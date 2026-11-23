@@ -1,0 +1,50 @@
+\section{Source map and scope}\label{sec:sources}
+The starting text is the English Wikipedia article \href{https://en.wikipedia.org/wiki/Topology}{\emph{Topology}}, especially its motivation, surface table, general and algebraic topology sections, and applications to data. The table groups its assertions with topics on its immediate outgoing pages. Some statements are direct arithmetic versions of statements in those pages. Others are consequences or tools developed here to explain a linked topic.
+\begingroup\small
+\renewcommand{\arraystretch}{1.15}
+\begin{longtable}{@{}L{.31\linewidth}L{.63\linewidth}@{}}
+\toprule
+Article topic or linked page & Proven scope in this collection\\
+\midrule\endfirsthead
+\toprule Article topic or linked page & Proven scope in this collection\\\midrule\endhead
+\href{https://en.wikipedia.org/wiki/Topological_space}{Topological space}, open and closed sets & Section~\ref{sec:finite-spaces} reconstructs all finite topologies from preorders, solves separation and continuity tests, and reconstructs finite $T_0$ spaces from their lattices of opens. Section~\ref{sec:metric-names} builds presented opens on completions.\\
+\href{https://en.wikipedia.org/wiki/Homeomorphism}{Homeomorphism} and
+\href{https://en.wikipedia.org/wiki/Homotopy}{homotopy} & Finite homeomorphism and homotopy equivalence have constructive decision procedures. For named Euclidean examples the maps are explicit. Sections~\ref{sec:loop} and \ref{sec:ribbon} compute homotopies for curves and bands.\\
+\href{https://en.wikipedia.org/wiki/Compact_space}{Compact space} and
+\href{https://en.wikipedia.org/wiki/Connected_space}{connected space} & A sharp subcover bound on finite spaces, certified covers and nets of cubes, exact cover decision for rational boxes, the cube's discrete-color test, a noncompact line, and the Cantor surjection in Section~\ref{sec:cantor}.\\
+\href{https://en.wikipedia.org/wiki/Metric_space}{Metric space} and
+\href{https://en.wikipedia.org/wiki/Euclidean_space}{Euclidean space} & Completion, dense extension, open inverse images, fixed accuracy extrema and intermediate values. The round sphere and cube boundary are uniformly homeomorphic (Section~\ref{sec:metric-names}).\\
+\href{https://en.wikipedia.org/wiki/Seven_Bridges_of_K%C3%B6nigsberg}{Seven bridges} and
+\href{https://en.wikipedia.org/wiki/Graph_theory}{graph theory} & Euler's complete trail criterion, impossibility for the historical graph, graph free groups and Betti numbers (Section~\ref{sec:algtop}).\\
+\href{https://en.wikipedia.org/wiki/Euler_characteristic}{Euler characteristic} and
+\href{https://en.wikipedia.org/wiki/Polyhedron}{polyhedra} & The planar formula for any number of components (Section~\ref{sec:grid}), the polyhedron formula for rational convex presentations, and Euler--Poincaré (Section~\ref{sec:algtop}).\\
+\href{https://en.wikipedia.org/wiki/Algebraic_topology}{Algebraic topology},
+\href{https://en.wikipedia.org/wiki/Homology_(mathematics)}{homology}, and
+\href{https://en.wikipedia.org/wiki/Betti_number}{Betti numbers} & Binary chains, subdivision, invariance under chain homotopies, nerve and gluing theorems, and interval decomposition for finite persistence data. The coefficients in the surface table are integers.\\
+\href{https://en.wikipedia.org/wiki/Torus}{Torus},
+\href{https://en.wikipedia.org/wiki/Real_projective_plane}{projective plane},
+\href{https://en.wikipedia.org/wiki/Klein_bottle}{Klein bottle}, and
+\href{https://en.wikipedia.org/wiki/Orientability}{orientability} & Homology and orientation for standard closed polygonal models, including every handle and cross-cap row. An independent winding argument distinguishes the sphere and torus.\\
+\href{https://en.wikipedia.org/wiki/Sphere}{Sphere},
+\href{https://en.wikipedia.org/wiki/Manifold}{manifold}, and
+\href{https://en.wikipedia.org/wiki/M%C3%B6bius_strip}{Möbius strip} & Sphere charts and lower homotopy groups, the line and circle as one-manifolds, the branch point of the figure eight, the twist and boundary of the Möbius band, and an embedded handled solid.\\
+The square and circle separating the plane, dimension & Grid Jordan separation with same-side paths, the circle corollary, and an opposite-face dimension obstruction with explicit alternative witnesses (companion).\\
+Subgroups of free groups in the algebraic-topology discussion & Section~\ref{sec:schreier} gives a Schreier basis for PR-decidable subgroups, the finite-index rank formula, and a folding algorithm starting with a finite list of generators.\\
+\href{https://en.wikipedia.org/wiki/Figure-eight_knot_(mathematics)}{Figure-eight knot} and knot theory & Section~\ref{sec:knotcolor} proves move invariance, coloring counts and a one-crossing unknotting calculation. The equivalence relation consists of finite diagram moves.\\
+\href{https://en.wikipedia.org/wiki/Hairy_ball_theorem}{Hairy-ball theorem} and
+\href{https://en.wikipedia.org/wiki/Tangent_vector_field}{tangent vector fields} & A bounded approximate-zero search for a PR field with modulus on every even sphere (companion), and a nonvanishing field on every odd sphere.\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\paragraph{Classical readings and proof boundaries.}
+The surface computation gives every homology entry of the source table for its standard polygonal presentation. The classification of arbitrary closed surfaces is a separate theorem. Metric compactness here has a precise net or cover contract, whereas the classical theory also treats arbitrary open covers. Unrestricted set-theoretic topology, general ambient isotopy, recognition of arbitrary surfaces, uniformization and three-manifold geometrization lie outside the proved claims. The finite-space discussion identifies where the ordinary real interval is used externally to interpret a numerical certificate.
+
+\paragraph{Mathematical references.}
+Compare J. P. May, \href{https://math.uchicago.edu/~may/FINITE/FINITEBOOK/FINITEBOOKCollatedDraft.pdf}{\emph{Finite Spaces and Larger Contexts}}, Chs.~1--4; R. E. Stong, \href{https://doi.org/10.1090/S0002-9947-1966-0195042-2}{\emph{Finite topological spaces}} (1966); A. Hatcher, \href{https://pi.math.cornell.edu/~hatcher/AT/ATpage.html}{\emph{Algebraic Topology}}, Chs.~1--2; J. R. Stallings, \href{https://www2.math.ou.edu/~nbrady/teaching/s11-5863/stallings.pdf}{\emph{Topology of finite graphs}} (1983); and A. Zomorodian and G. Carlsson, \href{https://doi.org/10.1007/s00454-004-1146-y}{\emph{Computing persistent homology}} (2005). The main text includes the finite arguments it uses. Each companion supplies its own references and full argument.
+
+\paragraph{Repository provenance.}
+The source snapshot is \href{https://github.com/VladimirReshetnikov/ProveIt/tree/6d03f3643ebb91a6243eb1e35e7599b388197786/Logic/PrimitiveRecursiveArithmetic}{\emph{VladimirReshetnikov/ProveIt, Logic/PrimitiveRecursiveArithmetic}}. The three mathematical companion directories come from \texttt{docs/proofs/topology/}. Four additional Lean modules come from the \path{general_topology_ipra_2026-11-19} packet. The archive manifest gives the exact path and Git blob hash of every copied file.
+
+\paragraph{Further research questions.}
+Can the dimension-uniform pole-avoidance construction be compiled into a reusable object-level iPRA derivation with a practical binary encoding of the intermediate simplices? Can a quantitative obstruction distinguish all pairs of distinct closed orientable surface genera starting with arbitrary equipped continuous maps? Which geometric clearance data suffice for a PR conversion of a tame spatial knot isotopy into a sequence of the diagram moves of Section~\ref{sec:knotcolor}?

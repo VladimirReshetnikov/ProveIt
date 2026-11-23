@@ -1,0 +1,58 @@
+\documentclass[10pt,letterpaper]{article}
+\usepackage[letterpaper,left=.92in,right=.92in,top=.85in,bottom=.85in,headheight=15pt,headsep=15pt,footskip=27pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,array,enumitem,multicol,microtype,graphicx,tikz,fancyhdr,titlesec}
+\usepackage{xcolor}
+\definecolor{inkblue}{HTML}{173B52}
+\definecolor{accent}{HTML}{11655F}
+\definecolor{soft}{HTML}{E6F3EE}
+\definecolor{mist}{HTML}{D4E4E2}
+\usepackage[unicode,colorlinks=true,urlcolor=accent,linkcolor=inkblue,citecolor=accent,pdfauthor={OpenAI},pdftitle={Finite combinatorics in intuitionistic primitive recursive arithmetic},bookmarksnumbered=true]{hyperref}
+\usepackage{bookmark}
+\titleformat{\section}{\Large\sffamily\bfseries\color{inkblue}}{\thesection}{.6em}{}
+\titleformat{\subsection}{\large\sffamily\bfseries\color{inkblue}}{\thesubsection}{.55em}{}
+\titleformat{\paragraph}[runin]{\normalfont\bfseries\color{inkblue}}{}{0pt}{}
+\titlespacing*{\section}{0pt}{2.1ex plus .6ex}{.8ex}
+\titlespacing*{\subsection}{0pt}{1.8ex plus .4ex}{.65ex}
+\setlength{\parindent}{1.2em}
+\setlength{\parskip}{.18em plus .06em minus .04em}
+\setlength{\emergencystretch}{2em}
+\setlist{nosep,topsep=.55em,leftmargin=*}
+\setcounter{tocdepth}{1}
+\newtheoremstyle{research}{6pt plus 2pt minus 1pt}{4pt}{\itshape}{}{\bfseries\color{inkblue}}{.}{.5em}{}
+\theoremstyle{research}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small\sffamily\color{inkblue}Finite combinatorics in iPRA}\fancyhead[R]{\small\sffamily\color{accent}\nouppercase{\leftmark}}\fancyfoot[C]{\small\sffamily\thepage}
+\renewcommand{\sectionmark}[1]{\markboth{Section \thesection}{}}
+\renewcommand{\headrulewidth}{.25pt}
+\raggedbottom
+\begin{document}
+\thispagestyle{empty}
+\noindent{\sffamily\bfseries\color{accent}CONSTRUCTIVE COMBINATORICS}\par\vspace{.55em}
+\noindent{\fontsize{26}{29}\selectfont\bfseries\sffamily\color{inkblue}Finite combinatorics in intuitionistic\\ primitive recursive arithmetic}\par\vspace{.7em}
+\noindent\rule{\linewidth}{.55pt}\par\vspace{.2em}
+\noindent How can one prove that an object exists when the only induction allowed is on quantifier-free formulas about natural numbers? The proofs here construct a table, compute a count, or give a finite search a provable success bound. The same arithmetic covers a schedule for fifteen pupils, all twelve ways to count distributions, and Ramsey's theorem for colorings of subsets of variable size.
+
+\noindent The starting points are the questions and links in \emph{Combinatorics}. They lead both to exact answers, such as $288$ standard tableaux of shape $(5,4,1)$, and to quantitative estimates, such as the relative error of the Catalan asymptotic. The last section identifies reusable ProveIt derivations and records exactly which new results have been checked in Lean. The accompanying source concordance identifies the direct link for each group of results.\par\vspace{.2em}
+\tableofcontents
+\clearpage
+\input{foundations}
+\input{enumeration}
+\input{analytic}
+\input{tableaux}
+\input{graphs}
+\input{structure}
+\input{matroids}
+\input{geometry}
+\input{additive}
+\input{actions}
+\input{words}
+\input{sperner}
+\input{models}
+\input{formalization}
+\input{index}
+\end{document}

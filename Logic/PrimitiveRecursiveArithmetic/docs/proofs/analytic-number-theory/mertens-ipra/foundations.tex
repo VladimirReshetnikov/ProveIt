@@ -1,0 +1,31 @@
+\section{Arithmetic conventions and the basic cancellation}\label{sec:foundation}
+
+We use first-order intuitionistic primitive recursive arithmetic (iPRA) as in ProveIt \cite{repo}. There is one numerical sort, a symbol and defining equations for each primitive recursive (PR) construction, and induction for quantifier-free formulas. Numerical parameters can be arbitrary. Bounded conjunction is a product of Boolean bits, bounded existence a finite disjunction with a least-index scan, and a bounded sum a primitive recursion. Thus correctness of all entries through $t$ may be an invariant for quantifier-free induction whenever entry correctness is given by a PR test. A loop with at most $b$ steps, including early termination, runs for $b$ ticks with a stopped flag. Products of signs, arrays, and permutations below all fall under these conventions.
+
+For a concrete coding use $(u+v)^2+u$ for the pair $(u,v)$. The intervals from $s^2$ to $s^2+s$ are disjoint for distinct sums $s$, and the coordinates can be extracted by bounded search through the code. Iterated pairing with a length field codes lists. List traversal, updates and folding are PR by recursion on the stated length, with a fixed default for malformed codes. An integer may be a pair $(a,b)$ for $a-b$, with equality $a+d=b+c$ against $(c,d)$. Rationals add a positive denominator and use cross multiplication for order. All finite reindexings below are equalities of such sums, proved by distributivity and cutting a finite array into explicitly tested pieces. In particular signs can be decided for integers and rationals in intuitionistic logic.
+
+\paragraph{Factorization with bounds.}
+For $m\ge2$ take the least $d$ in $[2,m]$ dividing $m$. It is prime since a proper factor would be an earlier divisor. Divide out and repeat at most $m$ times, retaining the residual product as an invariant. The residual strictly decreases whenever it is above one, hence ends at one. To see uniqueness, the Euclidean algorithm terminates on a pair of naturals in at most the smaller input plus two division steps (positive divisors decrease). Back substitution supplies a signed B\'ezout identity. If $p$ is prime and $p\nmid a$, $\gcd(p,a)=1$, so $p\mid ab$ implies $p\mid b$ after multiplying that identity by $b$. Consequently the first prime in one factorization occurs in any other. Cancel it and iterate over the bounded lists. This proves existence and uniqueness with no unbounded minimization. For $m=1$ the list is empty.
+
+Set $\mu(1)=1$. For $m\ge2$, set $\mu(m)=0$ if some prime square divides $m$, otherwise put $\mu(m)=(-1)^t$ for the number $t$ of prime factors. Define
+\[
+ M(0)=0,\qquad M(N)=\sum_{1\le m\le N}\mu(m).
+\]
+For a nonnegative rational $a/b$ with $b>0$ put $M(a/b)=M(\lfloor a/b\rfloor)$. For named real inputs the step-function value can be used when an integer part is given, or on a cell with certified endpoints. Identifying the integer part of a general Cauchy name at a jump would decide information unavailable at finite precision. Integrals of this particular step function will instead be defined by splitting at known integer endpoints.
+
+\begin{lemma}[Cancellation of the divisor sum]\label{lem:cancel}
+For $n\ge1$, $\displaystyle\sum_{d\mid n}\mu(d)=[n=1]$. This equation uniquely determines the values of $\mu$ on positive arguments.
+\end{lemma}
+\begin{proof}
+At $1$ the sum is one. At $n>1$ let $p$ be its least prime factor. Each squarefree divisor not containing $p$ is paired with its product by $p$. The reverse map divides out $p$. The two signs are opposite, and the remaining divisors have weight zero. To prove uniqueness, write the equation as the value at $n$ in terms of proper divisors and use induction on equality of two candidate prefixes. Both changes of index are bounded by $n$.
+\end{proof}
+
+The graph has precise local structure. The jump at $n$ is $\mu(n)$, so the plateaus between consecutive sample values occur exactly at nonsquarefree arguments. Writing $E(N),O(N)$ for the two squarefree parity counts gives $M=E-O$, and the total variation through $N$ is $Q(N)=E+O=\sum_{n\le N}|\mu(n)|$. In particular
+\[
+ |M(v)-M(u)|\le v-u \quad(0\le u\le v),\qquad
+ |M(N)|\le Q(N)\le N-\lfloor N/4\rfloor.
+\]
+Each multiple of $4$ has zero weight, which gives the last inequality. Since $M(2)=0$, the interval bound also gives $|M(N)|\le N-2$ for every $N\ge2$. The first inequality extends the source bound $|M(x)|\le x$ to intervals between integer arguments. If two integer values of $M$ straddle an integer level, the scan up to the later index finds an occurrence of the level because the first crossing has step size at most one. This is an effective discrete intermediate-value property.
+
+\paragraph{What the analytic notation means.}
+A real or complex number used below is given by rational approximations with certified errors, with a fixed PR program at each input schema. A comparison with a positive margin supplies a rational lower bound for it. Equality of two named quantities comprises the assertions at each demanded precision. For induction one fixes the final precision, bounds the finite computation and propagates rational error budgets. Section~\ref{sec:analytic} gives the elementary evaluators. The estimates in the subsequent proofs specify cutoff and mesh bounds. Numerical integrals and complex zeros enter only with the hypotheses and precision data stated for them.

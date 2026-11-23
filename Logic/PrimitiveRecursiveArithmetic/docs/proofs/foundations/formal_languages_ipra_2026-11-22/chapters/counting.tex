@@ -1,0 +1,227 @@
+\section{Counting, unary periodicity, and balanced parentheses}
+\label{sec:counting}
+
+This section proves numerical consequences of the finite constructions.
+Formal power-series notation below always abbreviates a statement about
+every supplied finite truncation. No completed infinite sequence is used
+as an object of the arithmetic.
+
+\begin{theorem}[Counting accepted words by a finite matrix]
+\label{count:matrix}
+For a DFA on $r\ge1$ states over $q$ letters, let
+\[
+ M_{ij}=\#\{a<q:\delta(i,a)=j\},\qquad
+ u_i=[i=q_0],\qquad f_i=[i\text{ is accepting}].
+\]
+The number $c_n$ of accepted words of length $n$ is
+$c_n=uM^nf$. All entries, powers, and counts are primitive recursive,
+uniformly in the finite DFA and $n$, and $0\le c_n\le q^n$.
+\end{theorem}
+\begin{proof}
+Let $v_{n,j}$ count words of length $n$ ending at state $j$.
+At length zero its value is $u_j$. Every word of length $n+1$ has a
+unique length-$n$ prefix and a final letter. Partition those prefixes
+by their reached state and then count the letters leading to $j$:
+\[
+ v_{n+1,j}=\sum_{i<r}v_{n,i}M_{ij}.
+\]
+The partition is a finite bijection, so its equality follows by induction
+on the finite enumeration, with equality of running counts as invariant.
+Inducting on $n$ gives $v_n=uM^n$. Summing over accepting states proves
+the formula. At each state the row sum of $M$ is $q$; thus
+$\sum_jv_{n,j}=q^n$ by the same recurrence, and the accepting sum is
+bounded by the total. This argument counts words, not accepting paths
+of a nondeterministic automaton, where multiplicities could be wrong.
+\end{proof}
+
+\begin{lemma}[Finite adjugate identity]\label{count:adjugate}
+For a finite square matrix $A$ over integer polynomials,
+\[
+ A\operatorname{adj}(A)=\operatorname{adj}(A)A=\det(A)I.
+\]
+The polynomial coefficients on both sides are primitive-recursive finite
+expressions, and their equality has an \ipra{} proof with signed integers
+represented by pairs of natural numbers.
+\end{lemma}
+\begin{proof}
+Use the convention that the determinant of the empty matrix is $1$.
+Define the determinant by its finite permutation sum with the sign given
+by the parity of the inversion count. For fixed row $i$, group the
+permutations by the column used in that row. Removing that row and column
+identifies the corresponding summand with the signed minor, and gives
+Laplace expansion. The sign changes by $(-1)^{i+j}$: moving row $i$ and
+column $j$ to the first positions uses $i+j$ adjacent exchanges, and
+the remaining inversion parity is that of the smaller permutation.
+Each grouping and deletion has a bounded inverse on the corresponding
+finite permutation table.
+
+For a diagonal entry of $A\operatorname{adj}(A)$, this is exactly the
+expansion of $\det(A)$. For an off-diagonal entry, it is the determinant
+of the matrix obtained by repeating one row in place of another. Pair
+each permutation with the permutation exchanging the columns assigned
+to those two row positions. The product terms agree, their signs differ,
+and the involution has no fixed points, so the finite signed sum is zero.
+Column expansion gives the other product. Arithmetic of integer pairs
+reduces the signed identities to equalities after moving negative sums
+to the other side. Polynomial multiplication is finite convolution,
+so the same reasoning applies coefficient by coefficient. These are
+bounded rearrangements of at most $r!$ terms; induction is only on the
+number of terms and the polynomial coefficient position.
+\end{proof}
+
+\begin{theorem}[Rational counting series and an integer recurrence]
+\label{count:rational}
+From any $r$-state DFA one can primitive-recursively compute integer
+polynomials
+\[
+ D(z)=\det(I-zM)=1+d_1z+\cdots+d_rz^r,\qquad
+ P(z)=u\operatorname{adj}(I-zM)f,\quad\deg P\le r-1,
+\]
+such that, coefficientwise,
+\[
+ D(z)\sum_{n\ge0}c_nz^n=P(z).
+\]
+In particular, for every $n\ge r$,
+\[
+ c_n+d_1c_{n-1}+\cdots+d_rc_{n-r}=0.
+\]
+These assertions are \ipra{} theorems about finite coefficients.
+\end{theorem}
+\begin{proof}
+Fix a truncation degree $N$ and work modulo $z^{N+1}$, a finite ring of
+$(N+1)$ signed coefficient cells. The finite geometric sum
+$S_N=I+zM+\cdots+z^NM^N$ satisfies
+$(I-zM)S_N=I$ modulo $z^{N+1}$, by adjacent-term cancellation.
+Multiplying by the adjugate and using Lemma~\ref{count:adjugate} gives
+$D(z)S_N=\operatorname{adj}(I-zM)$ in that finite ring.
+Multiply by $u$ and $f$ to obtain the displayed coefficient identity
+through degree $N$. The constant determinant is $1$, since the constant
+matrix is $I$; each minor has at most $r-1$ linear factors. The coefficient
+of degree $n\ge r$ therefore gives the recurrence. Since $N$ was an
+arbitrary numerical parameter, universal introduction proves every
+coefficient equation. No convergence, eigenvalues, complex numbers,
+or analytic division is needed. Conversely the equation with constant
+denominator coefficient $1$ computes each next $c_n$ uniquely from
+earlier coefficients, by primitive recursion with a finite history.
+\end{proof}
+
+\begin{theorem}[Unary regular languages are effectively ultimately periodic]
+\label{count:unary}
+For an $r$-state unary DFA there are computed numbers $i<r$ and
+$1\le p\le r$ such that membership of $a^n$ equals membership of
+$a^{n+p}$ for every $n\ge i$. Conversely, a unary primitive-recursive
+language with supplied $i\ge0,p>0$ and this periodicity property is accepted
+by an explicitly constructed DFA with $i+p$ states. The converse also
+allows $i=0$.
+\end{theorem}
+\begin{proof}
+Among the states reached at times $0,\ldots,r$, select equal states at
+$i<j\le r$ and set $p=j-i$. Run composition gives equal states at
+$i+t$ and $j+t$ for every $t$, by induction on $t$. Lookup of their
+acceptance bits proves the first assertion. For the converse, make a
+chain of states $0,\ldots,i+p-1$ whose final successor is state $i$.
+The initial state is $0$, and state $j$ has the supplied language's
+membership bit at $a^j$. For $n<i+p$ the reached state is $n$; afterwards
+it is $i+((n-i)\bmod p)$. Repeated use of the given period, formalized
+by induction on the quotient, proves the correct acceptance bit.
+\end{proof}
+
+\subsection{The one-type Dyck language}
+
+Write an opening parenthesis as an up-step and a closing parenthesis as
+a down-step. For a prefix $v$ let $U(v)$ and $D(v)$ be its counts of
+these letters. Define the language $\mathcal D$ by
+\[
+ U(w)=D(w)\quad\text{and}\quad
+ \forall j\le |w|\;D(w[0:j])\le U(w[0:j]).
+\]
+This is a primitive-recursive predicate. Height can be handled as a
+signed pair, or by the two displayed nonnegative counts.
+
+\begin{theorem}[Unique first return and an unambiguous grammar]
+\label{count:dyck}
+The language $\mathcal D$ is generated by
+$S\to\eps\mid\mathtt{(}S\mathtt{)}S$.
+Every nonempty Dyck word has a unique decomposition
+$\mathtt{(}u\mathtt{)}v$ with $u,v\in\mathcal D$.
+The matching closing position and the unique parse tree are
+primitive-recursively computable.
+\end{theorem}
+\begin{proof}
+A nonempty Dyck word starts with an opening parenthesis. Choose the first
+positive prefix length at which $U=D$; it exists at the full length and
+is found by bounded search. The last letter of this prefix is closing.
+Before that point the height is at least one, so removing the first and
+last steps gives a Dyck word $u$. The suffix $v$ is also Dyck because
+the removed prefix has height zero. Conversely an opening step, any
+Dyck word, a closing step, and another Dyck word never have negative
+height and end at zero. Inside the first block the height is positive,
+so this closing position is the unique first return.
+
+Repeat the decomposition on the two strictly shorter words to build
+the parse tree. Its nonempty internal nodes consume a disjoint pair
+of parentheses, so there are at most $|w|/2$ such nodes. A work list
+of subintervals and a loop of at most $|w|+1$ expansions implement the
+recursion. For a word with $n$ pairs every parse has $2n+1$ variable
+nodes and $2n$ terminal nodes: its variable nodes form a full binary
+tree with $n$ nonempty expansions. This gives an explicit
+primitive-recursive bound on all relevant tree codes. Uniqueness follows
+by bounded induction on the word length, since the root split and then
+both smaller parses are forced. The induction predicate checks equality
+of all valid parses within the numerical bound. This proves
+both grammar equivalence and unambiguity for this specific grammar.
+\end{proof}
+
+\begin{theorem}[Catalan recurrence and exact enumeration]
+\label{count:catalan}
+Let $C_n$ count Dyck words with $n$ opening and $n$ closing parentheses.
+Then
+\[
+ C_0=1,\qquad C_{n+1}=\sum_{i=0}^{n}C_iC_{n-i},\qquad
+ (n+1)C_n=\binom{2n}{n}.
+\]
+All counts and the bijections proving the identities are primitive
+recursive, and the identities are provable in \ipra.
+\end{theorem}
+\begin{proof}
+The empty word is the sole object for $n=0$. In the unique decomposition
+of a nonempty word, $u$ has $i$ pairs and $v$ has $n-i$ pairs. The
+decomposition and its inverse are a bijection, giving the convolution.
+
+For the exact formula assume first $n\ge1$. There are $\binom{2n}{n}$
+balanced words before imposing the prefix condition: choose the positions
+of the opening steps. A bad balanced word has a first prefix of height
+$-1$. Exchange opening and closing steps in this prefix. The resulting
+word has $n+1$ opening and $n-1$ closing steps. Conversely any such word
+has final height $2$ and therefore has a first prefix of height $1$;
+exchange its steps. The result is balanced with a first prefix of height
+$-1$, and the two operations are inverses. Existence of these first
+crossings follows from the fact that each step changes height by one,
+proved by a scan with the previous height as invariant. Thus the bad
+words number $\binom{2n}{n-1}$, and
+\[
+ C_n=\binom{2n}{n}-\binom{2n}{n-1}.
+\]
+Double-count pairs consisting of an $n$-element subset of a $2n$-element
+set and a distinguished element of that subset: there are
+$n\binom{2n}{n}$ pairs. Removing the distinguished element instead gives
+an $(n-1)$-element subset with one of its $n+1$ missing elements marked,
+so $n\binom{2n}{n}=(n+1)\binom{2n}{n-1}$. Multiply the preceding
+difference by $n+1$ to obtain the claimed identity. For $n=0$ it is
+$C_0=1$. Subset enumeration, prefix reflection, and its inverse are
+finite algorithms; their inverse identities and counting equations use
+bounded induction. No real asymptotic estimate enters the proof.
+\end{proof}
+
+\begin{corollary}[Balanced parentheses are context-free and nonregular]
+\label{count:dycknonreg}
+The Dyck language is context-free but is not accepted by any finite DFA.
+\end{corollary}
+\begin{proof}
+The grammar above proves context-freeness. Intersect $\mathcal D$ with
+the regular language consisting of a block of opening parentheses followed
+by a block of closing parentheses. The result is exactly
+$\{\mathtt{(}^n\mathtt{)}^n:n\ge0\}$. A DFA for $\mathcal D$ would,
+by the product construction, give a DFA for that language, contradicting
+the regular pumping argument in Section~\ref{sec:regular}.
+\end{proof}

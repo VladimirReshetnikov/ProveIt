@@ -1,0 +1,148 @@
+\section{An effective Catalan asymptotic}
+\label{sec:analytic-catalan}
+The links to \emph{Analytic combinatorics} and \emph{Catalan number}
+lead from an exact counting recurrence to an estimate of its coefficients.
+In Section~\ref{sec:enumeration}, $C=1+xC^2$ gives
+$(1-2xC)^2=1-4x$. Thus $1-2xC$ is the formal square root with
+constant coefficient $1$: coefficient $j>0$ of a square of this form
+equals twice coefficient $j$ of the root plus a sum over smaller indices.
+This proves uniqueness by triangular comparison. We now obtain an
+asymptotic with a numerical error at every positive index.
+
+\begin{theorem}[Wallis bounds and relative error]\label{result14}
+Set $a_n=4^n/\binom{2n}{n}$ for $n\ge1$. With the constant $\pi$
+specified by rational approximants below,
+\[
+ L_n=\frac{2a_n^2}{2n+1}\ \le\ \pi\ \le\
+ U_n=\frac{a_n^2}{n},\qquad U_n-L_n\le\frac4{2n+1}.
+\]
+Consequently the two normalized counts satisfy
+\[
+\begin{split}
+ 0&\le 1-\frac{\sqrt{\pi n}}{4^n}\binom{2n}{n}\le\frac1{4n},\\
+ 0&\le 1-\frac{\sqrt{\pi}\,n^{3/2}C_n}{4^n}
+       \le\frac5{4(n+1)}.
+\end{split}
+\]
+Thus $C_n\sim 4^n/(\sqrt{\pi}\,n^{3/2})$ with, for example, the
+primitive recursive relative-error modulus $n\ge 2^{k+1}$ for tolerance
+$2^{-k}$.
+\end{theorem}
+
+\paragraph{Rational meaning of the integral notation.}
+For a rational function $f=P/Q$ used below, the displayed denominator
+satisfies $Q(t)\ge1$ on $0\le t\le1$. Write
+$S_M(f)=M^{-1}\sum_{i=0}^{M-1} f(i/M)$ for $M\ge1$.
+The difference $P(t+h)Q(t)-P(t)Q(t+h)$ has zero constant coefficient
+in $h$. Divide by $h$ in the polynomial ring, and let $K$ be the
+sum of the absolute coefficients of that quotient, rounded up.
+For $0\le t\le t+h\le1$ the denominators of $f(t+h)-f(t)$ have
+product at least one, so $|f(t+h)-f(t)|\le Kh$.
+Comparing $S_M$ with the refinement $S_{MN}$ on each original cell
+gives an error at most $K/M$. Comparing with $S_N$ in the same way gives
+$|S_M-S_N|\le K/M+K/N$. The notation $\int_0^1 f$ stands for this
+explicit rational approximation procedure. At precision $2^{-k}$ one
+may take $M=(K+1)2^{k+2}$. Sums, rational scalar multiplication, and
+order inequalities on a common mesh follow directly from the finite sum.
+
+One other calculation suffices in place of a general integration theorem.
+For $F=P/Q$ form the polynomial
+\[
+ E(t,h)=(P(t+h)Q(t)-P(t)Q(t+h))Q(t)
+       -h(P'Q-PQ')(t)Q(t+h).
+\]
+Its constant and linear terms in $h$ vanish by the binomial expansion.
+Let $J(F)$ be the ceiling of the sum of absolute coefficients of
+$E/h^2$. Dividing by $Q(t+h)Q(t)^2\ge1$ gives
+$|F(t+h)-F(t)-hF'(t)|\le J(F)h^2$, with
+$F'=(P'Q-PQ')/Q^2$ computed formally. Telescoping at $h=1/M$ proves
+\[
+ |S_M(F')-(F(1)-F(0))|\le J(F)/M.                  \tag{*}
+\]
+These constants are primitive recursive functions of the coefficient arrays.
+
+\paragraph{Identifying the constant.}
+Define $\pi$ by $\pi_M=4S_M(1/(1+t^2))$. To identify the name independently,
+the finite geometric identity and $(*)$ for
+$F=t^{j+1}/(j+1)$ give Gregory's classical characterization
+\[
+ \left|\pi-4\sum_{j=0}^{b-1}\frac{(-1)^j}{2j+1}\right|
+       \le\frac4{2b+1}.
+\]
+Indeed the pointwise remainder before integration has absolute value
+$t^{2b}/(1+t^2)\le t^{2b}$. There is also a geometric identification.
+The parametrization $v(t)=((1-t^2)/(1+t^2),2t/(1+t^2))$ traverses the
+unit quarter circle for $0\le t\le1$; its inverse is $t=y/(1+x)$.
+Direct squaring shows the chord from $t$ to $u\ge t$ has length
+$2(u-t)/\sqrt{(1+t^2)(1+u^2)}$. This lies between the right- and
+left-endpoint rectangle contributions for the decreasing function
+$2/(1+t^2)$. On a uniform mesh those two totals differ by
+$1/M$ by telescoping. Thus the polygonal quarter-arc length converges
+to $\pi/2$. For any rational partition refine it by the uniform mesh;
+the coarse chord sum can only increase under refinement by the triangle
+inequality, and the refined upper and lower endpoint totals differ by
+at most $1/M$ (sum the drops multiplied by the largest mesh length).
+This also identifies the constant with the usual circle circumference
+divided by its diameter. The arithmetic proofs can use the rational
+$\pi_M$ throughout.
+
+\begin{proof}[Proof of the bounds]
+Put $c=(1-t^2)/(1+t^2)$, $s=2t/(1+t^2)$, $w=2/(1+t^2)$, and
+$I_j=\int_0^1 wc^j$. The identities $c^2+s^2=1$, $s'=wc$ and
+$c'=-ws$ follow by rational polynomial multiplication. We have
+$I_0=\pi/2$, $I_1=1$ from $s(1)-s(0)=1$ and $(*)$. For $j\ge2$
+differentiate the product $sc^{j-1}$ formally:
+\[
+ (sc^{j-1})'=jwc^j-(j-1)wc^{j-2}.
+\]
+The endpoint values vanish, giving $j I_j=(j-1)I_{j-2}$. Since
+$0\le c\le1$, the $I_j$ decrease. The recurrence gives
+\[
+ I_{2n}=\frac{\pi}{2a_n},\qquad
+ I_{2n+1}=\frac{a_n}{2n+1},\qquad I_{2n-1}=\frac{a_n}{2n}.
+\]
+For example the even product multiplier is
+$\prod_{j=1}^n(2j-1)/(2j)=\binom{2n}{n}/4^n$, by separating the
+factors of $(2n)!$. Comparison of the three integrals gives the enclosing
+interval. Also $a_{n+1}/a_n=2(n+1)/(2n+1)$, so
+$L_{n+1}/L_n=(2n+2)^2/((2n+1)(2n+3))>1$ and
+$U_{n+1}/U_n=4n(n+1)/(2n+1)^2<1$. The width is
+$U_n/(2n+1)\le U_1/(2n+1)=4/(2n+1)$.
+
+For an explicit iPRA induction in this argument fix the target index
+$m=2n+1$ and one mesh $M$. Replace $I_j$ by $S_M(wc^j)$.
+Compare these rational numbers with a rational table $u_j$ obeying the
+exact recurrence with $u_0=\pi_M/2$ and $u_1=1$. Let $J$ be the largest
+of $1,J(s)$ and the $J(sc^{j-1})$ for $2\le j\le m$.
+Equation $(*)$ bounds the error in each recurrence, after division by
+$j$, by $J/M$. Since $(j-1)/j\le1$, induction on the finite row
+gives $|u_j-S_M(wc^j)|\le(m+1)J/M$ for all $j\le m$.
+Thus $\pi_M$ satisfies both Wallis bounds to within
+$4a_n(m+1)J/M$. For any requested precision the product in this numerator
+specifies how large to take $M$. This proof only inducts on a bounded
+Boolean comparison of rational tables.
+
+Finally let $R_n=\sqrt{\pi n}/a_n$. Squaring and using the bounds yields
+$1/(1+1/(2n))\le R_n^2\le1$.
+For rational $x\ge0$ the identity
+$1-1/\sqrt{1+x}=x/(\sqrt{1+x}(1+\sqrt{1+x}))\le x/2$
+gives $1-R_n\le1/(4n)$. The Catalan ratio equals
+$nR_n/(n+1)$ by the exact counting formula; its deficit is at most
+$1/(n+1)+(n/(n+1))/(4n)=5/(4(n+1))$.
+One may eliminate the square roots in the internal assertions by squaring
+their nonnegative endpoints. Alternatively a square root of a bounded
+nonnegative rational is approximated by bisecting a rational interval
+with a square comparison, halving its width at each step.
+\end{proof}
+
+\paragraph{Lean targets.}
+Define rational coefficient arrays, polynomial translation
+$P(t+h)$ by binomial expansion, and the nonnegative integers
+\texttt{lipBound}, \texttt{taylorBound} from the coefficient sums above.
+Prove \texttt{sumRefine} on the rectangular index set $[M]\times[N]$
+and \texttt{telescopeDerivative} by summing the polynomial remainder
+inequality. Implement \texttt{wallisRow} and \texttt{riemannRow} for a
+supplied $m,M$. The central lemma bounds the largest difference on every
+completed prefix by its length times $J/M$. Comparison of entries
+$2n-1,2n,2n+1$ and positive cross multiplication then yields the
+finite precision theorem. These are outline targets.

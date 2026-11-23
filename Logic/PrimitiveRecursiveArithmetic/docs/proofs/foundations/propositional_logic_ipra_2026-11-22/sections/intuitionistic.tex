@@ -1,0 +1,564 @@
+\section{Intuitionistic propositional logic by finite saturation}
+\label{sec:ipc-saturation}
+\providecommand{\IPC}{\mathsf{IPC}}
+\providecommand{\ipra}{\mathsf{iPRA}}
+\providecommand{\Forces}{\Vdash}
+
+This section gives a direct, bounded proof of intuitionistic propositional
+soundness, completeness, decidability, and the finite model property.
+The construction uses neither an infinite maximal theory nor a preliminary
+cut-elimination theorem. Its purpose is a transparent primitive recursive
+formalization, rather than an efficient implementation. Kripke's original
+semantics provides the historical setting \cite{kripke1965}; all bounds and
+the finite construction used below are established here.
+
+\subsection{The proof system and its finite restriction}
+
+Formulas are generated from atoms $p_i$, falsity $\bot$, and the binary
+connectives $\wedge,\vee,\to$. Write $\neg A$ for $A\to\bot$ and $\top$ for
+$\bot\to\bot$. Contexts are finite sets. A judgement $\Gamma\vdash A$ has
+one formula on the right. We use the following natural-deduction rules, with
+weakening and cut displayed explicitly:
+\[
+\frac{A\in\Gamma}{\Gamma\vdash A}\quad
+\frac{\Gamma\vdash A\quad\Gamma\subseteq\Delta}{\Delta\vdash A}\quad
+\frac{\Gamma\vdash A\quad\Gamma\cup\{A\}\vdash B}{\Gamma\vdash B}\quad
+\frac{\Gamma\vdash\bot}{\Gamma\vdash A}.
+\]
+\[
+\frac{\Gamma\vdash A\quad\Gamma\vdash B}{\Gamma\vdash A\wedge B}
+\qquad
+\frac{\Gamma\vdash A\wedge B}{\Gamma\vdash A}
+\qquad
+\frac{\Gamma\vdash A\wedge B}{\Gamma\vdash B},
+\]
+\[
+\frac{\Gamma\vdash A}{\Gamma\vdash A\vee B}\qquad
+\frac{\Gamma\vdash B}{\Gamma\vdash A\vee B}\qquad
+\frac{\Gamma\vdash A\vee B\quad
+       \Gamma\cup\{A\}\vdash C\quad
+       \Gamma\cup\{B\}\vdash C}{\Gamma\vdash C},
+\]
+\[
+\frac{\Gamma\cup\{A\}\vdash B}{\Gamma\vdash A\to B}
+\qquad
+\frac{\Gamma\vdash A\to B\quad\Gamma\vdash A}{\Gamma\vdash B}.
+\]
+These are twelve rule forms, counting the two conjunction eliminations and
+the two disjunction introductions separately. The displayed cut is merely
+substitution of a derivation for an assumption, so this presentation proves
+exactly ordinary intuitionistic natural deduction. More explicitly, a
+derivation of $B$ from $\Gamma\cup\{A\}$ can be traversed recursively while
+replacing each free use of $A$ by the supplied derivation of $A$; under a
+discharged assumption, retain that local assumption and weaken the supplied
+derivations. The same traversal handles the two discharged branches of
+disjunction elimination. This is a primitive recursive transformation of
+finite proof trees. It need not normalize the resulting proof.
+
+Fix a finite input sequent $\Gamma_0\vdash A_0$. Let $S$ be the set of all
+its subformulas, together with $\bot$, and enumerate its distinct members
+as $s_0,\ldots,s_{m-1}$. Thus $m\geq1$, $\Gamma_0\subseteq S$, $A_0\in S$,
+and $S$ is closed under taking immediate subformulas. A context is now an
+$m$-bit mask. There are precisely
+\[
+                 N=m2^m
+\]
+possible judgements $(\Gamma,A)$ with $\Gamma\subseteq S$ and $A\in S$.
+Restrict every displayed rule to formulas in $S$. The restriction is imposed
+on all formulas, including cut formulas and the conclusions of introduction
+rules.
+
+Let $D_0$ contain precisely the assumption judgements. Having defined the
+Boolean table $D_r$, let $D_{r+1}$ contain $D_r$ and every conclusion of a
+restricted rule whose premises occur in $D_r$. All rule instances can be
+enumerated by a bounded loop. Retain, for every newly added judgement, its
+first stage and the first successful rule instance in a fixed ordering.
+
+\begin{lemma}[Finite closure and proof certificates]
+\label{lem:ipc-finite-closure}
+The table $D=D_N$ is closed under all twelve restricted rules. Every entry
+of $D$ has an $\IPC$ proof using only formulas in $S$. A simultaneous proof
+certificate for all accepted judgements can be represented by a directed
+acyclic graph with at most $N$ inference records. Expanding sharing gives
+each accepted judgement a proof tree with fewer than $3^{N+1}$ nodes, with
+cut retained as one of the displayed rules.
+\end{lemma}
+\begin{proof}
+Every table is contained in its successor. If one transition adds no entry,
+the defining update gives the same table forever. If $D_N$ were not closed,
+each of the first $N+1$ transitions would therefore add at least one new
+entry, which is impossible for a table with $N$ positions. This counting
+argument is finite: count the set bits, and observe that a proper increase
+increases the count by at least one.
+
+For proof extraction, order accepted judgements by first appearance stage,
+then by their numeric indices. An assumption entry is a leaf. Every other
+record points to at most three records of strictly earlier stage and stores
+the rule used. Thus the certificate is acyclic and has at most $N$ records.
+Following the records backwards from an entry first appearing at stage $r$
+produces a tree of height at most $r$, with at most three children per node.
+Its node count is at most $1+3+\cdots+3^r<3^{r+1}$. Each node is one of the
+displayed $\IPC$ rules, so this is an actual proof, not a certificate of
+semantic plausibility.
+\end{proof}
+
+This also supplies explicit primitive recursive resource bounds. There are
+at most $12N^4$ candidate tuples consisting of a rule tag, at most three
+premise judgements, and a conclusion; fewer-premise rules may use dummy
+entries. Hence $N$ rounds require at most $12N^5$ candidate checks. This is
+a bound on checks, not a machine-step complexity claim about a particular
+encoding. Each check is primitive recursive. An inference record uses a
+four-bit rule tag and four indices bounded by $N$, so the graph can use
+at most
+\[
+          N\bigl(4+4\lceil\log_2(N+1)\rceil\bigr)
+\]
+bits for those fields, in addition to the input list $S$ and elementary
+length and root fields. A local checker recomputes the side conditions from
+the referenced judgements. If an ordinary natural-deduction tree without
+the explicit cut rule is desired, the substitution procedure above removes
+the cuts. The stated $3^{N+1}$ bound is for expansion of sharing, not for
+that additional transformation.
+
+\subsection{Finite maximal extensions without a choice principle}
+
+For $X\subseteq S$ and $C\in S$, abbreviate the corresponding table entry
+by $D(X,C)$. Say that $X$ \emph{avoids} $C$ when $D(X,C)=0$. This is a
+decidable property of two finite codes.
+
+\begin{lemma}[Effective finite prime extension]
+\label{lem:ipc-prime-extension}
+If $X$ avoids $C$, a primitive recursive procedure produces $T\supseteq X$
+such that:
+\begin{enumerate}
+\item $D(T,C)=0$;
+\item for every $E\in S\setminus T$, $D(T\cup\{E\},C)=1$;
+\item $D(T,E)=1$ implies $E\in T$ for every $E\in S$;
+\item if $E\vee F\in T$, then $E\in T$ or $F\in T$;
+\item $\bot\notin T$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+Start with $T_0=X$. At stage $j<m$, test the bit
+$D(T_j\cup\{s_j\},C)$. If it is zero, set
+$T_{j+1}=T_j\cup\{s_j\}$; otherwise set $T_{j+1}=T_j$. Put $T=T_m$.
+By construction, every $T_j$ avoids $C$, proving (1). If $E=s_j$ is absent
+from $T$, it was rejected at stage $j$. The judgement
+$T_j\cup\{E\}\vdash C$ belongs to $D$, and weakening gives
+$D(T\cup\{E\},C)=1$. This proves (2).
+
+For (3), decide whether $E\in T$. If it is absent but $D(T,E)=1$, combine
+this judgement with (2) by the displayed cut rule. The result is
+$D(T,C)=1$, contrary to (1). Thus $E\in T$. Notice that membership in $T$
+is a bit test; this reasoning does not use excluded middle for an arbitrary
+arithmetical proposition.
+
+For (4), decide membership of $E$ and $F$. If neither belongs to $T$, (2)
+gives both $D(T\cup\{E\},C)=1$ and $D(T\cup\{F\},C)=1$. The assumption
+rule supplies $D(T,E\vee F)=1$. Disjunction elimination then contradicts
+(1). Therefore at least one of the two membership tests succeeds.
+Finally, if $\bot\in T$, assumption and falsity elimination give
+$D(T,C)=1$. This proves (5).
+\end{proof}
+
+The word ``maximal'' here refers only to the explicit finite condition (2).
+There is no invocation of Zorn's lemma, an infinite enumeration of all
+formulas, or a decision procedure for an unbounded proof search.
+
+\subsection{Kripke semantics and the finite truth lemma}
+
+A finite Kripke model consists of a nonempty finite partially ordered set
+$(W,\leq)$ and an upward closed set $V(p)$ for every atom under consideration.
+Atoms not listed in the finite input have the empty valuation. Define
+forcing by
+\[
+\begin{array}{ll}
+w\Forces p &\Longleftrightarrow w\in V(p),\\
+w\not\Forces\bot,&\\
+w\Forces B\wedge C &\Longleftrightarrow
+                         (w\Forces B\ \hbox{and}\ w\Forces C),\\
+w\Forces B\vee C &\Longleftrightarrow
+                         (w\Forces B\ \hbox{or}\ w\Forces C),\\
+w\Forces B\to C &\Longleftrightarrow
+     \text{for every }v\geq w,\ v\Forces B\text{ implies }v\Forces C.
+\end{array}
+\]
+For a finite coded frame these are Boolean computations. In the implication
+clause, the universal quantifier is a loop over the finite list of worlds.
+The formula recursion can be implemented by a bounded bottom-up scan of
+its parse tree.
+
+\begin{lemma}[Persistence and soundness]
+\label{lem:ipc-soundness}
+If $w\leq v$ and $w\Forces A$, then $v\Forces A$. Every $\IPC$ derivation
+is valid in every finite Kripke model: if $\Gamma\vdash A$ and $w$ forces
+all members of $\Gamma$, then $w\Forces A$.
+\end{lemma}
+\begin{proof}
+For persistence, induction on formulas handles atoms by upward closure,
+falsity trivially, and conjunction and disjunction componentwise. If $w$
+forces $B\to C$ and $v\geq w$, every extension of $v$ is also an extension
+of $w$, which proves the implication case.
+
+For soundness, traverse the finite proof. Assumption, weakening, cut, falsity,
+and the conjunction rules follow directly from the definitions. A disjunction
+forced at $w$ gives one of its two forced disjuncts, so the appropriate
+discharged branch proves the conclusion of disjunction elimination.
+For implication introduction, let $v\geq w$ force the discharged assumption
+$B$. Persistence carries every member of $\Gamma$ from $w$ to $v$, and the
+premise derivation yields $v\Forces C$. This proves $w\Forces B\to C$.
+Implication elimination uses the reflexive extension $w\leq w$.
+These checks also cover proofs whose intermediate formulas do not belong
+to the input subformula set $S$.
+\end{proof}
+
+Form the \emph{canonical finite frame} whose worlds are all subsets
+$T\subseteq S$ satisfying the following three bounded conditions:
+\begin{enumerate}
+\item if $D(T,E)=1$, then $E\in T$, for every $E\in S$;
+\item if $E\vee F\in T$, then $E\in T$ or $F\in T$;
+\item $\bot\notin T$.
+\end{enumerate}
+Order these worlds by inclusion, and put $T\Forces p$ exactly when $p\in T$.
+The frame is obtained by scanning all $2^m$ masks. When it is used to
+refute a failed judgement, Lemma~\ref{lem:ipc-prime-extension} supplies at
+least one world, so the required nonemptiness is established. We do not
+need to assert nonemptiness before that hypothesis is available.
+
+\begin{theorem}[Finite canonical truth lemma]
+\label{thm:ipc-truth-lemma}
+For every canonical world $T$ and every $E\in S$,
+\[
+                      T\Forces E\quad\Longleftrightarrow\quad E\in T.
+\]
+\end{theorem}
+\begin{proof}
+Use structural induction on $E$. The atomic case is the valuation definition;
+the falsity case is condition (3). If $B\wedge C\in T$, assumption,
+conjunction elimination, and condition (1) put both $B$ and $C$ in $T$.
+Conversely, membership of both gives their conjunction by introduction and
+condition (1). Apply the induction hypotheses. For disjunction, the forward
+membership direction is condition (2), and the reverse direction follows
+from disjunction introduction and condition (1).
+
+Now let $E=B\to C$. If $E\in T$ and $U\supseteq T$ is a canonical world
+forcing $B$, the induction hypothesis gives $B\in U$. Both $E$ and $B$
+are assumptions in context $U$, so implication elimination puts $D(U,C)=1$.
+Condition (1) and the induction hypothesis give $U\Forces C$. This proves
+$T\Forces B\to C$.
+
+Conversely, decide whether $B\to C\in T$. If it is absent, then
+$D(T\cup\{B\},C)=0$: otherwise implication introduction would give
+$D(T,B\to C)=1$, and condition (1) would put $B\to C$ in $T$.
+Apply Lemma~\ref{lem:ipc-prime-extension} to $X=T\cup\{B\}$ and target $C$.
+It produces a canonical world $U\supseteq T$ containing $B$ and avoiding
+$C$. Assumption implies $C\notin U$. By the induction hypotheses,
+$U\Forces B$ and $U\not\Forces C$, so $T\not\Forces B\to C$.
+Thus whenever $T$ forces the implication, the membership test must have
+succeeded. This proves the remaining direction constructively.
+\end{proof}
+
+\begin{theorem}[Proof or finite countermodel]
+\label{thm:ipc-proof-or-model}
+For every well-formed finite input $\Gamma_0\vdash A_0$, a primitive recursive
+procedure returns exactly one of these outcomes, with correctness and the
+stated bounds provable in $\ipra$:
+\begin{enumerate}
+\item an $\IPC$ derivation of $A_0$ from $\Gamma_0$; or
+\item a finite Kripke model with at most $2^m$ worlds, and a distinguished
+world forcing every member of $\Gamma_0$ but not $A_0$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+Compute $D$. If $D(\Gamma_0,A_0)=1$, extract the proof from
+Lemma~\ref{lem:ipc-finite-closure}. Otherwise extend $\Gamma_0$ to a
+canonical world $T$ avoiding $A_0$. The truth lemma makes $T$ the required
+counterexample, inside the frame of all canonical worlds. That frame has
+at most $2^m$ worlds. Soundness shows that the two outcomes cannot both be
+correct.
+
+All loops are bounded: extraction of $S$ by the input parse trees, saturation
+by $N$, greedy extension by $m$, and world enumeration by $2^m$. The
+invariants used above can each be represented by a single Boolean condition
+on finite arrays; bounded conjunctions are primitive recursive products of
+bits. The inductions are on these arrays' construction stages, their bounded
+counts, the parse-tree scan, and the proof scan. Thus they are instances of
+quantifier-free induction after the primitive recursive characteristic
+functions have been introduced. No induction on an unbounded semantic
+assertion, reflection principle, or unbounded search is used.
+\end{proof}
+
+Consequently $\IPC$ derivability for finite contexts is decidable; it is
+equivalent to validity in every finite Kripke model; and a failed sequent
+has a countermodel within the displayed bound. In fact it suffices to test
+all coded frames of at most $2^m$ worlds on the finitely many input atoms.
+One such frame uses at most $q^2+aq$ Boolean entries for its order and atomic
+valuation, where $q\leq2^m$ and $a\leq m$. Hence enumeration of all candidate
+frames also has an explicit primitive recursive bound. The canonical
+construction is preferable because it produces a witness directly.
+
+There is also a useful syntactic consequence. Any ordinary $\IPC$ proof
+of the input sequent, even if it uses arbitrary intermediate formulas,
+can be replaced by a proof in the displayed finite restriction. Indeed,
+compute the decision outcome. A countermodel would contradict soundness
+of the supplied proof, so the proof outcome occurs. This proves a bounded
+subformula result \emph{with cut allowed}; it is not an assertion that the
+algorithm has performed cut elimination.
+
+\subsection{Finite Heyting algebras}
+
+For a finite poset $W$, let $\mathcal U(W)$ be its upward closed subsets.
+This family is explicitly enumerable among the $2^{|W|}$ masks. Give it
+the operations
+\[
+0=\varnothing,\qquad 1=W,\qquad
+U\mathbin{\wedge}V=U\cap V,\qquad
+U\mathbin{\vee}V=U\cup V,
+\]
+\[
+U\Rightarrow V=
+\{w\in W:\text{ every }v\geq w\text{ that belongs to }U
+                              \text{ also belongs to }V\}.
+\]
+
+\begin{theorem}[Finite Heyting semantics and completeness]
+\label{thm:ipc-heyting}
+These operations make $\mathcal U(W)$ a finite Heyting algebra. The value
+of a formula in this algebra is exactly its set of forcing worlds. Every
+$\IPC$ theorem is valid in every coded finite Heyting algebra. Conversely,
+if a finite sequent with $m$ relevant subformulas is not derivable, it fails
+in a finite Heyting algebra with at most $2^{2^m}$ elements. All constructions
+and implications are formalizable in $\ipra$.
+\end{theorem}
+\begin{proof}
+Union and intersection preserve upward closure and satisfy the bounded
+distributive lattice identities by membership tests. The set $U\Rightarrow V$
+is upward closed because an extension of an extension is an extension.
+For upward closed $X$, prove the defining adjunction
+\[
+             X\cap U\subseteq V
+             \quad\Longleftrightarrow\quad
+             X\subseteq U\Rightarrow V.
+\]
+In the forward direction, if $x\in X$ and $y\geq x$ lies in $U$, upward
+closure puts $y\in X$, and the assumed inclusion puts $y\in V$.
+For the reverse direction, apply the implication condition at $y=x$.
+Thus this is a Heyting algebra. Formula induction identifies algebraic
+values with forcing sets, including implication by its definition.
+
+For an arbitrary finite Heyting algebra, write $g$ for the meet of the
+values of the assumptions, with empty meet $1$. Each proof rule preserves
+$g\leq[A]$. For example, implication introduction is exactly the adjunction
+$g\wedge a\leq b$ iff $g\leq a\Rightarrow b$.
+Implication elimination uses $a\wedge(a\Rightarrow b)\leq b$.
+For disjunction elimination, $g\leq a\vee b$ and the two branch inequalities
+$g\wedge a\leq c$, $g\wedge b\leq c$ imply
+\[
+g=g\wedge(a\vee b)=(g\wedge a)\vee(g\wedge b)\leq c.
+\]
+Cut uses $g\leq a$ and $g\wedge a\leq b$; the other rules follow directly
+from the lattice laws. This proves soundness by a finite proof scan.
+
+For completeness, use the countermodel from
+Theorem~\ref{thm:ipc-proof-or-model}. Its distinguished world belongs to
+the meet of the assumption values but not to the conclusion value in
+$\mathcal U(W)$. Thus the required inequality fails. The algebra contains
+at most $2^{|W|}\leq2^{2^m}$ elements. All algebra axioms and operations
+in this argument are finite tables and bounded checks.
+\end{proof}
+
+\subsection{Disjunction extraction, including Harrop assumptions}
+
+A \emph{Harrop formula} is generated by
+\[
+H::=p_i\mid\bot\mid H\wedge H\mid B\to H,
+\]
+where $B$ is arbitrary. In particular every negation is Harrop. We prove
+a primitive recursive extraction result. Stronger polynomial bounds are
+known \cite{buss-pudlak2001}; no such bound is needed or claimed here.
+
+\begin{lemma}[Gluing two rooted models]
+\label{lem:ipc-gluing}
+Let $M_1,M_2$ be disjoint finite rooted Kripke models, with roots $r_1,r_2$.
+Adjoin a fresh root $r$ below every world of both models. Give an atom to
+$r$ exactly when both $r_1$ and $r_2$ force it. Forcing at the old worlds
+is unchanged. If a Harrop formula is forced at both $r_1$ and $r_2$, then
+it is forced at $r$.
+\end{lemma}
+\begin{proof}
+The new atomic valuation is persistent: an atom at $r$ belongs to both old
+roots and hence to all their extensions. An old world has exactly its old
+extensions, so induction on formulas shows that its forcing relation is
+unchanged.
+
+For the final assertion, induct on the displayed Harrop grammar. Atoms
+hold by the definition at $r$; the falsity case has an impossible premise;
+conjunction follows componentwise. Suppose $H=B\to K$ is forced at both
+old roots. Every old extension forcing $B$ forces $K$ already. It remains
+to consider $r$ itself: if $r\Forces B$, persistence gives $r_i\Forces B$
+for both $i$, hence $r_i\Forces K$. The induction hypothesis for the
+strictly smaller Harrop formula $K$ gives $r\Forces K$. This is precisely
+the implication condition at the new root.
+\end{proof}
+
+\begin{theorem}[Constructive disjunction property]
+\label{thm:ipc-disjunction}
+If all formulas in the finite context $\Gamma$ are Harrop, an $\IPC$ proof
+of $\Gamma\vdash A\vee B$ can be transformed by a primitive recursive
+procedure into either a proof of $\Gamma\vdash A$ or a proof of
+$\Gamma\vdash B$, together with the tag identifying the chosen disjunct.
+In particular, $\IPC$ has the disjunction property for theorems.
+\end{theorem}
+\begin{proof}
+Run the proof-or-model procedure for both $\Gamma\vdash A$ and
+$\Gamma\vdash B$. If either returns a proof, output it and its tag.
+Otherwise obtain two countermodels with distinguished worlds. Restrict
+each model to the upward cone of its distinguished world; this preserves
+forcing there and makes that world a root. Glue the two models as in
+Lemma~\ref{lem:ipc-gluing}. Every assumption holds at the fresh root because
+it is Harrop and holds at both old roots.
+
+The new root cannot force $A$: persistence would carry $A$ to the old root
+of its countermodel. The same argument excludes $B$. Thus the fresh root
+does not force $A\vee B$, contradicting soundness of the supplied proof.
+Consequently one of the two decidable proof searches succeeds. An
+implementation may return a default value on the impossible third branch;
+the theorem's proof-checking hypothesis proves that this branch is never
+reached on valid input. All searches, cone restrictions, and gluing
+operations are bounded and primitive recursive.
+\end{proof}
+
+\paragraph{Disjunction cannot be defined by conjunction, implication and falsity.}
+More generally no Harrop formula $H$ is intuitionistically equivalent to
+$p\vee q$ for distinct atoms $p,q$. To see this, take two one-world models,
+one with exactly $p$ true and one with exactly $q$ true. If both directions
+of the proposed equivalence had proofs, soundness would make $H$ true at
+both worlds, since $p\vee q$ is true there. Glue these models as above.
+The Harrop gluing lemma makes $H$ true at the new root, while both $p$ and
+$q$ are false there. Soundness of $H\to(p\vee q)$ gives a contradiction.
+This is uniform in the finite code of $H$ and its alleged equivalence
+proof. Every formula built from atoms, $\bot,\wedge,\to$ is Harrop, so the
+claimed nondefinability follows. This is a failure of intuitionistic
+definability; the classical definition in Theorem~\ref{thm:three-axiom}
+remains valid.
+
+The deduction rule gives the familiar admissible Harrop rule as a further
+explicit consequence:
+\[
+\frac{\vdash\neg A\to(B\vee C)}
+     {\vdash(\neg A\to B)\vee(\neg A\to C)}.
+\]
+Indeed, apply disjunction extraction under the Harrop assumption $\neg A$,
+discharge that assumption in the selected proof, and introduce the outer
+disjunction. Admissibility means a transformation of theorem proofs. It
+does not assert that the implication from the premise formula to the
+conclusion formula is itself an $\IPC$ theorem.
+
+\subsection{Small countermodels and exact failures of classical laws}
+
+The following finite models certify nonderivability by
+Lemma~\ref{lem:ipc-soundness}. They also show why a classical truth table
+cannot serve as an intuitionistic completeness test.
+
+\paragraph{A two-world chain.}
+Take $r<t$ and let $p$ hold only at $t$. At $r$, neither $p$ nor $\neg p$
+holds: $p$ is absent there, while $t$ witnesses the failure of $\neg p$.
+No world forces $\neg p$, so $r$ does force $\neg\neg p$. Therefore both
+\[
+              p\vee\neg p,
+              \qquad \neg\neg p\to p
+\]
+fail at $r$. The implication $\neg p\to p$ holds at $r$ because no extension
+forces $\neg p$; hence the Peirce instance
+\[
+                      ((p\to\bot)\to p)\to p
+\]
+also fails there. Finally $p\to p$ holds everywhere but $\neg p\vee p$
+fails at $r$, refuting the general replacement of $A\to B$ by
+$\neg A\vee B$.
+
+\paragraph{A three-world fork.}
+Take $r<u$, $r<v$, with $u,v$ incomparable and terminal. Let $p$ hold only
+at $u$ and $q$ only at $v$. The following formulas fail at $r$:
+\[
+\begin{gathered}
+\neg p\vee\neg\neg p,\qquad
+(p\to q)\vee(q\to p),\\
+\neg(p\wedge q)\to(\neg p\vee\neg q),\qquad
+\neg\neg(p\vee q)\to(\neg\neg p\vee\neg\neg q).
+\end{gathered}
+\]
+For the first, $u$ refutes $\neg p$ at $r$, and $v\Forces\neg p$ refutes
+$\neg\neg p$ there. For the second, $u$ and $v$ refute the respective
+implications. For the third, no world forces $p\wedge q$, while neither
+negated atom holds at $r$. For the fourth, every terminal world forces
+$p\vee q$, so no world forces its negation; nevertheless each individual
+double negation fails at $r$ because of the opposite branch.
+
+On the same fork, assign an additional atom $a$ to both terminal worlds
+and to no other world. Then
+\[
+                (a\to(p\vee q))\to
+                   ((a\to p)\vee(a\to q))
+\]
+fails: the antecedent holds at $r$, while each disjunct of the consequent
+has a different terminal counterexample.
+
+\paragraph{An admissible rule need not be an axiom.}
+For the Harrop rule above, use a root with three terminal successors, with
+exactly $p$, exactly $q$, and exactly $s$ true respectively. At the root,
+$\neg p\to(q\vee s)$ holds: the two terminal worlds forcing $\neg p$
+force the required disjunction, and the remaining worlds do not force
+$\neg p$. Neither $\neg p\to q$ nor $\neg p\to s$ holds at the root.
+Thus
+\[
+(\neg p\to(q\vee s))\to
+       ((\neg p\to q)\vee(\neg p\to s))
+\]
+is not an $\IPC$ theorem even though the associated rule is admissible.
+
+These are uniform arithmetical nonderivability statements about the
+specified propositional proof checker, proved by concrete finite
+evaluations and soundness. They are not claims that $\ipra$ refutes every
+arithmetical substitution instance of the displayed formulas.
+
+\subsection{Lean implementation obligations for this construction}
+
+The implementation should retain two distinct levels. An inductive
+\texttt{Formula} and an inductive finite derivation type provide readable
+Lean specifications. Natural-number codes, Boolean tables, and fixed
+iteration bounds provide the primitive recursive objects interpreted in
+$\ipra$. A Lean proof about the readable specification becomes an
+$\ipra$ result only after the coding and quantifier-free invariant bridge
+has been proved.
+
+The necessary definitions are: formula coding and decoding; subformula
+enumeration with duplicate removal; context masks and their union,
+inclusion and insertion operations; an index for each of the $N$ sequents;
+the twelve-rule local checker; the inflationary table update; the
+$N$-fold iteration; first-appearance records and their proof checker; the
+greedy extension; the predicate on masks defining canonical worlds;
+finite frame validity; and the bottom-up Boolean forcing evaluator.
+
+The main proof dependency order is:
+\begin{enumerate}
+\item Prove formula coding and subformula closure, and the cardinality
+      $N=m2^m$ of the sequent table.
+\item Prove the update is inflationary and that equality of two successive
+      tables implies permanence. Prove stabilization at $N$ by the set-bit
+      count, and prove soundness of first-appearance certificates.
+\item Prove the five greedy-extension invariants in
+      Lemma~\ref{lem:ipc-prime-extension}. These require only the closed
+      table's weakening, cut, disjunction elimination, and falsity rules.
+\item Prove persistence and proof soundness for arbitrary finite models.
+      Prove the canonical truth lemma by induction on a formula's coded
+      parse tree; use the greedy extension only in the implication case.
+\item Combine the previous results into a total tagged proof-or-countermodel
+      function, with certified output checkers and the explicit bounds.
+\item Define upward-set algebra tables and prove the adjunction by finite
+      membership reasoning. Define cone restriction and gluing; prove
+      preservation and the Harrop induction, then the extraction theorem.
+\end{enumerate}
+No opaque axiom asserting completeness or decidability belongs in this
+dependency graph. A small executable can test the supplied countermodels,
+but such tests do not discharge any of the general Lean obligations.

@@ -1,0 +1,52 @@
+\section{Results, scope, and how to read the claims}
+\label{sec:scope}
+
+This report develops \textbf{86 labelled theorem and lemma groups} around the mathematical content of the requested computational-complexity article and its immediate subject links \cite{WikiRoot}. Several groups contain more than one conventional named result. The count is a navigational inventory, not a claim of 86 independent discoveries. The classical theorems are established results; our work is their explicit finite constructive reconstruction, the separation of their numerical readings from informal class notation, and a detailed route to object-language proofs in intuitionistic primitive recursive arithmetic.
+
+\begin{center}
+\begin{tabular}{p{0.12\textwidth}p{0.76\textwidth}}
+\toprule
+Labels & Principal content \\
+\midrule
+F01--F06 & The theory, finite witnesses, bounded induction, coded computation, and simulation. \\
+C01--C06 & Class presentations and closures; unary/binary time and space completeness. \\
+N01--N22 & Cook--Levin; graph, integer, and counting reductions; 2SAT and Horn SAT; search, approximation, and parameterized vertex cover. \\
+S01--S13 & Configuration graphs; Savitch; inductive counting and complement closure; QBF and finite games. \\
+H01--H05 & Explicit time/space diagonal witnesses and coarse hierarchy separations. \\
+A01--A07 & AP = PSPACE; finite PH levels and conditional collapses; uniform NC and AC constructions. \\
+R01--R23 & Randomness, PP, advice, second-level PH containment, zero error, counting, circuit bounds, queries, communication, and amortization. \\
+Q01--Q04 & Exact integer path sums and classical containments for the specified Hadamard--Toffoli gate model. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The most substantial conclusions include
+\begin{gather*}
+ \mathsf{NPSPACE}=\mathsf{PSPACE},\quad
+ \mathsf{NEXPSPACE}=\mathsf{EXPSPACE},\quad
+ \mathsf{NL}=\mathsf{coNL},\quad
+ \mathsf{AP}=\mathsf{PSPACE},\\
+ \mathsf P\subsetneq\mathsf{EXPTIME},\qquad
+ \mathsf L\subsetneq\mathsf{PSPACE}\subsetneq\mathsf{EXPSPACE},\\
+ \mathsf{BPP}\subseteq\mathsf P/\poly,\qquad
+ \mathsf{BPP}\subseteq\Sigma_2^{\mathsf P}\cap\Pi_2^{\mathsf P},\qquad
+ \mathsf{NP}\cup\mathsf{coNP}\cup\mathsf{BPP}\subseteq\mathsf{PP}\subseteq\mathsf{PSPACE}.
+\end{gather*}
+All class notation is shorthand for the numerical presentation and compiler statements specified in the report. For general space functions, a PR budget and the stated space constructor are hypotheses. Nonuniform advice is identified as such. Quantum conclusions retain the explicit gate-model subscript. None of the conclusions resolves P versus NP or the other unproved equalities in the article.
+
+\subsection{Three different verification statements}
+The mathematical proofs are human-readable constructive arguments. They explicitly give the algorithms, witnesses, bounds, and induction predicates that place the stated numerical theorems within \ipra. This is the main deliverable.
+
+The Lean deliverable is \emph{an outline with concrete semantic definitions and precise remaining proof obligations}. No Lean executable was available in this workspace, and the new files have not been compiled. They contain no admitted substantive proofs presented as completed theorems. Their eventual target is an actual derivation in ProveIt's intuitionistic arithmetic, not merely a theorem about natural numbers in Lean's ambient logic.
+
+The Python checks are independent finite implementation checks. They test nontrivial identities, reductions, witness multiplicities, table constructions, and resource-related edge cases on finite examples. They do not establish the universal mathematical claims, prove asymptotic resource bounds, or certify the object-language derivations. The archive records these distinctions per claim in \texttt{CLAIMS.json}.
+
+\subsection{Relationship with the existing ProveIt work}
+We inspected ProveIt at revision
+\begin{center}\small\texttt{3eb195cab4cc3d552a9eca78880c6d428f3e44f9}.\end{center}
+The November 20 packet \texttt{ipra\_complexity\_foundations\_2026-11-20} already developed bounded formulas, verifier circuits, Savitch, NL complementation, compact QBF, an exponential diagonal, and sketches of several extensions \cite{ProveItBaseline}. We retain those compatible foundations and give a self-contained exposition, rather than counting them as new mathematical discoveries. The present expansion includes extensive concrete completeness reductions, parsimonious SUBSET SUM, Horn P-completeness, detailed probability/PP/advice arguments, second-level hierarchy containment, explicit space separations, shallow-circuit simulations, query and communication lower bounds, and exact finite-gate quantum simulations.
+
+Actual reusable repository endpoints include \texttt{PR.lean}, the bounded-formula compiler and bounded induction, and arithmetic estimates in \texttt{DiagonalClock.lean}. A similarly named \texttt{ReachableFrontier.lean} is a metatheoretic theorem about proof graphs; it is not a ready-made object-arithmetic configuration-graph theorem. We preserve that distinction in the source audit. Upstream source was inspected, not rebuilt, and its prior build claims are not substituted for verification of this new packet.
+
+\subsection{Why a finite atlas is the appropriate reading of the request}
+The article links very broad subjects such as algorithms, graphs, computability, probability, and quantum computation. Their full mathematical contents have no practical finite maximum. We therefore prioritize a broad connected core of important statements, develop the substantial proofs, and give a selected topic-to-result ledger. That ledger is not an exhaustive crawl of every navigation, biography, language, or subject link. Advanced theorems not proved here are listed explicitly at the end, together with the missing mathematical work. A restricted finite counterpart is never labelled as a proof of an unrestricted theorem.

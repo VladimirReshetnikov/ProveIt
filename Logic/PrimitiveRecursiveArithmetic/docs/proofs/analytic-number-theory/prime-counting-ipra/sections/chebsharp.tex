@@ -1,0 +1,55 @@
+\section{The exact maximum of the normalized prime count}
+\label{sec:chebsharp}
+The numerical table up to a million has a consequence for all larger inputs. A factorial ratio bounds $\vartheta$ on the tail strongly enough to show that the maximum has already been reached.
+
+\begin{theorem}
+For rational $x>1$, and equally for real arguments with their integer parts supplied,
+\[
+ \frac{\pi(x)\log x}{x}\le \frac{30\log113}{113}<1.25506 .
+\]
+Equality in the first inequality occurs precisely at $x=113$ (in particular at rational cuts). Thus the upper Rosser--Schoenfeld inequality in the two source pages holds on its full stated range.
+\end{theorem}
+\begin{proof}
+Put
+\[
+ g(u)=\lfloor u\rfloor-\lfloor u/2\rfloor-\lfloor u/3\rfloor
+        -\lfloor u/5\rfloor+\lfloor u/30\rfloor .
+\]
+The increments of these five floors under translation by $30$ sum to zero. Each floor is determined by $\lfloor u\rfloor$, and for the residues $0$ through $29$ the successive values, in groups of five, are
+\[
+ 01111\quad10111\quad01011\quad00101\quad00010\quad00001 .
+\]
+Thus $g$ is nonnegative and equals one on $[1,6)$. Define $F(n)=n!\lfloor n/30\rfloor!/(\lfloor n/2\rfloor!\lfloor n/3\rfloor!\lfloor n/5\rfloor!)$. Counting multiples of $p^j$ in each factorial gives
+$v_p(F(n))=\sum_{j\ge1}g(n/p^j)$. This proves integrality and shows that every prime power $n/6<p^j\le n$ contributes a unit to this valuation. Taking logarithms yields
+\[
+ \psi(n)-\psi(\lfloor n/6\rfloor)\le\log F(n).
+\]
+
+For each $y>0$ let $B(y)=y\log y-y$. If $1\le y\le n$ and $m=\lfloor y\rfloor$, the lower and upper rectangles of $\log t$ between $1$ and $m$ give
+$B(m)+1\le\log(m!)\le B(m)+1+\log m$. Furthermore $0\le B(y)-B(m)\le\log y$. When $0<y<1$ use $m=0$ and $-1\le B(y)\le0$ (integrate $\log t$, or use $y\log(1/y)\le1-y$). Hence in all cases
+$|\log(\lfloor y\rfloor!)-B(y)|\le1+\log n$, for integers $n\ge1$. In the signed combination of the five $B(n/d)$ the terms involving $n\log n$ and $n$ cancel by $1-1/2-1/3-1/5+1/30=0$. The remaining coefficient of $n$ is
+\[
+ a=\tfrac12\log2+\tfrac13\log3+\tfrac15\log5-\tfrac1{30}\log30<0.93 .
+\]
+For instance $\log2<0.694$, $\log3<1.099$, $\log5<1.610$, and $\log30>3.400$ follow from the logarithm enclosures used for the finite table. The coefficient is positive, also directly from the formula and $30=2\cdot3\cdot5$. We obtain $\log F(n)\le a n+5(1+\log n)$. Repeated division by six takes at most $1+\log n/\log6$ nonzero stages; summing their arguments costs at most $6n/5$. Consequently
+\[
+ \psi(n)\le\tfrac65 a n+5(1+\log n)(1+\log n/\log6).
+\]
+With $b=10^6$, the second term divided by $n$ is bounded by $5(1+\log b)^2/b<1125/10^6$ for $n\ge b$. Indeed $\log6>1$, $\log b<14$, and $(1+\log t)^2/t$ decreases when $\log t>1$ by its derivative $(1+\log t)(1-\log t)/t^2$. This proves $\vartheta(t)\le\psi(t)<1.14t$ for every $t\ge b$ by taking the integer part.
+
+The finite computation in \texttt{finite\_bounds.py} gives $\pi(b)=78498$, $\vartheta(b)>0.99b$, $\log b<13.82$ and $30\log113/113>1.25$. Subtract the partial-summation identity for $\pi(b)$ from that for $\pi(x)$, $x\ge b$. It gives
+\[
+ \pi(x)\le U(x):=\pi(b)-\frac{\vartheta(b)}{\log b}
+       +\frac{1.14x}{\log x}
+       +1.14\int_b^x\frac{dt}{\log^2 t}.
+\]
+At $x=b$, the normalized right side is strictly below $78498(13.82)/10^6-0.99+1.14<1.24$. Throughout the tail,
+\[
+ U'(x)=\frac{1.14}{\log x}
+  < \frac{1.25}{\log x}\left(1-\frac1{\log x}\right)
+   =\frac{d}{dx}\frac{1.25x}{\log x}.
+\]
+Here $\log b>12$ since $b>2^{19}$ and $\log2\ge2/3$ by the first term of the expansion of $2\int_0^{1/3}(1-u^2)^{-1}du$. Integration gives $\pi(x)<1.25 x/\log x$ on the entire tail. The derivative comparisons have the same finite meaning as the partial summations: on each compact interval cut a rational mesh, telescope increments of products and reciprocal logarithms, then use the rectangular enclosures for $1/t$ and $1/(t\log^2 t)$. All denominators on $[b,x]$ have the displayed positive lower bounds, and the initial strict margin at $b$ is independent of the mesh precision.
+
+For integers $2\le n\le b$ the companion computes both endpoints of an enclosure of $\log n$ and compares $113\pi(n)\log n$ with $30n\log113$. Every case except $n=113$ is strictly smaller; there $\pi(113)=30$. The same computation gives $30\log113/113<1.25506$. For $1<x<2$ the count vanishes, and on $[2,3)$ we have $\log x/x<1$. On $[3,\infty)$ the multiplier $\log x/x$ decreases strictly. Indeed for $v>u\ge3$, $\log v-\log u\le(v-u)/u<(v-u)\log u/u$. Between integer jumps the largest value is therefore at the left endpoint. For a named real with known integer part $113$, equality in the normalized bound forces $x=113$: a positive separation from $113$ would give the strict decrement just proved, and the lower bound $x\ge113$ makes the absence of positive separation equivalent to equality of its real name. This finishes both the inequality and its equality statement.
+\end{proof}

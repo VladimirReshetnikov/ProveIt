@@ -1,0 +1,230 @@
+\section{A precise route to complete Lean formalization}
+\label{sec:lean}
+
+\subsection{Three separate obligations}
+
+A semantic Lean theorem about \texttt{Nat}, lists, or automata does not by
+itself prove that the theorem is derivable in iPRA. The completion plan
+therefore has three separate obligations for every operation and theorem.
+
+\begin{enumerate}
+\item \textbf{Semantic mathematics.} Define the finite structures and
+prove their ordinary Lean correctness statements. Finite alphabets and
+state spaces can be \texttt{Fin k}; words are lists; finite relations
+are Boolean tables. Quantified assertions about an arbitrary infinite
+set of words are avoided in the numerical layer.
+\item \textbf{Primitive-recursive representation.} Give numerical codecs,
+well-formedness bits, and a fixed primitive-recursive expression for every
+operation. Prove round trips for valid codes and prove that the coded
+operation agrees with the semantic one. A function that Lean accepts as
+total is not thereby known to be primitive recursive.
+\item \textbf{Object-theory derivability.} Construct
+\texttt{Prf PRAAx \(\Gamma\) \(\varphi\)} for the first-order formula
+expressing the actual theorem. Every induction node must use a
+quantifier-free formula. Bounded predicates are replaced by their bits
+using the inspected \texttt{BoundedFormulas} infrastructure. The final
+theorem has empty context and an explicit universally closed sentence.
+\end{enumerate}
+
+These tasks are individually substantial. The supplied files specify the
+data, algorithms, invariants, witness bounds, and remaining proof targets;
+they do not fill an axiom-shaped placeholder and count it as a theorem.
+The report's proofs supply the mathematical content to be translated.
+
+\subsection{Finite data and total conventions}
+
+\begin{longtable}{@{}p{0.18\textwidth}p{0.37\textwidth}p{0.38\textwidth}@{}}
+\toprule
+Object & Semantic data & Numerical representation and check\\
+\midrule\endhead
+Alphabet and word & \texttt{List (Fin k)} & Base-$(k+1)$ word code,
+positive digits, explicit length and validity bit.\\
+DFA & Start, transition table, final bits & Positive state count, exactly
+$nk$ table entries below $n$, exactly $n$ final bits.\\
+$\eps$-NFA & Initial/final bit sets and tagged edges & Letter-or-empty
+edge tags with checked endpoints; $2^n$ subset codes.\\
+Regular expression & Inductive expression tree & Postorder node table;
+children precede parents; each nonroot has one parent; all nodes reach
+the root. Sharing must be unfolded before the linear Thompson bound.\\
+Grammar & Tagged variables/terminals and rule list & Checked left-side
+variables, right-side symbol bounds, start and finite rule indices.\\
+Parse tree & Rule-labelled ordered rooted tree & Postorder table with
+unique parents, valid local productions, and computed yields.\\
+Derivation & Finite rewriting sequence & Forms, positions, and rule
+indices; bounded adjacent-step checker.\\
+PDA & Finite transition list, stack words & Input-or-empty tags,
+pop symbol, pushed word, states, and complete-run certificate.\\
+Machine & Finite table and configurations & State and two base-$b$ tape
+halves; fixed Boolean output convention; bounded iteration.\\
+Monoid & Finite multiplication table & Unit and associative table check;
+letter map and accepting bit vector.\\
+Polynomial & Finite signed coefficient list & Integer pairs and finite
+convolution; degree and coefficient bounds.\\
+\bottomrule
+\end{longtable}
+
+Malformed numerical descriptions receive explicit defaults. Theorems about
+the intended semantics retain a validity premise. A rejecting default is
+used for language descriptors; the machine chapter uses its stated
+immediate-halt default for malformed machine codes. Those conventions
+are independent and must not be conflated by an adapter.
+
+\subsection{Representative endpoint formulas}
+
+Here are the actual shapes of the closed arithmetic targets. Each symbol
+in them denotes a fixed primitive-recursive function or a displayed
+first-order formula; no extra sorts are implicit.
+
+\paragraph{Determinization.}
+\[
+ \forall E,w\;\bigl(\operatorname{ENFAValid}(E)\land
+ \operatorname{WordValid}(\operatorname{alphabet}(E),w)\bigr)
+ \to \operatorname{Accept}_{\rm DFA}(\operatorname{Det}(E),w)
+      =\operatorname{Accept}_{\eps\rm NFA}(E,w).
+\]
+Use the prefix invariant that each subset bit is exactly the corresponding
+reachable-state bit. The invariant quantifies only over the supplied finite
+state set and the processed prefix. Normalize empty-edge blocks to fewer
+than $n$ edges before constructing or comparing path witnesses.
+
+\paragraph{Equivalence of finite automata.}
+For valid $A,B$ on the same alphabet, define a bit $\operatorname{Eq}(A,B)$
+by the product reachability table. Prove
+\[
+ \operatorname{Eq}(A,B)=1\ \longleftrightarrow\
+ \forall w\bigl(\operatorname{WordValid}(k,w)\to
+                  \operatorname{Accept}(A,w)=\operatorname{Accept}(B,w)\bigr).
+\]
+The right-hand universal formula is not an induction motive. First prove
+the finite fixed-point table properties. Then fix $w$ and induct through
+its run with a bounded table-membership invariant. If the bit is zero,
+the stored predecessor table supplies a separator of length less than
+$|A||B|$. This supplies a concrete witness to inequivalence.
+
+\paragraph{Grammar membership.}
+For valid $G,w$, the target is
+\[
+ \operatorname{Parse}(G,w)=1\ \longleftrightarrow\
+ \exists t\;\operatorname{Tree}(G,S,w,t)=1.
+\]
+The forward direction exhibits the parser's tree term. The reverse direction
+fixes an arbitrary supplied tree and proves the table invariant by a scan
+of its finite code. The CNF version strengthens the existential to a
+primitive-recursively bounded one: the selected normal tree has $3|w|-1$
+nodes for nonempty input and the explicit inverse-normalization bound
+controls the original-grammar tree. Turn a bound on node count and labels
+into a bound on its numerical code using the chosen table codec. Empty
+input is a separate branch, never an instance of the formula $3|w|-1$.
+
+\paragraph{Pumping.}
+Compute the parser's chosen tree, a longest path, repeated-variable
+positions, and the five cut positions. The first endpoint proves that
+these cuts satisfy the bounded conditions. A second endpoint, with a
+free numerical exponent $i$, verifies the tree constructed by repeating
+the selected context $i$ times. This separation prevents a hidden
+unbounded universal quantifier from entering the induction invariant.
+The analogous regular construction uses repeated run states.
+
+\paragraph{Noncontracting membership.}
+The endpoint replaces the arbitrary derivation existential by reachability
+in the finite graph on words of length at most $n$. A shortest witness has
+fewer than $V=\sum_{j\le n}m^j$ steps. For example, after numbering graph
+vertices below $V$, every path with at most $V$ vertices has a list code
+bounded by a primitive-recursive expression in $V$; include its length
+and the step-rule witnesses in that bound. No efficient space bound is
+asserted for this exhaustive algorithm.
+
+\paragraph{Halting refutation.}
+The target denies the conjunction of the displayed Boolean totality formula
+and correctness as a decider for $K$. The derivation uses totality at the
+explicit code of the constructed machine and a case split on its Boolean
+output. It does not assert that all externally total machines have
+iPRA proofs of totality. The complement refutation instead produces the
+intuitionistically impossible equivalence $A\leftrightarrow\neg A$.
+
+\subsection{Dependency order and proof obligations}
+
+\begin{longtable}{@{}p{0.10\textwidth}p{0.40\textwidth}p{0.43\textwidth}@{}}
+\toprule
+Stage & Deliverable & Main proof invariant or bound\\
+\midrule\endhead
+1 & Words, list and table codecs & Digit identities, range tests, and
+round trips on valid codes.\\
+2 & Bits, least witnesses, graph paths & Bounded-formula reflection;
+finite counts and path deletion.\\
+3 & DFA and $\eps$-NFA runs & Equal prefix states; state-set bit equality;
+empty blocks shorter than state count.\\
+4 & Closure and Kleene conversions & Boundary states, finite factor lists,
+expression-interval tables, elimination round index.\\
+5 & Decisions and minimization & Product reachability, $n^2$ pair table,
+access-word and separator certificates.\\
+6 & Finite monoids & Transformation-vector equality and bounded closure
+among at most $n^n$ transformations.\\
+7 & Grammar trees and normalization & Frontier equality, nullable ranks,
+unit paths, and local rule provenance.\\
+8 & CYK and direct chart & Smaller intervals or smaller insertion ranks;
+bounded witness reconstruction.\\
+9 & PDA and pumping & Proper stack segments, finite endpoint chains,
+longest-path repeated variables, context-splice checks.\\
+10 & Noncontracting and recognizable & Length-bounded graph; supplied
+trace checker; explicit lists of certificates.\\
+11 & Diagonal programs & Compiler simulation and input/output traces;
+Boolean branch contradictions.\\
+12 & Counting & Finite bijections, matrix convolution, determinant
+involutions, first-crossing reflection.\\
+\bottomrule
+\end{longtable}
+
+The \texttt{lean/} directory makes these obligations concrete.
+\texttt{SemanticCore.lean} provides a small candidate semantic core with
+ordinary proof scripts and no placeholders, but remains uncompiled.
+The subject outlines specify structures, algorithms, and detailed
+remaining theorem targets. \texttt{ObjectTheoryOutline.lean.txt} lists
+the fixed PR symbols and the intended closed \texttt{Prf PRAAx} endpoints.
+An obligation record in an outline is a specification whose value must
+still be constructed; declaring that record does not establish its fields.
+
+\subsection{Reuse from Mathlib and from ProveIt}
+
+Mathlib's inspected documentation supplies semantic definitions and results
+for DFAs, NFAs, empty-edge automata, regular expressions, and CFG derivations
+\cite{MathlibDFA,MathlibNFA,MathlibEpsilon,MathlibRegex,MathlibCFG}.
+These interfaces are useful for cross-checking semantics. They often use
+arbitrary types or sets and therefore need finite Boolean-table adapters
+before use in this arithmetic development. At inspection, the regular
+expression documentation explicitly did not supply the entire
+regex--automaton equivalence; this plan therefore includes both
+conversions as work to implement, rather than assuming a nonexistent
+version-independent theorem name.
+
+ProveIt's inspected arithmetic infrastructure has the stronger object-level
+judgment needed here. Its bounded-formula compiler is recursion on a
+\emph{fixed syntax object in the metatheory}; its output is an arithmetic
+term and an arithmetic derivation. This is compatible with
+Proposition~\ref{base:noeval}, because it is not a universal primitive-recursive
+evaluation function in the object theory. The same distinction must be
+preserved when building our new program and proof compilers.
+
+\subsection{Completion gates and exact current status}
+
+The inspected repository uses \texttt{leanprover/lean4:v4.32.0}. Complete
+formalization should be carried out in a checkout pinned to the recorded
+revision, preserving that checkout's dependency lockfile. The necessary
+gates are:
+\begin{enumerate}
+\item Typecheck every new module with \texttt{lake env lean} or the
+corresponding Lake build target.
+\item Produce the explicitly named first-order formula and a value of
+\texttt{Prf PRAAx []} for every claimed object-theory endpoint.
+\item Inspect the endpoint formulas for validity hypotheses, empty-input
+branches, nonerasing hypotheses, totality data, and certificate bounds.
+\item Audit proof dependencies for \texttt{sorryAx} and added axioms.
+Metatheoretic tools used to construct a derivation must not be confused
+with extra axioms of the object theory.
+\item If desired, transport closed results with
+\texttt{IPRABridge.conciseToStandard} and inspect the translated symbols.
+\end{enumerate}
+No Lean executable was available in the present workspace, and none of
+these Lean build gates was executed. The finite reference checks in the
+next section were executed. The human proofs, unchecked Lean blueprint,
+and executable checks are deliberately reported with their own statuses.

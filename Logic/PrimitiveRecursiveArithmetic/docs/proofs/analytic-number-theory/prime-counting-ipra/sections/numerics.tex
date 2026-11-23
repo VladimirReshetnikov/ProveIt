@@ -1,0 +1,56 @@
+\section{Exact numerical consequences and two source corrections}
+\label{sec:cert}
+\subsection{Fourteen decades}
+For $x=10^e$ the last three columns below give nearest integers, with every rounding decided by an interval lying strictly within a single rounding cell. The first difference is signed as in Wikipedia, the second as $\operatorname{li}(x)-\pi(x)$, and the last as in MathWorld.
+\begin{center}
+\begin{tabular}{r r r r r}
+\toprule
+$e$ & $\pi(x)$ & $\pi(x)-x/\log x$ & $\operatorname{li}(x)-\pi(x)$ & $R(x)-\pi(x)$\\
+\midrule
+$1$ & $4$ & $0$ & $2$ & $1$ \\
+$2$ & $25$ & $3$ & $5$ & $1$ \\
+$3$ & $168$ & $23$ & $10$ & $0$ \\
+$4$ & $1\,229$ & $143$ & $17$ & $-2$ \\
+$5$ & $9\,592$ & $906$ & $38$ & $-5$ \\
+$6$ & $78\,498$ & $6\,116$ & $130$ & $29$ \\
+$7$ & $664\,579$ & $44\,158$ & $339$ & $88$ \\
+$8$ & $5\,761\,455$ & $332\,774$ & $754$ & $97$ \\
+$9$ & $50\,847\,534$ & $2\,592\,592$ & $1\,701$ & $-79$ \\
+$10$ & $455\,052\,511$ & $20\,758\,029$ & $3\,104$ & $-1\,828$ \\
+$11$ & $4\,118\,054\,813$ & $169\,923\,159$ & $11\,588$ & $-2\,318$ \\
+$12$ & $37\,607\,912\,018$ & $1\,416\,705\,193$ & $38\,263$ & $-1\,476$ \\
+$13$ & $346\,065\,536\,839$ & $11\,992\,858\,452$ & $108\,971$ & $-5\,773$ \\
+$14$ & $3\,204\,941\,750\,802$ & $102\,838\,308\,636$ & $314\,890$ & $-19\,200$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+The count column is an evaluation of the fourth-root formula in Section~\ref{sec:survivors}, implemented in \texttt{prime\_table.cpp}. Each approximate square- or cube-root seed is corrected until two integer quotient inequalities certify the root. An independent computation verifies the first ten rows as follows. Store $S(v)=v-1$ at the distinct positive quotients $v=\lfloor x/j\rfloor$. At step $p$, $S(v)$ counts the primes already processed and the integers in $[2,v]$ that survived them. Process $p$ when $S(p)>S(p-1)$, up to $\lfloor\sqrt{x}\rfloor$. The new removals for $v\ge p^2$ are $pm$ with $p\le m\le v/p$ surviving earlier primes. Subtract $S(\lfloor v/p\rfloor)-S(p-1)$ in descending $v$ so both counts still have their old values. All required quotients remain stored since iterated quotients compose. At termination every composite has been removed and $S(x)=\pi(x)$.
+
+For the analytic columns use Section~\ref{sec:li-cut} and the Gram power series in Section~\ref{sec:gram}. In this table $\log x<34$. For the coefficient $\zeta(j+1)$, truncate after $u=68\cdot2^{\lceil14/j\rceil}$ terms and add the upper tail $1/(ju^j)$ from integrating $t^{-j-1}$. Rounding each positive summand down on a $2^{-150}$ grid introduces at most $u2^{-150}$ further uncertainty. Use the directed products for $(\log x)^j/j!$ through $j=256$ and majorize the remaining series by $2\cdot34^{257}/257!$. The exponential-integral computation uses the same Taylor remainder with $34$ in place of $32$ when necessary. The file \texttt{approximation\_table.py} checks every rounding against this table. Only rows through $10^{14}$ are claimed as computations here.
+
+\subsection{Finite certificates for bounds and the harmonic approximation}
+Write $L=\log n$, $h_n=H_n-3/2$ and $U_3(n)=n(L^{-1}+L^{-2}+2L^{-3})$. The sieve and the rational logarithm checks give the following universal statements about the indicated \emph{integer} intervals. Section~\ref{sec:chebsharp} supplies a global upper bound separately.
+\begin{center}\small
+\begin{tabular}{@{}p{.62\linewidth}l@{}}
+\toprule
+Verified comparison & Range inclusive\\ \midrule
+$n/L<\pi(n)$ & $17\le n\le10^6$\\
+$n/(L-1)<\pi(n)$ & $5393\le n\le10^6$\\
+$\pi(n)<n/(L-1.1)$ & $60184\le n\le10^6$\\
+$U_3(n)\le\pi(n)$ & $88789\le n\le10^6$\\
+$\pi(n)\le U_3(n)+7.59n/L^4$ & $2\le n\le10^6$\\
+$n/h_n<\pi(n)$ & $1429\le n\le10^6$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Counterexamples at the published lower endpoint.}
+The displayed three-term lower inequality on the Wikipedia page starts at $88783$. The sieve gives $\pi(n)=8596$ for $88783\le n\le88788$. The enclosure at the first integer gives
+\[
+ 8596.04<U_3(88783)<8596.05 .
+\]
+All six inputs violate the inequality, with a positive certified margin in each case. A change from a strict to a non-strict inequality would still give six failures. The interval in the table begins with the next prime. The eventual bound is proved in Section~\ref{sec:growthrefine}.
+
+Here is how to reproduce the arithmetic in these comparisons. For $n\ge1$ write $n=2^a y$, $1\le y<2$; take $j=\lfloor1024y\rfloor$, $y=(j/1024)(1+z)$. Precompute the $1025$ grid logarithms by the rational series of Section~\ref{sec:li-cut}. Bound the small remainder by $z-z^2/2\le\log(1+z)\le z$ by integrating $1-t\le1/(1+t)\le1$. Add $a\log2$ and round outward to a $2^{-52}$ grid. Multiply each inequality by its positive denominator, using upper and lower endpoints in opposite directions to certify the sign. For example, if $l,u$ enclose $L$, a sufficient check for $U_3(n)\le\pi(n)$ is $\pi(n)l^3\ge n(u^2+u+2)$. To refute it use the strict reverse with the endpoints exchanged. For harmonic sums the prefix of $\sum_{i\le n}\lfloor2^{52}/i\rfloor\,2^{-52}$ is a lower bound. The code \texttt{finite\_bounds.py} gives every loop limit and integer comparison. Its inductive invariant is the correct prime prefix, the directed harmonic and logarithmic bounds, and a bit recording that every comparison so far has passed.
+
+MathWorld describes the harmonic approximation on $50\le n\le1000$ as accurate to about two. An exact rational scan shows how to read that description. The minimum signed error $\pi(n)-n/h_n$ is at $n=222$ and lies in $(-2.530,-2.529)$. Its maximum is at $n=887$ and lies in $(2.779,2.780)$. For instance these results follow by maintaining the exact pair for $H_n=H_{n-1}+1/n$ and comparing cross products at each step. The first seven positive errors occur at $1,109,113,114,199,200,201$, with $n=2$ omitted since $h_2=0$. For Ramanujan's \emph{prime-count} inequality the successes among integers $2,\ldots,18$ are $6,9,10,12,14,15,16,18$. The checker encloses $e$ between the Taylor polynomial through degree 12 and that polynomial plus $2/13!$, decides the floors of $n/e$, and cross-multiplies using logarithm enclosures. The exact all-integer cutoff $2418$ proved earlier belongs to the logarithmic-integral inequality.

@@ -1,0 +1,47 @@
+\section{The growth condition in the Riemann hypothesis criterion}\label{sec:growth}
+
+A family of entirely arithmetical estimates captures the growth condition on the source pages. For $r\ge1$ put $\alpha_r=(r+1)/(2r)$. A witness $C\ge1$ at $r$ satisfies
+\[
+ \mathcal B(r,C):\qquad
+     |M(n)|^{2r}\le C^{2r}n^{r+1}\quad(n\ge1).
+\]
+The usual growth assertion for every $\varepsilon>0$ is obtained by taking $1/(2r)\le\varepsilon$. Conversely apply it at each $1/(2r)$ and enlarge the constant to include the finite initial segment. In the constructive implications below one uses the witnesses at the indicated precision. A PR witness function is needed only for a uniform PR program that must produce all the constants on its own.
+
+\begin{theorem}[Dirichlet convergence criterion and zero exclusion]\label{thm:growth}
+The family $\mathcal B$ with witnesses yields effective convergence of
+$\sum\mu(n)n^{-s}$ in every certified half-plane $\Re s>1/2$ bounded away from its boundary, locally in $|s|$. Conversely, bounds on the partial sums at the real arguments $s=\alpha_r$ for each $r$ give witnesses for $\mathcal B$. In particular, under the growth hypothesis, the continued zeta function is apart from zero at every named $s\ne1$ with positive certificates for $\Re s-1/2$ and $|s-1|$.
+\end{theorem}
+\begin{proof}
+Fix $\sigma=\Re s$ and choose $r$ so that $\alpha=\alpha_r<\sigma$. Write $C$ for the witness and $\Delta$ for a positive rational lower bound for $\sigma-\alpha$. Thus $|M(\lfloor x\rfloor)|\le Cx^\alpha$ for $x\ge1$. Abel summation on unit cells gives
+\[
+ D(s)=s\int_1^\infty M(\lfloor x\rfloor)x^{-s-1}\,dx,\qquad
+ |D(s)-D_N(s)|\le C(1+|s|/\Delta)N^{-\Delta}.
+\]
+Indeed the tail of the integral and its boundary term are bounded separately. A cutoff $N=2^{h\lceil1/\Delta\rceil}$ makes $N^{-\Delta}\le2^{-h}$. In the opposite direction let $|S_j|\le K$ where $S_j=\sum_{n\le j}\mu(n)n^{-\alpha_r}$. Summing differences against $j^{\alpha_r}$ gives
+\[
+ M(N)=S_N N^{\alpha_r}-\sum_{j<N} S_j((j+1)^{\alpha_r}-j^{\alpha_r}).
+\]
+The weights telescope, so $|M(N)|\le 2K N^{\alpha_r}$. A convergence modulus supplies a bound $K$ by taking the maximum of finitely many upper enclosures and adding a tail allowance.
+
+To identify the analytic continuation constructively, write
+\[
+ I_f(z)=\int_1^\infty f(x)x^{-z-1}\,dx,\qquad
+ G(z)=z-z(z-1)I_{\{x\}}(z),
+\]
+where $I_{\{x\}}$ denotes $f(x)=x-\lfloor x\rfloor$. For $\Re z>0$ this defines $G$. For $\Re z>1$, Abel summation of the constant sequence gives $\zeta(z)=zI_{\lfloor x\rfloor}(z)$. Splitting $\lfloor x\rfloor=x-\{x\}$ gives $G(z)=(z-1)\zeta(z)$. At the other points in the theorem use $\zeta(z)=G(z)/(z-1)$ with its stated apartness certificate.
+
+We prove $D(s)G(s)=s-1$ without appealing to a classical identity theorem. Set $z_0=s+2$, and keep the witness $C,\alpha$ fixed. Whenever $|f(x)|\le A x^\beta$ and $\Re z_0>\beta$, the coefficient of $w^j$ in $I_f(z_0+w)$ is
+\[
+ a_j=\frac{(-1)^j}{j!}\int_1^\infty f(x)x^{-z_0-1}(\log x)^j\,dx,
+ \qquad |a_j|\le \frac{A}{d^{j+1}},\quad d=\Re z_0-\beta.
+\]
+For the bound put $u=\log x$ and integrate $u^j e^{-du}$ by parts $j$ times. The boundary terms tend effectively to zero by $u^j/j!\le(2/d)^j e^{du/2}$. On a finite interval the coefficients follow by expanding $\exp(-w\log x)$ with its uniform remainder. Integrated absolute majorants of the omitted terms on the whole ray form a geometric series with ratio $|w|/d$. This proves the asserted expansion up to every radius strictly below $d$ with explicit PR cutoffs. The integrands split at integer cells, so ordinate samples do not require taking the floor of an arbitrary real name.
+
+Use $\beta=\alpha,A=C$ for $D(z)=zI_M(z)$, and $\beta=0,A=1$ for $G$. Both radii exceed $2$ by a supplied margin. At the centre $z_0$ their Taylor coefficients can also be computed from the ordinary absolutely convergent Dirichlet series for $D(z)$ and $(z-1)\zeta(z)$. To see coefficient agreement directly, on $[m,m+1]$ integrate the negative derivative of $x^{-z_0}(-\log x)^j/j!$ and sum the endpoint differences. These are exactly the coefficientwise Abel identities for the two series. The boundary terms are at most a constant times $N^{1-\Re z_0}(\log N)^j/j!$ and vanish with the preceding exponential bound. For $G$ use also $I_x(z)=1/(z-1)$, obtained by integrating the power. In the product of the two Dirichlet series the $j$-th coefficient before multiplication by $z-1$ is
+\[
+ \frac1{j!}\sum_{m\ge1}m^{-z_0}(-\log m)^j\sum_{d\mid m}\mu(d).
+\]
+The binomial expansion combines $\log d$ and $\log(m/d)$. Regrouping is justified, at each fixed $j$, by the absolute double sum majorized by a constant times $\sum_{a,b}(ab)^{-(1+\Re z_0)/2}$, using $(\log t)^j/j!\le t^\eta/\eta^j$ with $\eta=(\Re z_0-1)/2$. Hence the coefficient is $1$ for $j=0$ and $0$ thereafter (the constant term of the exponential at $m=1$ is one). Multiplying by $z-1$ gives exactly the Taylor polynomial of $z-1$. At $w=-2$ both series converge with geometric tail bounds. Multiplying finite partial sums and passing to their effective limits gives $D(s)G(s)=s-1$. A bound for the product tail follows, for example, by cutting each factor at degree $J$ and bounding each unused tail by its geometric sum. Since $s-1$ is apart from zero, $D(s)\zeta(s)=1$. In fact $|D(s)|\le C|s|/\Delta$ proves $|\zeta(s)|\ge\Delta/(C|s|)$.
+\end{proof}
+
+Thus the Mertens growth condition rules out zeros to the right of the critical line in its quantitative reading. For the converse we now obtain the needed reciprocal bounds from quantitative zero exclusion. Related analytic and arithmetical formulations appear in \cite{ng,rhpacket}.

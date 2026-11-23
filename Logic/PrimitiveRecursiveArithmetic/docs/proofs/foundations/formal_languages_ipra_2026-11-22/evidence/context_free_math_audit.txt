@@ -1,0 +1,101 @@
+CONTEXT-FREE CHAPTER: MATHEMATICAL AUDIT AND STATUS
+==================================================
+
+Deliverables
+------------
+chapters/context_free.tex
+lean/ContextFreeOutline.lean.txt
+
+Final scope
+-----------
+26 grouped numbered results: 20 theorems, 1 lemma, 3 propositions, 2 corollarys.
+Two additional numbered definitions specify CFG certificates and the exact
+nondeterministic, empty-stack PDA convention.
+
+Results proved in the human-readable chapter
+--------------------------------------------
+1. Derivation/parse-tree equivalence with explicit size and step bounds.
+2. Nullable and productive saturation; emptiness and a bounded witness.
+3. Empty-rule and unit-rule removal, followed by full Chomsky normal form.
+4. Explicit grammar-size and forward/backward tree-size bounds.
+5. CYK correctness, reconstruction, exact positive-tree node counts and
+   finite table-operation bounds.
+6. Independent direct fixed-point parsing for arbitrary CFGs, with empty
+   intervals, ranked witnesses, and a Q-round stabilization bound.
+7. Counting parses of the normalized grammar for a fixed word.
+8. Union, concatenation, star, reversal, homomorphic images, context-free
+   substitution and intersection with regular languages.
+9. Disjointness against a regular language, CFG-to-regular inclusion, and
+   equality with a finite language.
+10. Finite EBNF compilation, including optionality and star/plus repetition,
+    with explicit finite-certificate semantics for recursive references.
+11. Both directions of CFG/nondeterministic-PDA equivalence for arbitrary
+    finite push lengths, with first-pop decomposition and trace bounds.
+12. PR PDA membership even in the presence of epsilon cycles.
+13. Inverse homomorphism closure, including erasing maps, with a protected
+    bottom marker and a finite buffer of image suffixes.
+14. A pumping decomposition and uniform PR pumping-tree constructor.
+15. Finiteness decision by the finite length window [2^M,2^(M+1)).
+16. Equal-block CFL/nonregular example; an explicit PR separating word
+    against every CFG for {a^n b^n c^n:n>=0}.
+17. Explicit failures of intersection and complement closure.
+18. A bounded quadratic-time tape recognizer for the three-block language,
+    with the noncontracting grammar and hierarchy result cross-referenced
+    to the effective-language chapter.
+
+The balanced-parentheses unique-parse proof is cross-referenced to
+count:dyck rather than duplicated.  The noncontracting grammar for the
+three-block language is cross-referenced to eff:abc rather than duplicated.
+
+Review findings and resolutions
+-------------------------------
+A separate internal mathematical review checked the normalization bounds,
+CYK and direct-chart invariants, the PDA first-pop decomposition, the finite
+buffer for erasing inverse homomorphisms, the pumping bound, the finite
+length-window test, and the explicit separating-word algorithm.
+
+The following conventions were made explicit during review:
+* {a^n b^n c^n} includes n=0.  The effective-language chapter's grammar
+  therefore includes a fresh isolated start with an empty alternative.
+* Star and substitution do not invoke unrestricted finite collection of
+  existential witnesses: the already proved PR parser constructs every
+  factor tree, with a uniform finite output bound.
+* A PDA segment must leave its protected suffix untouched until its final
+  configuration.  This condition is needed by the triple-variable grammar.
+* The inverse-homomorphism PDA can load erasing input letters even after
+  its simulated stack has emptied, because a protected bottom marker stays
+  in place until acceptance.
+* Normalization preserves the language, not the number of old derivations
+  or the original grammar's ambiguity.
+* The inclusion decision is L(CFG) subset L(DFA).  The reverse direction
+  and arbitrary CFG equality are not asserted decidable.
+
+Formalization status
+--------------------
+These are complete non-formalized mathematical arguments with explicit
+primitive recursive algorithms, certificate transformations and bounded
+Boolean invariants.  The Lean file is an outline, not a compiled proof.
+It defines all finite records and checker conditions and lists exact
+algorithm and theorem interfaces in dependency order.
+
+No machine-checked object-level iPRA derivation for this whole chapter is
+claimed.  The required completion path is to implement the Nat-coded PR
+functions, prove correspondence with convenient Lean finite-data models,
+prove the stated Boolean invariants using quantifier-free induction, and
+then assemble the intuitionistic first-order conclusions.  A proof solely
+in Lean's unrestricted ambient logic would not replace these object-level
+translation obligations.
+
+Sources
+-------
+Michael Sipser, MIT OpenCourseWare, 18.404J Theory of Computation, Fall 2020,
+lecture notes index:
+https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/pages/lecture-notes/
+
+Current Mathlib CFG documentation was inspected for the external semantic
+bridge (grammar, rewriting, derivation, language and reversal interfaces):
+https://leanprover-community.github.io/mathlib4_docs/Mathlib/Computability/ContextFreeGrammar.html
+
+The chapter's bounds, witness transformations and arithmetic audit are
+spelled out in the chapter itself; neither source is treated as providing
+an already completed iPRA formalization.

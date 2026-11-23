@@ -1,0 +1,52 @@
+\section{Effective cancellation using the ProveIt prime number theorem}\label{sec:cancellation}
+
+Here is a way to get genuine cancellation from an existing result of the project. It gives an arithmetic sentence with a threshold one can write down before doing any search.
+
+\begin{theorem}\label{thm:cancellation}
+For $k\ge1$ set $q=4k$ and define the integers
+\[
+ U(q)=2^{\,2^{(2^{20}q^3)^2+1}},\qquad
+ F(k)=2^{\,4k(3+4U(q))}.
+\]
+Then $n\ge F(k)$ implies $k|M(n)|\le n$.
+\end{theorem}
+\begin{proof}
+We use precisely two inequalities from the human proof in the ProveIt prime number theorem packet \cite{pnt}. For $\psi(y)=\sum_{p^a\le y}\log p$, $y\ge1$, these are
+\[
+ |\psi(y)-y|\le 4y,\qquad |\psi(y)-y|\le y/q\quad (y\ge U(q)).
+\]
+They hold for rational $y$, which is all we use. The integer $U(q)$ is the packet's $N_\psi(q)$, before conversion to a prime-counting estimate.
+
+Put $\Lambda(p^a)=\log p$ for $a\ge1$ and $\Lambda(m)=0$ otherwise. Write $*$ for the finite divisor convolution, $\mathbf1(n)=1$ and $\delta(n)=[n=1]$. Then $\mathbf1*\mu=\delta$ and $\mathbf1*\Lambda=\log$ since factorization gives $\log n=\sum_{p^a\mid n}\log p$. The operation $Df(n)=f(n)\log n$ satisfies $D(f*g)=Df*g+f*Dg$ by $\log(ab)=\log a+\log b$. Applying it to $\mu*\mathbf1=\delta$ and convolving with $\mu$ gives $D\mu=-\mu*\Lambda$. All these equalities hold separately in the formal coordinates $\log p$. Summation gives
+\[
+ \sum_{m\le n}\mu(m)\log m=-\sum_{d\le n}\mu(d)\psi(n/d).
+\]
+
+Two error terms deserve to be kept small. First,
+\[
+ n\sum_{d\le n}\frac{\mu(d)}d
+ =1+\sum_{d\le n}\mu(d)\{n/d\},\qquad
+ \left|\sum_{d\le n}\frac{\mu(d)}d\right|\le1 .
+\]
+Indeed the floors sum to $1$ with weights $\mu(d)$ by divisor cancellation, the $d=1$ fraction is zero, and each of the other $n-1$ terms has magnitude at most one. Second,
+we obtain $\sum_{m=1}^n\log(n/m)\le n$ by bounding each summand for $m\ge2$ by the integral over $[m-1,m]$ of the decreasing function $\log(n/t)$. The integral from $1$ to $n$ is $n-1-\log n$.
+
+Set $U=U(q)$. In the convolution replace $\psi(n/d)$ by $n/d$. For $d\le n/U$ the total absolute error is at most $n(1+\log n)/q$ by the integral bound on the harmonic sum. For $d>n/U$, each error is at most $4U$ and there are at most $n$ terms. Replacing $\log m$ on the left by $\log n$ costs at most $n$. The preceding estimates give
+\[
+ \frac{|M(n)|}{n}\ \le\ \frac1q+
+                 \frac{2+4U+1/q}{\log n}\quad(n\ge2).
+\]
+Since $\log 2\ge1/2$, our choice of $F(k)$ gives $\log n\ge2k(3+4U)$ and yields the conclusion, even with slack. The final assertion involves only natural numbers. The intermediate comparisons of logarithms use the enclosures of Section~\ref{sec:analytic}, or those of the cited packet. A strict violation of the final integer inequality has gap at least $1$, so rational enclosures at a prescribed finer precision suffice. Equivalently one can use the displayed slack to absorb their rounding errors.
+\end{proof}
+
+\begin{corollary}[The endpoint of the reciprocal series and the two signs]\label{cor:recip-one}
+$\sum_{n\le N}\mu(n)/n$ converges effectively to $0$. The densities of the positive and the negative values of $\mu$ are both $3/\pi^2$.
+\end{corollary}
+\begin{proof}
+To obtain error $1/k$ in the first assertion, take $D=4k$, $v=8kD$ and $N\ge D(F(v)+1)+4k$. Use the fractional-part identity from the proof above. The terms with $d\le N/D$ have total magnitude at most $N/D$. Partition the rest into intervals
+\[
+ a=\lfloor N/(j+1)\rfloor<d\le b=\lfloor N/j\rfloor,\qquad 1\le j<D.
+\]
+For $a<t\le b$, the running sum $M(t)-M(a)$ has magnitude at most $2b/v$, because $a\ge F(v)$. The weights $N/d-j$ decrease from at most $1$ to at least $0$. Finite summation by parts therefore bounds the absolute weighted sum on this interval by $2b/v$ because the last weight and all successive weight drops add up to the first weight. Dividing the complete identity by $N$ leaves error at most $1/N+1/D+2D/v\le1/k$. This argument reaches $s=1$ directly.
+For the second assertion let $E,O$ count squarefree integers up to $N$ with even and odd numbers of factors. Then $2E=Q+M$ and $2O=Q-M$. Combine Theorem~\ref{thm:cancellation} with Section~\ref{sec:squarefree}. For example $N\ge\max(F(2^j),2^{2j+4})$ gives error at most $2^{-j}$ for either density.
+\end{proof}

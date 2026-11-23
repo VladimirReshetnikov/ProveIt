@@ -1,0 +1,123 @@
+\section{What the mean-zero assertion says about primes}\label{sec:pnt}
+The zero mean also has a two-way elementary connection to the prime
+number theorem. The following proof transports an input modulus, so
+the equivalence has content independently of Theorem~\ref{thm:strongM}.
+Write $\psi(x)=\sum_{p^a\le x,\ a\ge1}\log p$ and
+$\Lambda(n)=[n=p^a]\log p$ with the prime recovered by bounded
+factorization and value zero if there is no such prime.
+Write $m(x)=\sum_{d\le x}\mu(d)/d$ and take $x$ to be a positive
+integer unless a real argument is indicated.
+
+\begin{theorem}
+The following limits imply one another with PR transformations of any
+supplied PR modulus:
+\[
+  \frac{\psi(x)}x\longrightarrow1,\qquad
+  \frac{M(x)}x\longrightarrow0,\qquad m(x)\longrightarrow0.
+\]
+The first limit is equivalent, in the same sense, to
+$\pi(x)\log x/x\longrightarrow1$, where $\pi(x)$ counts primes.
+\end{theorem}
+
+\paragraph{From primes to the mean.}
+The operation $Df(n)=f(n)\log n$ obeys the product rule for
+convolution by $\log(ab)=\log a+\log b$.
+Unique factorization gives $D\mathbf1=\mathbf1*\Lambda$.
+Apply $D$ to $\mu*\mathbf1=\varepsilon$ and convolve with $\mu$.
+It follows that $D\mu=-\mu*\Lambda$. On summing through $x$ we get
+\[
+ \sum_{n\le x}\mu(n)\log n=-\sum_{d\le x}\mu(d)\psi(x/d).
+\]
+By the floor identity, $xm(x)=1+\sum_{d\le x}\mu(d)\{x/d\}$,
+so $|m(x)|\le1+1/x$. Also
+$\sum_{n\le x}\log(x/n)\le\int_0^x\log(x/t)\,dt=x$
+by monotonicity (the first term can instead be kept separately).
+Given a rational $\eta\in(0,1)$, take $A\ge2$ from the PNT modulus
+so that $|\psi(y)-y|\le\eta y$ for $y\ge A$. For real $y$ use
+$\psi(y)=\psi(\lfloor y\rfloor)$ and increase the integer cutoff
+beyond $2/\eta$, using the initial modulus at $\eta/2$.
+For $1\le y<A$ the crude bound is $|\psi(y)-y|\le A^2+A$, by
+$\Lambda(n)\le\log n$. Thus
+\[
+ \frac{|M(x)|}{x}\le
+ \frac{A^2+A+3+\eta(1+\log x)}{\log x}\qquad(x\ge2).
+\]
+Indeed the main term after replacing $\psi(x/d)$ by $x/d$ is at most
+$x|m(x)|$, and the remaining large-argument errors cost at most
+$\eta x\sum_{d\le x}1/d$. For accuracy $1/k$ take
+$\eta=1/(4k)$ and, for example, $x\ge2^{8k(A^2+A+5)}$.
+
+\paragraph{A finite summation-by-parts lemma.}
+Suppose $M(x)/x\to0$ with a modulus. For each of the three functions
+of a rational $y\ge1$ displayed below one has
+\[
+ \frac1x\sum_{d\le x}\mu(d)g(x/d)\longrightarrow0:
+ \quad
+ \begin{cases}
+  g_1(y)=\{y\},\\
+  g_2(y)=y(H_{\lfloor y\rfloor}-\log y-\gamma),\\
+  g_3(y)=\log(\lfloor y\rfloor !)-y\log y+y .
+ \end{cases}
+\]
+Here are bounds that prove the lemma without a general equidistribution
+or integration theorem. Each $|g(y)|\le8\sqrt y$. For $g_2$ use
+$|H_j-\log j-\gamma|\le1/j$ and
+$\log(y/j)\le1/j$ for $j=\lfloor y\rfloor$.
+For $g_3$ the increasing function $\log t$ bounds $\log(j!)$ between
+$\int_1^j\log t\,dt$ and $\int_1^j\log t\,dt+\log j$.
+Replacing the upper integration endpoint $j$ by $y$ costs at most
+$\log y$. Thus $|g_3(y)|\le 1+2\log y\le8\sqrt y$.
+On $[1,A]$, $A$ integral, the two endpoint magnitudes plus the total
+variation of each $g$ are bounded by $V_A=50(A+1)^4$.
+For a direct check, on the open unit intervals the three derivatives are
+$1$, $H_j-\log y-\gamma-1$, and $-\log y$. Their absolute values are
+at most $3(A+1)$. The jumps at integers have magnitudes at most
+$1,1,\log A$, respectively. The same bounds hold for finite differences
+by integrating the explicit derivatives on each intervening piece.
+
+The terms $d\le x/A$ in the original sum contribute at most
+$16x/\sqrt A$, using $\sum_{d\le u}d^{-1/2}\le2\sqrt u$.
+For the other terms, partial summation with the bounded variation on
+$[1,A]$ costs at most $\eta x V_A$ if $|M(t)|\le\eta t$ for all
+integers $t\ge\lfloor x/A\rfloor$. Thus for a target $\epsilon>0$
+choose $A\ge(32/\epsilon)^2$, then $\eta=\epsilon/(2V_A)$, and take
+$x\ge A(U+1)$ where $U$ is the input modulus at $\eta$.
+All variation estimates only need finite lists of rational input points
+and the finitely many integer breakpoints.
+
+\paragraph{From the mean back to primes.}
+The floor identity and the lemma for $g_1$ give $m(x)\to0$.
+Define $L_x=\sum_{d\le x}\mu(d)\log(x/d)/d$. Grouping by $dk$ gives
+\[
+ 1=\sum_{d\le x}\frac{\mu(d)}d H_{\lfloor x/d\rfloor}
+  =L_x+\gamma m(x)+x^{-1}\sum_{d\le x}\mu(d)g_2(x/d).
+\]
+Hence $L_x\to1$. Finally $\log n=\sum_{r\mid n}\Lambda(r)$, and
+inversion, then summation over $n\le x$, gives
+$\psi(x)=\sum_{d\le x}\mu(d)\log(\lfloor x/d\rfloor!)$.
+Using $g_3$ gives
+$\psi(x)/x=L_x-m(x)+x^{-1}\sum_{d\le x}\mu(d)g_3(x/d)\to1$.
+A modulus for $m(x)\to0$ alone gives $M(x)/x\to0$ by
+\[
+ M(x)=xm(x)-\sum_{j=1}^{x-1}m(j).
+\]
+Indeed if $|m(j)|\le\eta$ for $j\ge U$, dividing by $x$ costs at
+most $2\eta+2U/x$, using the global bound $|m(j)|\le2$.
+
+\paragraph{The prime-counting formulation.}
+Put $\vartheta(x)=\sum_{p\le x}\log p$. Prime powers of exponent
+at least two contribute at most $\sqrt x\log x$ to $\psi(x)$:
+each prime $p\le\sqrt x$ contributes at most $\log x$.
+For $r\ge2$ put $y=x^{1-1/r}$ (the cutoff can be compared by integer
+$r$th powers). Splitting primes at $y$ gives the elementary bounds
+\[
+ (1-1/r)\big(\pi(x)\log x-y\log x\big)
+       \le\vartheta(x)\le \pi(x)\log x .
+\]
+The error $y\log x/x$ is at most $2r x^{-1/(2r)}$ since
+$\log u\le u$ for $u\ge1$. Choosing $1/r$ below a quarter of the desired
+error and $x$ above a suitable integer power of $2r/\epsilon$
+gives each implication between the normalized $\vartheta$ and
+$\pi$ limits. Taking a finer fixed fraction of the target precision
+absorbs the factor $(1-1/r)^{-1}\le2$. These are PR modulus
+transformations. The same power bound controls $\log x/\sqrt x$.

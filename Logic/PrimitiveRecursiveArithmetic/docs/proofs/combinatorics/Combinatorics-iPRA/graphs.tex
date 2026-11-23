@@ -1,0 +1,230 @@
+\section{Graphs, extremal problems and finite Ramsey theory}
+\label{sec:graphs}
+
+The survey asks how many graphs have a prescribed number of edges, which triangle-free graphs have the most edges, and how many triangles a random graph has on average. Its link to Hamiltonian cycles leads to statements about degree conditions and tournaments. We begin with these questions, then develop matching, tree enumeration and finite Ramsey theory as further results within the linked subjects.
+
+\subsection{Counting graphs and local configurations}
+
+Use $[n]=\{0,\ldots,n-1\}$. Enumerate the $M=\binom n2$ unordered pairs in lexicographic order. A simple graph $G$ is a mask below $2^M$, with a bit for each edge. Write $e(G)$ for its number of edges, $d(v)$ for a vertex degree and $t(G)$ for the number of unordered triangles. All counts use labeled vertices.
+
+\begin{proposition}[Graph counts, handshaking and finite averages]\label{result19}
+There are $2^M$ graphs on $[n]$ and $\binom Mk$ with $k$ edges. In each graph, $\sum_v d(v)=2e(G)$ and the number of vertices of odd degree is even. The mean of $t(G)$ over uniform masks is $\binom n3/8$. A graph with $e$ edges has a partition into two classes with at least $\lceil e/2\rceil$ crossing edges.
+\end{proposition}
+\begin{proof}
+Selecting edges is exactly selecting a subset of the $M$ positions. Each edge has two ends, which proves the degree sum. Reducing that sum modulo two counts odd degrees modulo two. For $n\ge3$, fixing a triple and requiring its three edges leaves $M-3$ free bits. Summing first over triples, then over graphs, gives
+\[
+ 8\sum_{G<2^M}t(G)=2^M\binom n3 .
+\]
+For $n<3$ both sides vanish. For the cut claim color the vertices with independent bits, meaning that we enumerate all $2^n$ masks. For each edge exactly half of the masks give its ends different colors, by toggling the first end. If $e>0$ the sum of the cut sizes is $e2^{n-1}$. The largest cut is at least the average and is returned by a mask scan. If $e=0$, any partition suffices.
+\end{proof}
+
+\subsection{The triangle-free extremum and its generalization}
+
+For $r\ge1$ let $T_r(n)$ be a complete $r$-partite graph whose parts have sizes $q$ and $q+1$, where $n=rq+s$ and $0\le s<r$. There are $s$ larger parts. Empty parts are allowed. Its edge count is
+\[
+ t_r(n)=\binom n2-(r-s)\binom q2-s\binom{q+1}2 .
+\]
+
+\begin{theorem}[Tur\'an, including equality]\label{result20}\label{thm:graph-turan}
+Every $K_{r+1}$-free simple graph on $n$ vertices has at most $t_r(n)$ edges. Equality holds precisely for graphs isomorphic to $T_r(n)$. In particular the triangle-free maximum is $\lfloor n^2/4\rfloor$, attained only by a complete bipartite graph with part sizes differing by at most one.
+\end{theorem}
+\begin{proof}
+Among complete $r$-partite graphs on $n$ vertices the missing edges are the pairs within the parts. Moving one vertex from a part of size $a$ to a part of size $b$, with $a\ge b+2$, reduces the number missing by $a-b-1>0$. After at most $\binom n2$ moves the sizes differ by at most one. This proves the bound and its strictness for unbalanced partitions.
+
+Induct on $r$. For $r=1$ the allowed graphs have no edges. For $r>1$ and $n>0$, take a vertex of maximum degree $d$, let $A$ be its neighborhood, and put $B=[n]\setminus A$. A clique of size $r$ in $A$ would extend to size $r+1$. Thus $e(A)\le t_{r-1}(d)$. Counting the edges with at least one end in $B$ gives
+\[
+ e(G)=e(A)+\sum_{b\in B}d(b)-e(B)
+       \le t_{r-1}(d)+|B|d.
+\]
+The right side counts the edges of a complete $r$-partite graph formed by adjoining one part $B$ to $T_{r-1}(d)$. It is at most $t_r(n)$. In case of equality, $e(B)=0$, every $b\in B$ has degree $d$, and equality holds in $A$. Hence each $b$ is adjacent to all $d$ vertices of $A$, and the induction hypothesis splits $A$ into the required parts. Strictness of the balancing step makes all $r$ final parts balanced. Conversely the displayed $T_r(n)$ has no clique larger than $r$. For $n=0$ take all parts empty. For $r=2$ the product of the part sizes is $\lfloor n^2/4\rfloor$.
+
+To use quantifier-free induction, fix an ambient bound $N$ for the number of vertices. The induction assertion for $r$ checks all $n\le N$, masks below $2^{\binom N2}$ and, in the equality case, the existence of a part assignment among the $r^n$ words. Relabel an induced graph by the increasing enumeration of its vertices. The check is a primitive recursive Boolean, including when $r>n$.
+\end{proof}
+
+\subsection{Hamiltonian cycles and tournaments}
+
+A Hamiltonian path is a listing of all vertices without repetition with an edge between successive entries. A Hamiltonian cycle also uses the last-to-first edge. For undirected cycles assume $n\ge3$, and identify rotations and reversals. In $K_n$ there are $(n-1)!/2$ such cycles. Starting at vertex $0$ leaves $(n-1)!$ orderings, and reversal pairs them without a fixed point. For complete bidirected graphs with orientations distinguished the count is $(n-1)!$. For a Hamiltonian undirected graph, removing any one vertex from a cycle leaves a path spanning the remaining vertices. In particular it is biconnected.
+
+\begin{theorem}[Bondy--Chv\'atal closure, Ore and Dirac]\label{result21}\label{thm:graph-closure}
+Let $n\ge3$. Adjoin edges between nonneighbors whose degrees sum to at least $n$, until no such pair remains. The resulting closure is canonical and has a Hamiltonian cycle if and only if the original graph has one. In particular a Hamiltonian cycle can be found if every nonadjacent pair has degree sum at least $n$, or if $2d(v)\ge n$ for each vertex.
+\end{theorem}
+\begin{proof}
+Consider a cycle after adding one edge $uv$. If it uses that edge, deleting it gives a Hamiltonian path $x_1=u,\ldots,x_n=v$ in the old graph. Among $1\le i<n$, mark red the indices with edge $ux_{i+1}$, and blue those with edge $x_iv$. The red and blue counts are $d(u)$ and $d(v)$, respectively. Their sum is at least $n$ on $n-1$ positions. The first doubly marked $i$ supplies the old cycle
+\[
+ x_1,\ldots,x_i,x_n,x_{n-1},\ldots,x_{i+1},x_1 .
+\]
+If the new cycle omits $uv$, it already works. Any old cycle persists after insertion. Store the at most $M$ inserted edges and undo them in reverse to reconstruct a certificate. Every saturated supergraph containing the input contains each inserted edge, by induction on insertions and monotonicity of degrees. Taking another terminal result as that supergraph and interchanging their roles proves uniqueness. Under Ore's hypothesis all missing pairs stay eligible, so the closure is complete. Dirac's condition implies Ore's by adding the two degree inequalities.
+\end{proof}
+
+A tournament orients each unordered pair in exactly one direction. For a loopless digraph $D$, let $h(D)$ count the vertex listings forming directed Hamiltonian paths. Its complement $\overline D$ reverses the presence of each nonloop ordered pair.
+
+\begin{theorem}[Berge parity, R\'edei and Camion]\label{result22}\label{thm:graph-tournaments}
+One has $h(D)\equiv h(\overline D)\pmod2$. Every tournament has an odd number of Hamiltonian paths. A tournament on $n\ge3$ vertices has a directed Hamiltonian cycle precisely when it is strongly connected.
+\end{theorem}
+\begin{proof}
+For $n\ge1$ count pairs consisting of a vertex listing and a subset of its consecutive directed arcs belonging to $D$. A listing with $j$ such arcs contributes $2^j$, odd exactly when the listing is a path of $\overline D$. Conversely, any prescribed marked set which occurs forms disjoint directed paths, including isolated vertices as one-vertex paths. With $b$ such blocks it occurs in exactly $b!$ listings, by permuting the blocks. Only $b=1$ gives an odd count, and those marked sets are exactly the full Hamiltonian paths in $D$. This proves Berge's congruence. For $n=0$ the empty listing contributes one on each side.
+
+Reverse one arc in a tournament $T$ to get $T'$. Let $D_0$ omit both orientations of the pair and $D_2$ include both. Paths avoiding the pair are counted twice in $h(T)+h(T')$, and paths using it are counted once. Thus $h(T)+h(T')=h(D_0)+h(D_2)$. The reverse of $D_2$ is $\overline D_0$. Reversing a listing preserves the path count under reversal of all arcs. By Berge the right side is even. Reverse all arcs pointing from a larger to a smaller label, in at most $M$ steps. The resulting tournament has just the increasing Hamiltonian path, proving oddness. A bounded listing search now returns a path.
+
+A directed Hamiltonian cycle gives a directed route between every ordered pair. Conversely, in a strongly connected tournament on at least three vertices, any arc followed by a shortest return path gives a simple directed cycle. Select a longest simple cycle $C$ by scanning vertex words of length at most $n$. For any vertex $z$ off $C$, if the edges from $C$ to $z$ have both orientations then two consecutive cycle vertices satisfy $c_i\to z\to c_{i+1}$, allowing insertion. Consequently all outside vertices lie in two classes, $A$ with $C\to A$ and $B$ with $B\to C$. If any outside vertices exist, both classes must occur, as otherwise reachability in one direction fails. Some arc $a\to b$ must run from $A$ to $B$, since otherwise $A$ cannot reach $C$. Replacing an edge $c_i\to c_{i+1}$ by $c_i\to a\to b\to c_{i+1}$ contradicts maximality. Hence $C$ spans. Every choice just used is a finite first or maximum.
+\end{proof}
+
+\begin{proposition}[The Petersen graph]\label{result23}
+The Petersen graph is cubic, biconnected and of diameter two and girth five. It has no Hamiltonian cycle.
+\end{proposition}
+\begin{proof}
+Use labels $O_i,I_i$ for $i$ modulo five. Join $O_i$ to $O_{i+1}$, $I_i$ to $I_{i+2}$ and $O_i$ to $I_i$ for each $i$. Each layer is a 5-cycle and every vertex has one spoke to the other layer. After deleting one vertex the intact layer and the path in the other layer remain joined by spokes. Two vertices in one layer are within two steps. For a pair in different layers, differences $0,\pm1,\pm2$ are covered by a spoke alone or a spoke with one outer or inner edge. Some pairs are nonadjacent, giving diameter two. A simple cycle using both layers uses a positive even number of spokes, separated by at least one layer edge. A cycle of length at most four would have exactly two spokes and one edge in each layer. Their indices would have to differ both by $\pm1$ and by $\pm2$, which is impossible modulo five. Either layer attains girth five.
+
+A Hamiltonian cycle must use two or four spokes. With two, each layer supplies a spanning path in its 5-cycle, so its two spoke indices are adjacent in both layer cycles, again impossible. With four, rotate labels so that spoke zero is omitted. Both outer edges at $O_0$ are forced, leaving $O_2O_3$ forced since $O_1,O_4$ already have two chosen incidences. Both inner edges at $I_0$ are also forced. Consequently the purported Hamiltonian cycle already contains the closed 5-cycle $O_2,O_3,I_3,I_0,I_2,O_2$. A simple cycle containing this closed component cannot visit its other five vertices.
+\end{proof}
+
+\subsection{Cayley graphs and change ringing}
+
+A finite group is an explicitly verified multiplication table on $[g]$ with identity and inverse table. Given $S\subseteq G$, put a directed arc of color $s$ from $x$ to $xs$ for each $s\in S$. Forgetting colors gives its Cayley digraph. An action of $G$ on a nonempty vertex set is \emph{simply transitive} if for each ordered pair of vertices exactly one group element takes the first to the second.
+
+\begin{theorem}[Finite Cayley graphs and Sabidussi's characterization]\label{result24}
+Every vertex has indegree and outdegree $|S|$. Left multiplication acts simply transitively by color-preserving automorphisms. When $S$ generates $G$, all color-preserving digraph automorphisms arise this way. The components of the underlying undirected graph are the left cosets of $\langle S\rangle$. A finite nonempty digraph given by a Boolean adjacency relation (loops allowed) admits a simply transitive action of $G$ by automorphisms precisely when it is isomorphic to a Cayley digraph of $G$ for some $S$.
+\end{theorem}
+\begin{proof}
+From $x$ the outgoing ends $xs$ are distinct by cancellation, and the incoming starts $xs^{-1}$ are distinct for the same reason. Translation by $h$ takes $x\to xs$ to $hx\to(hx)s$ preserving color, and $yx^{-1}$ is the unique translator sending $x$ to $y$. Along an undirected walk, each step is right multiplication by an element of $S$ or its inverse. Conversely such a word gives a walk. Hence vertices reachable from $x$ form $x\langle S\rangle$. All connectivity and subgroup membership tests may use walks of length less than $g$, by erasing repeated-vertex segments. If $S$ generates and an automorphism sends the identity to $h$, it must propagate $x\mapsto hx$ along every one of these steps, because each color has a unique incoming and outgoing neighbor. Hence it is left translation.
+
+Conversely fix a vertex $v$ of a supplied simply transitive action. The map $a\mapsto av$ is bijective, and inverse images are found by scanning $[g]$. Set $S=\{s:v\to sv\}$. Applying $a^{-1}$ to an arc shows that $av\to bv$ holds exactly when $a^{-1}b\in S$. Thus the bijection identifies the original edges with the Cayley edges. This form allows a non-generating $S$ when the digraph is disconnected.
+\end{proof}
+
+\begin{proposition}[Two cyclic Gray listings]\label{result25}
+The $d$-dimensional cube has a Hamiltonian cycle for $d\ge2$. The Cayley graph of the symmetric group on $n\ge3$ letters with adjacent position swaps as generators also has a Hamiltonian cycle.
+\end{proposition}
+\begin{proof}
+For binary words start with $0,1$. Given a listing, prefix $0$ to it in forward order and append its reverse prefixed by $1$. The transition between the halves switches only the new bit. The final and initial words also differ at that bit. Within a half the old adjacency survives, and deletion of the prefix identifies the old word uniquely. Iteration lists all $2^d$ words and gives a simple cycle for $d\ge2$.
+
+For permutations begin with $12,21$, whose last and first entries are adjacent by one swap. Given the old cyclic listing on $n-1$ letters, replace each word by a row of $n$ words inserting the new letter $n$ in all positions. In the first row move $n$ from the right end to the left end, in the second from left to right, and continue alternating. Inside a row the step is adjacent. Between rows the letter $n$ stays at one end and the old words differ by an adjacent swap. There are $(n-1)!$ rows, an even number for $n\ge3$, so the final row ends with $n$ on the right, just as the first row began. The old closing swap therefore closes the new listing. Deleting $n$ identifies its row and its position identifies its place within that row, so all $n!$ permutations appear exactly once. These recursions construct both cyclic listings from the dimension or alphabet size.
+\end{proof}
+
+\subsection{Euler trails and labeled trees}
+
+\begin{proposition}[Euler's criterion]\label{result26}
+In a finite undirected multigraph with at least one edge, there is a closed trail using every edge once if and only if the positive-degree vertices are connected and all degrees are even. There is an open such trail if and only if the same support is connected and exactly two degrees are odd.
+\end{proposition}
+\begin{proof}
+Give each edge its own index and count a loop twice at its vertex. On a trail, arrivals and departures pair at every internal visit, leaving just the endpoints unpaired for an open trail. All used vertices lie in a single component. In the even case start at an incident vertex and repeatedly use the least unused incident edge. A stop away from the starting point would leave an odd number of used incidences there and hence a positive odd number unused. The trail therefore closes. Its removal leaves even degrees. If edges remain, some vertex of the trail is incident with a remaining edge. Otherwise the trail vertices, which contain both ends of every used edge, would be separated from all remaining edges in the original support. Construct another closed trail there and splice it at that vertex. Each splice uses at least one more edge and the total number of edge choices over all rounds is the initial edge count. In the two-odd case temporarily add one distinguished edge joining those vertices, find the closed trail and cut it at that edge. Connectivity tests need only paths with at most $n-1$ edges, since a repeated-vertex segment can be deleted.
+\end{proof}
+
+\begin{theorem}[Pr\"ufer coding and Cayley's formula]\label{result27}\label{thm:graph-prufer}
+On $[n]$, $n\ge2$, the labeled trees are in primitive recursive bijection with the $n^{n-2}$ words of length $n-2$ over $[n]$. For $d_i\ge1$ with $\sum_i d_i=2n-2$, exactly
+\[
+ \frac{(n-2)!}{\prod_{i<n}(d_i-1)!}
+\]
+of the trees have degrees $d_i$. There is one tree on one labeled vertex.
+\end{theorem}
+\begin{proof}
+A tree is connected and has no simple cycle. When it has at least two vertices, the two ends of a longest simple path have degree one. Indeed an extra neighbor of an endpoint would extend the path or close a cycle. Deleting a leaf preserves connectedness of the remaining vertices, since a simple path between them cannot pass through a leaf. It also preserves acyclicity. Thus a tree on $n\ge1$ vertices has $n-1$ edges, by deleting leaves down to one vertex.
+
+Repeatedly delete the least leaf and record its sole neighbor until two labels remain. In the resulting word each label $v$ occurs $d(v)-1$ times. Its degree drops by one every time it is recorded, and reaches one either at its own deletion or at the final pair. This argument applies to every suffix of the process.
+
+Given a word, keep all labels live. With $m\ge3$ live labels the suffix has length $m-2$ and consists entirely of live labels. Choose the least live label $u$ missing from the suffix, join it to the first letter, retire $u$ and erase the first letter. At least two live labels are missing, and the first letter differs from $u$. Join the last two labels. Reading the construction backwards attaches one new leaf at each stage, giving a tree. At any decoding stage a live label is used once when it retires (or in the final pair) and once per occurrence in the suffix. Thus the leaves of that residual tree are exactly the live labels missing from the suffix. The encoder therefore makes the decoder's choices on a decoded tree. Conversely the degree-count observation on an encoded tree makes the decoder follow its deletions step for step. Finally, prescribing the multiplicities $d_i-1$ in the word amounts to distributing its positions into labeled fibers of those sizes, giving the multinomial above by ordering and forgetting within-fiber order. All loops have at most $n$ steps.
+\end{proof}
+
+\subsection{Matching, deficiency and vertex covers}
+
+Let $G\subseteq L\times R$ be bipartite, with $|L|=a$ and $|R|=b$. A matching is an edge subset in which no two edges share an endpoint. A vertex cover meets every edge. For $S\subseteq L$ put $N(S)=\{y\in R:(\exists x\in S)\,xy\in G\}$.
+
+\begin{theorem}[K\H{o}nig, Hall and the deficiency formula]\label{result28}\label{thm:matching-cover}
+One can construct a maximum matching $P$, a minimum cover $C$ and a set $S\subseteq L$ such that
+\[
+ |C|=|P|,\qquad a-|P|=|S|-|N(S)|
+     =\max_{U\subseteq L} (|U|-|N(U)|).
+\]
+In particular a matching saturating $L$ exists exactly when $|N(U)|\ge |U|$ for every $U\subseteq L$. Failure yields a specific violating $U$.
+\end{theorem}
+\begin{proof}
+Start with the empty matching. Direct every unmatched edge from left to right and every matched edge from right to left. From the set $F$ of unmatched left vertices compute the reachable sets $X\subseteq L$, $Y\subseteq R$, closing under directed edges for $a+b$ rounds. Reachable vertices have witnesses of length at most $a+b-1$ when the vertex set is nonempty, by deleting repetitions. If an unmatched right vertex is reached, take a shortest witnessing path. Its edges alternate between unmatched and matched, with unmatched first and last. Toggling the edges on this simple path preserves matching at interior vertices and matches the endpoints, increasing the size by one. Run at most $\min(a,b)$ augmentations. After this many successes a full smaller side rules out further paths, so one final reachability calculation always yields a terminal stage.
+
+At that stage all of $Y$ are matched. Their mates are in $X\setminus F$, and every $x\in X\setminus F$ was reached through its unique matched edge. Thus matching gives a bijection $Y\longleftrightarrow X\setminus F$. Also $Y=N(X)$. An unmatched edge from $X$ leads to $Y$, and the matched neighbor of any matched $x\in X$ was already reached. Every $y\in Y$ was reached from a neighbor in $X$. It follows that $C=(L\setminus X)\cup Y$ covers all edges and
+\[
+ |C|=a-|X|+|Y|=a-|F|=|P|.
+\]
+Every cover meets the disjoint edges of any matching at distinct vertices. This proves that both displayed objects are optimal. For every $U$, the matched vertices in $U$ inject into $N(U)$, and its unmatched vertices number at most $|F|$. Thus $|U|-|N(U)|\le |F|$, with equality at $S=X$. The empty subset ensures the maximum is nonnegative. Taking $|F|=0$ gives Hall's criterion and taking $|F|>0$ gives its failure certificate.
+\end{proof}
+
+\begin{corollary}[Regular bipartite graphs, edge coloring and transversals]\label{result29}
+A $d$-regular finite bipartite graph with $d>0$ splits into $d$ perfect matchings. Every finite bipartite graph of maximum degree $d$ admits a proper edge coloring with $d$ colors. A finite family $(A_i)_{i<a}$ of finite subsets of a common coded universe has a system of distinct representatives if and only if $|\bigcup_{i\in U} A_i|\ge |U|$ for every $U\subseteq[a]$.
+\end{corollary}
+\begin{proof}
+Counting ends on each side gives $da=db$, so $a=b$ when $d>0$. Counting the $d|U|$ incident edges gives $d|U|\le d|N(U)|$, even with parallel edges counted with multiplicity. Hall returns a perfect matching. Remove it and iterate, lowering each degree by one. With parallel edges, apply Hall to the underlying simple graph and take the least available edge for each chosen pair. For edge coloring, add isolated dummy vertices to equalize the two sides. The sums of degree deficits from $d$ now agree. Repeatedly add one edge between a left and a right vertex of positive deficit, permitting parallel edges, until both sums are zero. At most $d\max(a,b)$ additions suffice. Color the resulting perfect matchings differently, then restrict to the original edges. For $d=0$ the empty coloring suffices. The representative assertion is Hall applied to the incidence edges $i\,y$ with $y\in A_i$.
+\end{proof}
+
+\begin{theorem}[Integral max-flow min-cut]\label{result30}
+In a finite directed network with nonnegative integer capacities, distinct source $s$ and sink $t$, a maximum integral flow and a cut of equal capacity can be found by primitive recursion.
+\end{theorem}
+\begin{proof}
+Index the arcs, allowing parallel arcs. A flow assigns each arc an integer between zero and its capacity, and balances inflow and outflow at every vertex other than $s,t$. Its value is net outflow at $s$. For a set $S$ containing $s$ and excluding $t$, summing the balance equations shows that net flow out of $S$ is the value, and is at most the sum of capacities of arcs leaving $S$.
+
+Start with zero flow. Give each arc two indexed residual moves, forward with capacity $c-f$, backward with capacity $f$. Search for a simple $s$--$t$ path of positive moves (length at most $n-1$), recording move indices to distinguish parallel arcs. If found, augment by the least residual capacity on it. Bounds on all flows persist, intermediate vertices retain balance and the value increases by a positive integer. The value is bounded by the capacity $C_s$ out of $s$, so $C_s$ augmentations and a final residual search suffice. At termination, let $S$ be the set reachable by positive moves from $s$. Every arc leaving $S$ is full and every arc entering it has flow zero. The equality of the cut capacity and the flow value now proves optimality. Negative intermediate expressions can equivalently be represented by differences of two natural sums.
+\end{proof}
+
+\subsection{Ramsey bounds and a sum-free subset}
+
+\begin{theorem}[Two-color graph Ramsey bounds]\label{result31}\label{thm:graph-ramsey}
+For $s,t\ge1$, every red--blue coloring of the edges of $K_N$ with
+\[
+ N\ge B(s,t)=\binom{s+t-2}{s-1}
+\]
+has a red $s$-clique or a blue $t$-clique, with a primitive recursive witness. The least such size $R(s,t)$ is a primitive recursive function. In particular $R(3,3)=6$.
+\end{theorem}
+\begin{proof}
+The boundary value $B(1,t)=B(s,1)=1$ suffices for a singleton. At an interior pair, Pascal gives $B(s,t)=B(s-1,t)+B(s,t-1)$. Among the other $N-1$ vertices a pivot has at least $B(s-1,t)$ red neighbors or at least $B(s,t-1)$ blue ones. Take a sufficiently large color class, recurse with the corresponding coordinate decreased, and extend a clique of the pivot's color by the pivot if needed. The measure $s+t$ decreases until the boundary. To express the argument by Boolean induction fix original $s_0,t_0$ and use the rectangle $s\le s_0,t\le t_0$ and all induced colorings relabeled on at most the original number of vertices. The finite conjunction of all previously reached cases with smaller coordinate sum is available as an induction invariant. Alternatively extract the recursive witness by storing the chosen pivots and unwinding.
+
+For each $n\le B(s,t)$, scan all $2^{\binom n2}$ colorings and all subsets to test the Ramsey property and take the first success. Monotonicity follows by restriction. For $(3,3)$ the upper bound is six. Color the edges of a pentagon red and its diagonals blue. The two color graphs are 5-cycles (the blue cycle steps by two modulo five), so neither has a triangle.
+\end{proof}
+
+\begin{theorem}[Finite multicolor hypergraph Ramsey theorem]\label{result32}\label{thm:graph-hyperramsey}
+For positive integers $j,c,m$ there is a uniform primitive recursive bound $H_j(c,m)$ and a primitive recursive procedure which, for every $c$-coloring of the $j$-subsets of a set of at least $H_j(c,m)$ vertices, selects $m$ vertices all of whose $j$-subsets have the same color. When $j>m$ this condition is vacuous. The least size with this property is itself primitive recursive.
+\end{theorem}
+\begin{proof}
+Use $H_1(c,m)=c(m-1)+1$. Pigeonhole gives $m$ vertices of one color. Given $L=H_j(c,m)$ put
+\[
+ H_{j+1}(c,m)=(c+1)^{(L+1)(2^L+1)}.
+\]
+Order the input by its vertex labels. Build $L$ pivots $x_1<\cdots<x_L$, retaining a nonempty pool of larger unused vertices. Pick the least current vertex and delete it. For every $j$-subset $A$ of the chosen pivots whose last vertex is this new pivot, partition the current pool by the color of $A\cup\{y\}$ and retain a largest class, breaking ties by least color. Record this color $g(A)$. Across each round there is one deletion and at most $2^L$ thinnings. From a pool of size at least $(c+1)^h$ for $h\ge1$, either a single deletion or a largest-class thinning leaves at least $(c+1)^{h-1}$ vertices. Thus the exponent budget allows all rounds with vertices to spare. All later pivots come from every earlier retained pool. Hence for $i_1<\cdots<i_{j+1}$ the input color on those pivots equals $g(\{x_{i_1},\ldots,x_{i_j}\})$.
+
+Apply the rank-$j$ result to the table $g$ on the $j$-subsets of the $L$ pivots and lift the selected $m$ positions. Every $(j+1)$-subset takes the common $g$-color of its first $j$ vertices. If there are no such subsets the assertion holds with any color. This proves the step. The displayed recursion is ordinary primitive recursion on rank. For the induction in iPRA, fix a target rank $h$ and put $N=H_h(c,m)$. These bounds are nondecreasing with rank. Code colorings on at most $N$ vertices as $2^N$ base-$(c+1)$ digits indexed by subset masks. For each rank $j\le h$ the assertion for every coloring on precisely $H_j(c,m)$ vertices with an $m$-set witness is a bounded Boolean test, using table codes below $(c+1)^{2^N}$ and witness masks below $2^N$. Perform induction on this test. Restrict larger inputs to their first $H_j(c,m)$ vertices. A least good size is obtained by bounded search through $H_h(c,m)$.
+\end{proof}
+
+For possibly different positive requested sizes $m_1,\ldots,m_c$, take $m=\max_i m_i$ and keep the first $m_i$ vertices of the returned set of color $i$. Schur's finite theorem follows already from rank two. If $[1,N]$ has $c$ colors, color $\{a,b\}\subseteq\{0,\ldots,N\}$ by the color of $|a-b|$. When $N+1\ge H_2(c,3)$ a monochromatic triangle $a<b<d$ gives the same color to $b-a,d-b,d-a$, and the first two sum to the third.
+
+\begin{proposition}[A finite first-moment lower bound]\label{result33}
+If $2\le k\le n$ and $2\binom nk<2^{\binom k2}$, there is a two-color edge coloring on $[n]$ with no monochromatic $k$-set. A bounded search returns one, so $R(k,k)>n$.
+\end{proposition}
+\begin{proof}
+For each $k$-set precisely $2\cdot 2^{M-\binom k2}$ colorings make its edges monochromatic. The two choices of color are disjoint because $k\ge2$. Multiplying by $\binom nk$ counts the pairs (coloring, bad set), and the hypothesis says this is less than the number $2^M$ of colorings. If all colorings had a bad set, assigning the first one to each would give at least $2^M$ pairs. Equivalently the row counts have a zero, found by the first-success scan.
+\end{proof}
+
+\begin{theorem}[Erd\H{o}s's sum-free subset bound]\label{result34}\label{thm:graph-sumfree}
+Every nonempty finite set $A$ of nonzero integers has a computably selected subset $B$ with $3|B|>|A|$ in which $x+y=z$ has no solution $x,y,z\in B$, even allowing repetitions.
+\end{theorem}
+\begin{proof}
+Let $M=\max_{a\in A}|a|$ and $D=3M!-1$, with $M!$ denoting the factorial of $M$. The number $D\ge2$ is $2$ modulo $3$. Divide it repeatedly by its least divisor greater than one, found by search up to the current residual. Each divisor is prime, since a proper factor would be a smaller divisor. At most $D$ divisions produce a prime factorization. Some prime factor $p$ is $2$ modulo $3$, for no factor can be $3$ and a product of residues $1$ is $1$. Also $p>M$, as every prime $\le M$ divides $M!$ and cannot divide $3M!-1$.
+
+Write $p=3q+2$. The $q+1$ residues $I=\{q+1,\ldots,2q+1\}$ are sum-free modulo $p$. Before reduction their pair sums lie from $2q+2$ to $4q+2$. After reduction they lie either above $2q+1$ or at most $q$. For $1\le t<p$ put $B_t=\{a\in A:ta\bmod p\in I\}$. Additivity modulo $p$ makes $B_t$ sum-free in the integers. Each $a$ is nonzero modulo $p$, so multiplication by $a$ permutes the nonzero residues. For clarity, the Euclidean algorithm on $p$ and the positive residue $a'$ obtains gcd $1$ since $p$ is prime. Tracking the coefficients in each remainder equation expresses $1$ as a linear combination of $a'$ and $p$, giving the inverse modulo $p$. The remainder decreases each round, so $p$ rounds suffice for the primitive recursion updating the coefficients. Thus $a$ is counted in exactly $q+1$ of the sets $B_t$. Consequently
+\[
+ 3\sum_{1\le t<p}|B_t|=3|A|(q+1)>|A|(p-1).
+\]
+Take the first multiplier attaining the largest size. Its subset satisfies the asserted strict inequality. The factorial bound is deliberately elementary and covers $M=1$ with $p=2$.
+\end{proof}
+
+\subsection{Lean construction for the graph results}
+
+The file \texttt{lean/Handshaking.lean} checks four uniform results with Lean's kernel. The proof of \texttt{transpose\_sum} inducts on the first side of a rectangle and distributes a prefix sum over addition. For \texttt{weighted\_handshaking}, adjoining vertex $n$ contributes a column and a row. Symmetry equates them and the new diagonal entry vanishes. The theorem \texttt{handshaking} specializes this identity to a natural-number graph mask. Its binary reader computes parity and the quotient by two by primitive recursion, with a proof of $2\lfloor x/2\rfloor+(x\bmod2)=x$. Finally \texttt{odd\_degree\_count\_even} supplies the half-count witnessing evenness. Lean reports no axiom dependencies for any of the four theorems. These are proofs about natural numbers in Lean. Their numerical specializations use equality induction on the prefix length, vertex count, or parity-recursion argument, as in the iPRA proofs above.
+
+
+Use natural-number parameters for all finite domains. Define \texttt{edge n G u v} by the bit at the lexicographic rank of the ordered pair $(\min(u,v),\max(u,v))$, returning false outside $[n]$ or on the diagonal. Implement \texttt{degree}, \texttt{edgeCount} and \texttt{neighbors} as masked counts or folds. For digraphs reserve bit $nu+v$. A bipartite adjacency table uses bit $bx+y$. A vertex list uses digits $v+1$ in base $n+2$ together with its length. \texttt{simplePath}, \texttt{cycle}, \texttt{tree}, \texttt{matching}, \texttt{covers}, \texttt{clique} and \texttt{homogeneous} are bounded tests. They decode in-range labels and fold conjunctions for the required distinctness, incidences and colors. In \texttt{tree}, use connectivity by closure and reject simple cycles of lengths $3$ through $n$. For directed multigraphs paths also store the arc index and orientation of each step.
+
+\begin{enumerate}
+\item Prove that a bounded left fold computing reachable masks contains exactly the endpoints of walks of at most that many steps. Prove walk shortening by cutting the segment between the first repeated pair of positions. Store a predecessor on first discovery to implement path recovery, or return the least valid bounded word.
+\item For \texttt{closeGraph}, iterate $\binom n2$ one-edge insertions with a no-op on saturation. Verify \texttt{repairCycle} from the double-marked path index, then unwind the recorded insertions. For tournaments, enumerate marked arc subsets and permutations for the parity lemma. The compatibility predicate for a marked set tests that each of its arcs is consecutive in the listing. Permuting its maximal path blocks is the inverse of cutting a compatible listing at unmarked gaps.
+\item For \texttt{augment}, represent the matching as an edge mask. Prove the degree-at-most-one condition for toggling a simple alternating path by its endpoint/interior incidence counts. Then prove the terminal mate bijection, the cover test and cardinality equality from those masks. The flow version uses an array of arc flows with base one greater than the largest capacity (or base two if all capacities are zero). A bound for a path word uses the number of indexed residual moves.
+\item For \texttt{pruferEncode} and \texttt{pruferDecode}, iterate exactly $n-2$ deletions. The invariant for their composition identifies the live mask and the residual tree and equates its live degrees with one plus the occurrence counts in the suffix. Induct on the number of processed letters and use the last-two-label base case. For Tur\'an, implement part assignments as bounded words and formalize the maximum-degree split followed by the strict decrease in within-part pairs.
+\item For Ramsey, define $H$ by \texttt{Nat.rec} on rank, define the homogeneous-set witness by a bounded scan and verify the scan succeeds using the pivot invariant. The induction predicate quantifies only over the codes specified in the proof. At each round of the sum-free construction the data are integers encoded by signed naturals, a residual, a trial divisor, or a mask of the input set. The product-of-factors invariant and the residue double count are the two independent lemmas.
+\end{enumerate}
+
+The graph source pages are \href{https://en.wikipedia.org/wiki/Graph_theory}{Graph theory} as well as \href{https://en.wikipedia.org/wiki/Cayley_graph}{Cayley graph} and the directly linked \href{https://en.wikipedia.org/wiki/Hamiltonian_cycle}{Hamiltonian cycle} (redirecting to \emph{Hamiltonian path}). The overview's graph, extremal and probabilistic sections motivate the counting and extremal results. The one-third question is also explicit in \href{https://en.wikipedia.org/wiki/Extremal_combinatorics}{Extremal combinatorics}. Primary references for the closure and tournament subjects include \href{https://doi.org/10.1016/0012-365X(76)90078-9}{Bondy and Chv\'atal, \emph{A method in graph theory}} and \href{https://arxiv.org/abs/2307.05569}{Grinberg and Stanley, \emph{The R\'edei--Berge symmetric function of a directed graph}}.

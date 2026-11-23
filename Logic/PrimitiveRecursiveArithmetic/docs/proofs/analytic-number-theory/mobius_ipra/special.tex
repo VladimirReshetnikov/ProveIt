@@ -1,0 +1,240 @@
+\section{Finite Fourier sums and Gauss's congruence}
+\label{sec:fourier}
+
+\paragraph{A weighted hyperbola identity.}
+Fix $N\ge1$ and a table $w(1),\ldots,w(N)$ of integers. Partition the
+pairs of positive integers $j,k$ with $jk\le N$ by their product. Each
+pair in the part with product $u$ has the unique form $(u/k,k)$ with
+$k\mid u$. Consequently
+\[
+   \sum_{jk\le N} w(jk)\mu(k)
+    =\sum_{u=1}^N w(u)\sum_{k\mid u}\mu(k)=w(1).
+\]
+The constant table gives the floor-sum identity. The table
+$w(u)=0,1,0,-1$ on residues $0,1,2,3\pmod4$ gives
+$\sum_{jk\le N}\sin(\pi jk/2)\mu(k)=1$. These four integer values
+supply the exact arithmetic interpretation of the sine. Each follows also
+from the imaginary part of $i^u$.
+Writing $W(k)=\sum_{1\le j\le N/k}w(jk)$ and $W(N+1)=0$, one more
+finite rearrangement gives $\sum_{k=1}^N M(k)(W(k)-W(k+1))=w(1)$.
+Indeed the coefficient of $\mu(d)$ after expansion telescopes to $W(d)$.
+The same four-entry table therefore gives a Mertens version of the sine sum.
+
+
+\paragraph{A polynomial certificate for the sum of primitive roots.}
+Use rational polynomials stored as finite coefficient lists. For $n\ge1$
+put $A_n=X^n-1$ and form the monic polynomials
+\[
+ D_n=\gcd\!\left(A_n,\prod_{e\mid n,\ e<n}(X^e-1)\right),
+ \qquad H_n=A_n/D_n .
+\]
+An empty product is $1$. The gcd uses Euclidean division, which takes at
+most one more than the degree of the smaller nonzero operand in division steps once the inputs are ordered by degree.
+Since $A_n'=nX^{n-1}$ is coprime to $A_n$, the polynomial $A_n$ has no
+nonconstant square divisor, since a repeated factor divides the derivative
+by the product rule. For every proper divisor $e$ of $n$, the polynomial
+$X^e-1$ divides both gcd operands and hence divides $D_n$. A common
+factor of $H_n$ and $X^e-1$ would have its square dividing $H_nD_n=A_n$,
+so their monic gcd is $1$. Here and below, one may verify coprimality by
+the extended Euclidean algorithm. For $b>0$,
+$\gcd(X^b-1,A_n)=X^{\gcd(b,n)}-1$ by repeated subtraction of
+exponents, using
+$X^a-1=X^{a-b}(X^b-1)+(X^{a-b}-1)$ for $a\ge b$.
+In particular $\gcd(H_n,X^b-1)=1$ whenever $n\nmid b$.
+
+Let $z$ denote the residue of $X$ modulo $H_n$, with equality tested by
+polynomial division. Then $z^n=1$, and $z^b-1$ is invertible for every
+positive $b$ with $n\nmid b$, by B\'ezout. For $h\ge0$, consider the
+Ramanujan sum
+\[
+ C_n(h)=\sum_{0\le k<n,\ \gcd(k,n)=1}z^{hk}.
+\]
+Insert $[\gcd(k,n)=1]=\sum_{d\mid\gcd(k,n)}\mu(d)$. Writing $k=dj$ gives
+an inner sum of $(z^{hd})^j$ for $0\le j<n/d$. If $n\mid hd$, each
+summand equals $1$. Otherwise multiplication by the invertible $z^{hd}-1$
+telescopes the sum to $z^{hn}-1=0$. Substitution of $e=n/d$ proves the
+integer-valued formula
+\[
+       C_n(h)=\sum_{e\mid\gcd(n,h)}e\,\mu(n/e),
+       \qquad C_n(1)=\mu(n).
+\]
+This is a uniform polynomial remainder identity, including $n=1$.
+To evaluate at $\xi=\exp(2\pi i/n)$, each factor $\xi^e-1$ of the
+proper-divisor product has modulus $2\sin(\pi\min(e,n-e)/n)>1/n$.
+Indeed on $0\le t\le\pi/2<2$ the alternating sine series gives
+$\sin t\ge t-t^3/6\ge t/3$. A product of $h$ such factors has modulus
+at least $n^{-h}$. Writing the proper-divisor polynomial as $D_nV$,
+the bound $|V(\xi)|\le 1+\sum_j|V_j|$ gives explicit apartness of
+$D_n(\xi)$ from zero. Thus $A_n=D_nH_n$ forces $H_n(\xi)=0$.
+Conversely every root of $H_n$ has exact order $n$ by the coprimalities
+above. This evaluation gives the exponential formula, including the
+convention $k=n$ in place of $k=0$.
+
+\paragraph{The Farey formula.}
+Let $\mathcal F_N$ consist of all reduced fractions in $[0,1]$ with
+denominator at most $N\ge1$, both endpoints included. Sorting them has
+no effect on a sum. Group the nonzero fractions by their denominator;
+the group with denominator $d$ contains exactly the fractions $k/d$,
+$1\le k\le d$, $\gcd(k,d)=1$. Its exponential sum is $\mu(d)$.
+The extra term $0/1$ contributes $1$, yielding
+\[
+    \sum_{a\in\mathcal F_N}\exp(2\pi i a)=1+M(N).
+\]
+A single arithmetic certificate represents all summands in the residue
+ring modulo $H_L$, $L=N!$. For denominator $d$, use $z^{L/d}$ in place
+of the $d$th root. Its $b$th power equals $1$ if $d\mid b$, and
+$z^{(L/d)b}-1$ is invertible otherwise. The same geometric-sum
+calculation applies.
+
+\paragraph{Generators modulo a prime.}
+Let $p$ be prime and $m=p-1$. Multiplication by a nonzero residue $a$
+permutes the $m$ nonzero residues of $\mathbb F_p$. Taking the product
+and cancelling gives $a^m=1$. Its order is obtained by scanning
+$1,\ldots,m$ for the first exponent giving $1$. Division with remainder
+shows that this order divides every exponent giving $1$.
+For each prime power $r^v$ exactly dividing $m$, the polynomial
+$X^{m/r}-1$ has degree $m/r<m$; a nonzero field polynomial of degree $s$
+has at most $s$ distinct roots, since division by $X-a$ removes a root
+and reduces the degree by one. Scanning the nonzero residues therefore
+returns an $a$ with $a^{m/r}\ne1$. The element $b_r=a^{m/r^v}$
+has order $r^v$: its $r^v$th power is $1$, while its $r^{v-1}$st is
+not. The product $g=\prod_r b_r$ has order $m$. Indeed if $g^u=1$,
+raising to $m/r^v$ kills all the other factors and gives
+$r^v\mid u(m/r^v)$, hence $r^v\mid u$. These divisibilities imply
+$m\mid u$. For $m=1$ the empty product works.
+
+The $m$ distinct powers $g^k$, $0\le k<m$, exhaust the nonzero
+residues. Their orders are $m/\gcd(m,k)$, so the generators correspond
+to the coprime exponents. Repeat the calculation of $C_m(1)$ with
+$z=g$ in $\mathbb F_p$. Every nonzero difference is invertible by a
+bounded field search. This proves Gauss's congruence
+\[
+  \sum_{\substack{1\le a<p\\ \operatorname{ord}_p(a)=p-1}} a
+        \equiv \mu(p-1)\pmod p .
+\]
+In particular this yields $0$ when $p-1$ has a repeated prime factor,
+and the parity sign otherwise.
+
+\section{Counting irreducible polynomials over finite fields}
+\label{sec:irreducibles}
+
+Supply a finite field $F$ as a table of operations on $q\ge2$ labelled
+elements, with distinguished $0,1$ and the field laws checked on the
+table. A monic polynomial of degree $j$ is encoded by its $j$ free
+coefficients, a base-$q$ word numbered from $0$ through $q^j-1$.
+Let $I_q(j)$, $j\ge1$, count those with no monic divisor of degree $1$ through
+$\lfloor j/2\rfloor$. The scan is exact since any proper factorization
+has a smaller factor in this range and the leading coefficient can be
+normalized. This defines a primitive recursive count.
+
+\paragraph{Unique factorization suffices.}
+A monic polynomial of positive degree either passes the irreducibility
+test or splits into two monic factors of smaller positive degree. Repeating
+the split gives irreducibles: the number of factors increases at each
+split and cannot exceed the original degree. Over the field table,
+long division cancels one leading term per step. Iterated division with
+remainders, recording the two linear-combination coefficients, gives
+B\'ezout's identity for a monic gcd. Thus if an irreducible $P$ divides
+$AB$ and does not divide $A$, an identity $UP+VA=1$ multiplied by $B$
+shows that $P$ divides $B$. It follows by stripping one irreducible at
+a time and cancelling it that the multiset of monic irreducible factors
+is unique. Every decision here is a comparison of finite codes.
+
+\paragraph{The coefficient identity.}
+Fix $n\ge1$ and work through degree $n$ in the ring
+$\mathbb Z[T]/(T^{n+1})$. Enumerate all monic irreducibles $P$ of
+degree $1$ through $n$ and put
+\[
+  B(T)=\sum_{j=0}^{n}q^jT^j
+     =\prod_P (1-T^{\deg P})^{-1}.
+\]
+Each inverse is a finite geometric series in this ring. The coefficient
+of $T^j$ in the product counts multisets of irreducibles of total degree
+$j$, hence monic polynomials of degree $j$ by the preceding bijection.
+The degree-zero monic polynomial is $1$. On this truncated ring the operator
+$\Delta=T\,d/dT$ satisfies the product rule: it multiplies the $j$th
+coefficient by $j$ and preserves the truncation. All factors in $B$ have
+constant term one, so are units. Applying $\Delta B/B$ on both sides,
+using $(1-qT)B=1$, gives
+\[
+  \frac{qT}{1-qT}
+     =\sum_{d=1}^n I_q(d)\frac{dT^d}{1-T^d}.
+\]
+Comparison in degree $n$ gives $q^n=\sum_{d\mid n} d I_q(d)$.
+Divisor inversion now yields
+\[
+             n I_q(n)=\sum_{d\mid n}\mu(d)q^{n/d}.
+\]
+The integer on the right is divisible by $n$ and nonnegative.
+The proof uses only products of bounded length and coefficient arrays.
+
+\paragraph{Constructing a field for every prime-power input.}
+For completeness take $q=p$ prime first, with the residue field table
+obtained by modular arithmetic. The coefficient count implies
+$d I_p(d)\le p^d$ for $d\ge1$. For $r\ge2$ the contribution of all
+proper divisors of $r$ is at most
+$\sum_{d=1}^{\lfloor r/2\rfloor}p^d<p^r$; this follows by summing the
+geometric progression and using $\lfloor r/2\rfloor+1\le r$.
+Thus $I_p(r)>0$; for $r=1$ it equals $p$. A bounded scan of the $p^r$
+monic degree-$r$ polynomials supplies an irreducible $P$. Remainders
+of degree $<r$ modulo $P$ form the $p^r$-element field: B\'ezout
+computes an inverse for every nonzero residue. The count just proved
+can therefore be instantiated at each $q=p^r$ without asking for an
+extension field or an irreducible polynomial as an oracle.
+
+Conversely the size of every supplied finite field is a prime power. Among
+the $q+1$ multiples $0,1,2\\cdot1,\\ldots,q\\cdot1$, two agree, so a
+bounded scan gives a least positive $p$ with $p\\cdot1=0$. If $p=uv$
+with $1<u,v<p$, the nonzero elements $u\\cdot1$ and $v\\cdot1$ have zero
+product, contradicting the field laws. The multiples of $1$ form a copy
+of $\\mathbb F_p$. Starting from the span $\\{0\\}$, scan the field for the
+first element $z$ outside the current span $S$. Adjoining $z$ produces
+the $p$ disjoint translates $S+az$ with $a\\in\\mathbb F_p$: equality
+across two translates would express $z$ in $S$ by division by a nonzero
+scalar. Each step multiplies the size by $p$, and after at most $q$ steps
+the span is the whole field. Thus $q=p^r$ with $r\\ge1$.
+
+\section{Incidence inversion and convolution powers}
+\label{sec:incidence}
+For a finite poset given by its decidable order table, fix an interval
+$[a,b]$. Set $u(a,a)=1$ and, for $a<y\le b$, put
+$u(a,y)=-\sum_{a\le x<y}u(a,x)$. To evaluate the recurrence,
+order the elements by increasing cardinality of $[a,y]$, breaking ties
+by their stored indices. Strict predecessors always have smaller
+cardinality. Thus $\sum_{a\le x\le y}u(a,x)=[a=y]$, and each last
+summand is determined by those preceding it. Equivalently, if the
+order matrix in a linear extension is $Z=I+U$ on $m$ elements, the
+strictly triangular matrix $U$ satisfies $U^m=0$. Multiplication shows
+that $\sum_{j=0}^{m-1}(-U)^j$ is an inverse of $Z$ on both sides.
+Its entries are the same $u$, with zero outside
+comparable pairs. The proof applies to supplied finite intervals of a
+locally finite poset whenever their order tables are given.
+In the positive-integer divisibility order, the interval from $a$ to
+$b$ with $a\mid b$ has exactly the elements $ad$ for $d\mid b/a$.
+Hence $u(a,b)=\mu(b/a)$ by divisor cancellation and uniqueness.
+
+For $k\ge0$, let $\mu_k$ be the $k$-fold Dirichlet convolution of
+$\mu$, with $\mu_0(n)=[n=1]$. If $f,g$ are multiplicative then so is
+$f*g$. Every divisor of a coprime product $ab$ corresponds uniquely to
+a pair of divisors of $a,b$ by taking prime factors from the two disjoint
+supports. The sum defining $(f*g)(ab)$ therefore separates into the two
+sums at $a$ and $b$. At a prime power $p^v$, a nonzero term of the
+$k$-fold convolution distributes the $v$ copies of $p$ among distinct
+slots. Choosing the slots gives
+\[
+  \mu_k(p^v)=(-1)^v\binom{k}{v},\qquad
+  \mu_k(n)=\prod_{p^v\parallel n}(-1)^v\binom{k}{v}.
+\]
+Here $p^v\parallel n$ in the product means $v>0$ is the exact exponent
+and $\binom{k}{v}=0$ for $v>k$. For the polynomial extension, replace
+$\binom{k}{v}$ by
+$B_v(K)=K(K-1)\cdots(K-v+1)/v!$ in $\mathbb Q[K]$ with $B_0=1$.
+The parameter identity $\mu_{K+L}=\mu_K*\mu_L$ follows locally from
+$B_v(K+L)=\sum_{j=0}^v B_j(K)B_{v-j}(L)$: at nonnegative integer
+arguments the equation counts $v$-element subsets of two disjoint
+blocks. Each variable has degree at most $v$, so the finite grid
+$0,\ldots,v$ in each variable proves equality of polynomials by the
+root bound, applied first in one variable and then the other.
+Prime-factor multiplicativity gives the general identity. These are
+rational-coefficient array equalities in iPRA and specialize to complex
+parameters under evaluation.

@@ -1,0 +1,188 @@
+\section{Lean formalization and object-theory endpoints}
+\label{sec:lean-route}
+
+\subsection{Two independently usable representations}
+The file \texttt{lean/FiniteInversion.lean} uses only Lean's bundled
+library. It was checked with Lean 4.32.0, the version pinned by ProveIt,
+and with Lean 4.19.0. Entries of its matrix are genuine Lean integers.
+If $W(i,j)$ is the weight at row $i$, column $j$, write
+\[
+ (Lf)(i)=\sum_{j<i}W(i,j)f(j),\qquad (Zf)(i)=f(i)+(Lf)(i).
+\]
+Define $b_0(i)=0$, $b_{t+1}(i)=g(i)-(Lb_t)(i)$, and $b(i)=b_{i+1}(i)$.
+If $i<t$, induction on $t$ gives $b_{t+1}(i)=b_t(i)$, since every
+previous entry needed in row $i$ has index $j<i$. Thus $Zb=g$, and
+substitution, from the lowest row upwards, gives $b=f$ whenever $g=Zf$.
+These are \texttt{integrate\_invert} and \texttt{invert\_integrate}.
+The file also proves uniqueness on a specified prefix of rows.
+
+Subtract two consecutive iterates. The first difference is $g$, and
+each remaining difference is $-L$ applied to its predecessor. Hence
+\[
+ b(i)=\sum_{r=0}^{i} ((-L)^r g)(i).
+\]
+Each summand is a signed sum over strictly increasing length-$r$ chains,
+by expanding its last edge. For $r>i$ the row vanishes.
+The file checks both assertions uniformly in $i,r,W,g$.
+With $W(i,j)=[j+1\mid i+1]$ and $g(i)=[i=0]$, the recurrence computes
+$\mu(i+1)$. Its identification with the prime-factor definition follows
+from the divisor cancellation proof and uniqueness. The Lean file proves
+divisor cancellation and the chain formula for its recurrence-defined
+function. A second proof, \texttt{ExponentBox.box\_cancellation}, sums the
+prime-factor definition over a list of exponent ranges of arbitrary
+length. The coordinate factor at $e=0,1,\ge2$ is respectively $1,-1,0$.
+Its prefix sum up to exponent $a$ is $[a=0]$. Factoring this sum off
+the first coordinate and iterating proves the product formula. The human
+divisor--exponent bijection connects this calculation with the numerical
+divisor scan; the standalone file leaves that bijection to the report.
+
+The companion \texttt{FormalSeries.lean} imports this file. The coefficient
+calculations in Section~\ref{sec:mob-basel} describe its scaled
+representations and conclusions. Run \texttt{sh lean/check.sh} to check
+both files together.
+
+\subsection{The existing internal proofs}
+For object proofs use revision \texttt{65b76a5b8aa8} of ProveIt and the
+namespace \texttt{LeanProofs.}\allowbreak\texttt{IPRA.}\allowbreak\texttt{AnalyticNumberTheory}. The relevant
+source directory is
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/65b76a5b8aa87ecad4103c2d287eff5660d3c84c/Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/AnalyticNumberTheory}{the analytic number theory derivations directory}.
+The ordinary calculus has function codes \texttt{PR k}, terms
+\texttt{PTm n} over $n$ variables, formulas \texttt{Fm PTm n}, and
+deductions \texttt{Prf PRAAx} indexed by their contexts and conclusions.
+A term body with free variables for its input and parameters expresses a
+schematic arithmetic function. Object theorems use numerical variables
+for bounds. They may be specialized at arbitrary terms in any context
+which supplies the stated hypotheses.
+
+The repository takes $\mu_N^+(x)=[s_N(x)=0][\omega_N(x)\text{ even}]$ and
+$\mu_N^-(x)=[s_N(x)=0][\omega_N(x)\text{ odd}]$, scanning primes $q<N$.
+Here $\omega_N$ counts nonzero valuations, and $s_N$ counts those at
+least two. Once $N>x\ge1$ the pair is stable. Integer equations are
+written by transferring negative components across the equality.
+The following are source-inspected object-theory declarations at that
+revision. The replay file lists their fully resolved module imports.
+\begin{itemize}
+\item \texttt{Mobius.swap}, \texttt{Mobius.kill},
+\texttt{Mobius.mobius\_one}, and \texttt{Mobius.mobius\_cancel} give
+the prime steps and the divisor sum. \texttt{MobiusBounds.cancel\_gen}
+allows an arbitrary prime bound and an arbitrary divisor scan limit,
+both strictly above the positive argument. This matters when one cutoff
+is shared by many terms.
+\item \texttt{MobiusInversion.mobius\_inversion} instantiates the divisor
+inversion at a term body and \texttt{phi\_mobius} derives its totient
+specialization. For signed input bodies use the theorem on each natural
+component and add the cross terms.
+\item \texttt{SummatoryPhi.summatory\_phi} gives the floor-square
+totient identity. \texttt{MuLambda.mu\_lambda} gives
+$\mu*\Lambda_w=-\mu L_w$ for the prime weight represented by the
+given body. \texttt{PsiModulus.}\allowbreak\texttt{psi\_modulus} supplies the quantitative
+PNT for the repository's finite harmonic weights; \texttt{FinalPNT.}\allowbreak\texttt{arith\_pnt}
+gives its prime-counting version.
+\end{itemize}
+These existing derivations and the new standalone Lean proofs address
+different judgments. We inspected the pinned upstream sources; this
+packet includes replay commands for a prepared checkout. We ran both
+standalone files locally. The remaining object derivations described below
+are a formalization plan.
+
+\subsection{Constructing additional internal deductions}
+\begin{enumerate}
+\item \emph{Encoding and induction.} Use \texttt{PR.comp} to compose
+body codes and \texttt{PR.prec} with arguments in the order
+(counter, parameters), its step receiving (predecessor, previous value,
+parameters). Use bounded sums and products from \texttt{Core/Definitions}
+and \texttt{Core/MultiSums}, \texttt{Core/Search} for the first matching
+index, and \texttt{Core/Fubini} for two-index rearrangements. Define
+equality of signed pairs by $u_++v_-=v_++u_-$. For a bounded family of
+integer equalities $E_i$, form its failure count
+$\sum_{i<t}(1-[E_i])$. Induct on its equality to zero using
+\texttt{PRA.qfInd}. Nested counts allow several bounded indices.
+Recover each equality since a nonzero summand contributes at least one.
+This implements every use of finite strong induction on the prefix.
+\item \emph{Inversion and posets.} Fix a packed finite relation and a
+numerical bound $B$. On $i<B$ implement $L$ by the displayed bounded
+sum. Store the $B$ entries of the current row vector as a finite list
+of signed pairs; compute the next vector by one length-$B$ fold.
+The computation of $b_{i+1}(i)$ now recurses on a natural code at fixed
+$B$ instead of iterating over functions. Induct on the zero failure count
+of the equalities $b_{t+1}(j)=b_t(j)$ for $j<\min(B,t)$.
+Base, step and uniqueness are the finite proofs above. For an interval
+$[a,b]$ in a poset use a finite list with $x<y$ implying earlier
+position for $x$. Set $W(i,j)=[x_j<x_i]$ and $g(i)=[x_i=a]$.
+On divisibility take $B=n$, $x_i=i+1$, and instantiate
+\texttt{MobiusBounds.cancel\_gen} to compare the two definitions of
+$\mu$ pointwise by prefix uniqueness.
+\item \emph{Coefficient identities.} Store degrees $0$ through $B$,
+representing a polynomial by a signed coefficient list. Convolution at
+$k\le B$ is the fold $\sum_{j\le k}a_j b_{k-j}$. For Dirichlet
+products replace the additive incidence by $[de=k]$ and scan only
+$1\le d,e\le B$. For the Lambert series the coefficient of $X^k$
+adds one term per $d$ with $d\mid k$. Apply
+\texttt{MobiusBounds.cancel\_gen} at that $k$ and close all degrees
+through $B$ by the zero failure count. Formal logarithms may be stored
+with common denominator $(B+1)!$; prove divisibility before exact
+division. Polynomial cyclotomic arguments use lists with the explicitly
+given degree bound, monic division with remainder, and equality of
+coefficients. Finite geometric sums are first proved by recursion on
+their length, so evaluating at a unit in a specified quotient ring
+uses only addition and multiplication of integer pairs or lists.
+For the irreducible count over a field of cardinality $q$, supply two
+$q$-by-$q$ operation tables and validate the field axioms by a bounded
+scan. Represent a monic of degree $n$ by the base-$q$ digits of a number
+less than $q^n$. For $n>0$ its irreducibility bit tests every monic
+divisor of degree $1$ through $\lfloor n/2\rfloor$ by remainder.
+Summing this bit gives $I_q(n)$. If a division splits a polynomial of
+positive degree, both new degrees decrease. Recursion through a coded
+list, with sum of the pending degrees bounded by $n$, gives a complete
+factor list in at most $2n-1$ node visits. Use the Euclidean B\'ezout
+identity to prove Euclid's lemma for monic irreducibles, then compare
+multiplicities. This supplies the factorization bijection used by the
+finite Euler product.
+\item \emph{Finite fields and Fourier sums.} Encode the two $q$-by-$q$
+field operations by lists of entries $<q$. Test associativity, distributivity
+and the inverse laws on the bounded lists of tuples. Division by a monic
+polynomial is a fold on its degree, stripping the leading term. Record
+quotient and remainder and verify the product identity at each step.
+For degree $d$ enumerate coefficient codes $<q^d$ and enumerate the
+possible monic factors through degree $\lfloor d/2\rfloor$; the bit
+rejecting all of them defines $I_q(d)$. Induct on degree to establish
+the unique factor multiset, then count products in the coefficient table
+through degree $n$ and apply the existing inversion theorem to the term
+$d I_q(d)$. For $C_n(h)$, supply the Euclidean-algorithm certificate
+$(U,V)$ for each invertible difference. In the quotient ring the checker
+verifies its inverse by remainder equality. The same geometric-sum proof
+over the table of residues modulo $p$ gives the congruence.
+\item \emph{Approximation statements.} A rational name has primitive
+recursive numerator and positive denominator at each requested precision.
+Implement a complex name by two such pairs. For a fixed input code or a
+specified PR family and precision $k$, substitute the displayed cutoff in
+the relevant finite sum or product, perform exact denominator clearing,
+and express the error as two integer inequalities per real coordinate.
+For a tail use an additional free end index $V\ge U$, and prove the
+displayed estimate for every such $V$ by induction on $V-U$. Pass
+between different cutoffs by the triangle inequality and the given
+moduli. At the PNT step instantiate \texttt{psi\_modulus} with the
+repository's own mesh and denominator; compare alternative rational
+meshes by refining to their product. These operations leave all
+induction formulas quantifier-free after the bounded checks are compiled.
+A statement about a family of names quantifies over indices and precisions
+for that fixed family.
+\item \emph{The strong summatory estimate and boundary moments.}
+The ordinary PNT modulus suffices for Section~\ref{sec:pnt}.
+For Theorem~\ref{thm:strongM} the stronger analytic input in \cite{strip}
+must itself be represented by finite deductions. Implement the Euler
+summation samples with rational logarithm and exponential enclosures,
+the fourth-power strip comparison, and the regular reciprocal evaluation
+at the pole. The finite contour invariant equates the signed internal
+edge sum to zero, then accumulates at most one Taylor error per cell.
+Apply it to the smoothed signed sum at the two rational arguments.
+After raising the unsmoothing estimate to an eighth power, the closed
+matrix compares $2^k|M(x)|^8$ and $x^8$. To remove arbitrary precision
+from an inequality between integers it suffices to make the additive
+enclosure slack less than $1$: discreteness then gives the exact weak
+inequality. The moment target is the rational partial-sum comparison
+following \eqref{eq:momentTail}. A second possible dependency is the
+strong $\vartheta$ modulus and the bounded numerical induction in
+Section~\ref{sec:bootstrap}. Both routes require additional embedded
+deductions.
+\end{enumerate}

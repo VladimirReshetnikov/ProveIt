@@ -1,0 +1,134 @@
+\subsection{Lower homotopy groups of spheres}
+
+The same choice of a direction avoiding finitely many linear subspaces
+contracts a family of loops with several parameters. Use the based
+cubical description: a representative in degree $k\ge1$ is a uniformly
+presented map on $I^k=[-1,1]^k$ whose restriction to the boundary is one
+specified named point $a$. Homotopies relative to the boundary have value
+$a$ there at every time.
+
+\begin{theorem}[Vanishing below the dimension of the sphere]\label{idx-higher10}
+For $1\le k<n$, every such representative on the cubical sphere
+$S^n_\infty=\{x\in[-1,1]^{n+1}:\|x\|_\infty=1\}$ has a uniformly
+presented nullhomotopy relative to its boundary. Hence
+$\pi_k(S^n,a)=0$ for these representatives, also in the round-sphere
+presentation. Every two presented points of $S^n$ with $n\ge1$ can be
+joined by a uniformly presented path. The constructions use primitive
+recursion in the dimensions, mesh size and rational data, for each fixed
+input evaluator and modulus.
+\end{theorem}
+\begin{proof}
+Write $f$ for the input map, with a modulus $\mu$ on names in the maximum
+metric. Take $m=2^{\mu(5)+1}$ and subdivide each parameter axis into $m$
+pieces of length $l=2/m$. Two points of a mesh cube have images within
+$1/32$. At each grid vertex $v$ take a rational vector $p_v$ within $1/32$
+of $f(v)$, clipping to $[-1,1]^{n+1}$ if necessary. On \emph{every}
+boundary vertex use the same reading of $a$. This makes the subsequent
+polygonal approximation exactly constant on each boundary face, including
+where different faces meet.
+
+Here are the triangulation and its estimates. Within each grid cube write
+the local coordinates as $t_i\in[0,1]$. Sort them as
+$t_{i_1}\ge\cdots\ge t_{i_k}$, breaking ties by label. The simplex
+vertices $v_0,\ldots,v_k$ start at the lower corner and successively
+increase coordinates $i_1,\ldots,i_k$ by one grid step. For the affine
+interpolant $P$ take the corresponding convex combination of the $p_{v_j}$
+with weights
+\[
+ 1-t_{i_1},\quad t_{i_1}-t_{i_2},\quad\ldots,\quad
+ t_{i_{k-1}}-t_{i_k},\quad t_{i_k}.
+\]
+Exchanging equal coordinates changes only a zero-weight intermediate
+vertex. On a shared cube face the vertices off the face have weight zero,
+and the remaining coordinates have the same sorted order on either side.
+The formulas consequently agree on all overlaps. On any one simplex,
+$P=p_{v_0}+\sum_{j=1}^k t_{i_j}(p_{v_j}-p_{v_{j-1}})$, so its
+Lipschitz constant is at most $2k/l=km$. This bound is global: for a
+rational segment, split it where it crosses the finitely many grid and
+coordinate-order hyperplanes. An equation holding on the entire segment
+requires no cut. The maximum-norm lengths of successive subsegments sum
+to the original length since all run along the same segment. This proves
+the rational bound, whence extension gives a PR evaluator on names.
+There are $M=m^k k!$ simplices in the enumeration (grid indices and
+permutations). At rational parameters each vertex value used differs from
+$f$ at the parameter by at most $1/16$; convexity and approximation give
+$\|P-f\|_\infty\le1/16$ throughout. The first homotopy
+$\rho((1-s)f+sP)$ has denominator at least $15/16$. At boundary
+parameters its value depends only on $s$.
+
+The $k+1$ rational vertex readings of each simplex admit a common
+annihilating nonzero rational covector $c$ supported on the first $k+2$
+coordinates. Indeed there are $k+1$ homogeneous row equations and $k+2$
+unknowns. Row reduction uses at most $k+1$ pivots; choose a free coordinate,
+set it to $1$ and the other free coordinates to zero, then back-substitute.
+For $j\ge0$ put $u(j)=(1,j,\ldots,j^{k+1},0,\ldots,0)$ in
+$\mathbb Q^{n+1}$. Each polynomial $c\cdot u(j)$ is nonzero as a
+polynomial and excludes at most $k+1$ candidate integers. Indeed division
+at a root $r$ gives the factor $T-r$ by coefficient subtraction. Every
+other distinct root remains a root of the quotient. Repeating this on a
+list of distinct roots more numerous than the degree would give a root of
+a nonzero constant. The proof just uses rational operations on finite
+lists. In the table counting excluded pairs (simplex, candidate), the
+total therefore is at most $(k+1)M$. At least one of
+$0,\ldots,(k+1)M$ has no exclusion. For its first such $j$ put
+$w=u(j)/\|u(j)\|_\infty$. Its norm is one.
+
+The second homotopy is $\rho((1-s)P+sw)$. For $s\le1/8$ the
+denominator exceeds $1/2$ by $\|P\|_\infty\ge15/16$. On a simplex with
+covector $c$ and $s\ge1/8$, pairing with $c$ gives the lower bound
+$|c\cdot w|/(8\|c\|_1)$ because $c\cdot P=0$. Thus the minimum $b$ of
+$1/2$ and these $M$ positive rational bounds works globally. The
+inequalities follow first on rational parameters and then on names.
+Normalization with this denominator is $(2/b)$-Lipschitz, as in the loop
+proof. In both homotopies a convex mixture of two bounded vectors changes
+by at most the larger endpoint displacement plus twice the change of the
+time parameter. This estimate, $km$, the supplied modulus and $2/b$
+give a modulus for the concatenated homotopy $H$. At the time seam use
+target error $2^{-p-1}$ per side and double the time scale. The boundary
+track $h(s)=H(v,s)$ is common to all $v\in\partial I^k$, with
+$h(0)=a$ and $h(1)=w$.
+
+We now keep the boundary fixed. Put $r=\|u\|_\infty$ for a parameter
+$u\in I^k$. First deform $f(u)$ to its compressed copy using
+$f(u/\max(r,1-s/2))$. The denominator is at least $1/2$, and at $r=1$
+the input stays on the boundary. Next, at time $s$, use
+\[
+ \begin{cases}
+  H(2u,s),&r\le1/2,\\
+  h(2s(1-r)),&r\ge1/2.
+ \end{cases}
+\]
+At the seam the values agree because $2u$ is a boundary point there.
+At time zero this is the compressed copy, and at $r=1$ it equals $a$.
+At time one the formula is $h(\min(1,2(1-r)))$ everywhere. Contract
+it to $a$ with $h((1-s)\min(1,2(1-r)))$. The formula with cases is
+evaluated first on rational parameters. The inputs to $H,h$ on the two
+pieces vary by at most four times the domain displacement, and a segment
+with one endpoint on either side can be split at its rational intersection
+with $r=1/2$. Thus a common precision request on the two pieces, tightened
+by one output bit and two input bits, yields a global modulus. The
+case-free initial and final formulas have bounded denominators and
+Lipschitz reparameterizations. Extension gives the three homotopies on
+names, and their concatenation is relative to the boundary. The radial
+homeomorphism transports the result to the round sphere.
+
+For path connectedness take the two specified points as separate vertices,
+with one rational reading close to each. Apply the same argument to these
+two zero-dimensional simplices: a covector in the first two coordinates
+for each single reading excludes at most one integer, so one of $0,1,2$
+works for both. The two normalized interpolations join each original
+point to the same $w$; reverse the second path to reach the second point.
+\end{proof}
+
+For Lean the new finite indices are a base-$m$ tuple and a permutation of
+$k$ coordinate labels. Permutations may be obtained by filtering the
+length-$k$ tuples with entries below $k$ for absence of repeats; for a simple
+upper bound the search may use $m^k k^k$ in place of $M$ when $k\ge1$.
+Prove the interpolation formula over rational inputs and its agreement
+at ties before extending it. For the root bound keep a list of the distinct
+roots already removed and the remaining coefficient vector; each synthetic
+division shortens that vector by one and preserves vanishing at each of the
+remaining listed roots. This is a bounded table invariant. The input for
+the avoidance scan is the matrix of covectors and its output is the index
+$j$ together with the rational $b$. These data supply all precision
+requests in the three final homotopies.

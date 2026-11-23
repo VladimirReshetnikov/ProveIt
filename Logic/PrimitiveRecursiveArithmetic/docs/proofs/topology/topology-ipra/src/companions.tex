@@ -1,0 +1,33 @@
+\section{Dimension, fixed points, and tangent fields}\label{sec:companions}
+Three complete earlier ProveIt manuscripts are included with their editable sources. They address prominent instances where an approximation error or an inverse modulus changes the statement one can prove. They are credited continuations of this collection. Their results are excluded from the count of numbered results in the main manuscript.
+
+\paragraph{Dimension cannot be compressed at every scale.}
+In \path{companions/dimension_invariance_ipra/dimension_invariance.pdf}, the numerical input is an arbitrary rational table $F:\{0,\ldots,N\}^d\to\mathbb Q^m$, $d,N\ge1$, and a rational $h>0$. If $d>m$ there is either a pair on opposite coordinate faces whose images have sup distance $<h$, or a pair of vertices of one Kuhn simplex whose images have sup distance $\ge h/d$. Both alternatives exhibit their vertices. The proof pairs incident facets to obtain cubical Sperner parity and uses staggered target grids: distinct boundary positions tied to the same target coordinate are separated by at least $h/d$. Sampling an equipped map on a sufficiently fine cube excludes the second alternative. An inverse separation bound excludes the first for an embedding with the specified inverse control. Applying the argument in both directions gives equality of dimensions for the indicated homeomorphic Euclidean presentations. The finite dichotomy is stronger evidence for its arithmetic content than a contradiction obtained by assuming an undefined continuous injection. The full parity proof, offsets and inverse hypotheses are in that manuscript.
+
+\paragraph{A near-fixed point of a simplex map.}
+In \path{companions/approximate_brouwer_ipra/brouwer.pdf}, $A(x,s)$ reads a rational simplex point at rational $x\in\Delta^d$ and has the contract
+\[
+ s,t\ge m,\quad \|x-y\|_\infty\le2^{-\mu(m)}
+   \quad\Longrightarrow\quad\|A(x,s)-A(y,t)\|_\infty\le2^{-m}.
+\]
+With $m=k+2$ and $N=2^{\max(m,\mu(m))}$ the proof finds a rational $x$ of denominator $N$ such that for every $s\ge m$,
+\[
+             \|x-A(x,s)\|_\infty\le\frac{d}{d+1}\,2^{-k}.
+\]
+A fully labelled simplex exists by a facet parity count on at most $N^d$ cells. The coordinate residuals sum to zero because both vectors have barycentric mass one. Combining the sign information from the colors with the oscillation bound gives the displayed estimate. The paper also gives the changes of domain for cubes and balls. Each precision has its own witness; an additional selection argument would be needed to get a single exact fixed point.
+
+\paragraph{Hairy balls and the parity of the dimension.}
+In \path{companions/hairy_ball_ipra/hairy_ball.pdf}, the input dimension is $n=2m$, $d=n+1$. Rational directions are parametrized by $\|p\|_1=1$, representing $p/\sqrt{p\cdot p}$ on the round sphere. The PR evaluator $A(p,h)$ satisfies a regularity bound $\|A(p,j)-A(p,h)\|_1\le2\,2^{-h}$ for $j\ge h$, a same-stage variation bound $3\,2^{-h}$ whenever the input distance is at most $2^{-\mu(h)}$, and $|p\cdot A(p,h)|\le2^{-h}$. For $t=k+6$ and $D=2d\,2^{\mu(t)}$, it finds a rational direction $q$ with $Dq\in\mathbb Z^d$ such that
+\[
+       \|A(q,t)\|_1\le\tfrac34\,2^{-k},\qquad
+       \|A(q,j)\|_1\le\tfrac{25}{32}\,2^{-k}\quad(j\ge t).
+\]
+The signed fundamental chain of a cross-polytope distinguishes the identity from the antipodal map in even sphere dimension. If no observed vector were small, the corrected tangent data would produce successive compatible labels joining those two maps; the chain calculation forces a pair of opposite labels instead. The companion proves the mesh and sampling bounds and converts a direction into a rational unit-vector witness with prescribed error. Its sharpness section explains the difficulty of selecting exact zeros.
+
+\begin{proposition}[The other parity]\label{prop:oddfield}\label{idx-companions27}
+On every odd-dimensional round unit sphere there is an explicitly presented tangent vector field of constant Euclidean length one.
+\end{proposition}
+\begin{proof}
+The ambient dimension is even. Pair the coordinates and define
+$J(x_1,x_2,\dots)=(-x_2,x_1,\dots)$ with the same rotation on each pair. Each pair contributes $-x_1x_2+x_2x_1=0$ to the dot product with $x$. The two squares in a pair are exchanged, so $\|Jx\|_2^2=\|x\|_2^2=1$. A signed permutation is 1-Lipschitz; at each precision simply permute and negate the readings of the input. The identities transfer to names by error removal. On $S^0$, the tangent space is zero and the two base points are rational.
+\end{proof}

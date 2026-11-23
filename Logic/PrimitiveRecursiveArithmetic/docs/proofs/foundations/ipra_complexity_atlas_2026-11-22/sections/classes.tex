@@ -1,0 +1,111 @@
+\section{Presentations of complexity classes and basic constructions}
+\label{sec:classes}
+
+\subsection{Numerical presentations, not sets as arithmetic objects}
+A \emph{language bit} is a specified PR Boolean function $A(x)$ on word codes $x\ge1$. More generally a displayed first-order predicate is identified with such a bit by a proved equivalence. This restricts the representation, not the usual classes discussed below: every deterministic polynomial/exponential-time machine, polynomial-space machine, or polynomial verifier has a PR acceptance bit. It does not represent all computable or all abstract languages by one PR evaluator.
+
+Put $p_{c,k}(n)=c(n+1)^k$ for $c\ge1$. We write
+\[
+ A\in\mathsf P\quad\text{for}\quad
+ \exists e,c\ge1,k\ \forall x\ge1\quad
+ A(x)=\B(e,x,p_{c,k}(|x|)).
+\]
+The notation $e,c\ge1$ just requires a valid word code $e$ and positive $c$. This is an ordinary first-order formula containing the fixed function symbol $A$. It agrees extensionally with polynomial-time decidability: timeout means rejection, and the clocked interpreter is itself polynomial time for each fixed descriptor by Theorem~\ref{thm:F06}. Conversely enlarge the constant and degree of any halting polynomial-time algorithm.
+
+For a verifier descriptor $v=(e,c_p,k_p,c_t,k_t)$ put $p(n)=p_{c_p,k_p}(n)$ and $t(n)=p_{c_t,k_t}(n+p(n)+1)$. Its NP bit is
+\[
+ N(v,x)=\Any_{y<2^{p(n)}}\,B(e,\operatorname{pairWord}(x,\operatorname{word}_{p(n)}(y)),t(n)).
+\]
+Here all $2^{p(n)}$ witnesses have exactly $p(n)$ bits; for variable-length witnesses use an explicit length field and padding convention. A correct variable-length encoding has a designated canonical padding when counts matter. $A\in\mathsf{NP}$ means $\exists v\forall x\ge1, A(x)=N(v,x)$. Define $\mathsf{coNP}$ by the bit $1-N(v,x)$. These definitions identify both yes and no cases positively; an arbitrary predicate with only one one-sided implication is insufficient.
+
+For space classes use the read-only-input model of Section~\ref{sec:foundations}. Given a cell budget $s$, reject on attempted escape, and simulate for a configuration-count bound $C(e,n,s)$, with halting states absorbing. Call the resulting bit $B_s(e,x)$. Section~\ref{sec:space} proves that this finite semantics agrees with ordinary halting space-bounded decision. With $\ell(n)=\lceil\log_2(n+2)\rceil$, use the budgets in the following table. Constants and degrees are finite descriptors.
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+Class & Mode & Budget \\
+\midrule
+$\mathsf L$, $\mathsf{NL}$ & deterministic, nondeterministic & $c\ell(n)$ cells \\
+$\mathsf{PSPACE}$, $\mathsf{NPSPACE}$ & deterministic, nondeterministic & $c(n+1)^k$ cells \\
+$\mathsf{EXPSPACE}$, $\mathsf{NEXPSPACE}$ & deterministic, nondeterministic & $c2^{(n+1)^k}$ cells \\
+$\mathsf{EXPTIME}$, $\mathsf{NEXPTIME}$ & deterministic, nondeterministic & $c2^{(n+1)^k}$ steps \\
+\bottomrule
+\end{tabular}
+\end{center}
+Nondeterministic space acceptance means there is an accepting path within the configuration bound, not that every path halts. It is a bounded existential bit. The budget constructor and uniformity qualifications for general functions $s(n)$ are stated in the space section.
+
+A class inclusion is used in two precise ways. For any fixed language bit it is a first-order implication between the corresponding presentation formulas. More strongly, the proofs give PR transformations of descriptors and a proof of equality of their acceptance bits. For example the numerical sentence expressing $\mathsf P=\mathsf{NP}$ is
+\[
+ \forall v\ \exists d\ \forall x\ge1\quad N(v,x)=P(d,x),
+\]
+where $P(d,x)$ is the clocked deterministic acceptance bit. Nothing in this definition quantifies over arbitrary subsets of $\N$.
+
+\begin{theorem}[C01: basic time and space inclusions]\label{thm:C01}
+The following transformations are provable in \ipra:
+\[
+ \mathsf P\subseteq\mathsf{NP}\subseteq\mathsf{PSPACE}
+ \subseteq\mathsf{EXPTIME},\qquad
+ \mathsf{coNP}\subseteq\mathsf{PSPACE},
+\]
+and $\mathsf P\subseteq\mathsf{coNP}$. Together with the space results this gives
+$\mathsf L\subseteq\mathsf{NL}\subseteq\mathsf P$.
+\end{theorem}
+\begin{proof}
+A deterministic verifier ignores its witness, giving $\mathsf P\subseteq\mathsf{NP}$. Flipping its absorbing output gives a polynomial decider for the complement, hence $\mathsf P\subseteq\mathsf{coNP}$. To decide an NP bit deterministically, enumerate all $p(n)$-bit witness words with a binary counter and run the polynomial-time verifier for each. Save the original input, the current witness, verifier work tape, and an OR bit. A machine running for $t(n)$ steps visits at most $n+p(n)+t(n)+O(1)$ cells, a polynomial. Reuse the verifier storage between witnesses. The invariant says that the OR bit equals the bounded OR over processed witnesses. The complement version flips the final bit and uses the same space.
+
+For a fixed polynomial-space decider, the number of configurations is $2^{\poly(n)}$; a deterministic repeated configuration would repeat forever. Thus the explicit configuration clock decides the same language in exponential time. The count and loop removal are proved in Theorems~\ref{thm:S01}--\ref{thm:S02}. For nondeterministic logarithmic space the configuration graph has polynomially many vertices and its reachability bit is computable in polynomial time, as proved there. All simulations have named clocks, so even the brute-force witness enumeration is PR.
+\end{proof}
+
+\begin{theorem}[C02: closure constructions for P]\label{thm:C02}
+$\mathsf P$ is closed under complement, finite union, finite intersection, difference, concatenation, and Kleene star. The constructors and correctness proofs are effective in \ipra.
+\end{theorem}
+\begin{proof}
+For Boolean operations run the finitely many deciders and combine their bits. Their clocks add, with polynomial copying overhead. For concatenation, test all $n+1$ cuts $i$ of a word $x$ and OR the tests $A(x[0:i])B(x[i:n])$. Restriction and copying cost polynomial time, and each input to a decider has length at most $n$.
+
+For star, ignore empty factors except in the representation of the empty word. Set $D(0)=1$ and, for $1\le j\le n$, set
+\[
+ D(j)=\bigvee_{i<j}\bigl(D(i)\land A(x[i:j])\bigr).
+\]
+Every nonempty factorization of a prefix has a last positive-length factor. Conversely an accepting earlier prefix followed by one accepted factor gives a factorization. The invariant states that $D(j)$ equals existence of a partition into positive-length accepted factors, coded as at most $n+1$ cut positions below $n+1$. Its bound is $(n+1)^{n+1}$, independent of efficiency. It is a bounded formula, so its proof is allowed. The algorithm performs $O(n^2)$ decider calls and uses a length-$n+1$ bitmap; it is polynomial time. Return $D(n)$. No unbounded search over factorizations occurs.
+\end{proof}
+
+\begin{theorem}[C03: positive closures of NP and coNP]\label{thm:C03}
+$\mathsf{NP}$ is closed under finite union, finite intersection, concatenation, and Kleene star. $\mathsf{coNP}$ is closed under finite union and finite intersection.
+\end{theorem}
+\begin{proof}
+For union, a selector bit chooses which verifier and witness are supplied. For intersection supply both witnesses. For concatenation supply a cut $i\le n$ and the two certificates. For star supply at most $n$ positive-length pieces, their cut positions, and one certificate for each piece. Every piece has length at most $n$, so increasing the witness polynomial if necessary bounds the total certificate by $n\,p(n)+O(n\log(n+2))$. Verification checks the cuts are increasing, the first is zero and last $n$, and runs the appropriate verifier on every piece. The empty input is handled separately. Soundness concatenates the accepted pieces; completeness constructs the list from a bounded factorization. The finite witness search of Lemma~\ref{thm:F01} supplies any needed canonical certificates in the proof, not in the efficient verifier.
+
+The coNP conclusions follow by applying Boolean De Morgan laws to the NP constructions. Since these are complemented \emph{bits}, this is finite Boolean algebra and does not invoke a nonconstructive De Morgan law for arbitrary unbounded predicates. Complement closure for NP itself is not asserted.
+\end{proof}
+
+\begin{theorem}[C04: encoding invariance and the function/decision distinction]\label{thm:C04}
+If two encodings have polynomial-time translations that preserve and recover the represented object, polynomial-time solvability and NP verification transfer in both directions. A polynomial-time function with polynomially long output has a polynomial-time graph predicate. A polynomial-time graph predicate alone gives a bounded-search function algorithm only when a length bound is supplied; it need not give a polynomial-time function algorithm.
+\end{theorem}
+\begin{proof}
+Compose the input translation with the old decider or verifier and, for output problems, with the output translation. A polynomial-time transducer writes at most polynomially many output symbols. Composition of polynomial bounds is polynomial; the resource and witness constructions are detailed in the reduction section.
+
+For a function $f$, compute $f(x)$ and compare it with the proposed $y$, giving its graph test. In the reverse direction, if $|f(x)|\le p(|x|)$, enumerate all words up to that length and take the first passing graph test. Functionality guarantees uniqueness and the length hypothesis guarantees a witness. This is a PR algorithm using up to $2^{p(n)+1}$ candidates. Nothing in this argument makes that search polynomial. The stronger SAT search-to-decision theorem works because its queries ask whether a \emph{prefix has an extension}; they are not merely equality tests for a completed answer. Thus the source article's informal equivalence between a function and its graph requires this qualification.
+\end{proof}
+
+\subsection{Canonical complete bounded-computation problems}
+The following are useful examples where the entire completeness argument is elementary. Variable source programs use canonical fixed-alphabet, one-work-tape descriptions; fixed machines in other standard presentations are compiled to this form before reduction. A many-one reduction maps $x$ to $f(x)$ and proves equality of the two language bits. It must also exhibit a transducer resource bound. Definitions and closure under composition are developed in Section~\ref{sec:np}.
+
+\begin{theorem}[C05: unary and binary bounded-time acceptance]\label{thm:C05}
+The problem ``does deterministic $e$ accept $x$ within $T$ steps?'' is P-complete under logarithmic-space many-one reductions when $T$ is written in unary, and EXPTIME-complete under polynomial-time many-one reductions when $T$ is written in binary. With nondeterministic $e$, the two versions are respectively NP-complete and NEXPTIME-complete.
+\end{theorem}
+\begin{proof}
+In the unary version the input length $N$ is at least $T$, $|e|$, and $|x|$. Theorem~\ref{thm:F06} gives a polynomial deterministic algorithm. For a fixed source polynomial-time machine $M$ with clock $c(n+1)^k$, output $(M,x,1^{c(n+1)^k})$. A counter up to this polynomial occupies $O(\log(n+2))$ bits; stream the header, the input, and that many unary marks. This is a logarithmic-space transducer, and the acceptance equivalence is the defining simulation equation.
+
+In the binary version $T<2^{N+1}$. A unary countdown can be produced and the simulation run in $2^{O(N)}$ time with a generous fixed polynomial simulation overhead. If $M$ runs in time $c2^{(n+1)^k}$, the binary clock has length $(n+1)^k+O(1)$ and is printed in polynomial time by shifting the fixed binary representation of $c$. This is an EXPTIME reduction.
+
+For nondeterministic sources, guess one branch bit per source step and simulate it. In unary time this is an NP verifier; in binary time it is nondeterministic exponential time. Reducing a fixed source nondeterministic machine uses the same wrapper, and transforms accepting histories in both directions. No universal halting claim is used. Invalid descriptions are rejected. The time and length arguments above also prove all reduction bounds in \ipra.
+\end{proof}
+
+\begin{theorem}[C06: unary and binary bounded-space acceptance]\label{thm:C06}
+Deterministic acceptance with a supplied space budget $s$, where escape or nonhalting within the configuration bound counts as rejection, is PSPACE-complete for unary $s$ and EXPSPACE-complete for binary $s$, under polynomial-time many-one reductions.
+\end{theorem}
+\begin{proof}
+Use a fixed work alphabet and a fixed number of source tapes, or normalize the machine. Its configuration counter has $O(s+|e|+\log(n+2))$ bits; the simulator stores one configuration and that counter. It is polynomial space in the unary input length and exponential space in the binary input length. A fixed source polynomial-space machine is reduced by outputting its code, the input, and its polynomial budget in unary. An exponential-space source uses its exponential budget in binary, a polynomial-length word. Halting source deciders accept before the configuration bound exactly when their original computation accepts. The budgeted semantics also defines an answer on nonhalting source programs. Soundness, completeness, and the storage bound are the same finite configuration argument used in the space section.
+\end{proof}
+
+As a consequence of the explicit separations in Section~\ref{sec:hierarchy}, binary bounded-time acceptance is outside P, and binary bounded-space acceptance is outside PSPACE. The change from unary to binary encoding is substantial: these are not polynomially interconvertible representations of the budget.

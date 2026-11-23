@@ -1,0 +1,897 @@
+\section{Finite randomness, counting, circuits, and lower bounds}
+\label{sec:random-lower}
+
+The central objects in this section are finite tables and finite computation
+traces. A probability is a rational abbreviation for a ratio of two natural
+numbers; every inequality below has an explicitly stated integer form.
+The standard complexity results provide the targets
+\cite{adleman1978,lautemann1983,shannon1949,katz2011}.
+The proofs here reconstruct them with bounded searches, positive correctness
+statements, and numerical induction invariants. In particular, the assertion
+that a finite bad set is smaller than its ambient set produces its least
+missing element. It is not an appeal to an unbounded choice principle.
+
+\subsection{The counting primitives and the randomized presentations}
+
+For a coded Boolean table or a fixed primitive-recursive Boolean predicate
+$E(i,\vec a)$, put
+\[
+ C_E(N,\vec a)=\sum_{i<N}[E(i,\vec a)=1].
+\]
+The brackets have values zero and one. The defining recursion is
+$C_E(0)=0$ and $C_E(N+1)=C_E(N)+[E(N)=1]$.
+Sets in this section are abbreviations for such predicates on bounded
+intervals; their sizes mean these sums. Tuples are encoded in a fixed radix,
+so a tuple of $k$ elements below $Q$ is a number below $Q^k$.
+The intended language is always specified by a Boolean function $L(x)$,
+or by a fixed bounded definition already compiled to such a function.
+
+\begin{lemma}[R01: finite counting calculus]\label{thm:R01}
+The following statements have primitive-recursive witnesses and proofs by
+quantifier-free induction in the bounded compilation described earlier.
+\begin{enumerate}
+\item $0\leq C_E(N)\leq N$, and $C_E(N)>0$ if and only if there is an
+      $i<N$ with $E(i)=1$. If the count is positive, the least such $i$ is
+      obtained by a bounded scan.
+\item If $E(i)\leq F(i)$ for all $i<N$, then $C_E(N)\leq C_F(N)$.
+      For a finite family $(E_j)_{j<k}$,
+      $|\bigcup_{j<k}E_j|\leq\sum_{j<k}|E_j|$.
+\item $|E\times F|=|E||F|$. More generally, a sum of products over a
+      finite Cartesian product factors into the product of the sums.
+\item If a permutation of $[0,N)$ carries $E$ onto $F$, their counts agree.
+      If an explicitly described involution without fixed points exchanges
+      $E$ and its complement, then $2|E|=N$.
+\item If $|E|<N$, the least $i<N$ outside $E$ exists and is found by bounded
+      search. The same assertion applies to a union whose displayed upper
+      bound is strictly below $N$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+For the first two assertions, add the next zero-or-one term to both sides
+of the maintained inequality. For the union bound use the pointwise
+inequality $[\bigvee_{j<k}E_j(i)]\leq\sum_{j<k}[E_j(i)]$, then sum in $i$.
+For the product assertion, split the radix enumeration into consecutive
+blocks of the second radix and apply distributivity; induction in the
+number of blocks proves the equality. A permutation rearranges a finite
+sum, as is proved by tracking the counts of its already visited indices.
+An exchanging involution is a bijection between the two parts, so their
+counts add to $N$ and are equal. Finally the scan for a first missing
+element has invariant: either an already recorded index is missing, or
+every earlier index belongs to $E$. If the scan ended with no missing
+index, its count would be $N$, contradicting the strict bound. All these
+invariants contain only bounded quantifiers over explicitly coded tables.
+Their Boolean compilations, rather than induction on arbitrary formulas,
+are the object-theory induction instances.
+\end{proof}
+
+A randomized polynomial-time presentation consists of a fixed deterministic
+machine $M$, an explicit polynomial clock, and a polynomial $r(n)$ bounding
+the number of independent random bits. Unused bits are ignored, so each
+input of length $n$ has exactly
+\[
+ Q(n)=2^{r(n)}
+\]
+equally weighted seeds. Its clocked output is denoted $M(x,u)\in\{0,1\}$,
+for $u<Q(n)$. Define
+\[
+ a_M(x)=\sum_{u<Q(n)}M(x,u),\qquad
+ e_{M,L}(x)=\sum_{u<Q(n)}[M(x,u)\ne L(x)].
+\]
+All bounds are on binary input length; enumeration of the $Q(n)$ seeds is
+used in the proof theory, not asserted to be polynomial time.
+
+An RP presentation satisfies
+\[
+ L(x)=0\Longrightarrow a_M(x)=0,\qquad
+ L(x)=1\Longrightarrow 2a_M(x)\geq Q(n).
+\]
+A coRP presentation has $a_M(x)=Q(n)$ on yes inputs and
+$2a_M(x)\leq Q(n)$ on no inputs. A BPP presentation satisfies
+$3e_{M,L}(x)\leq Q(n)$ for every $x$. A PP presentation satisfies the
+positive equivalence
+\[
+ L(x)=1\quad\Longleftrightarrow\quad 2a_M(x)>Q(n).
+\]
+The left side is a decidable Boolean equality. These conventions prevent
+an undecidable proposition from being inserted as an unspecified
+``intended language'' behind two one-sided implications.
+
+\begin{theorem}[R02: one-sided randomness and witnesses]\label{thm:R02}
+$\mathrm{P}\subseteq\mathrm{RP}\subseteq\mathrm{NP}$ and
+$\mathrm{P}\subseteq\mathrm{coRP}\subseteq\mathrm{coNP}$.
+An RP computation repeated independently $k\geq1$ times, accepting if any
+trial accepts, still has no false positives and has at most $Q^k/2^k$
+false-negative seeds. The analogous AND construction amplifies coRP.
+In particular RP and coRP are contained in BPP.
+\end{theorem}
+\begin{proof}
+A deterministic decider may ignore its random seed. On an RP yes input,
+$2a_M\geq Q>0$ gives $a_M>0$; Lemma~\ref{thm:R01} supplies an accepting
+seed, of polynomial length, as an NP witness. Conversely an accepting
+seed is impossible when $L(x)=0$. Complementing both the output and the
+language gives the coRP assertion.
+
+For amplification let $b=Q-a_M$ on a yes input, so $2b\leq Q$. Exactly
+$b^k$ seed tuples make all $k$ trials reject, by the product identity.
+Thus $2^k b^k\leq Q^k$. On a no input each trial rejects, so the OR still
+rejects on every tuple. Two trials give error at most $1/4$, which is at
+most $1/3$. AND amplification follows by exchanging zero and one.
+The machine uses $kr(n)$ random bits and $k$ times the original clock,
+plus polynomial overhead for counters and the accumulated Boolean result.
+\end{proof}
+
+\begin{theorem}[R03: integer BPP amplification]\label{thm:R03}
+For every $d\geq1$, taking the majority of $12d$ independent BPP trials
+(breaking ties in a fixed way) gives
+\[
+ 2^d e_{\mathrm{amp},L}(x)<Q(n)^{12d}.
+\]
+The number of random bits is $12d\,r(n)$; if $d$ is polynomial in $n$,
+the amplified machine is polynomial time.
+\end{theorem}
+\begin{proof}
+Fix $x$, let $b=e_{M,L}(x)$, and put $k=2t$. For a seed tuple $\vec u$,
+let $j(\vec u)$ be its number of erroneous trials. Factorization of finite
+sums gives the exact identity
+\[
+ \sum_{\vec u\in[0,Q)^k}2^{j(\vec u)}=(Q+b)^k.
+\]
+Indeed each coordinate contributes weight two on its $b$ erroneous seeds
+and weight one on its $Q-b$ correct seeds, whose sum is $Q+b$.
+An erroneous majority has $j(\vec u)\geq t$, regardless of the tie rule.
+If $E$ is its error count, then
+\[
+ 2^tE\leq(Q+b)^{2t},\qquad
+ 3^{2t}2^tE\leq(4Q)^{2t},
+\]
+because $3b\leq Q$. Cancelling the positive factor $2^t$ yields
+$9^tE\leq8^tQ^{2t}$. Now choose $t=6d$. The explicit integer check
+$2\cdot8^6=524288<531441=9^6$, followed by induction on $d$, gives
+$2^d8^{6d}<9^{6d}$. Combining the inequalities proves the result.
+No logarithm, real exponential, Chernoff bound, or integration is used.
+\end{proof}
+
+\begin{theorem}[R04: elementary closure of randomized classes]\label{thm:R04}
+BPP is closed under complement, union, intersection, and polynomial-time
+many-one preimages. RP and coRP are each closed under union, intersection,
+and polynomial-time many-one preimages.
+\end{theorem}
+\begin{proof}
+For complement, replace $M$ by $1-M$: its error indicator relative to
+$1-L$ is identical. For BPP union and intersection, first amplify both
+machines with $d=3$. Each has error less than $1/8$. Run them with separate
+seeds and take respectively OR or AND. A wrong combined answer requires
+at least one wrong component answer, hence the union bound gives total
+error less than $1/4<1/3$ after clearing the seed denominators.
+
+For RP union, run both original machines and take OR. There are no false
+positives, and on a yes input at least one component succeeds on at least
+half its seeds. For RP intersection first amplify both to failure at most
+$1/4$, and take AND. On a yes input, at most half the seed pairs fail by
+the union bound; on a no input one component always rejects. Complement
+these constructions to obtain the two coRP closures. Finally compute a
+reduction $f(x)$ deterministically and run the chosen randomized machine
+on $f(x)$. Polynomial output length composes with its clock and random-bit
+bound. Its count inequality is exactly the old inequality for $f(x)$.
+\end{proof}
+
+\subsection{Counting functions, majority computation, and advice}
+
+A $\#\mathrm P$ presentation is a polynomial-time Boolean verifier
+$V(x,w)$ and a polynomial witness length $p(n)$, with
+\[
+ f(x)=\sum_{w<2^{p(n)}}V(x,w).
+\]
+This is an actual primitive-recursive natural-valued function. Witnesses
+are bit strings of an exact declared length. A convention that merely
+allows arbitrary trailing padding would change counts and is therefore
+not silently interchangeable with this one.
+
+\begin{theorem}[R05: algebra of witness counts]\label{thm:R05}
+$\#\mathrm P$ is closed under addition, multiplication, and polynomially
+bounded sums of uniformly polynomial-time verifiers. Its positive supports
+are precisely NP. Every nonnegative polynomial-time computable function
+of polynomial output length is a $\#\mathrm P$ function. A fixed
+presentation $f(x)=\#\{w<2^{p(n)}:V(x,w)=1\}$ also gives a
+$\#\mathrm P$ presentation of $2^{p(n)}-f(x)$.
+\end{theorem}
+\begin{proof}
+For addition, pad both witness lengths to their maximum by requiring the
+new padding bits to be zero. Prepend a tag bit selecting the first or
+second verifier. There is exactly one padded witness for each original
+witness, so the tag partitions the accepted witnesses into two disjoint
+sets of sizes $f(x)$ and $g(x)$. For multiplication concatenate one witness
+for each verifier and accept exactly when both verifiers accept. The
+product identity in Lemma~\ref{thm:R01} gives count $f(x)g(x)$.
+
+For a sum over $i<k(n)$, use an index of length
+$\lceil\log_2(k(n)+1)\rceil$ and a common polynomial witness length;
+reject invalid indices and require unused witness padding to be zero.
+The accepted pairs partition by $i$. A positive witness count is
+equivalent, with a bounded least-witness map, to existence of an accepted
+witness, which is exactly the NP presentation. If $f(x)<2^{p(n)}$ is
+computed in polynomial time, accept $w$ precisely when $w<f(x)$; its
+count is $f(x)$. Finally complement the Boolean verifier to obtain the
+count $2^{p(n)}-f(x)$. This last result is relative to a specified witness
+cube, and does not assert closure under arbitrary subtraction.
+\end{proof}
+
+\begin{theorem}[R06: PP containments and complement]\label{thm:R06}
+$\mathrm{NP}\cup\mathrm{coNP}\cup\mathrm{BPP}\subseteq\mathrm{PP}
+\subseteq\mathrm{PSPACE}$, and PP is closed under complement. Every
+$\#\mathrm P$ function is computable using polynomial work space and
+exponential time.
+\end{theorem}
+\begin{proof}
+For an NP verifier with $Q=2^{p(n)}$ witnesses and acceptance count $a$,
+use a tag bit and $p(n)$ other bits. On tag zero accept; on tag one run
+the verifier. Of the $2Q$ seeds, exactly $Q+a$ accept, which is more than
+half precisely when $a>0$. Thus the constructed PP language is exactly
+the NP support, with both implications witnessed by finite arithmetic.
+
+For complement closure, first pad the random length of a PP machine so
+it is at least one. Write $Q=2H$. Use $2Q$ seeds $(b,u)$ with $u<Q$.
+For $b=0$ accept if the original machine rejects. For $b=1$ accept if
+$u<H+1$. The new acceptance count is
+\[
+ Q-a+H+1=3H+1-a.
+\]
+It is strictly greater than half of $2Q$, namely $Q=2H$, precisely when
+$a\leq H$. This is the complement of $a>H$. The construction fits the
+seed space since $H\geq1$ and $H+1\leq Q$. It also gives
+$\mathrm{coNP}\subseteq\mathrm{PP}$ by the preceding NP construction.
+A BPP yes input has $3a\geq2Q$, whence $2a>Q$; a no input has
+$3a\leq Q$, whence $2a\leq Q$. Its original machine therefore already
+satisfies the PP specification.
+
+To compute a count, enumerate all $p(n)$-bit witnesses, retaining the
+current witness, a $p(n)+1$-bit accumulator, and the work tape of the
+polynomial-time verifier. Reuse the work tape between witnesses. The
+workspace is polynomial and the time is $2^{p(n)}$ times a polynomial.
+Comparing the resulting count to the half-cube threshold proves the PP
+containment. The invariant after witness $w$ is that the accumulator
+equals the sum on earlier witnesses; its Boolean form is bounded.
+\end{proof}
+
+\begin{theorem}[R07: BPP has polynomial advice and circuits]\label{thm:R07}
+From a BPP presentation one can construct, for every length $n$, a
+polynomial-length advice string $a_n$ that makes a fixed polynomial-time
+machine correct on all $n$-bit inputs. The function $n\mapsto a_n$ can be
+chosen primitive recursively. Consequently
+$\mathrm{BPP}\subseteq\mathrm P/\mathrm{poly}$ in the finite circuit
+and advice readings.
+\end{theorem}
+\begin{proof}
+Amplify with $d=n+2$. Let $m(n)=12(n+2)r(n)$ and let $Q'=2^{m(n)}$ be
+the amplified seed count. For each $n$-bit input $x$, fewer than
+$Q'/2^{n+2}$ seeds give a wrong answer. The union over the $2^n$ inputs
+has fewer than $Q'/4$ members, after multiplying through by $2^{n+2}$.
+It is therefore not the whole seed cube. Choose the least seed outside
+this union and call it $a_n$. The search predicate is a conjunction over
+$2^n$ inputs of finite machine computations and comparisons with $L(x)$.
+Thus both the search bound $Q'$ and its Boolean predicate are primitive
+recursive. No countable choice of unrelated advice strings is necessary.
+
+The deterministic advice machine runs the amplified machine with seed
+$a_n$. Its clock is polynomial and its output equals $L(x)$ for every
+input of length $n$, by the definition of the selected seed. Unrolling
+this fixed clocked computation into a Boolean circuit, with the advice
+bits hardwired, produces a polynomial-size circuit. Conversely a circuit
+description of polynomial length can be used as advice by a universal
+circuit evaluator; the gates are evaluated in topological order in
+polynomial time. This explains the equivalence of the two formulations
+used here. It does not say that the advice can be found in polynomial
+time. Nor does it say that arbitrary languages in $\mathrm P/\mathrm{poly}$
+are recursive: the primitive-recursive advice selector is available here
+because it is constructed from the given BPP presentation.
+\end{proof}
+
+\subsection{A fully finite proof that BPP lies at the second hierarchy level}
+
+\begin{theorem}[R08: the translate-covering construction]\label{thm:R08}
+Every BPP presentation has both a $\Sigma^\mathrm P_2$ presentation and a
+$\Pi^\mathrm P_2$ presentation, with explicit polynomial bounds and
+primitive-recursive witness searches. Hence
+\[
+ \mathrm{BPP}\subseteq\Sigma^\mathrm P_2\cap\Pi^\mathrm P_2.
+\]
+\end{theorem}
+\begin{proof}
+Let $r=r(n)$ be the original random-bit bound and set
+\[
+ d=16(r+1)^2,\qquad m=12dr,\qquad Q=2^m,\qquad k=m+1.
+\]
+Amplify as in Theorem~\ref{thm:R03}; call the resulting predicate $A(x,u)$.
+On a yes input its rejecting set has size $b$ with $2^d b<Q$; on a no
+input its accepting set has size $a$ with $2^d a<Q$.
+We require $k<2^d$. To verify it without an asymptotic exception, put
+$v=r+1\geq1$. Then $k\leq193v^3<2^{8+3v}\leq2^{16v^2}$, using
+$v\leq2^v$ and $8+3v\leq16v^2$. All constants and inequalities are
+integer ones.
+
+Bitwise exclusive-or on $m$-bit words is denoted $\oplus$; translation
+by a fixed word is a permutation. Consider
+\[
+ \exists s_0,\ldots,s_{k-1}<Q\quad
+ \forall u<Q\quad \bigvee_{i<k} A(x,u\oplus s_i)=1.                 \tag{R8a}
+\]
+Its witness block has length $km$, its universal block has length $m$,
+and its matrix is decidable by $k$ polynomial-time runs. It is therefore
+a $\Sigma^\mathrm P_2$ formula.
+
+On a yes input, fix $u$. Exactly $b^k$ of the $Q^k$ shift tuples have all
+$u\oplus s_i$ in the rejecting set: each coordinate is a permutation of
+the seed cube. At most $Qb^k$ shift tuples leave some $u$ uncovered, by
+the union bound. Since $2b<Q$ and $k=m+1$,
+\[
+ Qb^k < Q\,Q^k/2^k = Q^k/2 < Q^k.
+\]
+Thus a least covering tuple exists. This proves (R8a) constructively.
+On a no input, any $k$ translates of the accepting set have union size
+at most $ka<Q$, since $k<2^d$ and $2^d a<Q$. The least uncovered $u$
+refutes that tuple. This supplies the reverse implication with a bounded
+counterexample function.
+
+For completeness, the dual positive presentation is
+\[
+ \forall s_0,\ldots,s_{k-1}<Q\quad
+ \exists u<Q\quad \bigwedge_{i<k} A(x,u\oplus s_i)=1.              \tag{R8b}
+\]
+On a yes input the $k$ translates of the small rejecting set cannot cover
+the cube, so their least uncovered point supplies $u$. On a no input the
+large rejecting set has a covering tuple by the already proved argument,
+and that tuple refutes (R8b). This proves the $\Pi^\mathrm P_2$ reading
+directly, without using unrestricted classical contraposition. The special
+case $m=0$ is harmless: $Q=k=1$, and the strict error bounds force zero
+errors. Every search in the argument is bounded by $Q$ or $Q^k$.
+\end{proof}
+
+\subsection{Zero-error computation through finite truncations}
+
+A bounded zero-error trial returns one of $0,1,?$ in polynomial time.
+It has \emph{trace soundness} if every definite answer equals $L(x)$,
+and \emph{success density at least one half} if at least half its seeds
+produce a definite answer. These are finite Boolean and counting tests.
+For a possibly longer-running random machine $Z$, normalize it to inspect
+at most one fresh random bit per step. For a prefix of $T$ bits, let
+$c_T(x,u)$ be the smaller of its halting time and $T$, defined by a
+$T$-step simulation. The finite expected-time certificate with bound $p$
+is the arithmetical statement
+\[
+ \forall x\ \forall T\qquad
+ \sum_{u<2^T}c_T(x,u)\leq p(|x|)2^T.                              \tag{R9}
+\]
+The certificate is accompanied by trace soundness at every truncation.
+This is the precise zero-error expected-time reading used here.
+
+\begin{theorem}[R09: zero-error equivalence and restart bounds]\label{thm:R09}
+The following presentations are interconvertible by explicit machine
+constructions: (i) a bounded zero-error trial of success density at least
+one half; (ii) an RP presentation and a coRP presentation of the same
+Boolean language; (iii) a trace-sound random machine with a polynomial
+finite expected-time certificate (R9). Thus the finite arithmetical
+reading of $\mathrm{ZPP}=\mathrm{RP}\cap\mathrm{coRP}$ is provable in
+\ipra. Repeating (i) for at most $j$ rounds leaves failure density at most
+$2^{-j}$, and its average number of rounds is at most two for every cap.
+\end{theorem}
+\begin{proof}
+From (i), accept only on output one to get RP. Accept on output one or
+question mark to get coRP. Trace soundness eliminates the forbidden
+one-sided errors, and the definite-output density gives the required
+one-half success inequalities.
+
+Conversely let $R$ be an RP test for $L$ and let $S$ be an RP test for
+$1-L$, obtained by complementing a coRP test. Run them using disjoint
+seeds. Return one if $R$ accepts; otherwise return zero if $S$ accepts;
+otherwise return question mark. On a yes input, $S$ never accepts and
+$R$ accepts on at least half its seeds. On a no input the roles reverse.
+Both a definite wrong answer and a conflict of two valid answers are
+therefore excluded by trace soundness. This constructs (i).
+
+Pad one trial to a fixed polynomial duration $p(n)\geq1$, so that
+independent blocks of $p(n)$ fresh bits suffice. If $Q=2^{p(n)}$ and
+$b\leq Q/2$ is the number of inconclusive blocks, exactly $b^j$ block
+tuples fail all $j$ trials. Hence $2^j b^j\leq Q^j$. If $N_j$ is the
+number of rounds used by the procedure capped at $j$, finite double
+counting gives
+\[
+ \sum_{\vec u\in[0,Q)^j} N_j(\vec u)
+ =\sum_{i=0}^{j-1} b^i Q^{j-i}
+ \leq Q^j\sum_{i=0}^{j-1}2^{-i}\leq2Q^j.
+\]
+The displayed fractions abbreviate the equivalent inequality after
+multiplication by $2^{j-1}$ when $j>0$; the case $j=0$ is zero.
+The equality counts a round whenever all preceding rounds were
+inconclusive. Running successive independent trials until one succeeds
+therefore gives (R9) with bound $2p(n)$ at every finite step cap: charge
+at most $p(n)$ steps for each entered round, and apply the same finite
+tail sum, including the possibly incomplete last block. More explicitly, let
+$j=\lceil T/p(n)\rceil$ and extend each $T$-bit prefix to $jp(n)$ bits.
+For every extension, $c_T\leq p(n)N_j$. Summing over all extensions and
+using their equal multiplicity $2^{jp(n)-T}$ gives
+$2^{jp(n)-T}\sum_{u<2^T}c_T(x,u)\leq2p(n)2^{jp(n)}$; cancelling
+the positive multiplicity gives (R9). The case $T=0$ is immediate. The trace remains
+sound because any eventual answer came from a sound trial. This proves
+(i)$\Rightarrow$(iii) without asserting termination on every infinite
+random tape.
+
+Finally assume (iii), increase $p$ to at least one if necessary, and cap
+the machine at $T=2p(n)$ steps. If $B$ prefixes have not halted by that
+cap, each contributes exactly $T$ to the sum in (R9). Thus
+$TB\leq p(n)2^T$, and cancellation of $p(n)>0$ yields
+$2B\leq2^T$. Return question mark on these prefixes and the observed
+answer otherwise. This is (i). The argument is the finite counting form
+of Markov's inequality; no measure or assertion of universal random-tape
+termination enters it.
+\end{proof}
+
+
+\subsection{Circuit counting with an explicit hard family}
+
+For this subsection, a circuit on $n$ input bits is a finite straight-line
+program. It has input wires, two constant wires, and topologically ordered
+gates. Each gate applies one of the sixteen binary Boolean functions to two
+earlier wires. The output is a specified wire. This finite basis contains
+AND, OR, NOT, and copying; using it instead of a smaller complete basis
+changes the relevant size bounds only by fixed factors. A truth table is
+an integer $h<2^{2^n}$, whose $x$th bit is the value on input $x<2^n$.
+
+\begin{theorem}[R10: quantitative circuit counting]\label{thm:R10}
+The number of $n$-input Boolean functions computable with at most $s$ gates
+is at most
+\[
+ B(n,s)=(n+s+2)\bigl(16(n+s+2)^2\bigr)^s.
+\]
+If $B(n,s)<2^{2^n}$, a primitive-recursive bounded search produces a truth
+table not computed by any such circuit.
+\end{theorem}
+\begin{proof}
+Pad a shorter circuit to exactly $s$ gates with unused copy gates, retaining
+its output wire. For an upper bound, allow every gate to choose its two
+sources from all $n+s+2$ wire positions, even the positions that would be
+invalid because they are not earlier. There are at most
+$16(n+s+2)^2$ descriptions for each gate and at most $n+s+2$ choices of
+output. Every valid padded circuit occurs in this bounded enumeration,
+and different descriptions may compute the same function. Consequently
+the number of computed truth tables is bounded by $B(n,s)$.
+
+Enumerate a circuit's truth table by evaluating its gates in order on
+each of the $2^n$ inputs. Invalid descriptions are marked invalid; they
+are not used as extra circuits. Scan the $2^{2^n}$ truth tables and choose
+the first one distinct from the tables of all valid descriptions. If no
+such table existed, marking the computed tables in an initially zero
+bit vector would mark all $2^{2^n}$ positions with at most $B(n,s)$ marks.
+The invariant that the number of marked positions is at most the number
+of processed descriptions contradicts the strict inequality. The scan,
+evaluation, marks, and equality comparisons are all bounded and primitive
+recursive. They provide the witness, not merely a double-negated existence.
+\end{proof}
+
+\begin{theorem}[R11: a concrete Shannon bound]\label{thm:R11}
+For $n\geq4$ let
+\[
+ s(n)=\left\lfloor\frac{2^n}{16(n+1)}\right\rfloor.
+\]
+At most $2^{2^{n-1}}$ truth tables on $n$ bits have circuits of size at most
+$s(n)$. In particular a least hard table $h_n$ exists, and at least
+$2^{2^n}-2^{2^{n-1}}$ tables require more gates.
+\end{theorem}
+\begin{proof}
+Put $s=s(n)$. Since $s\leq2^{n-4}$ and
+$n+2+2^{n-4}\leq2^n$ for $n\geq4$, we have $n+s+2\leq2^n$.
+The latter elementary inequality starts at $n=4$ and is preserved when
+$n$ increases, as is verified after doubling the exponential term.
+The description bound is therefore
+\[
+ B(n,s)\leq2^{n+(4+2n)s}.
+\]
+By definition $16(n+1)s\leq2^n$, and $4+2n\leq3(n+1)$ for $n\geq1$;
+hence $(4+2n)s\leq3\cdot2^{n-4}$. Also
+$n\leq2^{n-2}=4\cdot2^{n-4}$ for $n\geq4$, by a one-step induction.
+Thus
+\[
+ n+(4+2n)s\leq7\cdot2^{n-4}\leq2^{n-1}.
+\]
+The previous theorem proves the stated count and constructs $h_n$.
+The phrase ``almost all'' can consequently be given the exact finite
+content that the fraction of tables with these small circuits is at most
+$2^{-2^{n-1}}$. Only the cross-multiplied integer inequality is used in
+\ipra.
+\end{proof}
+
+\begin{corollary}[R12: a primitive-recursive language outside polynomial circuits]
+\label{thm:R12}
+There is a primitive-recursive Boolean language $H$, decidable in
+space $2^{O(n)}$, with no polynomial-size circuit family. For every
+$c\geq1$ and $k\geq0$, the explicitly chosen length
+\[
+ n=2^{4(k+c+4)}
+\]
+has the property that no circuit with at most $c(n+1)^k$ gates computes
+$H$ correctly on all inputs of that length. For each such circuit a least
+mismatch input is primitive recursively obtainable.
+\end{corollary}
+\begin{proof}
+Let $H(x)$ be the $x$th bit of $h_n$ on length $n\geq4$, with arbitrary
+fixed values at the finitely many smaller lengths. Here $x$ is its
+fixed-length binary value; the ambient word coding also records $n$.
+The bounded construction of $h_n$ proves primitive recursiveness.
+
+To verify the advertised length, set $u=k+c+4$ and $t=4u$. For $t\geq4$,
+$2^t\geq t^2$, as follows by induction from $t=4$ and
+$(t+1)^2\leq2t^2$. Moreover
+$t^2>4+c+(k+1)(t+1)$, since the right side is at most
+$4u^2+2u$ and $t^2=16u^2$. As $n=2^t$ and $n+1\leq2^{t+1}$,
+\[
+ 16c(n+1)^{k+1}
+ \leq2^{4+c+(k+1)(t+1)}<2^{2^t}=2^n.
+\]
+Therefore $c(n+1)^k\leq s(n)$. The defining property of $h_n$ excludes
+all circuits up to that size. Scan the $2^n$ inputs to find a mismatch
+with any specified candidate; the absence of a mismatch would contradict
+the definition of the hard table.
+
+For the space bound, store one candidate table of $2^n$ bits, one circuit
+description of $O(s(n)\log(n+s(n)+2))=O(2^n)$ bits, the current circuit's
+gate values, and binary loop counters. A brute-force comparison may
+recompute every candidate circuit's value on each input, so no collection
+of all truth tables is stored. The counters for the truth-table and
+description enumerations themselves have $O(2^n)$ bits. The work space
+is therefore $2^{O(n)}$; the time can be doubly exponential. This proves
+$\mathrm{EXPSPACE}\not\subseteq\mathrm P/\mathrm{poly}$ by an explicit
+recursive example. It asserts no reverse containment: unrestricted
+nonuniform advice can encode nonrecursive languages.
+\end{proof}
+
+\begin{theorem}[R13: a constructive universal circuit upper bound]
+\label{thm:R13}
+Every truth table on $n\geq1$ inputs has a circuit with at most
+$n2^n+n$ gates, constructed primitive recursively from the table.
+For $n\geq64$ there is a compiler producing a circuit $C$ with
+\[
+ n\,\operatorname{size}(C)\leq18\cdot2^n.
+\]
+Together with Theorem~\ref{thm:R11}, this gives the order
+$\Theta(2^n/n)$ for the maximum, over truth tables of length $2^n$, of
+minimum circuit size. No real asymptotic expression is needed for its
+integer formulation.
+\end{theorem}
+\begin{proof}
+First precompute the $n$ negated inputs. For every input assignment with
+table bit one, form the conjunction of its $n$ matching literals, then
+OR these terms. At most $2^n$ terms are present, and the zero-term case
+uses the constant zero wire. The bound $n2^n+n$ follows by charging
+$n-1$ gates to each conjunction and at most one OR gate per term.
+The correctness invariant says that each partial OR equals the union
+of the already processed accepted assignments.
+
+For the sharper bound put
+$m=\lfloor\log_2 n\rfloor-1$ and $q=n-m$. Then
+$n/4<2^m\leq n/2$. Split an input into a $q$-bit prefix $a$ and an
+$m$-bit suffix $b$. Precompute, as separate circuits, all the
+$2^{2^m}$ Boolean functions of $b$ by the preceding construction. Each
+requires at most $m2^m+m\leq n^2$ gates, so this library costs at most
+$n^2 2^{\lfloor n/2\rfloor}$ gates. For every prefix $a$, the input
+truth table explicitly specifies one residual function $b\mapsto H(a,b)$,
+whose output wire is now available.
+
+Build all prefix indicators using a shared binary prefix tree. First
+precompute the negations of the prefix input bits, at cost at most $n$.
+From the constant-one empty indicator, form the indicators for both
+extensions of every prefix by AND with the next literal. This costs
+less than $2^{q+1}$ gates. For each full prefix, AND its indicator with
+its residual-function wire, and OR the resulting $2^q$ terms. These last
+operations cost at most $2^{q+1}$ gates. Exactly one indicator is true
+on every input, so the output equals the specified residual function.
+The total gate count is at most
+\[
+ n^2 2^{\lfloor n/2\rfloor}+n+4\cdot2^q.
+\]
+For $n\geq64$, $n^3\leq2^{\lfloor n/2\rfloor}$: check $64$ and $65$,
+then use $(n+2)^3\leq2n^3$ for $n\geq8$ to advance by two.
+Consequently the first term, multiplied by $n$, is at most $2^n$.
+Also $n^2\leq2^n$. Finally $2^m>n/4$ gives
+$n\cdot4\cdot2^q<16\cdot2^n$. Adding the three integer bounds gives
+the claimed constant 18. All residual-table lookups and circuit wiring
+are bounded operations, so this is a uniform primitive-recursive
+compiler from a truth table to its circuit, although its input and output
+can themselves be exponentially large in $n$.
+\end{proof}
+
+\subsection{Decision-tree and communication lower bounds}
+
+A query tree is a coded finite rooted binary tree. Its internal vertices
+specify which input bit to inspect, and its leaves carry output bits.
+A comparison tree instead specifies comparisons between two input keys,
+and its leaves give permutations of the keys. Repeated queries are
+allowed; they can only increase the measured number of queries.
+
+\begin{lemma}[R14: finite tree capacity]\label{thm:R14}
+A binary tree of depth at most $h$ has at most $2^h$ leaves. An arbitrary
+finite binary tree has at most $2^h-1$ leaves at depth strictly below $h$.
+\end{lemma}
+\begin{proof}
+The first assertion follows by induction on $h$: a leaf contributes one,
+and otherwise the two subtrees each contribute at most $2^{h-1}$.
+Equivalently, map each leaf path to its extensions to length $h$; the
+extension sets are nonempty and disjoint. For the second assertion,
+encode a path of length $j<h$ by the integer $2^j$ plus its binary value.
+There are only $1+2+\cdots+2^{h-1}=2^h-1$ such codes. Distinct leaves
+give distinct path codes. These arguments can be implemented as bounded
+counts over the tree code, so no induction on arbitrary set-valued trees
+is required in the object language.
+\end{proof}
+
+\begin{theorem}[R15: comparison sorting requires many comparisons]
+\label{thm:R15}
+Any comparison tree that correctly sorts $n$ distinct keys has worst-case
+depth $h$ satisfying
+\[
+ 2^h\geq n!.
+\]
+If $n\geq4$, $a=\lfloor n/2\rfloor$, and
+$\ell=\lfloor\log_2 a\rfloor$, then $h\geq a\ell$.
+Under the uniform distribution on the $n!$ rank orders, the average
+comparison count is also $\Omega(n\log n)$ in an explicit integer form:
+for every $j$ with $2^j\leq n!/2$,
+\[
+ 2\sum_{\pi}\operatorname{depth}(\pi)\geq j\,n!.
+\]
+\end{theorem}
+\begin{proof}
+Represent the $n!$ orders by permutations of ranks $0,\ldots,n-1$.
+Each rank order has a unique permutation of positions that lists the
+keys increasingly. Two distinct rank orders cannot reach the same leaf
+of a correct tree, because that leaf specifies only one permutation.
+The map from rank orders to leaves is therefore injective. Enumeration
+of permutations, for example by factorial-radix codes, and a finite
+occupancy count prove that there are at least $n!$ leaves. Apply
+Lemma~\ref{thm:R14}.
+
+The largest $a$ factors in $n!$ are each at least $a$, so
+$n!\geq a^a\geq2^{a\ell}$. Strict monotonicity of powers of two gives
+$h\geq a\ell$. This avoids Stirling's formula and real logarithms in
+the proof. For the average bound, fewer than $2^j$ leaves can have depth
+below $j$. Hence at least $n!/2$ of the $n!$ rank orders have depth at
+least $j$, and summing their depths gives the displayed inequality.
+Choosing $j=\lfloor\log_2(n!)\rfloor-1$ when this is nonnegative gives
+the stated order bound. These conclusions are specifically about the
+comparison model; integer-key algorithms using other operations are not
+covered by the lower bound \cite{mit2010sorting}.
+\end{proof}
+
+\begin{theorem}[R16: exact deterministic query bounds]\label{thm:R16}
+The deterministic query complexity of $n$-bit OR, AND, and parity is $n$.
+For parity, every correctly answered input path must query all $n$ bits.
+For OR the all-zero path must query all bits, and for AND the all-one
+path must do so.
+\end{theorem}
+\begin{proof}
+Suppose the all-zero OR path omits position $i$. Flip only that position.
+Induction through the path shows every queried answer remains the same,
+so the same leaf is reached, although the correct OR value changes.
+The omitted position can be chosen as the least position absent from
+the recorded query list. The AND argument starts from the all-one input.
+For parity, flip any omitted position on any input; the transcript again
+remains unchanged and parity changes. These are explicit error witnesses.
+Reading all positions and folding OR, AND, or XOR gives matching upper
+bounds. The empty-input case has zero queries with its stipulated
+constant output.
+\end{proof}
+
+\begin{theorem}[R17: finite randomized query lower bounds]\label{thm:R17}
+Suppose a randomized query algorithm uses a fixed finite uniform seed
+space and at most $q$ queries on every input and seed, and errs on at
+most one third of seeds for every input. For $n$-bit OR, $3q\geq n$.
+For $n$-bit parity, $q\geq n$. The same parity conclusion applies to any
+error bound strictly below one half.
+\end{theorem}
+\begin{proof}
+Let the seed count be $R>0$. For OR, let $S_i$ be the set of seeds for
+which the run on the all-zero input queries position $i$. Couple that
+run to the run with only bit $i$ set, using the same seed. If the zero
+run does not query $i$, induction on the transcript shows the two runs
+are identical. They cannot both be correct because their OR values
+differ. The two error sets each have size at most $R/3$, so
+$R-|S_i|\leq2R/3$, or $3|S_i|\geq R$. On the other hand, each seed
+occurs in at most $q$ of the sets $S_i$, whence
+$\sum_i|S_i|\leq qR$. Summing the first inequalities gives
+$nR\leq3qR$; cancel $R>0$.
+
+For parity assume $q<n$. Fix a seed, obtaining a deterministic tree.
+For each reachable leaf, choose the least input position not queried on
+its path. Flipping that bit preserves the leaf and exchanges the two
+parity values. It is an involution without fixed points on the inputs
+reaching that leaf. Thus exactly half of those inputs are answered
+correctly by the leaf's fixed output. Summing over leaves, each seed is
+correct on exactly half of the $2^n$ inputs. Summing over the $R$ seeds
+therefore gives exactly $R2^n/2$ correct input--seed pairs. But correctness
+on at least two thirds of the seeds at every input gives at least
+$2R2^n/3$ such pairs, a contradiction after multiplying by six. More
+generally any strict majority guarantee contradicts the same exact
+half-count. The argument uses finite double counting and an explicitly
+computable pairing, not a minimax theorem.
+\end{proof}
+
+A deterministic two-party communication protocol is a finite binary tree.
+Each internal vertex specifies the speaker and a Boolean function of
+that speaker's input and the preceding transcript. A leaf gives the
+output to both participants. Communication cost is the maximum transcript
+length. Fixing this shared leaf-output convention matters for exact
+additive constants.
+
+\begin{lemma}[R18: rectangles and fooling sets]\label{thm:R18}
+For each protocol leaf the input pairs reaching it form a Cartesian
+product $X_0\times Y_0$. If a Boolean communication problem has a finite
+set $F$ of one-inputs such that two distinct $(x,y),(x',y')\in F$ have
+at least one zero cross-input $(x,y')$ or $(x',y)$, then every correct
+protocol has at least $|F|$ one-leaves, and $2^h\geq|F|$ for its cost $h$.
+\end{lemma}
+\begin{proof}
+At the root every input pair is possible. A message from Alice restricts
+only the first coordinate of the current Cartesian product, and a
+message from Bob restricts only the second. Induction on the transcript
+proves the rectangle assertion. If two distinct elements of $F$ reached
+one leaf, both cross-inputs would reach it as well. At least one has
+value zero, contradicting the one label required by the two elements of
+$F$. Thus $F$ injects into the one-leaves. Use the finite tree bound.
+All sets can be represented by bounded Boolean matrices and row/column
+bit vectors \cite{blais2025communication}.
+\end{proof}
+
+\begin{theorem}[R19: deterministic equality needs $n+1$ bits]
+\label{thm:R19}
+For $n\geq1$, equality of two $n$-bit strings has deterministic
+communication complexity exactly $n+1$ under the shared leaf-output
+convention.
+\end{theorem}
+\begin{proof}
+The $2^n$ diagonal pairs $(x,x)$ form a fooling set: for $x\ne x'$, the
+cross-pairs have unequal coordinates. Therefore at least $2^n$ leaves
+must be labelled one. Since $n\geq1$, a zero-input exists and must reach
+some zero-leaf. The tree has at least $2^n+1$ leaves, so $2^h>2^n$ and
+$h\geq n+1$. For the upper bound Alice sends her $n$ input bits; Bob
+compares with his input and sends the resulting answer bit. If only Bob
+is required to know the final answer, this last bit can be omitted and
+the corresponding exact bound becomes $n$. The $2^n$ diagonal pairs
+still require distinct transcripts: a shared transcript for $(x,x)$ and
+$(y,y)$ with $x\ne y$ would give Bob the same view on $(x,y)$ as on
+$(y,y)$ and force a wrong answer. Thus the lower bound $n$ persists.
+\end{proof}
+
+\begin{theorem}[R20: a constant-communication public-randomness equality test]
+\label{thm:R20}
+With $kn$ shared random bits, equality has a protocol communicating
+$k+1$ bits, having no false negatives and false-positive density exactly
+$2^{-k}$ on unequal inputs. In particular three communicated bits suffice
+for error at most one third, independently of $n$.
+\end{theorem}
+\begin{proof}
+View the shared bits as $k$ independent masks $u_j\in\{0,1\}^n$.
+Alice sends the $k$ parities $\langle x,u_j\rangle$ over the two-element
+field. Bob compares each with $\langle y,u_j\rangle$ and sends one if
+all match, zero otherwise. Equal strings always pass. For unequal strings
+let $i$ be their least differing coordinate. Flipping bit $i$ of a mask
+exchanges agreement and disagreement of the two inner products. Exactly
+half the masks collide, by the pairing lemma. Independence, expressed
+by the product count, gives exactly $2^{kn-k}$ colliding mask tuples.
+Taking $k=2$ gives error $1/4$ and cost three. The bound uses public
+randomness explicitly; it is not a claim about private-coin protocols.
+\end{proof}
+
+\subsection{Finite costs and amortized analysis}
+
+\begin{theorem}[R21: best, weighted average, and worst cost]
+\label{thm:R21}
+Let $c_0,\ldots,c_{N-1}$ be natural costs with $N>0$, and let
+$w_0,\ldots,w_{N-1}$ be natural weights of total $W>0$. If
+$b=\min_i c_i$ and $z=\max_i c_i$, then
+\[
+ bW\leq\sum_{i<N}w_ic_i\leq zW.
+\]
+Both extrema and the weighted sum are primitive recursive on the coded
+finite lists. These inequalities give best $\leq$ weighted average
+$\leq$ worst after rational interpretation.
+\end{theorem}
+\begin{proof}
+The bounded scan computing the minimum and maximum retains the least
+index achieving the running extremum. For every $i$, multiplication of
+$b\leq c_i\leq z$ by the nonnegative integer $w_i$ preserves order.
+Add these inequalities and use $\sum_i w_i=W$. The proof is induction
+on the list length with a numerical partial-sum invariant.
+\end{proof}
+
+There is no automatic ordering of an amortized bound between an
+input-distribution average and a worst-case single-operation cost.
+Amortized analysis controls totals along valid sequences of state changes;
+it is not a third statistic of the same finite input distribution. The
+following statement is the exact useful principle.
+
+\begin{theorem}[R22: the potential method over natural numbers]
+\label{thm:R22}
+For a finite state sequence $s_0,\ldots,s_m$, let $c_i$ be the cost of
+the transition $s_i\to s_{i+1}$, and let $\Phi(s)$ be a nonnegative
+integer potential. If
+\[
+ c_i+\Phi(s_{i+1})\leq a_i+\Phi(s_i)\qquad(i<m),
+\]
+then
+\[
+ \sum_{i<m}c_i+\Phi(s_m)
+ \leq\sum_{i<m}a_i+\Phi(s_0).
+\]
+In particular $\sum_{i<m}c_i\leq\sum_{i<m}a_i+\Phi(s_0)$.
+\end{theorem}
+\begin{proof}
+For $m=0$ the inequality is equality. Add the next transition inequality
+to the induction hypothesis and cancel the common intermediate potential
+$\Phi(s_m)$. This gives the inequality for $m+1$. The final consequence
+uses $\Phi(s_m)\geq0$. No subtraction in the natural numbers, and no
+assumption that each amortized charge is a realized single-operation
+cost, is needed.
+\end{proof}
+
+\begin{corollary}[R23: binary counters have constant amortized bit-flip cost]
+\label{thm:R23}
+Starting at zero, $m$ increments of an unbounded binary counter use at
+most $2m$ bit flips. More precisely, if $\nu(m)$ is the number of one bits
+in the final counter, the total number of flips is $2m-\nu(m)$.
+\end{corollary}
+\begin{proof}
+If the current value has $t$ trailing ones, the next increment changes
+those $t$ ones to zero and the following zero to one. Its cost is $t+1$,
+and the potential $\Phi=\nu$ changes from $\nu$ to $\nu-t+1$.
+Thus $c_i+\Phi(s_{i+1})=2+\Phi(s_i)$ exactly. Sum this identity and use
+$\Phi(0)=0$ to obtain total cost plus $\nu(m)$ equal to $2m$.
+The trailing-one count, population count, and binary increment are all
+bounded digit scans. This is a bit-flip statement: a particular tape
+implementation may require additional head-motion cost, which must be
+accounted for separately.
+\end{proof}
+
+
+\subsection{Lean targets and the remaining proof-lowering work}
+
+The file \texttt{lean/CountingOutline.lean} defines the semantic interfaces
+and target propositions for this section. It is an \emph{uncompiled outline},
+with no axioms or admitted theorem bodies, rather than a completed proof of
+these results. Its two elementary recursion equations are the only theorem
+bodies. The substantive targets are definitions of propositions whose proofs
+remain to be implemented.
+
+The first layer defines \texttt{sumBelow}, \texttt{countBelow}, least-witness
+specifications, product and union count targets, and finite random-machine
+families. The proof order is to establish the two recursion equations,
+induct on loop bounds for addition and monotonicity, prove radix product
+factorization, and then implement first-witness search. The weighted identity
+in R03 uses the same product lemma with values one and two in place of bits.
+R07 and R08 then require only the finite union bound, XOR permutations,
+and the machine-to-circuit compiler already developed in the NP section.
+The zero-error interface explicitly records truncated cost and answer;
+its operational instantiation must prove consistency of prefixes,
+absorbing halting states, and the fact that an unfinished $T$-step trace
+has cost exactly $T$. These conditions cannot be replaced by unrelated
+semantic cost and answer functions.
+
+The second layer defines gates, topologically valid circuits, a circuit
+interpreter, truth tables, the description bound, and hard-table and
+universal-upper-bound targets. The implementations follow the proof:
+bounded description enumeration, a marking-count invariant, and least
+missing-table search; then literal conjunctions, prefix indicators, and
+residual-function selection. The final layer supplies finite query trees,
+comparison trees, and communication protocols, together with their
+interpreters and depth functions. The principal lemmas are preservation of
+transcripts under an unqueried bit flip and preservation of Cartesian
+products along protocol paths. Counts of leaves, permutations, and mask
+pairs finish their lower bounds.
+
+All these Lean function and inductive-type parameters are a semantic
+presentation of the mathematics. For an actual \ipra{} derivation, instantiate
+them with the fixed primitive-recursive programs, encode every finite object
+as a natural number, and replace every bounded property by its Boolean
+compiler. Prove the loop invariants with the repository's quantifier-free
+induction rule and check the resulting object-language derivation. A kernel
+proof of an ambient Lean target alone would not establish that last fact.
+The thirteen independent checks in \texttt{code/random\_lower\_checks.py}
+exercise finite instances and exact identities; they supply implementation
+evidence and do not replace universal proofs.

@@ -1,0 +1,170 @@
+\section{Arithmetic language and constructive factorization}\label{sec:arith}
+
+Throughout, $[P]$ denotes the bit of a decidable predicate. Every divisor
+is positive. The value of $\mu$ at zero is immaterial and may be set to
+zero by an outer test. Write $\mathbf1(n)=1$ and $\varepsilon(n)=[n=1]$ on
+positive inputs. A function in a theorem schema means a fixed
+primitive recursive (PR) definition with its numerical parameters free,
+or a supplied finite table covering the computation.
+
+\paragraph{The object theory.}
+We use first-order intuitionistic arithmetic with defining equations
+for PR functions, the successor axioms, and induction on quantifier-free
+formulas. An integer can be represented by $(a,b)$ with value $a-b$.
+Equality to $(c,d)$ is $a+d=b+c$. Multiplication uses
+$(ac+bd,ad+bc)$. Rationals have a positive denominator and equality by
+cross multiplication. Finite lists can be built by iterated pairing,
+with length carried separately, so every access is a bounded recursion.
+Polynomial coefficients, residue classes, tables of finite operations,
+and tuples of rationals have codes of this kind.
+For a decidable test $R(i,\mathbf u)$ and a PR bound $B$,
+$\prod_{i<B}[R(i,\mathbf u)]=1$ expresses that every test passes.
+The sum of the bits has positive sign if a witness exists, and the first
+witness is found by a scan of $B$ entries. A proof by strong induction
+on a decidable matrix uses ordinary induction on the product of all its
+preceding bits. Finite sums below are reindexed by explicit maps or by
+partitioning a bounded rectangle into its fibers.
+
+The real notation abbreviates arithmetic statements about rational
+approximants. For example, a tail estimate means a universal statement
+in the precision and the two truncation indices, after clearing positive
+denominators and adding the evaluation tolerance. Complex
+inputs may be Gaussian rationals or fixed PR Cauchy names with a supplied
+modulus, size bound and the indicated domain margins. Proofs about such
+names are schemata in the defining algorithms. A finite input version
+takes the needed samples and tests the finitely many error bounds in the
+proof. No quantification over infinite sequences is part of iPRA.
+
+\paragraph{Division and prime factors.}
+For $n>0$, define $p\mid n$ by a zero remainder for $p>0$.
+Primality of $p\ge2$ is the absence of divisors between $2$ and $p-1$.
+Define $v_p(n)$ for $p\ge2$ by the largest $j\le n$ such that $p^j\mid n$.
+The search is bounded because $2^j\ge j+1$. Every $n>1$ has a least
+divisor $p>1$, obtained by scanning through $n$. A proper factor of
+$p$ would contradict leastness, so $p$ is prime. Repeatedly divide the
+current remainder by its least prime, stopping at $1$ and then padding
+with idle steps. A nonidle step strictly decreases the remainder, hence
+$n$ steps suffice. The product of extracted primes times the remainder
+is always $n$.
+
+For uniqueness, the Euclidean divisions of $a,b$ strictly decrease the
+nonzero remainder. Back substitution through this bounded list gives
+integers $u,v$ with $ua+vb=\gcd(a,b)$. Initially represent $a,b$ by
+$(1,0),(0,1)$ and subtract quotient times the preceding representation
+at each division. Thus $p\nmid a$ implies $ua+vp=1$ for prime $p$, so
+$p\mid ab$ forces $p\mid b$. Apply this lemma successively along any
+second list representing $n$, cancel the matching prime, and induct
+on list length. This proves uniqueness up to permutation, additivity
+$v_p(ab)=v_p(a)+v_p(b)$, and the bijection between divisors of $n$
+and exponent vectors $0\le e_p\le v_p(n)$. Both directions of this
+bijection are bounded computations (take valuations, or multiply prime
+powers). These arguments can also start from ProveIt's valuation and
+Bézout derivations.
+
+\section{Cancellation, inversion, and counting}\label{sec:core}
+Set
+\[
+ \omega(n)=\sum_{\substack{p\le n\\p\text{ prime}}}[v_p(n)>0],\quad
+ \Omega(n)=\sum_{\substack{p\le n\\p\text{ prime}}}v_p(n),\quad
+ S(n)=\prod_{\substack{p\le n\\p\text{ prime}}}[v_p(n)\le1].
+\]
+Define $\lambda(n)=(-1)^{\Omega(n)}$ and $\mu(n)=S(n)(-1)^{\omega(n)}$.
+Thus $\mu(1)=1$, $\mu(p)=-1$, $\mu(p^a)=0$ for $a\ge2$.
+A square divisor $t^2$ with $t>1$ supplies a prime $p\mid t$. Conversely
+$p^2\mid n$ is already such a divisor. This proves
+\[
+ |\mu(n)|=\mu(n)^2=S(n),\qquad
+ \mu(n)=[\omega(n)=\Omega(n)]\lambda(n).
+\]
+Indeed every positive exponent contributes one to $\omega$, and the
+excess in $\Omega$ is a sum of nonnegative integers. If $a,b$ are
+coprime their prime supports are disjoint, so both the squarefree
+indicator and the sign factor multiply. If $\gcd(a,b)>1$, its least
+prime divisor has square dividing $ab$, giving $\mu(ab)=0$.
+All these alternatives are decidable. For instance $30=2\cdot3\cdot5$
+is the least composite with $\mu=-1$. A squarefree composite with an odd
+number of prime divisors needs at least three, and its three smallest
+are at least $2,3,5$. The same argument gives $2310=2\cdot3\cdot5\cdot7\cdot11$
+as the first integer with five distinct prime factors.
+
+\begin{theorem}[Divisor cancellation]
+For $n\ge1$,
+\[
+ \sum_{d\mid n}\mu(d)=\varepsilon(n),\qquad
+ \sum_{d\mid n}|\mu(d)|=2^{\omega(n)}.
+\]
+If $n>1$, exactly $2^{\omega(n)-1}$ divisors have each nonzero sign.
+\end{theorem}
+\begin{proof}
+List the distinct prime divisors of $n$ in increasing order. Its squarefree
+divisors are in bijection with bit masks of length $\omega(n)$ by the
+product of the selected primes. For $n>1$ flip the first bit. This is
+a fixed-point-free involution reversing the parity of the number of
+selected bits. Exactly one member of each pair has its first bit clear.
+The other bits are unrestricted. For $n=1$ there is one empty mask.
+Grouping the masks by their number of selected bits gives also
+$\sum_j(-1)^j\binom rj=[r=0]$.
+\end{proof}
+
+Define the Dirichlet convolution
+$(f*g)(n)=\sum_{d\mid n}f(d)g(n/d)$. It is commutative for scalar functions by
+$d\leftrightarrow n/d$, associative because both bracketings enumerate
+the same ordered triples with product $n$, and has unit $\varepsilon$.
+For coprime $u,v$, the divisors of $uv$ are exactly $ab$ with $a\mid u$,
+$b\mid v$. Factoring the two finite sums shows that convolution preserves
+multiplicativity. The theorem says $\mu*\mathbf1=\varepsilon$.
+It uniquely specifies $\mu$. Its value at $1$ must be $1$, and at
+$n>1$ it is minus the sum over proper divisors. This triangular recursion
+also computes $\mu$ without factoring, by building a table through $n$.
+\begin{theorem}[Two-sided inversion]
+For fixed integer-valued PR functions, $F(n)=\sum_{d\mid n}f(d)$ for
+all $n\ge1$ if and only if
+$f(n)=\sum_{d\mid n}\mu(d)F(n/d)$ for all $n\ge1$.
+The same holds up to any fixed bound and in a coded abelian group.
+\end{theorem}
+\begin{proof}
+Convolve the forward equality with $\mu$, or the reverse one with
+$\mathbf1$, and use associativity and the unit. On a finite interval
+all arguments on the right are at most the point being evaluated.
+For group-valued $f$, expand integer multiples by repeated addition
+and inverse and use the same finite reindexing.
+\end{proof}
+In particular $\tau=\mathbf1*\mathbf1$ counts the divisors, and
+$\mu*\tau=\mathbf1$. Also $\sum_{d\mid n}\varphi(d)=n$. The integers
+$1\le k\le n$ with $n/\gcd(k,n)=d$ correspond to the residues coprime
+to $d$ by dividing $k$ by $n/d$. Inversion gives
+$\varphi(n)=\sum_{d\mid n}\mu(d)n/d
+ =n\prod_{p\mid n}(1-1/p)$, by expansion over the prime masks.
+Clearing denominators gives the integer formulation.
+
+For $N\ge1$, group the pairs $dk\le N$ by their product, or by $d$, to get
+\[
+ 1=\sum_{d\le N}\mu(d)\lfloor N/d\rfloor
+  =\sum_{k\le N}M(\lfloor N/k\rfloor),\quad
+ M(0)=0,\quad M(N)=1-\sum_{k=2}^N M(\lfloor N/k\rfloor).
+\]
+The prime masks in $\sum_{d^2\mid n}\mu(d)$ give one factor $1-1$ for
+every $p^2\mid n$ and an empty product otherwise. Consequently
+\[
+  S(n)=\sum_{d^2\mid n}\mu(d),\qquad
+  Q(N):=\sum_{n\le N}S(n)
+     =\sum_{d\le\lfloor\sqrt N\rfloor}\mu(d)\lfloor N/d^2\rfloor.
+\]
+For $D=\lfloor\sqrt N\rfloor\ge1$ the floor errors total at most $D$,
+and $\sum_{d>D}d^{-2}\le1/D$ by comparison with
+$1/(d(d-1))$. Thus $|Q(N)/N-1/\zeta(2)|\le D/N+1/D\le2/D$,
+using the Dirichlet identity proved below. This gives squarefree density
+$6/\pi^2$ with a modulus. The counts with signs $+$ and $-$ are
+$(Q(N)\pm M(N))/2$. Their common density is $3/\pi^2$ by the mean
+estimate below.
+
+\paragraph{Occupation-number interpretation.}
+A vector of prime occupation numbers with finite support maps to
+$n=\prod_p p^{a_p}$ and has energy $\sum a_p\log p=\log n$.
+The inverse is the valuation vector. Restricting $a_p$ to $0,1$ selects
+the squarefree integers. Their parity sign is $(-1)^{\sum a_p}$.
+Assigning zero to excluded integers gives exactly $\mu$.
+For a cutoff $n\le N$ this is an explicit bijection of finite tables.
+Removing the cutoff under the absolutely convergent weights $n^{-s}$
+gives the partition sums $\zeta(s)$, $\zeta(s)/\zeta(2s)$, and
+$1/\zeta(s)$ in the unrestricted, restricted, and signed cases.

@@ -1,0 +1,548 @@
+\section{Metric topology at all precisions}
+\label{sec:metric-names}
+
+The source article says that a metric defines a topology, gives compactness and
+connectedness as examples of invariants, and compares a cube and a sphere.
+The linked articles on metric spaces and compact spaces also discuss completeness,
+uniform continuity, finite nets, and extrema. Here the points themselves can carry
+infinitely many approximations. Each approximation, each accuracy request, and
+each construction used to answer it has an arithmetic meaning.
+
+\subsection{Points and balls}
+
+Use a coded countable dense domain $D$ with a primitive-recursive (PR)
+rational metric $d$ and its three metric laws. The examples below are rational
+vectors with $d(u,v)=\max_i |u_i-v_i|$, including the one-dimensional case,
+and rational vectors in a cube. Write $e_p=2^{-p}$. A \emph{name} is a fixed PR
+recipe $x_p\in D$, with its numerical parameters suppressed, satisfying
+\[
+ d(x_p,x_q)\le e_p+e_q\qquad(p,q\ge0).
+\]
+For a rational $a\ge0$ abbreviate by $D(x,y)\le a$ the arithmetic sentence
+\[
+ \forall p,q\quad d(x_p,y_q)\le e_p+a+e_q .
+\]
+Equality of points means $D(x,y)\le0$. Apartness means that some pair
+$p,q$ violates the last inequality with $a=0$. A rational point is named by
+its constant recipe. Quantifiers over names, dense-domain operations, or
+moduli throughout this section specify theorem schemes, with their displayed
+numerical assumptions as antecedents. In particular no number is evaluated as
+the code of an arbitrary PR function.
+
+\begin{lemma}[Error removal, density, and the metric laws]\label{idx-metric32}
+If a rational inequality $b\le c+C e_h$ holds for every sufficiently large
+$h$, with a given rational $C\ge0$, then $b\le c$. The relations
+$D(x,y)\le a$ are symmetric and satisfy the triangle inequality in the sense
+of adding bounds. Equality is an equivalence relation. Each $x_p$ is within
+$e_p$ of $x$.
+\end{lemma}
+\begin{proof}
+Decide the rational comparison. If $b-c>0$, write $b-c=u/v$ with positive
+integer numerator and denominator. Take $h$ at least the given threshold and
+at least $v(\lceil C\rceil+1)+1$. Then $2^h>vC$, which contradicts
+the proposed inequality. For the triangle inequality bridge through the
+$h$th entry of the middle name. This adds $2e_h$ to the desired rational
+bound at fixed outer indices. Remove that error by the first assertion.
+Reflexivity is regularity of a name, and symmetry comes from $d$. For density,
+$d(x_p,x_q)\le e_p+e_q$ is precisely the required estimate against a
+constant name (one may remove the constant name's extra error).
+\end{proof}
+
+\begin{proposition}[A countable basis and separation]\label{idx-metric51}
+Rational balls form a countable basis on the named completion. PR-indexed
+unions of presented opens and finite intersections of presented opens are
+presented opens. Apart points have disjoint rational neighborhoods, and
+failure of apartness implies equality.
+\end{proposition}
+\begin{proof}
+A certificate for $x\in B(c,r)$ is an index $p$ with
+$d(x_p,c)+e_p<r$. Passing to a different name for $x$ preserves membership:
+at a sufficiently large stage $h$, the excess error $2e_h$ is smaller
+than the displayed rational margin. The same calculation works for closeness
+to a constant point: if $D(x,c)\le b<r$, taking $2e_h<r-b$ gives a
+membership certificate.
+
+Suppose $x$ belongs to two rational balls, with certificates for each.
+Let $m>0$ be the smaller of their two rational margins, and take $h$ with
+$4e_h<m$. The ball $B(x_h,2e_h)$ contains $x$ and lies inside both balls:
+for each original center $c$, the triangle inequality gives
+$d(x_h,c)+2e_h\le d(x_p,c)+e_p+3e_h<r$.
+A presented open is a PR-indexed list of balls with a bit enabling each
+entry. The empty list and the list of all balls present the empty and whole
+spaces. To intersect two lists, enumerate triples of two enabled entries
+and a rational ball $B(c,s)$ satisfying $d(c,c_j)+s<r_j$ for both entries.
+These rational tests are decidable, and the refinement just proved shows the
+result is exact. Use pairing of indices for a PR double list to take its union;
+iterate the binary construction for any fixed finite number of lists.
+For a uniformly given finite input family one can instead code all original
+indices in a single tuple and make all its containment tests in a bounded scan.
+
+For apart points take a certificate with rational surplus
+$m=d(x_p,y_q)-e_p-e_q>0$. Balls at $x_p,y_q$ of radii $e_p+m/3,e_q+m/3$
+contain the respective points and are disjoint, since their radii sum to less
+than the distance of their centers. If no certificate exists, each individual
+rational test for a violation fails by decidability. These inequalities give
+equality. The weaker negative statement that two names are unequal does not
+supply the positive margin used in the separation construction.
+\end{proof}
+
+\subsection{Completion and extension from a dense domain}
+
+\begin{theorem}[Completion with a Cauchy modulus]\label{idx-metric91}
+Let $x_{i,p}$ be a PR double array of names and $M$ a PR modulus such that
+$i,j\ge M(k)$ implies $D(x_i,x_j)\le e_k$. Then a PR name $z$ satisfies
+$D(x_i,z)\le e_k$ for every $i\ge M(k)$ and is the unique limit up to
+equality. Thus the represented Euclidean space, and the represented closed
+cube, are complete for such sequences.
+\end{theorem}
+\begin{proof}
+Replace $M(k)$ by $\max_{j\le k}M(j)$ for constructing the name. Call this
+larger bound $M^*(k)$ and put $z_p=x_{M^*(p+1),p+1}$. For $p\le q$ the
+outer indices both exceed or equal $M(p+1)$, so
+$d(z_p,z_q)\le 2e_{p+1}+e_{q+1}\le e_p+e_q$. For the stated convergence
+use any $i\ge M(k)$ and fixed $s,q$. Bridge from $x_{i,s}$ to $z_h$ and
+then $z_q$, with $h\ge k$. The bound is
+$e_s+e_k+e_{h+1}+e_h+e_q$. Remove the vanishing errors.
+Two limits with moduli are within $2e_k$ for every $k$ by bridging through
+an index at least both convergence thresholds, giving equality.
+All entries remain in the dense cube if the input entries lie there. A
+coordinatewise bounded name may also be clipped to the closed cube at each stage:
+clipping is 1-Lipschitz and moves a stage by at most its certified error if
+the named point belongs to the cube. Componentwise clipping fixes the named
+point by error removal.
+\end{proof}
+
+For the next theorem the source and target may have different rational
+metrics. A map on the dense source consists of a PR array $A(u,p)$ forming a
+target name for each $u$, together with a nondecreasing PR modulus $\mu$ such
+that
+\[
+ d(u,v)\le e_{\mu(k)}\quad\Longrightarrow\quad D(A(u),A(v))\le e_k .
+\]
+A nonmonotone supplied modulus can first be replaced by its running maximum.
+
+\begin{theorem}[Uniform extension and open inverse images]\label{idx-metric124}
+There is a unique uniformly continuous extension to names, up to equality.
+Its modulus can be taken to be $\nu(k)=\mu(k)+1$. Its inverse images of
+presented opens are presented opens. Identity and composition preserve this
+class of maps, and compositions have the composed moduli.
+\end{theorem}
+\begin{proof}
+Put $n(p)=1+\max(p,\mu(p+1))$ and
+$F(x)_p=A(x_{n(p)},p+1)$. For $p\le q$ and equal names $x,y$ the arguments
+$x_{n(p)},y_{n(q)}$ differ by at most $2e_{n(p)}\le e_{\mu(p+1)}$.
+The two target samples differ by at most $2e_{p+1}+e_{q+1}\le e_p+e_q$.
+Interchanging the roles handles the other order of indices. This proves both
+regularity and independence of representatives. On constant names the
+reindexing $p\mapsto p+1$ preserves equality by regularity.
+
+If $D(x,y)\le e_{\mu(k)+1}$, then at all sufficiently large $h$ the two
+arguments at stage $n(h)$ differ by at most
+$e_{\mu(k)+1}+2e_{n(h)}\le e_{\mu(k)}$. Hence their output samples at
+stage $h+1$ differ by at most $e_k+2e_{h+1}$. Bridge to arbitrary fixed
+outer samples by regularity and remove the errors depending on $h$. For
+uniqueness compare two candidate extensions at $x$ through a rational
+approximant $x_h$ within both input thresholds for target error $e_k$.
+They agree there, so their outputs at $x$ differ by at most $2e_k$ for all
+$k$. For composition use the computed target name as input to the next
+extension and compose its accuracy requests in reverse application order.
+
+For an output ball $B(b,r)$ enumerate every source ball
+$B(c,e_{\nu(k)})$ with $c$ rational for which some stage $p$ gives
+\[
+ d(A(c,p),b)+e_p+e_k<r.
+\]
+Both $k$ and $p$ occur in the enumeration index. Uniform continuity proves
+the containment in the inverse image. Conversely, if $F(x)\in B(b,r)$
+its certificate gives a positive margin $m$. Choose $3e_k<m$ and $c=x_h$
+with $2e_h<e_{\nu(k)}$. Then $x$ belongs to the enumerated candidate
+source ball and $D(F(c),F(x))\le e_k$. At a sufficiently large stage $p$,
+$d(A(c,p),b)+e_p+e_k\le r-m+2e_k+2e_p<r$. This certifies the entry.
+Take the double union for any presented output open.
+\end{proof}
+
+\subsection{Grids, covers, and extrema}
+
+\begin{theorem}[Quantitative compactness of a cube]\label{idx-metric166}
+For $Q=[0,1]^d$ in the maximum metric and every $k$, the explicit grid
+\[
+ G_k=\{0,1/2^{k+2},\ldots,1\}^d
+\]
+is an open $e_k$-net of $(2^{k+2}+1)^d$ points. A ball cover with a
+supplied local selection at one uniform scale admits an explicit finite
+subcover. Uniformly continuous images of the cube are totally bounded.
+\end{theorem}
+\begin{proof}
+Round each coordinate of the clipped stage $x_{k+2}$ down to the mesh of
+$G_k$ by integer division. The rational rounding costs at most $e_{k+2}$,
+so the named point is within $e_{k+1}$ of the returned grid point. This
+leaves a strict margin for radius $e_k$.
+Here is the precise cover input. For every $g\in G_k$ a given PR selector
+(or a supplied table) returns an enabled index $j(g)$ of a ball $B(c_j,r_j)$
+and $d(g,c_j)+e_k\le r_j$. Retain this finite list of indices. For each
+$x$, the preceding rounding supplies a $g$ with $D(x,g)\le e_{k+1}$.
+The triangle inequality gives a strict membership certificate in the selected
+ball, because $e_{k+1}<e_k$. An actual uniform Lebesgue-radius selector,
+valid at all rational centers, supplies precisely such a table on the grid;
+larger original open sets can receive balls with certified inclusion.
+The proof uses the uniform scale supplied with the cover.
+
+For an image net at radius $e_k$, apply the grid construction at input scale
+$\nu(k+1)$ and map its centers through $F$. Every image point is within
+$e_{k+1}$ of one of these finitely many image points. If a net in the target
+dense domain is desired, replace each image center by its rational stage
+$k+2$, leaving a strict margin. The resulting rational centers need not
+themselves belong to the image.
+\end{proof}
+
+\begin{proposition}[Deciding rational box covers and computing a Lebesgue radius]\label{idx-metric198}
+\label{prop:boxcover}
+Given a finite list of rational open boxes $B_i=\prod_{j=1}^{d}(l_{ij},u_{ij})$,
+there is a PR test for whether their restrictions cover $[0,1]^d$. Failure
+returns a missed rational point. Success returns a rational $\lambda>0$
+and a PR selection from each named point $x$ of one original box containing
+the entire relative ball of radius $\lambda$ about $x$. This applies in
+particular to finite lists of rational open balls in the maximum metric.
+\end{proposition}
+\begin{proof}
+In dimension zero the cube and every empty product are singletons.
+If the list is empty return the empty tuple as a missed point; otherwise
+use the first box and $\lambda=1$. Now let $d\ge1$. Discard boxes with
+any $l_{ij}\ge u_{ij}$, retaining the original indices of the others.
+For each coordinate $j$, sort the distinct numbers in the list $E_j$
+consisting of $0,1$ and all endpoints in that coordinate, including
+endpoints outside $[0,1]$. Within $[0,1]$ take each breakpoint itself
+and the midpoint of each pair of consecutive breakpoints as representatives.
+Test every tuple of representatives for membership in some retained box,
+using strict rational comparisons. If any tuple fails, return it.
+Otherwise every rational point is covered: replace each of its coordinates
+by the representative of the same singleton or open interval. All strict
+comparisons with original endpoints are preserved, including comparisons
+at a face or corner of the cube. If there are $b$ original boxes, at most
+$(4b+3)^d$ tuples are tested. In particular an empty list fails.
+
+On success let $4\delta$ be the smallest positive difference between
+consecutive members of any $E_j$. There is such a difference since
+$0,1\in E_j$. For a rational point $v$ in the cube, snap each coordinate
+within $\delta$ of a breakpoint to that breakpoint, leaving other
+coordinates alone, to form $v'$. The candidate is unique when it exists.
+It lies in $[0,1]$ because every breakpoint outside that interval is at
+least $4\delta$ away from the nearer endpoint $0$ or $1$. Scan the boxes
+for one containing $v'$. For every snapped coordinate both boundaries of
+this box are distinct breakpoints from the snapped value and hence at least
+$4\delta$ away from it. At the original coordinate they are at least
+$3\delta$ away. An unsnapped coordinate was already more than $\delta$
+from every breakpoint. Thus on every coordinate $v$ has slack at least
+$\delta$ inside this one box.
+
+Return $\lambda=\delta/2$. For a named point $x$, take a clipped rational
+sample $v$ at a fixed stage $h$ with $2^{-h}<\delta/4$ (for example
+$h=1+\lceil4/\delta\rceil$). Apply the preceding selection to $v$.
+Every named point of the relative ball about $x$ is within
+$\delta/4+\delta/2<\delta$ of $v$ in the maximum metric and therefore
+belongs to that box, with a positive coordinate margin. Sorting, finding
+the minimum gap and scanning the boxes use only finite rational data.
+\end{proof}
+
+\begin{corollary}[Extremal values with near-optimizers]\label{idx-metric247}
+For a real-valued map $F$ as above on a nonempty cube the supremum and
+infimum exist as PR names. At precision $p$ one can return a rational point
+$q_p$ with $F(x)\le F(q_p)+e_p$ for every $x$.
+\end{corollary}
+\begin{proof}
+Use $G_{\nu(p+2)}$ and form the rational maximum $m_p$ of stage $p+2$
+output samples on that grid, retaining any maximizing index $q_p$.
+Every sample differs from its named value by at most $e_{p+2}$.
+Uniform continuity and rounding thus give
+$F(x)\le m_p+2e_{p+2}$ for every $x$, whereas
+$m_p\le F(q_p)+e_{p+2}$. The two errors sum to less than $e_p$.
+In particular $m_p\le m_q+e_{p+2}+2e_{q+2}$ and the reverse estimate
+holds with $p,q$ interchanged. Thus $(m_p)$ is regular. The inequalities
+show by error removal that its value bounds $F$ above and lies below every
+upper bound. Apply the same argument to $-F$ for the infimum.
+Here and below an inequality between two scalar names is read at stages,
+with the sum of the two stage errors allowed. This construction provides
+the extremal value and the requested near-optimizer at each precision;
+it supplies no convergence modulus for the sequence of optimizing points.
+\end{proof}
+
+The line already has a PR open cover with no finite subcover:
+$B(0,n+1)$ for $n\in\mathbb N$. A first rational sample and its error
+bound give an index covering each named point. For any finite nonempty
+selection with largest index $N$, the rational $N+2$ lies outside all
+selected balls. The empty selection misses $0$ as well.
+
+\subsection{Paths, a discrete test for connectedness, and intermediate values}
+
+\begin{theorem}[Contractibility and a connectedness test]\label{idx-metric277}
+The cube is path connected and contractible by maps with explicit moduli.
+Any PR coloring of its rational points by two bits that is locally constant
+at every named point is constant. This last assertion requires no uniform
+modulus of local constancy.
+\end{theorem}
+\begin{proof}
+For two named points $u,v$ use $t\mapsto (1-t)u+tv$ for $0\le t\le1$.
+For rational $t$ compute the indicated convex combination on the same
+stages of both names. Its error against another such stage is bounded by
+the same convex combination of the two error bounds. Varying $t$ costs
+at most $|t-t'|$ since each coordinate difference in the unit cube has
+magnitude at most one. Extension gives the entire path. Fix an anchor $a$
+and put $H(x,t)=(1-t)x+ta$. Changing $x$ costs at most its displacement
+and changing $t$ costs at most its displacement. Thus $k+1$ is a modulus
+for the product maximum metric at target precision $k$. The endpoints
+are the identity and the constant map, and $H(a,t)=a$.
+
+For the second assertion, local constancy means that at every named $z$
+there exist a positive rational radius and a bit such that every rational
+point within this radius of $z$ has that bit. If two rational endpoints
+have different bits, bisect their segment and query its rational midpoint.
+Keep that half whose endpoint bits still differ. All choices are comparisons
+of rational-point bits. After $n$ steps the endpoints are at distance at
+most $2^{-n}$, and subsequent segments are contained in this segment.
+The sequence of left endpoints therefore forms a PR regular name $z$, and
+both endpoints of the $n$th segment are within $2^{-n}$ of it. These
+assertions follow by bounded induction on intermediate subdivision steps:
+each retained segment is a subsegment, and its length halves. Choose $n$
+with $2^{-n}$ smaller than the radius supplied at $z$. Both endpoints must
+now have the same bit, a contradiction. Thus all rational points have one
+bit. A rational approximant to any $z$ in its local constancy neighborhood
+has that same bit. This proves the claimed test. It rules out clopen
+partitions whose side on rational inputs has a PR decision procedure and
+whose local membership is witnessed on all named points.
+\end{proof}
+
+\begin{theorem}[Intermediate values and a fixed point at prescribed accuracy]\label{idx-metric314}
+Let $F:[0,1]\to\mathbb R$ be given by the dense-domain array and modulus,
+and suppose $F(0)\le0\le F(1)$. A PR construction returns $t_p\in[0,1]
+\cap\mathbb Q$ satisfying $|F(t_p)|\le e_p$. If the actual values of $F$
+on rational inputs are given by a rational-valued PR function, one can
+instead construct a single named point $t$ with $F(t)=0$.
+Every uniformly presented self-map of the interval consequently has
+approximate fixed points, and the rational-valued-on-rationals case has
+an exact named fixed point.
+\end{theorem}
+\begin{proof}
+Put $s=p+2$ and $N=2^{\mu(s)}$. At $i/N$ for $0\le i\le N$
+take an output sample $v_i$ of precision $s$. If $v_0\ge0$ then
+$-e_s\le F(0)\le0$. If $v_N<0$ then $0\le F(1)\le e_s$.
+In the remaining case scan for the first $i$ with $v_i\ge0$.
+Its predecessor has $v_{i-1}<0$, hence $F((i-1)/N)\le e_s$.
+The mesh and the dense-domain modulus give $F(i/N)\le 2e_s$,
+while $v_i\ge0$ gives $F(i/N)\ge-e_s$. Return the indicated sample
+point. Subtracting a target value reduces other intermediate values to zero
+provided its name and the shifted evaluation scheme are supplied.
+
+For exact rational evaluation bisect $[0,1]$. Keep $[a,m]$ when the
+midpoint value is nonnegative, and $[m,b]$ otherwise. Each step preserves
+$F(a)\le0\le F(b)$ and halves the length. The left endpoints give a PR name
+$t$, within $2^{-n}$ of both endpoints of the $n$th interval. For every
+$k$ choose $n\ge\nu(k)$; extension continuity and the two endpoint
+inequalities give $-e_k\le F(t)\le e_k$. Error removal proves equality.
+In this bisection the comparison at a possible zero is a decidable
+comparison of rationals. For the fixed-point assertions apply the
+corresponding construction to $t-F(t)$ with the displayed endpoint signs.
+For a dense-domain modulus $\mu$ of $F$, the difference has modulus
+$k\mapsto\max(k+1,\mu(k+1))$.
+\end{proof}
+
+\subsection{A cube boundary, a round sphere, and the open interval}
+
+\begin{theorem}[Radial homeomorphism, uniformly in the dimension]\label{idx-metric350}
+For $d\ge1$ the closed cube $[-1,1]^d$ and the closed Euclidean unit ball
+are homeomorphic. The restriction takes the cube boundary homeomorphically
+onto the unit sphere. In maximum-metric coordinates the forward and
+inverse maps have Lipschitz constants at most $d+2$ and $3d$ respectively.
+In particular the boundary of a square is homeomorphic to a circle.
+\end{theorem}
+\begin{proof}
+Put $a(x)=\max_i|x_i|$ and $s(x)=(\sum_i x_i^2)^{1/2}$. The maximum and
+the sum are finite folds. A square root of a nonnegative rational $v$ is a
+regular name: halve $[0,1+\lceil v\rceil]$ repeatedly, testing whether
+the rational midpoint squared exceeds $v$, and take an endpoint once the
+interval length is at most $e_p$. At most $p+1+\lceil v\rceil$ halvings
+suffice. The nested intervals give a unique nonnegative value of square $v$,
+since the error in the square is bounded by twice the initial upper bound
+times the interval length. For a nonnegative named scalar the same procedure
+applies to its nonnegative rational sample at stage $2p+4$, using the
+inequality $|\sqrt{u}-\sqrt{v}|\le\sqrt{|u-v|}$ (square both sides after
+ordering rational inputs). Computing the rational sample's square root to
+precision $p+2$ leaves total error at most $2e_{p+2}$.
+Multiplication on a bounded interval is PR on names: bounds from the zeroth
+samples plus one control the errors in each factor. To divide by a positive
+quantity with rational lower bound $b$, clip denominator samples below at
+$b$; the reciprocal changes by at most $b^{-2}$ times the sample error.
+Thus the arithmetic below has PR realizers with bounded precision requests.
+
+For rational $x\ne0$ define
+\[
+ P(x)=a(x)\frac{x}{s(x)},\qquad T(x)=s(x)\frac{x}{a(x)} .
+\]
+Set both values to zero at the rational origin. Each nonzero rational input
+has the explicit lower bound $a(x)>0$ for both denominators. To extend
+across the origin and to arbitrary named inputs we prove uniform estimates.
+For rational $x,y$ write $\delta=a(x-y)$. We have
+$|a(x)-a(y)|\le\delta$ and $a(x)\le s(x)\le d\,a(x)$ by summing squares.
+Furthermore
+\[
+ |s(x)^2-s(y)^2|
+ \le\sum_i|x_i-y_i|(|x_i|+|y_i|)
+ \le d\delta\,(s(x)+s(y)).
+\]
+When either rational vector is nonzero there is a rational positive lower
+bound on the sum in parentheses, giving $|s(x)-s(y)|\le d\delta$ by
+division. If both are zero the inequality is immediate.
+
+For nonzero $x,y$ set $N_s(x)=x/s(x)$. Writing the difference with first
+denominator $s(x)$ and using $|y_i|/s(y)\le1$ gives
+\[
+ a(N_s(x)-N_s(y))\le(\delta+|s(x)-s(y)|)/s(x).
+\]
+Split $P(x)-P(y)$ into
+$a(x)(N_s(x)-N_s(y))+(a(x)-a(y))N_s(y)$. Since $a(x)\le s(x)$ this
+costs at most $(d+2)\delta$. The identical subtraction with
+$N_a(x)=x/a(x)$ gives $a(N_a(x)-N_a(y))\le2\delta/a(x)$.
+Split $T(x)-T(y)$ using $s(x)\le d\,a(x)$ and the bound on
+$|s(x)-s(y)|$ to get $3d\delta$. With one argument zero use
+$a(P(x))\le a(x)$ and $a(T(x))=s(x)\le d\,a(x)$.
+A Lipschitz constant $L\ge1$ gives the PR modulus $k+\lceil L\rceil$.
+Consequently both maps extend to all named vectors.
+
+At a vector with a witnessed positive lower bound for $a(x)$ the extended
+formulas agree with the displayed quotients: nearby rational approximants
+have half the given lower bound, so the reciprocal estimate proves equality
+by error removal. For rational nonzero $x$ one has $s(P(x))=a(x)$ and
+$a(P(x))=a(x)^2/s(x)>0$, and direct substitution gives $T(P(x))=x$.
+Likewise $a(T(x))=s(x)>0$ and $P(T(x))=x$. At the rational origin both
+identities hold by construction. Equality on the dense rational domain
+extends to all names by the uniqueness argument above. The identities
+$s(P(x))=a(x)$ and $a(T(x))=s(x)$ extend in the same way. They show
+exactly what happens to the closed unit sets and their boundaries.
+No zero test on a named vector was used.
+\end{proof}
+
+There is also a quantitative version of the article's distinction between
+the circle and the line. The boundary of $[-1,1]^2$ has four rational
+edge grids of mesh $e_{k+2}$. For a boundary name $x$, take its clipped
+stage $k+3$. A coordinate of largest absolute rational value is within
+$e_{k+3}$ of magnitude one because $a(x)=1$. Move that coordinate to its
+signed endpoint and round the other coordinate down on the edge grid.
+The resulting point is within $2e_{k+3}+e_{k+2}<e_k$ of $x$.
+The radial map therefore supplies finite nets on the circle. Any real-valued
+map on it with a uniform modulus has bounded image: take a finite net at
+the input accuracy for target radius one, and bound the finitely many center
+values by the largest absolute zeroth sample plus one. Adding one bounds
+the whole image. Thus no such map can be a surjection onto the line.
+The uniform-modulus hypothesis here belongs to the representation.
+
+
+\begin{theorem}[Two charts for the sphere]\label{thm:stereographic}\label{idx-metric438}
+For $n\ge1$, each sphere $S^n\subseteq\mathbb R^{n+1}$ has two explicit
+Euclidean charts. Each chart identifies the complement of one pole,
+with positive separation from that pole, with the whole of $\mathbb R^n$.
+The charts cover the sphere with a finite decision at one fixed precision.
+Every $S^n$ is path connected. Finite products of these spheres are
+path connected and have product Euclidean charts; in particular the torus
+$S^1\times S^1$ has two-dimensional charts.
+\end{theorem}
+\begin{proof}
+Write $x=(v,z)$ with $\sum v_i^2+z^2=1$. For
+$\sigma\in\{1,-1\}$ the domain $U_\sigma$ consists of points with
+a witnessed positive lower bound on $1-\sigma z$. This describes
+positive separation from the pole $(0,\sigma)$:
+the squared Euclidean distance to that pole is $2(1-\sigma z)$, and
+the maximum and Euclidean norms bound each other as proved above. A
+smaller rational lower bound on the same expression persists on a small
+neighborhood, so the domain is relatively open. Put
+\[
+ \phi_\sigma(v,z)=\frac{v}{1-\sigma z},\qquad
+ \psi_\sigma(t)=
+ \left(\frac{2t}{1+w},\frac{\sigma(w-1)}{1+w}\right),
+ \qquad w=\sum_{i=1}^n t_i^2 .
+\]
+The identity $4w+(w-1)^2=(1+w)^2$ puts $\psi_\sigma(t)$ on the sphere.
+Its denominator gap at the excluded pole is $2/(1+w)>0$, so substitution
+gives $\phi_\sigma\psi_\sigma(t)=t$. In the other direction the sphere
+equation gives
+$\sum_i (v_i/(1-\sigma z))^2=(1+\sigma z)/(1-\sigma z)$.
+Both coordinates of $\psi_\sigma\phi_\sigma(v,z)$ now simplify to
+$(v,z)$.
+
+For inputs to $\phi_\sigma$ with denominator at least $b>0$, the maximum
+norm displacement of the output is at most $(b^{-1}+b^{-2})$ times the
+input displacement. This follows by subtracting the quotients and using
+$|v_i|\le1$. Given a gap at one point, use half of it on a neighborhood.
+For inputs of maximum norm at most $R$, say $R\ge1$, the change in $w$
+is at most $2nR$ times the input displacement. The first coordinates of
+$\psi_\sigma$ then have Lipschitz bound $2+4nR^2$. For the last coordinate
+write $(w-1)/(1+w)=1-2/(1+w)$ to get the bound $4nR$. These bounds
+supply all the local moduli, and bounds for $R$ come from zeroth samples
+plus their error. The chart changes are compositions of these explicit
+maps on their overlap. The relative rational balls of the ambient space
+supply a countable basis and separate apart points.
+
+To cover a given $x$, inspect the last coordinate's rational sample at
+stage $2$. If it is nonnegative take $\sigma=-1$, and otherwise take
+$\sigma=1$. In either case $1-\sigma z\ge3/4$. The equatorial point
+$e=((1,0,\ldots,0),0)$ lies in both charts with coordinate
+$e_1=(1,0,\ldots,0)$. In the selected chart join $\phi_\sigma(x)$ to
+$e_1$ by linear interpolation, then apply $\psi_\sigma$. A numerical
+bound on the two endpoints bounds the whole segment and gives a uniform
+modulus for this path by the preceding estimates. To join $x$ to $y$,
+follow the path from $x$ to $e$ and then the reverse of the path from $y$
+to $e$. On rational times the two formulas are evaluated on the two
+half intervals. Each is Lipschitz after rescaling time, and at times on
+opposite sides the two bounds add through the common value at $1/2$;
+the larger Lipschitz constant works on the whole interval. Extend from
+rational times as above. For a finite product take paths coordinatewise.
+The tuple of chart choices has open product domain (use the minimum of
+the finitely many local radii); concatenating coordinate lists identifies
+the chart target with Euclidean space in the sum of the dimensions.
+\end{proof}
+
+\begin{proposition}[Completeness depends on the metric]\label{idx-metric502}
+The open interval $(-1,1)$ and the line have an explicit homeomorphism
+with local moduli. With their usual metrics the line is complete for named
+Cauchy sequences with modulus, and the open interval is incomplete.
+\end{proposition}
+\begin{proof}
+Take $f(t)=t/(1+|t|)$ and $g(u)=u/(1-|u|)$. The first has
+$1-|f(t)|=1/(1+|t|)>0$, with a rational lower bound obtained from the
+zeroth sample of $t$. A name in the open interval comes with a positive
+rational bound on $1-|u|$. Thus both divisions are available and the
+identities $g(f(t))=t$ and $f(g(u))=u$ follow by substitution.
+Absolute value is 1-Lipschitz. On $|u|,|v|\le1-b$ with $0<b\le1$,
+subtracting the two quotients bounds $|g(u)-g(v)|$ by
+$(b^{-1}+b^{-2})|u-v|$. Given a local gap, use half of it on a
+neighborhood to obtain a local modulus. On $|t|,|v|\le R$ the same
+subtraction bounds $|f(t)-f(v)|$ by $(1+R)|t-v|$.
+These bounds give open inverse image neighborhoods in both directions.
+
+The rational sequence $1-e_n$ lies in the open interval and its terms
+at indices $i,j\ge k$ are within $e_k$. Its unique limit on the line is
+$1$, since the distance of the $n$th term from $1$ is $e_n$. A limit
+in the open interval would yield the same line limit and simultaneously
+a positive gap from $1$, a contradiction.
+\end{proof}
+
+\paragraph{Lean implementation order.}
+Use rational metric domains with a decidable carrier code and coded vector
+length; implement comparisons on pairs of integers by cross multiplication
+with positive denominators. Introduce transparent predicates
+\texttt{Reg x}, \texttt{DistLE x y r}, and \texttt{BallMem x c r} using
+the formulas above. Prove the rational error-removal lemma first, then the
+bridge triangle, evaluation against constants, and the diagonal completion
+lemma. For maps use fields for the rational-stage evaluator, its regularity,
+the modulus, and the displayed dense-domain bound. Define extension by the
+index $n(p)$ above and prove its regularity before its modulus or its
+inverse-image formula. For total boundedness implement the grid index in
+base $2^{k+2}+1$ and prove the rounding estimate coordinatewise. For
+intermediate values implement the finite scan and the exact-sign
+interval recursion separately. Prove nestedness between two given stages
+by induction on their gap, with the initial stage fixed and stage comparisons
+as Boolean tests. For the radial equivalence first implement rational
+square-root brackets and division with a lower bound, then the two estimates
+on rational vectors and finally uniqueness of extension. A Lean layer
+may quantify over function-valued parameters for reuse. Each iPRA instance
+instead substitutes fixed PR terms, keeps regularity and modulus laws as
+hypotheses at the numerical indices queried, and uses induction on finite
+loops with decidable invariants.

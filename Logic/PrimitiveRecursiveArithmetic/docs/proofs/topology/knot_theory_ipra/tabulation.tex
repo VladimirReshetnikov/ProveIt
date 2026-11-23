@@ -1,0 +1,131 @@
+\section{Finite tabulation and the first crossing number}
+\label{sec:tabulation}
+
+\begin{proposition}[A finite list of diagram codes]
+For $c\ge1$, all oriented one-component planar diagrams with $c$
+crossings, up to subdivided planar redraw, admit at most
+\[
+                         (c+2)4^c c!
+\]
+marked codes. Consequently there are finitely many diagrammatic knot
+types admitting at most $n$ crossings. More precisely one may bound their
+number by $1+\sum_{c=1}^{n}(c+2)4^cc!$.
+\end{proposition}
+\begin{proof}
+Start just before any crossing visit, traverse the knot, and number visits
+$1,\ldots,2c$. The Dowker even--odd rule proved above pairs the odd visits
+bijectively with the even visits. Record that permutation of $c$ symbols.
+On each pair record which visit goes over and the sign of the crossing.
+This gives four choices per pair. There are $c+2$ possible exterior
+faces on the connected sphere map, by Euler's formula. Mark the exterior
+face by its index when face orbits are sorted by least dart.
+
+The traversal tells which leaving dart joins which next arriving dart.
+At a crossing of visits $i,j$, their incoming and outgoing darts are
+opposite in pairs. Of the two possible oriented cyclic orders of these
+four named darts, precisely one has the recorded crossing sign for the
+recorded overpass. Thus the code recovers the oriented rotation table,
+the edge pairing, and the overpass and orientation data. Successive
+cyclic predecessors (or successors with the other fixed convention)
+after edge reversal trace the faces. Discard codes with an invalid
+permutation, face index, or Euler count. The argument only requires
+that every diagram is represented. Distinct codes may describe the same
+knot.
+
+Here is why subdivision coordinates add no multiplicity to a fixed code.
+Take disjoint small polygonal disks about the crossings and narrow strips
+along the intervening arcs. Their cell patterns are prescribed by the
+rotation table. Subdivide strip lengths on both drawings to match, and
+triangulate their rectangular pieces in matching order, keeping the
+diagram as center lines. The remaining bounded regions are disks with
+simple polygon boundaries: thickening a spanning tree gives a disk and
+inserting each remaining edge splits the corresponding complementary
+disk in the sphere. For the marked exterior face use a large bounding
+polygon; the extra region between its boundary and the outside boundary
+of the thickening is an annulus. A narrow strip from one matched marked
+point of the inner boundary to the outside box cuts this annulus to a
+disk. Such a polygonal path can be drawn along the exterior collar to an
+extreme vertex and then out along a supporting ray. The pieces can all
+be taken rational: at each disjointness requirement take a positive
+rational clearance smaller than the finitely many relevant separations.
+For disjoint rational segments the squared separation is computed by
+testing the endpoint-to-segment projections, clamped to the segment,
+in both directions. For a squared separation $q>0$, half of
+$\min(1,q)$ is a valid strict clearance. Direction and angular margins
+at a vertex use the finite list of nonzero rational determinants.
+
+Two polygonal disks with corresponding boundary vertices have compatible
+triangulated subdivisions. To see this, triangulate each polygon by
+diagonals. A short constructive diagonal argument is as follows. Remove
+collinear subdivision points temporarily. Choose a strictly convex
+vertex $v$ (one maximizing a generic linear functional suffices), with
+neighbors $u,w$. If the closed triangle $uvw$ contains no further
+vertex, $uw$ cuts off an ear, unless the polygon is already a triangle.
+Otherwise join $v$ to a further vertex of this triangle farthest from
+the line $uw$. The open segment so obtained has greater height above
+$uw$ than any such further vertex. An unrelated polygon edge could only
+enter the triangle through its base or end in the triangle, since it
+cannot cross $vu,vw$. Hence it cannot cross that open segment.
+The segment starts inside at the convex corner, and so is an interior
+diagonal. Repeat on the smaller polygons and reinsert all boundary
+subdivision points. Transport each triangulation to the same strictly
+convex rational polygon with the matched boundary order (points
+$(i,i^2)$ in increasing order, closed by the chord between the extreme
+points, suffice). There the two triangulations overlay in convex cells;
+triangulate those cells and pull the refinements back by the respective
+rational affine maps on triangles. This gives the common triangulations
+required for the redraw certificate. Together the matched disks, strips,
+and exterior pieces give the claimed redraw.
+
+Enumerating permutations, bit choices, and marked faces is bounded; a
+coarser $c^c$-entry scan also suffices to enumerate the permutations for
+$c\ge1$. The bound $c!$ follows by successively recording the rank of the
+partner among the remaining even positions. The arithmetic statement of
+finiteness is the finite coding and collision principle: in any supplied
+list of knot diagrams with the indicated crossing cap and length greater
+than the bound, two have identical positive-crossing codes and a redraw
+witness, or two have zero crossings. Pigeonhole follows by counting
+filled slots in a bounded Boolean array. Every oriented simple polygon
+redraws to a triangle of matching orientation by the disk and exterior
+construction. The two orientations of the unknot have a short move
+witness. Orient the bow-tie polygon with successive vertices
+$(-1,-1),(1,1),(-1,1),(1,-1)$ and choose either overpass at its double
+point. Its upper and lower triangular lobes have opposite orientations.
+Deleting one empty lobe or the other gives the two orientations of a
+simple polygon. This justifies the one zero-crossing slot for knot types.
+\end{proof}
+
+\begin{theorem}[The smallest crossing number of a nontrivial knot is three]
+Every knot diagram having one or two crossings admits a sequence of
+type I deletions and planar redraws to a crossing-free diagram. The
+trefoil realizes three and is nontrivial.
+\end{theorem}
+\begin{proof}
+At two crossings the cyclic word of visits uses letters $A,B$ twice
+each. The interlaced order $ABAB$ would pair two odd visits, contrary
+to the even--odd rule. Up to cyclic shift and relabeling the word is
+therefore $AABB$. The subarc between consecutive visits to $A$, closed
+at its crossing, is a simple polygonal lobe. The analogous $B$-lobe is
+disjoint from it. At the base of a lobe its two rays belong to different
+passages and are adjacent in the cyclic order. The remainder of the knot
+away from that base is a connected arc, so it lies entirely on one side
+of the lobe. Choose a lobe whose bounded interior does not contain the
+other lobe, by choosing the inner one if they are nested. Its interior
+then misses the whole remainder of the diagram. It is an empty monogon.
+A thin disk neighborhood of the lobe together with its empty interior,
+extended slightly past the crossing, therefore has exactly the type I
+curl pattern; the overpass choice permits one of the two type I
+deletions. The polygon triangulation construction above supplies the local
+redraw when the lobe has many subdivision vertices.
+
+At a single crossing there are two such lobes, now meeting only at
+their common base. Away from the base each lies entirely on one side
+of the other. At least one bounded interior is empty of the other lobe:
+if one contains the other away from their common point, its own boundary
+away from that point is exterior to the contained lobe. This is also the
+disk separation test on the two simple polygons. Delete the empty lobe
+as before. The resulting crossing-free diagram represents the unknot.
+The closed positive braid $\sigma_1^3$ has three crossings and Jones
+polynomial $t+t^3-t^4\ne1$, as calculated in
+Section~\ref{sec:bracket}. This proves both bounds.
+\end{proof}

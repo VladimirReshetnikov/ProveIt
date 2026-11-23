@@ -1,0 +1,62 @@
+\section{Sumsets, restricted sums and zero-sum subsequences}
+\label{sec:additive}
+The arithmetic-combinatorics section and the link to the polynomial method lead to a common question. How many different sums can a pair of finite sets produce? A certificate for a lower bound can list distinct sums and a pair producing each. We write $A+B=\{a+b:a\in A,b\in B\}$ and $A-B=\{a-b:a\in A,b\in B\}$, using the supplied finite abelian group law when one is specified. The first three estimates also hold in the integers on finite input lists, by taking masks over the range of the displayed sums.
+
+\begin{theorem}[Three elementary estimates of Ruzsa type]\label{result59}
+For nonempty finite subsets of an abelian group,
+\[
+ |A-C|\,|B|\le |A-B|\,|B-C|.
+\]
+There is a set $X\subseteq A$ with $|X|\,|B|\le |A+B|$ and $A\subseteq X+(B-B)$. If $r(s)=\#\{(a,b)\in A\times B:a+b=s\}$, then
+\[
+ (|A|\,|B|)^2\le |A+B|\sum_s r(s)^2.
+\]
+\end{theorem}
+\begin{proof}
+For each $d\in A-C$ choose its first representation $a_d-c_d$. Map $(d,b)$ to $(a_d-b,b-c_d)$. The sum of these two coordinates recovers $d$, after which $a_d$ recovers $b$. This injection gives the first inequality. For the second, scan $A$, adding $a$ to $X$ precisely when $a+B$ misses all the translates already kept. Their union gives the size bound. Each discarded translate meets $x+B$, so $a+b=x+b'$ for two elements of $B$ and $a=x+b'-b$. Each retained $x$ is also covered since $0\in B-B$. Finally $\sum_s r(s)=|A|\,|B|$. For $m$ listed summands $u_i$, expand $m\sum_i u_i^2-(\sum_i u_i)^2=\sum_{i<j}(u_i-u_j)^2$ and use nonnegativity. Apply this to the support $A+B$. In particular some $s$ has at least $\lceil |A||B|/|A+B|\rceil$ representations, by summing the contrary integer upper bounds.
+\end{proof}
+
+\begin{lemma}[The coefficient formula on a grid]\label{result60}\label{lem:grid}
+Over $\mathbb F_p$, take nonempty sets $S_i$ with $|S_i|=d_i+1$, $1\le i\le m$. For a polynomial $F$ of total degree at most $D=\sum_i d_i$,
+\[
+ [X_1^{d_1}\cdots X_m^{d_m}]F=
+ \sum_{s\in\prod S_i}F(s)\prod_{i=1}^m
+ \left(\prod_{t\in S_i,\ t\ne s_i}(s_i-t)\right)^{-1}.
+\]
+A nonzero coefficient supplies a grid point at which $F$ is nonzero.
+\end{lemma}
+\begin{proof}
+The polynomials $L_s(X)=\prod_{t\ne s}(X-t)/(s-t)$ on a single set $S$ take the values $1$ at $s$ and $0$ at the other points. For $j\le d=|S|-1$, $X^j-\sum_s s^jL_s(X)$ has $d+1$ distinct roots and degree at most $d$, hence is zero. Indeed, subtraction of the value at $u$ makes each monomial divisible by $X-u$ by the finite geometric identity; at another root $v$, cancel the nonzero factor $v-u$ and iterate. Taking the coefficient of $X^d$ shows the weighted sum of $s^j$ equals $0$ for $j<d$ and $1$ for $j=d$. Apply the product of the one-variable sums to a monomial of $F$. Unless the exponent vector is exactly $(d_i)$, some exponent falls below its $d_i$, because the total degree is at most $D$. That one factor kills the term, even if another exponent exceeds its bound. Distribute and sum. Scan the finite grid when the coefficient is nonzero. Nonzero residues have inverses: multiplication by such a residue is injective by Euclid's lemma, hence permutes the $p$ residues; scan for the preimage of $1$.
+\end{proof}
+
+\begin{theorem}[Cauchy--Davenport and the restricted two-sum theorem]\label{result61}
+For nonempty $A,B\subseteq\mathbb F_p$ of sizes $a,b$ and prime $p$,
+\[
+ |A+B|\ge\min(p,a+b-1).
+\]
+For $|A|=k\ge2$, writing $A\mathbin{\dot+}A=\{x+y:x,y\in A,\ x\ne y\}$, one has the sharp bound
+\[
+ |A\mathbin{\dot+} A|\ge\min(p,2k-3).
+\]
+\end{theorem}
+\begin{proof}
+If $a+b>p$, for each $t$ the sets $A$ and $t-B$ meet by counting; all $p$ residues occur. Otherwise, if $|A+B|\le a+b-2$, pad $A+B$ to a set $C$ of $a+b-2$ residues by scanning the complement. The polynomial $\prod_{c\in C}(X+Y-c)$ vanishes on $A\times B$. Its coefficient of $X^{a-1}Y^{b-1}$ is $\binom{a+b-2}{a-1}$, nonzero since its factorial numerator and denominators use factors less than $p$. This contradicts Lemma~\ref{lem:grid}. Decidable comparison gives the lower bound. Intervals beginning at zero attain the stated bound.
+
+For the restricted bound $p=2$ is immediate. Suppose $p$ is odd. If $k>(p+3)/2$, replace $A$ by its first $(p+3)/2$ elements. Proving the bound for this subset suffices, since at that size $2k-3=p$. Now $d=2k-4<p$. If the restricted sumset had size at most $d$, pad it to $C$ of size $d$ and put
+\[
+ F=(X-Y)\prod_{c\in C}(X+Y-c).
+\]
+It vanishes on $A\times A'$ where $A'$ consists of any $k-1$ elements of $A$: at identical coordinates the first factor vanishes. The coefficient at degrees $(k-1,k-2)$ is
+$\binom{d}{k-2}-\binom{d}{k-1}=\binom{d}{k-2}/(k-1)$. This follows by multiplying by $k-1$ and using the adjacent-binomial identity (also valid for $k=2$). It is nonzero in $\mathbb F_p$. The grid formula gives the contradiction. In the integers, distinct sums from $\{0,\ldots,k-1\}$ fill precisely $[1,2k-3]$: below $k$ use $0+s$, and for $s\ge k$ use $(k-1)+(s-k+1)$. Reduction modulo $p$ proves sharpness.
+\end{proof}
+
+\begin{theorem}[Erd\H{o}s--Ginzburg--Ziv, with the optimal threshold]\label{result62}
+For $n\ge1$, among $2n-1$ indexed residues modulo $n$ there are $n$ distinct indices whose entries sum to $0$ modulo $n$. A primitive recursive selector returns their mask.
+\end{theorem}
+\begin{proof}
+For a prime $p$, sort the $2p-1$ representatives, carrying their indices. If $p$ coincide they suffice. Otherwise reserve the last element and pair positions $i,i+p-1$ for $0\le i<p-1$ (positions start at zero). Each pair has unequal entries: equality would force $p$ consecutive equal entries. From each pair choose one element. Repeated Cauchy--Davenport, starting at the singleton $\{0\}$, gives at least $\min(p,1+j)$ sums after $j$ pairs. After $p-1$ pairs all residues occur. Take the negative of the reserved value and choose its first representing selection; adjoining the reserve gives $p$ positions.
+
+If the statement holds for $a,b\ge2$, take $2ab-1$ entries. Remove in succession $2b-1$ disjoint blocks of $a$ indices each, every block having sum $0$ modulo $a$. Before the last removal $2a-1$ entries remain, and earlier there are at least that many. Apply the assertion for $a$ to any first $2a-1$ remaining entries reduced modulo $a$. Divide the integer sum of each block by $a$ and use the assertion for $b$ on those $2b-1$ quotients modulo $b$. The selected $b$ blocks have total divisible by $ab$ and $ab$ indices in their union. The case $n=1$ is direct. Use bounded trial division to split every composite $n$ into smaller factors. For the induction fix the final $N$ and assert simultaneously the conclusion for all $n\le j\le N$ and all length-$2n-1$ tables of residues. Such tables are bounded by $(N+1)^{2N}$, and all masks by $2^{2N}$. The simultaneous predicate is a Boolean term. A simple uniform selector can scan all masks even when the proof of its success uses the factorization. Finally $n-1$ zeros followed by $n-1$ ones fail at $2n-2$ when $n\ge2$: an $n$-subset would contain between $1$ and $n-1$ ones. The empty sequence supplies the lower example for $n=1$.
+\end{proof}
+
+\paragraph{Objects for Lean.} Store group tables and orderings numerically. Represent a polynomial in $m$ variables of coordinate degree at most $D$ by $(D+1)^m$ residues indexed in base $D+1$ (use radix at least $2$ in the constant case). Normalize exponents and coefficients after each loop. For the grid formula, implement the functional on the right, prove additivity by finite distributivity, and verify its action on each monomial. In the root bound store the quotient coefficients during synthetic division. The EGZ success predicate tests all masks with fixed popcount and modular dot product. Its induction invariant above bounds the entire parameter family, including the inputs to both smaller-factor calls. Only bounded scans occur in producing the representatives, padding sets and recovering a witness. Alon's polynomial method supplies the historical context for the grid argument~\cite{alon}.

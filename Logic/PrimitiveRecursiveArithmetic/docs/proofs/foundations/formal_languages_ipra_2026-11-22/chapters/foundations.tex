@@ -1,0 +1,283 @@
+\section{The precise constructive setting}
+\label{sec:foundations}
+
+\subsection{Scope, representations, and what is being proved}
+
+We work with finite words over a supplied finite alphabet. The alphabet may
+vary as numerical input; no assertion here quantifies over a set of arbitrary
+sets of words. A language is represented by a finite automaton, a grammar,
+a fixed primitive-recursive membership predicate, or a finite-certificate
+predicate, as stated in each theorem. Equality of two presentations means
+pointwise equivalence on every valid word code. This is a first-order
+arithmetical assertion, not equality of objects in a power-set universe.
+
+The target article and its immediately linked mathematical articles supply
+the questions, rather than axioms for their answers. The main developments
+are the word algebra, regular languages, context-free grammars, bounded
+noncontracting derivations, and recognizable languages. Historical and
+linguistic claims, classifications of natural languages, and assertions about
+arbitrary infinite alphabets are outside the stated finite coding.
+
+\paragraph{Verification status.}
+The mathematical proofs below are human-readable derivations with numerical
+algorithms, explicit bounds, and quantifier-free induction invariants. The
+Lean files supplied with this report are a formalization blueprint; they
+have not been compiled in this session. In particular this package does not
+contain a completed Lean construction of every object-theory derivation.
+Section~\ref{sec:lean} identifies that work precisely. Reference-program
+checks are a separate, finite check on the constructions, not a replacement
+for a proof or a claim of kernel verification.
+
+\subsection{Language, axioms, and rules of iPRA}
+
+The numerical language has $0$, successor $S$, and, for every \emph{fixed}
+primitive-recursive definition, its function symbol. Definitions begin with
+zero, successor, and projections, and are closed under composition and
+primitive recursion. A recursive definition has equations
+\[
+ f(0,\vec x)=g(\vec x),\qquad
+ f(Sn,\vec x)=h(n,f(n,\vec x),\vec x).
+\]
+The nonlogical axioms are these defining equations, $Sx\ne0$, successor
+injectivity, and induction for quantifier-free formulas, with free numerical
+parameters. In sequent form the induction rule is
+\[
+ \frac{\Gamma\vdash A(0)\quad
+       \Gamma,A(n)\vdash A(Sn)}{\Gamma\vdash A(t)},
+ \qquad n\text{ fresh for }\Gamma,\quad A\text{ quantifier-free}.
+\]
+The logical rules are intuitionistic natural deduction for
+$\bot,\land,\lor,\to,\forall,\exists$, with equality reflexivity and
+substitution. There is no excluded-middle axiom, choice axiom, unrestricted
+induction, or rule converting semantic truth into a proof. Negation is
+$A\to\bot$. Primitive-recursive predicates abbreviate equations between
+their characteristic bits and $1$.
+
+One may add a fixed primitive-recursive definition by a definitional
+extension. This does not license a single total primitive-recursive evaluator
+for all primitive-recursive programs. Finite automata tables and bounded
+machine simulations do have uniform primitive-recursive evaluators; these
+are different statements.
+
+\begin{lemma}[Finite arithmetic and coding]\label{base:coding}
+Addition, multiplication, truncated subtraction, comparison, exponentiation,
+division with a positive divisor, bounded sums and products, and bounded
+least search have primitive-recursive definitions whose ordinary defining
+properties are provable in \ipra. Finite lists and rectangular tables of
+numbers can be encoded with primitive-recursive constructors, selectors,
+length tests, and update functions.
+\end{lemma}
+\begin{proof}
+Addition and multiplication use their usual recursions on the second
+argument. Predecessor gives truncated subtraction; comparing the two
+truncated differences gives equality and order bits. Exponentiation is
+repeated multiplication. For division by $d>0$, maintain a quotient--remainder
+pair, increasing the remainder unless it reaches $d$, when it is reset to
+zero and the quotient increases. Induct on the dividend with invariant
+$n=dq+r$ and $r<d$. Bounded sums and products are primitive recursions.
+To search below $B$, scan $0,\ldots,B-1$, retaining the first successful
+index and otherwise a distinguished failure flag. The invariant that the
+retained index is successful and earlier indices fail is a finite Boolean
+check of the scanned prefix.
+
+For general list coding use the injective pairing
+$\langle x,y\rangle=(x+y)^2+x$ and
+$\operatorname{cons}(x,s)=1+\langle x,s\rangle$, with empty list $0$.
+The largest $t\le z$ with $t^2\le z$ is bounded-search computable.
+On a pairing code, it equals $x+y$, so subtracting its square recovers $x$
+and then $y$. Include the range test to reject the gaps in this pairing.
+Every proper tail has smaller numerical code. A loop of at most the original
+code therefore decodes a list or reports failure. Each operation just
+described is a bounded scan or primitive recursion, and each asserted
+identity is proved using a quantifier-free invariant of the coded scan.
+For entries $<b$ in a table of $m$ cells, the simpler base-$b$ code
+$\sum_{i<m}a_i b^i<b^m$ is available when $b\ge2$.
+\end{proof}
+
+\begin{lemma}[Boolean compilation and bounded induction]\label{base:boolean}
+For every fixed formula $A(\vec x)$ built from primitive-recursive equations
+using propositional connectives and bounded numerical quantifiers, there is
+a primitive-recursive bit $[A](\vec x)$ such that \ipra{} proves
+\[
+ A(\vec x)\ \longleftrightarrow\ [A](\vec x)=1,
+ \qquad [A](\vec x)=0\ \lor\ [A](\vec x)=1.
+\]
+Consequently such formulas are decidable and admit induction derived from
+quantifier-free induction. A bounded existential has a primitive-recursive
+least witness, with a failure value when no witness exists.
+\end{lemma}
+\begin{proof}
+Equality has its comparison bit. On bits, conjunction is product,
+disjunction is the sign of the sum, negation is $1\mathbin{\dot-}b$, and
+implication is $(1\mathbin{\dot-}b)\lor c$.
+For bounded universal quantification use the product of the body bits;
+for bounded existential quantification use the sign of their sum.
+The finite-scan equations prove that all these expressions are bits.
+
+For clarity, reflection of a bounded quantifier does not use induction on
+that quantified formula. The search loop has a bit recording whether a
+counterexample has been seen and an index recording its first position.
+Its invariant is a conjunction of equations between primitive-recursive
+terms, including the product of the tested prefix. If the all-bit is $1$,
+instantiate the arbitrary input index below the bound and use the prefix
+product to obtain the corresponding body bit. If the all-bit is $0$, the
+recorded first counterexample has body bit $0$. Conversely, the hypothesis
+that every body holds contradicts this explicit counterexample. The
+existential case uses the first successful index in the same way.
+Structural recursion on the \emph{fixed formula} now constructs the claimed
+intuitionistic derivations. Finally replace $A(n)$ in an induction argument
+by the equation $[A](n)=1$, apply quantifier-free induction, and translate
+back. Strong bounded induction is obtained by applying this procedure to
+the conjunction of all earlier instances.
+\end{proof}
+
+\begin{lemma}[Bounded certificate selection]\label{base:selection}
+Let $V(x,c)$ be a primitive-recursive bit and $B(x)$ a
+primitive-recursive bound. The predicate
+$\exists c<B(x)\,V(x,c)=1$ has a primitive-recursive characteristic
+function and a primitive-recursive selecting function. Both its success
+and failure specifications are provable in \ipra.
+\end{lemma}
+\begin{proof}
+Apply the preceding lemma to the bounded existential and choose the first
+successful candidate. The failure value is $B(x)$. Its failure specification
+states that each smaller candidate has bit $0$, a bounded formula. No
+assertion is made about searching an unbounded set for a witness.
+\end{proof}
+
+\begin{lemma}[Finite collection with a supplied bound]\label{base:collection}
+For a fixed primitive-recursive $R$ and a supplied numerical bound $B$,
+\[
+ (\forall i<k\ \exists c<B\ R(i,c))
+ \quad\longleftrightarrow\quad
+ \exists s<(B+1)^k\ \forall i<k\ R(i,\operatorname{digit}_{B+1}(s,i)),
+\]
+where the right side also requires every selected digit to be $<B$.
+The selecting list is primitive recursive.
+\end{lemma}
+\begin{proof}
+For each $i<k$ select the least witness below $B$ and insert it in the
+$i$th base-$(B+1)$ cell. A loop on $i$ builds the table, whose range and
+entry conditions are bounded checks. The converse reads the $i$th digit.
+The condition remains correct for $B=0$ or $k=0$, using the empty table in
+the latter case. In particular this proof does \emph{not} establish
+$\forall i<k\exists c\,R(i,c)\Rightarrow\exists s\forall i<k\,R(i,s_i)$
+with no common bound. Certificate lists for recognizable-language star
+and substitution will be supplied as witnesses in their own right.
+\end{proof}
+
+\begin{lemma}[Pigeonhole witnesses and finite graph reachability]
+\label{base:graph}
+Among $r+1$ numbers below $r$ a repeated pair can be found by bounded
+search. In a directed graph on $r$ vertices, every reachable pair has a
+path of at most $r-1$ edges (a zero-edge path is allowed). A nonempty
+cycle, when present, has a cycle of at most $r$ edges. Reachability,
+including shortest-path witnesses, is primitive-recursively decidable.
+\end{lemma}
+\begin{proof}
+For the first claim maintain the $r$ occurrence counts. If every pair of
+positions differed, each count would be at most one, whereas the sum is
+$r+1$. The two equal positions are then obtained by a scan over fewer than
+$(r+1)^2$ pairs. The count equalities and inequalities are bounded-induction
+invariants. For a given path with a repeated vertex, delete the segment
+between equal occurrences. This preserves its endpoints and each remaining
+edge. Repeat for at most its original length; the remaining path has no
+repeated vertices. For a nonempty cycle stop upon obtaining a simple cycle
+rather than deleting its entire traversal.
+
+Alternatively compute $R_0(i,j)=[i=j]$ and
+$R_{t+1}(i,j)=R_t(i,j)\lor\bigvee_{u<r}(R_t(i,u)\land E(u,j))$.
+The invariant says that the entry has a path witness of at most $t$ edges
+and that every such path makes the entry true. Keep a first predecessor
+when an entry becomes true. After $r$ rounds cycle deletion proves
+completeness. All loops and all stored path lengths have the stated bounds.
+\end{proof}
+
+\begin{lemma}[Finite saturation and bounded structural recursion]
+\label{base:saturation}
+An inflationary operation on subsets of an $m$-element set stabilizes after
+at most $m$ strict changes, provided an unchanged stage is a fixed point.
+Finite syntax trees and finite derivation traces admit primitive-recursive
+bottom-up and top-down passes with supplied primitive-recursive size bounds.
+The usual table invariants are provable in \ipra.
+\end{lemma}
+\begin{proof}
+Represent a subset by $m$ bits. At a changing stage its cardinality increases
+by at least one and never exceeds $m$. Induction on the stage, using the
+cardinality as a bounded rank, proves stabilization. For a tree, use a
+numbering in which children precede their parent, check that ordering, and
+scan the node table. At stage $t$, a bounded conjunction states the desired
+property of all nodes below $t$. A postorder table can itself be constructed
+by bounded scans of a supplied tree code. If outputs grow, use the explicit
+majorant from the relevant construction to bound all entries. The claim is
+an implementation of these specified passes, not a theorem that every
+terminating program has a primitive-recursive running time.
+\end{proof}
+
+\begin{proposition}[No universal primitive-recursive evaluator]
+\label{base:noeval}
+There is no primitive-recursive function $U(e,x)$ whose sections include
+every unary primitive-recursive function with their correct values.
+\end{proposition}
+\begin{proof}
+If such a fixed $U$ existed, $d(x)=U(x,x)+1$ would be primitive recursive.
+Let $e$ be an index for $d$. Then $d(e)=U(e,e)=d(e)+1$, contradicting
+successor arithmetic. The contradiction is constructive. This is an
+external impossibility statement about the proposed evaluator; its
+diagonal equation is already an \ipra{} argument for each supplied
+putative definition and index. It does not prohibit uniform evaluation
+of a restricted finite syntax with a primitive-recursive bound, such as
+automata or a machine computation supplied with a step counter.
+\end{proof}
+
+\subsection{How the later proofs lower to the object theory}
+
+Each finite construction is specified by numerical loops. Each correctness
+proof either compares two computed codes, transforms an explicitly supplied
+certificate into another one, or checks a finite table whose entries have
+known numerical bounds. Induction is on a loop counter, a word length,
+a supplied tree size, a supplied trace length, or a decreasing rank with
+explicit fuel. Statements about all cells of a current table are Boolean
+compiled before induction. An unbounded universal quantifier over input
+words is introduced only after proving the result for an arbitrary input.
+An existential certificate is eliminated by fixing the supplied code;
+induction may then run to its numerical size, but never assumes a bound
+on all possible certificates.
+
+For example, equality of two automata is proved by one finite comparison
+table and an arbitrary-word run invariant. It is not proved by checking
+finitely many sample words and assuming the pattern continues. Likewise,
+the grammar parser gets completeness from normalization of an arbitrary
+supplied parse tree and an explicit bound on a normalized tree. The absence
+of a successful bounded parse then excludes every supplied parse by that
+normalization theorem.
+
+\subsection{Repository interface used in the blueprint}
+
+The inspected ProveIt revision is
+\texttt{3eb195cab4cc3d552a9eca78880c6d428f3e44f9}.
+Its ordinary target is \texttt{LeanProofs.ConciseIPRA.Prf PRAAx}, with
+first-order terms \texttt{PTm} and formulas \texttt{Fm PTm}.
+The relevant source files were read at this revision; the repository was
+not built in this session. The inspected interfaces are
+\begin{itemize}
+\item \texttt{IPRADerivations.Core.Pairing}: pairing projections and
+simultaneous recursion;
+\item \texttt{IPRADerivations.Core.SearchParameters}: finite-parameter
+bounded least search and success/failure theorems;
+\item \texttt{IPRADerivations.Core.Pigeonhole}: explicit repeated-position
+witnesses;
+\item \texttt{IPRADerivations.Foundations.BoundedFormulas}: fixed-formula
+compilation, \texttt{bf\_reflect}, \texttt{bf\_dec}, and
+\texttt{bf\_choice};
+\item \texttt{IPRADerivations.Foundations.BoundedFixpoint}: a fixed-point
+theorem from a bounded ascent invariant;
+\item \texttt{IPRABridge.Standard}: transport of closed ordinary iPRA
+derivations to the Foundation interface.
+\end{itemize}
+These are implementation dependencies for future formalization, not a
+claim that an imported theorem already proves our language results. The
+earlier complexity research packet is useful for compatible bounded-machine
+conventions; its semantic Lean results and its proposed object-theory
+derivations are kept distinct here as in that packet
+\cite{ProveIt,ProveItComplexity}.

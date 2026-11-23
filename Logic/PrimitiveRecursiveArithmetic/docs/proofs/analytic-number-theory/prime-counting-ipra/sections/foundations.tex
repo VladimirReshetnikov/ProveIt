@@ -1,0 +1,47 @@
+\section{What a prime count means in iPRA}
+\label{sec:found}
+Our theory is first-order intuitionistic arithmetic over the natural numbers with symbols for the primitive-recursive functions, their defining equations, and induction for quantifier-free formulas. A rational number means a signed numerator and a positive denominator. Two rationals are equal when the cross products agree. Division of natural numbers used below always has an explicit positive divisor on its mathematical domain. A default value outside that domain makes each algorithm total.
+
+For a decidable test $B$ write $[B]\in\{0,1\}$ for its truth value. A bounded universal claim for $i<t$ in an induction invariant is a product of $t$ such bits. Existence over the same interval is a bounded search, recording the first successful index and a success bit. These folds and bounded sums, products, minima and maxima are defined by primitive recursion. For a finite array of length $r$ with entries $<b$, $b\ge2$, use $\sum_{i<r}a_i b^i$ with bound $b^r$; reading a digit uses quotient and remainder. A scan with decreasing argument is implemented with a prescribed number of iterations or by building the table up to the original input. All finite sums over primes are thus sums over integers with a prime bit. Parameters such as a precision or an input ceiling are fixed before induction on an array. In particular a statement needed for all smaller inputs can be kept as a single prefix-test bit.
+
+Here are the conventions for analysis. An assertion about a named real number is an assertion about a specified sequence of rational enclosures, with a primitive-recursive width schedule. Equality means agreement within every requested tolerance. Non-strict inequalities permit arbitrarily small rational slack. A strict conclusion supplies a positive rational separation, possibly depending on the inputs. A limit with error $1/k$ has a primitive-recursive threshold $T(k)$ and a proof valid for every input beyond it. These meanings are first-order schemes or universal closures of statements about numbers. For discontinuous counts we use integer or rational cuts, roots decided by powering, or an integer part together with boundary comparisons supplied in the input. An arbitrary fast Cauchy name alone need not decide equality to a prime. On a region with a supplied distance from the jumps the same step function is evaluated locally by a rational approximation of sufficient precision.
+
+\subsection{Division, factorization and bounded prime selection}
+
+For $n\ge0$ set
+\[
+ b(n)=[n\ge2]\prod_{d=2}^{n-1}[n\bmod d\ne0],
+ \qquad \pi(n)=\sum_{j=1}^n b(j).
+\]
+Empty products are one and empty sums zero. This is the count including the upper endpoint. For $x=A/B\ge0$, $B>0$, put $\pi(x)=\pi(\lfloor A/B\rfloor)$. Extend it by zero on negative rationals. Write $p_1,p_2,\ldots$ in increasing order, with indices starting at one.
+
+For $m>1$, take the least divisor $d$ in $[2,m]$ by bounded search. If $d$ had a proper divisor above one it would contradict minimality. The step $m\mapsto m/d$ strictly decreases the positive quotient whenever it exceeds one. In at most $m$ steps it reaches one, so the recorded factors multiply to $m$. They are nondecreasing because any smaller prime in the quotient would already have divided the preceding dividend. The product of the factors found so far times the current quotient equals the original input; this equality is the induction invariant.
+
+For uniqueness we use Euclid's lemma. The Euclidean algorithm on $p,a$ tracks a Bézout representation of both current remainders. Start with coefficient pairs $(1,0),(0,1)$. A quotient step with quotient $q$ replaces the pairs $U,V$ by $V,U-qV$. Remainders decrease after the first division, so $a+p+2$ iterations, stopping when the second remainder is zero, suffice. Common divisors before and after each step agree by the remainder identity. At termination the last positive remainder divides both arguments. For prime $p$ with $p\nmid a$ it must be one, yielding $up+va=1$. Multiplying by $c$ shows $p\mid ac$ implies $p\mid c$ in that case. The coefficient magnitudes are bounded by $(a+p+2)^{a+p+2}$ because each step grows the previous maximum by at most $1+q\le a+p+2$. Hence the whole argument is a bounded computation with signed integers. Euclid's lemma applied successively to a finite product locates a matching prime on the other side of an equality of prime products. Using sorted lists, the least prime on either side is the same; cancel and apply length induction. This proves existence and uniqueness of the sorted factorization, including the empty factorization of one.
+
+\begin{theorem}[Rank and inverse rank]
+The function $\pi$ has jumps of size $b(n)$, is nondecreasing, and satisfies
+\[
+ \pi(p_k)=k\quad(k\ge1),\qquad
+ p_{\pi(n)}\le n<p_{\pi(n)+1}\quad(n\ge2),\qquad
+ p_{\pi(n)}=n\ \Longleftrightarrow\ b(n)=1\quad(n\ge2).
+\]
+In particular its integer range is all of $\mathbb N$.
+\end{theorem}
+\begin{proof}
+The sum gives $\pi(0)=0$ and $\pi(n+1)=\pi(n)+b(n+1)$. Each increment is either zero or one, and $\pi(n)\le n$. To put a uniform bound on inverse search, take $E(0)=1$, $E(k+1)=E(k)!+1$. The least divisor $q>1$ of $E(k)!+1$ is prime and exceeds $E(k)$ since a divisor between two and $E(k)$ would divide both $E(k)!$ and its successor. Thus $\pi(E(k))\ge k$ by quantifier-free induction. Define $p_k$ for $k\ge1$ to be the least $j\le E(k)$ with $\pi(j)\ge k$. Since every jump is at most one, $\pi(j-1)=k-1$, $b(j)=1$ and $\pi(j)=k$. Monotonicity now gives $p_k\le n$ exactly when $k\le\pi(n)$, also if $n>E(k)$. For $n\ge2$ the count is positive, so applying this equivalence to its rank and the next rank yields the inequalities. A flagged point is the first occurrence of its positive rank, and every first occurrence is flagged. Zero occurs at zero and one.
+\end{proof}
+
+It follows also that $\pi$ is constant on $[p_k,p_{k+1})$, has left value $k-1$ and right value $k$ at $p_k$, and satisfies $0\le\pi(v)-\pi(u)\le v-u$ for integers $0\le u\le v$. Its initial values for $n=1,\ldots,16$ are $0,1,2,2,3,3,4,4,4,4,5,5,6,6,6,6$, from the primes $2,3,5,7,11,13$. Arbitrarily long constant stretches also have PR witnesses. For $s\ge1$, each integer $(s+2)!+j$ for $2\le j\le s+2$ has the proper divisor $j$.
+
+\subsection{Congruence classes}
+For $a\ge1$ and $0\le r<a$, the modular prime-counting function of MathWorld is
+\[
+ \pi_{a,r}(N)=\sum_{m=1}^N b(m)[m\bmod a=r].
+\]
+The division algorithm identifies this class with the integers $ak+r$ with $k\ge0$. Every prime contributes to exactly one class, so $\sum_{r<a}\pi_{a,r}(N)=\pi(N)$. For $g=\gcd(a,r)>1$, every class member is divisible by $g$, and a prime in the class must equal $g$. Thus $\pi_{a,r}(N)=b(g)[g\le N][g\bmod a=r]$. More generally
+\[
+ \sum_{\substack{0\le r<a\\\gcd(a,r)=1}}\pi_{a,r}(N)
+  =\pi(N)-\sum_{p\le N}[p\mid a],
+\]
+where the last sum is over primes. Indeed $\gcd(a,m)=\gcd(a,m\bmod a)$, and the only primes having a common divisor above one with $a$ are its prime divisors. This includes $a=1$ with the unique residue zero.

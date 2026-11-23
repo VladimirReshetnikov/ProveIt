@@ -1,0 +1,94 @@
+INDEPENDENT MATHEMATICAL AUDIT: chapters/regular.tex
+Reviewer: effective_languages agent
+Date: 2026-11-22
+Scope: complete regular-language chapter, with emphasis requested by root.
+Status: no substantive gap found in the mathematical arguments; one concrete
+arithmetic encoding requirement and two wording clarifications were sent to
+root and the chapter author. This is a human mathematical review, not a Lean
+or object-level iPRA proof check.
+
+1. Kleene path invariant, including endpoint equality with h
+   The invariant is correct for i=h, j=h, and i=j=h. A path with no INTERNAL
+   h uses R^(h)_ij even when h is an endpoint. Otherwise the first and last
+   internal h visits give the outside factors; consecutive visits give
+   h-to-h middle factors with all internal vertices below h. Empty pieces
+   are allowed and 1 is present on the base diagonal. Conversely joined
+   pieces have new internal vertices only h. Empty epsilon cycles do not
+   invalidate this argument. Shortening only epsilon blocks preserves the
+   word and does not add forbidden internal vertices. The copying-size
+   recurrence 4*s+4 and bound 4^h*(b+2) are conservative and valid.
+
+2. Thompson construction
+   With separate child TREE occurrences and fresh entry/exit states, the
+   construction is correct for 0, 1, letters, union, product and star.
+   In particular 0* accepts epsilon via the direct bypass, and a nullable
+   child may be traversed repeatedly without creating a false nonempty word.
+   The local entry/no-incoming and exit/no-outgoing invariants justify all
+   decompositions. Product and star connector edges should explicitly be
+   named epsilon edges (their intended interpretation is clear).
+
+   IMPORTANT CODE REQUIREMENT: the later postfix validity description gave
+   only child-index < parent-index. That permits shared DAG nodes, whereas
+   the 2*s-state Thompson allocation uses one pair per TREE occurrence.
+   For P.P with shared P, reusing its states would allow the same child path
+   to be traversed the wrong number of times. Require every nonroot node to
+   have exactly one parent and the final node to be the unique root (with
+   connectivity, or the equivalent ordered-table condition). Alternatively
+   unfold sharing and state the size bound for the unfolded tree. The author
+   agreed and is aligning the outline; root was notified for prose.
+
+3. Finiteness test [n,2n)
+   Correct. If an accepted word has length >=2n, remove a loop among the first
+   n+1 run states. Its removed length lies in [1,n], so the result still has
+   length >=n. Iterate with original length as explicit fuel. If a word in
+   [n,2n) exists, pumping its nonempty loop yields strict length growth and
+   therefore an explicit injection of N. This is valid for n=1 as well.
+   No hidden least-witness or infinite-pigeonhole step is used.
+
+4. Quotient orientation
+   L/R: changing final states by reachability from (q,r0) to a pair final in
+   both DFAs correctly recognizes u with some v in R and uv in L.
+   R\L: changing the initial set to q reachable jointly with a final state of
+   R correctly recognizes v with some u in R and uv in L. Both extension
+   words can be bounded below n*m by loop erasure. Prefix/suffix/factor
+   constructions specialize the same orientation correctly.
+
+5. Distinguishability and minimization
+   D_j tests suffixes of length <=j. Monotonicity, n^2 bits, and permanence
+   of an unchanged stage prove stabilization at n^2. A false pair is a
+   right-congruence pair, and induction along a supplied word proves full
+   future equivalence. Transitivity can already be checked over the finite
+   bounded-word table. Least reachable representatives give a valid quotient.
+   Access words and explicit distinguishing suffixes inject quotient states
+   into every competing equivalent DFA; only explicit equality-of-language
+   instances are used. The uniqueness argument for reachable minimal DFAs is
+   valid and respects acceptance as well as transitions.
+
+6. Effective Myhill-Nerode schema
+   Correct with the stated input data: fixed PR classifier c, finite range,
+   supplied representatives, right stability and acceptance compatibility.
+   The construction computes delta(i,a)=c(r_i a), initial c(epsilon), final
+   L(r_i). It does NOT derive a PR classifier or representatives from bare
+   abstract finite index. The prose explicitly identifies this as a schema
+   over fixed PR definitions and avoids universal PR evaluation. A zero-size
+   range cannot meet the hypotheses, since c(epsilon) must be in the range.
+
+7. Other checks
+   - Epsilon path bound l+(l+1)(n-1), subset construction and completion pass.
+   - Boolean, concat/star, reversal, erasing image, inverse image and regular
+     substitution constructions pass, with finite path certificates explicit.
+   - Regex interval star test correctly deletes empty factors and handles the
+     empty interval separately; at positive length there are 2^(len-1) cuts.
+   - Right-linear grammar/path correspondence passes, including epsilon/unit
+     rules and arbitrary terminal-block right sides.
+   - Four nonregular examples pass. In particular the square-word slice
+     a* b a* b is exactly a^r b a^r b, and n^2+d lies strictly between
+     consecutive squares when 1<=d<=n.
+   - Emptiness/equality/inclusion/separator bounds pass.
+
+8. Minor wording clarification
+   The regular pumping theorem should say 'an n-state DFA' because its proof
+   uses the unique deterministic run. The analogous NFA fact is also true,
+   but that is not the proof written at this point.
+
+No optional theorem or implementation test was added during this audit.

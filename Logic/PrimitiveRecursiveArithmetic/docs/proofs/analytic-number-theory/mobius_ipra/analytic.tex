@@ -1,0 +1,284 @@
+\section{Dirichlet series with a witnessed margin}
+\label{sec:dirichlet-interior}
+
+Take $h\ge1$ and a complex argument $s$ with
+$\mathop{\rm Re}s\ge1+1/h$. A statement about this variable in iPRA is a
+schema for a specified primitive-recursive (PR) rational approximation to
+$s$, with bounds on its size and approximation error. For rational complex
+$s$ the resulting statement is uniform in its numerator and denominator
+codes. A disk or half-plane condition refers to a supplied bound.
+Write $u_n=\exp(-s\log n)$, $Z(s)=\sum_{n\ge1}u_n$. Then
+\begin{align}
+ D(s):=\sum_{n\ge1}\mu(n)u_n
+    &= Z(s)^{-1}=\prod_{p\ {\rm prime}}(1-u_p),\label{eq:mob-ds}\\
+ Q(s):=\sum_{n\ge1}|\mu(n)|u_n
+    &=Z(s)/Z(2s).\label{eq:mob-sqdir}
+\end{align}
+The notation $Z$ agrees here with the usual Dirichlet-series definition of
+$\zeta$. There are explicit finite error bounds for each equality.
+
+\paragraph{Evaluation of the elementary weights.}
+For $n\ge1$ put $v=(n-1)/(n+1)$. Use the series
+$2\sum_{j\ge0}v^{2j+1}/(2j+1)$ for $\log n$. After the terms
+$j<L$ its remainder is at most $2v^{2L+1}/(1-v^2)$.
+If $0\le r\le1-1/b$ and $b\ge2$, then $r^b\le1/2$ by
+$(1+1/b)^b\ge2$ and $1-1/b\le(1+1/b)^{-1}$.
+Thus $b=\max(2,n+1)$ supplies a PR cutoff.
+For $|z|\le B$, $B$ a positive integer, the exponential Taylor terms
+from index $2B$ on have successive absolute ratio at most $1/2$,
+and the term at $2B$ is at most $(1+B)^{2B}$.
+For example, the tail from $2B+L$ on is bounded by
+$2(1+B)^{2B}2^{-L}$. These estimates also justify replacing $s$ and
+$\log n$ by sufficiently accurate rationals. On a ball of radius $B$
+the exponential is Lipschitz with bound $3^B$ by its power series
+and $\sum 1/j!\le3$.
+
+For clarity, the algebra behind the weights is elementary too.
+The binomial theorem in the product of the exponential series gives
+$\exp(a+b)=\exp(a)\exp(b)$. As a formal identity in $v$,
+\[
+ \exp\!\left(2\sum_{j\ge0}\frac{v^{2j+1}}{2j+1}\right)
+       =\frac{1+v}{1-v}.
+\]
+Indeed both sides have constant term $1$ and solve
+$(1-v^2)y'=2y$, which determines the coefficients successively.
+At $0\le v<1$ the nonnegative terms can be collected by degree:
+truncate the inner sum using its geometric remainder, truncate the outer
+exponential using the factorial remainder above, then take a degree cutoff
+at the product of the two polynomial degrees. This proves
+$\exp(\log n)=n$. On real arguments $\exp$ is strictly increasing with
+a lower increment bound on each bounded interval, by
+$\exp(t)\ge1+t$ for $t\ge0$ and the addition law. These facts give
+$u_{ab}=u_a u_b$. Conjugation and the addition law give
+$|\exp(z)|=\exp(\mathop{\rm Re}z)$.
+
+\paragraph{One estimate for all the rearrangements.}
+In $2^j\le n<2^{j+1}$ the sum of $|u_n|$ is at most
+$2^{-\lfloor j/h\rfloor}$. Indeed there are $2^j$ terms and
+$n^{1/h}\ge2^{\lfloor j/h\rfloor}$, as seen on taking the $h$th power.
+Set $B_h=2h$. For $T=2^{hL}$ every finite sub-tail on $n\ge T$
+has absolute mass at most
+\[
+ E_h(L)=2h\,2^{-L},\qquad \sum_{n\ge1}|u_n|\le B_h .
+\]
+For a finite upper cutoff each bound follows by grouping $h$ successive
+blocks and summing a finite geometric progression. The same bounds hold
+with coefficients $\mu$, $|\mu|$, or any coefficients of absolute value
+at most $1$.
+
+In the product $D(s)Z(s)$ restrict first to $ab\le T^2$.
+The coefficient of $u_m$ is $\sum_{a\mid m}\mu(a)=[m=1]$.
+Every discarded pair has $a>T$ or $b>T$; its total absolute contribution,
+summed over both strips, is at most $2B_h E_h(L)$. This proves $D(s)Z(s)=1$.
+In particular $|Z(s)|\ge1/B_h$, so division has a rational apartness
+bound. Expand the finite product over $p\le T$ by choosing one summand
+from each factor. Unique factorization identifies its terms with
+$\mu(m)u_m$ over squarefree $m$ whose prime factors are all at most $T$.
+Every missing term has $m>T$. Hence the product approximates $D(s)$ with
+error at most $E_h(L)$. Grouping subsets by size also gives the
+alternating sums over increasing prime tuples printed by MathWorld.
+
+Finally, each $m$ has exactly one decomposition $m=a b^2$ with $a$
+squarefree: split each prime exponent into its parity and twice its
+integer half. In $Q(s)Z(2s)$ this gives coefficient $1$ at $u_m$.
+Truncate at $ab^2\le T^3$; the discarded pairs lie in $a>T$ or $b>T$,
+and $|u_{b^2}|\le |u_b|$. The same error bound proves
+$Q(s)Z(2s)=Z(s)$. Applying the reciprocal identity at $2s$ permits
+the division in \eqref{eq:mob-sqdir}.
+
+\section{Lambert series and the exponential product}
+\label{sec:mob-lambert}
+
+These identities hold coefficient by coefficient in the truncated
+polynomial rings $\mathbb Z[X]/(X^{H+1})$ or
+$\mathbb Q[X]/(X^{H+1})$ as appropriate. They also hold as effective
+complex identities on every disk $|q|\le \rho=1-1/b$, $b\ge2$:
+\begin{align}
+ \sum_{d\ge1}\frac{\mu(d)q^d}{1-q^d}&=q,\label{eq:mob-lam1}\\
+ \sum_{d\ge1}\frac{\mu(pd)q^d}{q^d-1}
+    &=\sum_{j\ge0}q^{p^j}\qquad(p\text{ prime}),\label{eq:mob-lam2}\\
+ \prod_{d\ge1}(1-q^d)^{\mu(d)/d}&=\exp(-q).\label{eq:mob-logprod}
+\end{align}
+In the last identity the factor means
+$\exp((\mu(d)/d)\log(1-q^d))$ with the logarithm given by its series
+at $1$. This specifies its complex branch.
+
+In \eqref{eq:mob-lam1} expand the geometric sum. The coefficient at
+degree $m$ is $\sum_{d\mid m}\mu(d)=[m=1]$.
+For \eqref{eq:mob-lam2} it is $-\sum_{d\mid m}\mu(pd)$.
+Writing $m=p^a v$, $p\nmid v$, the summands with $p\mid d$ vanish,
+while $-\mu(pd)=\mu(d)$ for $p\nmid d$. The answer is
+$\sum_{d\mid v}\mu(d)=[v=1]$, including $m=1=p^0$.
+For \eqref{eq:mob-logprod} add the logarithms:
+\[
+ -\sum_{d,j\ge1}\frac{\mu(d)}{dj}q^{dj}
+ =-\sum_{m\ge1}\frac{q^m}{m}\sum_{d\mid m}\mu(d)=-q.
+\]
+Modulo $X^{H+1}$ all displayed sums are finite. For the product use
+the truncated exponential $\sum_{i=0}^H y^i/i!$ at an argument
+with zero constant term. Its addition law is the binomial theorem in
+degrees at most $H$.
+
+For the analytic readings the double sums are dominated by
+$\sum_{d,j\ge1}\rho^{dj}$. The strip $d>K$ has mass at most
+$\rho^{K+1}/(1-\rho)^2$ by summing first over $j$, and the strip
+$j>K$ has the same bound. Thus cutting at total degree $dj\le K^2$
+leaves error at most $2b^2\rho^{K+1}$. The outer-row tail alone is
+at most $b^2\rho^{K+1}$. For target $2^{-t}$ one may take
+$K=b(t+2b+2)$, since $\rho^b\le1/2$.
+The lacunary sum uses the same degree cutoff and its remaining mass after
+degree $K^2$ is at most $b\rho^{K^2+1}$.
+In the logarithmic case each finite sum of logarithms has norm at most
+$b^2$; exponentiating transfers the error with the factor $3^{b^2}$.
+These estimates justify the exact rearrangements with only finite
+geometric and factorial bounds.
+
+\section{The three reciprocal-square masses}
+\label{sec:mob-basel}
+
+The values tabulated in MathWorld depend on two even zeta values. The
+following finite polynomial proof supplies both and gives a PR rate.
+We use angles in radians.
+
+\paragraph{Effective trigonometry.}
+Define sine and cosine by the imaginary and real parts of $\exp(it)$.
+For $|v|<1$ put
+$A(v)=\sum_{j\ge0}(-1)^jv^{2j+1}/(2j+1)$ and set
+$\pi=4(A(1/2)+A(1/3))$. This is the usual arctangent normalization of
+$\pi$. The alternating bounds give $2<\pi<4$.
+The formal identity $\exp(2iA(v))=(1+iv)/(1-iv)$ follows by matching
+the constant term and the coefficients of $(1+v^2)y'=2iy$.
+At $|v|\le1/2$ absolute geometric and exponential majorants justify
+evaluation as in Section~\ref{sec:dirichlet-interior}.
+Multiplying the two rational values on the right for $v=1/2,1/3$
+gives $i$. Thus $\exp(i\pi/2)=i$ and $\exp(i\pi)=-1$.
+
+For $0\le x\le\pi/2<2$, the alternating series give
+$x-x^3/6\le\sin x\le x$, in particular $\sin x\ge x/3$.
+Also $\cos x=\sin(\pi/2-x)\ge0$ by the addition law, and
+$|\sin x|,|\cos x|\le1$ by the complex norm identity.
+We shall need $x\cos x\le\sin x$ on this interval. Indeed
+$\sin x-x\cos x$ has successive signed terms
+$(-1)^{j+1}2j x^{2j+1}/(2j+1)!$, $j\ge1$. Their absolute ratio is
+$(j+1)x^2/[j(2j+3)(2j+2)]\le 2/5$ for $x\le2$.
+Pairing successive terms proves the inequality. For $0<x<\pi/2$
+we consequently have
+\begin{equation}
+ 0\le x^{-2}-\cot^2 x\le1 .\label{eq:mob-cot-est}
+\end{equation}
+The upper bound is $x^{-2}\le1/\sin^2x=1+\cot^2x$, and the lower
+bound follows from $x\cos x\le\sin x$.
+
+\paragraph{A finite polynomial with known roots.}
+Take $N=2m+1$ with $m\ge2$ and $x_k=k\pi/N$, $1\le k\le m$.
+The polynomial $\mathop{\rm Im}(Y+i)^N$ (real indeterminate $Y$)
+is an even polynomial in $Y$. Set $U=Y^2$ and divide by $N$ to obtain
+the monic polynomial
+\[
+ P(U)=U^m-\frac{\binom N3}{N}U^{m-1}
+           +\frac{\binom N5}{N}U^{m-2}+\cdots .
+\]
+For each $k$, $(\cot x_k+i)^N=(-1)^k/\sin^N x_k$, so
+$r_k=\cot^2x_k$ is a root. There is explicit apartness between
+different roots. For $x_j<x_k$,
+$\cot x_j-\cot x_k=\sin(x_k-x_j)/(\sin x_j\sin x_k)
+\ge \pi/(3N)$.
+Further $\cot x_k\ge \cos x_k\ge(\pi/2-x_k)/3\ge\pi/(6N)$.
+Thus differences of the $r_k$ have a positive rational lower bound.
+Synthetic division successively extracts the $m$ linear factors:
+evaluating a quotient at the next root gives zero because each previously
+extracted factor there is apart from zero. This proves the coefficient
+identities
+\[
+ \sum_k r_k=C,\qquad \sum_k r_k^2=C^2-2E,\qquad
+ C=\frac{(N-1)(N-2)}6,\quad E=\frac{\binom N5}{N}.
+\]
+
+\paragraph{Passage to the sums.}
+Set $t_k=(\pi/N)^2r_k$. By \eqref{eq:mob-cot-est},
+$0\le k^{-2}-t_k\le (\pi/N)^2$. Their squares differ by at most
+$2(\pi/N)^2$ since $t_k\le k^{-2}\le1$.
+The tail of either $\sum k^{-2}$ or $\sum k^{-4}$ beyond $m$ is
+at most $1/m$, using
+$1/k^2\le1/(k-1)-1/k$.
+Hence the respective sums differ from $(\pi/N)^2 C$ and
+$(\pi/N)^4(C^2-2E)$ by at most $1/m+2m(\pi/N)^2$.
+Now $C/N^2\to1/6$ and
+$E/N^4=\prod_{j=1}^4(1-j/N)/120\to1/120$.
+For an explicit check use
+$0\le1-\prod_j(1-j/N)\le\sum_j j/N$ for $N\ge5$.
+It gives $|C/N^2-1/6|\le1/(2N)$,
+$|E/N^4-1/120|\le1/(12N)$ and
+$|(C/N^2)^2-1/36|\le1/(6N)$.
+All errors thus tend to zero with a PR modulus, e.g.\ taking
+$m=128\cdot2^t$ makes each combined error less than $2^{-t}$.
+We obtain $Z(2)=\pi^2/6$ and
+$Z(4)=\pi^4(1/36-2/120)=\pi^4/90$.
+
+At $s=2$ equations \eqref{eq:mob-ds}--\eqref{eq:mob-sqdir} now give
+$D(2)=6/\pi^2$ and $Q(2)=15/\pi^2$. Since twice the indicator of
+$\mu(n)=\pm1$ is $|\mu(n)|\pm\mu(n)$, the two separate masses are
+\begin{equation}
+ \sum_{\mu(n)=-1}\frac1{n^2}=\frac9{2\pi^2},\qquad
+ \sum_{\mu(n)=1}\frac1{n^2}=\frac{21}{2\pi^2}.
+\end{equation}
+For all three positive series the rational partial sum through $m$
+already has error at most $1/m$.
+
+\paragraph{Lean implementation of the precision bounds.}
+Represent a Gaussian rational by a pair of rational numerators with
+positive denominators. For instance, the scalar cutoff
+$\texttt{tailCut}(h,L)=2^{hL}$ and the disk cutoff
+$\texttt{diskCut}(b,t)=b(t+2b+2)$ have type
+$\mathbb N\to\mathbb N\to\mathbb N$. Define a finite series evaluation
+from a list of coefficients, a cutoff and an input approximation.
+The Dirichlet proof requires three finite lemmas: a bound for a dyadic
+block, a bijection between divisor sums and hyperbola sums, and the
+two-strip bound. An embedded derivation of the last lemma first scans the
+rectangle by rows, includes all points with $a>T$, then includes only
+$a\le T$ in the column strip. This uses a bounded sum of nonnegative
+rational majorants. The supplied
+\texttt{lean/FormalSeries.lean} verifies the ordinary Lambert coefficients
+and the logarithmic coefficients of the product at every degree. It
+represents $L$ by $l_n=n[X^n]L$ in positive degrees and represents $E$
+by $e_n=n![X^n]E$. The formal equation $E'=L'E$ then reads
+\[
+ e_{n+1}=\sum_{k=0}^n n(n-1)\cdots(n-k+1)\,l_{k+1}e_{n-k},
+\]
+with an empty product at $k=0$. The file proves that $l_n=-[n=1]$
+and that the normalized solution has $e_n=(-1)^n$.
+For the remaining formal power series one may represent a
+truncation by an array of $H+1$ rational codes. Cauchy multiplication
+at index $k\le H$ is the bounded sum over $i\le k$. Formal differentiation
+through degree $H$ reads an input through degree $H+1$.
+Prove both coefficient ODE identities with that extra input coefficient.
+The polynomial proof of the two zeta values uses coefficient descent in
+synthetic division and the explicit lower bounds at the roots.
+For real inequalities $A\le B$ with error radius $e$ on each input,
+the target at a given precision is the rational comparison
+$A_{\rm app}\le B_{\rm app}+2e$. Equality uses both inequalities.
+The finite induction arguments can therefore be stated with a fixed precision
+parameter and a bounded Boolean check for every earlier row, coefficient
+or polynomial degree needed by the recursion.
+Here is an error budget for inductions whose length depends on the
+input. Generate the finite list of arithmetic operations and inference
+steps for the chosen cutoffs; let $J$ be its length. Bound magnitudes
+forward by replacing addition by the sum of bounds and multiplication
+by their product. At each inverse or cancellation record the reciprocal
+of the supplied lower bound. For example at the cotangent roots one may
+use $|\sin x_k|\ge 2/(3N)$ and
+$|r_j-r_k|\ge 4/(9N^2)$ for $j\ne k$.
+Let $C\ge2$ be an integer exceeding all these bounds. With
+$K=8(1+C)^4$, addition, multiplication, inversion on a ball of radius
+less than $1/(2C)$ around an admissible denominator, and cancellation
+against an apart factor all amplify incoming errors by at most $K$ per
+step. Indeed a product error is at most $(2C+1)e$ and an inverse error
+at most $2C^2e$ for input errors at most $e\le1/(2C)$.
+Start every elementary numerical evaluation with error at most
+$2^{-t}/(4CK^{J+1})$. Even with one new error of this size at each step,
+the geometric sum bounds the final accumulated error by $2^{-t}$.
+Power-series truncations are chosen by the preceding explicit tails.
+All bounds, including the generation and length of the operation list,
+use nested bounded loops or primitive recursion. This permits a single
+quantifier-free induction on the list at the selected working precision,
+including the synthetic-division argument with a variable number of roots.

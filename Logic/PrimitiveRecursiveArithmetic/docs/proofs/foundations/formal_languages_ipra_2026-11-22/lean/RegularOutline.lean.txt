@@ -1,0 +1,221 @@
+/-
+UNCOMPILED LEAN 4 IMPLEMENTATION OUTLINE — NOT AN ASSERTED FORMAL PROOF.
+
+This file gives finite data, evaluation algorithms, and explicitly collected
+proof obligations. No obligation is postulated as an axiom. The record
+`RegularObligations` below is a specification: constructing a value of it is
+remaining work. In addition, object-level iPRA derivations and PR-code
+certificates must be constructed; semantic Lean proofs alone do not imply
+those results. See chapters/regular.tex, especially reg:lean.
+
+Suggested dependency: import Std (for this finite-data layer). A separate
+semantic adapter may import Mathlib.Computability.DFA, NFA, EpsilonNFA, and
+RegularExpressions. No assumed version-independent Kleene theorem is used.
+-/
+import Std
+
+namespace IPRAFormalLanguages.RegularOutline
+
+abbrev Word := List Nat
+
+structure DfaCode where
+  alphabet : Nat
+  states : Nat
+  initial : Nat
+  table : List Nat                 -- row-major states * alphabet entries
+  finals : List Bool               -- exactly states entries
+  deriving Repr
+
+structure Edge where
+  source : Nat
+  letter : Option Nat              -- none is epsilon
+  target : Nat
+  deriving Repr
+
+structure ENfaCode where
+  alphabet : Nat
+  states : Nat
+  starts : List Bool
+  finals : List Bool
+  edges : List Edge
+  deriving Repr
+
+def bit (xs : List Bool) (i : Nat) : Bool := (xs[i]?).getD false
+
+def validDFA (M : DfaCode) : Bool :=
+  decide (0 < M.alphabet) && decide (0 < M.states) &&
+  decide (M.initial < M.states) &&
+  (M.table.length == M.states * M.alphabet) &&
+  (M.finals.length == M.states) &&
+  M.table.all (fun q => decide (q < M.states))
+
+def validENFA (M : ENfaCode) : Bool :=
+  decide (0 < M.alphabet) && decide (0 < M.states) &&
+  (M.starts.length == M.states) && (M.finals.length == M.states) &&
+  M.edges.all (fun e => decide (e.source < M.states) &&
+    decide (e.target < M.states) &&
+    match e.letter with
+    | none => true
+    | some a => decide (a < M.alphabet))
+
+def validWord (k : Nat) (w : Word) : Bool :=
+  w.all (fun a => decide (a < k))
+
+def step (M : DfaCode) (q a : Nat) : Nat :=
+  (M.table[q * M.alphabet + a]?).getD 0
+
+def run (M : DfaCode) (q : Nat) (w : Word) : Nat :=
+  w.foldl (step M) q
+
+def acceptDFA (M : DfaCode) (w : Word) : Bool :=
+  bit M.finals (run M M.initial w)
+
+-- Candidate semantic proof; to be checked against the pinned Lean version.
+theorem run_append (M : DfaCode) (q : Nat) (u v : Word) :
+    run M q (u ++ v) = run M (run M q u) v := by
+  simp [run, List.foldl_append]
+
+-- Every use below fixes f to an explicitly PR finite-table operation.
+def iterate {α : Type} (f : α → α) : Nat → α → α
+  | 0, x => x
+  | n + 1, x => iterate f n (f x)
+
+def epsilonRound (M : ENfaCode) (S : List Bool) : List Bool :=
+  (List.range M.states).map fun r =>
+    bit S r || M.edges.any (fun e =>
+      decide (e.letter = none) && bit S e.source && (e.target == r))
+
+def epsilonClosure (M : ENfaCode) (S : List Bool) : List Bool :=
+  iterate (epsilonRound M) M.states S
+
+def letterStep (M : ENfaCode) (S : List Bool) (a : Nat) : List Bool :=
+  epsilonClosure M ((List.range M.states).map fun r =>
+    M.edges.any (fun e => decide (e.letter = some a) &&
+      bit S e.source && (e.target == r)))
+
+def eRun (M : ENfaCode) (w : Word) : List Bool :=
+  w.foldl (letterStep M) (epsilonClosure M M.starts)
+
+def acceptENFA (M : ENfaCode) (w : Word) : Bool :=
+  (List.range M.states).any (fun q => bit (eRun M w) q && bit M.finals q)
+
+def maskBit (s q : Nat) : Bool := ((s / 2^q) % 2) == 1
+
+def decodeMask (n s : Nat) : List Bool :=
+  (List.range n).map (maskBit s)
+
+def encodeMask (n : Nat) (S : List Bool) : Nat :=
+  (List.range n).foldl (fun total q =>
+    total + if bit S q then 2^q else 0) 0
+
+def determinize (M : ENfaCode) : DfaCode where
+  alphabet := M.alphabet
+  states := 2^M.states
+  initial := encodeMask M.states (epsilonClosure M M.starts)
+  table := (List.range (2^M.states)).flatMap fun s =>
+    (List.range M.alphabet).map fun a =>
+      encodeMask M.states (letterStep M (decodeMask M.states s) a)
+  finals := (List.range (2^M.states)).map fun s =>
+    (List.range M.states).any (fun q => maskBit s q && bit M.finals q)
+
+-- A semantic regex view. Arithmetic syntax instead uses postfix node tables
+-- with child indices < the current index and a PR well-formedness checker.
+-- The checker must also enforce one final root, exactly one parent per
+-- nonroot node, and connectivity. Child-index order alone permits DAG sharing;
+-- reusing the same Thompson child in (times P P) would be unsound. An alternative is
+-- explicitly unfolding DAG sharing before construction and counting the
+-- unfolded tree size in the 2s state bound.
+inductive Regex where
+  | zero | epsilon | symbol (a : Nat)
+  | plus (p q : Regex)
+  | times (p q : Regex)
+  | star (p : Regex)
+  deriving Repr
+
+-- The interval-table implementation for Regex is specified as follows:
+--   zero[i,j] = false; epsilon[i,j] = (i=j)
+--   symbol a[i,j] = (j=i+1 and w[i]=a)
+--   plus P Q[i,j] = P[i,j] or Q[i,j]
+--   times P Q[i,j] = OR_{i<=t<=j} (P[i,t] and Q[t,j])
+--   star P[i,j] = reachability from i to j in the DAG with edges
+--                 s->t iff i<=s<t<=j and P[s,t], allowing the empty path.
+-- Every table has at most nodeCount * (wordLength+1)^2 entries. Children are
+-- evaluated first. These equations are the complete algorithmic definition;
+-- implementing their finite loops is the next syntactic engineering step.
+
+structure RegularObligations where
+  mask_roundtrip : ∀ n S,
+    S.length = n → decodeMask n (encodeMask n S) = S
+  determinize_valid : ∀ M,
+    validENFA M = true → validDFA (determinize M) = true
+  subset_correct : ∀ M w,
+    validENFA M = true → validWord M.alphabet w = true →
+    acceptDFA (determinize M) w = acceptENFA M w
+  epsilon_idempotent : ∀ M S,
+    validENFA M = true → S.length = M.states →
+    epsilonClosure M (epsilonClosure M S) = epsilonClosure M S
+
+/-
+Remaining declarations and exact theorem targets (constructors as in the text):
+
+1. Path code = state list + Option-letter list, with vertices = edges + 1.
+   pathValid is a bounded conjunction of table edge lookups; pathWord removes
+   none labels. Prove shorten_eps_blocks retains pathWord and endpoints and
+   gives edges <= |w|+(|w|+1)*(states-1). In the object calculus use explicit
+   finite pigeonhole and the bounded path-deletion loop.
+
+2. unionCode, intersectCode, differenceCode: product-state transition tables.
+   complementCode: flip final bits. Prove acceptance identities as Boolean
+   equations. concatenateCode/starCode/reverseCode produce ENFA records; prove
+   both certificate transformations, then apply subset_correct.
+
+3. homImageCode substitutes private finite paths for edges, allowing empty
+   outputs. homInverseCode replaces each transition with run M q (h a).
+   regularSubstitutionCode uses private copies of each substituted automaton.
+   rightQuotientCode: final[q] := graphReach((q,r0), F_M x F_R).
+   leftQuotientCode: starts[q] := graphReach((q0,r0), {q} x F_R).
+   Both graph searches are bounded by states(M)*states(R)-1 edges.
+
+4. thompsonCode returns <=2*nodeCount states. eliminateCode uses the exact
+   Kleene recurrence on n*n entries for n rounds. Correctness invariants are
+   bounded conjunctions over expression nodes, input intervals, and endpoints.
+   The expression-size majorant is 4^h*(baseSize+2), then at most
+   2*n^2*(4^n*(baseSize+2)+1) for the final sum.
+
+5. pumpCuts M w returns i<j<=states M with equal run states whenever
+   |w|>=states M and w is accepted. Prove the universal exponent result via
+   QF induction of run M q (pow y t)=q. No infinite pigeonhole is used.
+
+6. equivalent M N := no accepting product state for xor finals is reachable.
+   Failure returns a word of length < states M * states N. Inclusion changes
+   xor to and-not. Finite(M) tests every word with n<=length<2*n; positive
+   result enumerates all accepted words length<n, negative returns a pumping
+   certificate. Compare with the independent executable regular_reference.py.
+
+7. distinguish M has n*n Boolean entries D_j, computed for exactly n*n rounds.
+   D_0(q,r)=final(q) xor final(r);
+   D_(j+1)(q,r)=D_j(q,r) or OR_a D_j(step(q,a),step(r,a)).
+   Prove stabilization by counting newly set bits, and D_j iff there is a
+   separator of length<=j. Store a separator with each true bit. The fixed
+   false-pair relation is right invariant. minimizeCode restricts to reachable
+   states, takes least equivalent representatives, and consecutively renumbers.
+   Minimality uses access words length<n and suffixes length<=n*n to inject
+   the minimized states into every competing automaton for the same language.
+
+8. For the effective Myhill–Nerode schema, fix PR c and language bit L with
+   c(w)<m; supply representatives r_i, c(r_i)=i, right stability, and accepting
+   compatibility. Set delta(i,a)=c(r_i++[a]), final(i)=L(r_i), start=c([]).
+   Prove run(w)=c(w) by QF induction. Do not quantify internally over arbitrary
+   PR function codes with an unbounded universal evaluator.
+
+OBJECT-LEVEL COMPLETION GATE:
+(a) Encode each finite structure and loop into natural-number PR codes.
+(b) Establish semantic agreement with the list/Bool presentation above.
+(c) Compile each bounded invariant into a quantifier-free arithmetic formula.
+(d) Construct actual derivations using the repository's iPRA checker API and
+    its finite-pigeonhole, bounded-search, finite-fixpoint, and quotient lemmas.
+(e) Check all derivations and print their dependency/axiom audit. Only after
+    (a)-(e) is the result a fully checked iPRA formalization.
+-/
+
+end IPRAFormalLanguages.RegularOutline

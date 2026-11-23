@@ -1,0 +1,505 @@
+\section{Enumeration by reversible finite constructions}
+\label{sec:enumeration}
+The historical example of six tastes, the twelvefold way, and the five
+binary trees on three vertices all occur in the seed article. Its links to
+\emph{Binomial coefficient}, \emph{Composition (combinatorics)},
+\emph{Fibonacci sequence}, \emph{Partition of a set}, \emph{Catalan number},
+and \emph{Schr\"oder--Hipparchus number} lead to the following calculations.
+Write $[n]=\{0,\ldots,n-1\}$, and give a word of fixed length its positional
+code. Throughout, a bijection means two specified finite algorithms whose
+composites are the identity on the indicated valid codes. Counting equality
+then follows by summing the graph of either algorithm in the two orders.
+
+\subsection{Subsets, lists, and compositions}
+Let $b(n,k)$ count length-$n$ bit strings of weight $k$. Thus $b(n,k)=0$
+for $k>n$. We also write $\binom nk=b(n,k)$ and put $0^0=1$.
+\begin{theorem}[Binomial identities]\label{result04}
+For $k\le n$, $b(n,k)=b(n,n-k)$ and
+$b(n,k)k!(n-k)!=n!$. Moreover
+\begin{align*}
+ b(n+1,k+1)&=b(n,k)+b(n,k+1),\\
+ \sum_{j=0}^k b(m,j)b(n,k-j)&=b(m+n,k),\\
+ (a+b)^n&=\sum_{k=0}^n b(n,k)a^k b^{n-k},\\
+ \sum_{j=k}^n b(j,k)&=b(n+1,k+1) \quad(k\le n),\\
+ k b(n,k)&=n b(n-1,k-1)\quad(1\le k\le n).
+\end{align*}
+In particular the row sum is $2^n$, the sum of the squares in row $n$ is
+$b(2n,n)$, and there are $63$ nonempty choices from six tastes.
+\end{theorem}
+\begin{proof}
+Complement each bit for symmetry. Sort the first $k$ entries of a
+permutation into a set, retaining the two orderings on this set and its
+complement. Putting the two lists back to back reverses the operation.
+The number of permutations is $n!$, since the position of the largest
+entry has $n$ possibilities after the other entries are permuted. Separating
+the last bit gives Pascal's rule. Cutting after $m$ bits gives the second
+identity, with $j$ the weight in the first piece. A word on the disjoint
+union of alphabets of sizes $a,b$ is recovered from the positions occupied by
+the first alphabet and the two extracted words. A nonempty $(k+1)$-set
+in $[n+1]$ has a largest element $j$ and $k$ other elements in $[j]$.
+Finally a $k$-set with a marked member is determined by that member and a
+$(k-1)$-set in its ordered complement. The square sum follows by splitting
+a length-$2n$ string of weight $n$ at its middle and complementing the
+second piece. All relabelings here and below use increasing order.
+\end{proof}
+
+The sequence of binomial coefficients is unimodal. Indeed,
+$(k+1)b(n,k+1)=(n-k)b(n,k)$ by the same marked-subset identity (or by
+forming a $k$-set and adding a new element). Thus $b(n,k+1)\ge b(n,k)$
+when $k+1\le n-k$, and the reversed inequality holds on the other half.
+For ordered words with prescribed multiplicities $a_1,\ldots,a_r$ summing
+to $n$, let $M$ be their count. Distinguishing occurrences of each letter
+by a chosen linear order gives a permutation of $n$ labeled items, so
+$M\prod_i a_i!=n!$. This also proves the multinomial expansion by counting
+words on a disjoint union of $r$ colored alphabets.
+
+\begin{proposition}[Compositions and Fibonacci identities]\label{result05}
+The positive compositions of $n>0$ into $r>0$ parts number $b(n-1,r-1)$;
+there are $2^{n-1}$ in all. For $r>0$, nonnegative $r$-tuples summing to
+$n$ number $b(n+r-1,r-1)$. With $F_0=0,F_1=1,F_{t+2}=F_{t+1}+F_t$,
+\[
+ F_{n+1}=\sum_{j=0}^{\lfloor n/2\rfloor} b(n-j,j),\qquad
+ F_{m+n+1}=F_{m+1}F_{n+1}+F_m F_n .
+\]
+Also $\sum_{i=0}^n F_i=F_{n+2}-1$,
+$\sum_{i=0}^n F_i^2=F_nF_{n+1}$ and
+$F_{n+1}F_{n-1}-F_n^2=(-1)^n$ for $n\ge1$.
+\end{proposition}
+\begin{proof}
+Choose $r-1$ cuts among the $n-1$ gaps in a row of $n$ marks, or allow
+any gap set if the number of parts is free. For a nonnegative tuple write
+$n$ marks with $r-1$ bars, permitting adjacent or terminal bars. Reading
+the run lengths inverts the map. For the Fibonacci identities, tile a
+length-$n$ strip by monomers and dominoes. The empty strip and the unit
+strip each have one tiling. Removing the last tile proves by induction that
+the count is $F_{n+1}$. With $j$ dominoes there are $n-j$ tiles, and one
+chooses the $j$ domino positions. At a given seam after cell $m$ in a
+strip of length $m+n$, either the two strips are separately tiled or one
+domino crosses the seam. The crossing case leaves lengths $m-1,n-1$,
+and has count zero at an endpoint, as prescribed by $F_0=0$. The first
+sum telescopes using $F_i=F_{i+2}-F_{i+1}$, and the sum of squares
+telescopes using $F_iF_{i+1}-F_{i-1}F_i=F_i^2$ for $i\ge1$.
+Finally $D_n=F_{n+1}F_{n-1}-F_n^2$ has $D_1=-1$ and
+$D_{n+1}=F_{n+1}(F_n-F_{n+1})+F_n^2=-D_n$. Signed identities can
+equivalently be stated by moving negative terms to the opposite side.
+\end{proof}
+
+\subsection{All twelve cases for distributing objects}
+We distinguish positions (the $n$ objects) and labels (the $r$ boxes).
+Put $(r)_n=r(r-1)\cdots(r-n+1)$ for $n\le r$, and zero otherwise.
+Put $W(n,r)=b(n+r-1,r-1)$ and $V(n,r)=[n\ge r]b(n-1,r-1)$
+when $r>0$ (the second is zero for $n=0$). For $r=0$ put
+$W(n,0)=V(n,0)=[n=0]$. Here $[P]$ is $1$ or $0$ according as the
+decidable test $P$ succeeds or fails. Write $S(n,j)$ for the number of
+partitions of $[n]$ into $j$ nonempty blocks. Write $p_j(n)$ for the
+number of nonincreasing lists of $j$ positive integers of sum $n$, and
+$p_{\le r}(n)=\sum_{j=0}^r p_j(n)$. The empty partition contributes $1$.
+
+\begin{theorem}[Twelvefold way, including empty sets]\label{result06}
+The following are the numbers of classes of functions $[n]\to[r]$.
+A label declared immaterial may be permuted arbitrarily.
+\[
+\begin{array}{ll|ccc}
+\text{objects}&\text{boxes}&\text{all}&\text{injective}&\text{surjective}\\ \hline
+\text{labeled}&\text{labeled}&r^n&(r)_n&r!S(n,r)\\
+\text{unlabeled}&\text{labeled}&W(n,r)&b(r,n)&V(n,r)\\
+\text{labeled}&\text{unlabeled}&\sum_{j=0}^r S(n,j)&[n\le r]&S(n,r)\\
+\text{unlabeled}&\text{unlabeled}&p_{\le r}(n)&[n\le r]&p_r(n)
+\end{array}
+\]
+\end{theorem}
+\begin{proof}
+A labeled function is a word. For an injection the next position can take
+each unused label once. For a surjection take its nonempty fibers, order
+these blocks by their least elements, and record the permutation assigning
+the $r$ labels to them. These choices reconstruct the word.
+Ignoring object labels leaves exactly the vector of occupancy numbers:
+match the increasing lists of objects in corresponding fibers to obtain
+the relabeling. The vector is a weak composition, a bit vector of weight
+$n$, or a positive composition, respectively. Ignoring just box labels
+leaves exactly the equality partition on positions. A canonical word uses
+the least-element order of its nonempty fibers for consecutive labels;
+the remaining labels can be matched in increasing order. The injection
+then has only the singleton partition when $n\le r$.
+Ignoring both kinds of label leaves the sorted positive occupancies.
+The matching algorithm first matches equal-sized boxes in increasing order
+within each size (including size zero) and then matches their ordered
+contents. Injectivity leaves only a list of $n$ ones if $n\le r$.
+The map with empty domain is unique for every $r$ and is onto precisely
+when $r=0$; a positive domain admits no map to an empty set.
+\end{proof}
+
+\begin{corollary}[Stirling and Bell identities]\label{result07}
+Let $B_n=\sum_{j=0}^n S(n,j)$. Then $S(0,0)=1$, $S(n+1,0)=0$, and
+\[
+\begin{split}
+ S(n+1,k+1)&=S(n,k)+(k+1)S(n,k+1),\\
+ B_{n+1}&=\sum_{j=0}^n b(n,j)B_j,\qquad
+ r^n=\sum_{j=0}^n S(n,j)(r)_j .
+\end{split}
+\]
+\end{corollary}
+\begin{proof}
+Delete the new element $n$. If its block disappears, there remain $k$
+blocks; otherwise the old partition has $k+1$ blocks and one records
+which received $n$. To count all partitions choose the $j$ elements outside
+the block of $n$ and partition them; all the remaining elements join $n$.
+For the last identity partition the positions by their values and assign
+distinct labels to the blocks in canonical order.
+\end{proof}
+
+For completeness the companion numbers $c(n,k)$ count permutations of
+$[n]$ with exactly $k$ cycles. Cycles can be computed by following each
+unvisited least entry until its first return (at most $n$ steps). A repeated
+entry must be the starting point, since the predecessor is unique. Removing
+$n$ gives either a singleton cycle or a choice of one of the $n$ old
+elements after which to reinsert $n$. Thus
+$c(n+1,k+1)=c(n,k)+n c(n,k+1)$ with the same boundary row as $S$.
+Since multiplication of a polynomial by $x+n$ has this coefficient
+recursion, $\sum_k c(n,k)x^k=x(x+1)\cdots(x+n-1)$.
+Replacing $x$ by $-x$ and taking the overall sign gives
+$(x)_n=\sum_k(-1)^{n-k}c(n,k)x^k$ as a polynomial over signed numbers.
+Conversely $x(x)_j=(x)_{j+1}+j(x)_j$ and the recursion for $S$ give the
+polynomial identity $x^n=\sum_jS(n,j)(x)_j$ by induction on $n$.
+Substitution and coefficient comparison give the triangular inverse identity
+$\sum_{j=k}^n S(n,j)(-1)^{j-k}c(j,k)=[n=k]$.
+All comparisons take place in arrays of degree at most $n$.
+
+\subsection{Inclusion--exclusion and permutations}
+\begin{theorem}[A cancellation involution]\label{result08}
+For a finite universe $U$ and a coded family $A_0,\ldots,A_{m-1}$ of
+subsets, put $I_T=\#\{x\in U:\forall i\in T,\ x\in A_i\}$. Then
+\[
+ \#\{x\in U:\forall i<m,\ x\notin A_i\}
+ =\sum_{T\subseteq[m]}(-1)^{|T|}I_T .
+\]
+In particular, for the number $D_n$ of fixed-point-free permutations and
+the number of surjections one obtains
+\[
+ D_n=\sum_{j=0}^n(-1)^j b(n,j)(n-j)!,
+ \qquad r!S(n,r)=\sum_{j=0}^r(-1)^j b(r,j)(r-j)^n .
+\]
+\end{theorem}
+\begin{proof}
+For fixed $x$ form $H=\{i:x\in A_i\}$. In the signed sum its occurrences
+are indexed exactly by $T\subseteq H$. If $H$ is empty, $T$ is empty and
+gives one positive occurrence. Otherwise toggling its least member pairs
+each positive occurrence with one negative occurrence. In a permutation
+fixing a specified $j$-set, the complement may be freely permuted. In a
+word avoiding $j$ specified labels, each position has $r-j$ choices.
+Using as bad events fixed points and missing labels respectively proves the
+formulas. In particular both expressions are identities of natural
+numbers once the odd-indexed terms are transposed.
+\end{proof}
+Choosing the fixed set also gives $n!=\sum_{j=0}^n b(n,j)D_{n-j}$.
+For $n\ge2$ the first value $j$ of a derangement of $[n]$ has $n-1$
+choices. If $0$ and $j$ form a two-cycle, delete them. Otherwise delete
+$0$ from its cycle, replacing the unique arrow into $0$ by an arrow into
+$j$; the remaining permutation is a derangement. In the latter case the
+predecessor of $j$ determines where to reinsert $0$. Hence
+$D_n=(n-1)(D_{n-1}+D_{n-2})$, with $D_0=1,D_1=0$.
+
+\subsection{Integer partitions as finite coefficient identities}
+For each degree bound $N$ a generating function below means its first
+$N+1$ coefficients. The coefficient of $x^t$ in a product is the sum
+over $i+j=t$ of the two coefficients multiplied. This counts pairs of
+objects of total size $t$ and gives associativity by summing over triples.
+If $A$ counts positive-size objects, $1+A+\cdots+A^N$ counts sequences of
+such objects through degree $N$, since a sequence of size $t$ has length
+at most $t$. We abbreviate this finite geometric sum by $(1-A)^{-1}$.
+This interpretation permits the usual coefficientwise series notation over
+either natural or signed numbers.
+
+\begin{theorem}[Conjugation, Euler's product, and the Durfee square]\label{result09}
+Write $p(n)=p_{\le n}(n)$, $P_d(x)=\prod_{j=1}^d(1-x^j)^{-1}$.
+Then $[x^n]P_d(x)=p_{\le d}(n)$ and
+\[
+ p(n)=[x^n]P_n(x)
+     =[x^n]\sum_{d=0}^{\lfloor\sqrt n\rfloor}x^{d^2}P_d(x)^2 .
+\]
+For $n\ge d$, $p_d(n)=p_{\le d}(n-d)$, also with $d=0$.
+For every integer $h\ge2$, the number of partitions of $n$ having no
+part divisible by $h$ equals the number having every multiplicity $<h$.
+In particular partitions into odd parts and into distinct parts are
+equinumerous.
+\end{theorem}
+\begin{proof}
+A partition drawn in left-justified rows of lengths $\lambda_i$ is encoded
+by a decreasing list padded with zeros. Its transposed row $j$ has length
+$\#\{i:\lambda_i\ge j\}$ for $j\ge1$. Cellwise, $(i,j)$ belongs to
+the transpose exactly when $(j,i)$ belongs to the original shape. Thus
+transposition interchanges maximum part and number of nonzero parts, and
+preserves size. The product $P_d$ selects each multiplicity of parts of
+sizes $1$ through $d$, so counts partitions with largest part at most $d$.
+Subtracting one from each of $d$ positive rows gives a partition of $n-d$
+with at most $d$ rows; pad to length $d$ before adding back.
+For a size-$n$ partition take the greatest $d$ with $\lambda_d\ge d$
+(using $0$ as an always admissible value). Remove its northwest $d$ by $d$
+square. The cells to the right form a partition with at most $d$ rows;
+those below have largest part at most $d$. Conversely these two shapes
+adjoin uniquely to the square, and their bounds ensure no larger square
+fits. This proves the coefficient formula, including the empty diagram.
+
+Finally for each $j$ not divisible by $h$, write the multiplicity $m_j$
+of $j$ in base $h$, say $m_j=\sum_t a_t h^t$. Replace the $m_j$ copies by
+$a_t$ copies of $jh^t$ for each $t$. Every positive integer $v$ has a
+unique expression $jh^t$ with $h\nmid j$: repeatedly divide by $h$ while
+divisible, at most $v$ times. Thus output multiplicities are $<h$, weight
+is preserved, and splitting every part $jh^t$ into $h^t$ copies of $j$
+gives the inverse. All loops on positive-weight parts and nonzero digits
+are bounded by $n$.
+\end{proof}
+
+\subsection{Catalan objects and Schr\"oder dissections}
+A Dyck word of semilength $n$ has $n$ opening and $n$ closing steps, with
+every prefix containing at least as many opens as closes. Let $C_n$ count
+these words. A step changes the signed height by one.
+\begin{theorem}[Reflection and first return]\label{result10}
+We have $C_0=1$ and
+\[
+ C_n=b(2n,n)-b(2n,n+1),\qquad
+ (n+1)C_n=b(2n,n),\qquad
+ C_{n+1}=\sum_{j=0}^n C_j C_{n-j}.
+\]
+Thus $C(x)=1+xC(x)^2$ coefficientwise.
+\end{theorem}
+\begin{proof}
+A balanced word that fails its prefix test first hits $-1$ at a bounded
+position. Swap the two letters up to and including this position. The
+new word has $n+1$ opens, total height two, and its first hit of $+1$ is
+the changed position. Any length-$2n$ word with $n+1$ opens reaches $+1$
+because its height starts at zero, ends at two and advances by unit steps.
+Reflect there to invert the map. For $n=0$ both exceptional classes are
+empty. The marked-subset relation gives
+$(n+1)b(2n,n+1)=n b(2n,n)$, including $n=0$. Multiply the first identity
+by $n+1$ and cancel to obtain the second. A nonempty Dyck word splits
+uniquely into an open, a Dyck word, a close, and a second Dyck word:
+the displayed close is the first positive-time return to height zero.
+Concatenating reverses the split and proves the convolution.
+\end{proof}
+
+\begin{proposition}[Concrete Catalan families]\label{result11}
+$C_n$ counts full ordered binary trees with $n$ internal vertices,
+binary tree shapes with $n$ vertices and distinguished left and right
+slots, full parenthesizations of $n+1$ ordered letters, plane rooted trees
+with $n$ edges, noncrossing pairings on $[2n]$, noncrossing partitions of
+$[n]$, two-row standard tableaux of shape $(n,n)$, and, for $n\ge1$,
+triangulations of a labeled convex $(n+2)$-gon in its fixed cyclic order.
+In particular $C_n\le B_n$, and $C_3=5$.
+\end{proposition}
+\begin{proof}
+Make an empty Dyck word a leaf, and make the two words in the first-return
+decomposition the ordered children of an internal vertex. Recursive
+expansion stops after at most $n$ internal vertices. Deleting external
+leaves and retaining empty child slots, or writing an operation at each
+internal vertex and assigning letters to the leaves in order, gives the
+next two forms. There are $n+1$ leaves by induction on this construction.
+For a plane tree record an open on descending each edge during the
+left-to-right traversal, and a close on ascending. Conversely start at a
+root, add a new last child and descend on each open, and ascend on each
+close. Height is depth, so every step is valid and the walk ends at the
+root. For a pairing, pair each close with the most recent unmatched open.
+These nested or disjoint pairs cannot cross. Conversely writing opens at
+the smaller endpoints of a noncrossing pairing yields this same matching:
+skipping a more recent unmatched open would force its eventual pair to
+cross the chosen pair. For the tableau, place $i=1,\ldots,2n$ in the next
+free column of the top or bottom row according to the $i$th letter.
+The prefix condition is exactly the condition that the top entry of each
+column is filled before its bottom entry.
+
+For a noncrossing partition of $[n]$, let $r_i$ be the size of the block
+whose least member is $i$, or zero if there is none. At each $i$ print
+$r_i$ opens followed by one close. At every stage the blocks started so
+far contain all elements seen so far; the prefix condition follows.
+Conversely a Dyck word uniquely splits at its $n$ closes into these runs.
+When $r_i>0$, push a new block with $r_i$ vacant slots. Assign $i$ to
+the top block, decrease its vacancies and pop it when full. Stack height
+in \emph{slots} is the word height, so the assignment exists and all
+blocks finish. An older block pauses until every block above it finishes,
+which excludes an interlacing $a<b<c<d$ belonging alternately to two
+different blocks. Conversely, if an old block received $i$ while a younger
+one was still active, their least elements, $i$, and a future member of
+the younger block would interlace. This proves both inverses and the
+claimed inequality by forgetting the noncrossing test.
+
+In a triangulation the triangle incident to the distinguished base edge
+has a unique third vertex. Its other two sides bound two smaller
+triangulated intervals of boundary vertices, allowing a bare edge for an
+empty interval. Conversely, glue such a pair to the base triangle.
+The positions of the third vertex correspond to $j=0,\ldots,n-1$, and
+the two child objects have $j$ and $n-1-j$ triangles. This is exactly
+the binary tree construction, with a bare edge representing a leaf.
+Finally the convolution gives $C_0,C_1,C_2,C_3=1,1,2,5$.
+\end{proof}
+
+\begin{proposition}[Schr\"oder--Hipparchus numbers]\label{result12}
+Let $H_n$ count ordered rooted trees with $n\ge1$ leaves and at least two
+children at every internal vertex, with $H_0=0$. With $H=\sum H_nx^n$,
+\[
+ H=x+\frac{H^2}{1-H},\qquad
+ H_1=1,\qquad H_n=2\sum_{i=1}^{n-1}H_iH_{n-i}-H_{n-1}\quad(n\ge2).
+\]
+These count unrestricted parenthesizations of $n$ ordered letters into
+groups of arity at least two, with the outer pair omitted, and dissections
+of a convex $(n+1)$-gon by any noncrossing subset of diagonals ($n\ge2$).
+In particular $H_{10}=103049$.
+\end{proposition}
+\begin{proof}
+A leaf contributes $x$. Otherwise the root carries a list of $r\ge2$
+positive-size trees, so the contribution of all lists is
+$H^2(1+H+\cdots)$, finite at each degree. Multiply by $1-H$ and compare
+coefficients to get the recurrence. With the leaf base, it gives
+$1,1,3,11,45,197,903,4279,20793,103049$ for leaf counts $1$ through $10$.
+Recording child lists by grouping parenthesizes the letters, and labeled
+letters are read left to right to recover the ordered tree.
+In a polygon dissection start at the cell incident to the distinguished
+base. Its other $r\ge2$ sides, in boundary order, are children. An outer
+side is a leaf and an inner diagonal is the base of the dissection beyond
+it. The inverse allocates consecutive boundary intervals of lengths equal
+to the leaf counts of the children and uses their endpoints as vertices
+of the base cell. This produces exactly the original diagonals, since
+each inner side separates its interval from the rest. Restriction to
+triangles recovers the binary case.
+\end{proof}
+
+\subsection{Narayana numbers and dissections with prescribed size}
+The partition and tree bijections preserve enough information to refine
+the preceding counts. A peak is an open immediately followed by a close.
+For $m\ge1$ and $1\le k\le m$, let $N(m,k)$ count Dyck words of
+semilength $m$ with $k$ peaks.
+\begin{theorem}[Narayana refinement]\label{result13}
+The number of noncrossing partitions of $[m]$ with $k$ blocks is $N(m,k)$,
+where
+\[
+ mN(m,k)=b(m,k)b(m,k-1).
+\]
+Furthermore $H_{m+1}=\sum_{k=1}^{m}N(m,k)2^{k-1}$. For a convex
+$(m+2)$-gon the number $L(m,d)$ of dissections with exactly $d$ diagonals
+satisfies
+\[
+ (d+1)L(m,d)=b(m-1,d)b(m+d+1,d)\qquad(0\le d<m).
+\]
+\end{theorem}
+\begin{proof}
+A block in the partition encoding starts a nonempty run of opens ending
+at a close. Thus blocks are counted by peaks. With $k$ peaks a Dyck word
+has alternating positive up-run and down-run lengths summing to $m$ in
+each direction. Choose the $k-1$ internal partial sums $A$ of the up-run
+lengths and $B$ of the down-run lengths from $\{1,\ldots,m-1\}$.
+In increasing order they satisfy $B_i\le A_i$, since after the $i$th
+down-run total closes do not exceed total opens. Equivalently every
+prefix of $1,\ldots,m-1$ has at least as many members of $B$ as of $A$.
+Conversely taking successive differences, including the last gap up to
+$m$, recovers the word. Put $q=m-1$ and $s=k-1$.
+For a bad pair of $s$-sets the first prefix with one excess member of
+$A$ over $B$ exists. Swap the sets on this prefix, to obtain sizes
+$s-1$ and $s+1$, respectively. The inverse uses the first prefix having
+more members of the new second set. It exists because the final
+difference is two and changes by at most one per position. Consequently
+\[
+ N(m,k)= b(q,s)^2-b(q,s-1)b(q,s+1),
+\]
+where an out-of-range index gives zero. At either endpoint $s=0,q$
+the claimed formula follows directly. Otherwise divide the last expression
+by $b(q,s)^2$ in positive rational arithmetic. The ratio is
+\[
+ 1-\frac{s(q-s)}{(q-s+1)(s+1)}
+ =\frac{m}{(m-k+1)k}.
+\]
+Since $b(m,k)=m b(q,s)/k$ and
+$b(m,k-1)=m b(q,s)/(m-k+1)$, this gives the natural-number identity
+after clearing the positive denominators.
+
+Replace each ordered node of arity $u\ge2$ by its binary right comb:
+the first child is the left child, and subsequent children are attached
+along successive right edges. Mark the $u-2$ new internal right edges.
+Conversely in any full binary tree mark any subset of edges whose right
+child is internal. The marked-edge components are rightward chains, so
+contracting each chain to one vertex, retaining the left-to-right order
+of its hanging children, inverts the expansion. A binary tree with $m$
+internal vertices has $m-1$ edges between internal vertices. Under the
+first-return encoding a peak means exactly that its vertex's left child
+is external. Hence $m-k$ internal edges go left and $k-1$ go right. For
+each of the $N(m,k)$ shapes there are $2^{k-1}$ choices.
+
+Contracting $t$ edges leaves $m-t$ internal vertices, hence $m-1-t$
+diagonals in the dissection: one diagonal per nonroot internal vertex.
+Put $d=m-1-t$. Choosing exactly $t$ edges gives
+\[
+ \begin{split}
+ m L(m,d)
+  &=\sum_{k=1}^m b(m,k)b(m,k-1)b(k-1,t)\\
+  &=b(m,t)\sum_{k=1}^m b(m,k)b(m-t,m+1-k)
+    =b(m,t)b(2m-t,m+1).
+ \end{split}
+\]
+Here a nested $t$-set in a $(k-1)$-set may be chosen first, and the
+last equality splits an $(m+1)$-set between two rows. Substituting $t$,
+using symmetry, and applying $(d+1)b(m,d+1)=m b(m-1,d)$ proves the
+formula by cancellation. Each chain contraction and its inverse use at
+most $2m+1$ vertices. The proof uses quotients only with explicit
+positive denominators and has the displayed division-free output.
+\end{proof}
+
+\subsection{Arithmetic implementation and Lean proof obligations}
+The following specifications give finite loop bounds for the less direct
+bijections. They also allow the various identities to share a single Lean
+counting lemma. These are targets for formalization.
+\begin{itemize}
+\item Define \texttt{wordOK} by extracting $n$ digits in base
+$\max(2,r)$, testing all digits $<r$ and requiring the code to be less
+than the $n$th power of the base. Bits give the subset case.
+Define \texttt{kernelWord} by replacing each digit by the index of its
+first occurrence among the distinct digits seen so far. A restricted
+growth word starts at zero when nonempty, and each next label is at most
+one plus the preceding maximum. Prove by prefix induction that the
+normalized word has the same equality relation on positions and is fixed
+by normalization. Its number of distinct letters is the number of blocks.
+Normalized words for partitions of $[n]$ fit in $\max(2,n)^n$. The original word over $[r]$ fits in $\max(2,r)^n$. Empty domain and empty alphabet pass the general code test
+exactly in the cases used above.
+\item Define \texttt{occupancy} by counting matching digits, and
+\texttt{representative} by concatenating the indicated repetitions.
+Use increasing rank within each fiber to construct the permutations
+taking a valid word to the appropriate normal form. For the fully
+unlabeled case use stable sorting by occupancy with label as tie breaker.
+Restrict each inverse assertion to its Boolean validity tests. The
+canonical codes for integer partitions are $n$ digits in base $n+1$
+(use base two when $n=0$), with a positive nonincreasing prefix and
+zero padding. Conjugation's inverse proof reduces coordinatewise to
+$(i,j)\mapsto(j,i)$. Durfee extraction scans row indices $1$ through $n$.
+\item Implement \texttt{firstHit} as least prefix length $\le2n$ at the
+specified height; compare opens and closes as natural counts. The
+reflection lemma states that every prefix of the flipped segment has
+negated height and every later prefix changes by twice the opposite of
+the old segment's height. Apply the bounded inverse-bijection count
+lemma to the two failing/surplus bit masks. \texttt{firstReturn} yields
+the two substring codes and lengths, hence an equivalence with pairs of
+Dyck words indexed by $j$. For the partition bijection, a stack of at most
+$n$ pairs (block ID, vacancies) is maintained; prefix induction verifies
+that total vacancies equal opens minus closes and that finished blocks
+never receive another element.
+\item Tree and dissection algorithms can use bounded traversal rather than
+recursion on arbitrary abstract objects. A tree with $n$ leaves and at
+least two children per internal vertex has at most $n-1$ internal vertices:
+the sum of all outdegrees is its number of vertices minus one and is at
+least twice its number of internal vertices. Store the preorder outdegree
+list, with its length, in base $2n+2$; parsing starts with one vacant
+slot and replaces one slot by $d$ on reading degree $d$. The slots stay
+positive before the last entry and finish at zero. A stack restores the
+unique ordered tree. For plane trees with $n$ edges use $n+1$ entries
+instead. Dissections can be coded as subsets of the at most $(n+2)^2$
+vertex pairs on the cyclic boundary, with crossing tested by alternation
+of endpoints. The base face consists of the consecutive sides incident
+to its boundary walk; equivalently its vertices are exactly those outside
+all open intervals cut off from the base by the selected diagonals.
+This latter description is a direct bounded scan.
+\item For the polynomial assertions implement \texttt{coeffMul} by the
+finite convolution above and truncate after degree $N$. Prove reindexing
+for pairs/triples by counting indicator arrays on $[N+1]^2$ and
+$[N+1]^3$. Set \texttt{seqPos} to the sum of powers through $N$ and
+prove the geometric identity since the $(N+1)$st power has all
+coefficients zero through $N$. For all inductive proof invariants involving
+multiple positions or sizes, fix the final input bound and verify
+simultaneously all smaller indices by a Boolean fold. Signed outputs are
+pairs of naturals with equality by cross-addition.
+\end{itemize}

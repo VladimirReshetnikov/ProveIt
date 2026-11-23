@@ -1,0 +1,108 @@
+\documentclass[10pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=0.95in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage{booktabs,longtable,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!55!black,
+  citecolor=blue!45!black,pdftitle={Formal languages in intuitionistic primitive recursive arithmetic},
+  pdfauthor={Research packet prepared for Vladimir Reshetnikov}]{hyperref}
+\newcommand{\N}{\mathbb N}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\ipra}{\ensuremath{\mathsf{iPRA}}}
+\newcommand{\PR}{\ensuremath{\mathsf{PR}}}
+\newcommand{\Lang}{\mathcal L}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\setlist{itemsep=2pt,topsep=5pt}
+\setlength{\parskip}{3.2pt}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{2em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textsc{Formal languages in iPRA}}
+\fancyhead[R]{\small Constructive proof package}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\fancypagestyle{plain}[fancy]{}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,
+  columns=fullflexible,keepspaces=true,frame=single,
+  rulecolor=\color{black!20},showstringspaces=false}
+
+\begin{document}
+\begin{titlepage}
+\vspace*{0.7in}
+{\color{blue!40!black}\Large\textsc{Constructive mathematics / formal languages}}\par
+\vspace{0.35in}
+{\Huge\bfseries Formal languages in\par
+intuitionistic primitive\par
+recursive arithmetic}\par
+\vspace{0.3in}
+{\Large Finite constructions, explicit witnesses,\par
+and a Lean formalization blueprint}\par
+\vspace{0.45in}
+{\large Prepared for Vladimir Reshetnikov}\par
+{22 November 2026}\par
+\vspace{0.5in}
+\begin{minipage}{0.94\textwidth}
+\textbf{Abstract.}
+We reconstruct a broad part of formal-language theory in first-order
+intuitionistic primitive recursive arithmetic. Words, finite-state machines,
+grammars, trees, and computations have numerical codes. Positive results
+are given by explicit primitive-recursive transformations and bounded
+invariants; negative results have concrete separating or diagonal witnesses.
+The development includes word algebra, effective Kleene algebra, the
+regular-language equivalences and decision procedures, finite monoid
+recognition, context-free normalization and parsing, pushdown equivalence,
+pumping and nonclosure, noncontracting grammar membership, recognizable
+languages and halting obstructions, and exact counting results.
+Classical statements that need additional representation or termination
+data are reformulated with those data visible. The package contains full
+human-readable arguments, an explicit route to object-level Lean
+derivations, and independently cross-checked reference algorithms.
+
+\vspace{0.2in}
+\textbf{Formal status.}
+The Lean material is an uncompiled blueprint. Completed kernel-checked
+\texttt{Prf PRAAx} derivations of this report's language theorems are not
+claimed. Executable finite checks and document compilation are reported
+separately in the verification ledger.
+\end{minipage}
+\vfill
+{\small Repository reference: \texttt{VladimirReshetnikov/ProveIt}\par
+Snapshot: \texttt{3eb195cab4cc3d552a9eca78880c6d428f3e44f9}}
+\end{titlepage}
+
+\begingroup
+\setlength{\parskip}{0pt}
+\small
+\tableofcontents
+\endgroup
+\clearpage
+\input{chapters/foundations}
+\input{chapters/words}
+\input{chapters/regular}
+\input{chapters/monoids}
+\input{chapters/context_free}
+\input{chapters/effective}
+\input{chapters/counting}
+\clearpage
+\input{chapters/lean_plan}
+\clearpage
+\input{chapters/scope_audit}
+\clearpage
+\input{chapters/bibliography}
+\end{document}

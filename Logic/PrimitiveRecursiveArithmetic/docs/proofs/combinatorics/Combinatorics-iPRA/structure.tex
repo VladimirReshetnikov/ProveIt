@@ -1,0 +1,538 @@
+\section{Order, incidence, and extremal set systems}
+\label{sec:order-structure}
+
+The survey asks for the largest antichain and the largest intersecting uniform
+family on an \(n\)-element set. The answers use two different ways to read
+a permutation: take its prefixes, or wrap it around a circle. We develop
+the order-theoretic results first. Throughout, a subset of \([n]=\{0,\ldots,n-1\}\)
+is a binary mask, a family is a mask of masks, and a poset on \([m]\) is
+a reflexive, antisymmetric, transitive Boolean table. An integer can be
+coded by a sign and an absolute value, with one code for zero.
+
+\subsection{Chains, antichains, and finite lattices}
+
+\begin{theorem}[Linear extensions and Mirsky's theorem]\label{result35}
+A finite poset has a computable linear extension. Its maximum chain size
+equals the minimum number of antichains partitioning it. Both extrema
+come with witnesses.
+\end{theorem}
+\begin{proof}
+For \(x\), let \(d(x)\) be the number of its weak predecessors. If \(x<y\),
+the predecessor mask of \(x\) is properly included in that of \(y\), with
+\(y\) witnessing properness. Thus \(d(x)<d(y)\). Sort by \((d(x),x)\)
+lexicographically to get a linear extension. Read it in order and write
+\[
+ h(x)=1+\max(\{0\}\cup\{h(z):z<x\}).
+\]
+Induction on the processed prefix proves simultaneously that every chain
+ending at a processed \(x\) has at most \(h(x)\) elements and that a chain
+of exactly this size exists. For the upper bound, remove the endpoint
+of a nonsingleton chain. For the lower bound append \(x\) to the recorded
+chain at the first maximizing predecessor, using the singleton when the
+predecessor set is empty. Strict comparison increases \(h\), hence every
+nonempty fiber is an antichain. A longest chain meets distinct fibers
+and needs a different part for each element in any antichain partition.
+For the empty poset both numbers are zero. Chains are arrays of at most
+\(m\) distinct labels; testing the upper-bound invariant amounts to a
+bounded scan of padded arrays over \([m+1]\).
+\end{proof}
+
+\begin{theorem}[Dilworth's theorem]\label{result36}
+The largest size of an antichain is the least number of chains partitioning
+a finite poset. A partition and an antichain of the same size can be constructed.
+\end{theorem}
+\begin{proof}
+On two copies of \([m]\) put the bipartite edges \(x_Ly_R\) with \(x<y\).
+The matching and cover algorithm of Theorem~\ref{thm:matching-cover}
+produces a matching and a vertex cover of the same size \(e\).
+Treat each matched edge as an arrow \(x\to y\) on the original labels.
+Each vertex has at most one incoming and one outgoing arrow. Each arrow
+strictly increases \(d\), so following predecessors reaches a start
+within \(m\) steps, and following successors from all starts partitions
+the vertices into chains. There are \(m-e\) starts because exactly \(e\)
+vertices have a predecessor. Keep labels \(x\) for which neither copy
+belongs to the cover. At most \(e\) distinct labels were discarded.
+Two kept labels cannot satisfy \(x<y\), since their edge would miss the
+cover. This gives an antichain of size at least \(m-e\), and no antichain
+can meet one of the constructed chains twice. These two witnesses
+also certify both optimality claims.
+\end{proof}
+
+\begin{corollary}[Erd\H{o}s--Szekeres]\label{result37}
+A list of \(rs+1\) pairwise distinct elements of a coded decidable linear order has a strictly increasing
+subsequence of length \(r+1\) or a strictly decreasing one of length \(s+1\).
+\end{corollary}
+\begin{proof}
+For each position \(i\) record the longest increasing and decreasing
+subsequences ending there using the preceding recurrence over earlier
+positions with smaller or larger value, respectively. If \(i<j\), either
+the first length increases strictly from \(i\) to \(j\), or the second
+does. All pairs of lengths differ. If all first lengths are at most \(r\)
+and all second lengths at most \(s\), there are only \(rs\) pairs of
+positive lengths. The pigeonhole count rules this out; scan for the first
+excess and recover a subsequence from its predecessor pointers.
+\end{proof}
+
+\begin{theorem}[Finite distributive lattice representation]\label{result38}
+A nonempty finite distributive lattice \(L\) is isomorphic to the lattice
+of downward closed subsets of its poset \(J\) of nonzero join-irreducibles.
+The isomorphism, its inverse, and \(J\) are primitive recursive in the
+supplied join and meet tables.
+\end{theorem}
+\begin{proof}
+The order is \(u\le v\) when \(u\vee v=v\); the bottom \(0_L\)
+is the meet of all elements. A nonzero \(j\) belongs to \(J\) when
+\(j=u\vee v\) always implies \(j=u\) or \(j=v\), a test over table indices.
+Write \(I_x=\{j\in J:j\le x\}\). Every \(x\) is the join of \(I_x\)
+(the empty join is \(0_L\)). Prove this in the linear extension:
+for \(0_L\) and for \(x\in J\) it follows immediately. Otherwise a bounded
+scan supplies \(x=u\vee v\) with \(u,v<x\); insert the two earlier
+decompositions. Their terms all belong to \(I_x\), and all elements of
+\(I_x\) lie below \(x\).
+Distributivity makes each \(j\in J\) join-prime: if \(j\le u\vee v\)
+then \(j=(j\wedge u)\vee(j\wedge v)\), so one summand equals \(j\).
+Iteration gives the same conclusion for a nonempty finite join; a
+nonzero \(j\) cannot lie below an empty join. For a downward closed
+\(D\subseteq J\), put \(x=\bigvee D\). Then \(D\subseteq I_x\) and
+each \(j\in I_x\) is below a member of \(D\), hence belongs to \(D\).
+We have both inverse identities. Finally \(I_{u\wedge v}=I_u\cap I_v\)
+by the meet property, and \(I_{u\vee v}=I_u\cup I_v\) by join-primality.
+\end{proof}
+
+\subsection{Finite incidence inversion}
+
+\begin{theorem}[M\"obius inversion and product law]\label{result39}
+In a coded finite poset \(P\), form the signed total \(\mu_P(x,y)\)
+of the strict chains \(x=x_0<\cdots<x_j=y\), weighted by \((-1)^j\).
+The singleton chain has weight \(1\). For integer tables \(f,g\),
+\[
+ g(y)=\sum_{x\le y} f(x)\quad\hbox{for every }y
+ \quad\Longleftrightarrow\quad
+ f(y)=\sum_{x\le y}\mu_P(x,y)g(x)\quad\hbox{for every }y.
+\]
+Also \(\mu_{P\times Q}((x,u),(y,v))=\mu_P(x,y)\mu_Q(u,v)\).
+For \(A\subseteq B\) in the Boolean lattice this gives
+\(\mu(A,B)=(-1)^{|B\setminus A|}\).
+\end{theorem}
+\begin{proof}
+For \(x<y\), sum the chains contributing to
+\(\sum_{x\le z\le y}\mu_P(x,z)\). If their last point is \(y\), delete
+it; otherwise append \(y\). This involution reverses the sign. For the
+sum of \(\mu_P(z,y)\), insert or delete \(x\) at the beginning instead.
+For \(x=y\) both sums are \(1\). For a function supported on comparable
+pairs, define convolution by
+\((a*b)(x,y)=\sum_{x\le z\le y}a(x,z)b(z,y)\).
+The interval indicator \(\zeta(x,y)=[x\le y]\) therefore has a two-sided
+inverse \(\mu_P\). Associativity follows by enumerating the same pairs
+\(x\le z\le w\le y\) in either order, and the diagonal indicator acts
+as identity. Expanding each nested sum in the displayed equivalence
+gives the two inverse identities just proved.
+On a product interval the intermediate coordinates vary independently;
+hence convolution of separate products factors into the two coordinate
+convolutions. The proposed product of M\"obius values thus inverts the
+product zeta; a two-sided inverse is unique by associativity.
+The two-point chain has diagonal entries \(1\) and strict entry \(-1\);
+iterating the product law for \(n\) copies proves the subset formula
+(including the zero-fold product). The chain sum on \([m]\) can be computed
+by sorting the vertices of each of its \(2^m\) masks in the fixed linear
+extension and checking endpoints and strict comparisons. Its absolute
+value is therefore at most \(2^m\), a bound that also applies to
+intermediate signed totals.
+\end{proof}
+
+\subsection{Maximal chains and cyclic intervals}
+
+\begin{theorem}[LYM, Sperner, and the general chain bound]\label{result40}
+Let \(\mathcal F\) be a family of subsets of \([n]\) with at most \(r\)
+members in any strict chain, \(0\le r\le n+1\). Put \(a_j=\#\{A\in
+\mathcal F:|A|=j\}\) and \(c_j=\binom nj\). Then
+\[
+ \sum_{j=0}^n a_j\,j!(n-j)!\ \le\ r\,n!.
+\]
+The maximum size of such a family is the sum of the \(r\) largest
+\(c_j\). In particular the maximum antichain size is
+\(\binom n{\lfloor n/2\rfloor}\), and every maximizing antichain is
+one full level of that size.
+\end{theorem}
+\begin{proof}
+Each linear ordering of \([n]\) specifies one chain of all its prefixes,
+including the empty prefix. A particular \(j\)-set appears in
+\(j!(n-j)!\) orders: order it first and its complement last. Count
+the pairs (order, selected prefix) by their two coordinates to obtain
+the inequality. Dividing formally by \(n!\) writes it as
+\(\sum_j a_j/c_j\le r\); all denominators divide \(n!\).
+For \(r=0\) the family is empty. For \(r>0\), let \(T\) be \(r\) levels
+of largest size and \(c=\min_{j\in T}c_j\). Then
+\[
+ \sum_{j\notin T}a_j
+ \le c\sum_{j\notin T} a_j/c_j
+ \le c\sum_{j\in T}(1-a_j/c_j)
+ \le \sum_{j\in T}(c_j-a_j).
+\]
+On a chain there is at most one member of each rank, so the union of
+these \(r\) levels attains the bound. Comparing \(c_{j+1}(j+1)=
+c_j(n-j)\) identifies the middle maximum (two equal levels for odd \(n\)).
+
+For an antichain of maximum size \(M=\max c_j\), the inequalities
+\(\sum_j a_j/M\le\sum_j a_j/c_j\le1\) force every selected level
+to have size \(M\), and every prefix chain to contain a selected set.
+For even \(n\) there is one candidate level. For odd \(n=2h+1\),
+join an \(h\)-set to an \((h+1)\)-set containing it. Each such pair
+extends to a prefix chain, so exactly one endpoint is selected. This
+bipartite graph is connected: two \(h\)-sets can be reached from each
+other by exchanging one unwanted element for one wanted element at a
+time, walking through their union at each exchange. Every upper set has
+a lower neighbor, including when \(h=0\). Hence the choice at one lower
+vertex forces the choice on the whole graph. This also proves the
+classification for \(n=1\).
+\end{proof}
+
+\begin{theorem}[Erd\H{o}s--Ko--Rado]\label{result41}
+For \(1\le k\) and \(2k\le n\), the largest pairwise intersecting
+family \(\mathcal F\) of \(k\)-subsets of \([n]\) has size
+\(\binom{n-1}{k-1}\). For \(k\le n<2k\), its maximum is \(\binom nk\).
+\end{theorem}
+\begin{proof}
+Place the positions of a permutation on a circle. At most \(k\) of its
+length-\(k\) arcs can belong to \(\mathcal F\). To see this, handle
+the empty case and otherwise rotate the labels of positions so that a
+selected arc starts at \(0\). Each other selected start lies between
+\(-(k-1)\) and \(k-1\) modulo \(n\), since its arc meets the first one.
+Pair start \(-i\) with \(k-i\) for \(1\le i<k\). Their arcs are
+disjoint: they occupy \(2k\) consecutive positions without repetition.
+Thus at most one of each of \(k-1\) pairs can be selected.
+For each \(A\in\mathcal F\) and each of the \(n\) possible starts,
+exactly \(k!(n-k)!\) permutations display \(A\) on that arc. Counting
+(permutation, start) gives
+\(|\mathcal F|n k!(n-k)!\le k\,n!\), the claimed bound after
+cancellation of positive factors. All \(k\)-sets through one fixed
+label meet and attain it. When \(2k>n\), two disjoint \(k\)-sets
+would have \(2k\) distinct members of \([n]\), so every pair meets.
+\end{proof}
+
+\section{Designs, finite planes, and error-correcting codes}
+\label{sec:incidence-structure}
+
+\subsection{Parameter arithmetic and Fisher's inequality}
+
+A \(t\)-\((v,k,\lambda)\) design is an indexed list of \(k\)-subsets
+of \([v]\) in which every \(t\)-subset occurs in exactly \(\lambda\)
+blocks. We use \(0\le t\le k\le v\). Indexing makes multiplicities
+explicit.
+
+\begin{theorem}[Descent, incidence counts, and derived designs]\label{result42}
+Every \(s\)-subset, \(0\le s\le t\), belongs to the same number
+\(\lambda_s\) of blocks, determined by
+\[
+ \lambda_s\binom{k-s}{t-s}=\lambda\binom{v-s}{t-s}.
+\]
+In a \(2\)-design with \(b\) blocks and replication \(r=\lambda_1\),
+\(bk=vr\) and \(r(k-1)=\lambda(v-1)\).
+For \(t\ge 1\), the blocks through a specified point, with that point
+deleted, form a \((t-1)\)-\((v-1,k-1,\lambda)\) design.
+The blocks missing the point form a \((t-1)\)-design with block size
+\(k\) and parameter \(\lambda_{t-1}-\lambda\) when \(k<v\).
+\end{theorem}
+\begin{proof}
+Fix an \(s\)-set \(S\) and count the pairs \((T,B)\) with
+\(S\subseteq T\subseteq B\) and \(|T|=t\). Choosing the extra
+\(t-s\) points before choosing a block gives the right side; choosing
+a block through \(S\) first gives the left with the actual number
+through \(S\) as multiplier. The other factor is positive, so these
+actual numbers coincide by cancellation. Count pairs (point, block
+through it) to get \(bk=vr\); descent at \(s=1,t=2\) gives the second
+identity. For any \((t-1)\)-set avoiding the specified point, adjoining
+that point produces a \(t\)-set in exactly \(\lambda\) blocks. Of the
+\(\lambda_{t-1}\) blocks containing the smaller set, these are exactly
+the ones removed in the residual design and retained in the derived design.
+\end{proof}
+
+\begin{theorem}[Fisher's inequality]\label{result43}
+A \(2\)-\((v,k,\lambda)\) design with \(2\le k<v\) and \(\lambda>0\)
+has \(b\ge v\).
+\end{theorem}
+\begin{proof}
+The incidence identities give \(r>\lambda\). For integral coordinates
+\(z_0,\ldots,z_{v-1}\), expansion and the two incidence multiplicities give
+\[
+ \sum_B\left(\sum_{i\in B}z_i\right)^2
+  =(r-\lambda)\sum_i z_i^2+\lambda\left(\sum_i z_i\right)^2.
+\]
+Indeed a square \(z_i^2\) has total coefficient \(r\), and each product for
+\(i<j\) has coefficient \(2\lambda\). If all block sums vanish, scanning
+the squares on the right shows that all coordinates vanish. Consequently
+the block sums map is injective on any box of integer vectors, by taking
+the difference of two vectors.
+
+If \(b<v\), choose \(M=(v+1)^b+1\) and restrict to coordinates in
+\(\{0,\ldots,M-1\}\). The domain has \(M^v\) vectors. Each block sum
+has fewer than \((v+1)M\) possible positive-or-zero values, and the
+number of image vectors is at most
+\(((v+1)M)^b<M^{b+1}\le M^v\).
+This contradicts finite pigeonhole. Since \(b<v\) is decidable, \(v\le b\)
+follows. Even the auxiliary box used here has a specified primitive
+recursive size.
+\end{proof}
+
+\begin{corollary}[Necessary Steiner triple parameters]\label{result44}
+If \(v\ge3\) points carry a family of triples through every pair exactly once,
+then \(v\equiv1\) or \(3\pmod6\), each point is in \((v-1)/2\) triples,
+and there are \(v(v-1)/6\) triples. A parallel class is a partition of all
+points into triples. If the triples partition into parallel classes, then
+\(v\equiv3\pmod6\) and the number of classes is \((v-1)/2\).
+\end{corollary}
+\begin{proof}
+Take \(k=3,\lambda=1\). The equations \(2r=v-1\) and \(3b=vr\)
+force \(v\) odd and \(3\mid v(v-1)\); checking residues modulo \(6\)
+leaves \(1,3\). A parallel class requires \(3\mid v\), and uses a
+given point exactly once.
+\end{proof}
+
+\subsection{An explicit solution to Kirkman's schoolgirl problem}
+
+\begin{proposition}[Resolvable Steiner triple system on fifteen points]\label{result45}
+Fifteen pupils can walk in five disjoint triples on each of seven days
+so that each pair walks together exactly once.
+\end{proposition}
+\begin{proof}
+Label them \(\infty,A_i,B_i\) with \(i\in\mathbb Z/7\mathbb Z\). Use
+the following five rows on day \(0\), and add \(d\bmod7\) to every finite
+subscript on day \(d\).
+\[
+\begin{array}{ccccc}
+(\infty,A_0,B_0)&(A_1,A_2,A_4)&(A_3,B_1,B_5)&
+(A_5,B_4,B_6)&(A_6,B_2,B_3).
+\end{array}
+\]
+Each day is a partition by inspection of the subscripts. Translation of the
+first row accounts for all pairs involving \(\infty\). Up to sign, the
+differences in the all-\(A\) row are \(1,2,3\); the three \(B\)-pairs
+in the last three rows have differences up to sign \(3,2,1\).
+The mixed differences \(j-i\) from the displayed \(A_i,B_j\) pairs are
+\(0;\ 5,2;\ 6,1;\ 3,4\), each residue once. For each mixed difference
+its seven translates give precisely that class of pairs; for each
+nonzero same-letter difference up to sign the seven translates do likewise,
+since \(d\not\equiv-d\pmod7\) when \(d=1,2,3\). This covers every
+unordered pair exactly once.
+\end{proof}
+
+\subsection{Affine and projective planes over a finite field table}
+
+\begin{theorem}[Planes of order \(q\)]\label{result46}
+Given a field table \(F\) on \(q\ge2\) elements, there is an affine plane
+with \(q^2\) points and \(q(q+1)\) lines of size \(q\), arranged in
+\(q+1\) parallel classes. Adjoining the points at infinity constructs a
+projective plane with \(q^2+q+1\) points and as many lines, all of size
+\(q+1\), with \(q+1\) lines through each point. In particular both
+constructions are uniform in a prime \(p=q\).
+\end{theorem}
+\begin{proof}
+On \(F^2\) use the \(q\) verticals \(x=a\) and the \(q^2\) lines
+\(y=mx+c\). A vertical has one point for each \(y\), and a graph
+one for each \(x\). Two distinct points with equal \(x\)-coordinate
+lie on exactly their vertical. With unequal \(x\)-coordinates they determine
+\(m=(y'-y)/(x'-x)\) and \(c=y-mx\). For a fixed slope the \(q\) graphs
+partition the points, as do the \(q\) verticals. Lines of different
+nonvertical slopes intersect at the unique solution of
+\((m-m')x=c'-c\); a vertical meets each graph once. This proves all
+affine incidence and parallel axioms. The points \((0,0),(0,1),(1,0)\)
+supply a noncollinear triple.
+
+Add a point at infinity for each slope including the vertical direction,
+append it to every line of that class, and make all \(q+1\) new points
+one new line. Two ordinary points retain their unique joining line.
+An ordinary and an infinite point specify the unique line through
+the former of that direction. Two infinite points determine the new
+line. Distinct old lines in one class now meet at their infinite point,
+distinct classes still meet at their original point, and the new line
+meets an old line at its direction. There are \(q^2+q+1\) points,
+\(q(q+1)+1\) lines, and the displayed incidence verifies the stated
+valencies. The four corners \((0,0),(0,1),(1,0),(1,1)\) have no
+three collinear, since any three include an entire vertical side and a
+point outside it. This gives the nondegeneracy axiom. For \(p\) prime
+use arithmetic modulo \(p\). For \(0<a<p\) the Euclidean algorithm
+on \(p,a\) terminates within \(p+1\) divisions (positive remainders
+strictly decrease); back-substitution gives \(up+va=1\), since the
+last nonzero remainder divides the prime \(p\) and also \(a\).
+Thus scanning residues for an inverse of \(a\) succeeds.
+\end{proof}
+
+\begin{corollary}\label{result47}
+An affine plane from this construction is a resolvable
+\(2\)-\((q^2,q,1)\) design. A projective plane from it is a symmetric
+\(2\)-\((q^2+q+1,q+1,1)\) design (as many blocks as points).
+At \(q=2\) it gives the seven-point, seven-line Fano plane.
+\end{corollary}
+\begin{proof}
+Use the lines as blocks and apply uniqueness of the joining line.
+For an explicit table at \(q=2\), let \(a,b,c,d\) denote respectively
+\(00,01,10,11\); let \(v,h,s\) denote vertical, horizontal and
+slope-one infinity. The seven lines are
+\(abv,cdv,ach,bdh,ads,bcs,vhs\).
+\end{proof}
+
+\subsection{Metric bounds and the perfect binary Hamming code}
+
+A \(q\)-ary word of length \(n\) is a list of \(n\) digits in \([q]\),
+\(q\ge2\). Hamming distance counts positions with unequal digits. A code
+is a mask of the \(q^n\) words. Write
+\[
+ V_q(n,t)=\sum_{i=0}^{\min(n,t)}\binom ni(q-1)^i .
+\]
+
+\begin{theorem}[Hamming, Singleton, and Gilbert bounds]\label{result48}
+Let \(1\le d\le n+1\), and let \(C\) have pairwise distances at least
+\(d\). For \(t=\lfloor(d-1)/2\rfloor\),
+\[
+ |C|V_q(n,t)\le q^n,\qquad |C|\le q^{\,n-d+1}.
+\]
+There is a computable code of pairwise distances at least \(d\) with
+\(\lvert C\rvert V_q(n,d-1)\ge q^n\).
+\end{theorem}
+\begin{proof}
+At distance \(i\) from a center, choose \(i\) changed coordinates and
+one of \(q-1\) other digits in each, giving the stated ball volume.
+Coordinatewise, a difference at the endpoints requires a difference on
+one leg of any two-step path, proving the triangle inequality by addition.
+Radius-\(t\) balls about codewords are disjoint because their common
+point would force distance at most \(2t<d\). Counting all their points
+gives the first bound. Delete a fixed \(d-1\) coordinates from every
+codeword. Two equal resulting words would have differed only in those
+coordinates; hence deletion is injective on \(C\), proving Singleton's
+bound. For Gilbert's lower bound, visit the words in numerical order,
+retaining a word if its distance to every retained word is at least \(d\).
+Separation is preserved at each insertion. Each rejected word was within
+\(d-1\) of an earlier retained word and remains covered. Thus balls of
+radius \(d-1\) around the final code cover all \(q^n\) words. Counting
+them with multiplicity gives the opposite inequality.
+\end{proof}
+
+\begin{theorem}[Perfect binary codes and their triples]\label{result49}
+For \(r\ge2\) and \(n=2^r-1\), there is a binary linear code of length
+\(n\), size \(2^{n-r}\), and minimum distance \(3\), whose radius-one
+balls partition all words. Its words of weight three have supports forming
+a Steiner triple system on \(n\) labels.
+\end{theorem}
+\begin{proof}
+Index coordinates by the nonzero \(r\)-bit words. Let \(\sigma(w)\)
+be the bitwise exclusive-or of labels whose coordinate in \(w\) is \(1\);
+let \(C=\{w:\sigma(w)=0\}\). Exclusive-or is coordinatewise addition
+modulo \(2\) and cancellation in pairs shows that \(\sigma\) preserves
+addition. No one- or two-coordinate nonempty support has zero syndrome:
+one label is nonzero, and two distinct labels have nonzero sum. Every
+pair \(a,b\) of distinct nonzero labels yields exactly one third
+label \(a\mathbin{\oplus}b\) completing a zero-syndrome triple, distinct
+from \(0,a,b\). Pairs exist for \(r\ge2\). By linearity the minimum
+distance therefore equals three, and the triples have the asserted
+unique-pair property.
+
+Given \(w\), leave it if \(\sigma(w)=0\), and otherwise flip the unique
+coordinate labeled \(\sigma(w)\). Its resulting syndrome is zero, and a
+single flip at any other coordinate would leave a nonzero syndrome. This
+proves unique decoding at radius one. For an independent count of the code,
+first assign arbitrary bits to all positions except the \(r\) coordinate
+unit vectors. The syndrome of the partial assignment specifies the unique
+bits to put in those \(r\) positions, one per set bit of that syndrome.
+Hence \(|C|=2^{n-r}\), and indeed \((1+n)|C|=2^n\).
+\end{proof}
+
+\subsection{Lean definitions and induction obligations for these results}
+
+The following specifications use bounds as arguments. They can be
+implemented over natural-number tables using the coding layer of this
+paper. The named lemmas are a dependency order for completing the Lean
+proofs. The counting arguments use equality of interval sums under
+explicit rearrangements. Divisions in combinatorial inequalities abbreviate
+multiplication by positive common denominators.
+
+\paragraph{Order and incidence.}
+Use \(\mathrm{le}(P,x,y)\) for bit \(mx+y\) of a relation mask.
+Define \(\mathrm{validPoset}(m,P)\) by bounded diagonal, pair and
+triple scans. Define \(\mathrm{predCount}\) by summation and
+\(\mathrm{extension}\) as selection of the unused least
+\((\mathrm{predCount},x)\) for exactly \(m\) iterations.
+Prove \texttt{predCount\_lt} using subset counting, then
+\texttt{extension\_perm} and \texttt{extension\_sorted} by prefix
+induction. Store the longest-chain lengths and first maximizing predecessors
+in parallel tables. Induct on the extension prefix with table entries,
+pair comparisons, and all candidate chains bounded by
+\((m+1)^{m+1}\) using a padding digit. For Dilworth, construct the two
+copies of the poset via \(x\mapsto x\) and \(x\mapsto m+x\); reuse
+\texttt{matching-cover} (Theorem~\ref{thm:matching-cover}) and iterate the
+matched successor \(m\) times with an end marker.
+The lattice functions \texttt{joinIrred}, \texttt{idealOf} and
+\texttt{joinMask} require scans of at most \(m^2, m,m\) indices for a
+fixed element or mask. Prove the reconstruction identity first, the
+join-prime test next, then the inverse identity by induction on a join
+prefix. For M\"obius inversion, define \texttt{chainMask},
+\texttt{signedChainCount}, \texttt{conv}; prove the two endpoint-toggle
+cancellations, convolution associativity by summation over the same two
+intermediate indices with endpoints fixed, and the factored double sum. This yields the inversion,
+product, and Boolean formulas.
+
+\paragraph{Extremal families.}
+Define \texttt{prefixMask} and \texttt{arcMask} on permutation tables
+of length \(n\) with digits below \(n\). For each mask of size \(k\), enumerate
+the permutations containing it in a prescribed block by packing the two
+separately ordered restrictions into the block and its complement, each
+in increasing position order. Their unpacking maps are inverses by
+digit inspection. Prove \texttt{prefix\_fiber} and
+\texttt{arc\_fiber}; the latter regards the selected arc as the list
+of positions from its start modulo \(n\). For LYM, sum the prefix
+fiber bound and sort the \(n+1\) numerical rank sizes to select \(T\).
+Test the chain restriction using all prefix permutations: every chain
+can be extended to one by listing successive set differences in increasing
+order and then the outside elements. For EKR, prove bounded
+\texttt{pairedArcs\_disjoint} for \(1\le i<k\) by the \(2k\) consecutive
+positions argument, and sum its indicator inequalities.
+
+\paragraph{Designs and geometry.}
+Define \texttt{blockAt}, \texttt{through} and \texttt{designOK} using
+a list of \(b\) masks and a \(2^v\)-mask scan. The first reusable lemma
+counts \((T,B)\) by transposing its bounded double sum. For Fisher's
+bound define \texttt{blockSums} on \(v\) digits with base \(M\), prove
+\texttt{sumSquares\_expand} by finite distributivity, then
+\texttt{blockSums\_injective} by integer subtraction and positivity,
+and compare the two box cardinalities. For Kirkman use \texttt{day d}
+formed from the five displayed triples. The reduction to residues gives
+seven-bit difference tests or, equivalently, \(105\) unordered-pair
+tests on the full schedule. The supplied \texttt{lean/Kirkman.lean}
+checks the latter. Its theorems \texttt{shape}, \texttt{attendance},
+and \texttt{pairCoverage} quantify over \texttt{Fin 7} and \texttt{Fin 15};
+Lean discharges all three by kernel reduction and reports no axiom dependencies. For field tables, encode points by \(qx+y\),
+lines by \(qm+c\) followed by the \(q\) verticals. Append the \(q+1\)
+infinite points and one new line. \texttt{joinPoints} and
+\texttt{meetLines} branch on the types and equalities specified in the
+proof. A scan of \(q\) labels computes an inverse of a nonzero field
+element. Check existence and uniqueness by substitution in the table
+laws, expressed by bounded scans over \(q^3\) triples.
+
+\paragraph{Codes.}
+Define \texttt{dist n q u v} as a sum of digit inequalities;
+\texttt{syndrome r w} as a fold over the \(2^r-1\) nonzero labels;
+\texttt{correct} flips the syndrome-labeled bit when the syndrome is
+nonzero. Prove \texttt{dist\_triangle} by a sum of Boolean inequalities,
+\texttt{ball\_card} by enumerating change masks and changed digits,
+\texttt{syndrome\_flip} by cancellation, and the two-sided specification
+of the encoder by comparing the \(r\) component bits. The Gilbert loop
+uses \(q^n\) iterations; its invariant says that all retained words are
+separated and that every processed word lies within \(d-1\) of some
+retained word. Both assertions are bounded by the word range \(q^n\).
+All induction assertions above are equalities or inequalities of
+primitive recursive table checks, with codes supplied as parameters.
+
+\paragraph{Sources.}
+The survey's order, design, finite geometry, extremal, and coding sections
+motivate these results. Its extremal questions and its Kirkman example
+are answered explicitly. The incidence-algebra calculation follows
+G.-C. Rota, \emph{On the foundations of combinatorial theory I}
+(\href{https://doi.org/10.1007/BF00531932}{1964}).
+The permutation and circle counts follow D. Lubell,
+\emph{A short proof of Sperner's lemma}
+(\href{https://doi.org/10.1016/S0021-9800(66)80035-2}{1966}),
+and G. O. H. Katona, \emph{A simple proof of the Erd\H{o}s--Chao
+Ko--Rado theorem}
+(\href{https://doi.org/10.1016/0095-8956(72)90054-8}{1972}).
+For the original binary code construction see R. W. Hamming,
+\emph{Error detecting and error correcting codes}
+(\href{https://doi.org/10.1002/j.1538-7305.1950.tb00463.x}{1950}).

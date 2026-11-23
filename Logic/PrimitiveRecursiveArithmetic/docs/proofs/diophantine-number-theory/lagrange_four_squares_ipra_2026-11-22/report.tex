@@ -1,0 +1,154 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,tabularx,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{bookmark}
+\definecolor{ink}{HTML}{18344B}
+\definecolor{accent}{HTML}{176A75}
+\definecolor{pale}{HTML}{F3F6F8}
+\hypersetup{colorlinks=true,linkcolor=ink,urlcolor=accent,citecolor=accent,
+  pdftitle={Lagrange's Four-Square Theorem in Intuitionistic Primitive Recursive Arithmetic},
+  pdfauthor={Research report prepared for Vladimir Reshetnikov}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{ink}Four squares in intuitionistic PRA}
+\fancyhead[R]{\small 22 November 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{0.42em}
+\setlength{\parindent}{0pt}
+\setlist{itemsep=0.2em,topsep=0.3em,leftmargin=1.6em}
+\setcounter{tocdepth}{2}
+\allowdisplaybreaks[2]
+\newcommand{\NN}{\mathbb N}
+\newcommand{\ZZ}{\mathbb Z}
+\newcommand{\ipra}{\mathsf{iPRA}}
+\newcommand{\PR}{\mathsf{PR}}
+\newcommand{\Nrm}[1]{\mathsf N(#1)}
+\newcommand{\monus}{\mathbin{\dot{-}}}
+\newcommand{\Prime}{\mathsf{Prime}}
+\newcommand{\Init}{\mathsf{Init}}
+\newcommand{\Step}{\mathsf{Step}}
+\newcommand{\rep}{\mathsf{Rep}}
+\newcommand{\abs}[1]{\lvert#1\rvert}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\ind}[1]{[\,#1\,]}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\lstset{basicstyle=\ttfamily\small,backgroundcolor=\color{pale},
+  frame=single,rulecolor=\color{pale},breaklines=true,columns=fullflexible,
+  keepspaces=true,showstringspaces=false,xleftmargin=0.6em,xrightmargin=0.6em,
+  aboveskip=0.7em,belowskip=0.7em}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{0.55in}
+{\small\sffamily\color{accent}CONSTRUCTIVE ARITHMETIC \quad / \quad RESEARCH PACKET}
+\vspace{0.25in}
+
+{\Huge\bfseries\color{ink}Lagrange's\par Four-Square Theorem\par}
+\vspace{0.18in}
+{\Large in intuitionistic primitive recursive arithmetic\par}
+\vspace{0.4in}
+{\large A complete mathematical argument, explicit witnesses,\par
+and a Lean formalization roadmap}
+\vspace{0.35in}
+
+\begin{abstract}
+Every natural number is the sum of four squares, and this assertion admits
+an explicitly witnessed proof in intuitionistic primitive recursive
+arithmetic. We construct four primitive recursive functions $W_i$ and prove,
+using only quantifier-free induction, that
+\[
+  W_0(n)^2+W_1(n)^2+W_2(n)^2+W_3(n)^2=n.
+\]
+The construction consists of a bounded residue search for each prime,
+an explicit descent with separate even and odd multiplier branches, and a
+bounded trial-factor loop for arbitrary inputs. The central descent is
+iterated a prescribed number of times; all its invariants are arithmetic
+equalities and decidable inequalities. Integer and tuple notation is reduced
+to primitive recursive coding over the natural numbers.
+
+The packet includes an exact-arithmetic Python implementation, reproducible
+checks, uncompiled Lean source outlining the complete construction, and
+pinned ProveIt interface references. The mathematical proof is supplied in
+full. The Lean arithmetic obligations and the final syntactic iPRA derivation
+remain to be mechanized; no completed machine verification is claimed.
+\end{abstract}
+\vfill
+\begin{tabular}{@{}ll@{}}
+Prepared for & Vladimir Reshetnikov\\
+Date & 22 November 2026\\
+Foundational target & Intuitionistic first-order PRA, quantifier-free induction\\
+Proof route & Bounded modular seed, parity-first descent, bounded factor loop
+\end{tabular}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\clearpage
+\pagenumbering{arabic}
+
+\input{sections/01_foundations}
+\input{sections/02_seed}
+\input{sections/03_descent}
+\input{sections/04_assembly}
+\input{sections/05_formalization}
+\input{sections/06_validation}
+\appendix
+\input{sections/07_coding}
+
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{proveit}
+Vladimir Reshetnikov and ProveIt contributors.
+\emph{ProveIt: Logic/PrimitiveRecursiveArithmetic}.
+Repository snapshot
+\texttt{3a521d0265941f9e9d4ad450818365a78a6c9a73}, inspected 22 November 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/3a521d0265941f9e9d4ad450818365a78a6c9a73/Logic/PrimitiveRecursiveArithmetic}.
+The packet's \code{references/proveit/SOURCE\_MANIFEST.json} records precise
+paths, Git blob identifiers, and SHA-256 hashes.
+
+\bibitem{clocked}
+ProveIt contributors. \emph{Core/ClockedDescent.lean}.
+Git blob \texttt{4b41c93d5788694b9989a83c49d1c8acdaf918f6} at the snapshot above.
+See the pinned URL in the source manifest. Its introducing commit is
+\texttt{e1d9051b368ebe351cbbc50932982b06f852c03c}.
+
+\bibitem{mathlib}
+Chris Hughes and Mathlib contributors.
+\emph{Mathlib.NumberTheory.SumFourSquares}.
+Source inspected 22 November 2026, Git blob
+\texttt{863f3f96bb65314912188d69c38535c394612813}.
+\url{https://github.com/leanprover-community/mathlib4/blob/master/Mathlib/NumberTheory/SumFourSquares.lean}.
+Documentation:
+\url{https://leanprover-community.github.io/mathlib4_docs/Mathlib/NumberTheory/SumFourSquares.html}.
+
+\bibitem{requested}
+\emph{Lagrange's four-square theorem}. Wikipedia, user-supplied topic reference,
+consulted 22 November 2026.
+\url{https://en.wikipedia.org/wiki/Lagrange%27s_four-square_theorem}.
+The proof in this report is developed explicitly; this page is not used as
+a formal foundational dependency.
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,75 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=0.94in,top=0.84in,bottom=0.88in,headheight=15pt,headsep=13pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,tabularx,array}
+\usepackage{microtype,xcolor,fancyhdr,titlesec,graphicx}
+\usepackage{hyperref}
+\definecolor{ink}{HTML}{173D49}
+\definecolor{tone}{HTML}{365D68}
+\hypersetup{colorlinks=true,linkcolor=tone,citecolor=tone,urlcolor=tone,pdftitle={The Mertens function in intuitionistic primitive recursive arithmetic},pdfauthor={Research report}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\sffamily\color{tone}The Mertens function}
+\fancyhead[R]{\small\sffamily\color{tone}Intuitionistic primitive recursive arithmetic}
+\fancyfoot[R]{\small\sffamily\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\titleformat{\section}{\Large\sffamily\bfseries\color{ink}}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\large\sffamily\bfseries\color{ink}}{\thesubsection}{0.55em}{}
+\titlespacing*{\section}{0pt}{2.5ex plus .5ex minus .25ex}{1.0ex}
+\titlespacing*{\subsection}{0pt}{1.8ex plus .4ex}{.5ex}
+\newtheoremstyle{reportthm}{7pt}{6pt}{\itshape}{}{\bfseries\color{ink}}{.}{.5em}{}
+\theoremstyle{reportthm}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\setlength{\parindent}{1.15em}
+\setlength{\emergencystretch}{1.4em}
+\setcounter{tocdepth}{1}
+\raggedbottom
+\newcommand{\proj}{https://github.com/VladimirReshetnikov/ProveIt/tree/65b76a5b8aa87ecad4103c2d287eff5660d3c84c/Logic/PrimitiveRecursiveArithmetic}
+\begin{document}
+\thispagestyle{plain}
+{\noindent\sffamily\color{tone}\small NUMBER THEORY\quad / \quad CONSTRUCTIVE ARITHMETIC\par}
+\vspace{1.3em}
+{\noindent\sffamily\bfseries\color{ink}\fontsize{28}{32}\selectfont The Mertens function\par}
+\vspace{.35em}
+{\noindent\large\sffamily in intuitionistic primitive recursive arithmetic\par}
+\vspace{.7em}
+{\noindent\small 22 November 2026\par}
+\vspace{1em}
+\noindent The identity $\sum_{d\mid n}\mu(d)=[n=1]$ gives a short route from a bounded factorization algorithm to determinants, Farey sums and efficient evaluation of $M(N)$. It also gives the reciprocal zeta series. With explicit tail and contour bounds, we obtain symmetric Perron inversion, the squarefree-density constant, and $|M(N)|\le C_hN/(\log N)^h$ for every natural $h$, with primitive recursive constants. A separate argument recovers cancellation from ProveIt's effective prime number theorem. We prove an equivalence between the RH growth condition and quantitative zero exclusion on compact rectangles. A single certified zeta zero gives a bounded search for $|M(n)|>\sqrt n/32768$ beyond any starting point. Each assertion involving analysis has a finite-precision reading.
+
+\vspace{.8em}
+\noindent{\small\renewcommand{\arraystretch}{1.16}%
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash\bfseries}p{.21\linewidth}>{\raggedright\arraybackslash}Xr@{}}
+\toprule
+Area & Principal results & Sections\\ \midrule
+Finite identities & Divisor inversion, totients, Chebyshev's $\psi$, hyperboloids, Redheffer determinant and Farey sums & \ref{sec:foundation}--\ref{sec:finite-representations}\\
+Numerical results & Two algorithms and the maximum of $M(n)^2/n$ for $2\le n\le10\,000$ & \ref{sec:computing}\\
+Analytic estimates & Dirichlet, Mellin and Perron formulas, squarefree density and unconditional cancellation & \ref{sec:analytic}--\ref{sec:cancellation}\\
+Growth and zeros & Compact zero exclusion, square-root excursions and local residues & \ref{sec:growth}--\ref{sec:edges}\\
+Formalization & Checked Lean theorems, definitions and proof obligations & \ref{sec:lean}\\
+\bottomrule
+\end{tabularx}}
+
+\vspace{1em}
+\noindent\textbf{Verification.} The accompanying Lean development checks general finite identities and the published 143-term initial table. The analytic arguments and the translation to first-order iPRA are human proofs and formalization plans. The reference programs give repeatable integer checks. The two requested articles supply the inventory of target statements \cite{wiki,mw}.
+
+\vspace{1em}
+\noindent\includegraphics[width=\linewidth]{figures/mertens-quotient.pdf}
+\par\noindent{\small\textbf{Mertens's original range.} The normalized sum at every integer from $2$ through $10\,000$, shown on a logarithmic horizontal scale. The largest absolute ratio is $2/\sqrt5$ at $n=5$.}
+\newpage
+\input{foundations}
+\input{identities}
+\input{computation}
+\input{analytic}
+\input{rates}
+\input{cancellation}
+\input{growth}
+\input{reverse}
+\input{oscillation}
+\input{supplements}
+\input{formalization}
+\input{references}
+\end{document}

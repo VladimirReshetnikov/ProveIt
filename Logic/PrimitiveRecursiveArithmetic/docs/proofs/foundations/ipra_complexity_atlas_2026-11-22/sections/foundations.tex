@@ -1,0 +1,105 @@
+\section{The arithmetic foundation and its proof discipline}
+\label{sec:foundations}
+
+\subsection{Exactly which theory is used}
+There is one sort, the natural numbers. The language contains $0$, successor $S$, and a function symbol for each fixed primitive-recursive (PR) definition. Zero, projections, composition, and primitive recursion generate these definitions. If $h$ is defined from $f,g$, its axioms are
+\[
+ h(0,\vec x)=f(\vec x),\qquad
+ h(Sn,\vec x)=g(n,h(n,\vec x),\vec x).
+\]
+Composition and projection symbols have their defining equations. The remaining arithmetic axioms are $Sx\ne0$, $Sx=Sy\to x=y$, and
+\[
+ A(0,\vec x)\to
+ [\forall n\,(A(n,\vec x)\to A(Sn,\vec x))]\to
+ \forall n\,A(n,\vec x)
+\]
+for \emph{quantifier-free} $A$. The logic is intuitionistic first-order logic with equality: the introduction and elimination rules for $\bot,\land,\lor,\to,\forall,\exists$, equality reflexivity and substitution, and the usual eigenvariable restrictions. Negation abbreviates implication to $\bot$. There is no unrestricted excluded middle, choice, Markov principle, or self-reflection principle. This agrees with ProveIt's actual \texttt{PR}, \texttt{PTm}, \texttt{PRAAx}, and \texttt{Prf} interface \cite{ProveItPR}.
+
+Addition, truncated subtraction, multiplication, exponentiation, comparison, quotient and remainder, finite sums, and finite products have their elementary PR definitions. Their usual laws follow by quantifier-free induction. For quotient by $b>0$, one may maintain a remainder $r<b$ and a quotient $q$ as the dividend counter increases: increment $r$ unless it becomes $b$, in which case reset it to zero and increment $q$. The invariant $a=bq+r$ proves division with remainder using only numerical equalities and inequalities. Set quotient and remainder to zero when $b=0$ so every symbol is total. Signed integers are coded by sign and magnitude with a distinguished zero; their arithmetic reduces to these natural-number operations.
+
+It is essential to distinguish two uses of ``primitive recursive.'' A PR symbol is legitimate in the arithmetic language, but it is not a unit-cost operation in the machine model. Conversely, there is no total PR function $U(e,x)$ evaluating every unary PR function at its numerical code: if there were, the PR function $x\mapsto U(x,x)+1$ would contradict its own alleged index. We use a fixed \emph{clocked} machine interpreter instead.
+
+\subsection{Words and finite data}
+A word $w=b_0\cdots b_{n-1}$ is represented by
+\[
+ \code w=2^n+\sum_{i<n}b_i2^i.
+\]
+Thus the empty word has code $1$, and $0$ is reserved as invalid. The length is the unique $n$ satisfying $2^n\le\code w<2^{n+1}$. Find it by bounded search below the word code. Bit access uses division and remainder. Appending a word, taking a substring, reversing, and reading a self-delimiting header are bounded loops. The numerical code can be exponentially larger than its bit length, and all resource bounds below refer to \emph{bit length}.
+
+For an array of length $r$ with entries below $b\ge2$, use $\sum_{i<r}a_i b^i<b^r$, with length and base in a header. Its $i$th entry is $(A\mathbin{\mathrm{div}}b^i)\bmod b$. All proof-theoretic arrays are of this form or nested such records. Machine inputs and outputs use binary fields with self-delimiting lengths; a pairing with unnecessarily long unary fields is never silently treated as a polynomial-size serialization. Malformed words, graphs, circuits, clauses, and machines have a specified default interpretation, normally rejection. Every theorem about a meaningful instance includes the corresponding validity test, or uses a total constructor that guarantees validity.
+
+\begin{lemma}[F01: finite decisions and least witnesses]\label{thm:F01}
+For every \emph{fixed} PR Boolean predicate $b(i,\vec x)$, there are PR functions
+\[
+ \Any_b(r,\vec x),\quad \All_b(r,\vec x),\quad \mu_b(r,\vec x)\le r
+\]
+such that \ipra\ proves
+\begin{align*}
+ \Any_b(r,\vec x)=1&\ \longleftrightarrow\ \exists i<r\ b(i,\vec x)=1,\\
+ \All_b(r,\vec x)=1&\ \longleftrightarrow\ \forall i<r\ b(i,\vec x)=1.
+\end{align*}
+If a successful index exists, $\mu_b$ is its least value; otherwise $\mu_b=r$.
+\end{lemma}
+\begin{proof}
+Define the first two functions by folding OR and AND, starting from $0$ and $1$. For search maintain a found-bit $f$ and an index $j$. At stage $i$, if $f=0$ and $b(i,\vec x)=1$, set $(f,j)=(1,i)$; otherwise leave them unchanged. At the end return $j$ if $f=1$, and $r$ if $f=0$.
+
+The loop invariants are: $f$ is the OR of the processed bits; $f=1$ implies $j<i$, $b(j)=1$, and the product of the failure bits below $j$ is $1$; $f=0$ implies the product of all failure bits below $i$ is $1$. These are quantifier-free equations or Boolean combinations of equations between PR terms. Each of the two updates preserves them by the fold equations. Induction is therefore permitted.
+
+To recover quantified meanings, a given successful index forces the OR to be one: split the fold before and after that index. A one OR gives the saved witness. Dually, a zero AND gives a least failed factor, and a one AND forbids any failed factor. This proves both directions of the equivalences without induction on an unbounded existential formula. The zero-length cases give an empty OR of zero, an empty AND of one, and sentinel zero.
+\end{proof}
+
+\begin{theorem}[F02: bounded formulas and bounded induction]\label{thm:F02}
+For each fixed formula $A$ whose quantifiers have PR bounds, there is a fixed PR bit $\chi_A$ and an \ipra\ proof $A\leftrightarrow\chi_A=1$. Induction for $A$ is consequently derivable from quantifier-free induction.
+\end{theorem}
+\begin{proof}
+Equality and order have PR comparison bits. Conjunction and disjunction become Boolean product and OR. Since compiled subformulas are decidable, implication becomes $\neg\chi_B\lor\chi_C$; its equivalence with $B\to C$ is verified in the four Boolean cases. Bounded quantifiers become the folds of Lemma~\ref{thm:F01}. This constructs a finite PR definition and a finite proof by recursion on the \emph{external fixed syntax} of $A$. It is not a numerical truth predicate for arbitrary PR syntax.
+
+Translate the base and successor assumptions for $A(n)$ into those for the quantifier-free equation $\chi_A(n)=1$, apply its induction axiom, and translate back. Unbounded formulas may occur in the surrounding context; they are never put inside the induction predicate. This is exactly the mechanism exposed by ProveIt's \texttt{BoundedSyntaxInduction.induction} \cite{ProveItBounded}.
+\end{proof}
+
+\begin{lemma}[F03: bounded-loop correctness]\label{thm:F03}
+Suppose a finite program has a PR fuel bound $T(\vec x)$, PR state updates, and a PR bound $B(\vec x)$ on all state codes throughout that run. If an invariant has only quantifiers bounded by explicit PR terms, its base case and preservation prove correctness in \ipra. This includes bounded least search, array dynamic programming, and a depth-first traversal of a finitely bounded tree.
+\end{lemma}
+\begin{proof}
+Replace a while-loop by $T$ iterations that leave the state unchanged after its stopping bit becomes one. Simultaneous recursion on the tuple of variables is primitive recursion on a code. For nested loops, use nested recursions, or a flattened counter below the product of their bounds. Apply Theorem~\ref{thm:F02} to the assertion that either the counter is beyond $T$ or the coded state satisfies the invariant. Branching is a finite Boolean case distinction. A depth-first tree with branching at most $b$ and height at most $h$ has at most $1+b+\cdots+b^h$ nodes, so its stack traversal has a PR clock and a PR stack-code bound. This justifies the proof rule, not an assertion that every boundedly computable program has a correctness proof. Its actual invariant must still be established.
+\end{proof}
+
+\begin{lemma}[F04: finite counting and pigeonhole]\label{thm:F04}
+For any explicitly coded map $f:\{0,\ldots,r-1\}\to\{0,\ldots,s-1\}$, injectivity implies $r\le s$. If $r>s$, bounded search constructs $i<j<r$ with $f(i)=f(j)$. For any Boolean predicates $P_i$ on a finite set $X$, the size of their union is at most the sum of their sizes.
+\end{lemma}
+\begin{proof}
+Build a bitmap of the values seen in the first $k$ entries. Initially its sum is zero. Inserting a previously unseen entry increments the sum by one; inserting a repeated entry leaves it unchanged and produces a pair of equal values. If all $r$ entries are distinct, its sum is $r$ and is at most the number $s$ of positions. If $r>s$, search all $r^2$ pairs; absence of a found pair would give the impossible bitmap sum. The search succeeds constructively because its success bit is decidable. For the union bound, at each $x$ the OR of $P_i(x)$ is at most the sum of their bits; sum over $x$. All invariants are finite sums or bounded bitmap assertions.
+\end{proof}
+
+\subsection{The machine model and clocked semantics}
+We use deterministic or binary-branching Turing machines with a fixed finite alphabet, a read-only input tape with endmarkers when work space is measured, finitely many work tapes, and optional one-way write-only output. The output-head position is unavailable to the control and the output tape has no readable boundary signal. Time counts transitions. Space counts work-tape cells visited; input and write-only output do not count. Small-space transducers are additionally required to halt; their output length and time follow from the usual finite-configuration argument because their control never reads the output. Fixed machines can be normalized to one work tape with a fixed alphabet with constant-factor space overhead. Ordinary one-tape machines with input on the work tape are used only for time arguments, where the input contributes $n$ cells.
+
+Tables, states, head positions, tapes, and accepting/rejecting flags have finite numerical codes. Accepting and rejecting states are absorbing. An invalid table denotes an immediately rejecting machine. A branch-controlled interpreter uses an extra finite choice word; one bit is consumed at each branching step. Finite random-tape interpreters use exactly the same mechanism but count choice words instead of existentially quantifying over them.
+
+\begin{theorem}[F05: bounded simulation and trace uniqueness]\label{thm:F05}
+There are fixed PR functions $\Run(e,x,t)$ and $\B(e,x,t)\in\bits$ for the configuration and acceptance bit after $t$ transitions. A correctly coded trace of length $t+1$ beginning at the initial configuration agrees with $\Run$ at every position. Accepting or rejecting output remains unchanged under additional fuel. All statements have \ipra\ proofs.
+\end{theorem}
+\begin{proof}
+One transition is table lookup followed by replacement of finitely many fields, so it is PR. Define $\Run(e,x,0)$ as initialization and $\Run(e,x,t+1)$ as one step applied to $\Run(e,x,t)$. For a fixed horizon $T$, a one-tape head cannot leave $[-T,n+T]$, and only $n+2T+1$ tape cells matter. If there are $q$ states and alphabet size $g$, the number of configurations has the elementary bound
+\[
+ C=(q+2)(n+2T+3)g^{n+2T+3}
+\]
+after harmless enlargements for markers. This displayed formula is for an ordinary input-on-work-tape machine. With an independently moving read-only input head, include the additional factor $n+2$. A trace can be stored below $\max(2,C)^{T+1}$. For multiple tapes take the product of the corresponding bounds.
+
+The invariant $\forall i\le\min(j,T),\ \operatorname{trace}(z,i)=\Run(e,x,i)$ is bounded by those codes. Its base is initialization and its step is the deterministic transition equation. Lemma~\ref{thm:F03} proves it. Absorption follows by induction on extra steps. With a supplied branch word the transition is again deterministic, so the same argument applies. No assertion that an unclocked program halts was needed.
+\end{proof}
+
+\begin{theorem}[F06: concrete polynomial simulation]\label{thm:F06}
+For a fixed number of source tapes, time $t$ can be simulated on one tape in $O((n+t+1)^2)$ time. There is also a fixed interpreter that, with a finite source table of length $m$ and a unary clock $t$, computes $\B(e,x,t)$ in at most $C(m+n+t+1)^4$ transitions for a fixed constant $C$. Both simulations and their bounds admit bounded-invariant \ipra\ proofs.
+\end{theorem}
+\begin{proof}
+Put source tapes on separate tracks of one physical tape, with a head marker on each. One full sweep collects the scanned symbols into finite control; a return sweep updates symbols and markers. A bounded number of sweeps simulates one move. At stage $i$, occupied length is $O(n+i+1)$, so summing $O(n+i+1)$ over $i<t$ gives the first bound. Since the number of tapes is fixed for that compiler, its finite control and track alphabet are fixed too.
+
+For a variable program table, use canonical descriptions with one work tape over a fixed alphabet (and, if present, a separate read-only input tape). Other fixed-machine presentations are compiled to this form first. Scan its $m$ bits to locate the relevant rule, using an explicit finite word for the source state. Repeated comparisons, done by scans, cost at most $O((m+1)^2)$ virtual steps per source step. Store a unary fuel counter and the simulated tape. They occupy $O(m+n+t+1)$ cells. One-tape sweeps therefore cost at most
+\[
+ C\,t(m+1)^2(m+n+t+1)\le C(m+n+t+1)^4.
+\]
+Increase $C$ for parsing, initialization, and invalid descriptions. The preservation invariant records every represented cell, all head markers, the current table rule, the remaining fuel, and the occupied interval. Its scans and cell indices are bounded. Summing the scan counters gives the displayed costs by the same bounded induction. This supplies the coarse simulation used here; the sharper $t\log t$ simulation is not assumed \cite{HennieStearns1966}.
+\end{proof}
+
+The theory can therefore justify computations with immense finite bounds while still making meaningful distinctions between polynomial, exponential, and space-bounded machines. Arithmetic definability and computational efficiency remain separate claims throughout the report.

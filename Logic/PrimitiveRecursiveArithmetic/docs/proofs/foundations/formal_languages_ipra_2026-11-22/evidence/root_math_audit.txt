@@ -1,0 +1,127 @@
+Independent mathematical audit: regular_languages subagent
+Human audit only; not kernel verification or a completed formalization.
+
+Snapshot hashes:
+149f5fffa51e0266d5f7a57c7ec1c0eeebf89cabc807e0d715025e7ea15cec34  chapters/foundations.tex
+3a6a2f819dc0f00b7c4eb211ac0a5aafa6ad056b5709af396bd0a8aa6e1c8921  chapters/words.tex
+23e01ff394df1f04599d017b2d685a064ce58e78a7c6280706149a9a235170f9  chapters/counting.tex
+cf2d45ad3247e5c5f91e4cf0bb252bbc72757a3d93fe0e164d7e8650a02631c0  chapters/regular.tex
+
+SCOPE
+Read foundations.tex, words.tex, and counting.tex in full independently of
+root's drafting. Also re-read regular.tex for edge cases. Checked explicit
+bounds, witness transformations, constructive use of decidability, absence
+of unbounded collection, and the proposed lowering to quantifier-free
+induction. No material false statement or incorrect bound was identified.
+
+FOUNDATIONS
+- The pairing (x+y)^2+x is injective. For t=x+y, its value lies in
+  [t^2,t^2+t], strictly below (t+1)^2. The proposed inverse and range test
+  therefore work. The proper tail is smaller than its nonzero cons code.
+- Boolean compilation of bounded quantifiers is justified by explicit
+  search/counterexample bits, rather than assuming induction on the target
+  quantified formula. Implication uses already decidable subformulas.
+- Bounded collection correctly requires a common B and explicitly disclaims
+  the unbounded variant. The B=0,k=0 corner works with the empty table; for
+  B=0,k>0 both sides fail. A digit operation at base 1 can be totalized by
+  division/modulo by 1, yielding zero, so this edge case is harmless.
+- Finite path deletion preserves endpoints, not labels. regular.tex now
+  states this explicitly and only shortens epsilon blocks where the input
+  word must stay fixed. r=0 cases are vacuous for actual graph endpoints.
+- Finite saturation counts strict bit additions and does not assert that an
+  arbitrary terminating program is PR. The universal-PR-evaluator claim is
+  correctly classified as an external impossibility schema.
+
+WORDS AND PR LANGUAGE ALGEBRA
+- Base-(q+1) nonzero-digit coding, concatenation, and code(w)<(q+1)^|w|
+  hold including epsilon. Length-aware base-q enumeration handles leading
+  zeroes; q=1 has a separate valid treatment.
+- The commuting-word argument reduces total length from |u|+|v| to |v|
+  when v=uz with u nonempty. Reconstruction gives exponents r and r+s.
+  A fixed fuel |u|+|v|+1 and a finite substitution stack make the operation
+  PR; nonempty common roots bound exponents by word lengths. Both-empty
+  and one-empty cases satisfy the stated bound.
+- Star removes empty factors before applying the <=|w| factor bound.
+  Nested-star flattening has bounded cut masks, so the stated bounded
+  collection is adequate. Positive closure carefully allows one empty
+  factor when epsilon belongs to L. Sliding and denesting laws retain
+  finite witness chains, so no inappropriate nonempty-factor assumption
+  enters them.
+- Arden's equation uses the PR bit of X in its loop invariant. Failure of
+  B(w) yields an explicitly searchable cut from the assumed equation;
+  epsilon notin A forces a strict drop of residual length. The reverse
+  inclusion is a backward scan of a supplied factor list. This does not
+  require induction on an unbounded formula.
+- Erasing images are NOT incorrectly declared PR. alg:homlaws explicitly
+  gives image-star witnesses a list of source words; this is a correct
+  certificate-presentation theorem and avoids unbounded finite collection.
+  Suggested clarification: explicitly disclaim an object-theory equivalence
+  with the naive raw formula 'exists output factors, for every i<k there
+  exists a source_i' unless a common source bound is supplied. The existing
+  final sentence already points in this direction, so this is presentation
+  clarification rather than a mathematical correction.
+- The decimal syntax expression E or E=E matches the supplied source rules,
+  including syntactically legal false arithmetic equations.
+
+COUNTING
+- u M^n f counts words because the DFA has a unique run. Each letter counts
+  in exactly one transition multiplicity. The q^n bound follows by row
+  sums, including n=0.
+- The adjugate proof gives the correct sign and fixed-point-free involution
+  for repeated-row off-diagonal entries. Polynomial identities are finite
+  coefficient statements, not analytic reasoning. Suggested convention:
+  explicitly define det of the empty 0x0 matrix as 1, covering r=1 minors.
+- Multiplying the truncated geometric identity on the left by the adjugate
+  gives D S_N=adj(I-zM) modulo z^(N+1). Degree(P)<=r-1 and constant D=1
+  imply the claimed recurrence for all n>=r. There is no illicit infinite
+  formal-series object or analytic division.
+- Unary periodicity has preperiod i<r and period 1<=p<=r from the repeated
+  run states. The converse chain-plus-cycle DFA has exactly i+p states,
+  including i=0. Suggested wording: 'i>=0 and p>0' in its statement instead
+  of 'i,p>0' followed by the separate exception allowing i=0.
+- First-return Dyck decomposition is unique. Every nonempty node consumes
+  one disjoint pair of parentheses; a binary parse tree with n such nodes
+  has n+1 epsilon leaves, hence 2n+1=|w|+1 total nodes. This validates the
+  stated expansion budget. Suggested iPRA clarification: use this bound
+  to express uniqueness by a bounded parse-table invariant, rather than
+  leaving the phrase 'induction on word length' open to an unbounded
+  universal quantifier over arbitrary parse trees.
+- Catalan reflection is correct: reflect the prefix through first height
+  -1 to obtain n+1 openings and n-1 closings; inverse reflects through
+  first height +1. The bad-word count is binom(2n,n-1). The double-counted
+  incidence identity n*binom(2n,n)=(n+1)*binom(2n,n-1) gives
+  (n+1)C_n=binom(2n,n), with n=0 handled separately.
+
+REGULAR CHAPTER SELF-AUDIT
+- Epsilon-block normalization bound l+(l+1)(n-1), determinization bound
+  2^n, concatenation/star state counts, and substitution-copy counts hold.
+- Kleene elimination permits i=h or j=h and empty pieces; its recurrence
+  covers internal occurrences correctly. The syntax-size bound follows
+  s_(h+1)<=4*s_h+4 and s_h<=4^h*(b+2).
+- Finiteness test [n,2n) is valid: while an accepted word has length >=2n,
+  delete a first-n-state loop of length 1..n, leaving length >=n. Pumping
+  any surviving word yields a constructive injection by strictly increasing
+  lengths. No infinite pigeonhole is used.
+- Distinguishability stabilizes by n^2 rounds; false pairs form an effective
+  right congruence. The minimized-DFA injection into a competitor uses only
+  computed access words and computed distinguishing suffixes.
+- Myhill-Nerode converse is deliberately a fixed-PR finite-certificate
+  schema with representatives, not arbitrary finite-index quotient choice.
+- Independent executable checks are recorded separately in
+  verification/regular_check_results.json; they are not used to certify the
+  general theorems. No additional optional tests were necessary for this
+  human audit.
+
+FORMALIZATION LIMIT
+All human proofs still require implementation of numeric PR codes, their
+semantic bridges, compilation of bounded invariants, and actual iPRA
+object-derivation checking. The report and .lean.txt files correctly state
+that this work has not been completed in this session.
+
+FOLLOW-UP AUDIT FIX (independent effective_languages review)
+The finite regex syntax checker now explicitly requires a rooted tree,
+including unique parent and connectivity, not only increasing parent indices.
+This prevents unintended Thompson sharing for a DAG expression such as (times P P).
+The prose also labels all Thompson connectors epsilon and explicitly restricts
+the unique-run pumping proof to a DFA. These are blueprint/clarity fixes;
+regular expression semantics were already stated for finite syntax trees.

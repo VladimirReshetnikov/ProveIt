@@ -1,0 +1,210 @@
+\section{Explicit primitive recursive coding and search invariants}
+\label{app:coding}
+
+This appendix supplies the numerical details behind the record notation.
+It also explains why the displayed finite logical arguments do not hide
+stronger induction.
+
+\subsection{Natural quotient and remainder}
+
+Fix $m>0$. Define the pair $(Q_m(a),R_m(a))$ by recursion on $a$:
+\[
+ (Q_m(0),R_m(0))=(0,0).
+\]
+If the current remainder is $R$, set
+\[
+ (Q',R')=
+ \begin{cases}
+ (Q+1,0),&R+1=m,\\
+ (Q,R+1),&R+1<m.
+ \end{cases}
+\]
+For a total definition, the second branch can be the default branch;
+the invariant ensures its displayed inequality. Simultaneous recursion is
+implemented by pairing. Quantifier-free induction proves
+\[
+ a=mQ_m(a)+R_m(a),\qquad 0\le R_m(a)<m.
+\]
+The update proves the identity directly in each case. Uniqueness follows
+because two distinct quotients differ by at least one, while two
+remainders in $[0,m)$ differ in absolute value by less than $m$.
+Set $Q_0(a)=0$ and $R_0(a)=a$ as total defaults. This establishes the
+primitive recursive division and remainder operations used in the proof.
+
+Positive-factor cancellation is elementary arithmetic: if $c>0$ and
+$ca=cb$, then $a<b$ would imply $cb\ge ca+c>ca$, and $b<a$ would
+give the symmetric contradiction. Decidability of natural order leaves
+$a=b$. The multiplication-order laws used here follow by quantifier-free
+induction from addition and multiplication definitions.
+
+\subsection{A canonical integer code}
+
+Encode a signed integer by
+\[
+ \operatorname{enc}(z)=
+ \begin{cases}
+ 2z,&z\ge0,\\
+ 2(-z)-1,&z<0.
+ \end{cases}
+\]
+This display describes the intended meaning. The internal functions are
+defined directly on natural codes. For a code $c$, put
+\[
+ P(c)=\begin{cases}c/2,&c\text{ even},\\0,&c\text{ odd},\end{cases}
+ \qquad
+ M(c)=\begin{cases}0,&c\text{ even},\\(c+1)/2,&c\text{ odd}.\end{cases}
+\]
+Thus $c$ represents $P(c)-M(c)$ and its magnitude is
+$\operatorname{mag}(c)=(c+1)\mathbin{\mathrm{div}}2$.
+At most one of $P(c),M(c)$ is nonzero.
+
+For natural $u,v$, define the code of their difference by
+\[
+ E(u,v)=
+ \begin{cases}
+ 2(u\monus v),&v\le u,\\
+ 2(v\monus u)\monus1,&u<v.
+ \end{cases}
+\]
+Then canonical coded addition, negation, and multiplication are
+\begin{align*}
+ c\oplus d&=E(P(c)+P(d),M(c)+M(d)),\\
+ \operatorname{neg}(c)&=E(M(c),P(c)),\\
+ c\otimes d&=E(P(c)P(d)+M(c)M(d),\;
+                 P(c)M(d)+M(c)P(d)).
+\end{align*}
+These definitions use only natural arithmetic and decidable cases. Their
+interpretation as the desired integer operations follows by expansion of
+differences. Sign cases reduce their laws to natural polynomial equations.
+The square magnitude $\operatorname{mag}(c)^2$ is the natural norm
+contribution of the coded integer.
+
+For division by $m>0$, first compute natural magnitude quotient and
+remainder $a=mq+r$, $0\le r<m$. A nonnegative code gives quotient $q$
+and remainder $r$. For the code of $-a$, use
+\[
+ \begin{array}{c|cc}
+ &\text{signed quotient}&\text{nonnegative remainder}\\\hline
+ r=0&-q&0\\
+ r>0&-(q+1)&m-r.
+ \end{array}
+\]
+Both rows satisfy $-a=mQ+R$ and $0\le R<m$. In the exact-division case
+this is the usual signed exact quotient. For zero divisor choose quotient
+zero and remainder equal to the input signed integer. The valid descent
+branches never divide by zero.
+
+All signs in the human proof can therefore be translated into ordinary
+natural terms. The reference implementation's signed integers and Lean's
+\code{Int} are convenient host representations of these functions, not
+an additional sort in the object theory.
+
+\subsection{Tuple coding and simultaneous recursion}
+
+A convenient pairing, matching the inspected ProveIt interface, is
+\[
+ \pi(u,v)=(u+v)^2+u.
+\]
+It has primitive recursive projections on its image. Given a code $c$,
+let $s$ be the largest $j\le c$ with $j^2\le c$, computed by a bounded
+scan; put $u=c\monus s^2$ and $v=s\monus u$.
+For $c=\pi(u,v)$, write $s_0=u+v$. Since
+\[
+ s_0^2\le c=s_0^2+u\le s_0^2+s_0<(s_0+1)^2,
+\]
+the computed square-root floor is $s_0$, and both projections recover
+the original $u,v$. On codes outside the image their values are still
+defined, and no inverse law is needed there.
+
+Nested pairing codes a signed four-tuple, a multiplier with a four-tuple,
+or a remainder with an accumulated tuple. A single primitive recursion
+on the resulting code implements every simultaneous update. The defining
+equations for the projections then recover the displayed record equations.
+There is no recursor on an infinite stream and no need for a sequence
+comprehension principle.
+
+\subsection{Bounded search as a primitive recursive function}
+\label{app:folds}
+
+Let $b(i,\vec u)\in\{0,1\}$ be a \emph{fixed} primitive recursive test.
+The following recursion returns the first successful index below $B$,
+or $B$ if there is none:
+\begin{align*}
+ s(0,\vec u)&=0,\\
+ s(k+1,\vec u)&=
+ \begin{cases}
+ s(k,\vec u),&s(k,\vec u)<k,\\
+ k,&s(k,\vec u)=k\text{ and }b(k,\vec u)=1,\\
+ k+1,&\text{otherwise}.
+ \end{cases}
+\end{align*}
+The defining cases are decided by natural tests. Quantifier-free induction
+proves the following conjunction, using Boolean folds for its bounded parts:
+\begin{enumerate}
+\item $s(k,\vec u)\le k$;
+\item if $s(k,\vec u)<k$, then $b(s(k,\vec u),\vec u)=1$;
+\item every $i<s(k,\vec u)$ has $b(i,\vec u)=0$;
+\item if $s(k,\vec u)=k$, every $i<k$ has $b(i,\vec u)=0$.
+\end{enumerate}
+At a successor stage an existing hit is preserved. If there is none,
+the new candidate either becomes the stored hit or extends the failed
+prefix by one. These are exactly the three branches above. Thus a known
+successful candidate $j<B$ forces $s(B,\vec u)<B$, and a non-failure
+output gives a genuine witness.
+
+For the finite conjunction fold, the elementary facts needed are prefix
+extension and bounded extraction. Extension is the defining equation
+\[
+ \operatorname{All}(k+1)=\operatorname{All}(k)b(k).
+\]
+If the product is $1$, both bit factors are $1$. Conversely, if both are
+$1$, the product is $1$. For extraction at a fixed parameter $j$, induct
+on the quantifier-free formula
+\[
+ j<k\ \land\ \operatorname{All}(k)=1\quad\to\quad b(j)=1.
+\]
+In the successor step, decide whether $j<k$ or $j=k$ and use the old
+prefix or the last factor. This supplies the usual elimination rule for
+the displayed bounded universal statement without quantified induction.
+To build a finite conjunction from already available pointwise proofs,
+induct on its bit equation, restricting the index to the chosen total
+bound by a quantifier-free guard.
+
+The same ideas justify the finite incidence counts in~\eqref{eq:count}.
+For an explicitly coded injective list, a prefix contains at most one
+entry equal to a fixed residue. The prefix-count invariant is a natural
+inequality; absence of repeated equalities is a bounded Boolean condition.
+Adding the next equality-test bit preserves the inequality, because a
+previous hit and a new hit would be a repeated entry. Finite double-sum
+interchange follows by induction on the row count, and within the step
+by induction on the column count using associativity of addition.
+
+Here $b$ is a metamathematical schema for each particular test actually
+used in the finite program. The object theory has the corresponding
+fixed function symbols. Nothing in the proof assumes a primitive
+recursive universal evaluator for arbitrary primitive recursive program
+codes. Such an assumption is unnecessary and would be an invalid shortcut.
+
+\subsection{A dependency account for the final derivation}
+
+The proof can be assembled in the following finite sequence:
+\begin{enumerate}
+\item Derive natural arithmetic, coded integer operations, pairing,
+finite sums, and bounded-search specifications.
+\item Derive the Euler polynomial identity, bounded least-divisor facts,
+and the bounded B\'ezout lemma.
+\item Prove injectivity of the two residue lists, the finite incidence
+contradiction, and the seed's norm and size bounds.
+\item Prove the parity-halving identity and the centered odd-descent lemmas,
+including positivity and exact quotient divisibility.
+\item Apply QF induction to the explicit prime-state and rank invariant
+at clock $p$; obtain the prime witness identity.
+\item Apply QF induction to the factor-state and rank invariant at clock
+$n$; take magnitudes and obtain the four unary witness identities.
+\item Introduce the four existential witnesses and universally close the
+free input variable using intuitionistic logical rules.
+\end{enumerate}
+
+Every mathematical dependency in this list has been proved in the text
+or reduced here to its explicit elementary quantifier-free induction.
+The corresponding proof objects are the remaining Lean engineering task.

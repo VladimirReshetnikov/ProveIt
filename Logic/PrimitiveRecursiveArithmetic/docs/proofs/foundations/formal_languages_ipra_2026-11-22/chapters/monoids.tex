@@ -1,0 +1,150 @@
+\section{Finite monoids, syntactic contexts, and linear grammars}
+\label{sec:monoids}
+
+A finite monoid is a supplied multiplication table $\mu:[m]^2\to[m]$,
+$m\ge1$, and an element $e<m$, satisfying
+\[
+ \mu(e,x)=\mu(x,e)=x,\qquad
+ \mu(\mu(x,y),z)=\mu(x,\mu(y,z)).
+\]
+These laws and table well-formedness are decidable bounded assertions. A
+recognizer additionally supplies letter images $\lambda(a)<m$ and accepting
+bits $P(x)$. Its word evaluation starts at $e$ and multiplies the letter
+images from left to right. All structures here are finite numerical tables;
+no quotient of an arbitrary set of words is assumed.
+
+\begin{theorem}[Finite-monoid recognition and automata]\label{mon:recognition}
+A language has a supplied finite-monoid recognizer if and only if it has a
+finite DFA. Both conversions are primitive recursive. A monoid with $m$
+elements gives an $m$-state DFA; an $n$-state DFA gives a monoid with at most
+$n^n$ elements.
+\end{theorem}
+\begin{proof}
+From a monoid take state set $[m]$, initial state $e$, transition
+$x\mathrel{\smash{\xrightarrow{a}}}\mu(x,\lambda(a))$, and final bits $P$.
+Its run is exactly the monoid evaluation. Associativity and the unit laws
+also prove $\widehat\lambda(uv)=\mu(\widehat\lambda(u),\widehat\lambda(v))$
+by induction along $v$.
+
+Conversely represent a transformation of $[n]$ by its $n$-entry vector.
+There are $n^n$ vectors. For transformations $f,g$, define
+\[
+ (f\cdot g)(q)=g(f(q));
+\]
+thus multiplication means first $f$, then $g$. The identity vector is a
+two-sided unit, and both ways of multiplying three vectors have entry
+$h(g(f(q)))$. This proves the monoid laws by a bounded comparison of entries.
+Send $a$ to the transition vector $q\mapsto\delta(q,a)$. Run composition
+shows that the image of $w$ is
+$T_w(q)=\delta^*(q,w)$ and $T_{uv}=T_u\cdot T_v=T_v\circ T_u$.
+Mark vector $f$ accepting exactly when $f(q_0)$ is an accepting state of
+the DFA. This gives precisely the original accepting bit. Vector encoding,
+composition, and the finite multiplication table are primitive recursive.
+Their proofs compare computed entries, so the required inductions are
+quantifier-free after bounded Boolean compilation.
+\end{proof}
+
+\begin{theorem}[Computing the generated transition monoid]\label{mon:generated}
+From an $n$-state DFA one can compute its generated transition monoid,
+its multiplication table, and a representative word for each element.
+It has at most $N=n^n$ elements, and every representative may be chosen
+with length below $N$.
+\end{theorem}
+\begin{proof}
+Begin with the identity vector and repeatedly add $f\cdot T_a$ for every
+currently present vector $f$ and letter $a$. After $j$ rounds the marked
+vectors are exactly those represented by words of length at most $j$:
+append one letter in the forward direction and remove the last letter in
+the reverse direction. Store a first predecessor and letter for each new
+vector. The universe has $N$ elements, so after $N$ rounds the bit table
+is stable by bounded saturation. A shortest path from the identity to any
+marked vector in this letter-transition graph has fewer than $N$ edges,
+by finite path shortening. Those paths give the claimed representatives.
+
+The stable set contains every word transformation: induction along a
+supplied word uses its closure under each letter. It is closed under
+multiplication as well. If $g=T_v$ is represented by its computed word,
+starting at $f$ and reading $v$ remains in the stable set and ends at
+$f\cdot g$. Thus the inherited table is a monoid. Renumber the marked
+vectors in numerical order to obtain its finite code. Its recognizing
+bits are inherited from Theorem~\ref{mon:recognition}. Completeness is
+proved by the finite-table invariant and arbitrary-word induction, not
+by extrapolating from sampled words.
+\end{proof}
+
+\begin{theorem}[Effective syntactic monoid and short distinguishing contexts]
+\label{mon:syntactic}
+Let $M$ be a reachable minimal $n$-state DFA for $L$. Define two-sided
+syntactic equivalence by
+\[
+ u\approx_L v\quad\longleftrightarrow\quad
+ \forall x,y\;\bigl(L(xuy)\leftrightarrow L(xvy)\bigr).
+\]
+Then $u\approx_L v$ if and only if $T_u=T_v$ as $n$-entry vectors.
+When the vectors differ, one can compute distinguishing contexts with
+$|x|<n$ and $|y|\le n^2$. Consequently the syntactic monoid of a supplied
+regular language is effectively finite and primitive-recursively computable.
+\end{theorem}
+\begin{proof}
+If the vectors agree, a prefix $x$ reaches some state $q$; reading $u$ or
+$v$ then gives the same state, and the common suffix $y$ gives the same
+accepting bit. This proves the context equation for arbitrary supplied
+$x,y$.
+
+If the vectors differ, bounded search finds $q<n$ with
+$p=T_u(q)\ne T_v(q)=r$. Reachability provides an access word $x$ for $q$
+with $|x|<n$. Distinct states of a minimal DFA are distinguishable;
+otherwise the quotient construction in Theorem~\ref{reg:minimize} would
+reduce its number of states. The table of
+Proposition~\ref{reg:distinguish} therefore provides $y$, $|y|\le n^2$,
+whose accepting bits from $p,r$ differ. Hence $xuy,xvy$ distinguish the
+contexts. Since vector equality is decidable, this proves both directions
+constructively, including the implication from the universally quantified
+context equation to vector equality.
+
+Equivalence is a two-sided congruence because multiplication of equal
+vectors on either side preserves equality. More explicitly,
+$T_{aub}=T_a\cdot T_u\cdot T_b$ for arbitrary words $a,b$.
+The generated transition monoid therefore represents exactly the syntactic
+classes, with class multiplication represented by concatenation. Given any
+input DFA, first apply the primitive recursive minimization procedure,
+then Theorem~\ref{mon:generated}. This returns the actual finite multiplication
+table and representatives, without forming an infinite quotient. The
+unbounded context quantifiers occur only in the theorem statement;
+its test is equality of finitely many entries, and its negative branch
+supplies the explicit bounded contexts above.
+\end{proof}
+
+\begin{proposition}[Left-linear grammars and the danger of mixing directions]
+\label{mon:leftlinear}
+Finite left-linear grammars, with productions $A\to Bu$ or $A\to u$,
+define exactly the regular languages. Allowing both left-linear and
+right-linear productions in one grammar can define a nonregular language.
+\end{proposition}
+\begin{proof}
+Replace each left-linear production $A\to Bu$ by $A\to u^RB$, and each
+$A\to u$ by $A\to u^R$. A left-linear sentential form consists of one
+nonterminal followed by a terminal suffix. Reversing it gives a terminal
+prefix followed by that nonterminal, and each old production corresponds
+to exactly one new production. Induction along the supplied derivation
+therefore identifies the new grammar's language with the reversal of the
+old one's language. The new grammar is right-linear, so
+Theorem~\ref{reg:grammar} and closure under reversal give a DFA for the
+old grammar. Conversely convert a DFA for $L^R$ to a right-linear grammar
+and reverse this construction to obtain a left-linear grammar for $L$.
+All reversals and derivation transformations are finite PR scans.
+
+For a strict separation, use
+\[
+ S\to aA\mid\eps,\qquad A\to Sb.
+\]
+Every nonterminal derivation alternates the sentential forms
+$a^jSb^j$ and $a^{j+1}Ab^j$. Choosing $S\to\eps$ terminates with
+$a^jb^j$; choosing the other rule and then the forced $A$ rule increments
+$j$. This bounded trace invariant proves that the language is exactly
+$\{a^jb^j:j\in\N\}$, with every such word obtained by $j$ iterations
+and the final empty production. It is nonregular by
+Corollary~\ref{reg:nonregular}. Each production is individually linear,
+but their two directions cannot be mixed while retaining the regular-language
+characterization.
+\end{proof}

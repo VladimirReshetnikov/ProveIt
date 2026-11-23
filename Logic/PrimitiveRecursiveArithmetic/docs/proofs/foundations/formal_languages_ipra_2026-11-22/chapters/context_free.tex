@@ -1,0 +1,974 @@
+\section{Context-free grammars and pushdown automata}
+\label{sec:context-free}
+
+This section treats a grammar as finite input data.  A variable or a terminal
+is a natural number carrying a tag, a rule is a finite list, and a derivation
+is an explicitly supplied finite certificate.  No set of all derivable words
+is an object of arithmetic.  The notation $w\in L(G)$ abbreviates the
+first-order assertion that a checked derivation certificate exists.  The
+normalization and parsing theorems below subsequently replace this assertion
+by one primitive recursive Boolean computation.  The conventional grammar,
+pushdown, and pumping results provide the subject matter; the bounds and
+certificate transformations given here supply their arithmetic content
+\cite{Sipser2020}.
+
+\subsection{Finite syntax and finite certificates}
+
+\begin{definition}[Grammar and certificate conventions]
+\label{cf:definition}
+A context-free grammar is $G=(\Sigma,V,P,S)$, where
+$\Sigma=[a]$, $V=[m]$, $m\geq1$, $S<m$, and $P$ is a finite list of
+rules $A\to\beta$ with $A\in V$ and
+$\beta\in(\Sigma\sqcup V)^*$.  Tags keep the two alphabets disjoint.
+A sentential form is a word over this tagged alphabet.  A rewriting step
+replaces one specified occurrence of $A$ by the right side of a specified
+rule.  A derivation certificate lists the sentential forms, rule indices,
+and replacement positions.  Its checker is a bounded scan of those lists.
+
+A completed parse tree has a variable at its root.  A variable node carries
+a rule index, and its ordered children have exactly that rule's right-side
+labels.  Terminal nodes have no children.  A variable using an empty rule
+also has no children; it contributes no letter to the yield.  The yield is
+the left-to-right list of terminal leaves.  Trees can be coded as postorder
+node tables: children have smaller indices, every nonroot node occurs in
+exactly one child list, and the last node is the root.  These finite conditions
+exclude sharing and disconnected components.  A bottom-up table computes
+the yield of every node.  Write $\operatorname{Tree}(G,A,w,t)$ for the
+Boolean assertion that $t$ is such a tree with root $A$ and yield $w$.
+\end{definition}
+
+Malformed data is assigned a fixed rejecting value.  Thus all operations in
+this section are total functions on natural-number codes, even when their
+mathematical specifications are stated only for well-formed input.
+
+\begin{theorem}[Derivations and trees, with bounded translations]
+\label{cf:tree-derivation}
+There are primitive recursive translations in both directions between
+derivations $A\Rightarrow^* w$ with terminal $w$ and completed parse trees
+rooted at $A$ with yield $w$.  If every right side has length at most $r$, a
+$k$-step derivation produces a tree with at most $1+kr$ nodes.  A tree with
+$N$ nodes produces a leftmost derivation with at most $N$ steps, and all its
+sentential forms have length at most $N$.
+\end{theorem}
+
+\begin{proof}
+Begin with an unexpanded root labelled $A$.  Maintain the invariant that the
+ordered frontier, counting unexpanded variables but ignoring expanded
+empty-rule nodes, is the current sentential form.  The supplied replacement
+position identifies one unexpanded variable on this frontier.  Attach the
+specified right side as its ordered children.  This changes the frontier
+by precisely the certified rewriting step and introduces at most $r$
+nodes.  After $k$ steps the frontier is terminal, so every remaining frontier
+node is a terminal and the tree is completed.  The node count follows by
+adding the numbers of newly attached children.
+
+In the other direction, visit variable nodes in preorder.  Expand the
+leftmost unexpanded variable by the rule stored at that node, skipping
+terminal nodes.  Its children occur before every later frontier variable,
+so the next expansion again is leftmost.  Each variable is expanded once.
+Every frontier consists of distinct nodes of the original tree, so its
+length is at most $N$.  The final frontier is the yield.  Both procedures
+use a finite work list; the respective loop bounds are $k$ and $N$.
+Their frontier invariant is an equality between coded finite lists.
+\end{proof}
+
+\begin{lemma}[Nullable variables and bounded empty trees]
+\label{cf:nullable}
+The variables deriving the empty word are computed by $m$ rounds of
+Boolean saturation.  The computation returns an explicit empty parse tree
+for every variable it marks.
+\end{lemma}
+
+\begin{proof}
+Put $E_0=\varnothing$ and obtain $E_{i+1}$ by adjoining every left side of a
+rule whose right side contains no terminal and whose variables all belong
+to $E_i$.  Keep previously marked variables.  Store the first rule that
+marks each new variable and the already stored certificates for its children.
+At a strict stage the number of marked variables increases.  An equality
+stage is permanent, because applying the same deterministic update to the
+same set gives the same result.  Consequently $E_m=E_{m+1}$: otherwise the
+first $m+1$ updates would be strict in an $m$-element set.
+
+The stored rules give empty trees by copying the previously stored child
+trees.  Conversely, scan any completed empty tree in postorder.  A terminal
+leaf would contribute a letter, so none occurs.  When its children have
+been shown to lie in the fixed point $E_m$, the rule at a variable node
+puts that node's label in $E_m$ as well.  In particular its root is marked.
+If $r=\max(1,\max_{P}|\beta|)$, each stored certificate has height at most
+$m+1$ and fewer than $(r+1)^{m+2}$ nodes.  This generous bound covers unary
+rules and empty right sides.  Thus certificate production itself is
+primitive recursive, without an unbounded search for a derivation.
+\end{proof}
+
+\begin{theorem}[Productivity, emptiness, and a bounded positive witness]
+\label{cf:emptiness}
+There is a primitive recursive decision procedure for $L(G)=\varnothing$.
+If the language is nonempty, it produces a terminal word and a parse tree
+for it of fewer than $(r+1)^{m+2}$ nodes.
+\end{theorem}
+
+\begin{proof}
+Use the preceding saturation with one change: terminals in a right side
+are allowed and require no membership test.  A rule becomes usable when
+all of its variable occurrences are already marked.  Record a terminal
+leaf for each terminal occurrence and the stored tree for each variable
+occurrence.  The same increase argument gives a fixed point after $m$
+rounds and the same bound gives a tree for each marked variable.  Conversely,
+the postorder scan of any terminal-yield tree marks all its variable labels
+in that fixed point.  The start variable is marked exactly when a derivation
+certificate exists.  A negative answer therefore refutes every supplied
+certificate; it does not assert failure of an unbounded search.
+\end{proof}
+
+\subsection{Normalization with witness-preserving transformations}
+
+\begin{theorem}[Eliminating empty rules]
+\label{cf:epsilon-removal}
+One can transform $G$ primitively recursively into an equivalent grammar
+whose only possible empty rule belongs to a fresh start variable $S_0$, and
+in which $S_0$ occurs on no right side.  Both implications of language
+equivalence are witnessed by primitive recursive tree transformations.
+\end{theorem}
+
+\begin{proof}
+First introduce $S_0\to S$.  Compute the nullable variables.  For each rule
+$A\to X_1\cdots X_k$, enumerate the $2^k$ masks of its positions.  A mask may
+delete a position only when it contains a nullable variable.  Retain every
+resulting nonempty right side.  Retain $S_0\to\eps$ exactly when $S$ was
+nullable.  Record, with each new rule, one original rule and one deletion
+mask that produced it; a bounded first-match search supplies this provenance.
+No rule introduces $S_0$ on its right side.
+
+Given an old tree with nonempty yield, process it bottom-up and delete each
+child subtree with empty yield.  Every such child is a nullable variable,
+so the surviving children are an enumerated new rule.  Nodes with positive
+yield retain at least one child.  The root therefore yields a new tree with
+the same word.  An old empty tree at the start is replaced by the recorded
+rule $S_0\to\eps$.
+
+Conversely, for each new rule use its provenance and restore every erased
+child with the fixed nullable tree from Lemma~\ref{cf:nullable}.  Recurse
+over the retained variable children.  The inserted trees have empty yield,
+so the result has the same terminal yield.  For $S_0\to\eps$ use its stored
+old empty tree.  This is a bounded traversal of the supplied tree, with a
+grammar-dependent bound on the size inserted at every node.
+\end{proof}
+
+\begin{theorem}[Eliminating unit rules]
+\label{cf:unit-removal}
+Unit rules $A\to B$ can be removed primitively recursively, preserving
+the language and the preceding convention on the start and empty rule.
+\end{theorem}
+
+\begin{proof}
+For the current $M$ variables form the directed graph of unit rules.
+Compute its reflexive transitive closure by paths of length at most $M-1$.
+This bound is sufficient: on any longer path, find two equal vertices by
+bounded search and erase the segment between them; at most the original
+path length many erasures leave a path with no repeated vertex.  Record a
+short path for each reachable pair.
+
+For every reachable pair $(A,B)$ and every nonunit rule $B\to\gamma$, add
+$A\to\gamma$.  In an old completed tree, contract each maximal chain of
+unit nodes into one application of its last, nonunit rule.  Each such chain
+must end because the input is a finite completed tree.  The resulting rule
+is among the added rules.  In a new tree, expand each rule using the stored
+short unit path followed by its old nonunit rule.  These operations preserve
+yield.  The only empty rule before this operation belonged to $S_0$; since
+no unit edge enters $S_0$, no other variable acquires an empty rule.
+\end{proof}
+
+\begin{theorem}[Effective Chomsky normal form]
+\label{cf:cnf}
+There is a primitive recursive function $G\mapsto C(G)$ with
+$L(C(G))=L(G)$ such that every rule of $C(G)$ is
+\[
+ A\to BC,\qquad A\to a,\qquad\text{or, exceptionally, } S_0\to\eps,
+\]
+and $S_0$ never occurs on a right side.  The function returns tree
+translations certifying both directions of this equality.
+\end{theorem}
+
+\begin{proof}
+Apply the preceding two transformations.  In every right side of length
+at least two, replace a terminal $a$ by a fresh variable $T_a$ with rule
+$T_a\to a$.  Introduce at most one $T_a$ for each letter.  A long right side
+$X_1\cdots X_k$, $k\geq3$, is replaced by
+\[
+ A\to X_1D_1,\quad D_1\to X_2D_2,\quad\ldots,\quad
+ D_{k-2}\to X_{k-1}X_k,
+\]
+using variables private to that rule.  Expansion and contraction of these
+chains, and insertion and removal of the terminal wrappers, are mutually
+yield-preserving operations on the relevant tree pieces.  Unit and empty
+rules are not reintroduced.  Private auxiliary variables cannot interact
+with other rules, which proves the reverse implication as well.
+
+Here is an explicit, deliberately loose size bound.  If the input has $m$
+variables, $a$ letters, $p$ rules and maximum right-side length at most
+$r\geq1$, put
+\[
+ M=m+1,\qquad K=(p+2)2^{r+1},\qquad J=M^2K.
+\]
+Empty-rule elimination has at most $K$ rules, unit elimination at most
+$J$, and the final grammar has at most $M+a+Jr$ variables and at most
+$a+Jr$ rules.  Every transformation is a finite enumeration within these
+bounds.  For example, put $H=(r+1)^{M+2}$.  An original tree with $N$ nodes
+can be transformed forward using at most $2(r+1)(N+1)$ nodes: addition of
+the fresh start adds one, deletion and contraction reduce size, terminal
+wrappers at most double it, and binary chains multiply it by at most
+$r+1$.  In the reverse direction,
+\[
+             (M+1)(1+rH)N+H+1
+\]
+is a sufficient bound.  Contracting private chains and terminal wrappers
+does not increase size; restoring unit paths multiplies it by at most
+$M+1$; restoring deleted children inserts at most $r$ nullable trees of
+size at most $H$ per variable node.  The final $H+1$ also covers the
+start's empty alternative and removal of the fresh start.  Thus the
+certificate translations have explicit primitive recursive size bounds.
+\end{proof}
+
+The theorem is a language-preserving normalization.  It does not claim to
+preserve the number of derivations or the ambiguity of the original grammar.
+For example, unit or empty cycles may produce arbitrarily many different
+old trees for one word and disappear during normalization.
+
+\subsection{Parsing and other finite decisions}
+
+\begin{theorem}[CYK membership, reconstruction, and its arithmetic bound]
+\label{cf:cyk}
+Membership in a finite context-free grammar is uniformly primitive
+recursive in the grammar and the input word.  For a normal-form grammar
+with $M$ variables and $P$ rules, a word of length $n>0$ is decided using
+at most $M(n+1)^2$ Boolean table cells and at most
+$(P+1)M(n+1)^3$ elementary rule-and-split inspections.  On acceptance a tree
+with $3n-1$ nodes is reconstructed, using exactly $2n-1$ rule applications.
+\end{theorem}
+
+\begin{proof}
+Let $w=w_0\cdots w_{n-1}$.  For $0\leq i<j\leq n$ and a variable $A$, fill
+$D(A,i,j)$ in increasing order of $j-i$.  At length one the value is the
+Boolean disjunction of $A\to w_i$ over the finite rule list.  At greater
+length it is
+\[
+ \bigvee_{A\to BC\in P}\ \bigvee_{i<k<j}
+       \bigl(D(B,i,k)\wedge D(C,k,j)\bigr).
+\]
+Keep the least successful rule and split as a backpointer.  All referenced
+intervals are shorter than the interval being filled.  The displayed cell
+and inspection bounds follow simply by allowing all $M$ variables, all
+$(n+1)^2$ interval endpoints, all $P$ rules, and all $n+1$ splits.
+
+A successful terminal cell gives a one-letter tree.  A successful binary
+cell joins the two trees supplied by its earlier cells.  Induction through
+the table therefore constructs a valid tree with the advertised substring
+as yield.  Conversely, take any valid tree for a nonempty word.  Below the
+root no empty production is possible, because only $S_0$ has one and $S_0$
+is absent on right sides.  At a binary node the two child yields are
+nonempty.  Their boundary supplies one of the inspected splits, and a
+postorder scan of the supplied tree shows that the corresponding cell is
+true.  Its root supplies $D(S_0,0,n)$.
+
+In a positive-yield normal-form tree, write $b$ for the number of binary
+variable nodes and $t$ for the number of terminal-producing variable nodes.
+Counting edges between variable nodes gives $2b=b+t-1$, hence $b=t-1$.
+There is one terminal leaf for each terminal-producing variable, so $t=n$.
+The tree thus has $(n-1)+n+n=3n-1$ nodes and $2n-1$ variable nodes.  Expanding
+the backpointers with an explicit task stack constructs this many nodes;
+it never searches for a tree.  For $n=0$, inspect the single permitted empty
+rule.  For a general grammar, first apply Theorem~\ref{cf:cnf} and translate
+the resulting certificate back.  A negative table value refutes every
+supplied old certificate via the forward translation.
+\end{proof}
+
+\begin{theorem}[A direct bounded fixed-point parser for any CFG]
+\label{cf:chart}
+There is also a primitive recursive parser that works directly on the
+original grammar, including its empty and unit cycles.  For an input of
+length $n$ and $M$ variables, its chart has
+$Q=M(n+1)(n+2)/2$ possible entries and stabilizes within $Q$ simultaneous
+saturation rounds.
+\end{theorem}
+
+\begin{proof}
+Use entries $(A,i,j)$ for $0\leq i\leq j\leq n$, allowing empty intervals.
+Initially no entry is true.  At each round keep all true entries and add
+$(A,i,j)$ if a rule $A\to X_1\cdots X_k$ has a nondecreasing cut vector
+\[
+                  i=t_0\leq t_1\leq\cdots\leq t_k=j
+\]
+whose pieces match its symbols.  A terminal occurrence requires
+$t_\ell=t_{\ell-1}+1$ and the matching input letter.  A variable occurrence
+$B$ requires the entry $(B,t_{\ell-1},t_\ell)$ from the previous round.
+For an empty right side the condition is simply $i=j$.  Every rule and
+cut vector lies in a finite enumeration bounded by the grammar and $n$.
+An equality of two successive charts is permanent; every strict round
+adds an entry.  Hence the chart after $Q$ rounds is fixed.
+
+When an entry first appears, record its round, rule, and cut vector.
+The child-variable entries used for it have strictly earlier ranks.
+Recursively joining their stored trees, with terminal leaves at the
+terminal positions, gives a genuine tree for the indicated substring.
+The decreasing ranks prevent cycles in reconstruction even when the
+grammar has cycles.  If $r\geq1$ bounds right-side lengths, fewer than
+$(r+1)^{Q+2}$ nodes suffice for each reconstructed tree.
+
+Conversely, scan any supplied parse tree in postorder, annotating each
+node by its interval of terminal-leaf positions in the whole yield.
+The children of a node give a nondecreasing cut vector, including equal
+cuts for empty yields.  If all child-variable entries are in the final
+chart, its fixed-point property includes the parent entry.  Thus every
+node, including the root, is present.  The root entry $(S,0,n)$ therefore
+is true exactly for generated words.  All annotations and the processed
+node invariant are bounded finite data.  This proves an independent
+membership algorithm without appealing to normal form.
+\end{proof}
+
+\begin{proposition}[Counting parses of a normal-form grammar]
+\label{cf:parse-count}
+For a normal-form grammar, the number of parse trees for a specified word
+is a primitive recursive natural number.  In particular, zero, one, or
+more than one parses of that word can be distinguished effectively.
+\end{proposition}
+
+\begin{proof}
+Use the same interval order, replacing the Boolean disjunctions by sums and
+the conjunctions by products.  At length one count the matching rule
+indices; at greater length use
+\[
+ C(A,i,j)=\sum_{A\to BC\in P}\ \sum_{i<k<j}
+                  C(B,i,k)C(C,k,j).
+\]
+A tree of the given interval has a unique root rule, a unique boundary
+between its child yields, and an ordered pair of child trees.  Conversely
+any such data joins to a tree.  The finite disjoint union and product count
+is therefore exact.  Rules may either be deduplicated first or treated as
+distinct indexed productions consistently with the tree convention.
+There are only $3n-1$ nodes in a tree for $n>0$, which also directly gives
+a finite enumeration bound.  Empty input is handled by counting the
+start's empty rules.  This proposition concerns the normal-form grammar,
+not the number of parses of an arbitrary grammar before normalization.
+\end{proof}
+
+\subsection{Closure constructions}
+
+When a finite list of factor words is supplied with membership assertions
+instead of factor trees, Theorem~\ref{cf:cyk} supplies the latter uniformly:
+run its primitive recursive certificate constructor on every factor.
+Its completeness theorem proves each resulting tree valid, and its
+explicit size bound bounds the entire finite list of trees.  Thus the
+tree-list constructions below also establish the ordinary membership
+formulations of star and substitution.  They do not use an unbounded
+finite-collection or choice principle for existential derivation witnesses.
+
+\begin{theorem}[Union, concatenation, and star]
+\label{cf:basic-closure}
+Finite CFGs can be constructed primitively recursively for
+$L(G_1)\cup L(G_2)$, $L(G_1)L(G_2)$, and $L(G_1)^*$.  Tree and word-factor
+certificates are transformed in both directions.
+\end{theorem}
+
+\begin{proof}
+Rename variable sets into disjoint finite intervals.  For union add a fresh
+start $T$ and $T\to S_1\mid S_2$; its first rule selects exactly one of the
+two old trees.  For concatenation use $T\to S_1S_2$.  Its two ordered subtrees
+give a factorization $w=uv$, and any supplied pair of trees for $u,v$ joins
+under this rule.
+
+For star add $T\to\eps\mid S_1T$.  Repeatedly inspect the second child of a
+nonempty-rule $T$ node.  Because the tree is finite, this process ends at
+$T\to\eps$ after at most its node count many steps.  The first children give
+a finite list of old-language factors, possibly empty, whose concatenation
+is its yield.  Conversely, a supplied finite list of factor trees builds
+this chain by recursion on the list length.  Empty factors cause no
+termination problem: termination is measured by the supplied list or tree,
+not by the length of its yield.
+\end{proof}
+
+\begin{theorem}[Reversal]
+\label{cf:reversal}
+Replacing the right side of every rule by its reversal gives a CFG for
+$L(G)^R$.
+\end{theorem}
+
+\begin{proof}
+Reverse the children at each variable node and perform the same operation
+in every child subtree.  The resulting rule is a rule of the reversed
+grammar.  A bottom-up calculation uses
+$(x_1\cdots x_k)^R=x_k^R\cdots x_1^R$ to show that the yield is reversed.
+Applying the operation twice restores the original tree.  It preserves
+the node count and is implemented by one bounded traversal.
+\end{proof}
+
+\begin{theorem}[Arbitrary string homomorphisms]
+\label{cf:homomorphism}
+Let $h:\Sigma^*\to\Delta^*$ be specified by a finite table of words
+$h(a)$, with empty images allowed.  Replacing each terminal occurrence
+$a$ in a rule by the terminal block $h(a)$ gives a CFG for $h(L(G))$.
+\end{theorem}
+
+\begin{proof}
+Retain each rule's old index as provenance.  In an old tree, replace each
+terminal block in a variable node's rule by its image block, recursively
+transforming variable children.  The new yield is the concatenation of the
+letter images in the old yield, namely $h(w)$.
+
+Conversely, inspect a new tree node and its stored old rule.  That old rule
+specifies exactly which child positions arose from variable occurrences
+and which consecutive terminal positions arose from each $h(a)$.  Replace
+each latter block by one old terminal leaf $a$, even if that block has
+length zero.  Recurse on the variable positions.  This gives an old tree
+with yield $v$ and proves that the new yield is $h(v)$.  Ambiguity between
+different old rules with the same image is resolved by the recorded rule
+index, using no choice principle.  If $H=\max_a|h(a)|$, each original
+terminal occurrence creates at most $H$ terminal nodes, so the tree-size
+increase has an elementary bound in $H$ and the original size.
+\end{proof}
+
+\begin{theorem}[Context-free substitution]
+\label{cf:substitution}
+Suppose a CFG $H_a$ over $\Delta$ is supplied for every $a\in\Sigma$.
+There is a CFG for all words $v_1\cdots v_k$ where
+$a_1\cdots a_k\in L(G)$ and $v_i\in L(H_{a_i})$ for all $i$.
+\end{theorem}
+
+\begin{proof}
+Rename all variable sets disjointly.  In the rules of $G$, replace a terminal
+$a$ by the start variable of $H_a$, and include every rule of every $H_a$.
+Substitute a supplied $H_a$ tree for every terminal leaf of a supplied $G$
+tree to obtain a new tree with the desired concatenated yield.
+
+For the reverse transformation, a variable from a component $H_a$ can
+only have descendants from that component and terminals of $\Delta$;
+none of its rules returns to a $G$ variable.  In a new tree, contract each
+maximal component subtree entered from a $G$ rule to the old terminal $a$.
+The contracted tree is an old $G$ tree, and the contracted pieces are
+exactly the required factor trees.  The boundaries and factor order are
+found by a finite scan of the tagged nodes.  This argument also handles
+empty component yields and empty source words.
+\end{proof}
+
+\begin{theorem}[Intersection with a regular language]
+\label{cf:regular-intersection}
+Given a CFG $G$ and a DFA $D$ with $d$ states, one can construct a CFG for
+$L(G)\cap L(D)$ primitively recursively.  If $G$ is in normal form with
+$M$ variables, the product has at most $Md^2+1$ variables.
+\end{theorem}
+
+\begin{proof}
+Use variables $[p,A,q]$, intended to generate words derived from $A$ that
+take the DFA from $p$ to $q$.  For every binary rule add
+\[
+ [p,A,q]\to[p,B,r][r,C,q]\qquad(A\to BC),
+\]
+for all $p,r,q$.  For $A\to a$ add
+$[p,A,\delta(p,a)]\to a$.  If $S_0\to\eps$ is present add
+$[p,S_0,p]\to\eps$.  A fresh start $T$ has rules
+$T\to[q_0,S_0,f]$ for each final state $f$.
+
+Given an old tree and a DFA run on its yield, assign to every subtree its
+entry and exit states in that run.  The boundary between the two child
+yields gives $r$, so this decoration is a new parse tree.  Conversely,
+erase the state tags in a new tree.  At every node the recorded endpoints
+compose exactly as DFA runs compose under concatenation.  A bottom-up
+scan thus verifies the intended interpretation of $[p,A,q]$; at the fresh
+start it gives a run from $q_0$ to a final state.  Empty yield is handled
+by the displayed diagonal rule.  All state assignments and rule generation
+range over explicit finite tables.
+\end{proof}
+
+\begin{corollary}[Disjointness and a one-sided inclusion decision]
+\label{cf:regular-decisions}
+For a CFG $G$ and a DFA $D$, disjointness
+$L(G)\cap L(D)=\varnothing$ and inclusion $L(G)\subseteq L(D)$ are primitive
+recursively decidable.  Equality of a CFG language with a supplied finite
+language is also primitive recursively decidable.
+\end{corollary}
+
+\begin{proof}
+For disjointness apply the preceding construction and the productivity
+test.  For inclusion replace the DFA's final-state set by its complement
+and test emptiness of the resulting intersection.  A negative result
+returns an actual counterexample word by Theorem~\ref{cf:emptiness}.
+For a finite list $F$, construct its finite trie automaton, test
+$L(G)\subseteq F$ in this way, and test each $w\in F$ by CYK for the other
+inclusion.  Every membership predicate involved is Boolean, so these
+finite tests justify the stated alternatives intuitionistically.  This
+does not give a decision procedure for $L(D)\subseteq L(G)$ for an arbitrary
+regular language, or for equality of two arbitrary CFG languages.
+\end{proof}
+
+\begin{theorem}[A finite EBNF-to-CFG compiler]
+\label{cf:ebnf}
+Consider finite grammar definitions whose right sides are finite expression
+trees built from terminal letters, references to named variables, the empty
+word, binary alternation and concatenation, optional expressions, and
+star or positive repetition.  Interpret recursive references by finite
+parse certificates.  There is a primitive recursive translation to a CFG
+with the same terminal yields, with certificate transformations in both
+directions.  If there are $m$ named variables, $p$ definitions, and $e$
+expression-node occurrences, the result has $m+e$ variables and at most
+$p+2e$ rules, all of right-side length at most two.
+\end{theorem}
+
+\begin{proof}
+Give every expression-node occurrence $E$ a fresh private variable $X_E$.
+For a definition $A:=E$, add $A\to X_E$.  Compile the expression nodes by
+the following finite table, where $F,H$ denote their child occurrences:
+\[
+\begin{array}{c|l}
+ E & \text{rules for }X_E\\ \hline
+ \eps & X_E\to\eps\\
+ a & X_E\to a\\
+ \text{reference }B & X_E\to B\\
+ F\mid H & X_E\to X_F\mid X_H\\
+ FH & X_E\to X_FX_H\\
+ F\text{ optional} & X_E\to\eps\mid X_F\\
+ F^* & X_E\to\eps\mid X_FX_E\\
+ F^+ & X_E\to X_F\mid X_FX_E
+\end{array}
+\]
+Each occurrence contributes one variable and at most two rules, giving
+the stated bounds.  Distinct tags keep expression occurrences, original
+variables, and terminal letters separate even when their printed names
+coincide.  Construction is a bounded scan of the finite syntax tree.
+
+Here the source certificate has explicit constructors: a named variable
+chooses one of its definitions; a terminal or empty expression has its
+specified yield; a reference carries a certificate for the named variable;
+alternation records its chosen branch; concatenation carries an ordered
+pair; an optional expression records absence or one child; a star carries
+a finite list of child certificates; and a positive repetition carries
+a nonempty such list.  This is a finite tagged tree with finite list
+fields.  Its local constructor conditions and yield equations are checked
+in postorder, just as for CFG trees.  Cyclic references do not change the
+definition: only an actually supplied finite certificate is accepted.
+
+Translate a source certificate according to the table.  A star list
+becomes the rightward chain of $X_E\to X_FX_E$ rules, ending in
+$X_E\to\eps$.  For a nonempty repetition list, use that chain up to its
+last member and end in $X_E\to X_F$.  The other constructors correspond
+directly to the displayed rules.  The concatenation of the child yields
+is unchanged at every node, so the resulting CFG tree has the same word.
+
+Conversely, inspect a completed CFG tree.  Every private expression
+variable has exactly the rules prescribed for its occurrence, so its
+rule index identifies the original constructor.  For a star or positive
+repetition, scan its $X_E$ rightward chain to obtain the finite list of
+$X_F$ subtrees.  The chain ends within the supplied tree's node count;
+positive repetition cannot terminate by an empty rule.  Recursively
+translate these subtrees and the other constructor children.  Original
+variable nodes recover the selected definition.  This constructs a valid
+source certificate with the same yield.
+
+Both traversals are bounded by their supplied certificate tables; every
+source node or list cell emits a bounded number of new nodes.  If only
+source-language factor membership assertions are given, the compiled
+grammar's primitive recursive parser supplies the finite witnesses as
+above.  Thus optionality and repetition introduce no infinitary proof
+principle.  Ordinary BNF is the fragment using named variables, terminal
+strings, alternatives, and explicit empty right sides; its CFG interpretation
+is exactly the corresponding part of this construction.
+\end{proof}
+
+\subsection{Pushdown automata and inverse homomorphisms}
+
+\begin{definition}[The exact pushdown convention]
+\label{cf:pda-definition}
+A nondeterministic PDA has a finite state set $Q$, a finite stack alphabet
+$\Gamma$, an initial state $q_0$, one initial stack symbol $Z_0$, and a
+finite transition list.  A transition
+$(p,b,X)\mapsto(q,\beta)$ consumes $b\in\Sigma\cup\{\eps\}$, removes
+the top symbol $X$, and replaces it by $\beta\in\Gamma^*$, written with
+its new top on the left.  No transition is available on an empty stack.
+Acceptance means: some supplied finite run consumes the entire input and
+finishes with empty stack, in any state.  Epsilon transitions consume no
+input.  A run checker examines a finite sequence of configurations and
+transition indices; it is primitive recursive.
+\end{definition}
+
+\begin{theorem}[From CFGs to PDAs]
+\label{cf:cfg-to-pda}
+A one-state PDA in this convention can be constructed from a CFG, with
+exactly the same language.  Finite acceptance certificates translate in
+both directions primitively recursively.
+\end{theorem}
+
+\begin{proof}
+The stack alphabet is the tagged union of variables and terminals, and the
+initial stack is $S$.  For $A\to\beta$ use the epsilon transition replacing
+top $A$ by $\beta$.  For each terminal $a$, use the transition consuming
+$a$ and removing top $a$.  A preorder traversal of an old parse tree expands
+its variable nodes and then matches its terminal leaves in order.  It uses
+one transition per variable node or terminal leaf, and ends with empty
+stack after reading exactly the yield.
+
+In any accepting PDA run maintain the sentential form consisting of the
+already consumed terminal prefix followed by the current stack.  An
+epsilon expansion is exactly an old grammar rewriting step at the first
+remaining variable position.  A terminal-matching step leaves this whole
+sentential form unchanged, moving its split point one place to the right.
+At the end it is the input word.  Deleting the terminal-matching steps
+therefore gives a grammar derivation, which Theorem~\ref{cf:tree-derivation}
+converts to a tree.  Both verifications are bounded scans of the given
+tree or run.
+\end{proof}
+
+\begin{theorem}[From PDAs to CFGs, without a push-length assumption]
+\label{cf:pda-to-cfg}
+For every PDA in Definition~\ref{cf:pda-definition}, a finite CFG with the
+same language and primitive recursive certificate translations can be
+constructed.  If there are $q$ states, $g$ stack symbols, $t$ transitions,
+and no transition pushes more than $r$ symbols, the grammar has
+$q^2g+1$ variables and at most $q+t(q+1)^{r+1}$ rules.
+\end{theorem}
+
+\begin{proof}
+Use variables $[p,X,s]$.  They describe a run segment that starts in state
+$p$ with stack $X\gamma$, finishes in state $s$ with stack $\gamma$, and
+does not expose $\gamma$ before its last configuration.  This last condition
+is essential: the segment must remove this occurrence of $X$ and everything
+placed above the untouched suffix.
+
+For a transition $(p,b,X)\mapsto(u,Y_1\cdots Y_k)$ and every tuple
+$s_1,\ldots,s_k\in Q$, add
+\[
+ [p,X,s_k]\to b\,[u,Y_1,s_1][s_1,Y_2,s_2]\cdots
+                              [s_{k-1},Y_k,s_k].
+\]
+An epsilon $b$ contributes no terminal.  When $k=0$, instead add only
+$[p,X,u]\to b$.  A fresh start has rules
+$T\to[q_0,Z_0,s]$ for all $s\in Q$.  The finite rule count is bounded by
+the displayed expression.
+
+From a parse tree, execute its root transition, then the child run
+segments in their order.  The first child removes $Y_1$ while leaving
+$Y_2\cdots Y_k\gamma$ untouched; the next removes $Y_2$, and so forth.
+Their terminal yields concatenate to exactly the consumed input of the
+whole segment.  The start rule gives an accepting run.
+
+Conversely, consider a supplied proper segment for $X$.  After its first
+transition pushes $Y_1\cdots Y_k$, locate the first configuration exposing
+$Y_2\cdots Y_k\gamma$, then the first exposing
+$Y_3\cdots Y_k\gamma$, and so on.  These are bounded first-occurrence
+searches within the supplied run.  They exist because each transition
+removes only one old top symbol, so the stack height can fall by at most
+one per step.  Before each first occurrence the protected suffix has not
+been touched; the resulting pieces are proper segments for $Y_i$.  Their
+boundary states supply precisely one enumerated grammar rule.  If $k=0$,
+properness forces the segment to end immediately after its first step.
+Recursing on the strictly shorter pieces constructs the tree.
+
+This recursion can be implemented by a work list of subintervals of the
+original run.  Each recursive node accounts for a different transition,
+so there are no more nodes of this kind than run steps.  Terminals add at
+most one leaf per transition.  With the start node, an accepting $N$-step
+run gives a tree with at most $2N+1$ nodes.  Conversely the number of PDA
+steps is at most the number of variable nodes of a grammar tree.  These
+bounds make both transformations primitive recursive.
+\end{proof}
+
+\begin{corollary}[PDA membership with a bounded certificate constructor]
+\label{cf:pda-membership}
+PDA membership, including machines with epsilon cycles, is uniformly
+primitive recursively decidable.  On acceptance a primitive recursive
+function returns an accepting run; its length has a primitive recursive
+bound in the machine and word codes.
+\end{corollary}
+
+\begin{proof}
+Convert to a grammar, normalize it, and apply CYK.  Translate an accepted
+normal-form tree back through the explicitly bounded constructions, then
+through Theorem~\ref{cf:pda-to-cfg}.  The composition of their bounds is
+primitive recursive.  A failed parsing table rules out every PDA run by
+the forward certificate transformations.  The procedure never needs to
+bound or traverse arbitrary epsilon computations of the original machine.
+\end{proof}
+
+\begin{theorem}[Inverse homomorphisms, including erasing maps]
+\label{cf:inverse-homomorphism}
+For any finite homomorphism table $h:\Sigma^*\to\Delta^*$ and CFG $G$ over
+$\Delta$, a CFG for $h^{-1}(L(G))$ can be constructed primitively recursively.
+\end{theorem}
+
+\begin{proof}
+Convert $G$ to a PDA $M$.  Construct a new PDA with a protected bottom marker
+$\bot$ and a finite buffer in its control state.  The buffer values are
+the empty word and all suffixes of the finitely many words $h(a)$; they
+form a finite, explicitly enumerable set.  Initially an epsilon transition
+places $M$'s initial symbol above $\bot$ and chooses its initial state with
+empty buffer.
+
+When the buffer is empty, reading an actual input letter $a$ replaces it
+by $h(a)$ and leaves the simulated state and stack unchanged.  Implement
+this by, for every possible top symbol including $\bot$, a transition
+that replaces that symbol by itself.  A simulated epsilon transition of
+$M$ is allowed regardless of the buffer.  A simulated $b$-reading transition
+of $M$ is allowed exactly when the buffer begins with $b$; it consumes
+that buffered letter and no actual input.  Simulated transitions are
+available only above $\bot$.  When the simulated stack is empty and the
+buffer is empty, an epsilon transition may pop $\bot$.  It is the only
+way to empty the new stack.
+
+During a run, the loaded images, after removing the buffered suffix,
+are exactly the letters consumed by the simulated transitions.  This is
+an equality of finite words checked after every step.  An accepting run
+has read all original input and has empty buffer, so its simulated
+transitions accept $h(w)$ in $M$.  Conversely, take an accepting run of
+$M$ on $h(w)$.  Load the letters of $w$ in order whenever the buffer is
+empty, interleaving the supplied simulated transitions.  Empty images
+are loaded and immediately leave an empty buffer; they cause no problem
+even after the simulated stack has emptied, because the bottom marker
+remains.  After all input and buffered symbols have been processed, pop
+the marker.  The new run has the old number of simulated steps, plus
+$|w|$ loading steps and two boundary steps.  This proves both implications
+by explicit run transformations.  Finally convert the new PDA to a CFG.
+\end{proof}
+
+\subsection{Pumping, finiteness, and constructive separations}
+
+\begin{theorem}[The context-free pumping lemma with a PR witness function]
+\label{cf:pumping}
+Let a normal-form grammar have $M\geq1$ variables and put $p=2^M$.
+From a parse tree for $w$ with $|w|\geq p$ one can primitively recursively
+extract $u,v,x,y,z$ such that
+\[
+ w=uvxyz,\qquad |vy|>0,\qquad |vxy|\leq p,
+ \qquad uv^i x y^i z\in L(G)\quad(i\in\N).
+\]
+The last assertion has a single primitive recursive tree constructor in
+$i$.  For an arbitrary CFG the same result holds with $M$ taken from
+its computed normal form, and with trees translated back to that CFG.
+\end{theorem}
+
+\begin{proof}
+Consider the binary skeleton consisting only of variable nodes.  A
+terminal-producing variable is a leaf.  A skeleton in which every
+root-to-leaf path contains at most $h$ variable nodes has at most
+$2^{h-1}$ leaves: at a binary root the two bounds add, and a leaf has one
+leaf.  This calculation is proved by a bounded bottom-up scan of a given
+tree, storing height and leaf count.  Since the tree for $w$ has $|w|$
+such leaves, a longest path contains at least $M+1$ variable nodes.
+
+Take the last $M+1$ variable nodes on a longest path.  Two have the same
+label $A$, by finite pigeonhole; choose such a pair by bounded search,
+with one a proper ancestor of the other.  The upper one's subtree has
+variable height at most $M+1$.  Indeed the chosen path is longest also
+inside each of its subtrees, or replacing its suffix would give a longer
+whole path.  Its yield therefore has length at most $2^M=p$.
+
+Let $x$ be the lower subtree's yield, $v$ and $y$ the terminal yields to
+its left and right within the upper subtree, and $u,z$ the yields outside
+the upper subtree.  These are consecutive intervals of $w$, so
+$w=uvxyz$ and $|vxy|\leq p$.  Between the repeated variables there is a
+binary node and hence a sibling subtree.  Every such sibling has nonempty
+yield, because an empty rule cannot occur below the fresh start.  Thus
+$|vy|>0$.
+
+The piece between the two $A$ occurrences is a context with one hole
+labelled $A$, producing $v$ before that hole and $y$ after it.  Delete
+this context for $i=0$, use it once for $i=1$, and wrap $i$ copies around
+the lower tree in general.  A direct concatenation calculation gives
+$v^i x y^i$ as the new upper yield.  Each splice joins equal variable
+labels, so it remains a valid parse tree.  A primitive recursion on $i$
+copies a fixed finite context; if the original tree has $N$ nodes,
+$(i+1)N$ is a sufficient size bound.  Its validity and yield equations
+are quantifier-free induction invariants.  This constructs certificates
+for every $i$, rather than inferring their existence from an infinite
+set argument.
+\end{proof}
+
+\begin{theorem}[Deciding finiteness and returning either kind of witness]
+\label{cf:finiteness}
+Finiteness of a CFG language is primitive recursively decidable.  The
+procedure returns either an exhaustive finite list of its words, or a
+word with a pumping decomposition that yields accepted words of arbitrarily
+large length.  If $p=2^M$ for the normalized grammar, it suffices to test
+all words with
+\[
+                  p\leq |w|<2p.
+\]
+\end{theorem}
+
+\begin{proof}
+If this finite test finds an accepted word, use
+Theorem~\ref{cf:pumping}.  Since $|vy|>0$, the constructed word for index
+$i$ has length $|uxz|+i|vy|\geq i$.  Taking $i=N+1$ supplies an accepted
+word longer than any supplied bound $N$.
+
+Suppose the test finds none.  To refute any alleged accepted tree of length
+$n\geq p$, transform it to normal form.  If its length is at least $2p$,
+pump down once.  The length decreases by an integer between $1$ and $p$,
+so it remains at least $p$.  Repeat this bounded process at most the
+initial $n$ times, leaving the tree unchanged once its length is less
+than $2p$.  The decreasing-length invariant forces arrival at an accepted
+tree of length in $[p,2p)$, contradicting the finite test.  Thus every
+accepted word has length less than $p$.  Enumerate all such words and
+retain precisely those accepted by CYK; this is the required exhaustive
+list.  All word enumerations have a bound supplied by the finite alphabet
+and $2p$, and the pumping-down argument uses the supplied tree's length
+as its loop bound.  No least member of an unbounded set is invoked.
+\end{proof}
+
+\begin{proposition}[The equal-block language]
+\label{cf:equal-blocks}
+Over distinct letters $a,b$, the grammar $S\to aSb\mid\eps$ generates
+exactly $E_{ab}=\{a^n b^n:n\in\N\}$.  Thus, together with its regular
+pumping obstruction, it witnesses the strict inclusion of regular
+languages in context-free languages.
+\end{proposition}
+
+\begin{proof}
+Applying the first rule $n$ times and the second rule once is a certificate
+for $a^n b^n$.  Conversely, in any completed tree each nonempty rule has
+exactly one variable child.  Follow this chain until its final empty rule;
+its finite number $n$ of nonempty rules supplies exactly $n$ initial $a$'s
+and $n$ final $b$'s.  The traversal is bounded by the given tree size.
+For completeness, if a $d$-state DFA accepted precisely this language,
+the first $d+1$ states while reading the prefix $a^d$ would repeat.
+Deleting the nonempty loop from the accepted word $a^d b^d$ preserves
+acceptance but changes the number of $a$'s, a contradiction.  The loop is
+found by finite pigeonhole.  A DFA has a nonempty state set, so $d\geq1$.
+\end{proof}
+
+The balanced-parenthesis grammar $S\to\eps\mid(S)S$ gives another
+important example.  Its exact balance characterization, forced first-return
+split, unique parse tree, and enumeration are proved together in
+Theorem~\ref{count:dyck}, avoiding separate parsing and counting assumptions.
+
+\begin{theorem}[An explicit separating word against every CFG]
+\label{cf:abc-separator}
+Let $T=\{a^n b^n c^n:n\in\N\}$ over three distinct letters.  There is a
+primitive recursive algorithm which, on every finite CFG $G$ over this
+alphabet, returns a word where $L(G)$ and $T$ differ.  With $M$ variables
+in $C(G)$, the word has length at most $3\cdot2^M$.  In particular $T$
+is not context-free, in the constructive sense that every proposed
+grammar is effectively refuted.
+\end{theorem}
+
+\begin{proof}
+Set $p=2^M$ and run the parser on $w=a^p b^p c^p$.  If it rejects, $w$ is
+the required separating word, with its negative parsing table as
+certificate.  If it accepts, extract a tree and the pumping decomposition
+$w=uvxyz$.  The interval $vxy$ has length at most $p$.  An interval
+containing both an $a$ and a $c$ would contain all $p$ intervening $b$'s
+and at least those two additional letters, so it would have length at
+least $p+2$.  Therefore $v$ and $y$ together affect at most two of the
+three letter types.  They remove at least one letter because $|vy|>0$.
+
+The pumped-down word $uxz$ is still accepted.  One letter type retains
+its original count $p$, while another has smaller count.  Consequently
+the three counts are unequal, so $uxz\notin T$.  Its length is at most
+$3p$, and its acceptance certificate is supplied by pumping.  These two
+branches are selected by one Boolean computation, not by excluded
+middle for an arbitrary language predicate.  The membership and
+nonmembership assertions for $T$ are just finite order and count checks.
+\end{proof}
+
+\begin{theorem}[Failure of intersection and complement closure]
+\label{cf:nonclosures}
+There are explicit context-free languages whose intersection is not
+context-free, and an explicit context-free language whose complement
+relative to $\{a,b,c\}^*$ is not context-free.
+\end{theorem}
+
+\begin{proof}
+Let
+\[
+ L_1=\{a^n b^n c^k:n,k\in\N\},\qquad
+ L_2=\{a^k b^n c^n:n,k\in\N\}.
+\]
+For $L_1$ use start $U\to SC$, with
+$S\to aSb\mid\eps$ and $C\to cC\mid\eps$.
+For $L_2$ use start $U\to AR$, with
+$A\to aA\mid\eps$ and $R\to bRc\mid\eps$.
+The chain argument of Proposition~\ref{cf:equal-blocks} verifies their
+languages, and a word belongs to both exactly when all three block
+lengths agree.  Their intersection is $T$, excluded by
+Theorem~\ref{cf:abc-separator}.
+
+One can exhibit the complement counterexample directly, avoiding any
+appeal to a general classical De Morgan principle.  Write $E_{bc}$ for
+the equal-block grammar over $b,c$, and let
+\begin{align*}
+ R_0&=\{a,b,c\}^*\setminus a^*b^*c^*,\\
+ K&=R_0\ \cup\ (a^+E_{ab}\cup E_{ab}b^+)c^*
+       \ \cup\ a^*(b^+E_{bc}\cup E_{bc}c^+).
+\end{align*}
+The language $R_0$ is regular; all the other displayed pieces are
+context-free by the already proved union and concatenation constructions.
+They form an explicit CFG expression, and those constructions compile
+it to a finite grammar.  A word outside block order belongs to $R_0$.
+A word in block order is $a^i b^j c^k$; its counts are not all equal
+exactly when $i>j$, $i<j$, $j>k$, or $j<k$.  These four decidable cases
+are exactly the other four pieces of $K$.  Hence $K$ is precisely the
+complement of $T$, and its complement is $T$.  All equivalences here
+are verified using Boolean order and count comparisons.
+\end{proof}
+
+\begin{proposition}[A bounded tape recognizer and the hierarchy separation]
+\label{cf:abc-noncontracting}
+The language $T$ has a deterministic recognizer using only the input's
+cells, fixed endmarkers, and finitely many marked variants of its letters.
+The computation has a primitive recursive quadratic time bound.  Moreover,
+context-free languages are a proper subclass of the languages generated
+by noncontracting grammars with the isolated-start empty-word convention.
+\end{proposition}
+
+\begin{proof}
+First scan to check block order.  Repeatedly mark the leftmost unmarked
+$a$, then the leftmost unmarked $b$, then the leftmost unmarked $c$,
+rejecting if either latter search fails.  When no unmarked $a$ remains,
+accept exactly if no unmarked $b$ or $c$ remains.  Each successful round
+marks one of each letter.  At most the input length $n$ many rounds are
+possible, and each search and return to the left end is a bounded tape
+scan.  Fewer than ten scans per round, and finitely many initial and
+final scans, give the loose move bound $20(n+2)^2$.  Permanent endmarkers
+and three marked variants of the letters suffice; no additional unbounded
+tape is used.  Empty input is accepted immediately.
+
+Counting marked letters proves soundness.  If the three block counts
+are equal, after each successful round their unmarked remainders are
+still equal, so the next indicated searches succeed until all are zero.
+This proves completeness by a bounded invariant on the rounds.
+
+For the language-class inclusion, the normal form from
+Theorem~\ref{cf:cnf} is itself noncontracting apart from its isolated
+start's empty rule.  The explicit noncontracting grammar for $T$ is
+proved in Proposition~\ref{eff:abc}.  Theorem~\ref{cf:abc-separator}
+excludes every CFG for that same language, giving strictness.
+\end{proof}
+
+\subsection{What the arithmetic and Lean claims mean here}
+\label{cf:audit}
+
+Every induction in this section can be organized around one of four
+finite records: a processed prefix of a node table, a processed prefix
+of a supplied transition trace, a bounded grammar-enumeration table, or
+an already filled portion of a parsing table.  Each record's validity,
+list equality, label agreement, size bound, and Boolean cell value are
+primitive recursive predicates.  A conjunction over all already processed
+indices is itself a bounded Boolean fold.  Quantifier-free induction on
+that fold proves the invariant.  Apparent tree induction in the prose is
+implemented by a postorder node loop; recursive certificate construction
+is implemented by its explicitly bounded work list.  The pumping index
+uses ordinary primitive recursion with a fixed finite context.
+
+In particular, the saturation arguments do not use induction on the
+unbounded statement ``$A$ has some derivation.''  The positive direction
+checks a stored finite witness; the negative direction transforms or
+scans an arbitrary witness supplied as a parameter.  The same distinction
+justifies the negative answers of CYK and the emptiness and finiteness
+procedures.  All infinite-language conclusions are expressed by a uniform
+word-and-certificate constructor for each requested numerical bound.
+
+The accompanying \texttt{lean/ContextFreeOutline.lean.txt} specifies the
+finite records, Boolean predicates, algorithms, theorem interfaces, and
+the order of the proof obligations.  It is an outline, not a claimed
+compiled formalization.  Existing Lean grammar definitions can serve as
+an external semantic comparison, but using a theorem about unrestricted
+Lean predicates alone would not establish its derivability in \ipra.
+The object-level route is to implement the finite functions in the
+repository's primitive-recursive coding layer and prove the Boolean
+invariants just described.

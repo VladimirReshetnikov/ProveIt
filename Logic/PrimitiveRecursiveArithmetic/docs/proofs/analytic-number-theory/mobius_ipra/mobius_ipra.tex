@@ -1,0 +1,59 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in,top=.93in,bottom=.93in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,longtable,array,enumitem}
+\usepackage[table]{xcolor}
+\usepackage{fancyhdr}
+\definecolor{ink}{HTML}{184D58}
+\definecolor{faintink}{HTML}{566C70}
+\usepackage[unicode,colorlinks=true,linkcolor=ink,citecolor=ink,urlcolor=ink,breaklinks=true]{hyperref}
+\usepackage{bookmark}
+\setlength{\emergencystretch}{3em}
+\setcounter{tocdepth}{1}
+\setlist{nosep,topsep=4pt}
+\allowdisplaybreaks[2]
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small\color{faintink}The M\"obius function in iPRA}
+\fancyhead[R]{\small\color{faintink}Constructive number theory}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{.35pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\ipra}{\mathrm{iPRA}}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\ZZ}{\mathbb Z}
+\hypersetup{pdftitle={The Möbius function in intuitionistic primitive recursive arithmetic}}
+\begin{document}
+\thispagestyle{plain}
+\noindent{\color{ink}\sffamily\small CONSTRUCTIVE NUMBER THEORY}\par\vspace{8pt}
+{\noindent\LARGE\bfseries The M\"obius function in intuitionistic\\[3pt] primitive recursive arithmetic\par}
+\vspace{8pt}
+\noindent{\small November 22, 2026}\par
+\vspace{9pt}
+\noindent
+The finite sum $\sum_{d\mid n}\mu(d)=[n=1]$ accounts for much of the arithmetic of $\mu$.
+It gives inversion, counts of irreducible polynomials, and the sum of the primitive roots modulo a prime.
+At $s=1$ a different ingredient enters. A quantitative estimate for
+$M(x)=\sum_{n\le x}\mu(n)$ gives ordinary convergence of three boundary
+moments to $0,-1,-2\gamma$. We give the arithmetic proofs, an explicit
+estimate obtained from ProveIt's finite zero-free-strip argument, and the
+translation of the limits into primitive recursive precision statements.
+The formalization section locates existing embedded derivations and describes the
+steps to formalize the additional results in Lean.
+\vspace{3pt}
+\begingroup\small\tableofcontents\endgroup
+\clearpage
+\input{arithmetic}
+\input{special}
+\input{analytic}
+\input{boundary}
+\input{equivalence}
+\input{bootstrap}
+\input{lean}
+\input{sources}
+\end{document}

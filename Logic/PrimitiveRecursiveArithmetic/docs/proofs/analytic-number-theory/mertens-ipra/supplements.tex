@@ -1,0 +1,41 @@
+\section{Fourier phases and the residue terms}\label{sec:edges}
+
+\paragraph{Two consequences for Davenport's sum.}
+For a real phase $\theta$ let $S(N,\theta)=\sum_{n=1}^N\mu(n)e^{2\pi in\theta}$. Summation by parts at rational or named phases gives
+\[
+ S(N,\theta)=M(N)e^{2\pi iN\theta}
+ -\sum_{j<N}M(j)\big(e^{2\pi i(j+1)\theta}-e^{2\pi ij\theta}\big).
+\]
+If an integer $a$ and $|\theta-a|\le1/N$ are given, the successive differences have magnitude at most $2\pi/N$ by integrating the derivative of the exponential. For $N\ge4$, put $m=\lfloor\sqrt N\rfloor$. For $j\le m$, $\sum|M(j)|\le m(m+1)/2\le N$. For $m<j<N$, Theorem~\ref{thm:unconditional-log} and $\log j\ge(\log N)/2$ give
+$\sum |M(j)|\le C_h2^h N^2/(\log N)^h$. Thus this entire interval of phases satisfies $|S(N,\theta)|\le C'_h N/(\log N)^h$ with a PR constant. For example absorb the additive $2\pi$ using $(\log N)^h\le h!N$.
+
+At the equally spaced phases $k/L$ with $L\ge N\ge1$ one has the exact mean square
+\[
+ \sum_{k=0}^{L-1}|S(N,k/L)|^2=LQ(N).
+\]
+Expand each square as the sum over $n,m$ with weight $\mu(n)\mu(m)$ and phase $k(n-m)/L$. The polygon sum in Theorem~\ref{thm:farey} is $L$ when $L\mid n-m$ and zero otherwise, including negative frequencies by conjugation. Here $|n-m|<L$, so precisely the diagonal survives. As a constructive counting consequence, any supplied list of distinct grid points certified to have $|S|\ge t>0$ has length at most $LQ(N)/t^2$. This formulation does not need equality testing for arbitrary real names. These results handle the low-frequency region and an exact mean value. The uniform all-phase logarithmic estimate in Davenport's paper is stronger \cite{dav}.
+
+\paragraph{Coefficients that can be recovered before summing over zeros.}
+The primary source gives a height-ordered explicit formula for $M_0$ under hypotheses on the nontrivial zeros \cite[eq.~(2.3)]{ot}. The local residues can be determined separately. We use the zeta functional equation
+\[
+ \zeta(s)=2^s\pi^{s-1}\sin(\pi s/2)\Gamma(1-s)\zeta(1-s)
+\]
+and $\zeta(0)=-1/2$ from the ProveIt zeta packet \cite{zeta}. A simple zero $\rho\ne0$ with an apartness bound on $\zeta'(\rho)$ gives the residue $x^\rho/(\rho\zeta'(\rho))$ for $x^s/(s\zeta(s))$. Indeed $\zeta(s)=(s-\rho)(\zeta'(\rho)+O(|s-\rho|))$ on a certified disk and the numerator is continuous. At zero the residue is $-2$. At $s=-2j$, $j\ge1$, all factors of the functional equation except the sine have nonzero constant term. Its first-order coefficient is $(\pi/2)(-1)^j$, giving
+\[
+ \zeta'(-2j)=\frac{(-1)^j(2j)!\,\zeta(2j+1)}{2(2\pi)^{2j}},
+ \quad
+ \operatorname*{Res}_{s=-2j}\frac{x^s}{s\zeta(s)}
+  =\frac{(-1)^{j-1}(2\pi/x)^{2j}}{j(2j)!\,\zeta(2j+1)}.
+\]
+This recovers the factor $j$ in the denominator of the trivial-zero term in equation~(2) of MathWorld and equation~(2.3) of the primary paper. Each coefficient is a computable name by the reciprocal formula. The whole trivial-zero tail converges effectively for $x$ bounded away from zero. For any integer $B\ge\max(1,2\pi/x)$, compare its absolute terms to $B^{2j}/(2j)!$ using $\zeta(2j+1)\ge1$. Section~\ref{sec:analytic} gives an exponential-series tail clock. This calculation proves the local coefficients and this one tail without assuming RH. Passing an expanding contour through nontrivial zeros requires further estimates at the upper and lower heights.
+
+\paragraph{An exact part of the Weyl expression.}
+Integrating the step function by cells gives, at any rational $x>0$,
+\[
+ x\int_0^x\frac{M(u)}{u^2}\,du
+     =x\sum_{n\le x}\frac{\mu(n)}n-M(x).
+\]
+Set the integrand to zero on $[0,1)$. A jump $\mu(n)$ contributes $x\mu(n)(1/n-1/x)$, proving the formula including integer endpoints. For the approximate differential expression on Wikipedia there is no specified error term. For example, at $x=3/2$ and $y=M$, every positive-order $t$-derivative at zero vanishes since $M(x/(1+t))$ is locally constant. Its displayed left side is $1$ and the right side $2/3$. Thus an exact identity for that expression would fail even inside a cell.
+
+\paragraph{Scope of the remaining claims.}
+Theorem~\ref{thm:unconditional-log} gives every fixed logarithmic saving with its own explicit constant. For example, once $\log N\ge\max(1,2C_2,2C_5)$, the bounds for $h=2,5$ imply both $|M(N)|<0.6437752\,N/\log N$ and $|M(N)|<12590292\,N/(\log N)^{236/75}$. The thresholds printed in the source are much sharper and are not derived here. The compact form of the RH criterion is Theorem~\ref{thm:compact-rh}. The sharper RH-conditional upper bounds, the oscillations large enough to violate the square-root conjecture on both sides, and the nontrivial-zero and trace summations require additional analytic arguments. Ng's limiting distribution uses supplementary zero hypotheses \cite{ng}. Gonek's proposed maximal order is a conjectural statement in the sources. The repeated statements about historical computation limits describe records. The algorithms here establish their own resource bounds and the tabulated numerical results specified in Section~\ref{sec:computing}.

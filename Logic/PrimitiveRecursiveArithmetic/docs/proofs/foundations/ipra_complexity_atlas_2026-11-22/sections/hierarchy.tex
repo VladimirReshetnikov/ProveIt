@@ -1,0 +1,95 @@
+\section{Explicit separation witnesses and coarse hierarchies}
+\label{sec:hierarchy}
+
+The familiar hierarchy theorems originate in diagonal simulations \cite{HartmanisStearns1965,HennieStearns1966}. We prove concrete consequences with generous resource gaps. The advantage for \ipra\ is that every proposed smaller-resource machine receives an explicit mismatch input. We never infer $\exists x\,A(x)\ne B(x)$ merely from $\neg\forall x\,A(x)=B(x)$.
+
+\subsection{Self-descriptions with numerical bounds}
+For a program word $e$, a positive coefficient $c$, and an exponent $k$, form
+\[
+ W(e,c,k)=1^{|e|}\,0\,e\,1^c\,0\,1^k\,0.
+\]
+The initial unary field announces the exact program length, so zeros in the program do not confuse the next two unary fields. The last zero must be the last input symbol. The parser and constructor are PR, and direct concatenation equations prove
+\[
+ \operatorname{parse}(W(e,c,k))=(e,c,k),\qquad
+ n=|W(e,c,k)|=2|e|+c+k+3.
+\]
+Thus $|e|,c,k\le n$. These unary descriptors are used only as deliberately padded diagonal inputs. They are not the efficient serializers used in reductions.
+
+\begin{theorem}[H01: P is properly contained in EXPTIME]\label{thm:H01}
+There is a fixed PR bit $D$ computed by a fixed machine in time $2^{K(n+1)^2}$, for a fixed constant $K$, such that \ipra\ proves, uniformly in $e,c\ge1,k$,
+\[
+ D(W(e,c,k))\ne
+ \B\bigl(e,W(e,c,k),c(|W(e,c,k)|+1)^k\bigr).
+\]
+Consequently no polynomial-time presentation decides $D$, and $\mathsf P\subsetneq\mathsf{EXPTIME}$.
+\end{theorem}
+\begin{proof}
+On an invalid self-description return zero. Otherwise recover $e,c,k$, set $n=|x|$, and compute
+\[
+ D(x)=1-\B(e,x,c(n+1)^k).
+\]
+Every operation is PR. At $x=W(e,c,k)$ the parser equation makes $D(x)$ exactly the complement of the candidate's bit, so the mismatch follows by the two Boolean cases. No halting promise for $e$ is needed.
+
+It remains to give a time bound for the algorithm defining $D$, not merely to show it is PR. Write $T=c(n+1)^k$. For $n\ge1$, quantifier-free induction gives $n+1\le2^n$, and hence
+\[
+ T\le n(n+1)^n\le2^{n+n^2}\le2^{(n+1)^2}.
+\]
+Make a unary countdown by starting with $c$ marks and copying a block $n+1$ times in each of $k$ stages. All intermediate blocks have at most $T$ marks, and there are at most $n$ stages. Repeated full scans give the coarse bound $C_0(n+T+1)^4$ for this production. Theorem~\ref{thm:F06} gives the same form for the universal simulation. Thus the entire computation costs at most $C_1(n+T+1)^4$. With $q=(n+1)^2$, this is at most $16C_1 2^{4q}\le2^{Kq}$ for $K=4+16C_1$, enlarged for malformed and short inputs. These are elementary inequalities, with no eventual-growth premise. This clock lies in EXPTIME after increasing the fixed coefficient and degree.
+
+The parsing, copying, and simulation invariants are those of the foundation section, bounded by the displayed terms. ProveIt already contains object-level arithmetic derivations of the two clock estimates, \texttt{DiagonalClock.clock\_exp} and \texttt{cost\_exp} \cite{ProveItDiagonal}. The numerical simulator and complete diagonal theorem still require the formalization work described later; the availability of those arithmetic lemmas is not a claim that the full theorem has been kernel checked.
+\end{proof}
+
+\begin{theorem}[H02: a coarse fixed-degree time hierarchy]\label{thm:H02}
+For every fixed integer $k\ge1$, on the canonical model with read-only input and one work tape,
+\[
+ \mathsf{DTIME}_{\mathrm{can}}((n+1)^k)
+ \subsetneq
+ \mathsf{DTIME}_{\mathrm{can}}((n+1)^{4k+4}).
+\]
+There is a PR counterexample word for each proposed machine and constant in the lower class.
+\end{theorem}
+\begin{proof}
+Use only descriptions $W(e,c,0)$, and define $D_k$ by complementing the bounded computation with clock $c(n+1)^k$. The fixed $k$ is part of the constructed machine, not read from its input. As $c\le n$, its simulated time is at most $(n+1)^{k+1}$. Unary countdown construction and the fourth-power interpreter bound cost $O((n+1)^{4k+4})$. On $W(e,c,0)$ the output differs from the candidate within that exact clock. The nonstrict inclusion follows simply from monotonicity of the clocks, with constants adjusted. This proves the displayed coarse hierarchy, not the optimized standard $t\log t$ time-hierarchy theorem. For P versus EXPTIME the difference between one and several tapes disappears by polynomial simulation.
+\end{proof}
+
+\subsection{Space-bounded diagonalization}
+Normalize machines to one one-sided work tape over a fixed alphabet of size $g\ge2$, with a separate read-only input tape. A fixed machine with several tapes or another finite alphabet can be encoded in fixed-length blocks with head-marker bits. Folding a two-sided tape into two tracks makes it one-sided. The encoding uses at most a fixed constant times its old work space, plus constant bookkeeping; this is absorbed into the coefficient $c$. Sweeps may increase time, which is irrelevant here.
+
+For a supplied budget $s\ge1$, the configurations of a normalized machine with $q$ nonhalting states are bounded in number by
+\[
+ C(e,n,s)=(q+2)(n+2)(s+1)g^s.
+\]
+The factors record state, input head, work head, and tape content. Reject attempts to use a cell outside the budget. Run for $C$ transitions, retaining absorbing halts, and denote the acceptance bit by $B_s(e,x)$. A binary counter to $C$ uses $O(\log q+\log(n+2)+s)$ bits. Thus the whole finite simulation uses $O(s+|e|+\log(n+2))$ space even if its time is enormous. Repeated configurations cannot precede the first accepting configuration in a deterministic trace; the finite pigeonhole argument therefore proves equivalence to eventual acceptance under the budget. This is the deterministic specialization of the space section's configuration lemma.
+
+\begin{theorem}[H03: L is properly contained in PSPACE]\label{thm:H03}
+There is a PR language $D_{\log}$ in PSPACE and a PR map $W$ such that every logarithmic-space descriptor $(e,c)$ disagrees with $D_{\log}$ on $W(e,c,0)$. Thus $\mathsf L\subsetneq\mathsf{PSPACE}$.
+\end{theorem}
+\begin{proof}
+On a valid $W(e,c,0)$ of length $n$, put $s=c\ell(n)$, where $\ell(n)=\lceil\log_2(n+2)\rceil$, and output $1-B_s(e,x)$. On other words output zero. Because $c\le n$, we have $s\le n\ell(n)\le(n+2)^2$. Keep the program on the input and rescan it as necessary. Its source-state code uses at most $n$ bits. The work configuration and binary configuration-clock counter occupy $O(n+s)$ cells, so this is a polynomial-space decider.
+
+For each supplied $(e,c)$ the parsing equation gives the exact same $s$ used by that descriptor on the displayed input. Complementation therefore gives an explicit disagreement. In particular it disagrees with every ordinary total logarithmic-space decider after the constant-factor normalization above. Inclusion follows by the inequality $\ell(n)\le n+1$. The proof uses bounded simulation and Boolean arithmetic, not any claim that an arbitrary logspace program eventually halts.
+\end{proof}
+
+\begin{theorem}[H04: PSPACE is properly contained in EXPSPACE]\label{thm:H04}
+There is a PR language $D_{\mathrm{ps}}$ in EXPSPACE with a PR disagreement input for every polynomial-space descriptor. In particular $\mathsf{PSPACE}\subsetneq\mathsf{EXPSPACE}$.
+\end{theorem}
+\begin{proof}
+Return zero on invalid self-descriptions. On $W(e,c,k)$, use the budget $s=c(n+1)^k$ and output $1-B_s(e,x)$. The H01 inequality gives $s\le2^{(n+1)^2}$. A configuration and its binary clock use $O(n+s)$ space, at most $2^{K(n+1)^2}$ for a fixed $K$. This belongs to EXPSPACE. Its time may be double exponential, but its space bound is the asserted resource.
+
+For every $(e,c,k)$, the word $W(e,c,k)$ parses back to that descriptor, and the bit is its complement. Polynomial-space inclusion in exponential space follows from elementary clock domination, after enlarging fixed parameters. All budgets, counters, and trace bounds are PR functions even when double exponential.
+\end{proof}
+
+\begin{theorem}[H05: an exponential-time hierarchy step]\label{thm:H05}
+Let $2\mathsf{EXPTIME}$ denote the union of deterministic time classes with clocks $2^{2^{p(n)}}$ for polynomials $p$. There is an explicit PR language in $2\mathsf{EXPTIME}$ outside EXPTIME, with PR counterexample inputs for all exponential-time descriptors. Hence $\mathsf{EXPTIME}\subsetneq2\mathsf{EXPTIME}$.
+\end{theorem}
+\begin{proof}
+Return zero on invalid self-descriptions. On $W(e,c,k)$ complement $\B(e,x,c2^{(n+1)^k})$. Since $c,k\le n$,
+\[
+ \log_2(c2^{(n+1)^k})
+ \le n+(n+1)^n\le n+2^{n^2}\le2^{(n+1)^2+1}.
+\]
+The inequalities can be expressed without logarithms as bounds on the clock itself. Fourth-power simulation and countdown production fit $2^{2^{K(n+1)^2}}$ after enlarging a fixed $K$. The parsing equation again gives a mismatch against every lower-class descriptor. The ordinary inclusion is the elementary inequality between the clock families. This proof generalizes, at each fixed tower height, by applying one more exponential to the same padded-descriptor bound; we count only the explicitly stated step here.
+\end{proof}
+
+\paragraph{What has not been inferred.}
+These separations do not imply $\mathsf P\ne\mathsf{NP}$, $\mathsf P\ne\mathsf{PSPACE}$, or $\mathsf{PSPACE}\ne\mathsf{EXPTIME}$. They are witnesses against precisely the descriptor families stated. Nor does finite diagonalization prove that every negation of an unbounded agreement assertion has a PR counterexample function. The sharp deterministic and nondeterministic hierarchy theorems need their constructibility and simulation hypotheses; our coarser proofs avoid asserting those stronger results without developing the corresponding machinery.

@@ -1,0 +1,86 @@
+{
+  "scope": "The root complexity article directly links BPP, RP, ZPP, #P, Boolean circuits, circuit complexity, decision-tree complexity, communication complexity, and amortized analysis. These supply this section's immediate-link scope.",
+  "proof_status": "Human-readable constructive reconstructions with primitive-recursive algorithms and finite numerical invariants. No claim of full object-iPRA derivation or Lean compilation.",
+  "sources": [
+    {
+      "key": "adleman1978",
+      "author": "Leonard M. Adleman",
+      "title": "Two Theorems on Random Polynomial Time",
+      "publication": "19th Annual Symposium on Foundations of Computer Science, pp. 75-83 (1978)",
+      "doi": "10.1109/SFCS.1978.37",
+      "url": "https://mikael-monet.net/share/papers/adleman1978.pdf",
+      "source_ref": "turn256280718search35",
+      "access": "Primary paper indexed by search; full open returned 502. Full finite proof is independently supplied; official-author Katz notes were also inspected.",
+      "use": "Historical source for random-polynomial-time nonuniform constructions; not a source for a formal iPRA claim."
+    },
+    {
+      "key": "lautemann1983",
+      "author": "Clemens Lautemann",
+      "title": "BPP and the Polynomial Hierarchy",
+      "publication": "Information Processing Letters 17(4), pp. 215-217 (1983)",
+      "doi": "10.1016/0020-0190(83)90044-3",
+      "url": "https://www.sciencedirect.com/science/article/pii/0020019083900443",
+      "source_ref": "turn387778925search1",
+      "access": "Publisher abstract retrieved by search; direct open 403. The abstract explicitly identifies the counting proof of BPP inclusion at the second hierarchy level.",
+      "use": "Attribution of the theorem; report provides independent concrete integer parameters."
+    },
+    {
+      "key": "shannon1949",
+      "author": "Claude E. Shannon",
+      "title": "The Synthesis of Two-Terminal Switching Circuits",
+      "publication": "Bell System Technical Journal 28(1), pp. 59-98 (1949)",
+      "doi": "10.1002/j.1538-7305.1949.tb03624.x",
+      "url": "https://www.nokia.com/bell-labs/publications-and-media/publications/the-synthesis-of-two-terminal-switching-circuits/",
+      "source_ref": "turn256280718search1",
+      "access": "Official Bell Labs publication record retrieved; CMU-hosted original PDF exceeded retrieval size limit.",
+      "use": "Historical circuit-counting attribution. The report's sixteen-gate-basis constants and bounded least-table algorithm are independently specified."
+    },
+    {
+      "key": "katz2011",
+      "author": "Jonathan Katz",
+      "title": "Notes on Complexity Theory",
+      "publication": "University of Maryland, 2011; especially Lectures 12-13",
+      "url": "https://www.cs.umd.edu/~jkatz/complexity/f11/all.pdf",
+      "source_ref": "turn961099668view0",
+      "access": "Full official instructor notes retrieved (129 pages).",
+      "use": "Standard randomized-class targets, BPP advice, and hierarchy inclusion. No source wording copied."
+    },
+    {
+      "key": "katz2005circuits",
+      "author": "Jonathan Katz",
+      "title": "Notes on Complexity Theory, Handout 5",
+      "publication": "University of Maryland, October 2005",
+      "url": "https://www.cs.umd.edu/~jkatz/complexity/f05/lecture5.pdf",
+      "source_ref": "turn267882609view2",
+      "access": "Official instructor notes retrieved (6 pages).",
+      "use": "Confirms standard circuit upper-bound order and randomized definitions. Report's universal upper compiler uses a different residual-table construction with explicit constant 18, not the sharp Lupanov constant."
+    },
+    {
+      "key": "mit2010sorting",
+      "author": "Constantinos Daskalakis",
+      "title": "6.006 Introduction to Algorithms, Lecture 10: Sorting",
+      "publication": "Massachusetts Institute of Technology, Fall 2010",
+      "url": "https://courses.csail.mit.edu/6.006/fall10/lectures/lec10.pdf",
+      "source_ref": "turn267882609view1",
+      "access": "Official instructor slides retrieved (54 pages).",
+      "use": "Comparison-tree lower-bound target; report avoids the slides' use of Stirling's formula."
+    },
+    {
+      "key": "blais2025communication",
+      "author": "Eric Blais",
+      "title": "Models of Computation, Chapter 21: Communication Complexity",
+      "publication": "University of Waterloo, Winter 2025",
+      "url": "https://cs.uwaterloo.ca/~eblais/cs365/w25/communication",
+      "source_ref": "turn961099668view1",
+      "access": "Official instructor notes retrieved.",
+      "use": "Shared leaf-output convention, fooling-set target, and exact n+1 deterministic equality bound."
+    }
+  ],
+  "validation": {
+    "script": "code/random_lower_checks.py",
+    "log": "validation/random_lower_checks.log",
+    "tests": 13,
+    "result": "all passed",
+    "limits": "Finite instance checks support implementation correctness; they do not prove the universally quantified statements."
+  }
+}

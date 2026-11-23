@@ -1,0 +1,189 @@
+\section{Bounded elementary number theory}
+\label{sec:elementary}
+
+\begin{definition}[Primality]
+For a natural number $p$, $\Prime(p)$ means
+\[
+ p\ge2\quad\text{and}\quad
+ \forall d<p\;\bigl(2\le d\to p\bmod d\ne0\bigr).
+\]
+This notation abbreviates a primitive recursive Boolean test. Divisibility
+by a positive natural is also a remainder-zero test and supplies the
+quotient as its witness.
+\end{definition}
+
+\begin{lemma}[A bounded least divisor is prime]
+\label{lem:lpf}
+For $q\ge2$, scan the finite list $2,3,\ldots,q$ and let $p$ be its first
+divisor of $q$. This search succeeds, $2\le p\le q$, $p\mid q$, and $p$ is
+prime. All the functions and correctness assertions are available in $\ipra$.
+\end{lemma}
+
+\begin{proof}
+The last candidate $q$ divides $q$, so the scan cannot fail. If
+$2\le d<p$ and $d\mid p$, then $d\mid q$: multiply the exact quotient
+identities for $p/d$ and $q/p$. That contradicts the recorded failure of
+every candidate smaller than $p$. Each candidate is a decidable test, and
+the scan's correctness is proved by quantifier-free induction on its index.
+No assertion about existence or uniqueness of a full prime factorization
+is used.
+\end{proof}
+
+\begin{lemma}[Prime divisibility of a product]
+\label{lem:euclid}
+If $p$ is prime and $p\mid uv$ for signed integers $u,v$, then
+$p\mid u$ or $p\mid v$. This disjunction has a constructive $\ipra$ proof.
+\end{lemma}
+
+\begin{proof}
+Compute $a=u\bmod p$, so $0\le a<p$. If $a=0$, the first disjunct holds.
+Assume $a>0$. We give the bounded arithmetic proof that $a$ has a
+B\'ezout relation with $p$.
+
+Initialize remainders and signed coefficients by
+\[
+ r_0=p=1p+0a,\qquad r_1=a=0p+1a.
+\]
+At an active stage, with $r_1>0$, compute
+$Q=r_0\mathbin{\mathrm{div}}r_1$ and $r_2=r_0-Qr_1$ and replace
+$(r_0,r_1)$ by $(r_1,r_2)$. Replace their coefficient pairs in exactly the
+same way. If $r_1=0$, retain the entire record. Run exactly $p+1$ stages.
+
+At every active stage $0\le r_2<r_1$; hence the second remainder decreases
+by at least one until it is zero. Quantifier-free induction gives the bound
+$r_1(t)\le a\monus t$. After $p+1$ stages it is zero. The first remainder
+stays positive, and both remainders stay at most $p$. The coefficient
+identities are preserved because the same linear operation is applied to
+both sides of each identity.
+
+For every $1\le d\le p$, the relation
+\[
+ (d\mid r_0\land d\mid r_1)
+ \quad\Longleftrightarrow\quad
+ (d\mid r_1\land d\mid r_0-Qr_1)
+\]
+follows by substitution of the quotient identities, in each direction.
+Consequently the preserved common-divisor invariant is the finite conjunction
+\[
+ \bigwedge_{1\le d\le p}
+ \bigl((d\mid r_0(t)\land d\mid r_1(t))
+       \leftrightarrow(d\mid p\land d\mid a)\bigr).
+\]
+Represent this conjunction by its Boolean fold. It holds initially, and
+the displayed one-step equivalence proves its preservation by transitivity,
+using quantifier-free induction. At the final record $(g,0)$,
+it follows, by taking $d=g$, that $g\mid p$ and $g\mid a$.
+Here $1\le g\le p$.
+
+Primality gives $g=1$ or $g=p$: a value $2\le g<p$ is excluded directly
+by the primality test. The latter alternative is impossible because
+$0<a<p$. Thus $g=1$. The computed coefficient record supplies actual
+integers $s,t$ with
+\[
+ sp+ta=1.
+\]
+The coefficient update is primitive recursive. For an optional explicit
+size bound, every quotient is at most $p$, and the maximum absolute
+coefficient grows by a factor of at most $p+1$ per stage. Thus
+$(p+1)^{p+1}$ bounds its size after $p+1$ stages.
+
+Because $u\equiv a\pmod p$, the hypothesis gives $p\mid av$.
+Multiplying $sp+ta=1$ by $v$ shows that $p\mid v$. The initial test
+$a=0$ decides which disjunct is obtained. Every loop has a prescribed
+bound and a coded quantifier-free invariant, so the proof uses only
+allowed induction.
+\end{proof}
+
+\section{A finite modular seed for every prime}
+\label{sec:seed}
+
+The prime $2$ already has the tuple $(1,1,0,0)$. A prime greater than $2$
+is odd, since an even number greater than $2$ has the forbidden divisor
+$2$. Hence write an odd prime as $p=2h+1$, with $h\ge1$.
+
+\begin{lemma}[Two short lists of square residues]
+\label{lem:residue}
+For $p=2h+1$ prime, there are explicitly computable $a,b\le h$ with
+\[
+ a^2+b^2+1\equiv0\pmod p.
+\]
+One may find them by at most $(h+1)^2$ tests.
+\end{lemma}
+
+\begin{proof}
+For $0\le i,j\le h$, form the residues in $\{0,\ldots,p-1\}$
+\[
+ A_i=i^2\bmod p,\qquad B_j=(-1-j^2)\bmod p.
+\]
+Each list is injective. If $A_i=A_j$, then
+$p\mid(i-j)(i+j)$. Lemma~\ref{lem:euclid} gives $p\mid i-j$ or
+$p\mid i+j$. The bounds $\abs{i-j}<p$ and $0\le i+j\le2h=p-1$
+then give $i=j$ in the first case, or $i=j=0$ in the second.
+Indeed an integer divisible by $p$ and of absolute value less than $p$
+must be zero, by the exact quotient equation. Equality of two $B$ entries
+reduces to the same square-residue argument.
+
+Scan the $(h+1)^2$ pairs in lexicographic order, storing the first pair
+with $A_a=B_b$ and a hit flag. We prove that the failure flag is impossible
+by an explicit finite counting argument. If there were no cross-list
+match, the concatenation $L$ of the two lists would have
+$2(h+1)=p+1$ pairwise distinct entries, each smaller than $p$.
+
+For $r<p$, let
+\[
+ C(r)=\sum_{k=0}^{p}\ind{L_k=r},
+\]
+where the bracket is the equality-test bit. Because the entries are
+pairwise distinct, at most one summand is $1$, so $C(r)\le1$.
+For each $k$, exactly one of the $p$ equality tests $\ind{L_k=r}$ is $1$,
+because $L_k<p$. Counting the finite incidences in the two orders gives
+\begin{equation}
+\label{eq:count}
+ p+1
+ =\sum_{k=0}^{p}\sum_{r=0}^{p-1}\ind{L_k=r}
+ =\sum_{r=0}^{p-1}C(r)
+ \le p,
+\end{equation}
+a contradiction. The interchange of the two finite sums is proved by
+successively adding rows and distributing addition. These are nested
+quantifier-free inductions on the two finite bounds. The assertion that
+at most one summand is $1$ can either be recorded as a Boolean prefix
+condition or proved by induction on the count; no set cardinalities or
+infinite combinatorial principles are involved.
+
+The hit flag is a computed bit. Its $0$ case has just been excluded, so it
+is $1$ and its stored pair satisfies $A_a=B_b$. This equality is precisely
+the desired congruence. The scan's index $k<(h+1)^2$ can be decoded as
+\[
+ a=k\mathbin{\mathrm{div}}(h+1),\qquad b=k\bmod(h+1),
+\]
+which specifies the search as a single primitive recursive bounded loop.
+\end{proof}
+
+\begin{proposition}[Small positive multiple of a prime]
+\label{prop:seed}
+For each prime $p$ a primitive recursive seed construction returns
+$m_0\in\NN$ and $x^{(0)}\in\ZZ^4$ with
+\[
+ 1\le m_0<p,\qquad \Nrm{x^{(0)}}=m_0p.
+\]
+For odd $p$ it can ensure $m_0\le(p-1)/2$.
+\end{proposition}
+
+\begin{proof}
+For $p=2$ take $m_0=1$ and $x^{(0)}=(1,1,0,0)$.
+For odd $p=2h+1$, use the successful pair of Lemma~\ref{lem:residue} and set
+\[
+ x^{(0)}=(a,b,1,0),\qquad
+ m_0=(a^2+b^2+1)\mathbin{\mathrm{div}}p.
+\]
+The division is exact. Its numerator is positive, so $m_0\ge1$.
+Since $h\ge1$,
+\[
+ a^2+b^2+1\le2h^2+1\le2h^2+h=hp.
+\]
+Cancellation of the positive factor $p$ gives $m_0\le h<p$.
+For nonprime inputs the same finite program is made total by returning
+an arbitrary default, namely $(1,(0,0,0,0))$, when no pair is found.
+The theorem asserts correctness only under the decidable prime condition.
+\end{proof}

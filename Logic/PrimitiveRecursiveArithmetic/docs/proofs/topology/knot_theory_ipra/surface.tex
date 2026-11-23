@@ -1,0 +1,440 @@
+\section{Linking, Gauss words and Brunnian links}
+\label{sec:linking-surface}
+
+For arithmetic statements involving planarity, take the supplied rational
+polygonal realization of the diagram. Crossings are transverse intersections
+in the interiors of segments. No vertex meets another strand and no three
+strands meet. Label the components and direct each cyclic edge list.
+Write $\epsilon(p)$ for the crossing sign, choosing the positive two-strand
+braid generator to have sign $+1$ when both strands follow the braid.
+Equivalently this is a fixed sign times
+$\operatorname{sgn}\det(u_{\rm over},u_{\rm under})$ for the two
+directed tangents. The fixed sign depends on the orientation convention
+for the drawing plane and cancels in the argument below.
+
+\begin{lemma}[Signed planar intersection]
+\label{lem:rational-mixed}
+For two closed oriented rational polygonal walks $P,Q$ in mutual general
+position, the sum of $\operatorname{sgn}\det(u_P,u_Q)$ at their
+intersections, counting pairs of passages, is zero. In particular their
+number of intersections is even.
+\end{lemma}
+\begin{proof}
+Choose a point $a$ avoiding the supporting lines of the edges of $P,Q$,
+the lines from vertices of $P$ through vertices of $Q$, and the lines
+through vertices of $P$ parallel to edges of $Q$. From $N$ forbidden lines
+one obtains such an $a$ by testing $(j,j^2)$ for $0\leq j\leq2N$.
+A line excludes at most two tests. For each successive pair $p_i,p_{i+1}$
+use the directed boundary of the triangle $(a,p_i,p_{i+1})$.
+For a counterclockwise triangle the summand is $+1$ when $Q$ enters
+and $-1$ when it leaves, since its interior lies to the left of each edge.
+The sum telescopes to zero along closed $Q$. One may split its edges at
+the finitely many intersections and use the inside bits of the consecutive
+open pieces. A clockwise triangle multiplies this identity by $-1$.
+Adding the identities cancels each spoke in opposite directions and
+leaves precisely the intersection sum for $P$. Equal positive and negative
+counts give the parity assertion.
+\end{proof}
+
+\begin{theorem}[Three crossing formulas for linking]
+For distinct components $i,j$, the signed sum $O_{ij}$ at crossings
+where $i$ passes over $j$ equals $O_{ji}$. Their common value
+$\ell_{ij}$ satisfies
+\[
+  \ell_{ij}=\ell_{ji}
+  =\frac12\sum_{p\text{ between }i,j}\epsilon(p).
+\]
+It is invariant along every Reidemeister movie preserving the component
+labels and orientations. Mirroring negates it. Reversing exactly one
+of the two components negates it, and reversing both preserves it.
+\end{theorem}
+\begin{proof}
+In the intersection sum ordered as $(i,j)$ the over-$i$ terms agree with
+their crossing signs up to the fixed sign, and the over-$j$ terms have the
+opposite comparison. Lemma~\ref{lem:rational-mixed} gives
+$O_{ij}-O_{ji}=0$. A curl involves only one component. In a type II
+bigon the same strand is upper at the two crossings and the directed
+intersection signs are opposite. Indeed, following one side of the bigon
+across the other strand enters and exits on opposite sides. Reversing
+either orientation flips both local comparisons. In type III, each
+pair of participating strands crosses once on either side, with the same
+relative height, directions and crossing sign. These verifications also
+apply when two of the participating strands belong to the same component.
+An over/under switch reverses the determinant order. Reversing one tangent
+changes its sign. The transformation laws follow term by term.
+\end{proof}
+
+Let $w$ be the sum of all crossing signs and $w_i$ the sum over crossings
+of $i$ with itself. Thus
+\[
+  w=\sum_i w_i+2\sum_{i<j}\ell_{ij}.
+\]
+The same local proof leaves $w$ fixed in types II and III. A curl changes
+it by its sign. Mirroring negates $w$ and reversing all components
+preserves it. For any diagram, the number of crossings between $i,j$
+is at least $2|\ell_{ij}|$. A change of such a crossing changes
+$\ell_{ij}$ by exactly one in absolute value. A crossing change involving
+another unordered pair, or a self-crossing, leaves it fixed. Consequently
+every movie using ordinary moves and crossing changes to separate a
+partition $S\mid T$ of the components into disjoint diagram boxes
+uses at least $\sum_{i\in S,j\in T}|\ell_{ij}|$ crossing changes.
+This follows from the triangle inequality at each step, since all these
+entries vanish in the separated boxes.
+
+\begin{corollary}[Even two-strand torus links]
+For the closure of $\sigma_1^{2r}$, $r\in\mathbb Z$, the components with
+their braid orientations have linking number $r$. The least crossing count
+in its diagram-movie class is $2|r|$, and the least number of crossing
+changes needed to obtain the two-component unlink is $|r|$.
+In particular the Hopf link has crossing number two.
+\end{corollary}
+\begin{proof}
+The strand permutation is the identity. Every one of the $2|r|$
+crossings is between the two components and they have the same sign
+when $r\ne0$. This realizes the crossing lower bound. Switch one letter
+in each consecutive like-signed pair; each pair then cancels by type II.
+The resulting empty two-braid closes to the unlink. The linking bound
+gives the reverse inequality, including $r=0$.
+\end{proof}
+
+\begin{theorem}[The Dowker even--odd rule]
+In a one-component plane diagram with $c$ crossings, label the $2c$
+successive visits $1,\ldots,2c$ starting at any regular basepoint.
+The two labels at every crossing have opposite parity. Hence in order
+of the odd labels the partner labels are a permutation of $2,4,\ldots,2c$.
+\end{theorem}
+\begin{proof}
+Cut the parametrizing circle at its two visits to a particular crossing.
+Each of the two resulting arcs closes locally: its two ends lie on
+different strands and hence at adjacent corners of a crossing box.
+The two reconnections can be drawn separately along opposite sides of
+that box. Between the two visits each self-crossing of the chosen arc
+occurs twice and each crossing with the other arc occurs once. The
+latter number is even by Lemma~\ref{lem:rational-mixed} applied to
+the reconnected polygons. If the visits have labels $a<b$, their
+difference is one more than this even total $b-a-1$. Each even visit
+therefore partners one odd visit. Ordering by the latter yields the
+claimed permutation; recording whether the even visit is under or over
+provides the extra sign of a signed Dowker code.
+\end{proof}
+
+\begin{proposition}[The Borromean deletion test and failure of pairwise detection]
+The standard Borromean closed braid $B=(\sigma_1\sigma_2^{-1})^3$ has
+three components. Each two-component sublink is the unlink and all three
+pairwise linking numbers vanish. The full link is distinct from the
+three-component unlink under Reidemeister movies.
+\end{proposition}
+\begin{proof}
+Label the top strands $1,2,3$. The unordered pairs exchanged successively
+are $12,13,23,12,13,23$, with signs $+,-,+,-,+,-$. The final ordering
+is $123$, so each strand closes to its own component. After deleting any
+one component, the other two cross once positively and once negatively.
+Their two-strand word reduces by one cancellation and their closure is an
+unlink. To distinguish all three together, give the top strands Fox colors
+$(a,b,c)$ modulo $q\ge2$. A positive letter sends the affected pair
+$(x,y)$ to $(2x-y,x)$ and a negative letter to $(y,2y-x)$. A closure
+coloring is exactly a fixed vector. Substituting the six letters gives
+\[
+ (M-I)\begin{pmatrix}a\\b\\c\end{pmatrix}
+ =4\begin{pmatrix}2&-1&-1\\-1&0&1\\-3&1&2\end{pmatrix}
+   \begin{pmatrix}a\\b\\c\end{pmatrix}.
+\]
+The second row and then the first give $4(c-a)=4(b-a)=0\pmod q$;
+these conditions imply all three rows. Each difference has
+$\gcd(4,q)$ choices, since $4x=0\pmod q$ means
+$q/\gcd(4,q)$ divides $x$. Thus the color count is
+$q\gcd(4,q)^2$. At $q=3$ this gives $3$, whereas the unlink has
+$3^3=27$. The Reidemeister bijections for Fox colorings prove the
+distinction. In particular, even the complete list of pairwise linking
+numbers cannot detect all linking.
+\end{proof}
+
+
+\begin{corollary}[Six crossings are necessary for the Borromean rings]
+The least crossing count in the Borromean diagram-movie class is six.
+\end{corollary}
+\begin{proof}
+Use the bracket and span bound of Section~\ref{sec:bracket}. In the
+six-letter braid above, the writhe is zero. Here is its complete state
+count grouped by the number $b$ of $B$-pairings and the number $h$ of
+circles. The rows are $b=0,\ldots,6$ and the columns are $h=1,2,3,4$:
+\[
+  \begin{pmatrix}
+  0&0&0&1\\0&0&6&0\\0&15&0&0\\16&0&4&0\\
+  0&15&0&0\\0&0&6&0\\0&0&0&1
+  \end{pmatrix}.
+\]
+To reproduce each entry, trace three columns through seven horizontal
+levels. At letter $j$ join each unaffected column to its successor.
+Pair the two affected columns vertically for an $A$ at a positive
+letter or a $B$ at a negative letter. Otherwise join the two upper
+entries and join the two lower entries. Identify bottom and top and
+count equivalence classes on the $21$ entries. Summing
+$A^{6-2b}(-A^2-A^{-2})^{h-1}$ with the displayed multiplicities, and
+putting $X=A^4$, gives
+\[
+ -X^3+3X^2-2X+4-2X^{-1}+3X^{-2}-X^{-3}.
+\]
+Its value at $X=-1$ is $16$. A disconnected shadow forces the bracket
+to have a factor $-A^{-2}(A^4+1)$, by splitting its nonempty pieces
+in the state sum. Hence every equivalent diagram has connected shadow.
+The $A$-span is $24$, so the bound $\operatorname{span}_A\le4c$ gives
+$c\ge6$. The braid attains equality.
+\end{proof}
+
+\section{A rational Seifert surface and its genus certificate}
+\label{sec:seifert}
+At a crossing there are two incoming and two outgoing corners. Each
+through strand joins opposite corners, so the two incoming corners
+are neighbors in cyclic order. Replace the crossing by the unique
+noncrossing pairing joining incoming to outgoing. The result consists of
+$s$ disjoint oriented polygonal circles, the \emph{Seifert circles}.
+Isolated crossingless circles are included. The following elementary
+capping lemma makes the geometric content of the disk-and-band construction
+explicit.
+
+\begin{lemma}[Planar polygon caps]
+\label{lem:slab-cap}
+There is a primitive recursive construction of a rational triangulated
+disk bounded by a supplied simple rational polygon $P$. For finitely
+many disjoint such polygons their planar disks have disjoint interiors
+or are nested, and the strict containments are decidable.
+\end{lemma}
+\begin{proof}
+Shear by $(x,y)\mapsto(x+hy,y)$ so that the vertices have distinct
+first coordinates. Each vertex pair forbids at most one integer $h$.
+Split the plane at these coordinates into vertical slabs. In an open slab,
+sort the intersecting edges by height at the midpoint abscissa. This order
+is constant within the slab, since edges do not cross. The gaps between
+edges have alternating labels, starting with $0$ above the polygon.
+Across an open piece of a slab wall the labels agree: at a vertex the
+number of edges above changes by zero or two. Thus crossing any polygon
+edge changes the label, and walking through a wall away from the polygon
+preserves it. The label-one gaps are bounded triangles or trapezoids.
+
+Here are the two connectivity facts needed about this subdivision. On a
+small punctured neighborhood of a vertex, its two incident segments cut
+the neighborhood into two sectors. The labels differ across the segments,
+so the label-one sides of its consecutive edges meet through the same
+sector. Walking the boundary in order therefore connects every edge's
+label-one side to every other. Every label-one gap has a polygon edge
+as its ceiling or floor, giving connectedness of the label-one cells by
+wall adjacency. The same argument applies to the label-zero sides.
+Every bounded label-zero gap touches such a side, and the outside gaps
+join above, below or around an extreme vertex. Consequently every
+label-zero point away from $P$ can be routed to the unbounded gap.
+These statements concern finite cell adjacency. Near a vertex one can
+take a square of radius less than its distances to nonincident segments
+and other vertices.
+
+Use the closures of the label-one gaps. Subdivide both copies of a
+common wall at all polygon points on it. Triangulate a convex
+trapezoid by a diagonal, with a single triangle when one end collapses.
+To accommodate collinear marks on a side, split its incident triangle
+from the opposite vertex, successively. All vertices of the resulting
+triangles lie on $P$: even a wall endpoint in the middle of a polygon
+edge lies on that edge. The dual graph, with one vertex per triangle
+and one edge across each interior side, is connected by the preceding
+cell argument and the triangulation within each gap.
+
+Every interior side $e$ is a bridge in this graph. Join its endpoints
+by either boundary subarc of $P$ to form a closed polygon with $e$.
+If a dual path could bypass its dual edge, the bypass together with
+that dual edge would give a closed walk through triangle interiors
+crossing $e$ exactly once and disjoint from $P$. To draw the walk use
+triangle interior points and side midpoints. At a crossed side join
+nearby interior points directly so that its intersection is transverse
+and interior to a segment. This contradicts the parity assertion of
+Lemma~\ref{lem:rational-mixed}. The dual graph is thus a tree.
+The triangulation can be assembled by attaching a triangle on a single
+free side at each step along the tree. No extra identification at an
+isolated corner is needed: around each boundary vertex the incident
+triangles form one consecutive fan in its interior sector. Hence all
+copies of that corner are already identified through shared sides.
+A triangle attached on one entire boundary side to a disk gives a disk
+(replace that side of the boundary by the other two), proving the claim.
+The tree order itself is a disk certificate.
+
+For disjoint polygon boundaries $P,Q$, the bit for $P$ is constant
+along $Q$. If $Q$ has bit one, the exterior of $P$, together with its
+boundary, has routes to infinity avoiding $Q$. These points are exterior
+to $Q$; its disk therefore lies inside the disk of $P$. If each boundary
+is exterior to the other, the bit for $Q$ is constant on the connected
+interior of $P$ and is zero just inside its boundary, hence the disk
+interiors are disjoint. Both bits cannot be one, by strict containment.
+A wall or ray meeting a vertex is handled by its neighboring gap, or by
+subdivision and an interior test point. Inverting the shear restores the
+original rational coordinates.
+\end{proof}
+
+\begin{theorem}[Seifert construction with a boundary witness]
+\label{thm:seifert-pl}
+From a nonempty oriented rational plane link diagram with $c$ crossings,
+$b$ components and $s$ Seifert circles, one constructs by primitive
+recursion a rational embedded orientable triangulated surface whose
+boundary projects to that same decorated diagram, up to subdivision.
+It has $k$ connected components, where $k$ is the number of components
+of the incidence graph of Seifert circles and crossing bands. Its Euler
+characteristic and total handle genus $G$ satisfy
+\[
+  \chi=s-c,\qquad 2G=2k-b-s+c.
+\]
+In particular a knot diagram gives a connected surface of genus
+$g_D=(1+c-s)/2$, an explicit upper bound for the spanning genus of the knot.
+\end{theorem}
+
+\begin{proof}
+Fit disjoint rational parallelograms at the crossings, with corners
+on the four strand ends. They can be chosen as the convex hull of
+$p\pm t u,p\pm t v$ at a crossing $p$ of strands with directions
+$u,v$. Take pairwise crossing distances, distances from crossings to
+nonincident closed segments and to the endpoints of their incident
+segments. Their positive squared distances have a rational minimum $m$
+(append $1$ before taking minima). For a point and a segment the squared
+distance is computed by projecting to its supporting line and clamping
+the rational parameter to $[0,1]$. With $H$ the maximum of $1$ and
+the $\ell^1$ norms of the directions, one may take
+$t=\min(1,m)/(100H)$. Thus no unrelated pieces enter these
+parallelograms. Their opposite sides used by the oriented smoothing
+serve as the two attachment intervals. Outside them retain the input
+segments. This gives the circles to which Lemma~\ref{lem:slab-cap}
+applies.
+
+Let $d(C)$ be the number of other disks strictly containing circle $C$,
+and put its disk at height $-s+d(C)<0$. Connect its rim vertically
+to the copy of $C$ at height zero using a triangulated wall of
+rectangles. A containing disk lies below every contained one. The walls
+of different circles have disjoint projections. A wall above an inner
+disk never reaches the level of its containing cap, and disjoint
+nonnested disks have disjoint projections. This proves pairwise
+disjointness of the capped walls. Each is a disk with a collar and is
+oriented to induce the specified direction on its upper boundary.
+
+Use affine horizontal coordinates in each parallelogram so that the
+attachment intervals are $x=-1$ and $x=1$ in the square $[-1,1]^2$.
+The smoothing directs both intervals the same way in $y$. Here is a
+specific half-twisted PL band. One boundary side visits
+\[
+ (-1,-1,0),\quad (0,0,1),\quad (1,1,0),
+\]
+and the other visits $(-1,1,0),(0,0,3),(1,-1,0)$.
+Connect the two points in each column $x=-1,0,1$ and split each of the
+two resulting four-sided patches along a diagonal into two triangles.
+Within either half, one triangle projects onto a triangle of positive
+area and the other onto a boundary segment of that triangle; their
+intersection is precisely their common edge. The two halves meet only
+on the middle vertical edge. The band meets the plane $z=0$ exactly
+at its attaching ends. Its sides project to the original diagonals,
+with the specified overpass obtained by interchanging the heights
+$1,3$ when necessary. Because the order of the two side labels reverses
+between the ends, the induced boundary directions of the rectangle
+along both attachments point the same way in the drawing. Orient it
+oppositely to the two disk boundary intervals. This consistently
+orients the union. The patches occupy distinct boxes, and the rest of
+the surface lies at $z\leq0$. The resulting list of triangles is an
+embedded surface. Boundary subdivisions of the attachment intervals
+are matched by splitting the corresponding band triangles from their
+opposite corners. Its boundary follows the original crossing assignment
+at every box and the original edges outside.
+
+The disks and bands also give a purely finite computation of genus.
+Initially there are $s$ disks with $s$ boundary circuits. Attaching a
+rectangle on two disjoint intervals reduces the Euler characteristic
+by one: after a common subdivision it contributes $1-2$ by
+inclusion--exclusion for vertex, edge and face counts. The graph
+components track the surface components. For a prefix of the bands let
+$k',b',\chi'$ be the component, boundary and Euler counts. An oriented
+band on two intervals of the same boundary circle splits that boundary
+in two (trace the two complementary arcs after removing the intervals).
+On two distinct boundary circles it merges them into one. In the latter
+case the surface components also merge exactly when the intervals
+belonged to distinct components. Starting with $G'=0$, increment $G'$
+only for a band joining distinct boundary circles of the same component.
+These three updates preserve
+\[
+                      2G'=2k'-b'-\chi'.
+\]
+They are also the handle description of orientable genus: a band on
+one boundary splits a collar into a pair of pants; a band joining two
+boundaries in one connected surface makes a handle, merging those
+boundaries. Equivalently the displayed Euler relation computes total
+genus for an orientable surface with boundary. At completion the
+boundary circuits trace the diagram and number $b$. Every component of
+a disk-and-band surface has boundary, by the same updates, so $b=1$
+forces $k=1$. This proves all the formulas.
+\end{proof}
+
+\begin{corollary}[Bounds and operations]
+A knot diagram with $c$ crossings bounds a surface of genus at most
+$\lfloor c/2\rfloor$. For a connected sum made at regular arcs of two
+separate oriented knot diagrams, the surface genus of the resulting
+diagram is $g_{D\#E}=g_D+g_E$. Mirroring preserves $g_D$. For $p,q\ge1$,
+the usual closure of $(\sigma_1\cdots\sigma_{p-1})^q$ has
+$\gcd(p,q)$ components and a connected spanning surface of genus
+\[
+   \frac{2-\gcd(p,q)-p+(p-1)q}{2}.
+\]
+For coprime $p,q$ this gives the knot-genus upper bound
+$(p-1)(q-1)/2$.
+\end{corollary}
+\begin{proof}
+Use $s\ge1$ in the knot formula. In a connected sum, smoothing all
+crossings on either side leaves exactly the two marked Seifert circles
+spliced into one, so the crossing counts add and the circle counts add
+with a subtraction of one. A mirror changes heights without changing
+the oriented smoothing. For the displayed braid, with all strands
+oriented along the braid, smoothing leaves all $p$ columns vertical and
+each closes to its own circle. There are $(p-1)q$ crossing bands.
+The incidence graph contains the path through adjacent columns and is
+connected (also for $p=1$). The permutation of one block rotates the
+$p$ labels by one, up to reverse convention. Its $q$th power has
+$\gcd(p,q)$ orbits, since the subgroup of residues generated by $q$
+consists of the multiples of $\gcd(p,q)$ modulo $p$, by the Euclidean
+algorithm. Substitute these counts. Each upper bound is witnessed by the
+constructed surface. Minimality among spanning surfaces would require a
+lower bound and is not used in the construction.
+\end{proof}
+
+\paragraph{Arithmetic and Lean implementation.}
+The planar-intersection loop stores the two signed counts and the current
+triangle-inside bit. Its induction invariant is that the signed prefix
+equals the final minus initial bit, multiplied by the triangle orientation.
+For a polygon with $n$ vertices the shear has index at most $n(n-1)/2$.
+There are at most $n+1$ slabs and at most $n+1$ gaps per slab.
+Each slab wall has at most $n$ intersections with polygon edges plus
+its vertex. Thus $10(n+1)^3$ suffices for the triangles of a single cap
+and their intervening wall subdivisions. Connected components of a graph
+with $v$ vertices may be computed by $v$ iterations of adding all
+neighbors to a bit vector. The invariant says that its bits are exactly
+the endpoints of walks of length at most the stage; walk certificates can
+be bounded by $(v+1)^{v+1}$ for these stages. A cycle or bypass can be
+shortened to a simple one by deleting repeated-vertex portions, with at
+most $v+1$ successive retained vertices. Every instance of connectivity
+in the cap proof uses these finite adjacency tests. The triangle-tree
+gluing order gives local side and vertex fan checks. The depth list is
+an $s$-by-$s$ table of ray parities, and the $c$ band additions carry
+the equality $2G'=2k'-b'-\chi'$ as a signed-integer equality at every
+prefix. There are at most $b+c$ Seifert circles, since each smoothing
+changes the number of circuits by one in absolute value. All scalar
+geometry uses rational determinants, additions, products and divisions
+with nonzero denominators checked before use.
+
+For Lean, implement a closed walk as a cyclic vertex array, a triangle
+as a triple of rational pairs, and a surface as a list of rational
+spatial triangles with oriented edge incidences. First prove triangle
+entry/exit telescoping, then spoke cancellation and the signed crossing
+identities. Encode a slab cell by its two adjacent abscissas and its
+ordered floor/ceiling edges. The label is its vertical index modulo two;
+prove wall agreement by inspecting the two edges at the wall vertex.
+Prove the tree claim by converting a simple dual cycle into the rational
+polygon used in Lemma~\ref{lem:slab-cap}. Independently encode each
+disk rim by a cyclic word in its marked intervals. On band addition,
+split a word at two marks or splice two words, removing the attaching
+intervals and inserting the long band sides. The local cases above
+prove the genus recurrence by induction on the word of bands.
+Relate this combinatorial boundary to the triangle boundary by checking
+the single two-patch band and the capped-wall template, then concatenate
+the incidences. For object-theory induction, equality of arrays,
+validity of all incidences and correctness of all bounded labels are
+Boolean folds. This leaves only quantifier-free induction with the
+input code as a free parameter.

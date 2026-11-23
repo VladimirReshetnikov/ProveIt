@@ -1,0 +1,89 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1.02in,top=.96in,bottom=1in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,longtable,tabularx,array,enumitem}
+\usepackage{graphicx,xcolor,tikz,fancyhdr,needspace,xurl,multicol}
+\definecolor{ink}{HTML}{17364A}
+\definecolor{accent}{HTML}{11655D}
+\definecolor{lighttone}{HTML}{E6F1EE}
+\usepackage[colorlinks=true,linkcolor=ink,urlcolor=accent,citecolor=accent]{hyperref}
+\usepackage{bookmark}
+\hypersetup{pdftitle={Topology in intuitionistic primitive recursive arithmetic},pdfauthor={Research report prepared for Vladimir Reshetnikov},pdfsubject={Finite topology, constructive metric spaces, homology, and constructive sphere obstructions}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\sffamily\color{ink}Topology in iPRA}
+\fancyhead[R]{\small\sffamily\color{ink}Finite and quantitative proofs}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.25pt}
+\setlength{\parindent}{1.15em}\setlength{\parskip}{2.5pt plus 1pt}
+\setlength{\emergencystretch}{3em}
+\setlist{topsep=4pt,itemsep=2pt}
+\setcounter{tocdepth}{1}
+\newtheoremstyle{proved}{9pt}{4pt}{\itshape}{}{\bfseries\color{ink}}{.}{.5em}{}
+\theoremstyle{proved}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{.32in}
+{\sffamily\bfseries\color{accent}\large CONSTRUCTIVE MATHEMATICS\par}
+\vspace{.25in}
+{\sffamily\bfseries\color{ink}\raggedright\fontsize{34}{39}\selectfont Topology in intuitionistic\\primitive recursive arithmetic\par}
+\vspace{.22in}
+{\Large Finite spaces, continuous maps, and the shape of surfaces\par}
+\vspace{.40in}
+{\noindent\rule{\linewidth}{.6pt}\par}
+\vspace{.13in}
+\noindent\textbf{Can a sphere be deformed into a torus?}
+A small square of a proposed circle homotopy contributes zero winding. Adding those squares proves that a loop going once around a torus cannot contract. On a sphere of dimension at least two, a bounded search constructs a contraction for each loop. The two arguments distinguish these surfaces inside a first-order theory of numbers.
+
+\medskip\noindent
+The same arithmetic handles much more of topology than this example suggests. A finite preorder determines every open set and homotopy core of its space. A grid scan finds the two sides of a lattice polygon. Integer boundary matrices distinguish the projective plane from the sphere. Where a result uses an infinite object, the hypotheses specify what can be evaluated and how accurately.
+
+\vspace{.25in}
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm,thick,draw=ink,every node/.style={font=\small\sffamily}]
+\coordinate (a) at (0,0); \coordinate (b) at (1.75,.82);
+\coordinate (c) at (1.75,-.82); \coordinate (d) at (3.5,0);
+\draw (a) to[bend left=15] (b) (a) to[bend right=15] (b)
+      (a) to[bend left=15] (c) (a) to[bend right=15] (c)
+      (a) -- (d) (b) -- (d) (c) -- (d);
+\foreach \p/\v in {a/5,b/3,c/3,d/3}
+  \node[circle,inner sep=3pt,fill=lighttone,draw=accent,text=ink] at (\p) {\v};
+\end{tikzpicture}\par
+{\small Seven bridges, four odd degrees. No trail crosses every edge once.}
+\end{center}
+\vfill
+{\sffamily\color{ink}Prepared for Vladimir Reshetnikov\par}
+{\sffamily 22 November 2026\par}
+\end{titlepage}
+\hypersetup{pageanchor=true,bookmarksdepth=2}
+\setcounter{page}{2}
+\tableofcontents
+\medskip
+\noindent\textbf{Reading the collection.} The numbered sections form a self-contained manuscript. The three credited ProveIt companions extend the coverage of dimension, fixed points, and tangent fields. Section~\ref{sec:formal} gives the Lean targets, and Section~\ref{sec:sources} maps topics to their sources and precise scope.
+\newpage
+\input{src/arithmetic}
+\input{src/finite}
+\input{src/metric}
+\input{src/cantor}
+\input{src/algebraic}
+\input{src/plane}
+\input{src/surfaces}
+\input{src/higher}
+\input{src/ribbon}
+\input{src/schreier}
+\input{src/knots}
+\input{src/companions}
+\input{src/formal}
+\input{src/sources}
+\input{src/index}
+\end{document}

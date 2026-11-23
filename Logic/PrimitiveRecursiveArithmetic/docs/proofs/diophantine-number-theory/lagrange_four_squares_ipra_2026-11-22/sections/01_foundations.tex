@@ -1,0 +1,175 @@
+\section{The theorem and the precise foundational target}
+\label{sec:foundations}
+
+\begin{theorem}[Witnessed four-square theorem in $\ipra$]
+\label{thm:main}
+There are four explicitly specified primitive recursive functions
+$W_i:\NN\to\NN$, $0\le i<4$, such that $\ipra$ proves
+\begin{equation}
+\label{eq:main}
+ \forall n\;\bigl(W_0(n)^2+W_1(n)^2+W_2(n)^2+W_3(n)^2=n\bigr).
+\end{equation}
+It also proves $W_i(n)\le n$ for each $i$. Consequently it proves
+\begin{equation}
+\label{eq:exists}
+ \forall n\,\exists a,b,c,d\le n\quad n=a^2+b^2+c^2+d^2.
+\end{equation}
+The convention is $\NN=\{0,1,2,\ldots\}$.
+\end{theorem}
+
+The functions will be defined before their correctness is concluded. Thus
+the assertion is stronger than a pointwise existence argument: the witnesses
+are supplied by fixed arithmetic programs, and the proof establishes their
+correctness uniformly inside the specified theory.
+
+\subsection{What is meant by intuitionistic PRA}
+
+We use the standard first-order presentation of $\ipra$. Its only sort is
+$\NN$. Its language has zero, successor, and a function symbol for every
+primitive recursive definition, generated from projections by composition
+and primitive recursion. If
+\[
+ f(0,\vec x)=g(\vec x),\qquad
+ f(t+1,\vec x)=h(t,f(t,\vec x),\vec x),
+\]
+the corresponding defining equations are axioms. The non-logical axioms
+also state that successor is injective and never zero, and include induction
+\[
+ \bigl(A(0,\vec u)\land
+       \forall t(A(t,\vec u)\to A(t+1,\vec u))\bigr)
+ \to \forall t\,A(t,\vec u)
+\]
+only when $A$ is quantifier-free. Free parameters are allowed.
+
+The logic is intuitionistic first-order logic with equality: the usual
+introduction and elimination rules for $\land,\lor,\to,\forall,\exists$,
+falsehood elimination, and equality reflexivity and substitution. No general
+law of excluded middle, choice principle, or double-negation elimination is
+added. This is the presentation implemented by ProveIt's
+\code{ConciseIPRA.PR} and \code{PRAAx}~\cite{proveit}.
+
+Writing a new primitive recursive function in this presentation adds a
+name for a definition, not a stronger existence axiom. A smaller fixed
+language may instead compile the definitions into its established primitive
+recursive term language.
+
+\subsection{Decidable arithmetic and bounded statements}
+
+Truncated subtraction $a\monus b=\max(a-b,0)$, equality tests, order tests,
+parity, natural quotient and remainder, bounded sums, and bounded products
+are primitive recursive. Their elementary laws have quantifier-free
+induction proofs. The details of quotient/remainder and coding used here
+are given in Appendix~\ref{app:coding}.
+
+Every bounded predicate occurring in this report has a specified primitive
+recursive characteristic bit. For a bit-valued primitive recursive
+predicate $b(i,\vec u)$, define
+\[
+ \operatorname{All}(0,\vec u)=1,\qquad
+ \operatorname{All}(k+1,\vec u)
+   =\operatorname{All}(k,\vec u)b(k,\vec u).
+\]
+The equation $\operatorname{All}(t,\vec u)=1$ expresses the finite conjunction
+$\bigwedge_{i<t}b(i,\vec u)=1$. A similar fold expresses finite disjunction.
+Negation of a bit is $1\monus b$; conjunction is multiplication; disjunction
+can be written $\min(1,b+c)$. Thus the finite tests are decidable in $\ipra$.
+
+When a proof below inducts on a statement displayed with bounded
+quantifiers, the actual induction formula is its characteristic-bit
+equation. This is a concrete elimination of bounded quantifiers, not an
+extension of the induction scheme to arbitrary quantified formulas.
+Appendix~\ref{app:folds} gives the needed fold and search reasoning.
+
+In particular, eliminating a failed bounded search is constructive. A
+computed search flag is either $0$ or $1$. If the $0$ branch entails a
+contradiction, the $1$ branch remains and contains actual recorded witnesses.
+This is a decidable case split, not an application of double-negation
+elimination to an arbitrary existential assertion.
+
+\subsection{Signed integers and finite records are notation}
+
+For readability we calculate with $\ZZ$ and four-tuples. Internally, a signed
+integer is a natural code, and a tuple is a nested primitive recursive pair.
+All operations used below, including signed Euclidean remainder and exact
+division by a positive natural, have primitive recursive implementations.
+Appendix~\ref{app:coding} gives an explicit encoding and operations.
+
+For $x=(x_0,x_1,x_2,x_3)\in\ZZ^4$, put
+\[
+ \Nrm{x}=x_0^2+x_1^2+x_2^2+x_3^2.
+\]
+This is a natural-valued primitive recursive function of the tuple code.
+The state assertion $\Nrm{x}=mp$ is therefore quantifier-free after coding.
+No quantification over arbitrary functions, sets of integers, or infinite
+sequences is needed anywhere in the proof.
+
+\section{The algebraic identity that carries the construction}
+\label{sec:identity}
+
+\begin{definition}[Euler product]
+For $x=(a,b,c,d)$ and $y=(e,f,g,h)$, define
+\begin{equation}
+\label{eq:product}
+ x*y=\bigl(
+ ae-bf-cg-dh,\;
+ af+be+ch-dg,\;
+ ag-bh+ce+df,\;
+ ah+bg-cf+de
+ \bigr).
+\end{equation}
+Write $\bar y=(e,-f,-g,-h)$.
+\end{definition}
+
+Only this explicit polynomial operation will be used. No theory of
+quaternion algebras is required.
+
+\begin{lemma}[Euler's four-square identity]
+\label{lem:euler}
+For all integer four-tuples $x,y$,
+\[
+ \Nrm{x*y}=\Nrm{x}\Nrm{y},\qquad
+ x*\bar x=(\Nrm{x},0,0,0),\qquad
+ \Nrm{\bar x}=\Nrm{x}.
+\]
+These are finite polynomial identities and have $\ipra$ proofs.
+\end{lemma}
+
+\begin{proof}
+The four coordinates of $x*y$ are the rows of the following matrix applied
+to $(e,f,g,h)^{\mathsf T}$:
+\[
+ L_x=\begin{pmatrix}
+ a&-b&-c&-d\\
+ b&a&-d&c\\
+ c&d&a&-b\\
+ d&-c&b&a
+ \end{pmatrix}.
+\]
+Every column has squared length $a^2+b^2+c^2+d^2$. The six distinct
+column dot products are
+\begin{align*}
+ -ab+ab+cd-dc&=0,&
+ -ac-bd+ac+bd&=0,&
+ -ad+bc-bc+ad&=0,\\
+ bc-ad+ad-bc&=0,&
+ bd+ac-bd-ac&=0,&
+ cd-dc-ab+ab&=0.
+\end{align*}
+Expansion of the squared norm therefore has coefficient $\Nrm{x}$ on each
+of $e^2,f^2,g^2,h^2$ and zero on every mixed term. This proves the first
+identity. Substitution of $(a,-b,-c,-d)$ into~\eqref{eq:product} gives the
+second, and changing signs leaves squares unchanged, giving the third.
+
+The displayed matrix is only a compact arrangement of sixteen integer
+expressions. Each calculation reduces to associativity, commutativity, and
+distributivity in coded integer arithmetic; it invokes no linear-algebraic
+existence theorem. Those ring laws themselves follow from elementary
+quantifier-free arithmetic induction. In ProveIt the signed-pair identity
+can be produced by \code{ZT.derive} and \code{ipra\_ring}; see
+Section~\ref{sec:formalization}.
+\end{proof}
+
+The key consequence is constructive multiplicative closure: given actual
+tuples of norms $r$ and $s$, formula~\eqref{eq:product} supplies an actual
+tuple of norm $rs$. Taking absolute values gives nonnegative coordinates
+without changing the norm.

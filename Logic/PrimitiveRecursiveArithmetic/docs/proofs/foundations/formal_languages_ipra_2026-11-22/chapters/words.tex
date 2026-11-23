@@ -1,0 +1,377 @@
+\section{Words and effective language algebra}
+\label{sec:words}
+
+\subsection{A numerical free monoid}
+
+Fix $q\ge1$ and write $\Sigma_q=\{0,\ldots,q-1\}$. Put $b=q+1$.
+Encode a word by
+\[
+ \operatorname{code}(\eps)=0,\qquad
+ \operatorname{code}(wa)=b\operatorname{code}(w)+(a+1).
+\]
+Thus a valid nonzero code has only digits $1,\ldots,q$ in base $b$;
+the most significant digit is its first letter plus one. Dividing repeatedly
+by $b$ recovers the word from right to left. The loop needs at most the
+original code plus one iterations. Invalid numerical inputs are assigned
+a failure flag; every assertion about words includes the validity test.
+For $q=0$ take the empty word as the only word and omit letter operations.
+This exceptional case satisfies all compatible statements below directly.
+
+\begin{lemma}[Coding, concatenation, and length]\label{word:code}
+Word validity, length, letter lookup, concatenation, prefix, suffix,
+substring, and reversal are primitive recursive. Coding is injective, and
+\[
+ |uv|=|u|+|v|,\qquad
+ \operatorname{code}(uv)=b^{|v|}\operatorname{code}(u)+
+                          \operatorname{code}(v),\qquad
+ 0\le\operatorname{code}(w)<b^{|w|}.
+\]
+The last strict bound includes $w=\eps$, since $0<1$.
+\end{lemma}
+\begin{proof}
+Division with remainder uniquely recovers the last digit and shorter prefix.
+Induction on the digit count proves injectivity. The concatenation formula
+follows by appending one letter at a time; the length equation follows in
+the same induction. The bound is preserved by
+$bc+(a+1)\le b(b^n-1)+(b-1)=b^{n+1}-1$.
+To look up a letter, divide by the appropriate power of $b$ and take the
+remainder. Prefixes and suffixes use division and remainder by $b^k$;
+substrings are compositions of these operations. Reversal reads the letters
+in decreasing position order and appends them to a fresh word. All these
+loops are bounded by a supplied length or code, and their digit invariants
+are bounded formulas.
+\end{proof}
+
+\begin{theorem}[Free-monoid equations and cancellation]\label{word:monoid}
+Concatenation is associative, $\eps$ is its two-sided identity, and
+\[
+ xu=xv\Rightarrow u=v,\qquad ux=vx\Rightarrow u=v.
+\]
+Moreover $uv=\eps$ exactly when $u=v=\eps$.
+\end{theorem}
+\begin{proof}
+The digit at each position of $(uv)w$ and $u(vw)$ is the same: its position
+lies in the $u$, $v$, or $w$ interval in either grouping. Their lengths
+agree, so injectivity proves associativity. An empty interval adds no
+letters, proving the unit laws. In a cancellation equation, equality of
+lengths first gives equal lengths of the uncancelled words; compare the
+positions after the common prefix, or before the common suffix. Finally,
+the sum of two natural lengths is zero precisely when both are zero.
+\end{proof}
+
+\begin{lemma}[Prefix comparison and Levi's lemma]\label{word:levi}
+If $uv=xy$, either $|u|\le|x|$ and there is a unique $z$ with
+$x=uz$ and $v=zy$, or $|x|\le|u|$ and there is a unique $z$ with
+$u=xz$ and $y=zv$. At equality the two descriptions use $z=\eps$.
+The applicable factorization is found by a primitive-recursive procedure.
+\end{lemma}
+\begin{proof}
+Compare the two lengths, a decidable numerical comparison. In the first
+case the first $|u|$ positions of $x$ equal $u$, since both are prefixes
+of the displayed common word. Let $z$ be the remaining suffix of $x$.
+Substitute $x=uz$ and cancel $u$. The other case is symmetric.
+Uniqueness follows by cancellation; the suffix operation computes $z$.
+\end{proof}
+
+\begin{corollary}[Deciding elementary word equations]\label{word:equations}
+The equation $ux=v$ has a solution exactly when $u$ is a prefix of $v$;
+the solution is then unique and is the suffix after that prefix. The
+analogous right-suffix equation is equally decidable. All factorizations
+$w=uv$ are exactly the $|w|+1$ cuts at positions $0,\ldots,|w|$.
+\end{corollary}
+\begin{proof}
+Apply the length and position equations. A solution must have length
+$|v|-|u|$ and exactly the specified letters. Every cut plainly supplies
+a factorization, and its left-factor length uniquely determines it.
+\end{proof}
+
+\begin{lemma}[Powers and reversal]\label{word:powers}
+The power function $w^0=\eps$, $w^{n+1}=w^nw$ is primitive recursive,
+and
+\[
+ w^{m+n}=w^mw^n,\quad |w^n|=n|w|,\quad
+ (uv)^R=v^Ru^R,\quad (w^R)^R=w,\quad (w^n)^R=(w^R)^n.
+\]
+\end{lemma}
+\begin{proof}
+The first two identities are induction on the exponent with the monoid
+equations. Reversal maps position $i$ to $|w|-1-i$; applying that map
+twice is the identity, and its action on the two intervals of $uv$
+gives the reversed concatenation. The last identity follows by induction
+using this rule. Every induction compares coded words or numerical terms.
+\end{proof}
+
+\begin{theorem}[Commuting words are powers of a common word]
+\label{word:commute}
+For supplied words $u,v$, the equation $uv=vu$ holds exactly when there
+are a word $t$ and numbers $r,s$ with $u=t^r$ and $v=t^s$.
+When the equation holds, such witnesses are primitive-recursively
+computable; one may take $|t|\le |u|+|v|$ and $r,s\le |u|+|v|+1$.
+\end{theorem}
+\begin{proof}
+Common powers commute by the power equations. Conversely, if one word is
+empty, use the other as $t$ and exponents $0,1$, taking $t=\eps$ if both
+are empty. If both are nonempty and $|u|\le|v|$, Levi's lemma gives
+$v=uz$. Cancelling the initial $u$ in $uuz=uzu$ gives $uz=zu$.
+The total length of the new pair $(u,z)$ is $|v|$, strictly less than
+the previous total. Apply the same procedure to this smaller pair. If
+$u=t^r$ and $z=t^s$, then $v=t^{r+s}$, which reconstructs the required
+answer. The other length order interchanges the words.
+
+Implement the descent with fuel $|u|+|v|+1$ and store the substitutions
+in a finite stack. Every nonterminal stage decreases the positive length
+sum. The reverse pass verifies the equations for the stored pair at each
+stage. For a nonempty $t$ the exponents are bounded by the corresponding
+word lengths; the empty cases have the displayed bounds. Thus the proof
+uses bounded descent and a quantifier-free reconstruction invariant, not
+an unbounded well-founded recursion.
+\end{proof}
+
+\begin{theorem}[Counting and enumerating words]\label{word:count}
+There is a primitive-recursive bijection between words of length $n$ over
+$\Sigma_q$ and numbers below $q^n$. There are
+$\sum_{i=0}^{N}q^i$ words of length at most $N$. If $q\ge1$, the words
+$a^n$ for a fixed letter $a$ give arbitrarily many pairwise distinct words.
+\end{theorem}
+\begin{proof}
+For $q\ge2$, read the letters themselves as base-$q$ digits, retaining
+the supplied length so leading zeroes are not lost. Successive division
+gives the inverse and checks both identities. For $q=1$ there is one word
+of every length and one number below $1^n$. Enumerating length blocks
+gives the second formula. Distinct exponents give distinct lengths in
+the last assertion. This is a numerical enumeration statement; it makes
+no cardinality assertion about a power set of languages.
+\end{proof}
+
+\begin{theorem}[Extension of a letter map]\label{word:hom}
+A finite table $h:\Sigma_q\to\Sigma_r^*$ extends uniquely to a
+concatenation-preserving map on words with $h(\eps)=\eps$.
+The extension is primitive recursive. With
+$M=\max_{a<q}|h(a)|$, it satisfies $|h(w)|\le M|w|$.
+If every image is nonempty, then $|w|\le|h(w)|$.
+\end{theorem}
+\begin{proof}
+Read the input from left to right and append the table entry for each
+letter. Splitting this scan at a cut proves $h(uv)=h(u)h(v)$.
+Any other such map must have the same value after every prefix, by
+induction on its length. The length is the sum of the image lengths,
+giving both bounds. The same argument proves the universal property
+for a represented monoid with primitive-recursive multiplication and
+proved identity and associativity laws, replacing concatenation by that
+multiplication. This is a schema for each supplied represented monoid,
+not a quantifier over arbitrary mathematical structures.
+\end{proof}
+
+\subsection{Primitive-recursive languages and their operations}
+
+In this subsection $L(w)$ means $\ell(w)=1$ for a \emph{fixed}
+primitive-recursive bit $\ell$, on valid words. Parameters of $\ell$ may
+include numerical finite descriptions. $K=L$ means pointwise equivalence.
+Put $0=\varnothing$, $1=\{\eps\}$, and $\top=\Sigma_q^*$, with the
+context distinguishing the language $1$ from the number $1$.
+
+Concatenation is the bounded predicate
+\[
+ (KL)(w)\ \longleftrightarrow\
+ \exists i\le|w|\;
+ K(w[0:i])\land L(w[i:|w|]).
+\]
+For nonempty $w$, membership in $L^*$ means that some choice of cuts
+between its letters makes every nonempty factor belong to $L$;
+there are at most $2^{|w|}$ choices. Set $L^*(\eps)=1$.
+A mask of internal cuts, or an increasing sequence
+$0=i_0<i_1<\cdots<i_k=|w|$, supplies the witness, with
+$k\le|w|$. Empty factors can always be discarded.
+
+\begin{theorem}[Decidable closure and witness bounds]\label{alg:prclosure}
+Primitive-recursive languages are closed under union, intersection,
+complement, difference, concatenation, star, reversal, and inverse word
+homomorphism. A nonerasing homomorphic image of a primitive-recursive
+language is primitive recursive as well.
+\end{theorem}
+\begin{proof}
+Boolean operations use the membership bits. Concatenation checks the
+$n+1$ cuts, and star checks the at most $2^n$ masks just defined, where
+$n=|w|$. Reversal tests $L(w^R)$, and inverse image tests $L(h(w))$.
+For the last assertion, $h(u)=w$ implies $|u|\le n$, so enumerate all
+source words of length at most $n$ and test $L(u)$ and equality of the
+image. These enumerations are primitive recursive even if exponentially
+large. This argument deliberately excludes arbitrary erasing images:
+an empty letter image removes the preimage length bound.
+\end{proof}
+
+\begin{theorem}[Boolean and concatenation algebra]\label{alg:semiring}
+Union and intersection obey their usual commutative, associative,
+idempotent, distributive and absorption laws. For the decidable languages
+in this subsection, complement obeys both De Morgan laws and double
+complement. With union as addition and concatenation as multiplication,
+languages form an idempotent semiring:
+\[
+ (KL)M=K(LM),\quad 1L=L1=L,\quad 0L=L0=0,
+\]
+\[
+ K(L\cup M)=KL\cup KM,\qquad (K\cup L)M=KM\cup LM.
+\]
+All operations here are monotone in their non-complemented arguments.
+\end{theorem}
+\begin{proof}
+Boolean identities are checked on the finitely many possible input bits,
+using their decidability. For concatenation associativity, a witness on
+either side is exactly two nondecreasing cut positions
+$0\le i\le j\le|w|$ giving a $K$ prefix, an $L$ middle, and an $M$
+suffix. Moving parentheses retains these two cuts. Unit and zero use
+the unique empty factor and the impossibility of a factor in $0$.
+For distributivity, a chosen factor in a union supplies its disjunct;
+conversely retain the same cut and inject that disjunct. Monotonicity
+retains the witnesses and uses the corresponding membership implication.
+Thus none of the identities needs excluded middle for an unbounded formula.
+\end{proof}
+
+\begin{theorem}[Star laws and least closure]\label{alg:star}
+For primitive-recursive languages,
+\[
+ 0^*=1^*=1,\quad L^*=1\cup LL^*=1\cup L^*L,\quad
+ L\subseteq L^*,\quad L^*L^*=L^*,\quad (L^*)^*=L^*.
+\]
+The operation is monotone. It is the least represented submonoid containing
+$L$: if a primitive-recursive language $X$ contains $\eps$ and $L$ and
+is closed under concatenation, then $L^*\subseteq X$.
+\end{theorem}
+\begin{proof}
+Use an empty factor list for $\eps$. A nonempty accepted word has a
+first and a last nonempty factor; removing either proves the two unfoldings.
+Conversely append the specified factor and remove it if empty. A word of
+$L$ uses one factor unless it is empty. Joining two factor lists proves
+$L^*L^*\subseteq L^*$, and multiplying by $\eps$ proves the reverse.
+For $(L^*)^*$, select the inner cut mask for each outer block and flatten
+the lists. Every inner block has length at most the original word length,
+so the selections have a common bound $2^{|w|}$ and bounded collection
+is available. Monotonicity keeps the same mask. For least closure,
+multiply the factors in sequence; after $i$ factors the resulting prefix
+lies in $X$. This induction uses the bit for $X$ and a supplied finite
+factor table. The assertions for $0$ and $1$ follow by discarding empty
+factors.
+\end{proof}
+
+\begin{proposition}[Positive closure and star identities]\label{alg:identities}
+Write $L^+=LL^*$. Then
+\[
+ L^+=L^*L,\qquad L^*=1\cup L^+,\qquad
+ (KL)^*K=K(LK)^*,\qquad
+ (K\cup L)^*=K^*(LK^*)^*.
+\]
+Also $(1\cup L)^*=L^*$ and $L\subseteq K\Rightarrow L^*\subseteq K^*$.
+\end{proposition}
+\begin{proof}
+For $L^+$ keep a list with at least one factor, allowing that factor to be
+empty when $\eps\in L$. Separating the first or last factor proves the
+first two equations, including that empty-word case. A word in
+$(KL)^*K$ is a chain $k_0l_1k_1\cdots l_mk_m$ with each $k_i\in K$
+and $l_i\in L$; moving the parentheses proves the sliding identity.
+Empty factors cause no change and may be retained in this witness chain.
+For the last displayed identity, take a factorization with each factor
+tagged $K$ or $L$. Tags can be selected by their membership bits. Combine
+the initial run of $K$ factors, and then every $L$ factor with the following
+run of $K$ factors. This gives $K^*(LK^*)^*$. Expanding the grouped lists
+gives the converse. All selections and regroupings are scans of bounded
+factor tables. Adding or removing empty factors proves $(1\cup L)^*=L^*$;
+the final monotonicity statement was also proved above.
+\end{proof}
+
+\begin{theorem}[Arden's lemma with an effective uniqueness proof]
+\label{alg:arden}
+For primitive-recursive languages $A,B$, $A^*B$ is a solution of
+$X=AX\cup B$ and is contained in every primitive-recursive solution.
+If $\eps\notin A$, it is the unique primitive-recursive solution.
+\end{theorem}
+\begin{proof}
+The unfolding law gives $A^*B=B\cup A(A^*B)$. In any solution $X$,
+$B\subseteq X$ and $AX\subseteq X$. Induction on the length of a
+supplied list of $A$ factors proves $A^*B\subseteq X$.
+
+Assume $\eps\notin A$ and fix $w\in X$. Test $B(w)$. If it holds,
+stop. If it fails, the equation supplies $w=uv$ with $u\in A$ and
+$v\in X$; choose a witnessing cut by bounded search. Since $|u|\ge1$,
+the residual word is strictly shorter. Repeat. After at most $|w|$
+positive cuts the residual is empty. At that stage the $AX$ alternative
+is impossible, so the residual is in $B$. The stored prefixes are a
+factorization in $A^*B$. The invariant records the original word as the
+concatenation of the stored $A$ factors and the current residual in $X$;
+it is a bounded check. This proves the reverse inclusion without an
+unbounded unfolding argument. If $\eps\in A$, uniqueness need not hold:
+for $A=1,B=0$, every $X$ solves the equation.
+\end{proof}
+
+\begin{theorem}[Reversal of language operations]\label{alg:reverse}
+Reversal is an involution on represented languages and satisfies
+\[
+ (K\cup L)^R=K^R\cup L^R,\quad
+ (K\cap L)^R=K^R\cap L^R,\quad
+ (\overline L)^R=\overline{L^R},\quad
+ (KL)^R=L^RK^R,\quad (L^*)^R=(L^R)^*.
+\]
+\end{theorem}
+\begin{proof}
+Membership in $L^R$ is tested at $w^R$ and reversal is an involution,
+proving the Boolean equations. Reverse the two factors of a concatenation
+and exchange their order. For star reverse every factor and the order of
+the factor list; this is a bounded transformation and its own inverse.
+\end{proof}
+
+\begin{theorem}[Homomorphic image and inverse-image laws]
+\label{alg:homlaws}
+Inverse word homomorphism preserves union, intersection, complement, and
+star inclusion $h^{-1}(L)^*\subseteq h^{-1}(L^*)$. For any finite letter
+map, the existentially represented image satisfies
+\[
+ h(K\cup L)=h(K)\cup h(L),\quad h(KL)=h(K)h(L),\quad
+ h(L^*)=h(L)^*.
+\]
+In the last equation an image-star witness includes a finite list of source
+words. This is the witness-list presentation, with no unbounded collection
+step from separate existential preimage assertions. If $h$ is nonerasing,
+all these image languages have the bounded,
+primitive-recursive readings of Theorem~\ref{alg:prclosure}.
+\end{theorem}
+\begin{proof}
+The inverse-image equations simply substitute $h(w)$ into the membership
+formula. If a list factors $w$ into inverse images of $L$, applying $h$
+to its factors gives a factorization of $h(w)$ in $L^*$, allowing empty
+images. A witness for an image is a supplied source word. For union keep
+that word and its disjunct. For concatenation split the source word in the
+forward direction; in the reverse direction concatenate the two supplied
+source words and use $h(uv)=h(u)h(v)$.
+For star apply $h$ to the source factor list, or concatenate the supplied
+list of source words in the other direction. Empty image factors may be
+deleted on the output side; the source list remains part of the certificate.
+No unbounded collection principle is used to create such a list from
+pointwise existential statements.
+\end{proof}
+
+\begin{proposition}[The source article's arithmetic syntax is regular]
+\label{alg:syntax}
+Let $D$ be a decimal digit, $D_+$ a nonzero digit, and put
+\[
+ N=0\ \cup\ D_+D^*,\qquad E=N(\mathtt{+}N)^*,\qquad
+ T=E\ \cup\ E\mathtt{=}E.
+\]
+Then $T$ is exactly the language of numerals, sums, and one equality
+described in the source article's example. In particular it has a
+primitive-recursive membership test and is regular. It includes
+\texttt{23+4=555} regardless of the arithmetic truth of that equation.
+\end{proposition}
+\begin{proof}
+The numeral expression permits exactly $0$ or a nonzero first digit
+followed by any digits. Splitting at plus signs gives a unique list of
+nonempty numeral fields. Splitting at the optional unique equality sign
+gives one or two such sums. These are exactly the permitted recursive
+syntax rules: no equality may occur inside either side of the unique
+equality, and each plus sign separates valid numeral or sum substrings.
+Conversely, repeated splitting of any permitted sum yields those numeral
+fields. This splitting decreases the substring length and has at most
+the original length many steps. The expression is built from letters by
+union, concatenation, and star, hence is a regular expression; the
+regular-expression conversion in Section~\ref{sec:regular} supplies a
+finite automaton. Evaluating decimal numerals or addition was never part
+of this membership condition.
+\end{proof}

@@ -1,0 +1,209 @@
+\section{Lean formalization and the ProveIt integration path}\label{sec:lean}
+
+\subsection{Three layers which must remain distinct}
+
+The accompanying \texttt{lean/Propositional.lean} defines a readable
+inductive formula type with falsehood, natural-number atom names, conjunction,
+disjunction and implication. It defines Boolean evaluation, proposition-valued
+interpretation, substitution, size, atom occurrences, and a mode-indexed
+natural-deduction type. Its candidate proofs establish substitution laws and
+proof soundness, with a decision assumption required for classical axioms.
+The file does not import a classical axiom in order to prove intuitionistic
+soundness. It is a \emph{specification-level} development in Lean's metatheory.
+
+The \emph{numerical layer} represents all the data by the codes fixed in
+Section~\ref{sec:base}, with primitive recursive bit checkers. This layer
+must connect the readable inductive specifications to finite arrays and
+bounded recursive algorithms. A total Lean function by itself is not
+automatically a primitive recursive function, so the construction from
+\texttt{PR.zero}, \texttt{PR.succ}, \texttt{PR.proj}, \texttt{PR.comp}, and
+\texttt{PR.prec} must be retained.
+
+The \emph{object-derivation layer} proves the numerical specifications in
+the embedded arithmetic. Its final target is
+\[
+ \texttt{Prf PRAAx [] phi},\qquad \texttt{phi : Fm PTm 0}.
+\]
+This is a derivation of a specified closed sentence of iPRA. It is stronger
+evidence for the requested formalization than an ambient Lean theorem
+about the standard natural numbers. The present package supplies the
+human proofs of those object-theory results and a detailed implementation
+route, but not their completed object-level Lean derivations.
+
+\subsection{Existing interfaces actually inspected}
+
+The inspected \texttt{VladimirReshetnikov/ProveIt} snapshot is:
+\begin{center}\texttt{803d951d15834da5571e26d1f39988d921b29760}\end{center}
+The root README distinguishes
+kernel-checked libraries from delivered research packets; we preserve that
+distinction. We inspected the actual source of the following interfaces.
+The full paths, blob identifiers, and roles are recorded in the source
+audit included with the archive.
+
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{.29\textwidth}>{\raggedright\arraybackslash}X@{}}
+\toprule
+Module (abbreviated) & Verified interface and intended use\\
+\midrule
+\texttt{ConciseIPRA.PR} & Arity-indexed primitive recursive function syntax,
+terms \texttt{PTm}, and the exact axiom family \texttt{PRAAx}.\\
+\texttt{ConciseIPRA.Deduction} & Natural-deduction constructors and
+\texttt{Prf.weaken}, \texttt{Prf.subst}, \texttt{Prf.trans}.\\
+\texttt{Core.Pairing} & \texttt{pairT}, projections with their inverse
+equations, and simultaneous primitive recursion.\\
+\texttt{Core.Search} & \texttt{search\_spec},
+\texttt{search\_found}, and \texttt{search\_minimal} for explicitly
+bounded least-zero search.\\
+\texttt{BooleanBits} & Bit closure and interpretation of negation,
+conjunction, disjunction and Boolean implication.\\
+\texttt{BoundedReflection} & Bounded universal/existential aggregators,
+witness extraction, and bounded choice.\\
+\texttt{BoundedSyntaxInduction} & Induction on a fixed bounded formula
+through its actual characteristic-bit compilation.\\
+\texttt{BoundedFixpoint} & Ascending finite-closure termination after
+a proved finite rank bound; its hypotheses remain obligations for our
+specific operator.\\
+\bottomrule
+\end{tabularx}\end{center}
+
+The four foundation entries have prefix
+\texttt{IPRADerivations.Foundations.}; the two entries marked
+\texttt{Core} have prefix \texttt{IPRADerivations.}.
+We use the source declarations as integration points; we did not rebuild
+the upstream repository in this session and do not assert a new independent
+verification of all its transitive dependencies.
+
+\subsection{Exact numerical endpoint sentences}
+
+Let $\mathrm{Fm}(a)$ be the formula-validity bit,
+$\mathrm{Taut}(a)$ the truth-table product, $\mathrm{Prf}_C(d,a)$ the
+empty-context classical proof-checker bit, and $\mathrm{makeC}(a)$ the
+proof constructor, returning a default on nontautologies. The classical
+completeness endpoint is the closed sentence
+\[
+ \forall a\,[\mathrm{Fm}(a)=1\wedge\mathrm{Taut}(a)=1
+                   \to\mathrm{Prf}_C(\mathrm{makeC}(a),a)=1].
+\]
+It has only a quantifier-free matrix. Boolean soundness is a separate
+closed endpoint, universally in $d,a$, and all required validity parameters.
+To cover finite contexts, code the pair $(\Gamma,A)$ as a single input and
+use the same construction.
+
+For intuitionistic completeness, define $\mathrm{Prf}_I(d,a)$ and
+$\mathrm{CModel}(c,a)$. The latter checks a nonempty finite partial order,
+upward-closed valuations on the input atoms, a designated world, and
+failure of $a$ there. The two output functions are $\mathrm{makeI}(a)$
+and $\mathrm{model}(a)$, with defaults on their unused branches. The target is
+\[
+ \forall a\,[\mathrm{Fm}(a)=1\to
+   (\mathrm{Prf}_I(\mathrm{makeI}(a),a)=1
+       \vee\mathrm{CModel}(\mathrm{model}(a),a)=1)].
+\]
+The two displayed sentences are represented literally as closed
+\texttt{Fm PTm 0} definitions in \texttt{ObjectExamples.lean}, with the
+required primitive recursive symbols as parameters. The definitions are
+not asserted as axioms or advertised as finished theorems. To finish
+them, instantiate those parameters by the algorithms in this paper and
+prove the stated checker contracts in \texttt{Prf PRAAx}.
+
+\subsection{Definitions and proof order for completion}
+
+The full plan in \texttt{lean/FormalizationPlan.md} gives the following
+concrete work order.
+\begin{enumerate}
+\item \textbf{Coding.} Implement pairing, partial inverses with validity
+tests, finite sequences, base-digit arrays, formula tags and decoders,
+postorder/subcode iteration, duplicate-free supports and subformula lists,
+and the proof/tree/DAG codes. Prove constructor disjointness, smaller
+child codes and encoding/decoding round trips. A universal evaluator for
+arbitrary primitive recursive program codes is neither required nor
+available as a primitive recursive shortcut.
+\item \textbf{Evaluation.} Construct the Boolean evaluator and finite
+valuation enumeration. Prove its bit property, support locality and
+substitution by bounded induction on a subcode table. Define row products,
+truth tables, SAT, TAUT, and finite consequence; use the existing bounded
+search interface to extract the least failed or successful row.
+\item \textbf{Proof checking.} Define each natural-deduction rule tag
+and its exact bounded side tests. Reject forward references and incorrect
+conclusions or contexts. Prove primitive recursive weakening, substitution
+and proof cut. Derive Boolean soundness using the invariant that every
+earlier proof node is valid on every valuation row of a covering support.
+\item \textbf{Classical completeness.} Implement the signed-evaluation
+constructor and verify its two output modes. Implement the full binary
+literal-table merge. Its invariant is the conjunction of checker bits at
+the currently constructed frontier. This gives the classical endpoint,
+after which many equivalence proof generators can simply reuse it.
+\item \textbf{Intuitionistic completeness.} Define the $m2^m$-entry
+sequent table, twelve-rule update, first-appearance records, $N$-fold
+iteration, greedy prime extension, canonical-world predicate, model
+checker and forcing evaluator. Instantiate the bounded-fixed-point
+theorem, prove all five greedy invariants, and then prove the finite
+truth lemma. Combine them into the second endpoint. Keep the explicitly
+derived cut rule distinct from an unproved assumption of cut elimination.
+\item \textbf{Other logical metatheorems.} Implement Hilbert line
+translation, tableau search and LK reconstruction, negative translation,
+and the stable-case proof merger. For disjunction extraction implement
+generated cones and two-model gluing and verify the Harrop induction.
+\item \textbf{Boolean algorithms.} Implement ordered normal forms,
+ANF coefficient masks, Tseitin gate constraints, resolution annotations,
+assignment restriction, DPLL fuel, Horn saturation, finite reachability
+and SCC ordering, forgetting and definition extraction. The invariants
+are the local equivalences and bounded model correspondences proved in
+the relevant sections. Preserve the distinction between equivalence in
+the old variables and equisatisfiability with new gate variables.
+\item \textbf{Complexity reductions.} Implement the finite local machine
+transition table, one-hot cell indicators, circuit unrolling and circuit
+Tseitin encoding. Prove the bounded time/cell invariant and explicit
+polynomial string-output bounds for each fixed verifier presentation.
+\end{enumerate}
+
+\texttt{ObjectExamples.lean} additionally supplies eight short object-level
+proof candidates: identity, conjunction and disjunction commutativity,
+implication composition, double-negation introduction, double-negated
+excluded middle, explosion, and a closed universally quantified identity
+for a supplied unary primitive recursive predicate. Their constructor
+expressions use the inspected repository interface. They illustrate the
+required endpoint discipline without pretending to establish the large
+algorithmic theorems already.
+
+\subsection{Executable evidence and its exact limits}
+
+The Python reference program uses immutable formula trees, finite sets
+of assumptions, finite proof DAGs, and bit tables. These are readable
+representations of the specified finite objects. The accompanying README
+explains the correspondence with numerical coding and the use of in-place
+saturation scans, whose soundness and least-fixed-point interpretation
+agree with the staged mathematical construction.
+
+The main APIs return complete witnesses:
+\begin{itemize}
+\item \texttt{truth\_table\_prove(context,goal)} returns a constructed
+classical proof DAG or a Boolean countervaluation.
+\item \texttt{decide\_ipc(context,goal)} returns a pruned intuitionistic
+proof DAG or a finite rooted countermodel with designated world zero.
+\item Result checkers verify the exact requested context and conclusion;
+JSON conversion permits certificate export and replay independently of
+the producing function.
+\end{itemize}
+The demonstration file includes intuitionistic identity, intuitionistic
+failure of excluded middle, a classical excluded-middle proof, and the
+source article's explicit countervaluation.
+
+The executed validation covers all 516 formulas with at most five
+primitive nodes over two atoms and falsehood; 1,032 canonical-normal-form
+equivalences; 51,600 substitution instances; 9,258 Tseitin extension
+assignments; all 512 normalized two-variable clause sets; and 830 valid
+entailments with interpolants. For 551 formula/context sequents, the
+exporters produced 142 intuitionistic proof DAGs, 409 rooted countermodels,
+150 classical proof DAGs and 401 Boolean countervaluations. All 1,102
+serialized result round trips were replayed. Negative proof-checker
+regressions cover wrong contexts, malformed discharge, incorrect targets,
+self/forward/negative references, and classical axioms in intuitionistic
+mode. Empty Kripke frames are rejected.
+
+These checks exercise real certificates and the finite canonical truth
+lemma. They are \emph{not} formal Lean proofs, an exhaustive test of
+unbounded input sizes, or machine verification of the report's arithmetic
+formalization. The report is a developed non-formalized proof package;
+the Lean sources and object-level numerical endpoints remain the clear
+next formalization task.

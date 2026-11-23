@@ -1,0 +1,166 @@
+\section{Counting the survivors of a finite sieve}
+\label{sec:survivors}
+
+For integers $N,a\ge0$, let $\Phi(N,a)$ count the integers in $[1,N]$ divisible by none of the first $a$ primes $p_1,p_2,\ldots,p_a$. Thus $\Phi(0,a)=0$ and $\Phi(N,0)=N$. For $r\ge1$ write $R_r(N)=\max\{t\le N:t^r\le N\}$. It satisfies
+\[
+ t^r\le N\quad\Longleftrightarrow\quad t\le R_r(N).
+\]
+Every endpoint in this section can therefore be calculated by integer comparisons. Write $N/d$ inside $\Phi$ or $\pi$ for the integer quotient $\lfloor N/d\rfloor$ when $d>0$. Prime indices start at one.
+
+\subsection{The marking algorithm and Legendre's formula}
+
+If $m\ge2$ is composite, its least factor $q>1$ is prime and $q^2\le m$. Indeed, a proper divisor of $q$ would be a smaller factor of $m$, and in $m=qu$ the complementary factor satisfies $u\ge q$. Consequently the following sieve produces exactly the primes through $N$. Set a flag at each $m$ from $2$ to $N$. In increasing order $j=2,\ldots,R_2(N)$, whenever $j$ is flagged, clear the flags at $j^2,j^2+j,j^2+2j,\ldots$ through $N$. Every cleared integer is composite. A composite $j$ has already been cleared when its least prime factor was processed, since that prime remains flagged and $j$ is one of its indicated multiples. The same argument clears every composite $m\le N$ by termination. The flags are a word of $N+1$ bits, and either loop uses at most $N$ iterations. This proves the correctness of the sieve of Eratosthenes in the required arithmetic.
+
+\begin{proposition}[Legendre's identity and sieve recursion]
+For $N\ge1$ and $b=\pi(R_2(N))$,
+\[
+ \pi(N)+1=\Phi(N,b)+b.
+\]
+For $a\ge1$ and $N\ge0$,
+\[
+ \Phi(N,a)+\Phi(N/p_a,a-1)=\Phi(N,a-1).
+\]
+\end{proposition}
+\begin{proof}
+The survivors after the first $b$ primes are $1$ and the primes in $(R_2(N),N]$. For the second identity, the integers lost at step $a$ are exactly $p_a u$ with $1\le u\le N/p_a$ surviving step $a-1$. For $i<a$, Euclid's lemma gives $p_i\mid p_a u$ exactly when $p_i\mid u$. Multiplication by $p_a$ and exact division are inverse on these two finite lists.
+\end{proof}
+
+For a list of \emph{any} distinct primes $q_1,\ldots,q_a$, let $F(N)$ be its survivor count. Code a subset by $s<2^a$ and let $d_s$ be the product of those $q_i$ whose bit is set, with $d_0=1$. Let $w(s)$ count the set bits. Then
+\begin{equation}
+ F(N)=\sum_{s<2^a}(-1)^{w(s)}\left\lfloor\frac{N}{d_s}\right\rfloor .
+ \label{eq:sv-ie}
+\end{equation}
+For each $m\in[1,N]$ expand $\prod_{i=1}^a(1-[q_i\mid m])$. This product is its survival indicator. A subset in the expansion contributes $(-1)^{w(s)}[d_s\mid m]$ by unique factorization. Summing first over $m$ gives \eqref{eq:sv-ie}, since $d_s,2d_s,\ldots,\lfloor N/d_s\rfloor d_s$ are exactly its positive multiples through $N$. The product expansion is an induction on prefix length, splitting the next bit into 0 and 1. This proves the binary-mask formula underlying Mapes' method. For the first $a$ primes it gives $\Phi(N,a)$, with strictly increasing indices inside each subset. Repeated indices enter a different count below.
+
+Two useful exact consequences follow. Put $Q=\prod_i q_i$ and $D=\prod_i(q_i-1)$. Since each $d_s$ divides $Q$, summing the change of the floors gives
+\[
+ F(N+Q)-F(N)=\sum_{s<2^a}(-1)^{w(s)}Q/d_s
+ =Q\prod_{i=1}^a(1-1/q_i)=D.
+\]
+In particular $F(tQ+u)=tD+F(u)$ whenever $0\le u<Q$. For $a\ge1$ let $\delta=D/Q$. Replacing each floor in \eqref{eq:sv-ie} by its rational argument changes the contribution of an even mask downwards by less than one, and that of an odd mask upwards by less than one. Toggling the first bit pairs the masks of opposite parity. Hence
+\begin{equation}
+ |F(N)-N\delta|\le 2^{a-1}.
+ \label{eq:sv-floor-bound}
+\end{equation}
+Rational calculations here and below may be multiplied by their displayed positive denominators.
+
+\subsection{Meissel and Lehmer by sorting factorizations}
+
+Let $P_k(N,a)$ count the integers $m\in[1,N]$ whose factorization contains exactly $k$ primes, with multiplicity, all of index $>a$. Take the empty factorization of $1$. For $N\ge1$, $P_0(N,a)=1$. If $0\le a\le\pi(N)$, then $P_1(N,a)=\pi(N)-a$. In general the latter formula uses truncated subtraction. Each $m$ has exactly one sorted factor list. Its length satisfies $2^k\le m$. Thus, for $N\ge1$ and $L=\max\{j\le N:2^j\le N\}$,
+\[
+ \Phi(N,a)=\sum_{k=0}^L P_k(N,a).
+\]
+For $N=0$ all these counts, including $P_0$, are zero.
+
+For $k\ge0$ and $N\ge1$ splitting off the first prime gives the more general recurrence
+\begin{equation}
+ P_{k+1}(N,a)=\sum_{a<i\le \pi(R_{k+1}(N))}
+       P_k(N/p_i,i-1).
+ \label{eq:sv-factor}
+\end{equation}
+In any sorted product $p_i q_1\cdots q_k$ we have $p_i^{k+1}\le N$ and each $q_j\ge p_i$. Conversely, inserting $p_i$ at the front of any list counted on the right reconstructs an admissible list of length $k+1$. The unrestricted repetitions of $p_i$ explain the index $i-1$ on the right. The sets for different $i$ are disjoint because least prime factors are unique. This proof covers $k=0$ and perfect powers.
+
+Let $b=\pi(R_2(N))$, $c=\pi(R_3(N))$ and $b_i=\pi(R_2(\lfloor N/p_i\rfloor))$. Applying \eqref{eq:sv-factor} once and twice gives
+\begin{align}
+ P_2(N,a)&=\sum_{a<i\le b}\big(\pi(N/p_i)-i+1\big),\label{eq:sv-p2}\\
+ P_3(N,a)&=\sum_{a<i\le c}\ \sum_{i\le j\le b_i}
+     \big(\pi(N/(p_i p_j))-j+1\big).\label{eq:sv-p3}
+\end{align}
+For example, at a fixed pair $i,j$ in the latter sum, the last factor has index in $[j,\pi(N/(p_i p_j))]$. This interval has the stated positive length by $p_ip_j^2\le N$. The integer quotient in two successive divisions is the quotient by their product, as follows by the division algorithm. Empty sums equal zero.
+
+\begin{proposition}[Meissel's cube-root cutoff]
+Take $N\ge1$, let $R_3(N)\le y\le R_2(N)$ and put $a=\pi(y)$, $h=b-a$. Then
+\[
+ \pi(N)=\Phi(N,a)+a(h+1)+\frac{h(h-1)}2-1
+               -\sum_{i=a+1}^b\pi(N/p_i).
+\]
+In particular $a=c$ gives Meissel's formula.
+\end{proposition}
+\begin{proof}
+Every surviving prime is at least $y+1$, whose cube exceeds $N$. Thus $P_k=0$ for $k\ge3$. The partition gives $\pi(N)=\Phi(N,a)+a-1-P_2(N,a)$. In \eqref{eq:sv-p2}, the sum of $i-1$ over $i=a+1,\ldots,b$ is $ha+h(h-1)/2$. Substitution proves the result.
+\end{proof}
+
+\begin{proposition}[Lehmer's fourth-root cutoff]
+For $N\ge1$, set $a=\pi(R_4(N))$. With $b,c,b_i$ as above,
+\begin{align*}
+ \pi(N)={}&\Phi(N,a)+\frac{(b+a-2)(b-a+1)}2
+       -\sum_{a<i\le b}\pi(N/p_i)\\
+       &-\sum_{a<i\le c}\ \sum_{i\le j\le b_i}
+                \big(\pi(N/(p_ip_j))-j+1\big).
+\end{align*}
+The constant term uses signed integer arithmetic, also when $N$ is small.
+\end{proposition}
+\begin{proof}
+Now each surviving prime exceeds $R_4(N)$, so four cannot occur in one surviving product. Isolating $P_1$ gives $\pi(N)=\Phi(N,a)+a-1-P_2-P_3$. Substitute \eqref{eq:sv-p2} and \eqref{eq:sv-p3} and use
+\[
+ a-1+\sum_{a<i\le b}(i-1)=\frac{(b+a-2)(b-a+1)}2.
+\]
+This follows from the consecutive-integer sum or by induction on $b-a$. When $b=a$ the coefficient is $a-1$.
+\end{proof}
+
+For instance at $N=100$ the fourth-root cutoff is $3$ and $a=2$. The $33$ survivors have no factor $2$ or $3$, and their only composite products are $25,35,49,55,65,77,85,91,95$. Thus $P_2=9$, $P_3=0$, and $\pi(100)=33+2-1-9=25$. At $N=125$ the triple $5^3$ enters exactly at the inclusive boundary.
+
+All the algorithms can be implemented by bounded folds. For fixed input ceiling $N$ the recursion for $\Phi$ fills rows $0,\ldots,a$ at columns $0,\ldots,N$. Each entry is at most $N$. Encode a row in base $N+2$; reading the two entries of the preceding row determines the next value. For \eqref{eq:sv-factor}, alternatively compute $P_k$ by scanning $m\le N$, repeatedly dividing by its least prime factor for at most $N$ steps and counting factors. In the identities, evaluation of $\pi$ at a quotient $N/p_i$ involves a smaller input. Using a table of previous values makes induction on $N$ sufficient if one wants the recursive evaluator. For $N\ge2$ all root indices needed in the cube- and fourth-root formulas also come from smaller arguments. The cases $N=0,1$ can be initialized directly. The combinatorial formulas and their proofs underlie the treatment by Lagarias, Miller and Odlyzko, \emph{Computing $\pi(x)$: the Meissel--Lehmer method}, Math. Comp. 44 (1985), 537--560.
+
+\subsection{A factorial expression}
+
+MathWorld's equation (7) admits a short proof that explains its endpoint. Put $r(j)=(j-2)!\bmod j$ for $j\ge3$, the unique residue between $0$ and $j-1$. For every prime $p\ge3$, multiplication by a nonzero residue permutes $1,\ldots,p-1$. Indeed, equality of products modulo $p$ forces equality of the factors modulo $p$ by Euclid's lemma, and an injective self-map of a finite interval is surjective by counting. Each residue therefore has a unique inverse, found by scanning this interval. Inversion pairs all residues except its fixed points. If $u^2\equiv1\pmod p$ then $p\mid(u-1)(u+1)$, giving $u=1$ or $u=p-1$. The paired residues each contribute $1$ and the fixed ones contribute $-1$. This proves Wilson's congruence $(p-1)!\equiv-1\pmod p$. Dividing off the factor $p-1\equiv-1$ shows $r(p)=1$.
+
+Suppose $j\ge4$ is composite. Write $j=uv$ with $2\le u\le v$. If $u<v$ then $v\le j/2\le j-2$ and the factorial contains the distinct factors $u,v$. If $u=v\ge3$, it contains the distinct factors $u,2u$, since $2u\le u^2-2$. In both cases $r(j)=0$. The remaining case has $r(4)=2$. Thus, for $N\ge4$,
+\[
+ \pi(N)=-1+\sum_{j=3}^N r(j)
+        =-1+\sum_{j=3}^N\left((j-2)!-j\left\lfloor
+                       \frac{(j-2)!}{j}\right\rfloor\right).
+\]
+The sum counts the primes $3,\ldots,N$ once and has the additional contribution $2$ at $4$. This accounts for both the constant and the lower endpoint.
+
+\section{Every integral value of the ratio}
+\label{sec:golomb}
+
+MathWorld tabulates positive solutions of $N=k\pi(N)$ for $N\ge2$. We give a primitive-recursive bound for \emph{every} solution, a witness for every $k\ge2$, and complete solution lists for $2\le k\le7$.
+
+\begin{lemma}[An effective density bound]
+For every $k\ge1$ let $y=2^{4k}$, $a=\pi(y)$, and
+\[
+ B(k)=2k(a+2^a)+1 .
+\]
+For all $N\ge B(k)$ one has $k\pi(N)<N$.
+\end{lemma}
+\begin{proof}
+For the primes through $y$ set $\delta=\prod_{p\le y}(1-1/p)$. Unique factorization embeds each $m\le y$, $m\ge1$, as a distinct exponent tuple in the expansion of $\prod_{p\le y}\sum_{e=0}^y p^{-e}$. The bound $e\le y$ follows from $2^e\le m$ for nonzero exponents. All terms are positive, so
+\[
+ \delta\sum_{m=1}^y\frac1m
+ \le\prod_{p\le y}\left((1-1/p)\sum_{e=0}^y p^{-e}\right)
+ =\prod_{p\le y}(1-p^{-(y+1)})\le1 .
+\]
+For $0\le j<4k$, the $2^j$ terms from $m=2^j+1$ through $2^{j+1}$ add to at least $1/2$. Including $m=1$ gives $\sum_{m\le y}1/m\ge1+2k$. Hence $k\delta\le1/2$. Every prime through $N$ is either among the $a$ sieving primes or is counted by $\Phi(N,a)$. From \eqref{eq:sv-floor-bound},
+\[
+ k\pi(N)\le k(a+2^a)+kN\delta\le k(a+2^a)+N/2<N
+\]
+for $N\ge B(k)$. The tuple expansion uses at most $(y+1)^a$ terms and all rational equalities are finite.
+\end{proof}
+
+\begin{proposition}[Golomb's theorem with bounded witnesses]
+For $k\ge2$ the equation $N=k\pi(N)$ has a solution with $2\le N<B(k)$. The least solution, the largest solution, and the total number of solutions with $N\ge2$ are primitive-recursive functions of $k$ on this domain.
+\end{proposition}
+\begin{proof}
+Set $f(N)=N-k\pi(N)$ as a signed integer. Then $f(2)=2-k\le0$ and $f(B(k))>0$. Each increment $f(j+1)-f(j)$ is either $1$ or $1-k$. If $f(2)=0$, take $N=2$. Otherwise scan for the first $j\in[3,B(k)]$ with $f(j)\ge0$. Since $f(j-1)\le-1$, the upper bound of $1$ on a single increment gives $f(j)=0$. Necessarily $j<B(k)$. A scan of the entire interval finds all solutions, by the lemma. This argument supplies a bounded version of S.~W.~Golomb's \emph{On the ratio of $N$ to $\pi(N)$}, Amer. Math. Monthly 69 (1962), 36--37.
+\end{proof}
+
+For practical exact enumeration choose an arbitrary $a\ge1$ with $k\delta<1$ for the first $a$ primes. The sharper error in \eqref{eq:sv-floor-bound} proves that all $N$ satisfying the equation lie strictly below
+\[
+ T(k,a)=1+\left\lfloor\frac{k(a+2^{a-1})}{1-k\delta}\right\rfloor .
+\]
+Indeed $\pi(N)\le a+N\delta+2^{a-1}$ implies $N\le k(a+2^{a-1})/(1-k\delta)$ at a solution. The following table, including the exponents and cutoffs, is checked by \texttt{golomb\_check.py}. It constructs the sieve through the largest cutoff, accumulates flags to obtain $\pi(N)$ and records each exact equality. Thus the finite check and the proved cutoff together establish each complete list.
+\begin{center}
+\small
+\begin{tabular}{r r r l}
+$k$&$a$&$T(k,a)$&All solutions $N\ge2$\\ \hline
+2&2&25&2, 4, 6, 8\\
+3&3&106&27, 30, 33\\
+4&5&498&96, 100, 120\\
+5&7&3\,646&330, 335, 340, 350, 355, 360\\
+6&10&59\,867&1008, 1080, 1092, 1116, 1122, 1128, 1134\\
+7&15&3\,948\,665&3059, 3066, 3073, 3080, 3087, 3094
+\end{tabular}
+\end{center}

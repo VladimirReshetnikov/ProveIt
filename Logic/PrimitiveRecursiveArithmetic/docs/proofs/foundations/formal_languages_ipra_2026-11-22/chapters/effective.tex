@@ -1,0 +1,649 @@
+\section{Effective languages, finite rewriting, and diagonal limits}
+\label{sec:effective}
+
+This section treats an unbounded search as an existence of a finite certificate,
+not as a total function.  Its basic machine constructions belong to the tradition
+of finite machine coding and universal simulation \cite{Turing1936}; all bounds
+and diagonal arguments used below are supplied here.  In particular, a bounded
+universal machine simulator must not be confused with a total universal
+evaluator for primitive recursive functions.
+
+\subsection{A machine model with a primitive recursive bounded interpreter}
+
+Fix a finite tape alphabet $\{0,\ldots,b-1\}$, with $b\geq3$ and blank $0$.
+A deterministic machine has nonhalting states $0,\ldots,q-1$, a halting state
+$q$, and a finite table indexed by a state and a scanned symbol.  A table entry
+specifies a new state, a written symbol, and a move in $\{\mathrm L,
+\mathrm R,\mathrm S\}$.  Invalid codes are interpreted as a machine that
+immediately halts; this convention makes all decoding operations total.
+
+Represent a configuration by $(p,L,R)$, where the least significant base-$b$
+digit of $R$ is the scanned cell and that of $L$ is the cell immediately to its
+left.  Unrepresented digits are blank.  If the current instruction writes $d$,
+put $T=\lfloor R/b\rfloor$.  The three tape updates are
+\[
+\begin{array}{c|cc}
+ &L'&R'\\ \hline
+\mathrm R&d+bL&T\\
+\mathrm L&\lfloor L/b\rfloor&(L\bmod b)+bd+b^2T\\
+\mathrm S&L&d+bT.
+\end{array}
+\]
+The state becomes the entry's new state.  A halted configuration is unchanged.
+Natural-number inputs have a fixed delimiter-free binary representation using
+tape symbols $1,2$, followed by blanks; zero has the one-symbol representation
+$1$.  Finite-word inputs are encoded as natural numbers by the word coding of
+the foundations chapter.  The choice of this input convention has no effect
+on any theorem, but is fixed throughout.
+
+\begin{lemma}[Bounded simulation and finite traces]\label{eff:simulation}
+There are uniform primitive recursive functions
+$\operatorname{Step}(e,C)$ and $\operatorname{Run}(e,x,t)$, and Boolean
+primitive recursive predicates
+$\operatorname{Halt}(e,x,t)$ and $\operatorname{Out}(e,x,t,j)$,
+expressing respectively that the machine coded by $e$ has halted by stage $t$
+and has halted with Boolean output $j$.  A halting or output witness can be
+converted primitive recursively to a locally checked configuration trace,
+and conversely a valid trace of length $t+1$ proves the corresponding
+bounded-simulation assertion.
+\end{lemma}
+\begin{proof}
+Table lookup, tuple decoding, remainder, quotient, and the displayed updates
+are primitive recursive.  Define $\operatorname{Run}(e,x,0)$ to be the initial
+configuration and iterate $\operatorname{Step}$ exactly $t$ times.  Output is
+read from the scanned cell at halting, with any non-Boolean value treated
+as an invalid Boolean output.  Store the successive configurations during
+this iteration to obtain a trace.  Its checker verifies the initial entry,
+each adjacent pair, and the final state by a bounded conjunction.
+For the converse, use induction on the number of checked adjacent pairs:
+the computed state and the supplied trace state coincide.  The induction
+invariant is an equality of codes together with a bounded Boolean check.
+Thus this is quantifier-free induction after characteristic functions are
+introduced.  Determinism also proves that two valid halting traces of the
+same computation have the same output.  Absorption of the halting state
+proves monotonicity in $t$.
+\end{proof}
+
+\begin{lemma}[Compilation of each fixed primitive recursive predicate]
+\label{eff:compile}
+For each fixed primitive recursive Boolean predicate $R(\vec x)$ there are
+a fixed machine $m_R$ and a primitive recursive clock $c_R(\vec x)$ such that
+\ipra\ proves that $m_R$ halts by that clock and outputs $R(\vec x)$.
+This is a metatheoretic construction on the defining expression for $R$,
+not a uniform primitive recursive evaluator for all such expressions.
+\end{lemma}
+\begin{proof}
+First compile into finite register programs with increment, conditional
+decrement, and jumps.  Zero, successor, and projections have direct programs.
+Composition uses disjoint scratch registers and copying loops; a source is
+copied by decrementing it while incrementing both the target and a temporary
+register, then decrementing the temporary to restore the source.  Each such loop has
+its supplied natural-number length as a clock.  For primitive recursion
+$F(\vec x,0)=g(\vec x)$ and
+$F(\vec x,n+1)=h(\vec x,n,F(\vec x,n))$, keep a counter, the original inputs,
+and the current value in separate registers.  Repeat the compiled $h$
+program exactly $n$ times.  If clocks for $g,h$ have already been supplied,
+the clock for this loop is given by primitive recursion, adding at stage $i$
+the clock for $h(\vec x,i,F(\vec x,i))$ and the explicitly bounded copying
+cost.  The invariant identifies the counter and stored value with $i$ and
+$F(\vec x,i)$; it is quantifier-free.
+
+For completeness, these register programs have the claimed tape-machine
+implementation.  Encode their finitely many registers by unary blocks
+separated by a distinct delimiter.  A fixed finite control selects a block,
+checks emptiness, and inserts or removes one mark by a finite scan and shift
+of the remaining blocks.  If their total length is $s$, each instruction is
+implemented in at most $C(s+1)^2$ tape steps, for a constant depending only on
+the fixed register program.  In $t$ register instructions the total number
+of marks grows by at most $t$.  Consequently
+$C(t+1)(s+t+1)^2$, enlarged for fixed delimiters, bounds the simulation.
+Converting the fixed binary input encoding to unary register blocks and
+back is a primitive recursive bounded process (repeated doubling while
+reading the input suffices).  Compose these clocks with the previously
+constructed register clock.  The simulation invariant is equality of the
+encoded register contents at instruction boundaries.  This supplies both
+an actual compiler and its \ipra\ verification schema.
+\end{proof}
+
+\subsection{Recognition means a finite positive certificate}
+
+\begin{definition}\label{eff:def-re}
+A \emph{certificate presentation} of a language is a fixed primitive
+recursive Boolean verifier $R(w,c)$; its membership formula is
+\[
+ L_R(w)\quad\Longleftrightarrow\quad \exists c\;R(w,c)=1.
+\]
+A \emph{primitive recursive enumeration with possible silence} is a
+primitive recursive function $E(s)=(a_s,w_s)$, where $a_s\in\{0,1\}$ and
+$a_s=0$ means that stage $s$ outputs nothing.  A machine recognizes a
+language if membership is equivalent to existence of a finite accepting
+trace.  A rejecting halt, when present, is not an accepting trace.
+\end{definition}
+
+\begin{theorem}[Three equivalent effective presentations]
+\label{eff:three-presentations}
+Certificate presentations, primitive recursive enumerations with possible
+silence, and machine recognition admit explicit conversions in both
+directions.  Each equivalence is proved in \ipra\ for the given
+presentation.  The conversions on positive witnesses are primitive
+recursive.
+\end{theorem}
+\begin{proof}
+For $R$, inspect the fixed primitive recursive pair coding at each stage.
+Emit silence on gaps in a sparse coding or on invalid word codes; on a valid
+pair $(w,c)$, output $w$ precisely when $R(w,c)=1$.  A certificate $c$ gives the
+particular stage $\langle w,c\rangle$, and an output stage supplies the pair
+that was checked.  Conversely, the stage number itself is a certificate
+that an enumerator outputs $w$.
+
+A recognizer on input $w$ tests $R(w,0),R(w,1),\ldots$ in order and accepts
+at the first success, using the machine of Lemma~\ref{eff:compile}.  Given
+a successful $c$, its accepting trace has a primitive recursive bound:
+sum the fixed clocks for the tests with indices at most $c$, and add the
+counter and copying costs.  Conversely an accepting trace records which
+test succeeded, so its index is recoverable by a bounded scan of that
+trace.  Finally, for any machine, the predicate saying that its bounded
+run has accepted is a primitive recursive verifier by
+Lemma~\ref{eff:simulation}.  None of these steps asserts that an
+unsuccessful search terminates.
+\end{proof}
+
+\begin{proposition}[Binary positive operations and reversal]
+\label{eff:binary-closure}
+Certificate-presented languages are closed under union, intersection,
+concatenation, and reversal, with primitive recursive verifiers and
+primitive recursive translations of the displayed witnesses.
+\end{proposition}
+\begin{proof}
+For union a certificate contains a tag and a certificate for the indicated
+operand.  For intersection it contains both certificates.  For
+concatenation it contains a split point $i\leq |w|$ and certificates for
+$\operatorname{take}_i(w)$ and $\operatorname{drop}_i(w)$.  A successful
+concatenation witness determines these two words because concatenation is
+cancellative and lengths add.  Conversely two successful witnesses and the
+word equation supply that split record.  Reversal uses the verifier
+$R(\operatorname{rev}(w),c)$ and involutivity of reversal.  Every check is
+bounded by the supplied record.  The proofs use only elimination and
+introduction of finitely many existential witnesses; they require no
+principle of choice or unbounded collection.
+\end{proof}
+
+\begin{proposition}[Homomorphic images and preimages]
+\label{eff:hom-closure}
+For a finite-table word homomorphism $h$, both $h(L_R)$ and
+$h^{-1}(L_R)$ have certificate presentations, including when $h$ erases
+letters.  If $L$ has a primitive recursive characteristic function and
+$h$ is nonerasing, then $h(L)$ also has one.  Every inverse homomorphic
+image of a primitive recursive language is primitive recursive.
+\end{proposition}
+\begin{proof}
+For the image, certify a preimage word $u$, a certificate $c$, the equality
+$h(u)=w$, and $R(u,c)=1$.  For the preimage use $R(h(w),c)$.
+For a nonerasing $h$, the equality $h(u)=w$ implies $|u|\leq |w|$ by adding
+the positive lengths of letter images.  Enumerate the finitely many words
+$u$ over the source alphabet with length at most $|w|$, and test both the
+equality and the given characteristic function.  Their number is
+$\sum_{i=0}^{|w|}a^i$ for source-alphabet size $a$; the empty alphabet is
+handled by its sole word $\eps$.  This bounded disjunction is primitive
+recursive.  For an inverse image simply evaluate the characteristic
+function at $h(w)$.
+\end{proof}
+
+\paragraph{An essential finite-collection distinction.}
+For unbounded certificates, the formula
+$\forall i<k\;\exists c\,R(v_i,c)$ is not silently replaced by the
+existence of one coded list of all the $c$'s.  That replacement is a
+collection principle, not a consequence of the observation that each
+individual certificate is finite.  The next proposition consequently
+states its constructive input data explicitly.
+
+\begin{proposition}[Certified iteration and certified substitution]
+\label{eff:certified-star}
+The following operations preserve certificate presentations:
+\begin{enumerate}
+\item Kleene iteration with a certificate consisting of a list of factors,
+a list of their certificates, and the concatenation equation;
+\item substitution from a certificate-presented source language and a
+finite family of certificate-presented replacement languages, with a
+source witness, replacement factors, and one coded list of all replacement
+certificates.
+\end{enumerate}
+For primitive recursively decided operand membership these agree, internally
+in \ipra, with
+the usual bounded-cut definitions.  For general certificate languages
+they agree with the usual operations on standard languages externally;
+internally a common bound on all required certificates suffices to prove
+the corresponding equivalence with a bounded family of existential
+membership assertions.
+\end{proposition}
+\begin{proof}
+For iteration, the verifier checks the list lengths, each $R(v_i,c_i)$,
+and $w=v_0\cdots v_{k-1}$.  Empty factors can be removed together with their
+certificates; for $w\ne\eps$ the remaining $k$ is at most $|w|$, while
+$\eps$ is certified by the empty list.  For substitution a certificate
+contains $u=a_0\cdots a_{k-1}$, a certificate for source membership,
+factors $v_0,\ldots,v_{k-1}$, their verifier certificates, and
+$w=v_0\cdots v_{k-1}$.  All these checks are bounded by the supplied lists.
+Witness insertion, removal, and concatenation are primitive recursive.
+
+For a decidable predicate, no unbounded certificate choices are needed:
+evaluate each factor directly.  If a common certificate bound $B$ is
+provided instead, find the least successful $c_i\leq B$ by bounded search
+and store the resulting list by recursion on $i$.  The invariant is the
+bounded conjunction of successful checks for the stored prefix.  For
+standard finite lists, ordinary metatheoretic finite choice yields the
+usual extensional interpretation.  We make no claim that this last
+unbounded collection is an additional theorem of \ipra.
+\end{proof}
+
+\subsection{Decisions require a termination witness}
+
+\begin{definition}\label{eff:def-total}
+A Boolean machine has \emph{totality data} when its stipulated premise is
+\[
+ \forall w\;\exists t\;\bigl(
+ \operatorname{Out}(d,w,t,0)=1\ \vee\
+ \operatorname{Out}(d,w,t,1)=1\bigr).
+\]
+A primitive recursive clock is stronger data: a fixed primitive recursive
+$b(w)$ for which the corresponding disjunction holds at $t=b(w)$.
+A language is \emph{decided} by these data when output $1$ is equivalent
+to membership.  The totality premise may be used as a hypothesis; the
+chapter does not claim that \ipra\ proves it for every externally total
+recursive machine.
+\end{definition}
+
+\begin{proposition}[What total decision supplies]\label{eff:total-decision}
+A correct Boolean decider with the displayed totality data proves
+$L(w)\vee\neg L(w)$ for each $w$, and gives certificate presentations for
+both $L$ and $\neg L$.  A primitive recursive clock gives a primitive
+recursive characteristic function.  Conversely, a primitive recursive
+characteristic function supplies a clocked decider.
+\end{proposition}
+\begin{proof}
+Eliminate the totality witness and inspect the output bit.  Output $1$
+gives membership by correctness.  If the bit is $0$, a hypothetical
+membership assertion would give an output-$1$ trace; deterministic output
+uniqueness contradicts the existing output-$0$ trace.  This yields the
+disjunction constructively.  Output traces are the certificates.  At a
+supplied clock, inspect the bounded run to obtain the characteristic bit;
+Lemma~\ref{eff:compile} proves the converse.  No search for a clock is
+performed.
+\end{proof}
+
+\begin{proposition}[The constructive two-recognizer theorem]
+\label{eff:two-recognizers}
+Suppose $L$ and $\neg L$ have certificate verifiers, and suppose additionally
+that $\forall w\,(L(w)\vee\neg L(w))$ is supplied.  There is a correct total
+Boolean decider for $L$.  Without an explicit primitive recursive witness
+bound, this conclusion does not assert a primitive recursive clock.
+\end{proposition}
+\begin{proof}
+At stage $s$, test all certificates at most $s$ for both verifiers, stopping
+with the corresponding bit at the first success.  The two sides cannot
+both succeed, since their correctness would give $L(w)\wedge\neg L(w)$.
+Use the supplied disjunction for the particular input.  In its left case
+eliminate a positive certificate, and in its right case eliminate a
+negative one.  Either yields a finite stage at which the search stops.
+The primitive recursive test clocks give a finite machine trace up to that
+stage, just as in Theorem~\ref{eff:three-presentations}.  This proves the
+required totality implication without excluded middle.  Dropping the
+exhaustiveness premise would replace this proof by an unjustified
+classical step; we do not do so.
+\end{proof}
+
+\subsection{Noncontracting grammars are decided by a finite graph}
+
+A finite rewriting grammar has disjoint finite terminal and nonterminal
+alphabets, a start nonterminal $S$, and finitely many rules $u\to v$, where
+$u$ is nonempty and contains a nonterminal.  One step replaces one occurrence
+of $u$ by $v$ in a context.  It is \emph{noncontracting} if $|u|\leq |v|$
+for every rule, with the permitted exception $S\to\eps$, provided $S$
+never occurs on a right-hand side.  This is the noncontracting grammar
+presentation of the context-sensitive level used here.  We do not use a
+separate grammar--linear-bounded-automaton equivalence as an unstated lemma.
+
+\begin{proposition}[Every finite grammar has recognizable membership]
+\label{eff:grammar-recognizable}
+For every finite rewriting grammar, with or without length-decreasing rules,
+the generated language has a primitive recursive certificate verifier and
+therefore a recognizer.  A supplied finite derivation is a certificate;
+no bound on its length or on its intermediate word lengths is required.
+\end{proposition}
+\begin{proof}
+A certificate is a list of sentential forms together with a rule index and
+rewrite position for each adjacent pair.  Check that it starts with $S$,
+ends with the proposed terminal word, and that every listed replacement
+has the specified left and right contexts.  Each word and every rule index
+is supplied in the record, so all checks are bounded by that record's
+finite lengths.  Encoding these loops yields a primitive recursive Boolean
+verifier uniformly in the grammar and certificate.  A successful check is
+exactly the finite sequence required by the definition of derivability.
+Conversely an actual finite derivation supplies those forms, rules, and
+positions.  Apply Theorem~\ref{eff:three-presentations}.  This proves the
+grammar-to-recognizer direction without asserting its more involved converse.
+\end{proof}
+
+\paragraph{The finite graph bound.}
+We use the finite reachability theorem of the foundations
+(Lemma~\ref{base:graph}): a graph on $V\geq1$ numbered vertices has a
+primitive recursive reachability decision procedure, and a supplied path
+can be shortened to fewer than $V$ edges by deleting loops.  Its algorithm
+retains a simple prefix while processing the supplied path and truncates
+at a repeated vertex.  The proof, including primitive recursive witness
+reconstruction, has already been given there.
+
+\begin{theorem}[Uniform primitive recursive membership for noncontracting
+grammars]\label{eff:noncontracting}
+There is a uniform primitive recursive decision function $D(G,w)$ for
+membership in a well-formed noncontracting grammar.  For a nonempty target
+of length $n$ over a total grammar alphabet of size $m$, a positive result
+has a derivation with fewer than
+\[
+ V(G,n)=\sum_{i=0}^{n}m^i
+\]
+steps.  Both the Boolean answer and a positive derivation certificate can
+be computed primitive recursively from $G,w$.
+\end{theorem}
+\begin{proof}
+For $n>0$, every sentential form in a successful derivation has length at
+most $n$: each ordinary rule preserves or increases length.  The exceptional
+start-to-empty rule cannot occur on such a derivation, because the empty
+word has no occurrence of a left-hand side and cannot subsequently become
+nonempty.  Enumerate all words of length at most $n$ over the total
+alphabet.  There are exactly $V(G,n)$ of them, and both the start word and
+the target are among them.  Place an edge from $u$ to $v$ when some rule,
+applied at a position at most $n$, transforms $u$ into $v$.  Finite rule
+lookup and the position scan make this an effective finite edge table.
+
+Apply Lemma~\ref{base:graph}.  A graph path is precisely a grammar
+derivation remaining within the length bound; every successful derivation
+satisfies that bound.  This proves both directions and the certificate
+bound.  For $n=0$, acceptance is exactly the presence of $S\to\eps$.
+Indeed no noncontracting rule reaches length zero, and $S$ cannot reappear
+after it is first removed because it is absent from every right-hand side.
+Reject malformed grammars by a preliminary finite check.  All enumeration
+bounds, code bounds for the finite lists, and witness reconstructions are
+primitive recursive uniformly in $G,w$.
+\end{proof}
+
+\begin{theorem}[An explicit primitive recursive language beyond all
+noncontracting grammars]\label{eff:nc-pr-separation}
+Over the binary alphabet there is a primitive recursive language $J$ and
+a primitive recursive separating-word function such that, for every
+noncontracting grammar code $e$, the function returns a word on which $J$
+and that grammar disagree.  Consequently noncontracting grammar languages
+form a proper subclass of primitive recursively decided languages.
+\end{theorem}
+\begin{proof}
+Make the numerical convention in Theorem~\ref{eff:noncontracting} explicit.
+A grammar code is a tuple containing its terminal count, nonterminal count,
+start index, and finite list of pairs of word codes.  Decode the tuple and
+lists by the foundations' primitive recursive operations, and perform the
+finite well-formedness and noncontraction tests.  For this theorem, also
+require exactly the two terminal symbols $0,1$.  On malformed codes, codes
+with another terminal alphabet, and invalid target words, assign acceptance
+bit $0$.  On a valid binary grammar use the decision procedure already
+proved.  This gives a single total primitive recursive Boolean function
+$D_2(e,w)$, and every binary noncontracting grammar has a valid code for
+which that function is its characteristic function.
+
+Let $\operatorname{bin}(e)$ be the canonical nonempty binary representation
+of $e$, with zero represented by $0$.  Canonicality, decoding, and this
+encoding are primitive recursive, and decoding after encoding returns $e$.
+Define
+\[
+ J(w)=
+ \begin{cases}
+  1-D_2(e,w),&w=\operatorname{bin}(e)\text{ is canonical},\\
+  0,&\text{otherwise}.
+ \end{cases}
+\]
+This is a primitive recursive characteristic function.  For every natural
+number $e$, substitution of its explicitly computed binary word yields
+\[
+ J(\operatorname{bin}(e))
+     =1-D_2(e,\operatorname{bin}(e))
+     \ne D_2(e,\operatorname{bin}(e)).
+\]
+The inequality is simply the checked two-case fact that a Boolean bit
+differs from its complement.  For a valid binary grammar code it is an
+explicit separator from that grammar; no search is involved.  Theorem~
+\ref{eff:noncontracting} gives the inclusion of the whole class into the
+primitive recursive languages, and this one $J$ proves strictness.
+
+This diagonalization is legitimate in \ipra: the decision procedure is
+uniform only over the restricted finite syntax of noncontracting grammars.
+The resulting $J$ leaves that restricted class.  No universal evaluator for
+all primitive recursive functions is used, and no assumption that an
+externally total recursive function has a primitive recursive clock is
+made.
+\end{proof}
+
+\begin{proposition}[Union, reversal, and regular intersection at the
+noncontracting level]\label{eff:nc-closure}
+Noncontracting grammar languages are closed constructively under union,
+reversal, and intersection with a language given by a deterministic finite
+automaton.  The grammar transformations and all translations of finite
+derivation witnesses are primitive recursive.
+\end{proposition}
+\begin{proof}
+For union, rename the two nonterminal alphabets to be disjoint, remove their
+exceptional empty rules, and introduce a fresh start with alternatives to
+the two old starts.  Add an empty rule at the fresh start exactly when one
+old grammar has its exceptional empty rule.  Every nonempty derivation
+stays in its chosen component, since each rule of the other component
+requires a nonterminal that never occurs.  The old starts cannot reappear
+inside their component, so removing their empty rules loses no nonempty
+word.  For reversal replace every rule $u\to v$ by
+$\operatorname{rev}(u)\to\operatorname{rev}(v)$.  Reverse each sentential
+form in a trace; a context $xuy$ becomes
+$\operatorname{rev}(y)\operatorname{rev}(u)\operatorname{rev}(x)$.
+Lengths and the exceptional-start condition are preserved.
+
+Here is a full regular-intersection construction, which avoids invoking an
+unproved machine-equivalence theorem.  First handle the empty word
+separately and delete the exceptional empty rule.  Let the automaton have
+finite state set $Q$, start $q_0$, transition $\delta$, and final set $F$.
+For every grammar symbol $X$, terminal or nonterminal, introduce fresh
+\emph{nonterminal} markers $[p,X,q]$, for $p,q\in Q$.
+For each grammar rule $X_1\cdots X_k\to Y_1\cdots Y_l$, introduce all rules
+\[
+ [p_0,X_1,p_1]\cdots[p_{k-1},X_k,p_k]
+ \;\to\;
+ [r_0,Y_1,r_1]\cdots[r_{l-1},Y_l,r_l],
+\]
+where $p_0=r_0$ and $p_k=r_l$; internal states range independently over $Q$.
+All have $l\geq k$.  Include $[p,a,\delta(p,a)]\to a$ for every terminal
+$a$, and fresh-start rules $T\to[q_0,S,f]$ for $f\in F$.
+Include $T\to\eps$ exactly when both original languages contain $\eps$.
+The new start never appears on a right-hand side.
+
+In any new derivation, keep the endpoint annotations as ghost data even
+after a terminal marker is finalized.  Adjacent endpoints agree initially
+and after every rule.  A finalized terminal realizes the corresponding
+one-letter automaton transition.  Projecting markers to their old symbols
+turns the other rules into old grammar steps; finalization projects to an
+identity step.  Hence a final terminal word belongs to the old grammar
+and labels a path from $q_0$ to a final state.
+
+Conversely, take an old successful derivation and an accepting automaton
+run on its terminal yield.  Annotate the final word by the run.  Work
+backwards through the derivation: the replaced right-hand segment already
+has endpoints, and any choice of internal states annotates the old
+left-hand segment with those same endpoints.  Thus each old step becomes
+one of the enumerated annotated rules.  The beginning is
+$[q_0,S,f]$ for the same final state $f$.  Run these annotated steps forwards
+and finalize all terminal markers at the end.  The backwards annotation
+is recursion over a supplied finite trace; its invariant is a bounded
+endpoint check.  This establishes the converse and primitive recursive
+witness translations.
+\end{proof}
+
+\begin{proposition}[An explicit noncontracting grammar beyond context-free
+languages]\label{eff:abc}
+The following noncontracting grammar generates exactly
+$\{a^n b^n c^n:n\geq1\}$:
+\[
+\begin{gathered}
+ S\to aSBC\mid aBC,\qquad CB\to BC,\\
+ aB\to ab,\qquad bB\to bb,\qquad bC\to bc,\qquad cC\to cc.
+\end{gathered}
+\]
+Adding a fresh isolated start $S_0\to S\mid\eps$ generates exactly
+$\{a^n b^n c^n:n\in\N\}$ under the permitted empty-word convention.
+Thus the non-context-free example established by the context-free pumping
+argument occurs at the noncontracting grammar level.
+\end{proposition}
+\begin{proof}
+Apply the recursive start rule $n-1$ times and the base rule once to obtain
+$a^n(BC)^n$.  Repeatedly replace an adjacent $CB$ by $BC$.  Each replacement
+reduces the number of pairs consisting of a $C$ to the left of a $B$ by
+one, so at most $n^2$ replacements yield $a^n B^n C^n$.  Convert the $B$'s
+from left to right by $aB\to ab$ and $bB\to bb$, then convert the $C$'s by
+$bC\to bc$ and $cC\to cc$.  This gives a primitive recursive derivation
+of the asserted word.
+
+For soundness, while $S$ is present every sentential form is $a^j S u$,
+where $u$ is a word in $B,C$ with equally many of each, namely $j$.
+Swaps may already occur in $u$, but no terminalization rule applies because
+$S$ separates its left boundary from the terminal $a$'s.  After the base
+rule removes $S$, the form is $a^n u$ with $n$ copies of each of $B,C$.
+Thereafter every reachable form has shape $a^n b^i c^j v$ with
+$v\in\{B,C\}^*$.  The only terminalization is at the boundary of the
+terminal prefix; after a $c$ has appeared no remaining $B$ can be
+terminalized past it.  Swapping preserves this shape.  Counts of
+$B$ plus $b$, and of $C$ plus $c$, are both invariantly $n$.
+If the final word has no nonterminals, it is therefore $a^n b^n c^n$.
+The fresh-start extension adds exactly the empty word: its first rule is
+either the empty alternative or the one entering the preceding grammar,
+and $S_0$ never occurs again.  All invariants are finite-word characteristic
+checks on supplied traces.
+\end{proof}
+
+\subsection{Diagonal obstructions, without excluded middle}
+
+Write
+\[
+ H(e,x)\;:\!\Longleftrightarrow\;\exists t\,
+ \operatorname{Halt}(e,x,t)=1,
+ \qquad K(e)\;:\!\Longleftrightarrow\;H(e,e).
+\]
+By Theorem~\ref{eff:three-presentations}, $K$ is recognizable.  A fixed
+machine can first copy its input and then simulate the machine whose code
+is that input.  An interpreter maintains the simulated table and tape
+configuration, performs the displayed primitive recursive step operation,
+and repeats.  Given a finite simulated trace, the fixed step compiler of
+Lemma~\ref{eff:compile} supplies a primitive recursive bound for the
+interpreter's finite trace; conversely each completed simulated step is
+checked locally.  This is all the universal simulation needed below.
+
+\begin{theorem}[No total Boolean decider for diagonal halting]
+\label{eff:halting}
+\ipra\ proves that no coded Boolean machine can satisfy both the totality
+premise of Definition~\ref{eff:def-total} and the assertion
+\[
+ \forall e\;\bigl(K(e)\ \longleftrightarrow\
+       \exists t\,\operatorname{Out}(d,e,t,1)=1\bigr).
+\]
+Consequently the recognizable language of canonical binary codes of $K$
+is not recursive, and in particular is not primitive recursive.
+\end{theorem}
+\begin{proof}
+From a proposed decider code $d$, construct a machine $P_d$ which, on input
+$x$, simulates $d$ on $x$, halts if its Boolean output is $0$, and enters
+an absorbing nonhalting loop if the output is $1$.  A non-Boolean halt may
+also loop.  Inserting the fixed interpreter and these two branches is a
+primitive recursive transformation on finite programs; let $p$ be its
+code.  A trace showing output $0$ gives a halting trace of $P_d$ with a
+primitive recursive overhead bound.  A trace showing output $1$ proves
+by quantifier-free induction on any later time bound that $P_d$ never
+halts: before the simulated halt it is in its interpreter states, and
+afterwards it is in its designated loop state.
+
+Apply the assumed totality to input $p$ and inspect the resulting Boolean
+bit.  If it is $0$, the construction gives $H(p,p)$, hence $K(p)$; the
+assumed correctness gives an output-$1$ trace of $d$ on $p$, contradicting
+its output-$0$ trace.  If the bit is $1$, correctness gives $K(p)$ and a
+finite halting trace for $P_d$ on $p$; the preceding nonhalting invariant
+contradicts that trace.  This exhausts a decidable two-element datum,
+without deciding $K(p)$ by excluded middle.  The binary-word version is
+obtained by the fixed primitive recursive encoding and decoding.
+\end{proof}
+
+\begin{theorem}[The complement has no recognizer]
+\label{eff:complement}
+There is no machine recognizing the complement of $K$.  More precisely,
+\ipra\ refutes the assertion that a given recognizer accepts input $e$
+exactly when $\neg K(e)$.  Thus recognizable languages are not closed under
+complement.  This conclusion does not rely on the classical form of the
+two-recognizer theorem.
+\end{theorem}
+\begin{proof}
+Given the proposed recognizer $r$, construct $Q_r$ which on input $x$
+simulates $r$ on $x$, halts if $r$ accepts, and continues forever if $r$
+rejects.  If $r$ itself runs forever, so does $Q_r$.  Trace translations
+prove $H(Q_r,x)$ equivalent to acceptance by $r$ on $x$.
+Let $q$ be the code of $Q_r$.  The proposed correctness supplies
+\[
+ K(q)\longleftrightarrow\neg K(q).
+\]
+This is constructively contradictory: the forward implication first gives
+$\neg K(q)$, since assuming $K(q)$ produces both it and its negation;
+the reverse implication then gives $K(q)$.  Every step is intuitionistic.
+For any fixed primitive recursive verifier claimed to present $\neg K$,
+Theorem~\ref{eff:three-presentations} compiles it to such a recognizer, so
+the same contradiction refutes that claim.  The latter assertion is a
+schema over fixed verifier definitions, not quantification over an alleged
+primitive recursive universal evaluator.
+\end{proof}
+
+\begin{theorem}[Erasing a primitive recursive language can destroy
+decidability]\label{eff:erasing}
+There is a primitive recursive language $T$ over
+$\{0,1,\#,c\}$ and a homomorphism $h$ with
+$h(0)=0$, $h(1)=1$, $h(\#)=h(c)=\eps$, such that $h(T)$ is the binary-coded
+diagonal halting language.  In particular, primitive recursive and recursive
+languages are not closed under arbitrary erasing homomorphisms.
+\end{theorem}
+\begin{proof}
+Let $\operatorname{bin}(e)$ be the canonical nonempty binary representation
+of $e$, with $0$ represented by the single symbol $0$.  Define
+\[
+ T=\{\operatorname{bin}(e)\,\#\,c^t:
+               \operatorname{Halt}(e,e,t)=1\}.
+\]
+To test membership, check the single delimiter, canonical binary prefix,
+and all-$c$ suffix, decode $e$, count $t$, and apply the bounded interpreter.
+All operations are primitive recursive, even though the decoded numeric
+$e$ can be much larger than the input length.  If $v\in T$, then
+$h(v)=\operatorname{bin}(e)$ and its displayed $t$ proves $K(e)$.
+Conversely, any witness $t$ for $K(e)$ gives the explicit preimage
+$\operatorname{bin}(e)\#c^t\in T$.  Therefore $h(T)=\operatorname{bin}(K)$.
+Theorem~\ref{eff:halting} proves that this image has no total decider.
+\end{proof}
+
+\paragraph{Why the time parameter cannot be removed.}
+The diagonal obstruction of Proposition~\ref{base:noeval} has the concrete
+form $g(x)=E(x,x)+1$: for any fixed primitive recursive $E$, the function
+$g$ is primitive recursive and differs from its $e$th section at the
+explicit argument $e$.  Consequently the bounded machine simulator above
+must not be turned into an alleged primitive recursive evaluator containing
+all unary primitive recursive functions as sections.  Each compiled fixed
+predicate has its own clock; no uniform primitive recursive clock for all
+such programs has been asserted.
+
+\paragraph{Scope of the hierarchy and the logical boundary.}
+Finite alphabets, words, finite grammars, automata, and machine descriptions
+have explicit natural-number codes.  This yields numerical enumerations
+of descriptions.  We do not infer, inside first-order \ipra, a theorem
+about the cardinality of the power set of all words: an arbitrary such
+power set is not an object of the theory.  The diagonal theorems give the
+appropriate effective obstruction directly.  Nor do the preceding
+arguments prove the unrestricted-grammar/Turing-machine equivalence,
+closure of context-sensitive languages under complement, general grammar
+equivalence undecidability, or the Post correspondence problem.  Those
+would require further constructions.  The supplied results establish the stated constructive inclusions and
+specific separations among finite-state, context-free, noncontracting,
+primitive-recursive, and recognizable presentations.  They do not claim
+that every adjacent pair in every customary hierarchy has been separated.

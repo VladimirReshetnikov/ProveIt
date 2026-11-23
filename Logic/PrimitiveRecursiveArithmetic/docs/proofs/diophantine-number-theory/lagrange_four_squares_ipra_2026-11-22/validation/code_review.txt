@@ -1,0 +1,62 @@
+INDEPENDENT READ-ONLY REVIEW OF THE IMPLEMENTATION AND LEAN SCAFFOLD
+=================================================================
+
+Reviewed files:
+  output/lagrange_four_squares_ipra/code/four_squares.py
+  output/lagrange_four_squares_ipra/lean/FourSquares.lean
+
+Verdict: no mathematical or algorithmic defect found. No source changes made.
+
+Python
+------
+The Hamilton multiplication signs are correct. Multiplication by conj(r)
+matches the congruence argument in the proof. The parity pairing has exactly
+the three required cases. Integer division of negative coordinates agrees
+with the intended quotient whenever the arithmetic contracts establish
+exactness. Centered residues satisfy the strict odd-modulus bound. Seed
+enumeration includes both endpoints 0 and (p-1)/2. least_divisor includes q,
+and the fixed-count loops have absorbing terminal states. The n=0 and n=1
+branches are correct. Runtime prime tests are not needed inside prime_rep,
+because its correctness contract is deliberately restricted to prime inputs.
+
+Additional independent executable checks performed successfully:
+  * Exhaustively enumerated every signed tuple of norm m*p for
+    p in {2,3,5,7,11,13} and every 1<=m<p: 19,992 states total.
+  * For every state checked preservation, positivity, proper multiplier
+    decrease when m>1, and saturation when m=1.
+  * In each odd active state checked exact divisibility of the residue norm
+    and all four conjugate-product coordinates by m.
+  * Checked final natural representations and coordinate bounds for 0<=n<=500.
+  * Compared early-exit and literal-clock outputs for 0<=n<=64.
+  * Verified the p=7 even-halving and p=23 odd-centered worked traces.
+
+These finite checks complement the human argument; they are not evidence of
+universal theorem correctness on their own.
+
+Lean scaffold
+-------------
+The total definitions, prime-state invariant, factor invariant, saturated
+ranks multiplier-1 and remaining-1, and conditional assembly agree with
+the mathematical proof. ArithmeticContracts are local obligations and do
+not silently assume the final theorem. The explicit disclaimer about the
+uncompiled, incomplete status is appropriate. A proof of the closed host
+Lean theorem would still need all contract fields and would still be
+distinct from a kernel-checked object-theory iPRA derivation.
+
+The generic iterate_preserves theorem uses induction for arbitrary Lean
+predicates. This is valid at the host metatheory level; in an iPRA compilation
+only the specific Booleanized quantifier-free invariant instantiations are
+used. The report should preserve this distinction.
+
+Python and Lean choose different harmless total defaults on some invalid
+prime inputs (for example p=1) and small invalid least-divisor inputs. They
+agree on the valid-input behavior required by the proof. No cross-language
+identity of all malformed-input values should be claimed.
+
+Post-review editor note: before packaging, seedState for p=0 and p=1 and
+leastDivisor for n<2 were adjusted to match the Python defaults. This does
+not change any valid-input proof or the independently checked states above.
+The packet still does not claim a machine-verified cross-language equivalence.
+
+No Lean compiler was used or available for this independent review. This is
+a source-level conceptual audit, not a compilation claim.

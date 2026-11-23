@@ -1,0 +1,73 @@
+\section{Coverage of the source articles}\label{sec:coverage}
+The table follows MathWorld's equation numbers \cite{mw}. The numbered
+claims are all covered. The entries on the right identify the arithmetic
+content of the corresponding infinite formulas.
+
+\begin{center}\small
+\begin{tabular}{@{}p{.13\linewidth}p{.40\linewidth}p{.40\linewidth}@{}}
+\toprule
+Equations & Statement & Proof or interpretation\\\midrule
+(1), (2) & Definition of $\mu$, summatory $M$ &
+Valuations and bounded sums, \S\ref{sec:core}.\\
+(3), (4) & Reciprocal Dirichlet series and Euler factors &
+Positive half-plane margin, prime-mask expansion, \S\ref{sec:dirichlet-interior}.\\
+(5), (12) & Lambert series and the exponential product &
+Truncated coefficients and analytic error bounds, \S\ref{sec:mob-lambert}.\\
+(6), (7) & The first two moments at $s=1$ &
+Ordinary partial sums with a PR modulus, \S\ref{sec:boundary}.\\
+(8)--(10) & The three reciprocal-square masses &
+Finite trigonometric proof of the two even zeta values, \S\ref{sec:mob-basel}.\\
+(11), (13) & Squarefree divisor count and product law &
+Prime masks and additive valuations, \S\ref{sec:core}.\\
+(14), (15) & Divisor cancellation and $\mu*\tau=\mathbf1$ &
+The involution and convolution associativity, \S\ref{sec:core}.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The additional formulas on Wikipedia \cite{wiki} include the Liouville
+description, $\zeta(s)/\zeta(2s)$, the prime-shifted Lambert series,
+the second logarithmic moment at $s=1$, the trigonometric unital sum
+\cite{kline}, the two primitive-root identities, the Farey sum, the
+irreducible-polynomial count, and convolution powers with a polynomial
+parameter. Sections~\ref{sec:core}--\ref{sec:pnt} prove these and the
+mean-value equivalence with PNT. Section~\ref{sec:boundary} also proves a conditional zero-exclusion bound from power cancellation of $M$. A computable finite-interval presentation
+is specified for the incidence-algebra generalization. The occupation
+number argument explains the arithmetic content of the gas model.
+
+The value lists, including all sixty tabulated values, the initial sign
+fibers, and the displayed products of three and five distinct primes,
+are reproduced by \texttt{checks.py}. For example, bounding the scan
+by 9690 certifies completeness through the last listed product of five
+primes. The script also checks independent sample counts over two finite
+fields. The published plots are illustrations of the same decidable
+tests. The articles' historical notes, software listings, and references
+to other problems have no additional theorem statement about $\mu$ to
+prove here. Comparing the complexity of the two primitive-root and
+prime-factor evaluation procedures would require a specified computational
+model and representation of the output. We give exact bounded algorithms
+for both and make no complexity comparison.
+
+\begin{thebibliography}{9}\raggedright
+\bibitem{wiki} Wikipedia contributors, \emph{Möbius function}, article
+used for the formula inventory. \href{https://en.wikipedia.org/wiki/M\%C3\%B6bius_function}{Article}.
+\bibitem{mw} E. W. Weisstein, \emph{Möbius Function}, MathWorld,
+equations (1)--(15). \href{https://mathworld.wolfram.com/MoebiusFunction.html}{Article}.
+\bibitem{kline} J. Kline, \emph{Unital Sums of the Möbius and Mertens Functions},
+Journal of Integer Sequences 23 (2020), article 20.8.1.
+\href{https://cs.uwaterloo.ca/journals/JIS/VOL23/Kline/kline4.html}{Paper}.
+\bibitem{proveit} V. Reshetnikov et al., \emph{ProveIt},
+\texttt{Logic/PrimitiveRecursiveArithmetic}, in particular
+\texttt{ConciseIPRA} and \texttt{Derivations}. Declarations inspected at
+\texttt{65b76a5b8aa8} (full revision in the link).
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/65b76a5b8aa87ecad4103c2d287eff5660d3c84c/Logic/PrimitiveRecursiveArithmetic}{Pinned directory}.
+\bibitem{strip} ProveIt, \emph{Logarithmic-integral strengthenings of the
+prime number theorem in iPRA}, November 15, 2026.
+The files \texttt{tex/analytic.tex} (E1)--(E8), (A1)--(A7),
+\texttt{tex/finite\_contour.tex}, and \texttt{tex/theta\_bridge.tex}
+supply the quantitative analytic lemmas reused in
+Sections~\ref{sec:boundary} and~\ref{sec:bootstrap}.
+These are human proof sources. The new signed smoothing and the boundary
+moment deductions are given in this report.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/a9c0f1949be61679ed2e219b97dc42ecb7ae91a9/Logic/PrimitiveRecursiveArithmetic/docs/proofs/analytic-number-theory/pnt_li_ipra_2026-11-15}{Pinned packet}.
+\end{thebibliography}

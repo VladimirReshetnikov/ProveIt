@@ -1,0 +1,33 @@
+\section{Two cuts and a topological parity argument}
+\label{sec:topo}
+The necklace pictured in the overview has an elementary discrete theorem. For simplicial labelings a different parity count finds a fully labeled simplex. Both conclusions provide finite locations as witnesses.
+
+\begin{theorem}[Two-color necklace splitting]\label{result71}
+A linear necklace of $2a$ red and $2b$ blue beads can be shared equally between two people with at most two cuts between beads. For some two-color necklaces two cuts are necessary.
+\end{theorem}
+\begin{proof}
+Put $h=a+b$. For $0\le i\le h$, let $R_i$ be the red count in the $h$ positions starting at $i$. The two end windows are disjoint and exhaustive, so $R_0+R_h=2a$. Sliding the window changes the count by at most one. If the initial count is $a$, take the initial window; otherwise scan until the first index where the count crosses or reaches $a$ in the requisite direction. Since the final count is on the other side, such an index exists and the unit step makes its value exactly $a$. The window has $b$ blue beads as well. Give it to one person and the complement to the other, with cuts at its two ends if internal. If $h=0$, give both the empty share. For the linear necklace red--red--blue--blue, a single cut would have to give a prefix of length two containing one of each, which it does not. This proves sharpness for two colors.
+\end{proof}
+
+\begin{theorem}[Sperner's simplicial labeling lemma, with parity]\label{result72}
+In a finite triangulation of a $d$-simplex whose vertices are labeled $0,\ldots,d$ subject to the Sperner boundary condition, the number of fully labeled $d$-simplices is odd. In particular an explicit cell is returned by bounded search.
+\end{theorem}
+\begin{proof}
+We make explicit the finite incidence data used by the statement. Take the flag of faces on labels $[0,j]$, $0\le j\le d$. For each face record the list $K_j$ of its triangulation's top $j$-simplices as increasing $(j+1)$-tuples of distinct vertex IDs. $K_0$ consists of the vertex labeled $0$. Each codimension-one face obtained by omitting a vertex from a member of $K_j$ has one incident member on the boundary and two in the interior. The facets of the triangulated face opposite label $j$ are precisely the list $K_{j-1}$. Every other boundary facet lies on an original boundary face missing some label $i<j$. The boundary condition says a vertex lying on an original face has a label belonging to that face. Thus labels in $K_j$ are at most $j$, and other boundary facets cannot carry all $0,\ldots,j-1$. These are bounded checks on supplied carrier/incidence tables. They constitute the combinatorial version of a triangulation required in iPRA. For a geometric triangulation supplied together with its face incidences, each interior facet has one neighboring simplex on either side, and each boundary facet just the inward one; intersections along faces and covering the simplex give this local count.
+
+At stage $j\ge1$ count the pairs $(\sigma,\tau)$ with $\sigma\in K_j$ and $\tau$ one of its facets using all the labels $0,\ldots,j-1$. Counting by facets modulo two leaves exactly the fully labeled members of $K_{j-1}$. Counting by $\sigma$, there is one qualifying facet if all $j+1$ labels occur. If just the labels $0,\ldots,j-1$ all occur, exactly one of them occurs twice and deleting either repeated occurrence gives a qualifying facet. In every other case no deletion works. Hence the parity at stage $j$ equals that at $j-1$. The count is one at stage zero. This numerical induction gives oddness at $d$ and the least fully labeled cell. It applies verbatim to any verified incidence presentation satisfying the stated conditions.
+\end{proof}
+
+\begin{center}
+\begin{minipage}{.36\linewidth}\centering
+\begin{tikzpicture}[x=.75cm,y=.75cm]
+\coordinate(A)at(0,0);\coordinate(B)at(4,0);\coordinate(C)at(2,3);\coordinate(D)at(2,0);\coordinate(E)at(3,1.5);\coordinate(F)at(1,1.5);
+\fill[soft](D)--(E)--(F)--cycle;\draw[inkblue](A)--(B)--(C)--cycle (D)--(E)--(F)--cycle;
+\foreach \p/\l in {A/0,B/1,C/2,D/1,E/2,F/0}{\node[draw=inkblue,circle,fill=white,inner sep=1.5pt,font=\small\sffamily] at (\p){\l};}
+\end{tikzpicture}
+\end{minipage}\begin{minipage}{.54\linewidth}\small
+In dimension two, count incidences with edges labeled $0,1$. The lower-left triangle contributes two. The shaded triangle contributes one and carries all three labels. On the outer boundary just one edge has labels $0,1$.
+\end{minipage}
+\end{center}
+
+\paragraph{Objects for Lean.} Store each $K_j$ and label/carrier array with explicit lengths and bounds; order vertex tuples to identify two copies of a facet. The incidence predicate for $(\sigma,\tau)$ scans the $j+1$ single deletions. Double count this Boolean over the rectangular product of cell and facet indices. Use the recursion $\operatorname{parity}(a+b)=\operatorname{parity}(\operatorname{parity}(a)+\operatorname{parity}(b))$ and test all claims about boundary carriers directly from the data. The conclusion about a geometric realization is the interpretation of the finite input contract. No oracle for recognizing triangulations or for sampling arbitrary real maps is used.

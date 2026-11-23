@@ -1,0 +1,54 @@
+Standalone rerun. Executable paths abbreviated for readability.
+$ lean --version
+Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)
+$ lean lean/Bounded.lean
+'CombinatoricsCode.first_spec' depends on axioms: [propext, Quot.sound]
+'CombinatoricsCode.success_iff' depends on axioms: [propext, Quot.sound]
+$ lean lean/WordCount.lean
+'FiniteWords.wordCertificate' does not depend on any axioms
+'FiniteWords.countAll' depends on axioms: [propext]
+$ lean lean/Handshaking.lean
+'GraphCounting.transpose_sum' does not depend on any axioms
+'GraphCounting.weighted_handshaking' does not depend on any axioms
+'GraphCounting.handshaking' does not depend on any axioms
+'GraphCounting.odd_degree_count_even' does not depend on any axioms
+$ lean lean/Kirkman.lean
+'Kirkman.shape' does not depend on any axioms
+'Kirkman.attendance' does not depend on any axioms
+'Kirkman.pairCoverage' does not depend on any axioms
+$ lean lean/ThueMorse.lean
+'ThueMorse.tableCorrect' depends on axioms: [propext, Quot.sound]
+'ThueMorse.blockComplement' depends on axioms: [propext, Quot.sound]
+'ThueMorse.balancedPairs' depends on axioms: [propext, Quot.sound]
+'ThueMorse.cubeFree' depends on axioms: [propext, Quot.sound]
+'ThueMorse.packedCorrect' depends on axioms: [propext, Quot.sound]
+'ThueMorse.packedMismatch' depends on axioms: [propext, Quot.sound]
+'ThueMorse.atEven' depends on axioms: [propext, Quot.sound]
+'ThueMorse.overlapFree' depends on axioms: [propext, Quot.sound]
+'ThueMorse.mismatch' depends on axioms: [propext, Quot.sound]
+'ThueMorse.aperiodic' depends on axioms: [propext, Quot.sound]
+$ python3 checks/actions.py
+PASS: necklaces, primitive necklaces, bracelets, and XOR for 4,096 pairs of ranked games
+$ python3 checks/arithmetic.py
+PASS: prime sumsets and restricted sums, EGZ selectors, Fine-Wilf, Prouhet, two-cut necklaces, stationary tree weights and contraction.
+$ python3 checks/enumeration.py
+PASS: twelvefold table, Narayana numbers, polygon dissections, Glaisher and derangements
+$ python3 checks/graphs.py
+Graph enumeration, closure, Turan, tournaments, Pruefer, matching, Ramsey and sum-free checks passed.
+$ python3 checks/models.py
+Walk counts, restricted recurrence, finite Ising duality, defects and ring checks passed.
+$ python3 checks/polynomials.py
+PASS: Potts, chromatic and Tutte expansions through four vertices, and a multigraph with loop and parallel edges.
+$ python3 checks/structure.py
+test_kirkman passed
+test_planes passed
+test_perfect_codes passed
+test_set_bounds passed
+test_birkhoff passed
+test_permutohedron passed
+test_kissing passed
+$ python3 checks/tableaux.py
+Passed hook, content, insertion, reverse, subsequence and avoidance checks.
+$ python3 checks/wallis.py
+PASS: rational Wallis, central binomial, and Catalan bounds for 1 <= n <= 100
+All requested checks passed.

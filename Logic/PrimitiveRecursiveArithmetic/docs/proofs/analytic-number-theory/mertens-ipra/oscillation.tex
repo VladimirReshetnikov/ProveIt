@@ -1,0 +1,114 @@
+\section{A square-root lower bound with bounded witnesses}\label{sec:omega}
+The upper bounds still allow large excursions. The following result gives a
+literal finite search interval for the next excursion beyond any starting
+point. It uses one zero of zeta and needs no assumption on the other zeros.
+
+\begin{theorem}\label{thm:sqrt-lower}
+For $A\ge1$, put
+\[
+ P=65536A,\qquad V=4096 AP,\qquad J=32VP,\qquad B=16(A+1)4^J.
+\]
+Some integer $n$ with $A\le n\le B$ satisfies
+\[
+                     32768^2 M(n)^2>n.
+\]
+The least such $n$ in this interval is a primitive recursive witness function
+of $A$. Thus $|M(n)|/\sqrt n$ exceeds $1/32768$ arbitrarily far out.
+\end{theorem}
+\begin{proof}
+We use the constructive zero certificate in the ProveIt packet on zeta
+zeros\,\cite{zeropacket}. Its exact rational Euler--Maclaurin enclosures
+certify a contraction of factor less than $1/64$ on the disk of radius
+$10^{-6}$ centered at $1/2+14.1347251417347\,i$. Iteration gives a
+primitive recursive name for the unique zero $\rho$ in this disk. The
+functional equation and conjugation send this zero to $1-\bar\rho$ in
+the same disk, so $\rho=1/2+i\gamma$ with $14<\gamma<15$. We import
+this human-proved certificate and its functional-equation foundation.
+The exact rational computation was rerun for this report and gave the same JSON data as the pinned repository file. The continuation $Z$ used below is the Euler summation formula at cutoff
+one, the same one used to enclose the derivatives in that packet.
+
+Write $a=1/32768$, $e=1/P$, $s=\rho+e$, and $z_0=s+2$.
+Suppose that $|M(n)|\le a\sqrt n$ holds throughout the indicated finite
+interval. Put $m_B(t)=M(\min(\lfloor t\rfloor,B))$ for $t\ge1$, and
+$D_B(z)=\sum_{d=1}^{B}\mu(d)d^{-z}$. Then $|m_B(t)|\le A\sqrt t$
+everywhere, using $|M(n)|\le n$ for $n<A$. For $t\ge A$, the stronger
+$|m_B(t)|\le a\sqrt t$ holds, including beyond $B$ where the table is
+constant. For $\Re z>0$, integration of each step gives
+\[
+        D_B(z)=z\int_1^\infty m_B(t)t^{-z-1}\,dt .
+\]
+Indeed the contribution of the jump $\mu(d)$ is
+$\mu(d)z\int_d^\infty t^{-z-1}dt=\mu(d)d^{-z}$.
+At $z=s$, integrate $|m_B(t)|\le t$ on $[1,A]$ and
+$|m_B(t)|\le a\sqrt t$ on $[A,\infty)$. This gives
+$|D_B(s)|\le16(2A+a/e)$ since $|s|\le16$.
+The continuation formula
+\[
+ Z(z)=\frac{z}{z-1}-z\int_1^\infty\{t\}t^{-z-1}\,dt
+\]
+gives $|Z'(z)|\le1+2+16\cdot4<128$ along the horizontal segment from
+$\rho$ to $s$. Here $|z-1|\ge1$, the integral is bounded by
+$1/\Re z\le2$, and the differentiated integral by $1/(\Re z)^2\le4$.
+Since $Z(\rho)=0$, we have $|Z(s)|\le128 e$. In particular
+\begin{equation}\label{eq:small-omega-product}
+        |Z(s)D_B(s)|\le 2048(2Ae+a)\le 1/8.
+\end{equation}
+
+We next show from the same finite hypothesis that this product is close
+to one. Let $u_j$ be the Taylor coefficients at $z_0$ of
+$Z(z)D_B(z)-1$. Two estimates at different radii are needed. At radius
+$1/2$ the ordinary Dirichlet series converge absolutely, and the full
+reciprocal identity gives
+\[
+ Z(z)D_B(z)-1=-\sum_{m\ge1}\sum_{d>B}\mu(d)(md)^{-z}.
+\]
+The absolute Taylor coefficients of $t^{-z}$ about $z_0$, weighted by
+$(1/2)^j$, sum to $t^{-\Re z_0+1/2}$. As $\Re z_0-1/2\ge2$, comparison
+with $\sum_m 1/m^2\le2$ and $\sum_{d>B}1/d^2\le1/B$ gives
+\begin{equation}\label{eq:omega-small-radius}
+                       \sum_{j\ge0}|u_j|2^{-j}\le 2/B.
+\end{equation}
+The estimates follow from $1/d^2\le1/(d-1)-1/d$ for $d>1$.
+
+At radius $R=2+e/2$, use the two integral representations instead.
+For any of the functions $f$ here with $|f(t)|\le C t^\beta$ the absolute
+Taylor coefficient of degree $j$ in $\int_1^\infty f(t)t^{-z-1}dt$
+is bounded by $C/(\Re z_0-\beta)^{j+1}$. Expand the exponential on
+bounded intervals and integrate $u^je^{-du}/j!$ after $u=\log t$,
+$d=\Re z_0-\beta$, as in Section~\ref{sec:growth}. Summing the
+coefficient majorants with weight $R^j$ gives $C/(\Re z_0-\beta-R)$.
+For $D_B$ take $C=A$, $\beta=1/2$, and multiply by
+$|z_0|+R\le20$, obtaining $40A/e$. For $Z$, the fractional-part
+integral has $C=1$, $\beta=0$, giving a weighted bound of at most $40$
+after multiplication by $z$. The term $z/(z-1)$ contributes at most
+$(|z_0|+R)/(|z_0-1|-R)\le2$ by its geometric series. Thus the bound
+for $Z$ is at most $64$. The sum of weighted absolute coefficients
+of a product is at most the product of the two bounds, so
+\begin{equation}\label{eq:omega-large-radius}
+                       \sum_{j\ge0}|u_j|R^j\le 1+64\cdot40A/e\le V.
+\end{equation}
+The coefficients in the two estimates agree term by term. In a neighborhood
+of $z_0$, the integral for $D_B$ is the finite sum already evaluated,
+and the Euler formula for $Z$ is its ordinary Dirichlet series.
+Differentiating there at $z_0$ computes the coefficients in either
+representation. All derivative orders through any specified $j$ use the
+moment bounds just given, with geometric remainders on a smaller radius.
+
+Evaluate the expansion at $s=z_0-2$. By
+\eqref{eq:omega-small-radius} the terms through degree $J$ give absolute
+sum at most $4^J(2/B)\le1/8$. The remainder is bounded by
+\eqref{eq:omega-large-radius} by $V(2/R)^{J+1}$. Bernoulli's inequality
+gives $(R/2)^{J+1}=(1+e/4)^{J+1}\ge1+(J+1)e/4\ge8V$.
+It follows that $|Z(s)D_B(s)-1|\le1/4$, contradicting
+\eqref{eq:small-omega-product} with an absolute gap of at least $5/8$.
+
+The predicate tested at each $n$ in the finite interval is just the strict
+integer inequality in the theorem. A bounded scan either returns its first
+true instance or certifies the opposite weak inequality throughout the
+interval. The contradiction excludes the second output. All truncation,
+precision and search bounds are primitive recursive in $A$ and the
+requested precision. For example the geometric remainder at the evaluation
+point is controlled by the same Bernoulli bound with $J$ enlarged by a
+factor $2^j$ for $j$ extra bits. Thus this reasoning gives the positive
+witness, with the stated primitive recursive bound.
+\end{proof}

@@ -1,0 +1,71 @@
+\section{Coverage, source corrections, and boundaries}
+\label{sec:coverage}
+
+\subsection{Selected immediate-link coverage}
+The accompanying \texttt{sources/coverage\_map.json} records 59 selected immediate outgoing topic links. Each was observed on the main article and opened through that actual parent link. It records the target URL, theorem identifiers, and whether the treatment is complete for the selected result, conditional, limited, or restricted to an explicit model. The following compact table summarizes the mathematical groups; the machine-readable ledger retains the full link provenance.
+
+\begin{longtable}{p{0.31\textwidth}p{0.17\textwidth}p{0.44\textwidth}}
+\toprule
+Article topic & Results & What is established here \\
+\midrule\endhead
+Turing machines; determinism; multi-tape machines & F05--F06 & Total clocked simulation, trace uniqueness, and specified polynomial simulations. \\
+Complexity classes; P; NP; coNP & C01--C04, N02 & First-order presentations, core containments, and closure constructions. \\
+Time and space measures; input encoding & C05--C06 & Complete bounded-computation problems with unary versus binary budgets. \\
+Polynomial and logspace reductions & N01, N03, N06 & Composition, resource bounds, and explicit printers. \\
+SAT; NP-hardness and completeness & N03--N05, N07--N11 & Cook--Levin and graph/integer reductions with witness maps. \\
+Graph isomorphism; Hamiltonian paths; optimization & N12 & Explicit NP certificates for the stated decision versions. \\
+SAT fragments; structural complexity & N13--N14, N22, S09 & 2SAT and Horn algorithms; NL and P completeness. \\
+Function problems and search & C04, N15--N17 & Correct graph-versus-search qualification and conditional polynomial search. \\
+Counting problems; \#P & N18, R05--R06 & Parsimonious completeness, counting algebra, supports, majority classes. \\
+Vertex cover; parameterized complexity & N19--N20 & A factor-two approximation and a bounded branching algorithm. \\
+L; NL; nondeterministic space & S01--S09 & Graph completeness, path shortening, Savitch, and complement closure. \\
+PSPACE; NPSPACE; exponential space & S06, S10--S13 & Space equalities, compact QBF, and finite-game completeness. \\
+Time and space hierarchies & H01--H05 & Explicit counterexamples and the five stated coarse separations. \\
+Alternating machines; complexity classes & A01--A04 & AP = PSPACE, fixed PH levels and QBF completeness, conditional collapses. \\
+AC; NC; parallel computation & A05--A07 & Balancing, sequential/gate-replay evaluation, and NL in NC$^2$. \\
+RP; ZPP; BPP; probabilistic machines & R01--R09 & Exact amplification, finite zero-error formulation, PP, advice and PH containment. \\
+Boolean circuits; circuit complexity & R10--R13 & Counting, a PR hard family, and matching-order worst-case circuit size. \\
+Decision-tree complexity; sorting & R14--R17 & Comparison and query lower bounds, including finite randomized bounds. \\
+Communication complexity & R18--R20 & Rectangles, fooling sets, exact deterministic equality and public-coin fingerprints. \\
+Best/average/worst; amortized analysis & R21--R23 & Finite cost bounds, the potential identity, and exact binary-counter cost. \\
+Quantum machines; BQP & Q01--Q04 & Exact path sums and BPP/PP/PSPACE containments for the specified $HT$ model. \\
+\bottomrule
+\end{longtable}
+
+\subsection{Statements in the article that require care}
+\paragraph{The graph of a function is not automatically an efficient search oracle.}
+Checking a completed proposed output and finding an output are different computational tasks. C04 states the precise bounded-search result, and N15 proves the stronger prefix-extension property needed for SAT self-reduction.
+
+\paragraph{Amortized cost is not another point in a universal average-cost ordering.}
+For a finite distribution, minimum cost is at most weighted average cost and that is at most maximum cost. Amortization bounds total cost along admissible operation sequences and has no unconditional position between the average and worst costs of unrelated individual inputs. R21--R23 give the correct separate assertions.
+
+\paragraph{Encoding and machine hypotheses affect every resource claim.}
+Unary and binary clock fields produce different complete problems. A unit-cost RAM with unrestricted enormous integers is not covered by a polynomial simulation of finite-tape bit operations. Church--Turing and practical-feasibility theses are interpretive theses, not arithmetic theorems proved by our finite machine simulations. Quantum programs in this report use a specified finite gate basis; unrestricted amplitudes are excluded.
+
+\paragraph{Some source-page performance descriptions are stale.}
+The retrieved article still discusses a subexponential graph-isomorphism bound as the best known bound. Babai's primary work gives the stronger quasipolynomial result \cite{Babai2016}. We do not reproduce the outdated claim, and we do not count the quasipolynomial algorithm as proved here. N12 gives only the elementary NP certificate that its statement explicitly promises.
+
+\subsection{Advanced results deliberately not claimed}
+\begin{longtable}{p{0.28\textwidth}p{0.64\textwidth}}
+\toprule
+Result or subject & What remains beyond this packet \\
+\midrule\endhead
+Ladner's theorem & A complete delayed-diagonalization construction and a careful intuitionistic analysis of the numerical separation hypothesis. One cannot silently extract an unbounded mismatch witness from a negated universal agreement statement. No nonderivability claim is made. \\
+Sharp time hierarchy and nondeterministic time hierarchy & The optimized universal simulation, time constructibility, domination hypotheses, and the nondeterministic diagonal machinery. H01--H02 and H05 prove their displayed coarser consequences. \\
+General sharp space hierarchy & The uniform space-constructibility and separation-modulus bookkeeping at arbitrary bounds. H03--H04 prove concrete large-gap separations; S08 proves complement closure under its supplied budget hypothesis. \\
+AKS primality and advanced factoring & Their number-theoretic certificates, polynomial identities, and bit-complexity analysis. No unsupported polynomial primality or factoring theorem is imported. \\
+IP = PSPACE and PCP & Full arithmetization, finite-field sum-check, low-degree testing, and quantitative soundness machinery. The finite counting foundation is useful but does not supply these proofs. \\
+Full QMA and general quantum universality & Quantum-witness representation, gap-preserving approximations, and universal-gate compilation. Q01--Q04 prove the exact stated finite model. \\
+Continuous and analog complexity & A representation of continuous inputs, moduli, approximation costs, and a precise input/output promise. A finite discretization alone is not the unrestricted continuous theorem. \\
+Blum speedup and unrestricted recursive complexity measures & An explicit partial-recursion framework, the axioms for the measure, and the corresponding priority/diagonal argument. No total PR evaluator of arbitrary recursive programs is assumed. \\
+Open class equalities & No assertion of P = NP, P $\ne$ NP, L = P, P = BPP, NP = coNP, or an unproved strictness between intermediate classes. Conditional compiler theorems are kept conditional. \\
+\bottomrule
+\end{longtable}
+P versus NP remains listed as unsolved by the official Clay Mathematics Institute source \cite{ClayPNP}. Omitting an established theorem from this finite collection does not imply that it is false, nonconstructive, or unprovable in iPRA. It means its complete proof and audit have not been supplied here.
+
+\subsection{Reproducible artifacts and validation}
+The archive includes every LaTeX section, the compiled PDF, the uncompiled Lean outline modules, exact-arithmetic Python implementations and finite checks, the 86-entry claims ledger, the 59-topic coverage ledger, repository/source metadata, build instructions, and validation logs. \texttt{code/verify\_all.py} runs the five independent mathematical check programs and records their outcomes. Each check's numerical extent is reported in its own JSON or log; the aggregate does not turn experiments into universal proofs.
+
+The reduction checks compare satisfying assignments with independently evaluated circuits, graph predicates, and subset selections. The space checks compare graph reachability with counted nonreachability and with actual quantified syntax, including syntax-growth bounds. The probability checks use exact integer or rational arithmetic. The quantum checks compare signed path sums with an independent $a+b\sqrt2$ evaluator and explicitly enumerate the PP branch construction. The machine checks compare packed base-three tapes with a separate sparse-tape interpreter. These tests target different representations of the same finite mathematics.
+
+The PDF is built from the included source with pdfLaTeX and checked for unresolved references, clipping/overflow, and render quality. Visual inspection complements text extraction. The verification log records that Lean compilation and complete object-language proof export were not performed; neither successful Python tests nor a well-rendered PDF changes that status.

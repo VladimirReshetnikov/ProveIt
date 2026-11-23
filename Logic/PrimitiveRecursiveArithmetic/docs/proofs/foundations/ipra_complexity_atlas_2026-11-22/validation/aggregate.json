@@ -1,0 +1,196 @@
+{
+  "overall": "passed",
+  "python": "3.12.14",
+  "checks": [
+    {
+      "script": "code/machine_checks.py",
+      "exit_code": 0,
+      "elapsed_seconds": 0.734,
+      "result": "passed",
+      "details": {
+        "diagonal_examples": [
+          {
+            "candidate": false,
+            "clock": 1,
+            "coefficient": 1,
+            "diagonal": true,
+            "exponent": 0,
+            "input_length": 510
+          },
+          {
+            "candidate": false,
+            "clock": 2,
+            "coefficient": 2,
+            "diagonal": true,
+            "exponent": 0,
+            "input_length": 511
+          },
+          {
+            "candidate": false,
+            "clock": 512,
+            "coefficient": 1,
+            "diagonal": true,
+            "exponent": 1,
+            "input_length": 511
+          },
+          {
+            "candidate": true,
+            "clock": 1,
+            "coefficient": 1,
+            "diagonal": false,
+            "exponent": 0,
+            "input_length": 510
+          },
+          {
+            "candidate": true,
+            "clock": 2,
+            "coefficient": 2,
+            "diagonal": false,
+            "exponent": 0,
+            "input_length": 511
+          },
+          {
+            "candidate": true,
+            "clock": 512,
+            "coefficient": 1,
+            "diagonal": false,
+            "exponent": 1,
+            "input_length": 511
+          },
+          {
+            "candidate": true,
+            "clock": 1,
+            "coefficient": 1,
+            "diagonal": false,
+            "exponent": 0,
+            "input_length": 510
+          },
+          {
+            "candidate": true,
+            "clock": 2,
+            "coefficient": 2,
+            "diagonal": false,
+            "exponent": 0,
+            "input_length": 511
+          },
+          {
+            "candidate": true,
+            "clock": 512,
+            "coefficient": 1,
+            "diagonal": false,
+            "exponent": 1,
+            "input_length": 511
+          },
+          {
+            "candidate": false,
+            "clock": 1,
+            "coefficient": 1,
+            "diagonal": true,
+            "exponent": 0,
+            "input_length": 4
+          },
+          {
+            "candidate": false,
+            "clock": 2,
+            "coefficient": 2,
+            "diagonal": true,
+            "exponent": 0,
+            "input_length": 5
+          },
+          {
+            "candidate": false,
+            "clock": 6,
+            "coefficient": 1,
+            "diagonal": true,
+            "exponent": 1,
+            "input_length": 5
+          }
+        ],
+        "distinct_machine_tables_tested": 181,
+        "invalid_machine_encodings_rejected": 8,
+        "machine_codec_roundtrips": 100,
+        "packed_vs_sparse_configuration_comparisons": 67875,
+        "rule_codec_roundtrips": 675,
+        "self_description_roundtrips_and_diagonal_mismatches": 12,
+        "space_clock_vs_independent_cycle_checks": 238,
+        "status": "PASS",
+        "ternary_write_checks": 5103
+      }
+    },
+    {
+      "script": "code/reduction_checks.py",
+      "exit_code": 0,
+      "elapsed_seconds": 0.418,
+      "result": "passed",
+      "details": {
+        "all_graphs_through_five_vertices_approximation": 1100,
+        "clique_reverse_witnesses_checked": 1492,
+        "cnf_graph_and_subset_sum_instances": 236,
+        "dual_rail_circuit_to_horn_instances": 4416,
+        "horn_sat_least_model_instances": 4096,
+        "parameterized_vertex_cover_instances": 6505,
+        "sat_search_oracle_instances": 236,
+        "status": "PASS",
+        "subset_sum_partition_knapsack_instances": 2560,
+        "subset_sum_witness_bijections_checked": 618,
+        "two_gate_circuits_with_unique_extension": 1104,
+        "two_sat_differential_instances": 1326
+      }
+    },
+    {
+      "script": "code/space_checks.py",
+      "exit_code": 0,
+      "elapsed_seconds": 0.344,
+      "result": "passed",
+      "details": {
+        "status": "passed",
+        "directed_graphs": 530,
+        "forced_enumeration_subset_checks": 111108,
+        "layered_reduction_endpoint_checks": 4674,
+        "actual_qbf_evaluation_checks": 273,
+        "qbf_size_growth": "linear in recursion depth, checked",
+        "limits": "Finite tests; no general proof or small-space claim for this Python implementation."
+      }
+    },
+    {
+      "script": "code/random_lower_checks.py",
+      "exit_code": 0,
+      "elapsed_seconds": 0.138,
+      "result": "passed",
+      "details": {
+        "detail_log": "validation/random_lower_checks.log"
+      }
+    },
+    {
+      "script": "code/quantum_checks.py",
+      "exit_code": 0,
+      "elapsed_seconds": 0.825,
+      "result": "passed",
+      "details": {
+        "status": "passed",
+        "exhaustive_small_circuit_initial_state_checks": 8050,
+        "exact_amplitude_model": "rational pairs a+b*sqrt(2), independently updated",
+        "hadamard_counts_covered": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "fresh_wire_double_H_checks": 476,
+        "PP_gap_cases_with_all_branches_enumerated": 476,
+        "PP_total_branches_enumerated": 314624,
+        "PP_gap_signs_covered": [
+          -1,
+          0,
+          1
+        ],
+        "classical_randomized_embedding_checks": 80,
+        "duplicate_Boolean_gate_inputs": "included and compiled to copy gates",
+        "limits": "Finite implementation checks; no general theorem or object-iPRA derivation is machine-verified here."
+      }
+    }
+  ],
+  "verification_boundary": "Finite implementation checks only. New Lean files uncompiled; no completed object-iPRA derivations or asymptotic resource certificates are claimed."
+}

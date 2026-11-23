@@ -1,0 +1,95 @@
+\section{Lean formalization: definitions, exact targets, and remaining work}
+\label{sec:formalization}
+
+\subsection{The endpoint is an object-language derivation}
+The repository's inspected toolchain is \texttt{leanprover/lean4:v4.32.0}. Its \texttt{ConciseIPRA.PR} module defines the arity-indexed syntax
+\begin{lstlisting}
+inductive PR : Nat -> Type
+  | zero : PR 0
+  | succ : PR 1
+  | proj {k} (i : Fin k) : PR k
+  | comp {m k} (f : PR m) (gs : Fin m -> PR k) : PR k
+  | prec {k} (f : PR k) (g : PR (k + 2)) : PR (k + 1)
+\end{lstlisting}
+It then defines arithmetic terms \texttt{PTm n}, formulas \texttt{Fm PTm n}, arithmetic axioms \texttt{PRAAx}, and intuitionistic derivations. For a closed numerical sentence $\varphi$, the final goal has type
+\begin{lstlisting}
+([] : List (Fm PTm 0)) |- [PRAAx] phi
+\end{lstlisting}
+where the ASCII display represents the repository's Unicode turnstile notation. The actual syntax is shown in \texttt{lean/integration/ObjectTargets.lean}. A host-level theorem about an arbitrary function \texttt{Nat -> Bool} does not have that type. Neither a semantic structure with a correctness field nor an unproved target proposition is an object-language proof.
+
+The supplied files are deliberately separated into definitions, target statements, and completion notes. Their comments identify which predicates remain to be lowered into PR syntax and which resource-machine simulations are still to be proved. There is no claim that the files have been typechecked in this task. This meets the requested outline stage, and leaves a concrete rather than rhetorical completion path.
+
+\subsection{A complete numerical convention for the interpreter}
+The independent \texttt{CoreOutline.lean} and \texttt{machine\_checks.py} use this canonical source model. The input is read only. Its symbols are $0$ for the left endmarker, $1$ for data zero, $2$ for data one, and $3$ for the right endmarker. The one-sided work tape has base-three digits, with $0$ blank, $1$ data zero, and $2$ data one. States $0,1$ are absorbing rejection/acceptance; the initial state is $2$. Initially both heads are at position zero, so the input head is on the left endmarker, and the work tape is blank. Left moves clamp at zero; input moves also clamp at the right endmarker. The transition writes before moving.
+
+A source table has $q\ge3$ states and $12q$ rules. A rule with next state $a<q$, write symbol $b<3$, input move $u<3$, and work move $v<3$ is encoded as
+\[
+ 27a+9b+3u+v<27q,
+\]
+where move values $0,1,2$ mean left, stay, right. The program payload is $q-3$ unary ones followed by zero, then $12q$ fixed-width rule fields of width $w=\lceil\log_2(27q)\rceil$, with least-significant bit first within each field. Its exact length is $(q-2)+12qw$. The word marker retains zero suffixes. Invalid length, fields, headers, or input codes receive the rejecting interpretation. The rule index is $12a+3\,\text{inputSymbol}+\text{workSymbol}$. The table is explicit, so parsing and a rule lookup have the polynomial scan implementations used in F06.
+
+For a space budget $s$, the initial configuration or any resulting work head outside $\{0,\ldots,s-1\}$ causes rejection. With $s\ge1$, the bound $(q+2)(n+2)(s+1)3^s$ suffices. All definitions are finite numerical arithmetic. The Lean record presentation is a convenient semantic view; for object-language work pack its fields into a mixed-radix record using the explicit horizon or budget bounds. The per-transition equation between that packed record and the semantic record is the first required representation theorem.
+
+\subsection{Module responsibilities}
+\begin{longtable}{p{0.25\textwidth}p{0.67\textwidth}}
+\toprule
+File or target & Definitions and work to finish \\
+\midrule\endhead
+\texttt{CoreOutline.lean} & Marker words, bounded folds, canonical rules/configurations, fixed-table decoding, time and budgeted iteration, polynomial clocks and self-descriptions. Prove codec equations, invalid defaults, trace uniqueness, and physical simulation bounds. \\
+{\footnotesize\path{ReductionsOutline.lean}} & Explicit variable universes, literals, clauses, acyclic gates, Tseitin constraints, subset-sum digits, graph/SAT predicates and assignment constructors. Prove gate truth tables, prefix uniqueness, witness bijections, and the declared reduction/solver obligations. \\
+\texttt{SpaceOutline.lean} & Numeric graph tables, bounded paths, reachable rows, midpoint matrices, QBF syntax/evaluation, the single-copy selector, and finite games. Prove path/counter invariants, freshness, resource-stack implementation, and descriptor compilers. \\
+\texttt{CountingOutline.lean} & Finite counts, random-program presentations, amplification inequalities, majority predicates, advice/covering targets, circuit descriptions, costs and lower-bound obligations. Prove exact inequalities before translating the quantifiers. \\
+\texttt{QuantumOutline.lean} & Signed Hadamard paths, numerator counts, and the PP branch construction. Prove normalization, reversible embedding, and polynomial branch length. \\
+{\footnotesize\path{integration/}\newline\path{ObjectTargets.lean}} & Actual \texttt{PR}/\texttt{PTm}/\texttt{Fm}/\texttt{Prf} target definitions, plus direct reuse points in ProveIt. These are specified tasks, not invented completed derivations. \\
+\bottomrule
+\end{longtable}
+
+The high-level statements for A01--A07 reduce to these modules' machine, circuit, and QBF primitives. Add explicit printers for quantified block expansion, balanced gate replacement, configuration adjacency, and matrix squaring; prove their output lengths and logspace counters separately. A semantic \texttt{List.map} is not a proof of a logarithmic-space printer.
+
+\subsection{How to lower a proof, step by step}
+\paragraph{1. Construct the function syntax.}
+For each numerical operation, build a finite \texttt{PR k} term by zero, successor, projection, composition and recursion. Reuse the repository's existing arithmetic, division, sum, pairing, and bounded-search terms where their exact types match. Define machine execution by primitive recursion on its explicit step counter. A polynomial evaluator with a numerical exponent is PR; an arbitrary total evaluator of PR syntax is not introduced. Decode fixed finite circuit/QBF/table grammars by bounded loops on their numerical codes. Functions such as Savitch's recurrence can be defined by iterating the entire finite relation table, even though a different machine implementation is required for the small-space bound.
+
+\paragraph{2. Fix formulas and reflect their finite tests.}
+Write the actual \texttt{BFm} syntax of each bounded invariant. Examples are
+\begin{align*}
+ &\forall i\le j\ \operatorname{trace}(z,i)=\Run(e,x,i),\\
+ &\forall i<g\ \operatorname{gateConstraint}(C,i,a)=1,\\
+ &\forall u,v<N\ R_j(u,v)=[\text{a coded path of length at most }2^j],\\
+ &\forall u<N\ [\text{successful counted enumeration marks }u\iff R_i(u)].
+\end{align*}
+The bracketed path assertion quantifies over codes below $\max(2,N)^{2^K+1}$ for a fixed external horizon parameter $K\ge j$; the transcript assertion similarly has an explicit loop-count/field bound. No quantifier is left tacitly unbounded inside the induction formula. The repository's \texttt{BoundedFormulas.bf\_reflect}, \texttt{bf\_choice}, and \texttt{bf\_least}, and the scoped \texttt{BoundedSyntaxInduction.induction}, provide exactly the required proof rule. Their input is fixed syntax, and their outputs are derivations, not truth assumptions \cite{ProveItBounded}.
+
+\paragraph{3. Prove the local algebra and preservation.}
+Gate constraints use at most eight Boolean cases. Base-eight subset-sum columns use integer digit bounds below eight and a prefix division invariant. Inductive counting uses the equality between the reported count and the sum of the reachable bitmap, not an unverified claim that a guessed absent vertex is absent. Quantum gates use the signed identity $(a+b)^2+(a-b)^2=2(a^2+b^2)$. Random amplification uses finite distributivity and explicit integer inequalities, not analytic probability. Each yields defining-equation proofs, finite case splits, or previously proved arithmetic lemmas in the object theory.
+
+\paragraph{4. Apply only the permitted induction.}
+Reflect the invariant to a Boolean term $b(j)=1$. Prove its base and successor cases with the local hypotheses, apply \texttt{PRA.qfInd}, and reflect back. A proof by structural recursion on a fixed piece of syntax is a metatheoretic constructor of finite derivations. It must not be confused with induction on an arbitrary unbounded formula inside iPRA. Likewise, statements for each fixed PH level are a family of finite proof constructions, not an unjustified internal induction on semantic class membership.
+
+\paragraph{5. Verify a real machine for the resource bound.}
+Construct an explicit transducer or stack machine implementing the semantic function. Record every tape and counter. Prove simulation of one instruction and a PR bound on its overhead, then sum these bounds. For Savitch, a whole-matrix evaluator proves definability but not its quadratic-space theorem; the separate depth-first stack bound is necessary. For nonreachability, a materialized Python bitmap is an independent checker, not the claimed O(log $N$)-workspace machine. For circuit counting, an exponential truth table is compatible with EXPSPACE but does not supply a polynomial-time family. These distinctions are proof obligations, not engineering details that can be omitted.
+
+\paragraph{6. Assemble the closed endpoint and audit it.}
+First prove the compiler theorem with numerical parameters free; instantiate clock and size bounds; close all variables by universal introduction; export the actual \texttt{Prf PRAAx} term. Run Lean with the pinned toolchain and inspect the generated theorem type and axiom dependencies. Check both that there are no admitted proof constants and that the conclusion is the intended object-language formula. A theorem in Lean's metatheory can legitimately use metatheoretic tools to construct an object proof; the decisive evidence is the resulting derivation type. None of these final kernel checks is reported as completed for the new main theorems in this archive.
+
+\subsection{Representative exact obligations}
+\paragraph{Diagonal mismatch.}
+The object sentence universally quantifies numerical $e,c,k$, guards valid word code and $c>0$, and asserts
+\[
+ D(W(e,c,k))\ne B(e,W(e,c,k),c(|W(e,c,k)|+1)^k).
+\]
+It does not merely assert that no polynomial machine agrees everywhere. Prove parser inversion, substitute into the defining equation for $D$, and use Boolean complement inequivalence. Then separately attach the concrete exponential machine and cost derivation. The existing diagonal-clock inequalities can be imported without treating them as proofs of parser or simulator correctness.
+
+\paragraph{Cook--Levin with counted witnesses.}
+For the compiled circuit $C(v,x)$ and CNF $F(v,x)$, give PR assignment maps $\operatorname{extend}$ and $\operatorname{restrict}$. Prove, for all input witness words below their explicit bound, that extension satisfies $F$ exactly when the source verifier accepts; prove every satisfying target assignment is that unique extension of its restriction. This establishes decision equivalence and the stronger bijection needed by N18. The explicit input-variable universe prevents unused witness bits from being lost.
+
+\paragraph{Nonreachability and QBF.}
+Express an online nondeterministic run as a finite transcript, with each guessed path checked directly. Soundness is a bounded assertion about every transcript under its fuel bound. Completeness constructs a transcript by bounded least-path search; the constructor may be expensive, while the verifier's storage remains small. For QBF, prove every newly allocated variable is fresh and that the single recursive occurrence has the intended selector meaning. A mere semantic recurrence without a polynomial-size syntax printer would not prove PSPACE completeness.
+
+\paragraph{Probability and advice.}
+For each word $x$ and parameter $d$, the amplified-error statement is an integer inequality between exact counts. To obtain advice of length $a(n)$, prove that the number of bad lists is strictly below $2^{a(n)}$, use bounded least search, and prove the selected list succeeds on all $2^n$ inputs. This gives a PR advice selector and a nonuniform polynomial circuit, with no claim of polynomial-time advice construction. For a zero-error program, the expected-time assertion remains a family of finite truncation inequalities at every numerical cap.
+
+\subsection{Recommended completion order}
+Complete the common numerical codecs and trace theorem first. Next complete circuit evaluation/Tseitin and finite graph reachability, which have small local invariants and extensive independent checks. Then implement the physical simulation and printer interfaces. At that point Cook--Levin, graph/integer completeness, bounded-time completeness, and diagonal mismatch can be assembled. Finish the Savitch stack and inductive-counting verifier next, then QBF/alternation/parallel circuits. The exact-counting kernel supports PP, amplification, advice, lower bounds, and the quantum gap proof. This order minimizes duplicated encodings and avoids proving later semantic claims against incompatible representations.
+
+The archive's source manifest contains the repository revision and inspected blob identities. The intended integration directory is a new packet under \path{Logic/PrimitiveRecursiveArithmetic/docs/proofs/foundations/}, with eventual checked modules in \path{Derivations/Lean/IPRADerivations/}. No repository write or commit was performed for this delivery.

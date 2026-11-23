@@ -1,0 +1,422 @@
+\section{Hilbert systems, tableaux, and cut-free sequents}\label{sec:systems}
+
+\subsection{A complete Hilbert presentation with explicit proof translation}
+
+Consider the following nine axiom schemes, together with modus ponens.
+Every displayed letter can be replaced by an arbitrary formula:
+\[
+\begin{array}{ll}
+ \mathrm K&A\to(B\to A),\\
+ \mathrm S&(A\to(B\to C))\to((A\to B)\to(A\to C)),\\
+ \wedge I&A\to(B\to A\wedge B),\\
+ \wedge E_1&(A\wedge B)\to A,\\
+ \wedge E_2&(A\wedge B)\to B,\\
+ \vee I_1&A\to A\vee B,\\
+ \vee I_2&B\to A\vee B,\\
+ \vee E&(A\to C)\to((B\to C)\to((A\vee B)\to C)),\\
+ \bot E&\bot\to A.
+\end{array}
+\]
+Call the calculus $H_I$. Add the scheme $A\vee\neg A$ to obtain $H_C$.
+A Hilbert proof is a finite list, each entry annotated as an assumption, a
+scheme instance with its substitutions, or modus ponens from earlier indices.
+The checker is primitive recursive. Axiom schemes make a separate rule of
+uniform substitution unnecessary, though Theorem~\ref{thm:structural} gives
+that rule as a proof transformation.
+
+\begin{lemma}[Effective Hilbert deduction theorem]\label{thm:hilbert-deduction}
+From a length-$l$ Hilbert proof of $B$ from $\Gamma,A$, a primitive recursive
+transformation produces a proof of $A\to B$ from $\Gamma$, using at most
+$5l$ lines before optional sharing. It applies to both $H_I$ and $H_C$.
+\end{lemma}
+\begin{proof}
+Process each original line $D$, producing a block ending in $A\to D$.
+If $D$ is an axiom or an assumption from $\Gamma$, copy $D$, use
+$D\to(A\to D)$, and apply modus ponens. If $D=A$, use the following five
+lines:
+\[
+\begin{gathered}
+ A\to((A\to A)\to A),\qquad A\to(A\to A),\\
+ (A\to((A\to A)\to A))\to((A\to(A\to A))\to(A\to A)),\\
+ (A\to(A\to A))\to(A\to A),\qquad A\to A.
+\end{gathered}
+\]
+The first two are instances of K, the third of S, and the last two are
+modus ponens. If $D$ was obtained from $E$ and $E\to D$, earlier blocks
+provide $A\to E$ and $A\to(E\to D)$; an S instance and two modus ponens
+steps give $A\to D$. This is at most five lines per original line.
+Index translation and checking the resulting list are bounded scans.
+\end{proof}
+
+\begin{theorem}[Hilbert--natural-deduction equivalence]\label{thm:hilbert-equivalence}
+There are primitive recursive proof translations in both directions between
+$H_I$ and \IPC, and between $H_C$ and \CPC, preserving finite contexts
+and conclusions. Both Hilbert systems are sound, and $H_C$ is Boolean-complete.
+\end{theorem}
+\begin{proof}
+Each Hilbert scheme has a fixed natural-deduction proof template. K assumes
+$A$ and then $B$ and returns $A$. S assumes functions $A\to(B\to C)$ and
+$A\to B$, then assumes $A$, applies both functions, and obtains $C$.
+The conjunction and disjunction schemes are the corresponding introduction
+or elimination rules with their premises discharged. The falsehood scheme
+uses falsehood elimination. Modus ponens is implication elimination, and
+the extra classical scheme is an axiom of \CPC.
+
+Conversely, translate a natural-deduction tree recursively. Assumptions
+remain assumptions. Introduction and elimination of conjunction and
+disjunction introduction use the corresponding scheme with modus ponens.
+Implication elimination already is modus ponens. Implication introduction
+uses the effective deduction theorem. For disjunction elimination, translate
+its three premises; apply the deduction theorem to the two branch proofs,
+obtaining $A\to C$ and $B\to C$; combine them and the proof of $A\vee B$
+using the $\vee E$ scheme. Falsehood elimination uses $\bot E$.
+Each transformation has an explicit primitive recursion on the original
+tree; repeated use of the linear deduction transformation gives, for
+example, a bound $100^{l+1}$ on the output line count for a tree of $l$
+rule nodes. Formula-label lengths add only specified coding operations.
+Soundness and classical completeness follow by composition with
+Theorems~\ref{thm:bool-sound} and~\ref{thm:cpc-complete}.
+\end{proof}
+
+\subsection{The classical three-scheme presentation}
+
+The root article displays the schemes K, S, and
+\[
+ \mathrm{L3}:\quad(\neg A\to\neg B)\to(B\to A).
+\]
+We can prove completeness for their following precisely specified version.
+Take the language $\{p_i,\bot,\to\}$ and the abbreviation
+$\neg A=A\to\bot$. This is a definitional version of the displayed
+\L{}ukasiewicz schemes. The historical system with a separate primitive
+negation symbol has a different literal grammar; our theorem refers to
+the declared grammar and does not silently identify those syntaxes.
+
+\begin{theorem}[Three-scheme completeness in the declared language]\label{thm:three-axiom}
+K, S, L3, and modus ponens are sound and complete for Boolean truth in
+$\{\bot,\to\}$. Proof translation and proof construction are primitive
+recursive. Classical conjunction and disjunction can be added by the
+definitions
+\[
+ A\wedge_c B:=\neg(A\to\neg B),\qquad
+ A\vee_c B:=\neg A\to B.
+\]
+\end{theorem}
+\begin{proof}
+The deduction theorem used only K and S and therefore still applies.
+It gives all purely implicational natural deductions. In particular,
+$X\to\neg\neg X$ is derivable: assume $X$, assume $X\to\bot$, apply the
+second assumption to the first, and discharge both in reverse order.
+Also $\bot\to\bot$ is derivable. By K,
+$\neg A\to(\bot\to\bot)$ is derivable. L3 with $B=\bot$ now yields
+$\bot\to A$, so falsehood elimination has been recovered.
+
+Use $X=\neg A$ in double-negation introduction to obtain
+$\neg A\to\neg\neg\neg A$. L3 with $B=\neg\neg A$ yields
+$\neg\neg A\to A$. Thus double-negation elimination is recovered as well.
+To recover classical case analysis, suppose the two branch proofs give
+$A\to C$ and $\neg A\to C$. Under an extra assumption $\neg C$, the first
+branch implies $\neg A$; the second then gives $C$, contradicting $\neg C$.
+Discharge it and use double-negation elimination to conclude $C$.
+The signed evaluation construction for formulas in this smaller language
+uses only implication rules and falsehood elimination; its merging pass
+uses exactly this derived case rule. It therefore supplies completeness.
+Soundness is the two-bit truth-table verification of K, S, and L3, followed
+by modus ponens. Finally the two definitions have the asserted Boolean
+tables, so recursive expansion gives the announced classical extensions.
+All derivations just described have fixed templates, and the earlier
+proof constructors supply the uniform bounds.
+\end{proof}
+
+The six schemes attributed to Frege in the source article are also
+certifiable in this definitional language. Besides K and S, the exchange
+scheme $(D\to(B\to A))\to(B\to(D\to A))$ is proved by assuming its three
+antecedents and applying them in the indicated order. Contraposition
+$(B\to A)\to(\neg A\to\neg B)$ assumes $B$ to obtain a contradiction.
+Double-negation introduction was just proved. The remaining scheme is
+double-negation elimination. Conversely K, S, and that last scheme already
+give falsehood elimination: from $\bot$ obtain $\neg\neg A$ by weakening
+under $\neg A$, then eliminate the double negation. They then give the
+same case-analysis completeness proof. This proves the corresponding
+six-scheme version sound and complete, without relying on historical
+attribution to establish any mathematical step.
+
+\subsection{Analytic tableaux with explicit fuel}
+
+A signed formula is $\mathsf T A$ or $\mathsf F A$. It is satisfied by a
+Boolean row precisely when $A$ has the indicated value. A branch is a
+finite collection of signed formulas. Expanding a compound formula removes
+that occurrence and adds the entries in the following table. A vertical
+bar denotes two alternative branches:
+\[
+\begin{array}{c|c}
+\text{principal formula}&\text{replacement}\\\hline
+\mathsf T(A\wedge B)&\mathsf T A,\mathsf T B\\
+\mathsf F(A\wedge B)&\mathsf F A\mid\mathsf F B\\
+\mathsf T(A\vee B)&\mathsf T A\mid\mathsf T B\\
+\mathsf F(A\vee B)&\mathsf F A,\mathsf F B\\
+\mathsf T(A\to B)&\mathsf F A\mid\mathsf T B\\
+\mathsf F(A\to B)&\mathsf T A,\mathsf F B.
+\end{array}
+\]
+A branch closes on $\mathsf T\bot$ or on both $\mathsf T p_i,\mathsf F p_i$.
+An occurrence $\mathsf F\bot$ may be removed. Fix a deterministic order for
+choosing the next unexpanded compound formula. The total number of its
+primitive nodes, summed over pending formulas, strictly decreases along
+every branch: a nonbranching expansion removes one root node, and a
+branching expansion retains only a proper subformula on each child.
+
+\begin{theorem}[Tableau soundness, completeness, and termination]\label{thm:tableaux}
+For an input branch with total node count $L$, the expansion process has
+depth at most $L$ and fewer than $2^{L+1}$ nodes. It returns either a closed
+tableau or a satisfying valuation. A branch has a closed tableau if and
+only if it is unsatisfiable. All assertions and the proof-or-model
+construction are provable in \ipra.
+\end{theorem}
+\begin{proof}
+Each table entry is a Boolean equivalence: satisfying the parent is
+equivalent to satisfying its only child, or at least one of its two
+children. For example an implication is false exactly when its antecedent
+is true and its consequent false, and is true exactly when the antecedent
+is false or the consequent true. The decreasing node measure gives the
+displayed finite bound by induction. Use that bound as recursion fuel,
+padding completed branches with idle steps if a fixed loop is desired.
+
+At a saturated open leaf all remaining constraints are consistent atomic
+signs. Assign one to atoms with a positive sign and zero to the others.
+No negatively constrained atom receives one because the branch is open.
+Every sign at the leaf is therefore satisfied. The local equivalences
+transport this valuation back up the chosen path to the original branch.
+If every leaf closes, no valuation satisfies a leaf, and the same local
+equivalences show that no valuation satisfies the root. The algorithm
+decides which of these finite outcomes occurs and chooses the first open
+leaf in the second case. This proves both directions constructively.
+\end{proof}
+
+To decide $\Gamma\models_b A$, start with $\mathsf T B$ for each
+$B\in\Gamma$ and $\mathsf F A$. The theorem makes tableaux equivalent to
+the truth-table consequence test, and hence to \CPC\ derivability.
+
+\subsection{A classical cut-elimination algorithm by semantic reconstruction}
+
+A multiple-conclusion sequent $\Gamma\Rightarrow\Delta$ says that every
+valuation satisfying all members of $\Gamma$ satisfies some member of
+$\Delta$. The empty succedent says there is no such valuation. Use initial
+sequents $\Gamma,A\Rightarrow\Delta,A$ and
+$\Gamma,\bot\Rightarrow\Delta$, weakening, exchange and contraction,
+and the following rules:
+\[
+\begin{gathered}
+ \dfrac{\Gamma,A,B\Rightarrow\Delta}{\Gamma,A\wedge B\Rightarrow\Delta},\qquad
+ \dfrac{\Gamma\Rightarrow\Delta,A\quad\Gamma\Rightarrow\Delta,B}
+       {\Gamma\Rightarrow\Delta,A\wedge B},\\[5pt]
+ \dfrac{\Gamma,A\Rightarrow\Delta\quad\Gamma,B\Rightarrow\Delta}
+       {\Gamma,A\vee B\Rightarrow\Delta},\qquad
+ \dfrac{\Gamma\Rightarrow\Delta,A,B}{\Gamma\Rightarrow\Delta,A\vee B},\\[5pt]
+ \dfrac{\Gamma\Rightarrow\Delta,A\quad\Gamma,B\Rightarrow\Delta}
+       {\Gamma,A\to B\Rightarrow\Delta},\qquad
+ \dfrac{\Gamma,A\Rightarrow\Delta,B}{\Gamma\Rightarrow\Delta,A\to B}.
+\end{gathered}
+\]
+The cut rule, if included, is
+\[
+ \dfrac{\Gamma\Rightarrow\Delta,A\quad\Gamma,A\Rightarrow\Delta}
+       {\Gamma\Rightarrow\Delta}.
+\]
+The shared-context formulation suffices; weakening gives the usual rule
+with different contexts.
+
+\begin{theorem}[Analytic completeness and effective cut elimination]\label{thm:cut}
+Every Boolean-valid finite sequent has a cut-free proof in this calculus
+using only subformulas of its end sequent. A primitive recursive function
+maps any checked proof, including one with cuts, to a cut-free proof of the
+same sequent. For end-sequent node count $L$, a bound
+$10(L+1)2^{L+1}$ on rule nodes is sufficient with explicit structural steps.
+\end{theorem}
+\begin{proof}
+Read a sequent as the tableau branch with left formulas true and right
+formulas false. Each tableau expansion, read from child sequents to the
+parent, is exactly one of the six displayed rules. The closed leaves are
+initial sequents. Removing $\mathsf F\bot$ in search becomes right weakening
+by $\bot$ in the resulting proof. An atom may be marked as processed for
+the search without changing its sequent; it remains available for leaf
+closure. Thus a closed tableau translates directly into a cut-free proof.
+Move a chosen principal formula to the end of its side with at most $L$
+adjacent exchanges, insert its children there, and leave the other entries
+in their previous order. The tableau bound, together with this linear
+number of ordering and weakening steps at a node, gives the stated generous bound. All formulas
+encountered are subformulas of the end sequent.
+
+For an input proof with cuts, first use its finite Boolean soundness
+invariant. The displayed rules are sound by their truth tables. Cut is
+sound because on a row satisfying $\Gamma$ and falsifying $\Delta$, its
+first premise forces $A$ true and its second forbids $A$ true. Soundness
+therefore proves validity of the end sequent, so its tableau cannot have
+an open leaf and yields the required cut-free proof. This is a
+\emph{reconstruction} algorithm, not a claim about the termination rate of
+every possible local Gentzen reduction strategy. It proves cut elimination
+as the existence of a primitive recursive transformation with a concrete
+correctness contract.
+\end{proof}
+
+\section{Elementary intuitionistic laws and proof terms}\label{sec:laws}
+
+\subsection{A library of constructive laws}
+
+The following identities mean that both implications have \IPC\ proofs.
+The list is schematic and thus yields infinitely many instances:
+\[
+\begin{array}{ll}
+ A\wedge B\leftrightarrow B\wedge A,&A\vee B\leftrightarrow B\vee A,\\
+ (A\wedge B)\wedge C\leftrightarrow A\wedge(B\wedge C),&
+ (A\vee B)\vee C\leftrightarrow A\vee(B\vee C),\\
+ A\wedge A\leftrightarrow A,&A\vee A\leftrightarrow A,\\
+ A\wedge\top\leftrightarrow A,&A\vee\bot\leftrightarrow A,\\
+ A\wedge\bot\leftrightarrow\bot,&A\vee\top\leftrightarrow\top,\\
+ A\wedge(A\vee B)\leftrightarrow A,&A\vee(A\wedge B)\leftrightarrow A,\\
+ A\wedge(B\vee C)\leftrightarrow(A\wedge B)\vee(A\wedge C),&\phantom{X}\\
+ A\vee(B\wedge C)\leftrightarrow(A\vee B)\wedge(A\vee C).&
+\end{array}
+\]
+Further constructive equivalences include
+\[
+\begin{split}
+ (A\wedge B)\to C&\ \leftrightarrow\ A\to(B\to C),\\
+ A\to(B\wedge C)&\ \leftrightarrow\ (A\to B)\wedge(A\to C),\\
+ (A\vee B)\to C&\ \leftrightarrow\ (A\to C)\wedge(B\to C),\\
+ \neg(A\vee B)&\ \leftrightarrow\ \neg A\wedge\neg B,\\
+ \neg(A\wedge B)&\ \leftrightarrow\ A\to\neg B,\\
+ \neg\neg\neg A&\ \leftrightarrow\ \neg A.
+\end{split}
+\]
+
+\begin{theorem}[Constructive law certificates]\label{thm:int-laws}
+Every equivalence in the two displays has a fixed \IPC\ proof template.
+So do modus ponens, hypothetical syllogism, contraposition, disjunctive
+syllogism, and constructive dilemma. Substitution gives primitive
+recursive proof constructors for every instance.
+\end{theorem}
+\begin{proof}
+For conjunction commutativity and associativity, project the required
+components and introduce them in the target order; reversing that order
+gives the converse. Idempotence projects one copy in one direction and
+duplicates an available proof in the other. A proof of $\top$ is the
+identity proof of $\bot\to\bot$. Thus conjunction with $\top$ may be
+introduced or projected away. Conjunction with $\bot$ yields $\bot$ by
+projection, and $\bot$ yields both components by elimination.
+
+For disjunction commutativity use two branches, introducing the other
+injection in each. For associativity use three branches, introducing the
+same alternative with its new parenthesization; the reverse uses the
+opposite parenthesization. For idempotence both branches return $A$.
+In $A\vee\bot$ the $A$ branch returns $A$ and the falsehood branch returns
+$A$ by elimination; its converse is the left injection. Both directions
+of $A\vee\top\leftrightarrow\top$ follow by the always available proof of
+$\top$ and by its right injection. For absorption, projection gives
+$A$ from $A\wedge(A\vee B)$, and a given $A$ supplies that conjunction.
+For $A\vee(A\wedge B)$, either branch supplies $A$; conversely inject $A$.
+
+For the first distributivity law, project $A$ and split $B\vee C$; pair
+$A$ with the chosen disjunct and inject the resulting conjunction. Conversely
+split the outer disjunction, project its components, introduce $B\vee C$,
+and pair with $A$. For the second law, a proof of $A$ gives both disjunctions
+and a proof of $B\wedge C$ gives their right injections. Conversely split
+$A\vee B$: its $A$ branch already gives the result; in its $B$ branch split
+$A\vee C$, returning $A$ in one case and $B\wedge C$ in the other.
+
+Currying uses an assumption of $A$ followed by one of $B$ to form their
+pair; uncurrying projects a given pair and applies the curried function.
+For implication into a conjunction, apply the function and project, or
+apply the two component functions and pair. For implication out of a
+disjunction, restrict to each injection, or split the supplied disjunction
+and use the appropriate component function. Taking $C=\bot$ gives the
+disjunction De Morgan law, and currying at $C=\bot$ gives the negated
+conjunction identity. From $\neg A$ and $\neg\neg A$ one gets falsehood,
+so $\neg A\to\neg\neg\neg A$. Conversely, given $\neg\neg\neg A$, assume
+$A$; this assumption gives $\neg\neg A$, contradicting the given triple
+negation. Discharge $A$.
+
+Hypothetical syllogism applies $A\to B$ and then $B\to C$ to an assumed
+$A$. Contraposition applies a given $A\to B$ under $A$ and contradicts
+$\neg B$. Disjunctive syllogism splits $A\vee B$; the $A$ branch contradicts
+$\neg A$, and the $B$ branch is immediate. Constructive dilemma splits
+$A\vee B$, applies respectively $A\to C$ or $B\to D$, and introduces
+$C\vee D$. These instructions specify each proof node and all discharges;
+they are fixed finite templates. The structural substitution theorem
+makes the templates uniform over formula codes.
+\end{proof}
+
+The Boolean equivalences $A\to B\leftrightarrow\neg A\vee B$ and
+$\neg(A\wedge B)\leftrightarrow\neg A\vee\neg B$ are intentionally absent
+from this intuitionistic list. Their classical validity will be proved
+by truth tables, and finite Kripke countermodels below explain why the
+unrestricted intuitionistic versions fail.
+
+\subsection{Curry--Howard and typed SK combinators at the finite level}
+
+For the implication-only fragment, use terms $x$, $tu$, and $\lambda x.t$.
+A typing context assigns formulas to finitely many variables. The rules
+are variable lookup, application from $A\to B$ and $A$, and abstraction
+from a derivation of $B$ with one extra assumption $x:A$.
+
+\begin{theorem}[Finite Curry--Howard correspondence and substitution]\label{thm:curry-howard}
+Annotated typing derivations and implication-only natural deductions
+translate into each other primitive recursively, preserving the conclusion
+type. If $\Gamma,x:A\vdash t:B$ and $\Gamma\vdash u:A$, then
+$\Gamma\vdash t[u/x]:B$. Every single beta-reduction preserves typing.
+\end{theorem}
+\begin{proof}
+Assign a term variable to each context slot or discharged assumption class,
+using that same variable at every corresponding assumption leaf; record application
+at implication elimination, and record abstraction at implication
+introduction. Conversely erase the term decorations, retaining the rule
+tree. These are direct recursive operations. Substitution is the proof
+cut transformation from Theorem~\ref{thm:structural}; use fresh numerical
+variable labels or de Bruijn indices under binders. The contraction
+$(\lambda x.t)u\longrightarrow t[u/x]$ is well typed by this substitution
+lemma. For a contraction inside a larger term, rebuild the typing rules
+on the path to its root. This proves single-step subject reduction.
+We make no claim here that every arbitrary normalization strategy has a
+particular primitive recursive running time.
+\end{proof}
+
+Let K and S have the types displayed in the Hilbert schemes, read as
+curried function types. Put $\mathrm I=\mathrm{SKK}$, with the appropriate
+instances of their type schemes. For a lambda-free applicative term define bracket
+abstraction by
+\[
+ [x]x=\mathrm I,\qquad [x]t=\mathrm Kt\ (x\text{ absent from }t),\qquad
+ [x](tu)=\mathrm S([x]t)([x]u)
+\]
+in the remaining application case. To compile a term containing lambdas,
+eliminate inner lambdas first. The reduction identity in the next theorem
+is stated for the resulting lambda-free applicative body; for an original
+body containing lambdas its target is the correspondingly compiled substitution.
+
+\begin{theorem}[Typed bracket abstraction]\label{thm:sk}
+The bracket algorithm is primitive recursive and preserves typing:
+$\Gamma,x:A\vdash t:B$ gives $\Gamma\vdash[x]t:A\to B$.
+Under the reduction rules, closed under all application contexts,
+$\mathrm Ktu\to t$ and $\mathrm Sfgx\to fx(gx)$,
+the term $([x]t)u$ reduces in a constructively produced finite sequence
+to $t[u/x]$. Thus every implication-only proof has a typed SK certificate.
+For lambda-free $t$ one has $|[x]t|\le5|t|$, and the constructed reduction
+uses at most $2|t|$ K/S contractions. Compiling an arbitrary typed lambda
+term of $s$ nodes therefore yields a combinator term of at most $5^s$ nodes.
+\end{theorem}
+\begin{proof}
+The variable case uses the identity type. In the absent-variable case,
+K applied to $t:B$ has type $A\to B$. In the application case, write
+$t:C\to B$ and $u:C$; the recursively constructed abstractions have
+types $A\to(C\to B)$ and $A\to C$, so S produces $A\to B$.
+For the reduction claim, $\mathrm Iu=\mathrm{SKK}u$ reduces first to
+$\mathrm Ku(\mathrm Ku)$ and then to $u$; $\mathrm Ktu$ reduces to $t$;
+and the S case reduces to two smaller abstraction applications, to which
+the induction hypotheses apply. Concatenate these finite reduction lists.
+The size bound follows because the identity case has five nodes, the K
+case adds two nodes, and the S case adds three nodes to the two recursive
+outputs. The reduction count is two in the identity case, one in the K
+case, and one plus the two recursive counts in the S case. Induction on
+the source lambda term then gives the exponential compilation bound.
+All intermediate terms and proofs are explicitly constructed by recursion.
+No assertion about arbitrary, untyped combinator normalization is used.
+\end{proof}

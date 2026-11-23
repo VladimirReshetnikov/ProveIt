@@ -1,0 +1,93 @@
+\documentclass[11pt,oneside]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem,xcolor}
+\usepackage{listings,fancyhdr}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\usepackage{bookmark}
+\newcommand{\ipra}{\ensuremath{\mathrm{iPRA}}}
+\newcommand{\N}{\mathbb N}
+\newcommand{\bits}{\{0,1\}}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\len}[1]{\lvert #1\rvert}
+\newcommand{\code}[1]{\ulcorner #1\urcorner}
+\newcommand{\B}{\mathsf B}
+\newcommand{\Run}{\operatorname{Run}}
+\newcommand{\Any}{\operatorname{Any}}
+\newcommand{\All}{\operatorname{All}}
+\newcommand{\sg}{\operatorname{sg}}
+\newcommand{\size}{\operatorname{size}}
+\newcommand{\Space}{\operatorname{Space}}
+\newcommand{\Time}{\operatorname{Time}}
+\newcommand{\Pclass}{\mathsf P}
+\newcommand{\NP}{\mathsf{NP}}
+\newcommand{\coNP}{\mathsf{coNP}}
+\newcommand{\PSPACE}{\mathsf{PSPACE}}
+\newcommand{\EXPTIME}{\mathsf{EXPTIME}}
+\newcommand{\EXPSPACE}{\mathsf{EXPSPACE}}
+\newcommand{\DTIME}{\mathsf{DTIME}}
+\newcommand{\DSPACE}{\mathsf{DSPACE}}
+\newcommand{\NSPACE}{\mathsf{NSPACE}}
+\newcommand{\NTIME}{\mathsf{NTIME}}
+\newcommand{\SAT}{\mathsf{SAT}}
+\newcommand{\QBF}{\mathsf{TQBF}}
+\newcommand{\Reach}{\operatorname{Reach}}
+\newcommand{\true}{\mathsf{true}}
+\newcommand{\false}{\mathsf{false}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\setlist{itemsep=3pt,topsep=5pt}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,columns=fullflexible,keepspaces=true,frame=single,rulecolor=\color{black!20},xleftmargin=3pt,xrightmargin=3pt}
+\setlength{\emergencystretch}{2em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Constructive complexity in iPRA}
+\fancyhead[R]{\small Vladimir Reshetnikov research packet}
+\fancyfoot[C]{\thepage}
+\hypersetup{pdftitle={A constructive complexity-theory atlas in intuitionistic primitive recursive arithmetic},pdfauthor={Research prepared for Vladimir Reshetnikov},pdfsubject={Finite proofs, computational witnesses, and Lean formalization plan}}
+\begin{document}
+\begin{titlepage}
+\thispagestyle{empty}
+\vspace*{1cm}
+{\Large\color{blue!45!black} CONSTRUCTIVE MATHEMATICS / COMPLEXITY THEORY\par}
+\vspace{1cm}
+{\huge\bfseries A complexity-theory atlas in intuitionistic primitive recursive arithmetic\par}
+\vspace{0.7cm}
+{\Large Explicit algorithms, finite witnesses, resource bounds, and a route to Lean\par}
+\vspace{1.2cm}
+{\large Prepared for Vladimir Reshetnikov\par}
+{\large 22 November 2026\par}
+\vfill
+\begin{minipage}{0.94\textwidth}
+\textbf{Mathematical deliverable.} A broad collection of fully developed finitary proofs, organized around the computational-complexity article and its immediate subject links. Every asserted arithmetic theorem uses numerical codes, explicit primitive-recursive bounds, and quantifier-free induction through Boolean invariants.
+
+\medskip
+\textbf{Verification boundary.} The new Lean files are an uncompiled formalization outline. This packet does not claim completed kernel-checked object-language derivations of its main complexity theorems. Executable finite checks and PDF validation are reported separately. Existing ProveIt endpoints are cited at a fixed revision and are not re-certified here.
+\end{minipage}
+\vspace{0.7cm}
+\end{titlepage}
+\tableofcontents
+\newpage
+\input{sections/scope}
+\input{sections/foundations}
+\input{sections/classes}
+\input{sections/np}
+\input{sections/space}
+\input{sections/hierarchy}
+\input{sections/alternation_parallel}
+\input{sections/random_lower}
+\input{sections/quantum}
+\input{sections/formalization}
+\input{sections/coverage}
+\input{sections/bibliography}
+\end{document}

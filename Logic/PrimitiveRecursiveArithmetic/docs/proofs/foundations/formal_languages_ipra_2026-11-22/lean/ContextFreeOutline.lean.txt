@@ -1,0 +1,586 @@
+CONTEXT-FREE LANGUAGES: LEAN IMPLEMENTATION OUTLINE
+================================================
+
+Status: design document, not a compiled Lean file.
+The signatures below are proof obligations, NOT admitted axioms or completed
+theorems.  No `sorry`-based result is advertised as a formal proof.  Ordinary
+Lean verification of the algorithms and object-level iPRA derivations are
+separate obligations.  This file explains both layers.
+
+Companion human proofs: chapters/context_free.tex, labels cf:*.
+Reference algorithms: the package's Python CFG normalization, CYK and direct
+chart parser are useful implementation oracles; finite agreement tests do
+not replace any of the proofs below.
+
+The source repository has arithmetic coding and bounded-proof infrastructure
+under Core.Pairing, Core.Pigeonhole, Foundations.BoundedFormulas,
+Foundations.BoundedChoice, Foundations.BoundedFixpoint,
+Foundations.FiniteStabilization and Foundations.FiniteQueryTable.  The main
+report records the precise inspected repository revision.  Reuse those
+interfaces after checking their actual types; the names below are new local
+interfaces, not claims that they already exist in Mathlib or ProveIt.
+
+1. FINITE DATA AND ITS EXACT VALIDITY CONDITIONS
+-----------------------------------------------
+
+Lean-shaped data declarations:
+
+  inductive Symbol where
+    | terminal (letter : Nat)
+    | nonterminal (variable : Nat)
+    deriving DecidableEq, Repr
+
+  abbrev Word := List Nat
+  abbrev Form := List Symbol
+
+  structure Rule where
+    lhs : Nat
+    rhs : Form
+    deriving DecidableEq, Repr
+
+  structure CFG where
+    alphabetSize : Nat
+    variableCount : Nat
+    start : Nat
+    rules : List Rule
+    deriving DecidableEq, Repr
+
+All records have raw versions with no proof fields.  A Boolean `validCFG`
+requires variableCount > 0, start < variableCount, every rule lhs in range,
+and every rhs terminal/nonterminal in the appropriate range.  Finite
+conjunctions are List.all or their Nat-coded Boolean fold.  `validWord a w`
+requires every entry of w to be less than a.  A malformed code returns a
+fixed rejecting/default output in every subsequent function.
+
+  structure Node where
+    label : Symbol
+    ruleIndex : Nat     -- ignored for a terminal node
+    children : List Nat -- postorder indices
+
+  abbrev Tree := List Node
+
+For a list of N nodes, `treeShape` requires:
+  * N > 0; the root is index N-1;
+  * every child index of node i is < i;
+  * each index j < N-1 occurs exactly once across all child lists;
+  * index N-1 occurs in no child list;
+  * terminal nodes have no children;
+  * a variable node A has a valid rule index for a rule with lhs A, and
+    the labels at its child indices are exactly that rule's rhs list.
+
+These conditions force an ordinary ordered tree, not a DAG: there are no
+cycles because indices decrease; each nonroot has a unique parent; repeatedly
+following parents must end at the unique index without a parent, the root.
+Empty-rule variable nodes are permitted and contribute empty yield.
+
+`nodeYields` is a primitive recursion on the node list:
+  terminal a     -> append singleton [a] to the yield table;
+  variable node  -> append concatenation of its children's earlier yields.
+For invalid earlier indices use [], then reject through `treeShape`.
+
+  treeCheck (g : CFG) (root : Nat) (w : Word) (t : Tree) : Bool
+
+is the conjunction of validCFG, validWord, treeShape, root-label equality,
+and equality of the last computed yield with w.
+
+  Generates (g : CFG) (w : Word) : Prop :=
+    ∃ t : Tree, treeCheck g g.start w t = true
+
+On the iPRA side every record and list above is a natural-number code and
+`Generates` is an abbreviation for an ordinary first-order existential
+formula.  It is not a predicate quantified over in the object theory.
+
+  structure RewriteStep where
+    ruleIndex : Nat
+    position : Nat
+
+`applyRule? g u s` checks that position is in range, u[position] is the
+nonterminal lhs of rules[ruleIndex], and returns
+  u.take position ++ rhs ++ u.drop (position + 1).
+It returns none on a failed check.  `replay g A steps` iterates this operation
+from [nonterminal A].  `derivCheck` accepts precisely when replay succeeds
+and ends in w.map Symbol.terminal.  Option flags are 0/1 codes in arithmetic.
+
+Required theorem interfaces (cf:tree-derivation):
+  deriv_to_tree_sound:
+    derivCheck g A w d = true ->
+    treeCheck g A w (derivToTree g A d) = true
+  tree_to_deriv_sound:
+    treeCheck g A w t = true ->
+    derivCheck g A w (treeToLeftmost g t) = true
+  deriv_to_tree_size:
+    length (derivToTree ...) <= 1 + length d * maxRhs g
+  tree_to_deriv_size:
+    length (treeToLeftmost ...) <= length t
+
+Implementation: a finite frontier list plus attached children for the first
+direction; a stack of unexpanded node indices for the second.  The invariant
+is a coded-list equality between the frontier and the replayed form.
+
+2. SATURATION AND NORMALIZATION
+-------------------------------
+
+A set of variables is an M-entry Boolean vector or its integer bit mask.
+
+  nullableStep g E [A] := E[A] ||
+    any rule r with r.lhs=A such that every rhs symbol is
+      nonterminal B with E[B]=true.
+
+  productiveStep g E [A] := E[A] ||
+    any rule r with r.lhs=A such that every rhs symbol is either
+      a terminal or a nonterminal B with E[B]=true.
+
+Start with all false and iterate M=variableCount rounds.  When a variable
+first becomes true, store the least successful rule and copy the already
+stored child witnesses.  Store its first rank as well.  Children used for
+a new witness have smaller ranks.  Useful functions:
+
+  nullableMask, nullableTree, productiveMask, productiveTree
+
+Proof obligations:
+  nullable_step_monotone, productive_step_monotone
+  equality_stage_persists
+  strict_stage_increases_popcount
+  nullable_fixed_after_M, productive_fixed_after_M
+  nullableTree_checked, productiveTree_checked
+  tree_empty_implies_nullable, tree_implies_productive
+  emptiness_decision_and_witness
+
+For the reverse implications, fix an arbitrary supplied tree and scan its
+nodes; do not induct on the unbounded assertion that a derivation exists.
+For r=max(1,maxRhs g), stored trees have fewer than (r+1)^(M+2) nodes.
+
+Normal form is a Boolean predicate `cnf` requiring:
+  validCFG g;
+  g.start absent from every rhs;
+  each rule is A -> [nonterminal B, nonterminal C], or
+               A -> [terminal a], or
+               g.start -> [].
+
+Normalization uses the following total finite transformations, in order:
+
+  addFreshStart:
+    shift or retain all old variables, add S0, add S0 -> S.
+
+  removeEmpty:
+    compute nullableMask and nullableTree;
+    for every old rule of rhs length k enumerate 2^k bit masks;
+    retain masks deleting only nullable nonterminal occurrences;
+    retain every resulting NONEMPTY rhs;
+    add S0 -> [] exactly when old S is nullable.
+    A retained rule stores an original rule index and deletion mask.
+
+  removeUnit:
+    build unit-edge relation A->B;
+    compute reachability by paths of length <= M-1, including zero length;
+    store a least short path for each reachable pair;
+    for each reachable (A,B) and each nonunit B->rhs, emit A->rhs.
+    Store path and last-rule provenance with the new rule.
+
+  isolateTerminals:
+    in rhs lists of length >=2 replace terminal a by fresh T_a;
+    add T_a -> a; do not change single-terminal rules.
+
+  binarize:
+    A -> X1 ... Xk, k>=3, becomes a private chain
+      A->X1 D1, D1->X2 D2, ..., D_(k-2)->X_(k-1) Xk.
+
+`normalize g` returns the resulting finite grammar together with enough
+provenance to reconstruct the witness transformations.  Proving correctness
+one pass at a time is easier than unfolding a large composed transformation.
+
+  normForward g t : Tree
+  normBackward g t : Tree
+
+Required interfaces (cf:epsilon-removal, cf:unit-removal, cf:cnf):
+  normalize_valid_and_cnf
+  normForward_checked
+  normBackward_checked
+  normalize_language_iff
+  normalize_grammar_size_bound
+  normForward_tree_size_bound
+  normBackward_tree_size_bound
+
+Explicit size parameters for valid input:
+  m=variableCount, a=alphabetSize, p=rules.length, r=max(1,maxRhs);
+  M=m+1, K=(p+2)*2^(r+1), J=M*M*K, H=(r+1)^(M+2).
+The normalized grammar has <=M+a+J*r variables and <=a+J*r rules.
+Forward tree size is <=2*(r+1)*(N+1).
+Backward tree size is <=(M+1)*(1+r*H)*N+H+1.
+
+3. TWO COMPLETE PARSING PLANS
+----------------------------
+
+A. Direct fixed-point parser (cf:chart).
+
+Items are triples (A,i,j), with A<M and 0<=i<=j<=n.  A rectangular array
+of size M*(n+1)^2 is convenient for indexing; invalid i>j entries remain
+false.  There are exactly Q=M*(n+1)*(n+2)/2 valid entries.
+
+For a rhs [X1,...,Xk], enumerate lists [t0,...,tk] of length k+1 whose
+entries lie in [0,n], are nondecreasing, and have t0=i, tk=j.
+For k=0 this forces i=j.  `cutsMatch old rhs cuts w` requires:
+  terminal a at occurrence l:
+    t_l = t_(l-1)+1 and w[t_(l-1)] = a;
+  nonterminal B at occurrence l:
+    old[B,t_(l-1),t_l] = true.
+
+Define the simultaneous update
+  advance g w old[A,i,j] :=
+    old[A,i,j] ||
+    any rule with lhs A and any enumerated cut vector with cutsMatch=true.
+
+Iterate Q rounds from the all-false chart, retaining old entries.  When a
+new entry first appears, store its rank (round number), rule index and cut
+vector.  Every child-variable rank is strictly smaller than the parent's.
+
+Reconstruct witnesses by a second iteration through ranks 1,...,Q.  At a
+rank-r entry, copy the previously reconstructed child trees according to
+the stored cut vector and append its root node.  This is primitive recursion
+on a rank bound; it is not an unbounded recursive descent through a possibly
+cyclic grammar.  Fewer than (max(1,maxRhs g)+1)^(Q+2) nodes suffice per tree.
+
+  chart g w : BooleanTable
+  chartTree g w A i j : Tree
+  chartAccept g w := chart g w [g.start,0,w.length]
+
+Proof obligations:
+  advance_inflationary
+  advance_monotone
+  advance_equal_persists
+  chart_fixed_after_Q
+  recorded_children_have_smaller_rank
+  chartTree_checked:
+    chart[A,i,j]=true ->
+    treeCheck g A (w.extract i j) (chartTree ...) = true
+  tree_implies_chart:
+    treeCheck g A (w.extract i j) t=true -> chart[A,i,j]=true
+  chartAccept_iff_Generates
+
+For completeness, annotate every node of a supplied tree with its interval
+in the whole yield.  Child intervals form a nondecreasing cut vector, even
+when some yields are empty.  The postorder invariant says all processed
+nodes have true final-chart entries.  Apply final-chart fixedness at the
+next node.  This proof treats empty and unit cycles without extra cases.
+
+B. CYK after normalization (cf:cyk).
+
+For cnf g and n>0, items have i<j.  Fill increasing interval lengths.
+  D[A,i,i+1] := any rule A->[terminal w[i]];
+  D[A,i,j] := any rule A->[B,C] and i<k<j with
+                 D[B,i,k] && D[C,k,j], when j-i>=2.
+At each true cell retain a least successful rule and split.
+Empty input is decided by the start's empty rule.
+
+  cyk g w : Bool
+  cykTree g w : Tree
+  parse g w := cyk (normalize g).grammar w
+  parseTree g w := normBackward g (cykTree (normalize g).grammar w)
+
+Proof obligations:
+  cnf_nonroot_yield_nonempty
+  cnf_binary_children_have_shorter_yields
+  cykTree_checked
+  tree_implies_cyk
+  cnf_tree_counts:
+    nonempty checked tree for w has exactly 2*w.length-1 variable nodes
+    and 3*w.length-1 total nodes
+  cyk_iteration_bounds
+  parse_iff_Generates
+  parseTree_checked
+  parseTree_size_bound
+  chartAccept_eq_parse
+
+The final equality should be derived from the two correctness theorems.
+Finite regression comparisons are useful during implementation but cannot
+establish this universal equality.
+
+Counting variant (cf:parse-count): replace base OR by the count of matching
+rule indices; replace OR over (rule,split) by sum and AND by multiplication.
+Prove a bijection between a tree and its root rule, split and child pair.
+The count is for the normal-form grammar; normalization need not preserve
+ambiguity of the original grammar.
+
+4. CLOSURE INTERFACES AND CERTIFICATE TRANSFORMERS
+------------------------------------------------
+
+All variable sets are tagged into disjoint finite intervals before union.
+
+  unionCFG g1 g2:
+    new T -> S1 | S2.
+  concatCFG g1 g2:
+    new T -> S1 S2.
+  starCFG g:
+    new T -> [] | S T.
+  reverseCFG g:
+    reverse every rhs; reverse children in every tree node.
+  homCFG g h:
+    a finite h[a] table replaces each terminal occurrence by a terminal
+    block; preserve original-rule provenance, including erased letters.
+  substCFG g family:
+    each source terminal a becomes the disjoint start of family[a];
+    include every component rule.
+  intersectDFA g d:
+    normalize g; create [p,A,q], binary product rules with intermediate r,
+    terminal rules [p,A,delta(p,a)]->a, diagonal epsilon rules, and a
+    new start selecting final endpoint states.
+
+Required correctness theorems correspond exactly to cf:basic-closure,
+cf:reversal, cf:homomorphism, cf:substitution, cf:regular-intersection.
+Every implication must name a tree transformation, not merely conclude a
+set identity by classical extensionality.
+
+Important finite-collection obligation for star and substitution:
+  if factors w_i are supplied with boundedly many membership assertions,
+  run `parseTree` for each factor.  Its uniform explicit output bound gives
+  a coded finite list of all factor trees.  Do not use unrestricted
+  induction to collect witnesses of an arbitrary formula exists t,R(i,t).
+
+For DFA intersection, the main invariant for [p,A,q] is:
+  erasing state tags gives a checked old tree, and running the DFA on its
+  finite yield from p ends at q.
+Both components are Boolean functions of the supplied tree.
+
+Emptiness of intersectDFA g d gives disjointness; intersectDFA g (complement d)
+gives inclusion L(g) subset L(d).  Equality with a finite list additionally
+checks each listed word.  Do not add an unproved general CFG equality,
+universality or reverse-inclusion decision procedure.
+
+Finite EBNF compiler (cf:ebnf):
+  inductive EBNFExpr where
+    | epsilon
+    | terminal (a : Nat)
+    | reference (A : Nat)
+    | alternate (left right : EBNFExpr)
+    | concatenate (left right : EBNFExpr)
+    | optional (body : EBNFExpr)
+    | star (body : EBNFExpr)
+    | plus (body : EBNFExpr)
+  structure EBNFDefinition where
+    lhs : Nat
+    rhs : EBNFExpr
+The raw coded form is again a postorder node table.  The definition list is
+finite.  Number every expression occurrence and allocate a fresh variable
+X_E for it.  Add A->X_E for each definition A:=E and use exactly the finite
+compiler table in the theorem.  Original variable references are separate
+from expression-occurrence references, so cycles among named definitions
+do not prevent the compiler's own structural traversal from terminating.
+Source certificates carry a definition index, constructor tag, child indices,
+and, for star/plus, an explicit finite/nonempty list of child certificates.
+Prove sourceCheck and targetTreeCheck coincide under expansion/contraction;
+collapse star chains by a supplied-tree-size bounded traversal.  Required
+interfaces: ebnf_compile_valid, ebnf_compile_size, ebnf_expand_checked,
+ebnf_contract_checked, ebnf_language_equivalence.  Cyclic source definitions
+use finite-certificate semantics, not a silently postulated least fixed set.
+
+5. PUSH DOWN CONVENTIONS AND THE TWO CONVERSIONS
+------------------------------------------------
+
+  structure PDATransition where
+    src : Nat
+    read : Option Nat -- none is epsilon
+    top : Nat
+    dst : Nat
+    push : List Nat   -- top is the leftmost symbol
+
+  structure PDA where
+    alphabetSize : Nat
+    stateCount : Nat
+    stackAlphabetSize : Nat
+    initialState : Nat
+    initialTop : Nat
+    transitions : List PDATransition
+
+  structure Configuration where
+    state : Nat
+    inputPosition : Nat
+    stack : List Nat
+
+`validPDA` checks all fields and every transition's symbol bounds.
+`pdaStep?` rejects an empty stack, an incorrect state or top, and a failed
+input-letter match.  For epsilon, inputPosition is unchanged; for a letter,
+it increases by one.  The new stack is push ++ oldStack.tail.
+`runCheck` replays a finite list of transition indices from
+(initialState,0,[initialTop]) and requires all input consumed and stack=[]
+at the end.  Any final state is permitted.  There are no empty-stack moves.
+
+CFG->PDA:
+  one state, stack alphabet tagged variables+terminals, initial S;
+  each A->rhs gives an epsilon rewrite of top A;
+  terminal a consumes a and removes top a.
+Invariant for the reverse certificate map:
+  consumed input prefix ++ current stack is the current sentential form;
+  terminal-match steps preserve this whole form, grammar steps rewrite it.
+
+PDA->CFG:
+  variables [p,X,q], plus fresh T;
+  for (p,b,X)->(u,Y1...Yk) enumerate all state tuples s1,...,sk and add
+    [p,X,sk] -> b [u,Y1,s1]...[s_(k-1),Yk,sk];
+  for k=0 add only [p,X,u]->b;
+  T->[initialState,initialTop,q] for all q.
+An epsilon b contributes no terminal occurrence.
+
+Define `properSegment` with a protected suffix gamma:
+  initial stack is X::gamma, final stack gamma;
+  at every earlier configuration the stack is eta++gamma with eta nonempty;
+  all transitions satisfy runCheck's local checks.
+The predicate is a bounded scan of a supplied finite run.
+
+Core obligations (cf:pda-to-cfg):
+  one_step_height_drop_at_most_one
+  first_pop_boundary_exists_in_supplied_segment
+  split_segment_at_first_pop_boundaries
+  subsegments_strictly_shorter
+  triple_tree_to_proper_segment
+  proper_segment_to_triple_tree
+  initial_accepting_run_is_proper
+  cfg_pda_language_equivalence
+
+The decomposition work list contains subintervals of the original run.
+Each recursive node accounts for its first, distinct transition; thus an
+N-step accepting run produces <=2*N+1 tree nodes.  A grammar tree produces
+at most its variable-node count many PDA transitions.
+
+PDA membership is then parse(pdaToCFG M,w); extract an accepting run by
+normalization-backward and triple-tree-to-run transformations.  This gives
+a PR bound even when the input PDA has epsilon cycles.
+
+Inverse homomorphism construction:
+  buffers are all suffixes of the finitely many h[a], including [];
+  control = simulated state × buffer, with fixed initialization modes;
+  stack carries protected bottom marker Bot;
+  when buffer=[], actual input a loads h[a], leaving top unchanged;
+  simulated epsilon transitions leave buffer unchanged;
+  a simulated b-read is allowed exactly when buffer starts b, then removes b
+    from buffer while consuming no actual input;
+  simulated transitions never pop Bot;
+  only at buffer=[] and simulated stack empty may Bot be popped.
+Allow loading even when top=Bot.  This is necessary for trailing letters
+with empty h-image.  The word invariant identifies the consumed simulated
+prefix with the loaded images minus their pending buffer suffix.
+An accepting old run lifts to oldSteps+wordLength+2 steps; projecting the
+new run removes loading/initial/final marker steps.
+
+6. PUMPING, FINITENESS, AND NEGATIVE RESULTS
+------------------------------------------
+
+Add a `hole A` label to the finite tree-node alphabet for a tree context.
+`contextCheck g root A c` verifies exactly one hole of label A, ordinary
+rules elsewhere, and the same postorder parent conditions.  A context's
+yield is a pair (leftYield,rightYield) around that hole.
+`plug c t` inserts a supplied A-tree at the hole, adjusts postorder indices,
+and is total with a default on malformed data.
+
+  plug_checked
+  plug_yield_eq_left_append_middle_append_right
+  plug_size_eq_context_size_minus_one_plus_tree_size
+
+For a checked nonempty CNF tree:
+  compute every variable subtree's height and terminal-leaf count;
+  choose a longest path by least-index tie-breaking;
+  take its last M+1 variable labels;
+  find a repeated pair by bounded pigeonhole;
+  extract outer context O, middle A-to-A context C, and lower tree t0.
+
+  iterContext C t0 0 = t0
+  iterContext C t0 (i+1) = plug C (iterContext C t0 i)
+  pumpTree i = plug O (iterContext C t0 i)
+
+Required obligations (cf:pumping):
+  binary_leaf_bound: leaves <= 2^(height-1) for positive variable height
+  longest_path_suffix_is_longest
+  long_yield_has_M_plus_one_nodes
+  selected_pair_has_same_label
+  middle_context_has_positive_side_yield
+  selected_upper_yield_length_le_two_pow_M
+  pumpTree_checked_for_every_i
+  pumpTree_yield_eq_u_vpow_x_ypow_z
+  pumpTree_size_le_succ_i_mul_original_size
+
+The induction on i uses a quantifier-free predicate checking the constructed
+tree and its displayed yield equation.  The semantic universal statement
+is derived afterwards; it is not the induction formula.
+
+Finiteness algorithm (cf:finiteness):
+  normalize, set p=2^M;
+  enumerate words with p<=length<2*p, run CYK;
+  if a word is accepted, return its pumping certificate;
+  otherwise return all accepted words of length<p as a finite list.
+Completeness invariant for the second branch:
+  given any alleged accepted tree of length n>=p, repeat pump-down at most n
+  times while length>=2*p; length stays >=p and decreases by 1,...,p.
+  The result contradicts the finite absence test in [p,2*p).
+
+Explicit separation from T={a^n b^n c^n} (cf:abc-separator):
+  parse a^p b^p c^p;
+  rejection returns that word;
+  acceptance returns the pumped-down word from its reconstructed tree.
+The <=p window cannot include both a and c because it would contain p+2
+letters.  At least one count changes and one stays p.  The returned word
+has length<=3*p and carries the required positive/negative parser evidence.
+
+Nonclosure proofs are finite expression constructions:
+  intersection uses {a^n b^n c^k} and {a^k b^n c^n};
+  complement uses the explicit CFG expression
+    (Sigma* \ a*b*c*)
+      union ((a+ E_ab) union (E_ab b+)) c*
+      union a*((b+ E_bc) union (E_bc c+)).
+Verify equality with Sigma*\T by finite block-order and count comparisons.
+No double-negation elimination for arbitrary predicates is needed.
+
+7. OBJECT-LEVEL iPRA TRANSLATION GATES
+--------------------------------------
+
+For each implemented function F:
+  (a) supply its explicit Nat-code PR definition from projections,
+      composition and primitive recursion, or from already proved bounded
+      list/table operations;
+  (b) prove that the convenient Lean record/list version agrees with that
+      Nat-coded definition on valid data;
+  (c) translate its invariant to a Boolean characteristic function;
+  (d) produce the object-level quantifier-free induction derivation;
+  (e) use only intuitionistic first-order rules to obtain the displayed
+      existential and universal certificate statements.
+
+Example completeness invariant for the direct chart parser:
+  Inv(g,w,t,k) :=
+    NOT treeCheck(g,A,w,t)
+    OR all j<min(k,length(t)):
+         nodeIntervalValid(j) AND
+         finalChart[label(j),leftEndpoint(j),rightEndpoint(j)].
+All quantifiers in this notation are finite Boolean folds with explicit
+bounds.  Base and step follow from the local tree rule check and final-chart
+fixedness.  Quantifier-free induction on k proves the root entry.  An arbitrary
+tree code t is a free parameter throughout.
+
+For stored-tree soundness use an analogous bounded conjunction over entries
+whose discovery rank is <=k, asserting `treeCheck` for their already built
+trees.  For normalization use a bounded conjunction over processed source
+nodes asserting output-tree validity and yield equality.  For runs use
+the checked finite prefix and protected-suffix equality.  No invariant
+requires an unbounded existential semantic assertion.
+
+Prohibited shortcuts:
+  * do not infer iPRA provability merely from a theorem in Lean's full logic;
+  * do not introduce a total evaluator for arbitrary PR-program codes;
+  * do not use unrestricted choice to assemble factor-tree witnesses;
+  * do not define a parser by unbounded derivation search;
+  * do not silently convert arbitrary Lean decidability to a PR algorithm;
+  * do not claim CNF preserves the original grammar's ambiguity;
+  * do not claim deterministic PDAs have the nondeterministic PDA closure
+    properties established here.
+
+Suggested implementation order:
+  finite word/list coding -> tree/trace checkers -> certificate translations
+  -> saturation -> direct chart parser -> all parser witness bounds
+  -> normalization and CYK -> independent universal algorithm agreement
+  -> basic closure -> product grammar -> PDA conversions -> inverse images
+  -> contexts and pumping -> finiteness -> explicit separation/nonclosures.
+
+Existing Mathlib semantic bridge, if desired:
+  https://leanprover-community.github.io/mathlib4_docs/Mathlib/Computability/ContextFreeGrammar.html
+The inspected documentation provides ordinary grammar, rewriting,
+derivation, language and reversal definitions.  Adapt to its current exact
+API rather than assuming the local finite-coded interfaces above already
+exist there.  The code-and-invariant layer remains necessary for the iPRA
+claim even after this external semantic bridge is proved.

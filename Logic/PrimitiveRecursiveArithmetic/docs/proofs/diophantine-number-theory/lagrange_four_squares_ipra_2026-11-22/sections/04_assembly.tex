@@ -1,0 +1,200 @@
+\section{From prime witnesses to every natural number}
+\label{sec:assembly}
+
+We now avoid induction on the quantified statement ``$n$ has a
+four-square representation.'' A second explicit bounded loop carries
+the tuple that is being constructed.
+
+For $n>0$, start with
+\[
+ q_0=n,\qquad A_0=(1,0,0,0).
+\]
+For a state $(q,A)$ define
+\begin{equation}
+\label{eq:factorstep}
+ T(q,A)=
+ \begin{cases}
+ (q,A),&q\le1,\\
+ (q/p,\;A*P(p)),&q>1,
+ \end{cases}
+\end{equation}
+where $p$ in the second branch is the first divisor of $q$ in
+$2,\ldots,q$. This is the bounded search of Lemma~\ref{lem:lpf}.
+Iterate $T$ exactly $n$ times.
+
+\begin{proposition}[Factor-loop invariant]
+\label{prop:factor}
+For each $n>0$, quantifier-free induction proves
+\begin{equation}
+\label{eq:factorinvariant}
+ 1\le q_t,\qquad q_t\Nrm{A_t}=n,\qquad
+ (q_t\monus1)\le(n\monus1)\monus t.
+\end{equation}
+Consequently $q_n=1$ and $\Nrm{A_n}=n$.
+\end{proposition}
+
+\begin{proof}
+The initial norm is $1$, so the invariant holds at $t=0$.
+If $q=1$, the state is unchanged. If $q>1$, Lemma~\ref{lem:lpf}
+supplies a prime $p$ dividing $q$, with $2\le p\le q$.
+The exact quotient $q'=q/p$ is positive and satisfies $q'<q$:
+from $q=pq'$ and $p\ge2$ one obtains $q\ge2q'>q'$.
+
+Theorem~\ref{thm:prime} and Euler's identity give
+\[
+ q'\Nrm{A*P(p)}
+ =q'\Nrm{A}\Nrm{P(p)}
+ =q'\Nrm{A}p
+ =q\Nrm{A}=n.
+\]
+Thus the first two parts of the invariant are preserved, and the rank
+$q\monus1$ decreases in the saturated sense of Lemma~\ref{lem:clock}.
+That lemma supplies the third part. At $t=n$ its bound is zero,
+so positivity gives $q_n=1$, after which the norm equation gives
+$\Nrm{A_n}=n$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+For $n=0$ define $W_i(0)=0$. For $n>0$ take the tuple $A_n$ produced
+by~\eqref{eq:factorstep} and define
+\[
+ W_i(n)=\abs{(A_n)_i}\qquad(0\le i<4).
+\]
+All components are primitive recursive, by composition of the bounded
+searches, coded tuple operations, and the two fixed-clock recursions.
+Proposition~\ref{prop:factor} proves that their squares sum to $n$.
+This also holds at zero by definition. The split $n=0$ or $n>0$ is
+a decidable arithmetic split, giving~\eqref{eq:main} in $\ipra$.
+
+For each coordinate, $W_i(n)^2\le n$ because the other summands are
+nonnegative. If $W_i(n)=0$ its bound is immediate. Otherwise write
+$W_i(n)=u+1$; then $(u+1)^2\ge u+1$, so $W_i(n)\le n$.
+Finally introduce the four existential quantifiers using the four
+specific terms $W_i(n)$. This derives~\eqref{eq:exists} intuitionistically.
+\end{proof}
+
+\subsection{A compact program specification}
+
+The mathematical program is the following. Its arguments, records, signed
+operations, and parity tests are all primitive recursive after the coding
+of Appendix~\ref{app:coding}.
+
+\begin{lstlisting}
+prime_rep(p):
+    if p = 2: return (1,1,0,0)
+    if p < 3: return (0,0,0,0)
+    h := (p-1) div 2
+    search a,b in 0..h for (a*a+b*b+1) mod p = 0
+    if the bounded search fails: return (0,0,0,0)
+    x := (a,b,1,0); m := norm(x) div p
+    repeat exactly p times:
+        if m <= 1: retain (m,x)
+        else if m is even:
+            x := parity_halve(x); m := m div 2
+        else:
+            r := centered_residues(x,m)
+            z := x * conjugate(r)
+            (m,x) := (norm(r) div m, z div m)
+    return x
+
+four_squares(n):
+    if n = 0: return (0,0,0,0)
+    q := n; A := (1,0,0,0)
+    repeat exactly n times:
+        if q = 1: retain (q,A)
+        else:
+            p := first divisor of q in 2..q
+            (q,A) := (q div p, A * prime_rep(p))
+    return componentwise_abs(A)
+\end{lstlisting}
+
+Simultaneous assignment in this specification uses the old state on every
+right-hand side. The distributed Python implementation skips repeated
+terminal states by default; its \code{literal\_clock=True} option executes
+all the prescribed iterations. Both variants implement the same function
+on natural inputs, because the skipped states are absorbing.
+
+\subsection{A still simpler canonical witness definition}
+
+The constructive proof also justifies a very small, though slower, witness
+program. Search the $(n+1)^4$ codes for four digits in base $n+1$ and
+return the first $(a,b,c,d)$ with $a^2+b^2+c^2+d^2=n$.
+Theorem~\ref{thm:main} supplies a successful candidate, since all four
+coordinates are at most $n$. Hence the failure sentinel is impossible.
+This gives four primitive recursive witnesses defined using natural
+arithmetic alone. The descent construction is what proves the bounded
+search always succeeds; merely writing the bounded search would not by
+itself prove the theorem.
+
+\section{Why the whole argument belongs to \texorpdfstring{$\ipra$}{iPRA}}
+\label{sec:audit}
+
+The arithmetic proof above is already constructive. The remaining
+foundational question is the strength of its induction. The following
+table records every type of induction that carries substantive work.
+
+\begin{longtable}{@{}L{0.22\textwidth}L{0.29\textwidth}L{0.43\textwidth}@{}}
+\toprule
+Task & Recursion bound & Quantifier-free invariant or equation\\
+\midrule
+\endhead
+Quotient and remainder & Dividend $a$ & $a=mQ+R$ and $R<m$ for $m>0$.\\
+Finite search & Prescribed candidate bound & Stored success is a genuine hit;
+all earlier failures are a Boolean fold.\\
+B\'ezout computation & $p+1$ & Two coefficient identities, positive first
+remainder, decreasing second remainder, finite common-divisor bit.\\
+Residue counting & $p+1$ rows, $p$ columns & Equations of finite sums and
+prefix counts; range and distinctness use finite Boolean folds.\\
+Prime descent & $p$ & $I_p(s_t)$ and
+$(m_t\monus1)\le(m_0\monus1)\monus t$.\\
+General assembly & Original $n$ & $q_t\ge1$, $q_t\Nrm{A_t}=n$, and
+$(q_t\monus1)\le(n\monus1)\monus t$.\\
+\bottomrule
+\end{longtable}
+
+Each state field is a primitive recursive term in the loop counter and
+the input parameters. Consequently the norm equalities and rank
+inequalities in the last two rows are literally quantifier-free after
+expanding the state projections. The prime condition is a fixed
+primitive recursive bit equation. Its presence as a parameter assumption
+does not add a quantifier to the induction formula.
+
+The finite counting argument may be displayed in ordinary mathematical
+notation using statements about all entries of a list. Its actual
+implementation uses bounded sums of equality-test bits. Their laws are
+proved by induction on numerical prefix lengths. This is a finite
+combinatorial proof over coded data, requiring no comprehension axiom.
+
+All uses of contradiction concern a decidable branch already under
+consideration: the failed search flag, a zero new multiplier, or a
+forbidden divisor. General classical reductio is unnecessary. All
+witnesses used after such a split are either already stored in a record
+or obtained by exact arithmetic. There is no application of countable
+choice, Markov's principle, unbounded minimization, or induction on an
+existential representation predicate.
+
+\subsection{Explicit bounds on intermediate arithmetic}
+
+The bound $m<p$ gives $\Nrm{x}=mp<p^2$, hence $\abs{x_i}<p$ throughout
+prime descent. In its odd branch, $\abs{r_i}<p$ and each raw coordinate
+of $x*\bar r$ has absolute value less than $4p^2$. In its even branch,
+raw sums and differences have absolute value less than $2p$.
+After division, the norm invariant again bounds the new coordinates by
+$p$. The seed search has at most $((p+1)/2)^2$ candidates for odd $p$.
+
+In the outer loop, $q\Nrm{A}=n$ and $q\ge1$ give
+$\Nrm{A}\le n$, so every accumulated coordinate has absolute value at
+most $n$. Every selected prime is at most $q\le n$.
+Before normalization, a product coordinate is bounded in absolute value
+by $4n^2$. A fixed nesting of polynomial-size pair codes remains
+primitive recursive. These elementary register bounds are useful for
+mechanization, though ordinary primitive recursion does not require
+polynomial bounds on its intermediate values.
+
+The construction is intended to expose logical strength, not to optimize
+running time in the binary length of $n$. Under a unit-cost convention for
+integer arithmetic and division, the direct fixed-clock program has a
+crude $O((n+1)^3)$ bound on its arithmetic operations: at most $n$ outer
+stages, each with a search of at most $(n+1)^2$ candidates and at most $n$
+descent steps. This observation is not a polynomial-time claim in
+$\log n$ and is not needed for the proof.

@@ -1,0 +1,295 @@
+\section{Explicit descent of the multiplier}
+\label{sec:descent}
+
+Fix a prime $p$. A valid state is a pair $s=(m,x)$ satisfying
+\begin{equation}
+\label{eq:valid}
+ I_p(s):\quad 1\le m<p\quad\land\quad \Nrm{x}=mp.
+\end{equation}
+The task is to reach $m=1$ while preserving this assertion. Instead of
+choosing a least possible multiplier, we define the next state directly.
+
+\subsection{Even multipliers: exact parity halving}
+
+\begin{lemma}[Halving an even norm]
+\label{lem:half}
+There is a primitive recursive function $H:\ZZ^4\to\ZZ^4$ such that
+\[
+ 2\mid\Nrm{x}\quad\Longrightarrow\quad 2\Nrm{H(x)}=\Nrm{x}.
+\]
+\end{lemma}
+
+\begin{proof}
+Since $z^2\equiv z\pmod2$, an even norm means that the number of odd
+coordinates is even. For $x=(a,b,c,d)$ choose one of three orders:
+\[
+ (a,b,c,d)\quad\hbox{if }a\equiv b\pmod2;
+\]
+otherwise choose $(a,c,b,d)$ if $a\equiv c\pmod2$, and $(a,d,b,c)$ in the
+remaining case. These are explicit parity tests.
+
+In the first two cases, one chosen pair has equal parity, and the parity of
+the total norm forces the remaining pair to have equal parity as well.
+In the last case $b$ and $c$ both have parity opposite to $a$, so they
+have equal parity. The parity of the total then forces $d$ to have the
+same parity as $a$. Hence each chosen pair has equal parity in all cases.
+
+Write the reordered tuple as $(u,v,w,z)$ and define
+\begin{equation}
+\label{eq:half}
+ H(x)=\left(\frac{u+v}{2},\frac{u-v}{2},
+              \frac{w+z}{2},\frac{w-z}{2}\right).
+\end{equation}
+All four divisions are exact, including those of negative numerators.
+For either pair,
+\[
+ (u+v)^2+(u-v)^2=2u^2+2v^2.
+\]
+Substitute the exact quotient identities, add the two pair identities,
+and cancel the positive integer $2$. The result is
+$2\Nrm{H(x)}=u^2+v^2+w^2+z^2=\Nrm{x}$.
+\end{proof}
+
+If a valid state has even $m>1$, set
+\[
+ m'=m/2,\qquad x'=H(x).
+\]
+Then $1\le m'<m$, and Lemma~\ref{lem:half} gives $\Nrm{x'}=m'p$.
+Thus this branch strictly decreases the multiplier.
+
+\subsection{Odd multipliers: centered residues and exact division}
+
+Assume now that $m>1$ is odd. For an integer $z$, let $t=z\bmod m$,
+where $0\le t<m$, and define
+\begin{equation}
+\label{eq:center}
+ \rho_m(z)=
+ \begin{cases}
+ t,&2t\le m,\\
+ t-m,&2t>m.
+ \end{cases}
+\end{equation}
+Because $m$ is odd, this gives
+\begin{equation}
+\label{eq:centerbound}
+ \rho_m(z)\equiv z\pmod m,\qquad
+ \abs{\rho_m(z)}\le\frac{m-1}{2}.
+\end{equation}
+Put $r_i=\rho_m(x_i)$ and $r=(r_0,r_1,r_2,r_3)$.
+
+\begin{lemma}[The new multiplier]
+\label{lem:newmult}
+For a valid state with odd $m>1$, the quotient
+\[
+ k=\Nrm{r}\mathbin{\mathrm{div}}m
+\]
+is exact and satisfies $1\le k<m$.
+\end{lemma}
+
+\begin{proof}
+Congruence of the coordinates implies congruence of their squares and
+their sums. Therefore
+\[
+ \Nrm{r}\equiv\Nrm{x}=mp\equiv0\pmod m,
+\]
+so $\Nrm{r}=mk$. Moreover,
+\[
+ mk=\Nrm{r}
+ \le4\left(\frac{m-1}{2}\right)^2
+ =(m-1)^2<m^2.
+\]
+Cancellation of $m>0$ gives $k<m$. The displayed estimate can be written
+without fractions by setting $m=2h+1$: it is simply
+$\Nrm{r}\le4h^2<(2h+1)^2$.
+
+It remains to rule out zero. If $k=0$, the nonnegative squares in
+$\Nrm{r}=0$ must all be zero. Thus all $r_i=0$, and $m$ divides every
+$x_i$. Compute the exact quotients $w_i=x_i/m$. Then
+\[
+ m^2\Nrm{w}=\Nrm{x}=mp,
+\]
+and cancellation gives $m\Nrm{w}=p$. This would make $m$ a divisor of
+$p$ with $1<m<p$, contradicting the primality test. Since the natural
+number $k$ is decidably either zero or positive, it follows that $k\ge1$.
+\end{proof}
+
+\begin{lemma}[The new representing tuple]
+\label{lem:quotient}
+Under the assumptions of Lemma~\ref{lem:newmult}, every coordinate of
+$z=x*\bar r$ is divisible by $m$, and the exact quotient tuple
+$x'=z/m$ satisfies $\Nrm{x'}=kp$.
+\end{lemma}
+
+\begin{proof}
+For clarity, with $x=(a,b,c,d)$ and $r=(r,s,t,u)$, the four numerators are
+\begin{align*}
+ z_0&= ar+bs+ct+du,\\
+ z_1&=-as+br-cu+dt,\\
+ z_2&=-at+bu+cr-ds,\\
+ z_3&=-au-bt+cs+dr.
+\end{align*}
+Modulo $m$ one can replace $a,b,c,d$ by $r,s,t,u$, respectively.
+The first expression becomes $r^2+s^2+t^2+u^2=\Nrm{r}=mk$;
+each of the other three becomes zero by cancellation of paired products.
+Thus $m\mid z_i$ for each $i$, with exact signed quotient $x'_i$.
+
+Euler's identity and invariance of the norm under conjugation give
+\[
+ m^2\Nrm{x'}=\Nrm{z}
+ =\Nrm{x}\Nrm{\bar r}
+ =(mp)(mk)=m^2pk.
+\]
+Cancel the positive integer $m^2$ to obtain $\Nrm{x'}=pk$.
+\end{proof}
+
+\subsection{The total transition and its decrease theorem}
+
+The transition on coded states is now completely specified:
+\begin{equation}
+\label{eq:step}
+ \Step(m,x)=
+ \begin{cases}
+ (m,x),&m\le1,\\
+ (m/2,H(x)),&m>1\text{ even},\\
+ (\Nrm{r}/m,(x*\bar r)/m),&m>1\text{ odd},
+ \end{cases}
+\end{equation}
+where $r$ is given by~\eqref{eq:center}. Quotient operations are defined
+on all inputs; their exactness is a proved property of valid states.
+Therefore this is a total primitive recursive function even on malformed
+state codes. It does not need a partial ``divide if divisible'' operation.
+
+\begin{proposition}[One-step descent]
+\label{prop:step}
+If $p$ is prime and $I_p(m,x)$ holds, then $I_p(\Step(m,x))$ holds.
+If $m>1$, the new multiplier $m'$ satisfies $1\le m'<m$.
+If $m=1$, the state is unchanged.
+\end{proposition}
+
+\begin{proof}
+The terminal case follows from the first branch of~\eqref{eq:step}.
+The even case follows from Lemma~\ref{lem:half}, with $m'=m/2$.
+The odd case follows from Lemmas~\ref{lem:newmult} and~\ref{lem:quotient}.
+These exhaustive cases are determined by natural-number comparison and
+parity, both decidable arithmetic tests.
+\end{proof}
+
+\begin{remark}[Why the parity branch matters]
+A centered-residue bound for an arbitrary even modulus gives only
+$\abs{r_i}\le m/2$, hence $\Nrm{r}/m\le m$. That estimate alone does
+not prove strict descent. Treating even multipliers by exact halving removes
+the boundary case altogether. For the remaining odd multipliers,
+$\abs{r_i}\le(m-1)/2$ yields strict decrease directly. The separate
+argument excluding $k=0$ is also essential.
+\end{remark}
+
+\section{Termination by a fixed primitive recursive clock}
+\label{sec:clock}
+
+We record the precise induction used instead of an appeal to infinite
+descent.
+
+\begin{lemma}[An absorbing bounded descent]
+\label{lem:clock}
+Let $D$ be a primitive recursive operation on natural state codes, $J$ a
+quantifier-free state predicate, and $R$ a natural-valued primitive
+recursive rank. Suppose arithmetic proves
+\[
+ J(s)\to J(D(s)),\qquad
+ J(s)\to R(D(s))\le R(s)\monus1.
+\]
+Define $D^0(s)=s$ and $D^{t+1}(s)=D(D^t(s))$ by primitive recursion.
+Then quantifier-free induction proves
+\begin{equation}
+\label{eq:rankinvariant}
+ J(s)\to
+ \bigl(J(D^t(s))\land R(D^t(s))\le R(s)\monus t\bigr).
+\end{equation}
+In particular, $R(D^t(s))=0$ whenever $t\ge R(s)$ and $J(s)$ holds.
+\end{lemma}
+
+\begin{proof}
+For $t=0$, both claims follow from $D^0(s)=s$ and $R(s)\monus0=R(s)$.
+Assume the displayed invariant at $t$. Preservation gives $J(D^{t+1}(s))$,
+and the rank inequality gives
+\[
+ \begin{split}
+ R(D^{t+1}(s))
+ &\le R(D^t(s))\monus1\\
+ &\le(R(s)\monus t)\monus1
+   =R(s)\monus(t+1).
+ \end{split}
+\]
+Monotonicity and the last identity are elementary laws of truncated
+subtraction, proved by quantifier-free induction. Formula
+\eqref{eq:rankinvariant}, with state code $s$ as a parameter, is itself
+quantifier-free. At $t\ge R(s)$ its right-hand bound is zero.
+\end{proof}
+
+For the prime descent, use
+\[
+ J(s)=I_p(s),\qquad R(m,x)=m\monus1.
+\]
+If $m=1$, the rank is zero and remains zero. If $m>1$, strict multiplier
+decrease gives the required saturated decrease of the rank. Define
+\begin{equation}
+\label{eq:primeprog}
+ s_t(p)=\Step^{\,t}(m_0(p),x^{(0)}(p)),\qquad
+ P(p)=\text{the tuple component of }s_p(p).
+\end{equation}
+Here the clock is the given input $p$, not the first time a test succeeds.
+
+\begin{theorem}[Prime witness]
+\label{thm:prime}
+The function $P$ is primitive recursive, and $\ipra$ proves
+\[
+ \Prime(p)\to\Nrm{P(p)}=p.
+\]
+\end{theorem}
+
+\begin{proof}
+The seed is valid by Proposition~\ref{prop:seed}. Apply
+Lemma~\ref{lem:clock} and Proposition~\ref{prop:step} to obtain
+\[
+ I_p(s_t(p)),\qquad
+ (m_t\monus1)\le(m_0\monus1)\monus t.
+\]
+These assertions are obtained by quantifier-free induction, with the
+prime-test equation as a parameter assumption. Since $m_0<p$, at $t=p$
+the rank is zero. Validity also gives $m_p\ge1$, so $m_p=1$. The norm
+part of validity is now $\Nrm{P(p)}=p$.
+
+The seed, transition, and iteration have already been defined as total
+primitive recursive functions. The proof does not establish their
+termination by a separate unbounded search; it establishes correctness
+after a predetermined number of steps.
+\end{proof}
+
+\subsection{Two fully worked descent traces}
+
+For $p=7$, the lexicographic seed search returns $(a,b)=(2,3)$, so
+\[
+ 2\cdot7=2^2+3^2+1^2+0^2.
+\]
+The tuple is reordered as $(2,0,3,1)$ into equal-parity pairs. Halving
+sums and differences gives $(1,1,2,1)$ and
+$7=1^2+1^2+2^2+1^2$.
+
+For $p=23$, the seed is $(2,8,1,0)$ with multiplier $3$. Centering modulo
+$3$ gives $r=(-1,-1,1,0)$ and $\Nrm{r}=3$. Hence $k=1$.
+The conjugate product is
+\[
+ (2,8,1,0)*(-1,1,-1,0)=(-9,-6,-3,-9).
+\]
+Divide by $3$ to obtain $(-3,-2,-1,-3)$, of norm $23$.
+
+A trace exercising both branches is
+\[
+ \begin{array}{c|c|c}
+ p=31&m&x\\\hline
+ \text{seed}&6&(4,13,1,0)\\
+ \text{even halving}&3&(2,2,7,6)\\
+ \text{odd descent}&1&(1,2,-1,-5).
+ \end{array}
+\]
+Every row satisfies $\Nrm{x}=31m$.

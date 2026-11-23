@@ -1,0 +1,142 @@
+\subsection{The converse with compact zero exclusion}\label{sec:compact-rh}
+
+Here is a constructive version of the reverse implication. Let
+$E(s)=(s-1)\zeta(s)$ be the pole-removed function defined by the
+fractional-part integral, including $E(1)=1$. Consider the arithmetic
+condition
+\[
+ \text{for every } m,T\ge1\ \text{there is } b\ge1\ \text{such that }
+       |E(s)|\ge 1/b
+\]
+on $1/2+1/m\le\operatorname{Re}s\le4$, $|\operatorname{Im}s|\le T$.
+It suffices to quantify over rational complex points and approximation
+precisions because the derivative bound from the integral supplies a PR
+continuity modulus extending the estimate to all names in a rectangle.
+For instance the lower bound means that every disk of radius
+$2^{-j}$ about a returned approximant has center of magnitude
+at least $1/b-2^{-j}$. We call this condition compact zero exclusion.
+Beyond $\operatorname{Re}s=4$ the Euler product already gives uniform
+separation. Classically, the usual functional-equation symmetry and
+compactness identify zero exclusion on the right of the critical line
+with RH. The present equivalence is between two statements of arithmetic.
+
+\begin{theorem}\label{thm:compact-rh}
+Compact zero exclusion is equivalent in the stated iPRA interpretation
+to the family $\forall r\ge1\ \exists C\ge1\ \mathcal B(r,C)$.
+In the reverse direction the bound at exponent $1/2+1/(2r)$ has an
+explicit constant, independent of the compact separation witnesses $b$.
+\end{theorem}
+\begin{proof}
+First assume the growth family. In the proof of
+Theorem~\ref{thm:growth} choose $r\ge m$, so that
+$\alpha_r\le1/2+1/(2m)$. Then
+$|D(s)|\le2mC(T+4)$ on the indicated rectangle.
+When $|s-1|\ge1/8$ use $D(s)E(s)=s-1$ to get
+$|E(s)|\ge1/(16mC(T+4))$. When $|s-1|\le1/4$, the direct integral
+estimate in Section~\ref{sec:logrates} gives $|E(s)|\ge1/3$.
+The regions overlap, giving a single admissible $b$.
+
+For the converse fix positive rationals $\gamma,\kappa\le1/4$ and
+$T\ge4$. We first prove
+\begin{equation}\label{eq:subpower}
+ |D(s)|\le P_{\gamma,\kappa}(T+5)^\kappa,
+ \qquad 1/2+\gamma\le\operatorname{Re}s\le2,\quad |\operatorname{Im}s|\le T,
+ \qquad D(s)=\frac{s-1}{E(s)} .
+\end{equation}
+For a given height $t$ center a disk at $z_0=2+it$, of radius
+$R=3/2-\gamma/2$. On it
+$H(z)=E(z)/(z+1)$ is separated from zero using the witness at
+$m=\lceil4/\gamma\rceil$ and height $\lceil T\rceil+3$. This covers
+a neighborhood of the disk. The fractional-part integral and
+$\operatorname{Re}z\ge1/2$ give $|H(z)|\le4(T+5)^2$:
+use $|z|\le T+4$, $|z-1|\le T+5$, $|z+1|\ge1$, and
+$\int_1^\infty u^{-\operatorname{Re}z-1}du\le2$.
+Define a logarithm $L(z)$ of $H(z)$ by integrating $H'/H$ from $z_0$
+on straight segments. Start it with the branch on the inner disk
+$|z-z_0|\le1/2$ given by
+\[
+    \sum_{p,k\ge1}\frac{p^{-kz}}{k}
+       -\sum_{k\ge1}\frac1k\left(\frac{2}{z+1}\right)^k,
+       \qquad p\text{ prime}.
+\]
+The first sum has absolute majorant $\sum_{n\ge2}n^{-3/2}\le2$ by
+distinctness of prime powers, and the second has majorant
+$\sum_{k\ge1}(4/5)^k=4$. Their exponentials multiply to $H$, by the
+Euler product and $1-2/(z+1)=(z-1)/(z+1)$.
+The straight-segment primitive of an analytic $g$ is
+$(z-z_0)\int_0^1g(z_0+v(z-z_0))\,dv$. Differentiation integrates
+$\frac{d}{dv}[v g(z_0+v(z-z_0))]$, giving $g(z)$.
+Thus $L'=H'/H$, and differentiating $H e^{-L}$ shows it is $1$.
+On the inner disk $L$ agrees with the displayed branch by its
+derivative and initial value. In particular $|L|\le6$ there, and on
+the large disk $\operatorname{Re}L\le B=\log4+2\log(T+5)$.
+
+Let $a_j$ be the Taylor coefficients of $L$ at $z_0$. On a circle of
+radius $d\le R$ they are
+\[
+ a_jd^j=\frac1{2\pi}\int_0^{2\pi}
+                L(z_0+d e^{i\theta})e^{-ij\theta}\,d\theta .
+\]
+For completeness, the circle integral of an analytic function vanishes
+by the straight-segment primitive. Apply this to
+$(L(z)-L(w))/(z-w)$, continued at $w$ by the segment integral of
+$L'$ from $w$ to $z$ with parameter in $[0,1]$. For $|w-z_0|<d$
+expand $1/(z-w)$ about $z_0$ on the circle by its geometric series.
+Its normalized integral is $1$. The resulting Cauchy formula gives
+the displayed coefficients and their convergent expansion at $w$.
+In particular coefficients obtained from both circles agree
+(alternatively differentiate the series at the center).
+For $j\ge1$ the mean of $L(z_0+R e^{i\theta})e^{ij\theta}$ is zero,
+by integrating $L(z)(z-z_0)^{j-1}$ around the circle.
+Conjugating shows that the displayed mean for $a_jR^j$ equals
+twice the mean of $\operatorname{Re}L\,e^{-ij\theta}$.
+Subtract the constant $B$ in that last mean and use
+$B-\operatorname{Re} L\ge0$, whose mean is $B-\operatorname{Re}a_0$.
+Together with the inner circle this gives
+\[
+       |a_j|\le 6\,2^j\quad(j\ge0),\qquad
+       |a_j|R^j\le2(B+6)\quad(j\ge1).
+\]
+Circle quadrature here uses rational parameter meshes, the named
+sine and cosine, and their derivative bounds. A supplied $b$ controls
+the denominators in the segment primitive. It suffices even when
+it is very large.
+
+At radius $r_0=3/2-\gamma$, write $d_0=1-r_0/R\ge\gamma/3$,
+and choose $J=\lceil200/(\kappa\gamma^2)\rceil$. Through index
+$J$ the sum of the absolute terms is at most $3^{J+3}$.
+The remaining tail is at most
+\[
+   2(B+6)\frac{(1-d_0)^{J+1}}{d_0}
+    \le \frac{162(1+\log(T+5))}{(J+1)\gamma^2}
+    \le \kappa(1+\log(T+5)).
+\]
+Here $(1-d)^n\le1/(1+nd)$ for $0<d<1$ follows by the binomial
+inequality. Since $|D|=|(z-1)/(z+1)|\,|e^{-L}|\le e^{|L|}$,
+\eqref{eq:subpower} holds, for example with
+$P_{\gamma,\kappa}=3^{3^{J+3}+1}$. Every point at the fixed height
+in the stated strip is within $r_0$ of $z_0$. The separation witness
+was needed for the existence and quadrature of the logarithm. The
+bound on its Taylor tail used only its real-part upper bound.
+
+Finally put $e=1/(2r)$, $\gamma=\kappa=e/4$, and take $T=N\ge4$.
+At $x=N+1/2$, the half-integer Perron bound and the rectangle shift
+of Section~\ref{sec:logrates} apply with left edge
+$a=1/2+\gamma$. Use compact zero exclusion for the rectangle in
+the proof that its boundary integral is zero. The truncation error
+is at most $300xL/N$, where $L$ is the bit length of $2N+1$.
+On each horizontal edge use $|s|\ge N$, $x^c\le2x$ as before.
+On the left edge use $\int_{-N}^{N}|a+it|^{-1}dt\le4+2\log N$.
+Since $x\le2N$, $(N+5)^\kappa\le6N^\kappa$ and
+$L\le4(1+\log N)$, these three contributions together are bounded by
+$4000 P_{\gamma,\kappa} (1+\log N)N^{a+\kappa}$.
+Now $1+\log N\le(1+1/\gamma)N^\gamma$, and
+$a+\kappa+\gamma\le1/2+e$. Thus
+$C=\lceil4000 P_{\gamma,\kappa}(1+1/\gamma)\rceil$ works for
+this $r$, including the three smaller positive integers by their
+trivial bounds. Raising to the integer power $2r$ gives the
+predicate $\mathcal B(r,C)$. In deriving the bound at each $N$ it
+suffices to take the one separation witness for the corresponding
+finite rectangle. There is no need for a choice function for these
+witnesses.
+\end{proof}

@@ -1,0 +1,35 @@
+\section{Correspondence with the source articles}
+\label{sec:scope}
+The scope is the mathematical content of the requested \wiki{Knot_theory}{\emph{Knot theory} overview} and its directly linked topics. The table groups the source statements that have arithmetic counterparts here. The rational-tangle, torus-family and graph-polynomial results develop the relevant linked topics beyond the examples in the overview.
+\begin{center}\small
+\renewcommand{\arraystretch}{1.17}
+\begin{tabularx}{\linewidth}{@{}p{.34\linewidth}X@{}}
+\toprule Starting topic or linked article & Result in this report\\\midrule
+Knot diagrams; \wiki{Reidemeister_move}{Reidemeister move}; \wiki{Unknotting_problem}{unknotting problem} & Regular projections, diagram lifts, move witnesses, bounded certificate search, and an explicit descending unknotting construction. Sections 1--3.\\
+Higher dimensions; \wiki{Ribbon_knot}{ribbon knot}; \wiki{Slice_knot}{slice knot} & Every rational polygon in four-space reduces to a triangle. A marked rational ribbon disk lifts to a properly embedded slice disk. Section~\ref{sec:geometry}.\\
+\wiki{Knot_sum}{Knot sum}; \wiki{Tricolorability}{tricolorability}; \wiki{Tangle_(knot_theory)}{tangles} & Sum laws, Fox coloring counts, torus knots, rational tangle closure tests, and the exact crossing-change cost of trefoil sums. Sections~\ref{sec:sums}--\ref{sec:fox}.\\
+\wiki{Jones_polynomial}{Jones polynomial}; \wiki{Skein_relation}{skein relation}; alternating diagrams and Tait's crossing-number conjecture & The normalized bracket, mirror and sum laws, Tutte specialization, adequacy and the minimal-crossing theorem. Section~\ref{sec:bracket}.\\
+\wiki{Vassiliev_invariant}{Vassiliev invariants} & Integer finite-type coefficients at every order; an explicit invariant of exact order two. Section~\ref{sec:finite-type}.\\
+\wiki{Knot_group}{Knot group}; \wiki{Alexander_polynomial}{Alexander polynomial}; Alexander--Conway polynomial & Finite presentation transports, abelianization, gcd of first minors, family computations and the overview's trefoil computation. Section~\ref{sec:alex}.\\
+\wiki{Trefoil_knot}{Trefoil}; \wiki{Hopf_link}{Hopf link}; \wiki{Borromean_rings}{Borromean rings}; mirror image & Explicit distinctions, chirality or mirror equivalence in worked examples, deletion certificates and exact crossing counts. Sections~\ref{sec:fox}--\ref{sec:linking-surface}.\\
+\wiki{Link_(knot_theory)}{Links}; linking number; spanning surfaces & Signed crossing formulas; an embedded mesh, Euler characteristic and genus witness for an arbitrary oriented polygonal diagram. Sections~\ref{sec:linking-surface}--\ref{sec:seifert}.\\
+\wiki{Dowker_notation}{Dowker--Thistlethwaite notation}; Gauss codes; \wiki{Knot_tabulation}{knot tabulation} & Even--odd pairing, an explicit factorial bound on diagram codes, and the first possible nontrivial crossing number. Sections~\ref{sec:linking-surface} and~\ref{sec:tabulation}.\\\bottomrule
+\end{tabularx}
+\end{center}
+
+Classical knot recognition without a supplied certificate, uniqueness of prime decomposition, geometrization of knot complements, general smooth high-dimensional classifications, and the multiplication of knots described in the overview require additional ideas beyond this report. No unprovability claim about iPRA follows from these omissions. The proof of the first Tait conjecture here concerns crossing minimality; the flyping theorem is a different statement. The surface theorem constructs an upper bound on minimal genus. The Conway recurrence is used with its normalization explicitly stated.
+
+\clearpage
+\begin{thebibliography}{10}
+\bibitem{overview} \emph{Knot theory}, Wikipedia, with the article links above. \url{https://en.wikipedia.org/wiki/Knot_theory}.
+\bibitem{proveit} V.~Reshetnikov and contributors, \emph{ProveIt}, revision \href{https://github.com/VladimirReshetnikov/ProveIt/commit/6d03f3643ebb91a6243eb1e35e7599b388197786}{\texttt{6d03f3643ebb}}. See the \repo{Logic/PrimitiveRecursiveArithmetic/README.md}{iPRA overview}, \repo{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/PR.lean}{object syntax and induction}, and \repo{Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Core/Tactic.lean}{integer derivation tactics}. The research packets and checked library components have separate verification statuses.
+\bibitem{validator} \emph{ProveIt}, same revision. \repo{Topology/UnknotRecognition/reports/06/unknot/diagram.py}{Planar-diagram validator}, including its dart convention, face permutation and spherical Euler test.
+\bibitem{rei} K.~Reidemeister, \emph{Elementare Begr\"undung der Knotentheorie}, Abh. Math. Sem. Univ. Hamburg \textbf{5} (1927), 24--32. \href{https://doi.org/10.1007/BF02952507}{doi:10.1007/BF02952507}.
+\bibitem{kauffman} L.~H.~Kauffman, \emph{State models and the Jones polynomial}, Topology \textbf{26} (1987), 395--407. \href{https://webhomes.maths.ed.ac.uk/~v1ranick/papers/kauffmanjones.pdf}{Paper}.
+\bibitem{alexander} J.~W.~Alexander, \emph{Topological invariants of knots and links}, Trans. Amer. Math. Soc. \textbf{30} (1928), 275--306. \href{https://homepages.math.uic.edu/~kauffman/Alex.pdf}{Paper}.
+\bibitem{hiller} S.~Fushida-Hardy, \emph{Knot theory}, Stanford reading-course notes, especially Chapters 5, 6 and 9. \href{https://stanford.edu/~sfh/knot.pdf}{Notes}.
+\bibitem{colorknots} A.~B.~K{\i}l{\i}\c{c}, A.~Nijsten, R.~Pellikaan and A.~Ravagnani, \emph{Knot theory and error-correcting codes}, Des. Codes Cryptogr. \textbf{93} (2025), 3029--3068. \href{https://arxiv.org/abs/2307.14882}{arXiv:2307.14882}.
+\bibitem{birmanlin} J.~S.~Birman and X.-S.~Lin, \emph{Knot polynomials and Vassiliev's invariants}, Invent. Math. \textbf{111} (1993), 225--270. \href{https://www.math.columbia.edu/~jb/v-inv.-knot-poly.pdf}{Paper}.
+\bibitem{prz} J.~H.~Przytycki, \emph{3-coloring and other elementary invariants of knots}. \href{https://arxiv.org/abs/math/0608172}{arXiv:math/0608172}.
+\bibitem{shimizu} A.~Shimizu, \emph{The warping degree of a knot diagram}. \href{https://arxiv.org/abs/0809.1334}{arXiv:0809.1334}.
+\end{thebibliography}

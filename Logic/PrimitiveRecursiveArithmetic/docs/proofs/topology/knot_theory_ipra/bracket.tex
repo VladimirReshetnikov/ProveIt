@@ -1,0 +1,461 @@
+\section{The bracket, the Jones polynomial, and crossing number}
+\label{sec:bracket}
+
+The calculation in this section follows the state model of Louis H. Kauffman,
+\emph{State models and the Jones polynomial}, Topology \textbf{26} (1987),
+395--407, doi:10.1016/0040-9383(87)90009-7. All sums, degrees, and component
+counts below are integer calculations on finite diagrams.
+
+\subsection{Resolving crossings}
+
+Take a nonempty diagram in the oriented plane, compactified by an exterior
+face. At a crossing mark the two corners swept out on turning
+counterclockwise from each outgoing overpassing ray to the adjacent
+underpassing ray. The \emph{$A$-pairing} joins the two rays of each marked
+corner. The other adjacent pairing is the $B$-pairing. In a downward braid
+with its top-left strand passing over the top-right strand, the $A$-pairing
+consists of two vertical strands. This convention fixes the handedness of all
+the formulas below.
+
+Number the $c$ crossings. A state $S$ is a $c$-bit mask, with a set bit
+selecting $B$. Write $b(S)$ for its number of set bits and $h(S)$ for the
+number of circles after making the selected pairings. To compute $h$, form
+the graph on half-edges with one edge per diagram arc and one per local
+pairing. Count connected components and add the number of crossing-free
+circles. Each component of this graph is an alternating cycle of the two
+edge types, allowing a cycle of length two. Thus each is one resolved
+circle. With $\delta=-A^2-A^{-2}$ in $\mathbb Z[A,A^{-1}]$ put
+\[
+ B_D=\sum_{S<2^c} A^{c-2b(S)}\delta^{h(S)-1}.
+\]
+In particular $B_{\bigcirc}=1$. Partitioning masks by a chosen bit proves the
+local identity $B_{\times}=A B_{A\text{-pairing}}+
+A^{-1}B_{B\text{-pairing}}$. A fresh circle multiplies $B$ by $\delta$.
+These formulas determine the sum on nonempty diagrams by induction on $c$.
+
+\begin{theorem}[Regular isotopy and the Jones skein relation]
+Let $w$ be the sum of the oriented crossing signs, positive for the
+downward braid crossing just specified. Then
+\[
+ F_D(A)=(-A^3)^{-w(D)}B_D(A)
+\]
+is unchanged by all oriented Reidemeister moves. For
+$t^{1/2}=A^{-2}$ it defines a Laurent polynomial $V_D(t)$ in $t^{1/2}$
+with $V_{\bigcirc}=1$ and
+\[
+ t^{-1}V_{+}-t V_{-}=(t^{1/2}-t^{-1/2})V_{0},
+\]
+where $0$ is the orientation-preserving smoothing.
+\end{theorem}
+\begin{proof}
+For a rectangular patch resolve its crossings but keep its boundary
+endpoints. A resolved patch is a pairing of endpoints and a number of
+internal circles. Give each internal circle weight $\delta$. Stacking
+patches composes pairings by tracing paths and multiplies by $\delta$ for
+each newly closed circle. This operation is associative since tracing in the
+fully glued graph gives the same paths and closed components in either
+order. Equality of two local expansions survives insertion into any
+nonempty closed diagram: fix the outside state, glue each pairing to the
+same outside arcs, and apply the common weight $\delta^{h-1}$ to the
+resulting circles. There is at least one circle using the boundary when the
+patch has endpoints.
+
+For $k$ vertical strands write $I$ for the identity pairing and $e_i$ for a
+cap and cup at positions $i,i+1$, with every other strand vertical.
+Tracing the affected endpoints gives
+\[
+ e_i^2=\delta e_i,\qquad
+ e_i e_{i+1}e_i=e_i,\qquad e_{i+1}e_ie_{i+1}=e_{i+1}.
+\]
+In the first stacking, the interior cup and cap form one closed circle. In
+the second, the outside cap and cup stay at $i,i+1$ and the third strand
+traverses both interior turns with no closed circle. Reflection gives the
+third equality. Disjoint cap-cup pairs commute. The two crossing
+expansions are $R_i=AI+A^{-1}e_i$ and $R_i^{-}=A^{-1}I+Ae_i$.
+Their product in either order is
+$I+(A^2+A^{-2}+\delta)e_i=I$, which proves move II. For $e=e_i$, $f=e_{i+1}$, put $U=AI+A^{-1}e$ and $W=AI+A^{-1}f$. Expanding the two sides of move III gives
+\[
+ UWU-WUW=(A+A^{-1}\delta+A^{-3})(e-f)=0 .
+\]
+These are the unoriented move templates. To see that they cover type III,
+the three strands cross pairwise, so their six boundary ends occur in
+order $x,y,z,x,y,z$ up to relabeling. Choose three consecutive ends as
+inputs so that their strands, read around the disk in one of the two
+directions, are in descending overcrossing height order. Such a triple
+exists because cyclic orders and their reverses exhaust the six
+permutations. The local pictures are then the two three-crossing braid
+words above or their reflections. Reflection interchanges $A,A^{-1}$
+and preserves the identity. Rotation, or bending an endpoint along the
+boundary, merely glues the same pairing onto both sides. This also covers
+rotated type II patches.
+
+In a positive curl the $A$-pairing detaches a circle, giving factor
+$A\delta+A^{-1}=-A^3$. The opposite curl gives
+$A^{-1}\delta+A=-A^{-3}$. The oriented signs cancel in move II because
+the same pair of strands crosses twice with opposite local order. In
+move III the signs of the three corresponding pairs are unchanged. Move I
+changes $w$ by the matching sign; hence the normalization cancels its
+factor. Reversing all arrows fixes $w$ and $F$. Each exponent in $F$ is
+even since $w\equiv c\pmod 2$ and $\delta$ has even exponents.
+
+For the skein identity the positive crossing has the oriented smoothing
+in its $A$-term. In the negative crossing the weights are interchanged.
+Write $U$ for the bracket of the oriented smoothing and $H$ for that of
+the other pairing. If $u$ is the outside writhe, the two normalized
+brackets are $(-A^3)^{-u}(-A^{-3})(AU+A^{-1}H)$ and
+$(-A^3)^{-u}(-A^{3})(A^{-1}U+AH)$. Multiplying the first by $A^4$
+and subtracting $A^{-4}$ times the second cancels $H$ and leaves
+$(A^{-2}-A^{2})(-A^3)^{-u}U$. This is the asserted identity.
+\end{proof}
+
+\begin{proposition}[Exponents and elementary operations]
+If $D$ has $r$ link components, $V_D\in
+t^{(r-1)/2}\mathbb Z[t,t^{-1}]$. Mirroring replaces $t$ by $t^{-1}$.
+For a disjoint diagram union one has $F_{D\sqcup E}=\delta F_D F_E$.
+For the oriented connected sum along two chosen arcs one has
+$F_{D\#E}=F_D F_E$.
+\end{proposition}
+\begin{proof}
+Consider the three possible pairings at one crossing after all other
+crossings have been smoothed. The exterior arcs in the complementary disk
+give one of the two adjacent pairings. Indeed, two disjoint arcs in a
+disk cannot pair alternating boundary ends: closing one arc by either
+boundary interval separates the other two ends, by the polygonal
+crossing-parity test. Thus changing $A$ to $B$ splits or merges one
+circle. The leading exponent of the corresponding state monomial changes
+by $-2+2(\pm1)$, and the internal powers of $\delta$ have steps of four.
+All exponents after normalization therefore belong to a single residue
+class modulo four.
+
+Use the state that smooths all crossings compatibly with orientation.
+Let $p$ and $n$ count positive and negative crossings. Its bit count is
+$n$. Starting with the original components, make these oriented smoothings
+one by one. At each step the incoming ends previously led to two specific
+outgoing ends, and the new prescription exchanges these successors.
+A transposition of successors splits one directed cycle in two or joins two
+directed cycles in one. Hence this state's circle count satisfies
+$h\equiv r+c\pmod2$. Its normalized exponent modulo four is
+$c-2n+2(h-1)-3w=2(h-1-w)\equiv 2(r-1)\pmod4$ since
+$w=p-n\equiv c\pmod2$. This proves the claimed grading.
+
+In the mirror all corners swap roles, masks complement, $w$ changes sign,
+and $\delta$ is fixed by $A\mapsto A^{-1}$. For the union, states are
+independent pairs and the circle counts add. For the sum, cutting the two
+marked state circles opens each into a path; the joining arcs make a
+single circle out of the pair. Thus circle counts add minus one. Crossing
+weights and writhe add in both constructions.
+\end{proof}
+
+\begin{proposition}[Value at one and parity of the determinant]
+For a diagram with $r$ components,
+$F_D(1)=V_D(1)=(-2)^{r-1}$. In particular every Jones polynomial is
+nonzero. For knots $V_D(-1)$ is an odd integer.
+\end{proposition}
+\begin{proof}
+We prove $B_D(1)=(-1)^c(-2)^{r-1}$ by resolving one crossing.
+Outside its four ends, follow the original strands straight through every
+other crossing. This gives a pairing of the four ends and some closed
+components. Of the three possible local pairings, the one agreeing with
+the outside pairing yields two additional circles, and each of the other
+two yields one. If $d$ denotes the smaller total circle count,
+the three numbers $(-2)^{r_P-1}$, for the original, $A$, and $B$
+pairings $P$, therefore sum to
+$(-2)^d+2(-2)^{d-1}=0$. The two smoothing terms have $c-1$ crossings;
+the bracket recursion at $A=1$ proves the induction step. The case $c=0$
+is the disjoint-circle formula. Normalization multiplies by $(-1)^w$
+with $w\equiv c\pmod2$. Finally, for a knot $V_D$ has integral exponents,
+and $1$ and $-1$ agree modulo two in every Laurent monomial. Thus
+$V_D(-1)\equiv V_D(1)=1\pmod2$.
+\end{proof}
+
+\subsection{Extreme coefficients and the first Tait conjecture}
+
+Write $a=h(0)$, $d=h(2^c-1)$ for the all-$A$ and all-$B$ circle counts.
+A diagram is $A$-adequate if at every crossing the two $A$-smoothing arcs
+belong to distinct all-$A$ circles. Define $B$-adequacy likewise. The
+\emph{shadow} forgets over/under and retains the crossing vertices. A
+crossing-free circle is a separate connected shadow.
+
+\begin{lemma}[Dual state bound]
+For a connected shadow and any pair of complementary states $S,\bar S$,
+$h(S)+h(\bar S)\le c+2$.
+\end{lemma}
+\begin{proof}
+Take the $h(S)$ circles as vertices and one edge per crossing between the
+two incident state arcs, allowing loops. This graph is connected: collapsing
+the state circles and restoring the crossing sites preserves the connectivity
+of the original shadow. Select a spanning tree by scanning the edges and
+retaining an edge exactly when it joins distinct components. Changing the
+pairings first at tree edges merges two circles each time. Indeed, by
+induction each current tree component has exactly one circle, and the next
+edge joins different components. After $h(S)-1$ changes one circle remains.
+Each remaining change increases the count by at most one. Consequently
+$h(\bar S)\le1+c-(h(S)-1)$.
+\end{proof}
+
+\begin{theorem}[Span bounds and adequacy]
+For every nonempty diagram all exponents of $B_D$ lie between
+$-c-2(d-1)$ and $c+2(a-1)$. Under $A$-adequacy the upper endpoint occurs
+with coefficient $(-1)^{a-1}$; under $B$-adequacy the lower occurs with
+coefficient $(-1)^{d-1}$. On any connected shadow the span of a nonzero
+$F_D$ in the variable $A$ is at most $4c$.
+\end{theorem}
+\begin{proof}
+A change from $A$ to $B$ reduces the prefactor degree by two and
+increases the circle count by at most one. It therefore cannot increase
+the upper bound for the state's degree. If $D$ is $A$-adequate, the
+first such change merges two circles and drops the upper bound by four.
+Every state other than all-$A$ is reached by changes of this kind. Only
+all-$A$ contributes at $c+2(a-1)$ and it contributes the stated sign.
+Mirror the argument for the lower extreme. Subtract the degree bounds
+and use $a+d\le c+2$ to obtain span at most $4c$. Writhe normalization
+translates degrees by a constant.
+\end{proof}
+
+For the next theorem take a connected sphere diagram with $c>0$.
+In half-edge notation its cyclic orders and edge reversal trace the
+facial boundary walks. For a sphere map, $c-2c+f=2$ where $f$ is the
+number of face cycles. One can check this input condition by counting
+cycles. Geometrically it is Euler's formula: a spanning tree in a
+connected plane graph has one face, and inserting each remaining edge in
+its face splits that face into two. Diagram arcs can be polygonal with
+rational vertices. A crossing is \emph{nugatory} in the face test if two
+opposite corners belong to the same face. Equivalently a simple closed
+curve can pass through that crossing, approaching in the two opposite
+sectors, with its remaining arc in the complement. In the face-polygon
+description join the two corner occurrences by an interior simple arc,
+then identify their endpoints at the crossing. Conversely, the interior
+of any such arc belongs to a single face. A diagram is reduced if this
+test fails at every crossing.
+
+\begin{theorem}[Crossing minimality, with a spanning-tree certificate]
+Let $D$ be connected and alternating, meaning successive visits on each
+component alternate over and under. The class of $F_D$ modulo $A^4+1$
+is a unit monomial times the positive number of spanning trees of a
+checkerboard graph of $D$. In particular a diagram joined to $D$ by
+Reidemeister moves has connected shadow. If $D$ is also reduced, its
+$A$-span equals $4c$ and every such diagram has at least $c$ crossings.
+\end{theorem}
+\begin{proof}
+Take first $c>0$. Shade the $A$-corners black and the $B$-corners white.
+Along an arc an over endpoint is paired with an under endpoint; because
+the two outgoing rays point oppositely along that arc, the black side
+continues into the black side at the other end. Thus each facial walk
+has a single color and each edge has one face on each side of distinct
+colors. The all-$A$ circles trace precisely the black facial walks, and
+the all-$B$ circles the white ones. Hence $a+d=f=c+2$. Put one vertex
+in each black face and one edge at each crossing joining the two black
+corners. This is the connected graph of the dual state bound starting
+from all-$A$. The white graph is the corresponding graph starting from
+all-$B$.
+
+Reduce coefficients modulo $A^4+1$ in the Laurent polynomial ring.
+Here $A$ is a unit and $\delta=0$, so only one-circle states survive.
+Write $T$ for the set of changed black pairings, of size $j$. Every
+state circle is contained in one component of the spanning black subgraph
+with edges $T$: away from changed crossings follow the original black
+circle, and at a changed crossing one can pass only between its two
+incident black vertices. Each vertex supplies some arc of the diagram
+and is thus represented in a state circle. Consequently a one-circle
+state implies connectivity of this subgraph, so $j\ge a-1$. Starting
+instead from white circles gives $c-j\ge d-1$. As $a+d=c+2$, both
+inequalities are equalities. A connected graph on $a$ vertices with
+$a-1$ edges is a tree, by the edge-scan construction above. Conversely
+every spanning tree gives exactly one circle by the same merging argument.
+The surviving sum is therefore $\tau A^{c-2(a-1)}$ with $\tau\ge1$ the
+spanning-tree count, and normalization multiplies it by a unit monomial.
+This class is nonzero: reducing a monomial to a signed power of degree
+$0,1,2,$ or $3$ gives unique coordinates since $A^4+1$ is monic and
+$A^4=-1$. If a shadow has two or more components, partition them into two
+nonempty diagrams. The disjoint-union calculation gives a factor
+$\delta$, even if one component is drawn inside another. Its class is
+zero. This proves the connectivity assertion for any competitor.
+
+If $D$ is reduced, both black corners are in distinct faces and both white
+corners are in distinct faces at every crossing. Thus $D$ is adequate on
+both sides. Its extreme degrees give span $2c+2(a+d)-4=4c$.
+Any certified equivalent diagram $E$ has this span and, as just proved,
+connected shadow. The span bound gives $4c\le4c(E)$. For $c=0$ the
+connected diagram is a circle, $F=1$; with a one-vertex, zero-edge
+checkerboard graph all conclusions hold directly.
+\end{proof}
+
+The same extreme degrees give a chirality test. For a reduced connected
+alternating diagram, equivalence to its oriented mirror implies
+$3w=a-d$: the greatest and least exponents of $F$ must sum to zero.
+When $c>0$, reducedness forces $a,d\ge2$, so $|a-d|\le c-2$.
+In particular $3|w|\ge c$ excludes equivalence to the oriented mirror.
+
+\begin{proposition}[Tutte specialization and signs for alternating links]
+In the preceding checkerboard graph $G$, put $v=a$ and $e=c$. Write
+$k(U)$ for the number of components of the spanning subgraph with edge
+set $U$. Define its Tutte polynomial, for this connected $G$, by
+\[
+ T_G(X,Y)=\sum_{U\subseteq E}
+ (X-1)^{k(U)-1}(Y-1)^{|U|-v+k(U)}.
+\]
+Then
+\[
+ B_D(A)=A^{e-2(v-1)}T_G(-A^4,-A^{-4}).
+\]
+After an overall sign and monomial shift, the coefficients of $F_D$ at
+$A^{4j}$ have signs $(-1)^j$ wherever they are nonzero.
+For an alternating knot $|V_D(-1)|$ counts the spanning trees of $G$,
+so that count is odd.
+\end{proposition}
+\begin{proof}
+Draw a small disk for each black face and thin bands for the edges in
+$U$, ending at its cyclically marked corners. The boundary circuits use
+the $B$-pairing at selected bands and the $A$-pairing elsewhere: a
+band locally replaces two separate boundary arcs by the other smoothing.
+For one connected component of this spanning subgraph, a neighborhood of
+a spanning tree is a disk, by adding a new disk and its joining band at
+each step. Each remaining edge lies in a face of the connected partial
+plane graph. That face is a disk and its boundary in the thickened graph
+is one circle; the new band cuts the face into two and adds one boundary
+circle. (One can make this edge insertion with that component alone in
+the sphere.) Thus a component with $v'$ vertices and $e'$ edges has
+$2-v'+e'$ boundary circles, also valid for an isolated vertex. Summing
+gives $h(U)=2k(U)-v+|U|$. For $i=k(U)-1$ and
+$j=|U|-v+k(U)$ we have $h(U)-1=i+j$ and $|U|=v-1-i+j$.
+Consequently the state term, divided by $A^{e-2(v-1)}$, is
+$(A^2\delta)^i(A^{-2}\delta)^j$. Since
+$1+A^2\delta=-A^4$ and $1+A^{-2}\delta=-A^{-4}$ this proves the formula.
+
+For coefficient signs we need nonnegativity of the ordinary coefficients
+of $T_G$. Its subset definition extends to disconnected graphs by changing
+$k(U)-1$ to $k(U)-k(E)$. A loop $s$ contributes the factor
+$1+(Y-1)=Y$ times $T_{G\setminus s}$, by pairing subsets with and
+without $s$. For a bridge $s$, pair them instead with subsets in $G/s$:
+omitting $s$ adds one free component relative to including it, so the
+factor is $(X-1)+1=X$. For an edge of neither kind the two classes of
+subsets give $T_{G\setminus s}+T_{G/s}$, as deletion preserves the total
+component count, while contracting a selected non-loop decreases both
+its vertex and selected-edge counts by one. The graph with no edges
+has $T=1$. Induction now proves nonnegativity. Every monomial $X^iY^j$
+contributing to degree $4(i-j)$ in the specialization has sign
+$(-1)^{i+j}=(-1)^{i-j}$, proving the assertion. For a knot the exponent
+grading places all powers of $F$ in residue zero modulo four.
+Its class at $A^4=-1$ is exactly $V(-1)$; the spanning-tree evaluation
+and parity assertion above conclude the proof.
+\end{proof}
+
+\subsection{Concrete knots and an infinite family}
+
+Let $T_m$ be the closure of the downward two-strand braid $\sigma_1^m$,
+$m\ge0$, the usual diagram of the $(2,m)$ torus link. Its strands
+undergo $m$ transpositions, so there is one component for odd $m$ and
+two for even $m$. Write $R=AI+A^{-1}e$. Since $Re=-A^{-3}e$,
+induction, or telescoping $R^m-(AI)^m$, gives
+\[
+ R^m=A^m I+\sum_{j=0}^{m-1}(-1)^j A^{m-2-4j} e.
+\]
+Closing $I$ gives two circles of bracket $\delta$, while closing $e$
+gives one of bracket $1$. For $m\ge1$ the $j=0$ term cancels part of
+$A^m\delta$. Thus
+\[
+ F_{T_m}=(-A^3)^{-m}\left(-A^{m+2}
+           +\sum_{j=1}^{m-1}(-1)^j A^{m-2-4j}\right).
+\]
+For $m\ge2$ the extreme exponents of $F$ are $2-2m$ and $2-6m$,
+giving span $4m$ and chirality for the indicated orientation. The
+polynomial modulo $A^4+1$ is nonzero by the spanning-tree result for this
+alternating diagram. It follows that its crossing number in the
+Reidemeister presentation is exactly $m$, including for even $m$.
+The odd $m\ge3$ give pairwise distinct nontrivial knots of unbounded
+crossing number. In particular the right trefoil has $V=t+t^3-t^4$,
+its mirror has $V=t^{-1}+t^{-3}-t^{-4}$, and both require three crossings.
+
+\begin{center}
+\begin{tikzpicture}[line width=0.95pt,line cap=round]
+\begin{scope}
+\draw[ink] (-.85,0) .. controls (-.45,.87) and (.45,.87) .. (.85,0);
+\draw[ink] (-.85,0)--(.85,0);
+\draw[ink] (-.85,0) .. controls (-.45,-.87) and (.45,-.87) .. (.85,0);
+\fill[sea] (-.85,0) circle (2.3pt) (.85,0) circle (2.3pt);
+\node[font=\small] at (0,-1.01) {black graph};
+\end{scope}
+\begin{scope}[shift={(4.0,0)}]
+\draw[ink] (0,.66)--(-.70,-.48)--(.70,-.48)--cycle;
+\fill[sea] (0,.66) circle (2.3pt) (-.70,-.48) circle (2.3pt) (.70,-.48) circle (2.3pt);
+\node[font=\small] at (0,-1.01) {white graph};
+\end{scope}
+\end{tikzpicture}
+\end{center}
+\noindent For the standard positive trefoil all-$A$ smoothing leaves two circles; all-$B$ leaves three. Its black graph therefore has three parallel edges, and its plane dual is a triangle. Choosing any one black edge (or omitting any one white edge) gives a spanning tree. This recovers $|V(-1)|=3$ and makes the extreme bracket exponents $5$ and $-7$ visible from the two circle counts.
+
+Let $P=t+t^3-t^4$ and $P^*(t)=P(t^{-1})$. The granny knot, its mirror,
+and the square knot have polynomials $P^2,(P^*)^2,PP^*$, respectively:
+they are the sums of two right trefoils, two left trefoils, and one of
+each. Their degree intervals $[2,8],[-8,-2],[-3,3]$ separate all three.
+Each knot has crossing number six, since a six-crossing sum diagram
+exists and its Jones span in $t$ is six.
+
+For the figure-eight knot use the closed three-braid
+$(\sigma_1\sigma_2^{-1})^2$, with zero writhe. Set
+$x=A^{-2}$, $y=A^2$, $e=e_1$, $f=e_2$. The bracket expansion of one
+factor is $Q=I+xe+yf+ef$. The normalized closure evaluation
+$\operatorname{tr}$ sends $I$ to $\delta^2$, $e,f$ to $\delta$ and
+$ef,fe$ to $1$, by direct tracing. It is cyclic since the seam of a
+stacked closed rectangle can be taken before or after either factor.
+Expanding $Q^2$ and using the cap-cup identities gives
+\[
+ \operatorname{tr}(Q^2)
+  =(1+x^2+y^2)\delta^2+4(x+y)\delta+5
+  =A^8-A^4+1-A^{-4}+A^{-8}.
+\]
+Thus $V=t^2-t+1-t^{-1}+t^{-2}$ and four crossings are necessary and
+sufficient (the closure permutation is a three-cycle). Its mirror
+equivalence also has a finite witness. If $s=\sigma_1$, $u=\sigma_2$,
+then $\Delta=sus=usu$ conjugates $s$ to $u$ and $u$ to $s$, by that
+same braid relation. Conjugation therefore changes $(su^{-1})^2$ to
+$(us^{-1})^2$. Cyclically permuting the latter gives $(s^{-1}u)^2$,
+the mirror. For closed braids cyclic permutation slides the marked seam
+around the annulus, and conjugation reduces to cyclic permutation and
+adjacent inverse cancellation. These observations supply the moves;
+equality of the two Laurent polynomials alone would not supply them.
+
+\paragraph{Arithmetic implementation.}
+A table of $4c$ half-edges, plus $z$ isolated circles, suffices. Boolean
+reachability closure by $4c$ rounds computes the state components and
+their least representatives. Every state has $1\le h\le H=2c+z$:
+each non-isolated component uses at least two half-edges.
+Allocate exponent slots from $-4c-2H$ through $4c+2H$ to include
+normalization. The sum of absolute coefficients before cancellation is
+bounded by $2^c 2^{H}$, since one state has coefficient norm
+$2^{h-1}$. Powers of $\delta$ can be accumulated by shifted addition.
+Spanning-tree selection needs one edge scan with bounded component
+recomputation; counting trees needs at most $2^c$ subsets. Each proof
+inducts on a mask fold, a crossing-change list of length at most $c$, a
+tree-edge scan, or a move list with its given length. For the evaluation at one use a postorder fold over the ternary table of partially resolved states of the original diagram. For deletion--contraction fix the original vertex and edge bounds, allow deleted labels, and induct on the number of active edges with the induction predicate conjoined over all bounded incidence tables of the given size. Equalities of
+polynomials mean bounded slot equalities, connectivity is a Boolean
+matrix computation, and component counts use bounded sums. In particular
+the minimal-crossing conclusion quantifies over a proposed alternative
+diagram and an explicit move list. It does not require producing a
+shortest list or deciding whether two arbitrary diagrams are equivalent.
+
+\paragraph{Lean proof structure.}
+Use $\mathtt{Nat}$ for mask and coded input, an offset coefficient vector for
+$\mathtt{Laurent}$, and a finite array of mates for a boundary pairing.
+Implement \texttt{stack} by bounded component/path tracing, returning
+the new pairing and a loop count. Prove its gluing law by mapping each
+path segment in the two-stage trace to its original edge list. For the
+local tables it suffices to tabulate $I,e,f,ef,fe$ on six endpoints
+and check the three cap-cup equations by computation. For adequacy,
+first establish \texttt{switch\_merge} on two different cycle IDs and
+\texttt{switch\_bound} on an arbitrary pair by cutting the two edges
+and tracing the two resulting paths. Define \texttt{treeMask} by the
+edge scan and maintain that the current forest partition equals
+the cycle partition of the tree-switched state. Count face orbits and
+use the checked Euler equality $a+d=c+2$. Finally reduce a
+coefficient vector into four signed slots using $A^4=-1$; the tree
+bijection identifies one slot with $\pm\tau$. Each bounded invariant is
+suitable for quantifier-free induction after replacing list quantifiers
+by Boolean scans.
+
+The companion \texttt{jones\_states.py} directly enumerates braid states by
+gluing the levels of the braid diagram. Its open-pairing checks retain
+boundary information in moves II and III. Its closed computations test the
+two-strand formula and both mirror choices through eleven crossings, the
+figure-eight calculation, and the value and exponent grading on all 341
+three-strand words of length at most four.

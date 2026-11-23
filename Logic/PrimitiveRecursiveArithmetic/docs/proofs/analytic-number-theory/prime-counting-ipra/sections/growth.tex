@@ -1,0 +1,206 @@
+\section{Growth without analytic assumptions}
+\label{sec:dyadicgrowth}
+
+There are two routes to asymptotic information. An elementary binomial estimate already gives the correct order of magnitude. The leading constant $1$ will come from a specific previously proved iPRA theorem.
+
+\begin{proposition}[Integer Chebyshev bounds]
+Let $b$ be the unique integer with $2^b\le n<2^{b+1}$, for $n\ge1$. Then
+\[
+ \lfloor n/2\rfloor\le (b+1)\pi(n),\qquad
+ b\pi(n)\le13n\quad(b\ge2).
+\]
+In particular $\pi(n)$ has order $n/\log n$, and $\pi(n)/n$ tends to zero with the explicit modulus $n\ge2^{13k+1}$ for error $<1/k$.
+\end{proposition}
+\begin{proof}
+Write $L_n=\mathrm{lcm}(1,\ldots,n)$. For each $p$, counting the multiples of each $p^j$ in a factorial gives
+\[
+ v_p\binom{2m}{m}
+ =\sum_{j=1}^{2m}\left(\lfloor2m/p^j\rfloor-2\lfloor m/p^j\rfloor\right).
+\]
+Each summand is either zero or one and vanishes beyond $p^j>2m$. This proves $\binom{2m}{m}\mid L_{2m}$. Every $p^j$ in $(m,2m]$ contributes a one, which also proves $L_{2m}/L_m\mid\binom{2m}{m}$. The inequalities
+$2^m\le\binom{2m}{m}\le2^{2m}$ follow by multiplying $(m+i)/i\ge2$ for $1\le i\le m$, and by summing the entire binomial row. Hence $2^{\lfloor n/2\rfloor}\le L_n\le n^{\pi(n)}$ for $n\ge2$, the latter bound using the largest power of each prime separately. This proves the first inequality.
+
+The second divisibility gives $L_{2^j}\le2^{2^{j+1}-2}$ by induction starting at $j=0$. Monotonicity gives $L_n\le2^{4n}$. Put $h=\lfloor b/2\rfloor$ and let $c$ count the primes in $(2^h,n]$. Their product divides $L_n$, so $hc\le4n$. The other primes number at most $2^h$. For $b\ge2$, $b\le3h$ and $b2^h\le2^b$: the latter follows from $b\le2^{\lceil b/2\rceil}$ by induction in steps of two starting at 2 and 3. Thus $b\pi(n)\le n+12n$. Every power, quotient, product and valuation here has a bounded computation.
+\end{proof}
+
+\section{The prime number theorem with an arithmetic modulus}
+\label{sec:pntgrowth}
+
+For $H_j=\sum_{i=1}^j1/i$ set $F(n)=(n^2)!$, $A(n)=\sum_{n<i\le n^2} F(n)/i$ and $\lambda(n)=A(n)/F(n)$. Every displayed division in $A$ is exact. For $n\ge1$ the right and left rectangle sums for $1/t$ between $n$ and $n^2$ give
+\begin{equation}\label{eq:growth-harm}
+ 0\le\log n-\lambda(n)\le 1/n-1/n^2\le1/n.
+\end{equation}
+Here and below logarithms, integrals and limits of the specified functions abbreviate rational estimates at arbitrary requested precision. For instance right rectangles of width at most $2^{-s}$ on a positive interval $[1,x]$ give $\log x$ within $2^{-s}$, since the differences of the upper and lower rectangles telescope. For rational $x\ge1$ use equally spaced rectangles, $\max(1,\lceil (x-1)2^s\rceil)$ of them. For $0<x<1$ use $-\log(1/x)$. On $[2,x]$ one can compute $\mathrm{Li}_2(x)=\int_2^xdt/\log t$ to precision $2^{-s}$ by a mesh of width $2^{-s-3}$ (total rectangle error at most twice the mesh) and node logarithms to error $2^{-s-5}/(x+1)$, using $\log2\ge1/2$ and interval division. These procedures and their bounds are primitive recursive on rational codes.
+
+\paragraph{The imported arithmetic theorem.}
+At revision \texttt{a9c0f1949b}, ProveIt contains a deeply embedded derivation
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/a9c0f1949be61679ed2e219b97dc42ecb7ae91a9/Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/AnalyticNumberTheory/FinalPNT.lean}{\texttt{FinalPNT.arith\_pnt}}. With $k\ge1$ and $n\ge N_*(k)$ its conclusion is the integer inequality
+\begin{equation}\label{eq:growth-embedded}
+ k\,|\pi(n)A(n)-nF(n)|\le nF(n).
+\end{equation}
+The theorem constructs a derivation under \texttt{PRAAx} from derivations of the two displayed hypotheses. Its prime indicator uses trial division through the least prime factor. The least divisor $d\ge2$ of $n\ge2$ equals $n$ precisely when no $2\le t<n$ divides $n$, so its count agrees term by term with ours. This use of an existing theorem is the only prime-distribution input for the rest of this section.
+
+Here is a simple larger modulus that can be used without reproducing the contraction polynomials. Put
+\[
+ q=5k,\quad D=2^{20}q^3,\quad V_0=D+1600,\quad
+ V_{i+1}=[10^8(D+V_i+2)]^8,\qquad
+ N(k)=2^{V_{4D}+131137q^3}.
+\]
+To check the comparison with the source, its \texttt{Nk} is $2^{s_J+131137q^3}$, $J=\lfloor(4D-2^{20}q^2)/3\rfloor$, $s_0=D+1600$, $A_j=4D-3j$. One stage sets $P=4(\lfloor24D/A_j\rfloor+2)+2$ and $s'=2(s+P(c+1))+2$ with $c=\texttt{DecLin}+\texttt{DecCst}$ in \href{https://github.com/VladimirReshetnikov/ProveIt/blob/a9c0f1949be61679ed2e219b97dc42ecb7ae91a9/Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/AnalyticNumberTheory/StepCondition.lean}{\texttt{StepCondition}}. For $j<J$, $1\le A_j\le4D$, $P\le96D+10$. Writing $W=10^8(D+s+2)$, all factors $D,A_j,P,P+s+1$ and numerical coefficients in the expanded sums are at most $W$. Those sums contain fewer than 20 monomials, each a product of at most five such factors (including its coefficient). Thus $c\le20W^5$ and $s'\le W^8$. Induction up to $J\le4D$ gives $N_*\le N$. The underlying proof obtains a finite Selberg symmetry identity by divisor convolution, bounds the prime-power Chebyshev sum on successive blocks, improves the relative error by $3/D$ per stage, and then converts the prime-power sum to $\pi$ by finite summation and change of harmonic mesh. The stage predicate tests all integers from its threshold to a fixed endpoint, so the induction acts on a Boolean table.
+
+\begin{theorem}[Two forms of the prime number theorem]
+With $T(k)=\max\{N(2k),2k\}$, $k\ge1$, one has
+\[
+ n\ge T(k)\quad\Longrightarrow\quad
+ \left|\frac{\pi(n)\log n}{n}-1\right|\le1/k .
+\]
+Both $\pi(n)\sim n/\log n$ and $\pi(n)\sim\mathrm{Li}_2(n)$ follow; the second statement also holds with the principal-value normalization $\mathrm{li}$.
+\end{theorem}
+\begin{proof}
+Divide \eqref{eq:growth-embedded} at precision $2k$ by $nF(n)$ and use \eqref{eq:growth-harm} and $\pi(n)\le n$. The total normalized error is at most $1/(2k)+1/n$.
+
+Write $L=\log n$. The identity
+\[
+ \mathrm{Li}_2(n)=n/L-2/\log2+\int_2^n\frac{dt}{(\log t)^2}
+\]
+comes from differentiating $t/\log t$. Equivalently, telescope its increments on rational mesh intervals and pass to the prescribed precision. The derivatives through order two of $t/\log t$ on $[2,n]$ have bounds $10(n+1)$, so a mesh of width $2^{-s}/(20(n+1)^2)$ suffices for the derivative-integral comparison. Split the integral at $\sqrt n$ into pieces bounded by $4\sqrt n$ and $4n/L^2$. It follows that
+\[
+ |L\mathrm{Li}_2(n)/n-1|\le4L/n+4L/\sqrt n+4/L.
+\]
+For $n\ge2^{512 k^2}$ we have $L\ge256 k^2$. Since $\exp(L/2)\ge L^3/48$, the last display is at most $384/L^2+4/L<1/(8k)$. Explicit comparisons with $\sqrt n$ may use the integer-root partition or rational enclosures to any fixed precision. The conventional principal-value normalization adds the constant $\operatorname{li}(2)$, of absolute value less than four by the explicit rational endpoint enclosure of Section~\ref{sec:li-cut}. Thus the normalization changes the last bound by at most $4L/n$. With, for instance, $n\ge\max(T(8k),2^{512(2k)^2})$, the normalized quantities for $\pi$, $\mathrm{Li}_2$ and $\mathrm{li}$ are all within $1/(4k)$ of one; division by a number at least $3/4$ gives ratio error at most $2/(3k)$ in either logarithmic-integral normalization.
+\end{proof}
+
+\section{Higher-order estimates from the logarithmic-integral bound}
+\label{sec:growthrefine}
+
+The basic PNT allows errors too large to decide even the sign of $\pi(n)-n/\log n$. For this section we use one additional result, the quantitative estimate in the \href{https://github.com/VladimirReshetnikov/ProveIt/tree/a9c0f1949be61679ed2e219b97dc42ecb7ae91a9/Logic/PrimitiveRecursiveArithmetic/docs/proofs/analytic-number-theory/pnt_li_ipra_2026-11-15}{ProveIt logarithmic-integral packet}, particularly \texttt{tex/analytic.tex}, \texttt{theta\_bridge.tex} and \texttt{transfer.tex}. This is a cited human proof with an arithmetic precision analysis. Its accompanying Lean source gives a specification. The previous section used the separate object-level theorem \texttt{FinalPNT.arith\_pnt}.
+
+In detail, the packet's finite Euler-product inequality gives a positive lower bound $2^{-71}Q^{-7}$ for $|\zeta(\sigma+it)|$ when $|t|\ge1/64$, $Q\ge\log(|t|+3)$ and $1-2^{-88}Q^{-9}\le\sigma\le2$. The calculation uses $3+4\cos u+\cos(2u)=2(1+\cos u)^2$. Euler summation controls three derivatives and isolates the pole at one. A finite rectangular contour for the once-integrated prime-power sum, followed by monotone differences and finite Abel summation, yields the imported estimate
+\begin{equation}\label{eq:growth-strong}
+ n\ge 2^{\,2^{241}(m+5)^{10}}
+ \quad\Longrightarrow\quad
+ |\pi(n)-\mathrm{Li}_2(n)|\le 2^{-m} n/\log n .
+\end{equation}
+The exponent $10$ is strong enough to dominate every fixed power of $1/\log n$. The source gives rational approximations and precision bounds for the contour. We give the remaining deductions here.
+
+\begin{lemma}[Finite factorial expansion]\label{lem:growthfactorial}
+Let $r\ge1$, $C=2^{240}$, $M(r)=1+6400C^2r^2+48C$, $B_r=1+r!(1+2^{r+2})$, and
+\[
+ T_r=2^{\max(2M(r)^{10},\,32(r+2)^2)}.
+\]
+For $n\ge T_r$, set $L=\log n$, $u=1/L$, $P_r(u)=\sum_{j=0}^{r-1}j!u^j$. Then
+\[
+ \left|\frac{\pi(n)}{nu}-P_r(u)\right|\le B_r u^r.
+\]
+\end{lemma}
+\begin{proof}
+Write $D=2^{241}$, $\ell=\lfloor\log_2 n\rfloor$, and let $a$ be the largest integer with $D a^{10}\le\ell$, a bounded search. At $n\ge2^{D6^{10}}$ equation \eqref{eq:growth-strong} with $m=a-5$ applies. Since $\ell\ge L$ here and $a>(\ell/D)^{1/10}-1$, this bounds the normalized error $L|\pi-\mathrm{Li}_2|/n$ by $64\exp(-L^{1/10}/(2D))$, using $\log2\ge1/2$. Write $v=L^{1/10}$. For $n\ge2^{2M(r)^{10}}$ one has $v\ge M(r)$, so $\log64\le v/(4D)$ and $10r\log v\le10r\sqrt v\le v/(4D)$. Thus $|\pi-\mathrm{Li}_2|\le n/L^{r+1}$. The elementary inequality $\log v\le\sqrt v$ for $v\ge1$ follows by maximizing $2\log t-t$ at $t=2$; the signs of its derivative equally give the comparison on rational subintervals.
+
+Telescoping the derivatives of $t/(\log t)^j$ yields
+\[
+ \mathrm{Li}_2(n)=nuP_r(u)
+ -2\sum_{j=0}^{r-1}\frac{j!}{(\log2)^{j+1}}
+ +r!\int_2^n\frac{dt}{(\log t)^{r+1}} .
+\]
+The finite boundary sum is at most $2^{r+1}r!$ in absolute value: bound $j!\le(r-1)!$ and sum a geometric progression (take $r=1$ separately). The integral split at $\sqrt n$ is at most $2^{r+1}\sqrt n+2^{r+1}n/L^{r+1}$. For $L\ge16(r+2)^2$, one has $(r+1)(\log2+\log L)\le L/2$, using $\log L\le\sqrt L$. Thus $2^{r+1}\sqrt n\le n/L^{r+1}$ and $n/L^{r+1}\ge1$. The three error terms give the stated $B_r$. Each integration identity follows at precision $s$ by telescoping on a uniform rational mesh. For $f(t)=t/(\log t)^j$, $|f''(t)|\le 2^{j+3}(j+1)^2$ on $t\ge2$, directly by differentiation. Choosing mesh width at most $2^{-s}/((n+1)2^{j+4}(j+1)^2)$ bounds the accumulated Taylor error by $2^{-s}$. The iteration in $r$ uses a finite list of these estimates with $s$ enlarged by the binary length of $2(r+1)!$.
+\end{proof}
+
+The same bound, with $B'_r=2^{r+1}B_r+\sum_{j<r}j!(j+2)$, holds for real $x$ supplied with its integer part whenever $x\ge2T_r$. Indeed $n=\lfloor x\rfloor\ge\sqrt{x}$ and $\pi(x)=\pi(n)$. For $t\in[n,x]$ the derivative of $t/(\log t)^{j+1}$ has magnitude at most $j+2$. Also $x/(\log x)^{r+1}\ge1$. Summing these bounds proves the assertion. The expansion for $\mathrm{li}(x)$ follows by the same integration identity with the additional constant $\mathrm{li}(2)$, bounded in absolute value by 4. The following eventual inequalities all have thresholds computed from these formulas.
+
+\begin{proposition}[Reciprocal expansion and inequalities]\label{prop:growthrecip}
+Define signed integers $k_m$ recursively, for $m\ge1$, by
+\[
+ k_m=m\,m!-\sum_{i=1}^{m-1}(m-i)!k_i.
+\]
+They start $1,3,13,71,461,3441$. For each $m$, with $u=1/\log x$,
+\[
+ \frac{x}{\pi(x)}
+ =u^{-1}-1-\sum_{i=1}^m k_i u^i+O_m(u^{m+1}).
+\]
+The constants and thresholds in this expansion are primitive recursive in $m$.
+\end{proposition}
+\begin{proof}
+Put $Q_m=1-u-\sum_{i=1}^m k_i u^{i+1}$ and $r=m+2$. In $P_r Q_m$ the linear coefficient vanishes. The coefficient at $u^{j+1}$, $1\le j\le m$, is $(j+1)!-j!-\sum_{i=1}^j(j-i)!k_i=0$ by definition. This explains the varying power $u^i$ in the formula. For a polynomial write $\|P\|_1$ for the sum of the absolute values of its coefficients. For $0<u\le1$ the residual is at most $(1+\|P_r\|_1\|Q_m\|_1)u^r$. Put $f=\pi(x)/(xu)$. Beyond $2T_r$ the preceding lemma now gives
+\[
+ |1-fQ_m|\le [1+(\|P_r\|_1+B'_r)\|Q_m\|_1]u^r.
+\]
+If also $x\ge2^{4(B'_r+1)}$, then $B'_ru^r\le1/2$ and $f\ge1/2$. Divide by $fu$ to obtain the claimed bound with twice the bracketed integer as constant.
+\end{proof}
+
+\paragraph{Consequences for inequalities on the source pages.}
+For sufficiently large $x$, writing $L=\log x$, the following strict bounds hold:
+\begin{align*}
+ &\frac{x}{L}<\pi(x)<1.25506\frac{x}{L},\qquad
+ \frac{x}{L-1}<\pi(x)<\frac{x}{L-1.1},\\
+ &\frac{x}{L}\left(1+\frac1L+\frac2{L^2}\right)<\pi(x)
+ <\frac{x}{L}\left(1+\frac1L+\frac2{L^2}+\frac{7.59}{L^3}\right),\\
+ &\frac{x}{\pi(x)}< L-1-L^{-1}-3L^{-2}.
+\end{align*}
+For the first and third comparisons use the polynomial $1+u+2u^2+6u^3$ with error $B'_4u^4$. For the second, the reciprocal expansion starts $L-1-u+O(u^2)$, which lies strictly between $L-1.1$ and $L-1$. For the last comparison its next coefficient is $-13u^3$. In each use of an error $Cu^{j+1}$ against a signed leading term $au^j$ it suffices to add the integer threshold $x\ge2^{\lceil4(C+1)/|a|\rceil}$. These proofs establish eventual versions. The much smaller published numerical cutoffs require separate analysis or verified finite computations. The upper coefficient $1.25506$ alone also follows eventually from the basic PNT by taking $k=4$.
+
+For integers $n$ the harmonic approximation in MathWorld is asymptotically equivalent to $\pi(n)$, since $0\le H_n-\log n\le1$ and the basic PNT applies. It eventually underestimates $\pi(n)$ strictly. Indeed, $H_n-\log(n+1)$ increases by $1/(n+1)-\log(1+1/(n+1))\ge0$. At $n=8$, $H_8>2.717$ while $\log9<2.2$ (the Taylor polynomial through degree five already gives $e^{1.1}>3$). Thus $H_n-3/2>L-1$ for $n\ge8$ and the lower bound $\pi(n)>n/(L-1)$ proves the assertion once $L>1$.
+
+\subsection{Ramanujan's eventual inequality}
+\begin{theorem}\label{thm:growthram}
+For all sufficiently large positive rational $x$, and in the located-floor interpretation for real arguments,
+\[
+ \pi(x)^2<\frac{ex}{\log x}\pi(x/e).
+\]
+The same eventual inequality holds with $\mathrm{li}$ in both positions.
+\end{theorem}
+\begin{proof}
+Put $u=1/\log x$, $P=1+u+2u^2+6u^3+24u^4$, $B=B'_5+4$, and take $x\ge6T_5$, $u\le1/2$. Both arguments lie in the range of the expansion. Divide both sides by $x^2u^2$. The left side is $P^2$ with error at most $(68+B)Bu^5$, since $\|P\|_1=34$. The right side is
+\[
+ \sum_{j=0}^4\frac{j!u^j}{(1-u)^{j+1}}+E,
+ \qquad |E|\le64Bu^5.
+\]
+Indeed $\log(x/e)=1/u-1$. At each degree $d\le4$, the coefficient on the right is $\sum_{j=0}^d\binom{d}{j}j!$. The left coefficients are $1,2,5,16,64$ and the right coefficients are $1,2,5,16,65$. The discarded coefficients of $P^2$ sum to at most $34^2$. For each $j$, the geometric derivative series for $(1-u)^{-j-1}$ after degree $4-j$ has tail at most $64u^{5-j}$: factor out $u^{5-j}$ and compare with $2^{5-j}\sum_{h\ge0}\binom{h+j}{j}2^{-h}=64$. This identity also follows by multiplying $j+1$ geometric series with explicit tails. Thus the normalized right side minus the left is $u^4$ with error at most $Ku^5$, where $K=(68+B)B+64B+34^2+64\cdot34$. For $x\ge2^{4(K+1)}$ the difference is at least $u^4/2$. The same five coefficients and the chosen $B$ cover $\mathrm{li}$, since a constant shift of at most four is absorbed by the unnormalized remainder.
+
+There is an explicit method to determine the floor of $x/e$ for $x=a/b\ge2$ with $a,b$ positive integers. Set $E_a=\sum_{i=0}^a1/i!$ and scan $1\le j\le\lfloor a/b\rfloor$. For these $j$ the number $a/(bj)$ is a multiple of $1/a!$. Since $0<e-E_a<1/a!$ for $a\ge2$ by the factorial tail, we have $j\le x/e$ exactly when $bjE_a<a$. Include $j=0$ and take the largest passing index. More precisely the factorial tail satisfies $1/(a+1)!<e-E_a<2/(a+1)!$. Since distinct points of the $1/a!$ mesh are $(a+1)/(a+1)!$ apart and $a\ge2$, this gives $|a-bje|\ge bj/(a+1)!$ for every tested $j$. The unnormalized gap established above is at least $x^2/(2(\log x)^6)\ge1/(2a^4)$. Thus a finite strict comparison is available: evaluate $e$ and $\log x$ with interval widths at most $1/[100(a+1)^6]$. On $L\ge2$ the reciprocal changes by at most the width of its argument, and $x\pi(x/e)\le a^2$. The width of the resulting interval for the difference is at most $5a^2/[100(a+1)^6]$, strictly smaller than the gap. The series for $e$ has remainder less than $1/j!$ after degree $j\ge2$, so this precision too has an explicit finite cutoff.
+\end{proof}
+
+\subsection{Inversion at the \(m\)-th prime}
+\begin{theorem}[The first terms of the inverse expansion]
+For $t=\log m$, $w=\log t$, the expansion on the Wikipedia page holds through both displayed correction terms:
+\[
+ \frac{p_m}{m}
+ =t+w-1+\frac{w-2}{t}
+ -\frac{w^2-6w+11}{2t^2}
+ +O\!\left(\frac{w^3}{t^3}\right).
+\]
+All uses of the error below have primitive-recursive thresholds. In particular $p_m\sim m\log m$.
+\end{theorem}
+\begin{proof}
+Write $x=p_m$, $R=x/m$, and $L=\log x=t+\log R$. Since $x\ge m$, the hypotheses of Proposition~\ref{prop:growthrecip} apply as soon as $m$ exceeds its threshold. At order two let $C_2$ be the explicit error constant obtained in its proof, so that
+\[
+ |R-G(R)|\le C_2/t^3,\qquad
+ G(y)=t+\log y-1-\frac1{t+\log y}-\frac3{(t+\log y)^2}.
+\]
+Take $m$ large enough that $w\ge4$, $t\ge8w$ and $C_2/t^3\le1$. For instance $m\ge2^{2\max(256,C_2+1)}$ suffices for these size conditions, using $\log t\le\sqrt t$. Here $R\ge1$. The preceding estimate gives $L/2\le R\le2L$, hence $R\ge t/2$. If $R\ge4t$, then $\log R\le R/4$ (at $R\ge16$), so $R\le2t+R/2$ and $R\le4t$. Thus $R$ always lies in $[t/2,4t]$.
+
+Set $a=w-1$, $b=w-2$, $c=-(w^2-6w+11)/2$, $Y=t+a+b/t+c/t^2$. Since $|a|,|b|\le w$ and $|c|\le2w^2$, the relative correction $d=Y/t-1$ satisfies $|d|\le2w/t\le1/4$. Expand $\log(1+d)$ through degree two; the geometric remainder is at most $2|d|^3$. This gives
+\[
+ \log Y=w+a/t+(b-a^2/2)/t^2+E_1,\qquad |E_1|\le30w^3/t^3 .
+\]
+Indeed $|d-a/t|\le2w/t^2$, bounding the change in the quadratic term by $3w^2/t^3$, and $|c|/t^3\le2w^2/t^3$. Also $z=\log Y$ satisfies $0\le z\le2w$ and $|z-w|\le3w/t$ by the same series. The identity
+$(t+z)^{-1}=t^{-1}-z/t^2+z^2/(t^2(t+z))$ gives
+\[
+ \left|(t+z)^{-1}-t^{-1}+w/t^2\right|\le(3w+4w^2)/t^3,\qquad
+ \left|(t+z)^{-2}-t^{-2}\right|\le4w/t^3.
+\]
+For the latter inequality use $t^{-2}-(t+z)^{-2}\le2z/t^3$. Substitution shows that $G(Y)$ has successive coefficients $w-1$, $a-1$, $b-a^2/2+w-3$, exactly $a,b,c$. The errors just bounded give $|G(Y)-Y|\le50w^3/t^3$. On the interval between $R$ and $Y$ the derivative
+\[
+ G'(y)=\frac1y\left(1+(t+\log y)^{-2}+6(t+\log y)^{-3}\right)
+\]
+is bounded by $1/2$ since $y\ge t/2$ and $t\ge8$. Integrating this explicit bound (or summing it on rational meshes) gives $|R-Y|\le |R-G(R)|+|G(R)-G(Y)|+|G(Y)-Y|\le(C_2+50)w^3/t^3+|R-Y|/2$. The asserted remainder bound is therefore $2(C_2+50)w^3/t^3$.
+\end{proof}
+
+This also gives the eventual versions of the displayed Rosser, Dusart and Axler bounds for $p_m$. To see the signs explicitly, write
+\[
+ F(g)=t+w-1+(w-2)/t-g/(2t^2).
+\]
+The expansion implies
+\[
+ F(w^2-6w+11.321)<p_m/m<F(w^2-6w+10.667).
+\]
+Indeed, with $K=2(C_2+50)$, it suffices to have $Kw^3/t<0.16$. One explicit extra condition is $t\ge(10^5(K+1))^2$: the inequality $w\le8t^{1/8}$ follows from $e^{w/8}\ge w/8$, and so $Kw^3/t\le512K/t^{5/8}<0.16$. For $w\ge12$, these bounds also imply the versions with $F(w^2)$ and $F(w^2-6w)$, the latter on the upper side. They give the upper bound $t+w-1+(w-2)/t$ because $w^2-6w+10.667>0$. They give the lower bound $t+w-1+(w-2.1)/t$ when $w^2-6w+11.321<0.2t$, which follows, for example, from $w^2\le64t^{1/4}$ at $t\ge 2^{20}$. Finally $w-2.1>0$ and $(w-2)/t<0.0513$ eventually (use $w\le\sqrt t$). Thus the familiar lower bounds $t$ and $t+w-1$, and upper bounds $t+w$, $t+w-0.5$ and $t+w-0.9487$, all follow with room to spare. A required real threshold $t\ge B$ is guaranteed by the integer test $m\ge2^{\lceil2B\rceil}$; $w\ge12$ can be ensured by $t\ge2^{24}$. For the two sharpest decimal comparisons the residual positive margin after division by $m$ is at least $(0.321/2-0.16)/t^2=1/(2000t^2)$. It is enough to approximate both $t,w$ within $1/[10^6(m+1)^4]$: in the region $t\ge2$, $0\le w\le m+1$, the sum of the absolute partial derivatives of $F(w^2-6w+c)$ with $10\le c\le12$ is less than $100(m+1)^2$ by differentiating the displayed rational expression. The logarithm enclosures above supply these widths, using $|(\log t)'|\le1$ for $t\ge1$ and one extra precision bit to propagate the first enclosure. Thus the strict conclusion can be verified by a prescribed positive separation in the object language. The small numerical onset of each individual inequality is an additional quantitative problem.

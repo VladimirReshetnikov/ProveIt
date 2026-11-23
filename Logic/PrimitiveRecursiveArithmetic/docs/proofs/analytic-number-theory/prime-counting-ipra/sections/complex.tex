@@ -1,0 +1,13 @@
+\subsection{The Mellin identity for complex rational parameters}
+The integral identity above extends to $s=\sigma+i\tau$ with rational $\sigma>1$ and rational $\tau$. Define $v^{-s}$ by $v^{-\sigma}(\cos(\tau\log v)-i\sin(\tau\log v))$. Choose $b\ge1$ with $\sigma\ge1+1/b$. Define the branch of $\log\zeta(s)$ by the convergent name
+\[
+ T(s)=\sum_{p,k\ge1}\frac{p^{-ks}}{k},
+\]
+where $p$ ranges over primes. At the cutoff $p^k\le N=2^{bK}$ the tail in complex modulus is at most $2b\,2^{-K}$: different prime powers have different integer bases of summation in $\sum_{n>N}n^{-\sigma}$. For $H\ge N$, the finite step integral gives
+\[
+ s\int_1^H J(u)u^{-s-1}\,du
+   =\sum_{p^k\le H}\frac{p^{-ks}}k-H^{-s}\sum_{p^k\le H}\frac1k.
+\]
+The boundary correction has modulus at most $H^{1-\sigma}$. The kernel identity follows by differentiating $u^{-s}$ on each cell. For a rational verification on $[1,H]$, the second derivative has modulus at most $|s|(|s|+1)$. Taylor's formula with the resulting quadratic error gives the cell identity by telescoping. Thus the ordinary improper integral equals $T(s)$ with an explicit truncation error at most $(2b+1)2^{-K}$.
+
+To identify the branch, let $T^{(N)}$ include every exponent for each $p\le N$. At $|z|\le1/2$ the identity $\exp(\sum_{k\ge1}z^k/k)=1/(1-z)$ follows by differentiation along $uz$, $0\le u\le1$: the derivative of $(1-uz)\exp(\sum_{k\ge1}(uz)^k/k)$ is zero and its initial value is one. The geometric tails bound the differentiated polynomials uniformly. Consequently $\exp T^{(N)}=\prod_{p\le N}(1-p^{-s})^{-1}$. The product of truncated geometric sums contains each $n\le N$ once by factorization, and the sum of the absolute values of the extra monomials is at most $2b\,2^{-K}$, as in Section~\ref{sec:mellin}. Letting the geometric depth increase, the same inequality holds between this finite Euler product and $Z_N=\sum_{n\le N}n^{-s}$. Since $|T^{(N)}-T|\le2b\,2^{-K}$ and $|T^{(N)}|,|T|\le1+2b$ by the dyadic bound from $1$, the exponential amplifies this error by at most $3^{2+2b}$, by integrating its derivative along the connecting segment. This proves $\exp T=\zeta(s)$ and therefore identifies the branch without a logarithm choice or a zero test. Complex numbers here are pairs of rational enclosure names. Sine, cosine and exponential on $|z|\le U$ use their Taylor polynomials: for $m\ge2U$ successive absolute majorants beyond $m$ decrease at least geometrically, giving error at most $2U^{m+1}/(m+1)!$. The general length schedule at the end of Section~\ref{sec:li-cut} also suffices.

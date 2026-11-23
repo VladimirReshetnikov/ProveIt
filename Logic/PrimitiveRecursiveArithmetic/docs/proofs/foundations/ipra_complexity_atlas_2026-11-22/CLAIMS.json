@@ -1,0 +1,1985 @@
+{
+  "title": "Constructive complexity proof inventory",
+  "date": "2026-11-22",
+  "count": 86,
+  "counting_unit": "Labeled theorem, lemma, or corollary group; a group may contain several consequences. These are reconstructions of classical mathematics, not claims of novelty.",
+  "global_status": {
+    "human_readable_proofs_supplied": true,
+    "new_lean_modules_compiled": false,
+    "object_ipra_derivations_completed": false,
+    "finite_python_checks_are_formal_certificates": false,
+    "iPRA_reading": "Explicit finite numerical representations, primitive-recursive bounds, and bounded invariants lowered to quantifier-free induction, subject to each claim's stated hypotheses.",
+    "scope": "Selected results from the source article and immediate linked topics; not an exhaustive proof of every statement on every linked page."
+  },
+  "claims": [
+    {
+      "id": "F01",
+      "title": "finite decisions and least witnesses",
+      "title_tex": "finite decisions and least witnesses",
+      "kind": "lemma",
+      "section": "The arithmetic foundation and its proof discipline",
+      "section_label": "sec:foundations",
+      "source_file": "sections/foundations.tex",
+      "theorem_label": "thm:F01",
+      "statement_tex": "For every \\emph{fixed} PR Boolean predicate $b(i,\\vec x)$, there are PR functions\n\\[\n \\Any_b(r,\\vec x),\\quad \\All_b(r,\\vec x),\\quad \\mu_b(r,\\vec x)\\le r\n\\]\nsuch that \\ipra\\ proves\n\\begin{align*}\n \\Any_b(r,\\vec x)=1&\\ \\longleftrightarrow\\ \\exists i<r\\ b(i,\\vec x)=1,\\\\\n \\All_b(r,\\vec x)=1&\\ \\longleftrightarrow\\ \\forall i<r\\ b(i,\\vec x)=1.\n\\end{align*}\nIf a successful index exists, $\\mu_b$ is its least value; otherwise $\\mu_b=r$.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/CountingOutline.lean",
+      "supporting_lean_outline_files": [
+        "lean/CoreOutline.lean"
+      ],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Fixed primitive-recursive finite predicates and explicitly bounded searches."
+      ]
+    },
+    {
+      "id": "F02",
+      "title": "bounded formulas and bounded induction",
+      "title_tex": "bounded formulas and bounded induction",
+      "kind": "theorem",
+      "section": "The arithmetic foundation and its proof discipline",
+      "section_label": "sec:foundations",
+      "source_file": "sections/foundations.tex",
+      "theorem_label": "thm:F02",
+      "statement_tex": "For each fixed formula $A$ whose quantifiers have PR bounds, there is a fixed PR bit $\\chi_A$ and an \\ipra\\ proof $A\\leftrightarrow\\chi_A=1$. Induction for $A$ is consequently derivable from quantifier-free induction.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/integration/ObjectTargets.lean",
+      "supporting_lean_outline_files": [
+        "lean/CoreOutline.lean"
+      ],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Bounded-formula syntax is fixed externally; this is not a total primitive-recursive evaluator for arbitrary PR syntax. Induction is lowered to quantifier-free Boolean induction."
+      ]
+    },
+    {
+      "id": "F03",
+      "title": "bounded-loop correctness",
+      "title_tex": "bounded-loop correctness",
+      "kind": "lemma",
+      "section": "The arithmetic foundation and its proof discipline",
+      "section_label": "sec:foundations",
+      "source_file": "sections/foundations.tex",
+      "theorem_label": "thm:F03",
+      "statement_tex": "Suppose a finite program has a PR fuel bound $T(\\vec x)$, PR state updates, and a PR bound $B(\\vec x)$ on all state codes throughout that run. If an invariant has only quantifiers bounded by explicit PR terms, its base case and preservation prove correctness in \\ipra. This includes bounded least search, array dynamic programming, and a depth-first traversal of a finitely bounded tree.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/CoreOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Loop states, iterations, and invariant quantifiers require explicit primitive-recursive numerical bounds."
+      ]
+    },
+    {
+      "id": "F04",
+      "title": "finite counting and pigeonhole",
+      "title_tex": "finite counting and pigeonhole",
+      "kind": "lemma",
+      "section": "The arithmetic foundation and its proof discipline",
+      "section_label": "sec:foundations",
+      "source_file": "sections/foundations.tex",
+      "theorem_label": "thm:F04",
+      "statement_tex": "For any explicitly coded map $f:\\{0,\\ldots,r-1\\}\\to\\{0,\\ldots,s-1\\}$, injectivity implies $r\\le s$. If $r>s$, bounded search constructs $i<j<r$ with $f(i)=f(j)$. For any Boolean predicates $P_i$ on a finite set $X$, the size of their union is at most the sum of their sizes.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/CountingOutline.lean",
+      "supporting_lean_outline_files": [
+        "lean/CoreOutline.lean"
+      ],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Maps and sets are finite coded data; witness extraction uses bounded search."
+      ]
+    },
+    {
+      "id": "F05",
+      "title": "bounded simulation and trace uniqueness",
+      "title_tex": "bounded simulation and trace uniqueness",
+      "kind": "theorem",
+      "section": "The arithmetic foundation and its proof discipline",
+      "section_label": "sec:foundations",
+      "source_file": "sections/foundations.tex",
+      "theorem_label": "thm:F05",
+      "statement_tex": "There are fixed PR functions $\\Run(e,x,t)$ and $\\B(e,x,t)\\in\\bits$ for the configuration and acceptance bit after $t$ transitions. A correctly coded trace of length $t+1$ beginning at the initial configuration agrees with $\\Run$ at every position. Accepting or rejecting output remains unchanged under additional fuel. All statements have \\ipra\\ proofs.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/CoreOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "All evaluation has an explicit clock; no unbounded halting or total universal PR evaluator is assumed."
+      ]
+    },
+    {
+      "id": "F06",
+      "title": "concrete polynomial simulation",
+      "title_tex": "concrete polynomial simulation",
+      "kind": "theorem",
+      "section": "The arithmetic foundation and its proof discipline",
+      "section_label": "sec:foundations",
+      "source_file": "sections/foundations.tex",
+      "theorem_label": "thm:F06",
+      "statement_tex": "For a fixed number of source tapes, time $t$ can be simulated on one tape in $O((n+t+1)^2)$ time. There is also a fixed interpreter that, with a finite source table of length $m$ and a unary clock $t$, computes $\\B(e,x,t)$ in at most $C(m+n+t+1)^4$ transitions for a fixed constant $C$. Both simulations and their bounds admit bounded-invariant \\ipra\\ proofs.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/CoreOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "The first simulation fixes the source tape count; the variable-program interpreter uses canonical fixed-alphabet source descriptions. Numeric PR operations are not treated as unit-cost machine steps."
+      ]
+    },
+    {
+      "id": "C01",
+      "title": "basic time and space inclusions",
+      "title_tex": "basic time and space inclusions",
+      "kind": "theorem",
+      "section": "Presentations of complexity classes and basic constructions",
+      "section_label": "sec:classes",
+      "source_file": "sections/classes.tex",
+      "theorem_label": "thm:C01",
+      "statement_tex": "The following transformations are provable in \\ipra:\n\\[\n \\mathsf P\\subseteq\\mathsf{NP}\\subseteq\\mathsf{PSPACE}\n \\subseteq\\mathsf{EXPTIME},\\qquad\n \\mathsf{coNP}\\subseteq\\mathsf{PSPACE},\n\\]\nand $\\mathsf P\\subseteq\\mathsf{coNP}$. Together with the space results this gives\n$\\mathsf L\\subseteq\\mathsf{NL}\\subseteq\\mathsf P$.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/CoreOutline.lean",
+      "supporting_lean_outline_files": [
+        "lean/SpaceOutline.lean"
+      ],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Class memberships use numerical machine/verifier presentations of specified PR language bits."
+      ]
+    },
+    {
+      "id": "C02",
+      "title": "closure constructions for P",
+      "title_tex": "closure constructions for P",
+      "kind": "theorem",
+      "section": "Presentations of complexity classes and basic constructions",
+      "section_label": "sec:classes",
+      "source_file": "sections/classes.tex",
+      "theorem_label": "thm:C02",
+      "statement_tex": "$\\mathsf P$ is closed under complement, finite union, finite intersection, difference, concatenation, and Kleene star. The constructors and correctness proofs are effective in \\ipra.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/CoreOutline.lean",
+      "supporting_lean_outline_files": [
+        "lean/ReductionsOutline.lean"
+      ],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Finite Boolean operations and finite dynamic programming; empty-word and empty-factor cases are handled explicitly."
+      ]
+    },
+    {
+      "id": "C03",
+      "title": "positive closures of NP and coNP",
+      "title_tex": "positive closures of NP and coNP",
+      "kind": "theorem",
+      "section": "Presentations of complexity classes and basic constructions",
+      "section_label": "sec:classes",
+      "source_file": "sections/classes.tex",
+      "theorem_label": "thm:C03",
+      "statement_tex": "$\\mathsf{NP}$ is closed under finite union, finite intersection, concatenation, and Kleene star. $\\mathsf{coNP}$ is closed under finite union and finite intersection.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/CoreOutline.lean",
+      "supporting_lean_outline_files": [
+        "lean/ReductionsOutline.lean"
+      ],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "NP complement closure is not asserted. coNP closures use complements of decidable language bits."
+      ]
+    },
+    {
+      "id": "C04",
+      "title": "encoding invariance and the function/decision distinction",
+      "title_tex": "encoding invariance and the function/decision distinction",
+      "kind": "theorem",
+      "section": "Presentations of complexity classes and basic constructions",
+      "section_label": "sec:classes",
+      "source_file": "sections/classes.tex",
+      "theorem_label": "thm:C04",
+      "statement_tex": "If two encodings have polynomial-time translations that preserve and recover the represented object, polynomial-time solvability and NP verification transfer in both directions. A polynomial-time function with polynomially long output has a polynomial-time graph predicate. A polynomial-time graph predicate alone gives a bounded-search function algorithm only when a length bound is supplied; it need not give a polynomial-time function algorithm.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/CoreOutline.lean",
+      "supporting_lean_outline_files": [
+        "lean/ReductionsOutline.lean"
+      ],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "The reverse function-from-graph search needs a supplied output-length bound and need not run in polynomial time."
+      ]
+    },
+    {
+      "id": "C05",
+      "title": "unary and binary bounded-time acceptance",
+      "title_tex": "unary and binary bounded-time acceptance",
+      "kind": "theorem",
+      "section": "Presentations of complexity classes and basic constructions",
+      "section_label": "sec:classes",
+      "source_file": "sections/classes.tex",
+      "theorem_label": "thm:C05",
+      "statement_tex": "The problem ``does deterministic $e$ accept $x$ within $T$ steps?'' is P-complete under logarithmic-space many-one reductions when $T$ is written in unary, and EXPTIME-complete under polynomial-time many-one reductions when $T$ is written in binary. With nondeterministic $e$, the two versions are respectively NP-complete and NEXPTIME-complete.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/CoreOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Unary and binary budget encodings define different problems. Reduction resources are those explicitly stated for each completeness conclusion."
+      ]
+    },
+    {
+      "id": "C06",
+      "title": "unary and binary bounded-space acceptance",
+      "title_tex": "unary and binary bounded-space acceptance",
+      "kind": "theorem",
+      "section": "Presentations of complexity classes and basic constructions",
+      "section_label": "sec:classes",
+      "source_file": "sections/classes.tex",
+      "theorem_label": "thm:C06",
+      "statement_tex": "Deterministic acceptance with a supplied space budget $s$, where escape or nonhalting within the configuration bound counts as rejection, is PSPACE-complete for unary $s$ and EXPSPACE-complete for binary $s$, under polynomial-time many-one reductions.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/CoreOutline.lean",
+      "supporting_lean_outline_files": [
+        "lean/SpaceOutline.lean"
+      ],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Canonical fixed-alphabet space-bounded machines; budget escape or timeout at the finite configuration bound means rejection."
+      ]
+    },
+    {
+      "id": "N01",
+      "title": "constructive algebra of reductions",
+      "title_tex": "constructive algebra of reductions",
+      "kind": "theorem",
+      "section": "Reductions, complete problems, and constructive search",
+      "section_label": "sec:np",
+      "source_file": "sections/np.tex",
+      "theorem_label": "thm:N01",
+      "statement_tex": "Let $A,B,C$ be represented decision bits. If polynomial-time transducers $f,g$\nsatisfy $A(x)=B(f(x))$ and $B(z)=C(g(z))$, their composed transducer is a\npolynomial-time reduction $A\\leq_m^p C$. Identity and composition are explicit,\nand polynomial-time decidability is preserved downwards. Logarithmic-space\nmany-one reductions have the same composition property.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/ReductionsOutline.lean",
+      "supporting_lean_outline_files": [
+        "lean/CoreOutline.lean"
+      ],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Transducer resource bounds are supplied; logspace composition recomputes a virtual input rather than storing the intermediate word."
+      ]
+    },
+    {
+      "id": "N02",
+      "title": "verifier and branching presentations of NP",
+      "title_tex": "verifier and branching presentations of NP",
+      "kind": "theorem",
+      "section": "Reductions, complete problems, and constructive search",
+      "section_label": "sec:np",
+      "source_file": "sections/np.tex",
+      "theorem_label": "thm:N02",
+      "statement_tex": "Polynomial-time binary nondeterministic machines and polynomial-length,\npolynomial-time verifiers define the same decision bits. The translations\nsend accepting witnesses to accepting witnesses by primitive-recursive maps.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/ReductionsOutline.lean",
+      "supporting_lean_outline_files": [
+        "lean/CoreOutline.lean"
+      ],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Witness transformations establish existence equivalence, not a bijection between all padded paths and verifier strings."
+      ]
+    },
+    {
+      "id": "N03",
+      "title": "uniform finite computation circuits",
+      "title_tex": "uniform finite computation circuits",
+      "kind": "theorem",
+      "section": "Reductions, complete problems, and constructive search",
+      "section_label": "sec:np",
+      "source_file": "sections/np.tex",
+      "theorem_label": "thm:N03",
+      "statement_tex": "For a fixed verifier $V$ and a supplied polynomial clock $T(n)\\ge n+q(n)+1$,\nthere is a polynomial-time constructor $x\\mapsto C_x$ with $q(n)$ input bits\nsuch that, for every $q(n)$-bit vector $y$,\n\\[\n C_x(y)=V_T(x,y).\n\\]\nThere is a constant $c_V$ with at most $c_V(T(n)+1)^2$ gates and a polynomial\nbit-length bound for $C_x$. The construction is logspace for fixed $V,q,T$.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/ReductionsOutline.lean",
+      "supporting_lean_outline_files": [
+        "lean/CoreOutline.lean"
+      ],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Verifier and polynomial clocks are fixed/supplied; the circuit printer has a separate polynomial/logspace resource analysis."
+      ]
+    },
+    {
+      "id": "N04",
+      "title": "Tseitin constraints have unique extensions",
+      "title_tex": "Tseitin constraints have unique extensions",
+      "kind": "theorem",
+      "section": "Reductions, complete problems, and constructive search",
+      "section_label": "sec:np",
+      "source_file": "sections/np.tex",
+      "theorem_label": "thm:N04",
+      "statement_tex": "There is a linear-size conversion of an acyclic circuit $C$ to a 3CNF formula\n$F_C$, with the original inputs retained as designated variables, such that\nrestriction and gate evaluation give inverse maps between satisfying\nassignments of $F_C$ and inputs on which $C$ outputs one.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/ReductionsOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "An explicit variable universe retains unused inputs; unique extension includes every gate, including unused gates."
+      ]
+    },
+    {
+      "id": "N05",
+      "title": "SAT, circuit SAT, and 3SAT are NP-complete",
+      "title_tex": "SAT, circuit SAT, and 3SAT are NP-complete",
+      "kind": "theorem",
+      "section": "Reductions, complete problems, and constructive search",
+      "section_label": "sec:np",
+      "source_file": "sections/np.tex",
+      "theorem_label": "thm:N05",
+      "statement_tex": "Every polynomial verifier has an explicit polynomial many-one reduction to\n3SAT, with primitive-recursive forward and reverse witness maps. SAT and\ncircuit SAT are NP-complete as well.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/ReductionsOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Completeness is obtained from supplied polynomial verifier presentations; no unknown time bound is inferred."
+      ]
+    },
+    {
+      "id": "N06",
+      "title": "circuit value is P-complete under logspace reductions",
+      "title_tex": "circuit value is P-complete under logspace reductions",
+      "kind": "theorem",
+      "section": "Reductions, complete problems, and constructive search",
+      "section_label": "sec:np",
+      "source_file": "sections/np.tex",
+      "theorem_label": "thm:N06",
+      "statement_tex": "The problem of evaluating an explicitly supplied acyclic Boolean circuit with\nspecified input bits is in P and is hard for P under logarithmic-space\nmany-one reductions.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/ReductionsOutline.lean",
+      "supporting_lean_outline_files": [
+        "lean/CoreOutline.lean"
+      ],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Explicit acyclic circuit evaluation with given input bits; hardness uses logspace printers."
+      ]
+    },
+    {
+      "id": "N07",
+      "title": "CLIQUE is NP-complete",
+      "title_tex": "CLIQUE is NP-complete",
+      "kind": "theorem",
+      "section": "Reductions, complete problems, and constructive search",
+      "section_label": "sec:np",
+      "source_file": "sections/np.tex",
+      "theorem_label": "thm:N07",
+      "statement_tex": "Given a 3CNF $F$ with $m$ clauses, one can construct in polynomial time a graph\n$G_F$ such that $F$ is satisfiable exactly when $G_F$ has an $m$-vertex clique.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/ReductionsOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Explicit finite simple graphs and clique witnesses; empty clauses and the zero-clause case follow stated conventions."
+      ]
+    },
+    {
+      "id": "N08",
+      "title": "independent set and vertex cover are NP-complete",
+      "title_tex": "independent set and vertex cover are NP-complete",
+      "kind": "theorem",
+      "section": "Reductions, complete problems, and constructive search",
+      "section_label": "sec:np",
+      "source_file": "sections/np.tex",
+      "theorem_label": "thm:N08",
+      "statement_tex": "For a graph $G$ on $N$ vertices and $0\\le k\\le N$, the following equivalent\nwitness transformations are polynomial:\n\\[\n\\begin{split}\nG\\text{ has a }k\\text{-clique}\n &\\ \\Longleftrightarrow\\ \\overline G\\text{ has an independent set of size }k,\\\\\nG\\text{ has an independent set of size }k\n &\\ \\Longleftrightarrow\\ G\\text{ has a vertex cover of size }N-k.\n\\end{split}\n\\]\nConsequently INDEPENDENT SET and VERTEX COVER are NP-complete.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/ReductionsOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Simple graphs; the vertex-set complement transforms independent sets and vertex covers."
+      ]
+    },
+    {
+      "id": "N09",
+      "title": "a parsimonious 3SAT-to-SUBSET-SUM reduction",
+      "title_tex": "a parsimonious 3SAT-to-SUBSET-SUM reduction",
+      "kind": "theorem",
+      "section": "Reductions, complete problems, and constructive search",
+      "section_label": "sec:np",
+      "source_file": "sections/np.tex",
+      "theorem_label": "thm:N09",
+      "statement_tex": "For every 3CNF on $v$ designated variables with $m$ clauses, there is a\npolynomial-time binary SUBSET-SUM instance with $2v+2m$ indexed positive\nintegers. Satisfying assignments and subsets summing to the target are in\nexplicit bijection. In particular, SUBSET SUM is NP-complete.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/ReductionsOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Subsets are indexed, so equal-valued entries remain distinct. Base-eight columns avoid every carry and have unique slack completion."
+      ]
+    },
+    {
+      "id": "N10",
+      "title": "PARTITION and 0–1 KNAPSACK are NP-complete",
+      "title_tex": "PARTITION and 0--1 KNAPSACK are NP-complete",
+      "kind": "theorem",
+      "section": "Reductions, complete problems, and constructive search",
+      "section_label": "sec:np",
+      "source_file": "sections/np.tex",
+      "theorem_label": "thm:N10",
+      "statement_tex": "SUBSET SUM has explicit polynomial reductions to PARTITION and to the\n0--1 knapsack decision problem with nonnegative integer weights and profits.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/ReductionsOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Nonnegative integer SUBSET SUM/0-1 KNAPSACK inputs; zero total and out-of-range target are handled separately."
+      ]
+    },
+    {
+      "id": "N11",
+      "title": "0–1 integer feasibility is NP-complete",
+      "title_tex": "0--1 integer feasibility is NP-complete",
+      "kind": "theorem",
+      "section": "Reductions, complete problems, and constructive search",
+      "section_label": "sec:np",
+      "source_file": "sections/np.tex",
+      "theorem_label": "thm:N11",
+      "statement_tex": "Feasibility of a finite system of integer linear inequalities with every\nvariable constrained to $\\{0,1\\}$ is NP-complete, even for the inequalities\narising from clauses of width at most three.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/ReductionsOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Variables are constrained to 0 or 1; no unrestricted integer-programming certificate bound is claimed."
+      ]
+    },
+    {
+      "id": "N12",
+      "title": "elementary NP presentations of neighboring problems",
+      "title_tex": "elementary NP presentations of neighboring problems",
+      "kind": "theorem",
+      "section": "Reductions, complete problems, and constructive search",
+      "section_label": "sec:np",
+      "source_file": "sections/np.tex",
+      "theorem_label": "thm:N12",
+      "statement_tex": "Graph isomorphism, Hamiltonian path, Hamiltonian cycle, and the bounded-factor\nproblem have explicit polynomial verifiers. The latter asks, on $N\\ge2$,\nwhether $N$ has a divisor $d$ with $2\\le d\\le b$ and $d<N$.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/ReductionsOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Only elementary NP membership is proved for the listed problems. No Hamiltonian hardness, polynomial factoring algorithm, coNP factoring certificate, or graph-isomorphism speed bound is inferred."
+      ]
+    },
+    {
+      "id": "N13",
+      "title": "constructive 2SAT criterion and polynomial algorithm",
+      "title_tex": "constructive 2SAT criterion and polynomial algorithm",
+      "kind": "theorem",
+      "section": "Reductions, complete problems, and constructive search",
+      "section_label": "sec:np",
+      "source_file": "sections/np.tex",
+      "theorem_label": "thm:N13",
+      "statement_tex": "A 2CNF formula without empty clauses is satisfiable if and only if no variable\nand its complement are mutually reachable in its implication graph. There is\na polynomial algorithm returning either a satisfying assignment or a\nvariable together with the two contradictory implication paths.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/ReductionsOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "2CNF with explicit variable universe; the displayed polynomial implementation materializes reachability and is not claimed to use logarithmic workspace."
+      ]
+    },
+    {
+      "id": "N14",
+      "title": "Horn satisfiability has a least-model algorithm",
+      "title_tex": "Horn satisfiability has a least-model algorithm",
+      "kind": "theorem",
+      "section": "Reductions, complete problems, and constructive search",
+      "section_label": "sec:np",
+      "source_file": "sections/np.tex",
+      "theorem_label": "thm:N14",
+      "statement_tex": "Satisfiability of CNF formulas with at most one positive literal per clause is\npolynomial-time decidable. On satisfiable input an explicit algorithm returns\nthe coordinatewise least satisfying assignment.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/ReductionsOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Horn clauses have at most one positive literal; the algorithm computes the least model when one exists."
+      ]
+    },
+    {
+      "id": "N15",
+      "title": "constructive SAT search-to-decision",
+      "title_tex": "constructive SAT search-to-decision",
+      "kind": "theorem",
+      "section": "Reductions, complete problems, and constructive search",
+      "section_label": "sec:np",
+      "source_file": "sections/np.tex",
+      "theorem_label": "thm:N15",
+      "statement_tex": "A supplied polynomial-time SAT decider yields a polynomial-time algorithm\nwhich returns a satisfying assignment for any satisfiable formula and returns\n``none'' for an unsatisfiable one. The same supplied decider yields such a\nsearch algorithm for every polynomial verifier presentation.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/ReductionsOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Conditional on a supplied polynomial-time SAT decider; the result is a total witness finder with a distinguished failure output."
+      ]
+    },
+    {
+      "id": "N16",
+      "title": "the constructive completeness implication",
+      "title_tex": "the constructive completeness implication",
+      "kind": "theorem",
+      "section": "Reductions, complete problems, and constructive search",
+      "section_label": "sec:np",
+      "source_file": "sections/np.tex",
+      "theorem_label": "thm:N16",
+      "statement_tex": "A polynomial SAT decider implies a polynomial decider and a polynomial witness\nfinder for every presented NP problem. Conversely, if every NP presentation\nhas a polynomial decider, SAT does. Thus the standard statement\n$\\mathrm P=\\mathrm{NP}$ is equivalent to $\\mathrm{SAT}\\in\\mathrm P$ under the\nnumerical class-presentation convention of this report.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/ReductionsOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Equivalence/conditional compiler theorem only; neither P=NP nor P≠NP is established."
+      ]
+    },
+    {
+      "id": "N17",
+      "title": "an NP-complete coNP problem collapses NP and coNP",
+      "title_tex": "an NP-complete coNP problem collapses NP and coNP",
+      "kind": "theorem",
+      "section": "Reductions, complete problems, and constructive search",
+      "section_label": "sec:np",
+      "source_file": "sections/np.tex",
+      "theorem_label": "thm:N17",
+      "statement_tex": "If a supplied NP-complete problem $K$ also has a coNP presentation, then\n$\\mathrm{NP}=\\mathrm{coNP}$. In particular, $\\mathrm P=\\mathrm{NP}$ implies\n$\\mathrm{NP}=\\mathrm{coNP}$.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/ReductionsOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Conditional on a supplied NP-complete coNP presentation (or P=NP); the hypothesis is not asserted."
+      ]
+    },
+    {
+      "id": "N18",
+      "title": "parsimonious completeness for witness counting",
+      "title_tex": "parsimonious completeness for witness counting",
+      "kind": "theorem",
+      "section": "Reductions, complete problems, and constructive search",
+      "section_label": "sec:np",
+      "source_file": "sections/np.tex",
+      "theorem_label": "thm:N18",
+      "statement_tex": "For the counting convention\n\\[\n f_V(x)=\\sum_{y<2^{q(|x|)}} [V_T(x,y)=1],\n\\]\ncounting satisfying assignments of circuits and of 3CNF formulas is\n\\#$\\mathrm P$-complete under parsimonious polynomial many-one reductions.\nCounting indexed subsets of a positive integer list with a specified sum is\nalso \\#$\\mathrm P$-complete under those reductions.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/ReductionsOutline.lean",
+      "supporting_lean_outline_files": [
+        "lean/CountingOutline.lean"
+      ],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "#P uses exact declared witness lengths. Completeness is parsimonious for the specified circuit, 3CNF, and indexed-subset conventions."
+      ]
+    },
+    {
+      "id": "N19",
+      "title": "a factor-two vertex-cover approximation",
+      "title_tex": "a factor-two vertex-cover approximation",
+      "kind": "theorem",
+      "section": "Reductions, complete problems, and constructive search",
+      "section_label": "sec:np",
+      "source_file": "sections/np.tex",
+      "theorem_label": "thm:N19",
+      "statement_tex": "There is a polynomial algorithm that returns a vertex cover $C$ satisfying\n$|C|\\le2|C^*|$ for every vertex cover $C^*$ of the same graph.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/ReductionsOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Factor-two approximation; no optimum-computation claim."
+      ]
+    },
+    {
+      "id": "N20",
+      "title": "vertex cover is fixed-parameter tractable",
+      "title_tex": "vertex cover is fixed-parameter tractable",
+      "kind": "theorem",
+      "section": "Reductions, complete problems, and constructive search",
+      "section_label": "sec:np",
+      "source_file": "sections/np.tex",
+      "theorem_label": "thm:N20",
+      "statement_tex": "For a graph on $N$ vertices and parameter $k$, vertex cover of size at most\n$k$ can be decided, and a cover produced, in time\n$2^{k+1}\\poly(N+|E|+1)$.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/ReductionsOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Time is exponential in parameter k and polynomial in the remaining explicit graph size."
+      ]
+    },
+    {
+      "id": "N21",
+      "title": "UNSAT and tautology are coNP-complete",
+      "title_tex": "UNSAT and tautology are coNP-complete",
+      "kind": "theorem",
+      "section": "Reductions, complete problems, and constructive search",
+      "section_label": "sec:np",
+      "source_file": "sections/np.tex",
+      "theorem_label": "thm:N21",
+      "statement_tex": "UNSAT, propositional TAUT, and tautology for DNF formulas with terms of width\nat most three are coNP-complete under polynomial many-one reductions.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/ReductionsOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "UNSAT/TAUT use finite Boolean complements; no unbounded double-negation elimination is used."
+      ]
+    },
+    {
+      "id": "N22",
+      "title": "Horn SAT is P-complete under logspace reductions",
+      "title_tex": "Horn SAT is P-complete under logspace reductions",
+      "kind": "theorem",
+      "section": "Reductions, complete problems, and constructive search",
+      "section_label": "sec:np",
+      "source_file": "sections/np.tex",
+      "theorem_label": "thm:N22",
+      "statement_tex": "Horn satisfiability is P-complete, even when every clause has width at most\nthree. The hardness reduction uses only finite gate-local rules.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/ReductionsOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Dual-rail Horn construction; exactly-one-rail holds for the least closure, not necessarily for every Horn model."
+      ]
+    },
+    {
+      "id": "S01",
+      "title": "bounded reachability and constructive path shortening",
+      "title_tex": "bounded reachability and constructive path shortening",
+      "kind": "theorem",
+      "section": "Space, reachability, complementation, and finite games",
+      "section_label": "sec:space",
+      "source_file": "sections/space.tex",
+      "theorem_label": "thm:S01",
+      "statement_tex": "The bit $r_i(v)$ is one exactly when a walk from $a$ to $v$ of length at\nmost $i$ exists.  A witnessing walk can be obtained by primitive recursion\nand bounded search.  Every walk in an $N$-vertex graph has a walk with the\nsame endpoints and length at most $N-1$.  Thus $r_{N-1}=r_N$, and their\ncommon value decides unrestricted finite-walk reachability.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/SpaceOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Finite graphs with explicit vertex/code bounds; path witnesses are constructed by bounded operations."
+      ]
+    },
+    {
+      "id": "S02",
+      "title": "the finite configuration theorem",
+      "title_tex": "the finite configuration theorem",
+      "kind": "theorem",
+      "section": "Space, reachability, complementation, and finite games",
+      "section_label": "sec:space",
+      "source_file": "sections/space.tex",
+      "theorem_label": "thm:S02",
+      "statement_tex": "Acceptance within the supplied space budget is equivalent to reachability\nof the accepting sink in the above graph, and hence to existence of a\ncomputation of fewer than $N$ transitions in that graph.  The\nconfiguration graph and its edge test are primitive-recursive.  For\n$s\\geq\\lceil\\log_2(n+2)\\rceil$, its vertices and edge test use $O(s)$\nworking bits.  A deterministic computation which eventually halts has\nhalted before repeating an ordinary configuration.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/SpaceOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Read-only input; a supplied finite work budget defines the configuration graph. The O(s) record bound uses s at least the logarithmic input-length bound."
+      ]
+    },
+    {
+      "id": "S03",
+      "title": "directed reachability is NL-complete",
+      "title_tex": "directed reachability is NL-complete",
+      "kind": "theorem",
+      "section": "Space, reachability, complementation, and finite games",
+      "section_label": "sec:space",
+      "source_file": "sections/space.tex",
+      "theorem_label": "thm:S03",
+      "statement_tex": "Directed graph reachability is complete for $\\mathrm{NL}$ under\nlogarithmic-space many-one reductions.  In particular,\n\\[\n \\mathrm L\\subseteq\\mathrm{NL}\\subseteq\\mathrm P.\n\\]",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/SpaceOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Explicit directed graphs and logarithmic-space many-one reductions."
+      ]
+    },
+    {
+      "id": "S04",
+      "title": "even acyclic directed reachability is NL-complete",
+      "title_tex": "even acyclic directed reachability is NL-complete",
+      "kind": "corollary",
+      "section": "Space, reachability, complementation, and finite games",
+      "section_label": "sec:space",
+      "source_file": "sections/space.tex",
+      "theorem_label": "thm:S04",
+      "statement_tex": "The restriction of directed reachability to directed acyclic graphs is\nNL-complete, by a logarithmic-space reduction whose correctness has\nexplicit path maps.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/SpaceOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Layered construction gives an acyclic directed graph; graph size remains polynomial."
+      ]
+    },
+    {
+      "id": "S05",
+      "title": "Savitch's finite theorem",
+      "title_tex": "Savitch's finite theorem",
+      "kind": "theorem",
+      "section": "Space, reachability, complementation, and finite games",
+      "section_label": "sec:space",
+      "source_file": "sections/space.tex",
+      "theorem_label": "thm:S05",
+      "statement_tex": "The bit $R_j(a,b)$ is one exactly when there is a walk from $a$ to $b$\nof length at most $2^j$.  There is a deterministic implementation of\n$R_j(a,b)$ using\n\\[\n O\\bigl((j+1)(\\lceil\\log_2(N+2)\\rceil+\n                    \\lceil\\log_2(j+2)\\rceil)+w\\bigr)\n \\tag{S.5}\n\\]\nworking bits when the edge test uses $w$ working bits.  Its time is\nbounded by an explicit primitive-recursive function; for a polynomial-time\nedge test one may use\n$C(2N+2)^{j+2}(\\ell+j+2)^C$ with a suitable fixed $C$.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/SpaceOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Primitive-recursive whole-table definability is separated from the depth-first small-space implementation; the edge-access resource is accounted for."
+      ]
+    },
+    {
+      "id": "S06",
+      "title": "the principal space equalities",
+      "title_tex": "the principal space equalities",
+      "kind": "corollary",
+      "section": "Space, reachability, complementation, and finite games",
+      "section_label": "sec:space",
+      "source_file": "sections/space.tex",
+      "theorem_label": "thm:S06",
+      "statement_tex": "For the explicit budget conventions above and $s(n)\\geq\\log_2(n+2)$,\n\\[\n \\mathrm{NSPACE}(s)\\subseteq\\mathrm{DSPACE}(s^2).\n\\]\nConsequently,\n\\[\n \\begin{gathered}\n \\mathrm{NL}\\subseteq\\mathrm{DSPACE}(\\log^2 n),\\qquad\n \\mathrm{NPSPACE}=\\mathrm{PSPACE},\\\\\n \\mathrm{NEXPSPACE}=\\mathrm{EXPSPACE},\\qquad\n \\mathrm{PSPACE}\\subseteq\\mathrm{EXPTIME}.\n \\end{gathered}\n\\]",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/SpaceOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "General resource substitution uses s(n) at least logarithmic and a supplied O(s(n))-space budget constructor, as stipulated in the space section. Standard logarithmic, polynomial, and exponential budgets qualify."
+      ]
+    },
+    {
+      "id": "S07",
+      "title": "forced enumeration",
+      "title_tex": "forced enumeration",
+      "kind": "lemma",
+      "section": "Space, reachability, complementation, and finite games",
+      "section_label": "sec:space",
+      "source_file": "sections/space.tex",
+      "theorem_label": "thm:S07",
+      "statement_tex": "Suppose the exact number $c_i$ is supplied.  There is a nondeterministic\n$O(\\log(N+2))$-space procedure which, on a requested $v$, certifies\n$v\\notin A_{i+1}$.  Every completed successful branch certifies that\nfact, and if the fact holds a successful branch can be constructed by a\nprimitive-recursive procedure.  Here $0\\leq i<N$.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/SpaceOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "The exact reachable-vertex count is supplied; successful branches certify every selected path and cannot merely guess nonmembership."
+      ]
+    },
+    {
+      "id": "S08",
+      "title": "constructive space complementation",
+      "title_tex": "constructive space complementation",
+      "kind": "theorem",
+      "section": "Space, reachability, complementation, and finite games",
+      "section_label": "sec:space",
+      "source_file": "sections/space.tex",
+      "theorem_label": "thm:S08",
+      "statement_tex": "Nonreachability has a nondeterministic logarithmic-space recognizer whose\naccepting transcripts are sound and whose successful transcript can be\nconstructed primitively recursively whenever nonreachability holds.\nFor the budgeted machine presentations above,\n\\[\n \\mathrm{NSPACE}(s)=\\mathrm{coNSPACE}(s)\n \\quad(s\\geq\\log_2(n+2)),\n \\qquad \\mathrm{NL}=\\mathrm{coNL}.\n\\]\nThese classes are closed under finite unions, intersections, differences,\nand symmetric differences.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/SpaceOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "General NSPACE complementation assumes s(n) at least logarithmic and a supplied O(s(n))-space budget constructor, or uses an explicit budget parameter."
+      ]
+    },
+    {
+      "id": "S09",
+      "title": "2SAT is NL-complete",
+      "title_tex": "2SAT is NL-complete",
+      "kind": "corollary",
+      "section": "Space, reachability, complementation, and finite games",
+      "section_label": "sec:space",
+      "source_file": "sections/space.tex",
+      "theorem_label": "thm:S09",
+      "statement_tex": "Satisfiability of formulae with clauses of size at most two is\nNL-complete under logarithmic-space reductions.  Its restriction to\nclauses of the forms $\\neg x_u\\vee x_v$ and unit clauses is already\nNL-hard.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/SpaceOutline.lean",
+      "supporting_lean_outline_files": [
+        "lean/ReductionsOutline.lean"
+      ],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Uses the constructive 2SAT criterion and NL=coNL; empty/invalid syntax conventions are handled explicitly."
+      ]
+    },
+    {
+      "id": "S10",
+      "title": "bounded evaluation of QBF",
+      "title_tex": "bounded evaluation of QBF",
+      "kind": "theorem",
+      "section": "Space, reachability, complementation, and finite games",
+      "section_label": "sec:space",
+      "source_file": "sections/space.tex",
+      "theorem_label": "thm:S10",
+      "statement_tex": "There is a primitive-recursive evaluator for closed Boolean formulae,\nand a deterministic polynomial-space implementation.  Truth has an\nexplicit finite winning strategy for existential choices; falsity has\nan explicit finite counterstrategy for universal choices.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/SpaceOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "QBF has finite explicit syntax and finite Boolean quantifiers; syntax evaluation is distinct from arbitrary first-order truth."
+      ]
+    },
+    {
+      "id": "S11",
+      "title": "polynomial-size quantified reachability",
+      "title_tex": "polynomial-size quantified reachability",
+      "kind": "theorem",
+      "section": "Space, reachability, complementation, and finite games",
+      "section_label": "sec:space",
+      "source_file": "sections/space.tex",
+      "theorem_label": "thm:S11",
+      "statement_tex": "For all endpoint assignments, $\\Theta_j(U,V)$ has value $R_j(U,V)$.\nIts syntax has one copy of $D_x$ and only $O(j\\ell)$ extra connective\nand variable occurrences.  With binary variable indices its encoded\nlength is bounded by\n\\[\n O\\bigl((|D_x|+j\\ell)\\log((j+1)\\ell+2)\\bigr),\n \\tag{S.9}\n\\]\nwhere $|D_x|$ counts syntax nodes before variable-name encoding.  Construction,\nrenaming, and substitution of constant endpoints take polynomial time\nin the output bound.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/SpaceOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "A single recursive formula occurrence and fresh variables give polynomial syntax size; exponential path unrolling is avoided."
+      ]
+    },
+    {
+      "id": "S12",
+      "title": "TQBF is PSPACE-complete",
+      "title_tex": "TQBF is PSPACE-complete",
+      "kind": "theorem",
+      "section": "Space, reachability, complementation, and finite games",
+      "section_label": "sec:space",
+      "source_file": "sections/space.tex",
+      "theorem_label": "thm:S12",
+      "statement_tex": "Every fixed polynomial-space machine presentation has a polynomial-time\nmany-one reduction to TQBF, with an iPRA proof of its numerical\ncorrectness equation.  Together with S10 this proves PSPACE completeness.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/SpaceOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Polynomial-space source deciders have supplied budgets; the complete quantified syntax printer is part of the construction."
+      ]
+    },
+    {
+      "id": "S13",
+      "title": "finite strategies and game completeness",
+      "title_tex": "finite strategies and game completeness",
+      "kind": "theorem",
+      "section": "Space, reachability, complementation, and finite games",
+      "section_label": "sec:space",
+      "source_file": "sections/space.tex",
+      "theorem_label": "thm:S13",
+      "statement_tex": "The winner of a supplied game is decided by a primitive-recursive\nBoolean function.  One of the players has a canonical finite winning\nstrategy.  Deciding whether the existential player wins is PSPACE-complete\nunder polynomial-time reductions.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/SpaceOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Finite polynomial-horizon/succinctly represented games under the stated encoding; no unrestricted infinite-game determinacy is claimed."
+      ]
+    },
+    {
+      "id": "H01",
+      "title": "P is properly contained in EXPTIME",
+      "title_tex": "P is properly contained in EXPTIME",
+      "kind": "theorem",
+      "section": "Explicit separation witnesses and coarse hierarchies",
+      "section_label": "sec:hierarchy",
+      "source_file": "sections/hierarchy.tex",
+      "theorem_label": "thm:H01",
+      "statement_tex": "There is a fixed PR bit $D$ computed by a fixed machine in time $2^{K(n+1)^2}$, for a fixed constant $K$, such that \\ipra\\ proves, uniformly in $e,c\\ge1,k$,\n\\[\n D(W(e,c,k))\\ne\n \\B\\bigl(e,W(e,c,k),c(|W(e,c,k)|+1)^k\\bigr).\n\\]\nConsequently no polynomial-time presentation decides $D$, and $\\mathsf P\\subsetneq\\mathsf{EXPTIME}$.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/CoreOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "An explicit mismatch word excludes every polynomial descriptor; this does not separate P from NP."
+      ]
+    },
+    {
+      "id": "H02",
+      "title": "a coarse fixed-degree time hierarchy",
+      "title_tex": "a coarse fixed-degree time hierarchy",
+      "kind": "theorem",
+      "section": "Explicit separation witnesses and coarse hierarchies",
+      "section_label": "sec:hierarchy",
+      "source_file": "sections/hierarchy.tex",
+      "theorem_label": "thm:H02",
+      "statement_tex": "For every fixed integer $k\\ge1$, on the canonical model with read-only input and one work tape,\n\\[\n \\mathsf{DTIME}_{\\mathrm{can}}((n+1)^k)\n \\subsetneq\n \\mathsf{DTIME}_{\\mathrm{can}}((n+1)^{4k+4}).\n\\]\nThere is a PR counterexample word for each proposed machine and constant in the lower class.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/CoreOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Canonical one-tape model and the displayed coarse exponent gap; not the sharp deterministic time-hierarchy theorem."
+      ]
+    },
+    {
+      "id": "H03",
+      "title": "L is properly contained in PSPACE",
+      "title_tex": "L is properly contained in PSPACE",
+      "kind": "theorem",
+      "section": "Explicit separation witnesses and coarse hierarchies",
+      "section_label": "sec:hierarchy",
+      "source_file": "sections/hierarchy.tex",
+      "theorem_label": "thm:H03",
+      "statement_tex": "There is a PR language $D_{\\log}$ in PSPACE and a PR map $W$ such that every logarithmic-space descriptor $(e,c)$ disagrees with $D_{\\log}$ on $W(e,c,0)$. Thus $\\mathsf L\\subsetneq\\mathsf{PSPACE}$.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/CoreOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Fixed-machine constant-factor space normalization and explicit padded descriptors; this is a concrete large-gap separation."
+      ]
+    },
+    {
+      "id": "H04",
+      "title": "PSPACE is properly contained in EXPSPACE",
+      "title_tex": "PSPACE is properly contained in EXPSPACE",
+      "kind": "theorem",
+      "section": "Explicit separation witnesses and coarse hierarchies",
+      "section_label": "sec:hierarchy",
+      "source_file": "sections/hierarchy.tex",
+      "theorem_label": "thm:H04",
+      "statement_tex": "There is a PR language $D_{\\mathrm{ps}}$ in EXPSPACE with a PR disagreement input for every polynomial-space descriptor. In particular $\\mathsf{PSPACE}\\subsetneq\\mathsf{EXPSPACE}$.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/CoreOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Explicit polynomial/exponential space envelopes; no general sharp space-hierarchy theorem is asserted."
+      ]
+    },
+    {
+      "id": "H05",
+      "title": "an exponential-time hierarchy step",
+      "title_tex": "an exponential-time hierarchy step",
+      "kind": "theorem",
+      "section": "Explicit separation witnesses and coarse hierarchies",
+      "section_label": "sec:hierarchy",
+      "source_file": "sections/hierarchy.tex",
+      "theorem_label": "thm:H05",
+      "statement_tex": "Let $2\\mathsf{EXPTIME}$ denote the union of deterministic time classes with clocks $2^{2^{p(n)}}$ for polynomials $p$. There is an explicit PR language in $2\\mathsf{EXPTIME}$ outside EXPTIME, with PR counterexample inputs for all exponential-time descriptors. Hence $\\mathsf{EXPTIME}\\subsetneq2\\mathsf{EXPTIME}$.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/CoreOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "The displayed coarse exponential-time hierarchy step only; arbitrary sharp hierarchy/constructibility hypotheses are not silently assumed."
+      ]
+    },
+    {
+      "id": "A01",
+      "title": "alternating polynomial time equals polynomial space",
+      "title_tex": "alternating polynomial time equals polynomial space",
+      "kind": "theorem",
+      "section": "Alternation, the polynomial hierarchy, and parallel circuits",
+      "section_label": "sec:alternation",
+      "source_file": "sections/alternation_parallel.tex",
+      "theorem_label": "thm:A01",
+      "statement_tex": "For clocked finite presentations, $\\mathsf{AP}=\\mathsf{PSPACE}$, with descriptor transformations and \\ipra\\ proofs of equality of acceptance bits.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/SpaceOutline.lean",
+      "supporting_lean_outline_files": [
+        "lean/CoreOutline.lean"
+      ],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Clocked finite alternation; AP means alternating polynomial time. Infinite strategies are not quantified over."
+      ]
+    },
+    {
+      "id": "A02",
+      "title": "duality, monotonicity, and the space bound for PH",
+      "title_tex": "duality, monotonicity, and the space bound for PH",
+      "kind": "theorem",
+      "section": "Alternation, the polynomial hierarchy, and parallel circuits",
+      "section_label": "sec:alternation",
+      "source_file": "sections/alternation_parallel.tex",
+      "theorem_label": "thm:A02",
+      "statement_tex": "For every fixed $k$, complementation interchanges $\\Sigma_k^{\\mathsf P}$ and $\\Pi_k^{\\mathsf P}$. Each level is included in both appropriately prefixed next levels, and all finite levels are contained in PSPACE. In particular $\\Sigma_1^{\\mathsf P}=\\mathsf{NP}$ and $\\Pi_1^{\\mathsf P}=\\mathsf{coNP}$.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/SpaceOutline.lean",
+      "supporting_lean_outline_files": [
+        "lean/ReductionsOutline.lean"
+      ],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "One result for each fixed finite PH level; the union PH is metatheoretic terminology, not an unrestricted internal induction on semantic classes."
+      ]
+    },
+    {
+      "id": "A03",
+      "title": "bounded-alternation QBF completeness",
+      "title_tex": "bounded-alternation QBF completeness",
+      "kind": "theorem",
+      "section": "Alternation, the polynomial hierarchy, and parallel circuits",
+      "section_label": "sec:alternation",
+      "source_file": "sections/alternation_parallel.tex",
+      "theorem_label": "thm:A03",
+      "statement_tex": "For each fixed $k\\ge1$, truth of polynomial-size quantified Boolean formulas with $k$ alternating blocks beginning existentially is $\\Sigma_k^{\\mathsf P}$-complete under polynomial many-one reductions. The universally beginning version is $\\Pi_k^{\\mathsf P}$-complete. The quantifier-free matrix may be an arbitrary Boolean formula; no restricted CNF claim is needed.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/SpaceOutline.lean",
+      "supporting_lean_outline_files": [
+        "lean/ReductionsOutline.lean"
+      ],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Fixed number of alternating blocks. The matrix may be an arbitrary Boolean formula; no same-block restricted-CNF claim is made. Gate variables join the last block."
+      ]
+    },
+    {
+      "id": "A04",
+      "title": "conditional collapses, stated constructively",
+      "title_tex": "conditional collapses, stated constructively",
+      "kind": "theorem",
+      "section": "Alternation, the polynomial hierarchy, and parallel circuits",
+      "section_label": "sec:alternation",
+      "source_file": "sections/alternation_parallel.tex",
+      "theorem_label": "thm:A04",
+      "statement_tex": "For each fixed $k$, the numerical hypothesis $\\mathsf P=\\mathsf{NP}$ implies $\\Sigma_k^{\\mathsf P}=\\Pi_k^{\\mathsf P}=\\mathsf P$. The hypothesis $\\mathsf{NP}=\\mathsf{coNP}$ implies $\\Sigma_k^{\\mathsf P}=\\Pi_k^{\\mathsf P}=\\mathsf{NP}$ for $k\\ge1$.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/ReductionsOutline.lean",
+      "supporting_lean_outline_files": [
+        "lean/CoreOutline.lean"
+      ],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Conditional collapses at every fixed finite level. Neither equality hypothesis is asserted, and bare existential class equality is not replaced by a global PR choice function."
+      ]
+    },
+    {
+      "id": "A05",
+      "title": "balancing and sequential simulation",
+      "title_tex": "balancing and sequential simulation",
+      "kind": "theorem",
+      "section": "Alternation, the polynomial hierarchy, and parallel circuits",
+      "section_label": "sec:alternation",
+      "source_file": "sections/alternation_parallel.tex",
+      "theorem_label": "thm:A05",
+      "statement_tex": "For every fixed $k\\ge0$,\n\\[\n \\mathsf{NC}^k\\subseteq\\mathsf{AC}^k\\subseteq\\mathsf{NC}^{k+1},\n \\qquad \\mathsf{NC}=\\mathsf{AC}\\subseteq\\mathsf P,\n\\]\nwhere NC and AC denote their finite-level unions with the uniformity convention above.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/ReductionsOutline.lean",
+      "supporting_lean_outline_files": [
+        "lean/CoreOutline.lean"
+      ],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Logspace-uniform polynomial-size circuit families and the stated fan-in conventions; finite unions NC and AC are metatheoretic."
+      ]
+    },
+    {
+      "id": "A06",
+      "title": "shallow uniform circuits use logarithmic space",
+      "title_tex": "shallow uniform circuits use logarithmic space",
+      "kind": "theorem",
+      "section": "Alternation, the polynomial hierarchy, and parallel circuits",
+      "section_label": "sec:alternation",
+      "source_file": "sections/alternation_parallel.tex",
+      "theorem_label": "thm:A06",
+      "statement_tex": "$\\mathsf{NC}^1\\subseteq\\mathsf L$. More generally, a uniform bounded-fan-in circuit of depth $d(n)$ and polynomial size can be evaluated using $O(d(n)+\\ell(n))$ work space, with a PR time bound when $d$ has one.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/ReductionsOutline.lean",
+      "supporting_lean_outline_files": [
+        "lean/CoreOutline.lean"
+      ],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Logspace-uniform bounded-fan-in polynomial-size circuits. Gate replay yields O(depth+log size) storage; general evaluation time may be superpolynomial."
+      ]
+    },
+    {
+      "id": "A07",
+      "title": "NL has uniform quadratic-logarithmic-depth circuits",
+      "title_tex": "NL has uniform quadratic-logarithmic-depth circuits",
+      "kind": "theorem",
+      "section": "Alternation, the polynomial hierarchy, and parallel circuits",
+      "section_label": "sec:alternation",
+      "source_file": "sections/alternation_parallel.tex",
+      "theorem_label": "thm:A07",
+      "statement_tex": "$\\mathsf{NL}\\subseteq\\mathsf{NC}^2$. Consequently\n\\[\n \\mathsf{NC}^1\\subseteq\\mathsf L\\subseteq\\mathsf{NL}\n \\subseteq\\mathsf{NC}^2\\subseteq\\mathsf P.\n\\]",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/SpaceOutline.lean",
+      "supporting_lean_outline_files": [
+        "lean/ReductionsOutline.lean"
+      ],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Uniform NC^2 construction uses explicit circuit adjacency tests and balanced Boolean matrix squaring; it does not rely on an arbitrary logspace reduction preserving depth."
+      ]
+    },
+    {
+      "id": "R01",
+      "title": "finite counting calculus",
+      "title_tex": "finite counting calculus",
+      "kind": "lemma",
+      "section": "Finite randomness, counting, circuits, and lower bounds",
+      "section_label": "sec:random-lower",
+      "source_file": "sections/random_lower.tex",
+      "theorem_label": "thm:R01",
+      "statement_tex": "The following statements have primitive-recursive witnesses and proofs by\nquantifier-free induction in the bounded compilation described earlier.\n\\begin{enumerate}\n\\item $0\\leq C_E(N)\\leq N$, and $C_E(N)>0$ if and only if there is an\n      $i<N$ with $E(i)=1$. If the count is positive, the least such $i$ is\n      obtained by a bounded scan.\n\\item If $E(i)\\leq F(i)$ for all $i<N$, then $C_E(N)\\leq C_F(N)$.\n      For a finite family $(E_j)_{j<k}$,\n      $|\\bigcup_{j<k}E_j|\\leq\\sum_{j<k}|E_j|$.\n\\item $|E\\times F|=|E||F|$. More generally, a sum of products over a\n      finite Cartesian product factors into the product of the sums.\n\\item If a permutation of $[0,N)$ carries $E$ onto $F$, their counts agree.\n      If an explicitly described involution without fixed points exchanges\n      $E$ and its complement, then $2|E|=N$.\n\\item If $|E|<N$, the least $i<N$ outside $E$ exists and is found by bounded\n      search. The same assertion applies to a union whose displayed upper\n      bound is strictly below $N$.\n\\end{enumerate}",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/CountingOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Finite counts and bounded tables; missing elements and positive-count witnesses are found by bounded search."
+      ]
+    },
+    {
+      "id": "R02",
+      "title": "one-sided randomness and witnesses",
+      "title_tex": "one-sided randomness and witnesses",
+      "kind": "theorem",
+      "section": "Finite randomness, counting, circuits, and lower bounds",
+      "section_label": "sec:random-lower",
+      "source_file": "sections/random_lower.tex",
+      "theorem_label": "thm:R02",
+      "statement_tex": "$\\mathrm{P}\\subseteq\\mathrm{RP}\\subseteq\\mathrm{NP}$ and\n$\\mathrm{P}\\subseteq\\mathrm{coRP}\\subseteq\\mathrm{coNP}$.\nAn RP computation repeated independently $k\\geq1$ times, accepting if any\ntrial accepts, still has no false positives and has at most $Q^k/2^k$\nfalse-negative seeds. The analogous AND construction amplifies coRP.\nIn particular RP and coRP are contained in BPP.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/CountingOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Fixed finite seed cubes and positive language-bit correctness specifications; independence is finite product counting."
+      ]
+    },
+    {
+      "id": "R03",
+      "title": "integer BPP amplification",
+      "title_tex": "integer BPP amplification",
+      "kind": "theorem",
+      "section": "Finite randomness, counting, circuits, and lower bounds",
+      "section_label": "sec:random-lower",
+      "source_file": "sections/random_lower.tex",
+      "theorem_label": "thm:R03",
+      "statement_tex": "For every $d\\geq1$, taking the majority of $12d$ independent BPP trials\n(breaking ties in a fixed way) gives\n\\[\n 2^d e_{\\mathrm{amp},L}(x)<Q(n)^{12d}.\n\\]\nThe number of random bits is $12d\\,r(n)$; if $d$ is polynomial in $n$,\nthe amplified machine is polynomial time.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/CountingOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Exact integer amplification inequalities; polynomial-time amplification requires a polynomial repetition parameter."
+      ]
+    },
+    {
+      "id": "R04",
+      "title": "elementary closure of randomized classes",
+      "title_tex": "elementary closure of randomized classes",
+      "kind": "theorem",
+      "section": "Finite randomness, counting, circuits, and lower bounds",
+      "section_label": "sec:random-lower",
+      "source_file": "sections/random_lower.tex",
+      "theorem_label": "thm:R04",
+      "statement_tex": "BPP is closed under complement, union, intersection, and polynomial-time\nmany-one preimages. RP and coRP are each closed under union, intersection,\nand polynomial-time many-one preimages.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/CountingOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Randomized programs have explicit polynomial clocks and seed bounds."
+      ]
+    },
+    {
+      "id": "R05",
+      "title": "algebra of witness counts",
+      "title_tex": "algebra of witness counts",
+      "kind": "theorem",
+      "section": "Finite randomness, counting, circuits, and lower bounds",
+      "section_label": "sec:random-lower",
+      "source_file": "sections/random_lower.tex",
+      "theorem_label": "thm:R05",
+      "statement_tex": "$\\#\\mathrm P$ is closed under addition, multiplication, and polynomially\nbounded sums of uniformly polynomial-time verifiers. Its positive supports\nare precisely NP. Every nonnegative polynomial-time computable function\nof polynomial output length is a $\\#\\mathrm P$ function. A fixed\npresentation $f(x)=\\#\\{w<2^{p(n)}:V(x,w)=1\\}$ also gives a\n$\\#\\mathrm P$ presentation of $2^{p(n)}-f(x)$.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/CountingOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Exact witness lengths with canonical zero padding; complement counts are relative to a specified witness cube, not arbitrary subtraction closure."
+      ]
+    },
+    {
+      "id": "R06",
+      "title": "PP containments and complement",
+      "title_tex": "PP containments and complement",
+      "kind": "theorem",
+      "section": "Finite randomness, counting, circuits, and lower bounds",
+      "section_label": "sec:random-lower",
+      "source_file": "sections/random_lower.tex",
+      "theorem_label": "thm:R06",
+      "statement_tex": "$\\mathrm{NP}\\cup\\mathrm{coNP}\\cup\\mathrm{BPP}\\subseteq\\mathrm{PP}\n\\subseteq\\mathrm{PSPACE}$, and PP is closed under complement. Every\n$\\#\\mathrm P$ function is computable using polynomial work space and\nexponential time.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/CountingOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "PP uses strict majority; the complement construction corrects ties explicitly. Exact counting may require exponential time."
+      ]
+    },
+    {
+      "id": "R07",
+      "title": "BPP has polynomial advice and circuits",
+      "title_tex": "BPP has polynomial advice and circuits",
+      "kind": "theorem",
+      "section": "Finite randomness, counting, circuits, and lower bounds",
+      "section_label": "sec:random-lower",
+      "source_file": "sections/random_lower.tex",
+      "theorem_label": "thm:R07",
+      "statement_tex": "From a BPP presentation one can construct, for every length $n$, a\npolynomial-length advice string $a_n$ that makes a fixed polynomial-time\nmachine correct on all $n$-bit inputs. The function $n\\mapsto a_n$ can be\nchosen primitive recursively. Consequently\n$\\mathrm{BPP}\\subseteq\\mathrm P/\\mathrm{poly}$ in the finite circuit\nand advice readings.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/CountingOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Advice can be chosen PR from the supplied BPP presentation, but no polynomial-time advice construction is claimed. Arbitrary P/poly languages need not be recursive."
+      ]
+    },
+    {
+      "id": "R08",
+      "title": "the translate-covering construction",
+      "title_tex": "the translate-covering construction",
+      "kind": "theorem",
+      "section": "Finite randomness, counting, circuits, and lower bounds",
+      "section_label": "sec:random-lower",
+      "source_file": "sections/random_lower.tex",
+      "theorem_label": "thm:R08",
+      "statement_tex": "Every BPP presentation has both a $\\Sigma^\\mathrm P_2$ presentation and a\n$\\Pi^\\mathrm P_2$ presentation, with explicit polynomial bounds and\nprimitive-recursive witness searches. Hence\n\\[\n \\mathrm{BPP}\\subseteq\\Sigma^\\mathrm P_2\\cap\\Pi^\\mathrm P_2.\n\\]",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/CountingOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Positive finite Sigma_2 and Pi_2 presentations with polynomial block lengths; all covering searches have explicit finite bounds."
+      ]
+    },
+    {
+      "id": "R09",
+      "title": "zero-error equivalence and restart bounds",
+      "title_tex": "zero-error equivalence and restart bounds",
+      "kind": "theorem",
+      "section": "Finite randomness, counting, circuits, and lower bounds",
+      "section_label": "sec:random-lower",
+      "source_file": "sections/random_lower.tex",
+      "theorem_label": "thm:R09",
+      "statement_tex": "The following presentations are interconvertible by explicit machine\nconstructions: (i) a bounded zero-error trial of success density at least\none half; (ii) an RP presentation and a coRP presentation of the same\nBoolean language; (iii) a trace-sound random machine with a polynomial\nfinite expected-time certificate (R9). Thus the finite arithmetical\nreading of $\\mathrm{ZPP}=\\mathrm{RP}\\cap\\mathrm{coRP}$ is provable in\n\\ipra. Repeating (i) for at most $j$ rounds leaves failure density at most\n$2^{-j}$, and its average number of rounds is at most two for every cap.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/CountingOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Expected time means the stated inequalities for all finite truncation caps, together with trace soundness. Termination on every infinite random tape is not asserted."
+      ]
+    },
+    {
+      "id": "R10",
+      "title": "quantitative circuit counting",
+      "title_tex": "quantitative circuit counting",
+      "kind": "theorem",
+      "section": "Finite randomness, counting, circuits, and lower bounds",
+      "section_label": "sec:random-lower",
+      "source_file": "sections/random_lower.tex",
+      "theorem_label": "thm:R10",
+      "statement_tex": "The number of $n$-input Boolean functions computable with at most $s$ gates\nis at most\n\\[\n B(n,s)=(n+s+2)\\bigl(16(n+s+2)^2\\bigr)^s.\n\\]\nIf $B(n,s)<2^{2^n}$, a primitive-recursive bounded search produces a truth\ntable not computed by any such circuit.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/CountingOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Fixed finite complete gate basis; description counting allows collisions and invalid descriptions only in an upper bound."
+      ]
+    },
+    {
+      "id": "R11",
+      "title": "a concrete Shannon bound",
+      "title_tex": "a concrete Shannon bound",
+      "kind": "theorem",
+      "section": "Finite randomness, counting, circuits, and lower bounds",
+      "section_label": "sec:random-lower",
+      "source_file": "sections/random_lower.tex",
+      "theorem_label": "thm:R11",
+      "statement_tex": "For $n\\geq4$ let\n\\[\n s(n)=\\left\\lfloor\\frac{2^n}{16(n+1)}\\right\\rfloor.\n\\]\nAt most $2^{2^{n-1}}$ truth tables on $n$ bits have circuits of size at most\n$s(n)$. In particular a least hard table $h_n$ exists, and at least\n$2^{2^n}-2^{2^{n-1}}$ tables require more gates.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/CountingOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "The explicit numerical bound is stated for n>=4 and the supplied circuit encoding."
+      ]
+    },
+    {
+      "id": "R12",
+      "title": "a primitive-recursive language outside polynomial circuits",
+      "title_tex": "a primitive-recursive language outside polynomial circuits",
+      "kind": "corollary",
+      "section": "Finite randomness, counting, circuits, and lower bounds",
+      "section_label": "sec:random-lower",
+      "source_file": "sections/random_lower.tex",
+      "theorem_label": "thm:R12",
+      "statement_tex": "There is a primitive-recursive Boolean language $H$, decidable in\nspace $2^{O(n)}$, with no polynomial-size circuit family. For every\n$c\\geq1$ and $k\\geq0$, the explicitly chosen length\n\\[\n n=2^{4(k+c+4)}\n\\]\nhas the property that no circuit with at most $c(n+1)^k$ gates computes\n$H$ correctly on all inputs of that length. For each such circuit a least\nmismatch input is primitive recursively obtainable.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/CountingOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "An explicit PR language in exponential space lies outside polynomial circuits. No reverse containment for unrestricted nonuniform advice is asserted."
+      ]
+    },
+    {
+      "id": "R13",
+      "title": "a constructive universal circuit upper bound",
+      "title_tex": "a constructive universal circuit upper bound",
+      "kind": "theorem",
+      "section": "Finite randomness, counting, circuits, and lower bounds",
+      "section_label": "sec:random-lower",
+      "source_file": "sections/random_lower.tex",
+      "theorem_label": "thm:R13",
+      "statement_tex": "Every truth table on $n\\geq1$ inputs has a circuit with at most\n$n2^n+n$ gates, constructed primitive recursively from the table.\nFor $n\\geq64$ there is a compiler producing a circuit $C$ with\n\\[\n n\\,\\operatorname{size}(C)\\leq18\\cdot2^n.\n\\]\nTogether with Theorem~\\ref{thm:R11}, this gives the order\n$\\Theta(2^n/n)$ for the maximum, over truth tables of length $2^n$, of\nminimum circuit size. No real asymptotic expression is needed for its\ninteger formulation.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/CountingOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "The refined 18*2^n/n bound is for n>=64. The uniform compiler takes an explicit exponentially long truth table."
+      ]
+    },
+    {
+      "id": "R14",
+      "title": "finite tree capacity",
+      "title_tex": "finite tree capacity",
+      "kind": "lemma",
+      "section": "Finite randomness, counting, circuits, and lower bounds",
+      "section_label": "sec:random-lower",
+      "source_file": "sections/random_lower.tex",
+      "theorem_label": "thm:R14",
+      "statement_tex": "A binary tree of depth at most $h$ has at most $2^h$ leaves. An arbitrary\nfinite binary tree has at most $2^h-1$ leaves at depth strictly below $h$.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/CountingOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Finite binary trees with the stated depth convention."
+      ]
+    },
+    {
+      "id": "R15",
+      "title": "comparison sorting requires many comparisons",
+      "title_tex": "comparison sorting requires many comparisons",
+      "kind": "theorem",
+      "section": "Finite randomness, counting, circuits, and lower bounds",
+      "section_label": "sec:random-lower",
+      "source_file": "sections/random_lower.tex",
+      "theorem_label": "thm:R15",
+      "statement_tex": "Any comparison tree that correctly sorts $n$ distinct keys has worst-case\ndepth $h$ satisfying\n\\[\n 2^h\\geq n!.\n\\]\nIf $n\\geq4$, $a=\\lfloor n/2\\rfloor$, and\n$\\ell=\\lfloor\\log_2 a\\rfloor$, then $h\\geq a\\ell$.\nUnder the uniform distribution on the $n!$ rank orders, the average\ncomparison count is also $\\Omega(n\\log n)$ in an explicit integer form:\nfor every $j$ with $2^j\\leq n!/2$,\n\\[\n 2\\sum_{\\pi}\\operatorname{depth}(\\pi)\\geq j\\,n!.\n\\]",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/CountingOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Comparison sorting of distinct keys; average-case statement uses the uniform distribution on rank orders. No lower bound for arbitrary integer-key operations is inferred."
+      ]
+    },
+    {
+      "id": "R16",
+      "title": "exact deterministic query bounds",
+      "title_tex": "exact deterministic query bounds",
+      "kind": "theorem",
+      "section": "Finite randomness, counting, circuits, and lower bounds",
+      "section_label": "sec:random-lower",
+      "source_file": "sections/random_lower.tex",
+      "theorem_label": "thm:R16",
+      "statement_tex": "The deterministic query complexity of $n$-bit OR, AND, and parity is $n$.\nFor parity, every correctly answered input path must query all $n$ bits.\nFor OR the all-zero path must query all bits, and for AND the all-one\npath must do so.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/CountingOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Deterministic bit-query model with exact answers."
+      ]
+    },
+    {
+      "id": "R17",
+      "title": "finite randomized query lower bounds",
+      "title_tex": "finite randomized query lower bounds",
+      "kind": "theorem",
+      "section": "Finite randomness, counting, circuits, and lower bounds",
+      "section_label": "sec:random-lower",
+      "source_file": "sections/random_lower.tex",
+      "theorem_label": "thm:R17",
+      "statement_tex": "Suppose a randomized query algorithm uses a fixed finite uniform seed\nspace and at most $q$ queries on every input and seed, and errs on at\nmost one third of seeds for every input. For $n$-bit OR, $3q\\geq n$.\nFor $n$-bit parity, $q\\geq n$. The same parity conclusion applies to any\nerror bound strictly below one half.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/CountingOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "A fixed finite uniform seed space and a worst-case query cap for every input and seed, not merely an expected-query bound."
+      ]
+    },
+    {
+      "id": "R18",
+      "title": "rectangles and fooling sets",
+      "title_tex": "rectangles and fooling sets",
+      "kind": "lemma",
+      "section": "Finite randomness, counting, circuits, and lower bounds",
+      "section_label": "sec:random-lower",
+      "source_file": "sections/random_lower.tex",
+      "theorem_label": "thm:R18",
+      "statement_tex": "For each protocol leaf the input pairs reaching it form a Cartesian\nproduct $X_0\\times Y_0$. If a Boolean communication problem has a finite\nset $F$ of one-inputs such that two distinct $(x,y),(x',y')\\in F$ have\nat least one zero cross-input $(x,y')$ or $(x',y)$, then every correct\nprotocol has at least $|F|$ one-leaves, and $2^h\\geq|F|$ for its cost $h$.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/CountingOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Finite deterministic protocols with shared leaf outputs; sets are finite rectangles."
+      ]
+    },
+    {
+      "id": "R19",
+      "title": "deterministic equality needs n+1 bits",
+      "title_tex": "deterministic equality needs $n+1$ bits",
+      "kind": "theorem",
+      "section": "Finite randomness, counting, circuits, and lower bounds",
+      "section_label": "sec:random-lower",
+      "source_file": "sections/random_lower.tex",
+      "theorem_label": "thm:R19",
+      "statement_tex": "For $n\\geq1$, equality of two $n$-bit strings has deterministic\ncommunication complexity exactly $n+1$ under the shared leaf-output\nconvention.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/CountingOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Exact n+1 bound assumes n>=1 and both participants receive the shared leaf output. Bob-only output has the separately noted n-bit bound."
+      ]
+    },
+    {
+      "id": "R20",
+      "title": "a constant-communication public-randomness equality test",
+      "title_tex": "a constant-communication public-randomness equality test",
+      "kind": "theorem",
+      "section": "Finite randomness, counting, circuits, and lower bounds",
+      "section_label": "sec:random-lower",
+      "source_file": "sections/random_lower.tex",
+      "theorem_label": "thm:R20",
+      "statement_tex": "With $kn$ shared random bits, equality has a protocol communicating\n$k+1$ bits, having no false negatives and false-positive density exactly\n$2^{-k}$ on unequal inputs. In particular three communicated bits suffice\nfor error at most one third, independently of $n$.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/CountingOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Public randomness is explicit; the theorem does not claim the same bound with private coins."
+      ]
+    },
+    {
+      "id": "R21",
+      "title": "best, weighted average, and worst cost",
+      "title_tex": "best, weighted average, and worst cost",
+      "kind": "theorem",
+      "section": "Finite randomness, counting, circuits, and lower bounds",
+      "section_label": "sec:random-lower",
+      "source_file": "sections/random_lower.tex",
+      "theorem_label": "thm:R21",
+      "statement_tex": "Let $c_0,\\ldots,c_{N-1}$ be natural costs with $N>0$, and let\n$w_0,\\ldots,w_{N-1}$ be natural weights of total $W>0$. If\n$b=\\min_i c_i$ and $z=\\max_i c_i$, then\n\\[\n bW\\leq\\sum_{i<N}w_ic_i\\leq zW.\n\\]\nBoth extrema and the weighted sum are primitive recursive on the coded\nfinite lists. These inequalities give best $\\leq$ weighted average\n$\\leq$ worst after rational interpretation.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/CountingOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Finite nonnegative costs and weights of positive total; amortized costs are not placed in this pointwise distributional ordering."
+      ]
+    },
+    {
+      "id": "R22",
+      "title": "the potential method over natural numbers",
+      "title_tex": "the potential method over natural numbers",
+      "kind": "theorem",
+      "section": "Finite randomness, counting, circuits, and lower bounds",
+      "section_label": "sec:random-lower",
+      "source_file": "sections/random_lower.tex",
+      "theorem_label": "thm:R22",
+      "statement_tex": "For a finite state sequence $s_0,\\ldots,s_m$, let $c_i$ be the cost of\nthe transition $s_i\\to s_{i+1}$, and let $\\Phi(s)$ be a nonnegative\ninteger potential. If\n\\[\n c_i+\\Phi(s_{i+1})\\leq a_i+\\Phi(s_i)\\qquad(i<m),\n\\]\nthen\n\\[\n \\sum_{i<m}c_i+\\Phi(s_m)\n \\leq\\sum_{i<m}a_i+\\Phi(s_0).\n\\]\nIn particular $\\sum_{i<m}c_i\\leq\\sum_{i<m}a_i+\\Phi(s_0)$.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/CountingOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Finite valid state sequences with nonnegative integer potentials."
+      ]
+    },
+    {
+      "id": "R23",
+      "title": "binary counters have constant amortized bit-flip cost",
+      "title_tex": "binary counters have constant amortized bit-flip cost",
+      "kind": "corollary",
+      "section": "Finite randomness, counting, circuits, and lower bounds",
+      "section_label": "sec:random-lower",
+      "source_file": "sections/random_lower.tex",
+      "theorem_label": "thm:R23",
+      "statement_tex": "Starting at zero, $m$ increments of an unbounded binary counter use at\nmost $2m$ bit flips. More precisely, if $\\nu(m)$ is the number of one bits\nin the final counter, the total number of flips is $2m-\\nu(m)$.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/CountingOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Bit-flip cost only; tape-head motion and other implementation costs require separate accounting."
+      ]
+    },
+    {
+      "id": "Q01",
+      "title": "exact path-sum identity",
+      "title_tex": "exact path-sum identity",
+      "kind": "theorem",
+      "section": "A finite arithmetic treatment of a quantum gate model",
+      "section_label": "sec:quantum",
+      "source_file": "sections/quantum.tex",
+      "theorem_label": "thm:Q01",
+      "statement_tex": "Let a circuit contain $h$ Hadamard gates. For each $u\\in\\bits^h$, simulate the classical reversible gates and use $u_i$ as the chosen output at the $i$th Hadamard. Let $y(u)$ be the final basis word and let $\\sigma(u)\\in\\{1,-1\\}$ be the product of its Hadamard signs. Define\n\\[\n s_y=\\sum_{u<2^h}[y(u)=y]\\,\\sigma(u),\\qquad\n A=\\sum_{y:\\,y_{\\rm out}=1}s_y^2.\n\\]\nThen the exact acceptance probability is $A/2^h$, and $\\sum_y s_y^2=2^h$. These identities, including $0\\le A\\le2^h$, have finite \\ipra\\ proofs without introducing square roots as arithmetic objects.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/QuantumOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Exact uniform Hadamard/NOT/Toffoli gate model with basis input and zero ancillas. Signed path counts encode the probabilities without real-number objects."
+      ]
+    },
+    {
+      "id": "Q02",
+      "title": "classical random computation embeds exactly",
+      "title_tex": "classical random computation embeds exactly",
+      "kind": "theorem",
+      "section": "A finite arithmetic treatment of a quantum gate model",
+      "section_label": "sec:quantum",
+      "source_file": "sections/quantum.tex",
+      "theorem_label": "thm:Q02",
+      "statement_tex": "$\\mathsf{BPP}\\subseteq\\mathsf{BQP}_{HT}$, and in particular $\\mathsf P\\subseteq\\mathsf{BQP}_{HT}$. The reduction preserves each input's exact rational acceptance probability.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/QuantumOutline.lean",
+      "supporting_lean_outline_files": [
+        "lean/ReductionsOutline.lean",
+        "lean/CountingOutline.lean"
+      ],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Containment is in the explicitly defined BQP_HT class. Random seed registers are retained, so distinct seeds do not interfere."
+      ]
+    },
+    {
+      "id": "Q03",
+      "title": "a PP simulation by an explicit branch gap",
+      "title_tex": "a PP simulation by an explicit branch gap",
+      "kind": "theorem",
+      "section": "A finite arithmetic treatment of a quantum gate model",
+      "section_label": "sec:quantum",
+      "source_file": "sections/quantum.tex",
+      "theorem_label": "thm:Q03",
+      "statement_tex": "$\\mathsf{BQP}_{HT}\\subseteq\\mathsf{PP}$, in the exact finite-majority definition of PP used in the counting section.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/QuantumOutline.lean",
+      "supporting_lean_outline_files": [
+        "lean/CountingOutline.lean"
+      ],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "PP containment is proved for the finite H/X/Toffoli model and its positive bounded-error promise; no arbitrary gate-set universality or real-amplitude theorem is imported."
+      ]
+    },
+    {
+      "id": "Q04",
+      "title": "exact simulation in polynomial space",
+      "title_tex": "exact simulation in polynomial space",
+      "kind": "theorem",
+      "section": "A finite arithmetic treatment of a quantum gate model",
+      "section_label": "sec:quantum",
+      "source_file": "sections/quantum.tex",
+      "theorem_label": "thm:Q04",
+      "statement_tex": "A polynomial-size $HT$ circuit's integer numerator $A$ and the comparison $2A>2^h$ can be computed in polynomial space. Consequently $\\mathsf{BQP}_{HT}\\subseteq\\mathsf{PSPACE}$ independently of the PP containment.",
+      "proof_status": "human-readable constructive proof supplied",
+      "human_readable_proof_supplied": true,
+      "relevant_lean_outline_file": "lean/QuantumOutline.lean",
+      "supporting_lean_outline_files": [],
+      "outline_coverage_note": "Partial finite definitions and explicit remaining proof obligations; not a claim that this theorem is implemented or checked.",
+      "uncompiled_new_lean": true,
+      "object_ipra_derivation_completed": false,
+      "formalization_path_file": "sections/formalization.tex",
+      "qualifications": [
+        "Exact polynomial-space simulation for the stated H/X/Toffoli circuits, with exponential time. General quantum-model equivalence is not proved."
+      ]
+    }
+  ],
+  "validation": {
+    "unique_ids": true,
+    "expected_result_groups": 86,
+    "actual_result_groups": 86,
+    "all_groups_have_proof_environment": true,
+    "all_outline_paths_exist": true,
+    "coverage_topics": 59,
+    "coverage_theorem_reference_occurrences": 193,
+    "coverage_unique_referenced_ids": 79,
+    "unknown_coverage_ids": [],
+    "groups_not_named_in_topical_map": [
+      "F02",
+      "F03",
+      "F04",
+      "R01",
+      "S01",
+      "S07",
+      "S11"
+    ],
+    "per_prefix_counts": {
+      "A": 7,
+      "C": 6,
+      "F": 6,
+      "H": 5,
+      "N": 22,
+      "Q": 4,
+      "R": 23,
+      "S": 13
+    }
+  }
+}

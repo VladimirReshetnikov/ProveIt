@@ -1,0 +1,175 @@
+\section{Prime powers, midpoint values and finite inversion}
+\label{sec:powers}
+At a prime square the prime-power count has a jump even though the prime count is locally constant. Taking an integer part too soon in the inversion formula can therefore give the wrong answer. We encode each endpoint by an integer comparison.
+
+Fix a nonnegative rational $x=A/B$ with $B>0$. For $0\le h\le1$ rational put
+\[
+ e_h(u;x)=[Bu<A]+h[Bu=A].
+\]
+Brackets are the $0,1$ values of decidable tests. For a positive exponent $d$ set
+\[
+ C_h(d;x)=\sum_{p\le\lfloor x\rfloor} e_h(p^d;x),\qquad
+ J_h(d;x)=\sum_{k=1}^{L}\frac{C_h(dk;x)}{k},
+\]
+where $p$ always ranges over primes and $L$ is the largest positive $j\le A$ with $B2^j\le A$, defaulting to zero. A term with $dk>L$ vanishes. These formulas evaluate counts at $x^{1/d}$ even when the root is irrational. The subscripts $1$ and $1/2$ give respectively the right-continuous and midpoint conventions. In the notation of the source pages, $C_{1/2}(1;x)=\pi_0(x)$ and $J_{1/2}(1;x)=\Pi_0(x)=f_0(x)$.
+
+\begin{theorem}[Inversion at every endpoint]
+For every $d\ge1$,
+\[
+ C_h(d;x)=\sum_{k=1}^L \frac{\mu(k)}{k} J_h(dk;x).
+\]
+For $x=p^a$, the jump of $J_1(1;x)$ has size $1/a$, and its midpoint value is the right value minus $1/(2a)$. For every other positive rational endpoint the left and right values agree, except at the prime powers just specified.
+\end{theorem}
+\begin{proof}
+Use $\mu(1)=1$, $\mu(k)=0$ when some prime square divides $k$, and otherwise $\mu(k)=(-1)^r$ for $r$ distinct prime factors. This is a bounded computation, by trial division through $k$. The squarefree divisors of $j$ correspond to subsets of its distinct prime factors. For $j>1$ toggle its least prime in the subset. This fixed-point-free pairing gives
+$\sum_{k\mid j}\mu(k)=[j=1]$; for $j=1$ the empty subset contributes one. The bijection uses uniqueness of factorization. One bounded way to obtain it is to divide by the least divisor above one until the quotient is one (at most $j$ steps). Each least divisor is prime. Euclid's lemma then identifies the first factor in any sorted prime factorization and cancellation gives uniqueness by induction on the length.
+Expanding the right side of the displayed inversion and grouping pairs $(k,l)$ by $j=kl$, the coefficient of $C_h(dj;x)$ is $j^{-1}\sum_{k\mid j}\mu(k)$ whenever $j\le L$. All other summands vanish because $d j>L$. This leaves exactly $C_h(d;x)$, including when $L=0$ as both sides then vanish. For $h=1/2$, multiplication by $2(L!)^2$ clears every denominator in the expanded identity.
+Unique factorization makes the map $(p,a)\mapsto p^a$ injective for prime $p$ and $a\ge1$. The change between the strict and weak comparisons therefore has exactly the asserted size. On both sides of the rational cut, any positive displacement smaller than $1/(2B)$ crosses no other integer. Thus the arithmetic midpoint equals the usual symmetric limit. The same observation makes $\pi$ locally constant, with derivative zero, at every rational nonprime point.
+\end{proof}
+
+For example $J_1(1;8)=4+1/2+1/3=29/6$ and $J_{1/2}(1;8)=14/3$. At the square-root cut, $J_{1/2}(2;8)=1$; the prime $2$ has full weight because $4<8$. At the cube-root cut $J_{1/2}(3;8)=1/2$. Inversion gives $14/3-1/2-1/6=4$. At $x=9$ the square-root cut gives prime $3$ half weight. Both cases follow from the same comparison.
+
+\paragraph{The checked inversion theorem.}
+The companion \texttt{Inversion.lean} defines $\mu$ by $\mu(1)=1$ and the negative sum of the proper-divisor values at $n>1$. The recurrence singles out the same function as the prime-factor definition above: subtract its proper-divisor sum from $\sum_{k\mid n}\mu(k)=[n=1]$, then use uniqueness of the recurrence (bounded strong induction). Its checked theorem \texttt{midpoint\_inversion} uses $L>0$ and arbitrary Boolean prime indicators. Put $D=L!$ and $w_j=(D/j)\,2C_{1/2}(dj;x)$ for $1\le j\le L$. The theorem regroups
+\[
+ \sum_{k=1}^L\mu(k)\sum_{\substack{j\le L\\k\mid j}}w_j=w_1
+ \qquad (j\ge1).
+\]
+Here $D/j$ is exact integer division. In the inner sum write $j=kr$; the unique $r$ runs from $1$ to $\lfloor L/k\rfloor$. Thus this sum is $(2D/k)J_{1/2}(dk;x)$ for the cutoff $L$ specified above, while $w_1=2D C_{1/2}(d;x)$. This gives the rational reading of the checked integer equality. At $L=0$ the natural-bound sums vanish directly.
+
+\section{Chebyshev functions and the two partial summations}
+\label{sec:weights}
+There is an integer version of every basic weighted counting identity. Write
+\[
+ U(n)=\prod_{p\le n}p,\quad V(n)=\operatorname{lcm}(1,\ldots,n),\quad
+ D(m)=\begin{cases}p&m=p^a\ (a\ge1),\\1&\text{otherwise}.\end{cases}
+\]
+Empty products and the empty least common multiple are one. Write $r_d(n)$ for the largest integer $t\le n$ with $t^d\le n$, for $d\ge1$. Taking the multiplicity of any prime $p\le n$ shows
+\[
+ V(n)=\prod_{m=2}^nD(m)=\prod_{d=1}^{L}U(r_d(n)),\qquad L=\lfloor\log_2 n\rfloor\quad(n\ge1).
+\]
+Indeed, the largest exponent of $p$ among $1,\ldots,n$ is precisely the number of positive $a$ with $p^a\le n$. For $p>n$ every multiplicity is zero. Thus for $\Lambda(m)=\log D(m)$, $\vartheta(x)=\log U(\lfloor x\rfloor)$ and $\psi(x)=\log V(\lfloor x\rfloor)$ we obtain the source identities
+\[
+ \psi(x)=\sum_{m=2}^{\lfloor x\rfloor}\Lambda(m)
+       =\sum_{d=1}^{L}\vartheta(x^{1/d}),\qquad
+ \vartheta(x)=\sum_{p\le x}\log p.
+\]
+For $m\ge2$, $\Lambda(m)/\log m$ is $1/a$ at $p^a$ and zero elsewhere. Consequently its sum through $x$, with the boundary term weighted by $1/2$, is exactly $J_{1/2}(1;x)$. This last identity can be encoded using just rational numbers.
+
+Here and below a logarithm of $v\ge1$ is represented by upper and lower rectangular sums of $1/t$ from $1$ to $v$. At rational $v$, dividing into $M$ intervals gives a gap at most $(v-1)/M$ by telescoping the endpoint differences. For general positive rational arguments use $\log v=-\log(1/v)$ below one. Splitting $[1,ab]$ at $a$ and scaling $t=au$ in the second interval gives $\log(ab)=\log a+\log b$ for $a,b\ge1$. The argument uses finite partitions, refined by their common endpoints. The same identity for positive rationals follows by clearing inverses. Also for $1\le a\le b$,
+\[
+ (b-a)/b\ \le\ \log b-\log a\ \le\ (b-a)/a.
+\]
+These rational enclosures give equality at every requested precision. For a sum of $K$ logarithms, ask each enclosure for width $2^{-j}/(K+1)$ to obtain overall width at most $2^{-j}$. Integer factors in front of a sum multiply this precision cost by their absolute values.
+
+\begin{theorem}[Partial summation]
+At every rational $x\ge2$ one has
+\begin{align*}
+ \vartheta(x)&=\pi(x)\log x-\int_2^x \pi(t)\frac{dt}{t},\\
+ \pi(x)&=\frac{\vartheta(x)}{\log x}
+        +\int_2^x\frac{\vartheta(t)}{t\log^2t}\,dt .
+\end{align*}
+\end{theorem}
+\begin{proof}
+Include all integers strictly between $2$ and $x$ as cut points, together with $2,x$, without repetitions. For any nondecreasing list of endpoints $u_i$, prefix sums $S_i$ of weights, and selected values $f_i$, direct cancellation gives the discrete product rule
+\[
+ S_i f_i-S_{i-1}f_{i-1}=(S_i-S_{i-1})f_i+S_{i-1}(f_i-f_{i-1}).
+\]
+For the first identity take $S_i=\pi(u_i)$, $f_i=\log u_i$. The changes in $S_i$ contribute $\log p$ at each prime, with the starting product $\pi(2)\log2$ supplying the first prime. The other terms equal the integrals over individual intervals since $\pi$ is constant in their interiors. For the second identity use $S_i=\vartheta(u_i)$, $f_i=1/\log u_i$; every jump product is one and $\vartheta(2)/\log2=1$. The complementary differences use
+\[
+ \frac{1}{\log a}-\frac{1}{\log b}
+  =\frac{\log b-\log a}{\log a\log b}
+  =\int_a^b\frac{dt}{t\log^2t}\qquad(2\le a\le b).
+\]
+For the last equality apply the logarithmic enclosure above on each mesh interval $[u,v]$. The decrement of $1/\log t$ is sandwiched between $(v-u)/(v\log^2 v)$ and $(v-u)/(u\log^2 u)$. At mesh width $h$, summing gives an uncertainty at most $2h$ by monotonicity and $\log2\ge1/2$. Thus the integral identities are quantitative assertions about rational sums. For explicit bookkeeping let $X=\lceil x\rceil$; the step heights are at most $X^2$ and there are at most $X$ intervals. Taking $h\le2^{-j-3}/(X+1)^3$ gives total quadrature error below $2^{-j-1}$. Computed reciprocal logarithms are safe because their denominators are bounded below by $1/2$.
+\end{proof}
+
+\section{The positive-real Mellin identity with a truncation bound}
+\label{sec:mellin}
+The Mellin identity for $\Pi_0$ on the Wikipedia page has an elementary proof on positive rational exponents $s>1$. This part lies in the region of absolute convergence. Its internal meaning is an estimate at finite cutoffs, with an explicit primitive-recursive accuracy schedule.
+
+\begin{theorem}
+Let $s=a/b$ with positive integers $a>b$. Write
+\[
+ Z_N=\sum_{n=1}^N n^{-s},\qquad
+ T_N=\sum_{p^k\le N}\frac{p^{-ks}}{k},\qquad
+ J(t)=J_{1/2}(1;t).
+\]
+For $K\ge1$ and $N=2^{bK}$ one has
+\[
+ \left|\log Z_N-s\int_1^N J(t)t^{-s-1}\,dt\right|
+     \le (4b+1)2^{-K}.
+\]
+In particular, at the level of the associated names,
+$\log\zeta(s)=s\int_0^\infty J(t)t^{-s-1}\,dt$, where $\zeta(s)$ is the name given by the $Z_N$. The integrand below $1$ is assigned zero.
+\end{theorem}
+\begin{proof}
+For any $H>N$,
+\[
+ \sum_{N<n\le H}n^{-s}\le D_K:=2b\,2^{-K}.
+\]
+In a block $2^j\le n<2^{j+1}$ the sum is at most $2^{-j/b}$ since $s\ge1+1/b$. Group $b$ successive blocks starting at $j=bK$; their combined bound is $b2^{-K}$. Subsequent groups form a geometric series of ratio $1/2$. Every finite sum is bounded by twice the first group. In particular $Z_N$ is an effective Cauchy name. Rational powers in this proof have primitive-recursive enclosures: for $n^{a/b}$ bisect $[1,n^a]$, comparing the $b$th power of each rational midpoint with $n^a$; inversion on $[1,\infty)$ does not increase errors. For rational positive bases use the same method with rational endpoints widened to integers as needed.
+
+Consider the finite product $E_N=\prod_{p\le N}(1-p^{-s})^{-1}$. To compare it with $Z_N$, first truncate each geometric factor after exponent $m\ge N$. On multiplying out, every $n\le N$ appears exactly once by unique factorization; each other monomial equals $n^{-s}$ for a distinct $n>N$. The resulting difference is between zero and $D_K$, even for the largest product of prime powers in this rectangular expansion. Passing from finite factors to $E_N$ is effective. Each full factor is at most $2$, and replacing it by its truncation costs at most $2^{-m}$ since $p^{-s}\le1/2$. A telescoping product estimate gives total error at most $N 2^N 2^{-m}$. It follows that $0\le E_N-Z_N\le D_K$. Since both are at least one, the logarithm enclosure gives $0\le\log E_N-\log Z_N\le D_K$.
+
+For $0\le q\le1/2$, summing a geometric progression inside $\int_0^q(1-u)^{-1}du$ gives
+\[
+ 0\le -\log(1-q)-\sum_{k=1}^{m}\frac{q^k}{k}
+       \le 2q^{m+1}.
+\]
+Indeed the geometric remainder under the integral is $u^m/(1-u)$, bounded by $2u^m$; integrating powers of $u$ follows by telescoping $(u+h)^k-u^k$ between its lower and upper rectangular bounds. With $q=p^{-s}$ and $m\ge N$, the terms of the finite sums omitted by the cut $p^k\le N$ correspond to distinct integers $>N$. Their sum is at most $D_K$. The discarded geometric remainders contribute at most $N2^{-m}$. Additivity of the logarithm therefore gives $0\le\log E_N-T_N\le D_K$. In particular $|\log Z_N-T_N|\le2D_K$.
+
+On each interval between successive integers, $J(t)$ agrees in its interior with the right-continuous sum $\sum_{p^k\le t}1/k$. Integrating each step separately gives the exact finite formula
+\[
+ s\int_1^N J(t)t^{-s-1}\,dt=T_N-N^{-s}\sum_{p^k\le N}\frac1k.
+\]
+For the endpoint kernel identity, take $1\le u<v$ and write $u=\alpha^b$, $v=\beta^b$. After canceling $\beta-\alpha$ in $(u^{-s}-v^{-s})/(v-u)$, its numerator is the sum of $a$ products $\alpha^{-i}\beta^{-(a+1-i)}$, $1\le i\le a$, and its denominator the sum of $b$ products $\beta^{b-1-i}\alpha^i$, $0\le i<b$. Bounding each factor by its endpoint values traps the quotient between $s v^{-s-1}$ and $s u^{-s-1}$. Summing on a mesh proves $s\int_u^v t^{-s-1}dt=u^{-s}-v^{-s}$; at mesh width $h$ the upper and lower sums differ by at most $sh$. This also justifies the finite formula using only rational-power enclosures. Unique prime powers give $\sum_{p^k\le N}1/k\le N$, hence the correction is at most $N^{1-s}\le2^{-K}$. This proves the inequality. The same estimates at arbitrary upper limits $H\ge N$ (the tail after $H$ is bounded by $D_K$) identify the improper integral with the stated name. A primitive-recursive choice sufficient for error $2^{-j}$ in the displayed bound is $K=j+4b+2$.
+\end{proof}
+
+In this proof, the finite product over integers up to $N$ is a bounded fold. Even the rectangular expansion at cutoff $m$ has at most $(m+1)^N$ entries, all supported at integers at most $N^{mN}$. To read the inequalities with irrational factors entirely as interval arithmetic, fix an additional error $2^{-j}$. Enclose each factor and refine all finite sums and products by their usual rational interval rules. The fold lengths and a bound on their local amplification give a primitive-recursive precision schedule: for a circuit of $S$ addition, subtraction, multiplication and reciprocal gates, with absolute values bounded by $M\ge2$ and inverted quantities bounded below in modulus by $1/M$, round the inputs to width at most $2^{-j-2}(8M^2)^{-S}$. Each gate on that enclosure amplifies the maximum incoming width by at most $8M^2$, once incoming widths are at most $1/(2M)$. If needed shrink the initial width by a further $2M$. Here a bound $M$ can be propagated from the rational bases, the explicit positive lower bounds on divisors, and the finite gate list. Arbitrary precision followed by the rational inequality with an arbitrarily small slack is the convention for a non-strict comparison of names.
+
+\input{sections/complex}
+
+\section{The correction integral over the trivial zeros}
+\label{sec:trivial}
+A further analytic identity from the Wikipedia page can be isolated from its explicit formula. For rational $x>1$ put
+\[
+ C(x)=\int_x^\infty\frac{dt}{t(t^2-1)\log t}.
+\]
+For $0<z<1$ define $\operatorname{li}(z)=\int_0^z du/\log u$. This integral uses only the part of the logarithmic integral below its singularity. Write $q=x^{-2}$, $\ell=(x-1)/x$. Then
+\[
+ 0\le C(x)+\sum_{m=1}^M\operatorname{li}(x^{-2m})
+    \le \frac{q^{M+1}}{2(M+1)(1-q)\ell}.
+\]
+In particular $C(x)=-\sum_{m\ge1}\operatorname{li}(x^{-2m})$ has an effective geometric rate, also for rational inputs close to one.
+
+\begin{proof}
+For $t\ge x$, $\log t\ge\ell$ by the lower rectangle for $\int_1^x dt/t$. Expand $1/(t^2-1)=\sum_{m=1}^M t^{-2m}+t^{-2(M+1)}/(1-t^{-2})$. The integral of the remainder is bounded above by
+\[
+ \frac1{(1-q)\ell}\int_x^\infty t^{-2M-3}dt
+   =\frac{q^{M+1}}{2(M+1)(1-q)\ell}.
+\]
+On a finite interval $[x,T]$ substitute $u=t^{-2m}$ in each term; since $\log u=-2m\log t$ the oriented integral is
+\[
+ \int_x^T\frac{t^{-2m-1}}{\log t}\,dt
+   =\int_{x^{-2m}}^{T^{-2m}}\frac{du}{\log u}.
+\]
+For a direct quadrature check, on $[v,w]\subseteq[x,T]$ the positive integral of $-1/\log u$ on the reversed image interval is between
+$(v^{-2m}-w^{-2m})/(2m\log w)$ and $(v^{-2m}-w^{-2m})/(2m\log v)$. The endpoint kernel bounds of the preceding proof place these within the lower and upper rectangles for $t^{-2m-1}/\log t$ on $[v,w]$. Their summed gap tends to zero with mesh width, bounded by the width times the initial integrand value. Sending $T$ to infinity leaves $-\operatorname{li}(x^{-2m})$; the missing interval $[0,T^{-2m}]$ costs at most $T^{-2m}/(2m\log T)$. The tail of $C$ after $T$ costs at most $1/(2T^2(1-q)\ell)$ by the same remainder estimate with $M=0$ at the lower limit $T$.
+
+All accuracy choices can be made by arithmetic on the input. For example put $D=\lceil 1/(1-q)\rceil$, $F=\lceil 1/((1-q)\ell)\rceil$. Bernoulli's inequality gives $q^D\le1/2$ because $(1/q)^D\ge1+D(1-q)$. For error $2^{-j}$ the choices $M=D(j+F+2)$ and $T=\lceil x\rceil+2^{j+F+2}$ make both indicated truncation errors individually smaller than $2^{-j-1}$. On a compact interval the positive integrands in the $t$ variable decrease; thus the rectangular gap is at most the mesh width times the initial value, bounded rationally by replacing $\log x$ with $\ell$. This supplies a primitive-recursive quadrature for the remaining finite integrals.
+\end{proof}
+
+\paragraph{The smooth arctangent correction.}
+The same Wikipedia section describes a different correction,
+\[
+ A(x)=\frac{1}{\log x}-\frac1{\pi_{\rm c}}\arctan\frac{\pi_{\rm c}}{\log x},
+ \qquad x>1,
+\]
+where $\pi_{\rm c}=4\arctan 1$ is the circle constant. Its vanishing at infinity follows without any property of Riemann's $R$ function. Define $\arctan z=\int_0^z(1+t^2)^{-1}dt$ for $z\ge0$ and put $z=\pi_{\rm c}/\log x$. Since $1/2\le(1+t^2)^{-1}\le1$ on $[0,1]$, we have $2\le\pi_{\rm c}\le4$. Integrate
+\[
+ 0\le z-\arctan z=\int_0^z\frac{t^2}{1+t^2}dt\le z^3/3,
+ \qquad
+ 0\le z^3/3-(z-\arctan z)=\int_0^z\frac{t^4}{1+t^2}dt\le z^5/5.
+\]
+Division by $\pi_{\rm c}$ gives $0\le A(x)\le\pi_{\rm c}^2/(3\log^3 x)$ and shows that the difference between this upper bound and $A(x)$ is at most $\pi_{\rm c}^4/(5\log^5 x)$. For $x\ge2^r$ the first bound is at most $128/(3r^3)$ since $\log2\ge1/2$. Thus $x\ge2^{2^{j+6}}$ suffices for $A(x)\le2^{-j}$. The defining arctangent integrand is decreasing; its rectangular enclosure has gap at most the mesh width, and endpoint uncertainties cost at most their width. This also gives an explicit arithmetic interpretation of the assertion that the approximation $R(x)-A(x)$ differs from $R(x)$ by a term tending to zero.

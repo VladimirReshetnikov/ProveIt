@@ -1,0 +1,93 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=25mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,tabularx,array}
+\usepackage{xcolor,graphicx,microtype}
+\usepackage{enumitem,fancyhdr}
+\usepackage[hyphens]{url}
+\usepackage{hyperref}
+\definecolor{navy}{HTML}{17324D}
+\definecolor{teal}{HTML}{146B74}
+\hypersetup{colorlinks=true,linkcolor=navy,urlcolor=teal,citecolor=teal,
+ pdftitle={Propositional Logic in Intuitionistic Primitive Recursive Arithmetic},
+ pdfauthor={Research package prepared for Vladimir Reshetnikov},
+ pdfsubject={Constructive proofs, finite certificates, and Lean formalization plan}}
+\newcommand{\ipra}{\ensuremath{\mathsf{iPRA}}}
+\newcommand{\IPC}{\ensuremath{\mathsf{IPC}}}
+\newcommand{\CPC}{\ensuremath{\mathsf{CPC}}}
+\newcommand{\N}{\mathbb N}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\setlist{itemsep=3pt,topsep=5pt}
+\setlist[itemize]{label=\(\bullet\)}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt minus 1pt}
+\setlength{\emergencystretch}{2em}
+\allowdisplaybreaks[2]
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\sffamily Propositional logic in iPRA}
+\fancyhead[R]{\small\sffamily Constructive proof package}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{.3pt}
+
+\begin{document}
+\begin{titlepage}
+\color{navy}
+{\large\sffamily PROVEIT RESEARCH PACKAGE}\par
+\vspace{18mm}
+{\Huge\bfseries Propositional Logic}\par
+\vspace{4mm}
+{\LARGE in Intuitionistic Primitive\par Recursive Arithmetic}\par
+\vspace{12mm}
+{\Large\sffamily Finite proofs, Boolean certificates,\par and Kripke countermodels}\par
+\vspace{13mm}
+\color{black}
+\begin{minipage}{.91\textwidth}
+This report develops a broad, self-contained body of propositional
+metamathematics within intuitionistic primitive recursive arithmetic.
+Its central results are constructive classical completeness and a direct
+finite saturation proof of intuitionistic Kripke completeness. It also
+treats proof-system translations, analytic tableaux and classical cut
+elimination, Boolean normal forms, SAT algorithms and NP-completeness,
+finite interpolation and definability, negative translation, finite
+Heyting semantics, and disjunction extraction.
+
+Every positive theorem is accompanied by a finite construction or a proof
+transformation. Explicit bounds and bounded invariants explain why the
+arguments fit quantifier-free induction. Small Kripke models distinguish
+classical tautologies from intuitionistic theorems.
+\end{minipage}
+\vfill
+\color{navy}
+{\large Prepared for Vladimir Reshetnikov}\par
+{\large 22 November 2026}\par
+\vspace{6mm}
+\color{black}
+\small
+\textbf{Status.} Developed human proofs; executable certificates and
+small-instance validation; Lean proof candidates and an object-level
+formalization plan. The Lean files are explicitly uncompiled in this
+environment. This package does not claim completed kernel verification
+of its main iPRA theorems.
+\end{titlepage}
+
+\tableofcontents
+\clearpage
+\input{sections/foundations}
+\input{sections/proof_systems}
+\input{sections/classical_algorithms}
+\input{sections/intuitionistic}
+\input{sections/complexity}
+\input{sections/translation_limits}
+\input{sections/formalization}
+\appendix
+\input{sections/source_map}
+\input{sections/theorem_inventory}
+\input{sections/bibliography}
+\end{document}

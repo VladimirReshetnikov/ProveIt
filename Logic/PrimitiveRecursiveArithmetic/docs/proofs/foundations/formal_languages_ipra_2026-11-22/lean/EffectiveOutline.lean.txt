@@ -1,0 +1,329 @@
+/-
+EFFECTIVE LANGUAGES: FORMALIZATION BLUEPRINT
+
+Status: an outline, not a compiled Lean module.  No axiom or sorry below is
+being offered as a completed theorem.  The executable-looking definitions
+specify the intended semantic layer; every GOAL names an obligation still
+to be proved.  A second layer must encode all finite objects as naturals and
+produce object-level iPRA derivations using quantifier-free induction.
+Ordinary Lean Prop proofs alone are not an iPRA proof certificate.
+
+Source: chapters/effective.tex, labels eff:*.
+Dependencies: pairing/list coding; bounded conjunction/disjunction; finite
+pigeonhole; fixed-code primitive-recursion compilation.  Existing ProveIt
+Core.Pairing, Core.Pigeonhole, Foundations.BoundedFixpoint,
+Foundations.BoundedEnumeration and Foundations.BoundedFormulas are candidate
+interfaces to inspect, not silently imported completed theorems.
+-/
+
+namespace FormalLanguages.Effective
+
+abbrev Word := List Nat
+
+def legalWord (alphabet : Nat) (w : Word) : Prop :=
+  w.all (fun a => decide (a < alphabet)) = true
+
+inductive Move where
+  | left | right | stay
+  deriving DecidableEq
+
+structure Instruction where
+  target : Nat
+  write : Nat
+  move : Move
+  deriving DecidableEq
+
+structure Machine where
+  alphabet : Nat
+  states : Nat
+  table : List Instruction
+
+structure Configuration where
+  state : Nat
+  left : Nat
+  right : Nat
+  deriving DecidableEq
+
+def base (m : Machine) : Nat := max 3 m.alphabet
+
+def defaultInstruction (m : Machine) : Instruction :=
+  { target := m.states, write := 0, move := .stay }
+
+def step (m : Machine) (c : Configuration) : Configuration :=
+  if c.state >= m.states then c else
+  let b := base m
+  let a := c.right % b
+  let ins := (m.table[c.state * b + a]?).getD (defaultInstruction m)
+  let d := ins.write % b
+  let tail := c.right / b
+  match ins.move with
+  | .right => { state := ins.target, left := d + b * c.left,
+                right := tail }
+  | .left => { state := ins.target, left := c.left / b,
+               right := c.left % b + b*d + b*b*tail }
+  | .stay => { state := ins.target, left := c.left,
+               right := d + b*tail }
+
+def runFrom (m : Machine) (c : Configuration) : Nat -> Configuration
+  | 0 => c
+  | t+1 => step m (runFrom m c t)
+
+def isHalted (m : Machine) (c : Configuration) : Bool :=
+  decide (m.states <= c.state)
+
+def outputIs (m : Machine) (c : Configuration) (j : Nat) : Bool :=
+  isHalted m c && decide (j < 2) && decide (c.right % base m = j)
+
+/- NUMERICAL CODING TO ADD
+
+encodeNatInput : Nat -> List Nat
+  canonical nonempty binary digits with bit 0 mapped to tape symbol 1,
+  bit 1 mapped to tape symbol 2; numeric zero is [1].
+
+packTape : Nat -> List Nat -> Nat
+  packTape b [] = 0;
+  packTape b (a::xs) = a + b * packTape b xs.
+
+initial m x = {state:=0, left:=0,
+               right:=packTape (base m) (encodeNatInput x)}.
+
+encodeMachine/decodeMachine : finite record coding using the foundations'
+  pairing and length-prefixed list code.  Store alphabet, state count, and
+  the instruction list.  Instructions store target, write, and move-tag.
+  Malformed codes decode to a fixed immediate-halting machine.  All list
+  accesses are bounded by the decoded length and all invalid accesses use
+  the displayed default.  Establish decoder/encoder round-trip theorems
+  for valid records, then prove each coded operation primitive recursive.
+
+numericRun e x t = encodeConfig
+  (runFrom (decodeMachine e) (initial (decodeMachine e) x) t).
+
+haltAt e x t = isHalted ... (runFrom ... t).
+outAt e x t j = outputIs ... (runFrom ... t) j.
+
+GOAL E01 (eff:simulation): runFrom recurrence, halting absorption,
+  deterministic uniqueness of Boolean output, valid trace <-> runFrom,
+  PR numericRun/haltAt/outAt.  Trace check is a bounded all over adjacent
+  coded configurations.  Induction invariant checks the whole processed
+  prefix with one characteristic-function equality.
+
+GOAL E02 (eff:compile): a metaprogram/compiler on fixed PR syntax produces
+  a finite register program, fixed tape program, a PR clock, and iPRA proof
+  fragments.  Constructor cases: zero, successor, projection, composition,
+  primitive recursion.  Registers use INC, DEC-JUMP, HALT; a copy loop
+  decrements source while incrementing target and temp, then restores source
+  from temp.  Keep inputs and scratch registers disjoint.  Tape encoding is
+  unary registers separated by a delimiter; each register instruction is
+  bounded by C*(totalMarks+registerCount+1)^2.  The time budget for an n-step
+  register run is C*(n+1)*(initialMarks+n+registerCount+1)^2.
+
+  DO NOT define an object-level primitive recursive universal evaluator for
+  all PR syntax.  The constructor recursion is a metatheoretic compilation
+  process; each fixed output program has its own proved primitive recursive
+  clock.  Lean may define a total semantic evaluator on a syntax datatype,
+  but that does not prove it primitive recursive uniformly in the code.
+-/
+
+structure CertificatePresentation where
+  verify : Word -> Nat -> Bool
+  -- In the numerical layer, also retain a fixed PR expression and proof
+  -- that its denotation is this verifier.  An arbitrary Lean function is
+  -- not automatically a primitive recursive verifier.
+
+def Member (p : CertificatePresentation) (w : Word) : Prop :=
+  exists c, p.verify w c = true
+
+/- CERTIFICATE SHAPES (encode each finite record into Nat)
+
+Union: Sum Nat Nat; check the selected operand.
+Intersection: Nat x Nat; check both operands.
+Concatenation: (split : Nat) x (leftCert : Nat) x (rightCert : Nat);
+  require split <= w.length and verify w.take split and w.drop split.
+Reversal: Nat; verify w.reverse.
+Image under hom h: Word x Nat; check h preimage = w and verify preimage.
+Preimage under h: Nat; verify (h w).
+Certified star: List (Word x Nat); all factors verified, flatten = w.
+Certified substitution: sourceWord x sourceCert x List (Word x Nat);
+  one factor/certificate per source letter, flatten = target.
+
+GOAL E03 (eff:three-presentations):
+  enumerate stage s by decoding pair(word,cert), emitting word iff verified;
+  sparse-code gaps and invalid word codes emit silence;
+  silence is an Option Word, so the empty language is covered;
+  recognition tests certificates 0..c successively using E02.
+  Forward time bound is the sum of fixed verifier clocks up to the supplied c.
+  Reverse extraction scans the finite accepting trace for the successful c.
+
+GOAL E04 (eff:binary-closure, eff:hom-closure):
+  verify each record's membership equivalence constructively by explicit
+  witness insertion/extraction.  For nonerasing h prove length u <= length(h u)
+  and enumerate all words up to target length to decide the image.
+
+GOAL E05 (eff:certified-star):
+  verify a coded list of certificates; delete empty factors while preserving
+  remaining certificates; for nonempty w obtain at most w.length factors.
+  Under a supplied common certificate bound B, bounded search chooses each
+  certificate and yields the list.  DO NOT silently replace
+    (forall i<k, exists c, R(i,c))
+  by existence of a coded finite list of all c's.  That is exactly the
+  collection issue identified in the report.
+-/
+
+/- DECISION INTERFACES
+
+def K (e : Nat) : Prop := exists t, haltAt e e t = true
+
+def TotalBoolean (d : Nat) : Prop :=
+  forall x, exists t, outAt d x t 0 = true ∨ outAt d x t 1 = true
+
+def CorrectFor (d : Nat) (L : Nat -> Prop) : Prop :=
+  forall x, L x ↔ exists t, outAt d x t 1 = true
+
+GOAL E06 (eff:total-decision):
+  TotalBoolean d -> CorrectFor d L -> forall x, L x ∨ ¬L x.
+  Use the output disjunction and output uniqueness; no classical.
+  A supplied PR clock b(x) permits bounded evaluation at b(x).
+
+GOAL E07 (eff:two-recognizers):
+  Two correct certificate presentations of L and ¬L, PLUS
+  (forall x, L x ∨ ¬L x), produce a Boolean machine and TotalBoolean proof.
+  At stage s test certificates <=s on both sides.  The given disjunction
+  supplies a successful certificate on one side, hence termination.
+  This result alone does not supply a uniform PR clock.
+-/
+
+/- FINITE REWRITING DEFINITIONS
+
+structure RewriteRule where
+  lhs : Word
+  rhs : Word
+
+structure Grammar where
+  terminalCount : Nat
+  nonterminalCount : Nat
+  start : Nat
+  rules : List RewriteRule
+
+Use one total alphabet [0..terminalCount+nonterminalCount), with terminal
+symbols first and nonterminals next.  A valid lhs is nonempty and contains
+a nonterminal.  One-step(u,v) holds iff a supplied rule index and position
+replace the indicated lhs occurrence, with all other letters unchanged.
+All quantifiers are bounded by rules.length and u.length.
+
+Noncontracting G: every rule has lhs.length <= rhs.length except an optional
+[start] -> []; start appears on no rhs.  Derivation certificate: list of
+sentential forms with first [start], last w, and checked adjacent steps.
+
+GOAL E08a (eff:grammar-recognizable):
+  Check a supplied list of sentential forms, rule indices, and positions.
+  Every check is bounded by the record even when grammar rules contract.
+  Derivability <-> exists successful certificate follows by witness identity;
+  E03 compiles this uniform verifier into a recognizer.
+
+SHARED GOAL E08 (base:graph; reused by the effective chapter):
+  implement loopErase : List (Fin V) -> List (Fin V), by processing input
+  left-to-right, append fresh vertices and truncate to previous occurrences.
+  If input is an edge path, loopErase preserves endpoints and edges.
+  Its vertices are distinct, hence edge count < V.  Enumerate all lists
+  of <=V vertices; the first valid list is a witness.  This avoids a
+  nonconstructive minimum-length argument.
+
+GOAL E09 (eff:noncontracting):
+  for nonempty w, n=length w, enumerate all sentential forms of length <=n.
+  V=sum i=0..n m^i.  Use E08 on the finite rewrite edge table.  A successful
+  arbitrary derivation has length<=n at each vertex, and can be loop-erased.
+  Empty target is accepted exactly when the start-empty rule exists.
+
+GOAL E09b (eff:nc-pr-separation):
+  binaryGrammarAccept(e,w) decodes e, checks valid noncontracting grammar
+  with terminalCount=2, and invokes E09; malformed or nonbinary codes
+  return false.  This is a uniform PR Boolean function on all natural e.
+  Canonical binary word coding has decode(bin(e))=e.
+  Define J(w) = not binaryGrammarAccept(decode(w),w) on canonical words,
+  and false otherwise.  Prove it is PR by composition and finite branching.
+  Prove forall e,
+    J(bin(e)) != binaryGrammarAccept(e,bin(e)).
+  For valid grammar codes combine E09 correctness to obtain an explicit
+  separating word bin(e).  This is NC proper-subset PR, and only uses a
+  restricted finite-syntax evaluator; it is not uniform PR evaluation.
+
+GOAL E10 (eff:nc-closure):
+  union = disjoint nonterminal renaming + fresh start alternatives;
+  delete old exceptional empty rules and handle epsilon at fresh start;
+  reversal reverses both sides of every rule and every supplied trace;
+  regular intersection introduces nonterminal [p,X,q] for EVERY old symbol,
+  including terminals.  Expand each rule by all state chains on lhs/rhs
+  with equal outer endpoints.  Finalize [p,a,delta(p,a)] -> a.  Fresh start
+  branches to [q0,S,f] for f final.  Backwards annotation of a supplied old
+  derivation proves completeness; endpoint invariants and projection prove
+  soundness.  All state loops are bounded by a finite automaton code.
+
+GOAL E11 (eff:abc):
+  verify the seven displayed productions.  Forward witness uses n-1
+  expansions, one base step, <=n*n swaps, then 2n terminalizations.
+  Soundness invariants are the two sentential-form shapes in the report
+  and conservation of #(B)+#(b), #(C)+#(c).
+-/
+
+/- DIAGONAL COMPILERS AND THEIR EXACT OBLIGATIONS
+
+negDeciderCode : Nat -> Nat
+  embeds d into a fixed interpreter; on input x, simulate d(x), halt on
+  output 0, loop on output 1 (and on an invalid output).
+
+acceptToHaltCode : Nat -> Nat
+  embeds r; on input x, simulate r(x), halt on accepting halt and loop on
+  rejection.  Infinite simulated execution stays in interpreter states.
+
+GOAL E12 (compiler trace bridges):
+  Both program-code transformations are primitive recursive.
+  outAt d x t 0 -> exists u, haltAt (negDeciderCode d) x u.
+  outAt d x t 1 -> forall u, not (haltAt (negDeciderCode d) x u).
+  exists u, haltAt (acceptToHaltCode r) x u
+    <-> exists t, acceptingAt r x t.
+  For each forward implication give a PR function of the supplied trace
+  computing the new time/trace.  For nonhalting use quantifier-free induction
+  on the inspected time u with distinct interpreter/loop/halting phases.
+
+GOAL E13 (eff:halting):
+  forall d, not (TotalBoolean d ∧ CorrectFor d K).
+  Set p=negDeciderCode d.  TotalBoolean at p supplies bit 0 or bit 1.
+  Each case is contradicted by E12 and CorrectFor; no classical case split
+  on the proposition K p is used.
+
+GOAL E14 (eff:complement):
+  no recognizer r satisfies accepting(r,x) <-> not K(x) for every x.
+  Set q=acceptToHaltCode r.  Obtain K(q)<->not K(q), then use the purely
+  intuitionistic lemma immediately below.
+-/
+
+-- This small logical lemma is independent of any machine/PR trust boundary.
+theorem impossibleNegationFixedPoint {P : Prop} (h : P ↔ ¬ P) : False := by
+  have hn : ¬ P := fun hp => (h.mp hp) hp
+  exact hn (h.mpr hn)
+
+/- GOAL E15 (eff:erasing):
+  verifier for bin(e)#c^t parses one delimiter, canonical binary prefix,
+  unary suffix, then checks haltAt e e t.  The homomorphism preserves binary
+  symbols and erases #,c.  Extract t for image -> K; construct bin(e)#c^t
+  for K -> image.  Invoke E13 to refute decision of the image.
+
+SHARED GOAL E16 (base:noeval; reused by the effective chapter):
+  For any fixed PR E, define g x = E x x + 1 and prove
+    forall e, g e != E e e.
+  This is a fixed PR schema with explicit distinguishing argument e.
+
+OBJECT-LEVEL COMPLETION CHECKLIST
+1. Register every bounded loop/decoder/tuple operation as a PR expression.
+2. Translate each stated finite invariant to a Boolean characteristic check.
+3. Emit quantifier-free induction instances, with trace/word codes as free
+   parameters; do not substitute unrestricted Lean induction principles.
+4. Compile the finite machine macros and prove E12 before accepting E13/E14.
+5. For theorem schemas over fixed verifiers, keep the PR definition in the
+   meta-environment; do not add an internal uniform PR evaluator axiom.
+6. Retain exhaustiveness and finite-certificate-list assumptions in E05/E07.
+7. Audit final object derivations with ProveIt's proof checker; report the
+   object proof status separately from Lean semantic lemma compilation.
+-/
+
+end FormalLanguages.Effective

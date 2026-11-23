@@ -1,0 +1,278 @@
+FOUR SQUARES IN iPRA — INDEPENDENT MATHEMATICAL AND LOGICAL AUDIT
+================================================================
+
+Scope and conclusion
+--------------------
+The prime-seed / parity-first descent / bounded factor-loop construction is
+sound. It proves the witnessed form
+
+  iPRA |- forall n, S0(n)^2 + S1(n)^2 + S2(n)^2 + S3(n)^2 = n,
+
+for explicitly primitive recursive natural-valued S0,...,S3. Universal closure
+is taken only after quantifier-free induction with parameters. No induction on
+an existential representation predicate, no least-counterexample argument, no
+unbounded minimization, no choice, and no non-finite excluded middle is needed.
+
+1. Ambient arithmetic and primitive recursive conventions
+---------------------------------------------------------
+Use the definitional presentation of iPRA with a function symbol and defining
+equations for each primitive recursive function, intuitionistic first-order
+logic, and induction for quantifier-free formulas. Natural equality, truncated
+subtraction, order, parity, quotient/remainder, finite sums/products, bounded
+search, and finite tuple encodings are primitive recursive. Define division by
+zero as 0 so all functions are total; the proof only uses positive divisors.
+
+Signed integers are a notational convenience for primitive recursive signed
+codes over N. One may use sign-and-magnitude or normalized difference pairs;
+addition, multiplication, absolute value, remainder, and exact division all
+have explicit primitive recursive implementations. Tuples may be encoded by
+any primitive recursive pairing with primitive recursive projections. There
+is no integer or finite-sequence quantifier outside the natural-number sort.
+
+A bounded formula used below has a primitive recursive characteristic bit.
+Finite conjunction is a product of bits, finite disjunction a recursively
+accumulated Boolean OR, and bounded existential witnesses are obtained by a
+scan with a hit flag and stored first witness. Standard elimination and
+introduction facts for these folds have quantifier-free induction proofs.
+Thus a bounded universal invariant is represented by the equality of its
+primitive recursive characteristic bit to 1. This does not authorize
+induction on arbitrary quantified formulas: it is specific to the explicit
+bounded formulas appearing here.
+
+2. The bounded elementary number theory needed for the seed
+----------------------------------------------------------
+Prime(p) is the primitive recursive condition p>=2 and that no d with
+2<=d<p divides p. Divisibility is a remainder-zero test, with its usual
+positive-divisor quotient witness. For any q>=2 the bounded search for the
+least d in [2,q] dividing q succeeds because q itself does. Its result p is
+prime: if 2<=e<p and e|p, then e|q, contradicting the recorded failure of all
+earlier candidates. This needs no unique factorization theorem.
+
+Euclid's prime-divisor lemma can be proved by a fixed-length extended Euclidean
+algorithm. Given prime p and 0<a<p, initialize (r0,r1)=(p,a), together with
+coefficient pairs expressing r0 and r1 as integer combinations of p and a.
+If r1>0, perform the usual quotient/remainder update
+
+  (r0,r1) -> (r1, r0 - floor(r0/r1)*r1),
+
+and update coefficients by the same integer linear operation. If r1=0, freeze.
+Every active step strictly decreases r1, so p+1 steps suffice. The invariant
+that every d<=p divides both current remainders iff it divides p and a is a
+finite conjunction of decidable divisibility equivalences. Each equivalence
+is immediate from r0=q*r1+r2. The coefficient identities are quantifier-free.
+At the end r0=g>0, r1=0, g|p and g|a. Primality and 0<a<p give g=1. Hence
+u*p+v*a=1 for computed signed u,v. If p|a*b, multiply this identity by b to
+obtain p|b. Reducing a modulo p gives, for arbitrary integers a,b,
+
+  p | a*b  ->  p|a or p|b.
+
+The disjunction is a decidable split on a mod p. The remainder decreases
+within a known natural bound; extended coefficients are obtained by primitive
+recursion. No coefficient magnitude bound is required for primitive
+recursiveness, but (p+1)^(p+2) is a harmless coarse bound for p+1 updates.
+
+3. Constructive seed for an odd prime
+------------------------------------
+Let p=2h+1 be odd prime, h>=1. For i,j in {0,...,h}, form the two lists
+
+  A_i = i^2 mod p,
+  B_j = (-1-j^2) mod p.
+
+Both lists are injective. Indeed A_i=A_j implies p|(i-j)(i+j), hence p|i-j
+or p|i+j. Since |i-j|<=h<p, the first case gives i=j. Since 0<=i+j<=2h=p-1,
+the second gives i+j=0, again i=j=0. B-list injectivity is the same argument.
+
+Scan all (h+1)^2 pairs for A_i=B_j. This is a total bounded scan returning a
+hit bit and first pair. If the bit were 0, injectivity of each list plus no
+cross-list collision would make their concatenation L a list of p+1 distinct
+residues, all in {0,...,p-1}. Put
+
+  C(r) = sum_(k=0)^p [L_k=r].
+
+Pairwise distinctness gives C(r)<=1 for each r<p. Counting the same finite
+incidences in the two orders gives
+
+  p+1 = sum_(k=0)^p sum_(r=0)^(p-1) [L_k=r]
+      = sum_(r=0)^(p-1) C(r) <= p,
+
+a contradiction. Finite-sum rearrangement is proved by distributivity and
+quantifier-free induction, not by an infinite or set-theoretic counting
+principle. Splitting on the computed bit leaves bit=1, so the stored pair
+(a,b) is an actual witness. This is not double-negation elimination for an
+arbitrary proposition; it is elimination of one impossible case of a known
+0-or-1 natural number.
+
+Set x=(a,b,1,0) and m=(a^2+b^2+1)/p. Divisibility was just established. The
+numerator is positive, hence m>=1. Also
+
+  a^2+b^2+1 <= 2h^2+1 <= 2h^2+h = hp,
+
+because h>=1. Consequently 1<=m<=h<p and N(x)=mp. This sharper upper bound
+is convenient, though m<p is all descent needs. Handle p=2 by (1,1,0,0).
+
+4. Euler product with conjugation: signs and divisibility
+--------------------------------------------------------
+For x=(a,b,c,d) and r=(r,s,t,u), put
+
+  z0 =  a*r + b*s + c*t + d*u,
+  z1 = -a*s + b*r - c*u + d*t,
+  z2 = -a*t + b*u + c*r - d*s,
+  z3 = -a*u - b*t + c*s + d*r.
+
+These are the components of x times the conjugate of r. Direct polynomial
+expansion and cancellation proves
+
+  N(z) = N(x) N(r), where N(a,b,c,d)=a^2+b^2+c^2+d^2.
+
+If x_i congruent r_i mod m, then modulo m, z0 is N(r) and the other three
+components vanish by pairwise cancellation. Thus if m|N(r), every z_i is
+divisible by m. The quotient y=z/m then satisfies
+
+  m^2 N(y) = N(x) N(r).
+
+With N(x)=mp and N(r)=mk, cancellation of positive m^2 yields N(y)=pk.
+All cancellations occur in coded integer/natural arithmetic and are
+constructively valid because m>=1.
+
+5. Descent: treat even m before taking centered residues
+-------------------------------------------------------
+Maintain 1<=m<p and N(x)=mp for a prime p. If m=1, freeze.
+
+EVEN CASE. If m>1 is even, N(x) is even. Since z^2 and z have the same
+parity, the number of odd coordinates is even. Pair the four coordinates
+into same-parity pairs. An explicit three-way algorithm is: pair a with b
+if their parity agrees; otherwise pair a with c if their parity agrees;
+otherwise pair a with d. The last pair has the needed parity, because if
+a differed in parity from all three others the total parity would be odd.
+The remaining pair automatically has the same parity. Write the reordered
+tuple as (a,b,c,d). Define
+
+  y = ((a+b)/2, (a-b)/2, (c+d)/2, (c-d)/2).
+
+These four integer quotients are exact. Expansion gives
+
+  N(y)=N(x)/2=(m/2)p.
+
+Set m'=m/2. Then 1<=m'<m<p. In particular, the troublesome even-modulus
+equality case of a centered-residue proof never arises.
+
+ODD CASE. If m>1 is odd, choose each centered residue r_i congruent x_i mod m
+with |r_i|<m/2, equivalently |r_i|<=(m-1)/2. Define it explicitly from
+t_i=x_i mod m in [0,m-1]: take r_i=t_i when t_i<=(m-1)/2 and r_i=t_i-m
+otherwise. Since N(r) congruent N(x)=0 mod m, write N(r)=mk with computed
+natural k. The size bound gives
+
+  mk=N(r)<=4*((m-1)/2)^2=(m-1)^2<m^2,
+
+hence k<m. If k=0 then N(r)=0, so each r_i=0, and every x_i is divisible by
+m. Writing x=m*w gives m^2 N(w)=mp and therefore m N(w)=p. This makes m a
+proper divisor of p, impossible because 1<m<p. Decidability of k=0 therefore
+gives k>=1. Apply the product of Section 4 and divide all four components by
+m. Its norm is pk, so (m',x')=(k,z/m) has 1<=m'<m<p.
+
+The exact order of cases is essential: a naive centered-residue estimate for
+even m gives only k<=m and needs additional work. The parity branch above
+removes that issue completely.
+
+6. Fixed primitive recursive descent and its exact invariant
+------------------------------------------------------------
+For p prime initialize the seed state (m0,x0). Define a total step function
+by the three branches above, with harmless arbitrary defaults on malformed
+inputs (all quotients/remainders are total). Iterate it exactly p times by
+ordinary primitive recursion on the loop counter. For prime p the invariant
+
+  1<=m_t<p,
+  N(x_t)=m_t p,
+  m_t<=max(1, m0 dotminus t)
+
+is quantifier-free in the primitive recursive function language. All needed
+facts about primality are carried by the parameter condition PrimeFlag(p)=1.
+Prove the invariant by quantifier-free induction on t. If m_t=1 the state
+freezes. If m_t>1 the step just proved has m_(t+1)<=m_t-1, establishing the
+rank bound. Since m0<p, at t=p the bound forces m_p=1. Taking absolute
+values of x_p gives a natural four-square representation P(p) of p.
+
+Alternative rank invariant, if convenient for mechanization:
+
+  (m_t=1) or (m_t+t<=m0),
+
+together with positivity and norm identity. The first branch is stable;
+the second strictly decreases m at each active step. It yields the same
+terminal conclusion without arithmetic involving max and truncated minus.
+
+Intermediate register bounds are elementary. Since N(x)=mp<p^2, every
+|x_i|<p. In the odd branch |r_i|<p and every raw product coordinate has
+absolute value <4p^2. The final quotient coordinates again have absolute
+value <p by their norm. In the even branch raw sums/differences have
+absolute value <2p. These bounds can be recorded if finite array/register
+encodings require explicit natural bounds; no unbounded computation is
+hidden in the tuple notation.
+
+7. All natural numbers: no appeal to unique factorization
+---------------------------------------------------------
+For n=0 return (0,0,0,0). For n>=1 initialize remainder q0=n and tuple
+v0=(1,0,0,0), so q0*N(v0)=n. At each of exactly n stages:
+
+  - if q=1, freeze;
+  - if q>1, find the least p in [2,q] dividing q;
+  - compute the prime representation P(p) by the bounded construction above;
+  - set q'=q/p and v'=v*P(p) by the ordinary Euler/quaternion product.
+
+The bounded least-divisor lemma makes p prime. Because p>=2 and q>1,
+1<=q'<q. Euler's identity preserves q'*N(v')=q*N(v)=n. Quantifier-free
+induction on t proves
+
+  1<=q_t<=n,
+  q_t*N(v_t)=n,
+  q_t<=max(1, n dotminus t).
+
+After n steps q_n=1. Thus N(v_n)=n, and coordinatewise absolute values give
+the promised S_i(n). This construction uses no infinitude of primes, no
+factorization uniqueness, no induction on a formula asserting existence of
+a representation, and no well-founded recursion whose primitive recursive
+status would need separate justification.
+
+If an implementation uses the conjugating Euler product in every outer
+step, its norm identity remains valid and the same proof works; ordinary
+quaternion multiplication is not essential.
+
+8. Formalization risk checklist and resolutions
+----------------------------------------------
+(a) A Lean proof in Nat/Int of an existential four-square theorem is not by
+itself a proof in iPRA. Keep the constructive program and QF induction audit
+explicit; distinguish external Lean arithmetic checking from an internal
+iPRA derivation or compiler correctness theorem.
+
+(b) Avoid importing Mathlib's four-square theorem to justify the algorithm.
+It may serve as an external comparison only. The proof above is independent.
+
+(c) The modular seed requires Euclid's lemma or a substitute. It is not
+enough merely to assert distinct square residues; include the bounded
+Euclidean argument or a previously established iPRA lemma.
+
+(d) Claiming "bounded induction" without Booleanization is potentially
+ambiguous. State the specific characteristic functions or the general
+finite-formula compilation lemma and its QF induction proof.
+
+(e) Do not make the seed search partial or leave its failure branch undefined.
+Return a flag and default tuple. Correctness establishes that the failure
+branch is unreachable on valid prime inputs.
+
+(f) Primitive recursive descent should be a fixed-count iteration, not a
+while-loop justified solely by an informal statement that m decreases.
+
+(g) A prime factorization function with ordinary recursive calls at n/p
+can be primitive recursive after a course-of-values coding, but the fixed
+n-stage factor loop avoids requiring that separate explanation.
+
+(h) No claim of feasible or polynomial-in-bitlength complexity is justified
+by these broad numeric loop bounds. Primitive recursiveness is the intended
+resource guarantee.
+
+(i) The final natural coordinates satisfy S_i(n)<=n, since S_i(n)^2<=n and
+a<=a^2 for every natural a (separate a=0 from a>=1). Thus the existential
+corollary may explicitly bound all four witnesses by n.
+
+Independent verdict: the plan is complete at the human proof level, provided
+the report includes the elementary arithmetic/finite-counting support above
+and labels any unimplemented Lean obligations honestly.

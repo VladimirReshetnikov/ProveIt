@@ -1,0 +1,267 @@
+PROVEIT SOURCE REVIEW FOR LAGRANGE'S FOUR-SQUARE THEOREM IN iPRA
+Reviewed 2026-11-22
+Repository: https://github.com/VladimirReshetnikov/ProveIt
+Pinned commit: 3a521d0265941f9e9d4ad450818365a78a6c9a73
+Commit timestamp: 2026-11-22T21:44:40Z
+
+1. Scope and evidence status
+
+I used the selected GitHub connector for read-only inspection. I fetched full
+contents of the relevant small modules and the general iPRA README, and inspected
+the complete tree listings for Derivations (2131 entries) and iPRA/docs (6272
+entries), neither of which was truncated. I did not build or recompile any
+ProveIt module. The source review therefore supports the wording "the source
+provides object-level derivations", and does not itself constitute a fresh
+kernel-check receipt.
+
+The general README explicitly distinguishes the Lean libraries ConciseIPRA,
+Derivations and Bridge from delivered proof packets. Its proof-packet status says
+that those packets are filed as delivered, without rerunning or compiling them.
+Its structural description of iPRA is first-order intuitionistic logic with
+equality, a symbol for every primitive recursive definition, defining equations,
+successor axioms, and quantifier-free induction. This matches the requested
+foundational target.
+
+ClockedDescent status was specifically investigated. Its latest path commit is
+e1d9051b368ebe351cbbc50932982b06f852c03c (2026-11-17T15:43:33Z),
+https://github.com/VladimirReshetnikov/ProveIt/commit/e1d9051b368ebe351cbbc50932982b06f852c03c .
+The commit message reports that the full build passed and an axiom audit of 1389
+checks used only propext/Classical.choice/Quot.sound. These are metatheoretic
+Lean dependencies; the displayed object calculus remains PRAAx. This is an
+author-reported compilation receipt. GitHub Actions run listings, check-runs,
+and commit statuses for that commit returned zero entries; the aggregate status
+is "pending" with an empty status list, not a failing check. The current head
+also has no Actions runs. Thus no independent CI evidence was located, and no
+claim of independent fresh compilation should be made.
+
+No "sorry", "axiom", or "opaque" declarations occur in the ten fetched Core
+module files. This syntactic inspection is weaker than successful recompilation
+and should be reported as such.
+
+2. Toolchain and license
+
+At the pinned revision lean-toolchain is exactly:
+  leanprover/lean4:v4.32.0
+The root lakefile.toml requires Mathlib revision v4.32.0 and registers:
+  ConciseIPRA: Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean
+  IPRADerivations: Logic/PrimitiveRecursiveArithmetic/Derivations/Lean
+DEPENDENCIES.md records Mathlib commit
+81a5d257c8e410db227a6665ed08f64fea08e997. Since a lockfile was not separately
+checked, the root toolchain + requirement is the direct current evidence;
+the exact Mathlib commit is that document's recorded pin.
+
+Root LICENSE is MIT No Attribution (MIT-0), Copyright 2026 ProveIt Contributors.
+A full copy is stored at references/proveit/LICENSE.txt.
+Source files and exact blob SHA/provenance links are listed in
+references/proveit/SOURCE_MANIFEST.json. The local copied bytes were checked
+against their Git-blob SHA values and have SHA-256 hashes. These are source
+references only, not a portable import closure or a vendored build.
+
+3. Canonical syntax and proof type
+
+Module: ConciseIPRA.PR
+Namespace: LeanProofs.ConciseIPRA
+Path: Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/PR.lean
+Git blob: 3251631592070d9ed3687cc0bf7dbd5eb452e46f
+
+PR : Nat -> Type has constructors zero, succ, proj, comp, prec. In prec the
+recursion argument comes first. PTm n has n free natural-number variables.
+PRAAx contains projections, composition, zero/successor recursion equations,
+successor nonzero/injectivity, and only quantifier-free induction.
+A closed theorem goal is:
+  ([] : List (Fm PTm 0)) ⊢[PRAAx] sentence
+A source-level Nat theorem alone is not such an object proof.
+
+Exact generic induction interface:
+  theorem PRA.qfInd (φ : Fm PTm (n + 1)) (hφ : φ.QF)
+    (h0 : Γ ⊢[PRAAx] φ.subst (inst zero))
+    (hS : φ :: Γ.map Fm.shift ⊢[PRAAx]
+      φ.subst (repl (succ (var 0)))) :
+    Γ ⊢[PRAAx] Fm.all φ
+
+4. Eight relevant interface groups
+
+Unless otherwise stated the namespace is LeanProofs.IPRA and the module paths
+below are relative to Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/.
+
+A. Primitive-recursive term compilation
+Module IPRADerivations.Core.Definitions
+Git blob 0011b086a26c69117fc31a1ef19780e3602197ae
+PTm.toPR : PTm k -> PR k compiles a term to a function symbol.
+recDef (base : PTm k) (step : PTm (k + 2)) : PR (k + 1)
+implements primitive recursion, with rec_zero and rec_succ object derivations.
+sumF and prodF build bounded sums/products. This is the appropriate compiler
+target for a bounded witness search or a fixed-fuel descent.
+
+B. Bounded search
+Module IPRADerivations.Core.Search
+Namespace LeanProofs.IPRA.Search
+Git blob b6a5e30954ede9dd8751eec9ec6079edd61f2bb2
+For a body f : PTm 2, mu f N x searches i<N for f(i,x)=0, returning N on
+failure. The function is explicit PR:
+  mu(0,x)=0
+  mu(N+1,x)=mu(N,x)+eqb(mu(N,x),N)*sg(f(N,x)).
+Exact useful endpoint:
+  theorem search_found {N i x : PTm n}
+    (hf : Γ ⊢[PRAAx] inst2 f i x ≐ zero)
+    (hi : Γ ⊢[PRAAx] lt i N) :
+    Γ ⊢[PRAAx] lt (mu f N x) N ⋏
+      ((inst2 f (mu f N x) x ≐ zero) ⋏ le (mu f N x) i)
+search_spec additionally proves total bound and failure/minimality information.
+This supports bounded primality, residue-pair search, and final exhaustive
+four-square search. Multiple parameters can be paired.
+
+C. Explicit pigeonhole witnesses
+Module IPRADerivations.Core.Pigeonhole
+Namespace LeanProofs.IPRA.Pigeonhole
+Git blob 541c50bcd7027ffbd8f1c84b738e4425c4f3bf67
+For S : PTm 2, explicit terms phpI and phpJ are built using bounded counts
+and bounded search. Exact endpoint:
+  theorem pigeonhole {K x : PTm n}
+    (hr : Γ ⊢[PRAAx] Permutation.rangeAll S K x) :
+    Γ ⊢[PRAAx] lt (phpI S K x) (phpJ S K x) ⋏
+      (le (phpJ S K x) K ⋏
+        (inst2 S (phpI S K x) x ≐ inst2 S (phpJ S K x) x))
+This expresses collision of K+1 values in K boxes. The premise is a quantified
+range assertion; the internal induction formulas are explicitly quantifier
+free. The module has more imports than its Core name suggests
+(AnalyticNumberTheory.TotientCorollaries and its closure), so a compact standalone
+packet should prove its simple counting lemma directly rather than copy an
+incomplete import chain.
+
+D. Least prime factor
+Module IPRADerivations.AnalyticNumberTheory.Primes
+Namespace LeanProofs.IPRA.AnalyticNumberTheory.Primes
+Git blob 365d510cf9a77f2fab6e80888f87b14e984c6def
+lpfBody := rem (var 1) (succ (succ (var 0))).
+lpf z := succ (succ (Search.mu lpfBody z z)).
+Exact endpoints:
+  theorem lpf_dvd (z' : PTm n) :
+    Γ ⊢[PRAAx] dvd (lpf (succ (succ z'))) (succ (succ z')) ⋏
+      le (lpf (succ (succ z'))) (succ (succ z'))
+  theorem lpf_prime (z' : PTm n) :
+    Γ ⊢[PRAAx] prime (lpf (succ (succ z')))
+Here prime p is defined as 2<=p and no e with 2<=e<p dividing p.
+The absence of an unbounded factorization oracle is explicit: lpf is bounded
+search, and the proof uses the factor z itself as an available search witness.
+
+E. Euclid's lemma
+Module IPRADerivations.Core.EuclidLemma
+Namespace LeanProofs.IPRA
+Git blob 2246b0ddb1ba479aedbf8bd077d9b5384100ab1e
+Exact endpoint:
+  theorem euclid_lemma_at {p a b : PTm n}
+    (hp : Γ ⊢[PRAAx] prime p)
+    (hab : Γ ⊢[PRAAx] dvd p (a * b)) :
+    Γ ⊢[PRAAx] dvd p a ⋎ dvd p b
+This is the zero-product fact needed for injectivity of squares on
+0,...,(p-1)/2. The source develops the needed gcd/Bézout facts by explicit
+arithmetic; it is not an appeal to semantic field structure.
+
+F. Pairing and simultaneous recursion
+Module IPRADerivations.Core.Pairing
+Namespace LeanProofs.IPRA
+Git blob b59607d2b32e684f2e0aa0babb6e2a856a7e33c3
+The encoding is pairT a b = (a+b)^2+a, with PR square root projections.
+Exact endpoints:
+  fst_pair (a b : PTm n) :
+    Γ ⊢[PRAAx] fstT (pairT a b) ≐ a
+  snd_pair (a b : PTm n) :
+    Γ ⊢[PRAAx] sndT (pairT a b) ≐ b
+simF, sim₁ and sim₂ give simultaneous recursion on two fields, with
+sim₁_zero/sim₂_zero/sim₁_succ/sim₂_succ object equations. Nested pairing
+handles a multiplier and four signed coordinates. This pairing need only be
+injective with projections on its image; it need not be a bijection onto Nat.
+
+G. Signed integer terms and polynomial identities
+Module IPRADerivations.Core.Integers
+Namespace LeanProofs.IPRA, then ZT
+Git blob 1b7a652f6f901296e029d739d5c1b1ccfc936832
+ZT n is a pair {pos : PTm n, neg : PTm n} read as pos-neg.
+No canonicality condition is imposed; this is NOT the odd/even sign code.
+Operations:
+  (a,b)+(c,d)=(a+c,b+d)
+  -(a,b)=(b,a)
+  (a,b)*(c,d)=(ac+bd,ad+bc)
+Equality of (a,b) and (c,d) is the literal natural equation a+d=c+b.
+The target ZT.eq is therefore quantifier free. toZ Γ evaluates into the
+Grothendieck ring of the quotient of terms by derivable equality.
+Exact reflection endpoint:
+  theorem ZT.derive {u v : ZT n}
+    (h : ZT.toZ Γ u = ZT.toZ Γ v) :
+    Γ ⊢[PRAAx] ZT.eq u v
+The tactic ipra_ring uses this method to turn polynomial identities into object
+proofs. The small example DiophantineNumberTheory/Pell.lean proves:
+  brahmagupta :
+    ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 10 brahmaguptaFormula
+  := closeUniv 10 (by unfold brahmaguptaFormula; ipra_ring)
+Euler's four-square identity is a natural analogous target.
+A canonical sign/magnitude implementation requires an adapter: normalize
+(a,b) to (a∸b,b∸a), prove its difference is unchanged, then encode the
+nonzero component and sign. Conversely a sign code decodes to a signed pair.
+The paper can use signed pairs in the object formalization while using Python
+integers operationally, provided the PR coding bridge is specified.
+
+H. Clocked descent
+Module IPRADerivations.Core.ClockedDescent
+Namespace LeanProofs.IPRA.ClockedDescent
+Git blob 4b41c93d5788694b9989a83c49d1c8acdaf918f6
+For P : Fm PTm 1 and D r : PTm 1, Pat P t=P[t] and
+orb D k s is the primitive-recursive k-fold iterate of D.
+Exact endpoint:
+  theorem clocked (hP : P.QF)
+    (hstep : ([] : List (Fm PTm 1)) ⊢[PRAAx]
+      P ⟶ (Pat P D ⋏ lt (inst1 r D) r)) :
+    ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 1 (neg P)
+This theorem forbids any state satisfying a QF predicate closed under strict
+descent. The proof inducts on the QF invariant
+P(s) -> (P(D^k(s)) and r(D^k(s))+k<=r(s)).
+For witness production, a directly proved fuel invariant for an absorbing
+terminal state is often clearer: the theorem above is refutational by design,
+so it should not be described as already producing the final four-square
+witness. A bounded final search with decidable failure can also use it.
+
+5. Existing four-square material and limits
+
+Outside the iPRA tree, this actual source was fetched:
+Analysis/FabiusFunction/Lean/FabiusFunction/FourSquareTheorem.lean
+Git blob 63731070c83885eb243fc133c6361f631d25a5ee.
+It imports Mathlib.NumberTheory.SumFourSquares and proves
+  sumSqRep_four_ne_zero (n : Nat) : sumSqRep 4 n != 0
+by obtaining a,b,c,e from Nat.sum_four_squares n. It is an ordinary semantic
+Lean corollary, not an object proof in PRAAx. The module's broader Jacobi
+counting theorem is conditional on an explicit Lambert-series identity.
+This module therefore supplies context, not the missing iPRA descent theorem.
+
+The complete Derivations tree has no four-square-named module. The complete
+iPRA docs tree has no four-square-named packet. The repository-wide code
+searches were noisy and not exhaustive, so do not claim that the theorem or
+all its ingredients are wholly absent from the repository.
+
+6. Recommended integration boundary
+
+Keep the delivered mathematical proof self-contained. For eventual integration,
+add a dedicated module family under:
+  IPRADerivations/DiophantineNumberTheory/FourSquares/
+Use Core.Search, Core.Pairing, Core.EuclidLemma, Core.Integers and the relevant
+primality modules. Suggested local modules:
+  Identity, Seed, Halving, OddDescent, PrimeWitness, Assembly, Statement.
+Each public lemma should return an explicit PRAAx derivation. The final object
+sentence should existentially bind four Nat variables and state
+n=a*a+b*b+c*c+d*d, universally closing n. A stronger witness endpoint uses
+four unary PR symbols W_i and proves the universally closed equation.
+
+The report should distinguish (i) the complete mathematical iPRA argument,
+(ii) executable exact-arithmetic code, (iii) any checked standalone Lean
+fragments, and (iv) the not-yet-assembled object derivation. Importing
+Nat.sum_four_squares would only bypass the requested foundational proof.
+
+7. Retrieval notes
+
+All reference URLs in SOURCE_MANIFEST.json are pinned to the exact commit above.
+The general README's numerical counts of proof packets and modules need not be
+repeated: the tree has grown substantially and those descriptive counts are
+not an independently maintained current inventory.
+Derivations/README.md is over 1 MB and fetch_file returned empty content; no
+substantive claim above relies on that unread file.
+

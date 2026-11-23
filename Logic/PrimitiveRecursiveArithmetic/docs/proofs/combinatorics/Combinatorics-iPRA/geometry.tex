@@ -1,0 +1,309 @@
+\section{Polytope faces and exact kissing configurations}
+\label{sec:polygeom}
+
+The survey names the Birkhoff polytope and the permutohedron, asks how
+many faces of each dimension a polytope can have, and discusses kissing
+numbers. For these questions, rational points and finite vertex lists
+already support exact theorems. A rational convex combination is a list
+of nonnegative integer weights \(w_i\) with common denominator
+\(D=\sum_i w_i>0\). For a finite rational vertex list \(V\), a
+nonempty exposed face is the convex hull of those vertices maximizing
+a supplied rational linear functional; the zero functional includes
+the whole polytope. Maximizers over the convex hull have precisely this
+description: a weighted average of numbers \(\le M\) equals \(M\)
+exactly when every positive-weight term equals \(M\).
+Dimension means the rank over \(\mathbb Q\) of the differences from one
+vertex of the face. In the proofs below explicit bases compute these ranks.
+
+\subsection{Assignment matrices, faces, and optimization}
+
+\begin{theorem}[Rational Birkhoff--von Neumann theorem]\label{result54}
+Let \(A\) be a nonnegative rational \(n\times n\) matrix, \(n\ge1\),
+with all row and column sums equal to \(1\). There is an explicit convex
+decomposition into permutation matrices with at most \(n^2\) terms.
+With common denominator \(D>0\), the terms can all have weights with
+denominator \(D\). The \(n!\) permutation matrices are precisely the
+extreme points. Maximizing a rational linear objective on this polytope
+is equivalent to maximizing it over permutations.
+\end{theorem}
+\begin{proof}
+Clear denominators, obtaining a nonnegative integer matrix with common
+row and column sum \(s=D\). Whenever \(s>0\), join row \(i\) to column
+\(j\) if the entry is positive. For any subset \(U\) of rows, all of
+its \(s|U|\) units are in the neighboring columns, whose total over all
+rows is \(s|N(U)|\). Hence \(|U|\le|N(U)|\), and the constructive
+matching theorem supplies a permutation \(\pi\) supported on positive
+entries. Subtract from each selected entry the minimum \(w\) of the
+\(n\) selected entries. Every row and column sum decreases by \(w>0\);
+at least one positive cell disappears, and none is added. Record
+\((w,\pi)\). After at most \(n^2\) productive steps the residual is zero.
+The recorded weights sum to \(D\) by any row sum, and undoing the
+subtractions reconstructs \(DA\).
+
+Each permutation matrix \(P_\pi\) uniquely maximizes
+\(\sum_i A_{i,\pi(i)}\) with value \(n\): the entries are bounded by
+one, and reaching \(n\) forces every selected entry to be one, exhausting
+each row. Thus \(P_\pi\) is extreme. A nonpermutation matrix has a
+decomposition involving two different permutations with positive weights.
+Separating one of them from the normalized average of the rest gives
+two distinct points: a positive-weight different permutation has a
+positive coordinate outside the first one's support. This is a
+nontrivial convex decomposition. Finally any linear objective on \(A\)
+is the corresponding weighted average of its permutation values, and
+an optimum permutation is obtained by a finite maximum.
+\end{proof}
+
+\begin{proposition}[Dimension, facets, and edges of the Birkhoff polytope]\label{result55}
+The dimension is \((n-1)^2\). For \(n\ge3\) there are \(n^2\) facets,
+one for every vanishing entry. Two different vertices form an edge
+exactly when their permutations differ by a single nontrivial cycle.
+Consequently the graph of the \(3\times3\) polytope is complete on six
+vertices. The general number of edges is
+\[
+ \frac{n!}{2}\sum_{j=2}^n\binom nj(j-1)!.
+\]
+\end{proposition}
+\begin{proof}
+Every difference matrix has zero row and column sums, so its upper
+left \((n-1)\times(n-1)\) square determines it. Given an arbitrary
+rational square of that size, append negatives of its row and column
+sums, then put the sum of the square in the bottom right. This
+extends it uniquely to a zero-sum difference. Each coordinate unit
+in the square thus yields a four-entry difference \(E\). At the uniform
+matrix \(A_{ij}=1/n\), adding \(E/(2n)\) preserves nonnegativity.
+These independent perturbations prove the dimension claim.
+
+For a specified zero entry, relabel it as the bottom right. There is a
+point on its hyperplane with all other entries positive when \(n\ge3\):
+set the remaining entries of its row and column to \(1/(n-1)\) and the
+upper square to \((n-2)/(n-1)^2\). For differences in this hyperplane
+the sum of the upper square is zero; all but one of its entries are
+free, and the remaining entry is minus their sum. Each of the resulting
+basis differences, scaled by a rational smaller than the least positive
+matrix entry divided by one plus its largest absolute coordinate, gives
+a valid perturbation. The dimension drops by one. Every proper exposed
+face is contained in some such hyperplane. Indeed take the average of
+its maximizing permutations. If all entries of the average were positive,
+each of the independent perturbations above from the full space could
+be made in both directions by choosing a sufficiently small rational
+step. Maximality would make the objective constant in all those directions
+and hence constant on the polytope. A zero entry of the average is zero
+in every maximizing permutation. The exhibited positive points outside
+the single specified zero distinguish the \(n^2\) hyperplanes and prevent
+one of their faces from containing another. Thus these are exactly the
+maximal proper exposed faces.
+
+For two different permutations, relabel columns to make the first the
+identity. On each nontrivial cycle of the second permutation, a matching
+inside the union of their supports has just two choices. Selecting one
+off-diagonal edge occupies its successor column, forcing the off-diagonal
+choice at the successor row and then around the cycle. Otherwise all
+rows on the cycle use their diagonals. Fixed rows are forced, and
+choices on different cycles are independent. With one cycle exactly
+two vertices maximize the negative sum of entries outside the union.
+They expose an edge. With two or more cycles, exchange one cycle between
+the two original permutations to obtain two others \(R,S\) with
+\(P+Q=R+S\). Any functional maximal at \(P,Q\) must be maximal at both
+\(R,S\); neither lies on the segment from \(P\) to \(Q\), since an
+interior point of that segment has fractional coordinates on the
+nontrivial cycles. Hence the original pair is not an edge. There are
+\(\binom nj(j-1)!\) ways to choose a \(j\)-cycle by selecting its support
+and listing its cyclic order starting at its least label. Sum these
+degrees and divide by two. Every nonidentity permutation of three
+letters has precisely one nontrivial cycle.
+\end{proof}
+
+\subsection{The permutohedron and three elementary face formulas}
+
+\begin{theorem}[Permutohedron]\label{result56}
+For \(n\ge1\) the convex hull of the permutations of \((1,\ldots,n)\)
+has a nonempty exposed face for each ordered partition of the coordinate
+labels. A partition with \(k\) nonempty blocks gives a face of dimension
+\(n-k\). If \(S(n,k)\) is the number of partitions of \([n]\) into
+\(k\) unordered, nonempty blocks, the number of \(j\)-faces is
+\((n-j)! S(n,n-j)\), \(0\le j<n\). Its \(n!\) vertices have degree
+\(n-1\), and for \(n\ge2\) there are \(2^n-2\) facets.
+\end{theorem}
+\begin{proof}
+For an objective with coefficients \(c_i\), group equal coefficients
+and put the blocks in increasing order. In a maximizing permutation,
+\(c_i<c_j\) forces \(x_i<x_j\), since swapping a misplaced pair
+increases the objective by \((c_j-c_i)(x_i-x_j)>0\). At least one
+permutation maximizes it by finite search. Every permutation obeying
+the constraint assigns the same consecutive interval of values to
+each block, and hence has the same objective as a maximizer. Thus these
+are all the maximizers. Conversely, prescribe block indices as integer
+coefficients to realize any ordered partition. The block order is
+recovered from its maximizers: in different blocks the coordinate
+comparison is constant across them, and within one block both orders
+occur for any two distinct coordinates, by swapping their values.
+This also gives the inclusion rule: splitting blocks into consecutive
+subblocks restricts a face, and every nested pair is obtained this way.
+
+The sum of the coordinates in each block is fixed. Thus one coordinate
+per block is determined by the others. Fix a maximizing permutation and
+an anchor label in each block. Swapping the anchor with each other label
+in turn gives nonzero multiples of the independent coordinate differences
+\(e_i-e_{\rm anchor}\), spanning the space of blockwise zero-sum
+differences. This proves the dimension. Ordering the \(k\) blocks
+multiplies \(S(n,k)\) by \(k!\). An edge has one block of size two and
+all others singleton, so each vertex admits \(n-1\) swaps of consecutive
+values. A facet has two ordered blocks, specified by a nonempty proper
+first block.
+\end{proof}
+
+\begin{proposition}[Simplex, cube, and cross-polytope]\label{result57}
+In dimension \(d\), the standard simplex has \(\binom{d+1}{j+1}\)
+faces of dimension \(j\); the cube has \(2^{d-j}\binom dj\). For
+\(d\ge1\) the cross-polytope has \(2^{j+1}\binom d{j+1}\) faces of
+dimension \(j<d\) and one face of dimension \(d\). Each of these
+polytopes and the permutohedron has
+\(\sum_j(-1)^j f_j=1\), counting the whole polytope.
+\end{proposition}
+\begin{proof}
+The vertices of the simplex are \(e_1,\ldots,e_{d+1}\). An objective's
+maximum selects exactly the indices with largest coefficient. Any
+nonempty set of indices is obtained by giving those indices coefficient
+\(1\) and the others zero; a support of \(j+1\) vertices has dimension
+\(j\) by subtracting a fixed vertex. In the cube with vertices
+\(\{0,1\}^d\), each coordinate is fixed at \(0\) or \(1\) according
+to the sign of its nonzero coefficient, or is free if that coefficient
+vanishes. Every such pattern occurs; the free coordinate differences give
+its dimension. The hull indeed contains every rational point with
+\(0\le x_i\le1\): give vertex \(v\) the product of the \(x_i\) for
+its ones and \(1-x_i\) for its zeros. These weights sum to one and have
+barycenter \(x\) by distributivity.
+
+The cross-polytope has vertices \(\{\pm e_i\}_{i=1}^d\). For a nonzero
+objective take the largest absolute coefficient. The maximizing vertices
+are the labels attaining it, each with its prescribed sign, so the
+proper faces have one sign on a nonempty support. Conversely assign
+these signs to its support and zero elsewhere. Any \(j+1\) selected
+vertices are affinely independent by their distinct coordinate positions.
+The zero objective yields the full \(d\)-dimensional hull, since differences
+of opposite vertices span the whole coordinate space. These descriptions
+give the counts.
+
+For the simplex the alternating sum follows from \((1-1)^{d+1}=0\);
+for the cube it is \((2-1)^d=1\). For the cross-polytope its sum over
+proper faces is \(1-(1-2)^d\); add \((-1)^d\). For the permutohedron
+put \(a_n=\sum_k(-1)^k k!S(n,k)\). Inserting a new label into one of
+\(k\) blocks or making it a singleton gives
+\(S(n+1,k)=kS(n,k)+S(n,k-1)\). The two sums contributing to \(a_{n+1}\)
+combine coefficientwise as \(k-(k+1)=-1\), so \(a_{n+1}=-a_n\).
+As \(a_0=1\), its face alternating sum \((-1)^na_n\) is one.
+\end{proof}
+
+\subsection{Kissing numbers without trigonometry}
+
+A finite kissing configuration in dimension \(d\) is a list of vectors
+whose squared norms have a common positive value \(L\) and whose pairwise
+squared distances are at least \(L\). In ordinary Euclidean geometry these
+are the centers of equal spheres of diameter \(\sqrt L\) touching the
+one centered at the origin. The arithmetic predicate uses only products,
+sums and comparisons.
+
+\begin{theorem}[Small dimensions and explicit high-dimensional witnesses]\label{result58}
+Over the ordered quadratic field \(K=\mathbb Q(\sqrt3)\) the maximum
+sizes in dimensions one and two are \(2\) and \(6\), respectively.
+Integer-coordinate configurations give lower bounds \(2d\) in every
+positive dimension and \(2d(d-1)\) for \(d\ge2\). There is a rational
+configuration of size \(240\) in dimension eight.
+\end{theorem}
+\begin{proof}
+Write \(\theta^2=3,\ \theta>0\). For coding \(K\), use pairs of reduced
+rationals \(a+b\theta\), with multiplication reduced using \(\theta^2=3\).
+The norm \(a^2-3b^2\) vanishes only at zero: reducing a hypothetical
+fractional square root \(p/q\) to lowest terms would give \(3\mid p^2\),
+hence \(3\mid p\) by residues; substitution would also give \(3\mid q\).
+Conjugation divided by the norm supplies an inverse. The positive cone
+consists of quotients of two nonzero expressions with nonnegative
+coefficients. This cone is closed under sums and products and disjoint
+from its negative, by cross multiplication of expressions with nonnegative
+coefficients. It determines a decidable sign: coefficients of like sign
+are immediate; for opposite signs multiply by the positive
+\(|a|+|b|\theta\), reducing the result to the rational \(a^2-3b^2\)
+or its negative. Thus all comparisons below have primitive recursive
+tests.
+
+In dimension one \(u^2=v^2\) gives \((u-v)(u+v)=0\); at most two
+different coordinates occur, and \(1,-1\) attain the bound. In dimension
+two use the norm-preserving matrix
+\[
+ R=\frac12\begin{pmatrix}1&-\theta\\ \theta&1\end{pmatrix},
+ \qquad R^3=-I,\qquad R^6=I .
+\]
+The six powers of \(R\) applied to \((1,0)\) have norm one and their
+pairwise squared distances are \(1,3,4\), according to the distance
+between their exponents modulo six. This gives six neighbors. To bound
+an arbitrary list, divide directions into the six half-open cones obtained
+by applying these powers to \(x>0,\ 0\le y<\theta x\).
+Here is a signed comparison proof that the cones partition the nonzero
+vectors. In the half-plane \(y>0\) together with the positive horizontal
+axis, the inequalities \(\theta x>y\), \(-y<\theta x\le y\), and
+\(\theta x\le-y\) are the three cases. Applying respectively \(I\),
+\(R^{-1}\), and \(R^{-2}\) sends each case into the first cone,
+by multiplication with the displayed matrix; the reverse substitutions
+give precisely the same three cases. Negating handles the complementary
+half-plane. This settles all boundary rays.
+
+Two points in the same cone can be rotated into the first, preserving
+norm and dot product. Write their slopes \(0\le a\le b<\theta\); their
+coordinates have forms \((x,ax),(u,bu)\), with \(x,u>0\).
+The elementary identity
+\[
+ 4(1+ab)^2-(1+a^2)(1+b^2)
+   =(3-b^2)+a(8b-a)+3a^2b^2>0
+\]
+uses only \(0\le a\le b\) and \(b^2<3\).
+Multiply by \(x^2u^2\). The two points have common squared norm \(L\),
+so their positive dot product exceeds \(L/2\). Their squared distance
+is therefore less than \(L\). Each cone contains at most one center;
+the six-column count gives the upper bound. The same algebra proves the
+usual Euclidean inequality for a supplied list of real vectors; the
+internal statement here quantifies over the codes in \(K\).
+
+The \(2d\) signed unit vectors have squared norm one and pairwise
+squared distances at least two. For the second family, take all
+\(\pm e_i\pm e_j,\ i<j\), of norm squared two. Distinct such vectors
+have inner product at most one: different supports meet in at most one
+position, and a sign difference on an equal support brings the product
+down to zero or below. Hence their squared distances are at least two.
+This gives, among other cases, twelve centers in dimension three and
+twenty-four in dimension four. In eight dimensions the second family
+has \(112\) vectors. Add all \(\frac12(\pm1,\ldots,\pm1)\) having an
+even number of minus signs. The first seven signs freely determine the
+eighth, giving \(128\) new vectors of squared norm two. They have
+inner product at most one with every two-coordinate vector. Two
+different new sign patterns differ in a positive even number \(h\ge2\)
+of positions and have inner product \(2-h/2\le1\). The \(240\) vectors
+therefore meet the separation requirement.
+\end{proof}
+
+\paragraph{Formalization of the geometric statements.}
+Use \texttt{matrix n D a} for a base-\((D+1)\) table of \(n^2\)
+nonnegative numerators; the validity test checks each row and column
+sum against \(D\). The Birkhoff loop stores a residual and a list of
+integer weights and permutations. For at most \(n^2\) iterations maintain
+the uniform residual sum, coordinatewise reconstruction of the input,
+and the upper bound on remaining productive iterations from the support
+size. Implement \texttt{cycleSupport} by following a permutation for
+at most \(n\) steps. The test for the edge characterization counts its
+nontrivial cycles; the proof constructs the two recombined vertices
+from a cycle mask. For a coordinate objective define
+\texttt{equalWeightBlocks} by sorting indices and grouping ties;
+\texttt{maximizerMask} is a scan of all permutation codes. Prove the
+strict swap inequality, its conclusion for any maximizing permutation,
+and the equal objective of all block-respecting permutations. Encode
+faces by the resulting masks; dimensions follow from the explicitly
+listed independent differences and their coordinatewise spanning maps.
+The same definitions work on the cube's \(2^d\) vertices or the other
+finite lists. For kissing configurations define \texttt{Quad} using four
+integer numerator/denominator fields (normalize denominator signs), and
+prove the arithmetic and order rules from the conjugation and cone
+calculations above. Implement \texttt{sector} by the three comparisons
+and a sign bit. The squared-distance test and membership in a sector
+are arithmetic comparisons with free coded inputs. Apply the finite
+pigeonhole lemma to the resulting labels in \([6]\). A bounded
+checker on all index pairs independently verifies each explicit lower
+bound construction.

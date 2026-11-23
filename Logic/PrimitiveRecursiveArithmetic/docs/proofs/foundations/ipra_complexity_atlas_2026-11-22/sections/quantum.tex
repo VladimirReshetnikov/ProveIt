@@ -1,0 +1,70 @@
+\section{A finite arithmetic treatment of a quantum gate model}
+\label{sec:quantum}
+
+The main article directly links quantum machines, BQP, and QMA. A full treatment of arbitrary real amplitudes would require an additional representation and approximation theory. We can nevertheless prove substantial quantum-complexity statements by finite signed counts. This section makes the gate model explicit rather than hiding that issue.
+
+Use $q$ qubits, initially a computational-basis word containing the classical input and zero ancillas. Allowed gates are NOT $X$, classical reversible Toffoli, and Hadamard $H$. Toffoli maps $(a,b,c)$ to $(a,b,c\mathbin{\mathrm{xor}}ab)$. NOT flips a bit. On a basis bit $a$, Hadamard creates the two possible outputs $b\in\bits$ with sign $(-1)^{ab}$ and factor $1/\sqrt2$. Distinct control and target wires are required. A constant-one ancilla, made with $X$, lets Toffoli implement controlled NOT. The circuit contains a polynomial number of qubits and gates, is printed by a polynomial-time uniform procedure, and one designated output qubit is measured at the end. This defines the explicitly named class $\mathsf{BQP}_{HT}$ when every input has acceptance probability at least $2/3$ or at most $1/3$ as specified by its language bit.
+
+The subscript is deliberate. Hadamard plus classical reversible gates are an important universal model in the standard theory \cite{Shi2003}, but this report does not reprove the approximation/universality theorem identifying every other conventional presentation of BQP with this one. Our theorems concern exactly these finite gate descriptions and their positive gap promises. They do not permit a real amplitude to serve as an uncomputable advice parameter \cite{AdlemanDeMarraisHuang1997}.
+
+\begin{theorem}[Q01: exact path-sum identity]\label{thm:Q01}
+Let a circuit contain $h$ Hadamard gates. For each $u\in\bits^h$, simulate the classical reversible gates and use $u_i$ as the chosen output at the $i$th Hadamard. Let $y(u)$ be the final basis word and let $\sigma(u)\in\{1,-1\}$ be the product of its Hadamard signs. Define
+\[
+ s_y=\sum_{u<2^h}[y(u)=y]\,\sigma(u),\qquad
+ A=\sum_{y:\,y_{\rm out}=1}s_y^2.
+\]
+Then the exact acceptance probability is $A/2^h$, and $\sum_y s_y^2=2^h$. These identities, including $0\le A\le2^h$, have finite \ipra\ proofs without introducing square roots as arithmetic objects.
+\end{theorem}
+\begin{proof}
+The usual amplitude notation $s_y/(\sqrt2)^h$ is only explanatory; the arithmetic state is the array of signed integers $s_y$ together with the exponent $h$. Initially one array entry is one and the others are zero. A reversible classical gate permutes entries. At a Hadamard on one wire, the old entries indexed by the two values of that wire, say $a,b$, become $a+b,a-b$, while $h$ increases by one. The identity
+\[
+ (a+b)^2+(a-b)^2=2(a^2+b^2)
+\]
+shows that the sum of squares doubles. Thus it equals $2^h$ by induction on gate position. The signs $(-1)^{ab}$ give exactly the same two-entry update when the branch sums are expanded, proving the path formula by the same bounded induction.
+
+There are $2^q$ entries, each with absolute value at most $2^h$, and at most $2^h$ paths. Signed-array and path-code bounds are explicit exponentials, so every invariant is bounded. Final acceptance sums precisely the squared entries whose output bit is one; the normalization identity gives the bounds. All calculations use signed integer addition and multiplication.
+\end{proof}
+
+\begin{theorem}[Q02: classical random computation embeds exactly]\label{thm:Q02}
+$\mathsf{BPP}\subseteq\mathsf{BQP}_{HT}$, and in particular $\mathsf P\subseteq\mathsf{BQP}_{HT}$. The reduction preserves each input's exact rational acceptance probability.
+\end{theorem}
+\begin{proof}
+Take the polynomial-size circuit obtained by unrolling a clocked randomized verifier, with its $r$ random bits exposed as inputs. Apply Hadamard once to each of $r$ initially zero ancillas, giving one branch of weight $2^{-r}$ for each seed. Evaluate the classical Boolean circuit reversibly by storing every intermediate gate output on a fresh zero ancilla. AND is a Toffoli into a zero target. Repeated inputs are simplified first: AND$(a,a)$ and OR$(a,a)$ are copies, implemented by a controlled NOT with a distinct reserved constant-one control. All Toffoli targets and controls are distinct wires. To compute NOT into a fresh target, set that target to one and XOR the source into it. OR follows from $a\lor b=\neg(\neg a\land\neg b)$ with fresh ancillary outputs. Thus each gate has a constant-size reversible implementation, and the whole transformation has polynomial size and a polynomial-time printer.
+
+Keep the original seed register throughout; there is no need to erase the recorded history. Different seeds remain different orthogonal basis words. Hence no cross terms mix their output probabilities. Measuring the output bit accepts on exactly the seeds for which the classical verifier accepts, with probability equal to their count divided by $2^r$. The bit-level reversible identities and the injection from seeds into final basis words prove the arithmetic statement. A deterministic decider is the case of no random seeds.
+\end{proof}
+
+\begin{theorem}[Q03: a PP simulation by an explicit branch gap]\label{thm:Q03}
+$\mathsf{BQP}_{HT}\subseteq\mathsf{PP}$, in the exact finite-majority definition of PP used in the counting section.
+\end{theorem}
+\begin{proof}
+Append two Hadamard gates on a fresh unused zero wire. They compose to the identity: the two-entry update twice is $(a,b)\mapsto(2a,2b)$, and the amplitude denominator gains a factor two (the probability denominator gains a factor four). Probabilities do not change, and now $h\ge2$.
+
+For two branch words $u,v\in\bits^h$, put
+\[
+ g(u,v)=[y(u)=y(v),\ y(u)_{\rm out}=1]\,\sigma(u)\sigma(v)
+ \in\{-1,0,1\}.
+\]
+Expanding the squares in Q01 gives $\sum_{u,v}g(u,v)=A$. This contribution is computable in polynomial time from $u,v$ by two gate-list simulations; it needs no amplitude array.
+
+Construct a fair-coin machine using a selector bit, the $2h$ bits of $(u,v)$, and one extra bit. In selector mode zero, accept both extra-bit branches if $g=1$, reject both if $g=-1$, and accept exactly one if $g=0$. Its number of accepting branches minus rejecting branches is $2A$.
+
+In selector mode one there are $2^{2h+1}$ assignments to the other bits. Interpret them as an integer $j$ and accept exactly when
+\[
+ j<2^{2h}-2^{h-1}.
+\]
+Comparison of these $O(h)$-bit numbers takes polynomial time. This mode has acceptance-minus-rejection gap $-2^h$. The entire machine therefore has gap
+\[
+ 2A-2^h.
+\]
+It accepts with strict majority exactly when $A/2^h>1/2$. The promised $2/3$ versus $1/3$ gap makes this precisely the supplied language bit. The number of random bits is $2h+2$, polynomial in the original input length. The proof is finite counting and signed arithmetic, hence available in \ipra. This gives the path-counting content of the standard containment while retaining our stated gate restriction.
+\end{proof}
+
+\begin{theorem}[Q04: exact simulation in polynomial space]\label{thm:Q04}
+A polynomial-size $HT$ circuit's integer numerator $A$ and the comparison $2A>2^h$ can be computed in polynomial space. Consequently $\mathsf{BQP}_{HT}\subseteq\mathsf{PSPACE}$ independently of the PP containment.
+\end{theorem}
+\begin{proof}
+Enumerate the $2^q$ possible final basis words $y$ with a $q$-bit counter. For each such word, enumerate all $2^h$ Hadamard choice words, simulate the $L$ gates using a $q$-bit classical configuration and a sign bit, and add its sign exactly when the final word equals $y$. The partial sum needs at most $h+2$ signed bits. Square the result and, for an accepting $y$, add it to an accumulator. Even before using normalization, the crude upper bound $2^q 2^{2h}$ needs only $q+2h+1$ bits. Store the polynomial-size gate list and the current input and counters. All storage is polynomial in $q+h+L$, hence in input length.
+
+The nested counters give an explicit exponential time bound, for example $2^{q+h}$ times a fixed polynomial in $q+h+L$. Prefix-sum invariants prove that the final accumulator equals Q01's $A$. This algorithm's use of exponential time is compatible with polynomial space. As before, the proof never postulates an infinite random tape or a completed real Hilbert space.
+\end{proof}

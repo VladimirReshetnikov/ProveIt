@@ -1,0 +1,673 @@
+\section{Graphs, homology, and the surface table}
+\label{sec:algtop}
+The motivating article singles out the seven bridges, Euler's formula, and a
+table of invariants of closed surfaces. These are three different kinds of
+claim. A walk is a finite word, a homology computation is an identity about
+integer or binary matrices, and the identification of an arbitrary space
+with a particular surface requires a representation theorem. We prove the
+first two directly. For surfaces we specify the presentations on which the
+computations are performed.
+
+\subsection{Paths and bridges}
+A finite multigraph has vertices $0,\ldots,v-1$ and numbered edges
+$0,\ldots,e-1$ with two specified ends each. The two ends may coincide.
+An oriented edge is an edge number and a bit choosing its direction;
+reversal flips that bit, even on a loop. A path stores its initial vertex
+and a composable list of oriented edges. Degree counts ends with
+multiplicity. Starting at a vertex, mark it, then repeatedly mark a new
+vertex attached to a marked one, storing the attaching edge as its parent.
+Stop at exhaustion or after $v$ passes, with one new mark per successful
+pass. An edge cannot then lead from a marked to an unmarked vertex.
+Induction along any given path proves it stays in the marked set. Parent
+pointers, read in reverse marking order, give paths of length $<v$ to all
+marks. Repeating from the least unmarked vertex gives a spanning forest
+with exactly $v-c$ edges, where $c$ is the number of roots (components).
+It has no cycle, since the last-marked vertex on a cycle would need two
+earlier neighbors along forest edges. This argument counts a doubled edge
+or a loop as a cycle when applicable.
+
+\begin{theorem}[Euler trails and the seven bridges]\label{idx-algebraic29}
+For a graph with at least one edge, an edge-once trail exists precisely
+when all positive-degree vertices are in one component and the number of
+odd-degree vertices is zero or two. In the former case the trail closes.
+In the latter its endpoints are exactly the two odd vertices.
+\end{theorem}
+\begin{proof}
+A trail connects every visited vertex to its start. Pair each arrival with
+the next departure at an internal visit. All ends are paired except the
+initial departure and terminal arrival, which also pair if the endpoints
+coincide. This proves necessity. Suppose first all degrees are even.
+Starting at an incident vertex, traverse the least unused incident edge
+until there is none. Stopping anywhere other than the start would leave an
+odd number of used ends at a vertex with no unused ends. Thus we have a
+closed trail. Removing it preserves even degrees. If some edge is unused,
+some visited vertex has an unused incident edge: otherwise no edge could
+leave the visited set, and connectedness of the support would force every
+incident vertex to have been visited and every edge used. Make another
+closed trail from such a vertex in the residual graph, and splice it into
+the first. Each splice uses a fresh edge. At most $e$ walks of length at
+most $e$ suffice. With two odd vertices first join them by an extra edge.
+Cut the resulting cyclic list at this edge and drop it. For the historical
+bridge graph the four degrees are $5,3,3,3$ (one vertex has two edges to
+each of two banks and one to the other island; each bank has one further
+edge to that island). Its seven bridges therefore admit no such route.
+\end{proof}
+
+\begin{theorem}[The edge-path group of a graph]\label{idx-algebraic56}
+At a root in a connected nonempty graph the group of based edge paths
+modulo insertion and deletion of $a\bar a$ is the free group on
+$e-v+1$ generators. Equality has a primitive-recursive normal form.
+\end{theorem}
+\begin{proof}
+Read a word on signed letters with a stack, popping if the incoming letter
+inverts the top and pushing otherwise. Its stack is reduced after every
+step. Reading $a\bar a$ restores any reduced stack: if $a$ pops its
+inverse, the exposed letter cannot be $a$, because the old stack was
+reduced. In the other case the push is immediately undone. Thus insertion
+and deletion preserve the answer in every context. Conversely the scanned
+prefix is equivalent to its current stack, by induction on the scan. The scan records at most one adjacent-pair deletion per input letter,
+so it also produces an explicit move transcript. This
+proves the normal form theorem for free words (and the same argument
+respects endpoints for edge paths).
+
+Fix the parent tree and let $t_x$ be its route from the root to $x$.
+Send a based path to its list of non-tree edges, oriented relative to
+their given directions, then reduce. A generator corresponding to
+$a:x\to y$ lifts to $t_xa\bar t_y$. Its inverse lifts to the reverse
+loop. Projecting this lift gives the generator. Conversely insert
+$\bar t_x t_x$ between consecutive edges at $x$ (each detour is obtained by nested
+inverse-pair insertions) to write a based path as
+a product of the lifted single-edge loops. For a tree edge its loop
+cancels completely, since one endpoint is the parent of the other.
+The constructions are inverse and concatenate modulo cancellation, which
+also proves the group laws from the word operations.
+Lifting a word of length $l$ uses at most $(2v+1)l$ edge symbols.
+This is the combinatorial edge-path interpretation of the graph's
+fundamental group; its definition here quantifies over finite paths and
+moves.
+\end{proof}
+
+\subsection{Finite chain complexes and Betti numbers}
+A simplicial complex on $v$ available labels is a table on the $2^v$
+subsets, with the empty subset present and every subset of a present face
+present. Labels absent as singletons are harmless. Order faces by their
+bit masks. In degree $k\ge0$ the binary chain group $C_k$ consists of
+masks on the $f_k$ faces of size $k+1$, with exclusive-or as addition.
+In ordinary chains $d_0=0$. In positive degree, $d_k$ sends each face to
+the sum of its one-vertex deletions and extends by addition. Write
+$Z_k=\ker d_k$, $B_k=\operatorname{im}d_{k+1}$. For $k\ge2$ each
+two-vertex deletion occurs twice in $d_{k-1}d_k$; for $k=1$ the
+composite vanishes by $d_0=0$. Thus $B_k\subseteq Z_k$. Two cycles
+represent the same homology class exactly when their sum is a boundary.
+
+\begin{lemma}[Binary elimination with witnesses]\label{idx-algebraic103}
+For an $m$ by $n$ binary matrix $A$, a bounded algorithm produces $r$
+independent columns spanning the image, and $n-r$ independent kernel
+vectors spanning the kernel. It also solves $Ax=y$ or detects failure.
+\end{lemma}
+\begin{proof}
+Process columns in order. Store each surviving reduced column together
+with the domain vector mapping to it. Give it the highest occupied row
+as pivot. For the next column start with its domain unit vector; scan rows
+from high to low, eliminating occupied old pivots by adding the stored
+pair. If a nonzero residual has a new highest pivot, store it with its
+domain vector. If the residual is zero, store its domain vector as a
+kernel vector. (Eliminating all old pivots in one downward pass preserves
+every cancellation above the row being processed.) The domain vectors
+recorded after all columns, whether residuals are zero or nonzero, form a
+basis: the vector for column $j$ contains bit $j$ and uses no later bit.
+Descending elimination hence expresses any vector uniquely in this basis.
+The nonzero residuals are independent because a largest pivot in a
+nonempty sum survives. Consequently the zero-residual domain vectors span
+exactly the kernel and the nonzero residuals span the image. To solve,
+reduce $y$ in descending pivot order while accumulating the same domain
+vectors. A nonzero remainder cannot be in the span because it contains no
+pivot; a zero remainder exhibits a solution. If original independent
+columns are desired, take the original column indices with nonzero
+residual: at each such step subtracting a combination of earlier
+residuals preserves the generated span and enlarges its dimension by one.
+\end{proof}
+
+\begin{theorem}[Euler--Poincar\'e and cohomology]\label{idx-algebraic131}
+With $r_k=\operatorname{rank}d_k$, the ordinary homology classes have
+unique binary coordinates of length
+$\beta_k=f_k-r_k-r_{k+1}$. The same dimension is obtained for the
+cohomology of the transposed boundary matrices. In particular,
+\[
+ \chi(K):=\sum_{k\ge0}(-1)^k f_k
+        =\sum_{k\ge0}(-1)^k\beta_k .
+\]
+For subcomplexes $K,L$ on the same labels,
+$\chi(K\cup L)+\chi(K\cap L)=\chi(K)+\chi(L)$.
+\end{theorem}
+\begin{proof}
+Start a basis with the independent boundary vectors in $C_k$. Append
+successively the computed kernel generators whose reduction is nonzero.
+Keep the residuals and pivots as in the lemma. The final list spans the
+kernel. Each cycle has unique coordinates in it, by descending pivot
+elimination; two cycles differ by a boundary just when the appended
+coordinates agree. A binary space with bases of sizes $a,b$ has both
+$2^a$ and $2^b$ elements by unique coordinates, hence $a=b$ (alternatively
+use elimination). The final list thus has length $f_k-r_k$. This yields
+the claimed number of appended coordinates. For the transpose, the
+domain change of basis in the elimination lemma puts $A$ in the form
+consisting of independent image vectors and zeros. Extend these vectors
+to a codomain basis by appending independent unit vectors. In these two
+bases $A$ has exactly $r$ diagonal ones and remaining entries zero, up to
+a permutation. Transposing the elementary invertible basis changes
+preserves their invertibility, proving equality of ranks. Apply the same
+kernel-quotient count to the transposed complex. In the alternating sum
+the two appearances of each nonzero boundary rank cancel, including the
+end cases since $d_0=0$ and degrees above $v$ vanish.
+Inclusion--exclusion follows by testing membership of each nonempty face
+in the two tables.
+\end{proof}
+
+\begin{corollary}[Graphs and degree zero]\label{idx-algebraic166}
+For a finite complex $\beta_0$ is the number $c$ of components of its
+vertex-edge graph. For a finite graph, allowing loops and repeated edges
+by using their binary incidence columns, $\beta_1=e-v+c$ and
+$\chi=v-e$.
+\end{corollary}
+\begin{proof}
+Each edge boundary has even total parity in each component. Conversely
+the boundary of a parent route from $x$ to its root is the pair of
+endpoints (zero when they coincide). Summing these routes over the marked
+bits of a vertex chain with even parity in each component reproduces that
+chain as a boundary. The component parities are independent since each
+root is a representative. Thus $r_1=v-c$. A graph has $d_2=0$, proving
+the degree-one formula.
+\end{proof}
+
+\subsection{Cones, spheres, and invariance under subdivision}
+Use the augmented complex temporarily, adjoining one empty face in degree
+$-1$, with $d$ of a vertex the empty face and $d$ of the empty face zero.
+This is an index shift of a finite list of matrices. For any simplicial
+cone with apex $u$ (that is, $s\cup\{u\}$ is present for every face
+$s$), let $h(s)$ adjoin $u$ if absent and be zero if present. If $u$ is
+absent, its deletion from $h(s)$ gives $s$, and deleting any other vertex
+matches a summand in $hd(s)$. If $u$ is present, only its deletion in
+$hd(s)$ contributes. This includes the empty face. Hence
+$dh+hd=1$. In particular a reduced cycle $z$ has filling $h(z)$.
+
+\begin{theorem}[Simplex and boundary sphere]\label{idx-algebraic193}
+The full simplex on $n+1$ vertices, $n\ge0$, has vanishing reduced
+binary homology. For $n\ge1$, its boundary has reduced homology of
+dimension one in degree $n-1$ and zero elsewhere. The top cycle is the
+sum of its facets. In particular a triangle boundary has ordinary Betti
+numbers $(1,1)$, and a tetrahedral boundary has $(1,0,1)$ and
+$V-E+F=2$.
+\end{theorem}
+\begin{proof}
+The full simplex is a cone. A reduced boundary-sphere cycle $z$ of
+degree $k<n-1$ fills by the cone formula in the full simplex; its filling
+still has degree below $n$, so uses only proper faces. In degree $n-1$
+the cone filling is a multiple of the unique $n$-simplex, so every
+cycle is a multiple of its boundary. That boundary has distinct facets,
+is nonzero, and has no possible filling among the proper faces. In
+higher degrees there are no chains. For a nonempty complex, sorting a
+vertex chain by its parity splits off the class of a chosen vertex in
+ordinary degree zero, leaving reduced degree zero; positive degrees are
+unaffected.
+\end{proof}
+
+A simplicial vertex map sends a face to a face as an unordered image. On
+chains let $F$ send a basis face to its image if the vertices remain
+distinct and to zero otherwise. It sends the empty face to itself.
+It commutes with $d$: for an injectively mapped face, deletions match
+bijectively. If the image has deficit one, only the two deletions from
+the duplicated pair give nonzero terms, and their images agree. With
+larger deficit every deletion still has a repetition. This rule
+respects identity and composition since repeated images cannot regain
+distinctness under a second map. A chain map therefore sends cycles to
+cycles and boundaries to boundaries, inducing a map on homology. The
+algorithm above supplies its matrix by reducing the images of class
+representatives.
+
+\begin{lemma}[A cone filling for chain homotopies]\label{idx-algebraic227}
+Suppose augmentation-preserving chain maps $F,G$ from a simplicial
+complex to another are carried by cones $Q(s)$: both images of each
+nonempty basis face $s$ are supported there and
+$Q(t)\subseteq Q(s)$ for nonempty $t\subseteq s$. Then there is a
+computed family of binary matrices $P$ of degree $+1$ such that
+$dP+Pd=F+G$. In particular $F,G$ induce the same map on homology.
+\end{lemma}
+\begin{proof}
+Put $P(\varnothing)=0$. In increasing face size set
+\[
+ P(s)=h_{Q(s)}\bigl(F(s)+G(s)+P(d s)\bigr).
+\]
+The chain in parentheses lies in $Q(s)$ by the containment condition and
+the previous steps. Its boundary is zero: use the two chain map
+identities and $dP(d s)=(F+G)(d s)+P(d^2s)$, already established on
+proper faces (including the empty face). Hence its cone filling has the
+asserted boundary. Extending additively proves the identity. On an
+ordinary positive-degree cycle the difference of images is the boundary
+of $P(z)$; in degree zero the same conclusion holds since
+$P(\varnothing)=0$.
+\end{proof}
+
+\begin{theorem}[Contiguity, elementary collapse, and subdivision]\label{idx-algebraic250}
+Contiguous simplicial maps induce equal maps on homology. Removing a
+maximal simplex $s$ together with a nonempty codimension-one face $t$
+having no other proper coface preserves homology. Barycentric subdivision
+induces a computable isomorphism on homology in all degrees.
+\end{theorem}
+\begin{proof}
+Contiguity means that the union of the two images of each face is a face.
+Take $Q(s)$ to be the full simplex on that union and apply the cone
+lemma. Consequently a finite chain of contiguities gives the same map;
+mutual inverse maps up to such chains induce inverse homology maps.
+
+For a collapse write $d s=t+b$, where $b$ uses only remaining faces.
+The projection to the remaining chains fixes these, sends $s$ to zero,
+and $t$ to $b$. It commutes with $d$ since $d b=d t$ and $t$ occurs
+in the boundary of no other simplex. Its composite with inclusion is
+the identity on remaining chains. On the original chains the difference
+from the identity is $dP+Pd$ with $P(t)=s$ and $P=0$ elsewhere, as
+one sees on $s,t$ and each remaining face. This also proves invariance
+for a supplied finite sequence of collapses or their inverses.
+
+Vertices of $\operatorname{sd}K$ are the nonempty faces of $K$, and
+its simplices are strictly increasing chains of such faces. On augmented
+chains define $S(\varnothing)=\varnothing$ (the basis vector).
+Given a nonempty face $s$, cone $S(d s)$ to the vertex $s$ in
+$\operatorname{sd}(2^s)$, the subdivision of the full simplex on $s$.
+This complex is a cone since every chain can be extended by $s$ unless
+it ends there. By induction $S(d s)$ is a cycle in that cone and its
+filling has boundary $S(d s)$, so $S$ is a chain map with the indicated
+support. Map a subdivision vertex $t$ to the greatest original vertex
+of $t$. This assignment is simplicial since all images of a chain
+belong to its largest face. Call its chain map $L$. The maps $LS$ and
+the identity on $K$ are carried on $s$ by the full simplex on $s$.
+The maps $SL$ and the identity on $\operatorname{sd}K$ are carried on
+a nonempty chain ending in $s$ by $\operatorname{sd}(2^s)$.
+These carriers are nested under taking faces. Apply the lemma twice to
+obtain inverse homology maps. Iteration along any supplied finite list of
+subdivisions or simplicial isomorphisms preserves the calculated groups
+and Euler characteristic.
+\end{proof}
+
+\subsection{Euler's formula for a rational convex polyhedron}
+A vertex presentation lists distinct points $p_1,\dots,p_m$ in
+$\mathbb Q^3$ of affine dimension three. With each $p$ it gives a
+rational covector $u_p$ with $u_p(q-p)>0$ for all other points $q$.
+This certificate ensures that every listed point is a vertex. The
+polyhedron means their convex hull. Its facets are the maximal lists
+in a supporting plane spanning that plane, and its edges are its
+exposed segments. These data can all be tested with rational arithmetic.
+In particular supporting facet candidates are enumerated by triples.
+Here convex combinations can be read throughout as rational ones.
+
+\begin{lemma}[Planar sections of a finite hull]\label{idx-algebraic302}
+For noncollinear rational points in a plane, their hull has a boundary
+polygon. A rational affine form $x$ taking distinct values at the points
+splits its boundary into two chains from the least to the greatest
+$x$, along which $x$ increases. Consequently a cut $x<a$ avoiding the
+polygon vertices selects one consecutive cyclic block of vertices, unless
+it selects all vertices or none.
+\end{lemma}
+\begin{proof}
+Use $x$ as the first affine coordinate and take an independent rational
+coordinate $y$. At each rational abscissa $t$ between the extremes, the
+possible ordinates form the interval between the lowest and highest
+ordinates obtained by interpolating pairs of the given points spanning
+$t$ (include a point at $t$). Indeed, in a convex combination with
+three positive coefficients there is a nonzero rational change of those
+three coefficients preserving their sum and their weighted sum of $x$.
+It has both signs. Choose its sign so that the weighted $y$ does not
+decrease, and move until a coefficient first becomes zero. Iterate at
+most the size of the support to get an upper bound from a pair. For a
+lower bound reverse the choice of sign. The extreme ordinates are
+attained and all intermediate ordinates are mixtures of the two.
+The resulting upper envelope is concave by taking mixtures of its
+maximizers. Between successive input abscissae the candidate segments
+are fixed, so the upper envelope is also convex there as a maximum of
+affine functions. It is therefore affine on each such interval.
+There is no jump at an interior input abscissa, by the concavity
+inequality using points on both sides; at either extreme the finitely
+many candidate segments reaching it share the unique endpoint.
+The lower envelope has the reversed argument. Noncollinearity makes
+the two envelopes distinct at every interior abscissa: an interior
+triangle has positive vertical thickness at some abscissa, and mixtures
+with either endpoint propagate positive thickness throughout the
+interior. Removing collinear intermediate points leaves two strictly
+$x$-monotone polygonal chains, meeting only at their ends. Each corner
+is an input point: an extremizer at a corner supported by two different
+abscissae would, by concavity (or convexity), force the same affine
+segment on both sides. Each resulting side has a supporting line, as
+follows by monotonicity of the slopes of a concave or convex function.
+These two chains give the asserted cyclic block rule.
+\end{proof}
+
+\begin{theorem}[Euler's polyhedron formula]\label{idx-algebraic343}
+For a full-dimensional rational convex vertex presentation,
+$V-E+F=2$, with polygonal faces counted before any triangulation.
+\end{theorem}
+\begin{proof}
+At $p$ form the planar hull $Q_p$ of the normalized directions
+$q'=(q-p)/u_p(q-p)$, lying in $u_p=1$. It is two-dimensional since the
+rays span three-space. Its points $q'$ are distinct: two on the same
+ray would make the nearer input vertex a strict convex combination of
+$p$ and the farther one, contradicting its exposing certificate.
+Every affine form on $u_p=1$ extends to a linear form on the ambient
+vector space (extend its constant using $u_p$). Thus a supporting line
+of $Q_p$ gives a supporting plane of the original hull through $p$.
+A corner of $Q_p$ is exposed by the sum of inward slacks of its two
+incident sides, giving exactly one edge from $p$. Conversely an exposed
+edge from $p$ must expose just one of the normalized directions, a corner.
+A side of $Q_p$ gives exactly one facet through $p$: its two extreme
+directions span a plane with $p$, and all its directions give exactly
+the input vertices on that plane. Each facet through $p$ gives a side
+in reverse. This proves the incidence correspondence used below.
+
+Choose a rational linear height $h$ separating the input vertices and
+also separating all pairs of normalized directions within each $Q_p$.
+Testing $(1,j,j^2)$ for $j=0,1,\ldots,2M$ suffices for $M$ pairwise
+inequalities to avoid: each nonzero difference gives a nonzero polynomial
+of degree at most two with at most two integer roots. Heights of the
+normalized directions are nonzero, with the sign of $h(q)-h(p)$.
+At $p$ count $1$ for the vertex, subtract $1$ for each edge pointing
+downward from $p$, and add $1$ for each facet whose greatest vertex is
+$p$. The latter facets correspond to sides of $Q_p$ with both ends
+negative, because every direction on the side is a mixture of its ends.
+These contributions count each edge and each facet exactly once globally.
+
+If all corners are positive, all normalized directions are positive by
+convexity and $p$ is the global minimum. Its contribution is $1$.
+If all are negative, $p$ is the global maximum and its contribution is
+$1-k+k=1$, for $k$ corners. In the mixed case let $k$ be the number of
+negative corners. They form one consecutive proper block by the planar
+lemma for $x=h,a=0$, and exactly $k-1$ sides have both ends in it. The
+contribution $1-k+(k-1)$ vanishes. There is one global minimum and one
+global maximum, proving the formula. The planar argument uses at most
+all pairs of points per envelope ordinate. Affineness reduces each
+inequality about an interpolated interval to its endpoints. Thus the
+sweep needs only bounded lists and rational operations in iPRA.
+\end{proof}
+
+\subsection{The integer homology and orientability of the polygon models}
+Work now over $\mathbb Z$. Use $g$ handles and $c$ cross-caps in the
+standard polygon word
+\[
+ w=\prod_{i=1}^{g}a_ib_ia_i^{-1}b_i^{-1}
+       \prod_{j=1}^{c}y_jy_j .
+\]
+The formula below concerns the polygon with paired edges indicated by
+this word, including the orientable models $c=0$ and the nonorientable
+ones $c>0$. The empty word is handled by the tetrahedron boundary.
+No recognition or classification algorithm for an arbitrary supplied
+surface is needed.
+
+\begin{theorem}[The surface table over the integers]\label{idx-algebraic402}
+Write $m=2g+c$. The connected polygon model has Euler characteristic
+$2-m$. Its homology in degrees $0,1,2$ is respectively
+\[
+\begin{array}{c|ccc}
+ &H_0&H_1&H_2\\ \hline
+ c=0 &\mathbb Z&\mathbb Z^{2g}&\mathbb Z\\
+ c>0 &\mathbb Z&\mathbb Z^{m-1}\oplus\mathbb Z/2&0 .
+\end{array}
+\]
+It is orientable exactly when $c=0$. In particular the sphere, torus,
+and double torus have $(b_0,b_1,b_2)=(1,0,1),(1,2,1),(1,4,1)$.
+The projective plane and a Klein bottle model have $(1,0,0)$ and
+$(1,1,0)$ respectively, each with one order-two summand in degree one.
+\end{theorem}
+\begin{proof}
+Suppose the word has length $l>0$. All boundary vertices are identified:
+in a commutator block with successive corners $0,1,2,3,4$ the first
+pair gives $0=3,1=2$ and the second gives $1=4,2=3$. In a square
+block the two copies identify all three corners. Blocks share endpoints.
+Call the common vertex $p$, add a center $o$, and draw $l$ spokes
+$r_i:o\to p$ to successive corners ($i$ modulo $l$). These are
+distinct numbered edges. Let $e_j$ denote the oriented edge for each of
+the $m$ distinct boundary letters. The oriented triangle between spokes
+$i,i+1$ has boundary
+\[
+ dT_i=r_i+s_ie_{j(i)}-r_{i+1},\qquad
+ dr_i=p-o,\quad de_j=0 ,
+\]
+where $s_i$ is the sign of the letter. This is the ordinary oriented
+triangle-edge-vertex incidence complex of the glued fan, with face
+identifications allowed. There are $2$ vertices, $m+l$ edges and $l$
+triangles. This proves the Euler count and $H_0=\mathbb Z$.
+
+A $1$-cycle has total spoke coefficient zero, so its unique coordinates
+are the $e_j$ and $q_i=r_i-r_0$ for $1\le i<l$. Put $q_0=q_l=0$.
+The boundary relations are $q_{i+1}=q_i+s_ie_{j(i)}$. Successive
+substitution eliminates all $q_i$ leaving just
+$u=\sum_i s_i e_{j(i)}=0$. Explicitly, replace each $q_i$ by the prefix
+sum up to index $i-1$, using the first $i$ triangle boundaries.
+These substitutions kill the first $l-1$ relations and send the last
+one to $u$; conversely $u=\sum_i dT_i$. Thus a cycle is a boundary
+exactly when its final $e$-vector is an integer multiple of $u$.
+The spoke coefficients of $d\sum_i t_iT_i$ vanish exactly when
+$t_i=t_{i-1}$ for every $i$. The remaining boundary is then $t_0u$.
+There are no $3$-chains. For handles alone $u=0$, giving the first
+row. With cross-caps, $u=2(y_1+\cdots+y_c)$, where letters now denote
+basis vectors. Replacing $y_1$ by $y_1+\cdots+y_c$ is an invertible
+integer basis change with inverse obtained by subtraction. The new
+coordinate is reduced modulo two, proving its exact order and both
+homology formulas. A consistent orientation chooses $t_i\in\{1,-1\}$
+for every triangle with paired edge incidences cancelling. The spokes
+force a single sign throughout, which succeeds precisely when the
+paired boundary incidences have opposite directions, i.e. $c=0$.
+
+For the empty word use the tetrahedral boundary with oriented faces
+and alternating deletion signs. In the full simplex, prefixing the
+least vertex if absent (and returning zero otherwise) gives
+$dh+hd=1$ on augmented integer chains: deletion of the prefixed vertex
+has positive sign, and the signs of all later deletions reverse. When
+the least vertex is already present only its deletion contributes to
+$hd$. The preceding simplex-boundary proof now works over $\mathbb Z$,
+giving the sphere row. Its signed facet boundary supplies a consistent
+orientation. Finally the usual Klein bottle polygon can also be read as
+$a b a^{-1} b$; its paired corners are all identified and its exponent
+vector is $2b$, so the same spoke calculation proves its stated row
+directly.
+\end{proof}
+
+\subsection{Finite filtrations and their barcodes}
+Let $K_0\subseteq\cdots\subseteq K_N$ be finite face tables on common
+labels. In any fixed degree, the preceding algorithms turn the inclusions
+into binary matrices $A_i:V_i\to V_{i+1}$ on ordinary homology
+coordinates. Examples include the proximity complexes of a finite
+rational metric space, whose face test at threshold $t$ is
+$d(x,y)\le t$ for every pair in the face. The following applies to
+every finite sequence of binary matrices.
+
+\begin{theorem}[Interval decomposition and recovery from ranks]\label{idx-algebraic480}
+There are explicit bases in which the sequence is a direct sum of
+intervals $[b,d]$, $0\le b\le d\le N$: each interval contributes one
+coordinate at each covered index and identity maps between these
+coordinates. If $R(i,j)$ is the rank of the composite $V_i\to V_j$
+for $i\le j$ (identity for $i=j$), the multiplicity of $[b,d]$ is
+\[
+ R(b,d)-R(b-1,d)-R(b,d+1)+R(b-1,d+1)
+\]
+with out-of-range ranks read as zero. Thus the multiset of intervals
+and every persistent Betti number are computable.
+\end{theorem}
+\begin{proof}
+If there is any nonzero space, take the earliest one, $V_b$, and a unit
+vector $x_b$. Propagate it forward until it becomes zero or the sequence
+ends, and let $x_d$ be its last nonzero image. These lines form an
+interval submodule since the outgoing map kills $x_d$ if it exists.
+Choose a coordinate functional $\lambda_d$ with
+$\lambda_d(x_d)=1$. Pull it back along each composite from $t$ to $d$,
+giving $\lambda_t(x_t)=1$ for $b\le t\le d$. The projections
+$z\mapsto\lambda_t(z)x_t$ there and zero elsewhere commute with the
+arrows: in the interior this is the pullback identity, after $d$ the
+line dies, and the space before $b$ is zero. Thus their kernels form
+a complementary sequence. Elimination finds bases of these kernels;
+every vector splits uniquely by subtracting its projection. Apply
+the operation to the complement. Total dimension drops by at least one
+each time, so at most $\sum_i\dim V_i$ steps give an interval basis.
+In this basis $R(i,j)$ counts intervals starting at or before $i$ and
+ending at or after $j$. Taking successive differences retains precisely
+the intervals starting at $b$ and ending at $d$. This proves uniqueness
+of the multiplicities and the claimed formula.
+\end{proof}
+
+\subsection{Gluing and reconstruction from a cover}
+For the following exactness statement reduced groups use the augmented
+chain convention. Even the complex having only the empty face has its
+degree $-1$ chain group. Ordinary groups work as well when the groups
+in negative degrees are set to zero.
+
+\begin{theorem}[Mayer--Vietoris with a computed connecting map]\label{idx-algebraic519}
+Let $K=A\cup B$, with $A,B$ finite subcomplexes, and $I=A\cap B$.
+For binary coefficients the following sequence is exact in every degree:
+\[
+ H_k(I)\xrightarrow{u} H_k(A)\oplus H_k(B)
+ \xrightarrow{v}H_k(K)\xrightarrow{D}H_{k-1}(I)
+ \xrightarrow{u} H_{k-1}(A)\oplus H_{k-1}(B).
+\]
+Here $u[z]=([z],[z])$, $v([a],[b])=[a+b]$.
+\end{theorem}
+\begin{proof}
+Split a cycle $z=a+b$ by assigning each face in it to $A$ if possible
+and to $B$ otherwise. Then $da=db$ is supported in $I$ and is a cycle.
+Put $D[z]=[da]$. A second split differs by a pair $(i,i)$ in $I$,
+so its derivative changes by $di$. A change $z\mapsto z+dw$ permits
+the split $(a+dp,b+dq)$ using any split $w=p+q$, which leaves $da$
+unchanged. Thus $D$ is well-defined and additive, the latter by taking
+the sum of any splits.
+
+At $H_k(A)\oplus H_k(B)$ a diagonal class sums to zero. Conversely if
+$a+b=dw$, split $w=p+q$ and obtain $a+dp=b+dq$, a common cycle in
+$I$ giving the desired preimage. At $H_k(K)$ a pair of cycles supplies
+a split with zero derivative. Conversely if $da=di$ in $I$, then
+$a+i,b+i$ are cycles summing to $z$. At $H_{k-1}(I)$ the class of
+$da=db$ vanishes in both sides. Conversely if a cycle $i$ in $I$
+bounds $a$ in $A$ and $b$ in $B$, then $a+b$ is a cycle in $K$ with
+$D[a+b]=[i]$. The elimination lemma recovers each filling in these
+tests and hence a preimage coordinate vector at every exact spot.
+\end{proof}
+
+\begin{theorem}[Finite nerve lemma for cone intersections]\label{idx-algebraic549}
+Let $K$ be the union of a finite list of subcomplexes $K_i$. Discard
+members without vertices. For every nonempty set $J$ of indices whose
+intersection $K_J=\bigcap_{j\in J}K_j$ has a vertex, suppose $K_J$
+is a simplicial cone. The nerve $N$ has such sets $J$ as nonempty
+faces. There are inverse computable isomorphisms between the binary
+homology groups of $K$ and $N$.
+\end{theorem}
+\begin{proof}
+Choose the least apex $a_J$ passing the cone test on $K_J$.
+There is a simplicial map $F:\operatorname{sd}K\to\operatorname{sd}N$
+sending $s$ to $I(s)=\{i:s\in K_i\}$. It reverses inclusions
+and sends a chain of faces to a possibly repeated chain. The set $I(s)$
+is a face of $N$ since $s$ has a vertex. In the other direction
+$G:\operatorname{sd}N\to K$ sends $J$ to $a_J$. To see that it is
+simplicial, start with the apex at the end of a chain
+$J_0\subsetneq\cdots\subsetneq J_k$, and adjoin the earlier apices
+in descending order. At step $i$ the later face belongs to
+$K_{J_{i+1}}\subseteq K_{J_i}$, where it can be enlarged by $a_{J_i}$.
+Thus the entire image belongs to $K_{J_0}$.
+
+Use $S$ and $L$ for the subdivision and last-vertex chain maps of $K$.
+On a face of $\operatorname{sd}K$ ending in $s$, both $GF$ and
+$L$ have support in $K_{I(s)}$. The former assertion uses that
+$I(s)$ is the smallest index set in the image chain, while the latter
+uses $s\in K_i$ for all $i\in I(s)$. These cones nest under passage to
+a subface, so $GF$ and $L$ act identically on homology. It follows
+that $GFS$ acts as the identity. For a face of $\operatorname{sd}N$
+beginning in $J_0$, every original face $s$ occurring as a subdivision
+vertex in $SG$ belongs to $K_{J_0}$. Thus every vertex $I(s)$ of its
+$F$-image contains $J_0$. The subcomplex of $\operatorname{sd}N$
+consisting of chains of supersets of $J_0$ is a cone with apex $J_0$,
+and contains the original face too. When the least index set grows
+this cone shrinks. The cone homotopy lemma gives $FSG=1$ on homology.
+Consequently $G$ and $FS$ induce inverse isomorphisms between the
+homology of $K$ and of $\operatorname{sd}N$. Apply the subdivision
+theorem to $N$. The case with no vertices is covered by the unique
+maps on the complexes having only the empty face.
+\end{proof}
+
+\begin{corollary}[Dual complexes of a finite relation]\label{idx-algebraic589}
+For a binary relation $R\subseteq X\times Y$ on finite lists, give a
+nonempty subset of $X$ the face test that its elements have a common
+$R$-neighbor in $Y$, and use the transposed test on $Y$.
+The two complexes have isomorphic binary homology in every degree.
+\end{corollary}
+\begin{proof}
+Cover the first complex by the simplices on the neighborhoods of the
+individual elements of $Y$. Every intersection with vertices is a full
+simplex. Its nerve is exactly the second complex, with the isolated
+unused labels omitted. Apply the finite nerve lemma.
+\end{proof}
+
+\subsection{Arithmetic and Lean implementation details}
+All spaces of chains here have explicit carriers. On $v$ possible
+vertices a face is below $2^v$ and a table of faces below $2^{2^v}$.
+The group $C_k$ uses bit masks below $2^{f_k}$. An $m$ by $n$ binary
+matrix fits in $mn$ bits. A face of a barycentric subdivision is itself
+a subset of the fewer than $2^v$ nonempty faces. Enumerate subsets and
+test nestedness by comparing all pairs. A next subdivision replaces a
+vertex bound $b$ by $2^b$. Iterating this bound the supplied number of
+times is primitive recursion. Carriers and their apices are tested by
+exhaustive face scans. The row scans of elimination take $mn$ pivot
+tests for insertion of $n$ columns, each using an exclusive-or on two
+finite vectors. Integer vectors for the polygon calculation have arbitrary
+signed entries as input. Every substitution is addition, multiplication,
+or prefix summation on a bounded list, and extraction of the order-two
+coordinate is division by two with remainder. The proof that equality of
+coordinates entails the existence of a filling actually constructs that
+filling by reversing the substitutions. Rational operations for the
+polyhedron test use signed numerators, positive denominators, cross
+multiplication and a test before division. Thus all these algorithms
+are total after assigning a default on invalid input. Loops in the
+proofs can use bounded Boolean predicates about the processed prefix,
+including a finite table of the earlier partial answers to each face
+recursion.
+
+A Lean implementation can expose the following definitions in sequence.
+Use \texttt{Nat} for masks, a dimension and a list of masks for columns,
+and a pair of naturals or a signed constructor for integers. Give each
+routine a numerical recursion parameter for its scan length.
+\begin{enumerate}
+\item Define \texttt{facesOfSize} and \texttt{deleteVertex}. Next build
+\texttt{boundaryColumn}, \texttt{applyMatrix}, and
+\texttt{composeMatrix}. Prove \texttt{boundarySquared} by pairing the
+two orders of deleting distinct vertices. Implement
+\texttt{reduceWithWitness} as downward pivot recursion, carrying the
+preimage and the insertion index. Its two induction equalities say
+that the stored column is the matrix applied to the stored preimage and
+that processed pivot rows of the residual vanish. A separate prefix
+invariant records triangularity of all processed domain vectors and
+distinctness of nonzero pivots. These give \texttt{solve},
+\texttt{kernelBasis}, and \texttt{homologyCoords} as above.
+\item Define \texttt{coneColumn}, \texttt{simplicialImage}, and
+\texttt{carrierHomotopy} on basis masks. Tabulate the last routine
+in increasing face size. Its invariant is the checked matrix equality
+$dP+Pd=F+G$ on all completed columns. Define \texttt{subdivision}
+by the chain predicate on faces, and \texttt{subdivisionMap} by coning
+the already available boundary. Apply the carrier lemma with the specific
+cones in the subdivision and nerve proofs. The Mayer--Vietoris routine
+uses Boolean assignment to split each face and \texttt{solve} on the
+boundary columns for lifting.
+\item Encode a signed letter as an edge identifier and a Boolean,
+a walk as a start vertex and an edge list. Structural recursion gives
+\texttt{reduceWord}. Prove its invariance under an inverse pair first on
+one reduced stack, then under a common suffix. Encode \texttt{spokeBoundary}
+as the signed sum of three indexed unit vectors. Check prefix substitution
+and its inverse on a general signed input cycle, then specialize the
+exponent vector by recursion along the blocks of the polygon word.
+\item For the convex hull calculation implement \texttt{height},
+\texttt{directionAt}, determinant signs and the two rational extrema
+among pair interpolations. Build each side list through the extreme
+ordinates at input abscissae, deleting collinear intermediate points.
+The proof obligations are the three-weight support reduction, affine
+interpolation inequalities, then cyclic block counting. All are finite
+rational identities with sign tests. Check the global sum by counting
+incidences at their unique highest vertex.
+\item For barcodes store a list of matrices and dimensions and a list of
+basis matrices embedding the current complements in the original
+spaces. Compose rows backwards for $\lambda_t$, obtain its kernel by
+\texttt{kernelBasis}, and express the restricted arrows in these
+coordinates by \texttt{solve}. Recursion on the initial total dimension
+as fuel terminates even if some stages are zero. Verify the direct-sum
+identity stagewise and compute interval counts by four matrix ranks.
+\end{enumerate}

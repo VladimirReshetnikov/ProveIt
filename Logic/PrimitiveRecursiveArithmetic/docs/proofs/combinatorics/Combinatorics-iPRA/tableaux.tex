@@ -1,0 +1,311 @@
+\section{Young tableaux, hook products and insertion}
+\label{sec:tableaux}
+
+The overview article links to \emph{Young diagram}, which redirects to
+\emph{Young tableau}, and illustrates the partition \((5,4,1)\). The
+linked article gives both hook product formulas and numerical examples
+for this shape. We derive the counts directly, and use insertion to
+connect them with permutations.
+
+A shape is a list \(\lambda_1\ge\cdots\ge\lambda_r\ge0\) of sum \(n\),
+with trailing zeros allowed for a fixed row bound. In a sum over partitions
+we omit trailing zeros, so each shape occurs once. Its boxes are \((i,j)\), \(1\le i\le r\),
+\(1\le j\le\lambda_i\). A standard Young tableau fills the boxes
+bijectively with \(1,\ldots,n\), strictly increasing along rows and
+down columns. A semistandard tableau on \(1,\ldots,r\) is weakly
+increasing along rows and strictly increasing down columns. The hook
+length \(h_{ij}\) is one plus the number of boxes strictly to the
+right in its row or strictly below in its column.
+
+\begin{center}
+\begin{minipage}{.32\linewidth}\centering
+\begin{tikzpicture}[x=.41cm,y=-.41cm,baseline]
+\foreach \i/\j/\h in {0/0/7,1/0/5,2/0/4,3/0/3,4/0/1,0/1/5,1/1/3,2/1/2,3/1/1,0/2/1}{\draw[draw=inkblue,fill=soft](\i,\j)rectangle ++(1,1);\node[font=\footnotesize\sffamily] at (\i+.5,\j+.5) {\h};}
+\end{tikzpicture}
+\end{minipage}\begin{minipage}{.58\linewidth}\small
+Each box shows its hook length. The product for shape $(5,4,1)$ is $12{,}600$, so the theorem below gives $10!/12{,}600=288$ standard fillings.
+\end{minipage}
+\end{center}
+
+\subsection{Corner recursion and the hook-length formula}
+
+\begin{theorem}[Frame--Robinson--Thrall hook-length formula]\label{result15}
+If \(f^\lambda\) counts the standard tableaux of shape \(\lambda\), then
+\[
+ f^\lambda \prod_{(i,j)\in\lambda} h_{ij}=n!.
+\]
+Transposition preserves \(f^\lambda\). For a rectangle with \(r\) rows
+of length \(s\), the count is \((rs)!\prod_{j=0}^{r-1} j!/(s+j)!\).
+For two rows of lengths \(a\ge b\) it is
+\(\binom{a+b}b-\binom{a+b}{b-1}\), interpreting the second term as zero
+for \(b=0\).
+\end{theorem}
+\begin{proof}
+Put \(x_i=\lambda_i+r-i\), so \(x_1>\cdots>x_r\ge0\), and write
+\(\Delta(x)=\prod_{i<j}(x_i-x_j)\). The hooks in row \(i\) are exactly
+the numbers \(1,\ldots,x_i\) with the \(r-i\) numbers \(x_i-x_k\)
+for \(k>i\) omitted. Indeed the row's hook lengths
+\[
+ h_{ij}=\lambda_i-j+1+\#\{k>i:\lambda_k\ge j\}
+\]
+strictly decrease with \(j\) and lie in that range. For \(k>i\), if
+\(j\le\lambda_k\) the lower rows through \(k\) all contribute, giving
+\(h_{ij}>x_i-x_k\). If \(j>\lambda_k\), at most \(k-i-1\) lower rows
+contribute and \(h_{ij}<x_i-x_k\). The omitted numbers are distinct,
+and \(x_i-(r-i)=\lambda_i\) accounts for all others. Multiplying the row
+products gives
+\[
+ \prod_{(i,j)\in\lambda}h_{ij}=\frac{\prod_i x_i!}{\Delta(x)}.
+\]
+
+For \(n>0\), the largest tableau entry occupies a removable corner,
+namely the last box in some row \(i\) with
+\(\lambda_i>\lambda_{i+1}\), where \(\lambda_{r+1}=0\).
+Deleting it and reattaching \(n\) give inverse bijections. Thus
+\(f^\lambda=\sum_{i\ {\rm removable}} f^{\lambda-e_i}\) with
+\(f^\varnothing=1\). We verify this recursion for the positive rational
+number \(W(\lambda)=n!\Delta(x)/\prod_i x_i!\). For a removable row,
+\[
+ \frac{nW(\lambda-e_i)}{W(\lambda)}=x_i A_i,\qquad
+ A_i=\prod_{j\ne i}\frac{x_i-x_j-1}{x_i-x_j}.
+\]
+This follows by dividing the two factorial products and the factors of
+\(\Delta\) involving \(i\). A nonremovable row contributes \(x_iA_i=0\):
+either \(i<r\) and \(x_i-x_{i+1}=1\), or \(i=r\) and \(x_i=0\).
+
+We need \(\sum_i x_iA_i=\sum_i x_i-\binom r2=n\). Here is a finite
+algebraic proof. Put \(P(X)=\prod_i(X-x_i)\). Then
+\[
+ P(X-1)=P(X)-\sum_i A_i\prod_{j\ne i}(X-x_j).
+\]
+The difference of the sides has degree at most \(r-1\) and vanishes at
+each of the \(r\) distinct integers \(x_i\), by the defining product for
+\(A_i\). A polynomial vanishing at \(u\) is divisible by \(X-u\),
+by subtracting its value from each monomial; repeated cancellation
+at the other roots proves the required degree bound on the number of
+roots. Substitute \(X=1/t\), multiply by \(t^r\), and divide through
+by \(\prod_i(1-x_it)\) in the ring \(\mathbb Q[t]/(t^3)\). The factors
+are units with inverses \(1+x_it+x_i^2t^2\). This gives the equality
+\[
+ \prod_i\left(1-\frac{t}{1-x_i t}\right)
+   =1-\sum_i A_i \frac{t}{1-x_i t}\pmod{t^3}.
+\]
+The quadratic coefficient on the left is \(\binom r2-\sum_i x_i\);
+on the right it is \(-\sum_i A_i x_i\), as required. For the empty
+shape the hook-product expression gives \(W=1\), also with padded
+zero rows. The recursion now proves \(W=f^\lambda\) by induction on
+\(n\), giving the stated integral identity.
+
+Transposition exchanges the increasing conditions and is its own inverse.
+For the rectangle \(x_i=s+r-i\); grouping differences by the smaller
+coordinate gives \(\Delta=\prod_{j=0}^{r-1}j!\). For two rows
+the shifted coordinates are \(a+1,b\), giving
+\((a+b)!(a-b+1)/((a+1)!\,b!)\); expanding the two binomials gives this
+same expression.
+\end{proof}
+
+\subsection{Semistandard tableaux and the hook-content formula}
+
+\begin{theorem}[Hook-content formula]\label{result16}
+For a shape with at most \(r\) rows let \(D_r(\lambda)\) count
+semistandard fillings with entries in \(1,\ldots,r\). Then
+\[
+ D_r(\lambda)=\frac{\Delta(x)}{\prod_{k=0}^{r-1}k!}
+ =\prod_{(i,j)\in\lambda}\frac{r+j-i}{h_{ij}}.
+\]
+For the shape \((5,4,1)\) there are \(288\) standard tableaux and
+\(66{,}528\) semistandard tableaux on \(1,\ldots,7\).
+\end{theorem}
+\begin{proof}
+Deleting the entries equal to \(r\) leaves a shape \(\nu\) of at most
+\(r-1\) rows. Every such entry is at the right end of its row, in the
+sense that all subsequent cells in the row also have entry \(r\).
+Every box in row \(r\) must contain \(r\), by column strictness.
+The possible shapes are exactly
+\(\lambda_i\ge\nu_i\ge\lambda_{i+1}\) for \(1\le i<r\). Indeed the
+boxes above row \(i+1\) of \(\lambda\) cannot be deleted. Conversely,
+fill the difference of the two shapes with \(r\); the inequalities put
+every added box below a retained box if an upper box exists, and place
+no box below an added box. This extends every semistandard \(\nu\)
+uniquely for that shape. In shifted coordinates
+\(y_i=\nu_i+r-1-i\) this says the \(y_i\) range independently over
+\(x_{i+1}\le y_i<x_i\). These inequalities already imply strict descent
+of the \(y_i\).
+
+For a descending list \(v\) of length \(l\), define
+\[
+ B_l(v)=\det\bigl(\binom{v_i}{l-j}\bigr)_{1\le i,j\le l}
+       =\frac{\prod_{i<j}(v_i-v_j)}{\prod_{k=0}^{l-1}k!}.
+\]
+For the determinant evaluation, the polynomial \(\binom{X}{k}\) has
+leading coefficient \(1/k!\), and the lower-degree monomials are already
+spanned by the columns of lower degrees. Subtracting their multiples
+successively reduces to the determinant of descending powers with
+the displayed factorial factor. The latter determinant is \(\Delta(v)\):
+as a polynomial in \(v_1\) it has roots \(v_2,\ldots,v_l\) by equal
+rows, and leading coefficient the corresponding smaller determinant
+by expansion along row one. The root argument just used above verifies
+the factorization for fixed distinct lower entries, and induction gives
+the formula. Empty determinants are one.
+
+By induction with \(r-1\) symbols, the deletion count is the sum of
+\(B_{r-1}(y)\) over the stated intervals. Expand the determinant as a
+signed permutation sum and sum independently in each row. The result
+is a determinant of row sums. Pascal's identity telescopes these sums:
+\[
+ \sum_{z=x_{i+1}}^{x_i-1}\binom zk
+   =\binom{x_i}{k+1}-\binom{x_{i+1}}{k+1}.
+\]
+In the matrix for \(B_r(x)\), subtract row \(i+1\) from row \(i\)
+for \(i=1,\ldots,r-1\) in that order. The determinant stays unchanged
+by multilinearity and cancellation for repeated rows. Its constant
+last column is now zero except for a final one. Expansion there gives
+exactly the determinant of the above differences for
+\(k=r-2,\ldots,0\). This proves the recurrence, with the empty shape
+at \(r=0\) as base. Multiplying the factorials in each numerator row gives
+\(\prod_{j=1}^{\lambda_i}(r+j-i)=x_i!/(r-i)!\). The row hook product
+proved above gives the content formula. For the example the hook rows
+are \(7,5,4,3,1;\ 5,3,2,1;\ 1\), with total product \(12600\).
+The numerator is \(10!\) in the standard case and
+\((7\cdot8\cdot9\cdot10\cdot11)(6\cdot7\cdot8\cdot9)5\)
+in the semistandard case. Division gives the two values.
+\end{proof}
+
+\subsection{Permutation insertion and increasing subsequences}
+
+\begin{theorem}[Robinson--Schensted correspondence and Schensted's first-row theorem]\label{result17}
+Permutations of \(1,\ldots,n\) correspond bijectively to pairs \((P,Q)\)
+of standard tableaux of the same shape \(\lambda\) of size \(n\).
+The longest strictly increasing subsequence of the permutation has length
+\(\lambda_1\), with length zero for the empty shape. Consequently
+\[
+  \sum_{\lambda\vdash n}(f^\lambda)^2=n!.
+\]
+The number of permutations avoiding an increasing subsequence of length
+\(k+1\) is the same sum restricted to shapes with \(\lambda_1\le k\).
+\end{theorem}
+\begin{proof}
+Build the insertion tableau \(P\) from the empty filling by reading
+the permutation in order. To insert \(a\) in a row, find its leftmost
+entry \(b>a\). If found, replace \(b\) by \(a\) and insert \(b\) in the
+next row. Otherwise append \(a\) and stop. A missing row acts as empty.
+The entries are distinct throughout. A replacement preserves row order,
+and no column inequality with a lower neighbor is harmed by decreasing
+the cell. If the bump out of a row occurs at column \(c\), its insertion
+in the next row occurs at a column \(c'\le c\): the old entry there at
+column \(c\), when present, exceeds the bumped value, and a shorter row
+can append no later than \(c\). For the new entry at \(c'\) its upper
+neighbor is smaller. When \(c'<c\) this follows from the old upper row's
+strict order; when \(c'=c\) that neighbor was just replaced by a smaller
+value. In particular an appended box in a lower row has an upper box.
+The procedure visits at most one row past the old height and adds exactly
+one corner. Put the insertion time in this new box in \(Q\). Every
+immediately preceding box above or to its left existed earlier, so \(Q\)
+is standard.
+
+For the inverse, find the box of the largest remaining time in \(Q\).
+It is removable. Delete it in both tableaux, carrying its value \(b\)
+from \(P\). In the row above, use the \emph{rightmost} entry \(a<b\),
+replace \(a\) by \(b\), and carry \(a\) upward. On passing above row
+one, output the carried value. Such a choice always exists when a row
+above remains: if the carried value came from column \(c\), that upper
+row had a smaller entry at \(c\). The chosen column \(c'\) is therefore
+at least \(c\). Replacing \(a\) by \(b\) preserves the row order by
+the rightmost rule. Its upper neighbor stays smaller. For its lower
+neighbor, the lower row's entry formerly at \(c\) was just deleted or
+increased; at a chosen \(c'\ge c\), a lower entry if present now exceeds
+the carried \(b\). This verifies all inequalities as the reverse path
+proceeds. After any upward replacement, the entries to its left are
+below the value \(a\) carried out, so the first entry exceeding \(a\) on
+reinsertion is exactly the newly placed \(b\). In the bottom row the
+deleted last entry simply appends on reinsertion. In the other direction,
+after a forward bump, its replaced entry and all entries to its left
+are smaller than the bumped value, and all entries to its right are
+larger; the reverse search necessarily picks the same cell. Hence the
+local procedures invert each other. Repeating deletions recovers the
+permutation in reverse order: each deletion ejects exactly one distinct
+label from the remaining set. This proves the bijection and its square sum.
+
+To identify the first row, for a processed prefix call \(m_j\) the
+least possible final value of an increasing subsequence of length \(j\),
+whenever one exists. The first row after this prefix consists exactly
+of these \(m_j\), in increasing order. Prove it by induction, starting
+with the empty row. When a new distinct value \(a\) arrives, let \(c\)
+be the first column with \(m_c>a\), or the next unused column if there
+is none. A subsequence of length \(c\) now ends in \(a\): extend one
+ending in \(m_{c-1}<a\) or use the singleton if \(c=1\). No longer
+subsequence ending in \(a\) exists, since its prefix of length \(c\)
+would have a last element smaller than \(a\), whereas the old \(m_c\)
+was absent or larger. For smaller lengths the old minima are already
+below \(a\). For greater lengths no new candidate is available. Thus
+exactly column \(c\) is replaced or appended, as in the first-row
+insertion rule. This proves the claim and the restricted sum.
+\end{proof}
+
+\begin{corollary}[Catalan permutation avoidance]\label{result18}
+The number of permutations of length \(n\) avoiding an increasing
+subsequence of length three is \(C_n\), and the same is true for avoiding
+a decreasing subsequence of length three.
+\end{corollary}
+\begin{proof}
+Transpose both tableaux of a pair whose common shape has at most two
+columns. A standard tableau with at most two rows gives a length-\(n\)
+path with up-steps for top-row labels and down-steps for bottom-row
+labels, reading the labels in increasing order. Every prefix has at least
+as many up-steps as down-steps, by column strictness. Conversely fill
+the next vacant cell of the indicated row at each step; the prefix
+condition ensures column strictness. Two such paths have equal final
+height exactly when their shapes agree, because their lengths are equal.
+Concatenate the first path with the second read backwards and with steps
+negated. This gives a Dyck path of length \(2n\), and cutting at its
+middle gives the two inverse paths. Reversing the positions in a
+permutation interchanges increasing and decreasing subsequences. The
+argument also includes \(n=0\).
+\end{proof}
+
+\paragraph{Arithmetic bounds and Lean obligations.}
+For fixed size bound \(N\) and row count \(r\), take a shape code with
+\(r\) digits in base \(\max(2,N+1)\). Tableaux can be stored in
+\(rN\) entries, with zero padding; use base \(\max(2,N+1,r+1)\) for
+both kinds. Define \texttt{isShape}, \texttt{inShape}, \texttt{isSYT},
+\texttt{isSSYT}, \texttt{removable}, \texttt{hook} and
+\texttt{shiftedRow} by bounded scans. For the hook identity take
+induction on \(m\le N\) with a Boolean fold over all shape codes of
+size at most \(m\). The corner proof locates \(m\), erases its cell,
+and inverts this transformation by reattaching \(m\).
+For \texttt{cornerWeightSum}, implement rational polynomial coefficients
+with signed numerator and positive denominator and use arrays through
+degree \(r\), plus length-three arrays for the truncated expansion.
+The largest shifted coordinate is at most \(N+r\); every factorial in
+the formulas is bounded by \((N+r)!\). For the semistandard induction
+fix an alphabet bound \(R\) and size bound \(N\) and fold over all shapes
+of size at most \(N\) with at most the current number of rows, using
+padding to length \(R\). A determinant of size \(l\le R\) is the signed
+sum over permutations, each checked in base \(\max(2,l)\). Prove row
+linearity by distribution, repeated-row cancellation by swapping the two
+row assignments, and cofactor expansion by the chosen column index and
+the induced order on the remaining indices. These finite identities
+suffice for the telescoping determinant proof.
+
+For insertion take a padded \(N\times N\) tableau. Implement
+\texttt{bump}, \texttt{unbump}, \texttt{insert} and \texttt{removeCorner}
+with at most \(N+1\) row visits and at most \(N\) comparisons per row.
+The local inverse invariant records the carried entry, the previous
+column and the untouched prefixes or suffixes of the current and
+adjacent rows. Apply the two local inverse lemmas along the stored
+row path, then induct on the permutation prefix, retaining the shape
+agreement and validity of both tableaux. For the subsequence invariant
+enumerate index masks below \(2^N\) to define a least final value or an
+absent marker for each length. These are primitive recursive observations
+of a fixed finite prefix; the argument uses no quantification over
+uncoded maps or infinite series.
+
+\paragraph{Sources.}
+The numerical examples appear on the seed's linked
+\href{https://en.wikipedia.org/wiki/Young_diagram}{Young diagram/Young tableau}
+page. The original papers give the hook formula and the subsequence
+interpretation, respectively: J. S. Frame, G. de B. Robinson and R. M.
+Thrall, \emph{The Hook Graphs of the Symmetric Group}
+(\href{https://doi.org/10.4153/CJM-1954-030-1}{1954}), and
+C. Schensted, \emph{Longest Increasing and Decreasing Subsequences}
+(\href{https://doi.org/10.4153/CJM-1961-015-3}{1961}).

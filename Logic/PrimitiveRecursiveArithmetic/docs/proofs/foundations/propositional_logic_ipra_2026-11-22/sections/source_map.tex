@@ -1,0 +1,186 @@
+\section{Source coverage and archive reading guide}
+\label{sec:source-map}
+
+\subsection{The article and its immediate mathematical links}
+
+The scope audit was made on 22 November 2026. The starting article and the
+immediate linked pages listed below were inspected as a map of mathematical
+topics \cite{sourcewiki}. The table records where this report develops those
+topics. It is not a claim to have proved every sentence of every page, and
+historical, biographical, and philosophical material is not part of the
+theorem inventory. The mathematical proofs in this report are supplied
+independently; the linked articles do not serve as unproved premises.
+
+\begingroup\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.29\textwidth}>{\raggedright\arraybackslash}p{.49\textwidth}>{\raggedright\arraybackslash}p{.13\textwidth}@{}}
+\toprule
+Inspected topic & Coverage in this report & Sections\\
+\midrule
+\endfirsthead
+\toprule
+Inspected topic & Coverage in this report & Sections\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\href{https://en.wikipedia.org/wiki/Propositional_logic}{Propositional logic}
+  (starting article) &
+Syntax, rules, Boolean semantics, soundness, constructive completeness,
+decidability, and distinctions between classical and intuitionistic logic.
+& \ref{sec:syntax}, \ref{sec:nd}, \ref{sec:negative}\\[5pt]
+\href{https://en.wikipedia.org/wiki/Propositional_formula}{Propositional formula}
+& Unique parsing, finite support, subformulas, substitution, locality, and
+primitive recursive coding of syntax.
+& \ref{sec:syntax}\\[5pt]
+\href{https://en.wikipedia.org/wiki/Truth_function}{Truth function};
+\href{https://en.wikipedia.org/wiki/Truth_table}{truth table};
+\href{https://en.wikipedia.org/wiki/Boolean_function}{Boolean function}
+& Truth-table decision with witnesses; canonical forms; functional
+completeness; monotone and affine fragments; algebraic normal form.
+& \ref{sec:syntax}, \ref{ca-normal}\\[5pt]
+\href{https://en.wikipedia.org/wiki/Natural_deduction}{Natural deduction}
+& Explicit rule systems, proof checkers, structural transformations,
+deduction, classical completeness, and constructive law templates.
+& \ref{sec:nd}, \ref{sec:laws}\\[5pt]
+\href{https://en.wikipedia.org/wiki/Hilbert_system}{Hilbert system};
+\href{https://en.wikipedia.org/wiki/Combinatory_logic}{combinatory logic}
+& Hilbert axioms and proof translations; the deduction theorem;
+the roles of the $K$ and $S$ proof templates and abstraction.
+& \ref{sec:systems}, \ref{sec:laws}\\[5pt]
+\href{https://en.wikipedia.org/wiki/Method_of_analytic_tableaux}{Method of
+analytic tableaux};
+\href{https://en.wikipedia.org/wiki/Sequent_calculus}{sequent calculus}
+& Bounded tableau expansion, open-branch countervaluations, analytic
+classical completeness, and cut-free proof reconstruction.
+& \ref{sec:systems}\\[5pt]
+\href{https://en.wikipedia.org/wiki/Boolean_algebra_(structure)}{Boolean
+algebra (structure)};
+\href{https://en.wikipedia.org/wiki/Boolean_algebra_(logic)}{Boolean
+algebra (logic)}
+& Boolean identities; the algebra of truth-table bitsets; exact finite
+cardinality, atoms, and the universal mapping property for finite targets.
+& \ref{sec:laws}, \ref{ca-normal}\\[5pt]
+\href{https://en.wikipedia.org/wiki/Boolean_satisfiability_problem}{Boolean
+satisfiability problem};
+\href{https://en.wikipedia.org/wiki/DPLL_algorithm}{DPLL algorithm}
+& Witness-producing satisfiability procedures, branching bounds, clause
+encodings, and polynomial verifier reductions to SAT and 3-SAT.
+& \ref{ca-solvers}, \ref{sec:complexity}\\[5pt]
+\href{https://en.wikipedia.org/wiki/Peirce's_law}{Peirce's law}
+& Equivalence of classical axiom schemes over intuitionistic logic;
+finite countermodels to isolated classical principles.
+& \ref{sec:negative}, \ref{sec:ipc-saturation}\\[5pt]
+\href{https://en.wikipedia.org/wiki/Intuitionistic_propositional_calculus}{Intuitionistic
+propositional calculus} (redirecting to
+\href{https://en.wikipedia.org/wiki/Intuitionistic_logic}{Intuitionistic logic})
+& Finite Kripke semantics, completeness, decidability, finite Heyting
+algebras, disjunction extraction, and the scope of negative translation.
+& \ref{sec:ipc-saturation}, \ref{sec:negative}\\
+\end{longtable}
+\endgroup
+
+The phrase ``immediate linked pages'' in this table applies to this inspected
+list. It is not extended automatically to every further topic developed in
+the report. In particular, the following are supporting developments chosen
+because their proofs make the requested subject more complete and give
+useful explicit arithmetic constructions.
+
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{.31\textwidth}>{\raggedright\arraybackslash}X@{}}
+\toprule
+Supporting development & Role and location\\
+\midrule
+Tseitin encodings, Davis--Putnam elimination, resolution, Horn SAT, and 2-SAT
+& Explicit clause certificates, witness reconstruction, least models, and
+finite graph algorithms in Section~\ref{ca-solvers}. The original
+Davis--Putnam and Tseitin papers provide attribution
+\cite{DP1960,Tseitin1968}.\\[4pt]
+Forgetting, uniform and Craig interpolation, and finite Beth definability
+& Finite Boolean elimination and explicit definitions in
+Section~\ref{ca-interpolation}; the proofs use bounded truth tables.\\[4pt]
+Finite Heyting algebras, Harrop assumptions, and negative translation
+& Semantic and proof-theoretic consequences in
+Sections~\ref{sec:ipc-saturation} and~\ref{sec:negative}. Kripke and
+Buss--Pudl\'ak provide primary context \cite{kripke1965,buss-pudlak2001}.\\[4pt]
+Arithmetic coding and Lean endpoints
+& The numerical base and object-derivation plan in
+Sections~\ref{sec:base} and~\ref{sec:lean}, connected to the inspected
+ProveIt interfaces \cite{proveit}.\\[4pt]
+Limits of infinite compactness and intended interpretations
+& Section~\ref{sec:limits} separates finite certificates from infinite
+paths and from stronger intended-interpretation claims
+\cite{burgess1981}.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+Cook's paper is used for attribution of the computation-to-propositional
+encoding underlying the complexity chapter \cite{cook1971}. The report gives
+its own fixed-verifier construction and its own arithmetic audit. Similarly,
+no polynomial disjunction-extraction bound from Buss--Pudl\'ak is silently
+imported into the report: the bound proved here is primitive recursive.
+
+\subsection{Reading and reproducing the archive}
+
+Read the scope statement and arithmetic base first, then the relevant
+mathematical chapter. Section~\ref{sec:ipc-saturation} is self-contained
+apart from the common syntax and finite-data conventions. For formalization,
+read Section~\ref{sec:lean} together with the supplied Lean plan before
+treating any ambient Lean statement as an object-level iPRA theorem.
+
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{.33\textwidth}>{\raggedright\arraybackslash}X@{}}
+\toprule
+Archive component & Intended use\\
+\midrule
+\texttt{propositional\_logic\_ipra.pdf} & The complete human-readable argument, bounds,
+scope qualifications, source map, and theorem inventory.\\[4pt]
+\texttt{report.tex}; \texttt{sections/} & Editable LaTeX source. The
+section files are inputs to the main document, not separate standalone
+documents. The bibliography is included directly and needs no external
+BibTeX database.\\[4pt]
+\texttt{code/README.md}; \texttt{code/proplogic.py}
+& Executable finite constructions and the data conventions for formulas,
+clauses, proof DAGs, and Kripke models.\\[4pt]
+\texttt{code/validate.py};
+\texttt{code/validation\_results.json}
+& The validation driver and its recorded small-instance results.
+Run the driver from the code directory with Python 3.10 or later.\\[4pt]
+\texttt{code/demo.py};
+\texttt{code/demo\_certificates.json}
+& Worked certificate outputs for inspection and replay.\\[4pt]
+\texttt{code/VERIFICATION.md}
+& The meaning and limits of the executable checks. These tests are not
+universal mathematical proofs.\\[4pt]
+\texttt{lean/Propositional.lean};
+\texttt{lean/ObjectExamples.lean}
+& Readable Lean specifications and proof candidates, including examples
+targeting the inspected object-theory derivation interface.\\[4pt]
+\texttt{lean/FormalizationPlan.md}; \texttt{lean/README.md}
+& The remaining coding, primitive-recursion, and object-derivation
+obligations, together with integration and checking instructions.\\[4pt]
+\path{artifacts/repository_audit.json}
+& Pinned paths, blob identifiers, and source links for the inspected
+upstream integration interfaces. This audit does not constitute a rebuild
+of the upstream repository or verification of all its dependencies.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Source audit limits}
+
+The repository reference is pinned to the commit recorded in
+Section~\ref{sec:lean}; live Wikipedia links are identified by title and
+inspection date, not represented as immutable archived revisions. The source
+map separates what was inspected from what was proved. Primary papers are
+cited for attribution and for distinctions of scope; the report does not
+claim those papers already prove the precise iPRA formulations presented
+here.
+
+The validation files state the actual computational evidence. In particular,
+the absence of a completed Lean build is not concealed by the presence of
+Lean syntax, and the checked Python examples are not advertised as proofs
+of the universal checker contracts. The full human arguments and explicit
+primitive recursive constructions are the mathematical deliverable; the
+formalization files specify a clear route to stronger, kernel-checked
+evidence.

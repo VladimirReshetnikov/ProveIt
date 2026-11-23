@@ -1,0 +1,288 @@
+\section{Cancellation at the boundary of the Dirichlet series}\label{sec:boundary}
+
+Evaluation of the absolutely convergent series at $1+t$ settles none of
+the three ordinary series at $t=0$ by itself. We prove a summatory estimate
+strong enough to take that limit uniformly for two derivatives. We use
+the finite analytic lemmas in ProveIt's logarithmic-integral PNT packet
+\cite{strip}. We state the particular estimates, explain their proofs,
+and give the change of integrand and the unsmoothing step in detail.
+
+\subsection{A quantitative estimate for the signed sum}
+
+\begin{theorem}\label{thm:strongM}
+Put $D=2^{100}$. For an integer $x$ with $x\ge 2^{D\,8192^{10}}$,
+compute the largest $k$ satisfying $2^{Dk^{10}}\le x$ by bounded search.
+Then
+\[
+      |M(x)|\le x\,2^{-k/8}.
+\]
+In particular, $|M(x)|\le x/(\log x)^8$ for every integer
+$x\ge X_0=2^{\,2^{300}}$. The first estimate has the exact arithmetical
+form $2^k|M(x)|^8\le x^8$.
+\end{theorem}
+
+\paragraph{The strip and its numerical lower bound.}
+Let $T=2^k$, $Q=k+2$, $\delta=2^{-88}Q^{-9}$ and $\alpha=1-\delta$.
+On the rectangle $\alpha\le\sigma\le1+1/64$, $|t|\le T$,
+the reciprocal $F(s)=1/\zeta(s)$ has a regular extension at $1$ and
+\begin{equation}\label{eq:stripM}
+                      |F(s)|\le 2^{71}Q^7 .
+\end{equation}
+Here $s=\sigma+it$. The numerical content of the strip lemma matters.
+Euler summation, obtained by integration on each unit interval, gives
+\[
+ \zeta(s)=\sum_{n\le V}n^{-s}+\frac{V^{1-s}}{s-1}
+          -s\int_V^\infty\{u\}u^{-s-1}\,du.
+\]
+The integral tail after $W$ is at most $|s|W^{-\sigma}/\sigma$.
+Its first three derivatives are controlled by the same integrals with
+up to three powers of $\log u$, evaluated by parts. With
+$H=|t|+3$, $V=\lceil H^2\rceil$, and $|t|\ge1/64$, bounds (A1)
+of \cite{strip} give $|\zeta|\le2^9\log H$ and
+$|\zeta'|\le2^{15}(\log H)^2$ when $\sigma\ge1-1/(2\log H)$
+and $\sigma\le2$. The finite sum has $V^{1-\sigma}\le4$ as its
+weight bound, and the pole term has $|s-1|^{-1}\le64$.
+
+For $\sigma>1$ multiply the Euler products with weights $3,4,1$ at
+$t=0,t,2t$. The real logarithm of the product of their moduli has
+summands proportional to $3+4\cos u+\cos 2u=2(1+\cos u)^2$,
+all nonnegative. Thus
+$\zeta(\sigma)^3|\zeta(\sigma+it)|^4|\zeta(\sigma+2it)|\ge1$.
+It already suffices to certify the lower bound $1/2$ by finite
+products. The tails are bounded by $V^{1-\sigma}/(\sigma-1)$.
+Use $\zeta(1+\eta)\le2/\eta$ for $0<\eta\le1$ and the (A1)
+upper bound $2^{10}Q$ at $2t$. At the rational point
+$1+\delta+it$ the fourth-power inequality gives
+$|\zeta|\ge2^{-4}\delta^{3/4}Q^{-1/4}=2^{-70}Q^{-7}$.
+Moving left by $2\delta$ costs at most $2^{16}\delta Q^2$;
+farther right the same direct lower bound only increases. This gives
+\eqref{eq:stripM} for $|t|\ge1/64$.
+For $|t|\le1/64$ write
+\[
+ h(s)=1-s\int_1^\infty\{u\}u^{-s-1}\,du,\qquad
+ F(s)=\frac{s-1}{1+(s-1)h(s)} .
+\]
+There $|h|\le4$, $|s-1|\le1/32$ and the denominator has modulus at
+least $7/8$. The formula includes $F(1)=0$ and agrees with the other
+one on their overlap.
+
+\paragraph{A signed smoothed sum.}
+For rational $y\in[x,2x]$, put $b=\lceil\log_2 y\rceil$ (an integer
+obtained by comparison of powers), $c=1+1/b$ and
+$B(y)=\sum_{n\le y}(y-n)\mu(n)$. The scalar Perron kernel gives
+\begin{equation}\label{eq:smoothM}
+ B(y)=\frac1{2\pi i}\int_{c-i\infty}^{c+i\infty}
+                F(s)\frac{y^{s+1}}{s(s+1)}\,ds .
+\end{equation}
+Indeed expand $F$ at $c$, using $\sum|\mu(n)|n^{-c}\le1+b$.
+For $v=y/n$, the integral of $v^s/(s(s+1))$ on this line, with the
+factor $1/(2\pi i)$, is $(1-1/v)_+$. For $v\ge1$ close to the
+left past the poles $0,-1$ with residues $1,-1/v$. For $v<1$ close
+to the right, with no poles. On the closing vertical line at $\pm U$
+the integral is bounded by $1/(2(U-1))$, using $v^{\pm U}\le1$ on the
+chosen side and integrating the quadratic denominator. The two horizontal
+edges at height $W$ cost at most $(U+2)\max(1,v^2)/W^2$ up to a factor
+of two. These bounds also handle $v=1$. First truncate the Dirichlet
+series at $N$ using $3y^2bN^{-1/b}$ for its integrated error, then choose the kernel error per term
+less than the required error divided by $1+Ny$. All cutoffs are PR.
+The two residues can equivalently be evaluated by integrating the
+explicit simple fractions around rational rectangles (lemma (E8) of
+\cite{strip}).
+
+Truncate \eqref{eq:smoothM} at height $T$. Since $y^{c+1}\le3y^2$,
+the omitted tails cost at most $3(1+b)y^2/T$. The contour may be
+moved to $\alpha$ without a residue, by \eqref{eq:stripM} and the
+regular formula at $1$. The integral of $|s(s+1)|^{-1}$ along this
+vertical segment is at most $\pi/\alpha\le2\pi$. On the horizontal
+edges the denominator has absolute value at least $T^2$. With
+$R=\log y$, we may therefore use the slightly larger common bounds
+\begin{equation}\label{eq:smoothBound}
+ \frac{|B(y)|}{y^2}
+ \le 2^{91}Q^9e^{-\delta R}
+       +2^{88}Q^9/T^2+54 R^2/T .
+\end{equation}
+The first term uses $y^{\alpha+1}=y^2e^{-\delta R}$.
+These are the numerical majorants in (A6) of \cite{strip}, used here for
+a different Dirichlet series.
+
+For clarity, the contour move uses a strictly finite cancellation lemma.
+On a rational rectangular grid the trapezoidal boundary sums of every
+affine complex function vanish by $(u+v)(v-u)=v^2-u^2$. Approximation
+by the first-order Taylor polynomial on each cell therefore gives a
+total error bounded by $2JL^3/P+4LP\eta+2L^2\eta$, where $L\ge1$ bounds
+the sum of the side lengths, $P$ is the number of equal divisions per
+side, $J$ bounds the first two derivatives and the Taylor remainder,
+and $\eta$ is the per-value error in the taxicab norm. Internal edges
+cancel with opposite orientations. Take
+$P=2^{v+8}(J+1)(L+1)^3$ and
+$\eta\le 2^{-v-10}/((L+1)^2(P+1))$ for accuracy $2^{-v}$.
+For this integrand one may take
+$J=2^{512}(\lceil y\rceil+1)^8(T+4)^{40}$.
+Away from $|t|<1/64$, Euler summation at $V=1$ bounds the first
+two zeta derivatives and zeta itself by $2^{40}(T+3)$, and
+\eqref{eq:stripM} bounds $|F|$ by $2^{71}(T+3)^7$.
+Then $F'=-\zeta' F^2$ and
+$F''=2(\zeta')^2F^3-\zeta''F^2$. In the central band differentiate
+the regular quotient with denominator $\ge7/8$ using the integral bounds
+for $h$. The derivatives through order two of $y^{s+1}/(s(s+1))$ are
+bounded by $2^{10}y^6$ since $\sigma\ge1/2$.
+The product rule gives the displayed $J$ with room for both norm
+conversions. These derivative bounds apply on both sides of the rational
+band boundaries with matching values. Rational evaluations use the
+Euler-summation tail, log and exponential enclosures; rectangle edges
+are integrated as finite sums with the preceding errors. Thus the move
+does not require integration or existence of zeros as an object-theory axiom.
+
+\paragraph{Choice of scales and removal of smoothing.}
+We have $Q\le2k$, $2^{98}k^{10}\le R\le2^{112}k^{10}$,
+so $\delta R\ge2k$. For $k\ge8192$, $k\le 2^{k/256}$.
+Indeed with $u=\lfloor k/256\rfloor\ge32$, $256(u+1)\le2^u$ by
+induction. It follows that
+$2^{100}k^9\le2^{k/8}$ and $54\cdot2^{224}k^{20}\le2^{k/4}$:
+after bounding $k$ by $2^{k/256}$ both inequalities are linear in $k$
+in the exponent. Each of the first two terms of \eqref{eq:smoothBound}
+is at most $2^{-15k/8}$ and the third at most $2^{-3k/4}$. Therefore
+$|B(y)|\le y^2 2^{-k/2}\le4x^2 2^{-k/2}$.
+
+Set $h=x\,2^{-\lfloor k/4\rfloor}$. For integer $x$,
+\[
+ \frac{B(x+h)-B(x)}h
+ = M(x)+\sum_{x<n\le x+h}\mu(n)\frac{x+h-n}{h}.
+\]
+Each weight on the right is between $0$ and $1$ and the last sum has
+at most $\lfloor h\rfloor$ terms. Its magnitude is at most $h$.
+Consequently $|M(x)|\le8x^2 2^{-k/2}/h+h\le10x2^{-k/4}
+\le x2^{-k/8}$. The difference estimate uses just $|\mu(n)|\le1$,
+so it applies to these signed coefficients.
+
+When $x\ge X_0$, $k\ge2^{20}$. Write $u=\lfloor\log_2 k\rfloor$.
+The inequality $1024(u+1)\le2^u$ holds at $u=20$ and propagates by
+doubling, hence $\log_2 k\le k/1024$. Thus
+$8\log_2\log x\le896+80\log_2 k\le k/8$. This completes the proof
+of Theorem~\ref{thm:strongM}.
+
+\subsection{Three convergent boundary moments}
+
+\begin{theorem}
+With partial sums taken in increasing integer order,
+\[
+ \sum_{n\ge1}\frac{\mu(n)}n=0,\qquad
+ \sum_{n\ge1}\frac{\mu(n)\log n}n=-1,\qquad
+ \sum_{n\ge1}\frac{\mu(n)(\log n)^2}n=-2\gamma.
+\]
+Here $\gamma=\lim_{N\to\infty}(H_N-\log N)$, $H_N=\sum_{j=1}^N 1/j$.
+\end{theorem}
+\begin{proof}
+For $j=0,1,2$ and $0\le t\le1$, use $w(u)=(\log u)^j/u^{1+t}$,
+taking the zeroth power to be one at $u=1$.
+For $u\ge N\ge X_0$ we have
+$|M(\lfloor u\rfloor)|\le256u/(\log u)^8$, since
+$\lfloor u\rfloor\ge\sqrt u$.
+Also $|w'(u)|\le4(\log u)^j/u^2$.
+For integers $V\ge N$, summation by parts gives
+\[
+ \sum_{N<n\le V}\mu(n)w(n)=M(V)w(V)-M(N)w(N)
+                    -\int_N^V M(\lfloor u\rfloor)w'(u)\,du .
+\]
+Each unit-interval integral simply means the finite difference of $w$
+times the corresponding constant. Bounding the endpoints and integrating
+$1024/(u(\log u)^6)$ gives the uniform estimate
+\begin{equation}\label{eq:momentTail}
+ \left|\sum_{N<n\le V}\mu(n)w(n)\right|\le
+                       \frac{2048}{(\log N)^5}.
+\end{equation}
+In particular $N(v)=2^{\,2^{300}+2^{v+16}}$ makes this $<2^{-v-2}$.
+This modulus is chosen for simplicity. All constants are integers and
+the huge cutoff is used symbolically.
+
+For $t>0$, the moment with index $j$ equals $(-1)^j F^{(j)}(1+t)$.
+One can differentiate the absolutely convergent series twice on
+$t\ge a>0$ by majorizing the log-weighted derivative tails with
+$\int_N^\infty(\log(2u))^r u^{-1-a}\,du$, $r\le3$, evaluated by parts.
+By \eqref{eq:momentTail} the moments extend continuously from the
+right to the ordinary sums at $t=0$. Explicitly, first cut off at $N(v)$;
+the head changes by at most $tN(v)(1+\log N(v))^3$ by
+$|1-e^{-z}|\le z$ for $z\ge0$; then allow for both tails. This gives
+a PR choice of positive rational $t$ at any desired precision.
+
+At $s=1+t$ the regular formula is $F(1+t)=t/(1+t h(1+t))$.
+Euler summation at $s=1$ yields
+$H_N-\log N=1-\int_1^N\{u\}u^{-2}du$, so
+$|H_N-\log N-h(1)|\le1/N$ and $h(1)=\gamma$.
+Differentiating the regular quotient at zero gives successively
+$F(1)=0$, $F'(1)=1$, $F''(1)=-2h(1)$. The first three derivatives
+of $h$ near $1$ are bounded by its differentiated integrals, so the
+right-hand limits of these quotient derivatives have PR error bounds.
+Multiplying by $(-1)^j$ proves all three evaluations.
+\end{proof}
+
+For an explicit arithmetic output of the last theorem, take $n\ge N(v+3)$,
+use dyadic logarithm enclosures of radius
+$2^{-v-12}/(n+1)^3$ in the head through $n$, and approximate $\gamma$
+by $H_{2^{v+7}}-\log(2^{v+7})$ to the same precision in its logarithm.
+For $j\le2$ every logarithm in the head has size at most $n$, so the
+change from raising to the $j$th power and summing is at most
+$n(2n+1)2^{-v-12}/(n+1)^3$. Adding the tail and the error of the target
+gives a rational distance $<2^{-v}$. This last assertion, with a
+cross-multiplied integer matrix, is a first-order formulation of
+ordinary convergence to each displayed value.
+
+\subsection{A conditional link with the position of zeta zeros}
+
+There is a precise constructive version of the article's observation
+that the growth of $M$ controls zeros. Suppose one is given rational
+$0\le\theta<1$ and an integer $C\ge1$ such that
+$|M(n)|\le C n^\theta$ for every $n\ge1$. Denominators in the exponent
+can be eliminated by taking integer powers. Then for rational complex
+$s=\sigma+i\tau$, $\sigma>\theta$ and $s\ne1$,
+\[
+       |\zeta(s)|\ \ge\ \frac{\sigma-\theta}{C|s|}.
+\]
+In particular, a family of such bounds for every rational
+$\theta>1/2$ with $\theta<1$ would exclude zeta zeros to the right
+of the critical line. This conclusion is conditional on the stated
+power bounds; Theorem~\ref{thm:strongM} supplies logarithmic savings.
+
+To prove it, put $D_M(s)=s\int_1^\infty M(\lfloor u\rfloor)u^{-s-1}du$.
+Its tail after $N$ is at most $|s|CN^{-(\sigma-\theta)}/(\sigma-\theta)$.
+Finite partial summation identifies it with $\sum\mu(n)n^{-s}$, and
+the integral bound gives $|D_M(s)|\le C|s|/(\sigma-\theta)$.
+Let $W(s)=1+(s-1)h(s)$ with $h$ as above; thus $W=(s-1)\zeta$.
+We verify that $G=W D_M-(s-1)$ vanishes throughout $\sigma>\theta$.
+
+It suffices to explain the propagation from $2+i\tau$ to
+$\theta<\sigma\le2$. Choose rational
+$0<\delta\le\min(1/2,\sigma-\theta)$, put $r=\delta/2$, and move
+horizontally in rational steps of size at most $r/4$.
+At each center $z$, expand $u^{-z-v-1}$ in $v$ in both integrals.
+The coefficient in degree $j$ contains $( -\log u)^j/j!$.
+The sum of the absolute integral majorants at $|v|=r$ is bounded
+using $u^r$, because the exponential series sums to it. Equivalently
+one can use
+$\int_1^\infty(\log u)^j u^{-1-a}du=j!/a^{j+1}$ for $a>0$.
+Thus for the coefficients $a_j$ of $G(z+v)$ one has
+$\sum_j |a_j| r^j\le B$, where, for example,
+$H=6+\lceil|\tau|\rceil$ and
+$B=\lceil16(C+1)(H+1)^4/\delta^2\rceil$ suffice.
+Indeed the majorants for $D_M$ and $W$ there are respectively
+$2HC/\delta$ and $1+H(1+2H/\delta)$, and products multiply majorants.
+
+At $2+i\tau$ all coefficients vanish: expand the absolutely convergent
+product $\zeta D_M$ termwise on its disk and group by the integer product
+using divisor cancellation. At a step $v$ the new coefficient in
+degree $\ell$, scaled by $r^\ell$, is the sum of
+$\binom j\ell a_j r^j(v/r)^{j-\ell}$ over $j\ge\ell$.
+The omitted part past $J\ge\ell$ is bounded by
+$B4^\ell2^{-J}$ using $\binom j\ell\le2^j$. This makes propagation
+of zero an arithmetic argument even for a variable number of centers.
+Starting with the desired final degree zero and error $e$, work backwards:
+for each step requiring coefficients through degree $l$ with error $e$,
+take $J\ge l$ such that $B4^l2^{-J}\le e/2$ and ask for the preceding
+scaled coefficients through $J$ to error $e/(2\cdot4^{l+1})$.
+Indeed the sum of the absolute multipliers for one such coefficient
+is at most $4^l\sum_{j\ge0}2^{-j}\le 2\cdot4^l$.
+Choose $J$ by the binary length of the rational threshold, so the entire
+schedule is PR. Now a forward induction on the bounded tables proves
+$G(s)=0$ at every requested precision. For $s\ne1$ the rational
+distance from $1$ supplies a positive bound for division, yielding
+$\zeta(s)D_M(s)=1$ and the claimed inequality.

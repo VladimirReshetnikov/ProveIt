@@ -1,0 +1,49 @@
+\section{Two conditional prime-gap implications}
+\label{sec:conditional-gap}
+Let $c=\pi_{\rm c}$ denote the circle constant and let $x$ be an integer. A positive difference $\pi(x)-\pi(y)$ supplies a prime by scanning the integers in $(y,x]$. The question is which explicit finite inequality suffices to make this difference positive.
+
+\paragraph{Two values of the counting error.}
+Suppose $2657\le y<x$ are integers and at these two arguments the Schoenfeld bounds quoted on the Wikipedia page hold,
+\[
+ |\pi(t)-\operatorname{li}(t)|<\frac{\sqrt t\log t}{8c},\qquad t=y,x .
+\]
+If $x-y\ge\sqrt x\,(\log x)^2/(4c)$, then $(y,x]$ contains a prime. Indeed, $\operatorname{li}(x)-\operatorname{li}(y)\ge(x-y)/\log x$ by a lower rectangle, while the two endpoint errors in total are strictly smaller than $\sqrt{x}\log x/(4c)$. This gives a pointwise implication with no zero-counting premise.
+
+A shorter interval requires information on how the error varies across it. To see the scale, one can construct an integer counting function with jumps $0,1$ that obeys the same error envelope and has an arbitrarily far-out gap of length at least $2\sqrt{x}\log x$. Start at $m_0=2657$ with a rational approximation to $\operatorname{li}(m_0)$ of error at most $1/4$. At every integer $m\ge m_0$ add a nonnegative rational lower approximation to $1/\log m$ of error at most $2^{-m}$; then take the integer part of each accumulated rational. This gives $G(m)$ with unit jumps and $|G(m)-\operatorname{li}(m)|<4$, since the difference between upper and lower unit rectangles telescopes to at most $1/\log m_0$. The envelope exceeds four throughout: $c\le4$, $\sqrt{2657}>50$ and $\log2657>11/2$. Now fix $x\ge2^{4096}$, put $S=\sqrt x$, $L=\log x$, and choose an integer $H$ between $2SL$ and $2SL+2$ by taking the ceiling of a rational upper enclosure of width at most one. Put $y=x-H$. Freeze $G$ at $G(y)$ through $x$ and subtract $G(x)-G(y)$ from every later value. Since $H\le3SL$ and $L\le 24x^{1/24}$ (integrate $1/t\le t^{1/24-1}$), $y\ge x/2$ and $\log y\ge L/2$. The added discrepancy after $y$ is bounded by $8+H/\log y\le 8+6S$. The envelope there is at least $SL/128$, larger than the total error $12+6S$ since $L\ge2048$. Thus endpoint subtraction alone cannot yield a general statement about jumps at the shorter scale.
+
+\paragraph{A finite local hypothesis yielding Dudek's constant.}
+There is a more informative arithmetic premise that does give $4/c$ with one logarithm. Define a triangular sum, with $1\le h<t$ integers,
+\[
+ W(t,h)=\sum_{|m-t|<h}\bigl(1-|m-t|/h\bigr)\Lambda(m).
+\]
+It can also be computed as $[P(t+h)-2P(t)+P(t-h)]/h$, where
+$P(u)=\sum_{m\le u}(u-m)\Lambda(m)$. Expand the coefficient of each $\Lambda(m)$ on the three intervals to get the identity. The following local inequality is the specific input isolated from \href{https://arxiv.org/abs/1402.6417}{Dudek, \emph{On the Riemann hypothesis and the difference between primes}, Section 2.2}:
+\begin{equation}\label{eq:local-triangle}
+ W(t,h)>h-\frac{2}{c}\left(\frac{t}{\sqrt{t-h}}
+           +\frac{(t+h)^{3/2}}{t}\right)\log(2t/h)-\frac{48}{5h}.
+\end{equation}
+Dudek derives this premise from estimates for zeta zeros under RH when $2t/h>15$. We prove the following implication entirely with bounded arithmetic and real names.
+
+\begin{proposition}
+For each integer $x\ge2^{4096}$ choose $h$ with $(2/c)\sqrt x\log x-2\le h\le(2/c)\sqrt x\log x$ and put $t=x-h$. If \eqref{eq:local-triangle} holds at this pair, a bounded search returns a prime in
+\[
+ (x-(4/c)\sqrt x\log x,\ x].
+\]
+\end{proposition}
+\begin{proof}
+Write $d=2/c$, so $1/2\le d\le1$. Compute $h$ by taking the floor of a rational lower enclosure to $dSL$ of width at most one. Put $z=h/x\le L/S$. The bound $L\le24x^{1/24}$ gives $z\le1/8$ and $3zL\le1$ in the stated range; also $h\ge dSL/2$ and $2t/h>15$ (indeed $z<1/9$). Hence
+\[
+ \frac{t}{\sqrt{t-h}}+\frac{(t+h)^{3/2}}t\le S(2+6z),
+ \qquad \log(2t/h)\le L/2-\log L+3 .
+\]
+For the first inequality use $(1-2z)^{-1/2}\le(1-2z)^{-1}\le1+4z$ and $(1-z)^{-1}\le1+2z$. For the second use $2t/h\le(4/d)S/L$ and $\log 8\le3$. Since $L\ge2048$ and $\log L\ge11/2$, the product on the right is at most $S(L-2\log L+6+3zL)$. Substitution in \eqref{eq:local-triangle} gives
+\[
+ W(t,h)>dS(2\log L-7)-12\ge 2S-12>S.
+\]
+We bound all proper prime powers in this window. The number of squares in $(x-2h,x]$ is at most
+$1+2h/(\sqrt x+\sqrt{x-2h})\le1+2L$. For each $a\ge3$ there are at most $x^{1/3}$ eligible bases, and at most $L/\log 2\le2L$ exponents. Every weight is at most $L$. Thus the total proper-power contribution divided by $S$ is at most
+\[
+ (1+2L)L/S+2L^2 x^{-1/6}<1.
+\]
+For the strict bound insert $L\le24 x^{1/24}$; the three resulting terms are at most $24x^{-11/24}$, $1152x^{-5/12}$ and $1152x^{-1/12}$ respectively, whose sum is below one for $x\ge2^{4096}$. If all prime indicators in $(x-2h,x)$ were zero, the finite weight sum would therefore be $<S$. A bounded scan must succeed, and $2h\le(4/c)SL$ gives the claimed location. All comparisons with strict analytic hypotheses can be read as rational interval certificates with positive margin. This proves the arithmetic extraction from \eqref{eq:local-triangle}; deriving that premise from a formalized RH requires the analytic zero estimates.
+\end{proof}

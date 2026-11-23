@@ -1,0 +1,48 @@
+\section{The boundary and twist of a Möbius band}\label{sec:ribbon}
+Take $m\ge3$ unit rectangles indexed cyclically. Use coordinates $(x,y)$, $0\le x\le1$, $-1\le y\le1$. Glue the right end of panel $i$ to the left of panel $i+1$ by $y\mapsto e_i y$ with signs $e_i\in\{1,-1\}$. Put $e=\prod_{i<m}e_i$. Arithmetic on panel coordinates and all gluings is rational; maps agreeing on a seam specify maps on this finite presentation. Interior points have rectangular charts; at a seam use $x-1$ in the preceding panel and $x$ in the next, reversing the transverse coordinate when required. Horizontal-edge charts are half rectangles. These explicit charts also define the orientation and boundary used here.
+
+\begin{theorem}[Parity of the twist]\label{idx-ribbon4}
+Up to a panelwise affine homeomorphism there are two standard gluings, the cylinder for $e=1$ and the Möbius band for $e=-1$. The first has two boundary cycles and admits an orientation. The second has one boundary cycle and reverses a transverse direction around its core.
+\end{theorem}
+\begin{proof}
+Replace the $i$th transverse coordinate by $p_i y$, with $p_0=1$ and $p_{i+1}=p_i e_i$ up to the last seam. All gluings except the last become the identity; the last has sign $e$. This coordinate change is its own inverse panel by panel. The horizontal edges are exactly the boundary in the displayed half-rectangle atlas. Travelling with increasing panel coordinate takes an edge sign $s$ to $e_i s$ at seam $i$. After $m$ steps the sign is $es$. If $e=1$ the two signs give separate cycles of length $m$; if $e=-1$ one cycle goes twice around, length $2m$. The same transition has Jacobian sign $e_i$ in the two-dimensional chart (the longitudinal coordinate increases on both sides). Consistent orientation signs $o_i$ satisfy $o_{i+1}=e_i o_i$, and exist exactly for $e=1$. Each panel interior is connected, so a locally constant orientation sign there is constant; the obstruction cannot be removed by subdividing a chart. In the product coordinates of the ambient interval bundle the calculation is also the reversal of any chosen normal direction to the central curve \emph{within the strip}.
+\end{proof}
+
+\begin{proposition}[Core circle, cut, and double cover]\label{idx-ribbon11}
+Both bands strongly deformation retract to a circle. Cutting the Möbius band along its core gives one cylinder. Going twice round the base gives a cylinder double covering the Möbius band.
+\end{proposition}
+\begin{proof}
+The maps $(x,y)\mapsto(x,(1-t)y)$ respect all signed seams, fix the core pointwise, and at $t=1$ take the band to it. The core is a cyclic interval of length $m$ with its endpoints glued. The displayed homotopy is given by rational multiplication on each panel with an explicit local Lipschitz bound. To cut, split each panel into two closed half panels and keep the two copies of $y=0$ distinct. Label such a half by $s=\pm1$ and use transverse coordinate $u=|y|\in[0,1]$. The gluing changes $s$ to $e_i s$ and preserves $u$; the length-$2m$ boundary permutation just calculated shows that the result is a single circle of $2m$ intervals times $[0,1]$. For the double cover, instead take $2m$ full panels with signs repeated. The product around the lifted base is $e^2=1$, so the resulting band is a cylinder. Reduction of the panel index modulo $m$ covers each small panel-interior chart and each seam chart by exactly two disjoint copies, sent homeomorphically onto it. The finite chart calculations give a two-sheeted covering map.
+\end{proof}
+
+Gluing two copies of the Möbius band along their boundary gives Euler characteristic zero in the polygonal cell count: each band has $2m$ boundary edges, $m$ vertical edges, $2m$ vertices and $m$ faces, and the common boundary has $2m$ vertices and $2m$ edges. This also illustrates directly why having the homotopy type of a circle determines neither the boundary count nor orientability of these bands.
+
+\subsection{The circle is a one-manifold; the figure eight has a branch point}
+Each point $c$ of the circle $C=\mathbb R/\mathbb Z$ has an arc chart. Choose a rational center $a$ within $1/16$ of $c$ and take signed differences from $a$ on the ball $d_C(a,x)<1/4$. These are unique lifts in $(-1/4,1/4)$ and have the inverse $t\mapsto a+t\bmod1$. Both maps have local Lipschitz bounds, and this arc contains $c$. The line itself has interval charts by translation. Consider instead the graph obtained by joining two unit-circumference circles at their basepoints, with shortest-path metric. The open ball of radius $1/8$ at the joint $o$ has four arms. For points on distinct arms in this ball, their distance is the sum of their distances to $o$: a route going the other way around a unit circle is longer than $1/2$.
+
+\begin{proposition}[Branch obstruction]\label{idx-ribbon23}
+The joint has no equipped interval chart. More generally a metric star with three or more arms at a vertex has the same obstruction. Here a chart contains a specified ball about the vertex, has both inverse identities, and supplies continuity at prescribed points and uniform moduli on the small closed arm segments used in the proof.
+\end{proposition}
+\begin{proof}
+Suppose $f$ is such a chart with inverse $g$, with $b=f(o)$. Take three equal short closed arm segments $[o,p_i]$ of positive rational length $l$, inside the chart and the $1/8$ ball in the example. Write $b_i=f(p_i)$. The continuity bound for $g$ at $b$ for target error $l/2$ gives a positive threshold below which $b_i$ cannot lie from $b$, since $g(b_i)=p_i$. Consequently one can decide on which side of $b$ each $b_i$ lies using rational readings at precision finer than a quarter of this threshold. Two lie on one side. Choose a rational $c$ strictly between $b$ and both these endpoint values, with all three inequalities witnessed by positive margins. It lies in the interval chart.
+
+Write $z=g(c)$. On either of the two arms the approximate intermediate value theorem in Section~\ref{sec:metric-names} gives points with images arbitrarily close to $c$. It applies to named endpoint values by choosing readings accurate within the strict margins (reverse signs on decreasing arms). Applying the continuity modulus of $g$ at $c$ gives arm points at distance at most $2^{-k}$ from $z$ on each arm, for any given $k$. These two points are at most $2^{1-k}$ apart; their distance equals the sum of their distances from $o$. Thus $z$ is within $3\cdot2^{-k}$ of $o$ for all $k$, so $z=o$. Applying $f$ gives $c=b$, contradicting the chosen margin. This argument explains the failure at the joint without assuming the existence of an exact zero for a general intermediate-value problem.
+\end{proof}
+
+\subsection{A solid handle and an embedded torus}
+The cup-and-doughnut example requires specifying which surface one means. The following model includes the interior of the vessel's wall as solid material, and takes its complete boundary, including the inner bowl, as the surface.
+
+\begin{proposition}[A handled ball and its boundary]\label{idx-ribbon35}
+Let $D=[-1,1]^2$. A ball presented as $[0,1]\times D$, together with a second copy of $[0,1]\times D$ attached by its end disks to the two end disks of the ball with matching transverse coordinates, is a solid torus. Its boundary is $C\times C$, and both admit explicit embeddings in three-space.
+\end{proposition}
+\begin{proof}
+Orient the two longitudinal intervals consecutively. Their endpoint gluings make a circle of length two, and leave the $D$ coordinate unchanged. The quotient is thus exactly $C\times D$ by the piecewise rescaling that sends each interval to half a turn. The disk interiors at the attachments are interior points after gluing by a product chart. The remaining lateral faces and their seams form $C\times\partial D$, identified with $C\times C$ by the perimeter parameter. This also supplies the boundary charts at the former rims.
+
+Here is an embedding with an explicit inverse. For $u=(u_1,u_2)\in\partial D$ and $v=(v_1,v_2)\in D$, put
+\[
+      (X,Y,Z)=((3+v_1)u_1,(3+v_1)u_2,v_2).
+\]
+Writing $t=\max(|X|,|Y|)$ gives $t=3+v_1\ge2$. Recover $u=(X/t,Y/t)$ and $v=(t-3,Z)$. Thus the image is given by $\max(|t-3|,|Z|)\le1$ and its boundary by equality. All operations give PR evaluators with uniform bounds on this bounded region. For example coordinatewise multiplication on these parameter ranges changes by at most five times the sup displacement, and division uses $t\ge2$.
+
+A hollow-looking bowl can be made in the ball before attaching the handle. With $u\in D$ and $s\in[0,1]$, put $h(u)=(1+\|u\|_\infty)/2$. The map $(s,u)\mapsto(u,s h(u))$ produces material between a flat bottom and a top surface depressed at its center, with the rim at height one. Its inverse uses division by $h\ge1/2$. Mark the images of the two attaching disks (or transport a chosen pair by a supplied ball chart); postcomposing that chart simply transports the gluing. This establishes the advertised cup comparison for a ball with one ordinary solid handle, without needing a recognition theorem for physical objects.
+\end{proof}

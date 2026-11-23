@@ -1,0 +1,263 @@
+\section{Exact identities from finite divisor sums}\label{sec:divisor-identities}
+For $N\ge 0$ and $a\ge1$ put $q_N(a)=\lfloor N/a\rfloor$.
+In particular $q_N(a)=0$ for $a>N$. Throughout this section the sums
+with upper endpoint zero are empty and $M(0)=0$.
+
+\begin{lemma}[Weighted floor sums]\label{lem:weightedsum}
+For any finite integer table $w(1),\ldots,w(N)$,
+\[
+ \sum_{a=1}^{N} w(a)M(q_N(a))
+ =\sum_{m=1}^{N}\sum_{d\mid m}\mu(d)w(m/d).
+\]
+\end{lemma}
+\begin{proof}
+Expand the left side as the sum of $w(a)\mu(d)$ over the positive pairs
+with $ad\le N$. The map $(a,d)\longmapsto(ad,d)$ has inverse
+$(m,d)\longmapsto(m/d,d)$ on the displayed divisor pairs. To implement
+the change of order, enumerate $a,d,m\le N$ and insert the indicator
+$[ad=m]$. Summing first over $m$ or first over $a$ gives the two
+expressions. Finite double sums commute by induction on their side lengths.
+\end{proof}
+
+\begin{theorem}[Floor recurrence and quotient blocks]\label{thm:floor-recurrence}
+For $N\ge1$,
+\[
+ \sum_{a=1}^{N}M(q_N(a))=1,\qquad
+ M(N)=1-\sum_{a=2}^{N}M(q_N(a)).
+\]
+The recursion, together with $M(0)=0$, uniquely determines $M$.
+\end{theorem}
+\begin{proof}
+Set $w(a)=1$ in Lemma~\ref{lem:weightedsum}. The divisor sum on the right
+is $[m=1]$. The $a=1$ term on the left is $M(N)$ and all remaining
+arguments are strictly smaller than $N$. If two candidate tables obey the
+same equations through $N$, induction on the Boolean predicate that all
+entries through $t$ agree gives equality through $N$.
+
+For $1\le q\le N$, the indices $a$ giving quotient $q$ are exactly
+\[
+  q_N(q+1)<a\le q_N(q).
+\]
+Indeed $q\le N/a<q+1$ is equivalent to $a q\le N<a(q+1)$.
+Thus a whole block in the sum carries the single value $M(q)$ with
+multiplicity $q_N(q)-q_N(q+1)$, with the term $a=1$ removed when using
+the recursion. If $u$ is the largest integer with $u^2\le N$, the
+indices $a\le u$ yield at most $u$ quotients. For $a\ge u+1$, the
+inequality $N<(u+1)^2$ gives $q_N(a)\le u$. There are at most $2u$
+distinct positive quotients in total.
+\end{proof}
+
+\begin{theorem}[Totients and the second Chebyshev function]\label{thm:totient-chebyshev}
+Let $\varphi(m)=\#\{1\le b\le m:\gcd(b,m)=1\}$, including
+$\varphi(1)=1$. For $N\ge1$ one has
+\begin{align*}
+ \sum_{a=1}^N aM(q_N(a)) &= \sum_{m=1}^N\varphi(m),\\
+ \sum_{a=1}^N M(q_N(a))\log a
+     &= \sum_{\substack{p\ \mathrm{prime},\ j\ge1\\p^j\le N}}\log p
+      =\psi(N).
+\end{align*}
+The second equality of functions admits an exact, integer-valued proof
+for each prime coordinate of the logarithms.
+\end{theorem}
+\begin{proof}
+The indicator of coprimality equals $\sum_{d\mid\gcd(b,m)}\mu(d)$.
+For each $d\mid m$, precisely $m/d$ of the integers $1,\ldots,m$ are
+multiples of $d$. Hence
+$\varphi(m)=\sum_{d\mid m}\mu(d)(m/d)$, and the first formula follows
+from Lemma~\ref{lem:weightedsum}.
+
+Fix a prime $p\le N$. Write $v_p(a)$ for the largest $j\le a$ such that
+$p^j\mid a$, for $a\ge1$. It equals the number of $j\ge1$ such that
+$p^j\mid a$. Set $w(a)=v_p(a)$ in the lemma. For each $m$ the inner sum is
+\[
+ \sum_{d\mid m}\mu(d)v_p(m/d)
+ =\sum_{\substack{j\ge1\\p^j\mid m}}\;\sum_{d\mid m/p^j}\mu(d)
+ =[m=p^j\text{ for some }j\ge1].
+\]
+Indeed the inner divisor sum vanishes unless $p^j=m$, and then it is
+one. Consequently the coefficient of the formal symbol $\log p$ on each
+side of the Chebyshev formula is $\#\{j\ge1:p^j\le N\}$. Unique
+factorization gives $\log a=\sum_{p\le N}v_p(a)\log p$ in these
+coordinates. Substituting the usual logarithms in this finite identity
+gives the displayed formula. Its multiplicative form in positive rationals is
+\[
+  \prod_{a=1}^N a^{M(q_N(a))}=\operatorname{lcm}(1,\ldots,N),
+\]
+since the exponent on the right is the largest $j$ with $p^j\le N$,
+which equals the same count. Move negative powers to the other side to
+obtain a natural-number equality. The prime and exponent tests have
+bounds $p,j\le N$.
+\end{proof}
+
+\subsection{Ordered products beneath a hyperboloid}
+Let $H_k(N)$ count ordered $k$-tuples $(a_1,\ldots,a_k)$ of integers
+at least two satisfying $a_1\cdots a_k\le N$. For $N\ge1$ the empty
+tuple gives $H_0(N)=1$. Write $L_N$ for the largest $k\le N$ with
+$2^k\le N$.
+
+\begin{theorem}[Finite hyperboloid expansion]\label{thm:hyperboloid}
+For $N\ge1$,
+\[
+ M(N)=\sum_{k=0}^{L_N}(-1)^k H_k(N).
+\]
+For $N\ge2$, the first two terms are $1-(N-1)$.
+\end{theorem}
+\begin{proof}
+On tables indexed by $1,\ldots,N$, let
+$(Tg)(t)=\sum_{a=2}^{t}g(q_t(a))$. For these $a$ the quotient is at
+least one. The floor recurrence reads $M=\mathbf{1}-TM$, where
+$\mathbf{1}$ is the constant table of ones. Repeated substitution and
+the additivity of $T$ give, for every $s\ge0$,
+\[
+ M=\sum_{k=0}^s(-1)^kT^k\mathbf{1}+(-1)^{s+1}T^{s+1}M.
+\]
+This follows by induction starting with the floor recurrence. For every
+positive $a,b$ one has $q_{q_t(a)}(b)=q_t(ab)$ since for any $j$ both
+quotients are at least $j$ exactly when $jab\le t$.
+Induction on $k$ now identifies $(T^kg)(t)$ with the sum over tuples
+counted by $H_k(t)$ of $g(\lfloor t/(a_1\cdots a_k)\rfloor)$. Cutting
+off or prepending the first factor gives the two inverse enumerations
+in the induction step. Taking $s=L_N$ kills the last table since
+every tuple with $L_N+1$ factors has product at least $2^{L_N+1}>N$.
+Taking $g=\mathbf{1}$ proves the formula. Tuple codes are bounded by
+$(N+1)^k$ using base $N+1$. Alternatively $H_{k+1}=TH_k$ computes all
+needed counts using bounded tables.
+\end{proof}
+
+\section{Two finite representations of \texorpdfstring{$M(N)$}{M(N)}}\label{sec:finite-representations}
+\subsection{The Redheffer determinant}
+For $N\ge1$, the Redheffer matrix $R$ has indices $1\le i,j\le N$ and entries
+\[
+ R_{ij}=[j=1\ \text{or}\ i\mid j].
+\]
+\begin{theorem}\label{thm:redheffer}
+$\det R=M(N)$.
+\end{theorem}
+\begin{proof}
+Use the integer Leibniz determinant, the sum over permutations $\sigma$
+of $(-1)^{\operatorname{inv}(\sigma)}\prod_i R_{i,\sigma(i)}$, where
+$\operatorname{inv}$ counts inversions. Replace the first row by
+$\sum_{i=1}^N\mu(i)R_{i,*}$. Multilinearity in this row follows by
+distributing the product in each permutation term. For $i>1$, replacing
+row 1 by row $i$ gives determinant zero. To see this, pair the term of
+$\sigma$ with the term in which its images at positions $1$ and $i$
+are exchanged. Their products agree. The exchange is a composition of
+$2(i-1)-1$ adjacent exchanges, each of which changes inversion parity.
+This explicitly pairs opposite signs. Since $\mu(1)=1$, the row
+replacement preserves the determinant.
+
+The new first entry is $M(N)$ since the first column consists of ones.
+For $j>1$ the new entry is $\sum_{i\mid j}\mu(i)=0$. A possibly
+nonzero permutation term therefore has $\sigma(1)=1$. For $i\ge2$ it
+must have $i\mid\sigma(i)$ and thus $i\le\sigma(i)$. The sum of all
+images equals the sum of the indices. It follows that $i=\sigma(i)$ at
+every position, since any strict inequality would increase the sum. Only
+the identity term can contribute. Its value is $M(N)$. All the entries,
+permutations and inversion tests are finite. One may enumerate $N$-digit
+base-$(N+1)$ codes, retaining just the lists containing each symbol
+$1,\ldots,N$ exactly once.
+\end{proof}
+
+\subsection{The Farey sum and all its integer frequencies}
+For $N\ge1$, let $\mathcal F_N$ consist of $0/1$ and all fractions
+$a/q$ with $1\le a\le q\le N$ and $\gcd(a,q)=1$. This lists $1/1$
+exactly once. Reduced representations are unique by cross multiplication
+and prime factorization. The order of the list will not affect its sum.
+
+\begin{theorem}[Farey and Ramanujan sums]\label{thm:farey}
+For every $h\ge0$,
+\begin{align*}
+ c_q(h)&:=\sum_{\substack{1\le a\le q\\\gcd(a,q)=1}}
+       e^{2\pi i ha/q}=\sum_{r\mid\gcd(q,h)}r\mu(q/r),\\
+ \sum_{x\in\mathcal F_N} e^{2\pi i h x}
+    &= 1+\sum_{\substack{1\le r\le N\\r\mid h}}rM(q_N(r)).
+\end{align*}
+Thus $M(N)=-1+\sum_{x\in\mathcal F_N}e^{2\pi i x}$ and
+$|\mathcal F_N|=1+\sum_{m\le N}\varphi(m)$, where $m$ starts at one.
+The finite arithmetic interpretation of the exponentials is made explicit below.
+\end{theorem}
+\begin{proof}
+Expand the indicator of $\gcd(a,q)=1$ as $\sum_{d\mid\gcd(a,q)}\mu(d)$.
+For a fixed $d\mid q$ write $a=db$, $r=q/d$. Its contribution is
+$\mu(d)\sum_{b=1}^r e^{2\pi i hb/r}$, a sum around a regular polygon.
+If $r\mid h$, this last sum is $r$. Otherwise put $z=e^{2\pi i h/r}$.
+Multiplication of $z+\cdots+z^r$ by $1-z$ gives $z(1-z^r)=0$, and
+$z\ne1$. Hence the sum is zero. This proves the formula for $c_q(h)$.
+Add the extra term $1$ from $0/1$ and sum over $q\le N$. For each
+$r\mid h$ write $q=rt$. The inner sum over $t\le q_N(r)$ is $M(q_N(r))$,
+which gives the claimed expression. At $h=1$ only $r=1$ survives. At
+$h=0$ every positive $r$ divides $h$, so Theorem~\ref{thm:totient-chebyshev}
+gives the cardinality.
+
+Here is an integer-polynomial certificate for the polygon calculation.
+It makes the preceding complex notation disposable. Put $L=N!$, and work
+in the ring of length-$L$ integer coefficient lists with cyclic convolution,
+written $\mathbb Z[X]/(X^L-1)$. Multiplication by $X^j$ rotates a list
+by $j\bmod L$. Encode the first displayed sum by the polynomial
+\[
+ C_{q,h}(X)=\sum_{\substack{1\le a\le q\\\gcd(a,q)=1}}
+    X^{(ha(L/q)\bmod L)},\qquad
+ D_L(X)=\prod_{k=1}^{L-1}(1-X^k).
+\]
+For $q\le N$ one has the exact coefficientwise equality
+\[
+ D_L C_{q,h}=D_L\sum_{r\mid\gcd(q,h)}r\mu(q/r)
+       \pmod{X^L-1}.
+\]
+To verify it, perform the same divisor-indicator expansion. In a block
+of length $r$, put $k=h(L/r)\bmod L$. If $r\mid h$, then $k=0$ and the
+block is $r$. Otherwise $1\le k<L$. For the block
+$G=X^k+\cdots+X^{rk}$ the telescoping equality
+$(1-X^k)G=X^k(1-X^{rk})=0$ holds in the cyclic lists because $L\mid rk$.
+The factor $1-X^k$ occurs in $D_L$, so $D_L G=0$. This proves the
+certificate using bounded coefficient arithmetic, including $L=1$, when
+the product is empty. In the usual complex interpretation put
+$X=e^{2\pi i/L}$. Its order is $L$, hence every factor of $D_L(X)$ is
+separated from zero. Indeed for $1\le k<L$ put $b=\min(k,L-k)$.
+Then $|1-X^k|=2\sin(\pi b/L)\ge2\pi/(3L)\ge1/L$, using the elementary
+sine estimate on $[0,\pi/2]$ proved in Section~\ref{sec:squarefree}.
+Thus cancellation gives the stated complex identity. Cancellation of
+$D_L$ requires this evaluation or the primitive-root ring below. All induction in
+the certificate ranges over finite coefficient vectors, divisor lists or
+products with displayed bounds.
+\end{proof}
+
+The same certificate gives equality inside an explicit ring representing a
+primitive root, entirely in arithmetic. Here are the construction and the
+reason cancellation works there. Write $B_m=X^m-1$ and proceed in increasing
+order $1\le m\le L$. Define $P_m$ by monic polynomial division from
+\[
+ B_m=P_m\prod_{d\mid m,\ d<m}P_d.
+\]
+We verify simultaneously over $\mathbb Q[X]$ that each division is exact
+and that all polynomials obtained are pairwise coprime. A previous
+$P_d$ with $d\mid m$ divides $B_d$ and hence $B_m$. The previous factors
+are pairwise coprime, so their product divides $B_m$ by the polynomial
+B\'ezout identity applied successively. Monic long division also gives
+integer coefficients for the quotient. If $e\mid m$ and $e<m$, a common
+nonconstant factor of $P_m,P_e$ would give a square dividing $B_m$,
+impossible since $B_m$ is coprime to its derivative $mX^{m-1}$.
+For $e<m$ with $e\nmid m$, put $g=\gcd(e,m)<e$. Reduction of the larger
+exponent modulo the smaller in the Euclidean algorithm gives
+$\gcd(B_e,B_m)=B_g$. But $B_g=\prod_{d\mid g}P_d$ is coprime to $P_e$
+by the induction hypothesis, which excludes a common factor of $P_e,P_m$.
+This completes the simultaneous induction.
+
+Taking degrees gives $\sum_{d\mid m}\deg P_d=m$. Grouping the fractions
+$a/m$ for $1\le a\le m$ by their reduced denominators gives
+$\sum_{d\mid m}\varphi(d)=m$. Subtraction of the proper-divisor terms,
+in increasing order of $m$, now yields $\deg P_m=\varphi(m)\ge1$.
+The ring of rational lists representing remainders modulo $P_L$ therefore
+contains the rational constants faithfully. The class of $X$ satisfies
+$X^L=1$. For $1\le k<L$, put $g=\gcd(k,L)<L$. Any common divisor of
+$P_L$ and $X^k-1$ divides $B_g$, and $P_L$ is coprime to every $P_d$
+with $d\mid g$. Thus $1-X^k$ has a B\'ezout inverse modulo $P_L$. Reducing
+the cyclic-list certificate modulo $P_L$ and multiplying by these inverses
+gives $C_{q,h}=c_q(h)$, with $c_q(h)$ the integer divisor sum, in this
+ring. All polynomial divisions with remainder and extended Euclidean
+algorithms here use bounded fuel because a nonzero division step lowers the
+current degree, and a Euclidean step lowers the divisor degree. Tables
+of previously constructed polynomials, rational coefficients, and
+B\'ezout coefficients can be carried through these primitive recursions.
+The induction on $m$ checks coprimality by computing monic gcds for all
+indices up to $m$.

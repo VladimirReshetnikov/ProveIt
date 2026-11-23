@@ -1,0 +1,770 @@
+\section{Reductions, complete problems, and constructive search}\label{sec:np}
+
+The historical completeness constructions originate with Cook and Karp \cite{Cook1971,Karp1972}. Our 2SAT treatment uses the implication-graph criterion associated with Aspvall, Plass, and Tarjan \cite{AspvallPlassTarjan1979}, while proving only the explicit polynomial bound established below.
+
+The results in this section sharpen the verifier and circuit framework into a
+collection of explicit reductions and algorithms. Cook's original paper and
+Karp's reduction paper are the historical sources for the completeness
+framework; the proofs below give the finite constructions and witness maps
+needed here. The implication-graph criterion for 2SAT is the one treated by
+Aspvall, Plass, and Tarjan. We use a deliberately simpler polynomial algorithm,
+not their sharper linear-time implementation. Bibliographic pointers are
+listed in the source ledger accompanying this report.
+
+\subsection{Conventions that affect correctness}
+
+A Boolean instance has an explicitly specified finite variable universe
+$0,\ldots,v-1$. Its representation lists those variables, or gives $v$ in
+unary, so $v$ is at most the input length. An assignment is a bit vector of
+length exactly $v$, including values of unused variables. This detail is
+essential for counting. Ordinary syntactic formulas can enforce the same
+convention by appending $x_i\vee\neg x_i$ for every designated unused variable.
+A literal is a pair $(i,\epsilon)$, where $i<v$ and $\epsilon$ indicates whether
+the bit is negated. A clause is a finite list of literals; an empty clause is
+false and an empty conjunction is true. In $k$CNF every clause has width at
+most $k$. Repeating literals pads nonempty short clauses to width exactly
+three without changing assignments. Graphs below are finite, simple,
+undirected graphs with numbered vertices and an explicit adjacency table.
+Numbers in arithmetic decision problems are binary, and lists retain their
+positions even if two entries have equal values.
+
+A verifier presentation consists of a fixed deterministic machine $V$,
+nonnegative-coefficient polynomial bounds $q,T$, and the decision bit
+\[
+ A_V(x)=\bigvee_{y<2^{q(n)}} V_T(x,y),\qquad n=|x|.
+\]
+Here $y$ is decoded as exactly $q(n)$ bits and $V_T$ is the acceptance bit after
+$T(n)$ steps, with absorbing halting states. We can enlarge $T$ so that
+$T(n)\ge n+q(n)+1$. There is no unbounded evaluation in this definition.
+All instances are validated before processing. A reduction on valid instances
+is extended to malformed input by a fixed answer convention and fixed valid
+yes/no instances. In particular, the complement of a totalized language also
+complements that convention; ``invalid'' is not silently identified with both
+answers.
+
+\begin{theorem}[N01: constructive algebra of reductions]\label{thm:N01}
+Let $A,B,C$ be represented decision bits. If polynomial-time transducers $f,g$
+satisfy $A(x)=B(f(x))$ and $B(z)=C(g(z))$, their composed transducer is a
+polynomial-time reduction $A\leq_m^p C$. Identity and composition are explicit,
+and polynomial-time decidability is preserved downwards. Logarithmic-space
+many-one reductions have the same composition property.
+\end{theorem}
+\begin{proof}
+Suppose $f$ uses at most $p(n)$ steps and outputs at most $p(n)$ bits, while
+$g$ uses at most $r(m)$ steps on $m$ bits. A machine runs $f$, copies its output
+into a new input area, and runs $g$. A multitape implementation costs at most
+$c(p(n)+r(p(n))+n+1)^2$ for a fixed coding constant $c$; this deliberately
+loose bound covers the copies and elementary simulation. Polynomial
+composition and the displayed pointwise equalities prove the claim. To
+combine a reduction with a decider, replace $g$ by that decider. No decision
+about whether a machine is polynomial time is used: its bound is part of the
+supplied presentation.
+
+For logspace, storing $f(x)$ would be wrong. Instead, simulate $g$ with a
+virtual input tape. Its input-head position uses $O(\log n)$ bits, because
+$f$ has polynomial output length. Whenever $g$ asks for position $j$, restart
+$f$ on $x$, count the emitted symbols to $j$, and provide that symbol. Save
+$g$'s work tape while doing this. The sum of the two logarithmic work bounds
+is logarithmic. A halting logspace transducer has polynomial time and output
+length: ignoring its write-only output tape, it has only polynomially many
+configurations, and a repeated configuration would repeat forever. One may
+instead supply the resulting polynomial clock explicitly, which is the
+preferred internal representation. Thus the recomputation also has a
+polynomial bound. The invariant is equality of the simulated control,
+work-tape, and virtual-input contents with the ordinary computation of $g$ on
+$f(x)$, for all positions below the explicit clock. It is a bounded predicate.
+\end{proof}
+
+\begin{theorem}[N02: verifier and branching presentations of NP]\label{thm:N02}
+Polynomial-time binary nondeterministic machines and polynomial-length,
+polynomial-time verifiers define the same decision bits. The translations
+send accepting witnesses to accepting witnesses by primitive-recursive maps.
+\end{theorem}
+\begin{proof}
+For a binary branching machine with time bound $T(n)$, use a string of exactly
+$T(n)$ bits to select the branch at each step. An absent transition rejects;
+a deterministic transition ignores its bit; a halted computation ignores all
+remaining bits. The deterministic verifier simulates these choices for the
+supplied clock. An accepting path of length at most $T(n)$ supplies its choice
+bits, padded by zeros. Conversely, the simulation supplies the selected
+accepting path. The path code and the bit string have elementary bounds in
+$T$, and equality of the two current configurations is the induction
+invariant. A finite branching degree greater than two is compiled into a
+fixed binary choice tree, rejecting unused leaves, at constant-factor cost.
+
+For the other direction, a nondeterministic machine first guesses exactly
+$q(n)$ witness bits and then runs $V$ for its supplied time. It accepts exactly
+when some witness does. These are existential witness translations; they do
+not assert a bijection between all padded paths and witnesses. Such a
+bijection is needed only in the counting theorem below, where we fix the
+verifier convention from the outset.
+\end{proof}
+
+\subsection{Circuit compilation and Cook--Levin}
+
+A circuit is a list of input nodes followed by constant, NOT, binary AND, and
+binary OR gates. Every non-input gate refers only to earlier nodes. A selected
+node is its output. Evaluate in list order, recording one bit for each node.
+After $i$ gates, the recorded prefix is the unique prefix satisfying those
+$i$ gate equations for the fixed input bits: the next gate has already
+computed arguments and a uniquely determined output. This bounded prefix
+invariant proves both existence and uniqueness without an infinitary
+valuation object.
+
+\begin{theorem}[N03: uniform finite computation circuits]\label{thm:N03}
+For a fixed verifier $V$ and a supplied polynomial clock $T(n)\ge n+q(n)+1$,
+there is a polynomial-time constructor $x\mapsto C_x$ with $q(n)$ input bits
+such that, for every $q(n)$-bit vector $y$,
+\[
+ C_x(y)=V_T(x,y).
+\]
+There is a constant $c_V$ with at most $c_V(T(n)+1)^2$ gates and a polynomial
+bit-length bound for $C_x$. The construction is logspace for fixed $V,q,T$.
+\end{theorem}
+\begin{proof}
+We describe the compiler sufficiently explicitly to remove an appeal to a
+universal circuit theorem. Suppose $V$ has $k$ tapes, a fixed finite alphabet,
+and a fixed finite control. During $T$ steps, every head stays within an
+interval containing the initially occupied cells and $T$ additional cells
+on each side. Give every tape an interval of length
+$L=n+q(n)+2T+3$, with its origin shifted by $T+1$.
+
+At time $t$ use one bit $S_{h,j,a}$ for each tape $h$, cell $j<L$, and alphabet
+symbol $a$, one head-position bit $H_{h,j}$, and one bit $Q_r$ for each control
+state. Legal encodings are one-hot in the symbol, head, and state positions.
+The initial layer consists of constants and the input witness wires, or their
+negations, so its one-hot encoding is explicit. For example a witness cell
+has symbol-1 bit $y_i$, symbol-0 bit $\neg y_i$, and zero bits for the other
+symbols. The fixed input $x$ is hardwired.
+
+For each tape and symbol form the scanned-symbol bit
+\[
+ U_{h,a}=\bigvee_{j<L}(H_{h,j}\wedge S_{h,j,a}).
+\]
+Implement this OR by a binary chain. For each transition rule $\rho$, form a
+selector $D_\rho$ by ANDing its state bit with its scanned-symbol bits. There
+are only constantly many selectors, since $V$ is fixed. The next-state bit is
+the OR of selectors entering that state. For a cell-symbol bit use
+\[
+ S'_{h,j,a}=(\neg H_{h,j}\wedge S_{h,j,a})
+ \vee\left(H_{h,j}\wedge
+       \bigvee_{\rho\text{ writes }a\text{ on }h}D_\rho\right).
+\]
+If rule $\rho$ moves tape $h$ by $d_{\rho,h}\in\{-1,0,1\}$, define
+\[
+ H'_{h,j}=\bigvee_\rho(D_\rho\wedge H_{h,j-d_{\rho,h}}),
+\]
+with out-of-interval head bits set to zero. The reserved boundary cells ensure
+that an actually reached head is never lost during the $T$ layers. Absorbing
+halting states are implemented by rules that retain the tape and head and
+repeat the state.
+
+Every displayed conjunction or disjunction has constant length except the
+$L$-term scanned-symbol chains. Consequently one layer uses at most $c_V L$
+gates. Repeat the layer $T$ times and output the accepting-state bit. The
+invariant says that every state, head, and cell-symbol bit in layer $t$ is the
+corresponding bit of the $t$-step machine configuration, and that all one-hot
+conditions hold. The initial layer proves the base case. A one-hot encoding
+makes exactly one rule selector true; the three update formulas then give
+precisely the tape, head, and state update. Bounded induction on $t\le T$
+proves the claim for every witness, the latter quantified below $2^{q(n)}$.
+
+Since $L\le 3T+3$, the gate bound is quadratic. Each node address has
+$O(\log(T+2))$ bits, so the encoded circuit length is
+$O_V((T+1)^2\log(T+2))$. A simple implementation that repeatedly scans its
+partial output still has, for example, a bound $c'_V(T+2)^6$; no unit-cost
+large-integer assumption is needed. More efficiently, preallocate a fixed
+number of wire slots for each time, tape, cell, and local template. Unused
+slots are constant gates. Loop counters and address arithmetic use
+$O(\log(T+2))=O(\log(n+2))$ bits, and the bits of $x$ can be reread by an
+input scan. This emits the circuit in logspace. The circuit's large values
+are gate identifiers of logarithmic bit length, not evaluations of arbitrary
+primitive-recursive syntax.
+\end{proof}
+
+\begin{theorem}[N04: Tseitin constraints have unique extensions]\label{thm:N04}
+There is a linear-size conversion of an acyclic circuit $C$ to a 3CNF formula
+$F_C$, with the original inputs retained as designated variables, such that
+restriction and gate evaluation give inverse maps between satisfying
+assignments of $F_C$ and inputs on which $C$ outputs one.
+\end{theorem}
+\begin{proof}
+Use one variable for every circuit node. For a gate with output $z$, insert
+the following clauses:
+\[
+\begin{array}{c|l}
+ z=a\wedge b & (\neg z\vee a),\ (\neg z\vee b),\ (z\vee\neg a\vee\neg b)\\
+ z=a\vee b & (z\vee\neg a),\ (z\vee\neg b),\ (\neg z\vee a\vee b)\\
+ z=\neg a & (z\vee a),\ (\neg z\vee\neg a)\\
+ z=1 & (z)\\
+ z=0 & (\neg z).
+\end{array}
+\]
+Append a unit clause asserting the output variable. For the AND line, if
+$z=1$, the first two clauses force $a=b=1$; if $z=0$, the last clause says
+that at least one input is zero. Conversely, those two cases verify all
+three clauses whenever $z=a\wedge b$. The OR proof is dual; the NOT and
+constant lines are two-case or one-case checks. These are finite bit case
+splits, hence intuitionistically valid.
+
+Gate evaluation extends every accepting input to an assignment satisfying
+all clauses. Conversely, induction along the topological gate list shows
+that a satisfying assignment has exactly the evaluation bit at every node.
+Its output unit clause therefore forces acceptance. That induction also
+proves uniqueness of the extension, including gates not connected to the
+output. There are at most $3G+1$ clauses for $G$ gates. If the encoding derives
+its variable universe solely from literal occurrence, add one tautology per
+input; this changes the bound to $3G+q+1$ and prevents loss of unused inputs.
+No new choices are introduced by repeating literals to reach width three.
+All assignment maps are finite array operations, bounded by $2^{q+G}$.
+\end{proof}
+
+\begin{theorem}[N05: SAT, circuit SAT, and 3SAT are NP-complete]\label{thm:N05}
+Every polynomial verifier has an explicit polynomial many-one reduction to
+3SAT, with primitive-recursive forward and reverse witness maps. SAT and
+circuit SAT are NP-complete as well.
+\end{theorem}
+\begin{proof}
+Apply N03 to $V,x$ and N04 to $C_x$. An accepting witness $y$ gives the unique
+satisfying assignment by gate evaluation. A satisfying assignment restricts
+to $y$ and the simulation invariant gives $V_T(x,y)=1$. Thus
+$A_V(x)=\operatorname{SAT}(F_{C_x})$ as equality of Boolean decisions.
+The two compilers have polynomial composition. Membership in NP is witnessed
+by a bit vector assigning every designated variable: evaluating a formula,
+circuit, or CNF is polynomial in its explicit encoding. General SAT receives
+the 3CNF formula unchanged, while the circuit target uses $C_x$ directly.
+Every claim concerns a supplied verifier presentation; there is no search for
+an unknown polynomial bound.
+\end{proof}
+
+\begin{theorem}[N06: circuit value is P-complete under logspace reductions]\label{thm:N06}
+The problem of evaluating an explicitly supplied acyclic Boolean circuit with
+specified input bits is in P and is hard for P under logarithmic-space
+many-one reductions.
+\end{theorem}
+\begin{proof}
+Evaluate the nodes in order, recording their bits. Array access by scanning
+gives a polynomial tape-time bound, so no random-access assumption is needed.
+For a fixed polynomial-time decider $M$ and its clock, apply N03 with no
+witness inputs. The resulting constant-input circuit has value $M(x)$. The
+last paragraph of N03 gives a logspace constructor. Its correctness is the
+same layer invariant, so every presented P language reduces to circuit value.
+\end{proof}
+
+\subsection{Graph and arithmetic complete problems}
+
+\begin{theorem}[N07: CLIQUE is NP-complete]\label{thm:N07}
+Given a 3CNF $F$ with $m$ clauses, one can construct in polynomial time a graph
+$G_F$ such that $F$ is satisfiable exactly when $G_F$ has an $m$-vertex clique.
+\end{theorem}
+\begin{proof}
+Make a vertex for each literal occurrence, remembering both its clause and its
+literal. Two vertices are adjacent exactly when they come from different
+clauses and their literals are not complements. There are at most $3m$
+vertices; a double scan writes the adjacency matrix in polynomial time.
+From a satisfying assignment, select the first true literal occurrence in
+each clause. Selected vertices are in different clauses and cannot carry
+complementary literals, since both are true. They therefore form a clique.
+
+Conversely, a clique contains at most one occurrence from each clause. A
+clique of size $m$ therefore contains exactly one from each of the $m$
+clauses. Assign a variable the value requested by its selected occurrence,
+if there is one, and zero otherwise. Pairwise compatibility ensures that two
+selected occurrences never request different values. Every clause then has
+a true selected literal. Selection, compatibility checking, and assignment
+formation are bounded scans. An empty clause makes an $m$-clique impossible;
+if $m=0$, the empty assignment condition and empty clique both satisfy their
+respective instances. Membership of CLIQUE in NP follows by checking a list
+of $k$ distinct vertices and its at most $k^2$ pairs. Values $k$ larger than
+the vertex count are rejected immediately.
+\end{proof}
+
+\begin{theorem}[N08: independent set and vertex cover are NP-complete]\label{thm:N08}
+For a graph $G$ on $N$ vertices and $0\le k\le N$, the following equivalent
+witness transformations are polynomial:
+\[
+\begin{split}
+G\text{ has a }k\text{-clique}
+ &\ \Longleftrightarrow\ \overline G\text{ has an independent set of size }k,\\
+G\text{ has an independent set of size }k
+ &\ \Longleftrightarrow\ G\text{ has a vertex cover of size }N-k.
+\end{split}
+\]
+Consequently INDEPENDENT SET and VERTEX COVER are NP-complete.
+\end{theorem}
+\begin{proof}
+For distinct vertices, complementing the adjacency bit changes ``all selected
+pairs are edges'' into ``all selected pairs are nonedges.'' This leaves the
+selected vertex list unchanged. For the second equivalence, let $S$ be the
+selected independent set and output its vertex complement $C$. An edge
+uncovered by $C$ would have both endpoints in $S$, contradicting independence.
+Conversely, two adjacent vertices in the complement of a cover would give an
+uncovered edge. Cardinalities satisfy $|C|=N-|S|$ by a bounded sum of membership
+bits. For the common ``at least $k$'' and ``at most $N-k$'' conventions, trim
+an oversized independent set by taking its first $k$ members; enlarge a
+smaller cover when necessary. The input bounds make these operations finite.
+Both target problems have polynomial verifiers checking their membership
+bits and edges. Compose these transformations with N07.
+\end{proof}
+
+\begin{theorem}[N09: a parsimonious 3SAT-to-SUBSET-SUM reduction]\label{thm:N09}
+For every 3CNF on $v$ designated variables with $m$ clauses, there is a
+polynomial-time binary SUBSET-SUM instance with $2v+2m$ indexed positive
+integers. Satisfying assignments and subsets summing to the target are in
+explicit bijection. In particular, SUBSET SUM is NP-complete.
+\end{theorem}
+\begin{proof}
+Use base eight, with $v$ variable columns and $m$ clause columns. For each
+variable $x_i$, create two indexed numbers $a_i^0,a_i^1$. Both have digit one
+in variable column $i$ and zero in every other variable column. In clause
+column $j$, the digit of $a_i^b$ is the number of occurrences in clause $j$
+that are made true by assigning $x_i=b$. This digit is at most three; repeated
+literals are counted with their multiplicity. For each clause $j$, create
+slack numbers $s_j^1,s_j^2$ with sole nonzero digit respectively one and two
+in clause column $j$. The target has digit one in every variable column and
+digit four in every clause column.
+
+In any subset of the constructed list, a variable-column sum is at most two.
+The total contribution from all variable numbers to a clause column is at
+most three, because a literal occurrence contributes to exactly one of the
+two numbers for its variable. The two slack numbers contribute at most three
+more. Thus every column sum is at most six, strictly below eight. No carries
+can occur in any subset sum. Equality with the target can consequently be
+checked column by column, a statement proved by repeated quotient and
+remainder by eight.
+
+The variable columns force selection of exactly one of $a_i^0,a_i^1$ for
+each $i$. These choices specify an assignment. If $t_j$ is the number of true
+literal occurrences in clause $j$, then $0\le t_j\le3$, and its target column
+requires a slack contribution $4-t_j$. The available slack sums are
+$0,1,2,3$, each produced by a unique subset of the one- and two-slack numbers.
+Hence the column can be completed exactly when $t_j\ge1$, and the completion
+is unique. For $t_j=1,2,3$, select slack of total $3,2,1$, respectively.
+This gives both directions and the bijection. If a clause is empty, its
+column can never reach four, exactly as required.
+
+Each integer has at most $3(v+m)$ binary bits because base eight is $2^3$.
+The whole list has polynomial bit length and is written by nested bounded
+loops over variables, clauses, and occurrences. An indexed subset is a bit
+vector of length $2v+2m$; binary addition and comparison verify its sum in
+polynomial time. Equal-valued entries remain distinct positions, so the
+bijection also holds for unused variables and duplicate clauses. For the
+zero-column case the list and target are empty and zero; there is one empty
+subset and one zero-variable assignment. All nondegenerate generated numbers
+are positive.
+\end{proof}
+
+\begin{theorem}[N10: PARTITION and 0--1 KNAPSACK are NP-complete]\label{thm:N10}
+SUBSET SUM has explicit polynomial reductions to PARTITION and to the
+0--1 knapsack decision problem with nonnegative integer weights and profits.
+\end{theorem}
+\begin{proof}
+Let the subset-sum input be indexed numbers $a_1,\ldots,a_r$, target $T$, and
+$S=\sum_i a_i$. If $T>S$, output a fixed no-instance. If $S=0$, decide the
+instance directly and output a fixed yes- or no-instance. Otherwise
+$S>0$ and $0\le T\le S$. Append the numbers $2S-T$ and $S+T$. The total is
+$4S$, so equal partition asks for a sublist of sum $2S$. A subset of the
+original list of sum $T$, together with $2S-T$, gives such a partition.
+Conversely, a sublist summing to $2S$ contains exactly one appended number:
+without them its sum is at most $S$, and with both its sum is at least $3S$.
+If it contains $2S-T$, its original entries sum to $T$. If it contains $S+T$,
+its original entries sum to $S-T$, so the complementary original entries sum
+to $T$. The extra numbers have polynomial bit length.
+
+For knapsack, give item $i$ weight and profit both $a_i$, capacity $T$, and
+required profit $T$. The inequalities $\sum a_i\le T$ and $\sum a_i\ge T$
+force equality. Conversely a subset sum of $T$ meets both constraints.
+Checking subset sums, weights, and profits uses polynomial binary arithmetic,
+so both target problems lie in NP.
+\end{proof}
+
+\begin{theorem}[N11: 0--1 integer feasibility is NP-complete]\label{thm:N11}
+Feasibility of a finite system of integer linear inequalities with every
+variable constrained to $\{0,1\}$ is NP-complete, even for the inequalities
+arising from clauses of width at most three.
+\end{theorem}
+\begin{proof}
+Replace each positive literal $x_i$ by the integer $x_i$ and each negative
+literal by $1-x_i$. For each clause require the sum of its literal terms to
+be at least one. On a bit assignment this sum counts exactly its true literal
+occurrences. Therefore the same assignment satisfies the formula if and only
+if it satisfies the system. The expansion has polynomial size, with bounded
+coefficients even when a clause repeats a variable. An empty clause becomes
+$0\ge1$. Membership in NP follows by guessing the bit vector and evaluating
+all integer sums. If coefficients have $b$ bits and there are $r$ terms,
+intermediate sums have at most $b+\lceil\log_2(r+1)\rceil+2$ bits, which
+supplies the binary-arithmetic bound. This statement does not silently assert
+a certificate bound for unrestricted integer variables.
+\end{proof}
+
+\begin{theorem}[N12: elementary NP presentations of neighboring problems]\label{thm:N12}
+Graph isomorphism, Hamiltonian path, Hamiltonian cycle, and the bounded-factor
+problem have explicit polynomial verifiers. The latter asks, on $N\ge2$,
+whether $N$ has a divisor $d$ with $2\le d\le b$ and $d<N$.
+\end{theorem}
+\begin{proof}
+For graph isomorphism on $r$ vertices, a witness lists $r$ vertex images.
+Check that every image is below $r$, no two are equal, and all $r^2$
+adjacency bits are preserved. The first two properties make the map a
+permutation: a missing image would leave $r$ distinct images in $r-1$ slots,
+contradicting the finite counting lemma. The witness uses
+$O(r\log(r+2))$ bits and all checks are polynomial. Graphs of different sizes
+are immediately rejected.
+
+A Hamiltonian-path witness is a permutation of the vertices with an edge
+between consecutive entries. For a cycle also check the last-to-first edge,
+using the chosen convention for graphs of fewer than three vertices. These
+verifiers directly express the defining objects. No NP-hardness of either
+Hamiltonian problem is inferred merely from membership.
+
+For bounded factor, guess the binary integer $d$, check the inequalities, and
+compute $N\bmod d$ by binary long division. Its bit length is bounded by that
+of $N$, and repeated shift, comparison, and subtraction give polynomial time.
+The condition is equivalent to having a prime factor in the same range:
+if a divisor $d\ge2$ is supplied, boundedly select its least divisor
+$e\ge2$. A nontrivial factorization of $e$ would give a smaller divisor of
+$d$, so $e$ is prime; also $e\le d$ and $e\mid N$. This equivalence does not
+require computing $e$ in polynomial time, since the NP witness remains $d$.
+It proves membership only, not a polynomial factoring algorithm or a
+coNP presentation.
+\end{proof}
+
+\subsection{Tractable satisfiability fragments}
+
+\begin{theorem}[N13: constructive 2SAT criterion and polynomial algorithm]\label{thm:N13}
+A 2CNF formula without empty clauses is satisfiable if and only if no variable
+and its complement are mutually reachable in its implication graph. There is
+a polynomial algorithm returning either a satisfying assignment or a
+variable together with the two contradictory implication paths.
+\end{theorem}
+\begin{proof}
+Replace a unit clause $a$ by $a\vee a$. For each clause $a\vee b$, put edges
+$\neg a\to b$ and $\neg b\to a$ on the $2v$ literal vertices. Every edge
+$u\to w$ is paired with $\neg w\to\neg u$. An assignment satisfies the
+formula exactly when it respects all implications. Such an assignment
+respects every path by induction on its length. If $x_i$ and $\neg x_i$
+are mutually reachable, either value of $x_i$ then forces its complement to
+have that same truth value. Splitting on the bit of $x_i$ proves failure.
+
+For the converse and an actual algorithm, compute reflexive reachability by
+the recurrence
+\[
+ R_0(u,w)=[u=w]\vee E(u,w),\qquad
+ R_{j+1}(u,w)=R_j(u,w)\vee(R_j(u,j)\wedge R_j(j,w)).
+\]
+The invariant says that $R_j$ describes paths whose intermediate vertices
+lie below $j$. Path concatenation proves the forward update. For the reverse
+update, erase repeated vertices from a path first; a simple path uses $j$
+at most once as an intermediate vertex, and splitting there proves the
+recurrence. Length is always bounded by $2v$. Recording a predecessor or
+split index at the first successful update reconstructs paths by bounded
+loops. Thus the table and any path certificates have explicit elementary
+bounds; there is no unbounded reachability search.
+
+Define $u\sim w$ when both $R(u,w)$ and $R(w,u)$ hold. Reflexivity,
+symmetry, and transitivity follow from path operations. Represent each class
+$C$ by its least literal number $r(C)$. Complementing every literal and
+reversing every edge carries a path $u\leadsto w$ to
+$\neg w\leadsto\neg u$; consequently complementation induces an involution
+$C\mapsto\bar C$ on the classes. By hypothesis $C\ne\bar C$.
+
+Here is an explicit ordering device that avoids an unproved topological-sort
+subroutine. Let $d(C)$ count the classes $D$ with a path $D\leadsto C$,
+including $C$ itself. Put
+\[
+ B=2v+1,\qquad K(C)=B\,d(C)+r(C).
+\]
+Different classes have different keys, since their representatives are below
+$B$. If $C\leadsto D$ and $C\ne D$, every predecessor of $C$ is a predecessor
+of $D$, while $D$ is not a predecessor of $C$ (otherwise the classes coincide).
+Thus $d(D)\ge d(C)+1$, and $K(D)>K(C)$. This is a finite injection and
+strict-cardinality argument over the list of representatives.
+
+Assign a literal $u$ the value one exactly when
+$K([u])>K([\neg u])$. The unequal keys make complementary literals receive
+opposite bits. An edge $u\to w$ gives
+$K([u])\le K([w])$ and, from its paired edge,
+$K([\neg w])\le K([\neg u])$. If $u$ were true and $w$ false, these
+inequalities would yield
+\[
+ K([\neg u])<K([u])\le K([w])
+ <K([\neg w])\le K([\neg u]),
+\]
+an impossibility. Every implication is therefore respected, and the
+assignment satisfies the formula. All quantities come from the finite
+reachability table. Floyd's recurrence uses $O(v^3)$ Boolean operations;
+representative scans and predecessor counts are polynomial too. Even a
+sequential tape implementation with repeated table scans has a polynomial
+bound. If there is an empty clause, return its direct inconsistency
+certificate before constructing the graph. The case $v=0$ is handled by the
+empty conjunction convention.
+\end{proof}
+
+\begin{theorem}[N14: Horn satisfiability has a least-model algorithm]\label{thm:N14}
+Satisfiability of CNF formulas with at most one positive literal per clause is
+polynomial-time decidable. On satisfiable input an explicit algorithm returns
+the coordinatewise least satisfying assignment.
+\end{theorem}
+\begin{proof}
+Write each clause as a rule $x_{i_1}\wedge\cdots\wedge x_{i_r}\to h$,
+where $h$ is either a variable or false. Repeated antecedents do no harm.
+Start with all variables false. In a fixed order scan all rules whose heads
+are variables; whenever every antecedent is currently true, set the head
+true. Repeat the complete scan $v$ times. A change adds a previously absent
+true variable, and no variable is removed. If a full scan makes no change,
+all later scans are identical. If the state after $v$ scans were not closed,
+each of those scans would have made a change and a further change would be
+possible, requiring more than $v$ distinct additions. Finite counting rules
+this out. Thus the final state is closed under all positive-head rules.
+
+At every addition, every satisfying assignment must make the newly added
+variable true: it already makes all antecedents true by the induction
+hypothesis and must respect this rule. Hence the computed true set is a
+subset of every model. If any false-head rule now has all antecedents true,
+every model would violate that rule, so return unsatisfiable. Otherwise all
+rules are satisfied by the computed assignment; it is therefore a model,
+and its containment in every model proves leastness. Facts are rules with
+empty antecedent; an empty clause is the false-head rule with empty
+antecedent and is rejected. At most $v$ scans of the input and polynomial
+array accesses are needed. The invariant quantifies over assignments below
+$2^v$ only; this makes its minimality proof an instance of bounded induction.
+\end{proof}
+
+\subsection{Search, conditional collapse, and counting}
+
+\begin{theorem}[N15: constructive SAT search-to-decision]\label{thm:N15}
+A supplied polynomial-time SAT decider yields a polynomial-time algorithm
+which returns a satisfying assignment for any satisfiable formula and returns
+``none'' for an unsatisfiable one. The same supplied decider yields such a
+search algorithm for every polynomial verifier presentation.
+\end{theorem}
+\begin{proof}
+Run the decider once on $F$. If it says no, return none. Otherwise maintain a
+prefix assignment $a_0,\ldots,a_{i-1}$ for which the restricted formula is
+satisfiable. Query whether this restricted formula with $x_i=0$ is
+satisfiable. If yes, append zero. If no, append one. To justify the second
+case constructively, take a witness for the currently true finite SAT bit;
+its $i$th bit is either zero or one. Zero contradicts the no-answer, so one
+supplies a witness for the selected restriction. The invariant is thus
+preserved. After $v$ steps all variables are assigned and the restricted
+formula's true value means exactly that this assignment satisfies $F$.
+
+There are $v+1$ calls and each restricted encoding has length at most a fixed
+polynomial in the original length. One may retain the original formula and
+append unit clauses to specify the prefix. If the decider runs in time $p$,
+a bound such as $(v+1)p(c(|F|+v+1)^2)+c'(|F|+v+1)^4$ suffices. The algorithm
+never searches exponentially for the witness used in the correctness proof;
+it uses the decider and finite bit case analysis.
+
+For a verifier $V$, first construct $F_{C_x}$ by N03--N04, find its satisfying
+assignment, and restrict to its designated witness-input variables. The
+simulation theorem proves that this is an accepting witness. An initial
+no-answer correctly certifies that none exists. The resulting algorithm is
+a total search procedure with a distinguished failure result, not a claim
+that every arbitrary multivalued selection becomes a prescribed function.
+\end{proof}
+
+\begin{theorem}[N16: the constructive completeness implication]\label{thm:N16}
+A polynomial SAT decider implies a polynomial decider and a polynomial witness
+finder for every presented NP problem. Conversely, if every NP presentation
+has a polynomial decider, SAT does. Thus the standard statement
+$\mathrm P=\mathrm{NP}$ is equivalent to $\mathrm{SAT}\in\mathrm P$ under the
+numerical class-presentation convention of this report.
+\end{theorem}
+\begin{proof}
+The forward decision transformation composes the supplied SAT machine with
+the two compilers of N05. The witness-finding transformation is N15. These
+are explicit functions of the SAT descriptor and the verifier descriptor;
+their polynomial bounds are obtained by composition of the supplied
+polynomials. The reverse implication specializes the class-equality
+hypothesis to the concrete polynomial SAT verifier. The known inclusion
+$\mathrm P\subseteq\mathrm{NP}$ supplies the other half of the equality.
+These implications neither decide SAT in polynomial time nor settle the
+class equality.
+\end{proof}
+
+\begin{theorem}[N17: an NP-complete coNP problem collapses NP and coNP]\label{thm:N17}
+If a supplied NP-complete problem $K$ also has a coNP presentation, then
+$\mathrm{NP}=\mathrm{coNP}$. In particular, $\mathrm P=\mathrm{NP}$ implies
+$\mathrm{NP}=\mathrm{coNP}$.
+\end{theorem}
+\begin{proof}
+For any presented NP language $A$, take its supplied completeness reduction
+$f$ to $K$. Equality $A(x)=K(f(x))$ gives the equality of complement bits.
+The coNP presentation of $K$ means that $\bar K$ has a polynomial verifier.
+Compose it with $f$ to obtain a verifier for $\bar A$. Thus complementation
+maps every NP presentation to another NP presentation. A coNP presentation
+is, by definition, the complement of an NP presentation, so the same
+transformation gives both inclusions. If $\mathrm P=\mathrm{NP}$, take
+$K=\mathrm{SAT}$: a polynomial decider and its output-bit reversal give P,
+hence NP, presentations for both $K$ and $\bar K$.
+\end{proof}
+
+\begin{theorem}[N18: parsimonious completeness for witness counting]\label{thm:N18}
+For the counting convention
+\[
+ f_V(x)=\sum_{y<2^{q(|x|)}} [V_T(x,y)=1],
+\]
+counting satisfying assignments of circuits and of 3CNF formulas is
+\#$\mathrm P$-complete under parsimonious polynomial many-one reductions.
+Counting indexed subsets of a positive integer list with a specified sum is
+also \#$\mathrm P$-complete under those reductions.
+\end{theorem}
+\begin{proof}
+N03 preserves the accepting witness bit strings exactly. N04 gives each such
+string one and only one satisfying gate extension, and retains all input
+variables. Therefore $f_V(x)$ equals the number of satisfying assignments of
+$F_{C_x}$, with no multiplicative factor. Circuit counting has the same
+identity before Tseitin conversion. Both counts belong to \#$\mathrm P$
+because their finite assignments are verified in polynomial time. Applying
+the bijection of N09 gives equality with the number of indexed subsets
+summing to its target. This target count is in \#$\mathrm P$ by its binary
+subset verifier. Bounded induction on the finite witness lists proves that
+inverse bijections preserve cardinalities. This does not infer that exact
+counting is polynomial time, and it does not identify arbitrary padded
+nondeterministic path counts with the fixed-witness convention.
+\end{proof}
+
+\begin{theorem}[N19: a factor-two vertex-cover approximation]\label{thm:N19}
+There is a polynomial algorithm that returns a vertex cover $C$ satisfying
+$|C|\le2|C^*|$ for every vertex cover $C^*$ of the same graph.
+\end{theorem}
+\begin{proof}
+Scan the edges in a fixed order. If both endpoints are unused, add the edge
+to a matching $M$ and mark its endpoints. Output all marked vertices. An
+uncovered edge would have had two still-unmarked endpoints when scanned,
+because marks only accumulate. It would therefore have been selected, a
+contradiction; hence the output is a cover. The selected edges have disjoint
+endpoints, so $|C|=2|M|$. Every cover $C^*$ contains at least one endpoint of
+each selected edge. Choose the smaller numbered endpoint belonging to $C^*$
+on each such edge. Disjointness makes this choice injective, proving
+$|M|\le|C^*|$. The algorithm never needs to compute an optimum cover; the
+inequality holds for each supplied cover witness and hence for the optimum
+obtained, if desired, by finite minimization. A single edge scan with simple
+mark updates is polynomial on the explicit graph encoding.
+\end{proof}
+
+\begin{theorem}[N20: vertex cover is fixed-parameter tractable]\label{thm:N20}
+For a graph on $N$ vertices and parameter $k$, vertex cover of size at most
+$k$ can be decided, and a cover produced, in time
+$2^{k+1}\poly(N+|E|+1)$.
+\end{theorem}
+\begin{proof}
+If there are no edges, return the empty cover. If an edge remains and $k=0$,
+return failure. Otherwise choose the first edge $\{u,v\}$. Every cover
+contains $u$ or $v$. Recurse on the graph with $u$ deleted and parameter
+$k-1$, and on the graph with $v$ deleted and parameter $k-1$. A successful
+branch returns its chosen endpoint together with the recursively produced
+cover. If both branches fail, a proposed cover for the original graph would,
+by its choice of endpoint, restrict to a cover in a failed branch, a
+contradiction. This proves correctness by induction on the remaining depth,
+with all covers bounded by $2^N$ and all graphs by their fixed matrix bound.
+
+The recursion tree has at most $1+2+\cdots+2^k<2^{k+1}$ nodes. At each node
+one performs a polynomial scan and graph update. It is a primitive-recursive
+algorithm: enumerate the full binary tree through depth $k$ and compute
+bottom-up, or use an explicit stack with the stated node clock. For $k\ge N$
+return all vertices immediately. The parameter $k$ is thereby separated from
+the input-size polynomial, which is the fixed-parameter conclusion.
+\end{proof}
+
+\begin{theorem}[N21: UNSAT and tautology are coNP-complete]\label{thm:N21}
+UNSAT, propositional TAUT, and tautology for DNF formulas with terms of width
+at most three are coNP-complete under polynomial many-one reductions.
+\end{theorem}
+\begin{proof}
+The complement of UNSAT is SAT. The complement of TAUT has an NP witness: an
+assignment on which the formula is false. These are bounded Boolean
+complements, so finite assignment enumeration also identifies them exactly,
+without using double-negation elimination for an arbitrary proposition.
+For any coNP presentation $A$, its complement has an NP reduction $f$ to 3SAT.
+Hence $A(x)=\operatorname{UNSAT}(f(x))$. Negate that 3CNF syntactically and
+apply De Morgan laws to obtain a DNF whose terms have width at most three.
+For every assignment the resulting DNF has the opposite truth bit, so
+$f(x)$ is unsatisfiable exactly when this DNF is a tautology. Negation and
+De Morgan conversion have linear output size for a CNF. The bounded universal
+assignment test follows from the corresponding pointwise equality by a
+finite conjunction fold. This proves the remaining hardness claims.
+\end{proof}
+
+\begin{theorem}[N22: Horn SAT is P-complete under logspace reductions]\label{thm:N22}
+Horn satisfiability is P-complete, even when every clause has width at most
+three. The hardness reduction uses only finite gate-local rules.
+\end{theorem}
+\begin{proof}
+Take an acyclic circuit with its input values specified, as in N06. For each
+node $i$ introduce two variables $t_i,f_i$, intended to assert that its value
+is respectively true or false. For an input or constant node, add the unit
+fact for its specified value. For a NOT gate $z=\neg a$, add the rules
+$f_a\to t_z$ and $t_a\to f_z$. For an AND gate $z=a\wedge b$, add
+\[
+ t_a\wedge t_b\to t_z,\qquad f_a\to f_z,\qquad f_b\to f_z.
+\]
+For an OR gate $z=a\vee b$, add
+\[
+ t_a\to t_z,\qquad t_b\to t_z,\qquad f_a\wedge f_b\to f_z.
+\]
+These are Horn clauses of width at most three. Finally add the negative unit
+clause $\neg f_o$, where $o$ is the output node.
+
+Gate-order induction proves that the least closure of the positive-head
+rules contains exactly one of $t_i,f_i$ at every node, namely the assertion
+of its actual evaluated bit. The base case is the supplied input facts.
+For each gate, the displayed rules force its correct assertion from its
+already determined input assertions, and none of them triggers its incorrect
+assertion. No other rule has that node as head. Every model must contain
+this least closure, by the same addition invariant used in N14. If the
+circuit outputs zero, $f_o$ is forced and the final negative unit is
+impossible. If it outputs one, the least closure itself satisfies every
+rule and $\neg f_o$, giving a model. Thus the Horn instance is satisfiable
+exactly when the circuit value is one.
+
+A constructor scans the gate list and emits at most three clauses per gate,
+plus the input facts and final unit. Variable indices are the two integers
+$2i$ and $2i+1$, so its counters and address arithmetic need only logarithmic
+work space. Compose with N06 to obtain hardness for P. N14 gives polynomial
+membership, and the bounded gate-prefix invariant gives the object-arithmetic
+correctness proof. The construction makes no unsupported claim that all
+Horn models have exactly one assertion per node; only their least closure
+has that property, and that is sufficient for the reduction.
+\end{proof}
+
+\subsection{The object-arithmetic obligations in this section}
+
+Each constructor above is a fixed algorithm on finite codes, and each proof
+uses finite lists with displayed bounds. To lower the proofs to the repository's
+object theory, instantiate the Boolean bounded-formula reflection and bounded
+induction interfaces; do not reinterpret a semantic Lean function parameter as
+an object-language variable. The especially useful invariants are the
+following.
+
+\begin{itemize}
+\item For circuit evaluation and Tseitin: every gate below the current prefix
+has its computed value; all assignment codes are below $2^{q+G}$.
+\item For machine unrolling: all time indices are at most $T$, all tape
+positions below $L$, and all witnesses below $2^q$; the complete configuration
+array agrees bit by bit with the bounded machine run.
+\item For graph reductions: every selected occurrence lies in its recorded
+clause; selected literals have consistent requested bits; vertex and subset
+codes are bounded by their explicit vertex counts.
+\item For subset sum: all digit sums are below eight, exactly one variable
+number is selected, and the slack digit equals four minus the true-occurrence
+count. Quotient/remainder induction gives the no-carry equality.
+\item For 2SAT: the reachability table at stage $j$ matches paths with allowed
+intermediate vertices below $j$; representatives, predecessor counts, and keys
+are all bounded finite scans.
+\item For Horn SAT and SAT search: the true-variable set is contained in each
+model below $2^v$, or the current partial assignment has a satisfying extension
+below $2^v$, respectively.
+\item For parameterized vertex cover: every branch state has a graph below the
+original adjacency bound and a chosen-vertex list of length at most $k$; all
+branches lie in the full tree with fewer than $2^{k+1}$ nodes.
+\end{itemize}
+
+The accompanying \texttt{lean/ReductionsOutline.lean} supplies finite semantic
+definitions and precise target statements. It is an uncompiled outline, not a
+certificate for these theorems. The Python companion checks the new witness
+maps and algorithms against exhaustive small reference computations, including
+unused inputs, duplicated literals, empty clauses, and equal-valued indexed
+subset entries. Such checks validate implementation cases; the general proofs
+are the arguments above.

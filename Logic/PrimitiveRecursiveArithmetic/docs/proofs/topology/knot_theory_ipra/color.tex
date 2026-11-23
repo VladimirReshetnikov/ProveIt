@@ -1,0 +1,403 @@
+\section{Fox colorings and finite braid actions}
+\label{sec:fox}
+
+A coloring gives a short witness that a knot is nontrivial, and counting
+colorings can give the exact number of crossing changes needed to untie a
+whole family. We work throughout with finite diagrams and explicit move
+sequences. The classical names for the braid closures below specify their
+usual diagrams. Background sources for this section are
+J.~H.~Przytycki, \emph{3-coloring and other elementary invariants of knots}
+(\href{https://arxiv.org/abs/math/0608172}{arXiv:math/0608172}),
+L.~H.~Kauffman and P.~Lopes, \emph{Determinants of rational knots}
+(\href{https://dmtcs.episciences.org/articles/454}{DMTCS}), and
+S.~Asami and K.~Kuga, \emph{Colorings of torus knots and their
+twist-spins by Alexander quandles over finite fields}
+(\href{https://www.math.s.chiba-u.ac.jp/~xasami/library/coloring.pdf}{author's paper}).
+
+\subsection{A local rule that survives every move}
+
+Fix a modulus $n\ge2$ and put $R=\mathbb Z/n\mathbb Z$, implemented by
+residues $0,\ldots,n-1$. Cut the diagram at every crossing into edge
+segments, giving each crossing-free component a single segment. At a
+crossing require equality of the two overpassing segment colors, say $y$,
+and require the two underpassing segment colors $x,z$ to satisfy
+$x+z=2y$. Colors therefore propagate by the reflection
+$S_y(x)=2y-x$. Write $C_n(D)$ for the set of assignments satisfying all
+these equations and $F_n(D)$ for its cardinality. Equivalently one may use
+one variable per arc between successive undercrossings, including a single
+variable for each component with no undercrossing.
+
+\begin{theorem}[Coloring invariance and tricolorability]
+Each Reidemeister move induces a bijection of Fox colorings, fixed on the
+exterior of the move disc. These bijections preserve constant colorings.
+A knot is tricolorable exactly when $F_3(D)>3$, and every such knot coloring
+which is nonconstant uses all three colors.
+\end{theorem}
+\begin{proof}
+The identities needed at the three moves are
+\[
+ S_x(x)=x,\qquad S_y(S_y(x))=x,\qquad
+ S_z(S_y(x))=S_{S_z(y)}(S_z(x)).
+\]
+The last identity has value $2z-2y+x$ on both sides. At a kink the strand
+color uniquely extends to the little loop by idempotence and invertibility.
+In type II the overstrand has color $y$ and the intervening understrand
+must have color $S_y(x)$, so its exit has color $x$. In type III name the
+bottom, middle and top colors on entry $x,y,z$. The two bottom exits are
+the two sides of the last identity. The middle exit is $S_z(y)$ on both
+sides and the top exit is $z$. Each interior segment has been determined
+by the entry data. These descriptions apply from either end of an
+understrand since $S_y$ is its own inverse. Relabeling and reversing the
+reading of the local picture give the other presentations of the moves.
+Exterior assignments therefore extend to the two sides in pairs.
+For $n=3$ the equation reads $x+y+z=0$. Two equal entries force all
+three equal, and the three distinct residues satisfy the equation. There
+are three constant assignments. A nonconstant assignment on a single
+component must change color at some underpass, since otherwise traversal
+would give a single color everywhere. That crossing uses all three.
+\end{proof}
+
+The coloring equations are homogeneous and linear. Hence coordinatewise
+addition, negation, and scalar multiplication preserve solutions. On a
+nonempty diagram with marked segment $s$, translation gives a bijection
+\[
+ C_n(D)\longleftrightarrow R\times C_n^0(D,s),\qquad
+ f\longmapsto(f(s),f-f(s)),
+\]
+where $C_n^0$ means $f(s)=0$ and the second term subtracts the constant
+coloring. Disjoint unions multiply the counts, so the $k$-component
+unlink has $n^k$ colorings. Modulo $2$ the understrand keeps its original
+color, hence any $k$-component diagram has precisely $2^k$ colorings.
+For coprime $a,b\ge2$, $F_{ab}(D)=F_a(D)F_b(D)$: reduction of every
+entry is a bijection by the Chinese remainder construction and respects
+each equation in both directions. Concretely, given residues $u,v$ use
+$u+a((v-u)a^{-1}\bmod b)$ with $a^{-1}$ obtained by bounded search.
+
+For a prime $\ell$ the count is always a power of $\ell$. To see this
+constructively, let $W_j$ be the set of colorings vanishing on the first
+$j$ segments, $0\le j\le e$, where $e$ is the total number of segments.
+Look for an element of $W_j$ whose next entry is nonzero. If the bounded
+search fails, $W_j=W_{j+1}$. If it succeeds, rescale that element to
+obtain $v$ with next entry $1$. Then $(a,w)\mapsto av+w$ is a bijection
+from $(\mathbb Z/\ell)\times W_{j+1}$ onto $W_j$; its inverse reads off
+the next entry $a$ and subtracts $av$. Since $|W_e|=1$, scanning backward
+gives $F_\ell(D)=\ell^k$, where $k$ counts the successful searches.
+
+\subsection{Braids, fixed points and torus knots}
+
+Read a braid from top to bottom with strands numbered from the left.
+A positive generator takes input colors $(x,y)$ with the left strand
+overpassing to $P(x,y)=(2x-y,x)$, and its inverse takes $(u,v)$ to
+$(v,2v-u)$. Write $P_i$ for this update on neighboring coordinates $i,i+1$.
+Coloring a braid is deterministic given its top row. Closure joins equal
+positions, so its colorings are in bijection with fixed rows of the word.
+In particular a closed $b$-strand braid has at most $n^b$ colorings.
+This representation respects inverse cancellation and commutation at
+disjoint positions. On three coordinates both $P_1P_2P_1$ and $P_2P_1P_2$
+give $(2x-2y+z,2x-y,x)$, proving the braid relation. A conjugation of
+the word carries fixed rows bijectively by the conjugating permutation.
+For a stabilization, write the last output of the original word as $u$
+and the new input as $v$. The positive final crossing gives
+$(2u-v,u)$, the negative one gives $(v,2v-u)$. In each case the closure
+equations force $u=v$ and then require that the original last input was $u$.
+This proves invariance under both braid stabilizations directly.
+
+\begin{proposition}[All two-strand powers]
+For every signed integer $m$, the closure of $\sigma_1^m$ has
+$n\gcd(n,|m|)$ colorings, including $n^2$ at $m=0$. Its component count
+is one for odd $m$ and two for even $m$.
+\end{proposition}
+\begin{proof}
+Put $d=x-y$. Then $P(x,y)=(x+d,y+d)$ preserves $d$. Induction, applying
+$P^{-1}$ for negative powers, gives $(x+md,y+md)$. The row closes exactly
+when $md=0$ in $R$. For $g=\gcd(n,|m|)$ this says that $d$ is a multiple
+of $n/g$: after cancellation modulo $n/g$ the number $|m|/g$ is a unit
+when $n/g>1$, by Euclid's algorithm. The $g$ representatives
+$j(n/g)$, $0\le j<g$, and the $n$ choices for $x$ specify all solutions
+uniquely. The endpoint permutation is the transposition to the $m$th
+power, proving the component count.
+\end{proof}
+
+For the trefoil ($m=3$) there are nine tricolorings, versus three for the
+unknot. For the Hopf link ($m=2$) there are three, versus nine for the
+two-component unlink. More generally the knots with odd $m=1,3,5,\ldots$
+are pairwise inequivalent. For positive odd $a<b$, take $n=b$.
+The larger diagram has $b^2$ colorings and the smaller has at most $ab<b^2$.
+This also furnishes a primitive recursive sequence of arbitrarily many
+distinct knot types in the finite calculus.
+
+\begin{theorem}[All coprime positive torus parameters]
+Let $p,q\ge1$ be coprime and let $T(p,q)$ be the standard closure of
+$(\sigma_1\cdots\sigma_{p-1})^q$. Its Fox count for every modulus $n\ge2$ is
+\[
+ F_n(T(p,q))=
+ \begin{cases}
+ n & p,q\text{ both odd},\\
+ n\gcd(n,p)&q\text{ even},\\
+ n\gcd(n,q)&p\text{ even}.
+ \end{cases}
+\]
+More generally, for arbitrary positive $p,q$ the standard torus link has
+$\gcd(p,q)$ components.
+\end{theorem}
+\begin{proof}
+The permutation of a single block is a cyclic shift by one. Closure
+therefore follows addition by $q$ on $\mathbb Z/p\mathbb Z$ (the opposite
+shift has the same orbits). Its orbits are the residue classes modulo
+$\gcd(p,q)$, by cancellation after dividing by that gcd.
+
+Use cyclic indices $i=0,\ldots,p-1$, and set $d_i=x_{i+1}-x_i$. The
+first strand passes over all the others. A block $B$ sends $x_i$ to
+$(Bx)_i=2x_0-x_{i+1}$, including $(Bx)_{p-1}=x_0$. Hence it sends
+$d_i$ to $-d_{i+1}$. A row fixed by $B^q$ satisfies
+$d_i=(-1)^q d_{i+q}$ and $\sum_i d_i=0$. For coprime $p,q$ the shift by
+$q$ visits all positions.
+
+If $q$ is even all differences equal a single $d$, with $pd=0$.
+Conversely the row $x_i=x_0+id$ with $pd=0$ changes under one block to
+the row starting at $x_0-d$ and having difference $-d$. A second block
+restores it. This gives exactly $n\gcd(n,p)$ fixed rows.
+If $p,q$ are odd, iterating the signed shift $p$ times gives $d_i=-d_i$.
+All signs are then immaterial, so all differences equal $d$ with
+$2d=pd=0$. As $p$ is odd, $d=0$, and the constant rows give exactly $n$
+solutions. Finally, if $p$ is even, $q$ is odd and each shift changes
+parity of the index. Thus $d_i=(-1)^i d$ for some $d$, and the row
+alternates between $x_0$ and $x_0+d$. One block subtracts $d$ from
+each entry, preserving all its differences. Closure is exactly $qd=0$.
+The two-strand counting argument gives $n\gcd(n,q)$.
+\end{proof}
+
+The standard figure-eight diagram is the closure of
+$(\sigma_1\sigma_2^{-1})^2$. A single block sends $(x,y,z)$ to
+$(2x-y,z,2z-x)$. Put $y=x+d$ and $z=x+e$. On applying two blocks,
+equality of the three output positions to their inputs gives, respectively,
+$2d+e=0$, $-d+2e=0$, and $d+3e=0$. These equations are equivalent to
+$e=-2d,\ 5d=0$, so the figure-eight has exactly $n\gcd(n,5)$ colorings.
+Modulus $3$ distinguishes it from the trefoil, and modulus $5$ distinguishes
+it from the unknot.
+
+\subsection{Conway rational tangles by two boundary differences}
+
+Number a rectangular two-string tangle's boundary colors clockwise,
+starting at the northwest corner, by $a,b,c,d$. Write
+$h=b-a$ and $v=d-a$. Begin with the horizontal zero tangle whose
+northern pair and southern pair are each joined. Generate rational
+tangles by right twists, inverse right twists and clockwise quarter-turns.
+For the right twist use the crossing in which the old southeast strand
+goes over the old northeast one to become the new northeast strand.
+This fixes the fraction convention, including its sign.
+
+\begin{theorem}[Color count of both rational closures]
+Start the integer pair at $(P,Q)=(0,1)$. A right twist replaces it by
+$(P+Q,Q)$, an inverse twist by $(P-Q,Q)$ and a quarter-turn by
+$(-Q,P)$. After any word of operations, joining the northern and southern
+pairs (numerator closure) gives $n\gcd(n,|P|)$ Fox colorings.
+Joining the western and eastern pairs (denominator closure) gives
+$n\gcd(n,|Q|)$. The numerator closure is a knot exactly when $P$ is odd,
+and a numerator knot is tricolorable exactly when $3\mid P$.
+\end{theorem}
+\begin{proof}
+We maintain a bijection between all colorings of the tangle and pairs
+$(a,u)\in R^2$, with boundary values
+\[
+ (a,b,c,d)=(a,\ a+Pu,\ a+(P+Q)u,\ a+Qu).
+\]
+It holds at the start since the northern color is $a$ and the southern
+color can be any $a+u$. A twist replaces the eastern pair $(b,c)$ by
+$(c,2c-b)$ and fixes the western pair; the old assignment and the
+extended one determine each other. The new boundary formula has
+$P'=P+Q$, $Q'=Q$. The inverse twist reverses this substitution.
+Rotation changes $(a,b,c,d)$ to $(d,a,b,c)$. The new northwest parameter
+is $a'=a+Qu$ and $u$ is unchanged. The new differences are $-Qu$ and
+$Pu$, giving the asserted pair and a reversible parameter change.
+This proves the bijection by induction on the construction word.
+In particular the integer pairs remain coprime, since each update
+preserves their gcd. Their slopes follow the familiar operations
+$P/Q\mapsto P/Q\pm1$ and $P/Q\mapsto -Q/P$, with the integer pair
+also covering a zero denominator.
+
+The two numerator joins impose $a=b$ and $c=d$, both equivalent to
+$Pu=0$. The denominator joins impose $a=d$ and $b=c$, both equivalent
+to $Qu=0$. Counting $u$ as in the two-strand proof yields both formulas.
+At $n=2$ the general component count $2^k$ gives one component for
+odd $P$ and two for even $P$. At $n=3$ compare the numerator count with
+three constant colorings. At each construction step $|P|+|Q|$ at most
+doubles, so $2^L$ bounds it after a word of length $L$.
+\end{proof}
+
+For example, from $(0,1)$ apply two right twists, turn clockwise, and
+apply three more right twists. This gives $(2,1)$, then $(-1,2)$, then
+$(5,2)$, so the numerator is a knot with $n\gcd(n,5)$ colorings.
+The formula uses only a designated construction word. Classification
+of rational tangles by their fractions would assert a further converse.
+
+\subsection{A finite invariant beyond every Fox modulus}
+
+On an oriented diagram one may replace $S_y$ by the affine permutation
+$S_y(x)=t x+(1-t)y$ for any unit $t$ modulo $n$. At each oriented overpass
+use its normal to order the two underpassing sides; the two under-colors
+in this order are $x,S_y(x)$. Choose the normal convention for which a
+positive downward braid generator gives $(S_x(y),x)$. When traversing
+against this normal apply the inverse $S_y^{-1}(x)=t^{-1}x+(1-t^{-1})y$.
+Again $S_y(y)=y$. Every affine map $A(x)=ax+b$ satisfies
+$A S_y(x)=S_{A(y)} A(x)$ by expansion. In particular this holds for
+$A=S_z$ and $S_z^{-1}$ and with $S_y$ replaced by its inverse (when $A$
+is invertible, conjugate the original identity and take inverses).
+These identities give all oriented type III relations: moving across
+the top strand transports both the middle color and its action by
+$A$, in the direction prescribed by its normal. Type II uses mutually
+inverse actions and type I uses the fixed point $y$. The extension and
+restriction argument above therefore proves oriented move invariance for
+all these counts.
+
+For $T(3,5)$ every Fox modulus gives the unknot's count. Nevertheless, a
+single explicit affine coloring distinguishes this knot. Use $n=31$,
+$t=7$ (inverse $9$). Successive rows after each full positive
+$\sigma_1\sigma_2$ block are
+\[
+\begin{aligned}
+(0,1,6)&\longmapsto(7,11,0)\longmapsto(4,20,7)\\
+ &\longmapsto(23,25,4)\longmapsto(6,14,23)\longmapsto(0,1,6).
+\end{aligned}
+\]
+The row closes and is nonconstant. Its translates and nonzero scalar
+multiples are also fixed. In fact $a+b(0,1,6)$ for $a,b\in R$ gives
+$31^2$ distinct fixed rows by the first two coordinates. This count is exact.
+The first coordinates of the fifth block on the three unit rows, evaluated
+by the same recurrence, are $13,29,21$. A fixed row therefore satisfies
+$12x+29y+21z=0$, which forces $z=-5x+6y$ since $21^{-1}=3$ modulo $31$.
+The crossing-free circle has only $31$. An unoriented equivalence to the unknot would
+transport the given orientation along the certificate to one of the
+two orientations of that circle, both having the same $31$ colorings.
+
+\subsection{Connected sum, bridges and crossing changes}
+
+A convenient finite presentation of a $(1,1)$-tangle is a slice word in a
+rectangle, with one strand end at the top and one at the bottom. An event
+is a crossing of adjacent strands, the insertion of two adjacent ends of
+a local extremum, or the deletion of two adjacent ends meeting at an
+extremum. Each cup or cap joins equal colors. For a polygonal diagram
+in general position this word is read by sorting all vertex and crossing
+heights; an ordinary bend preserves color. Cut a small arc on the outside
+of a planar knot diagram and run its two ends along the exterior to the
+top and bottom of a containing rectangle. Joining the two ends outside
+recovers its closure. Equivalently use this marked tangle as input from
+the start. The connected sum of two such marked knot closures is the
+closure of their vertical concatenation.
+
+\begin{lemma}[Endpoint equality]
+Every Fox coloring of a $(1,1)$-tangle assigns the same color to its two
+ends, over every $R$ above.
+\end{lemma}
+\begin{proof}
+Read the colors at a regular horizontal slice from left to right, and form
+$x_1-x_2+x_3-\cdots$. A crossing preserves the alternating sum since
+$(2x-y)-x=x-y$ and the inverse preserves it too. A cup inserts adjacent
+entries $u,u$, whose contributions cancel; entries further right keep
+their original signs. A cap has the inverse effect. The sums on the top
+and bottom slices each consist of a single term, so the end colors agree.
+\end{proof}
+
+\begin{theorem}[Multiplication under connected sum]
+For the marked knot diagrams just described,
+\[
+ n F_n(D\mathbin{\#}E)=F_n(D)F_n(E).
+\]
+In particular the reduced count $F_n(D)/n$ is multiplicative.
+\end{theorem}
+\begin{proof}
+Endpoint equality identifies colorings of each open tangle with those of
+its closure: the exterior joining arc has its uniquely prescribed color.
+A coloring of the concatenation is uniquely a pair of such colorings
+agreeing on the joined end. For every fixed end color the number of
+choices in each factor is its reduced count by translation. Summing the
+product over the $n$ end colors gives the formula. The endpoint argument
+is essential here, since cutting open a general system of equations can
+admit new solutions.
+\end{proof}
+
+\begin{proposition}[Local cost of a crossing change]
+For diagrams $D,D'$ differing by one crossing change,
+$F_n(D)\le nF_n(D')$ and $F_n(D')\le nF_n(D)$.
+\end{proposition}
+\begin{proof}
+Subdivide the four incident edges at the boundary of the crossing disc
+so the two coloring problems use the same exterior variables. On either
+side, requiring all four colors there to coincide defines the same set
+$H$ of assignments. In $C_n(D)$ take the difference between one
+overpassing and one underpassing color. This is a homomorphism to $R$,
+with kernel $H$: if the two agree, the other underpassing color is forced
+to agree as well. Every nonempty fiber is a translate of $H$ by subtraction
+of its first assignment in lexicographic order. Thus
+$|H|\le F_n(D)\le n|H|$. The switched crossing has the same bounds.
+For prime $n$, the image of either difference map is zero or all of $R$,
+as multiplication by a nonzero scalar is bijective. Thus the counts
+across a crossing change are equal or differ by exactly a factor $n$.
+\end{proof}
+
+\begin{corollary}[A sharp unknotting bound]
+The standard connected sum of $r$ trefoils, each of either handedness, has
+$3^{r+1}$ tricolorings and unknotting number exactly $r$ in the diagram
+calculus. Every equivalent closed braid has at least $r+1$ strands.
+Every equivalent closed slice diagram has at least $r+1$ creating extrema
+and at least $r+1$ annihilating extrema.
+\end{corollary}
+\begin{proof}
+For $r=0$ take the unknot. The two-strand formula gives nine colorings
+for either trefoil, and the connected sum formula multiplies by three at
+each insertion. After $h$ crossing changes, interspersed with arbitrary
+Reidemeister moves, a diagram equivalent to the unknot could have started
+with at most $3^{h+1}$ colorings. Hence $h\ge r$. Conversely switch the
+middle crossing in each standard $\sigma_1^{\pm3}$ block. The adjacent
+opposite pair cancels by type II, leaving the closure of a one-crossing
+two-strand braid, which is a curl removable by type I. These moves can
+be made in each summand disc, choosing the cut on the exterior return arc
+away from the curl. The resulting concatenation of straight marked
+unknots is the unknot.
+
+The closed braid bound follows from $F_3\le3^b$. For a sweep from zero
+strands at the bottom back to zero at the top, choosing a color at
+each creating extremum determines both newly incident entries. Every
+crossing acts deterministically, and a deletion merely checks equality.
+Thus the number of accepted colorings is at most $3^u$ for $u$ creating
+extrema. Creation and deletion each change the number of strands by two,
+so their totals are equal.
+\end{proof}
+
+\paragraph{Primitive recursive and Lean details.}
+For $e$ segments, enumerate row codes $0,\ldots,n^e-1$ in base $n$ and
+test the crossing equations by a bounded conjunction. A braid on $b$
+strands acts on a row code below $n^b$ by replacing two digits and
+reducing them modulo $n$, iterating once per letter. Comparisons of
+functions on these codes are finite Boolean tables. For each local
+bijection the finite counting lemma can be proved by summing the
+indicator of its graph, once by rows and once by columns, using induction
+on partial rectangular sums. To verify the row after $j$ braid blocks,
+use the single bounded Boolean conjunction of the asserted coordinate
+equalities over $i<p$. The orbit proof needs just $p$ steps, and the
+coprime shift has inverse given by a bounded lookup modulo $p$ (the
+one-element case is immediate). For a slice word of length $L$ and initial
+width $b$, no slice exceeds $b+2L$. The count bound can equivalently be
+checked by mapping an assignment to its list of creating-extremum
+colors and reconstructing the slice row at each prefix. For a change
+sequence the induction assertion is the numerical inequality at the
+current prefix, with the power of $n$ indexed by its number of changes.
+All the running equalities, inequalities, digit tests and bounded
+conjunctions above are quantifier-free after characteristic functions
+are named. No minimization over all diagrams is used by the sharp
+unknotting claim: it gives a witness of cost $r$ and an inequality for
+every supplied certificate.
+
+In Lean one can use natural-number row codes throughout. Define
+\texttt{digit}, \texttt{putDigit}, \texttt{step}, \texttt{run},
+\texttt{validColor}, and \texttt{count} in that order. Prove first that
+putting a digit updates that coordinate and preserves the others; next
+prove the three local identities by modular arithmetic, the closure
+bijection by induction on the word, and the torus formula by the cyclic
+difference lemma. Encode a local move with its exterior identification;
+extend colors by the formulas above and prove the inverse identities
+pointwise. For connected sums build a slice-word type carrying arities,
+then prove preservation of the alternating sum for each constructor.
+The crossing-change proof uses a bounded least representative in each
+nonempty difference fiber. These choices give executable witnesses for
+all the bijections used in this section.

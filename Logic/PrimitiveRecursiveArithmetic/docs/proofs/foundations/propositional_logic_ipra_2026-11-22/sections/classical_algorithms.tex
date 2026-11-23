@@ -1,0 +1,917 @@
+\section{Boolean representation and explicit normal forms}
+\label{ca-normal}
+
+This section studies classical propositional formulas as finite syntactic
+objects inside an intuitionistic arithmetic.  Every use of a truth value below
+means a bit, and every choice is a search through an explicitly bounded finite
+list.  In particular, a case distinction on the value of a formula is a case
+distinction on a primitive recursive Boolean computation; it does not assert
+excluded middle for arbitrary arithmetical propositions.
+
+Fix an ordered list $X=(p_0,\ldots,p_{n-1})$ containing the variables of the
+formulas under discussion.  An assignment is a number $a<2^n$, its $i$th bit
+being the value of $p_i$.  Write $A[a]\in\{0,1\}$ for Boolean evaluation.
+The notation $A\equiv_2 B$ abbreviates
+\[
+  \bigwedge_{a<2^n}\bigl(A[a]=B[a]\bigr).
+\]
+This is a bounded Boolean test, independent of adding unused variables to $X$.
+Empty conjunctions have value $1$ and are written $\top$; empty disjunctions
+have value $0$ and are written $\bot$.  A Boolean function on these variables
+means an explicitly supplied table of $2^n$ bits, encoded by a number less than
+$2^{2^n}$.  This convention avoids quantification over an unrestricted
+function space.
+
+Size bounds below refer to finite syntactic data: $n$ is the number of
+distinct input variables and $s$ is the number of syntax-tree nodes, after
+densely renaming the variables in their order of first occurrence.  The
+renaming and its inverse are finite lists and preserve evaluation.
+Arithmetic codes for these objects may be much larger than their string
+lengths; no complexity statement treats the numerical code as the input
+length.  In particular, a gate label below has value less than $n+s$ and
+requires $O(\log(n+s+2))$ binary digits.
+
+\subsection{Cofactors, canonical forms, and negation normal form}
+
+\begin{theorem}[Shannon expansion and restriction]\label{ca-shannon}
+Let $A_0=A[p:=\bot]$ and $A_1=A[p:=\top]$.  Then
+\[
+ A\equiv_2(\neg p\wedge A_0)\vee(p\wedge A_1)
+ \equiv_2(p\vee A_0)\wedge(\neg p\vee A_1).
+\]
+Substitution of a bit for $p$ commutes with evaluation.  Consequently these
+expansions remain valid when $p$ is replaced by an arbitrary formula and
+the corresponding cofactors are substituted uniformly.
+\end{theorem}
+\begin{proof}
+The substitution assertion follows by recursion on the syntax: a variable
+equal to $p$ takes the substituted value; another variable is unchanged; and
+each connective applies the same Boolean operation to the recursively
+computed values of its arguments.  For an assignment with $p=0$, the first
+displayed disjunction becomes $A_0$, and its displayed conjunctive version
+also becomes $A_0$.  For $p=1$ both become $A_1$.  These two cases exhaust the
+values of the bit representing $p$.  Uniform substitution follows from the
+same substitution lemma, with the bit now obtained by evaluating the
+substituted formula.  All recursive assertions can be checked simultaneously
+on a list of subformulas ordered before their parents.
+\end{proof}
+
+For $a<2^n$, let
+\[
+ \ell_i^a=\begin{cases}p_i&\text{if the $i$th bit of $a$ is $1$},\\
+                        \neg p_i&\text{otherwise},\end{cases}
+ \qquad M_a=\bigwedge_{i<n}\ell_i^a,
+ \qquad K_a=\bigvee_{i<n}\neg\ell_i^a.
+\]
+Here $\neg\ell_i^a$ can immediately be simplified to the opposite literal.
+The minterm $M_a$ is true at exactly $a$; the clause $K_a$ is false at exactly
+$a$.  These assertions follow by scanning the $n$ bit positions: equality
+of assignments means equality at every position, and inequality supplies a
+least differing position by bounded search.
+
+\begin{theorem}[Canonical DNF and CNF]\label{ca-canonical}
+For every formula $A$,
+\[
+ D_A=\bigvee_{\substack{a<2^n\\ A[a]=1}}M_a,
+ \qquad
+ C_A=\bigwedge_{\substack{a<2^n\\ A[a]=0}}K_a
+\]
+satisfy $A\equiv_2D_A\equiv_2C_A$.  Each form has at most $2^n$ terms or
+clauses and at most $n2^n$ literal occurrences.  The same constructions
+represent every supplied Boolean table.  Two formulas have identical
+canonical DNF, with a fixed ordering and fixed conventions for empty folds,
+exactly when they are Boolean equivalent.
+\end{theorem}
+\begin{proof}
+Fix $b<2^n$.  Among the minterms only $M_b$ is true at $b$.  Thus $D_A[b]=1$
+exactly when that minterm was included, namely when $A[b]=1$.  Among the
+clauses only $K_b$ is false at $b$.  Hence $C_A[b]=0$ exactly when that clause
+was included, namely when $A[b]=0$.  The bounds follow directly from the
+outer loop over $2^n$ rows and the inner loop over $n$ positions.  For $n=0$
+there is one empty assignment, one minterm $\top$, and one clause $\bot$;
+the argument therefore includes constant functions.  Equality of the ordered
+lists of selected rows is equivalent to equality of their selection bits.
+No appeal to completeness or to an infinite Boolean algebra is involved.
+\end{proof}
+
+\begin{theorem}[Effective negation normal form]\label{ca-nnf}
+Every formula in $\bot,\top,\neg,\wedge,\vee,\to$ has a Boolean-equivalent
+formula in which negation occurs only on variables.  The transformation is
+primitive recursive and preserves the set of variables.
+\end{theorem}
+\begin{proof}
+Construct simultaneously $P(A)$ and $N(A)$, representing $A$ and $\neg A$.
+For a variable use $p$ and $\neg p$; for $\bot$ use $\bot,\top$ and for
+$\top$ use $\top,\bot$.  At a negation swap the two outputs.  At a
+conjunction put
+\[
+ P(B\wedge C)=P(B)\wedge P(C),\qquad
+ N(B\wedge C)=N(B)\vee N(C).
+\]
+At a disjunction interchange $\wedge$ and $\vee$ in these formulas.  Finally
+put
+\[
+ P(B\to C)=N(B)\vee P(C),\qquad
+ N(B\to C)=P(B)\wedge N(C).
+\]
+Each clause follows by examining the two input bits; the assertions for all
+nodes follow by induction on the finite syntax list.  Biconditionals, if
+present as abbreviations, may first be expanded as a conjunction of two
+implications.  The simultaneous construction is a finite bottom-up pass;
+duplicating earlier finite outputs gives a primitive recursive tree code.
+The negative clauses here are identities of Boolean semantics.  They are
+not being asserted as unrestricted equivalences of intuitionistic formulas.
+\end{proof}
+
+\subsection{Functional completeness and exact obstructions}
+
+\begin{theorem}[Complete Boolean bases]\label{ca-bases}
+The bases $\{\neg,\wedge,\vee,\bot,\top\}$,
+$\{\neg,\wedge,\bot,\top\}$, and $\{\neg,\vee,\bot,\top\}$ represent
+every finite Boolean table.  With at least one available variable, either
+NAND alone or NOR alone also represents every Boolean table, including the
+two constant functions.
+\end{theorem}
+\begin{proof}
+The first claim is the DNF construction.  The identities
+$x\vee y=\neg(\neg x\wedge\neg y)$ and
+$x\wedge y=\neg(\neg x\vee\neg y)$ establish the next two claims by
+substitution.  If $x\mathbin{\uparrow}y=\neg(x\wedge y)$, then
+\[
+ \neg x=x\mathbin{\uparrow}x,\quad
+ x\wedge y=(x\mathbin{\uparrow}y)\mathbin{\uparrow}
+              (x\mathbin{\uparrow}y),\quad
+ x\vee y=(x\mathbin{\uparrow}x)\mathbin{\uparrow}
+              (y\mathbin{\uparrow}y).
+\]
+The term $p\mathbin{\uparrow}(p\mathbin{\uparrow}p)$ is constantly true;
+its NAND with itself is constantly false.  For
+$x\mathbin{\downarrow}y=\neg(x\vee y)$ the dual identities give negation,
+disjunction, and conjunction, and
+$p\mathbin{\downarrow}(p\mathbin{\downarrow}p)$ is constantly false.
+Recursively replace each connective by the indicated fixed template.
+Each replacement duplicates its already constructed arguments a fixed
+number of times.  A recurrence $b(0)=20$,
+$b(t+1)=20b(t)+20$ bounds the output length for input depth at most $t$,
+including the constant templates.  This supplies an explicit primitive
+recursive bound even without sharing.  With no variables and no nullary
+symbols, there are no closed NAND-only or NOR-only terms; the qualification
+about an available variable is therefore necessary.
+\end{proof}
+
+\begin{theorem}[Monotone representation]\label{ca-monotone}
+A supplied Boolean table $f$ is representable using only
+$\wedge,\vee,\bot,\top$ if and only if it is monotone: whenever
+$a_i\leq b_i$ for every $i<n$, one has $f(a)\leq f(b)$.
+\end{theorem}
+\begin{proof}
+Constants and coordinate projections are monotone, and conjunction and
+disjunction preserve monotonicity.  Syntax induction proves necessity.
+For sufficiency define
+\[
+  F=\bigvee_{\substack{a<2^n\\ f(a)=1}}
+             \bigwedge_{\substack{i<n\\ a_i=1}}p_i.
+\]
+If $f(b)=1$, the term indexed by $b$ makes $F(b)=1$.  If $F(b)=1$, bounded
+search finds an included $a$ whose true coordinates all occur among the true
+coordinates of $b$.  Thus $a\leq b$ coordinatewise, and monotonicity gives
+$f(b)=1$.  This proves equality of the tables.  In particular, the basis
+containing only conjunction and disjunction cannot express negation, since
+negation reverses the order between the one-bit assignments $0$ and $1$.
+\end{proof}
+
+\subsection{Boolean algebra and algebraic normal form}
+
+\begin{theorem}[The finite algebra of formulas]\label{ca-finite-algebra}
+Modulo Boolean equivalence on $n$ variables, formulas have exactly
+$2^{2^n}$ equivalence classes.  Their Boolean algebra is explicitly
+isomorphic to the algebra of all subsets of the $2^n$ assignments, with
+intersection, union, complement, the empty set, and the whole set.
+Its atoms are the $2^n$ minterms.
+\end{theorem}
+\begin{proof}
+Send a formula to its truth-table bitset.  Conjunction, disjunction, and
+negation compute intersection, union, and complement bit by bit; equal
+bitsets are exactly equivalent formulas.  Every bitset has a preimage by
+canonical DNF.  Thus distinct bitsets give distinct classes, and every class
+has exactly one bitset.  A nonempty bitset contains a least set bit, so every
+nonzero element contains the singleton at that position.  A singleton has
+no nonzero proper subset.  Under the isomorphism these singletons are exactly
+the minterms.  Counting bitsets of length $2^n$ gives the stated cardinality.
+All statements can be expressed with the canonical bitsets as representatives,
+so no quotient type or comprehension over an infinite set is needed in iPRA.
+The usual commutative, associative, distributive, absorption, complement,
+identity, and De Morgan laws follow from the corresponding one-bit checks.
+\end{proof}
+
+There is also a completely finite meaning of the word \emph{free} in this
+example.  Supply a finite Boolean algebra by finite operation tables satisfying
+the Boolean equations, together with $n$ chosen elements $b_i$.  There is a
+unique Boolean homomorphism from the truth-table algebra taking the $i$th
+coordinate table to $b_i$.  Indeed, send the singleton indexed by $a$ to
+$\bigwedge_{i<n}b_i^{a_i}$, where $b_i^1=b_i$ and $b_i^0$ is its complement,
+and send a bitset to the join of its selected singleton images.  The images
+are pairwise disjoint: different assignments contribute complementary
+factors at a differing position.  Their join is $1$ by distributing
+$\bigwedge_i(b_i\vee\neg b_i)$.  These two facts prove preservation of joins,
+meets, and complement.  They also show that the coordinate tables have the
+required images.  Uniqueness follows because every bitset is the join of its
+singletons and each singleton is the indicated expression in the generators.
+Every distribution here is a finite induction on $n$ or on a bitset length.
+
+Use $x\oplus y$ for exclusive or and multiplication for conjunction of bits.
+Then $x\oplus x=0$, $x^2=x$, and multiplication distributes over exclusive
+or.  These are verified by their four input cases.
+
+\begin{theorem}[Unique algebraic normal form]\label{ca-anf}
+For every Boolean table $f$ on $n$ variables there are unique coefficients
+$c_S\in\{0,1\}$, indexed by subsets $S\subseteq\{0,\ldots,n-1\}$, such that
+\[
+ f(x)=\bigoplus_{S\subseteq\{0,\ldots,n-1\}}
+                  c_S\prod_{i\in S}x_i.
+\]
+They are given by the finite transform
+\[
+ c_S=\bigoplus_{T\subseteq S}f(1_T),
+\]
+where $1_T$ is the assignment with exactly the coordinates in $T$ true.
+The coefficient transform is its own inverse.
+\end{theorem}
+\begin{proof}
+At $x=1_U$, only monomials with $S\subseteq U$ contribute.  Substituting
+the proposed coefficients gives
+\[
+ \bigoplus_{S\subseteq U}\ \bigoplus_{T\subseteq S}f(1_T).
+\]
+For fixed $T\subseteq U$, its contribution occurs once for every $S$
+between $T$ and $U$.  If $T=U$ there is one occurrence.  Otherwise choose
+the least element of $U\setminus T$; toggling its membership in $S$ pairs
+all occurrences without a fixed point.  Equal bits cancel in exclusive or,
+leaving exactly $f(1_U)$.  This proves both the representation and that
+applying the transform twice returns the original table.  Consequently it
+is injective, proving uniqueness.  Alternatively, $c_\varnothing=f(0)$,
+and the value at $1_U$ determines $c_U$ after the coefficients for proper
+subsets have been determined.  Enumeration of pairs $(T,S)$ is bounded by
+$4^n$, so both the construction and the pairing argument are primitive
+recursive finite computations.
+\end{proof}
+
+\begin{corollary}[Affine fragment]\label{ca-affine}
+The functions representable by exclusive or, negation, and constants are
+exactly $c\oplus\bigoplus_{i\in S}x_i$.  This basis cannot express
+conjunction of two distinct variables.
+\end{corollary}
+\begin{proof}
+Exclusive or combines coefficients modulo $2$, and negation toggles the
+constant coefficient, so structural induction proves that every represented
+function has this form.  Conversely the displayed form uses precisely those
+operations.  The algebraic normal form of $x_0x_1$ has a degree-two monomial;
+uniqueness in Theorem~\ref{ca-anf} excludes an affine representation.
+\end{proof}
+
+\subsection{Prime implicants and bounded minimization}
+
+A consistent term is a conjunction of literals containing at most one sign
+of each variable.  It is coded by a ternary vector of length $n$: absent,
+positive, or negative.  It is an \emph{implicant} of $f$ if every assignment
+satisfying it makes $f$ true.  It is \emph{prime} if deleting any one of its
+literals destroys this property.  Both tests inspect at most $2^n$
+assignments for each of at most $n$ deletions.
+
+\begin{theorem}[Complete prime-implicant representation]\label{ca-prime}
+The disjunction of all prime implicants of $f$ represents $f$.  There are
+at most $3^n$ candidate terms.  Dually, the conjunction of all prime implicates
+represents $f$.
+\end{theorem}
+\begin{proof}
+Every included term implies $f$, by definition.  If $f(a)=1$, its complete
+minterm is an implicant.  Repeatedly delete the least literal whose deletion
+preserves being an implicant.  Each successful deletion decreases the number
+of literals, so $n$ iterations, with idle steps after stopping, suffice.
+The result remains true at $a$ and permits no further deletion.  If some
+proper subterm were an implicant, deleting just one of the removed literals
+would also have been an implicant, since a stronger term implies a weaker
+one.  Thus the output is prime and covers $a$.  For the dual statement apply
+this argument to $1-f$ and negate each term using De Morgan's law.  This also
+handles the constantly false function, whose prime-implicant disjunction is
+empty, and the constantly true function, whose empty term is prime.
+\end{proof}
+
+The theorem supplies a primitive recursive, exact minimization procedure
+among prime-implicant covers for any primitive recursive cost function, or
+for costs supplied as a finite input table: enumerate the at most
+$2^{3^n}$ subsets of the candidate prime implicants, retain the subsets
+representing $f$, and choose a least-cost retained subset with a fixed tie
+rule.  At least one is retained.  A minimum among arbitrary
+consistent-term DNFs may be sought among prime implicants when the cost is
+the number of terms, the number of literal occurrences, or a positive
+combination of these: replacing each term by a containing prime implicant
+does not increase either count and preserves the represented function.
+This is a termination and correctness result, not an efficiency claim.
+
+\section{Clause representations and certified satisfiability procedures}
+\label{ca-solvers}
+
+A literal is a variable with a sign, its complement being denoted
+$\overline\ell$.  A clause is a finite set of literals, interpreted as their
+disjunction.  The empty clause is false.  A clause set is interpreted as the
+conjunction of its clauses; the empty clause set is true.  Removing repeated
+literals or clauses preserves evaluation.  A clause containing a literal
+and its complement is always true and may be discarded.  Thus a normalized,
+non-tautological clause on $n$ variables has a ternary code, and there are at
+most $3^n$ such clauses, including the empty one.
+
+\subsection{A linear-size extension to clauses of width at most three}
+
+Associate a fresh variable $z$ with each non-variable node of a formula's
+syntax tree.  Process children before parents, using an original variable
+as the label of its own leaf.  For each node impose the following clauses,
+where $a,b$ are its child labels:
+\[
+\begin{array}{c|l}
+ \text{node relation}&\text{clauses}\\ \hline
+ z=\neg a &(\neg z\vee\neg a),\ (z\vee a)\\
+ z=a\wedge b &(\neg z\vee a),\ (\neg z\vee b),\
+                   (z\vee\neg a\vee\neg b)\\
+ z=a\vee b &(z\vee\neg a),\ (z\vee\neg b),\
+                   (\neg z\vee a\vee b)\\
+ z=(a\to b)&(\neg z\vee\neg a\vee b),\ (z\vee a),\
+                   (z\vee\neg b)\\
+ z=\top &(z)\\
+ z=\bot &(\neg z).
+\end{array}
+\]
+Add the unit clause containing the root label.  Call the resulting clause
+set $T_A$.  Here ``3-CNF'' means that every clause has at most three literal
+occurrences.  If exactly three occurrences are required, a shorter clause
+can be padded by repeating a literal; no fresh variables are needed for that
+convention.
+
+\begin{theorem}[Tseitin extension and projection]\label{ca-tseitin}
+For every assignment $a$ to the original variables:
+\begin{enumerate}
+ \item there is exactly one extension to the fresh labels satisfying all
+       node clauses;
+ \item that extension satisfies $T_A$ if and only if $A[a]=1$;
+ \item every satisfying assignment of $T_A$ restricts to a satisfying
+       assignment of $A$.
+\end{enumerate}
+If $s$ is the number of nodes of $A$, the construction uses at most $s$
+fresh variables, at most $3s+1$ clauses, and at most $7s+1$ literal
+occurrences.  In particular it preserves the number of satisfying assignments
+when assignments are counted over precisely the original variables and the
+introduced labels.
+\end{theorem}
+\begin{proof}
+For each row of the table, the conjunction of its clauses is true exactly
+when the stated equation of bits holds.  For example, the two clauses
+$\neg z\vee a$ and $\neg z\vee b$ say that $z=1$ forces both inputs to be
+$1$; the third says that when both inputs are $1$, $z$ must be $1$.  The
+other cases are verified by the same finite inspection.
+Given $a$, label each node by evaluating its children.  Each node equation
+then holds, so the node clauses hold.  Conversely, the bit at a leaf is
+already fixed, and each node equation uniquely determines its label from its
+children.  Induction along the node order proves that every satisfying
+extension has exactly the labels just computed.  Its root label is $A[a]$,
+which proves all three claims after adding the root unit clause.  Every
+binary gate contributes at most three clauses and seven occurrences; a
+negation or constant contributes fewer.  Add one occurrence for the root.
+Uniqueness gives a bijection between satisfying original assignments and
+satisfying extended assignments, not merely preservation of existence.
+\end{proof}
+
+Here nodes are occurrences, so two identical subformulas at different
+positions receive distinct fresh labels; their defining equations force the
+same bit nevertheless.  Sharing identical subformulas is an optional
+optimization, provided the shared directed graph remains acyclic.  With
+binary-encoded dense labels, the output bit length is
+$O(s\log(n+s+2))$; the displayed linear bounds concern clauses and literal
+occurrences.
+
+This is an equivalence after bounded existential elimination of the fresh
+labels.  It is not a claim that $A$ and $T_A$ have the same truth value for
+arbitrary independently chosen fresh-label values.  That distinction is
+essential when using equisatisfiability in a proof checker.
+
+\subsection{Resolution and Davis--Putnam elimination}
+
+The resolution rule, with a variable $p$ absent from $D$ and $E$, is
+\[
+ \frac{D\cup\{p\}\qquad E\cup\{\neg p\}}{D\cup E}.
+\]
+The union removes duplicate literals.  A resolution certificate is a finite
+list of input clauses and resolution steps, each step naming two earlier
+indices and a pivot.  Its checker merely verifies those finite operations.
+
+\begin{lemma}[Resolution soundness]\label{ca-resolution-sound}
+Every model of the two parent clauses is a model of their resolvent.
+Consequently a checked resolution certificate ending in the empty clause
+certifies unsatisfiability.
+\end{lemma}
+\begin{proof}
+If the resolvent were false, all literals in $D$ and $E$ would be false.
+The positive parent would force $p=1$ while the negative parent would force
+$p=0$, impossible for a bit.  Equivalently, split directly on the value of
+$p$: one of the parent clauses must be satisfied by its remaining literals.
+Induction along the certificate list preserves truth of every derived clause.
+The empty clause has value $0$ at every assignment, proving the last claim.
+\end{proof}
+
+Partition a normalized clause set $F$ into clauses $F_0$ not mentioning $p$,
+clauses $p\vee D_i$, and clauses $\neg p\vee E_j$.  Define
+\[
+ \operatorname{elim}_p(F)=F_0\cup\{D_i\cup E_j:i,j\},
+\]
+discarding tautologies and duplicate clauses after forming the resolvents.
+
+\begin{lemma}[Elimination with a witness reconstruction rule]
+\label{ca-elimination}
+An assignment $b$ to the other variables satisfies
+$\operatorname{elim}_p(F)$ if and only if it has an extension satisfying $F$.
+The extension is computed as follows: if some $D_i$ is false at $b$, set
+$p=1$; otherwise set $p=0$.
+\end{lemma}
+\begin{proof}
+A model of $F$ satisfies $F_0$ and all resolvents by resolution soundness, so
+its restriction is a model of the elimination.  Conversely suppose $b$
+satisfies the elimination.  If every $D_i$ is true, setting $p=0$ satisfies
+the positive clauses through their $D_i$ parts and satisfies all negative
+clauses through $\neg p$.  If some $D_i$ is false, setting $p=1$ satisfies
+all positive clauses.  For every $j$, the resolvent $D_i\cup E_j$ is true:
+it is either retained in the elimination or was discarded as a tautology.
+Since $D_i$ is false, $E_j$ is true.  Thus every negative clause is also true.
+The clauses of $F_0$ hold in either case.  The selected case and, when needed,
+the least offending $i$ are computed by a bounded scan.
+\end{proof}
+
+\begin{theorem}[Resolution completeness with primitive recursive bounds]
+\label{ca-resolution-complete}
+For every finite clause set $F$ on $n$ variables there is a primitive
+recursive procedure returning either a satisfying assignment or a checked
+resolution refutation.  After normalization the refutation can be represented
+as a directed acyclic list with at most $(n+1)3^n$ lines, using no variables
+outside the input vocabulary.
+\end{theorem}
+\begin{proof}
+Eliminate variables in their fixed order, retaining each earlier clause and
+recording a resolution justification for each new resolvent.  After $n$
+rounds there are no variables.  The remaining normalized set is either empty,
+which is satisfied by the empty assignment, or contains the empty clause.
+These alternatives are decided by inspecting its finite code.
+In the first case reconstruct the variable values in reverse order by
+Lemma~\ref{ca-elimination}.  Each step gives a model of the preceding clause
+set, ultimately a model of $F$.  In the second case, the empty clause already
+has a finite list of input or resolution justifications; deleting discarded
+clauses from the active set does not remove their earlier proof lines.
+This gives a checked refutation.  There are at most $3^n$ normalized input
+clauses, and each of the $n$ stages needs to store at most $3^n$ distinct new
+clauses.  This proves the stated generous bound.  Duplicate candidates can
+reuse an earlier stored line.
+
+For totality, all clause sets are bitsets over the fixed universe of at most
+$3^n$ clauses.  Each round scans at most $9^n$ parent pairs, each pivot and
+each union is a bounded operation, and there are exactly $n$ rounds.  Proof
+indices are bounded by the displayed line bound.  Hence the solver,
+back-substitution, and proof recording are all primitive recursive.
+Correctness is an induction on these fixed rounds, maintaining the bounded
+equivalence in Lemma~\ref{ca-elimination} and the proof-checking invariant.
+It does not presuppose an unbounded search for a refutation.
+\end{proof}
+
+\begin{corollary}[Clausal consequence by refutation]\label{ca-clausal-entail}
+For a finite clause set $F$ and a clause
+$C=\ell_1\vee\cdots\vee\ell_r$, the assertion $F\models_2 C$ is equivalent
+to existence of a resolution refutation of
+$F\cup\{\overline\ell_1,\ldots,\overline\ell_r\}$, where the added literals
+are unit clauses.  A refutation can be constructed within the preceding
+bound for the combined variable set.
+\end{corollary}
+\begin{proof}
+A counterexample to $F\models_2C$ is exactly a model of the augmented set:
+it satisfies $F$ and makes every literal of $C$ false.  Apply soundness and
+completeness of the previous theorem.  This formulation deliberately uses
+refutation; a pure resolution system without weakening need not directly
+derive every syntactically larger consequence clause from $F$.
+\end{proof}
+
+\subsection{DPLL as a bounded, correct search}
+
+For a partial assignment $\rho$, simplify $F$ by removing every clause already
+made true and removing every false assigned literal from the remaining
+clauses.  Denote the residual set by $F\!\upharpoonright\!\rho$.
+
+\begin{lemma}[Restriction, unit propagation, and pure literals]
+\label{ca-dpll-rules}
+The following transformations preserve the indicated satisfiability problem.
+\begin{enumerate}
+ \item An extension of $\rho$ satisfies $F$ exactly when its unassigned part
+       satisfies $F\!\upharpoonright\!\rho$.
+ \item If the residual set contains a unit clause $\{\ell\}$, every model
+       makes $\ell$ true; assigning it true loses no model.
+ \item If a residual literal occurs and its complement does not, assigning
+       that literal true preserves existence of a model.
+ \item For an unassigned variable $p$, the residual set is satisfiable
+       exactly when one of its restrictions $p=0,p=1$ is satisfiable.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+For the first claim, consider each clause separately.  A removed satisfied
+clause imposes no further condition, and deleting its already false literals
+leaves exactly the condition on its unassigned literals.  The second claim
+is the definition of a unit disjunction.  For the third claim, take any
+residual model and change the pure variable to make its occurring sign true.
+Every clause mentioning it becomes or stays true; every other clause is
+unchanged, since the opposite sign occurs nowhere.  Restricting the changed
+assignment gives a residual model, and any residual model extends back by
+the selected value using the first claim.  The final claim splits on the
+two possible values of $p$ in a model; conversely a model of either restricted
+set extends by that value.
+\end{proof}
+
+\begin{theorem}[Total and correct DPLL]\label{ca-dpll}
+Starting with $n$ unassigned variables, the following deterministic policy
+decides satisfiability by a primitive recursive search: report failure if an
+empty clause occurs, report success if no clauses remain, otherwise assign
+the least unit literal if one exists, then the least pure literal if one
+exists, and otherwise split on the least occurring unassigned variable.
+Every path assigns at most $n$ variables, and the full search tree contains
+at most $2^{n+1}-1$ nodes.
+\end{theorem}
+\begin{proof}
+Maintain the residual formula and the list of unassigned variables.
+Whenever neither terminal case applies, some unassigned variable occurs;
+each unit, pure, or split operation removes one such variable from that
+list.  Define the search by primitive recursion on a fuel $r$ initially
+equal to the list length.  Every recursive child receives fuel $r-1$.
+At $r=0$ the only residual clauses are empty, so the terminal cases exhaust
+the possibilities.  Every returned successful assignment is checked by
+Lemma~\ref{ca-dpll-rules}, extending arbitrary unused variables by $0$ when
+no clauses remain.  For completeness, the same lemma says that a model
+survives a unit or pure step and must survive one child of a split.  Induction
+on $r$ therefore proves both correctness assertions.  For the node bound,
+$t(0)=1$ and $t(r+1)\leq1+2t(r)$ give $t(r)\leq2^{r+1}-1$;
+unary steps only decrease this bound.  This recursive call tree can equally
+be evaluated by a bounded explicit stack for that many steps, so no
+general recursive termination principle is required.
+\end{proof}
+
+\subsection{Horn clauses: least models and forward certificates}
+
+A Horn clause has at most one positive literal.  After deleting tautologies,
+write it as a rule
+\[
+  p_{i_1}\wedge\cdots\wedge p_{i_k}\longrightarrow q,
+\]
+where $q$ is a variable or $\bot$.  Rules with $q=\bot$ are constraints;
+rules with a variable head are definite.  The empty body represents $\top$.
+For a set $Y$ of variables define
+\[
+ U(Y)=Y\cup\{q:\text{a definite input rule has head $q$ and body in $Y$}\}.
+\]
+Starting with $Y_0=\varnothing$, compute $Y_{t+1}=U(Y_t)$ for $n$ rounds.
+
+\begin{theorem}[Horn least-model theorem and decision procedure]
+\label{ca-horn}
+The set $Y_n$ is closed under every definite input rule and is contained in
+every model of those rules.  The full Horn set is satisfiable exactly when
+no constraint has all its body variables in $Y_n$.  In that case $Y_n$ is
+its least model under inclusion.  If a constraint does fire, forward chaining
+provides a finite contradiction certificate.
+\end{theorem}
+\begin{proof}
+Every $Y_t$ is contained in $Y_{t+1}$.  If equality occurs at one stage it
+persists, since both next stages apply the same function $U$.  A strict
+change adds at least one of the $n$ variables.  If $Y_n$ were not fixed,
+there would have been $n+1$ strict increases starting from the empty set,
+contradicting the count of distinct variables.  Thus $Y_n=U(Y_n)$, exactly
+the required definite-rule closure.
+
+Let $M$ be any model of the definite rules.  The empty set is contained in
+$M$.  If $Y_t\subseteq M$ and a rule fires at $Y_t$, every body variable
+is true in $M$, so its head is true in $M$.  Therefore
+$Y_{t+1}\subseteq M$.  Induction gives $Y_n\subseteq M$.  If no constraint
+fires at $Y_n$, definite closure and that fact verify every input clause,
+so $Y_n$ itself is a model.  If a constraint fires, its body lies in every
+possible model by the inclusion just proved, whereas its head is false;
+thus no model exists.
+
+For certificates record, when a variable is first added, one rule whose
+body was already available at the preceding stage.  This produces an
+acyclic list of at most $n$ variable conclusions, followed, in the failure
+case, by one constraint conclusion $\bot$.  The checker verifies the input
+rule and the earlier availability of its body variables.  If ordinary
+resolution clauses are desired, resolve the corresponding Horn clause
+successively with the unit clauses for those variables.  This derives its
+head unit, or the empty clause for a fired constraint.  A body with $k$
+literals uses $k$ resolution steps.  The resulting certificate length is
+bounded by $(n+1)(L+1)$, where $L$ is the total input literal count.
+\end{proof}
+
+\begin{corollary}[Closure of Horn models under intersection]
+\label{ca-horn-intersection}
+The intersection of a nonempty finite list of models of a Horn set is again
+a model.  For definite rules the same holds for the empty intersection,
+interpreted as the set of all variables.
+\end{corollary}
+\begin{proof}
+If a body is true in the intersection, it is true in each listed model.
+A variable head is consequently true in each and hence in the intersection.
+For a constraint, its body cannot be true in even one listed model, so it
+cannot be true in the intersection.  With an empty list there are no
+constraints in the definite case, and every head is true in the full set.
+The qualification about a nonempty list cannot be dropped for a Horn set
+containing, for example, the constraint $p\to\bot$.
+\end{proof}
+
+Forward chaining also has a worklist implementation.  Give each rule a
+counter initially equal to its number of body occurrences, and for each
+variable keep the list of occurrences in rule bodies.  Enqueue each
+zero-counter head; when a variable first becomes true, process its occurrence
+list and decrease the corresponding counters.  A counter reaching zero
+enqueues its head or reports the fired constraint.  Mark true variables so
+that duplicate enqueues are not processed again.  Each variable is processed
+once and each body occurrence once, and each rule fires once.  Thus the
+number of indexed array operations is $O(n+L+1)$, including initialization.
+The invariant says that a counter equals the number of its not-yet-processed
+body occurrences; it proves the same closure computation as above.
+This operation count uses an indexed-array cost model.  The simpler fixed
+$n$-round implementation already supplies everything required for an iPRA
+formalization, without any machine-cost assumptions.
+
+\subsection{Two-literal clauses and finite graph reachability}
+
+Suppose every clause has at most two literals and no empty clause occurs.
+Replace a unit clause $a$ by $a\vee a$.  Form a directed graph on the $2n$
+literals; each clause $a\vee b$ gives edges
+$\overline a\to b$ and $\overline b\to a$.  For every edge $u\to v$ the
+complement-reversed edge $\overline v\to\overline u$ also occurs.
+
+\begin{lemma}[Finite reachability and components]\label{ca-reachability}
+Reachability on a graph with $m$ vertices is primitive recursive, and can be
+computed by at most $m^3$ Boolean updates after initialization.  Mutual
+reachability is an equivalence relation.  Its component graph has no directed
+cycle between distinct components, and a topological ranking of its
+components is computable by bounded search.
+\end{lemma}
+\begin{proof}
+Initialize $R_0$ with edges and identity.  For $k=0,\ldots,m-1$, put
+\[
+ R_{k+1}(i,j)=R_k(i,j)\vee\bigl(R_k(i,k)\wedge R_k(k,j)\bigr).
+\]
+The invariant is that $R_k(i,j)$ holds exactly when there is a path from
+$i$ to $j$ whose internal vertices have indices below $k$.  For a path using
+$k$, remove loops until it is simple, and split it at its unique occurrence
+of $k$; both resulting paths have internal vertices below $k$.  Conversely
+concatenate the two paths witnessed by the second term.  Loop removal needs
+at most the length of the supplied path, and a simple path has at most
+$m-1$ edges.  Equivalently the invariant can carry these bounded path
+witnesses explicitly.  This proves the final reachability table correct.
+Reflexivity and transitivity follow by zero-length paths and concatenation,
+and mutual reachability is therefore an equivalence relation.  A component
+cycle would give paths both ways between its vertices, merging those
+components, so it cannot occur.
+
+To rank components, repeatedly remove the least remaining component with no
+incoming edge from another remaining component.  Such a component exists:
+otherwise choose the least predecessor at each step for one more step than
+the number of remaining components.  Two positions in this finite list must
+coincide, giving a cycle.  The pigeonhole claim is proved by marking distinct
+components as they are encountered; after at most the component count all
+marks have been used.  Thus bounded search always finds a source.  Assign
+successive ranks in the removal order.  Every edge goes from a component of
+no greater rank to one of no smaller rank.
+\end{proof}
+
+\begin{theorem}[The 2-SAT component criterion]\label{ca-twosat}
+A two-literal clause set without an empty clause is satisfiable if and only
+if no variable and its complement lie in the same strongly connected
+component of the implication graph.  A satisfying assignment or a pair of
+contradictory paths can be produced by a primitive recursive procedure.
+\end{theorem}
+\begin{proof}
+Every model of a clause respects each associated implication edge: if
+$\overline a$ is true in a model of $a\vee b$, then $a$ is false and $b$
+is true.  Truth therefore propagates along paths.  If $p$ and $\neg p$ are
+mutually reachable, split on the value of $p$.  Whichever of the pair is
+true forces the other true along one of those paths, a contradiction.  The
+reachability construction retains witnesses of length at most $2n-1$.
+
+Conversely assume the component condition.  Complementation maps components
+to components: reverse and complement each edge of a path, and mutual
+reachability is preserved.  No component equals its complement.  Let $r(C)$
+be a topological rank, and assign a literal $a$ to be true exactly when
+\[
+ r([a])>r([\overline a]).
+\]
+The ranks are distinct for complementary components, so exactly one of
+$a,\overline a$ is true; the definition is a consistent variable assignment.
+If both literals of a clause $a\vee b$ were false, its two edges would give
+\[
+ r([a])<r([\overline a])\leq r([b])
+       <r([\overline b])\leq r([a]),
+\]
+which is impossible for natural numbers.  Hence every clause is satisfied.
+The finite ranks and comparisons give the required explicit assignment.
+The graph and its reachability table have size bounded in $n$ and the input
+length, and all later searches are bounded by $2n$, establishing primitive
+recursiveness.  An input empty clause is handled separately as immediate
+unsatisfiability.
+\end{proof}
+
+\section{Forgetting variables, interpolation, and finite definability}
+\label{ca-interpolation}
+
+The quantifier notation introduced here names finite operations on formula
+codes.  It does not add first-order or second-order quantifiers to the object
+language.  Partition a formula's variables into a forgotten tuple
+$P=(p_0,\ldots,p_{k-1})$ and a retained tuple $Q$.  Define
+\[
+ \exists_P A=\bigvee_{a<2^k} A[P:=a],
+ \qquad
+ \forall_P A=\bigwedge_{a<2^k} A[P:=a].
+\]
+The substituted values are $\bot,\top$.  Each formula contains only variables
+of $Q$.  If $s$ is the syntax length of $A$, a size bound is
+$(s+2)2^k$ with the usual binary folds and fixed constant symbols.
+
+\begin{theorem}[Boolean elimination of finite quantifiers]
+\label{ca-forgetting}
+For every assignment $b$ to $Q$,
+\[
+ (\exists_P A)[b]=1\ \Longleftrightarrow\
+        \text{some }a<2^k\text{ has }A[a,b]=1,
+\]
+\[
+ (\forall_P A)[b]=1\ \Longleftrightarrow\
+        \text{every }a<2^k\text{ has }A[a,b]=1.
+\]
+In the existential case the least witness is recovered by bounded search.
+Both operations are primitive recursive.
+\end{theorem}
+\begin{proof}
+Substitution commutes with evaluation, so the displayed formula evaluations
+are exactly the disjunction and conjunction of the stated $2^k$ bits.
+An induction on the fold length proves that a Boolean disjunction equals
+$1$ exactly when some scanned bit equals $1$, recording the first such
+position; the dual induction proves the conjunction assertion.  A fixed loop
+over $2^k$ substitutions and a fixed fold construct the formula codes.
+\end{proof}
+
+\begin{theorem}[Uniform interpolation in the retained vocabulary]
+\label{ca-uniform}
+If $C$ contains no variable of $P$, then
+\[
+ A\models_2 C\quad\Longleftrightarrow\quad
+           \exists_P A\models_2 C,
+ \qquad
+ C\models_2 A\quad\Longleftrightarrow\quad
+           C\models_2\forall_P A.
+\]
+Thus $\exists_P A$ is the strongest Boolean consequence of $A$ expressible
+without $P$, and $\forall_P A$ is the weakest Boolean sufficient condition
+for $A$ expressible without $P$.
+\end{theorem}
+\begin{proof}
+Certainly $A\models_2\exists_P A$: the current forgotten-variable assignment
+selects one disjunct.  Thus a consequence of $\exists_P A$ is a consequence
+of $A$.  Conversely suppose $A\models_2 C$ and a retained assignment makes
+$\exists_P A$ true.  Extract a forgotten assignment making $A$ true and
+apply the entailment.  Since $C$ contains no forgotten variables, its value
+does not change when that witness is forgotten.  This proves the first
+equivalence, even if $C$ contains extra variables disjoint from $P$; those
+extra values are held fixed throughout.
+
+For the second equivalence, $\forall_P A\models_2 A$ is immediate by
+selecting the current conjunct.  In the other direction, if $C$ is true and
+$C\models_2 A$, vary the forgotten assignment through every $a<2^k$.
+The value of $C$ stays true, so every cofactor of $A$ is true; hence the
+conjunction $\forall_P A$ is true.  The characterizations ``strongest'' and
+``weakest'' are just these two universal entailment properties.
+\end{proof}
+
+\begin{corollary}[Finite propositional interpolation]\label{ca-craig}
+If $A\models_2 B$, there is an explicitly computed formula $I$ using only
+variables common to $A$ and $B$ such that
+$A\models_2 I$ and $I\models_2 B$.  One may take
+\[
+ I=\exists_{\operatorname{Var}(A)\setminus\operatorname{Var}(B)} A.
+\]
+By finite classical completeness, corresponding checked classical proofs of
+the two implications can also be constructed.
+\end{corollary}
+\begin{proof}
+The forgotten variables do not occur in $B$, so
+Theorem~\ref{ca-uniform} gives $I\models_2 B$ and the first part of its
+proof gives $A\models_2 I$.  Every variable surviving in $I$ occurs in both
+formulas.  All variable-set operations are finite scans of the input syntax.
+Apply the truth-table proof constructor of Theorem~\ref{thm:cpc-complete} to each
+of the two verified implications.  This last step is an additional proof
+construction and is not needed for semantic interpolation itself.
+If the common vocabulary is empty, $I$ is a constant formula, as required:
+it is true precisely when some assignment satisfies $A$.
+\end{proof}
+
+\begin{proposition}[Laws of forgetting]\label{ca-forgetting-laws}
+For disjoint forgotten tuples $P,R$, finite quantifier operations commute
+and compose:
+\[
+ \exists_P\exists_R A\equiv_2\exists_{P\cup R}A
+ \equiv_2\exists_R\exists_P A,
+\]
+with the analogous assertion for $\forall$.  Forgetting twice is idempotent.
+Moreover
+\[
+ \exists_P(A\vee B)\equiv_2(\exists_PA)\vee(\exists_PB),\qquad
+ \forall_P(A\wedge B)\equiv_2(\forall_PA)\wedge(\forall_PB),
+\]
+\[
+ \forall_P A\equiv_2\neg\exists_P\neg A.
+\]
+If $P$ is absent from $C$, then
+\[
+ \exists_P(A\wedge C)\equiv_2(\exists_PA)\wedge C,
+ \qquad
+ \forall_P(A\vee C)\equiv_2(\forall_PA)\vee C.
+\]
+\end{proposition}
+\begin{proof}
+The composition statements identify an assignment to the union with a pair
+of assignments to the separate tuples, simply a reindexing of a finite
+Boolean fold.  Idempotence holds because after the first forgetting the
+cofactors for the forgotten variables are identical.  The distribution
+identities express associativity and commutativity of finite joins or meets.
+Duality follows by complementing each bit in a finite conjunction.  For the
+last two identities, $C$ has a fixed bit across all cofactors; split on that
+bit.  For example, when $C=0$ both sides of the existential identity vanish,
+and when $C=1$ both are $\exists_PA$.  These arguments also cover an empty
+forgotten tuple, which has exactly one assignment.  Existential forgetting
+does not in general preserve conjunction: forgetting $p$ from $p\wedge\neg p$
+gives $\bot$, whereas $(\exists_p p)\wedge(\exists_p\neg p)$ is $\top$.
+\end{proof}
+
+\begin{theorem}[Finite Beth definability]\label{ca-beth}
+Let $T(Q,P)$ be a finite propositional theory, written as one conjunction,
+and let $p$ be a member of $P$.  Suppose the following finite uniqueness
+condition holds: any two assignments satisfying $T$ and agreeing on $Q$
+agree on $p$.  Then the formula
+\[
+ d(Q)=\exists_P\bigl(T(Q,P)\wedge p\bigr)
+\]
+explicitly defines $p$ in the theory:
+\[
+ T\models_2\bigl(p\leftrightarrow d(Q)\bigr).
+\]
+The uniqueness condition is a bounded truth-table test, and the definition
+and a classical proof certificate can be computed primitively recursively
+whenever that test succeeds.
+\end{theorem}
+\begin{proof}
+Take a model $(b,a)$ of $T$.  If its $p$ bit is $1$, that very assignment
+is a witness to the finite existential defining $d$, so $d(b)=1$.  If
+$d(b)=1$, extract a witness $a'$ making $T(b,a')\wedge p$ true.  The two
+models $(b,a)$ and $(b,a')$ agree on $Q$, so the supplied uniqueness condition
+forces their $p$ bits to agree; the second is $1$, hence so is the first.
+This proves both directions of the biconditional at every model.  A retained
+assignment with no extension to a model of $T$ simply makes $d$ false; no
+existence-of-model assumption was used.  Check the uniqueness condition by
+scanning all triples $(b,a,a')$, a finite bounded table.  Theorem~\ref{ca-forgetting}
+constructs $d$ and extracts its witnesses.  Finally use the classical
+truth-table proof constructor of Theorem~\ref{thm:cpc-complete} on the
+established implication.  Repeating
+the construction for every member of $P$ gives an explicitly defined tuple
+whenever the whole tuple is uniquely determined by $Q$.
+\end{proof}
+
+\subsection{Arithmetic audit of the constructions}
+\label{ca-audit}
+
+The constructions in these sections use truth tables of length $2^n$, clause
+universes of size $3^n$, and, for exact DNF minimization, subsets of a set of
+size $3^n$.  Their bounds may be large, but exponentiation and finite
+iteration of these explicit operations are primitive recursive.  A program
+does not stop merely because a mathematical argument says that an unbounded
+search eventually succeeds: it runs a fixed number of rounds, retaining its
+answer once a stopping condition has been met.  The relevant bounds are
+$n$ for elimination, Horn saturation, and variable assignment along a DPLL
+path; $2^{n+1}-1$ for the complete DPLL tree; $m$ for the stages of finite
+reachability; and the displayed table bounds for representation and
+forgetting.  Numerical encodings of the finite lists may enlarge these bounds
+by further primitive recursive functions without changing the conclusion.
+
+For formal proofs in iPRA, an assertion about all assignments is stored as
+the conjunction of its bounded Boolean checks.  A loop invariant says that
+this Boolean invariant equals $1$.  Induction on the loop counter is therefore
+quantifier-free induction in the language with the requisite primitive
+recursive functions.  Witness-producing assertions retain the actual
+assignment, path, formula, or certificate code in the loop state; correctness
+of that retained code is again a bounded check.  A uniformly named Boolean
+table supplied as an input code is distinct from an arbitrary higher-order
+function.  These observations are the specific reason the preceding
+arguments fit iPRA, beyond the bare fact that their algorithms terminate.
+
+The breadth of the results should not be confused with a sharp complexity
+classification.  The chapter proves the displayed bounds, and the stated
+worklist operation count, but does not use or establish $\mathrm P\ne
+\mathrm{NP}$, lower bounds for general propositional proof systems, or
+compactness for arbitrary infinite premise sets.  Every interpolation or
+definability claim in this chapter is explicitly finite and Boolean.

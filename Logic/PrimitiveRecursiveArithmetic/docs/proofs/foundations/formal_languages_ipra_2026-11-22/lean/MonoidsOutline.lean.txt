@@ -1,0 +1,97 @@
+/-
+UNCOMPILED LEAN 4 OUTLINE — SPECIFICATION, NOT A COMPLETED FORMAL PROOF.
+Supplement to RegularOutline.lean.txt and chapters/monoids.tex.
+-/
+
+namespace IPRAFormalLanguages.MonoidsOutline
+
+-- Arithmetic records have Nat/list codes; use finite lists only in the
+-- semantic layer until the standard number encodings are connected.
+structure MonoidTable where
+  size : Nat
+  unit : Nat
+  table : List Nat                 -- row-major size*size entries
+
+-- mul T x y := table[x*T.size+y], with an explicit default on invalid codes.
+-- validMonoid T checks:
+--   0<size; unit<size; table length=size^2; every entry<size;
+--   mul unit x=x and mul x unit=x for every x<size;
+--   mul (mul x y) z = mul x (mul y z) for every x,y,z<size.
+-- Each universal quantifier is a bounded conjunction, hence a PR bit.
+
+structure MonoidRecognizer where
+  algebra : MonoidTable
+  alphabet : Nat
+  letters : List Nat              -- exactly alphabet entries, all <size
+  accepting : List Bool           -- exactly size entries
+
+-- evalRecognizer starts at algebra.unit and folds mul with the listed
+-- letter images. acceptRecognizer looks up accepting at the resulting value.
+-- monoidToDFA uses size states, unit as start, and delta(x,a)=mul(x,letters[a]).
+
+-- Transformation representation for an n-state DFA: a vector of n numbers
+-- below n, encoded as an n-digit base-n value in [0,n^n). For n=1, use the
+-- unique vector and unique code 0 rather than treating base 1 as a usual
+-- positional numeral system. n=0 is rejected by validDFA.
+-- ID[q]=q; COMPOSE(f,g)[q]=g[f[q]] (first f, then g).
+-- WORD_ACTION(M,w)[q]=run(M,q,w).
+-- This orientation gives WORD_ACTION(u++v)=COMPOSE(WORD_ACTION u,WORD_ACTION v).
+
+-- Required semantic theorem targets:
+--
+-- valid_monoid_decidable:
+--   validMonoid T=true iff the finite table satisfies the displayed laws.
+-- word_action_append:
+--   action M (u++v) = compose (action M u) (action M v).
+-- transformation_monoid_valid:
+--   validDFA M -> validMonoid (allTransformations M.states).
+-- monoid_to_dfa_correct:
+--   acceptDFA (monoidToDFA R) w = acceptRecognizer R w.
+-- dfa_to_monoid_correct:
+--   acceptRecognizer (dfaToMonoid M) w = acceptDFA M w.
+--
+-- generatedTable computes a bitset of N=n^n possible vectors, initially ID.
+-- Round(S)=S union {compose f letter[a] | f in S, a<alphabet}.
+-- Exactly N rounds suffice. Store predecessors for every newly marked vector.
+-- A separate shortest-path scan returns representative words of length<N.
+--
+-- generated_membership_iff_action:
+--   marked f iff f=action M w for a supplied word w; on the forward branch
+--   return a word with length<N, while the reverse branch is induction on w.
+-- generated_closed_under_mul:
+--   marked f -> marked g -> marked(compose f g).
+-- Proof: follow the stored word for g starting at f in the stable table.
+-- generated_monoid_valid:
+--   renumber the marked vectors, restrict multiplication, prove all table laws.
+--
+-- Define SyntacticallyEquivalent M u v :=
+--   forall x y, acceptDFA M (x++u++y)=acceptDFA M (x++v++y).
+-- For reachable minimal M:
+-- syntactic_iff_action_eq:
+--   SyntacticallyEquivalent M u v iff action M u = action M v.
+-- action_ne_find_context:
+--   when vectors differ, return q where they differ; access[q] has length<n;
+--   a table separator for the distinct outputs has length<=n*n. Return x,y
+--   with those bounds and unequal accepting bits for x++u++y, x++v++y.
+-- syntactic_monoid_correct:
+--   minimize M first, then compute its generated transformation monoid.
+--   This gives precisely the syntactic classes and their concatenation table.
+-- No quotient over an arbitrary infinite predicate is formed.
+--
+-- LEFT-LINEAR GRAMMARS:
+-- leftProduction A (B,u) becomes rightProduction A (reverse u,B);
+-- terminalProduction A u becomes terminalProduction A (reverse u).
+-- left_right_derivation_reverse proves the stepwise correspondence of
+-- A++terminalSuffix with reverse(terminalSuffix)++A.
+-- The grammar S->aA|epsilon, A->Sb has a direct trace invariant alternating
+-- a^j S b^j and a^(j+1) A b^j; terminal outputs are exactly a^j b^j.
+--
+-- OBJECT-THEORY GATE:
+-- Encode vectors/tables, prove their PR interfaces, compile the bounded table
+-- laws and round invariants into QF formulas, and construct/check iPRA proof
+-- objects. For context equivalence, introduce unbounded x,y only after the
+-- arbitrary-context equality is established; the only decision is equality
+-- of n finite vector entries. The counterexample branch returns bounded
+-- contexts explicitly, so no classical negated-universal principle is used.
+
+end IPRAFormalLanguages.MonoidsOutline

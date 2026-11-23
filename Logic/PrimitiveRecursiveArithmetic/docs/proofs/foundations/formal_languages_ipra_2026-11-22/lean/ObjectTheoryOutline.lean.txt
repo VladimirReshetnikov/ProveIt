@@ -1,0 +1,184 @@
+/-
+OBJECT-THEORY LEAN BLUEPRINT. NOT A COMPILED MODULE.
+
+Source snapshot: VladimirReshetnikov/ProveIt
+  3eb195cab4cc3d552a9eca78880c6d428f3e44f9
+Root toolchain at that snapshot: leanprover/lean4:v4.32.0
+
+The code-like declarations in comments are targets to implement. No axiom
+or sorry is offered as a completed language-theory proof. The terminal
+judgment is Prf PRAAx [] phi, not merely a proposition about standard Nat.
+-/
+
+import IPRADerivations.Core.Pairing
+import IPRADerivations.Core.SearchParameters
+import IPRADerivations.Core.Pigeonhole
+import IPRADerivations.Foundations.BoundedFormulas
+import IPRADerivations.Foundations.BoundedFixpoint
+import IPRABridge.Standard
+
+open LeanProofs.ConciseIPRA
+open LeanProofs.IPRA
+open scoped Fm
+
+/- INSPECTED, REAL EXISTING TARGETS
+  Prf PRAAx (Gamma : List (Fm PTm n)) (phi : Fm PTm n)
+  Search.Finite.mu
+  Search.Finite.search_spec
+  Search.Finite.search_found
+  Search.Finite.search_failed
+  Pigeonhole.pigeonhole
+  Foundations.BoundedFormulas.bf_reflect
+  Foundations.BoundedFormulas.bf_dec
+  Foundations.BoundedFormulas.bf_choice
+  Foundations.BoundedFixpoint.fixpoint
+  IPRABridge.conciseToStandard
+
+First gate: run #check for each of these in the pinned repository and adapt
+the local import aliases to that revision. This session inspected their
+source declarations but did not run Lean.
+-/
+
+/- NUMERICAL PR SYMBOLS TO CONSTRUCT
+
+Each name below denotes a fixed PR defining expression, not an arbitrary
+Lean function declared to be PR. Give each expression its arity and defining
+equations, and prove its codec and validity lemmas in Prf PRAAx.
+
+Nat/finite data:
+  pair : PR 2; first, second : PR 1
+  nil/cons/listLength/listAt/listUpdate; finite sum/product; bounded choice
+  bitAt/tableUpdate/tableAll/tableAny; decode/encode finite records
+
+Words (alphabet size is an argument):
+  validWord : PR 2
+  wordLength : PR 2
+  letterAt : PR 3
+  appendWord : PR 3
+  takeWord/dropWord : PR 3
+  reverseWord : PR 2
+  wordPower : PR 3
+  enumerateWordOfLength : PR 3
+  applyHom : PR 2  -- packed hom-table includes source/target alphabets
+
+DFA/epsilon-NFA:
+  validDFA/validENFA : PR 1
+  dfaStep : PR 3; dfaRunFrom : PR 3; dfaAccept : PR 2
+  epsilonClosure : PR 2; enfaRun : PR 2; enfaAccept : PR 2
+  determinize/complete/complement/reverse : PR 1
+  union/intersection/concat/substitute : PR 2
+  star : PR 1; directHom/inverseHom : PR 2
+  shortestSeparator : PR 2; minimize : PR 1
+  regexOfAutomaton/automatonOfRegex : PR 1
+  regexAccept : PR 2
+
+Grammars:
+  validCFG : PR 1; validDerivation : PR 3; validTree : PR 4
+  treeToDerivation/derivationToTree : PR 2
+  nullable/productive/unitReach/normalizeCNF : PR 1
+  cnfForwardTree/cnfBackwardTree : PR 2
+  cyk/chartParse : PR 2; treeOfCyk : PR 2
+  cfgPumping : PR 2; cfgFiniteness : PR 1
+  cfgToPDA/pdaToCFG : PR 1
+  validNCGrammar : PR 1; ncAccept : PR 2
+
+Machines:
+  validMachine : PR 1; initial : PR 2; machineStep : PR 2
+  boundedRun : PR 3; haltAt : PR 3; outAt : PR 4
+  proofTraceCheck : PR 3
+
+Counting:
+  transitionCount : PR 3; matrixPower : PR 2; countAccepted : PR 2
+  determinantPolynomial/adjugatePolynomial : PR 1
+  dyckBit : PR 1; reflectFirstCrossing : PR 2; dyckCount : PR 1
+
+Grammar/regex syntax evaluation is finite bounded tree evaluation with the
+majorants in the report. Do not implement PR-code evaluation as a universal
+PR object-language function. Compilation of each fixed PR definition is
+metatheoretic recursion on the definition.
+-/
+
+/- EXACT REPRESENTATIVE CLOSED TARGETS (informal notation for Fm builders)
+
+All symbols below are their PR term constructors; validity predicates are
+equalities of bits to 1. Universal closures bind only number variables.
+
+T01: forall k u v w,
+  Valid(k,u) and Valid(k,v) and Valid(k,w) ->
+  append(k,append(k,u,v),w) = append(k,u,append(k,v,w)).
+  Invariant: equality of lengths and all digits below that common length.
+
+T02: forall M w,
+  ENFAValid(M) and WordValid(alphabet(M),w) ->
+  dfaAccept(determinize(M),w) = enfaAccept(M,w).
+  Invariant: after prefix i, every one of n state bits agrees with the
+  bounded reachability definition. Witness length <= (|w|+1)n+|w|.
+
+T03: forall M N,
+  DFAValid(M) and DFAValid(N) and sameAlphabet(M,N) ->
+  (separatorFound(M,N) = 0 <-> forall w,
+    WordValid(alphabet(M),w) -> dfaAccept(M,w)=dfaAccept(N,w)).
+  Positive direction: fixed-point product table + word scan.
+  Negative direction: separator witness length < states(M)*states(N).
+  The unbounded forall over w is introduced after the arbitrary-word proof.
+
+T04: forall G w,
+  CFGValid(G) and WordValid(alphabet(G),w) ->
+  (cyk(G,w)=1 <-> exists t, TreeCheck(G,start(G),w,t)=1).
+  The forward witness is the explicit reconstructed tree. The backward
+  proof fixes a supplied t, normalizes it, then scans its nodes.
+  A stronger bounded existential uses the encoding bound for the reverse
+  image of a CNF tree with 3*|w|-1 nodes (empty input separate).
+
+T05: forall G w,
+  CFGValid(G) and Generated(G,w) and |w|>=2^vars(CNF(G)) ->
+  PumpCheck(G,w,pumpCuts(G,w))=1.
+  PumpCheck includes w=u v x y z, |vxy|<=p, |vy|>0.
+  For every supplied i prove a checked tree for u v^i x y^i z.
+  No formula with an unbounded forall over trees is used as an induction
+  motive. Use the parser's selected tree and fixed finite bounds.
+
+T06: forall G w,
+  NCValid(G) and WordValid(alphabet(G),w) ->
+  (ncAccept(G,w)=1 <-> exists t, DerivationCheck(G,w,t)=1).
+  Bound: V=sum_{i<=|w|} totalAlphabet(G)^i vertices, fewer than V steps.
+  A finite simple-path encoding yields a primitive-recursive number bound.
+
+T07: forall d,
+  not (BooleanTotal(d) and forall e,
+    (exists t,haltAt(e,e,t)=1) <-> exists t,outAt(d,e,t,1)=1).
+  Use the explicit program constructor P_d and totality at its code.
+  This is an intuitionistic refutation from a totality premise, not a
+  universal termination theorem for all recursive programs.
+
+T08: forall M n,
+  DFAValid(M) and n>=states(M) ->
+  sum_{i<=states(M)} denominatorCoeff(M,i)*countAccepted(M,n-i)=0.
+  Integer expressions are encoded pairs. Prove finite polynomial
+  adjugate identity by permutation involutions, then coefficient extraction.
+
+T09: forall n, (n+1)*dyckCount(n)=binomial(2*n,n).
+  Count finite enumerations; prove first-crossing reflection and its inverse,
+  then the marked-subset double-counting identity. QF count invariants only.
+
+CONSTRUCTION ORDER
+  Codecs -> bounded bits/search -> finite tables/paths -> word identities ->
+  DFA runs -> epsilon/subsets -> closure -> regex/Kleene -> minimization ->
+  CFG certificates -> normalization -> CYK -> PDA -> pumping -> NC graph ->
+  bounded machines/compiler -> diagonals -> matrix/Dyck counting.
+
+For each arrow, retain both a semantic codec theorem and an object-level
+derivation. Apply bf_reflect to bounded table assertions before induction.
+Close contexts only after inserting the necessary validity hypotheses.
+
+COMPLETION GATES
+  1. lake env lean each new module in the pinned ProveIt checkout.
+  2. Export Prf PRAAx [] phi for every report endpoint.
+  3. Audit #print axioms on those exports: no sorryAx or custom axioms;
+     distinguish permitted metatheory used to construct proof terms from
+     the axioms visible in the object-theory judgment.
+  4. Verify formulas phi themselves contain the stated validity, input,
+     empty-word, nonerasing, totality, and certificate-bound conditions.
+  5. Optional: use IPRABridge.conciseToStandard to export the same theorem.
+None of these gates was executed in this session.
+-/

@@ -1,0 +1,202 @@
+\section{Unconditional logarithmic cancellation}\label{sec:logrates}
+
+The zero-frequency consequence of Davenport's estimate in the Wikipedia
+article can be proved with a weak zero-free region. We derive enough of that
+region here, with primitive recursive constants. The proof uses only
+absolute convergence to the right of $1$, the continuation of
+$(s-1)\zeta(s)$ slightly to its left, and the scalar kernel already
+proved in Theorem~\ref{thm:perron}.
+
+\begin{theorem}\label{thm:unconditional-log}
+For every natural $h$ there is an explicitly primitive recursive $C_h$
+such that, for all integers $N\ge2$,
+\[
+                    |M(N)|\le C_h N/(\log N)^h .
+\]
+This includes the bound with exponent $\pi$ for $N\ge3$ by taking
+$h=4$. It gives $M(N)/N\to0$ with a primitive recursive modulus.
+\end{theorem}
+
+\paragraph{Continuation with finite precision.}
+Write $s=\sigma+it$. For any integer $K\ge1$ and $\sigma>0$ use
+\begin{equation}\label{eq:zetacut}
+ Z(s)=\sum_{n=1}^K n^{-s}+\frac{K^{1-s}}{s-1}
+            -s\int_K^\infty \{u\}u^{-s-1}\,du,\qquad s\ne1.
+\end{equation}
+For $\sigma>1$ the formula agrees with $\zeta(s)$ since the series tail is
+$s\int_K^\infty(\lfloor u\rfloor-K)u^{-s-1}\,du$, by the same
+cellwise telescope as the Mellin formula. Integrating $u-K$
+gives the middle term. For $\sigma>0$, changing the cutoff from $K$
+to $K+1$ cancels by integrating $\{u\}=u-K$ on that cell. Thus
+these definitions agree there also. At $K=1$ the regularized function is
+\[
+ E(s)=(s-1)Z(s)=s-s(s-1)\int_1^\infty\{u\}u^{-s-1}\,du,
+ \qquad E(1)=1 .
+\]
+To certify the integrals and two complex derivatives for
+$\sigma\ge1/2$, differentiation inserts factors $-\log u$.
+For $j\le3$, $\log u\le16u^{1/16}$, by integration of
+$1/u\le u^{-15/16}$ for $u\ge1$. Therefore beyond an integer cutoff
+$D$ the absolute tail of the $j$th moment is at most
+$4\cdot16^j D^{-1/4}$. Taylor's formula for the exponential on
+each bounded interval justifies the derivatives there. The uniform
+moment estimates, also valid in a slightly smaller open neighborhood
+of any point with $\sigma>1/2$, pass the differentiation rules to the
+limit by the increment formula on each line segment. On a bounded
+interval split at integer jumps and use the rational quadratures of
+Section~\ref{sec:analytic}.
+
+\paragraph{Nonvanishing in a narrow strip.}
+Take an integer $T\ge4$, let $B$ be the least integer with
+$K=2^B\ge16(T+2)$, set $A=64$, and put
+\[
+                 \delta=(2^{60}B^9)^{-1}.
+\]
+If $1-1/B\le\sigma\le2$, $|t|\le2T+2$, and $|s-1|\ge1/16$,
+then
+\begin{equation}\label{eq:zeta-coarse}
+                        |Z(s)|\le AB,\qquad |Z'(s)|\le AB^2 .
+\end{equation}
+Indeed $K^{1-\sigma}\le2$, $|s|\le K/8$, $\log K\le B$,
+and the finite sum in \eqref{eq:zetacut} is bounded in absolute
+value by $2(1+\log K)$ using $n^{-\sigma}\le2/n$ for $n\le K$.
+Its derivative costs at most another factor $B$. The pole term is
+bounded by $32$, its derivative by $32B+512$. For the integral term
+use
+\[
+ \int_K^\infty u^{-\sigma-1}du=K^{-\sigma}/\sigma,\qquad
+ \int_K^\infty (\log u)u^{-\sigma-1}du
+       =K^{-\sigma}((\log K)/\sigma+1/\sigma^2).
+\]
+Since $\sigma\ge1/2$, its size is at most $1/2$ and its derivative
+at most $4/K+B/2+1$. Together these estimates imply
+\eqref{eq:zeta-coarse} for $B\ge6$.
+
+For $v>1$ and real $t$, the Euler product gives
+\[
+          1\le \zeta(v)^3|\zeta(v+it)|^4|\zeta(v+2it)|.
+\]
+Indeed, in the logarithm of the corresponding product over finitely
+many primes, the term at $(p,k)$ is $p^{-kv}/k$ times
+$3+4\cos(kt\log p)+\cos(2kt\log p)
+ =2(1+\cos(kt\log p))^2$. The logarithm expansion
+$-\log|1-z|=\operatorname{Re}\sum_{k\ge1}z^k/k$ follows by
+integrating $z/(1-uz)$ over $0\le u\le1$ and taking real parts.
+For the prime factors $|z|\le1/2$, so the $k$-tail is geometric.
+Exponentiate the finite-prime inequality and pass to the prime
+product limit already established.
+
+Take $v=1+\delta$ and $1/16\le |t|\le T$. Using
+$\zeta(v)\le1+1/\delta\le2/\delta$ by integral comparison, and
+\eqref{eq:zeta-coarse} at $v+2it$, one obtains
+\[
+       |Z(v+it)|^4\ge\frac{\delta^3}{8AB}
+                      \ge (4AB^2\delta)^4.
+\]
+The second inequality uses $8\cdot4^4 A^5\le2^{60}$.
+Moving horizontally by at most $2\delta$ changes $Z$ by at most
+$2AB^2\delta$, by \eqref{eq:zeta-coarse}. Thus $|Z(s)|\ge2AB^2\delta$
+throughout $1-\delta\le\sigma\le1+2\delta$ at those heights.
+For $|t|\le1/8$ in the same strip, $|s-1|\le1/4$.
+The formula for $E$ gives
+$|E(s)-1|\le |s-1|(1+|s|/\sigma)\le2/3$.
+Consequently $D(s)=(s-1)/E(s)$ is defined across $s=1$, with
+$D(1)=0$. For $1+\delta\le\sigma\le2$, absolute convergence gives
+$|1/\zeta(s)|\le1+1/\delta$. These estimates yield
+\begin{equation}\label{eq:recip-strip}
+              |D(s)|\le 2/\delta \quad
+          (1-\delta\le\sigma\le2,\ |t|\le T).
+\end{equation}
+Throughout the rectangle $E$ is separated from zero. Explicitly, where
+$|s-1|\le1/4$ use $|E|\ge1/3$ as above. Where $|s-1|\ge1/8$
+use the proved estimates on $|Z|$ to get $|E|\ge\delta/16$.
+The overlapping height and distance ranges allow the choice of
+bounds using rational approximations. The horizontal strips likewise overlap on
+$1+\delta\le\sigma\le1+2\delta$.
+
+\paragraph{A finite-height estimate at half integers.}
+Set $x=N+1/2$, $L=1+\lfloor\log_2(2N+1)\rfloor$ (an integer bit length)
+and $c=1+1/L$. Thus $x^c\le2x$ and $\zeta(c)\le1+L$. Write
+$I_T$ for the normalized Perron integral at $c$. The scalar bound in
+the proof of Theorem~\ref{thm:perron} gives
+\begin{equation}\label{eq:halfperron}
+                        |M(N)-I_T|\le 300 xL/T .
+\end{equation}
+Indeed for $n<x/2$ or $n>2x$ we have
+$|\log(x/n)|\ge\log2\ge1/2$. The sum of
+$(x/n)^c/|\log(x/n)|$ there is bounded by $2x^c\zeta(c)\le8xL$.
+In the remaining range $(x/n)^c\le4$ and
+$|\log(x/n)|\ge |x-n|/(2x)$. Each distance $k+1/2$ occurs at most
+twice, and $k\le\lceil x\rceil$. Hence the sum of reciprocal distances
+is bounded by $4+2(1+\log\lceil x\rceil)\le10L$. Multiply the two
+parts of the sum by $3/T$ to get \eqref{eq:halfperron}.
+
+Replace the integration line by the other three sides of the rectangle
+with left edge $1-\delta$ and heights $\pm T$. The integral of
+$f(s)=x^sD(s)/s$ around its boundary vanishes. For an arithmetic
+verification, partition it into cells of width and height at most
+$\eta$ on a uniform rectangular grid. On each cell subtract the affine
+polynomial $f(z_0)+f'(z_0)(s-z_0)$ about its lower left corner.
+Its boundary integral is zero by direct primitives. The residual is
+bounded by $2J\eta^2$ if $J$ bounds $|f''|$. The sum of the
+cell perimeters is at most $4(W+1)(H+1)/\eta$ for
+$\eta\le1$, using $\lceil W/\eta\rceil,\lceil H/\eta\rceil$
+subdivisions for side lengths $W,H$. Internal edges cancel, giving an
+error tending to zero with primitive recursive modulus. Indeed $J$
+is computed by the product and quotient rules, the moment bounds for
+$E$ and its derivatives, $|E|\ge\delta/16$, and $|s|\ge1/2$.
+Thus this contour shift requires no zero search or qualitative
+analytic continuation principle.
+
+On the new vertical edge,
+$\int_{-T}^{T}|1-\delta+it|^{-1}dt\le4+2\log T$ by splitting
+at $|t|=1$. On each horizontal edge $|s|\ge T$, its length is at
+most two, and $|x^s|\le2x$. Equation~\eqref{eq:recip-strip} gives
+\[
+ |M(N)|\le 300xL/T+16x/(\delta T)
+                + 8x\delta^{-1}(1+\log T)e^{-\delta\log x}.
+\]
+
+\paragraph{Eliminating the free height.}
+Take $T=L^{h+16}$, $H=64(h+17)$ and $R=2^{60}H^9$.
+Since $\log L\le20 L^{1/20}$, $B\le6+2(h+16)\log L
+\le H L^{1/20}$. Thus $\delta^{-1}\le R L^{9/20}$.
+For $L\ge4$, the bit length gives
+$\log x\ge(L-2)\log2\ge L/4$, so
+$\delta\log x\ge\sqrt L/(4R)$. The vertical prefactor satisfies
+$8\delta^{-1}(1+\log T)\le16\cdot2^{60}H^{10}L^{1/2}$.
+Finally $e^u\ge u^{2h+2}/(2h+2)!$ for $u\ge0$. Substituting yields
+\[
+ |M(N)|\le K_h x/L^h,\qquad
+ K_h=300+16R+
+       16\cdot2^{60}H^{10}(4R)^{2h+2}(2h+2)! .
+\]
+Since $x\le2N$ and $\log N\le L$, $C_h=2K_h$ works. For $L<4$
+one has $N=2,3$ and $|M(N)|\le N$. The same constant covers these
+values since $(\log 3)^h\le2^h\le C_h$.
+For example, at precision $j$ the rate for $M(N)/N$ follows by
+taking $h=1$ and $N\ge 2^{2^{j+1}C_1}$. For real abscissae with a
+supplied floor the logarithmic rate transfers from $N$ to $x$ using
+$N\le x<N+1\le2N$ and $\log x\le2\log N$ for $N\ge2$.
+
+\begin{corollary}[A single rate for all logarithmic powers]
+For $N\ge2$ the same estimates give
+\[
+ |M(N)|\le 2^{995}\,10!\,N
+            \exp\bigl(-2^{-91}(\log N)^{1/10}\bigr).
+\]
+\end{corollary}
+\begin{proof}
+For $L\ge4$ take $u=\lfloor L^{1/10}\rfloor\ge1$ by a bounded
+integer root search, and take $T=2^{u+2}$. Now $B\le u+7\le8u$,
+so $\delta^{-1}\le 2^{87}u^9$ and
+$\delta\log x\ge u^{10}/(4\cdot2^{87}u^9)=u/2^{89}$.
+Also $1/T\le e^{-u/2}$, $L\le(2u)^{10}$ and $1+\log T\le4u$.
+The preceding three-term bound therefore gives
+$|M(N)|/x\le2^{94}u^{10}e^{-u/2^{89}}$.
+Absorb $u^{10}$ with the tenth term of the exponential series at
+$u/2^{90}$. Since $u\ge L^{1/10}/2$, $L\ge\log N$ and $x\le2N$,
+the claimed bound follows. The same huge prefactor covers $N=2,3$
+directly. The constants here do not recover the numerical thresholds
+of the sharper inequalities attributed to El Marraki in the source.
+\end{proof}

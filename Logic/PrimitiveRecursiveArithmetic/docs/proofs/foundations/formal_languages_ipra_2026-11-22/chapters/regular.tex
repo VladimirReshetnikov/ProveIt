@@ -1,0 +1,708 @@
+\section{Regular languages: effective equivalences, closure, and decisions}
+\label{sec:regular}
+
+All alphabets in this section are finite, with letters numbered below a supplied
+integer $k\geq 1$.  A state set is $[n]=\{0,\ldots,n-1\}$, with $n\geq1$.
+A deterministic automaton is a finite transition table
+$\delta:[n]\times[k]\to[n]$, an initial state $q_0<n$, and an accepting
+bit-vector $F:[n]\to\{0,1\}$.  A nondeterministic automaton replaces
+$\delta$ by a Boolean relation $E(q,a,r)$ and permits a bit-vector $I$ of
+initial states.  An $\eps$-automaton also has a Boolean relation $E_\eps(q,r)$.
+All these data are number codes.  Well-formedness is a bounded test; malformed
+codes can be sent to a fixed rejecting automaton.  Consequently every
+construction below denotes a total primitive recursive function on codes.
+
+A path is a finite list of states and edge labels.  Its validity, endpoints,
+and the word obtained by deleting $\eps$ labels are primitive recursive.
+The accepted language is written $L(M)$.  This notation abbreviates an
+arithmetic predicate, not an additional sort of arbitrary sets.  In
+particular, the equality $L(M)=L(N)$ abbreviates equality of their accepting
+bits for every word.  All numerical bounds below are deliberately elementary;
+optimal running times are not needed for their interpretation in \ipra.
+The corresponding standard Lean interfaces are documented in
+\cite{MathlibDFA,MathlibNFA,MathlibEpsilon}; our number-coded implementations
+must additionally establish the primitive-recursive and object-theoretic
+bridges described below.
+
+\subsection{Finite runs and elimination of nondeterminism}
+
+\begin{lemma}[Run composition]\label{reg:run}
+There is a primitive recursive function $\delta^*(q,w)$ satisfying
+\[
+ \delta^*(q,\eps)=q,\qquad
+ \delta^*(q,wa)=\delta(\delta^*(q,w),a),\qquad
+ \delta^*(q,uv)=\delta^*(\delta^*(q,u),v).
+\]
+Thus membership in $L(M)$ is primitive recursive, uniformly in a finite
+well-formed DFA code $M$.
+\end{lemma}
+\begin{proof}
+Store the current state and scan the coded input from left to right, taking
+one table lookup per letter.  After $i$ letters the stored state is the state
+at position $i$ of the unique valid run.  This is an equality between
+primitive recursive terms.  Induction on the number of scanned letters
+proves the invariant.  Starting the second scan at the state reached by the
+first proves the third equation by the same quantifier-free induction.
+Acceptance is the final lookup $F(\delta^*(q_0,w))$.
+\end{proof}
+
+\paragraph{Finite-graph facts used below.}
+The bounded reachability result~\ref{base:graph} applies to every graph
+whose vertices are the numbered states of an automaton.  It supplies a
+primitive recursive path-shortening operation, a reachability test, and
+shortest path witnesses of length below the number of states.  Edge
+labels can be retained during each deletion, so a shortened automaton
+path gives an explicitly coded shorter word.  The deletion preserves
+endpoints, not generally the word itself; where the word must remain
+unchanged, we shorten only blocks of $\eps$ edges.
+
+\begin{proposition}[$\eps$-closure has a finite bound]\label{reg:epsilon}
+For an $n$-state $\eps$-automaton, the $\eps$-closure $C(S)$ of a state
+bit-vector $S$ is primitive recursive.  It is computed by $n$ iterations of
+\[
+ S\longmapsto S\cup\{r:\exists q<n\;(q\in S\wedge E_\eps(q,r))\}.
+\]
+It satisfies $S\subseteq C(S)$, $C(C(S))=C(S)$, and preserves finite unions.
+If a word of length $\ell$ is accepted, it has an accepting path with at most
+$\ell+(\ell+1)(n-1)$ edges.
+\end{proposition}
+\begin{proof}
+After $j$ iterations the bit at $r$ is set exactly when there is an
+$\eps$-path of length at most $j$ from $S$ to $r$.  The two directions are
+proved by appending an edge or deleting the last edge of a nonempty path.
+By the bounded reachability result~\ref{base:graph}, $n-1$ edges already suffice; using $n$ iterations
+avoids an exceptional subtraction.  Closure and idempotence follow by
+concatenating and shortening paths.  A path from a union starts in one of
+its finitely many constituent sets, which proves the union equation.
+An accepting path for a length-$\ell$ word has exactly $\ell$ letter edges
+and $\ell+1$ intervening $\eps$ blocks.  Shorten each block separately to
+length at most $n-1$.  The word and the state at every letter edge are
+unchanged, giving the stated bound.  This also replaces the apparently
+unbounded existential path definition of acceptance by bounded search.
+\end{proof}
+
+\begin{theorem}[Subset construction]\label{reg:subset}
+Every $n$-state $\eps$-NFA has an equivalent DFA with $2^n$ states.  The
+construction and its correctness proof are primitive recursive and
+formalizable in \ipra.  Ordinary NFAs and DFAs consequently define the same
+languages as $\eps$-NFAs.
+\end{theorem}
+\begin{proof}
+A DFA state is an $n$-bit subset.  Its initial subset is $C(I)$ and its
+letter transition is
+\[
+ T(S,a)=C\bigl(\{r:\exists q<n\;(q\in S\wedge E(q,a,r))\}\bigr).
+\]
+A subset accepts when it meets $F$.  For every prefix $u$ of the input,
+maintain the invariant that the current bit-vector consists exactly of the
+endpoints of paths labelled $u$, allowing a final $\eps$ block.  For the
+empty prefix this is the definition of $C(I)$.  For $ua$, split an accepting
+path immediately before its last letter edge; conversely concatenate a path
+for $u$, that edge, and a final $\eps$ block.  The bounded witnesses from
+Proposition~\ref{reg:epsilon} make the invariant a bounded Boolean
+assertion for the particular input.  Quantifier-free induction proves it.
+A DFA is an NFA with singleton transitions and initial set, and an NFA is
+an $\eps$-NFA with no $\eps$ edges.  These embeddings preserve paths.
+\end{proof}
+
+\begin{proposition}[Completion and finite languages]\label{reg:finite}
+A partial $n$-state DFA can be completed with at most $n+1$ states.  Every
+explicit finite list of words $w_1,\ldots,w_t$ defines a regular language,
+with a complete DFA using at most $2+\sum_i|w_i|$ states.
+\end{proposition}
+\begin{proof}
+For completion, add a nonaccepting sink, send every missing transition to
+it, and loop there on every letter.  A formerly defined run is unchanged;
+a run that encounters a missing transition can never accept.
+For the second assertion, make states for all distinct prefixes of listed
+words, including $\eps$, and add a sink.  From prefix $u$ on letter $a$, go
+to $ua$ if it is a listed prefix, otherwise to the sink.  Mark exactly the
+listed complete words as accepting.  Induction along a word says that its
+run is either at that prefix or at the sink.  There are at most
+$1+\sum_i|w_i|$ prefixes; comparing the finitely many codes removes
+duplicates constructively.  The empty list and lists containing $\eps$
+are handled by the same construction.
+\end{proof}
+
+\subsection{Closure constructions}
+
+\begin{theorem}[Boolean closure]\label{reg:boolean}
+Regular languages are closed under union, intersection, difference,
+symmetric difference, and complement.  Binary operations on $n$- and
+$m$-state complete DFAs use $nm$ states; complement uses $n$ states.
+\end{theorem}
+\begin{proof}
+The product automaton has initial state $(q_0,r_0)$ and transition
+$(q,r)\mapsto(\delta_M(q,a),\delta_N(r,a))$.  Its run on $w$ is the pair
+of the two runs by Lemma~\ref{reg:run}.  For union, intersection,
+difference, or symmetric difference, apply the corresponding Boolean
+operation to their accepting bits.  Complement replaces $F(q)$ by
+$1-F(q)$ and requires no other change.  The complement statement uses
+only decidability of a finite accepting bit, not excluded middle for an
+arbitrary arithmetic formula.
+\end{proof}
+
+\begin{theorem}[Concatenation and star]\label{reg:concatstar}
+If $M,N$ have $n,m$ states, there are $\eps$-NFAs for
+$L(M)\cup L(N)$, $L(M)L(N)$, and $L(M)^*$ with respectively
+$n+m$, $n+m$, and $n+1$ states.  Thus all three languages are regular.
+\end{theorem}
+\begin{proof}
+First rename states so the two copies are disjoint.  For union take the
+union of initial sets and the union of final sets, with no edges between
+the copies.  Every path stays in its initial copy.
+For concatenation use the first initial set, the second final set, and add
+$\eps$ edges from every final state of the first copy to every initial
+state of the second.  Every accepting path crosses once from the first
+copy to the second.  Splitting there gives a factorization $uv$ with
+$u\in L(M)$ and $v\in L(N)$; concatenating two witnessing paths gives the
+converse.  Empty factors cause no difficulty.
+For star add a new state $z$ that is both the sole initial state and the
+sole final state.  Add $\eps$ edges from $z$ to every old initial state
+and from every old final state to $z$.  A nonempty accepting path splits
+at its visits to $z$ into finitely many old accepting paths.  The empty
+path represents the zero-factor product.  Conversely concatenate any
+finite list of old accepting paths with the connecting $\eps$ edges.
+All splits and concatenations act on supplied finite certificates.
+Theorem~\ref{reg:subset} then supplies complete DFAs.
+\end{proof}
+
+\begin{theorem}[Reversal]\label{reg:reverse}
+Regular languages are closed under word reversal.  An $n$-state NFA for
+$L$ yields an $n$-state NFA for $L^R$.
+\end{theorem}
+\begin{proof}
+Reverse every edge, interchange the initial and final bit-vectors, and
+leave each edge label unchanged.  Reversing a path reverses its sequence
+of nonempty labels, and doing it twice returns the original path.
+This is a primitive recursive bijection of accepting path certificates.
+\end{proof}
+
+\begin{theorem}[Homomorphisms and inverse homomorphisms]\label{reg:morphism}
+Let $h$ be specified by a finite table of output words $h(a)$.  Regular
+languages are closed under $h$ and $h^{-1}$, including erasing
+homomorphisms.  A direct-image construction from an $n$-state DFA uses at
+most $n(1+\sum_a|h(a)|)$ $\eps$-NFA states; an inverse-image construction
+uses the original number of DFA states.
+\end{theorem}
+\begin{proof}
+For direct image replace every edge labelled $a$ by a private path labelled
+$h(a)$.  If $h(a)=\eps$, use an $\eps$ edge; if its length is $d>0$, use
+$d$ edges and $d-1$ fresh intermediate states.  Intermediate states belong
+to a single replaced edge and have no additional incident edges.  Every
+accepting path therefore splits, at the original states, into completed
+replacements of original edges.  Its label is $h(u)$ for an accepted
+original word $u$.  Conversely replace the edges of any accepting path.
+The exact additional state count is
+$n\sum_a\max(|h(a)|-1,0)$, bounded as stated.
+For inverse image replace the transition on input letter $a$ by
+$q\mapsto\delta^*(q,h(a))$.  Run composition gives
+$\delta_{\mathrm{new}}^*(q,w)=\delta^*(q,h(w))$, by induction on the
+number of letters of $w$.  Initial and final states are unchanged.
+\end{proof}
+
+\begin{theorem}[Regular substitution]\label{reg:substitution}
+Suppose each source letter $a$ is assigned a regular language $K_a$ by a
+finite automaton.  Replacing each letter of words in a regular language
+$L$ by an independently chosen word of $K_a$ produces a regular language.
+If the source DFA has $n$ states and the automata for the $K_a$ have
+$n_a$ states, $n+n\sum_a n_a$ states suffice for an $\eps$-NFA.
+\end{theorem}
+\begin{proof}
+For each source transition $q\mathrel{\smash{\xrightarrow{a}}}r$ take a
+private copy of the automaton for $K_a$.  Remove the source edge, put
+$\eps$ edges from $q$ to the copy's initial states, and from its accepting
+states to $r$.  Keep the source initial and final states.  An accepting
+path splits at successive source states into accepting paths through the
+private copies, giving a source word and one replacement word per letter.
+Conversely, given these finite witnesses, concatenate the corresponding
+paths.  A copy can accept $\eps$, but a completed traversal still records
+one source letter; no minimum length assumption is used.  There is one
+copy per source state and source letter, proving the bound.
+\end{proof}
+
+\begin{theorem}[Quotients by a regular language]\label{reg:quotient}
+For regular $L,R$, the languages
+\[
+ L/R=\{u:\exists v\;(v\in R\wedge uv\in L)\},\qquad
+ R\backslash L=\{v:\exists u\;(u\in R\wedge uv\in L)\}
+\]
+are regular.  Given DFAs of $n,m$ states, the existential witnesses needed
+to compute the new state sets may always be chosen with length below $nm$.
+\end{theorem}
+\begin{proof}
+For $L/R$, retain the transition table of $L$ and mark $q$ accepting
+exactly when a final pair is reachable from $(q,r_0)$ in the product of
+$L$ and $R$.  Such a path has length below $nm$ by
+the bounded reachability result~\ref{base:graph}.  Therefore its existence is a bounded test, and the
+new accepting condition is exactly the displayed definition.
+For $R\backslash L$, mark $q$ initial in an NFA exactly when
+$(q,r)$ is reachable from $(q_0,r_0)$ for some accepting state $r$ of $R$.
+Keep the old transitions and final states of $L$.  The same bound provides
+a word $u$ reaching each marked $q$.  A run starting at $q$ on $v$ is
+accepting exactly when $uv\in L$.  The two path concatenations prove both
+inclusions.  The assertion is intentionally restricted to supplied
+regular descriptions of $R$: an arbitrary predicate for $R$ does not
+supply a decision procedure for these new finite state sets.
+\end{proof}
+
+\begin{corollary}[Prefixes, suffixes, and factors]\label{reg:factors}
+The prefixes, suffixes, and contiguous factors of a regular language are
+regular.  Their witnessing extension words can be chosen with length
+below $n$ on each side, for an $n$-state DFA.
+\end{corollary}
+\begin{proof}
+For prefixes, mark as accepting all states from which a final state is
+reachable.  For suffixes, use all states reachable from the original
+initial state as NFA initial states.  For factors, make both changes.
+A path witnessing an extension can be shortened without changing its
+endpoints, so each extension has length below $n$.  Concatenation of the
+left extension, the proposed factor, and the right extension proves the
+three characterizations.
+\end{proof}
+
+\subsection{Regular expressions and regular grammars}
+
+A regular expression is a finite syntax tree generated by
+$0,1,a,+,\cdot,{}^*$.  Its denotation interprets these symbols as the empty
+language, $\{\eps\}$, a singleton letter, union, concatenation, and star.
+A membership certificate records choices at union nodes, word splits at
+product nodes, and a finite factor list at star nodes.  Empty factors can
+be deleted at a star without changing its product.  For a nonempty word
+of length $\ell$, at most $\ell$ remaining factors are needed.  For the
+empty word, the zero-factor certificate always suffices.
+
+\begin{proposition}[Bounded regular-expression membership]\label{reg:regexdec}
+Membership in a regular expression is primitive recursive uniformly in
+the expression and word codes.  It has an algorithm using only a finite
+table indexed by expression nodes and input intervals.
+\end{proposition}
+\begin{proof}
+For a fixed word $w$ of length $\ell$, store a Boolean value for every
+subexpression $P$ and interval $[i,j)$, $0\leq i\leq j\leq\ell$.
+The values for $0,1,a$ are immediate.  Union takes the disjunction.
+Product searches the $j-i+1$ splits $i\leq t\leq j$.  For $P^*$ first
+set every empty interval true; a nonempty interval is true exactly when
+some strictly increasing sequence
+$i=t_0<t_1<\cdots<t_r=j$ has every $P$ interval true.  There are at most
+$2^{j-i-1}$ such cut sets.  Removing empty factors proves that this
+bounded condition is equivalent to star membership.  Evaluate nodes in
+postorder, so their children have already been evaluated.  The table has
+at most $s(\ell+1)^2$ entries when there are $s$ syntax nodes.  Certificate
+extraction stores the first successful split or cut set.  Conversely,
+each stored choice assembles a valid certificate.  This proves soundness
+and completeness by a bounded conjunction over the table, not by an
+induction whose hypothesis quantifies over arbitrary languages or words.
+\end{proof}
+
+\begin{theorem}[Regular expressions to automata]\label{reg:thompson}
+An expression with $s$ syntax nodes has an equivalent $\eps$-NFA with at
+most $2s$ states.  The conversion is primitive recursive.
+\end{theorem}
+\begin{proof}
+Give every subexpression a fresh entry and exit.  Its entry has no incoming
+edges inside that subautomaton, and its exit has no outgoing edges there.
+For $0$ put no edge between them, for $1$ put an $\eps$ edge, and for a
+letter put that labelled edge.  For $P+Q$, connect the new entry to the
+two child entries, and the two child exits to the new exit, using $\eps$
+edges.  For $PQ$, connect the new entry to $P$'s entry, $P$'s exit to
+$Q$'s entry, and $Q$'s exit to the new exit.  For $P^*$ connect the new
+entry to the new exit and to $P$'s entry, and $P$'s exit to $P$'s entry
+and the new exit.  All these connecting edges are $\eps$ edges.  These
+instructions allocate precisely two states per
+syntax node.
+For union, an entry-to-exit path chooses one child.  For product, it
+visits the two child subautomata in order.  For star, split it at returns
+to the child entry after the child exit: this gives finitely many child
+accepting paths, or the direct zero-factor path.  The converse constructs
+paths from membership certificates with the same connectors.  The
+entry/exit invariant prevents any other way of moving between children.
+For formalization, fix the input word and prove these statements for all
+subexpressions and input intervals in the finite table of
+Proposition~\ref{reg:regexdec}; shorten $\eps$ blocks when necessary.
+Thus the structural proof has an explicitly bounded quantifier-free
+invariant.
+\end{proof}
+
+\begin{theorem}[Automata to regular expressions]\label{reg:eliminate}
+Every finite automaton has an equivalent regular expression, obtained by
+a primitive recursive construction.  Together with
+Theorem~\ref{reg:thompson}, this proves Kleene's equivalence in \ipra.
+\end{theorem}
+\begin{proof}
+It suffices to treat an $n$-state automaton whose edges carry letters or
+$\eps$.  For $i,j<n$ let $R^{(0)}_{ij}$ be the sum of all labels of direct
+edges from $i$ to $j$, adding $1$ when $i=j$ and writing $0$ for an empty
+sum.  For $0\leq h<n$ define
+\[
+ R^{(h+1)}_{ij}
+ =R^{(h)}_{ij}
+  +R^{(h)}_{ih}\bigl(R^{(h)}_{hh}\bigr)^*R^{(h)}_{hj}.
+\]
+The invariant says that $R^{(h)}_{ij}$ describes exactly the labels of
+paths from $i$ to $j$ all of whose internal vertices are below $h$.
+At $h=0$ such a path is a single edge or the empty path.  For the induction
+step, a path with no internal occurrence of $h$ uses the first summand.
+Otherwise split at its first and last internal occurrences of $h$ and at
+all the occurrences in between.  The first and last pieces have no
+internal $h$, and the middle pieces are $h$-to-$h$ paths with no internal
+$h$.  Their labels belong to the three factors of the second summand.
+Conversely concatenate these paths; every new internal vertex is either
+an old one below $h$ or $h$ itself.  This argument permits $i=h$, $j=h$,
+and empty pieces.
+At $h=n$ every internal vertex is allowed.  Sum $R^{(n)}_{ij}$ over
+initial $i$ and final $j$.  Path splitting and concatenation prove equality
+with the accepted language.
+The recursion has exactly $n$ rounds and $n^2$ expressions per round.
+If the largest base expression has size $b$, the recurrence for sizes is
+$s_{h+1}\leq4s_h+4$, hence $s_h\leq4^h(b+2)$.  The final finite sum has
+size at most $2n^2(s_n+1)$.  These coarse bounds show directly that even
+an implementation that copies syntax trees is primitive recursive.
+For each fixed input word the invariant can be expressed over its
+finitely many intervals and endpoint pairs; a syntactic path certificate
+is shortened block by block, so no appeal to an unbounded search is hidden
+in the proof.
+\end{proof}
+
+\begin{theorem}[Right-linear grammars]\label{reg:grammar}
+Finite right-linear grammars and finite automata define the same languages.
+This remains true when productions have forms $A\to uB$ and $A\to u$,
+where $u$ is any finite terminal word, including $\eps$.
+\end{theorem}
+\begin{proof}
+First take productions $A\to aB$, $A\to B$, $A\to a$, and
+$A\to\eps$.  Make one state for each nonterminal and one fresh accepting
+state $f$.  Use the start nonterminal as initial state.  The four
+production types give respectively an $a$ edge to $B$, an $\eps$ edge
+to $B$, an $a$ edge to $f$, and an $\eps$ edge to $f$.  State $f$ has
+no outgoing edges.  Before the last production, a derivable sentential
+form is a terminal prefix followed by exactly one nonterminal.  Each
+production extends the prefix and updates that state, while the final
+production removes it.  This invariant converts a finite derivation
+into an accepting path and conversely.
+For a general terminal word $u$, replace the production by a private
+chain spelling $u$; use an $\eps$ edge if $u$ is empty.  The same invariant
+holds at the chain boundaries.
+Conversely an NFA gives productions $A_q\to aA_r$ for every letter edge,
+$A_q\to A_r$ for every $\eps$ edge, and $A_q\to\eps$ for every final
+state.  A fresh start nonterminal has unit productions to initial states.
+Again derivations and paths convert by scanning their finite steps.
+All added chains and productions have explicit lengths supplied by the
+input grammar or automaton, so the conversions are primitive recursive.
+\end{proof}
+
+\paragraph{Application of Arden's equation.}
+The general PR-language result~\ref{alg:arden} applies in particular to
+regular languages.  For $\eps\notin A$, the language $A^*B$ is the unique
+PR solution of $X=AX\cup B$.  The closure constructions above additionally
+produce its finite automaton from those for $A,B$.  This is useful when
+solving finite systems of state equations; the explicit elimination
+recurrence in Theorem~\ref{reg:eliminate} does not need to assume that
+any particular coefficient is $\eps$-free.
+
+\subsection{Pumping and explicit separation examples}
+
+\begin{theorem}[Regular pumping with computed cuts]\label{reg:pumping}
+Let $M$ be a DFA with $n$ states accepting $w$ with $|w|\geq n$.  Primitive
+recursive functions compute $x,y,z$ such that
+\[
+ w=xyz,\qquad |xy|\leq n,\qquad 1\leq|y|,\qquad
+ xy^tz\in L(M)\quad\hbox{for every }t\in\N.
+\]
+\end{theorem}
+\begin{proof}
+Inspect the first $n+1$ states of the run.  Finite pigeonhole supplies
+$i<j\leq n$ with equal states; a bounded search selects the first such
+pair.  Put $x=w[0:i]$, $y=w[i:j]$, $z=w[j:|w|]$.  The run on $y$ loops
+at the state reached by $x$.  Quantifier-free induction on $t$ proves
+that $y^t$ also loops there.  Appending the fixed suffix $z$ reaches the
+same accepting state as the original run.  The cut and length assertions
+follow from $i<j\leq n$.
+\end{proof}
+
+\begin{corollary}[Four explicit nonregular languages]\label{reg:nonregular}
+Over letters $a\ne b$, the languages
+\[
+ \{a^rb^r:r\in\N\},\qquad
+ \{w:w=w^R\},\qquad
+ \{ww:w\in\{a,b\}^*\}
+\]
+are not regular.  The unary language $\{a^{r^2}:r\in\N\}$ is also not
+regular.  Each assertion is proved in \ipra\ as the refutation of every
+purported finite DFA code recognizing that particular PR predicate.
+\end{corollary}
+\begin{proof}
+Suppose an $n$-state DFA recognizes the first language.  Apply
+Theorem~\ref{reg:pumping} to $a^nb^n$.  The nonempty pumped factor lies
+in the first $n$ letters and is therefore $a^d$ with $1\leq d\leq n$.
+Taking $t=0$ accepts $a^{n-d}b^n$, whose two counts differ, a contradiction.
+For palindromes intersect a hypothetical DFA with the regular language
+$a^*ba^*$.  The intersection is exactly $\{a^rba^r:r\in\N\}$.
+For its own number $n$ of states, pump $a^nba^n$ at the first $n$ letters
+and take $t=0$; the two $a$-blocks no longer have equal lengths.
+For squares of words intersect with $a^*ba^*b$.  A square in this slice
+has exactly one $b$ in each half, and each half ends in $b$, so the
+intersection is exactly $\{a^rba^rb:r\in\N\}$.  Pumping its initial
+$a$-block gives the same contradiction.
+Finally an $n$-state unary-square DFA accepts $a^{n^2}$.  Pumping with
+$t=2$ gives an accepted length $n^2+d$, where $1\leq d\leq n$.
+But $n^2<n^2+d<(n+1)^2$, so this length is not a square.  Deciding square
+membership itself uses the bounded search $r\leq|w|$; all four predicates
+and all contradiction witnesses are primitive recursive.
+\end{proof}
+
+\subsection{Finite decision procedures and canonical minimization}
+
+\begin{theorem}[Emptiness and shortest accepted words]\label{reg:empty}
+An $n$-state DFA has a nonempty language if and only if it accepts a word
+of length below $n$.  Emptiness and a shortest accepted word, when one
+exists, are primitive recursive.
+\end{theorem}
+\begin{proof}
+An accepting run can be shortened by deleting loops, preserving its
+initial and final states; the remaining path has fewer than $n$ edges.
+Conversely any such word witnesses nonemptiness.  Enumerate words of
+length $0,1,\ldots,n-1$, lexicographically within each length, and choose
+the first accepted one.  The finite enumeration tests
+$\sum_{i<n}k^i$ words.  If every test fails, no accepting run exists by
+the shortening argument.
+\end{proof}
+
+\begin{theorem}[Equality, inclusion, universality, and short separators]
+\label{reg:equality}
+For DFAs with $n,m$ states, inequality of their languages has a witnessing
+word of length below $nm$.  Failure of inclusion has the same bound.
+Equality, inclusion, disjointness, and universality are primitive
+recursive decisions on finite automaton codes.
+\end{theorem}
+\begin{proof}
+Use the product automaton, accepting respectively when the two bits
+differ, when the first is true and the second false, or when both are
+true.  Lemma~\ref{reg:run} identifies its language with the required
+counterexamples.  Theorem~\ref{reg:empty} bounds every shortest witness
+by $nm-1$ and decides emptiness.  Universality is emptiness of the
+complement.  A negative decision produces an explicit counterexample;
+a positive decision says a finite Boolean reachability table has no
+accepting state.  These are complete decisions, rather than searches
+that stop only on counterexamples.
+\end{proof}
+
+\begin{theorem}[Finiteness has a bounded test]\label{reg:finiteness}
+An $n$-state DFA accepts arbitrarily long words if and only if it accepts
+a word of length in $[n,2n)$.  If it accepts no word in this interval,
+all its accepted words have length below $n$.  Thus finiteness is decidable,
+and a finite accepted language can be completely enumerated.
+\end{theorem}
+\begin{proof}
+A word of length at least $n$ has a pumping decomposition.  Repeating its
+nonempty factor gives words of unbounded length; for a requested bound
+$B$, choosing $t=B+1$ already makes the pumped word longer than $B$.
+Conversely, given any accepted word of length at least $n$, while its
+length is at least $2n$, remove the nonempty loop furnished by its first
+$n+1$ run states.  The removed length is at most $n$, so the new length
+is still at least $n$.  Repeat at most the original length times.  Each
+successful pass decreases the length, and the result lies in $[n,2n)$.
+This is a bounded primitive recursive normalization of a supplied
+accepted word.  If the finite test of that interval fails, no accepted
+word can have length at least $n$.  Enumerating the shorter words then
+lists the whole language.  If it succeeds, the pumping construction
+produces an injection of $\N$ into the language, since the lengths
+$|xz|+t|y|$ strictly increase.  This gives a constructive, witnessed
+meaning of infinitude without using an infinite-pigeonhole principle.
+\end{proof}
+
+\begin{proposition}[Bounded distinguishability of states]\label{reg:distinguish}
+For an $n$-state DFA, whether two states have identical future acceptance
+is decidable by a primitive recursive table.  If they differ, a
+separating suffix of length at most $n^2$ can be computed.
+\end{proposition}
+\begin{proof}
+Put $D_0(q,r)=F(q)\mathbin{\mathrm{xor}}F(r)$ and iterate
+\[
+ D_{j+1}(q,r)=D_j(q,r)\vee
+   \bigvee_{a<k}D_j(\delta(q,a),\delta(r,a)).
+\]
+The invariant is that $D_j(q,r)=1$ exactly when a word of length at most
+$j$ distinguishes $q,r$.  At a newly true entry store the responsible
+letter and predecessor entry; an initially true entry stores $\eps$.
+The recursion either keeps a witness or prefixes a letter to one, proving
+both directions by bounded induction.
+The table is monotone and has only $n^2$ bits.  If a round makes no
+change, every later round is identical.  If there were a change after
+round $n^2$, every earlier round would have changed as well; this would
+require more than $n^2$ newly set bits.  Finite counting therefore proves
+$D_{n^2}=D_{n^2+1}$.  At this fixed point, a false pair has equal accepting
+bits and sends every letter to a false pair.  Induction along any supplied
+word now proves identical future acceptance.  A true pair has its
+recorded suffix of length at most $n^2$.
+\end{proof}
+
+\begin{theorem}[Constructive DFA minimization]\label{reg:minimize}
+There is a primitive recursive procedure that takes any DFA to an
+equivalent reachable DFA with the smallest possible number of states.
+It returns access words for its states and distinguishing suffixes for
+every pair of different states.  All these witnesses have explicit
+bounds in the size of the input automaton.
+\end{theorem}
+\begin{proof}
+First restrict to states reachable from $q_0$, using
+the bounded reachability result~\ref{base:graph}; choose a shortest access word of length below $n$
+for each.  Write $q\sim r$ when $D_{n^2}(q,r)=0$.
+The characterization in Proposition~\ref{reg:distinguish} makes this
+an equivalence relation.  More explicitly, reflexivity and symmetry are
+immediate from equality of accepting bits, and transitivity follows by
+comparing the bits for every word of length at most $n^2$.  Its fixed-point
+equation gives $q\sim r\Rightarrow\delta(q,a)\sim\delta(r,a)$.
+Choose the least reachable representative of each equivalence class by
+bounded search.  These representatives, ordered numerically and
+renumbered consecutively, are the states of the quotient.  Transitions
+send a representative to the representative of its successor; acceptance
+is its original bit.  The right-congruence property makes the choice
+independent of representatives, and induction on a run proves equality
+of the accepted language.
+To prove minimality, let $B$ be any other DFA for that language.  For
+each quotient state choose the already computed access word $u_i$ and
+map it to the state reached in $B$ by $u_i$.  For $i\ne j$ the table gives
+a suffix $v_{ij}$ of length at most $n^2$ accepted from exactly one of
+the two original states.  If $B$ reached the same state after $u_i,u_j$,
+run composition would force the same answer on $u_iv_{ij}$ and
+$u_jv_{ij}$, contrary to agreement with the original automaton.  Thus
+the finite map is injective.  Finite pigeonhole implies that $B$ has at
+least as many states as the quotient.  Every comparison used here is a
+Boolean comparison of finite runs; the universally quantified assumption
+that $B$ recognizes the same language is only instantiated at the
+explicitly constructed words.
+\end{proof}
+
+\begin{corollary}[Uniqueness of the reachable minimal DFA]\label{reg:unique}
+Two reachable minimal complete DFAs for the same language are isomorphic
+by a unique initial-state-preserving, transition-preserving map.
+The map and its inverse are obtained by bounded access-word searches.
+\end{corollary}
+\begin{proof}
+Every state of a minimal DFA is distinguishable from every other: if
+not, the quotient construction of Theorem~\ref{reg:minimize} would
+strictly reduce its state count while preserving the language.
+For a state $q$ of the first automaton choose a shortest access word $u_q$
+and map $q$ to the state reached by $u_q$ in the second.  If $u,v$ reach
+the same first state, the two corresponding second states accept the
+same suffixes, because both automata recognize the same language.
+Distinguishability in the second automaton forces those states to be
+equal.  The map therefore does not depend on the chosen access word.
+It preserves the initial state, transitions, and final bits.  The symmetric
+construction is an inverse, as seen by using the same access words.
+Finally any map preserving the initial state and transitions must send
+the state reached by $u$ to the state reached by $u$; reachability makes
+this condition determine the whole map.
+\end{proof}
+
+\begin{theorem}[Effective Myhill--Nerode certificate]\label{reg:nerode}
+Fix a primitive recursive language predicate $L$.  A finite right-congruence
+certificate consists of a fixed PR function $c$ with values in $[m]$,
+words $r_0,\ldots,r_{m-1}$ with $c(r_i)=i$, and the assertions
+\[
+\begin{split}
+ c(u)=c(v)&\Longrightarrow c(ua)=c(va),\qquad a<k,\\
+ c(u)=c(v)&\Longrightarrow L(u)=L(v).
+\end{split}
+\]
+Such a certificate gives an $m$-state DFA for $L$.  Conversely every DFA
+for $L$ supplies such a certificate after removing inaccessible states.
+Consequently regularity is equivalent to the existence of this effective
+finite data, with their displayed arithmetic correctness assertions.
+\end{theorem}
+\begin{proof}
+Use initial state $c(\eps)$, transition
+$\delta(i,a)=c(r_i a)$, and accepting bit $F(i)=L(r_i)$.
+If the current state after $u$ is $c(u)$, then $c(r_{c(u)})=c(u)$,
+so the first certificate assertion gives
+$\delta(c(u),a)=c(ua)$.  Induction along the word proves the run state
+is $c(w)$; the second assertion gives $F(c(w))=L(w)$.
+Conversely let $c(w)$ be the state reached after $w$ in a reachable DFA,
+renumbering its states below $m$ if necessary.  The run-composition lemma
+proves right stability and agreement of accepting bits.  Bounded
+reachability provides a representative word for every state.
+This is a schema for fixed PR functions, not an assertion that all PR
+programs admit a PR universal evaluator.  Nor does it infer decidable
+classes or representatives from an abstract finite-index equivalence
+relation on arbitrary predicates.  Those additional data are exactly
+what make the converse constructive and its realization primitive
+recursive.
+\end{proof}
+
+\subsection{Lean implementation obligations for this section}
+\label{reg:lean}
+
+The semantic Lean layer may use \texttt{List (Fin k)} for words and the
+standard \texttt{DFA}, \texttt{NFA}, and \texttt{\ensuremath{\eps}NFA}
+interfaces.  It must not be confused with the arithmetic layer.  For the
+latter use a record of natural-number fields for the alphabet size, state
+count, start, transition-table code, and final-bit-vector code, together
+with a PR Boolean predicate \texttt{validDFA}.  The NFA code has an initial
+bit-vector and a three-dimensional Boolean edge table; its epsilon variant
+adds a two-dimensional edge table.  Define a total decoder for every field,
+using the rejecting automaton on invalid inputs.  A regular expression is
+a postfix list of tagged nodes, each child index strictly less than its
+parent index. The validity predicate also requires a single final root,
+exactly one parent for every nonroot node, and connectivity to that root;
+thus the code describes a tree, not a shared directed acyclic graph. These
+conditions are bounded PR checks.  Grammar codes are lists of the
+four production tags used in Theorem~\ref{reg:grammar}.
+
+The following are the substantive proof obligations; none is silently
+assumed from an algorithm's successful execution.
+\begin{enumerate}
+\item \texttt{runCode\_append}: decoded iteration equals list evaluation,
+with the invariant ``the first $i$ scanned letters lead to the stored
+state.''  Construct the code for this equality in the object calculus.
+\item \texttt{shortenPath\_correct}: verify every deletion, preserve endpoints,
+and combine the explicit finite-pigeonhole witness with the decreasing
+length counter.  The output bound is $n-1$.
+\item \texttt{epsilonClosure\_correct} and \texttt{subset\_correct}: prove the
+closure table's witness invariant, then the subset vector's prefix
+invariant.  The bounded epsilon-path bound is
+$\ell+(\ell+1)(n-1)$.
+\item \texttt{closure\_constructors\_correct}: each closure operator must
+return a valid finite code and maps in both directions between the relevant
+finite path certificates.  For quotients the crucial search bound is $nm$.
+\item \texttt{regexTable\_correct}, \texttt{thompson\_correct}, and
+\texttt{eliminate\_correct}: use the common finite table of expression
+nodes, word intervals, and state endpoints.  For elimination also record
+the internal-vertex threshold and the expression-size majorant.  Structural
+induction in ambient Lean alone is insufficient evidence of an \ipra{}
+proof; the table invariant is the route to quantifier-free induction.
+\item \texttt{regularGrammar\_correct}: implement stepwise derivation/path
+conversions and prove the terminal-prefix/nonterminal-suffix invariant.
+\item \texttt{pump\_correct}: extract the repeated indices from the first
+$n+1$ run states and prove the loop equation by quantifier-free induction
+on the pumping exponent.  State the nonregularity results as explicit
+refutations of alleged DFA recognition equations.
+\item \texttt{equivalence\_decision\_correct},
+\texttt{finiteness\_decision\_correct}, and
+\texttt{minimize\_correct}: return either bounded witnesses or checked
+negative reachability tables.  For minimization add the $n^2$-round
+stabilization proof, representative correctness, and the finite injection
+into any competing DFA.
+\item \texttt{finiteRightCongruence\_toDFA}: treat the fixed PR code $c$ and
+its object-theoretic correctness derivations as parameters.  Keep the
+schema separate from the internal quantification over finite DFA data.
+\end{enumerate}
+
+For example, after defining the constructors the semantic target for
+subset construction is
+\[
+ \forall M,w\quad
+ \operatorname{validENFA}(M)=1\ \longrightarrow\
+ \operatorname{acceptDFA}(\operatorname{determinize}(M),w)
+ =\operatorname{acceptENFA}(M,w).
+\]
+Both acceptance terms here are primitive recursive: the second uses the
+bounded path normalization above.  The object-level target is a derivation
+of this formula in the encoded \ipra\ calculus, after its Boolean and
+bounded quantifiers have been compiled away.  Existing mathlib declarations
+such as \texttt{NFA.toDFA\_correct} and
+\texttt{\ensuremath{\eps}NFA.toNFA\_correct} are useful semantic comparison
+lemmas; they do not themselves discharge that target.  The inspected
+regular-expression documentation explicitly describes its syntax and
+semantics; no version-independent assumption about a preexisting complete
+Kleene-equivalence implementation is needed here \cite{MathlibRegex}.

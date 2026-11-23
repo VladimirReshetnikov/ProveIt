@@ -1,0 +1,58 @@
+\section{Lean formalization and object-theory obligations}
+\label{sec:lean}
+A host theorem such as a divisibility criterion is a Lean proposition about integers. An object derivation is a term whose conclusion is a formula in a specified formal calculus. Both can be kernel-checked. The files have the following verification status.
+\begin{center}\small
+\renewcommand{\arraystretch}{1.20}
+\begin{tabularx}{\linewidth}{@{}p{.237\linewidth}p{.19\linewidth}X@{}}
+\toprule File in \texttt{lean/}& Verification & Scope\\\midrule
+\texttt{EquationalFox.lean} & Lean 4.32.0 & Object derivations in the additive equational fragment: the three universal Fox identities, with signed inputs encoded as pairs.\\
+\texttt{Fox.lean} & Lean 4.32.0 & Integer and modular local identities, signed two-braid powers and their closure condition; both rational-tangle closure criteria for arbitrary construction words.\\
+\texttt{SurfaceCore.lean} & Lean 4.32.0 & Modular fixed rows of the Borromean braid; the Euler/genus invariant for every finite sequence of specified band cases.\\
+\texttt{DiagramCore.lean} & Lean 4.32.0 & Executable pairing, state-circle and color-count definitions; closed evaluations on a curl, circle and braid examples.\\
+\texttt{LocalIPRA.lean} & Unbuilt integration source & Targets ProveIt's actual \texttt{Prf PRAAx}, with open integer equalities and a closed six-variable Fox type III formula. Its imports include the repository's ring tactic and Mathlib.\\\bottomrule
+\end{tabularx}
+\end{center}
+The four standalone files were run with Lean 4.32.0 and its standard library. The ProveIt integration dependencies were unavailable in the build environment. The full crossing-minimality, geometry, and knot-invariant theorems remain human proofs with the object-theory implementation plan below. The Python programs check enumerations, sample inputs, and in some cases entire supplied move lists. The archive README lists their individual checks.
+
+\subsection{A checked equational derivation}
+In \texttt{EquationalFox.lean}, terms are variables, zero, successor and addition. A derivation $D(\Gamma,a,b)$ derives one equation from a list of equation hypotheses. Its constructors are equality and congruence rules, the two defining equations of addition recursive on its second input, instantiation of an assumption-free schematic derivation, and equation induction. The last rule takes $a[0]=b[0]$ and, from the single hypothesis $a[i]=b[i]$, a derivation of $a[Si]=b[Si]$. Its conclusion has $i$ free, with universal closure understood. All other variables are parameters.
+
+Each constructor has a direct iPRA interpretation. Interpret $D(\Gamma,a,b)$ as intuitionistic derivability of $a=b$ in the translations of $\Gamma$. Take an ambient context large enough for the free indices in the given derivation. Reflexivity is an equality rule, symmetry/transitivity and congruences follow by substitution. The recursion axioms specialize \texttt{PRA.precZero} and \texttt{PRA.precSucc} (exchange the arguments to obtain recursion on the second). An assumption-free derivation may be universally closed, instantiated and weakened. In equation induction rename the finitely many parameters so the induction variable is fresh for the empty external context. Apply \texttt{PRA.qfInd} to the translated equality, then specialize its universal conclusion to the original variable. Together these instructions give the rule-by-rule interpretation in ordinary iPRA. The separate ProveIt script demonstrates the intended destination.
+
+The checked file derives $0+x=x$, $Sx+y=S(x+y)$, commutativity, and associativity from the two recursion equations. It forms the \emph{metatheoretic} quotient of terms by provable equality. Addition on that quotient is associative and commutative by the preceding derivations. Normalization for these two laws proves equality of classes, and exactness of the quotient returns an object derivation. For $x=(x^+,x^-)$, Fox reflection has pair
+\[
+  (y^++y^++x^-,\ y^-+y^-+x^+).
+\]
+Equality of signed pairs is translated to a single equation of natural terms by cross-addition. The Lean results are schematic object proofs before reduction modulo $n$. In particular \texttt{foxTriangle} has Lean's axiom report \texttt{[propext, Quot.sound]} for the metatheory. Its conclusion is derivability using the displayed rules for $D$.
+
+\subsection{From the finite algorithms to \texttt{Prf PRAAx}}
+At the revision in the bibliography, \texttt{PR k} has constructors zero, successor, projection, composition, and \texttt{prec}. Terms \texttt{PTm n} have variable and application constructors. The defining recursion uses $(i,\mathrm{previous},\mathrm{parameters})$ for the step arguments. Encode a loop starting with $a(x)$ and updating by $b(i,s,x)$ as the symbol $\operatorname{prec}(a,b)$. To run for $L(x)$ steps, compose it with $(L(x),x)$. To run several registers together put their tuple in $s$ and use projections in $b$. Expand this program syntax separately for each fixed algorithm in the paper. Use \texttt{Fm PTm} for formulas and the sequent $[]\mathrel{\vdash_{\rm PRAAx}}\forall\vec x\,\phi$ as the target.
+
+For example, let $V$ be a numerical diagram validator, $P(D,E,p)$ the movie Boolean, and $F(D)$ the normalized polynomial code. The Jones invariance target has matrix
+\[
+ V(D)=1\ \land\ V(E)=1\ \land\ P(D,E,p)=1
+      \ \longrightarrow\ F(D)=F(E).
+\]
+Table trimming makes the last equality numerical. A chosen coefficient slot may be an additional free parameter; a bounded conjunction covers any required range of slots. In an object proof for movie prefixes keep the full $p$ fixed, as in Lemma~\ref{lem:interface}. For a construction the target concludes $\operatorname{Check}(D,\operatorname{Build}(D))=1$, giving an existential corollary with $\operatorname{Build}(D)$ as its witness.
+
+\begin{center}\small
+\renewcommand{\arraystretch}{1.19}
+\begin{tabularx}{\linewidth}{@{}p{.21\linewidth}X@{}}
+\toprule Implementation stage & Lemmas needed for the object derivation\\\midrule
+Codes and arithmetic & Prove lookup/update, bounded flags and prefix counts. Reuse the repository's signed pairs, division/remainder, gcd and bounded sums. Use equality substitution for modular operations.\\
+Input and moves & Encode polygon vertices, segment tests and dart tables. Verify redraw incidences, local disk templates, certificate reversal, concatenation, and bounded path tracing. Prove transport along movies by prefix induction.\\
+Rational geometry & Verify linear elimination, leading terms, root factorization and grid avoidance. For the cone check pairs of edges, then induct on the remaining fan. For the ribbon and Seifert constructions use pairwise triangle-incidence tests and disk certificates.\\
+Colors and words & Use the three local identities to construct the extension tables. Count both projections of their graphs. Prove the braid difference invariant, the orbit enumeration and the changing-crossing kernel bounds. Induct on the number of trefoil summands.\\
+Bracket and finite type & Build the state-pairing tables; verify local composition and closure. Maintain the forest partition and extremal degree inequalities under smoothing changes. In the signed state sum, after $j$ marked sites the first $j$ coefficient slots vanish.\\
+Group and Alexander & Define word substitutions and their proof certificates. For linear relations use signed Laurent arrays, determinant expansion, row replacement and unit-pivot elimination. Record each nonzero remainder with its division identity.\\
+Surfaces and tabulation & Derive polygon parity from triangle-entry counts, then cap adjacency, disk shellings, marked rim splices and the band invariant. Recover cyclic orders and face walks. Count the occupied encoding slots.\\\bottomrule
+\end{tabularx}
+\end{center}
+
+For search claims, quantify over $p$ after proving the assertion for an arbitrary movie code. For connectedness on $v$ darts, at the $j$th adjacency iteration keep the Boolean array for endpoints reachable in at most $j$ steps; witnesses use at most $v+1$ base-$(v+1)$ digits up to the final pass. For a group certificate that grows under substitution, the new word length is at most the old length times the maximal image length. Iterate this bound along a fixed move list to obtain a PR length bound even for expanded certificates.
+
+\paragraph{Induction over families of subproblems.}
+For the bracket recursion at $A=1$, hold the original diagram fixed. A partial resolution is a word of $c$ ternary digits (keep the crossing, choose $A$, choose $B$). Induct on $j$ using the bounded conjunction of the desired identities for every partial resolution with at most $j$ live crossings. At the successor, its two children have one fewer live crossing. For Tutte deletion and contraction, order the original edges and record a deletion, contraction, or untouched bit-pair per edge; freeze isolated-vertex labels and canonicalize blocks by least representatives. Equivalently use the actual branching tree of depth at most $c$ on the least remaining edge, computed on all decision words of length at most $c$. Aggregate all nodes at a given remaining height into one Boolean. For ear splitting or disk shelling the nodes are sublists of the supplied finite triangulation or cyclic vertex list. Coding the list of subproblems before induction is what licenses these diagram-wide arguments with quantifier-free induction.
+
+\paragraph{Further research questions.}
+Can one convert a single rational spatial triangle move to a planar Reidemeister movie with a numerical bound in terms of the input charts, and compose these bounds without repeatedly changing projection? This would bring more of the classical Reidemeister theorem inside the object theory. A second target is a derivation identifying the Alexander first-minor gcd with the determinant of a Seifert pairing for every surface certificate. It would turn the explicit spanning surfaces here into sharp genus results when the polynomial has matching degree. A third is to formalize the reduced alternating crossing theorem as a \texttt{Prf PRAAx} endpoint using the finite forests in Section~\ref{sec:bracket}.

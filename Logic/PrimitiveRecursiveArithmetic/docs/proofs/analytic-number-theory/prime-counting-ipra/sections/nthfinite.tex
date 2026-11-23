@@ -1,0 +1,7 @@
+\paragraph{Finite checks for the \(k\)-th prime.}
+The ten displayed lower or upper bounds for $p_k$ whose stated starting index is at most $10^6$ were also tested at every integer from that index through $10^6$. There is exactly one exception. The Wikipedia page uses $0.9487$ at $k=39017$, but
+\[
+ p_{39017}=467473,\qquad
+ 467471<39017(\log39017+\log\log39017-0.9487)<467472.
+\]
+Dusart's original coefficient is $0.9484$; this passes the same entire interval. For Axler's $10.667$ upper bound, the separate indices $46254381$, $46254382$, and $46255381$ pass. The first follows, for example, since the proposed upper bound exceeds $905060142$ and $\pi(905060142)=46254381$. These counts use an Eratosthenes sieve and, for the three large endpoints, the quotient sieve. Nested logarithms use monotonicity and outward-rounded rational intervals. For the quadratic term, $(w-3)^2+c-9$ gives endpoint bounds even on intervals crossing $w=3$. The exact tests and their outputs are in \texttt{checks/nth\_bounds.py} and \texttt{verification/nth\_bounds.txt}. The original constant appears in \href{https://doi.org/10.1090/S0025-5718-99-01037-6}{P.~Dusart, \emph{The $k$th prime is greater than $k(\ln k+\ln\ln k-1)$ for $k\ge2$}}.

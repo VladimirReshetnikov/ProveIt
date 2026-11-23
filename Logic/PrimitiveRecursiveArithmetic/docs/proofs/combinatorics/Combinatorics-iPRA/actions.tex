@@ -1,0 +1,234 @@
+\section{Symmetries and impartial games}
+\label{sec:actions-games}
+The seed article connects combinatorics with group theory and lists
+combinatorial game theory among its related fields.
+The two applications below use different finite computations. Symmetry
+reduces a configuration to its least representative; a game assigns its
+positions numbers in order of increasing rank.
+
+\subsection{Finite group actions and color inventories}
+A finite group is specified by a size $s>0$, a multiplication table
+on $[s]$, an identity $e$ and an inverse table. Check the identity,
+inverse and associative laws by loops of length at most $s^3$.
+A left action on $X=[u]$ is a table with
+$ex=x$ and $(gh)x=g(hx)$.
+Write $Gx=\{gx:g\in G\}$, $G_x=\{g:gx=x\}$,
+$X^g=\{x:gx=x\}$, and $X/G$ for the set of least members of the
+orbits. Empty $X$ gives no representatives.
+\begin{theorem}[Orbit--stabilizer and the orbit-counting lemma]\label{result63}
+For every $x\in X$,
+\[
+ |Gx|\,|G_x|=s,\qquad
+ s\,|X/G|=\sum_{g\in G}|X^g|.
+\]
+In particular the size of each orbit divides $s$ and the sum of the
+numbers of fixed points is divisible by $s$.
+\end{theorem}
+\begin{proof}
+Inverse elements make the relation $y=gx$ symmetric, while the identity
+and multiplication give reflexivity and transitivity. For each $y\in Gx$
+take the least $t_y$ satisfying $t_yx=y$. The map
+$h\mapsto t_yh$ from $G_x$ onto the elements sending $x$ to $y$ has
+inverse $g\mapsto t_y^{-1}g$. Summing these fiber sizes gives the first
+formula. Moreover $h\mapsto t_yht_y^{-1}$ carries $G_x$ bijectively onto
+$G_y$; conjugate by $t_y^{-1}$ for its inverse. Count pairs $(g,x)$
+with $gx=x$. Each orbit contributes $|Gx|\,|G_x|=s$, while a fixed
+$g$ contributes $|X^g|$. This proves the second identity.
+\end{proof}
+If $H$ is a subgroup of $G$, apply the first identity to left
+multiplication by $H$ on each left-translation orbit $Hx$. It has
+$|H|$ elements since $hx=x$ implies $h=e$. The disjoint orbits partition
+$G$, giving the finite Lagrange divisibility statement $|H|\mid s$.
+
+\begin{theorem}[P\'olya's inventory formula]\label{result64}
+Let $G$ act on $m$ places. With $q$ available colors, give each coloring
+$w$ the monomial $\prod_{i<m} z_{w(i)}$. Let $Z$ be the sum of one such
+monomial per orbit of colorings. If $c_j(g)$ is the number of $j$-cycles
+of $g$ on the places, then
+\[
+ |G| Z=\sum_{g\in G}\prod_{j=1}^{m}
+          (z_0^j+\cdots+z_{q-1}^j)^{c_j(g)}.
+\]
+Taking all weights equal to one yields
+$|G|\,\#\{\text{coloring orbits}\}=\sum_g q^{\sum_j c_j(g)}$.
+\end{theorem}
+\begin{proof}
+The induced action is $(gw)(i)=w(g^{-1}i)$. Its fixed colorings are
+exactly those constant on each cycle of $g$. Starting at the least
+unvisited place, iterate $g$ until it returns. Injectivity forces the
+first repeated place to be the start, and the return takes at most $m$
+steps. Repeat while an unvisited place remains. A cycle of length $j$
+independently receives any color $a$ and contributes $z_a^j$.
+Color counts are constant on an orbit. Apply the orbit-counting
+identity separately to the finite invariant set for each inventory
+$(a_0,\ldots,a_{q-1})$, $\sum a_i=m$. This proves the coefficient
+identity and covers $m=0$ by the empty product convention.
+\end{proof}
+
+\subsection{Necklaces, primitive words, and bracelets}
+A necklace is a word of length $n\ge1$ modulo cyclic rotations of positions.
+Let $N_q(n)$ count necklaces on $q$ symbols; let $P_q(n)$ count primitive
+necklaces, whose words have no nonidentity rotation fixing them. Write
+$\varphi(d)$ for the number of $a\in[d]$ coprime to $d$, including
+$\varphi(1)=1$.
+\begin{theorem}[Necklace and primitive necklace formulas]\label{result65}
+With $\mu(d)=0$ if a prime square divides $d$ and
+$\mu(d)=(-1)^r$ if $d$ is the product of $r$ distinct primes, one has
+\[
+ n N_q(n)=\sum_{d\mid n}\varphi(d)q^{n/d},
+ \qquad
+ n P_q(n)=\sum_{d\mid n}\mu(d)q^{n/d}.
+\]
+Every primitive necklace has a unique lexicographically smallest rotation,
+a word strictly smaller than all its nontrivial rotations.
+\end{theorem}
+\begin{proof}
+A rotation by $a\in[n]$ generates the subsets of residues differing by a
+multiple of $g=\gcd(n,a)$. Indeed its least positive return time at any
+position is $n/g$: writing $a=ga'$, $n=gn'$, the divisibility $n\mid ta$
+reduces to $n'\mid ta'$ and hence to $n'\mid t$. The cancellation follows
+from the integer B\'ezout identity for the coprime pair, obtained by
+recording the linear combination at each Euclidean division; each
+nonterminal remainder strictly decreases. This also covers $a=0$.
+There are $g$ cycles, so $q^g$ words are fixed. The rotations with
+$n/g=d$ correspond to $a=(n/d)b$ with $b\in[d]$, $\gcd(b,d)=1$.
+The orbit-counting lemma now gives the first formula.
+
+For an individual word choose the least positive rotational period $t\le n$,
+allowing $n$ itself. Periods taken modulo $n$ are closed under addition
+and subtraction. Divide $n$ by $t$; its remainder is a period smaller than
+$t$ and therefore is zero. Thus $t\mid n$ and the word is a repetition
+of its length-$t$ prefix. That prefix is primitive: a smaller rotational
+period of it would extend to the whole word. Conversely repeating a
+primitive word of length $t\mid n$ gives least period $t$, as any shorter
+period would also rotate the length-$t$ prefix into itself (use its
+periodic extension). Let $A_t$ count primitive \emph{words}. We have
+$q^n=\sum_{t\mid n}A_t$ and $A_n=nP_q(n)$, since each primitive orbit
+has $n$ different rotations. For $v>1$, square-free divisors of $v$
+are subsets of its distinct prime divisors; toggling the least prime
+pairs their signs. Hence $\sum_{d\mid v}\mu(d)=[v=1]$, including $v=1$.
+Substitute the preceding expression for $q^{n/d}$ into the signed sum
+and regroup the terms with fixed $t$; the multiplier is
+$\sum_{d\mid n/t}\mu(d)$, which leaves exactly $A_n$. The prime list here
+can be obtained by repeatedly removing the least divisor greater than
+one. It is prime by minimality; Euclid's prime-divisor lemma follows from
+the same B\'ezout cancellation, giving uniqueness of multiplicities by
+successive cancellation. All searches and repeated divisions are bounded
+by $n$. Finally take the least in the finite lexicographic list of the
+$n$ distinct rotations of a primitive word.
+\end{proof}
+
+Let $J_q(n)$ count bracelets, obtained by identifying both rotations and
+reversals. These are orbits of the $2n$ formal symmetries
+$i\mapsto i+a$ and $i\mapsto a-i\pmod n$. Using formal pairs (sign,
+offset) keeps the group of order $2n$ even when two induced permutations
+coincide. A reflection has $f$ fixed places determined by $2i=a\pmod n$,
+and all remaining places form pairs. For odd $n$ there is precisely one
+solution: multiplication by $2$ is invertible modulo $n$. For even $n$,
+an odd $a$ has none, and an even $a$ has the two solutions $a/2$ and
+$a/2+n/2$. The orbit-counting formula therefore gives
+\[
+ 2n J_q(n)= n N_q(n)+
+ \begin{cases}
+ n q^{(n+1)/2},& n\text{ odd},\\
+ (n/2)(q^{n/2+1}+q^{n/2}),& n\text{ even}.
+ \end{cases}
+\]
+For example, the six binary places have $14$ necklaces, $9$ primitive
+necklaces, and $13$ bracelets, obtained by substituting $q=2,n=6$.
+
+\subsection{Winning moves from a finite game table}
+Consider finite, impartial, perfect-information games in normal play.
+A position has the same legal successors for either player. A player who
+cannot move loses. Supply the adjacency table on $[v]$ and a natural
+rank $r_i$ for each position, testing $i\to j\Rightarrow r_j<r_i$.
+For a finite set $S$ of naturals, $\operatorname{mex} S$ is the least
+natural missing from $S$. If $S$ consists of at most $a$ values, some
+value in $0,\ldots,a$ is missing by counting, so the search has an explicit
+bound. Define the Grundy value $g(i)$ in increasing order of rank by
+\[
+ g(i)=\operatorname{mex}\{g(j):i\to j\}.
+\]
+In particular $g(i)\le\#\{j:i\to j\}\le v$. Ties in rank may be broken
+by index.
+
+\begin{theorem}[Normal play, the sum theorem, and Nim]\label{result66}
+A current player has a winning strategy exactly when $g(i)\ne0$.
+In the disjunctive sum, where exactly one component changes at each move,
+\[
+ g(i,i')=g(i)\mathbin{\mathrm{xor}}g(i').
+\]
+A Nim heap of size $h$ has value $h$, and a finite list of heaps is
+losing exactly when their bitwise exclusive-or is zero. In particular,
+two equal heaps are losing. Every finite ranked impartial position is
+indistinguishable in win/loss outcome, under addition of any other such
+position, from the Nim heap of its value.
+\end{theorem}
+\begin{proof}
+By definition of mex every value strictly below $g(i)$ is realized by
+a successor, and $g(i)$ itself is absent. A zero position has only
+nonzero successors. From a nonzero position take the least-index successor
+of value zero. Starting from a nonzero position, this rule restores zero
+after every move by the player following it. Ranks decrease, so the
+opponent eventually encounters a terminal position. From a zero position
+the opponent can use this strategy after any first move (or win immediately
+if no move is available). This establishes both directions and specifies
+the strategy table.
+
+Write $a=g(i)$, $b=g(i')$, and $z=a\mathbin{\mathrm{xor}}b$. Induct on
+the sum of the two ranks, tabulating all pairs up to the given sum.
+A move in the first component yields $a'\mathbin{\mathrm{xor}}b$ with
+$a'\ne a$, hence cannot yield $z$ by bitwise cancellation. A move in the
+second component also cannot yield $z$. To see every $t<z$, find the
+highest differing bit $h$ of $t$ and $z$. At $h$, $z$ has one and $t$
+zero, so precisely one of $a,b$ has one there. If it is $a$, put
+$a'=t\mathbin{\mathrm{xor}}b$. Above $h$, $a'$ agrees with $a$; at $h$
+it is zero where $a$ is one. Thus $a'<a$ and is realized by a successor.
+The resulting sum value is $t$. If $b$ has the one, interchange the
+components. These facts characterize mex even for $z=0$. Binary digits and
+highest differing positions can be scanned up to $1+v+v'$ for the
+corresponding table sizes.
+
+The available moves of a heap $h$ go to exactly $0,\ldots,h-1$; finite
+induction gives its value $h$. Applying the two-component result repeatedly
+and using bitwise associativity gives the assertion for a finite list.
+The value determines all joint outcomes with a further component of value
+$c$, since the joint value vanishes exactly when $c$ equals that value.
+Two different values can be distinguished by adjoining a heap of the
+first value.
+\end{proof}
+For an input giving just a finite acyclic graph, a suitable ranking is
+itself primitive recursive. Repeatedly remove the least vertex with no
+successor among the remaining vertices, in at most $v$ rounds, assigning
+ranks in removal order. If a nonempty remainder had no such vertex,
+following least successors $v$ times from a remaining vertex would give
+$v+1$ visits and a repeated vertex, hence a directed cycle. Thus all
+vertices are removed and every move lowers the resulting rank.
+For the partizan version with two move tables and the same rank condition,
+tabulate two Boolean entries per position, one for each player to move.
+Each entry is true exactly when some legal move leaves a false entry for
+the other player; a terminal entry is false. Induction on rank gives the
+winner and bounded search selects a winning strategy whenever the entry
+is true. The mex and exclusive-or statements above use impartiality.
+
+\paragraph{Lean implementation.}
+Represent multiplication, inverses and actions by bounded digit tables
+and verify each law by a Boolean fold. Compute \texttt{orbRep x} as
+the minimum of the $s$ images, and \texttt{trans x y} as the first $g$
+with $gx=y$ under the orbit guard. Extend selectors by zero outside their
+guards. Use the two inverse maps in the proof to instantiate finite
+bijection counting. The inventory calculation uses
+bounded vectors in $[m+1]^q$: count each such vector by scanning at most
+$\max(2,q)^m$ colorings. For words, store all positions of \texttt{rotate}
+and \texttt{reverseRotate} modulo $n$ and test equality digitwise; verify
+cyclic least-period claims by Euclidean division and a single scan of the
+positions. In the game computation, store each mex table as $v$ digits
+in base $v+1$ (use base two for $v\le1$). Compute new entries in the
+specified topological order and prove the successor equation simultaneously
+for completed entries by prefix induction. For a product use $vv'$ slots
+and rank sums. Turn the exclusive-or argument into two bit lemmas:
+involution after flipping the same mask twice, and strict comparison at
+the greatest differing bit. Both follow by expanding the binary words
+above, at, and below that bit, since the sum of all lower place values
+is less than the place value at the bit. Every assertion about all
+positions in a completed prefix or rank layer is a bounded Boolean fold.

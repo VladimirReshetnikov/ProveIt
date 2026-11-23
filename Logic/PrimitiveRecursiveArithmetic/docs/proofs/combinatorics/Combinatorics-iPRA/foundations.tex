@@ -1,0 +1,46 @@
+\section{What the finite statements mean in iPRA}
+\label{sec:found}
+On six labeled tastes there are $2^6-1=63$ nonempty selections. The proof is a bijection: the six bits record the choices, the value zero records the empty selection, and division by powers of two recovers the individual bits. A larger example has the same logical form. For a graph with $v$ vertices, the assertion that a required clique exists can be witnessed by an integer below $2^v$; its entries can then be inspected. The work lies in proving that the search finds such an integer for \emph{every} valid graph. The size of a search space alone gives no such proof.
+
+\subsection{Numbers, finite sets and witnesses}
+We use first-order intuitionistic logic with equality on the naturals, zero and successor, the successor axioms, symbols and defining equations for each primitive recursive (PR) construction, and induction with parameters for quantifier-free formulas. A PR construction is built from zero, successor and projections by composition and the recursion
+\[
+ f(0,\mathbf u)=g(\mathbf u),\qquad f(i+1,\mathbf u)=h(i,f(i,\mathbf u),\mathbf u).
+\]
+Using several registers is legitimate. For example $\langle a,b\rangle=(a+b)^2+a$ has PR projections: a bounded scan finds $k=\lfloor\sqrt z\rfloor$, then for an actual pair $a=z-k^2$ and $b=k-a$. Use truncated subtraction for total projections on arbitrary codes. Finite tuples of a fixed number of registers use repeated pairing; variable-length data use radix words. Every algorithm below has total defaults outside its stated inputs. An object theorem has the form $\forall\mathbf u\,(\mathrm{Valid}(\mathbf u)=1\to \mathrm{Check}(\mathbf u,F(\mathbf u))=1)$ or an equality of PR terms. Here each displayed algorithm or finite schema fixes its own term; the theory needs no evaluator for arbitrary PR programs.
+
+\begin{center}\small
+\begin{tabular}{@{}p{.20\linewidth}p{.405\linewidth}p{.30\linewidth}@{}}\toprule
+Object & Representation & Operation or bound\\\midrule
+Subset of $[n]$ & Mask $a<2^n$ & Bit $i=\lfloor a/2^i\rfloor\bmod 2$\\
+Length-$n$ word over $[b]$ & Separate length and $a<B^n$, $B=\max(2,b)$; all digits $<b$ & Digit $i=\lfloor a/B^i\rfloor\bmod B$\\
+Finite family or relation & Mask of masks, or row-major array of Boolean entries & Family on $[n]$ is below $2^{2^n}$\\
+Finite permutation & Word of length $n$ on $[n]$; check distinct entries & Inverse found by scanning $n$ positions\\
+Integer; rational & Pair $(a,b)$ denotes $a-b$; quotient with positive denominator & Equality by cross addition or cross multiplication\\
+Polynomial or finite series & Rectangular array of signed coefficients, explicit degree/truncation & Convolution is a bounded sum\\\bottomrule
+\end{tabular}
+\end{center}
+Division by a positive $d$ can scan all candidates up to the dividend to find the largest $q$ with $dq\le x$. The base-power digit laws follow by division with remainder: appending $b_iB^i$ to a word $<B^i$ preserves lower digits and puts $b_i$ at $i$. Induction gives recovery of every word and the size bound. Set $0^0=1$. The empty word is unique even for an empty alphabet, and nonempty words over it fail the digit test. A finite set of arbitrary labels can be relabeled by its first or ordered enumeration. All comparisons used for sorting require a given decidable linear order.
+
+\begin{lemma}[Bounded reflection and search]\label{result01}\label{lem:search}
+Finite conjunctions, disjunctions, counts, lexicographically first witnesses, and maxima over nonempty finite lists have PR terms and intuitionistically provable specifications. Induction over a succession of bounded finite configurations can be performed by quantifier-free induction when the invariant is a Boolean test on the coded configurations.
+\end{lemma}
+\begin{proof}
+For a fixed PR bit $p(i,u)$, let $C(j)=\sum_{i<j}p(i,u)$ by the recursion $C(0)=0$, $C(j+1)=C(j)+p(j,u)$. For search keep $w(j)$, the first success below $j$, with sentinel $j$. Initialize $w(0)=0$. Retain an old success; otherwise return $j$ if $p(j,u)=1$ and $j+1$ if it fails. Induct on $j$ with the three invariants $w(j)\le j$, success of $p$ when $w(j)<j$, and zero sum of $p$ over the indices $<w(j)$. Retaining a success preserves all three. At the sentinel, either the old zero sum extends over the new failure or the first success is exactly the new index. These are quantifier-free statements in numerical terms. A zero sum forces each bounded term zero, since the sum dominates each term (split at its index); conversely the sum of zeros is zero by the defining recursion. This proves the witness specification and constructive equivalence of bounded existence with a Boolean. Apply it to $1-p$ for bounded universals and iterate for nested quantifiers. Retain the first position of the largest value seen in a scan to take a maximum.
+
+For a proof needing all smaller cases, fix the final ambient parameters and their code bounds $B$. Replace its induction hypothesis by the equation that the sum of all failure indicators at earlier stages and admissible codes below $B$ is zero. One can extract each earlier instance as just proved. If the stage proof establishes the next indicator is zero for each code, the enlarged sum is zero. The remaining induction is literally on this equation. It is essential that the smaller problems fit the chosen bounds; for example the Ramsey argument fixes the \emph{final} reservoir size before the induction on uniformity. A bounded ``repeat until'' loop of given length uses an absorbing state after success. An integer-valued measure bounded by $M$ that strictly decreases at each productive step permits $M$ iterations, followed as necessary by one final test.
+\end{proof}
+
+\begin{lemma}[Counting fibers and cancelling signs]\label{result02}\label{lem:fiber}
+For explicitly bounded sets $X,Y$ and a coded relation $R$, summing its row counts gives the same total as summing its column counts. A pair of PR inverse maps on the valid codes therefore gives equal counts. An injection gives the corresponding inequality. A sign-reversing involution cancels each of its two-element orbits from a signed sum when the magnitudes agree.
+\end{lemma}
+\begin{proof}
+For any rectangular table of naturals, induct on the number of rows. Appending a row adds its total on the row side. On the column side each column increases by its entry in that row; distributing addition through the column sum gives precisely the same increment. The latter distributivity is induction on the number of columns. Apply this to $[x\in X][F(x)=y][y\in Y]$, where each valid row sums to one and columns to one or at most one. Predicates outside the coded object can be padded by zero throughout. For the signed claim compare the positive and negative totals on pairs $x<f(x)$: the involution bijects the two signs preserving each magnitude. Fixed points are the uncancelled terms. Finite changes of summation order, products over independent choices, and double counting in subsequent sections use these arguments.
+\end{proof}
+
+\begin{proposition}[Weighted words and the geometric sum]\label{result03}\label{prop:weighted}
+The number of length-$n$ words on a disjoint union of labeled alphabets of sizes $a,b$ is $(a+b)^n$. If the last-letter recursion is $W_0=1$, $W_{n+1}=W_na+W_nb$, this is an equation about that recursion for every $a,b,n$. For an alphabet of size $q$, words of length $<n$ have total count $S_n=\sum_{i<n}q^i$ and satisfy $S_n+q^n=1+qS_n$.
+\end{proposition}
+\begin{proof}
+Deletion of the last letter partitions longer words into the two indicated classes, and appending recovers each old word and choice of last letter. Distributivity and the induction hypothesis give $W_{n+1}=W_n(a+b)=(a+b)^{n+1}$. The empty word gives the base. For the geometric identity $1+qS_n=1+\sum_{i<n}q^{i+1}=\sum_{i<n+1}q^i$. This includes $q=0,1$ and $n=0$; for $q\ge2$ it gives $(q-1)S_n=q^n-1$ without any limiting argument.
+\end{proof}

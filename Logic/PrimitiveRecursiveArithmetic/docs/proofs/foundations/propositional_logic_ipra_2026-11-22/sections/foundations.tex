@@ -1,0 +1,511 @@
+\section{Scope, meaning, and verification status}\label{sec:scope}
+
+The starting point is the article \emph{Propositional logic}, together with its
+mathematically relevant links concerning formulas, truth functions, natural
+deduction, Hilbert systems, analytic tableaux, sequent calculi, Boolean algebra,
+SAT, and intuitionistic propositional logic. The source map in the appendix
+distinguishes these topics from supporting developments such as interpolation
+and Horn satisfiability. Historical and philosophical claims are outside our
+proof inventory. All mathematical proofs below are supplied here; a reference
+is not being used as a substitute for a proof.
+
+There are two different logical levels. At the \emph{object level}, \CPC\ is a
+calculus whose rules include classical reasoning, while \IPC\ is the
+intuitionistic propositional calculus. At the \emph{metalevel}, the theory in
+which we justify operations on their finite syntax is \ipra. The assertion
+that a Boolean valuation gives $p\vee\neg p$ the value one is an equation
+between primitive recursive numerical functions. It is not an assertion of
+$P\vee\neg P$ for an arbitrary arithmetic proposition $P$.
+
+\paragraph{What is established.}
+The paper gives constructive, human-readable proofs with algorithms and
+primitive recursive bounds. Each algorithmic assertion has a numerical
+formulation using codes, and every induction is either quantifier-free or
+explicitly reducible to quantifier-free induction by bounded reflection.
+This constitutes a non-formalized proof in the stipulated theory. The
+accompanying Lean files are a formalization starting point and a detailed
+implementation plan. They are \emph{not} a completed, kernel-checked
+formalization of all these arithmetized theorems. The supplied validation
+record states exactly which programs were executed and whether Lean was
+available. Executable tests corroborate implementations; they do not establish
+universal mathematical correctness.
+
+\paragraph{A useful uniform contract.}
+Many results take the following stronger form than bare decidability. There
+are explicitly described primitive recursive functions $D,W$ and primitive
+recursive predicates $\mathrm{Good},\mathrm{Positive},\mathrm{Negative}$ such that
+\[
+ \ipra\vdash \forall x\bigl(\mathrm{Good}(x)\to
+ [(D(x)=1\wedge\mathrm{Positive}(x,W(x)))\vee
+  (D(x)=0\wedge\mathrm{Negative}(x,W(x)))]\bigr).
+\]
+The witnesses are proofs, valuations, clause refutations, or finite Kripke
+models. Thus a negative answer has explicit mathematical content.
+
+\section{The arithmetic base and finite data}\label{sec:base}
+
+\subsection{An explicit presentation of iPRA}
+
+The language has one sort of numbers, equality, $0$, successor $S$, and a
+function symbol for each finite primitive recursive definition. The initial
+definitions are zero, successor, and projections; composition and primitive
+recursion form new definitions. With the recursion variable first, the defining
+equations are
+\[
+ f(0,\vec x)=g(\vec x),\qquad
+ f(Sn,\vec x)=h(n,f(n,\vec x),\vec x).
+\]
+The nonlogical axioms are these equations, $Sx=Sy\to x=y$,
+$Sx=0\to\bot$, and the quantifier-free induction scheme, with parameters,
+\[
+ Q(0,\vec z)\wedge\forall n\,[Q(n,\vec z)\to Q(Sn,\vec z)]
+       \ \to\ \forall n\,Q(n,\vec z).
+\]
+The logical rules are ordinary intuitionistic first-order natural deduction
+with equality: assumption, introduction and elimination for $\wedge,\vee,\to$,
+falsehood elimination, quantifier introduction and elimination with their
+usual fresh-variable conditions, reflexivity, and equality substitution.
+There is no unrestricted excluded-middle rule, double-negation elimination,
+choice axiom, or unbounded minimization principle.
+
+This agrees with the definition inspected in ProveIt's
+\texttt{ConciseIPRA/PR.lean}. Its syntax is called \texttt{PR},
+\texttt{PTm}, and \texttt{Fm}; its nonlogical theory is \texttt{PRAAx}; a
+derivation is \texttt{Prf PRAAx}. We use this interface rather than changing
+the underlying arithmetic theory.
+
+\subsection{Bits, bounded quantifiers, and bounded witnesses}
+
+A bit is a number equal to zero or one. For bits put
+\[
+ \overline b=1\mathbin{\dot-}b,\quad b\mathbin{\&}c=bc,\quad
+ b\mathbin{|}c=1\mathbin{\dot-}(1\mathbin{\dot-}b)(1\mathbin{\dot-}c),
+ \quad b\Rightarrow_b c=\overline b\mathbin{|}c.
+\]
+Here $\dot-$ is truncated subtraction, defined by primitive recursion.
+The equality test $[x=y]$ and comparisons are primitive recursive and have
+their familiar arithmetic specifications. Their specifications follow by
+quantifier-free induction on predecessor, subtraction, and comparison.
+
+\begin{lemma}[Finite Boolean reflection]\label{thm:bounded-reflection}
+For every fixed bounded arithmetic formula $R(\vec x)$ built from primitive
+recursive predicates, there is a primitive recursive bit $\chi_R(\vec x)$
+such that \ipra\ proves
+\[
+ \chi_R=1\ \leftrightarrow\ R,\qquad
+ \chi_R=0\ \leftrightarrow\ \neg R,\qquad R\vee\neg R.
+\]
+If $R(i,\vec x)$ is such a predicate, there is a primitive recursive
+$\operatorname{first}_R(B,\vec x)\le B$ which is the least witness below $B$
+when one exists, and is $B$ otherwise.
+\end{lemma}
+\begin{proof}
+Atomic equality and order have characteristic bits. For conjunction,
+disjunction and negation use the bit operations above. For implication use
+$\Rightarrow_b$; its correspondence with the logical implication is justified
+by splitting on the already proved bit for its antecedent. This uses
+decidability of the particular bounded formula, not excluded middle for an
+arbitrary proposition. For bounded quantification define
+\[
+ \operatorname{All}(B)=\prod_{i<B}\chi_R(i),\qquad
+ \operatorname{Some}(B)=1\mathbin{\dot-}\prod_{i<B}(1\mathbin{\dot-}\chi_R(i)).
+\]
+The empty product is one. Define $w(0)=0$ and
+\[
+ w(k+1)=
+ \begin{cases}
+ w(k)&w(k)<k,\\
+ k& w(k)=k\text{ and }\chi_R(k)=1,\\
+ k+1& w(k)=k\text{ and }\chi_R(k)=0.
+ \end{cases}
+\]
+The simultaneous invariant says $w(k)\le k$, that $w(k)<k$ gives a true
+instance there, and that every instance at $i<w(k)$ is false. Encode the last
+assertion by its bounded product, and use quantifier-free induction on $k$.
+The three clauses of the recursion establish the induction step directly.
+It follows that $\operatorname{Some}(B)=1$ exactly when $w(B)<B$ and that
+$w(B)$ is a witness in this case. The analogous least-failure argument gives
+the universal-quantifier clause. These constructions also establish the
+zero cases and the claimed disjunction. A structural induction on the
+\emph{fixed} syntax of $R$ completes the compilation.
+\end{proof}
+
+\begin{corollary}[The permitted induction convention]\label{thm:bounded-induction}
+Induction on any fixed bounded formula is derivable in \ipra: apply
+quantifier-free induction to $\chi_R(n,\vec x)=1$ and use reflection.
+Finite case distinctions, a least member of a nonempty bounded set, and
+bounded simultaneous choices are therefore legitimate.
+\end{corollary}
+
+This convention matters throughout the paper. A phrase such as ``for every
+entry of this table'' always has a displayed finite table as its bound.
+We never apply induction to a formula containing an unbounded existential
+claim such as ``there exists a proof''. Instead a proof-producing algorithm
+is constructed, and the induction invariant says that its current output
+passes the primitive recursive proof checker.
+
+\subsection{An entirely numerical representation}
+
+One possible pairing, compatible with a construction already present in the
+repository, is
+\[
+ \pi(a,b)=(a+b)^2+a.
+\]
+It is injective: if $s=a+b$, then $s^2\le\pi(a,b)<(s+1)^2$, so $s$ is the
+integer square root; then $a=\pi(a,b)-s^2$ and $b=s-a$. For arbitrary input
+$z$ the proposed decoder uses $a=z\mathbin{\dot-}s^2$ and
+$b=s\mathbin{\dot-}a$ before testing that $\pi(a,b)=z$. Integer square root
+is a bounded search below $z+1$. Its uniqueness and these inverse equations
+are proved with bounded arithmetic. Numbers outside the image are detected
+by re-encoding their proposed components. Code lists by $[]:=0$ and
+$a::t:=1+\pi(a,t)$. The tail of a nonempty coded list is smaller than its
+code. Membership, length, lookup with a default, append, and bounded scans
+are consequently primitive recursive by a fuel counter no larger than the
+input code. This is an intentionally simple coding, not a space-efficient
+one.
+
+For arrays of a specified length $r$, whose entries are below $B$, it is more
+convenient to use base $B+1$ digits and retain $r$ explicitly. Subsets of an
+$m$-element set are bit masks below $2^m$. Finite relations are bit masks
+on a Cartesian product. Ordered tuples, matrices and proof annotations are
+combinations of these encodings. All tests mentioned below include validity
+checks on their codes; ill-formed inputs return a fixed default and are
+excluded from correctness statements by a validity hypothesis.
+
+\begin{lemma}[Finite ascending closure]\label{thm:finite-closure}
+Let $U$ be a coded universe with $N$ elements. Suppose a primitive recursive
+operator $F$ maps subsets of $U$ to subsets, is monotone, and satisfies
+$X\subseteq F(X)$. Then
+\[
+ X_0=\varnothing,\quad X_{i+1}=F(X_i)
+ \qquad\Longrightarrow\qquad X_N=X_{N+1}.
+\]
+The resulting set is the least $F$-closed set.
+\end{lemma}
+\begin{proof}
+Every unequal consecutive pair adds at least one previously absent element,
+so $|X_{i+1}|\ge |X_i|+1$. If equality occurs, determinism makes all subsequent
+sets equal. If equality has not occurred before stage $N$, the cardinality at
+stage $N$ is at least $N$, hence that set is all of $U$ and is fixed as well.
+Cardinalities are sums of bits. The argument is an induction on a bounded
+arithmetic invariant. If $Y$ is closed, induction using monotonicity gives
+$X_i\subseteq Y$, proving leastness.
+\end{proof}
+
+\section{Formulas, substitution, and Boolean semantics}\label{sec:syntax}
+
+\subsection{Syntax and primitive recursive recursion on formulas}
+
+The primitive formulas are
+\[
+ A::=\bot\mid p_i\mid(A\wedge A)\mid(A\vee A)\mid(A\to A),\quad i\in\N.
+\]
+Define $\neg A:=A\to\bot$, $\top:=\bot\to\bot$, and
+$A\leftrightarrow B:=(A\to B)\wedge(B\to A)$. Formulas are finite trees.
+The size $|A|$ counts their primitive nodes. The finite support
+$\operatorname{Var}(A)$ is the duplicate-free list of atom indices occurring
+in $A$; $\operatorname{Sub}(A)$ is its duplicate-free list of subformulas.
+For a finite context $\Gamma$, take unions over its entries.
+
+For definiteness use codes
+\[
+ \ulcorner\bot\urcorner=0,\quad \ulcorner p_i\urcorner=5i+1,\quad
+ \ulcorner A\circ B\urcorner=5\pi(\ulcorner A\urcorner,\ulcorner B\urcorner)+t_\circ,
+ \quad (t_\wedge,t_\vee,t_\to)=(2,3,4).
+\]
+The tags are disjoint. Both child codes are strictly smaller than the parent
+code. To evaluate a recursively defined operation on a formula of code $a$,
+fill a table of values at all codes $0,\ldots,a$; an invalid code gets a
+default. A primitive recursion on the table index does the job. This is
+course-of-values recursion implemented by ordinary primitive recursion,
+not an extra recursion principle. If an operation constructs new formulas,
+store their numerical codes in the same table; no a priori elementary
+bound on those numerical values is needed for primitive recursion.
+
+\begin{theorem}[Unique parsing and effective syntax]\label{thm:syntax}
+Formula validity, constructor recognition, child extraction, size, support,
+subformula closure, and simultaneous substitution are primitive recursive.
+Constructor cases are unique, and substitution satisfies
+\[
+ A[\mathrm{id}]=A,\qquad (A[\sigma])[\tau]=A[\lambda i.\sigma(i)[\tau]].
+\]
+Only the finitely many values of a substitution at atoms in the input are
+needed. A coded finite table supplies them; unlisted atoms are left unchanged.
+To represent the composition as a total substitution with that default,
+use the union of the two explicit domains and substitute into each of the
+first table's images; outside that union both substitutions act identically.
+\end{theorem}
+\begin{proof}
+The residue modulo five determines the constructor. The inverse pairing test
+checks the binary arguments, and their smaller codes allow the validity table
+to be computed from left to right. Support and subformulas are built by
+finite unions. Substitution copies each connective and replaces each variable
+by its table entry. The two identities hold at variables and falsehood and
+are preserved by each binary constructor. Formally the induction invariant
+is the conjunction of the claimed equations for all valid subcodes up to the
+current index, expressed as a bounded product. This explains exactly how
+structural induction is compiled into the permitted numerical induction.
+\end{proof}
+
+\subsection{Truth tables with finite support}
+
+Fix a duplicate-free support list $V=(v_0,\ldots,v_{n-1})$ covering all formulas
+under discussion. A valuation is a mask $a<2^n$; its $j$th digit is the value
+of $p_{v_j}$. Define $\operatorname{ev}(a,\bot)=0$, evaluate atoms by lookup,
+and use $\&,|,\Rightarrow_b$ at the three binary constructors.
+
+\begin{theorem}[Locality, substitution, and congruence]\label{thm:eval-subst}
+Evaluation is a primitive recursive bit. Valuations agreeing on
+$\operatorname{Var}(A)$ give the same value to $A$. For a substitution $\sigma$,
+\[
+ \operatorname{ev}(a,A[\sigma])
+   =\operatorname{ev}(b,A),\qquad b(i)=\operatorname{ev}(a,\sigma(i)).
+\]
+Pointwise equivalent formulas may be replaced inside any formula context.
+\end{theorem}
+\begin{proof}
+At a variable the assertions are the definition of lookup and of $b$.
+At falsehood both sides are zero. At a binary constructor the two induction
+hypotheses identify its argument bits, hence also the result of its specified
+Boolean operation. The same reasoning on a formula with one marked hole
+proves replacement. All valuation tables involved are finite; enlarge the
+support by the finitely many variables in the substituted formulas first.
+\end{proof}
+
+Put $\operatorname{Sat}_\Gamma(a)=\prod_{B\in\Gamma}\operatorname{ev}(a,B)$.
+Define
+\[
+\begin{split}
+ \Gamma\models_b A&\ :\!\Longleftrightarrow\
+   \prod_{a<2^n}(\operatorname{Sat}_\Gamma(a)\Rightarrow_b
+                         \operatorname{ev}(a,A))=1,\\
+ \operatorname{SAT}(A)&=1\mathbin{\dot-}\prod_{a<2^n}(1\mathbin{\dot-}\operatorname{ev}(a,A)),\\
+ \operatorname{TAUT}(A)&=\prod_{a<2^n}\operatorname{ev}(a,A).
+\end{split}
+\]
+The choice of a larger covering support changes none of these properties:
+restricting a row preserves its evaluations, and extending a smaller row by
+zeroes supplies an inverse witness. These are finite numerical definitions
+of satisfiability, validity, consequence and equivalence.
+
+\begin{theorem}[Truth-table decision with witnesses]\label{thm:truth-decision}
+Satisfiability, tautologicity, equivalence, and finite consequence are
+primitive recursively decidable in \ipra. A failed tautology or consequence
+test returns a countervaluation; a successful satisfiability test returns a
+satisfying valuation. A formula is exactly one of contradictory, tautological,
+or contingent. Furthermore,
+\[
+ \Gamma\models_b A\ \leftrightarrow\
+ \models_b(\bigwedge\Gamma)\to A,
+ \qquad
+ \operatorname{TAUT}(A)=1\ \leftrightarrow\ \operatorname{SAT}(\neg A)=0.
+\]
+Here the empty conjunction is $\top$.
+\end{theorem}
+\begin{proof}
+Use bounded reflection and least search on the $2^n$ rows. A failed product
+has a zero factor, and the corresponding row is the required witness. The
+three-way classification uses the two decidable bits ``some row is one''
+and ``some row is zero''. They cannot both be zero because there is at least
+one row, even when $n=0$. The two displayed equivalences follow row by row
+from the definition of Boolean implication and negation. This also proves
+that finite consequence is reflexive, monotone in premises, and transitive:
+on a row satisfying the original premises, successively apply the relevant
+implication tests.
+\end{proof}
+
+With formulas stored in postorder, one row takes a scan of their nodes;
+the truth-table procedure uses $2^n$ such scans. This is a bound on Boolean
+operations. A concrete bit-machine implementation adds polynomial coding
+overhead; no claim of unit-cost arithmetic on arbitrary integers is needed.
+
+\section{Natural deduction and constructive classical completeness}\label{sec:nd}
+
+\subsection{The two calculi and their proof checkers}
+
+Contexts are finite lists, with unused and repeated assumptions permitted.
+The rules of \IPC\ are the following; all premises have the indicated common
+context, and $A,\Gamma$ denotes context extension:
+\[
+\begin{gathered}
+ \dfrac{A\in\Gamma}{\Gamma\vdash A}\quad
+ \dfrac{\Gamma\vdash\bot}{\Gamma\vdash A}\quad
+ \dfrac{\Gamma\vdash A\quad\Gamma\vdash B}{\Gamma\vdash A\wedge B}\quad
+ \dfrac{\Gamma\vdash A\wedge B}{\Gamma\vdash A}\quad
+ \dfrac{\Gamma\vdash A\wedge B}{\Gamma\vdash B},\\[5pt]
+ \dfrac{\Gamma\vdash A}{\Gamma\vdash A\vee B}\quad
+ \dfrac{\Gamma\vdash B}{\Gamma\vdash A\vee B}\quad
+ \dfrac{\Gamma\vdash A\vee B\quad A,\Gamma\vdash C\quad B,\Gamma\vdash C}
+       {\Gamma\vdash C},\\[5pt]
+ \dfrac{A,\Gamma\vdash B}{\Gamma\vdash A\to B}\quad
+ \dfrac{\Gamma\vdash A\to B\quad\Gamma\vdash A}{\Gamma\vdash B}.
+\end{gathered}
+\]
+\CPC\ adds $\Gamma\vdash A\vee\neg A$. Equivalently one may add the
+classical case rule with branches $A,\Gamma\vdash C$ and
+$\neg A,\Gamma\vdash C$; excluded middle followed by disjunction elimination
+derives that rule, and its two disjunction-introduction branches derive
+excluded middle.
+
+A proof is a finite tree whose nodes contain a rule tag, a context, a
+conclusion, and its child proofs. The checker tests the exact local shape,
+assumption membership, matching contexts, and the recursive validity of
+the children. This yields primitive recursive bits
+$\operatorname{Check}_I(d,\Gamma,A)$ and
+$\operatorname{Check}_C(d,\Gamma,A)$. For computationally shared proofs,
+a list of earlier-node references is an equivalent representation: every
+reference must be strictly smaller than the current node index. Expanding
+a well-formed such list into a tree is a primitive recursive operation.
+Write $\Gamma\vdash_I A$ as an abbreviation for the existence of a checked
+proof, and likewise for $C$. These existence statements themselves need
+not be used as induction formulas.
+
+\begin{theorem}[Structural proof transformations]\label{thm:structural}
+Both calculi admit primitive recursive proof transformations for weakening,
+exchange, contraction, simultaneous substitution, and cut. In particular,
+\[
+ \Gamma,A\vdash_* B\ \leftrightarrow\ \Gamma\vdash_* A\to B,
+ \qquad *=I,C.
+\]
+\end{theorem}
+\begin{proof}
+For weakening, recursively change every node's ambient context and retain
+its discharge assumptions. Membership remains valid; each other local
+rule is unchanged. Exchange and contraction follow because membership is
+insensitive to order and repetition. For substitution replace every formula
+at every node; the syntax identities of Theorem~\ref{thm:syntax} show that
+each rule instance remains an instance, including excluded middle in $C$.
+For cut, given proofs of the needed hypotheses from $\Delta$, traverse the
+proof from $\Gamma$, replace each hypothesis leaf by its supplied proof,
+and rebuild the rules. Under a discharged assumption extend the assignment
+of hypothesis proofs by the new hypothesis leaf and weaken the old ones.
+This handles implication introduction and both disjunction branches without
+variable capture, since propositional syntax has no binders. The output
+checker succeeds by a bounded induction over the traversal. The forward
+deduction implication is implication introduction. For the reverse, weaken
+a proof of $A\to B$ to $A,\Gamma$ and apply it to the assumption $A$.
+\end{proof}
+
+\begin{theorem}[Boolean soundness and consistency]\label{thm:bool-sound}
+For every proof code $d$,
+\[
+ \operatorname{Check}_*(d,\Gamma,A)=1\ \Longrightarrow\ \Gamma\models_b A,
+ \qquad *=I,C.
+\]
+Consequently no checked closed proof of $\bot$ exists in either calculus.
+\end{theorem}
+\begin{proof}
+Fix a covering support for all formulas in the proof. Verify at each proof
+node and each of the finitely many valuation rows that truth of its context
+implies truth of its conclusion. Assumptions and the two conjunction
+projections are immediate. Conjunction introduction multiplies two ones;
+disjunction introduction gives a one when either input is one. In
+disjunction elimination, the disjunction's bit determines a true branch,
+and the corresponding child invariant yields the conclusion. For
+implication introduction, split on the antecedent bit; when it is zero the
+implication is true, and when it is one use the premise under the extended
+context. Implication elimination is the two-bit truth table. Falsehood
+elimination has no row with true falsehood. Excluded middle has bit one
+because its input bit is either zero or one. This establishes every rule
+using finite bit cases. Induction on the proof traversal, with all row
+conditions packed into a bounded product, finishes the proof. The empty
+context is true on its unique zero-variable row but $\bot$ is false there.
+\end{proof}
+
+Consistency here is consistency of the two \emph{propositional} proof
+checkers. It is not a proof of $\operatorname{Con}(\ipra)$ or of any stronger
+arithmetic theory.
+
+\subsection{A proof constructor from each truth table}
+
+For a valuation $a$ on $V$ let $L_a$ consist of $p_i$ when that atom's bit is
+one and of $\neg p_i$ when it is zero.
+
+\begin{lemma}[The signed evaluation lemma]\label{thm:signed-eval}
+There is a primitive recursive procedure giving an \IPC\ proof
+\[
+ L_a\vdash_I A\quad\text{if }\operatorname{ev}(a,A)=1,
+ \qquad
+ L_a\vdash_I\neg A\quad\text{if }\operatorname{ev}(a,A)=0.
+\]
+\end{lemma}
+\begin{proof}
+For a variable use its literal assumption. For falsehood prove
+$\bot\to\bot$ by assumption and discharge. For a true conjunction obtain
+both conjuncts recursively and introduce conjunction. For a false
+conjunction choose a false conjunct by a bit test; assuming the conjunction,
+project that conjunct and contradict its recursively obtained negation.
+For a true disjunction introduce a recursively proved true disjunct. For a
+false disjunction both disjuncts are false, so an assumed disjunction gives
+falsehood in either branch.
+
+For a true implication $B\to C$, either $C$ is true, when its recursive
+proof can be weakened under $B$, or $B$ is false, when its recursive
+negation contradicts an assumed $B$ and falsehood elimination gives $C$.
+Discharge $B$. For a false implication the bits of $B,C$ are respectively
+one and zero. Obtain $B$ and $\neg C$ recursively; an assumed $B\to C$
+then yields $C$ and falsehood, hence its negation. Every recursive choice
+is controlled by a computed bit. The proof does not use excluded middle
+as an \IPC\ rule.
+\end{proof}
+
+\begin{theorem}[Constructive classical completeness]\label{thm:cpc-complete}
+For finite $\Gamma,A$,
+\[
+ \Gamma\models_b A\quad\leftrightarrow\quad \Gamma\vdash_C A.
+\]
+More precisely, a primitive recursive algorithm returns either a checked
+\CPC\ proof of the sequent or a valuation satisfying $\Gamma$ and falsifying
+$A$. Correctness of this disjunction is provable in \ipra.
+\end{theorem}
+\begin{proof}
+If the finite consequence test fails, return its least failing row. Suppose
+it succeeds. For each valuation row $a$, work under $\Gamma,L_a$. If $A$
+is true there, weaken the signed evaluation proof of $A$. If $A$ is false,
+success of the consequence test means some $B\in\Gamma$ is false. Find its
+least index, obtain $\neg B$ by the signed evaluation lemma, combine with
+the context assumption $B$, and infer $A$ by falsehood elimination.
+Thus every full literal context has a proof of $A$.
+
+Now combine the two rows differing in the last atom by the classical case
+rule, discharging that atom's positive and negative literal. Combine the
+resulting pairs for the preceding atom, and continue through all $n$
+atoms. The final proof has context $\Gamma$. This is a full binary recursion
+of depth $n$, equivalently a bottom-up pass on a table with fewer than
+$2^{n+1}$ nodes. A proof of each leaf was constructed, not merely asserted
+to exist. Hence the entire pass is primitive recursive and its correctness
+invariant is the bounded conjunction of the checker bits of its entries.
+The reverse implication is Boolean soundness.
+\end{proof}
+
+For an explicit generous certificate bound, let $s$ be the total primitive
+node count of $\Gamma,A$ and put $n=|V|$. Count proof-rule nodes, temporarily
+ignoring the bit length of formula labels. The signed evaluation recursion
+uses at most $20^{s+1}$ nodes: each constructor combines at most two previous
+proofs with fewer than twenty local rule applications. A leaf in the
+completeness construction and its context copies fit below
+$10\cdot20^{s+2}$. All merging nodes fit below an additional
+$10\cdot2^{n+1}$. Thus
+\[
+ B_C(s,n)=100\cdot2^{n+1}\cdot20^{s+2}
+\]
+is a valid generous rule-node bound. Formula labels are input subformulas,
+their negations and literal contexts; their string lengths are bounded by
+a polynomial in the input string length. Their numerical tree codes can
+instead be bounded by iterating the specified constructor functions. Either
+encoding yields a primitive recursive bound on the complete certificate.
+
+\begin{corollary}[Classical transformations by rebuilding proofs]\label{thm:cpc-rebuild}
+If a proposed primitive recursive transformation preserves Boolean truth,
+then finite truth tables and Theorem~\ref{thm:cpc-complete} produce \CPC\
+proofs of its equivalence. In particular, tautological rules, equivalent
+replacement, contradiction tests, and semantic simplifications have
+primitive recursive proof certificates.
+\end{corollary}
+
+For example, the source article's formula
+$p\to((q\vee r)\to(r\to\neg p))$ is false at $p=1,q=0,r=1$:
+$q\vee r=1$, $\neg p=0$, $r\to\neg p=0$, and both remaining antecedents
+are one. The countervaluation certifies its nonderivability in either
+calculus. In contrast, the modus ponens sequent $p,p\to q\vdash q$ has a
+single implication-elimination step and needs no classical rule.

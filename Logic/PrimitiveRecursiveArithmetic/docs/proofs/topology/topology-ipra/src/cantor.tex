@@ -1,0 +1,204 @@
+\section{Cantor space, gaps, and continuous images}\label{sec:cantor}
+The Cantor set appears in the starting article. Its linked article
+\emph{Compact space} gives the classical theorem that every nonempty compact
+metric space is a continuous image of the Cantor set. We give the
+arithmetical version for a dense rational metric domain with explicit finite
+nets. An input point has a preimage computable from its name.
+
+A binary stream $a$ is a fixed PR bit function with optional numerical
+parameters. Write $a|n$ for its first $n$ bits, numbered from zero. A finite
+word is its length together with its bit mask. The cylinder $[w]$ consists of
+the streams with prefix $w$. Equality of streams means equality at each
+index; apartness has a differing index as witness. Uniform continuity from
+streams into a metric presentation means that agreement on the first
+$L(k)$ bits guarantees output distance at most $2^{-k}$ for a supplied PR
+function $L$.
+
+\begin{theorem}[Clopen cylinders and finite prefix covers]\label{idx-cantor17}
+Cylinders form a countable clopen basis. Distinct witnessed bits separate
+points by complementary clopens. A connected subset contains at most one
+point up to equality. There are no isolated points. Every finite list of
+cylinders admits an exact cover test, with an explicit missed stream on
+failure and a disjoint covering sublist on success.
+\end{theorem}
+\begin{proof}
+Two cylinders intersect in the one with the longer prefix if their bits
+are compatible, and otherwise are disjoint. The complement of $[w]$ is
+the union of the other cylinders of length $|w|$. Finite intersections
+and these complement formulas give the assertions about the product
+topology whose basic restrictions fix finitely many individual bits:
+any such restriction is a finite union of cylinders, taking the length
+just past its largest restricted position. If two streams differ at $i$,
+partition by bit $i$. Its two sides are finite unions of cylinders and
+both meet the subset. Consequently, in a connected subset, for each fixed
+$i$ the rationally decidable test of bit equality cannot fail, which proves
+equality at every index. Flipping bit $n$ produces a distinct point in
+$[a|n]$. Extending finite words by zeros also gives a countable dense list.
+
+For words $W$ let $N$ be their maximum length, with $N=0$ for the empty
+list. Enumerate all $2^N$ words of length $N$, asking whether each extends
+an entry of $W$. A failing word followed by zeros misses every cylinder;
+success proves coverage for any stream by reading exactly $N$ bits. Remove
+duplicates and all words having a shorter listed prefix. This leaves the
+same union, now disjoint. In the covering case each remaining $w$ accounts
+for $2^{N-|w|}$ distinct length-$N$ words, so the retained words also
+satisfy $\sum_w2^{-|w|}=1$. More generally, a PR predicate on words and a
+given uniform hitting depth $N$ give a finite cover by scanning the words
+of length at most $N$. Merely deciding the predicate does not supply this
+depth.
+\end{proof}
+
+The $2^n$ zero-extended length-$n$ words give a finite net to precision
+$n$ in the prefix topology. There is a complementary completeness
+statement. Suppose a PR array of streams $a_i$ agrees in its first $k$ bits
+whenever both row indices are at least the supplied $M(k)$. Define the
+limit's bit $j$ to be bit $j$ of row $M(j+1)$. If $i\ge M(k)$ and $j<k$,
+compare row $i$ with row $M(j+1)$ through the row indexed by
+$\max(M(k),M(j+1))$. The first comparison preserves the first $k$ bits and
+the second preserves the first $j+1$. Hence the limit has the required
+convergence modulus. Uniqueness follows one bit at a time.
+
+Similarly every represented continuous map from the interval to binary
+streams is constant when for each output bit its evaluation on rationals
+is PR and it is locally constant at every named input. Apply the cube's
+bit-coloring theorem in Section~\ref{sec:metric-names} separately to each
+bit. In particular the interval and Cantor set cannot be homeomorphic
+by maps with these data, since the two constant streams have different
+first bits.
+
+\begin{theorem}[The middle-thirds embedding]\label{idx-cantor69}
+Binary streams with the prefix topology and the named middle-thirds Cantor
+set are uniformly homeomorphic. The latter is closed, perfect and nowhere
+dense; it has finite interval covers of arbitrarily small total length.
+The digit decoder works at the endpoints of all the deleted intervals.
+\end{theorem}
+\begin{proof}
+For a word of length $n$ set
+\[
+ c(w)=\sum_{i<n}\frac{2w_i}{3^{i+1}},\qquad
+ I_w=[c(w),c(w)+3^{-n}],\qquad C_n=\bigcup_{|w|=n}I_w .
+\]
+Children occupy the first and last thirds of their parent. Two different
+level-$n$ intervals have distance at least $3^{-n}$: their first
+different bit $i<n$ separates them by a middle gap of length
+$3^{-(i+1)}$. For a rational $v$, distance to $C_n$ is the minimum of the
+$2^n$ rational distances to the individual closed intervals; each distance
+is $\max(0,c(w)-v,v-c(w)-3^{-n})$. It is 1-Lipschitz as a finite
+minimum of 1-Lipschitz functions. For a regular name $x$ from
+Section~\ref{sec:metric-names}, membership in the limiting set means
+\[
+          \forall n,q\quad \operatorname{dist}(x_q,C_n)\le 2^{-q}.
+\]
+A violation puts $x$ in the presented open complement: if the surplus is
+$m>0$, a rational ball at $x_q$ of radius $2^{-q}+m/2$ contains $x$,
+and is disjoint from $C_n$ by the distance estimate. Conversely enumerate
+all rational balls with radius strictly below the center's distance to
+some $C_n$. Membership in one yields a strict violation for a sufficiently
+accurate sample. In particular membership in the Cantor set is the
+negation of belonging to this open complement, since all individual
+rational violation tests are decidable. This complement is the exterior
+of $[0,1]$ together with the open middle thirds removed at the successive
+stages. Indeed each finite-stage complement is exactly that finite list of
+gaps together with the exterior; strict separation from its finite union
+of closed intervals decides which gap by a sufficiently accurate sample.
+
+Take $x_n=c(a|n)$. Subsequent sums lie in $I_{a|n}$ by the geometric sum,
+so these left endpoints are a regular name with prefix error $3^{-n}$.
+Each fixed interval $I_{a|n}$ contains the named point. Conversely,
+given a name in the limiting set and a requested length $n$, take its
+sample $x_h$ with $h=2n+3$ and select the word minimizing its distance
+to $x_h$. For $n=0$ there is just the empty word. For $n>0$, its interval
+is within $2^{-h}$ of the sample. At any $q\ge h$ the minimizing word
+for $x_q$ must be the same: two different intervals would have distance
+at most $2^{-h}+(2^{-h}+2^{-q})+2^{-q}\le4\cdot2^{-h}<3^{-n}$.
+Thus at all such $q$ the selected interval is within $2^{-q}$ of
+$x_q$. At earlier stages $p$, the triangle inequality bounds its distance
+from $x_p$ by $2^{-p}+2\cdot2^{-q}$ for arbitrarily large $q$, and
+error removal gives $2^{-p}$. This proves the interval contains the
+named point. Uniqueness follows from the positive gap. Since a level
+$n+1$ interval is contained in its level $n$ parent, the computed
+words are compatible. Reading the last bit at each positive length
+produces a single PR stream. The reconstructed point is within
+$3^{-n}$ of its left endpoint at every level, hence equals the input.
+The reverse composite preserves the unique prefix at every length.
+Agreement of $n$ input bits bounds output displacement by $3^{-n}$;
+input displacement in the real line strictly below $3^{-n}$ forces
+the same $n$ output bits. These are moduli in the two directions,
+and the estimates use no test of equality to a rational endpoint.
+
+Closedness and the absence of isolated points give perfection, in the
+sense that every Cantor point is a limit of other Cantor points: flip
+bit $n$ to get distance between $3^{-(n+1)}$ and $3^{-n}$.
+For any rational open interval take its midpoint $t$ and choose $n$
+with $3^{-n}$ less than its radius. Decide whether $t$ belongs to a
+level-$n$ interval. If not, a sufficiently small rational interval about
+$t$ misses $C_n$ by a computed positive distance. If it does, the open
+middle third of that level-$n$ interval lies inside the original interval
+and misses $C_{n+1}$. Thus every basic open interval contains an open gap,
+which proves nowhere density. Finally $C_n$ has an interval cover of total
+length $(2/3)^n$. Choosing $n=2(k+1)$ gives total length strictly below
+$2^{-k}$. If open covering intervals are required, enlarge each end by
+$(2^{-k}-(2/3)^n)/2^{n+2}$. The enlarged total remains below $2^{-k}$.
+\end{proof}
+
+\begin{theorem}[A Cantor surjection from finite metric nets]\label{idx-cantor144}
+Let $D$ be a nonempty PR rational metric domain. For each $k$ suppose
+we have a nonempty finite PR list $c_{k,0},\ldots,c_{k,m_k-1}$ in $D$
+such that every $u\in D$ is within $2^{-(k+4)}$ of a member.
+Then binary streams map uniformly continuously onto the named completion
+of $D$. Given any regular name $x$ one can compute a lifting stream.
+\end{theorem}
+\begin{proof}
+Give proposals for stage $k$ a block of $b_k=\max(1,m_k)$ bits; this
+simple choice ensures $2^{b_k}\ge m_k$. Read the block as an integer
+modulo $m_k$ to propose a center $c_k$. Set $y_0=c_0$ and use the rule
+\[
+ y_{k+1}=\begin{cases}
+ c_{k+1}&d(y_k,c_{k+1})\le2^{-(k+2)},\\
+ y_k&\text{otherwise}.
+ \end{cases}
+\]
+The test uses rational centers even when past proposals were rejected.
+At any later stage the distance from $y_k$ is bounded by the finite
+geometric sum of step bounds, hence by $2^{-(k+1)}$. Thus $(y_k)$
+is a regular name. If two inputs agree through stage $k$'s block,
+their outputs are within $2^{-k}$ by bridging through the common
+$y_k$. The required prefix length is $L(k+1)=\sum_{j\le k}b_j$.
+
+For a given target $x$, choose the first center within $2^{-(k+4)}$ of
+the rational sample $x_{k+4}$ by scanning the supplied finite list.
+It is within $2^{-(k+3)}$ of the named point. Two consecutive chosen
+centers have distance at most $2^{-(k+3)}+2^{-(k+4)}<2^{-(k+2)}$.
+Thus every proposal in this stream is accepted, and the output equals
+$x$ by the error estimate. To compute bit $i$ of the stream, find the
+unique $k$ with $L(k)\le i<L(k+1)$, where $L(0)=0$. Scanning at most
+$i+1$ blocks suffices since every block has positive length. Output
+the requested bit in the padded representation of the chosen center
+index. This proves the lifting claim without a choice principle.
+Different names for the same point may give different lifting streams.
+\end{proof}
+
+For instance the cube grids of Section~\ref{sec:metric-names} give these
+nets uniformly in the dimension. The Cantor set therefore maps onto every
+such cube, including the whole interval. This construction permits redundant
+representations of a target, as its surjectivity proof requires. Interleaving
+bits is itself a homeomorphism from a pair of streams to one stream: undo
+it by reading even and odd positions. Finally no fixed PR double array lists
+all PR streams, since $n\mapsto1-a_{n,n}$ differs from row $n$ at position
+$n$. This is a diagonal theorem scheme about uniform enumerations.
+
+\paragraph{Lean implementation.}
+Represent $w$ by a natural bit mask and its length, with prefix, append,
+test-bit and truncation. The coverage certificate is a bounded
+\texttt{all} over masks below $2^N$, with a bounded \texttt{any} over the
+input list. Define $3^n c(w)$ by appending digits to a base-three integer.
+Prove the interval gap by the first differing bit, computed by bounded
+search. Derive the decoder's universal containment only after proving the
+rational nearest-interval estimate for two fixed precisions. For the
+surjection define the offset $L$ by primitive recursion and store the
+current rational center as the sole state of the acceptance recursion.
+The quantitative invariant at two fixed stages is the rational geometric
+sum bound. In the lifting proof the invariant that the accepted center
+equals the proposed center at the current stage is decidable. The theorem
+schemes have only numerical inputs once the stream, net and target-stage
+recipes are fixed.

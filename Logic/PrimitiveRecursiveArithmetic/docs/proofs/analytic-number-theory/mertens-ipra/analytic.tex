@@ -1,0 +1,322 @@
+\section{The zeta identities with error bounds}\label{sec:analytic}
+
+The analytic variable can be kept outside the language of iPRA. A rational
+complex approximation is a pair of rational numbers. A name for a number
+supplies primitive recursive approximants within $2^{-j}$ at precision $j$.
+A statement about arbitrary such inputs is a schema in these names, or a
+finite calculation with input approximations and their error bounds. In
+particular, no evaluator for arbitrary primitive recursive programs is
+needed inside arithmetic. Equality of named quantities means agreement at
+every precision, with errors included. Throughout this section assume a
+supplied integer $q\ge1$ with $\sigma=\operatorname{Re}s\ge1+1/q$
+and a supplied integer upper bound on $|s|$. Both are quantitative
+inputs to the estimates.
+
+\paragraph{Elementary analytic operations.}
+Here are details of the rational interpretation used below. For positive
+rational $u$, write $u=2^jv$, $1\le v<2$, by bounded doubling of the
+numerator or denominator. Compute $\log u=j\log 2+\log v$ using
+\[
+   \log v=2\sum_{h=0}^{K-1}\frac{w^{2h+1}}{2h+1}+E_K,
+   \qquad w=\frac{v-1}{v+1},\qquad
+   |E_K|\le \frac{2|w|^{2K+1}}{1-|w|^2}.
+\]
+Use the same formula at $v=2$. It follows by summing the finite geometric
+identity for $1/(1-w^2)$ and integrating. For $|z|\le B$ with integral
+$B\ge1$, the exponential Taylor series beyond index $2B$ has successive
+absolute terms in ratio at most $1/2$. The term at $2B$ is at most
+$B^{2B}$, so another $2B^2+j+4$ terms give error below $2^{-j}$.
+Thus $x^{-s}=\exp(-s\log x)$ for positive $x$ has an explicit
+rational algorithm, also for named $x$ on an interval bounded away from
+zero. The formulae $(\log x)'=1/x$, $(e^z)'=e^z$, the exponential
+addition law, and $|e^{u+iv}|=e^u$ follow by the same geometric
+remainders for the differentiated series, the binomial formula for their
+product, and $e^{iv}e^{-iv}=1$. For real arguments one may equivalently
+define $\log$ by integration of $1/x$. Differentiating
+$e^{\log x}/x$ shows it is constant and evaluation at $1$ gives its
+value. In these uses the fundamental theorem of calculus has a finite
+proof by subdivision. On an interval of length $L$ where $|F''|\le B$, summing
+the first-order increments of $F$ over a mesh of width $h$ gives
+a left sum for $F'$ with error at most $BLh$.
+For the displayed series the increment estimate itself follows by the
+binomial formula on polynomials followed by the tail bounds on the
+first two derivatives. The product and quotient rules preserve the
+estimate, with a positive lower bound for each denominator. Oscillatory
+factors will only be integrated on bounded intervals at a time. On
+each segment all these derivative bounds are obtained by replacing
+the arguments by their supplied upper bounds, and replacing $e^B$ by
+$3^{\lceil B\rceil}$ for $B\ge0$. This provides a primitive recursive
+mesh at any requested precision. For a finite chain of $H$ arithmetic
+operations on approximations, with all magnitudes bounded by $A\ge2$
+and every divisor bounded below in absolute value by $1/A$, requesting
+input errors $\le 2^{-j}(8A^3)^{-H-1}$ suffices for final error
+$2^{-j}$. Indeed addition, multiplication, and division amplify the
+larger of the two operand errors by at most $8A^3$ while the divisor
+error stays below $1/(2A)$. Induction on the rational error inequality
+implements the chain for variable $H$.
+
+\begin{theorem}[Reciprocal Dirichlet series and prime product]
+For the indicated $s$ let
+\[
+ Z_N(s)=\sum_{n=1}^N n^{-s},\qquad
+ D_N(s)=\sum_{n=1}^N\mu(n)n^{-s},\qquad
+ P_N(s)=\prod_{p\le N,\ p\ \mathrm{prime}}(1-p^{-s}).
+\]
+Then $Z_N$ names $\zeta(s)$, and $D_N$ and $P_N$ both name
+$1/\zeta(s)$. Uniform tail estimates are available given the same $q$.
+\end{theorem}
+\begin{proof}
+On the block $2^j\le n<2^{j+1}$ the sum of $n^{-\sigma}$ is at
+most $2^{-j/q}$. Group the blocks in lots of $q$. Every finite tail
+starting at $n\ge2^{qk}$ has absolute majorant $2q\,2^{-k}$,
+and the full sum has majorant $2q$. For $N\ge2^{2qk}$ multiply
+the two finite sums $Z_N D_N$. Terms with $ab\le N$ sum to $1$ by
+$\sum_{d\mid m}\mu(d)=[m=1]$. Every remaining pair has
+$a>\sqrt N$ or $b>\sqrt N$. Dropping signs and extending each
+rectangle of summation gives
+\[
+                 |Z_N D_N-1|\le 8q^2 2^{-k}.
+\]
+Consequently the product of the two names is $1$. In particular, the
+absolute bound $2q$ on the second factor separates the first factor
+from zero by $1/(2q)$. Expanding $P_N$ chooses subsets of the primes
+up to $N$. The signed monomial attached to a subset with product $m$
+is $\mu(m)m^{-s}$. Unique factorization gives distinct products,
+and every squarefree $m\le N$ occurs. The discrepancy from $D_N$
+is bounded by the absolute tail after $N$, even though the largest
+product can be as large as $N!$. This proves the three assertions.
+\end{proof}
+
+\begin{theorem}[Mellin formula and its finite version]
+For $N\ge1$,
+\[
+ s\int_1^{N} M(\lfloor t\rfloor)t^{-s-1}\,dt
+      =D_N(s)-M(N)N^{-s}.
+\]
+Its limit is $1/\zeta(s)$. At $N\ge2^{qk}$ the error from the
+limiting value is at most $(2q+1)2^{-k}$.
+\end{theorem}
+\begin{proof}
+On $[m,m+1]$ use the endpoint difference $m^{-s}-(m+1)^{-s}$ as
+the integral of $s t^{-s-1}$. Isolated endpoint values have zero
+contribution, as is witnessed by meshes of arbitrarily small width.
+After multiplication by $M(m)$ and summation for $1\le m<N$, the
+successive differences of $M$ are $\mu$, yielding the displayed
+identity, also at $N=1$. The boundary term has absolute value at most
+$N^{1-\sigma}\le2^{-k}$. The Dirichlet tail gives the remaining
+error. The absolute integral beyond $N$ is bounded by
+$|s|\int_N^\infty t^{-\sigma}dt\le q|s|N^{-1/q}$, as follows by
+integrating a power over finite intervals. This also permits arbitrary
+upper endpoints in the limit.
+\end{proof}
+
+\subsection{Perron inversion and the value at a jump}
+
+Take $x=a/b>0$ rational, with $a,b$ positive integers. Define
+$M_0(x)=M(\lfloor x\rfloor)$ when $x$ is nonintegral, and
+$M_0(m)=M(m)-\mu(m)/2$ at a positive integer $m$. At $m$, twice
+this value is $M(m-1)+M(m)$. This distinction affects the integral
+displayed in the Wikipedia article even at $x=1$.
+
+\begin{theorem}[Symmetric Perron inversion]\label{thm:perron}
+For $c\ge1+1/q$ real, let $X$ be an integer bound on
+$\max(1,x^c)$, for example $X=\max(1,a)^{\lceil c\rceil}$ when
+$c$ is rational (a supplied integer upper bound for $c$ suffices).
+For every integer $T\ge2c$,
+\[
+ \left|\frac{1}{2\pi i}\int_{c-iT}^{c+iT}
+       \frac{x^s}{s\zeta(s)}\,ds-M_0(x)\right|
+ \le \frac{6qX(a+1)+c}{T}.
+\]
+In particular the normalized integral has a primitive recursive
+convergence modulus. The same conclusion holds on named inputs
+given a known floor and positive separation from the adjacent integers,
+with the corresponding lower bound on $|\log(x/n)|$.
+\end{theorem}
+\begin{proof}
+Put $y=\log(x/n)$ and write $K_T(y)$ for the normalized integral
+of $e^{ys}/s$ along this vertical segment. When $y>0$ close the
+rectangle with the left edge at $c-T$, traversing it counterclockwise.
+When $y<0$ close on the right at $c+T$. The normalized integral on
+the closed rectangle is respectively $1$ or $0$. To verify this
+directly, subtract $1/s$ from the integrand. The remainder has
+primitive
+\[
+           \sum_{j\ge1} \frac{y^j s^j}{j\,j!}.
+\]
+Its convergence and the convergence of its differentiated series on
+the rectangle follow from the exponential tail estimate, so endpoint
+differences cancel on the four sides. For $ds/s$ the real part is
+$d\log|s|$. The imaginary part is the increment of the angle.
+Explicitly in a right or left half-plane chart this differential is
+$d\arctan(v/u)$ for $s=u+iv$, and in a top or bottom chart it is
+$-d\arctan(u/v)$. Subdivide edges at the axes and use the continuous
+angle in each quadrant. Adjacent angle values agree at the axes on
+the same turn. A contour wholly in the right half-plane lies in one
+chart and the endpoint increments telescope to zero. A
+counterclockwise rectangle surrounding $0$ runs once through the
+four successive axis directions, which advances the angle by
+$4(\pi/2)=2\pi$. These chart computations are rationally effective:
+$\arctan t=\int_0^t(1+u^2)^{-1}du$ and $\pi=4\arctan 1$.
+The quarter-turn convention follows from
+$\arctan t+\arctan(1/t)=2\arctan 1$ for $t>0$, by differentiation.
+
+Each horizontal segment contributes absolute integral at most
+$e^{cy}/(T|y|)$ since $|s|\ge T$ and the numerator decays as
+$e^{-|y|u}$ at distance $u$ from the original line. The opposite
+vertical edge has length $2T$, denominator at least $T/2$, and
+numerator $e^{cy}e^{-T|y|}$. Since $e^{-v}\le1/v$ for $v>0$,
+division by $2\pi$ gives the convenient bound
+\[
+       |K_T(y)-[y>0]|\le \frac{3e^{cy}}{T|y|}\quad(y\ne0).
+\]
+At $y=0$ symmetry on the vertical segment gives
+$K_T(0)=\arctan(T/c)/\pi$, whose distance from $1/2$ is
+$\arctan(c/T)/\pi\le c/T$.
+
+If $bn<a$, then $\log(a/bn)\ge1-bn/a\ge1/a$. If $bn>a$,
+then $\log(bn/a)\ge1-a/(bn)\ge1/(a+1)$. Here
+$\log t\ge1-1/t$ for $t\ge1$ follows by integrating $1/u$.
+Thus all nonexceptional logarithms are uniformly separated.
+For fixed $T$ integrate the partial reciprocal Dirichlet sums
+termwise. Their uniform tail bound on the segment gives an integral
+error bounded by $2T X(2q)2^{-k}/(2\pi c)$ at cutoff
+$N\ge2^{qk}$, which tends effectively to zero. The error for the
+nonexceptional kernels after summation is at most
+$3(a+1)X(2q)/T$. The one possible exceptional term contributes
+at most $c/T$. The sum of the step values counts precisely $M_0(x)$.
+\end{proof}
+
+\section{Squarefree density and the Basel constant}\label{sec:squarefree}
+
+Let $Q(N)=\sum_{n\le N}|\mu(n)|$, with sums over positive
+integers. For each $m\ge1$,
+\[
+          |\mu(m)|=\sum_{d^2\mid m}\mu(d).
+\]
+Indeed a squarefree $d$ in this sum chooses a subset of the primes
+whose squares divide $m$. The empty subset is alone when there is no
+such prime. Otherwise toggling the least such prime cancels all terms
+in opposite-sign pairs. Hence if $r=\lfloor\sqrt N\rfloor$, found
+by a bounded scan, then
+\[
+                 Q(N)=\sum_{d=1}^{r}\mu(d)
+                              \left\lfloor\frac{N}{d^2}\right\rfloor.
+\]
+
+\begin{theorem}[An effective squarefree count]
+For $N\ge1$, $B\ge r=\lfloor\sqrt N\rfloor$, one has
+\[
+ \left|Q(N)-N\sum_{d=1}^B\frac{\mu(d)}{d^2}\right|
+        \le r+\frac{N}{r}\le 2r+2.
+\]
+Consequently $|Q(N)-6N/\pi^2|\le2r+2$, proving the squarefree
+asymptotic on MathWorld with a uniform error. In particular for
+$N\ge2^{2j+4}$ the density differs from $6/\pi^2$ by at most
+$2^{-j}$.
+\end{theorem}
+\begin{proof}
+The $r$ floors create total error at most $r$. For $d>r$ use
+$1/d^2\le 1/(d-1)-1/d$ and telescope. Finally
+$N<(r+1)^2$ gives $N\le r(r+2)$. The preceding reciprocal
+Dirichlet series identifies the limiting coefficient as $1/\zeta(2)$.
+Dividing the explicit error by $N$ gives at most
+$2/\sqrt N+2/N\le4/\sqrt N$, yielding the claimed modulus.
+
+For completeness we identify $\zeta(2)$ within the same arithmetic.
+Write $m=2l+1$, $l\ge1$. For $k=1,\ldots,l$, set $t_k=k\pi/m$.
+The imaginary part of $(\cos t+i\sin t)^m$ equals $\sin(mt)$.
+At $t_k$ it vanishes. Dividing its expansion by $\sin^m t_k$
+gives the polynomial
+\[
+        \sum_{j=0}^l(-1)^j {m\choose 2j+1}Y^{l-j}
+\]
+at $Y=\cot^2 t_k$. The roots are distinct because $\cot t$ is
+positive and strictly decreasing between $0$ and $\pi/2$.
+Factoring out the $l$ monic linear factors (polynomial division, where
+their distinctness permits cancellation) and comparing the next
+coefficient with the leading one gives
+$\sum_k \cot^2t_k={m\choose3}/m=(m-1)(m-2)/6$. On this interval,
+$\sin t\le t$ by integrating $\cos t\le1$, and
+$\sin t\ge t\cos t$ by integrating the derivative $t\sin t$ of
+their difference. Thus $\cot^2t\le1/t^2\le1+\cot^2t$, whence
+\[
+ \frac{\pi^2(m-1)(m-2)}{6m^2}\le
+        \sum_{k=1}^l\frac1{k^2}
+          \le \frac{\pi^2(m^2-1)}{6m^2}.
+\]
+The two rationally approximable endpoints differ by $\pi^2l/m^2$,
+and their distances to $\pi^2/6$ are at most $8/m$ since $\pi<4$.
+Taking $l\ge 2^{j+4}$ suffices for error $2^{-j}$.
+
+For the separation facts in the factorization, one can define
+$\cos$ and $\sin$ as the parts of $e^{it}$. Differentiation of
+$e^{i\arctan u}\sqrt{1+u^2}/(1+iu)$ shows it equals $1$ by its
+value at zero. Taking $u=1$ gives $e^{i\pi/2}=i$ by squaring.
+The defining integral for $\arctan 1$ gives $2\le\pi<4$.
+On $0<t\le\pi/2$ the sine series gives
+$\sin t\ge t-t^3/6\ge t/3$. Integrating this bound back from
+$\cos(\pi/2)=0$ separates $\cos t_k$ from zero, since
+$\pi/2-t_k\ge\pi/(2m)$. Also $-(\cot t)'=1/\sin^2t\ge1$,
+so distinct cotangents are separated by at least $\pi/m$.
+For clarity about induction strength in the polynomial step, these
+bounds give $|Y_k|\le3m^2$ and $|Y_j-Y_k|\ge m^{-3}$ for $j\ne k$. These follow from
+$\cos t_k\ge t_k(\pi/2-t_k)/3\ge 2/(3m^2)$ and $\sin t_k\le1$
+for the latter. Take rational approximations $b_k$ to $Y_k$ within
+$1/(4m^3)$. If $P$ denotes the displayed polynomial, then rational
+Lagrange interpolation applied to $P(Y)-m\prod_k(Y-b_k)$ gives its
+coefficient of degree $l-1$ as
+\[
+             \sum_k \frac{P(b_k)}{\prod_{j\ne k}(b_k-b_j)}.
+\]
+Indeed the interpolation polynomials take values $1$ at their own node
+and $0$ at the others. Subtract their linear combination and divide
+successively by the rational root factors. The right side has absolute
+value at most $l(2m^3)^{l-1}\max_k|P(b_k)|$. Each residual is
+bounded by $|b_k-Y_k|\,m^2 2^m(3m^2+1)^m$ by the difference of
+powers formula. Thus the coefficient comparison above is a family of
+finite rational inequalities with primitive recursive precision loss.
+The trigonometric root identities use at most $m$ angle additions,
+with the same finite-chain interpretation.
+\end{proof}
+
+\paragraph{Lean targets for the analytic arguments.}
+A first target with no analysis library is the squarefree error
+inequality. Let $U=(B!)^2$ and $V=\sum_{d=1}^B\mu(d)(U/d^2)$,
+computing the divisions in \texttt{Nat} before casting to
+\texttt{Int}. Induct over the positive summation indices to prove
+\[
+          r\,|UQ(N)-NV|\le U(r^2+N),\qquad 1\le r\le B,
+          \quad r^2\le N<(r+1)^2.
+\]
+Each $d^2$ divides $U$ by the factorial multiple property. The
+inequality follows from the square-divisor identity, Euclidean
+division remainders, and the rational telescoping estimate above.
+It gives a single executable test with natural/integer inputs.
+
+For the transcendental targets use pairs of rationals as complex
+centers, with a rational nonnegative error radius. Squared distance
+between centers is rational, so containment and error tests require
+only integer cross multiplication. An approximation routine accepts
+a natural precision, returns a center and radius at most $2^{-j}$,
+and has a proof that any two returned disks intersect. Equality of
+two such names is cross-intersection at every pair of precisions.
+The primitive recursive routines needed are the truncated logarithm
+and exponential with the term counts above, bounded summation,
+finite products, and equally spaced left sums on a finite segment.
+The squarefree cutoff uses the integer square root, the zeta cutoff
+uses $2^{qk}$, and the product error uses $2^{2qk}$.
+Implement the Mellin integral directly as the sum of cell endpoint
+differences. For Perron implement the finite segment integral as
+quadrature of a finite Dirichlet polynomial, budgeting one third
+of the requested error to each of series truncation, quadrature,
+and rational rounding. On a segment, the quadrature error is at
+most the segment length times the mesh width times a derivative
+bound, obtained term by term. For $1/\zeta$ use $D_N$. The product
+lemma proves the naming relation. Prove rectangle cancellation for
+polynomials by endpoint subtraction, extend to the displayed
+primitive by its known series tail, and prove the $1/s$ rectangle
+value from the chart derivatives. Apply Theorem~\ref{thm:perron}
+with $T\ge 2^j(6qX(a+1)+c)$ for the final limiting step. Each target
+reduces, after supplying the precision, to bounded loops and rational
+inequalities. The name-level Lean predicates collect these families.

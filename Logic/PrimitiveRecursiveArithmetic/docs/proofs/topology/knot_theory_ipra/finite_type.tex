@@ -1,0 +1,16 @@
+\section{An integral family of finite-type invariants}
+\label{sec:finite-type}
+A singular diagram with $m$ marked double points specifies $2^m$ ordinary diagrams by resolving each mark as a positive or negative crossing, keeping the strands and their arrows. Define its $m$th difference of an invariant as the sum over resolutions with sign $(-1)^{\#\text{negative resolutions}}$. A knot invariant has type at most $k$ if this difference is zero on every diagram with $k+1$ marks. This is the finite diagram form of the Vassiliev extension rule \cite{birmanlin}.
+
+\begin{theorem}[Truncated Jones coefficients]\label{th:finite-type}
+For each $k\ge0$ define the integer $v_k(D)=[h^k]F_D(1+h)$, where $F$ is the writhe-normalized bracket. The function $(k,D)\mapsto v_k(D)$ is primitive recursive. Each $v_k$ has type at most $k$. The invariant $v_2$ has type exactly two on knots; in this normalization its value is $-48$ on either trefoil and zero on the unknot.
+\end{theorem}
+\begin{proof}
+Calculate in $R_k=\mathbb Z[h]/(h^{k+1})$, represented by $k+1$ signed slots. The inverse of $1+h$ there is $1-h+h^2-\cdots+(-h)^k$, by telescoping. Thus the substitution is a ring map on Laurent polynomials; its coefficients survive all moves by Section~\ref{sec:bracket}. Multiplication is truncated convolution, and signed powers of $1+h$ are computed by iteration using the indicated inverse for negative exponents.
+
+Distribute the writhe normalization among the crossings, giving a crossing of sign $e$ an extra factor $(-A^3)^{-e}$. At a marked site the two crossing tensors are linear combinations of the \emph{same} two geometric pairings, with weights $A,A^{-1}$ interchanged, and their two normalizing factors as above. At $A=1$ both tensors have coefficient $-1$ on each pairing. Consequently, after $A=1+h$ the coefficient difference on each pairing is a multiple of $h$. Choose a boundary pairing at every site and expand the alternating sum. Its coefficient factors into the product of the local differences at the marked sites, times the common coefficients elsewhere. The closure loop count depends only on the selected pairings. Hence each summand contains $h^m$, and its coefficient of $h^k$ is zero if $m>k$. This is finite distributivity over $2^m$ sign masks, proved by folding one bit at a time. It proves the type upper bound directly over the integers.
+
+The trefoil has $F=A^{-4}+A^{-12}-A^{-16}$. Modulo $h^3$ the coefficient of $h^2$ in $(1+h)^j$ for any integer $j$ is $j(j-1)/2$, by multiplying the truncated series forwards or backwards. Thus $v_2=10+78-136=-48$; on the mirror it is $6+66-120=-48$. On a circle $F=1$. Mark two of the three positive crossings of the standard two-braid trefoil. The four resolutions have exponents $3,1,1,-1$ after inverse cancellation. Each closure at $1$ or $-1$ is an unknot with a curl. Their second difference is therefore $-48$, proving that type at most one fails by a particular witness.
+\end{proof}
+
+The numerical distinction between two finite-type coefficients deserves emphasis: the theorem gives an upper bound on order for \emph{every} $k$, while its lower-bound example proves sharpness for $k=2$. Checking vanishing coefficients requires only the $k+1$ slots and the finite state sum, including when $k$ is an input rather than a fixed metatheoretic numeral.

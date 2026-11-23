@@ -1,0 +1,57 @@
+\section{The exact cutoff for the logarithmic-integral inequality}
+\label{sec:li-cut}
+MathWorld gives Ramanujan's inequality for $\pi$ and a companion inequality for the principal-value logarithmic integral. The companion has an exact integer transition. Monotonicity reduces the whole infinite range to two rational sign certificates.
+
+\begin{theorem}
+For integers $n\ge2$,
+\[
+ \operatorname{li}(n)^2 <
+ \frac{en}{\log n}\operatorname{li}(n/e)
+ \quad\Longleftrightarrow\quad n\ge2418 .
+\]
+The inequality is reversed strictly for $2\le n\le2417$.
+\end{theorem}
+\begin{proof}
+For $x>e$ put $l=\log x$, $f(x)=\operatorname{li}(x)$, and
+\[
+ D(x)=e f(x/e)-\frac{l}{x} f(x)^2 .
+\]
+Multiplying $D(x)$ by $x/l>0$ gives the right side of the claimed inequality minus its left side. The derivative $f'(x)=1/l$ gives
+\[
+ D'(x)=\frac1{l-1}-\frac{2f(x)}x+(l-1)\frac{f(x)^2}{x^2}
+       =\frac{(1-(l-1)f(x)/x)^2}{l-1}\ge0.
+\]
+Consequently it suffices to determine the signs at $2417$ and $2418$ on the interval $[3,\infty)$. For $n=2$, $0<2/e<1$ and $f(2/e)<0$ by integration of a strictly negative integrand. Strictness of the two endpoint certificates below suffices even if the square in the derivative vanishes somewhere.
+
+Here are the definitions and numerical error bounds behind the sign test. With $t=\log x$ write
+\[
+ \operatorname{Ei}(t)=\operatorname{li}(x)
+   =\operatorname{PV}\int_{-\infty}^{t} e^u\,du/u .
+\]
+Substitution $x=e^u$ gives the displayed normalization. Symmetric excisions at $x=1$ or at $u=0$ have the same limit because $\log(1+h)/[-\log(1-h)]\to1$; this follows by sandwiching each log between $h/(1+h)$ and $h/(1-h)$. On finite intervals the Taylor series of $(e^u-1)/u$ can be integrated termwise with the following explicit bound. Write $S_K(t)=\sum_{j=1}^{K}t^j/(j\,j!)$. For $0<t\le B=32$ and $K=256$,
+\[
+ \operatorname{Ei}(t)=\log(t/B)+S_K(t)-S_K(-B)+E,\qquad
+ -\frac{2^{-B}}{B}-\epsilon\le E\le\epsilon,\quad
+ \epsilon=\frac{4B^{K+1}}{(K+1)!}.
+\]
+Indeed the integral to $-B$ is negative and has size at most $e^{-B}/B$. The principal value of $1/u$ from $-B$ to $t$ is $\log(t/B)$. Each series tail after integration is bounded by $2B^{K+1}/(K+1)!$ since successive absolute terms have ratio at most $1/2$. These arguments also provide arbitrary-precision names by increasing $B$ and $K$.
+
+To evaluate logarithms normalize a positive rational to $2^a y$ with $1\le y\le2$. With $z=(y-1)/(y+1)$ integrate the finite geometric series for $2/(1-z^2)$. This gives
+\[
+ 0\le \log y-2\sum_{j=0}^{49}\frac{z^{2j+1}}{2j+1}
+ \le \frac{2z^{101}}{101(1-z^2)}.
+\]
+The same rule evaluates $\log 2$. Evaluate $e$ by summing through $1/50!$ with tail at most $2/51!$. For $t=\log n$, the quantity $nD(n)=en\operatorname{Ei}(t-1)-t\operatorname{Ei}(t)^2$ has the following enclosures. All endpoints in the table are integers divided by $1000$.
+\[
+\begin{array}{c|rr}
+ n & \text{strict lower numerator}& \text{strict upper numerator}\\\hline
+ 2417 & -437 &-435\\
+ 2418 & 40 &42
+\end{array}
+\]
+The file \texttt{certify\_li.py} reproduces these rational comparisons. It accumulates $t^j/j!$ by multiplication by $t/j$ and rounds the two endpoints out to multiples of $2^{-120}$. It applies the logarithm bounds at each end and uses monotonicity of $\operatorname{Ei}$ on the positive axis. Thus each line is a closed finite calculation, reproducible using integer arithmetic.
+
+For clarity, the monotonicity step also has a finite interpretation. Fix integers $3\le a\le b$. On $[3,b]$, $\log x-1\ge1/16$; already the positive terms $2(1/2+(1/2)^3/3)$ of the logarithm series for $3$ exceed $1+1/16$. We have $|\operatorname{li}(x)|\le b+10$ there. Indeed the same expansion at $t=\log3$ gives $|\operatorname{li}(3)|<10$ (also checked by the auxiliary script), and $|f'|\le1$ on $[3,b]$. Write $A=1-(l-1)f/x$. The elementary derivative bounds give $|A|\le 1+b(b+10)$ and $|A'|\le (b+1)(b+11)$ using $x\ge3$, $l\le b$. Differentiating $A^2/(l-1)$ thus gives $|D''|\le M=10^4(b+12)^5$. On a mesh of width $h$ the error of the left sum of $D'$ for $D(b)-D(a)$ is at most $M(b-a)h$. This estimate can also be derived without a mean-value witness: differences of the integral names $f$ and $\log$ on $[u,u+h]$ equal their left derivatives times $h$ with quadratic remainders, by upper and lower rectangles for their decreasing positive kernels. Applying the product and reciprocal difference rules gives the same first-order expansion for $D$; equivalently integrate the bounded derivative of $D'$ cell by cell. Take $h\le2^{-s-2}/(M(b+1))$ and give each summand an accumulated rounding allowance below $2^{-s-2}$. The sum of squares is nonnegative, so $D(b)\ge D(a)-2^{-s}$ at every requested precision. Fixed positive margins in the two endpoint tests turn this into the stated strict inequalities. The mesh, all apartness bounds, and the power-series lengths are primitive recursive in the endpoints and precision.
+\end{proof}
+
+For an explicit general series schedule in the preceding paragraph, let the required absolute error be $2^{-s}$, take $B\ge s+\lceil|t|\rceil+8$, and use $K+1=2m$ with $m=4(B+1)^2+s+8$. Since $(2m)!\ge m^m$ and $m\ge4B^2$, the tail allowance $4 B^{2m}/(2m)!$ is at most $4^{1-m}$. The logarithm at $t>0$ in these applications is evaluated with the known lower bound on $t$ (at $x/e$ it is at least $1/16$ for $x\ge3$). General dyadic widths can be propagated by the finite circuit estimate of Section~\ref{sec:mellin}.

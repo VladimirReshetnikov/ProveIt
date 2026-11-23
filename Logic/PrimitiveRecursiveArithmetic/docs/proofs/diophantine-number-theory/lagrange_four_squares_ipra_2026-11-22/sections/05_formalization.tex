@@ -1,0 +1,258 @@
+\section{Lean formalization: definitions, obligations, and object proofs}
+\label{sec:formalization}
+
+\subsection{The exact status of the supplied Lean files}
+
+The packet contains two Lean source outlines:
+\begin{itemize}
+\item \code{lean/FourSquares.lean}: total executable definitions and proposed
+proof scripts assembling the theorem from six explicit arithmetic contracts.
+It imports Lean's standard library and the \code{omega} tactic, without
+importing Mathlib's four-square theorem.
+\item \code{lean/ProveItTarget.lean}: the exact first-order iPRA goal in
+ProveIt's syntax, a stronger goal parameterized by four unary primitive
+recursive symbols, and a proposed object-level Euler-identity proof fragment.
+This file requires the full pinned ProveIt workspace.
+\end{itemize}
+
+\textbf{Neither file was elaborated or compiled in this environment: a Lean
+compiler was not available.} No completed Lean four-square proof or final
+$\mathsf{PRAAx}$ derivation is claimed. The files expose the work still to
+be done as named local obligations; they contain no admitted theorem
+declarations. Absence of an admission is not a compilation receipt, and
+a conditional theorem is not an unconditional proof of its conclusion.
+
+The preceding sections prove the mathematical content of the obligations.
+The separate formalization ledger, \code{OBLIGATIONS.md}, decomposes the
+remaining work into 31 concrete steps, including the final syntax-level
+translation.
+
+\subsection{Definitions and their correspondence to the proof}
+
+The host Lean development uses an explicit record with four integer
+coordinates, and two records for the loops. The complete definitions are in
+the file, with this correspondence:
+
+\begin{longtable}{@{}L{0.42\textwidth}L{0.52\textwidth}@{}}
+\toprule
+Mathematical object & Lean identifier\\
+\midrule
+\endhead
+Finite conjunction and bounded first hit & \code{allLt}, \code{firstLt}\\
+Primality bit and first divisor & \code{primeB}, \code{IsPrime}, \code{leastDivisor}\\
+Integer four-tuple, norm, product, conjugate &
+\code{Z4}, \code{Z4.normSq}, \code{Z4.mul}, \code{Z4.conj}\\
+Centered residues & \code{centered}, \code{centered4}\\
+Three pairings and exact halving & \code{halfPairs}, \code{evenHalf}\\
+Initial multiple of a prime & \code{seedState}\\
+Transition~\eqref{eq:step} & \code{descentStep}\\
+State assertion~\eqref{eq:valid}, rank & \code{PrimeState}, \code{descentRank}\\
+Primitive recursive iteration & \code{iterate}\\
+Prime witness~\eqref{eq:primeprog} & \code{primeRep}\\
+Outer factor transition & \code{factorStep}\\
+Outer norm invariant and rank & \code{FactorInvariant}, \code{factorRank}\\
+Signed result and natural result & \code{signedFourSquares}, \code{fourSquares}\\
+Unfinished arithmetic interface & \code{ArithmeticContracts}\\
+Conditional correctness and existence & \code{fourSquares\_correct},
+\code{lagrange\_from\_contracts}\\
+\bottomrule
+\end{longtable}
+
+\par\noindent
+\begin{minipage}{\linewidth}
+For example, the recursion is structurally on its explicit clock:
+\begin{lstlisting}
+def iterate (step : A -> A) : Nat -> A -> A
+  | 0, s     => s
+  | k + 1, s => step (iterate step k s)
+\end{lstlisting}
+\end{minipage}\par
+Here \code{A} is a host-level type parameter. The actual iPRA instances
+use natural state codes and fixed first-order primitive recursive operations.
+The type-polymorphic presentation does not imply that iPRA itself has
+higher-order objects.
+
+\subsection{The six local contracts}
+
+The file's \code{ArithmeticContracts} structure contains exactly the
+following mathematical claims:
+\begin{enumerate}
+\item \textbf{Seed correctness:} a prime input yields a valid seed state.
+This is Proposition~\ref{prop:seed}, including finite-search correctness.
+\item \textbf{Descent preservation:} $I_p(s)$ implies $I_p(\Step(s))$.
+This is Proposition~\ref{prop:step}.
+\item \textbf{Descent rank decrease:}
+$R(\Step(s))\le R(s)\monus1$ for $R=m\monus1$ on valid states.
+The terminal, even, and odd branches were proved separately.
+\item \textbf{Factor-loop preservation:} assuming the proved prime witness
+property, the outer transition preserves
+$q\ge1$ and $q\Nrm{A}=n$.
+\item \textbf{Factor-loop rank decrease:} on this invariant,
+$(q'\monus1)\le(q\monus1)\monus1$.
+\item \textbf{Naturalization:} replacing each integer by its natural
+absolute value preserves the sum of squares.
+\end{enumerate}
+
+The source proposes generic preservation and rank-bound proofs, then uses
+these six fields to assemble
+\begin{lstlisting}
+theorem fourSquares_correct (C : ArithmeticContracts) (n : Nat) :
+    (fourSquares n).normSq = n
+
+theorem lagrange_from_contracts (C : ArithmeticContracts) (n : Nat) :
+    exists a b c d : Nat, n = a*a+b*b+c*c+d*d
+\end{lstlisting}
+The actual Lean files use standard Lean existential notation. The argument
+\code{C} is an explicit hypothesis record, and no instance of it is asserted.
+To finish the host formalization, prove the listed elementary lemmas,
+construct that record, and specialize these statements to it.
+
+Useful local proof methods are elementary rewriting for quotient equations,
+\code{omega} for linear inequalities and truncated subtraction, and a
+polynomial normalization tactic for the two Euler identities and the
+halving identity. Nonlinear inequalities such as
+$(m-1)^2<m^2$ should be reduced to explicit polynomial expansions plus
+positive-factor reasoning; they should not be silently given to an
+unrestricted high-level theorem.
+
+\subsection{The required distinction: host Lean truth versus iPRA derivability}
+
+A theorem of type
+\[
+ \forall n:\NN,\;\exists a,b,c,d:\NN,\quad n=a^2+b^2+c^2+d^2
+\]
+is a host Lean theorem about natural numbers. On its own, it does not
+state that iPRA proves the sentence. A complete machine formalization of
+the foundational claim must construct an object derivation of type
+\[
+ ([]:\operatorname{List}(\mathsf{Fm}\ \mathsf{PTm}\ 0))
+ \ \vdash[\mathsf{PRAAx}]\ \mathsf{fourSquareSentence}.
+\]
+This type is explicitly defined as \code{FourSquareObjectGoal} in the
+second source file; no inhabitant is postulated.
+
+The innermost matrix has five variables. Inside
+$\forall n\,\exists a\,\exists b\,\exists c\,\exists d$, ProveIt's
+de Bruijn indices are
+\[
+ 0=d,\quad1=c,\quad2=b,\quad3=a,\quad4=n.
+\]
+Thus the matrix is
+\[
+ v_4\doteq(v_3v_3+v_2v_2)+v_1v_1+v_0v_0,
+\]
+with the association fixed in \code{natSquareSum}. The four existential
+constructors are wrapped inside one universal constructor. This specifies
+the target without any ambiguity about which witness each binder denotes.
+
+For the stronger result, the source defines a family parameter
+$W:\operatorname{Fin}4\to\mathsf{PR}\,1$ and the closed object sentence
+\[
+ \forall n\;\left(n=\sum_{i<4}W_i(n)W_i(n)\right).
+\]
+The remaining construction is to compile the four actual programs into
+four \code{PR 1} terms and produce the derivation of that identity.
+Existential introductions then derive the ordinary sentence.
+
+Host-level generic induction lemmas may quantify over arbitrary predicates.
+Their use here is legitimate for the iPRA audit only because the actual
+instantiations are the coded quantifier-free predicates in
+Section~\ref{sec:audit}. A machine proof must record these QF certificates
+and invoke \code{PRA.qfInd} or an already proved restricted induction
+interface. Merely observing that Lean accepted a host induction proof
+would not establish this restriction.
+
+\subsection{Concrete integration with the inspected ProveIt snapshot}
+
+The source review is pinned to commit
+\begin{center}
+\texttt{3a521d0265941f9e9d4ad450818365a78a6c9a73}.
+\end{center}
+At that snapshot the root toolchain specifies Lean \code{v4.32.0};
+the dependency documentation records Mathlib commit
+\texttt{81a5d257c8e410db227a6665ed08f64fea08e997}~\cite{proveit}.
+The following actual source interfaces supply relevant object derivations:
+
+\begin{longtable}{@{}L{0.34\textwidth}L{0.60\textwidth}@{}}
+\toprule
+Source module & Integration use\\
+\midrule
+\endhead
+\code{Core.Definitions} & \code{PTm.toPR}, \code{recDef},
+\code{rec\_zero}, \code{rec\_succ} compile the fixed arithmetic programs
+and expose their recursion equations.\\
+\code{Core.Search} & \code{Search.search\_spec} and
+\code{Search.search\_found} give bounded-search success, minimality,
+and failure information. Its search returns the bound on failure.\\
+\code{Core.Pigeonhole} & \code{Pigeonhole.pigeonhole} supplies explicit
+colliding indices for a coded list of $K+1$ values below $K$. Its import
+closure is substantial; the report also proves the simple counting argument
+directly.\\
+\code{Core.EuclidLemma} & \code{euclid\_lemma\_at} supplies the prime
+divisor disjunction as an object derivation.\\
+\code{AnalyticNumberTheory.Primes} & \code{lpf\_dvd} and
+\code{lpf\_prime} justify a bounded least-prime-factor search.\\
+\code{Core.Pairing} & \code{pairT}, \code{fst\_pair},
+\code{snd\_pair}, and \code{simF} support state coding and simultaneous
+primitive recursion.\\
+\code{Core.Integers} & \code{ZT} represents differences of natural terms;
+\code{ZT.derive} and \code{ipra\_ring} can produce the fixed integer
+polynomial identities as object proofs.\\
+\code{Core.ClockedDescent} & \code{clocked\_at} and \code{clocked}
+give the QF refutational descent principle. The witness-producing absorbing
+loop here should instead use its displayed rank invariant directly.\\
+\bottomrule
+\end{longtable}
+
+These are source-inspected interfaces, not newly recompiled dependencies.
+The copied reference files retain their source identifiers and the
+repository's MIT-0 license. They are a reference subset, not a transitive
+import closure. Build the object target in the full pinned repository.
+
+There is an important encoding distinction. ProveIt's \code{ZT} is a pair
+$(u,v)$ representing $u-v$, with no canonicality condition. Equality of
+$(u,v)$ and $(r,s)$ is the natural equation $u+s=r+v$. The canonical
+integer code in Appendix~\ref{app:coding} has an explicit PR bridge to
+this representation: normalize a difference pair to
+$(u\monus v,v\monus u)$, then encode its sign and nonzero magnitude.
+The polynomial identity can be proved in \code{ZT} first and transported
+through this bridge. Thus no assumption about quotient-type integer
+objects is needed inside iPRA.
+
+\code{Core.ClockedDescent} has a complete explicit proof in the inspected
+source, and its introducing commit reports a successful build and axiom
+audit. This packet did not independently recompile it, and no independent
+CI check result was retrieved~\cite{clocked}. Moreover, that interface
+forbids a nonempty QF state predicate closed under strict descent; it does
+not already supply the tuple-producing absorbing iteration of this report.
+Keeping that difference explicit prevents a refutational theorem from
+being mistaken for a finished witness constructor.
+
+A sensible new module family is
+\code{IPRADerivations/DiophantineNumberTheory/FourSquares/}, with modules
+\code{Identity}, \code{Seed}, \code{Halving}, \code{OddDescent},
+\code{PrimeWitness}, \code{Assembly}, and \code{Statement}.
+Their dependency order is the order of this report. The six local
+contracts and the QF invariants specify the precise mathematical boundary
+between them.
+
+\subsection{Relation to the existing ordinary Lean theorem}
+
+Mathlib already provides \code{Nat.sum\_four\_squares}, together with the
+Euler identity and a prime case. The inspected source uses
+\code{classical}, \code{Nat.findX}, and induction on multiplicative
+factorization~\cite{mathlib}. This is useful as a comparison implementation.
+It is not used as a premise here: the explicit bounded witnesses and QF
+induction audit are what establish the requested weak-theory result.
+
+\begin{samepage}
+The inspected ProveIt file is
+\begin{quote}\small
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/FourSquareTheorem.lean}
+\end{quote}
+It uses Mathlib's theorem to obtain an ordinary existence corollary. Its
+source is distinct from a $\mathsf{PRAAx}$ derivation~\cite{proveit}.
+The source inventory found no four-square-named module in the inspected
+iPRA derivation tree; this is a filename observation, not a claim that
+no related material occurs anywhere in the repository.
+\end{samepage}

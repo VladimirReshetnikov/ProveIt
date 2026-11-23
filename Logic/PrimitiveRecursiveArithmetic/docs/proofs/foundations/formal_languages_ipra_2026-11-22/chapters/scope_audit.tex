@@ -1,0 +1,235 @@
+\section{Coverage, limitations, and verification ledger}
+\label{sec:audit}
+
+\subsection{What has been established}
+
+The report contains \textbf{100 numbered results}: theorems, propositions,
+lemmas, and corollaries, including supporting finite-arithmetic lemmas.
+Closely related identities are grouped into individual results rather than
+counted separately. Definitions have their own numbered entries but are
+not included in this count. A machine-readable catalogue with theorem
+labels, titles, and chapter paths accompanies the archive.
+
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Development & Numbered results\\\midrule
+Arithmetic and finite-certificate foundation & 7\\
+Words and effective language algebra & 16\\
+Regular languages and finite decisions & 24\\
+Finite monoids and linear grammars & 4\\
+Context-free grammars and pushdown automata & 26\\
+Effective languages, noncontracting grammars, and limits & 16\\
+Counting, unary periodicity, and Dyck words & 7\\\midrule
+Total & 100\\\bottomrule
+\end{tabular}
+\end{center}
+
+These are reconstructions of established mathematical results with explicit
+constructive arithmetic content, rather than claims that the classical
+language-theory theorems are new. The useful additional precision is in
+the witness functions, finite bounds, representation conditions, and
+separation between ordinary semantic proofs and iPRA derivations.
+
+\subsection{Map from the requested source neighborhood}
+
+The following immediate outgoing links were selected for their mathematical
+relevance. The source article is the scope guide \cite{Target}; the proofs
+are supplied in this report, with primary background and formalization
+references in the bibliography.
+
+\begin{longtable}{@{}p{0.31\textwidth}p{0.62\textwidth}@{}}
+\toprule
+Source article or immediate topic & Results established here\\
+\midrule\endhead
+Formal language; alphabet; string; concatenation & Numerical word codes,
+free-monoid equations, cancellation, Levi factorization, word equations,
+commuting words, counting and enumeration.\\
+Kleene star; string homomorphism; language operations & Effective Boolean
+and semiring laws, cut-based star membership, star identities, least
+closure, Arden's lemma, homomorphism laws, erasing-image obstruction.\\
+Regular language; regular expression; finite-state automaton & Full DFA,
+NFA, $\eps$-NFA, regex and right/left-linear grammar equivalences;
+closure, pumping, finite decisions, minimization, effective Nerode data.\\
+Regular language: algebraic and counting properties & Finite monoid
+recognition, syntactic monoid and contexts, integer coefficient recurrence,
+finite-truncation rational series, unary ultimate periodicity.\\
+Context-free language and context-free grammar & Parse trees, nullable and
+productive variables, CNF, CYK, direct fixed-point parsing, parse counts,
+closure, PDA equivalence, pumping, finiteness, nonclosure and separators.\\
+BNF and EBNF & Finite expression-to-CFG compilation with explicit parse
+certificate translations; the arithmetic syntax example from the source.\\
+Formal grammar and Chomsky hierarchy & Checked rewriting, noncontracting
+membership, constructive strict separations, and explicit $a^nb^nc^n$
+grammar. Full arbitrary-grammar/TM equivalence is not claimed.\\
+Turing machine; recursive and recursively enumerable language & Bounded
+simulation, fixed-PR compilation, certificate/enumerator/recognizer
+equivalence, totality-sensitive decisions, closure, halting and complement
+diagonals.\\
+CFG balanced-parenthesis example & Unique decomposition, unambiguous
+grammar, nonregularity, Catalan recurrence and exact counting identity.\\
+\bottomrule
+\end{longtable}
+
+\subsection{Closure matrix for results actually proved}
+
+Here ``PR'' means a supplied primitive-recursive membership predicate;
+``REG'' and ``CFL'' mean a finite automaton and a finite CFG; ``NC'' is the
+noncontracting grammar presentation defined in Section~\ref{sec:effective}.
+``RE'' means a certificate presentation. A check mark means an explicit
+construction and proof above; ``no'' means a proved counterexample;
+a dash means this report does not establish that cell. A superscript $c$
+means that the constructive statement uses an explicit list of certificates.
+These conventions are part of the statement, not typographical exceptions.
+
+\begin{center}\small
+\begin{tabular}{@{}p{0.30\textwidth}ccccc@{}}
+\toprule
+Operation & PR & REG & CFL & NC & RE\\\midrule
+Union & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$\\
+Intersection & $\checkmark$ & $\checkmark$ & no & --- & $\checkmark$\\
+Complement & $\checkmark$ & $\checkmark$ & no & --- & no\\
+Concatenation & $\checkmark$ & $\checkmark$ & $\checkmark$ & --- & $\checkmark$\\
+Star & $\checkmark$ & $\checkmark$ & $\checkmark$ & --- & $\checkmark^c$\\
+Reversal & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$\\
+Arbitrary homomorphic image & no & $\checkmark$ & $\checkmark$ & --- & $\checkmark$\\
+Nonerasing image & $\checkmark$ & $\checkmark$ & $\checkmark$ & --- & $\checkmark$\\
+Inverse homomorphism & $\checkmark$ & $\checkmark$ & $\checkmark$ & --- & $\checkmark$\\
+Substitution & no & $\checkmark$ & $\checkmark$ & --- & $\checkmark^c$\\
+Intersection with REG & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The ``no'' for PR substitution follows already from
+Theorem~\ref{eff:erasing}: substitute the finite singleton language
+$\{h(a)\}$ for each source letter. Each singleton is PR, but this
+substitution has the undecidable homomorphic image exhibited there.
+The NC dashes are not negative closure assertions.
+
+\subsection{Strict containments with explicit witnesses}
+
+For the represented finite-alphabet classes the report proves
+\[
+ \mathrm{REG}\ \subsetneq\ \mathrm{CFL}\ \subsetneq\
+ \mathrm{NC}\ \subsetneq\ \mathrm{PR\mbox{-}decided}
+ \ \subseteq\ \mathrm{total\mbox{-}decided}
+ \ \subsetneq\ \mathrm{RE}.
+\]
+This is a summary of explicit first-order statements and metatheoretic
+schemas, not a second-order assertion about class objects inside iPRA.
+The witness for the first separation is $\{a^nb^n\}$.
+For the second it is $\{a^nb^nc^n\}$, with a primitive-recursive
+separating word for every proposed CFG. For the third it is the diagonal
+language of Theorem~\ref{eff:nc-pr-separation}, whose separating word
+against grammar code $e$ is its canonical binary encoding.
+For the last separation it is the diagonal halting language $K$.
+The inclusion into total decisions uses the compiler and PR clock for
+each fixed PR predicate; the next inclusion uses accepting traces.
+No strictness assertion between PR-decided and total-decided is made here.
+
+The hierarchy is presented across finite alphabets, with the actual
+alphabets specified by the witness constructions. It is not a claim that
+all these strict separations hold over a unary alphabet. The empty-word
+exception for noncontracting grammars is included, so the CFL inclusion
+does not silently discard $\eps$.
+
+\subsection{Statements needing more than an unqualified classical slogan}
+
+\paragraph{Finite right congruence.}
+The constructive Myhill--Nerode converse is stated with a primitive-recursive
+class map, representatives, and right-stability and acceptance assertions.
+An abstract finite-index relation on an arbitrary predicate does not by
+itself supply those algorithms. For a supplied DFA, the stronger canonical
+minimization and syntactic-context conclusions are fully effective.
+
+\paragraph{Quotients by arbitrary languages.}
+Regular-by-regular quotients are constructed. The classically valid slogan
+that a regular language has regular quotients by every language cannot be
+used as an unconditional algorithm on arbitrary predicates. For instance,
+if $R=\Sigma^*$, then $R/K$ is all words when $K$ is inhabited and empty
+otherwise. For a uniformly PR family encoding bounded halting witnesses,
+an unconditional uniform compiler would decide whether the family member
+is inhabited, and hence decide halting. Supplied finite state-membership
+information can support an appropriate constructive version; this report
+does not assert such information comes for free.
+
+\paragraph{Two recognizers.}
+In classical computability theory recognizers for a language and its
+complement yield a decider. Our internal theorem states the exhaustiveness
+premise $L(w)\lor\neg L(w)$ explicitly. Recognition alone supplies a
+finite witness only after the relevant side is known; it does not justify
+an intuitionistic proof that a dovetailing search always stops. The
+complement nonrecognizability theorem uses a direct contradiction
+$A\leftrightarrow\neg A$ instead of that classical shortcut.
+
+\paragraph{Finite certificate families.}
+A list of unbounded positive certificates is a single input witness.
+It is not silently extracted from
+$\forall i<k\exists c\,R(i,c)$ with no bound on $c$.
+For PR-decided languages, and for CFGs with their proved parsing bounds,
+bounded selection supplies the necessary lists. For general recognizable
+languages the list is part of the explicit star or substitution certificate.
+
+\paragraph{Full linked neighborhood.}
+This report does not prove general CFG equivalence, inclusion, ambiguity,
+or universality undecidability; Post correspondence; Parikh's theorem;
+context-sensitive complement closure; deterministic context-free or indexed
+language closure classifications; full unrestricted-grammar/TM equivalence;
+or results about infinite-word automata. It does not claim an iPRA
+power-set cardinality theorem. Those questions require additional
+reductions, automata constructions, or a different represented object.
+They are not counted among the proved results.
+
+\subsection{Executed checks and what they mean}
+
+\begin{longtable}{@{}p{0.33\textwidth}p{0.60\textwidth}@{}}
+\toprule
+Artifact & Observed result\\\midrule\endhead
+Automata reference checks & 64 binary two-state DFA models, 256 unary
+two-state empty-edge models, 4,096 DFA-pair comparisons, and 36,721 word
+comparisons; all passed. Independent path enumeration and cut tests check
+the corresponding table and conversion algorithms.\\
+Grammar reference checks & 37 grammars, including empty/unit cycles and
+32 reproducibly seeded small grammars; 2,331 word comparisons between
+direct chart saturation and CNF plus CYK; 1,068 reconstructed parse
+certificates checked; all passed.\\
+Words and counting checks & 433 codec round trips, 2,347 concatenation-cut
+checks, 3,969 commuting-word cases, 1,260 star comparisons, 4,081 inverse
+reflection checks, 256 matrix/enumeration comparisons, and 400 recurrence
+checks; all passed. Catalan counts through $n=7$ agree with the formula.\\
+Mathematical review & Independent reviews of the main chapters checked
+bounds, empty-word cases, collection, grammar normalization, pumping,
+minimization, and diagonals. The regex encoding was tightened to exclude
+unintended DAG sharing in the Thompson construction.\\
+Lean & Not run. Source is an explicitly uncompiled companion and blueprint;
+no completed language-theory \texttt{Prf PRAAx} endpoint is claimed.\\
+Repository & Read at the recorded immutable commit. Relevant declarations
+and contracts inspected; ProveIt was not built in this session.\\
+\bottomrule
+\end{longtable}
+
+The executable checks test genuinely different implementations where
+possible: direct arbitrary-grammar saturation against normalization and
+CYK, word enumeration against matrix counting, cut enumeration against
+dynamic programming, and explicit paths against automaton tables.
+They are regression evidence for the implementation, not exhaustive
+evidence for unbounded theorem statements. The written proofs establish
+the general constructions; full kernel certification remains the stated
+formalization task.
+
+\subsection{Reproduction}
+
+The Python programs use only the standard library. From the archive root:
+\begin{lstlisting}
+python3 verification/regular_reference.py
+python3 code/grammar_reference.py
+python3 code/word_count_reference.py
+python3 tools/build_pdf.py formal_languages_ipra.tex --out-dir build
+\end{lstlisting}
+The PDF builder uses a local TeX format and font-map setup when necessary;
+on a normal TeX Live installation its \texttt{--system} option uses the
+existing configuration. The LaTeX source is a genuine editable source
+for the supplied report. The supplied Lean toolchain declaration matches
+the inspected ProveIt revision; it is not evidence that the blueprint
+has been compiled.

@@ -1,0 +1,105 @@
+\section{Alternation, the polynomial hierarchy, and parallel circuits}
+\label{sec:alternation}
+
+\subsection{Finite alternation}
+An alternating machine has terminal accepting/rejecting configurations and nonterminal existential or universal configurations, each with two successors. Duplicate a successor to represent a unary transition. A finite time bound $T$ supplies the evaluation horizon. At an existential node take OR of the successor bits; at a universal node take AND. Terminal bits are retained. A nonterminal node at horizon zero has value zero. Thus every evaluation is a finite Boolean tree, including malformed or cyclic descriptions.
+
+Although this definition mentions a recursively branching tree, its arithmetic value is PR. For a fixed horizon, bound every possible configuration code as in F05. Tabulate all its value bits at remaining time zero and update the entire table $T$ times. Alternatively traverse the binary tree of at most $2^{T+1}-1$ nodes with an explicitly bounded stack. Both implementations use only primitive recursion. The definition does not quantify over infinite strategies or arbitrary sets of configurations.
+
+\begin{theorem}[A01: alternating polynomial time equals polynomial space]\label{thm:A01}
+For clocked finite presentations, $\mathsf{AP}=\mathsf{PSPACE}$, with descriptor transformations and \ipra\ proofs of equality of acceptance bits.
+\end{theorem}
+\begin{proof}
+For a time-$T(n)$ alternating machine, evaluate its tree by depth-first search. Each stack frame stores the current configuration, a phase bit, and the first child's value. There are at most $T(n)+1$ frames, each with $O(n+T(n)+1)$ cells for a fixed machine. Thus a polynomial $T$ gives polynomial space. The invariant says every completed frame equals the finite OR/AND recurrence; all frames, depths, configurations, and partial tree codes have displayed finite bounds. The traversal clock is a polynomial factor times $2^{T+1}$, which is PR. There is no demand that the evaluation take polynomial \emph{time}.
+
+In the reverse direction, Theorem~\ref{thm:S12} transforms a fixed polynomial-space computation into a polynomial-length quantified Boolean formula. Its construction is polynomial time and uses the single-copy reachability recursion, so it does not unroll an exponential path. Evaluate each existential variable block by existential choices and each universal block by universal choices; save the assigned bits. At a leaf evaluate the quantifier-free matrix deterministically. Every branch uses a polynomial number of transitions in the input length. The QBF simulation theorem identifies its bit with the original space computation. Composing the two finite machine constructions gives the claimed transformations. This reconstructs the polynomial-time part of the classical alternation theorem \cite{ChandraKozenStockmeyer1981}.
+\end{proof}
+
+\subsection{Fixed levels of the polynomial hierarchy}
+For a fixed $k\ge1$, a $\Sigma_k^{\mathsf P}$ presentation consists of a polynomial-time Boolean verifier $V$ and polynomial bounds $p_1,\ldots,p_k$ such that
+\[
+ A(x)=\bigvee_{u_1<2^{p_1(n)}}
+       \bigwedge_{u_2<2^{p_2(n)}}\cdots
+       Q_{u_k<2^{p_k(n)}} V(x,u_1,\ldots,u_k).
+\]
+The alternating folds begin with OR; $\Pi_k^{\mathsf P}$ begins with AND. These are first-order bounded formulas and PR bits. Set $\Sigma_0^{\mathsf P}=\Pi_0^{\mathsf P}=\mathsf P$. The unbounded union PH is terminology in the metatheory; every assertion below specifies what happens at each fixed finite level.
+
+\begin{theorem}[A02: duality, monotonicity, and the space bound for PH]\label{thm:A02}
+For every fixed $k$, complementation interchanges $\Sigma_k^{\mathsf P}$ and $\Pi_k^{\mathsf P}$. Each level is included in both appropriately prefixed next levels, and all finite levels are contained in PSPACE. In particular $\Sigma_1^{\mathsf P}=\mathsf{NP}$ and $\Pi_1^{\mathsf P}=\mathsf{coNP}$.
+\end{theorem}
+\begin{proof}
+Complement the matrix bit and exchange each bounded OR with AND. Finite Boolean De Morgan identities prove the result by induction on the fixed number of folds; they do not use De Morgan laws for arbitrary unbounded predicates. A dummy one-bit block does not change a bit independent of that variable. Insert a dummy block at the beginning for the opposite leading quantifier, or at the end for same-leading monotonicity; merge adjacent blocks of the same kind by pairing their words. This gives the usual level inclusions with explicit polynomial witness lengths.
+
+There is an alternating polynomial-time machine making the indicated block choices and then running $V$; Theorem~\ref{thm:A01} supplies a polynomial-space evaluator. Directly, a depth-first traversal needs only the $\sum_i p_i(n)$ current assignment bits, a bounded stack of counters, and polynomial verifier storage. The first-level equalities are the verifier definitions.
+\end{proof}
+
+\begin{theorem}[A03: bounded-alternation QBF completeness]\label{thm:A03}
+For each fixed $k\ge1$, truth of polynomial-size quantified Boolean formulas with $k$ alternating blocks beginning existentially is $\Sigma_k^{\mathsf P}$-complete under polynomial many-one reductions. The universally beginning version is $\Pi_k^{\mathsf P}$-complete. The quantifier-free matrix may be an arbitrary Boolean formula; no restricted CNF claim is needed.
+\end{theorem}
+\begin{proof}
+Membership follows by using the quantifier blocks as the alternating witness blocks and evaluating the matrix in polynomial time. For hardness, fix a source verifier $V(x,\vec u)$ and its clocks. The circuit construction in N03 yields a polynomial-size circuit with the bits $\vec u$ as inputs and $x$ fixed. Let $z$ contain the gate values, let $E(\vec u,z)$ be the conjunction of their local equations, and let $o(z)$ be the output bit. Unique extension of an acyclic circuit proves, for every assignment $\vec u$, both
+\[
+ V(x,\vec u)=1\ \longleftrightarrow\ \exists z\,(E(\vec u,z)\land o(z)),
+\]
+and
+\[
+ V(x,\vec u)=1\ \longleftrightarrow\ \forall z\,(E(\vec u,z)\to o(z)).
+\]
+The second equivalence uses the actual unique extension for the reverse implication; if the output is zero, that extension is a counterexample. Every quantifier is over a finite bit array.
+
+If the final source block is existential, use the first matrix and put $z$ in that block. If it is universal, use the second and put $z$ in that block. Earlier blocks are unchanged. The conjunction of gate equations is a polynomial-length formula, so the construction is a polynomial-time printer with exactly $k$ blocks after harmless dummy variables. Bitwise equivalence under each fixed outer fold proves the reduction in \ipra. Complementing gives the dual statement, or repeat the same last-block construction.
+\end{proof}
+
+\begin{theorem}[A04: conditional collapses, stated constructively]\label{thm:A04}
+For each fixed $k$, the numerical hypothesis $\mathsf P=\mathsf{NP}$ implies $\Sigma_k^{\mathsf P}=\Pi_k^{\mathsf P}=\mathsf P$. The hypothesis $\mathsf{NP}=\mathsf{coNP}$ implies $\Sigma_k^{\mathsf P}=\Pi_k^{\mathsf P}=\mathsf{NP}$ for $k\ge1$.
+\end{theorem}
+\begin{proof}
+Under P=NP, an existentially bounded polynomial projection of a P predicate is an NP predicate, hence has a P presentation by the hypothesis. A universal projection is the complement of the existential projection of the complemented bit, and P is closed under complement. Eliminate the finitely many blocks from the inside out. Each use of the hypothesis supplies a numerical descriptor by existential elimination; the constructed final descriptor is the required witness. If a particular SAT decider is supplied, the Cook--Levin reduction provides an explicit compiler parameterized by that decider. A bare existential class-equality hypothesis is not silently replaced by a PR global choice function.
+
+Under NP=coNP, complementing an NP predicate again has an NP presentation. Existentially projecting an NP predicate concatenates the projected word and its NP witness, so it remains NP. A universal projection is complement--existential--complement, hence remains NP. The same finite inside-out argument applies. In both proofs induction on the number of blocks is in the metatheory over the fixed formula construction; the internal inductions are only the bounded array and simulation inductions already justified. Neither hypothesis is asserted to hold.
+\end{proof}
+
+\subsection{Uniform Boolean circuits}
+An acyclic Boolean circuit is a topologically ordered array of gates; its inputs precede its operations. A family is \emph{logarithmic-space uniform} if a fixed halting logspace transducer, given $1^n$, prints the circuit for inputs of length $n$. A fixed polynomial bounds the number of gates and the length of all gate records. $\mathsf{NC}^k$ uses fan-in at most two and depth $O(\ell(n)^k)$; $\mathsf{AC}^k$ allows polynomially bounded fan-in for AND and OR, with NOT of fan-in one. Constants, initial input gates, and a designated output are included. We use these uniform definitions throughout this subsection. Arbitrary nonuniform advice is discussed separately in the counting section.
+
+\begin{theorem}[A05: balancing and sequential simulation]\label{thm:A05}
+For every fixed $k\ge0$,
+\[
+ \mathsf{NC}^k\subseteq\mathsf{AC}^k\subseteq\mathsf{NC}^{k+1},
+ \qquad \mathsf{NC}=\mathsf{AC}\subseteq\mathsf P,
+\]
+where NC and AC denote their finite-level unions with the uniformity convention above.
+\end{theorem}
+\begin{proof}
+The first inclusion merely permits more inputs to a gate. Replace an AND or OR gate with $r\le n^a+a$ inputs by a balanced binary tree. Pad to a power of two with the identity bit (one for AND, zero for OR). Induction on tree height proves equal output. It has at most $2r$ gates and height $\lceil\log_2\max(2,r)\rceil=O(\ell(n))$. Replacing all gates therefore increases size by at most a polynomial and depth by at most this logarithmic factor. The printer enumerates each source gate and the binary-tree addresses; these counters need $O(\log(n+2))$ bits. To recover a source gate it reruns the source uniform printer with an output-position counter. Thus uniformity is preserved.
+
+Finally a uniform polynomial-size circuit is evaluated sequentially in topological order, storing one bit per gate and looking up its predecessors by bounded scans. The uniform printer is polynomial time: its internal configuration count is polynomial and, being a halting deterministic transducer whose output is never read, it cannot revisit an internal configuration. Both printing and evaluation are polynomial time. A bounded prefix invariant says every stored gate value equals its Boolean expression. The union equalities follow from the two adjacent-level containments.
+\end{proof}
+
+\begin{theorem}[A06: shallow uniform circuits use logarithmic space]\label{thm:A06}
+$\mathsf{NC}^1\subseteq\mathsf L$. More generally, a uniform bounded-fan-in circuit of depth $d(n)$ and polynomial size can be evaluated using $O(d(n)+\ell(n))$ work space, with a PR time bound when $d$ has one.
+\end{theorem}
+\begin{proof}
+Unfold the output gate into a binary expression tree, duplicating shared subcircuits only conceptually. A depth-first traversal stores the left/right path from its root, the phase at each level, and a single saved first-child value for each active binary gate. These are $O(d)$ bits in total. Do \emph{not} store a logarithmic-size gate address in every frame. Instead recover the current gate by replaying the root-to-current path, keeping just one gate number. Given that number, rerun the uniform circuit printer to obtain its gate record. This uses $O(\ell(n))$ additional space; replay counters use $O(\log(d+2))\le O(d+1)$ bits.
+
+At each return the saved bit equals the value of the already evaluated subtree. The path and phase invariant proves that the algorithm eventually returns the output value after traversing at most $2^{d+1}-1$ occurrences, with a polynomial overhead for gate recovery. For $d=O(\ell(n))$ the space is logarithmic. The general time is deliberately allowed to exceed polynomial when $d$ is larger. All traversal bounds are finite PR expressions, so the same correctness proof belongs to \ipra.
+\end{proof}
+
+\begin{theorem}[A07: NL has uniform quadratic-logarithmic-depth circuits]\label{thm:A07}
+$\mathsf{NL}\subseteq\mathsf{NC}^2$. Consequently
+\[
+ \mathsf{NC}^1\subseteq\mathsf L\subseteq\mathsf{NL}
+ \subseteq\mathsf{NC}^2\subseteq\mathsf P.
+\]
+\end{theorem}
+\begin{proof}
+First take an explicitly encoded graph with $N$ vertices. Let $R_0=I\lor E$ and define Boolean matrix squaring
+\[
+ R_{j+1}(u,v)=\bigvee_{z<N}(R_j(u,z)\land R_j(z,v)).
+\]
+Induction shows that $R_j(u,v)$ means existence of a walk of length at most $2^j$. After $\lceil\log_2\max(1,N)\rceil$ stages this is reachability, by simple-path shortening. Each stage uses $O(N^3)$ AND/OR gates and depth $O(\log(N+2))$ when the ORs are balanced. Total depth is $O(\log^2(N+2))$, size $O(N^3\log(N+2))$, and stage/vertex/tree-address counters produce it in logarithmic space.
+
+For a fixed logspace machine, its configuration graph has $N=n^{O(1)}$ vertices. A configuration has $O(\ell(n))$ bits. Adjacency of two such configurations is tested by the fixed transition table and equality of all unmodified work-tape positions. Selecting the input symbol at a coded input-head position is a balanced multiplexer on the $n$ input bits, of depth $O(\ell(n))$ and polynomial size. All configuration fields and work symbols likewise use polynomially many equality and bit-selection gates with depth $O(\ell(n))$. Thus the initial graph matrix has a uniform polynomial-size circuit of logarithmic depth. Append the matrix-squaring circuit. If accepting configurations are multiple, OR over them. The total remains uniform NC$^2$ and agrees with the nondeterministic acceptance bit by the configuration graph theorem.
+\end{proof}
+
+The result is an upper-bound construction, not a proof that NC equals P or that its displayed containments are strict. The exact gate and table meanings used here are finite and numerical; no circuit family is quantified over as an arbitrary set inside \ipra.

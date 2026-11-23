@@ -1,0 +1,121 @@
+\section{Self-avoiding walks and finite Ising models}
+\label{sec:models}
+
+The square-grid walk illustrated in the survey and the Ising model in its physics section admit a common calculation. A spin correlation on a finite piece of the square grid can be bounded by counting walks between the two marked sites. We use polynomial identities and rational edge weights throughout.
+
+\subsection{Counting walks without revisiting a vertex}
+
+A walk of length $n$ starts at $(0,0)$ and is a word on the four unit coordinate directions. It is \emph{self-avoiding} if its $n+1$ partial-sum positions are distinct. Write $c_n$ for the count. Scan the $4^n$ words, compute integer coordinates in $[-n,n]$, and compare every pair of positions. In particular $c_n$ is a primitive recursive function.
+
+\begin{theorem}[Finite square-lattice walk estimates]\label{result73}\label{thm:model-saw}
+The initial values $c_0,\ldots,c_4$ are $1,4,12,36,100$. One has $c_{m+n}\le c_mc_n$ and
+\[
+  c_{1+3k+r}\le4\,25^k3^r \quad(0\le r<3),\qquad
+  c_n\ge d_n,\quad d_0=1,\quad d_1=3,\quad d_{n+2}=2d_{n+1}+d_n .
+\]
+In particular $d_n\ge(1+\sqrt2)^n$. For every chosen block length $m\ge1$, writing $n=qm+s$ with $s<m$ gives $c_n\le c_m^q c_s$.
+\end{theorem}
+\begin{proof}
+Split a self-avoiding walk at time $m$ and translate the second piece to the origin. The two pieces recover the whole walk and are each self-avoiding. This injection proves submultiplicativity, and iteration proves the block bound. After one step, each continuation has at most three choices because an immediate reversal revisits a vertex. On the square lattice, every nonempty closed walk has even length by coordinate parity. A nonbacktracking walk of length at most three therefore has no repeat. This gives the first four values. With four steps, a repeat in a nonbacktracking walk must be a square returning to the origin. There are eight such directed traversals, from the four possible first steps and two turning senses. Thus $c_4=4\cdot3^3-8=100$. After any nonempty prefix, append three nonbacktracking steps. Of their $27$ possible relative turn words, three consecutive left turns and three consecutive right turns return to the start of the last prefix edge. At most $25$ survive. Iterating this three-step estimate proves the upper bound.
+
+For the lower bound allow east, north and south moves, and within each vertical column allow a monotone run. Such walks are self-avoiding, since each east move enters a new column. Conversely an east/north/south self-avoiding walk cannot reverse its vertical direction without an intervening east move. A column run of length $j$ has one choice at $j=0$ and two at $j>0$. For a transparent recurrence let $V=1+2z+2z^2+\cdots$ count the runs by length and let $D=\sum_n d_nz^n$ count the restricted walks. Decomposition at the first east step gives $D=V+zVD$. Since $(1-z)V=1+z$, multiplication gives $(1-2z-z^2)D=1+z$. This identity and all operations are read at any prescribed degree, truncating both tables there. Comparing coefficients yields the displayed recurrence. In the ordered quadratic integers put $u=1+\sqrt2$. We have $u^2=2u+1$, $d_0=1$, and $d_1\ge u$. Induction with the recurrence gives $d_n\ge u^n$. The integer recurrence itself supplies the lower bound in ordinary iPRA. If the quadratic comparison is desired, sign of $a+b\sqrt2$ for rational $a,b$ of opposite sign is decided by comparing $a^2$ with $2b^2$, with the sign determined by which term dominates.
+\end{proof}
+
+\subsection{Even subgraphs, cuts, and one-dimensional correlations}
+
+Let $G=(V,E)$ be a finite undirected graph with indexed edges, allowing parallel edges. For a spin assignment $\sigma:V\to\{-1,1\}$, an edge $e=ij$ contributes weight $a_e$ if its endpoints agree and $b_e$ if they differ. Its configuration weight $W(\sigma)$ is the product. For $S\subseteq V$ put
+\[
+ Z_S=\sum_{\sigma}W(\sigma)\prod_{i\in S}\sigma_i,\qquad Z=Z_\varnothing .
+\]
+The boundary $\partial F$ of an edge mask $F$ is its set of odd-degree vertices. For $D\subseteq E$, write $D=\delta U$ if its edges are precisely those crossing from $U\subseteq V$ to $V\setminus U$. A cut here refers to the edge mask, with all repeated realizations as vertex subsets identified.
+
+\begin{theorem}[High- and low-temperature expansions]\label{result74}\label{thm:model-ising}
+Let $p_e=a_e+b_e$, $q_e=a_e-b_e$, and let $k(G)$ count all components, including isolated vertices. For arbitrary rational edge weights,
+\begin{align*}
+ 2^{|E|}Z_S &=
+ 2^{|V|}\sum_{\partial F=S}\prod_{e\notin F}p_e\prod_{e\in F}q_e,\\
+ Z &=2^{k(G)}\sum_{D\text{ a cut}}\prod_{e\notin D}a_e\prod_{e\in D}b_e .
+\end{align*}
+The first formula gives $Z_S=0$ if $S$ meets some component in an odd number of vertices. All equalities can be cleared of denominators.
+\end{theorem}
+\begin{proof}
+Twice the edge weight is $p_e+q_e\sigma_i\sigma_j$. Expand the product over all edges by choosing the second term on $F$, and multiply by the inserted spins from $S$. The exponent of the spin at vertex $v$ is $d_F(v)+[v\in S]$. If any exponent is odd, flip the least-index spin with odd exponent to pair the terms with opposite signs. If all are even, every assignment contributes the same spin factor $1$. This proves the first formula. The sum of degrees in any component is twice its edge count, so no $F$ can realize the stated odd intersection. For the second formula, the disagreement edges of $\sigma$ are the cut from its negative-spin set. Two configurations give the same cut precisely when their pointwise product is constant on each component. Indeed at each edge the two endpoint products must agree, which propagates along paths. Each such componentwise constant choice gives an assignment with the required cut. Thus every cut contributes exactly $2^{k(G)}$ copies of its weight.
+\end{proof}
+
+\begin{corollary}[Open chain, ring and two-point functions]\label{result75}
+For uniform weights $a,b$, put $p=a+b$, $q=a-b$. On a tree with $v\ge1$ vertices, $Z=2p^{v-1}$. For distinct vertices $x,y$ at distance $d$ in a tree and $a,b>0$, $Z_{\{x,y\}}/Z=(q/p)^d$. In particular these are exact formulas for an open chain. On the cycle of $n\ge3$ vertices,
+\[
+ Z=p^n+q^n,\qquad
+ Z_{\{x,y\}}=q^d p^{n-d}+q^{n-d}p^d
+\]
+when the two arcs from $x$ to $y$ have lengths $d,n-d$.
+\end{corollary}
+\begin{proof}
+A nonempty edge subset in a tree contains a leaf in a nontrivial component of that subset, so only the empty subset has empty boundary. A simple path from $x$ to $y$ is unique, since two distinct simple paths would contain a cycle. Its edge mask has boundary $\{x,y\}$. Symmetric difference adds vertex degrees modulo two, so any other mask with that boundary would differ by a nonempty even subgraph. Since $|E|=v-1$, substitution in Theorem~\ref{thm:model-ising} gives the two tree formulas. On a ring an even mask must take both or neither of the edges at each vertex, so the only even masks are the empty and the full mask. Toggling either with one of the two arcs between $x,y$ gives precisely the two masks with that boundary. The ring has equally many vertices and edges, yielding the stated expressions.
+\end{proof}
+
+\begin{theorem}[Rectangular duality with its boundary factor]\label{result76}
+Take a rectangle of $w\times h$ unit square cells, $w,h\ge1$. Its grid graph $G$ has all sides of all cells as edges. The dual $G^*$ has one vertex per cell and one exterior vertex. An edge crosses each primal edge and joins its two incident faces, counting the exterior face along the boundary. If $Z_{G^*}^{+}$ fixes the exterior spin at $+1$, then
+\[
+ 2^{|E|} Z_G(\mathbf a,\mathbf b)
+    =2^{|V|}Z_{G^*}^{+}(\mathbf p,\mathbf q)
+    =2^{|V|-1}Z_{G^*}(\mathbf p,\mathbf q).
+\]
+Moreover the grid has $2^{wh}$ even edge masks.
+\end{theorem}
+\begin{proof}
+The mod-two sum of the boundaries of a chosen set of cells is even, since each individual cell boundary is even. Mark the chosen cells with negative spin and all other faces with positive spin. A primal edge survives the mod-two sum exactly when its two incident face spins disagree.
+
+Conversely, given an even mask $F$, scan each column of cells from bottom to top. Starting with the bottom exterior bit zero, toggle the current bit each time the horizontal edge directly below the next cell belongs to $F$, assigning the new bit to that cell. This is the unique assignment reproducing $F$ on every horizontal edge except possibly the top boundary. Subtract its cell boundaries from $F$ modulo two. The residual mask is even and supported on the vertical columns and the top horizontal row. Those edges form a tree: the only horizontal moves are along the top path, with a single descending path attached at each top vertex. Consequently the residual is empty, by the leaf argument above. This gives an explicit bijection between all even masks and the $2^{wh}$ cell assignments with fixed exterior. The even-subgraph weights in Theorem~\ref{thm:model-ising} are now exactly the dual agreement and disagreement weights $p_e,q_e$. Finally global spin reversal pairs assignments of opposite exterior spin with equal weight. This proves both boundary normalizations.
+\end{proof}
+
+\subsection{A finite correlation estimate from self-avoidance}
+
+\begin{proposition}[A finite-volume path bound]\label{result77}
+In any finite subgraph of the square lattice with uniform weights $a\ge b>0$, put $t=(a-b)/(a+b)$. For distinct sites $x,y$ in the same component, let $d$ be their graph distance, let $v=|V|$, and put $k=\lfloor(d-1)/3\rfloor$. Then
+\[
+ 0\le\frac{Z_{\{x,y\}}}{Z}\le\sum_{\ell=d}^{v-1}c_\ell t^\ell .
+\]
+If $25t^3<1$, an upper bound independent of $v$ is
+\[
+ \frac{4t(1+3t+9t^2)}{1-25t^3}(25t^3)^k .
+\]
+\end{proposition}
+\begin{proof}
+Cancel common factors in the high-temperature expressions. The ratio is
+the sum of $t^{|F|}$ over masks with boundary $\{x,y\}$ divided by the sum
+over even masks, whose empty term is $1$. Every numerator mask contains
+a path from $x$ to $y$, since each component has an even number of odd
+vertices. Select its least simple such path $P$ in a fixed word ordering.
+Deleting the path edges gives an even mask $D$ disjoint from $P$, and
+$(P,D)$ determines $F$. Thus the numerator is at most
+$\sum_P t^{|P|}\sum_{D\text{ even}}t^{|D|}$, since all terms are
+nonnegative. Paths of length $\ell$ from $x$ to $y$ translate into
+distinct self-avoiding walks on the square lattice. This gives the first
+bound. Group lengths by $\ell=1+3j+r$, $0\le r<3$. All such $j$ are at
+least $k$. By Theorem~\ref{thm:model-saw} each full group contributes at
+most $4t(1+3t+9t^2)(25t^3)^j$. For rational $0\le u<1$ the finite
+sum of $u^j$ from $k$ to any $J\ge k$ is at most $u^k/(1-u)$ by
+multiplication with $1-u$. This proves the second bound using only a
+finite sum.
+\end{proof}
+
+\paragraph{Arithmetic and Lean implementation.}
+For walks use a base-four direction word and length. Each coordinate prefix
+is the difference of two finite direction counts, and self-avoidance is
+a conjunction of comparisons of prefix pairs. Truncated power series for
+$d_n$ use $n+1$ coefficients. For spins use one vertex bit per sign,
+one edge bit per selected bond and a parity fold at each vertex for
+\texttt{boundary}. The expansion proof is induction on the prefix
+of indexed edges followed by the single-spin sign-reversing pairing.
+After clearing denominators let $A$ bound $1,|a_e|,|b_e|$. Intermediate
+absolute coefficient products are at most $(2A)^{|E|}$ and the crude
+bound $2^{|V|+|E|}(2A)^{|E|}$ controls all expanded sums. For duality,
+\texttt{fillCells} folds horizontal-edge bits along each of $w$
+columns of height $h$. Test the residual tree and fixed-exterior spin
+by Boolean scans. In the path bound choose $P$ by a search over
+vertex words of length at most $v$; the disjoint union of its edges
+with $D$ is the inverse on the image. This proves quantitative
+statements for each finite input. For the relation with planar Ising
+expansions see \href{https://arxiv.org/abs/1209.0951}{Cimasoni and
+Duminil-Copin}.

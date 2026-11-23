@@ -1,0 +1,97 @@
+\section{The ordinary M\"obius series for Riemann's smooth count}
+\label{sec:gram}
+
+The derivative in MathWorld (11) contains a conditionally convergent constant term. There is also a normalization constant in Wikipedia's formula for $R$. We evaluate both in the ordinary order $n=1,2,\ldots$. The one analytic number-theory input in this section is the quantitative $\vartheta$ estimate in the ProveIt manuscript used in Section~\ref{sec:growthrefine}. Its status as an imported human proof applies to these deductions.
+
+\begin{lemma}[Two boundary values of the M\"obius series]\label{lem:Rboundary}
+Write $M(x)=\sum_{n\le x}\mu(n)$, with $n\ge1$ in all sums. With primitive-recursive moduli of convergence,
+\[
+ \sum_{n\ge1}\frac{\mu(n)}n=0,\qquad
+ \sum_{n\ge1}\frac{\mu(n)\log n}{n}=-1 .
+\]
+\end{lemma}
+\begin{proof}
+\emph{A bound for the prime-power sum.}
+Write $H(x)=1+\log x$ for $x\ge1$. We first obtain
+\[
+ |\psi(n)-n|\le W n/H(n)^8,\qquad W=2^{3000}100!.
+\]
+The imported estimate from the packet's \texttt{theta\_bridge.tex} is
+$|\vartheta(n)-n|\le2^{-r}n$ for $n\ge2^{C(r+1)^{10}}$, $C=2^{240}$.
+Let $\ell=\lfloor\log_2 n\rfloor$. If $\ell\ge C$, take the largest $r$ with $C(r+1)^{10}\le\ell$. Then $H(n)\le2C(r+2)^{10}$. Since $e^z\ge z^{80}/80!$ and $\log2\ge1/2$, we have $2^{-r}(r+2)^{80}\le 3\cdot 2^{80}80!$. If $\ell<C$, use $H(n)\le C+2$ and $\vartheta(n)\le\psi(n)\le 4n$. This last bound follows from $L_n\le2^{4n}$ in Section~\ref{sec:dyadicgrowth}, since $\psi(n)=\log L_n$. Finally $\psi(n)-\vartheta(n)\le\sqrt n\log n$, since each prime $p\le\sqrt n$ contributes at most $\log n$ in its higher powers. This gap times $H(n)^8/n$ is at most $2^{10}9!$ by applying the exponential bound to $H(n)/2$. The stated $W$ covers both contributions.
+
+\emph{Passing from $\psi$ to $M$.}
+For $i=0,\ldots,8$ put $m=i/2$, $K_0=1$, $K_{i+1}=2^{50}(1+W+K_i)$. We prove $|M(x)|\le K_i x/H(x)^m$ at integer $x\ge1$. The case $i=0$ follows from $|\mu|\le1$. Put $E(u)=\psi(u)-u$ for integer $u$. The two exact convolutions
+\[
+ \mu(n)\log n=-\sum_{d\mid n}\mu(d)\Lambda(n/d),
+ \qquad \sum_{d\le x}\mu(d)\lfloor x/d\rfloor=1
+\]
+give
+\begin{equation}
+ M(x)\log x
+ =-1-\sum_{d\le x}\mu(d) E(\lfloor x/d\rfloor)
+       +\int_1^x M(t)\frac{dt}{t}.
+ \label{eq:gram-m}
+\end{equation}
+For the first convolution, a squarefree $n$ contributes one term for each prime divisor, with $\mu(n/p)=-\mu(n)$. When precisely one prime $p$ has exponent $v\ge2$, its surviving terms $n/d=p^v,p^{v-1}$ cancel. Two repeated primes make every term zero. The second convolution counts the divisors of each integer up to $x$ with weight $\mu$. The integral expands as the finite sum $\sum_{n\le x}\mu(n)\log(x/n)$.
+
+For $\ell=\lfloor\log_2 x\rfloor\ge64$ set
+$Y=2^{\lfloor\sqrt\ell\rfloor}$ and $D=\lfloor x/(Y+1)\rfloor$. Write $H=H(x)$. The elementary comparisons
+\[
+ D\ge\sqrt x,\qquad \sqrt H/4\le\log(Y+1),\qquad
+ 1+\log Y\le3\sqrt H
+\]
+follow from $\ell/2\le\log x\le\ell+1$ and $\sqrt\ell\le\ell/4$. For instance $Y\le x^{1/4}$ and $x/(x^{1/4}+1)\ge\sqrt x+1$ on this range. In the part $d\le D$ the argument of $E$ is at least $Y+1$. Summing the bound $W(x/d)4^8/H^4$ costs at most $4^8 W x/H^3$, using $\sum_{d\le x}1/d\le H$.
+
+For $d>D$, expand $E(q)=\sum_{u\le q}(\Lambda(u)-1)$ and interchange the finite sums. The resulting expression is
+\[
+ \sum_{u\le Y}(\Lambda(u)-1)
+                   (M(\lfloor x/u\rfloor)-M(D)).
+\]
+Both arguments of $M$ are at least $D$ and at most $x/u$. The inductive bound makes the difference at most $2^{m+1}K_i x/(uH^m)$ in absolute value. Partial summation and $\psi(u)\le4u$ give
+$\sum_{u\le Y}(\Lambda(u)+1)/u\le9(1+\log Y)$.
+Thus this part costs at most $864K_i xH^{1/2-m}$ for $m\le4$.
+In the integral in \eqref{eq:gram-m}, the portion up to $\sqrt x$ costs at most $\sqrt x$. Beyond $\sqrt x$ we have $H(\lfloor t\rfloor)\ge H/3$, so the remainder is at most $3^m K_i x/H^m$. Finally $\sqrt x\le2^6 4!\,x/H^4$ by the exponential bound.
+Dividing by $\log x\ge H/2$, these estimates give $K_{i+1}x/H^{m+1/2}$ for $i\le7$. For $\ell<64$, $H^4\le65^4<2^{50}$ suffices. Applying this improvement eight times gives the asserted bound. Each application proves its prefix estimates at a fixed ceiling and precision. There is no object induction on a formula quantifying over every ceiling.
+
+\emph{Ordinary convergence and evaluation.}
+Put $K=K_8$. On $t\ge3$, $|M(t)|\le16Kt/H(t)^4$ also for nonintegral $t$, by passing to $\lfloor t\rfloor$. For integers $V>N\ge3$ apply partial summation on $(N,V]$ to the weights $1/t$ and $(\log t)/t$. The two endpoint terms together are bounded by $2K/(\log N)^3$ for the second weight, and the integral by
+\[
+ 16K\int_N^V\frac{dt}{t(\log t)^3}\le 8K/(\log N)^2 .
+\]
+The first weight has smaller endpoint bounds and integral at this range. Thus $32K/(\log N)^2$ bounds each signed tail. In particular $N_j=2^{2^{j+8}(K+1)}$ suffices for precision $2^{-j}$. Partial summation here means summation by parts on integer intervals followed by the integrals of the explicit weights. Their derivatives are rational combinations of $1/t$ and $\log t$, so these finite identities equally follow by rectangular sums as in Section~\ref{sec:weights}.
+
+For rational $0<s\le1$, define $Z=\sum_{n\ge1}n^{-1-s}$, $Z_1=\sum_{n\ge1}(\log n)n^{-1-s}$. Absolute convergence and the divisor cancellation $\sum_{d\mid n}\mu(d)=[n=1]$ give
+\[
+ \sum_n\frac{\mu(n)}{n^{1+s}}=\frac1Z,\qquad
+ \sum_n\frac{\mu(n)\log n}{n^{1+s}}=-\frac{Z_1}{Z^2}.
+\]
+For the second equality multiply the identity $\sum_{d\mid n}\mu(d)=[n=1]$ by $\log n=\log d+\log(n/d)$, then sum with weight $n^{-1-s}$. Absolute convergence follows with effective tails: if $s=a/b$, blocks $2^{bj}\le n<2^{b(j+1)}$ have total weight at most $b2^{-j}$ without a logarithm and $b^2(j+1)2^{-j}$ with one. Cutting a product at $mn\le T^2$ misses only pairs having a coordinate $>T$, so these estimates justify the convolution products as well.
+
+Comparison with the integral yields $1\le sZ\le1+s$. Also $|s^2 Z_1-1|\le2s^2$. Indeed $f(t)=t^{-1-s}\log t$ has one maximum, at $\log t=1/(1+s)$, of height at most one. The difference between its integral and unit-width rectangular sum is at most its total variation, at most two. Integration of $f$ gives $1/s^2$, either by integration by parts or by the substitution $t=e^u$. The tail in this calculation is the endpoint expression $T^{-s}(1+s\log T)/s^2$. It follows that $1/Z\le s$ and $|Z_1/Z^2-1|\le5s$.
+
+Lastly the ordinary limits equal the damped limits as $s$ decreases to zero. On the first $N$ terms the discrepancy caused by $n^{-s}$ is bounded by $sN^3$ for either weight, using $1-e^{-v}\le v$. On a tail whose every prefix sum is bounded by $\epsilon$, multiplying by the decreasing sequence $n^{-s}\in[0,1]$ leaves its sum bounded by $\epsilon$, by finite summation by parts. First choose $N=N_j$, then a rational $s\le 2^{-j}/N^3$. This proves both values and gives a primitive-recursive comparison throughout.
+\end{proof}
+
+\begin{theorem}[Gram series, M\"obius formula and derivative]
+For $x>1$ at rational input, let $t=\log x$. The following series define the same real name. The first extends to $x=1$ with value one.
+\[
+ R(x)=1+\sum_{j\ge1}\frac{t^j}{j\,j!\,\zeta(j+1)}
+      =\sum_{n\ge1}\frac{\mu(n)}n\operatorname{li}(x^{1/n}).
+\]
+Furthermore,
+\[
+ R'(x)=\frac1{x\log x}\sum_{n\ge1}\frac{\mu(n)}n x^{1/n}.
+\]
+\end{theorem}
+\begin{proof}
+For $u>0$, write
+$\operatorname{li}(e^u)=\gamma+\log u+\sum_{j\ge1}u^j/(j\,j!)$,
+with the principal-value normalization. The exponential series integrated after extracting its constant term gives this expansion (the constant cancels below). At $u=t/n$, its logarithmic term equals $\log t-\log n$. Lemma~\ref{lem:Rboundary} annihilates $\gamma+\log t$ and evaluates the remaining logarithmic sum as $+1$. The double series of positive powers is absolutely convergent, since its absolute contribution for a given $n$ is at most $(e^t-1)/n^2$. Divisor cancellation at the absolutely convergent exponent $j+1\ge2$ gives
+$\sum_n\mu(n)n^{-j-1}=1/\zeta(j+1)$. This proves the first display.
+
+Differentiating the Gram polynomials in $t$ gives
+$\sum_{j\ge1}t^{j-1}/(j!\zeta(j+1))$. Multiplying by $t$ and expanding the reciprocal zeta factors gives $\sum_n \mu(n)(e^{t/n}-1)/n$. The same $n^{-2}$ bound permits this interchange. Adding back $\sum\mu(n)/n=0$ and using $dt/dx=1/x$ proves the derivative formula, with the ordinary ordering of $n$.
+
+For quantitative details, on $|t|\le A$ with integer $A\ge1$, the Gram series of polynomials and its first two derivatives have tails bounded by the corresponding exponential tails (for derivative order $d$, truncate the exponential after degree $J-d$). For $m\ge2A$ the successive majorant terms $A^m/m!$ decrease by a factor at least two; their sum through any index is at most $e^A\le3^A$. Taking $J=5A+j+8$ therefore gives all three tails below $2^{-j}$. A Taylor estimate for the finite polynomials bounds linearization error by $3^A h^2$ when both arguments lie in the chosen interval. These estimates prove the stated derivative as a modulus assertion on rational increments. For any rational $x>1$ a working bound is $A=\lceil x\rceil+2$ on a sufficiently small neighbourhood. The absolute $n$-tails above are at most $3^A/N$ after $N$ terms, and the two boundary tails have the explicit bound in Lemma~\ref{lem:Rboundary}. All limits and rearrangements thus reduce to bounded operations on finite rational enclosures.
+\end{proof}

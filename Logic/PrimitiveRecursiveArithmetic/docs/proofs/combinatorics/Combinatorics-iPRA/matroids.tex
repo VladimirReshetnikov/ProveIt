@@ -1,0 +1,57 @@
+\section{Matroids, greedy optimization and the Tutte polynomial}
+\label{sec:matroid}
+A finite independence system is a bit table $I$ indexed by masks on an ordered ground set $E=[m]$. It contains the empty set and is hereditary. It is a \emph{matroid} if, whenever $U,V$ are independent and $|U|<|V|$, some $e\in V\setminus U$ makes $U+e$ independent. Here $U+e$ means $U\cup\{e\}$. Let $r(A)$ be the largest size of an independent submask of $A$. A basis of $A$ is an inclusion-maximal independent subset of $A$. These are tests on integers; in particular the exchange witness can always be taken to be the first eligible element.
+
+\begin{theorem}[Rank and the greedy characterization]\label{result50}
+In a matroid all bases of $A$ have size $r(A)$, and
+\[
+  r(A\cup B)+r(A\cap B)\le r(A)+r(B).
+\]
+For any nonnegative integer weights, scanning elements in decreasing weight order and accepting an element when it preserves independence produces a maximum-weight independent set. Conversely, if this algorithm works for all such weights on a hereditary system containing $\varnothing$, the system is a matroid.
+\end{theorem}
+\begin{proof}
+A basis smaller than an independent set admits an exchange, contradicting its maximality. Any independent set extends to a basis of any containing set by one full scan: a rejected element remains infeasible after more elements are accepted, by heredity. Extend a basis of $A\cap B$ to one of $A$, then to one of $A\cup B$. Every newly accepted element at the last stage lies in $B\setminus A$. Together with the original intersection basis these elements form an independent subset of $B$. The resulting size inequality gives submodularity. Monotonicity of rank and the bound $r(A)\le |A|$ follow directly from its definition.
+
+Let $e_1,\ldots,e_m$ be the sorted list, with weights $w_1\ge\cdots\ge w_m\ge w_{m+1}=0$. On each prefix $P_i$ the greedy output $G$ already contains a basis. Thus $|G\cap P_i|=r(P_i)\ge|J\cap P_i|$ for any independent $J$. Multiply these inequalities by $w_i-w_{i+1}$ and sum. An element at position $j$ receives total weight $\sum_{i=j}^m(w_i-w_{i+1})=w_j$. This proves optimality, even with tied or zero weights.
+
+If exchange fails for $U,V$, assign weight $M+1$ on $U$, $M$ on $V\setminus U$, and zero elsewhere, with $M=m+1$. Greedy accepts all of $U$ and no member of $V\setminus U$, so its weight is $(M+1)|U|$. But $V$ has weight at least $M|V|\ge M(|U|+1)>(M+1)|U|$. The failure of exchange is decidable by the bounded scan, so this witness proves the converse intuitionistically.
+\end{proof}
+
+\begin{proposition}[Graphic rank and minimum spanning forests]\label{result51}
+The acyclic edge sets of a finite undirected multigraph form a matroid. If $k(A)$ counts connected components of the spanning subgraph with edges $A$, then $r(A)=|V|-k(A)$. Greedy in increasing order of cost gives a minimum-cost spanning forest.
+\end{proposition}
+\begin{proof}
+Start from isolated vertices. Adding an edge between different components merges exactly two. An edge with both ends already connected creates a cycle by adjoining a simple path, with a loop or a pair of parallel edges allowed as cycles. Connectivity means existence of a simple path of length $<|V|$ between distinct vertices, using a bounded path search. A forest $F$ thus has $|V|-|F|$ components. If forests $F,H$ have $|F|<|H|$, then $H$ has fewer components. Some edge of $H$ must cross between two components of $F$, since otherwise each $H$-component would lie inside one $F$-component. That edge augments $F$. A maximal forest of $A$ connects exactly the same pairs as $A$, because each rejected edge already has connected ends. This proves the formula. For integer costs $c(e)$ take $C=\max(\{0\}\cup\{c(e):e\in E\})$ and apply greedy to the nonnegative weights $C-c(e)$. All spanning forest bases have the same size, so maximizing their transformed weight minimizes cost.
+\end{proof}
+
+\begin{theorem}[Rank expansion, deletion and contraction]\label{result52}
+For a finite matroid $M$ on $E$, put $r=r(E)$ and
+\[
+ T_M(X,Y)=\sum_{A\subseteq E}(X-1)^{r-r(A)}(Y-1)^{|A|-r(A)}.
+\]
+The empty ground set has polynomial $1$. A loop $e$ contributes a factor $Y$ on deletion; a coloop contributes $X$ on contraction. Every other $e$ satisfies $T_M=T_{M\setminus e}+T_{M/e}$. In particular $T_M$ has nonnegative integral coefficients. Its specializations at $(1,1),(2,1),(1,2),(2,2)$ respectively count bases, independent sets, full-rank sets, and all subsets.
+\end{theorem}
+\begin{proof}
+A loop means $r(\{e\})=0$. A coloop means deleting $e$ lowers full rank. Deletion restricts the independence table. For a nonloop contract $e$ by declaring $B\subseteq E-e$ independent exactly when $B+e$ was independent. This is a matroid: heredity is immediate and exchange on $B+e,C+e$ supplies an element different from $e$. Its rank on $A$ is $r(A+e)-1$, since $\{e\}$ can be extended to a basis inside $A+e$. If $e$ is a coloop every basis of $E$ contains $e$; any independent $B\subseteq E-e$ extends to such a basis, so $B+e$ is independent. Thus $r(A+e)=r(A)+1$ for every $A\subseteq E-e$, and contraction equals deletion. For a loop $r(A+e)=r(A)$ by heredity.
+
+Pair the summands for $A$ and $A+e$. For a loop their sum is $1+(Y-1)=Y$ times the deletion summand. For a coloop it is $(X-1)+1=X$ times the contraction summand. Otherwise deletion leaves $r$ unchanged: the summands avoiding $e$ are precisely its expansion. In contraction, full rank is $r-1$, so the corank and nullity of $A$ there are exactly those of $A+e$ in $M$. The recursion and nonnegativity now follow by bounded induction on remaining ground size, with all minors represented by disjoint deletion and contraction masks or by their independence tables. For the evaluations use $0^0=1$: exponent zero on the first factor means full rank, and on the second means independence. Both mean basis. The last evaluation counts $2^{|E|}$ masks.
+\end{proof}
+
+\begin{theorem}[The Potts, chromatic and Tutte identities]\label{result53}
+For an undirected multigraph $G=(V,E)$, $q\in\mathbb N$ and integer edge weights $v_e$,
+\[
+ Z_G(q,\mathbf v)=\sum_{\sigma:V\to[q]}\prod_{e=ij}\bigl(1+v_e[\sigma(i)=\sigma(j)]\bigr)
+ =\sum_{A\subseteq E}q^{k(A)}\prod_{e\in A}v_e.
+\]
+Taking all $v_e=-1$ gives the proper-coloring count $P_G(q)=\sum_A(-1)^{|A|}q^{k(A)}$. For a nonloop $e$ it satisfies $P_G=P_{G\setminus e}-P_{G/e}$, while a loop gives zero. For common weight $v$ and the graphic matroid polynomial $T_G$, the division-free polynomial identity is
+\[
+ Z_G\bigl((X-1)(Y-1),Y-1\bigr)
+   =(X-1)^{k(E)}(Y-1)^{|V|}T_G(X,Y).
+\]
+In particular $P_G(q)=(-1)^{r(E)}q^{k(E)}T_G(1-q,0)$.
+\end{theorem}
+\begin{proof}
+In the first product, choose the second summand on exactly $A$. The selected equalities force the color to be constant on each component of $(V,A)$. Ordering components by their least vertex gives $q^{k(A)}$ assignments. Swapping two bounded sums proves the expansion. At weight $-1$ an assignment contributes one exactly when every edge is proper. Colorings of the deletion partition according as the ends of $e$ agree; those that agree correspond bijectively to colorings of the contraction by merging the ends. A loop precludes every coloring. In the polynomial identity, use $k(A)=|V|-r(A)$. The exponent of $X-1$ on each side is $k(A)$, and that of $Y-1$ is $k(A)+|A|$. This is an identity on coefficient arrays; substituting the polynomial for $q$ on the right-hand subset expansion defines the left side for all $X,Y$. To check the last specialization directly, the $A$ term of $(-1)^r q^{k(E)}T_G(1-q,0)$ has power $q^{k(A)}$ and sign $(-1)^{r+r-r(A)+|A|-r(A)}=(-1)^{|A|}$. All formulas include the empty graph.
+\end{proof}
+
+\paragraph{Objects for Lean.} The table for $I$ is a natural below $2^{2^m}$. Store elements in order of the pair (decreasing weight, increasing original index). The greedy invariant after $j$ steps checks that the output is independent and that none of the rejected prefix elements can augment it. Bounds for reference subsets, prefix indices and rank are $2^m,m,m$ respectively. For the graphical instance store component labels of the first $j$ edges as their least vertex, relabeling a merged class by a bounded scan. Polynomials can be flattened into signed coefficient rectangles, with coordinate degree at most $2(m+|V|+1)$ in the above substitutions (or use coefficient-by-coefficient convolution with its actual degree bound). Thus deletion identities can be proved termwise, without testing polynomials at infinitely many values. The subset expansion is the finite random-cluster expansion surveyed by Sokal~\cite{sokal}.

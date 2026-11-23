@@ -1,0 +1,99 @@
+ProveIt interface excerpts; source references only, not a compilation unit.
+Pinned commit: 3a521d0265941f9e9d4ad450818365a78a6c9a73
+License: MIT-0 (see LICENSE.txt).
+
+
+FILE Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Core/Search.lean
+GIT BLOB b6a5e30954ede9dd8751eec9ec6079edd61f2bb2
+URL https://github.com/VladimirReshetnikov/ProveIt/blob/3a521d0265941f9e9d4ad450818365a78a6c9a73/Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Core/Search.lean
+
+theorem search_found {N i x : PTm n} (hf : Γ ⊢[PRAAx] inst2 f i x ≐ zero) (hi : Γ ⊢[PRAAx] lt i N) :
+    Γ ⊢[PRAAx] lt (mu f N x) N ⋏ ((inst2 f (mu f N x) x ≐ zero) ⋏ le (mu f N x) i) := by
+
+
+FILE Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Core/Pigeonhole.lean
+GIT BLOB 541c50bcd7027ffbd8f1c84b738e4425c4f3bf67
+URL https://github.com/VladimirReshetnikov/ProveIt/blob/3a521d0265941f9e9d4ad450818365a78a6c9a73/Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Core/Pigeonhole.lean
+
+theorem pigeonhole {K x : PTm n} (hr : Γ ⊢[PRAAx] Permutation.rangeAll S K x) :
+    Γ ⊢[PRAAx] lt (phpI S K x) (phpJ S K x) ⋏
+      (le (phpJ S K x) K ⋏ (inst2 S (phpI S K x) x ≐ inst2 S (phpJ S K x) x)) := by
+
+
+FILE Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Core/ClockedDescent.lean
+GIT BLOB 4b41c93d5788694b9989a83c49d1c8acdaf918f6
+URL https://github.com/VladimirReshetnikov/ProveIt/blob/3a521d0265941f9e9d4ad450818365a78a6c9a73/Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Core/ClockedDescent.lean
+
+theorem clocked (hP : P.QF) (hstep : ([] : List (Fm PTm 1)) ⊢[PRAAx] P ⟶ (Pat P D ⋏ lt (inst1 r D) r)) :
+    ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 1 (neg P) := by
+
+
+FILE Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Core/Integers.lean
+GIT BLOB 1b7a652f6f901296e029d739d5c1b1ccfc936832
+URL https://github.com/VladimirReshetnikov/ProveIt/blob/3a521d0265941f9e9d4ad450818365a78a6c9a73/Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Core/Integers.lean
+
+structure ZT (n : ℕ) where
+  pos : PTm n
+  neg : PTm n
+
+namespace ZT
+
+variable {n : ℕ}
+
+instance : Add (ZT n) := ⟨fun u v => ⟨u.pos + v.pos, u.neg + v.neg⟩⟩
+
+def eq (u v : ZT n) : Fm PTm n := u.pos + v.neg ≐ v.pos + u.neg
+
+theorem derive {u v : ZT n} (h : toZ Γ u = toZ Γ v) : Γ ⊢[PRAAx] eq u v := by
+
+
+FILE Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Core/EuclidLemma.lean
+GIT BLOB 2246b0ddb1ba479aedbf8bd077d9b5384100ab1e
+URL https://github.com/VladimirReshetnikov/ProveIt/blob/3a521d0265941f9e9d4ad450818365a78a6c9a73/Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Core/EuclidLemma.lean
+
+theorem euclid_lemma_at {p a b : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hab : Γ ⊢[PRAAx] dvd p (a * b)) :
+    Γ ⊢[PRAAx] dvd p a ⋎ dvd p b := by
+
+
+FILE Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Core/Pairing.lean
+GIT BLOB b59607d2b32e684f2e0aa0babb6e2a856a7e33c3
+URL https://github.com/VladimirReshetnikov/ProveIt/blob/3a521d0265941f9e9d4ad450818365a78a6c9a73/Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Core/Pairing.lean
+
+theorem fst_pair (a b : PTm n) : Γ ⊢[PRAAx] fstT (pairT a b) ≐ a := by
+
+theorem snd_pair (a b : PTm n) : Γ ⊢[PRAAx] sndT (pairT a b) ≐ b := by
+
+
+FILE Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Core/Definitions.lean
+GIT BLOB 0011b086a26c69117fc31a1ef19780e3602197ae
+URL https://github.com/VladimirReshetnikov/ProveIt/blob/3a521d0265941f9e9d4ad450818365a78a6c9a73/Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Core/Definitions.lean
+
+def recDef {k : ℕ} (base : PTm k) (step : PTm (k + 2)) : PR (k + 1) :=
+  .prec (PTm.toPR base) (PTm.toPR step)
+
+theorem rec_zero {k : ℕ} (base : PTm k) (step : PTm (k + 2)) (xs : Fin k → PTm n) :
+    Γ ⊢[PRAAx] app (recDef base step) (Fin.cases zero xs) ≐ Syn.subst xs base :=
+  (PRA.precZero _ _ xs).eqTrans (toPR_eq base xs)
+
+theorem rec_succ {k : ℕ} (base : PTm k) (step : PTm (k + 2)) (y : PTm n) (xs : Fin k → PTm n) :
+    Γ ⊢[PRAAx] app (recDef base step) (Fin.cases (succ y) xs)
+      ≐ Syn.subst (Fin.cases y (Fin.cases (app (recDef base step) (Fin.cases y xs)) xs)) step :=
+  (PRA.precSucc _ _ y xs).eqTrans (toPR_eq step _)
+
+
+def PTm.toPR {k : ℕ} : PTm k → PR k
+  | .var i => .proj i
+  | .app f ts => .comp f fun j => PTm.toPR (ts j)
+
+theorem toPR_eq {k : ℕ} (e : PTm k) (ts : Fin k → PTm n) :
+    Γ ⊢[PRAAx] app (PTm.toPR e) ts ≐ Syn.subst ts e := by
+
+
+FILE Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/AnalyticNumberTheory/Primes.lean
+GIT BLOB 365d510cf9a77f2fab6e80888f87b14e984c6def
+URL https://github.com/VladimirReshetnikov/ProveIt/blob/3a521d0265941f9e9d4ad450818365a78a6c9a73/Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/AnalyticNumberTheory/Primes.lean
+
+theorem lpf_dvd (z' : PTm n) :
+    Γ ⊢[PRAAx] dvd (lpf (succ (succ z'))) (succ (succ z')) ⋏ le (lpf (succ (succ z'))) (succ (succ z')) := by
+
+theorem lpf_prime (z' : PTm n) : Γ ⊢[PRAAx] prime (lpf (succ (succ z'))) := by

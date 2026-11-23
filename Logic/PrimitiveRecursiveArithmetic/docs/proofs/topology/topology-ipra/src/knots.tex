@@ -1,0 +1,182 @@
+\section{Colorings of knot diagrams}\label{sec:knotcolor}
+The figure-eight knot pictured at the beginning of \emph{Topology} has
+a four-crossing diagram. Can one turn this diagram into a circle by
+moving its strands? A count with five colors answers the question.
+A separate four-letter computation identifies the knot with its mirror.
+
+\subsection{Local rules and Reidemeister moves}
+Use a finite diagram with crossing records. Each crossing has four
+half-edges in cyclic order, an opposite pair marked over, and the other
+pair marked under. Edges pair the half-edges between crossings. Store
+each crossing-free circle separately. For planar diagrams one may give a
+planar drawing or a list of elementary tangle slices as well. An
+$n$-coloring, $n\ge1$, assigns each edge (and each free circle) a residue
+modulo $n$. At a crossing the two over colors agree, say with $y$, and the
+two under colors $x,x'$ satisfy $x+x'=2y$. Thus the under color changes
+by the operation $x*y=2y-x$. Following a strand across successive
+overcrossings gives the equivalent familiar coloring of arcs between
+undercrossings. Write $C_n(D)$ for the number of colorings.
+
+\begin{theorem}[Fox coloring invariance]\label{idx-knots20}
+A Reidemeister move induces a bijection on $n$-colorings fixing the
+untouched part of the diagram. In particular $C_n$, and the existence of
+a nonconstant coloring, are invariant under a finite sequence of
+diagram moves, for every positive modulus.
+\end{theorem}
+\begin{proof}
+In a type I kink the over color is also one of the under colors,
+since the small loop directly joins the corresponding half-edges. The
+crossing equation forces the other under color to agree. The local
+extension is unique and has equal colors at both ends.
+In type II one strand passes over twice with the same color $y$. A
+color $x$ on the other strand changes first to $x*y$ and then back to
+$x$, since $(x*y)*y=x$. This determines all internal colors uniquely.
+
+For type III name the strands by their relative height. Read the top
+color as $z$, the middle color on the side before it passes under the
+top as $y$, and the bottom input as $x$. On one side of the move the
+bottom passes under the middle and then the top, leaving with
+$(x*y)*z$. On the other side it passes under the top and then under
+the transformed middle, leaving with $(x*z)*(y*z)$. These agree since
+both equal $x-2y+2z$. The top stays $z$ and the middle exits with $y*z$
+on both sides. These three parameters determine all local colors, so
+the two local assignments agree at every exterior port. Directions here
+are choices for tracing the three strands. Reading a strand backwards
+uses the same crossing relation because it is involutive. The argument
+therefore also covers reversed and rotated local pictures. Gluing the
+unchanged exterior identifies the full colorings even if some exterior
+ports are joined to one another. Constant colorings extend constantly
+in both directions. Relabeling the edges simply permutes color
+coordinates. Composing the local bijections proves the assertion.
+\end{proof}
+
+\subsection{Two-strand links and the figure-eight}
+A braid word is read from top to bottom, and its closure joins each bottom
+position to the top position of the same index. For a positive crossing
+with the left strand passing over the right, the pair of colors transforms
+by
+\[
+ B(x,y)=(2x-y,x),\qquad B^{-1}(x,y)=(y,2y-x).
+\]
+All untouched positions keep their colors. Once the top colors are
+given, all internal colors are forced, so the colorings of the closure
+are exactly the fixed vectors of the braid word modulo $n$.
+
+\begin{theorem}[Two-strand closure formula]\label{idx-knots65}
+For the closure $D_m$ of the two-strand braid with signed exponent
+$m\in\mathbb Z$,
+\[
+                  C_n(D_m)=n\gcd(n,|m|).
+\]
+For odd $m$ this is a knot, and for even $m$ it is a two-component link.
+The positive odd exponents give pairwise distinct diagram classes.
+\end{theorem}
+\begin{proof}
+Put $a=x-y$. Both crossings preserve this difference. The positive
+crossing adds $a$ to both entries and its inverse subtracts $a$.
+Iteration gives $B^m(x,y)=(x+ma,y+ma)$. The closure condition is thus
+$ma=0$ modulo $n$. Set $h=\gcd(n,|m|)$ and $n'=n/h$.
+The admissible residues are exactly $0,n',\ldots,(h-1)n'$.
+Indeed, cancelling $h$ gives $n'\mid (m/h)a$, and B\'ezout's identity
+for the coprime integers $n',m/h$ gives $n'\mid a$. The converse
+follows by multiplication. The identity is obtained by the ordinary
+Euclidean algorithm with decreasing remainders, carrying the two
+coefficients in each division. For $m=0$ every residue works. There are
+$n$ independent choices of $y$, giving the formula. Every crossing
+transposes the two strand positions, so the cycles of the endpoint
+permutation give the asserted component counts. If $1\le m<k$ are odd,
+use $n=k$: $C_k(D_k)=k^2$ while $C_k(D_m)\le km<k^2$.
+\end{proof}
+
+The trefoil is the closure $D_3$ and has nine three-colorings, six
+nonconstant. At modulus three the crossing equation says that the
+three arc colors are all equal or all different, as checking $x=y$ or
+$x\ne y$ shows. The crossing-free unknot has exactly three
+three-colorings, one per constant color. Thus no finite Reidemeister
+sequence takes one of these two diagrams to the other.
+
+\begin{proposition}[The figure-eight diagram]\label{idx-knots98}
+Write $a=\sigma_1,b=\sigma_2$ for the adjacent crossings of three
+strands. The figure-eight diagram is the closure of $w=(ab^{-1})^2$.
+It has $C_n(w)=n\gcd(n,5)$. Its diagram class is distinct from the
+unknot and the trefoil. It is equivalent to its mirror and has
+unknotting number one under diagram moves and crossing changes.
+\end{proposition}
+\begin{proof}
+Apply $B$ on slots $1,2$, then $B^{-1}$ on slots $2,3$, twice.
+For input $(x,y,z)$, put $u=x-y$, $v=y-z$. Subtracting the input from
+the output gives $(3u+v,-u-2v,-4u-3v)$. Vanishing is equivalent to
+$v=-3u$ and $5u=0$ modulo $n$. Given $z,u$, these equations reconstruct
+all three input colors. Counting $u$ as in the previous proof gives the
+formula. At $n=5$ the count is $25$, whereas the trefoil and unknot
+both have $5$. At $n=3$ the figure-eight has only its constant colorings.
+
+Mirroring across the projection plane changes all crossing signs, giving
+$(a^{-1}b)^2$. The braid relation $aba=bab$ is a type III move. Thus
+$\Delta=aba=bab$ satisfies $\Delta a=b\Delta$ and $\Delta b=a\Delta$ by
+concatenation. Conjugation by $\Delta$ interchanges $a,b$, including
+their inverses. Conjugation preserves a closed braid diagram class:
+move the cut around the annular closure, which cyclically permutes the
+word, then cancel inverse pairs by type II. Hence the mirror has the
+class of $(b^{-1}a)^2$, which cyclically shifts to $w$.
+
+Change the first $a$ in $w$ to $a^{-1}$. Cyclically shifting its last
+letter to the front gives $b^{-1}a^{-1}b^{-1}a$. The inverse braid
+relation changes the first three letters to $a^{-1}b^{-1}a^{-1}$, so
+cancellation leaves $a^{-1}b^{-1}$. Its rightmost strand now takes
+part in only its last crossing. On closure the strand and its outer
+closing arc form an empty kink, removable by a type I move after
+straightening that arc. The two-strand closure left over is $D_{-1}$,
+again a single removable kink. One crossing change therefore suffices.
+Zero cannot suffice by the count at modulus five.
+\end{proof}
+
+\subsection{Joining knots and the arithmetic statement}
+For connected sums use diagrams cut into $(1,1)$-tangles, each drawn
+with one input at the top and one output at the bottom. Closing the cut
+by an exterior arc gives its original diagram. Stacking two tangles and
+closing the result gives their marked connected sum. Represent a tangle
+by successive horizontal slices containing one crossing, one birth of a
+pair at a local minimum when read in the chosen direction, or one death
+of a pair. These are combinatorial instructions about adjacent positions.
+
+\begin{proposition}[Connected-sum count]\label{idx-knots143}
+For two such presented knots,
+\[
+ n C_n(D_1\mathbin{\#}D_2)=C_n(D_1)\,C_n(D_2).
+\]
+In particular the connected sum of $s\ge1$ trefoils has $3^{s+1}$
+three-colorings. Distinct positive values of $s$ give inequivalent
+diagrams.
+\end{proposition}
+\begin{proof}
+On a horizontal slice with colors $c_1,\ldots,c_k$ the alternating sum
+$c_1-c_2+c_3-\cdots$ is conserved. A crossing preserves the difference
+of the two entries it acts on. Inserting or removing an adjacent equal
+pair contributes zero and changes no subsequent sign. At the two ends
+there is only one entry, so every coloring has equal endpoint colors.
+It extends uniquely across the closing arc. Translating all residues by
+a constant preserves the equations and bijects the colorings at any two
+specified endpoint colors. Thus for $D_i$ let $q_i$ be the number with
+endpoint color zero. Its total is $nq_i$. For the stack, choose the
+common endpoint color in $n$ ways and the two restricted colorings in
+$q_1q_2$ ways. This gives the identity and, by induction from
+$C_3(D_3)=9$, the claimed powers of three.
+\end{proof}
+
+For Lean, encode a crossing record by four edge indices and a bit for
+the over pair. Define \texttt{colorOK} by one modular test and one
+equality per crossing. With $e$ edge variables including free circles,
+enumerate the $n^e$ vectors by radix digits (handle $n=1$ by the unique
+zero vector). For each external port table the type I--III proofs give
+explicit inverse functions between extension lists. Define
+\texttt{braidStep} on indexed color lists, and prove by induction on
+the word the fixed-vector test for the closure. Implement the signed
+two-strand formula as two inductions on $|m|$. For the connected-sum
+proof the induction predicate is equality of the current and initial
+alternating sums, evaluated modulo $n$. Thus iPRA proves the invariant
+for every coded move list, and unequal counts rule out any such list.
+Classically Reidemeister's theorem connects this diagram equivalence to
+ambient isotopy of tame knots. The iPRA claims above work directly with
+diagrams and the displayed moves. A translation of arbitrary ambient
+isotopies into move certificates would be a separate geometric theorem.

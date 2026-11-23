@@ -1,0 +1,109 @@
+\section{Executable artifacts and verification evidence}
+\label{sec:validation}
+
+\subsection{Files and reproducibility}
+
+\begin{longtable}{@{}L{0.38\textwidth}L{0.56\textwidth}@{}}
+\toprule
+Artifact & Purpose\\
+\midrule
+\endhead
+\code{report.tex}, \code{sections/*.tex}, \code{report.pdf} & Complete
+mathematical proof and foundational audit, with the source for rebuilding
+this PDF.\\
+\code{code/four\_squares.py} & Exact-integer implementation of the bounded
+seed, parity halving, odd descent, and factor accumulation.\\
+\code{code/validate.py} & Reproducible symbolic and finite checks.\\
+\code{validation/results.json} & Machine-readable results and exact
+test scope.\\
+\code{validation/prime\_traces.json} & Explicit descent traces, including
+negative coordinates and both transition branches.\\
+\code{lean/FourSquares.lean} & Uncompiled algorithm definitions and
+conditional host-theorem assembly.\\
+\code{lean/ProveItTarget.lean} & Uncompiled exact object sentences and
+proposed Euler-identity fragment for the pinned repository.\\
+\code{lean/OBLIGATIONS.md} & Named remaining formalization steps.\\
+\code{references/proveit/} & Pinned reference sources, interface excerpts,
+license, and provenance manifest.\\
+\code{validation/proof\_audit.txt}, \code{validation/code\_review.txt} &
+Independent mathematical and implementation review notes, with stated scope.\\
+\bottomrule
+\end{longtable}
+
+The constructor itself uses only the Python standard library. The symbolic
+validation script additionally uses SymPy. From the packet directory:
+\begin{lstlisting}
+python3 code/four_squares.py 2026
+python3 code/four_squares.py 31 --prime-trace
+python3 code/four_squares.py 128 --literal-clock
+python3 code/validate.py
+make pdf
+\end{lstlisting}
+The recorded validation used Python 3.12.14 and SymPy 1.14.0.
+
+\subsection{Checks that were actually run}
+
+The following checks passed and are recorded in
+\code{validation/results.json}:
+\begin{itemize}
+\item Exact symbolic expansion of Euler's identity returned zero remainder.
+The conjugate-product diagonal identity and the halving polynomial identity
+were also checked symbolically.
+\item Every signed ordered four-tuple satisfying
+$\Nrm{x}=mp$ with $p\in\{2,3,5,7,11,13\}$ and $1\le m<p$ was tested.
+This gives \textbf{19,992 states}: 376 terminal states, 10,992 even-halving
+states, and 8,624 odd-centered states. All passed norm preservation,
+positive new multiplier, strict active decrease, and, where applicable,
+exact coordinate divisibility.
+\item The complete constructor was checked for every
+$0\le n\le1000$ (1,001 inputs). Each returned four nonnegative integers
+whose squares sum exactly to $n$.
+\item All 168 primes at most 1,000 were checked for seed correctness and
+prime-representation correctness. The active traces exercised 129 even
+steps and 194 odd steps, with at most five active steps in that range.
+Primality classifications were compared with an independent finite sieve.
+\item The early-exit implementation and the literal fixed-clock version
+agreed for $0\le n\le128$ and for primes at most 257. An independent
+bounded two-pair enumerator also produced valid representations through 128.
+\item Additional exact outputs were checked for 2,026, 1,000,000, and
+20,261,122, as recorded below.
+\end{itemize}
+
+\begin{center}
+\begin{tabular}{r@{\qquad}rrrr}
+\toprule
+$n$&$W_0(n)$&$W_1(n)$&$W_2(n)$&$W_3(n)$\\
+\midrule
+0&0&0&0&0\\
+1&1&0&0&0\\
+7&1&1&2&1\\
+23&3&2&1&3\\
+31&1&2&1&5\\
+65&3&2&4&6\\
+310&0&6&15&7\\
+2,026&0&0&1&45\\
+1,000,000&0&1,000&0&0\\
+20,261,122&3,706&926&1,157&2,081\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The finite tests check implementation behavior, especially sign conventions,
+parity pairings, exact division, and clock handling. The universal theorem
+is established by the proof and QF induction audit, not inferred from the
+test range. Symbolic expansion verifies a fixed polynomial identity but
+does not produce a Lean or iPRA proof object.
+
+\subsection{Completion boundary}
+
+The human-readable constructive argument and explicit primitive recursive
+witness construction are complete. The Python implementation and the
+reported checks are complete. The PDF is compiled from the distributed
+LaTeX source.
+
+The host Lean local arithmetic contracts remain to be proved and compiled.
+The natural-code correspondence and the final closed
+$\mathsf{PRAAx}$ derivation remain to be assembled in ProveIt. The supplied
+source outlines, exact object goals, pinned interfaces, and obligation
+ledger describe those tasks concretely. They do not turn the remaining
+formalization into an already verified artifact.

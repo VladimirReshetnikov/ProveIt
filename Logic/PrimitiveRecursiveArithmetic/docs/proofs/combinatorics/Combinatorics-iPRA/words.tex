@@ -1,0 +1,51 @@
+\section{Words, finite orbits and mixing}
+\label{sec:words}
+For a word $w$ of length $L$, $p>0$ is a period when $w_i=w_{i+p}$ for every $i+p<L$. All subscripts below denote actual positions. Reading an infinite primitive recursive word means evaluating its letter function at a numerical input.
+
+\begin{theorem}[Fine--Wilf]\label{result67}
+If $p,q$ are periods and $L\ge p+q-\gcd(p,q)$, then $\gcd(p,q)$ is a period.
+\end{theorem}
+\begin{proof}
+Order $p\le q$ and put $d=\gcd(p,q)$. For $p=q$ the conclusion is the hypothesis. For $p<q$ use the prefix of length $L-p$. It still has period $p$. If $i+q-p<L-p$, the equalities $w_i=w_{i+q}=w_{i+q-p}$ show it also has period $q-p$. The new length is at least $q-d=p+(q-p)-\gcd(p,q-p)$. The sum of the periods has fallen, so the prefix has period $d$. Since $q\ge p+d$, this prefix has at least $p$ letters; in particular it contains representatives of all residues modulo $d$. Each position of the last $p$ letters can be moved back by $p$ into the prefix, keeping its residue modulo $d$. Thus every letter equals the prefix representative of its residue. For quantifier-free induction keep the original word fixed and test all its prefixes and both periods up to the initial sum, restricted to smaller period sums. For an illustrative sharp instance, $010010$ has periods $3,5$ but lacks period $1$; its length is one below $3+5-1$.
+\end{proof}
+
+\begin{theorem}[Thue--Morse, overlaps and equal powers]\label{result68}\label{thm:tm}
+Let $t(n)$ be the parity of the sum of the binary digits of $n$. It obeys $t(2n)=t(n)$ and $t(2n+1)=1-t(n)$. Its length-$2^m$ prefix is obtained by $m$ iterations of the substitution $0\mapsto01$, $1\mapsto10$ on $0$, and the next block of equal length is its complement. It contains no overlap $a\,u\,a\,u\,a$ (a letter $a$ and a possibly empty word $u$), and hence no cube and no ultimately periodic tail. For $0\le j<m$ the two sets of indices $0\le n<2^m$ having $t(n)=0,1$ have equal sums of $j$th powers, respectively, taking $n^0=1$.
+\end{theorem}
+\begin{proof}
+The bit formulas follow by appending the low bit. Substitution generates the two children of each old letter. For $0\le n<2^m$ the high bit of $n+2^m$ reverses parity. These observations prove the prefix and complement claims by induction.
+
+An overlap of period $p\ge1$ starting at $s$ would impose $t(s+i)=t(s+p+i)$ for $0\le i\le p$. If $p$ is odd, an equal adjacent pair anywhere among $s,\ldots,s+p$ would recur $p$ places later. One of the two pairs would start at an even index, where the two children are complementary. Hence the whole first segment alternates. Its endpoints $p$ steps apart then differ, contradicting the equality for $i=0$. If $p=2h$, take the equalities for $i=2j$, $0\le j\le h$. At even $s$ they give an overlap of period $h$ starting at $s/2$; at odd $s$ both sides are complemented, giving the same conclusion at $\lfloor s/2\rfloor$. Period descent ends in at most $p$ steps. Formally test the absence of overlaps for periods $\le k$ and starts $\le s$ with fixed $s,p$ bounds. A cube of a nonempty word contains its first two copies and the first letter of its third, an overlap. A period $p>0$ on a tail would already give an overlap on its first $2p+1$ positions. In fact scanning $0\le i\le p$ gives a mismatch for any specified $s,p$.
+
+For the moments let $S_m(f)=\sum_{i<2^m}(-1)^{t(i)}f(i)$ in the signed integers. Splitting at the high bit gives $S_{m+1}(f)=S_m(f(X)-f(X+2^m))$. If $f$ is constant, the difference vanishes; otherwise the binomial formula lowers its degree by at least one. Repeating $m$ times annihilates any polynomial of degree $<m$, hence $S_m(X^j)=0$. This also gives the finite polynomial identity
+\[
+ \sum_{i<2^m}(-1)^{t(i)}X^i=\prod_{h<m}(1-X^{2^h})
+\]
+by expanding over the binary digits. One can avoid any induction over arbitrary polynomials: the bounded predicate for stage $m$ is just $S_m(X^i)=0$ for $i<m$. At the successor stage, expand the difference of the two powers into a linear combination of these preceding moment equations.
+\end{proof}
+
+\begin{corollary}[A ternary square-free word]\label{result69}
+There is an explicitly primitive recursive word on three symbols with no two consecutive identical nonempty blocks.
+\end{corollary}
+\begin{proof}
+Set $p_0=1$ and take $p_{j+1}$ to be the next position with $t=1$. Three consecutive zeros would be an overlap, so scan only the next three positions. The gaps $g_j=p_{j+1}-p_j$ belong to $\{1,2,3\}$ and $p_j\le 1+3j$. A repetition of a block of gaps would produce two consecutive copies of the binary word obtained by replacing each gap $d$ with one followed by $d-1$ zeros. The next symbol is again one. Writing the repeated word as $1u$ produces the forbidden overlap $1u1u1$. All decisions are over the supplied starting position and block length.
+\end{proof}
+
+\begin{theorem}[Finite dynamics and a quantitative Markov-chain bound]\label{result70}
+A table $f:[N]\to[N]$, started at any $x$, has integers $\mu\ge0$, $\lambda>0$ with $\mu+\lambda\le N$ such that $f^{i+\lambda}(x)=f^i(x)$ for $i\ge\mu$.
+
+Let $W=(w_{ij})$ be a nonnegative integer $N\times N$ table, $N\ge1$, with each row sum $D>0$. Set $P=W/D$, $a_j=\min_i w_{ij}$ and $s=\sum_j a_j$. If $s>0$, $P$ has a unique stationary probability among rational distributions, given by an explicit tree formula. For rational row distributions $u,v$ and every $t$,
+\[
+ \|uP^t-vP^t\|_1\le (1-s/D)^t\|u-v\|_1.
+\]
+In total variation, distance to stationarity is at most $2^{-k}$ after $Dk$ steps.
+\end{theorem}
+\begin{proof}
+Among the first $N+1$ orbit values a pair repeats. Choose the first repeated index $j$ and its earlier occurrence $i$. Then $\mu=i,\lambda=j-i$ work, since repeated application of the same table preserves equality. All earlier values are distinct, giving a repetition certificate and the preperiod and cycle themselves.
+
+For stationarity, let $\tau_j$ sum the products of edge weights over directed spanning trees oriented toward root $j$: every other vertex chooses one outgoing edge and iterating from it reaches $j$. This includes the empty tree when $N=1$. The identity $\sum_i\tau_i w_{ij}=D\tau_j$ follows from a reversible counting operation. On the left complete the tree rooted at $i$ by the edge $i\to j$. On the right complete a tree rooted at $j$ by an arbitrary outgoing edge. Both constructions list exactly the functional graphs having one directed cycle, with $j$ on it. To recover the left tree remove the cycle edge entering $j$; to recover the right tree remove the cycle edge leaving $j$. A one-edge loop is allowed. The products agree even with zero weights. Some $a_j>0$, and the star toward that $j$ has positive weight (empty product for $N=1$). Therefore $T=\sum_j\tau_j>0$ and $\pi_j=\tau_j/T$ is a stationary rational probability.
+
+Writing $R_{ij}=w_{ij}-a_j\ge0$, its row sums are $D-s$. Any row difference $z=u-v$ has sum zero, so $DzP=zR$. The triangle inequality in each column gives $D\|zP\|_1\le\sum_i |z_i|\sum_j R_{ij}=(D-s)\|z\|_1$. Iterate this inequality. For two stationary rows it forces equality of the rows since $s>0$. For $x=s/D$ we have $(1-x)^D(1+Dx)\le(1-x)^D(1+x)^D\le1$ by the binomial formula. Since $Dx=s\ge1$, each block of $D$ steps multiplies distance by at most $1/2$. Initially $\|u-\pi\|_1/2\le1$, giving the indicated bound in total variation. This argument covers $s=D$ with the usual zeroth-power convention.
+\end{proof}
+
+\paragraph{Objects for Lean.} Encode finite words by digits and length; \texttt{period} compares letters at indices below that length. A direct term for $t(n)$ folds parity over $n+1$ inspected binary digits. Alternatively, compute the table of letters in increasing order from the two child equations. The overlap test is a conjunction over $p+1$ positions; the code returns its first failure. For tree weights enumerate the $N^{N-1}$ parent assignments for each root and test reachability in $N$ iterations. Common denominators can be tracked with the factor $D^t$; e.g. rational matrix powers with denominator $D^t$ have numerators at most $D^t$. This yields integer versions of the norm bounds. Allouche and Shallit provide background on the word and its two uses~\cite{thue}.

@@ -1,0 +1,44 @@
+\section{Algorithms and the numerical claims}\label{sec:computing}
+
+\begin{theorem}[All values and an isolated value]\label{thm:algorithm}
+All the values through $N$ take $O(N)$ word operations and $O(N)$ words. For one value at $N\ge1$, the quotient recurrence takes $O(N^{2/3})$ word operations and $O(N^{2/3})$ words with the cutoff below.
+\end{theorem}
+\begin{proof}
+For the table maintain a list of the primes found and a Boolean composite array initialized to false. Set $\mu(1)=1$. In increasing order of $i\ge2$, if $i$ is unmarked append it to the prime list and set $\mu(i)=-1$. For each prime $p$ in list order form $j=ip$. Stop if $j>N$. Mark $j$ composite. If $p\mid i$, set $\mu(j)=0$ and end this inner loop. Otherwise set $\mu(j)=-\mu(i)$ and continue.
+
+Every composite $j$ has the unique generating pair $(i,p)$ with $p$ its least prime factor and $i=j/p$. Its least factor satisfies $p\le i$, and no prime below $p$ divides $i$. The pass at $i$ therefore reaches $p$. Conversely each product generated has $p$ as least factor, by the stopping condition. Thus the prime test on an unmarked $i$ is justified inductively, each composite is marked just once, and the update for $\mu$ follows from its prime exponents. There is at most one extra terminating test per outer iteration. A final prefix sum gives $M$.
+
+For the isolated-value method let $b=\lceil\sqrt[3]N\rceil$, $y=\min(N,b^2)$ and $K=\lfloor N/(y+1)\rfloor\le b$. First sieve to $y$. For $i=K,K-1,\ldots,1$ compute the value at $v=\lfloor N/i\rfloor$. In its recurrence, starting at $a=2$, one whole quotient block has
+\[
+ u=\lfloor v/a\rfloor,\qquad e=\lfloor v/u\rfloor,\qquad
+ \text{contribution }(e-a+1)M(u).
+\]
+Advance to $e+1$. For $u\le y$ use the sieve. For $u>y$, use the previously computed entry at index $ia$, since $u=\lfloor N/(ia)\rfloor$ and $i<ia\le K$. This proves the reverse-loop invariant and correctness, including the case $K=0$ when the sieve already gives the answer.
+
+There are at most $2\lfloor\sqrt{N/i}\rfloor$ blocks at $i$. To sum this bound count the pairs $(i,j)$ with $1\le i\le K$, $j\ge1$ and $ij^2\le N$. Those with $j\le b$ contribute at most $b^2$ and the others at most $\sum_{j>b}N/(j(j-1))=N/b\le b^2$. This proves the time bound with integer cutoffs throughout. A running total in a recurrence has magnitude at most $1+N^2$. Indices and products fit in a constant multiple of $\log(2N)$ bits. The operation model allows indexed word reads and writes and integer division. With schoolbook word arithmetic in a random-access bit-cost model one can charge $O(\log^2(2N))$ per operation, giving the $O_\varepsilon(N^{2/3+\varepsilon})$ exponent. The operation-count claim concerns this algorithm. Other methods achieve smaller space bounds \cite{ht}.
+\end{proof}
+
+\paragraph{An independent formula for verification.}
+Let $r=\lfloor\sqrt N\rfloor$. Using $\mu*\mu*\mathbf1=\mu$, sum the triple convolution over $abc\le N$ with weight $\mu(a)\mu(b)$. The regions $a>r$ and $b>r$ are disjoint. For fixed $a>r$ the sum on $(b,c)$ is $\sum_{m\le N/a}\sum_{b\mid m}\mu(b)=1$. Thus these two regions together contribute $2(M(N)-M(r))$. Summing $c$ in the remaining region and rearranging gives the identity used in the second computation \cite{ht}:
+\[
+ M(N)=2M(r)-\sum_{a,b\le r}\mu(a)\mu(b)\left\lfloor\frac{N}{ab}\right\rfloor.
+\]
+
+\paragraph{Exact finite evaluations.}
+Both isolated-value algorithms yield the following ten integers.
+\begin{center}
+\begin{tabular}{@{}lrrrrrrrrrr@{}}
+\toprule
+$j$&0&1&2&3&4&5&6&7&8&9\\
+$M(10^j)$&1&$-1$&1&2&$-23$&$-48$&212&1037&1928&$-222$\\
+\bottomrule
+\end{tabular}
+\end{center}
+For $N=1,\ldots,12$ the values are
+$1,0,-1,-1,-2,-1,-2,-2,-2,-1,-2,-2$. The first ten positive zero arguments are
+$2,39,40,58,65,93,101,145,149,150$. The full table to $428$ recovers the displayed initial $143$ terms, the displayed zero sequence, and the seven level sets in the two articles over their displayed ranges. The per-integer table is in \texttt{verification/initial-values.csv}. The program lists all the level hits over the required interval.
+
+More sharply, on the integers $2\le n\le10\,000$ the maximum of $M(n)^2/n$ is $4/5$, first attained at $5$. The program verifies this by comparing integer cross products using two independent definitions of $\mu$. It uses the sieve and independently performs the update $\mu(m)\mathrel{-}=\mu(d)$ on each proper multiple $m$ of successive $d$, starting from the array $\delta$. Before visiting $d$, all contributions of its proper divisors have already been subtracted. This proves the update by the divisor identity. On each cell $[n,n+1)$ the largest ratio $M(n)^2/x$ occurs at $n$. On $(1,2)$ it is $1/x<1$. Together these give Mertens's historical strict inequality on $1<x\le10\,000$. For each finite calculation the proof rule in iPRA is evaluation of closed PR terms by their defining equations. The bundled scripts are reproducible evaluations, with the mathematical justifications above.
+
+\paragraph{The disproof as a logical statement.}
+The 1985 result of Odlyzko and te Riele gives excursions on both sides of the square-root bounds \cite{ot}. Its strict-excess conclusion implies $\exists n>1\ [M(n)^2>n]$ by taking an integer part. At the metamathematical level every true closed existential statement with a PR witness test has an iPRA proof obtained by evaluation at a witnessing numeral followed by existential introduction. This observation identifies the proof-theoretic status of the individual existential statement. It supplies neither that numeral nor a uniform oscillation theorem. The large oscillations in the 1985 paper and the effective bound of Pintz quoted in \cite{ht} remain external inputs here.

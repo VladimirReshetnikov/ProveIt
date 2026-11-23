@@ -1,0 +1,52 @@
+\documentclass[10pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[letterpaper,left=.91in,right=.91in,top=.82in,bottom=.81in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,array,microtype}
+\usepackage{enumitem,fancyhdr,xcolor,titlesec}
+\definecolor{ink}{HTML}{183D47}
+\definecolor{accent}{HTML}{17635D}
+\usepackage[colorlinks=true,linkcolor=accent,urlcolor=accent,citecolor=accent,bookmarksnumbered=true]{hyperref}
+\usepackage{bookmark}
+\hypersetup{pdftitle={Prime counting in intuitionistic primitive recursive arithmetic},pdfsubject={Exact formulas, sharp inequalities, asymptotic estimates and Lean formalization}}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small\color{ink}Prime counting in iPRA}
+\fancyhead[R]{\small\color{ink}\thepage}\renewcommand{\headrulewidth}{.3pt}
+\setlength{\emergencystretch}{2em}
+\setlength{\parindent}{1.15em}
+\setlength{\parskip}{2pt}
+\allowdisplaybreaks[2]
+\setcounter{tocdepth}{1}
+\titleformat{\section}{\Large\bfseries\color{ink}}{\thesection}{.65em}{}
+\titleformat{\subsection}{\large\bfseries\color{ink}}{\thesubsection}{.6em}{}
+\titlespacing*{\section}{0pt}{12pt plus 3pt}{6pt}
+\titlespacing*{\subsection}{0pt}{8pt plus 2pt}{4pt}
+\setlist{topsep=4pt,itemsep=3pt,parsep=0pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\numberwithin{equation}{section}
+\begin{document}
+\thispagestyle{empty}
+{\noindent\color{accent}\sffamily\small CONSTRUCTIVE NUMBER THEORY \hfill NOVEMBER 22, 2026\par}
+\vspace{9pt}
+{\noindent\fontsize{25}{29}\selectfont\bfseries\color{ink}Prime counting in intuitionistic\\primitive recursive arithmetic\par}
+\vspace{8pt}
+\noindent We prove exact sieve and inversion formulas for $\pi(x)$, determine the global maximum of $\pi(x)\log(x)/x$, and certify the exact cutoff $2418$ in Ramanujan's inequality for the logarithmic integral. Each assertion about an integral or a limit is read as an estimate for rational approximations with a primitive-recursive accuracy schedule. A pinned ProveIt derivation supplies the prime number theorem. A separate quantitative human proof supplies the stronger input for the asymptotic expansions of $\pi(x)$ and $p_m$. We recompute fourteen rows of the prime-count tables, and give counterexamples to numerical cutoffs in the cited material. The final section identifies the checked Lean theorems and the remaining object-level derivations.
+\smallskip
+\begingroup\small\setlength{\parskip}{0pt}\tableofcontents\endgroup
+\newpage
+\input{sections/foundations}
+\input{sections/sieve}
+\input{sections/exact}
+\input{sections/growth}
+\input{sections/chebsharp}
+\input{sections/riemannR}
+\input{sections/li}
+\input{sections/numerics}
+\input{sections/nthfinite}
+\input{sections/conditional}
+\input{sections/formalization}
+\end{document}

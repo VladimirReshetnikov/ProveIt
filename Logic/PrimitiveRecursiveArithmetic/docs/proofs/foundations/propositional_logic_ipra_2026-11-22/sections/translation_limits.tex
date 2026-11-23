@@ -1,0 +1,266 @@
+\section{Classical principles and negative translation}\label{sec:negative}
+
+\subsection{Exactly where the classical strength enters}
+
+\begin{lemma}[Double negation and stable conclusions]\label{thm:stable-case}
+\IPC\ proves $A\to\neg\neg A$ and $\neg\neg(A\vee\neg A)$.
+Every formula $\neg\neg C$ is stable, meaning that
+$\neg\neg\neg\neg C\to\neg\neg C$ is provable.
+If $C$ is stable, the rule
+\[
+ \frac{\Gamma,A\vdash_I C\qquad\Gamma,\neg A\vdash_I C}
+      {\Gamma\vdash_I C}
+\]
+is derivable with a fixed proof template using a supplied stability proof.
+\end{lemma}
+\begin{proof}
+Under $A$ and $A\to\bot$, application gives $\bot$, proving the first
+assertion. To prove the second, assume $h:\neg(A\vee\neg A)$. Assuming
+$A$ and injecting it contradicts $h$, so $\neg A$ follows. Injecting that
+negation again contradicts $h$, and discharging $h$ gives the result.
+Stability of double negations is the triple-negation law from
+Theorem~\ref{thm:int-laws} applied to $\neg C$.
+
+For the rule, suppose $\neg C$. Under an additional $A$, the first branch
+gives $C$, so $\neg A$ follows. The second branch now gives $C$, another
+contradiction. Discharging $\neg C$ gives $\neg\neg C$; the supplied
+stability proof gives $C$. No case split on the truth of $A$ occurred.
+\end{proof}
+
+\begin{theorem}[Equivalent classical extensions]\label{thm:classical-schemes}
+Over \IPC, adding any one of the following \emph{schemes} gives exactly
+\CPC:
+\[
+ A\vee\neg A,\qquad \neg\neg A\to A,\qquad
+ ((A\to B)\to A)\to A.
+\]
+The equivalences are witnessed by primitive recursive proof translations.
+\end{theorem}
+\begin{proof}
+Excluded middle eliminates double negations: its $A$ branch gives $A$,
+while its $\neg A$ branch contradicts $\neg\neg A$ and gives $A$ by
+falsehood elimination. Double-negation elimination gives excluded middle
+by applying it to the second assertion of Lemma~\ref{thm:stable-case}.
+For Peirce's law, suppose $h:(A\to B)\to A$. Under $\neg A$, any
+assumed $A$ yields falsehood and hence $B$, giving $A\to B$. Applying
+$h$ then contradicts $\neg A$. Thus $\neg\neg A$, and double-negation
+elimination yields $A$.
+
+Conversely specialize Peirce's scheme to $B=\bot$. Given $\neg\neg A$,
+an assumption $\neg A$ yields falsehood and hence $A$. Therefore
+$\neg A\to A$, and that instance of Peirce gives $A$. These are fixed
+templates for replacing each added-axiom node of a proof. The distinction
+between a scheme and an isolated instance matters: an assertion about
+all substitution instances is what the theorem proves.
+\end{proof}
+
+\subsection{A constructive contextual Glivenko theorem}
+
+\begin{theorem}[Glivenko with finite hypotheses]\label{thm:glivenko}
+There are primitive recursive transformations proving
+\[
+       \Gamma\vdash_C A
+       \quad\Longleftrightarrow\quad
+       \Gamma\vdash_I\neg\neg A.
+\]
+Correctness is provable in \ipra\ as a statement about the two proof
+checkers. In particular a classically valid propositional formula has an
+intuitionistic proof of its double negation.
+\end{theorem}
+\begin{proof}
+From a classical proof obtain its finite Boolean consequence certificate
+by soundness. Reuse the leaf construction in the proof of
+Theorem~\ref{thm:cpc-complete}: for every full literal context $L_a$ it
+produces an \IPC\ proof of $A$ from $\Gamma,L_a$. That construction uses
+only the signed evaluation lemma and falsehood elimination, even when
+a premise in $\Gamma$ is false on the row. Append double-negation
+introduction to obtain $\neg\neg A$ at every leaf.
+
+Merge the leaves in the same binary pattern, but use the stable-conclusion
+rule of Lemma~\ref{thm:stable-case}, with $C=\neg\neg A$, in place of
+classical case analysis. It discharges the two opposite literals without
+excluded middle. The final proof has precisely the context $\Gamma$ and
+conclusion $\neg\neg A$. This is a bounded proof-table construction.
+In the opposite direction, regard the intuitionistic proof as a classical
+one and append the classical double-negation-elimination template.
+\end{proof}
+
+\begin{corollary}[Conservativity for stable conclusions]\label{thm:stable-conservativity}
+If a supplied \IPC\ proof establishes $\neg\neg A\to A$, then any
+\CPC\ proof of $A$ from $\Gamma$ can be changed into an \IPC\ proof of
+$A$ from $\Gamma$. In particular this holds for negated conclusions.
+\end{corollary}
+\begin{proof}
+Apply contextual Glivenko and then the stability proof. A negation is
+stable by the triple-negation law.
+\end{proof}
+
+\subsection{A structural negative translation}
+
+The truth-table method above gives an especially simple existence proof.
+There is also a translation which follows the input proof structurally.
+Define
+\[
+\begin{array}{ll}
+ (p_i)^N=\neg\neg p_i,&\bot^N=\bot,\\
+ (A\wedge B)^N=A^N\wedge B^N,&
+ (A\vee B)^N=\neg\neg(A^N\vee B^N),\\
+ (A\to B)^N=A^N\to B^N.&
+\end{array}
+\]
+This is a primitive recursive formula transformation. Its output size is
+bounded by a constant times the input size because each constructor adds
+only a fixed number of nodes.
+
+\begin{lemma}[Stability of translated formulas]\label{thm:negative-stable}
+There is a primitive recursive constructor for \IPC\ proofs of
+$\neg\neg A^N\to A^N$. If $Y$ is stable, then from $\neg\neg X$ and
+$X\to Y$ one can derive $Y$ intuitionistically.
+\end{lemma}
+\begin{proof}
+For the last assertion, an assumption $\neg Y$ and $X\to Y$ give
+$\neg X$, contradicting $\neg\neg X$. This yields $\neg\neg Y$, hence $Y$.
+For stability use structural induction. Double negations, including the
+translated atom and disjunction cases, are stable. Falsehood is stable:
+$\neg\neg\bot$ applied to the identity $\bot\to\bot$ gives $\bot$.
+If $P,Q$ are stable, then $\neg\neg(P\wedge Q)$ gives $\neg\neg P$ and
+$\neg\neg Q$ by composing hypothetical negations with projections.
+Stability gives the components and hence their conjunction.
+If $Q$ is stable, assume $\neg\neg(P\to Q)$ and $P$. Under $\neg Q$,
+any function $P\to Q$ gives a contradiction, so $\neg(P\to Q)$ follows,
+contradicting the first assumption. Hence $\neg\neg Q$ and then $Q$.
+Discharge $P$. These are recursive proof templates for every constructor.
+\end{proof}
+
+\begin{theorem}[Negative translation of classical proofs]\label{thm:negative-translation}
+A primitive recursive transformation maps every \CPC\ proof of $A$ from
+$\Gamma$ to an \IPC\ proof of $A^N$ from $\Gamma^N$. Also \CPC\ proves
+$A\leftrightarrow A^N$, uniformly by a primitive recursive proof constructor.
+\end{theorem}
+\begin{proof}
+Translate the proof tree. Conjunction and implication rules commute with
+the translation, as do assumptions and falsehood elimination. Disjunction
+introduction first introduces $A^N\vee B^N$ and then its double negation.
+For disjunction elimination the translated branches give
+$(A^N\vee B^N)\to C^N$. Its principal premise is the double negation of
+that disjunction; apply Lemma~\ref{thm:negative-stable}, since $C^N$ is stable.
+The translation of an excluded-middle axiom is
+$\neg\neg(A^N\vee\neg A^N)$, already proved in
+Lemma~\ref{thm:stable-case}. Thus every translated rule has an intuitionistic
+template. For the classical equivalence, evaluate both sides under a
+Boolean valuation: double negation changes no bit, so a structural induction
+identifies the values. Classical completeness supplies the equivalence
+proof, or the classical double-negation templates give it directly.
+\end{proof}
+
+\subsection{Substitution into arithmetic without a reflection mistake}
+
+\begin{proposition}[Decidable arithmetic instances]\label{thm:decidable-instances}
+Suppose a finite collection of arithmetic formulas $P_i$ is supplied,
+together with iPRA derivations of $P_i\vee\neg P_i$. A classical
+propositional derivation whose atoms lie in this collection can be
+translated primitive recursively into an iPRA derivation of its arithmetic
+instance from the instantiated premises. Every bounded arithmetic formula
+is eligible because of Theorem~\ref{thm:bounded-reflection}.
+\end{proposition}
+\begin{proof}
+Decidability is preserved by every propositional connective. For
+conjunction and disjunction inspect the two given decisions. For an
+implication, a decision of its antecedent and consequent either provides
+the implication, by a true consequent or a false antecedent, or provides
+its negation, by a true antecedent and a false consequent. Falsehood is
+decidable. Hence recursion constructs a decision proof for each formula
+whose excluded-middle axiom occurs in the input derivation. Substitute
+the arithmetic formulas throughout and replace those classical nodes by
+these constructed proofs; every remaining propositional rule is already
+an iPRA logical rule. This proves a syntactic proof-translation claim.
+It does not supply a universal arithmetic truth predicate, nor does it
+turn a proof-checker acceptance statement into unrestricted truth of an
+arbitrary coded arithmetic formula.
+\end{proof}
+
+\section{What finite completeness does and does not assert}\label{sec:limits}
+
+\subsection{Finite compactness statements that are proved here}
+
+Every formula uses finitely many atoms, every proof uses finitely many
+assumptions, and the proof constructors above use finite contexts. In
+particular, a coded proof from an enumerated collection of hypotheses
+comes with a finite support: traverse its hypothesis leaves and collect
+their finitely many indices. This extraction is primitive recursive.
+One can then rebuild the proof over precisely that finite subcollection.
+
+There is also a useful finite-vocabulary observation. For $n$ fixed atoms
+there are $2^{2^n}$ distinct Boolean truth tables, and every formula is
+equivalent to one of them. Any \emph{finite} family of formulas over those
+atoms may therefore be reduced to at most $2^{2^n}$ representative formulas
+without changing its models, by evaluating and deduplicating its truth
+tables. The representative indices and equivalence proofs are bounded
+search outputs. This does not by itself provide a bound on when a new
+truth table might appear in an infinite enumeration.
+
+\subsection{Why arbitrary countable compactness is a different assertion}
+
+An unrestricted claim that every finitely satisfiable countable theory has
+an infinite satisfying assignment quantifies over an infinite object that
+is not among the numerical finite certificates used in this paper. The
+obstruction is concrete, not just terminological.
+
+\begin{proposition}[Compactness would supply paths through binary trees]
+\label{thm:compactness-tree}
+Let $T$ be a prefix-closed binary tree with a node at every finite depth,
+specified by a fixed primitive recursive membership predicate. From $T$
+one can primitive recursively enumerate a countable propositional
+theory every finite subcollection of which is satisfiable, such that any
+infinite satisfying valuation determines an infinite path in $T$.
+\end{proposition}
+\begin{proof}
+Use atoms $p_0,p_1,\ldots$. For each binary string
+$s=(s_0,\ldots,s_{k-1})$ absent from $T$, include the clause
+\[
+ C_s=\bigvee_{i<k}\begin{cases}p_i&s_i=0,\\\neg p_i&s_i=1.\end{cases}
+\]
+It is false on exactly the valuations whose first $k$ bits are $s$.
+For a total enumeration, scan all binary strings in length order and output
+$\top$ for a string in $T$, or $C_s$ otherwise. This avoids any search for
+a next missing string. For a finite subcollection let $L$ be the maximum
+excluded-string length occurring there, with $L=0$ for the empty
+subcollection. Choose a node $t\in T$ of length $L$ by bounded search among the
+$2^L$ strings, using the assumed existence at that level. Its bits satisfy
+every listed clause: otherwise an excluded string would be a prefix of
+$t$, contrary to prefix closure. Thus finite satisfiability has explicit
+witnesses at each finite stage. If a single infinite assignment satisfies
+all clauses, none of its finite prefixes is excluded, so every prefix lies
+in $T$. It is exactly an infinite path. For a tree supplied only with a
+general computable decider, the same construction is effective relative
+to that decider, but no primitive recursive running bound is asserted.
+\end{proof}
+
+Thus arbitrary countable compactness would solve an infinite path-selection
+problem, usually expressed in second-order settings by a weak K\"onig
+principle. We do not add such a principle to iPRA, do not claim a universal
+primitive recursive path selector, and do not identify stage-by-stage
+finite witnesses with a coherent infinite witness. This proof also pinpoints
+why the finite maximal-extension construction in the intuitionistic section
+is harmless: its entire universe has the explicit size $m$, and it performs
+only $m$ greedy tests.
+
+\subsection{Other boundaries of the result}
+
+The Boolean and finite Kripke completeness theorems are full propositional
+theorems for arbitrary finite input syntax, not bounds on a preselected
+finite list of formulas. Nevertheless they should not be confused with
+completeness for the ``intended meaning'' of all constructive arithmetic
+propositions, with first-order completeness, or with arithmetic reflection.
+For the intended-interpretation distinction see the original analysis by
+Burgess \cite{burgess1981}; no additional choice-sequence principle from
+that work is used here.
+
+Our proof-system translations do not give polynomial simulations between
+all proof systems. Truth tables and reconstructed cut-free proofs may be
+exponentially large. The intuitionistic saturation table also deliberately
+uses an exponential number of sequents. Nothing here settles $P$ versus
+$NP$, gives a polynomial-time general SAT solver, or establishes a sharp
+complexity bound for intuitionistic validity. Modal, quantified, and
+first-order logics require separate syntax and metatheory and are not
+silently included by the word ``logic''.

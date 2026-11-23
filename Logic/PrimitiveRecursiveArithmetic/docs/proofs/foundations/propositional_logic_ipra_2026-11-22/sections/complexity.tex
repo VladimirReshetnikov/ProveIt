@@ -1,0 +1,248 @@
+\section{SAT and polynomial verifier reductions}\label{sec:complexity}
+
+The root article states that satisfiability is NP-complete. Here that
+statement receives a finite, constructive proof rather than being left as
+an external complexity-theoretic assertion. The mechanism is the bounded
+computation encoding behind Cook's theorem \cite{cook1971}, followed by the
+explicit Tseitin construction proved earlier. We state the machine model,
+the witnesses, and the uniformity needed for the iPRA reading.
+
+\subsection{Representing the classes without quantifying over arbitrary sets}
+
+Inputs are finite binary strings. A verifier presentation consists of a
+fixed deterministic Turing machine $M$, a polynomial witness-length bound
+$p(n)$, and a polynomial clock $T(n)$. Both polynomials have specified
+natural coefficients and exponents; increase the bounds if necessary to
+avoid negative or fractional coefficients. A witness has exactly $p(n)$
+bits. A witness of length at most $q(n)$ may instead be represented by
+$q(n)+1$ unary length-marker bits and $q(n)$ padded data bits; validate the
+marker and ignore padding. This gives exact length $2q(n)+1$.
+The accepted predicate is
+\[
+ L_{M,p,T}(x)\quad:\!\Longleftrightarrow\quad
+ \exists w<2^{p(|x|)}\ \operatorname{Accept}_M(x,w,T(|x|))=1.
+\]
+The acceptance test is a primitive recursive bounded simulation. The
+polynomially clocked verifier presentations are what ``NP'' means here.
+A polynomial reduction is a specified deterministic string algorithm with
+a specified polynomial running-time bound and a proved equivalence of
+membership predicates. Thus the assertions below are uniform theorem
+schemes about numerical programs and their certificates, not unformalized
+quantification over a universe of arbitrary languages.
+
+This verifier definition agrees with the finite branching nondeterministic
+description: a nondeterministic run of polynomial length is specified by
+its sequence of transition choices, each from a fixed finite list, and a
+deterministic verifier replays those choices. Conversely, guess the
+polynomial-length witness and run its deterministic verifier. Both
+transformations have explicitly polynomial clocks. A multitape machine
+may be replaced by a one-tape machine with polynomial overhead: record
+the finitely many tracks and head markers in consecutive blocks, sweep
+the at most polynomially many used cells to find and update the markers
+for each simulated step, and repeat for the specified clock. The number
+of tracks is fixed, so this uses at most a fixed polynomial number of
+scanned cells. These are bounded simulations and therefore primitive
+recursive constructions with bounded arithmetic invariants.
+
+\begin{proposition}[Polynomial verifiability of SAT]\label{thm:sat-np}
+Satisfiability of formulas, of Boolean circuits, and of clauses of width
+at most three has a polynomially clocked verifier presentation. The
+correctness of each presentation is provable in \ipra.
+\end{proposition}
+\begin{proof}
+Parse the finite input and reject invalid syntax. Densely rename its
+distinct atom indices to $0,\ldots,n-1$ by repeated comparisons; there are
+at most as many as input symbol positions. For an input of bit length $m$,
+a witness supplies exactly $m$ bits; consume its first $n$ bits and ignore
+the remainder. Represent circuits as finite gate lists with all predecessor
+indices smaller than their gate index, rejecting a malformed list.
+Evaluate the formula or circuit in an order in which the children precede
+their parent and accept precisely when the output is one. For clauses,
+scan their literals and conjunction. The correctness equation is the
+definition of evaluation and is proved by the node scan.
+For a concrete bit-string model, repeated scans, comparisons of indices,
+and copying a value from an earlier position each cost at most a polynomial
+in the input length. A deliberately naive implementation with nested
+linear scans is still polynomial; no constant-time random access to
+unbounded integers is assumed. With repeated scans for parsing, comparisons
+and lookup, a conservative one-tape clock $C(m+2)^8$ suffices for a fixed
+implementation and fixed constant $C$: there are at most $m$ nodes and
+indices of at most $m$ bits; using at most eight nested scans of length
+$O(m+2)$ dominates parsing, renaming, table updates, and work-tape sweeps.
+Witness length and total work therefore have polynomial bounds depending
+only on input length.
+\end{proof}
+
+\subsection{Unrolling a verifier into a Boolean circuit}
+
+Fix $M,p,T$ and an input $x$ of length $n$. Use a one-tape machine with a
+finite tape alphabet $\Sigma$, a finite state set $Q$, and moves
+$-1,0,+1$. Make the accepting and rejecting halting states stationary
+self-loops, so acceptance by the clock is the same as acceptance at the
+clock. The input consists of a fixed framing symbol, $x$, a separator,
+the $p(n)$ witness bits, and another framing symbol; let its length be
+$b=n+p(n)+3$. Put its first cell at offset $T(n)+1$ in an array of length
+\[
+                 \ell=b+2T(n)+3.
+\]
+There is enough blank padding that a head making at most $T(n)$ moves
+cannot leave this array. The few extreme cells can be treated as fixed
+blanks, since no head reaches them within the clock.
+
+A cell state belongs to
+\[
+       K=\Sigma\ \sqcup\ (Q\times\Sigma).
+\]
+The second alternative records the unique head and its control state.
+A legal configuration has exactly one tagged cell. There is a finite
+local transition table $F:K^3\to K$ describing the next state of a cell
+from its left neighbor, itself, and its right neighbor. To define it on a
+legal triple, proceed as follows. If the central cell has the head,
+consult $M$'s transition, write the specified symbol, and retain the head
+tag only for a stationary move. If a neighboring head moves into this
+cell, retain this cell's old tape symbol and attach the incoming control
+state. If neither event occurs, retain the untagged symbol. Simultaneous
+incompatible incoming heads cannot occur in a legal configuration;
+on such triples and other invalid patterns, choose any fixed default.
+This makes $F$ a total finite function. Its behavior on legal configurations
+is exactly $M$'s next step.
+
+Encode each cell by $k=|K|$ bits with exactly one bit true. For $d\in K$,
+the output indicator for $d$ is the Boolean formula
+\[
+ \bigvee_{\substack{a,b,c\in K\\F(a,b,c)=d}}
+                  (L_a\wedge C_b\wedge R_c).
+\]
+The input blocks are one-hot, so exactly one triple term is true and the
+display gives precisely the indicated output. Empty disjunction means
+false. Use binary conjunction and disjunction gates; each conjunction of
+three bits needs two gates, and each disjunction of $r$ terms needs at
+most $r$ gates with constants allowed. Across all $k$ output indicators,
+a safe uniform bound is $4(k+1)^4$ gates per updated cell. The constants
+depend only on the fixed machine.
+
+\begin{theorem}[Bounded computation-to-circuit compiler]\label{thm:verifier-circuit}
+There is a primitive recursive, polynomial-time compiler constructing a
+circuit $C_x$ whose only free input bits are the witness bits, such that
+\[
+ \operatorname{ev}(w,C_x)=1
+       \quad\Longleftrightarrow\quad
+ \operatorname{Accept}_M(x,w,T(n))=1.
+\]
+For a fixed machine, a bound on its number of gates is
+\[
+ 20(k+1)^4(T(n)+1)(\ell+1).
+\]
+The correctness equivalence, universally in the finite input and witness
+codes, has an iPRA proof.
+\end{theorem}
+\begin{proof}
+Construct the initial row of cell indicators from constants determined
+by $x$, the witness inputs and their complements, and the unique initial
+head tag. It is one-hot and encodes the prescribed initial configuration.
+For each time $t<T(n)$ and each cell, append a fresh copy of the constant-size
+local transition circuit just described, supplying constant blank neighbors
+for any index just outside the array. Its input wires point only to
+the preceding time row. Thus the circuit is acyclic and can be written in
+time order. Finally take the disjunction of the indicators of accepting
+head states in the last row, using a linear number of binary gates.
+
+Induct on $t$ with the invariant that every cell's indicator block is
+one-hot and agrees with the configuration after exactly $t$ simulated
+steps. The base case is the initialization. In the step, all triples are
+the triples of a legal configuration, so the finite table $F$ computes
+the correct next cell, with exactly one output indicator true. The padding
+bound ensures the boundary convention does not interfere. This proves
+the invariant simultaneously for all cells. The final accept-disjunction
+then has the claimed value. Every universal claim in this invariant is
+bounded by $\ell,k$, and the time counter is bounded by $T(n)$, so it is
+a bounded arithmetic formula and uses only permitted induction.
+
+Initialization, the $T(n)\ell$ local copies, and the final disjunction fit
+within the displayed generous gate bound. The output consists of gate
+tags and predecessor indices of logarithmic bit length in that bound.
+A sequential generator can write these indices with polynomially bounded
+arithmetic and copying. Even representing its working tables by repeated
+string scans introduces only a polynomial factor. Thus construction time
+as well as output bit length is polynomial in $n$ for fixed $M,p,T$.
+\end{proof}
+
+\subsection{An actual NP-completeness proof}
+
+The Tseitin encoding applies to acyclic circuits as well as syntax trees:
+give each gate a fresh variable and impose the same local equivalence
+clauses in dependency order. The proof that each gate variable must equal
+its computed value uses exactly that order; sharing an input wire does
+not affect it. Clauses for constants, negation, conjunction, disjunction
+and implication have width at most three. Assert the output variable
+by a unit clause. Retain an ordered list of all allocated witness and gate
+variables, densely named $0,\ldots,v(\Phi_x)-1$; this defines
+$v(\Phi_x)$. Thus unused allocated inputs also have assignment positions.
+If one instead stores only occurring variables, fill any missing witness
+positions with zero when projecting a satisfying assignment.
+
+\begin{theorem}[Constructive NP-completeness of SAT and 3-SAT]
+\label{thm:np-complete}
+For each polynomially clocked verifier presentation $(M,p,T)$ there is a
+polynomial-time primitive recursive map $x\mapsto\Phi_x$ into 3-CNF such
+that \ipra\ proves
+\[
+ L_{M,p,T}(x)
+       \quad\Longleftrightarrow\quad
+ \exists a<2^{v(\Phi_x)}\ [\operatorname{ev}(a,\Phi_x)=1].
+\]
+Witness maps in both directions are explicit. Consequently SAT, circuit
+SAT, and 3-SAT are NP-complete for these presentations under polynomial
+many-one reductions.
+\end{theorem}
+\begin{proof}
+Compile $C_x$ by Theorem~\ref{thm:verifier-circuit} and let $\Phi_x$ be
+its Tseitin clauses with the output asserted. Given an accepting witness
+$w$, evaluate the circuit in dependency order and extend $w$ by these
+gate values. Every local equivalence and the output unit clause hold,
+so this is a satisfying assignment of $\Phi_x$. Conversely, restrict any
+satisfying assignment to the witness-input variables. Induction through
+the gates, using the local equivalence clauses, forces every auxiliary
+value to its actual circuit value. The asserted output is therefore the
+value one, so the restricted witness is accepted by $M$. These two maps
+are bounded table operations and establish the equivalence in iPRA.
+
+If the circuit has $g$ gates, there are at most $3g+1$ local/output
+clauses and a linear number of literal occurrences. Its binary encoding
+has length $O((g+p(n)+1)\log(g+p(n)+2))$. The earlier polynomial bound
+on $g$ gives a polynomial reduction. Membership in NP is
+Proposition~\ref{thm:sat-np}. A 3-CNF is already a propositional formula,
+so this same reduction establishes hardness of SAT. The intermediate
+circuit compiler establishes hardness of circuit SAT.
+
+Here ``3-CNF'' means clauses of width \emph{at most} three. If exactly
+three literal occurrences are required, repeat a literal in a shorter
+nonempty clause. If three distinct variables are required, replace
+$(a\vee b)$ by $(a\vee b\vee z)\wedge(a\vee b\vee\neg z)$ with fresh
+$z$, and replace a unit $a$ by the four clauses
+$(a\vee z^{\epsilon}\vee u^{\delta})$ for
+$\epsilon,\delta\in\{0,1\}$ with fresh $z,u$ and signed literals
+$z^1=z,z^0=\neg z$. For an empty clause use all eight clauses on three
+fresh variables, which cannot be simultaneously true. Tautological clauses
+are deleted and repetitions simplified before these replacements. Direct
+bit cases prove extension and restriction in each case. The size increase
+is a fixed factor and hence remains polynomial.
+\end{proof}
+
+\begin{corollary}[Tautology is coNP-complete]\label{thm:taut-conp}
+Relative to the same explicit verifier presentations for complements,
+the tautology problem is coNP-complete under polynomial many-one reductions.
+\end{corollary}
+\begin{proof}
+A nontautology has a polynomial-size falsifying valuation, so its complement
+is in NP. If the complement of a problem reduces to satisfiability of
+$\Phi_x$, then membership in the original problem is equivalent to
+unsatisfiability of $\Phi_x$, hence to tautologicity of $\neg\Phi_x$.
+Adding one negation is a polynomial transformation. The witness correctness
+of the reduction was proved above, and the SAT/TAUT duality is
+Theorem~\ref{thm:truth-decision}.
+\end{proof}
+
+This proof supplies no superpolynomial lower bound for SAT. NP-completeness
+is a statement about polynomial reductions, fully compatible with the
+primitive recursive decision algorithms already constructed.

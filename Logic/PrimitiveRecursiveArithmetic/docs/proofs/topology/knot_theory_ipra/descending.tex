@@ -1,0 +1,169 @@
+\section{Descending diagrams and a constructive unknotting bound}
+\label{sec:descending}
+
+Choose a regular basepoint and a traversal direction on a one-component
+diagram. The diagram is \emph{descending} if the first visit to each
+crossing is on its overstrand. We shall turn this condition on the
+$2c$-letter visit word into a certificate of polygonal unknotting in
+three-space.
+
+\begin{lemma}[Changing the heights of a lift]
+Two rational polygonal lifts of the same parametrized regular diagram,
+with the same overpass at each crossing, are related by rational
+triangle moves and subdivisions in three-space.
+\end{lemma}
+\begin{proof}
+Subdivide the two projected circuits simultaneously at all height
+breakpoints and at both occurrences of every crossing. A vertex at a
+crossing now has a distinct vertex of the other branch above or below it.
+If a vertex $A$ with neighbors $U,V$ is moved vertically to $A'$ without
+sweeping past or meeting that other branch, two triangle moves implement
+the displacement. Insert $A'$ on $U A$ using the triangle $UAA'$, and
+delete $A$ from $A'AV$ using the triangle $A'AV$. Skip zero displacements.
+Both triangles are nondegenerate: the neighboring projections are
+different from that of $A$. Each projects onto one incident projected
+halfedge. Its open projected halfedge contains no other branch, by the
+subdivision. Over the moved vertex the triangle occupies precisely the
+interval of heights being swept; over the other endpoint it occupies
+just the unchanged endpoint. The two incident halfedges have disjoint
+interiors. These observations verify the clean-triangle tests, including
+when a neighboring vertex is another crossing occurrence.
+
+At each crossing first move the upper vertex to the larger of its
+initial and target heights and the lower to the smaller of its two
+heights. Then move them to their target heights. The
+upper vertex can be moved first, since its target is strictly higher
+than the target lower height and than the temporarily lowered vertex.
+The lower vertex can then be moved. Every intermediate comparison is
+strict. Move ordinary vertices once to their targets. This gives at most
+four triangle moves per common-subdivision vertex.
+\end{proof}
+
+\begin{theorem}[A descending diagram bounds a polygonally unknotted lift]
+Every rational polygonal lift of a descending diagram admits a finite
+rational triangle-move sequence to a triangle. Both a lift and such
+a sequence are primitive recursively constructible.
+\end{theorem}
+\begin{proof}
+Take the basepoint $b$ in the interior of an edge, and choose points
+$b^-,b^+$ immediately before and after it in traversal order.
+The short interval from $b^-$ to $b^+$ contains no crossing, bends or
+other passages of the diagram. Its endpoints can be chosen by taking
+midpoints to the nearest recorded event on either side along that edge.
+Subdivide at these two points, all old bends and all crossing occurrences.
+Read the resulting planar list from $b$ back to $b$ as
+$p_0,p_1,\ldots,p_m$, with $p_0=p_m=b$, $p_1=b^+$ and $p_{m-1}=b^-$.
+Choose strictly decreasing heights $z_i=m-i$ and put
+$A_i=(p_i,z_i)$ and $B_i=(b,z_i)$. First form the temporary polygon
+consisting of the chain $A_0\cdots A_m$ and the vertical return
+$A_m A_0$. The chain is simple by strict descent; the return meets it
+only at the two ends since $b$ has no other preimage. At every crossing
+the earlier passage is higher.
+
+To obtain a lift with the exact regular projection, replace the local
+arc $A_{m-1}A_m A_0 A_1$ by the straight segment $A_{m-1}A_1$.
+First delete $A_m$ across the triangle $A_{m-1}A_mA_0$, then delete
+$A_0$ across $A_{m-1}A_0A_1$. These triangles project into
+$[b^-,b^+]$, away from the rest of the diagram except at its prescribed
+ends. The first triangle lies over $[b^-,b]$ and the remaining piece
+$A_0A_1$ lies over $[b,b^+]$. The second triangle is nondegenerate
+because $A_0$ is higher than both its other vertices. The new straight
+segment traces the short basepoint interval once. Thus the new polygon
+really projects to the original diagram with its descending crossing
+bits. Reversing these two moves returns to the temporary polygon.
+
+Subdivide its vertical return at the $B_i$. Between heights $z_i$ and
+$z_{i+1}$ take the two triangles
+\[
+ (B_i,A_i,A_{i+1}),\qquad (B_i,A_{i+1},B_{i+1}),
+\]
+omitting the repeated-vertex end triangles. They form an embedded strip.
+For completeness, at the fraction $0<s<1$ down the slab the diagonal
+has planar coordinate $b+s(p_{i+1}-b)$. The second triangle runs in
+that slice from $b$ to this point; the first continues from it by the
+vector $(1-s)(p_i-b)$ to the chain. Two nonzero directions
+$p_i-b$ and $p_{i+1}-b$ cannot be negative multiples, since then the
+interior of the edge $p_i p_{i+1}$ would pass through $b$. Consequently
+the two successive segments in the slice meet only at their common end.
+If one vector is zero we are in an end slab, containing just one
+triangle. Different open slabs have disjoint heights and consecutive
+ones meet along the common horizontal rung $B_i A_i$.
+
+Peel this strip from the top. In slab zero delete $B_0=A_0$ across the
+second triangle, leaving the rung $B_1A_1$. At a subsequent step replace
+$B_i A_i A_{i+1}$ by $B_i A_{i+1}$ across the first triangle, then
+$B_{i+1}B_i A_{i+1}$ by $B_{i+1}A_{i+1}$ across the second. The embedded
+strip and level separation give clean moves at each step. Stop with
+the last triangle $B_{m-1}A_{m-1}A_m$. Thus at most $2m+2$ moves after
+subdivision suffice for the chosen lift. The previous lemma transfers
+the certificate to any other lift over the same parametrized projection.
+\end{proof}
+
+\begin{theorem}[Warping degree and the crossing-change bound]
+For an oriented diagram $D$ with $c>0$ crossings, let $d(D)$ be the
+minimum, over its $2c$ basepoint gaps, of the number of first visits
+which are underpasses. Write $-D$ for the opposite traversal. Then
+\[
+                d(D)+d(-D)\le c-1,
+\]
+with equality exactly when the cyclic visits alternate over and under.
+One can change at most $\lfloor(c-1)/2\rfloor$ crossings of $D$ to
+obtain a diagram whose rational polygonal lifts are triangle-equivalent
+to a triangle. At $c=0$ the corresponding cost is zero.
+\end{theorem}
+\begin{proof}
+Let $f(j)$ count first-under crossings starting in gap $j$. For the same
+gap the opposite traversal sees the other visit first at every crossing,
+so its count is $c-f(j)$. Advancing the basepoint just past one visit
+affects a single crossing. When the passed visit is over, it ceases to
+be first and the under visit becomes first, so the count rises by one.
+Passing an under visit lowers it by one. Thus
+\[
+ d(D)+d(-D)=c-\bigl(\max_j f(j)-\min_j f(j)\bigr).
+\]
+The range is at least one. It equals one exactly when the unit steps
+alternate: two successive equal steps give range at least two, and
+alternating steps visit just two adjacent integers. This proves the
+claimed equality criterion. Choose a minimizing gap in whichever
+direction has smaller minimum, and switch all its first-under
+crossings. This changes at most $\lfloor(c-1)/2\rfloor$ bits and yields
+a descending traversal. The previous theorem gives its PL certificate;
+for $c=0$ every traversal is already descending. The chosen traversal
+simply constructs the crossing bits and height order and may be used
+regardless of which orientation is retained on the input knot.
+\end{proof}
+
+\begin{corollary}[Unlinking a diagram]
+Any $k$-component diagram with $c$ crossings can be changed at at most
+$\lfloor c/2\rfloor$ crossings to one admitting an explicit reduction by
+spatial triangle moves and subdivisions to $k$ triangles in disjoint
+horizontal slabs.
+\end{corollary}
+\begin{proof}
+Order the components; choose a direction and a regular basepoint on each.
+Request earlier components to pass over later ones at mixed crossings,
+and request the first visit to pass over at each self-crossing. Reverse
+the component order and all traversals to obtain the complementary
+request at every crossing. One request therefore costs at most
+$\lfloor c/2\rfloor$ switches. Construct the descending lift of each
+component within its own height slab by an increasing affine rescaling
+of the above heights, with earlier components occupying higher slabs.
+All mixed crossing bits are then correct, and all unknotting triangles
+stay inside the slab of the component being simplified. Their terminal
+triangles bound disjoint filled disks in those slabs. The height-change
+lemma applies to the whole link since its argument is local to a vertex
+and to the other branch at a crossing.
+\end{proof}
+
+The arithmetic assertions use bounded scans over gaps and visits. The
+strip verification uses a loop on the remaining suffix and rational
+triangle-intersection tests. In a Lean development, first prove a
+one-gap update lemma on a cyclic list in which each label occurs once
+over and once under. Next formalize a single-vertex height move and
+the two triangles of one descending slab. Induction on the suffix emits
+the explicit spatial move list. This result supplies crossing changes
+followed by three-dimensional PL moves. A conversion of arbitrary
+spatial triangle moves to a movie for the original projection is a
+separate theorem. For the classical warping-degree formulation see
+A.~Shimizu, \emph{The warping degree of a knot diagram}
+(\href{https://arxiv.org/abs/0809.1334}{arXiv:0809.1334}).

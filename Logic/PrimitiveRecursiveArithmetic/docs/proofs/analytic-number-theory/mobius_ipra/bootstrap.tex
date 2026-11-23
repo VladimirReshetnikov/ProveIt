@@ -1,0 +1,100 @@
+\section{An elementary transfer from prime counts to signed cancellation}
+\label{sec:bootstrap}
+There is a second route to the boundary estimates. It uses only finite
+summation identities after importing a quantitative prime number theorem.
+Write $L(t)=1+\lfloor\log_2 t\rfloor$ for the binary length of an integer
+$t\ge1$, and let $\Lambda(p^j)=\log p$ for a prime $p$ and $j\ge1$,
+with value zero elsewhere. Fix any integer $A\ge1$. The required input is
+\begin{equation}\label{eq:bootstrap-input}
+    |E(t)|\le Kt/L(t)^A,\qquad E(t)=\sum_{m\le t}(\Lambda(m)-1).
+\end{equation}
+Logs here denote rational enclosure names; the multiplier $K$ and every
+binary length are integers.
+
+\paragraph{Obtaining the input from ProveIt.}
+The theorem \texttt{thm:theta-modulus-established} in the repository's
+\texttt{pnt\_li\_ipra\_2026-11-15/tex/theta\_bridge.tex} gives, with
+$C=2^{240}$ and $\vartheta(t)=\sum_{p\le t}\log p$,
+\[
+  t\ge2^{C(r+1)^{10}}\quad\Longrightarrow\quad
+  |\vartheta(t)-t|\le2^{-r}t.
+\]
+It is the upstream quantitative theorem used in this section.
+For a fully specified instance of \eqref{eq:bootstrap-input} take
+\[
+ D_A=2(4A+4)^{A+1},\qquad
+ K=(C+2)^{A+1}+4C^A(20A)^{10A}+D_A.
+\]
+Indeed set $L=L(t)$ and choose the largest $k$ with $Ck^{10}\le L-1$
+by bounded search. For $k=0$ use
+$|\vartheta(t)-t|/t\le1+\log t\le1+L$ and $L\le C$.
+For $k\ge1$ the theorem bounds this ratio by $2^{1-k}$, while
+$L\le C(k+1)^{10}$. The power-series inequality
+$e^u\ge u^d/d!$ and $\log2\ge1/2$ give
+$(k+1)^d 2^{-k}\le 2(2d)^d$ for $d\ge1$.
+This bounds the $\vartheta$ contribution by the first two terms of $K$.
+For each prime $p\le\sqrt t$, its powers of exponent at least two contribute
+in total at most $\log t$. Thus
+$0\le \sum_{m\le t}\Lambda(m)-\vartheta(t)\le\sqrt t\log t$.
+Since $t\ge2^{L-1}$, the same exponential inequality gives
+$L^{A+1}/\sqrt t\le D_A$, as required.
+
+\paragraph{The finite identity.}
+Let $e(m)=\Lambda(m)-1$. The operator $Df(n)=f(n)\log n$ is a derivation
+for Dirichlet convolution, by $\log(ab)=\log a+\log b$. Write $\mathbf1$
+for the constant-one function. Factorization gives
+$D\mathbf1=\mathbf1*\Lambda$. Differentiate $\mu*\mathbf1=[n=1]$
+and convolve on the right with $\mu$ to obtain $D\mu=-\mu*\Lambda$.
+Summing this equality for $n\le x$ and using
+$\sum_{dm\le x}\mu(d)=1$ gives for each positive integer $x$
+\begin{equation}\label{eq:bootstrap-identity}
+ M(x)\log x
+ =\sum_{d\le x}\mu(d)\log(x/d)-1
+       -\sum_{dm\le x}\mu(d)e(m).
+\end{equation}
+All sums on the right are finite.
+
+\paragraph{Gain of a half-power in one step.}
+Set $B_0=1$ and recursively take
+\[
+ B_{j+1}=16^{A+1}+64\cdot4^A(K+2)(B_j+D_A+1).
+\]
+We prove $|M(x)|\le B_j x/L(x)^{j/2}$ for $0\le j\le A$. The case
+$j=0$ uses $|\mu|\le1$. Put $s=j/2$, $L=L(x)$, and suppose $j<A$.
+For $L<16$ use the trivial bound and $B_{j+1}\ge16^{A+1}$. Otherwise
+choose $U=2^{\lfloor\sqrt L\rfloor}$. In the double sum of
+\eqref{eq:bootstrap-identity}, the part $m\le U$ is
+$\sum_{m\le U}e(m)M(\lfloor x/m\rfloor)$. The binary length of
+$\lfloor x/m\rfloor$ is at least $L-\lfloor\sqrt L\rfloor\ge L/2$.
+A dyadic block $2^h\le m<2^{h+1}$ contributes at most $2(K+2)$
+to $\sum |e(m)|/m$, since \eqref{eq:bootstrap-input} gives
+$\sum_{m\le y}|e(m)|\le(K+2)y$. Thus the small-$m$ part has magnitude
+at most
+\[
+       4(K+2) 2^s B_j x\, L^{1/2-s}.
+\]
+The remaining part is exactly
+$\sum_{d\le x/U}\mu(d)(E(\lfloor x/d\rfloor)-E(U))$.
+Each argument of $E$ is at least $U$, with binary length at least
+$\sqrt L$. Since $\sum_{d\le x}1/d\le 1+\log x\le1+L$, its magnitude
+is at most $3Kx L^{1-A/2}$.
+
+Finally summation by parts rewrites the first sum on the right of
+\eqref{eq:bootstrap-identity} as
+$\sum_{d<x} M(d)\log(1+1/d)$. For $d<\sqrt x$ bound
+$|M(d)|\le d$; for $d\ge\sqrt x$ use the inductive bound and
+$L(d)\ge L/4$. The result is bounded by
+$\sqrt x+4^s B_j x/L^s$.
+Use $L^s/\sqrt x\le D_A$ and divide \eqref{eq:bootstrap-identity} by
+$\log x\ge L/4$. As $s+1/2\le A/2$, the three estimates together
+are at most $B_{j+1}x/L^{s+1/2}$, proving the step. All block endpoints
+come from integer roots or bit lengths. The fractional powers in the
+bounds for $M$ disappear on squaring nonnegative quantities. For
+quantifier-free induction one can fix an arbitrary upper bound $X$ and
+carry the Boolean conjunction of the integer estimates for $1\le x\le X$
+at stage $j$; every use of the inductive hypothesis is within this list.
+
+Taking $A=2b$ proves an effective $|M(x)|\le B_{2b}x/L(x)^b$ for
+each positive integer $b$. Thus the repository's explicit prime estimate
+supplies whatever fixed logarithmic saving is needed in ordinary
+logarithmically weighted sums of $\mu(n)/n$.
