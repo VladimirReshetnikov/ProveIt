@@ -84,9 +84,6 @@ theorem exists_singular_approx {a b ε : ℝ} (hab : a < b) (hε : 0 < ε) :
   let H (m : ℕ) (y : ℝ) := ∑ j ∈ Finset.range m, f (y - j)
   have hHm (m : ℕ) : Monotone (H m) :=
     fun _ _ hy => Finset.sum_le_sum fun _ _ => hfm (sub_le_sub_right hy _)
-  have hf (y : ℝ) : 0 ≤ f y ∧ f y ≤ 1 :=
-    ⟨(hf₀ _ (min_le_right y 0)).ge.trans (hfm (min_le_left y 0)),
-      (hfm (le_max_left y 1)).trans_eq (hf₁ _ (le_max_right y 1))⟩
   -- Only the translate containing `y` can differ from its linear ramp.
   have hH (m : ℕ) (y : ℝ) :
       H m y ∈ Icc 0 (m : ℝ) ∧ ((m : ℝ) ≤ y → H m y = m) ∧
@@ -94,12 +91,10 @@ theorem exists_singular_approx {a b ε : ℝ} (hab : a < b) (hε : 0 < ε) :
     induction m with
     | zero => simp [H]
     | succ m ih =>
-      rw [Nat.cast_succ, show H (m + 1) y = H m y + f (y - m) from Finset.sum_range_succ _ _]
-      have hm : (0 : ℝ) ≤ m := Nat.cast_nonneg m
-      have h0 : y ≤ m → f (y - m) = 0 := fun h => hf₀ _ (sub_nonpos.mpr h)
-      have h1 : (m : ℝ) + 1 ≤ y → f (y - m) = 1 := fun h => hf₁ _ (by linarith)
-      have hr := hf (y - m)
-      grind [abs_le]
+      simp only [H, Nat.cast_succ, Finset.sum_range_succ] at ih ⊢
+      have hmin := (hf₀ _ (min_le_right (y - m) 0)).ge.trans (hfm (min_le_left (y - m) 0))
+      have hmax := (hfm (le_max_left (y - m) 1)).trans_eq (hf₁ _ (le_max_right (y - m) 1))
+      grind [abs_le, Nat.cast_nonneg]
   let B := (OrderIso.mulLeft₀ w hw).trans (OrderIso.addRight a)
   have hB (x : ℝ) : B x = w * x + a := rfl
   have hBinv (x : ℝ) : B.symm x = w⁻¹ * (x - a) := rfl
