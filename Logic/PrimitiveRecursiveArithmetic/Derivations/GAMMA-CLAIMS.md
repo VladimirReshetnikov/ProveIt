@@ -840,10 +840,18 @@ quadratic residual. [GaussianRationalUniformFirstOrderPolynomial](Lean/IPRADeriv
 makes the polynomial estimate uniform on the compact disk.
 [GaussianEulerPowerIncrement](Lean/IPRADerivations/Analysis/GaussianEulerPowerIncrement.lean)
 checks the original power increment with the compact quadratic
-remainder and the two requested observation errors. The finite
-integral comparison and identification
-with the original Gamma construction throughout the right half-plane
-remain.
+remainder and the two requested observation errors.
+[GaussianBetaPrimitiveCompactStep](Lean/IPRADerivations/Analysis/GaussianBetaPrimitiveCompactStep.lean)
+uses the exact synthetic slope and the original power clock to compare
+successive primitive samples to the actual weighted beta row.
+[GaussianBetaPrimitiveGridTelescope](Lean/IPRADerivations/Analysis/GaussianBetaPrimitiveGridTelescope.lean)
+checks the exact finite telescoping and sums that shape of cell error
+on the original affine mesh.
+[GaussianBetaKernelCompactUpperTail](Lean/IPRADerivations/Analysis/GaussianBetaKernelCompactUpperTail.lean)
+bounds the original upper beta quadrature through the support endpoint
+using the existing half-decay estimates. Matching the full finite
+quadratures and identifying the improper name with Gamma throughout
+the right half-plane remain.
 
 ## Every ledger family remains in scope
 
@@ -856,7 +864,7 @@ remain.
 | 18–24 | Reflection with an explicit sine margin, multiplication at arbitrary internal positive integer multiplier, duplication/triplication, beta–Gamma relation, beta symmetry/recurrence and all stated integral forms with their positive half-plane margins. |
 | 25–30 | Positive-root selection and half-integer values, the listed fractional-argument relations and fractional products, rising/binomial cancellation through apparent poles, and imaginary/half-shifted modulus formulas, including their zero-safe versions. |
 | 31–36 | Digamma and polygamma evaluators with remainder bounds, recurrences/signs/special derivative values, differentiated reflection/multiplication, rational-argument values, and the finite polynomial recursion for Gamma derivatives. Derivative orders may remain external where the source explicitly allows that schema. |
-| 37–42 | Quantified local Taylor/log-Gamma expansions, entire reciprocal coefficient recursion, Laurent constants/remainders at each pole, positive-integer-centered expansions, vertical modulus products and balanced parameter products. Coefficient programs and discarded-tail estimates must be connected to the same named functions. |
+| 37–42 | [GaussianGammaCanonicalCoefficientRecurrence](Lean/IPRADerivations/Analysis/GaussianGammaCanonicalCoefficientRecurrence.lean) proves the C42 equality of the actual regular canonical coefficient and finite sum names. [GaussianGammaCanonicalRecurrenceZetaFormula](Lean/IPRADerivations/Analysis/GaussianGammaCanonicalRecurrenceZetaFormula.lean) identifies the right name with the original gamma and signed zeta formula at the same observations. The remaining local Taylor/log-Gamma expansions, Laurent constants and remainders at each pole, positive-integer-centered expansions, vertical modulus products, and balanced parameter products still require their named coefficient and discarded-tail comparisons. |
 | 43–48 | Quantitative strict convexity, effective Bohr–Mollerup uniqueness at fixed presentations, Wendel/Gautschi inequalities, rate-bearing Gamma ratios, actual positive-minimum location and negative-pole interval extremum/sign constructions. |
 | 49–53 | Leading Stirling/relative errors, Robbins bounds, every fixed order of log-Stirling and digamma expansions with the signed positive-real-axis remainder, and the actual multiplicative-coefficient/error algorithm. Generic Euler–Maclaurin components need application-specific endpoint and positivity proofs. |
 | 54–58 | Branch-specified analytic log-Gamma on the certified right half-plane, both Binet formulas and their finite kernel/tail bounds, complete monotonicity, Raabe/unit-interval log-Gamma integrals and the Gamma–zeta Mellin identity for `Re(s)>1`. |
