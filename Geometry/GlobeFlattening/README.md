@@ -49,10 +49,12 @@ horizontal projection and latitude from the arcsine of height.
 Strict row increase gives injectivity on the closed coordinate rectangle.
 Compactness makes the map an embedding, and the interior maps onto the
 open region between the continuous longitude endpoint curves. Its image
-under the planar coordinate equivalence is the Euclidean target. The
-strict width comparison proves total area excess. For local exceptional area,
-the proof pulls the open target patch back to coordinates, picks a
-rectangle there, and uses the same width comparison on that rectangle.
+under the planar coordinate equivalence is the Euclidean target. Mathlib's
+formula for the area between the endpoint curves gives the width integral
+after swapping coordinates. The strict width comparison proves total area
+excess. For local exceptional area, the proof pulls the open target patch
+back to coordinates, picks a rectangle there, and applies the same formula
+to its image.
 The reference cosine integral is the length of the interval swept out by
 `2π sin(latitude)`, by the same Jacobian formula applied in one dimension.
 The uniform projection error bounds the total area from above.

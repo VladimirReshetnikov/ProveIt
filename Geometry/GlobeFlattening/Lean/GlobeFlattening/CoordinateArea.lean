@@ -22,13 +22,12 @@ theorem volume_chartImage_eq_lintegral_width
     (hu : ContinuousOn u (chartClosedRectangle a b c d)) :
     volume (chartImage u a b c d) =
       ∫⁻ y in Ioo c d, ENNReal.ofReal (u (b, y) - u (a, y)) := by
-  rw [Measure.volume_eq_prod, Measure.prod_apply_symm (isOpen_chartImage hab hu).measurableSet,
-    ← lintegral_indicator measurableSet_Ioo]
-  refine lintegral_congr fun y => ?_
-  change volume {x | y ∈ Ioo c d ∧ x ∈ Ioo (u (a, y)) (u (b, y))} = _
-  by_cases hy : y ∈ Ioo c d <;>
-    simp only [indicator_apply, hy, if_true, if_false, true_and, false_and, setOf_mem_eq,
-      setOf_false, measure_empty, Real.volume_Ioo]
+  refine (Measure.measurePreserving_swap.measure_preimage_equiv
+    (f := MeasurableEquiv.prodComm) _).trans ?_
+  have hprofile (x : ℝ) (hx : x ∈ Icc a b) :=
+    ((continuousOn_latitudeProfile hu hx).mono Ioo_subset_Icc_self).aemeasurable (μ := volume) measurableSet_Ioo
+  exact volume_regionBetween_eq_lintegral (hprofile a ⟨le_rfl, hab⟩)
+    (hprofile b ⟨hab, le_rfl⟩) measurableSet_Ioo
 
 /-- Integrate the cosine density by horizontal slices of a rectangle. -/
 theorem lintegral_cos_rectangle {a b c d : ℝ} (hab : a ≤ b) :
@@ -75,14 +74,15 @@ theorem volume_local_exceptional_image_pos {u : ℝ × ℝ → ℝ} {good : Set 
   have hcos (y : ℝ) (hy : y ∈ Icc c d) : 0 ≤ Real.cos y :=
     Real.cos_nonneg_of_mem_Icc (hsub (show (a, y) ∈ _ from ⟨⟨le_rfl, hab.le⟩, hy⟩)).2
   have hslope' (p) (hp) (q) (hq) := hslope p (hsub hp) q (hsub hq)
-  let g := triangularChart hab.le (hu.mono hsub) (strictMonoOn_chartRows_of_lowerSlope hcos hslope')
-  have hnull' : volume (g.source \ good) = 0 :=
+  have hmono := strictMonoOn_chartRows_of_lowerSlope hcos hslope'
+  have hinj := (injOn_flattenCoordinates_closedRectangle hmono).mono chartRectangle_subset_closed
+  have hnull' : volume (chartRectangle a b c d \ good) = 0 :=
     measure_mono_null (sdiff_subset_sdiff_left (chartRectangle_subset_closed.trans hbox)) hnull
-  change 0 < volume (g '' (g.source \ good))
-  rw [g.injOn.image_sdiff, g.image_source_eq_target]
+  rw [hinj.image_sdiff, image_flattenCoordinates_chartRectangle hab.le (hu.mono hsub)
+    (fun y hy => hmono y (Ioo_subset_Icc_self hy))]
   refine (tsub_pos_of_lt ?_).trans_le le_measure_sdiff
-  exact (measure_flattened_good_image (g.open_source.measurableSet.inter hgood)
-    inter_subset_left (by rwa [sdiff_self_inter]) g.injOn
+  exact (measure_flattened_good_image ((isOpen_chartRectangle a b c d).measurableSet.inter hgood)
+    inter_subset_left (by rwa [sdiff_self_inter]) hinj
     (fun p hp => (hderiv p hp.2).hasFDerivWithinAt)
     (fun p hp => hcos p.2 (Ioo_subset_Icc_self hp.1.2))).trans_lt
       (lintegral_cos_lt_volume_chartImage hab hcd (hu.mono hsub)
