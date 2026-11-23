@@ -68,11 +68,10 @@ theorem volume_sphereExceptional_inter_of_open {u : ℝ × ℝ → ℝ}
   have hpos := volume_local_exceptional_image_pos (hp'.1.1.trans hp'.1.2)
     (hp'.2.1.trans hp'.2.2) (hbox.trans inter_subset_left) hu hslope hgood hnull hderiv
   rw [← volume_planarEuclideanEquiv_image, image_image] at hpos
-  rw [sphereFlattenForward_exceptional_image hsub, image_image]
-  refine hpos.trans_le (measure_mono ?_)
-  rintro _ ⟨q, hq, rfl⟩
-  obtain ⟨hqdom, hqW⟩ := hbox (chartRectangle_subset_closed hq.1)
-  exact ⟨hqW, ⟨q, ⟨hqdom, hq.2⟩, rfl⟩⟩
+  rw [sphereFlattenForward_exceptional_image hsub, image_image, ← image_preimage_inter]
+  exact hpos.trans_le (measure_mono (image_mono fun _ ⟨hq, hq'⟩ =>
+    let ⟨hqdom, hqW⟩ := hbox (chartRectangle_subset_closed hq)
+    ⟨hqW, hqdom, hq'⟩))
 
 /-- The chart-null exceptional set also has zero two-dimensional Hausdorff measure. -/
 theorem hausdorffMeasure_sphereExceptional_eq_zero {good : Set (ℝ × ℝ)}
@@ -102,9 +101,8 @@ theorem not_lipschitzOn_of_exceptional_area
     exact hf.isOpenMap _ hU
   have hsub : f '' W ⊆ target := (image_mono hWsub).trans hmaps.image_subset
   have hpos := hexcess _ hOpen ((hne.image _).image _) hsub
-  have hLip' : LipschitzOnWith K f W := by
-    rintro _ ⟨p, hp, rfl⟩ _ ⟨q, hq, rfl⟩
-    exact hLip hp hq
+  have hLip' : LipschitzOnWith K f W :=
+    inter_eq_right.mpr hWsub ▸ lipschitzOnWith_restrict.mp hLip
   have hbound := (hLip'.mono (inter_subset_left : W ∩ Z ⊆ W)).hausdorffMeasure_image_le
     (d := 2) (by norm_num)
   have hnull : μH[Module.finrank ℝ (EuclideanSpace ℝ (Fin 2))] (f '' (W ∩ Z)) = 0 := by

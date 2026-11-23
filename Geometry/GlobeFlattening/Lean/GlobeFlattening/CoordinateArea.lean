@@ -81,11 +81,8 @@ theorem volume_local_exceptional_image_pos {u : ℝ × ℝ → ℝ} {good : Set 
   have hsub := hbox.trans sphereLongitudeDomain_subset_box
   have hRectNull : volume (R \ good) = 0 :=
     measure_mono_null (sdiff_subset_sdiff_left (chartRectangle_subset_closed.trans hbox)) hnull
-  have hcos : ∀ y ∈ Icc c d, 0 ≤ Real.cos y := by
-    intro y hy
-    have hp : (a, y) ∈ chartClosedRectangle a b c d :=
-      ⟨⟨le_rfl, hab.le⟩, hy⟩
-    exact (Real.cos_pos_of_mem_Ioo (hbox hp).2).le
+  have hcos (y : ℝ) (hy : y ∈ Icc c d) : 0 ≤ Real.cos y :=
+    Real.cos_nonneg_of_mem_Icc (hsub (show (a, y) ∈ _ from ⟨⟨le_rfl, hab.le⟩, hy⟩)).2
   have hslope' (p) (hp) (q) (hq) := hslope p (hsub hp) q (hsub hq)
   have hmono := strictMonoOn_chartRows_of_lowerSlope hcos hslope'
   have hinj : InjOn (flattenCoordinates u) R :=
@@ -100,11 +97,8 @@ theorem volume_local_exceptional_image_pos {u : ℝ × ℝ → ℝ} {good : Set 
         (fun y hy => hmono y (Ioo_subset_Icc_self hy))]
     exact lintegral_cos_lt_volume_chartImage hab hcd (hu.mono hsub)
       (fun y hy => hcos y (Ioo_subset_Icc_self hy)) hslope'
-  refine pos_iff_ne_zero.2 fun hazero => hAreaLt.not_ge ?_
-  have hsplit := measure_union_le (μ := volume) (flattenCoordinates u '' (R ∩ good))
-    (flattenCoordinates u '' (R \ good))
-  rw [← image_union, inter_union_sdiff, hazero, add_zero] at hsplit
-  exact hsplit
+  rw [hinj.image_sdiff]
+  exact (tsub_pos_of_lt hAreaLt).trans_le le_measure_sdiff
 
 private abbrev latitudeInterval : Set ℝ := Ioo (-(Real.pi / 2)) (Real.pi / 2)
 
@@ -199,19 +193,12 @@ theorem flattenCoordinates_close_to_sinusoidal
       dist (flattenCoordinates u p) (sinusoidalCoordinates p) ≤ ε := by
   have hδ := globeErrorParameter_pos hε
   intro p hp
-  have hx : |p.1| ≤ Real.pi := abs_le.mpr hp.1
   rw [dist_flattenCoordinates_sinusoidalCoordinates]
-  have heq : u p - p.1 * Real.cos p.2 =
-      (u p - (Real.cos p.2 + globeErrorParameter ε) * p.1) + globeErrorParameter ε * p.1 := by ring
-  rw [heq]
-  calc
-    _ ≤ |u p - (Real.cos p.2 + globeErrorParameter ε) * p.1| +
-        |globeErrorParameter ε * p.1| := abs_add_le ..
-    _ ≤ globeErrorParameter ε + globeErrorParameter ε * Real.pi := by
-      rw [abs_mul, abs_of_pos hδ]
-      exact add_le_add (hclose p hp) (mul_le_mul_of_nonneg_left hx hδ.le)
-    _ = (1 + Real.pi) * globeErrorParameter ε := by ring
-    _ = ε := globeErrorParameter_scale ε
+  have htri := abs_sub_le (u p) ((Real.cos p.2 + globeErrorParameter ε) * p.1) (p.1 * Real.cos p.2)
+  rw [show (Real.cos p.2 + globeErrorParameter ε) * p.1 - p.1 * Real.cos p.2 =
+    globeErrorParameter ε * p.1 by ring, abs_mul, abs_of_pos hδ] at htri
+  rw [← globeErrorParameter_scale ε, add_mul, one_mul, mul_comm Real.pi]
+  exact htri.trans (add_le_add (hclose p hp) (mul_le_mul_of_nonneg_left (abs_le.mpr hp.1) hδ.le))
 
 end
 

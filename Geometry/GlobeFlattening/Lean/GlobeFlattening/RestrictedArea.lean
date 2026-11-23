@@ -28,8 +28,7 @@ def coordinateDerivative (slope : ℝ) : ℝ × ℝ →L[ℝ] ℝ × ℝ :=
     (coordinateDerivative slope).det = slope := by
   change (LinearMap.prodMap (slope • (LinearMap.id : ℝ →ₗ[ℝ] ℝ))
     (LinearMap.id : ℝ →ₗ[ℝ] ℝ)).det = slope
-  rw [LinearMap.det_prodMap]
-  simp
+  simp [LinearMap.det_prodMap]
 
 /-- The width-reparametrized chart has area density equal to its positive
 longitude slope wherever the scalar derivative has the prescribed form. -/
@@ -46,14 +45,11 @@ theorem measure_flattened_good_image
     infer_instance
   have hrestrict : volume.restrict good = volume.restrict domain :=
     Measure.restrict_congr_set (ae_eq_set.2 ⟨by simp [sdiff_eq_empty.mpr hsub], hnull⟩)
-  rw [← hrestrict]
-  calc
-    _ = ∫⁻ p in good, ENNReal.ofReal |(coordinateDerivative (slope p)).det| :=
-      (lintegral_abs_det_fderiv_eq_addHaar_image volume hgood
-        (fun p hp => ((hDeriv p hp).mono hsub).prodMk hasFDerivAt_snd.hasFDerivWithinAt)
-        (hf.mono hsub)).symm
-    _ = _ := setLIntegral_congr_fun hgood fun p hp => by
-      rw [det_coordinateDerivative, abs_of_nonneg (hnonneg p hp)]
+  rw [← hrestrict, ← lintegral_abs_det_fderiv_eq_addHaar_image
+    (f := flattenCoordinates u) (f' := coordinateDerivative ∘ slope) volume hgood
+    (fun p hp => ((hDeriv p hp).mono hsub).prodMk hasFDerivAt_snd.hasFDerivWithinAt) (hf.mono hsub)]
+  exact setLIntegral_congr_fun hgood fun p hp => by
+    simp [abs_of_nonneg (hnonneg p hp)]
 
 end
 
