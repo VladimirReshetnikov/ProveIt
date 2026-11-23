@@ -18,8 +18,6 @@ namespace GlobeFlattening
 
 noncomputable section
 
-private def sphericalCoordinateArea : ℝ := 2 * Real.pi ^ 2
-
 private def initialScalar (δ : ℝ) (p : ℝ × ℝ) : ℝ :=
   (Real.cos p.2 + δ) * p.1
 
@@ -36,26 +34,13 @@ private structure ScalarStage (δ : ℝ) (n : ℕ) where
   good : Set (ℝ × ℝ)
   good_measurable : MeasurableSet good
   discarded_le : volume (sphereClosedBox \ good) ≤
-    ENNReal.ofReal (if n = 0 then sphericalCoordinateArea
-      else 7 * stageMargin n * sphericalCoordinateArea)
+    ENNReal.ofReal ((2 * Real.pi^2) * ((2 : ℝ)⁻¹)^n)
   lowerSlope : ∀ p ∈ sphereClosedBox, ∀ q ∈ sphereClosedBox, p.2 = q.2 → p.1 ≤ q.1 →
     stageTarget δ n p.2 * (q.1 - p.1) ≤ approx q - approx p
-  affine_near : ∀ p ∈ good, ∃ intercept slope : ℝ, ∀ q, dist q p ≤ radius →
-    approx q = intercept + slope * q.1 ∧
-    stageTarget δ n q.2 ≤ slope ∧ slope ≤ stageTarget δ n q.2 + 2 * meshWidth
-
-private def ScalarStage.tileSlope {δ : ℝ} {n : ℕ} (s : ScalarStage δ n) (p : ℝ × ℝ) : ℝ := by
-  classical
-  exact if hp : p ∈ s.good then (s.affine_near p hp).choose_spec.choose else 0
-
-private theorem ScalarStage.affine_at_tileSlope {δ : ℝ} {n : ℕ} (s : ScalarStage δ n)
-    {p : ℝ × ℝ} (hp : p ∈ s.good) :
-    ∃ intercept : ℝ, ∀ q, dist q p ≤ s.radius →
-      s.approx q = intercept + s.tileSlope p * q.1 ∧
-      stageTarget δ n q.2 ≤ s.tileSlope p ∧
-      s.tileSlope p ≤ stageTarget δ n q.2 + 2 * s.meshWidth := by
-  refine ⟨(s.affine_near p hp).choose, ?_⟩
-  simpa [ScalarStage.tileSlope, hp] using (s.affine_near p hp).choose_spec.choose_spec
+  tileSlope : ℝ × ℝ → ℝ
+  affine_near : ∀ p ∈ good, ∃ intercept : ℝ, ∀ q, dist q p ≤ radius →
+    approx q = intercept + tileSlope p * q.1 ∧
+    stageTarget δ n q.2 ≤ tileSlope p ∧ tileSlope p ≤ stageTarget δ n q.2 + 2 * meshWidth
 
 private structure StageTransition {δ : ℝ} {n : ℕ}
     (before : ScalarStage δ n) (after : ScalarStage δ (n + 1)) : Prop where
@@ -74,15 +59,14 @@ private def zeroStage {δ : ℝ} (hδ : 0 < δ) : ScalarStage δ 0 where
   meshWidth_le := by positivity
   good := ∅
   good_measurable := MeasurableSet.empty
-  discarded_le := by
-    rw [sdiff_empty, volume_sphereClosedBox, if_pos rfl]
-    rfl
+  discarded_le := by simp [volume_sphereClosedBox]
   lowerSlope := by
     intro p hp q hq hlat hlong
     unfold initialScalar
     rw [hlat, stageTarget_zero]
     apply le_of_eq
     ring
+  tileSlope := fun _ => 0
   affine_near := by simp
 
 private theorem exists_nextStage {δ : ℝ} (hδ : 0 < δ) {n : ℕ}
@@ -94,6 +78,9 @@ private theorem exists_nextStage {δ : ℝ} (hδ : 0 < δ) {n : ℕ}
   have holdSlope : g.HasLowerSlope before.approx (stageTarget δ n) := by
     apply g.hasLowerSlope_iff_same_latitude.mpr
     simpa only [hgrect] using before.lowerSlope
+  choose! intercept slope haffine using
+    (fun (p : ℝ × ℝ) (hp : p ∈ g.trimmedTiles) => g.exists_affine_near_trimmed
+      (u := before.approx) (stageTarget_variation δ (n + 1)) hp)
   let after : ScalarStage δ (n + 1) :=
     { approx := g.refineStage before.approx (stageTarget δ (n + 1))
       continuousOn := (g.continuous_refineStage _ _).continuousOn
@@ -105,12 +92,17 @@ private theorem exists_nextStage {δ : ℝ} (hδ : 0 < δ) {n : ℕ}
       good_measurable := g.isClosed_trimmedTiles.measurableSet
       discarded_le := by
         rw [← hgrect]
-        simpa only [hgratio, hgarea, Nat.succ_ne_zero, if_false, sphericalCoordinateArea]
-          using g.volume_discarded hg4
+        refine (g.volume_discarded hg4).trans ?_
+        rw [hgratio, hgarea]
+        apply ENNReal.ofReal_le_ofReal
+        calc
+          _ = (2 * Real.pi^2) * (7 * stageMargin (n + 1)) := by ring
+          _ ≤ _ := mul_le_mul_of_nonneg_left (seven_stageMargin_le_dyadic _) (by positivity)
       lowerSlope := by
         rw [← hgrect, ← g.hasLowerSlope_iff_same_latitude]
         exact g.refineStage_lowerSlope holdSlope newSlopeGap (stageTarget_variation δ (n + 1))
-      affine_near := fun _ hp => g.exists_affine_near_trimmed (stageTarget_variation δ (n + 1)) hp }
+      tileSlope := slope
+      affine_near := fun p hp => ⟨intercept p, haffine p hp⟩ }
   refine ⟨after, ?_, ?_, ?_⟩
   · change g.margin ≤ before.radius / 2
     exact hg_half
@@ -127,7 +119,7 @@ private theorem exists_nextStage {δ : ℝ} (hδ : 0 < δ) {n : ℕ}
     convert hs using 1
     ring
   · intro p hp q hq hnear
-    obtain ⟨a, b, haffine⟩ := before.affine_near p hp
+    obtain ⟨a, haffine⟩ := before.affine_near p hp
     have htile (z : ℝ × ℝ) (hz : dist z q ≤ g.width) : dist z p ≤ before.radius := by
       have ht := (dist_triangle z q p).trans (add_le_add hz hnear)
       linarith [before.radius_pos]
@@ -144,13 +136,9 @@ private theorem exists_nextStage {δ : ℝ} (hδ : 0 < δ) {n : ℕ}
     rw [hnormalize]
     exact local_refinement_dyadic_bound before.meshWidth_le g.width_pos.le
 
-private def nextStage {δ : ℝ} (hδ : 0 < δ) {n : ℕ} (before : ScalarStage δ n) :
-    ScalarStage δ (n + 1) :=
-  (exists_nextStage hδ before).choose
-
 private def scalarStages {δ : ℝ} (hδ : 0 < δ) : (n : ℕ) → ScalarStage δ n
   | 0 => zeroStage hδ
-  | n + 1 => nextStage hδ (scalarStages hδ n)
+  | n + 1 => (exists_nextStage hδ (scalarStages hδ n)).choose
 
 private theorem scalarStages_transition {δ : ℝ} (hδ : 0 < δ) (n : ℕ) :
     StageTransition (scalarStages hδ n) (scalarStages hδ (n + 1)) :=
@@ -168,14 +156,10 @@ theorem exists_scalar_flattening {δ : ℝ} (hδ : 0 < δ) :
       ∀ p ∈ E, HasFDerivAt u (Real.cos p.2 • ContinuousLinearMap.fst ℝ ℝ ℝ) p := by
   let s := scalarStages hδ
   have hbad : (∑' n, volume (sphereLongitudeDomain \ (s n).good)) ≠ ∞ := by
-    have hcompare (n : ℕ) :
-        volume (sphereLongitudeDomain \ (s n).good) ≤ volume (sphereClosedBox \ (s n).good) :=
-      measure_mono (sdiff_subset_sdiff_left sphereLongitudeDomain_subset_box)
     apply sphereMesh_bad_area_summable
-    · exact ne_top_of_le_ne_top ENNReal.ofReal_ne_top ((hcompare 0).trans (s 0).discarded_le)
-    · intro n
-      simpa only [Nat.succ_ne_zero, if_false, sphericalCoordinateArea] using
-        (hcompare (n + 1)).trans (s (n + 1)).discarded_le
+    intro n
+    exact (measure_mono (sdiff_subset_sdiff_left sphereLongitudeDomain_subset_box)).trans
+      (s n).discarded_le
   refine exists_scalar_limit_of_refinement_stages isOpen_sphereLongitudeDomain
     sphereLongitudeDomain_subset_box
     (approx := fun n => (s n).approx) (good := fun n => (s n).good)
@@ -187,7 +171,7 @@ theorem exists_scalar_flattening {δ : ℝ} (hδ : 0 < δ) :
     (fun n => (s n).good_measurable) hbad (stageTarget_tendsto δ)
     (fun n => (s n).lowerSlope) (tendsto_quarter_ratio_zero _) (tendsto_dyadic_ratio_zero _) ?_ ?_
   · intro n p hp _
-    obtain ⟨_, htile⟩ := (s n).affine_at_tileSlope hp
+    obtain ⟨_, htile⟩ := (s n).affine_near p hp
     have hb := (htile p (by simpa using (s n).radius_pos.le)).2
     unfold stageTarget at hb
     have hwidth := (s n).meshWidth_le
@@ -200,14 +184,13 @@ theorem exists_scalar_flattening {δ : ℝ} (hδ : 0 < δ) :
   · intro n p hp _ q hq hdist
     have hnear : dist q p ≤ (s n).radius / 2 := by
       simpa [dist_eq_norm] using hdist.le
-    obtain ⟨intercept, htile⟩ := (s n).affine_at_tileSlope hp
+    obtain ⟨intercept, htile⟩ := (s n).affine_near p hp
     have hpval := (htile p (by simpa using (s n).radius_pos.le)).1
     have hqval := (htile q (hnear.trans (by linarith [(s n).radius_pos]))).1
     refine ⟨?_, (scalarStages_transition hδ n).localError p hp q
       (sphereLongitudeDomain_subset_box hq) hnear⟩
     rw [hpval, hqval]
     ring
-
 
 end
 
