@@ -55,15 +55,13 @@ theorem volume_sphereExceptional_inter_of_open {u : ℝ × ℝ → ℝ}
     0 < volume (W ∩
       (planarEuclideanEquiv ∘ (flattenCoordinates u ∘ sphereChartInverse)) '' sphereExceptional good) := by
   let g := planarEuclideanEquiv ∘ flattenCoordinates u
-  have hcont : ContinuousOn g sphereLongitudeDomain :=
-    planarEuclideanEquiv.continuous.comp_continuousOn
-      ((hu.mono sphereLongitudeDomain_subset_box).prodMk continuous_snd.continuousOn)
-  obtain ⟨z, hz⟩ := hne
+  have hopen : IsOpen (sphereLongitudeDomain ∩ g ⁻¹' W) :=
+    ContinuousOn.isOpen_inter_preimage (planarEuclideanEquiv.continuous.comp_continuousOn
+      ((hu.mono sphereLongitudeDomain_subset_box).prodMk continuous_snd.continuousOn))
+      isOpen_sphereLongitudeDomain hW
   rw [image_image] at hWsub
-  obtain ⟨p, hp, rfl⟩ := hWsub hz
-  have hD := isOpen_sphereLongitudeDomain.mem_nhds hp
-  obtain ⟨a, b, c, d, hp', hbox⟩ := exists_chartClosedRectangle_subset_of_mem_nhds
-    (Filter.inter_mem hD ((hcont.continuousAt hD) (hW.mem_nhds hz)))
+  obtain ⟨p, hp⟩ := image_inter_nonempty_iff.mp (hne.mono (subset_inter hWsub Subset.rfl))
+  obtain ⟨a, b, c, d, hp', hbox⟩ := exists_chartClosedRectangle_subset_of_mem_nhds (hopen.mem_nhds hp)
   have hpos := volume_local_exceptional_image_pos (hp'.1.1.trans hp'.1.2)
     (hp'.2.1.trans hp'.2.2) (hbox.trans inter_subset_left) hu hslope hgood hnull hderiv
   rw [← volume_planarEuclideanEquiv_image, image_image] at hpos
@@ -93,20 +91,19 @@ theorem not_lipschitzOn_of_exceptional_area
     {U : Set cutSphere} (hU : IsOpen U) (hne : U.Nonempty) (K : ℝ≥0) :
     ¬ LipschitzOnWith K (fun p : cutSphere => f p) U := by
   intro hLip
-  let W := Subtype.val '' U
-  have hWsub : W ⊆ cutSphere := Subtype.coe_image_subset _ _
-  have hOpen : IsOpen (f '' W) := by
-    rw [image_image]
-    exact hf.isOpenMap _ hU
-  have hsub : f '' W ⊆ target := (image_mono hWsub).trans hmaps.image_subset
-  have hpos := hexcess _ hOpen ((hne.image _).image _) hsub
-  have hLip' : LipschitzOnWith K f W :=
-    inter_eq_right.mpr hWsub ▸ lipschitzOnWith_restrict.mp hLip
-  have hnull : μH[Module.finrank ℝ (EuclideanSpace ℝ (Fin 2))] (f '' (W ∩ Z)) = 0 := by
-    simpa [measure_mono_null inter_subset_right hZnull] using
-      (hLip'.mono (inter_subset_left : W ∩ Z ⊆ W)).hausdorffMeasure_image_le (d := 2) (by norm_num)
-  rw [← (injOn_iff_injective.2 hf.injective).image_inter hWsub hZ] at hpos
-  exact hpos.ne' (Measure.absolutelyContinuous_isAddHaarMeasure volume _ hnull)
+  let Z' : Set cutSphere := Subtype.val ⁻¹' Z
+  have himage : Subtype.val '' Z' = Z := image_preimage_eq_of_subset (by simpa using hZ)
+  have hnull : μH[2] Z' = 0 := by
+    rw [← isometry_subtype_coe.hausdorffMeasure_image (Or.inl (by norm_num)), himage, hZnull]
+  have heq : cutSphere.restrict f '' Z' = f '' Z := by
+    rw [Set.restrict_eq, Set.image_comp, himage]
+  have hpos := hexcess _ (hf.isOpenMap _ hU) (hne.image _)
+    (Set.image_subset_iff.2 fun p _ => hmaps p.2)
+  rw [← heq, ← image_inter hf.injective] at hpos
+  refine hpos.ne' (Measure.absolutelyContinuous_isAddHaarMeasure volume
+    (μH[Module.finrank ℝ (EuclideanSpace ℝ (Fin 2))]) ?_)
+  simpa [measure_mono_null inter_subset_right hnull] using
+    (hLip.mono (inter_subset_left : U ∩ Z' ⊆ U)).hausdorffMeasure_image_le (d := 2) (by norm_num)
 
 end
 

@@ -59,8 +59,7 @@ theorem measurableSet_sphereExceptional {good : Set (ℝ × ℝ)} (hgood : Measu
 
 theorem sphereExceptional_eq_image {good : Set (ℝ × ℝ)} (hsub : good ⊆ sphereLongitudeDomain) :
     sphereExceptional good = spherePoint '' (sphereLongitudeDomain \ good) := by
-  rw [sphereExceptional, ← spherePoint_image_domain, spherePoint_bijOn.injOn.image_sdiff,
-    inter_eq_right.mpr hsub]
+  rw [sphereExceptional, ← spherePoint_image_domain, spherePoint_bijOn.injOn.image_sdiff_subset hsub]
 
 theorem measure_sphereExceptional_eq_zero {good : Set (ℝ × ℝ)} (hgood : MeasurableSet good)
     (hsub : good ⊆ sphereLongitudeDomain) (hnull : volume (sphereLongitudeDomain \ good) = 0) :

@@ -66,9 +66,10 @@ images are Borel.
 Spherical area is defined in the longitude–latitude chart with density
 `cos(latitude)`, as in the report. The exceptional set also has zero
 two-dimensional Hausdorff measure by Lipschitz continuity of the sphere
-parametrization. A local Lipschitz bound would therefore give zero planar
-area for its image on an open target patch, contradicting the local area
-result. [Spherical area](Lean/GlobeFlattening/SphereMeasure.lean) ·
+parametrization. The isometric inclusion of the cut sphere transfers this
+nullity to its own metric. A local Lipschitz bound would then give zero
+planar area for the exceptional image on an open target patch,
+contradicting the local area result. [Spherical area](Lean/GlobeFlattening/SphereMeasure.lean) ·
 [Local distortion](Lean/GlobeFlattening/SphereLocalExcess.lean)
 
 Build from the repository root with `lake build GlobeFlattening`.

@@ -113,8 +113,8 @@ coordinate rectangle. -/
 theorem lintegral_cos_chartRectangle :
     (∫⁻ p in sphereLongitudeDomain,
         ENNReal.ofReal (Real.cos p.2)) = ENNReal.ofReal (4 * Real.pi) := by
-  rw [sphereLongitudeDomain, lintegral_cos_rectangle (by linarith [Real.pi_pos]), show Real.pi - -Real.pi = 2 * Real.pi by ring]
-  exact lintegral_sinusoidalWidth
+  rw [sphereLongitudeDomain, lintegral_cos_rectangle (neg_le_self Real.pi_pos.le), sub_neg_eq_add,
+    ← two_mul, lintegral_sinusoidalWidth]
 
 /-- A co-null good subset of the coordinate rectangle has image area
 exactly `4π` when the prescribed scalar derivative holds there. -/
@@ -144,9 +144,8 @@ private theorem globeErrorParameter_scale (ε : ℝ) :
 def sinusoidalCoordinates (p : ℝ × ℝ) : ℝ × ℝ := (p.1 * Real.cos p.2, p.2)
 
 private theorem dist_flattenCoordinates_sinusoidalCoordinates (u : ℝ × ℝ → ℝ) (p : ℝ × ℝ) :
-    dist (flattenCoordinates u p) (sinusoidalCoordinates p) = |u p - p.1 * Real.cos p.2| := by
-  rw [Prod.dist_eq, flattenCoordinates, sinusoidalCoordinates, dist_self,
-    max_eq_left dist_nonneg, Real.dist_eq]
+    dist (flattenCoordinates u p) (sinusoidalCoordinates p) = |u p - p.1 * Real.cos p.2| :=
+  dist_prod_same_right.trans (Real.dist_eq _ _)
 
 /-- A uniform sinusoidal distance bound gives at most two endpoint errors per slice. -/
 theorem volume_chartImage_upper_of_sinusoidal_closeness
@@ -156,7 +155,7 @@ theorem volume_chartImage_upper_of_sinusoidal_closeness
       dist (flattenCoordinates u p) (sinusoidalCoordinates p) ≤ ε) :
     volume (chartImage u (-Real.pi) Real.pi (-(Real.pi / 2)) (Real.pi / 2)) <
       ENNReal.ofReal (4 * Real.pi * (1 + ε)) := by
-  have hab : -Real.pi ≤ Real.pi := by linarith [Real.pi_pos]
+  have hab := neg_le_self Real.pi_pos.le
   rw [volume_chartImage_eq_lintegral_width hab hu]
   calc
     _ ≤ ∫⁻ y in latitudeInterval, ENNReal.ofReal (2 * Real.pi * Real.cos y) + ENNReal.ofReal (2 * ε) := by
@@ -168,7 +167,7 @@ theorem volume_chartImage_upper_of_sinusoidal_closeness
       linarith only [(abs_le.mp hleft).1, (abs_le.mp hright).2]
     _ < _ := by
       rw [lintegral_add_right _ measurable_const, lintegral_sinusoidalWidth, setLIntegral_const,
-        Real.volume_Ioo, show Real.pi / 2 - -(Real.pi / 2) = Real.pi by ring,
+        Real.volume_Ioo, sub_neg_eq_add, add_halves,
         ← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_add (by positivity) (by positivity)]
       exact (ENNReal.ofReal_lt_ofReal_iff (by positivity)).2 (by
         nlinarith only [mul_pos Real.pi_pos hε])

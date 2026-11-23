@@ -26,9 +26,7 @@ def coordinateDerivative (slope : ℝ) : ℝ × ℝ →L[ℝ] ℝ × ℝ :=
 
 @[simp] theorem det_coordinateDerivative (slope : ℝ) :
     (coordinateDerivative slope).det = slope := by
-  change (LinearMap.prodMap (slope • (LinearMap.id : ℝ →ₗ[ℝ] ℝ))
-    (LinearMap.id : ℝ →ₗ[ℝ] ℝ)).det = slope
-  simp [LinearMap.det_prodMap]
+  simp [coordinateDerivative, ContinuousLinearMap.det, LinearMap.det_prodMap]
 
 /-- The width-reparametrized chart has area density equal to its positive
 longitude slope wherever the scalar derivative has the prescribed form. -/
