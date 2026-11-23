@@ -65,7 +65,7 @@ theorem exists_staircases {δ : ℝ} (hδ : 0 < δ) : Nonempty (Staircases δ) :
     (show -Real.pi < Real.pi by linarith [Real.pi_pos])
     (lt_min (div_pos (rate_pos hδ n) (by norm_num : (0 : ℝ) < 4))
       (by norm_num : (0 : ℝ) < 1 / 4))
-  choose X hc hm hr _ _ he hd using hX
+  choose X hc hm hr he hd using hX
   exact ⟨⟨hδ, X, hm, hc, hd, fun n x => abs_le.mpr (hr n x), he⟩⟩
 
 namespace Staircases
