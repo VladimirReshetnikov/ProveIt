@@ -8,13 +8,16 @@ Packet: `topology/knot_theory_ipra`, `bracket.tex`, Theorem "Regular isotopy and
 invariance proofs reduce each move to an identity between coefficients; those identities are derived here in iPRA
 for integer terms.
 
-The bracket. The Laurent variable is a pair of terms `A`, `B` with `A B = 1` (`B` is `A⁻¹`), and `δ` is a term with
-`A² + B² + δ = 0` ("`δ = −A² − A⁻²`"). With the Temperley–Lieb relations `e² = δ e`, `e f e = e`, `f e f = f`
-of the cap-cup pairings:
+The bracket. The Laurent variable is a pair of terms `A`, `B` (`B` in the role of `A⁻¹`), and `δ` is a term in
+the role of `−A² − A⁻²`. The relations `A B = 1` and `A² + B² + δ = 0` are not assumed as hypotheses about
+integer terms (the first would force `A = B = ±1`): each statement is an unconditional identity in which the
+defects `A B − 1` and `A² + B² + δ` appear with explicit multipliers. With the Temperley–Lieb relations
+`e² = δ e`, `e f e = e`, `f e f = f` of the cap-cup pairings:
 
-* `move_II`: "`R_i R_i⁻ = I + (A² + A⁻² + δ) e_i = I`": the coefficient `A² + B² + A B δ` of `e` vanishes (and the
-  coefficient of `I` is `A B = 1`);
-* `move_III`: "`U W U − W U W = (A + A⁻¹ δ + A⁻³)(e − f) = 0`": the coefficient `A² B + A B² δ + B³` vanishes;
+* `move_II`: "`R_i R_i⁻ = I + (A² + A⁻² + δ) e_i = I`": the coefficient `A² + B² + A B δ` of `e` is a combination
+  of the two defects (and the coefficient of `I` is `A B`);
+* `move_III`: "`U W U − W U W = (A + A⁻¹ δ + A⁻³)(e − f) = 0`": the coefficient `A² B + A B² δ + B³` is a
+  combination of the two defects;
 * `curl_pos`, `curl_neg`: "In a positive curl the `A`-pairing detaches a circle, giving factor
   `A δ + A⁻¹ = −A³`. The opposite curl gives `A⁻¹ δ + A = −A⁻³`";
 * `skein`: "Multiplying the first by `A⁴` and subtracting `A⁻⁴` times the second cancels `H` and leaves
@@ -59,58 +62,50 @@ local macro "ksimp" loc:(Lean.Parser.Tactic.location)? : tactic =>
 
 /-! ## The bracket -/
 
-/-- Move II: the coefficient of `e` in `(A I + B e)(B I + A e)` vanishes. -/
-theorem move_II {A B δ : ZT n} (hAB : Γ ⊢[PRAAx] ZT.eq (A * B) (ZT.natLit 1))
-    (hδ : Γ ⊢[PRAAx] ZT.eq (A * A + B * B + δ) (ZT.natLit 0)) :
-    Γ ⊢[PRAAx] ZT.eq (A * A + B * B + A * B * δ) (ZT.natLit 0) := by
-  have e1 := ZT.toZ_eq hAB
-  have e2 := ZT.toZ_eq hδ
+/-- Move II: the coefficient `A² + B² + A B δ` of `e` in `(A I + B e)(B I + A e)` is
+`(A² + B² + δ) + δ (A B − 1)`. -/
+theorem move_II (A B δ : ZT n) :
+    Γ ⊢[PRAAx] ZT.eq (A * A + B * B + A * B * δ) (A * A + B * B + δ + δ * (A * B - ZT.natLit 1)) := by
   apply ZT.derive
-  ksimp at e1 e2 ⊢
-  linear_combination e2 + ZT.toZ Γ δ * e1
+  ksimp
+  ring
 
-/-- Move III: the coefficient of `e − f` in `U W U − W U W` vanishes. -/
-theorem move_III {A B δ : ZT n} (hAB : Γ ⊢[PRAAx] ZT.eq (A * B) (ZT.natLit 1))
-    (hδ : Γ ⊢[PRAAx] ZT.eq (A * A + B * B + δ) (ZT.natLit 0)) :
-    Γ ⊢[PRAAx] ZT.eq (A * A * B + A * B * B * δ + B * B * B) (ZT.natLit 0) := by
-  have e1 := ZT.toZ_eq hAB
-  have e2 := ZT.toZ_eq hδ
+/-- Move III: the coefficient `A² B + A B² δ + B³` of `e − f` in `U W U − W U W` is
+`B (A² + B² + δ) + B δ (A B − 1)`. -/
+theorem move_III (A B δ : ZT n) :
+    Γ ⊢[PRAAx] ZT.eq (A * A * B + A * B * B * δ + B * B * B)
+      (B * (A * A + B * B + δ) + B * δ * (A * B - ZT.natLit 1)) := by
   apply ZT.derive
-  ksimp at e1 e2 ⊢
-  linear_combination ZT.toZ Γ B * e2 + ZT.toZ Γ B * ZT.toZ Γ δ * e1
+  ksimp
+  ring
 
-/-- The positive curl: `A δ + B = −A³`. -/
-theorem curl_pos {A B δ : ZT n} (hAB : Γ ⊢[PRAAx] ZT.eq (A * B) (ZT.natLit 1))
-    (hδ : Γ ⊢[PRAAx] ZT.eq (A * A + B * B + δ) (ZT.natLit 0)) :
-    Γ ⊢[PRAAx] ZT.eq (A * δ + B) (-(A * A * A)) := by
-  have e1 := ZT.toZ_eq hAB
-  have e2 := ZT.toZ_eq hδ
+/-- The positive curl: `A δ + B = −A³ + A (A² + B² + δ) − B (A B − 1)`. -/
+theorem curl_pos (A B δ : ZT n) :
+    Γ ⊢[PRAAx] ZT.eq (A * δ + B)
+      (-(A * A * A) + A * (A * A + B * B + δ) - B * (A * B - ZT.natLit 1)) := by
   apply ZT.derive
-  ksimp at e1 e2 ⊢
-  linear_combination ZT.toZ Γ A * e2 - ZT.toZ Γ B * e1
+  ksimp
+  ring
 
-/-- The negative curl: `B δ + A = −B³`. -/
-theorem curl_neg {A B δ : ZT n} (hAB : Γ ⊢[PRAAx] ZT.eq (A * B) (ZT.natLit 1))
-    (hδ : Γ ⊢[PRAAx] ZT.eq (A * A + B * B + δ) (ZT.natLit 0)) :
-    Γ ⊢[PRAAx] ZT.eq (B * δ + A) (-(B * B * B)) := by
-  have e1 := ZT.toZ_eq hAB
-  have e2 := ZT.toZ_eq hδ
+/-- The negative curl: `B δ + A = −B³ + B (A² + B² + δ) − A (A B − 1)`. -/
+theorem curl_neg (A B δ : ZT n) :
+    Γ ⊢[PRAAx] ZT.eq (B * δ + A)
+      (-(B * B * B) + B * (A * A + B * B + δ) - A * (A * B - ZT.natLit 1)) := by
   apply ZT.derive
-  ksimp at e1 e2 ⊢
-  linear_combination ZT.toZ Γ B * e2 - ZT.toZ Γ A * e1
+  ksimp
+  ring
 
-/-- The skein relation: `A⁴ (−B³)(A U + B H) − B⁴ (−A³)(B U + A H) = (B² − A²) U`. -/
-theorem skein {A B U H : ZT n} (hAB : Γ ⊢[PRAAx] ZT.eq (A * B) (ZT.natLit 1)) :
+/-- The skein relation: `A⁴ (−B³)(A U + B H) − B⁴ (−A³)(B U + A H) = (B² − A²) U` modulo `A B − 1`, with the
+explicit multiple `(B² − A²) U ((A B)² + A B + 1)`. -/
+theorem skein (A B U H : ZT n) :
     Γ ⊢[PRAAx] ZT.eq
       (A * A * A * A * (-(B * B * B)) * (A * U + B * H) -
         B * B * B * B * (-(A * A * A)) * (B * U + A * H))
-      ((B * B - A * A) * U) := by
-  have e1 := ZT.toZ_eq hAB
+      ((B * B - A * A) * U +
+        (B * B - A * A) * U * (A * B * (A * B) + A * B + ZT.natLit 1) * (A * B - ZT.natLit 1)) := by
   apply ZT.derive
-  ksimp at e1 ⊢
-  linear_combination
-    ((ZT.toZ Γ B * ZT.toZ Γ B - ZT.toZ Γ A * ZT.toZ Γ A) * ZT.toZ Γ U *
-      (ZT.toZ Γ A * ZT.toZ Γ B * (ZT.toZ Γ A * ZT.toZ Γ B) + ZT.toZ Γ A * ZT.toZ Γ B + 1)) * e1
+  ksimp
+  ring
 
 /-! ## Fox colourings -/
 

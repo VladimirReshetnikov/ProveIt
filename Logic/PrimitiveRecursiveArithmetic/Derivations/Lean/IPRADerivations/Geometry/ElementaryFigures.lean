@@ -13,8 +13,9 @@ integer-term coordinates, with `dot`, `det`, `nsq` of `Geometry/TriangleCentres`
 * `pythagoras_converse`: conversely `|u − v|² = |u|² + |v|²` gives `u · v = 0` (the factor `2` is cancelled);
 * `pythagoras_dim`: in every dimension, `u · v = 0` gives `N(u + v) = N(u) + N(v)`: the orthogonal
   decomposition "`N(X − O) = N(X − F) + d²`" of a sphere section;
-* `equilateral_AC`, `equilateral_BC`: for a term `s` with `s² = 3` (the root `√3`) and
-  `2 (C − A) = (B − A) + s J (B − A)`: `|2 (C − A)|² = 4 |B − A|²` and `|2 (C − B)|² = 4 |B − A|²`;
+* `equilateral_AC`, `equilateral_BC`: for a term `s` in the role of `√3` and
+  `2 (C − A) = (B − A) + s J (B − A)`: `|2 (C − A)|²` and `|2 (C − B)|²` are `4 |B − A|² + (s² − 3) |B − A|²`
+  (the relation `s² = 3` has no integer solution, so it is not assumed: it appears as an explicit term);
 * `rectangle_area`: "If `u · v = 0`, the Gram identity gives `[u, v]² = N(u) N(v)`";
 * `trapezoid_shoelace`: "The boundary order is `(0, 0), (a, 0), (t + b, h), (t, h)`. Its shoelace sum is
   `a h + b h`, independently of `t`";
@@ -85,21 +86,18 @@ theorem pythagoras_dim {u v : Fin d → ZT n}
 
 /-! ## Equilateral triangles -/
 
-/-- `|u + s J u|² = 4 |u|²` when `s² = 3`: the side `AC`. -/
-theorem equilateral_AC {u₁ u₂ s : ZT n} (hs : Γ ⊢[PRAAx] ZT.eq (s * s) (ZT.natLit 3)) :
-    Γ ⊢[PRAAx] ZT.eq (nsq (u₁ - s * u₂) (u₂ + s * u₁)) (ZT.natLit 4 * nsq u₁ u₂) := by
-  have e := ZT.toZ_eq hs
-  apply ZT.derive
-  gsimp at e ⊢
-  linear_combination (ZT.toZ Γ u₁ * ZT.toZ Γ u₁ + ZT.toZ Γ u₂ * ZT.toZ Γ u₂) * e
+/-- `|u + s J u|² = 4 |u|² + (s² − 3) |u|²`: the side `AC`, of squared length `4 |u|²` on the relation
+`s² = 3`. -/
+theorem equilateral_AC (u₁ u₂ s : ZT n) :
+    Γ ⊢[PRAAx] ZT.eq (nsq (u₁ - s * u₂) (u₂ + s * u₁))
+      (ZT.natLit 4 * nsq u₁ u₂ + (s * s - ZT.natLit 3) * nsq u₁ u₂) := by
+  geo
 
-/-- `|−u + s J u|² = 4 |u|²` when `s² = 3`: the side `BC`. -/
-theorem equilateral_BC {u₁ u₂ s : ZT n} (hs : Γ ⊢[PRAAx] ZT.eq (s * s) (ZT.natLit 3)) :
-    Γ ⊢[PRAAx] ZT.eq (nsq (-u₁ - s * u₂) (-u₂ + s * u₁)) (ZT.natLit 4 * nsq u₁ u₂) := by
-  have e := ZT.toZ_eq hs
-  apply ZT.derive
-  gsimp at e ⊢
-  linear_combination (ZT.toZ Γ u₁ * ZT.toZ Γ u₁ + ZT.toZ Γ u₂ * ZT.toZ Γ u₂) * e
+/-- `|−u + s J u|² = 4 |u|² + (s² − 3) |u|²`: the side `BC`. -/
+theorem equilateral_BC (u₁ u₂ s : ZT n) :
+    Γ ⊢[PRAAx] ZT.eq (nsq (-u₁ - s * u₂) (-u₂ + s * u₁))
+      (ZT.natLit 4 * nsq u₁ u₂ + (s * s - ZT.natLit 3) * nsq u₁ u₂) := by
+  geo
 
 /-! ## Areas and volumes -/
 
