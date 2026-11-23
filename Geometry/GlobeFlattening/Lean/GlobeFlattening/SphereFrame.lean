@@ -85,8 +85,8 @@ theorem sphereTangentLift_sphereFlattenDerivative_of_tangent (p : ℝ × ℝ)
 
 theorem norm_sphereFlattenDerivative_of_tangent (p : ℝ × ℝ) {w : EuclideanSpace ℝ (Fin 3)}
     (hw : ⟪spherePoint p, w⟫ = 0) : ‖sphereFlattenDerivative p w‖ = ‖w‖ := by
-  rw [← norm_sphereTangentLift p (sphereFlattenDerivative p w),
-    sphereTangentLift_sphereFlattenDerivative_of_tangent p hw]
+  simpa [sphereFlattenDerivative] using
+    (sphereTangentPlane p).norm_orthogonalProjectionOnto_apply (mem_sphereTangentPlane.2 hw)
 
 /-- The usual coordinate identification of the real plane with Euclidean space.
 The pair carries the product norm for the analytic construction. -/

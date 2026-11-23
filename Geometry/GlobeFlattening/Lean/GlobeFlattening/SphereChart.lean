@@ -20,13 +20,6 @@ noncomputable section
 def spherePoint (p : ℝ × ℝ) : EuclideanSpace ℝ (Fin 3) :=
   !₂[Real.cos p.2 * Real.cos p.1, Real.cos p.2 * Real.sin p.1, Real.sin p.2]
 
-@[simp] theorem norm_spherePoint (p : ℝ × ℝ) : ‖spherePoint p‖ = 1 := by
-  have hLon := Real.sin_sq_add_cos_sq p.1
-  have hLat := Real.sin_sq_add_cos_sq p.2
-  simp [← pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero, EuclideanSpace.real_norm_sq_eq,
-    Fin.sum_univ_three, spherePoint, mul_pow]
-  grind only
-
 theorem continuous_spherePoint : Continuous spherePoint := by
   fun_prop [spherePoint]
 
@@ -46,6 +39,16 @@ theorem horizontalComplex_spherePoint (p : ℝ × ℝ) :
   simp only [← Complex.ofReal_cos, ← Complex.ofReal_sin, horizontalComplex, spherePoint,
     Complex.equivRealProdCLM_symm_apply, Matrix.cons_val_zero, Matrix.cons_val_one,
     Complex.ofReal_mul, mul_add, mul_assoc]
+
+private theorem norm_sq_eq_horizontal (w : EuclideanSpace ℝ (Fin 3)) :
+    ‖w‖ ^ 2 = ‖horizontalComplex w‖ ^ 2 + (w 2)^2 := by
+  simp only [EuclideanSpace.real_norm_sq_eq, Fin.sum_univ_three, Complex.sq_norm,
+    Complex.normSq_apply, horizontalComplex_re, horizontalComplex_im, ← pow_two]
+
+@[simp] theorem norm_spherePoint (p : ℝ × ℝ) : ‖spherePoint p‖ = 1 := by
+  rw [← pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero, norm_sq_eq_horizontal,
+    horizontalComplex_spherePoint, norm_mul, Complex.norm_cos_add_sin_mul_I, mul_one]
+  simp [spherePoint, Real.cos_sq_add_sin_sq, -Complex.ofReal_cos]
 
 /-- The unit sphere minus the negative-real equatorial ray's meridian,
 including both poles in the removed meridian. -/
@@ -83,10 +86,7 @@ theorem sphereChartInverse_spherePoint {p : ℝ × ℝ} (hp : p ∈ sphereLongit
 
 private theorem cutSphere_horizontal_norm_sq {w : EuclideanSpace ℝ (Fin 3)}
     (hw : w ∈ cutSphere) : ‖horizontalComplex w‖ ^ 2 = 1 - (w 2)^2 := by
-  apply eq_sub_of_add_eq
-  simpa only [Complex.sq_norm, Complex.normSq_apply, horizontalComplex_re, horizontalComplex_im,
-    ← pow_two, EuclideanSpace.real_norm_sq_eq, Fin.sum_univ_three, one_pow] using
-    congrArg (· ^ (2 : ℕ)) hw.1
+  rw [eq_sub_iff_add_eq, ← norm_sq_eq_horizontal, hw.1, one_pow]
 
 theorem cutSphere_vertical_bounds {w : EuclideanSpace ℝ (Fin 3)} (hw : w ∈ cutSphere) :
     w 2 ∈ Ioo (-1 : ℝ) 1 := by
