@@ -1,0 +1,191 @@
+\section{Lean formalization: definitions, proof targets, and remaining work}
+\label{sec:formalization}
+\subsection{The object-theory endpoint}
+The intended endpoint is a theorem whose type is an actual derivation in
+the arithmetic calculus:
+\[
+       (\varnothing:\operatorname{List}(\operatorname{Fm}\ \operatorname{PTm}\ 0))
+               \ \vdash_{\operatorname{PRAAx}}\ \phi.
+\]
+The repository notation is \texttt{[] $\vdash$[PRAAx] $\phi$}.
+It is materially different from proving a theorem in Lean about
+\texttt{Real}, \texttt{EuclideanSpace}, or a host-level real-closed field.
+The latter may be useful as a metatheoretic check, but it does not supply
+an iPRA derivation. In this package the new algebraic candidates already
+have the object-theory conclusion type, while the complete scalar-code
+backend is explicitly unfinished.
+
+The pinned dependency is ProveIt commit
+\nolinkurl{bbb85238dac533fc4b7b84a750cca864fe35fed5}, with Lean
+\texttt{leanprover/lean4:v4.32.0} and Mathlib commit
+\nolinkurl{81a5d257c8e410db227a6665ed08f64fea08e997}.
+The exact upstream paths and blob hashes that were inspected are recorded
+in \nolinkurl{sources/provenance.json}. Its source files, rather than a
+memory of an older API, determined the imports and tactic calls below.
+
+\subsection{Literal terms and predicates supplied in the archive}
+The file \texttt{lean/EuclideanIPRA/GeometrySyntax.lean} defines
+\texttt{AlgebraicSymbols}. Its fields have types \texttt{PR k}, actual
+primitive-recursive program syntax of the repository, not arbitrary
+functions supplied with no effectivity proof. The fields are validity,
+equality, strict order, zero and one codes, addition, negation,
+multiplication, reciprocal, and nonnegative square root. A point over
+$n$ free variables is a pair of \texttt{PTm n} terms. The file defines:
+\begin{itemize}
+\item point validity and equality, vector addition and subtraction, scale,
+quarter-turn, dot product, determinant, squared norm, and squared distance;
+\item collinearity, positive orientation, noncollinearity, distinctness,
+betweenness, right angles, parallel directions, and incidence with a line
+or a circle;
+\item length, cosine, squared sine, and angle equality, with nonzero-ray
+hypotheses required when using these raw definitions;
+\item explicit terms for midpoint, centroid, perpendicular foot,
+reflection, line intersection, circumcenter, orthocenter, incenter,
+the two line--circle candidates, and inversion;
+\item concrete formula definitions, including \texttt{lineMeetSpec} and
+\texttt{circumcenterSpec}, along with \texttt{thalesSpec},
+\texttt{lineCircleSpec}, and \texttt{ptolemyInequalitySpec}.
+\end{itemize}
+These are definitions and targets. No instance of the complete
+\texttt{AlgebraicSymbols} record is provided, and no field or root laws
+are inserted as unproved axioms. The record isolates the implementation
+task precisely: reify the bounded algorithms of
+Section~\ref{sec:foundation} and prove their advertised contracts in
+\texttt{Prf PRAAx}.
+
+The raw specifications deliberately expose only parts of the eventual
+theorem contracts. \texttt{lineMeetSpec} and \texttt{circumcenterSpec}
+state incidence or equidistance; validity and uniqueness remain separate
+obligations. \texttt{lineCircleSpec} asserts membership of the two
+candidate terms when the discriminant is nonnegative; completeness,
+the negative case, and the one-versus-two count must be added.
+\texttt{thalesSpec} is the squared-distance equivalence, including
+endpoints; its geometric right-angle export requires distinct endpoints
+and nonzero rays. Finally \texttt{angleEq} compares cosines only.
+Its equivalence with the report's interior angle-pair equality needs
+the nonnegative sine branch and the proved scalar laws. None of these
+raw formulas is presented as an already proved complete geometric theorem.
+
+For example, the printed circle chapter uses a squared radius $\rho$;
+the Lean predicate \texttt{onCircle p o r} takes a radius $r$ and compares
+the squared distance with $r^2$. They agree after substituting
+$\rho=r^2$ and proving $r>0$. This simple representation conversion
+must be made explicitly when exporting a theorem. Similarly the report's
+comparison-zero equality is the Boolean program \texttt{equal} returning
+one in the syntax file. Literal equality of scalar record numbers is not
+used as geometric equality.
+
+\subsection{The proposed arithmetic derivations}
+\texttt{lean/EuclideanIPRA/Derivations.lean} has 42 theorem declarations:
+40 generic integer-coordinate lemmas and two universally closed versions.
+Their proofs call the existing \texttt{ipra\_ring} and
+\texttt{ipra\_zle} infrastructure. The latter turns a nonnegative slack
+certificate into an object-theory inequality. For example, the
+Cauchy--Schwarz slack is the square of the determinant. In mathematical
+notation the two generic targets are
+\[
+ \Gamma\vdash N(u)N(v)=(u\cdot v)^2+[u,v]^2,
+ \qquad \Gamma\vdash (u\cdot v)^2\le N(u)N(v).
+\]
+The actual source patterns are:
+\begin{lstlisting}
+theorem lagrange (u v : Vec2 n) :
+    Gamma |- [PRAAx] ZT.eq (sqnorm u * sqnorm v)
+      (ZT.sq (dot u v) + ZT.sq (det u v)) := by
+  unfold sqnorm dot det
+  ipra_ring
+
+-- In the actual source Gamma and |- use Lean's Unicode notation.
+-- cauchy_schwarz_squared uses the exact nonnegative certificate:
+--   (ZT.toZ Gamma (u.1*v.2-u.2*v.1)) ^ 2
+\end{lstlisting}
+The listing is a typographic ASCII rendering; the archive contains the
+literal Lean source with its correct notation. The closed versions use
+eight natural variables for the four signed coordinates and
+\texttt{closeAll 8}. Other declarations cover the polarization identity,
+Heron, median and Stewart formulas, affine intersection components,
+reflection, triangle centers, Thales, circle powers, a Ptolemy algebraic
+identity, Varignon, and three-dimensional determinant identities.
+
+\paragraph{Verification boundary.}
+Lean and Lake executables and compiled dependencies were unavailable in
+this execution environment. \emph{None of these new Lean files was
+compiled here.} They are candidate proof-producing source, not reported
+kernel-checked theorems. Their absence of \texttt{sorry}, new axioms, and
+\texttt{native\_decide} is useful source hygiene, not a substitute for a
+successful build. \texttt{lean/build\_status.json} records this explicitly.
+
+\subsection{A concrete order for completing the formalization}
+\begin{enumerate}
+\item \textbf{Compile the finite identity module.} In an existing checkout
+at the pinned commit, build its \texttt{Core.IntCertificates} and
+\texttt{Core.Definitions} prerequisites. Run the supplied
+\texttt{build\_in\_proveit.py}. It checks the commit and relevant source
+cleanliness, then compiles only this packet's modules into a separate
+output directory. It neither edits nor fetches upstream sources.
+Fix any elaboration errors before advancing.
+\item \textbf{Reify finite rational and polynomial algorithms.} Use the
+repository's signed-integer and bounded-search terms, representing
+lists by its list-coding operations or the explicit encoding in this
+report. The obligations are coefficient equality after convolution,
+division-with-remainder invariants, Bezout identities, determinant
+cofactor identities, and the displayed iteration bounds.
+\item \textbf{Implement the scalar readers and comparisons.} Prove
+\texttt{Valid} preservation, rational interval nesting, the width and
+residual estimates, and the finite sign gap. The difficult equivalence is
+comparison-zero versus agreement at every precision. Prove it with an
+arbitrary precision free, using the decidability of its rational interval
+test, then generalize. Do not invoke a universal evaluator for arbitrary
+PR-program codes or induction on that universally quantified agreement.
+\item \textbf{Derive field and root laws internally.} Prove agreement is
+an equivalence and a congruence, arithmetic is representation-independent,
+positive denominator clearing is valid, nonzero inverses satisfy their
+equations, and the nonnegative root is both existent and unique.
+The annihilator, squarefree, and bounded-grid arguments give the exact
+remaining numerical lemmas. Instantiate \texttt{AlgebraicSymbols} only
+after those programs are specified.
+\item \textbf{Export elementary geometry.} For each construction prove
+validity of the output record along with its equations. Start with line
+intersection and perpendicular projection, then circle intersections and
+triangle centers. For inequalities first prove the cleared square or
+slack identity and then justify every sign-sensitive cancellation.
+For angles retain the upper-semicircle branch data. For Ptolemy retain
+the four boundary-order signs as well as concyclicity.
+\item \textbf{Add variable-size and precision families.} Polygon sums,
+triangulations, construction traces, field-degree certificates, and dyadic
+volume bounds use QF invariants on their finite lists. Parameterize by
+the input list and requested output precision. A theorem about each fixed
+polygon size is weaker than the uniform bounded-loop theorem; preserve
+that distinction in statement names.
+\item \textbf{Close and audit.} Universally close the complete implication
+from validity, positivity, orientation, and distinctness hypotheses to
+the conclusion. Audit the result type and axiom dependencies. Export a
+result as finished only after both the kernel check and the representation
+contract have succeeded.
+\end{enumerate}
+
+\subsection{What the executed checks establish}
+The integer polynomial checker stores a polynomial as an exponent-tuple
+dictionary with exact integer coefficients. Addition merges coefficients;
+multiplication performs finite convolution; powers iterate that operation.
+By distributivity and induction on these finite operations, the resulting
+dictionary evaluates to the original expression under every assignment in
+every commutative ring. Equal dictionaries therefore certify universal
+identities, rather than checking finitely many example points.
+The normalization code itself is not formally verified in this package.
+The full coefficient records are retained for independent reproduction.
+
+It checked 41 scalar components of 37 named relations. A separate SymPy
+script checked 17 circle identity groups, including inscribed-angle
+doubling, external tangents, both circle-intersection formulas, inversion,
+the Ptolemy orientation calculation, and the butterfly cancellation.
+The solid checker uses exact rational pairs $a+b\sqrt5$ to enumerate
+supporting faces and validate all five coordinate realizations.
+The measurement checker verifies six symbolic identity groups, thirteen
+polygon refinement levels with outward rational interval arithmetic, and
+512 exact finite-sum and refinement checks. It does not compare any
+approximation with floating-point $\pi$.
+These checks address algebra and finite examples. They do not alone prove
+the sign, representation, root-existence, or complete iPRA-derivability
+claims of the human argument. The verification directory records the
+commands, results, and that distinction.

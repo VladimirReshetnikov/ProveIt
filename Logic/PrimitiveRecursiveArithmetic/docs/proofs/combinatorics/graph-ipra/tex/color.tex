@@ -1,0 +1,657 @@
+\section{Colourings, obstructions, and counting}\label{co:color}
+
+Throughout this section graphs are finite, simple and undirected. Write
+$[n]=\{0,\ldots,n-1\}$. A proper $q$-colouring assigns elements of $[q]$ to
+$[n]$ and gives the two ends of every edge different values. An independent set
+has no internal edge. A clique has every possible internal edge. Let
+$\chi,\alpha,\omega$ be the least number of colours, largest independent-set
+size and largest clique size, respectively. All three extrema include witnesses.
+Scan subset masks below $2^n$ for the last two. Scan $q\le n$ and the
+$q^n$ words of length $n$ for the first, using $0^0=1$.
+Giving each vertex its own colour certifies that this scan succeeds.
+
+\begin{proposition}[Basic bounds and their witnesses]\leavevmode\label{co:greedy}
+For every graph, $\omega\le\chi$ and $n\le\alpha\chi$.
+If each vertex has at most $d$ earlier neighbours in a specified order,
+a greedy algorithm produces a proper $(d+1)$-colouring. In particular
+$\chi\le\Delta+1$, where $\Delta$ is the maximum degree, taken as zero on the
+empty graph. If every nonempty induced subgraph has a vertex of degree at
+most $d$, the algorithm also gives a $(d+1)$-colouring.
+\end{proposition}
+\begin{proof}
+Colours on a clique are distinct. Each colour class is independent, so summing
+its size gives the second inequality. At each step mark the colours of earlier
+neighbours and pick the first unmarked colour among $0,\ldots,d$. At most
+$d$ have been marked. The prefix of assigned vertices remains properly
+coloured after the new vertex is inserted. For the last assertion repeatedly
+remove the first vertex of current degree at most $d$ and colour in reverse
+removal order. The input hypothesis is a scan over all $2^n$ induced
+subgraphs, and the invariant for each of the $n$ removal steps checks the
+residual vertex mask and its size.
+\end{proof}
+
+\begin{theorem}[Bipartition or odd cycle]\leavevmode\label{co:bip}
+An algorithm returns either a proper $2$-colouring or a simple cycle of
+odd length at most $n$. Exactly one of these outcomes is possible.
+A bipartite graph with $c$ components has precisely $2^c$ proper
+$2$-colourings.
+\end{theorem}
+\begin{proof}
+Root a spanning tree in each component at its least vertex. Colour each
+vertex by the parity of its tree distance from its root. Inspect every edge
+$uv$. If the parities agree, follow the two parent chains to their last
+common vertex $w$ on the paths from their root. The two tails after $w$ are
+internally disjoint. The sum of their lengths is
+$d(u)+d(v)-2d(w)$, which is even. The edge $uv$ closes an odd cycle.
+This edge cannot be a tree edge, since adjacent levels have opposite parity.
+The same construction works if $w=u$ or $w=v$. If no edge fails the test,
+the colouring is proper. A proper $2$-colouring alternates along any walk,
+so it cannot close an odd cycle. When the graph passes the test, the root
+colour in each component forces every other colour along the unique tree
+path. Either root choice works, since it flips both endpoints of every edge
+in that component. These $c$ independent choices give the claimed count,
+including the single empty colouring when $c=0$.
+\end{proof}
+Thus bipartite means $\chi\le 2$. A bipartite graph containing an edge
+has $\chi=2$, a nonempty edgeless graph has $\chi=1$, and the empty graph
+has $\chi=0$. Every induced subgraph of a bipartite graph is bipartite.
+Its largest clique has size $2$, $1$ or $0$ in those same three cases,
+so bipartite graphs are perfect: $\omega=\chi$ on every induced subgraph.
+In particular $\chi(C_j)=2$ for even $j\ge 4$ and $\chi(C_j)=3$ for odd
+$j\ge3$. For odd $j$, alternate on the first $j-1$ vertices and use a third
+colour on the last.
+
+\begin{proposition}[Cographs and optimal colourings]\leavevmode\label{co:cographs}
+Given an expression built from single vertices by disjoint union and join,
+one can produce an optimal colouring and a clique of that size on every
+induced subgraph. Thus every cograph given by its construction is perfect.
+\end{proposition}
+\begin{proof}
+A join adds all edges between its two disjoint operands. At a disjoint union,
+a clique is contained in one side (the empty clique may be placed on either
+side), and the sides may use the same palette. Take the larger of the two
+cliques and reuse the palettes. At a join, concatenate the cliques and shift
+the palette of the second side above that of the first: the size and palette
+now both add. At a retained leaf use a one-element clique and one colour,
+and at a deleted leaf use the empty clique and no colours. Evaluating the
+expression from leaves to root therefore handles any given induced-subgraph
+mask. On each node the two witnesses have matching objective values, so the
+clique lower bound proves optimality there. A postorder list with children
+pointing backwards permits one bounded induction through the expression.
+\end{proof}
+
+\begin{theorem}[Brooks]\leavevmode\label{co:brooks}
+Every connected nonempty simple graph of maximum degree $\Delta$ that is
+neither complete nor an odd cycle has a constructive $\Delta$-colouring.
+\end{theorem}
+\begin{proof}
+In a connected graph of maximum degree at most $D$ with a vertex $z$ of
+degree less than $D$, root a spanning tree at $z$ and greedily colour from
+greatest depth down. A nonroot has an uncoloured parent, and the root has
+fewer than $D$ neighbours. This uses at most $D$ colours. It settles the
+nonregular case with $D=\Delta$. A connected regular graph of degree at
+most two is a vertex, an edge, or a cycle: in degree two follow successive
+edges without turning back until the first repeat, which closes a cycle
+with no unused incident edge, hence spans by connectivity. The even cycle
+is two-colourable. Assume henceforth that $G$ is regular of degree
+$\Delta\ge3$ and is noncomplete.
+
+If $w$ is a cut vertex, each component of $G-w$ together with $w$ has
+$w$ of degree less than $\Delta$ there, since $w$ also has neighbours in
+another component. Apply the rooted construction separately and permute
+the palettes to give $w$ the same colour in all components.
+Suppose now there is no cut vertex. We find nonadjacent neighbours $x,y$
+of some $z$ such that $G-\{x,y\}$ is connected. If every pair can be
+deleted while preserving connectivity, take the first and third vertices
+of a shortest path between any nonadjacent pair, with $z$ in
+the middle. Otherwise choose $z,w$ whose joint deletion disconnects.
+Write $J=G-z$, which is connected. In each component $C$ of $J-w$ there
+is a neighbour of $z$, since $G-w$ is connected. Choose such a neighbour
+$x_C$ of greatest distance from $w$ measured in $J$. Then $J-x_C$ is
+connected. Indeed, a component $D$ of $J-x_C$ avoiding $w$ would lie
+in $C$, since every other component of $J-w$ can reach $w$ without
+$x_C$. Connectivity of $G-x_C$ forces an edge from $z$ to some $d\in D$.
+Every $w$--$d$ path in $J$ uses $x_C$, making $d$ strictly farther from
+$w$ than $x_C$, a contradiction. Pick $x,y$ of this kind in two
+different components. They are nonadjacent. In each affected component all
+remaining vertices reach $w$ avoiding its deleted vertex, and the initial
+path to $w$ stays inside that component. Thus $J-\{x,y\}$ is connected.
+Vertex $z$ still has a third neighbour, proving the assertion for $G$.
+
+Give $x,y$ the same colour. In $G-\{x,y\}$ root a spanning tree at
+$z$ and colour in decreasing depth. Every vertex other than $z$ has an
+uncoloured parent, and at $z$ the already coloured neighbours $x,y$
+forbid just one colour between them. A choice among $\Delta$ colours
+is available at every step. Vertex pairs, components and shortest
+path lengths in this proof are all found by scans on the fixed input.
+\end{proof}
+
+\subsection{The chromatic polynomial and acyclic orientations}
+For $F\subseteq E$ let $c(F)$ be the number of components of the spanning
+graph $([n],F)$, counting isolated vertices. Define the signed coefficient
+list of a polynomial by a finite sum
+\[
+ P_G(X)=\sum_{F\subseteq E}(-1)^{|F|}X^{c(F)}.
+\]
+Each coefficient is a difference of two natural counts at most $2^{|E|}$.
+Polynomial statements below mean finite coefficient-list identities.
+
+\begin{theorem}[Chromatic identities]\leavevmode\label{co:poly}
+$P_G(q)$ counts proper $q$-colourings for each natural $q$. It is monic
+of degree $n$ and, for $n\ge1$, its coefficient of $X^{n-1}$ is $-|E|$.
+For an edge $e=uv$, deleting $e$ gives $D$ and identifying its ends in $D$
+and suppressing duplicate edges gives $H$. Then
+$P_G=P_D-P_H$. Disjoint unions multiply chromatic polynomials.
+\end{theorem}
+\begin{proof}
+For a fixed colouring word $a$, let $B(a)$ consist of its monochromatic
+edges. Its proper-colouring indicator is
+$\sum_{F\subseteq B(a)}(-1)^{|F|}$: when $B(a)$ is nonempty, toggling its
+least edge pairs terms of opposite sign, and otherwise just the empty
+subset occurs. Sum over words and interchange the two finite sums. A word
+constant on the edges of $F$ is specified by one value per component,
+giving $q^{c(F)}$ possibilities. The only spanning subgraph with $n$
+components has no edge. A spanning simple subgraph with $n-1$ components
+has exactly one doubleton component, carrying one edge, and all other
+vertices isolated. This gives the first two coefficients.
+
+For deletion and contraction, the proper words on $D$ split by whether the
+colours at $u,v$ agree. The unequal words are precisely the proper words on
+$G$. An equal word descends uniquely to $H$, since the common colour is the
+one on the identified vertex, and duplication of an inequality has no
+effect. The two words on the sides of a disjoint union can be chosen
+independently, so the product identity also holds on natural inputs.
+To pass from evaluations to coefficients, a nonzero integer polynomial of
+degree $h$ cannot vanish on $h+1$ distinct integers: at a root $b$,
+$P(X)-P(b)$ is $(X-b)$ times the polynomial obtained from
+$X^j-b^j=(X-b)\sum_{i<j}X^{j-1-i}b^i$. At every other root that quotient
+also vanishes by integer cancellation. Iterating gives a nonzero constant
+with a root, an impossibility. Only evaluations at $0,\ldots,n$ are
+needed here. For an explicit bound in this root argument, if the initial
+absolute coefficients are at most $M$ and the roots have magnitude at most
+$N$, each division raises the coefficient bound by a factor at most
+$(h+1)(N+1)^h$. Iterate this factor at most $h$ times.
+\end{proof}
+For the complete graph $K_n$ this gives $P_{K_n}(q)=(q)_n$, the number of
+injections from $[n]$ to $[q]$. It is zero for $q<n$. For a forest with
+$c$ components, orient a rooted tree in each component away from its root.
+For $q\ge 1$ the roots have $q$ choices each and each other vertex has
+$q-1$ choices after its parent. Thus $P_G(X)=X^c(X-1)^{n-c}$ by the
+same coefficient argument, evaluating at $1,\ldots,n+1$.
+
+\begin{theorem}[Stanley's evaluation]\leavevmode\label{co:stanley}
+The number $a(G)$ of acyclic orientations of $G$ is $(-1)^nP_G(-1)$.
+\end{theorem}
+\begin{proof}
+Keep $D,H,u,v$ as above. In an acyclic orientation of $D$ there is at
+most one direction of reachability between $u$ and $v$. If a directed
+path joins them, orienting $e$ in the same direction is the only acyclic
+extension. If neither is reachable from the other, both orientations extend.
+The latter orientations of $D$ are in bijection with acyclic orientations
+of $H$. Indeed, at a common neighbour the two edges incident to $u,v$ have
+the same direction relative to that neighbour, since opposite directions
+would make a two-step path. Thus the orientation descends. A directed
+simple cycle through the identified vertex would lift to a directed cycle
+or a directed path between $u,v$. A cycle avoiding that vertex would already
+lie in $D$. Conversely the lift of an acyclic orientation of $H$ allows
+neither a directed cycle nor a path between $u,v$, because either would
+map to a nonempty directed closed walk. A shortest nonempty directed
+closed subwalk is a directed cycle. The edges of $D$ all map to actual
+edges of $H$, so the image walk has positive length.
+Consequently $a(G)=a(D)+a(H)$. The signed evaluation has the same
+recurrence because $H$ has one fewer vertex, and both quantities are one
+on edgeless graphs. Induct on the edge count bounded by the initial edge
+count, bounding all smaller graph codes by the fixed initial order.
+\end{proof}
+
+\subsection{Chordal graphs and perfect elimination}
+A graph is chordal when every simple cycle of length at least four has a
+chord, an edge joining two nonconsecutive vertices. A vertex is simplicial
+when its neighbours form a clique.
+
+\begin{theorem}[Minimal separators and elimination]\leavevmode\label{co:chordal}
+In a chordal graph every inclusion-minimal vertex separator for a
+nonadjacent pair is a clique. Every noncomplete chordal graph has two
+nonadjacent simplicial vertices. A graph is chordal precisely when it has
+an ordering in which the later neighbours of every vertex form a clique.
+Every chordal graph is perfect.
+\end{theorem}
+\begin{proof}
+For nonadjacent $x,y$, choose an inclusion-minimal subset
+$S\subseteq V\setminus\{x,y\}$ separating them. Such a set exists by
+deleting all other vertices and scanning subsets. Let $A,B$ be the
+components of $x,y$ after deleting $S$. Every $s\in S$ has a neighbour
+in each component: a simple $x$--$y$ path on restoring $s$ must pass
+through $s$, with the portions on either side contained in $A,B$. If
+$p,q\in S$ were nonadjacent, there would be a $p$--$q$ path through $A$
+and one through $B$. Take shortest ones with interiors in those respective
+components. Neither path has a chord by minimality, and there is no edge
+between the two interiors. Their union is an induced cycle of length at
+least four, a contradiction. This also covers $S=\varnothing$.
+
+Use induction on the size of an induced subgraph of the fixed input.
+For a noncomplete graph choose $x,y,S,A,B$ as above. In the smaller
+chordal induced graph on $A\cup S$, find a simplicial vertex in $A$:
+if this graph is complete, choose any vertex of $A$. If it is noncomplete,
+the induction hypothesis produces two nonadjacent simplicial vertices,
+at most one of them in the clique $S$. All neighbours of the chosen
+vertex in the whole graph already belong to $A\cup S$, so it remains
+simplicial. Repeating with $B$ gives the second vertex, nonadjacent to
+the first. The complete case has every vertex simplicial.
+Repeated removal therefore produces the required ordering. Conversely, on
+an induced cycle of length at least four, the first vertex in such an
+ordering would have two nonadjacent later neighbours. Finally colour in
+reverse order. Each vertex together with its later neighbours is a clique,
+so at most $\omega-1$ colours are forbidden. Every induced subgraph is
+chordal by inspection of its cycles, hence $\chi=\omega$ throughout.
+\end{proof}
+
+\subsection{Colouring edges by fans}
+In a proper edge colouring, edges sharing an endpoint have distinct colours.
+Equivalently this is a vertex colouring of the line graph, whose vertices
+are the original edges and whose adjacencies mean a shared endpoint.
+
+\begin{theorem}[Vizing]\leavevmode\label{co:vizing}
+Every simple graph of maximum degree $\Delta$ has an edge colouring with
+$\Delta+1$ colours. Its least possible palette size is $\Delta$ or
+$\Delta+1$.
+\end{theorem}
+\begin{proof}
+Use a fixed palette of $\Delta+1$ colours. Extend a proper colouring of
+the first $t$ edges to include the next edge $xy$. Ignore later edges.
+A colour missing at a vertex occurs on none of its coloured incident
+edges. At least one colour is missing at every vertex.
+Make a list of distinct neighbours $w_0=y,w_1,\ldots,w_k$ of $x$.
+Append a neighbour $w_j$ whenever the coloured edge $xw_j$ has a colour
+missing at an earlier $w_{p(j)}$, recording one such predecessor $p(j)<j$.
+Stop when no new neighbour can be appended.
+
+For any target index $i$, follow predecessors down to $0$, then reverse
+the chain. Shifting the colour of each successive spoke $xw_j$ to the
+preceding spoke $xw_{p(j)}$ leaves the target spoke empty. Each moved
+colour was missing at its new outer endpoint. At $x$ the distinct
+colours are permuted along with the single empty slot. We call this
+operation rotation. It succeeds whenever the recorded missing colours on
+that chain still are missing.
+
+Choose $\alpha$ missing at $x$ and $\beta$ missing at $w_k$.
+If $\beta$ is missing at $x$, rotate to $k$ and use $\beta$ there.
+Otherwise the $\beta$-spoke is $xw_j$ for some $1\le j\le k$, by
+maximality of the list, and $\alpha\ne\beta$. Set $i=p(j)$. Both $w_i$
+and $w_k$ miss $\beta$ and they are distinct. In the graph of
+$\alpha$- and $\beta$-edges every vertex has degree at most two. The
+component of $x$, which has degree one there, is a path. Iterating from its
+only edge cannot revisit a vertex (a first repeat would require a third
+incident edge or a second edge at $x$). Thus at most one of $w_i,w_k$
+belongs to that component, since both have degree at most one. Swapping
+$\alpha$ and $\beta$ throughout any component preserves propriety.
+
+If $w_i$ is outside the component of $x$, swap on its component. This
+makes $\alpha$ missing at $w_i$. Rotation to $i$ uses only spokes
+of index at most $i<j$. None has colour $\alpha$ or $\beta$.
+All its recorded missing colours survive the swap. Rotate and use
+$\alpha$ at $xw_i$. In the remaining case swap on the component of
+$w_k$, which contains neither $w_i$ nor $x$. This makes $\alpha$ missing
+at $w_k$. On the chain to $k$, the only possible spoke of colour $\beta$
+is $xw_j$, and its recorded predecessor $w_i$ still misses $\beta$.
+There are no $\alpha$-spokes at $x$. Again the rotation is valid and
+$\alpha$ fills the final empty spoke. Each extension traverses at most
+$n$ fan vertices and one two-colour component. The outer induction checks
+propriety of the coloured edge prefix. Finally the incident edges of a
+maximum-degree vertex already require $\Delta$ colours. The empty edge
+set has least palette size zero.
+\end{proof}
+
+A further vertex-colouring certificate is an acyclic orientation whose
+longest directed path has at most $q$ \emph{vertices}. Direct each edge
+from smaller to larger colour. Colours strictly increase along a directed
+path. In the reverse direction, colour $v$ by the maximum number of
+vertices on a directed path ending at $v$, minus one. A longest such path
+ending at $u$ extends across an arc $u\to v$, since otherwise $v$ would
+already occur on it and give a directed cycle. The colour therefore
+strictly increases on each arc. Paths are found by scanning words of at
+most $n$ vertices. The least such longest-path order, over acyclic
+orientations, is exactly $\chi$ (the longest-path order of the empty graph
+is zero).
+
+\section{Extremal graph theory with explicit witnesses}\label{co:extremal}
+\subsection{The exact clique-free maximum}
+Write $T_r(n)$ for the complete $r$-partite graph on $n$ vertices whose
+part sizes differ by at most one, allowing empty parts. Thus, for $r\ge1$
+and $n=ar+b$ with $0\le b<r$, its part sizes are $b$ copies of $a+1$ and
+$r-b$ copies of $a$. Let $t_r(n)$ denote its edge count.
+\begin{theorem}[Tur\'an, including equality]\leavevmode\label{co:turan}
+A graph on $n$ vertices containing no $(r+1)$-clique has at most
+\[
+ t_r(n)=\binom n2-b\binom{a+1}2-(r-b)\binom a2
+\]
+edges. Equality holds precisely for graphs isomorphic to $T_r(n)$. A
+partition giving this isomorphism can be constructed. Strictly more than
+$t_r(n)$ edges yields an explicit $(r+1)$-clique.
+\end{theorem}
+\begin{proof}
+First construct a complete $r$-partite graph on the same vertex set having
+at least as many edges, with equality only if the two graphs actually have
+the same edges. For $r=1$ the input is edgeless. For $r>1$, an empty graph
+of order zero needs only empty parts. Otherwise take a vertex of maximum
+degree $d$, put $S$ equal to its neighbours and $T=V\setminus S$.
+The graph on $S$ contains no $r$-clique, since that clique together with the
+chosen vertex would be forbidden. Let $e(S),e(T),e(S,T)$ be the internal and
+crossing edge counts. Summing degrees over $T$ gives
+\[
+ e(S,T)+2e(T)\le d|T|,\qquad
+ e(G)\le e(S)+d|T|-e(T)\le e(S)+|S||T|.
+\]
+Recursively replace $G[S]$ by a complete $(r-1)$-partite graph, and
+make $T$ an independent part joined to all of $S$. These inequalities prove
+the promised domination. Equality forces $e(T)=0$, every one of the
+$|S||T|$ cross edges present, and equality inside $S$. Hence the
+replacement made no change. This only requires $r$ successive passes.
+Alternatively, for induction on $r$ fix a bound $N$ on vertex labels
+and quantify over masks of $[N]$ and matrices below $2^{N^2}$ inside
+the induction formula.
+
+A complete multipartite graph has $\binom n2-\sum_i\binom{a_i}2$ edges.
+If two parts have sizes $x\ge y+2$, moving a vertex from the larger to the
+smaller increases the edge count by $(x-1)-y\ge1$. There can be at most
+$\binom n2$ improving moves. At termination all sizes are $a$ or $a+1$,
+with the stipulated multiplicities. This proves the formula and the equality
+condition. The extremal construction forbids an $(r+1)$-clique by the
+pigeonhole principle. For a graph above the bound, scan all subset masks
+for a clique of the required size. Exhaustion contradicts the proved bound.
+\end{proof}
+For $r=2$ this is Mantel's theorem, with bound
+$\lfloor n/2\rfloor\lceil n/2\rceil=\lfloor n^2/4\rfloor$ and the unique
+balanced complete bipartite extremizer up to isomorphism.
+For later use,
+$t_r(n)\le (1-1/r)n^2/2$: the identity
+$r\sum_i a_i^2-(\sum_i a_i)^2=\sum_{i<j}(a_i-a_j)^2$
+gives the bound from $2t_r(n)=n^2-\sum_i a_i^2$.
+
+\subsection{Dense graphs contain a prescribed multipartite graph}
+The following bound gives the Erd\H{o}s--Stone theorem its finite,
+witness-producing formulation. All densities in this and the next
+subsection abbreviate inequalities of naturals after clearing positive
+denominators.
+
+\begin{lemma}[A dense relation contains a box]\leavevmode\label{co:box}
+Let $k,s,d\ge1$ and let $R\subseteq[n]^k$ satisfy $d|R|\ge n^k$.
+Define $d_0=d$ and
+$d_{j+1}=2d_j(4d_j)^s$. If $n\ge 4s d_k$, there are $s$-element
+sets $A_1,\ldots,A_k$ with $A_1\times\cdots\times A_k\subseteq R$.
+\end{lemma}
+\begin{proof}
+With current dimension $l\ge2$ and density denominator $D$, each of the
+$n^{l-1}$ prefixes has a number of extensions in $[n]$. At least
+$n^{l-1}/(2D)$ prefixes have at least $n/(2D)$ extensions: the remaining
+prefixes together account for at most $n^l/(2D)$ tuples and each retained
+prefix accounts for at most $n$. From each retained prefix one can choose
+an ordered list of $s$ distinct extensions in at least $(n/(4D))^s$ ways,
+because fewer than $s$ previously used labels are excluded and $n\ge4Ds$.
+Sum over prefixes and reorder the count by extension list. There are at
+most $n^s$ lists. Thus some list has at least
+$n^{l-1}/[2D(4D)^s]$ common prefixes. It is found by a bounded scan.
+Its entries form $A_l$, and the relation of common prefixes is the input
+for dimension $l-1$. At dimension one there are at least $n/D\ge s$
+members, so take the first $s$. The invariant after each projection says
+that every current tuple concatenated with any choices from the recorded
+suffix lies in $R$, and that the current relation meets its cardinality
+bound with the new $D$. All relation masks have at most $n^k$ bits.
+\end{proof}
+
+\begin{theorem}[Effective Erd\H{o}s--Stone]\leavevmode\label{co:es}
+Fix $r\ge2$, $s\ge1$ and a positive integer $h$. Write
+$\lambda=1-1/(r-1)$, $q=\max\{r,2h+1\}$, and
+$d=2^{r+1}h\binom qr$. Use Lemma~\ref{co:box} with this $d$ and set
+\[
+ N(r,s,h)=\max\{q,2r,4s d_r\}.
+\]
+If $n\ge N(r,s,h)$ and $e(G)\ge(\lambda+1/h)\binom n2$,
+one can find $r$ disjoint sets of size $s$ with every edge between
+different sets present.
+\end{theorem}
+\begin{proof}
+The average edge count of an induced $q$-vertex subgraph equals
+$e(G)\binom q2/\binom n2$, since each edge lies in
+$\binom{n-2}{q-2}$ such subsets. If a $q$-set has no $r$-clique,
+Tur\'an's bound gives at most
+\[
+ \lambda q^2/2=
+ \bigl(\lambda+\lambda/(q-1)\bigr)\binom q2
+ \le (\lambda+1/(2h))\binom q2
+\]
+edges. All other sets have at most $\binom q2$. Subtracting the bound
+for the former from the average shows that at least a $1/(2h)$
+fraction of all $q$-sets contain an $r$-clique: if their fraction is $f$,
+the average divided by $\binom q2$ is at most
+$\lambda+1/(2h)+f$. Every $r$-clique lies in
+$\binom{n-r}{q-r}$ such sets. Counting incidences shows that the number
+of $r$-cliques is at least $\binom nr/(2h\binom qr)$. Here one uses
+$\binom nq\binom qr=\binom nr\binom{n-r}{q-r}$.
+
+Let $R$ be the relation of ordered $r$-cliques. Its size is $r!$ times
+that count, and $(n)_r\ge (n/2)^r$ for $n\ge 2r$, so $d|R|\ge n^r$.
+Apply Lemma~\ref{co:box}. Coordinates in a member of $R$ are distinct,
+so the $r$ resulting sets must be pairwise disjoint: an element shared by
+two sets could be chosen in those two coordinates simultaneously. Choosing
+any pair from two different sets and completing the remaining coordinates
+proves that all required edges are present.
+\end{proof}
+
+In particular, given a graph $H$ with $\chi(H)=r\ge2$, take $s=|V(H)|$.
+Its optimal colouring gives an explicit embedding into this complete
+multipartite subgraph, by assigning its same-colour vertices distinct
+labels in the corresponding part. In the other direction, every
+$(r-1)$-partite graph avoids $H$, since an embedding would colour $H$ with
+$r-1$ colours. Such a graph on $n\ge2$ can attain density at least
+$\lambda$: among all $(r-1)^n$ assignments of vertices to labelled parts,
+the fraction separating any fixed edge of $K_n$ is $\lambda$, so one
+assignment cuts at least $\lambda\binom n2$ pairs. Fill all those cross
+edges. Thus for $n\ge N(r,s,h)$ the maximum edge density of an
+$H$-free graph lies in $[\lambda,\lambda+1/h)$. This is a
+primitive-recursive modulus for the usual density limit.
+
+\subsection{The finite graph Ramsey theorem}
+\begin{theorem}[Two colours and the binomial bound]\leavevmode\label{co:ramsey}
+For $a,b\ge1$ put $B(a,b)=\binom{a+b-2}{a-1}$. Every graph on at
+least $B(a,b)$ vertices has an $a$-clique or a $b$-vertex independent
+set. A bounded algorithm returns one. In particular the two-colour Ramsey
+number $R(a,b)$ exists and satisfies $R(a,b)\le B(a,b)$.
+\end{theorem}
+\begin{proof}
+With $a=1$ or $b=1$, use any vertex. Otherwise fix a vertex $v$. Among the
+remaining vertices either there are at least $B(a-1,b)$ neighbours, or
+there are at least $B(a,b-1)$ non-neighbours. If both tests failed, the two
+sets would together have at most $B(a,b)-2$ elements by Pascal's identity.
+In the first branch restrict to the neighbours and lower $a$ by one.
+An independent-set answer works as it stands, and a clique answer extends
+by $v$. In the second branch restrict to the non-neighbours and lower $b$
+by one. Now extend just the independent-set answer by $v$. A stored stack
+of at most $a+b$ branch choices implements the descent and reconstruction.
+One may induct on the sum of the targets with all varying targets bounded
+by the initial $a,b$ and all varying vertex sets masks on the original
+ground set. The least working graph order is found by checking all simple
+graph codes at each order through $B(a,b)$. It works at all larger orders
+by restriction to that many vertices.
+\end{proof}
+For example $B(3,3)=6$. The $5$-cycle has no triangle and its complement
+is a $5$-cycle (traverse the vertices in steps of two), so it has no
+independent triple either. Hence $R(3,3)=6$. For $k\ge1$ edge colours
+and target $s\ge1$, set $L_1=s$ and $L_{i+1}=B(s,L_i)$. On $L_{i+1}$
+vertices group the edges of one colour against all other edges. The
+two-colour result returns an $s$-set of the first colour or an $L_i$-set
+on which the remaining $i$ colours suffice. Iterating yields a
+monochromatic $s$-set. The nested values $L_i$ are given by ordinary
+primitive recursion on $i$.
+
+\subsection{An equitable regularity lemma with an arithmetic bound}
+The following proof supplies the exceptional set, all equal-size classes,
+and the witnesses used to refine them. For disjoint nonempty sets $A,B$
+write $d(A,B)=e(A,B)/(|A||B|)$. A pair is $\varepsilon$-regular if
+$|d(X,Y)-d(A,B)|\le\varepsilon$ whenever $X\subseteq A$, $Y\subseteq B$,
+$|X|\ge\varepsilon|A|$, and $|Y|\ge\varepsilon|B|$.
+
+\begin{theorem}[Finite Szemer\'edi regularity]\leavevmode\label{co:regularity}
+Let $h\ge2$, $k_0\ge1$, and $\varepsilon=1/h$.
+Put $J=4h^5+1$, $K_0=\max\{k_0,2hJ\}$,
+$K_{i+1}=4K_i4^{K_i}$ and
+$N=\max\{2hK_J,8K_J4^{K_J}\}$.
+Every graph of order $n\ge N$ has a partition into an exceptional set
+$V_0$ of size at most $n/h$ and $k$ nonempty equal-size classes, with
+$k_0\le k\le K_J$. At most $k^2/h$ ordered pairs of distinct classes
+are irregular. The partition and a bounded regularity test are
+primitive recursive.
+\end{theorem}
+\begin{proof}
+Use ordered pairs of vertices throughout, counting a diagonal entry as
+zero. An auxiliary partition $\mathcal P$ consists of the main classes
+and the exceptional vertices as individual singleton cells. Define its
+energy by
+\[
+ Q(\mathcal P)=\sum_{A,B\in\mathcal P}\frac{|A||B|}{n^2}
+                  d(A,B)^2.
+\]
+Here the density for $A=B$ also uses ordered pairs and denominator
+$|A|^2$. We have $0\le Q\le1$. In a refinement, an old rectangle with
+density $d$ is split into rectangles with relative areas $w_i$ and densities
+$d_i$. Since $\sum_iw_i=1$ and $\sum_iw_i d_i=d$, its gain in mean
+square is $\sum_iw_i(d_i-d)^2$. In particular the energy never decreases.
+
+Suppose the main classes have size $m$ and a pair $A,B$ is irregular.
+Scan the two subset masks to choose witnesses $X,Y$. If a refinement
+respects those masks, $X\times Y$ is a union of its rectangles. Their
+contribution to the mean square gain on $A\times B$ is at least
+\[
+ \frac{|X||Y|}{m^2}\bigl(d(X,Y)-d(A,B)\bigr)^2> h^{-4}.
+\]
+Indeed the weighted average of $d_i-d(A,B)$ on that subrectangle is
+$d(X,Y)-d(A,B)$, and the average of squares dominates the square
+of the average by the same variance identity. Use a single witness
+pair per unordered irregular pair, transposing for the opposite order.
+Inside each main class split by membership in all its chosen witness sets.
+There are at most $2^k$ nonempty atoms per class. If more than $k^2/h$
+ordered pairs are irregular and $km\ge n/2$, the increase in energy
+is greater than $(km/n)^2 h^{-5}\ge1/(4h^5)$.
+
+It remains to ensure equal sizes without undoing this gain. Start with
+$K_0$ consecutive blocks of $\lfloor n/K_0\rfloor$ vertices and place
+the remainder in $V_0$. At a refinement, divide every atom in vertex order
+into blocks of a common size $m'=\lfloor m/4^k\rfloor$, transferring the
+unused vertices of that atom to $V_0$. As individual singletons these
+vertices also refine the atom. At most $k2^k m'\le n/2^k$ vertices are
+added to $V_0$. Initially $|V_0|<K_0\le n/(2h)$, and $J$ such
+additions total at most $Jn/2^{K_0}\le n/(2h)$ provided $k\ge K_0$.
+These estimates propagate together: at stage $i<J$, suppose
+$K_0\le k\le K_i$ and $|V_0|\le n/(2h)+in/2^{K_0}\le n/h$.
+Then $km\ge n/2$, and the choice of $N$ gives $m\ge2\cdot 4^k$.
+Consequently $m'\ge m/(2\cdot 4^k)\ge1$. Every old class contributes
+at least one new main block since fewer than $2^k m'\le m/2^k<m$
+of its vertices are discarded. The new class count is at most
+$n/m'\le 4k4^k\le K_{i+1}$. This proves the required induction estimates.
+
+The scan stops when the irregularity count satisfies the theorem.
+Otherwise $J$ failed tests and refinements would increase energy by more
+than $J/(4h^5)>1$. This proves termination with the stated bound.
+An energy may be stored over the common denominator $n^2(n!)^2$ because
+each ordered cell product $|A||B|$ divides $(n!)^2$. Cross-multiplication
+therefore makes the energy-increment invariant a Boolean check, along with
+the partition tests. The recurrence for the number of cells is uniform in
+both parameters.
+\end{proof}
+
+\subsection{Large girth and large chromatic number}
+\begin{theorem}[Erd\H{o}s, with a finite search bound]\leavevmode\label{co:girth}
+For $g\ge3$ and $k\ge1$ there is a graph with no cycle of length at most
+$g$ and with $\chi>k$. Its order is at most
+$[64(g+1)k^2]^{2g}$, and such a graph can be produced by primitive
+recursion in $g,k$.
+\end{theorem}
+\begin{proof}
+Set $q=64(g+1)k^2$, $n=q^{2g}$, $D=n/q$, and $t=n/(2k)$.
+Consider all $D^{\binom n2}$ words assigning one digit below $D$ to each
+unordered pair of vertices, making it an edge exactly when its digit is
+zero. An average always means the sum over this finite list divided by
+its length. Prescribing $j$ particular edges to be present selects a
+fraction $D^{-j}$ of the words by counting free digits.
+
+Let $C$ count simple cycles of lengths $3$ through $g$.
+Represent each cycle by its lexicographically first traversal among its
+rotations and reversals. There are at most $n^j$ candidate traversals of
+length $j$. Their $j$ distinct edges occur in a fraction $D^{-j}$ of words,
+so the average of $C$ is at most $\sum_{j=3}^g q^j\le gq^g\le n/8$.
+At most a quarter of the words have $C\ge n/2$, since summing $C$ on
+those words alone gives at least their number times $n/2$.
+
+Let $I$ count independent $t$-sets. Each candidate needs its
+$\binom t2$ pairs absent, so the average of $I$ is at most
+$2^n(1-1/D)^{\binom t2}$. Since $D\ge2$,
+$(1+1/(D-1))^D\ge1+D/(D-1)\ge2$ by the binomial expansion.
+Thus $(1-1/D)^D\le1/2$. Here $t\ge2$ and
+\[
+ \binom t2\ge t^2/4=n^2/(16k^2)\ge D(n+2),
+\]
+using $q\ge32k^2$ and $n+2\le2n$. The average of $I$ is at most
+$1/4$, so at most a quarter of the words have $I\ge1$.
+Consequently a word with $I=0$ and $C<n/2$ is found by bounded scan.
+Choose one vertex of each of its short cycles, form the union of these
+choices, and delete it. At least $n/2$ vertices remain and every short
+cycle was hit. Every independent set remaining has size $<t$.
+With only $k$ colours the graph could have at most $k(t-1)<n/2$
+vertices, a contradiction.
+\end{proof}
+
+\section{Hamiltonian routes in graphs and tournaments}\label{co:hamilton}
+A Hamiltonian cycle is a simple cycle visiting every vertex. The graph
+has at least three vertices in the cycle results below.
+
+\begin{theorem}[Closure, Ore, and Dirac]\leavevmode\label{co:ore}
+If $u,v$ are nonadjacent in a simple graph of order $n\ge3$ and
+$\deg(u)+\deg(v)\ge n$, adding $uv$ preserves and reflects existence
+of a Hamiltonian cycle. Consequently a Hamiltonian cycle can be
+constructed if every nonedge satisfies this inequality (Ore), in
+particular if $2\deg(v)\ge n$ at every vertex (Dirac).
+\end{theorem}
+\begin{proof}
+An existing cycle survives edge addition. Given a cycle after addition
+that uses the new edge, deleting it gives a spanning path
+$x_1=u,x_2,\ldots,x_n=v$ in the original graph. In the $n-1$ slots
+$i=1,\ldots,n-1$ mark one type when $v$ is adjacent to $x_i$ and
+a second type when $u$ is adjacent to $x_{i+1}$. The counts sum to
+at least $n$, so some slot has both marks. Since $uv$ was a nonedge
+this slot has $1<i<n-1$. Follow the path from $x_1$ to $x_i$, cross
+to $x_n$, follow the path backwards to $x_{i+1}$, and close to $x_1$.
+This gives the required cycle in the original graph. For Ore's condition,
+add nonedges in order until the complete graph is obtained. Degree sums
+only increase. Its vertex order gives a Hamiltonian cycle. Undo the
+additions in reverse order by the preceding operation. There are at most
+$\binom n2$ steps and each stored cycle is a permutation of $[n]$.
+Dirac's condition implies Ore's by addition.
+\end{proof}
+
+\begin{theorem}[R\'edei and Camion]\leavevmode\label{co:tournament}
+A tournament (exactly one arc on each pair of distinct vertices) has
+a directed Hamiltonian path. A tournament on $n\ge3$ has a directed
+Hamiltonian cycle if and only if it is strongly connected.
+\end{theorem}
+\begin{proof}
+Insert the next vertex $x$ into an existing path immediately before the
+first vertex to which $x$ has an outgoing arc, appending $x$ if there is
+none. The predecessor, if any, has an arc to $x$. Starting with the
+empty list gives a directed Hamiltonian path (the empty list is the
+output at order zero).
+
+A directed Hamiltonian cycle gives directed reachability in both directions
+between each pair. For the converse, strong connectivity gives a directed
+cycle: take an arc and a shortest path returning from its head to its tail.
+Choose a longest directed simple cycle $C$ by scanning lists of length at
+most $n$. If an outside vertex $x$ has incidences both ways with $C$,
+a cyclic change of type on $C$ gives successive vertices $c,d$ with
+$c\to x\to d$. Insert $x$ there to extend $C$. Thus any outside vertex
+is either dominated by every vertex of $C$ (type $U$) or dominates every
+vertex of $C$ (type $W$). If there is an outside vertex there must be
+both types: otherwise either no arc leaves $C$ or no arc enters it.
+There must be an arc $u\to w$ from $U$ to $W$, since the only possible
+exit from $U$ is into $W$ and vertices of $U$ must reach $C$. Replace
+any arc $c\to d$ of $C$ by $c\to u\to w\to d$, contradicting maximality.
+The bounded scan therefore produces a spanning cycle.
+\end{proof}

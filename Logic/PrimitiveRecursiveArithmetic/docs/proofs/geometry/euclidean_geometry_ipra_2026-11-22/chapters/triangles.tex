@@ -1,0 +1,888 @@
+\section{Metric geometry and the triangle portfolio}
+\label{sec:triangles}
+
+This chapter gives finite algebraic proofs of the familiar metric and triangle
+theorems.  Coordinates are the certified exact scalar codes of the foundational
+chapter.  Ordered-field notation is an abbreviation for computations on those
+codes, not an additional higher-order axiom.  In particular, a square root below
+means its nonnegative, certified algebraic root.  Division is used only after a
+nonzero denominator has been exhibited.  The coordinate calculations give
+\ipra{} proof schemata by the certificate interpretation established there.
+They do not assert a decision procedure for equality of arbitrary Cauchy reals.
+
+The classical statements covered here include the triangle propositions in
+Euclid's Books I, II and VI; our proofs use coordinates and explicitly account
+for their constructive data.  For example, the original statements of
+Pythagoras and the angle-bisector theorem are in I.47 and VI.3,
+respectively.\footnote{Euclid, \emph{Elements}, I.47 and VI.3, in David Joyce's
+online edition:
+\url{https://aleph0.clarku.edu/~djoyce/java/elements/bookI/propI47.html} and
+\url{https://aleph0.clarku.edu/~djoyce/java/elements/bookVI/propVI3.html}.
+These references identify the classical statements; the arithmetic proofs
+below are supplied in full.}
+
+\subsection{Definitions and two-coordinate certificates}
+
+For vectors $u=(u_1,u_2)$ and $v=(v_1,v_2)$ put
+\[
+ u\mathbin{\cdot}v=u_1v_1+u_2v_2,\qquad
+ [u,v]=u_1v_2-u_2v_1,\qquad
+ |u|^2=u\mathbin{\cdot}u,\qquad
+ Ju=(-u_2,u_1).
+\]
+The notation $|u|$ denotes the nonnegative square root of $|u|^2$.
+Thus $|P-Q|$ is a distance.  A noncollinear triangle $(A,B,C)$ has
+$[B-A,C-A]\ne0$.  Unless orientation matters, write
+\[
+ a=|B-C|,\quad b=|C-A|,\quad c=|A-B|,\quad
+ D=|[B-A,C-A]|,\quad \Delta=D/2,\quad s=(a+b+c)/2.
+\]
+Its side lengths and $D$ are strictly positive.  Reflection, or an interchange
+of $B,C$, permits us to calculate with $A=0$, $B=u$, $C=v$ and $[u,v]=D>0$.
+This is an explicit finite coordinate change.  It is not an assumption that
+an arbitrary real sign can be decided.
+
+\begin{lemma}[Gram identity and quarter-turn identities]
+\label{tri:gram}
+For all $u,v$,
+\[
+ (u\mathbin{\cdot}v)^2+[u,v]^2=|u|^2|v|^2,\qquad
+ (Ju)\mathbin{\cdot}v=[u,v],\qquad
+ u\mathbin{\cdot}(Jv)=-[u,v],\qquad |Ju|^2=|u|^2.
+\]
+If $u\ne0$, every $v$ has the unique decomposition
+\[
+ v=\frac{u\mathbin{\cdot}v}{|u|^2}u+
+   \frac{[u,v]}{|u|^2}Ju.
+\]
+\end{lemma}
+\begin{proof}
+The first left-hand side expands to
+$u_1^2v_1^2+2u_1u_2v_1v_2+u_2^2v_2^2+
+u_1^2v_2^2-2u_1u_2v_1v_2+u_2^2v_1^2$.
+Cancellation leaves $(u_1^2+u_2^2)(v_1^2+v_2^2)$.
+The three quarter-turn equalities follow by substituting $Ju=(-u_2,u_1)$.
+For the decomposition, multiply through by $|u|^2$ and expand its two
+coordinates.  They become $|u|^2v_1$ and $|u|^2v_2$.
+Taking the dot product with $u$ and with $Ju$ recovers the two coefficients,
+which proves uniqueness.  The denominator is positive because a sum of two
+squares can vanish only if both coordinates vanish.
+\end{proof}
+
+\begin{theorem}[Cauchy--Schwarz, metric axioms, and strict triangle inequality]
+\label{tri:metric}
+For all vectors $u,v$,
+\[
+ -|u||v|\le u\mathbin{\cdot}v\le |u||v|,
+ \qquad |u+v|\le |u|+|v|.
+\]
+Distance is symmetric, nonnegative, and zero precisely on equal points.
+If $[u,v]\ne0$, then $|u+v|<|u|+|v|$.
+Consequently a noncollinear triangle satisfies all three strict inequalities
+$a<b+c$, $b<c+a$, and $c<a+b$.
+\end{theorem}
+\begin{proof}
+The Gram identity gives $(u\mathbin{\cdot}v)^2\le |u|^2|v|^2$.
+For a nonnegative $q$, the inequalities $p>q$ or $p<-q$ would imply
+$p^2>q^2$, by factoring the difference of squares and multiplying positive
+quantities.  Apply this with $p=u\mathbin{\cdot}v$ and $q=|u||v|$.
+Now
+\[
+ |u+v|^2=|u|^2+2u\mathbin{\cdot}v+|v|^2
+ \le (|u|+|v|)^2.
+\]
+Both sides being squares of nonnegative quantities, the same factorization
+gives the claimed inequality for their square roots.  If $[u,v]\ne0$,
+the Gram inequality is strict, so the last inequality is strict as well.
+Symmetry and the zero criterion follow directly from the sum-of-squares
+definition.  Apply the strict inequality to the two edge vectors along a
+broken path between each pair of vertices.  Their determinants differ from
+$[B-A,C-A]$ only by sign, and are therefore nonzero.
+\end{proof}
+
+\begin{proposition}[Explicit Euclidean motions and similarities]
+\label{tri:motions}
+Let $e,e'$ be unit vectors and let $\varepsilon^2=1$.  The map
+\[
+ Qx=(x\mathbin{\cdot}e)e'+
+       \varepsilon(x\mathbin{\cdot}Je)Je'
+\]
+preserves dot products and distances.  It has determinant $\varepsilon$.
+For $\lambda>0$, the map $x\mapsto P+\lambda Q(x-A)$ multiplies all
+distances by $\lambda$, preserves all unoriented angles, and multiplies
+unsigned triangle areas by $\lambda^2$.
+\end{proposition}
+\begin{proof}
+Write $x=\alpha e+\beta Je$ and $y=\gamma e+\delta Je$ using
+Lemma~\ref{tri:gram}.  Orthogonality and the unit equations give
+$x\mathbin{\cdot}y=\alpha\gamma+\beta\delta$ and
+$Qx\mathbin{\cdot}Qy=\alpha\gamma+\varepsilon^2\beta\delta$.
+The two are equal.  The same computation with $x-y$ proves distance
+preservation.  The determinant of the matrix with columns $e,Je$ is one,
+as is that with columns $e',Je'$; the intervening diagonal matrix has
+determinant $\varepsilon$.  Scaling introduces a factor $\lambda^2$
+in dot products and determinants.  The ratios defining angles below
+therefore remain unchanged, and their determinant absolute values scale
+by $\lambda^2$ as asserted.
+\end{proof}
+
+\subsection{Angles without transcendental functions}
+
+For nonzero vectors $u,v$, the unoriented angle between their rays is the pair
+\[
+ \operatorname{Ang}(u,v)=
+ \left(\frac{u\mathbin{\cdot}v}{|u||v|},
+       \frac{|[u,v]|}{|u||v|}\right).
+\]
+It belongs to the upper unit semicircle.  Its components will be called
+$\cos\alpha$ and $\sin\alpha$; this is an algebraic definition, not an appeal
+to already constructed analytic sine and cosine.  Equality of angles means
+equality of these pairs.  A right angle is $(0,1)$; a straight angle is
+$(-1,0)$.  An angle is acute if its first coordinate is positive and obtuse if
+that coordinate is negative.  For the open upper semicircle, angular order
+is circular order: $z<w$ means $[z,w]>0$.  This also agrees with decreasing
+first coordinate.  Indeed, for $z=(c,t)$ and $w=(d,r)$ there,
+\[
+ (t+r)[z,w]=(c-d)(1+z\mathbin{\cdot}w),
+\]
+and both $t+r$ and $1+z\mathbin{\cdot}w$ are positive.  The latter is
+$|z+w|^2/2$, and $z+w$ has positive second coordinate.
+
+Addition of direction angles uses the pair product
+\[
+ (c,t)*(d,r)=(cd-tr,cr+td).
+\]
+If two open upper-semicircle angles have their product in the open upper
+semicircle, this product is their sum with no passage through a straight
+angle: $[z,z*w]=r>0$ and $[w,z*w]=t>0$.  More generally, half-plane signs
+record the finite carry when a sum crosses a half-turn.  These observations
+are a precise algebraic meaning for the angle sums used below.  Supplement
+is $(c,t)\mapsto(-c,t)$.
+
+\begin{theorem}[Pythagoras and its converse]
+\label{tri:pythagoras}
+For three distinct vertices, the angle at $A$ is right if and only if
+$a^2=b^2+c^2$.
+\end{theorem}
+\begin{proof}
+Writing $u=B-A$, $v=C-A$ gives
+\[
+ a^2=|v-u|^2=|u|^2+|v|^2-2u\mathbin{\cdot}v
+             =c^2+b^2-2u\mathbin{\cdot}v.
+\]
+Thus the asserted equality is equivalent to $u\mathbin{\cdot}v=0$.
+The Gram identity then gives $|[u,v]|=|u||v|$, so the angle pair is
+$(0,1)$.  Conversely that pair has zero dot product.  All cancellation is
+by the nonzero constant $2$ and the positive side lengths.
+\end{proof}
+
+\begin{theorem}[Law of cosines]
+\label{tri:cosine}
+For a noncollinear triangle with interior angle pairs $\alpha,\beta,\gamma$,
+\[
+ a^2=b^2+c^2-2bc\cos\alpha,
+\quad b^2=c^2+a^2-2ca\cos\beta,
+\quad c^2=a^2+b^2-2ab\cos\gamma.
+\]
+\end{theorem}
+\begin{proof}
+The expansion in the preceding proof and the definition
+$bc\cos\alpha=(B-A)\mathbin{\cdot}(C-A)$ give the first identity.
+Perform the same expansion with origins $B$ and $C$ for the other two.
+\end{proof}
+
+\begin{theorem}[Triangle angle sum and exterior-angle theorem]
+\label{tri:angle-sum}
+The three interior angles of a noncollinear triangle sum to a straight
+angle.  Each exterior angle is the sum of the two remote interior angles
+and is greater than either of them.
+\end{theorem}
+\begin{proof}
+Use positive orientation $A=0$, $B=u$, $C=v$ and define unit vectors
+\[
+ e=u/c,\qquad f=v/b,\qquad g=(v-u)/a.
+\]
+Regard a pair $(x,y)$ as a formal complex number, with multiplication $*$
+above and conjugation $(x,y)\mapsto(x,-y)$.  The three interior angle pairs
+are exactly
+\[
+ z_A=\overline e f,\qquad z_B=\overline g(-e),\qquad
+ z_C=\overline f g.
+\]
+Their imaginary parts are $D/(bc)$, $D/(ac)$ and $D/(ab)$, all positive.
+Associativity, commutativity and $\overline e e=\overline f f=
+\overline g g=1$ give
+\[
+ z_Az_B=-\overline{z_C}=(-\cos\gamma,\sin\gamma).
+\]
+The product is in the open upper semicircle.  The angle-addition rule just
+defined therefore makes it the sum of $\alpha$ and $\beta$ without a
+half-turn carry.  It is the supplement of $\gamma$, so adjoining
+$\gamma$ gives a straight angle.  The supplement is the exterior angle at
+$C$.  Its determinants with $z_A$ and $z_B$ are respectively
+$\sin\beta>0$ and $\sin\alpha>0$, so it is greater than each.  Cycling the
+vertices proves the other two exterior-angle statements.
+\end{proof}
+
+\begin{theorem}[At most one nonacute angle; at least two acute angles]
+\label{tri:acute}
+A noncollinear triangle cannot have two right or obtuse angles.
+For certified exact coordinates, at least two of its three angles are acute.
+\end{theorem}
+\begin{proof}
+Suppose the angle at $A$ is not acute.  With $u=B-A$, $v=C-A$, put
+$p=u\mathbin{\cdot}v\le0$.  The dot products defining the angles at $B,C$
+are $|u|^2-p>0$ and $|v|^2-p>0$.  They are acute.  The same argument applies
+at any designated nonacute vertex.  This proves the first assertion
+without any case choice.  For the second, the finite scalar comparison
+procedure either certifies all three dot products positive or supplies one
+that is nonpositive; in the latter case the calculation just made certifies
+the other two positive.  This final decidable split is asserted only for the
+exact coordinate representation, not for arbitrary Cauchy names.
+\end{proof}
+
+\begin{theorem}[Area--sine identity and sine law]
+\label{tri:sine}
+For every noncollinear triangle,
+\[
+ 2\Delta=bc\sin\alpha=ca\sin\beta=ab\sin\gamma,
+ \qquad
+ \frac a{\sin\alpha}=\frac b{\sin\beta}
+                      =\frac c{\sin\gamma}=\frac{abc}{2\Delta}.
+\]
+\end{theorem}
+\begin{proof}
+The first three equalities are precisely the definitions of the three
+positive sine components: the determinants at all vertices have absolute
+value $D=2\Delta$.  Divide by $abc>0$ and then by each positive sine to
+obtain the displayed ratios.  No inverse trigonometric function or limit is
+involved.
+\end{proof}
+
+\begin{theorem}[Side--angle ordering]
+\label{tri:side-angle}
+In a noncollinear triangle, $a>b$ if and only if $\alpha>\beta$;
+$a=b$ if and only if $\alpha=\beta$.  The analogous statements hold for
+the other pairs of sides and opposite angles.
+\end{theorem}
+\begin{proof}
+Subtract the cosine-law expressions to get the exact factorization
+\[
+ \cos\alpha-\cos\beta
+ =\frac{(a-b)\bigl(c^2-(a+b)^2\bigr)}{2abc}.
+\]
+By strict triangle inequality, $c<a+b$, so the second numerator factor is
+negative.  The denominator is positive.  Thus $a>b$ is equivalent to
+$\cos\alpha<\cos\beta$, and the upper-semicircle order identity above
+identifies this with $\alpha>\beta$.  If $a=b$, the cosine components are
+equal, and the sine law makes the positive sine components equal too.
+Conversely equal angle pairs have equal sines, so the sine law gives $a=b$.
+\end{proof}
+
+\subsection{Congruence, similarity, and constructions}
+
+Triangles are \emph{congruent} here when one explicit Euclidean motion of
+Proposition~\ref{tri:motions}, including a possible reflection, sends their
+ordered vertices to one another.  They are \emph{similar} if a positive
+scaling followed by such a motion does so.  These are witness-bearing
+definitions, stronger than a mere list of invariant equalities.
+
+\begin{theorem}[SSS congruence, with an explicit motion]
+\label{tri:sss}
+Two noncollinear triangles with the same three corresponding side lengths
+are congruent.
+\end{theorem}
+\begin{proof}
+Translate their first vertices to zero, and call the remaining vectors
+$u,v$ and $u',v'$.  Set $c=|u|=|u'|>0$, $e=u/c$, $e'=u'/c$.
+The cosine expansion gives
+\[
+ p=u\mathbin{\cdot}v=u'\mathbin{\cdot}v'
+   =\frac{|u|^2+|v|^2-|v-u|^2}{2}.
+\]
+Let $d=[u,v]\ne0$ and $d'=[u',v']\ne0$.  The Gram identity and equality
+of corresponding lengths give $d'^2=d^2$.  Thus
+$\varepsilon=d'/d$ satisfies $\varepsilon^2=1$; no sign choice is needed.
+The frame decompositions are
+\[
+ u=ce,\quad v=(p/c)e+(d/c)Je,\qquad
+ u'=ce',\quad v'=(p/c)e'+(d'/c)Je'.
+\]
+The motion $Q$ in Proposition~\ref{tri:motions}, with this $\varepsilon$,
+sends $u$ to $u'$ and $v$ to $v'$.  Restoring the two translations gives
+the required witness.
+\end{proof}
+
+\begin{theorem}[SAS congruence]
+\label{tri:sas}
+Equality of two corresponding side lengths and of their included angle
+implies congruence of noncollinear triangles.
+\end{theorem}
+\begin{proof}
+If $b,c$ and $\alpha$ agree, the cosine law gives equality of $a^2$.
+The positive square roots $a$ are therefore equal.  Apply the explicit SSS
+construction.  This proves the assertion for any included vertex after
+renaming the vertices.
+\end{proof}
+
+\begin{theorem}[ASA and AAS congruence]
+\label{tri:asa}
+Equality of two corresponding angles and of one corresponding side implies
+congruence of noncollinear triangles.  In particular both ASA and AAS are
+valid.
+\end{theorem}
+\begin{proof}
+The angle-sum identity determines the third angle from the other two, so
+all three pairs agree.  Suppose the common side is $c$.  The positive
+$\sin\gamma$ is common, and the sine law gives the explicit formulas
+\[
+ a=c\frac{\sin\alpha}{\sin\gamma},\qquad
+ b=c\frac{\sin\beta}{\sin\gamma}.
+\]
+Thus all side lengths agree, and SSS supplies a motion.  If another side
+was specified, use the corresponding cyclic formulas.  In each case the
+only new denominator is the sine of a nondegenerate interior angle.
+\end{proof}
+
+\begin{theorem}[AAA, SSS and SAS similarity]
+\label{tri:similarity}
+Two noncollinear triangles are similar if their corresponding angles agree;
+if their corresponding sides are in one positive ratio; or if two
+corresponding sides are in one positive ratio and their included angles
+agree.  Similarity preserves all angle pairs and makes all corresponding
+side ratios equal.
+\end{theorem}
+\begin{proof}
+For AAA, let $\lambda=c'/c>0$ and scale the first triangle by $\lambda$.
+Its side $c$ then agrees with $c'$ and its angles are unchanged, so ASA
+gives a congruence to the second triangle.  For proportional SSS, the
+same scaling makes all three sides agree, so use SSS.  For proportional
+SAS, scaling makes the designated two sides agree, so use SAS.
+Conversely Proposition~\ref{tri:motions} computes exactly how a similarity
+changes lengths and angle pairs.  These constructions exhibit the scale
+and the motion rather than merely asserting their existence.
+\end{proof}
+
+\begin{theorem}[Pons asinorum and the equilateral angle theorem]
+\label{tri:isosceles}
+In a noncollinear triangle, $AB=AC$ if and only if the base angles at
+$B,C$ are equal.  Their exterior supplements are equal as well.
+An equilateral triangle has all three angle pairs
+$(1/2,\sqrt3/2)$, the algebraic representation of $60$ degrees.
+\end{theorem}
+\begin{proof}
+The first equivalence is the equality case of
+Theorem~\ref{tri:side-angle}; applying the supplement operation gives the
+exterior statement.  If $a=b=c=\ell>0$, the cosine law gives
+$\cos\alpha=(\ell^2+\ell^2-\ell^2)/(2\ell^2)=1/2$ at every vertex.
+The positive sine has square $1-1/4=3/4$, hence is $\sqrt3/2$.
+This pair has cube $(-1,0)$, and three successive positive equal turns
+fill one straight angle by Theorem~\ref{tri:angle-sum}; this is exactly
+one third of $180$ degrees, independently of a radian construction.
+\end{proof}
+
+\begin{proposition}[A rational SSA counterexample]
+\label{tri:ssa}
+Two sides and a nonincluded angle do not determine a triangle up to
+congruence, even when all vertex coordinates are rational.
+\end{proposition}
+\begin{proof}
+Take $A=(0,0)$, $B=(5,0)$ and
+\[
+ C_1=(6/5,8/5),\qquad C_2=(12/5,16/5).
+\]
+In both triangles $AB=5$, $BC_i^2=17$, and the angle at $A$ is the pair
+$(3/5,4/5)$.  Direct sums of squares give
+$AC_1=2$ and $AC_2=4$.  A congruence would preserve that distance, so none
+exists.  Both determinants $[B,C_i]$ are positive.  Thus the example does
+not exploit a degenerate triangle or an undecidable branch.
+\end{proof}
+
+\begin{theorem}[Equilateral triangles on a given segment]
+\label{tri:equilateral-construction}
+If $A\ne B$ and $d=B-A$, precisely the two points
+\[
+ C_\pm=\frac{A+B}{2}\ \pm\ \frac{\sqrt3}{2}Jd
+\]
+form equilateral triangles with side $AB$.  Their determinant signs are
+opposite, so one lies on each side of the supporting line.
+\end{theorem}
+\begin{proof}
+The vectors from $A,B$ to $C_\pm$ are
+$d/2\pm(\sqrt3/2)Jd$ and $-d/2\pm(\sqrt3/2)Jd$.
+Orthogonality gives their squared lengths as
+$(1/4+3/4)|d|^2=|d|^2$.
+Also $[d,C_\pm-A]=\pm(\sqrt3/2)|d|^2\ne0$.
+Conversely let $C$ have the required distances and put
+$w=C-(A+B)/2$.  Subtracting the two distance equations gives
+$w\mathbin{\cdot}d=0$.  Lemma~\ref{tri:gram} therefore gives $w=tJd$.
+One distance equation becomes $(1/4+t^2)|d|^2=|d|^2$, hence
+$t^2=3/4$.  Factoring
+$(t-\sqrt3/2)(t+\sqrt3/2)=0$ and using the exact scalar comparison
+procedure gives exactly the two displayed possibilities.
+\end{proof}
+
+\subsection{Area, medians, and right-triangle projections}
+
+\begin{theorem}[Heron's formula]
+\label{tri:heron}
+Every noncollinear triangle satisfies
+\[
+ 16\Delta^2=2a^2b^2+2b^2c^2+2c^2a^2-a^4-b^4-c^4
+           =(a+b+c)(-a+b+c)(a-b+c)(a+b-c),
+\]
+and therefore $\Delta^2=s(s-a)(s-b)(s-c)$.
+\end{theorem}
+\begin{proof}
+With $p=u\mathbin{\cdot}v=(b^2+c^2-a^2)/2$, the Gram identity yields
+\[
+ 16\Delta^2=4D^2=4b^2c^2-(b^2+c^2-a^2)^2.
+\]
+Expanding the square gives the first polynomial expression.  Factoring
+as a difference of squares gives
+\[
+ \bigl(2bc-(b^2+c^2-a^2)\bigr)
+ \bigl(2bc+(b^2+c^2-a^2)\bigr)
+ =(a^2-(b-c)^2)((b+c)^2-a^2),
+\]
+which factors into the four displayed linear factors.  Replacing them
+by $2s$, $2(s-a)$, $2(s-b)$ and $2(s-c)$ and cancelling $16$ proves the
+last identity.  All four factors are positive by the strict triangle
+inequalities, so this is also a certified positive square-root formula
+for the area.
+\end{proof}
+
+\begin{theorem}[Constructing a triangle from its side lengths]
+\label{tri:side-construction}
+For positive certified side lengths $a,b,c$, a noncollinear triangle with
+those lengths exists if and only if the three strict triangle inequalities
+hold.  A witness is
+\[
+ A=(0,0),\qquad B=(c,0),\qquad C=(x,y),\qquad
+ x=\frac{b^2+c^2-a^2}{2c},\quad y=\sqrt{b^2-x^2}>0.
+\]
+\end{theorem}
+\begin{proof}
+Necessity was proved in Theorem~\ref{tri:metric}.  For sufficiency, direct
+factorization gives
+\[
+ 4c^2(b^2-x^2)
+ =(a+b+c)(-a+b+c)(a-b+c)(a+b-c)>0.
+\]
+Thus the nonnegative root $y$ is strictly positive.  The definitions give
+$AC^2=x^2+y^2=b^2$ and
+$BC^2=(x-c)^2+y^2=b^2-2cx+c^2=a^2$.
+The determinant is $cy>0$.  The three distances are the designated
+positive roots.  These formulas use a single positive square-root
+construction and provide all denominator and nondegeneracy witnesses.
+\end{proof}
+
+\begin{theorem}[Parallelogram law and Apollonius's median theorem]
+\label{tri:apollonius}
+For all vectors,
+\[
+ |u+v|^2+|u-v|^2=2|u|^2+2|v|^2.
+\]
+If $M=(B+C)/2$ is the midpoint of a triangle side, then
+\[
+ AM^2=\frac{2AB^2+2AC^2-BC^2}{4}.
+\]
+\end{theorem}
+\begin{proof}
+Expand the two squares in the first expression.  Their dot-product
+terms are $2u\mathbin{\cdot}v$ and $-2u\mathbin{\cdot}v$, and cancel.
+Apply the result to $u=B-A$, $v=C-A$ and use
+$M-A=(u+v)/2$ and $B-C=u-v$.  Rearranging gives the second formula.
+\end{proof}
+
+\begin{theorem}[Stewart's theorem]
+\label{tri:stewart}
+Let $T$ lie on $BC$, let $m=BT$, $n=TC$, and suppose $m,n\ge0$ and
+$a=m+n>0$.  With $d=AT$,
+\[
+ b^2m+c^2n=a(d^2+mn).
+\]
+\end{theorem}
+\begin{proof}
+The certified betweenness data give
+$T=(nB+mC)/a$.  For $u=B-A$, $v=C-A$ this means
+$a(T-A)=nu+mv$.  Consequently
+\[
+ a^2d^2=n^2c^2+m^2b^2+2mn(u\mathbin{\cdot}v).
+\]
+Substitute $2u\mathbin{\cdot}v=b^2+c^2-a^2$ and collect terms.  The
+right side becomes
+$na c^2+ma b^2-mna^2$ because $m+n=a$.
+Cancel the positive $a$ and rearrange.  Endpoints $m=0$ or $n=0$ are
+included, so this proof does not require an unmentioned interior-point
+hypothesis.
+\end{proof}
+
+\begin{theorem}[Right-triangle altitude and projection theorems]
+\label{tri:right-altitude}
+Suppose $\angle A$ is right, and let $F$ be the perpendicular projection
+of $A$ on $BC$.  Then $F$ is strictly between $B,C$ and
+\[
+ BF=\frac{c^2}{a},\qquad FC=\frac{b^2}{a},\qquad
+ AF=\frac{bc}{a},\qquad AF^2=BF\,FC.
+\]
+In particular $AB^2=BC\,BF$ and $AC^2=BC\,FC$.
+\end{theorem}
+\begin{proof}
+Use $A=0$, $B=u$, $C=v$, where $u\mathbin{\cdot}v=0$.
+The projection parameter is
+\[
+ F=u+t(v-u),\qquad
+ t=\frac{(-u)\mathbin{\cdot}(v-u)}{|v-u|^2}=\frac{c^2}{a^2}.
+\]
+Since $a^2=b^2+c^2$ and $b,c>0$, one has $0<t<1$.
+Thus $BF=ta=c^2/a$ and $FC=(1-t)a=b^2/a$.
+Orthogonality of $u,v$ now gives
+\[
+ |F|^2=(1-t)^2c^2+t^2b^2
+ =\frac{b^4c^2+c^4b^2}{a^4}=\frac{b^2c^2}{a^2}.
+\]
+Taking its positive square root gives the altitude formula and its product
+identity.  The projection itself is certified by
+$(A-F)\mathbin{\cdot}(C-B)=0$, which follows from the definition of $t$.
+\end{proof}
+
+\subsection{Centers, concurrency, and extremal identities}
+
+\begin{theorem}[Median concurrency and the centroid]
+\label{tri:centroid}
+The three medians of a noncollinear triangle meet at
+$G=(A+B+C)/3$.  On each median, the vertex-to-centroid segment is twice
+the centroid-to-midpoint segment.  This common point is unique.
+\end{theorem}
+\begin{proof}
+For $M_A=(B+C)/2$,
+$G=A+(2/3)(M_A-A)$, so $G$ lies strictly between $A,M_A$ and divides
+the median in the asserted ratio.  Cycling gives all three incidences.
+To check uniqueness, translate $A=0$, $B=u$, $C=v$.  A point on the first
+median is $t(u+v)$, and one on the median from $B$ is
+$u+r(v/2-u)$.  Linear independence of $u,v$ gives
+$t=1-r$ and $t=r/2$, hence $r=2/3$, $t=1/3$ and the point is $G$.
+Linear independence here follows directly from $[u,v]\ne0$, using
+determinants to extract the two coefficients.
+\end{proof}
+
+\begin{theorem}[Leibniz's identity and the centroid minimizer]
+\label{tri:leibniz}
+For any point $X$ and $G=(A+B+C)/3$,
+\[
+ |X-A|^2+|X-B|^2+|X-C|^2
+ =3|X-G|^2+\frac{a^2+b^2+c^2}{3}.
+\]
+Thus the centroid is the unique point minimizing the sum of squared
+distances to the three vertices.
+\end{theorem}
+\begin{proof}
+Let $p=A-G$, $q=B-G$, $r=C-G$, so $p+q+r=0$.
+Expanding the three squares about $X-G$ makes all linear terms cancel,
+leaving $3|X-G|^2+|p|^2+|q|^2+|r|^2$.
+Expansion of $|p+q+r|^2=0$ gives
+$2(p\mathbin{\cdot}q+q\mathbin{\cdot}r+r\mathbin{\cdot}p)
+=-(|p|^2+|q|^2+|r|^2)$.
+It follows by expanding the three pairwise squared distances that
+$a^2+b^2+c^2=3(|p|^2+|q|^2+|r|^2)$.
+The identity follows.  Its additional term $3|X-G|^2$ is nonnegative and
+vanishes exactly when $X=G$, proving the constructive minimization claim.
+\end{proof}
+
+\begin{theorem}[Circumcenter, perpendicular bisectors, and circumradius]
+\label{tri:circumcenter}
+Every noncollinear triangle has a unique point $O$ equidistant from its
+vertices; the three perpendicular bisectors meet there.  In positively
+oriented coordinates $A=0$, $B=u$, $C=v$,
+\[
+ O=\frac{|v|^2Ju-|u|^2Jv}{2D},\qquad
+ R=|O-A|=\frac{abc}{4\Delta}.
+\]
+Consequently the sine-law ratio is $a/\sin\alpha=b/\sin\beta=
+c/\sin\gamma=2R$.
+\end{theorem}
+\begin{proof}
+The equations $|O|^2=|O-u|^2=|O-v|^2$ are equivalent to
+\[
+ 2O\mathbin{\cdot}u=|u|^2,\qquad
+ 2O\mathbin{\cdot}v=|v|^2.
+\]
+Substitution of the displayed $O$, using Lemma~\ref{tri:gram}, verifies
+both.  If another point satisfies them, their difference has zero dot
+product with both $u,v$; the nonzero determinant makes that difference
+zero.  The first equation also says
+$(O-u/2)\mathbin{\cdot}u=0$, the perpendicular bisector of $AB$;
+similarly for the other sides.
+Put $U=|u|^2=c^2$, $V=|v|^2=b^2$, $p=u\mathbin{\cdot}v$.
+The squared numerator of $O$ is
+\[
+ |VJu-UJv|^2=V^2U+U^2V-2UVp
+ =UV(U+V-2p)=a^2b^2c^2.
+\]
+Thus $R^2=a^2b^2c^2/(4D^2)$ and positivity selects
+$R=abc/(2D)=abc/(4\Delta)$.
+The final assertion follows from Theorem~\ref{tri:sine}.
+\end{proof}
+
+\begin{theorem}[Altitude concurrency and the orthocenter]
+\label{tri:orthocenter}
+The three altitudes of a noncollinear triangle meet in the unique point
+$H=A+B+C-2O$, where $O$ is the circumcenter.
+\end{theorem}
+\begin{proof}
+Translate $A=0$, $B=u$, $C=v$, so $H=u+v-2O$.
+The circumcenter equations give
+\[
+ H\mathbin{\cdot}(v-u)
+ =(u+v)\mathbin{\cdot}(v-u)-2O\mathbin{\cdot}(v-u)
+ =(V-U)-(V-U)=0.
+\]
+This is the altitude through $A$.  Also
+$(H-u)\mathbin{\cdot}v=(v-2O)\mathbin{\cdot}v=V-V=0$ and
+$(H-v)\mathbin{\cdot}u=U-U=0$, proving the other two incidences.
+The normals of the last two altitude equations are $v,u$, which are
+linearly independent, so their intersection is unique by the same
+determinant calculation as for the circumcenter.  Translating back gives
+the stated coordinate-free affine formula.
+\end{proof}
+
+\begin{theorem}[Euler line]
+\label{tri:euler-line}
+The circumcenter $O$, centroid $G$, and orthocenter $H$ satisfy
+$H=3G-2O$.  In particular they are collinear and $|H-G|=2|G-O|$.
+If the points coincide, the affine identity remains valid; a distinct
+``Euler line'' is asserted only when $O\ne H$.
+\end{theorem}
+\begin{proof}
+The formulas $3G=A+B+C$ and $H=A+B+C-2O$ give the identity.
+Then $G=O+(H-O)/3$, so collinearity and the ratio follow from
+$H-G=2(G-O)$.  This proof includes the coincident case without attempting
+to construct a line from two equal points.
+\end{proof}
+
+\begin{theorem}[Nine-point circle]
+\label{tri:nine-point}
+Let $N=(O+H)/2$.  The circle with center $N$ and radius $R/2$ contains
+the three side midpoints, the three midpoints between $H$ and a vertex,
+and the three altitude feet.  Some of these nine named points may
+coincide.
+\end{theorem}
+\begin{proof}
+Use the circumcenter as origin, and write the vertex vectors as $x,y,z$.
+They have common length $R$, the orthocenter is $h=x+y+z$, and $N=h/2$.
+The midpoint $M_A=(y+z)/2$ satisfies $M_A-N=-x/2$, while the midpoint
+$K_A=(x+h)/2$ satisfies $K_A-N=x/2$.  Both therefore have distance
+$R/2$ from $N$, and cycling gives six points.
+Let $F_A$ be the projection of $x$ onto the supporting line of $yz$.
+The points $M_A,F_A$ lie on that line.  Both $x$ and $h$ lie on the
+altitude perpendicular to it, hence so does their midpoint $K_A$.
+Therefore
+$(F_A-M_A)\mathbin{\cdot}(F_A-K_A)=0$.
+Since $N=(M_A+K_A)/2$, expansion rewrites this equality as
+\[
+ |F_A-N|^2=|M_A-K_A|^2/4=R^2/4.
+\]
+The positive distance root is $R/2$.  This proves the remaining three
+incidences without requiring the feet to lie on the closed side segments.
+\end{proof}
+
+\begin{theorem}[Internal angle-bisector theorem and its converse]
+\label{tri:bisector}
+The internal bisector from $A$ meets $BC$ at
+\[
+ T=\frac{bB+cC}{b+c},\qquad \frac{BT}{TC}=\frac cb=\frac{AB}{AC}.
+\]
+Conversely an interior point of $BC$ with this ratio lies on that
+internal bisector.
+\end{theorem}
+\begin{proof}
+The unit directions from $A$ to $B,C$ are $e=(B-A)/c$ and
+$f=(C-A)/b$.  Their sum $d=e+f$ is nonzero and lies inside the angle:
+with positive orientation, $[e,d]=[d,f]=[e,f]>0$.
+Also $e\mathbin{\cdot}d=f\mathbin{\cdot}d=1+e\mathbin{\cdot}f$.
+After dividing by $|d|>0$, these equalities say that $d$ makes equal
+angle pairs with $e,f$.  This certifies the internal bisector.  It is
+unique as a ray: equality of those two cosines for a unit interior
+direction $w$ gives $w\mathbin{\cdot}(e-f)=0$.  The nonzero perpendicular
+vectors $e-f,e+f$ form a basis, so $w$ is a scalar multiple of $e+f$;
+the interior side inequalities make that scalar positive.
+The displayed point has
+\[
+ T-A=\frac{b(B-A)+c(C-A)}{b+c}
+     =\frac{bc}{b+c}(e+f).
+\]
+It is on the desired ray, and $T=B+\frac c{b+c}(C-B)$ is strictly
+between $B,C$.  Thus $BT/TC=c/b$.
+Conversely an interior point has $T=B+t(C-B)$ with $0<t<1$.
+The ratio condition $t/(1-t)=c/b$ uniquely gives $t=c/(b+c)$, hence
+the displayed point and its bisector incidence.
+\end{proof}
+
+\begin{theorem}[Incenter, incircle, and the area--inradius identity]
+\label{tri:incenter}
+The three internal bisectors meet at
+\[
+ I=\frac{aA+bB+cC}{a+b+c}.
+\]
+This is the unique interior point equidistant from the three supporting
+side lines.  Its common distance is
+$r=2\Delta/(a+b+c)=\Delta/s>0$.
+The perpendicular feet lie strictly on the side segments, so the circle
+with center $I$ and radius $r$ is an incircle tangent to all three sides.
+\end{theorem}
+\begin{proof}
+Put $P=a+b+c$.  Since
+$I-A=\frac{bc}{P}((B-A)/c+(C-A)/b)$,
+the preceding bisector calculation puts $I$ on the bisector from $A$;
+cycling gives the other two.  Its barycentric coefficients $a/P,b/P,c/P$
+are positive and sum to one, so it is strictly inside.
+In the positively oriented coordinates $A=0$, $B=u$, $C=v$,
+\[
+ [C-B,I-B]=\frac{aD}{P},\quad
+ [A-C,I-C]=\frac{bD}{P},\quad
+ [B-A,I-A]=\frac{cD}{P}.
+\]
+These follow by bilinearity, since each determinant loses two of the
+three barycentric terms.  Divide respectively by $a,b,c$ to get common
+positive perpendicular distance $r=D/P$.
+For uniqueness, any strictly interior $X$ with common distance $r'$ has
+subtriangle doubled areas $ar'$, $br'$, $cr'$.  Their sum is $D$ by the
+determinant identity
+\[
+ [C-B,X-B]+[A-C,X-C]+[B-A,X-A]=[B-A,C-A].
+\]
+Thus $r'=D/P$.  The first two prescribed determinants then determine
+$X$ uniquely because their side directions are independent; $I$ already
+has those values, so $X=I$.
+Finally let $F$ be the foot on $BC$.  Its parameter from $B$ is
+\[
+ t=\frac{(I-B)\mathbin{\cdot}(C-B)}{a^2}
+   =\frac{a+c-b}{2a}.
+\]
+For completeness, use
+$I-B=(a(A-B)+c(C-B))/P$ and
+$2(A-B)\mathbin{\cdot}(C-B)=c^2+a^2-b^2$.
+The numerator simplifies to
+$a((a+c)^2-b^2)/(2P)=a(a+c-b)/2$, proving the formula.
+Strict triangle inequalities give $0<t<1$.  The same holds cyclically.
+Each foot lies on the radius-perpendicular side line and at distance $r$
+from $I$.  A point $F+t(C-B)$ on $BC$ has squared distance
+$r^2+t^2a^2$ from $I$, so it lies on the circle only when $t=0$.
+This certifies tangency and the incircle assertion, and the same
+calculation applies to the other two sides.
+\end{proof}
+
+\begin{theorem}[Excenters and exradii]
+\label{tri:excenters}
+The point
+\[
+ I_A=\frac{-aA+bB+cC}{-a+b+c}
+\]
+has equal positive distances $r_A=\Delta/(s-a)$ from the three supporting
+side lines.  It lies on the opposite side of $BC$ from $A$, and on the
+same sides of $CA,AB$ as $B,C$, respectively.  The analogous formulas
+give the other two excenters and radii.
+\end{theorem}
+\begin{proof}
+The denominator $P_A=-a+b+c=2(s-a)$ is strictly positive.
+Exactly the determinant calculation in the preceding proof, with the
+coefficient of $A$ negated, gives signed doubled subareas
+$-aD/P_A$, $bD/P_A$, $cD/P_A$.
+After division by the corresponding side lengths, the signed distances
+are $-D/P_A$, $D/P_A$, $D/P_A$.
+Their absolute values are $D/P_A=\Delta/(s-a)>0$, proving the claim
+and the three specified side relations.  Projection to each line gives
+a tangent radius, so these data also construct its excircle.  This
+statement concerns supporting lines; it does not silently claim all
+three tangency points lie on the original closed segments.
+\end{proof}
+
+\begin{theorem}[Euler's inradius--circumradius identity and inequality]
+\label{tri:euler-inequality}
+For any noncollinear triangle,
+\[
+ |O-I|^2=R(R-2r),\qquad R\ge2r.
+\]
+Equality holds precisely for an equilateral triangle.
+\end{theorem}
+\begin{proof}
+Use $O$ as origin, write the vertex vectors as $x,y,z$, and put
+$P=a+b+c$.  They all have squared length $R^2$, while
+$I=(ax+by+cz)/P$.  Expanding and collecting pairwise differences gives
+\[
+ |ax+by+cz|^2
+ =P(a|x|^2+b|y|^2+c|z|^2)
+   -ab|x-y|^2-bc|y-z|^2-ca|z-x|^2.
+\]
+The three pairwise distances here are $c,a,b$, respectively.  Thus
+\[
+ |I|^2=R^2-\frac{ab c^2+bc a^2+ca b^2}{P^2}
+       =R^2-\frac{abc}{P}.
+\]
+The formulas $R=abc/(4\Delta)$ and $r=2\Delta/P$ give
+$2Rr=abc/P$, proving the identity.
+The left side is nonnegative and $R>0$, so $R-2r\ge0$.
+If equality holds, $I=O$.  For each side, its midpoint is the foot from
+the circumcenter, because the circumcenter lies on the perpendicular
+bisector.  Since its distance to every side is now $r$, Pythagoras gives
+\[
+ a^2/4+r^2=b^2/4+r^2=c^2/4+r^2=R^2.
+\]
+Positive roots yield $a=b=c$.
+Conversely for an equilateral triangle of side $\ell$,
+$\Delta=\sqrt3\ell^2/4$ by Heron's formula, so
+$r=\sqrt3\ell/6$ and $R=\ell/\sqrt3=2r$.
+\end{proof}
+
+\begin{theorem}[Viviani's theorem]
+\label{tri:viviani}
+For any point inside or on an equilateral triangle, the sum of its three
+perpendicular distances to the side lines equals the altitude of the
+triangle.
+\end{theorem}
+\begin{proof}
+Let the common side be $\ell>0$, the altitude $h$, and the three
+nonnegative signed distances of the point $X$ be $d_a,d_b,d_c$.
+The determinant decomposition used in the incenter proof gives
+\[
+ 2\Delta=\ell d_a+\ell d_b+\ell d_c.
+\]
+Also $2\Delta=\ell h$ from the perpendicular projection formula for
+triangle area.  Cancel $\ell$ to obtain $d_a+d_b+d_c=h$.
+Boundary points simply make one or more of the signed distances zero,
+and require no separate limiting argument.
+\end{proof}
+
+\subsection{Arithmetic and Lean obligations for this chapter}
+
+Every displayed construction has constant algebraic depth once its input
+scalar codes are given.  The only roots introduced are nonnegative square
+roots.  Denominators are products of positive side lengths, nonzero
+determinants, $2$, $3$, or the explicitly positive quantities $s-a$, $s-b$,
+$s-c$.  Hence the finite-code arithmetic layer can attach a nonzero
+certificate to each division.  No minimization over an unbounded set is
+used: even the centroid minimization theorem is proved by one identity.
+
+The polynomial equalities should be exported as denominator-cleared ring
+certificates.  Ordered consequences use only sums of squares, multiplication
+by a certified positive scalar, and the rule that positive square roots of
+equal nonnegative quantities are equal.  The two places that choose a
+finite sign branch---the ``at least two acute angles'' conclusion and the
+two solutions in the equilateral construction---use decidable comparison
+of the exact scalar codes.  A Cauchy-real presentation may retain the
+branch-free implications and use explicit apartness/side witnesses for
+chosen branches; it must not import this decidability for arbitrary real
+names.
+
+A Lean development can first state these identities for a structure
+\texttt{Vec2} with two scalar fields, define dot product, determinant and
+quarter-turn by the formulas above, and check the denominator-cleared
+identities with ring normalization.  The geometric layer then packages
+the following data: a nonzero determinant for a triangle; positive square
+roots for lengths; a unit-pair angle and its half-plane tag; an explicit
+affine map for congruence; and a barycentric or projection parameter for
+incidence.  The next stage proves the primitive-recursive coding and
+certificate-soundness lemmas in the chosen \ipra{} embedding.  An ambient
+Lean ordered-field proof alone is not that last stage, and the separation
+must remain visible in the formalization status.

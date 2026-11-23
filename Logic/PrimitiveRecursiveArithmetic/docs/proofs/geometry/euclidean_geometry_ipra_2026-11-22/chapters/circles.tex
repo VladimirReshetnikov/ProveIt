@@ -1,0 +1,943 @@
+\section{Circles, inversion, and straightedge--compass constructions}
+\label{sec:circles}
+
+This chapter works in the exact scalar field $K$ supplied by the arithmetic
+interpretation.  Its elements have finite codes; equality, order, arithmetic,
+and the nonnegative square root are the certified operations of that
+interpretation.  In particular, no test of equality of arbitrary Cauchy names
+is used.  A circle is represented by its centre $O\in K^2$ and its
+\emph{squared} radius $\rho>0$:
+\[
+  \mathcal C(O,\rho)=\{X:\normsq{X-O}=\rho\}.
+\]
+Writing an equation of this form is an abbreviation for a predicate on point
+codes, not an appeal to an infinite set of points.  A line is $P+tv$, where
+$\normsq v>0$.  The quarter-turn is $\J(x,y)=(-y,x)$.  We repeatedly use
+\[
+ \dotp{\J u}{v}=\detp{u}{v},\qquad
+ \detp{u}{\J u}=\normsq u,\qquad
+ \normsq{u+tv}=\normsq u+2t\dotp uv+t^2\normsq v.
+\]
+Lengths denote nonnegative square roots.  Whenever a division occurs below,
+its nonzero denominator is either displayed in the hypotheses or proved
+positive in the proof.
+
+\subsection{Intersections, chords, and tangents}
+
+\begin{theorem}[Complete line--circle intersection test]
+\label{circ:line-intersection}
+For the line $P+tv$ and circle $\mathcal C(O,\rho)$, put
+\[
+ a=\normsq v>0,\qquad b=\dotp{P-O}{v},\qquad
+ c=\normsq{P-O}-\rho,\qquad D=b^2-ac.
+\]
+If $D<0$, there is no intersection.  If $D=0$, there is exactly one,
+$P-(b/a)v$.  If $D>0$, there are exactly two, with parameters
+\[
+ t_-=\frac{-b-\sqrt D}{a},\qquad t_+=\frac{-b+\sqrt D}{a}.
+\]
+In particular, a line meets a circle in at most two distinct points.
+\end{theorem}
+\begin{proof}
+Expanding the circle equation gives $at^2+2bt+c=0$, and completing the
+square gives the identity
+\[
+ a\bigl(\normsq{P+tv-O}-\rho\bigr)=(at+b)^2-D.       \tag{C1}
+\]
+A square cannot equal a negative element.  When $D=0$, a square is zero
+only when its argument is zero, giving $t=-b/a$.  When $D>0$, let
+$s=\sqrt D>0$.  Equation (C1) is equivalent to
+$(at+b-s)(at+b+s)=0$.  The ordered field has no zero divisors, so one factor
+is zero and the displayed two parameters are exhaustive.  Their difference
+$2s/a$ is positive, so their points are distinct: multiplication by a
+nonzero vector is injective on scalar parameters.
+
+The perpendicular foot $H=P-(b/a)v$ satisfies
+$\dotp{H-O}{v}=0$ and
+\[
+ \normsq{H-O}=\normsq{P-O}-\frac{b^2}{a},\qquad
+ D=a\bigl(\rho-\normsq{H-O}\bigr).
+\]
+Thus the test is also the usual comparison between squared radius and
+squared distance from the centre to the line.
+\end{proof}
+
+\begin{theorem}[Chord midpoint and perpendicular bisector]
+\label{circ:chord-midpoint}
+Let $A\ne B$ lie on $\mathcal C(O,\rho)$, put $M=(A+B)/2$ and $d=B-A$.
+Then $\dotp{M-O}{d}=0$.  The perpendicular from $O$ to the chord line meets
+it at $M$, and reflection in the perpendicular bisector interchanges $A$
+and $B$ while fixing the circle.
+\end{theorem}
+\begin{proof}
+Subtracting the two radius equations gives
+\[
+ 0=\normsq{B-O}-\normsq{A-O}=2\dotp{M-O}{d}.
+\]
+For $H=A+td$ the condition $\dotp{H-O}{d}=0$ becomes
+$(t-1/2)\normsq d=0$, whence $t=1/2$.  This also treats a diameter,
+when $M=O$.  The perpendicular bisector is the line
+$M+s\J d$, which is nondegenerate even in that case.
+
+Its reflection is explicitly
+\[
+ R(X)=X-2\frac{\dotp{X-M}{d}}{\normsq d}\,d.
+\]
+For a vector $z$, expanding the square of
+$z-2(\dotp zd/\normsq d)d$ gives $\normsq z$.
+Consequently $R$ preserves squared distances; the preceding orthogonality
+gives $R(O)=O$.  Finally $A=M-d/2$ and $B=M+d/2$ give $R(A)=B$ and
+$R(B)=A$.  The radius predicate is therefore preserved.
+\end{proof}
+
+\begin{theorem}[Chord length and distance from the centre]
+\label{circ:chord-distance}
+For the chord above,
+\[
+ \normsq{B-A}=4\bigl(\rho-\normsq{M-O}\bigr).       \tag{C2}
+\]
+Two chords of the same circle have equal lengths exactly when their
+midpoints have equal distances from the centre.  A longer chord has its
+midpoint strictly nearer the centre.  Every chord has length at most the
+diameter $2\sqrt\rho$, with equality exactly for a diameter.
+\end{theorem}
+\begin{proof}
+Write $A-O=(M-O)-d/2$.  The cross term vanishes by
+Theorem~\ref{circ:chord-midpoint}, so
+$\rho=\normsq{M-O}+\normsq d/4$.  This is (C2).
+Subtracting two instances proves the equality and strict comparison
+statements.  Since $\normsq{M-O}\ge0$, it also proves
+$\normsq d\le4\rho$.  Equality means $\normsq{M-O}=0$, which is equivalent
+to $M=O$.  The nonnegative square root preserves these comparisons.
+\end{proof}
+
+\begin{theorem}[Thales' theorem, converse, and the inside--outside test]
+\label{circ:thales}
+Let $A\ne C$, $M=(A+C)/2$, and $\rho=\normsq{C-A}/4$.
+For every $P$,
+\[
+ \dotp{A-P}{C-P}=\normsq{P-M}-\rho.                 \tag{C3}
+\]
+If $P\ne A,C$, the angle $APC$ is right exactly when $P$ belongs to the
+circle with diameter $AC$.  If moreover $P$ is off the line $AC$, it is
+obtuse inside that circle and acute outside it, with the algebraic
+classification given by the sign of the dot product.
+\end{theorem}
+\begin{proof}
+Put $h=(C-A)/2$ and $z=P-M$.  Then $A-P=-h-z$ and $C-P=h-z$.
+Their dot product is $\normsq z-\normsq h$, proving (C3).
+Perpendicularity is a zero dot product.  The sign of the cosine is the
+sign of the dot product, since its two length denominators are positive.
+For $P$ off the chord line the interior sine is positive, excluding the
+zero and straight angles; hence (C3) gives the asserted acute and obtuse
+cases as well.
+No argument by passage to a limit is involved.
+\end{proof}
+
+\begin{theorem}[The tangent is perpendicular to the radius]
+\label{circ:tangent}
+Let $A\in\mathcal C(O,\rho)$ and $v\ne0$.
+The line $A+tv$ has $A$ as its only intersection with the circle if and
+only if $\dotp{A-O}{v}=0$.  Thus the unique tangent line at $A$ is
+\[
+ T_A=\{X:\dotp{X-O}{A-O}=\rho\}
+     =\{A+t\J(A-O):t\in K\}.
+\]
+\end{theorem}
+\begin{proof}
+The line--circle equation, with $P=A$, is
+\[
+ t\bigl(t\normsq v+2\dotp{A-O}{v}\bigr)=0.
+\]
+If the dot product is zero, the only parameter is $t=0$.  If it is
+nonzero, $t=-2\dotp{A-O}{v}/\normsq v$ is a second, nonzero parameter.
+The perpendicular vectors to the nonzero vector $A-O$ are precisely the
+scalar multiples of $\J(A-O)$: expand an arbitrary vector in the basis
+$A-O,\J(A-O)$ and use the dot product.  This proves uniqueness and the
+two equations for $T_A$.
+\end{proof}
+
+\begin{theorem}[A circle bounds its chords and has a supporting tangent]
+\label{circ:convexity}
+If $A,B$ lie on $\mathcal C(O,\rho)$ and $0\le t\le1$, then
+\[
+ \normsq{(1-t)A+tB-O}
+   =\rho-t(1-t)\normsq{B-A}\le\rho.                \tag{C4}
+\]
+The inequality is strict if $A\ne B$ and $0<t<1$.
+For every $X$ on the circle,
+$\dotp{X-O}{A-O}\le\rho$, with equality exactly when $X=A$.
+\end{theorem}
+\begin{proof}
+Expansion of the square on the left of (C4), using both radius equations,
+gives (C4); the sign conditions then give the asserted inequalities.
+For the tangent statement,
+\[
+ \normsq{X-A}=2\rho-2\dotp{X-O}{A-O}.
+\]
+This squared norm is nonnegative, and it is zero exactly when $X=A$.
+Thus the circle lies in the indicated closed half-plane and touches its
+bounding tangent at just one point.
+\end{proof}
+
+\subsection{Power of a point and two-circle geometry}
+
+\begin{theorem}[Power of a point: secants, intersecting chords, and tangents]
+\label{circ:power}
+Define $\operatorname{Pow}(P)=\normsq{P-O}-\rho$.
+Suppose the intersections of $P+tv$ with the circle have parameters
+$t_1,t_2$, counted twice in the tangent case.  Their directed distances
+$s_i=t_i\len v$ satisfy
+\[
+ s_1s_2=\operatorname{Pow}(P).                       \tag{C5}
+\]
+Consequently the products of the two directed secant segments agree for
+any two secants through $P$.  If $P$ is between the endpoints of a chord,
+the product of its two ordinary segment lengths is
+$\rho-\normsq{P-O}$.  If $PT$ is tangent at $T$, then
+\[
+ \normsq{P-T}=\operatorname{Pow}(P).                 \tag{C6}
+\]
+\end{theorem}
+\begin{proof}
+Use the notation of Theorem~\ref{circ:line-intersection}.  Its two
+parameters satisfy
+\[
+ t_1t_2=\frac{b^2-D}{a^2}=\frac{c}{a}.
+\]
+Multiplication by $a=\len v^2$ proves (C5), including $D=0$.
+If $t_1\le0\le t_2$, the ordinary lengths are $-s_1,s_2$; their product
+is $-\operatorname{Pow}(P)$.  The sign changes have therefore been made
+explicit rather than suppressed in the usual secant diagram.
+
+For a tangent at $T$, Theorem~\ref{circ:tangent} gives
+$\dotp{P-T}{T-O}=0$.  Expanding
+$P-O=(P-T)+(T-O)$ gives
+$\normsq{P-O}=\normsq{P-T}+\rho$, which is (C6).
+In particular, equal powers yield both the intersecting-chords theorem
+and the tangent--secant theorem.
+\end{proof}
+
+\begin{theorem}[The two tangents from an exterior point]
+\label{circ:external-tangents}
+Put $p=P-O$ and $s=\normsq p$.  If $s>\rho$, the two and only two
+points of tangency from $P$ are
+\[
+ T_\pm=O+\frac{\rho}{s}p
+        \mathbin{\pm}\frac{\sqrt{\rho(s-\rho)}}{s}\,\J p.       \tag{C7}
+\]
+The tangent segments have equal length $\sqrt{s-\rho}$.
+If $s<\rho$, there is no tangent from $P$ to a point of the circle.
+\end{theorem}
+\begin{proof}
+For $T=O+u$ on the circle, tangency of $PT$ is equivalent to
+$\dotp{p-u}{u}=0$, or $\dotp pu=\rho$.
+The basis $p,\J p$ has squared norm $s>0$ in each direction, so this last
+equation forces
+$u=(\rho/s)p+z\J p$.  The radius equation becomes
+$\rho^2/s+z^2s=\rho$, hence
+$z^2=\rho(s-\rho)/s^2$.  There are exactly the two square-root choices in
+(C7), and their radicand is positive.  This proves existence, distinctness,
+and exhaustion.  Formula (C6) gives both equal tangent lengths.
+If $s<\rho$, the equation $s=\rho+\normsq{P-T}$ required by any tangent
+is impossible.
+\end{proof}
+
+\begin{theorem}[Radical axes and the radical centre]
+\label{circ:radical}
+For circles $\mathcal C(O_1,\rho_1)$ and
+$\mathcal C(O_2,\rho_2)$ with $O_1\ne O_2$, their equal-power locus is
+the line
+\[
+ 2\dotp{X-O_1}{O_2-O_1}
+       =\normsq{O_2-O_1}+\rho_1-\rho_2.              \tag{C8}
+\]
+It is perpendicular to the line of centres and contains every common
+point of the circles.  Three circles with noncollinear centres have one
+and only one point of equal power to all three.
+\end{theorem}
+\begin{proof}
+Write $x=X-O_1$ and $d=O_2-O_1$.  Subtraction of powers gives
+\[
+ (\normsq x-\rho_1)-(\normsq{x-d}-\rho_2)
+       =2\dotp xd-\normsq d-\rho_1+\rho_2.
+\]
+Thus equality is exactly (C8).  Its normal vector is the nonzero vector
+$d$, and it contains the explicitly given point
+$O_1+[(\normsq d+\rho_1-\rho_2)/(2\normsq d)]d$.
+At a common point both powers are zero.
+
+For three circles, set $d_i=O_i-O_1$ for $i=2,3$.
+The equalities of powers $1=2$ and $1=3$ form two linear equations whose
+coefficient determinant is $4\detp{d_2}{d_3}\ne0$.
+Cramer's formula supplies their unique solution.  At that solution,
+equality of powers $2=3$ follows by transitivity.
+
+The hypotheses matter.  With collinear centres the radical axes may be
+parallel or coincide.  With equal centres, unequal squared radii give an
+empty equal-power locus, while identical circles give the whole plane.
+None of these cases is silently described as a unique radical centre.
+\end{proof}
+
+\begin{theorem}[Complete intersection test for two circles]
+\label{circ:circle-intersection}
+For distinct centres put
+\[
+ d=O_2-O_1,\quad s=\normsq d>0,\quad
+ h=O_1+\frac{s+\rho_1-\rho_2}{2s}d,\quad
+ E=4s\rho_1-(s+\rho_1-\rho_2)^2.
+\]
+The circles have no common point if $E<0$, exactly the one point $h$ if
+$E=0$, and exactly the two points
+\[
+ h\mathbin{\pm}\frac{\sqrt E}{2s}\,\J d              \tag{C9}
+\]
+if $E>0$.  With $r_i=\sqrt{\rho_i}$ and $\delta=\sqrt s$, intersection
+is equivalently characterized by
+$|r_1-r_2|\le\delta\le r_1+r_2$.
+\end{theorem}
+\begin{proof}
+Every common point satisfies (C8), so in the basis $d,\J d$ it has the
+form $h+t\J d$.  If $k=(s+\rho_1-\rho_2)/(2s)$, its first radius
+equation is $k^2s+t^2s=\rho_1$, or $(2st)^2=E$.
+The square-root cases give exactly (C9).  Conversely those points satisfy
+the first radius equation and (C8), so equality of powers supplies the
+second radius equation.  Distinctness and exhaustion follow as in the
+line--circle theorem.
+
+The identity
+\[
+ E=\bigl((r_1+r_2)^2-\delta^2\bigr)
+       \bigl(\delta^2-(r_1-r_2)^2\bigr)
+\]
+follows by expanding both sides.  If $\delta$ lies between the displayed
+nonnegative endpoints, both factors are nonnegative.  Below the lower
+endpoint the second is negative and the first positive; above the upper
+endpoint the first is negative and the second positive.  This proves the
+equivalence using only ordered-field arithmetic.  When the centres
+coincide, the circles are identical if their squared radii agree and
+disjoint otherwise; that separate case requires no division by $s$.
+\end{proof}
+
+\begin{corollary}[Three common points determine the circle]
+\label{circ:three-common}
+Two circles with three distinct common points are identical.
+\end{corollary}
+\begin{proof}
+If the centres differ, Theorem~\ref{circ:circle-intersection} permits at
+most two common points.  If their centres agree, one common point already
+forces equality of their squared radii.  The equality test for centre codes
+supplies the finite case distinction.
+\end{proof}
+
+\begin{theorem}[Butterfly theorem with explicit intersection hypotheses]
+\label{circ:butterfly}
+Let $P,Q$ be distinct points of a circle and $M=(P+Q)/2$.
+Let the two distinct chord lines $AB$ and $CD$ pass through $M$, with
+$A,B,C,D$ on the circle.  Suppose that the lines $AD$ and $BC$ meet the
+line $PQ$ in finite points $X,Y$, respectively, and are not parallel to it.
+Then $M$ is the midpoint of $XY$.
+\end{theorem}
+\begin{proof}
+Translate $M$ to zero and use the unit direction of $PQ$ as the horizontal
+axis.  Thus $P=(-r,0)$, $Q=(r,0)$ with $r>0$.
+The chord-midpoint theorem puts the centre on the vertical axis, say at
+$(0,k)$.  Its squared radius is $r^2+k^2$, so the circle equation is
+\[
+ x^2+y^2-2ky=c_0,\qquad c_0=r^2>0.                 \tag{B1}
+\]
+Choose nonzero direction vectors $u,v$ for the two chord lines, and write
+\[
+ A=au,\quad B=bu,\qquad C=cv,\quad D=dv.
+\]
+The distinct-line assumption gives $\Delta=\detp uv\ne0$.
+Substitution in (B1), followed by the quadratic root sum and product
+identities, gives
+\[
+ a+b=\frac{2ku_y}{\normsq u},\quad ab=\frac{-c_0}{\normsq u},
+ \qquad
+ c+d=\frac{2kv_y}{\normsq v},\quad cd=\frac{-c_0}{\normsq v}.        \tag{B2}
+\]
+In particular both products are negative, so none of the four parameters
+is zero.  Write the horizontal coordinates of the two intersections as
+$x_X,x_Y$.  Solving the line equations $AD$ and $BC$ at vertical
+coordinate zero gives
+\[
+ x_X=\frac{ad\Delta}{dv_y-au_y},\qquad
+ x_Y=\frac{bc\Delta}{cv_y-bu_y}.                     \tag{B3}
+\]
+The stated nonparallel hypotheses say exactly that these denominators
+are nonzero.  Adding (B3) over their common denominator gives numerator
+\[
+ \Delta\bigl(cd(a+b)v_y-ab(c+d)u_y\bigr).
+\]
+By (B2), the two terms inside the parentheses are both
+$-2kc_0u_yv_y/(\normsq u\normsq v)$; their difference is zero.
+Thus $x_X+x_Y=0$.  Their vertical coordinates are already zero, so
+$X+Y=0=2M$.  In fact $x_X\ne0$, because its numerator and denominator
+are nonzero, so $X,Y$ are distinct and this is an ordinary midpoint.
+
+The familiar butterfly diagram places $X,Y$ on the chord segment.
+That extra placement is unnecessary for the identity: the proof also
+covers intersections on extensions of $PQ$.  It excludes exactly the
+parallel cases in which the named finite intersection fails to exist.
+\end{proof}
+
+\subsection{Cyclic quadrilaterals and inscribed angles}
+
+It is useful to multiply coordinate pairs as if they were complex numbers,
+without introducing any new scalar objects:
+\[
+ (x,y)\star(u,v)=(xu-yv,xv+yu),\qquad
+ \overline{(x,y)}=(x,-y).
+\]
+Pair multiplication is associative and commutative by expansion, and
+\[
+ \bar u\star v=(\dotp uv,\detp uv),\qquad
+ \normsq{u\star v}=\normsq u\,\normsq v.             \tag{C10}
+\]
+A scalar on the right of a pair equation is identified with the pair
+$(a,0)$.  Nonzero pairs are cancellable because their squared norms are
+positive.  An oriented angle between nonzero vectors $u,v$ is represented
+by the unit pair
+\[
+ z(u,v)=\frac{\bar u\star v}{\len u\len v}.
+\]
+The associated interior angle has pair
+$(\operatorname{Re}z,|\operatorname{Im}z|)$.
+This is the angle convention used elsewhere in the report.  It makes
+equality and supplement statements exact finite algebra, with side
+hypotheses recording the necessary branch information.
+
+\begin{theorem}[A determinant test for concyclicity]
+\label{circ:cyclic-determinant}
+Let $A,B,C$ be noncollinear and let $\mathcal C(O,\rho)$ be their
+circumcircle.  A fourth point $D$ lies on it exactly when
+\[
+ \det\begin{pmatrix}
+ \normsq A&A_x&A_y&1\\
+ \normsq B&B_x&B_y&1\\
+ \normsq C&C_x&C_y&1\\
+ \normsq D&D_x&D_y&1
+ \end{pmatrix}=0.                                  \tag{C11}
+\]
+\end{theorem}
+\begin{proof}
+Replace the first column by the first column minus $2O_x$ times the
+second, minus $2O_y$ times the third, plus
+$(\normsq O-\rho)$ times the fourth.  Multilinearity and the vanishing of
+determinants with two equal columns preserve the determinant.  Its new
+entries are the four powers.  The first three are zero, so expansion in
+this column gives
+\[
+ -\bigl(\normsq{D-O}-\rho\bigr)\detp{B-A}{C-A}.
+\]
+The last determinant is nonzero.  Cancellation therefore proves the
+equivalence.  The circumcentre itself is obtained by the two linear
+equations formed by subtracting radius equations, so the test uses no
+search over circles.
+\end{proof}
+
+\begin{theorem}[Inscribed angle and central angle]
+\label{circ:inscribed}
+Let $A,B,P$ be pairwise distinct points of $\mathcal C(O,\rho)$.
+Put $a=A-O$, $b=B-O$, $p=P-O$, $u=a-p$, $v=b-p$.
+The exact directed-angle identity is
+\[
+ z(u,v)\star z(u,v)=\frac{\bar a\star b}{\rho}.       \tag{C12}
+\]
+In particular it expresses that the directed central angle is twice the
+directed inscribed angle, with angles taken modulo a full turn.
+In division-free coordinates it is the pair of polynomial identities
+\begin{align*}
+ \rho\bigl(\dotp uv^2-\detp uv^2\bigr)
+       &=\normsq u\,\normsq v\,\dotp ab,\\
+ 2\rho\dotp uv\detp uv
+       &=\normsq u\,\normsq v\,\detp ab.
+\end{align*}
+\end{theorem}
+\begin{proof}
+All three centre vectors have squared norm $\rho$.
+Since $u=a-p$,
+\[
+ \bar a\star\bar p\star u
+   =\bar p\star(\bar a\star a)
+        -\bar a\star(\bar p\star p)
+   =\rho(\bar p-\bar a)=-\rho\bar u.
+\]
+Likewise $\rho\bar v=-\bar b\star\bar p\star v$.
+It follows that
+\[
+ (\bar a\star b)\star u\star\bar v
+  =-\bar a\star\bar p\star u\star v
+  =\rho\bar u\star v.
+\]
+Multiply this identity by $\bar u\star v$.  Commutativity gives
+\[
+ \rho(\bar u\star v)^2
+    =(\bar a\star b)\normsq u\,\normsq v.
+\]
+Divide by the positive scalar
+$\rho\normsq u\normsq v$ and use
+$(\len u\len v)^2=\normsq u\normsq v$ to obtain (C12).
+Taking its two coordinates gives the displayed polynomial identities.
+Thus the theorem contains no tacit choice of an inverse trigonometric
+function.  Which representative of a doubled angle is intended is
+specified by the orientation of the relevant arcs or half-planes.
+\end{proof}
+
+\begin{theorem}[Angles in the same segment; opposite cyclic angles]
+\label{circ:same-segment}
+Let $A,B,P,Q$ lie on one circle, with $A\ne B$ and $P,Q\notin\{A,B\}$.
+If $P,Q$ are on the same open side of the line $AB$, then the interior
+angles $APB$ and $AQB$ are equal.  If they are on opposite sides, their
+interior angle pairs are supplements: $(c,s)$ and $(-c,s)$.
+Consequently opposite interior angles of a convex cyclic quadrilateral
+are supplementary.
+\end{theorem}
+\begin{proof}
+Three distinct points on a circle cannot be collinear by
+Theorem~\ref{circ:line-intersection}.  Therefore the two oriented angle
+pairs $z_P,z_Q$ have nonzero imaginary coordinates.  By (C12),
+$z_P^2=z_Q^2$, and thus
+\[
+ (z_P-z_Q)\star(z_P+z_Q)=0.
+\]
+The sign of $\operatorname{Im}z_P$ is the sign of
+\[
+ \detp{A-P}{B-P}=\detp{B-A}{P-A},
+\]
+and similarly for $Q$.  On the same side these signs agree, so the
+imaginary coordinate of $z_P+z_Q$ is nonzero.  Cancellation gives
+$z_P=z_Q$.  On opposite sides the imaginary coordinate of $z_P-z_Q$ is
+nonzero, so cancellation instead gives $z_P=-z_Q$.  Passing to absolute
+imaginary coordinates yields equal interior pairs in the first case and
+supplementary pairs in the second.
+
+In a convex quadrilateral the two vertices opposite either diagonal lie
+on opposite open sides of its line.  Apply the second conclusion to each
+diagonal.  This proof records the side condition that a bare squared
+angle identity would lose.
+\end{proof}
+
+\begin{theorem}[Converse angle criterion for a cyclic quadrilateral]
+\label{circ:cyclic-converse}
+Let $A\ne C$, and let $B,D$ lie off the line $AC$ and on opposite open
+sides.  If the interior angle pairs of $ABC$ and $ADC$ are supplementary,
+then $A,B,C,D$ lie on a circle.
+\end{theorem}
+\begin{proof}
+Translate $A$ to zero, put $d=C-A$, and for $x=X-A$ define
+\[
+ F(x)=\normsq x-\dotp dx,\qquad T(x)=\detp dx.
+\]
+These are respectively the dot product and signed determinant of the
+vectors $A-X,C-X$.  If $L_X=\len{A-X}\len{C-X}>0$, the interior pair at
+$X$ is $(F(x)/L_X,|T(x)|/L_X)$.
+Writing $b=B-A$ and $e=D-A$, supplementary pairs give
+\[
+ \frac{F(e)}{|T(e)|}=-\frac{F(b)}{|T(b)|}.
+\]
+Because $T(e),T(b)$ have opposite signs, this is exactly
+$F(e)/T(e)=F(b)/T(b)$.  Let $k=F(b)/T(b)$ and set
+\[
+ o=\frac{d+k\J d}{2},\qquad \rho=\normsq o
+       =\frac{\normsq d(1+k^2)}{4}>0.
+\]
+The circle with centre $A+o$ and squared radius $\rho$ has equation
+\[
+ \normsq x-\dotp dx-k\detp dx=0.                    \tag{C13}
+\]
+It contains $x=0,d,b$ by construction and $x=e$ by the ratio equality.
+This gives the desired circle explicitly.  Every division was by a
+nonzero determinant certified by the off-line hypotheses.
+\end{proof}
+
+\begin{theorem}[Tangent--chord angle theorem]
+\label{circ:tangent-chord}
+Let $A,B,P$ be three distinct points on a circle, and choose the tangent
+ray at $A$ whose direction $t$ makes
+$\detp{t}{B-A}$ have the same sign as
+$\detp{A-P}{B-P}$.  Then the interior angle between that tangent ray and
+the chord ray $AB$ equals the interior angle $APB$.
+\end{theorem}
+\begin{proof}
+Translate the centre to zero, write $a=A-O$, $b=B-O$, and $v=b-a$.
+For $t=\J a$,
+\[
+ \detp tv=-\dotp av=\rho-\dotp ab=\frac{\normsq v}{2}>0;
+\]
+the opposite tangent direction has negative determinant.  Exactly one of
+the two rays therefore meets the prescribed sign condition.
+
+Pair notation writes $\J a=i\star a$, where $i=(0,1)$.
+As in the preceding inscribed-angle proof,
+$\rho\bar v=-\bar a\star\bar b\star v$.
+Using $\bar i=-i$ and $i^2=-1$, cancellation gives
+\[
+ z(t,v)^2=\frac{\bar t\star v}{t\star\bar v}
+          =\frac{\bar a\star b}{\rho}.
+\]
+Here a quotient of nonzero pairs means multiplication by its explicit
+inverse $\bar w/\normsq w$; the same identity holds for $-t$ because its
+angle pair changes sign.  By (C12) this square equals the square of
+$z(A-P,B-P)$.  The chosen imaginary signs agree and are nonzero, so the
+cancellation argument of Theorem~\ref{circ:same-segment} proves equality
+of the two oriented pairs.  Their interior angle pairs are consequently
+equal.
+\end{proof}
+
+\begin{theorem}[Rational parametrization of a circle]
+\label{circ:parameter}
+Let $a=A-O$ be a known radius vector.  Every point of the circle except
+$O-a$ is uniquely of the form
+\[
+ P(t)=O+\frac{1-t^2}{1+t^2}a+\frac{2t}{1+t^2}\J a,
+       \qquad t\in K.                              \tag{C14}
+\]
+In particular, a circle with rational centre and a known rational point
+has this parametrization of all its rational points, together with the
+one omitted rational point.
+\end{theorem}
+\begin{proof}
+The denominator $1+t^2$ is positive, and
+$(1-t^2)^2+(2t)^2=(1+t^2)^2$.  The two vectors $a,\J a$ are orthogonal
+with squared norm $\rho$, so (C14) satisfies the circle equation.
+Conversely write $P-O=ua+v\J a$, where
+\[
+ u=\frac{\dotp{a}{P-O}}{\rho},\qquad
+ v=\frac{\detp{a}{P-O}}{\rho},\qquad u^2+v^2=1.
+\]
+If $u=-1$, then $v^2=0$ and $P=O-a$.
+Otherwise $t=v/(1+u)$ is defined.  From $v^2=1-u^2$ one obtains
+$1+t^2=2/(1+u)$ and substitution recovers $u,v$ in (C14).
+This inverse also proves uniqueness.  All formulas use field operations
+alone and therefore preserve rationality in both directions.
+\end{proof}
+
+\subsection{Inversion and Ptolemy's theorem}
+
+\begin{theorem}[Inversion: involution, radial order, and the distance identity]
+\label{circ:inversion}
+For $k>0$, define on points $P\ne O$
+\[
+ I(P)=O+\frac{k(P-O)}{\normsq{P-O}}.
+\]
+Then $I(I(P))=P$.  It preserves every ray from $O$, fixes precisely the
+circle of squared radius $k$, and exchanges its inside and outside.
+For $P,Q\ne O$,
+\[
+ \len{I(P)-I(Q)}
+   =\frac{k\len{P-Q}}{\len{P-O}\len{Q-O}}.            \tag{C15}
+\]
+\end{theorem}
+\begin{proof}
+With $p=P-O$, the squared norm of the inverted vector is
+$k^2/\normsq p>0$.  Applying the formula a second time gives
+$k(kp/\normsq p)/(k^2/\normsq p)=p$.
+The radial multiplier $k/\normsq p$ is positive, and comparing
+$k^2/\normsq p$ with $k$ gives the fixed-circle and inside--outside
+claims.
+
+For $q=Q-O$, direct expansion gives
+\begin{align*}
+ \normsq{\normsq q\,p-\normsq p\,q}
+  &=(\normsq q)^2\normsq p+(\normsq p)^2\normsq q
+       -2\normsq p\normsq q\dotp pq\\
+  &=\normsq p\normsq q\,\normsq{p-q}.
+\end{align*}
+Dividing by the positive squared denominator proves
+\[
+ \normsq{I(P)-I(Q)}
+      =\frac{k^2\normsq{P-Q}}{\normsq p\normsq q}.
+\]
+Both sides of (C15) are nonnegative and have these equal squares, so they
+are equal.
+\end{proof}
+
+\begin{theorem}[Inversion carries generalized circles to generalized circles]
+\label{circ:inversion-circle}
+Translate the inversion centre to zero.  A nonzero point $x$ satisfies
+\[
+ \lambda\normsq x+2\dotp ax+b=0
+\]
+if and only if $y=I(x)$ satisfies
+\[
+ b\normsq y+2k\dotp ay+\lambda k^2=0.              \tag{C16}
+\]
+Thus a circle through the inversion centre becomes a line not through it;
+a line not through the centre becomes a circle through it, with that
+centre point omitted.  A line through the centre remains the same line.
+\end{theorem}
+\begin{proof}
+Substitute $x=ky/\normsq y$, which is valid by the involution theorem,
+and multiply by $\normsq y>0$.  This gives (C16) exactly, so the
+implication is reversible.
+
+A circle with centre $c$ has $\lambda=1$, $a=-c$, and
+$b=\normsq c-\rho$.  If it passes through zero, $b=0$ and (C16) becomes
+$2\dotp cy=k$; this is a genuine line because $\normsq c=\rho>0$.
+If $b\ne0$, completing the square in (C16) gives centre $kc/b$ and
+squared radius $k^2\rho/b^2>0$.
+A line has $\lambda=0$ and $a\ne0$.  For $b\ne0$, its image has centre
+$-ka/b$ and squared radius $k^2\normsq a/b^2$, and passes through zero.
+For $b=0$, (C16) is the original equation $\dotp ay=0$.
+The origin is excluded throughout because inversion is undefined there;
+it is not an additional image point.
+\end{proof}
+
+\begin{theorem}[Ptolemy's inequality]
+\label{circ:ptolemy-inequality}
+For any four points $A,B,C,D$ in the plane, allowing coincidences,
+\[
+ \len{C-A}\len{D-B}
+ \le\len{B-A}\len{D-C}+\len{D-A}\len{C-B}.          \tag{C17}
+\]
+\end{theorem}
+\begin{proof}
+Translate $A$ to zero and write $b=B-A,c=C-A,d=D-A$.
+Commutativity and distributivity of pair multiplication give the exact
+identity
+\[
+ c\star(d-b)=b\star(d-c)+d\star(c-b).
+\]
+By (C10), $\len{u\star v}=\len u\len v$: both quantities are
+nonnegative with the same square.  Apply the triangle inequality to the
+displayed pair identity and replace each product length by this formula.
+The result is (C17).  No nonzero denominator occurs, so the proof includes
+all degenerate configurations.
+\end{proof}
+
+\begin{theorem}[Ptolemy's theorem with cyclic order made explicit]
+\label{circ:ptolemy}
+Let $A,B,C,D$ be distinct points of a circle in convex boundary order.
+Equivalently, the four successive triple determinants
+\[
+ \detp{B-A}{C-A},\quad\detp{C-B}{D-B},\quad
+ \detp{D-C}{A-C},\quad\detp{A-D}{B-D}
+\]
+are all positive, or all negative.  Then
+\[
+ \len{C-A}\len{D-B}
+ =\len{B-A}\len{D-C}+\len{D-A}\len{C-B}.           \tag{C18}
+\]
+\end{theorem}
+\begin{proof}
+Translate $A$ to zero and invert with $k=1$.  Put
+$b'=b/\normsq b$, $c'=c/\normsq c$, and $d'=d/\normsq d$.
+The original circle passes through zero, so
+Theorem~\ref{circ:inversion-circle} puts all three images on one line
+not through zero.  In particular $b',d'$ are linearly independent:
+if one were a scalar multiple of the other, their common nonzero value
+under the line's linear functional would force that scalar to be $1$,
+contradicting inversion's injectivity.
+
+Write $c'=(1-t)b'+td'$.  Taking determinants with $b'$ and $d'$ gives
+\[
+ t=\frac{\detp{b'}{c'}}{\detp{b'}{d'}},\qquad
+ 1-t=\frac{\detp{c'}{d'}}{\detp{b'}{d'}}.
+\]
+Inversion divides each determinant by positive squared norms, so its
+sign is unchanged.  The boundary-order hypotheses say that
+$\detp bc$, $\detp bd$, and $\detp cd$ have the same nonzero sign.
+Consequently $0<t<1$.  Thus $c'$ is between $b',d'$ and
+\[
+ \len{b'-d'}=\len{b'-c'}+\len{c'-d'}.
+\]
+Use (C15) for the three lengths:
+\[
+ \frac{\len{B-D}}{\len{B-A}\len{D-A}}
+ =\frac{\len{B-C}}{\len{B-A}\len{C-A}}
+  +\frac{\len{C-D}}{\len{C-A}\len{D-A}}.
+\]
+Multiplication by the positive product
+$\len{B-A}\len{C-A}\len{D-A}$ proves (C18).
+The explicit betweenness calculation is what makes the two products add
+rather than subtract.
+\end{proof}
+
+\begin{theorem}[Converse to Ptolemy's theorem]
+\label{circ:ptolemy-converse}
+Suppose $A,B,C,D$ are distinct, $A,B,C$ are noncollinear, and equality
+holds in (C17).  Then they are concyclic in one of the two boundary
+orientations appearing in Theorem~\ref{circ:ptolemy}.
+\end{theorem}
+\begin{proof}
+Invert about $A$ as in that proof, without initially assuming a circle.
+Formula (C15) turns the equality into
+\[
+ \len{d'-b'}=\len{c'-b'}+\len{d'-c'}.
+\]
+Set $u=c'-b'$ and $v=d'-c'$; these vectors are nonzero by injectivity.
+Squaring the equality gives $\dotp uv=\len u\len v>0$.
+The two-dimensional Lagrange identity
+$\normsq u\normsq v-\dotp uv^2=\detp uv^2$ therefore gives
+$\detp uv=0$.  Hence
+$v=(\dotp uv/\normsq u)u$, a positive multiple of $u$.
+It follows that $c'=(1-t)b'+td'$ for some $0<t<1$.
+
+The line through $b',c'$ does not pass through zero, since
+$\detp{b'}{c'}=\detp bc/(\normsq b\normsq c)\ne0$.
+Its inverse is a circle through zero by
+Theorem~\ref{circ:inversion-circle}, containing $b,c,d$.
+For completeness the boundary order can be read off without a picture.
+Let $W=\detp{b'}{d'}\ne0$.  Then
+\[
+ \detp{b'}{c'}=tW,\qquad
+ \detp{c'}{d'}=(1-t)W.
+\]
+The determinants $\detp bc,\detp cd,\detp bd$ consequently have the
+same sign as $W$.  The remaining consecutive triple has the same sign
+because
+\[
+ \detp{c-b}{d-b}
+ =\frac{W\bigl((1-t)\normsq{b'}+t\normsq{d'}-\normsq{c'}\bigr)}{\normsq{b'}\normsq{c'}\normsq{d'}}
+ =\frac{Wt(1-t)\normsq{d'-b'}}{\normsq{b'}\normsq{c'}\normsq{d'}}.
+\]
+All factors other than $W$ are positive.  This proves all four orientation
+conditions.  The noncollinearity hypothesis excludes the additional
+collinear equality configurations.
+\end{proof}
+
+\subsection{Finite straightedge--compass constructions}
+
+\begin{theorem}[Copying a segment to a prescribed ray]
+\label{circ:elementary-constructions}
+Given a segment vector $u$ and a nonzero ray direction $v$ starting at
+$P$, its unique copied endpoint is
+\[
+ P+\frac{\len u}{\len v}v.
+\]
+For $u\ne0$, it is constructed by intersecting that ray with the circle
+centred at $P$ and having the length of the given segment as its radius.
+\end{theorem}
+\begin{proof}
+The copied displacement has squared norm $\normsq u$ and nonnegative
+ray parameter; uniqueness follows by solving $t^2\normsq v=\normsq u$
+with $t\ge0$.  If $u=0$ the endpoint is simply $P$.
+Otherwise the stated circle is nondegenerate, and its two intersections
+with the whole line have parameters $\pm\len u/\len v$.
+Exactly the positive parameter lies on the prescribed ray.
+\end{proof}
+
+\begin{theorem}[Midpoints, perpendiculars, and parallels are constructible]
+\label{circ:perpendicular-construction}
+The midpoint and perpendicular bisector of any nonzero segment can be
+constructed using equal-radius circles.  From a line and any point $X$,
+one can construct the perpendicular through $X$ and then the parallel
+through $X$, with all intersections certified nondegenerate.
+\end{theorem}
+\begin{proof}
+For distinct $U,V$, draw their circles of common radius $\len{V-U}$.
+The equilateral construction of Theorem~\ref{tri:equilateral-construction}
+gives their two intersections, so the joining line has direction
+$\J(V-U)$ and passes through $(U+V)/2$.  It meets the original segment
+line uniquely, since
+$\detp{V-U}{\J(V-U)}=\normsq{V-U}>0$.
+This gives both its perpendicular bisector and its midpoint.
+
+For a line containing distinct $P,Q$, set
+$R=\len{X-P}+\len{Q-P}>0$ and draw the circle of centre $X$ and radius
+$R$.  Its distance from the line is at most $\len{X-P}<R$:
+indeed the foot $H$ satisfies
+$\normsq{X-P}=\normsq{X-H}+\normsq{H-P}$.
+The line--circle discriminant is therefore positive, so there are two
+distinct intersections $U,V$.  The point $X$ is equidistant from them,
+hence it lies on their perpendicular bisector, as follows directly by
+subtracting squared distances.  Constructing that bisector gives the
+desired perpendicular even if $X$ originally lies on the line; it avoids
+the degenerate attempt to join $X$ to itself as its own perpendicular
+foot.  A second perpendicular through $X$ gives the parallel, since
+$\J(\J v)=-v$.
+The radius $R$ is obtained by copying the two lengths consecutively on a
+ray, using the preceding theorem.
+\end{proof}
+
+\begin{theorem}[Straightedge--compass arithmetic]
+\label{circ:construction-arithmetic}
+Use the frame $(0,0),(1,0),(0,1)$.  Numbers represented on the horizontal
+axis are closed under addition, subtraction,
+multiplication, nonzero division, and nonnegative square root by explicit
+straightedge--compass constructions.  Conversely, the coordinates of each
+point obtained in a finite straightedge--compass construction are obtained
+from the input coordinates by finitely many such scalar operations.
+\end{theorem}
+\begin{proof}
+The preceding theorem supplies parallels and perpendiculars.  Projection
+along lines parallel to the diagonal joining $(1,0)$ to $(0,1)$ transfers
+$(a,0)$ to $(0,a)$ and back.  Perpendicular intersections therefore
+construct $(a,b)$ from axis representatives $a,b$.
+
+For addition, take the line through $(a,0)$ parallel to the line from
+$(0,0)$ to $(b,1)$.  Its intersection with the horizontal line $y=1$ is
+$(a+b,1)$; vertical projection gives $a+b$.  A half-turn about the origin
+constructs $-b$, and the same operation gives subtraction.  One explicit
+half-turn is the composition of the two reflections in the coordinate
+axes, each obtained by laying off an equal perpendicular segment on the
+other side.
+
+For multiplication, the line through $(0,0)$ and $(a,1)$ meets $y=b$ at
+$(ab,b)$, whose horizontal coordinate is $ab$.  For reciprocal, if
+$a\ne0$, that same line meets $x=1$ at $(1,1/a)$, which gives $1/a$ by
+coordinate transfer.  These intersections have respectively nonzero
+vertical direction $1$ and nonzero horizontal direction $a$.
+
+For square root, let $a\ge0$ and construct the circle whose diameter has
+endpoints $(-1,0)$ and $(a,0)$.  Its centre is $((a-1)/2,0)$ and its
+radius is $(a+1)/2>0$.  At its intersections with $x=0$ the equation is
+\[
+ y^2=\frac{(a+1)^2-(a-1)^2}{4}=a.
+\]
+Choose the nonnegative vertical coordinate and transfer it to the
+horizontal axis.  For $a=0$ this is the single tangent intersection;
+for $a>0$ it is the upper of two distinct intersections.  The branch is
+decided on exact scalar codes.
+
+For the converse, a line through known distinct points has coefficients
+formed by subtraction and multiplication.  Two nonparallel lines are
+solved by field operations and their nonzero determinant.  A circle
+specified by a centre and a point has squared radius given by a sum of
+two squares.  A line--circle intersection is given by
+Theorem~\ref{circ:line-intersection}; a two-circle intersection is given
+by Theorem~\ref{circ:circle-intersection}.  Both use field operations and
+one nonnegative square root after their existence hypotheses have been
+checked.  Identical circles or coincident lines do not specify a new
+isolated intersection and are not valid construction steps.
+Induction on the length of the finite construction list now proves the
+converse, recording the displayed scalar expressions at each step.
+This establishes the constructive field-operation characterization; it
+does not assert that every algebraic number is constructible.
+\end{proof}
+
+\subsection{Arithmetic and formalization audit for this chapter}
+
+Every displayed construction is a fixed composition of the coded scalar
+operations.  The proofs have three kinds of steps: polynomial identities,
+ordered-field deductions with explicit nonzero denominators, and selection
+of the nonnegative square root of a certified nonnegative scalar.  The only
+induction added by the final theorem is induction on a coded finite list of
+construction steps.  The invariant records the complete finite expression
+and its validated coordinate equations; it is checked by a primitive
+recursive Boolean predicate.  Thus its induction is an instance of
+quantifier-free induction after the usual Boolean encoding of bounded
+conditions.
+
+For a Lean development the small data types needed here are a point
+$(x,y)$, a circle $(O,\rho,h_\rho)$, a line $(P,v,h_v)$, and the two angle
+coordinates, all instantiated with the interpreted exact scalars.  The
+intersection routines should return either a negative-discriminant
+certificate, one point with a completeness proof, or two points with
+distinctness and completeness proofs.  In particular, an existential
+intersection theorem alone would not record the construction used here.
+
+The first formalization targets are (C1), (C3), (C10), the determinant
+identity in (C11), and the division-free form of (C12): they are polynomial
+equalities.  The next layer proves positivity of the relevant norms and
+discriminants, then validates the output formulas.  Ptolemy's inequality
+uses the already established triangle inequality; the ordered equality
+uses the inversion length identity and the explicit determinant proof of
+betweenness.  These are genuine proof dependencies, rather than a call to
+an ambient theorem about all real Euclidean spaces.  Connecting those
+Lean lemmas to the object-level $\ipra$ checker still requires the coded
+scalar interpretation described in the foundation chapter; a conventional
+Lean proof over an ordered field alone is not that connection.

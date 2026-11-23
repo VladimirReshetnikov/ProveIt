@@ -1,0 +1,372 @@
+\section{Successors, fundamental sequences and cofinality}
+\label{sec:fundseq}
+
+Write $P\mathbin{\|}Q$ for list concatenation, $[b]$ for a one-entry
+list, and $[b]^k$ for $k$ copies of $b$ in a list.
+All arguments of ordinal comparisons in this section are canonical terms.
+We use the convention that a limit ordinal is positive.
+The root of even the empty term counts as one node. Thus its node count is
+\[
+ v([a_1,\ldots,a_k])=1+\sum_{i=1}^k v(a_i).
+\]
+
+\begin{proposition}[Successor and finite remainder]
+The immediate successor of $x$ is $S(x)=x\mathbin{\|}[0]$.
+A nonempty term is a successor exactly when its last exponent is zero.
+Every term has a unique expression $S^r(L)$ with $r$ a natural number and
+$L$ zero or a positive term ending in a positive exponent.
+\end{proposition}
+\begin{proof}
+A proper extension of $x$ begins with an additional exponent at least zero,
+so it is at least $S(x)$. If a term exceeds $x$ by a first unequal
+exponent, that same difference puts it above $S(x)$.
+Thus $x<y$ is equivalent to $S(x)\le y$.
+Deleting a last zero inverts $S$. Counting and deleting all trailing
+zeros gives $r,L$ and reversing this operation recovers the input.
+Maximality of the trailing zero run proves uniqueness. In particular the
+finite terms are the lists $[0]^r$. The terms below $\omega=[1]$, where
+$1=[0]$, are exactly these lists, because every positive exponent is at least
+$1$. Thus $\omega$ is the first infinite term.
+\end{proof}
+
+For a term $\lambda=P\mathbin{\|}[b]$ ending in $b>0$, define
+\[
+ F(\lambda,n)=
+ \begin{cases}
+ P\mathbin{\|}[c]^{n+1},& b=S(c),\\
+ P\mathbin{\|}[F(b,n)],& b\text{ ends in a positive exponent}.
+ \end{cases}
+\]
+Give $F$ the default value zero on other inputs. The computational call
+in the second line follows the last child in the input tree.
+The number of calls is bounded by $v(\lambda)$. The two clauses give
+$v(F(\lambda,n))\le(n+1)v(\lambda)$ by addition of node counts along
+this path. One can therefore implement the definition by bounded
+descent with a stack of saved prefixes and a reverse traversal for
+reassembly. For instance,
+\[
+ F(\omega,n)=n+1,\qquad
+ F(\omega^2,n)=\omega(n+1),\qquad
+ F(\omega^\omega,n)=\omega^{n+1}.
+\]
+Here numerals in ordinal expressions stand for the corresponding finite
+terms. The indexing convention starts each example strictly above zero.
+
+\begin{theorem}[A quantitative cofinality theorem]
+\label{thm:fsquant}
+If $\lambda$ ends in a positive exponent, $F(\lambda,n)$ is canonical,
+and for every $n$,
+\[
+ F(\lambda,n)<F(\lambda,n+1)<\lambda.
+\]
+More precisely, whenever $y<\lambda$ and $n\ge v(y)$, one has
+$y<F(\lambda,n)$.
+\end{theorem}
+\begin{proof}
+In the successor-exponent clause, every entry of $P$ is at least $b>c$.
+The extra copy of $c$ gives strict increase by proper extension. The
+first replacement of $b$ by $c$ places both results below $\lambda$.
+In the limit-exponent clause the same conclusions hold by applying the
+comparisons for the smaller tree $b$ to the only varying entry. This
+also justifies canonicality at every return from the recursive call.
+
+For the quantitative claim compare $y$ with $P\mathbin{\|}[b]$. If
+$y$ ends in or at $P$ as a prefix, the result has a nonempty suffix
+after $P$ and exceeds $y$. If $y$ first differs inside $P$, the
+smaller entry of $y$ still decides the comparison. The remaining case is
+$y=P\mathbin{\|}[d]\mathbin{\|}Q$ with $d<b$. If $b=S(c)$ then
+$d\le c$. For $d<c$ the first new entry decides. For $d=c$ all
+entries of $[d]\mathbin{\|}Q$ are at most $c$, and this list has
+at most $v(y)$ entries. A list of $n+1$ copies of $c$ therefore
+exceeds it at a first smaller entry or by proper extension. If $b$ ends
+in a positive exponent, apply the claim to the smaller input pair
+$(b,d)$, since $v(d)<v(y)\le n$. It gives $d<F(b,n)$ as required.
+
+These verifications use ordinary induction on the length of the
+calculation. Explicitly, for fixed inputs store the visited pairs
+$(\lambda,y),(b,d),\ldots$ and the common $n$. At each pair the local
+comparison either decides the result outright or invokes the next pair.
+Check the implications backwards with a bounded conjunction over the
+visited nodes. For strict increase use the analogous list of rightmost
+ancestors with parameters $n,n+1$. This makes the induction predicate
+a primitive recursive Boolean test.
+\end{proof}
+
+\begin{corollary}[The exact first cofinality index]
+\label{thm:exact-fs}
+Let $M(y)$ be the largest length of a run of identical consecutive
+children anywhere in the tree $y$, with empty maximum zero.
+For each positive limit $\lambda$ and $y<\lambda$ a primitive recursive
+function $m(\lambda,y)$ satisfies
+\[
+   y<F(\lambda,n)\quad\Longleftrightarrow\quad n\ge m(\lambda,y),
+   \qquad m(\lambda,y)\le M(y).
+\]
+In particular $M(y)$ can replace $v(y)$ in
+Theorem~\ref{thm:fsquant}. For every natural $k$, equality holds in
+the bound when $\lambda=\omega$ and $y=k$.
+\end{corollary}
+\begin{proof}
+Write $\lambda=P\mathbin{\|}[b]$. If $y$ is a prefix of $P$,
+including equality, or first differs from $\lambda$ inside $P$,
+return zero. The whole prefix $P$ survives and is followed by at
+least one entry, so the desired strict comparison holds at every
+index. Otherwise $y=P\mathbin{\|}[d]\mathbin{\|}Q$ with $d<b$.
+If $b=S(c)$ and $d<c$, return zero again. If $d=c$, return the length
+$r$ of the initial run of $c$ in $[d]\mathbin{\|}Q$. The new suffix
+of $F(\lambda,n)$ has $n+1$ copies of $c$. For $n+1\le r$ this suffix
+is a prefix of the suffix of $y$, possibly equal. For $n+1>r$ it
+exceeds that suffix because $y$ ends after the run or continues with
+a smaller entry. This proves the threshold $n\ge r$, and $r\le M(y)$.
+If $b$ is a limit, return $m(b,d)$. The new suffix has the single
+entry $F(b,n)$, so $y<F(\lambda,n)$ is equivalent to $d<F(b,n)$.
+In particular equality at that entry cannot give strict inequality,
+even when $Q$ is empty. The recursion descends into proper subtrees, and
+$M(d)\le M(y)$ as $d$ is a child of $y$. A bounded stack of these
+input pairs and a backwards scan prove both assertions by the same
+quantifier-free induction as before. Computing $M$ itself requires
+only counting runs at each node and taking their finite maximum.
+Finally $F(\omega,n)=n+1$ and $M(k)=k$, so $m(\omega,k)=k$.
+\end{proof}
+
+\begin{example}
+Let $\lambda=\omega^{\omega^2}$ and $y=\omega^{\omega\cdot3+7}+42$.
+Comparison of the leading exponents reduces the first-index problem to
+$\omega^2$ and $\omega\cdot3+7$. The latter begins with three copies of
+the exponent $1$, so $m(\lambda,y)=3$. Indeed
+$F(\lambda,2)=\omega^{\omega\cdot3}<y<F(\lambda,3)=\omega^{\omega\cdot4}$.
+The final $42$ units do not enter the calculation.
+\end{example}
+
+\begin{corollary}[Characterizations and cofinalities]
+For $x>0$ the following four conditions are equivalent.
+\begin{enumerate}[nosep,label=(\roman*)]
+\item The last exponent of $x$ is positive.
+\item The term $x$ has no predecessor.
+\item $S(y)<x$ for every $y<x$.
+\item The strict predecessors of $x$ have least upper bound $x$.
+\end{enumerate}
+The cofinalities of zero, a successor and a positive limit in this
+presentation are respectively $0,1,\omega$. Here a cofinal list or
+sequence below $x$ must supply an entry $\ge y$ for each $y<x$.
+\end{corollary}
+\begin{proof}
+For a positive last exponent, take $n=v(y)$ in
+Theorem~\ref{thm:fsquant}. Then $S(y)\le F(x,n)<x$.
+Every proposed upper bound $y<x$ of the predecessors is exceeded by
+$F(x,n)$. A final zero, on the other hand, exhibits a predecessor $p$
+which is itself the greatest strict predecessor and their least upper
+bound. This separates the two cases constructively.
+
+The empty list suffices at zero and the singleton containing $p$ suffices
+at $S(p)$, where an empty list fails on $p$. At a positive limit the
+displayed $F$ gives an increasing sequence. It exceeds the maximum of
+each nonempty finite list of predecessors at the explicit index given
+above. The empty list misses zero. Since the terms below $\omega$ are
+the finite ones, this also proves minimality of the stated cofinality.
+In particular $\omega$ is the least positive limit. The three values give
+$\operatorname{cf}(\operatorname{cf}(x))=\operatorname{cf}(x)$ by
+inspection.
+\end{proof}
+
+\begin{proposition}[A minimum problem already at $\omega+1$]
+Let $b(n)$ be any specified primitive recursive Boolean predicate,
+possibly with numerical parameters. In $[0,\omega]$ form the decidable
+inhabited predicate $A_b$ consisting of $\omega$ and exactly those
+finite $n$ for which $b(n)=1$. Then $A_b$ has a least member if and
+only if
+\[
+       (\exists n\ b(n)=1)\ \lor\ (\forall n\ b(n)=0).
+\]
+\end{proposition}
+\begin{proof}
+Given a least member, decide whether it is finite or equals $\omega$.
+A finite least member supplies a positive instance. If the least
+member is $\omega$, any $n$ with $b(n)=1$ would be a smaller member.
+Boolean decidability now gives $b(n)=0$ at each input. Conversely,
+from a witness $n$ scan the $n+1$ finite positions up to it to find
+the first positive one. This is least among all finite members and
+lies below $\omega$. In the all-zero case $\omega$ itself is least.
+Thus the assertion that all such inhabited decidable subsets have a
+minimum already entails the limited principle of omniscience for
+primitive recursive predicates, understood as a first-order schema.
+\end{proof}
+
+\subsection{The tower endpoint and continuity of the principal-power map}
+Put $p(x)=[x]$, the notation for $\omega^x$. Singleton comparison gives
+$p(x)<p(y)$ exactly when $x<y$. In fact $x<p(x)$ for every finite
+term. This holds at zero. If $a$ is the first child of $x$, then
+$a<p(a)$ by the same assertion for the smaller tree, and $p(a)\le x$
+by the prefix comparison. Thus $a<x$, whence $x<[x]$ by comparison
+of the first entries. This argument is a bounded backwards check on the
+leftmost branch. At a positive limit $\lambda$, the sequence
+$p(F(\lambda,n))=F(p(\lambda),n)$ is cofinal below $p(\lambda)$.
+In particular, given $z<p(\lambda)$, the bound $n=v(z)$ supplies an
+argument $u=F(\lambda,n)<\lambda$ with $z<p(u)$. This proves
+continuity in the increasing, least-upper-bound sense.
+
+Define $T_0=1$, $T_{n+1}=p(T_n)$, and let $h(0)=0$,
+$h(x)=1+\max_i h(a_i)$ for a nonempty term with children $a_i$.
+The tower is strictly increasing. In fact,
+\[
+                 x<T_n\quad\Longleftrightarrow\quad h(x)\le n.
+\]
+To see this, first prove $x<T_{h(x)}$, and, for $h(x)=d>0$,
+$T_{d-1}\le x$. At height zero the upper inequality is $0<1$.
+At positive height $d$, all children are below $T_{d-1}$ by their
+upper inequalities and monotonicity of the tower. Comparing first
+entries gives $x<[T_{d-1}]=T_d$. When $d=1$, nonemptiness gives
+$x\ge1=T_0$. When $d>1$, a child of height $d-1$ is at least
+$T_{d-2}$ by its lower inequality. The first child is at least this
+large and therefore $x\ge[T_{d-2}]=T_{d-1}$. Both estimates can be
+verified on the finite table of nodes of the given tree, in postorder.
+Together they give the asserted equivalence.
+
+Thus the towers are cofinal in the entire term order, with witness
+$h(x)$ for a strict upper bound of $x$. There is also an exact
+fixed-point formulation using a one-symbol extension. Adjoin a last
+point $E$ and set $p(E)=E$. Then $E$ is the least fixed point, since
+$x<p(x)$ for every ordinary term. The towers have supremum $E$, and
+$p$ is continuous there since, for $x<E$, $p(T_{h(x)})>x$. This models the
+first epsilon fixed point at the endpoint of this presentation. The
+unextended term order itself has no largest element.
+
+\section{Order topology by explicit neighborhood tests}
+\label{sec:ordtop}
+All statements about a family of points below refer to its specified
+membership predicate. A basic neighborhood of a nonzero point $x$ can
+be shrunk to $(b,S(x))$ with $b<x$, since the right-hand endpoint can
+be moved to $S(x)$ and zero supplies a possible lower endpoint.
+At zero use $[0,1)$. In an initial segment intersect these intervals
+with the segment. A point $x>0$ is therefore a limit point of a
+predicate $A$ precisely when for every $b<x$ there is a $y$ with
+$b<y<x$ and $A(y)$.
+
+Successors $S(p)$ are isolated by $(p,S(S(p)))$, and zero is isolated.
+At a positive limit $x$ the sequence $F(x,n)$ gives points approaching
+$x$ strictly from below. The intervals $(F(x,n),S(x))$ form a
+decreasing countable local basis by Theorem~\ref{thm:fsquant}. As a
+result, an initial segment $[0,a)$ is discrete exactly when
+$a\le\omega$. For $a\le\omega$ every point is finite. For $a>\omega$
+the segment contains $\omega$ and all the finite points approaching it.
+On $[0,\omega]$, a fixed decidable membership predicate $U$ describes
+an open set exactly when it omits $\omega$ or it contains $\omega$ and
+there is an $N$ such that $U(n)$ holds for every finite $n\ge N$.
+Indeed, the isolated points impose no condition. A neighborhood of
+$\omega$ contains a final tail and every such tail together with
+$\omega$ contains a basic neighborhood. Thus in the case containing
+$\omega$ the complement can be given by a finite list, obtained by
+checking the $N$ positions below the cutoff.
+
+\begin{theorem}[Exact derivative stages from a last exponent]
+Write $D_0(x)$ for true, and for $a>0$ set
+\[
+       D_a(x)\quad\Longleftrightarrow\quad
+       x\ne0\ \text{and the last exponent of }x\text{ is at least }a.
+\]
+For all term indices the following equations hold, where the prime
+means taking limit points in the order topology:
+\[
+ D_{S(a)}=(D_a)',\qquad
+ D_\lambda(x)\ \Longleftrightarrow\ (\forall n)\,D_{F(\lambda,n)}(x)
+ \ \Longleftrightarrow\
+ (\forall a<\lambda)\,D_a(x)\qquad(\lambda\text{ a positive limit}).
+\]
+Thus a nonzero $x$ with last exponent $e$ belongs at stage $e$ and
+disappears at $S(e)$. Zero disappears at stage $1$.
+\end{theorem}
+\begin{proof}
+Consider $x=P\mathbin{\|}[e]$. If $e\le a$, use $(P,S(x))$.
+Each point strictly between $P$ and $x$ must extend $P$ with a
+first new entry $d<e$. An earlier discrepancy would put it on the
+same side of both bounds, and the prefix ending in $e$ already equals
+$x$. Its last exponent is at most $d<e\le a$.
+When $a=0$ this open interval has no point below $x$. Thus throughout
+the case $e\le a$ it contains no other $D_a$ point.
+Zero has its own isolating neighborhood.
+
+If $e>a$, fix $b<x$. For $e=S(c)$, the term $F(x,v(b))$ is strictly
+between $b$ and $x$ and ends in $c\ge a$. For $e$ a limit, take
+$n=\max(v(b),v(a))$. Then $F(x,n)>b$ and its last exponent $F(e,n)$
+exceeds $a$, again by Theorem~\ref{thm:fsquant}. This supplies a
+$D_a$ point for every prescribed neighborhood and proves the successor
+equation.
+
+For the limit equation, $D_\lambda(x)$ implies membership at every
+smaller stage by comparison of indices. For nonzero $x$ with last
+exponent $e<\lambda$, the one index $F(\lambda,v(e))>e$ witnesses
+failure of both universal conditions. For $x=0$, the term
+$F(\lambda,0)>0$ witnesses the same failure, since our fundamental
+sequences use at least one copy in the bottom clause. These are
+explicit witnesses for all the negative cases.
+\end{proof}
+
+The family $D$ was defined directly by a primitive recursive test on
+two inputs. The displayed equations certify its behavior at every
+stage without applying a transfinite recursion principle in iPRA.
+Each $D_a$ contains its limit points since $D_{S(a)}\subseteq D_a$.
+It is cofinal in the whole term order. For a proposed bound $x$ the
+singleton $[S(\max(x,a))]$ exceeds $x$ because $x<[x]$, and its
+exponent exceeds $a$. These give explicit closed unbounded families on
+this particular countable notation order. The neighborhood proofs also
+apply pointwise within $[0,b)$. When $b>0$ the stage $D_b$ in this
+segment is empty because, for each positive $x<b$, its last exponent is no
+larger than its first, which was proved strictly below $x$.
+
+\section{Controlled descending chains below a fixed finite power of omega}
+\label{sec:control}
+Fix a positive integer $d$. Terms below $\omega^d=[d]$ are exactly
+the polynomials in $\omega$ with natural coefficients and exponents
+$d-1,\ldots,0$ (zero coefficients fill the gaps). Indeed, the first
+exponent, if present, must be $<d$, and every smaller entry is then
+also a finite exponent $<d$. Reading multiplicities from highest to
+lowest identifies the term order with strict lexicographic order of
+$d$-tuples of naturals. At the first unequal coefficient, the tuple
+with the shorter run either ends or passes to a lower exponent, which
+proves the comparison rule in both directions.
+
+Let $g(i)$ be a given nondecreasing primitive recursive bound on
+all coordinates allowed at time $i$. Define an end index for each
+fixed dimension by
+\[
+ H_0(s)=s+1,\qquad
+ H_{j+1}(s)= H_j^{\,g(s)+1}(s),
+\]
+where the superscript on $H_j$ means ordinary iteration of that
+natural-number function. Each $H_j$ is nondecreasing and
+$H_j(s)\ge s+1$. Indeed, increasing the
+start or the number of iterations cannot decrease the result, and
+there is at least one iteration. For every fixed $j$ the iterate
+uses only primitive recursion.
+
+\begin{theorem}[A length bound with a computable failure index]
+A list occupying times $s,\ldots,t-1$ of strictly decreasing
+$j$-tuples satisfying the coordinate bound has $t\le H_j(s)$
+(for $s\le t$). In particular every primitive recursive sequence of
+terms below $\omega^d$, for fixed $d$, has a primitive recursively
+located index $i$ with $f(i+1)\ge f(i)$.
+\end{theorem}
+\begin{proof}
+At dimension zero there is just the empty tuple, so the list has
+at most one entry. Suppose the bound is proved in dimension $j$.
+In a nonempty decreasing list of $(j+1)$-tuples the first coordinates
+are nonincreasing and start at most $g(s)$. Split into maximal
+constant-first-coordinate blocks by scanning the list. There are at
+most $g(s)+1$ blocks because every new block drops the first coordinate
+by at least one. If a block starts at $u$, its remaining $j$ coordinates
+decrease strictly, so its exclusive end is at most $H_j(u)$.
+Induction on the number of blocks and monotonicity show that the final
+end is at most $H_j^{g(s)+1}(s)$. An empty list satisfies the bound
+immediately. The dimension induction constructs a separate iPRA proof
+for each fixed $j$. Within each proof the block endpoints are bounded
+scans of the supplied list, and the induction on block count only
+compares natural numbers computed from those endpoints.
+
+For the last assertion choose $g(i)$ as the maximum of the coordinates
+of $f(0),\ldots,f(i)$ (and zero). Apply the bound to the list of
+$H_d(0)+1$ consecutive inputs starting at zero. If all adjacent
+comparisons decrease, its end index violates the bound. A bounded
+scan returns a failing comparison before index $H_d(0)$. Its correctness follows by the same finite argument. The statement for
+sequences is a scheme, with $f$ given by a primitive recursive
+definition. The dimension is fixed before forming the bound.
+\end{proof}

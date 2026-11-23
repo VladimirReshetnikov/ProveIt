@@ -1,0 +1,188 @@
+\section{Proof inventory and representation ledger}
+\label{sec:inventory}
+The inventory contains 117 labeled theorem, lemma, proposition, or corollary
+declarations. Each declaration is counted once, even when it contains
+several familiar consequences. Definitions, remarks, and equations are
+not additional entries. This is a count of the report's human-readable
+arguments, not a claim of that many distinct classical named theorems
+or compiled Lean proofs. All new Lean sources remain uncompiled.
+
+\begin{center}\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.48\textwidth}r>{\raggedright\arraybackslash}p{0.40\textwidth}@{}}
+\toprule Category & Count & Interpretation\\\midrule
+Exact geometry and construction results & 98 & Finite algebraic coordinates, geometric data, or construction traces\\
+Arithmetic and transfer infrastructure & 11 & Finite arithmetic, fields, elimination, or degree certificates\\
+Finite-observation geometry & 5 & Explicit polygonal or prism enclosures and fixed observation recipes\\
+Observation infrastructure & 2 & Rationalization or finite-sum estimates for the named observations\\
+External computability obstruction & 1 & Metatheoretic nondecidability; not an exact iPRA Euclidean theorem\\
+\midrule Total & 117 & One row per labeled declaration\\
+\bottomrule\end{tabular}\end{center}
+
+Proposition~\ref{lim:equality-boundary} is an \emph{external metatheoretic}
+computability obstruction. It is explicitly excluded from the category
+of exact iPRA Euclidean results. The observation entries prove finite
+enclosures or equalities of separately specified PR rational interval
+names; they do not decide equality for arbitrary real names.
+The transfer result in Theorem~\ref{qe:transfer} is indexed by a fixed
+formula, rather than an internal universal truth predicate.
+
+\begin{center}\small\begin{tabular}{@{}lr@{}}
+\toprule Chapter & Declarations\\\midrule
+Arithmetic foundation & 6\\
+Elementary geometry transfer & 4\\
+Incidence and affine geometry & 14\\
+Metric geometry and triangles & 32\\
+Circles and constructions & 26\\
+Polygonal area and quadrilaterals & 11\\
+Euclidean space and solids & 11\\
+Construction obstructions & 5\\
+Finite observations and boundary & 8\\
+\bottomrule\end{tabular}\end{center}
+
+In the detailed ledger, the source-area column is a thematic route
+through the requested article neighborhood, not a claim that every
+statement is printed verbatim on the main article. Supporting arithmetic
+and analysis entries supply the interpretation used by the geometric
+proofs. The machine-readable CSV and JSON retain the stable labels,
+source files, declaration kinds, categories, scope notes, and entry-page
+URLs: \texttt{sources/theorem\_inventory.csv} and
+\texttt{sources/theorem\_inventory.json}.
+
+{\small\setlength{\tabcolsep}{3pt}\renewcommand{\arraystretch}{1.13}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.07\textwidth}>{\raggedright\arraybackslash}p{0.51\textwidth}>{\raggedright\arraybackslash}p{0.19\textwidth}>{\raggedright\arraybackslash}p{0.18\textwidth}@{}}
+\toprule Ref. & Result & Representation & Source area\\\midrule
+\endfirsthead
+\multicolumn{4}{@{}l}{\textit{Proof inventory (continued)}}\\
+\toprule Ref. & Result & Representation & Source area\\\midrule
+\endhead
+\midrule\multicolumn{4}{r@{}}{\textit{Continued on the next page}}\\
+\endfoot
+\bottomrule\endlastfoot
+\multicolumn{4}{@{}l}{\textbf{Arithmetic foundation} (6 declarations)}\\*[2pt]
+\ref{found:finite} & Finite arithmetic and bounded invariants & Arithmetic codes & Supporting arithmetic\\
+\ref{found:reader} & A reader for a scalar record & Arithmetic codes & Supporting arithmetic\\
+\ref{found:sign} & An annihilator decides sign & Arithmetic codes & Supporting arithmetic\\
+\ref{found:convert} & Conversion to an isolating record & Arithmetic codes & Supporting arithmetic\\
+\ref{found:field} & A coded ordered field & Arithmetic codes & Supporting arithmetic\\
+\ref{found:roots} & Polynomial roots, square roots, and finite root lists & Arithmetic codes & Supporting arithmetic\\
+\multicolumn{4}{@{}l}{\textbf{Elementary geometry transfer} (4 declarations)}\\*[2pt]
+\ref{qe:query} & Signed remainder query & Finite sign data & Supporting arithmetic\\
+\ref{qe:patterns} & Every occurring sign pattern is decidable & Finite sign data & Supporting arithmetic\\
+\ref{qe:one} & One-variable elimination and witnesses & Finite sign data & Supporting arithmetic\\
+\ref{qe:transfer} & Elementary geometry transfer, formula by formula & Finite sign data & Supporting arithmetic\\
+\multicolumn{4}{@{}l}{\textbf{Incidence and affine geometry} (14 declarations)}\\*[2pt]
+\ref{aff:line} & A line through two points and extension & Exact $\K^2$ & Analytic geometry\\
+\ref{aff:between} & Betweenness is a decidable polynomial predicate & Exact $\K^2$ & Analytic geometry\\
+\ref{aff:intersection} & Complete line intersection test & Exact $\K^2$ & Analytic geometry\\
+\ref{aff:parallel} & Parallel through a point; Playfair and strong intersection & Exact $\K^2$ & Parallel postulate\\
+\ref{aff:foot} & Perpendicular foot and shortest distance & Exact $\K^2$ & Analytic geometry\\
+\ref{aff:bisector} & Perpendicular bisector as an exact locus & Exact $\K^2$ & Analytic geometry\\
+\ref{aff:reflection} & Reflection in a line & Exact $\K^2$ & Analytic geometry\\
+\ref{aff:barycentric} & Barycentric coordinates and oriented subareas & Exact $\K^2$ & Analytic geometry\\
+\ref{aff:pasch} & Inner Pasch as a positive explicit intersection & Exact $\K^2$ & Analytic geometry\\
+\ref{aff:intercept} & Intercept theorem and midpoint theorem & Exact $\K^2$ & Analytic geometry\\
+\ref{aff:ceva} & Ceva's theorem for internal cevians & Exact $\K^2$ & Ceva\\
+\ref{aff:menelaus} & Menelaus' theorem with directed ratios & Exact $\K^2$ & Menelaus\\
+\ref{aff:maps} & Affine maps and area scaling & Exact $\K^2$ & Analytic geometry\\
+\ref{aff:desargues} & A finite homogeneous Desargues theorem & Homogeneous $\K^3$ & Analytic geometry\\
+\multicolumn{4}{@{}l}{\textbf{Metric geometry and triangles} (32 declarations)}\\*[2pt]
+\ref{tri:gram} & Gram identity and quarter-turn identities & Exact $\K^2$ & Main; Elements\\
+\ref{tri:metric} & Cauchy--Schwarz, metric axioms, and strict triangle inequality & Exact $\K^2$ & Main; Elements\\
+\ref{tri:motions} & Explicit Euclidean motions and similarities & Exact $\K^2$ & Main; Elements\\
+\ref{tri:pythagoras} & Pythagoras and its converse & Exact $\K^2$ & Pythagoras\\
+\ref{tri:cosine} & Law of cosines & Exact $\K^2$ & Main; Elements\\
+\ref{tri:angle-sum} & Triangle angle sum and exterior-angle theorem & Exact $\K^2$ & Main; Elements\\
+\ref{tri:acute} & At most one nonacute angle; at least two acute angles & Exact $\K^2$ & Main; Elements\\
+\ref{tri:sine} & Area--sine identity and sine law & Exact $\K^2$ & Main; Elements\\
+\ref{tri:side-angle} & Side--angle ordering & Exact $\K^2$ & Main; Elements\\
+\ref{tri:sss} & SSS congruence, with an explicit motion & Exact $\K^2$ & Main; Elements\\
+\ref{tri:sas} & SAS congruence & Exact $\K^2$ & Main; Elements\\
+\ref{tri:asa} & ASA and AAS congruence & Exact $\K^2$ & Main; Elements\\
+\ref{tri:similarity} & AAA, SSS and SAS similarity & Exact $\K^2$ & Main; Elements\\
+\ref{tri:isosceles} & Pons asinorum and the equilateral angle theorem & Exact $\K^2$ & Main; Elements\\
+\ref{tri:ssa} & A rational SSA counterexample & Exact $\Q^2$ & Main; Elements\\
+\ref{tri:equilateral-construction} & Equilateral triangles on a given segment & Exact $\K^2$ & Main; Elements\\
+\ref{tri:heron} & Heron's formula & Exact $\K^2$ & Heron\\
+\ref{tri:side-construction} & Constructing a triangle from its side lengths & Exact $\K^2$ & Main; Elements\\
+\ref{tri:apollonius} & Parallelogram law and Apollonius's median theorem & Exact $\K^2$ & Main; Elements\\
+\ref{tri:stewart} & Stewart's theorem & Exact $\K^2$ & Main; Elements\\
+\ref{tri:right-altitude} & Right-triangle altitude and projection theorems & Exact $\K^2$ & Main; Elements\\
+\ref{tri:centroid} & Median concurrency and the centroid & Exact $\K^2$ & Main; Elements\\
+\ref{tri:leibniz} & Leibniz's identity and the centroid minimizer & Exact $\K^2$ & Main; Elements\\
+\ref{tri:circumcenter} & Circumcenter, perpendicular bisectors, and circumradius & Exact $\K^2$ & Main; Elements\\
+\ref{tri:orthocenter} & Altitude concurrency and the orthocenter & Exact $\K^2$ & Main; Elements\\
+\ref{tri:euler-line} & Euler line & Exact $\K^2$ & Main; Elements\\
+\ref{tri:nine-point} & Nine-point circle & Exact $\K^2$ & Nine-point circle\\
+\ref{tri:bisector} & Internal angle-bisector theorem and its converse & Exact $\K^2$ & Angle bisector\\
+\ref{tri:incenter} & Incenter, incircle, and the area--inradius identity & Exact $\K^2$ & Main; Elements\\
+\ref{tri:excenters} & Excenters and exradii & Exact $\K^2$ & Main; Elements\\
+\ref{tri:euler-inequality} & Euler's inradius--circumradius identity and inequality & Exact $\K^2$ & Main; Elements\\
+\ref{tri:viviani} & Viviani's theorem & Exact $\K^2$ & Main; Elements\\
+\multicolumn{4}{@{}l}{\textbf{Circles and constructions} (26 declarations)}\\*[2pt]
+\ref{circ:line-intersection} & Complete line--circle intersection test & Exact $\K^2$ & Circle\\
+\ref{circ:chord-midpoint} & Chord midpoint and perpendicular bisector & Exact $\K^2$ & Circle\\
+\ref{circ:chord-distance} & Chord length and distance from the centre & Exact $\K^2$ & Circle\\
+\ref{circ:thales} & Thales' theorem, converse, and the inside--outside test & Exact $\K^2$ & Circle\\
+\ref{circ:tangent} & The tangent is perpendicular to the radius & Exact $\K^2$ & Circle\\
+\ref{circ:convexity} & A circle bounds its chords and has a supporting tangent & Exact $\K^2$ & Circle\\
+\ref{circ:power} & Power of a point: secants, intersecting chords, and tangents & Exact $\K^2$ & Circle\\
+\ref{circ:external-tangents} & The two tangents from an exterior point & Exact $\K^2$ & Circle\\
+\ref{circ:radical} & Radical axes and the radical centre & Exact $\K^2$ & Circle\\
+\ref{circ:circle-intersection} & Complete intersection test for two circles & Exact $\K^2$ & Circle\\
+\ref{circ:three-common} & Three common points determine the circle & Exact $\K^2$ & Circle\\
+\ref{circ:butterfly} & Butterfly theorem with explicit intersection hypotheses & Exact $\K^2$ & Butterfly\\
+\ref{circ:cyclic-determinant} & A determinant test for concyclicity & Exact $\K^2$ & Circle\\
+\ref{circ:inscribed} & Inscribed angle and central angle & Exact $\K^2$ & Circle\\
+\ref{circ:same-segment} & Angles in the same segment; opposite cyclic angles & Exact $\K^2$ & Circle\\
+\ref{circ:cyclic-converse} & Converse angle criterion for a cyclic quadrilateral & Exact $\K^2$ & Circle\\
+\ref{circ:tangent-chord} & Tangent--chord angle theorem & Exact $\K^2$ & Circle\\
+\ref{circ:parameter} & Rational parametrization of a circle & Exact $\K^2$ & Circle\\
+\ref{circ:inversion} & Inversion: involution, radial order, and the distance identity & Exact $\K^2$ & Circle\\
+\ref{circ:inversion-circle} & Inversion carries generalized circles to generalized circles & Exact $\K^2$ & Circle\\
+\ref{circ:ptolemy-inequality} & Ptolemy's inequality & Exact $\K^2$ & Main; circle\\
+\ref{circ:ptolemy} & Ptolemy's theorem with cyclic order made explicit & Exact $\K^2$ & Main; circle\\
+\ref{circ:ptolemy-converse} & Converse to Ptolemy's theorem & Exact $\K^2$ & Main; circle\\
+\ref{circ:elementary-constructions} & Copying a segment to a prescribed ray & Exact $\K^2$ & Constructions\\
+\ref{circ:perpendicular-construction} & Midpoints, perpendiculars, and parallels are constructible & Exact $\K^2$ & Constructions\\
+\ref{circ:construction-arithmetic} & Straightedge--compass arithmetic & Construction traces & Constructions\\
+\multicolumn{4}{@{}l}{\textbf{Polygonal area and quadrilaterals} (11 declarations)}\\*[2pt]
+\ref{poly:shoelace} & Shoelace formula and finite dissection invariance & Finite polygons & Elements; area\\
+\ref{poly:angles} & Convex polygon angle sum & Finite polygons & Elements; area\\
+\ref{poly:areas} & Areas of parallelograms, rectangles, triangles, and trapezoids & Finite polygons & Elements; area\\
+\ref{poly:parallel-areas} & Equal-area figures between parallels & Finite polygons & Elements; area\\
+\ref{poly:parallelogram} & Parallelogram characterizations & Finite polygons & Elements; area\\
+\ref{poly:varignon} & Varignon's midpoint parallelogram & Finite polygons & Elements; area\\
+\ref{poly:diagonal-area} & Diagonal area formula and bound & Finite polygons & Elements; area\\
+\ref{poly:bretschneider} & Bretschneider identity and the cyclic area maximum & Finite polygons & Elements; area\\
+\ref{poly:brahmagupta} & Brahmagupta's formula & Finite polygons & Elements; area\\
+\ref{poly:similar-pythagoras} & Areas of similar figures on a right triangle & Finite polygons & Elements; area\\
+\ref{poly:regular} & Regular polygon area and explicit elementary examples & Finite polygons & Elements; area\\
+\multicolumn{4}{@{}l}{\textbf{Euclidean space and solids} (11 declarations)}\\*[2pt]
+\ref{sol:gram} & Lagrange's identity in finite dimension and cross products & Finite $\K^d$ & Space; solids\\
+\ref{sol:planes} & Planes and exact intersections & Finite spatial data & Space; solids\\
+\ref{sol:projection} & Distance to a plane and orthogonal projection & Finite spatial data & Space; solids\\
+\ref{sol:sphere-section} & Sphere sections and tangency & Finite spatial data & Space; solids\\
+\ref{sol:circumsphere} & A sphere through four noncoplanar points & Finite spatial data & Space; solids\\
+\ref{sol:volume} & Finite oriented volume and its boundary formula & Finite spatial data & Space; solids\\
+\ref{sol:prism} & Prism and box volumes & Finite spatial data & Space; solids\\
+\ref{sol:pyramid} & Pyramid volume and the one-third ratio & Finite spatial data & Space; solids\\
+\ref{sol:euler} & Euler's formula for a finite convex polyhedron & Finite spatial data & Space; solids\\
+\ref{sol:five-types} & Only five regular face--vertex types & Finite spatial data & Platonic solids\\
+\ref{sol:realizations} & Exact realizations of all five types & Finite spatial data & Platonic solids\\
+\multicolumn{4}{@{}l}{\textbf{Construction obstructions} (5 declarations)}\\*[2pt]
+\ref{obs:diagonal} & The diagonal of the unit square is irrational & Construction traces & Constructions\\
+\ref{obs:degree} & Quadratic-tower degree obstruction & Finite field bases & Constructions\\
+\ref{obs:cube} & Doubling the unit cube is impossible & Construction traces & Constructions\\
+\ref{obs:trisection} & A $60$-degree angle cannot be trisected in general & Construction traces & Constructions\\
+\ref{obs:heptagon} & A regular heptagon is not constructible & Construction traces & Constructions\\
+\multicolumn{4}{@{}l}{\textbf{Finite observations and boundary} (8 declarations)}\\*[2pt]
+\ref{lim:polygons} & Nested polygonal bounds with explicit error & Algebraic brackets & Circle\\
+\ref{lim:rationalize} & Turning algebraic enclosures into rational observations & PR interval names & Supporting analysis\\
+\ref{lim:circle} & Geometric $\pi$, circumference, and disk area & PR interval names & Circle\\
+\ref{lim:sums} & Quadratic slice sums and their modulus & Finite rational sums & Supporting analysis\\
+\ref{lim:cylinder} & Cylinder volume & PR interval names & Solid geometry\\
+\ref{lim:cone} & Cone volume and the one-third ratio & PR interval names & Solid geometry\\
+\ref{lim:sphere} & Sphere volume and Archimedes' two-thirds ratio & PR interval names & Solid geometry\\
+\ref{lim:equality-boundary} & A uniform obstruction to deciding real-name equality \emph{(external)} & External metatheory & Scope boundary\\
+\end{longtable}
+}

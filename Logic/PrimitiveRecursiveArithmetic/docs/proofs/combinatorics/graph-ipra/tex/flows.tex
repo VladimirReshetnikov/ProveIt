@@ -1,0 +1,353 @@
+\section{Flows, cuts and disjoint paths}\label{fl:flows}
+
+A network has $n$ vertices, distinct terminals $s,t$, and $m$ numbered
+arcs. Arc $e$ has a tail $u_e$, a head $v_e$, and a natural capacity
+$c_e$. Arc numbers distinguish parallel and opposite arcs. A flow of value
+$k\in\mathbb N$ assigns integers $0\le f_e\le c_e$. Its outflow equals
+its inflow at each internal vertex, its outflow at $s$ equals its inflow
+plus $k$, and its inflow at $t$ equals its outflow plus $k$. A cut is a
+vertex mask $S$ containing $s$ and omitting $t$. Write $\delta^+(S)$ for
+arcs leaving $S$ and $\delta^-(S)$ for arcs entering it. For a set of
+arcs $D$, write $f(D)=\sum_{e\in D}f_e$, and similarly for $c$.
+
+\begin{theorem}[Integral max-flow min-cut]\leavevmode\label{fl:main}
+A primitive-recursive algorithm produces a flow $f$ and cut $S$ with
+$k=c(\delta^+(S))$. Thus $f$ has maximum value and $S$ has minimum
+capacity.
+\end{theorem}
+\begin{proof}
+Summing the balance equations over any cut $U$ cancels every internal
+arc, including loops, and gives
+\[
+             k+f(\delta^-(U))=f(\delta^+(U))\le c(\delta^+(U)).
+\]
+In particular $k\le C=c(\delta^+(\{s\}))$.
+Start with the zero flow. Make a directed residual step along arc $e$
+in its original direction when $f_e<c_e$, and in reverse when $f_e>0$.
+Keep both the index and the direction with each step. To test whether
+$t$ can be reached, enumerate simple paths from $s$ having at most
+$n-1$ steps. This gives the entire reachable set: a repeated vertex in
+a walk permits deletion of the intervening segment. Iterating at most
+the input length leaves a simple path with the same ends. Thus the set
+is closed under a further residual step.
+
+If a simple residual $s$--$t$ path is found, add one on each forward
+arc and subtract one on each reverse arc on that path. Its vertices are
+distinct, so an original arc cannot receive two updates. Either type of
+step changes the net outflow by $+1$ at its starting vertex and $-1$ at
+its ending vertex. The changes cancel at internal vertices. The
+capacity tests guarantee feasibility, and the value increases by one.
+If the search fails, retain the state. Perform exactly $C$ rounds.
+After the first failure, the state is fixed. If all $C$ rounds
+succeeded, the value is $C$ and another success would violate the cut
+bound. This also handles $C=0$. In the final residual graph let $S$ be
+the reachable set. It excludes $t$. Every original arc leaving $S$
+is saturated, since otherwise its forward residual step would leave
+$S$. Every entering arc carries zero, since otherwise its reverse
+step would leave $S$. Substitution in the displayed balance identity
+gives equality. Applying its inequality to all other feasible flows
+and all other cuts proves both extremal claims.
+\end{proof}
+
+A residual arc sequence of length $\ell<n$ uses digits in base $2m+2$,
+with length stored separately. Flows use $m$ digits in base
+$2+\max(\{0\}\cup\{c_e:e<m\})$. A cut uses $n$ bits. At round
+$j\le C$, the Boolean invariant tests feasibility and the disjunction
+of value $j$ with failure of the residual search. Thus the running-time
+bound may depend on the numerical capacities while the induction is
+quantifier-free. For nonnegative rational capacities $a_e/b_e$ with
+$b_e>0$, multiply all capacities by $\prod_e b_e$, solve the integral
+instance and divide the result by the product. The same cut inequality
+compares the answer to every rational competitor after clearing
+denominators.
+
+\begin{lemma}[Extracting paths]\leavevmode\label{fl:decompose}
+From any integral flow of value $k$ one can extract $k$ simple
+$s$--$t$ paths such that each arc $e$ is used at most $f_e$ times.
+\end{lemma}
+\begin{proof}
+For positive value, let $U$ be the vertices reachable along arcs of
+positive flow. If $t\notin U$, no positive flow leaves the cut $U$,
+contradicting the balance identity. Find a simple such path and
+subtract one on each of its arcs. All internal balances persist and
+the value decreases by one. Repeat $k$ times, retaining the list of
+paths. It is an invariant that the original flow on each arc equals
+the remaining flow plus the number of recorded uses. At value zero
+there may still be a circulation. The stated inequality suffices.
+\end{proof}
+
+\begin{theorem}[Finite Menger theorems]\leavevmode\label{fl:menger}
+For distinct $s,t$, the maximum number of pairwise arc-disjoint
+directed $s$--$t$ paths equals the minimum size of a set of arcs whose
+deletion destroys every such path. In an undirected graph the same
+holds for edges. If the directed arc $s\to t$ is absent, the maximum
+number of internally vertex-disjoint directed $s$--$t$ paths equals
+the minimum size of an internal vertex separator. The undirected
+vertex version holds for nonadjacent terminals.
+\end{theorem}
+\begin{proof}
+Give each arc capacity one. The flow supplies the paths by
+Lemma~\ref{fl:decompose}. The forward arcs of a minimum cut form
+a separating set of the same size. Every separating set must contain
+a distinct arc from each disjoint path. For an undirected edge use
+two opposite unit arcs. If both carry one, subtract one from each.
+This preserves the balances, so extraction uses each undirected edge
+at most once. Exactly one directed arc per crossing edge leaves the
+cut and those undirected edges separate.
+
+For the vertex theorem, ignore loops, arcs entering $s$ and arcs leaving
+$t$, since simple terminal paths omit them. Replace each internal
+$v$ by $v^-,v^+$ and an arc $v^-\to v^+$ of capacity one. Represent each
+original arc by an arc of capacity $n$ from its tail's output copy to
+its head's input copy, leaving $s,t$ unsplit. Deletion of all $n-2$
+unit arcs separates the terminals by the hypothesis on $s\to t$.
+Take the reachable side after this deletion. Every arc leaving it in
+the full network belongs to the deleted set. Hence the minimum cut
+costs at most $n-2$, and none of its forward arcs has capacity $n$.
+Its crossing unit arcs give a vertex separator of its capacity, since
+every original path lifts through the split vertices. The extracted
+paths project to simple original paths: visiting an internal vertex
+uses its two copies consecutively and consumes its unit arc. Thus
+their internal vertices are pairwise disjoint. Again any separator
+must meet the paths at distinct vertices. For an undirected graph,
+first replace each edge by two opposite arcs. All auxiliary networks
+have at most $2n$ vertices and $2m+n$ arcs for $m$ original edges or arcs.
+\end{proof}
+
+\section{Matching, covering and decomposition}\label{fl:matching}
+
+Let $(L,R,E)$ be a finite bipartite graph with disjoint parts. Put
+$a=|L|$, $b=|R|$. A matching is an edge mask with at most one selected
+edge incident at each vertex. A vertex cover is a vertex mask meeting
+each edge. Write $N(X)\subseteq R$ for the vertices adjacent to
+some $x\in X\subseteq L$. The following equality computes both an
+optimal matching and a most deficient subset.
+
+\begin{theorem}[K\H{o}nig, Hall and the deficiency formula]\leavevmode\label{fl:hall}
+If $\nu$ is the maximum matching size and $\tau$ the minimum vertex-cover
+size, then
+\[
+ \nu=\tau,\qquad
+ a-\nu=\max_{X\subseteq L}\bigl(|X|-|N(X)|\bigr).
+\]
+Thus a matching saturates $L$ exactly when $|N(X)|\ge |X|$ for every
+$X\subseteq L$. When $a=b$ such a matching is perfect. A failed
+saturation test returns a specific violating $X$.
+\end{theorem}
+\begin{proof}
+Use a source joined by unit arcs to $L$, arcs of capacity $a+1$
+for each edge from $L$ to $R$, and unit arcs from $R$ to a sink.
+In an integral flow the total through each internal vertex is at
+most one. The positive middle arcs therefore give a matching of
+size the flow value, and each matching gives such a flow. For a
+minimum cut write $X$ for the left vertices on the source side and
+$Y$ for the right vertices there. Its cost is at most $a$ by the
+source-only cut, so no middle arc crosses and $N(X)\subseteq Y$.
+Its capacity is $a-|X|+|Y|$. Replacing $Y$ by $N(X)$ preserves the
+absence of crossing middle arcs. Minimality gives $|Y|=|N(X)|$.
+For any other left subset $W$, the cut with sides specified by
+$W,N(W)$ has cost $a-|W|+|N(W)|$. Minimizing these values gives
+the formula. Interpret the differences in the formula as signed
+differences, or move the neighborhood counts across the comparisons.
+The empty set has deficiency zero.
+
+The vertices $(L\setminus X)\cup Y$ meet every edge. Their number is
+the minimum cut capacity, which is the maximum matching size.
+Every cover contains at least one distinct vertex for each edge of
+any matching. This proves $\nu=\tau$. The constructed $X$ attains
+the maximum deficiency. A matching saturates the left side exactly
+when its size is $a$, giving both alternatives of Hall's theorem.
+The reasoning allows parallel edges, since the unit arcs at the two
+ends still enforce the matching condition.
+\end{proof}
+
+\begin{corollary}[Regular bipartite graphs and edge coloring]\leavevmode\label{fl:edgecolour}
+A finite $d$-regular bipartite multigraph with $d>0$ has a perfect
+matching and splits into $d$ perfect matchings. Every finite bipartite
+multigraph of maximum degree $D$ splits into $D$ matchings, and its
+edge chromatic number is $D$ (zero for an empty edge set).
+\end{corollary}
+\begin{proof}
+Counting edges from each side gives $da=db$, whence $a=b$.
+The $d|X|$ incidences from a left subset $X$ arrive in $N(X)$,
+whose total degree is $d|N(X)|$. Positive cancellation proves Hall's
+condition. Removing a perfect matching lowers every degree by one.
+Repeat $d$ times, testing that the remaining graph is regular of the
+remaining degree and that removed edges occur exactly once in the
+recorded matchings.
+
+For the general case add isolated vertices to equalize the sides at
+size $p=\max(a,b)$. If $m=|E|$, the total degree deficit to $D$ on
+each side is $pD-m$. Whenever it is positive, take the first
+deficient vertex on each side and add an edge between them, permitting
+parallel edges with distinct indices. After $pD-m$ steps the graph is
+regular. Restrict the resulting $D$ matchings to the original edges.
+Conversely $D$ edges sharing an endpoint require distinct colors.
+For $D=0$ the empty list of matchings suffices.
+\end{proof}
+
+\begin{theorem}[Berge's criterion and the edge-cover identity]\leavevmode\label{fl:berge}
+In any finite loopless undirected graph, a matching $M$ is maximum
+exactly when there is no simple path starting and ending at distinct
+unmatched vertices whose edges alternate outside and inside $M$,
+starting and ending outside. If the graph has $n$ vertices and no
+isolated vertex, its minimum edge-cover size is $n-\nu$, where an
+edge cover is an edge set incident with every vertex.
+\end{theorem}
+\begin{proof}
+Toggling membership along the stated path matches its previously
+free ends and keeps each internal vertex matched once. This increases
+the size by one. Conversely take any larger matching $M'$, obtainable
+by scanning the $2^m$ masks if one exists. In the symmetric difference
+each vertex has degree at most two, with incident edges of opposite
+types wherever the degree is two. Each nonempty edge component is an
+alternating path or cycle. From a degree-one vertex follow the
+unique unused continuation. If all degrees are two, start anywhere
+and return to the start. The traversal uses at most $m$
+edges, and no edge can attach to an internal traversed vertex after
+both its incidences have been used. Cycles have equal counts of each
+type. A path with more edges of $M'$ than of $M$ must occur because
+the total difference is positive. Its end edges are in $M'$.
+Each end is unmatched by $M$, since an incident $M$-edge would
+either extend the symmetric difference there or coincide with an
+$M'$-edge at an already occupied endpoint.
+
+Take a maximum matching. No two unmatched vertices are adjacent.
+Choose one incident edge for each unmatched vertex. Each chosen edge
+runs to a matched vertex, and all choices are distinct. Along with
+the matching they form an edge cover of size $\nu+(n-2\nu)=n-\nu$.
+Conversely, in the graph formed by any edge cover of size $h$, every
+component has an edge. A component on $p$ vertices has at least $p-1$
+edges: start from one vertex and add an edge to a new vertex until
+the component is exhausted. Summing gives at least $n-h$ components.
+Choosing one edge in each produces a matching, so $\nu\ge n-h$.
+Both constructions also give zero on the empty graph.
+\end{proof}
+
+\begin{corollary}[Four families of perfect graphs]\leavevmode\label{fl:perfect}
+A simple bipartite graph, its complement, its line graph and the
+complement of its line graph are perfect. Here perfection means that
+every induced subgraph has chromatic number equal to clique number,
+with both numbers zero on an empty vertex set.
+\end{corollary}
+\begin{proof}
+Every induced subgraph of a bipartite graph remains bipartite.
+If it has an edge, both numbers are two: its two parts color it
+and any three vertices include two in the same part. For a nonempty
+edgeless graph both numbers are one. In the complement of a bipartite
+graph $H$ on $p$ vertices, a color class is a clique in $H$, hence
+a singleton or an edge. The disjoint two-vertex classes form a matching.
+A maximum matching therefore gives the minimum number $p-\nu(H)$ of
+classes. A clique in the complement is an independent set in $H$.
+Complements exchange independent sets with vertex covers, so its
+maximum size is $p-\tau(H)=p-\nu(H)$. This works after any vertex
+restriction.
+
+In a line graph vertices are edges, adjacent when they meet. Inducing
+on any set of edges amounts to discarding all other edges of $H$.
+All pairwise incident edges of a simple bipartite graph share a
+vertex if the edge family is nonempty. If two distinct edges have a common
+end $v$, an edge meeting both away from $v$ would join their other ends
+in the same part. Thus the line graph has clique number the maximum
+degree, equal by Corollary~\ref{fl:edgecolour} to its chromatic number.
+With at most one edge the assertion follows directly. In the complement
+line graph a clique is a matching in $H$. A color class consists of
+edges at a common vertex. The centers of the nonempty classes form a
+vertex cover. Conversely assign each edge to its first endpoint in a
+minimum cover to obtain such classes. Its chromatic number is therefore
+$\tau(H)$, and its clique number is $\nu(H)$. Apply
+Theorem~\ref{fl:hall}.
+\end{proof}
+
+\begin{theorem}[Finite Dilworth and Mirsky dualities]\leavevmode\label{fl:poset}
+In a finite partially ordered set the minimum number of chains in a
+partition equals the maximum size of an antichain, and the minimum
+number of antichains in a partition equals the maximum size of a
+chain. Extremal partitions and extremal subsets are computable.
+\end{theorem}
+\begin{proof}
+Use two copies of the $n$ elements and join $x_L$ to $y_R$ precisely
+when $x<y$. Orient each edge of a maximum matching as an arrow $x\to y$
+on the original set. At most one arrow enters and at most one leaves
+each element. There is no cycle by strict transitivity. Following
+these arrows from all vertices with no predecessor partitions the
+vertices into directed paths, including isolated vertices. Every
+vertex is reached: following predecessors for $n$ steps without
+finding a start would repeat a vertex. Each path is a chain, and the
+number of paths is $n-\nu$ because a $k$-vertex path uses $k-1$
+arrows. From a minimum vertex cover in the bipartite graph take all
+elements for which neither copy belongs to the cover. At least
+$n-\tau=n-\nu$ elements survive, and no two are comparable,
+since their comparison edge would be uncovered. Any antichain meets
+any chain at most once. Thus the displayed chain partition and this
+antichain have equal sizes and are optimal.
+
+For the dual statement enumerate all increasing sequences of length
+at most $n$. For each $x$ take the largest length $r(x)$ among those
+ending at $x$, including the singleton. If $x<y$, appending $y$
+to a longest sequence ending at $x$ proves $r(y)>r(x)$. Equal-rank
+classes are antichains. If the longest chain has length $h$, the
+ranks give a partition into at most $h$ antichains, and every
+antichain partition needs at least $h$ classes to cover this chain.
+The empty order has both optima zero.
+\end{proof}
+
+\begin{theorem}[Stable bipartite matching]\leavevmode\label{fl:stable}
+Suppose each vertex strictly ranks its acceptable neighbors, and the
+edge list records mutual acceptability. Everyone prefers an acceptable
+partner to being unmatched. A primitive-recursive procedure produces a
+stable matching, meaning one for which no unused edge would improve both
+of its endpoints. Each left vertex receives its best outcome among all
+stable matchings.
+\end{theorem}
+\begin{proof}
+Take the first free left vertex with an untried neighbor and have it
+propose to its highest-ranked untried neighbor. The recipient keeps the
+better of its present partner and the proposer, or accepts if free.
+Mark the edge as tried and free the rejected vertex if there was one.
+Held edges form a matching after every step. Pad the computation to
+$m$ rounds by retaining a state with no proposal available. Each
+actual proposal consumes a distinct edge, so the final state has no
+free proposer with an untried neighbor. A left vertex preferring $y$
+to its final outcome must already have proposed to $y$: proposals
+follow preference order, and a free vertex has exhausted its list.
+The recipient rejected it, either at once or later when a better
+proposal arrived. A recipient's held partners only improve. Thus
+$y$ prefers its final partner to that left vertex and the pair cannot
+block.
+
+Fix any stable matching $Q$. Suppose a first rejection of a pair
+$(x,y)$ in $Q$ occurred. At that time $y$ keeps some $z$ preferred
+to $x$. To have proposed to $y$, vertex $z$ must already have lost
+every partner it ranks above $y$. None of those earlier rejections
+can have been of a pair of $Q$ by the choice of the first rejection.
+In $Q$, vertex $z$ is either free or paired below $y$, since $y$ is
+paired with $x$. Thus $(z,y)$ blocks $Q$, a contradiction. The first
+rejection is found by a scan of the finite proposal log. Therefore
+no pair of $Q$ is rejected. If any left vertex preferred its partner
+in $Q$ to its final outcome, it would have proposed there and been
+rejected. This proves the claim simultaneously for all left vertices.
+\end{proof}
+
+\paragraph{Lean implementation detail.}
+Use a digit vector for the capacities and flow, and bit masks for
+cuts and matchings. A residual token is $2e$ (forward) or $2e+1$
+(reverse). Its availability is a capacity comparison after division
+by two. The path predicate checks the start and end vertices, that
+successive token endpoints agree, that all tokens are available, and
+that the $\ell+1$ visited vertices are pairwise distinct. A
+length-zero path is allowed at its starting vertex. Define
+\texttt{reachable}, \texttt{pathTo}, and \texttt{round} by the bounded
+search and update in Theorem~\ref{fl:main}. Prove the balance identity
+by induction on the arc-sum length and cancellation of the vertex
+equations. For path updates, first prove the local change at each
+vertex by induction through a prefix of the path, retaining the two
+end corrections. Induct on the number of rounds with the stated
+feasibility/value invariant. These lemmas yield equality with the
+computed cut and inequalities for any competing input codes.
+The remaining constructions are compositions with this solver and
+bounded loops: path extraction loops on the input value, regular
+completion on the common deficit, decomposition on the remaining
+degree, and poset traversal on $n$. The stable-matching state contains
+a tried-edge mask and a matching mask, each below $2^m$.
+Each loop can check its whole finite output list by bounded digit tests.

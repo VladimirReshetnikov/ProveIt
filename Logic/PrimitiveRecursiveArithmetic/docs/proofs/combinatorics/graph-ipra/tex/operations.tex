@@ -1,0 +1,209 @@
+\section{Graph operations, symmetry, and enumeration}\label{sec:ops}
+\begin{proposition}[Products and line graphs]\leavevmode\label{prop:products}
+Suppose $G,H$ are simple, with orders $n,h$, sizes $m,l$, and degrees $d_u,e_x$.
+The following counts hold, with product vertices $(u,x)\in[n]\times[h]$.
+\[
+\begin{array}{lcc}
+\toprule
+\text{graph} & \text{degree at }(u,x)&\text{number of edges}\\
+\midrule
+G\square H &d_u+e_x&mh+ln\\
+G\times H &d_u e_x&2ml\\
+G\boxtimes H&d_u+e_x+d_u e_x&mh+ln+2ml\\
+G[H]&h d_u+e_x&mh^2+nl\\
+\bottomrule
+\end{array}
+\]
+If both factors are nonempty and connected, Cartesian distance is the sum
+of the factor distances. The line graph $L(G)$ has $m$ vertices and
+$\sum_v\binom{d_v}{2}$ edges. Its vertex $uv$ has degree $d_u+d_v-2$.
+\end{proposition}
+\begin{proof}
+In the Cartesian product change one coordinate along an edge, leaving the
+other fixed. In the tensor product change both along edges independently.
+Their disjoint union of neighbour lists is the strong product's neighbour
+list. In the lexicographic product either change the first coordinate along
+an edge, freely choosing the new second coordinate, or leave the first fixed
+and move along an edge of $H$. These disjoint alternatives give the middle
+column. Sum it over all $(u,x)$ and apply the handshaking identity to the two
+factors for the right column. Any Cartesian walk projects to walks after
+deleting stationary steps. Their lengths sum to the original length. Following
+two shortest walks in succession realizes that lower bound. Two different
+edges of a simple graph sharing a vertex share exactly one. Count pairs there,
+or count the other edges at the two ends of a given $uv$.
+\end{proof}
+
+\begin{proposition}[Homomorphisms, subgraphs, and minors]\leavevmode\label{idx:operations-homomorphisms-subgraphs-and-minors}
+A homomorphism is a table $f:[n]\to[h]$ sending edges to edges. Composition
+preserves this condition, and $G$ has a $q$-colouring exactly when it admits
+a homomorphism to $K_q$. A subgraph embedding is an injective edge-preserving
+table, and is induced precisely when it also preserves nonedges at distinct
+arguments. Isomorphism, containment as an ordinary or induced subgraph, and
+minor containment are all decidable by PR procedures returning certificates.
+\end{proposition}
+\begin{proof}
+Substitute the image of each edge into the next table. In $K_q$ two colours
+are adjacent exactly when distinct. Scan all maps (at most $\max(2,h)^n$
+codes), checking the desired row conditions. Isomorphism adds surjectivity
+and reflection of adjacency, so its inverse is a bounded lookup. For a
+minor of $G$ modelled on $H$, search for $h$ disjoint nonempty connected
+branch sets in $[n]$, checking for a crossing edge for each edge of $H$.
+Use codes below $2^{nh}$ and connectivity restricted to each mask. In an
+actual sequence of deletions and contractions keep the sets of original
+vertices represented by surviving vertices. Unions joined by an edge stay
+connected, and every surviving edge has two original representatives in the
+indicated sets. Conversely retain a spanning tree in each branch set and
+one crossing edge for each required adjacency, delete everything else and
+contract the retained trees. This constructs the minor and proves completeness
+of the decision procedure.
+\end{proof}
+
+\begin{proposition}[Labelled, connected, and unlabelled graphs]\leavevmode\label{prop:burn}
+Put $N=\binom n2$. There are $a_n=2^N$ labelled simple graphs on $[n]$,
+$\binom Nm$ of size $m$, and $c_n$ connected graphs for $n\ge1$, where
+\[
+ c_n=a_n-\sum_{j=1}^{n-1}\binom{n-1}{j-1}c_j a_{n-j}.
+\]
+If $u_n$ counts isomorphism classes, and $o_2(\pi)$ counts cycles of $\pi$
+on unordered vertex pairs, then
+\[
+ n!\,u_n=\sum_{\pi\in S_n} 2^{o_2(\pi)} .
+\]
+The numbers of loopless digraphs, oriented simple graphs and tournaments
+on $[n]$ are respectively $4^N,3^N,2^N$.
+\end{proposition}
+\begin{proof}
+The upper triangle has $N$ independent bits, and a mask of weight $m$ is
+an $m$-subset. Pascal's recurrence counts it by splitting at the last slot.
+For a nonempty graph choose the component of vertex zero. Its other labels
+form a $(j-1)$-subset of $[n]\setminus\{0\}$, its induced graph is connected,
+and the complement carries an arbitrary graph. Sorting either set supplies
+a canonical labelling. The joining construction has no cross edges. The case
+$j=n$ gives $c_n$, so the displayed subtraction is exact. For a fixed
+permutation, an invariant graph chooses one bit for each orbit of pairs.
+Count all $(\pi,G)$ with $\pi G=G$ by their graph or by their permutation.
+Group the graph side using the least code in each orbit. For a representative
+$R$, every orbit member $H$ has as many transporters $\pi R=H$ as stabilizers
+of $R$: compose with the least transporter, which exists by finite search.
+Its stabilizer has the same size as that of $H$, by conjugation. The fibres
+over $H$ partition all $n!$ permutations, so each orbit contributes exactly
+$n!$. Permutations are counted by successively selecting unused images.
+Finally for each pair of labels the allowed directed states number four
+(neither, either, both), three (exclude both) or two (exactly one).
+\end{proof}
+
+\begin{corollary}[Finite random graph counts and a Ramsey lower certificate]\leavevmode\label{idx:operations-finite-random-graph-counts-and-a-ramsey-lower-certifica}
+In the uniform list of $2^N$ graphs the mean number of $k$-cliques for
+$1\le k\le n$ is $\binom nk/2^{\binom k2}$. If
+$2\binom nk<2^{\binom k2}$ there exists a graph on $n$ vertices with neither
+a $k$-clique nor an independent $k$-set, and the least such mask is PR.
+\end{corollary}
+\begin{proof}
+Fix the $k$ labels. Requiring every internal bit to equal one leaves
+$2^{N-\binom k2}$ masks. Requiring zero leaves the same number. Count incidences
+of a mask with a distinguished clique (or independent set) and sum over label
+sets. Under the strict inequality the total number of incidences of either
+kind is smaller than $2^N$. If every mask had at least one incidence the
+sum would be at least $2^N$. A bounded scan therefore finds a zero count.
+\end{proof}
+
+\begin{theorem}[The Petersen graph]\leavevmode\label{thm:petersen}
+Take the two-subsets of $[5]$ as vertices, with disjointness for adjacency.
+This graph has order $10$, size $15$, diameter $2$, girth $5$, and strongly
+regular parameters $(10,3,0,1)$. Its automorphism group is the full $S_5$
+acting on the underlying labels, so it has order $120$. Its chromatic number
+is three.
+\end{theorem}
+\begin{proof}
+There are $\binom52$ vertices. For a fixed pair choose two of the remaining
+three labels to find its three neighbours. Disjoint pairs use four labels
+and have no common neighbour. Intersecting distinct pairs use three, leaving
+exactly one common neighbour. These counts imply the diameter and exclude
+triangles and four-cycles (opposite vertices of a four-cycle have two common
+neighbours). With underlying labels $1,\ldots,5$, the sequence
+$12,34,15,23,45,12$ is a five-cycle. An independent family consists of
+pairwise intersecting pairs. If it contains $ab,ac$, every pair avoiding
+$a$ must be $bc$, and no fourth distinct pair can meet all three of
+$ab,ac,bc$. Thus the only independent families of size four are the five
+full stars about a label. Automorphisms permute the stars, and the star
+pair about $a,b$ intersects in the single vertex $ab$. Their action on
+stars determines their action everywhere. Every permutation of the five
+labels preserves disjointness, proving the group assertion. Colour the star
+at label 1 first, the remaining pairs containing 2 second, and the three
+pairs on $\{3,4,5\}$ third. Each class is intersecting. An odd cycle cannot
+alternate two colours all the way round.
+\end{proof}
+
+\begin{proposition}[Intersection representation]\leavevmode\label{idx:operations-intersection-representation}
+Every finite simple graph is an intersection graph of finite sets.
+\end{proposition}
+\begin{proof}
+For the intersection representation, assign each vertex its set of incident
+edge labels plus a private marker. Distinct vertices' sets intersect precisely
+in their common edge if there is one. The markers distinguish isolated
+vertices and leave all intersection tests between different vertices unchanged.
+\end{proof}
+
+\begin{theorem}[The graphic matroid and submodularity]\leavevmode\label{thm:matroid}
+For a multigraph on $[n]$ the acyclic edge masks form a matroid: they contain
+the empty mask, are closed under restriction, and if $I,J$ are acyclic with
+$|I|<|J|$, one can extend $I$ by an edge of $J\setminus I$ while preserving
+acyclicity. Its rank on $A$ is $r(A)=n-c(A)$, and
+\[
+ r(A\cup B)+r(A\cap B)\ \le\ r(A)+r(B).
+\]
+\end{theorem}
+\begin{proof}
+The first two assertions follow by the cycle test. If every edge of $J$ lies
+inside the components of $I$, then in each such component, with $b$ vertices,
+$J$ has at most $b-1$ edges because its restriction is a forest. Summing gives
+$|J|\le n-c(I)=|I|$, contrary to the hypothesis. A crossing edge, found by
+a scan, joins two components and creates no cycle. A maximal forest in $A$
+spans exactly its components, giving the rank formula and a basis algorithm.
+The increase in rank on inserting an edge equals one if its endpoints were
+in different components and zero otherwise. For nested edge sets this
+increment can only decrease on passage to the larger set. Start with
+$A\cap B\subseteq B$ and insert, on both sides, the same successive edges
+of $A\setminus B$. Adding the increment inequalities gives
+$r(A)-r(A\cap B)\ge r(A\cup B)-r(B)$.
+\end{proof}
+
+\begin{theorem}[Reconstruction from the vertex-deleted deck]\leavevmode\label{thm:deck}
+For a simple graph $G$ on $n\ge3$ vertices let its deck be the multiset of
+unlabelled cards $G-v$. From the deck one can reconstruct the degree multiset,
+counts of all smaller induced subgraph types, and, if $G$ is regular or
+disconnected, the isomorphism type of $G$. Both special classes are recognizable.
+\end{theorem}
+\begin{proof}
+Encode an unlabelled graph by the least adjacency mask among all its
+relabellings. A card of order $n-1$ therefore has a canonically labelled
+representative, with repetitions retained in the deck. For each graph $H$
+of order $j<n$, write $s(H,G)$ for the count of $j$-vertex subsets inducing
+$H$ up to isomorphism. A subset survives deletion in precisely $n-j$ cards,
+so $(n-j)s(H,G)=\sum_v s(H,G-v)$. The same argument works for copies of
+ordinary subgraphs on $j$ vertices. In particular the edge count $m$ is
+the sum of the card edge counts divided by $n-2$, and $d(v)=m-|E(G-v)|$.
+These divisions are exact by the counts. If the degrees all equal $d$,
+choose any card. The neighbours of its missing vertex have degree $d-1$ there
+and the other vertices degree $d$. Attach one vertex to the former group.
+For $d=0$ simply add an isolated vertex.
+
+A connected graph with at least two vertices has at least two connected
+cards: removing either of two leaves of a spanning tree preserves the rest
+of the tree. In a disconnected graph, a deletion can give a connected card
+only if it removes an entire singleton component and exactly one component
+then remains. For $n\ge3$ this can happen at most once. This recognizes
+connectivity. In the disconnected case every component has order $<n$.
+Consider all connected types $H$ of smaller order, in decreasing order of size,
+and write $b_H$ for their unknown component multiplicities. A connected
+induced copy of $H$ lies inside one component. Thus
+\[
+ b_H=s(H,G)-\sum_{\substack{C\ {\rm connected}\\|H|<|C|< n}}
+                   b_C\,s(H,C).
+\]
+Among components of the same order an induced copy uses the whole component,
+so only type $H$ contributes. Each difference is a nonnegative integer by
+the counting identity. Their disjoint union reconstructs $G$. All types
+can be listed by scanning masks up to $2^{\binom n2}$ and taking least codes.
+This proves the stated special cases without a general reconstruction premise.
+\end{proof}

@@ -1,0 +1,266 @@
+\section{Finite order types and the von Neumann construction}
+\label{sec:finite-models}
+
+A finite ordinal has two concrete representatives here. Its order
+presentation is the interval $I_n=\{i:i<n\}$ in the usual order, and its
+set presentation is a number whose binary digits encode the preceding
+ordinals. The passage from a finite relation to the second representative
+also gives a finite form of the Mostowski collapse theorem.
+
+\subsection{Classification by rank}
+
+A presentation on $I_n$ consists of a Boolean table $R$ with $n^2$ entries.
+It is a strict linear order if the diagonal is false, the relation is
+transitive, and exactly one of $R(x,y),R(y,x)$ holds for distinct inputs.
+All the tests range over $I_n$. A subset is a mask on $I_n$, and a map is
+a list of values indexed by its domain. A presentation with holes in its
+domain can first enumerate its occupied positions in numerical order.
+
+\paragraph{Least elements and sorted enumeration.}
+For each nonempty mask $D$, scan the points of $I_n$ in numerical order.
+Keep a flag and the least point of $D$ seen so far, replacing the incumbent
+exactly when the new point precedes it in $R$. After scanning $j$ positions,
+the flag says whether an occupied position has occurred, and a flagged
+incumbent belongs to the scanned portion and precedes or equals every
+occupied point there. The empty prefix initializes the invariant. A
+replacement preserves it by transitivity, and retaining the incumbent
+preserves it by totality. Thus the algorithm returns a least point.
+Two least points must coincide by strictness. Reversing the comparison
+gives a greatest point.
+
+Start with the full mask. Repeat least-point selection and deletion $n$
+times, writing the selected points as $a_0,\ldots,a_{n-1}$. After $j$
+successful selections the remaining mask has $n-j$ bits set, the entries
+selected so far are increasing, and every selected entry precedes every
+remaining entry. Deleting a single selected bit decreases the count by
+one, as follows by splitting its defining sum at that index.
+Least-point selection preserves the two comparison assertions. Consequently
+the procedure succeeds at every prescribed stage, exhausts the domain,
+and produces each point exactly once.
+
+Define $r_A(x)=\sum_{y<n}[R(y,x)]$, where square brackets denote a
+Boolean value treated as a number. The predecessors of $a_i$ are exactly
+$a_0,\ldots,a_{i-1}$. Reordering a Boolean sum by this enumeration
+preserves the sum, since deletion subtracts exactly the deleted summand.
+Hence $r_A(a_i)=i$. The maps $i\mapsto a_i$ and $r_A$ are inverse
+order-isomorphisms. In particular every finite linear order is a
+well-order for coded subsets, its first unused ordinal label is $n$, and
+its order type equals its cardinality.
+
+\paragraph{Segments, comparison and rigidity.}
+If $D$ is downward closed in $A$, let $k$ be the first index omitted by
+$D$, taking $k=n$ if the search fails. Then $D$ contains exactly the
+$a_i$ with $i<k$. Indeed an entry above the first omitted one would force
+the omitted one into $D$. Conversely every such prefix is downward
+closed. For $k<n$ the prefix consists of precisely the predecessors of
+$a_k$ and has order type $k$.
+
+For orders $A,B$ of sizes $n,m$ with sorted arrays $a,b$, if $n\le m$,
+the map $a_i\mapsto b_i$ is an order-isomorphism onto the prefix of
+length $n$. The comparison of $n,m$ therefore decides equality of types
+or the direction of the proper-initial-segment relation. Any isomorphism
+onto an initial segment maps a point's predecessors bijectively onto all
+predecessors of its image. Counting predecessors forces its value on
+$a_i$ to be $b_i$. Thus this isomorphism is unique, every automorphism
+is the identity, and no finite order is isomorphic to a proper initial
+segment of itself. The identity, inverse and composite of finite
+isomorphisms are finite maps preserving and reflecting the order. Their
+existence makes isomorphism an equivalence relation, and equality of
+sizes is its complete decision procedure for finite linear orders.
+
+A strictly increasing sequence of $s$ indices in $I_n$ has its $j$th
+entry at least $j$, by induction from one entry to the next. The
+descending version gives $d_j+j\le d_0$ for a decreasing sequence of
+natural numbers. Thus no descending chain in $A$ starting at $x$ has
+more than $r_A(x)$ strict steps. The chain through ranks
+$r_A(x),r_A(x)-1,\ldots,0$ attains the bound.
+
+\paragraph{Induction and recursion along a finite presentation.}
+For a fixed primitive recursive Boolean predicate $P(x,\vec u)$, suppose
+that at each point $x$ the truth of $P$ at all predecessors implies
+$P(x,\vec u)$. Induct on the Boolean
+$\bigwedge_{i<j}P(a_i,\vec u)$ for $j\le n$. At stage $j$ the
+induction hypothesis covers exactly the predecessors of $a_j$.
+This proves $P$ throughout the order. If a bounded search has a
+counterexample, the least failing rank instead supplies its least
+counterexample. Given a fixed primitive recursive step $H$, a finite
+recursion with history has an equally explicit realization. Start with
+the empty list and append
+$H(a_j,(v_0,\ldots,v_{j-1}),\vec u)$ at stage $j$. Primitive
+recursion on $j$ builds the whole table and the answer at $x$ is the
+entry at $r_A(x)$. Two candidate tables satisfying these equations agree
+on their first $j$ entries by induction on that bounded prefix test.
+The step $H$ is fixed for each instance of the schema.
+
+\paragraph{Sums, products and powers as order types.}
+The concatenation of $A$ and $B$ has consecutive ranks $i$ and $n+j$
+on the two blocks. In the ordered family of $m$ copies of $A$ compare
+pairs $(j,i)$ by $j$ first, then $i$. The rank is $nj+i$, since $j$
+whole blocks precede this copy and $i$ entries precede the chosen entry
+within it. For $n>0$, quotient and remainder by $n$ decode this rank. For $n=0$ the product is empty. These descriptions prove that ordinal
+sum and product restricted to finite ordinals are natural addition and
+multiplication. In particular both are commutative on this restriction.
+
+Give the words of length $m$ over $I_n$ the order comparing the highest
+place of disagreement first, and write $d_0$ for the least significant
+place. Their ranks are $\sum_{i<m}d_i n^i$. The empty word has rank
+zero and is the sole word of length zero, including for $n=0$.
+For the next length, fixing the highest digit $j$ produces a copy of
+the preceding order, so the block calculation gives rank
+$j n^m+r$ and exactly $n^{m+1}$ words. This proves the finite
+exponentiation formula and handles the singleton alphabet as well.
+
+\paragraph{Cofinality and topology in the finite case.}
+A sublist is cofinal if every point is less than or equal to some entry.
+For $n>0$ this says precisely that it contains $n-1$. Thus the least
+order type of a cofinal subset is $1$, and for the empty order it is $0$.
+In the order topology on a finite chain, every interior singleton is
+the interval between its two neighbors. Endpoint singletons are open
+rays, and in a one-point order the whole space is open. Expressing a
+mask as the union of its occupied singletons proves that every coded
+subset is open and closed and that its derived set is empty. The empty
+chain also satisfies these statements.
+
+\subsection{Membership as a binary digit}
+
+Interpret $x\in a$ as the assertion that digit $x$ of $a$ in base two
+is one. One primitive recursive expression for this digit is
+$\lfloor a/2^x\rfloor\bmod 2$. Thus $a$ codes a hereditarily finite set.
+Indeed $x\in a$ implies $2^x\le a$, and $x<2^x$ follows by numerical
+induction. Consequently $x<a$. Equality of all digits below
+$1+\max(a,b)$ implies $a=b$, by the unique binary expansions, which can
+also be proved by repeated division with remainder by two. Set inclusion
+and the condition $\operatorname{Tr}(a)$ that $a$ be transitive are
+therefore bounded predicates. In particular, in $x\in y\in a$ all three
+positions are bounded by $a$. Finite unions are computed by bitwise OR.
+
+\paragraph{The finite hierarchy.}
+Define $\nu(0)=0$ and
+\[
+                  \nu(n+1)=\nu(n)+2^{\nu(n)}.
+\]
+The added bit was zero since $\nu(n)<2^{\nu(n)}$. All lower bits
+remain as before, and all higher bits are zero. Thus this is the
+successor $a\mapsto a\cup\{a\}$. Its first four values are $0,1,3,11$.
+The codes strictly increase, so $i\le\nu(i)$ and the index is unique.
+Iterating the one-bit description gives
+\[
+        x\in\nu(n)\quad\Longleftrightarrow\quad
+                     (\exists i<n)\ x=\nu(i).
+\]
+One can fix $x$ as a parameter in this induction. In particular
+$\nu(i)\in\nu(j)$ exactly when $i<j$, and
+$\nu(i)\subseteq\nu(j)$ exactly when $i\le j$. For the reverse
+inclusion test, if $j<i$, then $\nu(j)$ belongs to $\nu(i)$ and fails
+to belong to itself. These formulas prove transitivity of each code,
+as well as strict linearity and the least-element property of
+membership on its elements. They identify the canonical collapse of an
+order $A$ as the map $x\mapsto\nu(r_A(x))$ onto the members of
+$\nu(n)$.
+
+\paragraph{Recognition from intrinsic set properties.}
+For every number $a$ the following four conditions are equivalent.
+\begin{enumerate}
+\item $a=\nu(i)$ for some $i\le a$.
+\item $a$ is transitive and each of its members is transitive.
+\item $a$ is transitive and its members are strictly well-ordered by
+membership, with subsets represented by finite masks.
+\item $a$ is transitive and membership on its members is a strict
+linear order.
+\end{enumerate}
+We already proved that the first condition gives the next three. The
+third gives the fourth. For the fourth implying the second, take
+$z\in y\in x\in a$. Set transitivity puts $y,z$ in $a$, so
+transitivity of the order there gives $z\in x$. This proves
+transitivity of $x$.
+
+For the second implying the first, use numerical course-of-values
+induction through $a$. Each member $y$ is transitive, and each member
+of $y$ is a member of $a$, hence transitive. The induction gives
+$y=\nu(i)$ for some $i\le y<a$. The indices $i$ of the members of $a$
+form a downward closed subset of $I_a$, since $j<i$ implies
+$\nu(j)\in\nu(i)$ and $a$ is transitive. It is a prefix $I_k$, by the
+segment argument above. Thus $a$ and $\nu(k)$ have precisely the same
+members and coincide by binary extensionality. Here the induction
+invariant can be taken as the conjunction of the claimed bounded
+implications for all codes up to the current stage. This is
+quantifier-free after replacing bounded scans by their primitive
+recursive characteristic functions. An efficient intrinsic test uses
+the second or fourth condition. A simpler equivalent decision
+procedure checks equality with $\nu(i)$ for $i\le a$.
+
+For a nonempty finite family of such codes, intersection is the member
+of least index and union the member of greatest index, by the inclusion
+test. These are respectively the infimum and supremum. The empty union
+is $\nu(0)$. The successor of the supremum is strictly above every
+member of the family. Hence no hereditarily finite set can contain all
+the $\nu(i)$ as elements. More generally, for any code $a$ the specific
+code $\nu(a+1)>a$ cannot be a member of $a$.
+
+\subsection{The finite Mostowski collapse}
+
+Let $R$ now be any directed relation on $I_n$, and call it extensional
+if distinct vertices have different predecessor masks. Acyclicity is
+decidable by checking the absence of directed cycles of length $1$
+through $n$, since removing the intervening part between repeated
+vertices shortens a nonsimple cycle until a simple cycle remains.
+Equivalently, every nonempty mask contains a point with no predecessor
+in that mask. For, if a mask contained none, repeatedly choose the
+numerically least predecessor in the mask. Within $n+1$ visited points
+two would coincide, producing a directed cycle. The finite pigeonhole
+step follows by counting the distinct occupied bits as above.
+Conversely a cycle's vertices give a nonempty mask with a predecessor
+at each point.
+
+\paragraph{Collapse theorem.}
+An acyclic extensional finite relation is isomorphic to membership on
+a unique transitive hereditarily finite set, with a unique isomorphism.
+To construct it, repeatedly remove the least numbered point with no
+predecessor in the current mask. Its predecessors, if any, have already
+been removed. This gives a topological list $v_0,\ldots,v_{n-1}$. At
+stage $j$ define
+\[
+                  c(v_j)=\bigvee_{i<j,\,R(v_i,v_j)} 2^{c(v_i)},
+\]
+where the join denotes bitwise OR, with empty join zero. After $j$
+stages, the earlier codes are distinct. For the induction step suppose
+$c(v_j)=c(v_h)$ with $h<j$. Extensionality gives a point in the
+symmetric difference of their predecessor masks. It occurs earlier
+than $v_j$ in the topological list. Its code contributes a bit on one
+side of the displayed equality. Equality supplies an earlier
+predecessor with that same code on the other side, and injectivity on
+the first $j$ positions identifies the two vertices, a contradiction.
+This establishes injectivity throughout. Reading off the bits now gives
+$R(x,y)$ exactly when $c(x)\in c(y)$. The range set
+$C=\bigvee_{j<n}2^{c(v_j)}$ is transitive because each member of a
+$c(v_j)$ is a $c(v_i)$ from an earlier stage. Conversely, let a
+bijection $f$ identify $R$ with membership on another transitive
+set $D$. Every member of $f(v_j)$ belongs to $D$ by transitivity,
+hence is the image of a predecessor. The membership equation for
+$f(v_j)$ therefore has precisely the same right-hand side as for
+$c(v_j)$, once equality on earlier entries is known. Induction up the
+list and binary extensionality give $f=c$, then $D=C$. The proof covers
+the empty relation on an empty domain as well.
+
+All loops in the construction have numerical lengths fixed by $n$ and
+the already computed table. Values can grow rapidly, but appending the
+next value to the current table is a single fixed primitive recursive
+operation. This distinguishes primitive recursiveness from a polynomial
+bound on output size.
+
+\paragraph{Lean realization.}
+The accompanying \texttt{Finite.lean} defines \texttt{Mem}, \texttt{Sub},
+\texttt{TransSet}, \texttt{von}, and a bounded search
+\texttt{isVon}. Its theorem \texttt{elements} gives the exact bit
+description. Theorems \texttt{ordinal\_mem\_iff},
+\texttt{ordinal\_sub\_iff}, and \texttt{structural\_recognition}
+prove respectively the order tests and the transitive-set recognition test.
+The helper \texttt{cut x b} computes one plus the last occupied ordinal
+index below $b$, or zero. For a transitive $x$ this gives the prefix
+length directly. The same file defines the Boolean order condition \texttt{OrderOn} and computes \texttt{rank} and \texttt{unrank}. Theorems \texttt{rank\_lt\_iff}, \texttt{rank\_unrank}, and \texttt{unrank\_rank} prove the order comparison and both inverse identities. Its proof of surjectivity uses the finite pigeonhole principle, proved there by removing the last input and moving its image into the available output position. To extend the file to the general collapse construction,
+encode the relation in digit $ny+x$ of a natural number for the pair
+$(x,y)$, and use the digit and bounded-search lemmas for masks.
+Implement removal, sorting, topological sorting and collapse by a common
+stage variable $j=0,\ldots,n$. The invariants in the three construction
+proofs above give their induction motives, with the partially constructed
+tables as primitive recursive functions of the fixed input and $j$.

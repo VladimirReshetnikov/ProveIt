@@ -1,0 +1,32 @@
+\section{Validation, review, and reproducibility}
+\label{sec:validation}
+
+\subsection{What the evidence establishes}
+The report's mathematical evidence is the full proof of every numbered statement, including the explicit induction invariants and bounds that reduce the argument to \ipra. Independent mathematical cross-review was used on the quadratic, Diophantine, foundational, analytic, algebraic, and transcendence arguments. The review found and corrected a circular presentation of bounded Boolean reflection and search: the final proof first verifies the Boolean scan directly by quantifier-free induction, then derives bounded existential reflection. Smaller clarifications addressed zero in prime-divisor sums and capped valuations.
+
+The computational evidence is a separate layer. The Python programs use exact integers and \texttt{fractions.Fraction}; they compare algorithms against independent finite specifications and check identities and invariants on stated ranges. Passing these checks does not prove a universally quantified mathematical theorem, establish a statement about all primitive recursive programs, or provide an object-language \ipra\ proof certificate. Very large symbolic bounds, such as the Pell worst-case box, the prime-reciprocal threshold, and the Liouville separation denominator, were not fully enumerated in the checks.
+
+\subsection{Recorded finite checks}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.24\linewidth}>{\raggedright\arraybackslash}p{0.67\linewidth}}
+\toprule
+Check family & Actual scope and purpose\\
+\midrule\endhead
+Elementary algorithms & Division on 1,377 cases; 2,116 extended Euclidean inputs with coefficient and descent invariants; 6,405 generalized CRT systems compared with brute force; 20,301 sieve entry comparisons.\\
+Binomial and divisor identities & 19,880 Lucas cases, 17,892 Kummer cases, arithmetic identities for positive inputs through 400, 1,200 M\"obius inversion cases, and every even integer through 10,000 for the perfect-number characterization.\\
+Quadratic and square representations & 1,980 ordered reciprocity prime pairs; primitive-root counts below 100; prime and composite square-representation algorithms through the stated bounds; 93,728 signed assignments for the even and odd four-square descent branches.\\
+Diophantine algorithms & 16,545 cases across continued fractions, rational and simultaneous approximation, bounded norm approximants, Pell collisions and power descent, and Pythagorean parameter recovery.\\
+Pell norm collision & Every nonsquare $D$ from 2 through 100, including collisions with both positive and negative common norm. For $D=61$ the recorded construction returns $(1766319049,226153980)$ using common norm $-9$.\\
+Finite analytic estimates & Exact rational sieve identities, 12 dyadic Chebyshev cases, 150 Euler-product errors, 450 zeta tails, 750 truncation estimates, 1,500 denominator-removal inequalities, and complete-period CRT event patterns.\\
+Algebraic and $p$-adic examples & Norm multiplication, capped valuation edge cases, Hensel simple-root digit uniqueness and compatible residues, and explicit partition bijections. Precise cases are in the companion JSON record.\\
+Transcendence & Finite factorial-tail and polynomial-value bounds, root avoidance including a polynomial vanishing at the first two truncations, and the domination inequalities for the deliberately huge separation denominator.\\
+\bottomrule
+\end{longtable}
+
+The JSON files beside the programs or in \texttt{verification/} contain the detailed ranges, counts, examples, and declared limitations. The recorded Pell example is an illustration of the explicit collision mechanism, not evidence that the worst-case bound is close to optimal. The programs are small reference implementations, not claims about best computational complexity.
+
+\subsection{Reproducing the package}
+From the package directory, run \texttt{make check} to execute the finite checks and regenerate the inventory, and \texttt{make pdf} to compile the \LaTeX\ report. The checks require Python 3 and only its standard library. The PDF build requires \texttt{latexmk}, pdf\LaTeX, and the standard packages listed in the preamble. Intermediate \LaTeX\ files are excluded from the delivered archive.
+
+The standalone Lean directory pins the inspected Lean and Mathlib revisions. After installing that toolchain and obtaining dependencies, its proposed first replay is \texttt{lake build}. This replay is an instruction for future validation, not a command reported as successful here. \texttt{ProveItTargets.lean} is a separate integration file requiring the pinned ProveIt checkout and its selected source paths; it is excluded from the standalone semantic-definition target. The accompanying blueprints explain which proofs still need to be implemented.
+
+The PDF was compiled and visually reviewed after the final text changes. Its result inventory is generated from the same theorem labels as the source, and the package includes a SHA-256 manifest for the delivered files. The archive is self-contained for reading the proofs, recompiling the PDF, and rerunning the Python checks. Completing the Lean object derivations requires the additional formalization work explicitly described in Section~\ref{sec:lean}.

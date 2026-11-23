@@ -1,0 +1,60 @@
+\section{Which reachability claims survive on infinite graphs?}\label{sec:infinite}
+A first-order theory of numbers can speak about the graph of a specified
+PR relation on natural labels. A relation program in the next result is fixed
+in advance. Its numerical parameters may vary. This covers some countably
+infinite graphs while keeping the interpretation first-order.
+
+\begin{proposition}[Paths of specified length in a bounded neighbourhood]\leavevmode\label{idx:infinite-paths-of-specified-length-in-a-bounded-neighbourhood}
+Suppose adjacency $E(x,y)$ is PR and every successor $y$ of $x$ satisfies
+$y\le b(x)$ for a specified PR function $b$. Given $s,t,k$ there is a PR
+decision, with witness, for the existence of a walk from $s$ to $t$ of length
+at most $k$. A given finite walk can be shortened to a simple path of no
+greater length. An odd closed walk in an undirected graph contains an odd cycle.
+\end{proposition}
+\begin{proof}
+Set $M_0=s$ and $M_{j+1}=\max(M_j,\max_{x\le M_j}b(x))$. By induction on
+position, every walk of length at most $k$ starting at $s$ stays in $[M_k+1]$.
+Enumerate all lengths up to $k$ and the corresponding vertex words in
+radix $\max(2,M_k+1)$. Take the first accepted word. Erasure of the segment
+between two equal vertices proves shortening exactly as in
+Theorem~\ref{stshort}, using the length of the input walk for fuel.
+For the last assertion, whenever a closed walk of odd length has a repeated
+vertex other than its required final return, split there into two shorter
+closed walks. Exactly one length is odd. Continue with that one for at most
+the initial length. The final odd closed walk with no intermediate repetition
+is an odd cycle (a length-one loop is allowed).
+\end{proof}
+
+\begin{proposition}[A uniform obstruction to deciding arbitrary reachability]\leavevmode\label{idx:infinite-a-uniform-obstruction-to-deciding-arbitrary-reachabilit}
+There is a single PR directed acyclic graph on natural-number labels, of
+undirected degree at most three, for which deciding reachability between
+arbitrary designated pairs would decide the halting problem. The equivalence
+for each input is provable in iPRA.
+\end{proposition}
+\begin{proof}
+Use a fixed enumeration of deterministic machines with a halting state.
+Let $H(e,j)$ say that machine $e$ on input $e$ has halted by step $j$.
+This is PR: read the finite instruction table by a bounded scan, store the
+finite tape on the two sides of the head as two base-$b$ stacks, and implement
+one transition by quotient, remainder and appending a digit. Encode the state,
+two stacks and head symbol in a tuple, make the halt state absorbing, and
+iterate $j$ times. Invalid descriptions can stand for a fixed looping machine.
+Write $H_0(e,j)$ for $H(e,j)$ together with $j=0$ or $H(e,j-1)=0$.
+One layer per machine contains a ray $v_{e,0}\to v_{e,1}\to\cdots$ and a
+distinct sink $z_e$. Add $v_{e,j}\to z_e$ exactly when $H_0(e,j)$.
+Pairing with tags gives PR adjacency and separates layers. There is at most
+one added edge in a layer. Hence the degree bound holds and cycles are
+impossible. Existence of a walk $v_{e,0}\leadsto z_e$ is equivalent to
+$\exists j\,H(e,j)$. From $j$ find the first successful step at most $j$ and
+write its finite ray segment plus the final edge. From a walk to the sink read
+the time on its last predecessor. The path test and both conversions are PR
+in the supplied witnesses. These manipulations of existential witnesses prove
+the two implications intuitionistically.
+
+For the metamathematical consequence, a decision procedure for the designated
+reachability test would give a machine $D$ which on input $e$ loops when the
+decision says reachable, and halts otherwise. Apply the purported decision to
+the index of $D$ on itself. Either returned bit contradicts its defining
+behaviour. Thus the finite-graph decision theorem cannot be extended to all
+such graphs by merely supplying a PR adjacency predicate and a degree bound.
+\end{proof}

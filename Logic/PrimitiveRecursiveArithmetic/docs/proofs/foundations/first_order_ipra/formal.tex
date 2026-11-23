@@ -1,0 +1,65 @@
+\section{Lean formalization and the remaining object-theory proofs}\label{sec:lean}
+The accompanying Lean files are standalone developments using Lean 4.32.0 and \texttt{Std}. Their theorems have the following scopes.
+\begin{description}[style=nextline,leftmargin=1.25em]
+\item[\texttt{NegativeTranslation.lean}]
+\texttt{FOLNegative.translate} and \texttt{recover} construct typed derivations in both directions, with de Bruijn capture avoidance, the ordinary intuitionistic connectives and quantifiers, equality transport, and variadic function and relation symbols. \texttt{negative\_translation\_iff} and \texttt{equiconsistency} state the resulting equivalences. The raw syntax admits any numerical index or argument list. For use at a fixed signature the paper's range and arity tests restrict it to well-scoped input. The inductive calculus makes admissible context weakening and individual shifting explicit. \texttt{finite\_sound} covers finite inhabited carriers for both calculi. \texttt{consistency} excludes an empty-context deduction of falsity.
+\item[\texttt{Substitution.lean}]
+\texttt{Formula.truthSubst} proves semantic substitution for an executable Boolean interpretation with finite carriers, equality, arbitrary relation argument lists, and function symbols of arities zero, one and two. Scope is intrinsic via \texttt{Fin}. Renaming, coincidence on free indices and identity substitution are proved with binder lifting. Extending this particular file to all function arities adds mutual recursion on argument lists.
+\item[\texttt{BackAndForth.lean}]
+\texttt{FirstOrderPacket.transfer} proves rank invariance for arbitrary related environments, and \texttt{sentence\_transfer} specializes to sentences. It uses scoped relational atoms with variable arguments, equality, falsity, conjunction, negation and existence. Its truth clauses use Lean propositions. Duplicator's reply clauses transport existential witnesses in both directions. The Python companion implements the converse separator on finite tables.
+\item[\texttt{GroundResolution.lean}]
+\texttt{check\_sound} proves that every accepted resolution tree preserves a valuation. \texttt{refute\_checked} proves that a finite family of clauses having no Boolean model has a constructed tree accepted with the empty root. The implementation builds an assignment tree on a bounded set of atoms, then drops unused pivots. The checker accepts clause lists with duplicates.
+\item[\texttt{CanonicalForcing.lean}]
+\texttt{canonical\_completeness} proves the propositional part of Section~\ref{sec:canonical}, including falsity at inconsistent syntactic worlds. Worlds are finite contexts and implication ranges over larger contexts. The first-order extension uses substitution arrows and the generic individual in the human proof.
+\end{description}
+The files present different interfaces for raw proof trees, intrinsically scoped expressions and finite tables. A common numerical decoder is needed to relate their Lean types.
+
+\subsection{An object-calculus example}
+As a separate test of object-level proof production, the archive includes a native scalar certificate for
+\[
+     x=y,\quad y=z\quad\vdash\quad H(x)=H(z),\qquad
+     H(a)=I(a,S(a);u.I(u,a;v.S(v))).
+\]
+Here $I$ denotes ProveIt's scalar iterator, with the variable following the semicolon bound in the step body. The proof combines equality transport with the iterator computation axiom. Both free occurrences and occurrences under an iterator have to be treated correctly. ProveIt's pinned raw goal checker accepted this certificate. The certificate, checker revision and reproduction procedure are in the \texttt{native} directory. This is one checked native instance of the equality calculus.
+
+\subsection{The object language and numerical interface}
+Use the upstream namespace \texttt{LeanProofs.ConciseIPRA}. Its \texttt{PR k} constructors are zero, successor, projection, composition, and primitive recursion (recursion argument first). \texttt{PTm n} applies these symbols to terms with $n$ free slots. \texttt{PRAAx} supplies the defining equations, the successor axioms and quantifier-free induction. A completed internal theorem is a term of type \texttt{Prf PRAAx []} applied to its explicit universally closed arithmetic formula. A Lean theorem on \texttt{Nat} or an inductive derivation type does not automatically supply this term.
+
+Use tagged lists for records with the pairing of Lemma~\ref{lem:toolkit} or a sentinel variant of the repository pairing. For the latter store cons as $1+\langle a,b\rangle$ with $\langle a,b\rangle=(a+b)^2+a$, reserve zero for nil, and reject a positive value unless its projections re-encode it. The pairing has gaps. Components of a cons are strictly smaller than its code. Use the following layouts, rejecting malformed fields.
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}lX@{}}\toprule
+Record & Fields and tests \\ \midrule
+Signature & Lists of function and relation arities, in index order.\\
+Syntax node & Constructor tag, symbol or variable index as needed, and ordered children. Expected sorts and scoping follow Section~\ref{sec:binding}.\\
+Proof node & Mode, scope, context, conclusion, rule, annotation and children. Each rule selects its term, equality body or assumption position and checks the required premise sequents.\\
+Structure & Signature, positive cardinality and tables with exact lengths and value ranges. An assignment is a list of domain elements of stated length.\\
+Kripke structure & World and label counts, preorder bits, inhabited domain masks, persistent atom and coherent function tables on active tuples.\\
+EF position & Two relational structures, two equal-length assignments and remaining rounds. A separator is another scoped formula.\\
+Computation & Program table, input word, and list of triples of label and two stacks. Test the first record and consecutive steps, then read the stopping label.\\
+\bottomrule\end{tabularx}\end{center}
+The decoder outputs a typed tree or failure. Prove that decoding the encoding of a scoped tree gives that tree, and that re-encoding a canonical valid input gives the same number. Both use a postorder scan and pairing equations. Fix unused fields to a single default, or normalize them before the second test.
+
+\subsection{Compiling the inductions}
+Associate to each fixed operation $f$ a symbol $\widehat f$ of the correct \texttt{PR} arity. Projections and tuple composition implement parameter passing. A bounded loop with initial state $a(\bar x)$ and step $h(i,u,\bar x)$ compiles to \texttt{PR.prec} on their codes. Use a tuple state for multiple outputs. The repository's pairing, simultaneous recursion and finite-parameter search lemmas provide checked components. Its \texttt{Search.Finite.mu} searches for a \emph{zero} below the bound and returns the bound on failure. To search for a one of a bit $h$, use $1\mathbin{\dot-}h$.
+
+For example a semantic row stores $h(i)=[B](i::e)$. Set $j=\operatorname{mu}(1\mathbin{\dot-}h,m,e)$ and define the existential bit by $[j<m]$. From $i<m$ with $h(i)=1$, \texttt{search\_found} gives $j<m$ and a zero of the complemented body. Conversely, \texttt{search\_spec} at $j$ supplies that zero from $j<m$, and its earlier-index condition proves minimality. The bit equations for $h$ recover $h(j)=1$. This supplies the derivation of the semantic existential clause and a witness uniform in the body row.
+
+For a loop with parameters $x$, introduce $u_i$ for its PR state and write the induction formula as an equation $\widehat{\mathrm{ok}}(i,u_i,x)=1$. At an EF level this bit ANDs all completed position checks, including a losing move with a correctly oriented separator or a winning position with the required replies. For rank preservation on an input formula, form a second finite table over its subformulas, positions and remaining budgets. The input formula is a free parameter of this induction. The collection of all bounded-rank formulas is infinite. With the initialization and update equalities derived, apply \texttt{PRA.qfInd} and specialize at the final index. Universally close the original input variables last.
+
+Representative target formulas follow. Close the input variables universally and guard the equations by valid signatures, models, contexts and positions of the indicated sorts.
+\begin{align*}
+ \mathrm{Check}_C(p,\Gamma,A)=1
+   &\ \to\ \mathrm{Check}_I(\mathrm{translate}(p),\Gamma^N,A^N)=1,\\
+ \mathrm{Well}(M,e,A,\sigma)=1
+   &\ \to\ V(M,e,A[\sigma])=V(M,e_\sigma,A),\\
+ W_r(u,v)=0
+   &\ \to\ \mathrm{Distinguishes}_{\le r}(\mathrm{sep}(r,u,v),u,v)=1,\\
+ \mathrm{Trace}_{\rm yes}(P,w,t)=1
+   &\ \to\ \mathrm{FinModel}(\mathrm{encode}(P,w,t),B_{P,w})=1,\\
+ \mathrm{FinModel}(M,B_{P,w})=1
+   &\ \to\ \mathrm{Trace}_{\rm yes}(P,w,\mathrm{extract}(P,w,M))=1.
+\end{align*}
+A history and its stopping bound are interconvertible in these last two lines by bounded simulation and length. The distinguishing test conjoins scope, rank and the two evaluated bits. Each endpoint above is an implication between quantifier-free equalities.
+
+\paragraph{Remaining dependencies.}
+After pairing and row access, prove shift/composition and the fold laws, then the two substitution lemmas and the local rule checks. Use them for grafting and forcing. Build Skolem rows and resolution after finite evaluation. Use resolution and congruence representatives for Bernays--Schönfinkel and the Herbrand tree. For witness closure, verify the finite mask fixed-point count and the representative round trip for closed terms. Use EF replies for monadic truncation, order thresholds and cycles, and the symbolic elimination templates for monadic refutations. For computation reductions verify two-stack steps, Horn instantiation, rejecting tables, sorted time extraction and graph decoding in that order. Represent machine totality by $\forall x\exists t\,\mathrm{StopsBit}(e,x,t)$ and specialize it at the diagonal input. For canonical forcing, a Lean recursion on the fixed template constructs a separate \texttt{Prf} goal and derivation, instantiating the child derivations at each translated arrow. The uniform embedded-iPRA proofs of the full suite are remaining formalization work.

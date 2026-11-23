@@ -1,0 +1,383 @@
+\section{Ordinary arithmetic on hereditary Cantor forms}\label{sec:ordinary}
+Write $W(e)=[e]$, $0=[]$, $1=W(0)$, $\omega=W(1)$.
+A natural number $n$ in an ordinal expression denotes the list of $n$ zeros.
+The length $|x|$ is its number of outer entries, and $h(x)$ is its first
+entry when $x>0$. All variables for ordinals in this section range over
+valid finite notations. Thus, for example, a formula about all $e$ is an
+arithmetical assertion about codes with a decidable validity guard.
+Juxtaposition of ordinal variables denotes multiplication once it has been
+defined. We first use concatenation of \emph{lists}, written $U\mathbin{\|}V$.
+
+\subsection{Addition, subtraction on the left, and absorption}
+Given $a,b$, put $a+0=a$. For $b>0$ retain from $a$ its longest prefix
+with entries $\ge h(b)$ and concatenate $b$. This is the normal form of
+ordinal addition. To see what happens with many summands, allow an arbitrary
+finite word of exponents and scan it from left to right. Each input letter
+$s$ removes the current final letters $<s$, then joins the end of the word.
+Write $N$ for the result. In any surrounding word, replacing adjacent letters
+$r,s$ with $s$ when $r<s$ preserves $N$. Indeed, inserting $r$ can only
+have removed letters smaller than $r$. The subsequent insertion of $s$
+would remove all of them, as well as $r$. The normalized stack after $s$
+is identical in the two scans. The scan itself implements just such
+deletions. It follows that $N(U\mathbin{\|}V)$ is unchanged by normalizing
+either factor first. For descending words it is exactly the displayed
+prefix rule.
+
+\begin{theorem}\label{th:ordinary-add}
+Addition is associative and has two-sided unit $0$. For fixed $a$, the
+map $b\mapsto a+b$ is an increasing bijection onto the terms $\ge a$,
+with a primitive recursive inverse on its range. For fixed $b$ the map
+$a\mapsto a+b$ is weakly increasing. In particular, left cancellation
+holds, $a+(b+1)=(a+b)+1$, and $a+1$ appends one zero.
+\end{theorem}
+\begin{proof}
+Associativity follows by normalizing the concatenation of three words,
+and the empty word gives the unit. When a positive summand $d$ removes
+a suffix of $x$, its first entry exceeds the first removed entry.
+When it removes nothing, $x$ is a proper prefix of $x+d$. Thus $x<x+d$.
+
+For $b<c$ discard their longest common prefix and take $d$ to be the
+remaining suffix of $c$. If $b$ ends at the common prefix, $b+d=c$ by
+concatenation. Otherwise its first remaining entry is smaller than the
+first of $d$. Every remaining entry of $b$ is removed and the common
+prefix is retained. Again $b+d=c$. For $b=c$ take $d=0$. Hence
+$a+c=(a+b)+d>a+b$ whenever $b<c$. This gives uniqueness of the residual
+and the stated range.
+
+For weak monotonicity in the first argument it suffices to insert one
+letter $s$ at a time. Deleting the entries below $s$ from two ordered
+words preserves their lexicographic order because a first mismatch either
+survives, becomes a prefix comparison, or disappears in both.
+Appending $s$ to both truncated words preserves that order. Indeed, in
+the proper-prefix case the next letter of the longer word is at least
+$s$. Equality of this next letter with $s$ leaves the shorter result a
+proper prefix. An induction on the scanned length proves the assertion.
+\end{proof}
+
+\begin{theorem}[Additive indecomposability]\label{th:add-indecomp}
+For $x>0$, the singletons $W(e)$ are exactly the terms closed below themselves under sums of two smaller terms. Equivalently, $x$ is a singleton if and only if it cannot be expressed as a sum of two smaller terms. The map $e\mapsto W(e)$ gives
+an increasing enumeration of exactly these terms. Also $u+W(e)=W(e)$
+whenever $u<W(e)$.
+\end{theorem}
+\begin{proof}
+A nonempty word is below $[e]$ exactly when its first entry is below
+$e$. The sum of two such words still uses only entries below $e$, and
+insertion of $e$ deletes all of the first word. The empty-word cases follow
+from the unit. If $x$ has at least two entries, split off its final
+singleton. Both pieces are smaller than $x$ and concatenation is their
+ordinal sum. Singleton comparison compares their sole entries.
+\end{proof}
+
+\subsection{Multiplication by expanding the right operand}
+Set $0b=a0=0$. For $a>0$ replace each entry $e$ of $b$ by the block
+\[
+ B_a(0)=a,\qquad B_a(e)=W\bigl(h(a)+e\bigr)\quad(e>0),
+\]
+and add the blocks in their original order. In particular $aW(e)=B_a(e)$.
+For $r<s$, all exponents of $B_a(r)$ are smaller than the sole exponent
+of $B_a(s)$. For $r=0$ this uses $h(a)<h(a)+s$. For $r>0$ it uses strict
+increase of $h(a)+{}\cdot$. Consequently a deletion $r,s\rightsquigarrow s$
+in a word of exponents preserves the sum of its expanded blocks.
+The first block has first exponent at least as large as every later
+block exponent, so it survives all later insertions. Thus
+\[
+                  h(ab)=h(a)+h(b)\qquad(a,b>0).                 \tag{1}\label{eq:arith-head}
+\]
+
+\begin{theorem}\label{th:ordinary-mul}
+Multiplication is associative, has unit $1$ and absorbing element $0$,
+and satisfies $a(b+c)=ab+ac$. For $a>0$, $b\mapsto ab$ is strictly
+increasing and left cancellation holds. Multiplication is weakly increasing
+in its first argument. In particular $a(b+1)=ab+a$.
+\end{theorem}
+\begin{proof}
+Expansion of a concatenation gives the sum of its two expansions.
+The preceding deletion argument allows the concatenation to be normalized
+first, proving the distributive law. Both unit identities follow from
+$B_a(0)=a$ and $B_1(e)=W(e)$ for every $e$. Associativity reduces by
+finite distributivity to $a(bW(e))=(ab)W(e)$ for each entry $e$.
+Zero factors are immediate and $e=0$ is the unit identity.
+For $a,b,e>0$ the two sides are monomials with exponents
+$h(a)+(h(b)+e)$ and $(h(a)+h(b))+e$, by (1). They agree by associativity
+of addition. If $b<c$, take $d>0$ with $b+d=c$. For $a>0$, expansion
+gives $ad>0$, so $ac=ab+ad>ab$. If $0<a\le a'$, then $h(a)\le h(a')$. Each expanded block for $a$ is bounded by its counterpart for $a'$.
+Addition is weakly increasing in both arguments, so the same holds for
+the sum of all blocks. The case $a=0$ follows from leastness of zero.
+\end{proof}
+
+For $s,t\ge0$ this calculation gives
+$W(s)W(t)=W(s+t)$, including $t=0$. For a positive $a$ it gives
+$a\omega=W(h(a)+1)$. If the first exponent $g$ of $a$ has multiplicity
+$j$, then $an$, for a positive finite $n$, has $j(n-1)$ copies of $g$
+followed by $a$. Each new copy of $a$ deletes exactly the part of the
+preceding copy below $g$. This proves the formula by ordinary induction.
+In particular, finite ordinals have their usual addition and multiplication.
+
+\begin{corollary}[Multiplicative indecomposability]
+The nonzero terms $x$ satisfying
+$u,v<x\Rightarrow uv<x$ are exactly $1$, $2$ and the $W(W(e))$.
+\end{corollary}
+\begin{proof}
+The finite cases $1,2$ can be checked directly. For finite $n\ge3$,
+$(n-1)^2\ge n$. Below $W(W(e))$ the heads of nonzero factors are
+$<W(e)$, and their sum remains $<W(e)$ by Theorem~\ref{th:add-indecomp}.
+Equation (1) bounds their product. Conversely an infinite $x$ with at
+least two entries and head $g$ strictly exceeds $W(g)$. Both $W(g)$
+and the natural number $|x|+1$ are below $x$, but their product, a list
+of $|x|+1$ copies of $g$, exceeds $x$. For infinite $x=W(g)$, if
+$g$ is not a singleton then $g>0$ splits as $p+q$ with $p,q<g$.
+The two smaller monomials $W(p),W(q)$ multiply to $x$.
+\end{proof}
+
+\subsection{Exponentiation with arbitrary base}
+The following decomposition is also an indexing theorem for the limits.
+Every term $b$ has a unique expression
+\[
+                         b=\omega Q+n,\qquad n<\omega.            \tag{2}\label{eq:arith-omega-div}
+\]
+Count its final zeros to obtain $n$. For each remaining entry $e>0$,
+solve $1+d=e$ by subtracting one if $e$ is finite, and by taking $d=e$
+if $e$ is infinite. Indeed, in the latter case the head of $e$ is
+positive, so $1$ is absorbed. The solution is unique and ordered as
+$e$ varies by Theorem~\ref{th:ordinary-add}. These solutions in their
+given order form $Q$. The rules for multiplication replace its entries
+$d$ by $1+d$, also when $d=0$. The recovered positive entries of $b$
+and its $n$ zeros prove (2) and uniqueness. Thus $Q\mapsto\omega Q$ is
+an order isomorphism onto zero together with the nonzero limits (the
+nonempty terms with no final zero).
+
+Write $P_a(n)$ for the ordinary finite product of $n$ copies of $a$,
+with $P_a(0)=1$. Set $a^0=1$, $0^b=0$ for $b>0$, and $1^b=1$.
+For $a\ge2$ define the code $k_a$ and the general power by
+\[
+ k_a=\begin{cases}1,&a<\omega,\\ h(a)\omega,&a\ge\omega,\end{cases}
+ \qquad
+ a^{\omega Q+n}=W(k_a Q)\,P_a(n).                              \tag{3}\label{eq:arith-power}
+\]
+These operations are primitive recursive. All word scans, prefix cuts and
+extractions in (1)--(3) are bounded by the input word length. The recursion
+$P_a(n+1)=P_a(n)a$ uses the already defined multiplication. A changing
+accumulator is allowed in ordinary primitive recursion. All further scans
+are on outputs of earlier primitive recursive operations. For instance,
+when $a\ge\omega$, $h(a)>0$ and $k_a=W(h(h(a))+1)$ is a single monomial.
+Formula (3) therefore also covers bases and exponents of arbitrarily
+large finite nesting depth.
+
+\begin{theorem}[Power laws]\label{th:ordinary-pow}
+For all terms $a,b,c$,
+\[
+ a^{b+c}=a^b a^c,\qquad (a^b)^c=a^{bc},\qquad
+ a^{b+1}=a^b a,\qquad \omega^b=W(b).
+\]
+For $a\ge2$ the exponential is strictly increasing in $b$. For fixed
+$b$ it is weakly increasing in $a$.
+\end{theorem}
+\begin{proof}
+First fix $a\ge2$ and put $k=k_a$. By (1) and finite induction,
+$h(P_a(m))=h(a)m$, including $m=0$. This head is $<k$. For a finite
+base it is zero. For an infinite base and $m>0$ it has head $h(h(a))$, below
+the exponent of $k$. In consequence, for $C>0$,
+\[
+             P_a(m)W(kC)=W(kC).                                \tag{4}
+\]
+Indeed $kC\ge k$, since multiplication by positive $k$ is increasing.
+As $k$ is a single monomial, every exponent of the word $h(P_a(m))$
+is smaller than its exponent. More explicitly, if $h(P_a(m))>0$, then
+$h(h(P_a(m)))<h(k)\le h(kC)$.
+Thus $h(P_a(m))+kC=kC$, proving (4) by the block rule.
+
+Write $b=\omega B+m$, $c=\omega C+n$. If $C=0$, appending $c$ changes
+the finite tail of $b$ to $m+n$ and $P_a(m+n)=P_a(m)P_a(n)$ by finite
+induction. If $C>0$, $m+\omega C=\omega C$ by absorption, so the sum
+has quotient $B+C$ and tail $n$. Removing the middle factors by (4)
+in $a^b a^c$ leaves
+$W(kB)W(kC)P_a(n)=W(k(B+C))P_a(n)$. This is the first power law.
+It includes the successor identity because $a^1=a$.
+
+For the second power law take $b>0$ and define
+\[
+ D=1\quad(b<\omega),\qquad D=B\omega\quad(b=\omega B+m,\ B>0).
+\]
+We claim $b\omega=\omega D$ and $k_{a^b}=kD$. Here $a^b\ge2$ because positive
+finite powers of $a$ are at least $a$, and $B>0$ gives first exponent
+$\ge kB>0$ by (1). If $b$ is finite then $b\omega=\omega$.
+A positive finite power of a finite base is finite. For an infinite base,
+$h(P_a(b))=h(a)b$ has the same head as $h(a)$, so
+$h(P_a(b))\omega=h(a)\omega$. This proves both claims in the finite case.
+If $B>0$, equation (1) gives $h(b)=1+h(B)$, since adding the finite
+tail preserves the head. Now $b\omega=W((1+h(B))+1)=\omega(B\omega)$.
+The head $H=h(a^b)=kB+h(P_a(m))$ has the same head as $kB$ because the second
+summand is $<k$, whereas $kB\ge k$, with $k$ a monomial.
+Thus $H\omega=(kB)\omega=kD$, proving the second claim.
+
+Apply the first power law repeatedly to obtain
+$P_{a^b}(n)=a^{bn}$ by finite induction on $n$.
+Since $bc=b\omega C+bn=\omega(DC)+bn$, the first law and (3) give
+\[
+       a^{bc}=W(kDC)P_{a^b}(n)=(a^b)^c .
+\]
+If $b=0$, both sides of the second law are $1$. For bases $0$ and $1$
+the laws follow by splitting zero from positive exponents and using that
+a sum is zero exactly when both summands are zero, and a product is zero
+exactly when a factor is zero.
+
+For $a=\omega$, $k=\omega$ and $P_\omega(n)=W(n)$ by the monomial
+product formula. Thus (3) is $W(\omega Q)W(n)=W(b)$. For $b<c$, write
+$c=b+d$ with $d>0$. Since $a^d>1$ and $a^b>0$ for $a\ge2$, strict
+increase of multiplication in the right argument gives $a^c>a^b$.
+Finally $k_a$ is weakly increasing for $a\ge2$, by monotonicity of the
+head and of multiplication, and $P_a(n)$ is weakly increasing in $a$
+by finite induction. Formula (3) proves weak monotonicity in the base.
+The exceptional bases satisfy it directly.
+\end{proof}
+
+\subsection{Continuity with explicit witnesses}
+For a strictly increasing function $F$ on the codes and a nonzero limit
+$L$, the limit equation $F(L)=\sup_{d<L}F(d)$ has the following
+witnessed meaning. Every $F(d)$ with $d<L$ lies below $F(L)$, and for
+every $z<F(L)$ we compute $d<L$ with $z<F(d)$. These two assertions
+imply the least-upper-bound property by the decidable linear order.
+
+\begin{theorem}\label{th:ordinary-cont}
+The maps $d\mapsto a+d$, $d\mapsto ad$ for $a>0$, and $d\mapsto a^d$
+for $a\ge2$ satisfy these limit equations at every coded nonzero limit.
+\end{theorem}
+\begin{proof}
+Strict increase proves the first assertion. For addition, given
+$z<a+L$, use $d=0$ if $z<a$. Otherwise compute $q$ with $a+q=z$. Then $q<L$, and $d=q+1<L$ works since $L$ is a limit.
+For multiplication, use the Euclidean division theorem for the codes
+proved in this paper. Write $z=aq+r$, $r<a$. Then $aq\le z<aL$ gives
+$q<L$, and $z<a(q+1)$ with $q+1<L$.
+
+For powers, (2) writes the limit as $L=\omega Q$ with $Q>0$. Thus
+$a^L=W(kQ)$ where $k=k_a$. If $z=0$, use $d=0$. If $z>0$, let
+$t,r$ be the Euclidean quotient and remainder of $h(z)$ on division
+on the left by $k$. Then $h(z)=kt+r<kQ$, $r<k$, and $t<Q$.
+If $a$ is infinite, write $g=h(h(a))$, so $k=W(g+1)$. Put
+$n=|r|+1$. Every exponent of $r$ is $\le g$, and $h(a)n$ begins with
+at least $n$ copies of $g$. Thus $h(a)n>r$. For $d=\omega t+n$
+equation (1) now gives
+\[
+ h(a^d)=kt+h(P_a(n))=kt+h(a)n>kt+r=h(z).
+\]
+If $2\le a<\omega$, then $k=1$, $r=0$, and $t=h(z)$. Use
+$n=|z|+1$. The word $a^{\omega t+n}=W(t)P_a(n)$ consists of
+at least $n$ copies of $t$, since the natural number $a^n\ge n$.
+It exceeds $z$ by length or at the first smaller exponent of $z$.
+In either case $\omega t+n<\omega(t+1)\le\omega Q$. This follows
+from $n<\omega$ and left distributivity. All three witnesses have
+been constructed by primitive recursive operations.
+\end{proof}
+
+For $a=1$ the power function is constant $1$, and for base $0$ the
+positive powers are constant $0$. Including the exponent $0$ makes the
+supremum for this base equal to $1$, since $0^0=1$. Taking the supremum over
+$0<d<L$ gives the article's limit equation in these cases too. The zero
+multiplication map has constant value $0$ and also preserves these suprema.
+
+\paragraph{Calculations.}
+We have $1+\omega=\omega<\omega+1$ and
+$2\omega=\omega<\omega 2$. Thus right cancellation for addition and
+multiplication can fail. Also $(1+1)\omega=\omega$ while
+$1\omega+1\omega=\omega 2$, exhibiting failure of the other distributive
+law. Formula (3) yields $2^\omega=\omega$, $2^{\omega+1}=\omega 2$,
+and $\omega^2=W(2)>\omega$. In particular, exponentiation also
+fails to commute. With the left argument varying up to $\omega$, the
+values $n+1$, $n2$ and $n^2$ on finite arguments are cofinal in
+$\omega$, whereas $\omega+1$, $\omega 2$ and $\omega^2$ all exceed it.
+This proves failure of continuity in the other argument in all three cases.
+
+The spiral in the opening illustration of \emph{Ordinal number} uses
+$f(x)=\omega(1+x)$. Its least fixed point is $W(\omega)=\omega^\omega$.
+Indeed, $f(x)>x$ for finite $x$. For $\omega\le x<W(\omega)$ one has
+$1+x=x$ and the positive finite head $h(x)$ increases to $1+h(x)$
+under multiplication by $\omega$ on the left. At $x=W(\omega)$ the
+head becomes $1+\omega=\omega$ and the product is exactly $W(\omega)$.
+
+\subsection{Prime factors and a unique ordered factorization}
+An ordinal prime is a term $x>1$ with no expression $x=ab$ with $a,b<x$.
+This condition concerns equality. Closure of an initial segment under
+all products, treated above, is stronger.
+
+\begin{theorem}[Prime classification and normal factorization]\label{th:ord-primes}
+The primes of this notation system are the finite primes, the limit primes
+$W(W(d))$, and the infinite successor primes $W(d)+1$ with $d>0$.
+Every positive term has a unique prime factorization subject to the
+following ordering rules. All limit factors precede all other factors,
+the limit factors are nonincreasing, and each uninterrupted group of
+finite primes is nonincreasing. All the factors can be computed
+primitive recursively.
+\end{theorem}
+\begin{proof}
+If $ab$ is positive and finite, both factors are finite by (1) or
+by monotonicity in each argument. The finite primes are therefore
+exactly those of elementary arithmetic. The closure assertion above
+already proves primality of $W(W(d))$. Let $x=W(d)+1$ with $d>0$
+and suppose $x=ab$ with both factors smaller. Each factor must exceed
+$1$. If $b$ is a limit, every block of $ab$ is a singleton with
+positive exponent, whereas $x$ ends in zero. If $b$ is finite,
+$b\ge2$. Then $a$ must be infinite and the formula for $ab$ has at
+least two copies of its leading exponent, whereas $x$ has exactly one.
+If $b$ is an infinite successor, $ab$ has at least one positive
+singleton block before the last copy of $a$. The singleton survives
+because its exponent strictly exceeds $h(a)$. As $a>1$ and $ab$ ends in
+zero, $a$ ends in zero too and has at least two entries. Thus $ab$ has
+at least three entries, whereas $x$ has two.
+
+We now give a factorization algorithm. Combine adjacent equal entries
+of $x$ into runs with exponents $e_0<\cdots<e_s$ listed from the
+\emph{right} and multiplicities $m_0,\ldots,m_s>0$. For each $i>0$
+compute $d_i>0$ with $e_{i-1}+d_i=e_i$ by the prefix algorithm. Write
+the word of $e_0$ as $[g_1,\ldots,g_j]$. The ordered factorization,
+temporarily keeping finite factors unexpanded, is
+\[
+ \left(\prod_{t=1}^{j}W(W(g_t))\right)m_0
+       \prod_{i=1}^{s}\bigl((W(d_i)+1)m_i\bigr),               \tag{5}
+\]
+with products read from left to right. The first product is $W(e_0)$
+by the monomial product formula and equals $1$ if $e_0=0$.
+Multiplication by $m_0$ produces the bottom run. If the portion already
+formed is $v$ with head $e_{i-1}$, then
+$v(W(d_i)+1)=W(e_i)+v$. Its leading exponent occurs once, so multiplying
+by $m_i$ yields exactly $m_i$ copies of $e_i$ followed by $v$.
+Finite induction proves (5). Replace each $m_i$ by its finite prime
+factors in nonincreasing order, omitting $1$.
+
+Conversely, any product obeying the ordering rules has an initial
+block of limit primes, followed by finite blocks separated by the
+successor factors $W(d_i)+1$. Finite blocks are allowed to be empty.
+Multiplying exactly as above recovers the run exponents and
+multiplicities. The bottom exponent records the initial block
+letter for letter. Each next exponent determines $d_i$ uniquely by
+left cancellation. Each multiplicity recovers its finite block by
+unique natural factorization. This proves uniqueness even when a
+multiplicity is one.
+
+To see that no further primes occur, take a product (5) containing at
+least two prime factors. Its proper prefix before the last factor is
+smaller than $x$ by strict increase of multiplication in the right
+argument. Its last prime is also smaller. For a finite last prime this
+is immediate if $x$ is infinite, and is ordinary arithmetic otherwise.
+If the last factor is a limit, the entire list consists of at least two
+nonincreasing limit primes, so the bottom exponent $e_0$ exceeds its
+last singleton $W(g_j)$. If the last factor is $W(d)+1$, the preceding
+product $v$ exceeds $1$ and $x=W(h(v)+d)+v$. Here $h(v)+d\ge d$. Even in the case of equal leading exponents, the tail $v$ exceeds $1$.
+Thus (5) splits into two strictly smaller factors. A single prime
+factor and the empty product account for all remaining cases.
+
+For the elementary arithmetic used here, factor a natural $m>1$ by
+trial division up to $m$, removing a least divisor greater than one
+at each stage. Each such divisor is prime by minimality, and at most
+$m$ nonterminal divisions occur since the remaining quotient decreases.
+Uniqueness uses Euclid's lemma. If a prime $p$ does not divide $v$, the
+ordinary Euclidean algorithm on $(p,v)$ returns gcd $1$, since the only
+positive divisors of $p$ are $1,p$. Back-substitution gives integers
+$u,w$ with $up+wv=1$. Initialize the two inputs by their two unit
+coefficient vectors and replace a row by the difference of that row
+and the quotient times the other. Multiplication by $z$ shows that
+$p\mid vz$ implies $p\mid z$. Euclid's lemma locates an equal prime
+in any second factor list, after which cancellation and finite induction
+prove uniqueness. The decreasing Euclidean remainders permit the fixed
+fuel $p+v+2$. All scans, products, and sorting steps in (5) are bounded
+iterations on finite codes.
+\end{proof}

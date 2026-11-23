@@ -1,0 +1,161 @@
+\section{Finite structures and the truth definition}\label{sec:models}
+A signature is a finite list of function and relation symbols with their arities. A constant is a function of arity zero. Write $[m]=\{0,\ldots,m-1\}$, with $m>0$. A structure $M$ of size $m$ gives each $s$-ary function a table of $m^s$ entries in $[m]$ and each $s$-ary relation a bit table of the same length. The lexicographic index of a tuple is obtained by iterating $j\mapsto mj+a$ over its entries. The empty tuple has index zero. Fixed lengths make this work even at $m=1$. Code validity, including all range checks, is a bounded scan. Statements involving mathematical structures below are uniform implications about valid codes.
+
+\subsection{Evaluation and change of environment}
+An environment for $k$ free slots is a tuple $e\in[m]^k$. Write $a::e$ for extension at the front. For de Bruijn indices, $v_0$ under a new binder names its new entry. Write $t^M(e)$ for term evaluation and $[A]_M(e)$ for the truth bit. A variable reads an entry and a function node indexes its table by the values of its sons. A relation node does the same with a bit table, while $t=u$ tests numerical equality. Falsity gives $0$, conjunction takes minimum, disjunction takes maximum, and implication takes $\max(1-p,q)$ on input bits $p,q$. Quantifiers give the finite folds
+\[
+ [\forall A]_M(e)=\min_{a<m}[A]_M(a::e),\qquad
+ [\exists A]_M(e)=\max_{a<m}[A]_M(a::e).
+\]
+One can use $1$ and $0$, respectively, as the initial values of these folds. Negation is implication to falsity. These are classical \emph{object-language} truth tables evaluated by constructive arithmetic.
+
+\begin{proposition}[Uniform model checking and witnesses]\label{prop:mc}
+Term values and formula truth are primitive recursive (PR) uniformly in the signature, structure, expression and environment. A true existential supplies its least witness and a false universal supplies its least counterexample. A closed sentence has a well-defined truth bit independent of any extra environment entries.
+\end{proposition}
+\begin{proof}
+List the nodes of the syntax tree in postorder. For each occurrence at binder depth $d$, allocate one cell for each of the $m^{k+d}$ environments of that length. Fill rows in node order, applying the displayed operations to cells in earlier rows. If the tree has $L$ nodes, at most $L m^{k+L}$ cells are needed, and each quantifier cell scans $m$ entries. A node's variable, symbol and argument indices and the table arithmetic all use bounded operations on the input or on previously constructed rows. Encoding each updated row into a single number gives ordinary numerical primitive recursion. Return zero on malformed input. Induction on the filled rows proves their defining equations. For the witness, scan the child row until the first $1$ (respectively $0$), returning sentinel $m$ on failure. Induction on a scan prefix says that the sentinel persists exactly while all entries read have the opposite value. Environment independence follows from the next lemma.
+\end{proof}
+
+\begin{lemma}[Coincidence, renaming and semantic substitution]\label{lem:semsub}
+Environments agreeing on the free slots of an expression give it the same value. For a capture-avoiding simultaneous substitution $\sigma=(s_0,\ldots,s_{k-1})$, let $e_\sigma=(s_0^M(e),\ldots,s_{k-1}^M(e))$. Then
+\[
+ (t[\sigma])^M(e)=t^M(e_\sigma),\qquad
+ [A[\sigma]]_M(e)=[A]_M(e_\sigma).
+\]
+Consequently, equal-valued terms can replace each other in any formula context.
+\end{lemma}
+\begin{proof}
+For coincidence, variable lookup uses a slot on which the environments agree. Equal lists of child values select the same function or relation entry and give the same equality or Boolean bit. Under a quantifier extend both environments by the same $a$. They agree at the new slot and on the shifted free slots needed by the body. The folds therefore agree entry by entry. The same traversal proves the renaming formula: replacing $v_i$ by $v_{\rho(i)}$ evaluates an expression at the tuple $(e_{\rho(i)})_i$. Under a binder the index map fixes $0$ and sends $i+1$ to $\rho(i)+1$, so the two ways to form each extended tuple coincide.
+
+For substitution, the variable case reads precisely $s_i^M(e)$. All function and atomic cases follow by equality of their child values. At a binder the lifted tuple sends its first slot to $v_0$ and old slot $i+1$ to $s_i$ with all its free indices raised by one. By renaming, this raised term evaluates on $a::e$ to $s_i^M(e)$. The environment built from the lifted tuple is thus $a::e_\sigma$. Apply the body identity to these environments and take the same minimum or maximum. Boolean nodes use equal input bits. For replacement, take the formula with a free placeholder at the indicated occurrences and apply the identity twice. The two resulting environments agree. All of these inductions can take the conjunction of the required equalities at the nodes already visited, over all assignments of the row lengths just specified. For substitution the lifted tuple at each node is predetermined by its depth. It is a computed parameter of that node. Thus no induction hypothesis quantifies over an unbounded set of substitutions or environments.
+\end{proof}
+
+\begin{corollary}[Closure, duality and finite evaluation games]
+The universal closure of $A$ is true in $M$ exactly when all assignments satisfy it. Its existential closure is true exactly when some assignment satisfies it. Negating a quantifier exchanges it with its dual and negates the body. In the ordinary evaluation game for a formula in negation normal form, the verifying player wins exactly when its truth bit is $1$. A winning strategy for the appropriate player is PR in the input.
+\end{corollary}
+\begin{proof}
+Repeated quantifier folds enumerate the Cartesian power, in the order set by the binders. Complement interchanges min and max: scan the same entries on the two sides, starting with complementary bits. At a disjunction or existential the verifier chooses the branch or element. At a conjunction or universal the falsifier chooses. A literal awards the game to the verifier exactly at bit $1$. At a verifier choice with bit $1$, choose the first child of bit $1$. At a falsifier choice with bit $1$ every child has bit $1$. The symmetric rule keeps bit $0$ for the falsifier. Each move goes down the syntax tree, so the invariant persists to an awarded leaf. Storing the choices with the evaluation cells produces both conditional strategies by bounded scans. Negations can be pushed into atoms by the bit identities just proved and the two-element Boolean truth tables.
+\end{proof}
+
+\subsection{Maps, equality and finite diagrams}
+A map $h:[m]\to[n]$ is a length-$m$ table. A homomorphism $M\to N$ commutes with every function table and carries every true relation entry to a true entry. An embedding is injective, commutes with functions and preserves and reflects relations. An isomorphism is a surjective embedding. Each condition is a finite test. A substructure has a nonempty subset of the domain closed under all functions (including constants), with each relation restricted to that subset. Enumerating its members in increasing order puts it in our coding convention.
+
+\begin{theorem}[Preservation under structure maps]\label{thm:maps}
+Homomorphisms preserve existential-positive formulas, built from atoms, truth, falsity, conjunction, disjunction and existence. Embeddings preserve and reflect quantifier-free formulas. Existential sentences with quantifier-free matrix pass from a substructure to the larger structure. Universal ones pass to a substructure. Isomorphisms preserve and reflect all formulas with corresponding parameters.
+\end{theorem}
+\begin{proof}
+Compute first $h(t^M(e))=t^N(h e)$, where $h e$ means applying $h$ entrywise. The variable case is lookup and the function step is the commutation equation. For a homomorphism this proves preservation of equality and reduces preservation of atomic relations to its definition. Conjunction carries both successes, disjunction carries its successful branch, and existence transports its least witness $a$ to $h(a)$. Truth and falsity have constant bits. For an embedding injectivity reflects equality and the defining relation equivalence gives equality of the remaining atomic bits. Every Boolean connective preserves equality of bits. Witnesses for an existential block in a substructure therefore work in the large structure. A universal block true in the large structure gives a true matrix on each tuple from the substructure, which reflects back. For an isomorphism scan for the unique preimage of each element. At quantifiers every extended environment in one structure has a corresponding extension in the other. The body bits coincide, so do their extrema. These are inductions on the finite evaluation tables. In particular, a parameter-free definable relation is invariant under every automorphism, and the same holds with parameters under each automorphism fixing them.
+\end{proof}
+
+\begin{theorem}[Equality from a congruence]\label{thm:eqquot}
+Let $E$ be a binary table on $M$ satisfying reflexivity, symmetry and transitivity. Suppose functions respect $E$ coordinatewise and relations have equal bits on coordinatewise $E$-equivalent tuples. There is a PR quotient $Q$ and surjection $p$ such that, for every formula $A$ of the original signature with logical equality,
+\[
+ [A^{E}]_M(e)=[A]_Q(p e).
+\]
+Here $A^{E}$ replaces each logical equality atom $t=u$ by $E(t,u)$.
+\end{theorem}
+\begin{proof}
+Set $r(a)$ to the least $b<m$ with $E(a,b)$. Reflexivity ensures success. If $E(a,b)$ then symmetry and transitivity give equal sets of candidates, hence $r(a)=r(b)$. Conversely, if $r(a)=r(b)$ then $E(a,r(a))$ and $E(b,r(b))$ give $E(a,b)$. Thus $r(r(a))=r(a)$. Enumerate the fixed points, and let $p(a)$ be the ordinal position of $r(a)$ in this list. For each quotient tuple apply the original function on the representatives and then apply $p$. Read predicates directly on representatives. The assumed congruences give the same answers on all equivalent tuples, so induction on terms identifies quotient values with projections of their old values. Equality of projected values is exactly $E$ of old values. The relation case uses saturation. Boolean steps preserve equal bits. Every quotient value has its listed representative, and each original value has its projection, so the extrema defining either quantifier agree. Every test scans at most a finite table or a finite power of the carrier. In particular this realizes the equality-axiom reduction on codes for finite structures.
+\end{proof}
+
+\begin{theorem}[Two finite diagrams]\label{thm:diagrams}
+Given a finite $M$, one can compute an existential-positive sentence $P_M$ and a sentence $D_M$ of quantifier rank at most $m+1$ such that for every finite $N$ in the same signature
+\[
+ [P_M]_N=1\ \Longleftrightarrow\ M\to N\text{ by a homomorphism},\qquad
+ [D_M]_N=1\ \Longleftrightarrow\ M\cong N .
+\]
+In particular, agreement on all sentences between two finite structures implies isomorphism. Existence of a homomorphism is equivalent to inclusion of their existential-positive sentence theories in the same direction.
+\end{theorem}
+\begin{proof}
+Name each $i<m$ by a variable $x_i$. For each function row include $f(x_{i_1},\ldots,x_{i_s})=x_{f^M(\bar i)}$. For each true relation row include $R(x_{i_1},\ldots,x_{i_s})$. Conjoin these clauses and existentially bind all names, using truth for the empty conjunction. This is $P_M$. A witnessing tuple is exactly the table of a homomorphism. If all existential-positive truths transfer, $P_M$ transfers because the identity witnesses it in $M$. The converse is Theorem~\ref{thm:maps}.
+
+For $D_M$, insert under the same existential prefix the negative literal for every false relation row, $x_i\ne x_j$ for all $i<j$, and the clause $\forall y\,\bigvee_{i<m} y=x_i$. A witnessing tuple now enumerates the target without repeats and preserves and reflects every atomic table. A given isomorphism supplies that tuple. There are $m$ outer quantifiers and at most one further nested quantifier. This also proves finite categoricity from elementary equivalence via the single sentence $D_M$. In both constructions finite truth provides witnesses by repeated least search. The function and relation clauses include nullary rows.
+\end{proof}
+
+\subsection{Three changes of language}
+\begin{proposition}[Graphs of functions]\label{prop:fgraph}
+Functions and constants can be eliminated in favor of relation symbols in finite satisfiability, with a uniform PR translation and model recovery.
+\end{proposition}
+\begin{proof}
+Introduce a fresh $(s+1)$-ary $G_f$ for each $s$-ary $f$. Require
+$\forall\bar x\,\exists y\,G_f(\bar x,y)$ and
+$\forall\bar x\,\forall y\,\forall z\,((G_f(\bar x,y)\land G_f(\bar x,z))\to y=z)$.
+For a term $t$ and fresh $z$ construct its value formula $V_t(z)$. Put $V_{v_i}(z)=(z=v_i)$. For $t=f(t_1,\ldots,t_s)$ put
+\[
+ V_t(z)=\exists y_1\cdots y_s
+ \left(\bigwedge_{j=1}^s V_{t_j}(y_j)\land G_f(y_1,\ldots,y_s,z)\right).
+\]
+In the nullary case use $G_f(z)$. Replace each atomic formula on terms by existential binding of their values, conjunction of the value formulas and the same atom on the fresh variables. Translate connectives and quantifiers compositionally, shifting free indices whenever extending scope. A structure with functions supplies their graphs. In the reverse direction search the output column of each input row. Totality supplies a first output and uniqueness identifies every output with it. Term induction gives exactly one $z$ satisfying $V_t(z)$, the original term value, hence every translated atom has the old bit. Boolean and quantifier folds now agree. Conjoining the graph axioms with the translated sentence proves the claim. Each constructor expands a finite list of previously computed children by a bounded fold.
+\end{proof}
+
+\begin{proposition}[Many sorts by relativization]
+For a finite nonempty list of inhabited sorts, finite many-sorted satisfaction translates uniformly to one-sorted satisfaction. In the relational encoding, a finite model of the translated sort and typing axioms yields a finite many-sorted model.
+\end{proposition}
+\begin{proof}
+Use the graph translation within each sort first if functions occur, choosing witnesses of the stated output sort. Make a tagged disjoint union of the carriers and add predicates $S_i$ for the tags. Assert $\exists x\,S_i(x)$ for each $i$, that every element belongs to some $S_i$, and that no element belongs to two. For each relation require that every true tuple has the declared coordinate sorts. Quantification over sort $i$ becomes $\exists x(S_i(x)\land A)$ or $\forall x(S_i(x)\to A)$. Copy equalities and predicates on well-typed variables. The filtered min/max runs over precisely the elements of the intended sort, since out-of-sort entries contribute the neutral bit. This proves correctness on every well-typed environment by the evaluation recurrence. Conversely enumerate each tag predicate in increasing order and restrict relation tables to the typed Cartesian products. The partition identifies the disjoint union of these enumerations with the given one-sorted carrier. The relativized graph axioms recover function tables if needed.
+\end{proof}
+
+\begin{proposition}[Relational algebra for finite assignments]
+In a relational language the sets of satisfying $k$-tuples of first-order formulas are exactly the relations computed from the named tables, equality and full domain powers by coordinate substitutions, Boolean operations and one-coordinate projections. The translations in both directions are PR.
+\end{proposition}
+\begin{proof}
+Interpret a formula in $k$ slots as its bit table on $[m]^k$. An atom $R(v_{i_1},\ldots,v_{i_s})$ pulls back a named table along the indicated coordinate list, with repeated coordinates permitted. Equality pulls back the diagonal table. Truth gives the full power, negation takes complement within that power and conjunction takes intersection. Existential quantification drops the first coordinate by maximum over its fibers. Other connectives and universal quantification follow by truth tables and duality. Conversely a named table is an atom on its coordinates, the diagonal is equality and the full power is truth. Pullback is capture-free variable renaming, Boolean operations are connectives and projection binds the coordinate being removed, after permuting it to slot zero. Each recursion reconstructs the same bit by its defining equation. The availability of full domain powers specifies the complement convention even if an element never occurs in a true relation row.
+\end{proof}
+
+\section{Finite back-and-forth and a sharp rank bound}\label{sec:ef}
+Work in a finite relational signature with equality and without function symbols or constants. Nullary relations are allowed. With constants one may first use the translation in Proposition~\ref{prop:fgraph}, at a potential cost in quantifier rank. The quantifier rank $q(A)$ is zero on atoms, is the maximum of the child ranks at a Boolean connective, and increases by one at a quantifier.
+
+\subsection{A game that returns a formula}
+For $M,N$ of sizes $m,n$, a position consists of equal-length tuples $u,v$ of previously paired elements, ordered most recent first. Define $I(u,v)$ to say that all equalities $u_i=u_j$ and all $R^M(u_{i_1},\ldots,u_{i_s})$ have the same bits on $v$. Thus $I$ checks a finite list, including the empty index tuple for each nullary relation. Write $W_0=I$ and define $W_{r+1}(u,v)$ as the conjunction of $I(u,v)$ and
+\[
+ \begin{split}
+ &\min_{a<m}\max_{b<n} W_r(a::u,b::v)=1,\\[-2pt]
+ &\min_{b<n}\max_{a<m} W_r(a::u,b::v)=1 .
+ \end{split}
+\]
+Treat predicates throughout as their bits. In one round Spoiler chooses one side and one element, and Duplicator chooses an element from the other side. Duplicator must maintain the partial isomorphism $I$. The first successful inner entry above provides a strategy reply. If a clause fails, its first failing outer entry is a Spoiler move for which every reply loses one level lower. Recursing on the number of rounds proves finite determinacy with strategies for either outcome. Testing $I$ at intermediate rounds is equivalent to testing it only at the end: a failing atomic comparison persists after any tuple extension, and the carriers are inhabited.
+
+\begin{theorem}[Finite Ehrenfeucht--Fra\"iss\'e theorem with a separator]\label{thm:ef}
+If $W_r(u,v)=1$, every formula in the indicated slots of quantifier rank at most $r$ has equal bits at $(M,u)$ and $(N,v)$. If $W_r(u,v)=0$, a PR procedure returns a formula of rank at most $r$ with value $1$ at $(M,u)$ and $0$ at $(N,v)$. Thus agreement on all formulas of this rank is equivalent to winning the game.
+\end{theorem}
+\begin{proof}
+For agreement, follow the formula with a remaining budget $s$ initially equal to $r$. At an atom use $I$. Boolean operations preserve equal child bits, at the same budget. At an existential with a witness on the left, the first direction of $W_s$ pairs it with a right witness at budget $s-1$ by the body assertion. A right witness is transported back by the second direction. A universal is handled by transporting counterexamples in the same way. Budget suffices because each quantifier descent removes one from the rank. This proof uses induction on syntax, including Boolean nodes when the budget is zero.
+
+For the other direction orient every separating formula to be true on the left. If $I$ fails, take the first discrepant atom or its negation. Otherwise the budget is positive. A failed first direction supplies $a$ such that each $b<n$ has a separator $B_b$ for $(a::u,b::v)$ at budget $s-1$. Then
+\[
+                  \exists x\,\bigwedge_{b<n} B_b(x,\bar z)
+\]
+separates: the one left witness $a$ makes all conjuncts true. For each proposed right witness $b$ its own conjunct fails. If the second direction fails, take $b$ such that each $a<m$ has a separator $C_a$ for $(a::u,b::v)$. Then
+\[
+                  \forall x\,\bigvee_{a<m} C_a(x,\bar z)
+\]
+is true on the left because each $a$ has its corresponding true disjunct, and false on the right at the chosen $b$ because every disjunct is false. Child formulas are already expressed in the new slot and shifted old slots. Neither finite connective increases rank, giving the rank bound.
+
+For a numerical implementation, put $k=|u|$. The row at budget $i$ covers tuples of length $k+r-i$. There are at most $(r+1)(mn)^{k+r}$ cells across these rows. Compute the rows in increasing $i$ and store the bit, strategy choice and, on failure, the oriented formula. If $s_0$ is the maximum of two and the relation arities, a separating syntax tree need have at most $H_i$ nodes, with for example
+\[
+ H_0=s_0+5,\qquad H_{i+1}=(m+n+1)(H_i+4)+5 .
+\]
+Here indices count as single variable nodes. Their numerical labels are bounded by $k+r$, and relation labels by the signature. Binary folds realize the displayed finite connectives. Encoding the successive finite rows is ordinary PR even when formula codes exceed their node counts. The loop invariant checks the computed separator's rank and its two evaluation bits for every failed cell filled, and for each successful cell verifies its finite response clauses. Its induction formula is a bounded Boolean test. For the agreement half fix a supplied formula and conjoin the required implications over its nodes, all tuple pairs of the needed lengths and budgets at most $r$, proceeding in postorder. The equivalence with agreement on all formulas follows by testing the computed separator if the game fails.
+\end{proof}
+
+\begin{corollary}[A finite rank test for isomorphism]
+For finite relational structures, $W_{\max(m,n)}((),())=1$ exactly when $M\cong N$.
+\end{corollary}
+\begin{proof}
+An isomorphism and its inverse specify a reply to every move. Conversely play all elements on the larger side in enumeration order. A winning strategy pairs distinct elements with distinct elements, so the two finite sizes must agree. To see the cardinal inequality arithmetically, mark each new image in a bit vector. Its count increases by one at every move and never exceeds the length of the vector. At equal sizes every vector entry is marked. The final pairing is therefore a bijection, and $I$ checks every relation row on this enumeration. All moves and marks belong to bounded loops.
+\end{proof}
+
+\subsection{What rank can count on finite linear orders}
+Let $L_m$ be $[m]$ with its usual strict order as the only nonlogical symbol. Write $T_0=0$, $T_{r+1}=2T_r+1$, so $T_r=2^r-1$.
+
+\begin{theorem}[Exact threshold and nondefinability of parity]\label{thm:orders}
+$L_m$ and $L_n$ agree on all sentences of rank at most $r$ exactly when $m=n$ or $\min(m,n)\ge T_r$. No first-order sentence in the single-order signature defines even cardinality on all nonempty finite linear orders. Given any proposed sentence one computes a concrete adjacent even--odd pair on which it gives the same bit.
+\end{theorem}
+\begin{proof}
+Sort the distinct matched points. Maintain their equality and order, and require that the numbers of unplayed points in corresponding gaps (including the end gaps) are equal or both at least $T_s$, where $s$ rounds remain. Repeating a point is answered by its match. Given a new point in an equal-sized gap, copy its offset from the left. In a pair of unequal gaps each has size at least $2T_{s-1}+1$. If the chosen point leaves fewer than $T_{s-1}$ elements on its left, copy that left count. The two right counts are then at least $T_{s-1}$. If it leaves fewer on its right, copy the right count. If neither is small, choose a point with exactly $T_{s-1}$ elements on its left in the responding gap: both its sides are large enough. The argument works for moves on either side and also when $T_{s-1}=0$. The invariant at zero rounds ensures all equalities and order bits agree. At the initial position its condition is exactly the asserted sufficient size condition.
+
+For sharpness, for each $0\le h\le T_s$ construct a formula saying that an interval has at least $h$ elements, of rank at most $s$, with its existing endpoints as free parameters. A missing endpoint imposes no bound. At $h=0$ take truth. At $h>0$ put $p=\min(h-1,T_{s-1})$, $q=h-1-p$, so $p,q\le T_{s-1}$. Ask for a point $x$ inside the interval, with at least $p$ elements in the interval to its left and $q$ in the one to its right. The interval guard uses only atomic order tests. Formally each child uses the appropriate original endpoint and $x$ as its other endpoint, under a fresh binder. If the interval has at least $h$ elements, its $(p+1)$st point is a witness. Conversely, the two disjoint open subintervals and the chosen point provide at least $p+q+1$ elements. Induction verifies the claim by bounded checks of all interval endpoints and $h\le T_s$ at each stage (allow endpoint sentinels and empty intervals). In orders of unequal sizes with $\min(m,n)<T_r$, choose $h=\min(m,n)+1$ and use the whole interval. The resulting sentence separates. Finally, given a sentence of rank $r$, take $m=2^{r+1}$ and $n=m+1$. The first is even, the second odd, and the sufficient condition forces agreement. This gives the uniform arithmetical counterexample claimed.
+\end{proof}
+
+\paragraph{Formalization details for the model and game algorithms.}
+Use natural-number codes with operations for constant-length tuple enumeration, table lookup, prepending, and indexed left folds. Give \texttt{evalTerm} and \texttt{truth} their postorder implementations. The data lemmas needed for the binder proofs are \texttt{lookupConsZero}, \texttt{lookupConsSucc}, the identity between lookup on a mapped tuple and mapping a lookup, and the minimum/maximum witness identities for a finite bit row. Prove \texttt{evalRename} first, then \texttt{evalLift} and \texttt{evalSubst}. Formulate each as a rowwise equality guarded by code validity. The structure-map proofs reuse this pattern with a fixed map table. For quotients, implement \texttt{rep} by bounded minimum, prove $E(a,b)\leftrightarrow r(a)=r(b)$, then prove term projection before formula projection. For diagrams and language changes, assemble the displayed finite lists of clauses by indexed folds. Apply the closure and substitution lemmas to their evaluated matrices. For the game, store \texttt{win}, \texttt{choice} and \texttt{separator} per position. Prove the bounded row invariant in Theorem~\ref{thm:ef} and separately the implication from a winning position to agreement on each input formula. For the order corollary implement sorted pebbles and gaps by scans and the two-sided reply by the three cases in the proof. The companion \texttt{ef\_certificates.py} constructs and evaluates actual separating formulas, including pointed examples, and tests the rank threshold on small orders.

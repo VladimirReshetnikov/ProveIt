@@ -1,0 +1,660 @@
+\section{Finite fields, quadratic reciprocity, and sums of squares}
+\label{sec:quadratic}
+
+This section develops three connected parts of number theory: the elementary
+structure of the nonzero residues modulo a prime, quadratic reciprocity, and
+representations by two and four squares.  The conventional topics and proof
+traditions may be compared with \cite{lynn-qr,kumar-qr,conrad-descent}.
+The proofs below include their own constructions and bounds.  In particular,
+``descent'' always means an explicitly bounded iteration, not an appeal to an
+unbounded least-number principle.
+
+\subsection{Residue arithmetic and polynomial roots}
+
+For a prime $p$, write $\mathbf F_p$ as notation for the integers
+$0,\ldots,p-1$ with addition and multiplication followed by remainder modulo
+$p$. This is a finite representation, not a new sort of the arithmetic.
+An inverse of $a\ne0$ is the first $b<p$ with $ab\equiv1\pmod p$;
+B\'ezout's identity proves that this bounded search succeeds.  In particular,
+$ab=0$ in $\mathbf F_p$ implies $a=0$ or $b=0$.  Polynomials are finite
+coefficient arrays and their values are computed by Horner's recurrence.
+Trailing zero coefficients are removed by a bounded scan.  All assertions
+about roots mean finite tests over $0,\ldots,p-1$.
+
+\begin{theorem}[Polynomial root bound]\label{qr:roots}
+A nonzero polynomial of degree $d$ over $\mathbf F_p$ has at most $d$
+distinct roots.
+\end{theorem}
+\begin{proof}
+For a constant nonzero polynomial there are no roots.  If a polynomial $f$
+of positive degree has no root, the conclusion also holds.  Otherwise choose
+the first root $a<p$.  Synthetic division computes an array $g$ of degree
+$d-1$ such that
+\[
+ f(X)=(X-a)g(X)+f(a)=(X-a)g(X).
+\]
+For completeness, if $f=\sum_{i=0}^d c_iX^i$, set $b_{d-1}=c_d$ and,
+working downwards, $b_{i-1}=c_i+ab_i$ for $1\le i<d$.  The coefficient
+of $X^i$ in $(X-a)\sum_{j=0}^{d-1}b_jX^j$ is $b_{i-1}-ab_i=c_i$;
+the remaining constant term agrees because evaluation at $a$ gives zero.
+If $b\ne a$ is another root of $f$, cancellation in $\mathbf F_p$ gives
+$g(b)=0$.  Thus the roots of $f$ consist of $a$ and at most $d-1$ further
+roots, by induction.
+
+Here the induction can be made quantifier-free without a hidden polynomial
+sort. Fix $p$ and use the characteristic function which checks the assertion
+for every coefficient array of length at most $d+1$ with entries below $p$.
+Such arrays, padded with zeros, have codes below $p^{d+1}$.  The induction
+step just given reduces the relevant array to one of length at most $d$;
+all root counts are sums of $p$ zero-one values.  This is bounded induction
+compiled into the quantifier-free induction scheme of \ipra.
+\end{proof}
+
+For $1\le a<p$, define $\operatorname{ord}_p(a)$ to be the first positive
+$e\le p-1$ with $a^e\equiv1\pmod p$. Fermat's little theorem proves that
+the search succeeds; exponentiation is always the ordinary primitive
+recursive operation, or its remainder-reduced version.
+
+\begin{lemma}[Orders and coprime products]\label{qr:orders}
+If $d=\operatorname{ord}_p(a)$, then
+\[
+ a^k\equiv1\pmod p\quad\Longleftrightarrow\quad d\mid k
+ \qquad(k\in\N),
+\]
+and $d\mid p-1$.  If $u,v$ have coprime orders $s,t$, respectively,
+then $uv$ has order $st$.
+\end{lemma}
+\begin{proof}
+Divide $k$ by $d$, writing $k=qd+r$ with $0\le r<d$.  If $a^k=1$,
+then $a^r=1$, so the minimality in the bounded definition of $d$ forces
+$r=0$.  The reverse implication follows by exponentiation. Apply this to
+$k=p-1$ for the second assertion.  For the last assertion, $(uv)^{st}=1$.
+If $(uv)^k=1$, raising to $t$ gives $u^{kt}=1$, hence $s\mid kt$.
+Coprimality gives $s\mid k$ by B\'ezout. Similarly $t\mid k$, and therefore
+$st\mid k$. The least positive such exponent is $st$.
+\end{proof}
+
+\begin{theorem}[Primitive roots modulo a prime]\label{qr:primitive}
+For every prime $p$ there is $g<p$ whose powers run through all the
+nonzero residues modulo $p$. A primitive recursive function can choose
+such a $g$ by searching $1\le g<p$.
+\end{theorem}
+\begin{proof}
+For $p=2$, take $g=1$. Put $N=p-1$ and factor $N$ as
+$\prod_{i<r}q_i^{e_i}$ with distinct primes $q_i$. For each $i$, the
+polynomial $X^{N/q_i}-1$ has degree $N/q_i<N$. By the root bound it
+cannot vanish at all $N$ nonzero residues. Choose the first $a_i<p$
+for which $a_i^{N/q_i}\ne1$, and set
+\[
+ b_i=a_i^{N/q_i^{e_i}}\pmod p.
+\]
+The order of $b_i$ divides $q_i^{e_i}$. If it were a proper divisor,
+it would divide $q_i^{e_i-1}$, contradicting
+$b_i^{q_i^{e_i-1}}=a_i^{N/q_i}\ne1$. Thus its order is exactly
+$q_i^{e_i}$. The preceding lemma shows that $g=\prod_{i<r}b_i$
+has order $N$. If $g^i=g^j$ for $0\le i<j<N$, cancellation gives
+$g^{j-i}=1$, contradicting the order. Consequently these $N$ powers
+are distinct, and finite counting shows that they exhaust the $N$
+nonzero residues.
+
+The factor list has length at most $N$, every residue search has $p$
+candidates, and each exponent is at most $N$. Alternatively the final
+function may simply test every $g<p$ for the $N$ required inequalities;
+the argument proves that this single bounded search succeeds.
+\end{proof}
+
+\begin{corollary}[Orders of powers and the number of primitive roots]
+\label{qr:primitive-count}
+For a primitive root $g$ and $N=p-1$,
+\[
+ \operatorname{ord}_p(g^k)=\frac{N}{\gcd(N,k)}.
+\]
+There are exactly $\varphi(N)$ primitive roots modulo $p$. More generally,
+if $b\ne0$, $k\ge1$, $b=g^t$ with $0\le t<N$, and $d=\gcd(k,N)$,
+then $x^k=b$ has no nonzero solution when $d\nmid t$, and exactly $d$
+nonzero solutions when $d\mid t$.
+\end{corollary}
+\begin{proof}
+The equation $(g^k)^j=1$ is equivalent to $N\mid kj$. Dividing by
+$d=\gcd(N,k)$ and using coprimality shows that this is equivalent to
+$N/d\mid j$. This proves the order formula. Since $g^0,\ldots,g^{N-1}$
+list the units once, exactly those exponents coprime to $N$ give order
+$N$, proving the count. Finally, write $x=g^j$; then $x^k=b$ is
+$kj\equiv t\pmod N$. Necessarily $d\mid t$. When $d\mid t$, division
+by $d$ gives a congruence with invertible coefficient modulo $N/d$,
+so it has one class $j_0$ there. Its $d$ distinct representatives modulo
+$N$ are $j_0+\ell N/d$, $0\le\ell<d$.
+\end{proof}
+
+\subsection{Quadratic characters and reciprocity}
+
+For an odd prime $p$ and an integer $a$, define the Legendre symbol by
+the finite decision
+\[
+ \chi_p(a)=\left(\frac ap\right)=
+ \begin{cases}
+ 0,&a\equiv0\pmod p,\\
+ 1,&a\not\equiv0\pmod p\ \text{and some }1\le x<p\text{ satisfies }x^2\equiv a,\\
+ -1,&\text{otherwise}.
+ \end{cases}
+\]
+The word ``otherwise'' is justified by a complete finite search, not by
+excluded middle for an arbitrary proposition. The output is encoded as a
+signed integer. Put $h=(p-1)/2$.
+
+\begin{lemma}[The square residues]\label{qr:squares-half}
+The $h$ residues $1^2,2^2,\ldots,h^2$ are distinct, and they are
+exactly the nonzero square residues. Each has precisely two square roots
+modulo $p$.
+\end{lemma}
+\begin{proof}
+If $i^2=j^2$, then $(i-j)(i+j)=0$. For $1\le i,j\le h$, the second
+factor is a positive integer less than $p$, so it cannot vanish modulo
+$p$; hence $i=j$. Every nonzero residue $x$ has either $x\le h$ or
+$p-x\le h$, and $x^2=(p-x)^2$. This proves exhaustion. The same
+factorization shows that the only roots of $X^2-i^2$ are $i$ and $-i$;
+they differ because $p$ is odd and $i\ne0$.
+\end{proof}
+
+\begin{theorem}[Euler's criterion]\label{qr:euler-criterion}
+For an odd prime $p$ and $p\nmid a$,
+\[
+ a^{(p-1)/2}\equiv\chi_p(a)\pmod p.
+\]
+\end{theorem}
+\begin{proof}
+If $a=b^2\ne0$, Fermat's little theorem gives $a^h=b^{p-1}=1$.
+Thus all $h$ nonzero square residues are roots of $X^h-1$. The root
+bound permits no further roots, so a nonsquare $a$ satisfies $a^h\ne1$.
+On the other hand, $(a^h)^2=a^{p-1}=1$. The identity
+$(a^h-1)(a^h+1)=0$ forces $a^h=-1$. These are exactly the two
+nonzero values specified by $\chi_p$.
+\end{proof}
+
+\begin{corollary}[Multiplicativity]\label{qr:character}
+For all integers $a,b$,
+\[
+ \chi_p(ab)=\chi_p(a)\chi_p(b).
+\]
+\end{corollary}
+\begin{proof}
+If either residue is zero, both sides are zero. Otherwise Euler's criterion
+makes the two sides congruent modulo $p$. Both are in $\{-1,1\}$.
+Since an odd prime does not divide $2$, these two values are distinct
+modulo $p$, and congruence implies equality as signed integers.
+\end{proof}
+
+\begin{theorem}[Gauss's lemma]\label{qr:gauss}
+Let $p\nmid a$. For $1\le i\le h$, let $r_i$ be the residue of
+$ai$ in $\{1,\ldots,p-1\}$, and let
+\[
+ m=\#\{i:1\le i\le h,\ 2r_i>p\}.
+\]
+Then $\chi_p(a)=(-1)^m$.
+\end{theorem}
+\begin{proof}
+Define $s_i=r_i$ when $r_i\le h$ and $s_i=p-r_i$ otherwise.
+These numbers lie in $\{1,\ldots,h\}$. If $s_i=s_j$, then
+$ai\equiv aj$ or $ai\equiv-aj$. Cancellation gives $i\equiv j$
+or $i\equiv-j$. The first gives $i=j$; the second is impossible
+because $2\le i+j\le p-1$. Thus $s_1,\ldots,s_h$ is a permutation
+of $1,\ldots,h$. Multiplying all congruences gives
+\[
+ a^h h!\equiv\prod_{i=1}^h r_i
+       \equiv(-1)^m\prod_{i=1}^h s_i=(-1)^m h!\pmod p.
+\]
+No factor of $h!$ is divisible by $p$, so cancel it and use Euler's
+criterion. The comparison of the two signs is justified as in the previous
+corollary. Every permutation assertion here is a bounded statement about
+$h$ entries; the product equality follows from counting each possible
+entry once.
+\end{proof}
+
+\begin{lemma}[The floor-sum form]\label{qr:eisenstein}
+If $a$ is a positive odd integer coprime to the odd prime $p$, then
+\[
+ \chi_p(a)=(-1)^{\displaystyle\sum_{i=1}^{h}\lfloor ai/p\rfloor}.
+\]
+\end{lemma}
+\begin{proof}
+Use the residues $r_i$ and folded residues $s_i$ of Gauss's lemma and
+put $K=\sum_i\lfloor ai/p\rfloor$. Summing $ai=p\lfloor ai/p\rfloor+r_i$
+and replacing each negative-side residue by $p-s_i$ yields the exact
+integer identity
+\[
+ (a-1)\sum_{i=1}^{h}i
+   =p(K+m)-2\sum_{\{i:r_i>h\}}s_i.
+\]
+Here we used $\sum_i s_i=\sum_i i$, already proved by the finite
+permutation. Since $a-1$ is even and $p$ is odd, $K+m$ is even.
+Therefore $(-1)^K=(-1)^m$, and Gauss's lemma proves the assertion.
+The identity, rather than any geometric parity intuition, is the
+quantifier-free invariant needed for formalization.
+\end{proof}
+
+\begin{theorem}[Quadratic reciprocity]\label{qr:reciprocity}
+For distinct odd primes $p,q$,
+\[
+ \left(\frac qp\right)\left(\frac pq\right)
+       =(-1)^{((p-1)/2)((q-1)/2)}.
+\]
+\end{theorem}
+\begin{proof}
+Put $h=(p-1)/2$, $k=(q-1)/2$. Consider all $hk$ pairs
+$(i,j)$ with $1\le i\le h$, $1\le j\le k$. None satisfies
+$qi=pj$: otherwise $p\mid i$, impossible because $0<i<p$.
+For fixed $i$, the number with $pj<qi$ is $\lfloor qi/p\rfloor$.
+Indeed $qi/p<q/2=k+1/2$, and $qi/p$ is not integral, so this floor
+lies between $0$ and $k$. For fixed $j$, the number with $qi<pj$
+is similarly $\lfloor pj/q\rfloor$. The decidable alternatives
+$pj<qi$ and $qi<pj$ partition the rectangle. Consequently
+\[
+ \sum_{i=1}^{h}\left\lfloor\frac{qi}{p}\right\rfloor+
+ \sum_{j=1}^{k}\left\lfloor\frac{pj}{q}\right\rfloor=hk.
+\]
+Apply the floor-sum formula twice and multiply the signs. The counting
+identity is proved arithmetically by two nested bounded sums, so no
+geometric theorem or principle concerning an infinite set has entered.
+\end{proof}
+
+\begin{theorem}[The two supplementary laws]\label{qr:supplements}
+For every odd prime $p$,
+\[
+ \left(\frac{-1}{p}\right)=(-1)^{(p-1)/2},
+ \qquad
+ \left(\frac2p\right)=(-1)^{(p^2-1)/8}.
+\]
+In particular, $-1$ is a square precisely when $p\equiv1\pmod4$,
+and $2$ is a square precisely when $p\equiv1$ or $7\pmod8$.
+\end{theorem}
+\begin{proof}
+The first identity follows immediately by applying Euler's criterion to
+$-1$. For the second, the residues of $2,4,\ldots,2h$ are those
+integers themselves because $2h=p-1$. In Gauss's lemma, a residue
+$2i$ is on the negative side exactly when $4i>p$. Hence
+\[
+ m=h-\lfloor p/4\rfloor.
+\]
+Write the odd integer $p$ in one of the four forms $8t+1,8t+3,8t+5,8t+7$.
+The corresponding values of $m$ are $2t,2t+1,2t+1,2t+2$.
+The integers $(p^2-1)/8$ in those four cases have the same parities:
+$8t^2+2t$, $8t^2+6t+1$, $8t^2+10t+3$, and $8t^2+14t+6$.
+Thus Gauss's sign is exactly the displayed sign. These four branches
+also give the stated residue-class criteria.
+\end{proof}
+
+\subsection{Two squares: prime representation and exact classification}
+
+Write $N_2(x,y)=x^2+y^2$ for signed integers $x,y$.  A pair of
+nonnegative square roots representing $n$ can always be sought in the
+finite box $0\le x,y\le n$.  We use signed coordinates during the
+constructions because subtraction makes the identities shorter.
+
+\begin{lemma}[The two-square product identity]\label{qr:two-product}
+For all integers $x,y,r,s$,
+\[
+ (x^2+y^2)(r^2+s^2)=(xr+ys)^2+(xs-yr)^2.
+\]
+Consequently products of sums of two squares are sums of two squares.
+\end{lemma}
+\begin{proof}
+Expanding the right side gives $x^2r^2+2xyrs+y^2s^2+x^2s^2-2xyrs+y^2r^2$.
+The mixed terms cancel and the remaining four terms factor as claimed.
+This is a polynomial identity over the signed-integer coding, hence an
+identity provable from the elementary ring equations of \ipra.
+\end{proof}
+
+\begin{lemma}[A strict, bounded two-square descent]\label{qr:two-descent}
+Let $p$ be prime and $1<m<p$. From $x^2+y^2=mp$ one can compute
+integers $u,v$ and $1\le m'<m$ with $u^2+v^2=m'p$.
+\end{lemma}
+\begin{proof}
+Choose balanced residues $r\equiv x$ and $s\equiv y\pmod m$ with
+$|r|,|s|\le m/2$. They are computed by taking ordinary remainders
+and subtracting $m$ exactly when twice the remainder exceeds $m$.
+Since $r^2+s^2\equiv x^2+y^2\equiv0\pmod m$, write
+$r^2+s^2=mm'$. The estimate $r^2+s^2\le m^2/2$ gives
+$m'\le m/2<m$. If $m'=0$, both $r$ and $s$ vanish, so $m$ divides
+$x$ and $y$, hence $m^2\mid mp$. Cancellation yields $m\mid p$,
+contrary to $1<m<p$. Thus $m'>0$.
+
+The numerators $xr+ys$ and $xs-yr$ are divisible by $m$, by reducing
+them modulo $m$. Define
+\[
+ u=(xr+ys)/m,\qquad v=(xs-yr)/m.
+\]
+The product identity gives $u^2+v^2=m'p$. All divisions displayed here
+are exact integer divisions established before they are performed.
+A state has $m<p$ and $|x|,|y|<p$; the new state has the same bounds.
+The intermediate products have absolute value at most $p^2$, and a
+sum of two has absolute value at most $2p^2$.
+\end{proof}
+
+\begin{theorem}[Fermat's two-square theorem for primes]\label{qr:two-prime}
+A prime $p$ is a sum of two integer squares if and only if $p=2$ or
+$p\equiv1\pmod4$. In either positive case a primitive recursive
+function returns a pair $(x,y)$ with $0\le x,y\le p$ and
+$x^2+y^2=p$.
+\end{theorem}
+\begin{proof}
+The prime $2$ is $1^2+1^2$. Suppose $p\equiv1\pmod4$.
+The first supplementary law, together with the defining bounded search
+for the Legendre symbol, supplies $a$ with $a^2\equiv-1\pmod p$.
+Replacing $a$ by $p-a$ if needed gives $1\le a\le(p-1)/2$.
+Thus $a^2+1=mp$ for some $1\le m<p$; the upper bound follows
+from $a^2+1<p^2$. If $m>1$, use the preceding descent step.
+Repeat this operation exactly $p$ times, freezing the state when $m=1$.
+At every active step the positive multiplier drops by at least one;
+therefore it must equal $1$ by the end. Absolute values of the final
+coordinates give the requested pair.
+
+Conversely, squares are $0$ or $1$ modulo $4$. If an odd prime is
+a sum of two squares, exactly one square is odd, and the sum is
+$1$ modulo $4$. This covers all primes.
+
+To make the fuel argument explicit, if $m_0<p$ is the initial
+multiplier and $m_t$ the multiplier after $t$ frozen-or-descending
+steps, the bounded invariant is
+$m_t\le\max(1,m_0-t)$, where subtraction is truncated in the
+arithmetic coding. Quantifier-free induction proves it, and at $t=p$
+it gives $m_p=1$. Thus the proof constructs the solution; it does not
+merely negate the possibility of infinite descent.
+\end{proof}
+
+\begin{lemma}[Primes congruent to three modulo four]\label{qr:two-obstruction}
+If $q$ is prime, $q\equiv3\pmod4$, and $q\mid x^2+y^2$, then
+$q\mid x$ and $q\mid y$. If $n=x^2+y^2>0$, its $q$-adic
+valuation $v_q(n)$ is even.
+\end{lemma}
+\begin{proof}
+If $q\nmid y$, divide the congruence $x^2+y^2=0$ by $y^2$
+in $\mathbf F_q$. It gives a square root of $-1$, contradicting the
+first supplementary law. Thus $q\mid y$, and then $q\mid x^2$
+forces $q\mid x$ by primality.
+
+For the valuation statement, choose $t$ to be the smaller of the two
+valuations of the nonzero coordinates, ignoring a zero coordinate.
+At least one coordinate is nonzero because $n>0$. Equivalently, choose
+the greatest $t\le n$ for which $q^t$ divides both coordinates;
+there cannot be a larger relevant exponent, since a nonzero coordinate
+has absolute value at most $n$ and $2^{n+1}>n$. Write
+$x=q^t u$, $y=q^t v$. At least one of $u,v$ is not divisible by $q$.
+The first part implies $q\nmid u^2+v^2$. Since
+$n=q^{2t}(u^2+v^2)$, unique factorization gives $v_q(n)=2t$.
+All the valuation selections used here are bounded by $n$.
+\end{proof}
+
+\begin{theorem}[The sum-of-two-squares classification]\label{qr:two-classification}
+For $n>0$, the following conditions are equivalent:
+\begin{enumerate}
+\item $n=x^2+y^2$ for integers $x,y$;
+\item every prime $q\equiv3\pmod4$ has even exponent in the
+prime factorization of $n$.
+\end{enumerate}
+There is a primitive recursive decision procedure for this condition,
+and a primitive recursive witness function returning nonnegative
+$x,y\le n$ whenever it holds. Also $0=0^2+0^2$.
+\end{theorem}
+\begin{proof}
+Necessity is the preceding lemma, applied to every prime factor of $n$.
+For sufficiency, take the finite prime factorization. Each factor $2$
+has representation $(1,1)$, and each prime $p\equiv1\pmod4$ has
+a representation from the prime theorem. A prime factor
+$q\equiv3\pmod4$ occurs to an even exponent $2e$, so the whole
+factor $q^{2e}$ has representation $(q^e,0)$. Multiply these finitely
+many representations using the two-square identity, starting with
+$(1,0)$. The norm invariant states after each multiplication that the
+current pair represents the product of the factors already processed.
+The final product is $n$. Taking absolute values gives nonnegative
+coordinates, each at most $n$.
+
+The decision is a scan over primes $q\le n$ and their valuations.
+For a particularly simple total witness function, scan the entire box
+$\{0,\ldots,n\}^2$ and return its first representation, with $(0,0)$
+as a failure value when none exists. The proof establishes success
+under condition (2); the search itself has exactly $(n+1)^2$ candidates.
+Thus the internal statement may use only the equality
+$N_2(\operatorname{twoSq}(n))=n$ and a zero-one condition checking (2).
+\end{proof}
+
+\subsection{Four squares by finite descent}
+
+Write $N_4(x)=x_0^2+x_1^2+x_2^2+x_3^2$. For two signed integer
+quadruples define the bilinear quadruple $B(x,r)$ by
+\begin{align*}
+ B_0&=x_0r_0+x_1r_1+x_2r_2+x_3r_3,\\
+ B_1&=x_0r_1-x_1r_0-x_2r_3+x_3r_2,\\
+ B_2&=x_0r_2+x_1r_3-x_2r_0-x_3r_1,\\
+ B_3&=x_0r_3-x_1r_2+x_2r_1-x_3r_0.
+\end{align*}
+
+\begin{lemma}[Euler's four-square identity]\label{qr:four-product}
+For the displayed bilinear map,
+\[
+ N_4(B(x,r))=N_4(x)N_4(r).
+\]
+Moreover, if $r_i\equiv x_i\pmod m$ for all $i$ and
+$m\mid N_4(x)$, then $m\mid B_i(x,r)$ for every $i$.
+\end{lemma}
+\begin{proof}
+In the sum of the four squared coordinates, every term $x_i^2r_j^2$
+occurs once. Every mixed term has a second occurrence with the opposite
+sign; cancellation leaves $\sum_{i,j}x_i^2r_j^2=N_4(x)N_4(r)$.
+For the divisibility assertion substitute $r_i=x_i$ modulo $m$.
+The first coordinate becomes $N_4(x)$, and each remaining coordinate
+becomes zero by commutativity of multiplication. This also explains the
+particular sign convention in $B$: the divisibility needed for descent
+is built directly into the identity.
+\end{proof}
+
+\begin{lemma}[A small represented multiple of an odd prime]\label{qr:four-seed}
+For every odd prime $p$ one can find $a,b\le(p-1)/2$ and
+$1\le m<p$ such that
+\[
+ a^2+b^2+1^2+0^2=mp.
+\]
+\end{lemma}
+\begin{proof}
+Put $h=(p-1)/2$. The residues $a^2$ for $0\le a\le h$ are
+pairwise distinct: the usual factorization of $a^2-b^2$ gives this,
+including the zero case. The residues $-1-b^2$ for $0\le b\le h$
+are also pairwise distinct. Each list has $h+1$ elements, whereas
+there are only $p=2h+1$ residues. If they had no common element,
+the concatenated list would contain $p+1$ distinct residues in a box
+of size $p$, contrary to finite counting. A scan of the
+$(h+1)^2$ pairs therefore returns an intersection, so
+$p\mid a^2+b^2+1$. This positive number is at most
+$2h^2+1=(p^2-2p+3)/2<p^2$ for $p\ge3$. Division by $p$
+gives the required multiplier.
+
+The counting contradiction eliminates a decidable proposition: complete
+search either finds a pair or certifies all pairs unequal. Hence it
+constructs a pair intuitionistically. No infinitary pigeonhole principle
+is used.
+\end{proof}
+
+\begin{lemma}[A strict four-square descent, including the even case]
+\label{qr:four-descent}
+If $p$ is an odd prime, $1<m<p$, and $N_4(x)=mp$, one can
+compute $1\le m'<m$ and $y$ with $N_4(y)=m'p$.
+\end{lemma}
+\begin{proof}
+First suppose $m$ is even. Since $mp$ is even, an even number of
+the four coordinates is odd. There are therefore pairs of equal parity:
+by a permutation, arrange $x_0\equiv x_1\pmod2$ and
+$x_2\equiv x_3\pmod2$. This can be found by testing the $24$
+permutations. Set
+\[
+ y=\left(\frac{x_0+x_1}{2},\frac{x_0-x_1}{2},
+          \frac{x_2+x_3}{2},\frac{x_2-x_3}{2}\right).
+\]
+The coordinates are integers and
+$N_4(y)=N_4(x)/2=(m/2)p$. Thus take $m'=m/2$, which is
+positive and smaller than $m$.
+
+Now suppose $m$ is odd. Choose balanced residues
+$r_i\equiv x_i\pmod m$ with $|r_i|\le(m-1)/2$.
+Their norm is divisible by $m$, so write $N_4(r)=mm'$.
+The strict estimate
+\[
+ N_4(r)\le4\left(\frac{m-1}{2}\right)^2=(m-1)^2<m^2
+\]
+gives $m'<m$. If $m'=0$, all $r_i$ vanish, so every $x_i$
+is divisible by $m$. Then $m^2\mid mp$, hence $m\mid p$,
+contrary to $1<m<p$. Thus $m'\ge1$. The previous lemma makes
+all coordinates of $B(x,r)$ divisible by $m$. Define
+$y_i=B_i(x,r)/m$. Its norm is
+\[
+ N_4(y)=\frac{N_4(x)N_4(r)}{m^2}
+        =\frac{(mp)(mm')}{m^2}=m'p.
+\]
+This completes both branches.
+
+The even branch is essential for this proof: balanced residues for an
+even modulus only give $N_4(r)\le m^2$, which need not be strict.
+The parity operation handles that case directly. For every valid state,
+$|x_i|<p$ because $N_4(x)<p^2$. The same holds for the output,
+and every bilinear numerator has absolute value at most $4p^2$.
+These bounds cover the whole finite iteration and all signed arithmetic.
+\end{proof}
+
+\begin{theorem}[Lagrange's four-square theorem]\label{qr:four-squares}
+Every $n\in\N$ is a sum of four squares of nonnegative integers.
+There is a primitive recursive function $\operatorname{fourSq}$ such
+that, provably in \ipra,
+\[
+ \sum_{i=0}^3\operatorname{fourSq}_i(n)^2=n,
+ \qquad \operatorname{fourSq}_i(n)\le n.
+\]
+\end{theorem}
+\begin{proof}
+For an odd prime $p$, the seed lemma supplies a represented multiple
+$mp$ with $1\le m<p$. Apply the descent step when $m>1$ and
+freeze the state when $m=1$. Exactly $p$ iterations suffice, by the
+same invariant $m_t\le\max(1,m_0-t)$ used in the two-square proof.
+This yields a representation of $p$. The prime $2$ is
+$1^2+1^2+0^2+0^2$.
+
+The numbers $0$ and $1$ have the evident representations. For $n>1$,
+compute its prime factor list and multiply the prime representations
+using $B$, starting from $(1,0,0,0)$. The four-square identity proves,
+by induction over this list, that the current norm is the product of
+the already processed factors. At the end the norm is $n$; take
+absolute values of the coordinates. A nonnegative coordinate with
+square at most $n$ is at most $n$.
+
+All fuel bounds are explicit: factorization uses at most $n$ extracted
+factors, each prime routine uses at most $p\le n$ descent steps,
+and the final product uses at most $n$ bilinear operations. A simpler
+specification of the witness function is the first quadruple in
+$\{0,\ldots,n\}^4$ of norm $n$, with a default zero quadruple.
+This is a bounded scan of $(n+1)^4$ candidates; the constructive proof
+above establishes its success for every input. The universal theorem
+therefore has a quantifier-free matrix in the language with this
+primitive recursive witness function.
+\end{proof}
+
+\begin{corollary}[Four squares over the nonnegative rationals]
+\label{qr:rational-four}
+For integers $a\ge0$ and $b\ge1$, the rational $a/b$ is a sum of
+four rational squares, with a primitive recursive construction from
+$(a,b)$.
+\end{corollary}
+\begin{proof}
+Represent $ab=x_0^2+x_1^2+x_2^2+x_3^2$ by the preceding theorem.
+Then $a/b=\sum_i(x_i/b)^2$. This statement is an exact equality
+after multiplication by $b^2$, so it needs no analytic theory of
+rational or real numbers. The numerators satisfy $x_i\le ab$ and
+the common positive denominator is the input $b$.
+\end{proof}
+
+\begin{proposition}[The three-square obstruction and optimality]
+\label{qr:three-obstruction}
+No integer of the form $4^a(8b+7)$, with $a,b\in\N$, is a sum
+of three integer squares. In particular four squares are sometimes
+necessary: $7$ cannot be expressed using three squares.
+\end{proposition}
+\begin{proof}
+The square residues modulo $8$ are $0,1,4$. A sum of three such
+residues is never $7$: with no $4$ it is at most $3$; with one $4$
+it is $4,5$, or $6$; with two $4$ it is $0$ or $1$ modulo $8$;
+with three it is $4$. Thus $8b+7$ is not a sum of three squares.
+If a sum of three squares is divisible by $4$, all three coordinates
+are even, since a square is $0$ or $1$ modulo $4$ and a sum of at
+most three ones is zero modulo $4$ only when there are none. Divide
+all three coordinates by $2$ and the equation by $4$, and repeat
+this operation exactly $a$ times. A representation of
+$4^a(8b+7)$ would thereby yield the already impossible representation
+of $8b+7$. This is a bounded descent on the supplied exponent $a$.
+No converse to this obstruction, and thus no proof here of the full
+three-square theorem, is asserted.
+\end{proof}
+
+\subsection{Internal arithmetic statements and Lean obligations}
+\label{qr:formalization}
+
+All functions in this section are given by composition, primitive recursion,
+or explicitly bounded search. For clarity, a common implementation can use
+these numerical interfaces:
+\begin{itemize}
+\item $\operatorname{eval}(p,c,d,x)$: Horner evaluation of a base-$p$
+coefficient code $c<p^{d+1}$; $\operatorname{rootCount}(p,c,d)$ is the
+sum of its zero tests over $x<p$.
+\item $\operatorname{order}(p,a)$: the first $1\le e\le p-1$ with
+$a^e\bmod p=1$, defaulting to $0$; $\operatorname{generator}(p)$:
+the first $1\le g<p$ with order $p-1$, defaulting to $0$.
+\item $\operatorname{legendre}(p,a)$: the signed three-valued finite
+search above; $\operatorname{fold}(p,r)=\min(r,p-r)$ for $r<p$;
+$\operatorname{negCount}(p,a)$: the sum of the comparisons
+$2(ai\bmod p)>p$ for $1\le i\le(p-1)/2$.
+\item $\operatorname{balance}(m,x)$: the signed balanced remainder;
+$\operatorname{twoStep}$ and $\operatorname{fourStep}$: the exact
+formulas in the descent lemmas, with invalid states sent to a fixed
+zero state. Valid states have $1\le m<p$ and norm $mp$.
+\item $\operatorname{twoSq}(n)$ and $\operatorname{fourSq}(n)$:
+the bounded lexicographic searches specified in the main theorems.
+A tuple is coded in base $n+1$, so its search bound is respectively
+$(n+1)^2$ and $(n+1)^4$.
+\end{itemize}
+The state records and coefficient codes are numerical encodings.  In
+particular, a statement about a list means a statement about the bounded
+digit tests of its code. The arithmetic predicates ``prime'', ``coprime'',
+``has order'', and ``all $3\bmod4$ exponents are even'' are zero-one
+primitive recursive functions. Signed equations can equally be converted
+to equations between natural numbers by moving negative summands to the
+opposite side.
+
+A Lean formalization should have two distinct layers.  The first is a
+semantic development on \texttt{Nat}, coded signed integers, and finite
+arrays; the second constructs or checks the corresponding derivations
+in the explicit syntax of \ipra. Proving a result in Lean's ambient
+logic, even without invoking \texttt{Classical}, is not by itself the
+second layer. The specific proof obligations are as follows.
+\begin{enumerate}
+\item Prove the Horner synthetic-division identity, root-set inclusion,
+and counting inequality. Instantiate bounded induction on degree with
+all coefficient codes below $p^{d+1}$.
+\item Prove the remainder/exponent identities for orders, the finite
+root-count witness for each factor of $p-1$, and the coprime-order product
+lemma. No general finite-field classification theorem is needed.
+\item Prove that folded residues give a bounded permutation. Derive
+both the product identity for Gauss's lemma and the exact sum identity
+for floor parity. Prove the reciprocity rectangle identity as equality
+of two finite sums of zero-one comparisons.
+\item Normalize the polynomial identities $N_2$ and $N_4$ in a
+commutative-ring semantics, then supply equation-level certificates
+for their use in \ipra. Prove exact divisibility before constructing
+any quotient in a descent step.
+\item For four-square descent, formalize the equal-parity pairing of
+four integers separately from the odd-modulus balanced-residue estimate.
+This prevents a weak inequality from being mistaken for strict descent.
+\item Compile the frozen-loop invariant
+$m_t\le\max(1,m_0-t)$ and the norm invariant to quantifier-free
+induction. Finish with bounded-search success and its primitive
+recursive definition certificate.
+\end{enumerate}
+This list is a completion route, not a claim that the Lean implementation
+of all these obligations has already been completed. It is deliberately
+compatible with reusing the repository's folded-residue, Gauss-product,
+reciprocity, and supplementary-law derivations once their exact interfaces
+and assumptions have been checked.

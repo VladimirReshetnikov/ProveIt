@@ -1,0 +1,971 @@
+{
+  "total_numbered_results": 106,
+  "foundational_results": 5,
+  "number_theoretic_results": 101,
+  "counts_by_chapter": {
+    "foundations": 5,
+    "elementary": 32,
+    "quadratic": 22,
+    "diophantine": 20,
+    "analytic": 15,
+    "algebraic": 9,
+    "transcendence": 3
+  },
+  "counting_policy": "Distinct numbered theorem/lemma/corollary/proposition blocks; consequences within one block are not counted separately.",
+  "results": [
+    {
+      "id": "fd:reflection",
+      "number": "1.1",
+      "kind": "lemma",
+      "title_latex": "Bounded Boolean reflection",
+      "statement_latex": "For each fixed formula $A(\\vec x)$ made from primitive recursive atomic equalities by propositional connectives and bounded quantifiers, there is a primitive recursive Boolean $[A](\\vec x)$ for which \\ipra\\ proves\n\\[\n [A]=0\\ \\vee\\ [A]=1,\n \\qquad A\\ \\longleftrightarrow\\ [A]=1.\n\\]\nConsequently bounded-formula induction is derivable, by applying quantifier-free induction to $[A]=1$.",
+      "source": "chapters/foundations.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "fd:search",
+      "number": "1.2",
+      "kind": "lemma",
+      "title_latex": "Bounded search, finite sums, and finite products",
+      "statement_latex": "Let $b(i,\\vec x)$ be a fixed primitive recursive Boolean and let $T(\\vec x)$ be primitive recursive. The first $i<T$ with $b(i,\\vec x)=1$, with the failure value $T$, is primitive recursive. Its successful answer satisfies the predicate and is least; failure is equivalent to all $T$ tests being zero. Finite sums and products of fixed primitive recursive functions, including signed or rational ones, are primitive recursive.",
+      "source": "chapters/foundations.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "fd:loops",
+      "number": "1.3",
+      "kind": "lemma",
+      "title_latex": "Clocked loops and simultaneous invariants",
+      "statement_latex": "Suppose a state update $F(s,\\vec x)$, initial state $s_0(\\vec x)$, and iteration count $T(\\vec x)$ are primitive recursive. If a bounded arithmetic invariant $I(j,s,\\vec x)$ holds initially and is preserved by the update, \\ipra\\ proves it at every $j\\le T$. The resulting state and every selected output component are primitive recursive.",
+      "source": "chapters/foundations.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "fd:descent",
+      "number": "1.4",
+      "kind": "lemma",
+      "title_latex": "Finite descent",
+      "statement_latex": "Let $\\operatorname{Bad}(s)$ and a height $h(s)$ be primitive recursive. Suppose \\ipra\\ proves that a bad state has positive height and that a primitive recursive update $F$ maps every bad state to a bad state of strictly smaller height. Then \\ipra\\ proves that no bad state exists.",
+      "source": "chapters/foundations.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "fd:php",
+      "number": "1.5",
+      "kind": "lemma",
+      "title_latex": "Finite pigeonhole principle with witnesses",
+      "statement_latex": "For a coded list $a_0,\\ldots,a_M$ with $a_i<M$, one can find $i<j\\le M$ with $a_i=a_j$ by a primitive recursive search, and \\ipra\\ proves its success.",
+      "source": "chapters/foundations.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "el:division",
+      "number": "2.1",
+      "kind": "theorem",
+      "title_latex": "Division with a bounded algorithm",
+      "statement_latex": "For $a\\in\\N$ and $b>0$ there are unique natural numbers $q,r$ such that\n$a=bq+r$ and $r<b$.  They satisfy $q\\le a$ and $r\\le a$, and are primitive\nrecursive functions of $a,b$.",
+      "source": "chapters/elementary.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "el:bezout",
+      "number": "2.2",
+      "kind": "theorem",
+      "title_latex": "Euclidean algorithm and B\\'ezout identity",
+      "statement_latex": "There are primitive recursive functions $g(a,b)\\in\\N$ and\n$u(a,b),v(a,b)\\in\\Z$ satisfying\n\\[\n g\\mid a,\\quad g\\mid b,\\quad ua+vb=g,\n \\qquad d\\mid a\\text{ and }d\\mid b\\Longrightarrow d\\mid g.\n\\]\nHere $g(0,0)=0$; otherwise $g>0$.  Consequently $g$ is the greatest\ncommon divisor.  A computation with at most $a+b+1$ Euclidean steps\nsuffices, and the displayed coefficients may be chosen with\n\\[\n |u|,|v|\\le (a+b+2)^{a+b+1}.\n\\]",
+      "source": "chapters/elementary.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "el:linear",
+      "number": "2.3",
+      "kind": "theorem",
+      "title_latex": "Linear Diophantine equations",
+      "statement_latex": "Let $a,b\\in\\N$, not both zero, and $c\\in\\Z$, and put $g=g(a,b)$.\nThe equation $ax+by=c$ has integer solutions exactly when $g\\mid c$.\nWhen it does, one solution is\n\\[\n x_0=u(a,b)(c/g),\\qquad y_0=v(a,b)(c/g).\n\\]\nAll solutions are\n\\[\n x=x_0+(b/g)t,\\qquad y=y_0-(a/g)t\\qquad(t\\in\\Z).\n\\]\nFor $a=b=0$ solvability is exactly $c=0$.",
+      "source": "chapters/elementary.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "el:leastprime",
+      "number": "2.4",
+      "kind": "lemma",
+      "title_latex": "A least divisor is prime",
+      "statement_latex": "Every $n\\ge2$ has a prime divisor at most $n$, obtained by taking the\nleast $d\\in[2,n]$ dividing $n$.  If $n$ is composite, it has a prime\ndivisor $p$ with $p^2\\le n$.",
+      "source": "chapters/elementary.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "el:euclidlemma",
+      "number": "2.5",
+      "kind": "theorem",
+      "title_latex": "Euclid's lemma",
+      "statement_latex": "For a prime $p$, if $p\\mid ab$, then $p\\mid a$ or $p\\mid b$.\nConsequently, if $\\gcd(a,m)=1$ and $m\\mid ab$, then $m\\mid b$.",
+      "source": "chapters/elementary.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "el:fta",
+      "number": "2.6",
+      "kind": "theorem",
+      "title_latex": "Fundamental theorem of arithmetic",
+      "statement_latex": "Every $n\\ge1$ has a primitive recursively computed nondecreasing list\nof primes $p_0,\\ldots,p_{\\ell-1}$, with $\\ell\\le n$, whose product is $n$.\nAny other nondecreasing prime list with product $n$ is identical to it.\nEquivalently, the multiset of prime factors is unique.",
+      "source": "chapters/elementary.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "el:valuation",
+      "number": "2.7",
+      "kind": "theorem",
+      "title_latex": "Valuations, gcd, and lcm",
+      "statement_latex": "For primes $p$ and positive $a,b$,\n\\[\n v_p(ab)=v_p(a)+v_p(b),\\qquad\n a\\mid b\\ \\Longleftrightarrow\\\n       (\\forall p\\le\\max(a,b))\n       (\\operatorname{Prime}(p)\\Longrightarrow v_p(a)\\le v_p(b)).\n\\]\nThe valuations of $\\gcd(a,b)$ and $\\operatorname{lcm}(a,b)$ are the\nrespective minima and maxima.  In particular\n\\[\n \\gcd(a,b)\\operatorname{lcm}(a,b)=ab.\n\\]",
+      "source": "chapters/elementary.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "el:euclid",
+      "number": "2.8",
+      "kind": "theorem",
+      "title_latex": "Euclid's theorem with a bound",
+      "statement_latex": "For every $N\\in\\N$ a prime $p$ with\n\\[\n             N<p\\le N!+1\n\\]\ncan be computed primitive recursively.  Consequently there is no finite\nlist containing all primes.",
+      "source": "chapters/elementary.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "el:sieve",
+      "number": "2.9",
+      "kind": "theorem",
+      "title_latex": "Correctness of the sieve of Eratosthenes",
+      "statement_latex": "There is a primitive recursive Boolean array marking exactly the primes\nat most $N$.  The usual sieve, which crosses off multiples of $d$ from\n$d^2$ onward whenever $d$ is still unmarked, is correct.",
+      "source": "chapters/elementary.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "el:linearcong",
+      "number": "2.10",
+      "kind": "theorem",
+      "title_latex": "Solving and counting linear congruences",
+      "statement_latex": "Let $m>0$, $a\\in\\N$, $b\\in\\Z$, and $g=\\gcd(a,m)$.\nThe congruence $ax\\equiv b\\pmod m$ is solvable exactly when $g\\mid b$.\nWhen solvable, it has exactly $g$ representatives in $[0,m)$, namely\n\\[\n x_0+k(m/g)\\qquad(0\\le k<g),\n\\]\nwhere $0\\le x_0<m/g$ is computed by a B\\'ezout inverse modulo $m/g$.",
+      "source": "chapters/elementary.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "el:crt2",
+      "number": "2.11",
+      "kind": "theorem",
+      "title_latex": "Generalized Chinese remainder theorem for two moduli",
+      "statement_latex": "For $m,n>0$, the system\n$x\\equiv a\\pmod m$, $x\\equiv b\\pmod n$ has a solution exactly when\n$\\gcd(m,n)\\mid(b-a)$.  There is then a unique solution in\n$[0,L)$, where $L=\\operatorname{lcm}(m,n)\\le mn$.",
+      "source": "chapters/elementary.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "el:crt",
+      "number": "2.12",
+      "kind": "theorem",
+      "title_latex": "Chinese remainder theorem for a finite system",
+      "statement_latex": "For positive moduli $m_0,\\ldots,m_{k-1}$ and integer residues $a_i$,\na simultaneous solution exists exactly when\n\\[\n \\gcd(m_i,m_j)\\mid(a_i-a_j)\\qquad(i,j<k).\n\\]\nWhen it exists, there is a unique representative below\n$L=\\operatorname{lcm}(m_0,\\ldots,m_{k-1})$, and it is primitive\nrecursively computable.  In particular pairwise coprime moduli admit\narbitrary residues, with $L=\\prod_i m_i$.",
+      "source": "chapters/elementary.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "el:euler",
+      "number": "2.13",
+      "kind": "theorem",
+      "title_latex": "Euler's theorem",
+      "statement_latex": "If $n\\ge1$ and $\\gcd(|a|,n)=1$, then\n\\[\n                    a^{\\varphi(n)}\\equiv1\\pmod n.\n\\]",
+      "source": "chapters/elementary.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "el:fermat",
+      "number": "2.14",
+      "kind": "corollary",
+      "title_latex": "Fermat's little theorem",
+      "statement_latex": "For a prime $p$, $p\\nmid a$ implies $a^{p-1}\\equiv1\\pmod p$.\nFor every integer $a$ one has $a^p\\equiv a\\pmod p$.",
+      "source": "chapters/elementary.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "el:order",
+      "number": "2.15",
+      "kind": "theorem",
+      "title_latex": "Order of a residue",
+      "statement_latex": "For $n>1$ and $\\gcd(|a|,n)=1$, the least positive exponent\n$d\\le\\varphi(n)$ with $a^d\\equiv1\\pmod n$ exists and is primitive\nrecursive.  For every $t\\in\\N$,\n\\[\n a^t\\equiv1\\pmod n\\ \\Longleftrightarrow\\ d\\mid t,\n \\qquad\\text{and consequently }d\\mid\\varphi(n).\n\\]",
+      "source": "chapters/elementary.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "el:wilson",
+      "number": "2.16",
+      "kind": "theorem",
+      "title_latex": "Wilson's theorem and converse",
+      "statement_latex": "For every $n\\ge2$,\n\\[\n \\operatorname{Prime}(n)\\quad\\Longleftrightarrow\\quad\n (n-1)!\\equiv-1\\pmod n.\n\\]",
+      "source": "chapters/elementary.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "el:rsa",
+      "number": "2.17",
+      "kind": "theorem",
+      "title_latex": "RSA correctness, including nonunits",
+      "statement_latex": "Let $p,q$ be distinct primes, $N=pq$, and let positive $e,d$ satisfy\n$ed\\equiv1\\pmod{(p-1)(q-1)}$.  For every integer message $m$,\n\\[\n                    (m^e)^d\\equiv m\\pmod N.\n\\]\nAll key arithmetic and message transformations here are primitive\nrecursive.  This assertion makes no claim about cryptographic security.",
+      "source": "chapters/elementary.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "el:digits",
+      "number": "2.18",
+      "kind": "theorem",
+      "title_latex": "Base-expansion divisibility rules",
+      "statement_latex": "If $b\\ge2$ and $n=\\sum_{i<k}d_i b^i$, $0\\le d_i<b$, then\n\\[\n n\\equiv\\sum_{i<k}d_i\\pmod{b-1},\\qquad\n n\\equiv\\sum_{i<k}(-1)^i d_i\\pmod{b+1}.\n\\]\nIf $m\\mid b^j$, divisibility by $m$ depends only on the last $j$\nbase-$b$ digits.  Thus the usual decimal rules for $3,9,11$, and\npowers dividing $10^j$ follow.",
+      "source": "chapters/elementary.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "el:binomial",
+      "number": "2.19",
+      "kind": "theorem",
+      "title_latex": "Prime binomial divisibility and the Frobenius identity",
+      "statement_latex": "For a prime $p$ and $0<k<p$ one has $p\\mid\\binom pk$.\nConsequently $(x+y)^p\\equiv x^p+y^p\\pmod p$ for integer $x,y$,\nand the coefficientwise identity\n$(A+B)^p=A^p+B^p$ holds for finite polynomials modulo $p$.",
+      "source": "chapters/elementary.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "el:legendre",
+      "number": "2.20",
+      "kind": "theorem",
+      "title_latex": "Legendre's factorial valuation formula",
+      "statement_latex": "For a prime $p$ and $n\\ge0$,\n\\[\n        v_p(n!)=\\sum_{j=1}^{n}\\left\\lfloor\\frac{n}{p^j}\\right\\rfloor.\n\\]\nIf $n=\\sum_{i<k}d_i p^i$ is its base-$p$ expansion and\n$s_p(n)=\\sum_{i<k}d_i$, this is equivalently\n\\[\n                 (p-1)v_p(n!)=n-s_p(n).\n\\]",
+      "source": "chapters/elementary.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "el:lucas",
+      "number": "2.21",
+      "kind": "theorem",
+      "title_latex": "Lucas's binomial congruence",
+      "statement_latex": "Let $p$ be prime and write $n=\\sum_i n_i p^i$ and\n$k=\\sum_i k_i p^i$ with digits in $[0,p)$, padding with zeros to the\nsame finite length.  Then\n\\[\n                    \\binom nk\\equiv\\prod_i\\binom{n_i}{k_i}\\pmod p,\n\\]\nwhere a binomial coefficient with lower index exceeding the upper\nis zero.",
+      "source": "chapters/elementary.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "el:kummer",
+      "number": "2.22",
+      "kind": "theorem",
+      "title_latex": "Kummer's carry formula",
+      "statement_latex": "For a prime $p$ and $0\\le k\\le n$, the exponent of $p$ in\n$\\binom nk$ equals the number of carries when adding $k$ and $n-k$\nin base $p$.  Equivalently,\n\\[\n (p-1)v_p\\!\\left(\\binom nk\\right)\n     =s_p(k)+s_p(n-k)-s_p(n).\n\\]",
+      "source": "chapters/elementary.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "el:divisorfunc",
+      "number": "2.23",
+      "kind": "theorem",
+      "title_latex": "Divisor formulas and multiplicativity",
+      "statement_latex": "If $n=\\prod_{i<t}p_i^{e_i}$ with distinct primes and $e_i>0$, then\n\\[\n \\tau(n)=\\prod_{i<t}(e_i+1),\\qquad\n \\sigma_r(n)=\\prod_{i<t}\\left(\\sum_{j=0}^{e_i}p_i^{rj}\\right).\n\\]\nThe functions $\\tau$ and $\\sigma_r$ are multiplicative.  For $r=1$,\n\\[\n             (p-1)\\sigma(p^e)=p^{e+1}-1.\n\\]",
+      "source": "chapters/elementary.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "el:squareparity",
+      "number": "2.24",
+      "kind": "theorem",
+      "title_latex": "Squarefree decomposition and parity of divisor functions",
+      "statement_latex": "Every $n\\ge1$ has unique positive integers $s,t$ such that\n$n=st^2$ and $s$ is squarefree (no prime square divides it).\nBoth are primitive recursively computable and at most $n$.\nFurthermore,\n\\[\n \\tau(n)\\text{ is odd}\\ \\Longleftrightarrow\\ n\\text{ is a square},\n\\]\n\\[\n \\sigma(n)\\text{ is odd}\\ \\Longleftrightarrow\\\n n\\text{ is a square or twice a square}.\n\\]",
+      "source": "chapters/elementary.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "el:totient",
+      "number": "2.25",
+      "kind": "theorem",
+      "title_latex": "Totient formula and multiplicativity",
+      "statement_latex": "For a prime $p$ and $e\\ge1$,\n$\\varphi(p^e)=p^{e-1}(p-1)$.  The totient is multiplicative, and hence\n\\[\n             \\varphi(n)=\\prod_{p^e\\parallel n}p^{e-1}(p-1)\n             \\qquad(n\\ge1).\n\\]",
+      "source": "chapters/elementary.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "el:phisum",
+      "number": "2.26",
+      "kind": "theorem",
+      "title_latex": "The divisor sum of the totient",
+      "statement_latex": "For every $n\\ge1$,\n\\[\n                         \\sum_{d\\mid n}\\varphi(d)=n.\n\\]",
+      "source": "chapters/elementary.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "el:mobiuscancel",
+      "number": "2.27",
+      "kind": "theorem",
+      "title_latex": "M\\\"obius cancellation",
+      "statement_latex": "The function $\\mu$ is multiplicative and\n\\[\n \\sum_{d\\mid n}\\mu(d)=\\varepsilon(n),\\qquad\n \\varepsilon(n)=\\begin{cases}1&n=1,\\\\0&n>1.\\end{cases}\n\\]",
+      "source": "chapters/elementary.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "el:liouville",
+      "number": "2.28",
+      "kind": "theorem",
+      "title_latex": "Liouville's function and square detection",
+      "statement_latex": "Let $\\Omega(n)$ be the length of the prime factor list, counting\nmultiplicity, and put $\\lambda(n)=(-1)^{\\Omega(n)}$ for $n\\ge1$.\nThen $\\lambda(ab)=\\lambda(a)\\lambda(b)$ for all positive $a,b$, and\n\\[\n \\sum_{d\\mid n}\\lambda(d)=\n \\begin{cases}1&n\\text{ is a square},\\\\0&n\\text{ is not a square}.\n \\end{cases}\n\\]",
+      "source": "chapters/elementary.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "el:convolution",
+      "number": "2.29",
+      "kind": "theorem",
+      "title_latex": "Finite Dirichlet convolution algebra",
+      "statement_latex": "Dirichlet convolution is commutative and associative, has identity\n$\\varepsilon$, and distributes over pointwise addition.  If $f,g$\nare multiplicative, then $f*g$ is multiplicative.",
+      "source": "chapters/elementary.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "el:mobius",
+      "number": "2.30",
+      "kind": "theorem",
+      "title_latex": "M\\\"obius inversion",
+      "statement_latex": "For fixed primitive recursive integer-valued $f,F$, the identities\n\\[\n F(n)=\\sum_{d\\mid n}f(d)\\quad(n\\ge1)\n\\]\nare equivalent to\n\\[\n f(n)=\\sum_{d\\mid n}\\mu(d)F(n/d)\\quad(n\\ge1).\n\\]\nFor each $N$, the same equivalence holds using only the corresponding\nidentities at indices $1,\\ldots,N$.  In particular\n\\[\n                   \\varphi(n)=\\sum_{d\\mid n}\\mu(d)(n/d).\n\\]",
+      "source": "chapters/elementary.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "el:summatory",
+      "number": "2.31",
+      "kind": "theorem",
+      "title_latex": "Divisor summatory and hyperbola identities",
+      "statement_latex": "For $N\\in\\N$ and $r\\in\\N$,\n\\[\n \\sum_{n=1}^N\\sigma_r(n)=\n      \\sum_{d=1}^N d^r\\left\\lfloor\\frac Nd\\right\\rfloor.\n\\]\nWriting $h=\\lfloor\\sqrt N\\rfloor$, the divisor-counting case also has\n\\[\n \\sum_{n=1}^N\\tau(n)=\n       2\\sum_{d=1}^{h}\\left\\lfloor\\frac Nd\\right\\rfloor-h^2.\n\\]",
+      "source": "chapters/elementary.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "el:perfect",
+      "number": "2.32",
+      "kind": "theorem",
+      "title_latex": "Euclid--Euler characterization of even perfect numbers",
+      "statement_latex": "An even positive integer $N$ satisfies $\\sigma(N)=2N$ exactly when\n\\[\n                  N=2^{e-1}(2^e-1)\n\\]\nfor some $e\\ge2$ such that $2^e-1$ is prime.  The exponent $e$ is then\nprime.  For a supplied $N$ all witnesses and all tests are bounded\nprimitive recursive computations.",
+      "source": "chapters/elementary.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "qr:roots",
+      "number": "3.1",
+      "kind": "theorem",
+      "title_latex": "Polynomial root bound",
+      "statement_latex": "A nonzero polynomial of degree $d$ over $\\mathbf F_p$ has at most $d$\ndistinct roots.",
+      "source": "chapters/quadratic.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "qr:orders",
+      "number": "3.2",
+      "kind": "lemma",
+      "title_latex": "Orders and coprime products",
+      "statement_latex": "If $d=\\operatorname{ord}_p(a)$, then\n\\[\n a^k\\equiv1\\pmod p\\quad\\Longleftrightarrow\\quad d\\mid k\n \\qquad(k\\in\\N),\n\\]\nand $d\\mid p-1$.  If $u,v$ have coprime orders $s,t$, respectively,\nthen $uv$ has order $st$.",
+      "source": "chapters/quadratic.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "qr:primitive",
+      "number": "3.3",
+      "kind": "theorem",
+      "title_latex": "Primitive roots modulo a prime",
+      "statement_latex": "For every prime $p$ there is $g<p$ whose powers run through all the\nnonzero residues modulo $p$. A primitive recursive function can choose\nsuch a $g$ by searching $1\\le g<p$.",
+      "source": "chapters/quadratic.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "qr:primitive-count",
+      "number": "3.4",
+      "kind": "corollary",
+      "title_latex": "Orders of powers and the number of primitive roots",
+      "statement_latex": "For a primitive root $g$ and $N=p-1$,\n\\[\n \\operatorname{ord}_p(g^k)=\\frac{N}{\\gcd(N,k)}.\n\\]\nThere are exactly $\\varphi(N)$ primitive roots modulo $p$. More generally,\nif $b\\ne0$, $k\\ge1$, $b=g^t$ with $0\\le t<N$, and $d=\\gcd(k,N)$,\nthen $x^k=b$ has no nonzero solution when $d\\nmid t$, and exactly $d$\nnonzero solutions when $d\\mid t$.",
+      "source": "chapters/quadratic.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "qr:squares-half",
+      "number": "3.5",
+      "kind": "lemma",
+      "title_latex": "The square residues",
+      "statement_latex": "The $h$ residues $1^2,2^2,\\ldots,h^2$ are distinct, and they are\nexactly the nonzero square residues. Each has precisely two square roots\nmodulo $p$.",
+      "source": "chapters/quadratic.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "qr:euler-criterion",
+      "number": "3.6",
+      "kind": "theorem",
+      "title_latex": "Euler's criterion",
+      "statement_latex": "For an odd prime $p$ and $p\\nmid a$,\n\\[\n a^{(p-1)/2}\\equiv\\chi_p(a)\\pmod p.\n\\]",
+      "source": "chapters/quadratic.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "qr:character",
+      "number": "3.7",
+      "kind": "corollary",
+      "title_latex": "Multiplicativity",
+      "statement_latex": "For all integers $a,b$,\n\\[\n \\chi_p(ab)=\\chi_p(a)\\chi_p(b).\n\\]",
+      "source": "chapters/quadratic.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "qr:gauss",
+      "number": "3.8",
+      "kind": "theorem",
+      "title_latex": "Gauss's lemma",
+      "statement_latex": "Let $p\\nmid a$. For $1\\le i\\le h$, let $r_i$ be the residue of\n$ai$ in $\\{1,\\ldots,p-1\\}$, and let\n\\[\n m=\\#\\{i:1\\le i\\le h,\\ 2r_i>p\\}.\n\\]\nThen $\\chi_p(a)=(-1)^m$.",
+      "source": "chapters/quadratic.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "qr:eisenstein",
+      "number": "3.9",
+      "kind": "lemma",
+      "title_latex": "The floor-sum form",
+      "statement_latex": "If $a$ is a positive odd integer coprime to the odd prime $p$, then\n\\[\n \\chi_p(a)=(-1)^{\\displaystyle\\sum_{i=1}^{h}\\lfloor ai/p\\rfloor}.\n\\]",
+      "source": "chapters/quadratic.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "qr:reciprocity",
+      "number": "3.10",
+      "kind": "theorem",
+      "title_latex": "Quadratic reciprocity",
+      "statement_latex": "For distinct odd primes $p,q$,\n\\[\n \\left(\\frac qp\\right)\\left(\\frac pq\\right)\n       =(-1)^{((p-1)/2)((q-1)/2)}.\n\\]",
+      "source": "chapters/quadratic.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "qr:supplements",
+      "number": "3.11",
+      "kind": "theorem",
+      "title_latex": "The two supplementary laws",
+      "statement_latex": "For every odd prime $p$,\n\\[\n \\left(\\frac{-1}{p}\\right)=(-1)^{(p-1)/2},\n \\qquad\n \\left(\\frac2p\\right)=(-1)^{(p^2-1)/8}.\n\\]\nIn particular, $-1$ is a square precisely when $p\\equiv1\\pmod4$,\nand $2$ is a square precisely when $p\\equiv1$ or $7\\pmod8$.",
+      "source": "chapters/quadratic.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "qr:two-product",
+      "number": "3.12",
+      "kind": "lemma",
+      "title_latex": "The two-square product identity",
+      "statement_latex": "For all integers $x,y,r,s$,\n\\[\n (x^2+y^2)(r^2+s^2)=(xr+ys)^2+(xs-yr)^2.\n\\]\nConsequently products of sums of two squares are sums of two squares.",
+      "source": "chapters/quadratic.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "qr:two-descent",
+      "number": "3.13",
+      "kind": "lemma",
+      "title_latex": "A strict, bounded two-square descent",
+      "statement_latex": "Let $p$ be prime and $1<m<p$. From $x^2+y^2=mp$ one can compute\nintegers $u,v$ and $1\\le m'<m$ with $u^2+v^2=m'p$.",
+      "source": "chapters/quadratic.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "qr:two-prime",
+      "number": "3.14",
+      "kind": "theorem",
+      "title_latex": "Fermat's two-square theorem for primes",
+      "statement_latex": "A prime $p$ is a sum of two integer squares if and only if $p=2$ or\n$p\\equiv1\\pmod4$. In either positive case a primitive recursive\nfunction returns a pair $(x,y)$ with $0\\le x,y\\le p$ and\n$x^2+y^2=p$.",
+      "source": "chapters/quadratic.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "qr:two-obstruction",
+      "number": "3.15",
+      "kind": "lemma",
+      "title_latex": "Primes congruent to three modulo four",
+      "statement_latex": "If $q$ is prime, $q\\equiv3\\pmod4$, and $q\\mid x^2+y^2$, then\n$q\\mid x$ and $q\\mid y$. If $n=x^2+y^2>0$, its $q$-adic\nvaluation $v_q(n)$ is even.",
+      "source": "chapters/quadratic.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "qr:two-classification",
+      "number": "3.16",
+      "kind": "theorem",
+      "title_latex": "The sum-of-two-squares classification",
+      "statement_latex": "For $n>0$, the following conditions are equivalent:\n\\begin{enumerate}\n\\item $n=x^2+y^2$ for integers $x,y$;\n\\item every prime $q\\equiv3\\pmod4$ has even exponent in the\nprime factorization of $n$.\n\\end{enumerate}\nThere is a primitive recursive decision procedure for this condition,\nand a primitive recursive witness function returning nonnegative\n$x,y\\le n$ whenever it holds. Also $0=0^2+0^2$.",
+      "source": "chapters/quadratic.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "qr:four-product",
+      "number": "3.17",
+      "kind": "lemma",
+      "title_latex": "Euler's four-square identity",
+      "statement_latex": "For the displayed bilinear map,\n\\[\n N_4(B(x,r))=N_4(x)N_4(r).\n\\]\nMoreover, if $r_i\\equiv x_i\\pmod m$ for all $i$ and\n$m\\mid N_4(x)$, then $m\\mid B_i(x,r)$ for every $i$.",
+      "source": "chapters/quadratic.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "qr:four-seed",
+      "number": "3.18",
+      "kind": "lemma",
+      "title_latex": "A small represented multiple of an odd prime",
+      "statement_latex": "For every odd prime $p$ one can find $a,b\\le(p-1)/2$ and\n$1\\le m<p$ such that\n\\[\n a^2+b^2+1^2+0^2=mp.\n\\]",
+      "source": "chapters/quadratic.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "qr:four-descent",
+      "number": "3.19",
+      "kind": "lemma",
+      "title_latex": "A strict four-square descent, including the even case",
+      "statement_latex": "If $p$ is an odd prime, $1<m<p$, and $N_4(x)=mp$, one can\ncompute $1\\le m'<m$ and $y$ with $N_4(y)=m'p$.",
+      "source": "chapters/quadratic.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "qr:four-squares",
+      "number": "3.20",
+      "kind": "theorem",
+      "title_latex": "Lagrange's four-square theorem",
+      "statement_latex": "Every $n\\in\\N$ is a sum of four squares of nonnegative integers.\nThere is a primitive recursive function $\\operatorname{fourSq}$ such\nthat, provably in \\ipra,\n\\[\n \\sum_{i=0}^3\\operatorname{fourSq}_i(n)^2=n,\n \\qquad \\operatorname{fourSq}_i(n)\\le n.\n\\]",
+      "source": "chapters/quadratic.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "qr:rational-four",
+      "number": "3.21",
+      "kind": "corollary",
+      "title_latex": "Four squares over the nonnegative rationals",
+      "statement_latex": "For integers $a\\ge0$ and $b\\ge1$, the rational $a/b$ is a sum of\nfour rational squares, with a primitive recursive construction from\n$(a,b)$.",
+      "source": "chapters/quadratic.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "qr:three-obstruction",
+      "number": "3.22",
+      "kind": "proposition",
+      "title_latex": "The three-square obstruction and optimality",
+      "statement_latex": "No integer of the form $4^a(8b+7)$, with $a,b\\in\\N$, is a sum\nof three integer squares. In particular four squares are sometimes\nnecessary: $7$ cannot be expressed using three squares.",
+      "source": "chapters/quadratic.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "dio:normal",
+      "number": "4.1",
+      "kind": "theorem",
+      "title_latex": "Canonical rational representation",
+      "statement_latex": "Every pair $(a,b)$ with $b>0$ has a unique equivalent pair $(u,v)$ with\n$v>0$ and $\\gcd(|u|,v)=1$. Normalization, addition, multiplication,\ncomparison, and reciprocal of a nonzero rational are primitive recursive.",
+      "source": "chapters/diophantine.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "dio:rational-root",
+      "number": "4.2",
+      "kind": "theorem",
+      "title_latex": "Rational root test",
+      "statement_latex": "Let $f(X)=c_0+c_1X+\\cdots+c_dX^d$, with $d\\geq1$, $c_d\\ne0$,\nand integer coefficients. If a reduced rational $u/v$, $v>0$, is a\nroot, then $v\\mid c_d$; if $u\\ne0$, then $u\\mid c_0$.\nA rational root of a monic integer polynomial is therefore an integer.\nIf $c_0\\ne0$, all rational roots can be found by a finite search with\n$|u|\\leq|c_0|$ and $1\\leq v\\leq|c_d|$.",
+      "source": "chapters/diophantine.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "dio:powers",
+      "number": "4.3",
+      "kind": "corollary",
+      "title_latex": "Rational powers and irrational roots",
+      "statement_latex": "For $N\\in\\N$ and $k\\geq2$, a nonnegative rational whose $k$th power is\n$N$ is an integer. Such a rational exists precisely when\n$N=t^k$ for some $0\\leq t\\leq N+1$.\nFor $N>0$, the equivalent valuation criterion is\n$k\\mid v_p(N)$ for every prime $p\\leq N$.\nIn particular, if $D$ is nonsquare and $q>0$, then\n$p^2-Dq^2\\ne0$ for every integer $p$.",
+      "source": "chapters/diophantine.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "dio:pythagoras",
+      "number": "4.4",
+      "kind": "theorem",
+      "title_latex": "Primitive Pythagorean triples",
+      "statement_latex": "Suppose $a,b,c>0$, $a^2+b^2=c^2$, and $\\gcd(a,b)=1$.\nExactly one leg is even. Calling it $b$, there are unique integers\n$m>n>0$ such that\n\\[\n a=m^2-n^2,\\quad b=2mn,\\quad c=m^2+n^2,\\quad\n \\gcd(m,n)=1,\\quad m\\not\\equiv n\\pmod2.\n\\]\nConversely these conditions produce a primitive positive triple.\nThe parameters can be recovered by bounded square-root tests.",
+      "source": "chapters/diophantine.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "dio:all-triples",
+      "number": "4.5",
+      "kind": "corollary",
+      "title_latex": "All integer right triangles",
+      "statement_latex": "Every positive integer right triangle is a positive integer multiple of\nexactly one primitive triple, up to exchanging its legs.",
+      "source": "chapters/diophantine.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "dio:square-area",
+      "number": "4.6",
+      "kind": "theorem",
+      "title_latex": "No integer right triangle has positive square area",
+      "statement_latex": "There are no positive integers $a,b,c,t$ satisfying\n$a^2+b^2=c^2$ and $ab=2t^2$.",
+      "source": "chapters/diophantine.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "dio:fermat-four",
+      "number": "4.7",
+      "kind": "theorem",
+      "title_latex": "Fermat's quartic descent",
+      "statement_latex": "There are no positive integers $x,y,z$ with $x^4+y^4=z^2$.\nConsequently $x^{4k}+y^{4k}=z^{4k}$ has no positive integer solution\nfor any $k\\geq1$.",
+      "source": "chapters/diophantine.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "dio:cf-rational",
+      "number": "4.8",
+      "kind": "theorem",
+      "title_latex": "Finite continued fractions for rationals",
+      "statement_latex": "Every nonnegative rational has a unique finite simple continued fraction\nwhose last coefficient is at least $2$, unless there is just one\ncoefficient. For $a/b$, $a\\geq0,b>0$, it can be computed in at most\n$b+1$ Euclidean stages, with every coefficient at most $a+b$.",
+      "source": "chapters/diophantine.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "dio:continuants",
+      "number": "4.9",
+      "kind": "theorem",
+      "title_latex": "Continuant identity, coprimality, and growth",
+      "statement_latex": "For every valid finite coefficient list,\n\\[\n [a_0;\\ldots,a_n]=p_n/q_n,\\qquad\n p_nq_{n-1}-p_{n-1}q_n=(-1)^{n+1}.\n\\]\nIn particular $\\gcd(p_n,q_n)=1$ and $q_n>0$.\nThe denominators are nondecreasing from $q_0=1$ and strictly increase\nafter $q_1$. Whenever the indicated terms exist,\n\\[\n q_{n+2}\\geq2q_n,\\qquad q_{2k}\\geq2^k.\n\\]\nIf every coefficient is at most $A\\geq1$, then\n$p_n,q_n\\leq(A+1)^{n+1}$.",
+      "source": "chapters/diophantine.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "dio:cf-error",
+      "number": "4.10",
+      "kind": "theorem",
+      "title_latex": "Exact tail and error identities",
+      "statement_latex": "For a positive rational $t$ and $n\\geq0$,\n\\[\n [a_0;\\ldots,a_n,t]\n =\\frac{tp_n+p_{n-1}}{tq_n+q_{n-1}},\\qquad\n \\left|[a_0;\\ldots,a_n,t]-\\frac{p_n}{q_n}\\right|\n =\\frac1{q_n(tq_n+q_{n-1})}.\n\\]\nFor $t\\geq1$ the distance from $p_n/q_n$ is at most $1/q_n^2$.\nFor $n\\geq1$ the value lies between adjacent convergents.\nIf a next coefficient $a_{n+1}$ is specified and $t\\geq a_{n+1}$,\nits distance is at most $1/(q_nq_{n+1})$.",
+      "source": "chapters/diophantine.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "dio:cf-real",
+      "number": "4.11",
+      "kind": "corollary",
+      "title_latex": "A primitive recursive continued-fraction real",
+      "statement_latex": "Fix a primitive recursive coefficient function $a(n)$ with $a(0)\\geq0$\nand $a(n)\\geq1$ for $n>0$. Its convergents satisfy\n\\[\n m>n\\quad\\Longrightarrow\\quad\n |p_m/q_m-p_n/q_n|\\leq q_n^{-2}.\n\\]\nConsequently $r_k=p_{2k+2}/q_{2k+2}$ is a primitive recursive rational\nname with $|r_\\ell-r_k|\\leq2^{-2k-2}$ whenever $\\ell>k$.",
+      "source": "chapters/diophantine.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "dio:farey",
+      "number": "4.12",
+      "kind": "theorem",
+      "title_latex": "Farey separation and the mediant",
+      "statement_latex": "Suppose $a/b<c/d$, $b,d>0$, and $bc-ad=1$.\nEvery rational $p/q$ strictly between them, $q>0$, has $q\\geq b+d$.\nThe mediant $(a+c)/(b+d)$ is reduced, lies strictly between them,\nand attains that denominator bound.",
+      "source": "chapters/diophantine.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "dio:dirichlet",
+      "number": "4.13",
+      "kind": "theorem",
+      "title_latex": "Rational Dirichlet approximation",
+      "statement_latex": "For a rational $\\alpha$ and $Q\\geq1$, there are integers $p,q$ with\n\\[\n 1\\leq q\\leq Q,\\qquad |q\\alpha-p|<1/Q.\n\\]\nThey can be found by a bounded scan of $Q+1$ rational fractional parts.",
+      "source": "chapters/diophantine.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "dio:simultaneous",
+      "number": "4.14",
+      "kind": "theorem",
+      "title_latex": "Simultaneous rational Dirichlet approximation",
+      "statement_latex": "For a finite rational list $\\alpha_1,\\ldots,\\alpha_d$, $d\\geq1$,\nand $N\\geq1$, there are $q,p_1,\\ldots,p_d$ satisfying\n\\[\n 1\\leq q\\leq N^d,\\qquad |q\\alpha_i-p_i|<1/N\n \\quad(1\\leq i\\leq d).\n\\]\nThe construction and witness bounds are primitive recursive in the\nfinite input list and $N$.",
+      "source": "chapters/diophantine.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "dio:real-transfer",
+      "number": "4.15",
+      "kind": "theorem",
+      "title_latex": "Certified transfer to represented reals",
+      "statement_latex": "Fix rational approximation names for a finite list of quantities\n$\\xi_1,\\ldots,\\xi_d$. Suppose a chosen precision supplies rationals\n$r_i$ with certificates $|\\xi_i-r_i|\\leq\\varepsilon$.\nThe rational construction produces $1\\leq q\\leq N^d$ and integers\n$p_i$ with\n\\[\n |q\\xi_i-p_i|<1/N+N^d\\varepsilon.\n\\]\nIn particular $\\varepsilon\\leq1/(2N^{d+1})$ gives errors\nless than $3/(2N)$.",
+      "source": "chapters/diophantine.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "dio:pell-approx",
+      "number": "4.16",
+      "kind": "lemma",
+      "title_latex": "Bounded norm with a prescribed lower denominator",
+      "statement_latex": "Let $D\\geq2$ be nonsquare and $Y\\geq0$. Set\n\\[\n B=4(D+1),\\qquad Q=B(Y+1),\\qquad C=4D+2.\n\\]\nThere are positive integers $p,q$ with\n\\[\n Y<q\\leq Q,\\qquad p\\leq DQ+1,\\qquad 0<|p^2-Dq^2|<C.\n\\]\nThe pair can be obtained by bounded search using integer arithmetic.",
+      "source": "chapters/diophantine.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "dio:pell-existence",
+      "number": "4.17",
+      "kind": "theorem",
+      "title_latex": "Uniform bounded Pell existence",
+      "statement_latex": "For nonsquare $D\\geq2$, define\n\\[\n \\begin{gathered}\n C=4D+2,\\quad B=4(D+1),\\quad K=2C^3,\\\\\n U=(B+1)^{K+1},\\qquad H=4(D+1)^2(U+1)^2.\n \\end{gathered}\n\\]\nThere are integers\n\\[\n 2\\leq x\\leq H,\\qquad1\\leq y\\leq H,\\qquad x^2-Dy^2=1.\n\\]\nThe first such pair in the displayed finite box is therefore a primitive\nrecursive function of $D$ on nonsquare inputs.",
+      "source": "chapters/diophantine.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "dio:pell-powers",
+      "number": "4.18",
+      "kind": "theorem",
+      "title_latex": "Pell composition and arbitrarily many solutions",
+      "statement_latex": "Define\n\\[\n (x,y)\\mathbin{\\star}(u,v)=(xu+Dyv,xv+yu),\\qquad\n \\mathcal N_D(x,y)=x^2-Dy^2.\n\\]\nThe norm is multiplicative. If the norm is $1$, $(x,-y)$ is an inverse.\nFor $u>1,v>0,u^2-Dv^2=1$, define\n\\[\n (X_0,Y_0)=(1,0),\\qquad\n X_{n+1}=uX_n+DvY_n,\\quad Y_{n+1}=vX_n+uY_n.\n\\]\nEvery pair has norm $1$ and $Y_{n+1}>Y_n$. For every specified $n$,\nthis primitive recursive procedure gives $n$ distinct positive solutions.",
+      "source": "chapters/diophantine.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "dio:pell-all",
+      "number": "4.19",
+      "kind": "theorem",
+      "title_latex": "All positive Pell solutions are fundamental powers",
+      "statement_latex": "Let $(u,v)$ be a norm-one solution with $u>1,v>0$ whose $v$ is\nsmallest among positive solutions. Such a pair is found in the box of\nTheorem~\\ref{dio:pell-existence}. Every solution with $x>0,y\\geq0$\nis uniquely $(u,v)^{\\star n}$ for an integer $0\\leq n\\leq y$.\nIts exponent is recovered by a primitive recursive procedure.",
+      "source": "chapters/diophantine.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "dio:pell-family",
+      "number": "4.20",
+      "kind": "corollary",
+      "title_latex": "An explicit Pell family",
+      "statement_latex": "For $t\\geq2$, the nonsquare $D=t^2-1$ has fundamental solution\n$(t,1)$. All its positive solutions are powers of this pair.",
+      "source": "chapters/diophantine.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "an:progressions",
+      "number": "5.1",
+      "kind": "theorem",
+      "title_latex": "Primes in the classes $1$ and $3$ modulo $4$",
+      "statement_latex": "For every $N\\ge2$ there is a prime $q>N$ with $q\\equiv3\\pmod4$ and $q\\le4N!-1$. There is also a prime $p>N$ with $p\\equiv1\\pmod4$ and $p\\le(N!)^2+1$. Both selections are primitive recursive and their correctness is provable in \\ipra.",
+      "source": "chapters/analytic.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "an:sieve",
+      "number": "5.2",
+      "kind": "theorem",
+      "title_latex": "Finite inclusion--exclusion sieve",
+      "statement_latex": "\\[\n S(X,z)=\\sum_{d\\mid P(z)}\\mu(d)\\left\\lfloor\\frac Xd\\right\\rfloor,\n \\qquad\n \\left|S(X,z)-X\\prod_{p\\le z}\\left(1-\\frac1p\\right)\\right|\n \\le 2^{\\pi(z)}.\n\\]",
+      "source": "chapters/analytic.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "an:sievepi",
+      "number": "5.3",
+      "kind": "corollary",
+      "title_latex": "Exact prime counting from a finite sieve",
+      "statement_latex": "For $X\\ge2$ and $z=\\lfloor\\sqrt X\\rfloor$,\n\\[\n \\pi(X)=S(X,z)+\\pi(z)-1.\n\\]",
+      "source": "chapters/analytic.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "an:binomial",
+      "number": "5.4",
+      "kind": "lemma",
+      "title_latex": "A central binomial coefficient and its prime powers",
+      "statement_latex": "For $n\\ge1$,\n\\[\n \\frac{4^n}{2n+1}\\le \\binom{2n}{n}\\le4^n,\n \\qquad \\binom{2n}{n}\\le(2n)^{\\pi(2n)}.\n\\]\nAlso $\\prod_{n<p\\le2n}p\\le4^n$.",
+      "source": "chapters/analytic.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "an:chebyshev",
+      "number": "5.5",
+      "kind": "theorem",
+      "title_latex": "Dyadic Chebyshev bounds without logarithms",
+      "statement_latex": "For every integer $K\\ge3$, \\ipra\\ proves\n\\[\n 2^{K-1}\\ \\le\\ K\\pi(2^K)\\ \\le\\ 6\\,2^K.\n\\]",
+      "source": "chapters/analytic.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "an:harmonic",
+      "number": "5.6",
+      "kind": "lemma",
+      "title_latex": "Dyadic harmonic growth",
+      "statement_latex": "For $m\\ge0$, $H_{2^m}\\ge1+m/2$.",
+      "source": "chapters/analytic.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "an:eulerdom",
+      "number": "5.7",
+      "kind": "lemma",
+      "title_latex": "Finite Euler domination at exponent one",
+      "statement_latex": "For $M\\ge1$,\n\\[\n H_M\\le\\prod_{p\\le M}\\left(1-\\frac1p\\right)^{-1}.\n\\]",
+      "source": "chapters/analytic.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "an:blockproduct",
+      "number": "5.8",
+      "kind": "lemma",
+      "title_latex": "Bounding a finite product by a reciprocal sum",
+      "statement_latex": "Let $0\\le x_i\\le1/2$ be a finite list of rationals and suppose $\\sum_i x_i\\le k$, where $k\\in\\N$. Then\n\\[\n \\prod_i(1-x_i)^{-1}\\le4^{4k+1}.\n\\]",
+      "source": "chapters/analytic.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "an:primeharmonic",
+      "number": "5.9",
+      "kind": "theorem",
+      "title_latex": "Divergence of prime reciprocals with an explicit bound",
+      "statement_latex": "Put\n\\[\n B(k)=2^{\\,2\\cdot4^{4k+1}}.\n\\]\nFor every $k\\in\\N$, \\ipra\\ proves\n\\[\n \\sum_{p\\le B(k)}\\frac1p>k.\n\\]",
+      "source": "chapters/analytic.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "an:zetatail",
+      "number": "5.10",
+      "kind": "lemma",
+      "title_latex": "A rational tail estimate",
+      "statement_latex": "For $M\\ge N\\ge1$ and $s\\ge2$,\n\\[\n 0\\le Z_s(M)-Z_s(N)\\le N^{1-s}-M^{1-s}\\le N^{1-s}.\n\\]",
+      "source": "chapters/analytic.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "an:eulererror",
+      "number": "5.11",
+      "kind": "theorem",
+      "title_latex": "Finite Euler-product error",
+      "statement_latex": "For $N\\ge1$ and $s\\ge2$,\n\\[\n 0\\le E_s(N)-Z_s(N)\\le N^{1-s}.\n\\]",
+      "source": "chapters/analytic.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "an:zetaname",
+      "number": "5.12",
+      "kind": "corollary",
+      "title_latex": "An iPRA name for $\\zeta(s)$ and its Euler product",
+      "statement_latex": "Let $z_s(k)=Z_s(2^{k+2})$ and $e_s(k)=E_s(2^{k+2})$. For $l\\ge k$,\n\\[\n 0\\le z_s(l)-z_s(k)\\le2^{-k-2},\\qquad\n 0\\le e_s(k)-z_s(k)\\le2^{-k-2},\n\\]\nand $|e_s(l)-e_s(k)|\\le3\\,2^{-k-2}\\le2^{-k}$. In the external real interpretation both names have the same value, denoted $\\zeta(s)$, and this proves the Euler-product identity for every integer $s\\ge2$.",
+      "source": "chapters/analytic.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "an:means",
+      "number": "5.13",
+      "kind": "theorem",
+      "title_latex": "Exact means of prime-divisor counts",
+      "statement_latex": "For $X\\ge1$,\n\\[\n \\sum_{n=1}^{X}\\omega(n)=\\sum_{p\\le X}\\left\\lfloor\\frac Xp\\right\\rfloor,\n \\quad\n \\sum_{n=1}^{X}\\Omega(n)=\\sum_{p\\le X}\\sum_{1\\le j\\le X}\n            \\left\\lfloor\\frac X{p^j}\\right\\rfloor.\n\\]\nIn particular,\n\\[\n \\left|\\frac1X\\sum_{n=1}^{X}\\omega(n)-\\sum_{p\\le X}\\frac1p\\right|\n \\le\\frac{\\pi(X)}X.\n\\]",
+      "source": "chapters/analytic.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "an:independence",
+      "number": "5.14",
+      "kind": "theorem",
+      "title_latex": "Exact finite independence of distinct prime divisibility",
+      "statement_latex": "Let $p_1,\\ldots,p_r$ be distinct primes and $M=\\prod_i p_i$. In the uniform finite sample $0\\le n<M$, the events $p_i\\mid n$ are independent and have probabilities $1/p_i$. More explicitly, for disjoint index sets $A,B\\subseteq\\{1,\\ldots,r\\}$,\n\\[\n \\frac{\\#\\{n<M:\\ p_i\\mid n\\ (i\\in A),\\ p_j\\nmid n\\ (j\\in B)\\}}M\n =\\prod_{i\\in A}\\frac1{p_i}\\prod_{j\\in B}\\left(1-\\frac1{p_j}\\right).\n\\]",
+      "source": "chapters/analytic.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "an:coprimepairs",
+      "number": "5.15",
+      "kind": "theorem",
+      "title_latex": "Coprime pairs and M\\\"obius inversion",
+      "statement_latex": "For $X\\ge1$, the number $C(X)$ of pairs $1\\le a,b\\le X$ with $\\gcd(a,b)=1$ satisfies\n\\[\n C(X)=\\sum_{d=1}^X\\mu(d)\\left\\lfloor\\frac Xd\\right\\rfloor^2.\n\\]",
+      "source": "chapters/analytic.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "ag:norm",
+      "number": "6.1",
+      "kind": "theorem",
+      "title_latex": "Norm and integrality in a quadratic ring",
+      "statement_latex": "For $u,v\\in R$, $N(uv)=N(u)N(v)$. The norm vanishes exactly at zero, and the units are $1$ and $-1$. Every $a+b\\theta$ satisfies the monic integer polynomial\n\\[\n X^2-2aX+(a^2+5b^2).\n\\]",
+      "source": "chapters/algebraic.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "ag:nonufd",
+      "number": "6.2",
+      "kind": "theorem",
+      "title_latex": "Two inequivalent irreducible factorizations",
+      "statement_latex": "In $R$ the four elements $2,3,1+\\theta,1-\\theta$ are irreducible, and\n\\[\n 6=2\\cdot3=(1+\\theta)(1-\\theta)\n\\]\nare factorizations with no matching associates. In particular $2$ is irreducible but is not prime.",
+      "source": "chapters/algebraic.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "ag:valuation",
+      "number": "6.3",
+      "kind": "theorem",
+      "title_latex": "Truncated valuation laws",
+      "statement_latex": "For integers $a,b$,\n\\[\n v_{p,k}(ab)=\\min(k,v_{p,k}(a)+v_{p,k}(b)),\\qquad\n v_{p,k}(a+b)\\ge\\min(v_{p,k}(a),v_{p,k}(b)).\n\\]\nIf $v_{p,k}(a)\\ne v_{p,k}(b)$, equality holds in the second formula.",
+      "source": "chapters/algebraic.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "ag:taylor",
+      "number": "6.4",
+      "kind": "lemma",
+      "title_latex": "Taylor congruence at a finite precision",
+      "statement_latex": "If $k\\ge1$, then for integers $a,t$,\n\\[\n f_c(a+t p^k)\\equiv f_c(a)+t p^k f'_c(a)\\pmod{p^{k+1}}.\n\\]",
+      "source": "chapters/algebraic.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "ag:henselstep",
+      "number": "6.5",
+      "kind": "theorem",
+      "title_latex": "Simple-root Hensel lifting with a unique digit",
+      "statement_latex": "Suppose $k\\ge1$, $0\\le a<p^k$, $p^k\\mid f_c(a)$, and $p\\nmid f'_c(a)$. There is a unique $t\\in[0,p)$ such that $b=a+t p^k$ satisfies $p^{k+1}\\mid f_c(b)$. Consequently $b$ is the unique root modulo $p^{k+1}$ in $[0,p^{k+1})$ reducing to $a$ modulo $p^k$.",
+      "source": "chapters/algebraic.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "ag:henselname",
+      "number": "6.6",
+      "kind": "theorem",
+      "title_latex": "A primitive recursive compatible Hensel name",
+      "statement_latex": "Given $0\\le a_1<p$ with $f_c(a_1)\\equiv0\\pmod p$ and $f'_c(a_1)\\not\\equiv0\\pmod p$, there is a primitive recursive sequence $a_k$, $k\\ge1$, such that\n\\[\n 0\\le a_k<p^k,\\qquad f_c(a_k)\\equiv0\\pmod{p^k},\\qquad\n a_l\\equiv a_k\\pmod{p^k}\\quad(l\\ge k).\n\\]\nIt is unique among compatible root sequences with the prescribed first residue.",
+      "source": "chapters/algebraic.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "ag:partitionrec",
+      "number": "6.7",
+      "kind": "theorem",
+      "title_latex": "Partition recursion and finite generating product",
+      "statement_latex": "For $m\\ge1$,\n\\[\n p_m(n)=p_{m-1}(n)+[n\\ge m]p_m(n-m),\n \\quad p_0(0)=1,\\quad p_0(n)=0\\ (n>0).\n\\]\nFor every fixed truncation $N$, the coefficient of $X^n$, $0\\le n\\le N$, in\n\\[\n \\prod_{j=1}^N\\left(\\sum_{e=0}^{\\lfloor N/j\\rfloor}X^{je}\\right)\n\\]\nis $p(n)$.",
+      "source": "chapters/algebraic.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "ag:oddpartitions",
+      "number": "6.8",
+      "kind": "theorem",
+      "title_latex": "Euler's odd-parts/distinct-parts identity",
+      "statement_latex": "For each $n$, the number of partitions of $n$ into odd parts equals the number into distinct parts.",
+      "source": "chapters/algebraic.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "ag:conjugate",
+      "number": "6.9",
+      "kind": "theorem",
+      "title_latex": "Conjugation of partitions",
+      "statement_latex": "Partitions of $n$ with exactly $k$ parts are equinumerous with partitions whose largest part is $k$, where the largest part of the empty partition is defined to be zero.",
+      "source": "chapters/algebraic.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "tr:polynomial",
+      "number": "7.1",
+      "kind": "theorem",
+      "title_latex": "Finite polynomial estimates and a rational Liouville bound",
+      "statement_latex": "Let $f=f_c$ be a nonzero integer polynomial of degree $d$.\n\\begin{enumerate}\n\\item Among any $d+1$ distinct rational numbers, at least one has\nnonzero value under $f$, and a bounded scan finds such an argument.\n\\item If $y=a/q$, where $a\\in\\Z$ and $q\\ge1$, and $f(y)\\ne0$, then\n$|f(y)|\\ge q^{-d}$.\n\\item If $x,y\\in[0,1]\\cap\\Q$, then\n$|f(x)-f(y)|\\le A(c)|x-y|$. Consequently, if $A(c)>0$,\n$y=a/q$, $f(y)\\ne0$, and $|f(x)|\\le1/(2q^d)$, then\n\\[\n |x-y|\\ge\\frac1{2A(c)q^d}.\n\\]\nIf $f(x)=0$, the stronger bound $|x-y|\\ge1/(A(c)q^d)$ holds.\n\\end{enumerate}",
+      "source": "chapters/transcendence.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "tr:name",
+      "number": "7.2",
+      "kind": "theorem",
+      "title_latex": "The Liouville name and its approximation bounds",
+      "statement_latex": "The rational sequence $r_n$ is strictly increasing and lies in $(0,1)$.\nFor $m\\ge n\\ge1$,\n\\[\n 0\\le r_m-r_n\\le2\\,10^{-(n+1)!}\\le2^{-n}.\n\\]\nThus $u(k)=r_{k+1}$ is a primitive recursive rational name with a\nspecified Cauchy modulus. Moreover, for every $h\\ge1$, every $n\\ge h$,\nand every $m>n$,\n\\[\n 0<r_m-r_n<q_n^{-h}.\n\\]\nThe truncation $r_n=P_n/q_n$ is in lowest terms.",
+      "source": "chapters/transcendence.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    },
+    {
+      "id": "tr:transcendence",
+      "number": "7.3",
+      "kind": "theorem",
+      "title_latex": "Uniform polynomial separation and transcendence",
+      "statement_latex": "There are primitive recursive functions which, from any nonzero integer\npolynomial $f_c$, return an index $n\\ge1$ and a positive integer $D$\nsuch that \\ipra\\ proves\n\\[\n \\forall m\\ge n\\qquad |f_c(r_m)|\\ge\\frac1D.\n\\]\nFor a nonconstant polynomial, explicit choices are\n\\[\n A=A(c),\\qquad n_0=d+A+1,\\qquad\n Q=10^{(n_0+d)!},\\qquad D=2Q^d,\n\\]\nwith $n$ selected from $n_0,\\ldots,n_0+d$. The external real number\nrepresented by $r_n$ is therefore transcendental.",
+      "source": "chapters/transcendence.tex",
+      "proof_status": "human proof with explicit iPRA reduction; Lean uncompiled"
+    }
+  ]
+}

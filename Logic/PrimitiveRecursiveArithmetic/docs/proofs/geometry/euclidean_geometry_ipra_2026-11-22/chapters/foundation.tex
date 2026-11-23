@@ -1,0 +1,346 @@
+\section{The arithmetic foundation}
+\label{sec:foundation}
+\subsection{The theory and its finite data}
+We use first-order intuitionistic logic with equality, the connectives
+$\bot,\land,\lor,\to$, and the quantifiers $\forall,\exists$ over $\N$.
+Negation abbreviates implication to $\bot$. The logical rules are the
+ordinary introduction and elimination rules, equality reflexivity and
+substitution, and the usual eigenvariable restrictions for quantifiers.
+There is no rule of unrestricted excluded middle or double-negation
+elimination. The nonlogical language has $0,S$, projections, and a symbol
+for every function obtained by composition and primitive recursion. Its
+axioms are their defining equations, $Sx\ne0$, injectivity of $S$, and
+\[
+ \bigl(A(0,\bar a)\land\forall n(A(n,\bar a)\to A(Sn,\bar a))\bigr)
+       \to\forall n\,A(n,\bar a)
+\]
+for quantifier-free $A$. This is the presentation of iPRA used in the
+repository \cite{proveit}. Parameters $\bar a$ remain free while induction
+is applied. Universal generalization is performed afterwards.
+
+Pairs and lists are numbers: take $\operatorname{cons}(a,b)=2^a(2b+1)$,
+with zero the empty list. Head, tail, length, and indexed access are
+bounded searches on the code. A signed integer is a pair $(a,b)$ read
+as $a-b$; its equality to $(c,d)$ means $a+d=b+c$. A rational is a signed
+numerator and a positive denominator, with equality and order determined
+by cross multiplication. Coefficient lists encode polynomials in ascending
+degree; matrices, vectors, permutations, and tables are lists with explicit
+dimensions. Malformed input is assigned a fixed default, so that every
+function is total. A theorem asserts its substantive conclusion under
+the corresponding decidable well-formedness hypotheses.
+
+\begin{lemma}[Finite arithmetic and bounded invariants]\label{found:finite}
+Integer and rational arithmetic, finite polynomial arithmetic, degree-fueled
+Euclidean division, finite sums and products, and Boolean tests over a
+specified finite list are primitive recursive. Their usual calculation
+laws and the loop invariants used below are provable with quantifier-free
+induction.
+\end{lemma}
+\begin{proof}
+Addition and multiplication satisfy their defining recursions. Distributivity
+and associativity follow by induction on one numerical argument, with the
+remaining arguments free; the displayed assertions are equations. Signed
+arithmetic is obtained by expanding the two parts of a difference, and
+rational arithmetic by multiplying positive denominators. A bounded search
+keeps its current candidate and a Boolean flag saying whether a successful
+entry has been found. The invariant for entries before stage $k$ is a
+bounded product or sum of their characteristic functions. Thus an apparent
+bounded universal quantifier is a single equation about a PR function.
+
+Polynomial multiplication is coefficient convolution. Its associativity
+reindexes finite sums, proved by induction on their bounds. Long division
+subtracts a multiple of the divisor to cancel the current highest term.
+The invariant $f=qg+r$, together with the decreasing degree counter, is an
+equality of coefficient lists and a numerical inequality. The same argument
+proves the extended Euclidean algorithm, retaining the two coefficient
+vectors expressing every remainder as a combination of the inputs.
+Finite permutations and tuples can be enumerated with their known length
+and entry bounds, regardless of efficiency. No search in this paragraph
+has a termination test without a previously supplied bound.
+\end{proof}
+
+\paragraph{A basic discipline.}
+That a function is PR does not, by itself, prove every proposed property
+of it in iPRA. We shall specify the numerical invariant as well. Nor is
+there a PR universal evaluator for all PR programs. The algorithms below
+are particular finite-data algorithms; a separately specified real name is
+always a fixed PR recipe, with a numerical precision argument.
+
+\subsection{Exact algebraic scalars without a completeness axiom}
+The following construction follows the useful organization of the earlier
+planar packet \cite{planar}, but all estimates needed here are stated.
+The related literature on primitive recursive fields and formal algebraic
+numbers supplies context, not a replacement for the bounds
+\cite{selivanov,cohen}.
+
+For $p(X)=\sum p_iX^i$ and rational $R\ge1$, define
+\[
+ M(p,R)=\sum_i|p_i|R^i,\qquad D(p,R)=M(p'',R).
+\]
+A valid scalar record is a triple $(p,l,r)$ of rational data with $l<r$,
+such that, for $c=(l+r)/2$, $w=(r-l)/2$, and
+$R=1+\max(|l|,|r|)$,
+\begin{equation}\label{eq:record}
+ p(l)p(r)<0,\qquad |p'(c)|>D(p,R)w.
+\end{equation}
+This is a decidable test on finite rational data. A rational $a$ is
+represented by $(X-a,a-1,a+1)$.
+
+\begin{lemma}[A reader for a scalar record]\label{found:reader}
+A valid record has a PR sequence of nested rational intervals of width
+at most $2^{-n}$, satisfying $p(x)=0$ at every requested precision.
+There is at most one such value in the record interval.
+\end{lemma}
+\begin{proof}
+For rational $u,v$, write
+\[
+ p[u,v]=\sum_{i\ge1}p_i\sum_{j<i}u^{i-1-j}v^j.
+\]
+The identity $p(v)-p(u)=(v-u)p[u,v]$ follows by telescoping powers.
+If $u,v,c$ have absolute value at most $R$ and both $u,v$ are within
+$e$ of $c$, replacement of one factor at a time gives
+\begin{equation}\label{eq:divided}
+ |p[u,v]-p'(c)|\le D(p,R)e.
+\end{equation}
+Indeed, the degree-$i$ term contributes at most
+$i(i-1)|p_i|R^{i-2}e$. Thus the slope in the original interval has
+a fixed sign and a positive rational lower bound.
+
+Bisect its endpoints. If the midpoint is an exact zero, freeze at that
+singleton; otherwise retain the half with opposite endpoint signs.
+After $n+2+\lceil r-l\rceil$ iterations the interval width is below
+$2^{-n}$. The invariant comprises rational endpoint signs, nesting,
+and the width bound, so Lemma~\ref{found:finite} applies.
+For opposite-sign endpoints of width $e$, the divided-difference identity
+bounds each endpoint's polynomial value by $M(p',R)e$.
+Consequently every desired error in $p(x)$ is obtained at an explicitly
+chosen stage. If two purported roots are separated by a rational gap,
+the positive slope bound forces their polynomial values to be separated
+too. Refine until the polynomial errors are smaller than that separation;
+this is a contradiction. No completed set of real numbers was invoked.
+\end{proof}
+
+For this argument a \emph{provisional scalar} means a particular PR
+recipe for nested rational intervals with width at most $2^{-n}$.
+Lemmas about readers are schemata for a fixed function $R(\bar a,n)$;
+only its numerical parameters $\bar a$ and precision $n$ are inputs.
+No lemma takes a code for an arbitrary PR program.
+Agreement means that the two intervals meet at every precision; strict
+order is witnessed by two separated intervals. Agreement is transitive:
+if outer intervals have a positive gap, a sufficiently short intermediate
+interval cannot meet both. The statements are formulas about numerical
+precision arguments, not a new sort of infinite sequences.
+Addition and multiplication have interval readers: if $|x|,|y|\le R$,
+input interval widths $e$ give output widths at most $2e$ and $2Re$,
+respectively. For an interval separated from zero by $b>0$, reciprocal
+width is at most $e/b^2$. Intersect later intervals with the separating
+one before inversion. These formulas supply an explicit backward request
+for the precision needed at every input of a fixed finite expression.
+
+\begin{lemma}[An annihilator decides sign]\label{found:sign}
+Suppose a provisional scalar $x$ is accompanied by a nonzero rational
+polynomial $P$ with $P(x)=0$. Its sign is determined after a PR, explicitly
+bounded number of interval refinements. The zero answer means agreement
+with zero at every precision, and a nonzero answer supplies a rational
+separation from zero.
+\end{lemma}
+\begin{proof}
+Remove the initial zero coefficients, writing $P=X^kG$ with $g=G(0)\ne0$.
+Set
+\[
+ a=\min\left(\frac14,\frac{|g|}{8(1+\sum_{i>0}|G_i|)}\right)>0.
+\]
+For $|x|\le2a$, the nonconstant terms have total absolute value at most
+$2a\sum_{i>0}|G_i|\le |g|/4$, so $G(x)$ is separated from zero.
+Since $x^kG(x)=0$, this forces $x^k=0$. If $k=0$ it is impossible;
+if $k>0$, an interval separating $x$ from zero by $b$ would separate
+$x^k$ by $b^k$, also impossible. Hence $x=0$.
+
+Read an interval of width less than $a$. If it lies strictly to one side
+of zero, its sign and gap give the result. Otherwise it contains zero
+and puts $|x|\le a$, so the preceding calculation proves the zero answer.
+One may request precision $2+\lceil1/a\rceil$, since
+$2^{-2-\lceil1/a\rceil}<a$. This is a bounded computation even when
+the correct answer is exact equality. The proof of the zero case fixes
+an arbitrary proposed separation first. For each given precision, whether
+its rational interval meets zero is decidable. The disjoint alternative
+supplies such a gap and is contradictory; therefore that interval meets
+zero. Generalize over the precision afterwards. This is not
+double-negation elimination for a universally quantified equality, and
+it does not induct on a formula universally quantified over precisions.
+\end{proof}
+
+\begin{lemma}[Conversion to an isolating record]\label{found:convert}
+Given the data in Lemma~\ref{found:sign}, a valid record for $x$ can be
+constructed by primitive recursion.
+\end{lemma}
+\begin{proof}
+Let $h$ be the monic squarefree part of $P$, computed by dividing out
+$\gcd(P,P')$. Polynomial Euclid computes $U,V$ satisfying
+$Uh+Vh'=1$. Also $P$ divides $h^{\deg P}$, so $h(x)=0$ by the
+power argument in the preceding proof. These statements can be verified
+without an unbounded factor search. For completeness, a bounded
+factorization procedure evaluates the primitive integer associate of $P$
+at $d+1$ nonzero values among $0,\ldots,2d$, where $d=\deg P$.
+An integer polynomial divisor must take signed divisors of these values;
+enumerate those finite choices, interpolate, and test exact divisibility.
+Gauss's lemma follows by reducing a purported nonprimitive product modulo
+a prime dividing all its coefficients and comparing highest nonzero
+coefficients. Repeated splitting takes at most $d-1$ successful steps.
+This proves the assertions about squarefree factors and their
+multiplicities using finite polynomial calculations.
+
+Take an integer $R>3+\max_{u\in I_0}|u|$, where $I_0$ is the coarse
+interval of $x$, and put $B=\max(1,M(V,R))$ and
+$L=1+D(h,R)$. The Bezout identity at $x$ gives
+$|h'(x)|\ge1/B$. Choose $\delta=2^{-s}<1/(32BL)$ and read an interval
+of width at most $\delta$ with midpoint $c$. The slope estimate
+\eqref{eq:divided} shows that throughout $[c-2\delta,c+2\delta]$
+the divided differences have the sign of $h'(x)$ and absolute value
+greater than $1/(2B)$. Its two endpoints are on opposite sides of $x$
+at distance at least $\delta$. Their values under $h$ therefore have
+opposite signs, and the second test in \eqref{eq:record} also holds.
+Its own test radius $1+\max|c\pm2\delta|$ is smaller than $R$, so
+its derivative majorant is no larger than $D(h,R)$.
+The triple $(h,c-2\delta,c+2\delta)$ is the required record; uniqueness
+in Lemma~\ref{found:reader} identifies its reader with $x$.
+All precisions are explicit rational functions of finite coefficient bounds.
+\end{proof}
+
+\begin{theorem}[A coded ordered field]\label{found:field}
+Valid records, modulo agreement, carry PR addition, subtraction,
+multiplication, division with $0^{-1}=0$, and decidable equality and order.
+All ordered-field laws, including inverse laws under a nonzero hypothesis,
+hold in the numerical interpretation in iPRA. Write $\K$ for this field
+notation; internally no quotient type is added.
+\end{theorem}
+\begin{proof}
+For monic annihilators $p_1,p_2$ of degrees $d_1,d_2$, form the finite
+rational algebra
+\[
+ E=\Q[T_1,T_2]/(p_1(T_1),p_2(T_2)).
+\]
+The monomials $T_1^iT_2^j$, $i<d_1,j<d_2$, are a coefficient basis.
+Reduction in the two separate monic polynomials gives an explicit
+multiplication table. For $v=T_1+T_2,T_1-T_2,T_1T_2$ compute the matrix
+of multiplication by $v$. Its characteristic polynomial is a nonzero
+monic annihilator. To see the annihilation directly, expand
+$(YI-A)\operatorname{adj}(YI-A)=\det(YI-A)I$, compare coefficients,
+multiply by successive powers of $A$, and add. All intermediate matrix
+terms telescope, leaving the characteristic polynomial at $A$ equal to
+zero. Applying it to the vector $1$ gives the required relation for $v$.
+Evaluation at the input scalars preserves the reductions even if the
+two inputs satisfy additional algebraic relations.
+
+Use interval arithmetic for the provisional result and
+Lemma~\ref{found:convert} for its output record. Negation is similar.
+For an input whose sign is nonzero, its rational gap licenses interval
+reciprocal, with annihilator $X^{\deg p}p(1/X)$. The zero branch returns
+zero. Compare two scalars by applying Lemma~\ref{found:sign} to their
+difference. Different records may represent the same scalar.
+This test returns zero exactly when the readers agree: if the two
+intervals meet at every equal precision, their interval differences contain
+zero at every refinement. Conversion preserves their provisional value,
+so its sign is zero. Conversely, disjoint input intervals supply a positive
+rational gap that persists under refinement; their difference cannot have
+zero sign. This proves that the PR equality used in subsequent formulas
+coincides with the reader agreement relation.
+
+The field identities are rational identities evaluated at arbitrary
+precision. Given a claimed positive output gap, propagate the requested
+error backwards through their finite expression trees and use the rational
+identity on sufficiently accurate input approximations. The error becomes
+smaller than the gap, disproving the alleged separation. The inverse
+identity uses the supplied input gap. Translation preserves a positive
+gap after refining the common summand, and multiplication preserves
+positivity because positive lower bounds $b,c$ give lower bound $bc$.
+Trichotomy is exactly the three finite branches of the sign test.
+Thus both arithmetic and its order laws are proved, rather than assumed.
+\end{proof}
+
+\begin{theorem}[Polynomial roots, square roots, and finite root lists]
+\label{found:roots}
+Over $\K$, a polynomial with opposite nonzero signs at two endpoints
+has a constructible-in-arithmetic zero strictly between them. Every
+nonnegative scalar has a unique nonnegative square root. Every
+nonzero polynomial has a PR list of all its distinct real roots,
+in increasing order. These statements have iPRA proofs in the coded
+interpretation.
+\end{theorem}
+\begin{proof}
+Normalize a nonconstant polynomial
+$f(Z)=Z^n+\sum_{i<n}x_iZ^i$ to be monic. Form the finite rational
+algebra on one generator $T_i$ for every coefficient record, modulo its
+monic annihilator, and adjoin $Z$ modulo the monic polynomial
+$Z^n+\sum T_iZ^i$. Multiplication by $Z$ now has a rational matrix.
+Its characteristic polynomial $H$ is monic and satisfies
+\begin{equation}\label{eq:eliminant}
+ f(y)=0\quad\Longrightarrow\quad H(y)=0.
+\end{equation}
+This follows from the same adjugate identity and evaluation argument as
+before. The matrix dimension is $n\prod_i d_i$, a known natural number.
+
+For endpoints $s<t$ with opposite signs, substitute $s+(t-s)T$ and
+bisect the rational interval $[0,1]$. Exact signs are already available
+from Theorem~\ref{found:field}; they do not call the root finder being
+defined. After $k$ steps the width is $2^{-k}$. A rational upper bound
+on the derivative's coefficients bounds the polynomial residual by
+the interval width times that constant. Thus the provisional value $\tau$
+is a zero of the substituted polynomial. Put $y=s+(t-s)\tau$ using its
+fixed interval readers. Then $f(y)=0$, so
+relation~\eqref{eq:eliminant} for $f$ and the conversion lemma return
+a finite algebraic record for $y$. Nonzero endpoint signs exclude either endpoint.
+For $b>0$, apply this to $T^2-b$ between $0$ and $b+1$; for $b=0$
+return zero. If $r,s\ge0$ and $r^2=s^2$, then
+$(r-s)(r+s)=0$ and either both vanish or $r+s>0$, proving uniqueness.
+
+For exhaustive root lists take the squarefree part $h$ of $H$ and
+an integer $R>2+\sum_{i<\deg h}|h_i|$. Leading-term dominance puts
+every root of $h$ strictly inside $[-R,R]$. Compute $U,V$ with
+$Uh+Vh'=1$, and $B,L$ as above at radius $R+1$. Partition $[-R,R]$
+into rational dyadic cells of length $\delta<1/(32BL)$. Record every
+grid zero and every cell whose endpoint signs differ, obtaining its
+zero by bisection and conversion. Any root $z$ lies either on the grid
+or in a cell. The Bezout derivative bound at $z$ makes the slope
+strictly signed throughout that cell, so an interior root forces an
+endpoint sign change and is unique there. A grid root similarly excludes
+an extra root in an adjacent cell. Filter the finite result by the exact
+test $f(z)=0$. Relation~\eqref{eq:eliminant} proves that every desired
+root survives. Constants and the zero polynomial are handled separately,
+the latter by a flag rather than an impossible finite list of all scalars.
+
+The grid length, degrees, coefficient lists, and bisection precision are
+computed before their loops. The grid invariant is the bounded Boolean
+fold of processed sign changes and the stored root records. Completeness
+is proved for an arbitrary candidate root as a free parameter. It never
+uses induction on an assertion quantified over all roots or all precisions.
+\end{proof}
+
+Externally, the records denote exactly the real algebraic numbers.
+Every record denotes its real root by the nested-interval construction,
+and the exhaustive procedure finds every real root of a rational
+polynomial. This external identification explains the geometric meaning.
+The arithmetic proofs themselves use only the finite definitions above.
+
+\subsection{A precision-level version that is visibly first order}
+For nonnegative rational $r$ and $\epsilon=2^{-n}$, let $m$ be the largest
+integer in the bounded range $0\le m\le 2^n(1+\lceil r\rceil)$ with
+$m^2\le 2^{2n}r$. Cross multiplication removes the rational denominator.
+Then
+\begin{equation}\label{eq:meshroot}
+ m\epsilon\le\sqrt r<(m+1)\epsilon,
+ \qquad 0\le r-(m\epsilon)^2<(2m+1)\epsilon^2.
+\end{equation}
+The upper bound follows because $m+1$ fails the inequality; existence of
+the bounded maximum follows by its Boolean scan. This is an explicit
+quantifier-free arithmetic proof of a root approximation, not an appeal
+to a limit inside the object theory.
+
+For later reference the elementary inequalities
+\begin{equation}\label{eq:sqrtholder}
+ |\sqrt r-\sqrt s|^2\le |r-s|\quad(r,s\ge0),\qquad
+ |r^{-1}-s^{-1}|\le\frac{|r-s|}{b^2}\quad(r,s\ge b>0)
+\end{equation}
+follow by factoring the difference of squares and the difference of
+reciprocals. They give a concrete path from every fixed finite construction
+to PR error bounds for its rational observations.

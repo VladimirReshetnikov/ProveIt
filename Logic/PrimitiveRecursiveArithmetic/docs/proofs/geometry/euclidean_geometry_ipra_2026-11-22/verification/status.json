@@ -1,0 +1,57 @@
+{
+  "python_version": "3.12.14",
+  "all_diagnostics_passed": true,
+  "checks": [
+    {
+      "name": "polynomial_certificates",
+      "command": [
+        "python3",
+        "code/check_certificates.py",
+        "--output",
+        "certificates/polynomials.json"
+      ],
+      "exit_code": 0,
+      "passed": true,
+      "log": "verification/polynomial_certificates.log",
+      "source_sha256": "1846b5ef52ad292d92fbbb59f971f534e3705478b31ef0292417b65f1132cfbf"
+    },
+    {
+      "name": "circle_identities",
+      "command": [
+        "python3",
+        "code/check_circle_identities.py"
+      ],
+      "exit_code": 0,
+      "passed": true,
+      "log": "verification/circle_identities.log",
+      "source_sha256": "aee63c50b792b8a100ad3edbfc88d7aed2dbdd4c4dd7b08e776aa63c347c4690"
+    },
+    {
+      "name": "platonic_realizations",
+      "command": [
+        "python3",
+        "code/check_solids.py",
+        "--output",
+        "certificates/solids.json"
+      ],
+      "exit_code": 0,
+      "passed": true,
+      "log": "verification/platonic_realizations.log",
+      "source_sha256": "f516eeef7077d33ffdded6191b0f87bf53ee8acc41dcc781aab08f61c6dcfea1"
+    },
+    {
+      "name": "measurement_observations",
+      "command": [
+        "python3",
+        "code/check_limits.py"
+      ],
+      "exit_code": 0,
+      "passed": true,
+      "log": "verification/measurement_observations.log",
+      "source_sha256": "79402f917de38b3fe4dcf17e2f5d816af86774fe64006802c8f58a4632993d82"
+    }
+  ],
+  "lean_compiled": false,
+  "ipra_kernel_checked": false,
+  "scope_note": "Exact executable diagnostics, distinct from the report's human proofs and the uncompiled Lean candidates."
+}

@@ -1,0 +1,84 @@
+\subsection{Exponentiation as an order on finitely supported functions}
+\label{sec:exporder}
+Fix canonical terms $a\ge2$ and $b$. A function from $I_b$ to $I_a$
+of finite support is represented by a list of pairs $(s,d)$ in strictly
+decreasing order of $s<b$, with $0<d<a$. At every unlisted argument its
+value is zero. Order two distinct lists by their digits at the largest
+argument where they differ. That argument is found by merging their
+two finite lists of occupied positions.
+
+\begin{theorem}[The order-type interpretation of ordinal powers]
+Uniformly in $a,b$, the map
+\[
+                f\longmapsto V(f)=\sum_{s\text{ in decreasing order}}
+                                      a^s f(s)
+\]
+is a primitive recursive order isomorphism onto $I_{a^b}$, with a
+primitive recursive inverse. This includes the empty support and $b=0$.
+\end{theorem}
+\begin{proof}
+First allow arbitrary finite lists of occupied positions, without an
+upper bound $b$. For a nonempty list with highest position $s$ its
+value lies in $[a^s,a^{s+1})$. To prove this, consider its first
+digit $d$ and the value $L$ of the tail. If the tail is empty,
+$L=0<a^s$. Otherwise its highest position $t<s$ gives
+$L<a^{t+1}\le a^s$ by induction on the finite list length. Thus
+\[
+ a^s\le a^s d\le a^s d+L<a^s d+a^s=a^s(d+1)\le a^{s+1}.
+\]
+Here $d+1\le a$ follows from the successor property. Likewise the
+tail strictly below any position $s$ has value less than $a^s$.
+At the greatest differing position write the two digits as $d<d'$,
+allowing zero. The smaller digit and its tail then contribute strictly
+less than $a^s(d+1)\le a^s d'$. Restoring the identical higher terms
+by addition on the left preserves the strict inequality. This proves
+order preservation and reflection, and gives injectivity. The same
+bounds show that $V(f)<a^b$ exactly when all occupied positions are
+below $b$, including the empty list since $a^b>0$.
+
+It remains to produce the digits of any given $x$. Put $k=k_a$ as in
+\eqref{eq:arith-power}, so $a^\omega=W(k)$ and
+$a^{\omega J+i}=W(kJ)a^i$ for finite $i$. For each outer exponent $e$
+of $x$, divide on the left by $k$, writing $e=kJ+r$ with $r<k$.
+The intervals $[kJ,k(J+1))$ are ordered by $J$, and inside such an
+interval the order is the order of its remainders. Consecutive entries
+with a common $J$ therefore give a canonical word $C_J$ of their
+remainders, including repeated entries and zeros. Its head is $<k$, so
+$0<C_J<W(k)$. Each original group has value $W(kJ)C_J$, since
+$W(kJ)W(r)=W(kJ+r)$, including $r=0$. Summing these groups in
+decreasing order of $J$ reconstructs $x$.
+
+Find a natural $N$ with $C_J<a^N$ as follows. For finite $a$, $k=1$,
+so all entries of $C_J$ are zero. Its value is its length $m$,
+and $N=m+1$ gives $a^N>m$. For infinite $a$ put $g=h(h(a))$.
+Then $k=W(g+1)$. Every entry of the head $r_*=h(C_J)$ is at most
+$g$. With $N=|r_*|+1$, ordinary finite multiplication shows that
+$h(a)N$ begins with at least $N$ copies of $g$. Thus
+$h(a)N>r_*$, by the first differing exponent or by length when all
+of $r_*$ consists of copies of $g$. Since $h(a^N)=h(a)N$,
+again $C_J<a^N$.
+
+Now set $q_0=C_J$. For $i<N$ divide $q_i=aq_{i+1}+d_i$,
+where $d_i<a$. From $q_i<a^{N-i}$ one gets
+$q_{i+1}<a^{N-i-1}$, since $aq_{i+1}\le q_i$ and
+$a\,a^{N-i-1}=a^{N-i}$. At the last step $q_N<1$, hence $q_N=0$.
+Substituting the equations back, using left distributivity at each
+step, gives $C_J=a^{N-1}d_{N-1}+\cdots+a^0d_0$.
+Multiplication on the left by $W(kJ)$ moves these digits to the positions
+$\omega J+i$. These positions increase with $i$, and positions from
+distinct groups are ordered by $J$, since
+$\omega J+i<\omega(J+1)$. Omitting zero digits and concatenating the
+groups therefore returns a valid finite support. It has value $x$.
+The initial-segment bound already proved guarantees the required
+positions $<b$ whenever $x<a^b$. Uniqueness follows from the strict
+comparison proved above.
+
+There are at most $|x|$ groups, and each group has its displayed
+numerical bound $N$ on the division loop. Intermediate lists are
+computed by ordinary primitive recursion with a changing accumulator.
+This construction uses no induction on the ordinal quotient.
+\end{proof}
+For $a=1$ there is only the zero-valued function, and $1^b=1$.
+For $a=0$ there is one empty function when $b=0$ and none when $b>0$,
+in agreement with the exceptional powers. In this last case a total
+function on a nonempty domain cannot choose a value at its least input.

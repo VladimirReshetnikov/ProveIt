@@ -1,0 +1,100 @@
+{
+  "status": "passed",
+  "scope": "exact finite regression checks only; not proofs or formalization",
+  "report_date": "2026-11-22",
+  "arithmetic": "arbitrary-precision integers; no floating-point tests",
+  "checks": {
+    "division": {
+      "status": "passed",
+      "cases": 1377,
+      "range": "0<=a<=80, 1<=b<=17",
+      "reference": "Python divmod"
+    },
+    "extended_gcd": {
+      "status": "passed",
+      "cases": 2116,
+      "range": "0<=a,b<=45, including (0,0)",
+      "verified": [
+        "math.gcd agreement",
+        "Bezout identity at every step",
+        "decreasing second-remainder invariant",
+        "coefficient bound at every step",
+        "termination by a+b+1"
+      ]
+    },
+    "generalized_crt": {
+      "status": "passed",
+      "cases": 6405,
+      "range": "all residue systems for two moduli 1..10 and three moduli 1..5; five signed/empty corners",
+      "reference": "exhaustive search below math.lcm; independent pairwise gcd compatibility test"
+    },
+    "sieve": {
+      "status": "passed",
+      "input_bounds": 201,
+      "entry_comparisons": 20301,
+      "range": "0<=N<=200, every entry 0..N",
+      "reference": "independent trial division up to integer square root"
+    },
+    "lucas": {
+      "status": "passed",
+      "cases": 19880,
+      "primes": [
+        2,
+        3,
+        5,
+        7,
+        11,
+        13,
+        17
+      ],
+      "range": "0<=n<=70, 0<=k<=n+4",
+      "reference": "exact math.comb modulo p, including k>n"
+    },
+    "kummer": {
+      "status": "passed",
+      "cases": 17892,
+      "primes": [
+        2,
+        3,
+        5,
+        7,
+        11,
+        13,
+        17
+      ],
+      "range": "0<=k<=n<=70",
+      "reference": "division valuation of exact math.comb; separately checked digit-sum formula"
+    },
+    "arithmetic_functions": {
+      "status": "passed",
+      "positive_inputs": 400,
+      "range": "1<=n<=400; sigma_r for r=0,1,2; coprime a,b<=20",
+      "mobius_inversion_cases": 1200,
+      "multiplicative_input_pairs": 255,
+      "verified": [
+        "bounded prime-factor construction",
+        "tau and sigma product formulas",
+        "phi product and divisor-sum formulas",
+        "Mobius cancellation and inversion for three signed functions",
+        "phi via Mobius",
+        "squarefree decomposition",
+        "tau/sigma parity",
+        "Liouville square indicator",
+        "multiplicativity of phi, mu, tau, sigma"
+      ]
+    },
+    "even_perfect_numbers": {
+      "status": "passed",
+      "even_inputs": 5000,
+      "range": "2<=N<=10000, N even",
+      "observed": [
+        6,
+        28,
+        496,
+        8128
+      ],
+      "reference": "independent paired-divisor sigma versus Mersenne-prime construction and recovered exponents"
+    }
+  },
+  "elapsed_seconds": 0.549
+}

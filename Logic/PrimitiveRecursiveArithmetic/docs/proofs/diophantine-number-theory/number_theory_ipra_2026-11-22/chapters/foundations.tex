@@ -1,0 +1,107 @@
+\section{The arithmetic setting and the proof discipline}\label{sec:foundations}
+
+\subsection{What is being proved}
+This report gives first-order arithmetic versions of a broad collection of number-theoretic results. For an integer theorem such as the four-square theorem the version is the ordinary theorem, with a specified primitive recursive witness. For an analytic theorem the version is an explicitly quantified finite inequality or a statement about a specified primitive recursive sequence of rational approximations. These two situations must be distinguished. A first-order theory of numbers does not quantify over an unrestricted set of real numbers, all subsets of the integers, or all functions on the integers.
+
+Our base theory \ipra\ has one sort, natural numbers including zero, intuitionistic first-order logic with equality, and a symbol for each primitive recursive definition. It includes the defining equations, successor injectivity, $Sx\ne0$, and induction for quantifier-free formulas with parameters. The defining equations for a primitive recursion are
+\[
+ f(0,\vec x)=g(\vec x),\qquad
+ f(Sn,\vec x)=h(n,f(n,\vec x),\vec x).
+\]
+Induction is the axiom schema
+\[
+ A(0,\vec x)\ \wedge\ \forall n\bigl(A(n,\vec x)\to A(Sn,\vec x)\bigr)
+ \ \longrightarrow\ \forall n A(n,\vec x),
+\]
+where $A$ is quantifier-free. Induction on a formula with an unbounded existential quantifier is not an available rule. The notation $\ipra\vdash\varphi$ means derivability in this object theory, not merely truth of a corresponding theorem in Lean's natural numbers.
+
+The logical rules are the usual assumption and substitution rules; introduction and elimination for $\wedge,\vee,\to,\forall,\exists$; elimination of falsehood; equality reflexivity and replacement of equals. Universal introduction requires that the generalized variable is absent from the open assumptions. Existential elimination requires a fresh witness variable absent from the conclusion and other assumptions. Negation abbreviates implication to falsehood. There is no rule of unrestricted excluded middle, double-negation elimination, choice, or reflection from semantic truth to derivability. Arithmetic equality and bounded finite questions will nevertheless be decidable by explicit computations.
+
+\subsection{Numerical encodings}
+All encodings below have primitive recursive constructors, accessors, and validity tests. An integer is represented by its sign and absolute value, canonically by the natural code $2a$ for $a\ge0$ and $2a-1$ for $-a<0$. A rational is a signed numerator and a positive denominator; equality and order are tested by cross multiplication, so normalization is optional. A rational identity in a proof can always be cleared of its positive denominators and becomes an integer identity. An integer identity becomes an equality between natural-number expressions by moving negative summands to the other side.
+
+For definiteness, pairs may be encoded by
+\[
+ \langle a,b\rangle=2^a(2b+1)-1.
+\]
+Decode $a$ as the largest $j\le c+1$ such that $2^j\mid c+1$, then decode $b$ by exact division. This is a bounded search. A finite list of length $l$ with entries at most $M$ can be represented by the triple $(l,M,A)$, where
+\[
+ A=\sum_{i<l} a_i(M+1)^i,\qquad 0\le A<(M+1)^l
+\]
+when $M\ge1$; the all-zero case uses base $2$. The $i$th digit is obtained by quotient and remainder. Pair the three numbers to obtain a single code. Lists whose sizes change can be re-encoded with a new maximum at each step. Products, sums, concatenation, bounded permutations, coefficient vectors, and finite tables are therefore primitive recursive. We never require a bound on running time that is polynomial or practically small.
+
+The division functions used in the encodings can first be defined by an $a+1$-step scan of candidate quotients at input $(a,b)$, with a default output for $b=0$. Their defining equations do not presuppose Euclid's theorem; correctness for $b>0$ is proved in the elementary chapter. Similarly, an integer square root is defined by searching $j\le n$ for the largest $j$ with $j^2\le n$. The elementary order lemmas verify $r^2\le n<(r+1)^2$. Thus the encodings do not assume their later number-theoretic applications.
+
+\begin{lemma}[Bounded Boolean reflection]\label{fd:reflection}
+For each fixed formula $A(\vec x)$ made from primitive recursive atomic equalities by propositional connectives and bounded quantifiers, there is a primitive recursive Boolean $[A](\vec x)$ for which \ipra\ proves
+\[
+ [A]=0\ \vee\ [A]=1,
+ \qquad A\ \longleftrightarrow\ [A]=1.
+\]
+Consequently bounded-formula induction is derivable, by applying quantifier-free induction to $[A]=1$.
+\end{lemma}
+\begin{proof}
+Equality is decided by simultaneous predecessor comparison, or by testing whether both truncated differences vanish. The equations for this test and induction on its input prove equality or its negation. On Boolean values use multiplication for conjunction, $1-b$ for negation, and $\max$ for disjunction. Implication between decidable formulas is represented by $\max(1-a,b)$. These equivalences are intuitionistically valid because the induction hypotheses provide the relevant decisions.
+
+For $\forall i<t\,B(i,\vec x)$ use the product $P(t)=\prod_{i<t}[B(i,\vec x)]$. Its equations are $P(0)=1$ and $P(t+1)=P(t)[B(t,\vec x)]$. Quantifier-free induction proves that it is a Boolean. For each fixed index $i$, induction proves $i<j\wedge P(j)=1\to[B(i,\vec x)]=1$. In the other direction, retain $\forall i<t\,B(i,\vec x)$ as an open assumption and induct on the quantifier-free assertion $j\le t\to P(j)=1$. The assumption supplies the next factor by universal elimination. Thus this argument does not assume bounded-formula induction in order to establish it.
+
+For an existential quantifier, put $b_i=[B(i,\vec x)]$ and $F(j)=\prod_{i<j}(1-b_i)$. With the final bound $t$ fixed, initialize $w(0)=t$ and update $w(j)$ to $j$ exactly when $w(j)=t$ and $b_j=1$. Direct quantifier-free induction, guarded by $j\le t$, proves
+\[
+ F(j)=1\ \longrightarrow\ w(j)=t,\qquad
+ F(j)=0\ \longrightarrow\ w(j)<j\ \wedge\ b_{w(j)}=1.
+\]
+For each fixed $i$, another quantifier-free induction proves $i<j\wedge b_i=1\to F(j)=0$. Hence $1-F(t)=1$ is equivalent to the bounded existential, with witness $w(t)$. These direct Boolean invariants establish the scan before using any bounded-formula induction. Nest the construction in the syntactic order of the bounded formula. This is an effective metatheoretic construction for each fixed formula, not a universal evaluator for arbitrary primitive recursive programs.
+\end{proof}
+
+\begin{lemma}[Bounded search, finite sums, and finite products]\label{fd:search}
+Let $b(i,\vec x)$ be a fixed primitive recursive Boolean and let $T(\vec x)$ be primitive recursive. The first $i<T$ with $b(i,\vec x)=1$, with the failure value $T$, is primitive recursive. Its successful answer satisfies the predicate and is least; failure is equivalent to all $T$ tests being zero. Finite sums and products of fixed primitive recursive functions, including signed or rational ones, are primitive recursive.
+\end{lemma}
+\begin{proof}
+At stage $j$ store the least successful index below $j$, using the sentinel $T$ until one is found. If the stored value is $T$ and $b(j)=1$, replace it by $j$; otherwise retain it. The invariant is: either the stored value is a successful least index below $j$, or it is $T$ and every previous test is zero. Every quantifier in this invariant is bounded by $j$ or $T$; Lemma~\ref{fd:reflection} replaces it with a quantifier-free Boolean equation. Start at $j=0$ and iterate exactly $T$ steps. The update equations and the invariant prove the claim. For sums store the previous sum and add the next term; for products multiply. Rational updates use pairs of integers and positive denominators. A common denominator such as the product of all input denominators provides an alternative integer-only implementation.
+\end{proof}
+
+\begin{lemma}[Clocked loops and simultaneous invariants]\label{fd:loops}
+Suppose a state update $F(s,\vec x)$, initial state $s_0(\vec x)$, and iteration count $T(\vec x)$ are primitive recursive. If a bounded arithmetic invariant $I(j,s,\vec x)$ holds initially and is preserved by the update, \ipra\ proves it at every $j\le T$. The resulting state and every selected output component are primitive recursive.
+\end{lemma}
+\begin{proof}
+Define $s(0)=s_0$ and $s(j+1)=F(s(j),\vec x)$. Substitute this term in the Boolean characteristic of $I$. Quantifier-free induction proves $[I(j,s(j),\vec x)]=1$. If the desired invariant only concerns the first $T$ stages, freeze the state thereafter, or use the implication $j\le T\to I$. Simultaneous recursions are one recursion on a tuple code. Finite strong induction is handled by storing the previously constructed witnesses and the product of their correctness bits. At stage $j$ every preceding case is read from that table; the induction formula is still a Boolean equation. This justifies the finite strong-induction presentations used below.
+\end{proof}
+
+\begin{lemma}[Finite descent]\label{fd:descent}
+Let $\operatorname{Bad}(s)$ and a height $h(s)$ be primitive recursive. Suppose \ipra\ proves that a bad state has positive height and that a primitive recursive update $F$ maps every bad state to a bad state of strictly smaller height. Then \ipra\ proves that no bad state exists.
+\end{lemma}
+\begin{proof}
+Starting from a proposed bad state, run $F$ for $h(s)$ steps. At stage $j\le h(s)$ maintain
+\[
+ \operatorname{Bad}(s_j),\qquad j+h(s_j)\le h(s).
+\]
+Strict decrease makes the second inequality survive the next step. At $j=h(s)$ it forces $h(s_j)=0$, contradicting positivity. Both assertions are bounded arithmetic, and the iteration has a supplied finite clock. This argument does not use an unbounded least-counterexample principle. In a witness-producing descent, freeze the state once the target is reached and apply the same argument to show that failure to reach it within the clock is impossible.
+\end{proof}
+
+\begin{lemma}[Finite pigeonhole principle with witnesses]\label{fd:php}
+For a coded list $a_0,\ldots,a_M$ with $a_i<M$, one can find $i<j\le M$ with $a_i=a_j$ by a primitive recursive search, and \ipra\ proves its success.
+\end{lemma}
+\begin{proof}
+Test all at most $(M+1)^2$ pairs. If none succeeds, for each $v<M$ the count $c_v(t)=\#\{i<t:a_i=v\}$ is at most one. Induction on $t$ proves $\sum_{v<M}c_v(t)=t$, because inserting $a_t$ increases exactly its one count. At $t=M+1$, the left side is at most $M$ and the right side is $M+1$, a contradiction. The counts and both nested sums are bounded loops. The finite decision of whether a collision exists, together with the contradiction in its failure branch, produces the successful pair.
+\end{proof}
+
+\subsection{Witnesses, schemas, and analytic names}
+Whenever a theorem says ``choose a prime divisor'', ``take an inverse'', ``take a square root'', or ``select a collision'', the indicated finite bounds determine a search using Lemma~\ref{fd:search}. Witnesses returned by separate branches can be combined by a primitive recursive conditional. The implication from hypotheses to witness correctness is proved by the stated invariants; a default value is used when the hypotheses fail. Accordingly the functions are total even when a mathematical operation is described only on its usual domain.
+
+Statements about an arbitrary arithmetic function $f$ are schemas: fix a primitive recursive definition of $f$, then make the displayed construction and derivation for that definition. A uniform theorem can instead take a finite table as numerical input. It is incorrect to use a single primitive recursive function $\operatorname{eval}(e,x)$ evaluating every primitive recursive program with code $e$: diagonalizing $\operatorname{eval}(e,e)+1$ rules out such an evaluator. Uniform evaluation of a finite polynomial or a fixed finite table is harmless because those are restricted, explicitly bounded data formats.
+
+A real name, when needed, is a fixed primitive recursive rational sequence $r(k)$ accompanied by a derived modulus, for example
+\[
+ \forall l\ge k\quad |r(l)-r(k)|\le 2^{-k}.
+\]
+The displayed formula concerns natural-number codes and is interpreted by clearing denominators. The external real number represented by the name is explanatory notation. Within \ipra\ the theorem is the family of rational estimates about $r$. No step asks whether an arbitrary represented real is exactly zero, an integer, positive, or rational. A strict comparison needs a finite separation margin; the approximation chapter makes that margin explicit.
+
+\subsection{Proof status and the ProveIt integration target}
+The human-readable proofs in this report are complete mathematical arguments with an explicit reduction to the preceding finite proof rules. The supplied Lean files are definitions and a formalization blueprint; they have not been compiled in this environment, which has no Lean executable. They are not presented as new kernel-checked derivations. Finite Python checks exercise identities and witness implementations; they do not establish the universally quantified theorems.
+
+The repository snapshot used for integration is
+\begin{center}\small\ttfamily bbb85238dac533fc4b7b84a750cca864fe35fed5.\end{center}
+Its top-level arithmetic overview distinguishes the checked libraries from delivered research packets, which it does not certify merely by filing them~\cite{proveit-readme}. We inspected the definitions of \texttt{PR}, \texttt{PTm}, \texttt{PRAAx}, and \texttt{PRA.qfInd}, and selected source files for search, division, B\'ezout, bounded sums, pigeonhole, descent, reciprocity, and the arithmetic prime number theorem. These are useful existing targets, not an automatic certification of this report. The formalization section records exact source paths and the obligations needed to turn this package into derivations of type
+\[
+ \texttt{([] : List (Fm PTm 0))}\ \vdash[\texttt{PRAAx}]\ \varphi.
+\]

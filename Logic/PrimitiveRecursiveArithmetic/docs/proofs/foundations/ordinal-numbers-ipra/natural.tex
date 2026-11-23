@@ -1,0 +1,42 @@
+\section{Natural arithmetic, indecomposability, and finite nimbers}
+\label{sec:natural}
+Write $c_a(e)$ for the number of occurrences of $e$ among the children of $a$. To compare coefficients, scan the finite union of supports in decreasing order. At the largest exponent with different coefficients the term with smaller coefficient is smaller. This follows by expanding equal leading runs and comparing the next entry, including the case of a missing entry.
+
+\begin{theorem}[Hessenberg operations]\label{thm:hess}
+Define $a\mathbin\oplus b$ by merging the two lists in decreasing order. Define $a\mathbin\otimes b$ by listing all $e\oplus f$ with $e$ an entry of $a$, $f$ an entry of $b$, with their repetitions, and sorting in decreasing order. These PR operations make $\mathcal O$ a commutative semiring. Natural sum strictly preserves order in each argument, as does natural product when the other factor is positive. For finite inputs they give ordinary natural sum and product.
+\end{theorem}
+\begin{proof}
+Multiplicity in a merge is $c_a(e)+c_b(e)$. Induction on the entries inserted proves this for each queried exponent. Equality of all coefficients on the union of supports implies equality of the sorted lists by matching equal runs. Thus $\oplus$ is commutative and associative with identity $0$. It preserves the largest coefficient difference and its sign. In the product the coefficient at $g$ is the finite sum of $c_a(e)c_b(f)$ over support pairs with $e\oplus f=g$. Swapping the pair gives commutativity. Triples $(e,f,h)$ contribute equal numbers to the same exponent under either bracketing because $(e\oplus f)\oplus h=e\oplus(f\oplus h)$. Splitting a merge in the second factor splits each coefficient into two contributions and proves distributivity. The empty list has no pairs and $1=[0]$ contributes one pair with each left entry, preserving it. Lists of zeros give the finite laws.
+
+For strict product monotonicity take $a<b$ and $z>0$. Let $e$ be the largest exponent at which $a,b$ differ, and $f$ the leading exponent of $z$. Above $e\oplus f$ every contribution from the first factor comes from an exponent greater than $e$, and the coefficients there agree. At $e\oplus f$ those larger exponents still contribute equally. Smaller first exponents cannot contribute. With first exponent $e$ only second exponent $f$ contributes. Strict increase of $\oplus$ proves each exclusion. The excess at this exponent is $(c_b(e)-c_a(e))c_z(f)>0$ as required. All supports and the pair and triple indexing sets are finite, bounded by products of the input lengths.
+\end{proof}
+
+\begin{proposition}[Comparison with ordinary arithmetic]
+$a+b\le a\oplus b$ and $ab\le a\otimes b$. Repeated $n$-fold natural sum of $a$ equals $a\otimes n$. The two natural operations can fail to preserve suprema in either argument.
+\end{proposition}
+\begin{proof}
+The sum algorithm deletes entries, whereas the merge keeps every entry. Deletion from a decreasing list can only decrease its value. For the product first take a single right monomial $[f]$. For $f=0$ both results are $a$. For $f>0$ and $a>0$ the ordinary result is $[d+f]$, with $d$ the leading exponent of $a$. The natural result has leading exponent $d\oplus f\ge d+f$, with at least one copy. For an arbitrary right list fold these ordinary products in order, using the bound for a sum and monotonicity of natural sum at each step. Distributivity reconstructs the natural product. Zero causes no exception. The identity for $n$ follows from the pair formula, or ordinary induction. Finally $1\oplus n=n+1$ has supremum $\omega$, but $1\oplus\omega=\omega+1$. Likewise $2\otimes n=2n$ has supremum $\omega$, but $2\otimes\omega=\omega\cdot 2$. For either sequence every value is finite and an index exceeding any proposed finite bound can be given by its successor.
+\end{proof}
+
+\begin{corollary}[Closure at principal terms]
+The terms below $\omega^t$ are closed under natural sum. Those below $\omega^{\omega^t}$ are closed under natural product.
+\end{corollary}
+\begin{proof}
+Every entry of either summand below $[t]$ is $<t$, hence this remains so after a merge. For positive factors below $[\,[t]\,]$, let their leading exponents be $e,f<[t]$. The largest product exponent is $e\oplus f<[t]$ by the first assertion. Zero factors give zero directly.
+\end{proof}
+
+\paragraph{A polynomial reading.}
+Natural arithmetic here is the semiring of finite polynomials with natural coefficients in commuting variables $X_t$ indexed by valid terms $t$. Assign $X_t=[\,[t]\,]$. A monomial $\prod_t X_t^{m_t}$, using natural product and its finite powers, has one exponent, the decreasing list with $m_t$ copies of $t$. Natural sum assembles such monomials as the children of a term. Conversely, sort the children and their own children to read off uniquely the monomials and their multiplicities. The two conversions are inverse and the pair formula gives multiplication of polynomials. This is an equality of finite coded data. The universal polynomial evaluation property for any fixed coded commutative semiring follows by evaluating this finite list with its given operations.
+
+\subsection{The finite nimber sum}
+The article also links ordinals as nimbers. For natural numbers let $a\mathbin{\mathrm{xor}}b$ be bitwise exclusive-or. For a finite list of integers write $\mathrm{mex}$ for its least missing natural. A list of length $k$ misses some value among $0,\ldots,k$ by counting, giving a bounded algorithm.
+\begin{theorem}
+For finite nimbers the mex addition rule has the unique solution $a\boxplus b=a\mathbin{\mathrm{xor}}b$.
+\[
+ a\boxplus b=\mathrm{mex}\big(\{i\boxplus b:i<a\}\cup\{a\boxplus j:j<b\}\big).
+\]
+In particular this operation is commutative and associative, has identity zero, and $a\boxplus a=0$.
+\end{theorem}
+\begin{proof}
+Put $z=a\mathbin{\mathrm{xor}}b$. Exclusive-or by a fixed input is its own inverse, so no legal option gives $z$. For $w<z$, find the highest bit at which $w$ and $z$ differ by a bounded scan. At that bit $z$ has one and $w$ zero. Exactly one of $a,b$ has one there. If it is $a$, take $i=w\mathbin{\mathrm{xor}}b$. All higher bits of $i$ and $a$ agree, and this bit decreases, giving $i<a$ and $i\mathbin{\mathrm{xor}}b=w$. The other case yields $j=w\mathbin{\mathrm{xor}}a<b$. Thus the first missing value is precisely $z$. The other assertions follow bit by bit. For uniqueness, tabulate the rule in any fixed rectangle $i\le a,j\le b$ by increasing $i+j$. Agreement with exclusive-or for all earlier entries is a bounded invariant and forces agreement at the next entries. In particular $1\boxplus1=0$, while $1+1=1\oplus1=2$.
+\end{proof}

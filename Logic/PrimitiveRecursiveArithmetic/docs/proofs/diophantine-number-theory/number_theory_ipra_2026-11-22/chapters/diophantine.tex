@@ -1,0 +1,657 @@
+\section{Diophantine equations, continued fractions, and bounded approximation}
+\label{sec:diophantine}
+
+This chapter uses signed integers, positive denominators, finite lists, and
+bounded search only. A rational is represented by $(a,b)$ with $a\in\Z$
+and $b\geq1$; equality and order are cross-multiplication tests.
+Rational inequalities therefore abbreviate integer inequalities.
+An algorithmic square root means the integer function
+\[
+ \operatorname{isqrt}(n)=\max\{j\leq n:j^2\leq n\}.
+\]
+Its specification $s^2\leq n<(s+1)^2$ follows by a bounded scan,
+including $n=0$. No real-number decision procedure is assumed.
+
+\subsection{Rational arithmetic and power obstructions}
+
+\begin{theorem}[Canonical rational representation]\label{dio:normal}
+Every pair $(a,b)$ with $b>0$ has a unique equivalent pair $(u,v)$ with
+$v>0$ and $\gcd(|u|,v)=1$. Normalization, addition, multiplication,
+comparison, and reciprocal of a nonzero rational are primitive recursive.
+\end{theorem}
+\begin{proof}
+Put $g=\gcd(|a|,b)$, $u=a/g$, and $v=b/g$. Since $b>0$, $g>0$;
+the quotients are exact. A common divisor larger than $1$, multiplied
+by $g$, would contradict the greatest-common-divisor property.
+If $u/v=u'/v'$ and both pairs are reduced, then $uv'=u'v$.
+The coprime version of Euclid's lemma gives $v\mid v'$ and $v'\mid v$.
+Positivity gives $v=v'$, and cancellation gives $u=u'$.
+Addition and multiplication form
+$(uv'+u'v,vv')$ and $(uu',vv')$ and normalize.
+Comparison tests $uv'\leq u'v$. The reciprocal switches numerator
+and denominator and moves a negative sign to the numerator.
+Every operation uses integer arithmetic and gcd. Zero becomes $(0,1)$.
+\end{proof}
+
+\begin{theorem}[Rational root test]\label{dio:rational-root}
+Let $f(X)=c_0+c_1X+\cdots+c_dX^d$, with $d\geq1$, $c_d\ne0$,
+and integer coefficients. If a reduced rational $u/v$, $v>0$, is a
+root, then $v\mid c_d$; if $u\ne0$, then $u\mid c_0$.
+A rational root of a monic integer polynomial is therefore an integer.
+If $c_0\ne0$, all rational roots can be found by a finite search with
+$|u|\leq|c_0|$ and $1\leq v\leq|c_d|$.
+\end{theorem}
+\begin{proof}
+Multiply the equation by $v^d$:
+\[
+ c_0v^d+c_1uv^{d-1}+\cdots+c_du^d=0.
+\]
+Reduction modulo $v$ shows $v\mid c_du^d$. Coprimality gives
+$\gcd(u^d,v)=1$, hence $v\mid c_d$. Reduction modulo $u$ similarly
+gives $u\mid c_0v^d$, hence $u\mid c_0$. For $c_d=1$ we obtain $v=1$.
+If $c_0\ne0$, zero is not a root, and the divisibilities bound every
+candidate. Horner evaluation after clearing denominators checks each
+candidate by an integer equality. The degree and coefficient list are
+finite data, so the complete test is primitive recursive.
+\end{proof}
+
+\begin{corollary}[Rational powers and irrational roots]\label{dio:powers}
+For $N\in\N$ and $k\geq2$, a nonnegative rational whose $k$th power is
+$N$ is an integer. Such a rational exists precisely when
+$N=t^k$ for some $0\leq t\leq N+1$.
+For $N>0$, the equivalent valuation criterion is
+$k\mid v_p(N)$ for every prime $p\leq N$.
+In particular, if $D$ is nonsquare and $q>0$, then
+$p^2-Dq^2\ne0$ for every integer $p$.
+\end{corollary}
+\begin{proof}
+Apply the rational root test to $X^k-N$. An integer root is bounded
+by $N+1$, including $N=0$. For $N>0$, unique factorization makes
+$t^k=N$ equivalent to every prime exponent being divisible by $k$;
+the reverse implication uses the finite product
+$\prod_{p\leq N}p^{v_p(N)/k}$.
+If $p^2=Dq^2$, normalize $|p|/q$ and apply the square case.
+Thus the irrationality of $\sqrt D$ has the purely arithmetical content
+$q>0\Longrightarrow p^2\ne Dq^2$.
+\end{proof}
+
+\subsection{Pythagorean triples and two finite descents}
+
+\begin{theorem}[Primitive Pythagorean triples]\label{dio:pythagoras}
+Suppose $a,b,c>0$, $a^2+b^2=c^2$, and $\gcd(a,b)=1$.
+Exactly one leg is even. Calling it $b$, there are unique integers
+$m>n>0$ such that
+\[
+ a=m^2-n^2,\quad b=2mn,\quad c=m^2+n^2,\quad
+ \gcd(m,n)=1,\quad m\not\equiv n\pmod2.
+\]
+Conversely these conditions produce a primitive positive triple.
+The parameters can be recovered by bounded square-root tests.
+\end{theorem}
+\begin{proof}
+The legs cannot both be even by coprimality. They cannot both be odd,
+because their squared sum would be $2$ modulo $4$. Thus $b$ is even
+and $a,c$ odd. A prime dividing $a,c$ divides $b^2$, hence $b$;
+therefore $\gcd(a,c)=1$. The positive integers
+\[
+ U=(c+a)/2,\qquad V=(c-a)/2
+\]
+satisfy $U>V$, $UV=(b/2)^2$, and $\gcd(U,V)=1$: a common divisor
+divides $c$ and $a$. In a coprime product that is a square, each prime
+exponent in each factor is even. Hence $U=m^2$ and $V=n^2$ for unique
+positive $m,n$. The displayed formulas follow. Coprimality follows
+from that of $U,V$, and opposite parity follows because $c$ is odd.
+
+Conversely expand
+$(m^2-n^2)^2+(2mn)^2=(m^2+n^2)^2$.
+The first leg is odd. An odd prime dividing both legs divides $m$ or
+$n$, and then the other, contradicting coprimality.
+The positive square roots of $U,V$ prove uniqueness; they are bounded
+by $c$, so recovery is primitive recursive.
+\end{proof}
+
+\begin{corollary}[All integer right triangles]\label{dio:all-triples}
+Every positive integer right triangle is a positive integer multiple of
+exactly one primitive triple, up to exchanging its legs.
+\end{corollary}
+\begin{proof}
+Put $g=\gcd(a,b)$. Since $g^2\mid c^2$, comparison of prime
+exponents gives $g\mid c$. Divide by $g$ and apply the preceding
+theorem. Conversely scaling preserves the equation.
+The scale is forced to equal the gcd of the two legs.
+\end{proof}
+
+\begin{theorem}[No integer right triangle has positive square area]
+\label{dio:square-area}
+There are no positive integers $a,b,c,t$ satisfying
+$a^2+b^2=c^2$ and $ab=2t^2$.
+\end{theorem}
+\begin{proof}
+We give a size-decreasing transformation with explicitly bounded
+iteration. First divide a proposed triangle by $g=\gcd(a,b)$.
+The primitive triangle has integral area $A_0$, since one leg is even.
+Then $t^2=g^2A_0$, so $g\mid t$ by prime exponents; its area is the
+square $(t/g)^2$. This normalization does not increase the hypotenuse.
+
+For a primitive counterexample the area, in the parameters of
+Theorem~\ref{dio:pythagoras}, is
+\[
+ mn(m+n)(m-n).
+\]
+The four factors are pairwise coprime. Coprimality involving $m$ or
+$n$ follows from $\gcd(m,n)=1$; a common divisor of $m+n,m-n$
+divides $2m,2n$, and these two factors are odd.
+Thus each factor is a square, say
+\[
+ m=u^2,\quad n=v^2,\quad m+n=w^2,\quad m-n=z^2.
+\]
+Both $w,z$ are odd. Since $w^2-z^2=2v^2$ and odd squares are $1$
+modulo $8$, $v$ is even. Put $r=(w+z)/2$, $s=(w-z)/2$.
+These are positive integers, and
+\[
+ r^2+s^2=(w^2+z^2)/2=m=u^2,\qquad
+ rs/2=(w^2-z^2)/8=(v/2)^2.
+\]
+So $(r,s,u)$ is another integer right triangle of square area, with
+smaller hypotenuse because $u^2=m<m^2+n^2=c$.
+
+The step uses gcd, exact division, and bounded square-root searches.
+Make it a total primitive recursive function by returning a fixed
+default tuple on invalid input. Starting at hypotenuse $c_0$, iterate
+it $c_0$ times. The quantifier-free invariant is that the current tuple
+is a counterexample with $1\leq c_i\leq c_0-i$. At $i=c_0$ this is
+impossible. This uses quantifier-free induction, not an unrestricted
+least-counterexample principle.
+\end{proof}
+
+\begin{theorem}[Fermat's quartic descent]\label{dio:fermat-four}
+There are no positive integers $x,y,z$ with $x^4+y^4=z^2$.
+Consequently $x^{4k}+y^{4k}=z^{4k}$ has no positive integer solution
+for any $k\geq1$.
+\end{theorem}
+\begin{proof}
+Normalize by $g=\gcd(x,y)$. The equation gives $g^4\mid z^2$,
+hence $g^2\mid z$, so division yields a solution with coprime $x,y$
+and no larger $z$. They cannot both be odd, by reduction modulo $16$.
+Exchange them so $x$ is odd and $y$ even.
+The primitive right triangle $(x^2,y^2,z)$ has parameters
+\[
+ x^2=m^2-n^2,\qquad y^2=2mn,\qquad z=m^2+n^2.
+\]
+If $m$ were even and $n$ odd, the first equality would make a square
+$3$ modulo $4$. Hence $m$ is odd and $n$ even.
+The coprime factors $m,2n$ have square product, so $m=u^2$ and
+$2n=w^2$. The latter implies $w=2v$ and $n=2v^2$.
+
+Now $(x,n,m)$ is a primitive right triangle: a prime dividing $x,n$
+would also divide $m$. Its even leg is $2v^2$ and its hypotenuse is
+$u^2$. Another parametrization gives coprime positive $r>s$ with
+\[
+ x=r^2-s^2,\qquad v^2=rs,\qquad u^2=r^2+s^2.
+\]
+Therefore $r=A^2,s=B^2$, and $A^4+B^4=u^2$ is a new positive
+solution. It is smaller since $u^2=m<z=m^2+n^2$.
+Normalize and apply this transformation with fuel equal to the original
+$z_0$. The quantifier-free invariant records the quartic equation and
+$1\leq z_i\leq z_0-i$, giving a contradiction at the last stage.
+All root searches are bounded by the current hypotenuse.
+For the last assertion substitute $X=x^k,Y=y^k,Z=z^{2k}$.
+\end{proof}
+
+\subsection{Finite continued fractions and Farey arithmetic}
+
+For $a_0\geq0$ and $a_i\geq1$ for $i>0$, write
+$[a_0;a_1,\ldots,a_n]$ for the usual right-nested rational fraction.
+Define continuants by
+\[
+ \begin{gathered}
+ p_{-2}=0,\quad p_{-1}=1,\quad
+ q_{-2}=1,\quad q_{-1}=0,\\
+ p_i=a_ip_{i-1}+p_{i-2},\qquad
+ q_i=a_iq_{i-1}+q_{i-2}\quad(i\geq0).
+ \end{gathered}
+\]
+Negative subscripts name four initial constants; an implementation
+stores a four-entry state.
+
+\begin{theorem}[Finite continued fractions for rationals]\label{dio:cf-rational}
+Every nonnegative rational has a unique finite simple continued fraction
+whose last coefficient is at least $2$, unless there is just one
+coefficient. For $a/b$, $a\geq0,b>0$, it can be computed in at most
+$b+1$ Euclidean stages, with every coefficient at most $a+b$.
+\end{theorem}
+\begin{proof}
+Divide $a=a_0b+r$. If $r=0$, stop; otherwise replace $(a,b)$ by
+$(b,r)$ and repeat. Every nonterminal positive second entry decreases,
+so $b+1$ stages suffice. Substitution backwards gives the continued
+fraction. Later quotients are positive. At a final stage after the
+first, the first entry is larger than, and a multiple of, the second,
+so the quotient is at least $2$. All entries are at most $a+b$.
+For uniqueness, the tail of a nonintegral canonical fraction is greater
+than $1$, so its first coefficient is the floor of its value.
+Subtract the coefficient, invert the positive remainder, and repeat.
+This recovers every coefficient. A final $1$ accounts exactly for the
+excluded alternate expression $[\ldots,c,1]=[\ldots,c+1]$.
+All floors here are rational floors, computed by integer division.
+\end{proof}
+
+\begin{theorem}[Continuant identity, coprimality, and growth]
+\label{dio:continuants}
+For every valid finite coefficient list,
+\[
+ [a_0;\ldots,a_n]=p_n/q_n,\qquad
+ p_nq_{n-1}-p_{n-1}q_n=(-1)^{n+1}.
+\]
+In particular $\gcd(p_n,q_n)=1$ and $q_n>0$.
+The denominators are nondecreasing from $q_0=1$ and strictly increase
+after $q_1$. Whenever the indicated terms exist,
+\[
+ q_{n+2}\geq2q_n,\qquad q_{2k}\geq2^k.
+\]
+If every coefficient is at most $A\geq1$, then
+$p_n,q_n\leq(A+1)^{n+1}$.
+\end{theorem}
+\begin{proof}
+Induction by matrix multiplication gives
+\[
+ \begin{pmatrix}a_0&1\\1&0\end{pmatrix}\cdots
+ \begin{pmatrix}a_n&1\\1&0\end{pmatrix}
+ =
+ \begin{pmatrix}p_n&p_{n-1}\\q_n&q_{n-1}\end{pmatrix}.
+\]
+Substitution in the nested fraction gives its value $p_n/q_n$.
+Each factor has determinant $-1$, proving the determinant identity.
+Any common divisor of $p_n,q_n$ divides $1$.
+The recurrence gives $q_0=1,q_1=a_1\geq1$, and
+$q_{n+2}\geq q_{n+1}+q_n>q_{n+1}$.
+Thus $q_{n+2}\geq2q_n$, and induction gives the even-index bound.
+For the upper bound start with $p_0\leq A,q_0=1$ and
+$p_1\leq A^2+1\leq(A+1)^2,q_1\leq A$. Thereafter use
+\[
+ A(A+1)^n+(A+1)^{n-1}\leq(A+1)^{n+1}.
+\]
+All these are invariants of a finite matrix-product loop.
+\end{proof}
+
+\begin{theorem}[Exact tail and error identities]\label{dio:cf-error}
+For a positive rational $t$ and $n\geq0$,
+\[
+ [a_0;\ldots,a_n,t]
+ =\frac{tp_n+p_{n-1}}{tq_n+q_{n-1}},\qquad
+ \left|[a_0;\ldots,a_n,t]-\frac{p_n}{q_n}\right|
+ =\frac1{q_n(tq_n+q_{n-1})}.
+\]
+For $t\geq1$ the distance from $p_n/q_n$ is at most $1/q_n^2$.
+For $n\geq1$ the value lies between adjacent convergents.
+If a next coefficient $a_{n+1}$ is specified and $t\geq a_{n+1}$,
+its distance is at most $1/(q_nq_{n+1})$.
+\end{theorem}
+\begin{proof}
+Insert $t$ in the matrix identity and subtract $p_n/q_n$.
+The numerator of the difference is
+$p_{n-1}q_n-p_nq_{n-1}$, of absolute value $1$.
+All denominators are positive. For $n\geq1$ the value is the weighted
+mean of $p_n/q_n,p_{n-1}/q_{n-1}$ with positive weights
+$tq_n,q_{n-1}$. Finally $tq_n+q_{n-1}\geq q_n$ if $t\geq1$,
+and is at least $q_{n+1}$ under the stronger hypothesis.
+For a finite extension $t$ is a positive rational, so all claims are
+finite integer identities after clearing denominators.
+\end{proof}
+
+\begin{corollary}[A primitive recursive continued-fraction real]
+\label{dio:cf-real}
+Fix a primitive recursive coefficient function $a(n)$ with $a(0)\geq0$
+and $a(n)\geq1$ for $n>0$. Its convergents satisfy
+\[
+ m>n\quad\Longrightarrow\quad
+ |p_m/q_m-p_n/q_n|\leq q_n^{-2}.
+\]
+Consequently $r_k=p_{2k+2}/q_{2k+2}$ is a primitive recursive rational
+name with $|r_\ell-r_k|\leq2^{-2k-2}$ whenever $\ell>k$.
+\end{corollary}
+\begin{proof}
+For specified finite $m>n$, use the preceding theorem with
+$t=[a_{n+1};\ldots,a_m]\geq1$. Then
+$q_{2k+2}\geq2^{k+1}$ gives the stated estimate.
+Each prefix is produced by primitive recursion.
+This is a schema for each fixed primitive recursive coefficient
+function and its positivity proofs; it does not say that arbitrary
+reals have primitive recursive continued-fraction expansions.
+The estimates are themselves the arithmetical Cauchy data, without
+completion or choice.
+\end{proof}
+
+\begin{theorem}[Farey separation and the mediant]\label{dio:farey}
+Suppose $a/b<c/d$, $b,d>0$, and $bc-ad=1$.
+Every rational $p/q$ strictly between them, $q>0$, has $q\geq b+d$.
+The mediant $(a+c)/(b+d)$ is reduced, lies strictly between them,
+and attains that denominator bound.
+\end{theorem}
+\begin{proof}
+The strict inequalities give $bp-aq\geq1$ and $cq-dp\geq1$.
+Hence
+\[
+ q=d(bp-aq)+b(cq-dp)\geq d+b.
+\]
+Cross multiplication places the mediant strictly between the endpoints.
+A common divisor of its numerator and denominator divides
+$b(a+c)-a(b+d)=bc-ad=1$.
+In particular this applies to appropriately ordered adjacent convergents.
+\end{proof}
+
+\subsection{Finite Dirichlet approximation}
+
+\paragraph{The bounded collision principle.}
+We use Theorem~\ref{fd:php}: a list of $M+1$ integers in
+$\{0,\ldots,M-1\}$ contains an equal pair, which can be found by
+checking at most $(M+1)^2$ pairs.
+For the present applications, one can maintain a Boolean array of
+length $M$ marking encountered values.
+Processing a new distinct value changes exactly one zero to one.
+After $j$ distinct entries the array has exactly $j$ ones, by induction.
+It cannot contain $M+1$ ones. Thus the scan finds a collision.
+Array counts and tests for repeated entries in a finite prefix are
+bounded Boolean operations; their induction invariants are quantifier-free.
+
+\begin{theorem}[Rational Dirichlet approximation]\label{dio:dirichlet}
+For a rational $\alpha$ and $Q\geq1$, there are integers $p,q$ with
+\[
+ 1\leq q\leq Q,\qquad |q\alpha-p|<1/Q.
+\]
+They can be found by a bounded scan of $Q+1$ rational fractional parts.
+\end{theorem}
+\begin{proof}
+For $j=0,\ldots,Q$, let
+$f_j=j\alpha-\lfloor j\alpha\rfloor\in[0,1)$ and assign it box
+$\lfloor Qf_j\rfloor<Q$.
+Two indices $i<j$ have equal box numbers. Put
+$q=j-i$ and $p=\lfloor j\alpha\rfloor-\lfloor i\alpha\rfloor$.
+Then $q\alpha-p=f_j-f_i$, of absolute value less than $1/Q$.
+For $\alpha=a/b$, $b>0$, compute the fractional parts from
+remainders of $ja$ modulo $b$. There is no real floor.
+The witness satisfies $|p|\leq Q|\alpha|+1$.
+\end{proof}
+
+\begin{theorem}[Simultaneous rational Dirichlet approximation]
+\label{dio:simultaneous}
+For a finite rational list $\alpha_1,\ldots,\alpha_d$, $d\geq1$,
+and $N\geq1$, there are $q,p_1,\ldots,p_d$ satisfying
+\[
+ 1\leq q\leq N^d,\qquad |q\alpha_i-p_i|<1/N
+ \quad(1\leq i\leq d).
+\]
+The construction and witness bounds are primitive recursive in the
+finite input list and $N$.
+\end{theorem}
+\begin{proof}
+For $j=0,\ldots,N^d$, form the vector of box numbers
+$\lfloor N\{j\alpha_i\}\rfloor<N$. Encode it in base $N$;
+for $N=1$ every vector has the single code zero.
+There are $N^d$ codes and $N^d+1$ vectors. A collision at $j>k$,
+with $q=j-k$, gives the result by subtracting the integer parts in
+every coordinate. All errors are less than the box width $1/N$.
+One may use $|p_i|\leq N^d|\alpha_i|+1$.
+Exponentiation, finite-list operations, and the collision scan are
+primitive recursive.
+\end{proof}
+
+\begin{theorem}[Certified transfer to represented reals]\label{dio:real-transfer}
+Fix rational approximation names for a finite list of quantities
+$\xi_1,\ldots,\xi_d$. Suppose a chosen precision supplies rationals
+$r_i$ with certificates $|\xi_i-r_i|\leq\varepsilon$.
+The rational construction produces $1\leq q\leq N^d$ and integers
+$p_i$ with
+\[
+ |q\xi_i-p_i|<1/N+N^d\varepsilon.
+\]
+In particular $\varepsilon\leq1/(2N^{d+1})$ gives errors
+less than $3/(2N)$.
+\end{theorem}
+\begin{proof}
+Take witnesses for the rational list $r_i$. Then
+\[
+ |q\xi_i-p_i|\leq q|\xi_i-r_i|+|qr_i-p_i|
+ <N^d\varepsilon+1/N.
+\]
+Arithmetically, replace $\xi_i$ by all later rational approximants and
+the supplied error inequalities; the same calculation proves each
+finite inequality, uniformly in the later precision index.
+For names with error $2^{-k}$, the generous choice $k=2N^{d+1}$
+suffices, since $2^k\geq k$ by quantifier-free induction.
+Thus the required precision is primitive recursive.
+This is a schema for fixed names and their approximation proofs.
+It retains explicit slack; it neither assumes a decidable real floor
+nor claims the sharp real version with the identical denominator bound.
+\end{proof}
+
+\subsection{Pell's equation with an explicit primitive recursive bound}
+
+The following proof uses rational approximation and a finite collision.
+It needs neither periodic continued fractions nor a limiting argument.
+
+\begin{lemma}[Bounded norm with a prescribed lower denominator]
+\label{dio:pell-approx}
+Let $D\geq2$ be nonsquare and $Y\geq0$. Set
+\[
+ B=4(D+1),\qquad Q=B(Y+1),\qquad C=4D+2.
+\]
+There are positive integers $p,q$ with
+\[
+ Y<q\leq Q,\qquad p\leq DQ+1,\qquad 0<|p^2-Dq^2|<C.
+\]
+The pair can be obtained by bounded search using integer arithmetic.
+\end{lemma}
+\begin{proof}
+Put $A=\operatorname{isqrt}(DQ^4)$ and $\alpha=A/Q^2$. Then
+\[
+ 1\leq\alpha\leq D,\qquad
+ 0\leq D-\alpha^2<\frac{2A+1}{Q^4}
+ \leq\frac{2D}{Q^2}+\frac1{Q^4}.
+\]
+Indeed $A\geq Q^2$, since $D\geq2$, and
+$A^2\leq DQ^4\leq D^2Q^4$.
+Rational Dirichlet approximation gives $1\leq q\leq Q$ and $p$ with
+$|p-q\alpha|<1/Q$. Since $Q\geq12$ and $\alpha\geq1$, $p>0$.
+Also $p\leq Dq+1\leq DQ+1$. Factoring a difference of squares,
+\[
+ \begin{split}
+ |p^2-Dq^2|
+ &\leq |p-q\alpha|(p+q\alpha)+q^2(D-\alpha^2)\\
+ &<\frac{2Dq+1}{Q}
+       +q^2\left(\frac{2D}{Q^2}+\frac1{Q^4}\right)\\
+ &\leq4D+\frac1Q+\frac1{Q^2}<C.
+ \end{split}
+\]
+It is nonzero by Corollary~\ref{dio:powers}.
+If $q\leq Y$, the same estimate gives
+\[
+ |p^2-Dq^2|
+ <\frac{2DY+1}{4(D+1)(Y+1)}
+  +\frac{(2D+1)Y^2}{16(D+1)^2(Y+1)^2}<1.
+\]
+The first summand is less than $1/2$, since
+$2DY+1\leq2D(Y+1)$; the second is less than $1/2$, since
+$2D+1<8(D+1)^2$. This contradicts the nonzero integral norm.
+Thus $q>Y$. Clearing the positive denominators expresses the entire
+proof as integer equalities and inequalities.
+\end{proof}
+
+\begin{theorem}[Uniform bounded Pell existence]\label{dio:pell-existence}
+For nonsquare $D\geq2$, define
+\[
+ \begin{gathered}
+ C=4D+2,\quad B=4(D+1),\quad K=2C^3,\\
+ U=(B+1)^{K+1},\qquad H=4(D+1)^2(U+1)^2.
+ \end{gathered}
+\]
+There are integers
+\[
+ 2\leq x\leq H,\qquad1\leq y\leq H,\qquad x^2-Dy^2=1.
+\]
+The first such pair in the displayed finite box is therefore a primitive
+recursive function of $D$ on nonsquare inputs.
+\end{theorem}
+\begin{proof}
+Let $T_0=0,T_{i+1}=B(T_i+1)$. For each $i=0,\ldots,K$ use the
+preceding lemma with $Y=T_i$ to obtain $(p_i,q_i)$ and
+$m_i=p_i^2-Dq_i^2$, with
+\[
+ T_i<q_i\leq T_{i+1},\qquad 0<|m_i|\leq C,\qquad
+ p_i\leq DT_{i+1}+1.
+\]
+The $q_i$ strictly increase. Induction gives
+$T_i+1\leq(B+1)^i$, so $q_i<U$ and $p_i\leq DU+1$.
+Classify a pair by
+\[
+ (m_i,\ p_i\bmod|m_i|,\ q_i\bmod|m_i|).
+\]
+There are at most $2C^3=K$ classes: use a sign-and-magnitude tag
+less than $2C$, and two residue slots each less than $C$.
+A collision among the $K+1$ pairs gives $i<j$ with common nonzero
+norm $m$ and matching residues modulo $|m|$.
+Define
+\[
+ x=\frac{p_ip_j-Dq_iq_j}{m},\qquad
+ y=\frac{p_iq_j-p_jq_i}{m}.
+\]
+The first numerator is congruent to
+$p_i^2-Dq_i^2=m$ modulo $|m|$, and the second to zero.
+Thus both quotients are integers, also for $m<0$.
+Expansion gives
+\[
+ (p_ip_j-Dq_iq_j)^2-D(p_iq_j-p_jq_i)^2=m^2,
+\]
+so their norm is $1$.
+
+Positivity needs checking, especially for negative common norm.
+Since $q_j>q_i>0$ and all $p_i$ are positive,
+\[
+ (p_iq_j)^2-(p_jq_i)^2=m(q_j^2-q_i^2).
+\]
+The second numerator has the same sign as $m$, hence $y>0$.
+Also
+\[
+ (p_ip_j)^2-(Dq_iq_j)^2
+ =m\bigl(D(q_i^2+q_j^2)+m\bigr).
+\]
+The bracket is positive: for $m<0$ use
+$Dq_i^2+m=p_i^2>0$, and for $m>0$ it is immediate.
+The first numerator therefore has the same sign as $m$, so $x>0$.
+Now $D\geq2,y>0$, and the norm equation imply $x\geq2$.
+Finally, because $|m|\geq1$,
+\[
+ x\leq(DU+1)^2+DU^2\leq H,\qquad
+ y\leq2(DU+1)U\leq H.
+\]
+The deliberately loose estimates are sufficient.
+There are exactly $K+1$ stages and each inner construction is bounded.
+Alternatively the proved existence permits a direct scan of the
+$H^2$ candidate pairs. Give the function a default value when
+$D<2$ or $\operatorname{isqrt}(D)^2=D$ to make it total.
+\end{proof}
+
+\begin{theorem}[Pell composition and arbitrarily many solutions]
+\label{dio:pell-powers}
+Define
+\[
+ (x,y)\mathbin{\star}(u,v)=(xu+Dyv,xv+yu),\qquad
+ \mathcal N_D(x,y)=x^2-Dy^2.
+\]
+The norm is multiplicative. If the norm is $1$, $(x,-y)$ is an inverse.
+For $u>1,v>0,u^2-Dv^2=1$, define
+\[
+ (X_0,Y_0)=(1,0),\qquad
+ X_{n+1}=uX_n+DvY_n,\quad Y_{n+1}=vX_n+uY_n.
+\]
+Every pair has norm $1$ and $Y_{n+1}>Y_n$. For every specified $n$,
+this primitive recursive procedure gives $n$ distinct positive solutions.
+\end{theorem}
+\begin{proof}
+Polynomial expansion proves norm multiplicativity, associativity,
+and the conjugate inverse identity. Induction proves norm $1$ and
+$X_n\geq1,Y_n\geq0$. The recurrence gives
+$Y_{n+1}=vX_n+uY_n>Y_n$, since $vX_n\geq1,u\geq2$.
+For a size bound put $L=u+Dv+1$. Induction gives
+$X_n,Y_n\leq L^n$. The infinitude assertion is this finite witness
+construction for each $n$, not an assertion that an infinite set exists.
+\end{proof}
+
+\begin{theorem}[All positive Pell solutions are fundamental powers]
+\label{dio:pell-all}
+Let $(u,v)$ be a norm-one solution with $u>1,v>0$ whose $v$ is
+smallest among positive solutions. Such a pair is found in the box of
+Theorem~\ref{dio:pell-existence}. Every solution with $x>0,y\geq0$
+is uniquely $(u,v)^{\star n}$ for an integer $0\leq n\leq y$.
+Its exponent is recovered by a primitive recursive procedure.
+\end{theorem}
+\begin{proof}
+For $y=0$ the equation gives $x=1$. For $y>0$, minimality gives
+$y\geq v$. Divide by $(u,v)$ using the integer pair
+\[
+ x'=ux-Dvy,\qquad y'=uy-vx.
+\]
+Its norm is $1$. Furthermore
+\[
+ (uy)^2-(vx)^2=y^2-v^2\geq0,
+\]
+so $y'\geq0$. Positivity of $x'$ follows from
+\[
+ (ux)^2-(Dvy)^2=1+D(v^2+y^2)>0.
+\]
+Finally
+\[
+ (vx)^2-\bigl((u-1)y\bigr)^2=v^2+2(u-1)y^2>0,
+\]
+so $vx>(u-1)y$, which says $y'<y$.
+Repeat until reaching $(1,0)$, using at most the original $y$ steps.
+The invariant states that the current pair has norm $1$, has
+nonnegative coordinates with positive first coordinate, and multiplied
+by the already recorded fundamental power equals the original pair.
+The second coordinate supplies the decreasing fuel.
+Reconstruction gives the power representation.
+The preceding theorem makes second coordinates of distinct powers
+strictly increasing, proving uniqueness.
+
+For the fundamental solution, first find $(x_0,y_0)$ in the box of size
+$H$. Scan $1\leq y\leq y_0,2\leq x\leq x_0$.
+Any competitor with smaller $y$ has smaller $x$ by $x^2=1+Dy^2$,
+so this scan finds a globally minimal positive $y$.
+\end{proof}
+
+\begin{corollary}[An explicit Pell family]\label{dio:pell-family}
+For $t\geq2$, the nonsquare $D=t^2-1$ has fundamental solution
+$(t,1)$. All its positive solutions are powers of this pair.
+\end{corollary}
+\begin{proof}
+The inequalities $(t-1)^2<t^2-1<t^2$ prove nonsquareness.
+The identity $t^2-(t^2-1)\cdot1^2=1$ gives a solution with smallest
+possible positive second coordinate. Apply the preceding theorem.
+\end{proof}
+
+\subsection{Induction audit and Lean implementation route}
+
+Each construction has a total primitive recursive version using a bounded
+scan or fixed-fuel recurrence and a default on malformed inputs.
+Rational claims are proved after clearing positive denominators.
+Bounded universal conditions, such as preservation of previous entries,
+are Boolean folds and can be part of a quantifier-free invariant.
+The descents use the original positive size as fuel. Pell existence uses
+$K+1$ stages and the explicit bound $H$; Pell classification uses the
+input second coordinate.
+
+Formalization has three distinct products. First define the algorithms
+and prove their ordinary Lean specifications over naturals, integers, and
+explicit rational pairs. Second give primitive recursive codes and
+defining equations in the chosen iPRA presentation. Third construct
+iPRA derivations of the invariants and specifications.
+An ordinary Lean arithmetic proof alone does not complete the third step.
+
+Useful module boundaries are \texttt{RationalCodes},
+\texttt{PythagoreanParameters}, \texttt{BoundedDescent},
+\texttt{Continuants}, \texttt{FiniteDirichlet},
+\texttt{PellNormCollision}, and \texttt{PellClassification}.
+The separate blueprint provides concrete definitions and proof obligations.
+ProveIt modules named \texttt{Pythagoras}, \texttt{FermatQuartic},
+\texttt{SquareArea}, \texttt{Dirichlet}, \texttt{SimultaneousGrid}, and
+\texttt{PellGeneral} are integration points subject to the repository
+audit; their names alone do not certify the explicit uniform bound above.

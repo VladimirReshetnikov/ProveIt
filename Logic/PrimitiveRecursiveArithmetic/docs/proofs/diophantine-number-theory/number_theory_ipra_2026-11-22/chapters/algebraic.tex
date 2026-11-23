@@ -1,0 +1,124 @@
+\section{Algebraic, \texorpdfstring{$p$}{p}-adic, and combinatorial examples}\label{sec:algebraic}
+
+\subsection{A concrete failure of unique factorization}
+The algebraic-number-theory example in the root article can be formulated without constructing the complex numbers. Let $R$ be the set of integer pairs with operations
+\[
+ (a,b)+(c,d)=(a+c,b+d),\qquad
+ (a,b)(c,d)=(ac-5bd,ad+bc).
+\]
+Write $a+b\theta$ for $(a,b)$, where $\theta^2=-5$. Equality means equality of both integer coordinates. All ring laws follow by expanding integer polynomials. Define conjugation by $\overline{a+b\theta}=a-b\theta$ and norm by $N(a+b\theta)=a^2+5b^2$.
+
+\begin{theorem}[Norm and integrality in a quadratic ring]\label{ag:norm}
+For $u,v\in R$, $N(uv)=N(u)N(v)$. The norm vanishes exactly at zero, and the units are $1$ and $-1$. Every $a+b\theta$ satisfies the monic integer polynomial
+\[
+ X^2-2aX+(a^2+5b^2).
+\]
+\end{theorem}
+\begin{proof}
+Expand $(ac-5bd)^2+5(ad+bc)^2$ and cancel the two mixed terms. The result is $(a^2+5b^2)(c^2+5d^2)$. Both norm summands are nonnegative, so norm zero forces $a=b=0$. If $uv=1$, the positive integers $N(u),N(v)$ multiply to one and therefore both equal one. The equation $a^2+5b^2=1$ forces $b=0$ and $a=\pm1$. Conversely these two elements have inverses. Direct substitution in the displayed monic polynomial gives zero using $\theta^2=-5$. This is the exact algebraic-integrality assertion in a finite presentation; no choice of a complex square root is required.
+\end{proof}
+
+\begin{theorem}[Two inequivalent irreducible factorizations]\label{ag:nonufd}
+In $R$ the four elements $2,3,1+\theta,1-\theta$ are irreducible, and
+\[
+ 6=2\cdot3=(1+\theta)(1-\theta)
+\]
+are factorizations with no matching associates. In particular $2$ is irreducible but is not prime.
+\end{theorem}
+\begin{proof}
+There is no element of norm $2$ or $3$. Indeed, $b\ne0$ gives norm at least $5$, while $b=0$ would require an integer square equal to $2$ or $3$. A nontrivial factorization of $2$, of norm $4$, would require norms $2,2$, and a nontrivial factorization of $3$, of norm $9$, would require norms $3,3$. A nontrivial factorization of $1\pm\theta$, of norm $6$, would require norms $2,3$ in some order. All are impossible. The product identity follows by expansion. Associates differ by a unit, hence by sign; none of $2,3$ is a sign of $1+\theta$ or $1-\theta$, and the two latter elements are not associates of one another. Finally $2$ divides their product $6$ but divides neither factor, since an element divisible by $2$ has both coordinates even. Thus irreducible need not imply prime outside the ordinary integers.
+
+To read irreducibility as a first-order formula, quantify over the two candidate factors. Norm multiplicativity immediately bounds each nonzero factor norm by the fixed norm of the element; this reduces every test just used to a finite bounded case analysis. The proof therefore fits \ipra\ directly.
+\end{proof}
+
+\subsection{Finite precision \texorpdfstring{$p$}{p}-adic arithmetic}
+Fix a prime $p$. For an integer $a$ and a precision $k$, define
+\[
+ v_{p,k}(a)=\max\{0\le j\le k:p^j\mid a\}.
+\]
+In particular $v_{p,k}(0)=k$. This avoids introducing an infinite value. A residue of precision $k$ is an integer in $[0,p^k)$. Compatibility of residues $a_k,a_l$ for $k\le l$ means $a_l\equiv a_k\pmod{p^k}$.
+
+\begin{theorem}[Truncated valuation laws]\label{ag:valuation}
+For integers $a,b$,
+\[
+ v_{p,k}(ab)=\min(k,v_{p,k}(a)+v_{p,k}(b)),\qquad
+ v_{p,k}(a+b)\ge\min(v_{p,k}(a),v_{p,k}(b)).
+\]
+If $v_{p,k}(a)\ne v_{p,k}(b)$, equality holds in the second formula.
+\end{theorem}
+\begin{proof}
+If a factor is zero, or has valuation at least $k$, the first formula follows immediately from divisibility by $p^k$. Otherwise write $a=p^ru$, $b=p^sv$ with $p\nmid u,v$. Euclid's lemma gives $p\nmid uv$, so the product has exact valuation $r+s$, truncated at $k$. For the sum, set $r=v_{p,k}(a)$ and $s=v_{p,k}(b)$. Divisibility by the smaller of $p^r,p^s$ gives the inequality. If, say, $r<s$, then $r<k$; write $a=p^ru$ with $p\nmid u$ and $b=p^sv$. No indivisibility condition on $v$ is required when $s=k$. Now $a+b=p^r(u+p^{s-r}v)$ and the parenthesis is nonzero modulo $p$, giving exact valuation $r$. These arguments include negative integers because divisibility ignores signs. The maximum in the definition is found by at most $k+1$ tests.
+\end{proof}
+
+For a finite integer coefficient vector $c=(c_0,\ldots,c_d)$ put
+\[
+ f_c(X)=\sum_{j=0}^d c_jX^j,\qquad
+ f'_c(X)=\sum_{j=1}^d j c_jX^{j-1}.
+\]
+Horner evaluation and these derivative coefficients are uniform primitive recursive operations on the vector code.
+
+\begin{lemma}[Taylor congruence at a finite precision]\label{ag:taylor}
+If $k\ge1$, then for integers $a,t$,
+\[
+ f_c(a+t p^k)\equiv f_c(a)+t p^k f'_c(a)\pmod{p^{k+1}}.
+\]
+\end{lemma}
+\begin{proof}
+Expand each $(a+tp^k)^j$ by the finite binomial theorem. The terms with zero and one occurrences of $tp^k$ are precisely $a^j$ and $j a^{j-1}tp^k$. Every remaining term contains $p^{2k}$, divisible by $p^{k+1}$ since $k\ge1$. Sum the finitely many identities with the coefficients $c_j$. This is a polynomial identity with an explicitly computed remainder divisible by $p^{k+1}$.
+\end{proof}
+
+\begin{theorem}[Simple-root Hensel lifting with a unique digit]\label{ag:henselstep}
+Suppose $k\ge1$, $0\le a<p^k$, $p^k\mid f_c(a)$, and $p\nmid f'_c(a)$. There is a unique $t\in[0,p)$ such that $b=a+t p^k$ satisfies $p^{k+1}\mid f_c(b)$. Consequently $b$ is the unique root modulo $p^{k+1}$ in $[0,p^{k+1})$ reducing to $a$ modulo $p^k$.
+\end{theorem}
+\begin{proof}
+Compute the signed exact quotient $q=f_c(a)/p^k$. The derivative has an inverse $u$ modulo $p$, by B\'ezout. Choose $t\equiv-qu\pmod p$, $0\le t<p$. Lemma~\ref{ag:taylor} shows that $f_c(b)/p^k\equiv q+t f'_c(a)\equiv0\pmod p$. Thus $b$ is a root at the next precision. Its size follows from $a<p^k$ and $t<p$.
+
+Conversely any candidate $b$ in the indicated residue class has a unique digit expression $a+t p^k$ with $0\le t<p$. Its being a root forces $q+t f'_c(a)\equiv0\pmod p$, and cancellation by the invertible derivative forces the chosen value of $t$. The inverse and digit can be found by scans of length $p$; this proves a bounded witness theorem.
+\end{proof}
+
+\begin{theorem}[A primitive recursive compatible Hensel name]\label{ag:henselname}
+Given $0\le a_1<p$ with $f_c(a_1)\equiv0\pmod p$ and $f'_c(a_1)\not\equiv0\pmod p$, there is a primitive recursive sequence $a_k$, $k\ge1$, such that
+\[
+ 0\le a_k<p^k,\qquad f_c(a_k)\equiv0\pmod{p^k},\qquad
+ a_l\equiv a_k\pmod{p^k}\quad(l\ge k).
+\]
+It is unique among compatible root sequences with the prescribed first residue.
+\end{theorem}
+\begin{proof}
+Iterate the previous theorem exactly $k-1$ times. At each stage the derivative remains congruent to $f'_c(a_1)$ modulo $p$, because it is an integer polynomial and all residues remain equal modulo $p$. Thus the next lift always applies. Store the bounds, root divisibility, and the finite conjunction of previous compatibility conditions as the loop invariant. Uniqueness follows by induction from uniqueness of the successive digits. If another fixed primitive recursive sequence is supplied, the same argument is an iPRA proof that the sequences agree at every index; arbitrary second-order quantification over sequences is not being asserted. Externally this compatible sequence is a $p$-adic integer root. For example, lifting $X^2-2$ from $3$ modulo $7$ begins with $3,10,108$ at moduli $7,49,343$.
+\end{proof}
+
+\subsection{Integer partitions as finite combinatorics}
+A partition of $n$ is a multiplicity vector $(c_1,\ldots,c_n)$ with $0\le c_j\le n$ and $\sum_{j=1}^n j c_j=n$. The empty vector partitions zero. Counting these vectors is bounded by $(n+1)^n$ for $n\ge1$ and is primitive recursive. Denote the count by $p(n)$ and the count with parts at most $m$ by $p_m(n)$.
+
+\begin{theorem}[Partition recursion and finite generating product]\label{ag:partitionrec}
+For $m\ge1$,
+\[
+ p_m(n)=p_{m-1}(n)+[n\ge m]p_m(n-m),
+ \quad p_0(0)=1,\quad p_0(n)=0\ (n>0).
+\]
+For every fixed truncation $N$, the coefficient of $X^n$, $0\le n\le N$, in
+\[
+ \prod_{j=1}^N\left(\sum_{e=0}^{\lfloor N/j\rfloor}X^{je}\right)
+\]
+is $p(n)$.
+\end{theorem}
+\begin{proof}
+Split partitions into those having no part equal to $m$ and those having at least one. Removing one such part is a bijection from the second class to partitions of $n-m$ with parts at most $m$. The second class is empty if $n<m$. For the generating product, an expansion term chooses one multiplicity $e$ for each part size $j$ and has exponent $\sum je$. Therefore the coefficient counts exactly the partitions of that exponent. Terms above degree $N$ can be discarded throughout; polynomial multiplication is a finite coefficient convolution. The recursion is implemented by a table, first increasing $m$, then $n$; the within-row argument $n-m$ is strictly smaller than $n$ whenever it is used.
+\end{proof}
+
+\begin{theorem}[Euler's odd-parts/distinct-parts identity]\label{ag:oddpartitions}
+For each $n$, the number of partitions of $n$ into odd parts equals the number into distinct parts.
+\end{theorem}
+\begin{proof}
+For every odd part size $u$, write its multiplicity in binary, $c_u=\sum_j\epsilon_{u,j}2^j$ with digits $\epsilon_{u,j}\in\{0,1\}$. Replace these copies of $u$ by the distinct part $u2^j$ whenever $\epsilon_{u,j}=1$. Every positive integer has a unique odd part times a power of two, so outputs coming from different pairs $(u,j)$ cannot coincide. The sum is preserved because $u c_u=\sum_j\epsilon_{u,j}u2^j$.
+
+For the inverse, factor each distinct part as $u2^j$ with $u$ odd and add $2^j$ to the multiplicity of $u$. Binary uniqueness proves that the two transformations are inverse. All part sizes and multiplicities are at most $n$, and exponents need only be scanned up to $n$. The explicit inverse bijection establishes equality of the two finite counts in \ipra.
+\end{proof}
+
+\begin{theorem}[Conjugation of partitions]\label{ag:conjugate}
+Partitions of $n$ with exactly $k$ parts are equinumerous with partitions whose largest part is $k$, where the largest part of the empty partition is defined to be zero.
+\end{theorem}
+\begin{proof}
+List the parts as $\lambda_1\ge\cdots\ge\lambda_k>0$. For $1\le j\le\lambda_1$ define $\lambda'_j=\#\{i:\lambda_i\ge j\}$. The new list is nonincreasing, has largest part $k$, and has the same sum: both sums count the pairs $(i,j)$ with $j\le\lambda_i$. Applying the construction again recovers $\lambda$, since at least $i$ rows have length at least $j$ exactly when $j\le\lambda_i$. Hence conjugation is an involutive bijection. The empty partition handles $n=k=0$; if $k=0<n$ or $k>n$, both classes are empty. Counting cells in an $n$ by $n$ box proves the identities by bounded sums.
+\end{proof}

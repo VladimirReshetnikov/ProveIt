@@ -1,0 +1,276 @@
+\section{What straightedge and compass cannot construct}
+\label{sec:obstructions}
+Fix the rational Cartesian frame $(0,0),(1,0),(0,1)$.  A construction
+program is a finite list of the operations in
+Theorem~\ref{circ:construction-arithmetic}, with nonzero-denominator and
+intersection-validity data.  Thus its coordinate recipe uses rational
+arithmetic and successive nonnegative square roots.  The number $k$ below
+counts these root adjunctions, including any used to measure an output
+segment.  A repeated root or a root already in the current field need not
+increase its dimension.  The classical construction obstruction is due
+to Wantzel; we give the finite algebra needed for its arithmetic use.\footnote{
+L. Wantzel, ``Recherches sur les moyens de reconna\^itre si un Probl\`eme
+de G\'eom\'etrie peut se r\'esoudre avec la r\`egle et le compas'',
+\emph{Journal de Math\'ematiques Pures et Appliqu\'ees}, series 1,
+vol.~2 (1837), pp.~366--372;
+\url{https://www.numdam.org/item/JMPA_1837_1_2__366_0/}.}
+
+\begin{theorem}[The diagonal of the unit square is irrational]
+\label{obs:diagonal}
+The unit square has a constructible diagonal of length $\sqrt2$, and no
+rational number has square $2$.
+\end{theorem}
+\begin{proof}
+The diagonal vector is $(1,1)$, whose squared length is $2$; its positive
+length is therefore $\sqrt2$.  The vertices, and hence the segment, are
+constructed by the perpendicular and parallel constructions already proved.
+If a rational of square $2$ existed, write it as $m/n$ with integers
+$m\ge0$, $n>0$, and $\gcd(m,n)=1$.  Reducing a rational to this form
+uses the bounded integer Euclidean algorithm.  The equality would be
+$m^2=2n^2$.  Squares have the parity of their bases, since
+$(2a)^2$ is even and $(2a+1)^2$ is odd.  Thus $m=2a$, and substitution
+gives $n^2=2a^2$, so $n$ is even too.  This contradicts coprimality.
+Equivalently, a computed B\'ezout relation $um+vn=1$ would have an even
+left side.  The argument is a finite parity calculation, not an infinite
+descent or a minimum principle over arbitrary sets.
+\end{proof}
+
+\subsection{Finite field bases and the degree obstruction}
+A finite number-field record consists of a monic irreducible rational
+polynomial $h$ and a selected scalar $\xi\in\K$ with $h(\xi)=0$.
+Its elements are coefficient vectors for $1,\xi,\ldots,\xi^{d-1}$,
+where $d=\deg h$.  Polynomial remainder computes multiplication.
+Extended Euclid computes the inverse of a nonzero vector: irreducibility
+makes its representing polynomial coprime to $h$.
+The bounded factorization procedure in Lemma~\ref{found:convert} tests
+irreducibility and supplies the required factor certificates.
+
+Here is an explicit bounded way to merge two such fields, so that
+``find a basis'' does not hide an unbounded search.  For generators
+$\alpha,\beta$ with monic irreducible polynomials $p,q$ of degrees $m,n$,
+use the rational algebra
+\[
+ E=\Q[U,V]/(p(U),q(V)),\qquad N=mn,
+\]
+with its known $N$ monomials as basis.  Let $H_c$ be the characteristic
+polynomial of multiplication by $U+cV$.  Its discriminant, as a
+polynomial in $c$, has degree at most $M=m^2n(n-1)$, and its coefficient
+of $c^M$ is
+\[
+\operatorname{disc}(p)^n\operatorname{disc}(q)^{m^2}\ne0.
+\]
+Here the discriminant of a monic degree-$d$ polynomial is
+$(-1)^{d(d-1)/2}$ times the Sylvester determinant of it and its derivative,
+so it is computed by finite coefficient arithmetic.
+Irreducibility in characteristic zero gives
+$\gcd(p,p')=\gcd(q,q')=1$, since each derivative is nonzero and has
+smaller degree; extended Euclid and the Sylvester determinant identity
+therefore certify that both discriminants are nonzero.
+To verify this finite coefficient identity, introduce formal roots
+$a_i,b_j$.  Evaluation at their pairs has an invertible tensor product
+of Vandermonde matrices over the rational-function field, so the
+characteristic polynomial is formally $\prod_{i,j}(T-a_i-cb_j)$.
+In the product
+of squared pairwise differences, pairs with equal $j$ contribute
+$\operatorname{disc}(p)^n$, and pairs with different $j$ contribute the
+leading factor $\operatorname{disc}(q)^{m^2}c^{m^2n(n-1)}$.
+Symmetric coefficient comparison gives the stated identity for $p,q$.
+This substitution is injective: products of the elementary symmetric
+polynomials have distinct leading monomials, whose exponent vectors are
+the successive tail sums of the product exponents.  Thus a coefficient
+identity after formal-root substitution is an identity before it;
+no choice of actual complex roots is required.  A nonzero polynomial of
+degree at most $M$ has at most $M$ roots, by successive division by linear
+factors.  Checking $c=0,\ldots,M$ therefore finds one with $H_c$ squarefree.
+
+For this $c$, the powers of $U+cV$ form a basis of $E$.  Indeed, the
+matrix with entries
+$\operatorname{Tr}(A^{i+j})$, $0\le i,j<N$, where $A$ is its
+multiplication matrix, has determinant $\operatorname{disc}(H_c)$.
+Trace means the sum of the diagonal entries.  Newton's coefficient
+identities identify these traces with the formal power sums, so the
+determinant identity is the square of a Vandermonde determinant.
+A dependence among the powers
+would annihilate this nonsingular matrix, so none exists.  Rational
+Gaussian elimination therefore expresses $U,V$ as polynomials in $U+cV$.
+Factor $H_c$, and select the unique irreducible factor $h$ vanishing at
+$\xi=\alpha+c\beta$, using the exact scalar equality test.  Such a factor
+exists because their product vanishes, and two distinct factors cannot
+both vanish by B\'ezout.  Reducing the recovered expressions modulo $h$
+gives a power-basis record for $\Q(\alpha,\beta)=\Q(\xi)$.
+All searches have just been bounded: the $M+1$ choices of $c$, the
+factorization enumeration, and elimination on explicitly dimensioned
+rational matrices.  Repeated merges are primitive recursion on a supplied
+finite generator list.
+
+\begin{theorem}[Quadratic-tower degree obstruction]
+\label{obs:degree}
+Let
+\[
+ L_0=\Q,\qquad L_{i+1}=L_i(\beta_i),\qquad
+ \beta_i^2=a_i\in L_i\quad(0\le i<k)
+\]
+be a finite tower of real algebraic fields.  Then
+$[L_k:\Q]=2^j$ for some $j\le k$.  For every $x\in L_k$, its
+minimal-polynomial degree $e=[\Q(x):\Q]$ divides $2^j$, and hence
+divides $2^k$.  These degree statements have a uniform numerical proof
+for the finite field-and-basis certificates just described; every finite
+straightedge--compass recipe produces such certificates by PR operations.
+\end{theorem}
+\begin{proof}
+First, $L_i(\beta_i)$ is spanned over $L_i$ by $1,\beta_i$.
+The relation $\beta_i^2=a_i$ reduces products to this span.  For an
+inverse use
+\[
+ (u+v\beta_i)^{-1}=\frac{u-v\beta_i}{u^2-a_iv^2}
+\]
+when the denominator is nonzero.  If that denominator is zero and the
+original element is nonzero, the zero-product law forces $u-v\beta_i=0$;
+unless $v=0$, this says $\beta_i=u/v\in L_i$.  The $v=0$ case is
+an ordinary inverse in $L_i$.  Thus the span is a field in every case.
+
+The field records above make membership $\beta_i\in L_i$ decidable by
+a rational linear system: express the old basis and $\beta_i$ in the
+new power basis and test the rank after adjoining its column.  If
+membership holds, the old basis remains a basis.  Otherwise $1,\beta_i$
+are linearly independent over $L_i$: a relation $u+v\beta_i=0$ with
+$v\ne0$ would express $\beta_i=-u/v\in L_i$, while $v=0$ forces $u=0$.
+For an old rational basis $e_1,\ldots,e_D$, the resulting new rational
+basis is therefore either the old one or
+\[
+ e_1,\ldots,e_D,\quad \beta_i e_1,\ldots,\beta_i e_D.
+\]
+Hence the dimension is unchanged or doubled.  Induction gives
+$D_i=2^{j_i}$ with $j_i\le i$, counting only actual doublings.
+
+For completeness, divisibility is also a finite basis calculation.
+In a field of rational dimension $D$, the $D+1$ vectors
+$1,x,\ldots,x^D$ are dependent.  Elimination for degrees $1,\ldots,D$
+finds the first monic relation $\mu(x)=0$, of degree $e$.
+If $\mu=fg$ with both factor degrees smaller, the zero-product law
+would contradict its minimality.  Thus $\mu$ is irreducible, and
+$1,x,\ldots,x^{e-1}$ is a basis of the subfield $\Q(x)$.
+Scan the given rational basis of $L_k$, greedily retaining a vector $w$
+when it is not in the $\Q(x)$-span of earlier retained vectors.
+Each test is rational Gaussian elimination on the columns $x^r w$,
+$0\le r<e$.  At most $D$ vectors are scanned.  If $f$ are retained,
+the $ef$ products $x^r w$ are a rational basis: spanning follows from
+the scan, and any dependence groups into a $\Q(x)$-dependence of the
+retained vectors.  Thus $D=ef$, proving $e\mid2^j$.
+Multiplication by $2^{k-j}$ proves $e\mid2^k$.
+
+The invariant $D_i=2^{j_i}$, $j_i\le i$, together with the verified
+coefficient-vector and rank certificates, is a quantifier-free statement
+about a finite list code.  Its induction is legitimate in \ipra.
+The bounded field-merge construction supplies the certificates at each
+root instruction, while rational operations stay in the current field.
+This proves the asserted uniformity without quantifying over arbitrary
+vector spaces or choosing an unspecified basis.
+\end{proof}
+
+\paragraph{A finite irreducibility test used three times.}
+A cubic over $\Q$ is reducible exactly when it has a rational root: a
+nontrivial factorization of degree three has a linear factor, and a root
+gives such a factor by division.  A rational root $u/v$ in lowest terms
+of a monic integer polynomial has $v=1$, since the cleared equation
+gives $v\mid u^d$.  Raising a B\'ezout relation for $u,v$ to the $d$th
+power then gives $v\mid1$, hence $v=1$.  The resulting integer
+root divides the constant coefficient.  Thus for nonzero constant term
+$c$ only the signed divisors in $[-|c|,|c|]$ need checking.  These are
+bounded arithmetic tests.  Finally $3$ never divides $2^j$: its residue
+alternates between $1$ and $2$, a quantifier-free induction on $j$.
+
+\begin{theorem}[Doubling the unit cube is impossible]
+\label{obs:cube}
+No finite straightedge--compass construction in the rational initial frame
+produces the edge of a cube of twice the unit cube's volume.
+\end{theorem}
+\begin{proof}
+Such a positive edge length $x$ would satisfy $x^3=2$.
+The only possible rational roots of $T^3-2$ are $\pm1,\pm2$, and
+none is a root.  The polynomial is therefore irreducible of degree three.
+Theorem~\ref{obs:degree} would make $3$ divide a power of two, a
+contradiction.  The desired length does exist in $\K$, by the polynomial
+intermediate value theorem between $1$ and $2$; the obstruction concerns
+the specified finite geometric operations.
+\end{proof}
+
+\begin{theorem}[A $60$-degree angle cannot be trisected in general]
+\label{obs:trisection}
+Starting with the rational frame and its constructible $60$-degree ray,
+no finite straightedge--compass program constructs an internal trisector
+making a $20$-degree angle with the base ray.  Consequently there is no
+such program that trisects every supplied angle.
+\end{theorem}
+\begin{proof}
+The given angle pair is $(1/2,\sqrt3/2)$; adjoining its coordinates costs
+at most one quadratic extension.  Normalize a proposed trisector to a
+unit direction $(c,s)$, using one further nonnegative square root if
+necessary.  The algebraic angle multiplication of
+Section~\ref{sec:triangles} gives
+\[
+ (c+is)^3=\frac12+i\frac{\sqrt3}{2},\qquad
+ c^2+s^2=1,
+\]
+where $i$ is only notation for the pair product.  Comparing real parts
+gives $4c^3-3c=1/2$.  Hence $t=2c$ satisfies
+$t^3-3t-1=0$.  Its only possible rational roots are $1,-1$, where the
+polynomial has values $-3,1$.  Its degree is therefore three, contradicting
+Theorem~\ref{obs:degree}.
+
+The angle itself exists in the coded field: the cubic has a root
+$1<t<2$, because its values at the endpoints have opposite signs.
+Set $c=t/2$, $s=\sqrt{1-c^2}>0$.  The cube of this unit pair has real
+part $1/2$ and positive imaginary part $s(t^2-1)$, hence is the stated
+$60$-degree pair.  Its first two successive products are in the upper
+semicircle, so the angle-addition convention has no half-turn carry.
+This supplies the intended internal third.  The impossibility assertion
+is thus the failure of one concrete constructible input, which suffices
+to refute a general trisection procedure.
+\end{proof}
+
+\begin{theorem}[A regular heptagon is not constructible]
+\label{obs:heptagon}
+No finite straightedge--compass construction in the rational frame
+inscribes a regular heptagon in the unit circle.  More generally it cannot
+produce a nondegenerate regular heptagon in any location or scale.
+\end{theorem}
+\begin{proof}
+After setting one vertex at $(1,0)$, let the rotation to its next vertex
+be the unit pair $z$.  Regularity here has the equal-successive-rotation,
+convex-boundary-order meaning of Theorem~\ref{poly:regular}.  Consequently
+$z^7=1$ and $z\ne1$.
+Nonzero pairs are cancellable, since their squared norms multiply and
+are positive.  Therefore
+\[
+ 1+z+z^2+z^3+z^4+z^5+z^6=0.
+\]
+Multiply by $z^{-3}$ and put $t=z+z^{-1}$, which is twice the real
+coordinate of $z$.  The identities
+$z^2+z^{-2}=t^2-2$ and $z^3+z^{-3}=t^3-3t$ give
+\[
+ t^3+t^2-2t-1=0.
+\]
+The values at the only possible rational roots $1,-1$ are $-1,1$.
+Thus this cubic is irreducible, and again degree three contradicts
+Theorem~\ref{obs:degree}.
+For a heptagon in an arbitrary position, compute its circumcenter from
+three vertices, translate it to zero, divide by its positive radius, and
+rotate its first unit vertex to $(1,0)$.  The circumcenter formulas,
+square root for the radius, and unit-frame rotation use only permitted
+field operations and square roots.  Consecutive vertices then give the
+unit rotation used above.  This reduces every nondegenerate regular
+heptagon to the already impossible case.
+\end{proof}
+
+\paragraph{Scope and formalization.}
+These are arithmetic obstructions to finite constructions, with the
+initial data specified.  A Lean implementation should encode the
+irreducible-polynomial records, rational matrices, field embeddings,
+and the two possible basis updates; then prove the dimension invariant
+by induction on the construction list.  The three displayed cubic
+identities and their finite rational-root checks are the final short
+steps.  The present package does not claim a compiled implementation of
+this additional number-field certificate layer.  Circle squaring would
+require the separate transcendence argument for $\pi$ and is not claimed
+as a consequence of these cubic calculations.

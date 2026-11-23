@@ -1,0 +1,448 @@
+{
+  "chapter": "Elementary number theory",
+  "results": [
+    {
+      "id": "el:division",
+      "kind": "theorem",
+      "title_tex": "Division with a bounded algorithm",
+      "human_proof": "complete in chapters/elementary.tex",
+      "lean_status": "definitions and proof plan only; not kernel checked",
+      "dependencies": [],
+      "primitive_recursive_bound": "a counter steps; q,r<=a",
+      "semantic_lean_goal": "0 < b -> a = b*(divide a b).q + (divide a b).r and (divide a b).r < b; uniqueness",
+      "object_theory_proof_obligations": "Loop invariant i=b*q+r, r<b; preserve both branches; derive uniqueness by linear order."
+    },
+    {
+      "id": "el:bezout",
+      "kind": "theorem",
+      "title_tex": "Euclidean algorithm and B\\'ezout identity",
+      "human_proof": "complete in chapters/elementary.tex",
+      "lean_status": "definitions and proof plan only; not kernel checked",
+      "dependencies": [
+        "el:division"
+      ],
+      "primitive_recursive_bound": "a+b+1 iterations; coefficients <= (a+b+2)^(a+b+1)",
+      "semantic_lean_goal": "gcdPR divides a,b and every common divisor divides gcdPR; u*a+v*b=gcdPR",
+      "object_theory_proof_obligations": "Quote EuclidState as natural tuple. Preserve both linear-combination equations and common-divisor equivalence for each fixed d. Prove y=0 by decreasing clock."
+    },
+    {
+      "id": "el:linear",
+      "kind": "theorem",
+      "title_tex": "Linear Diophantine equations",
+      "human_proof": "complete in chapters/elementary.tex",
+      "lean_status": "definitions and proof plan only; not kernel checked",
+      "dependencies": [
+        "el:bezout"
+      ],
+      "primitive_recursive_bound": "(a+b+2)^(a+b+1)*abs(c) bounds constructed coordinates",
+      "semantic_lean_goal": "a+b>0 -> ((exists x y:Int, a*x+b*y=c) iff gcdPR a b divides c), plus full parameterization",
+      "object_theory_proof_obligations": "Use witness u*(c/g),v*(c/g). Cancellation follows by multiplying a Bezout identity. Handle b=0 explicitly."
+    },
+    {
+      "id": "el:leastprime",
+      "kind": "lemma",
+      "title_tex": "A least divisor is prime",
+      "human_proof": "complete in chapters/elementary.tex",
+      "lean_status": "definitions and proof plan only; not kernel checked",
+      "dependencies": [
+        "el:division"
+      ],
+      "primitive_recursive_bound": "search divisors 2..n",
+      "semantic_lean_goal": "2<=n -> primeB(leastFactor n)=true and leastFactor n divides n; composite n has p*p<=n",
+      "object_theory_proof_obligations": "Maintain no earlier divisor flag; any smaller factor contradicts it."
+    },
+    {
+      "id": "el:euclidlemma",
+      "kind": "theorem",
+      "title_tex": "Euclid's lemma",
+      "human_proof": "complete in chapters/elementary.tex",
+      "lean_status": "definitions and proof plan only; not kernel checked",
+      "dependencies": [
+        "el:bezout",
+        "el:leastprime"
+      ],
+      "primitive_recursive_bound": "bounded divisibility decision with parameter p,a",
+      "semantic_lean_goal": "primeB p=true -> p divides a*b -> p divides a or p divides b",
+      "object_theory_proof_obligations": "Decide p divides a. In the negative branch derive gcdPR p a=1 and multiply Bezout by b."
+    },
+    {
+      "id": "el:fta",
+      "kind": "theorem",
+      "title_tex": "Fundamental theorem of arithmetic",
+      "human_proof": "complete in chapters/elementary.tex",
+      "lean_status": "definitions and proof plan only; not kernel checked",
+      "dependencies": [
+        "el:leastprime",
+        "el:euclidlemma"
+      ],
+      "primitive_recursive_bound": "n factor steps; least-divisor scan <=n; array length <=n and entries <=n",
+      "semantic_lean_goal": "n>0 -> factors n has prime entries, is sorted, has product n, and is unique among sorted prime lists",
+      "object_theory_proof_obligations": "Maintain remainder*product=n and active remainder+i<=n. Uniqueness uses finite prefix cancellation."
+    },
+    {
+      "id": "el:valuation",
+      "kind": "theorem",
+      "title_tex": "Valuations, gcd, and lcm",
+      "human_proof": "complete in chapters/elementary.tex",
+      "lean_status": "definitions and proof plan only; not kernel checked",
+      "dependencies": [
+        "el:fta"
+      ],
+      "primitive_recursive_bound": "exponent scan <=n; prime scan <=max(a,b)",
+      "semantic_lean_goal": "valuation p (a*b)=valuation p a+valuation p b; divisibility iff exponent domination; gcd/lcm min/max; gcd*lcm=a*b",
+      "object_theory_proof_obligations": "Collect exponents in unique lists; construct quotient, gcd and lcm using finite products."
+    },
+    {
+      "id": "el:euclid",
+      "kind": "theorem",
+      "title_tex": "Euclid's theorem with a bound",
+      "human_proof": "complete in chapters/elementary.tex",
+      "lean_status": "definitions and proof plan only; not kernel checked",
+      "dependencies": [
+        "el:leastprime"
+      ],
+      "primitive_recursive_bound": "prime witness <=N!+1",
+      "semantic_lean_goal": "exists p<=Nat.factorial N+1, N<p and primeB p=true",
+      "object_theory_proof_obligations": "Witness leastFactor(N!+1); a divisor <=N divides factorial and contradicts divisibility of one."
+    },
+    {
+      "id": "el:sieve",
+      "kind": "theorem",
+      "title_tex": "Correctness of the sieve of Eratosthenes",
+      "human_proof": "complete in chapters/elementary.tex",
+      "lean_status": "definitions and proof plan only; not kernel checked",
+      "dependencies": [
+        "el:leastprime"
+      ],
+      "primitive_recursive_bound": "N^2 crossing checks; flag code <2^(N+1)",
+      "semantic_lean_goal": "for n<=N, nthFlag(sieve N)n=primeB n",
+      "object_theory_proof_obligations": "Bounded array invariant: primes survive; each processed prime removes its multiples >=p*p; least factor covers every composite."
+    },
+    {
+      "id": "el:linearcong",
+      "kind": "theorem",
+      "title_tex": "Solving and counting linear congruences",
+      "human_proof": "complete in chapters/elementary.tex",
+      "lean_status": "definitions and proof plan only; not kernel checked",
+      "dependencies": [
+        "el:bezout",
+        "el:linear"
+      ],
+      "primitive_recursive_bound": "all solution residues <m; exactly gcdPR a m representatives",
+      "semantic_lean_goal": "m>0 -> a*x congruent b mod m solvable iff gcdPR a m divides b; full residue list",
+      "object_theory_proof_obligations": "Divide by gcd, invert the reduced coefficient, and prove exactly g distinct lifts."
+    },
+    {
+      "id": "el:crt2",
+      "kind": "theorem",
+      "title_tex": "Generalized Chinese remainder theorem for two moduli",
+      "human_proof": "complete in chapters/elementary.tex",
+      "lean_status": "definitions and proof plan only; not kernel checked",
+      "dependencies": [
+        "el:linearcong",
+        "el:valuation"
+      ],
+      "primitive_recursive_bound": "solution <lcm(m,n)<=m*n",
+      "semantic_lean_goal": "two congruences solvable iff gcd(m,n) divides b-a; unique residue below lcm",
+      "object_theory_proof_obligations": "Solve reduced linear congruence, normalize modulo lcm; exponent criterion proves uniqueness."
+    },
+    {
+      "id": "el:crt",
+      "kind": "theorem",
+      "title_tex": "Chinese remainder theorem for a finite system",
+      "human_proof": "complete in chapters/elementary.tex",
+      "lean_status": "definitions and proof plan only; not kernel checked",
+      "dependencies": [
+        "el:crt2",
+        "el:fta"
+      ],
+      "primitive_recursive_bound": "product M of input moduli; prime/exponent scans <=M; indices <k",
+      "semantic_lean_goal": "finite CRT solvable iff all pairwise gcd compatibility tests; unique representative below finite lcm",
+      "object_theory_proof_obligations": "First merge pairwise coprime moduli. For each prime choose least index of maximal exponent and solve the prime-power system."
+    },
+    {
+      "id": "el:euler",
+      "kind": "theorem",
+      "title_tex": "Euler's theorem",
+      "human_proof": "complete in chapters/elementary.tex",
+      "lean_status": "definitions and proof plan only; not kernel checked",
+      "dependencies": [
+        "el:bezout"
+      ],
+      "primitive_recursive_bound": "residue list length <=n; permutation search <=n^2",
+      "semantic_lean_goal": "gcdPR a n=1 and n>0 -> a^(phi n) congruent 1 mod n",
+      "object_theory_proof_obligations": "Multiplication by unit permutes finite coprime list; explicit swap loop preserves product; cancel product using multiplied inverses."
+    },
+    {
+      "id": "el:fermat",
+      "kind": "corollary",
+      "title_tex": "Fermat's little theorem",
+      "human_proof": "complete in chapters/elementary.tex",
+      "lean_status": "definitions and proof plan only; not kernel checked",
+      "dependencies": [
+        "el:euler",
+        "el:leastprime"
+      ],
+      "primitive_recursive_bound": "phi(p)=p-1",
+      "semantic_lean_goal": "primeB p=true -> a^p congruent a mod p, and p not divides a -> a^(p-1) congruent 1",
+      "object_theory_proof_obligations": "All nonzero prime residues are coprime; split the bounded divisibility test."
+    },
+    {
+      "id": "el:order",
+      "kind": "theorem",
+      "title_tex": "Order of a residue",
+      "human_proof": "complete in chapters/elementary.tex",
+      "lean_status": "definitions and proof plan only; not kernel checked",
+      "dependencies": [
+        "el:euler",
+        "el:division"
+      ],
+      "primitive_recursive_bound": "least exponent <=phi(n)<=n",
+      "semantic_lean_goal": "orderWitness a n gives d>0; a^t congruent 1 iff d divides t; d divides phi(n)",
+      "object_theory_proof_obligations": "Bounded least search; divide t by d; a nonzero remainder would violate search minimality."
+    },
+    {
+      "id": "el:wilson",
+      "kind": "theorem",
+      "title_tex": "Wilson's theorem and converse",
+      "human_proof": "complete in chapters/elementary.tex",
+      "lean_status": "definitions and proof plan only; not kernel checked",
+      "dependencies": [
+        "el:bezout",
+        "el:euclidlemma",
+        "el:leastprime"
+      ],
+      "primitive_recursive_bound": "inverse and used-array scans <=p^2; factorial recursion <=n",
+      "semantic_lean_goal": "n>=2 -> primeB n=true iff (n-1)! congruent -1 mod n",
+      "object_theory_proof_obligations": "Pair each nonfixed inverse residue; fixed points are +/-1. Composite converse uses a proper divisor of factorial."
+    },
+    {
+      "id": "el:rsa",
+      "kind": "theorem",
+      "title_tex": "RSA correctness, including nonunits",
+      "human_proof": "complete in chapters/elementary.tex",
+      "lean_status": "definitions and proof plan only; not kernel checked",
+      "dependencies": [
+        "el:fermat",
+        "el:crt2"
+      ],
+      "primitive_recursive_bound": "all message residues <p*q; exponentiation clock exponent",
+      "semantic_lean_goal": "p,q distinct primes and e,d>0 and ed=1 mod((p-1)*(q-1)) -> (m^e)^d=m mod(p*q)",
+      "object_theory_proof_obligations": "At each prime split zero/nonzero residue, then apply CRT. Include nonunit messages."
+    },
+    {
+      "id": "el:digits",
+      "kind": "theorem",
+      "title_tex": "Base-expansion divisibility rules",
+      "human_proof": "complete in chapters/elementary.tex",
+      "lean_status": "definitions and proof plan only; not kernel checked",
+      "dependencies": [
+        "el:division"
+      ],
+      "primitive_recursive_bound": "digit extraction clock n+1; input digit arrays finite",
+      "semantic_lean_goal": "base-b number congruent to digit sum mod(b-1), alternating sum mod(b+1); last-j-digit criterion",
+      "object_theory_proof_obligations": "Power congruence invariant and finite distributivity."
+    },
+    {
+      "id": "el:binomial",
+      "kind": "theorem",
+      "title_tex": "Prime binomial divisibility and the Frobenius identity",
+      "human_proof": "complete in chapters/elementary.tex",
+      "lean_status": "definitions and proof plan only; not kernel checked",
+      "dependencies": [
+        "el:euclidlemma"
+      ],
+      "primitive_recursive_bound": "Pascal triangle through row p; degree-p polynomial arrays",
+      "semantic_lean_goal": "prime p and 0<k<p -> p divides choose p k; Frobenius polynomial congruence",
+      "object_theory_proof_obligations": "Prove factorial identity by Pascal recursion, cancel denominator factorials modulo p, expand the binomial."
+    },
+    {
+      "id": "el:legendre",
+      "kind": "theorem",
+      "title_tex": "Legendre's factorial valuation formula",
+      "human_proof": "complete in chapters/elementary.tex",
+      "lean_status": "definitions and proof plan only; not kernel checked",
+      "dependencies": [
+        "el:valuation",
+        "el:digits"
+      ],
+      "primitive_recursive_bound": "double count on a,j<=n",
+      "semantic_lean_goal": "valuation p(n!)=sum j=1..n floor(n/p^j); (p-1)*valuation p(n!)=n-digitSum p n",
+      "object_theory_proof_obligations": "Valuation additivity; reindex finite power-divisibility count; telescope finite geometric sums."
+    },
+    {
+      "id": "el:lucas",
+      "kind": "theorem",
+      "title_tex": "Lucas's binomial congruence",
+      "human_proof": "complete in chapters/elementary.tex",
+      "lean_status": "definitions and proof plan only; not kernel checked",
+      "dependencies": [
+        "el:binomial",
+        "el:digits"
+      ],
+      "primitive_recursive_bound": "digit list length <=n+k+1; relevant polynomial degree <=n and coefficients <=2^n",
+      "semantic_lean_goal": "prime p -> choose n k mod p = lucasValue p n k",
+      "object_theory_proof_obligations": "Iterate Frobenius, expand product over digits, use uniqueness of base-p representation for coefficient selection."
+    },
+    {
+      "id": "el:kummer",
+      "kind": "theorem",
+      "title_tex": "Kummer's carry formula",
+      "human_proof": "complete in chapters/elementary.tex",
+      "lean_status": "definitions and proof plan only; not kernel checked",
+      "dependencies": [
+        "el:legendre"
+      ],
+      "primitive_recursive_bound": "carry clock n+2 for k+(n-k)",
+      "semantic_lean_goal": "prime p and k<=n -> valuation p(choose n k)=carryCount p k(n-k)",
+      "object_theory_proof_obligations": "Take factorial valuations, apply digit-sum identity, sum digit addition equations with initial and final carry zero."
+    },
+    {
+      "id": "el:divisorfunc",
+      "kind": "theorem",
+      "title_tex": "Divisor formulas and multiplicativity",
+      "human_proof": "complete in chapters/elementary.tex",
+      "lean_status": "definitions and proof plan only; not kernel checked",
+      "dependencies": [
+        "el:fta",
+        "el:valuation"
+      ],
+      "primitive_recursive_bound": "divisor scan <=n; exponent tuple code <=(n+1)^n",
+      "semantic_lean_goal": "tau and sigmaPow product formulas and multiplicativity; (p-1)*sigma(p^e)=p^(e+1)-1",
+      "object_theory_proof_obligations": "Bijection divisor <-> bounded exponent tuple, finite product/sum expansion."
+    },
+    {
+      "id": "el:squareparity",
+      "kind": "theorem",
+      "title_tex": "Squarefree decomposition and parity of divisor functions",
+      "human_proof": "complete in chapters/elementary.tex",
+      "lean_status": "definitions and proof plan only; not kernel checked",
+      "dependencies": [
+        "el:fta",
+        "el:divisorfunc"
+      ],
+      "primitive_recursive_bound": "squarefree part and square root <=n",
+      "semantic_lean_goal": "n=s*t^2 uniquely with squarefree s; tau odd iff square; sigma odd iff square or twice square",
+      "object_theory_proof_obligations": "Divide every exponent by 2; use product formulas modulo 2; explicit half-exponent witnesses."
+    },
+    {
+      "id": "el:totient",
+      "kind": "theorem",
+      "title_tex": "Totient formula and multiplicativity",
+      "human_proof": "complete in chapters/elementary.tex",
+      "lean_status": "definitions and proof plan only; not kernel checked",
+      "dependencies": [
+        "el:crt",
+        "el:fta"
+      ],
+      "primitive_recursive_bound": "residue scans <=n; prime support <=n",
+      "semantic_lean_goal": "phi(p^e)=p^(e-1)*(p-1); phi multiplicative and prime-power product formula",
+      "object_theory_proof_obligations": "Count nonmultiples of p; restrict CRT bijection to coprime residue sublists."
+    },
+    {
+      "id": "el:phisum",
+      "kind": "theorem",
+      "title_tex": "The divisor sum of the totient",
+      "human_proof": "complete in chapters/elementary.tex",
+      "lean_status": "definitions and proof plan only; not kernel checked",
+      "dependencies": [
+        "el:bezout"
+      ],
+      "primitive_recursive_bound": "partition of a=1..n by gcd; double scan <=n^2",
+      "semantic_lean_goal": "sum d divides n, phi d = n",
+      "object_theory_proof_obligations": "Bijection a with gcd(a,n)=g <-> coprime u<=n/g, then divisor involution g -> n/g."
+    },
+    {
+      "id": "el:mobiuscancel",
+      "kind": "theorem",
+      "title_tex": "M\\\"obius cancellation",
+      "human_proof": "complete in chapters/elementary.tex",
+      "lean_status": "definitions and proof plan only; not kernel checked",
+      "dependencies": [
+        "el:fta"
+      ],
+      "primitive_recursive_bound": "squarefree divisor pairings <=n",
+      "semantic_lean_goal": "mobius multiplicative and sum d divides n mobius d=epsilon n",
+      "object_theory_proof_obligations": "Use disjoint supports; toggle least prime in squarefree divisors to cancel opposite signs."
+    },
+    {
+      "id": "el:liouville",
+      "kind": "theorem",
+      "title_tex": "Liouville's function and square detection",
+      "human_proof": "complete in chapters/elementary.tex",
+      "lean_status": "definitions and proof plan only; not kernel checked",
+      "dependencies": [
+        "el:fta",
+        "el:squareparity"
+      ],
+      "primitive_recursive_bound": "factor list length and divisor scans <=n",
+      "semantic_lean_goal": "liouville(a*b)=liouville a*liouville b; divisor sum equals square indicator",
+      "object_theory_proof_obligations": "Lengths of factor lists add; finite alternating sums over each exponent."
+    },
+    {
+      "id": "el:convolution",
+      "kind": "theorem",
+      "title_tex": "Finite Dirichlet convolution algebra",
+      "human_proof": "complete in chapters/elementary.tex",
+      "lean_status": "definitions and proof plan only; not kernel checked",
+      "dependencies": [
+        "el:fta"
+      ],
+      "primitive_recursive_bound": "bounded triple sums with entries <=n",
+      "semantic_lean_goal": "convolution commutative, associative, unital, distributive, preserves multiplicativity",
+      "object_theory_proof_obligations": "Finite divisor reindexing; prove as schemas for fixed PR functions or one theorem for finite input tables."
+    },
+    {
+      "id": "el:mobius",
+      "kind": "theorem",
+      "title_tex": "M\\\"obius inversion",
+      "human_proof": "complete in chapters/elementary.tex",
+      "lean_status": "definitions and proof plan only; not kernel checked",
+      "dependencies": [
+        "el:mobiuscancel",
+        "el:convolution",
+        "el:phisum"
+      ],
+      "primitive_recursive_bound": "only values at indices <=N for bounded version",
+      "semantic_lean_goal": "F=one*f on 1..N iff f=mobius*F on 1..N; phi(n)=sum mu(d)*(n/d)",
+      "object_theory_proof_obligations": "Apply associativity and mu*one=epsilon at each bounded index; no higher-order internal quantification."
+    },
+    {
+      "id": "el:summatory",
+      "kind": "theorem",
+      "title_tex": "Divisor summatory and hyperbola identities",
+      "human_proof": "complete in chapters/elementary.tex",
+      "lean_status": "definitions and proof plan only; not kernel checked",
+      "dependencies": [
+        "el:division",
+        "el:divisorfunc"
+      ],
+      "primitive_recursive_bound": "lattice [1,N]^2; hyperbola split at isqrt(N)",
+      "semantic_lean_goal": "sum n<=N sigmaPow r n=sum d<=N d^r*floor(N/d); tau hyperbola identity",
+      "object_theory_proof_obligations": "Reindex weighted pairs d*k<=N; split unweighted region at isqrt and subtract square intersection."
+    },
+    {
+      "id": "el:perfect",
+      "kind": "theorem",
+      "title_tex": "Euclid--Euler characterization of even perfect numbers",
+      "human_proof": "complete in chapters/elementary.tex",
+      "lean_status": "definitions and proof plan only; not kernel checked",
+      "dependencies": [
+        "el:divisorfunc",
+        "el:valuation",
+        "el:euclidlemma"
+      ],
+      "primitive_recursive_bound": "valuation scan <=N; exponent witness <=N+1",
+      "semantic_lean_goal": "even perfect N iff N=2^(e-1)*(2^e-1) with e>=2 and 2^e-1 prime; e prime",
+      "object_theory_proof_obligations": "Write N=2^s*m, cancel coprime factor, compare three divisors to force m=2^(s+1)-1, then prove primality."
+    }
+  ],
+  "schemas": "Statements about unspecified arithmetic functions are fixed-PR-function schemas, or finite-table statements. No universal PR evaluator is assumed.",
+  "sources": [
+    {
+      "key": "mit781",
+      "url": "https://ocw.mit.edu/courses/18-781-theory-of-numbers-spring-2012/pages/lecture-notes/",
+      "role": "topic correspondence and standard reference; report supplies its own full proofs"
+    }
+  ]
+}

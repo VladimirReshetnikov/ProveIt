@@ -1,0 +1,254 @@
+\section{Finite analytic and probabilistic number theory}\label{sec:analytic}
+
+The root article links prime distribution, the zeta function, sieves, and probabilistic number theory. This section gives exact finite statements in those directions. Every sum and product is finite, every denominator is positive, and every assertion becomes a bounded arithmetic formula after clearing denominators. The only infinite objects mentioned are the external interpretations of explicitly specified rational names.
+
+\subsection{Infinitude in two residue classes}
+\begin{theorem}[Primes in the classes $1$ and $3$ modulo $4$]\label{an:progressions}
+For every $N\ge2$ there is a prime $q>N$ with $q\equiv3\pmod4$ and $q\le4N!-1$. There is also a prime $p>N$ with $p\equiv1\pmod4$ and $p\le(N!)^2+1$. Both selections are primitive recursive and their correctness is provable in \ipra.
+\end{theorem}
+\begin{proof}
+Factor $4N!-1$. It is odd and congruent to $3$ modulo $4$. If all of its prime factors were $1$ modulo $4$, their product would be $1$ modulo $4$. Thus a bounded scan of its factorization finds a prime factor $q\equiv3\pmod4$. No prime at most $N$ divides $4N!-1$, because it divides $N!$ and cannot also divide their difference $1$.
+
+Next factor $(N!)^2+1$. The number is odd since $N!$ is even, and again every prime factor exceeds $N$. For a prime factor $p$, the nonzero residue $N!$ squares to $-1$ modulo $p$. The first supplement to quadratic reciprocity, proved in the quadratic chapter, says that this is possible only for $p\equiv1\pmod4$. The bounds are the numbers being factored. In both arguments the failure of a desired finite scan contradicts a decidable congruence computation; this constructs a witness. This theorem is not the full theorem on primes in every coprime arithmetic progression.
+\end{proof}
+
+\subsection{Exact sieve identities}
+Write $\pi(X)=\#\{p\le X:p\text{ prime}\}$ and $P(z)=\prod_{p\le z}p$, with empty product $1$. For $X,z\in\N$ put
+\[
+ S(X,z)=\#\{1\le n\le X:\gcd(n,P(z))=1\}.
+\]
+The M\"obius function $\mu$ is defined and its divisor identity is proved in the elementary chapter.
+
+\begin{theorem}[Finite inclusion--exclusion sieve]\label{an:sieve}
+\[
+ S(X,z)=\sum_{d\mid P(z)}\mu(d)\left\lfloor\frac Xd\right\rfloor,
+ \qquad
+ \left|S(X,z)-X\prod_{p\le z}\left(1-\frac1p\right)\right|
+ \le 2^{\pi(z)}.
+\]
+\end{theorem}
+\begin{proof}
+For each fixed $n$, expand the finite product
+\[
+ \prod_{p\le z}(1-[p\mid n]).
+\]
+It is $1$ exactly when no listed prime divides $n$ and is $0$ otherwise. Choosing either $1$ or the negative indicator from each factor identifies its expansion with $\sum_{d\mid P(z),\ d\mid n}\mu(d)$. Sum over $1\le n\le X$ and interchange the two finite loops. There are exactly $\lfloor X/d\rfloor$ multiples of $d$ in that interval. The same subset expansion without the divisibility indicators gives $\sum_{d\mid P(z)}\mu(d)/d=\prod_{p\le z}(1-1/p)$. Subtract this identity multiplied by $X$. Each floor discrepancy has absolute value less than one. The squarefree number $P(z)$ has $2^{\pi(z)}$ divisors, so the triangle inequality proves the displayed bound. Subsets are bit vectors of length $\pi(z)$, with a scan bound $2^{\pi(z)}$.
+\end{proof}
+
+\begin{corollary}[Exact prime counting from a finite sieve]\label{an:sievepi}
+For $X\ge2$ and $z=\lfloor\sqrt X\rfloor$,
+\[
+ \pi(X)=S(X,z)+\pi(z)-1.
+\]
+\end{corollary}
+\begin{proof}
+A composite $n\le X$ has a prime factor at most $\sqrt n\le z$: if its least prime factor $p$ exceeded $\sqrt n$, the complementary factor $n/p$, which is at least $p$, would make $n>n$. More explicitly $p\le n/p$ implies $p^2\le n$. Thus the survivors are exactly $1$ and the primes $z<p\le X$. All comparisons can use squares, without real square roots.
+\end{proof}
+
+\subsection{Elementary quantitative prime bounds}
+\begin{lemma}[A central binomial coefficient and its prime powers]\label{an:binomial}
+For $n\ge1$,
+\[
+ \frac{4^n}{2n+1}\le \binom{2n}{n}\le4^n,
+ \qquad \binom{2n}{n}\le(2n)^{\pi(2n)}.
+\]
+Also $\prod_{n<p\le2n}p\le4^n$.
+\end{lemma}
+\begin{proof}
+Pascal recursion defines the binomial coefficients as natural numbers. The sum of row $2n$ is $2^{2n}=4^n$, by induction using Pascal's identity. The central coefficient is the largest: the factorial identity
+\[
+ (j+1)\binom{2n}{j+1}=(2n-j)\binom{2n}{j}
+\]
+shows nondecrease for $j<n$, and symmetry handles the other half. There are $2n+1$ entries, proving the first two inequalities.
+
+The factorial valuation formula gives, for each prime $p\le2n$,
+\[
+ v_p\binom{2n}{n}
+ =\sum_{j\ge1}\left(\left\lfloor\frac{2n}{p^j}\right\rfloor
+       -2\left\lfloor\frac n{p^j}\right\rfloor\right).
+\]
+Only $j\le2n$ need be included. Write $n=ap^j+r$ with $0\le r<p^j$; the corresponding summand is $\lfloor2r/p^j\rfloor$, either $0$ or $1$. It is zero when $p^j>2n$. If $h$ is the largest exponent with $p^h\le2n$, the valuation is at most $h$, and so the entire $p$-power contribution is at most $p^h\le2n$. Multiplying over the $\pi(2n)$ primes proves the third bound. Finally every prime $n<p\le2n$ occurs in $(2n)!$ once and in $n!$ zero times. Their product therefore divides the binomial coefficient, proving the last assertion.
+\end{proof}
+
+\begin{theorem}[Dyadic Chebyshev bounds without logarithms]\label{an:chebyshev}
+For every integer $K\ge3$, \ipra\ proves
+\[
+ 2^{K-1}\ \le\ K\pi(2^K)\ \le\ 6\,2^K.
+\]
+\end{theorem}
+\begin{proof}
+Set $n=2^{K-1}\ge4$. Induction from $n=3$ proves $2n+1\le2^n$: the next left side increases by $2$, while the right side doubles and is already at least $2$. Lemma~\ref{an:binomial} therefore gives
+\[
+ 2^n\le\frac{4^n}{2n+1}\le \binom{2n}{n}
+ \le (2n)^{\pi(2n)}=2^{K\pi(2^K)}.
+\]
+Strict monotonicity of powers of $2$ yields $n\le K\pi(2^K)$.
+
+For the upper bound, multiply the interval prime-product bounds for $n=1,2,4,\ldots,2^{K-1}$:
+\[
+ P(2^K)\le 2^{2+4+\cdots+2^K}=2^{2^{K+1}-2}.
+\]
+Put $L=\lceil K/2\rceil$. Every prime in $(2^L,2^K]$ is at least $2^L$, whence
+\[
+ L\bigl(\pi(2^K)-\pi(2^L)\bigr)\le2^{K+1}.
+\]
+Since $\pi(2^L)\le2^L$ and $L2^L\le2^K$, this implies $L\pi(2^K)\le3\,2^K$. The auxiliary inequality follows by writing $K=2m$ or $K=2m+1$ and using $m\le2^m$ or $m+1\le2^m$, respectively; the latter holds for $m\ge0$ by induction. Finally $K\le2L$ gives the advertised upper bound. All exponent and counting operations have finite primitive recursive definitions. These coarse constants are chosen for transparent proofs, not sharpness.
+\end{proof}
+
+\subsection{Harmonic growth and the prime reciprocal sum}
+Define $H_M=\sum_{n=1}^M1/n$. Rational inequalities below mean inequalities after cross multiplication.
+
+\begin{lemma}[Dyadic harmonic growth]\label{an:harmonic}
+For $m\ge0$, $H_{2^m}\ge1+m/2$.
+\end{lemma}
+\begin{proof}
+The block $2^{j-1}<n\le2^j$ has $2^{j-1}$ terms, each at least $2^{-j}$, so its sum is at least $1/2$. Add the $m$ blocks and the initial term $1$.
+\end{proof}
+
+\begin{lemma}[Finite Euler domination at exponent one]\label{an:eulerdom}
+For $M\ge1$,
+\[
+ H_M\le\prod_{p\le M}\left(1-\frac1p\right)^{-1}.
+\]
+\end{lemma}
+\begin{proof}
+Expand $\prod_{p\le M}\sum_{j=0}^{M}p^{-j}$. Unique prime factorization puts every $1/n$, $1\le n\le M$, among its terms, exactly once. No exponent of such an $n$ exceeds $M$. All other terms are positive. Each finite geometric sum is at most the rational number $(1-1/p)^{-1}$, by the finite geometric-sum identity. Thus no infinite product or convergence theorem is involved.
+\end{proof}
+
+\begin{lemma}[Bounding a finite product by a reciprocal sum]\label{an:blockproduct}
+Let $0\le x_i\le1/2$ be a finite list of rationals and suppose $\sum_i x_i\le k$, where $k\in\N$. Then
+\[
+ \prod_i(1-x_i)^{-1}\le4^{4k+1}.
+\]
+\end{lemma}
+\begin{proof}
+Process the list in order, accumulating a block as long as its sum remains at most $3/4$; otherwise start a new block. A completed nonfinal block has sum greater than $1/4$, since the next summand is at most $1/2$ and would have taken the sum above $3/4$. If there are $r$ blocks, their total is greater than $(r-1)/4$ when $r>1$, so in all cases $r\le4k+1$. The empty list also satisfies the claim.
+
+For nonnegative $u_i$ with sum at most one, induction proves $\prod_i(1-u_i)\ge1-\sum_i u_i$. In the induction step multiply the prior inequality by $1-u\ge0$ and use the extra nonnegative product $u\sum_i u_i$. Hence each block product is at least $1/4$ and its reciprocal at most $4$. Multiply the at most $4k+1$ block inequalities. The greedy partition and its count are finite recursive objects.
+\end{proof}
+
+\begin{theorem}[Divergence of prime reciprocals with an explicit bound]\label{an:primeharmonic}
+Put
+\[
+ B(k)=2^{\,2\cdot4^{4k+1}}.
+\]
+For every $k\in\N$, \ipra\ proves
+\[
+ \sum_{p\le B(k)}\frac1p>k.
+\]
+\end{theorem}
+\begin{proof}
+The sum is a rational, so comparison with $k$ is decidable. In the branch where it is at most $k$, Lemma~\ref{an:blockproduct} applied to $x_i=1/p$ bounds its Euler product by $4^{4k+1}$. Lemmas~\ref{an:eulerdom} and \ref{an:harmonic}, with $m=2\cdot4^{4k+1}$, instead give
+\[
+ \prod_{p\le B(k)}(1-1/p)^{-1}\ge H_{B(k)}
+ \ge1+4^{4k+1},
+\]
+a contradiction. The remaining comparison branch proves the assertion. This is a uniform first-order theorem with a primitive recursive bound, rather than just a statement that no finite list contains all primes.
+\end{proof}
+
+\subsection{Zeta values and a quantitatively controlled Euler product}
+For integers $s\ge2$, define
+\[
+ Z_s(N)=\sum_{n=1}^N\frac1{n^s},\qquad
+ E_s(N)=\prod_{p\le N}\frac1{1-p^{-s}}.
+\]
+Both are rational functions of natural-number inputs computed by finite loops.
+
+\begin{lemma}[A rational tail estimate]\label{an:zetatail}
+For $M\ge N\ge1$ and $s\ge2$,
+\[
+ 0\le Z_s(M)-Z_s(N)\le N^{1-s}-M^{1-s}\le N^{1-s}.
+\]
+\end{lemma}
+\begin{proof}
+For each $n\ge2$, the difference-of-powers identity gives
+\[
+ n^{s-1}-(n-1)^{s-1}\ge(n-1)^{s-2}.
+\]
+Consequently
+\[
+ \frac1{(n-1)^{s-1}}-\frac1{n^{s-1}}
+ \ge\frac1{(n-1)n^{s-1}}\ge\frac1{n^s}.
+\]
+Sum from $N+1$ to $M$ and telescope. This proves the estimate entirely in rational arithmetic, with no integration argument.
+\end{proof}
+
+\begin{theorem}[Finite Euler-product error]\label{an:eulererror}
+For $N\ge1$ and $s\ge2$,
+\[
+ 0\le E_s(N)-Z_s(N)\le N^{1-s}.
+\]
+\end{theorem}
+\begin{proof}
+The lower bound follows by the same finite expansion as Lemma~\ref{an:eulerdom}, replacing $1/p$ by $1/p^s$. For the upper bound let $r=\pi(N)$ and truncate every geometric series at exponent $J$:
+\[
+ T_J=\prod_{p\le N}\sum_{j=0}^Jp^{-sj}.
+\]
+Each term in its expansion is $n^{-s}$ for a distinct positive integer $n\le P(N)^J$. Thus $T_J\le Z_s(M)$ with $M=\max(N,P(N)^J)$, and Lemma~\ref{an:zetatail} gives $T_J\le Z_s(N)+N^{1-s}$.
+
+Each full geometric factor is at most $2$, and the difference between it and its truncation is
+\[
+ \frac{p^{-s(J+1)}}{1-p^{-s}}\le2^{-J}.
+\]
+The finite telescoping identity for a difference of products therefore gives
+\[
+ 0\le E_s(N)-T_J\le N2^{N-J}.
+\]
+This is a rational expression; a negative exponent means a reciprocal power. We have proved the desired upper inequality with an extra error $N2^{N-J}$ for every $J$.
+
+To remove this error inside arithmetic, set $\delta=E_s(N)-Z_s(N)-N^{1-s}$, and compute a positive denominator $D$ for it, without requiring lowest terms. If $\delta>0$, then $\delta\ge1/D$. Take $J=2N+D+2$. The elementary inequalities $N\le2^N$ and $D<2^{D+1}$ give $N2^{N-J}<1/D$, contradicting the preceding error estimate. The rational sign test is decidable, so $\delta\le0$. The extra truncation index is a primitive recursive function of the original input denominators. This explicit step replaces a hidden appeal to a limiting process.
+\end{proof}
+
+\begin{corollary}[An iPRA name for $\zeta(s)$ and its Euler product]\label{an:zetaname}
+Let $z_s(k)=Z_s(2^{k+2})$ and $e_s(k)=E_s(2^{k+2})$. For $l\ge k$,
+\[
+ 0\le z_s(l)-z_s(k)\le2^{-k-2},\qquad
+ 0\le e_s(k)-z_s(k)\le2^{-k-2},
+\]
+and $|e_s(l)-e_s(k)|\le3\,2^{-k-2}\le2^{-k}$. In the external real interpretation both names have the same value, denoted $\zeta(s)$, and this proves the Euler-product identity for every integer $s\ge2$.
+\end{corollary}
+\begin{proof}
+Use the tail and product estimates with $N=2^{k+2}$, noting $N^{1-s}\le N^{-1}$. For the last estimate insert $z_s(l)$ and $z_s(k)$ between the two Euler products and use the triangle inequality. Equality of the two names means precisely the displayed errors tending to zero with this supplied modulus. The theorem does not assert analytic continuation or a statement about arbitrary complex $s$.
+\end{proof}
+
+\subsection{Finite probabilistic number theory}
+Let $\omega(n)$ be the number of distinct prime divisors of $n$, and $\Omega(n)$ the number counted with multiplicity, with both zero at $n=1$.
+
+\begin{theorem}[Exact means of prime-divisor counts]\label{an:means}
+For $X\ge1$,
+\[
+ \sum_{n=1}^{X}\omega(n)=\sum_{p\le X}\left\lfloor\frac Xp\right\rfloor,
+ \quad
+ \sum_{n=1}^{X}\Omega(n)=\sum_{p\le X}\sum_{1\le j\le X}
+            \left\lfloor\frac X{p^j}\right\rfloor.
+\]
+In particular,
+\[
+ \left|\frac1X\sum_{n=1}^{X}\omega(n)-\sum_{p\le X}\frac1p\right|
+ \le\frac{\pi(X)}X.
+\]
+\end{theorem}
+\begin{proof}
+Expand $\omega(n)=\sum_{p\le X}[p\mid n]$ and interchange the two finite sums. For $\Omega$, the valuation $v_p(n)$ is the number of positive $j$ with $p^j\mid n$; all such $j$ are at most $X$. Count multiples once again. For the estimate divide the first equality by $X$ and bound each floor discrepancy by $1/X$. This is a theorem about a uniform finite sample $1,\ldots,X$; it requires no probability measure on an infinite space.
+\end{proof}
+
+\begin{theorem}[Exact finite independence of distinct prime divisibility]\label{an:independence}
+Let $p_1,\ldots,p_r$ be distinct primes and $M=\prod_i p_i$. In the uniform finite sample $0\le n<M$, the events $p_i\mid n$ are independent and have probabilities $1/p_i$. More explicitly, for disjoint index sets $A,B\subseteq\{1,\ldots,r\}$,
+\[
+ \frac{\#\{n<M:\ p_i\mid n\ (i\in A),\ p_j\nmid n\ (j\in B)\}}M
+ =\prod_{i\in A}\frac1{p_i}\prod_{j\in B}\left(1-\frac1{p_j}\right).
+\]
+\end{theorem}
+\begin{proof}
+The Chinese remainder map sends $n<M$ bijectively to its tuple of residues modulo the $p_i$. A specified zero coordinate has one choice, a specified nonzero coordinate has $p_i-1$ choices, and an unspecified coordinate has $p_i$ choices. Multiply the choices and divide by $M$. This is an exact finite counting identity. It does not imply that all prime-divisibility indicators on every interval are independent.
+\end{proof}
+
+\begin{theorem}[Coprime pairs and M\"obius inversion]\label{an:coprimepairs}
+For $X\ge1$, the number $C(X)$ of pairs $1\le a,b\le X$ with $\gcd(a,b)=1$ satisfies
+\[
+ C(X)=\sum_{d=1}^X\mu(d)\left\lfloor\frac Xd\right\rfloor^2.
+\]
+\end{theorem}
+\begin{proof}
+The divisor identity $\sum_{d\mid m}\mu(d)=[m=1]$ turns the indicator of coprimality into $\sum_{d\mid a,\ d\mid b}\mu(d)$. Interchange three finite sums. For each $d$ there are $\lfloor X/d\rfloor$ choices for each coordinate. Their product gives the formula. No passage to an asymptotic density is needed for this statement.
+\end{proof}

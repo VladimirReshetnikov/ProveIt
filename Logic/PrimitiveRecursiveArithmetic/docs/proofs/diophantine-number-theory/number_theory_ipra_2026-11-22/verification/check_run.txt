@@ -1,0 +1,295 @@
+python3 code/build_inventory.py
+{
+  "total_numbered_results": 106,
+  "foundational_results": 5,
+  "number_theoretic_results": 101,
+  "counts_by_chapter": {
+    "foundations": 5,
+    "elementary": 32,
+    "quadratic": 22,
+    "diophantine": 20,
+    "analytic": 15,
+    "algebraic": 9,
+    "transcendence": 3
+  },
+  "counting_policy": "Distinct numbered theorem/lemma/corollary/proposition blocks; consequences within one block are not counted separately."
+}
+python3 code/elementary_checks.py
+{"status": "passed", "groups": 8, "elapsed_seconds": 0.549, "output": "/workspace/scratch/58b8b2ed12c8/number_theory_ipra/verification/elementary_checks.json"}
+python3 code/quadratic_checks.py
+{
+  "status": "PASS",
+  "meaning": "Finite implementation checks; not a machine-checked iPRA proof.",
+  "counts": {
+    "quadratic_reciprocity_ordered_prime_pairs_below_200": 1980,
+    "primitive_root_prime_moduli_below_100": 25,
+    "four_square_prime_routines_below_500": 95,
+    "two_square_prime_routines_below_500": 45,
+    "two_square_classification_n_1_through_500": 500,
+    "four_square_factor_product_n_0_through_500": 501,
+    "four_square_even_multiplier_signed_states_p_below_20": 50016,
+    "four_square_odd_multiplier_signed_states_p_below_20": 43712
+  },
+  "example_four_square_descent_499": [
+    [
+      9,
+      [
+        1,
+        67,
+        1,
+        0
+      ]
+    ],
+    [
+      2,
+      [
+        30,
+        -7,
+        0,
+        -7
+      ]
+    ],
+    [
+      1,
+      [
+        15,
+        15,
+        -7,
+        0
+      ]
+    ]
+  ],
+  "example_two_square_descent_461": [
+    [
+      5,
+      [
+        48,
+        1
+      ]
+    ],
+    [
+      1,
+      [
+        -19,
+        10
+      ]
+    ]
+  ]
+}
+python3 code/verify_diophantine.py
+{
+  "status": "all finite checks passed",
+  "scope": "Exact finite regression checks, not a Lean or iPRA derivation.",
+  "seed": 20261122,
+  "counts": {
+    "continued_fraction_lists": 484,
+    "rational_dirichlet_cases": 12200,
+    "simultaneous_grid_cases": 450,
+    "bounded_norm_cases": 1272,
+    "pell_norm_collisions": 90,
+    "pell_power_descent_cases": 63,
+    "pythagorean_reconstructions": 1986
+  },
+  "total_cases": 16545,
+  "pell_common_norm_signs_exercised": [
+    -1,
+    1
+  ],
+  "maximum_pell_collision_index": 8,
+  "selected_pell_certificates": [
+    {
+      "D": 2,
+      "x": 99,
+      "y": 70,
+      "common_norm": -1,
+      "earlier_index": 0,
+      "later_index": 2
+    },
+    {
+      "D": 3,
+      "x": 97,
+      "y": 56,
+      "common_norm": -2,
+      "earlier_index": 0,
+      "later_index": 2
+    },
+    {
+      "D": 5,
+      "x": 9,
+      "y": 4,
+      "common_norm": -1,
+      "earlier_index": 0,
+      "later_index": 1
+    },
+    {
+      "D": 13,
+      "x": 649,
+      "y": 180,
+      "common_norm": -1,
+      "earlier_index": 3,
+      "later_index": 5
+    },
+    {
+      "D": 61,
+      "x": 1766319049,
+      "y": 226153980,
+      "common_norm": -9,
+      "earlier_index": 0,
+      "later_index": 4
+    }
+  ]
+}
+python3 code/analytic_checks.py
+{
+  "status": "PASS",
+  "meaning": "Finite implementation checks; not a formal iPRA proof.",
+  "huge_bound_policy": "The prime reciprocal upper endpoint B(k) was kept symbolically as a power of two; its prime sum was not evaluated.",
+  "counts": {
+    "dyadic_chebyshev_K_3_through_14": 12,
+    "greedy_block_product_exact_rational_lists": 781,
+    "prime_reciprocal_bound_symbolic_exponent_checks_k_0_through_30": 31,
+    "finite_euler_product_error_exact_rational_cases": 150,
+    "zeta_tail_exact_rational_cases": 450,
+    "finite_euler_truncation_cases": 750,
+    "denominator_based_error_removal_pairs_N_D": 1500,
+    "finite_sieve_X_0_through_64_z_0_through_13": 910,
+    "prime_counting_sieve_X_2_through_200": 199,
+    "CRT_independence_zero_nonzero_unrestricted_patterns": 121,
+    "coprime_pair_Mobius_counts_X_1_through_60": 60
+  }
+}
+python3 code/algebraic_checks.py
+{
+  "status": "all finite checks passed",
+  "scope": "Exact finite regression checks, not Lean or iPRA derivations.",
+  "counts": {
+    "quadratic_norm_products": 6561,
+    "monic_polynomial_substitutions": 81,
+    "bounded_irreducibility_factor_pairs": 556,
+    "factorizations_confirmed_to_have_a_unit": 16,
+    "truncated_valuation_pairs": 67228,
+    "hensel_simple_initial_roots": 18,
+    "hensel_unique_lift_steps": 90,
+    "finite_taylor_congruences": 770,
+    "explicit_partitions_and_conjugation": 272,
+    "odd_distinct_inverse_checks": 140,
+    "fixed_part_count_conjugation_identities": 104,
+    "partition_recurrence_cases": 91,
+    "finite_generating_product_coefficients": 91
+  },
+  "total_checks": 76018,
+  "valuation_coverage": {
+    "primes": [
+      2,
+      3,
+      5,
+      7
+    ],
+    "precision_range": [
+      0,
+      6
+    ],
+    "integer_range": [
+      -24,
+      24
+    ],
+    "unequal_valuation_cases": 24324,
+    "cases_with_a_zero_input": 2716,
+    "cases_with_a_capped_valuation_at_positive_precision": 8684
+  },
+  "partition_counts_n_0_through_12": [
+    1,
+    1,
+    2,
+    3,
+    5,
+    7,
+    11,
+    15,
+    22,
+    30,
+    42,
+    56,
+    77
+  ],
+  "hensel_x_squared_minus_two_from_3_mod_7": [
+    {
+      "precision": 1,
+      "modulus": 7,
+      "residue": 3
+    },
+    {
+      "precision": 2,
+      "modulus": 49,
+      "residue": 10
+    },
+    {
+      "precision": 3,
+      "modulus": 343,
+      "residue": 108
+    },
+    {
+      "precision": 4,
+      "modulus": 2401,
+      "residue": 2166
+    },
+    {
+      "precision": 5,
+      "modulus": 16807,
+      "residue": 4567
+    },
+    {
+      "precision": 6,
+      "modulus": 117649,
+      "residue": 38181
+    }
+  ],
+  "nonufd_small_norm_search": {
+    "norm_bound": 9,
+    "no_elements_of_norm": [
+      2,
+      3
+    ],
+    "units_found": [
+      [
+        -1,
+        0
+      ],
+      [
+        1,
+        0
+      ]
+    ],
+    "irreducibles_checked": [
+      [
+        2,
+        0
+      ],
+      [
+        3,
+        0
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        -1
+      ]
+    ]
+  }
+}
+python3 code/transcendence_checks.py
+{
+  "status": "PASS",
+  "meaning": "Finite exact implementation checks, not formal proofs.",
+  "large_bound_policy": "General high-index windows were checked using exponent inequalities; their huge rational truncations were not allocated.",
+  "counts": {
+    "factorial_tail_pairs_n_1_through_5_m_through_6": 20,
+    "root_avoidance_example_with_two_initial_roots": 1,
+    "polynomial_rational_value_and_Lipschitz_grid_cases": 726,
+    "polynomial_separation_symbolic_exponent_cases": 1760,
+    "actual_polynomial_separation_small_truncation_cases": 12
+  }
+}

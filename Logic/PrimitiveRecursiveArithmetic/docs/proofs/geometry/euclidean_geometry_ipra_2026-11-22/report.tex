@@ -1,0 +1,103 @@
+\documentclass[11pt,a4paper]{article}
+\ifdefined\pdfmapfile
+\pdfmapfile{+lm.map}
+\pdfmapfile{+cm.map}
+\pdfmapfile{+cmextra.map}
+\pdfmapfile{+symbols.map}
+\fi
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=26mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{calc,arrows.meta,angles,quotes}
+\usepackage{graphicx,fancyhdr,hyperref,bookmark,xurl}
+\hypersetup{colorlinks=true,linkcolor=MidnightBlue,urlcolor=MidnightBlue,citecolor=MidnightBlue,
+ pdftitle={Euclidean geometry in intuitionistic primitive recursive arithmetic},
+ pdfauthor={Research proof portfolio}}
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,columns=fullflexible,
+ frame=single,rulecolor=\color{gray!35},backgroundcolor=\color{gray!4},showstringspaces=false}
+\setlength{\parskip}{3pt}
+\setlength{\parindent}{1.2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\K}{\mathbb K}
+\newcommand{\ipra}{\ensuremath{\mathsf{iPRA}}}
+\newcommand{\dotp}[2]{\langle #1,#2\rangle}
+\newcommand{\detp}[2]{[#1,#2]}
+\newcommand{\normsq}[1]{N(#1)}
+\newcommand{\len}[1]{\lVert #1\rVert}
+\newcommand{\J}{\mathsf J}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\area}{\operatorname{Area}}
+\newcommand{\vol}{\operatorname{Vol}}
+\newcommand{\Bet}{\operatorname{Bet}}
+\newcommand{\Col}{\operatorname{Col}}
+\newcommand{\PR}{\mathsf{PR}}
+\newcommand{\code}[1]{\texttt{#1}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Euclidean geometry in iPRA}
+\fancyhead[R]{\small Research report}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\emergencystretch=2em
+\begin{document}
+\begin{titlepage}
+\vspace*{17mm}
+{\color{MidnightBlue}\Large CONSTRUCTIVE MATHEMATICS}\par
+\vspace{8mm}
+{\Huge\bfseries Euclidean geometry\par}
+\vspace{3mm}
+{\LARGE in intuitionistic primitive recursive arithmetic\par}
+\vspace{12mm}
+{\Large A theorem portfolio, explicit constructions,\par
+ arithmetic interpretation, and Lean formalization plan}\par
+\vspace{15mm}
+\noindent\textbf{Research report}\par
+\noindent 22 November 2026\par
+\vfill
+\noindent\begin{minipage}{0.94\textwidth}
+\textbf{Reading the claims.}
+The mathematical proofs are human-readable arguments in an explicit
+finite-coordinate interpretation of iPRA. Exact geometry uses coded real
+algebraic numbers; continuous observations use separately specified
+primitive recursive rational approximations. The accompanying Lean sources
+include proposed object-theory derivations and a detailed blueprint. They
+have not been compiled in the present environment. Executed exact-arithmetic
+checks are evidence for their stated algebraic identities and constructions,
+not a claim that the entire development is kernel-verified.
+\end{minipage}
+\vspace{10mm}
+\end{titlepage}
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+\newpage
+\input{chapters/scope}
+\input{chapters/foundation}
+\input{chapters/elimination}
+\input{chapters/affine}
+\input{chapters/triangles}
+\input{chapters/circles}
+\input{chapters/polygons}
+\input{chapters/solids}
+\input{chapters/obstructions}
+\input{chapters/limits}
+\input{chapters/formalization}
+\input{chapters/inventory}
+\input{chapters/references}
+\end{document}

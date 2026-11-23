@@ -1,0 +1,196 @@
+\section{Paths, components and trees}
+\label{stpaths}
+Use vertices $0,\ldots,n-1$ and edge labels $0,\ldots,m-1$. An edge has two endpoint entries. In a directed graph they are read in tail--head order. Even parallel edges have distinct labels. A walk of length $k$ is an alternating table $v_0,e_1,v_1,\ldots,e_k,v_k$ obeying the incidence and, when appropriate, direction tests. A path has distinct vertices. A trail has distinct edges. A cycle is a nonempty closed trail with distinct vertices before its return. Thus a loop is a cycle of length one, and two parallel undirected edges give a cycle of length two. A walk of length zero has one vertex. All index searches below choose the first eligible index, with a separate failure flag.
+
+\begin{theorem}[Reachability, shortest paths and separation]\leavevmode\label{stshort}
+For vertices $s,t$, the existence of any walk from $s$ to $t$ is equivalent to the existence of a path of length at most $n-1$. One can return either a shortest path or a vertex set $S$ containing $s$, excluding $t$, and closed under every allowed step. With nonnegative integer edge weights one can likewise return a path of minimum total weight among all walks.
+\end{theorem}
+\begin{proof}
+If $v_i=v_j$ for $i<j$, remove the subwalk from position $i$ to position $j$, retaining its common endpoint. Adjacency at the join holds even for directed edges. The endpoints are preserved, the length drops, and the total weight cannot increase. Given an input walk of length $k$, do this $k$ times, freezing whenever no repetition remains. At each step the resulting table is a walk with the specified endpoints and either it has stabilized or its length has fallen by at least the number of active steps. The output is a path. A repetition-free list of vertices has length at most $n$ because each newly marked vertex increases the cardinality of its $n$-bit mask by one. This also proves the bound for $s=t$, when the path has length zero.
+
+For a direct decision procedure, start with $R_0=\{s\}$ and put $R_{i+1}=R_i\cup\{v:\text{a step }u\to v\text{ has }u\in R_i\}$. The equality with the endpoints of walks of length at most $i$ follows by removing or adding the last step. This induction quantifies only over tables of bounded length for its current $i$. On a vertex's first appearance after round zero, store a witnessing predecessor vertex and edge from the preceding round. Following these entries strictly lowers the first round and yields a path. If there were a shorter walk, the vertex would have appeared earlier. The shortening argument shows that $R_{n-1}$ contains every reachable vertex and hence is closed under a step. If it omits $t$, it supplies the required set. For nonnegative weights, minimize first the weight and then the length over the finite set of eligible paths. The erasure procedure applied to any competing walk proves optimality. One may enumerate the two tables of a walk of length $k$ by integers below $(n+1)^{k+1}$ and $(m+1)^k$. All minima have a candidate when the reachability decision succeeds.
+\end{proof}
+
+\begin{corollary}[Components, metric and condensation]\leavevmode\label{stcond}
+Undirected reachability is an equivalence relation. Inside each component the unweighted shortest-path distance is a metric, and its diameter is at most the number of vertices in the component minus one. In a directed graph mutual reachability is an equivalence relation. Contracting its classes and omitting internal arcs produces a directed acyclic graph, which admits a topological ordering. A topological ordering exists precisely when a directed graph has no directed cycle.
+\end{corollary}
+\begin{proof}
+Use the length-zero walk, reversal for undirected graphs, and concatenation followed by erasure. Mutual reachability uses a walk in each direction. Assign to each vertex the least mutually reachable vertex (the least reachable vertex in the undirected case). Equality of the resulting labels expresses class membership. For distance, length zero forces equal endpoints, reversal preserves length, and concatenating shortest paths gives the triangle inequality. A shortest path uses distinct vertices of its own component.
+
+A directed cycle of distinct classes would make any two successive classes mutually reachable: lift each arc to an original arc, and connect its head to the tail of the next arc by a path inside their common class. This contradicts their distinct representatives. For a topological order, repeatedly remove the least remaining vertex with no incoming arc from a remaining vertex. If a nonempty remaining set had no such vertex, start at its least element and follow an incoming arc backwards $n$ times. Among the resulting $n+1$ vertices there is a repetition. Choose a repeated interval of minimal positive length. In the forward direction it is a directed cycle. The algorithm therefore removes all vertices of an acyclic graph in $n$ rounds, and each arc's tail must precede its head. Conversely a directed cycle would give a strictly increasing sequence of positions returning to its initial value. Every intermediate assertion can be checked on the remaining mask and the list of removed vertices. This gives either an order or an explicit cycle.
+\end{proof}
+
+\begin{corollary}[Transitive reduction and enumeration of directed acyclic graphs]\leavevmode\label{stdagenum}
+For a finite simple directed acyclic graph, positive-length reachability is a strict partial order. Keeping its cover relations gives the unique inclusion-minimal subgraph with the same reachability. A topological ordering is unique exactly when the graph has a directed path through all its vertices (for $n\ge1$). The number $a_n$ of directed acyclic graphs on $n$ fixed labels satisfies $a_0=1$ and, for $n>0$,
+\[
+ a_n=\sum_{k=1}^{n}(-1)^{k-1}\binom nk 2^{k(n-k)}a_{n-k}.
+\]
+\end{corollary}
+\begin{proof}
+Write $u<v$ when a positive walk leads from $u$ to $v$. Concatenation gives transitivity, and a positive closed walk contains a directed cycle by the shortest-repetition argument. Keep $u\to v$ when $u<v$ and there is no $z$ with $u<z<v$. A walk witnessing such a pair must have length one. For an arbitrary comparable pair, start with its two-element chain and repeatedly insert an intermediate vertex in a gap where possible. A strict chain has at most $n$ vertices. The resulting saturated chain joins the pair using only retained edges. Every subgraph with the same reachability must retain each covering edge, because a longer path would exhibit an intermediate vertex. This proves uniqueness. In a topological order, every consecutive pair either has an arc in forward order or can be swapped: in the absence of this arc their interchange preserves every arc inequality. A unique order must therefore give a spanning directed path. Conversely that path forces the positions of all vertices in any order.
+
+For the count, a nonempty acyclic graph has a source (no incoming arc), by the predecessor argument above. For a specified set of $k$ forced sources there are no arcs among them or entering them, and the $k(n-k)$ arcs leaving them for the complement are independent choices. The complement must induce one of the $a_{n-k}$ acyclic graphs. This already suffices for global acyclicity. Sum the forced-source counts with sign $(-1)^{k-1}$ over nonempty subsets of labels. A graph whose source set has $h>0$ elements receives total coefficient one: over all subsets, toggling the least source pairs equal numbers with opposite signs, and removing the empty term leaves the claimed coefficient for the chosen signs. Arithmetic with signs can again be expressed by an equality of natural sums. The graph masks enumerated have at most $n(n-1)$ bits.
+\end{proof}
+
+\begin{theorem}[Spanning forest and bridges]\leavevmode\label{stforest}
+Let $c$ count the components, including isolated vertices. One can construct a spanning forest $F$ with exactly $n-c$ edges and the same components as the graph. In an undirected multigraph an edge is a bridge (its deletion increases $c$) exactly when it lies on no cycle. Deleting a bridge increases $c$ by one.
+\end{theorem}
+\begin{proof}
+Start with all vertices, no edges. Scan the $m$ labels. Accept an edge precisely when its endpoints belong to different components of the accepted graph. Such an edge merges those two components and no others: a path using it splits into old walks on either side, and any two vertices in the merged blocks can be joined by using the new edge once. A cycle through the new edge would yield an old path between its endpoints by deleting it. Thus the accepted graph remains acyclic. A rejected edge already has a path between its endpoints, including the empty path for a loop. Consequently every scanned edge has connected endpoints in the accepted graph, and replacing the edges of any walk by these paths proves equality of the two reachability relations for the scanned prefix. The invariant $|F|+c_{F}=n$ starts with $n$ singleton blocks. Acceptance adds one on the left and removes one block. This proof includes the graph with $n=m=0$.
+
+For an edge $e=uv$, compute connectivity in $G-e$. If a path from $u$ to $v$ survives, joining it to $e$ gives a cycle (a loop if $u=v$). Every transit that formerly used $e$ can use the path instead. Hence the component count is preserved. If there is no such path, adding $e$ back merges exactly two blocks as above. Any cycle containing it would have supplied the missing path.
+\end{proof}
+
+\begin{theorem}[Tree characterizations and leaves]\leavevmode\label{sttree}
+For a nonempty finite undirected graph, each of the following four conditions characterizes a tree: (i) connected and acyclic, (ii) connected with every edge a bridge, (iii) connected with $n-1$ edges, and (iv) acyclic with $n-1$ edges. In a loopless graph these are also equivalent to having exactly one path between each pair of distinct vertices. A tree on at least two vertices has at least two leaves. Every nonempty subgraph of a forest has a vertex of degree at most one.
+\end{theorem}
+\begin{proof}
+The spanning forest has $n-c$ edges. A rejected edge together with its forest path gives a cycle. Thus in an acyclic graph every edge belongs to the forest, and $m+c=n$. For a connected graph $c=1$, so equality $m=n-1$ forces every edge into the forest. The bridge criterion gives the second characterization.
+
+Two different paths from $u$ to $v$ have a longest common initial segment (read edge labels as well as vertices). From its last vertex $z$, follow the first path up to its first subsequent intersection with the remainder of the second. Such an intersection exists at $v$. The two segments between $z$ and this intersection have different first edges and disjoint interiors. They form a cycle. Conversely, either arc of a loopless cycle gives a different path between the endpoints of any of its edges (one arc is that edge). Excluding loops in this characterization matters even for a single vertex.
+
+In a tree with an edge, choose a longest path by bounded search. At either endpoint a second incident edge must either extend the path to a new vertex or close a cycle to a vertex already on it, with parallel edges included in the latter case. Both are impossible, so the distinct endpoints are leaves. In a nonempty subgraph of a forest apply this argument to any component containing an edge, or take an isolated vertex when there are no edges.
+\end{proof}
+
+\begin{corollary}[Paths, cycles and the degree profile]\leavevmode\label{stprofile}
+A connected finite simple graph with exactly two vertices of degree one and all others of degree two is a path graph. A nonempty connected finite simple graph in which every vertex has degree two is a cycle graph. The converse holds for paths on at least two vertices and for cycles on at least three. In a tree on at least two vertices, the leaf count is
+\[
+  2+\sum_{v:\,d(v)\ge3}(d(v)-2).
+\]
+\end{corollary}
+\begin{proof}
+In the first graph the degree sum is $2n-2$. Each edge contributes two, so $m=n-1$ and the graph is a tree. A longest path has two leaf endpoints. A vertex outside it would have a first point of attachment reached along a path from outside. An internal attachment would have degree at least three, and an endpoint attachment would extend the path. Any extra edge on the path would form a cycle. In the second graph choose a longest path. Its first endpoint has a second neighbor on the path, closing a cycle. Every vertex on that cycle has already used both incident edges, and connectivity forbids outside vertices. Simplicity gives cycle length at least three. The converse degree lists follow by reading the defining edge sequences. For the displayed identity count the endpoints of all $n-1$ edges of the tree. Subtracting $2$ per vertex from $2(n-1)$ gives $-2$. Degree-one vertices contribute $-1$, degree-two vertices zero, and the other terms give the displayed sum. This signed identity can equivalently be read after moving all negative terms across the equality.
+\end{proof}
+
+\begin{theorem}[Minimum spanning forest]\leavevmode\label{stkruskal}
+For natural edge weights, scanning edges in increasing order of $(\text{weight},\text{label})$ in Theorem~\ref{stforest} returns a minimum-total-weight spanning forest among those with the same components as the input. If all weights are distinct, it is the unique minimum forest.
+\end{theorem}
+\begin{proof}
+Enumerate the $2^m$ subsets once to choose a minimum forest $T$. Existence follows from Theorem~\ref{stforest}. Maintain a minimum forest containing the accepted edges so far. When the next accepted edge $e=uv$ is absent from $T$, the unique $u$--$v$ path in $T$ leaves the current accepted component of $u$ along some edge $f$. This edge is outside the accepted forest. Every earlier scanned edge has endpoints in the same accepted component, so $f$ occurs later in the order and $w(e)\le w(f)$. Remove $f$ from $T$. Its component splits into two pieces separating $u,v$, since the old path was unique. Inserting $e$ reconnects these pieces without a cycle. The resulting forest still contains the previous accepted edges, now contains $e$, and costs no more, so it is minimum. At termination both forests contain $n-c$ edges, hence coincide. For distinct weights the exchange would strictly improve any minimum forest omitting $e$. Inducting through the scan with any proposed minimum forest proves uniqueness. The scan uses bounded selection sort, and the exchange family uses only edge masks.
+\end{proof}
+
+\section{Binary cycle and cut spaces}
+\label{stspaces}
+Identify an edge subset with its $m$-bit string. Addition is bitwise exclusive-or, denoted $\oplus$. Its scalar product with another string is the parity of the intersection size. For an edge mask $X$, its boundary $\partial X$ is the vertex mask of odd degrees in $X$. For a vertex mask $S$, the cut $\delta S$ contains edges whose two endpoint bits differ. A loop has zero boundary and belongs to no cut. The \emph{cycle space} consists of masks $X$ having $\partial X=0$. The \emph{cut space} consists of the $\delta S$. Both are closed under $\oplus$ by the endpoint formulas.
+
+\begin{theorem}[Bases, dimensions and orthogonality]\leavevmode\label{stbases}
+In an undirected multigraph with $n$ vertices, $m$ edges and $c$ components, a spanning forest gives explicit bases for the cycle and cut spaces, respectively of dimensions $m-n+c$ (read as $m-(n-c)$) and $n-c$. Each space is the orthogonal complement of the other.
+\end{theorem}
+\begin{proof}
+Fix the spanning forest $F$. For each $e\notin F$, let $C_e$ consist of $e$ and the unique forest path joining its endpoints (empty for a loop). This is an even mask containing exactly one nonforest edge, namely $e$. For an even $X$, add $C_e$ for each nonforest edge $e$ marked in $X$. The resulting mask is even and supported in $F$. If it contained any edge, its nontrivial tree component would have a leaf of degree one by Theorem~\ref{sttree}, a contradiction. Hence it is zero. The coordinates of $X$ in this expansion are uniquely forced by its nonforest entries. This proves directly that the even masks are exactly the sums of cycles.
+
+For each forest edge $f$ let $S_f$ be the component of its first endpoint in $F-f$ and put $D_f=\delta S_f$. Its only forest edge is $f$. If $\delta S$ is any cut, add $D_f$ for the forest edges it contains. The result is still a cut because $\delta S\oplus\delta T=\delta(S\oplus T)$. Its vertex-side indicator must be constant along every tree edge and hence on each component of $F$. Every graph edge stays within such a component. The resulting cut is empty. Again the forest entries give both the expansion and its uniqueness. There are therefore exactly $2^{m-(n-c)}$ cycle-space masks and $2^{n-c}$ cut-space masks, including zero in each count.
+
+The parity of $|X\cap\delta S|$ equals that of $\sum_{v\in S} d_X(v)$, since internal edges contribute twice. Thus every even mask is orthogonal to every cut. Orthogonality to singleton cuts forces all degrees even. For the reverse direction, suppose $Y$ is orthogonal to every $C_e$. Form the cut $Z=\bigoplus_{f\in F\cap Y}D_f$. Then $Y\oplus Z$ vanishes on $F$ and is orthogonal to every $C_e$. Taking its product with $C_e$ reads just its $e$-bit, so all its other bits vanish too. This produces the desired cut equal to $Y$.
+\end{proof}
+
+\begin{corollary}[Prescribed odd vertices]\leavevmode\label{stboundary}
+There exists an edge mask with boundary $T$ precisely when $T$ has even size in each component. In that case there are exactly $2^{m-(n-c)}$ such masks, and precisely one is supported in a fixed spanning forest.
+\end{corollary}
+\begin{proof}
+Counting incidence ends within one component proves necessity. In each component with an even list of marked vertices, pair them in increasing order, join each pair by its forest path, and add the path masks modulo two. Each path has precisely its endpoints in its boundary, so the resulting forest mask $J$ has boundary $T$. Every other solution differs from $J$ by an even mask and conversely. An even mask contained in a forest is empty, as in the preceding proof. Component pairs and forest paths are bounded lists. Both the construction and its inverse on each fiber are explicit.
+\end{proof}
+
+\section{Euler tours and route inspection}
+\label{steuler}
+The \emph{support} of a graph is the set of vertices incident with at least one edge. Connectivity on the support ignores isolated vertices. In a directed graph, weak connectivity means connectivity after forgetting orientations, retaining the arc labels. A tour is a closed trail traversing every edge once.
+
+\begin{theorem}[Undirected and directed Euler criterion]\leavevmode\label{steulertheorem}
+Assume there is at least one edge. An undirected multigraph has a tour exactly when its support is connected and all degrees are even. It has an Euler trail from distinct specified vertices $a$ to $b$ exactly when its support is connected and the set of odd vertices is $\{a,b\}$. A directed multigraph has a tour exactly when its support is weakly connected and each vertex has equal in- and outdegree. For an open directed Euler trail from $a$ to $b$ the degree requirement is one extra outgoing arc at $a$, one extra incoming arc at $b$, and equality elsewhere. A tour may start at any support vertex.
+\end{theorem}
+\begin{proof}
+A trail visiting every edge connects its support weakly. Count an arrival and a departure at every internal position, treating a loop as one of each. The excess degrees at the ends give precisely the stated necessity conditions for a directed walk. Forgetting direction pairs the incidence ends at internal positions and gives the undirected parity conditions.
+
+Consider first either closed case. Start at a prescribed support vertex $r$. Traverse the least unused allowable edge out of the current vertex until stuck, with fuel $m$. In the undirected case, if the terminal vertex differed from $r$, its used incidence count would be odd. Its original incidence count is even, so an unused incident edge would remain. In the directed case a terminal vertex different from $r$ has received one more used arrival than used departure. Original balance forces at least one unused outgoing arc there. Thus the trail closes at $r$. It traverses at least one edge, since $r$ is incident and balance gives an outgoing arc in the directed case. Subtracting this closed trail leaves even degrees or equal in- and outdegrees in the residual graph, respectively.
+
+If unused edges remain, some vertex of the current tour is incident with an unused edge. Indeed choose an unused edge, take a weak path from the tour to one of its ends, and if this end lies outside the tour inspect the first edge leaving the tour's vertex set. Such an edge is unused because both ends of every used edge occur on the tour. In the directed case residual balance supplies an unused outgoing arc even if the first incidence located is incoming. Apply the same traversal to the unused edges at that tour vertex and insert the resulting nonempty closed trail at its occurrence. The new trail is closed and repeats no label, since its two parts have disjoint edge masks. After $m$ possible rounds, freezing when finished, every label has been used. Each traversal and each insertion processes at most $m$ edges. The Boolean invariant checks closure and label uniqueness of the stored table, equality of its used mask with the set of its entries, and residual parity or balance. It also checks that the mask size increases on each active round.
+
+In the open case add one new labelled edge between $b$ and $a$, directed $b\to a$ for the directed variant. The augmented graph satisfies the closed criterion. In its cyclic list locate the new edge and cut immediately after it, deleting it. The remaining trail goes from $a$ to $b$. Reverse it in the undirected case if necessary. The artificial edge never collides with an original label. If $m=0$, the only trails are length-zero trails at individual vertices, giving a tour precisely when $n>0$ under the walk convention above.
+\end{proof}
+
+\begin{corollary}[K\"onigsberg and cycle decomposition]\leavevmode\label{stkonigsberg}
+The historic seven-bridge graph has no Euler trail. Any undirected even graph is a union of edge-disjoint cycles, as is any balanced directed graph (with directed cycles).
+\end{corollary}
+\begin{proof}
+The four land masses have degrees $5,3,3,3$. The criterion allows at most two odd vertices. For the decomposition, take an Euler tour separately in each nontrivial weak component. In a nonempty closed trail find a shortest positive interval with equal endpoint vertices. Its intervening vertices are all distinct and its edges are already distinct, so it is a cycle. Delete it and splice at the common vertex. The remainder is a closed trail, possibly empty. Each deletion uses at least one previously unassigned edge, and $m$ rounds suffice.
+\end{proof}
+
+\begin{theorem}[Undirected route inspection]\leavevmode\label{stpostman}
+Let the support be nonempty and connected, with natural edge weights $w$. Write $T$ for its odd vertices, $W$ for the sum of all edge weights, and $d(u,v)$ for shortest weighted distance. The minimum cost of a closed walk traversing every edge at least once equals
+\[
+ W+\min_P\ \sum_{\{u,v\}\in P}d(u,v),
+\]
+where $P$ pairs all vertices of $T$. The empty pairing has cost zero. Both a minimizing pairing and an optimum walk are primitive-recursive outputs.
+\end{theorem}
+\begin{proof}
+$T$ has even size, since the sum of degrees is $2m$. Enumerate pairings (for example all permutations of its increasing list, pairing consecutive entries). Take shortest paths for the pairs in a minimizing pairing, and add a fresh copy of every edge occurrence on those paths. This adds odd degree exactly at $T$, so the Euler criterion yields a tour in the resulting multigraph. Reading its new labels as their original edges attains the displayed cost. The number of edge copies added is at most $(|T|/2)(n-1)$.
+
+Conversely, take any closed covering walk and reserve one occurrence of each original edge. The remaining occurrence multigraph $H$ has odd vertices exactly $T$, because the whole occurrence multigraph is even. Add a fresh vertex $z$ and one new edge from $z$ to each member of $T$. This graph is even. If $T\ne\varnothing$, take an Euler tour of the component containing $z$, starting at $z$. Delete the new edges and split the tour at its visits to $z$. Each excursion from $z$ pairs two distinct vertices of $T$, because each such vertex has just one added edge. Its intervening edges form a walk in $H$. Each member of $T$ occurs in exactly one pair. The total weight of these walks is at most the weight of $H$, even when $H$ has additional disjoint components. Each walk costs at least its endpoint distance, proving the lower bound. For empty $T$ the lower bound follows directly from nonnegativity. An arbitrary competitor is a finite input table. The lower-bound argument uses loops bounded by its own length, whereas the optimum constructor uses only the original graph and weights.
+\end{proof}
+
+\section{Counting labelled trees and rooted forests}
+\label{stcounttrees}
+\begin{theorem}[Pr\"ufer coding and Cayley's formula]\leavevmode\label{stprufer}
+For $n\ge2$, labelled simple trees on $\{0,\ldots,n-1\}$ correspond bijectively to words of length $n-2$ over that alphabet. A vertex $v$ occurs exactly $d(v)-1$ times in its tree's word. Thus there are $n^{n-2}$ such trees. For prescribed positive degrees $d_v$ with $\sum_v d_v=2(n-1)$, their number is the multinomial coefficient
+\[
+  \frac{(n-2)!}{\prod_v(d_v-1)!}.
+\]
+There is one tree on a single labelled vertex.
+\end{theorem}
+\begin{proof}
+To encode, remove the least leaf and record its unique neighbor, until two vertices remain. A leaf exists at each step by Theorem~\ref{sttree}. Deleting it leaves a tree: no path between two remaining vertices can pass through a leaf internally. A vertex begins with $d(v)$ incident edges. Each time an incident edge is removed before that vertex becomes a removed leaf, its neighbor was removed and this vertex was recorded. At its removal it has one edge left, and the two final vertices also have one edge left. This proves the occurrence count, including for the tree remaining at every intermediate stage.
+
+Decode by starting with all labels active. At a stage with $k>2$ active vertices, the remaining suffix has length $k-2$ and uses only active labels. The least active label $p$ absent from the suffix exists, by marking its entries. Join $p$ to the first letter $q$, delete $p$ from the active set, and drop that first letter. Since $q$ occurs, $q\ne p$, and the invariant on active labels persists. At $k=2$ join the last two labels. Reading the operations backwards starts with a single edge and repeatedly attaches a fresh leaf, so the output is a tree. At any decoding stage, the tree made by this suffix has degree at each active label equal to one plus its multiplicity in the suffix: the last two vertices start at one, and reinserting $p$ of multiplicity zero increases the degree only of $q$, whose missing occurrence was exactly the dropped letter. Hence encoding this reconstructed tree removes precisely the decoder's least absent label and writes $q$. In the other direction the occurrence count for every residual encoded tree makes its least leaf precisely the decoder's next choice, so decoding recovers all removed edges and the last edge. Both inverse identities use at most $n$ transitions. The prescribed degree formula counts words with those multiplicities: choose disjoint position sets of the required sizes in increasing vertex order. The product of successive binomial coefficients times $\prod_v(d_v-1)!$ equals $(n-2)!$ by cancellation, giving the integer quotient displayed.
+\end{proof}
+
+\begin{theorem}[Weighted matrix--tree and rooted-forest identities]\leavevmode\label{stkirchhoff}
+Orient the edges of an undirected labelled multigraph arbitrarily, and let $B$ be its signed incidence matrix, with column $e$ equal to the unit vector at its tail minus the one at its head. A loop gives zero. For natural weights $w_e$, put $L=B\,\mathrm{diag}(w_e)\,B^{\mathsf T}$. For a set of roots $R$ delete its rows and columns, leaving $L_{\bar R,\bar R}$. Then
+\[
+ \det L_{\bar R,\bar R}=
+ \sum_{F}\ \prod_{e\in F}w_e,
+\]
+where the sum ranges over spanning forests having exactly one root per component. With one specified root this is the spanning-tree count with weights. At unit weights every principal cofactor of a nonempty graph counts the spanning trees. As usual a $0$-by-$0$ determinant and an empty product equal one.
+\end{theorem}
+\begin{proof}
+We first prove the finite determinant identity needed here. For a $k$-by-$m$ matrix $U$ and an $m$-by-$k$ matrix $V$, expand the determinant of $UV$ by permutations, then expand each factor $(UV)_{i,\sigma(i)}$ by its inner index. Grouping terms by the list of indices $h(1),\ldots,h(k)$ gives
+\[
+  \det(UV)=\sum_{h:[k]\to[m]}
+    \left(\prod_i U_{i,h(i)}\right)
+    \det\big(V_{h(i),j}\big)_{i,j\in[k]} .
+\]
+Here $[k]$ denotes an index set of size $k$. If $h$ repeats an index, the inner determinant has equal rows. Terms in its permutation sum cancel in pairs by swapping the columns assigned to those two rows. Otherwise write the image as an increasing list $S$ and $h(i)=S_{\pi(i)}$. The inner determinant is then $\operatorname{sgn}(\pi)\det V_{S,:}$ by permuting rows. Summing over $\pi$ gives precisely $\det U_{:,S}\det V_{S,:}$. Thus the sum over all $k$-element subsets $S$ gives $\det(UV)$, including $k>m$ when it is zero. The sign rules here follow from inversion parity: swapping two positions changes it by an odd number (one for that pair plus an even contribution from intermediate entries), and sorting a permutation by swaps proves the row-permutation rule. Equal columns, column linearity, Laplace expansion along a row with one nonzero entry, and invariance under transposition likewise follow from the permutation formula: group by the assigned column in a given row, or replace a permutation by its inverse for transposition.
+
+Put $A=B_{\bar R,:}$ and $k=n-|R|$. The identity with $U=A\,\mathrm{diag}(w)$ and $V=A^{\mathsf T}$ gives one summand $(\prod_{e\in S}w_e)\det(A_{:,S})^2$ per $k$-edge subset. If $S$ contains a cycle, its columns around that cycle, signed according as the orientation agrees with the traversal, sum to zero. For a loop the one column is zero. Solve this relation for one column, expand linearly, and each term has a duplicate column or is zero. Thus its determinant vanishes.
+
+If $S$ is a forest, it has $n-k=|R|$ components. A component without a root supplies a nonempty family of retained rows whose sum is zero, because each selected edge contributes opposite ends within its component. The same linearity argument forces determinant zero. Otherwise each component has exactly one root by counting. When $k>0$ there is a nontrivial component. Its two or more leaves include at least one nonroot leaf $v$. Its row has a single entry $+1$ or $-1$. Expanding there deletes that vertex and its edge, with all root conditions preserved, and changes the determinant only by a sign. Repeating $k$ times leaves the empty determinant, proving the squared determinant is one. The argument also covers $R=\varnothing$: a nonempty forest cannot have zero components, and the empty graph contributes its empty forest.
+\end{proof}
+
+\begin{corollary}[Rooted-forest generating function and directed trees]\leavevmode\label{stforestgen}
+For a natural number $t$,
+\[
+ \det(tI+L)=\sum_F t^{c(F)}\left(\prod_{C\text{ component of }F}|C|\right)
+                      \left(\prod_{e\in F} w_e\right),
+\]
+with $F$ now ranging over all spanning forests. For a weighted directed multigraph the principal minor with roots $R$ of its outdegree Laplacian counts, with product weights, spanning directed forests whose arcs lead to exactly one root in each component.
+\end{corollary}
+\begin{proof}
+Expand by choosing in each column either the $tI$ column or the $L$ column. For the set $R$ of identity columns, the corresponding permutations fix $R$ and contribute $t^{|R|}\det L_{\bar R,\bar R}$: deleting fixed points does not change permutation sign, as is seen from its disjoint cycles or by simultaneous row and column permutation. Apply Theorem~\ref{stkirchhoff}. Given $F$, choosing one root independently in each component gives the product of component sizes.
+
+In the directed case put $H_{v,e}=1$ when $v$ is the tail of $e$, zero otherwise, and take $B$ with the given arc orientations. The outdegree Laplacian is $H\,\mathrm{diag}(w)\,B^{\mathsf T}$, with a loop cancelling in its diagonal entry. Apply the same product identity to the retained rows. The $B$ minor is nonzero exactly when the chosen arcs form an underlying forest with one root per component, as proved above. The $H$ minor is nonzero precisely when each retained vertex is the tail of exactly one chosen arc and no root is a tail, because its columns must be distinct retained unit vectors. In such a forest, following the outgoing arc strictly advances toward the root: iteration must stop at a root, since a repeat would be a directed cycle, including a two-edge cycle if applicable. To compute the product of minor signs, order the vertices by decreasing distance from their roots and put the columns in the corresponding tail order. Then $H$ becomes the identity, and $B$ is triangular with diagonal $1$ (the other entry, if retained, is in the parent's later row). Simultaneous reordering changes both determinants by the same sign. Their product is therefore $+1$, which proves the formula.
+\end{proof}
+
+\begin{corollary}[Last-exit trees count Euler tours]\leavevmode\label{stbest}
+Let a finite directed multigraph have nonempty weakly connected support, equal in- and outdegrees, and distinguished vertex $r$ on the support. Work on that support and write $d(v)$ for outdegree, $\tau_r$ for the number of spanning directed trees pointing towards $r$. Fix an outgoing arc $b$ at $r$. The number of ordered lists of all labelled arcs forming tours starting with $b$ is
+\[
+       \tau_r\prod_v (d(v)-1)! .
+\]
+Allowing any first arc at $r$ multiplies this by $d(r)$. The directed minor in Corollary~\ref{stforestgen} computes $\tau_r$.
+\end{corollary}
+\begin{proof}
+Read a tour as a list of departures at each vertex in temporal order. For every $v\ne r$ mark its last departure. If it leads to $u\ne r$, the tour must leave $u$ later, since its final vertex is $r$. Thus the times of marked departures would strictly increase around any directed cycle of marks. Each nonroot vertex has one mark and every mark sequence ends at $r$ within $n$ steps. The underlying marked graph is connected and has one fewer edge than vertices, hence is a tree. The marked arcs point towards $r$.
+
+Conversely choose such a tree. At each nonroot vertex order its departures arbitrarily with its tree arc last. At $r$ order the departures with $b$ first. Start at $r$ and on each visit take the first unused arc in the prescribed local list. By balance it can stop only at $r$, as in Theorem~\ref{steulertheorem}. At this point the used trail is closed, so unused indegree and outdegree agree everywhere. If some vertex has unused departures, it is a nonroot and its last arc is unused. Its parent now has an unused incoming arc, hence an unused departure. Following parents in the tree forces an unused departure at $r$, contradicting termination. Hence this procedure recovers a tour, and its recorded local lists and tree are the choices used to generate it. Each local order with its one prescribed end or beginning has $(d(v)-1)!$ possibilities with distinct arc labels. This proves the product and supplies mutually inverse bounded algorithms.
+\end{proof}
+
+\paragraph{Arithmetic implementation.}
+Determinants above are finite signed sums indexed by permutation tables. Integers may be stored as pairs of naturals with equality by cross-addition. Compute sign by inversion-count parity. For a matrix of order $k$ with entries of absolute value at most $M$, the sum of absolute values of its permutation terms is at most $k!(M+1)^k$. A forest certificate consists of an $m$-bit mask, the endpoint table, and an $n$-bit root mask. All assertions about minors in the leaf-stripping argument concern explicitly computed matrices. Fix the original graph and enumerate submasks of its row and column masks (at most $2^{n+m}$ possibilities). Induct on the number of retained rows using the Boolean conjunction of the minor statement for all relevant submasks of that size, keeping the original indexing of all survivors. This provides the smaller instance after leaf removal using quantifier-free induction. The permutation and map expansions are double finite folds and their regroupings are witnessed by sorting index lists. Pr\"ufer coding uses at most $n$ steps and suffixes of a single word. Its backward invariant is the active-vertex mask together with its degree vector and suffix multiplicity vector. Both are computed by bounded folds. These give direct targets for Lean definitions and induction statements.

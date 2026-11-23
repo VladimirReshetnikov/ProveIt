@@ -1,0 +1,115 @@
+\section{Incidence, degree sequences, and walk counts}\label{sec:basic}
+An undirected multigraph on $[n]$ with $m$ labelled edges has two endpoint
+tables $s_e,t_e<n$, $e<m$. Equality of the endpoints gives a loop. An edge
+with identical endpoint data but a different label is still a different edge.
+For a directed graph the order specifies tail and head. A simple graph has no
+loops and at most one edge on each unordered pair. Its symmetric zero-diagonal
+adjacency bit matrix is $A$. The upper triangle, in the order
+$(0,1),(0,2),(1,2),(0,3),\ldots$, uses one bit per pair. This encoding and the
+square encoding in the Lean file are interconvertible by bounded digit scans.
+A mixed graph marks each record as directed or undirected. Natural weights
+are a further digit table, with maximum found by a scan. A binary relation on
+$[n]$ is exactly the arc mask of a digraph permitting a loop at each vertex.
+
+\begin{proposition}[Incidence identities and parity]\leavevmode\label{prop:degree}
+Put $d(v)=\sum_{e<m}([s_e=v]+[t_e=v])$, where brackets denote truth bits.
+Then $\sum_vd(v)=2m$, and the number of odd-degree vertices is even. In a
+digraph the indegrees and outdegrees each sum to $m$. For every cut $S$,
+$\sum_{v\in S}d(v)=2|E(S)|+|\delta(S)|$, with $\delta(S)$ the edges with
+exactly one end in $S$. In an $r$-regular graph $nr=2m$.
+\end{proposition}
+\begin{proof}
+Fix an edge. Summing each endpoint indicator over all vertices gives one,
+including when both endpoints coincide. Summing over a subset gives two,
+one or zero according as both, one or neither endpoint lies there. Exchange
+the finite sums. Write $d(v)=2q_v+b_v$ with $b_v\in\{0,1\}$. Reducing the
+sum modulo two proves the parity assertion. Keeping only tail or head indicators
+gives the directed identities. Substitution gives the regular case.
+\end{proof}
+
+\begin{proposition}[Simple graph degree bounds]\leavevmode\label{idx:elementary-simple-graph-degree-bounds}
+For $n\ge 1$, $0\le d(v)\le n-1$ and $m\le\binom n2$. Equality in the
+edge bound characterizes $K_n$. For $n\ge2$ some two vertices have the same
+degree. Complementation replaces each degree $d$ by $n-1-d$.
+\end{proposition}
+\begin{proof}
+Row $v$ has $n-1$ possible off-diagonal entries and the upper triangle has
+$\sum_{j<n}j=\binom n2$ slots. A missing slot makes the edge sum strictly
+smaller. A row of degree $n-1$ meets every other vertex, excluding an isolated
+vertex. Scan for such a row. On success the degrees lie in $[1,n-1]$ and
+otherwise in $[0,n-2]$. Either range has $n-1$ values. Apply the finite
+pigeonhole argument. Complementation flips every off-diagonal slot.
+\end{proof}
+
+\begin{theorem}[Havel--Hakimi realization criterion]\leavevmode\label{idx:elementary-havel-hakimi-realization-criterion}
+Let $d_0\ge\cdots\ge d_{n-1}\ge0$ be labelled demands for a simple graph.
+The empty list is realizable. For a nonempty list set $d=d_0$. Reject if
+$d\ge n$ or one of $d_1,\ldots,d_d$ is zero. Otherwise remove $d_0$,
+subtract one from $d_1,\ldots,d_d$, and sort. The initial list is realizable
+if and only if the reduced list is. The sequence of successful reductions
+reconstructs a realizing graph.
+\end{theorem}
+\begin{proof}
+In a realization write $v=0$ and $T=\{1,\ldots,d\}$. If some $x\in T$
+misses $v$, there is a neighbour $y$ of $v$ outside $T$ because $v$ has
+$d$ distinct neighbours. We have $d_x\ge d_y$. In the neighbourhoods of
+$x,y$ remove each other if they are adjacent. Both sizes drop by the same
+amount. $v$ occurs on the $y$ side only. The $x$ side therefore contains
+some $z$ missing from the $y$ side, and $z\notin\{v,x,y\}$. Replace edges
+$vy,xz$ by $vx,yz$. The four degrees are preserved, simplicity survives,
+and the number of desired neighbours increases. In at most $d$ switches the
+neighbours of $v$ are precisely $T$. This also proves both rejection tests
+necessary. Delete $v$ to obtain the reduced degrees. Conversely unsort using
+the stored label permutation and add $v$ adjacent to $T$. Iterate at most
+$n$ times. Sorting ties by label makes the construction deterministic.
+\end{proof}
+
+\begin{proposition}[Adjacency powers, triangles, and quadrangles]\leavevmode\label{idx:elementary-adjacency-powers-triangles-and-quadrangles}
+For a digraph let $A_{uv}$ count labelled arcs from $u$ to $v$.
+Then $(A^k)_{uv}$ counts the length-$k$ walks from $u$ to $v$, with
+$A^0=I$. For a simple undirected graph,
+\[
+ \operatorname{tr}(A^2)=2m,\qquad \operatorname{tr}(A^3)=6t,\qquad
+ \operatorname{tr}(A^4)=2m+4\sum_v\binom{d(v)}2+8q,
+\]
+where $t,q$ count unoriented triangles and unoriented simple four-cycles.
+\end{proposition}
+\begin{proof}
+An empty walk is determined by its one vertex. In a walk of length $k+1$
+mark the last step $w\to v$. Choosing a prefix to $w$ and one of its last arcs
+gives every such walk exactly once. Summing over $w$ gives matrix multiplication.
+A closed two-step walk chooses a starting end of an edge. A closed three-step
+walk uses three distinct vertices and chooses a start and a direction on its
+triangle. A closed four-step walk on two vertices alternates along one edge
+(two starts). On three vertices it uses a two-edge path twice, with four
+rooted ordered walks for each unordered pair of neighbours of its centre:
+start at either leaf, or start at the centre with either first leaf. On four
+distinct vertices it chooses one of eight starts with direction. These cases
+partition the finite walk table, including walks in graphs containing chords.
+For fixed $u$ there are at most $\max(1,m)^k$ labelled directed walks,
+and a bounded table of descriptions uses one edge index per step. For a
+simple graph one can instead enumerate $k$ subsequent vertices.
+\end{proof}
+
+\par\noindent\begin{minipage}{\linewidth}\begin{example}[The six-vertex graph in the source article]\leavevmode\label{ex:six}
+Using its labels $1,\ldots,6$, take $12,15,23,25,34,45,46$. The row counts
+are $(2,3,2,3,3,1)$ and sum to $14$. Four odd vertices preclude a single
+Euler trail. The vertex mask $\{2,4,5\}$ is a cover. The three disjoint edges
+$15,23,46$ show that this cover is minimum. The edges
+$12,23,34,45,46$ form a spanning tree and the other two edges give two
+independent fundamental cycles. There is one triangle ($125$), and hence
+$\operatorname{tr}(A^3)=6$. A three-colouring is given by the classes
+$\{1,3,6\}$, $\{2,4\}$, $\{5\}$. The triangle certifies optimality.
+
+\begin{center}
+\begin{tikzpicture}[x=0.89cm,y=0.89cm,ordinary/.style={circle,draw=ink,fill=white,minimum size=6.6mm,inner sep=0.3pt,font=\small\sffamily},cover/.style={ordinary,fill=ink,text=white}]
+\coordinate (a) at (0,0.9); \coordinate (b) at (1.5,1.55); \coordinate (c) at (3.2,1.55);
+\coordinate (d) at (3.2,0); \coordinate (e) at (1.5,0); \coordinate (f) at (4.6,-0.05);
+\draw[gray] (a)--(b)--(e)--(d)--(c);
+\draw[linkcol,line width=1.8pt] (a)--(e) (b)--(c) (d)--(f);
+\node[ordinary] at (a){1}; \node[cover] at (b){2}; \node[ordinary] at (c){3};
+\node[cover] at (d){4}; \node[cover] at (e){5}; \node[ordinary] at (f){6};
+\end{tikzpicture}\par
+{\small Filled vertices give the cover. The three heavy edges give the matching.}
+\end{center}
+\end{example}\end{minipage}\par

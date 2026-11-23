@@ -1,0 +1,78 @@
+\section{Source guide and limits of coverage}\label{sec:sources}
+The selection starts from the two requested articles,
+\href{https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)}{\emph{Graph
+(discrete mathematics)}} and \href{https://en.wikipedia.org/wiki/Graph_theory}{\emph{Graph
+theory}}. The left column identifies an article or a topic reached from their
+text. Named corollaries and quantitative variants in the right column are
+proved here. Their particular algorithms and constants are not attributed to
+the encyclopaedia.
+
+\begin{longtable}{@{} >{\raggedright\arraybackslash}p{0.32\linewidth}@{\hspace{0.04\linewidth}}p{0.62\linewidth}@{}}
+\toprule
+Topic or immediate link & Statements treated here\\ \midrule\endhead
+Definition, directed graphs, regular graphs,
+\href{https://en.wikipedia.org/wiki/Degree_(graph_theory)}{degree}
+& Incidence counts with loops, parity, degree bounds, graph codes, degree-sequence realization and the six-vertex example.\\[4pt]
+\href{https://en.wikipedia.org/wiki/Connectivity_(graph_theory)}{Connectivity},
+\href{https://en.wikipedia.org/wiki/Directed_acyclic_graph}{directed acyclic graph}
+& Reachability and separation, metric, components, topological order, transitive reduction, DAG enumeration, and the finite/infinite boundary.\\[4pt]
+\href{https://en.wikipedia.org/wiki/Tree_(graph_theory)}{Tree},
+\href{https://en.wikipedia.org/wiki/Path_graph}{path graph},
+\href{https://en.wikipedia.org/wiki/Cycle_graph}{cycle graph},
+\href{https://en.wikipedia.org/wiki/Matroid}{matroid}
+& Forest characterizations and exchange, cycle and cut bases, Kruskal's algorithm, Cayley's formula, the two matrix--tree identities and their forest versions.\\[4pt]
+\href{https://en.wikipedia.org/wiki/Seven_Bridges_of_K%C3%B6nigsberg}{Seven Bridges},
+route problems, network flow
+& Euler criteria with multiplicity and direction, route inspection, last-exit enumeration, integral max-flow min-cut and edge/vertex Menger theorems.\\[4pt]
+\href{https://en.wikipedia.org/wiki/Bipartite_graph}{Bipartite graph},
+\href{https://en.wikipedia.org/wiki/Perfect_graph}{perfect graph}
+& Odd-cycle alternative, Hall, K\H{o}nig, edge colouring, four perfect families, and stable matching. Finite order-decomposition results are deductions from matching.\\[4pt]
+\href{https://en.wikipedia.org/wiki/Graph_operations}{Graph operations},
+\href{https://en.wikipedia.org/wiki/Line_graph}{line graph},
+\href{https://en.wikipedia.org/wiki/Cartesian_product_of_graphs}{Cartesian product}
+& Cartesian, tensor, strong and lexicographic product counts, line graph degrees, complement, union, join, contraction and minors.\\[4pt]
+Enumeration, finite random graphs,
+\href{https://en.wikipedia.org/wiki/Reconstruction_conjecture}{reconstruction}
+& Labelled and unlabelled counts, component recurrence, fixed-pair orbits, deck double counts, regular and disconnected reconstruction, finite probabilistic existence arguments.\\[4pt]
+\href{https://en.wikipedia.org/wiki/Petersen_graph}{Petersen graph},
+\href{https://en.wikipedia.org/wiki/Cayley_graph}{Cayley graph},
+algebraic graph theory
+& Automorphism groups, finite Frucht realization, exact Petersen eigenbasis and tree count, adjacency powers, Laplacian kernel and the characteristic-polynomial bipartiteness test.\\[4pt]
+\href{https://en.wikipedia.org/wiki/Planar_graph}{Planar graph},
+\href{https://en.wikipedia.org/wiki/Dual_graph}{dual graph},
+graph polynomials
+& Euler characteristic from face splices, density bounds, five colours, dual trees, one direction of the forbidden-minor criterion, chromatic and Tutte specializations, planar flow duality and Tait's three-edge-colouring equivalence.\\[4pt]
+\href{https://en.wikipedia.org/wiki/Graph_coloring}{Graph colouring},
+\href{https://en.wikipedia.org/wiki/Chordal_graph}{chordal graphs},
+\href{https://en.wikipedia.org/wiki/Cograph}{cographs}
+& Greedy colouring, Brooks and Vizing, chordal elimination, cograph perfection, chromatic coefficients and Stanley's acyclic-orientation evaluation.\\[4pt]
+\href{https://en.wikipedia.org/wiki/Extremal_graph_theory}{Extremal graph theory},
+Ramsey theory, Hamiltonian routes
+& Mantel and Tur\'an with equality, Erd\H{o}s--Stone with a PR modulus, finite Ramsey bounds, equitable regularity, high girth with high chromatic number, Ore, Dirac and tournaments.\\
+\bottomrule
+\end{longtable}
+
+\paragraph{Reference points.}
+Reinhard Diestel's \href{https://diestel-graph-theory.com/}{\emph{Graph Theory},
+sixth edition} gives textbook terminology for these topics. Jeff Erickson's
+\href{https://jeffe.cs.illinois.edu/teaching/comptop/2023/notes/09-planar-graphs.html}{notes on planar graphs}
+describe the dart convention and its interpretation as an embedding.
+The arithmetic presentation and the proof interfaces come from
+\repo{README.md}{the ProveIt overview}, its
+\repo{ConciseIPRA/Lean/ConciseIPRA/PR.lean}{ordinary iPRA syntax and axioms},
+and its \repo{Derivations/Lean/IPRADerivations/Core/Fubini.lean}{double-sum}
+and \repo{Derivations/Lean/IPRADerivations/Core/SearchParameters.lean}{bounded-search}
+sources. Repository links are pinned to commit \texttt{bbb85238dac5}.
+The supplied paper is self-contained for its graph-theoretic arguments.
+
+\paragraph{Results beyond this collection.}
+The five-colour construction does not establish the four-colour theorem.
+The minor argument proves that a spherical graph excludes $K_5$ and $K_{3,3}$
+minors. Proving that every graph excluding them has a spherical rotation
+would require the converse direction of Wagner's theorem. The spectral
+statements use exact polynomial coefficients and supplied rational vectors.
+A general analytic spectral theorem would need a representation for
+algebraic or real eigenvalues. The reconstruction proof covers the two
+classes stated in Theorem~\ref{thm:deck}. No general reconstruction assertion
+is used. These are boundaries of the proofs in this paper, not
+unprovability assertions about iPRA.

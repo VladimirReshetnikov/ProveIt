@@ -1,0 +1,68 @@
+\section{Compactness, finite carriers and computable models}\label{sec:compactness}
+The classical compactness theorem speaks of a single structure satisfying an entire theory whenever every finite subtheory has a model. Its finite-character direction is immediate from the definition of satisfaction. For derivations, the finite-support transformation gives a stronger conclusion: it returns the actual premises used. Replacing the model in compactness by a finite carrier, a computable presentation, or a certified member of a fixed list gives different arithmetical questions.
+
+\begin{proposition}[Two separations for finite satisfiability]
+There is a single sentence true in the natural-number successor structure and false in every finite structure. There is also a primitive-recursive sequence of sentences for which every finite sublist has a uniformly constructible finite model, while every particular finite structure falsifies a computable member of the sequence.
+\end{proposition}
+\begin{proof}
+In the language of $c,s$ take
+\[
+ (\forall x\forall y\,(s(x)=s(y)\to x=y))\ \land\
+ (\forall x\,s(x)\ne c).
+\]
+Its direct interpretation $c=0$, $s=S$ is a conjunction of axioms of iPRA. In a finite model of the first conjunct, the $m$ table entries of $s$ on $[m]$ are distinct. Mark each output in an $m$-bit array. After $j$ inputs the array has exactly $j$ marked entries by induction on $j$, since the next output has not yet occurred. All $m$ entries are therefore marked, including $c$, which contradicts the second conjunct. This fixed interpretation requires no global truth predicate for arithmetic.
+
+For the sequence take the pure-equality sentences $H_j$ asserting the existence of $j$ pairwise distinct elements, with $H_0=\top$. Their codes are obtained by two bounded loops for the matrix and one for the prefix. For a finite sublist use the maximum of $1$ and its indices as the carrier size. Use the first $j$ elements as witnesses for $H_j$. A carrier of size $m$ fails $H_{m+1}$ by the same marking argument. Thus even a supplied model for every finite stage does not ensure a common finite model.
+\end{proof}
+
+\begin{theorem}[Exact finite obstruction size at a fixed cardinal bound]\label{thm:boundedcover}
+Fix a nonempty size range $1,\ldots,B$ and a finite signature. Let $K$ be the number of isomorphism types in that range. A finite list of sentences having no joint model of size at most $B$ has a computable sublist of size at most $K$ with the same property. The constant $K$ is sharp and is PR in the signature and $B$.
+\end{theorem}
+\begin{proof}
+Enumerate all labelled structures, numbering a function row by a base-$m$ choice and a relation row by a bit. The list length is
+\[
+ \sum_{m=1}^B
+  \left(\prod_f m^{m^{\operatorname{arity}(f)}}\right)
+  \left(\prod_R 2^{m^{\operatorname{arity}(R)}}\right).
+\]
+Keep a structure if it is the first in its isomorphism class. To test isomorphism between two size-$m$ tables, scan the $m^m$ candidate maps, testing bijectivity and every operation and predicate row. Distinct sizes need no test. This gives $K$ representatives with an explicit PR loop bound. In each representative find the first sentence of the input list it falsifies. The assumed failure of joint satisfaction ensures success of each search. Retain these sentences, deleting duplicates. Each candidate structure is isomorphic to its representative, so Theorem~\ref{thm:maps} transfers the falsity of the selected sentence. This proves the upper bound even when the original family contains repeated sentences.
+
+For sharpness form one sentence $\neg D_M$ from Theorem~\ref{thm:diagrams} for each representative $M$. The whole list eliminates every type. If one member $\neg D_M$ is removed, $M$ satisfies every remaining member. Thus no smaller universal bound works. For an enumerated theory a supplied list of failing axiom indices, one per representative, similarly gives a single inconsistent-with-the-bound prefix by taking their maximum. This last statement concerns a supplied finite certificate. It makes no infinite selection of failure indices.
+\end{proof}
+
+\begin{theorem}[Computable finite approximations with no computable common model]\label{thm:nocompmodel}
+In the fixed language of a constant $c$, unary function $s$, and unary predicate $P$, one can give an increasing PR sequence of finite theories $T_k$ and a PR finite model $M_k$ for each $T_k$. No total computable bit function can supply the joint values of all the ground atoms $P(s^j(c))$ compatibly with all these theories. In particular their union has no model with a computable atomic diagram and computable interpretations of $s,c$. Its finite-proof consistency is provable in iPRA.
+\end{theorem}
+\begin{proof}
+Use an ordinary deterministic program enumeration with PR bounded simulation. Let $U(e,j,t)$ record whether program $e$ has halted on input $j$ within $t$ steps, and its output when it has. Halting is made a stationary state. The scan up to $t$ is primitive recursion on configurations. In particular a reported output persists for every greater bound. Write $A_j=P(s^j(c))$. For each $e<k$, inspect $U(e,e,k)$. On output bit $b$ include in $T_k$ the literal forcing $A_e$ to have bit $1-b$. Thus on output $0$ include $A_e$, on output $1$ include $\neg A_e$, and on any other outcome include neither. Treat finite theories as lists up to inclusion of members. Stationarity gives $T_k\subseteq T_{k+1}$.
+
+For $M_k$ use $[k+1]$, with $c=0$ and $s(i)=\min(i+1,k)$. Set $P(i)$ to the forced bit if the bounded simulation produced one for $i<k$, and to zero otherwise. For $i<k$ the value of $s^i(c)$ is $i$, by the induction identity $s^j(c)=\min(j,k)$. Hence $M_k$ satisfies every listed literal. Any finite derivation from the union, with its theory-premise occurrences certified by stages, has a maximum cited stage $k$ (take zero for the empty list). The model $M_k$ validates all its premises. Finite two-valued soundness precludes a conclusion of falsity. This proves the numerical statement that no certified contradiction is accepted.
+
+Suppose program $e$ purports to compute the sequence of bits of a common model on the $A_j$. If it is total with bit outputs, applying its totality hypothesis just at $j=e$ gives a halting time $t$ and bit $b$. Set $k=\max(e+1,t)$. The stage-$k$ axiom for $A_e$ forces $1-b$, while the proposed computation gives $b$. In particular this refutation takes an explicit halting trace as input, with a PR bound on the stage needed. Computable $c,s,P$ would compute the forbidden sequence by iterating $s$ exactly $j$ times before querying $P$. Externally, in classical set theory, an ordinary model can be described on $\mathbb N$ by taking $c=0$, $s=S$ and declaring $P(e)$ true just when program $e$ on input $e$ eventually outputs $0$. The arithmetical obstruction concerns computable truth bits for a common model, as requested by an effective strengthening of compactness.
+\end{proof}
+
+\begin{proposition}[A branch encoded by a common atomic diagram]\label{prop:compbranch}
+For every fixed PR prefix-closed binary tree whose every level is inhabited, a uniform construction gives a sequence of finitely satisfiable stages in the same three-symbol language such that the ground truth bits of any common model form an infinite path. Conversely any supplied path gives an interpretation on the successor chain satisfying all the stages.
+\end{proposition}
+\begin{proof}
+A binary word $w$ of length $h$ is forbidden if its tree test is zero. At stage $k$ enumerate all forbidden words of lengths $h\le k$. For each include the clause saying that some $A_j$, $j<h$, differs from $w_j$. Use the positive literal $A_j$ if $w_j=0$ and the negative one otherwise. For the empty word the clause is falsity. At level $k$ a bounded scan of the $2^k$ words finds the first tree node $v$ by the hypothesis. Its prefixes belong to the tree, so $v$ differs from each forbidden word at some coordinate in that word. Interpret $A_0,\ldots,A_{k-1}$ as the bits of $v$ in the truncated successor chain $[k+1]$ just used. All stage clauses hold. If the bits of a common model had a forbidden prefix $w$, its stage-$h$ clause would be false, term by term. Conversely a supplied path satisfies every clause for this same reason on $\mathbb N$ with $P(j)$ its $j$th bit. For a PR path this is a schema in the supplied bit function. For an arbitrary path the converse describes the external interpretation. Finite verification uses at most $\sum_{h=0}^{k}2^h$ word tests per stage plus bounded coordinate comparisons. This reduction identifies the infinite branch that a general model-construction principle would have to provide.
+\end{proof}
+
+\begin{theorem}[A Herbrand tree with an exact finitary completeness statement]\label{thm:herbrandtree}
+Let $S$ be a finite list of universally closed clauses over a finite equality-free signature having at least one constant. There is a PR binary tree $\mathcal T_S$ for which iPRA proves
+\[
+ \neg\exists p\,\operatorname{GroundRef}(S,p)
+ \quad\longleftrightarrow\quad
+ \forall k\,\operatorname{HasLevel}(\mathcal T_S,k)=1 .
+\]
+Here a refutation is a ground resolution tree with the source clause and substituting ground terms attached to each leaf. Both a missing level's refutation and a refutation's missing level are primitive-recursively recoverable. A supplied infinite path yields a Herbrand model, that is, a model whose elements are the ground terms and whose functions build those terms.
+\end{theorem}
+\begin{proof}
+Use natural-number syntax codes themselves as coordinates. A coordinate which is not the code of a ground atom has no semantic role. This convention works even when there are finitely many ground atoms or none. For a word $w$ of length $k$, inspect every $i<k$. If $i$ codes a pair consisting of a valid index into $S$ and an appropriate tuple of well-formed ground terms, form the indicated ground instance. If every atom code of the instance is less than $k$, require at least one of its signed literals to be true under $w$. Otherwise impose no condition from $i$ at this stage. In particular an inspected empty clause causes failure. Declare $w\in\mathcal T_S$ when all these bounded requirements succeed. Every requirement tested at a shorter length was already tested at the larger length and reads the same coordinates. Thus prefixes of tree members are members. The level test scans all $2^k$ words, recording the first success if there is one.
+
+If level $k$ is missing, collect the inspected ground instances whose atom codes are below $k$. No valuation satisfies this finite family: every assignment to its atoms extends to a $k$-bit word by assigning zero to unused positions. The bounded resolution construction in Section~\ref{sec:normal} returns a refutation with at most $2^{k+1}-1$ nodes, and each selected leaf retains its generating code $i$. Conversely, given a refutation take $k$ greater than all its leaf generating codes and all atom codes used anywhere in it. If a length-$k$ word passed the test, it would satisfy all the leaves. Resolution soundness would make its empty root clause true. Therefore this level is missing. These two PR maps prove the displayed equivalence by the decidability of the level test. In particular ordinary syntactic consistency of $S$ implies every level is inhabited: universal instantiation proves the leaves from $S$, and the resolution rule on disjunctions follows by cases on the two premises, using contradiction in the two opposite-pivot cases taken together.
+
+For a supplied path $b$, let the domain consist of the well-formed ground term codes. A constant ensures it is inhabited. Interpret $f$ by the constructor on its term arguments, and $R(\bar t)$ by the bit $b$ at the code of the corresponding ground atom. Evaluating a term under a tuple of ground terms gives its syntactic instance, by term induction. Given a clause and an assignment, compute the generating index $i$ of that instance and choose a level exceeding $i$ and every atom code in the instance. The corresponding path prefix certifies its truth. This proves every universal clause. Conversely, in an ordinary model with Boolean ground truth values, evaluate each ground atom to supply a path bit and use zero on unused coordinates. Each inspected clause holds by universal instantiation. For a supplied PR path the forward construction is a schema about PR atomic tables on coded terms. The theorem never needs an operation choosing a common path from its inhabited levels.
+
+If there is logical equality, first use a fresh binary predicate for equality and add universal clauses for reflexivity, symmetry, transitivity and coordinatewise congruence for each original symbol (as implications of conjunctions of atoms, written as clauses). The tree construction applies verbatim to this expanded list. Along a supplied path every term $t$ has a canonical representative, the least ground term code $u\le t$ declared equal to $t$. Reflexivity makes the search succeed. Equality of representatives agrees with the path's equivalence relation by symmetry and transitivity. Applying a constructor and replacing its result by this representative, and reading predicates on representatives, now gives the genuine-equality quotient interpretation. The proof is the projection argument of Theorem~\ref{thm:eqquot}. Here each particular term's representative search is bounded by that term's own code rather than by a finite carrier size.
+\end{proof}

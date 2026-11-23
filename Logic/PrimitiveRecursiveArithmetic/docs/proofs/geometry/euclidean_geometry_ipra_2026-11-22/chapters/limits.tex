@@ -1,0 +1,489 @@
+\section{Circle measurement and volumes by finite observations}
+\label{sec:limits}
+
+This section represents the circumference constant by a specified PR
+rational observation recipe. A \emph{rational observation name} is one fixed PR recipe
+which, from the numerical input data and a precision $n$, returns rational
+endpoints $l_n\le u_n$, with nested intervals and
+$u_n-l_n\le2^{-n}$. Equality of two such names means agreement at every
+precision, as in the reader construction of Section~\ref{sec:foundation}.
+This is a schema for named recipes, not quantification over arbitrary
+functions and not a universal evaluator for PR programs. The formulas
+below containing $\pi_{\mathrm g}$ abbreviate equalities of these names;
+they do not introduce a new algebraic scalar.
+
+The geometric content will be certified by finite enclosures. A disk is
+placed between explicit polygons; a solid is placed between finite unions
+of polygonal prisms. Their areas and volumes are the exact algebraic
+quantities already constructed in the preceding sections. Enclosure
+widths tend to zero with stated PR bounds. Thus the same recipes have the
+usual geometric interpretation as circle length, disk area, and the
+volumes of the displayed solids. No general assertion that arbitrary
+bounded sets have an area or volume is used.
+
+\subsection{A polygonal construction of the circumference constant}
+
+Start with the four unit-circle points $(1,0),(0,1),(-1,0),(0,-1)$.
+At each stage insert between consecutive vertices $v,w$ the normalized
+midpoint $(v+w)/\len{v+w}$. Put
+\[
+ N_k=4\cdot2^k,\qquad c_0=0,\quad s_0=1,\qquad
+ c_{k+1}=\sqrt{\frac{1+c_k}{2}},\quad
+ s_{k+1}=\frac{s_k}{2c_{k+1}}.
+\]
+The two numbers $c_k,s_k$ will be the dot product and positive determinant
+of consecutive unit radius vectors. Set
+\begin{gather}
+ a_k=c_{k+1},\qquad \ell_k=\sqrt{2-2c_k},\qquad
+ L_k=N_k\ell_k,\qquad U_k=\frac{L_k}{a_k},\notag\\
+ A_k^-=\frac{L_ka_k}{2},\qquad A_k^+=\frac{U_k}{2}.    \tag{L1}
+\end{gather}
+All these are finite algebraic computations at each numerical stage $k$.
+
+\begin{theorem}[Nested polygonal bounds with explicit error]
+\label{lim:polygons}
+The construction gives a convex inscribed $N_k$-gon of perimeter $L_k$
+and area $A_k^-$. Scaling it about zero by $1/a_k$ gives a polygon
+containing the unit disk, of perimeter $U_k$ and area $A_k^+$.
+The numerical bounds satisfy
+\begin{gather*}
+ 0<L_k\le L_{k+1}\le U_{k+1}\le U_k\le8,\qquad
+ 0<A_k^-\le A_{k+1}^-\le A_{k+1}^+\le A_k^+,\\
+ U_k-L_k\le4\cdot2^{-k},\qquad
+ A_k^+-A_k^-\le2\cdot2^{-k},\qquad
+ A_{k+1}^-=L_k/2.                                      \tag{L2}
+\end{gather*}
+Every finite circle-inscribed polygon whose vertices follow cyclic order
+has perimeter at most $U_k$, for every $k$.
+\end{theorem}
+\begin{proof}
+First prove by induction that
+$0\le c_k<1$, $s_k>0$, and $c_k^2+s_k^2=1$.
+The base case is explicit. The next denominator is positive because
+$c_{k+1}^2=(1+c_k)/2\ge1/2$; and
+\[
+ s_{k+1}^2=\frac{1-c_k^2}{2(1+c_k)}
+           =\frac{1-c_k}{2}=1-c_{k+1}^2.
+\]
+The strict inequalities are preserved. For consecutive unit vectors
+$v,w$ with dot product $c_k$ and determinant $s_k$,
+$\len{v+w}=2a_k$. Their inserted midpoint $m=(v+w)/(2a_k)$ satisfies
+\[
+ \dotp vm=\dotp mw=a_k=c_{k+1},\qquad
+ \detp vm=\detp mw=s_{k+1}>0.
+\]
+It lies strictly inside the positive cone spanned by $v,w$.
+The four initial cones are the quadrants. Inserting $m$ divides one
+cone into two: for a vector $\alpha v+\beta w$ with
+$\alpha,\beta\ge0$, compare $\alpha$ and $\beta$ and rewrite it as
+either $(\alpha-\beta)v+2a_k\beta m$ or
+$2a_k\alpha m+(\beta-\alpha)w$.
+Thus the successive cones still make one full cyclic partition of the
+plane, and no vertex is repeated.
+
+The midpoint direction $m$ is a unit normal to the chord $vw$, with
+$\dotp mv=\dotp mw=a_k$. The other vertices are on the side
+$\dotp mx\le a_k$. To verify this last fact algebraically, use the
+orthonormal basis $m,\J m$: the chord endpoints have coordinates
+$(a_k,\pm\ell_k/2)$. A unit vector with first coordinate greater than
+$a_k$ has smaller absolute second coordinate than $\ell_k/2$ and hence
+lies strictly in their positive cone. No other vertex lies there.
+The chords are therefore the boundary edges of a convex polygon.
+The disk is convex, since
+\[
+ \normsq{(1-t)x+ty}
+ =(1-t)\normsq x+t\normsq y-t(1-t)\normsq{y-x}\le1
+ \quad(0\le t\le1,\ \normsq x,\normsq y\le1).
+\]
+Consequently the inscribed polygon lies in the disk. The scaled
+polygon has edge equations $\dotp mx=1$, one for each unit chord
+normal $m$. To check containment directly, place a disk point in one of
+the successive cones, writing it as $x=\alpha v+\beta w$ with
+$\alpha,\beta\ge0$. Cauchy--Schwarz gives
+$a_k(\alpha+\beta)=\dotp mx\le1$.
+Thus it belongs to the triangle with vertices $0,v/a_k,w/a_k$,
+and hence to the scaled polygon.
+
+The chord length is $\ell_k$, and the distance of its line from zero is
+$a_k$. Summing the $N_k$ triangular fan areas gives $A_k^-=L_ka_k/2$.
+Scaling areas by $1/a_k^2$ and lengths by $1/a_k$ gives $A_k^+,U_k$.
+For the numerical estimates, the half-angle equations imply
+\[
+ \ell_{k+1}^2=\frac{\ell_k^2}{2(1+a_k)},\qquad
+ L_{k+1}=\frac{L_k}{a_{k+1}},\qquad
+ U_{k+1}=\frac{2L_k}{1+a_k}.                         \tag{L3}
+\]
+Indeed $\ell_k^2=4(1-a_k^2)$ and
+$\ell_{k+1}^2=2(1-a_k)$; the second identity then uses
+$a_{k+1}^2=(1+a_k)/2$. Since $0<a_k<1$, (L3) gives
+$L_{k+1}\ge L_k$ and $U_{k+1}\le U_k$.
+Also $U_0=8$, $A_{k+1}^-=L_k/2\ge A_k^-$, and
+$A_{k+1}^+=U_{k+1}/2\le A_k^+$.
+
+From $\ell_0^2=2$ and the first equation in (L3), induction gives
+$\ell_k^2\le2\cdot2^{-k}$. Now
+\[
+ U_k-L_k=U_k(1-a_k)
+   =\frac{U_k\ell_k^2}{4(1+a_k)}\le2\ell_k^2,
+ \qquad
+ A_k^+-A_k^-=\frac{U_k(1-a_k^2)}2
+            =\frac{U_k\ell_k^2}{8}\le\ell_k^2.
+\]
+These prove (L2).
+
+For the last assertion, recall the elementary finite perimeter comparison
+for convex polygons. Cutting a convex polygon by a half-plane replaces
+the removed boundary chain by the straight segment joining its endpoints;
+the triangle inequality says that perimeter cannot increase.
+If a convex polygon $P$ lies in a convex polygon $Q$, clip $Q$ by the
+finitely many supporting half-planes of $P$. The result is $P$, so
+$\operatorname{perimeter}(P)\le\operatorname{perimeter}(Q)$.
+The circle-inscribed polygon is convex by its cyclic order and is
+contained in our outer polygon. Applying this finite comparison proves
+the bound by $U_k$.
+
+All vertex invariants in this proof are bounded Boolean folds over the
+current vertex list. Induction on $k$ and the finite clipping lists is
+therefore quantifier-free induction on coded data. A point whose
+membership is being checked is retained as a free parameter.
+\end{proof}
+
+\begin{lemma}[Turning algebraic enclosures into rational observations]
+\label{lim:rationalize}
+Suppose one fixed PR family of algebraic endpoints has proved invariants
+$\alpha_k\le\alpha_{k+1}\le\beta_{k+1}\le\beta_k$ and
+$\beta_k-\alpha_k\le M2^{-k}$, where $M\ge1$ is an integer computed
+from the input data. It has a PR rational observation name with width
+at most $2^{-n}$. One explicit choice of algebraic refinement is
+\[
+ k=n+2+\lambda(M),\qquad
+ \lambda(M)=\min\{j\le M:M\le2^j\}.                 \tag{L4}
+\]
+\end{lemma}
+\begin{proof}
+The bounded minimum exists because $2^M\ge M$ for $M\ge1$.
+Read rational enclosures for $\alpha_k$ and $\beta_k$, each of width
+at most $2^{-(n+2)}$. Use the lower endpoint of the first and the upper
+endpoint of the second. Their difference is at most
+\[
+ M2^{-k}+2\cdot2^{-(n+2)}
+       \le3\cdot2^{-(n+2)}\le2^{-n}.
+\]
+To make these rational intervals nested, replace the $n$th interval by
+the intersection of the first $n+1$ intervals, taking the maximum lower
+endpoint and minimum upper endpoint. It is nonempty: the algebraic
+interval at the largest refinement index is contained in all of them.
+The last raw width is still an upper bound for the intersection width.
+Finite maxima, minima, and the readers from the foundation are PR.
+The stated invariants of the intersections are finite rational
+inequalities, so their induction is quantifier-free.
+This lemma applies to specified families whose invariants have been
+proved; it does not take the code of an arbitrary PR function as input.
+\end{proof}
+
+\begin{theorem}[Geometric $\pi$, circumference, and disk area]
+\label{lim:circle}
+The brackets
+\[
+ p_k=L_k/2\le q_k=U_k/2,
+ \qquad 0<q_k-p_k\le2\cdot2^{-k},\qquad q_k\le4       \tag{L5}
+\]
+define a fixed PR observation name $\pi_{\mathrm g}$.
+The unit disk has area $\pi_{\mathrm g}$ and its boundary has
+circumference $2\pi_{\mathrm g}$ in the finite-enclosure sense.
+For a nonnegative exact algebraic radius $r$,
+\[
+ \operatorname{Circumference}(r)=2\pi_{\mathrm g}r,
+ \qquad \operatorname{DiskArea}(r)=\pi_{\mathrm g}r^2.              \tag{L6}
+\]
+The circumference brackets $[rL_k,rU_k]$ have width at most
+$4r2^{-k}$, and the area brackets $[r^2A_k^-,r^2A_k^+]$ have width at
+most $2r^2 2^{-k}$.
+\end{theorem}
+\begin{proof}
+Theorem~\ref{lim:polygons} gives the nested intervals (L5), so apply
+Lemma~\ref{lim:rationalize} with $M=2$.
+No new exact scalar is being constructed: $\pi_{\mathrm g}$ is the name
+of that rational observation recipe.
+
+The polygonal circumference brackets are exactly twice (L5).
+Every cyclic polygon inscribed in the circle is bounded above by each
+$U_k$, while $L_k$ itself is an inscribed perimeter. Since the gap
+$U_k-L_k$ has the displayed modulus, these observations measure the
+circle's polygonal length, without a general rectifiability principle.
+For area, the actual inner and outer polygons have areas
+$A_k^-$ and $A_k^+=q_k$. Their gap has the displayed modulus, and
+$A_{k+1}^-=p_k$. Thus the area intervals and (L5) have a common nested
+refinement and specify the same observation name.
+
+Multiplying coordinates by $r$ multiplies each finite edge length by
+$r$ and each determinant area by $r^2$, proving the enclosures and (L6).
+For $r=0$ all measurements are zero. For an arbitrary coded algebraic
+$r$, a coarse reader supplies an integer upper bound $B\ge1+r$.
+The rationalization lemma can therefore use, for example, $M=4B$ for
+circumference and $M=2B^2$ for area. This gives a fully numerical PR
+precision schedule, including the cost of rationalizing the endpoints.
+
+When $\pi$ is defined geometrically as half the unit-circle circumference,
+$\pi_{\mathrm g}$ is that constant. An independent analytic definition,
+such as a trigonometric or integral definition of $\pi$, would require
+its own identification theorem. No such identification is assumed in
+the computations here.
+\end{proof}
+
+For the volume constructions it is convenient to use a matching pair of
+disk enclosures: the inscribed polygon at stage $k+1$ has area $p_k$,
+and the circumscribed polygon at stage $k$ has area $q_k$.
+Their scaled copies enclose every disk of squared radius $b\ge0$ with
+areas $p_kb$ and $q_kb$. The required scale $\sqrt b$ is an exact
+algebraic operation. The zero-radius case is assigned area zero.
+
+\subsection{Finite slabs for the cylinder, cone, and sphere}
+
+\begin{lemma}[Quadratic slice sums and their modulus]
+\label{lim:sums}
+For an integer $m\ge1$, define
+\[
+ S_m^-=\frac{1}{m}\sum_{i=0}^{m-1}\left(\frac{i}{m}\right)^2,
+ \qquad
+ S_m^+=\frac{1}{m}\sum_{i=1}^{m}\left(\frac{i}{m}\right)^2.
+\]
+Then
+\begin{gather*}
+ S_m^-=\frac{1}{3}-\frac{1}{2m}+\frac{1}{6m^2},\qquad
+ S_m^+=\frac{1}{3}+\frac{1}{2m}+\frac{1}{6m^2},\\
+ 0\le S_m^-\le\tfrac13\le S_m^+\le1,\qquad
+ S_m^+-S_m^-=\frac{1}{m},                             \tag{L7}\\
+ S_m^-\le S_{2m}^-,\qquad S_{2m}^+\le S_m^+.
+\end{gather*}
+\end{lemma}
+\begin{proof}
+The integer identity
+\[
+ 6\sum_{i=0}^{m-1}i^2=m(m-1)(2m-1)
+\]
+is proved by induction: the initial empty sum at $m=0$ is zero, and the
+difference of the two right sides at $m+1$ and $m$ is $6m^2$.
+This is a quantifier-free polynomial identity; negative factors in the
+base expression may be read in the signed-integer encoding.
+Adding $m^2$ gives the corresponding identity for $\sum_{i=1}^m i^2$.
+Divide by $6m^3>0$ and expand to obtain (L7).
+The summands are between zero and one. The lower correction to $1/3$
+is $(-3m+1)/(6m^2)\le0$, while the upper correction is positive.
+Finally
+\[
+ S_{2m}^--S_m^-=\frac{2m-1}{8m^2}\ge0,
+ \qquad S_m^+-S_{2m}^+=\frac{2m+1}{8m^2}>0.
+\]
+These calculations prove all the claimed bounds and refinement relations.
+No theorem about integration is used.
+\end{proof}
+
+A finite slab construction is interpreted as follows. Partition a
+vertical interval into finitely many slabs, and on each slab put a fixed
+polygonal prism wholly inside the solid and another containing that
+part of the solid. Exact prism volumes are base area times height by
+Theorem~\ref{sol:prism}. Summing the volumes gives a lower and an upper
+bound, since different slabs have disjoint interiors. This sum is a
+finite dissection calculation. A common refinement of two slab
+partitions verifies comparisons using only finite polygon area
+monotonicity. A pair of PR slab bounds with an explicit vanishing gap
+therefore provides a volume observation name, without a measure axiom
+for arbitrary subsets of space.
+
+\begin{theorem}[Cylinder volume]
+\label{lim:cylinder}
+For exact algebraic $r,h\ge0$, the cylinder
+\[
+ x^2+y^2\le r^2,\qquad 0\le z\le h
+\]
+has the PR volume observation
+\[
+ V_{\mathrm{cyl}}=\pi_{\mathrm g}r^2h.
+\]
+At stage $k$ it is enclosed by polygonal prisms of volumes
+\[
+ C_k^-=p_kr^2h,\qquad C_k^+=q_kr^2h,
+ \qquad C_k^+-C_k^-\le2r^2h\,2^{-k}.                 \tag{L8}
+\]
+\end{theorem}
+\begin{proof}
+Use the two disk polygons of areas $p_kr^2$ and $q_kr^2$ as bases and
+extrude them through height $h$. Disk containment gives containment of
+the cylinder between the prisms, and Theorem~\ref{sol:prism} gives
+(L8). The numerical bounds are nested by (L5), with the stated gap.
+They are exactly $r^2h$ times the brackets defining $\pi_{\mathrm g}$,
+so their observation name is the asserted product.
+An integer majorant for $2r^2h$ is computed from coarse upper bounds on
+$r,h$; Lemma~\ref{lim:rationalize} then supplies rational observations
+of any requested width. Zero radius or height gives zero volume directly.
+\end{proof}
+
+\begin{theorem}[Cone volume and the one-third ratio]
+\label{lim:cone}
+For exact algebraic $r\ge0$ and $h>0$, the right circular cone
+\[
+ 0\le z\le h,\qquad x^2+y^2\le r^2(z/h)^2
+\]
+has the PR volume observation
+\[
+ V_{\mathrm{cone}}=\frac{\pi_{\mathrm g}r^2h}{3}
+                  =\frac{V_{\mathrm{cyl}}}{3}.
+\]
+With $m=2^k$, finite prism unions give the nested bounds
+\[
+ K_k^-=p_kr^2hS_m^-,\qquad K_k^+=q_kr^2hS_m^+,
+ \qquad K_k^+-K_k^-\le6r^2h\,2^{-k}.                 \tag{L9}
+\]
+\end{theorem}
+\begin{proof}
+Divide $[0,h]$ into $m$ slabs of height $h/m$.
+On the $i$th slab the cross-section radius lies between
+$ri/m$ and $r(i+1)/m$. The disk monotonicity is just the inequality
+$i/m\le z/h\le(i+1)/m$ between nonnegative scalars, followed by squaring.
+Use the inner polygon of area $p_k(ri/m)^2$ throughout that slab and
+the outer polygon of area $q_k(r(i+1)/m)^2$ throughout it.
+Their prism unions are finite lower and upper enclosures. Summing
+base area times height gives exactly (L9).
+
+Both lower factors $p_k,S^-_{2^k}$ increase, and both upper factors
+$q_k,S^+_{2^k}$ decrease; they are nonnegative, so the products are
+nested. Their gap is
+\begin{align*}
+ r^2h(q_kS_m^+-p_kS_m^-)
+ &=r^2h\bigl((q_k-p_k)S_m^-+q_k(S_m^+-S_m^-)\bigr)\\
+ &\le r^2h\bigl(2\cdot2^{-k}+4/m\bigr)
+   =6r^2h\,2^{-k}.
+\end{align*}
+Here $S_m^-\le1$, $q_k\le4$, and (L5), (L7) supplied all constants.
+Moreover the interval
+\[
+ [p_kr^2h/3,\ q_kr^2h/3]
+\]
+is contained in $[K_k^-,K_k^+]$, because
+$S_m^-\le1/3\le S_m^+$. It is the bracket for
+$\pi_{\mathrm g}r^2h/3$. The common refinement and shrinking-width
+argument therefore proves equality of the two names. This is the
+one-third formula, derived from finite sums rather than a presupposed
+integral of a quadratic. An integer majorant for $6r^2h$ makes the
+rational precision schedule explicit through (L4).
+\end{proof}
+
+\begin{theorem}[Sphere volume and Archimedes' two-thirds ratio]
+\label{lim:sphere}
+For exact algebraic $R\ge0$, the ball
+$x^2+y^2+z^2\le R^2$ has the PR volume observation
+\[
+ V_{\mathrm{ball}}=\frac{4\pi_{\mathrm g}R^3}{3}.
+\]
+It is two-thirds of the volume of the cylinder of radius $R$ and height
+$2R$. With $m=2^k$, finite prism unions give the nested bounds
+\[
+ B_k^-=2p_kR^3(1-S_m^+),\qquad
+ B_k^+=2q_kR^3(1-S_m^-),\qquad
+ B_k^+-B_k^-\le12R^3\,2^{-k}.                        \tag{L10}
+\]
+\end{theorem}
+\begin{proof}
+The case $R=0$ has zero volume, so assume $R>0$.
+The horizontal section at $z=Rt$, $0\le t\le1$, is a disk of squared
+radius $R^2(1-t^2)$. This decreases as $t$ increases.
+On the slab $i/m\le t\le(i+1)/m$, take the inner polygon with squared
+radius $R^2(1-((i+1)/m)^2)$ and the outer polygon with squared radius
+$R^2(1-(i/m)^2)$. The radii themselves are nonnegative algebraic
+square roots, so every prism vertex is constructed by the exact scalar
+operations. Multiplication by slab height $R/m$ and summation give
+the upper-hemisphere bounds
+$p_kR^3(1-S_m^+)$ and $q_kR^3(1-S_m^-)$.
+Reflect the same slabs through $z=0$ and double their volumes to obtain
+(L10).
+
+The lower factors increase and the upper factors decrease, as follows
+from (L5), (L7). Put $T^-=1-S_m^+$ and $T^+=1-S_m^-$.
+Then $0\le T^-\le2/3\le T^+\le1$ and $T^+-T^-=1/m$.
+Exactly as in the cone calculation,
+\[
+ B_k^+-B_k^-
+ =2R^3\bigl((q_k-p_k)T^-+q_k(T^+-T^-)\bigr)
+ \le12R^3\,2^{-k}.
+\]
+The interval $[4p_kR^3/3,4q_kR^3/3]$ lies inside these volume bounds,
+so it defines their common observation name. This proves the ball
+formula. The circumscribing cylinder has volume
+$2\pi_{\mathrm g}R^3$ by Theorem~\ref{lim:cylinder}; multiplying it by
+$2/3$ gives the ball volume. Equivalently, the ball and a cone of radius
+$R$ and height $2R$ have volumes summing to that cylinder's volume.
+The explicit constant $12R^3$, bounded by an integer from a coarse
+radius observation, supplies the rational precision schedule (L4).
+\end{proof}
+
+\paragraph{What the finite formulas prove internally.}
+For each requested $n$, the chosen indices $k$ and $m=2^k$ are finite
+numbers. Polygon vertices, slab vertices, determinant volumes, and the
+final rational endpoints are produced by specified PR routines.
+All containment checks concern algebraic inequalities with a candidate
+point as a free parameter. The summation and refinement invariants are
+quantifier-free identities on the finite lists. No induction on a
+statement universally quantified over every future precision is required.
+After proving each precision assertion, universal generalization over
+$n$ expresses equality of the observation names.
+
+The constants needed for rational observations are collected here;
+each may be replaced by any computable integer majorant at least $1$.
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+Observable & Width of its algebraic bracket at stage $k$\\
+\midrule
+$\pi_{\mathrm g}$ & $2\cdot2^{-k}$\\
+Circle circumference & $4r\,2^{-k}$\\
+Disk area & $2r^2\,2^{-k}$\\
+Cylinder volume & $2r^2h\,2^{-k}$\\
+Cone volume & $6r^2h\,2^{-k}$\\
+Ball volume & $12R^3\,2^{-k}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Why arbitrary real-name predicates need a different treatment}
+
+\begin{proposition}[A uniform obstruction to deciding real-name equality]
+\label{lim:equality-boundary}
+There is a single PR family of nonnegative rational observation names
+$x_e$ for which no total computable procedure decides whether $x_e=0$.
+Consequently an exact collinearity or line--circle intersection classifier
+for all PR observation names cannot be justified by extending the exact
+algebraic sign test to those names.
+\end{proposition}
+\begin{proof}
+Fix a coding of programs, and use bounded simulation of program $e$ on
+input $e$. At precision $n$, if its first halt occurred at a stage
+$t\le n$, output the singleton interval $[2^{-t},2^{-t}]$;
+if no halt has occurred, output $[0,2^{-n}]$.
+Bounded simulation and bounded search for the first halting stage are
+PR in $(e,n)$. These intervals are nested: a newly found halt has
+$t=n+1$ and its singleton lies in the preceding interval, while a
+continued failure to halt simply halves the upper endpoint. Their
+width is at most $2^{-n}$. Thus this is one particular, uniformly PR
+observation recipe, not a universal evaluator of PR functions.
+
+The resulting name is zero exactly when program $e$ does not halt on
+input $e$. A total computable zero test $D(e)$ would therefore decide
+this halting problem. The contradiction can be given directly:
+construct a program which on input $j$ halts if $D(j)$ reports zero,
+and otherwise runs forever. Apply it to its own program code.
+Either possible answer of the total test contradicts that behavior.
+This is the ordinary finite-program diagonal argument, not an assumption
+that an infinite search eventually answers.
+
+For geometry, the determinant of $(1,0)$ and $(0,x_e)$ is $x_e$, so an
+exact collinearity decision for $(0,0),(1,0),(0,x_e)$ would give the
+forbidden zero test. Likewise the line $y=1+x_e$ is tangent to
+the unit circle when $x_e=0$ and disjoint from it when $x_e>0$.
+An exhaustive classifier on such names would again decide zero.
+The conclusion is a uniform computability obstruction. It does not
+claim that every individual equality is undecidable, or that continuous
+geometry is unavailable. The explicitly proved observation schemata
+above remain valid because they require neither that test nor a choice
+between exact degeneracy and a positive gap for an arbitrary name.
+\end{proof}

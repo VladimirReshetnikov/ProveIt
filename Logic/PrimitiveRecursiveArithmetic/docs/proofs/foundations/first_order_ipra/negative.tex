@@ -1,0 +1,22 @@
+\section{Interpreting classical proofs intuitionistically}\label{sec:negative}
+The article distinguishes classical from intuitionistic first-order logic. There is nevertheless an arithmetical equivalence between their proof predicates after a change of formula. The following variant of the Gödel--Gentzen translation keeps the positive constructors under double negation.
+
+\begin{theorem}[Negative translation on certificates]\label{thm:negative}
+Let $A^N$ replace each atom (including equality) by its double negation, preserve $\bot,\wedge,\to,\forall$, and send $A\vee B$ and $\exists x A$ to $\neg\neg(A^N\vee B^N)$ and $\neg\neg\exists x A^N$. For every finite context,
+\[
+             \Gamma\vdash_C A\quad\Longleftrightarrow\quad
+             \Gamma^N\vdash_I A^N .
+\]
+Both directions have PR maps on certificates. In particular the two empty theories are equiconsistent in iPRA.
+\end{theorem}
+\begin{proof}
+Write $JX=\neg\neg X$. There are fixed intuitionistic derivations of $X\to JX$, of $JX\to JY$ given $X\to Y$ (compose a refutation of $Y$ with that implication), and of $JJX\to JX$ (given $k:\neg X$, a proof of $JX$ contradicts $k$). Say that $Y$ is stable when $JY\to Y$ is derived. For stable $Y$ an implication $X\to Y$ extends to $JX\to Y$ by the second derivation and stability.
+
+Every $A^N$ is stable, with a uniform certificate. All double-negated heads use the third derivation. For $\bot$, apply the assumed $J\bot$ to the identity of $\bot$. For conjunction use the two projections and their stable conclusions. For implication $X\to Y$, under a hypothesis $x:X$ the map from $X\to Y$ to $Y$ is application to $x$. Extend it to $J(X\to Y)\to Y$ and discharge $x$. For a universal formula, fix a fresh individual $a$, use the map from $\forall x\,Y(x)$ to $Y(a)$, extend by stability at $a$, and generalize. Each premise comes from the corresponding child formula with any needed shift. Translation commutes with term substitution because it changes no term and introduces no new individual binder except the binder already present.
+
+Translate the proof from its leaves up. Hypotheses, implication and conjunction rules, universal rules, explosion and parameter erasure translate directly. Disjunction introduction and existential introduction add $X\to JX$ after the corresponding ordinary rule. In a disjunction elimination the translated branches define an ordinary implication from the disjunction of translated disjuncts to the stable translated conclusion. Extend it to the double negation of that disjunction. For existential elimination use the translated fresh-variable branch to obtain an implication from $\exists x A^N$ to the same stable conclusion, then extend it. Equality introduction follows by double-negating reflexivity. For transport along $s=t$, assume the translated minor premise, perform ordinary transport in the formula context $B^N$ under the temporary assumption $s=t$, and discharge. Extend the resulting implication to $J(s=t)$ using stability of $B^N\langle t\rangle$. The translated classical elimination is exactly the stability derivation, since $(\neg\neg A)^N=J(A^N)$.
+
+In classical deduction $A^N\leftrightarrow A$ has a PR proof: atom, disjunction and existential heads shed or introduce $J$ by classical elimination or intuitionistic introduction. Use the child equivalences under each constructor. For implication use the reverse equivalence on the antecedent by composition, for a quantifier instantiate a fresh variable and then generalize or eliminate its existential as appropriate. Start the reverse transformation with the given intuitionistic tree as a classical one, supply each translated hypothesis by its forward equivalence under $\Gamma$, graft these proofs, and use the reverse equivalence at the conclusion. Since $\bot^N=\bot$, the consistency claim follows by composing either transformation with a supposed contradiction.
+
+All templates in this proof are fixed finite rule trees. A pass through the formula constructs its translation and its stability and equivalence certificates. A pass through the input proof constructs the translated proof from child certificates. Copies and substitutions have the bounds of Section~\ref{sec:deduction}. With $s$ the current maximum code, one stage is bounded by the finite maximum of the fixed template builders on inputs at most $s$ and the input labels. Iterate this bound once per row. Correctness is the conjunction of the local proof-checker tests on those rows.
+\end{proof}

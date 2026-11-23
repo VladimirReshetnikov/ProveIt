@@ -1,0 +1,45 @@
+\section{Laplacian energy and exact spectral data}\label{sec:spectral}
+We use the characteristic polynomial $p_M(t)=\det(tI-M)$, a finite coefficient table over the integers. A rational eigenpair is a rational scalar $\lambda$ and a specified nonzero rational vector $x$ with $Mx=\lambda x$. Vector entries may be cleared of denominators by multiplying by their product. All arithmetic and comparisons in the following arguments are finite.
+
+\begin{theorem}[Laplacian energy, nullity and eigenvalue bounds]\leavevmode\label{spec:energy}
+For an undirected multigraph with natural weights put $L=B\,\mathrm{diag}(w_e)\,B^{\mathsf T}$ as in Theorem~\ref{stkirchhoff}. On rational vertex vectors,
+\[
+ x^{\mathsf T}Lx=\sum_{e=uv} w_e(x_u-x_v)^2.
+\]
+The indicator vectors of the components of the positive-weight edges form a basis of the kernel (include isolated vertices). Thus zero has algebraic multiplicity equal to their number $c$. For a nonempty graph let $\Delta$ be the maximum sum of weights of nonloop incidences at a vertex. Every rational eigenvalue of $L$ is an integer in $[0,2\Delta]$. When the positive-weight graph is connected and $n\ge2$, every nonzero rational eigenpair satisfies $\lambda\ge 2/(n-1)^2$.
+\end{theorem}
+\begin{proof}
+Entry $e$ of $B^{\mathsf T}x$ is the difference of its endpoint values. Expand the quadratic form by first summing over the edge index. A sum of nonnegative rationals vanishes precisely when all its terms vanish (clear denominators). Thus if $Lx=0$, each positive edge has equal endpoint values and so do the ends of every positive-edge path. Conversely any vector constant on the components satisfies $Lx=0$ by multiplication. Its component values supply unique coordinates in the asserted basis.
+
+To obtain algebraic multiplicity directly, discard zero-weight edges, which contribute zero to $L$. In Corollary~\ref{stforestgen} every spanning forest has at least $c$ components. A spanning forest with exactly $c$ exists by Theorem~\ref{stforest}, and its root-count times edge-weight product is positive, including the empty graph convention. All coefficients are nonnegative, so the least nonzero power of $t$ in $\det(tI+L)$ is $t^c$. Replacing $t$ by $-t$ yields the assertion for $p_L$.
+
+For an eigenpair, $x^{\mathsf T}Lx=\lambda\sum_v x_v^2$ has positive denominator sum $\sum_v x_v^2$. This proves nonnegativity. Since $(a-b)^2\le2a^2+2b^2$ by $(a+b)^2\ge0$, summing over nonloops proves the upper bound. For any integer matrix its characteristic polynomial is monic, by the permutation formula, and vanishes at a rational eigenvalue: in $\lambda I-L$ a nonzero eigenvector gives a linear dependence of the columns with a nonzero, hence invertible, rational coefficient. If $a/b$ in lowest terms, $b>0$, solves a monic polynomial, clearing denominators gives $b\mid a^n$. To see $b=1$, the Euclidean algorithm for $|a|,b$ gives a signed inverse to $a$ modulo $b$ when their gcd is one (each remainder is a combination of the previous pair, and each positive step decreases the divisor). Its $n$th power is inverse to $a^n$ there, so $b\mid1$. All divisions in this argument are bounded by the dividend and the coefficient computations use the same fixed recursion on the Euclidean steps.
+
+For the lower bound, all column sums of $L$ vanish, hence $\lambda\ne0$ forces $\sum_v x_v=0$. Expansion gives $\sum_{u<v}(x_u-x_v)^2=n\sum_v x_v^2$. For each pair choose a simple positive-edge path of length $\ell\le n-1$. The squared telescoping sum of its endpoint differences is at most $\ell$ times the sum of their squares: subtract the first quantity from the second to obtain the sum of $(a_i-a_j)^2$ over unordered pairs of steps. Every path-edge weight is at least one. Writing $E=x^{\mathsf T}Lx$, we get $n\sum_v x_v^2\le\binom n2(n-1)E$, proving the bound after cancellation.
+\end{proof}
+
+\begin{theorem}[A bipartiteness test in the characteristic polynomial]\leavevmode\label{spec:bip}
+For a finite simple graph with adjacency matrix $A$, the graph is bipartite exactly when $p_A(t)=(-1)^n p_A(-t)$. If the graph is nonbipartite, let $g$ be the length of its shortest odd cycle. The coefficient of $t^{n-g}$ in $p_A(t)$ is minus twice the number of undirected cycles of length $g$ (identified up to rotation and reversal). All coefficients of $t^{n-j}$ for smaller odd $j$ vanish.
+\end{theorem}
+\begin{proof}
+A bipartition supplies a diagonal matrix $D$ with signs $+1,-1$ on the two classes. We have $DAD=-A$ and $D^2=I$. Determinant multiplicativity, the square-matrix case of the product formula proved in Theorem~\ref{stkirchhoff}, gives $p_A(t)=\det(tI+A)=(-1)^n p_A(-t)$.
+
+For the converse, first produce an odd cycle whenever the graph fails the bipartition test. Colour each vertex by the parity of its depth in a rooted spanning forest. If some edge joins equal colours, follow the two root paths from their last common vertex to its endpoints and close along the edge. The two lengths have the same parity, and their paths are internally disjoint, so the resulting cycle is odd. A forest edge cannot be the offending edge. Bounded minimization gives $g$.
+
+In the determinant expansion a permutation moving $j$ vertices contributes to $t^{n-j}$, since the diagonal entries are $t$ and all off-diagonal nonzero entries are $-1$. Every nontrivial permutation cycle of length at least three in a nonzero term follows a simple graph cycle. A transposition needs just one undirected edge. Odd $j$ requires an odd permutation-cycle length, at least $g$. For $j=g$ all moved vertices make one $g$-cycle. Its sign is $(-1)^{g-1}$ and its factors contribute $(-1)^g$, yielding $-1$ for each of the two orientations of each undirected cycle. There is at least one, so equality with $(-1)^n p_A(-t)$ fails in that coefficient. All enumeration bounds are $n!$ for permutations and $(n+1)^{n+1}$ for possible paths or cycles of bounded length, recording length separately.
+\end{proof}
+
+\begin{theorem}[Spectrum and tree count of the Petersen graph]\leavevmode\label{spec:petersen}
+The adjacency characteristic polynomial of the Petersen graph is $(t-3)(t-1)^5(t+2)^4$. There is a rational eigenbasis with these multiplicities. It has exactly $2000$ spanning trees.
+\end{theorem}
+\begin{proof}
+Index coordinates by the ten two-subsets of $[5]$, as in Theorem~\ref{thm:petersen}. Let $C$ be the $10$-by-$5$ membership matrix, and $J$ the all-ones matrix of the size indicated by its equation. Counting shared labels gives $A=J+I-CC^{\mathsf T}$, while counting pairs through one or two labels gives $C^{\mathsf T}C=3I+J$. The constant vector $\mathbf 1$ has eigenvalue $3$. For $b\in\mathbb Q^5$ with $\sum_i b_i=0$, the vector $Cb$ has coordinate sum $4\sum_i b_i=0$ and satisfies $A(Cb)=-2Cb$. These vectors have dimension four: take $b=e_i-e_4$ for $i<4$, and recover $b$ from $Cb$ by $C^{\mathsf T}/3$. Any $y$ with $C^{\mathsf T}y=0$ has zero coordinate sum, since the sum of $C^{\mathsf T}y$ is twice that of $y$. Hence $Ay=y$.
+
+Every $x$ has a unique decomposition into these three kinds of vectors. Subtract its mean times $\mathbf1$ to obtain $x'$ of sum zero. The vector $b=C^{\mathsf T}x'/3$ has sum zero and $C^{\mathsf T}(x'-Cb)=0$. Conversely its mean, followed by this same formula for $b$, recovers the first two components of any proposed decomposition. For explicit coordinates on the third component, consider the five pairs $\{i,i+1\}$ in cyclic order modulo five. Give the other five pair coordinates arbitrary values. If $z_i$ is the coordinate on $\{i,i+1\}$ and $s_i$ is minus the sum of the already assigned pair coordinates through $i$, the five constraints are $z_{i-1}+z_i=s_i$. Their unique solution is
+\[
+ 2z_i=s_i-s_{i-1}+s_{i-2}-s_{i-3}+s_{i-4}.
+\]
+Substitution proves existence. The homogeneous equations alternate signs around an odd circle and give $2z_i=0$. The five standard choices for the free coordinates thus give another five basis vectors. In this basis $A$ is diagonal, proving the factorization. Determinant products with polynomial entries are justified coefficientwise by the same finite expansion as for integers.
+
+The Laplacian is $L=3I-A$, so $\det(tI+L)=t(t+2)^5(t+5)^4$. Its coefficient at $t$ is $2^5 5^4=20000$. By Corollary~\ref{stforestgen} this coefficient counts spanning trees with one chosen root, ten times the number of spanning trees. Division by ten gives the result.
+\end{proof}

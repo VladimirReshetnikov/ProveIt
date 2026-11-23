@@ -1,0 +1,268 @@
+\section{Polygonal area and quadrilaterals}
+\label{sec:polygons}
+A polygon is a finite ordered vertex list, closed by repeating its first
+vertex. A convex polygon here has nonempty interior and lists exactly
+the extreme vertices of its convex hull in counterclockwise boundary
+order; redundant collinear vertices are omitted. A triangulated polygon is supplied
+with a finite partition into nonoverlapping triangles: each internal edge
+occurs twice in opposite directions and the remaining edges are its
+oriented boundary. These conditions can be checked from exact coordinates
+by orientation tests and a finite arrangement of segments. We do not
+assume that an arbitrary self-intersecting vertex list bounds a simple region.
+
+\begin{theorem}[Shoelace formula and finite dissection invariance]
+\label{poly:shoelace}
+If $P_0,\ldots,P_{n-1}$ is the boundary of a positively triangulated
+polygon, its area is
+\[
+ \area(P)=\frac12\sum_{i<n}[P_i,P_{i+1}],\qquad P_n=P_0.
+\]
+The value is independent of the chosen positive triangulation, unchanged
+by translating all vertices or subdividing boundary edges, and additive
+under a finite partition into polygons with disjoint interiors.
+\end{theorem}
+\begin{proof}
+The doubled oriented area of a triangle $ABC$ is
+$[B-A,C-A]=[A,B]+[B,C]+[C,A]$. Sum this identity over the supplied
+triangles. Every internal edge contributes $[X,Y]+[Y,X]=0$; all
+remaining terms are exactly the boundary sum. Thus any two positive
+triangulations have the same sum of unsigned triangle areas. Adding a
+common translation $a$ changes each summand by
+$[a,P_{i+1}]-[a,P_i]$, which telescopes to zero. Inserting
+$Q=(1-t)P_i+tP_{i+1}$ replaces $[P_i,P_{i+1}]$ by
+$[P_i,Q]+[Q,P_{i+1}]$, the same value. Summing the boundary identities
+over a partition cancels all its internal edges too.
+
+For a convex polygon the fan from $P_0$ is a positive triangulation.
+Every ray from $P_0$ through the polygon meets its boundary in a segment;
+the boundary vertices order those rays and the consecutive triangular
+sectors have disjoint interiors. This is checked by their determinant
+signs. The fan therefore gives $n-2$ triangles without any triangulation
+search. For arbitrary supplied partitions the cancellation invariant is
+the partial sum of processed directed edges, a quantifier-free equation
+of coded lists, so the proof is uniform in the number of triangles.
+\end{proof}
+
+\begin{theorem}[Convex polygon angle sum]\label{poly:angles}
+The interior angles of a convex $n$-gon sum to $(n-2)$ straight angles.
+Its positive exterior turns sum to one full turn.
+\end{theorem}
+\begin{proof}
+Use the convex fan in Theorem~\ref{poly:shoelace}. Each of its $n-2$
+triangles contributes one straight angle by Theorem~\ref{tri:angle-sum}.
+At each vertex the fan rays subdivide exactly that polygon's interior
+angle, so adding the fan contributions gives the first assertion. Each
+exterior turn is supplementary to its interior angle; subtracting from
+$n$ straight angles leaves two straight angles.
+
+This argument has a precise finite angle-code interpretation. Let
+$H=\{(x,y):x^2+y^2=1,\ y>0\text{ or }(x,y)=(1,0)\}$.
+Represent an angle by $(k,z)$, meaning $k$ half-turns and a remainder
+$z\in H$. For $(k,z)+(l,w)$ form the pair product $p=z*w$.
+If $p\in H$, return $(k+l,p)$; otherwise return $(k+l+1,-p)$.
+The negative-axis endpoint increments the counter and the positive-axis
+endpoint does not. Straight and full turns have canonical codes
+$(1,(1,0))$ and $(2,(1,0))$. For remainders in $H$ the sum is
+below two half-turns, so there is no missing double-carry case.
+All tests are algebraic sign tests. The fan rays are ordered
+by determinant signs and subdivide intervals of angle less than a
+straight angle. Adding their adjacent sectors therefore has no unrecorded
+wrap. Reassociating a finite sum changes neither its pair nor its carry:
+refine the concatenated oriented sectors at both axis directions and
+all participating endpoints. Both groupings count the same half-turn
+crossings and retain the same final sector. The pair product is
+associative by its coordinate identity, while the crossing count removes
+the possible whole-turn ambiguity. This is a finite-list identity,
+not equality merely modulo a full turn. The bounded sum invariant proves
+the statement uniformly in $n$.
+\end{proof}
+
+\begin{theorem}[Areas of parallelograms, rectangles, triangles, and trapezoids]
+\label{poly:areas}
+A parallelogram on $u,v$ has area $|[u,v]|$; a triangle on the same
+base vectors has half that area. A rectangle with perpendicular side
+lengths $a,b$ has area $ab$. A trapezoid with parallel base lengths
+$a,b$ and perpendicular height $h$ has area $(a+b)h/2$.
+\end{theorem}
+\begin{proof}
+The parallelogram's diagonal divides it into the two equal determinant
+triangles. If $u\cdot v=0$, the Gram identity gives
+$[u,v]^2=N(u)N(v)$, so the nonnegative area is $ab$.
+For a trapezoid choose an orthonormal frame with bases
+$(0,0),(a,0)$ and $(t,h),(t+b,h)$, where $a,b,h>0$.
+The boundary order is $(0,0),(a,0),(t+b,h),(t,h)$. Its shoelace
+sum is $ah+bh$, independently of $t$. Orthogonal motions preserve
+the absolute determinant, proving the general case. The same calculation
+gives base times height divided by two for a triangle.
+\end{proof}
+
+\begin{theorem}[Equal-area figures between parallels]\label{poly:parallel-areas}
+Triangles on the same base and between the same parallels have equal
+area, as do parallelograms on the same base between the same parallels.
+Conversely, two triangle vertices on the same side of a fixed nonzero
+base give equal areas exactly when they lie on one parallel to that base.
+\end{theorem}
+\begin{proof}
+For base $AB$ put $u=B-A$. Sliding a third vertex by $tu$ leaves
+$[u,C-A]$ unchanged. On one fixed side the determinant sign is fixed,
+so equality of unsigned areas is equality of these determinants.
+Subtracting them gives $[u,D-C]=0$, precisely proportional directions.
+Parallelogram area is twice the corresponding triangle area.
+\end{proof}
+
+\begin{theorem}[Parallelogram characterizations]\label{poly:parallelogram}
+For a nondegenerate quadrilateral in boundary order, its diagonals bisect
+each other if and only if $A+C=B+D$. This is equivalent to opposite
+edge vectors being equal and parallel. In a parallelogram equal diagonals
+characterize a rectangle, and perpendicular diagonals characterize a rhombus.
+\end{theorem}
+\begin{proof}
+Equality of diagonal midpoints is precisely $A+C=B+D$. Rearrangement
+gives $B-A=C-D$ and $D-A=C-B$, which are the two equal parallel
+edge pairs. Translate $A$ to zero and write $B=u,D=v,C=u+v$.
+The diagonal vectors are $u+v,v-u$.
+Their squared-length difference is $4u\cdot v$, so equality means
+adjacent sides perpendicular, the rectangle condition. Their dot product
+is $N(v)-N(u)$, so perpendicularity means equal adjacent lengths,
+the rhombus condition. Conversely each condition gives its diagonal
+criterion by the same identities.
+\end{proof}
+
+\begin{theorem}[Varignon's midpoint parallelogram]\label{poly:varignon}
+The successive side midpoints of any quadrilateral form a parallelogram,
+possibly degenerate. For a convex quadrilateral its area is half the
+original area. Its sides have half the lengths of the original diagonals.
+\end{theorem}
+\begin{proof}
+Set $E=(A+B)/2$, $F=(B+C)/2$, $G=(C+D)/2$, $H=(D+A)/2$.
+Then $F-E=(C-A)/2$, $G-F=(D-B)/2$, and the other two sides
+are their negatives. The signed doubled area of the original cycle is
+\[
+ [A,B]+[B,C]+[C,D]+[D,A]=[C-A,D-B].
+\]
+The midpoint parallelogram area is
+$|[(C-A)/2,(D-B)/2]|$, one quarter of this absolute determinant,
+while the original convex area is one half of it. The vector identities
+also give the side-length assertions.
+\end{proof}
+
+\begin{theorem}[Diagonal area formula and bound]\label{poly:diagonal-area}
+For a convex quadrilateral with diagonal lengths $p,q$ and angle $\theta$
+between their directions,
+$\area=\tfrac12pq\sin\theta\le\tfrac12pq$.
+Equality holds exactly when the diagonals are perpendicular.
+\end{theorem}
+\begin{proof}
+The determinant identity in the preceding proof gives the area as
+$|[C-A,D-B]|/2$. The definition of the angle pair identifies its
+second coordinate with this determinant divided by $pq$.
+The Gram identity bounds the determinant squared by $p^2q^2$,
+with equality exactly when the diagonal dot product vanishes.
+Both diagonals are nonzero, so the stated divisions are valid.
+\end{proof}
+
+\begin{theorem}[Bretschneider identity and the cyclic area maximum]
+\label{poly:bretschneider}
+Let a strictly convex quadrilateral have consecutive side lengths
+$a,b,c,d$, area $K_0$, semiperimeter $s$, and opposite interior angles
+$B,D$. Write their upper-semicircle pairs as $(x,u),(y,v)$.
+Then
+\[
+ K_0^2=(s-a)(s-b)(s-c)(s-d)
+          -\frac{abcd}{2}(1+xy-uv).
+\]
+The last term is nonnegative. Thus among convex quadrilaterals with these
+side lengths, any cyclic realization has maximal area; equality in the
+bound occurs exactly for a cyclic realization.
+\end{theorem}
+\begin{proof}
+The diagonal $AC$ splits the quadrilateral into the triangles at $B,D$.
+Put $X=ab$, $Y=cd$, and $E=a^2+b^2-c^2-d^2$.
+The cosine law on that common diagonal gives $E=2Xx-2Yy$.
+The area--sine formula gives $2K_0=Xu+Yv$. A direct difference of
+squares factors as
+\[
+ 16(s-a)(s-b)(s-c)(s-d)=4(X+Y)^2-E^2.
+\]
+Subtract $16K_0^2=4(Xu+Yv)^2$ and use $x^2+u^2=y^2+v^2=1$.
+The result is $8XY(1+xy-uv)$, proving the identity after division by
+16. Moreover
+$2(1+xy-uv)=(x+y)^2+(u-v)^2\ge0$.
+It vanishes exactly when $x=-y$ and $u=v$, meaning that the two
+opposite angles are supplementary. The cyclic-angle theorem and its
+converse from Section~\ref{sec:circles} say exactly that this happens
+for a cyclic quadrilateral. All side lengths are positive, so multiplying
+or cancelling $abcd$ does not lose a case.
+\end{proof}
+
+\begin{corollary}[Brahmagupta's formula]\label{poly:brahmagupta}
+For a strictly convex cyclic quadrilateral,
+\[
+ \area=\sqrt{(s-a)(s-b)(s-c)(s-d)}.
+\]
+\end{corollary}
+\begin{proof}
+Its opposite angles are supplementary, so the correction term in
+Theorem~\ref{poly:bretschneider} vanishes. Each factor is positive:
+each side is shorter than the three-side broken path joining its endpoints,
+by the strict triangle inequalities in the two triangles of a diagonal.
+The area is positive, selecting the displayed nonnegative root uniquely.
+\end{proof}
+
+\begin{theorem}[Areas of similar figures on a right triangle]
+\label{poly:similar-pythagoras}
+Take any fixed positively triangulated polygonal shape. Similar copies
+built with scale proportional to the three sides of a right triangle
+have the area on the hypotenuse equal to the sum of the other two areas.
+\end{theorem}
+\begin{proof}
+If the reference area is $A_0$ and the three scale factors are
+$ka,kb,kc$, area scaling gives $A_0k^2a^2$, $A_0k^2b^2$,
+$A_0k^2c^2$. Pythagoras supplies $c^2=a^2+b^2$.
+The determinant proof of area scaling applies term by term to the finite
+triangulation, so this includes any such shape, not only squares.
+\end{proof}
+
+\begin{theorem}[Regular polygon area and explicit elementary examples]
+\label{poly:regular}
+Let $n$ vertices on a circle of radius $r>0$ occur in convex boundary
+order, with the same successive rotation pair $(c,t)$, $t>0$.
+For $n\ge3$ its side length is $\ell=r\sqrt{2(1-c)}$, apothem is
+$a=r\sqrt{(1+c)/2}$, and
+\[
+ \area=\frac{nr^2t}{2}=\frac{a(n\ell)}2.
+\]
+Regular triangles, squares, pentagons, and hexagons can be explicitly
+constructed with straightedge and compass; repeated angle bisection
+doubles any of these numbers of sides.
+\end{theorem}
+\begin{proof}
+Adjacent radius vectors have dot product $r^2c$ and determinant $r^2t$.
+The cosine law gives $\ell^2=2r^2(1-c)$. Their midpoint has squared
+norm $r^2(1+c)/2$ and lies on the perpendicular to the chord; it is
+the foot defining the apothem. Since $t>0$ and $c^2+t^2=1$,
+$a\ell=r^2t$. Sum the $n$ oriented triangles from the center.
+
+For a triangle use rotation pair $(-1/2,\sqrt3/2)$, for a square
+$(0,1)$, and for a hexagon $(1/2,\sqrt3/2)$. Powers of these pairs
+give respectively 3, 4, and 6 vertices and one full counterclockwise turn,
+as their signs and products show. For a pentagon use
+\[
+ c=\frac{\sqrt5-1}{4},\qquad
+ t=\frac{\sqrt{10+2\sqrt5}}4.
+\]
+Squaring verifies $c^2+t^2=1$. Put $f=4c^2+2c-1=0$ and $z=(c,t)$.
+Expansion gives $\operatorname{Re}(z^5)-1=(c-1)f^2$ and
+$\operatorname{Im}(z^5)=tf(4c^2-2c-1)$, so $z^5=(1,0)$.
+Its successive nontrivial powers lie in quadrants
+I, II, III, IV: $0<c<1/2$, the square has negative first and positive
+second coordinate, and the last two powers are conjugates of the first
+two. Hence their boundary order is the required five-step full turn,
+not a star traversal. All displayed quantities use only arithmetic and
+nonnegative square roots, whose straightedge--compass constructions were
+proved in the circle chapter. The pair
+$(\sqrt{(1+c)/2},\ t/(2\sqrt{(1+c)/2}))$ bisects a central angle
+in $(0,\pi)$, so its successive powers insert one midpoint direction
+between each original pair of radius directions. This doubles the side
+count and proves the final construction claim.
+\end{proof}

@@ -1,0 +1,89 @@
+\section{What is proved in iPRA}\label{sec:logic}
+We use first-order intuitionistic logic with equality on natural numbers,
+zero, successor with injectivity and disjointness from zero, a symbol for each
+primitive recursive (PR) definition with its defining equations, and induction
+for quantifier-free formulas with parameters. This is the presentation in
+\repo{README.md}{ProveIt's arithmetic overview}. A free input parameter is
+arbitrary. An existence assertion here comes with a PR construction, or a
+finite list with an explicit PR bound and a proof that the scan succeeds.
+Size means finite magnitude, with no polynomial-time restriction.
+
+\paragraph{Tables.}
+Write $[n]=\{0,\ldots,n-1\}$, with $[0]$ empty. A vector of length $L$ whose
+digits are $<b$, $b\ge2$, is a number $a<b^L$. Read digit $i<L$ as
+$\lfloor a/b^i\rfloor\bmod b$. Replace that digit by $d$ by subtracting its old
+contribution and adding $db^i$. The subtraction is exact. Set intersection,
+union, difference, symmetric difference, restriction, and cardinality on
+$[n]$ are respectively the entrywise Boolean operations and the sum of bits.
+A subset code is $<2^n$. Matrices are vectors in row-major order. Choose radix
+$\max(2,B+1)$ for entries $\le B$. Record length and radix separately. For
+unbounded tuples one may pair $x,y$ as $2^x(2y+1)$, decoding a positive code
+by at most that many divisions. This includes zero as a spare code. Signed
+integers can use two naturals $p,q$ for $p-q$, with equality tested by
+cross-addition. A rational uses signed numerator and positive denominator,
+with comparisons by cross-multiplication. For example, find quotient and
+remainder by a positive divisor by a scan through the dividend. We give
+all partial decoders a fixed default outside their validity checks.
+
+\begin{lemma}[Bounded reasoning]\leavevmode\label{lem:bounded}
+Finite quantifications over PR ranges with PR Boolean body admit Boolean
+characteristic functions. Their bounded existential forms admit a least
+witness with a distinguished failure value. Induction on a formula made of
+such tests, and simultaneous induction on a finite table of such tests, is
+available in iPRA.
+\end{lemma}
+\begin{proof}
+For a bit $p(i,x)$ fold $p(0,x),\ldots,p(t-1,x)$ by OR, starting at zero.
+Carry also the first successful index, keeping the current prefix length
+as sentinel while the OR is zero. A new bit either preserves the old witness
+or supplies its own index. For each prefix the recorded index is below its
+length exactly on success. When successful its bit is one and the OR of all
+earlier entries is zero. These last conditions are equations of PR terms.
+For completeness, with an arbitrary $j$ as a fixed parameter, induction on
+the prefix length proves that $j$ below the prefix and $p(j,x)=1$ force success.
+At the step $j$ is earlier or is the new index. The same comparison proves
+that success implies the recorded witness is least. Apply this construction
+to the complement for universal tests, and repeat for nesting. Case distinction
+uses decidability of natural equality and order, proved by primitive recursion
+and quantifier-free induction. For a table of invariants take the AND of its
+characteristic bits. Prove the base and successor equations, apply quantifier-free
+induction to the one resulting equation, then evaluate at any desired index.
+\end{proof}
+
+\paragraph{Changing parameters.}
+A proof which deletes or contracts a graph can appear to induct on the
+unbounded assertion that every graph has a witness. Fix the original size
+bounds $N,M$ and all numerical parameters. Use an AND over all smaller valid
+graph codes with these bounds, all required masks, and, when necessary, all
+legal auxiliary states. For simple graphs of order $\le N$ the common square
+code bound $2^{N^2}$ suffices. Endpoint lists of length $\le M$ are bounded by
+$\max(2,N+1)^{2M}$. A solution is a computed certificate or the bounded OR
+over its candidate codes. Thus the induction variable can be the size,
+the number of edges, the number of successful steps, or the number of
+remaining steps, with the global envelope as a free parameter. Course-of-values
+induction over that envelope is induction on the AND of preceding levels.
+If an auxiliary parameter grows, use its stated PR bound over the whole run
+before forming the invariant. For an iteration of $t$ applications of a fixed
+PR function, its state itself is PR by primitive recursion even when it grows
+exponentially at each step. All the programs and recursions used here are fixed.
+
+\paragraph{Finite counting.}
+We repeatedly exchange the order of a finite sum or count the same table
+by rows and columns. The two orders agree by induction on one side, pushing
+a new row across the other sum by a second induction and associativity.
+If $f$ is an injection of a finite list of $a$ distinct entries into $[b]$,
+the occupancy bits contain exactly $a$ ones. Inserting a previously unused
+image raises the total by one. Thus $a\le b$. A surjective injection has a
+bounded inverse by scanning its domain. Pigeonhole arguments in this paper
+refer to these identities and produce a colliding pair or a missing entry
+by Lemma~\ref{lem:bounded}. A positive sum of nonnegative integers similarly
+supplies an index with positive summand. These facts justify finite bijective
+counts, finite averages after clearing denominators, and stable sorting by
+repeated selection of the least unused key.
+
+\paragraph{Scope.}
+Graphs have arbitrary finite order. Disconnected graphs and the empty graph
+are included wherever the statement permits. For embeddings we use rotations
+and finite face certificates. An asymptotic assertion is given a finite
+numerical interpretation when a modulus is supplied. Numbered results are
+human iPRA proofs. Section~\ref{sec:lean} specifies the machine-checked part.

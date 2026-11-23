@@ -1,0 +1,179 @@
+\section{The Tutte polynomial and planar duality}\label{fl:tutte}
+
+Let $G=(V,E)$ now be an undirected multigraph with indexed edges, including
+loops. Put $n=|V|$, $m=|E|$, let $c(A)$ count components of $(V,A)$
+including isolated vertices, and write $r(A)=n-c(A)$, $r=r(E)$. A spanning
+forest of $(V,A)$ that connects each of its components uses $r(A)$ edges.
+This follows by growing a tree one vertex at a time in each component.
+In particular $r(A)\le |A|$. Define
+\[
+ T_G(x,y)=\sum_{A\subseteq E}(x-1)^{r-r(A)}(y-1)^{|A|-r(A)}.
+\]
+All exponents are nonnegative. Coefficients form a signed rectangular
+array with coordinate bounds $n,m$. Expanding each summand by the
+binomial rule gives an absolute bound $2^{n+2m}$ on each coefficient,
+since there are $2^m$ summands, each having sum of absolute coefficients
+at most $2^{n+m}$. Thus all polynomial identities below are arithmetic
+statements about finite arrays.
+
+\begin{theorem}[Deletion, contraction and special values]\leavevmode\label{fl:tutterec}
+The edgeless graph has $T_G=1$. For a loop $e$, $T_G=yT_{G-e}$.
+For a bridge $e$, $T_G=xT_{G/e}$. For every other edge,
+$T_G=T_{G-e}+T_{G/e}$. In particular all the coefficients of $T_G$ in
+$x,y$ are nonnegative, it is multiplicative under disjoint union, and
+\[
+\begin{array}{c|l}
+ (x,y)&T_G(x,y)\ \text{counts}\\ \hline
+ (1,1)&\text{spanning forests connecting each component of }G\\
+ (2,1)&\text{all acyclic spanning edge subsets}\\
+ (1,2)&\text{spanning edge subsets with the same components as }G\\
+ (2,2)&\text{all }2^m\text{ edge subsets}.
+\end{array}
+\]
+For a connected nonempty graph the first entry is its spanning-tree count.
+\end{theorem}
+\begin{proof}
+For $B\subseteq E\setminus\{e\}$ pair the terms $B,B\cup\{e\}$.
+A loop changes only the edge count, so the second term is $y-1$
+times the first. For a nonloop, contracting $e$ identifies exactly
+its two ends and retains the indices of all other edges, keeping any
+new loops. Hence $r_{G/e}(B)=r_G(B\cup\{e\})-1$ and
+$r_{G/e}=r-1$. The terms containing $e$ give $T_{G/e}$. If $e$ is
+not a bridge, deletion leaves $r$ fixed and terms omitting $e$ give
+$T_{G-e}$. If it is a bridge, its ends are in distinct components of
+every $(V,B)$. Then $r(B\cup\{e\})=r(B)+1$ and the term for $B$ is
+$x-1$ times the term for $B\cup\{e\}$. This gives the bridge rule.
+
+The recurrence starts at one and uses only addition and multiplication
+by a variable, proving coefficient nonnegativity. An edge-index order
+bounds every recursion branch by $m$ deletions or contractions. A binary
+tree of depth $m$ can be evaluated bottom-up in a bounded table.
+For disjoint unions all ranks, sizes and exponent differences add
+over the two factors. Finally, $|A|-r(A)=0$ exactly when $A$ is a
+forest: a spanning forest inside $A$ has $r(A)$ edges and every extra
+edge closes a cycle, possibly a loop or a parallel pair. The other
+exponent vanishes exactly when $A$ connects every original component.
+Substituting the four pairs, with $0^0=1$, proves the table.
+\end{proof}
+
+\begin{theorem}[Chromatic and flow evaluations]\leavevmode\label{fl:tutteflow}
+For a natural $q$, let $P_G(q)$ count proper $q$-colourings, with a loop
+forbidding every colouring. Give every edge an arbitrary direction.
+For a finite abelian group of order $q\ge1$, a circulation assigns a
+group element to each edge so that the sum entering each vertex equals
+the sum leaving it. Let $F_G(q)$ count circulations nonzero on every
+edge. Then
+\[
+ P_G(q)=(-1)^r q^{c(E)}T_G(1-q,0),\qquad
+ F_G(q)=(-1)^{m-r}T_G(0,1-q).
+\]
+In particular the second count depends only on the group order and
+is independent of the orientation.
+\end{theorem}
+\begin{proof}
+The alternating sum $\sum_{A\subseteq E}(-1)^{|A|}q^{c(A)}$
+counts proper colourings. A word constant on the ends of every edge
+in $A$ has one free colour per component. Interchanging the finite
+sums, an improper word cancels by toggling its first monochromatic
+edge, and a proper one contributes one. This includes loops.
+Substitution in $T$ gives this same sum, since $c(E)+r-r(A)=c(A)$
+and the sign exponent is congruent to $|A|$ modulo two.
+
+The number of circulations supported in $A$ (zero outside $A$) is
+$q^{|A|-r(A)}$. Indeed choose a spanning forest inside $A$ and set
+the values of the remaining $|A|-r(A)$ edges freely. In each
+nontrivial tree take the first leaf. Its unique remaining tree edge
+has a unique value balancing the leaf, obtained by moving all known
+terms to the opposite side and using group inversion when needed.
+Remove the leaf, retaining the contributions of the now fixed edge at
+its other end. After at most $n$ steps only the roots remain. In each
+component the sum of all vertex imbalances was zero for every full
+assignment, by cancellation of each oriented edge. Since the nonroot
+imbalances vanish, the root has balance zero too. This construction
+works with any finite addition table satisfying the abelian group laws.
+
+Now sum these counts with weight $(-1)^{m-|A|}$. A fixed circulation
+is counted once for every superset of its support. If some edge
+carries zero, toggling the first such edge pairs opposite signs.
+A nowhere-zero circulation contributes one. The resulting sum equals
+the second evaluation, because its sign on $A$ is
+$(-1)^{m-r+r-r(A)+|A|-r(A)}=(-1)^{m-|A|}$.
+\end{proof}
+
+\begin{theorem}[Spherical duality]\leavevmode\label{fl:tuttedual}
+Take a connected graph with a supplied orientable rotation system of
+Euler characteristic two. Its face dual $G^*$ has a vertex per face
+and a corresponding edge crossing each primal edge. With these indexed
+edges identified,
+\[
+ T_{G^*}(x,y)=T_G(y,x),\qquad
+ P_{G^*}(q)=q F_G(q)\quad(q\ge1).
+\]
+\end{theorem}
+\begin{proof}
+Write $f$ for the number of faces. In the cyclic order of half-edges at
+each vertex, let $\sigma$ send each half-edge to the next one and
+$\iota$ exchange the halves of each edge. Face walks are the cycles of
+$\sigma\iota$ (reversing the rotation convention gives an equivalent
+proof). The action generated by $\sigma,\iota$ is transitive on the
+half-edges of a connected graph with an edge: follow a vertex path,
+rotating at each intermediate vertex to its desired exiting half-edge.
+The same action is generated by $\sigma\iota,\iota$, so the face dual
+is connected as well. When $m=0$ there is one vertex and one face,
+and both assertions follow directly.
+
+In binary edge masks, the cuts of the dual are even subgraphs of the
+primal graph. Indeed the cut of one dual vertex is the parity mask of
+edges in that face's closed boundary walk. Every vertex there has even
+degree modulo two. A general cut is the symmetric difference of these
+single-face cuts and stays even. The connected dual has $2^{f-1}$ cuts:
+a vertex mask and its complement give the same cut, and equality of
+cuts makes membership in their symmetric difference constant along
+every edge, hence constant throughout. The primal has $2^{m-r}$ even
+subgraphs by the circulation count for the group of order two with
+all edges allowed. Since $n-m+f=2$ and $r=n-1$, the counts are equal.
+Membership in the two families is decidable on the same $m$-bit
+universe, so inclusion and equality of finite counts give equality
+of the families.
+
+Fix $A\subseteq E$, and write $B=E\setminus A$. Counting only masks
+supported in $A$ gives $2^{|A|-r(A)}$ on the primal side. On the dual
+side a defining vertex mask must be constant on each component of
+$(V^*,B)$. There are $2^{c^*(B)}$ choices and each cut is counted twice.
+Consequently
+\[
+ |A|-r(A)=c^*(B)-1=r^*(E)-r^*(B).
+\]
+Since $r^*(E)=m-r$, rearrangement also gives
+$r-r(A)=|B|-r^*(B)$. Complementing edge masks therefore exchanges
+the two exponents term by term in the Tutte sum. Finally apply the two
+preceding evaluations, using $c^*(E)=1$ and $r^*(E)=m-r$. Every face
+scan uses at most $2m$ half-edges and all comparisons of cut and cycle
+families are scans of coded finite masks.
+\end{proof}
+
+\begin{corollary}[Tait's formulation for a cubic spherical map]\leavevmode\label{thm:tait}
+Suppose $G$ is a nonempty connected loopless cubic graph with a spherical
+rotation. Its faces admit four colours, with different colours across every
+edge, exactly when its edges admit a proper three-colouring. Both conversions
+are primitive recursive.
+\end{corollary}
+\begin{proof}
+Take the additive group $K=(\mathbb Z/2)^2$, with three nonzero elements.
+A nowhere-zero $K$-flow on a cubic graph assigns three nonzero labels at each
+vertex summing to zero. Orientation is immaterial in this group. Three such
+labels sum to zero exactly when they are the three different nonzero elements.
+Indeed two equal labels cancel, leaving a nonzero label, while the sum of all
+three nonzero elements is zero. Thus these flows are exactly proper
+edge three-colourings, using those labels as colours. A face colouring is a
+vertex colouring of the dual, with a dual loop making proper colouring
+impossible. Theorem~\ref{fl:tuttedual} gives
+$P_{G^*}(4)=4F_G(4)$. This is an identity between counts of two explicit
+finite tables, so given a witness on either side one may scan the other
+table (at most $4^f$ or $3^m$ words) for a witness there. More directly,
+from a proper face colouring, label each edge by the sum of its two face
+colours. It is nonzero and each incident face sector contributes twice
+around a vertex, so the three labels sum to zero. Both arguments cover the
+case of a bridge, which borders the same face on both sides and is forced
+to carry zero in a circulation.
+\end{proof}

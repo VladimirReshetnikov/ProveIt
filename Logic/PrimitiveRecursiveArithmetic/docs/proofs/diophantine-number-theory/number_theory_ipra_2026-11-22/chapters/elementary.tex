@@ -1,0 +1,962 @@
+\section{Divisibility, primes, and finite arithmetic}
+\label{sec:elementary}
+
+This chapter develops the integer arithmetic needed by the later chapters.
+Every search is bounded.  A statement about an arbitrary primitive recursive
+function is a schema with that function fixed, or, equivalently for the
+finite assertions used here, a statement about a coded finite table.  It
+never means that arithmetic has a total interpreter for all primitive
+recursive programs.  The conventional topics correspond to the elementary
+portion of the source article and to the university course outline
+\cite{mit781}; the arguments and arithmetic bounds below are supplied in full.
+
+We use natural numbers including zero.  A signed integer is represented by
+its sign and absolute value; addition, multiplication, comparison, and
+absolute value have their usual primitive recursive definitions on these
+codes.  For natural numbers, $d\mid n$ means that $n=dq$ for some $q\le n$,
+with the separate convention $0\mid0$.  For integers one uses a signed
+quotient of absolute value at most $|n|$ when $d\ne0$.  Thus the divisibility
+predicate is decidable by a bounded test.  A bounded maximum, minimum,
+conjunction, sum, or product is implemented by a fold over its displayed
+finite range.  For example, primality is the bounded predicate
+\[
+ \operatorname{Prime}(p)\ \Longleftrightarrow\
+ p\ge2\ \text{ and }\ (\forall d\le p)
+       (d\mid p\Longrightarrow d=1\text{ or }d=p).
+\]
+A bounded universal quantifier in a loop invariant abbreviates a Boolean
+fold.  Induction on that Boolean assertion is quantifier-free induction.
+
+\subsection{Division and the Euclidean algorithm}
+
+\begin{theorem}[Division with a bounded algorithm]\label{el:division}
+For $a\in\N$ and $b>0$ there are unique natural numbers $q,r$ such that
+$a=bq+r$ and $r<b$.  They satisfy $q\le a$ and $r\le a$, and are primitive
+recursive functions of $a,b$.
+\end{theorem}
+\begin{proof}
+Start with $(q_0,r_0)=(0,0)$.  To pass from $i$ to $i+1$, replace
+$(q_i,r_i)$ by $(q_i,r_i+1)$ if $r_i+1<b$, and by $(q_i+1,0)$ otherwise.
+The invariant is
+\[
+ i=bq_i+r_i,\qquad r_i<b,\qquad q_i\le i,\quad r_i\le i.
+\]
+In the second branch $r_i<b$ and the failure of $r_i+1<b$ give
+$r_i+1=b$.  This proves preservation by direct arithmetic.  After exactly
+$a$ steps the required pair has been obtained.  For uniqueness, if
+$bq+r=bq'+r'$ and $q<q'$, then
+$bq+r<b(q+1)\le bq'\le bq'+r'$, a contradiction.  Decidable trichotomy
+therefore gives $q=q'$ and then $r=r'$.  No least-number principle is used.
+\end{proof}
+
+We write these outputs as $\lfloor a/b\rfloor$ and $a\bmod b$.
+For a signed integer $z$ the same construction on $|z|$, followed when
+necessary by $(-q-1,b-r)$, gives a unique residue in $[0,b)$.
+
+\begin{theorem}[Euclidean algorithm and B\'ezout identity]
+\label{el:bezout}
+There are primitive recursive functions $g(a,b)\in\N$ and
+$u(a,b),v(a,b)\in\Z$ satisfying
+\[
+ g\mid a,\quad g\mid b,\quad ua+vb=g,
+ \qquad d\mid a\text{ and }d\mid b\Longrightarrow d\mid g.
+\]
+Here $g(0,0)=0$; otherwise $g>0$.  Consequently $g$ is the greatest
+common divisor.  A computation with at most $a+b+1$ Euclidean steps
+suffices, and the displayed coefficients may be chosen with
+\[
+ |u|,|v|\le (a+b+2)^{a+b+1}.
+\]
+\end{theorem}
+\begin{proof}
+Maintain two remainders $x,y$ and two coefficient rows $U,V$, initially
+$x=a$, $y=b$, $U=(1,0)$, $V=(0,1)$.  If $y=0$, keep the state fixed.
+Otherwise put $q=\lfloor x/y\rfloor$ and replace
+\[
+ (x,y,U,V)\quad\text{by}\quad(y,x-qy,V,U-qV).
+\]
+The two remainders remain the linear combinations described by the rows.
+For any fixed $d$, the conditions $d\mid x,d\mid y$ are equivalent to
+$d\mid y,d\mid x-qy$: one direction is subtraction and the other is
+$x=(x-qy)+qy$.  In particular the initial common divisors and the current
+common divisors coincide.
+
+Whenever a nonzero second remainder is replaced, its successor is a
+smaller natural number.  After the first step both remainders are at most
+$\max(a,b)$; the second remainder starts at $b$ and decreases by at least
+one on every active step.  A loop with $a+b+1$ steps has therefore reached
+$y=0$.  A quantifier-free termination invariant is: either $y_i=0$, or
+$y_i+i\le b$ .
+At the terminal state let $g=x$ and let $(u,v)=U$.  The common-divisor
+invariant gives all the claimed divisibilities, including $g\mid a,b$.
+If the initial pair is nonzero then an active step never makes both
+remainders zero, so $g>0$.  A positive common divisor of $a,b$ divides
+the positive number $g$ and is therefore at most $g$.
+
+Every quotient is at most $a+b$.  If all four coefficient magnitudes are
+at most $C$, a step makes them at most $(a+b+1)C$.  Starting with $C=1$
+and using the larger base $a+b+2$ gives the asserted bound.  All invariants
+are equalities, inequalities, and bounded divisibility tests.  One may
+preserve the common-divisor assertion for each fixed $d$ separately;
+there is no need to induct on an unbounded universal formula.
+\end{proof}
+
+\begin{theorem}[Linear Diophantine equations]\label{el:linear}
+Let $a,b\in\N$, not both zero, and $c\in\Z$, and put $g=g(a,b)$.
+The equation $ax+by=c$ has integer solutions exactly when $g\mid c$.
+When it does, one solution is
+\[
+ x_0=u(a,b)(c/g),\qquad y_0=v(a,b)(c/g).
+\]
+All solutions are
+\[
+ x=x_0+(b/g)t,\qquad y=y_0-(a/g)t\qquad(t\in\Z).
+\]
+For $a=b=0$ solvability is exactly $c=0$.
+\end{theorem}
+\begin{proof}
+A common divisor divides every linear combination, proving necessity.
+Multiplying the B\'ezout identity by $c/g$ proves sufficiency.  Divide
+$a,b$ by $g$ and write $a',b'$; their gcd is one, since a common divisor
+$h>1$ would make $gh$ a common divisor of $a,b$ greater than $g$.
+If $(x,y)$ is a solution, then
+$a'(x-x_0)=-b'(y-y_0)$.  For coprime integers $A,B$, a B\'ezout
+identity $rA+sB=1$ shows that $B\mid Az$ implies $B\mid z$:
+multiply the identity by $z$.  If $b'>0$, this proves
+$x-x_0=b't$, and cancellation gives $y-y_0=-a't$.
+If $b'=0$, then $a'=1$, so $x=x_0$ and $y$ is arbitrary; the same
+formula still describes every solution.  The constructed solution has
+coordinate magnitudes at most
+$(a+b+2)^{a+b+1}|c|$.  The assertion about an arbitrary proposed solution
+uses its own coordinates as parameters, not an unbounded search for $t$.
+\end{proof}
+
+\subsection{Prime decomposition and its consequences}
+
+\begin{lemma}[A least divisor is prime]\label{el:leastprime}
+Every $n\ge2$ has a prime divisor at most $n$, obtained by taking the
+least $d\in[2,n]$ dividing $n$.  If $n$ is composite, it has a prime
+divisor $p$ with $p^2\le n$.
+\end{lemma}
+\begin{proof}
+The search succeeds because $n\mid n$.  If its output $d$ were
+composite, it would have a divisor $e$ with $1<e<d$; then $e\mid n$,
+contrary to the checked minimality.  If $n$ is composite and $p$ is its
+least prime divisor, write $n=pk$ with $k>1$.  A prime divisor of $k$
+is at least $p$, so $k\ge p$ and $p^2\le n$.
+All alternatives are decidable within $[0,n]$.
+\end{proof}
+
+\begin{theorem}[Euclid's lemma]\label{el:euclidlemma}
+For a prime $p$, if $p\mid ab$, then $p\mid a$ or $p\mid b$.
+Consequently, if $\gcd(a,m)=1$ and $m\mid ab$, then $m\mid b$.
+\end{theorem}
+\begin{proof}
+Test $p\mid a$.  If it fails, the positive divisor $g(p,a)$ of $p$
+cannot equal $p$, so it equals one.  A B\'ezout identity $up+va=1$,
+multiplied by $b$, expresses $b$ as a sum of two multiples of $p$.
+The coprime version follows by precisely the same multiplication.
+This proof uses excluded middle only for the bounded predicate
+$p\mid a$, whose characteristic function is already primitive recursive.
+\end{proof}
+
+\begin{theorem}[Fundamental theorem of arithmetic]
+\label{el:fta}
+Every $n\ge1$ has a primitive recursively computed nondecreasing list
+of primes $p_0,\ldots,p_{\ell-1}$, with $\ell\le n$, whose product is $n$.
+Any other nondecreasing prime list with product $n$ is identical to it.
+Equivalently, the multiset of prime factors is unique.
+\end{theorem}
+\begin{proof}
+Keep a remainder $r$, initially $n$, and an initially empty factor list.
+If $r>1$, append its least prime divisor and divide $r$ by that divisor;
+if $r=1$, do nothing.  An active step strictly decreases $r$, and the
+invariant is
+\[
+ n=r\prod_{j<\ell}p_j,\qquad r\ge1,\qquad
+ \ell\le i,\qquad (r>1\Longrightarrow r+i\le n).
+\]
+A loop of $n$ steps therefore ends with $r=1$.  A prime factor of the
+new remainder was also a divisor of the old remainder, so it is at least
+the prime just removed; the list is nondecreasing.  Every list entry is
+at most $n$, and a length-$n$ array in base $n+1$, together with its
+length, is a primitive recursive code.
+
+For uniqueness, the first prime of one nonempty list divides the
+product of the other.  Repeated use of Euclid's lemma, over at most the
+length of that list, gives an entry divisible by this prime.  Since that
+entry is prime, the entries are equal.  Interchanging the lists shows
+that their first entries are equal: each is at most an entry equal to
+the first entry of the other list.  Cancel that positive common entry
+and repeat.  A prime product is at least $2^{\ell}$, so a list with
+product one must be empty.  Thus neither list can end earlier than the
+other.  This is an induction on a bounded comparison loop, with the
+invariant that the canceled prefixes agree and the remaining products
+agree.  It requires no induction on an existential factorization claim.
+\end{proof}
+
+For $p\ge2$ and $n\ge1$ define
+\[
+ v_p(n)=\max\{e\le n:p^e\mid n\}.
+\]
+The bound is valid because $p^e\ge e+1$ by induction.  This definition is
+used only with $p$ prime when the valuation laws are invoked.
+
+\begin{theorem}[Valuations, gcd, and lcm]\label{el:valuation}
+For primes $p$ and positive $a,b$,
+\[
+ v_p(ab)=v_p(a)+v_p(b),\qquad
+ a\mid b\ \Longleftrightarrow\
+       (\forall p\le\max(a,b))
+       (\operatorname{Prime}(p)\Longrightarrow v_p(a)\le v_p(b)).
+\]
+The valuations of $\gcd(a,b)$ and $\operatorname{lcm}(a,b)$ are the
+respective minima and maxima.  In particular
+\[
+ \gcd(a,b)\operatorname{lcm}(a,b)=ab.
+\]
+\end{theorem}
+\begin{proof}
+Collect the occurrences of $p$ in the unique prime lists.  Concatenating
+and sorting the lists for $a$ and $b$ gives a prime list for $ab$, so
+uniqueness says that the occurrences add.  If $a\mid b$, write $b=ac$
+and use additivity.  Conversely, subtract the exponent of each prime
+in $a$ from that in $b$ and multiply the resulting nonnegative prime
+powers.  The product $c$ satisfies $ac=b$, proving divisibility.
+Take the products with minimum and maximum exponents to construct $G,L$.
+The exponent criterion proves that $G$ divides both inputs and every
+common divisor divides $G$; similarly $L$ is a common multiple dividing
+every common multiple.  Thus $G$ is the Euclidean gcd and $L$ is the
+least positive common multiple.  Since
+$\min(r,s)+\max(r,s)=r+s$, their product is $ab$.
+All prime scans can be limited to $\max(a,b)$; any proposed common
+multiple is handled with its own finite bound.  The output $L\le ab$.
+\end{proof}
+
+Integer fractions use the primitive recursive canonical reduction proved in
+Theorem~\ref{dio:normal}.  The normalization map sends $(a,b)$, $b>0$,
+to $(a/g,b/g)$ with $g=\gcd(|a|,b)$; all fraction calculations in this
+chapter may use these canonical finite codes.
+
+\begin{theorem}[Euclid's theorem with a bound]\label{el:euclid}
+For every $N\in\N$ a prime $p$ with
+\[
+             N<p\le N!+1
+\]
+can be computed primitive recursively.  Consequently there is no finite
+list containing all primes.
+\end{theorem}
+\begin{proof}
+Take the least prime divisor of $N!+1\ge2$.  If this prime were at most
+$N$, it would divide both $N!$ and $N!+1$, and hence divide one, a
+contradiction.  For a supplied finite prime list, use $N$ equal to its
+maximum (zero for the empty list).  The factorial is defined by primitive
+recursion, so this is an explicit uniform witness rather than an
+unbounded search for the next prime.
+\end{proof}
+
+\begin{theorem}[Correctness of the sieve of Eratosthenes]
+\label{el:sieve}
+There is a primitive recursive Boolean array marking exactly the primes
+at most $N$.  The usual sieve, which crosses off multiples of $d$ from
+$d^2$ onward whenever $d$ is still unmarked, is correct.
+\end{theorem}
+\begin{proof}
+Initially mark all entries $2,\ldots,N$ as candidates.  Scan
+$d=2,\ldots,\lfloor\sqrt N\rfloor$, where the square root is the bounded
+maximum of $r\le N$ with $r^2\le N$.  If $d$ is a candidate, cross off
+$d^2+kd\le N$ for $k\le N$.
+Inductively a candidate $d$ must be prime: if it were composite, its
+least prime divisor $q<d$ would have crossed it off, because $d\ge q^2$.
+No prime is ever crossed off, since every crossed-off integer is a
+product of two integers at least two.  Finally, every composite $n\le N$
+has a least prime divisor $p$ with $p^2\le n$; the step $d=p$ occurs,
+$p$ is still a candidate, and $n$ is crossed off.  The array can be coded
+by a number below $2^{N+1}$.  At most $N^2$ crossing-off checks and $N$
+outer steps are enough.  The invariant ``a crossed-off entry has a known
+proper factor, and every processed prime has crossed off its prescribed
+multiples'' is a bounded Boolean assertion on that array.
+\end{proof}
+
+\subsection{Congruences, finite residue systems, and powers}
+
+For $m>0$ put $a\equiv b\pmod m$ when $a\bmod m=b\bmod m$.
+Division identifies this with $m\mid(a-b)$.  Substitution in differences
+proves reflexivity, symmetry, transitivity, and compatibility with
+addition and multiplication.  B\'ezout's identity gives the useful rule
+\[
+ \gcd(a,m)=1,\quad ax\equiv ay\pmod m
+       \quad\Longrightarrow\quad x\equiv y\pmod m.
+\]
+All residue representatives below lie in a stated finite interval.
+
+\begin{theorem}[Solving and counting linear congruences]
+\label{el:linearcong}
+Let $m>0$, $a\in\N$, $b\in\Z$, and $g=\gcd(a,m)$.
+The congruence $ax\equiv b\pmod m$ is solvable exactly when $g\mid b$.
+When solvable, it has exactly $g$ representatives in $[0,m)$, namely
+\[
+ x_0+k(m/g)\qquad(0\le k<g),
+\]
+where $0\le x_0<m/g$ is computed by a B\'ezout inverse modulo $m/g$.
+\end{theorem}
+\begin{proof}
+A solution gives $ax-my=b$, proving necessity.  If $g\mid b$, divide
+by $g$ to obtain $a'x\equiv b'\pmod {m'}$ with
+$\gcd(a',m')=1$.  Compute $u$ with $ua'+vm'=1$ and take
+$x_0=(ub')\bmod m'$.  Multiplication by $u$ shows that every solution
+is congruent to $x_0$ modulo $m'$.  The integers in $[0,m)$ with that
+residue are exactly $x_0+km'$ for $k<g$, by division of a proposed
+representative by $m'$.  They are distinct because their differences
+have magnitude less than $m$ and a nonzero difference of their indices
+cannot be a multiple of $g$.  This includes $m'=1$ and $a=0$.
+\end{proof}
+
+\begin{theorem}[Generalized Chinese remainder theorem for two moduli]
+\label{el:crt2}
+For $m,n>0$, the system
+$x\equiv a\pmod m$, $x\equiv b\pmod n$ has a solution exactly when
+$\gcd(m,n)\mid(b-a)$.  There is then a unique solution in
+$[0,L)$, where $L=\operatorname{lcm}(m,n)\le mn$.
+\end{theorem}
+\begin{proof}
+Necessity follows by subtracting the congruences.  Put $g=\gcd(m,n)$,
+$m'=m/g$, $n'=n/g$.  If $g\mid b-a$, solve
+$m't\equiv(b-a)/g\pmod {n'}$ using the preceding theorem.  The integer
+$a+mt$ satisfies both congruences.  Reduce it modulo $L=mn'$ to obtain
+the required representative; both moduli divide $L$, so reduction
+preserves the congruences.  Two solutions differ by a multiple of both
+$m$ and $n$, and hence by a multiple of $L$ by the valuation criterion.
+Two representatives in $[0,L)$ with that property are equal.
+\end{proof}
+
+\begin{theorem}[Chinese remainder theorem for a finite system]
+\label{el:crt}
+For positive moduli $m_0,\ldots,m_{k-1}$ and integer residues $a_i$,
+a simultaneous solution exists exactly when
+\[
+ \gcd(m_i,m_j)\mid(a_i-a_j)\qquad(i,j<k).
+\]
+When it exists, there is a unique representative below
+$L=\operatorname{lcm}(m_0,\ldots,m_{k-1})$, and it is primitive
+recursively computable.  In particular pairwise coprime moduli admit
+arbitrary residues, with $L=\prod_i m_i$.
+\end{theorem}
+\begin{proof}
+First prove the pairwise coprime case by successively applying
+Theorem~\ref{el:crt2}.  The product of the previously used moduli is
+coprime to the next: otherwise a prime dividing their gcd would divide
+one previous modulus, contradicting the hypothesis.  Thus each step
+is possible and gives one representative below the enlarged product.
+
+For general moduli take $M=\prod_i m_i$ (the empty product is one).
+For each prime $p\le M$ occurring in some modulus, set
+$e_p=\max_{i<k}v_p(m_i)$ and select the least index $j_p$ attaining it.
+The compatibility hypotheses imply
+\[
+ a_{j_p}\equiv a_i\pmod {p^{v_p(m_i)}}
+\]
+for every $i$: the indicated prime power divides
+$\gcd(m_i,m_{j_p})$.  Use the coprime case to solve
+$x\equiv a_{j_p}\pmod {p^{e_p}}$ for the finitely many occurring primes.
+Its modulus is $L=\prod_p p^{e_p}\le M$.  For each $i$, the difference
+$x-a_i$ is divisible by every prime power in $m_i$, hence by $m_i$.
+Necessity follows by subtraction, and uniqueness follows because a
+difference divisible by all moduli is divisible by their lcm.
+All maxima, index choices, and prime scans are bounded by $k$ and $M$.
+For $k=0$ the assertion has the unique representative zero modulo one.
+\end{proof}
+
+Define
+\[
+ \varphi(n)=\#\{1\le r\le n:\gcd(r,n)=1\}\qquad(n\ge1).
+\]
+For $n>1$ the same count uses the residues $1,\ldots,n-1$.
+The inverse of a coprime residue is computed by B\'ezout or by a scan
+of $[0,n)$, so inverse and multiplication are primitive recursive maps
+on an explicitly finite list.
+
+\begin{theorem}[Euler's theorem]\label{el:euler}
+If $n\ge1$ and $\gcd(|a|,n)=1$, then
+\[
+                    a^{\varphi(n)}\equiv1\pmod n.
+\]
+\end{theorem}
+\begin{proof}
+For $n=1$ every pair of integers is congruent.  For $n>1$, enumerate
+the coprime residues as $r_0<\cdots<r_{h-1}$, where $h=\varphi(n)$.
+Multiplication by $a$, followed by reduction, sends this list to itself:
+a common divisor of $ar_i$ and $n$ would, using an inverse for $a$,
+divide $r_i$.  An inverse for $a$ also gives the inverse map, so this
+is a permutation of the finite list.  Products of a finite list are
+unchanged by such a permutation.  Concretely, scan the image list,
+find each next entry in the remaining source list, and swap it into
+place; every search has length at most $h$ and each swap preserves
+the product.  Hence
+\[
+ a^h\prod_{i<h}r_i\equiv\prod_{i<h}r_i\pmod n.
+\]
+The product is coprime to $n$: multiply the inverses of the entries.
+Coprime cancellation proves the assertion.  The finite permutation
+argument needs only bounded arrays and quantifier-free induction.
+\end{proof}
+
+\begin{corollary}[Fermat's little theorem]\label{el:fermat}
+For a prime $p$, $p\nmid a$ implies $a^{p-1}\equiv1\pmod p$.
+For every integer $a$ one has $a^p\equiv a\pmod p$.
+\end{corollary}
+\begin{proof}
+The nonzero residues modulo a prime are exactly its coprime residues,
+so $\varphi(p)=p-1$.  Apply Euler's theorem and multiply by $a$.
+If $p\mid a$, the second congruence holds directly.  The case split
+is the bounded divisibility test.
+\end{proof}
+
+\begin{theorem}[Order of a residue]\label{el:order}
+For $n>1$ and $\gcd(|a|,n)=1$, the least positive exponent
+$d\le\varphi(n)$ with $a^d\equiv1\pmod n$ exists and is primitive
+recursive.  For every $t\in\N$,
+\[
+ a^t\equiv1\pmod n\ \Longleftrightarrow\ d\mid t,
+ \qquad\text{and consequently }d\mid\varphi(n).
+\]
+\end{theorem}
+\begin{proof}
+Euler's theorem supplies a witness within the search range.  Write
+$t=qd+r$, $0\le r<d$.  Since $a^d\equiv1$, one has
+$a^t\equiv a^r$.  If this is one and $r>0$, the search defining $d$
+would have found $r$ earlier.  Thus $r=0$.  Conversely, a multiple
+of $d$ gives a power of $a^d$ and hence residue one.  Substitute
+$t=\varphi(n)$ for the last assertion.
+\end{proof}
+
+\begin{theorem}[Wilson's theorem and converse]\label{el:wilson}
+For every $n\ge2$,
+\[
+ \operatorname{Prime}(n)\quad\Longleftrightarrow\quad
+ (n-1)!\equiv-1\pmod n.
+\]
+\end{theorem}
+\begin{proof}
+Let $p$ be prime.  Every residue $1,\ldots,p-1$ has a unique inverse.
+An inverse equals the original residue exactly when
+$p\mid(x-1)(x+1)$, which, by Euclid's lemma, gives $x=1$ or $x=p-1$
+within the specified interval.  For odd $p$ these are distinct and
+all other entries form pairs with product one.  To make the pairing
+literal, maintain a Boolean ``used'' array; take the least unused
+non-fixed entry, pair it with its computed inverse, and mark both.
+The inverse is unused, since if it had already appeared then its
+partner would have been the present entry.  After at most $p$ steps
+all non-fixed entries have been paired.  The factorial residue is
+therefore $1\cdot(p-1)=-1$.  For $p=2$, directly $1!=-1\pmod2$.
+
+Conversely, if $n$ is composite choose a proper divisor $d$ with
+$1<d<n$.  It divides $(n-1)!$.  If $n$ divided $(n-1)!+1$, then $d$
+would also divide that number and hence divide one, a contradiction.
+Because primality is decidable, this exclusion of the composite branch
+proves primality constructively.
+\end{proof}
+
+\begin{theorem}[RSA correctness, including nonunits]\label{el:rsa}
+Let $p,q$ be distinct primes, $N=pq$, and let positive $e,d$ satisfy
+$ed\equiv1\pmod{(p-1)(q-1)}$.  For every integer message $m$,
+\[
+                    (m^e)^d\equiv m\pmod N.
+\]
+All key arithmetic and message transformations here are primitive
+recursive.  This assertion makes no claim about cryptographic security.
+\end{theorem}
+\begin{proof}
+Since $ed\ge1$, write $ed=1+t(p-1)(q-1)$ with $t\ge0$.
+Modulo $p$, test whether $p\mid m$.  If so, both $m^{ed}$ and $m$
+are zero.  Otherwise Fermat's theorem gives
+$m^{ed}=m(m^{p-1})^{t(q-1)}\equiv m$.  The same proof works modulo
+$q$.  These distinct prime moduli are coprime, so the difference is
+divisible by their product.  The exponentiation identity
+$(m^e)^d=m^{ed}$ is a direct induction.  To compute encryption or
+decryption one can reduce after every multiplication; a loop of
+length equal to the exponent keeps all residues below $N$.
+\end{proof}
+
+\begin{theorem}[Base-expansion divisibility rules]\label{el:digits}
+If $b\ge2$ and $n=\sum_{i<k}d_i b^i$, $0\le d_i<b$, then
+\[
+ n\equiv\sum_{i<k}d_i\pmod{b-1},\qquad
+ n\equiv\sum_{i<k}(-1)^i d_i\pmod{b+1}.
+\]
+If $m\mid b^j$, divisibility by $m$ depends only on the last $j$
+base-$b$ digits.  Thus the usual decimal rules for $3,9,11$, and
+powers dividing $10^j$ follow.
+\end{theorem}
+\begin{proof}
+Modulo $b-1$ every power of $b$ is one; modulo $b+1$ its $i$th power
+is $(-1)^i$.  These claims follow by induction on $i$ and can be
+substituted into the finite sum.  For the last assertion, split the
+sum at $j$; every term of the remaining part contains $b^j$.
+The digit list itself is obtained by repeated division by $b$ for at
+most $n+1$ steps, padding by zeros after the quotient reaches zero.
+The invariant says that the original number is the extracted low
+part plus $b^i$ times the current quotient.
+\end{proof}
+
+\subsection{Factorials, binomial coefficients, and their valuations}
+
+Define $\binom nk$ by Pascal recursion, setting it to zero when $k>n$.
+Finite summation of Pascal's rule proves
+$(x+y)^n=\sum_{k=0}^n\binom nkx^ky^{n-k}$ by induction on $n$:
+multiply the previous sum by $x+y$, shift the second index, and add
+adjacent coefficients.  The same recursion proves
+$k!(n-k)!\binom nk=n!$ for $k\le n$.  Indeed, at an interior
+index $1\le k\le n$, multiplying Pascal's identity for
+$\binom{n+1}{k}$ by $k!(n+1-k)!$ gives the sum
+$(n+1-k)n!+kn!=(n+1)!$ by the two induction identities.
+The boundary indices are immediate.
+
+\begin{theorem}[Prime binomial divisibility and the Frobenius identity]
+\label{el:binomial}
+For a prime $p$ and $0<k<p$ one has $p\mid\binom pk$.
+Consequently $(x+y)^p\equiv x^p+y^p\pmod p$ for integer $x,y$,
+and the coefficientwise identity
+$(A+B)^p=A^p+B^p$ holds for finite polynomials modulo $p$.
+\end{theorem}
+\begin{proof}
+The factorial product $k!(p-k)!$ contains no factor divisible by $p$,
+by repeated Euclid's lemma; it is coprime to $p$.  The factorial
+identity shows that $p$ divides this product times $\binom pk$,
+because $p\mid p!$.  Cancel the coprime product.  All the inner
+coefficients of the binomial expansion therefore vanish modulo $p$.
+The same calculation works in the finite polynomial ring: addition
+and multiplication are bounded coefficient sums, and the binomial
+expansion uses only commutativity and distributivity.  There is no
+appeal to an infinite polynomial object.
+\end{proof}
+
+\begin{theorem}[Legendre's factorial valuation formula]
+\label{el:legendre}
+For a prime $p$ and $n\ge0$,
+\[
+        v_p(n!)=\sum_{j=1}^{n}\left\lfloor\frac{n}{p^j}\right\rfloor.
+\]
+If $n=\sum_{i<k}d_i p^i$ is its base-$p$ expansion and
+$s_p(n)=\sum_{i<k}d_i$, this is equivalently
+\[
+                 (p-1)v_p(n!)=n-s_p(n).
+\]
+\end{theorem}
+\begin{proof}
+Valuation additivity gives $v_p(n!)=\sum_{a=1}^n v_p(a)$.
+For each $a\le n$, the exponent $v_p(a)$ counts exactly the indices
+$j\in[1,n]$ with $p^j\mid a$: the valid powers form the initial segment
+through $v_p(a)$, and $p^n>n$ for $n>0$.  Interchange the two finite
+sums.  The number of multiples of $p^j$ in $[1,n]$ is
+$\lfloor n/p^j\rfloor$, by division, proving the first formula.
+For the second, division of the base-$p$ expansion gives
+$\lfloor n/p^j\rfloor=\sum_{i\ge j}d_i p^{i-j}$.
+Summing and using
+$(p-1)\sum_{h=0}^{i-1}p^h=p^i-1$ gives
+$(p-1)v_p(n!)=\sum_i d_i(p^i-1)=n-s_p(n)$.
+For $n=0$ all sums are empty and $0!=1$ has valuation zero.
+\end{proof}
+
+\begin{theorem}[Lucas's binomial congruence]\label{el:lucas}
+Let $p$ be prime and write $n=\sum_i n_i p^i$ and
+$k=\sum_i k_i p^i$ with digits in $[0,p)$, padding with zeros to the
+same finite length.  Then
+\[
+                    \binom nk\equiv\prod_i\binom{n_i}{k_i}\pmod p,
+\]
+where a binomial coefficient with lower index exceeding the upper
+is zero.
+\end{theorem}
+\begin{proof}
+Iterate the finite polynomial identity of
+Theorem~\ref{el:binomial} to obtain
+$(1+X)^{p^i}\equiv1+X^{p^i}$ coefficientwise modulo $p$.
+Exponent addition therefore gives
+\[
+ (1+X)^n\equiv\prod_i(1+X^{p^i})^{n_i}\pmod p.
+\]
+Expanding the right side chooses indices $j_i$ with
+$0\le j_i\le n_i<p$, contributing the exponent
+$\sum_i j_i p^i$ and coefficient $\prod_i\binom{n_i}{j_i}$.
+Uniqueness of base-$p$ division says that this exponent is $k$ exactly
+when $j_i=k_i$ for every $i$.  If some digit $k_i>n_i$ no term exists
+and the coefficient is zero; otherwise precisely one digit tuple
+exists, yielding the formula.  This coefficient comparison is finite:
+arrays of length $n+1$ suffice, with integer coefficients bounded by
+$2^n$, and digit lists have length at most $n+k+1$.  For $k>n$ the
+same comparison uses the zero coefficient outside degree $n$.
+\end{proof}
+
+\begin{theorem}[Kummer's carry formula]\label{el:kummer}
+For a prime $p$ and $0\le k\le n$, the exponent of $p$ in
+$\binom nk$ equals the number of carries when adding $k$ and $n-k$
+in base $p$.  Equivalently,
+\[
+ (p-1)v_p\!\left(\binom nk\right)
+     =s_p(k)+s_p(n-k)-s_p(n).
+\]
+\end{theorem}
+\begin{proof}
+The binomial coefficient is positive for $k\le n$, as follows from
+Pascal recursion.  Taking valuations in
+$k!(n-k)!\binom nk=n!$ and applying Legendre's formula gives the
+displayed digit-sum identity.  To interpret it, let $a_i,b_i,n_i$
+be the base-$p$ digits of $k,n-k,n$, padded with zeros, and let
+$c_i$ be the carry into position $i$, with $c_0=0$.
+The grade-school addition recursion is the division of
+$a_i+b_i+c_i$ by $p$.  Since $a_i,b_i<p$ and $c_i\le1$, each carry
+$c_{i+1}$ is zero or one, and
+\[
+                 a_i+b_i+c_i=n_i+p c_{i+1}.
+\]
+There are at most $n+2$ relevant positions, and the last carry is
+zero after padding because the sum is $n$.  Sum these equations
+without positional weights.  The sums of incoming and outgoing
+carries agree, leaving
+$s_p(k)+s_p(n-k)-s_p(n)=(p-1)\sum_i c_{i+1}$.
+Cancel $p-1>0$.  The carry array is computed by a fixed bounded loop,
+so both the equality and the count use only quantifier-free induction.
+\end{proof}
+
+\subsection{Arithmetic functions and finite inversion}
+
+For $n\ge1$ and $r\in\N$ define
+\[
+ \tau(n)=\sum_{d=1}^n[d\mid n],\qquad
+ \sigma_r(n)=\sum_{d=1}^n[d\mid n]d^r,\qquad \sigma=\sigma_1.
+\]
+Here $[P]$ is one or zero according as the decidable predicate $P$
+holds or fails.  Define $\mu(n)=0$ when a square of a prime divides
+$n$; otherwise define $\mu(n)=(-1)^t$, where $t$ is the number of
+its distinct prime factors.  In particular $\mu(1)=1$.
+An arithmetic function is called multiplicative if its value at one
+is one and it satisfies $f(ab)=f(a)f(b)$ whenever $a,b$ are positive
+and coprime.  Statements involving an unspecified $f$ below are
+fixed-function schemas, or statements about supplied finite tables.
+
+\begin{theorem}[Divisor formulas and multiplicativity]
+\label{el:divisorfunc}
+If $n=\prod_{i<t}p_i^{e_i}$ with distinct primes and $e_i>0$, then
+\[
+ \tau(n)=\prod_{i<t}(e_i+1),\qquad
+ \sigma_r(n)=\prod_{i<t}\left(\sum_{j=0}^{e_i}p_i^{rj}\right).
+\]
+The functions $\tau$ and $\sigma_r$ are multiplicative.  For $r=1$,
+\[
+             (p-1)\sigma(p^e)=p^{e+1}-1.
+\]
+\end{theorem}
+\begin{proof}
+The valuation criterion gives a bijection between positive divisors
+$d$ of $n$ and tuples $(j_0,\ldots,j_{t-1})$ with $0\le j_i\le e_i$:
+the divisor is $\prod_i p_i^{j_i}$.  Counting tuples gives the formula
+for $\tau$.  Summing $d^r=\prod_i p_i^{rj_i}$ and distributing the
+finite product gives the second formula.  For coprime $a,b$ their
+prime supports are disjoint, so both products concatenate; this proves
+multiplicativity.  The last equation follows by subtracting the finite
+geometric sum from $p$ times that sum.  All tuple codes are bounded by
+$\prod_i(e_i+1)\le(n+1)^n$; direct divisor scans use only $n$ steps.
+\end{proof}
+
+\begin{theorem}[Squarefree decomposition and parity of divisor functions]
+\label{el:squareparity}
+Every $n\ge1$ has unique positive integers $s,t$ such that
+$n=st^2$ and $s$ is squarefree (no prime square divides it).
+Both are primitive recursively computable and at most $n$.
+Furthermore,
+\[
+ \tau(n)\text{ is odd}\ \Longleftrightarrow\ n\text{ is a square},
+\]
+\[
+ \sigma(n)\text{ is odd}\ \Longleftrightarrow\
+ n\text{ is a square or twice a square}.
+\]
+\end{theorem}
+\begin{proof}
+For every prime exponent $e$ in the factorization of $n$, divide it
+as $e=2q+r$ with $r\in\{0,1\}$.  Put the factor $p^r$ into $s$ and
+$p^q$ into $t$.  Unique factorization proves $n=st^2$, squarefreeness,
+and uniqueness of these choices.  The product formula
+$\tau(n)=\prod_p(e_p+1)$ is odd exactly when every $e_p$ is even,
+which is exactly the condition for $n$ to be a square.
+For an odd prime $p$, the sum $1+p+\cdots+p^e$ has parity $e+1$;
+for $p=2$ it is always odd.  Thus $\sigma(n)$ is odd exactly when
+every odd-prime exponent is even.  In that case the exponent of
+two is either even, giving a square, or odd, giving twice a square.
+The converse follows from the same parity calculation.
+All root witnesses are the displayed products of half-exponents,
+so the existential conclusions carry explicit bounded constructions.
+\end{proof}
+
+\begin{theorem}[Totient formula and multiplicativity]
+\label{el:totient}
+For a prime $p$ and $e\ge1$,
+$\varphi(p^e)=p^{e-1}(p-1)$.  The totient is multiplicative, and hence
+\[
+             \varphi(n)=\prod_{p^e\parallel n}p^{e-1}(p-1)
+             \qquad(n\ge1).
+\]
+\end{theorem}
+\begin{proof}
+A residue modulo $p^e$ is noncoprime exactly when it is divisible by
+$p$, using prime factorization.  Among $1,\ldots,p^e$ precisely
+$p^{e-1}$ numbers are multiples of $p$.  Subtracting their count proves
+the prime-power formula.  If $a,b$ are coprime, the Chinese remainder
+map from residues modulo $ab$ to pairs of residues modulo $a,b$ is
+bijective.  A residue is coprime to $ab$ exactly when each component
+is coprime to its modulus: a prime common divisor would divide $a$
+or $b$.  Restricting the finite bijection to these decidable sublists
+gives $\varphi(ab)=\varphi(a)\varphi(b)$.  Factorization then proves
+the product formula; the empty product gives $\varphi(1)=1$.
+\end{proof}
+
+\begin{theorem}[The divisor sum of the totient]\label{el:phisum}
+For every $n\ge1$,
+\[
+                         \sum_{d\mid n}\varphi(d)=n.
+\]
+\end{theorem}
+\begin{proof}
+Partition $a=1,\ldots,n$ by $g=\gcd(a,n)$.  For a fixed divisor $g$
+of $n$, the assignment $a=gu$ identifies this part with the integers
+$1\le u\le n/g$ coprime to $n/g$: dividing a B\'ezout identity for
+$a,n$ by $g$ proves one direction, and multiplying a coprimality
+identity for $u,n/g$ by $g$ proves the other.  This part has
+$\varphi(n/g)$ members.  The divisor map $g\mapsto n/g$ is an
+involution, so counting all $n$ integers gives the stated sum.
+This is a disjoint finite classification, implementable by a double
+scan bounded by $n^2$.
+\end{proof}
+
+\begin{theorem}[M\"obius cancellation]\label{el:mobiuscancel}
+The function $\mu$ is multiplicative and
+\[
+ \sum_{d\mid n}\mu(d)=\varepsilon(n),\qquad
+ \varepsilon(n)=\begin{cases}1&n=1,\\0&n>1.\end{cases}
+\]
+\end{theorem}
+\begin{proof}
+For coprime inputs, their prime supports are disjoint.  If either has
+a repeated prime factor, the product does too and both sides of
+multiplicativity are zero.  Otherwise the numbers of prime factors
+add and their parity signs multiply.  This proves multiplicativity.
+For $n=1$ the divisor sum is $\mu(1)=1$.  For $n>1$, fix the least
+prime $p\mid n$.  Divisors with a squared prime factor contribute
+zero.  Pair each squarefree divisor not containing $p$ with its
+product by $p$; both divide $n$, the pairing is reversible, and the
+values of $\mu$ are opposite.  The finite sum is therefore zero.
+Equivalently, distributing over the distinct prime support gives a
+product of factors $1-1$.  The pairing is explicit and bounded by $n$.
+\end{proof}
+
+\begin{theorem}[Liouville's function and square detection]
+\label{el:liouville}
+Let $\Omega(n)$ be the length of the prime factor list, counting
+multiplicity, and put $\lambda(n)=(-1)^{\Omega(n)}$ for $n\ge1$.
+Then $\lambda(ab)=\lambda(a)\lambda(b)$ for all positive $a,b$, and
+\[
+ \sum_{d\mid n}\lambda(d)=
+ \begin{cases}1&n\text{ is a square},\\0&n\text{ is not a square}.
+ \end{cases}
+\]
+\end{theorem}
+\begin{proof}
+Concatenating prime factor lists and using their uniqueness gives
+$\Omega(ab)=\Omega(a)+\Omega(b)$, without any coprimality assumption.
+This proves complete multiplicativity of $\lambda$.  A divisor of
+$n=\prod_p p^{e_p}$ chooses each exponent independently, so finite
+distributivity gives
+\[
+ \sum_{d\mid n}\lambda(d)=\prod_{p\mid n}
+             (1-1+1-\cdots+(-1)^{e_p}).
+\]
+Each parenthesis is one when $e_p$ is even and zero when it is odd,
+by pairing consecutive terms.  The product is therefore one exactly
+when every exponent is even.  This is the square criterion just proved.
+For $n=1$ the empty product is one, as required.
+\end{proof}
+
+For fixed integer-valued primitive recursive functions $f,g$ define
+Dirichlet convolution by
+\[
+                  (f*g)(n)=\sum_{d\mid n} f(d)g(n/d),\qquad n\ge1.
+\]
+This is a primitive recursive operation for each fixed pair of function
+definitions.  One can instead take arrays containing $f(1),\ldots,f(N)$
+and $g(1),\ldots,g(N)$ to obtain a single first-order assertion for
+all indices at most $N$.
+
+\begin{theorem}[Finite Dirichlet convolution algebra]
+\label{el:convolution}
+Dirichlet convolution is commutative and associative, has identity
+$\varepsilon$, and distributes over pointwise addition.  If $f,g$
+are multiplicative, then $f*g$ is multiplicative.
+\end{theorem}
+\begin{proof}
+For commutativity replace a divisor $d$ by $n/d$; this substitution
+is a bijection of the finite divisor list.  Both
+$((f*g)*h)(n)$ and $(f*(g*h))(n)$ expand as
+\[
+                   \sum_{abc=n}f(a)g(b)h(c),
+\]
+where $1\le a,b,c\le n$.  The equality follows by a bijective
+reindexing of this bounded triple sum, proving associativity.
+Only the divisor one contributes to $(\varepsilon*f)(n)$, and
+finite distributivity proves the additive rule.
+
+If $\gcd(a,b)=1$, each divisor of $ab$ has a unique form $uv$ with
+$u\mid a$ and $v\mid b$, by the prime exponent description.  The
+complementary divisor is $(a/u)(b/v)$.  The two factors in each of
+these products are coprime.  Multiplicativity of $f$ and $g$ therefore
+gives
+\[
+ (f*g)(ab)=\sum_{u\mid a}\sum_{v\mid b}
+ f(u)f(v)g(a/u)g(b/v)=(f*g)(a)(f*g)(b).
+\]
+The value at one is one.  For a formal theorem about finite tables,
+only the multiplicativity identities at the bounded arguments used
+in this display are hypotheses; no quantification over functions is
+part of the arithmetic language.
+\end{proof}
+
+\begin{theorem}[M\"obius inversion]\label{el:mobius}
+For fixed primitive recursive integer-valued $f,F$, the identities
+\[
+ F(n)=\sum_{d\mid n}f(d)\quad(n\ge1)
+\]
+are equivalent to
+\[
+ f(n)=\sum_{d\mid n}\mu(d)F(n/d)\quad(n\ge1).
+\]
+For each $N$, the same equivalence holds using only the corresponding
+identities at indices $1,\ldots,N$.  In particular
+\[
+                   \varphi(n)=\sum_{d\mid n}\mu(d)(n/d).
+\]
+\end{theorem}
+\begin{proof}
+Let $\mathbf1(n)=1$.  M\"obius cancellation says
+$\mu*\mathbf1=\varepsilon$.  If $F=\mathbf1*f$, associativity gives
+$\mu*F=(\mu*\mathbf1)*f=f$.  Conversely, if $f=\mu*F$, then
+$\mathbf1*f=(\mathbf1*\mu)*F=F$.
+Every convolution evaluated at $n$ uses only divisors of $n$, all at
+most $n$, so the proof applies verbatim to the bounded version with
+$n\le N$.  Apply it to Theorem~\ref{el:phisum} to obtain the totient
+formula.  This proof is therefore a quantifier-free induction on
+finite sums after the bounded hypotheses have been folded into one
+Boolean antecedent, rather than an induction on a functional equation.
+\end{proof}
+
+\begin{theorem}[Divisor summatory and hyperbola identities]
+\label{el:summatory}
+For $N\in\N$ and $r\in\N$,
+\[
+ \sum_{n=1}^N\sigma_r(n)=
+      \sum_{d=1}^N d^r\left\lfloor\frac Nd\right\rfloor.
+\]
+Writing $h=\lfloor\sqrt N\rfloor$, the divisor-counting case also has
+\[
+ \sum_{n=1}^N\tau(n)=
+       2\sum_{d=1}^{h}\left\lfloor\frac Nd\right\rfloor-h^2.
+\]
+\end{theorem}
+\begin{proof}
+Both sides of the first identity count the finite pairs $(d,k)$ with
+$d,k\ge1$ and $dk\le N$, giving pair weight $d^r$.  On the left
+classify by $n=dk$; on the right fix $d$ and count
+$k\le\lfloor N/d\rfloor$.  This is a reindexing in the square
+$[1,N]^2$.  In the unweighted case every admissible pair has $d\le h$
+or $k\le h$, because otherwise $dk\ge(h+1)^2>N$.  The two regions
+each have $\sum_{d=1}^{h}\lfloor N/d\rfloor$ points.  Their intersection
+is the full square $[1,h]^2$, since $h^2\le N$, and has $h^2$ points.
+Adding the two region counts and subtracting their intersection gives
+the second formula.  For $N=0$ all regions and sums are empty.
+\end{proof}
+
+\begin{theorem}[Euclid--Euler characterization of even perfect numbers]
+\label{el:perfect}
+An even positive integer $N$ satisfies $\sigma(N)=2N$ exactly when
+\[
+                  N=2^{e-1}(2^e-1)
+\]
+for some $e\ge2$ such that $2^e-1$ is prime.  The exponent $e$ is then
+prime.  For a supplied $N$ all witnesses and all tests are bounded
+primitive recursive computations.
+\end{theorem}
+\begin{proof}
+If $q=2^e-1$ is prime and $e\ge2$, then $q$ is odd, and
+multiplicativity of $\sigma$ gives
+\[
+ \sigma(2^{e-1}q)=(1+2+\cdots+2^{e-1})(1+q)
+                  =(2^e-1)2^e=2N.
+\]
+Conversely, write an even $N$ as $2^s m$ with $s\ge1$ and $m$ odd,
+using $s=v_2(N)$.  The equation for perfection becomes
+\[
+             (2^{s+1}-1)\sigma(m)=2^{s+1}m.
+\]
+Put $q=2^{s+1}-1$.  Since $q$ and $2^{s+1}$ are consecutive, they are
+coprime, so coprime cancellation gives $q\mid m$.  Write $m=qt$;
+then the displayed equation simplifies to
+$\sigma(m)=(q+1)t=m+t$.  If $t>1$, the three distinct numbers
+$1,t,m$ are divisors of $m$ (here $q\ge3$), so
+$\sigma(m)\ge1+t+m>t+m$, a contradiction.  Thus $t=1$ and $m=q$.
+The identity $\sigma(q)=q+1$ forces $q$ to be prime, because a proper
+divisor $1<d<q$ would add an additional positive summand besides
+$1$ and $q$.  Taking $e=s+1$ gives the required form.
+Finally, if $e=uv$ with $u,v>1$, then
+\[
+ 2^e-1=(2^u-1)(1+2^u+\cdots+2^{u(v-1)})
+\]
+has two factors greater than one, contradicting primality.
+The exponent $s$ is obtained by a scan bounded by $N$, and the proof
+uses only factorization, finite sums, and explicit inequalities.  It
+says nothing about the existence or nonexistence of odd perfect numbers.
+\end{proof}
+
+\subsection{Quantifier-free proof obligations for this chapter}
+
+The constructions above provide witness terms, not merely assertions that
+an algorithm eventually terminates.  Their common verification pattern is
+as follows.  Code a loop state by a finite tuple of natural numbers; for
+signed coordinates, code a sign and magnitude.  Set a total clock, extend
+the transition by the identity after its stopping condition, and define
+the state after $i$ steps by primitive recursion.  Express the invariant
+as equality of natural-valued characteristic functions.  Its preservation
+is a quantifier-free statement with the original inputs as parameters.
+Apply quantifier-free induction to $i$, then decode the state at the clock.
+Finite permutations and reindexings are verified by explicit bounded
+maps and their inverses.  No infinite set, quotient type, arbitrary
+choice function, or unbounded minimization is needed.
+
+For clarity, some useful clocks and magnitude bounds are collected here.
+They are deliberately generous; optimal bit complexity is a separate
+question.
+\begin{center}
+\begin{tabular}{p{0.27\linewidth}p{0.62\linewidth}}
+\hline
+Construction & Sufficient explicit arithmetic bound\\
+\hline
+Division of $a$ by $b>0$ & $a$ counter steps; outputs at most $a$.\\
+Extended Euclid & $a+b+1$ steps; coefficient magnitudes at most
+$(a+b+2)^{a+b+1}$.\\
+Prime factorization & $n$ division stages, each divisor scan at most $n$;
+factor array of length at most $n$ with entries at most $n$.\\
+Sieve to $N$ & At most $N^2$ crossing-off checks; bit-array code
+below $2^{N+1}$.\\
+CRT for $k$ moduli & Representative below $\prod_{i<k}m_i$;
+prime and exponent scans below that product.\\
+Orders and inverses & Residue scan below $n$ and exponent scan
+at most $\varphi(n)\le n$.\\
+Arithmetic functions & Divisor and prime scans bounded by $n$;
+$\sigma_r(n)\le n^{r+1}$ for $n\ge1$.\\
+Summatory identities & Reindexings inside $[1,N]^2$.\\
+\hline
+\end{tabular}
+\end{center}
+
+Each theorem concerning a positive input is encoded with a decidable
+antecedent, so total definitions may return a harmless default on
+nonpositive or malformed inputs.  This handles zero denominators and
+invalid finite-array codes without adding a partial function to \ipra.

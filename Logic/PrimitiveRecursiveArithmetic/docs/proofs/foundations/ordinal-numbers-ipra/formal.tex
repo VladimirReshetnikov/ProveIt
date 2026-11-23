@@ -1,0 +1,73 @@
+\section{Lean formalization and proof obligations}
+\label{sec:formal}
+Lean 4.32.0 checked the following theorems with its standard library. The object-language construction in the next subsection gives the remaining steps for certification in iPRA.
+
+\subsection{What the kernel has checked}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\linewidth}{@{}p{.22\linewidth}X@{}}
+\toprule
+File & Definitions and proved results\\\midrule
+\texttt{Finite.lean} & Ackermann bit membership, exact elements of $\nu(n)$, membership and inclusion tests, and intrinsic recognition by two levels of transitivity. On any Boolean finite linear order, the predecessor count and its bounded inverse are order-preserving bijections. See \texttt{structural\_recognition}, \texttt{rank\_lt\_iff}, \texttt{rank\_unrank} and \texttt{unrank\_rank}.\\
+\texttt{OrdinalCore.lean} & Binary-tree syntax, recursive comparison, validity, $+$ and $\cdot$. Equality reflection, reversal, transitivity, comparison of principal terms, strict successor growth and agreement of addition on finite inputs.\\
+\texttt{Limits.lean} & Immediate successor, height of canonical terms and the exact tower test, classification by the last exponent, and fundamental sequences. \texttt{fundamental\_sequence} proves validity, increase and the limit bound. \texttt{cofinal\_modulus} proves the node-count witness.\\
+\texttt{Threshold.lean} & \texttt{firstIndex\_spec} proves the exact threshold equivalence for a bounded search. The search uses the node-count bound. The sharper maximum-coefficient bound and the direct recursive formula are proved in Corollary~\ref{thm:exact-fs}.\\
+\texttt{Power.lean} & General addition associativity, two inverse equations for division by $\omega$ with validity of the quotient, and general power as an executable definition. Finite-exponent recursion and transfinite examples are checked.\\
+\bottomrule
+\end{tabularx}
+
+Here is the mathematical content of the two main limit declarations, with Boolean tests written as predicates. For valid $x$ ending in a positive exponent, $F(x,n)$ is valid and $F(x,n)<F(x,n+1)<x$. For valid $y<x$ and $v(y)\le n$, the comparison $y<F(x,n)$ holds. These use the same convention $F(\omega,n)=n+1$ as the manuscript. The Lean tree is either \texttt{nil} or \texttt{cons head tail}, so a word and a suffix are both trees. In the node count a cons contributes the count of its head plus that of its tail, and nil contributes one. This is exactly $1+\sum v(e_i)$.
+
+\subsection{From the definitions to object-language derivations}
+The ProveIt snapshot used here defines \texttt{LeanProofs.ConciseIPRA.PR k}, \texttt{PTm k}, \texttt{Fm PTm k} and \texttt{Prf PRAAx}. A declaration with conclusion
+\texttt{([] : List (Fm PTm k))} $\vdash$\texttt{[PRAAx]} $\varphi$ represents an object-language derivation with $k$ free numerical variables. Universal introduction can close those variables. Its numeric primitives include composition and primitive recursion. The finite algorithms in this report therefore specify their symbols by explicit PR definitions, without adding axioms about their intended computations.
+
+\begin{enumerate}[leftmargin=*,label=\arabic*.]
+\item \textbf{Arithmetic representation.}
+Use \texttt{IPRADerivations.Core.Definitions} for \texttt{PTm.toPR}, \texttt{recDef}, \texttt{rec\_zero}, and \texttt{rec\_succ}. Use \texttt{Core.Pairing} for the square pairing, inverse projections, and paired registers, and \texttt{Core.Search} or \texttt{Core.SearchParameters} for least bounded search. Encode cons by one plus the pairing from Section~\ref{sec:foundation}. Set $\mathrm{entry}(L,0)=\mathrm{head}(L)$ and $\mathrm{entry}(L,i+1)=\mathrm{entry}(\mathrm{tail}(L),i)$, with default zero. Implement retrieval by iterating tail then taking head. Prepend each new result to a history list, retrieving the entry for stage $j<t$ at index $t-1-j$. The defining equations and paired-register projections give the readback lemma by numerical induction with the queried $j$ fixed. A subcode table is an instance of this history. On malformed values all tests and constructors have fixed default outputs, and theorem hypotheses guard semantic conclusions.
+\item \textbf{Bounded induction and order.}
+Introduce Boolean operators, a bounded conjunction and a first-failure witness as in Section~\ref{sec:foundation}. To prove an instance $A(s)$ of a bounded universal assertion, apply the repository's \texttt{ind} rule to the equality $\mathrm{allPass}(s)=1$. Eliminate bounded conjunctions by instantiation at a selected index. Introduce them by a scan, retaining a failure witness if the result is zero. Build $\mathrm{cmp}$ from the empty, head and tail clauses. To avoid a choice of traversal order in a rectangular table for comparison, increase the first input's numerical code $i$ and at each stage fill every second input $j\le B$, for fixed bound $B$. Both recursive comparisons have smaller first code and bounded second code. Derive comparison transitivity by the bounded triple invariant of Theorem~\ref{thm:order}. Reflect equality of codes using injectivity of the pairing. The checked Lean proof \texttt{cmp\_trans} supplies the exact branch split.
+\item \textbf{Finite structures.}
+Represent a relation by its $n^2$ membership bits, a partial table by a numerical list, and an order by its bounded validity test. Sorted-prefix invariants certify rank/unrank and isomorphism. Vertex-removal invariants certify the collapse. For $\nu$, prove first the one-bit successor identity using \texttt{Core.Powers} and division with remainder. The bounded recognition formula checks both levels of transitivity by ranging over indices $<a$. Use the finite table of all implications up to the current numerical code for strong induction. The semantic Lean \texttt{Sub} contains a universal quantifier, but the arithmetic induction test uses only the finite digit ranges.
+\item \textbf{Limit sequences, derivatives and descent.}
+Define the tagged classifier to return zero, a predecessor, or a value $F(x,n)$ as in \texttt{Limits.localStep}. The paper's rightmost-child recursion also gives a PR definition by tables. For the modulus introduce PR symbols $V,L,C,F$ for validity, ends-in-positive, strict comparison and the fundamental sequence, and $v$ for node count. The object theorem has free inputs $x,y,n$ with matrix
+\[
+ (V(x)=1\ \wedge\ V(y)=1\ \wedge\ L(x)=1\ \wedge\ C(y,x)=1\ \wedge\ v(y)\le n)
+ \ \longrightarrow\ C(y,F(x,n))=1 .
+\]
+Here $u\le n$ is the quantifier-free equality $u\mathbin{\dot-}n=0$ on natural numbers. Fix $x,y,n$ and tabulate the implications for all subcodes of $x,y$ by decreasing recursive dependency. Every recursive pair is within the original boxes, and node counts of relevant children decrease. The \emph{parameter} $n$ is fixed. For consecutive-index growth, compute the two values at $n$ and $n+1$ in parallel. For derivatives define $D_a(x)$ by its last-exponent test, prove the local positive/negative neighborhood witnesses, and only then introduce the universal quantifiers of the topology statements. For fixed $d$, construct $H_d$ at the Lean meta-level by $d$ repetitions of the iterator construction. The proof by blocks is a bounded induction on the input list.
+\item \textbf{Arithmetic and order models.}
+Represent a word-normalization scan by its time and stack. Prove equality of stacks immediately after consuming an absorbable pair. Use this lemma before the algebra of addition, then the block-expansion lemma before multiplication. General division uses only these two operations and the bounded maximum in Section~\ref{sec:division}. Powers need the split at $\omega$, finite powers, and the leading-exponent identity. After addition and multiplication, construct division by $\omega$ and then general division. Next prove the power laws and continuity, which supply the bounds needed for digit expansions. For rank/unrank of function words, check digit bounds and carry the finite high-to-low prefix sum as accumulator. For prime factorization use runs and ordinary bounded integer division. The inverse procedure in equation (5) proves uniqueness. The object-level proofs of the general division, exponent, and prime-factor theorems remain to be implemented.
+\item \textbf{Natural arithmetic and extensions.}
+Sort and count by bounded insertion. Prove multiplicity invariance on the finite union of input and output supports. Products use a rectangular table of pairs, and associativity reindexes triples. The module \texttt{Core.Fubini} provides a reusable finite-sum exchange. For nimbers implement digits and exclusive-or by a bounded sum of digit differences modulo two. For mex use first missing below one plus list length. For the epsilon extension use a tag for marker versus power, encode its index or exponent as a component, and compute levels before comparisons. The three inputs to a transitivity proof shrink together on recursive comparisons. Track the maximum input level and a syntax-height cap for the tower theorem. For hereditary base change use a table through the input integer and a second for evaluating the resulting tree. Digit comparison needs a conjunction over all pairs of subterms including pairs from the same root. These finite invariants suffice without any induction on the notation order.
+\end{enumerate}
+The normality and cover results are conditional theorems or schemata over fixed algorithms. Introduce their witnesses before discharging hypotheses and closing the formulas. A completed object derivation can then be transported by the repository's \texttt{pra\_iff\_native} equivalence. This object-language stage remains open for the collection.
+
+\section{Source correspondence and further questions}
+\small
+\begin{description}[leftmargin=.8em,labelindent=0pt,style=nextline]
+\item[Order and sets, Sections~\ref{sec:foundation}, \ref{sec:finite-models}, \ref{sec:division}, \ref{sec:scope}.] Strict order, order types, initial segments, finite Mostowski collapse, von Neumann membership, union, and cardinality. \href{https://en.wikipedia.org/wiki/Ordinal_number}{Ordinal number},
+\href{https://en.wikipedia.org/wiki/Well-order}{Well-order},
+\href{https://en.wikipedia.org/wiki/Order_type}{Order type},
+\href{https://en.wikipedia.org/wiki/Mostowski_collapse_lemma}{Mostowski collapse lemma},
+\href{https://en.wikipedia.org/wiki/Cardinal_number}{Cardinal number}.
+\item[Limits and topology, Sections~\ref{sec:fundseq}--\ref{sec:control} and \ref{sec:scope}.] Successor, cofinality, order topology, induction, least points, and the club-intersection hypothesis. \href{https://en.wikipedia.org/wiki/Successor_ordinal}{Successor ordinal},
+\href{https://en.wikipedia.org/wiki/Limit_ordinal}{Limit ordinal},
+\href{https://en.wikipedia.org/wiki/Cofinality}{Cofinality},
+\href{https://en.wikipedia.org/wiki/Order_topology}{Order topology},
+\href{https://en.wikipedia.org/wiki/Transfinite_induction}{Transfinite induction},
+\href{https://en.wikipedia.org/wiki/Club_set}{Club set}.
+\item[Arithmetic and fixed points, Sections~\ref{sec:ordinary}--\ref{sec:epsilon}.] Ordinary and Hessenberg operations, order-type models, prime factorization, finite mex arithmetic, normal functions and epsilon numbers.
+\href{https://en.wikipedia.org/wiki/Ordinal_arithmetic}{Ordinal arithmetic}, including its Cantor normal form and prime factorization sections,
+\href{https://en.wikipedia.org/wiki/Additively_indecomposable_ordinal}{Additively indecomposable ordinal},
+\href{https://en.wikipedia.org/wiki/Nimber}{Nimber},
+\href{https://en.wikipedia.org/wiki/Normal_function}{Normal function},
+\href{https://en.wikipedia.org/wiki/Epsilon_numbers_(mathematics)}{Epsilon numbers}.
+\item[Constructive and proof-theoretic context.] N. Kraus, F. Nordvall Forsberg and C. Xu, \emph{Type-Theoretic Approaches to Ordinals}, TCS 957 (2023), 113843, surveys constructive tradeoffs and develops binary-tree CNFs in type theory. M. Rathjen, \emph{Goodstein's theorem revisited}, gives the metatheoretic nonprovability used in Section~\ref{sec:scope}. Our local descent proof uses finite digit arithmetic. \href{https://arxiv.org/abs/2208.03844}{Kraus--Nordvall Forsberg--Xu},
+\href{https://arxiv.org/abs/1405.4484}{Rathjen}.
+\item[ProveIt.] We used the theory definition and derivation interface from Vladimir Reshetnikov's repository, at commit \texttt{95aa4ea543d15ec628998c1f21cd71147745728e}. Section~\ref{sec:scope}'s two-type example is adapted from the repository note on effective ordinal semantics. The proof packet is standalone.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/95aa4ea543d15ec628998c1f21cd71147745728e/Logic/PrimitiveRecursiveArithmetic}{iPRA directory},
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/95aa4ea543d15ec628998c1f21cd71147745728e/Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Core}{Core derivations},
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/95aa4ea543d15ec628998c1f21cd71147745728e/Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/ordinal_two_type_effectivity_boundary.md}{Two-type promise note}.
+\end{description}
+\paragraph{Further questions.}
+Can the numerical code for a CNF be replaced by a word code with smaller readback bounds while shortening the object derivation of quantitative cofinality? What uniform bounds can be proved when both the descent dimension and the growth-control function are restricted by explicit input data? For the extended epsilon notation, can the derivative and cofinality calculations be lifted with a modulus depending only on the size of the comparator and the largest marker index it uses?

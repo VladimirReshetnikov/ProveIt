@@ -1,0 +1,62 @@
+\section*{Scope, results, and reading guide}
+\addcontentsline{toc}{section}{Scope, results, and reading guide}
+
+The task is to prove as much as possible of the mathematics represented by the Wikipedia article \emph{Number theory} and its relevant immediate outgoing links, while remaining in intuitionistic primitive recursive arithmetic. The article is used as a topic index. The proofs below are independently developed finite arguments, not an appeal to Wikipedia as a proof authority. The selected coverage spans divisibility, prime decomposition, congruences, finite fields, quadratic reciprocity, additive representations, Diophantine equations and approximation, finite analytic estimates, elementary algebraic number theory, $p$-adic lifting, and partitions~\cite{wiki-number,mit781}.
+
+The report contains \ResultCount\ numbered mathematical results, of which \FoundationCount\ are foundational finite-proof lemmas and \NumberTheoryCount\ are number-theoretic theorems, lemmas, or corollaries. These counts refer to distinct numbered entries, not to individual consequences packed into a theorem. They are a substantial selection, not a claim to exhaust the indefinitely extensible subject or to maximize a formal theorem count. Each numbered result has a human-readable proof. The archive adds Lean definitions and proof obligations, exact-arithmetic reference algorithms, finite validation records, a theorem inventory, and source provenance.
+
+\begin{center}
+\begin{tabularx}{\linewidth}{p{0.27\linewidth}X}
+\toprule
+Area & Principal results developed in full\\
+\midrule
+Arithmetic and primes & Division, Euclidean algorithm and B\'ezout, linear equations, Euclid's lemma, unique factorization, valuations, lcm, bounded prime infinitude, and sieve correctness.\\
+Congruences and functions & Generalized finite CRT, Euler and Fermat, Wilson and converse, RSA correctness, Lucas and Kummer, divisor and totient formulas, M\"obius inversion, Liouville's divisor sum, and even perfect numbers.\\
+Quadratic theory & Polynomial root bounds, primitive roots, Euler's criterion, Gauss's lemma, reciprocity and supplements, complete two-square classification, and the four-square theorem.\\
+Diophantine theory & Rational roots, Pythagorean triples, square-area and quartic descents, continued fractions, Farey separation, finite Dirichlet approximation, bounded Pell existence, and classification by fundamental powers.\\
+Analytic and probabilistic & Exact inclusion--exclusion sieve, dyadic Chebyshev bounds, explicit divergence of prime reciprocals, zeta tails and Euler-product error, prime-divisor means, and finite CRT independence.\\
+Algebraic and combinatorial & A concrete nonunique factorization ring, truncated valuations, unique Hensel lifting, compatible $p$-adic names, partition recursion, odd/distinct partitions, and conjugation.\\
+Transcendence & An explicit Liouville rational name, factorial-tail bounds, and uniform positive separation from every nonzero integer polynomial.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection*{Three representative explicit bounds}
+The main theme is that the existence statements carry actual finite search bounds. For every $n$, a four-square witness lies in $[0,n]^4$, and the full proof establishes that the $(n+1)^4$-candidate search succeeds. For a nonsquare $D\ge2$, put
+\[
+ C=4D+2,\quad B=4(D+1),\quad K=2C^3,\quad U=(B+1)^{K+1},
+ \quad H=4(D+1)^2(U+1)^2.
+\]
+Then a nontrivial solution of $x^2-Dy^2=1$ exists with $2\le x\le H$ and $1\le y\le H$. The proof uses rational approximation and a finite collision of equal norms and residue classes. It does not assume periodic continued fractions.
+
+For the prime reciprocal sum a similarly explicit statement is
+\[
+ \sum_{p\le 2^{\,2\cdot4^{4k+1}}}\frac1p>k\qquad(k\in\N).
+\]
+The proof uses only finite rational products and the dyadic harmonic lower bound. Such bounds are deliberately generous. Primitive recursive arithmetic constrains the form of the construction and its proof; it does not require a practical algorithm or an optimal asymptotic estimate.
+
+\subsection*{Correspondence with the source scope}
+The mathematical map below records the portion of the linked topic actually developed. Links are scope references; the later proofs supply the mathematics.
+\begin{longtable}{p{0.31\linewidth}p{0.61\linewidth}}
+\toprule
+Root article or immediate topic & Treatment and exact scope\\
+\midrule\endhead
+\emph{Number theory}, elementary subsection & Integer arithmetic, congruences, primes, factorial and divisor identities, right triangles, and partitions. The \emph{Elementary number theory} URL currently redirects to this article.\\
+\emph{Prime number} & Factorization, infinitude, two residue classes, primality by finite tests, dyadic distribution bounds, prime reciprocal divergence, and Euler products.\\
+\emph{Finite field} & Prime fields $\mathbf F_p$, polynomial roots, the cyclic multiplicative group, and power equations. The classification of every finite field is outside this report.\\
+\emph{Diophantine approximation} & Rational finite Dirichlet approximation, simultaneous approximation, continued fractions, explicit transfer with slack to fixed rational names, and Liouville's explicit transcendental example.\\
+\emph{Algebraic number theory} & The pair-ring $\Z[\sqrt{-5}]$, norm, algebraic-integrality certificates, and an explicit failure of unique factorization. General class groups and class field theory are outside the proved scope.\\
+\emph{$p$-adic number} & Finite precision valuations, Hensel's simple-root lifting, and a fixed primitive recursive compatible residue sequence. No unrestricted completion or quantification over all $p$-adic numbers is assumed.\\
+\emph{Probabilistic number theory} & Exact finite means and divisibility independence over a complete CRT period. No central limit theorem is inferred.\\
+\emph{Analytic number theory} and zeta discussion & Finite sieve identities, Chebyshev-scale estimates, and Euler products for integer exponents $s\ge2$ with a rational error bound. No complex analytic continuation is used.\\
+\emph{Diophantine geometry} & Rational-root obstructions, the right-triangle parametrization, Pell curves, and explicit finite descent examples. No general finiteness theorem for higher-genus curves is claimed.\\
+\bottomrule
+\end{longtable}
+
+\subsection*{Limits of the claims}
+For discrete statements the report proves their usual mathematical content. The four-square theorem is proved for every natural number, and quadratic reciprocity is proved for all distinct odd primes. For continuous statements the proved content is the specified arithmetical version: a fixed rational name and a primitive recursive accuracy schedule, or a finite certificate with a stated error. These formulations are stated explicitly at the point of use.
+
+The report proves the obstruction to three squares but not the converse characterization. It proves primes in the classes $1$ and $3$ modulo $4$, not the full arithmetic-progression theorem. It supplies the exponent-four case of Fermat's theorem, not a proof for every exponent. It does not claim proofs of the Riemann hypothesis, Goldbach's conjecture, general class field theory, or unrestricted Diophantine finiteness theorems. Failure to include a theorem here is not a proof that it cannot be formulated or proved in \ipra. In particular the repository has a stronger arithmetic prime-number endpoint, discussed separately in Section~\ref{sec:lean}; this report's own proof portfolio stops at the explicit estimates it develops in full.
+
+\subsection*{How to read the package}
+Read Section~\ref{sec:foundations} first for the translation discipline and the distinction between human proofs, reference computations, and object-level formal proofs. The elementary chapter supplies the common arithmetic. The quadratic and Diophantine chapters can then largely be read independently. The final formalization section gives exact repository interfaces, concrete Lean goal types, and a staged completion route. The machine-readable inventory and validation summaries make the coverage and evidence auditable without relying on the present synopsis.

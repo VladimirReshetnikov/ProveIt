@@ -1,0 +1,252 @@
+{
+  "chapter": "Diophantine equations, continued fractions, and bounded approximation",
+  "result_count": 20,
+  "status": "Human-readable constructive proofs with explicit PR bounds; Lean definitions and proof obligations are uncompiled outlines.",
+  "sources": [
+    {
+      "title": "MIT OCW 18.781 Theory of Numbers, Abhinav Kumar and Joseph Lee, 2012",
+      "url": "https://ocw.mit.edu/courses/18-781-theory-of-numbers-spring-2012/pages/lecture-notes/",
+      "use": "Reference topics: continued fractions, Pell, Pythagorean triples, descent; proofs in this chapter are independently developed arithmetizations."
+    },
+    {
+      "title": "Keith Conrad, Proofs by Descent",
+      "url": "https://kconrad.math.uconn.edu/blurbs/ugradnumthy/descent.pdf",
+      "use": "Classical quartic-descent statement and background."
+    }
+  ],
+  "results": [
+    {
+      "id": "dio:normal",
+      "kind": "theorem",
+      "title": "Canonical rational representation",
+      "bound": "gcd(|a|,b) and exact quotient; normalize zero to 0/1",
+      "dependencies": [
+        "gcd",
+        "Euclid lemma"
+      ],
+      "lean_obligation": "normalize_valid_reduced_unique",
+      "schema": false
+    },
+    {
+      "id": "dio:rational-root",
+      "kind": "theorem",
+      "title": "Rational root test",
+      "bound": "|u|<=|c0| and 1<=v<=|cd| for c0,cd nonzero",
+      "dependencies": [
+        "dio:normal",
+        "Euclid lemma"
+      ],
+      "lean_obligation": "rational_root_denominator_and_numerator_divide",
+      "schema": false
+    },
+    {
+      "id": "dio:powers",
+      "kind": "corollary",
+      "title": "Rational powers and irrational roots",
+      "bound": "root test t<=N+1, prime test p<=N",
+      "dependencies": [
+        "dio:rational-root",
+        "unique factorization"
+      ],
+      "lean_obligation": "rational_power_integral_and_valuation_criterion",
+      "schema": false
+    },
+    {
+      "id": "dio:pythagoras",
+      "kind": "theorem",
+      "title": "Primitive Pythagorean triples",
+      "bound": "m,n<=c",
+      "dependencies": [
+        "unique factorization",
+        "gcd"
+      ],
+      "lean_obligation": "recover_pythagorean_parameters",
+      "schema": false
+    },
+    {
+      "id": "dio:all-triples",
+      "kind": "corollary",
+      "title": "All integer right triangles",
+      "bound": "scale=gcd(a,b), parameters<=c",
+      "dependencies": [
+        "dio:pythagoras"
+      ],
+      "lean_obligation": "scale_to_primitive_triple",
+      "schema": false
+    },
+    {
+      "id": "dio:square-area",
+      "kind": "theorem",
+      "title": "No integer right triangle has positive square area",
+      "bound": "fuel=initial hypotenuse",
+      "dependencies": [
+        "dio:pythagoras",
+        "bounded descent"
+      ],
+      "lean_obligation": "square_area_step_and_fuel_contradiction",
+      "schema": false
+    },
+    {
+      "id": "dio:fermat-four",
+      "kind": "theorem",
+      "title": "Fermat's quartic descent",
+      "bound": "fuel=initial z",
+      "dependencies": [
+        "dio:pythagoras",
+        "bounded descent"
+      ],
+      "lean_obligation": "quartic_step_and_fuel_contradiction",
+      "schema": false
+    },
+    {
+      "id": "dio:cf-rational",
+      "kind": "theorem",
+      "title": "Finite continued fractions for rationals",
+      "bound": "Euclidean fuel b+1; coefficients<=a+b",
+      "dependencies": [
+        "division algorithm"
+      ],
+      "lean_obligation": "rational_cf_terminates_canonical_unique",
+      "schema": false
+    },
+    {
+      "id": "dio:continuants",
+      "kind": "theorem",
+      "title": "Continuant identity, coprimality, and growth",
+      "bound": "coordinates<=(A+1)^(n+1); q_(2k)>=2^k",
+      "dependencies": [
+        "integer polynomial identities"
+      ],
+      "lean_obligation": "continuant_determinant_coprime_growth",
+      "schema": false
+    },
+    {
+      "id": "dio:cf-error",
+      "kind": "theorem",
+      "title": "Exact tail and error identities",
+      "bound": "exact error 1/[q_n(t*q_n+q_(n-1))]",
+      "dependencies": [
+        "dio:continuants"
+      ],
+      "lean_obligation": "rational_tail_identity_and_error",
+      "schema": false
+    },
+    {
+      "id": "dio:cf-real",
+      "kind": "corollary",
+      "title": "A primitive recursive continued-fraction real",
+      "bound": "r_k uses prefix of length 2k+3; error<=2^(-2k-2)",
+      "dependencies": [
+        "dio:cf-error"
+      ],
+      "lean_obligation": "fixed_PR_cf_stream_Cauchy_schema",
+      "schema": true
+    },
+    {
+      "id": "dio:farey",
+      "kind": "theorem",
+      "title": "Farey separation and the mediant",
+      "bound": "intermediate denominator>=b+d",
+      "dependencies": [
+        "integer arithmetic"
+      ],
+      "lean_obligation": "farey_mediant_minimum_denominator",
+      "schema": false
+    },
+    {
+      "id": "dio:dirichlet",
+      "kind": "theorem",
+      "title": "Rational Dirichlet approximation",
+      "bound": "Q+1 points; q<=Q; error<1/Q",
+      "dependencies": [
+        "fd:php",
+        "rational arithmetic"
+      ],
+      "lean_obligation": "rational_grid_collision_witness",
+      "schema": false
+    },
+    {
+      "id": "dio:simultaneous",
+      "kind": "theorem",
+      "title": "Simultaneous rational Dirichlet approximation",
+      "bound": "N^d+1 points; q<=N^d; coordinate errors<1/N",
+      "dependencies": [
+        "fd:php",
+        "dio:dirichlet"
+      ],
+      "lean_obligation": "simultaneous_grid_witness",
+      "schema": false
+    },
+    {
+      "id": "dio:real-transfer",
+      "kind": "theorem",
+      "title": "Certified transfer to represented reals",
+      "bound": "precision k=2*N^(d+1); errors<3/(2N)",
+      "dependencies": [
+        "dio:simultaneous",
+        "certified rational-name inequalities"
+      ],
+      "lean_obligation": "finite_error_transfer_schema",
+      "schema": true
+    },
+    {
+      "id": "dio:pell-approx",
+      "kind": "lemma",
+      "title": "Bounded norm with a prescribed lower denominator",
+      "bound": "Q=4(D+1)(Y+1); Y<q<=Q; p<=D*Q+1; 0<|norm|<4D+2",
+      "dependencies": [
+        "dio:dirichlet",
+        "dio:powers",
+        "integer square root"
+      ],
+      "lean_obligation": "bounded_norm_pair_with_lower_denominator",
+      "schema": false
+    },
+    {
+      "id": "dio:pell-existence",
+      "kind": "theorem",
+      "title": "Uniform bounded Pell existence",
+      "bound": "C=4D+2; B=4(D+1); K=2C^3; U=(B+1)^(K+1); H=4(D+1)^2(U+1)^2; x,y<=H",
+      "dependencies": [
+        "dio:pell-approx",
+        "fd:php"
+      ],
+      "lean_obligation": "PellBoundSpec_and_findPell_correct",
+      "schema": false
+    },
+    {
+      "id": "dio:pell-powers",
+      "kind": "theorem",
+      "title": "Pell composition and arbitrarily many solutions",
+      "bound": "n steps; coordinates<=(u+D*v+1)^n",
+      "dependencies": [
+        "norm composition identity"
+      ],
+      "lean_obligation": "pell_norm_multiplicative_and_powers_strict",
+      "schema": false
+    },
+    {
+      "id": "dio:pell-all",
+      "kind": "theorem",
+      "title": "All positive Pell solutions are fundamental powers",
+      "bound": "fundamental search within H box; exponent descent fuel=input y",
+      "dependencies": [
+        "dio:pell-existence",
+        "dio:pell-powers"
+      ],
+      "lean_obligation": "fundamental_search_and_PellClassificationSpec",
+      "schema": false
+    },
+    {
+      "id": "dio:pell-family",
+      "kind": "corollary",
+      "title": "An explicit Pell family",
+      "bound": "fundamental pair=(t,1) for D=t^2-1",
+      "dependencies": [
+        "dio:pell-all"
+      ],
+      "lean_obligation": "pell_t_squared_minus_one",
+      "schema": false
+    }
+  ]
+}

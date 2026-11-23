@@ -1,0 +1,124 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=0.88in,headheight=14pt]{geometry}
+\usepackage{mathtools,amssymb,amsthm}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{booktabs,longtable,tabularx,array}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{xurl}
+\usepackage[unicode,hidelinks]{hyperref}
+\definecolor{ink}{HTML}{15364B}
+\definecolor{accent}{HTML}{216780}
+\definecolor{softgray}{HTML}{F3F5F7}
+\hypersetup{pdftitle={Constructive Number Theory in iPRA},
+ pdfauthor={Research report prepared for Vladimir Reshetnikov},
+ pdfsubject={Finite proofs, primitive recursive bounds, and Lean formalization blueprint},
+ colorlinks=true,linkcolor=ink,urlcolor=accent,citecolor=ink}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\ipra}{\ensuremath{\mathsf{iPRA}}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+\setlist{topsep=5pt,itemsep=3pt,parsep=0pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{3em}
+\allowdisplaybreaks[2]
+\lstset{basicstyle=\small\ttfamily,columns=fullflexible,
+ breaklines=true,frame=single,rulecolor=\color{accent!30},
+ backgroundcolor=\color{softgray},aboveskip=8pt,belowskip=8pt,
+ keepspaces=true,showstringspaces=false}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{ink}Constructive Number Theory in \ipra}
+\fancyhead[R]{\small Research report}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\input{metrics.tex}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\color{ink}
+\vspace*{0.8cm}
+{\large MATHEMATICAL RESEARCH REPORT\par}
+\vspace{0.35cm}
+\hrule height 1.2pt
+\vspace{1.1cm}
+{\Huge\bfseries Constructive\par Number Theory\par}
+\vspace{0.3cm}
+{\LARGE in intuitionistic primitive\par recursive arithmetic\par}
+\vspace{0.9cm}
+{\large Fully developed finite proofs, explicit witnesses,\par
+and a Lean formalization blueprint\par}
+\vspace{1.2cm}
+{\Large\bfseries \NumberTheoryCount\ number-theoretic results\par}
+\vspace{0.15cm}
+{\large plus \FoundationCount\ foundational finite-proof lemmas\par}
+\vfill
+{\large Prepared for Vladimir Reshetnikov\par}
+\vspace{0.35cm}
+{\large 22 November 2026\par}
+\vspace{0.6cm}
+{\small Source scope: \emph{Number theory} and relevant immediately linked topics.\par
+ProveIt integration snapshot: \texttt{bbb85238dac5}.\par
+Proof status: complete human arguments; uncompiled Lean blueprint;\par
+finite exact-arithmetic checks recorded separately.\par}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\tableofcontents
+\clearpage
+\input{chapters/introduction.tex}
+\clearpage
+\input{chapters/foundations.tex}
+\clearpage
+\input{chapters/elementary.tex}
+\clearpage
+\input{chapters/quadratic.tex}
+\clearpage
+\input{chapters/diophantine.tex}
+\clearpage
+\input{chapters/analytic.tex}
+\clearpage
+\input{chapters/algebraic.tex}
+\clearpage
+\input{chapters/transcendence.tex}
+\clearpage
+\input{chapters/formalization.tex}
+\clearpage
+\appendix
+\section{Result inventory}
+The following table is generated from the actual theorem environments and labels in the source. It includes lemmas and corollaries, and keeps the five infrastructure lemmas separate by their \texttt{fd:} prefix. The JSON inventory also records statements and proof locations; the topic manifests supply additional witnesses, bounds, and dependency notes.
+\input{inventory.tex}
+\clearpage
+\input{chapters/validation.tex}
+\clearpage
+\begin{thebibliography}{99}
+\addcontentsline{toc}{section}{References and inspected sources}
+\bibitem{wiki-number} Wikipedia contributors, \emph{Number theory}, consulted 22 November 2026. Used as the requested scope index. \url{https://en.wikipedia.org/wiki/Number_theory}.
+\bibitem{wiki-prime} Wikipedia contributors, \emph{Prime number}. Scope reference. \url{https://en.wikipedia.org/wiki/Prime_number}.
+\bibitem{wiki-dio} Wikipedia contributors, \emph{Diophantine approximation}. Scope reference. \url{https://en.wikipedia.org/wiki/Diophantine_approximation}.
+\bibitem{wiki-padic} Wikipedia contributors, \emph{$p$-adic number}. Scope reference. \url{https://en.wikipedia.org/wiki/P-adic_number}.
+\bibitem{mit781} Abhinav Kumar and Joseph Lee, \emph{Theory of Numbers}, MIT 18.781, Spring 2012, lecture-note collection. Primary teaching reference for the conventional topics. \url{https://ocw.mit.edu/courses/18-781-theory-of-numbers-spring-2012/pages/lecture-notes/}.
+\bibitem{kumar-qr} Abhinav Kumar and Joseph Lee, \emph{Quadratic Residues, Quadratic Reciprocity}, MIT 18.781, Lecture 9 notes, 2012. \url{https://ocw.mit.edu/courses/18-781-theory-of-numbers-spring-2012/resources/mit18_781s12_lec9/}.
+\bibitem{lynn-qr} Ben Lynn, \emph{Number Theory: Quadratic Reciprocity}, Stanford-hosted notes. \url{https://crypto.stanford.edu/pbc/notes/numbertheory/quadrecip.html}.
+\bibitem{conrad-descent} Keith Conrad, \emph{Proofs by Descent}, University of Connecticut-hosted mathematical notes. \url{https://kconrad.math.uconn.edu/blurbs/ugradnumthy/descent.pdf}.
+\bibitem{miller-liouville} Steven J. Miller and Ramin Takloo-Bighash, \emph{An Invitation to Modern Number Theory: Countable, Uncountable, Algebraic and Transcendentals}, draft dated 23 October 2003, Section 2.3.1. \url{https://web.williams.edu/Mathematics/sjmiller/public_html/BrownClasses/1/CountableAlgTran.pdf}.
+\bibitem{proveit-readme} Vladimir Reshetnikov, \emph{ProveIt: Primitive recursive arithmetic}, repository overview at commit \texttt{bbb85238dac533fc4b7b84a750cca864fe35fed5}. \url{https://github.com/VladimirReshetnikov/ProveIt/blob/bbb85238dac533fc4b7b84a750cca864fe35fed5/Logic/PrimitiveRecursiveArithmetic/README.md}.
+\bibitem{proveit-pr} \emph{ProveIt: ConciseIPRA.PR}, definition of \texttt{PR}, \texttt{PTm}, \texttt{PRAAx}, and quantifier-free induction at the same commit. \url{https://github.com/VladimirReshetnikov/ProveIt/blob/bbb85238dac533fc4b7b84a750cca864fe35fed5/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/PR.lean}.
+\bibitem{proveit-bounded} \emph{ProveIt: Foundations.BoundedSyntax}, bounded syntax, compiler, and reflection derivations at the same commit. \url{https://github.com/VladimirReshetnikov/ProveIt/blob/bbb85238dac533fc4b7b84a750cca864fe35fed5/Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Foundations/BoundedSyntax.lean}.
+\bibitem{proveit-pnt} \emph{ProveIt: AnalyticNumberTheory.FinalPNT}, arithmetic prime number theorem source endpoint, at the same commit. The complete transitive proof closure was not rebuilt for this report. \url{https://github.com/VladimirReshetnikov/ProveIt/blob/bbb85238dac533fc4b7b84a750cca864fe35fed5/Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/AnalyticNumberTheory/FinalPNT.lean}.
+\end{thebibliography}
+\end{document}

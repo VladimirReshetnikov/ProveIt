@@ -1,0 +1,115 @@
+\section{Lean formalization: definitions, targets, and completion route}
+\label{sec:lean}
+
+\subsection{Three products that must not be conflated}
+There are three separate artifacts in a complete formalization. A \emph{semantic specification} defines the algorithms on Lean's \texttt{Nat}, \texttt{Int}, rational pairs, and finite lists, and states their mathematical correctness. A \emph{primitive recursive representation} gives the fixed function symbols and their defining equations. An \emph{object derivation} is a proof term in the explicit first-order calculus, with only the axioms of \ipra. An ambient Lean proof of a theorem about natural numbers does not automatically produce the third artifact. Even avoiding Lean's \texttt{Classical} namespace would not remove this distinction: unrestricted inductive propositions and higher-order constructions are available in the ambient metatheory.
+
+The delivered files provide concrete definitions and a detailed dependency plan. Their status is \textbf{uncompiled blueprint}. The runtime used to prepare this report had Python and \LaTeX, but no \texttt{lean}, \texttt{lake}, or \texttt{elan} executable. Therefore this package does not claim any new Lean kernel check. The existing repository sources were read at a pinned commit; their import closure was not rebuilt here. A record called \texttt{AnalyticGoals} or \texttt{RequiredDerivations} lists obligations and has no constructed inhabitant: such a record is not an axiom declaring the obligations true.
+
+\subsection{Concrete semantic interfaces}
+\texttt{ElementaryDefinitions.lean} defines fixed-clock iteration, bounded divisibility and primality bits, division states, an extended Euclidean state with two coefficient rows, factor lists, valuation, congruence, totient and divisor sums, M\"obius values, convolution, a sieve, finite CRT checking, bounded order search, digit extraction, and the Lucas product. The definitions have explicit defaults outside their mathematical domains. For example, the mathematical specification for \texttt{divide a b} assumes $b>0$; the definition still returns a total value for $b=0$.
+
+\texttt{AnalyticDefinitions.lean} defines prime lists, $\pi$, primorials, harmonic and zeta partial sums, rational Euler products and their truncations, the explicit prime-reciprocal bound, prime-divisor counts, finite sieve survivors, and the M\"obius formulas. The exact-rational semantics can initially use \texttt{Rat}; the object translation replaces a rational by signed numerator and positive denominator, with all comparisons cleared of denominators.
+
+\texttt{AlgebraicDefinitions.lean} defines the quadratic integer-pair multiplication and norm, truncated valuations, polynomial evaluation and formal derivative, a bounded Hensel digit search, compatible lifted residues, and finite multiplicity-vector partition predicates. Derivative coefficients are computed from the input coefficient vector. This is a restricted uniform polynomial interpreter, whose primitive recursiveness follows from its explicit finite degree loop.
+
+The Diophantine blueprint specifies rational normalization, continuants, approximation witnesses, the bounded norm-collision construction, and Pell classification. \texttt{QuadraticDefinitions.lean} adds residue searches, the Legendre symbol, primitive-root predicates, and bounded two-square and four-square witness searches; the quadratic chapter specifies the finite polynomial operations and both descent steps. \texttt{TranscendenceDefinitions.lean} supplies factorial truncations, rational polynomial evaluation, the coefficient bound, and the explicit separation search and denominator. The report itself defines every mathematical predicate and construction used in the goals; the machine-readable theorem inventory records the label and source file of each result.
+
+For a concrete example, a four-square witness can be defined without any complicated recursive control flow: enumerate $0\le a,b,c,d\le n$, encoded by four base-$(n+1)$ digits; choose the first tuple whose squared norm is $n$; return the zero tuple on failure. The scan has $(n+1)^4$ candidates. The hard proof obligation is that it succeeds, which is supplied mathematically by the prime-seed and descent proofs. Giving a bounded definition alone would not prove its success.
+
+\subsection{The exact ProveIt object language}
+At the pinned revision, \texttt{ConciseIPRA.PR} defines the type of function symbols by the following constructors:
+\begin{lstlisting}[language={}]
+inductive PR : Nat -> Type
+  | zero : PR 0
+  | succ : PR 1
+  | proj {k : Nat} (i : Fin k) : PR k
+  | comp {m k : Nat} (f : PR m) (gs : Fin m -> PR k) : PR k
+  | prec {k : Nat} (f : PR k) (g : PR (k + 2)) : PR (k + 1)
+\end{lstlisting}
+Terms \texttt{PTm n} have $n$ free variables and are built from variables and applications of these symbols. The symbols are syntactic descriptions, not object-level arguments to a universal evaluator. The primitive recursion constructor takes its recursion variable first. The first-order theory \texttt{PRAAx} contains the projection, composition, recursion, successor, and quantifier-free-induction axioms described in Section~\ref{sec:foundations}.
+
+The inspected \texttt{Foundations.BoundedSyntax} module gives an arity-indexed bounded formula type \texttt{BFm n}. It has equality, conjunction, disjunction, implication, negation, bounded universal, and bounded existential constructors. The module defines \texttt{formula} for the actual first-order interpretation and \texttt{bitF} for a compiled primitive recursive Boolean symbol. Its source contains the endpoint
+\begin{lstlisting}[language={}]
+boolean_reflection_closed (A : BFm n) :
+  ([] : List (Fm PTm 0)) |- [PRAAx]
+    univ n (iff (app (bitF A) var = one) (formula A))
+\end{lstlisting}
+where the listing uses plain ASCII for the source's object equality and derivability notation. This is a derivation of Boolean reflection, not an extra reflection axiom. Its compilation is metatheoretic recursion on a fixed finite formula. This is exactly the infrastructure required for the bounded invariants in this report.
+
+\texttt{Core.Search.search\_found} finds a \emph{zero} of its supplied term. By contrast the characteristic functions in this report use $1$ for truth. A port must therefore supply the complement $1-[A]$, or explicitly use the corresponding zero-specification. Reversing these conventions silently would invalidate a witness routine. The exact names and bit conventions were checked in the source, rather than inferred from a filename.
+
+\texttt{ProveItTargets.lean} defines actual formulas in the object language, parameterized by the still-to-be-constructed primitive recursive witness codes. For example its four-square body has one free variable and is the literal object equality
+\[
+ w_0(n)^2+w_1(n)^2+w_2(n)^2+w_3(n)^2=n.
+\]
+Its universal closure is a closed \texttt{Fm PTm 0}. The Pell body uses a Boolean nonsquare guard and the equality $x(D)^2=1+Dy(D)^2$, together with $y(D)>0$. The file also reuses the inspected bounded-reflection theorem in a small wrapper; that wrapper remains uncompiled here. The missing theorem-specific derivations are explicitly fields of a requirement record.
+
+\subsection{Source audit and reusable interfaces}
+The source paths below are relative to
+\path{Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/}.
+They were read at commit \texttt{bbb85238dac533fc4b7b84a750cca864fe35fed5}.
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.43\linewidth}>{\raggedright\arraybackslash}p{0.50\linewidth}}
+\toprule
+Inspected source & Useful interface or precise role\\
+\midrule\endhead
+\path{Core/Definitions.lean} & \texttt{PTm.toPR}, \texttt{recDef}, \texttt{sumF}, \texttt{prodF}; converts fixed arithmetic terms into function symbols.\\
+\path{Core/Division.lean} & \texttt{div\_mod}, \texttt{euclid\_unique}, \texttt{div\_mod\_unique}; quotient and remainder equations.\\
+\path{Core/Bezout.lean} & \texttt{Bezout.invariant\_open} and \texttt{Bezout.bezout}; a closed B\'ezout derivation.\\
+\path{Core/Search.lean} & \texttt{Search.search\_spec}, \texttt{search\_minimal}, \texttt{search\_found}; bounded zero search.\\
+\path{Core/BoundedSums.lean} & \texttt{sum\_zero\_elim}, \texttt{sum\_zero\_of\_bounded}; finite sum reasoning.\\
+\path{Core/Pigeonhole.lean} & \texttt{Pigeonhole.pigeonhole}; explicit collision selectors and their object-level specification.\\
+\path{Core/Descent.lean} & \texttt{Descent.descent}; a reusable finite descent interface with hypotheses that must be discharged.\\
+\path{Foundations/BoundedSyntax.lean} & \texttt{BFm}, \texttt{bitF}, \texttt{boolean\_reflection\_closed}; the bounded-formula compiler and derivation.\\
+\path{DiophantineNumberTheory/}\newline\path{QuadraticReciprocity.lean} & \texttt{quadratic\_reciprocity}; a closed proof of the separately defined reciprocity sentence.\\
+\path{DiophantineNumberTheory/}\newline\path{PellGeneral.lean} & Positive- and negative-norm reduction from a \emph{supplied} norm-one unit; does not by its filename prove the explicit bound in Theorem~\ref{dio:pell-existence}.\\
+\path{AnalyticNumberTheory/}\newline\path{FinalPNT.lean} & \texttt{arith\_pnt}; a source endpoint for a stronger arithmetic prime-number estimate, recorded below without claiming a fresh rebuild.\\
+\bottomrule
+\end{longtable}
+
+The actual toolchain file specifies Lean \texttt{v4.32.0}; the lockfile pins Mathlib to
+\begin{center}\small\ttfamily 81a5d257c8e410db227a6665ed08f64fea08e997.\end{center}
+These exact files, rather than a potentially older prose dependency summary, determine the proposed replay environment. The source audit is selective: it checks interfaces and visible definitions, not every transitive imported proof. No new theorem in this report depends on treating an unverified research packet as an axiom.
+
+\subsection{A precise completion schedule}
+The following work order minimizes repeated encoding and proof work.
+\begin{enumerate}
+\item \textbf{Freeze the syntax and encodings.} Use the pinned \texttt{PR}, \texttt{PTm}, and \texttt{BFm} frontend. Represent integers by the repository's existing signed arithmetic layer, and rational values by integer numerator/positive denominator pairs. Prove agreement with the semantic definitions for every operation actually used. Select one list representation and prove its bounded access and update equations.
+\item \textbf{Port the shared loops.} Instantiate the proved Boolean compiler for primality, divisibility, squarehood, tuple validity, and the loop invariants. Reuse bounded zero search with the correct complemented truth bit. Implement frozen iteration, list factorization, bounded maxima, and finite sum/product templates as fixed primitive recursive syntax. Derive their initial and successor equations.
+\item \textbf{Discharge arithmetic invariants.} Reuse the division and B\'ezout derivations. Establish prime factorization with its remainder/product invariant, finite list uniqueness, and valuation formulas. Prove finite permutations and finite sum reindexings via coded inverse maps. These finish the elementary chapter and supply nearly all arithmetic dependencies for the later chapters.
+\item \textbf{Build the two main descent packets.} Compile the two-square and four-square norm identities into integer polynomial certificates. Prove the exact divisibility of every numerator before defining its quotient. Treat the even four-square multiplier separately from the odd multiplier. Use the fixed-clock invariant for the multiplier and then prove bounded witness-search success.
+\item \textbf{Build the Pell packet.} Establish the rational box collision, the norm estimate with $B=4(D+1)$ and $C=4D+2$, and the separation $q>Y$. Compile the $K+1$-stage sequence, where $K=2C^3$. Prove that equal class codes yield integral quotients, verify both signs by the two squared-difference identities, and discharge the explicit $H$ bound. This proves the new bound independently of any continued-fraction-period theorem.
+\item \textbf{Build the analytic packet.} Formalize the finite binomial valuation bound, the dyadic product recurrence, and the block partition recurrence for reciprocal products. For the Euler product, define its rational denominator and the primitive recursive error-removal index $J=2N+D+2$. The decisive obligation is the discrete fact that a positive rational with denominator $D$ is at least $1/D$.
+\item \textbf{Build the remaining finite packets.} Prove the Hensel Taylor remainder certificate, single-digit uniqueness, and the compatible residue loop. Verify the partition bijections by finite inverse transformations. The explicit transcendence construction, when read as separation of a fixed rational name from integer polynomial zeros, uses the same finite-polynomial and error-budget infrastructure.
+\item \textbf{Close and audit endpoints.} Assemble a derivation of each closed translated sentence, print its exact type and its Lean axiom dependencies, check that no \texttt{sorryAx} appears, and check the entire selected import closure. A clean \texttt{\#print axioms} for an ambient semantic theorem is not a substitute for inspecting that the conclusion really has the type \texttt{Prf PRAAx []} for the intended sentence.
+\end{enumerate}
+
+The packet-level manifests and the theorem inventory make this schedule concrete: every numbered result has a source label, a proof location, and the mathematical construction to port. The provided definitions may be optimized later without changing the mathematical obligations; the deliberately simple bounded searches are preferable first targets because they expose all quantifiers and default cases.
+
+\paragraph{A concrete transcendence endpoint.}
+Use integer coefficient vectors and rational pairs with positive
+denominators. Formalize Horner evaluation and synthetic division, proving
+the clocked remaining-roots invariant of Theorem~\ref{tr:polynomial}.
+Establish the finite power-difference identity and its rational inequality
+by induction on the exponent. Define $P_n,q_n$ by the displayed finite
+sums and prove the factorial-gap and finite-geometric inequalities.
+Finally define the $d+1$-entry search and its margin $D$ as numerical
+primitive recursive terms. The final object-theory formula has the
+nonzero-vector test as antecedent and, after denominator clearing,
+\[
+ m\ge n(c)\ \longrightarrow\ D(c)|\operatorname{num}(f_c(r_m))|
+                    \ge\operatorname{den}(f_c(r_m)).
+\]
+The positivity of the denominator is part of the rational-code invariant.
+These are concrete semantic and derivation obligations, not claims of
+completed Lean certification.
+
+\subsection{A stronger repository endpoint, kept separate}
+The inspected \texttt{FinalPNT.lean} source states a derivation of the arithmetic estimate
+\[
+ k\,\bigl|\pi(n)A(n)-nF(n)\bigr|\le nF(n)
+ \quad\text{for }k\ge1,\ n\ge N(k),
+\]
+where $F(n)=(n^2)!$, $A(n)=\sum_{j=n+1}^{n^2}F(n)/j$, and $N$ is a concrete primitive recursive term assembled from its imported stage functions~\cite{proveit-pnt}. In particular $A(n)/F(n)=H_{n^2}-H_n$ is an exact rational harmonic proxy for $\log n$. The source supplies a proof term using other library modules, rather than merely naming a goal. Reusing that endpoint with its complete checked dependency closure is a sensible next integration step.
+
+This report does not reproduce that long proof or define all its imported stage functions, so it does not count the prime number theorem among the self-contained results proved here. Likewise the existence of a source file named after a major theorem would not be enough to count its full classical formulation. This separation prevents the source inventory from enlarging the mathematical claims beyond the arguments actually supplied.

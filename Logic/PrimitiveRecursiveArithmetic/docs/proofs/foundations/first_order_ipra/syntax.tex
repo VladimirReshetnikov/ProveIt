@@ -1,0 +1,593 @@
+\section{Syntax with a computable account of binding}\label{sec:binding}
+
+Fix a finite signature, given by two lists of arities for functions and
+predicates. Constants have function arity zero. The arguments also apply
+schema by schema to a fixed signature given by primitive-recursive (PR)
+symbol tests and arity functions. An expression at arity $n$ may refer to
+the $n$ individuals $v_0,\ldots,v_{n-1}$. Terms are variables and
+applications $f(\vec t)$ of the stipulated arity. Formulas are predicates
+$R(\vec t)$, identities $s=t$, $\bot$, $A\wedge B$, $A\vee B$, $A\to B$,
+$\forall B$ and $\exists B$. Under either quantifier the body has arity
+$n+1$, with its newly bound slot at index zero. Write
+$\neg A=A\to\bot$ and $A\leftrightarrow B=(A\to B)\wedge(B\to A)$.
+An expression remains well scoped if an unused slot is appended at
+the high end. A sentence has no free occurrences.
+
+\begin{theorem}[Parsing, scope and alpha-conversion]\label{thm:alpha}
+Well-formedness, the parse tree, the free-variable set, the binding
+occurrence of each bound variable and alpha-equivalence of named
+expressions all have PR algorithms. Parsing succeeds with a unique tree.
+\end{theorem}
+\begin{proof}
+For a concrete serialization use prefix tokens carrying the constructor
+and any index or symbol. Its arity fixes the number and sorts of its
+children. Read the tokens backwards, pushing leaves and at each internal
+node popping the prescribed number of children, checking sorts in their
+specified order and pushing the resulting tree. Reject underflow,
+a bad symbol or any final stack other than one element of the requested
+sort. At each suffix the stack is its left-to-right list of complete
+subtrees whenever that suffix can arise in a parse. Reading a parent is
+then forced. Induction on the number of scanned tokens proves uniqueness
+and proves that serializing any tree is inverted by this scan. To check
+indices, traverse the resulting tree with the current binder depth $d$.
+An index $j<d$ picks the binder $j$ positions back from the innermost.
+Otherwise it denotes free slot $j-d$ and must satisfy $j-d<n$.
+Mark those slots in an $n$-bit mask. This computes the exact support,
+so closedness is decidable even when the input was supplied at positive
+arity.
+
+For named input keep a stack of active binder names, nearest first.
+Look up each occurrence on that stack by bounded search. A hit gives its
+position, and a miss gives the free name's index in a fixed table shared
+by both expressions being compared. A common table is obtained by sorting
+and removing duplicates from the free names in the two inputs. Renaming a
+binder to a fresh name and changing exactly its bound occurrences preserves
+these lookups. Conversely, assign to each binder in preorder the name
+$M+1+j$ for its preorder number $j$, where $M$ exceeds all names in both
+inputs. Both expressions can be renamed to this representative one binder
+at a time without capture. Equal indexed trees now print identically.
+The scans, stacks and bounded searches use at most the total token count
+in steps per traversal or lookup. The fresh names are bounded by $M+1$
+plus the larger token count.
+\end{proof}
+
+A substitution $\sigma:n\to m$ is a list of $n$ terms at arity $m$.
+Let $E[\sigma]$ replace each free slot by its image. On terms the
+clauses are $v_i[\sigma]=\sigma_i$ and
+$f(\vec t)[\sigma]=f(\vec t[\sigma])$. For atomic formulas and
+connectives apply the operation to the children. Put
+$\uparrow t=t[v_1,\ldots,v_m]$ for a term at arity $m$, and use
+the same simultaneous shift on formulas. At a quantifier use the lift
+\[
+ \sigma^+=(v_0,\uparrow\sigma_0,\ldots,\uparrow\sigma_{n-1}),
+ \qquad (QB)[\sigma]=Q(B[\sigma^+]).
+\]
+Equivalently, at depth $d$ copy $v_j$ when $j<d$, and replace $v_{d+i}$
+by $\sigma_i$ with every index increased by $d$. This last algorithm
+defines shift on formulas directly. Write
+$B\langle t\rangle=B[t,v_0,\ldots,v_{n-1}]$ for opening an
+$(n+1)$-ary body at arity $n$.
+
+\begin{theorem}[Simultaneous substitution]\label{thm:subst}
+Substitution preserves scope, acts identically for the variable list
+$\mathrm{id}_n$, and obeys
+\[
+  (E[\sigma])[\tau]=E[\sigma;\tau],\qquad
+  (\sigma;\tau)_i=\sigma_i[\tau].
+\]
+Its exact free support is
+$\operatorname{FV}(E[\sigma])
+ =\bigcup_{i\in\operatorname{FV}(E)}\operatorname{FV}(\sigma_i)$.
+Substitutions agreeing on the free support give identical results.
+In particular
+$(B\langle t\rangle)[\sigma]=B[\sigma^+]\langle t[\sigma]\rangle$.
+\end{theorem}
+\begin{proof}
+At depth $d$ the copied bound indices are below $d$ and every inserted
+index lies in $[d,d+m)$. A former free occurrence contributes exactly
+the free variables of its replacement. Taking the union over the
+occurrences gives the support formula, and comparison of the actual
+insertions proves agreement. Replacing by the identity copies every
+index. For composition consider a free occurrence $v_{d+i}$. After
+the first operation its replacement is $\sigma_i$ shifted by $d$.
+Every variable in this inserted term is therefore free relative to
+the surrounding $d$ binders. Applying the second operation replaces
+each original variable $v_j$ of $\sigma_i$ by $\tau_j$ shifted
+by $d$. The result is precisely $\sigma_i[\tau]$ shifted by $d$.
+Original bound occurrences and constructor nodes are copied on both
+sides. This proves the equality of output trees, including when
+$\sigma_i$ has no variables. For opening, the two composites send
+$v_0$ to $t[\sigma]$ and $v_{i+1}$ to $\sigma_i$. Apply composition.
+
+For explicit PR bounds, if $N$ counts input nodes and $L$ is the
+largest image size (take $L=1$ for an empty list), the output has at
+most $N\max(1,L)$ nodes. The depth is at most $N$, and a shifted
+variable index is less than $m+N$ whenever one is inserted. A traversal
+with a stack visits each original node and copies each selected image
+within these bounds. The preceding arguments can be verified by a
+bounded conjunction over occurrence addresses: trace each output block
+to its original node, then use the computed input path and depth at that
+node. This avoids induction with a universally quantified substitution
+as induction formula.
+\end{proof}
+
+\section{Effective deduction and admissible proof operations}\label{sec:deduction}
+
+Write $\Gamma\vdash_n A$ for a certificate in arity $n$ with an
+ordered finite list $\Gamma$ of assumptions. Write $\Gamma,A$ for
+appending an assumption, and $\uparrow\Gamma$ for shifting every
+formula. A node records its sequent, a rule, its ordered child proofs
+and the term or body used by its rule. All formulas and terms are
+scope-checked. The two calculi below share the following rules.
+\begin{itemize}
+\item A leaf cites an assumption by position. Ex falso concludes
+any $A$ from $\bot$. Conjunction is formed from both proofs and projected
+to either component. Disjunction is introduced from either disjunct.
+To eliminate $A\vee B$, prove $C$ under $\Gamma,A$ and under
+$\Gamma,B$. Implication introduction discharges the last assumption
+in $\Gamma,A\vdash B$ and elimination is modus ponens in a common
+context.
+\item Universal introduction has premise
+$\uparrow\Gamma\vdash_{n+1}B$ and conclusion
+$\Gamma\vdash_n\forall B$. Its elimination gives $B\langle t\rangle$
+from $\forall B$. Existential introduction reverses this last pattern
+with $\exists$ in the conclusion. Existential elimination has premises
+$\Gamma\vdash_n\exists B$ and
+$\uparrow\Gamma,B\vdash_{n+1}\uparrow C$, and conclusion
+$\Gamma\vdash_n C$.
+\item Reflexivity proves $t=t$. Equality elimination takes proofs
+of $s=t$ and $B\langle s\rangle$ to a proof of $B\langle t\rangle$.
+The unary formula context $B$ can also use the old $n$ slots.
+\item A fresh, unused parameter may be dropped:
+from $\uparrow\Gamma\vdash_{n+1}\uparrow A$ infer
+$\Gamma\vdash_n A$. This implements the ordinary convention of
+nonempty domains even in a signature without a closed term. For example,
+in one parameter, reflexivity followed by existential introduction proves
+the shift of $\exists x\,(x=x)$. The rule closes this proof.
+\end{itemize}
+Call this calculus $I$. Its extension $C$ adds one rule, from
+$\neg\neg A$ infer $A$. The tags $I,C$ here describe object proofs.
+All the algorithms and arguments about their codes use iPRA.
+
+\begin{theorem}[Proof recognition and finite search]\label{thm:proofcheck}
+For either calculus, the relation $\operatorname{Check}(p,n,\Gamma,A)$
+is PR. The increasing bounded search
+$S(b)=\bigvee_{p\le b}\operatorname{Check}(p,n,\Gamma,A)$ is PR,
+and a positive result supplies a least certificate $p\le b$.
+Consequently theoremhood in either presented calculus is recursively
+enumerable.
+\end{theorem}
+\begin{proof}
+Parse a proof code as a tree. Reject malformed input. At each node compare
+its child sequents to the required instances, computing shifts, openings
+and positional lookups. Mark it accepted exactly when these tests and
+all child marks succeed. A bottom-up scan proves by induction over the
+scan position that the accepted nodes are exactly the locally justified
+subtrees with accepted children. The root must also match the four inputs.
+Operations use a traversal bounded by input size and the PR substitution
+algorithm. Bounded disjunction and least successful index are finite
+folds. Enumerate proof codes by increasing number and output their
+accepted sequents. Each actual proof occurs at its own code number.
+\end{proof}
+
+\begin{theorem}[Instance, context substitution, cut and deduction]\label{thm:graft}
+Uniform PR operations on certificates implement all the following.
+\begin{enumerate}
+\item From $\Gamma\vdash_n A$ and $\sigma:n\to m$, obtain
+$\Gamma[\sigma]\vdash_m A[\sigma]$.
+\item Given $p:\Gamma\vdash_n A$ and, for every position $i$ of
+$\Gamma$, a proof $q_i:\Delta\vdash_n\Gamma_i$, obtain
+$\Delta\vdash_n A$. In particular weakening, exchange, contraction
+and cut are admissible.
+\item Certificates for $\Gamma,A\vdash B$ and for
+$\Gamma\vdash A\to B$ can be converted in both directions.
+A derivation uses only a computable sublist of its assumptions.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+For the first operation relabel every sequent and the rule's term and
+formula annotations by $\sigma$. At an individual-variable binder use
+$\sigma^+$ in the premise at larger arity. In initial contexts and
+shifted conclusions we require
+$(\uparrow E)[\sigma^+]=\uparrow(E[\sigma])$. The two composite
+variable maps coincide by Theorem~\ref{thm:subst}. In instantiation
+and in equality elimination we require that opening commute with
+substitution, the last identity of that theorem. Thus the same rule
+tag remains legal everywhere, including at parameter erasure.
+Propositional binders merely retain their added assumption.
+
+For the second operation, first implement change of context by a map
+from each assumption position to a position carrying the same formula.
+Change hypothesis leaves by the map. Under a discharged assumption
+extend the map by matching the new last position to the new last
+position. Under an individual binder the old position map also maps the
+shifted formulas. For existential elimination extend that shifted map
+by the new last position. All other steps copy their original rule.
+This gives weakening and all positional structural rules directly.
+
+Now graft $q_i$ at each original assumption leaf. On entering a
+propositional discharge with new assumption $D$, weaken every current
+$q_i$ to $\Delta,D$ and append the assumption leaf for $D$ to the
+substitution list. At universal introduction or parameter erasure,
+shift the current proofs by part 1. At the second child of existential
+elimination do both operations, first shift and then append the proof
+of its new local assumption. All premise sequents are thereby relabelled
+as required. Cut is the case of one nontrivial graft and identity
+assumption proofs for the other positions. Discharge gives the forward
+deduction conversion in a single step. For the reverse direction weaken
+the proof of $A\to B$ to $\Gamma,A$, append an assumption leaf for
+$A$ and use modus ponens.
+
+To extract the finite support, trace the cited hypothesis of each
+assumption leaf back through the position maps to the root or to its
+local discharge. Mark precisely the cited root positions. Delete the
+other root positions throughout and reindex surviving citations and local
+discharges. This yields a proof under the marked sublist. In particular,
+a proof from a possibly infinite axiom collection, presented with a
+membership certificate for each use, exhibits its own finite subcollection.
+For a PR checker in that formulation the supplied membership certificates
+must themselves have a PR verification relation.
+
+Each algorithm visits the nodes of the original $p$ once, carrying a
+list of current maps or proofs downward. A current graft has the original
+rule-tree size of its $q_i$ or is a one-node local assumption: weakening
+and shifting relabel vertices. The grafted tree thus has at most
+$|p|(1+\max_i |q_i|)$ rule nodes, taking the empty maximum to be zero.
+During relabelling the number of nested extensions is at most $|p|$.
+Contexts are finite lists, with at most $|p|$ new entries on a path.
+Repeated applications of a fixed PR bound for a single relabelling
+are bounded by its primitive iteration $|p|$ times. More formally one
+can run a forward pass producing the local arguments at all addresses
+and a reverse pass producing the result. The assertion that every
+processed address has passed its local equality tests is a single
+bounded Boolean fold. This supplies quantifier-free induction for the
+certificate transformations.
+\end{proof}
+
+\begin{proposition}[A Hilbert deduction transformer]\label{prop:hilbert-ded}
+Consider a named-variable Hilbert presentation with modus ponens,
+generalization on a variable absent from the free variables of all
+undischarged assumptions, and axiom instances
+\[
+ \begin{gathered}
+  K: U\to(V\to U),\qquad
+  S:(U\to(V\to W))\to((U\to V)\to(U\to W)),\\
+  (\forall x(U\to V))\to(U\to\forall x V)
+       \qquad(x\notin\operatorname{FV}(U)).
+ \end{gathered}
+\]
+Other fixed logical axioms may be included. From an $N$-line derivation
+of $B$ from $\Gamma,A$, a PR algorithm produces a derivation of $A\to B$
+from $\Gamma$ in at most $5N$ lines.
+\end{proposition}
+\begin{proof}
+For each old line $D$ store the location of its new last line $A\to D$.
+For an axiom or an assumption in $\Gamma$, copy $D$, append
+$D\to(A\to D)$ and apply modus ponens. For the hypothesis $A$ use the
+two $K$ instances $A\to((A\to A)\to A)$ and $A\to(A\to A)$.
+Apply the matching $S$ instance and modus ponens twice to obtain
+$A\to A$ in five lines. For modus ponens on $E$ and $E\to D$ use $S$
+and two applications of modus ponens to their stored versions. If $D$
+is $\forall x E$ by generalization, $x$ is absent from $A$ and from
+$\Gamma$. Generalize the stored $A\to E$, append the displayed
+quantifier axiom and apply modus ponens. All new references point
+backwards. Checking the stored-location invariant for the bounded
+list of earlier lines proves correctness by induction on the scan.
+\end{proof}
+
+\subsection{Equality and eliminating explicit definitions}
+
+\begin{proposition}[Derived equality calculus]\label{prop:derived-eq}
+In $I$ there are uniform proofs of symmetry, transitivity, congruence for
+each function and predicate, and replacement of equals in every formula.
+Conversely reflexivity, symmetry, transitivity and congruence for
+the function and predicate symbols suffice for formula replacement.
+\end{proposition}
+\begin{proof}
+Given $s=t$, substitute into $z=s$, starting with $s=s$, to get $t=s$.
+From $s=t$ and $t=u$ substitute in $s=z$ to get $s=u$. Insert a single
+varying argument into the context
+$f(\ldots,s,\ldots)=f(\ldots,z,\ldots)$ and start with reflexivity.
+For a predicate the context is $R(\ldots,z,\ldots)$. Change
+successive arguments one at a time and compose the implications or
+identities. Replacement for an arbitrary context is precisely the
+elimination rule, and symmetry gives the reverse implication.
+
+For the converse fix $s=t$ and a term context $u(z)$. A variable occurrence
+of the hole uses $s=t$. Another variable uses reflexivity. At a function
+node apply its congruence to the already obtained identities of its
+arguments. For formula contexts construct both directions together.
+At a relation use term congruence and predicate congruence in each
+direction. At $u=v$ use transitivity and the two term identities,
+reversing one by symmetry. Both occurrences of $\bot$ are identical.
+At $\wedge$ convert each component. At $\vee$ reason by cases. At an
+implication, first convert its antecedent backwards, apply the given
+implication and convert the result forwards. The reverse proof exchanges
+these two roles. Under $\forall$, open at a fresh parameter, apply the
+body conversion with the shifted $s=t$, and generalize again. Under
+$\exists$ open a witness in a local subproof, convert its body and
+introduce the existential with that very witness. The conclusion omits
+the local parameter, as required by elimination. The procedure recurses
+over the finitely many input nodes. Store both conversions per node
+and compose them by the graft operation. An explicit PR size bound is
+obtained by iterating a bound for this construction at one node the
+number of nodes in the input. Here a step combines finitely many
+previously constructed proofs, at most the maximum symbol arity plus
+a fixed number of rule templates, and uses the PR operations of
+Theorem~\ref{thm:graft}.
+\end{proof}
+
+\begin{theorem}[Conservative predicate abbreviations]\label{thm:def-abbrev}
+Let $D$ be an old-language formula in $k$ slots. Extend the language
+by one fresh $k$-ary predicate $P$ and the universally closed axiom
+$\forall\vec x\,(P(\vec x)\leftrightarrow D(\vec x))$ with the indicated
+argument order. Every extended proof of an old sequent from old axioms
+and this axiom yields an old proof of the sequent by a PR transformation,
+in $I$ or in $C$. A finite ordered list of definitions referring only to
+earlier ones can likewise be eliminated.
+\end{theorem}
+\begin{proof}
+Expand $P(\vec t)$ into $D[\vec t]$ at every occurrence in sequents
+and formula annotations, and recurse through the old constructors.
+Expansion commutes with substitution: at $P(\vec t)$ this is the
+composition identity of Theorem~\ref{thm:subst}. Under a binder
+the same identity uses the lifted substitution. Expansion is the
+identity on the old language. It therefore preserves every rule
+test, including opening in equality elimination. Replace the expanded
+defining axiom by its old proof: derive $D\to D$ by discharge twice
+for the two conjuncts of $D\leftrightarrow D$, combine them and
+universally introduce each parameter. In an arbitrary ambient context
+one may first prove this closed theorem, then weaken and shift as needed.
+Use grafting to replace all uses of the axiom. For a list, process the
+definitions in reverse order. Iteration over the input list of the
+uniform single-definition algorithm is PR.
+\end{proof}
+
+\section{Soundness, quantifier laws and small separating models}
+\label{sec:deduction-soundness}
+
+Here is an interpretation that checks which logical principles the two
+certificate types support. A finite Kripke frame consists of a nonempty
+finite list of worlds, a reflexive transitive order $\leq$, and nonempty
+finite domains $D_w$ of natural-number labels, with $D_w\subseteq D_v$ for
+$w\leq v$. At each world there are total function tables and relation
+tables on its domain. Require that functions preserve their values on
+earlier tuples and positive relation entries persist upwards. Equality is
+equality of the individual labels. All these conditions are decidable
+by bounded scans. For an assignment $a\in D_w^n$ interpret terms by table
+lookup. Denote its value by $[t]_{w,a}$. Atomic forcing uses the given
+tables, $\bot$ has value false, and $\wedge,\vee$ are the Boolean
+conjunction and disjunction at the current world. The remaining clauses
+are
+\[
+\begin{aligned}
+ w,a\Vdash U\to V
+    &\iff (\forall v\ge w)\,(v,a\Vdash U\ \Rightarrow\ v,a\Vdash V),\\
+ w,a\Vdash\forall B
+    &\iff (\forall v\ge w)(\forall e\in D_v)\,v,(e,a)\Vdash B,\\
+ w,a\Vdash\exists B
+    &\iff (\exists e\in D_w)\,w,(e,a)\Vdash B .
+\end{aligned}
+\]
+The displayed quantifiers range over finite tables. All three tests
+return bits. With one world these are precisely ordinary two-valued
+semantics, also called Tarskian semantics here.
+
+\begin{lemma}[Persistence and semantic substitution]\label{lem:krip-sub}
+Term values are unchanged at later worlds on old assignments, and positive
+forcing persists. For a substitution $\sigma:n\to m$ and an assignment
+$a$ in $D_w^m$, put $b_i=[\sigma_i]_{w,a}$. Then
+\[
+  [t[\sigma]]_{w,a}=[t]_{w,b},\qquad
+  w,a\Vdash A[\sigma]\ \Longleftrightarrow\ w,b\Vdash A.
+\]
+Truth depends only on the free support. In particular a sentence has the
+same truth value under every assignment at a fixed world.
+\end{lemma}
+\begin{proof}
+Variable lookup is unchanged at a larger world. The condition on
+function tables propagates this assertion through each term node. For
+forcing, persistence at atomic nodes follows by the condition on relations
+and stability of term values. The cases $\bot,\wedge,\vee$ follow from their
+definitions. For an implication or a universal formula, every extension
+of a later world is already an extension of the earlier one. For an
+existential formula its witness still belongs to the larger domain
+and its body persists by the child assertion.
+
+For term substitution, variable lookup gives the claimed equality on
+variables and applying the same function entry gives it on a compound
+term. Atom evaluation then agrees. Conjunction, disjunction and falsity
+preserve agreement. At implication, in each $v\ge w$ the values of
+$\sigma$ at $a$ are still the original $b$, so apply agreement to the
+two subformulas there. At a quantifier, the image of $\sigma^+$ evaluated
+at $(e,a)$ is $(e,b)$: its first component is the fresh slot and the
+rest ignore that slot. This works at each $v\ge w$ for the universal
+and at $w$ for the existential. Finally assignments agreeing on free
+support have equal term values at all corresponding occurrences.
+At depth $d$ extend both by the same $d$ chosen individual labels
+along a common sequence of worlds. Each variable lookup in the
+corresponding bodies then agrees, and the forcing clauses give the
+same output. This also proves the sentence assertion.
+\end{proof}
+
+\begin{theorem}[Finite soundness]\label{thm:krip-check}
+Every accepted $I$ proof preserves forcing at every world of every
+coded finite Kripke model. Every accepted $C$ proof preserves truth in
+every coded nonempty finite two-valued structure. Both claims are
+uniform theorems of iPRA.
+\end{theorem}
+\begin{proof}
+For each node, tabulate for every world and every assignment the assertion
+that if all its assumptions are forced then its conclusion is forced.
+An assumption is a lookup. A false conclusion from an assumed proof of
+$\bot$ poses no case, because a forced $\bot$ is the false bit. The
+conjunction and disjunction rules read the corresponding bits. For
+disjunction elimination choose the true disjunct and use its branch with
+that assumption appended. For implication introduction pass to any $v\ge w$
+forcing the antecedent. Persistence takes every old assumption to $v$,
+so the branch gives the consequent. For elimination use the implication
+test at $v=w$ and the true antecedent.
+
+For universal introduction take arbitrary $v\ge w$ and $e\in D_v$.
+Each old assumption, shifted, is true at $(v,(e,a))$ by persistence and
+the semantic substitution lemma. The premise gives the body there.
+For elimination choose $v=w$ and $e=[t]_{w,a}$, then use semantic
+substitution. An existential introduction uses the same $e$ as witness.
+For elimination scan for the first witness $e$ of the forced major premise
+at $w$. At $(w,(e,a))$ the shifted old assumptions and the body all hold,
+so the minor premise gives the shifted conclusion. Ignoring the fresh
+slot gives the desired conclusion at $(w,a)$. For parameter erasure
+use the least label of nonempty $D_w$ and the same shift identity.
+Reflexivity uses identity of labels. In equality elimination, $s,t$
+have the same value $e$, so both opened formulas have the truth of the
+same body at $(e,a)$. In a one-world model implication is the usual
+Boolean implication. Its double-negation operation is the identity
+on each of the two bits, verifying the additional $C$ rule.
+
+For an explicit induction invariant fix the input model and proof.
+If the label universe has size $h$ after reindexing and the largest
+arity at any local sequent or subformula is $k$, there are at most
+$|W|\max(1,h)^k$ world-assignment rows per occurrence. Both $h$ and
+$k$ come from finite scans, including extra slots under binders.
+Compute truth and persistence in bottom-up syntax order, and soundness
+in bottom-up proof order. At each stage take the bounded conjunction of
+the assertions for all earlier rows. This is a quantifier-free induction
+in the language of PR functions, even though the exposition speaks of
+every assignment at once.
+\end{proof}
+
+\begin{corollary}[Consistency and explicit separation]\label{cor:ded-cons}
+Neither calculus has a proof of $\bot$ from the empty context.
+There is no $I$ proof of excluded middle $H\vee\neg H$ for a fresh
+nullary predicate $H$, whereas $C$ has a proof.
+\end{corollary}
+\begin{proof}
+Take the one-element one-world model with constant functions and empty
+relation tables for consistency. For separation, take two worlds $r<s$
+with a singleton domain and force $H$ only at $s$. At $r$ neither $H$
+nor $\neg H$ holds. Finite soundness excludes an $I$ certificate.
+In $I$, if $\neg(H\vee\neg H)$, then $H$ gives a contradiction by the
+left injection, yielding $\neg H$. The right injection now gives a
+contradiction too. Discharge to obtain $\neg\neg(H\vee\neg H)$ and
+apply the extra rule of $C$.
+\end{proof}
+
+\subsection{Which quantifier identities have intuitionistic proofs?}
+
+Write $P(x),Q(x)$ for formulas with an indicated slot and $H$ for a
+formula independent of that slot. Other parameters may occur throughout.
+The following equivalences have uniform $I$ proofs.
+\begin{align*}
+ \neg\exists x\,P(x)&\ \leftrightarrow\ \forall x\,\neg P(x),\tag{1}\\
+ \forall x\forall y\,P(x,y)&\ \leftrightarrow\ \forall y\forall x\,P(x,y),\tag{2}\\
+ \exists x\exists y\,P(x,y)&\ \leftrightarrow\ \exists y\exists x\,P(x,y),\tag{3}\\
+ \forall x\,(P(x)\wedge Q(x))&\ \leftrightarrow\
+      (\forall x\,P(x))\wedge(\forall x\,Q(x)),\tag{4}\\
+ \exists x\,(P(x)\vee Q(x))&\ \leftrightarrow\
+      (\exists x\,P(x))\vee(\exists x\,Q(x)),\tag{5}\\
+ \exists x\,(H\wedge Q(x))&\ \leftrightarrow\ H\wedge\exists x\,Q(x),\tag{6}\\
+ (H\to\forall x\,P(x))&\ \leftrightarrow\ \forall x\,(H\to P(x)),\tag{7}\\
+ ((\exists x\,P(x))\to H)&\ \leftrightarrow\ \forall x\,(P(x)\to H).\tag{8}
+\end{align*}
+For (1), a putative $P(u)$ contradicts $\neg\exists x\,P(x)$ by
+existential introduction. Generalize $u$. Conversely a witness for
+$\exists x\,P(x)$ contradicts its particular negation. For (2), introduce
+the target's two fresh parameters, instantiate the input in the opposite
+order and generalize in the target order. For (3), open the two input
+witnesses in order and introduce the same two in the reversed nesting.
+Both operations reverse themselves on exchanging the roles of $x,y$.
+For (4), specialize at a fresh parameter and project either component,
+generalizing the two results separately. For the converse specialize
+both inputs at the same parameter, pair them and generalize. For (5),
+open the witness and split its disjunction, introducing the matching
+existential and disjunct in each case. In reverse, split the outer
+disjunction, open its witness and rebuild the inner disjunction
+with that witness. For (6), retain $H$ and introduce $\exists x\,Q(x)$
+from the witness, or, in reverse, carry $H$ into the witness branch
+and pair it with $Q$. For (7), take a fresh $u$ and assume $H$.
+Use the implication and specialize its universal result. In reverse,
+assume $H$, specialize at fresh $u$, apply and generalize.
+For (8), a given $P(u)$ supplies an existential witness to the left
+implication. In reverse, open a given existential at $u$ and apply the
+specialized right-hand universal there. Independence of $H$ makes the
+parameter conditions in (6)--(8) hold. Each argument is a fixed proof
+template, using shifts and openings on input codes.
+
+There are also $I$ proofs of
+$\exists x\,\neg P(x)\to\neg\forall x\,P(x)$ and
+$H\vee\forall x\,P(x)\to\forall x\,(H\vee P(x))$.
+For the first, specialize the supposed universal at the negative
+witness. For the second split the disjunction. At each fresh individual
+use the left injection if given $H$, and otherwise specialize the
+universal and use the right injection.
+
+\begin{proposition}[Two converses separated]\label{prop:quant-krip}
+The converses of these last two implications have uniform $C$ proofs.
+For a fresh unary $P$ and nullary $H$, neither converse has an $I$ proof.
+\end{proposition}
+\begin{proof}
+In $C$, assume $\neg\forall x\,P(x)$ and, toward a contradiction,
+$\neg\exists x\,\neg P(x)$. At any fresh $u$, $\neg P(u)$ gives a
+forbidden witness, so $\neg\neg P(u)$. Eliminate double negation and
+generalize, contradicting the first assumption. Discharge the second
+assumption and eliminate double negation once more. For the other
+converse assume $\forall x\,(H\vee P(x))$ and split on $H\vee\neg H$.
+In the first branch inject $H$. In the second, arbitrary $u$ gives
+$H\vee P(u)$. The left alternative contradicts $\neg H$, and the right
+gives $P(u)$. Generalize and use the right injection.
+
+For the first countermodel take a root $r$ with two incomparable
+terminal successors $s,t$. All domains are $\{0,1\}$. Force no
+$P$ at $r$, just $P(0)$ at $s$ and just $P(1)$ at $t$. The universal
+fails at all three worlds, so its negation holds at $r$. Each potential
+negative witness is defeated at one successor, so the existential
+fails there at the root. For the second take $r<s$, with
+$D_r=\{0\}$ and $D_s=\{0,1\}$. Force $P(0)$ throughout, never
+$P(1)$, and force $H$ just at $s$. The premise holds at $r$: its
+local choice is $P(0)$, and either individual at $s$ satisfies $H$.
+At the root $H$ fails and $\forall x\,P(x)$ fails by the later
+individual $1$. Apply Theorem~\ref{thm:krip-check} in both cases.
+\end{proof}
+
+\paragraph{Lean implementation path for the proof checker.}
+Define raw inductives \texttt{Term} (variable, function on a list)
+and \texttt{Form} with the constructors above, and Boolean functions
+\texttt{termOK} and \texttt{formOK} taking the arity and signature.
+One nondependent implementation of substitution carries the binder
+depth explicitly and uses the depth algorithm of
+Theorem~\ref{thm:subst}. Define \texttt{Sequent} with natural-number
+arity, assumption list and conclusion, and a proof node with its sequent,
+tag, annotation and ordered list of children. For termination one can
+implement tree traversals over postorder arrays: each entry refers only
+to earlier entries and the structural test verifies the child sorts and
+arities. For a context-dependent calculation, first unroll occurrences
+(a subtree repeated by two parents gets two addresses), propagate
+arities or substitutions downward, then fold upwards. If the array length
+is $N$, an unrolling has depth at most $N$ and branching at most the
+maximum declared child-list length $b$. The expression $1+(b+1)+\cdots+(b+1)^N$
+bounds its size. Ill-formed inputs return failure before traversal.
+Define \texttt{localOK} by cases on the tags listed above, and
+\texttt{check} by conjunction with the stored child bits. Prove
+\texttt{lift\_comp} and \texttt{open\_subst} from the composition
+law. Prove the node equalities for renaming and grafting by cases
+on the rule tag, using these two lemmas at quantifiers and equality
+elimination. Implement forcing using finite tables, with two extra
+loops at a universal node and a bounded witness lookup at an existential
+node. Prove the persistence and substitution tables before the
+per-rule invariant in Theorem~\ref{thm:krip-check}. For an internal
+iPRA implementation, replace inductives and arrays by their natural
+codes, and generate the same bounded-fold identities. Lean induction on
+the conjunction of all earlier Boolean checks then translates to
+quantifier-free induction with the model, formula, proof and other
+input codes as parameters.
+
+The companion \texttt{NegativeTranslation.lean} implements the typed
+rule trees and proves \texttt{FOLNegative.finite\_sound} and
+\texttt{FOLNegative.consistency}. Its argument-list datatype permits
+function symbols of arbitrary finite arity. Scope and the signature's
+arity checks belong to the external syntax encoding. The Lean model
+uses $\operatorname{Fin}(n+1)$, arbitrary total operations and decidable
+relations. It also proves soundness for a presented nonempty carrier
+when the semantic double-negation step is available for each enabled
+classical rule. The finite expanding-domain Kripke argument above uses
+the same quantifier rules with an additional world parameter.

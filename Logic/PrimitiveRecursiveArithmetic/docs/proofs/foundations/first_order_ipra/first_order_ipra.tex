@@ -1,0 +1,55 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1.01in,top=.9in,bottom=.91in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,longtable,tabularx,array,enumitem,fancyhdr,xcolor,xurl}
+\usepackage[colorlinks=true,linkcolor=teal!55!black,urlcolor=teal!65!black,citecolor=teal!55!black]{hyperref}
+\usepackage{bookmark}
+\definecolor{ink}{HTML}{17374A}
+\definecolor{accent}{HTML}{116661}
+\hypersetup{pdftitle={First-order logic in intuitionistic primitive recursive arithmetic},pdfsubject={Proof transformations, finite models, decision procedures and limits},pdfauthor={Research report prepared for Vladimir Reshetnikov}}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small\sffamily\color{ink}First-order logic in iPRA}\fancyhead[R]{\small\sffamily\color{ink}Proofs and finite models}\fancyfoot[C]{\small\thepage}\renewcommand{\headrulewidth}{.25pt}
+\newtheoremstyle{packet}{8pt}{4pt}{\itshape}{}{\bfseries\color{ink}}{.}{.5em}{}
+\theoremstyle{packet}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}\newtheorem{example}[theorem]{Example}
+\setlength{\emergencystretch}{3em}
+\setlist{topsep=3pt,itemsep=2pt}
+\setcounter{tocdepth}{1}
+\hypersetup{bookmarksdepth=2}
+\makeatletter
+\renewcommand*\l@section[2]{\addpenalty\@secpenalty\vskip .21em\@dottedtocline{1}{0em}{2.1em}{\bfseries #1}{#2}}
+\makeatother
+\begin{document}
+\thispagestyle{plain}
+{\noindent\sffamily\small\color{accent}MATHEMATICAL LOGIC\quad /\quad CONSTRUCTIVE METATHEORY\par}
+\vspace{1.15em}
+{\raggedright\noindent\color{ink}\huge\bfseries First-order logic in intuitionistic\\primitive recursive arithmetic\par}
+\vspace{.6em}
+{\noindent\large Proof transformations, finite models and limits of decision\par}
+\vspace{1.2em}
+\noindent A first-order formula, a derivation and a finite interpretation can each be written as a natural number. This lets weak arithmetic prove theorems about whole families of formulas, including classical formulas. The essential question is what data each theorem produces. A negative translation produces a new proof. A failed finite back-and-forth test produces a distinguishing formula. A successful Skolemization of a finite model produces actual tables of witnesses. None of these constructions needs an oracle for truth.
+\medskip
+
+\noindent Two examples locate the boundary. With $p$ unary predicates and equality, the truth of a sentence of quantifier rank $q$ on finite structures is determined by $2^p$ counts truncated at $q$. With a single binary relation one can encode a computation, and even a procedure that only separates provable sentences from those with finite countermodels is impossible. Both arguments give explicit algorithms on the side where an algorithm exists.
+\medskip
+
+\noindent The manuscript gives human proofs in iPRA, a Lean formalization plan tied to ProveIt's ordinary iPRA calculus, and a smaller kernel-checked Lean development. The implementation and verification statuses are recorded in Section~\ref{sec:lean}.
+\tableofcontents\clearpage
+\input{foundations}
+\input{syntax}
+\input{negative}
+\input{canonical}
+\input{models}
+\input{reflection}
+\input{normal}
+\input{expressive}
+\input{computability}
+\input{compactness}
+\input{formal}
+\input{sources}
+\end{document}

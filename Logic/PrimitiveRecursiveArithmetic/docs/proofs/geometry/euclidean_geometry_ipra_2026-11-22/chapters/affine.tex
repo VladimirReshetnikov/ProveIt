@@ -1,0 +1,287 @@
+\section{Incidence, order, perpendiculars, and affine geometry}
+\label{sec:affine}
+For $u=(u_1,u_2),v=(v_1,v_2)$ put
+\[
+ \dotp uv=u_1v_1+u_2v_2,\quad [u,v]=u_1v_2-u_2v_1,
+ \quad N(u)=u_1^2+u_2^2,\quad \J u=(-u_2,u_1).
+\]
+A point is a pair of scalar codes. A valid line is $L(A,u)=\{A+tu:t\in\K\}$
+with $N(u)>0$; braces abbreviate a formula, not a new set sort.
+A segment is given by the same expression with $0\le t\le1$.
+Parallel directions mean zero determinant; parallel supporting lines in
+this directional sense may coincide. Strictly parallel lines are distinct
+and disjoint. Whenever disjointness is intended it is stated explicitly.
+The doubled signed area of $ABC$ is $[B-A,C-A]$.
+The main article's analytic-geometry, parallel-postulate, Ceva, and
+Menelaus links motivate this section \cite{wiki,euclid}.
+
+\begin{theorem}[A line through two points and extension]\label{aff:line}
+Two distinct points determine a unique line. Every nondegenerate segment can be extended
+by a specified nonnegative multiple of its direction, and by any prescribed
+nonnegative length along its ray.
+\end{theorem}
+\begin{proof}
+For $A\ne B$ take $u=B-A$, so $N(u)>0$. The identity
+\begin{equation}\label{eq:frame}
+ N(u)v=\dotp uv\,u+[u,v]\J u
+\end{equation}
+is verified in its two coordinates by expansion. Thus $[u,v]=0$ exactly
+when $v$ is a scalar multiple of $u$. A second line containing $A$ and
+$B$ has a nonzero direction parallel to $u$, and hence consists of the
+same points. The point $B+tu$, $t\ge0$, extends the segment. For a
+specified additional length $l\ge0$, use $B+(l/\sqrt{N(u)})u$;
+the denominator is positive and the new segment has squared length $l^2$.
+\end{proof}
+
+\begin{theorem}[Betweenness is a decidable polynomial predicate]
+\label{aff:between}
+Inclusive betweenness is precisely \eqref{eq:betweenpoly}. For $A\ne C$
+its segment parameter is unique. If $A=C$, betweenness forces $X=A$.
+\end{theorem}
+\begin{proof}
+Put $u=C-A$, $v=X-A$. If $u=0$, the dot condition is $N(v)\le0$,
+so both coordinates of $v$ vanish. Otherwise $N(u)>0$ and
+\eqref{eq:frame} turns the determinant condition into $v=tu$, with
+$t=\dotp uv/N(u)$. The dot condition becomes $t(t-1)N(u)\le0$.
+If $t<0$ or $t>1$, the two factors $t,t-1$ have the same nonzero sign,
+contradicting it. Hence $0\le t\le1$. Conversely that interval condition
+gives the determinant and dot inequalities directly. Uniqueness follows
+by subtracting two parameters and using $N(u)>0$.
+\end{proof}
+
+\begin{theorem}[Complete line intersection test]\label{aff:intersection}
+For $L(A,u),L(B,v)$ let $d=[u,v]$. If $d\ne0$, their unique intersection is
+\[
+ X=A+\frac{[B-A,v]}d\,u
+   =B+\frac{[B-A,u]}d\,v.
+\]
+If $d=0$, the lines coincide when $[B-A,u]=0$, and are disjoint otherwise.
+\end{theorem}
+\begin{proof}
+Write $w=B-A$. Expanding each coordinate gives
+$[w,v]u-[w,u]v=[u,v]w$, proving both displayed expressions equal.
+Conversely an intersection obeys $tu-sv=w$; taking determinants with
+$v,u$ forces the two parameters. If $d=0$, formula~\eqref{eq:frame}
+shows that the nonzero directions are scalar multiples. The displacement
+$B-A$ is either a multiple too, giving the same line, or is not, excluding
+every possible intersection. All three cases are decidable in $\K$.
+\end{proof}
+
+\begin{corollary}[Parallel through a point; Playfair and strong intersection]
+\label{aff:parallel}
+Through a point outside a line there is exactly one disjoint parallel line.
+Two lines with nonparallel directions intersect at the explicitly computed
+point of Theorem~\ref{aff:intersection}.
+\end{corollary}
+\begin{proof}
+Through $B\notin L(A,u)$ use $L(B,u)$. The zero-determinant disjoint
+case proves existence. Any other line through $B$ with determinant
+nonzero against $u$ would meet $L(A,u)$; therefore its determinant is
+zero and it is the same line through $B$. This conclusion uses the
+decidable determinant of exact algebraic data. It is not a claim that
+Playfair implies the same existence assertion in every intuitionistic
+synthetic axiom system; that distinction is substantive \cite{beeson}.
+\end{proof}
+
+\begin{theorem}[Perpendicular foot and shortest distance]\label{aff:foot}
+The unique foot of $P$ on $L(A,u)$ is
+\[
+ F=A+\frac{\dotp{P-A}u}{N(u)}u.
+\]
+For every $t\in\K$,
+$N(P-(F+tu))=N(P-F)+t^2N(u)$.
+Consequently the foot is the unique point of the line nearest to $P$.
+The perpendicular through $P$ has direction $\J u$ and is unique.
+\end{theorem}
+\begin{proof}
+Taking the dot product of $P-F$ with $u$ gives zero.
+The stated square identity follows by expanding the norm and discarding
+that cross term. Its last term is nonnegative, and is zero only at $t=0$.
+Every vector perpendicular to $u$ is a multiple of $\J u$ by
+\eqref{eq:frame}; this proves both the unique perpendicular and the unique
+intersection which is its foot. The formula works when $P$ is already on
+the line, so no separate incidence case is needed.
+\end{proof}
+
+\begin{theorem}[Perpendicular bisector as an exact locus]\label{aff:bisector}
+For $A\ne B$, the points equidistant from $A,B$ are exactly the line
+through $M=(A+B)/2$ perpendicular to $B-A$.
+\end{theorem}
+\begin{proof}
+Set $u=B-A$. Direct expansion yields
+$N(X-A)-N(X-B)=2\dotp{X-M}u$.
+Equality of squared distances is therefore equivalent to perpendicularity,
+and the positive square-root convention makes it equivalent to equality
+of distances. The direction $\J u$ is nonzero.
+\end{proof}
+
+\begin{theorem}[Reflection in a line]\label{aff:reflection}
+Let $F(P)$ be the perpendicular foot on a fixed line. The map
+$R(P)=2F(P)-P$ is an involutive distance-preserving transformation, with
+fixed points precisely that line.
+\end{theorem}
+\begin{proof}
+Relative to $A$, decompose $P-A=\alpha u+\beta\J u$ by
+\eqref{eq:frame}. The foot is $A+\alpha u$, and reflection replaces
+$\beta$ by $-\beta$. Doing this twice is the identity. For two points
+their difference decomposes in the same frame, and its squared norm is
+$(\Delta\alpha)^2N(u)+(\Delta\beta)^2N(u)$, unchanged by the sign reversal.
+A fixed point has $2\beta\J u=0$, hence $\beta=0$ and lies on the line.
+\end{proof}
+
+\begin{theorem}[Barycentric coordinates and oriented subareas]
+\label{aff:barycentric}
+For a noncollinear triangle $ABC$, every $X$ has unique coordinates
+$X=\alpha A+\beta B+\gamma C$ with $\alpha+\beta+\gamma=1$.
+With $D=[B-A,C-A]\ne0$,
+\[
+ \beta=\frac{[X-A,C-A]}D,\qquad
+ \gamma=\frac{[B-A,X-A]}D,\qquad \alpha=1-\beta-\gamma.
+\]
+The three oriented subareas satisfy
+$[B-X,C-X]=\alpha D$, $[C-X,A-X]=\beta D$,
+$[A-X,B-X]=\gamma D$. Nonnegative coordinates characterize the closed
+filled triangle; positive coordinates characterize its interior.
+\end{theorem}
+\begin{proof}
+Subtract $A$ and solve the two-by-two linear system in the basis
+$B-A,C-A$, using the determinant calculation in
+Theorem~\ref{aff:intersection}. This gives existence and uniqueness.
+Substitute $X-A=\beta(B-A)+\gamma(C-A)$ into the three determinants;
+bilinearity gives the formulas. A convex combination has nonnegative
+coefficients summing to one by definition, and uniqueness gives the converse.
+The strict case lies on the inside side of each oriented edge because
+all three determinant signs equal the sign of $D$; a zero coefficient is
+on the corresponding side. These are finite sign tests.
+\end{proof}
+
+\begin{theorem}[Inner Pasch as a positive explicit intersection]
+\label{aff:pasch}
+Let $P=(1-r)A+rC$ and $Q=(1-s)B+sC$, with $0<r,s<1$ and $ABC$
+noncollinear. The open segments $BP$ and $AQ$ intersect.
+\end{theorem}
+\begin{proof}
+Put $H=r+s-rs>0$. Their common point has barycentric coordinates
+\[
+ X=\frac{s(1-r)A+r(1-s)B+rsC}{H}.
+\]
+The numerators are positive and sum to $H$. In $BP$ its parameter
+from $P$ to $B$ is $r(1-s)/H$, strictly between zero and one; the
+remaining coefficients equal $(1-r)$ and $r$ times its complement.
+In $AQ$ its parameter from $A$ to $Q$ is $r/H$, also in $(0,1)$
+since $H-r=s(1-r)>0$. Expanding the two segment formulas gives exactly
+the displayed point. There is no order case split or unbounded search.
+\end{proof}
+
+\begin{theorem}[Intercept theorem and midpoint theorem]\label{aff:intercept}
+Let $ABC$ be noncollinear, $X=A+t(B-A)$, $Y=A+s(C-A)$, and suppose
+$X\ne Y$. Then $XY$ is parallel to $BC$ exactly when $t=s$.
+In that case $Y-X=t(C-B)$, so lengths on the parallel segments have
+ratio $|t|$. In particular the midpoint segment is parallel to the
+third side and has half its length.
+\end{theorem}
+\begin{proof}
+Translate $A$ to zero and write $B=u,C=v$. Bilinearity gives
+$[sv-tu,v-u]=(s-t)[u,v]$. Since $[u,v]\ne0$, the determinant
+vanishes exactly when $s=t$. Substitution gives the vector identity.
+Taking norms proves the ratio and putting $t=1/2$ proves the midpoint case.
+\end{proof}
+
+\begin{theorem}[Ceva's theorem for internal cevians]\label{aff:ceva}
+Let $D=(1-d)B+dC$, $E=(1-e)C+eA$, $F=(1-f)A+fB$, where
+$0<d,e,f<1$. The lines $AD,BE,CF$ concur if and only if
+\[
+ \frac d{1-d}\frac e{1-e}\frac f{1-f}=1.
+\]
+These are the directed side ratios $BD/DC$, $CE/EA$, $AF/FB$.
+\end{theorem}
+\begin{proof}
+Write the concurrency point in barycentric coordinates $(x,y,z)$.
+The three line equations are
+\[
+ dy=(1-d)z,\qquad (1-e)x=ez,\qquad fx=(1-f)y.
+\]
+The first two imply that its coordinates are proportional to
+$(de,(1-d)(1-e),d(1-e))$, whose sum is positive. Substitution in the
+third gives $def=(1-d)(1-e)(1-f)$, equivalent to the displayed ratio.
+Conversely, under that equality normalize these three positive coordinates
+by their sum. They solve all three equations, constructing the common
+interior point. The positivity excludes a point at infinity; directed
+external variants require retaining that qualification.
+\end{proof}
+
+\begin{theorem}[Menelaus' theorem with directed ratios]\label{aff:menelaus}
+With $D,E,F$ as in Theorem~\ref{aff:ceva}, but now arbitrary scalar
+$d,e,f$ different from $0,1$, the points $D,E,F$ are collinear if and
+only if
+\[
+ \frac d{1-d}\frac e{1-e}\frac f{1-f}=-1.
+\]
+\end{theorem}
+\begin{proof}
+In the affine barycentric chart the determinant of their coordinate rows is
+\[
+ \det\begin{pmatrix}0&1-d&d\\ e&0&1-e\\1-f&f&0\end{pmatrix}
+  =(1-d)(1-e)(1-f)+def.
+\]
+The coordinate change has nonzero determinant, so collinearity is
+equivalent to this expression being zero. Divide by the three nonzero
+denominators to obtain the assertion. The signs automatically distinguish
+external division from internal division; three internal division points
+cannot satisfy this condition.
+\end{proof}
+
+\begin{theorem}[Affine maps and area scaling]\label{aff:maps}
+For an invertible $2\times2$ matrix $T$, the map $X\mapsto a+TX$
+preserves collinearity, segment parameters, parallelism, and concurrency.
+It multiplies signed doubled areas by $\det T$, and unsigned areas by
+$|\det T|$. Similarities of ratio $\lambda>0$ therefore multiply
+areas by $\lambda^2$.
+\end{theorem}
+\begin{proof}
+An affine combination with coefficient sum one commutes with the map.
+This proves the incidence and parameter claims, and invertibility gives
+their converses. Expanding the two-by-two determinant gives
+$[Tu,Tv]=\det(T)[u,v]$. For a similarity $T=\lambda Q$ with
+$Q^\mathsf TQ=I$, taking determinants gives $(\det Q)^2=1$,
+so $|\det T|=\lambda^2$. No statement about arbitrary measurable sets
+is hidden here: polygonal areas are finite sums, dealt with below.
+\end{proof}
+
+\begin{theorem}[A finite homogeneous Desargues theorem]\label{aff:desargues}
+In homogeneous coordinates in $\K^3$, suppose two nondegenerate triangles
+have representatives $A_i$ and $B_i=A_i+t_iO$ for $i=1,2,3$, with
+each $t_i\ne0$. Assume each pair of corresponding side lines is distinct.
+Their three intersection points are collinear, allowing a point at infinity.
+For intersections with nonzero last coordinate this gives the usual
+Euclidean-plane conclusion after division by that coordinate.
+\end{theorem}
+\begin{proof}
+A projective point is a nonzero vector modulo nonzero scalar multiple;
+a line is a two-dimensional span. Put
+$P_{ij}=t_jA_i-t_iA_j$. It is nonzero because $A_i,A_j$ are independent.
+The equality
+$t_jB_i-t_iB_j=t_jA_i-t_iA_j$ places it in both side spans. Their
+distinctness makes this their intersection. Finally
+\[
+ t_3P_{12}-t_2P_{13}+t_1P_{23}=0
+\]
+by cancellation of the three $A_i$ coefficients. The coefficient of
+$P_{23}$ is nonzero. Moreover $P_{12},P_{13}$ are independent: in the
+$A_1,A_2,A_3$ basis, a relation $aP_{12}+bP_{13}=0$ has second and
+third coordinates $-at_1,-bt_1$, forcing $a=b=0$. Thus all three
+points belong to the same genuine two-dimensional span.
+All claims are finite linear algebra. The explicit representative
+hypothesis states the nonexceptional perspective configuration being used;
+it does not silently assert that every degenerate projective picture has
+three defined intersections.
+\end{proof}
+
+\paragraph{iPRA audit.}
+Every denominator here is $N(u)$, a nonzero determinant, a positive
+barycentric sum, or a stated nonzero directed ratio denominator. Expand
+and multiply through these denominators to obtain integer polynomial
+identities and sign implications. Thus the proofs are fixed finite
+ordered-field arguments to which Section~\ref{sec:foundation} applies.
+No induction on geometric objects or quantification over arbitrary sets
+occurs.

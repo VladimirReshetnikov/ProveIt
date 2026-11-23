@@ -1,0 +1,63 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,array,longtable,tabularx,enumitem,graphicx}
+\usepackage{xcolor,fancyhdr,tikz}
+\usepackage[bookmarksnumbered,pdfusetitle]{hyperref}
+\definecolor{ink}{HTML}{123A49}
+\definecolor{linkcol}{HTML}{14616D}
+\hypersetup{colorlinks=true,linkcolor=linkcol,urlcolor=linkcol,citecolor=linkcol}
+\setcounter{tocdepth}{1}
+\makeatletter
+\renewcommand*\l@section[2]{\vskip 2.5pt\relax\@dottedtocline{1}{0em}{1.9em}{#1}{#2}}
+\makeatother
+\setlength{\parskip}{2pt plus .5pt}
+\setlength{\parindent}{1em}
+\setlist{nosep,topsep=4pt}
+\setlength{\emergencystretch}{2em}
+\raggedbottom
+\pagestyle{fancy}\fancyhf{}\lhead{\small\color{ink}Finite graph theory in iPRA}\rhead{\small\color{ink}Constructive proofs}\cfoot{\thepage}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\ipra}{\ensuremath{\mathsf{iPRA}}}
+\DeclareMathOperator{\Aut}{Aut}
+\newcommand{\ind}{\mathbf 1}
+\newcommand{\repo}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/bbb85238dac533fc4b7b84a750cca864fe35fed5/Logic/PrimitiveRecursiveArithmetic/#1}{#2}}
+\title{Finite graph theory in intuitionistic primitive recursive arithmetic}
+\author{}\date{}
+\begin{document}
+\thispagestyle{plain}
+{\sffamily\small\bfseries\color{linkcol} GRAPH THEORY \quad / \quad CONSTRUCTIVE ARITHMETIC}\par
+\vspace{8pt}
+{\color{ink}\LARGE\bfseries Finite graph theory in intuitionistic\\[3pt] primitive recursive arithmetic\par}
+\vspace{6pt}
+{\large Human proofs, finite witnesses, and a Lean formalization guide}\par
+\vspace{8pt}\hrule\vspace{8pt}
+A finite graph can be coded by one integer. To prove a theorem about all such
+codes, one must still justify how the witnesses are found and which induction
+formulas suffice. A failed matching, for example, produces a set witnessing
+Hall deficiency. A maximum integral flow produces a cut of the same value,
+and a spherical rotation gives a five-colouring by contractions. Each
+certificate can be checked by finite arithmetic. Section~\ref{sec:logic}
+specifies the theory. Section~\ref{sec:lean} gives the Lean proof obligations
+and the status of the supplied code.
+\tableofcontents
+\clearpage
+\input{tex/foundation}
+\input{tex/elementary}
+\input{tex/structure}
+\input{tex/operations}
+\input{tex/symmetry}
+\input{tex/spectral}
+\input{tex/plane}
+\input{tex/flows}
+\input{tex/color}
+\input{tex/tutte}
+\input{tex/infinite}
+\input{tex/sources}
+\input{tex/formal}
+\end{document}

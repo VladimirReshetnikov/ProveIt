@@ -1,0 +1,36 @@
+\section{Division and the order types represented by the operations}
+\label{sec:division}
+Write $A+B$, $AB$ for the ordinary ordinal operations just constructed. Within a CNF, $\|$ means list concatenation. A sum may delete final entries from its left input.
+For $X\le Y$ denote by $Y\mathbin{\dot-}_{\!L}X$ the suffix of $Y$ after its longest common prefix with $X$. Theorem~\ref{th:ordinary-add} proves that this is the unique $D$ with $X+D=Y$. We will apply this inverse both to exponents and to full terms.
+\begin{theorem}[Euclidean division of ordinal notations]\label{thm:orddiv}
+For $A>0$ and every $B$, a PR algorithm computes the unique pair $(Q,R)$ with
+\[
+ B=AQ+R,\qquad R<A .
+\]
+\end{theorem}
+\begin{proof}
+Let $d$ be the first exponent of $A$. Split $B=H\|V$ after all exponents $e>d$. All exponents in $V$ are at most $d$. For each entry $e$ in $H$ solve $d+u=e$ by left subtraction. Every $u$ is positive. Since $d+(-)$ is strictly increasing, these $u$ form a weakly descending list $U$. The multiplication rule gives $AU=H$ entry by entry, also when $U$ is empty.
+
+Let $m$ be the number of initial entries $d$ of $V$ (zero if there are none). If $A$ has $k\ge1$ leading entries $d$, the finite multiple $A j$, for $j>0$, has exactly $kj$ such leading entries followed by the tail of $A$ below $d$. In particular $A(m+1)>V$, even if $m=0$. Among $0,\ldots,m$ select the greatest $j$ with $Aj\le V$. Zero qualifies, and
+$Aj\le V<A(j+1)$. Solve $Aj+R=V$ by the residual algorithm. If $R\ge A$, monotonicity in the right argument gives $V\ge Aj+A=A(j+1)$, a contradiction. Return $Q=U\|[0]^j$. Left distributivity, associativity and the canonical boundary between $H$ and $V$ give
+\[
+ AQ+R=(AU+Aj)+R=H+V=B.
+\]
+If $Q<Q'$ then $AQ+R<A(Q+1)\le AQ'\le AQ'+R'$ for $R<A$. The reversed inequality is symmetric. Thus equal results force equal quotients and, by left cancellation of addition, equal remainders. This also proves the maximality characterization $AQ\le B<A(Q+1)$. Each search in the construction has a stated finite bound.
+\end{proof}
+\begin{example}
+Take $A=\omega+3$ and $B=\omega^2+\omega\cdot2+1$. The high block gives $U=\omega$. In the tail, $A\cdot2=\omega\cdot2+3$ is already too large. The algorithm chooses $j=1$ and returns $Q=\omega+1$, $R=\omega+1$. Adding $R$ erases the final three units of $A$. Ordinary natural-number division of the two leading coefficients alone would miss this case.
+\end{example}
+\begin{corollary}[Ordered sum, product, and intervals]
+The tagged sum of $I_A$ followed by $I_B$ is order-isomorphic to $I_{A+B}$. The lexicographically ordered pairs $(j,i)$ with $j<B$, $i<A$, with the block index $j$ compared first, are order-isomorphic to $I_{AB}$. Both isomorphisms and their inverses are PR on the specified domains. In particular $I_B$ is isomorphic to the interval $[A,A+B)$.
+\end{corollary}
+\begin{proof}
+Send the first summand identically to $I_A$ and the second by $y\mapsto A+y$. To invert, decide $x<A$ and otherwise compute its left residual from $A$. Strict increase shows that the residual is $<B$. For products send $(j,i)$ to $Aj+i$. Each block lies between $Aj$ and $A(j+1)$, with the latter endpoint excluded. The map is strictly increasing within and across blocks. For $x<AB$ its quotient by $A$ must be $<B$, so division inverts the map. When $A=0$ or $B=0$ both sides of the product claim are empty. These arguments require neither a least element of an arbitrary subset nor a general order-type assignment.
+\end{proof}
+
+\begin{theorem}[Cardinality of each represented initial segment]
+If $a\ge\omega$, there is a uniform PR bijection, with PR inverse, between $\mathbb N$ and the canonical numerical codes in $I_a$. The least infinite notation of that cardinality is $\omega$. Distinct order types of this cardinality include $\omega$ and $\omega+1$.
+\end{theorem}
+\begin{proof}
+Let $p_a(c)$ test that $c$ is a valid notation strictly below $a$. The $n+1$ finite terms $0,\ldots,n$ all pass and have distinct codes. Compute $B(n)$ as the maximum of their numerical codes, including the code of zero. Scan the integers up to $B(n)$ and return the $(n+1)$st passing integer $e_a(n)$, in \emph{numerical code order}. Counting the marked positions among the $n+1$ distinct witnesses guarantees that the scan has at least that many hits. For an accepted code $c$, set $r_a(c)=\sum_{i<c}p_a(i)$. The unit increments of this counter imply $r_a(e_a(n))=n$. Conversely if $r_a(c)=n$, then $c$ is the unique passing integer of rank $n$, hence $e_a(n)=c$. Bounded-sum invariants prove both identities. The same enumeration works with validity alone, so all the canonical names are effectively countable. An injection from $\mathbb N$ into a finite segment would restrict to one more point than its size, contradicting finite counting. Below $\omega$ lie just the finite terms. The segment at $\omega+1$ has a greatest point $\omega$, whereas each point $n$ below $\omega$ has the larger point $n+1$ there, excluding an order isomorphism. At the same time $\omega\cdot\omega=\omega^2>\omega$ and the resulting two segments are in PR bijection.
+\end{proof}

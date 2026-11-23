@@ -1,0 +1,209 @@
+\section{An explicit transcendental rational name}\label{sec:transcendence}
+
+Transcendence admits a substantial constructive example using only finite
+polynomials and rapidly convergent rational approximations. The classical
+constant is Liouville's $\sum_{j\ge1}10^{-j!}$; see, for example, the
+construction in \cite{miller-liouville}. Here the internal theorem will
+state that every nonzero integer polynomial is separated from zero on
+all sufficiently late rational approximations, with a primitive recursive
+index and a positive rational separation bound. The proof does not
+quantify over arbitrary real numbers or decide equality of real names.
+
+For an integer coefficient vector $c=(c_0,\ldots,c_d)$ with $c_d\ne0$,
+put
+\[
+ f_c(X)=\sum_{j=0}^d c_jX^j,
+ \qquad A(c)=\sum_{j=1}^d j|c_j|.
+\]
+The degree, coefficient sums, rational Horner evaluation, and every
+finite search below are uniform primitive recursive functions of the
+coefficient code. Trailing zeros can first be removed by a bounded scan.
+
+\begin{theorem}[Finite polynomial estimates and a rational Liouville bound]
+\label{tr:polynomial}
+Let $f=f_c$ be a nonzero integer polynomial of degree $d$.
+\begin{enumerate}
+\item Among any $d+1$ distinct rational numbers, at least one has
+nonzero value under $f$, and a bounded scan finds such an argument.
+\item If $y=a/q$, where $a\in\Z$ and $q\ge1$, and $f(y)\ne0$, then
+$|f(y)|\ge q^{-d}$.
+\item If $x,y\in[0,1]\cap\Q$, then
+$|f(x)-f(y)|\le A(c)|x-y|$. Consequently, if $A(c)>0$,
+$y=a/q$, $f(y)\ne0$, and $|f(x)|\le1/(2q^d)$, then
+\[
+ |x-y|\ge\frac1{2A(c)q^d}.
+\]
+If $f(x)=0$, the stronger bound $|x-y|\ge1/(A(c)q^d)$ holds.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+For the first assertion, suppose the finite scan finds no nonzero
+value at the distinct arguments $x_0,\ldots,x_d$. Synthetic division
+at $x_0$ writes $f(X)=(X-x_0)g(X)$, with $g$ of degree $d-1$
+and the same nonzero leading coefficient. Explicitly, for coefficients
+$a_0,\ldots,a_e$ and a root $u$, start with $b_{e-1}=a_e$ and
+recurse downwards by $b_{i-1}=a_i+ub_i$. Coefficient comparison gives
+$f(X)=(X-u)\sum_{i<e}b_iX^i+(a_0+ub_0)$, and the remainder
+is $f(u)=0$. At every other listed root,
+$x_i-x_0\ne0$, so cancellation of nonzero rational numbers shows
+$g(x_i)=0$. Repeat at $x_1$, then $x_2$, and so on. After exactly
+$d$ divisions the remaining polynomial is the original nonzero leading
+coefficient, but still vanishes at $x_d$, a contradiction. For $d=0$
+the contradiction is immediate. Thus the decidable failure branch of
+the finite scan is impossible and a witness is returned.
+
+This is a clocked algorithm on rational coefficient arrays. Its invariant
+after $i\le d$ divisions is: the current degree is $d-i$, its leading
+coefficient is the original leading coefficient, and its values at the
+remaining listed arguments vanish. All argument indices are bounded by
+$d$; rational identities are cleared of denominators. Hence the proof
+uses bounded, and therefore quantifier-free-compilable, induction.
+
+For the second assertion, clearing the positive denominator gives
+\[
+ q^d f(a/q)=\sum_{j=0}^d c_j a^j q^{d-j}\in\Z.
+\]
+This integer is nonzero, so its absolute value is at least one.
+Dividing by $q^d$ proves the inequality; the fraction $a/q$ need not
+be in lowest terms.
+
+For the third assertion use, for $j\ge1$,
+\[
+ x^j-y^j=(x-y)\sum_{i=0}^{j-1}x^{j-1-i}y^i.
+\]
+Each summand in the finite sum belongs to $[0,1]$, so
+$|x^j-y^j|\le j|x-y|$. Multiplication by $|c_j|$, summation,
+and the triangle inequality give the claimed Lipschitz bound. Finally
+\[
+ q^{-d}\le |f(y)|\le |f(x)|+A(c)|x-y|.
+\]
+Insert the stated upper bound for $|f(x)|$ and rearrange. When
+$f(x)=0$, omit that term instead. These are exact rational inequalities;
+no mean-value theorem or differentiability is being used.
+\end{proof}
+
+For $n\ge1$, define the rational truncations and their common denominators
+by
+\[
+ r_n=\sum_{j=1}^n10^{-j!}=\frac{P_n}{q_n},\qquad
+ q_n=10^{n!},\qquad P_n=\sum_{j=1}^n10^{n!-j!}.
+\]
+All factorials, powers, sums, and integer quotients here have fixed
+primitive recursive definitions.
+
+\begin{theorem}[The Liouville name and its approximation bounds]
+\label{tr:name}
+The rational sequence $r_n$ is strictly increasing and lies in $(0,1)$.
+For $m\ge n\ge1$,
+\[
+ 0\le r_m-r_n\le2\,10^{-(n+1)!}\le2^{-n}.
+\]
+Thus $u(k)=r_{k+1}$ is a primitive recursive rational name with a
+specified Cauchy modulus. Moreover, for every $h\ge1$, every $n\ge h$,
+and every $m>n$,
+\[
+ 0<r_m-r_n<q_n^{-h}.
+\]
+The truncation $r_n=P_n/q_n$ is in lowest terms.
+\end{theorem}
+\begin{proof}
+Every added term is positive. Since $j!\ge j$ for $j\ge1$, the
+partial sum is bounded by the finite geometric sum
+$\sum_{j=1}^n10^{-j}<1/9<1$. For $j\ge n+1$, successive factorials
+increase by at least one, so
+\[
+ j!\ge(n+1)!+(j-n-1).
+\]
+Consequently, using only a finite geometric sum,
+\[
+ r_m-r_n\le10^{-(n+1)!}
+       \sum_{i=0}^{m-n-1}10^{-i}
+       \le\frac{10}{9}\,10^{-(n+1)!}
+       <2\,10^{-(n+1)!}
+\]
+when $m>n$; for $m=n$ the difference is zero. Since
+$(n+1)!\ge n+1$ and $10^{n+1}\ge2^{n+1}$, the latter bound is
+at most $2^{-n}$. This proves the asserted modulus directly.
+
+If $n\ge h$, then $q_n\ge10$ and
+\[
+ 2\,10^{-(n+1)!}=2q_n^{-(n+1)}<q_n^{-h},
+\]
+because $n+1-h\ge1$ and therefore $q_n^{n+1-h}\ge10>2$.
+Finally, the last summand in $P_n$ is one and each earlier summand
+is divisible by ten. Thus $P_n\equiv1\pmod{10}$, so it is
+coprime to $q_n=2^{n!}5^{n!}$. This gives the lowest-terms assertion.
+The external interpretation of the name is the real number commonly
+written $L=0.110001000000000000000001\ldots$; the internal content
+is precisely the rational estimates just proved.
+\end{proof}
+
+\begin{theorem}[Uniform polynomial separation and transcendence]
+\label{tr:transcendence}
+There are primitive recursive functions which, from any nonzero integer
+polynomial $f_c$, return an index $n\ge1$ and a positive integer $D$
+such that \ipra\ proves
+\[
+ \forall m\ge n\qquad |f_c(r_m)|\ge\frac1D.
+\]
+For a nonconstant polynomial, explicit choices are
+\[
+ A=A(c),\qquad n_0=d+A+1,\qquad
+ Q=10^{(n_0+d)!},\qquad D=2Q^d,
+\]
+with $n$ selected from $n_0,\ldots,n_0+d$. The external real number
+represented by $r_n$ is therefore transcendental.
+\end{theorem}
+\begin{proof}
+If $d=0$, every value is the nonzero integer $c_0$, so choose
+$n=D=1$. Suppose now $d\ge1$. Then $A\ge1$ because the leading
+coefficient is nonzero. The $d+1$ rational truncations
+$r_{n_0},\ldots,r_{n_0+d}$ are distinct. The polynomial-root bound
+therefore makes the search for the first index $n$ with $f_c(r_n)\ne0$
+succeed. Writing $q=q_n$, the rational-value bound gives
+$|f_c(r_n)|\ge q^{-d}$.
+
+For $m\ge n$, the Lipschitz estimate and the tail bound give
+\[
+ |f_c(r_m)-f_c(r_n)|\le 2A\,10^{-(n+1)!}.
+\]
+We check the required numerical domination explicitly. Since
+$n\ge d+A+1$, one has $n+1-d\ge A+2$. Thus
+\[
+ (n+1-d)n!\ge A+2,
+ \qquad 10^{(n+1-d)n!}\ge10^{A+1}>4A.
+\]
+For the last inequality, elementary induction gives $10^A\ge A+1$,
+so $10^{A+1}\ge10(A+1)>4A$. Using
+$(n+1)!-dn!=(n+1-d)n!$, it follows that
+\[
+ 2A\,10^{-(n+1)!}\le\frac12\,10^{-dn!}
+       =\frac12q^{-d}.
+\]
+The triangle inequality now yields
+\[
+ |f_c(r_m)|\ge |f_c(r_n)|-|f_c(r_m)-f_c(r_n)|
+              \ge\frac12q^{-d}\ge\frac1{2Q^d},
+\]
+since $n\le n_0+d$ implies $q\le Q$. This is the announced
+uniform margin, independent of the later index $m$.
+
+The witness algorithm has exactly $d+1$ candidate evaluations and uses
+only factorial, exponentiation, rational polynomial evaluation, and a
+bounded nonzero test. Its fallback value on the zero polynomial can
+be fixed arbitrarily; the theorem assumes the decidable nonzero
+coefficient condition. The proof for any later $m$ uses finite sums
+with that $m$ as a numerical parameter. No universal evaluator for
+arbitrary programs is introduced: only coefficient-coded polynomials
+are evaluated.
+
+For the external interpretation, polynomial continuity follows already
+from the displayed Lipschitz estimate on $[0,1]$. Hence the same positive
+margin separates $f_c(L)$ from zero for every nonzero integer
+polynomial. This is exactly transcendence. Internally the stronger,
+explicitly witnessed eventual separation above is the theorem; no
+second-order object or unrestricted real-zero test is needed.
+\end{proof}
+
+
+The concrete Lean encoding and denominator-cleared endpoint are described in Section~\ref{sec:lean}.

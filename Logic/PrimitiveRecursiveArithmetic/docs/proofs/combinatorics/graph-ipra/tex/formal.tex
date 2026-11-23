@@ -1,0 +1,201 @@
+\section{Lean formalization and proof obligations}\label{sec:lean}
+There are two mathematical levels. A Lean theorem about \texttt{Nat} validates
+a finite construction in Lean's metatheory. An internal iPRA theorem has a
+syntactic formula $\varphi$ and a term of type
+\[
+             \texttt{Prf PRAAx []}\ \varphi .
+\]
+The standalone Lean files in this archive were checked with Lean 4.32.0 and
+use only its distribution. They prove the native statements in the table.
+The object-language construction below targets the separate ProveIt
+workspace. The complete collection of internal proof terms remains to be
+implemented.
+
+\noindent\begin{tabularx}{\linewidth}{@{}p{0.25\linewidth}X@{}}
+\toprule
+Standalone module & Definitions and verified results\\ \midrule
+\texttt{GraphCore} & Finite summation, digit-coded adjacency, endpoint incidence,
+\texttt{sum\_out}, \texttt{sum\_in}, \texttt{handshaking}, bounded search and
+the positive-entry and bounded-reachability equivalences
+\texttt{walks\_pos}, \texttt{reachableBy\_iff}.\\[3pt]
+\texttt{CutParity} & Cut masks, parity of crossing multiplicity, vertex
+degrees, finite edge lists and endpoint cancellation. \texttt{even\_iff\_all\_cuts}
+and \texttt{euler\_boundary} prove cut orthogonality and necessity of the
+Euler parity conditions.\\[3pt]
+\texttt{ColorCert} & Bounded correctness tests for colour and clique vectors,
+pairwise distinct clique colours, alternation along walks, and
+\texttt{noOddClosedWalk} for a checked binary colouring.\\ \bottomrule
+\end{tabularx}
+
+\paragraph{Reification.}
+Use the pinned upstream namespace \texttt{LeanProofs.ConciseIPRA}.
+\texttt{PR k} has constructors \texttt{zero, succ, proj, comp, prec}.
+The recursion argument is first: in a successor clause the step reads the
+predecessor, previous value, and original parameters. A $k$-ary named graph
+program is a fixed value of this datatype. A term \texttt{PTm n} is a variable
+or an application of one such value to a tuple of terms. Formula constructors
+combine equalities of terms by intuitionistic logical operations. Let $[p]$
+mean the formula $p=1$ for a bit-valued term. To compile a test, first compile
+its bounded loops and comparisons to a bit term. To quantify over unbounded
+input codes, put ordinary universal introductions outside the input-validity
+implication. \texttt{PRA.precZero} and \texttt{PRA.precSucc} give the unfolding
+derivations, and \texttt{PRA.qfInd} is the induction rule.
+
+For each scan over $i<T$, the Lean-side program can mention a body function.
+At object level this is a fixed term with free digit-table parameters,
+never a variable for a function. Primitive-recursively pack all changing
+state fields into one number before iterating. Carry a flag when a legitimate
+output may be zero, and freeze completed runs. The repo's
+\texttt{Core.Pairing}, \texttt{Core.Division}, \texttt{Core.Powers},
+\texttt{Core.Fubini} and \texttt{Core.SearchParameters} supply arithmetic
+interfaces. In particular \texttt{Search.Finite.mu} seeks a \emph{zero}
+of its body, with the bound as sentinel, so use body $1-p$ to search for
+a true bit $p$. Use \texttt{search\_spec} to obtain the reflected
+witness and its leastness. Changing between one's own digit coding and
+upstream's term operations requires proofs of digit read-after-write,
+validity of padding, mask enumeration, and the reflection lemma of
+Section~\ref{sec:logic}. These proofs induct on the prefix length of a
+digit expansion, using division with remainder to extract each digit.
+
+\paragraph{An explicit endpoint for handshaking.}
+Fix parameters $(n,m,S,T)$ where the last two codes have $m$ endpoint digits
+in radix $\max(2,n+1)$. Let $a(e),b(e)$ read those digits.
+$V$ is the AND over $e<m$ of $a(e)<n$ and $b(e)<n$. Define
+$h(u,e)=[a(e)=u]+[b(e)=u]$ using the numeric truth bits. Reify
+\[
+ \forall n,m,S,T\quad [V]\ \longrightarrow\
+ \sum_{u<n}\sum_{e<m}h(u,e)=m+m .
+\]
+Here $\forall n,m,S,T$ denotes four nested object binders, and each sum
+is a primitive-recursive term. Use \texttt{fubini} to swap the sums.
+For fixed valid $a(e),b(e)$ each endpoint truth bit sums to one by
+\texttt{sum\_delta} with constant value one. Equivalently, scan $u$
+with invariant that the partial sum is the bit $[a(e)<u]$.
+Apply \texttt{sum\_add} to split the two sums, then induct on $m$ to sum
+the pair of ones. This includes loops since the two indicators are separate.
+Generalize the four variables only after the quantifier-free inductions.
+The independent \texttt{GraphCore} theorem verifies the same double count
+on finite endpoint tables. The ProveIt adapter supplied with the packet
+specializes the square double sum to the directed multiplicity matrix,
+using the internal endpoint \texttt{GraphIncidence.incidence\_closed}. Its explicit formula is universally closed over width, radix and packed digits. The source was checked against the pinned interfaces. A build in the full ProveIt dependency environment remains outstanding.
+
+\paragraph{An explicit endpoint for flow.}
+Pack the data and terminals in $G$ and define $\mathrm{Valid}(G)$ by the
+bounds in Section~\ref{fl:flows}. Define $\mathrm{Good}(G,f,k)$ by capacity
+and balance entry tests, $\mathrm{Cut}(G,U)$ by the two terminal bits,
+and $\mathrm{cap}(G,U)$ by summing outward capacities. Let
+$(F,K,S)=\mathrm{solve}(G)$ be the projections of the $C$-round program.
+A closed equality-certificate endpoint is the universal closure in $G$ of
+\[
+ [\mathrm{Valid}(G)]\ \longrightarrow\
+ [\mathrm{Good}(G,F,K)]\ \land\ [\mathrm{Cut}(G,S)]\
+             \land\ K=\mathrm{cap}(G,S).
+\]
+For optimality add arbitrary candidate $f',k',U'$ as outer parameters.
+The cut inequality gives $k'\le K\le\mathrm{cap}(G,U')$ under their
+validity conditions. To implement reachability at each round use a bounded
+path-code search, or an $n$-round predecessor table. Prove that the tag on a
+residual arc changes exactly the two net balances by one, including the
+reverse tag. The cut identity and saturated-boundary test eliminate all
+remaining search oracles. Substitution of the explicitly constructed network
+terms gives the matching and disjoint-path endpoints.
+
+\paragraph{Module order for the remaining proofs.}
+Each row specifies input data or a constructor, the principal invariant
+to reflect as a bit, and its induction parameter. These are proposed modules,
+with names describing their mathematical content. The exact recurrences
+and proofs are in the referenced sections.
+
+\begin{longtable}{@{} >{\raggedright\arraybackslash}p{0.25\linewidth}@{\hspace{0.035\linewidth}}p{0.69\linewidth}@{}}
+\toprule
+Data and constructions & Reflection lemma, induction and output\\ \midrule\endhead
+Reachability, components, forest & Fold a vertex mask from a fixed start, recording
+first-visit rounds. At $j$, membership means some admissible walk of length
+$\le j$. For the forest scan, check acyclicity, coincidence of component labels
+on the scanned prefix and $|F|+c=n$. Output a path or a closed separating side,
+and one tree per component.\\[4pt]
+Cycle and cut bases, Euler walks & Encode a basis as a list of $m$-bit masks.
+Test coordinates by a dot product mod two and uniqueness by their pivot bits.
+Store a tour by its alternating edge/vertex vectors plus its used mask.
+For each splice maintain a closed trail, disjoint residual edges, and parity
+or balance. Induct through at most $m$ splices.\\[4pt]
+Trees and determinants & Delete least leaves on a fixed active mask for
+Pr\"ufer coding. Maintain suffix multiplicities plus one at every active
+vertex. Encode a permutation as a word of distinct column indices, compute
+sign by inversion parity, and define the determinant by a signed sum.
+Group by images and cancel repeated rows as in Theorem~\ref{stkirchhoff}.
+Bound all submatrices by submasks of the original matrix.\\[4pt]
+Operations, group actions and spectra & Test maps and permutations by bounded
+rows, canonicalize an orbit by a minimum, certify a group by its multiplication
+and inverse tables. For reconstruction induce on decreasing proper type order.
+For the spectrum use rational vector codes and signed polynomial arrays.
+Matrix products, the Petersen change of basis, and polynomial parity are
+entrywise bounded identities.\\[4pt]
+Planar maps, minors and colouring & Store two dart permutations, one vertex map,
+component representatives, and face labels. Enumerate rotation cycles by
+marking the next unvisited dart. Prove the insertion and contraction splices
+by comparing the successors of the changed corners. Induct on $n$ for
+five-colouring within the original simplified size bounds.\\[4pt]
+General graph colouring & Search vertex and edge words over the palette, and
+store cliques and independent families as masks. Greedy induction checks the
+coloured prefix. A Vizing step keeps a fan, its predecessor indices, and a
+two-colour component. Reflect the missing-colour tests and the spoke-rotation
+lemma before inducting on the next edge. Chordal elimination and Brooks'
+construction reduce the vertex mask or operate on computed components.\\[4pt]
+Graph polynomials & Store coefficients by degree in signed arrays. Each
+edge deletion/contraction decreases the $m$-bound. Carry a table of
+coefficient equalities at all smaller subgraphs or minors inside the
+original size envelope. Group circulation assignments by support. All group
+elements have codes below the input order.\\[4pt]
+Tur\'an, Ramsey, Erd\H{o}s--Stone & Store partitions and cliques by masks.
+At each degree-maximizing step restrict to the selected neighbourhood.
+For Ramsey store a stack of pivots and both target sizes. For the
+dense-box lemma store a suffix of chosen sets, the current relation
+and density denominator $d_i$. Double-count the possible extensions
+and lower the dimension. All thresholds are PR terms in the input parameters.\\[4pt]
+Regularity and probabilistic arguments & Store a partition by class numbers,
+exceptional mask and irregularity witness masks. After each refinement the
+common-denominator energy increases by the proved increment, class sizes
+and exceptional cardinality obey their bounds, and every test is bounded.
+In the high-girth proof sum integer numerators over all digit assignments
+and delete representatives of the bad cycles.\\[4pt]
+Hamiltonicity and infinite presentations & Record a spanning permutation and
+undo one closure edge per step. For the infinite graph schema fix the specific
+neighbour-bound term and compile its $k$-fold majorant. For the halting example
+use existential witness conversion at the logical level, leaving the time
+variable unbounded only in the final existential formula.\\
+\bottomrule
+\end{longtable}
+A complete repository implementation ends each internal theorem with universal
+closure of its open derivation and an audit of its \texttt{Prf PRAAx} type.
+Numerical tests in the archive are independent regression checks for the
+algorithms. Their finite sample sizes play no part in the general proofs.
+
+\clearpage\subsection*{Executable verification in this archive}
+The Lean audit records the dependencies of seven named theorems. It reports
+\texttt{propext} and, for six of them, \texttt{Quot.sound}. The audit lists
+no \texttt{Classical.choice} or unfinished proof axiom. The Lean driver also checks the optimal colouring and the triangle certificate of Example~\ref{ex:six}, and verifies directly that there is exactly one two-step walk from vertex 1 to vertex 4. For that graph the square bit code is $8788157778$ and the base-three colour word has code $192$. The Python programs
+use independent finite enumerations for the following comparisons.
+
+\noindent\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{.22\linewidth}X@{}}
+\toprule
+Construction & Checks performed\\ \midrule
+Edge colouring & All 33,868 labelled simple graphs of orders zero through six,
+plus 150 larger instances in shuffled edge orders. All three fan extension
+cases occurred.\\[3pt]
+Networks and matching & 742 capacity networks compared with exhaustively
+enumerated flows and cuts. 690 bipartite instances compared with all matching
+masks and neighbourhood deficiencies.\\[3pt]
+Tree determinants and tours & 5,272 rooted minors compared with forest counts
+and 336 prescribed-first-arc tour counts compared with enumeration, across
+609 graph instances.\\[3pt]
+Rotation systems & 614 connected rotations, with 909 nonloop contractions
+and 582 complementary dual-tree checks.\\[3pt]
+Degree sequences and examples & All 637 sorted length-$n$ degree sequences
+with entries in $[n]$, $1\le n\le6$. Checks of unlabelled counts through eight
+vertices, the six-vertex certificates, the Petersen characteristic polynomial
+and one Laplacian cofactor.\\ \bottomrule
+\end{tabularx}
+
+The archive contains the theorem index with PDF page numbers, the source
+files and the exact commands for repeating each check.

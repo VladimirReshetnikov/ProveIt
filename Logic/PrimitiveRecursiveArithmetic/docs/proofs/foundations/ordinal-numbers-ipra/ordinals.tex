@@ -1,0 +1,49 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1.02in,top=.91in,bottom=.96in,headheight=15pt]{geometry}
+\usepackage{booktabs,tabularx,array,xcolor,enumitem,fancyhdr,xurl}
+\definecolor{ink}{HTML}{173546}
+\definecolor{accent}{HTML}{17695E}
+\usepackage[colorlinks=true,linkcolor=ink,urlcolor=accent,citecolor=accent]{hyperref}
+\hypersetup{pdftitle={Ordinal numbers in intuitionistic primitive recursive arithmetic},pdfsubject={Constructive order types, arithmetic and cofinality}}
+\setlength{\emergencystretch}{3.3em}
+\setlength{\parskip}{2.5pt plus 1pt}
+\setlist{topsep=4pt,itemsep=2pt}
+\setcounter{tocdepth}{1}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small\sffamily\color{ink}Ordinal numbers in iPRA}\fancyhead[R]{\small\sffamily\color{ink}Constructive arithmetic}\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{.25pt}
+\newtheoremstyle{main}{9pt}{4pt}{\itshape}{}{\bfseries\color{ink}}{.}{.5em}{}
+\theoremstyle{main}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\begin{document}
+\begin{center}
+{\sffamily\small\bfseries\color{accent} CONSTRUCTIVE MATHEMATICS}\par\vspace{11pt}
+{\LARGE\bfseries\color{ink} Ordinal numbers in intuitionistic\\[3pt] primitive recursive arithmetic}\par\vspace{9pt}
+{\large Order types, Cantor normal forms, and effective cofinality}\par\vspace{8pt}
+{\small Research report for Vladimir Reshetnikov\quad $\cdot$\quad November 22, 2026}
+\end{center}
+\begin{abstract}
+A finite linear order determines its order type by counting predecessors. The same first-order theory can reason about an infinite order such as $\omega^\omega$ when its elements have finite canonical names. We construct arithmetic, ordinal division with unique remainder, order isomorphisms for sums, products and finite-support powers, and cofinal sequences for all hereditary Cantor normal forms below $\varepsilon_0$. Given $y<\lambda$ with $\lambda$ a limit, we compute the first index at which the fundamental sequence passes $y$. It is bounded by the largest coefficient anywhere in the hereditary form of $y$. An extension by epsilon constants presents the order below $\varepsilon_\omega$ and identifies its principal-power fixed points. Further applications identify topological derivatives, natural ordinal arithmetic, and the decrease at each hereditary base-change step. The proofs use finite recursion, decidable tests and quantifier-free induction. The formalization section distinguishes the Lean theorems checked here from the remaining work of producing formal iPRA derivations.
+\end{abstract}
+\tableofcontents
+\newpage
+\input{foundation}
+\input{finite}
+\input{limits}
+\input{arithmetic}
+\input{division}
+\input{exporder}
+\input{natural}
+\input{epsilon}
+\input{scope}
+\input{formal}
+\end{document}

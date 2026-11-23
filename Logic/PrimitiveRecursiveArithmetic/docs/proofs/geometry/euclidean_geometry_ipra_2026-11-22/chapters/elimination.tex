@@ -1,0 +1,210 @@
+\section{A general theorem for elementary Euclidean geometry}
+\label{sec:elimination}
+The preceding field is more than a convenient place to calculate.
+It supports every fixed first-order statement of elementary real geometry.
+This section establishes the precise scope of that claim. Its finite
+sign-determination argument is closely related to the earlier planar
+packet and to formal real-algebraic elimination \cite{planar,cm,pr}.
+The theorem is a schema indexed externally by a fixed formula, not an
+internal truth predicate for arithmetic.
+
+\subsection{A finite sign calculation}
+\begin{lemma}[Signed remainder query]\label{qe:query}
+Let $D$ be a squarefree nonconstant polynomial over $\K$ and $W$ any
+polynomial. The integer
+\[
+ Q_D(W)=\sum_{D(r)=0}\sgn W(r)
+\]
+can be computed using only coefficient arithmetic and sign tests, with
+degree bounds on every division and loop.
+\end{lemma}
+\begin{proof}
+Reduce $D'W$ modulo $D$. A zero remainder gives zero query. Otherwise
+cancel the gcd of the remainder and $D$, leaving a proper reduced fraction
+$B/A$. Form the signed Euclidean remainder chain
+\[
+ S_0=A,\quad S_1=B,\quad S_{i+1}=-\operatorname{rem}(S_{i-1},S_i).
+\]
+Stop before the zero remainder. Coprimality makes the final entry a
+nonzero constant. Let $V_+$ be the sign-variation count in the leading
+coefficients and $V_-$ the count after multiplying each leading sign by
+$(-1)^{\deg S_i}$. Then $Q_D(W)=V_--V_+$.
+
+Here is the proof of the formula. List all roots of the product of the
+nonzero chain entries using Theorem~\ref{found:roots}. On each intervening
+interval every sign is fixed: a contrary sign would produce a root by
+polynomial intermediate value. Adjacent entries have no common root,
+by the Euclidean identities. At a zero of an interior entry, the
+neighboring entries have opposite values because the remainder has a
+minus sign. The two adjacent edges therefore contribute exactly one
+variation on either side. Simultaneous zeros of nonadjacent entries affect
+disjoint pairs of edges. There is no zero in the final constant entry.
+
+At a zero $r$ of $A$, factor $A=(T-r)A_1$, so $A_1(r)=A'(r)$.
+The first edge loses one variation if $B(r)/A'(r)>0$ and gains one
+if it is negative. The local coefficient of $(T-r)^{-1}$ in $D'W/D$
+is $W(r)$; cancellation and removal of a polynomial part preserve that
+coefficient. Cancelled roots have $W(r)=0$. Thus the net loss of
+variations is the stated sum. Signs at the two tails are their leading
+term signs, since $|T|>1+\sum_{i<d}|a_i/a_d|$ suffices for dominance.
+
+Every use of a local sign is quantitative. Expand
+$g(r+h)-g(r)=\sum_{j\ge1}c_jh^j$. If $g(r)\ne0$, then
+$|h|<\min(1,|g(r)|/(1+\sum|c_j|))$ preserves its sign. Choose a
+rational bound below this positive algebraic number using its sign gap.
+Consequently the root-list telescoping argument is a bounded Boolean
+and integer calculation, with the candidate point kept as a free parameter.
+\end{proof}
+
+\begin{lemma}[Every occurring sign pattern is decidable]\label{qe:patterns}
+Given polynomials $f_1,\ldots,f_m$ and a squarefree $D$, occurrence of
+any prescribed sign vector at a root of $D$ is a PR coefficient test.
+Here $D$ is nonzero; a nonzero constant has no roots and every pattern
+count is zero.
+\end{lemma}
+\begin{proof}
+On $z\in\{-1,0,1\}$ the polynomials
+\[
+ I_0(z)=2(1-z^2),\quad I_+(z)=z^2+z,\quad I_-(z)=z^2-z
+\]
+are twice the indicator of the indicated sign. Expand
+$\prod_j I_{\sigma_j}(Z_j)=\sum_e c_eZ^e$. By multiplicativity of
+sign and finite distributivity,
+\[
+ 2^m\#\{r:D(r)=0,\ \sgn f_j(r)=\sigma_j\ (1\le j\le m)\}
+   =\sum_e c_e Q_D\left(\prod_j f_j^{e_j}\right).
+\]
+The right side is a computed integer; positivity decides occurrence.
+No comparison of unknown roots is needed in this coefficient algorithm.
+\end{proof}
+
+\begin{theorem}[One-variable elimination and witnesses]\label{qe:one}
+For a quantifier-free ordered-ring formula $\theta(T,\bar a)$, its
+existential and universal quantifiers in $T$ can be eliminated by a PR
+finite decision tree on polynomial signs in $\bar a$. On an accepting
+existential branch, a scalar witness can be constructed. On a rejecting
+universal branch, a counterexample can be constructed.
+\end{theorem}
+\begin{proof}
+First fix the parameters. Remove constant polynomials after recording
+their signs, including sign zero for identically zero polynomials.
+If no nonconstant polynomial remains, $T=0$ is the only
+sample required. Otherwise let $P$ be the monic squarefree part of their
+product. All possible sign vectors occur in one of three places: at a
+root of $P$, at a root of the squarefree part of $P'$, or in either tail.
+If $P'$ is a nonzero constant, its root family is empty; the
+nonconstant-root query is not called for it.
+To justify the middle class, let $a<b$ be consecutive roots of $P$.
+Simplicity and the common interior sign of $P$ imply that $P'(a)$ and
+$P'(b)$ have opposite signs. Factoring out $T-a$ and $T-b$ makes this
+assertion explicit, with the local bounds of Lemma~\ref{qe:query}.
+Intermediate value supplies a derivative root in $(a,b)$, where all the
+original signs are constant. Hence every bounded open cell is sampled.
+
+The queries in Lemma~\ref{qe:patterns} determine precisely which sign
+vectors occur at the two kinds of roots, and leading terms determine the
+tails. Evaluate $\theta$ on this finite collection. For actual witnesses
+use the sorted roots of $P$ itself, their intervening midpoints, and one
+point outside each extreme root. These samples contain every sign vector
+needed. If $P$ has no real roots, use the single sample $T=0$ instead:
+all original signs are constant by intermediate value, so this sample
+is complete even when $P$ is nonconstant.
+A true existential has a true sample; a false universal has a
+false sample. If all samples satisfy the matrix, an arbitrary candidate
+lies in a root singleton or one of the sampled intervals, so it satisfies
+the matrix too. This last direct argument is what licenses universal
+quantification intuitionistically.
+
+Now treat parameters symbolically. At each coefficient sign test make
+three branches, recording equality to zero, positivity, or negativity.
+Test every leading coefficient before division, truncate when it vanishes,
+and discard identically zero specializations. On a realized branch every
+coefficient is a rational function $p/q$ with $q\ne0$; its sign is the
+sign of $pq$ because $q^2>0$. Thus all branch guards are polynomial
+sign conditions on the parameters. Disjoin the accepting guards.
+Unrealizable branches need not be recognized. Division by $a/b$ is used
+only on a branch guarded by $a\ne0$, so no actual division by zero
+can occur.
+
+For bounds, if there are $m$ polynomials of degree at most $d$, set
+$s=1+m(d+1)$. Product and squarefree degrees are below $s$; query
+products have degree at most $2md$. A remainder chain takes at most its
+initial maximum degree plus two divisions, and each division takes at most
+that degree plus two coefficient cancellations. There are $3^m$ sign
+patterns and at most $3^m$ monomials in an indicator product. Unroll those
+bounded loops and branch at most three ways at each test. Repeated
+addition and multiplication of finite expression-tree sizes give a PR
+bound on the whole tree. This bound may be enormous; efficiency is not
+needed for membership in iPRA. Correctness at a specialized branch uses
+the numerical finite-list invariants already described.
+\end{proof}
+
+\begin{theorem}[Elementary geometry transfer, formula by formula]
+\label{qe:transfer}
+For every fixed first-order ordered-field formula $\phi$ there is a PR
+Boolean test $b_\phi$ such that iPRA proves
+\[
+ \operatorname{Valid}(\bar a)\ \longrightarrow\
+      \bigl(\phi^\#(\bar a)\leftrightarrow b_\phi(\bar a)=1\bigr).
+\]
+The standard real field and the coded field $\K$ agree on $\phi$ at
+algebraic parameters. Consequently each true closed elementary
+Euclidean-geometric sentence has a proof of its numerical translation in
+iPRA. This is a metatheorem schema, not a uniform internal assertion of
+the soundness of iPRA.
+\end{theorem}
+\begin{proof}
+Eliminate the innermost scalar variable and repeat. The recursion is on
+the externally fixed formula. Boolean cases for conjunction, disjunction,
+and implication are valid because the relevant subformulas have already
+been supplied with decisions. The witness and counterexample arguments
+of Theorem~\ref{qe:one} handle both quantifiers directly. Translating
+$\forall T\,\theta$ merely as $\neg\exists T\,\neg\theta$ would
+be insufficient without that argument; we do not make that omission.
+
+Translate each point binder into two scalar binders, point equality into
+component equality, and equal distances into equality of squared distances.
+For scalar binders the precise relativization is
+\[
+ (\exists x\,\psi)^\#=\exists n(\operatorname{Valid}(n)\land\psi^\#),
+ \qquad
+ (\forall x\,\psi)^\#=\forall n(\operatorname{Valid}(n)\to\psi^\#).
+\]
+Scalar equality says that the PR comparison test returns zero, not that
+the two record numbers are literally equal. All atomic relations respect
+this equality by Theorem~\ref{found:field}.
+Inclusive betweenness has the polynomial translation
+\begin{equation}\label{eq:betweenpoly}
+ \Bet(A,X,C)\quad\longleftrightarrow\quad
+ [C-A,X-A]=0\ \land\ (X-A)\mathbin\cdot(X-C)\le0.
+\end{equation}
+Section~\ref{sec:affine} proves this even when $A=C$. Lines and circles
+are finite parameter tuples with their validity conditions. Nonnegative
+lengths are scalar witnesses satisfying $l^2=N(v)$; uniqueness makes
+their introduction a definitional abbreviation. Thus all named elementary
+statements in the geometry chapters fall under the translation.
+
+Externally the same elimination tree works over $\R$: polynomial roots
+are finite in number, the same sign-variation proof applies, and all
+coefficient signs agree on algebraic parameters. At a closed sentence
+the final calculation is a closed Boolean computation. Its true value
+has a derivation by the defining equations of PR functions, and the
+proved equivalence supplies the geometric translation. This proves the
+last assertion without introducing a truth predicate into arithmetic.
+\end{proof}
+
+\paragraph{A visible example.}
+Two circles of squared radius $s$ with centers $(0,0),(1,0)$ intersect
+if and only if $4s\ge1$. Subtracting their equations gives $2x=1$;
+then $y^2=s-1/4$. The positive, zero, and negative branches give two,
+one, and no points, respectively. This is an entire elimination and
+witness calculation that can be checked by hand.
+
+\paragraph{What this metatheorem adds.}
+It gives a principled route for every further fixed semialgebraic theorem
+in the article's neighborhood, rather than an arbitrary cutoff at this
+report's named portfolio. It does not assert that every sentence about
+continuous curves, arbitrary subsets, integer-indexed geometry, or
+transcendental functions is an elementary ordered-field sentence. The
+polygon and approximation families below receive their own bounded-loop
+arguments when their input length or precision varies.

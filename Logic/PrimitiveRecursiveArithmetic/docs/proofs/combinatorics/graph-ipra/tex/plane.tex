@@ -1,0 +1,159 @@
+\section{Plane maps, forbidden minors, and five colours}\label{sec:plane}
+We give the combinatorial version of plane embedding. Each edge has two
+distinct darts paired by an involution $\alpha$, even for a loop. A rotation
+$\sigma$ is a permutation of the darts whose cycles are exactly the cyclic
+orders of outgoing darts at the nonisolated vertices. From a dart, crossing
+and taking the next dart in that cyclic order applies $\phi=\sigma\alpha$.
+Its cycles are called facial walks. A component consisting of one isolated
+vertex contributes one empty facial walk. For disconnected graphs we use a
+separate sphere for each component until an outer face is chosen.
+
+All three permutations are tables on $[2m]$. Count cycles by taking the least
+unmarked member, following at most $2m$ steps and marking its orbit. A
+specified embedding thus has a numerical interpretation entirely inside iPRA.
+The connection with plane pictures is that a vertex is a small disc and
+an edge an untwisted band. The boundary of these discs and bands follows
+$\phi$. All embedding claims below refer to this finite representation.
+
+\begin{lemma}[Face tracing and the spherical certificate]\leavevmode\label{lem:sphere}
+For a connected nonempty graph with any rotation there is a natural $g$ with
+$n-m+f=2-2g$, where $f$ counts its facial walks. For any fixed spanning tree,
+restore the other edges one at a time in their input cyclic positions.
+Then $g$ is exactly the number of restorations joining two different facial
+walks. In particular $g=0$ has a certificate built using only face splits.
+\end{lemma}
+\begin{proof}
+Initially restrict each cyclic order to the tree. A one-vertex tree has one
+empty boundary. Adding a leaf and its edge inserts a trip out and back into
+the boundary at the parent's indicated corner. It preserves the number of
+boundaries, also when the parent was the singleton. Thus the tree has one
+face and $n-(n-1)+1=2$.
+
+To insert an edge, mark its two attachment slots in the current boundary
+lists. A slot is the corner between two successive local darts, with a
+temporary marker for a degree-zero singleton. When both new darts enter
+the same slot, their relative order is that in the final rotation, so one
+of the intervening strings can be empty. Cut the boundary at the two marks,
+and cross-connect the resulting ends via the two opposite darts of the
+new edge. On one old boundary, write its cyclic word as $AB$ cut at those
+marks. The new cycles consist of $A$ and one new dart, and $B$ and its
+mate. On two old boundaries, now words $A,B$, the new cycle contains
+$A$, one new dart, $B$, and the other dart. These splices follow directly
+by applying $\sigma\alpha$ at the two changed corners. Every other transition
+is unchanged. The singleton's empty word gives two one-dart faces on
+inserting its first loop. Consequently $m$ increases by one and $f$ increases
+by one or decreases by one. In the latter case the displayed characteristic
+drops by two. Induction on the number of restorations proves the formula.
+\end{proof}
+Call a connected rotation \emph{spherical} if it has such a tree-and-splits
+construction. This is the combinatorial spherical map convention. The lemma
+proves that the choice of tree and insertion order is immaterial, and gives
+Euler's formula $n-m+f=2$ as a consequence of the construction. The face
+words also describe the disc picture: a thickened tree is a disc, and at
+each split a chord is inserted in a complementary disc between its marked
+boundary slots, cutting that disc in two. A graph is called planar here if
+each nonempty component admits a spherical rotation. All rotations can be
+tested by a scan below $\max(2,2m)^{2m}$. If all components share a common
+exterior face, the merged face count $F=1+\sum_i(f_i-1)$ gives
+$n-m+F=1+c$ for $c$ components, including the empty graph. These formulas
+make no quantification over real curves.
+
+\begin{proposition}[Minor closure and dual trees]\leavevmode\label{prop:dual}
+Deletion of edges or vertices and contraction of nonloop edges preserve
+planarity in this convention. For a nonempty connected spherical map its
+dual has one vertex per face, one edge per primal edge, one face per primal
+vertex, and is spherical. The dual of the dual recovers the original map.
+The complements of spanning trees are dual spanning trees.
+\end{proposition}
+\begin{proof}
+For a nonbridge $e$ select a tree avoiding it and restore $e$ last. Zero
+merges for the full rotation imply zero for the rotation just before that
+last split. This gives deletion, including a loop. If $e$ is a bridge, its
+removal gives two connected components with the inherited rotations.
+Joining two such boundary lists by the bridge joins one face on each side
+into one (the two-boundary splice above). Hence the defect
+$2-(n-m+f)$ of the joined graph is the sum of the component defects. Both
+are nonnegative, so if the sum is zero both are zero. This calculation
+also covers isolated components via the empty-face convention.
+
+For contraction of $uv$, $u\ne v$, cut the cyclic lists after its two darts,
+remove them and concatenate the remaining lists into the rotation about the
+merged vertex. Tracing a face then just skips the deleted darts: arriving
+where a deleted dart used to leave now continues at the former other end.
+A face consisting solely of deleted darts can occur only when $uv$ is a whole
+one-edge component, whose contracted vertex has its empty face by convention.
+Thus $f$ is unchanged, while $n,m$ each drop by one. Delete loops and surplus
+parallel edges afterward when a simple minor is required. To delete a vertex,
+delete all its incident edges and discard its isolated component.
+
+For a map with edges, the dual uses the same paired darts and vertex
+rotation $\sigma^*=\phi$. Its face permutation is $\sigma^*\alpha=\sigma$.
+The original graph is connected precisely when the darts form one orbit
+under $\alpha,\sigma$: moves around a vertex and across an edge lift and
+project walks. Since $\phi=\sigma\alpha$, the dual has the same orbit.
+The Euler characteristic is unchanged. The assertion for a singleton is
+direct. Fix a primal spanning tree $T$. Delete edges outside $T$ in any
+order. Each deletion is of a nonbridge and, by restoring it last, reverses
+a split, merging two distinct faces. On the dual side the names of the two faces incident with the deleted edge are identified. Thus these are successive
+contractions of edges with distinct endpoints. After all deletions the
+primal tree has one face, so the selected dual edges connect all original
+dual vertices. There are $m-(n-1)=f-1$ selected edges, hence they form a
+tree. Apply the same construction to the dual for the converse.
+\end{proof}
+
+\begin{theorem}[Euler bounds and explicit obstructions]\leavevmode\label{thm:densplane}
+In a connected simple spherical map on $n\ge3$ vertices, $m\le3n-6$.
+If it is triangle-free, $m\le 2n-4$. In particular $K_5$ and $K_{3,3}$ are
+nonplanar, as is any graph having one of them as a minor or a subdivision
+subgraph.
+\end{theorem}
+\begin{proof}
+Each dart is on exactly one facial walk, so face lengths sum to $2m$.
+A face of length one needs a loop. A face of length two either uses parallel
+edges or immediately reverses a single edge at both ends. Immediate reversal
+in the face trace means that the endpoint has degree one. In the latter case
+the entire component would be $K_2$. A length-three closed walk in a simple
+graph uses three different vertices and forms a triangle. Therefore
+$2m\ge3f$ or, under triangle-freeness, $2m\ge4f$. Substitute $f=2-n+m$.
+Now $K_5$ has ten edges against a bound of nine. The bipartite $K_{3,3}$
+has nine against a triangle-free bound of eight. Apply minor closure.
+In a subdivision subgraph, contracting along each subdivided edge recovers
+the original graph, giving the last assertion.
+\end{proof}
+
+\begin{theorem}[Constructive five-colour theorem]\leavevmode\label{thm:five}
+A finite simple graph with spherical rotation certificates has a computable
+proper five-colouring.
+\end{theorem}
+\begin{proof}
+Every nonempty such graph has a vertex of degree at most five. In a component
+with at least three vertices a contrary degree sum would give $2m\ge6n$,
+contrary to Theorem~\ref{thm:densplane}. Components of size one and two
+are immediate. For a vertex $v$ of degree at most four, delete it, colour
+recursively and use a missing colour. At degree five consider its five
+neighbours. If every two were adjacent, their induced $K_5$ would be a
+nonplanar subgraph. Search all ten pairs and select two nonadjacent
+neighbours $p,q$. Contract the two edges of $p v q$ to a single vertex
+$w$ and simplify. This is a smaller planar graph. From its colouring,
+transfer the colour of $w$ to both $p,q$ and copy the colours of all
+vertices outside $\{p,v,q\}$. Every edge away from $v$ is proper: the
+only possible edge lost between two differently named but equally coloured
+endpoints would be $pq$, which was tested absent. Among the five neighbours
+of $v$ at most four colours now occur. Give $v$ the least palette colour missing
+there. All recursion decreases the vertex count. Store the contraction
+and relabelling records and unwind at most $n$ frames. For induction fix
+$n$ and conjoin correctness for smaller vertex codes and their rotations.
+A simplified intermediate graph has at most $\binom n2$ edges.
+\end{proof}
+
+\begin{corollary}[Four colours for triangle-free spherical graphs]\leavevmode\label{idx:plane-four-colours-for-triangle-free-spherical-graphs}
+Every simple triangle-free graph with spherical rotation certificates is
+constructively four-colourable.
+\end{corollary}
+\begin{proof}
+In each component on $n\ge3$ vertices, $2m\le 4n-8$ gives a vertex of
+degree at most three. Smaller nonempty components have such a vertex too.
+Deleting that vertex preserves both hypotheses. Record $n$ such removals,
+then colour the vertices in reverse order. On inserting a vertex at most
+three colours are forbidden by previously inserted neighbours.
+\end{proof}

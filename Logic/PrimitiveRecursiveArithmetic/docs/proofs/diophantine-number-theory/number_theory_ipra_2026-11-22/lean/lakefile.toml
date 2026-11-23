@@ -1,0 +1,15 @@
+name = "number_theory_ipra"
+defaultTargets = ["NumberTheoryIPRA"]
+
+[[require]]
+name = "mathlib"
+git = "https://github.com/leanprover-community/mathlib4.git"
+rev = "81a5d257c8e410db227a6665ed08f64fea08e997"
+
+# This default target checks only the standalone semantic outlines.
+# ProveItTargets.lean must be checked separately inside the pinned ProveIt
+# project, whose IPRADerivations/ConciseIPRA dependencies are not vendored here.
+# Merely compiling these definitions does not prove the goal-record fields.
+[[lean_lib]]
+name = "NumberTheoryIPRA"
+roots = ["ElementaryDefinitions", "AnalyticDefinitions", "AlgebraicDefinitions", "DiophantineTargets", "QuadraticDefinitions", "TranscendenceDefinitions"]

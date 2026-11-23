@@ -1,0 +1,373 @@
+\section{Euclidean space, finite volume, and the five solid types}
+\label{sec:solids}
+In $\K^d$ let $u\cdot v=\sum_{i<d}u_iv_i$ and
+$N(u)=\sum_{i<d}u_i^2$. Dimension $d$ may be a natural-number input
+for these bounded sums. In dimension three write
+\[
+ u\times v=(u_2v_3-u_3v_2,\ u_3v_1-u_1v_3,\ u_1v_2-u_2v_1),
+ \qquad [u,v,w]=u\cdot(v\times w).
+\]
+All surfaces and solids below have finite vertex, face, or triangulation
+data. The section addresses the main article's solid-geometry, scaling,
+and Platonic-solid statements \cite{wiki,euclid,platoniccore}.
+
+\begin{theorem}[Lagrange's identity in finite dimension and cross products]
+\label{sol:gram}
+For every finite $d$,
+\[
+ N(u)N(v)-(u\cdot v)^2=
+       \sum_{i<j<d}(u_iv_j-u_jv_i)^2\ge0.
+\]
+Consequently Cauchy--Schwarz and the Euclidean metric triangle inequality
+hold in every such dimension. In three dimensions the sum on the right
+is $N(u\times v)$, and $u\times v$ is perpendicular to both factors.
+\end{theorem}
+\begin{proof}
+Expand the two products on the left. The diagonal terms cancel. Group
+the remaining terms with indices $(i,j)$ and $(j,i)$; their sum is
+$u_i^2v_j^2+u_j^2v_i^2-2u_iv_iu_jv_j$, the asserted square.
+This reindexing is a bounded-sum identity, proved by induction on $d$
+with all coordinate lists as parameters. The inequality follows because
+squares are nonnegative. The square-root and norm-expansion argument in
+Theorem~\ref{tri:metric} now proves Cauchy--Schwarz and the triangle
+inequality word for word. In dimension three the three squared terms
+are the squared coordinates of the cross product. Its dot products with
+$u,v$ vanish by cancellation of their six terms.
+\end{proof}
+
+\begin{theorem}[Planes and exact intersections]\label{sol:planes}
+Three noncollinear spatial points determine a unique plane. A plane
+$n\cdot X=h$, $N(n)>0$, and line $A+tu$ meet uniquely if
+$n\cdot u\ne0$, at
+\[
+ A+\frac{h-n\cdot A}{n\cdot u}u.
+\]
+Otherwise the whole line lies in the plane when $n\cdot A=h$, and
+the line is disjoint from it when that equality fails. Two nonparallel
+planes intersect in a line with explicitly computable coefficients.
+\end{theorem}
+\begin{proof}
+For points $A,B,C$ take $n=(B-A)\times(C-A)\ne0$ and $h=n\cdot A$.
+The cross-product calculation gives all three incidences. The normal
+space perpendicular to the two independent vectors has dimension one:
+solve the two equations using a nonzero two-by-two minor, which exists
+because the cross product is nonzero. Thus any other plane through the
+three points has proportional normal and the same equation up to scale.
+The line cases follow by solving $n\cdot A+t(n\cdot u)=h$.
+
+For planes $n\cdot X=h$, $m\cdot X=k$, assume
+$D=N(n)N(m)-(n\cdot m)^2=N(n\times m)>0$. Put
+\[
+ X_0=\frac{hN(m)-k(n\cdot m)}D n
+       +\frac{kN(n)-h(n\cdot m)}D m.
+\]
+Taking its two dot products yields $h,k$. Every point
+$X_0+t(n\times m)$ satisfies the equations. Subtracting $X_0$ from
+any other solution gives a vector perpendicular to $n,m$, hence a
+multiple of their cross product by the same nonzero-minor argument.
+The parallel-normal case is decided by the compatibility of the constants.
+\end{proof}
+
+\begin{theorem}[Distance to a plane and orthogonal projection]
+\label{sol:projection}
+The foot of $P$ on $n\cdot X=h$ is
+$F=P+(h-n\cdot P)n/N(n)$, and its distance is
+$|n\cdot P-h|/\sqrt{N(n)}$. It uniquely minimizes the distance to
+$P$ among points of the plane. Reflection $P\mapsto2F-P$ is an
+involutive isometry fixing exactly the plane.
+\end{theorem}
+\begin{proof}
+Substitution verifies $n\cdot F=h$. The vector $P-F$ is a scalar
+multiple of $n$, while every displacement $X-F$ in the plane is
+perpendicular to $n$. Thus
+$N(P-X)=N(P-F)+N(X-F)$, proving the distance and uniqueness claims.
+Reflection negates the normal component while preserving the component
+in the plane. The orthogonal sum of their squared norms proves isometry,
+and the sign reversal proves involution and the fixed-point assertion.
+\end{proof}
+
+\begin{theorem}[Sphere sections and tangency]\label{sol:sphere-section}
+Let a sphere have center $O$ and radius $R>0$, and let a plane be at
+distance $d$ from $O$, with foot $F$. Its intersection with the sphere
+is empty if $d>R$, the singleton $F$ if $d=R$, and the circle in
+that plane centered at $F$ with squared radius $R^2-d^2$ if $d<R$.
+\end{theorem}
+\begin{proof}
+For $X$ in the plane, orthogonal decomposition gives
+$N(X-O)=N(X-F)+d^2$. The sphere equation is therefore
+$N(X-F)=R^2-d^2$. A negative right side has no solution; zero
+forces $X=F$. In the positive case choose an orthonormal frame in
+the plane by normalizing any nonzero perpendicular vector and its
+cross product with the normal. The equation is exactly the planar
+circle equation. A suitable perpendicular vector is obtained from a
+coordinate axis not parallel to $n$, a three-case decidable selection.
+\end{proof}
+
+\begin{theorem}[A sphere through four noncoplanar points]\label{sol:circumsphere}
+Four noncoplanar points determine a unique sphere. With one point at
+zero and the others $u,v,w$, let $D=[u,v,w]\ne0$. Its center is
+\[
+ O=\frac{N(u)(v\times w)+N(v)(w\times u)+N(w)(u\times v)}{2D}.
+\]
+Its squared radius is $N(O)>0$.
+\end{theorem}
+\begin{proof}
+Taking dot products gives $2O\cdot u=N(u)$ and the corresponding
+equations for $v,w$. Expanding $N(O-u)$, $N(O-v)$, and $N(O-w)$
+therefore gives $N(O)$. Conversely any sphere through zero and those
+points must satisfy these three linear equations. Their determinant
+is nonzero, so the solution is unique. If $O=0$, the first equation
+would force $u=0$, contradicting noncoplanarity, hence the radius is positive.
+\end{proof}
+
+\begin{theorem}[Finite oriented volume and its boundary formula]
+\label{sol:volume}
+For a tetrahedron $ABCD$ define its signed volume by
+\[
+ V_s(A,B,C,D)=\frac{[B-A,C-A,D-A]}6.
+\]
+For a finite positively oriented conforming tetrahedral partition, the sum of these
+volumes depends only on its oriented triangular boundary, and is additive
+under finite dissection. An affine map with linear part $T$ multiplies
+signed volume by $\det T$ and unsigned volume by $|\det T|$.
+In particular a similarity of ratio $\lambda$ multiplies volume by
+$\lambda^3$.
+Here conforming means that shared boundary pieces have identical face
+triangulations; otherwise first take their finite common refinement.
+\end{theorem}
+\begin{proof}
+Multilinearity gives the four-face identity
+\[
+ [B-A,C-A,D-A]=[B,C,D]-[A,C,D]+[A,B,D]-[A,B,C].
+\]
+Sum this over the tetrahedra. Every internal oriented triangular face
+occurs twice with opposite signs; only the boundary remains. This proves
+independence, additivity, and invariance under changing an interior
+triangulation. The sum can be updated one face at a time with a
+quantifier-free equality invariant.
+
+The permutation formula for the determinant gives
+$[Tu,Tv,Tw]=\det(T)[u,v,w]$. A common translation disappears from
+the edge differences, proving the affine claim. If $T=\lambda Q$ and
+$Q^\mathsf TQ=I$, then $(\det Q)^2=1$, so $|\det T|=\lambda^3$.
+For a unit box the familiar six tetrahedra obtained by ordering its three
+coordinates each have determinant one; their volumes sum to one.
+Thus this volume has the unit-box normalization as well as finite
+dissection additivity. It is the ordinary polyhedral volume on these
+finite representations, not a measure on arbitrary subsets.
+\end{proof}
+
+\begin{theorem}[Prism and box volumes]\label{sol:prism}
+A prism on a planar triangulated base of area $A$ and perpendicular
+height $h$ has volume $Ah$. In particular a rectangular box has the
+product of its three edge lengths as volume.
+\end{theorem}
+\begin{proof}
+First take a triangular base $A_0B_0C_0$ and displacement $u$.
+Its prism divides into tetrahedra with vertex sets
+\[
+ \{A_0,B_0,C_0,C_0+u\},\quad
+ \{A_0,B_0,B_0+u,C_0+u\},\quad
+ \{A_0,A_0+u,B_0+u,C_0+u\}.
+\]
+In base barycentric coordinates and height parameter $0\le t\le1$,
+these three tetrahedra are the three consecutive regions obtained by
+ordering $t$ against the two cumulative barycentric coordinates. They
+cover the prism and have disjoint interiors. Each has absolute determinant
+$|[B_0-A_0,C_0-A_0,u]|$. Their total volume is half that determinant.
+The base area is $\sqrt{N((B_0-A_0)\times(C_0-A_0))}/2$ and
+the height is the absolute normal component of $u$, so their product
+is the same half-determinant. For a base with several triangles choose
+one global vertex order before applying these splits, so that shared
+vertical rectangles acquire the same diagonal. Sum over the base triangulation; internal
+vertical faces cancel. A rectangular base has the product of its two
+perpendicular edges as area, giving the box formula.
+\end{proof}
+
+\begin{theorem}[Pyramid volume and the one-third ratio]\label{sol:pyramid}
+A pyramid on a planar triangulated base of area $A$, with apex at
+perpendicular height $h$, has volume $Ah/3$. It therefore has one third
+the volume of a prism with the same base and height.
+\end{theorem}
+\begin{proof}
+Each base triangle together with the apex is a tetrahedron. Its absolute
+triple product is its doubled base area times the perpendicular height,
+because only the normal component of the apex displacement contributes.
+Divide by six to obtain one third the base area times $h$.
+All base triangles have the same height, and their areas add, giving
+$Ah/3$. Their interiors and conical sectors are disjoint, so the finite
+volume additivity applies. The prism comparison follows from
+Theorem~\ref{sol:prism}. The height-zero case gives zero on both sides.
+\end{proof}
+
+\begin{theorem}[Euler's formula for a finite convex polyhedron]
+\label{sol:euler}
+For a three-dimensional convex polyhedron given by its exact finite
+vertices and maximal polygonal faces, with counts $V,E,F$,
+$V-E+F=2$.
+\end{theorem}
+\begin{proof}
+Choose a face $F_0$ and its vertex centroid $p$, which is in its relative
+interior. Let its supporting equation be $n\cdot X=h$, with the solid
+on the $\le h$ side. Choose a viewpoint
+$z=p+\epsilon n/N(n)$, where $\epsilon>0$ is sufficiently small.
+This choice is finite and effective. At $p$ all other face inequalities
+are strict, so their finitely many positive gaps give a bound ensuring
+that $z$ remains inside those halfspaces. For every vertex $v$ not in
+$F_0$, let $\delta_v=h-n\cdot v>0$. Its projection from $z$ to
+the face plane is
+\[
+ p+\frac{\epsilon}{\delta_v+\epsilon}(v_{\parallel}-p),
+ \qquad
+ v_{\parallel}=v+\frac{h-n\cdot v}{N(n)}n.
+\]
+Each of the finitely many edge inequalities of $F_0$ is strict at $p$.
+Choose $\epsilon$ below the minimum of the resulting positive rational
+bounds after bounding the displayed displacements. Then every such
+projection is strictly inside $F_0$.
+More explicitly, let $g_i>0$ be rational lower bounds for the gaps to
+the other face planes, and choose rational
+$A_i\ge|n_i\cdot n/N(n)|$. For each edge inequality
+$m_j\cdot(X-p)+b_j\ge0$ of $F_0$, choose a rational
+$g_j>0$ below $b_j$, and choose rational
+$d_v>0$ below $\delta_v$ and
+$L_{jv}\ge|m_j\cdot(v_{\parallel}-p)|$.
+It suffices to take
+\[
+ \epsilon=\min\left(1,\min_i\frac{g_i}{2(1+A_i)},
+                     \min_{j,v}\frac{d_vg_j}{2(1+L_{jv})}\right).
+\]
+All minima are finite and positive; omit an empty subfamily. The two
+changes in the relevant inequalities are then smaller than half their
+strict margins.
+
+Every ray from $z$ through the face meets the convex solid in an interval:
+each face inequality cuts out an interval of ray parameters, and their
+finite intersection is an interval. Its far endpoint is unique. Hence the
+remaining surface projects onto $F_0$ without crossing or overlap of
+face interiors. Projection denominators are positive, so a convex
+combination projects to a convex combination after positive renormalization
+of its weights. Each projected face is therefore convex.
+Triangulate each projected convex face by a fan. We now
+have a finite triangulated disk with convex polygonal boundary. Let $b$
+be its number of boundary vertices, $V_i$ its number of interior vertices,
+$E_i$ its number of interior edges, and $T$ its number of triangles.
+
+At each interior vertex the incident triangle sectors fill a full turn;
+at boundary vertices they fill the outer polygon's interior angles.
+The triangle angle-sum theorem and Theorem~\ref{poly:angles}, using
+their finite half-turn carries, therefore give
+$T=2V_i+b-2$. Counting triangle-edge incidences gives $3T=2E_i+b$.
+Thus, with $V=V_i+b$ and $E=E_i+b$,
+$V-E+T=1$. Add back the omitted outer face to get two. Every fan
+diagonal that was introduced adds one edge and one face, so removing
+them preserves $V-E+F$. This proves the original formula.
+
+All choices are from finite vertex and face lists, and every strict
+geometric margin has an algebraic sign gap. The counts and incidence
+equalities are bounded folds. The argument uses neither a theorem about
+arbitrary topological surfaces nor an unbounded compactness principle.
+\end{proof}
+
+\begin{theorem}[Only five regular face--vertex types]
+\label{sol:five-types}
+Suppose a convex polyhedron has regular $p$-gonal faces with $q$ faces
+meeting at every vertex, where $p,q\ge3$. Then
+\[
+ (p,q)\in\{(3,3),(4,3),(3,4),(5,3),(3,5)\}.
+\]
+Its counts $(V,E,F)$ are respectively
+$(4,6,4),(8,12,6),(6,12,8),(20,30,12),(12,30,20)$.
+\end{theorem}
+\begin{proof}
+Face--edge counting gives $pF=2E$, while face--vertex counting gives
+$qV=pF=2E$. Multiply Euler's equality
+by $pq$ and substitute to obtain
+\[
+ E(2p+2q-pq)=2pq>0.
+\]
+Hence $(p-2)(q-2)<4$. Both factors are positive integers. Enumerating
+their products below four gives $(1,1),(1,2),(2,1),(1,3),(3,1)$,
+which are exactly the listed possibilities. Finally
+$E=2pq/(2p+2q-pq)$ and the incidence equations give the displayed
+counts. This is also the arithmetic core already represented by
+\texttt{Geometry/PlatonicSolids.lean} in ProveIt \cite{platoniccore}.
+\end{proof}
+
+\begin{theorem}[Exact realizations of all five types]\label{sol:realizations}
+All five types in Theorem~\ref{sol:five-types} are realized by explicit
+convex polyhedra with constructible coordinates. Put
+$\varphi=(1+\sqrt5)/2$, so $\varphi^2=\varphi+1$.
+Their vertices may be chosen as follows:
+\begin{center}\small
+\begin{tabular}{ll}
+\toprule
+Solid & Vertex set\\
+\midrule
+Tetrahedron & $(\pm1,\pm1,\pm1)$ with sign product $+1$\\
+Cube & all $(\pm1,\pm1,\pm1)$\\
+Octahedron & $(\pm1,0,0),(0,\pm1,0),(0,0,\pm1)$\\
+Icosahedron & cyclic permutations of $(0,\pm1,\pm\varphi)$\\
+Dodecahedron & cube vertices and cyclic permutations of
+$(0,\pm\varphi^{-1},\pm\varphi)$\\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{theorem}
+\begin{proof}
+For the first three sets, the supporting planes and faces follow directly
+from their sign patterns. The tetrahedron has four equilateral faces
+of squared edge length 8; the cube has six squares of squared edge
+length 4; the octahedron has eight equilateral triangles of squared
+edge length 2. Their vertex squared radii are $3,3,1$, respectively.
+
+For the icosahedron take outward normals of two kinds: all eight signed
+$(1,1,1)$, and the twelve cyclic permutations of
+$(0,\pm\varphi,\pm\varphi^{-1})$. Each supporting value is
+$\varphi^2$. Substitution of the twelve vertices gives at most this
+value, with exactly three equalities. Representatives of the equality
+triples are
+\[
+ (0,1,\varphi),(1,\varphi,0),(\varphi,0,1)
+\quad\hbox{and}\quad
+ (0,1,\varphi),(1,\varphi,0),(-1,\varphi,0).
+\]
+All three pairwise distances in either triple are 2. Signed coordinates
+and cyclic permutations give the twenty facets. Every vertex has five
+incident triangles and all vertex squared radii are $\varphi+2$.
+
+For the dodecahedron use the twelve cyclic signed normals
+$(0,\pm\varphi,\pm1)$ with supporting value $\varphi^2$.
+For $n=(0,\varphi,1)$ the five equality vertices, in boundary order, are
+\[
+ (1,1,1),\quad (\varphi^{-1},\varphi,0),\quad
+ (-\varphi^{-1},\varphi,0),\quad (-1,1,1),\quad
+ (0,\varphi^{-1},\varphi).
+\]
+They have common squared radius 3 and lie in one plane, so they lie
+on the circle with center the foot of the origin in that plane.
+Adjacent squared distances are $4/\varphi^2=6-2\sqrt5$, and
+successive turns have the same positive sign and the same dot product.
+Thus the face is a convex regular pentagon. The sign and cyclic
+symmetries give twelve such faces, with three meeting at each vertex.
+
+For completeness the accompanying exact certificate enumerates every
+noncollinear vertex triple, retains the plane precisely when all remaining
+vertices are on one side, and merges equal equality sets. This exhausts
+the facets: a two-dimensional exposed face of a finite convex hull is
+the convex hull of its equality vertices and contains three affinely
+independent ones. All comparisons take place in $\Q(\sqrt5)$ with
+integer sign tests. The returned facets are exactly the ones above;
+the full oriented face and edge lists are in
+\texttt{certificates/solids.json}. Their finite counts and face equations
+are reproducible by \texttt{code/check\_solids.py}.
+\end{proof}
+
+\paragraph{Exact extent of the classification.}
+The last two theorems prove the five admissible face--vertex types and
+give regular convex examples of each, including their incidence counts.
+They do not add a separate global rigidity or abstract-combinatorial
+uniqueness theorem asserting that every polyhedron with a given type is
+congruent to the displayed one. The package's inventory records this
+distinction explicitly. The exact coordinate certificates establish
+existence and regularity, rather than relying on a drawing of a solid.

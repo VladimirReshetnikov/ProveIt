@@ -1,0 +1,33 @@
+\section{A constructive completeness theorem with syntactic worlds}\label{sec:canonical}
+There is a sense of completeness in which iPRA can reason about worlds of unbounded size. We give the exact semantics because a change in the interpretation of disjunction or of falsity would change the theorem. Start with the fragment consisting of atoms, equality, $\bot,\wedge,\to,\forall$. Worlds are pairs $w=(n,\Gamma)$ of an arity and a finite context in the full intuitionistic calculus $I$. An arrow $w\to v=(m,\Delta)$ consists of a term substitution $\sigma:n\to m$ and a list of proofs $\Delta\vdash_I G[\sigma]$, one per $G$ in $\Gamma$. Identity arrows are hypothesis leaves. For composition, substitute the second term map into each proof in the first list and graft the proof list of the second arrow. Theorem~\ref{thm:graft} verifies this operation and the transport of any derivation along an arrow. Multiple certificates can witness the same access between contexts.
+
+For each \emph{fixed} formula $A$ with $k$ slots define an arithmetic predicate $w\Vdash A[\theta]$ with a numerical parameter $\theta:k\to n$. In this paragraph $\vdash$ denotes existence of an accepted proof code. For atoms (including equality) and $\bot$, use $\Gamma\vdash_I A[\theta]$. Conjunction uses conjunction in arithmetic. An implication $B\to C$ holds if, for every coded arrow $(\sigma,\pi):w\to v$, the assertion $v\Vdash B[\theta;\sigma]$ implies $v\Vdash C[\theta;\sigma]$. A universal $\forall B$ holds if for every such arrow and every $m$-ary term $t$ one has $v\Vdash B[(t,\theta;\sigma)]$. The tuple on the right sends slot zero to $t$ and old slots to the composite. These clauses are a finite compilation of the syntax of $A$ into an ordinary arithmetic formula, with potentially unbounded quantifiers over arrow codes. They require no decision of the resulting predicates.
+
+\begin{theorem}[Schematic forcing equals derivability]\label{thm:syntacticforcing}
+For each formula $A$ of this fragment, iPRA proves, uniformly in $w,\theta$,
+\[
+            w\Vdash A[\theta]\quad\longleftrightarrow\quad
+            \Gamma\vdash_I A[\theta].
+\]
+Forcing is persistent under these arrows. For a sentence the equivalence at the empty context gives completeness for the indicated interpretation.
+\end{theorem}
+\begin{proof}
+Construct a finite iPRA argument in the metatheory by induction on the fixed template $A$. This is an induction that \emph{generates proofs}, not an internal induction on formulas with a quantified induction invariant. The atomic and falsity cases use their definitions. For conjunction, project either part of a given proof, or combine the two proofs supplied by the induction hypotheses. These are fixed PR operations.
+
+Given a proof of $B\to C$ at $w$ and an arbitrary arrow, transport it. The induction hypothesis converts forcing of $B$ at the target into a proof there. Apply the transported implication and use the other induction hypothesis to get forcing of $C$. In reverse, take $v=(n,\Gamma,B[\theta])$ with identity term map and the weakened context proofs. Its last hypothesis supplies forcing of $B$ by the induction hypothesis. Apply the assumed forcing implication at this arrow and turn its conclusion into a proof of $C[\theta]$ in $v$. Implication introduction returns the required proof in $w$.
+
+A proof of $\forall B$ transports along each arrow and specializes to every term $t$. The substitution law gives exactly the body instance in the definition. Apply the body induction hypothesis. For the reverse take the single generic arrow to $(n+1,\uparrow\Gamma)$ whose term map is the shift, with the shifted hypotheses as its proof list. Specialize there at $v_0$. The combined body substitution is $(v_0,\uparrow\theta)$, the lift of $\theta$. The body induction hypothesis returns a derivation under $\uparrow\Gamma$. Universal introduction gives the claimed universal in $w$. Finally transport the proof on the right of the equivalence and use the equivalence again to obtain persistence. Every use of existential elimination on a proof predicate provides an actual certificate to the finite constructions involved.
+\end{proof}
+
+\begin{corollary}[An arithmetical completeness reading for classical theorems]
+For each classical sentence $A$ one can compute a formula $A^-$ of the indicated fragment and an arithmetic sentence $\mathsf{Force}(A^-)$ such that iPRA proves
+\[
+       (\exists p\,\operatorname{Check}_C(p,0,[],A)=1)
+                   \ \longleftrightarrow\ \mathsf{Force}(A^-).
+\]
+\end{corollary}
+\begin{proof}
+Use the translation of Theorem~\ref{thm:negative}, writing the disjunction clause as $\neg(\neg X\wedge\neg Y)$ and the existential clause as $\neg\forall x\neg X(x)$. Intuitionistically, a refutation of $X\vee Y$ is equivalent to a pair of refutations by the disjunction rules, and a refutation of $\exists x X(x)$ is equivalent to $\forall x\neg X(x)$ by the quantifier rules. Negating these equivalences gives the required replacements, including substitutions in enclosing formulas. Compose the proof maps and use the preceding theorem at $w=(0,[])$ with the empty substitution.
+\end{proof}
+
+At a world carrying a contradiction, falsity is forced and every formula of the fragment is forced. Equality here is provable equality and can grow along an arrow. These facts distinguish the result from Tarski completeness and from the usual nonexploding Kripke semantics with rigid identity. The formula compiler produces an iPRA theorem separately for every $A$. No single arithmetical satisfaction predicate for arbitrary arithmetic formulas is asserted.

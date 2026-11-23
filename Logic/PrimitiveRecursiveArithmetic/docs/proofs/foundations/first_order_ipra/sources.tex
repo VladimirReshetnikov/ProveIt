@@ -1,0 +1,32 @@
+\clearpage
+\section{Source guide, boundaries and further questions}
+\begingroup\small
+The starting article is \href{https://en.wikipedia.org/wiki/First-order_logic}{\emph{First-order logic}}. The table locates the mathematical claims selected from its sections and linked topics. The additional bounds, explicit algorithms and proof maps are developed in this manuscript.
+
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{.32\linewidth}>{\raggedright\arraybackslash}X@{}}\toprule
+Source topic & Result obtained here \\ \midrule
+Formation, variables and substitution & Unique readability, alpha-equivalence, capture avoidance, composition and semantic substitution (Sections~\ref{sec:binding}, \ref{sec:models}).\\
+Deductive systems, equality, \href{https://en.wikipedia.org/wiki/Extension_by_definitions}{extension by definitions} & PR proof checking, deduction, finite support, equality transport, quotient structures and conservativity.\\
+Intuitionistic first-order logic & Increasing-domain soundness and countermodels, embedding classical derivations, and canonical forcing for the negative fragment.\\
+Interpretations, variations and \href{https://en.wikipedia.org/wiki/Relational_algebra}{relational algebra} & Finite satisfaction, preservation and diagrams, elimination of functions and sorts, relational operations and fragment-elementary substructures.\\
+\href{https://en.wikipedia.org/wiki/Prenex_normal_form}{Prenex} and \href{https://en.wikipedia.org/wiki/Skolem_normal_form}{Skolem} normal forms, automated deduction & Witness tables, two clausal forms, resolution completeness and two-way cut-free Herbrand extraction.\\
+Decidable fragments & Monadic rank profiles and proof-producing decision with equality, and the relational existential--universal fragment with constants and equality.\\
+\href{https://en.wikipedia.org/wiki/Ehrenfeucht-Fraisse_game}{Ehrenfeucht--Fraïssé games} and expressive limitations & Formula separators, exact finite-order threshold, parity, connectedness and reachability counterexamples.\\
+Completeness and undecidability & Church separation for one binary relation, finite satisfiability, nonenumerability of finite validity, and an arithmetical completeness reading.\\
+\href{https://en.wikipedia.org/wiki/Compactness_theorem}{Compactness} and \href{https://en.wikipedia.org/wiki/Lowenheim-Skolem_theorem}{Löwenheim--Skolem} & Sharp bounded-carrier obstruction, no computable common diagram, Herbrand trees, and Skolem hulls with supplied witness selectors.\\
+\bottomrule\end{tabularx}\end{center}
+
+\paragraph{ProveIt.}
+The \href{https://github.com/VladimirReshetnikov/ProveIt/tree/bbb85238dac533fc4b7b84a750cca864fe35fed5/Logic/PrimitiveRecursiveArithmetic}{iPRA project} fixes the base theory. Its ordinary deduction target is specified by \href{https://github.com/VladimirReshetnikov/ProveIt/blob/bbb85238dac533fc4b7b84a750cca864fe35fed5/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/PR.lean}{\texttt{ConciseIPRA/PR.lean}}. Arithmetic providers include \href{https://github.com/VladimirReshetnikov/ProveIt/blob/bbb85238dac533fc4b7b84a750cca864fe35fed5/Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Core/Pairing.lean}{pairing and simultaneous recursion} and \href{https://github.com/VladimirReshetnikov/ProveIt/blob/bbb85238dac533fc4b7b84a750cca864fe35fed5/Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Core/SearchParameters.lean}{bounded search with parameters}. The separate \href{https://github.com/VladimirReshetnikov/ProveIt/tree/bbb85238dac533fc4b7b84a750cca864fe35fed5/Logic/FirstOrder}{first-order completeness project} reports an independent Lean and Rocq development for equality and one binary relation. Its Lean model-existence proof uses classical choice. Its general-signature semantic compactness target is a separate mathlib-backed result.
+
+\paragraph{Comparison literature.}
+Y. Forster, D. Kirst and D. Wehr, \href{https://arxiv.org/abs/2006.04399}{\emph{Completeness Theorems for First-Order Logic Analysed in Constructive Type Theory}}, compare completeness principles for different semantics and study connections to weak König's lemma. D. Kirst and D. Larchey-Wendling, \href{https://arxiv.org/abs/2104.14445}{\emph{Trakhtenbrot's Theorem in Coq: Finite Model Theory through the Constructive Lens}}, give a signature-sensitive classification of finite satisfiability. Here both ends of the two-stack reductions are explicit arithmetic codes. The proof transformation in Section~\ref{sec:negative} is the Gödel--Gentzen construction. See J. Avigad and S. Feferman, \href{https://math.stanford.edu/~feferman/papers/dialectica.pdf}{\emph{Gödel's functional (Dialectica) interpretation}}, for background.
+
+\paragraph{Scope of the reformulations.}
+Arbitrary uncountable signatures, the assertion that every consistent theory has a set-sized Tarski model, the upward cardinal conclusion of Löwenheim--Skolem, and the characterization of abstract logics in Lindström's theorem involve objects outside the numerical language chosen here. The computable-diagram counterexample explains a precise obstruction to replacing models by programs. Other arithmetizations of completeness require their own analysis. The extraction in Section~\ref{sec:normal} accepts cut-free input. The guarded and two-variable fragments and the full classification of decidable signatures are further topics beyond the decisions proved here.
+
+\paragraph{Further research questions.}
+Can the binary-signature separation be formalized in ProveIt with a reusable theory of interpreting finite signatures in graphs? Can the monadic decision proof exploit shared subproofs to give a substantially smaller verified bound on certificate size? Which additional fragments admit constructive completeness with a PR certificate transformation for their intended semantics?
+
+\endgroup
