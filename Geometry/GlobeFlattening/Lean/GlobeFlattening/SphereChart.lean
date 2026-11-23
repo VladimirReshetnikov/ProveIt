@@ -16,6 +16,10 @@ open scoped Real
 
 noncomputable section
 
+/-- The closed rectangle of longitude-latitude parameters from the report. -/
+def sphereClosedBox : Set (ℝ × ℝ) :=
+  Icc (-Real.pi) Real.pi ×ˢ Icc (-(Real.pi / 2)) (Real.pi / 2)
+
 /-- The open rectangle of longitude-latitude parameters from the report. -/
 def sphereLongitudeDomain : Set (ℝ × ℝ) :=
   Ioo (-Real.pi) Real.pi ×ˢ Ioo (-(Real.pi / 2)) (Real.pi / 2)

@@ -10,12 +10,14 @@ also proves positive exceptional image area in every nonempty open target
 patch and rules out a Lipschitz bound on any nonempty relatively open
 source patch. [Lean theorem](Lean/GlobeFlattening/FlatteningTheorem.lean)
 
-The construction chooses a square mesh at each stage. The slope at the
-latitude midpoint plus one mesh width majorizes the target slope across
-each row and its interpolation layers. The longitude and latitude profiles
-use the same sum of clipped ramps. At each point in a retained affine tile,
-the local error bound controls the difference quotient for all sufficiently
-small increments. [Scalar construction](Lean/GlobeFlattening/ScalarConstruction.lean) · [Ramp profiles](Lean/GlobeFlattening/RampProfile.lean)
+The Lean construction uses two sequences of continuous monotone staircases
+that approximate longitude and latitude and have derivative zero almost
+everywhere. The longitude correction has nonnegative weights, preserving
+the row slope bound. Summation by parts gives a second expression for the
+same function. Together the two expressions bound horizontal and vertical
+errors and give the joint derivative.
+[Scalar construction](Lean/GlobeFlattening/ScalarConstruction.lean) ·
+[Singular staircases](Lean/GlobeFlattening/SingularStaircase.lean)
 
 The triangular chart is open because it maps open rectangles to regions
 between continuous longitude endpoint curves.
