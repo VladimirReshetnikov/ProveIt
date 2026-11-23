@@ -1347,10 +1347,27 @@ gives a uniform bound for independently late observations of the
 same fixed-grid density.
 [GaussianEulerUnitSubstitutionTiltedNodes](Lean/IPRADerivations/Analysis/GaussianEulerUnitSubstitutionTiltedNodes.lean)
 gives ordered native rational nodes with an explicit correction of
-at most `2N / 2^p` for each original rounded decay node. Identifying the
-decay-image integral with
-independently chosen partitions of the unit kernel and scaling with
-arbitrary positive real parameters remain open.
+at most `2N / 2^p` for each original rounded decay node.
+[RationalUnitFloorBounds](Lean/IPRADerivations/Analysis/RationalUnitFloorBounds.lean)
+derives compact interval guards for quantized lattice nodes and all
+intermediate points. [RationalTiltedFloorWidth](Lean/IPRADerivations/Analysis/RationalTiltedFloorWidth.lean)
+bounds each rounded width by the original signed width, with one
+tilt increment and the two floor allowances.
+[GaussianEulerUnitSubstitutionReversedWeights](Lean/IPRADerivations/Analysis/GaussianEulerUnitSubstitutionReversedWeights.lean)
+keeps the original density under exact finite reversal and projects
+the actual cell mesh to scalar endpoint distances.
+[GaussianEulerUnitKernelCompactName](Lean/IPRADerivations/Analysis/GaussianEulerUnitKernelCompactName.lean)
+constructs a regular compact unit-kernel quadrature with an explicit
+modulus on native rational panels.
+[GaussianEulerUnitSubstitutionNearbyKernel](Lean/IPRADerivations/Analysis/GaussianEulerUnitSubstitutionNearbyKernel.lean)
+bounds the original power against the rational kernel at nearby
+points with independent observation precisions.
+[GaussianPartitionedFiniteSumTotalDistance](Lean/IPRADerivations/Analysis/GaussianPartitionedFiniteSumTotalDistance.lean)
+accumulates the finite row error using the total cut width.
+[GaussianPartitionedFiniteSumWeightReplacement](Lean/IPRADerivations/Analysis/GaussianPartitionedFiniteSumWeightReplacement.lean)
+controls the replacement of the integer-cell weights by signed widths.
+The comparison with independently chosen partitions of the unit
+kernel and scaling with arbitrary positive real parameters remain open.
 [GaussianBetaSharpPartition](Lean/IPRADerivations/Analysis/GaussianBetaSharpPartition.lean)
 locates one and the two degree endpoints on the same original dyadic
 grid and identifies the original half-time decay at the split with
