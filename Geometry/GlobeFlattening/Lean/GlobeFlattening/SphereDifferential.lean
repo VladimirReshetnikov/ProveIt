@@ -53,12 +53,10 @@ theorem hasFDerivAt_sphereFlatten_inverse
   have hs' : HasFDerivAt spherePoint (sphereDerivative p) (G.symm (G p)) := by
     rw [G.left_inv hp]
     exact hasFDerivAt_spherePoint p
-  have hD : (sphereDerivative p).comp D.symm.toContinuousLinearMap = sphereTangentLift p := by
-    ext v : 1
-    change sphereTangentLift p (D (D.symm v)) = _
-    rw [ContinuousLinearEquiv.apply_symm_apply]
-  rw [← hD]
-  exact hs'.comp (G p) hGinv
+  apply (hs'.comp (G p) hGinv).congr_fderiv
+  ext v : 1
+  change sphereTangentLift p (D (D.symm v)) = _
+  rw [ContinuousLinearEquiv.apply_symm_apply]
 
 /-- The forward differential is the linear left inverse of the tangent lift. -/
 theorem hasFDerivWithinAt_sphereFlatten
