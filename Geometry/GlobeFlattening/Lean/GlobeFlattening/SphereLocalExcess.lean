@@ -55,23 +55,22 @@ theorem volume_sphereExceptional_inter_of_open {u : ℝ × ℝ → ℝ}
     0 < volume (W ∩
       (planarEuclideanEquiv ∘ (flattenCoordinates u ∘ sphereChartInverse)) '' sphereExceptional good) := by
   let g := planarEuclideanEquiv ∘ flattenCoordinates u
-  let V := sphereLongitudeDomain ∩ g ⁻¹' W
   have hcont : ContinuousOn g sphereLongitudeDomain :=
     planarEuclideanEquiv.continuous.comp_continuousOn
       ((hu.mono sphereLongitudeDomain_subset_box).prodMk continuous_snd.continuousOn)
-  have hV : IsOpen V := hcont.isOpen_inter_preimage isOpen_sphereLongitudeDomain hW
   obtain ⟨z, hz⟩ := hne
   rw [image_image] at hWsub
   obtain ⟨p, hp, rfl⟩ := hWsub hz
-  obtain ⟨a, b, c, d, hp', hbox⟩ :=
-    exists_chartClosedRectangle_subset_of_mem_nhds (hV.mem_nhds ⟨hp, hz⟩)
+  have hD := isOpen_sphereLongitudeDomain.mem_nhds hp
+  obtain ⟨a, b, c, d, hp', hbox⟩ := exists_chartClosedRectangle_subset_of_mem_nhds
+    (Filter.inter_mem hD ((hcont.continuousAt hD) (hW.mem_nhds hz)))
   have hpos := volume_local_exceptional_image_pos (hp'.1.1.trans hp'.1.2)
     (hp'.2.1.trans hp'.2.2) (hbox.trans inter_subset_left) hu hslope hgood hnull hderiv
   rw [← volume_planarEuclideanEquiv_image, image_image] at hpos
-  rw [sphereFlattenForward_exceptional_image hsub, image_image, ← image_preimage_inter]
-  exact hpos.trans_le (measure_mono (image_mono fun _ ⟨hq, hq'⟩ =>
-    let ⟨hqdom, hqW⟩ := hbox (chartRectangle_subset_closed hq)
-    ⟨hqW, hqdom, hq'⟩))
+  rw [sphereFlattenForward_exceptional_image hsub, image_image, ← image_preimage_inter,
+    inter_sdiff_left_comm, ← inter_sdiff_assoc]
+  exact hpos.trans_le (measure_mono (image_mono
+    (sdiff_subset_sdiff_left (chartRectangle_subset_closed.trans hbox))))
 
 /-- The chart-null exceptional set also has zero two-dimensional Hausdorff measure. -/
 theorem hausdorffMeasure_sphereExceptional_eq_zero {good : Set (ℝ × ℝ)}
@@ -103,10 +102,9 @@ theorem not_lipschitzOn_of_exceptional_area
   have hpos := hexcess _ hOpen ((hne.image _).image _) hsub
   have hLip' : LipschitzOnWith K f W :=
     inter_eq_right.mpr hWsub ▸ lipschitzOnWith_restrict.mp hLip
-  have hbound := (hLip'.mono (inter_subset_left : W ∩ Z ⊆ W)).hausdorffMeasure_image_le
-    (d := 2) (by norm_num)
   have hnull : μH[Module.finrank ℝ (EuclideanSpace ℝ (Fin 2))] (f '' (W ∩ Z)) = 0 := by
-    simpa [measure_mono_null inter_subset_right hZnull] using hbound
+    simpa [measure_mono_null inter_subset_right hZnull] using
+      (hLip'.mono (inter_subset_left : W ∩ Z ⊆ W)).hausdorffMeasure_image_le (d := 2) (by norm_num)
   rw [← (injOn_iff_injective.2 hf.injective).image_inter hWsub hZ] at hpos
   exact hpos.ne' (Measure.absolutelyContinuous_isAddHaarMeasure volume _ hnull)
 

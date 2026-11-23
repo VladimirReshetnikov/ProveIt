@@ -35,13 +35,9 @@ theorem volume_chartImage_eq_lintegral_width
 theorem lintegral_cos_rectangle {a b c d : ℝ} (hab : a ≤ b) :
     (∫⁻ p in chartRectangle a b c d, ENNReal.ofReal (Real.cos p.2)) =
       ∫⁻ y in Ioo c d, ENNReal.ofReal ((b - a) * Real.cos y) := by
-  have hcos : Measurable (fun y => ENNReal.ofReal (Real.cos y)) :=
-    ENNReal.measurable_ofReal.comp Real.continuous_cos.measurable
-  rw [chartRectangle, Measure.volume_eq_prod, ← Measure.prod_restrict,
-    ← lintegral_map hcos measurable_snd, Measure.map_snd_prod, lintegral_smul_measure,
-    Measure.restrict_apply_univ, Real.volume_Ioo, smul_eq_mul]
-  simp_rw [ENNReal.ofReal_mul (sub_nonneg.mpr hab)]
-  rw [lintegral_const_mul _ hcos]
+  rw [chartRectangle, Measure.volume_eq_prod, setLIntegral_prod_symm _ (by fun_prop)]
+  simp only [setLIntegral_const, Real.volume_Ioo, ENNReal.ofReal_mul (sub_nonneg.mpr hab)]
+  exact lintegral_congr fun _ => mul_comm _ _
 
 /-- A strict longitude slope bound gives greater image area than the cosine density. -/
 theorem lintegral_cos_lt_volume_chartImage
@@ -87,16 +83,14 @@ theorem volume_local_exceptional_image_pos {u : ℝ × ℝ → ℝ} {good : Set 
   have hmono := strictMonoOn_chartRows_of_lowerSlope hcos hslope'
   have hinj : InjOn (flattenCoordinates u) R :=
     (injOn_flattenCoordinates_closedRectangle hmono).mono chartRectangle_subset_closed
-  have hAreaLt : volume (flattenCoordinates u '' (R ∩ good)) <
-      volume (flattenCoordinates u '' R) := by
-    rw [measure_flattened_good_image ((isOpen_chartRectangle a b c d).measurableSet.inter hgood)
-        inter_subset_left (by rwa [sdiff_self_inter]) hinj
-        (fun p hp => (hderiv p hp.2).hasFDerivWithinAt)
-        (fun p hp => hcos p.2 (Ioo_subset_Icc_self hp.1.2)),
-      image_flattenCoordinates_chartRectangle hab.le (hu.mono hsub)
-        (fun y hy => hmono y (Ioo_subset_Icc_self hy))]
-    exact lintegral_cos_lt_volume_chartImage hab hcd (hu.mono hsub)
-      (fun y hy => hcos y (Ioo_subset_Icc_self hy)) hslope'
+  have hAreaLt := lintegral_cos_lt_volume_chartImage hab hcd (hu.mono hsub)
+    (fun y hy => hcos y (Ioo_subset_Icc_self hy)) hslope'
+  rw [← image_flattenCoordinates_chartRectangle hab.le (hu.mono hsub)
+      (fun y hy => hmono y (Ioo_subset_Icc_self hy)),
+    ← measure_flattened_good_image ((isOpen_chartRectangle a b c d).measurableSet.inter hgood)
+      inter_subset_left (by rwa [sdiff_self_inter]) hinj
+      (fun p hp => (hderiv p hp.2).hasFDerivWithinAt)
+      (fun p hp => hcos p.2 (Ioo_subset_Icc_self hp.1.2))] at hAreaLt
   rw [hinj.image_sdiff]
   exact (tsub_pos_of_lt hAreaLt).trans_le le_measure_sdiff
 
@@ -111,7 +105,6 @@ private theorem lintegral_sinusoidalWidth :
     (hcont.integrableOn_Icc.mono_set Ioo_subset_Icc_self)
     ((ae_restrict_mem measurableSet_Ioo).mono fun y hy =>
       mul_nonneg (by positivity) (Real.cos_pos_of_mem_Ioo hy).le)]
-  change ENNReal.ofReal (∫ y in Ioo _ _, 2 * Real.pi * Real.cos y) = _
   rw [← integral_Ioc_eq_integral_Ioo, ← intervalIntegral.integral_of_le (by linarith [Real.pi_pos]),
     intervalIntegral.integral_const_mul, integral_cos, Real.sin_neg, Real.sin_pi_div_two]
   congr 1
@@ -175,14 +168,12 @@ theorem volume_chartImage_upper_of_sinusoidal_closeness
       have hright := hclose (Real.pi, y) ⟨⟨hab, le_rfl⟩, Ioo_subset_Icc_self hy⟩
       rw [dist_flattenCoordinates_sinusoidalCoordinates] at hleft hright
       linarith only [(abs_le.mp hleft).1, (abs_le.mp hright).2]
-    _ = ENNReal.ofReal (4 * Real.pi + 2 * Real.pi * ε) := by
+    _ < _ := by
       rw [lintegral_add_right _ measurable_const, lintegral_sinusoidalWidth, setLIntegral_const,
         Real.volume_Ioo, show Real.pi / 2 - -(Real.pi / 2) = Real.pi by ring,
         ← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_add (by positivity) (by positivity)]
-      congr 1
-      ring
-    _ < _ := (ENNReal.ofReal_lt_ofReal_iff (by positivity)).2 (by
-      linarith only [mul_pos Real.pi_pos hε])
+      exact (ENNReal.ofReal_lt_ofReal_iff (by positivity)).2 (by
+        nlinarith only [mul_pos Real.pi_pos hε])
 
 /-- The scalar tolerance gives a uniform bound on the projection error. -/
 theorem flattenCoordinates_close_to_sinusoidal
