@@ -1,0 +1,343 @@
+\section{Polynomial curves, tangents, and a quantitative implicit theorem}
+\label{sec:tangency}
+
+The source article's informal ``just touches'' description does not determine
+a tangent. For example, the tangent $y=0$ to $y=x^3$ at the origin crosses
+the graph. We use a finite quadratic remainder as the definition of first-order
+contact. This supplies an explicit \ipra\ interpretation of tangent lines and
+planes, and also proves existence of the relevant local curve or surface when
+a partial derivative is separated from zero.
+
+\subsection{Finite derivatives and remainder estimates}
+
+Let $F(X)=\sum_\alpha c_\alpha X^\alpha$ be a rational polynomial in a
+fixed number $d$ of variables. The exponent vector is $\alpha$, its total
+degree is $|\alpha|$, and coefficients and exponents are finite coded lists.
+Define formal partial derivatives term by term, and write $\nabla F$ for
+their vector. For $M\ge1$ define the rational bounds
+\begin{align*}
+ H_F(M)&=\sum_\alpha |c_\alpha|(M+1)^{|\alpha|},\\
+ B_F(M)&=1+\sum_\alpha |c_\alpha|\,|\alpha|(M+1)^{|\alpha|},\\
+ L_F(M)&=1+\sum_\alpha |c_\alpha|\,|\alpha|^2(M+1)^{|\alpha|}.
+\end{align*}
+All are uniformly primitive recursive in the polynomial code and $M$.
+
+\begin{theorem}[A polynomial Taylor estimate without a limit theorem]
+\label{tan:taylor}
+If $\|p\|_\infty\le M$ and $\|h\|_\infty\le1$, then
+\[
+ F(p+h)=F(p)+\nabla F(p)\cdot h+R(p,h),\qquad
+ |R(p,h)|\le H_F(M)\|h\|_\infty^2.
+\]
+The equality is a finite polynomial identity and the bound is a rational
+inequality. Both are provable in \ipra, uniformly for coded polynomials.
+\end{theorem}
+\begin{proof}
+For one monomial expand each factor by the binomial formula:
+\[
+ (p+h)^\alpha=\sum_{\beta\le\alpha}
+ {\alpha\choose\beta}p^{\alpha-\beta}h^\beta.
+\]
+The term $|\beta|=0$ is $p^\alpha$ and the terms $|\beta|=1$ are
+the formal derivatives times $h_i$. In every remaining term,
+$|h^\beta|\le\|h\|_\infty^2$, since $\|h\|_\infty\le1$.
+The sum of the remaining coefficient bounds is at most the sum of all
+of them,
+\[
+ \sum_{\beta\le\alpha}{\alpha\choose\beta}M^{|\alpha|-|\beta|}
+       =(M+1)^{|\alpha|}.
+\]
+Multiply by $|c_\alpha|$ and sum over the finite coefficient list.
+The binomial identity and list sums are proved by the finite induction
+rule of Lemma~\ref{found:loops}. Transfer to fixed PR names uses
+Proposition~\ref{found:transfer} and the same explicit bounds.
+\end{proof}
+
+\begin{corollary}[Tangent lines and planes to polynomial graphs]
+\label{tan:graphs}
+For a polynomial $f:\Q^m\to\Q$, $m=1$ or $2$, the graph at
+$(p,f(p))$ has the affine first-order approximation
+\[
+ z=f(p)+\nabla f(p)\cdot(x-p).
+\]
+Its vertical error on $\|x-p\|_\infty\le1$ is at most
+$H_f(M)\|x-p\|_\infty^2$. A normal vector is
+$(-\nabla f(p),1)$. This affine approximation is unique among affine
+functions whose residual is bounded by a constant times
+$\|x-p\|_\infty^2$ near $p$.
+\end{corollary}
+\begin{proof}
+The remainder estimate is Theorem~\ref{tan:taylor}. A displacement
+$(h,\nabla f(p)\cdot h)$ in the affine graph has zero dot product
+with the stated normal. Putting $h=0$ forces both affine approximations to agree at $p$.
+Subtract them and substitute $h=te_i$. Their coefficient difference
+$a_i$ satisfies $|a_i|\,|t|\le C t^2$ for all sufficiently small
+nonzero rational $t$. If a fixed rational observation of $a_i$ had a
+positive gap from zero, a dyadic $t$ smaller than that gap divided by
+$2(C+1)$ would contradict the estimate. Therefore the coefficient
+names are equal at every precision. This proof uses an explicit small
+rational $t$, not an assumption about infinitesimals.
+\end{proof}
+
+\begin{theorem}[Polynomial parametrized curves and tangent transport]
+\label{tan:parametric}
+Let $\gamma(t)\in\Q[t]^d$, $d=2$ or $3$. At a rational parameter $t_0$ the vector
+$v=\gamma'(t_0)$ satisfies
+\[
+ \|\gamma(t_0+h)-\gamma(t_0)-hv\|_\infty\le Hh^2
+ \quad(|h|\le1),
+\]
+where $H$ is the maximum of the component Taylor bounds. If $v\ne0$,
+the tangent is $\gamma(t_0)+\R v$ in the represented-family reading.
+Under a polynomial reparametrization $t=\sigma(u)$ with
+$\sigma'(u_0)\ne0$ and $\sigma(u_0)=t_0$, the tangent line is
+unchanged. If $F(\gamma(t))$ is the zero polynomial, then
+$\nabla F(\gamma(t_0))\cdot v=0$.
+\end{theorem}
+\begin{proof}
+Apply Theorem~\ref{tan:taylor} to each component. The finite product
+rule proves the formal chain rule, first on a monomial by distributing
+its one-factor derivative, then on a finite sum. It gives
+$(\gamma\circ\sigma)'(u_0)=v\sigma'(u_0)$, a nonzero scalar
+multiple of $v$, and gives the last dot product by differentiating
+the zero polynomial. A coefficientwise zero polynomial has all its
+formal derivatives zero, so this last argument is exact. The regularity
+conditions are decidable for rational input; for named input they
+require the stated nonzero gaps before normalization or inversion.
+No claim of a unique tangent is inferred from a vanishing velocity.
+\end{proof}
+
+\begin{lemma}[Explicit divided-difference bounds]
+\label{tan:divided}
+Suppose $\|p\|_\infty\le M$ and all points under consideration are
+within distance $r\le1$ of $p$ in the maximum norm. If only coordinate
+$i$ changes from $u$ to $v$, write the exact identity
+\[
+ F(\ldots,v,\ldots)-F(\ldots,u,\ldots)
+          =(v-u)D_iF(\ldots;u,v).
+\]
+Here $D_iF$ is a polynomial, including at $u=v$. It obeys
+\[
+ |D_iF-\partial_iF(p)|\le L_F(M)r.
+\]
+More generally $|F(q)-F(q')|\le B_F(M)\|q-q'\|_\infty$
+on that box. These estimates require neither integration nor a
+mean-value theorem.
+\end{lemma}
+\begin{proof}
+For a power use
+\[
+ \frac{v^k-u^k}{v-u}=\sum_{j=0}^{k-1}v^{k-1-j}u^j,
+\]
+interpreted as a polynomial identity even when $u=v$. For a monomial
+of total degree $a$, its divided difference has at most $a$ products,
+each with $a-1$ factors. Compare each factor to the corresponding
+coordinate of $p$ and telescope. Each factor difference is at most
+$r$, every remaining factor has magnitude at most $M+1$, so the
+total error is bounded by
+$a(a-1)(M+1)^{\max(a-2,0)}r$. The definition of $L_F$ is a larger
+bound after multiplying by coefficients and summing. For the second
+inequality telescope directly in all factors of each monomial:
+its error is at most $a(M+1)^{\max(a-1,0)}\|q-q'\|_\infty$.
+Summing is bounded by $B_F(M)$. This last estimate bounds the whole
+coordinate change, so no missing factor of the dimension is needed.
+\end{proof}
+
+\subsection{A local implicit curve or surface with a PR constructor}
+
+\begin{theorem}[Quantitative polynomial implicit function]
+\label{tan:implicit}
+Let $F(x,y)$ be a rational polynomial, where $x\in\Q^m$,
+$m=1$ or $2$, and let $p=(x_0,y_0)$ be a rational point with
+\[
+ F(p)=0,\qquad g=\partial_yF(p)>0.
+\]
+Choose an integer $M\ge1$ with $\|p\|_\infty\le M$ and put
+\[
+ B=B_F(M),\quad L=L_F(M),\quad
+ r=\min\left(1,\frac{g}{4(L+1)}\right),\quad
+ a=\frac{gr}{4(B+g+1)}.
+\]
+For every rational $x$ with $\|x-x_0\|_\infty\le a$, there is
+a PR name $Y(x,n)$ for a unique $y(x)\in[y_0-r,y_0+r]$ satisfying
+$F(x,y(x))=0$. It is obtained by exactly $n+2$ rational bisections
+of $[y_0-r,y_0+r]$ and taking the midpoint. Its interval width is
+at most $2^{-n-1}$. In addition,
+\[
+ |y(x)-y(x')|\le\frac{2B}{g}\|x-x'\|_\infty
+\]
+for rational $x,x'$ in this box. Every displayed conclusion is a
+fixed-family first-order arithmetic statement. If the nonzero partial
+derivative is negative, replace $F$ by $-F$; if another partial is
+nonzero, permute coordinates first.
+\end{theorem}
+\begin{proof}
+Since $a<r$, all points used are in the radius-$r$ box. By
+Lemma~\ref{tan:divided}, every divided difference in the $y$ direction
+differs from $g$ by at most $Lr\le g/4$, so is at least $g/2$.
+Thus for rational $u<v$ in the vertical interval,
+\[
+ F(x,v)-F(x,u)\ge(g/2)(v-u).
+\]
+This is a strict monotonicity inequality with an explicit positive
+coefficient. Also
+\[
+ |F(x,y_0)|\le B\|x-x_0\|_\infty\le Ba<gr/4.
+\]
+Moving vertically by $r$ changes $F$ by at least $gr/2$.
+Consequently $F(x,y_0-r)<0<F(x,y_0+r)$, with rational sign margins.
+
+Start with those two endpoints. At a rational midpoint test the exact
+sign of $F$: if it is nonpositive, retain the upper half, and otherwise
+retain the lower half. The invariant is
+\[
+ F(x,l_j)\le0\le F(x,u_j),\qquad
+ [l_{j+1},u_{j+1}]\subseteq[l_j,u_j],\qquad
+ u_j-l_j=2r\,2^{-j}.
+\]
+It consists of rational comparisons and is proved by quantifier-free
+induction. If a midpoint is an exact root, the chosen interval still
+has that root as an endpoint and preserves the invariant. At $j=n+2$
+the width is at most $2^{-n-1}$. Nested intervals give the name condition
+and a named point in the original vertical interval.
+
+For the midpoint $q$, the endpoint signs and the Lipschitz estimate give
+$|F(x,q)|\le B(u_j-l_j)$. To obtain residual at most $2^{-k}$ take
+$n=k+\ell(\lceil B\rceil+1)+2$. Thus the name satisfies the polynomial
+equation at all precisions. This establishes existence directly by a
+bounded procedure, not by an appeal to an arbitrary intermediate-value
+principle.
+
+If two named roots $y,y'$ are in the interval, the divided-difference
+identity yields $|F(x,y)-F(x,y')|\ge(g/2)|y-y'|$ in the finite
+observation interpretation, and hence $y=y'$. This inequality transfers
+because its divided-difference coefficient has the uniform positive
+bound already proved; no sign test on $y-y'$ is performed. Finally,
+\[
+ (g/2)|y(x)-y(x')|
+ \le |F(x,y(x))-F(x,y(x'))|
+ =|F(x',y(x'))-F(x,y(x'))|
+ \le B\|x-x'\|_\infty.
+\]
+It proves the Lipschitz statement and completes the primitive-recursive
+construction. All parameters in the number of bisections and in the
+precision request are explicit rational or natural data.
+\end{proof}
+
+\begin{corollary}[The tangent of the implicit branch, with its error]
+\label{tan:implicit-tangent}
+Under Theorem~\ref{tan:implicit}, set $K=\max(1,2B/g)$ and
+$f=\nabla_xF(p)$. Then
+\[
+ \left|y(x)-y_0+\frac{f\cdot(x-x_0)}{g}\right|
+ \le \frac{H_F(M)K^2}{g}\|x-x_0\|_\infty^2.
+\]
+In particular the tangent line or plane is exactly
+$\nabla F(p)\cdot(X-p)=0$, and the gradient is a normal vector.
+\end{corollary}
+\begin{proof}
+The Lipschitz estimate with $x'=x_0$ bounds the vertical displacement by
+$(2B/g)\|x-x_0\|_\infty$. Insert
+$h=(x-x_0,y(x)-y_0)$ into Theorem~\ref{tan:taylor}. Both polynomial
+values vanish, so
+$0=f\cdot(x-x_0)+g(y(x)-y_0)+R$, with
+$|R|\le H_F(M)K^2\|x-x_0\|_\infty^2$. Divide by the positive
+rational $g$. The linear equation is the kernel of the nonzero
+gradient covector, hence a line when $m=1$ and a plane when $m=2$.
+Uniqueness follows by the coefficient argument of
+Corollary~\ref{tan:graphs}.
+\end{proof}
+
+\begin{proposition}[Regularity is an essential hypothesis]
+\label{tan:singular}
+The equations $y^2-x^2=0$ and $y^2-x^3=0$ both have vanishing gradient
+at the origin, but the first has two distinct rational line branches,
+while the parametrized cusp $(t^2,t^3)$ of the second has tangent
+direction the horizontal axis in the limiting-secant sense. Thus a
+zero gradient does not by itself select a tangent, or certify its
+nonexistence.
+\end{proposition}
+\begin{proof}
+The first polynomial is $(y-x)(y+x)$; the two displayed line
+parametrizations have respective directions $(1,1)$ and $(1,-1)$.
+They are distinct rational directions. For the second, direct
+substitution gives $(t^3)^2=(t^2)^3$. For $t\ne0$, its secant vector
+from the origin is $t^2(1,t)$, and the slope is $t$. This tends to zero
+with the explicit bound $|t|$. At $t=0$ the parametrization's velocity
+vanishes, so Theorem~\ref{tan:parametric}'s regular-velocity conclusion
+was not applicable. These computations establish both examples without
+making any general decision claim about singularities.
+\end{proof}
+
+\subsection{Arc length as an explicitly convergent geometric observable}
+
+\begin{theorem}[Constructive arc length of a polynomial curve]
+\label{tan:arclength}
+Let $\gamma(t)=\sum_j c_jt^j\in\Q[t]^d$, $d=2$ or $3$, on a
+rational interval $[a,b]$, $a<b$. Put $D=b-a$ and choose
+$M\ge\max(1,|a|,|b|)$. With component coefficients $c_{ij}$ set
+\[
+ V=\sum_{i=1}^{d}\sum_{j\ge1}|c_{ij}|jM^{j-1},\qquad
+ K=\sum_{i=1}^{d}\sum_{j\ge2}|c_{ij}|j(j-1)M^{j-2}.
+\]
+Let $L_N$ be the sum of the Euclidean chord lengths over the uniform
+$N$-interval partition. The dyadic sequence $L_{2^k}$ is nondecreasing,
+bounded by $VD$, and has the explicit Cauchy bound
+\[
+ 0\le L_{2^{k+s}}-L_{2^k}\le 2KD^2\,2^{-k}.
+\]
+It therefore defines a PR name for arc length. This name is at least
+the chord sum of every finite rational partition and is approximated by
+those sums as their mesh tends to zero with the displayed modulus.
+\end{theorem}
+\begin{proof}
+For any subinterval $[u,v]\subseteq[a,b]$ the polynomial divided
+difference proves
+\[
+ \left\|\frac{\gamma(v)-\gamma(u)}{v-u}\right\|\le V.
+\]
+The same factorwise comparison to $\gamma'(t_0)$, when $u,v,t_0$
+are in an interval of width $h$, gives
+\[
+ \|\gamma(v)-\gamma(u)-(v-u)\gamma'(t_0)\|
+                  \le K h(v-u).
+\]
+The Euclidean norm is bounded by the sum of coordinate absolute values,
+so the displayed $V,K$ suffice. Both estimates follow by finite
+telescoping, exactly as in Lemma~\ref{tan:divided}.
+
+Fix a coarse interval of width $h$ and choose its left endpoint as
+$t_0$. Each refinement chord differs in length from
+$(v-u)\|\gamma'(t_0)\|$ by at most $Kh(v-u)$, using the metric
+inequality $|\|A\|-\|B\||\le\|A-B\|$. Summing the refined
+chords gives error at most $Kh^2$ from $h\|\gamma'(t_0)\|$.
+The coarse chord has the same bound. Thus refinement increases the
+chord sum by at most $2Kh^2$; increase is nonnegative by the triangle
+inequality. Over $N$ equal coarse intervals this is $2KD^2/N$,
+independently of how finely they are subdivided. The bound $VD$ follows
+by summing the first inequality.
+
+To make an actual rational output at precision $n$, let
+$C=\lceil2KD^2\rceil+1$ and choose
+$k=n+\ell(C)+3$, $N=2^k$. Evaluate the rational coordinates at
+the partition points exactly. Each chord has a nonnegative rational
+squared length. Approximate its square root at precision
+$m=n+k+3$ using Theorem~\ref{found:sqrt}. The sum of the $N$ errors
+is at most $2^{-n-3}$; the refinement tail is at most $2^{-n-3}$.
+Thus the rational output has a uniform PR Cauchy modulus with slack.
+
+For a nonuniform partition with mesh $h$, the same argument gives a
+refinement error at most $2K\sum h_i^2\le2KD h$. Take its common
+refinement with a fine dyadic partition. This shows its chord sum is
+bounded above by the limiting dyadic name, and that its deficit is
+at most $2KD h$. Finite partition merging is bounded list arithmetic.
+This characterizes the usual polygonal arc length for this fixed PR
+family using only natural-number codes of finite partitions, with no
+unrestricted real supremum principle inside the theory.
+\end{proof}
+
+The theorem includes curves with zero velocity and self-intersections;
+it measures parametrized length, with multiplicity when the curve retraces
+itself. It is not a theorem about arc length of every continuous curve.
+The finite observation modulus, and the distinction between a curve's
+parametrization and its image, are part of the proved statement.

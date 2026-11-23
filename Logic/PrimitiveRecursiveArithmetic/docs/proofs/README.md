@@ -5,7 +5,7 @@ gives the target interface for future verified
 derivations of these delivered proofs.
 
 This directory holds the research packets that were delivered as archives from 14 to
-22 November 2026: 33 to `docs/drafts`, and 144 to
+22 November 2026: 33 to `docs/drafts`, and 145 to
 `Logic/PrimitiveRecursiveArithmetic/docs/incoming`. Each packet gives a human-readable proof of a classical theorem
 of analysis, number theory or geometry. Each proof is in a finitary, quantitative form meant
 for intuitionistic primitive recursive arithmetic (iPRA). Most packets also include
@@ -37,7 +37,7 @@ reason. Its directory column gives `<area>/<directory>`.
 
 | Reason | Members | Where the bytes are |
 |---|---:|---|
-| `ignored` | 212 | The member matches the repository's `.gitignore`: 82 `SHA256SUMS` / `SHA256SUMS.txt` checksum manifests, 129 `.log` files from LaTeX and Lean builds and from test and verification runs, and 1 file under a `build/` directory. It is available only from the delivered archive, so it is lost for the archives that were not committed. |
+| `ignored` | 214 | The member matches the repository's `.gitignore`: 83 `SHA256SUMS` / `SHA256SUMS.txt` checksum manifests, 130 `.log` files from LaTeX and Lean builds and from test and verification runs, and 1 file under a `build/` directory. It is available only from the delivered archive, so it is lost for the archives that were not committed. |
 | `checksum-manifest` | 58 | The member is a checksum manifest that `.gitignore` does not match. The first 45 are 40 `MANIFEST.sha256`, 2 `manifest.sha256` and the 3 `MANIFEST.txt` files that list SHA-256 digests (`eight_geometry_theorems_ipra`, `mollweide_circle_ipra`, `median_ipra_constructive_proofs`). These 45 were placed at first and removed on 16 November 2026 on Vladimir's instruction ("We don't need any checksum manifests"). The 45 removed files are in the history up to `7c7f7874f7`. The rest belong to later packets and were never placed. The three of the batch of `90c856b681` (21 November 2026) are two `MANIFEST.sha256` and the `MANIFEST.json` of `implicit_function_ipra_2026-11-21`, a JSON list of the byte sizes and SHA-256 digests of the packet's files under six metadata fields (title, date, page count, source commit and two Lean status lines). The one of the batch of `b4de6f7a61` and `37b99921c7` (22 November 2026) is the `MANIFEST.sha256` of `fermat_two_squares_ipra_2026-11-22`. |
 | `sibling-packet` | 78 | `puiseux_ipra` bundles `dependencies/FTA_iPRA/`, a byte-identical copy of the packet filed in [`algebra/FTA_iPRA`](algebra/FTA_iPRA/) (13 members). `ipra_finite_demand` bundles four of its files under the same path (4 members). `ipra_resources_and_elimination_2026-11-15` bundles `lean/BackwardDemand.lean` of [`foundations/ipra_finite_demand`](foundations/ipra_finite_demand/) (1 member). `ipra_stable_observables` bundles three `lean/ConciseIPRA/` files byte-identical to the `lean/upstream/` copies in [`foundations/ipra_coherent_methods_2026-11-15`](foundations/ipra_coherent_methods_2026-11-15/) (3 members). The reference column gives the placed file, except for the copy of `SHA256SUMS`, which is ignored in both. `riemann_ipra_equivalences_2026-11-20` repeats 16 files of [`analytic-number-theory/riemann_hypotheses_ipra_2026-11-20`](analytic-number-theory/riemann_hypotheses_ipra_2026-11-20/), delivered in the same batch: 12 Lean modules, `check_packets.py`, `dirichlet.tex`, `erh.tex` and `lake-manifest.json` (16 members); they are kept only in the latter. `riemann_ipra_prime_criteria_2026-11-20`, delivered by `a569c1dd4c`, repeats 41 files of those two packets (Lean modules, TeX sections, check scripts and the Lake manifest; 41 members). |
 | `sibling-archive` | 1 | `zeta_zeros_ipra_2026-11-15` bundles `dependencies/zeta_functional_equation_ipra.zip`, a byte-identical copy of the delivered archive filed in [`analytic-number-theory/zeta_functional_equation_ipra`](analytic-number-theory/zeta_functional_equation_ipra/). |
@@ -80,7 +80,7 @@ manifests, ignored build logs and `build/` files.
 
 ## Packets
 
-The 177 archives hold 6,326 members: 5,610 placed here, 212 ignored, 58 checksum manifests that are not kept, 78 in copies of
+The 178 archives hold 6,373 members: 5,655 placed here, 214 ignored, 58 checksum manifests that are not kept, 78 in copies of
 a sibling packet, 1 nested copy of a sibling archive, 363 copies of repository files and 4 duplicates within a packet.
 In each area's table, P is the number of placed files and O the number of omitted members
 of each packet. Arrival is the commit that added the archive to its drop directory, or *not committed*.
@@ -260,7 +260,7 @@ of each packet. Arrival is the commit that added the archive to its drop directo
 
 ### Geometry
 
-[`geometry/`](geometry/): Euclidean and projective incidence theorems, triangle and solid geometry, rotations, convex sets, the isoperimetric inequality, the Gauss–Bonnet theorem, and Zariski descent on schemes.
+[`geometry/`](geometry/): Euclidean and projective incidence theorems, triangle and solid geometry, rotations, convex sets, conics and quadrics, the isoperimetric inequality, the Gauss–Bonnet theorem, and Zariski descent on schemes.
 
 | Directory | Arrival | Wrapper in the archive | What the packet states | P | O |
 |---|---|---|---|---:|---:|
@@ -297,6 +297,7 @@ of each packet. Arrival is the commit that added the archive to its drop directo
 | [`space_worm_bounds_2026-11-20`](geometry/space_worm_bounds_2026-11-20/) | `826de90c1c` 2026-11-20 | `space_worm_bounds` | Sharper bounds for convex covers of unit space curves: the minimum volume lies strictly between 0.01942 and 0.052942305538, the upper bound an explicit rational polytope with exact volume; exact Python and C++ checkers. `upstream_keller/` holds the pinned Lean sources and the 50-shard certificate (23 MB) of E. Keller's planar covering theorem (arXiv:2609.21968), under its Apache License 2.0. | 120 | 1 |
 | [`gauss_bonnet_ipra`](geometry/gauss_bonnet_ipra/) | `90c856b681` 2026-11-21 | `gauss_bonnet_ipra` | A quantitative Gauss–Bonnet theorem for explicitly presented finite triangulated metric surfaces, with boundary, corners, disconnected and nonorientable surfaces included: `∫_M K dA + ∫_∂M k_g ds + Σ corner turns = 2πχ`, as a primitive recursive family of rational inequalities with an explicit error budget; a second theorem with seam curvature and interior cone defects. A theorem schema for fixed primitive recursive programs, conditional on its arithmetic presentation hypotheses. A 33-page report. Its two Lean files are uncompiled candidates. Exact rational and symbolic reference checks. | 28 | 1 |
 | [`helly-ipra`](geometry/helly-ipra/) | `90c856b681` 2026-11-21 | `helly-ipra` | Helly's theorem: from a table of local rational points, one common point is computed, with a barycentric certificate for each set that expresses the point through local witnesses of that set; an exact polyhedral alternative, a centerpoint application, a real approximation theorem, an obstruction to exact selection and a weak exact formulation. An 11-page article. Three standalone Lean 4.19.0 files: the finite rational Helly theorem with a constructive rational Radon lemma (`propext`, `Quot.sound`), precision bounds, and the selection boundary. These are host-language proofs; the embedded-iPRA judgment is a written proof and plan. Exact Python certificate generator and Fourier–Motzkin feasibility code. | 12 | 0 |
+| [`analytic_geometry_ipra_2026-11-22`](geometry/analytic_geometry_ipra_2026-11-22/) | *not committed* 2026-11-22 | `analytic_geometry_ipra` | Analytic geometry in iPRA: a 50-page report with 71 numbered geometry and analysis results and 7 foundational results: affine and metric geometry of lines, planes, circles and triangle centres (30); conics and quadrics, with a rational classification that includes degenerate and empty loci (24); coordinate systems from explicit finite sine and cosine sums (9); polynomial tangency, a bounded-bisection implicit function and a polygonal arc-length modulus (8). Assertions about represented reals are schemas for each fixed primitive recursive input family, and one foundational result is an external computability obstruction to a zero test. Its four Lean files, among them `lean/ObjectCertificates.lean` with 24 candidate closed `Prf PRAAx` derivations, are uncompiled. Exact Python checks, a SymPy check of 47 polynomial identities, and a theorem inventory. The packet says that it does not prove every theorem of the linked pages. | 45 | 2 |
 
 ### Probability
 

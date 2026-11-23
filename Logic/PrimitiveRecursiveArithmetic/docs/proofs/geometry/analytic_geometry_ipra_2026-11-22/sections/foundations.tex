@@ -1,0 +1,169 @@
+\section{The arithmetic foundation and its real-name boundary}
+\label{sec:foundations}
+
+\subsection{The exact theory and numerical codes}
+
+We use intuitionistic first-order logic with equality. Its nonlogical symbols are $0,S$ and a function symbol for each specified primitive-recursive definition. The nonlogical axioms are the defining equations, $Sx\ne0$, successor injectivity, and, for every quantifier-free formula $A(n,\mathbf a)$, the induction axiom
+\[
+ \bigl(A(0,\mathbf a)\wedge
+   \forall n\,[A(n,\mathbf a)\to A(Sn,\mathbf a)]\bigr)
+       \longrightarrow \forall n\,A(n,\mathbf a).
+\]
+The logical rules are the ordinary intuitionistic introduction and elimination rules for $\wedge,\vee,\to,\forall,\exists,\bot$, together with equality substitution. No induction instance whose matrix contains an unbounded quantifier is used.
+
+The following concrete coding choices suffice. Encode the integer $m\ge0$ by $2m$, and $-(m+1)$ by $2m+1$. A rational code is a pair $(z,d)$ with $d\ge1$, representing $\operatorname{int}(z)/d$; unreduced fractions are allowed. Natural-number pairs can be encoded by
+\[
+ \langle a,b\rangle=(a+b)^2+a.
+\]
+This is injective: for $s=a+b$, its value lies in $[s^2,s^2+s]$, and these intervals are disjoint. Both components can be recovered by a bounded double search with bound equal to the code. Codes outside the image decode to $(0,0)$. A rational denominator is stored as $d-1$, so every decoded rational has a positive denominator. A list is its length together with nested pair codes; its entries are recovered by iteration for the recorded length. Invalid structure is assigned a fixed default.
+
+For $a/b,c/d$ with $b,d>0$, use
+\[
+ \frac ab+\frac cd=\frac{ad+bc}{bd},\quad
+ \frac ab\frac cd=\frac{ac}{bd},\quad
+ \frac ab\le\frac cd\ \Longleftrightarrow\ ad\le bc.
+\]
+The reciprocal is $\sgn(a)b/|a|$ when $a\ne0$, and is totalized as $0$ when $a=0$. Theorems involving a reciprocal carry the nonzero guard. Integer signs, absolute values, comparisons, quotients and remainders are all primitive recursive; quotient, for example, is the greatest $q\le a$ with $bq\le a$ when $b>0$.
+
+\begin{proposition}[Coded ordered-rational arithmetic]\label{found:rat}
+The above operations are primitive recursive. The ordered-field identities and order rules for rational values are provable in \ipra, with the indicated positive-denominator and nonzero guards. Equality of codes is replaced, where necessary, by equality of represented rational values.
+\end{proposition}
+\begin{proof}
+Parity, truncated subtraction, and bounded maximum are defined by recursion on natural numbers. Their correctness is proved by quantifier-free induction on their counters. Thus every displayed rational operation is a composition of primitive-recursive functions. To verify equality, cross-multiply positive denominators. Associativity of addition becomes the integer identity
+$(ad+bc)f+ebd=adf+bcf+ebd$ after common denominators are inserted; multiplication, distributivity and the guarded inverse law are equally direct. The natural semiring laws follow by induction from the defining equations for addition and multiplication. Signed-integer laws follow by representing an integer as a difference of naturals and cross-adding the two sides; subtraction introduces no new induction principle. Order transitivity and preservation under addition follow from the corresponding natural-number order laws after positive denominator multiplication. A positive product has positive factors' signs, so denominator clearing preserves the direction of each comparison. Every proof has a fixed, finite algebraic form. No choice of a canonical fraction is needed.
+\end{proof}
+
+\begin{lemma}[Finite loops and bounded formulas]\label{found:loops}
+A loop with a primitive-recursive number of iterations, primitive-recursive state update, and a quantifier-free invariant admits its usual invariant proof in \ipra. A bounded collection of decidable rational tests can be used in that invariant.
+\end{lemma}
+\begin{proof}
+Define the state after $j$ iterations by primitive recursion, freeze it after the specified bound, and apply quantifier-free induction to the coded invariant at $j$. A conjunction of tests indexed by $i<b$ is the Boolean product of their characteristic values; disjunction is computed by a Boolean maximum. Their equivalence to the corresponding bounded formulas is proved by induction on $b$. Consequently a loop invariant with a bounded list of rational equalities or inequalities is an abbreviation for a quantifier-free formula. This is a derived use of bounded formulas, not stronger induction.
+\end{proof}
+
+Polynomial expressions in a fixed finite number of variables may be stored as finite coefficient--exponent lists. Evaluation is a bounded sum of products of powers, hence is uniformly primitive recursive even when degree is input data. This restricted evaluator is entirely different from an evaluator for arbitrary primitive-recursive programs.
+
+\subsection{A square root with an actual stopping bound}
+
+For $a\ge0$, $b\ge1$, and $n\in\N$, put $H=2^n$ and
+\[
+ B=(a+1)H,\qquad
+ j(a,b,n)=\max\{j\le B:b j^2\le aH^2\},\qquad
+ s_n(a/b)=j(a,b,n)/H.
+\]
+The bounded set contains zero. This formula is a primitive-recursive search, whether implemented as a scan or by integer square root after division.
+
+\begin{theorem}[Dyadic square-root bracket]\label{found:sqrt}
+For every $a\ge0,b\ge1,n\in\N$,
+\[
+ b j^2\le a4^n<b(j+1)^2,
+ \qquad s_n^2\le a/b<(s_n+2^{-n})^2.
+\]
+Moreover $j<B$, $s_n\le s_{n+1}<s_n+2^{-n}$, and the nested intervals
+$[s_n,s_n+2^{-n}]$ give a primitive-recursive name for the unique nonnegative square root of $a/b$.
+\end{theorem}
+\begin{proof}
+The loop that maintains the greatest acceptable candidate has the quantifier-free invariant ``the current candidate is acceptable and every tested larger candidate is unacceptable.'' Its bounded universal clause is handled by Lemma~\ref{found:loops}. Since $(a+1)^2>a$ and $b\ge1$, $bB^2>aH^2$, so the maximum is strictly below $B$. The next integer is therefore tested and fails, proving the bracket.
+
+At precision $n+1$, the inequalities for $2j$ and $2j+2$ show that the next maximum is either $2j$ or $2j+1$. This proves the nesting and the distance estimate. For any two nonnegative numbers whose squares equal $a/b$, the elementary identity
+$(u-v)(u+v)=u^2-v^2$ shows uniqueness: on rational enclosing intervals, a positive separation of $u,v$ would imply a positive separation of their squares. An entirely finite version is given in the next lemma. Thus the name is specified by its brackets without assuming a completeness axiom in the object theory. The word ``square root'' is shorthand for these arithmetic contracts.
+\end{proof}
+
+\begin{lemma}[Square-root order and a uniform modulus]\label{found:holder}
+For nonnegative rational $u,v$, their constructed roots obey monotonicity and
+\[
+ |\sqrt u-\sqrt v|^2\le |u-v|.
+\]
+More explicitly, if $h=2^{-m}$ and $B$ is a common rational upper bound for the two lower approximations, then
+\[
+ |s_m(u)-s_m(v)|^2\le |u-v|+2Bh+h^2.
+\]
+These statements have finite-precision versions provable in \ipra. In particular the square-root operation needs no positive lower bound at zero.
+\end{lemma}
+\begin{proof}
+For nonnegative rational $p\ge q$, one has
+$(p-q)^2\le(p-q)(p+q)=p^2-q^2$. Also $p^2\le q^2$ and $p,q\ge0$ imply $p\le q$: if $p>q$, then $(p-q)(p+q)>0$. Apply these rational inequalities to the lower and upper endpoints in Theorem~\ref{found:sqrt}. If $p=s_m(u)\ge q=s_m(v)$, then
+\[
+ (p-q)^2\le p^2-q^2\le u-v+2qh+h^2
+             \le |u-v|+2Bh+h^2;
+\]
+the other rational case is symmetric. Their widths are $2^{-m}$, and these explicit error terms vanish at a chosen finer precision. More explicitly, if a fixed rational observation inequality fails by $\eta>0$, choose $m$ with its computed error bound less than $\eta$; bounded search up to the numerator and denominator data finds such an $m$. This contradicts the finite rational endpoint inequality. This argument is intuitionistically valid because only a rational comparison is split into cases. It also proves uniqueness of a nonnegative root name. No trichotomy on real names is involved.
+\end{proof}
+
+\subsection{Fixed primitive-recursive real families}
+
+\begin{definition}[Names, bounds, and apartness]\label{found:names}
+A name is a \emph{fixed} primitive-recursive rational-valued function
+$X(\mathbf a,n)$, with numerical parameters $\mathbf a$, satisfying
+\[
+ \forall m,n\quad |X(\mathbf a,m)-X(\mathbf a,n)|
+                 \le 2^{-m}+2^{-n}.
+\]
+We write $x$ for this family in mathematical prose. A bound $M$ supplies
+$|X(\mathbf a,n)|\le M+2^{-n}$. Nonnegativity means
+$X(\mathbf a,n)\ge-2^{-n}$ for all $n$. An apartness bound $k$ supplies
+\[
+ |X(\mathbf a,n)|\ge 2^{-k}-2^{-n}\quad\hbox{for all }n.
+\]
+Equality and order of names are propositions about all precisions, never Boolean tests. For example, $x=y$ can be expressed by
+$|X(m)-Y(n)|\le2^{-m}+2^{-n}$ for all $m,n$; $x\le y$ is expressed by
+$X(m)\le Y(n)+2^{-m}+2^{-n}$ for all $m,n$.
+\end{definition}
+
+All these formulas are first-order arithmetic formulas after the fixed programs are expanded. Their universal quantifiers do not occur in induction matrices. Pointwise arguments are carried out at a requested precision, with the finitely many required instances of the hypotheses. Displaying an ``exact'' identity between names means all of these finite rational conclusions, not an equality test on the names' program codes.
+
+Let $\ell(B)$, for an integer $B\ge1$, be the least $j\le B$ with $B\le2^j$; this is a bounded primitive-recursive search. For rational bounds use their natural-number ceilings first.
+
+\begin{theorem}[Arithmetic on names with explicit precision]\label{found:operations}
+Fixed PR names are closed under addition, subtraction, multiplication, absolute value, and nonnegative square root. They are closed under reciprocal when an apartness bound is supplied. The constructions have primitive-recursive precision schedules and their defining contracts are provable in \ipra.
+\end{theorem}
+\begin{proof}
+For readability write an approximation error as $\varepsilon=2^{-m}$; all estimates below are rational endpoint estimates, so the same proof gives the formulas of Definition~\ref{found:names}. For addition query each input at $m=n+2$; the combined error is at most $2^{-n-1}$. Absolute value is $1$-Lipschitz on rational numbers.
+
+If $|x|,|y|\le M$ and $|p-x|,|q-y|\le\varepsilon\le1$, then
+\[
+ |pq-xy|\le |p|\,|q-y|+|y|\,|p-x|
+             \le(2M+1)\varepsilon.
+\]
+Take $m=n+\ell(2M+3)+2$. This gives slack for converting one-stage estimates to the two-index name condition.
+
+For a reciprocal put $\delta=2^{-k}$. At $m\ge k+2$, the rational observation has absolute value at least $\delta/2$. The identity
+\[
+ \left|\frac1p-\frac1x\right|
+   =\frac{|p-x|}{|p|\,|x|}
+   \le 2\delta^{-2}|p-x|
+\]
+is a guarded rational identity when endpoint bounds are used. Taking
+$m=n+2k+3$ gives error at most $2^{-n-2}$. The program tests whether its sampled rational is zero and returns zero there, so it remains total off the promised domain. The apartness hypothesis proves that this default branch is not used on the domain.
+
+For square root, query a nonnegative input at $m=2n+6$, replace a negative observation by zero, and compute its rational square root at precision $n+2$ by Theorem~\ref{found:sqrt}. Clipping changes neither the nonnegative target nor its error bound. Lemma~\ref{found:holder} bounds the input error in the root by $2^{-n-3}$; the final dyadic bracket contributes at most $2^{-n-2}$. Their sum is less than $2^{-n}$. Every search and index in this construction is primitive recursive.
+
+To remove the suggestive occurrences of $x$ in these estimates, replace it throughout by an observation at a common later index $r$, use the Cauchy and bound hypotheses at $(m,r)$, and leave the extra $2^{-r}$ terms visible. For each target rational inequality, choose $r$ so their explicit coefficient times $2^{-r}$ fits the reserved slack. For exact weak inequalities at a boundary, the rational failure argument of Lemma~\ref{found:holder} applies. This proves the displayed first-order contracts without appealing to real completeness.
+\end{proof}
+
+\begin{proposition}[Finite algebra and quantified name identities]\label{found:transfer}
+Every fixed polynomial identity established by ring algebra transfers to fixed PR names. A fixed rational expression transfers when every denominator has a supplied apartness bound. Rational coefficient inequalities, a priori magnitude bounds, and square-root contracts can be composed with these transfers. This is a schema for the particular finite expressions used below, not a truth-reflection principle for arbitrary formulas.
+\end{proposition}
+\begin{proof}
+For a polynomial $P=\sum_\alpha c_\alpha X^\alpha$ on $|X_i|\le M$ and observations within $\varepsilon\le1$, telescope one factor at a time in each monomial. The resulting explicit bound is
+\[
+ |P(p)-P(x)|\le L_P(M)\varepsilon,\qquad
+ L_P(M)=\sum_\alpha |c_\alpha|\,|\alpha|(M+1)^{|\alpha|}.
+\]
+Here $|\alpha|$ is the total degree, and the exponent-zero case contributes zero. If $P-Q$ is a polynomial identity, its value on rational observations is exactly zero by Proposition~\ref{found:rat}; the two Lipschitz errors bound the residual. Choose an observation precision exceeding the requested precision by
+$\ell(\lceil L_P+L_Q\rceil+1)+3$. Reciprocal and root nodes use Theorem~\ref{found:operations}. Induct on the \emph{finite expression tree in the metatheory}; for each expression this supplies a particular first-order proof. Variable finite coefficient lists can instead use Lemma~\ref{found:loops}. This reasoning never asserts the soundness of all iPRA proofs inside iPRA.
+\end{proof}
+
+\subsection{What cannot be hidden in a real-number branch}
+
+\begin{proposition}[No uniform zero test for all these names]\label{found:no-zero-test}
+There is no total computable algorithm that, from the description of every fixed PR Cauchy name with the above modulus, always decides whether its value is zero. Consequently a rational classification algorithm below must not be silently advertised as an arbitrary-real classification algorithm.
+\end{proposition}
+\begin{proof}
+For a machine code $e$, simulate it for $n$ steps. If it first halts at step $t\le n$, output $X_e(n)=2^{-t}$; otherwise output zero. Bounded simulation is primitive recursive, and this family satisfies the stated modulus: the only difference between observations before and after a halt at $t$ is $2^{-t}$, which is smaller than $2^{-n}$ at every earlier stage $n<t$. The limiting value is zero exactly when that machine never halts. A total zero test would therefore decide halting. For completeness, a halting decider leads to the program which, on its own code, loops when the decider says it halts and halts when the decider says it loops. Either answer contradicts the specified behavior. This is an external impossibility argument about algorithms; it is not presented as a new internal consistency theorem of \ipra.
+\end{proof}
+
+This obstruction leaves all positive constructions intact. Rational determinant signs are decidable, a supplied nonzero gap permits inversion of a name, and a precision request permits certified approximation near a boundary. It only prevents us from replacing those hypotheses by an unstated total oracle.
+
+\subsection{A uniform audit rule for the later proofs}
+
+For each proof below, encode its input tuple as a natural number; expand rational arithmetic as above; totalize every guarded division; unfold its finite sum or bounded search; and use quantifier-free induction only on that explicit loop. A fixed-dimensional determinant computation has no unbounded search. For a name assertion, first fix its PR input families, quantify only their numerical parameters, and prove the requested observation formula with the explicit demand schedule. This rule is used together with the particular identities and bounds proved in each chapter. It is not a license to import an arbitrary classical theorem merely because its conclusion looks computational.

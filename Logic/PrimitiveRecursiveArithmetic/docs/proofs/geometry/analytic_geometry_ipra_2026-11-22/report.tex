@@ -1,0 +1,81 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=25mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+% Explicit bundled font maps also support minimally initialized TeX Live installs.
+\ifdefined\pdfmapfile
+  \pdfmapfile{=lm.map}\pdfmapfile{+cm.map}\pdfmapfile{+symbols.map}
+\fi
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,graphicx,xcolor,enumitem,fancyhdr}
+\usepackage{listings}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!55!black,citecolor=blue!45!black]{hyperref}
+\definecolor{ink}{HTML}{16324F}
+\definecolor{muted}{HTML}{52616B}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\ipra}{\ensuremath{\mathsf{iPRA}}}
+\newcommand{\PR}{\ensuremath{\mathsf{PR}}}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\dotp}[2]{\left\langle #1,#2\right\rangle}
+\newcommand{\epsn}{2^{-n}}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\gap}{\operatorname{Gap}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\tr}{\operatorname{tr}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{3em}
+\setlist{itemsep=2pt,topsep=4pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{muted}Analytic geometry in intuitionistic PRA}
+\fancyhead[R]{\small\color{muted}Research packet}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,columns=fullflexible,keepspaces=true,frame=single,rulecolor=\color{gray!25}}
+\hypersetup{pdftitle={Analytic geometry in intuitionistic primitive recursive arithmetic},pdfauthor={Research prepared for Vladimir Reshetnikov},pdfsubject={Constructive coordinate geometry, explicit primitive recursive witnesses, and Lean formalization}}
+\begin{document}
+\begin{titlepage}
+\vspace*{14mm}
+{\color{ink}\Huge\bfseries Analytic geometry\\[3mm]in intuitionistic\\[3mm]primitive recursive arithmetic\par}
+\vspace{12mm}
+{\Large Constructive proofs, explicit numerical witnesses,\\ finite-precision contracts, and a Lean completion path\par}
+\vspace{14mm}
+{\large Prepared for Vladimir Reshetnikov\par}
+{\large 22 November 2026\par}
+\vspace{14mm}
+\begin{abstract}
+We develop a broad, explicitly constructive portion of coordinate geometry: affine incidence, metric identities, projections, intersections, conic classification, focal descriptions, quadrics, coordinate transformations, and quantitative tangency. Rational geometric data are encoded by natural numbers. Algebraic lengths and intersection points are supplied by bounded dyadic square-root procedures; analytic coordinate functions are represented by fixed primitive-recursive approximation families. Every division and case distinction is assigned an appropriate domain guard.
+
+The intended arithmetic is first-order intuitionistic primitive recursive arithmetic with quantifier-free induction. No universal primitive-recursive evaluator, arbitrary-real sign oracle, unrestricted choice, or completeness axiom is assumed. The report supplies full mathematical arguments and an explicit translation discipline. It also supplies candidate Lean proofs in ProveIt's actual object-language proof type, together with definitions and remaining formalization obligations. The new Lean source has \textbf{not been compiled in this environment}; executable arithmetic and symbolic checks are separate evidence, not substitutes for formal proofs.
+\end{abstract}
+\vfill
+{\small\color{muted}Repository reference: ProveIt, commit \texttt{bbb85238dac533fc4b7b84a750cca864fe35fed5}.\\
+Scope source: \emph{Analytic geometry}, Wikipedia revision 1383468283, and selected relevant immediate outgoing links. Mathematical arguments in this report are developed independently.}
+\end{titlepage}
+\tableofcontents
+\clearpage
+\input{sections/introduction}
+\input{sections/foundations}
+\input{sections/affine_metric}
+\input{sections/conics}
+\input{sections/coordinates}
+\input{sections/tangency}
+\input{sections/formalization}
+\input{sections/coverage}
+\input{sections/references}
+\end{document}

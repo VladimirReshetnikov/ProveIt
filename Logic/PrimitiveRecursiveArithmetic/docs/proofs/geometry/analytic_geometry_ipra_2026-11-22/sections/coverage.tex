@@ -1,0 +1,108 @@
+\section{Coverage, reproducibility, and remaining work}
+\label{sec:coverage}
+
+\subsection{What the packet establishes}
+
+There are 71 numbered results in the geometric and analytic chapters:
+30 in affine and metric geometry, 24 in conics and quadrics, nine in
+coordinate systems, and eight in polynomial tangency and arc length.
+Seven further foundational results specify the arithmetic and representation
+discipline; one of those is an external computability obstruction, explicitly
+not an internal consistency theorem. The total of 78 counts named theorem,
+lemma, proposition, and corollary blocks. It does not count definitions,
+examples, individual subclaims, or Lean certificates a second time.
+
+\begin{center}
+\begin{tabular}{p{.23\linewidth}p{.65\linewidth}}
+\toprule Source area & Coverage and boundary \\\midrule
+Cartesian geometry & Exact incidence, determinants, affine maps, distances,
+projections, metric inequalities, and finite triangle/circle constructions.\\[4pt]
+Conics & Complete affine classification for rational coefficients, explicit
+degeneracies, focal equivalences, parametrizations, tangents, polars, optical
+laws, and asymptote bounds.\\[4pt]
+Quadrics & Rational elimination to diagonal/null forms, affine type table,
+stereographic sphere coordinates, two ruled examples, ellipsoid support.\\[4pt]
+Coordinates & Finite-series radian functions and forward polar/cylindrical/
+spherical formulas; inverse direction coordinates with rational case tests
+or supplied axis and gap data.\\[4pt]
+Tangency & Polynomial remainder estimates; regular implicit curves and
+surfaces constructed by bounded bisection; tangent errors and polynomial
+arc-length approximation.\\\bottomrule
+\end{tabular}
+\end{center}
+
+The Euler-line and nine-point-circle deductions, the local implicit theorem,
+and the arc-length modulus are supplementary developments in these linked
+topics. We do not pretend that each is stated verbatim in the parent article.
+The machine-readable inventory marks them accordingly.
+
+\subsection{Limits of the proved claims}
+
+This packet does not claim a formalized proof of all elementary geometry,
+general real-algebraic quantifier elimination, an algorithm to classify conics
+with arbitrary real-name coefficients without promises, a global continuous
+scalar angular inverse, or a theorem on every continuous curve. We do not prove
+the general bound on the number of intersection points of two conics here;
+that bound requires exclusion of common components and a separate elimination
+argument. The line--conic, line--circle, and circle--circle results are complete
+in their stated domains. The factorized equations of singular crossings do not
+assert an unrestricted disjunction selecting one component for an arbitrary
+represented-real input.
+
+Every geometric assertion has a fully developed mathematical proof in its
+stated E/A/R interpretation. The new complete object-language derivations are
+still a formalization task. In particular, the 24 explicit polynomial Lean
+candidates have not been compiled, and the rational/name bridge records have
+no asserted instances. The absence of a proof placeholder in source code is
+not itself a verification result.
+
+\subsection{Executable evidence}
+
+The exact-rational conic classifier returns an affine change, transformed
+coefficients, and a type. Its independent checker reconstructs all six
+coefficients by evaluating at $(0,0),(1,0),(-1,0),(0,1),(0,-1),(1,1)$.
+These values determine a polynomial of total degree at most two, so this is
+an exact polynomial-identity test for the specified change of coordinates.
+The finite regression run covers all $5^6=15{,}625$ integer coefficient
+sextuples in $[-2,2]^6$, all 12 returned classes, and rejection of a deliberately
+altered certificate. This verifies those finite instances and the checker
+behavior; it is not a proof of the classifier for all inputs.
+
+Additional exact tests check the geometric formulas, square-root brackets,
+trigonometric tails, Taylor remainders, implicit-root intervals, and chord
+refinement bounds. An independent SymPy pass reads the arithmetic statements
+in the candidate Lean file and checks 28 scalar identities across its 24
+endpoints, plus 19 additional scalar identities in 13 formula families.
+It checks the polynomial equations, not Lean syntax or proof terms; it cannot
+establish the positivity guards or the constructive scope on its own.
+The exact counts, source hashes, and software versions are recorded in
+\path{artifacts/}. Floating-point plots are illustrative only and do not
+decide any geometric predicate.
+
+\subsection{Rebuilding the packet}
+
+From the extracted packet directory, use
+\begin{lstlisting}
+python3 code/conic_classifier.py
+python3 code/check_affine_metric.py
+python3 code/check_analytic.py
+python3 code/check_symbolic.py
+python3 code/build_inventory.py
+bash build.sh
+\end{lstlisting}
+The first three numerical programs use only Python's standard library.
+The symbolic pass requires SymPy; rebuilding the figures requires Matplotlib
+and NumPy. The report uses a standard TeX Live installation with
+\texttt{latexmk} and \texttt{pdflatex}. The saved figures are already in the
+archive, so regenerating them is optional. Lean checking has its separate
+script and pinned dependency requirements in Section~\ref{sec:formalization}.
+The archive includes source, validation receipts, and checksums for its files.
+
+\subsection{The complete named-result ledger}
+
+The following table is generated from the report's actual theorem blocks.
+It is an index to the proofs, not a replacement for their hypotheses or
+constructive interpretation. The topic names identify the source neighborhood;
+the JSON inventory records proof status and supplementary results separately.
+
+\input{sections/theorem_ledger}

@@ -1,0 +1,320 @@
+\section{Coordinate systems, trigonometry, and changes of variables}
+\label{sec:coordinates}
+
+This chapter addresses the Cartesian, polar, cylindrical and spherical
+coordinate links of the source article. Its algebraic direction coordinates
+are especially useful constructively: an angle may be represented by its
+unit direction $(c,s)$ without choosing a discontinuous global argument.
+We also construct the conventional sine and cosine functions with an
+explicit finite-series bound, so that the forward radian formulas have
+their usual meaning.
+
+\subsection{Radian functions from bounded rational sums}
+
+Identify a pair $(a,b)$ with the formal complex number $a+ib$ only as
+notation for the rational multiplication rule
+$(a,b)(c,d)=(ac-bd,ad+bc)$. Put
+\[
+ E_N(t)=\sum_{j=0}^{N}\frac{(it)^j}{j!}=C_N(t)+iS_N(t),
+\]
+where $C_N$ collects the even powers and $S_N$ the odd powers. These are
+finite rational expressions for rational $t$. The norm used for estimates
+in this subsection is $|(a,b)|_1=|a|+|b|$, which is submultiplicative by
+the rational triangle inequality.
+
+\begin{lemma}[A primitive-recursive trigonometric tail bound]
+\label{coord:tail}
+Let $M\ge1$ be an integer, $|t|\le M$, and $J\ge N\ge2M$. Then
+\[
+ |E_J(t)-E_N(t)|_1\le 2^{4M-N}.
+\]
+Consequently the schedule $N(M,n)=4M+n+6$ defines PR names
+$C_{N(M,n)}(t)$ and $S_{N(M,n)}(t)$ for $\cos t$ and $\sin t$.
+Different admissible choices of $M$ give equal names.
+\end{lemma}
+\begin{proof}
+For every finite $K$, $j!\ge2^{j-1}$ for $j\ge1$, by induction on $j$.
+Hence $\sum_{j=0}^K1/j!\le3$. The multinomial identity, obtained by
+repeated distributivity, gives
+\[
+ \sum_{j=0}^{K}\frac{M^j}{j!}
+ \le\left(\sum_{j=0}^{K}\frac1{j!}\right)^M
+ \le3^M\le2^{2M}.
+\]
+The first inequality holds because all terms whose total degree is at
+most $K$ occur in the product, with the displayed multinomial coefficients;
+the additional terms are nonnegative. Starting at index $2M$, successive
+terms $M^j/j!$ decrease by a factor at most $1/2$. Therefore
+\[
+ \sum_{j=N+1}^{J}\frac{M^j}{j!}
+ \le 2^{2M}\sum_{j=N+1}^{J}2^{-(j-2M)}
+ \le2^{4M-N}.
+\]
+All sums here are finite, and the geometric-sum estimate is an induction
+identity. The pair triangle inequality proves the assertion for $E$.
+The proposed schedule leaves error at most $2^{-n-6}$ after any further
+truncation. Comparing two truncations at a common later degree proves
+the name condition and independence of $M$. Powers, factorials, finite
+sums and the degree schedule are primitive recursive. The multinomial
+and geometric-sum proofs use quantifier-free induction on their finite
+counters.
+\end{proof}
+
+\begin{theorem}[Addition laws and the unit-circle identity]
+\label{coord:addition}
+The constructed functions satisfy
+\begin{align*}
+ \cos(s+t)&=\cos s\cos t-\sin s\sin t,\\
+ \sin(s+t)&=\sin s\cos t+\cos s\sin t,\\
+ \cos^2t+\sin^2t&=1.
+\end{align*}
+Also $\cos0=1$, $\sin0=0$, $\cos(-t)=\cos t$, and
+$\sin(-t)=-\sin t$. The assertions are arithmetic identities of fixed PR
+names, first for rational parameters and then for fixed PR named inputs
+with supplied magnitude bounds.
+\end{theorem}
+\begin{proof}
+Multiply $E_N(s)E_N(t)$. For total degree $k\le N$, the coefficient is
+\[
+ i^k\sum_{j=0}^k\frac{s^jt^{k-j}}{j!(k-j)!}
+       =i^k\frac{(s+t)^k}{k!}
+\]
+by the binomial formula. Thus its terms through total degree $N$ equal
+$E_N(s+t)$. With an integer $M\ge|s|+|t|+1$, the sum of the absolute
+values of the remaining coefficients is bounded by
+$\sum_{k=N+1}^{2N}M^k/k!\le2^{4M-N}$.
+Lemma~\ref{coord:tail} and the multiplication estimate of
+Theorem~\ref{found:operations} give the addition laws at each requested
+precision. The parity statements hold term by term in the finite sums.
+Set $s=-t$ in the addition formula and use $E_N(0)=(1,0)$ to get the
+unit-circle identity. This also proves $|\cos t|,|\sin t|\le1$ from
+nonnegativity of squares, through finite rational observations.
+
+To admit named arguments, note that for $|u|,|v|\le M$,
+\[
+ |E_N(u)-E_N(v)|_1
+ \le |u-v|\sum_{j=1}^N\frac{jM^{j-1}}{j!}
+ \le3^M|u-v|.
+\]
+The first inequality is the factorization of $u^j-v^j$; the second is
+the finite bound in Lemma~\ref{coord:tail}. Query an argument at precision
+$n+\ell(3^{M+1})+8$, allow the approximating value the bound $M+1$,
+and use degree $4(M+1)+n+8$. These are PR schedules. The estimates
+transfer the rational formulas with room for every observation error.
+\end{proof}
+
+\begin{theorem}[Quantitative trigonometric derivatives]
+\label{coord:derivatives}
+For $|h|\le1$,
+\begin{align*}
+ |\sin(t+h)-\sin t-h\cos t|&\le6h^2,\\
+ |\cos(t+h)-\cos t+h\sin t|&\le6h^2.
+\end{align*}
+In particular the names have derivatives $\cos t$ and $-\sin t$ in the
+finite-error sense, with an explicit modulus.
+\end{theorem}
+\begin{proof}
+The finite series and Lemma~\ref{coord:tail} imply
+$|\cos h-1|\le3h^2$ and $|\sin h-h|\le3|h|^3$ for $|h|\le1$:
+factor $h^2$ or $|h|^3$ from the corresponding tail and bound the
+remaining factorial sum by $3$. For a named $h$ with $|h|\le1$, clip its rational observations to $[-1,1]$ before applying these finite estimates; clipping preserves the name and the error bound. Substitute these estimates into the
+addition formulas. Each coefficient $\sin t$ or $\cos t$ has absolute
+value at most one. The first residual is
+$\sin t(\cos h-1)+\cos t(\sin h-h)$, so it is at most
+$3h^2+3|h|^3\le6h^2$; the second is handled by the displayed
+cosine addition identity. For a difference quotient error at most
+$2^{-n}$ it suffices to supply $0<|h|\le2^{-n}/6$; the quotient is
+used only under this nonzero guard. The remainder inequalities themselves
+include $h=0$ and avoid division entirely.
+\end{proof}
+
+\subsection{Polar and spatial coordinates}
+
+\begin{theorem}[Polar direction coordinates and reconstruction]
+\label{coord:polar}
+For $r\ge0$ and $c^2+s^2=1$, put $(x,y)=(rc,rs)$. Then
+$x^2+y^2=r^2$. Conversely, for a rational point $(x,y)\ne(0,0)$, the
+constructed values
+\[
+ r=\sqrt{x^2+y^2},\qquad c=x/r,\qquad s=y/r
+\]
+give a unique radius and unit direction and reconstruct the point. At
+the origin one may output $r=0,(c,s)=(1,0)$; the direction there is not
+unique. For arbitrary fixed PR named points the same converse requires
+a supplied positive lower bound on $x^2+y^2$, or the supplied assertion
+that both coordinates are zero. The forward radian formulas are
+$x=r\cos\theta$, $y=r\sin\theta$.
+\end{theorem}
+\begin{proof}
+The forward assertion is the polynomial identity
+$(rc)^2+(rs)^2=r^2(c^2+s^2)$. For a nonzero rational point the positive
+rational $q=x^2+y^2$ has a computable rational lower bound. If
+$q\ge\delta>0$, then $r\ge\min(1,\delta)$, since
+$0<\delta\le1$ implies $\sqrt\delta\ge\delta$, and
+$\delta\ge1$ implies $\sqrt\delta\ge1$. A dyadic lower bound below
+$\min(1,\delta)$ is found by bounded search. Thus division by $r$ is
+permitted by Theorem~\ref{found:operations}. Squaring proves the unit
+identity, and multiplying gives reconstruction. Nonnegative-root
+uniqueness forces any other nonnegative radius to be $r$, and the
+nonzero radius then forces the same direction. The zero case is checked
+directly. Theorem~\ref{coord:addition} supplies the forward radian case.
+\end{proof}
+
+The usual scalar formula $\theta=\arctan(y/x)$ requires both a chart and
+a quadrant convention. No global scalar inverse is claimed here.
+Direction coordinates encode the complete ray, including vertical and
+negative-horizontal directions. The rational parametrizations of
+Theorem~\ref{con:standard-param} give stereographic charts; their inverse
+requires the chart denominator to be apart from zero. This is an atlas
+interpretation, not a choice of a global continuous argument.
+
+\begin{theorem}[Cylindrical coordinates]
+\label{coord:cylindrical}
+The transformation
+\[
+ (r,c,s,z)\longmapsto(rc,rs,z),\qquad r\ge0,\quad c^2+s^2=1,
+\]
+satisfies $x^2+y^2=r^2$. It has the inverse of
+Theorem~\ref{coord:polar} on each horizontal plane, with the same axis
+qualification. Hence $x^2+y^2=R^2$ is the circular cylinder of radius
+$R\ge0$, and $z=k$ fixes a horizontal plane. Radian input substitutes
+$c=\cos\theta,s=\sin\theta$.
+\end{theorem}
+\begin{proof}
+Apply the polar theorem to the first two coordinates and leave $z$
+unchanged. The inverse preserves that last coordinate. A fixed radius
+condition places no restriction on $z$; fixing $z$ places no restriction
+on the first two coordinates. These observations prove the locus
+descriptions by the displayed equations. All inverse branches on
+rational Cartesian inputs are rational zero tests on $x^2+y^2$.
+\end{proof}
+
+\begin{theorem}[Spherical coordinates with explicit axis data]
+\label{coord:spherical}
+For $\rho\ge0$, $c_\theta^2+s_\theta^2=1$, and
+$c_\phi^2+s_\phi^2=1$ with $s_\phi\ge0$, set
+\[
+ x=\rho s_\phi c_\theta,\quad
+ y=\rho s_\phi s_\theta,\quad z=\rho c_\phi.
+\]
+Then $x^2+y^2+z^2=\rho^2$ and the cylindrical radius is
+$r=\rho s_\phi$. For a rational point away from the origin and the
+vertical axis an inverse is
+\[
+ \rho=\sqrt{x^2+y^2+z^2},\quad r=\sqrt{x^2+y^2},\quad
+ (c_\theta,s_\theta)=(x/r,y/r),\quad
+ (c_\phi,s_\phi)=(z/\rho,r/\rho).
+\]
+On the nonzero vertical axis take $(c_\theta,s_\theta)=(1,0)$,
+$s_\phi=0,c_\phi=\sgn z$. At the origin use $\rho=0$ and arbitrary
+fixed admissible directions. The inverse for general named data
+requires the corresponding radial gaps or certified axis cases.
+\end{theorem}
+\begin{proof}
+Substitution and the two unit identities give
+\[
+ x^2+y^2+z^2
+ =\rho^2s_\phi^2(c_\theta^2+s_\theta^2)+\rho^2c_\phi^2
+ =\rho^2.
+\]
+The horizontal norm squared is $\rho^2s_\phi^2$; since both factors
+are nonnegative, its nonnegative root is $\rho s_\phi$. The inverse
+unit identities follow from $r^2=x^2+y^2$ and $\rho^2=r^2+z^2$;
+substitution then recovers all three coordinates. The finitely many
+axis cases are explicit rational branches. The nonzero denominators
+receive gaps exactly as in the polar theorem. For conventional
+inclination and azimuth one substitutes
+$c_\phi=\cos\phi,s_\phi=\sin\phi$ and
+$c_\theta=\cos\theta,s_\theta=\sin\theta$, retaining the
+nonnegative-inclination-sine condition.
+\end{proof}
+
+\subsection{Oblique frames and transformation of equations}
+
+\begin{theorem}[The metric in an oblique coordinate frame]
+\label{coord:gram-metric}
+Let $e_1,\ldots,e_d$ be an invertible rational frame, $d=2$ or $3$, with
+matrix $M$ having those columns. Coordinates $u$ represent $P=O+Mu$.
+The squared distance between coordinates $u,v$ is
+\[
+ (u-v)^TG(u-v),\qquad G=M^TM.
+\]
+The form $G$ is positive definite. It is the identity precisely when
+the frame is orthonormal. Changes of origin leave $G$ unchanged.
+\end{theorem}
+\begin{proof}
+The physical displacement is $M(u-v)$, whose norm square is
+$(u-v)^TM^TM(u-v)$. If this sum of squares is zero, every coordinate
+of $M(u-v)$ is zero; multiplication by the rational inverse of $M$
+gives $u=v$. Thus the form is positive on nonzero rational vectors;
+for names a quantitative nonzero vector is needed to infer a positive
+gap, while zero-kernel injectivity remains valid. The $(i,j)$ entry of
+$G$ is $e_i\cdot e_j$, so $G=I$ is exactly the orthonormality
+condition. The origin cancels in a displacement. This explains why a
+Euclidean distance formula cannot be reused unchanged in an arbitrary
+affine frame.
+\end{proof}
+
+\begin{theorem}[Transforming a locus uses the inverse substitution]
+\label{coord:locus-transform}
+Let $T(u)=Mu+t$ be an invertible rational affine transformation and let
+a locus be specified by $F(u)=0$. Then its transformed locus is
+\[
+ F\bigl(M^{-1}(x-t)\bigr)=0.
+\]
+In particular translation by $(h,k)$ gives $F(x-h,y-k)=0$;
+scaling by nonzero $(b,a)$ gives $F(x/b,y/a)=0$; rotation with
+unit pair $(c,s)$ gives $F(cx+sy,-sx+cy)=0$.
+\end{theorem}
+\begin{proof}
+If $u$ is on the original locus and $x=T(u)$, then
+$M^{-1}(x-t)=u$, which proves the transformed equation. Conversely,
+that equation supplies the explicit preimage $u=M^{-1}(x-t)$, so
+the point is an image of a point of the locus. The displayed special
+cases insert the inverses of a translation, a diagonal matrix, and
+$\left(\begin{smallmatrix}c&-s\\s&c\end{smallmatrix}\right)$,
+respectively. The latter inverse is its transpose because $c^2+s^2=1$.
+For a graph $y=f(x)$ this also proves that
+$y=a f(b(x-k))+h$ corresponds to the point map
+$(u,v)\mapsto(k+u/b,h+av)$, under $a,b\ne0$. If $f$ is a
+fixed represented function with primitive-recursive extensional evaluation
+(equal input names give equal output names), the assertion is a substitution
+schema for that function. No universal evaluator for all functions is used.
+\end{proof}
+
+\begin{proposition}[Coordinate Jacobian identities]
+\label{coord:jacobians}
+With the conventional radian formulas, the polar Jacobian determinant
+for input order $(r,\theta)$ is $r$, the cylindrical determinant for
+$(r,\theta,z)$ is $r$, and the spherical determinant for
+$(\rho,\phi,\theta)$ is $\rho^2\sin\phi$. Their absolute values
+give the associated local area or volume scaling. These assertions
+are determinant identities; no integration change-of-variables theorem
+is assumed.
+\end{proposition}
+\begin{proof}
+The polar derivative columns are $(\cos\theta,\sin\theta)$ and
+$(-r\sin\theta,r\cos\theta)$, whose determinant is
+$r(\cos^2\theta+\sin^2\theta)=r$. The cylindrical derivative
+adds the independent column $(0,0,1)$, leaving the same determinant.
+For spherical coordinates put $s=\sin\phi,c=\cos\phi$ and
+$C=\cos\theta,S=\sin\theta$. The three columns are
+\[
+ (sC,sS,c),\quad(\rho cC,\rho cS,-\rho s),\quad
+ (-\rho sS,\rho sC,0).
+\]
+The cross product of the last two is
+$\rho^2s(sC,sS,c)$. Its dot product with the first is
+$\rho^2s(s^2+c^2)=\rho^2s$. The derivative formulas follow from
+Theorem~\ref{coord:derivatives} and finite products. Swapping the
+order of the two angle variables changes the determinant's sign.
+At $r=0$, or $\rho\sin\phi=0$, these formulas explicitly expose
+the chart singularity. Local parallelepiped volume scaling is the
+determinant identity of Theorem~\ref{geo:cross}.
+\end{proof}
+
+The proofs in this chapter use finite sums, factorials, powers,
+polynomial identities, explicit root brackets and guarded reciprocals.
+The only variable-length proofs are the finite sum estimates, governed
+by Lemma~\ref{found:loops}. They therefore respect the same first-order
+\ipra\ discipline as the exact geometry chapters.

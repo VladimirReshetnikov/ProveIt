@@ -1,0 +1,35 @@
+\section{Scope, interpretation, and evidence}
+\label{sec:scope}
+
+The task is to establish as much of the mathematics in the analytic-geometry article and its relevant immediate links as can be justified constructively in \ipra. There is no finite, canonical maximum: links such as Euclidean space, algebraic geometry, and differential geometry open entire subjects. We therefore give a substantial, reproducible collection concentrated on the article's mathematical spine, and a coverage ledger that identifies the interpretation of each result. Historical and biographical assertions are outside the mathematical task.
+
+Three distinctions govern the work. First, a rational input does not imply a rational output: two rational circles can meet at irrational points. Second, a formula about all real points must be interpreted by a stated representation; natural-number codes do not magically code every classical real. Third, a Lean proof over \texttt{Real} or \texttt{Rat} is not by itself a proof in an embedded first-order theory. The final formal target is a derivation of type \texttt{Prf PRAAx} for a displayed arithmetic sentence.
+
+\subsection{Three kinds of assertion}
+
+\begin{description}[style=nextline]
+\item[Exact rational assertions (E).]
+Input coordinates, coefficients, and parameters are rational codes. Equality and order are decided by integer arithmetic. Constructed points are rational unless a square-root output is explicitly stated. These assertions translate directly into first-order arithmetic.
+\item[Constructed algebraic outputs (A).]
+A rational problem produces finitely many explicit expressions using rational operations and nonnegative square roots. Each expression has a primitive-recursive approximation program with a proved error bound. This is sufficient for the intersections and canonical-form witnesses below; a general real-algebraic-number decision procedure is not silently invoked.
+\item[Represented-real schemas (R).]
+For each \emph{fixed} primitive-recursive family of coordinate names, with supplied bounds and any required apartness data, we prove an arithmetic statement about all requested precisions. The family is fixed outside the formula; its numerical parameters and precision indices are quantified inside the formula. Universal quantification over an arbitrary function space is never introduced.
+\end{description}
+
+When an elementary identity is written with real-looking coordinates, its E reading is immediate. Its R reading uses the quantitative translation of Section~\ref{sec:foundations}; a branching assertion does \emph{not} acquire an R reading unless all branch information is supplied. Exact comparison of the resulting names is not an operation of this representation.
+
+\subsection{What was reused from ProveIt}
+
+The repository was inspected at the commit printed on the title page. Its directory README explicitly separates checked derivation libraries from delivered research packets~\cite{repo-main}. We inspected the concrete modules
+\path{Geometry/PlaneMetric.lean} and
+\path{Geometry/IsoperimetricDyadicSquareRoot.lean} under
+\path{Derivations/Lean/IPRADerivations/}~\cite{repo-metric,repo-sqrt}.
+The first contains the actual object-iPRA Gram and parallelogram identities. The second exposes the bracket, maximality, source bound, and program equations for a dyadic square root. These are unusually close to the present needs.
+
+We also inspected the planar Euclidean-geometry and Euler--Rodrigues packet READMEs~\cite{repo-plane-packet,repo-rotation-packet}. They motivate useful interfaces and identify existing work, but their general claims are not imported as axioms. In particular, this report does not rely on a completed quantifier-elimination theorem for algebraic numbers. The elementary arguments needed here are supplied below. The repository's published build status was not independently replayed in this environment.
+
+\subsection{Corrections and necessary qualifications}
+
+Several informal textbook sentences require extra conditions. A negative conic discriminant does not guarantee a nonempty ellipse: $x^2+y^2+1=0$ has no real point. Two conics may share a component and then have infinitely many common points. The expression $\arctan(y/x)$ is neither defined on the vertical axis nor a correct global angular coordinate. A tangent may cross its curve, and a singular point need not have a unique tangent. All corresponding positive statements in this packet include the relevant conditions; these are mathematical distinctions, not merely numerical implementation choices.
+
+The source ledger uses the Wikipedia pages as a topic inventory~\cite{wiki-main}. The proofs and numerical bounds are original developments for this packet. The primary-source comparison for standard plane and tangent equations is Paul Dawkins's course material~\cite{dawkins}; ProveIt's source is the primary reference for its own formal interface.

@@ -1,0 +1,915 @@
+\section{Affine and metric coordinate geometry}
+\label{sec:affine-metric}
+
+This chapter treats points and vectors in dimensions two and three. Unless
+explicitly stated otherwise their coordinates, the coefficients of equations,
+and construction parameters are rational. Thus every equality test and every
+sign case below is a test of integers after multiplication by positive
+denominators. Lengths and the square roots occurring in intersection formulas
+are interpreted by the fixed primitive recursive real names constructed in the
+foundational chapter. The assertions extend to fixed families of such names
+when the required denominator bounds and sign certificates are supplied;
+they do not assert a decision procedure for equality of arbitrary real names.
+
+Write
+\[
+ \langle u,v\rangle=\sum_{i=1}^{d}u_iv_i,\qquad
+ S(u)=\langle u,u\rangle,\qquad |u|=\sqrt{S(u)},\qquad d\in\{2,3\}.
+\]
+For planar vectors set
+\[
+ J(u_1,u_2)=(-u_2,u_1),\qquad [u,v]=u_1v_2-u_2v_1.
+\]
+A nonzero rational vector has strictly positive squared length: one of its
+finitely many rational coordinates is nonzero, its square is positive, and
+the other squares are nonnegative. Every reciprocal of a squared length
+used below is therefore guarded by a decidable, explicitly stated condition.
+In particular, no argument obtains a reciprocal from a mere double negation
+of nonzeroness.
+
+\subsection{Incidence and affine constructions}
+
+\begin{theorem}[Equivalent equations of a line, and the line through two points]
+\label{geo:line}
+Let $P\in\Q^2$ and $u\in\Q^2$ with $u\ne0$. Then
+\[
+ X=P+tu\quad\Longleftrightarrow\quad [u,X-P]=0
+ \quad\Longleftrightarrow\quad \langle Ju,X-P\rangle=0.
+\]
+Here the existential parameter $t$ is uniquely determined and rational for
+rational $X$. Consequently two distinct rational points determine a unique
+line, and every equation $ax+by=c$ with $(a,b)\ne(0,0)$ describes a line.
+\end{theorem}
+\begin{proof}
+Substitution proves both implications from the parametric equation. Conversely,
+if $u_1\ne0$, set $t=(X_1-P_1)/u_1$. The determinant equation says
+$u_1(X_2-P_2)=u_2(X_1-P_1)$, so $X_2-P_2=tu_2$.
+If $u_1=0$, then $u_2\ne0$, the determinant equation gives $X_1=P_1$,
+and $t=(X_2-P_2)/u_2$ works. The same nonzero coordinate proves uniqueness.
+For distinct $P,Q$, take $u=Q-P$. A line containing $P$ and $Q$ has a
+direction proportional to $u$, so its point set agrees with this one.
+Finally, for $n=(a,b)\ne0$, the rational point
+$P=(c/S(n))n$ satisfies $\langle n,P\rangle=c$ and the nonzero direction
+$Jn$ is perpendicular to $n$. The equivalence already proved gives the
+required line. All branches and quotients have displayed rational guards.
+\end{proof}
+
+\begin{theorem}[Slope, intercepts, parallelism, and perpendicularity]
+\label{geo:slope}
+For $(a,b)\ne(0,0)$, the line $ax+by=c$ has slope-intercept equation
+$y=mx+k$ with $m=-a/b$ and $k=c/b$ when $b\ne0$; when $b=0$ it is the
+vertical line $x=c/a$. Its intersections with the axes are obtained by
+setting the other coordinate equal to zero, with the zero-coefficient case
+giving either the whole axis or no point. Two nonvertical lines with slopes
+$m,m'$ have parallel directions exactly when $m=m'$, and perpendicular
+directions exactly when $mm'=-1$.
+\end{theorem}
+\begin{proof}
+Solving the equation for $y$, or for $x$ if $b=0$, proves the first assertion.
+For the $x$-axis the remaining equation is $ax=c$: if $a\ne0$ the unique
+intercept is $(c/a,0)$; if $a=0$ its truth is the decidable test $c=0$.
+The $y$-axis is identical with the roles reversed. Directions of the two
+nonvertical lines can be chosen as $(1,m)$ and $(1,m')$. Their determinant
+is $m'-m$ and their dot product is $1+mm'$, proving the last assertions.
+The treatment of vertical lines explains why a slope alone cannot represent
+every line and why the perpendicular-slope formula requires its stated domain.
+\end{proof}
+
+\begin{theorem}[Complete intersection classification of two rational lines]
+\label{geo:two-lines}
+Consider $ax+by=c$ and $a'x+b'y=c'$, with both normal vectors nonzero, and
+put $\Delta=ab'-ba'$. If $\Delta\ne0$, their unique intersection is
+\[
+ x=\frac{cb'-bc'}{\Delta},\qquad
+ y=\frac{ac'-ca'}{\Delta}.
+\]
+If $\Delta=0$, the lines coincide precisely when
+$ac'=a'c$ and $bc'=b'c$; otherwise they are disjoint.
+\end{theorem}
+\begin{proof}
+Multiplying the equations respectively by $b',b$ and subtracting gives
+$\Delta x=cb'-bc'$. The analogous elimination gives
+$\Delta y=ac'-ca'$. This proves necessity and uniqueness when the determinant
+is nonzero, and direct substitution proves existence.
+If the determinant vanishes, choose a nonzero coordinate of $(a,b)$.
+For example, when $a\ne0$, the determinant equation gives
+$(a',b')=\lambda(a,b)$ for $\lambda=a'/a$.
+Because the second normal is nonzero, $\lambda\ne0$.
+The two equations are then consistent exactly when $c'=\lambda c$,
+equivalently $ac'=a'c$. The additional displayed equality follows from it.
+The branch $a=0$ uses $b\ne0$ and is identical. An inconsistent proportional
+pair cannot have a common point because substitution would force the failed
+constant equality. This is a finite rational case split, including coincidence.
+\end{proof}
+
+\begin{theorem}[Determinant, collinearity, and triangle area]
+\label{geo:area}
+For $A,B,C\in\Q^2$, define the signed area
+\[
+ \mathcal A(A,B,C)=\tfrac12[B-A,C-A].
+\]
+It is translation invariant, changes sign on interchanging two vertices,
+and is zero exactly when the three points are collinear, allowing coincident
+points. Its absolute value is one half of base length times perpendicular
+height. For every $P$ one has
+\[
+ \mathcal A(A,B,C)=\mathcal A(P,B,C)+\mathcal A(A,P,C)+\mathcal A(A,B,P).
+\]
+\end{theorem}
+\begin{proof}
+Translation cancels in both differences; exchanging $B,C$ reverses the
+determinant. Exchanging $A,B$ gives
+$[A-B,C-B]=[-(B-A),(C-A)-(B-A)]=-[B-A,C-A]$.
+If $A\ne B$, the zero determinant is exactly the line criterion of
+Theorem~\ref{geo:line}. If $A=B$, any line through $A,C$ works, and if all
+three coincide the horizontal line through them works.
+For nonzero base $u=B-A$, decompose $v=C-A$ as
+\[
+ v=\frac{\langle u,v\rangle}{S(u)}u+
+       \frac{[u,v]}{S(u)}Ju.
+\]
+The identity follows coordinatewise; the second summand is perpendicular
+to the base and has length $|[u,v]|/|u|$. Hence half base times height is
+$|[u,v]|/2$. A zero base gives zero area directly.
+Finally, expand every determinant in the last displayed equation using
+$[X-Y,Z-Y]=[X,Z]-[X,Y]-[Y,Z]$; all terms containing $P$ cancel.
+This also verifies finite additivity of oriented triangle area without a
+topological argument about the inside of a curve.
+\end{proof}
+
+\begin{theorem}[Section formula, midpoint, and segment inequalities]
+\label{geo:section}
+Let $P,Q\in\Q^d$, $P\ne Q$, and $t\in\Q$. The point
+$R=(1-t)P+tQ$ is on their line and is on the closed segment precisely when
+$0\le t\le1$. In that case
+$|R-P|=t|Q-P|$ and $|Q-R|=(1-t)|Q-P|$.
+For positive rationals $m,n$, the unique point on the segment with
+$|R-P|:|Q-R|=m:n$ is
+\[
+ R=\frac{nP+mQ}{m+n}.
+\]
+The midpoint $M=(P+Q)/2$ satisfies, for every $X$,
+\[
+ S(X-P)+S(X-Q)=2S(X-M)+\tfrac12 S(P-Q).
+\]
+\end{theorem}
+\begin{proof}
+The segment is defined parametrically by $0\le t\le1$, and the uniqueness
+of the line parameter makes this definition unambiguous. The differences
+are $t(Q-P)$ and $(1-t)(Q-P)$, whose lengths have the displayed values by
+nonnegativity of $t,1-t$. The ratio equation reduces, after cancelling the
+positive base length, to $nt=m(1-t)$, whose unique solution is
+$t=m/(m+n)$. For the last identity set $a=X-M$ and $b=(Q-P)/2$.
+The left side is $S(a+b)+S(a-b)=2S(a)+2S(b)$, because the two cross terms
+cancel. This proves the midpoint identity by a finite polynomial calculation.
+\end{proof}
+
+\begin{theorem}[Barycentric coordinates and concurrence of medians]
+\label{geo:centroid}
+If $A,B,C\in\Q^2$ are noncollinear, every rational point $X$ has unique
+rational barycentric coordinates $\alpha,\beta,\gamma$ with
+\[
+ \alpha+\beta+\gamma=1,\qquad X=\alpha A+\beta B+\gamma C.
+\]
+They are
+\[
+ \alpha=\frac{\mathcal A(X,B,C)}{\mathcal A(A,B,C)},\quad
+ \beta=\frac{\mathcal A(A,X,C)}{\mathcal A(A,B,C)},\quad
+ \gamma=\frac{\mathcal A(A,B,X)}{\mathcal A(A,B,C)}.
+\]
+The three medians meet uniquely at $G=(A+B+C)/3$, which divides each median
+in the ratio $2:1$ measured from its vertex.
+\end{theorem}
+\begin{proof}
+Write $u=B-A$, $v=C-A$. The system $X-A=\beta u+\gamma v$ has a unique
+solution because $[u,v]\ne0$. Taking determinants with $v$ and with $u$
+gives $\beta=[X-A,v]/[u,v]$ and $\gamma=[u,X-A]/[u,v]$.
+Set $\alpha=1-\beta-\gamma$; the area-addition identity proves the formula
+for $\alpha$. If $M=(B+C)/2$, then
+$G=A+\frac23(M-A)$, so the section formula proves the claimed ratio and
+incidence. A point on the median from $A$ has $\beta=\gamma$; a point on
+the median from $B$ has $\alpha=\gamma$. Their unique common solution is
+$\alpha=\beta=\gamma=1/3$. Thus concurrency and uniqueness are both explicit.
+\end{proof}
+
+\begin{theorem}[Affine changes of coordinates]
+\label{geo:affine}
+Let $T(X)=MX+b$ on $\Q^2$. It preserves affine combinations whose coefficients
+sum to one. If $\det M\ne0$, it is bijective, maps lines to lines, preserves
+the parameter of every section of a line, and obeys
+\[
+ [Mu,Mv]=(\det M)[u,v],\qquad
+ \mathcal A(TA,TB,TC)=(\det M)\mathcal A(A,B,C).
+\]
+For a locus $F(X)=0$, its image is described by
+$F(M^{-1}(Y-b))=0$.
+\end{theorem}
+\begin{proof}
+Linearity gives
+$T(\sum_i\lambda_iX_i)=\sum_i\lambda_iT(X_i)$ when $\sum_i\lambda_i=1$.
+For $M=\left(\begin{smallmatrix}a&b_0\\c&d\end{smallmatrix}\right)$,
+expansion gives
+\[
+ (au_1+b_0u_2)(cv_1+dv_2)-(cu_1+du_2)(av_1+b_0v_2)
+ =(ad-b_0c)(u_1v_2-u_2v_1).
+\]
+The inverse matrix is
+$(ad-b_0c)^{-1}\left(\begin{smallmatrix}d&-b_0\\-c&a\end{smallmatrix}\right)$,
+verified by multiplication. Thus a nonzero direction stays nonzero, and
+$T(P+tu)=T(P)+tMu$ proves the assertions about lines and sections.
+The area formula follows from the determinant identity. Finally
+$Y=T(X)$ is equivalent to $X=M^{-1}(Y-b)$, proving both directions of
+the locus transformation. The inverse substitution is essential: substituting
+the forward map into $F$ would describe its inverse image.
+\end{proof}
+
+\subsection{Inner products, distances, projections, and isometries}
+
+\begin{theorem}[Lagrange's sum-of-squares identity]
+\label{geo:lagrange}
+In dimensions two and three,
+\[
+ S(u)S(v)-\langle u,v\rangle^2
+ =\sum_{1\le i<j\le d}(u_iv_j-u_jv_i)^2.
+\]
+In the plane the right side is $[u,v]^2$. It vanishes precisely when $u,v$
+are linearly dependent, including the case where one vector is zero.
+\end{theorem}
+\begin{proof}
+Expand the product as
+$\sum_i u_i^2v_i^2+\sum_{i<j}(u_i^2v_j^2+u_j^2v_i^2)$.
+The square of the dot product is
+$\sum_i u_i^2v_i^2+2\sum_{i<j}u_iu_jv_iv_j$.
+Subtracting leaves exactly the displayed squares. If they all vanish and
+$u\ne0$, choose $k$ with $u_k\ne0$. Each equation
+$u_kv_j-u_jv_k=0$ gives $v_j=(v_k/u_k)u_j$, proving dependence.
+If $u=0$, dependence is immediate. Conversely proportional vectors make
+every minor vanish. A finite sum of nonnegative rational squares is zero
+only if each square is zero, a fact proved by rational order and the finite
+number of summands.
+\end{proof}
+
+\begin{theorem}[Cauchy--Schwarz and its equality condition]
+\label{geo:cauchy}
+For $u,v\in\Q^d$,
+\[
+ |\langle u,v\rangle|\le |u||v|.
+\]
+Equality holds exactly when the vectors are linearly dependent. For nonzero
+vectors the normalized dot product lies between $-1$ and $1$.
+\end{theorem}
+\begin{proof}
+The sum of squares in Theorem~\ref{geo:lagrange} is nonnegative, so
+$\langle u,v\rangle^2\le S(u)S(v)$. Both sides of the desired inequality
+are nonnegative; comparison of their squares proves it, using monotonicity
+of the nonnegative square root. Equality is equivalent to the vanishing
+of the difference of those squares, hence to linear dependence by the same
+theorem. If both squared lengths are positive, their product has a positive
+square root, so division gives the final assertion. For rational inputs this
+positive denominator has an explicit rational lower bound, obtainable from
+the input numerators and denominators or the square-root construction.
+\end{proof}
+
+\begin{theorem}[Pythagoras, parallelogram identity, and polarization]
+\label{geo:pythagoras}
+The identities
+\[
+ S(u+v)=S(u)+2\langle u,v\rangle+S(v),\qquad
+ S(u+v)+S(u-v)=2S(u)+2S(v)
+\]
+hold in dimensions two and three. In particular,
+$S(u+v)=S(u)+S(v)$ exactly when $\langle u,v\rangle=0$.
+Moreover
+\[
+ \langle u,v\rangle=\tfrac14\bigl(S(u+v)-S(u-v)\bigr).
+\]
+\end{theorem}
+\begin{proof}
+For each coordinate,
+$(u_i+v_i)^2=u_i^2+2u_iv_i+v_i^2$.
+Summation proves the first identity. Replacing $v$ by $-v$ and adding cancels
+the dot products; subtracting instead yields four times the dot product.
+The Pythagorean equivalence follows by subtracting $S(u)+S(v)$ and using
+the nonzero rational constant $2$. Thus the usual geometric right-angle
+criterion, defined by a zero inner product, is equivalent to the squared
+length identity; no angle-selection operation is needed.
+\end{proof}
+
+\begin{theorem}[The Euclidean distance is a metric]
+\label{geo:metric}
+Define $d(P,Q)=\sqrt{\sum_i(P_i-Q_i)^2}$. It is nonnegative and symmetric,
+equals zero exactly when $P=Q$, and satisfies
+\[
+ d(P,R)\le d(P,Q)+d(Q,R).
+\]
+For a nonnegative rational $a$, $d(aP,aQ)=a\,d(P,Q)$.
+\end{theorem}
+\begin{proof}
+Nonnegativity is part of the square-root specification. Reversing each
+difference leaves its square unchanged, proving symmetry. If the distance
+is zero, its square is zero, and each nonnegative coordinate square is zero;
+therefore all coordinate differences vanish. The converse is immediate.
+For the triangle inequality put $u=P-Q$ and $v=Q-R$. By the preceding
+theorems,
+\[
+ S(u+v)=S(u)+2\langle u,v\rangle+S(v)
+ \le S(u)+2|u||v|+S(v)=(|u|+|v|)^2.
+\]
+Taking nonnegative square roots gives $|u+v|\le|u|+|v|$.
+Finally $S(a(P-Q))=a^2S(P-Q)$, and $a|P-Q|$ is the unique nonnegative
+square root of that value. Every appeal to square roots is an inequality
+or equality of the represented values; no branching on their equality occurs.
+\end{proof}
+
+\begin{theorem}[Cosine law and an algebraic encoding of planar angles]
+\label{geo:cosine}
+For a triangle with side vectors $u,v$ at one vertex and nonzero adjacent
+lengths $a=|u|$, $b=|v|$, set
+$c_\theta=\langle u,v\rangle/(ab)$. Then
+\[
+ |u-v|^2=a^2+b^2-2ab c_\theta.
+\]
+In the plane, set also $s_\theta=[u,v]/(ab)$. Then
+$c_\theta^2+s_\theta^2=1$. These two numbers encode an oriented angle
+without choosing an inverse trigonometric branch. For nonvertical directions
+$(1,m),(1,m')$, when $1+mm'\ne0$, the corresponding sine-to-cosine ratio is
+\[
+ \frac{s_\theta}{c_\theta}=\frac{m'-m}{1+mm'}.
+\]
+\end{theorem}
+\begin{proof}
+The cosine law is the expansion of $S(u-v)$ followed by the definition of
+$c_\theta$. The planar Lagrange identity gives
+$\langle u,v\rangle^2+[u,v]^2=S(u)S(v)=a^2b^2$;
+division proves the unit-circle equation. The dot product of the two slope
+directions is $1+mm'$ and their determinant is $m'-m$, so their common
+normalizing factor cancels in the displayed quotient. The nonzero-denominator
+condition excludes a right angle, where this quotient has no finite value.
+The normalized pair remains defined there and also records the quadrant
+information lost by an unqualified arctangent of a slope.
+\end{proof}
+
+\begin{theorem}[Projection onto a line and its minimum-distance property]
+\label{geo:projection}
+Let $L=\{P+tu:t\in\Q\}$ with $u\ne0$, and let $X\in\Q^d$.
+The perpendicular foot is
+\[
+ H=P+\frac{\langle X-P,u\rangle}{S(u)}u.
+\]
+It is the unique point of the line minimizing squared distance to $X$, since
+for every parameter $t$,
+\[
+ S\bigl(X-(P+tu)\bigr)
+ =S(X-H)+S(u)\left(t-\frac{\langle X-P,u\rangle}{S(u)}\right)^2.
+\]
+In the plane,
+$S(X-H)=[u,X-P]^2/S(u)$; in three dimensions it is
+$S(X-P)-\langle X-P,u\rangle^2/S(u)$.
+\end{theorem}
+\begin{proof}
+The chosen coefficient makes $\langle X-H,u\rangle=0$.
+Write $X-(P+tu)=(X-H)+(t_0-t)u$, where $t_0$ is that coefficient.
+Pythagoras gives the displayed decomposition. Its second term is nonnegative
+and vanishes only when $t=t_0$, proving minimum and uniqueness.
+Expanding $S((X-P)-t_0u)$ gives
+$S(X-P)-\langle X-P,u\rangle^2/S(u)$. The planar Lagrange identity rewrites
+this as the determinant quotient. The same minimum statement holds for fixed
+PR real line parameters, since its proof is an exact identity plus a square.
+\end{proof}
+
+\begin{theorem}[Projection onto a line or plane in normal form]
+\label{geo:hyperplane}
+Let $n\ne0$ and $\Pi=\{Y:\langle n,Y\rangle=c\}$ in dimension two or three.
+For rational $X$, set
+\[
+ H=X-\frac{\langle n,X\rangle-c}{S(n)}n.
+\]
+Then $H\in\Pi$ and, for every $Y\in\Pi$,
+\[
+ S(X-Y)=\frac{(\langle n,X\rangle-c)^2}{S(n)}+S(H-Y).
+\]
+Thus $H$ is the unique nearest point and
+$d(X,\Pi)=|\langle n,X\rangle-c|/|n|$.
+\end{theorem}
+\begin{proof}
+Taking the dot product with $n$ proves $\langle n,H\rangle=c$.
+The vector $X-H$ is a scalar multiple of $n$, while
+$\langle n,H-Y\rangle=0$. Applying Pythagoras to
+$X-Y=(X-H)+(H-Y)$ gives the identity, and
+$S(X-H)=(\langle n,X\rangle-c)^2/S(n)$.
+The nonnegative second term vanishes exactly when $Y=H$, proving the claims.
+This treats point-to-line and point-to-plane distance with one construction.
+\end{proof}
+
+\begin{theorem}[Reflection in a line or plane]
+\label{geo:reflection}
+For the normal equation in Theorem~\ref{geo:hyperplane}, the map
+\[
+ R(X)=X-2\frac{\langle n,X\rangle-c}{S(n)}n
+\]
+is an involution fixing exactly $\Pi$, preserves all distances, and has
+midpoint $(X+R(X))/2$ equal to the perpendicular foot of $X$.
+\end{theorem}
+\begin{proof}
+Let $s=\langle n,X\rangle-c$. Then
+$\langle n,R(X)\rangle-c=-s$, so applying the same formula twice returns
+$X$. The equation $R(X)=X$ implies $s=0$ by taking a nonzero coordinate of
+$n$; the converse is immediate. The midpoint formula is the projection
+formula. For a difference vector $v=X-Y$, its image is
+$v-2\langle n,v\rangle n/S(n)$. Expanding its squared length gives
+\[
+ S(v)-4\frac{\langle n,v\rangle^2}{S(n)}
+       +4\frac{\langle n,v\rangle^2}{S(n)}=S(v).
+\]
+Taking nonnegative square roots proves preservation of distance.
+\end{proof}
+
+\begin{theorem}[Orthogonal transformations and similarities]
+\label{geo:isometries}
+If a rational matrix $M$ satisfies $M^{\mathsf T}M=I$, then $X\mapsto MX+b$
+preserves dot products of differences and distances. Its inverse is
+$Y\mapsto M^{\mathsf T}(Y-b)$. A rational linear map preserves every squared
+length if and only if $M^{\mathsf T}M=I$. In dimension two its determinant
+is $1$ or $-1$, and it has one of the forms
+\[
+ \begin{pmatrix}c&-s\\s&c\end{pmatrix},\qquad
+ \begin{pmatrix}c&s\\s&-c\end{pmatrix},\qquad c^2+s^2=1.
+\]
+Multiplying an orthogonal matrix by a nonzero rational $a$ gives a similarity
+with distance factor $|a|$.
+\end{theorem}
+\begin{proof}
+Matrix multiplication gives
+$\langle Mu,Mv\rangle=u^{\mathsf T}M^{\mathsf T}Mv=\langle u,v\rangle$.
+An orthogonal square matrix has nonzero determinant because
+$(\det M)^2=1$; the inverse follows. Conversely, squared-length preservation
+on each standard basis vector makes each column have squared length one;
+preservation on the sum of each pair makes their dot product zero by
+polarization. These finitely many equations are exactly $M^{\mathsf T}M=I$.
+In dimension two write the first column as $(c,s)$, of squared length one.
+Its orthogonal complement consists of multiples of $(-s,c)$ by the line
+criterion. A unit second column is therefore $t(-s,c)$ with $t^2=1$.
+The rational factorization $(t-1)(t+1)=0$ gives $t=1$ or $t=-1$, yielding
+the two forms. Finally $S(aMv)=a^2S(v)$ proves the similarity factor.
+Only the rational parameters are classified; there is no algorithmic
+classification of arbitrary real matrix entries by unbounded equality tests.
+\end{proof}
+
+\subsection{Three-dimensional incidence}
+
+For $u,v\in\Q^3$, define
+\[
+ u\mathbin{\times}v=(u_2v_3-u_3v_2,\ u_3v_1-u_1v_3,\ u_1v_2-u_2v_1).
+\]
+
+\begin{theorem}[Cross product, triple product, and volume]
+\label{geo:cross}
+The cross product is perpendicular to both factors and satisfies
+\[
+ S(u\times v)=S(u)S(v)-\langle u,v\rangle^2,\qquad
+ u\times(v\times w)=v\langle u,w\rangle-w\langle u,v\rangle.
+\]
+The scalar triple product $\langle u\times v,w\rangle$ is the determinant
+with columns $u,v,w$; it vanishes precisely when those vectors are dependent.
+The absolute volume of their parallelepiped is its absolute value.
+\end{theorem}
+\begin{proof}
+In $\langle u,u\times v\rangle$ the six monomials cancel in pairs, and
+the same happens with $v$. The squared-length formula is precisely the
+three-dimensional Lagrange identity, with its three minors in the stated
+order. For the first coordinate of the vector triple identity, expansion gives
+\[
+ u_2(v_1w_2-v_2w_1)-u_3(v_3w_1-v_1w_3)
+ =v_1(u_2w_2+u_3w_3)-w_1(u_2v_2+u_3v_3).
+\]
+Adding and subtracting the equal terms $u_1v_1w_1$ supplies the first
+coordinate on the right. The other two coordinates follow by cyclic renaming.
+Expansion of the scalar triple product is the six-term determinant formula.
+If $u\times v\ne0$, choose a nonzero $2\times2$ minor of $(u,v)$.
+It solves two coordinates of $w=\alpha u+\beta v$, and the zero triple
+product supplies the third; if $u\times v=0$, the first two vectors are
+already dependent by Theorem~\ref{geo:lagrange}. Conversely dependence
+forces determinant zero by linearity and alternating signs.
+When $u\times v\ne0$, the base parallelogram has area $|u\times v|$ by
+the base-times-height calculation, and the component of $w$ normal to it
+has length $|\langle u\times v,w\rangle|/|u\times v|$.
+Their product is the asserted volume. A dependent base gives zero volume.
+\end{proof}
+
+\begin{theorem}[Equations of a plane and a plane through three points]
+\label{geo:plane}
+For $n\in\Q^3\setminus\{0\}$ and $P\in\Q^3$, the plane with normal $n$
+through $P$ has equivalent equations
+\[
+ \langle n,X-P\rangle=0,\qquad
+ n_1x+n_2y+n_3z=\langle n,P\rangle.
+\]
+It has a rational parametrization by two independent direction vectors.
+Three noncollinear rational points $A,B,C$ determine the unique plane with
+normal $(B-A)\times(C-A)$ through $A$.
+\end{theorem}
+\begin{proof}
+Expansion gives equivalence of the two equations. If $n_3\ne0$, take
+directions $u=(1,0,-n_1/n_3)$ and $v=(0,1,-n_2/n_3)$.
+Every point in the plane has the unique form $P+su+tv$, because its first
+two differences determine $s,t$ and the normal equation forces the third.
+If $n_3=0$, use a nonzero coordinate among $n_1,n_2$ and permute this
+construction. The two displayed directions are independent.
+For the three-point assertion their differences are independent, so their
+cross product is nonzero. It is perpendicular to both differences and
+therefore defines a plane containing all three. Any other plane containing
+the points has normal perpendicular to both independent directions; solving
+the same two-coordinate system shows that normal is proportional to their
+cross product. Consequently its equation describes the same plane.
+\end{proof}
+
+\begin{theorem}[Line--plane intersection, including all degenerate cases]
+\label{geo:line-plane}
+Let $X=P+tu$ be a line with $u\ne0$, and let
+$\langle n,X\rangle=c$ be a plane with $n\ne0$.
+Put $a=\langle n,u\rangle$ and $b=c-\langle n,P\rangle$.
+If $a\ne0$, their unique intersection occurs at $t=b/a$.
+If $a=0=b$, the whole line lies in the plane; if $a=0$ and $b\ne0$,
+there is no intersection.
+\end{theorem}
+\begin{proof}
+Substituting the line equation gives exactly the scalar equation $at=b$.
+The three rational cases give its complete solution set. In the first case
+the nonzero direction ensures a unique point corresponds to the unique
+parameter. Thus this classification is a bounded amount of rational arithmetic
+with no appeal to a general equation-solving principle.
+\end{proof}
+
+\begin{theorem}[Intersection of two planes]
+\label{geo:two-planes}
+Let the planes be $\langle n,X\rangle=c$ and $\langle m,X\rangle=d$, with
+both normals nonzero, and put $k=n\times m$.
+If $k\ne0$, their intersection is the line
+\[
+ X=X_0+tk,\qquad
+ X_0=\frac{c(m\times k)+d(k\times n)}{S(k)}.
+\]
+If $k=0$, their normals are proportional; they either coincide or are
+disjoint, according as their constants have the same proportionality factor.
+\end{theorem}
+\begin{proof}
+The triple-product identities give
+$\langle n,m\times k\rangle=S(k)$,
+$\langle m,k\times n\rangle=S(k)$, and the two crossed dot products
+$\langle n,k\times n\rangle$, $\langle m,m\times k\rangle$ equal zero.
+Hence $X_0$ satisfies both equations. The direction $k$ is perpendicular
+to both normals, so the whole displayed line lies in the intersection.
+Conversely, if $X$ is another solution, $X-X_0$ is perpendicular to the
+independent vectors $n,m$. Solving using any nonzero minor of $(n,m)$
+shows that their common orthogonal complement consists exactly of multiples
+of $k$. If $k=0$, Theorem~\ref{geo:lagrange} yields $m=\lambda n$ with
+nonzero rational $\lambda$, obtained from a nonzero coordinate of $n$.
+The equations then coincide exactly when $d=\lambda c$; otherwise
+substitution proves inconsistency.
+\end{proof}
+
+\begin{theorem}[Common perpendicular and distance between two spatial lines]
+\label{geo:skew}
+Let $L=P+tu$ and $L'=Q+sv$ with $u,v\ne0$ and set $w=Q-P$.
+If $k=u\times v\ne0$, the minimum squared distance is
+\[
+ \frac{\langle w,k\rangle^2}{S(k)}.
+\]
+The unique minimizing parameter pair solves
+\[
+ \begin{pmatrix}S(u)&-\langle u,v\rangle\\
+ -\langle u,v\rangle&S(v)\end{pmatrix}
+ \binom{t}{s}=
+ \binom{\langle u,w\rangle}{-\langle v,w\rangle}.
+\]
+The lines intersect exactly when $\langle w,k\rangle=0$; otherwise they
+are skew. If $k=0$, their distance is the point-to-line distance from $Q$
+to $L$, and they coincide exactly when that squared distance is zero.
+\end{theorem}
+\begin{proof}
+For a minimizing pair the joining vector
+$D=(Q+sv)-(P+tu)=w+sv-tu$ must be perpendicular to both directions.
+Those two perpendicularity equations are exactly the displayed system.
+Its determinant is $S(u)S(v)-\langle u,v\rangle^2=S(k)>0$, so Cramer's
+formulas construct a unique rational solution $(t_0,s_0)$. Its joining
+vector $D_0$ is a multiple of $k$. Taking its dot product with $k$ gives
+$\langle D_0,k\rangle=\langle w,k\rangle$, whence
+$D_0=\langle w,k\rangle k/S(k)$ and the distance formula.
+For any other parameters,
+$D=D_0+(s-s_0)v-(t-t_0)u$, with the last vector perpendicular to $D_0$.
+Pythagoras gives $S(D)\ge S(D_0)$, with equality only if the last vector
+vanishes. Independence of $u,v$ forces the same pair of parameters.
+A zero minimum is an actual intersection because the minimizing pair is
+constructed; positive minimum proves disjointness. If $k=0$, write
+$v=\lambda u$ with $\lambda\ne0$. The family of joining vectors is then
+$w+ru$, and its minimum is the projection construction of
+Theorem~\ref{geo:projection}. A zero value means $Q$ is on $L$, which
+makes the two proportional-direction lines identical.
+\end{proof}
+
+\subsection{Circles and elementary triangle geometry}
+
+\begin{theorem}[Circle equation and completion of the square]
+\label{geo:circle}
+A circle with rational center $O=(h,k)$ and squared radius $q\ge0$ has
+equation $(x-h)^2+(y-k)^2=q$.
+The equation $x^2+y^2+ax+by+c=0$ is equivalent to this form with
+\[
+ O=(-a/2,-b/2),\qquad q=(a^2+b^2)/4-c.
+\]
+It has no real points when $q<0$, one point when $q=0$, and a nontrivial
+circle when $q>0$, with explicit points $O\pm(\sqrt q,0)$.
+\end{theorem}
+\begin{proof}
+Expand $(x+a/2)^2+(y+b/2)^2$ and move its constant term to the other
+side. The left side is a sum of two nonnegative squares, so a negative
+right side is impossible. A zero right side forces both squares to vanish,
+giving exactly the center. For positive $q$ the indicated points satisfy
+the equation and are distinct because $\sqrt q>0$. Thus nonemptiness does
+not rely on an unbounded search. Rational $q$ need not have a rational square
+root; the points are represented by the foundational PR square-root names.
+\end{proof}
+
+\begin{theorem}[Line--circle intersections]
+\label{geo:line-circle}
+Let a circle have rational center $O$ and rational squared radius $q\ge0$,
+and let $L=P+tu$ with $u\ne0$. Define
+\[
+ t_0=\frac{\langle O-P,u\rangle}{S(u)},\qquad H=P+t_0u,\qquad
+ K=q-S(H-O).
+\]
+There are no intersections if $K<0$, exactly one, $H$, if $K=0$, and
+exactly two if $K>0$, namely
+\[
+ H\mathbin{\pm}\sqrt{K/S(u)}\,u.
+\]
+When $q>0$ and $K=0$, the line is perpendicular to the radius at the
+contact point and is the tangent line there.
+\end{theorem}
+\begin{proof}
+The projection formula makes $H-O$ perpendicular to $u$. Every point of
+the line is uniquely $H+ru$, so Pythagoras changes its circle equation into
+$S(H-O)+r^2S(u)=q$, or $r^2=K/S(u)$.
+Its right side is rational and has the three decidable sign cases in the
+statement. A negative value is impossible, zero forces $r=0$, and a positive
+value has precisely the two roots $\pm\sqrt{K/S(u)}$.
+For completeness, write $s=\sqrt{K/S(u)}>0$ and take the positive rational
+lower bound $a=\min\{1,K/S(u)\}\le s$. The circle equation
+gives $(r-s)(r+s)=0$. Approximate a proposed represented-real parameter $r$
+by a rational $r_0$ with $|r-r_0|\le a/4$. If $r_0\ge0$, then
+$r+s\ge3a/4$, so multiplication by its guarded reciprocal gives $r=s$.
+If $r_0<0$, then $s-r\ge3a/4$, and the same argument gives $r=-s$.
+The only test was the sign of the rational approximant; no real sign
+trichotomy or general disjunction from a zero product was used.
+In the zero case with $q>0$, $H-O\ne0$ and the line has this radius as
+a normal, establishing the tangent equation.
+\end{proof}
+
+\begin{theorem}[Radical axis and complete circle--circle intersection test]
+\label{geo:circle-circle}
+Let two circles have rational centers $O_1,O_2$ and squared radii
+$q_1,q_2\ge0$. If $O_1\ne O_2$, put
+\[
+ w=O_2-O_1,\quad D=S(w),\quad
+ t=\frac{D+q_1-q_2}{2D},\quad H=O_1+tw,\quad K=q_1-t^2D.
+\]
+Their common points lie on the radical axis
+\[
+ \langle X-O_1,w\rangle=(D+q_1-q_2)/2,
+\]
+and are absent for $K<0$, equal to $H$ alone for $K=0$, and precisely
+\[
+ H\mathbin{\pm}\sqrt{K/D}\,Jw
+\]
+for $K>0$. If $O_1=O_2$, the circles coincide when $q_1=q_2$ and otherwise
+have no common point.
+\end{theorem}
+\begin{proof}
+Writing $Y=X-O_1$, subtract the equations $S(Y)=q_1$ and
+$S(Y-w)=q_2$. Since $S(Y-w)=S(Y)-2\langle Y,w\rangle+D$, subtraction
+gives the radical-axis equation. Conversely, that equation together with
+the first circle equation implies the second, so no solutions have been
+lost. The axis is $H+rJw$, because $\langle H-O_1,w\rangle=tD$ and
+$Jw$ is perpendicular to $w$. Its substitution into the first circle gives
+$t^2D+r^2D=q_1$, whence the stated three cases by the preceding theorem.
+If the centers agree, the equations have the same left side; equality or
+inequality of the rational right sides gives the final classification.
+The single-point case is called tangency when both radii are positive;
+the statement also correctly includes circles of radius zero.
+\end{proof}
+
+\begin{theorem}[Circumcenter of a noncollinear rational triangle]
+\label{geo:circumcenter}
+Let $A,B,C\in\Q^2$ be noncollinear and put $u=B-A$, $v=C-A$.
+There is a unique circle through the three vertices. Its rational center is
+\[
+ O=A+\frac{S(v)Ju-S(u)Jv}{2[u,v]},
+\]
+and its squared radius is the positive rational $q=S(O-A)$.
+The perpendicular bisectors of all three sides pass through $O$.
+\end{theorem}
+\begin{proof}
+For $Y=O-A$, equality of the squared distances to $A,B$ is
+$S(Y)=S(Y-u)$, equivalently $2\langle Y,u\rangle=S(u)$.
+The analogous equation for $A,C$ is
+$2\langle Y,v\rangle=S(v)$.
+The two normals are independent. The displayed formula is their unique
+solution: $\langle Ju,u\rangle=0$,
+$\langle Jv,u\rangle=-[u,v]$, and
+$\langle Ju,v\rangle=[u,v]$ verify it directly.
+The locus of points equidistant from two distinct points is their
+perpendicular bisector, by expanding the same squared-distance equation
+around their midpoint. Thus all three bisectors contain $O$.
+The radius cannot be zero: that would force $O=A=B=C$, contradicting
+noncollinearity. Any other circle through the vertices would have a center
+solving the same unique pair of linear equations and the same radius.
+\end{proof}
+
+\begin{theorem}[Orthocenter and the Euler-line relation]
+\label{geo:orthocenter}
+For the triangle of Theorem~\ref{geo:circumcenter}, the three altitudes
+meet uniquely at
+\[
+ H=A+B+C-2O.
+\]
+With centroid $G=(A+B+C)/3$, one has $H=3G-2O$.
+Consequently $O,G,H$ are collinear; if they are not all equal, $G$ divides
+the segment from $O$ to $H$ in the ratio $1:2$.
+\end{theorem}
+\begin{proof}
+Translate the origin to $O$, so the three vertex vectors all have squared
+length $q$ and the proposed orthocenter is $H=A+B+C$.
+Then
+\[
+ \langle H-A,B-C\rangle
+ =\langle B+C,B-C\rangle=S(B)-S(C)=0.
+\]
+Thus $H$ lies on the altitude through $A$, and cyclic permutation proves
+the other two incidences. The normals of the altitudes through $A,B$ are
+the nonparallel side directions $B-C,A-C$, so their intersection is unique.
+Restoring the original origin gives the displayed formula.
+The relation $H=3G-2O$ follows by substitution, equivalently
+$G=\frac23O+\frac13H$. The section formula then gives the ratio whenever
+the segment has nonzero length. This explicitly includes the exceptional
+case where the Euler line has no distinguished direction because its three
+named points coincide.
+\end{proof}
+
+\begin{theorem}[The nine-point circle]
+\label{geo:ninepoint}
+The three side midpoints, the three midpoints between a vertex and the
+orthocenter, and the three altitude feet of a noncollinear triangle lie on
+the circle with center $N=(O+H)/2$ and squared radius $q/4$, where $O,H,q$
+are its circumcenter, orthocenter, and squared circumradius.
+Repeated named points are allowed.
+\end{theorem}
+\begin{proof}
+Again put $O=0$, so $H=A+B+C$ and $S(A)=S(B)=S(C)=q$.
+For the side midpoint $U=(B+C)/2$,
+$U-N=-A/2$, so $S(U-N)=q/4$.
+For $V=(A+H)/2$, one has $V-N=A/2$, yielding the same equation.
+Cyclic permutation treats the six midpoints.
+Let $D$ be the foot of the altitude from $A$ onto $BC$, constructed by
+Theorem~\ref{geo:projection}. Both $D,U$ lie on $BC$, and both $D,V$
+lie on the altitude through $A$. These lines are perpendicular, so
+$\langle D-U,D-V\rangle=0$. For any $U,V,D$, writing
+$M=(U+V)/2$ and expanding gives
+\[
+ \langle D-U,D-V\rangle=S(D-M)-\tfrac14 S(U-V).
+\]
+In this instance $M=N$ and $V-U=A$, so the zero dot product gives
+$S(D-N)=q/4$. The other two feet follow by cyclic permutation.
+This proof handles obtuse and right triangles without an interior-point
+assumption or a special position diagram.
+\end{proof}
+
+\begin{theorem}[Power of a point, secants, and equal tangents]
+\label{geo:power}
+For the circle $S(X-O)=q$ with $q>0$, define the power of $P$ by
+$\operatorname{Pow}(P)=S(P-O)-q$.
+For a line $P+tu$ with $u\ne0$, suppose its restricted quadratic has two
+real roots $t_1,t_2$, counted with multiplicity. Then
+\[
+ S(u)t_1t_2=\operatorname{Pow}(P).
+\]
+If $T$ is a contact point and $\langle T-O,P-T\rangle=0$, then
+$S(P-T)=\operatorname{Pow}(P)$; hence the lengths of two tangent segments
+from the same point are equal. If $D=S(P-O)>q$, two such contact points
+are explicitly
+\[
+ T_\pm=O+\frac qD(P-O)
+       \mathbin{\pm}\frac{\sqrt{q(D-q)}}D J(P-O).
+\]
+\end{theorem}
+\begin{proof}
+Substitution of the secant into the circle yields
+$S(u)t^2+2\langle P-O,u\rangle t+\operatorname{Pow}(P)=0$.
+When there are two roots, including a repeated root, comparison with
+$S(u)(t-t_1)(t-t_2)$ gives the product identity; it also follows directly
+from the quadratic root formulas in Theorem~\ref{geo:line-circle}.
+The product is directed: replacing it by an unsigned length product would
+lose the sign of the power for a point inside the circle.
+For a contact point, Pythagoras applied to
+$P-O=(P-T)+(T-O)$ gives $S(P-O)=S(P-T)+q$.
+For the final construction put $Y=P-O$. Orthogonality of $Y,JY$ gives
+\[
+ S(T_\pm-O)=q^2/D+q(D-q)/D=q,
+ \qquad \langle Y,T_\pm-O\rangle=q.
+\]
+Subtracting $S(T_\pm-O)=q$ from the last equality proves
+$\langle T_\pm-O,P-T_\pm\rangle=0$.
+Because $q(D-q)>0$ and $Y\ne0$, the points are distinct. Their tangent
+lines have the respective nonzero radius vectors as normals, and the
+line--circle theorem proves that each meets the circle only at its contact point.
+\end{proof}
+
+\begin{theorem}[Shoelace formula and origin-independent polygon area]
+\label{geo:shoelace}
+For a finite cyclic list of rational planar points
+$P_0,\ldots,P_{m-1}$, with $m\ge1$ and $P_m=P_0$, define its signed fan area from $O$ by
+$\sum_{i<m}\mathcal A(O,P_i,P_{i+1})$. It is independent of $O$ and equals
+\[
+ \frac12\sum_{i<m}(x_iy_{i+1}-y_ix_{i+1}).
+\]
+If the polygon comes with an oriented triangulation whose internal edges
+occur in opposite directions, this number is the sum of the oriented areas
+of its triangles. In particular, for a convex polygon in cyclic positive
+order it is its ordinary area.
+\end{theorem}
+\begin{proof}
+Expand
+$[P_i-O,P_{i+1}-O]=[P_i,P_{i+1}]+[O,P_i]-[O,P_{i+1}]$.
+Summing around the cycle cancels the last two terms, including the final
+term because $P_m=P_0$. This proves origin independence and the coordinate
+formula. A triangle has twice its signed area equal to the sum of its three
+directed-edge determinants, by Theorem~\ref{geo:area}. Summing these
+identities over the supplied triangulation cancels every paired internal
+edge, leaving the boundary sum. For a convex polygon, the fan from $P_0$
+has triangles with nonnegative orientation and covers it without overlap
+of interiors; its area is therefore the sum of their base-times-height
+areas. Alternatively that finite fan can be taken as the area certificate.
+The proof of cancellation for a variable list length is induction on the
+length of a coded list with a rational equality invariant, hence quantifier-free
+induction after coding. No decision procedure for arbitrary Jordan regions
+is asserted.
+\end{proof}
+
+\begin{theorem}[Intersection of a sphere with a plane]
+\label{geo:sphere-plane}
+Let $S(X-O)=q$ with $q\ge0$ be a sphere with rational center in $\Q^3$,
+and let $\langle n,X\rangle=c$, $n\ne0$, be a rational plane. Set
+\[
+ H=O+\frac{c-\langle n,O\rangle}{S(n)}n,\qquad
+ K=q-\frac{(c-\langle n,O\rangle)^2}{S(n)}.
+\]
+The intersection is empty for $K<0$, is the point $H$ for $K=0$, and is
+a circle in that plane with center $H$ and squared radius $K$ for $K>0$.
+An orthonormal coordinate pair for that circle is constructible using
+rational arithmetic and positive square roots.
+\end{theorem}
+\begin{proof}
+The point $H$ is the projection of $O$ onto the plane. Every point of the
+plane is $H+v$ with $\langle n,v\rangle=0$; since $H-O$ is a multiple
+of $n$, Pythagoras gives
+$S(H+v-O)=S(H-O)+S(v)$. Thus the sphere equation is exactly $S(v)=K$,
+which proves the three cases except for the promised explicit coordinates.
+Choose a standard basis vector $e_i$ with $E=n\times e_i\ne0$.
+Such an index exists: a nonzero vector cannot be parallel to all three
+basis vectors, and the three rational tests are finite. Put $F=n\times E$.
+Then $E,F$ are perpendicular to $n$ and to each other, and
+$S(F)=S(n)S(E)>0$ by the cross-product identity. Therefore
+\[
+ e=E/\sqrt{S(E)},\qquad f=F/\sqrt{S(n)S(E)}
+\]
+are a constructed orthonormal basis of the plane's direction space.
+The circle is exactly $H+ae+bf$ with $a^2+b^2=K$.
+All reciprocal square roots have positive rational inputs and explicit
+apartness bounds. In particular, when $K>0$ the points $H\pm\sqrt K\,e$
+witness nonemptiness constructively.
+\end{proof}
+
+\subsection{Arithmetic audit of the chapter}
+
+The thirty statements above use three kinds of proof steps. First, fixed
+coordinate identities are finite polynomial identities over rational codes;
+clearing their positive denominators reduces them to integer identities, and
+splitting signed integers into natural-number codes gives quantifier-free
+arithmetic formulas. Second, every rational choice is among a fixed finite
+list: a nonzero coordinate, a nonzero minor, a determinant sign, or one of the
+three signs of a rational squared-radius difference. Its branch condition is
+decidable and its branch result is a primitive recursive expression. Third,
+lengths and intersection coordinates use the fixed square-root and arithmetic
+constructions already proved in the foundation. Their equality and order
+conclusions are the corresponding finite-precision schemas with explicit
+error budgets. Polynomial equalities never require deciding equality of their
+represented real values.
+
+The only variable-length construction introduced here is the polygon sum.
+Its recurrence stores a rational accumulator and a bounded index; the proof
+invariant is the displayed telescoping identity. The dimensions in every
+matrix calculation remain two or three. Thus the argument does not invoke
+unbounded search, an arbitrary-dimensional choice of bases, unrestricted
+induction on formulas with quantifiers, or a total evaluator for all primitive
+recursive programs. These observations specify the actual arithmetic
+translation needed for the Lean development, rather than inferring an
+\ipra\ proof merely from the fact that a statement is true over real numbers.
