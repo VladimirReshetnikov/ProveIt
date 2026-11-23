@@ -1106,6 +1106,12 @@ factorial term of the original finite exponential.
 [GaussianEulerLogarithmicHalfDecay](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicHalfDecay.lean)
 proves the upper weighted-row bound at the exact factorial majorant
 for the combined Euler and logarithmic degree.
+[GaussianEulerLowerLogarithmPower](Lean/IPRADerivations/Analysis/GaussianEulerLowerLogarithmPower.lean)
+proves the inverse-root bound for the actual logarithm at squared root times.
+[GaussianEulerLogarithmicUpperPointwise](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicUpperPointwise.lean)
+proves the original upper pointwise majorant for the retimed logarithmic compact row.
+[GaussianEulerLogarithmicUpperScalar](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicUpperScalar.lean)
+supplies the original scalar majorant at the combined degree to the actual compact evaluator.
 [GaussianBetaSharpPartition](Lean/IPRADerivations/Analysis/GaussianBetaSharpPartition.lean)
 locates one and the two degree endpoints on the same original dyadic
 grid and identifies the original half-time decay at the split with

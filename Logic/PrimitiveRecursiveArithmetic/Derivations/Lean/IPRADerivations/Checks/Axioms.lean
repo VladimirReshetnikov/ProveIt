@@ -19915,6 +19915,32 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianLogarithmFactorialPowerBound.original_power_bound
 #print axioms LeanProofs.IPRA.Analysis.GaussianLogarithmFactorialPowerBound.actual_original_logarithm_factorial_power_majorant_closed
 
+/-! ### GaussianEulerLowerLogarithmPower -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLowerLogarithmPower.targetRadius
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLowerLogarithmPower.commonRadius
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLowerLogarithmPower.gain
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLowerLogarithmPower.rawPower
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLowerLogarithmPower.numerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLowerLogarithmPower.denominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLowerLogarithmPower.auxiliaryCost
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLowerLogarithmPower.subst_targetRadius
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLowerLogarithmPower.subst_commonRadius
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLowerLogarithmPower.subst_gain
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLowerLogarithmPower.subst_rawPower
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLowerLogarithmPower.subst_numerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLowerLogarithmPower.subst_denominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLowerLogarithmPower.subst_auxiliaryCost
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLowerLogarithmPower.harmonic_power_slack
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLowerLogarithmPower.harmonic_power_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLowerLogarithmPower.negative_power_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLowerLogarithmPower.reciprocal_harmonic_power_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLowerLogarithmPower.scaled_reference_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLowerLogarithmPower.original_reference_distance
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLowerLogarithmPower.original_power_slack
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLowerLogarithmPower.original_power_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLowerLogarithmPower.original_derivative_lower_logarithm_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLowerLogarithmPower.actual_original_lower_logarithmic_power_majorant_closed
+
 /-! ### GaussianUpperTimeLogarithmBound -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianUpperTimeLogarithmBound.finite_interval_bound
 #print axioms LeanProofs.IPRA.Analysis.GaussianUpperTimeLogarithmBound.harmonic_sample_bound
@@ -19973,6 +19999,30 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicHalfDecay.actual_amplified_weighted_half_decay_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicHalfDecay.original_logarithmic_weighted_half_decay_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicHalfDecay.original_logarithmic_sampled_half_row_bound_closed
+
+/-! ### GaussianEulerLogarithmicUpperPointwise -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicUpperPointwise.powerMajorant
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicUpperPointwise.source
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicUpperPointwise.splitRow
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicUpperPointwise.splittingCost
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicUpperPointwise.referenceCost
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicUpperPointwise.rawCost
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicUpperPointwise.observationCost
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicUpperPointwise.upper_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicUpperPointwise.half_square_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicUpperPointwise.original_split_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicUpperPointwise.half_reference_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicUpperPointwise.approximate_reference_product
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicUpperPointwise.original_raw_envelope
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicUpperPointwise.original_observation_slack
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicUpperPointwise.original_upper_pointwise
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicUpperPointwise.original_logarithmic_Euler_upper_pointwise_closed
+
+/-! ### GaussianEulerLogarithmicUpperScalar -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicUpperScalar.original_cell_majorized
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicUpperScalar.original_evaluator_cell_majorized
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicUpperScalar.original_scalar_reference_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicUpperScalar.original_logarithmic_Euler_scalar_majorant_closed
 
 /-! ### GaussianGammaEulerCompactQuadrature -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerCompactQuadrature.source
