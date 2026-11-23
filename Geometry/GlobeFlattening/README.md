@@ -13,11 +13,11 @@ source patch. [Lean theorem](Lean/GlobeFlattening/FlatteningTheorem.lean)
 The Lean construction uses continuous monotone staircases with derivative
 zero almost everywhere. One sequence approximates longitude, and rescaling
 it by `Yₙ(y) = Xₙ(2y) / 2` gives the latitude sequence. Each longitude
-approximant sums scaled copies of the Cantor distribution function. The
-distribution comes from the binary digits of a uniform point in `[0, 1)`,
-read in base three after replacing each `1` with `2`. The digit encoding
-is injective, so the distribution has no atoms and its distribution
-function is continuous. Scaling the Cantor set by three gives the union
+approximant sums scaled copies of a Cantor-supported distribution function.
+Mathlib supplies a measurable injection from the reals to Boolean sequences
+and a homeomorphism from those sequences to the Cantor set. Their composition
+pushes uniform measure on `[0, 1)` to a measure with null singletons, so its
+distribution function is continuous. Scaling the Cantor set by three gives the union
 of two translates of the set, forcing its Lebesgue measure to be zero.
 The distribution function is locally constant off the Cantor set, so it
 has derivative zero almost everywhere.

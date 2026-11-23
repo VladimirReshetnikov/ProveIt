@@ -1,7 +1,7 @@
 import Mathlib.Analysis.Calculus.Deriv.Add
 import Mathlib.Analysis.Calculus.Deriv.Comp
 import Mathlib.Analysis.Calculus.Deriv.Mul
-import Mathlib.MeasureTheory.Function.Floor
+import Mathlib.MeasureTheory.MeasurableSpace.CountablyGenerated
 import Mathlib.MeasureTheory.Measure.Lebesgue.EqHaar
 import Mathlib.MeasureTheory.Integral.DominatedConvergence
 import Mathlib.Topology.Instances.CantorSet
@@ -9,10 +9,9 @@ import Mathlib.Topology.Instances.CantorSet
 /-!
 # Singular staircases close to the identity
 
-The Cantor staircase is the cumulative distribution function of the
-pushforward of uniform measure on `[0, 1)` by the binary-to-ternary
-encoding. Its atomless measure gives a continuous distribution function
-that is locally constant off the null Cantor set. Finite sums of scaled
+A measurable injection sends uniform measure on `[0, 1)` to an atomless
+measure supported on the null Cantor set. Its distribution function is
+continuous and locally constant off the Cantor set. Finite sums of scaled
 copies approximate the clamped identity and have derivative zero almost everywhere.
 -/
 
@@ -38,33 +37,21 @@ private theorem volume_cantorSet : volume cantorSet = 0 := by
 theorem exists_singular_staircase : ∃ f : ℝ → ℝ,
     Continuous f ∧ Monotone f ∧ (∀ x ≤ 0, f x = 0) ∧ (∀ x ≥ 1, f x = 1) ∧
       (∀ᵐ x ∂volume, HasDerivAt f 0 x) := by
-  let digit : Fin 2 → Fin 3 := fun d => if d = 0 then 0 else 2
-  have hdigit : Function.Injective digit := by decide
-  have hne1 (d : Fin 2) : digit d ≠ 1 := by fin_cases d <;> decide
-  let encode (x : ℝ) := Real.ofDigits (digit ∘ Real.digits x 2)
-  have hmem (x : ℝ) : encode x ∈ cantorSet :=
-    ofDigits_zero_two_sequence_mem_cantorSet fun i => hne1 (Real.digits x 2 i)
-  have hmeas : Measurable encode := by
-    refine Real.continuous_ofDigits.measurable.comp (measurable_pi_lambda _ fun i => ?_)
-    exact (measurable_of_countable (digit ∘ Fin.ofNat 2)).comp
-      (measurable_id.mul_const ((2 : ℝ) ^ (i + 1))).nat_floor
-  have hinj : InjOn encode (Ico 0 1) := by
-    intro x hx y hy hxy
-    have h := ofDigits_zero_two_sequence_unique (fun i => hne1 (Real.digits x 2 i))
-      (fun i => hne1 (Real.digits y 2 i)) hxy
-    rw [← Real.ofDigits_digits (b := 2) (by decide) hx,
-      ← Real.ofDigits_digits (b := 2) (by decide) hy]
-    exact congrArg Real.ofDigits (funext fun i => hdigit (congrFun h i))
-  let μ := (volume.restrict (Ico 0 1)).map encode
-  have hμ (s : Set ℝ) (hs : MeasurableSet s) : μ s = volume (encode ⁻¹' s ∩ Ico 0 1) := by
-    simp only [μ, Measure.map_apply hmeas hs, Measure.restrict_apply' measurableSet_Ico]
-  letI : IsProbabilityMeasure μ := ⟨by simp [hμ _ MeasurableSet.univ, Real.volume_Ico]⟩
-  letI : NullSingletonClass μ := ⟨fun x => by
-    rw [hμ _ (measurableSet_singleton x)]
-    exact (show (encode ⁻¹' {x} ∩ Ico 0 1).Subsingleton from
-      fun y hy z hz => hinj hy.2 hz.2 ((mem_singleton_iff.mp hy.1).trans (mem_singleton_iff.mp hz.1).symm)).measure_zero volume⟩
+  obtain ⟨code, hcode, hcode_inj⟩ := MeasurableSpace.measurable_injection_nat_bool_of_countablySeparated ℝ
+  let embed (x : ℝ) : ℝ := (cantorSetHomeomorphNatToBool.symm (code x) : cantorSet)
+  have hm : Measurable embed :=
+    (continuous_subtype_val.comp cantorSetHomeomorphNatToBool.symm.continuous).measurable.comp hcode
+  have hi : Function.Injective embed :=
+    Subtype.val_injective.comp (cantorSetHomeomorphNatToBool.symm.injective.comp hcode_inj)
+  let ν := volume.restrict (Ico (0 : ℝ) 1)
+  let μ := ν.map embed
+  letI : IsProbabilityMeasure μ := ⟨by simp [μ, ν, Measure.map_apply hm MeasurableSet.univ, Real.volume_Ico]⟩
+  letI : NullSingletonClass μ := ⟨fun x =>
+    (Measure.map_apply hm (measurableSet_singleton x)).trans
+      ((subsingleton_singleton.preimage hi).measure_zero ν)⟩
   have hs : ∀ᵐ t ∂μ, t ∈ cantorSet :=
-    (ae_map_iff hmeas.aemeasurable isClosed_cantorSet.measurableSet).2 (ae_of_all _ hmem)
+    (ae_map_iff hm.aemeasurable isClosed_cantorSet.measurableSet).2
+      (ae_of_all _ fun x => (cantorSetHomeomorphNatToBool.symm (code x)).2)
   let F (x : ℝ) := μ.real (Iic x)
   refine ⟨F, continuous_iff_continuousAt.2 fun x => ?_,
     fun _ _ h => measureReal_mono (Iic_subset_Iic.2 h), ?_, ?_, ?_⟩
