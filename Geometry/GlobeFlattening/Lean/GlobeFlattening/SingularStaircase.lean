@@ -31,12 +31,11 @@ private theorem volume_cantorSet : volume cantorSet = 0 := by
       simp only [← image_smul, image_image, smul_eq_mul, div_eq_inv_mul]]
     rw [Measure.addHaar_smul, image_add_left, measure_preimage_add, Module.finrank_self, pow_one]
     norm_num
-  have hleft : volume ((· / 3) '' cantorSet) = ENNReal.ofReal (1 / 3) * volume cantorSet := by
-    simpa using hscale 0
   have hle : volume cantorSet ≤ ENNReal.ofReal (2 / 3) * volume cantorSet := by
     nth_rw 1 [cantorSet_eq_union_halves]
     refine (measure_union_le _ _).trans_eq ?_
-    rw [hleft, hscale 2, ← add_mul, ← ENNReal.ofReal_add (by norm_num) (by norm_num)]
+    rw [show volume ((· / 3) '' cantorSet) = ENNReal.ofReal (1 / 3) * volume cantorSet by
+      simpa using hscale 0, hscale 2, ← add_mul, ← ENNReal.ofReal_add (by norm_num) (by norm_num)]
     norm_num
   by_contra hn
   have hc := ENNReal.ofReal_lt_one.2 (show (2 / 3 : ℝ) < 1 by norm_num)
@@ -81,10 +80,8 @@ theorem exists_singular_staircase : ∃ f : ℝ → ℝ,
       ENNReal.ofReal_eq_zero, sub_nonpos] at h
     exact le_antisymm ((monotone_cdf μ).leftLim_le le_rfl) h
   · intro x hx
-    have hsubset : encode ⁻¹' Iic x ∩ Ico 0 1 ⊆ encode ⁻¹' {0} ∩ Ico 0 1 := by
-      intro y hy
-      exact ⟨le_antisymm ((mem_Iic.mp hy.1).trans hx)
-        (cantorSet_subset_unitInterval (hmem y)).1, hy.2⟩
+    have hsubset : encode ⁻¹' Iic x ∩ Ico 0 1 ⊆ encode ⁻¹' {0} ∩ Ico 0 1 :=
+      fun y hy => ⟨((mem_Iic.mp hy.1).trans hx).antisymm (cantorSet_subset_unitInterval (hmem y)).1, hy.2⟩
     rw [cdf_eq_real, measureReal_def, hμ _ measurableSet_Iic,
       measure_mono_null hsubset (hnull 0), ENNReal.toReal_zero]
   · intro x hx
@@ -109,12 +106,8 @@ theorem exists_singular_approx {a b ε : ℝ} (hab : a < b) (hε : 0 < ε) :
   have hn₀ : (0 : ℝ) < n := (by positivity : 0 ≤ (b - a) / ε).trans_lt hn
   let w := (b - a) / (n : ℝ)
   have hw : 0 < w := div_pos (sub_pos.mpr hab) hn₀
-  have hwε : w ≤ ε := by
-    apply (div_le_iff₀ hn₀).2
-    linarith [(div_lt_iff₀ hε).1 hn]
-  have hwidth : a + w * n = b := by
-    rw [div_mul_cancel₀ (b - a) hn₀.ne']
-    ring
+  have hwε : w ≤ ε := (div_le_comm₀ hn₀ hε).2 hn.le
+  have hwidth : a + w * n = b := by simp [w, hn₀.ne']
   let H (y : ℝ) := ∑ j ∈ Finset.range n, f (y - j)
   have hHm : Monotone H :=
     fun _ _ hy => Finset.sum_le_sum fun _ _ => hfm (sub_le_sub_right hy _)
@@ -148,8 +141,8 @@ theorem exists_singular_approx {a b ε : ℝ} (hab : a < b) (hε : 0 < ε) :
   have hgr (x : ℝ) : g x ∈ Icc a b := ⟨
     le_add_of_nonneg_right (mul_nonneg hw.le (hHr _).1), hwidth ▸
       add_le_add le_rfl (mul_le_mul_of_nonneg_left (hHr _).2 hw.le)⟩
-  have hH₀ : H 0 = 0 := by simpa only [Nat.cast_zero] using hgrid 0 (Nat.zero_le n)
-  have hga : g a = a := by simp [g, A, hH₀]
+  have hga : g a = a := by
+    simpa [g, A] using congrArg (fun t : ℝ => a + w * t) (hgrid 0 (Nat.zero_le n))
   have hAb : A b = n := (div_eq_iff hw.ne').2 (by linarith only [hwidth])
   have hgb : g b = b := by rw [show g b = a + w * H (A b) from rfl, hAb, hgrid n le_rfl, hwidth]
   refine ⟨g, ?_, hgm, hgr, hga, hgb, ?_, ?_⟩
