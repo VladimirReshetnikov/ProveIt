@@ -824,9 +824,15 @@ identifies the original reciprocal head with the factorial quotient
 of the actual rising product.
 [GaussianEulerBetaPrimitivePascal](Lean/IPRADerivations/Analysis/GaussianEulerBetaPrimitivePascal.lean)
 proves the actual primitive coefficient recurrence at all degrees.
-Evaluating the primitive at one and identifying
-the integral with the original Gamma construction throughout the
-right half-plane remain.
+[GaussianEulerBetaEndpoint](Lean/IPRADerivations/Analysis/GaussianEulerBetaEndpoint.lean)
+identifies the literal primitive at one with the original factorial
+quotient for arbitrary internal degree under the native half-plane
+guard.
+[GaussianPositiveRationalLogarithmIncrement](Lean/IPRADerivations/Analysis/GaussianPositiveRationalLogarithmIncrement.lean)
+checks the original positive-rational logarithm increment with its
+quadratic remainder and independent observation errors. The finite
+integral comparison and identification with the original Gamma
+construction throughout the right half-plane remain.
 
 ## Every ledger family remains in scope
 
