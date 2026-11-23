@@ -328,6 +328,9 @@ precisions on the certified nonzero native guard.
 computed retiming and proves equivalence to the original shifted name.
 [GaussianGammaShiftedDeflatedZero](Lean/IPRADerivations/Analysis/GaussianGammaShiftedDeflatedZero.lean) evaluates the same deflated polynomial and shifted reciprocal
 name at the native zero input.
+[GaussianGammaShiftedDeflatedIdentification](Lean/IPRADerivations/Analysis/GaussianGammaShiftedDeflatedIdentification.lean) proves the same original name equivalence over the full
+native source, including zero. [GaussianGammaDeflatedFiniteTaylor](Lean/IPRADerivations/Analysis/GaussianGammaDeflatedFiniteTaylor.lean) proves the true deflated
+polynomial remainder with the full power of the shrinking radius.
 [GaussianGammaPrefixCompatibility](Lean/IPRADerivations/Analysis/GaussianGammaPrefixCompatibility.lean)
 identifies the two prefix names and proves the literal C19 rate with
 these canonical coefficients on the original encoded disk.
@@ -1498,9 +1501,19 @@ identifies the lifted chart logarithm with its affine coordinate.
 [GaussianEulerPowerChartFrozenKernel](Lean/IPRADerivations/Analysis/GaussianEulerPowerChartFrozenKernel.lean) gives the compact comparison with the literal time-weighted
 Euler row at the frozen decoded image. [GaussianEulerPowerScalingFrozenIntegrand](Lean/IPRADerivations/Analysis/GaussianEulerPowerScalingFrozenIntegrand.lean) cancels the
 source time and compares the original power-damped integrand directly
-to the frozen Euler row with its inverse scale factor. Finite quadrature transport,
-the improper limit for the general power chart, and arbitrary
-positive real parameters remain open.
+to the frozen Euler row with its inverse scale factor. [GaussianEulerPowerScalingCompactName](Lean/IPRADerivations/Analysis/GaussianEulerPowerScalingCompactName.lean)
+builds the ordinary source-panel quadrature. [GaussianEulerPowerScalingFrozenRow](Lean/IPRADerivations/Analysis/GaussianEulerPowerScalingFrozenRow.lean) exposes the exact
+original row clocks, and [GaussianEulerPowerScalingCell](Lean/IPRADerivations/Analysis/GaussianEulerPowerScalingCell.lean) combines their readback with the
+evaluated Jacobian error. [GaussianEulerPowerScalingImageQuadrature](Lean/IPRADerivations/Analysis/GaussianEulerPowerScalingImageQuadrature.lean) compares the finite affine source sum
+with the corrected image sum and extracts one original scale factor.
+[GaussianEulerPositivePowerChartCorrectedImage](Lean/IPRADerivations/Analysis/GaussianEulerPositivePowerChartCorrectedImage.lean) decodes the corrected nodes in a certified compact interval
+and compares their original Euler samples to those at the raw image.
+[GaussianEulerPowerScalingCorrectedQuadrature](Lean/IPRADerivations/Analysis/GaussianEulerPowerScalingCorrectedQuadrature.lean) lifts that comparison to the full finite weighted sum.
+[GaussianEulerPowerScalingFiniteSubstitution](Lean/IPRADerivations/Analysis/GaussianEulerPowerScalingFiniteSubstitution.lean) combines both finite comparisons with the source-derived
+rescaled Gamma parameter and a single common scale observation.
+The comparison to independent ordinary image quadratures, the
+improper limit for the general power chart, and arbitrary positive real
+parameters remain open.
 [GaussianBetaSharpPartition](Lean/IPRADerivations/Analysis/GaussianBetaSharpPartition.lean)
 locates one and the two degree endpoints on the same original dyadic
 grid and identifies the original half-time decay at the split with
@@ -1625,7 +1638,7 @@ exponential tail rate of the report remains.
 | 43–48 | Quantitative strict convexity, effective Bohr–Mollerup uniqueness at fixed presentations, Wendel/Gautschi inequalities, rate-bearing Gamma ratios, actual positive-minimum location and negative-pole interval extremum/sign constructions. |
 | 49–53 | Leading Stirling/relative errors, Robbins bounds, every fixed order of log-Stirling and digamma expansions with the signed positive-real-axis remainder, and the actual multiplicative-coefficient/error algorithm. Generic Euler–Maclaurin components need application-specific endpoint and positivity proofs. |
 | 54–58 | Branch-specified analytic log-Gamma on the certified right half-plane, both Binet formulas and their finite kernel/tail bounds, complete monotonicity, Raabe/unit-interval log-Gamma integrals and the Gamma–zeta Mellin identity for `Re(s)>1`. |
-| 59–62 | Wallis product with a rational rate, Gaussian moments and Gamma-density normalization/moments. [GaussianEulerIntegerMomentIntegrand](Lean/IPRADerivations/Analysis/GaussianEulerIntegerMomentIntegrand.lean) proves the original weighted Euler row identity at every internal integer order. [GaussianGammaDensityDomain](Lean/IPRADerivations/Analysis/GaussianGammaDensityDomain.lean) derives the shifted integral and Gamma guards. [GaussianEulerIntegerMomentUniform](Lean/IPRADerivations/Analysis/GaussianEulerIntegerMomentUniform.lean) gives a uniform compact clock for the literal weighted rows. [GaussianGammaDensityMomentReference](Lean/IPRADerivations/Analysis/GaussianGammaDensityMomentReference.lean) evaluates the normalized original shifted integral as the rising product. [GaussianEulerIntegerMomentGrid](Lean/IPRADerivations/Analysis/GaussianEulerIntegerMomentGrid.lean) and [GaussianGammaDensityMomentGrid](Lean/IPRADerivations/Analysis/GaussianGammaDensityMomentGrid.lean) bind the literal weighted rows to the normalized cofinal sampler. [GaussianGammaDensityMomentName](Lean/IPRADerivations/Analysis/GaussianGammaDensityMomentName.lean) proves the original density moments for every internal nonnegative integer on the encoded half-plane. [GaussianGammaDensityMeanVariance](Lean/IPRADerivations/Analysis/GaussianGammaDensityMeanVariance.lean) gives normalization, mean and variance for that same sampler. Both Gamma-crossing equations with the golden-ratio solution, and the stated alternative factorial interpolations. |
+| 59–62 | Wallis product with a rational rate. [GaussianEvenMomentIntegral](Lean/IPRADerivations/Analysis/GaussianEvenMomentIntegral.lean) checks the actual positive-half Gaussian moment relative to the original half-integer Gamma value. [GaussianGammaHalfIntegerValues](Lean/IPRADerivations/Analysis/GaussianGammaHalfIntegerValues.lean) gives its exact factorial coefficient relative to Gamma at one half. [GaussianOddSymmetricQuadrature](Lean/IPRADerivations/Analysis/GaussianOddSymmetricQuadrature.lean) checks exact finite symmetric cancellation for the literal odd Gaussian quadrature. The base value at one half and whole-line improper conclusions remain open. Gamma-density normalization and moments are checked. [GaussianEulerIntegerMomentIntegrand](Lean/IPRADerivations/Analysis/GaussianEulerIntegerMomentIntegrand.lean) proves the original weighted Euler row identity at every internal integer order. [GaussianGammaDensityDomain](Lean/IPRADerivations/Analysis/GaussianGammaDensityDomain.lean) derives the shifted integral and Gamma guards. [GaussianEulerIntegerMomentUniform](Lean/IPRADerivations/Analysis/GaussianEulerIntegerMomentUniform.lean) gives a uniform compact clock for the literal weighted rows. [GaussianGammaDensityMomentReference](Lean/IPRADerivations/Analysis/GaussianGammaDensityMomentReference.lean) evaluates the normalized original shifted integral as the rising product. [GaussianEulerIntegerMomentGrid](Lean/IPRADerivations/Analysis/GaussianEulerIntegerMomentGrid.lean) and [GaussianGammaDensityMomentGrid](Lean/IPRADerivations/Analysis/GaussianGammaDensityMomentGrid.lean) bind the literal weighted rows to the normalized cofinal sampler. [GaussianGammaDensityMomentName](Lean/IPRADerivations/Analysis/GaussianGammaDensityMomentName.lean) proves the original density moments for every internal nonnegative integer on the encoded half-plane. [GaussianGammaDensityMeanVariance](Lean/IPRADerivations/Analysis/GaussianGammaDensityMeanVariance.lean) gives normalization, mean and variance for that same sampler. Both Gamma-crossing equations with the golden-ratio solution, and the stated alternative factorial interpolations. |
 
 In particular, a finite factor bound or a generic exponentiation/logarithm
 interface does not prove a source assertion identifying the completed named
