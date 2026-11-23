@@ -16820,6 +16820,27 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerLowerTailRootGrid.time_width
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerLowerTailRootGrid.actual_lower_root_grid_endpoints_closed
 
+/-! ### GaussianEulerEtaToOneRootGrid -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerEtaToOneRootGrid.root
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerEtaToOneRootGrid.rootDen
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerEtaToOneRootGrid.time
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerEtaToOneRootGrid.timeDen
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerEtaToOneRootGrid.totalWidth
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerEtaToOneRootGrid.rightTime
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerEtaToOneRootGrid.exact_ratio
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerEtaToOneRootGrid.root_first
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerEtaToOneRootGrid.root_last
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerEtaToOneRootGrid.first_time
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerEtaToOneRootGrid.last_time
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerEtaToOneRootGrid.exact_denominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerEtaToOneRootGrid.exact_width
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerEtaToOneRootGrid.denominator_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerEtaToOneRootGrid.right_guard
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerEtaToOneRootGrid.grouped_original_quadrature
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerEtaToOneRootGrid.original_right_observation_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerEtaToOneRootGrid.actual_eta_to_one_root_grid_endpoints_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerEtaToOneRootGrid.actual_eta_to_one_original_Euler_right_rows_closed
+
 /-! ### GaussianEulerLowerTailPartition -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerLowerTailPartition.rootStep
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerLowerTailPartition.offset
@@ -17473,6 +17494,23 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegralPositiveLower.original_Euler_integral_one_eighteenth_lower_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegralPositiveLower.original_gamma_positive_lower
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegralPositiveLower.original_Gamma_one_eighteenth_lower_closed
+
+/-! ### GaussianNamedGammaPositiveLower -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaPositiveLower.lower
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaPositiveLower.source
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaPositiveLower.clock
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaPositiveLower.subst_lower
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaPositiveLower.subst_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaPositiveLower.subst_clock
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaPositiveLower.decoded_imaginary_zero
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaPositiveLower.late_input
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaPositiveLower.encoded_lower
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaPositiveLower.original_lower_budget
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaPositiveLower.original_gamma_positive_lower
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaPositiveLower.improper_lower_budget
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaPositiveLower.original_improper_positive_lower
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaPositiveLower.original_named_real_Gamma_one_eighteenth_lower_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaPositiveLower.original_named_real_Euler_integral_one_eighteenth_lower_closed
 
 /-! ### GaussianCompactAlignedFourSplit -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianCompactAlignedFourSplit.totalWidth
@@ -19383,6 +19421,20 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerUpperTailLeftNorm.original_grid_left_norm
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerUpperTailLeftNorm.original_half_degree_upper_grid
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerUpperTailLeftNorm.original_Euler_rational_time_grid_retains_left_decay_norm_closed
+
+/-! ### GaussianEulerUnitToTopBound -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitToTopBound.original_decay_unit_envelope
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitToTopBound.meshCost
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitToTopBound.rowCost
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitToTopBound.endpointCost
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitToTopBound.minimumMesh
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitToTopBound.minimumPrecision
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitToTopBound.minimumReference
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitToTopBound.coarseNumerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitToTopBound.coarseDenominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitToTopBound.original_coarse_grid_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitToTopBound.original_grid_dyadic_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitToTopBound.actual_upper_Euler_panel_factorial_bound_closed
 
 /-! ### GaussianEulerUpperTailNameBudget -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerUpperTailNameBudget.halfCost
