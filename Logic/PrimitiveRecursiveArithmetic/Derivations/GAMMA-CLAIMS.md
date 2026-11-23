@@ -1140,6 +1140,10 @@ preserves the exact lower coefficient under a larger valid upper-time guard.
 [GaussianEulerLogarithmicCommonCutoff](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicCommonCutoff.lean)
 identifies the physical cutoff intervals using a computed lower index offset,
 with the original integrand radius retained.
+[GaussianEulerLogarithmicParameterTaylor](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicParameterTaylor.lean)
+checks the actual pointwise first-order remainder at every numerical
+order. It derives the shifted radius from the increment bound and
+leaves all three original observation queries independent.
 [GaussianBetaSharpPartition](Lean/IPRADerivations/Analysis/GaussianBetaSharpPartition.lean)
 locates one and the two degree endpoints on the same original dyadic
 grid and identifies the original half-time decay at the split with
