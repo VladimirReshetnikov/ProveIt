@@ -21,9 +21,6 @@ noncomputable section
 abbrev sphereFlattenForward (u : ℝ × ℝ → ℝ) :=
   planarEuclideanEquiv ∘ (flattenCoordinates u ∘ sphereChartInverse)
 
-private abbrev sphereClosedCoordinates : Set (ℝ × ℝ) :=
-  chartClosedRectangle (-Real.pi) Real.pi (-(Real.pi / 2)) (Real.pi / 2)
-
 theorem sphereFlattenForward_spherePoint {u : ℝ × ℝ → ℝ} {p : ℝ × ℝ}
     (hp : p ∈ sphereLongitudeDomain) :
     sphereFlattenForward u (spherePoint p) =
@@ -47,8 +44,8 @@ theorem sphereFlattenForward_exceptional_image {u : ℝ × ℝ → ℝ} {good : 
 area from the exceptional image. -/
 theorem volume_sphereExceptional_inter_of_open {u : ℝ × ℝ → ℝ}
     {good : Set (ℝ × ℝ)} {W : Set (EuclideanSpace ℝ (Fin 2))}
-    (hu : ContinuousOn u sphereClosedCoordinates)
-    (hslope : ∀ p ∈ sphereClosedCoordinates, ∀ q ∈ sphereClosedCoordinates,
+    (hu : ContinuousOn u sphereClosedBox)
+    (hslope : ∀ p ∈ sphereClosedBox, ∀ q ∈ sphereClosedBox,
       p.2 = q.2 → p.1 < q.1 → Real.cos p.2 * (q.1 - p.1) < u q - u p)
     (hgood : MeasurableSet good) (hsub : good ⊆ sphereLongitudeDomain)
     (hnull : volume (sphereLongitudeDomain \ good) = 0)

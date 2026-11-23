@@ -63,18 +63,6 @@ theorem GlobeFlatteningResult.sup_distance_lt {ε : ℝ} (result : GlobeFlatteni
   have hne : cutSphere.Nonempty := ⟨spherePoint (0, 0), spherePoint_mapsTo hp⟩
   exact (csSup_le (hne.image _) (by rintro _ ⟨p, hp, rfl⟩; exact hbound p hp)).trans_lt hd
 
-private theorem strictlyIncreasing_interior_rows
-    {u : ℝ × ℝ → ℝ}
-    (hSlope : ∀ p ∈ sphereClosedBox, ∀ q ∈ sphereClosedBox, p.2 = q.2 → p.1 < q.1 →
-      Real.cos p.2 * (q.1 - p.1) < u q - u p) :
-    ∀ y ∈ Ioo (-(Real.pi / 2)) (Real.pi / 2),
-      StrictMonoOn (fun x => u (x, y)) (Icc (-Real.pi) Real.pi) := by
-  intro y hy x hx x' hx' hxx'
-  have h := hSlope (x, y) ⟨hx, Ioo_subset_Icc_self hy⟩ (x', y)
-    ⟨hx', Ioo_subset_Icc_self hy⟩ rfl hxx'
-  have hpos := mul_pos (Real.cos_pos_of_mem_Ioo hy) (sub_pos.mpr hxx')
-  exact sub_pos.mp (hpos.trans h)
-
 /-- The scalar function and its full-measure good set give the spherical
 homeomorphism and the quantitative conclusions. -/
 def globeFlattening_from_scalar
@@ -90,7 +78,8 @@ def globeFlattening_from_scalar
     (hDeriv : ∀ p ∈ good, HasFDerivAt u (Real.cos p.2 • ContinuousLinearMap.fst ℝ ℝ ℝ) p) :
     GlobeFlatteningResult ε := by
   have hab : -Real.pi ≤ Real.pi := by linarith [Real.pi_pos]
-  have hmono := strictlyIncreasing_interior_rows hSlope
+  have hmono := strictMonoOn_chartRows_of_lowerSlope
+    (fun _ hy => (Real.cos_pos_of_mem_Ioo hy).le) hSlope
   let g := triangularChart hab hcu hmono
   let target := planarEuclideanEquiv '' g.target
   let Z := sphereExceptional good
@@ -99,11 +88,17 @@ def globeFlattening_from_scalar
   let chart : sphereLongitudeDomain ≃ₜ g.target := g.toHomeomorphSourceTarget
   let F : cutSphere ≃ₜ target :=
     (sphereLongitudeChart.symm.trans chart).trans (planarEuclideanEquiv.toHomeomorph.image g.target)
+  have hcloseCoordinates := flattenCoordinates_close_to_sinusoidal hε hclose
   have harea : ENNReal.ofReal (4 * Real.pi) < volume target ∧
       volume target < ENNReal.ofReal (4 * Real.pi * (1 + ε)) := by
     dsimp [target]
     rw [volume_planarEuclideanEquiv_image]
-    exact volume_chartImage_with_tolerance hε hcu hclose
+    have hlo := lintegral_cos_lt_volume_chartImage
+      (by linarith [Real.pi_pos] : -Real.pi < Real.pi)
+      (by linarith [Real.pi_pos] : -(Real.pi / 2) < Real.pi / 2) hcu
+      (fun _ hy => (Real.cos_pos_of_mem_Ioo hy).le) hSlope
+    exact ⟨lintegral_cos_chartRectangle ▸ hlo,
+      volume_chartImage_upper_of_sinusoidal_closeness hε hcu hcloseCoordinates⟩
   have hgoodSource : cutSphere \ Z = spherePoint '' good :=
     sdiff_sdiff_cancel_left ((image_mono hsub).trans spherePoint_mapsTo.image_subset)
   have hgoodImage : f '' (cutSphere \ Z) = planarEuclideanEquiv '' (flattenCoordinates u '' good) := hgoodSource ▸
@@ -175,7 +170,7 @@ def globeFlattening_from_scalar
       (planarEuclideanEquiv (sinusoidalCoordinates p)) ≤ _
     rw [dist_planarEuclideanEquiv_of_snd_eq
       (a := flattenCoordinates u p) (b := sinusoidalCoordinates p) rfl]
-    exact flattenCoordinates_close_to_sinusoidal hε hclose p hsub'
+    exact hcloseCoordinates p hsub'
 
 /-- The cut sphere has the usual total area of the unit sphere. -/
 theorem sphericalArea_cutSphere : sphericalArea cutSphere = ENNReal.ofReal (4 * Real.pi) := by

@@ -12,17 +12,20 @@ source patch. [Lean theorem](Lean/GlobeFlattening/FlatteningTheorem.lean)
 
 The Lean construction uses two sequences of continuous monotone staircases
 that approximate longitude and latitude and have derivative zero almost
-everywhere. The longitude correction has positive weights, giving a
-strict lower bound on the slope of every nontrivial horizontal interval.
-Summation by parts gives a second expression for the
-same function. Together the two expressions bound horizontal and vertical
-errors and give the joint derivative. Scaling the scalar tolerance by
+everywhere. Each approximant is a finite sum of scaled copies of the
+staircase obtained as the fixed point of the Cantor averaging rule.
+Positive longitude correction weights give a strict slope bound on every
+nontrivial horizontal interval. Summation by parts recovers the sinusoidal
+term as the boundary term. The two formulas then control horizontal and
+vertical errors and give the joint derivative. Scaling the scalar tolerance by
 `1 / (1 + π)` gives a uniform distance bound of `ε` for the constructed map.
 [Scalar construction](Lean/GlobeFlattening/ScalarConstruction.lean) ·
 [Singular staircases](Lean/GlobeFlattening/SingularStaircase.lean)
 
 The triangular chart is open because it maps open rectangles to regions
-between continuous longitude endpoint curves.
+between continuous longitude endpoint curves. The same strict width
+comparison proves total area excess and local exceptional area. The
+uniform projection error bounds the total area from above.
 [Chart homeomorphism](Lean/GlobeFlattening/TriangularChart.lean)
 
 Spherical area is defined in the longitude–latitude chart with density

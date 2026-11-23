@@ -1,6 +1,6 @@
 import GlobeFlattening.TriangularChart
-import Mathlib.Analysis.Real.Pi.Bounds
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
+import Mathlib.MeasureTheory.Integral.Lebesgue.Markov
 
 /-!
 # Area and closeness in longitude and latitude coordinates
@@ -23,19 +23,13 @@ theorem volume_chartImage_eq_lintegral_width
     (hu : ContinuousOn u (chartClosedRectangle a b c d)) :
     volume (chartImage u a b c d) =
       ∫⁻ y in Ioo c d, ENNReal.ofReal (u (b, y) - u (a, y)) := by
-  rw [Measure.volume_eq_prod, Measure.prod_apply_symm (isOpen_chartImage hab hu).measurableSet,
-    ← lintegral_indicator measurableSet_Ioo]
-  apply lintegral_congr
-  intro y
-  by_cases hy : y ∈ Ioo c d
-  · have heq : (fun x => (x, y)) ⁻¹' chartImage u a b c d = Ioo (u (a, y)) (u (b, y)) := by
-      ext x
-      exact and_iff_right hy
-    rw [heq, Real.volume_Ioo, indicator_of_mem hy]
-  · have heq : (fun x => (x, y)) ⁻¹' chartImage u a b c d = ∅ := by
-      ext x
-      simp only [chartImage, mem_preimage, mem_setOf_eq, hy, false_and, mem_empty_iff_false]
-    rw [heq, measure_empty, indicator_of_notMem hy]
+  rw [chartImage, Measure.volume_eq_prod,
+    Measure.measurePreserving_swap.measure_preimage_emb MeasurableEquiv.prodComm.measurableEmbedding]
+  have hprofile (x : ℝ) (hx : x ∈ Icc a b) :
+      AEMeasurable (fun y => u (x, y)) (volume.restrict (Ioo c d)) :=
+    ((continuousOn_latitudeProfile hu hx).mono Ioo_subset_Icc_self).aemeasurable measurableSet_Ioo
+  exact volume_regionBetween_eq_lintegral
+    (hprofile a ⟨le_rfl, hab⟩) (hprofile b ⟨hab, le_rfl⟩) measurableSet_Ioo
 
 /-- Integrate the cosine density by horizontal slices of a rectangle. -/
 theorem lintegral_cos_rectangle {a b c d : ℝ} (hab : a ≤ b) :
@@ -49,6 +43,29 @@ theorem lintegral_cos_rectangle {a b c d : ℝ} (hab : a ≤ b) :
   change (∫⁻ _ in Ioo a b, ENNReal.ofReal (Real.cos y)) = _
   rw [lintegral_const, Measure.restrict_apply_univ, Real.volume_Ioo, mul_comm]
   exact (ENNReal.ofReal_mul (sub_nonneg.mpr hab)).symm
+
+/-- A strict longitude slope bound gives greater image area than the cosine density. -/
+theorem lintegral_cos_lt_volume_chartImage
+    {u : ℝ × ℝ → ℝ} {a b c d : ℝ} (hab : a < b) (hcd : c < d)
+    (hu : ContinuousOn u (chartClosedRectangle a b c d))
+    (hcos : ∀ y ∈ Ioo c d, 0 ≤ Real.cos y)
+    (hslope : ∀ p ∈ chartClosedRectangle a b c d, ∀ q ∈ chartClosedRectangle a b c d,
+      p.2 = q.2 → p.1 < q.1 → Real.cos p.2 * (q.1 - p.1) < u q - u p) :
+    (∫⁻ p in chartRectangle a b c d, ENNReal.ofReal (Real.cos p.2)) <
+      volume (chartImage u a b c d) := by
+  rw [lintegral_cos_rectangle hab.le, volume_chartImage_eq_lintegral_width hab.le hu]
+  have hLcon : Continuous (fun y => (b - a) * Real.cos y) := continuous_const.mul Real.continuous_cos
+  refine lintegral_strict_mono ?_
+    (((continuousOn_chartWidth hab.le hu).mono Ioo_subset_Icc_self).aemeasurable
+      measurableSet_Ioo).ennreal_ofReal
+    (hLcon.integrableOn_Icc.mono_set Ioo_subset_Icc_self).lintegral_lt_top.ne ?_
+  · rw [Ne, Measure.restrict_eq_zero, Real.volume_Ioo]
+    exact (ENNReal.ofReal_pos.mpr (sub_pos.mpr hcd)).ne'
+  · refine (ae_restrict_mem measurableSet_Ioo).mono fun y hy => ?_
+    have hy' := Ioo_subset_Icc_self hy
+    apply (ENNReal.ofReal_lt_ofReal_iff_of_nonneg (mul_nonneg (sub_nonneg.mpr hab.le) (hcos y hy))).2
+    simpa only [mul_comm (b - a)] using
+      hslope (a, y) ⟨⟨le_rfl, hab.le⟩, hy'⟩ (b, y) ⟨⟨hab.le, le_rfl⟩, hy'⟩ rfl hab
 
 private abbrev latitudeInterval : Set ℝ := Ioo (-(Real.pi / 2)) (Real.pi / 2)
 
@@ -99,49 +116,6 @@ theorem volume_good_image_eq_four_pi
   (measure_flattened_good_image hgood hsub hnull hinj hderiv
     (fun _ hp => (Real.cos_pos_of_mem_Ioo (hsub hp).2).le)).trans lintegral_cos_chartRectangle
 
-/-- The two endpoint errors give the uniform upper and lower bounds on
-the length of every horizontal slice in the cut-sphere chart. -/
-theorem chartWidth_bounds_of_closeness
-    {u : ℝ × ℝ → ℝ} {δ y : ℝ}
-    (hclose : ∀ p ∈ chartClosedRectangle (-Real.pi) Real.pi (-(Real.pi / 2)) (Real.pi / 2),
-      |u p - (Real.cos p.2 + δ) * p.1| ≤ δ)
-    (hy : y ∈ Icc (-(Real.pi / 2)) (Real.pi / 2)) :
-    2 * Real.pi * Real.cos y + 2 * (Real.pi - 1) * δ ≤ u (Real.pi, y) - u (-Real.pi, y) ∧
-      u (Real.pi, y) - u (-Real.pi, y) ≤ 2 * Real.pi * Real.cos y + 2 * (Real.pi + 1) * δ := by
-  have hπ : -Real.pi ≤ Real.pi := by linarith [Real.pi_pos]
-  have hL := abs_le.mp (hclose (-Real.pi, y) ⟨⟨le_rfl, hπ⟩, hy⟩)
-  have hR := abs_le.mp (hclose (Real.pi, y) ⟨⟨hπ, le_rfl⟩, hy⟩)
-  constructor
-  · linarith only [hL.2, hR.1]
-  · linarith only [hL.1, hR.2]
-
-/-- Two-sided area bound for the entire image of the scalar construction. -/
-theorem volume_chartImage_bounds_of_closeness
-    {u : ℝ × ℝ → ℝ} {δ : ℝ} (hδ : 0 ≤ δ)
-    (hu : ContinuousOn u (chartClosedRectangle (-Real.pi) Real.pi (-(Real.pi / 2)) (Real.pi / 2)))
-    (hclose : ∀ p ∈ chartClosedRectangle (-Real.pi) Real.pi (-(Real.pi / 2)) (Real.pi / 2),
-      |u p - (Real.cos p.2 + δ) * p.1| ≤ δ) :
-    ENNReal.ofReal (4 * Real.pi + 2 * Real.pi * (Real.pi - 1) * δ) ≤
-        volume (chartImage u (-Real.pi) Real.pi (-(Real.pi / 2)) (Real.pi / 2)) ∧
-      volume (chartImage u (-Real.pi) Real.pi (-(Real.pi / 2)) (Real.pi / 2)) ≤
-        ENNReal.ofReal (4 * Real.pi + 2 * Real.pi * (Real.pi + 1) * δ) := by
-  rw [volume_chartImage_eq_lintegral_width (by linarith [Real.pi_pos] : -Real.pi ≤ Real.pi) hu]
-  have hwidth (k : ℝ) (hk : 0 ≤ k) :
-      (∫⁻ y in latitudeInterval, ENNReal.ofReal (2 * Real.pi * Real.cos y + 2 * k * δ)) =
-        ENNReal.ofReal (4 * Real.pi + 2 * Real.pi * k * δ) := by
-    rw [lintegral_latitude_affine_cos (by positivity) (by positivity)]
-    congr 1
-    ring
-  constructor
-  · rw [← hwidth (Real.pi - 1) (by linarith [Real.pi_gt_three])]
-    exact setLIntegral_mono' measurableSet_Ioo
-      (fun y hy => ENNReal.ofReal_le_ofReal (chartWidth_bounds_of_closeness hclose
-        (Ioo_subset_Icc_self hy)).1)
-  · rw [← hwidth (Real.pi + 1) (by positivity)]
-    exact setLIntegral_mono' measurableSet_Ioo
-      (fun y hy => ENNReal.ofReal_le_ofReal (chartWidth_bounds_of_closeness hclose
-        (Ioo_subset_Icc_self hy)).2)
-
 /-- Scale the scalar error so its contribution to the uniform distance is `ε`. -/
 def globeErrorParameter (ε : ℝ) : ℝ := ε / (1 + Real.pi)
 
@@ -152,31 +126,37 @@ private theorem globeErrorParameter_scale (ε : ℝ) :
     (1 + Real.pi) * globeErrorParameter ε = ε :=
   mul_div_cancel₀ ε (by positivity)
 
-theorem volume_chartImage_with_tolerance
+/-- The sinusoidal projection written in the cut-sphere coordinates. -/
+def sinusoidalCoordinates (p : ℝ × ℝ) : ℝ × ℝ := (p.1 * Real.cos p.2, p.2)
+
+private theorem dist_flattenCoordinates_sinusoidalCoordinates (u : ℝ × ℝ → ℝ) (p : ℝ × ℝ) :
+    dist (flattenCoordinates u p) (sinusoidalCoordinates p) = |u p - p.1 * Real.cos p.2| := by
+  rw [Prod.dist_eq, flattenCoordinates, sinusoidalCoordinates, dist_self,
+    max_eq_left dist_nonneg, Real.dist_eq]
+
+/-- A uniform sinusoidal distance bound gives at most two endpoint errors per slice. -/
+theorem volume_chartImage_upper_of_sinusoidal_closeness
     {u : ℝ × ℝ → ℝ} {ε : ℝ} (hε : 0 < ε)
     (hu : ContinuousOn u (chartClosedRectangle (-Real.pi) Real.pi (-(Real.pi / 2)) (Real.pi / 2)))
     (hclose : ∀ p ∈ chartClosedRectangle (-Real.pi) Real.pi (-(Real.pi / 2)) (Real.pi / 2),
-      |u p - (Real.cos p.2 + globeErrorParameter ε) * p.1| ≤ globeErrorParameter ε) :
-    ENNReal.ofReal (4 * Real.pi) <
-        volume (chartImage u (-Real.pi) Real.pi (-(Real.pi / 2)) (Real.pi / 2)) ∧
-      volume (chartImage u (-Real.pi) Real.pi (-(Real.pi / 2)) (Real.pi / 2)) <
-        ENNReal.ofReal (4 * Real.pi * (1 + ε)) := by
-  have hδ := globeErrorParameter_pos hε
-  obtain ⟨hlo, hhi⟩ := volume_chartImage_bounds_of_closeness hδ.le hu hclose
-  have hπsub : 0 < Real.pi - 1 := by linarith [Real.pi_gt_three]
-  have hexcess : 0 < 2 * Real.pi * (Real.pi - 1) * globeErrorParameter ε := by positivity
-  have hfrom : 4 * Real.pi < 4 * Real.pi + 2 * Real.pi * (Real.pi - 1) * globeErrorParameter ε :=
-    lt_add_of_pos_right _ hexcess
-  have hto : 4 * Real.pi + 2 * Real.pi * (Real.pi + 1) * globeErrorParameter ε <
-      4 * Real.pi * (1 + ε) := by
-    have hscale := congrArg (fun x : ℝ => 2 * Real.pi * x) (globeErrorParameter_scale ε)
-    linarith only [hscale, mul_pos Real.pi_pos hε]
-  constructor
-  · exact ((ENNReal.ofReal_lt_ofReal_iff_of_nonneg (by positivity)).2 hfrom).trans_le hlo
-  · exact hhi.trans_lt ((ENNReal.ofReal_lt_ofReal_iff (by positivity)).2 hto)
-
-/-- The sinusoidal projection written in the cut-sphere coordinates. -/
-def sinusoidalCoordinates (p : ℝ × ℝ) : ℝ × ℝ := (p.1 * Real.cos p.2, p.2)
+      dist (flattenCoordinates u p) (sinusoidalCoordinates p) ≤ ε) :
+    volume (chartImage u (-Real.pi) Real.pi (-(Real.pi / 2)) (Real.pi / 2)) <
+      ENNReal.ofReal (4 * Real.pi * (1 + ε)) := by
+  have hab : -Real.pi ≤ Real.pi := by linarith [Real.pi_pos]
+  rw [volume_chartImage_eq_lintegral_width hab hu]
+  calc
+    _ ≤ ∫⁻ y in latitudeInterval, ENNReal.ofReal (2 * Real.pi * Real.cos y + 2 * ε) := by
+      refine setLIntegral_mono' measurableSet_Ioo fun y hy => ENNReal.ofReal_le_ofReal ?_
+      have hleft := hclose (-Real.pi, y) ⟨⟨le_rfl, hab⟩, Ioo_subset_Icc_self hy⟩
+      have hright := hclose (Real.pi, y) ⟨⟨hab, le_rfl⟩, Ioo_subset_Icc_self hy⟩
+      rw [dist_flattenCoordinates_sinusoidalCoordinates] at hleft hright
+      linarith only [(abs_le.mp hleft).1, (abs_le.mp hright).2]
+    _ = ENNReal.ofReal (4 * Real.pi + 2 * Real.pi * ε) := by
+      rw [lintegral_latitude_affine_cos (by positivity) (by positivity)]
+      congr 1
+      ring
+    _ < _ := (ENNReal.ofReal_lt_ofReal_iff (by positivity)).2 (by
+      linarith only [mul_pos Real.pi_pos hε])
 
 /-- The scalar tolerance gives a uniform bound on the projection error. -/
 theorem flattenCoordinates_close_to_sinusoidal
@@ -188,8 +168,7 @@ theorem flattenCoordinates_close_to_sinusoidal
   have hδ := globeErrorParameter_pos hε
   intro p hp
   have hx : |p.1| ≤ Real.pi := abs_le.mpr hp.1
-  rw [Prod.dist_eq, flattenCoordinates, sinusoidalCoordinates, dist_self,
-    max_eq_left dist_nonneg, Real.dist_eq]
+  rw [dist_flattenCoordinates_sinusoidalCoordinates]
   have heq : u p - p.1 * Real.cos p.2 =
       (u p - (Real.cos p.2 + globeErrorParameter ε) * p.1) + globeErrorParameter ε * p.1 := by ring
   rw [heq]

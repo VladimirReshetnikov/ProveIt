@@ -24,7 +24,7 @@ def chartRectangle (a b c d : ℝ) : Set (ℝ × ℝ) :=
 
 /-- The region between the left and right endpoint profiles. -/
 def chartImage (u : ℝ × ℝ → ℝ) (a b c d : ℝ) : Set (ℝ × ℝ) :=
-  {p | p.2 ∈ Ioo c d ∧ u (a, p.2) < p.1 ∧ p.1 < u (b, p.2)}
+  Prod.swap ⁻¹' regionBetween (fun y => u (a, y)) (fun y => u (b, y)) (Ioo c d)
 
 theorem chartRectangle_subset_closed {a b c d : ℝ} :
     chartRectangle a b c d ⊆ chartClosedRectangle a b c d :=
@@ -53,7 +53,7 @@ private theorem continuousOn_longitudeRow {u : ℝ × ℝ → ℝ} {a b c d y : 
   hu.comp' ((continuous_id.prodMk continuous_const).continuousOn)
     (fun _ hx => ⟨hx, hy⟩)
 
-private theorem continuousOn_latitudeProfile {u : ℝ × ℝ → ℝ} {a b c d x : ℝ}
+theorem continuousOn_latitudeProfile {u : ℝ × ℝ → ℝ} {a b c d x : ℝ}
     (hu : ContinuousOn u (chartClosedRectangle a b c d)) (hx : x ∈ Icc a b) :
     ContinuousOn (fun y => u (x, y)) (Icc c d) :=
   hu.comp' ((continuous_const.prodMk continuous_id).continuousOn)
@@ -80,6 +80,16 @@ theorem isOpen_chartImage {u : ℝ × ℝ → ℝ} {a b c d : ℝ} (hab : a ≤ 
   filter_upwards [hy, (hprofile a ⟨le_rfl, hab⟩).eventually_lt continuous_fst.continuousAt hp.2.1,
     continuous_fst.continuousAt.eventually_lt (hprofile b ⟨hab, le_rfl⟩) hp.2.2] with q hq hlow hhigh
   exact ⟨hq, hlow, hhigh⟩
+
+/-- A strict lower slope bound with a nonnegative slope gives increasing longitude rows. -/
+theorem strictMonoOn_chartRows_of_lowerSlope {u : ℝ × ℝ → ℝ} {slope : ℝ → ℝ} {a b c d : ℝ}
+    (hnonneg : ∀ y ∈ Ioo c d, 0 ≤ slope y)
+    (hslope : ∀ p ∈ chartClosedRectangle a b c d, ∀ q ∈ chartClosedRectangle a b c d,
+      p.2 = q.2 → p.1 < q.1 → slope p.2 * (q.1 - p.1) < u q - u p) :
+    ∀ y ∈ Ioo c d, StrictMonoOn (fun x => u (x, y)) (Icc a b) := by
+  intro y hy x hx z hz hxz
+  exact sub_pos.mp ((mul_nonneg (hnonneg y hy) (sub_nonneg.mpr hxz.le)).trans_lt
+    (hslope (x, y) ⟨hx, Ioo_subset_Icc_self hy⟩ (z, y) ⟨hz, Ioo_subset_Icc_self hy⟩ rfl hxz))
 
 theorem image_flattenCoordinates_chartRectangle {u : ℝ × ℝ → ℝ} {a b c d : ℝ}
     (hab : a ≤ b) (hu : ContinuousOn u (chartClosedRectangle a b c d))
