@@ -53,8 +53,8 @@ under the planar coordinate equivalence is the Euclidean target. Mathlib's
 formula for the area between the endpoint curves gives the width integral
 after swapping coordinates. The strict width comparison proves total area
 excess. For local exceptional area, the proof pulls the open target patch
-back to coordinates, picks a rectangle there, and applies the same formula
-to its image.
+back to coordinates, picks a rectangle there, and uses the same triangular
+chart and width formula for its image.
 The reference width integral factors out `2π` and adjoins the two null
 latitude endpoints. The one-dimensional Jacobian formula then uses sine's
 bijection from the closed latitude interval onto `[-1, 1]`.
