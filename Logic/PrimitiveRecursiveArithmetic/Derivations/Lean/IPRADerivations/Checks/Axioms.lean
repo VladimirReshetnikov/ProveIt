@@ -17311,6 +17311,17 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicParameterRate.original_parameter_rate
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicParameterRate.actual_original_logarithmic_two_named_parameter_rate_closed
 
+/-! ### GaussianNamedEulerLogarithmicZeroIdentification -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicZeroIdentification.commonClock
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicZeroIdentification.subst_commonClock
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicZeroIdentification.logarithmic_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicZeroIdentification.gamma_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicZeroIdentification.native_order_zero
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicZeroIdentification.original_diagonal
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicZeroIdentification.original_order_zero_is_Gamma
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicZeroIdentification.original_observations
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicZeroIdentification.actual_original_named_order_zero_is_Gamma_closed
+
 /-! ### GaussianNamedEulerLogarithmicIncrementBinding -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicIncrementBinding.lateClock
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicIncrementBinding.shiftDemand
@@ -17364,6 +17375,17 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicNamedDerivative.quotient_comparison
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicNamedDerivative.original_derivative_rate
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicNamedDerivative.actual_original_logarithmic_derivative_along_a_named_increment_closed
+
+/-! ### GaussianNamedGammaEulerFirstDerivative -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaEulerFirstDerivative.source
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaEulerFirstDerivative.quotientF
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaEulerFirstDerivative.quotientData
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaEulerFirstDerivative.subst_quotientData
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaEulerFirstDerivative.original_quotient_proper
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaEulerFirstDerivative.quotient_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaEulerFirstDerivative.original_first_derivative_rate
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaEulerFirstDerivative.original_observations
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaEulerFirstDerivative.actual_original_named_Gamma_first_Euler_derivative_closed
 
 /-! ### GaussianNamedGammaLateInput -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaLateInput.encodedData
@@ -28413,6 +28435,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedIncrementDifferenceQuotient.late_native_value
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedIncrementDifferenceQuotient.actual_named_increment_divided_difference_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedIncrementDifferenceQuotient.actual_named_increment_late_native_separation_closed
+
+/-! ### GaussianNamedIncrementDifferenceQuotientProperness -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedIncrementDifferenceQuotientProperness.input
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedIncrementDifferenceQuotientProperness.subst_input
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedIncrementDifferenceQuotientProperness.proper
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedIncrementDifferenceQuotientProperness.actual_named_increment_quotient_endpoint_replacement_closed
 
 /-! ### GaussianNamedReciprocalFrozenRate -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedReciprocalFrozenRate.rawFrozen

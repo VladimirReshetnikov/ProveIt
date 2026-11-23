@@ -1230,6 +1230,12 @@ extends the same estimate to increments given by regular complex names
 with finite apartness and an all-observation smallness certificate. The
 actual named reciprocal, original difference, and original named slope
 all retain their original query interfaces.
+[GaussianNamedEulerLogarithmicZeroIdentification](Lean/IPRADerivations/Analysis/GaussianNamedEulerLogarithmicZeroIdentification.lean)
+proves that the order-zero evaluator agrees with the original Gamma name
+on every fixed certified complex input.
+[GaussianNamedGammaEulerFirstDerivative](Lean/IPRADerivations/Analysis/GaussianNamedGammaEulerFirstDerivative.lean)
+proves the first derivative estimate directly for the quotient of the original
+named Gamma evaluators along a certified regular named increment.
 [GaussianEulerPositiveScalingQuadrature](Lean/IPRADerivations/Analysis/GaussianEulerPositiveScalingQuadrature.lean)
 lifts the scaled integrand identity to the original finite quadrature
 with its rational Jacobian and both observation allowances. The improper
