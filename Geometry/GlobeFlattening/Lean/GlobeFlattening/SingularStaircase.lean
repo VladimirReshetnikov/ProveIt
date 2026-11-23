@@ -5,7 +5,6 @@ import Mathlib.MeasureTheory.Group.Prod
 import Mathlib.MeasureTheory.Measure.Lebesgue.EqHaar
 import Mathlib.Analysis.Calculus.Deriv.Basic
 import Mathlib.Analysis.SpecificLimits.Basic
-import Mathlib.MeasureTheory.Measure.Hausdorff
 import Mathlib.Topology.Instances.CantorSet
 import Mathlib.Topology.UniformSpace.UniformApproximation
 
@@ -119,13 +118,14 @@ private theorem stage_locally_constant (n : ℕ) {x : ℝ} (hx : x ∉ preCantor
 private theorem volume_cantorSet : volume cantorSet = 0 := by
   have hscale (b : ℝ) : volume ((fun x : ℝ => (b + x) / 3) '' cantorSet) ≤
       (1 / 3 : ℝ≥0∞) * volume cantorSet := by
-    have hlip : LipschitzWith (1 / 3 : ℝ≥0) (fun x : ℝ => (b + x) / 3) := by
-      refine LipschitzWith.of_dist_le_mul fun x y => ?_
-      rw [Real.dist_eq, Real.dist_eq, show (b + x) / 3 - (b + y) / 3 = (x - y) / 3 by ring,
-        abs_div]
-      simp [div_eq_mul_inv, mul_comm]
-    simpa only [hausdorffMeasure_real, ENNReal.rpow_one, ENNReal.coe_div', ENNReal.coe_one,
-      ENNReal.coe_ofNat, ENNReal.coe_natCast] using hlip.hausdorffMeasure_image_le (d := 1) (by norm_num) cantorSet
+    have hfun : (fun x : ℝ => (b + x) / 3) =
+        (fun x => b / 3 + (1 / 3 : ℝ) * x) := by
+      funext x
+      ring
+    rw [hfun, ← image_image]
+    simp only [← smul_eq_mul, image_smul, image_add_left, measure_preimage_add,
+      Measure.addHaar_smul, Module.finrank_self, pow_one]
+    norm_num [ENNReal.ofReal_div_of_pos]
   have hle : volume cantorSet ≤ (1 / 3 + 1 / 3 : ℝ≥0∞) * volume cantorSet := calc
     volume cantorSet = volume ((· / 3) '' cantorSet ∪
         (fun x : ℝ => (2 + x) / 3) '' cantorSet) := congrArg volume cantorSet_eq_union_halves

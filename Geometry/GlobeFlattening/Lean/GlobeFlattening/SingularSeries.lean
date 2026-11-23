@@ -66,7 +66,7 @@ private theorem singular_of_monotone_remainders
   exact h
 
 /-- A pointwise summable series of monotone singular functions is singular. -/
-theorem singular_tsum_on_Ioc
+private theorem singular_tsum_on_Ioc
     (f : ℕ → ℝ → ℝ) (a b : ℝ) (hab : a ≤ b)
     (hsum : ∀ x, Summable (fun n => f n x))
     (hmono : ∀ n, Monotone (f n))
@@ -105,37 +105,19 @@ theorem singular_tsum_on_Ioc
     simpa using (htail_tendsto b).sub (htail_tendsto a)
   exact singular_of_monotone_remainders F tail a b hab hF htail hpartial hsmall
 
-/-- Explicit weighted version. Pointwise summability is implied, for example,
-by a summable bound on the weighted sup norms. -/
-theorem singular_weighted_tsum_on_Ioc
-    (f : ℕ → ℝ → ℝ) (w : ℕ → ℝ) (a b : ℝ) (hab : a ≤ b)
-    (hw : ∀ n, 0 ≤ w n)
-    (hsum : ∀ x, Summable (fun n => w n * f n x))
+/-- A pointwise summable series of monotone singular functions is singular. -/
+theorem singular_tsum
+    (f : ℕ → ℝ → ℝ) (hsum : ∀ x, Summable (fun n => f n x))
     (hmono : ∀ n, Monotone (f n))
     (hsing : ∀ n, ∀ᵐ x, HasDerivAt (f n) 0 x) :
-    ∀ᵐ x ∂volume.restrict (Ioc a b), HasDerivAt (fun y => ∑' n, w n * f n y) 0 x := by
-  apply singular_tsum_on_Ioc (fun n x => w n * f n x) a b hab hsum
-  · intro n x y hxy
-    exact mul_le_mul_of_nonneg_left (hmono n hxy) (hw n)
-  · intro n
-    filter_upwards [hsing n] with x hx
-    simpa using hx.const_mul (w n)
-
-/-- Global almost-everywhere version. -/
-theorem singular_weighted_tsum
-    (f : ℕ → ℝ → ℝ) (w : ℕ → ℝ)
-    (hw : ∀ n, 0 ≤ w n)
-    (hsum : ∀ x, Summable (fun n => w n * f n x))
-    (hmono : ∀ n, Monotone (f n))
-    (hsing : ∀ n, ∀ᵐ x, HasDerivAt (f n) 0 x) :
-    ∀ᵐ x, HasDerivAt (fun y => ∑' n, w n * f n y) 0 x := by
+    ∀ᵐ x, HasDerivAt (fun y => ∑' n, f n y) 0 x := by
   have hr (n : ℕ) : -(n : ℝ) ≤ n := by
     have hn : (0 : ℝ) ≤ n := Nat.cast_nonneg _
     linarith
   have hs (n : ℕ) : ∀ᵐ x, x ∈ Ioc (-(n : ℝ)) (n : ℝ) →
-      HasDerivAt (fun y => ∑' n, w n * f n y) 0 x :=
+      HasDerivAt (fun y => ∑' n, f n y) 0 x :=
     (ae_restrict_iff' measurableSet_Ioc).mp
-      (singular_weighted_tsum_on_Ioc f w _ _ (hr n) hw hsum hmono hsing)
+      (singular_tsum_on_Ioc f _ _ (hr n) hsum hmono hsing)
   filter_upwards [ae_all_iff.mpr hs] with x hx
   obtain ⟨n, hn⟩ := exists_nat_gt |x|
   apply hx n
@@ -152,13 +134,18 @@ theorem singular_bounded_weighted_tsum
     (hmono : ∀ n, Monotone (f n))
     (hsing : ∀ n, ∀ᵐ x, HasDerivAt (f n) 0 x) :
     ∀ᵐ x, HasDerivAt (fun y => ∑' n, w n * f n y) 0 x := by
-  apply singular_weighted_tsum f w hw ?_ hmono hsing
-  intro x
-  obtain ⟨C, hC⟩ := hbound x
-  apply Summable.of_norm_bounded (hwSum.mul_right C)
-  intro n
-  rw [norm_mul, Real.norm_eq_abs, abs_of_nonneg (hw n)]
-  exact mul_le_mul_of_nonneg_left (hC n) (hw n)
+  apply singular_tsum (fun n x => w n * f n x)
+  · intro x
+    obtain ⟨C, hC⟩ := hbound x
+    apply Summable.of_norm_bounded (hwSum.mul_right C)
+    intro n
+    rw [norm_mul, Real.norm_eq_abs, abs_of_nonneg (hw n)]
+    exact mul_le_mul_of_nonneg_left (hC n) (hw n)
+  · intro n x y hxy
+    exact mul_le_mul_of_nonneg_left (hmono n hxy) (hw n)
+  · intro n
+    filter_upwards [hsing n] with x hx
+    simpa using hx.const_mul (w n)
 
 /-- A Borel set whose members are exactly the points with the given derivative. -/
 theorem measurableSet_hasDerivAt_zero (f : ℝ → ℝ) :

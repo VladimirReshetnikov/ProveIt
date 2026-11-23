@@ -82,26 +82,19 @@ theorem summable_mul_of_abs_le {b c d : ℕ → ℝ} {C : ℝ} (hb : Summable b)
   rw [Real.norm_eq_abs, abs_mul]
   exact mul_le_mul (hc n) (hd n) (abs_nonneg _) ((abs_nonneg _).trans (hc n))
 
-/-- Changes of latitude cost at most the matching difference of the monotone comparison series. -/
-theorem abs_tsum_cos_sub_le {ξ b a : ℕ → ℝ} {Y : ℕ → ℝ → ℝ}
-    (hξ : ∀ n, |ξ n| ≤ b n) (hY : ∀ n, Monotone (Y n)) {y y' : ℝ}
-    (hf : Summable (fun n => (a n + Real.cos (Y n y)) * ξ n))
-    (hf' : Summable (fun n => (a n + Real.cos (Y n y')) * ξ n))
-    (hb : Summable (fun n => b n * Y n y))
-    (hb' : Summable (fun n => b n * Y n y')) :
-    |(∑' n, (a n + Real.cos (Y n y')) * ξ n) - ∑' n, (a n + Real.cos (Y n y)) * ξ n| ≤
-      |(∑' n, b n * Y n y') - ∑' n, b n * Y n y| := by
-  wlog h : y ≤ y' generalizing y y'
-  · rw [abs_sub_comm (∑' n, (a n + Real.cos (Y n y')) * ξ n),
-      abs_sub_comm (∑' n, b n * Y n y')]
-    exact this hf' hf hb' hb (le_of_not_ge h)
-  refine (abs_tsum_sub_le_of_termwise hf' hf hb' hb fun n => ?_).trans (le_abs_self _)
-  have hdelta := sub_nonneg.mpr (hY n h)
-  rw [← sub_mul, add_sub_add_left_eq_sub, abs_mul, ← mul_sub, mul_comm (b n)]
-  exact mul_le_mul ((Real.abs_cos_sub_cos_le _ _).trans_eq (abs_of_nonneg hdelta))
-    (hξ n) (abs_nonneg _) hdelta
+/-- Compare absolute increments of two series using an ordered bound on each term. -/
+private theorem abs_tsum_increment_le {f g : ℕ → ℝ → ℝ}
+    (hf : ∀ x, Summable (fun n => f n x)) (hg : ∀ x, Summable (fun n => g n x))
+    (hstep : ∀ x y : ℝ, x ≤ y → ∀ n, |f n y - f n x| ≤ g n y - g n x)
+    (x y : ℝ) :
+    |(∑' n, f n y) - ∑' n, f n x| ≤ |(∑' n, g n y) - ∑' n, g n x| := by
+  wlog h : x ≤ y generalizing x y
+  · rw [abs_sub_comm (∑' n, f n y), abs_sub_comm (∑' n, g n y)]
+    exact this y x (le_of_not_ge h)
+  exact (abs_tsum_sub_le_of_termwise (hf y) (hf x) (hg y) (hg x) (hstep x y h)).trans
+    (le_abs_self _)
 
-/-- A convenient version with all four series justified by a common summable bound. -/
+/-- Changes of latitude are bounded by increments of the monotone comparison series. -/
 theorem abs_tsum_cos_sub_le_of_bounded {ξ b a : ℕ → ℝ} {Y : ℕ → ℝ → ℝ} {A B : ℝ}
     (hb : Summable b) (hξ : ∀ n, |ξ n| ≤ b n) (ha : ∀ n, |a n| ≤ A)
     (hmono : ∀ n, Monotone (Y n)) (hY : ∀ n y, |Y n y| ≤ B) (y y' : ℝ) :
@@ -114,7 +107,11 @@ theorem abs_tsum_cos_sub_le_of_bounded {ξ b a : ℕ → ℝ} {Y : ℕ → ℝ �
   have hg (t : ℝ) : Summable (fun n => b n * Y n t) := by
     simpa only [mul_comm] using
       summable_mul_of_abs_le hb (fun n => hY n t) (fun n => (abs_of_nonneg (hnonneg n)).le)
-  exact abs_tsum_cos_sub_le hξ hmono (hf y) (hf y') (hg y) (hg y')
+  refine abs_tsum_increment_le hf hg (fun x x' h n => ?_) y y'
+  have hdelta := sub_nonneg.mpr (hmono n h)
+  rw [← sub_mul, add_sub_add_left_eq_sub, abs_mul, ← mul_sub, mul_comm (b n)]
+  exact mul_le_mul ((Real.abs_cos_sub_cos_le _ _).trans_eq (abs_of_nonneg hdelta))
+    (hξ n) (abs_nonneg _) hdelta
 
 /-- Increasing summands with smaller nonnegative weights have smaller absolute increments. -/
 theorem abs_tsum_weighted_sub_le {a b : ℕ → ℝ} {X : ℕ → ℝ → ℝ} {B : ℝ}
@@ -127,10 +124,7 @@ theorem abs_tsum_weighted_sub_le {a b : ℕ → ℝ} {X : ℕ → ℝ → ℝ} {
     simpa only [mul_comm] using summable_mul_of_abs_le hb (fun n => hX n t) hc
   have hf := hs a (fun n => (abs_of_nonneg (ha n).1).le.trans (ha n).2)
   have hg := hs b (fun n => (abs_of_nonneg ((ha n).1.trans (ha n).2)).le)
-  wlog h : x ≤ x' generalizing x x'
-  · rw [abs_sub_comm (∑' n, a n * X n x'), abs_sub_comm (∑' n, b n * X n x')]
-    exact this x' x (le_of_not_ge h)
-  refine (abs_tsum_sub_le_of_termwise (hf x') (hf x) (hg x') (hg x) fun n => ?_).trans (le_abs_self _)
+  refine abs_tsum_increment_le hf hg (fun y y' h n => ?_) x x'
   have hdelta := sub_nonneg.mpr (hmono n h)
   rw [← mul_sub, abs_of_nonneg (mul_nonneg (ha n).1 hdelta), ← mul_sub]
   exact mul_le_mul_of_nonneg_right (ha n).2 hdelta
