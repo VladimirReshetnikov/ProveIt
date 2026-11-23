@@ -814,7 +814,17 @@ proves the finite weighted Euler operator identity for the actual beta
 primitive from the native positive half-plane source.
 [GaussianBetaKernelLogarithm](Lean/IPRADerivations/Analysis/GaussianBetaKernelLogarithm.lean)
 compares the original scaled logarithm with the decay exponent and gives
-a fixed compact radius. Evaluating the primitive at one and identifying
+a fixed compact radius.
+[GaussianBetaKernelGridComparison](Lean/IPRADerivations/Analysis/GaussianBetaKernelGridComparison.lean)
+compares the literal finite beta-kernel grid with the original improper
+Euler observation at its actual evaluation clock and also allows
+independent observation precision on a fixed cutoff interval.
+[GaussianEulerBetaProductValue](Lean/IPRADerivations/Analysis/GaussianEulerBetaProductValue.lean)
+identifies the original reciprocal head with the factorial quotient
+of the actual rising product.
+[GaussianEulerBetaPrimitivePascal](Lean/IPRADerivations/Analysis/GaussianEulerBetaPrimitivePascal.lean)
+proves the actual primitive coefficient recurrence at all degrees.
+Evaluating the primitive at one and identifying
 the integral with the original Gamma construction throughout the
 right half-plane remain.
 
