@@ -2,8 +2,7 @@ import GlobeFlattening.CoordinateRectangles
 import GlobeFlattening.SingularSeries
 import GlobeFlattening.SingularStaircase
 import GlobeFlattening.StaircaseEstimates
-import Mathlib.Analysis.Calculus.MeanValue
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds
 
 /-!
 # The scalar longitude coordinate from singular staircases
@@ -95,9 +94,7 @@ theorem tendsto_latitudeProfile (y : ℝ) :
 
 private theorem abs_cos_half_sub_le (x y : ℝ) :
     |Real.cos (x / 2) - Real.cos (y / 2)| ≤ |x - y| / 2 := by
-  have hcos : LipschitzWith 1 Real.cos :=
-    lipschitzWith_of_nnnorm_deriv_le Real.differentiable_cos <| by simpa using! Real.abs_sin_le_one
-  simpa [Real.dist_eq, ← sub_div, abs_div] using hcos.dist_le_mul (x / 2) (y / 2)
+  simpa [← sub_div, abs_div] using Real.abs_cos_sub_cos_le (x / 2) (y / 2)
 
 theorem coefficient_bounds (n : ℕ) (y : ℝ) :
     0 < S.coefficient n y ∧ |S.coefficient n y| ≤ rate δ n := by
