@@ -5,9 +5,10 @@ import Mathlib.MeasureTheory.Measure.Hausdorff
 /-!
 # Strict local excess in the flattening chart
 
-A rectangle on which the image area is exactly the cosine-weighted area
-would force the scalar function to have the form `x cos y + k y`.
-The vertical derivatives at two good points of one row rule this out.
+Equality in the width bound throughout a rectangle would force the
+scalar function to have the form `x cos y + v(y)` for a function `v`
+of latitude. The vertical derivatives at two good points of one row
+rule this out.
 -/
 
 open Filter MeasureTheory Set
@@ -26,11 +27,8 @@ private theorem isOpen_globeDomain : IsOpen globeDomain :=
 
 private theorem ae_restrict_Ioo_neBot {a b : ℝ} (hab : a < b) :
     (ae (volume.restrict (Ioo a b))).NeBot := by
-  apply ae_neBot.mpr
-  intro hzero
-  have hmass := Measure.measure_univ_eq_zero.mpr hzero
-  rw [Measure.restrict_apply_univ, Real.volume_Ioo] at hmass
-  exact (ENNReal.ofReal_ne_zero_iff.mpr (sub_pos.mpr hab)) hmass
+  rw [ae_neBot, ne_eq, Measure.restrict_eq_zero, Real.volume_Ioo]
+  exact ENNReal.ofReal_ne_zero_iff.mpr (sub_pos.mpr hab)
 
 private theorem ae_good_rows {good : Set (ℝ × ℝ)} {a b c d : ℝ}
     (hgood : MeasurableSet good) (hnull : volume (chartRectangle a b c d \ good) = 0) :
@@ -50,16 +48,18 @@ private theorem zero_vertical_derivative {u : ℝ × ℝ → ℝ} {x y : ℝ}
     (hasDerivAt_const y x).prodMk (hasDerivAt_id y)
   simpa [Function.comp_def] using h.comp_hasDerivAt y hv
 
-/-- The difference of two longitude values cannot agree with a fixed
-nonzero multiple of cosine throughout a rectangle. -/
-private theorem not_cosine_row_difference {u : ℝ × ℝ → ℝ} {good : Set (ℝ × ℝ)}
+/-- Equality of the width bound on each row would force the difference
+of two longitude values to be a nonzero multiple of cosine. -/
+private theorem exists_strict_width {u : ℝ × ℝ → ℝ} {good : Set (ℝ × ℝ)}
     {a b c d : ℝ} (hab : a < b) (hcd : c < d)
     (hbox : chartClosedRectangle a b c d ⊆ globeDomain)
+    (hslope : ∀ p ∈ chartClosedRectangle a b c d, ∀ q ∈ chartClosedRectangle a b c d,
+      p.2 = q.2 → p.1 ≤ q.1 → Real.cos p.2 * (q.1 - p.1) ≤ u q - u p)
     (hgood : MeasurableSet good) (hnull : volume (chartRectangle a b c d \ good) = 0)
     (hderiv : ∀ p ∈ good, HasFDerivAt u
-      (Real.cos p.2 • ContinuousLinearMap.fst ℝ ℝ ℝ) p)
-    (hdiff : ∀ y ∈ Ioo c d, ∀ x₁ ∈ Ioo a b, ∀ x₂ ∈ Ioo a b,
-      u (x₂, y) - u (x₁, y) = (x₂ - x₁) * Real.cos y) : False := by
+      (Real.cos p.2 • ContinuousLinearMap.fst ℝ ℝ ℝ) p) :
+    ∃ y ∈ Ioo c d, (b - a) * Real.cos y < u (b, y) - u (a, y) := by
+  by_contra! hbad
   letI := ae_restrict_Ioo_neBot hcd
   have hyGood : ∀ᵐ y ∂volume.restrict (Ioo c d),
       y ∈ Ioo c d ∧ y ≠ 0 ∧ ∀ᵐ x ∂volume.restrict (Ioo a b), (x, y) ∈ good := by
@@ -76,60 +76,29 @@ private theorem not_cosine_row_difference {u : ℝ × ℝ → ℝ} {good : Set (
     ⟨Ioo_subset_Icc_self hx₁, Ioo_subset_Icc_self hy⟩
   have hyLat : y ∈ Ioo (-(Real.pi / 2)) (Real.pi / 2) := (hbox hxy).2
   have hsin : Real.sin y ≠ 0 := by
-    have hlow : -Real.pi < y := by linarith [hyLat.1, Real.pi_pos]
-    have hhigh : y < Real.pi := by linarith [hyLat.2, Real.pi_pos]
-    exact fun hz => hy0 ((Real.sin_eq_zero_iff_of_lt_of_lt hlow hhigh).mp hz)
-  have hv₁ := zero_vertical_derivative (hderiv (x₁, y) hp₁)
-  have hv₂ := zero_vertical_derivative (hderiv (x₂, y) hp₂)
-  have hzero := hv₂.sub hv₁
-  have hsub : (fun t => u (x₂, t)) - (fun t => u (x₁, t)) =
-      (fun t => u (x₂, t) - u (x₁, t)) := rfl
-  rw [hsub, sub_self] at hzero
+    rw [Ne, Real.sin_eq_zero_iff_of_lt_of_lt (by linarith [hyLat.1, Real.pi_pos])
+      (by linarith [hyLat.2, Real.pi_pos])]
+    exact hy0
+  have hzero : HasDerivAt (fun t => u (x₂, t) - u (x₁, t)) 0 y := by
+    change HasDerivAt ((fun t => u (x₂, t)) - fun t => u (x₁, t)) 0 y
+    simpa only [sub_self] using
+      (zero_vertical_derivative (hderiv (x₂, y) hp₂)).sub
+        (zero_vertical_derivative (hderiv (x₁, y) hp₁))
   have hcos : HasDerivAt (fun t => (x₂ - x₁) * Real.cos t)
       ((x₂ - x₁) * -Real.sin y) y := (Real.hasDerivAt_cos y).const_mul _
-  have hnear : ∀ᶠ t in 𝓝 y, t ∈ Ioo c d := isOpen_Ioo.mem_nhds hy
   have heq : (fun t => u (x₂, t) - u (x₁, t)) =ᶠ[𝓝 y]
-      (fun t => (x₂ - x₁) * Real.cos t) :=
-    hnear.mono (fun t ht => hdiff t ht x₁ hx₁ x₂ hx₂)
+      (fun t => (x₂ - x₁) * Real.cos t) := by
+    filter_upwards [isOpen_Ioo.mem_nhds hy] with t ht
+    have ha : (a, t) ∈ chartClosedRectangle a b c d := ⟨⟨le_rfl, hab.le⟩, Ioo_subset_Icc_self ht⟩
+    have hb : (b, t) ∈ chartClosedRectangle a b c d := ⟨⟨hab.le, le_rfl⟩, Ioo_subset_Icc_self ht⟩
+    have hlinear {x : ℝ} (hx : x ∈ Ioo a b) : u (x, t) - u (a, t) = Real.cos t * (x - a) := by
+      have hp : (x, t) ∈ chartClosedRectangle a b c d :=
+        ⟨Ioo_subset_Icc_self hx, Ioo_subset_Icc_self ht⟩
+      linarith only [hslope (a, t) ha (x, t) hp rfl hx.1.le,
+        hslope (x, t) hp (b, t) hb rfl hx.2.le, hbad t ht]
+    linarith only [hlinear hx₁, hlinear hx₂]
   exact (mul_ne_zero (sub_ne_zero.mpr hne) (neg_ne_zero.mpr hsin))
     ((hcos.congr_of_eventuallyEq heq).unique hzero)
-
-private theorem lintegral_cos_rectangle {a b c d : ℝ} (hab : a ≤ b) :
-    (∫⁻ p in chartRectangle a b c d, ENNReal.ofReal (Real.cos p.2)) =
-      ∫⁻ y in Ioo c d, ENNReal.ofReal ((b - a) * Real.cos y) := by
-  have hmeas : Measurable (fun p : ℝ × ℝ => ENNReal.ofReal (Real.cos p.2)) :=
-    ENNReal.measurable_ofReal.comp (Real.continuous_cos.measurable.comp measurable_snd)
-  rw [chartRectangle, Measure.volume_eq_prod, setLIntegral_prod_symm _ hmeas.aemeasurable]
-  apply setLIntegral_congr_fun measurableSet_Ioo
-  intro y _
-  change (∫⁻ _ in Ioo a b, ENNReal.ofReal (Real.cos y)) = _
-  rw [lintegral_const, Measure.restrict_apply_univ, Real.volume_Ioo, mul_comm]
-  exact (ENNReal.ofReal_mul (sub_nonneg.mpr hab)).symm
-
-private theorem exists_strict_width {u : ℝ × ℝ → ℝ} {good : Set (ℝ × ℝ)}
-    {a b c d : ℝ} (hab : a < b) (hcd : c < d)
-    (hbox : chartClosedRectangle a b c d ⊆ globeDomain)
-    (hslope : ∀ p ∈ chartClosedRectangle a b c d, ∀ q ∈ chartClosedRectangle a b c d,
-      p.2 = q.2 → p.1 ≤ q.1 → Real.cos p.2 * (q.1 - p.1) ≤ u q - u p)
-    (hgood : MeasurableSet good) (hnull : volume (chartRectangle a b c d \ good) = 0)
-    (hderiv : ∀ p ∈ good, HasFDerivAt u
-      (Real.cos p.2 • ContinuousLinearMap.fst ℝ ℝ ℝ) p) :
-    ∃ y ∈ Ioo c d, (b - a) * Real.cos y < u (b, y) - u (a, y) := by
-  by_contra! hbad
-  refine not_cosine_row_difference hab hcd hbox hgood hnull hderiv ?_
-  intro y hy x₁ hx₁ x₂ hx₂
-  have ha : (a, y) ∈ chartClosedRectangle a b c d :=
-    ⟨⟨le_rfl, hab.le⟩, Ioo_subset_Icc_self hy⟩
-  have hb : (b, y) ∈ chartClosedRectangle a b c d :=
-    ⟨⟨hab.le, le_rfl⟩, Ioo_subset_Icc_self hy⟩
-  have hlinear (x : ℝ) (hx : x ∈ Ioo a b) :
-      u (x, y) - u (a, y) = Real.cos y * (x - a) := by
-    have hxy : (x, y) ∈ chartClosedRectangle a b c d :=
-      ⟨Ioo_subset_Icc_self hx, Ioo_subset_Icc_self hy⟩
-    have hlo := hslope (a, y) ha (x, y) hxy rfl hx.1.le
-    have hhi := hslope (x, y) hxy (b, y) hb rfl hx.2.le
-    linarith only [hlo, hhi, hbad y hy]
-  linarith only [hlinear x₁ hx₁, hlinear x₂ hx₂]
 
 /-- On every open rectangle with closure inside the cut-sphere chart,
 the exceptional image has positive planar measure. -/
@@ -163,66 +132,44 @@ theorem volume_local_exceptional_image_pos {u : ℝ × ℝ → ℝ} {good : Set 
   have hUcon : ContinuousOn U (Icc c d) := (hRow b ⟨hab.le, le_rfl⟩).sub (hRow a ⟨le_rfl, hab.le⟩)
   have hUInt : IntegrableOn U (Ioo c d) := hUcon.integrableOn_Icc.mono_set Ioo_subset_Icc_self
   have hLInt : IntegrableOn L (Ioo c d) := hLcon.integrableOn_Icc.mono_set Ioo_subset_Icc_self
-  have hLU : ∀ y ∈ Ioo c d, L y ≤ U y := by
+  have hLU : ∀ y ∈ Icc c d, L y ≤ U y := by
     intro y hy
-    have ha : (a, y) ∈ chartClosedRectangle a b c d :=
-      ⟨⟨le_rfl, hab.le⟩, Ioo_subset_Icc_self hy⟩
-    have hb : (b, y) ∈ chartClosedRectangle a b c d :=
-      ⟨⟨hab.le, le_rfl⟩, Ioo_subset_Icc_self hy⟩
-    simpa only [L, U, mul_comm (b - a)] using hslope (a, y) (hsub ha) (b, y) (hsub hb) rfl hab.le
+    simpa only [L, U, mul_comm (b - a)] using
+      hslope (a, y) (hsub ⟨⟨le_rfl, hab.le⟩, hy⟩) (b, y) (hsub ⟨⟨hab.le, le_rfl⟩, hy⟩) rfl hab.le
   have hLnn : 0 ≤ᵐ[volume.restrict (Ioo c d)] L :=
     (ae_restrict_mem measurableSet_Ioo).mono (fun y hy => mul_nonneg (sub_nonneg.mpr hab.le) (hcos y hy).le)
   have hUnn : 0 ≤ᵐ[volume.restrict (Ioo c d)] U :=
-    (hLnn.and (ae_restrict_mem measurableSet_Ioo)).mono (fun y hy => hy.1.trans (hLU y hy.2))
+    (hLnn.and (ae_restrict_mem measurableSet_Ioo)).mono
+      (fun y hy => hy.1.trans (hLU y (Ioo_subset_Icc_self hy.2)))
   have hreal : (∫ y in Ioo c d, L y) < ∫ y in Ioo c d, U y := by
-    by_contra! hle
-    have hzero : (∫ y in Ioo c d, U y - L y) = 0 := by
-      rw [integral_sub hUInt hLInt]
-      linarith only [hle, setIntegral_mono_on hLInt hUInt measurableSet_Ioo hLU]
-    have hnneg : 0 ≤ᵐ[volume.restrict (Ioo c d)] (fun y => U y - L y) :=
-      (ae_restrict_mem measurableSet_Ioo).mono (fun y hy => sub_nonneg.mpr (hLU y hy))
-    have haezero := (integral_eq_zero_iff_of_nonneg_ae hnneg (hUInt.sub hLInt)).mp hzero
-    have hEqOn := Measure.eqOn_open_of_ae_eq haezero isOpen_Ioo
-      ((hUcon.mono Ioo_subset_Icc_self).sub hLcon.continuousOn) continuousOn_const
+    simp_rw [← integral_Ioc_eq_integral_Ioo, ← intervalIntegral.integral_of_le hcd.le]
     obtain ⟨y, hy, hlt⟩ := exists_strict_width hab hcd hbox
       (fun p hp q hq => hslope p (hsub hp) q (hsub hq)) hgood hRectNull hderiv
-    exact (sub_pos.mpr hlt).ne' (hEqOn hy)
+    exact intervalIntegral.integral_lt_integral_of_continuousOn_of_le_of_exists_lt hcd
+      hLcon.continuousOn hUcon (fun y hy => hLU y (Ioc_subset_Icc_self hy)) ⟨y, Ioo_subset_Icc_self hy, hlt⟩
   have hmono : ∀ y ∈ Ioo c d, StrictMonoOn (fun x => u (x, y)) (Icc a b) := by
     intro y hy x₁ hx₁ x₂ hx₂ hx
     have hlo := hslope (x₁, y) (hsub ⟨hx₁, Ioo_subset_Icc_self hy⟩)
       (x₂, y) (hsub ⟨hx₂, Ioo_subset_Icc_self hy⟩) rfl hx.le
     exact sub_pos.mp ((mul_pos (hcos y hy) (sub_pos.mpr hx)).trans_le hlo)
-  have hArea : volume (flattenCoordinates u '' R) = ENNReal.ofReal (∫ y in Ioo c d, U y) := by
-    rw [show R = chartRectangle a b c d from rfl,
-      image_flattenCoordinates_chartRectangle hab.le (hu.mono hsub) hmono,
-      volume_chartImage_eq_lintegral_width hab.le (hu.mono hsub),
-      ofReal_integral_eq_lintegral_ofReal hUInt hUnn]
-  have hinj : InjOn (flattenCoordinates u) R := by
-    apply injOn_flattenCoordinates
-    rintro ⟨x₁, y₁⟩ hp ⟨x₂, y₂⟩ hq hlat hx
-    change y₁ = y₂ at hlat
-    subst y₂
-    exact hmono _ hp.2 (Ioo_subset_Icc_self hp.1) (Ioo_subset_Icc_self hq.1) hx
-  have hAreaGood : volume (flattenCoordinates u '' (R ∩ good)) =
-      ENNReal.ofReal (∫ y in Ioo c d, L y) := by
+  have hinj : InjOn (flattenCoordinates u) R := (triangularChart hab.le (hu.mono hsub) hmono).injOn
+  have hAreaLt : volume (flattenCoordinates u '' (R ∩ good)) <
+      volume (flattenCoordinates u '' R) := by
     rw [measure_flattened_good_image (hR.measurableSet.inter hgood) inter_subset_left
         (by rwa [sdiff_self_inter]) hinj
         (fun p hp => (hderiv p hp.2).hasFDerivWithinAt) (fun p hp => (hcos p.2 hp.1.2).le),
       lintegral_cos_rectangle hab.le,
-      ofReal_integral_eq_lintegral_ofReal hLInt hLnn]
-  have hAreaLt : volume (flattenCoordinates u '' (R ∩ good)) <
-      volume (flattenCoordinates u '' R) := by
-    rw [hAreaGood, hArea]
-    exact (ENNReal.ofReal_lt_ofReal_iff (by linarith [integral_nonneg_of_ae hLnn])).mpr hreal
+      ← ofReal_integral_eq_lintegral_ofReal hLInt hLnn, show R = chartRectangle a b c d from rfl,
+      image_flattenCoordinates_chartRectangle hab.le (hu.mono hsub) hmono,
+      volume_chartImage_eq_lintegral_width hab.le (hu.mono hsub),
+      ← ofReal_integral_eq_lintegral_ofReal hUInt hUnn]
+    exact (ENNReal.ofReal_lt_ofReal_iff_of_nonneg (integral_nonneg_of_ae hLnn)).mpr hreal
   by_contra! hnpos
   have hazero : volume (flattenCoordinates u '' (R \ good)) = 0 := le_antisymm hnpos bot_le
-  apply hAreaLt.not_ge
-  calc
-    _ = volume (flattenCoordinates u '' (R ∩ good) ∪ flattenCoordinates u '' (R \ good)) := by
-      rw [← image_union, inter_union_sdiff]
-    _ ≤ _ := by simpa only [hazero, add_zero] using
-      (measure_union_le (μ := volume) (flattenCoordinates u '' (R ∩ good))
-        (flattenCoordinates u '' (R \ good)))
+  have hsplit := measure_union_le (μ := volume) (flattenCoordinates u '' (R ∩ good))
+    (flattenCoordinates u '' (R \ good))
+  rw [← image_union, inter_union_sdiff, hazero, add_zero] at hsplit
+  exact hAreaLt.not_ge hsplit
 
 private theorem exists_closed_subrectangle {W : Set (ℝ × ℝ)} (hW : IsOpen W) (hne : W.Nonempty) :
     ∃ a b c d : ℝ, a < b ∧ c < d ∧ chartClosedRectangle a b c d ⊆ W := by

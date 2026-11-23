@@ -30,15 +30,25 @@ theorem volume_chartImage_eq_lintegral_width
   by_cases hy : y ∈ Ioo c d
   · have heq : (fun x => (x, y)) ⁻¹' chartImage u a b c d = Ioo (u (a, y)) (u (b, y)) := by
       ext x
-      change (y ∈ Ioo c d ∧ u (a, y) < x ∧ x < u (b, y)) ↔
-        u (a, y) < x ∧ x < u (b, y)
       exact and_iff_right hy
     rw [heq, Real.volume_Ioo, indicator_of_mem hy]
   · have heq : (fun x => (x, y)) ⁻¹' chartImage u a b c d = ∅ := by
       ext x
-      change (y ∈ Ioo c d ∧ u (a, y) < x ∧ x < u (b, y)) ↔ False
-      simp only [hy, false_and]
+      simp only [chartImage, mem_preimage, mem_setOf_eq, hy, false_and, mem_empty_iff_false]
     rw [heq, measure_empty, indicator_of_notMem hy]
+
+/-- Integrate the cosine density by horizontal slices of a rectangle. -/
+theorem lintegral_cos_rectangle {a b c d : ℝ} (hab : a ≤ b) :
+    (∫⁻ p in chartRectangle a b c d, ENNReal.ofReal (Real.cos p.2)) =
+      ∫⁻ y in Ioo c d, ENNReal.ofReal ((b - a) * Real.cos y) := by
+  have hmeas : Measurable (fun p : ℝ × ℝ => ENNReal.ofReal (Real.cos p.2)) :=
+    ENNReal.measurable_ofReal.comp (Real.continuous_cos.measurable.comp measurable_snd)
+  rw [chartRectangle, Measure.volume_eq_prod, setLIntegral_prod_symm _ hmeas.aemeasurable]
+  apply setLIntegral_congr_fun measurableSet_Ioo
+  intro y _
+  change (∫⁻ _ in Ioo a b, ENNReal.ofReal (Real.cos y)) = _
+  rw [lintegral_const, Measure.restrict_apply_univ, Real.volume_Ioo, mul_comm]
+  exact (ENNReal.ofReal_mul (sub_nonneg.mpr hab)).symm
 
 private abbrev latitudeInterval : Set ℝ := Ioo (-(Real.pi / 2)) (Real.pi / 2)
 
@@ -68,17 +78,9 @@ coordinate rectangle. -/
 theorem lintegral_cos_chartRectangle :
     (∫⁻ p in chartRectangle (-Real.pi) Real.pi (-(Real.pi / 2)) (Real.pi / 2),
         ENNReal.ofReal (Real.cos p.2)) = ENNReal.ofReal (4 * Real.pi) := by
-  have hcos : (∫⁻ y in latitudeInterval, ENNReal.ofReal (Real.cos y)) = ENNReal.ofReal 2 := by
-    have h := lintegral_latitude_affine_cos (C := 1) (B := 0) zero_le_one le_rfl
-    simpa only [one_mul, add_zero, mul_one, mul_zero] using h
-  have hmeas : Measurable (fun p : ℝ × ℝ => ENNReal.ofReal (Real.cos p.2)) :=
-    ENNReal.measurable_ofReal.comp (Real.continuous_cos.measurable.comp measurable_snd)
-  rw [chartRectangle, Measure.volume_eq_prod, setLIntegral_prod _ hmeas.aemeasurable]
-  simp_rw [hcos]
-  rw [lintegral_const, Measure.restrict_apply_univ, Real.volume_Ioo, ← ENNReal.ofReal_mul]
-  · congr 1
-    ring
-  · norm_num
+  rw [lintegral_cos_rectangle (by linarith [Real.pi_pos]), show Real.pi - -Real.pi = 2 * Real.pi by ring]
+  simpa only [add_zero, mul_zero, show (2 : ℝ) * (2 * Real.pi) = 4 * Real.pi by ring] using
+    lintegral_latitude_affine_cos (C := 2 * Real.pi) (B := 0) (by positivity) le_rfl
 
 /-- A co-null good subset of the coordinate rectangle has image area
 exactly `4π` when the prescribed scalar derivative holds there. -/
@@ -123,23 +125,19 @@ theorem volume_chartImage_bounds_of_closeness
         volume (chartImage u (-Real.pi) Real.pi (-(Real.pi / 2)) (Real.pi / 2)) ∧
       volume (chartImage u (-Real.pi) Real.pi (-(Real.pi / 2)) (Real.pi / 2)) ≤
         ENNReal.ofReal (4 * Real.pi + 2 * Real.pi * (Real.pi + 1) * δ) := by
-  have hπ : 0 ≤ Real.pi := Real.pi_pos.le
-  have hπsub : 0 ≤ Real.pi - 1 := by linarith [Real.pi_gt_three]
-  rw [volume_chartImage_eq_lintegral_width (by linarith : -Real.pi ≤ Real.pi) hu]
-  have hlo := lintegral_latitude_affine_cos (C := 2 * Real.pi) (B := 2 * (Real.pi - 1) * δ)
-    (mul_nonneg (by norm_num) hπ) (mul_nonneg (mul_nonneg (by norm_num) hπsub) hδ)
-  have hhi := lintegral_latitude_affine_cos (C := 2 * Real.pi) (B := 2 * (Real.pi + 1) * δ)
-    (mul_nonneg (by norm_num) hπ) (mul_nonneg (mul_nonneg (by norm_num) (by linarith)) hδ)
-  rw [show 2 * (2 * Real.pi) + Real.pi * (2 * (Real.pi - 1) * δ) =
-    4 * Real.pi + 2 * Real.pi * (Real.pi - 1) * δ by ring] at hlo
-  rw [show 2 * (2 * Real.pi) + Real.pi * (2 * (Real.pi + 1) * δ) =
-    4 * Real.pi + 2 * Real.pi * (Real.pi + 1) * δ by ring] at hhi
+  rw [volume_chartImage_eq_lintegral_width (by linarith [Real.pi_pos] : -Real.pi ≤ Real.pi) hu]
+  have hwidth (k : ℝ) (hk : 0 ≤ k) :
+      (∫⁻ y in latitudeInterval, ENNReal.ofReal (2 * Real.pi * Real.cos y + 2 * k * δ)) =
+        ENNReal.ofReal (4 * Real.pi + 2 * Real.pi * k * δ) := by
+    rw [lintegral_latitude_affine_cos (by positivity) (by positivity)]
+    congr 1
+    ring
   constructor
-  · rw [← hlo]
+  · rw [← hwidth (Real.pi - 1) (by linarith [Real.pi_gt_three])]
     exact setLIntegral_mono' measurableSet_Ioo
       (fun y hy => ENNReal.ofReal_le_ofReal (chartWidth_bounds_of_closeness hclose
         (Ioo_subset_Icc_self hy)).1)
-  · rw [← hhi]
+  · rw [← hwidth (Real.pi + 1) (by positivity)]
     exact setLIntegral_mono' measurableSet_Ioo
       (fun y hy => ENNReal.ofReal_le_ofReal (chartWidth_bounds_of_closeness hclose
         (Ioo_subset_Icc_self hy)).2)
