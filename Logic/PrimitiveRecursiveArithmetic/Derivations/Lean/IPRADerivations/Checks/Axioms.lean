@@ -22258,6 +22258,97 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitSubstitutionOrdinaryEndpoints.canonical_endpoints
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitSubstitutionOrdinaryEndpoints.actual_ordinary_unit_panels_exhaust_interval_closed
 
+/-! ### GaussianAffinePanelDisplacement -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianAffinePanelDisplacement.endpointSource
+#print axioms LeanProofs.IPRA.Analysis.GaussianAffinePanelDisplacement.subst_endpointSource
+#print axioms LeanProofs.IPRA.Analysis.GaussianAffinePanelDisplacement.convex_upper
+#print axioms LeanProofs.IPRA.Analysis.GaussianAffinePanelDisplacement.grid_native_bounds
+#print axioms LeanProofs.IPRA.Analysis.GaussianAffinePanelDisplacement.width_native_bounds
+#print axioms LeanProofs.IPRA.Analysis.GaussianAffinePanelDisplacement.common_fraction_upper
+#print axioms LeanProofs.IPRA.Analysis.GaussianAffinePanelDisplacement.common_fraction_radius
+#print axioms LeanProofs.IPRA.Analysis.GaussianAffinePanelDisplacement.grid_scalar_radius
+#print axioms LeanProofs.IPRA.Analysis.GaussianAffinePanelDisplacement.grid_fraction_distance
+#print axioms LeanProofs.IPRA.Analysis.GaussianAffinePanelDisplacement.grid_distance
+#print axioms LeanProofs.IPRA.Analysis.GaussianAffinePanelDisplacement.width_radius
+#print axioms LeanProofs.IPRA.Analysis.GaussianAffinePanelDisplacement.width_distance
+#print axioms LeanProofs.IPRA.Analysis.GaussianAffinePanelDisplacement.actual_same_count_affine_panel_displacement_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianAffinePanelDisplacement.actual_affine_panel_scalar_width_displacement_closed
+
+/-! ### GaussianWeightedPanelRowDistance -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianWeightedPanelRowDistance.numerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianWeightedPanelRowDistance.denominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianWeightedPanelRowDistance.subst_numerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianWeightedPanelRowDistance.subst_denominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianWeightedPanelRowDistance.original_row_distance
+#print axioms LeanProofs.IPRA.Analysis.GaussianWeightedPanelRowDistance.actual_original_weighted_panel_row_distance_closed
+
+/-! ### GaussianEulerUnitKernelPanelContinuity -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitKernelPanelContinuity.source
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitKernelPanelContinuity.leading
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitKernelPanelContinuity.subst_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitKernelPanelContinuity.subst_leading
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitKernelPanelContinuity.original_grid_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitKernelPanelContinuity.original_weighted_row_distance
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitKernelPanelContinuity.original_weighted_rows
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitKernelPanelContinuity.original_same_count_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitKernelPanelContinuity.actual_original_unit_kernel_panel_quadrature_continuity_closed
+
+/-! ### GaussianEulerUnitKernelPanelNameContinuity -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitKernelPanelNameContinuity.original_diagonal
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitKernelPanelNameContinuity.original_rate
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitKernelPanelNameContinuity.original_observations
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitKernelPanelNameContinuity.actual_original_unit_kernel_panel_name_continuity_closed
+
+/-! ### GaussianEulerUnitKernelPanelRescaling -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitKernelPanelRescaling.source_rescaling
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitKernelPanelRescaling.original_rescaling
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitKernelPanelRescaling.original_observations
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitKernelPanelRescaling.actual_unit_kernel_rescaled_source_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitKernelPanelRescaling.actual_original_unit_kernel_panel_rescaling_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitKernelPanelRescaling.actual_unit_kernel_rescaled_independent_observations_closed
+
+/-! ### GaussianEulerUnitKernelMarginIndependence -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitKernelMarginIndependence.original_margin_invariance
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitKernelMarginIndependence.original_observations
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitKernelMarginIndependence.actual_original_unit_kernel_margin_invariance_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitKernelMarginIndependence.actual_original_unit_kernel_independent_margin_observations_closed
+
+/-! ### RationalNativeFractionDisplacement -/
+#print axioms LeanProofs.IPRA.Analysis.RationalNativeFractionDisplacement.native_upper
+#print axioms LeanProofs.IPRA.Analysis.RationalNativeFractionDisplacement.native_absolute
+#print axioms LeanProofs.IPRA.Analysis.RationalNativeFractionDisplacement.actual_normalized_rational_endpoint_displacement_closed
+
+/-! ### GaussianEulerUnitKernelRationalPanelContinuity -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitKernelRationalPanelContinuity.panelSource
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitKernelRationalPanelContinuity.source
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitKernelRationalPanelContinuity.original_rate
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitKernelRationalPanelContinuity.original_observations
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitKernelRationalPanelContinuity.actual_unit_quadrature_rational_panel_endpoint_rate_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitKernelRationalPanelContinuity.endpointDisplacement
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitKernelRationalPanelContinuity.native_endpoint_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitKernelRationalPanelContinuity.native_endpoint_budget
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitKernelRationalPanelContinuity.endpointSourceRadius
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitKernelRationalPanelContinuity.observations_at_radius
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitKernelRationalPanelContinuity.actual_unit_quadrature_arbitrary_rational_endpoint_observations_closed
+
+/-! ### GaussianEulerUnitKernelNativePanel -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitKernelNativePanel.proper
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitKernelNativePanel.subst_proper
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitKernelNativePanel.denominator_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitKernelNativePanel.proper_from_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitKernelNativePanel.source_at_denominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitKernelNativePanel.actual_native_unit_panel_source_closed
+
+/-! ### GaussianEulerUnitSubstitutionOrdinaryContainment -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitSubstitutionOrdinaryContainment.contains
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitSubstitutionOrdinaryContainment.contains_of_radii
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitSubstitutionOrdinaryContainment.contain_of_endpoint_bounds
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitSubstitutionOrdinaryContainment.original_panel_contains
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitSubstitutionOrdinaryContainment.containmentIndex
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitSubstitutionOrdinaryContainment.containment_index_later
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitSubstitutionOrdinaryContainment.containment_index_budget
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitSubstitutionOrdinaryContainment.actual_ordinary_unit_contains_proper_rational_panel_closed
+
 /-! ### GaussianBoundedIntegerExponentialStages -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianBoundedIntegerExponentialStages.input
 #print axioms LeanProofs.IPRA.Analysis.GaussianBoundedIntegerExponentialStages.scaledF
