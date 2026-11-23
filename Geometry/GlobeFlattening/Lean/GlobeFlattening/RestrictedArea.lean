@@ -1,3 +1,4 @@
+import GlobeFlattening.CoordinateRectangles
 import Mathlib.Analysis.Calculus.FDeriv.Prod
 import Mathlib.MeasureTheory.Function.Jacobian
 
@@ -14,10 +15,6 @@ open scoped ENNReal
 namespace GlobeFlattening
 
 noncomputable section
-
-/-- The triangular map keeps latitude and replaces longitude by the scalar
-coordinate. -/
-def flattenCoordinates (u : ℝ × ℝ → ℝ) (p : ℝ × ℝ) : ℝ × ℝ := (u p, p.2)
 
 /-- The derivative is diagonal in the longitude and latitude coordinates. -/
 def coordinateDerivative (slope : ℝ) : ℝ × ℝ →L[ℝ] ℝ × ℝ :=

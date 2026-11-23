@@ -1,3 +1,4 @@
+import GlobeFlattening.RestrictedArea
 import GlobeFlattening.TriangularChart
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv
 
@@ -22,8 +23,8 @@ theorem volume_chartImage_eq_lintegral_width
     (hu : ContinuousOn u (chartClosedRectangle a b c d)) :
     volume (chartImage u a b c d) =
       ∫⁻ y in Ioo c d, ENNReal.ofReal (u (b, y) - u (a, y)) := by
-  refine (Measure.measurePreserving_swap.measure_preimage_equiv
-    (f := MeasurableEquiv.prodComm) _).trans ?_
+  refine (Measure.measurePreserving_swap.measure_preimage_equiv (f := MeasurableEquiv.prodComm)
+    (regionBetween (fun y => u (a, y)) (fun y => u (b, y)) (Ioo c d))).trans ?_
   have hprofile (x : ℝ) (hx : x ∈ Icc a b) :=
     ((continuousOn_latitudeProfile hu hx).mono Ioo_subset_Icc_self).aemeasurable (μ := volume) measurableSet_Ioo
   exact volume_regionBetween_eq_lintegral (hprofile a ⟨le_rfl, hab⟩)

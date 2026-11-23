@@ -1,5 +1,6 @@
 import GlobeFlattening.CoordinateRectangles
-import GlobeFlattening.RestrictedArea
+import Mathlib.Topology.OpenPartialHomeomorph.Basic
+import Mathlib.Topology.Order.IntermediateValue
 
 /-!
 # The triangular flattening chart
@@ -15,7 +16,7 @@ namespace GlobeFlattening
 
 /-- The region between the left and right endpoint profiles. -/
 def chartImage (u : ℝ × ℝ → ℝ) (a b c d : ℝ) : Set (ℝ × ℝ) :=
-  Prod.swap ⁻¹' regionBetween (fun y => u (a, y)) (fun y => u (b, y)) (Ioo c d)
+  {p | p.2 ∈ Ioo c d ∧ p.1 ∈ Ioo (u (a, p.2)) (u (b, p.2))}
 
 /-- Every neighborhood contains a closed rectangle with the point in its interior. -/
 theorem exists_chartClosedRectangle_subset_of_mem_nhds {p : ℝ × ℝ} {W : Set (ℝ × ℝ)}

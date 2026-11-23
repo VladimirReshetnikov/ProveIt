@@ -35,4 +35,8 @@ theorem isOpen_sphereLongitudeDomain : IsOpen sphereLongitudeDomain :=
 theorem sphereLongitudeDomain_subset_box : sphereLongitudeDomain ⊆ sphereClosedBox :=
   chartRectangle_subset_closed
 
+/-- The triangular map keeps latitude and replaces longitude by the scalar
+coordinate. -/
+def flattenCoordinates (u : ℝ × ℝ → ℝ) (p : ℝ × ℝ) : ℝ × ℝ := (u p, p.2)
+
 end GlobeFlattening
