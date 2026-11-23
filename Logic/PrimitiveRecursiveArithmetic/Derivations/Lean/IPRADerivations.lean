@@ -264,6 +264,9 @@ import IPRADerivations.AnalyticNumberTheory.SieveSquare
 import IPRADerivations.AnalyticNumberTheory.SievePairBound
 import IPRADerivations.DiophantineNumberTheory.QuadraticReciprocityGoal
 import IPRADerivations.DiophantineNumberTheory.RectangleCount
+import IPRADerivations.DiophantineNumberTheory.EisensteinParity
+import IPRADerivations.DiophantineNumberTheory.FoldedResidues
+import IPRADerivations.DiophantineNumberTheory.FoldedPermutation
 import IPRADerivations.Analysis.StokesSlice
 import IPRADerivations.Geometry.GaussBonnetBridge
 import IPRADerivations.Analysis.InexactTrace
