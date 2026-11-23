@@ -315,6 +315,12 @@ supplies the regular finite evaluator of the original canonical names.
 to the finite sum of actual canonical coefficient observations at any
 internal order. Its remainder retains the full power of the shrinking
 input radius, with separate finite-cutoff and coefficient-query errors.
+[GaussianGammaCanonicalTaylorSampler](Lean/IPRADerivations/Analysis/GaussianGammaCanonicalTaylorSampler.lean) removes the auxiliary finite-polynomial query from the bound
+for the original reciprocal Gamma sampler. The resulting error is the
+shrinking tail plus one output observation error and the coefficient
+observation error multiplied by the number of retained terms.
+[GaussianGammaDeflatedPrefixTaylor](Lean/IPRADerivations/Analysis/GaussianGammaDeflatedPrefixTaylor.lean) factors the exact canonical prefix by its argument and
+checks the value one at zero for the deflated prefix.
 [GaussianGammaPrefixCompatibility](Lean/IPRADerivations/Analysis/GaussianGammaPrefixCompatibility.lean)
 identifies the two prefix names and proves the literal C19 rate with
 these canonical coefficients on the original encoded disk.
@@ -1469,8 +1475,14 @@ chart with the exponential of its affine logarithmic coordinate.
 [GaussianEulerPowerScalingParameter](Lean/IPRADerivations/Analysis/GaussianEulerPowerScalingParameter.lean) derives the rescaled native Gamma parameter and
 its half-plane source. [GaussianEulerPowerScalingKernel](Lean/IPRADerivations/Analysis/GaussianEulerPowerScalingKernel.lean) proves the pointwise kernel
 identity including the inverse scale factor and the rescaled complex
-exponent. Finite quadrature transport, the improper limit for the
-general power chart, and arbitrary positive real parameters remain open.
+exponent. [GaussianEulerPositivePowerChartLower](Lean/IPRADerivations/Analysis/GaussianEulerPositivePowerChartLower.lean) supplies an explicit positive lower bound on
+the compact image and exact positive-real sample guards at uniformly
+late precisions. [GaussianEulerDampedNamedIntegrand](Lean/IPRADerivations/Analysis/GaussianEulerDampedNamedIntegrand.lean) identifies the original power-damped Euler
+integrand times t with the logarithmic kernel. [GaussianEulerPowerScalingCompactRate](Lean/IPRADerivations/Analysis/GaussianEulerPowerScalingCompactRate.lean) gives a
+uniform majorant and a compact variation bound for the actual
+power-damped integrand. Finite quadrature transport, the improper limit
+for the general power chart, and arbitrary positive real parameters
+remain open.
 [GaussianBetaSharpPartition](Lean/IPRADerivations/Analysis/GaussianBetaSharpPartition.lean)
 locates one and the two degree endpoints on the same original dyadic
 grid and identifies the original half-time decay at the split with
@@ -1595,7 +1607,7 @@ exponential tail rate of the report remains.
 | 43–48 | Quantitative strict convexity, effective Bohr–Mollerup uniqueness at fixed presentations, Wendel/Gautschi inequalities, rate-bearing Gamma ratios, actual positive-minimum location and negative-pole interval extremum/sign constructions. |
 | 49–53 | Leading Stirling/relative errors, Robbins bounds, every fixed order of log-Stirling and digamma expansions with the signed positive-real-axis remainder, and the actual multiplicative-coefficient/error algorithm. Generic Euler–Maclaurin components need application-specific endpoint and positivity proofs. |
 | 54–58 | Branch-specified analytic log-Gamma on the certified right half-plane, both Binet formulas and their finite kernel/tail bounds, complete monotonicity, Raabe/unit-interval log-Gamma integrals and the Gamma–zeta Mellin identity for `Re(s)>1`. |
-| 59–62 | Wallis product with a rational rate, Gaussian moments and Gamma-density normalization/moments. [GaussianEulerIntegerMomentIntegrand](Lean/IPRADerivations/Analysis/GaussianEulerIntegerMomentIntegrand.lean) proves the original weighted Euler row identity at every internal integer order. [GaussianGammaDensityDomain](Lean/IPRADerivations/Analysis/GaussianGammaDensityDomain.lean) derives the shifted integral and Gamma guards. The normalized density quadrature and its improper identification remain open. Both Gamma-crossing equations with the golden-ratio solution, and the stated alternative factorial interpolations. |
+| 59–62 | Wallis product with a rational rate, Gaussian moments and Gamma-density normalization/moments. [GaussianEulerIntegerMomentIntegrand](Lean/IPRADerivations/Analysis/GaussianEulerIntegerMomentIntegrand.lean) proves the original weighted Euler row identity at every internal integer order. [GaussianGammaDensityDomain](Lean/IPRADerivations/Analysis/GaussianGammaDensityDomain.lean) derives the shifted integral and Gamma guards. [GaussianEulerIntegerMomentUniform](Lean/IPRADerivations/Analysis/GaussianEulerIntegerMomentUniform.lean) gives a uniform compact clock for the literal weighted rows. [GaussianGammaDensityMomentReference](Lean/IPRADerivations/Analysis/GaussianGammaDensityMomentReference.lean) evaluates the normalized original shifted integral as the rising product. The finite comparison to actual density rows remains open. Both Gamma-crossing equations with the golden-ratio solution, and the stated alternative factorial interpolations. |
 
 In particular, a finite factor bound or a generic exponentiation/logarithm
 interface does not prove a source assertion identifying the completed named
