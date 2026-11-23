@@ -25,85 +25,50 @@ namespace GlobeFlattening
 
 noncomputable section
 
-/-- If the derivative of a monotone function agrees almost everywhere with
-that of monotone tails of vanishing oscillation, it is zero almost everywhere. -/
-private theorem singular_of_monotone_remainders
-    (F : ℝ → ℝ) (tail : ℕ → ℝ → ℝ) (a b : ℝ) (hab : a ≤ b)
-    (hF : Monotone F) (htail : ∀ n, Monotone (tail n))
-    (hpartial : ∀ n, ∀ᵐ x, HasDerivAt (fun y => F y - tail n y) 0 x)
-    (hsmall : Tendsto (fun n => tail n b - tail n a) atTop (𝓝 0)) :
-    ∀ᵐ x ∂volume.restrict (Ioc a b), HasDerivAt F 0 x := by
-  have heq (n : ℕ) : ∀ᵐ x, deriv F x = deriv (tail n) x := by
-    filter_upwards [hF.ae_differentiableAt, (htail n).ae_differentiableAt, hpartial n] with x hf ht hp
-    exact sub_eq_zero.mp ((hf.hasDerivAt.sub ht.hasDerivAt).unique hp)
-  have hFint := ((hF.monotoneOn (uIcc a b)).intervalIntegrable_deriv).1
-  have hbound (n : ℕ) : (∫ x in Ioc a b, deriv F x) ≤ tail n b - tail n a := by
-    rw [integral_congr_ae (ae_restrict_of_ae (heq n)), ← intervalIntegral.integral_of_le hab]
-    have hi := ((htail n).monotoneOn (uIcc a b)).intervalIntegral_deriv_mem_uIcc
-    rw [uIcc_of_le (sub_nonneg.mpr ((htail n) hab))] at hi
-    exact hi.2
-  have hle : (∫ x in Ioc a b, deriv F x) ≤ 0 :=
-    le_of_tendsto_of_tendsto tendsto_const_nhds hsmall (Eventually.of_forall hbound)
-  have hge : 0 ≤ (∫ x in Ioc a b, deriv F x) := integral_nonneg fun _ => hF.deriv_nonneg
-  have hzero : deriv F =ᵐ[volume.restrict (Ioc a b)] 0 :=
-    (integral_eq_zero_iff_of_nonneg_ae (ae_of_all _ fun _ => hF.deriv_nonneg) hFint).mp
-      (le_antisymm hle hge)
-  filter_upwards [ae_restrict_of_ae hF.ae_differentiableAt, hzero] with x hx hz
-  exact hx.hasDerivAt.congr_deriv hz
-
-/-- A pointwise summable series of monotone singular functions is singular. -/
-private theorem singular_tsum_on_Ioc
-    (f : ℕ → ℝ → ℝ) (a b : ℝ) (hab : a ≤ b)
-    (hsum : ∀ x, Summable (fun n => f n x))
-    (hmono : ∀ n, Monotone (f n))
-    (hsing : ∀ n, ∀ᵐ x, HasDerivAt (f n) 0 x) :
-    ∀ᵐ x ∂volume.restrict (Ioc a b), HasDerivAt (fun y => ∑' n, f n y) 0 x := by
-  let F : ℝ → ℝ := fun x => ∑' n, f n x
-  let tail : ℕ → ℝ → ℝ := fun n x => F x - ∑ i ∈ Finset.range n, f i x
-  have htail_eq (n : ℕ) (x : ℝ) : tail n x = ∑' i, f (i + n) x := by
-    dsimp [tail, F]
-    rw [← (hsum x).sum_add_tsum_nat_add n]
-    exact add_sub_cancel_left _ _
-  have hF : Monotone F := by
-    intro x y hxy
-    exact Summable.tsum_le_tsum (fun i => hmono i hxy) (hsum x) (hsum y)
-  have htail : ∀ n, Monotone (tail n) := by
-    intro n x y hxy
-    rw [htail_eq n x, htail_eq n y]
-    exact Summable.tsum_le_tsum (fun i => hmono (i+n) hxy)
-      ((summable_nat_add_iff n).2 (hsum x)) ((summable_nat_add_iff n).2 (hsum y))
-  have hpartial (n : ℕ) : ∀ᵐ x, HasDerivAt (fun y => F y - tail n y) 0 x := by
-    filter_upwards [ae_all_iff.mpr hsing] with x hx
-    simpa only [tail, sub_sub_cancel, Finset.sum_const_zero] using
-      (HasDerivAt.fun_sum (u := Finset.range n) (A := f) (A' := fun _ => 0)
-        fun i _ => hx i)
-  have htail_tendsto (x : ℝ) : Tendsto (fun n => tail n x) atTop (𝓝 0) := by
-    simpa [tail, F] using
-      (tendsto_const_nhds (x := F x)).sub (hsum x).hasSum.tendsto_sum_nat
-  have hsmall : Tendsto (fun n => tail n b - tail n a) atTop (𝓝 0) := by
-    simpa using (htail_tendsto b).sub (htail_tendsto a)
-  exact singular_of_monotone_remainders F tail a b hab hF htail hpartial hsmall
-
-/-- A pointwise summable series of monotone singular functions is singular. -/
+/-- A pointwise summable series of monotone singular functions is singular. On every interval
+the derivative of the sum agrees almost everywhere with that of each monotone tail, so its
+integral is at most the oscillation of the tail. -/
 theorem singular_tsum
     (f : ℕ → ℝ → ℝ) (hsum : ∀ x, Summable (fun n => f n x))
     (hmono : ∀ n, Monotone (f n))
     (hsing : ∀ n, ∀ᵐ x, HasDerivAt (f n) 0 x) :
     ∀ᵐ x, HasDerivAt (fun y => ∑' n, f n y) 0 x := by
-  have hr (n : ℕ) : -(n : ℝ) ≤ n := by
-    have hn : (0 : ℝ) ≤ n := Nat.cast_nonneg _
-    linarith
-  have hs (n : ℕ) : ∀ᵐ x, x ∈ Ioc (-(n : ℝ)) (n : ℝ) →
-      HasDerivAt (fun y => ∑' n, f n y) 0 x :=
-    (ae_restrict_iff' measurableSet_Ioc).mp
-      (singular_tsum_on_Ioc f _ _ (hr n) hsum hmono hsing)
-  filter_upwards [ae_all_iff.mpr hs] with x hx
-  obtain ⟨n, hn⟩ := exists_nat_gt |x|
-  apply hx n
-  have hleft := neg_abs_le x
-  have hright := le_abs_self x
-  simp only [Set.mem_Ioc]
-  constructor <;> linarith
+  let F : ℝ → ℝ := fun x => ∑' n, f n x
+  let tail : ℕ → ℝ → ℝ := fun n x => ∑' i, f (i + n) x
+  have hF : Monotone F := fun x y hxy =>
+    Summable.tsum_le_tsum (fun i => hmono i hxy) (hsum x) (hsum y)
+  have htail (n : ℕ) : Monotone (tail n) := fun x y hxy =>
+    Summable.tsum_le_tsum (fun i => hmono (i + n) hxy)
+      ((summable_nat_add_iff n).2 (hsum x)) ((summable_nat_add_iff n).2 (hsum y))
+  have heq (n : ℕ) : ∀ᵐ x, deriv F x = deriv (tail n) x := by
+    filter_upwards [hF.ae_differentiableAt, (htail n).ae_differentiableAt, ae_all_iff.mpr hsing]
+      with x hf ht hx
+    have hs (y : ℝ) : F y - tail n y = ∑ i ∈ Finset.range n, f i y :=
+      sub_eq_of_eq_add ((hsum y).sum_add_tsum_nat_add n).symm
+    have hp : HasDerivAt (fun y => F y - tail n y) 0 x := by
+      simpa only [hs, Finset.sum_const_zero] using
+        HasDerivAt.fun_sum (u := Finset.range n) (A := f) (A' := fun _ => 0) fun i _ => hx i
+    exact sub_eq_zero.mp ((hf.hasDerivAt.sub ht.hasDerivAt).unique hp)
+  have hloc (a b : ℝ) (hab : a < b) : ∀ᵐ x, x ∈ univ ∩ Ioo a b → HasDerivAt F 0 x := by
+    have hbound (n : ℕ) : (∫ x in Ioc a b, deriv F x) ≤ tail n b - tail n a := by
+      rw [integral_congr_ae (ae_restrict_of_ae (heq n)), ← intervalIntegral.integral_of_le hab.le]
+      have hi := ((htail n).monotoneOn (uIcc a b)).intervalIntegral_deriv_mem_uIcc
+      rw [uIcc_of_le (sub_nonneg.mpr (htail n hab.le))] at hi
+      exact hi.2
+    have hsmall : Tendsto (fun n => tail n b - tail n a) atTop (𝓝 0) := by
+      simpa only [sub_zero] using
+        (tendsto_sum_nat_add fun i => f i b).sub (tendsto_sum_nat_add fun i => f i a)
+    have hzero : deriv F =ᵐ[volume.restrict (Ioc a b)] 0 :=
+      (integral_eq_zero_iff_of_nonneg_ae (ae_of_all _ fun _ => hF.deriv_nonneg)
+        ((hF.monotoneOn (uIcc a b)).intervalIntegrable_deriv).1).mp
+        (le_antisymm
+          (le_of_tendsto_of_tendsto tendsto_const_nhds hsmall (Eventually.of_forall hbound))
+          (integral_nonneg fun _ => hF.deriv_nonneg))
+    filter_upwards [hF.ae_differentiableAt, (ae_restrict_iff' measurableSet_Ioc).mp hzero]
+      with x hx hd hmem
+    exact hx.hasDerivAt.congr_deriv (hd (Ioo_subset_Ioc_self hmem.2))
+  exact (ae_of_mem_of_ae_of_mem_inter_Ioo (μ := volume) (s := univ) fun a b _ _ => hloc a b).mono
+    fun x hx => hx (mem_univ x)
 
 /-- Summable nonnegative weights and pointwise bounded summands suffice. -/
 theorem singular_bounded_weighted_tsum
