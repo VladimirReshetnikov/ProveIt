@@ -20,26 +20,9 @@ noncomputable section
 coordinate. -/
 def flattenCoordinates (u : ℝ × ℝ → ℝ) (p : ℝ × ℝ) : ℝ × ℝ := (u p, p.2)
 
-theorem injOn_flattenCoordinates {u : ℝ × ℝ → ℝ} {domain : Set (ℝ × ℝ)}
-    (hmono : ∀ p ∈ domain, ∀ q ∈ domain, p.2 = q.2 → p.1 < q.1 → u p < u q) :
-    InjOn (flattenCoordinates u) domain := by
-  intro p hp q hq heq
-  have hlat := congrArg (fun r : ℝ × ℝ => r.2) heq
-  have hlon : u p = u q := congrArg (fun r : ℝ × ℝ => r.1) heq
-  have hx : p.1 = q.1 := le_antisymm
-    (le_of_not_gt fun h => (hmono q hq p hp hlat.symm h).ne hlon.symm)
-    (le_of_not_gt fun h => (hmono p hp q hq hlat h).ne hlon)
-  exact Prod.ext hx hlat
-
 /-- The derivative is diagonal in the longitude and latitude coordinates. -/
 def coordinateDerivative (slope : ℝ) : ℝ × ℝ →L[ℝ] ℝ × ℝ :=
   (slope • ContinuousLinearMap.id ℝ ℝ).prodMap (ContinuousLinearMap.id ℝ ℝ)
-
-theorem hasFDerivWithinAt_flattenCoordinates {u : ℝ × ℝ → ℝ} {domain : Set (ℝ × ℝ)}
-    {p : ℝ × ℝ} {slope : ℝ}
-    (h : HasFDerivWithinAt u (slope • ContinuousLinearMap.fst ℝ ℝ ℝ) domain p) :
-    HasFDerivWithinAt (flattenCoordinates u) (coordinateDerivative slope) domain p := by
-  exact h.prodMk hasFDerivAt_snd.hasFDerivWithinAt
 
 @[simp] theorem det_coordinateDerivative (slope : ℝ) :
     (coordinateDerivative slope).det = slope := by
@@ -67,7 +50,7 @@ theorem measure_flattened_good_image
   calc
     _ = ∫⁻ p in good, ENNReal.ofReal |(coordinateDerivative (slope p)).det| :=
       (lintegral_abs_det_fderiv_eq_addHaar_image volume hgood
-        (fun p hp => hasFDerivWithinAt_flattenCoordinates ((hDeriv p hp).mono hsub))
+        (fun p hp => ((hDeriv p hp).mono hsub).prodMk hasFDerivAt_snd.hasFDerivWithinAt)
         (hf.mono hsub)).symm
     _ = _ := setLIntegral_congr_fun hgood fun p hp => by
       rw [det_coordinateDerivative, abs_of_nonneg (hnonneg p hp)]

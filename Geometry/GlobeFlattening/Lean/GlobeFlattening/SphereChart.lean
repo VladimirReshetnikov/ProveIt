@@ -1,7 +1,6 @@
 import GlobeFlattening.CoordinateRectangles
 import GlobeFlattening.SphereFrame
 import Mathlib.Analysis.SpecialFunctions.Complex.Arg
-import Mathlib.Tactic.Linarith
 
 /-!
 # The longitude chart on the cut unit sphere
@@ -37,11 +36,6 @@ theorem horizontalComplex_spherePoint (p : ℝ × ℝ) :
   rw [← Complex.ofReal_cos, ← Complex.ofReal_sin]
   apply Complex.ext <;>
     simp [spherePoint, Complex.mul_re, Complex.mul_im, -Complex.ofReal_cos, -Complex.ofReal_sin]
-
-theorem horizontalComplex_norm_sq (w : EuclideanSpace ℝ (Fin 3)) :
-    ‖horizontalComplex w‖ ^ 2 = (w 0)^2 + (w 1)^2 := by
-  rw [Complex.sq_norm, Complex.normSq_apply]
-  simp only [horizontalComplex_re, horizontalComplex_im, pow_two]
 
 /-- The unit sphere minus the negative-real equatorial ray's meridian,
 including both poles in the removed meridian. -/
@@ -79,21 +73,21 @@ theorem sphereChartInverse_spherePoint {p : ℝ × ℝ} (hp : p ∈ sphereLongit
     sphereChartInverse (spherePoint p) = p := by
   exact Prod.ext (longitude_spherePoint hp) (Real.arcsin_sin hp.2.1.le hp.2.2.le)
 
-private theorem cutSphere_sq_identity {w : EuclideanSpace ℝ (Fin 3)} (hw : w ∈ cutSphere) :
-    ‖horizontalComplex w‖ ^ 2 + (w 2)^2 = 1 := by
-  have hn := EuclideanSpace.real_norm_sq_eq w
-  have hr : ‖w‖ = 1 := hw.1
-  rw [hr, one_pow, Fin.sum_univ_three] at hn
-  rw [horizontalComplex_norm_sq]
-  exact hn.symm
+private theorem cutSphere_horizontal_norm_sq {w : EuclideanSpace ℝ (Fin 3)}
+    (hw : w ∈ cutSphere) : ‖horizontalComplex w‖ ^ 2 = 1 - (w 2)^2 := by
+  apply eq_sub_iff_add_eq.mpr
+  calc
+    _ = ‖w‖ ^ 2 := by
+      rw [Complex.sq_norm, Complex.normSq_apply, EuclideanSpace.real_norm_sq_eq, Fin.sum_univ_three]
+      simp only [horizontalComplex_re, horizontalComplex_im, pow_two]
+    _ = 1 := by simp [hw.1]
 
 theorem cutSphere_vertical_bounds {w : EuclideanSpace ℝ (Fin 3)} (hw : w ∈ cutSphere) :
     w 2 ∈ Ioo (-1 : ℝ) 1 := by
-  have hrad : 0 < ‖horizontalComplex w‖ :=
-    norm_pos_iff.mpr (Complex.slitPlane_ne_zero hw.2)
-  have hlt : (w 2)^2 < (1 : ℝ)^2 := by
-    nlinarith [cutSphere_sq_identity hw, sq_pos_of_pos hrad]
-  simpa using abs_lt.mp (by simpa using sq_lt_sq.mp hlt : |w 2| < (1 : ℝ))
+  have hrad := sq_pos_of_pos (norm_pos_iff.mpr (Complex.slitPlane_ne_zero hw.2))
+  rw [cutSphere_horizontal_norm_sq hw] at hrad
+  have hlt : (w 2)^2 < (1 : ℝ)^2 := by simpa using sub_pos.mp hrad
+  exact abs_lt.mp (by simpa using sq_lt_sq.mp hlt)
 
 theorem sphereChartInverse_mapsTo : MapsTo sphereChartInverse cutSphere sphereLongitudeDomain := by
   intro w hw
@@ -105,24 +99,17 @@ theorem sphereChartInverse_mapsTo : MapsTo sphereChartInverse cutSphere sphereLo
 theorem spherePoint_sphereChartInverse {w : EuclideanSpace ℝ (Fin 3)} (hw : w ∈ cutSphere) :
     spherePoint (sphereChartInverse w) = w := by
   have hz := cutSphere_vertical_bounds hw
-  have hsin := Real.sin_arcsin hz.1.le hz.2.le
-  have hcos := Real.sin_sq_add_cos_sq (Real.arcsin (w 2))
-  rw [hsin] at hcos
-  have hrad : Real.cos (Real.arcsin (w 2)) = ‖horizontalComplex w‖ :=
-    (sq_eq_sq₀ (Real.cos_arcsin_nonneg _) (norm_nonneg _)).mp
-      (by linarith [cutSphere_sq_identity hw])
+  have hrad : Real.cos (Real.arcsin (w 2)) = ‖horizontalComplex w‖ := by
+    rw [Real.cos_arcsin, ← cutSphere_horizontal_norm_sq hw, Real.sqrt_sq (norm_nonneg _)]
+  have hh : horizontalComplex (spherePoint (sphereChartInverse w)) = horizontalComplex w := by
+    rw [horizontalComplex_spherePoint]
+    simpa only [sphereChartInverse, hrad] using
+      Complex.norm_mul_cos_add_sin_mul_I (horizontalComplex w)
   ext i
   fin_cases i
-  · change Real.cos (Real.arcsin (w 2)) * Real.cos (horizontalComplex w).arg = w 0
-    rw [hrad, Complex.norm_mul_cos_arg, horizontalComplex_re]
-  · change Real.cos (Real.arcsin (w 2)) * Real.sin (horizontalComplex w).arg = w 1
-    rw [hrad, Complex.norm_mul_sin_arg, horizontalComplex_im]
-  · exact hsin
-
-theorem continuousOn_sphereChartInverse : ContinuousOn sphereChartInverse cutSphere := by
-  exact (Complex.continuousOn_arg.comp continuous_horizontalComplex.continuousOn
-    (fun _ hw => hw.2)).prodMk
-    (Real.continuous_arcsin.comp (EuclideanSpace.proj (𝕜 := ℝ) (2 : Fin 3)).continuous).continuousOn
+  · exact congrArg Complex.re hh
+  · exact congrArg Complex.im hh
+  · exact Real.sin_arcsin hz.1.le hz.2.le
 
 theorem spherePoint_bijOn : BijOn spherePoint sphereLongitudeDomain cutSphere :=
   ⟨spherePoint_mapsTo,
@@ -138,8 +125,13 @@ def sphereLongitudeChart : sphereLongitudeDomain ≃ₜ cutSphere where
   left_inv p := Subtype.ext (sphereChartInverse_spherePoint p.2)
   right_inv w := Subtype.ext (spherePoint_sphereChartInverse w.2)
   continuous_toFun := (continuous_spherePoint.comp continuous_subtype_val).subtype_mk _
-  continuous_invFun := (continuousOn_iff_continuous_restrict.1
-    continuousOn_sphereChartInverse).subtype_mk _
+  continuous_invFun := by
+    apply Continuous.subtype_mk
+    change Continuous (cutSphere.restrict sphereChartInverse)
+    apply continuousOn_iff_continuous_restrict.1
+    exact (Complex.continuousOn_arg.comp continuous_horizontalComplex.continuousOn
+      (fun _ hw => hw.2)).prodMk
+      (Real.continuous_arcsin.comp (EuclideanSpace.proj (𝕜 := ℝ) (2 : Fin 3)).continuous).continuousOn
 
 end
 

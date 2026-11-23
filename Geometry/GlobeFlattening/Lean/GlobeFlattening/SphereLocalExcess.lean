@@ -85,32 +85,30 @@ theorem not_lipschitzOn_of_exceptional_area
     {U : Set cutSphere} (hU : IsOpen U) (hne : U.Nonempty) (K : ℝ≥0) :
     ¬ LipschitzOnWith K (fun p : cutSphere => f p) U := by
   intro hLip
-  let A : cutSphere → EuclideanSpace ℝ (Fin 2) := fun p => f p
-  let Z' : Set cutSphere := Subtype.val ⁻¹' Z
-  have hA : A = Subtype.val ∘ F := funext hf
-  have hpatch : A '' U = Subtype.val '' (F '' U) := by
-    rw [hA, image_image]
-    rfl
-  have hOpen : IsOpen (A '' U) := hpatch ▸
-    htarget.isOpenMap_subtype_val _ (F.isOpenMap _ hU)
-  have hsub : A '' U ⊆ target := hpatch ▸ Subtype.coe_image_subset _ _
-  have hpos := hexcess _ hOpen (hne.image A) hsub
-  have hZ' : Subtype.val '' Z' = Z := by
-    rw [image_preimage_eq_inter_range, Subtype.range_coe, inter_eq_left.mpr hZ]
-  have hZ'null : μH[2] Z' = 0 := by
-    rwa [← isometry_subtype_coe.hausdorffMeasure_image (Or.inl (by norm_num)) Z', hZ']
-  have hbound := (hLip.mono (inter_subset_left : U ∩ Z' ⊆ U)).hausdorffMeasure_image_le
+  let W := Subtype.val '' U
+  have hWsub : W ⊆ cutSphere := Subtype.coe_image_subset _ _
+  have hpatch : f '' W = Subtype.val '' (F '' U) := by
+    rw [image_image, image_image]
+    exact image_congr fun p _ => hf p
+  have hOpen : IsOpen (f '' W) := hpatch ▸ htarget.isOpenMap_subtype_val _ (F.isOpenMap _ hU)
+  have hsub : f '' W ⊆ target := hpatch ▸ Subtype.coe_image_subset _ _
+  have hpos := hexcess _ hOpen ((hne.image _).image _) hsub
+  have hLip' : LipschitzOnWith K f W := by
+    rintro _ ⟨p, hp, rfl⟩ _ ⟨q, hq, rfl⟩
+    exact hLip hp hq
+  have hbound := (hLip'.mono (inter_subset_left : W ∩ Z ⊆ W)).hausdorffMeasure_image_le
     (d := 2) (by norm_num)
   have hHaar : Measure.IsAddHaarMeasure (μH[2] : Measure (EuclideanSpace ℝ (Fin 2))) := by
     convert (inferInstance : Measure.IsAddHaarMeasure (μH[Module.finrank ℝ
       (EuclideanSpace ℝ (Fin 2))] : Measure (EuclideanSpace ℝ (Fin 2)))) using 1
     simp
-  have hzero : volume (A '' (U ∩ Z')) = 0 :=
+  have hzero : volume (f '' (W ∩ Z)) = 0 :=
     Measure.absolutelyContinuous_isAddHaarMeasure volume _ (le_zero_iff.mp <| by
-      simpa [measure_mono_null inter_subset_right hZ'null] using hbound)
-  have hBad : A '' Z' = f '' Z := by rw [← hZ', image_image]
-  have hInj : Function.Injective A := hA ▸ Subtype.coe_injective.comp F.injective
-  rw [image_inter hInj, hBad] at hzero
+      simpa [measure_mono_null inter_subset_right hZnull] using hbound)
+  have hInj : InjOn f cutSphere := by
+    rw [injOn_iff_injective, show cutSphere.restrict f = Subtype.val ∘ F from funext hf]
+    exact Subtype.coe_injective.comp F.injective
+  rw [hInj.image_inter hWsub hZ] at hzero
   exact hpos.ne' hzero
 
 end

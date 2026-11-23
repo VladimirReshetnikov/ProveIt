@@ -91,21 +91,11 @@ def sphereFlattenDerivative (p : ℝ × ℝ) :
   (PiLp.continuousLinearEquiv 2 ℝ (fun _ : Fin 2 => ℝ)).symm.toContinuousLinearMap.comp
     (ContinuousLinearMap.pi ![innerSL ℝ (sphereEast p), innerSL ℝ (sphereNorth p)])
 
-theorem sphereFlattenDerivative_apply (p : ℝ × ℝ) (w : EuclideanSpace ℝ (Fin 3)) :
-    sphereFlattenDerivative p w =
-      !₂[⟪sphereEast p, w⟫, ⟪sphereNorth p, w⟫] := by
-  ext i
-  fin_cases i <;> rfl
-
 /-- The inverse isometry sends a planar vector into the tangent plane. -/
 def sphereTangentLift (p : ℝ × ℝ) :
     EuclideanSpace ℝ (Fin 2) →L[ℝ] EuclideanSpace ℝ (Fin 3) :=
   (EuclideanSpace.proj 0).smulRight (sphereEast p) +
     (EuclideanSpace.proj 1).smulRight (sphereNorth p)
-
-theorem sphereTangentLift_apply (p : ℝ × ℝ) (v : EuclideanSpace ℝ (Fin 2)) :
-    sphereTangentLift p v = v 0 • sphereEast p + v 1 • sphereNorth p :=
-  rfl
 
 private def sphereFrameBasis (p : ℝ × ℝ) : OrthonormalBasis (Fin 3) ℝ (EuclideanSpace ℝ (Fin 3)) :=
   let h := orthonormal_sphereFrame p
@@ -119,7 +109,6 @@ private theorem sphereFrameBasis_apply (p : ℝ × ℝ) (i : Fin 3) :
 private theorem sphereFrameBasis_repr (p : ℝ × ℝ) (w : EuclideanSpace ℝ (Fin 3)) :
     (sphereFrameBasis p).repr w =
       !₂[(sphereFlattenDerivative p w) 0, (sphereFlattenDerivative p w) 1, ⟪spherePoint p, w⟫] := by
-  rw [sphereFlattenDerivative_apply]
   ext i
   rw [OrthonormalBasis.repr_apply_apply, sphereFrameBasis_apply]
   fin_cases i <;> rfl
@@ -127,18 +116,15 @@ private theorem sphereFrameBasis_repr (p : ℝ × ℝ) (w : EuclideanSpace ℝ (
 private theorem sphereFrameBasis_repr_tangentLift (p : ℝ × ℝ) (v : EuclideanSpace ℝ (Fin 2)) :
     (sphereFrameBasis p).repr (sphereTangentLift p v) = !₂[v 0, v 1, 0] := by
   apply (sphereFrameBasis p).repr.symm.injective
-  rw [LinearIsometryEquiv.symm_apply_apply, ← (sphereFrameBasis p).sum_repr_symm,
-    Fin.sum_univ_three, sphereTangentLift_apply]
-  simp [sphereFrameBasis_apply, sphereFrame]
+  rw [LinearIsometryEquiv.symm_apply_apply, ← (sphereFrameBasis p).sum_repr_symm, Fin.sum_univ_three]
+  simp [sphereTangentLift, sphereFrameBasis_apply, sphereFrame]
 
 theorem norm_sphereTangentLift (p : ℝ × ℝ) (v : EuclideanSpace ℝ (Fin 2)) :
     ‖sphereTangentLift p v‖ = ‖v‖ := by
-  apply (sq_eq_sq₀ (norm_nonneg _) (norm_nonneg _)).mp
   rw [← (sphereFrameBasis p).repr.norm_map (sphereTangentLift p v),
-    sphereFrameBasis_repr_tangentLift,
-    EuclideanSpace.real_norm_sq_eq, EuclideanSpace.real_norm_sq_eq, Fin.sum_univ_three,
-    Fin.sum_univ_two]
-  change v 0 ^ 2 + v 1 ^ 2 + 0 ^ 2 = _
+    sphereFrameBasis_repr_tangentLift, PiLp.norm_eq_of_L2, PiLp.norm_eq_of_L2,
+    Fin.sum_univ_three, Fin.sum_univ_two]
+  change Real.sqrt (‖v 0‖ ^ 2 + ‖v 1‖ ^ 2 + ‖(0 : ℝ)‖ ^ 2) = _
   simp
 
 theorem sphereFlattenDerivative_leftInverse (p : ℝ × ℝ) :

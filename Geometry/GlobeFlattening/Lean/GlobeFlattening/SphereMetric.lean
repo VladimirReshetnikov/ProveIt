@@ -31,11 +31,9 @@ theorem volume_planarEuclideanEquiv_image (s : Set (ℝ × ℝ)) :
 /-- With latitude fixed, the two planar metrics give the same distance. -/
 theorem dist_planarEuclideanEquiv_of_snd_eq {a b : ℝ × ℝ} (hy : a.2 = b.2) :
     dist (planarEuclideanEquiv a) (planarEuclideanEquiv b) = dist a b := by
-  apply (sq_eq_sq₀ dist_nonneg dist_nonneg).mp
-  rw [EuclideanSpace.dist_sq_eq, Fin.sum_univ_two]
-  change dist a.1 b.1 ^ 2 + dist a.2 b.2 ^ 2 = dist a b ^ 2
-  rw [Prod.dist_eq, hy, dist_self, max_eq_left dist_nonneg]
-  simp
+  rw [PiLp.dist_eq_of_L2, Fin.sum_univ_two, Prod.dist_eq]
+  change Real.sqrt (dist a.1 b.1 ^ 2 + dist a.2 b.2 ^ 2) = _
+  simp [hy, Real.sqrt_sq dist_nonneg]
 
 theorem norm_sphereDerivative_le (p : ℝ × ℝ) : ‖sphereDerivative p‖ ≤ 2 := by
   have he : ‖sphereEast p‖ = 1 := (orthonormal_sphereFrame p).norm_eq_one (0 : Fin 3)
