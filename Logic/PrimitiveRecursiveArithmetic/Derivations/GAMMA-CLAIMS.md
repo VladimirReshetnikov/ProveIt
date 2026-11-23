@@ -1199,8 +1199,20 @@ cancels the increment before bounding the finite mean of the slope errors.
 proves `I_j' = I_{j+1}` of ledger family 14 on certified native Gaussian
 rational inputs for every numerical `j`. Its modulus is independent of the
 increment, and the bound is `2⁻ᵖ + 2⁻ᑫ + 2⁻ᵛ` for the independent actual
-observations at `q` and `v`. The extension to general fixed input names
-and the substitution and scaling formulas remain open.
+observations at `q` and `v`.
+[GaussianGammaEulerFirstDerivative](Lean/IPRADerivations/Analysis/GaussianGammaEulerFirstDerivative.lean)
+binds the quotient made directly from the original Gamma evaluator to
+the certified order-one logarithmic integral at the same rate.
+[GaussianEulerLogarithmicMixedParameterRate](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicMixedParameterRate.lean)
+proves the uniform comparison at distinct native inputs with independent
+certificates. [GaussianNamedEulerLogarithmicImproper](Lean/IPRADerivations/Analysis/GaussianNamedEulerLogarithmicImproper.lean)
+uses a finite demand maximum to construct regular logarithmic improper
+evaluators at every numerical order on a fixed certified complex name.
+[GaussianRationalQuadratureDilation](Lean/IPRADerivations/Analysis/GaussianRationalQuadratureDilation.lean)
+checks the finite pullback for a positive rational scale and its exact
+Jacobian, preserving the original grid observations. Differentiation on
+general fixed input names and the improper substitution and scaling
+formulas remain open.
 [GaussianBetaSharpPartition](Lean/IPRADerivations/Analysis/GaussianBetaSharpPartition.lean)
 locates one and the two degree endpoints on the same original dyadic
 grid and identifies the original half-time decay at the split with
