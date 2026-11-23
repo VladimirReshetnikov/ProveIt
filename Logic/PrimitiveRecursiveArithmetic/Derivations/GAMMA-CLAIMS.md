@@ -834,6 +834,12 @@ finite dyadic refinement.
 [GaussianBetaKernelDecayDampedError](Lean/IPRADerivations/Analysis/GaussianBetaKernelDecayDampedError.lean)
 bounds the original kernel error by the quadratic factor times the
 actual positive decay observation and its explicit allowances.
+[GaussianBetaUpperRowDampedError](Lean/IPRADerivations/Analysis/GaussianBetaUpperRowDampedError.lean)
+keeps the exact high-time row factor `t^(R+2)/N` with the same
+positive decay reference and independently queried beta and Euler
+observations. [GaussianEulerLowTimePowerOrder](Lean/IPRADerivations/Analysis/GaussianEulerLowTimePowerOrder.lean)
+gives the reciprocal-power reference comparison for the actual
+lower-time power square.
 [GaussianMonomialDecayMajorant](Lean/IPRADerivations/Analysis/GaussianMonomialDecayMajorant.lean)
 bounds the actual monomial times decay through the weighted half-decay
 majorant at coefficient `2^d d!`.
@@ -938,8 +944,13 @@ evaluates that named integrand on the original varying grids with
 the certified margin parameter `2A`. Advancing the outer precision by
 three gives a regular improper integral name and proves agreement with
 the original Gamma program on a fixed regular complex input at arbitrary
-independent output precisions. The literal C_R/N plus exponential tail
-rate of the report remains.
+independent output precisions.
+[GaussianNamedEulerCompactModulus](Lean/IPRADerivations/Analysis/GaussianNamedEulerCompactModulus.lean)
+constructs the actual regular fixed compact quadrature from the sampled
+modulus. [GaussianNamedEulerCutoffBinding](Lean/IPRADerivations/Analysis/GaussianNamedEulerCutoffBinding.lean)
+identifies each varying-cutoff sample with the corresponding fixed
+compact observation at the original clock. The literal C_R/N plus
+exponential tail rate of the report remains.
 
 ## Every ledger family remains in scope
 
