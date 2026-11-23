@@ -1,5 +1,6 @@
 import GlobeFlattening.SphereDifferential
 import Mathlib.Analysis.Calculus.MeanValue
+import Mathlib.Analysis.Normed.Operator.Prod
 import Mathlib.MeasureTheory.Measure.Haar.InnerProductSpace
 
 /-!
@@ -37,16 +38,13 @@ theorem dist_planarEuclideanEquiv_of_snd_eq {a b : ℝ × ℝ} (hy : a.2 = b.2) 
   simp
 
 theorem norm_sphereDerivative_le (p : ℝ × ℝ) : ‖sphereDerivative p‖ ≤ 2 := by
-  apply ContinuousLinearMap.opNorm_le_bound _ (by norm_num)
-  intro v
   have he : ‖sphereEast p‖ = 1 := (orthonormal_sphereFrame p).norm_eq_one (0 : Fin 3)
   have hn : ‖sphereNorth p‖ = 1 := (orthonormal_sphereFrame p).norm_eq_one (1 : Fin 3)
-  have hcos : ‖Real.cos p.2‖ ≤ 1 := by simpa [Real.norm_eq_abs] using Real.abs_cos_le_one p.2
-  rw [sphereDerivative_apply, two_mul]
+  rw [sphereDerivative, ← (one_add_one_eq_two : (1 : ℝ) + 1 = 2)]
   refine (norm_add_le _ _).trans ?_
-  simp only [norm_smul, he, hn, mul_one, norm_mul]
-  exact add_le_add ((mul_le_of_le_one_left (norm_nonneg _) hcos).trans (norm_fst_le v))
-    (norm_snd_le v)
+  simp only [ContinuousLinearMap.norm_smulRight_apply, norm_smul, he, hn,
+    ContinuousLinearMap.norm_fst, ContinuousLinearMap.norm_snd, mul_one, Real.norm_eq_abs]
+  exact add_le_add (Real.abs_cos_le_one _) le_rfl
 
 theorem lipschitzWith_spherePoint : LipschitzWith 2 spherePoint := by
   apply lipschitzWith_of_nnnorm_fderiv_le (𝕜 := ℝ)

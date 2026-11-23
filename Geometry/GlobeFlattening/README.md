@@ -30,6 +30,10 @@ strict width comparison proves total area excess and local exceptional
 area. The uniform projection error bounds the total area from above.
 [Chart homeomorphism](Lean/GlobeFlattening/TriangularChart.lean)
 
+The inverse derivative is the tangent lift. Applying its linear left
+inverse to the differentiated inverse identity gives the forward derivative
+along the cut sphere. [Differential proof](Lean/GlobeFlattening/SphereDifferential.lean)
+
 Spherical area is defined in the longitude–latitude chart with density
 `cos(latitude)`, as in the report. The exceptional set also has zero
 two-dimensional Hausdorff measure by Lipschitz continuity of the sphere

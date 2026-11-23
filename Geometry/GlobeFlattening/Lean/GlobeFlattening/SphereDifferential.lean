@@ -1,6 +1,7 @@
 import GlobeFlattening.SphereChart
 import GlobeFlattening.RestrictedArea
 import Mathlib.Analysis.Calculus.FDeriv.OfCompLeft
+import Mathlib.Topology.OpenPartialHomeomorph.Constructions
 
 /-!
 # Tangent isometries and the differential in the ambient spaces
@@ -35,63 +36,6 @@ private def scaledPlanarEquiv (p : ℝ × ℝ) (hc : Real.cos p.2 ≠ 0) :
     (ℝ × ℝ) ≃L[ℝ] EuclideanSpace ℝ (Fin 2) :=
   (coordinateDerivativeEquiv (Real.cos p.2) hc).trans planarEuclideanEquiv
 
-/-- The ambient left inverse to the coordinate derivative. Dividing the east
-component by the cosine of latitude changes from arc length to longitude. -/
-def sphereChartInverseDerivative (p : ℝ × ℝ) :
-    EuclideanSpace ℝ (Fin 3) →L[ℝ] ℝ × ℝ :=
-  (coordinateDerivative (Real.cos p.2)⁻¹).comp
-    (planarEuclideanEquiv.symm.toContinuousLinearMap.comp (sphereFlattenDerivative p))
-
-theorem sphereChartInverseDerivative_leftInverse (p : ℝ × ℝ) (hc : Real.cos p.2 ≠ 0) :
-    Function.LeftInverse (sphereChartInverseDerivative p) (sphereDerivative p) := by
-  intro v
-  change (scaledPlanarEquiv p hc).symm (sphereFlattenDerivative p
-    (sphereTangentLift p (scaledPlanarEquiv p hc v))) = v
-  rw [sphereFlattenDerivative_leftInverse, ContinuousLinearEquiv.symm_apply_apply]
-
-theorem hasFDerivWithinAt_sphereChartInverse {p : ℝ × ℝ} (hp : p ∈ sphereLongitudeDomain) :
-    HasFDerivWithinAt sphereChartInverse (sphereChartInverseDerivative p) cutSphere
-      (spherePoint p) := by
-  have hw : spherePoint p ∈ cutSphere := spherePoint_mapsTo hp
-  have hcos := (Real.cos_pos_of_mem_Ioo hp.2).ne'
-  have hcont : Tendsto sphereChartInverse (𝓝[cutSphere] (spherePoint p))
-      (𝓝[univ] (sphereChartInverse (spherePoint p))) := by
-    rw [nhdsWithin_univ]
-    exact continuousOn_sphereChartInverse (spherePoint p) hw
-  have hf : HasFDerivWithinAt spherePoint (sphereDerivative p) univ
-      (sphereChartInverse (spherePoint p)) := by
-    rw [sphereChartInverse_spherePoint hp]
-    exact (hasFDerivAt_spherePoint p).hasFDerivWithinAt
-  have hcomp : EqOn (spherePoint ∘ sphereChartInverse) id cutSphere :=
-    fun _ hw => spherePoint_sphereChartInverse hw
-  simpa only [ContinuousLinearMap.comp_id] using hf.of_comp_of_leftInverse hcont
-    (hasFDerivWithinAt_id _ _) hcomp.eventuallyEq_nhdsWithin
-    (sphereChartInverseDerivative_leftInverse p hcos) hw
-
-theorem sphereFlatten_comp_inverseDerivative (p : ℝ × ℝ) (hc : Real.cos p.2 ≠ 0) :
-    planarEuclideanEquiv.toContinuousLinearMap.comp
-      ((coordinateDerivative (Real.cos p.2)).comp (sphereChartInverseDerivative p)) =
-      sphereFlattenDerivative p := by
-  ext w : 1
-  exact (scaledPlanarEquiv p hc).apply_symm_apply (sphereFlattenDerivative p w)
-
-/-- The prescribed longitude derivative in rectangular coordinates gives the
-ambient differential that extracts the two orthonormal tangent components. -/
-theorem hasFDerivWithinAt_sphereFlatten {u : ℝ × ℝ → ℝ} {p : ℝ × ℝ}
-    (hp : p ∈ sphereLongitudeDomain)
-    (hu : HasFDerivWithinAt u (Real.cos p.2 • ContinuousLinearMap.fst ℝ ℝ ℝ)
-      sphereLongitudeDomain p) :
-    HasFDerivWithinAt (planarEuclideanEquiv ∘ (flattenCoordinates u ∘ sphereChartInverse))
-      (sphereFlattenDerivative p) cutSphere (spherePoint p) := by
-  have h := hasFDerivWithinAt_flattenCoordinates hu
-  rw [← sphereChartInverse_spherePoint hp] at h
-  have hrect := h.comp (spherePoint p) (hasFDerivWithinAt_sphereChartInverse hp)
-    sphereChartInverse_mapsTo
-  rw [sphereChartInverse_spherePoint hp] at hrect
-  have hc := (Real.cos_pos_of_mem_Ioo hp.2).ne'
-  rw [← sphereFlatten_comp_inverseDerivative p hc]
-  exact planarEuclideanEquiv.hasFDerivAt.comp_hasFDerivWithinAt (spherePoint p) hrect
-
 /-- The metric in spherical coordinates has diagonal entries
 `cos latitude` squared and `1`. -/
 theorem sq_norm_sphereDerivative (p v : ℝ × ℝ) :
@@ -109,24 +53,45 @@ theorem hasFDerivAt_sphereFlatten_inverse
     HasFDerivAt (spherePoint ∘ (g.symm ∘ planarEuclideanEquiv.symm)) (sphereTangentLift p)
       (planarEuclideanEquiv (g p)) := by
   let D := scaledPlanarEquiv p hc
-  have hinv : HasFDerivAt g.symm
-      (coordinateDerivativeEquiv (Real.cos p.2) hc).symm.toContinuousLinearMap (g p) := by
-    apply g.hasFDerivAt_symm (f' := coordinateDerivativeEquiv (Real.cos p.2) hc) (g.map_source hp)
-    rw [g.left_inv hp, coordinateDerivativeEquiv_toContinuousLinearMap]
-    exact hg
-  have hg' : HasFDerivAt (g.symm ∘ planarEuclideanEquiv.symm) D.symm.toContinuousLinearMap
-      (planarEuclideanEquiv (g p)) :=
-    hinv.comp (planarEuclideanEquiv (g p)) planarEuclideanEquiv.symm.hasFDerivAt
-  have hs' : HasFDerivAt spherePoint (sphereDerivative p)
-      ((g.symm ∘ planarEuclideanEquiv.symm) (planarEuclideanEquiv (g p))) := by
-    simpa only [Function.comp_apply, ContinuousLinearEquiv.symm_apply_apply, g.left_inv hp]
-      using hasFDerivAt_spherePoint p
+  let G := g.transHomeomorph planarEuclideanEquiv.toHomeomorph
+  have hG : HasFDerivAt G D.toContinuousLinearMap p :=
+    planarEuclideanEquiv.hasFDerivAt.comp p hg
+  have hGinv : HasFDerivAt G.symm D.symm.toContinuousLinearMap (G p) := by
+    apply G.hasFDerivAt_symm (f' := D) (G.map_source hp)
+    rwa [G.left_inv hp]
+  have hs' : HasFDerivAt spherePoint (sphereDerivative p) (G.symm (G p)) := by
+    rw [G.left_inv hp]
+    exact hasFDerivAt_spherePoint p
   have hD : (sphereDerivative p).comp D.symm.toContinuousLinearMap = sphereTangentLift p := by
     ext v : 1
     change sphereTangentLift p (D (D.symm v)) = _
     rw [ContinuousLinearEquiv.apply_symm_apply]
   rw [← hD]
-  exact hs'.comp (planarEuclideanEquiv (g p)) hg'
+  exact hs'.comp (G p) hGinv
+
+/-- The forward differential is the left inverse of the tangent lift.
+The homeomorphism supplies continuity and the inverse identity on the cut sphere. -/
+theorem hasFDerivWithinAt_sphereFlatten
+    {target : Set (EuclideanSpace ℝ (Fin 2))} (F : cutSphere ≃ₜ target)
+    {f : EuclideanSpace ℝ (Fin 3) → EuclideanSpace ℝ (Fin 2)}
+    {fInv : EuclideanSpace ℝ (Fin 2) → EuclideanSpace ℝ (Fin 3)} {p : ℝ × ℝ}
+    (hf : ∀ w : cutSphere, f w = (F w).val)
+    (hfInv : ∀ z : target, fInv z = (F.symm z).val)
+    (hp : spherePoint p ∈ cutSphere)
+    (hinv : HasFDerivAt fInv (sphereTangentLift p) (f (spherePoint p))) :
+    HasFDerivWithinAt f (sphereFlattenDerivative p) cutSphere (spherePoint p) := by
+  have hcont : ContinuousOn f cutSphere :=
+    continuousOn_iff_continuous_restrict.2
+      ((continuous_subtype_val.comp F.continuous).congr fun w => (hf w).symm)
+  have hleft : LeftInvOn fInv f cutSphere := by
+    intro w hw
+    rw [hf ⟨w, hw⟩, hfInv (F ⟨w, hw⟩)]
+    exact congrArg Subtype.val (F.symm_apply_apply ⟨w, hw⟩)
+  simpa only [ContinuousLinearMap.comp_id] using
+    (hinv.hasFDerivWithinAt (s := univ)).of_comp_of_leftInverse
+      (by rw [nhdsWithin_univ]; exact hcont (spherePoint p) hp)
+      (hasFDerivWithinAt_id _ _) hleft.eqOn.eventuallyEq_nhdsWithin
+      (sphereFlattenDerivative_leftInverse p) hp
 
 end
 
