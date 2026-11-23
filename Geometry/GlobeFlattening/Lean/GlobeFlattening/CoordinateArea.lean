@@ -48,7 +48,8 @@ theorem lintegral_cos_lt_volume_chartImage
   rw [lintegral_cos_rectangle hab.le, volume_chartImage_eq_lintegral_width hab.le hu]
   refine lintegral_strict_mono
     (Measure.restrict_eq_zero.not.mpr ((Measure.measure_Ioo_pos volume).2 hcd).ne')
-    (((continuousOn_chartWidth hab.le hu).mono Ioo_subset_Icc_self).aemeasurable
+    ((((continuousOn_latitudeProfile hu ⟨hab.le, le_rfl⟩).sub
+      (continuousOn_latitudeProfile hu ⟨le_rfl, hab.le⟩)).mono Ioo_subset_Icc_self).aemeasurable
       measurableSet_Ioo).ennreal_ofReal
     (((continuous_const.mul Real.continuous_cos).integrableOn_Icc.mono_set
       Ioo_subset_Icc_self).lintegral_lt_top.ne) ?_
@@ -114,20 +115,6 @@ theorem lintegral_cos_chartRectangle :
         ENNReal.ofReal (Real.cos p.2)) = ENNReal.ofReal (4 * Real.pi) := by
   rw [sphereLongitudeDomain, lintegral_cos_rectangle (neg_le_self Real.pi_pos.le), sub_neg_eq_add,
     ← two_mul, lintegral_sinusoidalWidth]
-
-/-- A co-null good subset of the coordinate rectangle has image area
-exactly `4π` when the prescribed scalar derivative holds there. -/
-theorem volume_good_image_eq_four_pi
-    {u : ℝ × ℝ → ℝ} {good : Set (ℝ × ℝ)}
-    (hgood : MeasurableSet good)
-    (hsub : good ⊆ sphereLongitudeDomain)
-    (hnull : volume (sphereLongitudeDomain \ good) = 0)
-    (hinj : InjOn (flattenCoordinates u) sphereLongitudeDomain)
-    (hderiv : ∀ p ∈ good, HasFDerivWithinAt u
-      (Real.cos p.2 • ContinuousLinearMap.fst ℝ ℝ ℝ) sphereLongitudeDomain p) :
-    volume (flattenCoordinates u '' good) = ENNReal.ofReal (4 * Real.pi) :=
-  (measure_flattened_good_image hgood hsub hnull hinj hderiv
-    (fun _ hp => (Real.cos_pos_of_mem_Ioo (hsub hp).2).le)).trans lintegral_cos_chartRectangle
 
 /-- Scale the scalar error so its contribution to the uniform distance is `ε`. -/
 def globeErrorParameter (ε : ℝ) : ℝ := ε / (1 + Real.pi)
