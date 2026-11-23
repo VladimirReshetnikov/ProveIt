@@ -107,25 +107,24 @@ theorem original_lower_dyadic_bound (p z R B A k : PTm n) (h : Γ ⊢[PRAAx] sou
   have late : Γ ⊢[PRAAx] slack V N D (num 5) t := lower_slack p t z R B A k h
   exact slack_removal_at V N D (num 5) hD late
 
-theorem original_upper_diagonal (t z R B A k : PTm n) (h : Γ ⊢[PRAAx] source z R B A) :
-    Γ ⊢[PRAAx] distanceBounded (ap2 upperF t (splitData z R B A k)) (ap2 gammaF t (gammaData z R B A))
-      (GaussianNamedLipschitzRate.diagonalNumerator A (unit (height k A R)) (num 6) t)
-      (GaussianNamedLipschitzRate.diagonalDenominator (unit (height k A R)) t) := by
-  let E := etaDen k A R
-  let H := unit (height k A R)
+theorem original_upper_diagonal_of_lower (t z R B A a b H : PTm n)
+    (h : Γ ⊢[PRAAx] GaussianEulerIncompleteCofinalRate.source z R B A a b)
+    (hH : Γ ⊢[PRAAx] le one H)
+    (hLower : Γ ⊢[PRAAx] bounded (ap2 lowerF t (data z R B A a b)) (A*unit t+H) (H*unit t)) :
+    Γ ⊢[PRAAx] distanceBounded (ap2 upperF t (data z R B A a b)) (ap2 gammaF t (gammaData z R B A))
+      (GaussianNamedLipschitzRate.diagonalNumerator A H (num 6) t)
+      (GaussianNamedLipschitzRate.diagonalDenominator H t) := by
   let T := unit t
   let D := H*T
-  let x := splitData z R B A k
+  let x := data z R B A a b
   let V := ap2 gammaF t (gammaData z R B A)
-  let W := ap2 GaussianEulerIncompleteSum.sumF t (GaussianEulerIncompleteSum.sumData z R B A one E)
+  let W := ap2 GaussianEulerIncompleteSum.sumF t (GaussianEulerIncompleteSum.sumData z R B A a b)
   let L := ap2 lowerF t x
   let U := ap2 upperF t x
-  have hH := unit_positive (Γ := Γ) (height k A R)
   have hT := unit_positive (Γ := Γ) t
   have hD : Γ ⊢[PRAAx] le one D := positive_product _ _ hH hT
-  have hSplit := split_source z R B A k h
-  have both := original_regular_names z R B A one E hSplit
-  have eq := GaussianEulerIncompleteSum.original_Gamma_is_incomplete_sum z R B A one E hSplit
+  have both := original_regular_names z R B A a b h
+  have eq := GaussianEulerIncompleteSum.original_Gamma_is_incomplete_sum z R B A a b h
   have first : Γ ⊢[PRAAx] distanceBounded V W (two*H) D :=
     distance_radius_mono _ _ _ _ _ _ (positive_product _ _ hT hT) hD
       (le_of_eq_add (d := zero) (by dsimp only [D]; ipra_ring)) (cross_at _ _ _ _ t t eq)
@@ -133,10 +132,10 @@ theorem original_upper_diagonal (t z R B A k : PTm n) (h : Γ ⊢[PRAAx] source 
   have second : Γ ⊢[PRAAx] distanceBounded W (qadd L U) (num 3*H) D :=
     distance_radius_mono _ _ _ _ _ _ hT hD
       (le_of_eq_add (d := zero) (by dsimp only [D,GaussianNameRingLaws.three]; ipra_ring)) separate
-  have lower := (GaussianReconstructionRoots.distance_zero_iff _ _ _ hD).iffMpr (original_lower_dyadic_bound t z R B A k h)
+  have lower := (GaussianReconstructionRoots.distance_zero_iff _ _ _ hD).iffMpr hLower
   have same := GaussianRationalPowerDifference.distance_refl_zero (Γ := Γ) U D hD
   have cU : Γ ⊢[PRAAx] GaussianRationalHorner.canonical U :=
-    GaussianRationalHorner.canonical_congr (upper_at t z R B A one E)
+    GaussianRationalHorner.canonical_congr (upper_at t z R B A a b)
       (GaussianCompactRiemannName.name_canonical GaussianEulerIntegrandName.evaluatorF _ _ _ _ _ _ _)
   have last : Γ ⊢[PRAAx] distanceBounded (qadd L U) U (A*T+H) D :=
     distance_congr (.eqRefl _) (GaussianRationalSyntheticDivision.qzero_add _ cU) (by ipra_ring) (.eqRefl _)
@@ -144,6 +143,13 @@ theorem original_upper_diagonal (t z R B A k : PTm n) (h : Γ ⊢[PRAAx] source 
   exact distance_symmetric _ _ _ _ hD (distance_congr (.eqRefl _) (.eqRefl _)
     (by dsimp only [GaussianNamedLipschitzRate.diagonalNumerator]; ipra_ring) (.eqRefl _)
     (distance_triangle_same V W U _ _ D hD first (distance_triangle_same W (qadd L U) U _ _ D hD second last)))
+
+theorem original_upper_diagonal (t z R B A k : PTm n) (h : Γ ⊢[PRAAx] source z R B A) :
+    Γ ⊢[PRAAx] distanceBounded (ap2 upperF t (splitData z R B A k)) (ap2 gammaF t (gammaData z R B A))
+      (GaussianNamedLipschitzRate.diagonalNumerator A (unit (height k A R)) (num 6) t)
+      (GaussianNamedLipschitzRate.diagonalDenominator (unit (height k A R)) t) :=
+  original_upper_diagonal_of_lower t z R B A one (etaDen k A R) (unit (height k A R))
+    (split_source z R B A k h) (unit_positive _) (original_lower_dyadic_bound t z R B A k h)
 
 theorem original_upper_dyadic_rate (z R B A k : PTm n) (h : Γ ⊢[PRAAx] source z R B A) :
     Γ ⊢[PRAAx] independentRate upperF gammaF (splitData z R B A k) (gammaData z R B A) A (unit (height k A R)) := by
