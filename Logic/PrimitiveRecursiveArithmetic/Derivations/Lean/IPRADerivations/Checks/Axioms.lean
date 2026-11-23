@@ -1898,6 +1898,15 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.ClusterTransport.others_lower
 #print axioms LeanProofs.IPRA.Analysis.ClusterTransport.unique_nearest
 #print axioms LeanProofs.IPRA.Analysis.ClusterTransport.same_label
+#print axioms LeanProofs.IPRA.Analysis.EulerPolygon.euler_norm
+#print axioms LeanProofs.IPRA.Analysis.EulerPolygon.euler_bound
+#print axioms LeanProofs.IPRA.Analysis.EulerPolygon.interp_bound
+#print axioms LeanProofs.IPRA.Analysis.EulerPolygon.acc_le
+#print axioms LeanProofs.IPRA.Analysis.EulerPolygon.stability_coeff
+#print axioms LeanProofs.IPRA.Analysis.EulerPolygon.stability_bound
+#print axioms LeanProofs.IPRA.Analysis.EulerPolygon.clear_mid
+#print axioms LeanProofs.IPRA.Analysis.EulerPolygon.clear_left
+#print axioms LeanProofs.IPRA.Analysis.EulerPolygon.clear_right
 #print axioms LeanProofs.IPRA.Topology.FiniteSeparation.t1_collapse
 #print axioms LeanProofs.IPRA.Topology.FiniteSeparation.discrete_clopen
 #print axioms LeanProofs.IPRA.Topology.FiniteSeparation.hausdorff_collapse
@@ -2227,6 +2236,9 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Topology.SpernerWitness.first_change
 #print axioms LeanProofs.IPRA.Topology.SpernerWitness.before_change
 #print axioms LeanProofs.IPRA.Topology.SpernerWitness.sperner_cell
+#print axioms LeanProofs.IPRA.Topology.BrouwerIntervalMain.main_interval
+#print axioms LeanProofs.IPRA.Topology.ObstructionLabels.repeat_of_no_opposite
+#print axioms LeanProofs.IPRA.Topology.ObstructionLabels.finite_obstruction_labels
 #print axioms LeanProofs.IPRA.Combinatorics.RamseyBounds.thinning
 #print axioms LeanProofs.IPRA.Combinatorics.RamseyBounds.reservoir_step
 #print axioms LeanProofs.IPRA.Combinatorics.RamseyBounds.chain_step

@@ -840,6 +840,7 @@ import IPRADerivations.Analysis.EulerResidual
 import IPRADerivations.Analysis.SignedPolysolver
 import IPRADerivations.Analysis.FactorTransport
 import IPRADerivations.Analysis.ClusterTransport
+import IPRADerivations.Analysis.EulerPolygon
 import IPRADerivations.Topology.FiniteSeparation
 import IPRADerivations.Topology.FiniteRecovery
 import IPRADerivations.Topology.FiniteNormalityConverse
@@ -883,6 +884,8 @@ import IPRADerivations.Topology.BarycentricMesh
 import IPRADerivations.Topology.HairyBallSearch
 import IPRADerivations.Topology.SimplexProjection
 import IPRADerivations.Topology.SpernerWitness
+import IPRADerivations.Topology.BrouwerIntervalMain
+import IPRADerivations.Topology.ObstructionLabels
 import IPRADerivations.Combinatorics.RamseyBounds
 import IPRADerivations.Geometry.HellyCertificates
 import IPRADerivations.Geometry.HellyLine
