@@ -35,12 +35,12 @@ theorem exists_chartClosedRectangle_subset_of_mem_nhds {p : ℝ × ℝ} {W : Set
 private theorem continuousOn_longitudeRow {u : ℝ × ℝ → ℝ} {a b c d y : ℝ}
     (hu : ContinuousOn u (chartClosedRectangle a b c d)) (hy : y ∈ Icc c d) :
     ContinuousOn (fun x => u (x, y)) (Icc a b) :=
-  hu.comp' (by fun_prop) fun _ hx => ⟨hx, hy⟩
+  ContinuousOn.uncurry_right (f := fun x y => u (x, y)) y hy hu
 
 theorem continuousOn_latitudeProfile {u : ℝ × ℝ → ℝ} {a b c d x : ℝ}
     (hu : ContinuousOn u (chartClosedRectangle a b c d)) (hx : x ∈ Icc a b) :
     ContinuousOn (fun y => u (x, y)) (Icc c d) :=
-  hu.comp' (by fun_prop) fun _ hy => ⟨hx, hy⟩
+  ContinuousOn.uncurry_left (f := fun x y => u (x, y)) x hx hu
 
 /-- The difference of the two endpoint profiles is the width of a chart slice. -/
 theorem continuousOn_chartWidth {u : ℝ × ℝ → ℝ} {a b c d : ℝ} (hab : a ≤ b)
@@ -109,21 +109,20 @@ noncomputable def triangularChart {u : ℝ × ℝ → ℝ} {a b c d : ℝ}
     (hmono : ∀ y ∈ Icc c d, StrictMonoOn (fun x => u (x, y)) (Icc a b)) :
     OpenPartialHomeomorph (ℝ × ℝ) (ℝ × ℝ) := by
   let s := chartRectangle a b c d
-  let t := chartImage u a b c d
   let box := chartClosedRectangle a b c d
   have hcont : ContinuousOn (flattenCoordinates u) box := hu.prodMk continuous_snd.continuousOn
   have hinj := injOn_flattenCoordinates_closedRectangle hmono
-  have himage : flattenCoordinates u '' s = t :=
-    image_flattenCoordinates_chartRectangle hab hu (fun y hy => hmono y (Ioo_subset_Icc_self hy))
-  have hbij : BijOn (flattenCoordinates u) s t :=
-    himage ▸ (hinj.mono chartRectangle_subset_closed).bijOn_image
   letI : CompactSpace box := isCompact_iff_compactSpace.mp (isCompact_chartClosedRectangle a b c d)
-  have hclosed := (continuousOn_iff_continuous_restrict.mp hcont).isClosedEmbedding hinj.injective
-  have hopen : IsOpenEmbedding (s.restrict (flattenCoordinates u)) :=
-    ⟨hclosed.isEmbedding.comp (IsEmbedding.inclusion chartRectangle_subset_closed), by
-      simpa only [range_restrict, himage] using isOpen_chartImage hab hu⟩
+  have he : IsEmbedding (s.restrict (flattenCoordinates u)) :=
+    (hcont.restrict.isClosedEmbedding hinj.injective).isEmbedding.comp
+      (IsEmbedding.inclusion chartRectangle_subset_closed)
+  have hbij : BijOn (flattenCoordinates u) s (chartImage u a b c d) :=
+    image_flattenCoordinates_chartRectangle hab hu (fun y hy => hmono y (Ioo_subset_Icc_self hy)) ▸
+      (hinj.mono chartRectangle_subset_closed).bijOn_image
   exact OpenPartialHomeomorph.ofContinuousOpenRestrict
-    (hbij.toPartialEquiv (flattenCoordinates u) s t) (hcont.mono chartRectangle_subset_closed)
-    hopen.isOpenMap (isOpen_chartRectangle _ _ _ _)
+    (hbij.toPartialEquiv (flattenCoordinates u) s _) (hcont.mono chartRectangle_subset_closed)
+    (he.isInducing.isOpenMap (by
+      simpa only [range_restrict, hbij.image_eq] using isOpen_chartImage hab hu))
+    (isOpen_chartRectangle _ _ _ _)
 
 end GlobeFlattening

@@ -25,8 +25,7 @@ private def scaledPlanarEquiv (p : ℝ × ℝ) (hc : Real.cos p.2 ≠ 0) :
 theorem sq_norm_sphereDerivative (p v : ℝ × ℝ) :
     ‖sphereDerivative p v‖ ^ 2 = (Real.cos p.2 * v.1)^2 + v.2^2 := by
   change ‖sphereTangentLift p !₂[Real.cos p.2 * v.1, v.2]‖ ^ 2 = _
-  rw [norm_sphereTangentLift, EuclideanSpace.real_norm_sq_eq, Fin.sum_univ_two]
-  rfl
+  simp [norm_sphereTangentLift, EuclideanSpace.real_norm_sq_eq, Fin.sum_univ_two]
 
 /-- The differential of the inverse planar chart followed by the spherical
 parametrization is the lift into the tangent plane. -/
@@ -38,14 +37,12 @@ theorem hasFDerivAt_sphereFlatten_inverse
       (planarEuclideanEquiv (g p)) := by
   let D := scaledPlanarEquiv p hc
   let G := g.transHomeomorph planarEuclideanEquiv.toHomeomorph
-  have hGinv := G.hasFDerivAt_symm (f' := D) (G.map_source hp) (by
-    rw [G.left_inv hp]
-    exact planarEuclideanEquiv.hasFDerivAt.comp p hg)
+  have hGinv := G.hasFDerivAt_symm (f' := D) (G.map_source hp)
+    ((G.left_inv hp).symm ▸ planarEuclideanEquiv.hasFDerivAt.comp p hg)
   have hs' : HasFDerivAt spherePoint (sphereDerivative p) (G.symm (G p)) :=
     (G.left_inv hp).symm ▸ hasFDerivAt_spherePoint p
-  apply (hs'.comp (G p) hGinv).congr_fderiv
-  ext v : 1
-  exact congrArg (sphereTangentLift p) (D.apply_symm_apply v)
+  exact (hs'.comp (G p) hGinv).congr_fderiv <|
+    ContinuousLinearMap.ext fun v => congrArg (sphereTangentLift p) (D.apply_symm_apply v)
 
 /-- The forward differential is the linear left inverse of the tangent lift. -/
 theorem hasFDerivWithinAt_sphereFlatten
