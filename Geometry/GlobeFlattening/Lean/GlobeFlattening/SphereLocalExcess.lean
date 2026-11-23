@@ -34,12 +34,6 @@ theorem sphereFlattenForward_image {u : ℝ × ℝ → ℝ} {s : Set (ℝ × ℝ
   rw [image_image, image_image]
   exact image_congr fun _ hp => sphereFlattenForward_spherePoint (hs hp)
 
-theorem sphereFlattenForward_exceptional_image {u : ℝ × ℝ → ℝ} {good : Set (ℝ × ℝ)}
-    (hsub : good ⊆ sphereLongitudeDomain) :
-    sphereFlattenForward u '' sphereExceptional good =
-      planarEuclideanEquiv '' (flattenCoordinates u '' (sphereLongitudeDomain \ good)) := by
-  rw [sphereExceptional_eq_image hsub, sphereFlattenForward_image sdiff_subset]
-
 /-- Every nonempty open patch of the Euclidean target contains positive
 area from the exceptional image. -/
 theorem volume_sphereExceptional_inter_of_open {u : ℝ × ℝ → ℝ}
@@ -65,7 +59,8 @@ theorem volume_sphereExceptional_inter_of_open {u : ℝ × ℝ → ℝ}
   have hpos := volume_local_exceptional_image_pos (hp'.1.1.trans hp'.1.2)
     (hp'.2.1.trans hp'.2.2) (hbox.trans inter_subset_left) hu hslope hgood hnull hderiv
   rw [← volume_planarEuclideanEquiv_image, image_image] at hpos
-  rw [sphereFlattenForward_exceptional_image hsub, image_image, ← image_preimage_inter,
+  rw [sphereExceptional_eq_image hsub, sphereFlattenForward_image sdiff_subset, image_image,
+    ← image_preimage_inter,
     inter_sdiff_left_comm, ← inter_sdiff_assoc]
   exact hpos.trans_le (measure_mono (image_mono
     (sdiff_subset_sdiff_left (chartRectangle_subset_closed.trans hbox))))

@@ -32,22 +32,10 @@ theorem exists_chartClosedRectangle_subset_of_mem_nhds {p : ℝ × ℝ} {W : Set
   · exact ⟨⟨sub_lt_self _ hr, lt_add_of_pos_right _ hr⟩, ⟨sub_lt_self _ hr, lt_add_of_pos_right _ hr⟩⟩
   · simpa only [chartClosedRectangle, ← Real.closedBall_eq_Icc, closedBall_prod_same] using hsub
 
-private theorem continuousOn_longitudeRow {u : ℝ × ℝ → ℝ} {a b c d y : ℝ}
-    (hu : ContinuousOn u (chartClosedRectangle a b c d)) (hy : y ∈ Icc c d) :
-    ContinuousOn (fun x => u (x, y)) (Icc a b) :=
-  ContinuousOn.uncurry_right (f := fun x y => u (x, y)) y hy hu
-
 theorem continuousOn_latitudeProfile {u : ℝ × ℝ → ℝ} {a b c d x : ℝ}
     (hu : ContinuousOn u (chartClosedRectangle a b c d)) (hx : x ∈ Icc a b) :
     ContinuousOn (fun y => u (x, y)) (Icc c d) :=
   ContinuousOn.uncurry_left (f := fun x y => u (x, y)) x hx hu
-
-/-- The difference of the two endpoint profiles is the width of a chart slice. -/
-theorem continuousOn_chartWidth {u : ℝ × ℝ → ℝ} {a b c d : ℝ} (hab : a ≤ b)
-    (hu : ContinuousOn u (chartClosedRectangle a b c d)) :
-    ContinuousOn (fun y => u (b, y) - u (a, y)) (Icc c d) :=
-  (continuousOn_latitudeProfile hu ⟨hab, le_rfl⟩).sub
-    (continuousOn_latitudeProfile hu ⟨le_rfl, hab⟩)
 
 theorem isOpen_chartImage {u : ℝ × ℝ → ℝ} {a b c d : ℝ} (hab : a ≤ b)
     (hu : ContinuousOn u (chartClosedRectangle a b c d)) :
@@ -89,8 +77,8 @@ theorem image_flattenCoordinates_chartRectangle {u : ℝ × ℝ → ℝ} {a b c 
   simp only [Prod.exists, mem_prod, Prod.mk.injEq, ← and_assoc, exists_eq_right]
   simp only [and_assoc, @and_left_comm _ (y ∈ Ioo c d) _, exists_and_left]
   exact and_congr_right fun hy => Set.ext_iff.mp
-    ((continuousOn_longitudeRow hu (Ioo_subset_Icc_self hy)).image_Ioo_of_strictMonoOn hab
-      (hmono y hy)) x
+    (ContinuousOn.image_Ioo_of_strictMonoOn hab (f := fun x => u (x, y))
+      (hu.comp' (by fun_prop) fun _ hx => ⟨hx, Ioo_subset_Icc_self hy⟩) (hmono y hy)) x
 
 theorem isBounded_chartImage {u : ℝ × ℝ → ℝ} {a b c d : ℝ}
     (hab : a ≤ b) (hu : ContinuousOn u (chartClosedRectangle a b c d))

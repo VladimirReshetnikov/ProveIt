@@ -134,8 +134,9 @@ def globeFlattening_from_scalar
       good_image_measurable := hBorelImage (measurableSet_cutSphere.diff hZmeas) sdiff_subset
       good_image_area := by
         rw [hgoodSource, sphereFlattenForward_image hsub, volume_planarEuclideanEquiv_image]
-        exact volume_good_image_eq_four_pi hgood hsub hnull g.injOn
+        exact (measure_flattened_good_image hgood hsub hnull g.injOn
           (fun p hp => (hDeriv p hp).hasFDerivWithinAt)
+          (fun _ hp => (Real.cos_pos_of_mem_Ioo (hsub hp).2).le)).trans lintegral_cos_chartRectangle
       forward_derivative := ?_
       inverse_derivative := ?_
       distance_bound := ?_
