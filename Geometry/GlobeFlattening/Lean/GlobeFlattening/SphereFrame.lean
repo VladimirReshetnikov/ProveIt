@@ -1,7 +1,6 @@
-import GlobeFlattening.CoordinateRectangles
+import GlobeFlattening.SphereChart
 import Mathlib.Analysis.Calculus.FDeriv.WithLp
 import Mathlib.Analysis.InnerProductSpace.LinearMap
-import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv
 import Mathlib.Tactic.Ring
 
@@ -18,10 +17,6 @@ open scoped RealInnerProductSpace
 
 noncomputable section
 
-/-- The spherical parametrization at a longitude-latitude pair. -/
-def spherePoint (p : ℝ × ℝ) : EuclideanSpace ℝ (Fin 3) :=
-  !₂[Real.cos p.2 * Real.cos p.1, Real.cos p.2 * Real.sin p.1, Real.sin p.2]
-
 /-- Unit tangent in the direction of increasing longitude. -/
 def sphereEast (p : ℝ × ℝ) : EuclideanSpace ℝ (Fin 3) :=
   !₂[-Real.sin p.1, Real.cos p.1, 0]
@@ -37,13 +32,11 @@ def sphereFrame (p : ℝ × ℝ) : Fin 3 → EuclideanSpace ℝ (Fin 3) :=
 theorem orthonormal_sphereFrame (p : ℝ × ℝ) : Orthonormal ℝ (sphereFrame p) := by
   have hLon := Real.sin_sq_add_cos_sq p.1
   have hLat := Real.sin_sq_add_cos_sq p.2
-  simp [sphereFrame, Fin.forall_fin_succ, ← pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero,
+  simp [sphereFrame, Fin.forall_fin_succ, norm_spherePoint]
+  simp [← pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero,
     EuclideanSpace.real_norm_sq_eq, PiLp.inner_apply, Fin.sum_univ_three, RCLike.inner_apply,
     sphereEast, sphereNorth, spherePoint, mul_pow]
   grind only
-
-@[simp] theorem norm_spherePoint (p : ℝ × ℝ) : ‖spherePoint p‖ = 1 :=
-  (orthonormal_sphereFrame p).norm_eq_one (2 : Fin 3)
 
 private def sphereTangentPlane (p : ℝ × ℝ) : Submodule ℝ (EuclideanSpace ℝ (Fin 3)) :=
   (ℝ ∙ spherePoint p)ᗮ
@@ -126,9 +119,6 @@ theorem hasFDerivAt_spherePoint (p : ℝ × ℝ) :
     intro v
     simp [sphereDerivative_apply, sphereEast, sphereNorth]
     ring
-
-theorem continuous_spherePoint : Continuous spherePoint :=
-  continuous_iff_continuousAt.2 fun p => (hasFDerivAt_spherePoint p).continuousAt
 
 end
 

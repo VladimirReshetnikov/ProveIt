@@ -1,5 +1,5 @@
 import GlobeFlattening.CoordinateRectangles
-import GlobeFlattening.SphereFrame
+import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Analysis.SpecialFunctions.Complex.Arg
 
 /-!
@@ -15,6 +15,20 @@ open Set
 open scoped Real
 
 noncomputable section
+
+/-- The spherical parametrization at a longitude-latitude pair. -/
+def spherePoint (p : ℝ × ℝ) : EuclideanSpace ℝ (Fin 3) :=
+  !₂[Real.cos p.2 * Real.cos p.1, Real.cos p.2 * Real.sin p.1, Real.sin p.2]
+
+@[simp] theorem norm_spherePoint (p : ℝ × ℝ) : ‖spherePoint p‖ = 1 := by
+  have hLon := Real.sin_sq_add_cos_sq p.1
+  have hLat := Real.sin_sq_add_cos_sq p.2
+  simp [← pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero, EuclideanSpace.real_norm_sq_eq,
+    Fin.sum_univ_three, spherePoint, mul_pow]
+  grind only
+
+theorem continuous_spherePoint : Continuous spherePoint := by
+  fun_prop [spherePoint]
 
 /-- The projection to the equatorial plane, identified with the complex plane. -/
 def horizontalComplex (w : EuclideanSpace ℝ (Fin 3)) : ℂ :=
@@ -88,14 +102,13 @@ theorem sphereChartInverse_mapsTo : MapsTo sphereChartInverse cutSphere sphereLo
 
 theorem spherePoint_sphereChartInverse {w : EuclideanSpace ℝ (Fin 3)} (hw : w ∈ cutSphere) :
     spherePoint (sphereChartInverse w) = w := by
-  have hxy : horizontalComplex (spherePoint (sphereChartInverse w)) = horizontalComplex w := by
-    rw [horizontalComplex_spherePoint, sphereChartInverse, Real.cos_arcsin,
-      ← cutSphere_horizontal_norm_sq hw, Real.sqrt_sq (norm_nonneg _),
-      Complex.norm_mul_cos_add_sin_mul_I]
+  have hr : Real.cos (Real.arcsin (w 2)) = ‖horizontalComplex w‖ := by
+    rw [Real.cos_arcsin, ← cutSphere_horizontal_norm_sq hw, Real.sqrt_sq (norm_nonneg _)]
   have hz := cutSphere_vertical_bounds hw
   apply PiLp.ext
-  simp only [Fin.forall_fin_succ, Fin.forall_fin_zero, and_true]
-  exact ⟨congrArg Complex.re hxy, congrArg Complex.im hxy, Real.sin_arcsin hz.1.le hz.2.le⟩
+  simpa [Fin.forall_fin_succ, spherePoint, sphereChartInverse, hr] using
+    And.intro (Complex.norm_mul_cos_arg (horizontalComplex w))
+      (And.intro (Complex.norm_mul_sin_arg (horizontalComplex w)) (Real.sin_arcsin hz.1.le hz.2.le))
 
 theorem spherePoint_bijOn : BijOn spherePoint sphereLongitudeDomain cutSphere :=
   (show InvOn sphereChartInverse spherePoint sphereLongitudeDomain cutSphere from
