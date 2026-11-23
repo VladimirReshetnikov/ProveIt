@@ -1,3 +1,4 @@
+import GlobeFlattening.CoordinateRectangles
 import GlobeFlattening.RestrictedArea
 import Mathlib.Topology.OpenPartialHomeomorph.Basic
 import Mathlib.Topology.Order.IntermediateValue
@@ -5,8 +6,8 @@ import Mathlib.Topology.Order.IntermediateValue
 /-!
 # The triangular flattening chart
 
-The scalar construction becomes a homeomorphism once it is continuous on
-the closed rectangle and strictly increasing on each interior latitude row.
+Continuity and strict increase on each row make the closed rectangle
+embed by compactness. The interior maps onto the open chart image.
 -/
 
 open Filter Set Topology
@@ -14,24 +15,9 @@ open scoped Topology
 
 namespace GlobeFlattening
 
-/-- The closed coordinate rectangle, on which the scalar function is continuous. -/
-def chartClosedRectangle (a b c d : ℝ) : Set (ℝ × ℝ) :=
-  Icc a b ×ˢ Icc c d
-
-/-- The open longitude and latitude rectangle. -/
-def chartRectangle (a b c d : ℝ) : Set (ℝ × ℝ) :=
-  Ioo a b ×ˢ Ioo c d
-
 /-- The region between the left and right endpoint profiles. -/
 def chartImage (u : ℝ × ℝ → ℝ) (a b c d : ℝ) : Set (ℝ × ℝ) :=
   Prod.swap ⁻¹' regionBetween (fun y => u (a, y)) (fun y => u (b, y)) (Ioo c d)
-
-theorem chartRectangle_subset_closed {a b c d : ℝ} :
-    chartRectangle a b c d ⊆ chartClosedRectangle a b c d :=
-  prod_mono Ioo_subset_Icc_self Ioo_subset_Icc_self
-
-theorem isOpen_chartRectangle (a b c d : ℝ) : IsOpen (chartRectangle a b c d) :=
-  isOpen_Ioo.prod isOpen_Ioo
 
 theorem isCompact_chartClosedRectangle (a b c d : ℝ) :
     IsCompact (chartClosedRectangle a b c d) :=

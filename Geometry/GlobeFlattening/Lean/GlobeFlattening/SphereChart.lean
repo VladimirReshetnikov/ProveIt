@@ -1,3 +1,4 @@
+import GlobeFlattening.CoordinateRectangles
 import GlobeFlattening.SphereFrame
 import Mathlib.Analysis.SpecialFunctions.Complex.Arg
 import Mathlib.Tactic.Linarith
@@ -15,17 +16,6 @@ open Set
 open scoped Real
 
 noncomputable section
-
-/-- The closed rectangle of longitude-latitude parameters from the report. -/
-def sphereClosedBox : Set (ℝ × ℝ) :=
-  Icc (-Real.pi) Real.pi ×ˢ Icc (-(Real.pi / 2)) (Real.pi / 2)
-
-/-- The open rectangle of longitude-latitude parameters from the report. -/
-def sphereLongitudeDomain : Set (ℝ × ℝ) :=
-  Ioo (-Real.pi) Real.pi ×ˢ Ioo (-(Real.pi / 2)) (Real.pi / 2)
-
-theorem isOpen_sphereLongitudeDomain : IsOpen sphereLongitudeDomain :=
-  isOpen_Ioo.prod isOpen_Ioo
 
 /-- The projection to the equatorial plane, identified with the complex plane. -/
 def horizontalComplex (w : EuclideanSpace ℝ (Fin 3)) : ℂ := ⟨w 0, w 1⟩

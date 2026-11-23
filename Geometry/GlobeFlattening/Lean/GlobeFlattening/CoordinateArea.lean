@@ -41,7 +41,7 @@ theorem lintegral_cos_rectangle {a b c d : ℝ} (hab : a ≤ b) :
   apply setLIntegral_congr_fun measurableSet_Ioo
   intro y _
   change (∫⁻ _ in Ioo a b, ENNReal.ofReal (Real.cos y)) = _
-  rw [lintegral_const, Measure.restrict_apply_univ, Real.volume_Ioo, mul_comm]
+  rw [setLIntegral_const, Real.volume_Ioo, mul_comm]
   exact (ENNReal.ofReal_mul (sub_nonneg.mpr hab)).symm
 
 /-- A strict longitude slope bound gives greater image area than the cosine density. -/
@@ -69,49 +69,39 @@ theorem lintegral_cos_lt_volume_chartImage
 
 private abbrev latitudeInterval : Set ℝ := Ioo (-(Real.pi / 2)) (Real.pi / 2)
 
-private theorem lintegral_latitude_affine_cos {C B : ℝ} (hC : 0 ≤ C) (hB : 0 ≤ B) :
-    (∫⁻ y in latitudeInterval, ENNReal.ofReal (C * Real.cos y + B)) =
-      ENNReal.ofReal (2 * C + Real.pi * B) := by
-  have hab : -(Real.pi / 2) ≤ Real.pi / 2 := by linarith [Real.pi_pos]
-  have hmul : Continuous (fun y => C * Real.cos y) := continuous_const.mul Real.continuous_cos
-  have hsum : Continuous (fun y => C * Real.cos y + B) := hmul.add continuous_const
-  have hint : IntegrableOn (fun y => C * Real.cos y + B) latitudeInterval :=
-    hsum.integrableOn_Icc.mono_set Ioo_subset_Icc_self
-  have hnonneg : 0 ≤ᵐ[volume.restrict latitudeInterval] (fun y => C * Real.cos y + B) :=
-    (ae_restrict_mem measurableSet_Ioo).mono fun y hy =>
-      add_nonneg (mul_nonneg hC (Real.cos_pos_of_mem_Ioo hy).le) hB
-  rw [← ofReal_integral_eq_lintegral_ofReal hint hnonneg]
-  change ENNReal.ofReal (∫ y in Ioo _ _, C * Real.cos y + B) = _
-  rw [← integral_Ioc_eq_integral_Ioo, ← intervalIntegral.integral_of_le hab,
-    intervalIntegral.integral_add (hmul.intervalIntegrable _ _) (continuous_const.intervalIntegrable _ _),
-    intervalIntegral.integral_const_mul, integral_cos, Real.sin_neg,
-    Real.sin_pi_div_two, intervalIntegral.integral_const]
+private theorem lintegral_sinusoidalWidth :
+    (∫⁻ y in latitudeInterval, ENNReal.ofReal (2 * Real.pi * Real.cos y)) =
+      ENNReal.ofReal (4 * Real.pi) := by
+  have hcont : Continuous (fun y => 2 * Real.pi * Real.cos y) :=
+    continuous_const.mul Real.continuous_cos
+  rw [← ofReal_integral_eq_lintegral_ofReal
+    (hcont.integrableOn_Icc.mono_set Ioo_subset_Icc_self)
+    ((ae_restrict_mem measurableSet_Ioo).mono fun y hy =>
+      mul_nonneg (by positivity) (Real.cos_pos_of_mem_Ioo hy).le)]
+  change ENNReal.ofReal (∫ y in Ioo _ _, 2 * Real.pi * Real.cos y) = _
+  rw [← integral_Ioc_eq_integral_Ioo, ← intervalIntegral.integral_of_le (by linarith [Real.pi_pos]),
+    intervalIntegral.integral_const_mul, integral_cos, Real.sin_neg, Real.sin_pi_div_two]
   congr 1
-  simp only [smul_eq_mul]
   ring
 
 /-- The spherical area density integrates to `4π` over the cut-sphere
 coordinate rectangle. -/
 theorem lintegral_cos_chartRectangle :
-    (∫⁻ p in chartRectangle (-Real.pi) Real.pi (-(Real.pi / 2)) (Real.pi / 2),
+    (∫⁻ p in sphereLongitudeDomain,
         ENNReal.ofReal (Real.cos p.2)) = ENNReal.ofReal (4 * Real.pi) := by
-  rw [lintegral_cos_rectangle (by linarith [Real.pi_pos]), show Real.pi - -Real.pi = 2 * Real.pi by ring]
-  simpa only [add_zero, mul_zero, show (2 : ℝ) * (2 * Real.pi) = 4 * Real.pi by ring] using
-    lintegral_latitude_affine_cos (C := 2 * Real.pi) (B := 0) (by positivity) le_rfl
+  rw [sphereLongitudeDomain, lintegral_cos_rectangle (by linarith [Real.pi_pos]), show Real.pi - -Real.pi = 2 * Real.pi by ring]
+  exact lintegral_sinusoidalWidth
 
 /-- A co-null good subset of the coordinate rectangle has image area
 exactly `4π` when the prescribed scalar derivative holds there. -/
 theorem volume_good_image_eq_four_pi
     {u : ℝ × ℝ → ℝ} {good : Set (ℝ × ℝ)}
     (hgood : MeasurableSet good)
-    (hsub : good ⊆ chartRectangle (-Real.pi) Real.pi (-(Real.pi / 2)) (Real.pi / 2))
-    (hnull : volume
-      (chartRectangle (-Real.pi) Real.pi (-(Real.pi / 2)) (Real.pi / 2) \ good) = 0)
-    (hinj : InjOn (flattenCoordinates u)
-      (chartRectangle (-Real.pi) Real.pi (-(Real.pi / 2)) (Real.pi / 2)))
+    (hsub : good ⊆ sphereLongitudeDomain)
+    (hnull : volume (sphereLongitudeDomain \ good) = 0)
+    (hinj : InjOn (flattenCoordinates u) sphereLongitudeDomain)
     (hderiv : ∀ p ∈ good, HasFDerivWithinAt u
-      (Real.cos p.2 • ContinuousLinearMap.fst ℝ ℝ ℝ)
-      (chartRectangle (-Real.pi) Real.pi (-(Real.pi / 2)) (Real.pi / 2)) p) :
+      (Real.cos p.2 • ContinuousLinearMap.fst ℝ ℝ ℝ) sphereLongitudeDomain p) :
     volume (flattenCoordinates u '' good) = ENNReal.ofReal (4 * Real.pi) :=
   (measure_flattened_good_image hgood hsub hnull hinj hderiv
     (fun _ hp => (Real.cos_pos_of_mem_Ioo (hsub hp).2).le)).trans lintegral_cos_chartRectangle
@@ -137,22 +127,25 @@ private theorem dist_flattenCoordinates_sinusoidalCoordinates (u : ℝ × ℝ �
 /-- A uniform sinusoidal distance bound gives at most two endpoint errors per slice. -/
 theorem volume_chartImage_upper_of_sinusoidal_closeness
     {u : ℝ × ℝ → ℝ} {ε : ℝ} (hε : 0 < ε)
-    (hu : ContinuousOn u (chartClosedRectangle (-Real.pi) Real.pi (-(Real.pi / 2)) (Real.pi / 2)))
-    (hclose : ∀ p ∈ chartClosedRectangle (-Real.pi) Real.pi (-(Real.pi / 2)) (Real.pi / 2),
+    (hu : ContinuousOn u sphereClosedBox)
+    (hclose : ∀ p ∈ sphereClosedBox,
       dist (flattenCoordinates u p) (sinusoidalCoordinates p) ≤ ε) :
     volume (chartImage u (-Real.pi) Real.pi (-(Real.pi / 2)) (Real.pi / 2)) <
       ENNReal.ofReal (4 * Real.pi * (1 + ε)) := by
   have hab : -Real.pi ≤ Real.pi := by linarith [Real.pi_pos]
   rw [volume_chartImage_eq_lintegral_width hab hu]
   calc
-    _ ≤ ∫⁻ y in latitudeInterval, ENNReal.ofReal (2 * Real.pi * Real.cos y + 2 * ε) := by
-      refine setLIntegral_mono' measurableSet_Ioo fun y hy => ENNReal.ofReal_le_ofReal ?_
+    _ ≤ ∫⁻ y in latitudeInterval, ENNReal.ofReal (2 * Real.pi * Real.cos y) + ENNReal.ofReal (2 * ε) := by
+      refine setLIntegral_mono' measurableSet_Ioo fun y hy =>
+        (ENNReal.ofReal_le_ofReal ?_).trans ENNReal.ofReal_add_le
       have hleft := hclose (-Real.pi, y) ⟨⟨le_rfl, hab⟩, Ioo_subset_Icc_self hy⟩
       have hright := hclose (Real.pi, y) ⟨⟨hab, le_rfl⟩, Ioo_subset_Icc_self hy⟩
       rw [dist_flattenCoordinates_sinusoidalCoordinates] at hleft hright
       linarith only [(abs_le.mp hleft).1, (abs_le.mp hright).2]
     _ = ENNReal.ofReal (4 * Real.pi + 2 * Real.pi * ε) := by
-      rw [lintegral_latitude_affine_cos (by positivity) (by positivity)]
+      rw [lintegral_add_right _ measurable_const, lintegral_sinusoidalWidth, setLIntegral_const,
+        Real.volume_Ioo, show Real.pi / 2 - -(Real.pi / 2) = Real.pi by ring,
+        ← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_add (by positivity) (by positivity)]
       congr 1
       ring
     _ < _ := (ENNReal.ofReal_lt_ofReal_iff (by positivity)).2 (by
@@ -161,9 +154,9 @@ theorem volume_chartImage_upper_of_sinusoidal_closeness
 /-- The scalar tolerance gives a uniform bound on the projection error. -/
 theorem flattenCoordinates_close_to_sinusoidal
     {u : ℝ × ℝ → ℝ} {ε : ℝ} (hε : 0 < ε)
-    (hclose : ∀ p ∈ chartClosedRectangle (-Real.pi) Real.pi (-(Real.pi / 2)) (Real.pi / 2),
+    (hclose : ∀ p ∈ sphereClosedBox,
       |u p - (Real.cos p.2 + globeErrorParameter ε) * p.1| ≤ globeErrorParameter ε) :
-    ∀ p ∈ chartClosedRectangle (-Real.pi) Real.pi (-(Real.pi / 2)) (Real.pi / 2),
+    ∀ p ∈ sphereClosedBox,
       dist (flattenCoordinates u p) (sinusoidalCoordinates p) ≤ ε := by
   have hδ := globeErrorParameter_pos hε
   intro p hp
