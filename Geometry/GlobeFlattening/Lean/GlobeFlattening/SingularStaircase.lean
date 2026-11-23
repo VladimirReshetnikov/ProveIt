@@ -44,33 +44,30 @@ theorem exists_singular_staircase : ∃ f : ℝ → ℝ,
   have hi : Function.Injective embed :=
     Subtype.val_injective.comp (cantorSetHomeomorphNatToBool.symm.injective.comp hcode_inj)
   let ν := volume.restrict (Ico (0 : ℝ) 1)
+  letI : IsProbabilityMeasure ν := ⟨by simp [ν, Real.volume_Ico]⟩
   let μ := ν.map embed
-  letI : IsProbabilityMeasure μ := ⟨by simp [μ, ν, Measure.map_apply hm MeasurableSet.univ, Real.volume_Ico]⟩
-  letI : NullSingletonClass μ := ⟨fun x =>
-    (Measure.map_apply hm (measurableSet_singleton x)).trans
-      ((subsingleton_singleton.preimage hi).measure_zero ν)⟩
-  have hs : ∀ᵐ t ∂μ, t ∈ cantorSet :=
-    (ae_map_iff hm.aemeasurable isClosed_cantorSet.measurableSet).2
-      (ae_of_all _ fun x => (cantorSetHomeomorphNatToBool.symm (code x)).2)
-  let F (x : ℝ) := μ.real (Iic x)
+  letI : IsProbabilityMeasure μ := Measure.isProbabilityMeasure_map hm.aemeasurable
+  have hnull (x : ℝ) : ν (embed ⁻¹' {x}) = 0 := (subsingleton_singleton.preimage hi).measure_zero ν
+  letI : NullSingletonClass μ := ⟨fun x => (Measure.map_apply hm (measurableSet_singleton x)).trans (hnull x)⟩
+  have hs (x : ℝ) : embed x ∈ cantorSet := (cantorSetHomeomorphNatToBool.symm (code x)).2
+  let F (x : ℝ) := ν.real (embed ⁻¹' Iic x)
   refine ⟨F, continuous_iff_continuousAt.2 fun x => ?_,
-    fun _ _ h => measureReal_mono (Iic_subset_Iic.2 h), ?_, ?_, ?_⟩
+    fun _ _ h => measureReal_mono (preimage_mono (Iic_subset_Iic.2 h)), ?_, ?_, ?_⟩
   · have hi : IntegrableOn (fun _ : ℝ => (1 : ℝ)) (Iic (x + 1)) μ := (integrable_const 1).integrableOn
-    simpa only [F, setIntegral_const, smul_eq_mul, mul_one] using
+    simpa only [F, μ, setIntegral_const, smul_eq_mul, mul_one, map_measureReal_apply hm measurableSet_Iic] using
       hi.continuousOn_Iic_primitive_Iic.continuousAt (Iic_mem_nhds (lt_add_one x))
   · intro x hx
-    have hle : Iic x ≤ᵐ[μ] ({0} : Set ℝ) := hs.mono fun t ht htx =>
-      mem_singleton_iff.mpr (((mem_Iic.mp htx).trans hx).antisymm (cantorSet_subset_unitInterval ht).1)
-    simp [F, measureReal_def, measure_mono_null_ae hle (measure_singleton 0)]
+    refine measureReal_mono_null (s₂ := embed ⁻¹' {0}) (fun t ht => ?_) (by simp [measureReal_def, hnull])
+    exact ((mem_Iic.mp ht).trans hx).antisymm (cantorSet_subset_unitInterval (hs t)).1
   · intro x hx
-    exact (measureReal_congr (t := univ) (hs.mono fun t ht =>
-      propext (iff_true_intro ((cantorSet_subset_unitInterval ht).2.trans hx)))).trans probReal_univ
+    exact (congrArg ν.real (eq_univ_of_forall (s := embed ⁻¹' Iic x) fun t =>
+      (cantorSet_subset_unitInterval (hs t)).2.trans hx)).trans probReal_univ
   · filter_upwards [measure_eq_zero_iff_ae_notMem.1 volume_cantorSet] with x hx
     obtain ⟨a, b, hx', hab⟩ := mem_nhds_iff_exists_Ioo_subset.1 (isClosed_cantorSet.isOpen_compl.mem_nhds hx)
     apply (hasDerivAt_const x (F x)).congr_of_eventuallyEq
     filter_upwards [Ioo_mem_nhds hx'.1 hx'.2] with y hy
-    refine measureReal_congr (hs.mono fun t ht => propext (show t ≤ y ↔ t ≤ x from ?_))
-    have hgap : t ∉ Ioo a b := fun ht' => hab ht' ht
+    refine congrArg ν.real (Set.ext fun t => (show embed t ≤ y ↔ embed t ≤ x from ?_))
+    have hgap : embed t ∉ Ioo a b := fun ht => hab ht (hs t)
     grind
 
 /-- Monotone singular approximants to the identity on a compact interval. -/
