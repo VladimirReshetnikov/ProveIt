@@ -47,20 +47,19 @@ theorem singular_bounded_weighted_tsum
     (hmono : ∀ n, Monotone (f n))
     (hsing : ∀ n, ∀ᵐ x, HasDerivAt (f n) 0 x) :
     ∀ᵐ x, HasDerivAt (fun y => ∑' n, w n * f n y) 0 x := by
+  have hg (n : ℕ) : Continuous (w n • f n) := (hcont n).const_smul (w n)
   let g (n : ℕ) : StieltjesFunction ℝ :=
-    ⟨fun x => w n * f n x, (hmono n).const_mul (hw n),
-      fun _ => (continuous_const.mul (hcont n)).continuousWithinAt⟩
-  have hnorm (n : ℕ) (x : ℝ) : ‖g n x‖ ≤ w n * C :=
-    norm_mul_le_of_le (by simp [Real.norm_eq_abs, abs_of_nonneg (hw n)]) (hbound n x)
-  have hs (x : ℝ) : Summable (fun n => g n x) :=
-    (hwSum.mul_right C).of_norm_bounded (fun n => hnorm n x)
+    ⟨w n • f n, (hmono n).const_mul (hw n), fun _ => (hg n).continuousWithinAt⟩
+  have hu := tendstoUniformly_tsum (f := fun n => g n) (hwSum.mul_right C) fun n x =>
+    norm_mul_le_of_le (Real.norm_of_nonneg (hw n)).le (hbound n x)
+  have hs (x : ℝ) : HasSum (fun n => g n x) (∑' n, g n x) := hu.tendsto_at x
   let G : StieltjesFunction ℝ :=
-    ⟨fun x => ∑' n, g n x, fun x y h => (hs x).tsum_le_tsum (fun n => (g n).mono h) (hs y),
-      fun _ => (continuous_tsum (fun n => continuous_const.mul (hcont n))
-        (hwSum.mul_right C) hnorm).continuousWithinAt⟩
-  exact singular_stieltjes_sum g G (fun x => (hs x).hasSum) fun n =>
+    ⟨fun x => ∑' n, g n x, fun x y h => hasSum_le (fun n => (g n).mono h) (hs x) (hs y),
+      fun _ => (hu.continuous
+        (Frequently.of_forall fun s => continuous_finsetSum _ fun n _ => hg n)).continuousWithinAt⟩
+  exact singular_stieltjes_sum g G hs fun n =>
     (hsing n).mono fun x hx => by
-      simpa [g, Pi.smul_def, smul_eq_mul] using (hx.hasFDerivAt.const_smul (w n)).hasDerivAt
+      simpa [g] using (hx.hasFDerivAt.const_smul (w n)).hasDerivAt
 
 /-- Pull a full-measure derivative event back to the two coordinates, allowing a nonzero rescaling. -/
 theorem exists_scaled_product_derivative_good
@@ -68,15 +67,13 @@ theorem exists_scaled_product_derivative_good
     (hH : ∀ᵐ x ∂volume, HasDerivAt H 0 x) :
     ∃ E : Set (ℝ × ℝ), MeasurableSet E ∧ E ⊆ D ∧ volume (D \ E) = 0 ∧
       ∀ p ∈ E, HasDerivAt H 0 p.1 ∧ HasDerivAt H 0 (c * p.2) := by
-  have hscale := Measure.quasiMeasurePreserving_smul (volume : Measure ℝ) hc
   have hae : ∀ᵐ p : ℝ × ℝ ∂volume, HasDerivAt H 0 p.1 ∧ HasDerivAt H 0 (c * p.2) := by
     rw [Measure.volume_eq_prod]
-    exact (Measure.quasiMeasurePreserving_fst.ae hH).and
-      (Measure.quasiMeasurePreserving_snd.ae (hscale.ae hH))
-  obtain ⟨E, hE, hm, hgood⟩ := hae.exists_measurable_mem
-  refine ⟨D ∩ E, hD.inter hm, inter_subset_left, ?_, fun p hp => hgood p hp.2⟩
-  rw [sdiff_self_inter]
-  exact measure_mono_null (sdiff_subset_compl D E) (mem_ae_iff.1 hE)
+    exact (Measure.quasiMeasurePreserving_fst.ae hH).and (Measure.quasiMeasurePreserving_snd.ae
+      ((Measure.quasiMeasurePreserving_smul (volume : Measure ℝ) hc).ae hH))
+  obtain ⟨E, hE, hm, hgood⟩ := ((ae_restrict_mem hD).and (ae_restrict_of_ae hae)).exists_measurable_mem
+  refine ⟨E, hm, fun p hp => (hgood p hp).1, ?_, fun p hp => (hgood p hp).2⟩
+  simpa only [Measure.restrict_apply hm.compl, inter_comm, sdiff_eq] using mem_ae_iff.1 hE
 
 /-- Zero derivatives at two linear coordinates control the full linearization error. -/
 theorem hasFDerivAt_of_increment_bounds {u : ℝ × ℝ → ℝ} {H V : ℝ → ℝ} {p : ℝ × ℝ}
