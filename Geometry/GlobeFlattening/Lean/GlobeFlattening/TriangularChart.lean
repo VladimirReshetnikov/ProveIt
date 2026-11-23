@@ -37,6 +37,16 @@ theorem isCompact_chartClosedRectangle (a b c d : ℝ) :
     IsCompact (chartClosedRectangle a b c d) :=
   isCompact_Icc.prod isCompact_Icc
 
+/-- Every neighborhood contains a closed rectangle with the point in its interior. -/
+theorem exists_chartClosedRectangle_subset_of_mem_nhds {p : ℝ × ℝ} {W : Set (ℝ × ℝ)}
+    (hW : W ∈ 𝓝 p) :
+    ∃ a b c d : ℝ, p ∈ chartRectangle a b c d ∧ chartClosedRectangle a b c d ⊆ W := by
+  obtain ⟨U, hU, V, hV, hsub⟩ := mem_nhds_prod_iff.mp hW
+  obtain ⟨a, b, _, hab, hUa⟩ := exists_Icc_mem_subset_of_mem_nhds hU
+  obtain ⟨c, d, _, hcd, hVc⟩ := exists_Icc_mem_subset_of_mem_nhds hV
+  exact ⟨a, b, c, d, ⟨Icc_mem_nhds_iff.mp hab, Icc_mem_nhds_iff.mp hcd⟩,
+    (prod_mono hUa hVc).trans hsub⟩
+
 private theorem continuousOn_longitudeRow {u : ℝ × ℝ → ℝ} {a b c d y : ℝ}
     (hu : ContinuousOn u (chartClosedRectangle a b c d)) (hy : y ∈ Icc c d) :
     ContinuousOn (fun x => u (x, y)) (Icc a b) :=
@@ -54,18 +64,14 @@ theorem isOpen_chartImage {u : ℝ × ℝ → ℝ} {a b c d : ℝ} (hab : a ≤ 
     IsOpen (chartImage u a b c d) := by
   refine isOpen_iff_mem_nhds.2 (fun p hp => ?_)
   have hlat : Ioo c d ∈ 𝓝 p.2 := isOpen_Ioo.mem_nhds hp.1
-  have hleftOn : ContinuousOn (fun y => u (a, y)) (Ioo c d) :=
-    (continuousOn_latitudeProfile hu ⟨le_rfl, hab⟩).mono Ioo_subset_Icc_self
-  have hrightOn : ContinuousOn (fun y => u (b, y)) (Ioo c d) :=
-    (continuousOn_latitudeProfile hu ⟨hab, le_rfl⟩).mono Ioo_subset_Icc_self
-  have hleft : ContinuousAt (fun q : ℝ × ℝ => u (a, q.2)) p :=
-    (hleftOn.continuousAt hlat).comp continuous_snd.continuousAt
-  have hright : ContinuousAt (fun q : ℝ × ℝ => u (b, q.2)) p :=
-    (hrightOn.continuousAt hlat).comp continuous_snd.continuousAt
+  have hprofile (x : ℝ) (hx : x ∈ Icc a b) :
+      ContinuousAt (fun q : ℝ × ℝ => u (x, q.2)) p :=
+    (((continuousOn_latitudeProfile hu hx).mono Ioo_subset_Icc_self).continuousAt hlat).comp
+      continuous_snd.continuousAt
   have hy : ∀ᶠ q : ℝ × ℝ in 𝓝 p, q.2 ∈ Ioo c d :=
     continuous_snd.continuousAt.tendsto.eventually_mem hlat
-  filter_upwards [hy, hleft.eventually_lt continuous_fst.continuousAt hp.2.1,
-    continuous_fst.continuousAt.eventually_lt hright hp.2.2] with q hq hlow hhigh
+  filter_upwards [hy, (hprofile a ⟨le_rfl, hab⟩).eventually_lt continuous_fst.continuousAt hp.2.1,
+    continuous_fst.continuousAt.eventually_lt (hprofile b ⟨hab, le_rfl⟩) hp.2.2] with q hq hlow hhigh
   exact ⟨hq, hlow, hhigh⟩
 
 theorem image_flattenCoordinates_chartRectangle {u : ℝ × ℝ → ℝ} {a b c d : ℝ}
@@ -95,30 +101,40 @@ theorem isBounded_chartImage {u : ℝ × ℝ → ℝ} {a b c d : ℝ}
     (hu.prodMk continuous_snd.continuousOn)).isBounded).subset
       (image_mono chartRectangle_subset_closed)
 
-private theorem mem_chartRectangle_of_mem_chartImage {u : ℝ × ℝ → ℝ} {a b c d : ℝ}
-    {p : ℝ × ℝ} (hp : p ∈ chartClosedRectangle a b c d)
-    (hq : flattenCoordinates u p ∈ chartImage u a b c d) :
-    p ∈ chartRectangle a b c d := by
-  rcases p with ⟨x, y⟩
-  have hxc : x ∈ Icc a b := hp.1
-  obtain ⟨hy, hleft, hright⟩ :
-      y ∈ Ioo c d ∧ u (a, y) < u (x, y) ∧ u (x, y) < u (b, y) := hq
-  have hxa : a < x := hxc.1.lt_of_ne fun h => hleft.ne (by rw [h])
-  have hxb : x < b := hxc.2.lt_of_ne fun h => hright.ne (by rw [h])
-  exact ⟨⟨hxa, hxb⟩, hy⟩
+private theorem isOpen_image_flattenCoordinates {u : ℝ × ℝ → ℝ} {a b c d : ℝ}
+    (hu : ContinuousOn u (chartClosedRectangle a b c d))
+    (hmono : ∀ y ∈ Ioo c d, StrictMonoOn (fun x => u (x, y)) (Icc a b))
+    {W : Set (ℝ × ℝ)} (hW : IsOpen W) (hsub : W ⊆ chartRectangle a b c d) :
+    IsOpen (flattenCoordinates u '' W) := by
+  refine isOpen_iff_mem_nhds.mpr ?_
+  rintro _ ⟨p, hp, rfl⟩
+  obtain ⟨a', b', c', d', hp', hbox⟩ :=
+    exists_chartClosedRectangle_subset_of_mem_nhds (hW.mem_nhds hp)
+  have hrect := hbox.trans hsub
+  have hab' : a' ≤ b' := (hp'.1.1.trans hp'.1.2).le
+  have hmono' : ∀ y ∈ Ioo c' d', StrictMonoOn (fun x => u (x, y)) (Icc a' b') := by
+    intro y hy x hx z hz hxz
+    have hx' : (x, y) ∈ chartRectangle a b c d := hrect ⟨hx, Ioo_subset_Icc_self hy⟩
+    have hz' : (z, y) ∈ chartRectangle a b c d := hrect ⟨hz, Ioo_subset_Icc_self hy⟩
+    exact hmono y hx'.2 (Ioo_subset_Icc_self hx'.1) (Ioo_subset_Icc_self hz'.1) hxz
+  have hopen : IsOpen (flattenCoordinates u '' chartRectangle a' b' c' d') := by
+    have hu' := hu.mono (hrect.trans chartRectangle_subset_closed)
+    rw [image_flattenCoordinates_chartRectangle hab' hu' hmono']
+    exact isOpen_chartImage hab' hu'
+  exact mem_of_superset (hopen.mem_nhds (mem_image_of_mem _ hp'))
+    (image_mono (chartRectangle_subset_closed.trans hbox))
 
 /-- The scalar flattening is a homeomorphism from the open rectangle to the
-open region between its endpoint profiles. For inverse continuity, use the
-closed images of compact subsets of the closed rectangle. A point in that
-rectangle which maps into the target already belongs to the open rectangle. -/
+open region between its endpoint profiles. It is open because each point
+of an open patch lies inside a smaller rectangle whose image is open. -/
 noncomputable def triangularChart {u : ℝ × ℝ → ℝ} {a b c d : ℝ}
     (hab : a ≤ b) (hu : ContinuousOn u (chartClosedRectangle a b c d))
     (hmono : ∀ y ∈ Ioo c d, StrictMonoOn (fun x => u (x, y)) (Icc a b)) :
     OpenPartialHomeomorph (ℝ × ℝ) (ℝ × ℝ) := by
   let s := chartRectangle a b c d
   let t := chartImage u a b c d
-  have hG : ContinuousOn (flattenCoordinates u) (chartClosedRectangle a b c d) :=
-    hu.prodMk continuous_snd.continuousOn
+  have hcont : ContinuousOn (flattenCoordinates u) s :=
+    (hu.mono chartRectangle_subset_closed).prodMk continuous_snd.continuousOn
   have hinj : InjOn (flattenCoordinates u) s := by
     apply injOn_flattenCoordinates
     intro p hp q hq hlat hlt
@@ -132,32 +148,13 @@ noncomputable def triangularChart {u : ℝ × ℝ → ℝ} {a b c d : ℝ}
     rw [← image_flattenCoordinates_chartRectangle hab hu hmono]
     exact hinj.bijOn_image
   let e := hbij.toPartialEquiv (flattenCoordinates u) s t
-  have hclosed : IsClosedMap e.toEquiv := by
-    intro V hV
-    obtain ⟨C, hC, hCV⟩ := isClosed_induced_iff.mp hV
-    have hCompact : IsCompact (chartClosedRectangle a b c d ∩ C) :=
-      (isCompact_chartClosedRectangle a b c d).inter_right hC
-    refine isClosed_induced_iff.mpr ⟨flattenCoordinates u '' (chartClosedRectangle a b c d ∩ C),
-      (hCompact.image_of_continuousOn (hG.mono inter_subset_left)).isClosed, ?_⟩
-    ext q
-    constructor
-    · rintro ⟨p, hp, hpq⟩
-      have hpo := mem_chartRectangle_of_mem_chartImage hp.1 (by rw [hpq]; exact q.2)
-      let p' : s := ⟨p, hpo⟩
-      exact ⟨p', hCV ▸ hp.2, Subtype.ext hpq⟩
-    · rintro ⟨p, hp, rfl⟩
-      have hpC : p ∈ Subtype.val ⁻¹' C := hCV.symm ▸ hp
-      exact ⟨p.1, ⟨chartRectangle_subset_closed p.2, hpC⟩, rfl⟩
-  have hcont : Continuous e.toEquiv :=
-    (hG.mono chartRectangle_subset_closed).restrict.subtype_mk _
-  let H := e.toEquiv.toHomeomorphOfContinuousClosed hcont hclosed
-  exact
-    { toPartialEquiv := e
-      open_source := isOpen_chartRectangle a b c d
-      open_target := isOpen_chartImage hab hu
-      continuousOn_toFun := hG.mono chartRectangle_subset_closed
-      continuousOn_invFun := continuousOn_iff_continuous_restrict.mpr
-        (continuous_subtype_val.comp H.symm.continuous) }
+  have hs : IsOpen s := isOpen_chartRectangle a b c d
+  refine OpenPartialHomeomorph.ofContinuousOpenRestrict e hcont ?_ hs
+  change IsOpenMap (fun p : s => flattenCoordinates u p)
+  intro V hV
+  have hsub : Subtype.val '' V ⊆ s := by rintro _ ⟨q, _, rfl⟩; exact q.2
+  simpa only [image_image] using
+    isOpen_image_flattenCoordinates hu hmono (hs.isOpenMap_subtype_val V hV) hsub
 
 @[simp] theorem triangularChart_source {u : ℝ × ℝ → ℝ} {a b c d : ℝ}
     (hab : a ≤ b) (hu : ContinuousOn u (chartClosedRectangle a b c d))

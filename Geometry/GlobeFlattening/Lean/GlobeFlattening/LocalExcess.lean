@@ -174,15 +174,9 @@ theorem volume_local_exceptional_image_pos {u : ℝ × ℝ → ℝ} {good : Set 
 private theorem exists_closed_subrectangle {W : Set (ℝ × ℝ)} (hW : IsOpen W) (hne : W.Nonempty) :
     ∃ a b c d : ℝ, a < b ∧ c < d ∧ chartClosedRectangle a b c d ⊆ W := by
   obtain ⟨p, hp⟩ := hne
-  obtain ⟨r, hr, hball⟩ := Metric.isOpen_iff.mp hW p hp
-  refine ⟨p.1 - r / 2, p.1 + r / 2, p.2 - r / 2, p.2 + r / 2, by linarith, by linarith, ?_⟩
-  intro q hq
-  have hx : p.1 - r / 2 ≤ q.1 ∧ q.1 ≤ p.1 + r / 2 := hq.1
-  have hy : p.2 - r / 2 ≤ q.2 ∧ q.2 ≤ p.2 + r / 2 := hq.2
-  apply hball
-  rw [Metric.mem_ball, Prod.dist_eq, max_lt_iff, Real.dist_eq, Real.dist_eq]
-  exact ⟨abs_lt.mpr ⟨by linarith [hx.1], by linarith [hx.2]⟩,
-    abs_lt.mpr ⟨by linarith [hy.1], by linarith [hy.2]⟩⟩
+  obtain ⟨a, b, c, d, hp', hbox⟩ :=
+    exists_chartClosedRectangle_subset_of_mem_nhds (hW.mem_nhds hp)
+  exact ⟨a, b, c, d, hp'.1.1.trans hp'.1.2, hp'.2.1.trans hp'.2.2, hbox⟩
 
 /-- Every nonempty open subset of the planar image meets the exceptional
 image in a set of positive area. -/
