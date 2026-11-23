@@ -73,8 +73,10 @@ images are Borel.
 Spherical area is defined in the longitude–latitude chart with density
 `cos(latitude)`, as in the report. The exceptional set also has zero
 two-dimensional Hausdorff measure by Lipschitz continuity of the sphere
-parametrization. A local Lipschitz bound transfers to the same patch in the
-ambient Euclidean metric because the subtype uses the ambient distances.
+parametrization. The derivative bound follows by the triangle inequality
+for its components along the two unit tangent vectors. A local Lipschitz
+bound transfers to the same patch in the ambient Euclidean metric because
+the subtype uses the ambient distances.
 It would give zero planar area for the exceptional image on an open target
 patch, contradicting the local area result. [Spherical area](Lean/GlobeFlattening/SphereMeasure.lean) ·
 [Local distortion](Lean/GlobeFlattening/SphereLocalExcess.lean)

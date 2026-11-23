@@ -14,13 +14,6 @@ open scoped RealInnerProductSpace Topology
 
 noncomputable section
 
-/-- The metric in spherical coordinates has diagonal entries
-`cos latitude` squared and `1`. -/
-theorem sq_norm_sphereDerivative (p v : ℝ × ℝ) :
-    ‖sphereDerivative p v‖ ^ 2 = (Real.cos p.2 * v.1)^2 + v.2^2 := by
-  change ‖sphereTangentLift p !₂[Real.cos p.2 * v.1, v.2]‖ ^ 2 = _
-  simp [norm_sphereTangentLift, EuclideanSpace.real_norm_sq_eq, Fin.sum_univ_two]
-
 /-- The differential of the inverse planar chart followed by the spherical
 parametrization is the lift into the tangent plane. -/
 theorem hasFDerivAt_sphereFlatten_inverse

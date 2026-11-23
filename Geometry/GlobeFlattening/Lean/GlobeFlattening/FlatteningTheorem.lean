@@ -1,4 +1,5 @@
 import GlobeFlattening.ScalarConstruction
+import GlobeFlattening.SphereDifferential
 import GlobeFlattening.SphereLocalExcess
 
 /-!
