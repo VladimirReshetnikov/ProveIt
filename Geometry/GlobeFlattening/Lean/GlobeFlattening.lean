@@ -4,4 +4,8 @@ import GlobeFlattening.InverseDerivative
 import GlobeFlattening.LatitudeProfile
 import GlobeFlattening.LimitDifferentiability
 import GlobeFlattening.LongitudeProfile
+import GlobeFlattening.RectangularMesh
+import GlobeFlattening.RectangularRefinement
+import GlobeFlattening.RefinementLimit
 import GlobeFlattening.RestrictedArea
+import GlobeFlattening.TrimmedTiles
