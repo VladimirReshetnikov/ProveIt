@@ -79,16 +79,15 @@ theorem volume_chartImage_upper_of_sinusoidal_closeness
     volume (chartImage u (-Real.pi) Real.pi (-(Real.pi / 2)) (Real.pi / 2)) <
       ENNReal.ofReal (4 * Real.pi * (1 + ε)) := by
   have hab := neg_le_self Real.pi_pos.le
+  simp only [dist_flattenCoordinates_sinusoidalCoordinates, abs_le] at hclose
   rw [volume_chartImage_eq_lintegral_width hab hu]
   calc
     _ ≤ ∫⁻ y in Ioo (-(Real.pi / 2)) (Real.pi / 2),
         ENNReal.ofReal (Real.cos y * (Real.pi - (-Real.pi))) + ENNReal.ofReal (2 * ε) := by
       refine setLIntegral_mono' measurableSet_Ioo fun y hy =>
         (ENNReal.ofReal_le_ofReal ?_).trans ENNReal.ofReal_add_le
-      have hleft := hclose (-Real.pi, y) ⟨⟨le_rfl, hab⟩, Ioo_subset_Icc_self hy⟩
-      have hright := hclose (Real.pi, y) ⟨⟨hab, le_rfl⟩, Ioo_subset_Icc_self hy⟩
-      rw [dist_flattenCoordinates_sinusoidalCoordinates] at hleft hright
-      linarith only [(abs_le.mp hleft).1, (abs_le.mp hright).2]
+      linarith only [(hclose (-Real.pi, y) ⟨⟨le_rfl, hab⟩, Ioo_subset_Icc_self hy⟩).1,
+        (hclose (Real.pi, y) ⟨⟨hab, le_rfl⟩, Ioo_subset_Icc_self hy⟩).2]
     _ < _ := by
       rw [lintegral_add_right _ measurable_const, ← lintegral_cos_rectangle hab, ← sphereLongitudeDomain,
         lintegral_cos_chartRectangle, setLIntegral_const, Real.volume_Ioo, sub_neg_eq_add, add_halves,
