@@ -105,9 +105,9 @@ def globeFlattening_from_scalar
       ((congrArg (fun t => V ⊆ planarEuclideanEquiv '' t) g.image_source_eq_target.symm).mp hVsub)
   have hInv (p : ℝ × ℝ) (hp : p ∈ good) :
       HasFDerivAt fInv (sphereTangentLift p) (f (spherePoint p)) := by
-    convert hasFDerivAt_sphereFlatten_inverse g (hsub hp) (Real.cos_pos_of_mem_Ioo (hsub hp).2).ne'
-      ((hDeriv p hp).prodMk hasFDerivAt_snd) using 1
-    exact sphereFlattenForward_spherePoint (hsub hp)
+    simpa only [f, g, triangularChart_apply, sphereFlattenForward_spherePoint (hsub hp)] using
+      hasFDerivAt_sphereFlatten_inverse g (hsub hp) (Real.cos_pos_of_mem_Ioo (hsub hp).2).ne'
+        ((hDeriv p hp).prodMk hasFDerivAt_snd)
   refine
     { target := T
       exceptional := Z
@@ -160,9 +160,8 @@ def globeFlattening_from_scalar
       hasFDerivWithinAt_sphereFlatten hfcont hfleft (spherePoint_mapsTo (hsub hp)) (hInv p hp),
       fun _ h => norm_sphereFlattenDerivative_of_tangent p h⟩
   · simp only [hgoodSource, forall_mem_image]
-    exact fun p hp => ⟨sphereTangentLift p, hInv p hp, fun v =>
-      ⟨(hfleft (spherePoint_mapsTo (hsub hp))).symm ▸ tangent_sphereTangentLift p v,
-        norm_sphereTangentLift p v⟩⟩
+    exact fun p hp => ⟨sphereTangentLift p, hInv p hp, fun v => by
+      simp [hfleft (spherePoint_mapsTo (hsub hp)), tangent_sphereTangentLift, norm_sphereTangentLift]⟩
   · refine ⟨ε, lt_two_mul_self hε, fun w hw => ?_⟩
     convert hclose _ (sphereLongitudeDomain_subset_box (sphereChartInverse_mapsTo hw)) using 1
     exact dist_planarEuclideanEquiv_of_snd_eq rfl
