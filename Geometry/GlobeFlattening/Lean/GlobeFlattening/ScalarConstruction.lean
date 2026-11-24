@@ -53,15 +53,14 @@ theorem exists_staircases {δ : ℝ} (hδ : 0 < δ) : Nonempty (Staircases δ) :
   choose X hc hm hr he hd using hX
   refine ⟨⟨X, hm, hc, hd, fun n x => abs_le.mpr (hr n x), ?_, ?_⟩⟩
   · intro n x
-    have h := dist_triangle_right (X (n + 1) x) (X n x) (max (-Real.pi) (min Real.pi x))
-    simp only [Real.dist_eq] at h
-    linarith only [h, he (n + 1) x, he n x, rate_succ δ (n + 1), rate_succ δ (n + 2),
+    refine (abs_sub_le _ (max (-Real.pi) (min Real.pi x)) _).trans_lt ?_
+    rw [abs_sub_comm (max (-Real.pi) (min Real.pi x))]
+    linarith only [he (n + 1) x, he n x, rate_succ δ (n + 1), rate_succ δ (n + 2),
       rate_pos hδ (n + 1)]
   · intro x hx
-    refine tendsto_iff_norm_sub_tendsto_zero.2 <|
-      squeeze_zero (fun _ => norm_nonneg _) (fun n => ?_)
-        ((summable_rate δ).tendsto_atTop_zero.comp (tendsto_add_atTop_nat 2))
-    simpa only [Function.comp_apply, Real.norm_eq_abs, min_eq_right hx.2, max_eq_right hx.1] using he n x
+    refine tendsto_iff_dist_tendsto_zero.2 (squeeze_zero (fun _ => dist_nonneg) ?_
+      ((summable_rate δ).tendsto_atTop_zero.comp (tendsto_add_atTop_nat 2)))
+    simpa only [Function.comp_apply, Real.dist_eq, min_eq_right hx.2, max_eq_right hx.1] using (he · x)
 
 namespace Staircases
 
