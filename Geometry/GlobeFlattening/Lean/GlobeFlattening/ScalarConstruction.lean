@@ -75,10 +75,9 @@ def coefficient (n : ℕ) (y : ℝ) : ℝ := S.latitudeProfile n y - S.latitudeP
 theorem coefficient_bounds (n : ℕ) (y : ℝ) :
     0 < S.coefficient n y ∧ |S.coefficient n y| ≤ rate δ n := by
   have hcos := abs_lt.mp <| (Real.abs_cos_sub_cos_le _ _).trans_lt (S.stepX n y)
-  unfold coefficient latitudeProfile latitudeWeight
-  rw [rate_succ] at hcos ⊢
-  refine ⟨?_, abs_le.mpr ⟨?_, ?_⟩⟩ <;>
-    linarith only [hcos.1, hcos.2]
+  rw [rate_succ] at hcos
+  simp only [coefficient, latitudeProfile, latitudeWeight, rate_succ, abs_le]
+  refine ⟨?_, ?_, ?_⟩ <;> linarith only [hcos.1, hcos.2]
 
 def correction (p : ℝ × ℝ) := ∑' n, S.coefficient n p.2 * S.X n p.1
 

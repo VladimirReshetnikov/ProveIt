@@ -72,15 +72,14 @@ theorem exists_hasFDerivAt_of_increment_bounds {u : ℝ × ℝ → ℝ}
   have hae : ∀ᵐ p : ℝ × ℝ ∂volume, HasDerivAt H 0 p.1 ∧ HasDerivAt H 0 p.2 := by
     rw [Measure.volume_eq_prod]
     exact (Measure.quasiMeasurePreserving_fst.ae hH).and (Measure.quasiMeasurePreserving_snd.ae hH)
-  obtain ⟨E, hE, hm, hgood⟩ := ((ae_restrict_mem hD.measurableSet).and (ae_restrict_of_ae hae)).exists_measurable_mem
-  refine ⟨E, hm, fun p hp => (hgood p hp).1, ?_, ?_⟩
-  · simpa only [Measure.restrict_apply hm.compl, inter_comm, sdiff_eq] using mem_ae_iff.1 hE
-  · intro p hp
-    obtain ⟨hpD, h₁, h₂⟩ := hgood p hp
-    have hl := (h₁.isLittleO.comp_tendsto continuousAt_fst.tendsto).prod_rightl (fun q => q.2 - p.2)
-    have hr := (h₂.isLittleO.comp_tendsto continuousAt_snd.tendsto).prod_rightr (fun q => q.1 - p.1)
-    refine HasFDerivAt.of_isLittleO <| (Eventually.mono (hD.mem_nhds hpD) (herror p hpD)).isBigO.trans_isLittleO ?_
-    simpa only [Function.comp_def, smul_zero, sub_zero] using! hl.abs_left.add hr.abs_left
+  obtain ⟨E, hE, hm, hgood⟩ := hae.exists_measurable_mem
+  refine ⟨D ∩ E, hD.measurableSet.inter hm, inter_subset_left,
+    ae_le_set.1 (Filter.Eventually.mono hE fun _ hpE hpD => ⟨hpD, hpE⟩), fun p ⟨hpD, hpE⟩ => ?_⟩
+  obtain ⟨h₁, h₂⟩ := hgood p hpE
+  have hl := (h₁.isLittleO.comp_tendsto continuousAt_fst.tendsto).prod_rightl (fun q => q.2 - p.2)
+  have hr := (h₂.isLittleO.comp_tendsto continuousAt_snd.tendsto).prod_rightr (fun q => q.1 - p.1)
+  refine HasFDerivAt.of_isLittleO <| (Eventually.mono (hD.mem_nhds hpD) (herror p hpD)).isBigO.trans_isLittleO ?_
+  simpa only [Function.comp_def, smul_zero, sub_zero] using! hl.abs_left.add hr.abs_left
 
 end
 
