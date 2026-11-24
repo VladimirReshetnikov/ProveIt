@@ -28,9 +28,8 @@ noncomputable section
 
 def rate (δ : ℝ) (n : ℕ) := δ * (1 / 2 : ℝ)^n
 
-private theorem rate_pos {δ : ℝ} (hδ : 0 < δ) (n : ℕ) : 0 < rate δ n := by
-  unfold rate
-  positivity
+private theorem rate_pos {δ : ℝ} (hδ : 0 < δ) (n : ℕ) : 0 < rate δ n :=
+  mul_pos hδ (pow_pos (by norm_num) n)
 
 theorem rate_succ (δ : ℝ) (n : ℕ) : rate δ (n + 1) = rate δ n / 2 := by
   simp [rate, pow_succ, mul_assoc, div_eq_mul_inv]
@@ -102,10 +101,8 @@ private theorem rate_le_rate_max_pi (δ : ℝ) (n : ℕ) : rate δ n ≤ rate (m
 theorem longitudeIncrement_bound (n : ℕ) (x : ℝ) :
     |S.longitudeIncrement n x| ≤ rate (max δ Real.pi) n := by
   cases n with
-  | zero => simpa [longitudeIncrement, rate] using
-      (S.boundX 0 x).trans (le_max_right δ Real.pi)
-  | succ n =>
-    exact (S.stepX n x).le.trans (rate_le_rate_max_pi δ _)
+  | zero => exact (S.boundX 0 x).trans (by simp [rate])
+  | succ n => exact (S.stepX n x).le.trans (rate_le_rate_max_pi δ _)
 
 def scalar (p : ℝ × ℝ) := p.1 * Real.cos p.2 + S.correction p
 
