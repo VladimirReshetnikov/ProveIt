@@ -46,8 +46,8 @@ theorem volume_sphereExceptional_inter_of_open {u : ℝ × ℝ → ℝ}
     (hW : IsOpen W) (hne : W.Nonempty)
     (hWsub : W ⊆ planarEuclideanEquiv '' (flattenCoordinates u '' sphereLongitudeDomain)) :
     0 < volume (W ∩ sphereFlattenForward u '' sphereExceptional good) := by
-  rw [sphereExceptional_eq_image hsub, sphereFlattenForward_image sdiff_subset,
-    ← image_preimage_inter, volume_planarEuclideanEquiv_image, ← image_preimage_inter]
+  rw [inter_comm, sphereExceptional_eq_image hsub, sphereFlattenForward_image sdiff_subset,
+    ← image_inter_preimage, volume_planarEuclideanEquiv_image, ← image_inter_preimage, sdiff_inter_right_comm]
   have hopen := ((hu.mono sphereLongitudeDomain_subset_box).prodMk
     continuous_snd.continuousOn).isOpen_inter_preimage isOpen_sphereLongitudeDomain
       (hW.preimage planarEuclideanEquiv.continuous)
@@ -62,19 +62,17 @@ theorem volume_sphereExceptional_inter_of_open {u : ℝ × ℝ → ℝ}
     Real.cos_nonneg_of_mem_Icc (hsubBox (show (a, y) ∈ _ from ⟨⟨le_rfl, hab.le⟩, hy⟩)).2
   have hslope' (p) (hp) (q) (hq) := hslope p (hsubBox hp) q (hsubBox hq)
   let r := triangularChart hab.le (hu.mono hsubBox) (strictMonoOn_chartRows_of_lowerSlope hcos hslope')
-  have hpos : 0 < volume (r '' (r.source \ good)) := by
-    have hnull' : volume (r.source \ good) = 0 :=
-      measure_mono_null (sdiff_subset_sdiff_left (hrectangle.trans inter_subset_left)) hnull
-    rw [r.injOn.image_sdiff, r.image_source_eq_target]
-    refine (tsub_pos_of_lt ?_).trans_le le_measure_sdiff
-    exact (measure_flattened_good_image (r.open_source.measurableSet.inter hgood)
-      inter_subset_left (by rwa [sdiff_self_inter]) r.injOn
-      (fun p hp => (hderiv p hp.2).hasFDerivWithinAt)
-      (fun p hp => hcos p.2 (Ioo_subset_Icc_self hp.1.2))).trans_lt
-        (lintegral_cos_lt_volume_chartImage hab hcd (hu.mono hsubBox)
-          (fun y hy => hcos y (Ioo_subset_Icc_self hy)) hslope')
-  exact hpos.trans_le (measure_mono (image_mono fun p hp =>
-    ⟨(hrectangle hp.1).2, (hrectangle hp.1).1, hp.2⟩))
+  refine lt_of_lt_of_le (b := volume (r '' (r.source \ good))) ?_
+    (measure_mono (image_mono (sdiff_subset_sdiff_left hrectangle)))
+  rw [r.injOn.image_sdiff, r.image_source_eq_target]
+  refine (tsub_pos_of_lt ?_).trans_le le_measure_sdiff
+  exact (measure_flattened_good_image (r.open_source.measurableSet.inter hgood) inter_subset_left (by
+    rw [sdiff_self_inter]
+    exact measure_mono_null (sdiff_subset_sdiff_left (hrectangle.trans inter_subset_left)) hnull) r.injOn
+    (fun p hp => (hderiv p hp.2).hasFDerivWithinAt)
+    (fun p hp => hcos p.2 (Ioo_subset_Icc_self hp.1.2))).trans_lt
+      (lintegral_cos_lt_volume_chartImage hab hcd (hu.mono hsubBox)
+        (fun y hy => hcos y (Ioo_subset_Icc_self hy)) hslope')
 
 /-- The chart-null exceptional set also has zero two-dimensional Hausdorff measure. -/
 theorem hausdorffMeasure_sphereExceptional_eq_zero {good : Set (ℝ × ℝ)}
