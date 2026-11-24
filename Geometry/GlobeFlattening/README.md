@@ -58,13 +58,15 @@ arcsine of height gives latitude.
 
 Strict row increase gives injectivity on the closed coordinate rectangle.
 Compactness makes the map an embedding, and the interior maps onto the
-open region between the continuous longitude endpoint curves. Its image
-under the planar coordinate equivalence is the Euclidean target. Tonelli's
-theorem gives the width integral directly from the horizontal slices of the
-open image. The strict width comparison proves total area
-excess. The planar coordinate equivalence preserves area, so local
-exceptional area can be measured in coordinates. The proof pulls the open
-patch back to the longitude and latitude domain, picks a rectangle there,
+open region between the continuous longitude endpoint curves. Composing the
+chart with the planar coordinate equivalence gives the Euclidean target and
+the inverse map. The area proof identifies that target with the image of the
+open region under the equivalence. Tonelli's theorem gives the width
+integral directly from the horizontal slices of the open image. The strict
+width comparison proves total area excess. The planar coordinate
+equivalence preserves area, so local exceptional area can be measured in
+coordinates. The proof pulls the open patch back to the longitude and
+latitude domain, picks a rectangle there,
 and uses the same triangular chart and width formula for its image.
 The reference area follows by integrating the sinusoidal slice width with
 antiderivative `2π sin(y)`. For the upper estimate, the two longitude

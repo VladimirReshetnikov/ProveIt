@@ -79,21 +79,19 @@ def globeFlattening_from_scalar
   have hmono := strictMonoOn_chartRows_of_lowerSlope (fun _ => Real.cos_nonneg_of_mem_Icc) hSlope
   let g := triangularChart hab.le hcu hmono
   have hgimage : flattenCoordinates u '' sphereLongitudeDomain = g.target := g.image_source_eq_target
-  let e := planarEuclideanEquiv.toHomeomorph
-  let T := planarEuclideanEquiv '' g.target
+  let h := g.transHomeomorph planarEuclideanEquiv.toHomeomorph
+  have hT : _ = h.target := planarEuclideanEquiv.image_eq_preimage_symm g.target
   let Z := sphereExceptional good
   have hZsub : Z ⊆ cutSphere := sdiff_subset
   let f := sphereFlattenForward u
-  let fInv := spherePoint ∘ (g.symm ∘ planarEuclideanEquiv.symm)
-  let F : cutSphere ≃ₜ T := sphereLongitudeChart.symm.trans
-    (g.toHomeomorphSourceTarget.trans (e.image g.target))
-  have hTopen : IsOpen T := e.isOpenMap _ g.open_target
+  let fInv := spherePoint ∘ h.symm
+  let F : cutSphere ≃ₜ h.target := sphereLongitudeChart.symm.trans h.toHomeomorphSourceTarget
   have hfopen : Topology.IsOpenEmbedding (cutSphere.restrict f) :=
-    hTopen.isOpenEmbedding_subtypeVal.comp F.isOpenEmbedding
+    h.open_target.isOpenEmbedding_subtypeVal.comp F.isOpenEmbedding
   have hfcont : ContinuousOn f cutSphere := continuousOn_iff_continuous_restrict.2 hfopen.continuous
   have hfleft : LeftInvOn fInv f cutSphere :=
     fun w hw => congrArg Subtype.val (F.symm_apply_apply ⟨w, hw⟩)
-  have hvol : volume T = volume g.target := volume_planarEuclideanEquiv_image _
+  have hvol : volume h.target = volume g.target := hT ▸ volume_planarEuclideanEquiv_image _
   have hgoodSource : cutSphere \ Z = spherePoint '' good :=
     sdiff_sdiff_cancel_left (spherePoint_mapsTo.mono_left hsub).image_subset
   obtain ⟨hZmeas, hZnull⟩ := sphereExceptional_measurable_null hgood hsub hnull
@@ -101,24 +99,24 @@ def globeFlattening_from_scalar
     simpa only [image_restrict, inter_eq_left.2 hss] using
       hfopen.measurableEmbedding.measurableSet_image' (hs.preimage measurable_subtype_coe)
   have hexcess (V : Set (EuclideanSpace ℝ (Fin 2))) (hV : IsOpen V) (hne : V.Nonempty)
-      (hVsub : V ⊆ T) : 0 < volume (V ∩ f '' Z) :=
+      (hVsub : V ⊆ h.target) : 0 < volume (V ∩ f '' Z) :=
     volume_sphereExceptional_inter_of_open hcu hSlope hgood hsub hnull hDeriv hV hne
-      (hgimage.symm ▸ hVsub)
+      (hgimage.symm ▸ hT.symm ▸ hVsub)
   have hInv (p : ℝ × ℝ) (hp : p ∈ good) :
       HasFDerivAt fInv (sphereTangentLift p) (f (spherePoint p)) := by
-    simpa only [f, g, triangularChart_apply, sphereFlattenForward_spherePoint (hsub hp)] using
+    simpa only [f, g, triangularChart_apply, sphereFlattenForward_spherePoint (hsub hp)] using!
       hasFDerivAt_sphereFlatten_inverse g (hsub hp) (Real.cos_pos_of_mem_Ioo (hsub hp).2).ne'
         ((hDeriv p hp).prodMk hasFDerivAt_snd)
   refine
-    { target := T
+    { target := h.target
       exceptional := Z
       homeomorph := F
       forward := f
       inverse := fInv
       forward_agrees := fun p => rfl
       inverse_agrees := fun q => rfl
-      target_open := hTopen
-      target_bounded := planarEuclideanEquiv.toContinuousLinearMap.lipschitz.isBounded_image (by
+      target_open := h.open_target
+      target_bounded := hT ▸ planarEuclideanEquiv.toContinuousLinearMap.lipschitz.isBounded_image (by
         rw [← hgimage]
         exact ((isCompact_Icc.prod isCompact_Icc).image_of_continuousOn
           (hcu.prodMk continuous_snd.continuousOn)).isBounded.subset
