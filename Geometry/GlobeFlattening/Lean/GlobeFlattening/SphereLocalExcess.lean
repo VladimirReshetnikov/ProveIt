@@ -51,14 +51,14 @@ theorem volume_sphereExceptional_inter_of_open {u : ℝ × ℝ → ℝ}
   have hopen := ((hu.mono sphereLongitudeDomain_subset_box).prodMk
     continuous_snd.continuousOn).isOpen_inter_preimage isOpen_sphereLongitudeDomain
       (hW.preimage planarEuclideanEquiv.continuous)
-  rw [image_image] at hWsub
-  obtain ⟨p, hp⟩ := image_inter_nonempty_iff.mp (hne.mono (subset_inter hWsub Subset.rfl))
-  obtain ⟨a, b, c, d, hp', hbox⟩ := exists_chartClosedRectangle_subset_of_mem_nhds (hopen.mem_nhds hp)
+  obtain ⟨z, hz⟩ := hne
+  rcases hWsub hz with ⟨_, ⟨p, hp, rfl⟩, rfl⟩
+  obtain ⟨a, b, c, d, hp', hbox⟩ := exists_chartClosedRectangle_subset_of_mem_nhds (hopen.mem_nhds ⟨hp, hz⟩)
   have hrectangle := chartRectangle_subset_closed.trans hbox
   obtain ⟨hab, hcd⟩ := (prod_nonempty_iff.1 ⟨p, hp'⟩).imp nonempty_Ioo.1 nonempty_Ioo.1
   have hsubBox := hbox.trans (inter_subset_left.trans sphereLongitudeDomain_subset_box)
   have hcos (y : ℝ) (hy : y ∈ Icc c d) : 0 ≤ Real.cos y :=
-    Real.cos_nonneg_of_mem_Icc (hsubBox (show (a, y) ∈ _ from ⟨⟨le_rfl, hab.le⟩, hy⟩)).2
+    (Real.cos_pos_of_mem_Ioo (hbox (a := (a, y)) ⟨left_mem_Icc.mpr hab.le, hy⟩).1.2).le
   have hslope' (p) (hp) (q) (hq) := hslope p (hsubBox hp) q (hsubBox hq)
   let r := triangularChart hab.le (hu.mono hsubBox) (strictMonoOn_chartRows_of_lowerSlope hcos hslope')
   refine lt_of_lt_of_le (b := volume (r '' (r.source \ good))) ?_
