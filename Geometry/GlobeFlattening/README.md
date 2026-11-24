@@ -52,9 +52,10 @@ open region between the continuous longitude endpoint curves. Its image
 under the planar coordinate equivalence is the Euclidean target. Mathlib's
 formula for the area between the endpoint curves gives the width integral
 after swapping coordinates. The strict width comparison proves total area
-excess. For local exceptional area, the proof pulls the open target patch
-back to coordinates, picks a rectangle there, and uses the same triangular
-chart and width formula for its image.
+excess. The planar coordinate equivalence preserves area, so local
+exceptional area can be measured in coordinates. The proof pulls the open
+patch back to the longitude and latitude domain, picks a rectangle there,
+and uses the same triangular chart and width formula for its image.
 Both the reference area and the upper estimate use the same antiderivative
 `2π sin(y) + r y` for the sinusoidal width plus a constant offset. The
 reference uses `r = 0`. For the upper estimate, the uniform projection error

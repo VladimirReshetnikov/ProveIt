@@ -46,11 +46,11 @@ theorem volume_sphereExceptional_inter_of_open {u : ℝ × ℝ → ℝ}
     (hW : IsOpen W) (hne : W.Nonempty)
     (hWsub : W ⊆ planarEuclideanEquiv '' (flattenCoordinates u '' sphereLongitudeDomain)) :
     0 < volume (W ∩ sphereFlattenForward u '' sphereExceptional good) := by
-  let g := planarEuclideanEquiv ∘ flattenCoordinates u
-  have hopen : IsOpen (sphereLongitudeDomain ∩ g ⁻¹' W) :=
-    ContinuousOn.isOpen_inter_preimage (planarEuclideanEquiv.continuous.comp_continuousOn
-      ((hu.mono sphereLongitudeDomain_subset_box).prodMk continuous_snd.continuousOn))
-      isOpen_sphereLongitudeDomain hW
+  rw [sphereExceptional_eq_image hsub, sphereFlattenForward_image sdiff_subset,
+    ← image_preimage_inter, volume_planarEuclideanEquiv_image, ← image_preimage_inter]
+  have hopen := ((hu.mono sphereLongitudeDomain_subset_box).prodMk
+    continuous_snd.continuousOn).isOpen_inter_preimage isOpen_sphereLongitudeDomain
+      (hW.preimage planarEuclideanEquiv.continuous)
   rw [image_image] at hWsub
   obtain ⟨p, hp⟩ := image_inter_nonempty_iff.mp (hne.mono (subset_inter hWsub Subset.rfl))
   obtain ⟨a, b, c, d, hp', hbox⟩ := exists_chartClosedRectangle_subset_of_mem_nhds (hopen.mem_nhds hp)
@@ -73,11 +73,8 @@ theorem volume_sphereExceptional_inter_of_open {u : ℝ × ℝ → ℝ}
       (fun p hp => hcos p.2 (Ioo_subset_Icc_self hp.1.2))).trans_lt
         (lintegral_cos_lt_volume_chartImage hab hcd (hu.mono hsubBox)
           (fun y hy => hcos y (Ioo_subset_Icc_self hy)) hslope')
-  rw [← volume_planarEuclideanEquiv_image, image_image] at hpos
-  rw [sphereExceptional_eq_image hsub, sphereFlattenForward_image sdiff_subset, image_image]
-  exact hpos.trans_le <| measure_mono <| image_subset_iff.2 fun p hp =>
-    let hpatch := hrectangle hp.1
-    ⟨hpatch.2, mem_image_of_mem g ⟨hpatch.1, hp.2⟩⟩
+  exact hpos.trans_le (measure_mono (image_mono fun p hp =>
+    ⟨(hrectangle hp.1).2, (hrectangle hp.1).1, hp.2⟩))
 
 /-- The chart-null exceptional set also has zero two-dimensional Hausdorff measure. -/
 theorem hausdorffMeasure_sphereExceptional_eq_zero {good : Set (ℝ × ℝ)}
