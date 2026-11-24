@@ -59,9 +59,9 @@ arcsine of height gives latitude.
 Strict row increase gives injectivity on the closed coordinate rectangle.
 Compactness makes the map an embedding, and the interior maps onto the
 open region between the continuous longitude endpoint curves. Its image
-under the planar coordinate equivalence is the Euclidean target. Mathlib's
-formula for the area between the endpoint curves gives the width integral
-after swapping coordinates. The strict width comparison proves total area
+under the planar coordinate equivalence is the Euclidean target. Tonelli's
+theorem gives the width integral directly from the horizontal slices of the
+open image. The strict width comparison proves total area
 excess. The planar coordinate equivalence preserves area, so local
 exceptional area can be measured in coordinates. The proof pulls the open
 patch back to the longitude and latitude domain, picks a rectangle there,

@@ -23,12 +23,10 @@ theorem volume_chartImage_eq_lintegral_width
     (hu : ContinuousOn u (chartClosedRectangle a b c d)) :
     volume (chartImage u a b c d) =
       ∫⁻ y in Ioo c d, ENNReal.ofReal (u (b, y) - u (a, y)) := by
-  refine (Measure.measurePreserving_swap.measure_preimage_equiv (f := MeasurableEquiv.prodComm)
-    (regionBetween (fun y => u (a, y)) (fun y => u (b, y)) (Ioo c d))).trans ?_
-  have hprofile (x : ℝ) (hx : x ∈ Icc a b) :=
-    ((continuousOn_latitudeProfile hu hx).mono Ioo_subset_Icc_self).aemeasurable (μ := volume) measurableSet_Ioo
-  exact volume_regionBetween_eq_lintegral (hprofile a ⟨le_rfl, hab⟩)
-    (hprofile b ⟨hab, le_rfl⟩) measurableSet_Ioo
+  rw [Measure.volume_eq_prod, Measure.prod_apply_symm (isOpen_chartImage hab hu).measurableSet,
+    ← lintegral_indicator measurableSet_Ioo]
+  exact lintegral_congr fun y => by
+    by_cases hy : y ∈ Ioo c d <;> simp [-mem_Ioo, chartImage, hy, Real.volume_Ioo, preimage]
 
 /-- Integrate the cosine density by horizontal slices of a rectangle. -/
 theorem lintegral_cos_rectangle {a b c d : ℝ} (hab : a ≤ b) :
