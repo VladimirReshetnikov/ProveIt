@@ -12,7 +12,7 @@ staircases `X n`. The correction weights are successive drops
 of `rate n + cos (X n y)`. Their positivity gives the strict lower
 longitude slope.
 
-The scalar coordinate is the clamped sinusoidal coordinate plus the
+The scalar coordinate is the sinusoidal coordinate plus the
 longitude correction. Summation by parts shows that finite sums of
 longitude increments weighted by `rate n + cos (X n y)` converge to the same
 coordinate. The two formulas bound horizontal and vertical errors by a
@@ -110,9 +110,8 @@ private theorem correction_series :
     Continuous S.correction ∧ (∀ p, HasSum (fun n => S.coefficient n p.2 * S.X n p.1) (S.correction p)) := by
   have hu := tendstoUniformly_tsum ((summable_rate δ).mul_right Real.pi) S.norm_correction_term
   refine ⟨hu.continuous (Frequently.of_forall fun N => continuous_finsetSum N fun n _ => ?_), hu.tendsto_at⟩
-  have hprofile (k : ℕ) : Continuous (S.latitudeProfile k) := by
-    have hX := S.continuousX k
-    fun_prop [latitudeProfile, latitudeWeight]
+  have hprofile (k : ℕ) : Continuous (S.latitudeProfile k) :=
+    continuous_const.add (Real.continuous_cos.comp (S.continuousX k))
   exact (((hprofile n).sub (hprofile (n + 1))).comp continuous_snd).mul ((S.continuousX n).comp continuous_fst)
 
 def longitudeIncrement : ℕ → ℝ → ℝ
@@ -130,35 +129,32 @@ theorem longitudeIncrement_bound (n : ℕ) (x : ℝ) :
   | succ n =>
     exact (S.X_step_bound n x).le.trans (rate_le_rate_add_pi δ _)
 
-def scalar (p : ℝ × ℝ) :=
-  longitude p.1 * Real.cos (longitude p.2) + S.correction p
+def scalar (p : ℝ × ℝ) := p.1 * Real.cos p.2 + S.correction p
 
-private theorem continuous_scalar : Continuous S.scalar := by
-  have hlong : Continuous longitude := continuous_subtype_val.comp continuous_projIcc
-  exact ((hlong.comp continuous_fst).mul (Real.continuous_cos.comp (hlong.comp continuous_snd))).add
-    S.correction_series.1
+private theorem continuous_scalar : Continuous S.scalar :=
+  (continuous_fst.mul (Real.continuous_cos.comp continuous_snd)).add S.correction_series.1
 
-private theorem tendsto_increment_sum (p : ℝ × ℝ) :
+private theorem tendsto_increment_sum {p : ℝ × ℝ} (hp : p ∈ sphereClosedBox) :
     Tendsto (fun N => ∑ n ∈ Finset.range N, S.longitudeIncrement n p.1 * S.latitudeProfile n p.2)
       atTop (𝓝 (S.scalar p)) := by
   refine (tendsto_add_atTop_iff_nat 1).1 ?_
-  simpa only [Finset.sum_range_succ', longitudeIncrement, scalar] using
+  simpa only [Finset.sum_range_succ', longitudeIncrement, scalar, longitude_of_mem hp.1,
+    longitude_of_mem (latitude_mem_longitude hp.2)] using
     tendsto_sum_weighted_increment (S.correction_series.2 p)
       ((S.tendsto_X p.1).mul (S.tendsto_latitudeProfile p.2))
 
-theorem scalar_eq_correction {p : ℝ × ℝ} (hp : p ∈ sphereClosedBox) :
-    S.scalar p = p.1 * Real.cos p.2 + S.correction p := by
-  simp only [scalar, longitude_of_mem hp.1, longitude_of_mem (latitude_mem_longitude hp.2)]
+theorem scalar_eq_correction {p : ℝ × ℝ} (_hp : p ∈ sphereClosedBox) :
+    S.scalar p = p.1 * Real.cos p.2 + S.correction p := rfl
 
 theorem scalar_strictLowerSlope : StrictLowerSlopeOn S.scalar Real.cos sphereClosedBox := by
   rintro ⟨x, y⟩ hp ⟨x', y'⟩ hq rfl hxx'
   obtain ⟨n, hX⟩ := ((S.tendsto_X x).eventually_lt (S.tendsto_X x')
     (by rwa [longitude_of_mem hp.1, longitude_of_mem hq.1])).exists
   have hsum : S.correction (x, y) < S.correction (x', y) :=
-    Summable.tsum_lt_tsum
+    hasSum_lt
       (fun k => mul_le_mul_of_nonneg_left (S.monoX k hxx'.le) (S.coefficient_bounds k y).1.le)
       (mul_lt_mul_of_pos_left hX (S.coefficient_bounds n y).1)
-      (S.correction_series.2 (x, y)).summable (S.correction_series.2 (x', y)).summable
+      (S.correction_series.2 (x, y)) (S.correction_series.2 (x', y))
   rw [S.scalar_eq_correction hp, S.scalar_eq_correction hq]
   nlinarith only [hsum]
 
@@ -178,8 +174,7 @@ theorem linearization_bound (hcontrol : ∀ t, Summable (fun n => rate (δ + Rea
   let mid := (q.1, p.2)
   calc
     _ = |(S.correction mid - S.correction p) + (S.scalar q - S.scalar mid)| := by
-      rw [S.scalar_eq_correction hp, S.scalar_eq_correction (p := mid) ⟨hq.1, hp.2⟩]
-      simp only [mid]
+      simp only [scalar, mid]
       congr 1
       ring
     _ ≤ _ := by
@@ -189,7 +184,7 @@ theorem linearization_bound (hcontrol : ∀ t, Summable (fun n => rate (δ + Rea
           (fun _ _ _ => le_rfl) p.1 q.1 (S.correction_series.2 p).tendsto_sum_nat (S.correction_series.2 mid).tendsto_sum_nat
       · refine abs_sub_le_of_tendsto_weighted_comp (X := S.X) (f := latitudeWeight δ) hcontrol
           (fun n => S.longitudeIncrement_bound n q.1) S.monoX
-          (fun n x y => ?_) p.2 q.2 (S.tendsto_increment_sum mid) (S.tendsto_increment_sum q)
+          (fun n x y => ?_) p.2 q.2 (S.tendsto_increment_sum (p := mid) ⟨hq.1, hp.2⟩) (S.tendsto_increment_sum hq)
         simpa only [latitudeWeight, add_sub_add_left_eq_sub] using Real.abs_cos_sub_cos_le y x
 
 end Staircases

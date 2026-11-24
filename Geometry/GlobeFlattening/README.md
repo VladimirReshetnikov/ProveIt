@@ -24,10 +24,10 @@ has derivative zero almost everywhere.
 One induction on the number of translates proves the range, upper plateau,
 and one-step error bound for the staircase approximants. Affine rescaling
 carries those estimates to the desired interval.
-On the chart, the scalar coordinate is the sinusoidal coordinate plus a
-correction with positive weights. Uniform convergence of the correction
-gives continuity, and the positive weights give the strict horizontal slope
-bound. Each staircase is bounded by `π`, and the correction weights are
+The scalar coordinate is the sinusoidal coordinate plus a correction with
+positive weights. This formula also extends it continuously outside the
+chart box. Uniform convergence of the correction gives continuity, and the
+positive weights give the strict horizontal slope bound. Each staircase is bounded by `π`, and the correction weights are
 bounded by a geometric sequence with sum `2δ`. Taking `δ = ε / (2π)`
 bounds the uniform distance to the sinusoidal map by `ε`.
 
