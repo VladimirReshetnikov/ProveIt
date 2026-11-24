@@ -56,28 +56,21 @@ theorem lintegral_cos_lt_volume_chartImage
   exact (ENNReal.ofReal_lt_ofReal_iff_of_nonneg (mul_nonneg (hcos y hy) (sub_nonneg.mpr hab.le))).2
     (hslope (a, y) ⟨⟨le_rfl, hab.le⟩, hy'⟩ (b, y) ⟨⟨hab.le, le_rfl⟩, hy'⟩ rfl hab)
 
-private abbrev latitudeInterval : Set ℝ := Ioo (-(Real.pi / 2)) (Real.pi / 2)
-
-private theorem lintegral_sinusoidalWidth_add (r : ℝ) (hr : 0 ≤ r) :
-    (∫⁻ y in latitudeInterval, ENNReal.ofReal (Real.cos y * (2 * Real.pi) + r)) =
-      ENNReal.ofReal (4 * Real.pi + Real.pi * r) := by
-  have hfi : IntervalIntegrable (fun y => Real.cos y * (2 * Real.pi) + r) volume
-      (-(Real.pi / 2)) (Real.pi / 2) := Continuous.intervalIntegrable (by fun_prop) _ _
-  rw [← ofReal_integral_eq_lintegral_ofReal (hfi.1.mono_set Ioo_subset_Ioc_self)
-    (ae_restrict_of_forall_mem measurableSet_Ioo fun y hy =>
-      add_nonneg (mul_nonneg (Real.cos_pos_of_mem_Ioo hy).le (by positivity)) hr),
-    ← integral_Ioc_eq_integral_Ioo, ← intervalIntegral.integral_of_le (neg_le_self (half_pos Real.pi_pos).le),
-    intervalIntegral.integral_eq_sub_of_hasDerivAt (f := fun y => Real.sin y * (2 * Real.pi) + r * y)
-      (fun y _ => ((Real.hasDerivAt_sin y).mul_const (2 * Real.pi)).add (hasDerivAt_const_mul r)) hfi]
-  exact congrArg ENNReal.ofReal (by rw [Real.sin_neg, Real.sin_pi_div_two]; ring)
-
 /-- The spherical area density integrates to `4π` over the cut-sphere
 coordinate rectangle. -/
 theorem lintegral_cos_chartRectangle :
     (∫⁻ p in sphereLongitudeDomain,
         ENNReal.ofReal (Real.cos p.2)) = ENNReal.ofReal (4 * Real.pi) := by
-  simpa only [sphereLongitudeDomain, lintegral_cos_rectangle (neg_le_self Real.pi_pos.le),
-    sub_neg_eq_add, ← two_mul, add_zero, mul_zero] using lintegral_sinusoidalWidth_add 0 le_rfl
+  rw [sphereLongitudeDomain, lintegral_cos_rectangle (neg_le_self Real.pi_pos.le)]
+  have hfi := (Real.continuous_cos.mul_const (Real.pi - (-Real.pi))).intervalIntegrable
+    (μ := volume) (-(Real.pi / 2)) (Real.pi / 2)
+  rw [← ofReal_integral_eq_lintegral_ofReal (hfi.1.mono_set Ioo_subset_Ioc_self)
+    (ae_restrict_of_forall_mem measurableSet_Ioo fun y hy =>
+      mul_nonneg (Real.cos_pos_of_mem_Ioo hy).le (sub_nonneg.mpr (neg_le_self Real.pi_pos.le))),
+    ← integral_Ioc_eq_integral_Ioo, ← intervalIntegral.integral_of_le (neg_le_self (half_pos Real.pi_pos).le),
+    intervalIntegral.integral_eq_sub_of_hasDerivAt
+      (fun y _ => (Real.hasDerivAt_sin y).mul_const (Real.pi - (-Real.pi))) hfi]
+  exact congrArg ENNReal.ofReal (by rw [Real.sin_neg, Real.sin_pi_div_two]; ring)
 
 /-- A uniform sinusoidal distance bound gives at most two endpoint errors per slice. -/
 theorem volume_chartImage_upper_of_sinusoidal_closeness
@@ -90,14 +83,18 @@ theorem volume_chartImage_upper_of_sinusoidal_closeness
   have hab := neg_le_self Real.pi_pos.le
   rw [volume_chartImage_eq_lintegral_width hab hu]
   calc
-    _ ≤ ∫⁻ y in latitudeInterval, ENNReal.ofReal (Real.cos y * (2 * Real.pi) + 2 * ε) := by
-      refine setLIntegral_mono' measurableSet_Ioo fun y hy => ENNReal.ofReal_le_ofReal ?_
+    _ ≤ ∫⁻ y in Ioo (-(Real.pi / 2)) (Real.pi / 2),
+        ENNReal.ofReal (Real.cos y * (Real.pi - (-Real.pi))) + ENNReal.ofReal (2 * ε) := by
+      refine setLIntegral_mono' measurableSet_Ioo fun y hy =>
+        (ENNReal.ofReal_le_ofReal ?_).trans ENNReal.ofReal_add_le
       have hleft := hclose (-Real.pi, y) ⟨⟨le_rfl, hab⟩, Ioo_subset_Icc_self hy⟩
       have hright := hclose (Real.pi, y) ⟨⟨hab, le_rfl⟩, Ioo_subset_Icc_self hy⟩
       rw [dist_flattenCoordinates_sinusoidalCoordinates] at hleft hright
       linarith only [(abs_le.mp hleft).1, (abs_le.mp hright).2]
     _ < _ := by
-      rw [lintegral_sinusoidalWidth_add _ (by positivity)]
+      rw [lintegral_add_right _ measurable_const, ← lintegral_cos_rectangle hab, ← sphereLongitudeDomain,
+        lintegral_cos_chartRectangle, setLIntegral_const, Real.volume_Ioo, sub_neg_eq_add, add_halves,
+        ← ENNReal.ofReal_mul, ← ENNReal.ofReal_add] <;> try positivity
       exact (ENNReal.ofReal_lt_ofReal_iff (by positivity)).2 (by
         nlinarith only [mul_pos Real.pi_pos hε])
 

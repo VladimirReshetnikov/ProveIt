@@ -66,10 +66,10 @@ excess. The planar coordinate equivalence preserves area, so local
 exceptional area can be measured in coordinates. The proof pulls the open
 patch back to the longitude and latitude domain, picks a rectangle there,
 and uses the same triangular chart and width formula for its image.
-Both the reference area and the upper estimate use the same antiderivative
-`2π sin(y) + r y` for the sinusoidal width plus a constant offset. The
-reference uses `r = 0`. For the upper estimate, the uniform projection error
-bounds the two endpoint errors by a combined `r = 2ε`.
+The reference area follows by integrating the sinusoidal slice width with
+antiderivative `2π sin(y)`. For the upper estimate, the two longitude
+endpoint errors add at most `2ε` to each slice. Integrating that constant
+over the latitude interval adds at most `2πε` to the reference area.
 [Chart homeomorphism](Lean/GlobeFlattening/TriangularChart.lean)
 
 The inverse derivative is the isometric lift into the plane perpendicular
