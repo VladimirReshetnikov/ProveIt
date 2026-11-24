@@ -105,15 +105,14 @@ theorem exists_singular_approx {a b ε : ℝ} (hab : a < b) (hε : 0 < ε) :
     simpa [hB, hwidth] using B.monotone.mapsTo_Icc (hH n (B.symm x)).1
   · intro x
     have hclip : B (max 0 (min (n : ℝ) (B.symm x))) = max a (min b x) := by
-      rw [B.monotone.map_max, B.monotone.map_min, B.apply_symm_apply]
-      simp [hB, hwidth]
+      simp only [B.monotone.map_max, B.monotone.map_min, B.apply_symm_apply, hB, mul_zero, zero_add, hwidth]
     simp only [Function.comp_apply, ← hclip, hB, add_sub_add_right_eq_sub, ← mul_sub, abs_mul, abs_of_pos hw]
     exact (mul_le_of_le_one_right hw.le (hH n (B.symm x)).2.2).trans hwε
   · have hqmp : Measure.QuasiMeasurePreserving B.symm volume volume :=
       (Measure.quasiMeasurePreserving_smul volume (inv_ne_zero hw.ne')).comp
         (measurePreserving_sub_right volume a).quasiMeasurePreserving
-    filter_upwards [ae_all_iff.2 fun j : ℕ =>
-      hqmp.ae ((measurePreserving_sub_right volume (j : ℝ)).quasiMeasurePreserving.ae hfd)] with x hx
+    filter_upwards [hqmp.ae (ae_all_iff.2 fun j : ℕ =>
+      (measurePreserving_sub_right volume (j : ℝ)).quasiMeasurePreserving.ae hfd)] with x hx
     have hAx : HasDerivAt B.symm _ x := ((hasDerivAt_id x).sub_const a).const_mul w⁻¹
     have hs := HasDerivAt.fun_sum (u := Finset.range n) fun j _ => (hx j).comp x (hAx.sub_const (j : ℝ))
     simpa [H, Function.comp_def, hB] using (hs.const_mul w).add_const a
