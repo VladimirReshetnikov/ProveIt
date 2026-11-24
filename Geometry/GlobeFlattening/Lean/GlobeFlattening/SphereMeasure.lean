@@ -18,16 +18,16 @@ open scoped ENNReal
 
 noncomputable section
 
+theorem measurableSet_cutSphere : MeasurableSet cutSphere :=
+  (isClosed_eq continuous_norm continuous_const).measurableSet.inter
+    (Complex.isOpen_slitPlane.measurableSet.preimage (by fun_prop [horizontalComplex]))
+
 /-- Borel subsets of the longitude rectangle remain Borel in the ambient
 space when mapped to the cut sphere. -/
 theorem measurableSet_spherePoint_image {s : Set (ℝ × ℝ)} (hs : MeasurableSet s)
     (hsub : s ⊆ sphereLongitudeDomain) : MeasurableSet (spherePoint '' s) :=
   hs.image_of_continuousOn_injOn continuous_spherePoint.continuousOn
     (spherePoint_bijOn.injOn.mono hsub)
-
-theorem measurableSet_cutSphere : MeasurableSet cutSphere :=
-  spherePoint_bijOn.image_eq ▸
-    measurableSet_spherePoint_image isOpen_sphereLongitudeDomain.measurableSet Subset.rfl
 
 /-- Spherical area of subsets of the cut unit sphere, using its longitude chart. -/
 def sphericalArea : Measure (EuclideanSpace ℝ (Fin 3)) :=
@@ -58,9 +58,8 @@ theorem sphereExceptional_measurable_null {good : Set (ℝ × ℝ)} (hgood : Mea
     MeasurableSet (sphereExceptional good) ∧ sphericalArea (sphereExceptional good) = 0 := by
   rw [sphereExceptional_eq_image hsub]
   have hdiff := isOpen_sphereLongitudeDomain.measurableSet.diff hgood
-  refine ⟨measurableSet_spherePoint_image hdiff sdiff_subset, ?_⟩
-  rw [sphericalArea_spherePoint_image hdiff sdiff_subset,
-    Measure.restrict_eq_zero.mpr hnull, lintegral_zero_measure]
+  exact ⟨measurableSet_spherePoint_image hdiff sdiff_subset,
+    (sphericalArea_spherePoint_image hdiff sdiff_subset).trans (setLIntegral_measure_zero _ _ hnull)⟩
 
 end
 

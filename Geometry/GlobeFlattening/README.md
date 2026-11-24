@@ -76,8 +76,9 @@ identity gives the injectivity used to prove that the good and exceptional
 images are Borel.
 [Differential proof](Lean/GlobeFlattening/SphereDifferential.lean)
 
-Spherical area is defined in the longitude–latitude chart with density
-`cos(latitude)`, as in the report. The exceptional set also has zero
+The cut sphere is Borel by its unit-norm condition and the open slit-plane
+condition on the horizontal projection. Spherical area is defined in the
+longitude–latitude chart with density `cos(latitude)`, as in the report. The exceptional set also has zero
 two-dimensional Hausdorff measure by Lipschitz continuity of the sphere
 parametrization. Its differential factors through the tangent isometry,
 and the complex-plane norm bound controls the two rescaled coordinates.
