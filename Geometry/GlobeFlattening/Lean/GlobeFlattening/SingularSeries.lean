@@ -27,16 +27,15 @@ theorem singular_stieltjes_sum (f : ℕ → StieltjesFunction ℝ) (F : Stieltje
   have hmeasure : F.measure = Measure.sum (fun n => (f n).measure) := by
     refine Measure.ext_of_Ioc _ _ fun a b hab => ?_
     simp only [StieltjesFunction.measure_Ioc, Measure.sum_apply _ measurableSet_Ioc]
-    have hdiff := (hsum b).sub (hsum a)
-    rw [← ENNReal.ofReal_tsum_of_nonneg (fun n => sub_nonneg.mpr ((f n).mono hab.le)) hdiff.summable,
-      hdiff.tsum_eq]
+    exact (ENNReal.hasSum_coe.2 (((hsum b).sub (hsum a)).toNNReal
+      (fun n => sub_nonneg.mpr ((f n).mono hab.le)))).tsum_eq.symm
   have hsing (g : StieltjesFunction ℝ) :
       (∀ᵐ x, HasDerivAt g 0 x) ↔ g.measure ⟂ₘ volume := by
     rw [← Measure.rnDeriv_eq_zero]
     apply Filter.eventually_congr
     filter_upwards [g.ae_hasDerivAt, Measure.rnDeriv_ne_top g.measure volume] with x hd ht
-    simpa [ENNReal.toReal_eq_zero_iff, ht] using
-      (show HasDerivAt g 0 x ↔ (g.measure.rnDeriv volume x).toReal = 0 from ⟨hd.unique, hd.congr_deriv⟩)
+    rw [Pi.zero_apply, ← ENNReal.toReal_eq_toReal_iff' ht ENNReal.zero_ne_top, ENNReal.toReal_zero]
+    exact ⟨hd.unique, hd.congr_deriv⟩
   simpa only [hsing, hmeasure, Measure.MutuallySingular.sum_left] using hzero
 
 /-- A nonnegative summable combination of bounded continuous monotone singular functions
@@ -82,9 +81,8 @@ theorem exists_hasFDerivAt_of_increment_bounds {u : ℝ × ℝ → ℝ}
     have hcomp (L : (ℝ × ℝ) →L[ℝ] ℝ) (hL : HasDerivAt H 0 (L p)) :
         (fun q => |H (L q) - H (L p)|) =o[𝓝 p] fun q => q - p := by
       simpa [Function.comp_def] using (hL.hasFDerivAt.comp p L.hasFDerivAt).isLittleO.abs_left
-    have hnear : ∀ᶠ q in 𝓝 p, q ∈ D := hD.mem_nhds hpD
-    exact HasFDerivAt.of_isLittleO ((hnear.mono (herror p hpD)).isBigO.trans_isLittleO
-      ((hcomp (ContinuousLinearMap.fst ℝ ℝ ℝ) h₁).add (hcomp (ContinuousLinearMap.snd ℝ ℝ ℝ) h₂)))
+    exact HasFDerivAt.of_isLittleO <| (Eventually.mono (hD.mem_nhds hpD) (herror p hpD)).isBigO.trans_isLittleO
+      ((hcomp (ContinuousLinearMap.fst ℝ ℝ ℝ) h₁).add (hcomp (ContinuousLinearMap.snd ℝ ℝ ℝ) h₂))
 
 end
 
