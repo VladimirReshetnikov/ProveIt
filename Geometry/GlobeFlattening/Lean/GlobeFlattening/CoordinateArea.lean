@@ -8,7 +8,7 @@ The entire image is measured by its horizontal interval lengths. On the
 good set the restricted Jacobian formula instead gives the cosine density.
 -/
 
-open Filter MeasureTheory Set
+open MeasureTheory Set intervalIntegral
 open scoped ENNReal
 
 namespace GlobeFlattening
@@ -48,9 +48,8 @@ theorem lintegral_cos_lt_volume_chartImage
   refine lintegral_strict_mono
     (Measure.restrict_eq_zero.not.mpr ((Measure.measure_Ioo_pos volume).2 hcd).ne')
     ((hwidth.mono Ioo_subset_Icc_self).aemeasurable measurableSet_Ioo).ennreal_ofReal
-    (((Real.continuous_cos.mul continuous_const).integrableOn_Icc.mono_set
-      Ioo_subset_Icc_self).lintegral_lt_top.ne) ?_
-  refine (ae_restrict_mem measurableSet_Ioo).mono fun y hy => ?_
+    ((intervalIntegrable_cos.mul_const _).1.mono_set Ioo_subset_Ioc_self).lintegral_lt_top.ne ?_
+  refine ae_restrict_of_forall_mem measurableSet_Ioo fun y hy => ?_
   have hy' := Ioo_subset_Icc_self hy
   exact (ENNReal.ofReal_lt_ofReal_iff_of_nonneg (mul_nonneg (hcos y hy) (sub_nonneg.mpr hab.le))).2
     (hslope (a, y) ⟨⟨le_rfl, hab.le⟩, hy'⟩ (b, y) ⟨⟨hab.le, le_rfl⟩, hy'⟩ rfl hab)
@@ -63,7 +62,7 @@ theorem lintegral_cos_chartRectangle :
   rw [sphereLongitudeDomain, lintegral_cos_rectangle (neg_le_self Real.pi_pos.le)]
   have hlat := neg_le_self (half_pos Real.pi_pos).le
   rw [← ofReal_integral_eq_lintegral_ofReal
-      ((intervalIntegrable_iff_integrableOn_Ioo_of_le hlat).1 (intervalIntegral.intervalIntegrable_cos.mul_const _))
+      ((intervalIntegrable_cos.mul_const _).1.mono_set Ioo_subset_Ioc_self)
       (ae_restrict_of_forall_mem measurableSet_Ioo fun y hy =>
         mul_nonneg (Real.cos_pos_of_mem_Ioo hy).le (sub_nonneg.mpr (neg_le_self Real.pi_pos.le))),
     ← integral_Ioc_eq_integral_Ioo, ← intervalIntegral.integral_of_le hlat,
