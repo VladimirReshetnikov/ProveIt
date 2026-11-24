@@ -18,10 +18,9 @@ noncomputable section
 
 theorem volume_planarEuclideanEquiv_image (s : Set (ℝ × ℝ)) :
     volume (planarEuclideanEquiv '' s) = volume s := by
-  have hmeasure : MeasurePreserving planarEuclideanEquiv volume volume :=
-    (PiLp.volume_preserving_toLp (Fin 2)).comp (volume_preserving_finTwoArrow ℝ).symm
-  rw [← hmeasure.measure_preimage_emb planarEuclideanEquiv.toHomeomorph.measurableEmbedding,
-    preimage_image_eq _ planarEuclideanEquiv.injective]
+  rw [planarEuclideanEquiv.image_eq_preimage_symm]
+  exact ((EuclideanSpace.volume_preserving_symm_measurableEquiv_toLp (Fin 2)).trans
+    (volume_preserving_finTwoArrow ℝ)).measure_preimage_equiv s
 
 /-- With latitude fixed, the two planar metrics give the same distance. -/
 theorem dist_planarEuclideanEquiv_of_snd_eq {a b : ℝ × ℝ} (hy : a.2 = b.2) :

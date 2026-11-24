@@ -28,13 +28,11 @@ def sphereFrame (p : ℝ × ℝ) : Fin 3 → EuclideanSpace ℝ (Fin 3) :=
   ![sphereEast p, sphereNorth p, spherePoint p]
 
 theorem orthonormal_sphereFrame (p : ℝ × ℝ) : Orthonormal ℝ (sphereFrame p) := by
-  have hLon := Real.sin_sq_add_cos_sq p.1
-  have hLat := Real.sin_sq_add_cos_sq p.2
   simp [sphereFrame, Fin.forall_fin_succ, norm_spherePoint]
   simp [← pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero,
     EuclideanSpace.real_norm_sq_eq, PiLp.inner_apply, Fin.sum_univ_three, RCLike.inner_apply,
     sphereEast, sphereNorth, spherePoint, mul_pow]
-  grind only
+  grind only [Real.sin_sq_add_cos_sq]
 
 private def sphereTangentPlane (p : ℝ × ℝ) : Submodule ℝ (EuclideanSpace ℝ (Fin 3)) :=
   (ℝ ∙ spherePoint p)ᗮ
