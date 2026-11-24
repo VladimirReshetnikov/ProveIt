@@ -97,9 +97,9 @@ def globeFlattening_from_scalar
   have hgoodSource : cutSphere \ Z = spherePoint '' good :=
     sdiff_sdiff_cancel_left (spherePoint_mapsTo.mono_left hsub).image_subset
   obtain ⟨hZmeas, hZnull⟩ := sphereExceptional_measurable_null hgood hsub hnull
-  have hBorelImage {s : Set (EuclideanSpace ℝ (Fin 3))} (hs : MeasurableSet s) (hss : s ⊆ cutSphere) :
-      MeasurableSet (f '' s) :=
-    hs.image_of_continuousOn_injOn (hfcont.mono hss) (hfleft.injOn.mono hss)
+  have hBorelImage {s} (hs : MeasurableSet s) (hss : s ⊆ cutSphere) : MeasurableSet (f '' s) := by
+    simpa only [image_restrict, inter_eq_left.2 hss] using
+      hfopen.measurableEmbedding.measurableSet_image' (hs.preimage measurable_subtype_coe)
   have hexcess (V : Set (EuclideanSpace ℝ (Fin 2))) (hV : IsOpen V) (hne : V.Nonempty)
       (hVsub : V ⊆ T) : 0 < volume (V ∩ f '' Z) :=
     volume_sphereExceptional_inter_of_open hcu hSlope hgood hsub hnull hDeriv hV hne
