@@ -63,16 +63,15 @@ private abbrev latitudeInterval : Set ℝ := Ioo (-(Real.pi / 2)) (Real.pi / 2)
 private theorem lintegral_sinusoidalWidth_add (r : ℝ) (hr : 0 ≤ r) :
     (∫⁻ y in latitudeInterval, ENNReal.ofReal (Real.cos y * (2 * Real.pi) + r)) =
       ENNReal.ofReal (4 * Real.pi + Real.pi * r) := by
-  have hab := neg_le_self (half_pos Real.pi_pos).le
-  have hcont : Continuous (fun y => Real.cos y * (2 * Real.pi) + r) := by fun_prop
-  rw [← ofReal_integral_eq_lintegral_ofReal (hcont.integrableOn_Icc.mono_set Ioo_subset_Icc_self)
-    ((ae_restrict_mem measurableSet_Ioo).mono fun y hy =>
+  have hfi : IntervalIntegrable (fun y => Real.cos y * (2 * Real.pi) + r) volume
+      (-(Real.pi / 2)) (Real.pi / 2) := Continuous.intervalIntegrable (by fun_prop) _ _
+  rw [← ofReal_integral_eq_lintegral_ofReal (hfi.1.mono_set Ioo_subset_Ioc_self)
+    (ae_restrict_of_forall_mem measurableSet_Ioo fun y hy =>
       add_nonneg (mul_nonneg (Real.cos_pos_of_mem_Ioo hy).le (by positivity)) hr),
-    ← integral_Ioc_eq_integral_Ioo, ← intervalIntegral.integral_of_le hab,
+    ← integral_Ioc_eq_integral_Ioo, ← intervalIntegral.integral_of_le (neg_le_self (half_pos Real.pi_pos).le),
     intervalIntegral.integral_eq_sub_of_hasDerivAt (f := fun y => Real.sin y * (2 * Real.pi) + r * y)
-      (fun y _ => ((Real.hasDerivAt_sin y).mul_const (2 * Real.pi)).add (hasDerivAt_const_mul r))
-      (hcont.intervalIntegrable _ _), Real.sin_neg, Real.sin_pi_div_two]
-  exact congrArg ENNReal.ofReal (by ring)
+      (fun y _ => ((Real.hasDerivAt_sin y).mul_const (2 * Real.pi)).add (hasDerivAt_const_mul r)) hfi]
+  exact congrArg ENNReal.ofReal (by rw [Real.sin_neg, Real.sin_pi_div_two]; ring)
 
 /-- The spherical area density integrates to `4π` over the cut-sphere
 coordinate rectangle. -/
