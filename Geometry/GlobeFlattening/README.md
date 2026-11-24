@@ -34,7 +34,8 @@ coordinate plus a correction with positive weights. The correction
 converges uniformly, giving continuity, and its weights give the strict
 horizontal slope bound on the chart. Each staircase is bounded by `π`, and the correction weights are
 bounded by a geometric sequence with sum `2δ`. Taking `δ = ε / (2π)`
-bounds the uniform distance to the sinusoidal map by `ε`.
+bounds the distance to the sinusoidal map by `ε` throughout the coordinate
+plane.
 
 Summation by parts shows that finite sums of longitude increments weighted
 by shifted latitude cosines converge to the same scalar coordinate. The

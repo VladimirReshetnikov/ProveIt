@@ -33,7 +33,7 @@ private theorem rate_pos {δ : ℝ} (hδ : 0 < δ) (n : ℕ) : 0 < rate δ n := 
   positivity
 
 theorem rate_succ (δ : ℝ) (n : ℕ) : rate δ (n + 1) = rate δ n / 2 := by
-  simp only [rate, pow_succ]; ring
+  simp [rate, pow_succ, mul_assoc, div_eq_mul_inv]
 
 theorem hasSum_rate (δ : ℝ) : HasSum (rate δ) (δ * 2) := hasSum_geometric_two.mul_left δ
 
@@ -50,21 +50,19 @@ structure Staircases (δ : ℝ) where
   tendsto_X : ∀ x ∈ Icc (-Real.pi) Real.pi, Tendsto (fun n => X n x) atTop (𝓝 x)
 
 theorem exists_staircases {δ : ℝ} (hδ : 0 < δ) : Nonempty (Staircases δ) := by
-  have hX (n : ℕ) := exists_singular_approx (neg_lt_self Real.pi_pos)
-    (div_pos (rate_pos hδ n) (by norm_num : (0 : ℝ) < 4))
+  have hX (n : ℕ) := exists_singular_approx (neg_lt_self Real.pi_pos) (rate_pos hδ (n + 2))
   choose X hc hm hr he hd using hX
   refine ⟨⟨hδ, X, hm, hc, hd, fun n x => abs_le.mpr (hr n x), ?_, ?_⟩⟩
   · intro n x
     have h := abs_sub_le (X (n + 1) x) (max (-Real.pi) (min Real.pi x)) (X n x)
     rw [abs_sub_comm (max (-Real.pi) (min Real.pi x))] at h
-    have hnext := he (n + 1) x
-    rw [rate_succ] at hnext ⊢
-    linarith only [h, hnext, he n x, rate_pos hδ n]
+    linarith only [h, he (n + 1) x, he n x, rate_succ δ (n + 1), rate_succ δ (n + 2),
+      rate_pos hδ (n + 1)]
   · intro x hx
     refine tendsto_iff_norm_sub_tendsto_zero.2 <|
-      squeeze_zero (g := fun n => rate δ n / 4) (fun _ => norm_nonneg _) (fun n => ?_) ?_
-    · simpa only [Real.norm_eq_abs, min_eq_right hx.2, max_eq_right hx.1] using he n x
-    · simpa only [zero_div] using (summable_rate δ).tendsto_atTop_zero.div_const 4
+      squeeze_zero (fun _ => norm_nonneg _) (fun n => ?_)
+        ((summable_rate δ).tendsto_atTop_zero.comp (tendsto_add_atTop_nat 2))
+    simpa only [Function.comp_apply, Real.norm_eq_abs, min_eq_right hx.2, max_eq_right hx.1] using he n x
 
 namespace Staircases
 
@@ -129,9 +127,6 @@ private theorem tendsto_increment_sum {p : ℝ × ℝ} (hp : p ∈ sphereClosedB
     Function.comp_def, zero_add] using
     tendsto_sum_weighted_increment (S.correction_series.2 p) ((S.tendsto_X p.1 hp.1).mul hprofile)
 
-theorem scalar_eq_correction {p : ℝ × ℝ} (_hp : p ∈ sphereClosedBox) :
-    S.scalar p = p.1 * Real.cos p.2 + S.correction p := rfl
-
 theorem scalar_strictLowerSlope : StrictLowerSlopeOn S.scalar Real.cos sphereClosedBox := by
   rintro ⟨x, y⟩ hp ⟨x', y'⟩ hq rfl hxx'
   obtain ⟨n, hX⟩ := ((S.tendsto_X x hp.1).eventually_lt (S.tendsto_X x' hq.1) hxx').exists
@@ -140,14 +135,13 @@ theorem scalar_strictLowerSlope : StrictLowerSlopeOn S.scalar Real.cos sphereClo
       (fun k => mul_le_mul_of_nonneg_left (S.monoX k hxx'.le) (S.coefficient_bounds k y).1.le)
       (mul_lt_mul_of_pos_left hX (S.coefficient_bounds n y).1)
       (S.correction_series.2 (x, y)) (S.correction_series.2 (x', y))
-  rw [S.scalar_eq_correction hp, S.scalar_eq_correction hq]
-  nlinarith only [hsum]
+  simp only [scalar]
+  linarith only [hsum]
 
-theorem scalar_error {p : ℝ × ℝ} (hp : p ∈ sphereClosedBox) :
+theorem scalar_error (p : ℝ × ℝ) :
     dist (flattenCoordinates S.scalar p) (sinusoidalCoordinates p) ≤ δ * 2 * Real.pi := by
-  rw [dist_flattenCoordinates_sinusoidalCoordinates, S.scalar_eq_correction hp,
-    add_sub_cancel_left, ← Real.norm_eq_abs]
-  exact (S.correction_series.2 p).norm_le_of_bounded ((hasSum_rate δ).mul_right Real.pi) (fun n => S.norm_correction_term n p)
+  rw [dist_flattenCoordinates_sinusoidalCoordinates, scalar, add_sub_cancel_left, ← Real.norm_eq_abs]
+  exact tsum_of_norm_bounded ((hasSum_rate δ).mul_right Real.pi) (S.norm_correction_term · p)
 
 def horizontalControl (x : ℝ) := ∑' n, rate (δ + Real.pi) n * S.X n x
 
@@ -164,11 +158,12 @@ theorem linearization_bound (hcontrol : ∀ t, Summable (fun n => rate (δ + Rea
     (fun n => S.longitudeIncrement_bound n q.1) S.monoX (fun _ x y => by
       simpa only [latitudeWeight, add_sub_add_left_eq_sub] using Real.abs_cos_sub_cos_le y x)
     p.2 q.2 (S.tendsto_increment_sum (p := mid) ⟨hq.1, hp.2⟩) (S.tendsto_increment_sum hq)
-  convert (abs_add_le (S.correction mid - S.correction p) (S.scalar q - S.scalar mid)).trans
-    (add_le_add hhorizontal hvertical) using 1 <;> try rfl
-  congr 1
-  simp only [scalar, mid]
-  ring
+  calc
+    _ = |(S.correction mid - S.correction p) + (S.scalar q - S.scalar mid)| := by
+      congr 1
+      simp only [scalar, mid]
+      ring
+    _ ≤ _ := (abs_add_le _ _).trans (add_le_add hhorizontal hvertical)
 
 end Staircases
 
@@ -195,7 +190,7 @@ theorem exists_strict_scalar_flattening {ε : ℝ} (hε : 0 < ε) :
       isOpen_sphereLongitudeDomain hsingular (fun p hp q hq =>
         S.linearization_bound hcontrol (sphereLongitudeDomain_subset_box hp) (sphereLongitudeDomain_subset_box hq))
   exact ⟨S.scalar, E, S.continuous_scalar.continuousOn, hm, hsub, hnull,
-    fun _ hq => (S.scalar_error hq).trans_eq hscale, S.scalar_strictLowerSlope, hderiv⟩
+    fun q _ => (S.scalar_error q).trans_eq hscale, S.scalar_strictLowerSlope, hderiv⟩
 
 end
 end GlobeFlattening
