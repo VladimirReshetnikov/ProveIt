@@ -25,7 +25,10 @@ The distribution function is locally constant off the Cantor set, so it
 has derivative zero almost everywhere.
 One induction on the number of translates proves the range, upper plateau,
 and one-step error bound for the staircase approximants. Affine rescaling
-carries those estimates to the desired interval.
+carries those estimates to the desired interval. The scalar proof uses
+convergence on the longitude interval and a global bound on consecutive
+steps. Each step is smaller than the drop in the geometric rate. Since
+cosine is 1-Lipschitz, the successive profile drops stay positive.
 On the whole coordinate plane, the scalar coordinate is the sinusoidal
 coordinate plus a correction with positive weights. The correction
 converges uniformly, giving continuity, and its weights give the strict

@@ -26,16 +26,6 @@ open scoped NNReal Topology
 
 noncomputable section
 
-abbrev longitude (x : ℝ) : ℝ :=
-  (projIcc (-Real.pi) Real.pi (neg_le_self Real.pi_pos.le) x).1
-
-theorem longitude_of_mem {x : ℝ} (hx : x ∈ Icc (-Real.pi) Real.pi) : longitude x = x :=
-  congrArg Subtype.val (projIcc_of_mem _ hx)
-
-private theorem latitude_mem_longitude {y : ℝ} (hy : y ∈ Icc (-(Real.pi / 2)) (Real.pi / 2)) :
-    y ∈ Icc (-Real.pi) Real.pi :=
-  Icc_subset_Icc (neg_le_neg (half_le_self Real.pi_pos.le)) (half_le_self Real.pi_pos.le) hy
-
 def rate (δ : ℝ) (n : ℕ) := δ * (1 / 2 : ℝ)^n
 
 private theorem rate_pos {δ : ℝ} (hδ : 0 < δ) (n : ℕ) : 0 < rate δ n := by
@@ -56,45 +46,38 @@ structure Staircases (δ : ℝ) where
   continuousX : ∀ n, Continuous (X n)
   singularX : ∀ n, ∀ᵐ x ∂volume, HasDerivAt (X n) 0 x
   boundX : ∀ n x, |X n x| ≤ Real.pi
-  errorX : ∀ n x, |X n x - longitude x| ≤ rate δ n / 4
+  stepX : ∀ n x, |X (n + 1) x - X n x| < rate δ (n + 1)
+  tendsto_X : ∀ x ∈ Icc (-Real.pi) Real.pi, Tendsto (fun n => X n x) atTop (𝓝 x)
 
 theorem exists_staircases {δ : ℝ} (hδ : 0 < δ) : Nonempty (Staircases δ) := by
   have hX (n : ℕ) := exists_singular_approx (neg_lt_self Real.pi_pos)
     (div_pos (rate_pos hδ n) (by norm_num : (0 : ℝ) < 4))
   choose X hc hm hr he hd using hX
-  exact ⟨⟨hδ, X, hm, hc, hd, fun n x => abs_le.mpr (hr n x), he⟩⟩
+  refine ⟨⟨hδ, X, hm, hc, hd, fun n x => abs_le.mpr (hr n x), ?_, ?_⟩⟩
+  · intro n x
+    have h := abs_sub_le (X (n + 1) x) (max (-Real.pi) (min Real.pi x)) (X n x)
+    rw [abs_sub_comm (max (-Real.pi) (min Real.pi x))] at h
+    have hnext := he (n + 1) x
+    rw [rate_succ] at hnext ⊢
+    linarith only [h, hnext, he n x, rate_pos hδ n]
+  · intro x hx
+    refine tendsto_iff_norm_sub_tendsto_zero.2 <|
+      squeeze_zero (g := fun n => rate δ n / 4) (fun _ => norm_nonneg _) (fun n => ?_) ?_
+    · simpa only [Real.norm_eq_abs, min_eq_right hx.2, max_eq_right hx.1] using he n x
+    · simpa only [zero_div] using (summable_rate δ).tendsto_atTop_zero.div_const 4
 
 namespace Staircases
 
 variable {δ : ℝ} (S : Staircases δ)
-
-private theorem X_step_bound (n : ℕ) (x : ℝ) : |S.X (n + 1) x - S.X n x| < rate δ (n + 1) := by
-  have h := abs_sub_le (S.X (n + 1) x) (longitude x) (S.X n x)
-  rw [abs_sub_comm (longitude x)] at h
-  have hnext := S.errorX (n + 1) x
-  rw [rate_succ] at hnext ⊢
-  linarith only [h, hnext, S.errorX n x, rate_pos S.delta_pos n]
-
-theorem tendsto_X (x : ℝ) : Tendsto (fun n => S.X n x) atTop (𝓝 (longitude x)) := by
-  refine tendsto_iff_norm_sub_tendsto_zero.2 <|
-    squeeze_zero (g := fun n => rate δ n / 4) (fun _ => norm_nonneg _) (fun n => ?_) ?_
-  · simpa only [Real.norm_eq_abs] using S.errorX n x
-  · simpa only [zero_div] using (summable_rate δ).tendsto_atTop_zero.div_const 4
 
 private def latitudeWeight (δ : ℝ) (n : ℕ) (t : ℝ) := rate δ n + Real.cos t
 
 def latitudeProfile (n : ℕ) (y : ℝ) : ℝ := latitudeWeight δ n (S.X n y)
 def coefficient (n : ℕ) (y : ℝ) : ℝ := S.latitudeProfile n y - S.latitudeProfile (n + 1) y
 
-theorem tendsto_latitudeProfile (y : ℝ) :
-    Tendsto (fun n => S.latitudeProfile n y) atTop (𝓝 (Real.cos (longitude y))) := by
-  simpa only [latitudeProfile, latitudeWeight, Function.comp_def, zero_add] using
-    (summable_rate δ).tendsto_atTop_zero.add
-      ((Real.continuous_cos.tendsto _).comp (S.tendsto_X y))
-
 theorem coefficient_bounds (n : ℕ) (y : ℝ) :
     0 < S.coefficient n y ∧ |S.coefficient n y| ≤ rate δ n := by
-  have hcos := abs_lt.mp <| (Real.abs_cos_sub_cos_le _ _).trans_lt (S.X_step_bound n y)
+  have hcos := abs_lt.mp <| (Real.abs_cos_sub_cos_le _ _).trans_lt (S.stepX n y)
   unfold coefficient latitudeProfile latitudeWeight
   rw [rate_succ] at hcos ⊢
   refine ⟨?_, abs_le.mpr ⟨?_, ?_⟩⟩ <;>
@@ -127,7 +110,7 @@ theorem longitudeIncrement_bound (n : ℕ) (x : ℝ) :
   | zero => simpa [longitudeIncrement, rate] using
       (S.boundX 0 x).trans (le_add_of_nonneg_left S.delta_pos.le)
   | succ n =>
-    exact (S.X_step_bound n x).le.trans (rate_le_rate_add_pi δ _)
+    exact (S.stepX n x).le.trans (rate_le_rate_add_pi δ _)
 
 def scalar (p : ℝ × ℝ) := p.1 * Real.cos p.2 + S.correction p
 
@@ -137,19 +120,21 @@ private theorem continuous_scalar : Continuous S.scalar :=
 private theorem tendsto_increment_sum {p : ℝ × ℝ} (hp : p ∈ sphereClosedBox) :
     Tendsto (fun N => ∑ n ∈ Finset.range N, S.longitudeIncrement n p.1 * S.latitudeProfile n p.2)
       atTop (𝓝 (S.scalar p)) := by
+  have hy : p.2 ∈ Icc (-Real.pi) Real.pi :=
+    Icc_subset_Icc (neg_le_neg (half_le_self Real.pi_pos.le)) (half_le_self Real.pi_pos.le) hp.2
+  have hprofile := (summable_rate δ).tendsto_atTop_zero.add
+    ((Real.continuous_cos.tendsto _).comp (S.tendsto_X p.2 hy))
   refine (tendsto_add_atTop_iff_nat 1).1 ?_
-  simpa only [Finset.sum_range_succ', longitudeIncrement, scalar, longitude_of_mem hp.1,
-    longitude_of_mem (latitude_mem_longitude hp.2)] using
-    tendsto_sum_weighted_increment (S.correction_series.2 p)
-      ((S.tendsto_X p.1).mul (S.tendsto_latitudeProfile p.2))
+  simpa only [Finset.sum_range_succ', longitudeIncrement, scalar, latitudeProfile, latitudeWeight,
+    Function.comp_def, zero_add] using
+    tendsto_sum_weighted_increment (S.correction_series.2 p) ((S.tendsto_X p.1 hp.1).mul hprofile)
 
 theorem scalar_eq_correction {p : ℝ × ℝ} (_hp : p ∈ sphereClosedBox) :
     S.scalar p = p.1 * Real.cos p.2 + S.correction p := rfl
 
 theorem scalar_strictLowerSlope : StrictLowerSlopeOn S.scalar Real.cos sphereClosedBox := by
   rintro ⟨x, y⟩ hp ⟨x', y'⟩ hq rfl hxx'
-  obtain ⟨n, hX⟩ := ((S.tendsto_X x).eventually_lt (S.tendsto_X x')
-    (by rwa [longitude_of_mem hp.1, longitude_of_mem hq.1])).exists
+  obtain ⟨n, hX⟩ := ((S.tendsto_X x hp.1).eventually_lt (S.tendsto_X x' hq.1) hxx').exists
   have hsum : S.correction (x, y) < S.correction (x', y) :=
     hasSum_lt
       (fun k => mul_le_mul_of_nonneg_left (S.monoX k hxx'.le) (S.coefficient_bounds k y).1.le)
