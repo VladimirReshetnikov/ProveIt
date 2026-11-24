@@ -1,5 +1,4 @@
 import Mathlib.Analysis.Normed.Ring.InfiniteSum
-import Mathlib.Tactic.Ring
 
 /-!
 # Summation by parts and increment comparison for the staircase series
@@ -16,12 +15,10 @@ theorem tendsto_sum_weighted_increment {e A : ℕ → ℝ} {L C : ℝ}
     (hend : Tendsto (fun n => A n * e n) atTop (𝓝 L)) :
     Tendsto (fun N => (∑ n ∈ range N, (A (n + 1) - A n) * e (n + 1)) + A 0 * e 0)
       atTop (𝓝 (L + C)) := by
-  have hstep (n : ℕ) :
-      (A (n + 1) - A n) * e (n + 1) =
-        (e n - e (n + 1)) * A n + (A (n + 1) * e (n + 1) - A n * e n) := by ring
   refine (hend.add hs.tendsto_sum_nat).congr' (Eventually.of_forall fun N => ?_)
-  simp only [hstep, sum_add_distrib, sum_range_sub (fun n => A n * e n)]
-  ring
+  simp only [sub_mul, sum_sub_distrib, mul_comm (e _) (A _)]
+  rw [sub_add_eq_add_sub, ← sum_range_succ' (fun n => A n * e n), ← add_sub_assoc,
+    add_comm (A N * e N), ← sum_range_succ (fun n => A n * e n)]
 
 /-- Compare the limits of weighted increments with the increments of their monotone majorant. -/
 theorem abs_sub_le_of_tendsto_weighted_comp {a b : ℕ → ℝ} {X f : ℕ → ℝ → ℝ} {A B : ℝ}
