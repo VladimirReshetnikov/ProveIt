@@ -99,10 +99,8 @@ theorem hasFDerivAt_spherePoint (p : ℝ × ℝ) :
   have hfst := hasFDerivAt_fst (𝕜 := ℝ) (p := p)
   have hsnd := hasFDerivAt_snd (𝕜 := ℝ) (p := p)
   refine ⟨(hsnd.cos.mul hfst.cos).congr_fderiv ?_, (hsnd.cos.mul hfst.sin).congr_fderiv ?_,
-    hsnd.sin.congr_fderiv ?_⟩
-  all_goals
-    exact ContinuousLinearMap.ext fun v => by
-      simp [sphereDerivative_apply, sphereEast, sphereNorth, mul_assoc, mul_comm, mul_left_comm, add_comm]
+    hsnd.sin.congr_fderiv ?_⟩ <;> ext <;>
+      simp [sphereDerivative_apply, sphereEast, sphereNorth, mul_comm, add_comm]
 
 end
 
