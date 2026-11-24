@@ -51,8 +51,7 @@ theorem cutSphere_eq_sphere_sdiff_meridian :
     cutSphere = Metric.sphere (0 : EuclideanSpace ℝ (Fin 3)) 1 \
       {w | w 1 = 0 ∧ w 0 ≤ 0} := by
   ext w
-  simp only [cutSphere, mem_setOf_eq, mem_sdiff, Metric.mem_sphere, dist_zero_right,
-    Complex.mem_slitPlane_iff, horizontalComplex_re, horizontalComplex_im, not_and_or, not_le, or_comm]
+  simp [cutSphere, Complex.mem_slitPlane_iff, or_iff_not_imp_right]
 
 private theorem spherePoint_polar_target {p : ℝ × ℝ} (hp : p ∈ sphereLongitudeDomain) :
     (Real.cos p.2, p.1) ∈ Complex.polarCoord.target :=

@@ -34,13 +34,12 @@ theorem lipschitzWith_spherePoint : LipschitzWith 2 spherePoint := by
   rw [(hasFDerivAt_spherePoint p).fderiv, ← NNReal.coe_le_coe]
   change ‖sphereDerivative p‖ ≤ 2
   refine ContinuousLinearMap.opNorm_le_bound _ (by norm_num) fun v => ?_
-  let z : ℂ := ⟨Real.cos p.2 * v.1, v.2⟩
-  change ‖sphereTangentLift p (Complex.orthonormalBasisOneI.repr z)‖ ≤ _
-  rw [norm_sphereTangentLift, LinearIsometryEquiv.norm_map]
-  refine (Complex.norm_le_abs_re_add_abs_im z).trans ?_
-  simpa only [z, abs_mul, two_mul, Real.norm_eq_abs] using add_le_add
-    ((mul_le_of_le_one_left (abs_nonneg v.1) (Real.abs_cos_le_one p.2)).trans (norm_fst_le v))
-    (norm_snd_le v)
+  have h := orthonormal_sphereFrame p
+  rw [sphereDerivative_apply, two_mul]
+  refine norm_add_le_of_le ?_ ?_
+  · simpa only [norm_smul, show ‖sphereEast p‖ = 1 from h.norm_eq_one 0, mul_one, one_mul]
+      using norm_mul_le_of_le (a₁ := Real.cos p.2) (Real.abs_cos_le_one p.2) (norm_fst_le v)
+  · simpa [norm_smul, show ‖sphereNorth p‖ = 1 from h.norm_eq_one 1] using norm_snd_le v
 
 end
 
