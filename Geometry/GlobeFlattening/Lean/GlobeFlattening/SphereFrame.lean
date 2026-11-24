@@ -1,7 +1,6 @@
 import GlobeFlattening.SphereChart
 import Mathlib.Analysis.InnerProductSpace.LinearMap
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv
-import Mathlib.Tactic.Ring
 
 /-!
 # Spherical coordinates and the tangent frame
@@ -100,15 +99,13 @@ theorem hasFDerivAt_spherePoint (p : ℝ × ℝ) :
     HasFDerivAt spherePoint (sphereDerivative p) p := by
   rw [← (PiLp.continuousLinearEquiv 2 ℝ _).comp_hasFDerivAt_iff, hasFDerivAt_pi']
   simp only [Fin.forall_fin_succ, Fin.forall_fin_zero, and_true]
-  have hfst := hasFDerivAt_fst (𝕜 := ℝ) (E := ℝ) (F := ℝ) (p := p)
-  have hsnd := hasFDerivAt_snd (𝕜 := ℝ) (E := ℝ) (F := ℝ) (p := p)
+  have hfst := hasFDerivAt_fst (𝕜 := ℝ) (p := p)
+  have hsnd := hasFDerivAt_snd (𝕜 := ℝ) (p := p)
   refine ⟨(hsnd.cos.mul hfst.cos).congr_fderiv ?_, (hsnd.cos.mul hfst.sin).congr_fderiv ?_,
     hsnd.sin.congr_fderiv ?_⟩
   all_goals
-    apply ContinuousLinearMap.ext
-    intro v
-    simp [sphereDerivative_apply, sphereEast, sphereNorth]
-    ring
+    exact ContinuousLinearMap.ext fun v => by
+      simp [sphereDerivative_apply, sphereEast, sphereNorth, mul_assoc, mul_comm, mul_left_comm, add_comm]
 
 end
 
