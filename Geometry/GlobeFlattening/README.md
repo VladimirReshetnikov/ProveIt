@@ -11,9 +11,9 @@ patch and rules out a Lipschitz bound on any nonempty relatively open
 source patch. [Lean theorem](Lean/GlobeFlattening/FlatteningTheorem.lean)
 
 The Lean construction uses continuous monotone staircases with derivative
-zero almost everywhere. One sequence approximates longitude, and rescaling
-it by `Yₙ(y) = Xₙ(2y) / 2` gives the latitude sequence. Each longitude
-approximant sums scaled copies of a Cantor-supported distribution function.
+zero almost everywhere. The same sequence approximates longitude and
+latitude because the latitude interval lies inside the longitude interval.
+Each approximant sums scaled copies of a Cantor-supported distribution function.
 Mathlib supplies a measurable injection from the reals to Boolean sequences
 and a homeomorphism from those sequences to the Cantor set. Their composition
 pushes uniform measure on `[0, 1)` to a measure with null singletons, so its
@@ -35,10 +35,10 @@ Summation by parts shows that finite sums of longitude increments weighted
 by shifted latitude cosines converge to the same scalar coordinate. The
 correction gives the horizontal error estimate, and termwise comparison of
 the finite sums gives the vertical one. Both estimates use increments of
-the same control function, with latitude rescaled. Its Stieltjes measure
-is a sum of singular measures, so the control function has derivative zero
-almost everywhere. Longitude and doubled latitude pull back that derivative
-event to the chart and yield the joint derivative.
+the same control function. Its Stieltjes measure is a sum of singular
+measures, so the control function has derivative zero almost everywhere.
+The two coordinate projections pull back that derivative event to the
+chart and yield the joint derivative.
 [Scalar construction](Lean/GlobeFlattening/ScalarConstruction.lean) ·
 [Singular staircases](Lean/GlobeFlattening/SingularStaircase.lean)
 
