@@ -12,7 +12,6 @@ the arcsine of the vertical coordinate.
 namespace GlobeFlattening
 
 open Set
-open scoped Real
 
 noncomputable section
 
@@ -106,11 +105,10 @@ theorem spherePoint_bijOn : BijOn spherePoint sphereLongitudeDomain cutSphere :=
 /-- The coordinates of the report give a homeomorphism onto the cut sphere. -/
 def sphereLongitudeChart : sphereLongitudeDomain ≃ₜ cutSphere where
   toEquiv := sphereLongitudeEquiv.toEquiv
-  continuous_toFun := (continuous_spherePoint.comp continuous_subtype_val).subtype_mk _
-  continuous_invFun :=
+  continuous_toFun := continuous_spherePoint.continuousOn.mapsToRestrict spherePoint_mapsTo
+  continuous_invFun := ContinuousOn.mapsToRestrict
     ((Complex.continuousOn_arg.comp (f := horizontalComplex) (by fun_prop [horizontalComplex])
-      (fun _ hw => hw.2)).prodMk
-      (by fun_prop : ContinuousOn (fun w => Real.arcsin (w 2)) cutSphere)).restrict.subtype_mk _
+      (fun _ hw => hw.2)).prodMk (by fun_prop)) sphereChartInverse_mapsTo
 
 end
 
