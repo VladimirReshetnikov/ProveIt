@@ -40,7 +40,6 @@ theorem hasSum_rate (δ : ℝ) : HasSum (rate δ) (δ * 2) := hasSum_geometric_t
 theorem summable_rate (δ : ℝ) : Summable (rate δ) := (hasSum_rate δ).summable
 
 structure Staircases (δ : ℝ) where
-  delta_pos : 0 < δ
   X : ℕ → ℝ → ℝ
   monoX : ∀ n, Monotone (X n)
   continuousX : ∀ n, Continuous (X n)
@@ -52,7 +51,7 @@ structure Staircases (δ : ℝ) where
 theorem exists_staircases {δ : ℝ} (hδ : 0 < δ) : Nonempty (Staircases δ) := by
   have hX (n : ℕ) := exists_singular_approx (neg_lt_self Real.pi_pos) (rate_pos hδ (n + 2))
   choose X hc hm hr he hd using hX
-  refine ⟨⟨hδ, X, hm, hc, hd, fun n x => abs_le.mpr (hr n x), ?_, ?_⟩⟩
+  refine ⟨⟨X, hm, hc, hd, fun n x => abs_le.mpr (hr n x), ?_, ?_⟩⟩
   · intro n x
     have h := dist_triangle_right (X (n + 1) x) (X n x) (max (-Real.pi) (min Real.pi x))
     simp only [Real.dist_eq] at h
@@ -99,16 +98,16 @@ def longitudeIncrement : ℕ → ℝ → ℝ
   | 0 => S.X 0
   | n + 1 => fun x => S.X (n + 1) x - S.X n x
 
-private theorem rate_le_rate_add_pi (δ : ℝ) (n : ℕ) : rate δ n ≤ rate (δ + Real.pi) n :=
-  mul_le_mul_of_nonneg_right (le_add_of_nonneg_right Real.pi_pos.le) (by positivity)
+private theorem rate_le_rate_max_pi (δ : ℝ) (n : ℕ) : rate δ n ≤ rate (max δ Real.pi) n :=
+  mul_le_mul_of_nonneg_right (le_max_left δ Real.pi) (by positivity)
 
 theorem longitudeIncrement_bound (n : ℕ) (x : ℝ) :
-    |S.longitudeIncrement n x| ≤ rate (δ + Real.pi) n := by
+    |S.longitudeIncrement n x| ≤ rate (max δ Real.pi) n := by
   cases n with
   | zero => simpa [longitudeIncrement, rate] using
-      (S.boundX 0 x).trans (le_add_of_nonneg_left S.delta_pos.le)
+      (S.boundX 0 x).trans (le_max_right δ Real.pi)
   | succ n =>
-    exact (S.stepX n x).le.trans (rate_le_rate_add_pi δ _)
+    exact (S.stepX n x).le.trans (rate_le_rate_max_pi δ _)
 
 def scalar (p : ℝ × ℝ) := p.1 * Real.cos p.2 + S.correction p
 
@@ -140,16 +139,16 @@ theorem scalar_error (p : ℝ × ℝ) :
   rw [dist_flattenCoordinates_sinusoidalCoordinates, scalar, add_sub_cancel_left, ← Real.norm_eq_abs]
   exact tsum_of_norm_bounded ((hasSum_rate δ).mul_right Real.pi) (S.norm_correction_term · p)
 
-def horizontalControl (x : ℝ) := ∑' n, rate (δ + Real.pi) n * S.X n x
+def horizontalControl (x : ℝ) := ∑' n, rate (max δ Real.pi) n * S.X n x
 
-theorem linearization_bound (hcontrol : ∀ t, Summable (fun n => rate (δ + Real.pi) n * S.X n t))
+theorem linearization_bound (hcontrol : ∀ t, Summable (fun n => rate (max δ Real.pi) n * S.X n t))
     {p q : ℝ × ℝ} (hp : p ∈ sphereClosedBox) (hq : q ∈ sphereClosedBox) :
     |S.scalar q - S.scalar p - Real.cos p.2 * (q.1 - p.1)| ≤
       |S.horizontalControl q.1 - S.horizontalControl p.1| +
         |S.horizontalControl q.2 - S.horizontalControl p.2| := by
   let mid := (q.1, p.2)
   have hhorizontal := abs_sub_le_of_tendsto_weighted_comp (X := S.X) (f := fun _ => id) hcontrol
-    (fun n => (S.coefficient_bounds n p.2).2.trans (rate_le_rate_add_pi δ n)) S.monoX
+    (fun n => (S.coefficient_bounds n p.2).2.trans (rate_le_rate_max_pi δ n)) S.monoX
     (fun _ _ _ => le_rfl) p.1 q.1 (S.correction_series.2 p).tendsto_sum_nat (S.correction_series.2 mid).tendsto_sum_nat
   have hvertical := abs_sub_le_of_tendsto_weighted_comp (X := S.X) (f := latitudeWeight δ) hcontrol
     (fun n => S.longitudeIncrement_bound n q.1) S.monoX (fun _ x y => by
@@ -175,9 +174,9 @@ theorem exists_strict_scalar_flattening {ε : ℝ} (hε : 0 < ε) :
   let δ := ε / (2 * Real.pi)
   have hδ : 0 < δ := div_pos hε (by positivity)
   obtain ⟨S⟩ := exists_staircases hδ
-  obtain ⟨hcontrol, hsingular⟩ := summable_and_singular_weighted_tsum S.X (rate (δ + Real.pi))
-    (fun n => (rate_pos (add_pos hδ Real.pi_pos) n).le)
-    (summable_rate (δ + Real.pi)) S.boundX S.continuousX S.monoX S.singularX
+  obtain ⟨hcontrol, hsingular⟩ := summable_and_singular_weighted_tsum S.X (rate (max δ Real.pi))
+    (fun n => (rate_pos (Real.pi_pos.trans_le (le_max_right δ Real.pi)) n).le)
+    (summable_rate (max δ Real.pi)) S.boundX S.continuousX S.monoX S.singularX
   obtain ⟨E, hm, hsub, hnull, hderiv⟩ :=
     exists_hasFDerivAt_of_increment_bounds S.horizontalControl (fun p => Real.cos p.2)
       isOpen_sphereLongitudeDomain hsingular (fun p hp q hq =>
