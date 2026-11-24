@@ -16,9 +16,9 @@ theorem tendsto_sum_weighted_increment {e A : ℕ → ℝ} {L C : ℝ}
     Tendsto (fun N => (∑ n ∈ range N, (A (n + 1) - A n) * e (n + 1)) + A 0 * e 0)
       atTop (𝓝 (L + C)) := by
   refine (hend.add hs.tendsto_sum_nat).congr' (Eventually.of_forall fun N => ?_)
-  simp only [sub_mul, sum_sub_distrib, mul_comm (e _) (A _)]
-  rw [sub_add_eq_add_sub, ← sum_range_succ' (fun n => A n * e n), ← add_sub_assoc,
-    add_comm (A N * e N), ← sum_range_succ (fun n => A n * e n)]
+  have htel := sum_range_sub (fun n => A n * e n) N
+  simp only [sub_mul, sum_sub_distrib, mul_comm (e _) (A _)] at htel ⊢
+  linarith only [htel]
 
 /-- Compare the limits of weighted increments with the increments of their monotone majorant. -/
 theorem abs_sub_le_of_tendsto_weighted_comp {a b : ℕ → ℝ} {X f : ℕ → ℝ → ℝ} {A B : ℝ}

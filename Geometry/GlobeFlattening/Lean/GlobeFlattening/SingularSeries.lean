@@ -26,9 +26,9 @@ theorem singular_stieltjes_sum (f : ℕ → StieltjesFunction ℝ) (F : Stieltje
     ∀ᵐ x, HasDerivAt F 0 x := by
   have hmeasure : F.measure = Measure.sum (fun n => (f n).measure) := by
     refine Measure.ext_of_Ioc _ _ fun a b hab => ?_
-    simp only [StieltjesFunction.measure_Ioc, Measure.sum_apply _ measurableSet_Ioc]
-    exact (ENNReal.hasSum_coe.2 (((hsum b).sub (hsum a)).toNNReal
-      (fun n => sub_nonneg.mpr ((f n).mono hab.le)))).tsum_eq.symm
+    have h := (hsum b).sub (hsum a)
+    simp only [StieltjesFunction.measure_Ioc, Measure.sum_apply _ measurableSet_Ioc,
+      ← ENNReal.ofReal_tsum_of_nonneg (fun n => sub_nonneg.mpr ((f n).mono hab.le)) h.summable, h.tsum_eq]
   have hsing (g : StieltjesFunction ℝ) :
       (∀ᵐ x, HasDerivAt g 0 x) ↔ g.measure ⟂ₘ volume := by
     rw [← Measure.rnDeriv_eq_zero]
