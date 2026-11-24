@@ -57,9 +57,8 @@ theorem exists_singular_staircase : ∃ f : ℝ → ℝ,
     rcases lt_or_gt_of_ne ht with h | h
     · exact eventually_of_mem (Ioi_mem_nhds h) fun y (hy : embed t < y) => iff_of_true hy.le h.le
     · exact eventually_of_mem (Iio_mem_nhds h) fun y (hy : y < embed t) => iff_of_false hy.not_ge h.not_ge
-  · intro x hx
-    refine measureReal_mono_null (s₂ := embed ⁻¹' {0}) (fun t ht => ?_) (by simp [measureReal_def, hnull])
-    exact ((mem_Iic.mp ht).trans hx).antisymm (cantorSet_subset_unitInterval (hs t)).1
+  · refine fun x hx => (measureReal_eq_zero_iff (measure_ne_top ν _)).2 (measure_mono_null ?_ (hnull 0))
+    exact fun t ht => ((mem_Iic.mp ht).trans hx).antisymm (cantorSet_subset_unitInterval (hs t)).1
   · intro x hx
     exact (congrArg ν.real (eq_univ_of_forall (s := embed ⁻¹' Iic x) fun t =>
       (cantorSet_subset_unitInterval (hs t)).2.trans hx)).trans probReal_univ
@@ -107,11 +106,9 @@ theorem exists_singular_approx {a b ε : ℝ} (hab : a < b) (hε : 0 < ε) :
       simp only [B.monotone.map_max, B.monotone.map_min, B.apply_symm_apply, hB, mul_zero, zero_add, hwidth]
     simp only [Function.comp_apply, ← hclip, hB, add_sub_add_right_eq_sub, ← mul_sub, abs_mul, abs_of_pos hw]
     exact (mul_le_of_le_one_right hw.le (hH n (B.symm x)).2.2).trans hwε
-  · have hqmp : Measure.QuasiMeasurePreserving B.symm volume volume :=
-      (Measure.quasiMeasurePreserving_smul volume (inv_ne_zero hw.ne')).comp
-        (measurePreserving_sub_right volume a).quasiMeasurePreserving
-    filter_upwards [hqmp.ae (ae_all_iff.2 fun j : ℕ =>
-      (measurePreserving_sub_right volume (j : ℝ)).quasiMeasurePreserving.ae hfd)] with x hx
+  · have htranslate (t : ℝ) := (measurePreserving_sub_right volume t).quasiMeasurePreserving
+    have hqmp := (Measure.quasiMeasurePreserving_smul volume (inv_ne_zero hw.ne')).comp (htranslate a)
+    filter_upwards [hqmp.ae (ae_all_iff.2 fun j : ℕ => (htranslate (j : ℝ)).ae hfd)] with x hx
     have hAx : HasDerivAt B.symm _ x := ((hasDerivAt_id x).sub_const a).const_mul w⁻¹
     have hs := HasDerivAt.fun_sum (u := Finset.range n) fun j _ => (hx j).comp x (hAx.sub_const (j : ℝ))
     simpa [H, Function.comp_def, hB] using (hs.const_mul w).add_const a
