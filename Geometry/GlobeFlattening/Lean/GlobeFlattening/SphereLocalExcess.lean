@@ -55,8 +55,7 @@ theorem volume_sphereExceptional_inter_of_open {u : ℝ × ℝ → ℝ}
   obtain ⟨p, hp⟩ := image_inter_nonempty_iff.mp (hne.mono (subset_inter hWsub Subset.rfl))
   obtain ⟨a, b, c, d, hp', hbox⟩ := exists_chartClosedRectangle_subset_of_mem_nhds (hopen.mem_nhds hp)
   have hrectangle := chartRectangle_subset_closed.trans hbox
-  have hab := hp'.1.1.trans hp'.1.2
-  have hcd := hp'.2.1.trans hp'.2.2
+  obtain ⟨hab, hcd⟩ := (prod_nonempty_iff.1 ⟨p, hp'⟩).imp nonempty_Ioo.1 nonempty_Ioo.1
   have hsubBox := hbox.trans (inter_subset_left.trans sphereLongitudeDomain_subset_box)
   have hcos (y : ℝ) (hy : y ∈ Icc c d) : 0 ≤ Real.cos y :=
     Real.cos_nonneg_of_mem_Icc (hsubBox (show (a, y) ∈ _ from ⟨⟨le_rfl, hab.le⟩, hy⟩)).2

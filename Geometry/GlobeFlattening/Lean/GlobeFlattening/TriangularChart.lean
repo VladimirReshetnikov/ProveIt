@@ -23,9 +23,9 @@ theorem exists_chartClosedRectangle_subset_of_mem_nhds {p : ℝ × ℝ} {W : Set
     (hW : W ∈ 𝓝 p) :
     ∃ a b c d : ℝ, p ∈ chartRectangle a b c d ∧ chartClosedRectangle a b c d ⊆ W := by
   obtain ⟨r, hr, hsub⟩ := Metric.nhds_basis_closedBall.mem_iff.mp hW
-  refine ⟨p.1 - r, p.1 + r, p.2 - r, p.2 + r, ?_, ?_⟩
-  · exact ⟨⟨sub_lt_self _ hr, lt_add_of_pos_right _ hr⟩, ⟨sub_lt_self _ hr, lt_add_of_pos_right _ hr⟩⟩
-  · simpa only [chartClosedRectangle, ← Real.closedBall_eq_Icc, closedBall_prod_same] using hsub
+  refine ⟨p.1 - r, p.1 + r, p.2 - r, p.2 + r, ?_⟩
+  simpa only [chartRectangle, chartClosedRectangle, ← Real.ball_eq_Ioo, ball_prod_same,
+    ← Real.closedBall_eq_Icc, closedBall_prod_same] using And.intro (Metric.mem_ball_self hr) hsub
 
 theorem continuousOn_latitudeProfile {u : ℝ × ℝ → ℝ} {a b c d x : ℝ}
     (hu : ContinuousOn u (chartClosedRectangle a b c d)) (hx : x ∈ Icc a b) :
@@ -35,8 +35,7 @@ theorem continuousOn_latitudeProfile {u : ℝ × ℝ → ℝ} {a b c d x : ℝ}
 theorem isOpen_chartImage {u : ℝ × ℝ → ℝ} {a b c d : ℝ} (hab : a ≤ b)
     (hu : ContinuousOn u (chartClosedRectangle a b c d)) :
     IsOpen (chartImage u a b c d) := by
-  refine isOpen_iff_mem_nhds.2 fun p hp => ?_
-  rcases hp with ⟨hy, hlower, hupper⟩
+  refine isOpen_iff_mem_nhds.2 fun p ⟨hy, hlower, hupper⟩ => ?_
   have hsnd : ContinuousAt (Prod.snd : ℝ × ℝ → ℝ) p := continuous_snd.continuousAt
   have hprofile (x : ℝ) (hx : x ∈ Icc a b) :=
     ((continuousOn_latitudeProfile hu hx).continuousAt (Icc_mem_nhds hy.1 hy.2)).comp hsnd
@@ -84,12 +83,12 @@ noncomputable def triangularChart {u : ℝ × ℝ → ℝ} {a b c d : ℝ}
     ((hu.prodMk continuous_snd.continuousOn).restrict.isClosedEmbedding
       (injOn_flattenCoordinates_closedRectangle hmono).injective).isEmbedding.comp
       (IsEmbedding.inclusion chartRectangle_subset_closed)
-  have himage := image_flattenCoordinates_chartRectangle hab hu (fun y hy => hmono y (Ioo_subset_Icc_self hy))
   have hbij : BijOn (flattenCoordinates u) s (chartImage u a b c d) :=
-    himage ▸ (injOn_iff_injective.2 he.injective).bijOn_image
+    image_flattenCoordinates_chartRectangle hab hu (fun y hy => hmono y (Ioo_subset_Icc_self hy)) ▸
+      (injOn_iff_injective.2 he.injective).bijOn_image
   exact OpenPartialHomeomorph.ofContinuousOpenRestrict
     (hbij.toPartialEquiv (flattenCoordinates u) s _) (continuousOn_iff_continuous_restrict.2 he.continuous)
-    (he.isInducing.isOpenMap (by simpa only [range_restrict, s, himage] using isOpen_chartImage hab hu))
+    (he.isInducing.isOpenMap (by simpa only [range_restrict, hbij.image_eq] using isOpen_chartImage hab hu))
     (isOpen_chartRectangle _ _ _ _)
 
 end GlobeFlattening
