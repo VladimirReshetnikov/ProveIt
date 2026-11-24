@@ -112,8 +112,7 @@ def scalar (p : ℝ × ℝ) := p.1 * Real.cos p.2 + S.correction p
 private theorem tendsto_increment_sum {p : ℝ × ℝ} (hp : p ∈ sphereClosedBox) :
     Tendsto (fun N => ∑ n ∈ Finset.range N, S.longitudeIncrement n p.1 * S.latitudeProfile n p.2)
       atTop (𝓝 (S.scalar p)) := by
-  have hy : p.2 ∈ Icc (-Real.pi) Real.pi :=
-    Icc_subset_Icc (neg_le_neg (half_le_self Real.pi_pos.le)) (half_le_self Real.pi_pos.le) hp.2
+  have hy := abs_le.mp ((abs_le.mpr hp.2).trans (half_le_self Real.pi_pos.le))
   have hprofile := (summable_rate δ).tendsto_atTop_zero.add
     ((Real.continuous_cos.tendsto _).comp (S.tendsto_X p.2 hy))
   refine (tendsto_add_atTop_iff_nat 1).1 ?_
@@ -121,16 +120,18 @@ private theorem tendsto_increment_sum {p : ℝ × ℝ} (hp : p ∈ sphereClosedB
     Function.comp_def, zero_add] using
     tendsto_sum_weighted_increment (S.correction_series.2 p) ((S.tendsto_X p.1 hp.1).mul hprofile)
 
+private theorem scalar_row_error (p : ℝ × ℝ) (x : ℝ) :
+    S.scalar (x, p.2) - S.scalar p - Real.cos p.2 * (x - p.1) = S.correction (x, p.2) - S.correction p := by
+  simp only [scalar, mul_comm (Real.cos p.2), sub_mul, add_sub_add_comm, add_sub_cancel_left]
+
 theorem scalar_strictLowerSlope : StrictLowerSlopeOn S.scalar Real.cos sphereClosedBox := by
   rintro ⟨x, y⟩ hp ⟨x', y'⟩ hq rfl hxx'
   obtain ⟨n, hX⟩ := ((S.tendsto_X x hp.1).eventually_lt (S.tendsto_X x' hq.1) hxx').exists
-  have hsum : S.correction (x, y) < S.correction (x', y) :=
-    hasSum_lt
-      (fun k => mul_le_mul_of_nonneg_left (S.monoX k hxx'.le) (S.coefficient_bounds k y).1.le)
-      (mul_lt_mul_of_pos_left hX (S.coefficient_bounds n y).1)
-      (S.correction_series.2 (x, y)) (S.correction_series.2 (x', y))
-  simp only [scalar]
-  linarith only [hsum]
+  rw [← sub_pos, S.scalar_row_error (x, y) x', sub_pos]
+  exact hasSum_lt
+    (fun k => mul_le_mul_of_nonneg_left (S.monoX k hxx'.le) (S.coefficient_bounds k y).1.le)
+    (mul_lt_mul_of_pos_left hX (S.coefficient_bounds n y).1)
+    (S.correction_series.2 (x, y)) (S.correction_series.2 (x', y))
 
 theorem scalar_error (p : ℝ × ℝ) :
     dist (flattenCoordinates S.scalar p) (sinusoidalCoordinates p) ≤ δ * 2 * Real.pi := by
@@ -152,11 +153,9 @@ theorem linearization_bound (hcontrol : ∀ t, Summable (fun n => rate (max δ R
     (fun n => S.longitudeIncrement_bound n q.1) S.monoX (fun _ x y => by
       simpa only [latitudeWeight, add_sub_add_left_eq_sub] using Real.abs_cos_sub_cos_le y x)
     p.2 q.2 (S.tendsto_increment_sum (p := mid) ⟨hq.1, hp.2⟩) (S.tendsto_increment_sum hq)
-  calc
-    _ = |(S.correction mid - S.correction p) + (S.scalar q - S.scalar mid)| := congrArg abs (by
-      simp only [scalar, mid]
-      ring)
-    _ ≤ _ := (abs_add_le _ _).trans (add_le_add hhorizontal hvertical)
+  rw [← sub_add_sub_cancel' (S.scalar mid) (S.scalar p) (S.scalar q), ← sub_add_eq_add_sub,
+    S.scalar_row_error]
+  exact (abs_add_le _ _).trans (add_le_add hhorizontal hvertical)
 
 end Staircases
 
