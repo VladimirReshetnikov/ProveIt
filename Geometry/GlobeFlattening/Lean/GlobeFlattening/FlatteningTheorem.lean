@@ -143,17 +143,16 @@ def globeFlattening_from_scalar
       distance_bound := ?_
       no_lipschitz_patch := by
         intro U hU hne K hLip
-        have hLip' : LipschitzOnWith K f ((U : Set _) ∩ Z) :=
-          (lipschitzOnWith_restrict.1 hLip).mono
-            (subset_inter (inter_subset_right.trans hZsub) inter_subset_left)
+        have hLip' := (lipschitzOnWith_restrict (f := f).1 hLip).mono
+          (inter_subset_inter_left _ hZsub)
         have hpos := hexcess _ (hfopen.isOpenMap _ hU) (hne.image _)
           (image_subset_iff.2 fun p _ => (F p).2)
-        rw [← image_image_val_eq_restrict_image,
-          ← hfleft.injOn.image_inter image_val_subset hZsub] at hpos
+        rw [← image_image_val_eq_restrict_image, inter_comm,
+          ← hfleft.injOn.image_inter hZsub image_val_subset] at hpos
         refine hpos.ne' (Measure.absolutelyContinuous_isAddHaarMeasure volume
           (μH[Module.finrank ℝ (EuclideanSpace ℝ (Fin 2))]) ?_)
-        have hHaus : μH[2] (Subtype.val '' U ∩ Z) = 0 :=
-          measure_mono_null inter_subset_right (hausdorffMeasure_sphereExceptional_eq_zero hsub hnull)
+        have hHaus : μH[2] (Z ∩ Subtype.val '' U) = 0 :=
+          measure_mono_null inter_subset_left (hausdorffMeasure_sphereExceptional_eq_zero hsub hnull)
         simpa [hHaus] using hLip'.hausdorffMeasure_image_le (d := 2) (by norm_num)
       exceptional_area_positive := hexcess }
   · simp only [hgoodSource, forall_mem_image]
