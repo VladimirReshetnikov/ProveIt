@@ -45,9 +45,9 @@ private theorem norm_sq_eq_horizontal (w : EuclideanSpace ℝ (Fin 3)) :
     Complex.normSq_apply, horizontalComplex_re, horizontalComplex_im, ← pow_two]
 
 @[simp] theorem norm_spherePoint (p : ℝ × ℝ) : ‖spherePoint p‖ = 1 := by
-  rw [← pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero, norm_sq_eq_horizontal,
-    horizontalComplex_spherePoint, norm_mul, Complex.norm_cos_add_sin_mul_I, mul_one]
-  simp [spherePoint, Real.cos_sq_add_sin_sq, -Complex.ofReal_cos]
+  rw [← pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero, norm_sq_eq_horizontal]
+  change ‖Complex.polarCoord.symm (Real.cos p.2, p.1)‖ ^ 2 + Real.sin p.2 ^ 2 = 1
+  simp only [Complex.norm_polarCoord_symm, sq_abs, Real.cos_sq_add_sin_sq]
 
 /-- The unit sphere minus the negative-real equatorial ray's meridian,
 including both poles in the removed meridian. -/
@@ -86,20 +86,20 @@ theorem cutSphere_vertical_bounds {w : EuclideanSpace ℝ (Fin 3)} (hw : w ∈ c
   rw [mem_Ioo, ← abs_lt, ← sq_lt_one_iff_abs_lt_one, ← sub_pos, ← cutSphere_horizontal_norm_sq hw]
   exact sq_pos_of_pos (norm_pos_iff.mpr (Complex.slitPlane_ne_zero hw.2))
 
-theorem sphereChartInverse_mapsTo : MapsTo sphereChartInverse cutSphere sphereLongitudeDomain := by
-  intro w hw
-  exact ⟨(Complex.polarCoord.map_source hw.2).2,
+theorem sphereChartInverse_mapsTo : MapsTo sphereChartInverse cutSphere sphereLongitudeDomain :=
+  fun _ hw => ⟨(Complex.polarCoord.map_source hw.2).2,
     Real.sinPartialHomeomorph.map_target (cutSphere_vertical_bounds hw)⟩
 
 theorem spherePoint_sphereChartInverse {w : EuclideanSpace ℝ (Fin 3)} (hw : w ∈ cutSphere) :
     spherePoint (sphereChartInverse w) = w := by
-  have hr : Real.cos (Real.arcsin (w 2)) = ‖horizontalComplex w‖ := by
-    rw [Real.cos_arcsin, ← cutSphere_horizontal_norm_sq hw, Real.sqrt_sq (norm_nonneg _)]
-  have hz : Real.sin (Real.arcsin (w 2)) = w 2 :=
-    Real.sinPartialHomeomorph.right_inv (cutSphere_vertical_bounds hw)
+  have hxy : horizontalComplex (spherePoint (sphereChartInverse w)) = horizontalComplex w := by
+    change Complex.polarCoord.symm (Real.cos (Real.arcsin (w 2)), (horizontalComplex w).arg) = _
+    rw [Real.cos_arcsin, ← cutSphere_horizontal_norm_sq hw, Real.sqrt_sq (norm_nonneg _),
+      ← Complex.polarCoord_apply, Complex.polarCoord.left_inv hw.2]
   apply PiLp.ext
-  simp [Fin.forall_fin_succ, spherePoint, sphereChartInverse, hr, hz,
-    Complex.norm_mul_cos_arg, Complex.norm_mul_sin_arg]
+  simp only [Fin.forall_fin_succ, Fin.forall_fin_zero, and_true]
+  exact ⟨congrArg Complex.re hxy, congrArg Complex.im hxy,
+    Real.sinPartialHomeomorph.right_inv (cutSphere_vertical_bounds hw)⟩
 
 theorem spherePoint_bijOn : BijOn spherePoint sphereLongitudeDomain cutSphere :=
   (show InvOn sphereChartInverse spherePoint sphereLongitudeDomain cutSphere from
