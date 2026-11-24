@@ -95,17 +95,17 @@ theorem spherePoint_sphereChartInverse {w : EuclideanSpace ℝ (Fin 3)} (hw : w 
   exact ⟨congrArg Complex.re hxy, congrArg Complex.im hxy,
     Real.sinPartialHomeomorph.right_inv (cutSphere_vertical_bounds hw)⟩
 
+private def sphereLongitudeEquiv : PartialEquiv (ℝ × ℝ) (EuclideanSpace ℝ (Fin 3)) :=
+  ⟨spherePoint, sphereChartInverse, sphereLongitudeDomain, cutSphere,
+    spherePoint_mapsTo, sphereChartInverse_mapsTo,
+    (fun _ => sphereChartInverse_spherePoint), (fun _ => spherePoint_sphereChartInverse)⟩
+
 theorem spherePoint_bijOn : BijOn spherePoint sphereLongitudeDomain cutSphere :=
-  (show InvOn sphereChartInverse spherePoint sphereLongitudeDomain cutSphere from
-    ⟨fun _ => sphereChartInverse_spherePoint, fun _ => spherePoint_sphereChartInverse⟩).bijOn
-    spherePoint_mapsTo sphereChartInverse_mapsTo
+  sphereLongitudeEquiv.bijOn
 
 /-- The coordinates of the report give a homeomorphism onto the cut sphere. -/
 def sphereLongitudeChart : sphereLongitudeDomain ≃ₜ cutSphere where
-  toFun p := ⟨spherePoint p, spherePoint_mapsTo p.2⟩
-  invFun w := ⟨sphereChartInverse w, sphereChartInverse_mapsTo w.2⟩
-  left_inv p := Subtype.ext (sphereChartInverse_spherePoint p.2)
-  right_inv w := Subtype.ext (spherePoint_sphereChartInverse w.2)
+  toEquiv := sphereLongitudeEquiv.toEquiv
   continuous_toFun := (continuous_spherePoint.comp continuous_subtype_val).subtype_mk _
   continuous_invFun :=
     ((Complex.continuousOn_arg.comp (f := horizontalComplex) (by fun_prop [horizontalComplex])

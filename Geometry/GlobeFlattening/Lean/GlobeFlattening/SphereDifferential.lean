@@ -7,10 +7,7 @@ import Mathlib.Analysis.Calculus.FDeriv.OfCompLeft
 
 namespace GlobeFlattening
 
-open Filter Set
-open scoped RealInnerProductSpace Topology
-
-noncomputable section
+open Set
 
 /-- The differential of the inverse planar chart followed by the spherical
 parametrization is the lift into the tangent plane. -/
@@ -44,7 +41,5 @@ theorem hasFDerivWithinAt_sphereFlatten
       ((hcont _ hp).tendsto_nhdsWithin (mapsTo_univ _ _))
       (hasFDerivWithinAt_id _ _) hleft.eqOn.eventuallyEq_nhdsWithin
       (sphereFlattenDerivative_leftInverse p) hp
-
-end
 
 end GlobeFlattening
