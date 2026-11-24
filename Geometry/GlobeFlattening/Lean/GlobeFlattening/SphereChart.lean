@@ -33,12 +33,6 @@ def horizontalComplex (w : EuclideanSpace ℝ (Fin 3)) : ℂ :=
 @[simp] theorem horizontalComplex_im (w : EuclideanSpace ℝ (Fin 3)) :
     (horizontalComplex w).im = w 1 := rfl
 
-theorem horizontalComplex_spherePoint (p : ℝ × ℝ) :
-    horizontalComplex (spherePoint p) =
-      (Real.cos p.2 : ℂ) * (Complex.cos p.1 + Complex.sin p.1 * Complex.I) := by
-  change Complex.polarCoord.symm (Real.cos p.2, p.1) = _
-  simp only [Complex.polarCoord_symm_apply, Complex.ofReal_cos, Complex.ofReal_sin]
-
 private theorem norm_sq_eq_horizontal (w : EuclideanSpace ℝ (Fin 3)) :
     ‖w‖ ^ 2 = ‖horizontalComplex w‖ ^ 2 + (w 2)^2 := by
   simp only [EuclideanSpace.real_norm_sq_eq, Fin.sum_univ_three, Complex.sq_norm,
