@@ -17,21 +17,21 @@ clamped identity and have derivative zero almost everywhere.
 -/
 
 open Filter MeasureTheory Set
-open scoped Topology ENNReal Pointwise
+open scoped Topology ENNReal NNReal Pointwise
 
 namespace GlobeFlattening
 
 noncomputable section
 
 private theorem volume_cantorSet : volume cantorSet = 0 := by
-  have hsplit : (3 : ℝ) • cantorSet = cantorSet ∪ ((2 + · : ℝ → ℝ) '' cantorSet) := by
+  have hsplit : (3 : ℝ≥0) • cantorSet = cantorSet ∪ ((2 + · : ℝ → ℝ) '' cantorSet) := by
     nth_rw 1 [cantorSet_eq_union_halves, smul_set_union]
-    simp only [← image_smul, image_image, smul_eq_mul,
+    simp only [← image_smul, image_image, NNReal.smul_def, NNReal.coe_ofNat, smul_eq_mul,
       mul_div_cancel₀ _ (by norm_num : (3 : ℝ) ≠ 0), image_id']
   have hle : (3 : ℝ≥0∞) * volume cantorSet ≤ 2 * volume cantorSet := by
-    have h := measure_union_le (μ := volume) cantorSet ((2 + · : ℝ → ℝ) '' cantorSet)
-    rw [← hsplit, Measure.addHaar_smul_of_nonneg volume (by norm_num : 0 ≤ (3 : ℝ))] at h
-    simpa [Module.finrank_self, image_add_left, measure_preimage_add, two_mul] using h
+    rw [← (by simp : volume ((3 : ℝ≥0) • cantorSet) = 3 * volume cantorSet), hsplit]
+    simpa [image_add_left, measure_preimage_add, two_mul] using
+      measure_union_le (μ := volume) cantorSet ((2 + · : ℝ → ℝ) '' cantorSet)
   by_contra hn
   exact (not_lt_of_ge hle) (ENNReal.mul_lt_mul_left hn isCompact_cantorSet.measure_lt_top.ne (by norm_num))
 
@@ -54,7 +54,7 @@ theorem exists_singular_staircase : ∃ f : ℝ → ℝ,
   · refine (ENNReal.tendsto_toReal (measure_ne_top ν _)).comp ?_
     apply tendsto_measure_of_ae_tendsto_indicator_of_isFiniteMeasure _ (hm measurableSet_Iic) (fun _ => hm measurableSet_Iic)
     filter_upwards [measure_eq_zero_iff_ae_notMem.1 (hnull x)] with t ht
-    rcases lt_or_gt_of_ne (show embed t ≠ x from ht) with h | h
+    rcases lt_or_gt_of_ne ht with h | h
     · exact eventually_of_mem (Ioi_mem_nhds h) fun y (hy : embed t < y) => iff_of_true hy.le h.le
     · exact eventually_of_mem (Iio_mem_nhds h) fun y (hy : y < embed t) => iff_of_false hy.not_ge h.not_ge
   · intro x hx
@@ -69,7 +69,7 @@ theorem exists_singular_staircase : ∃ f : ℝ → ℝ,
     filter_upwards [Ioo_mem_nhds hx'.1 hx'.2] with y hy
     refine congrArg ν.real (Set.ext fun t => (show embed t ≤ y ↔ embed t ≤ x from ?_))
     have hgap : embed t ∉ Ioo a b := fun ht => hab ht (hs t)
-    grind
+    grind only [mem_Ioo]
 
 /-- Monotone singular approximants to the identity on a compact interval. -/
 theorem exists_singular_approx {a b ε : ℝ} (hab : a < b) (hε : 0 < ε) :
