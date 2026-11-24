@@ -125,9 +125,8 @@ def globeFlattening_from_scalar
       exceptional_subset := hZsub
       exceptional_measurable := hZmeas
       exceptional_null := hZnull
-      target_area_lower := by
-        rw [hvol, ← lintegral_cos_chartRectangle]
-        exact lintegral_cos_lt_volume_chartImage hab (neg_lt_self (half_pos Real.pi_pos)) hcu
+      target_area_lower := hvol.symm ▸ lintegral_cos_chartRectangle ▸
+        lintegral_cos_lt_volume_chartImage hab (neg_lt_self (half_pos Real.pi_pos)) hcu
           (fun _ hy => (Real.cos_pos_of_mem_Ioo hy).le) hSlope
       target_area_upper :=
         hvol.symm ▸ volume_chartImage_upper_of_sinusoidal_closeness hε hcu hclose
@@ -163,8 +162,9 @@ def globeFlattening_from_scalar
     exact fun p hp => ⟨sphereTangentLift p, hInv p hp, fun v => by
       simp [hfleft (spherePoint_mapsTo (hsub hp)), tangent_sphereTangentLift, norm_sphereTangentLift]⟩
   · refine ⟨ε, lt_two_mul_self hε, fun w hw => ?_⟩
-    convert hclose _ (sphereLongitudeDomain_subset_box (sphereChartInverse_mapsTo hw)) using 1
-    exact dist_planarEuclideanEquiv_of_snd_eq rfl
+    refine (dist_planarEuclideanEquiv_of_snd_eq ?_).trans_le
+      (hclose _ (sphereLongitudeDomain_subset_box (sphereChartInverse_mapsTo hw)))
+    rfl
 
 /-- The cut sphere has the usual total area of the unit sphere. -/
 theorem sphericalArea_cutSphere : sphericalArea cutSphere = ENNReal.ofReal (4 * Real.pi) := by
