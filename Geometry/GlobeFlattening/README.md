@@ -73,8 +73,8 @@ Spherical area is defined in the longitude–latitude chart with density
 `cos(latitude)`, as in the report. The exceptional set also has zero
 two-dimensional Hausdorff measure by Lipschitz continuity of the sphere
 parametrization. Its differential factors through the tangent isometry,
-so bounding the two rescaled planar coordinates bounds its norm. A local
-Lipschitz bound transfers to the same patch in the ambient metric because
+and the complex-plane norm bound controls the two rescaled coordinates.
+A local Lipschitz bound transfers to the same patch in the ambient metric because
 the subtype uses the ambient distances.
 It would give zero planar area for the exceptional image on an open target
 patch, contradicting the local area result. [Spherical area](Lean/GlobeFlattening/SphereMeasure.lean) ·

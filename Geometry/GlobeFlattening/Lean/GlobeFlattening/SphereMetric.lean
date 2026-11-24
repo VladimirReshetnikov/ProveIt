@@ -35,14 +35,13 @@ theorem lipschitzWith_spherePoint : LipschitzWith 2 spherePoint := by
   rw [(hasFDerivAt_spherePoint p).fderiv, ← NNReal.coe_le_coe]
   change ‖sphereDerivative p‖ ≤ 2
   refine ContinuousLinearMap.opNorm_le_bound _ (by norm_num) fun v => ?_
-  simp only [sphereDerivative, ContinuousLinearMap.comp_apply, norm_sphereTangentLift]
-  change ‖!₂[Real.cos p.2 * v.1, v.2]‖ ≤ _
-  simp only [PiLp.norm_eq_of_L2, Fin.sum_univ_two, Matrix.cons_val_zero,
-    Matrix.cons_val_one, Real.norm_eq_abs, abs_mul, Real.sqrt_le_iff]
-  refine ⟨by positivity, ?_⟩
-  have hLon := (mul_le_of_le_one_left (abs_nonneg v.1) (Real.abs_cos_le_one p.2)).trans (norm_fst_le v)
-  grw [hLon, show |v.2| ≤ ‖v‖ from norm_snd_le v]
-  nlinarith only [sq_nonneg ‖v‖]
+  let z : ℂ := ⟨Real.cos p.2 * v.1, v.2⟩
+  change ‖sphereTangentLift p (Complex.orthonormalBasisOneI.repr z)‖ ≤ _
+  rw [norm_sphereTangentLift, LinearIsometryEquiv.norm_map]
+  refine (Complex.norm_le_abs_re_add_abs_im z).trans ?_
+  simpa only [z, abs_mul, two_mul, Real.norm_eq_abs] using add_le_add
+    ((mul_le_of_le_one_left (abs_nonneg v.1) (Real.abs_cos_le_one p.2)).trans (norm_fst_le v))
+    (norm_snd_le v)
 
 end
 
