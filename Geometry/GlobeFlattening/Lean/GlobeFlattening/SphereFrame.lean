@@ -11,7 +11,7 @@ planar target use Euclidean norms.
 
 namespace GlobeFlattening
 
-open scoped RealInnerProductSpace
+open scoped RealInnerProductSpace EuclideanSpace
 
 noncomputable section
 
@@ -48,8 +48,7 @@ private def sphereTangentBasis (p : ℝ × ℝ) : OrthonormalBasis (Fin 2) ℝ (
   have hon := (h.comp Fin.castSucc (Fin.castSucc_injective 2)).codRestrict (sphereTangentPlane p)
     (fun i => mem_sphereTangentPlane.2 (h.inner_eq_zero (Fin.castSucc_ne_last i).symm))
   refine OrthonormalBasis.mk hon (hon.linearIndependent.span_eq_top_of_card_eq_finrank ?_).ge
-  exact (Submodule.finrank_add_finrank_orthogonal' (K := ℝ ∙ spherePoint p)
-    (by simp [finrank_span_singleton (show spherePoint p ≠ 0 from h.ne_zero (2 : Fin 3))])).symm
+  exact (Submodule.finrank_orthogonal_span_singleton (n := 2) (h.ne_zero (2 : Fin 3))).symm
 
 /-- East and north coordinates of the orthogonal projection onto the tangent plane. -/
 def sphereFlattenDerivative (p : ℝ × ℝ) :
