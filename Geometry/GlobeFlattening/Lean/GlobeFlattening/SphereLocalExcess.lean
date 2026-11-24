@@ -13,12 +13,10 @@ the Euclidean target.
 
 namespace GlobeFlattening
 
-open MeasureTheory Set Topology
-open scoped NNReal ENNReal MeasureTheory Topology
+open MeasureTheory Set
+open scoped MeasureTheory
 
-noncomputable section
-
-abbrev sphereFlattenForward (u : ℝ × ℝ → ℝ) :=
+noncomputable abbrev sphereFlattenForward (u : ℝ × ℝ → ℝ) :=
   planarEuclideanEquiv ∘ (flattenCoordinates u ∘ sphereChartInverse)
 
 theorem sphereFlattenForward_spherePoint {u : ℝ × ℝ → ℝ} {p : ℝ × ℝ}
@@ -78,11 +76,8 @@ theorem hausdorffMeasure_sphereExceptional_eq_zero {good : Set (ℝ × ℝ)}
     (hsub : good ⊆ sphereLongitudeDomain) (hnull : volume (sphereLongitudeDomain \ good) = 0) :
     μH[2] (sphereExceptional good) = 0 := by
   rw [sphereExceptional_eq_image hsub]
-  apply le_zero_iff.mp
   simpa [hausdorffMeasure_prod_real, hnull] using
     lipschitzWith_spherePoint.hausdorffMeasure_image_le (d := 2) (by norm_num)
       (sphereLongitudeDomain \ good)
-
-end
 
 end GlobeFlattening
