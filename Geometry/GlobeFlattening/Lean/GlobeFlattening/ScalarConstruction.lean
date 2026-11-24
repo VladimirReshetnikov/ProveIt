@@ -174,8 +174,6 @@ theorem exists_strict_scalar_flattening {ε : ℝ} (hε : 0 < ε) :
       ∀ p ∈ E, HasFDerivAt u (Real.cos p.2 • ContinuousLinearMap.fst ℝ ℝ ℝ) p := by
   let δ := ε / (2 * Real.pi)
   have hδ : 0 < δ := div_pos hε (by positivity)
-  have hscale : δ * 2 * Real.pi = ε := by
-    simpa only [mul_assoc] using div_mul_cancel₀ ε (by positivity : 2 * Real.pi ≠ 0)
   obtain ⟨S⟩ := exists_staircases hδ
   obtain ⟨hcontrol, hsingular⟩ := summable_and_singular_weighted_tsum S.X (rate (δ + Real.pi))
     (fun n => (rate_pos (add_pos hδ Real.pi_pos) n).le)
@@ -186,7 +184,8 @@ theorem exists_strict_scalar_flattening {ε : ℝ} (hε : 0 < ε) :
         S.linearization_bound hcontrol (sphereLongitudeDomain_subset_box hp) (sphereLongitudeDomain_subset_box hq))
   exact ⟨S.scalar, E, ((continuous_fst.mul (Real.continuous_cos.comp continuous_snd)).add
     S.correction_series.1).continuousOn, hm, hsub, hnull,
-    fun q _ => (S.scalar_error q).trans_eq hscale, S.scalar_strictLowerSlope, hderiv⟩
+    fun q _ => (S.scalar_error q).trans_eq (by simp [δ, mul_assoc, Real.pi_ne_zero]),
+    S.scalar_strictLowerSlope, hderiv⟩
 
 end
 end GlobeFlattening
