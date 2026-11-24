@@ -15,10 +15,12 @@ zero almost everywhere. The same sequence approximates longitude and
 latitude because the latitude interval lies inside the longitude interval.
 Each approximant sums scaled copies of a Cantor-supported distribution function.
 Mathlib supplies a measurable injection from the reals to Boolean sequences
-and a homeomorphism from those sequences to the Cantor set. Their composition
-pushes uniform measure on `[0, 1)` to a measure with null singletons, so its
-distribution function is continuous. Scaling the Cantor set by three gives the union
-of two translates of the set, forcing its Lebesgue measure to be zero.
+and a homeomorphism from those sequences to the Cantor set. The distribution
+function measures the preimage of `(-∞, x]` under their composition using
+uniform measure on `[0, 1)`. These preimage indicators converge off the
+null fiber over `x`, so dominated convergence gives continuity. Scaling the
+Cantor set by three gives a union of two translates of the set, forcing
+its Lebesgue measure to be zero.
 The distribution function is locally constant off the Cantor set, so it
 has derivative zero almost everywhere.
 One induction on the number of translates proves the range, upper plateau,

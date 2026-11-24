@@ -3,16 +3,17 @@ import Mathlib.Analysis.Calculus.Deriv.Comp
 import Mathlib.Analysis.Calculus.Deriv.Mul
 import Mathlib.MeasureTheory.MeasurableSpace.CountablyGenerated
 import Mathlib.MeasureTheory.Measure.Lebesgue.EqHaar
-import Mathlib.MeasureTheory.Integral.DominatedConvergence
+import Mathlib.MeasureTheory.Integral.Indicator
+import Mathlib.MeasureTheory.Measure.Real
 import Mathlib.Topology.Instances.CantorSet
 
 /-!
 # Singular staircases close to the identity
 
-A measurable injection sends uniform measure on `[0, 1)` to an atomless
-measure supported on the null Cantor set. Its distribution function is
-continuous and locally constant off the Cantor set. Finite sums of scaled
-copies approximate the clamped identity and have derivative zero almost everywhere.
+Measuring preimages of lower intervals under a measurable injection into
+the null Cantor set gives a continuous distribution function. It is locally
+constant off the Cantor set. Finite sums of scaled copies approximate the
+clamped identity and have derivative zero almost everywhere.
 -/
 
 open Filter MeasureTheory Set
@@ -45,17 +46,17 @@ theorem exists_singular_staircase : ∃ f : ℝ → ℝ,
     Subtype.val_injective.comp (cantorSetHomeomorphNatToBool.symm.injective.comp hcode_inj)
   let ν := volume.restrict (Ico (0 : ℝ) 1)
   letI : IsProbabilityMeasure ν := ⟨by simp [ν, Real.volume_Ico]⟩
-  let μ := ν.map embed
-  letI : IsProbabilityMeasure μ := Measure.isProbabilityMeasure_map hm.aemeasurable
   have hnull (x : ℝ) : ν (embed ⁻¹' {x}) = 0 := (subsingleton_singleton.preimage hi).measure_zero ν
-  letI : NullSingletonClass μ := ⟨fun x => (Measure.map_apply hm (measurableSet_singleton x)).trans (hnull x)⟩
   have hs (x : ℝ) : embed x ∈ cantorSet := (cantorSetHomeomorphNatToBool.symm (code x)).2
   let F (x : ℝ) := ν.real (embed ⁻¹' Iic x)
   refine ⟨F, continuous_iff_continuousAt.2 fun x => ?_,
     fun _ _ h => measureReal_mono (preimage_mono (Iic_subset_Iic.2 h)), ?_, ?_, ?_⟩
-  · have hi : IntegrableOn (fun _ : ℝ => (1 : ℝ)) (Iic (x + 1)) μ := (integrable_const 1).integrableOn
-    simpa only [F, μ, setIntegral_const, smul_eq_mul, mul_one, map_measureReal_apply hm measurableSet_Iic] using
-      hi.continuousOn_Iic_primitive_Iic.continuousAt (Iic_mem_nhds (lt_add_one x))
+  · refine (ENNReal.tendsto_toReal (measure_ne_top ν _)).comp ?_
+    apply tendsto_measure_of_ae_tendsto_indicator_of_isFiniteMeasure _ (hm measurableSet_Iic) (fun _ => hm measurableSet_Iic)
+    filter_upwards [measure_eq_zero_iff_ae_notMem.1 (hnull x)] with t ht
+    rcases lt_or_gt_of_ne (show embed t ≠ x from ht) with h | h
+    · exact eventually_of_mem (Ioi_mem_nhds h) fun y (hy : embed t < y) => iff_of_true hy.le h.le
+    · exact eventually_of_mem (Iio_mem_nhds h) fun y (hy : y < embed t) => iff_of_false hy.not_ge h.not_ge
   · intro x hx
     refine measureReal_mono_null (s₂ := embed ⁻¹' {0}) (fun t ht => ?_) (by simp [measureReal_def, hnull])
     exact ((mem_Iic.mp ht).trans hx).antisymm (cantorSet_subset_unitInterval (hs t)).1
@@ -97,7 +98,6 @@ theorem exists_singular_approx {a b ε : ℝ} (hab : a < b) (hε : 0 < ε) :
       grind [abs_le, Nat.cast_nonneg]
   let B := (OrderIso.mulLeft₀ w hw).trans (OrderIso.addRight a)
   have hB (x : ℝ) : B x = w * x + a := rfl
-  have hBinv (x : ℝ) : B.symm x = w⁻¹ * (x - a) := rfl
   have hHc : Continuous (H n) := by unfold H; fun_prop
   refine ⟨B ∘ H n ∘ B.symm, B.continuous.comp (hHc.comp B.symm.continuous),
     B.monotone.comp ((hHm n).comp B.symm.monotone), ?_, ?_, ?_⟩
@@ -114,9 +114,9 @@ theorem exists_singular_approx {a b ε : ℝ} (hab : a < b) (hε : 0 < ε) :
         (measurePreserving_sub_right volume a).quasiMeasurePreserving
     filter_upwards [ae_all_iff.2 fun j : ℕ =>
       hqmp.ae ((measurePreserving_sub_right volume (j : ℝ)).quasiMeasurePreserving.ae hfd)] with x hx
-    have hAx := ((hasDerivAt_id x).sub_const a).const_mul w⁻¹
+    have hAx : HasDerivAt B.symm _ x := ((hasDerivAt_id x).sub_const a).const_mul w⁻¹
     have hs := HasDerivAt.fun_sum (u := Finset.range n) fun j _ => (hx j).comp x (hAx.sub_const (j : ℝ))
-    simpa [H, Function.comp_def, hB, hBinv] using (hs.const_mul w).add_const a
+    simpa [H, Function.comp_def, hB] using (hs.const_mul w).add_const a
 
 end
 
