@@ -93,9 +93,8 @@ theorem exists_singular_approx {a b ε : ℝ} (hab : a < b) (hε : 0 < ε) :
     | zero => simp [H]
     | succ m ih =>
       simp only [H, Nat.cast_succ, Finset.sum_range_succ] at ih ⊢
-      have hmin := (hf₀ _ (min_le_right (y - m) 0)).ge.trans (hfm (min_le_left (y - m) 0))
-      have hmax := (hfm (le_max_left (y - m) 1)).trans_eq (hf₁ _ (le_max_right (y - m) 1))
-      grind [abs_le, Nat.cast_nonneg]
+      grind [abs_le, Nat.cast_nonneg,
+        hfm (min_le_left (y - m) 0), hfm (le_max_left (y - m) 1)]
   let B := (OrderIso.mulLeft₀ w hw).trans (OrderIso.addRight a)
   have hB (x : ℝ) : B x = w * x + a := rfl
   have hHc : Continuous (H n) := by unfold H; fun_prop
