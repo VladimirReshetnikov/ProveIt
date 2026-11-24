@@ -35,9 +35,8 @@ theorem abs_sub_le_of_tendsto_weighted_comp {a b : ℕ → ℝ} {X f : ℕ → �
   · simpa only [abs_sub_comm] using this y x hy hx (le_of_not_ge h)
   refine (le_of_tendsto_of_tendsto' (hy.sub hx).norm
     ((hb y).hasSum.tendsto_sum_nat.sub (hb x).hasSum.tendsto_sum_nat) fun N => ?_).trans (le_abs_self _)
-  rw [← sum_sub_distrib, ← sum_sub_distrib]
+  simp only [← sum_sub_distrib, ← mul_sub]
   refine norm_sum_le_of_le _ fun n _ => ?_
-  rw [← mul_sub, ← mul_sub]
   refine norm_mul_le_of_le (ha n) ?_
   simpa only [Real.norm_eq_abs, abs_of_nonneg (sub_nonneg.mpr (hmono n h))] using hlip n (X n x) (X n y)
 

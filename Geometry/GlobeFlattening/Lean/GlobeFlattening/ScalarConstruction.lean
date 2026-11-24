@@ -172,20 +172,18 @@ theorem linearization_bound (hcontrol : ∀ t, Summable (fun n => rate (δ + Rea
       |S.horizontalControl q.1 - S.horizontalControl p.1| +
         |S.horizontalControl q.2 - S.horizontalControl p.2| := by
   let mid := (q.1, p.2)
-  calc
-    _ = |(S.correction mid - S.correction p) + (S.scalar q - S.scalar mid)| := by
-      simp only [scalar, mid]
-      congr 1
-      ring
-    _ ≤ _ := by
-      refine (abs_add_le _ _).trans (add_le_add ?_ ?_)
-      · exact abs_sub_le_of_tendsto_weighted_comp (X := S.X) (f := fun _ => id) hcontrol
-          (fun n => (S.coefficient_bounds n p.2).2.trans (rate_le_rate_add_pi δ n)) S.monoX
-          (fun _ _ _ => le_rfl) p.1 q.1 (S.correction_series.2 p).tendsto_sum_nat (S.correction_series.2 mid).tendsto_sum_nat
-      · refine abs_sub_le_of_tendsto_weighted_comp (X := S.X) (f := latitudeWeight δ) hcontrol
-          (fun n => S.longitudeIncrement_bound n q.1) S.monoX
-          (fun n x y => ?_) p.2 q.2 (S.tendsto_increment_sum (p := mid) ⟨hq.1, hp.2⟩) (S.tendsto_increment_sum hq)
-        simpa only [latitudeWeight, add_sub_add_left_eq_sub] using Real.abs_cos_sub_cos_le y x
+  have hhorizontal := abs_sub_le_of_tendsto_weighted_comp (X := S.X) (f := fun _ => id) hcontrol
+    (fun n => (S.coefficient_bounds n p.2).2.trans (rate_le_rate_add_pi δ n)) S.monoX
+    (fun _ _ _ => le_rfl) p.1 q.1 (S.correction_series.2 p).tendsto_sum_nat (S.correction_series.2 mid).tendsto_sum_nat
+  have hvertical := abs_sub_le_of_tendsto_weighted_comp (X := S.X) (f := latitudeWeight δ) hcontrol
+    (fun n => S.longitudeIncrement_bound n q.1) S.monoX (fun _ x y => by
+      simpa only [latitudeWeight, add_sub_add_left_eq_sub] using Real.abs_cos_sub_cos_le y x)
+    p.2 q.2 (S.tendsto_increment_sum (p := mid) ⟨hq.1, hp.2⟩) (S.tendsto_increment_sum hq)
+  convert (abs_add_le (S.correction mid - S.correction p) (S.scalar q - S.scalar mid)).trans
+    (add_le_add hhorizontal hvertical) using 1 <;> try rfl
+  congr 1
+  simp only [scalar, mid]
+  ring
 
 end Staircases
 
