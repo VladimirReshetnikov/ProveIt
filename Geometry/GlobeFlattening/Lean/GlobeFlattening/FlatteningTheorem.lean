@@ -94,7 +94,7 @@ def globeFlattening_from_scalar
   have hvol : volume h.target = volume g.target := hT ▸ volume_planarEuclideanEquiv_image _
   have hgoodSource : cutSphere \ Z = spherePoint '' good :=
     sdiff_sdiff_cancel_left (spherePoint_mapsTo.mono_left hsub).image_subset
-  obtain ⟨hZmeas, hZnull⟩ := sphereExceptional_measurable_null hgood hsub hnull
+  have hZprops := sphereExceptional_measurable_null hgood hsub hnull
   have hBorelImage {s} (hs : MeasurableSet s) (hss : s ⊆ cutSphere) : MeasurableSet (f '' s) := by
     simpa only [image_restrict, inter_eq_left.2 hss] using
       hfopen.measurableEmbedding.measurableSet_image' (hs.preimage measurable_subtype_coe)
@@ -122,15 +122,15 @@ def globeFlattening_from_scalar
           (hcu.prodMk continuous_snd.continuousOn)).isBounded.subset
             (image_mono sphereLongitudeDomain_subset_box))
       exceptional_subset := hZsub
-      exceptional_measurable := hZmeas
-      exceptional_null := hZnull
+      exceptional_measurable := hZprops.1
+      exceptional_null := hZprops.2
       target_area_lower := hvol.symm ▸ lintegral_cos_chartRectangle ▸
         lintegral_cos_lt_volume_chartImage hab (neg_lt_self (half_pos Real.pi_pos)) hcu
           (fun _ hy => (Real.cos_pos_of_mem_Ioo hy).le) hSlope
       target_area_upper :=
         hvol.symm ▸ volume_chartImage_upper_of_sinusoidal_closeness hε hcu hclose
-      exceptional_image_measurable := hBorelImage hZmeas hZsub
-      good_image_measurable := hBorelImage (measurableSet_cutSphere.diff hZmeas) sdiff_subset
+      exceptional_image_measurable := hBorelImage hZprops.1 hZsub
+      good_image_measurable := hBorelImage (measurableSet_cutSphere.diff hZprops.1) sdiff_subset
       good_image_area := by
         rw [hgoodSource, sphereFlattenForward_image hsub, volume_planarEuclideanEquiv_image]
         exact (measure_flattened_good_image hgood hsub hnull g.injOn
