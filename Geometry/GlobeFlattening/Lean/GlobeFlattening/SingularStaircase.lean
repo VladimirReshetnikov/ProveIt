@@ -54,14 +54,12 @@ theorem exists_singular_staircase : ∃ f : ℝ → ℝ,
   · refine (ENNReal.tendsto_toReal (measure_ne_top ν _)).comp ?_
     apply tendsto_measure_of_ae_tendsto_indicator_of_isFiniteMeasure _ (hm measurableSet_Iic) (fun _ => hm measurableSet_Iic)
     filter_upwards [measure_eq_zero_iff_ae_notMem.1 (hnull x)] with t ht
-    rcases lt_or_gt_of_ne ht with h | h
-    · exact eventually_of_mem (Ioi_mem_nhds h) fun y (hy : embed t < y) => iff_of_true hy.le h.le
-    · exact eventually_of_mem (Iio_mem_nhds h) fun y (hy : y < embed t) => iff_of_false hy.not_ge h.not_ge
+    filter_upwards [Metric.ball_mem_nhds x (dist_pos.mpr (Ne.symm ht))] with y hy
+    grind only [Metric.mem_ball, Real.dist_eq, abs_lt, abs_eq_max_neg, max_def, mem_preimage, mem_Iic]
   · refine fun x hx => (measureReal_eq_zero_iff (measure_ne_top ν _)).2 (measure_mono_null ?_ (hnull 0))
     exact fun t ht => ((mem_Iic.mp ht).trans hx).antisymm (cantorSet_subset_unitInterval (hs t)).1
-  · intro x hx
-    exact (congrArg ν.real (eq_univ_of_forall (s := embed ⁻¹' Iic x) fun t =>
-      (cantorSet_subset_unitInterval (hs t)).2.trans hx)).trans probReal_univ
+  · refine fun x hx => (congrArg ν.real (eq_univ_of_forall ?_)).trans probReal_univ
+    exact fun t => (cantorSet_subset_unitInterval (hs t)).2.trans hx
   · filter_upwards [measure_eq_zero_iff_ae_notMem.1 volume_cantorSet] with x hx
     obtain ⟨a, b, hx', hab⟩ := mem_nhds_iff_exists_Ioo_subset.1 (isClosed_cantorSet.isOpen_compl.mem_nhds hx)
     apply (hasDerivAt_const x (F x)).congr_of_eventuallyEq
