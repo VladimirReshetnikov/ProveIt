@@ -24,10 +24,10 @@ has derivative zero almost everywhere.
 One induction on the number of translates proves the range, upper plateau,
 and one-step error bound for the staircase approximants. Affine rescaling
 carries those estimates to the desired interval.
-The scalar coordinate is the sinusoidal coordinate plus a correction with
-positive weights. This formula also extends it continuously outside the
-chart box. Uniform convergence of the correction gives continuity, and the
-positive weights give the strict horizontal slope bound. Each staircase is bounded by `π`, and the correction weights are
+On the whole coordinate plane, the scalar coordinate is the sinusoidal
+coordinate plus a correction with positive weights. The correction
+converges uniformly, giving continuity, and its weights give the strict
+horizontal slope bound on the chart. Each staircase is bounded by `π`, and the correction weights are
 bounded by a geometric sequence with sum `2δ`. Taking `δ = ε / (2π)`
 bounds the uniform distance to the sinusoidal map by `ε`.
 
@@ -74,8 +74,8 @@ Spherical area is defined in the longitude–latitude chart with density
 two-dimensional Hausdorff measure by Lipschitz continuity of the sphere
 parametrization. Its differential factors through the tangent isometry,
 and the complex-plane norm bound controls the two rescaled coordinates.
-A local Lipschitz bound transfers to the same patch in the ambient metric because
-the subtype uses the ambient distances.
+A local Lipschitz bound transfers to the same patch in the ambient metric
+because the subtype uses the ambient distances.
 It would give zero planar area for the exceptional image on an open target
 patch, contradicting the local area result. [Spherical area](Lean/GlobeFlattening/SphereMeasure.lean) ·
 [Local distortion](Lean/GlobeFlattening/SphereLocalExcess.lean)
