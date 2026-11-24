@@ -1,7 +1,7 @@
 import GlobeFlattening.ScalarConstruction
 import GlobeFlattening.SphereDifferential
 import GlobeFlattening.SphereLocalExcess
-import Mathlib.MeasureTheory.Measure.Haar.Unique
+import Mathlib.Geometry.Euclidean.Volume.Measure
 
 /-!
 # Almost-everywhere isometric flattening of the cut sphere
@@ -78,6 +78,7 @@ def globeFlattening_from_scalar
   have hab := neg_lt_self Real.pi_pos
   have hmono := strictMonoOn_chartRows_of_lowerSlope (fun _ => Real.cos_nonneg_of_mem_Icc) hSlope
   let g := triangularChart hab.le hcu hmono
+  have hgimage : flattenCoordinates u '' sphereLongitudeDomain = g.target := g.image_source_eq_target
   let e := planarEuclideanEquiv.toHomeomorph
   let T := planarEuclideanEquiv '' g.target
   let Z := sphereExceptional good
@@ -102,7 +103,7 @@ def globeFlattening_from_scalar
   have hexcess (V : Set (EuclideanSpace ℝ (Fin 2))) (hV : IsOpen V) (hne : V.Nonempty)
       (hVsub : V ⊆ T) : 0 < volume (V ∩ f '' Z) :=
     volume_sphereExceptional_inter_of_open hcu hSlope hgood hsub hnull hDeriv hV hne
-      ((congrArg (fun t => V ⊆ planarEuclideanEquiv '' t) g.image_source_eq_target.symm).mp hVsub)
+      (hgimage.symm ▸ hVsub)
   have hInv (p : ℝ × ℝ) (hp : p ∈ good) :
       HasFDerivAt fInv (sphereTangentLift p) (f (spherePoint p)) := by
     simpa only [f, g, triangularChart_apply, sphereFlattenForward_spherePoint (hsub hp)] using
@@ -118,7 +119,7 @@ def globeFlattening_from_scalar
       inverse_agrees := fun q => rfl
       target_open := hTopen
       target_bounded := planarEuclideanEquiv.toContinuousLinearMap.lipschitz.isBounded_image (by
-        rw [← g.image_source_eq_target]
+        rw [← hgimage]
         exact ((isCompact_Icc.prod isCompact_Icc).image_of_continuousOn
           (hcu.prodMk continuous_snd.continuousOn)).isBounded.subset
             (image_mono sphereLongitudeDomain_subset_box))
@@ -148,8 +149,7 @@ def globeFlattening_from_scalar
           (image_subset_iff.2 fun p _ => (F p).2)
         rw [← image_image_val_eq_restrict_image, inter_comm,
           ← hfleft.injOn.image_inter hZsub image_val_subset] at hpos
-        refine hpos.ne' (Measure.absolutelyContinuous_isAddHaarMeasure volume
-          (μH[Module.finrank ℝ (EuclideanSpace ℝ (Fin 2))]) ?_)
+        refine hpos.ne' (Measure.absolutelyContinuous_isAddHaarMeasure volume (μH[(2 : ℕ)]) ?_)
         have hHaus : μH[2] (Z ∩ Subtype.val '' U) = 0 :=
           measure_mono_null inter_subset_left (hausdorffMeasure_sphereExceptional_eq_zero hsub hnull)
         simpa [hHaus] using hLip'.hausdorffMeasure_image_le (d := 2) (by norm_num)
