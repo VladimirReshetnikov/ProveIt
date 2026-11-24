@@ -1,6 +1,5 @@
 import GlobeFlattening.TriangularChart
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv
-import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
+import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 
 /-!
 # Area and closeness in longitude and latitude coordinates
@@ -62,14 +61,13 @@ theorem lintegral_cos_chartRectangle :
     (∫⁻ p in sphereLongitudeDomain,
         ENNReal.ofReal (Real.cos p.2)) = ENNReal.ofReal (4 * Real.pi) := by
   rw [sphereLongitudeDomain, lintegral_cos_rectangle (neg_le_self Real.pi_pos.le)]
-  have hfi := (Real.continuous_cos.mul_const (Real.pi - (-Real.pi))).intervalIntegrable
-    (μ := volume) (-(Real.pi / 2)) (Real.pi / 2)
-  rw [← ofReal_integral_eq_lintegral_ofReal (hfi.1.mono_set Ioo_subset_Ioc_self)
-    (ae_restrict_of_forall_mem measurableSet_Ioo fun y hy =>
-      mul_nonneg (Real.cos_pos_of_mem_Ioo hy).le (sub_nonneg.mpr (neg_le_self Real.pi_pos.le))),
-    ← integral_Ioc_eq_integral_Ioo, ← intervalIntegral.integral_of_le (neg_le_self (half_pos Real.pi_pos).le),
-    intervalIntegral.integral_eq_sub_of_hasDerivAt
-      (fun y _ => (Real.hasDerivAt_sin y).mul_const (Real.pi - (-Real.pi))) hfi]
+  have hlat := neg_le_self (half_pos Real.pi_pos).le
+  rw [← ofReal_integral_eq_lintegral_ofReal
+      ((intervalIntegrable_iff_integrableOn_Ioo_of_le hlat).1 (intervalIntegral.intervalIntegrable_cos.mul_const _))
+      (ae_restrict_of_forall_mem measurableSet_Ioo fun y hy =>
+        mul_nonneg (Real.cos_pos_of_mem_Ioo hy).le (sub_nonneg.mpr (neg_le_self Real.pi_pos.le))),
+    ← integral_Ioc_eq_integral_Ioo, ← intervalIntegral.integral_of_le hlat,
+    intervalIntegral.integral_mul_const, integral_cos]
   exact congrArg ENNReal.ofReal (by rw [Real.sin_neg, Real.sin_pi_div_two]; ring)
 
 /-- A uniform sinusoidal distance bound gives at most two endpoint errors per slice. -/
