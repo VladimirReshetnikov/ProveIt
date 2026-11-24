@@ -54,8 +54,8 @@ theorem exists_staircases {δ : ℝ} (hδ : 0 < δ) : Nonempty (Staircases δ) :
   choose X hc hm hr he hd using hX
   refine ⟨⟨hδ, X, hm, hc, hd, fun n x => abs_le.mpr (hr n x), ?_, ?_⟩⟩
   · intro n x
-    have h := abs_sub_le (X (n + 1) x) (max (-Real.pi) (min Real.pi x)) (X n x)
-    rw [abs_sub_comm (max (-Real.pi) (min Real.pi x))] at h
+    have h := dist_triangle_right (X (n + 1) x) (X n x) (max (-Real.pi) (min Real.pi x))
+    simp only [Real.dist_eq] at h
     linarith only [h, he (n + 1) x, he n x, rate_succ δ (n + 1), rate_succ δ (n + 2),
       rate_pos hδ (n + 1)]
   · intro x hx
@@ -112,9 +112,6 @@ theorem longitudeIncrement_bound (n : ℕ) (x : ℝ) :
 
 def scalar (p : ℝ × ℝ) := p.1 * Real.cos p.2 + S.correction p
 
-private theorem continuous_scalar : Continuous S.scalar :=
-  (continuous_fst.mul (Real.continuous_cos.comp continuous_snd)).add S.correction_series.1
-
 private theorem tendsto_increment_sum {p : ℝ × ℝ} (hp : p ∈ sphereClosedBox) :
     Tendsto (fun N => ∑ n ∈ Finset.range N, S.longitudeIncrement n p.1 * S.latitudeProfile n p.2)
       atTop (𝓝 (S.scalar p)) := by
@@ -159,10 +156,9 @@ theorem linearization_bound (hcontrol : ∀ t, Summable (fun n => rate (δ + Rea
       simpa only [latitudeWeight, add_sub_add_left_eq_sub] using Real.abs_cos_sub_cos_le y x)
     p.2 q.2 (S.tendsto_increment_sum (p := mid) ⟨hq.1, hp.2⟩) (S.tendsto_increment_sum hq)
   calc
-    _ = |(S.correction mid - S.correction p) + (S.scalar q - S.scalar mid)| := by
-      congr 1
+    _ = |(S.correction mid - S.correction p) + (S.scalar q - S.scalar mid)| := congrArg abs (by
       simp only [scalar, mid]
-      ring
+      ring)
     _ ≤ _ := (abs_add_le _ _).trans (add_le_add hhorizontal hvertical)
 
 end Staircases
@@ -179,8 +175,7 @@ theorem exists_strict_scalar_flattening {ε : ℝ} (hε : 0 < ε) :
   let δ := ε / (2 * Real.pi)
   have hδ : 0 < δ := div_pos hε (by positivity)
   have hscale : δ * 2 * Real.pi = ε := by
-    rw [mul_assoc]
-    exact div_mul_cancel₀ ε (by positivity)
+    simpa only [mul_assoc] using div_mul_cancel₀ ε (by positivity : 2 * Real.pi ≠ 0)
   obtain ⟨S⟩ := exists_staircases hδ
   obtain ⟨hcontrol, hsingular⟩ := summable_and_singular_weighted_tsum S.X (rate (δ + Real.pi))
     (fun n => (rate_pos (add_pos hδ Real.pi_pos) n).le)
@@ -189,7 +184,8 @@ theorem exists_strict_scalar_flattening {ε : ℝ} (hε : 0 < ε) :
     exists_hasFDerivAt_of_increment_bounds S.horizontalControl (fun p => Real.cos p.2)
       isOpen_sphereLongitudeDomain hsingular (fun p hp q hq =>
         S.linearization_bound hcontrol (sphereLongitudeDomain_subset_box hp) (sphereLongitudeDomain_subset_box hq))
-  exact ⟨S.scalar, E, S.continuous_scalar.continuousOn, hm, hsub, hnull,
+  exact ⟨S.scalar, E, ((continuous_fst.mul (Real.continuous_cos.comp continuous_snd)).add
+    S.correction_series.1).continuousOn, hm, hsub, hnull,
     fun q _ => (S.scalar_error q).trans_eq hscale, S.scalar_strictLowerSlope, hderiv⟩
 
 end
