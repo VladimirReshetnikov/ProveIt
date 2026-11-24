@@ -77,11 +77,10 @@ theorem exists_hasFDerivAt_of_increment_bounds {u : ℝ × ℝ → ℝ}
   · simpa only [Measure.restrict_apply hm.compl, inter_comm, sdiff_eq] using mem_ae_iff.1 hE
   · intro p hp
     obtain ⟨hpD, h₁, h₂⟩ := hgood p hp
-    have hcomp (L : (ℝ × ℝ) →L[ℝ] ℝ) (hL : HasDerivAt H 0 (L p)) :
-        (fun q => |H (L q) - H (L p)|) =o[𝓝 p] fun q => q - p := by
-      simpa [Function.comp_def] using (hL.hasFDerivAt.comp p L.hasFDerivAt).isLittleO.abs_left
-    exact HasFDerivAt.of_isLittleO <| (Eventually.mono (hD.mem_nhds hpD) (herror p hpD)).isBigO.trans_isLittleO
-      ((hcomp (ContinuousLinearMap.fst ℝ ℝ ℝ) h₁).add (hcomp (ContinuousLinearMap.snd ℝ ℝ ℝ) h₂))
+    have hl := (h₁.isLittleO.comp_tendsto continuousAt_fst.tendsto).prod_rightl (fun q => q.2 - p.2)
+    have hr := (h₂.isLittleO.comp_tendsto continuousAt_snd.tendsto).prod_rightr (fun q => q.1 - p.1)
+    refine HasFDerivAt.of_isLittleO <| (Eventually.mono (hD.mem_nhds hpD) (herror p hpD)).isBigO.trans_isLittleO ?_
+    simpa only [Function.comp_def, smul_zero, sub_zero] using! hl.abs_left.add hr.abs_left
 
 end
 
