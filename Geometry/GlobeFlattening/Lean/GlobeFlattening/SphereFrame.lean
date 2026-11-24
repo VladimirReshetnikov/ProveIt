@@ -1,5 +1,4 @@
 import GlobeFlattening.SphereChart
-import Mathlib.Analysis.Calculus.FDeriv.WithLp
 import Mathlib.Analysis.InnerProductSpace.LinearMap
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv
 import Mathlib.Tactic.Ring
@@ -49,9 +48,9 @@ private def sphereTangentBasis (p : ℝ × ℝ) : OrthonormalBasis (Fin 2) ℝ (
   have h := orthonormal_sphereFrame p
   have hon := (h.comp Fin.castSucc (Fin.castSucc_injective 2)).codRestrict (sphereTangentPlane p)
     (fun i => mem_sphereTangentPlane.2 (h.inner_eq_zero (Fin.castSucc_ne_last i).symm))
-  letI : Fact (Module.finrank ℝ (EuclideanSpace ℝ (Fin 3)) = 2 + 1) := ⟨by simp⟩
-  exact OrthonormalBasis.mk hon (hon.linearIndependent.span_eq_top_of_card_eq_finrank
-    (Submodule.finrank_orthogonal_span_singleton (n := 2) (h.ne_zero (2 : Fin 3))).symm).ge
+  refine OrthonormalBasis.mk hon (hon.linearIndependent.span_eq_top_of_card_eq_finrank ?_).ge
+  exact (Submodule.finrank_add_finrank_orthogonal' (K := ℝ ∙ spherePoint p)
+    (by simp [finrank_span_singleton (show spherePoint p ≠ 0 from h.ne_zero (2 : Fin 3))])).symm
 
 /-- East and north coordinates of the orthogonal projection onto the tangent plane. -/
 def sphereFlattenDerivative (p : ℝ × ℝ) :
@@ -94,9 +93,8 @@ def sphereDerivative (p : ℝ × ℝ) : ℝ × ℝ →L[ℝ] EuclideanSpace ℝ 
 
 theorem sphereDerivative_apply (p v : ℝ × ℝ) :
     sphereDerivative p v = (Real.cos p.2 * v.1) • sphereEast p + v.2 • sphereNorth p := by
-  change ((sphereTangentBasis p).repr.symm !₂[Real.cos p.2 * v.1, v.2]).1 = _
-  rw [← (sphereTangentBasis p).sum_repr_symm, Fin.sum_univ_two]
-  simp [sphereTangentBasis, sphereFrame]
+  simpa [sphereTangentBasis, sphereFrame, Fin.sum_univ_two] using!
+    congrArg Subtype.val ((sphereTangentBasis p).sum_repr_symm !₂[Real.cos p.2 * v.1, v.2]).symm
 
 theorem hasFDerivAt_spherePoint (p : ℝ × ℝ) :
     HasFDerivAt spherePoint (sphereDerivative p) p := by
