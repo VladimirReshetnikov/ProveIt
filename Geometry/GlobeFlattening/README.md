@@ -41,8 +41,10 @@ Summation by parts shows that finite sums of longitude increments weighted
 by shifted latitude cosines converge to the same scalar coordinate. The
 correction gives the horizontal error estimate, and termwise comparison of
 the finite sums gives the vertical one. Both estimates use increments of
-the same control function. Its Stieltjes measure is a sum of singular
-measures, so the control function has derivative zero almost everywhere.
+the same control function. Its series converges uniformly, giving
+continuity and the pointwise sums used to identify its Stieltjes measure.
+That measure is a sum of singular measures, so the control function has
+derivative zero almost everywhere.
 The two coordinate projections pull back that derivative event to the
 chart and yield the joint derivative.
 [Scalar construction](Lean/GlobeFlattening/ScalarConstruction.lean) ·

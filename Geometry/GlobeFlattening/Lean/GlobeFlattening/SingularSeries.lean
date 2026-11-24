@@ -51,13 +51,12 @@ theorem summable_and_singular_weighted_tsum
   have hg (n : ℕ) : Continuous (w n • f n) := (hcont n).const_smul (w n)
   let g (n : ℕ) : StieltjesFunction ℝ :=
     ⟨w n • f n, (hmono n).const_mul (hw n), fun _ => (hg n).continuousWithinAt⟩
-  have hwc := hwSum.mul_right C
-  have hnorm (n : ℕ) (x : ℝ) : ‖g n x‖ ≤ w n * C :=
+  have hu := tendstoUniformly_tsum (hwSum.mul_right C) fun n x =>
     norm_mul_le_of_le (Real.norm_of_nonneg (hw n)).le (hbound n x)
-  have hs (x : ℝ) := (hwc.of_norm_bounded (fun n => hnorm n x)).hasSum
+  have hs (x : ℝ) : HasSum (fun n => g n x) (∑' n, g n x) := hu.tendsto_at x
   let G : StieltjesFunction ℝ :=
     ⟨fun x => ∑' n, g n x, fun x y h => hasSum_le (fun n => (g n).mono h) (hs x) (hs y),
-      fun _ => (continuous_tsum hg hwc hnorm).continuousWithinAt⟩
+      fun _ => (hu.continuous (Frequently.of_forall fun s => continuous_finsetSum s fun n _ => hg n)).continuousWithinAt⟩
   exact ⟨fun x => (hs x).summable, singular_stieltjes_sum g G hs fun n =>
     (hsing n).mono fun x hx => by simpa [g] using (hx.hasFDerivAt.const_smul (w n)).hasDerivAt⟩
 
