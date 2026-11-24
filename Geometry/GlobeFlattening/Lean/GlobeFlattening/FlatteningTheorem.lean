@@ -78,9 +78,10 @@ def globeFlattening_from_scalar
   have hab := neg_lt_self Real.pi_pos
   have hmono := strictMonoOn_chartRows_of_lowerSlope (fun _ => Real.cos_nonneg_of_mem_Icc) hSlope
   let g := triangularChart hab.le hcu hmono
-  have hgimage : flattenCoordinates u '' sphereLongitudeDomain = g.target := g.image_source_eq_target
   let h := g.transHomeomorph planarEuclideanEquiv.toHomeomorph
   have hT : _ = h.target := planarEuclideanEquiv.image_eq_preimage_symm g.target
+  have htarget : planarEuclideanEquiv '' (flattenCoordinates u '' sphereLongitudeDomain) = h.target :=
+    (image_image _ _ _).trans h.image_source_eq_target
   let Z := sphereExceptional good
   have hZsub : Z ⊆ cutSphere := sdiff_subset
   let f := sphereFlattenForward u
@@ -98,10 +99,9 @@ def globeFlattening_from_scalar
   have hBorelImage {s} (hs : MeasurableSet s) (hss : s ⊆ cutSphere) : MeasurableSet (f '' s) := by
     simpa only [image_restrict, inter_eq_left.2 hss] using
       hfopen.measurableEmbedding.measurableSet_image' (hs.preimage measurable_subtype_coe)
-  have hexcess (V : Set (EuclideanSpace ℝ (Fin 2))) (hV : IsOpen V) (hne : V.Nonempty)
-      (hVsub : V ⊆ h.target) : 0 < volume (V ∩ f '' Z) :=
-    volume_sphereExceptional_inter_of_open hcu hSlope hgood hsub hnull hDeriv hV hne
-      (hgimage.symm ▸ hT.symm ▸ hVsub)
+  have hexcess V hV hne (hVsub : V ⊆ h.target) :=
+    volume_sphereExceptional_inter_of_open (W := V)
+      hcu hSlope hgood hsub hnull hDeriv hV hne (htarget.symm ▸ hVsub)
   have hInv (p : ℝ × ℝ) (hp : p ∈ good) :
       HasFDerivAt fInv (sphereTangentLift p) (f (spherePoint p)) := by
     simpa only [f, g, triangularChart_apply, sphereFlattenForward_spherePoint (hsub hp)] using!
@@ -116,9 +116,8 @@ def globeFlattening_from_scalar
       forward_agrees := fun p => rfl
       inverse_agrees := fun q => rfl
       target_open := h.open_target
-      target_bounded := hT ▸ planarEuclideanEquiv.toContinuousLinearMap.lipschitz.isBounded_image (by
-        rw [← hgimage]
-        exact ((isCompact_Icc.prod isCompact_Icc).image_of_continuousOn
+      target_bounded := htarget ▸ planarEuclideanEquiv.toContinuousLinearMap.lipschitz.isBounded_image
+        (((isCompact_Icc.prod isCompact_Icc).image_of_continuousOn
           (hcu.prodMk continuous_snd.continuousOn)).isBounded.subset
             (image_mono sphereLongitudeDomain_subset_box))
       exceptional_subset := hZsub
