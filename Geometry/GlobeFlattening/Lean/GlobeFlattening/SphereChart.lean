@@ -1,6 +1,6 @@
 import GlobeFlattening.CoordinateRectangles
 import Mathlib.Analysis.InnerProductSpace.PiL2
-import Mathlib.Analysis.SpecialFunctions.Complex.Arg
+import Mathlib.Analysis.SpecialFunctions.PolarCoord
 
 /-!
 # The longitude chart on the cut unit sphere
@@ -36,9 +36,8 @@ def horizontalComplex (w : EuclideanSpace ℝ (Fin 3)) : ℂ :=
 theorem horizontalComplex_spherePoint (p : ℝ × ℝ) :
     horizontalComplex (spherePoint p) =
       (Real.cos p.2 : ℂ) * (Complex.cos p.1 + Complex.sin p.1 * Complex.I) := by
-  simp only [← Complex.ofReal_cos, ← Complex.ofReal_sin, horizontalComplex, spherePoint,
-    Complex.equivRealProdCLM_symm_apply, Matrix.cons_val_zero, Matrix.cons_val_one,
-    Complex.ofReal_mul, mul_add, mul_assoc]
+  change Complex.polarCoord.symm (Real.cos p.2, p.1) = _
+  simp only [Complex.polarCoord_symm_apply, Complex.ofReal_cos, Complex.ofReal_sin]
 
 private theorem norm_sq_eq_horizontal (w : EuclideanSpace ℝ (Fin 3)) :
     ‖w‖ ^ 2 = ‖horizontalComplex w‖ ^ 2 + (w 2)^2 := by
@@ -62,16 +61,12 @@ theorem cutSphere_eq_sphere_sdiff_meridian :
   simp only [cutSphere, mem_setOf_eq, mem_sdiff, Metric.mem_sphere, dist_zero_right,
     Complex.mem_slitPlane_iff, horizontalComplex_re, horizontalComplex_im, not_and_or, not_le, or_comm]
 
-private theorem polar_spherePoint {p : ℝ × ℝ} (hp : p ∈ sphereLongitudeDomain) :
-    horizontalComplex (spherePoint p) ∈ Complex.slitPlane ∧
-      (horizontalComplex (spherePoint p)).arg = p.1 := by
-  have hcos := Real.cos_pos_of_mem_Ioo hp.2
-  rw [horizontalComplex_spherePoint, Complex.mem_slitPlane_iff_arg,
-    Complex.arg_mul_cos_add_sin_mul_I hcos (Ioo_subset_Ioc_self hp.1), ← Complex.exp_mul_I]
-  simp [hp.1.2.ne, hcos.ne', -Complex.ofReal_cos]
+private theorem spherePoint_polar_target {p : ℝ × ℝ} (hp : p ∈ sphereLongitudeDomain) :
+    (Real.cos p.2, p.1) ∈ Complex.polarCoord.target :=
+  ⟨Real.cos_pos_of_mem_Ioo hp.2, hp.1⟩
 
 theorem spherePoint_mapsTo : MapsTo spherePoint sphereLongitudeDomain cutSphere :=
-  fun p hp => ⟨norm_spherePoint p, (polar_spherePoint hp).1⟩
+  fun p hp => ⟨norm_spherePoint p, Complex.polarCoord.map_target (spherePoint_polar_target hp)⟩
 
 /-- Longitude and latitude computed directly from an ambient point. -/
 def sphereChartInverse (w : EuclideanSpace ℝ (Fin 3)) : ℝ × ℝ :=
@@ -79,7 +74,8 @@ def sphereChartInverse (w : EuclideanSpace ℝ (Fin 3)) : ℝ × ℝ :=
 
 theorem sphereChartInverse_spherePoint {p : ℝ × ℝ} (hp : p ∈ sphereLongitudeDomain) :
     sphereChartInverse (spherePoint p) = p :=
-  Prod.ext (polar_spherePoint hp).2 (Real.sinPartialHomeomorph.left_inv hp.2)
+  Prod.ext (congrArg Prod.snd (Complex.polarCoord.right_inv (spherePoint_polar_target hp)))
+    (Real.sinPartialHomeomorph.left_inv hp.2)
 
 private theorem cutSphere_horizontal_norm_sq {w : EuclideanSpace ℝ (Fin 3)}
     (hw : w ∈ cutSphere) : ‖horizontalComplex w‖ ^ 2 = 1 - (w 2)^2 := by
@@ -87,13 +83,12 @@ private theorem cutSphere_horizontal_norm_sq {w : EuclideanSpace ℝ (Fin 3)}
 
 theorem cutSphere_vertical_bounds {w : EuclideanSpace ℝ (Fin 3)} (hw : w ∈ cutSphere) :
     w 2 ∈ Ioo (-1 : ℝ) 1 := by
-  apply abs_lt.mp
-  rw [← abs_one, ← sq_lt_sq, one_pow, ← sub_pos, ← cutSphere_horizontal_norm_sq hw]
+  rw [mem_Ioo, ← abs_lt, ← sq_lt_one_iff_abs_lt_one, ← sub_pos, ← cutSphere_horizontal_norm_sq hw]
   exact sq_pos_of_pos (norm_pos_iff.mpr (Complex.slitPlane_ne_zero hw.2))
 
 theorem sphereChartInverse_mapsTo : MapsTo sphereChartInverse cutSphere sphereLongitudeDomain := by
   intro w hw
-  exact ⟨⟨Complex.neg_pi_lt_arg _, (Complex.arg_le_pi _).lt_of_ne (Complex.slitPlane_arg_ne_pi hw.2)⟩,
+  exact ⟨(Complex.polarCoord.map_source hw.2).2,
     Real.sinPartialHomeomorph.map_target (cutSphere_vertical_bounds hw)⟩
 
 theorem spherePoint_sphereChartInverse {w : EuclideanSpace ℝ (Fin 3)} (hw : w ∈ cutSphere) :

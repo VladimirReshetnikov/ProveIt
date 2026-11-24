@@ -41,7 +41,7 @@ theorem hasFDerivWithinAt_sphereFlatten
     HasFDerivWithinAt f (sphereFlattenDerivative p) cutSphere (spherePoint p) := by
   simpa only [ContinuousLinearMap.comp_id] using
     (hinv.hasFDerivWithinAt (s := univ)).of_comp_of_leftInverse
-      (by rw [nhdsWithin_univ]; exact hcont (spherePoint p) hp)
+      ((hcont _ hp).tendsto_nhdsWithin (mapsTo_univ _ _))
       (hasFDerivWithinAt_id _ _) hleft.eqOn.eventuallyEq_nhdsWithin
       (sphereFlattenDerivative_leftInverse p) hp
 

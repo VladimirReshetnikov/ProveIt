@@ -42,8 +42,8 @@ chart and yield the joint derivative.
 [Scalar construction](Lean/GlobeFlattening/ScalarConstruction.lean) ·
 [Singular staircases](Lean/GlobeFlattening/SingularStaircase.lean)
 
-The sphere chart recovers longitude from the complex argument of the
-horizontal projection and latitude from the arcsine of height.
+Mathlib’s polar chart gives longitude as the argument of the horizontal
+projection. The arcsine of height gives latitude.
 [Sphere chart](Lean/GlobeFlattening/SphereChart.lean)
 
 Strict row increase gives injectivity on the closed coordinate rectangle.
