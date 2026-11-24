@@ -26,8 +26,8 @@ theorem volume_planarEuclideanEquiv_image (s : Set (ℝ × ℝ)) :
 /-- With latitude fixed, the two planar metrics give the same distance. -/
 theorem dist_planarEuclideanEquiv_of_snd_eq {a b : ℝ × ℝ} (hy : a.2 = b.2) :
     dist (planarEuclideanEquiv a) (planarEuclideanEquiv b) = dist a b := by
-  change dist !₂[a.1, a.2] !₂[b.1, b.2] = dist a b
-  simp [PiLp.dist_eq_of_L2, Fin.sum_univ_two, Prod.dist_eq, hy, Real.sqrt_sq dist_nonneg]
+  refine (Complex.orthonormalBasisOneI.repr.isometry.dist_eq ⟨a.1, a.2⟩ ⟨b.1, b.2⟩).trans ?_
+  exact (Complex.dist_of_im_eq hy).trans (by simp [Prod.dist_eq, hy])
 
 theorem lipschitzWith_spherePoint : LipschitzWith 2 spherePoint := by
   refine lipschitzWith_of_nnnorm_fderiv_le (fun p => (hasFDerivAt_spherePoint p).differentiableAt) ?_

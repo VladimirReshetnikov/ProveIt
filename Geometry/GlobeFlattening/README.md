@@ -82,6 +82,8 @@ longitude–latitude chart with density `cos(latitude)`, as in the report. The e
 two-dimensional Hausdorff measure by Lipschitz continuity of the sphere
 parametrization. Its differential factors through the tangent isometry,
 and the complex-plane norm bound controls the two rescaled coordinates.
+The same complex-plane isometry gives the distance identity for points
+at equal latitude.
 A local Lipschitz bound transfers to the same patch in the ambient metric
 because the subtype uses the ambient distances.
 It would give zero planar area for the exceptional image on an open target

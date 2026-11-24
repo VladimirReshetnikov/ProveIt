@@ -162,9 +162,8 @@ def globeFlattening_from_scalar
     exact fun p hp => ⟨sphereTangentLift p, hInv p hp, fun v => by
       simp [hfleft (spherePoint_mapsTo (hsub hp)), tangent_sphereTangentLift, norm_sphereTangentLift]⟩
   · refine ⟨ε, lt_two_mul_self hε, fun w hw => ?_⟩
-    refine (dist_planarEuclideanEquiv_of_snd_eq ?_).trans_le
+    exact (dist_planarEuclideanEquiv_of_snd_eq (by rfl)).trans_le
       (hclose _ (sphereLongitudeDomain_subset_box (sphereChartInverse_mapsTo hw)))
-    rfl
 
 /-- The cut sphere has the usual total area of the unit sphere. -/
 theorem sphericalArea_cutSphere : sphericalArea cutSphere = ENNReal.ofReal (4 * Real.pi) := by
