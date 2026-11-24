@@ -26,13 +26,12 @@ theorem measure_flattened_good_image
       HasFDerivWithinAt u (slope p • ContinuousLinearMap.fst ℝ ℝ ℝ) domain p)
     (hnonneg : ∀ p ∈ good, 0 ≤ slope p) :
     volume (flattenCoordinates u '' good) = ∫⁻ p in domain, ENNReal.ofReal (slope p) := by
-  have harea := lintegral_abs_det_fderiv_eq_addHaar_image
-    (f := flattenCoordinates u) (f' := coordinateDerivative ∘ slope) (volume.prod volume) hgood
-    (fun p hp => ((hDeriv p hp).mono hsub).prodMk hasFDerivAt_snd.hasFDerivWithinAt) (hf.mono hsub)
-  refine harea.symm.trans ((setLIntegral_congr_fun hgood fun p hp => ?_).trans
-    (setLIntegral_congr (hsub.eventuallyLE.antisymm (ae_le_set.2 hnull))))
-  simp [coordinateDerivative, ContinuousLinearMap.det, LinearMap.det_prodMap,
-    abs_of_nonneg (hnonneg p hp)]
+  rw [← setLIntegral_congr (hsub.eventuallyLE.antisymm (ae_le_set.2 hnull))]
+  refine (lintegral_abs_det_fderiv_eq_addHaar_image (f' := coordinateDerivative ∘ slope)
+    (volume.prod volume) hgood
+    (fun p hp => ((hDeriv p hp).mono hsub).prodMk hasFDerivAt_snd.hasFDerivWithinAt) (hf.mono hsub)).symm.trans ?_
+  exact setLIntegral_congr_fun hgood fun p hp => by
+    simp [coordinateDerivative, ContinuousLinearMap.det, LinearMap.det_prodMap, abs_of_nonneg (hnonneg p hp)]
 
 end
 
