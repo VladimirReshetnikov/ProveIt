@@ -2774,3 +2774,6 @@ The fixed-presentation convexity law gives the paper’s chord for every natural
 
 Any two positive rational input charts with the same quotient give equivalent observations of the original improper Binet moment. The closed theorem compares independently chosen observation precisions and allows separate certified chart radii.
 [GaussianBinetLaplaceMomentRescale](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentRescale.lean)
+
+Iterating the exact fixed-presentation recurrence gives the actual shifted logarithm sum at every finite block length. Each term is bounded by the last logarithm, giving the closed finite-sum comparison for the larger block chord.
+[GaussianBohrMollerupFiniteRecurrence](Lean/IPRADerivations/Analysis/GaussianBohrMollerupFiniteRecurrence.lean), [GaussianBohrMollerupBlockLogBound](Lean/IPRADerivations/Analysis/GaussianBohrMollerupBlockLogBound.lean)
