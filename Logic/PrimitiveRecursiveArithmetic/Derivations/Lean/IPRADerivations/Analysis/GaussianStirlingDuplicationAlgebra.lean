@@ -115,7 +115,7 @@ theorem duplication_value (a b g h j u v w : PTm n) (hb : Γ ⊢[PRAAx] le one b
   apply canonical_unique _ _ _ _ (qsub_canonical _ _) (qadd_canonical _ _) hT (hrv := rhs)
   apply represents_congr (.eqRefl _) (hAB := .eqRefl _) (h := lhs)
   apply equal_of_values <;>
-    simp only [T,C,arg,halfNumerator,re_add,im_add,re_sub,im_sub,re_scale,im_scale,re_mul,im_mul,
+    simp only [C,arg,halfNumerator,re_add,im_add,re_sub,im_sub,re_scale,im_scale,re_mul,im_mul,
       re_neg,im_neg,re_one,im_one] <;> ipra_simps <;> ring
 
 end LeanProofs.IPRA.Analysis.GaussianStirlingDuplicationAlgebra
