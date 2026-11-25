@@ -2261,6 +2261,12 @@ compare to those of every positive finite prefix with the same
 leading bound `D 2⁻ᴸ/(12 X)`.
 [GaussianBinetLaplaceImproperName](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceImproperName.lean).
 
+The original real decay at time zero evaluates exactly to one. The
+finite decay quadrature includes the zero left cell with the same
+error bound. The actual improper Binet sampler consequently has
+norm at most `1/(12 Re(z)) + 2⁻⁽ᵖ⁺¹⁾` at its observation clock `p`.
+[GaussianEulerDecayQuadratureAtZero](Lean/IPRADerivations/Analysis/GaussianEulerDecayQuadratureAtZero.lean), [GaussianBinetLaplaceImproperBound](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceImproperBound.lean).
+
 ## Source artifacts and representation boundaries
 
 The delivered [Lean companion](../docs/proofs/analysis/gamma_ipra/lean/README.md)
