@@ -30141,6 +30141,21 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentImproperTaylor.subst_linearSample
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentImproperTaylor.observation_taylor
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentImproperTaylor.actual_improper_Binet_moment_right_Taylor_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentForwardQuotient.quotientF
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentForwardQuotient.targetF
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentForwardQuotient.quotientData
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentForwardQuotient.targetData
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentForwardQuotient.linearBudget
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentForwardQuotient.samplerBudget
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentForwardQuotient.subst_quotientData
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentForwardQuotient.subst_targetData
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentForwardQuotient.subst_linearBudget
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentForwardQuotient.subst_samplerBudget
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentForwardQuotient.positive_parameter
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentForwardQuotient.quotient_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentForwardQuotient.quotient_sample
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentForwardQuotient.forward_rate
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentForwardQuotient.actual_improper_Binet_moment_forward_quotient_closed
 
 /-! ### GaussianEulerDecayCompactUpper -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerDecayCompactUpper.upperPoint

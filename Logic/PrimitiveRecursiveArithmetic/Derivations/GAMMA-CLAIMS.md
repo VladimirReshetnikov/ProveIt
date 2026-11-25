@@ -2750,3 +2750,6 @@ The actual same-clock shifted improper observation compares to the original base
 
 The original Dirichlet sums converge at the certified margin with the explicit dyadic-block rate for every sufficiently long finite prefix. The original normalized Gamma product has the corresponding independent-observation rate.
 [GaussianGammaZetaDirichletBlock](Lean/IPRADerivations/Analysis/GaussianGammaZetaDirichletBlock.lean), [GaussianGammaZetaDirichletTail](Lean/IPRADerivations/Analysis/GaussianGammaZetaDirichletTail.lean), [GaussianGammaZetaDirichletFiniteRate](Lean/IPRADerivations/Analysis/GaussianGammaZetaDirichletFiniteRate.lean), [GaussianGammaZetaDirichletCofinal](Lean/IPRADerivations/Analysis/GaussianGammaZetaDirichletCofinal.lean), [GaussianGammaZetaDirichletProduct](Lean/IPRADerivations/Analysis/GaussianGammaZetaDirichletProduct.lean)
+
+At each encoded positive rational base, the original punctured forward difference quotient converges to the negative of the next moment with explicit linear step error and independent dyadic observation errors.
+[GaussianBinetLaplaceMomentForwardQuotient](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentForwardQuotient.lean)
