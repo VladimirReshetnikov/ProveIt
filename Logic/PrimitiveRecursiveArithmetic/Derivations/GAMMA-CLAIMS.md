@@ -1832,6 +1832,12 @@ integer `k`, the same program satisfies
 the exact shifted numerator and residual denominator.
 [GaussianRightHalfPlaneLogarithmRescale](Lean/IPRADerivations/Analysis/GaussianRightHalfPlaneLogarithmRescale.lean).
 
+Finite sums of regular names now have checked first-row and final-row
+splits, transport under bounded row equivalence, and additivity.
+These statements compare the actual count-dependent samplers at
+independent observation clocks.
+[GaussianNamedFiniteSumFamilySplit](Lean/IPRADerivations/Analysis/GaussianNamedFiniteSumFamilySplit.lean), [GaussianNamedFiniteSumFamilyCongruence](Lean/IPRADerivations/Analysis/GaussianNamedFiniteSumFamilyCongruence.lean), [GaussianNamedFiniteSumFamilyAdd](Lean/IPRADerivations/Analysis/GaussianNamedFiniteSumFamilyAdd.lean).
+
 ## Source artifacts and representation boundaries
 
 The delivered [Lean companion](../docs/proofs/analysis/gamma_ipra/lean/README.md)
