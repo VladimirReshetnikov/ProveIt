@@ -1,4 +1,4 @@
-import IPRADerivations.Core.IntCertificates
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The local identities behind the Reidemeister moves: the bracket and Fox colourings
@@ -59,6 +59,7 @@ def refl (y x : ZT n) : ZT n := ZT.natLit 2 * y - x
 local macro "ksimp" loc:(Lean.Parser.Tactic.location)? : tactic =>
   `(tactic| simp only [refl, ZT.toZ_add, ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_neg, ZT.toZ_sq, ZT.toZ_natLit,
     Nat.cast_ofNat, Nat.cast_zero, Nat.cast_one] $[$loc]?)
+attribute [local ipra_defs] refl
 
 /-! ## The bracket -/
 
@@ -66,34 +67,26 @@ local macro "ksimp" loc:(Lean.Parser.Tactic.location)? : tactic =>
 `(A² + B² + δ) + δ (A B − 1)`. -/
 theorem move_II (A B δ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (A * A + B * B + A * B * δ) (A * A + B * B + δ + δ * (A * B - ZT.natLit 1)) := by
-  apply ZT.derive
-  ksimp
-  ring
+  ipra_lc
 
 /-- Move III: the coefficient `A² B + A B² δ + B³` of `e − f` in `U W U − W U W` is
 `B (A² + B² + δ) + B δ (A B − 1)`. -/
 theorem move_III (A B δ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (A * A * B + A * B * B * δ + B * B * B)
       (B * (A * A + B * B + δ) + B * δ * (A * B - ZT.natLit 1)) := by
-  apply ZT.derive
-  ksimp
-  ring
+  ipra_lc
 
 /-- The positive curl: `A δ + B = −A³ + A (A² + B² + δ) − B (A B − 1)`. -/
 theorem curl_pos (A B δ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (A * δ + B)
       (-(A * A * A) + A * (A * A + B * B + δ) - B * (A * B - ZT.natLit 1)) := by
-  apply ZT.derive
-  ksimp
-  ring
+  ipra_lc
 
 /-- The negative curl: `B δ + A = −B³ + B (A² + B² + δ) − A (A B − 1)`. -/
 theorem curl_neg (A B δ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (B * δ + A)
       (-(B * B * B) + B * (A * A + B * B + δ) - A * (A * B - ZT.natLit 1)) := by
-  apply ZT.derive
-  ksimp
-  ring
+  ipra_lc
 
 /-- The skein relation: `A⁴ (−B³)(A U + B H) − B⁴ (−A³)(B U + A H) = (B² − A²) U` modulo `A B − 1`, with the
 explicit multiple `(B² − A²) U ((A B)² + A B + 1)`. -/
@@ -103,58 +96,40 @@ theorem skein (A B U H : ZT n) :
         B * B * B * B * (-(A * A * A)) * (B * U + A * H))
       ((B * B - A * A) * U +
         (B * B - A * A) * U * (A * B * (A * B) + A * B + ZT.natLit 1) * (A * B - ZT.natLit 1)) := by
-  apply ZT.derive
-  ksimp
-  ring
+  ipra_lc
 
 /-! ## Fox colourings -/
 
 /-- Move I: `S_x(x) = x`. -/
 theorem kink (x : ZT n) : Γ ⊢[PRAAx] ZT.eq (refl x x) x := by
-  apply ZT.derive
-  ksimp
-  ring
+  ipra_lc
 
 /-- Move II: `S_y(S_y(x)) = x`. -/
 theorem type_II (x y : ZT n) : Γ ⊢[PRAAx] ZT.eq (refl y (refl y x)) x := by
-  apply ZT.derive
-  ksimp
-  ring
+  ipra_lc
 
 /-- Move III: `S_z(S_y(x)) = S_{S_z(y)}(S_z(x))`. -/
 theorem type_III (x y z : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (refl z (refl y x)) (refl (refl z y) (refl z x)) := by
-  apply ZT.derive
-  ksimp
-  ring
+  ipra_lc
 
 /-- The common value in move III: `2z − 2y + x`. -/
 theorem type_III_value (x y z : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (refl z (refl y x)) (ZT.natLit 2 * z - ZT.natLit 2 * y + x) := by
-  apply ZT.derive
-  ksimp
-  ring
+  ipra_lc
 
 /-- The braid relation for `P(x, y) = (S_x(y), x)`: the first coordinates of `P₁ P₂ P₁` and `P₂ P₁ P₂`. -/
 theorem braid_relation (x y z : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (refl (refl x y) (refl x z)) (refl x (refl y z)) := by
-  apply ZT.derive
-  ksimp
-  ring
+  ipra_lc
 
 /-- Positive stabilization: the closure equation `2u − v = u` forces `u = v`. -/
 theorem stabilization_pos {u v : ZT n} (h : Γ ⊢[PRAAx] ZT.eq (refl u v) u) : Γ ⊢[PRAAx] ZT.eq u v := by
-  have e := ZT.toZ_eq h
-  apply ZT.derive
-  ksimp at e
-  linear_combination e
+  ipra_lc ZT.toZ_eq h
 
 /-- Negative stabilization: the closure equation `2v − u = v` forces `u = v`. -/
 theorem stabilization_neg {u v : ZT n} (h : Γ ⊢[PRAAx] ZT.eq (refl v u) v) : Γ ⊢[PRAAx] ZT.eq u v := by
-  have e := ZT.toZ_eq h
-  apply ZT.derive
-  ksimp at e
-  linear_combination (-1 : Groth (Q Γ)) * e
+  ipra_lc -ZT.toZ_eq h
 
 /-- The row `P^m (x, y)` of the two-strand braid `σ₁^m`, for `P(x, y) = (S_x(y), x)`. -/
 def pw (x y : ZT n) : ℕ → ZT n × ZT n
@@ -194,8 +169,6 @@ theorem two_strand_power (x y : ZT n) (m : ℕ) :
 
 /-- A crossing preserves the alternating sum of a slice: `(2x − y) − x = x − y`. -/
 theorem crossing_alternating (x y : ZT n) : Γ ⊢[PRAAx] ZT.eq (refl x y - x) (x - y) := by
-  apply ZT.derive
-  ksimp
-  ring
+  ipra_lc
 
 end LeanProofs.IPRA.Topology.KnotLocalMoves

@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianRationalOriginalSpanMembership
 import IPRADerivations.Foundations.FiniteCoverAssignment
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual membership assignment for a finite family of proper row spans
@@ -99,25 +100,16 @@ theorem fields_at (f m c L D : PTm n) (j : Fin 5) : Γ ⊢[PRAAx] fields (data f
 theorem point_congr {f f' m m' c c' L L' v v' : PTm n} (hf : Γ ⊢[PRAAx] f ≐ f')
     (hm : Γ ⊢[PRAAx] m ≐ m') (hc : Γ ⊢[PRAAx] c ≐ c') (hL : Γ ⊢[PRAAx] L ≐ L')
     (hv : Γ ⊢[PRAAx] v ≐ v') : Γ ⊢[PRAAx] point f m c L v ≐ point f' m' c' L' v' := by
-  simpa only [subst_point,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.cons_val_three,Matrix.cons_val_four,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (point (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5)
-      (σ := ![f,m,c,L,v]) (σ' := ![f',m',c',L',v'])
-      (fun j => by fin_cases j; exact hf; exact hm; exact hc; exact hL; exact hv)
+  ipra_congr (point (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) with [hf, hm, hc, hL, hv]
 theorem count_congr {f f' m m' c c' L L' : PTm n} (hf : Γ ⊢[PRAAx] f ≐ f')
     (hm : Γ ⊢[PRAAx] m ≐ m') (hc : Γ ⊢[PRAAx] c ≐ c') (hL : Γ ⊢[PRAAx] L ≐ L') :
     Γ ⊢[PRAAx] basisCount f m c L ≐ basisCount f' m' c' L' := by
-  simpa only [GaussianSuperellipticSubspaceWitness.subst_basisCount,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-    Matrix.cons_val_two,Matrix.cons_val_three,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (basisCount (var 0) (var 1) (var 2) (var 3) : PTm 4)
-      (σ := ![f,m,c,L]) (σ' := ![f',m',c',L']) (fun j => by fin_cases j; exact hf; exact hm; exact hc; exact hL)
+  ipra_congr (basisCount (var 0) (var 1) (var 2) (var 3) : PTm 4) with [hf, hm, hc, hL]
 theorem classifier_congr {A A' R R' N N' v v' : PTm n} (hA : Γ ⊢[PRAAx] A ≐ A')
     (hR : Γ ⊢[PRAAx] R ≐ R') (hN : Γ ⊢[PRAAx] N ≐ N') (hv : Γ ⊢[PRAAx] v ≐ v') : Γ ⊢[PRAAx]
     GaussianRationalOriginalSpanMembership.test A R N v ≐ GaussianRationalOriginalSpanMembership.test A' R' N' v' := by
-  simpa only [GaussianRationalOriginalSpanMembership.subst_test,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-    Matrix.cons_val_two,Matrix.cons_val_three,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (GaussianRationalOriginalSpanMembership.test (var 0) (var 1) (var 2) (var 3) : PTm 4)
-      (σ := ![A,R,N,v]) (σ' := ![A',R',N',v']) (fun j => by fin_cases j; exact hA; exact hR; exact hN; exact hv)
+  ipra_congr (GaussianRationalOriginalSpanMembership.test (var 0) (var 1) (var 2) (var 3) : PTm 4) with
+    [hA, hR, hN, hv]
 
 theorem test_body_at (f m c L D g v : PTm n) : Γ ⊢[PRAAx]
     inst3 testBody g v (data f m c L D) ≐ eqb (candidate f m c L D g v) one := by

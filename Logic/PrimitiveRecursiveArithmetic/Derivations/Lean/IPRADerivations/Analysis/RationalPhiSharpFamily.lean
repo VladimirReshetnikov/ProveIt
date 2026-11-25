@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.RationalPolynomialPowers
 import IPRADerivations.Analysis.RationalPhiSharpness
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The literal general-Q sharp superelliptic family
@@ -148,9 +149,7 @@ def hyperplane (Q s : PTm n) : PTm n := sequence lambdaBody (RationalPhiFeatures
 
 theorem lambda_coefficient_congr {Q P s t i j : PTm n} (hQ : Γ ⊢[PRAAx] Q ≐ P) (hs : Γ ⊢[PRAAx] s ≐ t) (hi : Γ ⊢[PRAAx] i ≐ j) :
     Γ ⊢[PRAAx] lambdaCoefficient Q s i ≐ lambdaCoefficient P t j := by
-  simpa only [subst_lambdaCoefficient,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (lambdaCoefficient (var 0) (var 1) (var 2) : PTm 3) (σ := ![Q,s,i]) (σ' := ![P,t,j])
-      (fun k => by fin_cases k; exact hQ; exact hs; exact hi)
+  ipra_congr (lambdaCoefficient (var 0) (var 1) (var 2) : PTm 3) with [hQ, hs, hi]
 theorem lambda_body_at (Q s k : PTm n) : Γ ⊢[PRAAx] inst2 lambdaBody k (pairT Q s) ≐ lambdaCoefficient Q s k := by
   simpa only [lambdaBody,inst2,subst_lambdaCoefficient,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using
     lambda_coefficient_congr (fst_pair (Γ := Γ) Q s) (snd_pair Q s) (.eqRefl k)
@@ -230,11 +229,8 @@ theorem points_on_hyperplane (Q s m : PTm n) (hQ : Γ ⊢[PRAAx] length Q ≐ su
   have hh : Δ ⊢[PRAAx] length a ≐ succ b := by simpa [Δ,a,b,Fm.shift,Syn.shift] using hQ.shift.wk
   have args : Δ ⊢[PRAAx] RationalPhiFeatures.equation (hyperplane a b) b (abscissa (points a M) (var 0)) (ordinate (points a M) (var 0)) ≐
       RationalPhiFeatures.equation (hyperplane a b) b (root (var 0)) (evaluate a (root (var 0))) := by
-    simpa only [RationalPhiFeatures.subst_equation,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_three,
-      Matrix.head_cons,Matrix.tail_cons] using Prf.eqCongr (Γ := Δ) (RationalPhiFeatures.equation (var 0) (var 1) (var 2) (var 3) : PTm 4)
-        (σ := ![hyperplane a b,b,abscissa (points a M) (var 0),ordinate (points a M) (var 0)])
-        (σ' := ![hyperplane a b,b,root (var 0),evaluate a (root (var 0))])
-        (fun i => by fin_cases i; exact .eqRefl _; exact .eqRefl _; exact point_abscissa a M (var 0) hj; exact point_ordinate a M (var 0) hj)
+    ipra_congr (RationalPhiFeatures.equation (var 0) (var 1) (var 2) (var 3) : PTm 4) with
+      [.eqRefl (hyperplane a b), .eqRefl b, point_abscissa a M (var 0) hj, point_ordinate a M (var 0) hj]
   simpa [Δ,a,b,M,Fm.shift,Syn.shift] using args.eqTrans (hyperplane_equation a b (root (var 0)) hh)
 
 theorem point_dot_zero (Q s m j : PTm n) (hQ : Γ ⊢[PRAAx] length Q ≐ succ s) (hj : Γ ⊢[PRAAx] lt j m) : Γ ⊢[PRAAx]

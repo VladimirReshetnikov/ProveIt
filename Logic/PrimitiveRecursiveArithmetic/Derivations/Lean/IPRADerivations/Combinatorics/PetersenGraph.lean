@@ -1,4 +1,4 @@
-import IPRADerivations.Core.IntCertificates
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The Petersen graph: cubic, diameter two, girth five, and its minimal polynomial
@@ -71,22 +71,14 @@ theorem petersen_loop (u : Fin 10) :
 /-- Every vertex has degree three. -/
 theorem petersen_cubic (u : Fin 10) :
     Γ ⊢[PRAAx] ZT.eq (ZT.sumFin fun v => (ZT.natLit (padj u v) : ZT n)) (ZT.natLit 3) := by
-  apply ZT.derive
-  simp only [ZT.toZ_sumFin, ZT.toZ_natLit, Nat.cast_ofNat, Nat.cast_one]
-  have h := congrArg (Nat.cast : ℕ → Groth (Q Γ)) (padj_cubic u)
-  push_cast at h
-  exact h
+  ipra_cast padj_cubic u
 
 /-- Two distinct vertices: common neighbours plus adjacency is one. -/
 theorem petersen_srg (u v : Fin 10) (huv : u ≠ v) :
     Γ ⊢[PRAAx] ZT.eq
       ((ZT.sumFin fun w => (ZT.natLit (padj u w) : ZT n) * ZT.natLit (padj w v)) + ZT.natLit (padj u v))
       (ZT.natLit 1) := by
-  apply ZT.derive
-  simp only [ZT.toZ_sumFin, ZT.toZ_add, ZT.toZ_mul, ZT.toZ_natLit, Nat.cast_ofNat, Nat.cast_one]
-  have h := congrArg (Nat.cast : ℕ → Groth (Q Γ)) (padj_srg u v huv)
-  push_cast at h
-  exact h
+  ipra_cast padj_srg u v huv
 
 /-- `A³ + 6 I = 2 A² + 5 A`: the adjacency matrix is annihilated by `(t − 3)(t − 1)(t + 2)`. -/
 theorem petersen_minimal (u v : Fin 10) :
@@ -96,11 +88,6 @@ theorem petersen_minimal (u v : Fin 10) :
         ZT.natLit 6 * ZT.natLit (if u = v then 1 else 0))
       (ZT.natLit 2 * (ZT.sumFin fun w => ZT.natLit (padj u w) * ZT.natLit (padj w v)) +
         ZT.natLit 5 * ZT.natLit (padj u v)) := by
-  apply ZT.derive
-  simp only [ZT.toZ_sumFin, ZT.toZ_add, ZT.toZ_mul, ZT.toZ_natLit, Nat.cast_ofNat, Nat.cast_one]
-  have h := congrArg (Nat.cast : ℕ → Groth (Q Γ)) (padj_minimal u v)
-  push_cast at h
-  push_cast
-  exact h
+  ipra_cast padj_minimal u v
 
 end LeanProofs.IPRA.Combinatorics.PetersenGraph

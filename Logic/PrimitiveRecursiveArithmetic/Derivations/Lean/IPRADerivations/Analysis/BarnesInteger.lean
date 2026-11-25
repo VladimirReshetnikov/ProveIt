@@ -3,6 +3,8 @@ import IPRADerivations.AnalyticNumberTheory.LocalFactor
 import IPRADerivations.Combinatorics.Binomial
 import IPRADerivations.AnalyticNumberTheory.Euler
 import IPRADerivations.Core.ProdLemmas
+import IPRADerivations.Core.CongruenceTactic
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The Barnes G-function at positive integers
@@ -101,21 +103,16 @@ theorem barnes_four : Γ ⊢[PRAAx] barnes (succ (succ two) : PTm n) ≐ two * (
 /-! ## The hyperfactorial identity -/
 
 theorem hc_base : Γ ⊢[PRAAx] barnes (zero : PTm n) * hyp zero ≐ pw (fact zero) zero := by
-  have zg := natEq (barnes_zero (Γ := Γ)); have zh := natEq (hyp_zero (Γ := Γ))
-  have zp := natEq (pw_zero (Γ := Γ) (fact (zero : PTm n)))
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞(hyp zero) * zg + zh - zp
+  ipra_lc 𝔞(hyp zero) * natEq (barnes_zero (Γ := Γ)) + natEq (hyp_zero (Γ := Γ)) -
+    natEq (pw_zero (Γ := Γ) (fact (zero : PTm n)))
 
 theorem hc_step {m : PTm n} (ih : Γ ⊢[PRAAx] barnes m * hyp m ≐ pw (fact m) m) :
     Γ ⊢[PRAAx] barnes (succ m) * hyp (succ m) ≐ pw (fact (succ m)) (succ m) := by
   have eR : Γ ⊢[PRAAx] pw (fact (succ m)) (succ m) ≐ (pw (fact m) m * fact m) * pw (succ m) (succ m) :=
     (congrAp2 powF (.eqRefl _) (fact_succ m zero)).eqTrans
       ((pw_mul_base _ _ _).eqTrans (congrMul (pw_succ _ _) (.eqRefl _)))
-  have sg := natEq (barnes_succ (Γ := Γ) m); have sh := natEq (hyp_succ (Γ := Γ) m)
-  have i := natEq ih; have r := natEq eR
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞(hyp (succ m)) * sg + 𝔞(barnes m) * 𝔞(fact m) * sh +
-    𝔞(fact m) * 𝔞(pw (succ m) (succ m)) * i - r
+  ipra_lc 𝔞(hyp (succ m)) * natEq (barnes_succ (Γ := Γ) m) + 𝔞(barnes m) * 𝔞(fact m) * natEq (hyp_succ (Γ := Γ) m) +
+    𝔞(fact m) * 𝔞(pw (succ m) (succ m)) * natEq ih - natEq eR
 
 /-- Variables: `0 = m`. -/
 private abbrev hcF : Fm PTm 1 := barnes (var 0) * hyp (var 0) ≐ pw (fact (var 0)) (var 0)
@@ -145,9 +142,7 @@ private abbrev hposF : Fm PTm 1 := hyp (var 0) ≐ succ (pred (hyp (var 0)))
 theorem pos_congr {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) (hb : Γ ⊢[PRAAx] b ≐ succ (pred b)) :
     Γ ⊢[PRAAx] a ≐ succ (pred a) := by
   have e : Γ ⊢[PRAAx] pred a ≐ pred b := by
-    have c := Prf.eqCongr (Γ := Γ) (pred (var 0) : PTm 1) (σ := ![a]) (σ' := ![b])
-      (fun j => by fin_cases j; exact h)
-    simpa using c
+    ipra_congr (pred (var 0) : PTm 1) with [h]
   exact h.eqTrans (hb.eqTrans (congrSucc e.eqSymm))
 
 private theorem bpos₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] bposF := by
@@ -222,15 +217,12 @@ theorem pf_step {m : PTm n} (ih : Γ ⊢[PRAAx] ap2 (prodF epB) m m ≐ barnes (
   have ee : Syn.subst ![m, succ m] epB = pw (succ m) (monus (succ m) m) := inst2_ep m (succ m)
   rw [ee] at e₁
   have p₁ : Γ ⊢[PRAAx] pw (succ m) (monus (succ m) m) ≐ succ m := by
-    have e : Γ ⊢[PRAAx] succ m ≐ m + succ zero := by apply deriveNat; ipra_simps; ring
+    have e : Γ ⊢[PRAAx] succ m ≐ m + succ zero := by ipra_ring
     exact (congrAp2 powF ((congrMonus e (.eqRefl _)).eqTrans (add_monus' _ _)) (.eqRefl _)).eqTrans
       ((pw_succ _ _).eqTrans ((congrMul (pw_zero _) (.eqRefl _)).eqTrans (one_mul _)))
-  have a := natEq e₁; have sh := natEq (ep_shift (Γ := Γ) m); have p := natEq p₁
-  have bs := natEq (barnes_succ (Γ := Γ) (succ m)); have fs := natEq (fact_succ (Γ := Γ) m zero)
-  have i := natEq ih
-  apply deriveNat; ipra_simps
-  linear_combination a - bs + 𝔞(pw (succ m) (monus (succ m) m)) * sh +
-    𝔞(ap2 (prodF epB) m m) * 𝔞(fact m) * p + 𝔞(fact m) * (𝔞(m) + 1) * i - 𝔞(barnes (succ m)) * fs
+  ipra_lc natEq e₁ - natEq (barnes_succ (Γ := Γ) (succ m)) +
+    𝔞(pw (succ m) (monus (succ m) m)) * natEq (ep_shift (Γ := Γ) m) + 𝔞(ap2 (prodF epB) m m) * 𝔞(fact m) * natEq p₁ +
+    𝔞(fact m) * (𝔞(m) + 1) * natEq ih - 𝔞(barnes (succ m)) * natEq (fact_succ (Γ := Γ) m zero)
 
 /-- Variables: `0 = m`. -/
 private abbrev pfF : Fm PTm 1 := ap2 (prodF epB) (var 0) (var 0) ≐ barnes (succ (var 0))

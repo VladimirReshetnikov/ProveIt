@@ -38,7 +38,7 @@ theorem sq_base : Γ ⊢[PRAAx] le (succ (zero : PTm n) * succ zero) (pw two (tw
 theorem sq_step {t : PTm n} (ih : Γ ⊢[PRAAx] le (succ t * succ t) (pw two (two * t))) :
     Γ ⊢[PRAAx] le (succ (succ t) * succ (succ t)) (pw two (two * succ t)) := by
   have e₂ : Γ ⊢[PRAAx] two * succ t ≐ succ (succ (two * t)) := by
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   have c := natEq (congrAp2 powF e₂ (.eqRefl (two : PTm n)))
   have p₁ := natEq (pw_succ (Γ := Γ) two (succ (two * t)))
   have p₂ := natEq (pw_succ (Γ := Γ) two (two * t))

@@ -1,5 +1,6 @@
 import IPRADerivations.Geometry.PlatonicSurface.Intrinsic
 import IPRADerivations.Core.Tactic
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The tetrahedral lattice and Voronoi inequalities
@@ -39,16 +40,12 @@ theorem sixMod (X U V : PTm n)
       (Prf.hyp0 : (lt U V :: Γ) ⊢[PRAAx] le (succ U) V))
     have h' := natEq (e.wk : (lt U V :: Γ) ⊢[PRAAx] _)
     apply succ_ne_zero' _ (a := X + num 18 * monus V (succ U) + num 11)
-    apply deriveNat
-    ipra_simps
-    linear_combination h' - 18*h
+    ipra_lc h' - 18*h
   · have h := natEq (eq_add_of_le
       (Prf.hyp0 : (le V U :: Γ) ⊢[PRAAx] le V U))
     have h' := natEq (e.wk : (le V U :: Γ) ⊢[PRAAx] _)
     refine le_of_eq_add (d := num 18*monus U V) ?_
-    apply deriveNat
-    ipra_simps
-    linear_combination h' + 18*h
+    ipra_lc h' + 18*h
 
 theorem sixModZ (X : PTm n) (K : ZT n)
     (h : Γ ⊢[PRAAx] ZT.eq (z X) (z (num 6)+z (num 18)*K)) :
@@ -75,8 +72,6 @@ theorem holeLower (mp mn np nn : PTm n) :
     (num 1+num 3*mn) (num 1+num 3*nn) (num 3*mp) (num 3*np))
   unfold holeCost
   dsimp only [m,k,triQ] at *
-  apply ZT.derive
-  ipra_simps
-  linear_combination e
+  ipra_lc e
 
 end LeanProofs.IPRA.Geometry.PlatonicSurface.Tetrahedron

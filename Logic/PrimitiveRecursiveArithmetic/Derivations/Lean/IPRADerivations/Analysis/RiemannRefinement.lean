@@ -96,7 +96,7 @@ theorem shift_le' {a b : PTm n} (h : Γ ⊢[PRAAx] le a b) :
 /-- The offset index of a cell: `(A + (j + 1), A + j)` read through the pair `⟨A, x⟩`. -/
 theorem off_succ (A x j : PTm n) : Γ ⊢[PRAAx] succ (A + j) ≐ fstT (pairT A x) + succ j :=
   ((congrAdd (fst_pair A x) (.eqRefl (succ j))).eqTrans
-    (by apply deriveNat; ipra_simps; ring : Γ ⊢[PRAAx] A + succ j ≐ succ (A + j))).eqSymm
+    (by ipra_ring : Γ ⊢[PRAAx] A + succ j ≐ succ (A + j))).eqSymm
 
 theorem off_same (A x j : PTm n) : Γ ⊢[PRAAx] A + j ≐ fstT (pairT A x) + j :=
   (congrAdd (fst_pair A x) (.eqRefl j)).eqSymm
@@ -166,7 +166,7 @@ theorem off_zero (f : PTm 2) (A x : PTm n) : Γ ⊢[PRAAx] inst2 (offB f) zero (
 theorem fine_succ (f : PTm 2) (k r x : PTm n) :
     Γ ⊢[PRAAx] ap2 (sumF f) (succ k * r) x ≐
       ap2 (sumF f) (k * r) x + ap2 (sumF (offB f)) r (pairT (k * r) x) :=
-  (congrAp2 (sumF f) (by apply deriveNat; ipra_simps; ring : Γ ⊢[PRAAx] succ k * r ≐ k * r + r)
+  (congrAp2 (sumF f) (by ipra_ring : Γ ⊢[PRAAx] succ k * r ≐ k * r + r)
     (.eqRefl x)).eqTrans (sum_split f (k * r) r x)
 
 theorem fine_zero (f : PTm 2) (r x : PTm n) : Γ ⊢[PRAAx] ap2 (sumF f) (zero * r) x ≐ zero :=

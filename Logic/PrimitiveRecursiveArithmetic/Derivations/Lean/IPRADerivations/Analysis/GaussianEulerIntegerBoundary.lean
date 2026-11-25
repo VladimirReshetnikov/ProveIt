@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianEulerUnitNormalizationIntegrand
 import IPRADerivations.Analysis.GaussianEulerIntegrationByPartsParameterShiftObservation
 import IPRADerivations.Analysis.GaussianGammaFactorialValues
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Original Euler boundary values at the actual positive integer trajectory
@@ -82,11 +83,7 @@ theorem integerData_succ (i a b : PTm n) : Γ ⊢[PRAAx]
 
 private theorem sample_argument_congr (p z w a b : PTm n) (h : Γ ⊢[PRAAx] z ≐ w) : Γ ⊢[PRAAx]
     sample p z one a b ≐ sample p w one a b := by
-  simpa only [GaussianEulerIntegrandName.subst_sample,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-    Matrix.cons_val_two,Matrix.cons_val_three,Matrix.cons_val_four,Matrix.head_cons,Matrix.tail_cons,
-    ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero] using
-    Prf.eqCongr (Γ := Γ) (sample (var 0) (var 1) one (var 2) (var 3) : PTm 4)
-      (σ := ![p,z,a,b]) (σ' := ![p,w,a,b]) (fun i => by fin_cases i; exact .eqRefl _; exact h; exact .eqRefl _; exact .eqRefl _)
+  ipra_congr (sample (var 0) (var 1) one (var 2) (var 3) : PTm 4) with [.eqRefl p, h, .eqRefl a, .eqRefl b]
 
 theorem raw_zero (p a b : PTm n) : Γ ⊢[PRAAx] rawProduct p zero a b ≐ ap2 decayF p (decayData a b) := by
   have canonical : Γ ⊢[PRAAx] GaussianRationalHorner.canonical (ap2 decayF p (decayData a b)) :=

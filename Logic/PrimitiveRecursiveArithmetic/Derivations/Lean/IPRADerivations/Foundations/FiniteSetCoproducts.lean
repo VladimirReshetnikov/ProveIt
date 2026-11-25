@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.FiniteSetCategory
 import IPRADerivations.Foundations.FiniteGluing
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Binary coproducts in the table category of finite sets (`ipra_categorical_methods`, Section 4)
@@ -63,9 +64,7 @@ theorem add_lt_add {x n m : PTm k} (h : Γ ⊢[PRAAx] lt x m) : Γ ⊢[PRAAx] lt
 
 /-- `(n + t) ∸ n = t`. -/
 theorem add_monus_left (n t : PTm k) : Γ ⊢[PRAAx] monus (n + t) n ≐ t := by
-  have e := natEq (eq_add_of_le (le_add_right (Γ := Γ) n t))
-  apply deriveNat; ipra_simps
-  linear_combination -e
+  ipra_lc -natEq (eq_add_of_le (le_add_right (Γ := Γ) n t))
 
 /-- `n + (x ∸ n) = x` for `n ≤ x`. -/
 theorem add_monus_of_le {n x : PTm k} (h : Γ ⊢[PRAAx] le n x) : Γ ⊢[PRAAx] n + monus x n ≐ x :=
@@ -135,20 +134,16 @@ theorem cp_entry_lt {x n c f g : PTm k} (hx : Γ ⊢[PRAAx] lt x n) :
     Γ ⊢[PRAAx] inst2 cpT x (pairT n (pairT c (pairT f g))) ≐ dg c x f := by
   have hne : Γ ⊢[PRAAx] neg (monus n x ≐ zero) :=
     .impI (le_lt_absurd _ (Prf.hyp0 (Γ := Γ) (φ := monus n x ≐ zero)) hx.wk)
-  have b := natEq (sg_of_ne hne)
-  have c₁ := natEq ((congrMonus (.eqRefl (one : PTm k)) (sg_of_ne hne)).eqTrans (le_refl one))
   refine (cpT_at x n c f g).eqTrans ?_
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 (dg c x f) * b + 𝔞 (dg c (monus x n) g) * c₁
+  ipra_lc 𝔞 (dg c x f) * natEq (sg_of_ne hne) +
+    𝔞 (dg c (monus x n) g) * natEq ((congrMonus (.eqRefl (one : PTm k)) (sg_of_ne hne)).eqTrans (le_refl one))
 
 /-- The concatenated entry on the right half. -/
 theorem cp_entry_ge {x n c f g : PTm k} (hx : Γ ⊢[PRAAx] le n x) :
     Γ ⊢[PRAAx] inst2 cpT x (pairT n (pairT c (pairT f g))) ≐ dg c (monus x n) g := by
-  have b := natEq (sg_of_zero hx)
-  have c₁ := natEq ((congrMonus (.eqRefl (one : PTm k)) (sg_of_zero hx)).eqTrans (monus_zero _))
   refine (cpT_at x n c f g).eqTrans ?_
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 (dg c x f) * b + 𝔞 (dg c (monus x n) g) * c₁
+  ipra_lc 𝔞 (dg c x f) * natEq (sg_of_zero hx) +
+    𝔞 (dg c (monus x n) g) * natEq ((congrMonus (.eqRefl (one : PTm k)) (sg_of_zero hx)).eqTrans (monus_zero _))
 
 theorem shift_add' (a b : PTm k) : Syn.shift (a + b) = Syn.shift a + Syn.shift b := by
   simp [Syn.shift]

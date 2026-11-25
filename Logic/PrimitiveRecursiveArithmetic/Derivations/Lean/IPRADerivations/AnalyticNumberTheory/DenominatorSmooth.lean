@@ -4,6 +4,7 @@ import IPRADerivations.AnalyticNumberTheory.SieveSurvivors
 import IPRADerivations.AnalyticNumberTheory.PhiDivides
 import IPRADerivations.Foundations.StrongInduction
 import IPRADerivations.DiophantineNumberTheory.QuarticStep
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The left endpoint of the denominator bound: `H_q(z) ≤ S_{A_q(z)}(z)`
@@ -142,8 +143,7 @@ theorem inst2_v (m q : PTm n) :
 
 theorem bits_alg {s b X : PTm n} (hs : Γ ⊢[PRAAx] s ≐ one) (hb : Γ ⊢[PRAAx] b ≐ one)
     (h : Γ ⊢[PRAAx] s * (b * X) ≐ zero) : Γ ⊢[PRAAx] X ≐ zero := by
-  have x := natEq hs; have y := natEq hb; have w := natEq h
-  apply deriveNat; ipra_simps; linear_combination w - 𝔞 b * 𝔞 X * x - 𝔞 X * y
+  ipra_lc natEq h - 𝔞 b * 𝔞 X * natEq hs - 𝔞 X * natEq hb
 
 theorem of_viol {m q : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (hc : Γ ⊢[PRAAx] gcd m q ≐ one)
     (h : Γ ⊢[PRAAx] sg m * (eqb (gcd m q) one * sg (rem (pw (Aq m q) m) m)) ≐ zero) :
@@ -157,8 +157,7 @@ theorem viol_of {m q : PTm n} (h : Γ ⊢[PRAAx] dvd m (pw (Aq m q) m)) :
 
 theorem two_alg {K P Q : PTm n} (h1 : Γ ⊢[PRAAx] K ≐ succ P) (h2 : Γ ⊢[PRAAx] P ≐ succ Q) :
     Γ ⊢[PRAAx] K ≐ two + Q := by
-  have x := natEq h1; have y := natEq h2
-  apply deriveNat; ipra_simps; linear_combination x + y
+  ipra_lc natEq h1 + natEq h2
 
 theorem sm_step {K q : PTm n} (ih : Γ ⊢[PRAAx] ap2 (sumF vB) K q ≐ zero) :
     Γ ⊢[PRAAx] sg K * (eqb (gcd K q) one * sg (rem (pw (Aq K q) K) K)) ≐ zero := by

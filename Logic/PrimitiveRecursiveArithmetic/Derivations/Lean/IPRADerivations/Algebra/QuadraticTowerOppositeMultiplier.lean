@@ -1,5 +1,6 @@
 import IPRADerivations.Algebra.QuadraticTowerComparisonSymmetry
 import IPRADerivations.Algebra.QuadraticTowerConeTest
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual opposite-sign tower multipliers
@@ -278,8 +279,8 @@ theorem signedNorm_minus (h B D A : PTm n) (hs : Γ ⊢[PRAAx] QuadraticTowerCon
 
 theorem flag_operand_congr (h B D : PTm n) {A C : PTm n} (e : Γ ⊢[PRAAx] A ≐ C) : Γ ⊢[PRAAx]
     QuadraticTowerConeTest.flag h B D A ≐ QuadraticTowerConeTest.flag h B D C := by
-  simpa using Prf.eqCongr (QuadraticTowerConeTest.flag (var 0) (var 1) (var 2) (var 3) : PTm 4)
-    (σ := ![h,B,D,A]) (σ' := ![h,B,D,C]) (fun i => by fin_cases i; exact .eqRefl _; exact .eqRefl _; exact .eqRefl _; exact e)
+  ipra_congr (QuadraticTowerConeTest.flag (var 0) (var 1) (var 2) (var 3) : PTm 4) with
+    [.eqRefl h, .eqRefl B, .eqRefl D, e]
 
 def certificate (h B D A : PTm n) : Fm PTm n :=
   (QuadraticTowerConeTest.flag h B D (multiplier h B D A) ≐ one) ⋏

@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.PrimeRank
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Arbitrarily long runs of composite numbers
@@ -46,9 +47,8 @@ theorem prime_no_divisor {p d : PTm n} (hp : Γ ⊢[PRAAx] prime p) (h2 : Γ ⊢
   exact Prf.impE (Prf.impE a h2) hlt
 
 theorem lt_add_pos {f j : PTm n} (fp : Γ ⊢[PRAAx] f ≐ succ (pred f)) : Γ ⊢[PRAAx] lt j (f + j) := by
-  have a := natEq fp
   refine le_of_eq_add (d := pred f) ?_
-  apply deriveNat; ipra_simps; linear_combination a
+  ipra_lc natEq fp
 
 /-- `N! + j` is not prime for `2 ≤ j ≤ N`. -/
 theorem composite_run {N j : PTm n} (h2 : Γ ⊢[PRAAx] le two j) (hj : Γ ⊢[PRAAx] le j N) :
@@ -63,7 +63,7 @@ theorem composite_run {N j : PTm n} (h2 : Γ ⊢[PRAAx] le two j) (hj : Γ ⊢[P
   exact .botE _ (.impE (prime_no_divisor hp h2.wk hlt.wk) dN.wk)
 
 theorem two_le_ss (t : PTm n) : Γ ⊢[PRAAx] le two (succ (succ t)) :=
-  le_of_eq_add (d := t) (by apply deriveNat; ipra_simps; ring)
+  le_of_eq_add (d := t) (by ipra_ring)
 
 /-- `π(N! + t + 2) = π(N! + t + 1)` for `t + 2 ≤ N`. -/
 theorem gap_step {N t : PTm n} (h : Γ ⊢[PRAAx] le (succ (succ t)) N) :

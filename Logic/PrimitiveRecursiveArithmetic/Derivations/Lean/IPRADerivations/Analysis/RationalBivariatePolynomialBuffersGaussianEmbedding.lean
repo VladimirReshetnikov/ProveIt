@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.RationalPolynomialYShiftGaussianEmbedding
 import IPRADerivations.Analysis.GaussianBivariatePolynomialBuffers
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual original rational rectangular padding and addition
@@ -90,9 +91,10 @@ theorem pad_row_length (G m a dx dy r : PTm n) (hG : Γ ⊢[PRAAx] rowShape G m 
 theorem add_body_at (A B a r : PTm n) : Γ ⊢[PRAAx] inst2 addBody r (addData A B a) ≐ addRow A B a r := by
   simp only [addBody,inst2,subst_addRow,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
   have tail := snd_pair (Γ := Γ) A (pairT B a)
-  simpa using Prf.eqCongr (Γ := Γ) (addRow (var 0) (var 1) (var 2) (var 3) : PTm 4)
-    (σ := ![fstT (addData A B a),fstT (sndT (addData A B a)),sndT (sndT (addData A B a)),r]) (σ' := ![A,B,a,r])
-    (fun i => by fin_cases i; exact fst_pair _ _; exact (congrFst tail).eqTrans (fst_pair _ _); exact (congrSnd tail).eqTrans (snd_pair _ _); exact .eqRefl _)
+  ipra_congr (addRow (var 0) (var 1) (var 2) (var 3) : PTm 4) with
+    [(show _ ⊢[PRAAx] fstT (addData A B a) ≐ A from fst_pair _ _),
+      (show _ ⊢[PRAAx] fstT (sndT (addData A B a)) ≐ B from (congrFst tail).eqTrans (fst_pair _ _)),
+      (show _ ⊢[PRAAx] sndT (sndT (addData A B a)) ≐ a from (congrSnd tail).eqTrans (snd_pair _ _)), .eqRefl r]
 theorem add_length (A B m a : PTm n) : Γ ⊢[PRAAx] length (add A B m a) ≐ m := sequence_length _ _ _
 theorem add_lookup (A B m a r : PTm n) (hr : Γ ⊢[PRAAx] lt r m) : Γ ⊢[PRAAx]
     entry (add A B m a) r ≐ added (entry A r) (entry B r) (succ a) := (sequence_decode addBody hr).eqTrans (add_body_at _ _ _ _)
@@ -253,9 +255,7 @@ theorem pad_tail_coefficient (G m a dx dy r s : PTm n) (hG : Γ ⊢[PRAAx] rowSh
     le_congr (by ipra_ring : Γ ⊢[PRAAx] succ r+dy ≐ succ (dy+r)) (add_comm m dy) (add_le_add_right dy hr)
   have index : Γ ⊢[PRAAx] monus (dy+r) dy ≐ r := (congrMonus (add_comm dy r) (.eqRefl dy)).eqTrans (add_monus r dy)
   have padded : Γ ⊢[PRAAx] leftPad (normalizedRow (entry G (monus (dy+r) dy))) dx ≐ leftPad (normalizedRow (entry G r)) dx := by
-    simpa using Prf.eqCongr (Γ := Γ) (leftPad (normalizedRow (entry (var 0) (var 1))) (var 2) : PTm 3)
-      (σ := ![G,monus (dy+r) dy,dx]) (σ' := ![G,r,dx])
-      (fun i => by fin_cases i; exact .eqRefl _; exact index; exact .eqRefl _)
+    ipra_congr (leftPad (normalizedRow (entry (var 0) (var 1))) (var 2) : PTm 3) with [.eqRefl G, index, .eqRefl dx]
   have old := (pad_lookup G m a dx dy (dy+r) range).eqTrans
     ((pad_row_after G a dx dy (dy+r) (le_add_right _ _)).eqTrans padded)
   exact (entry_congr old (.eqRefl _)).eqTrans (scalar_pad_tail _ _ _

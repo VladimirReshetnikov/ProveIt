@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.AbsDiff
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The open cube is homeomorphic to Euclidean space
@@ -44,10 +45,8 @@ theorem monus_add_cancel (x y c : PTm n) : Γ ⊢[PRAAx] monus (x + c) (y + c) �
   · let C : List (Fm PTm n) := le y x :: Γ
     have e := natEq (eq_add_of_le (Prf.hyp0 : C ⊢[PRAAx] le y x))
     have h1 : C ⊢[PRAAx] le (y + c) (x + c) := le_of_eq_add (d := monus x y) (by
-      apply deriveNat; ipra_simps; linear_combination e)
-    have e1 := natEq (eq_add_of_le h1)
-    apply deriveNat; ipra_simps
-    linear_combination e - e1
+      ipra_lc e)
+    ipra_lc e - natEq (eq_add_of_le h1)
   · let C : List (Fm PTm n) := le x y :: Γ
     have h0 : C ⊢[PRAAx] monus x y ≐ zero := Prf.hyp0
     have h1 : C ⊢[PRAAx] le (x + c) (y + c) := by
@@ -59,24 +58,22 @@ theorem monus_add_cancel (x y c : PTm n) : Γ ⊢[PRAAx] monus (x + c) (y + c) �
 
 /-- `|t(1+u) − u(1+t)| = |t − u|`. -/
 theorem fwd_same (t u : PTm n) : Γ ⊢[PRAAx] absd (t * succ u) (u * succ t) ≐ absd t u := by
-  have e1 : Γ ⊢[PRAAx] t * succ u ≐ t + t * u := by apply deriveNat; ipra_simps; ring
-  have e2 : Γ ⊢[PRAAx] u * succ t ≐ u + t * u := by apply deriveNat; ipra_simps; ring
+  have e1 : Γ ⊢[PRAAx] t * succ u ≐ t + t * u := by ipra_ring
+  have e2 : Γ ⊢[PRAAx] u * succ t ≐ u + t * u := by ipra_ring
   exact congrAdd ((congrMonus e1 e2).eqTrans (monus_add_cancel _ _ _))
     ((congrMonus e2 e1).eqTrans (monus_add_cancel _ _ _))
 
 /-- `|h(t) − h(u)| ≤ |t − u|` for `t, u ≥ 0`, cleared: `|t(1+u) − u(1+t)| ≤ |t − u| (1+t)(1+u)`. -/
 theorem fwd_same_le (t u : PTm n) :
     Γ ⊢[PRAAx] le (absd (t * succ u) (u * succ t)) (absd t u * (succ t * succ u)) := by
-  have e := natEq (fwd_same (Γ := Γ) t u)
   refine le_of_eq_add (d := absd t u * (t + u + t * u)) ?_
-  apply deriveNat; ipra_simps
-  linear_combination -e
+  ipra_lc -natEq (fwd_same (Γ := Γ) t u)
 
 /-- `|h(t)| + |h(u)| ≤ |t| + |u|`, cleared: `t(1+u) + u(1+t) ≤ (t + u)(1+t)(1+u)`. -/
 theorem fwd_opp (t u : PTm n) :
     Γ ⊢[PRAAx] le (t * succ u + u * succ t) ((t + u) * (succ t * succ u)) := by
   refine le_of_eq_add (d := t * t + u * u + t * t * u + t * u * u) ?_
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- `h(t) < 1`: `t < 1 + t`. -/
 theorem fwd_bound (t : PTm n) : Γ ⊢[PRAAx] lt t (succ t) := le_refl _
@@ -86,12 +83,10 @@ theorem fwd_bound (t : PTm n) : Γ ⊢[PRAAx] lt t (succ t) := le_refl _
 /-- `|σ(M−τ) − τ(M−σ)| = M |σ − τ|` for `σ, τ ≤ M`. -/
 theorem inv_same {σ τ M : PTm n} (hs : Γ ⊢[PRAAx] le σ M) (ht : Γ ⊢[PRAAx] le τ M) :
     Γ ⊢[PRAAx] absd (σ * monus M τ) (τ * monus M σ) ≐ M * absd σ τ := by
-  have es := natEq (eq_add_of_le hs)
-  have et := natEq (eq_add_of_le ht)
   have a1 : Γ ⊢[PRAAx] σ * monus M τ + σ * τ ≐ M * σ := by
-    apply deriveNat; ipra_simps; linear_combination (-(𝔞 σ)) * et
+    ipra_lc (-(𝔞 σ)) * natEq (eq_add_of_le ht)
   have a2 : Γ ⊢[PRAAx] τ * monus M σ + σ * τ ≐ M * τ := by
-    apply deriveNat; ipra_simps; linear_combination (-(𝔞 τ)) * es
+    ipra_lc (-(𝔞 τ)) * natEq (eq_add_of_le hs)
   have m1 : Γ ⊢[PRAAx] monus (σ * monus M τ) (τ * monus M σ) ≐ monus (M * σ) (M * τ) :=
     (monus_add_cancel _ _ (σ * τ)).eqSymm.eqTrans (congrMonus a1 a2)
   have m2 : Γ ⊢[PRAAx] monus (τ * monus M σ) (σ * monus M τ) ≐ monus (M * τ) (M * σ) :=
@@ -122,16 +117,12 @@ theorem inv_same {σ τ M : PTm n} (hs : Γ ⊢[PRAAx] le σ M) (ht : Γ ⊢[PRA
 /-- `D² ≤ (M − σ)(M − τ)` for `σ, τ ≤ M − D`. -/
 theorem inv_den {σ τ M D : PTm n} (hs : Γ ⊢[PRAAx] le (σ + D) M) (ht : Γ ⊢[PRAAx] le (τ + D) M) :
     Γ ⊢[PRAAx] le (D * D) (monus M σ * monus M τ) := by
-  have es := natEq (eq_add_of_le hs)
-  have et := natEq (eq_add_of_le ht)
   have ls : Γ ⊢[PRAAx] le σ M := le_trans (le_of_eq_add (d := D) (.eqRefl _)) hs
   have lt' : Γ ⊢[PRAAx] le τ M := le_trans (le_of_eq_add (d := D) (.eqRefl _)) ht
-  have fs := natEq (eq_add_of_le ls)
-  have ft := natEq (eq_add_of_le lt')
   have a : Γ ⊢[PRAAx] le D (monus M σ) := le_of_eq_add (d := monus M (σ + D)) (by
-    apply deriveNat; ipra_simps; linear_combination es - fs)
+    ipra_lc natEq (eq_add_of_le hs) - natEq (eq_add_of_le ls))
   have b : Γ ⊢[PRAAx] le D (monus M τ) := le_of_eq_add (d := monus M (τ + D)) (by
-    apply deriveNat; ipra_simps; linear_combination et - ft)
+    ipra_lc natEq (eq_add_of_le ht) - natEq (eq_add_of_le lt'))
   exact le_mul_mono a b
 
 /-- `|h⁻¹(s) − h⁻¹(v)| ≤ |s − v|/δ²` for `s = σ/M`, `v = τ/M` of the same sign, `σ, τ ≤ M − D`:
@@ -149,13 +140,11 @@ theorem inv_opp {σ τ M D : PTm n} (hs : Γ ⊢[PRAAx] le (σ + D) M) (ht : Γ 
     Γ ⊢[PRAAx] le (D * D * (σ * monus M τ + τ * monus M σ)) (M * (σ + τ) * (monus M σ * monus M τ)) := by
   have ls : Γ ⊢[PRAAx] le σ M := le_trans (le_of_eq_add (d := D) (.eqRefl _)) hs
   have lt' : Γ ⊢[PRAAx] le τ M := le_trans (le_of_eq_add (d := D) (.eqRefl _)) ht
-  have es := natEq (eq_add_of_le ls)
-  have et := natEq (eq_add_of_le lt')
   have num : Γ ⊢[PRAAx] le (σ * monus M τ + τ * monus M σ) (M * (σ + τ)) :=
     le_of_eq_add (d := two * (σ * τ)) (by
-      apply deriveNat; ipra_simps; linear_combination 𝔞 σ * et + 𝔞 τ * es)
+      ipra_lc 𝔞 σ * natEq (eq_add_of_le lt') + 𝔞 τ * natEq (eq_add_of_le ls))
   have m := le_mul_mono (inv_den hs ht) num
-  exact le_congr (.eqRefl _) (by apply deriveNat; ipra_simps; ring) m
+  exact le_congr (.eqRefl _) (by ipra_ring) m
 
 /-! ## The maps are inverse -/
 

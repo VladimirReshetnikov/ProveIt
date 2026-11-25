@@ -66,7 +66,7 @@ theorem mixed_four {x' y' Z a b c : PTm n} (ha : Γ ⊢[PRAAx] dvd (two * two) a
   have h4 : Γ ⊢[PRAAx] (two * two : PTm n) ≐ succ (pred (two * two)) := pos_mul two_pos two_pos
   have ea := eq_of_dvd' h4 ha; have eb := eq_of_dvd' h4 hb; have ec := eq_of_dvd' h4 hc
   have ec' : Γ ⊢[PRAAx] c ≐ two * (two * quo c (two * two)) :=
-    ec.eqTrans (by apply deriveNat; ipra_simps; ring)
+    ec.eqTrans (by ipra_ring)
   refine .impI (.impE (mixed_quartic x' y' Z (quo a (two * two)) (quo b (two * two))
     (two * quo c (two * two))) ?_)
   exact (congrAdd (congrPw (.eqRefl _) ea.wk) (congrPw (.eqRefl _) eb.wk)).eqSymm.eqTrans

@@ -1,5 +1,6 @@
 import IPRADerivations.Topology.KuhnSimplices
 import IPRADerivations.Core.Gcd
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Digit codes for packed lists
@@ -86,7 +87,7 @@ theorem digit {P cP a y : PTm n} (hP : Γ ⊢[PRAAx] P ≐ succ cP) (ha : Γ ⊢
 
 theorem enc_step (k : ℕ) (P x w : PTm n) :
     Γ ⊢[PRAAx] enc (k + 1) P x + pwr (k + 1) P * w ≐ fstT x + P * (enc k P (sndT x) + pwr k P * w) := by
-  apply deriveNat; simp only [enc, pwr]; ipra_simps; ring
+  ipra_lc [enc, pwr]
 
 theorem congrDec (k : ℕ) (P : PTm n) {c c' : PTm n} (b : PTm n) (h : Γ ⊢[PRAAx] c ≐ c') :
     Γ ⊢[PRAAx] dec k P c b ≐ dec k P c' b := by
@@ -117,7 +118,7 @@ theorem quoK_enc {P cP : PTm n} (hP : Γ ⊢[PRAAx] P ≐ succ cP) :
       (Γ ⊢[PRAAx] quoK k P (enc k P x + pwr k P * w) ≐ w)
   | 0, x, w, _ => by
     show Γ ⊢[PRAAx] zero + one * w ≐ w
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   | k + 1, x, w, hx => by
     have d := digit (y := enc k P (sndT x) + pwr k P * w) hP (hx 0 (by omega))
     refine (congrQuoK (k + 1) P (enc_step k P x w)).eqTrans ?_
@@ -130,20 +131,15 @@ theorem enc_lt {P : PTm n} :
       (Γ ⊢[PRAAx] lt (enc k P x) (pwr k P))
   | 0, _, _ => (succ_monus_succ _ _).eqTrans (zero_monus _)
   | k + 1, x, hx => by
-    have eP := natEq (eq_add_of_le (hx 0 (by omega)))
-    have eK := natEq (eq_add_of_le (enc_lt k (sndT x) (fun q hq => hx (q + 1) (by omega))))
     refine le_of_eq_add (d := monus P (succ (proj 0 x)) + P * monus (pwr k P) (succ (enc k P (sndT x)))) ?_
-    apply deriveNat; simp only [enc, pwr, proj] at eP eK ⊢; ipra_simps
-    linear_combination eP + 𝔞 P * eK
+    ipra_lc [enc, pwr, proj] natEq (eq_add_of_le (hx 0 (by omega))) +
+      𝔞 P * natEq (eq_add_of_le (enc_lt k (sndT x) (fun q hq => hx (q + 1) (by omega))))
 
 /-- A pair of codes below `K` gives a code below `K K`. -/
 theorem pair_lt {eu ev K : PTm n} (hu : Γ ⊢[PRAAx] lt eu K) (hv : Γ ⊢[PRAAx] lt ev K) :
     Γ ⊢[PRAAx] lt (eu + K * ev) (K * K) := by
-  have eα := natEq (eq_add_of_le hu)
-  have eβ := natEq (eq_add_of_le hv)
   refine le_of_eq_add (d := monus K (succ eu) + K * monus K (succ ev)) ?_
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 K * eβ + eα
+  ipra_lc 𝔞 K * natEq (eq_add_of_le hv) + natEq (eq_add_of_le hu)
 
 /-- The digits are below `P`. -/
 theorem dec_lt {P cP : PTm n} (hP : Γ ⊢[PRAAx] P ≐ succ cP) :

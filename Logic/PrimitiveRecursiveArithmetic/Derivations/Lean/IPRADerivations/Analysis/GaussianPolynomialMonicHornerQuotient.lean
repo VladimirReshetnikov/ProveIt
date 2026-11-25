@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianPolynomialMonicHornerReduction
 import IPRADerivations.Analysis.GaussianPolynomialYShift
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The quotient in polynomial-valued monic Horner division
@@ -50,10 +51,8 @@ def quotient (F H m a c j : PTm n) : PTm n := ap2 quotientF j (data F H m a c)
 private theorem advance_parameters (p : PTm n) (F H m a c j Q : PTm n)
     (h : ∀ i : Fin 5, Γ ⊢[PRAAx] fields p i ≐ ![F,H,m,a,c] i) :
     Γ ⊢[PRAAx] advance (fields p 0) (fields p 1) (fields p 2) (fields p 3) (fields p 4) j Q ≐ advance F H m a c j Q := by
-  simpa [Matrix.cons_val_succ',Matrix.cons_val_zero'] using
-    Prf.eqCongr (Γ := Γ) (advance (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) : PTm 7)
-      (σ := ![fields p 0,fields p 1,fields p 2,fields p 3,fields p 4,j,Q]) (σ' := ![F,H,m,a,c,j,Q])
-      (fun i => by fin_cases i; exact h 0; exact h 1; exact h 2; exact h 3; exact h 4; exact .eqRefl _; exact .eqRefl _)
+  ipra_congr (advance (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) : PTm 7) with
+    [h 0, h 1, h 2, h 3, h 4, .eqRefl j, .eqRefl Q]
 
 theorem quotient_zero (F H m a c : PTm n) : Γ ⊢[PRAAx] quotient F H m a c zero ≐ zeroRows one a := by
   have base := rec2_zero (Γ := Γ) initial stepBody (data F H m a c)
@@ -62,8 +61,7 @@ theorem quotient_zero (F H m a c : PTm n) : Γ ⊢[PRAAx] quotient F H m a c zer
     one,ConciseIPRA.PTm.subst_zero,ConciseIPRA.PTm.subst_succ] at base
   have widthField : Γ ⊢[PRAAx] fields (data F H m a c) 3 ≐ a := by simpa using data_fields F H m a c 3
   have e : Γ ⊢[PRAAx] zeroRows one (fields (data F H m a c) 3) ≐ zeroRows one a := by
-    simpa using Prf.eqCongr (Γ := Γ) (zeroRows one (var 0) : PTm 1)
-      (σ := ![fields (data F H m a c) 3]) (σ' := ![a]) (fun i => by fin_cases i; exact widthField)
+    ipra_congr (zeroRows one (var 0) : PTm 1) with [widthField]
   exact base.eqTrans e
 
 theorem quotient_succ (F H m a c j : PTm n) : Γ ⊢[PRAAx]

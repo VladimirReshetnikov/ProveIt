@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.RationalCubeStrongConvexity
 import IPRADerivations.Analysis.RationalCubeMinimizerUniqueness
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The source's literal strongly convex minimizer a_(2k+c)
@@ -141,7 +142,6 @@ theorem evaluation_value (A : PR 3) (mu : PR 2) (d c p q x : PTm n) (hc : Γ ⊢
     ring
   exact RationalValueBounds.radius_of_upper _ _ _ _ upper lower
 
-
 def pointBody (A : PR 3) (mu : PR 2) : PTm 2 := point A mu (fstT (var 1)) (fstT (sndT (var 1))) (var 0) (sndT (sndT (var 1)))
 def pointF (A : PR 3) (mu : PR 2) : PR 2 := PTm.toPR (pointBody A mu)
 def evaluationBody (A : PR 3) (mu : PR 2) : PTm 2 := evaluation A mu (fstT (var 1)) (fstT (sndT (var 1))) (var 0) (sndT (sndT (var 1)))
@@ -230,7 +230,6 @@ theorem source_same_value (A : PR 3) (mu : PR 2) (d c x : PTm n) (hc : Γ ⊢[PR
     exact le_of_eq_add (d := scale (var 0)*scale (var 0)) (by ipra_ring)
   simpa only [D,C,X,Syn.shift,subst_data] using result
 
-
 /-- Only actual finite tails are compared before removing their explicit slack. -/
 theorem approximate_cross_radius (A : PR 3) (mu b : PR 2) (d c x z q t k : PTm n)
     (hc : Γ ⊢[PRAAx] coherence A d x) (ht : Γ ⊢[PRAAx] continuity A mu d x)
@@ -257,10 +256,7 @@ theorem approximate_cross_radius (A : PR 3) (mu b : PR 2) (d c x z q t k : PTm n
       (RationalAlgebra.positive_product (RationalCubeGrid.scale_positive q) (RationalCubeGrid.scale_positive k))
       (RationalAlgebra.positive_product (RationalCubeGrid.scale_positive s) (RationalCubeGrid.scale_positive t))) combined
   refine le_of_eq_add (d := (scale q*scale t)*(scale q*scale t)*scale k*monus (scale s) (scale k)) ?_
-  have ep := natEq (eq_add_of_le power)
-  apply deriveNat
-  ipra_simps
-  linear_combination 𝔞(scale q)^2*𝔞(scale t)^2*𝔞(scale k)*ep
+  ipra_lc 𝔞(scale q)^2*𝔞(scale t)^2*𝔞(scale k)*natEq (eq_add_of_le power)
 
 theorem unique_radius (A : PR 3) (mu b : PR 2) (d c x z q t : PTm n)
     (hc : Γ ⊢[PRAAx] coherence A d x) (ht : Γ ⊢[PRAAx] continuity A mu d x)

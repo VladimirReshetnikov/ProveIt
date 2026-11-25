@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.AperyMultinomial
 import IPRADerivations.AnalyticNumberTheory.BinomialLcm
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The valuation of the Apéry multinomial
@@ -45,22 +46,16 @@ theorem binom_fact {n j : PTm k} (h : Γ ⊢[PRAAx] le j n) : Γ ⊢[PRAAx] fact
 theorem binom_pos {n j : PTm k} (h : Γ ⊢[PRAAx] le j n) : Γ ⊢[PRAAx] binom n j ≐ succ (pred (binom n j)) := by
   refine .orE (zero_or_succ (binom n j)) ?_ Prf.hyp0
   have h0 : ((binom n j ≐ zero) :: Γ) ⊢[PRAAx] binom n j ≐ zero := Prf.hyp0
-  have e1 := natEq ((binom_fact h).wk (ψ := binom n j ≐ zero))
-  have e2 := natEq ((fact_pos (Γ := (binom n j ≐ zero) :: Γ) n))
-  have e0 := natEq h0
   have c : ((binom n j ≐ zero) :: Γ) ⊢[PRAAx] succ (pred (fact n)) ≐ zero := by
-    apply deriveNat; ipra_simps
-    linear_combination -e2 + e1 + 𝔞 (fact j) * 𝔞 (fact (monus n j)) * e0
+    ipra_lc -natEq ((fact_pos (Γ := (binom n j ≐ zero) :: Γ) n)) + natEq ((binom_fact h).wk (ψ := binom n j ≐ zero)) +
+      𝔞 (fact j) * 𝔞 (fact (monus n j)) * natEq h0
   exact succ_ne_zero' _ c
 
 /-- `v_p(C(n, j)) + v_p(j!) + v_p((n − j)!) = v_p(n!)`. -/
 theorem val_binom {p n j : PTm k} (hp : Γ ⊢[PRAAx] prime p) (h : Γ ⊢[PRAAx] le j n) :
     Γ ⊢[PRAAx] val p (binom n j) + (val p (fact j) + val p (fact (monus n j))) ≐ val p (fact n) := by
-  have e1 := natEq ((val_congr p (binom_fact (Γ := Γ) h)).eqTrans
-    (val_mul hp (bden_pos n j) (binom_pos h)))
-  have e2 := natEq (val_mul (Γ := Γ) hp (fact_pos j) (fact_pos (monus n j)))
-  apply deriveNat; ipra_simps
-  linear_combination -e1 - e2
+  ipra_lc -natEq ((val_congr p (binom_fact (Γ := Γ) h)).eqTrans (val_mul hp (bden_pos n j) (binom_pos h))) -
+    natEq (val_mul (Γ := Γ) hp (fact_pos j) (fact_pos (monus n j)))
 
 /-- `L(N) = ∑_{j<N} ⌊N/p^{j+1}⌋`. -/
 abbrev L (p N : PTm k) : PTm k := ap2 (sumF qB') N (pairT p N)
@@ -75,23 +70,13 @@ theorem val_Mm {p : PTm k} (hp : Γ ⊢[PRAAx] prime p) (m : PTm k) :
   have l2 : Γ ⊢[PRAAx] le (num 14 * m) (num 21 * m) := by ipra_le 7 * 𝔞 m
   have l3 : Γ ⊢[PRAAx] le (num 6 * m) (num 7 * m) := by ipra_le 𝔞 m
   have p1 := binom_pos l1; have p2 := binom_pos l2; have p3 := binom_pos l3
-  have eM := natEq (val_mul hp (pos_mul p1 p2) p3)
-  have eM2 := natEq (val_mul hp p1 p2)
-  have b1 := natEq (val_binom hp l1)
-  have b2 := natEq (val_binom hp l2)
-  have b3 := natEq (val_binom hp l3)
-  have c1 := natEq (val_congr p (congrAp2 factF (monus_split (Γ := Γ) (a := num 42 * m) (b := num 21 * m)
-    (c := num 21 * m) (by apply deriveNat; ipra_simps; ring)) (.eqRefl zero)))
-  have c2 := natEq (val_congr p (congrAp2 factF (monus_split (Γ := Γ) (a := num 21 * m) (b := num 14 * m)
-    (c := num 7 * m) (by apply deriveNat; ipra_simps; ring)) (.eqRefl zero)))
-  have c3 := natEq (val_congr p (congrAp2 factF (monus_split (Γ := Γ) (a := num 7 * m) (b := num 6 * m)
-    (c := m) (by apply deriveNat; ipra_simps; ring)) (.eqRefl zero)))
-  have lf42 := natEq (legendre_fact (Γ := Γ) hp (num 42 * m))
-  have lf21 := natEq (legendre_fact (Γ := Γ) hp (num 21 * m))
-  have lf14 := natEq (legendre_fact (Γ := Γ) hp (num 14 * m))
-  have lf6 := natEq (legendre_fact (Γ := Γ) hp (num 6 * m))
-  have lfm := natEq (legendre_fact (Γ := Γ) hp m)
-  apply deriveNat; ipra_simps
-  linear_combination eM + eM2 + b1 + b2 + b3 - c1 - c2 - c3 - lf21 - lf14 - lf6 - lfm + lf42
+  ipra_lc natEq (val_mul hp (pos_mul p1 p2) p3) + natEq (val_mul hp p1 p2) + natEq (val_binom hp l1) +
+    natEq (val_binom hp l2) + natEq (val_binom hp l3) -
+    natEq (val_congr p (congrAp2 factF (monus_split (Γ := Γ) (a := num 42 * m) (b := num 21 * m) (c := num 21 * m) (by ipra_ring)) (.eqRefl zero))) -
+    natEq (val_congr p (congrAp2 factF (monus_split (Γ := Γ) (a := num 21 * m) (b := num 14 * m) (c := num 7 * m) (by ipra_ring)) (.eqRefl zero))) -
+    natEq (val_congr p (congrAp2 factF (monus_split (Γ := Γ) (a := num 7 * m) (b := num 6 * m) (c := m) (by ipra_ring)) (.eqRefl zero))) -
+    natEq (legendre_fact (Γ := Γ) hp (num 21 * m)) - natEq (legendre_fact (Γ := Γ) hp (num 14 * m)) -
+    natEq (legendre_fact (Γ := Γ) hp (num 6 * m)) - natEq (legendre_fact (Γ := Γ) hp m) +
+    natEq (legendre_fact (Γ := Γ) hp (num 42 * m))
 
 end LeanProofs.IPRA.DiophantineNumberTheory.AperyLcmVal

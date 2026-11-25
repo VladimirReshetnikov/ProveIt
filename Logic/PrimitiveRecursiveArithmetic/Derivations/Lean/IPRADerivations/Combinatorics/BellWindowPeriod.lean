@@ -75,7 +75,7 @@ theorem mid_pt {t m N K : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m))
   have h : Γ ⊢[PRAAx] rem (bell (t + monus N m + succ K)) m ≐
       rem (bell (monus N m + succ K)) m :=
     (cong_of_eq (congrBell (a := t + monus N m + succ K) (b := t + (monus N m + succ K))
-      (by apply deriveNat; ipra_simps; ring))).eqTrans (e_elim (all_elim eB hQ hlt))
+      (by ipra_ring))).eqTrans (e_elim (all_elim eB hQ hlt))
   exact (cong_of_eq (sh_at K m (t + monus N m))).eqTrans
     ((cong_mul (cyc m (succ K)) hm h).eqTrans (cong_of_eq (sh_at K m (monus N m))).eqSymm)
 
@@ -169,7 +169,7 @@ theorem window_mul {t m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m))
   have hall : Γ ⊢[PRAAx] Fm.all (mulF t m N) := by
     refine PRA.qfInd _ trivial ?_ ?_
     · have b : Γ ⊢[PRAAx] rem (bell (zero * t + N)) m ≐ rem (bell N) m :=
-        cong_of_eq (congrBell (by apply deriveNat; ipra_simps; ring))
+        cong_of_eq (congrBell (by ipra_ring))
       simpa using b
     · have hT' : (Γ.map Fm.shift) ⊢[PRAAx] Test (Syn.shift t) (Syn.shift m) ≐ one := by
         simpa [Fm.shift, Syn.shift] using hT.shift
@@ -180,7 +180,7 @@ theorem window_mul {t m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m))
             rem (bell (Syn.shift N)) (Syn.shift m) :=
         (cong_of_eq (congrBell (a := succ (var 0) * Syn.shift t + Syn.shift N)
           (b := Syn.shift t + (var 0 * Syn.shift t + Syn.shift N))
-          (by apply deriveNat; ipra_simps; ring))).eqTrans
+          (by ipra_ring))).eqTrans
           ((period_of_window hm'.wk hT'.wk _).eqTrans Prf.hyp0)
       simpa [subst_repl_shift, Syn.repl_zero] using st
   have h2 := Prf.allE q hall

@@ -1,5 +1,6 @@
 import IPRADerivations.Core.Tactic
 import IPRADerivations.Core.Powers
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Localization witnesses and the power-cover constructor
@@ -66,27 +67,18 @@ theorem loc_refl (a Pn : ZT n) :
 
 theorem loc_symm (h : Γ ⊢[PRAAx] ZT.eq (Pk * (Pm * a - Pn * b)) (ZT.natLit 0)) :
     Γ ⊢[PRAAx] ZT.eq (Pk * (Pn * b - Pm * a)) (ZT.natLit 0) := by
-  have e := ZT.toZ_eq h
-  apply ZT.derive
-  ipra_simps
-  linear_combination -e
+  ipra_lc -ZT.toZ_eq h
 
 /-- A killing exponent may be enlarged. -/
 theorem loc_weaken (Pj : ZT n) (h : Γ ⊢[PRAAx] ZT.eq (Pk * (Pm * a - Pn * b)) (ZT.natLit 0)) :
     Γ ⊢[PRAAx] ZT.eq (Pj * Pk * (Pm * a - Pn * b)) (ZT.natLit 0) := by
-  have e := ZT.toZ_eq h
-  apply ZT.derive
-  ipra_simps
-  linear_combination 𝔷(Pj) * e
+  ipra_lc 𝔷(Pj) * ZT.toZ_eq h
 
 /-- Transitivity: `a / f^n ~ b / f^m` and `b / f^m ~ c / f^r` give `a / f^n ~ c / f^r`. -/
 theorem loc_trans (h₁ : Γ ⊢[PRAAx] ZT.eq (Pk * (Pm * a - Pn * b)) (ZT.natLit 0))
     (h₂ : Γ ⊢[PRAAx] ZT.eq (Pl * (Pr * b - Pm * c)) (ZT.natLit 0)) :
     Γ ⊢[PRAAx] ZT.eq (Pk * Pl * Pm * (Pr * a - Pn * c)) (ZT.natLit 0) := by
-  have e₁ := ZT.toZ_eq h₁; have e₂ := ZT.toZ_eq h₂
-  apply ZT.derive
-  ipra_simps
-  linear_combination 𝔷(Pl) * 𝔷(Pr) * e₁ + 𝔷(Pk) * 𝔷(Pn) * e₂
+  ipra_lc 𝔷(Pl) * 𝔷(Pr) * ZT.toZ_eq h₁ + 𝔷(Pk) * 𝔷(Pn) * ZT.toZ_eq h₂
 
 /-- Addition: `a / f^n ~ a' / f^n'` and `b / f^m ~ b' / f^m'` give
 `(f^m a + f^n b) / f^(n+m) ~ (f^m' a' + f^n' b') / f^(n'+m')`. -/
@@ -94,19 +86,13 @@ theorem loc_add (h₁ : Γ ⊢[PRAAx] ZT.eq (Pk * (Pn' * a - Pn * a')) (ZT.natLi
     (h₂ : Γ ⊢[PRAAx] ZT.eq (Pl * (Pm' * b - Pm * b')) (ZT.natLit 0)) :
     Γ ⊢[PRAAx] ZT.eq
       (Pk * Pl * (Pn' * Pm' * (Pm * a + Pn * b) - Pn * Pm * (Pm' * a' + Pn' * b'))) (ZT.natLit 0) := by
-  have e₁ := ZT.toZ_eq h₁; have e₂ := ZT.toZ_eq h₂
-  apply ZT.derive
-  ipra_simps
-  linear_combination 𝔷(Pl) * 𝔷(Pm) * 𝔷(Pm') * e₁ + 𝔷(Pk) * 𝔷(Pn) * 𝔷(Pn') * e₂
+  ipra_lc 𝔷(Pl) * 𝔷(Pm) * 𝔷(Pm') * ZT.toZ_eq h₁ + 𝔷(Pk) * 𝔷(Pn) * 𝔷(Pn') * ZT.toZ_eq h₂
 
 /-- Multiplication: the same witnesses give `a b / f^(n+m) ~ a' b' / f^(n'+m')`. -/
 theorem loc_mul (h₁ : Γ ⊢[PRAAx] ZT.eq (Pk * (Pn' * a - Pn * a')) (ZT.natLit 0))
     (h₂ : Γ ⊢[PRAAx] ZT.eq (Pl * (Pm' * b - Pm * b')) (ZT.natLit 0)) :
     Γ ⊢[PRAAx] ZT.eq (Pk * Pl * (Pn' * Pm' * (a * b) - Pn * Pm * (a' * b'))) (ZT.natLit 0) := by
-  have e₁ := ZT.toZ_eq h₁; have e₂ := ZT.toZ_eq h₂
-  apply ZT.derive
-  ipra_simps
-  linear_combination 𝔷(Pl) * 𝔷(Pm') * 𝔷(b) * e₁ + 𝔷(Pk) * 𝔷(Pn) * 𝔷(a') * e₂
+  ipra_lc 𝔷(Pl) * 𝔷(Pm') * 𝔷(b) * ZT.toZ_eq h₁ + 𝔷(Pk) * 𝔷(Pn) * 𝔷(a') * ZT.toZ_eq h₂
 
 /-- The universal property on a witness: if the multipliers have inverses `Vk, Vm, Vn`, then
 `a / f^n ~ b / f^m` gives `a Vn = b Vm`. -/
@@ -114,11 +100,8 @@ theorem loc_universal (hk : Γ ⊢[PRAAx] ZT.eq (Vk * Pk) (ZT.natLit 1))
     (hm : Γ ⊢[PRAAx] ZT.eq (Vm * Pm) (ZT.natLit 1)) (hn : Γ ⊢[PRAAx] ZT.eq (Vn * Pn) (ZT.natLit 1))
     (h : Γ ⊢[PRAAx] ZT.eq (Pk * (Pm * a - Pn * b)) (ZT.natLit 0)) :
     Γ ⊢[PRAAx] ZT.eq (a * Vn) (b * Vm) := by
-  have ek := ZT.toZ_eq hk; have em := ZT.toZ_eq hm; have en := ZT.toZ_eq hn; have e := ZT.toZ_eq h
-  apply ZT.derive
-  ipra_simps
-  linear_combination 𝔷(Vk) * 𝔷(Vn) * 𝔷(Vm) * e -
-    𝔷(Vn) * 𝔷(Vm) * (𝔷(Pm) * 𝔷(a) - 𝔷(Pn) * 𝔷(b)) * ek - 𝔷(Vn) * 𝔷(a) * em + 𝔷(Vm) * 𝔷(b) * en
+  ipra_lc 𝔷(Vk) * 𝔷(Vn) * 𝔷(Vm) * ZT.toZ_eq h - 𝔷(Vn) * 𝔷(Vm) * (𝔷(Pm) * 𝔷(a) - 𝔷(Pn) * 𝔷(b)) * ZT.toZ_eq hk -
+    𝔷(Vn) * 𝔷(a) * ZT.toZ_eq hm + 𝔷(Vm) * 𝔷(b) * ZT.toZ_eq hn
 
 end Calculus
 
@@ -132,12 +115,8 @@ theorem loc_trans_pow {f k l m r s : PTm n} {a b c : ZT n}
     (h₁ : Γ ⊢[PRAAx] ZT.eq (fp f k * (fp f m * a - fp f s * b)) (ZT.natLit 0))
     (h₂ : Γ ⊢[PRAAx] ZT.eq (fp f l * (fp f r * b - fp f m * c)) (ZT.natLit 0)) :
     Γ ⊢[PRAAx] ZT.eq (fp f (k + l + m) * (fp f r * a - fp f s * c)) (ZT.natLit 0) := by
-  have e := ZT.toZ_eq (loc_trans h₁ h₂)
-  have p₁ := natEq (pw_add (Γ := Γ) f (k + l) m); have p₂ := natEq (pw_add (Γ := Γ) f k l)
-  apply ZT.derive
-  ipra_simps
-  linear_combination e + (𝔞(pw f r) * 𝔷(a) - 𝔞(pw f s) * 𝔷(c)) * p₁ +
-    𝔞(pw f m) * (𝔞(pw f r) * 𝔷(a) - 𝔞(pw f s) * 𝔷(c)) * p₂
+  ipra_lc ZT.toZ_eq (loc_trans h₁ h₂) + (𝔞(pw f r) * 𝔷(a) - 𝔞(pw f s) * 𝔷(c)) * natEq (pw_add (Γ := Γ) f (k + l) m) +
+    𝔞(pw f m) * (𝔞(pw f r) * 𝔷(a) - 𝔞(pw f s) * 𝔷(c)) * natEq (pw_add (Γ := Γ) f k l)
 
 /-! ## The power-cover constructor -/
 
@@ -192,31 +171,19 @@ variable {c₀ c₁ c₂ f₀ f₁ f₂}
 /-- `thm:power-cover` for two generators and squares. -/
 theorem cover22 (h : Γ ⊢[PRAAx] ZT.eq (c₀ * f₀ + c₁ * f₁) (ZT.natLit 1)) :
     Γ ⊢[PRAAx] ZT.eq (d22₀ c₀ c₁ f₀ f₁ * p2 f₀ + d22₁ c₀ c₁ f₀ f₁ * p2 f₁) (ZT.natLit 1) := by
-  have e := ZT.toZ_eq h
-  apply ZT.derive
-  ipra_simps
-  linear_combination ((𝔷(c₀) * 𝔷(f₀) + 𝔷(c₁) * 𝔷(f₁)) ^ 2 + (𝔷(c₀) * 𝔷(f₀) + 𝔷(c₁) * 𝔷(f₁)) + 1) * e
+  ipra_lc ((𝔷(c₀) * 𝔷(f₀) + 𝔷(c₁) * 𝔷(f₁)) ^ 2 + (𝔷(c₀) * 𝔷(f₀) + 𝔷(c₁) * 𝔷(f₁)) + 1) * ZT.toZ_eq h
 
 /-- `thm:power-cover` for two generators and cubes. -/
 theorem cover23 (h : Γ ⊢[PRAAx] ZT.eq (c₀ * f₀ + c₁ * f₁) (ZT.natLit 1)) :
     Γ ⊢[PRAAx] ZT.eq (d23₀ c₀ c₁ f₀ f₁ * p3 f₀ + d23₁ c₀ c₁ f₀ f₁ * p3 f₁) (ZT.natLit 1) := by
-  have e := ZT.toZ_eq h
-  apply ZT.derive
-  ipra_simps
-  linear_combination ((𝔷(c₀) * 𝔷(f₀) + 𝔷(c₁) * 𝔷(f₁)) ^ 4 + (𝔷(c₀) * 𝔷(f₀) + 𝔷(c₁) * 𝔷(f₁)) ^ 3 +
-    (𝔷(c₀) * 𝔷(f₀) + 𝔷(c₁) * 𝔷(f₁)) ^ 2 + (𝔷(c₀) * 𝔷(f₀) + 𝔷(c₁) * 𝔷(f₁)) + 1) * e
+  ipra_lc ((𝔷(c₀) * 𝔷(f₀) + 𝔷(c₁) * 𝔷(f₁)) ^ 4 + (𝔷(c₀) * 𝔷(f₀) + 𝔷(c₁) * 𝔷(f₁)) ^ 3 + (𝔷(c₀) * 𝔷(f₀) + 𝔷(c₁) * 𝔷(f₁)) ^ 2 + (𝔷(c₀) * 𝔷(f₀) + 𝔷(c₁) * 𝔷(f₁)) + 1) * ZT.toZ_eq h
 
 /-- `thm:power-cover` for three generators and squares. -/
 theorem cover32 (h : Γ ⊢[PRAAx] ZT.eq (c₀ * f₀ + c₁ * f₁ + c₂ * f₂) (ZT.natLit 1)) :
     Γ ⊢[PRAAx] ZT.eq
       (d32₀ c₀ c₁ c₂ f₀ f₁ f₂ * p2 f₀ + d32₁ c₀ c₁ c₂ f₀ f₁ f₂ * p2 f₁ + d32₂ c₀ c₁ c₂ f₀ f₁ f₂ * p2 f₂)
       (ZT.natLit 1) := by
-  have e := ZT.toZ_eq h
-  apply ZT.derive
-  ipra_simps
-  linear_combination ((𝔷(c₀) * 𝔷(f₀) + 𝔷(c₁) * 𝔷(f₁) + 𝔷(c₂) * 𝔷(f₂)) ^ 3 +
-    (𝔷(c₀) * 𝔷(f₀) + 𝔷(c₁) * 𝔷(f₁) + 𝔷(c₂) * 𝔷(f₂)) ^ 2 +
-    (𝔷(c₀) * 𝔷(f₀) + 𝔷(c₁) * 𝔷(f₁) + 𝔷(c₂) * 𝔷(f₂)) + 1) * e
+  ipra_lc ((𝔷(c₀) * 𝔷(f₀) + 𝔷(c₁) * 𝔷(f₁) + 𝔷(c₂) * 𝔷(f₂)) ^ 3 + (𝔷(c₀) * 𝔷(f₀) + 𝔷(c₁) * 𝔷(f₁) + 𝔷(c₂) * 𝔷(f₂)) ^ 2 + (𝔷(c₀) * 𝔷(f₀) + 𝔷(c₁) * 𝔷(f₁) + 𝔷(c₂) * 𝔷(f₂)) + 1) * ZT.toZ_eq h
 
 /-- The inductive step of `thm:power-cover` for two generators, for every exponent. With
 `P = f₀^N`, `Q = f₁^N` and a certificate `d₀ f₀^(N+1) + d₁ f₁^(N+1) = 1`, the updated
@@ -232,11 +199,8 @@ theorem cover_step {d₀ d₁ P Q : ZT n} (hu : Γ ⊢[PRAAx] ZT.eq (c₀ * f₀
       ((d₀ * c₀ + d₀ * d₀ * c₁ * P * f₁ + d₀ * d₁ * c₀ * (f₁ * Q)) * (f₀ * (f₀ * P)) +
         (d₁ * c₁ + d₀ * d₁ * c₁ * (f₀ * P) + d₁ * d₁ * c₀ * f₀ * Q) * (f₁ * (f₁ * Q)))
       (ZT.natLit 1) := by
-  have eu := ZT.toZ_eq hu; have eS := ZT.toZ_eq hS
-  apply ZT.derive
-  ipra_simps
-  linear_combination (𝔷(c₀) * 𝔷(f₀) + 𝔷(c₁) * 𝔷(f₁) + 𝔷(d₀) * 𝔷(c₁) * 𝔷(f₁) * (𝔷(f₀) * 𝔷(P)) +
-    𝔷(d₁) * 𝔷(c₀) * 𝔷(f₀) * (𝔷(f₁) * 𝔷(Q))) * eS + eu
+  ipra_lc (𝔷(c₀) * 𝔷(f₀) + 𝔷(c₁) * 𝔷(f₁) + 𝔷(d₀) * 𝔷(c₁) * 𝔷(f₁) * (𝔷(f₀) * 𝔷(P)) + 𝔷(d₁) * 𝔷(c₀) * 𝔷(f₀) * (𝔷(f₁) * 𝔷(Q))) * ZT.toZ_eq hS +
+    ZT.toZ_eq hu
 
 /-- A bucket of `(X + Xa + Xb)³ u` for three generators: the terms with the square of `X = d f P`,
 and the share `6 c d Xa Xb` of the mixed term. -/
@@ -258,14 +222,8 @@ theorem cover_step₃ {d₀ d₁ d₂ P₀ P₁ P₂ : ZT n}
         bucket d₂ c₂ P₂ (d₂ * (f₂ * P₂)) (d₀ * (f₀ * P₀)) (d₁ * (f₁ * P₁)) (c₀ * f₀ + c₁ * f₁ + c₂ * f₂) *
           (f₂ * (f₂ * P₂)))
       (ZT.natLit 1) := by
-  have eu := ZT.toZ_eq hu; have eS := ZT.toZ_eq hS
-  apply ZT.derive
-  simp only [bucket]
-  ipra_simps
-  linear_combination
-    ((𝔷(d₀) * (𝔷(f₀) * 𝔷(P₀)) + 𝔷(d₁) * (𝔷(f₁) * 𝔷(P₁)) + 𝔷(d₂) * (𝔷(f₂) * 𝔷(P₂))) ^ 2 +
-      (𝔷(d₀) * (𝔷(f₀) * 𝔷(P₀)) + 𝔷(d₁) * (𝔷(f₁) * 𝔷(P₁)) + 𝔷(d₂) * (𝔷(f₂) * 𝔷(P₂))) + 1) *
-      (𝔷(c₀) * 𝔷(f₀) + 𝔷(c₁) * 𝔷(f₁) + 𝔷(c₂) * 𝔷(f₂)) * eS + eu
+  ipra_lc [bucket] ((𝔷(d₀) * (𝔷(f₀) * 𝔷(P₀)) + 𝔷(d₁) * (𝔷(f₁) * 𝔷(P₁)) + 𝔷(d₂) * (𝔷(f₂) * 𝔷(P₂))) ^ 2 + (𝔷(d₀) * (𝔷(f₀) * 𝔷(P₀)) + 𝔷(d₁) * (𝔷(f₁) * 𝔷(P₁)) + 𝔷(d₂) * (𝔷(f₂) * 𝔷(P₂))) + 1) * (𝔷(c₀) * 𝔷(f₀) + 𝔷(c₁) * 𝔷(f₁) + 𝔷(c₂) * 𝔷(f₂)) * ZT.toZ_eq hS +
+    ZT.toZ_eq hu
 
 end PowerCover
 

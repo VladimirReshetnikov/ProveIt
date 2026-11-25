@@ -1,4 +1,5 @@
 import IPRADerivations.Geometry.CevaMenelaus
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Mollweide's formulas, the law of tangents and the inradius
@@ -197,10 +198,6 @@ theorem incenter_distance {a b c Ax Ay Bx By Cx Cy Ix Iy : ZT n}
     (hy : Γ ⊢[PRAAx] ZT.eq ((a + b + c) * Iy) (a * Ay + b * By + c * Cy)) :
     Γ ⊢[PRAAx] ZT.eq ((a + b + c) * ((Cx - Bx) * (Iy - By) - (Cy - By) * (Ix - Bx)))
       (a * ((Cx - Bx) * (Ay - By) - (Cy - By) * (Ax - Bx))) := by
-  have e₁ := ZT.toZ_eq hx; have e₂ := ZT.toZ_eq hy
-  simp only [ZT.toZ_mul, ZT.toZ_add] at e₁ e₂
-  apply ZT.derive
-  simp only [ZT.toZ_mul, ZT.toZ_add, ZT.toZ_sub]
-  linear_combination (ZT.toZ Γ Cx - ZT.toZ Γ Bx) * e₂ - (ZT.toZ Γ Cy - ZT.toZ Γ By) * e₁
+  ipra_lc (ZT.toZ Γ Cx - ZT.toZ Γ Bx) * ZT.toZ_eq hy - (ZT.toZ Γ Cy - ZT.toZ Γ By) * ZT.toZ_eq hx
 
 end LeanProofs.IPRA.Geometry.Mollweide

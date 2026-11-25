@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.RationalBivariatePolynomialBuffersGaussianEmbedding
 import IPRADerivations.Analysis.GaussianBivariateMonicFactor
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The actual original rational full monic factor
@@ -55,10 +56,7 @@ def table (F m c : PTm n) : PTm n := sequence rowBody (succ m) (pairT F c)
 theorem row_body_at (F c i : PTm n) : Γ ⊢[PRAAx] inst2 rowBody i (pairT F c) ≐ row F c i := by
   simp only [rowBody, inst2, subst_row, subst_fstT, subst_sndT, Syn.subst_var, Matrix.cons_val_zero,
     Matrix.cons_val_one]
-  simpa only [subst_row, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
-    Matrix.head_cons, Matrix.tail_cons] using Prf.eqCongr (Γ := Γ) (row (var 0) (var 1) (var 2) : PTm 3)
-      (σ := ![fstT (pairT F c), sndT (pairT F c), i]) (σ' := ![F, c, i])
-      (fun k => by fin_cases k; exact fst_pair _ _; exact snd_pair _ _; exact .eqRefl _)
+  ipra_congr (row (var 0) (var 1) (var 2) : PTm 3) with [fst_pair _ _, snd_pair _ _, .eqRefl i]
 
 theorem table_length (F m c : PTm n) : Γ ⊢[PRAAx] length (table F m c) ≐ succ m := sequence_length _ _ _
 
@@ -110,9 +108,9 @@ theorem singleton_one_entries : Γ ⊢[PRAAx] embeddedEntries (singleton (scalar
 theorem target_monic_row (c : PTm n) : Γ ⊢[PRAAx] GaussianPolynomialMonicCompanion.monicRow c ≐
     GaussianRationalPolynomialBuffers.leftPad (singleton GaussianRationalReciprocal.qone) c := by
   unfold GaussianPolynomialMonicCompanion.monicRow GaussianRationalMonicReduction.constant
-  simpa [GaussianRationalSyntheticDivision.qone,GaussianRationalReciprocal.qone] using Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (GaussianRationalPolynomialBuffers.leftPad (var 0) (var 1) : PTm 2)
-    (σ := ![singleton GaussianRationalReciprocal.qone,pred (succ c)]) (σ' := ![singleton GaussianRationalReciprocal.qone,c])
-    (fun i => by fin_cases i; exact .eqRefl _; exact pred_succ _)
+  ipra_congr (GaussianRationalPolynomialBuffers.leftPad (var 0) (var 1) : PTm 2) with
+    [.eqRefl (singleton GaussianRationalReciprocal.qone), pred_succ _] using [GaussianRationalSyntheticDivision.qone,
+      GaussianRationalReciprocal.qone]
 
 theorem monic_row_embedding (c s : PTm n) (hs : Γ ⊢[PRAAx] le s c) : Γ ⊢[PRAAx]
     embed (entry (monicRow c) s) ≐ entry (GaussianPolynomialMonicCompanion.monicRow c) s :=
@@ -165,7 +163,6 @@ theorem table_evaluation (F m c x y : PTm n) (hF : Γ ⊢[PRAAx] rowShape F m c)
       ((GaussianBivariateMonicFactor.table_evaluation _ _ _ _ _).eqTrans (RationalBivariateGaussianEmbedding.monic_conjugacy F m c x y hF).eqSymm)
   exact RationalPolynomialBuffersGaussianEmbedding.canonical_equal_of_embedding _ _
     (RationalPolynomialGaussianEmbedding.horner_canonical _ _ _) (RationalPolynomialGaussianEmbedding.horner_canonical _ _ _) e
-
 
 def tableF : PR 3 := PTm.toPR (table (var 0) (var 1) (var 2))
 def run (F m c : PTm n) : PTm n := PTm.app tableF ![F,m,c]

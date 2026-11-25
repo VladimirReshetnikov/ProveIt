@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.RationalAnnihilatorPolynomial
 import IPRADerivations.Analysis.RationalPolynomialWeightedDegreeGaussianEmbedding
 import IPRADerivations.Foundations.SequenceEquality
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual original rational annihilator nonvanishing and weight
@@ -136,10 +137,8 @@ theorem nonzero_rows (a m e L : PTm n) (h : Γ ⊢[PRAAx] nonzeroLambda a m e L)
 
 private theorem gaussian_weight_congr (A B m L e : PTm n) (he : Γ ⊢[PRAAx] A ≐ B) : Γ ⊢[PRAAx]
     GaussianPolynomialWeightedDegree.weightedDegree A m L e ≐ GaussianPolynomialWeightedDegree.weightedDegree B m L e := by
-  simpa only [GaussianPolynomialWeightedDegree.subst_weightedDegree,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-    Matrix.cons_val_two,Matrix.cons_val_three,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (GaussianPolynomialWeightedDegree.weightedDegree (var 0) (var 1) (var 2) (var 3) : PTm 4)
-      (σ := ![A,m,L,e]) (σ' := ![B,m,L,e]) (fun i => by fin_cases i; exact he; exact .eqRefl m; exact .eqRefl L; exact .eqRefl e)
+  ipra_congr (GaussianPolynomialWeightedDegree.weightedDegree (var 0) (var 1) (var 2) (var 3) : PTm 4) with
+    [he, .eqRefl m, .eqRefl L, .eqRefl e]
 
 theorem weighted_bound (a m e L : PTm n) (h : Γ ⊢[PRAAx] input a m e L) : Γ ⊢[PRAAx]
     le (RationalPolynomialWeightedDegreeGaussianEmbedding.weightedDegree (polynomial a m e L) m L e) L :=

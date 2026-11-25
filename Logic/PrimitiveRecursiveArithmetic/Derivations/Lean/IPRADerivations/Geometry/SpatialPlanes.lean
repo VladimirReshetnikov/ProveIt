@@ -1,4 +1,4 @@
-import IPRADerivations.Core.IntCertificates
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Planes in space: normals, the intersection with a line, and the line of two planes
@@ -50,11 +50,7 @@ def cr₃ (a₁ a₂ _a₃ b₁ b₂ _b₃ : ZT n) : ZT n := a₁ * b₂ - a₂ 
 
 local notation:max "ζ" t:max => ZT.toZ Γ t
 
-local macro "gsimp" loc:(Lean.Parser.Tactic.location)? : tactic =>
-  `(tactic| simp only [dt, nm, cr₁, cr₂, cr₃, zsl_def, ZT.toZ_add, ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_neg,
-    ZT.toZ_sq, ZT.toZ_natLit, Nat.cast_ofNat, Nat.cast_zero, Nat.cast_one] $[$loc]?)
-
-local macro "geo" : tactic => `(tactic| (apply ZT.derive; gsimp; ring))
+attribute [local ipra_defs] dt nm cr₁ cr₂ cr₃
 
 /-! ## The plane through three points -/
 
@@ -62,13 +58,13 @@ local macro "geo" : tactic => `(tactic| (apply ZT.derive; gsimp; ring))
 theorem normal_u (u₁ u₂ u₃ v₁ v₂ v₃ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq
       (dt (cr₁ u₁ u₂ u₃ v₁ v₂ v₃) (cr₂ u₁ u₂ u₃ v₁ v₂ v₃) (cr₃ u₁ u₂ u₃ v₁ v₂ v₃) u₁ u₂ u₃) (ZT.natLit 0) := by
-  geo
+  ipra_lc
 
 /-- `(u × v) · v = 0`. -/
 theorem normal_v (u₁ u₂ u₃ v₁ v₂ v₃ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq
       (dt (cr₁ u₁ u₂ u₃ v₁ v₂ v₃) (cr₂ u₁ u₂ u₃ v₁ v₂ v₃) (cr₃ u₁ u₂ u₃ v₁ v₂ v₃) v₁ v₂ v₃) (ZT.natLit 0) := by
-  geo
+  ipra_lc
 
 /-- A vector perpendicular to `u` and `v` is parallel to `u × v`, first coordinate of `m × (u × v)`. -/
 theorem normal_unique₁ {u₁ u₂ u₃ v₁ v₂ v₃ m₁ m₂ m₃ : ZT n}
@@ -77,11 +73,7 @@ theorem normal_unique₁ {u₁ u₂ u₃ v₁ v₂ v₃ m₁ m₂ m₃ : ZT n}
     Γ ⊢[PRAAx] ZT.eq
       (cr₁ m₁ m₂ m₃ (cr₁ u₁ u₂ u₃ v₁ v₂ v₃) (cr₂ u₁ u₂ u₃ v₁ v₂ v₃) (cr₃ u₁ u₂ u₃ v₁ v₂ v₃))
       (ZT.natLit 0) := by
-  have eu := ZT.toZ_eq hu
-  have ev := ZT.toZ_eq hv
-  apply ZT.derive
-  gsimp at eu ev ⊢
-  linear_combination ζ u₁ * ev - ζ v₁ * eu
+  ipra_lc ζ u₁ * ZT.toZ_eq hv - ζ v₁ * ZT.toZ_eq hu
 
 /-- A vector perpendicular to `u` and `v` is parallel to `u × v`, second coordinate. -/
 theorem normal_unique₂ {u₁ u₂ u₃ v₁ v₂ v₃ m₁ m₂ m₃ : ZT n}
@@ -90,11 +82,7 @@ theorem normal_unique₂ {u₁ u₂ u₃ v₁ v₂ v₃ m₁ m₂ m₃ : ZT n}
     Γ ⊢[PRAAx] ZT.eq
       (cr₂ m₁ m₂ m₃ (cr₁ u₁ u₂ u₃ v₁ v₂ v₃) (cr₂ u₁ u₂ u₃ v₁ v₂ v₃) (cr₃ u₁ u₂ u₃ v₁ v₂ v₃))
       (ZT.natLit 0) := by
-  have eu := ZT.toZ_eq hu
-  have ev := ZT.toZ_eq hv
-  apply ZT.derive
-  gsimp at eu ev ⊢
-  linear_combination ζ u₂ * ev - ζ v₂ * eu
+  ipra_lc ζ u₂ * ZT.toZ_eq hv - ζ v₂ * ZT.toZ_eq hu
 
 /-- A vector perpendicular to `u` and `v` is parallel to `u × v`, third coordinate. -/
 theorem normal_unique₃ {u₁ u₂ u₃ v₁ v₂ v₃ m₁ m₂ m₃ : ZT n}
@@ -103,11 +91,7 @@ theorem normal_unique₃ {u₁ u₂ u₃ v₁ v₂ v₃ m₁ m₂ m₃ : ZT n}
     Γ ⊢[PRAAx] ZT.eq
       (cr₃ m₁ m₂ m₃ (cr₁ u₁ u₂ u₃ v₁ v₂ v₃) (cr₂ u₁ u₂ u₃ v₁ v₂ v₃) (cr₃ u₁ u₂ u₃ v₁ v₂ v₃))
       (ZT.natLit 0) := by
-  have eu := ZT.toZ_eq hu
-  have ev := ZT.toZ_eq hv
-  apply ZT.derive
-  gsimp at eu ev ⊢
-  linear_combination ζ u₃ * ev - ζ v₃ * eu
+  ipra_lc ζ u₃ * ZT.toZ_eq hv - ζ v₃ * ZT.toZ_eq hu
 
 /-! ## A line and a plane -/
 
@@ -119,27 +103,20 @@ theorem line_plane (n₁ n₂ n₃ a₁ a₂ a₃ u₁ u₂ u₃ h : ZT n) :
         (dt n₁ n₂ n₃ u₁ u₂ u₃ * a₂ + (h - dt n₁ n₂ n₃ a₁ a₂ a₃) * u₂)
         (dt n₁ n₂ n₃ u₁ u₂ u₃ * a₃ + (h - dt n₁ n₂ n₃ a₁ a₂ a₃) * u₃))
       (dt n₁ n₂ n₃ u₁ u₂ u₃ * h) := by
-  geo
+  ipra_lc
 
 /-- A point `A + t u` of the plane has `t (n · u) = h − n · A`. -/
 theorem line_plane_unique {n₁ n₂ n₃ a₁ a₂ a₃ u₁ u₂ u₃ h t : ZT n}
     (hX : Γ ⊢[PRAAx] ZT.eq (dt n₁ n₂ n₃ (a₁ + t * u₁) (a₂ + t * u₂) (a₃ + t * u₃)) h) :
     Γ ⊢[PRAAx] ZT.eq (t * dt n₁ n₂ n₃ u₁ u₂ u₃) (h - dt n₁ n₂ n₃ a₁ a₂ a₃) := by
-  have e := ZT.toZ_eq hX
-  apply ZT.derive
-  gsimp at e ⊢
-  linear_combination e
+  ipra_lc ZT.toZ_eq hX
 
 /-- If `n · u = 0` and `n · A = h`, every point of the line is in the plane. -/
 theorem line_in_plane {n₁ n₂ n₃ a₁ a₂ a₃ u₁ u₂ u₃ h : ZT n} (t : ZT n)
     (hu : Γ ⊢[PRAAx] ZT.eq (dt n₁ n₂ n₃ u₁ u₂ u₃) (ZT.natLit 0))
     (hA : Γ ⊢[PRAAx] ZT.eq (dt n₁ n₂ n₃ a₁ a₂ a₃) h) :
     Γ ⊢[PRAAx] ZT.eq (dt n₁ n₂ n₃ (a₁ + t * u₁) (a₂ + t * u₂) (a₃ + t * u₃)) h := by
-  have eu := ZT.toZ_eq hu
-  have eA := ZT.toZ_eq hA
-  apply ZT.derive
-  gsimp at eu eA ⊢
-  linear_combination eA + ζ t * eu
+  ipra_lc ZT.toZ_eq hA + ζ t * ZT.toZ_eq hu
 
 /-! ## Two planes -/
 
@@ -151,7 +128,7 @@ theorem two_planes_n (n₁ n₂ n₃ m₁ m₂ m₃ h k : ZT n) :
         ((h * nm m₁ m₂ m₃ - k * dt n₁ n₂ n₃ m₁ m₂ m₃) * n₂ + (k * nm n₁ n₂ n₃ - h * dt n₁ n₂ n₃ m₁ m₂ m₃) * m₂)
         ((h * nm m₁ m₂ m₃ - k * dt n₁ n₂ n₃ m₁ m₂ m₃) * n₃ + (k * nm n₁ n₂ n₃ - h * dt n₁ n₂ n₃ m₁ m₂ m₃) * m₃))
       ((nm n₁ n₂ n₃ * nm m₁ m₂ m₃ - dt n₁ n₂ n₃ m₁ m₂ m₃ * dt n₁ n₂ n₃ m₁ m₂ m₃) * h) := by
-  geo
+  ipra_lc
 
 /-- `m · (D X₀) = D k`. -/
 theorem two_planes_m (n₁ n₂ n₃ m₁ m₂ m₃ h k : ZT n) :
@@ -161,7 +138,7 @@ theorem two_planes_m (n₁ n₂ n₃ m₁ m₂ m₃ h k : ZT n) :
         ((h * nm m₁ m₂ m₃ - k * dt n₁ n₂ n₃ m₁ m₂ m₃) * n₂ + (k * nm n₁ n₂ n₃ - h * dt n₁ n₂ n₃ m₁ m₂ m₃) * m₂)
         ((h * nm m₁ m₂ m₃ - k * dt n₁ n₂ n₃ m₁ m₂ m₃) * n₃ + (k * nm n₁ n₂ n₃ - h * dt n₁ n₂ n₃ m₁ m₂ m₃) * m₃))
       ((nm n₁ n₂ n₃ * nm m₁ m₂ m₃ - dt n₁ n₂ n₃ m₁ m₂ m₃ * dt n₁ n₂ n₃ m₁ m₂ m₃) * k) := by
-  geo
+  ipra_lc
 
 /-- Moving along `n × m` keeps the first plane equation. -/
 theorem two_planes_direction_n {n₁ n₂ n₃ m₁ m₂ m₃ x₁ x₂ x₃ h : ZT n} (t : ZT n)
@@ -169,10 +146,7 @@ theorem two_planes_direction_n {n₁ n₂ n₃ m₁ m₂ m₃ x₁ x₂ x₃ h :
     Γ ⊢[PRAAx] ZT.eq
       (dt n₁ n₂ n₃ (x₁ + t * cr₁ n₁ n₂ n₃ m₁ m₂ m₃) (x₂ + t * cr₂ n₁ n₂ n₃ m₁ m₂ m₃)
         (x₃ + t * cr₃ n₁ n₂ n₃ m₁ m₂ m₃)) h := by
-  have e := ZT.toZ_eq hx
-  apply ZT.derive
-  gsimp at e ⊢
-  linear_combination e
+  ipra_lc ZT.toZ_eq hx
 
 /-- Moving along `n × m` keeps the second plane equation. -/
 theorem two_planes_direction_m {n₁ n₂ n₃ m₁ m₂ m₃ x₁ x₂ x₃ k : ZT n} (t : ZT n)
@@ -180,16 +154,13 @@ theorem two_planes_direction_m {n₁ n₂ n₃ m₁ m₂ m₃ x₁ x₂ x₃ k :
     Γ ⊢[PRAAx] ZT.eq
       (dt m₁ m₂ m₃ (x₁ + t * cr₁ n₁ n₂ n₃ m₁ m₂ m₃) (x₂ + t * cr₂ n₁ n₂ n₃ m₁ m₂ m₃)
         (x₃ + t * cr₃ n₁ n₂ n₃ m₁ m₂ m₃)) k := by
-  have e := ZT.toZ_eq hx
-  apply ZT.derive
-  gsimp at e ⊢
-  linear_combination e
+  ipra_lc ZT.toZ_eq hx
 
 /-- `N(n) N(m) − (n · m)² = N(n × m)`. -/
 theorem gram_cross (n₁ n₂ n₃ m₁ m₂ m₃ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq
       (nm n₁ n₂ n₃ * nm m₁ m₂ m₃ - dt n₁ n₂ n₃ m₁ m₂ m₃ * dt n₁ n₂ n₃ m₁ m₂ m₃)
       (nm (cr₁ n₁ n₂ n₃ m₁ m₂ m₃) (cr₂ n₁ n₂ n₃ m₁ m₂ m₃) (cr₃ n₁ n₂ n₃ m₁ m₂ m₃)) := by
-  geo
+  ipra_lc
 
 end LeanProofs.IPRA.Geometry.SpatialPlanes

@@ -1,6 +1,7 @@
 import IPRADerivations.Combinatorics.LegendreDigits
 import IPRADerivations.DiophantineNumberTheory.ModularCertificate
 import IPRADerivations.Foundations.CrossingSearch
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Base-expansion divisibility rules
@@ -42,8 +43,7 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 /-! ## The digit sum modulo `b − 1` -/
 
 theorem two_split {b : PTm k} (hb : Γ ⊢[PRAAx] le two b) : Γ ⊢[PRAAx] b ≐ one + succ (monus b two) := by
-  have e := natEq (eq_add_of_le hb)
-  apply deriveNat; ipra_simps; linear_combination e
+  ipra_lc natEq (eq_add_of_le hb)
 
 /-- `b − 1 ≥ 1` for `b ≥ 2`. -/
 theorem pred_pos {b : PTm k} (hb : Γ ⊢[PRAAx] le two b) :
@@ -62,8 +62,7 @@ theorem digit_sum_rule {b : PTm k} (hb : Γ ⊢[PRAAx] le two b) (m : PTm k) :
 
 theorem last_alg {n P d q r c : PTm k} (e : Γ ⊢[PRAAx] n ≐ P * q + r) (f : Γ ⊢[PRAAx] P ≐ d * c) :
     Γ ⊢[PRAAx] n ≐ d * (c * q) + r := by
-  have a := natEq e; have b := natEq f
-  apply deriveNat; ipra_simps; linear_combination a + 𝔞 q * b
+  ipra_lc natEq e + 𝔞 q * natEq f
 
 /-- If `m ∣ b^j` then `n mod m = (n mod b^j) mod m`. -/
 theorem last_digits {m b j : PTm k} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (hb : Γ ⊢[PRAAx] b ≐ succ (pred b))

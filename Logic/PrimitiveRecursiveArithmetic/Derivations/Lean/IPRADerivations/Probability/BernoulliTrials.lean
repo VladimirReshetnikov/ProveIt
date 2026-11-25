@@ -54,14 +54,14 @@ theorem bern_total (a c : PTm n) : Γ ⊢[PRAAx] ap2 (sumF bw) two (pairT a c) �
   rw [inst2_bw, inst2_bw]
   refine (congrAdd (congrAdd (congrMul eqb_00 (snd_pair _ _)) (congrMul eqb_01 (.eqRefl _)))
     (congrAdd (congrMul eqb_10 (.eqRefl _)) (congrMul eqb_11 (fst_pair _ _)))).eqTrans ?_
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem bern_success (a c : PTm n) : Γ ⊢[PRAAx] ap2 (sumF (bw * bX)) two (pairT a c) ≐ a := by
   refine (sum_two _ _).eqTrans ?_
   rw [inst2_mul', inst2_mul', inst2_bw, inst2_bw, inst2_bX, inst2_bX]
   refine (congrAdd (congrMul (congrAdd (congrMul eqb_00 (.eqRefl _)) (congrMul eqb_01 (.eqRefl _))) eqb_01)
     (congrMul (congrAdd (congrMul eqb_10 (.eqRefl _)) (congrMul eqb_11 (fst_pair _ _))) eqb_11)).eqTrans ?_
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem bX_idem (x : PTm n) :
     Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift two) ⟶

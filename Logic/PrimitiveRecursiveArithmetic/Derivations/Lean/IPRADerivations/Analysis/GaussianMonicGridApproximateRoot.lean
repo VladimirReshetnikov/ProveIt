@@ -3,6 +3,7 @@ import IPRADerivations.Analysis.GaussianMonicApplications
 import IPRADerivations.Analysis.GaussianRationalHornerLipschitz
 import IPRADerivations.Analysis.GaussianRationalLinearProduct
 import IPRADerivations.Foundations.LeastBoundedWitness
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual bounded square-grid search for a monic approximate root
@@ -151,12 +152,9 @@ def root (C N A p q : PTm n) : PTm n :=
 
 theorem check_congr {C D z w p a q b : PTm n} (hC : Γ ⊢[PRAAx] C ≐ D) (hz : Γ ⊢[PRAAx] z ≐ w)
     (hp : Γ ⊢[PRAAx] p ≐ a) (hq : Γ ⊢[PRAAx] q ≐ b) : Γ ⊢[PRAAx] check C z p q ≐ check D w a b := by
-  simpa only [subst_check,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_three,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (check (var 0) (var 1) (var 2) (var 3) : PTm 4)
-      (σ := ![C,z,p,q]) (σ' := ![D,w,a,b]) (fun i => by fin_cases i; exact hC; exact hz; exact hp; exact hq)
+  ipra_congr (check (var 0) (var 1) (var 2) (var 3) : PTm 4) with [hC, hz, hp, hq]
 theorem grid_congr {R S M K : PTm n} (hR : Γ ⊢[PRAAx] R ≐ S) (hM : Γ ⊢[PRAAx] M ≐ K) : Γ ⊢[PRAAx] grid R M ≐ grid S K := by
-  simpa only [GaussianRationalSquareGrid.subst_grid,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using
-    Prf.eqCongr (Γ := Γ) (grid (var 0) (var 1) : PTm 2) (σ := ![R,M]) (σ' := ![S,K]) (fun i => by fin_cases i; exact hR; exact hM)
+  ipra_congr (grid (var 0) (var 1) : PTm 2) with [hR, hM]
 
 theorem scan_body_at (C R M p q i : PTm n) : Γ ⊢[PRAAx]
     inst2 scanBody i (data C R M p q) ≐ check C (entry (grid R M) i) p q := by

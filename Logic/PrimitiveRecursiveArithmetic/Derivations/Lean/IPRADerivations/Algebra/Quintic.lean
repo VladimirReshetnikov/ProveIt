@@ -1,4 +1,5 @@
 import IPRADerivations.Core.Tactic
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Polynomial identities for quintic equations
@@ -105,10 +106,7 @@ end Monotone
 theorem residual {n : ℕ} {Γ : List (Fm PTm n)} {x q a : ZT n}
     (h : Γ ⊢[PRAAx] ZT.eq (p5 x + x + a) (ZT.natLit 0)) :
     Γ ⊢[PRAAx] ZT.eq (p5 q + q + a) ((q - x) * (ZT.natLit 1 + S4 x q)) := by
-  have e := ZT.toZ_eq h
-  apply ZT.derive
-  ipra_simps
-  linear_combination e
+  ipra_lc ZT.toZ_eq h
 
 /-! ## Depressing the general quintic -/
 

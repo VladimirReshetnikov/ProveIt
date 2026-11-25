@@ -1,4 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.FourSquaresSeed
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The square residues modulo an odd prime
@@ -38,8 +39,7 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 /-! ## The two roots -/
 
 theorem diff_alg {x y d : PTm k} (e : Γ ⊢[PRAAx] x ≐ y + d) : Γ ⊢[PRAAx] x * x ≐ y * y + d * (x + y) := by
-  have a := natEq e
-  apply deriveNat; ipra_simps; linear_combination (𝔞 x + 𝔞 y) * a
+  ipra_lc (𝔞 x + 𝔞 y) * natEq e
 
 /-- **The roots of `X² − y²`**: for a prime `p` and `y ≤ x`, `x² ≡ y² (mod p)` gives `p ∣ x − y` or
 `p ∣ x + y`. -/
@@ -57,8 +57,7 @@ theorem sq_roots {p x y : PTm k} (hp : Γ ⊢[PRAAx] prime p) (hxy : Γ ⊢[PRAA
 
 theorem neg_alg {p x m : PTm k} (e : Γ ⊢[PRAAx] p ≐ x + m) :
     Γ ⊢[PRAAx] p * (two * x) + m * m ≐ p * p + x * x := by
-  have a := natEq e
-  apply deriveNat; ipra_simps; linear_combination -(𝔞 p - 𝔞 x + 𝔞 m) * a
+  ipra_lc -(𝔞 p - 𝔞 x + 𝔞 m) * natEq e
 
 /-- `(p − x)² ≡ x² (mod p)` for `x ≤ p`. -/
 theorem neg_sq {p x : PTm k} (hp1 : Γ ⊢[PRAAx] p ≐ succ (pred p)) (hx : Γ ⊢[PRAAx] le x p) :
@@ -68,8 +67,7 @@ theorem neg_sq {p x : PTm k} (hp1 : Γ ⊢[PRAAx] p ≐ succ (pred p)) (hx : Γ 
 
 theorem upper_alg {p x h m s : PTm k} (ep : Γ ⊢[PRAAx] p ≐ two * h + one) (em : Γ ⊢[PRAAx] p ≐ x + m)
     (es : Γ ⊢[PRAAx] x ≐ succ h + s) : Γ ⊢[PRAAx] h ≐ m + s := by
-  have a := natEq ep; have b := natEq em; have c := natEq es
-  apply deriveNat; ipra_simps; linear_combination -a + b + c
+  ipra_lc -natEq ep + natEq em + natEq es
 
 /-- For `p = 2h + 1` and `x ≤ p`: `x ≤ h` or `p − x ≤ h`. -/
 theorem half_cases {p x h : PTm k} (ep : Γ ⊢[PRAAx] p ≐ two * h + one) (hx : Γ ⊢[PRAAx] le x p) :

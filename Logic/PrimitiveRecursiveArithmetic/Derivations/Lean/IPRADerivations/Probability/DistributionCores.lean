@@ -1,4 +1,4 @@
-import IPRADerivations.Core.IntCertificates
+import IPRADerivations.Core.CertificateTactics
 import IPRADerivations.Core.PolynomialInequalities
 
 /-!
@@ -51,17 +51,13 @@ theorem recip_bound {u v z D : ZT n} (hu : Γ ⊢[PRAAx] zle z (ZT.natLit 2 * u)
 
 /-- Uniform law, mean: `b² − a² = (b − a)(a + b)`. -/
 theorem uniform_mean (a b : ZT n) : Γ ⊢[PRAAx] ZT.eq (b * b - a * a) ((b - a) * (a + b)) := by
-  apply ZT.derive
-  simp only [ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_add]
-  ring
+  ipra_lc
 
 /-- Uniform law, variance: `4(b³ − a³) − 3(b − a)(a + b)² = (b − a)³`. -/
 theorem uniform_var (a b : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (ZT.natLit 4 * (b * b * b - a * a * a) - ZT.natLit 3 * (b - a) * ((a + b) * (a + b)))
       ((b - a) * (b - a) * (b - a)) := by
-  apply ZT.derive
-  simp only [ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_add, ZT.toZ_natLit, Nat.cast_ofNat]
-  ring
+  ipra_lc
 
 /-- `eq:normal-third`, cleared: `2 a³ N ≤ a² N² + a⁴`. -/
 theorem third_moment (a N : PTm n) :

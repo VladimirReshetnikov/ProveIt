@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.EigenvalueBound
 import IPRADerivations.Foundations.RationalRootConstant
 import IPRADerivations.Core.ProdLemmas
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Integrality of a rational eigenvalue in every dimension (`ipra_presentations_to_witnesses`, `lem:integer-eigenvalue`)
@@ -71,11 +72,8 @@ theorem pt {j b' x : PTm k} (hd : Γ ⊢[PRAAx] dvd (succ b') (inst2 ω j x)) :
     Γ ⊢[PRAAx] inst2 (wB e ω) j x ≐
       inst2 (mB (gB e ω)) j (pairT (succ b') (pairT (succ b') x)) := by
   rw [inst2_wB]
-  have m := natEq (mB_at (Γ := Γ) (gB e ω) j (succ b') (pairT (succ b') x))
-  have g := natEq (gB_at (Γ := Γ) e ω j (succ b') x)
-  have q := natEq (eq_of_dvd hd)
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 (inst2 e j x) * q - m - (𝔞 b' + 1) * g
+  ipra_lc 𝔞 (inst2 e j x) * natEq (eq_of_dvd hd) - natEq (mB_at (Γ := Γ) (gB e ω) j (succ b') (pairT (succ b') x)) -
+    (𝔞 b' + 1) * natEq (gB_at (Γ := Γ) e ω j (succ b') x)
 
 /-- `∑_{j<D} e_j ω_j = b ∑_{j<D} e_j ⌊ω_j / b⌋` when `b ∣ ω_j` for `j < D`. -/
 theorem sum_div {D b' x : PTm k}
@@ -108,14 +106,10 @@ theorem eigen_integral {D b' La u v x : PTm k} (hB : Γ ⊢[PRAAx] Bez b' La u v
       simp [Fm.shift, Syn.shift]
     rw [eB] at hB'
     exact euclid hB'.wk (.impE h1.allOpen.wk Prf.hyp0)
-  have sp := natEq (sum_div ep ω hall)
-  have sn := natEq (sum_div en ω hall)
-  have h := natEq h2
   -- `b X = 1 + b Y`, so `b ∣ 1`
   have eq : Γ ⊢[PRAAx] succ b' * ap2 (sumF (gB ep ω)) D (pairT (succ b') x) ≐
       one + succ b' * ap2 (sumF (gB en ω)) D (pairT (succ b') x) := by
-    apply deriveNat; ipra_simps
-    linear_combination h - sp + sn
+    ipra_lc natEq h2 - natEq (sum_div ep ω hall) + natEq (sum_div en ω hall)
   have d := dvd_sub (dvd_congr eq (dvd_of_eq (w := ap2 (sumF (gB ep ω)) D (pairT (succ b') x))
     (.eqRefl _))) (dvd_of_eq (w := ap2 (sumF (gB en ω)) D (pairT (succ b') x)) (.eqRefl _))
   have l := dvd_le d (pos_of_eq_succ (c := zero) (.eqRefl _))

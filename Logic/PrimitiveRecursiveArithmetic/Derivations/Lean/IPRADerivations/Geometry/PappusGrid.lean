@@ -1,5 +1,6 @@
 import IPRADerivations.Probability.Lotus
 import IPRADerivations.Core.SumLemmas
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Pappus's theorems for finite grids and polygonal chains (`pappus_centroid_ipra_2026-11-15`, `thm:grid-pappus`, `thm:polygon-pappus`)
@@ -76,10 +77,7 @@ theorem cell_nat {a b : PTm k} (e : PTm k) (h : Γ ⊢[PRAAx] le a b) :
 /-- From `V = T · M` and `M · q = A · p + A · p`: `V · q = T · (A · p + A · p)`. -/
 theorem centroid_form {V M A T p q : PTm k} (hv : Γ ⊢[PRAAx] V ≐ T * M)
     (hc : Γ ⊢[PRAAx] M * q ≐ A * p + A * p) : Γ ⊢[PRAAx] V * q ≐ T * (A * p + A * p) := by
-  have e₁ := natEq hv
-  have e₂ := natEq hc
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 q * e₁ + 𝔞 T * e₂
+  ipra_lc 𝔞 q * natEq hv + 𝔞 T * natEq hc
 
 /-! ## A pointwise proportionality, summed -/
 

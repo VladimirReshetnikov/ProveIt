@@ -80,7 +80,7 @@ theorem g_eq {j L : PTm n} (h : Γ ⊢[PRAAx] le (succ (two * j)) L) :
 theorem lower_base {w L : PTm n} (hL : Γ ⊢[PRAAx] le (num 3) L) :
     Γ ⊢[PRAAx] le (pw w zero * fact L) (num 3 * Tr w L (succ zero)) := by
   have h3 : Γ ⊢[PRAAx] le (succ (two * succ zero)) L :=
-    le_congr (by apply deriveNat; ipra_simps; ring) (.eqRefl _) hL
+    le_congr (by ipra_ring) (.eqRefl _) hL
   have e := natEq (g_eq h3)
   have t1 := natEq (Tr_succ (Γ := Γ) w L zero); have t0 := natEq (Tr_zero (Γ := Γ) w L)
   have p0 := natEq (pw_zero (Γ := Γ) w)
@@ -127,7 +127,7 @@ abbrev UpInv (k v L : PTm n) : Fm PTm n :=
 theorem upper_base {v L : PTm n} (hL : Γ ⊢[PRAAx] le (succ (two * succ (succ zero))) L) :
     Γ ⊢[PRAAx] UpInv zero v L := by
   have h3 : Γ ⊢[PRAAx] le (succ (two * succ zero)) L :=
-    le_trans (le_of_eq_add (d := two) (by apply deriveNat; ipra_simps; ring)) hL
+    le_trans (le_of_eq_add (d := two) (by ipra_ring)) hL
   have e3 := natEq (g_eq h3); have e5 := natEq (g_eq hL)
   have t2 := natEq (Tr_succ (Γ := Γ) (succ v) L (succ zero))
   have t1 := natEq (Tr_succ (Γ := Γ) (succ v) L zero); have t0 := natEq (Tr_zero (Γ := Γ) (succ v) L)
@@ -166,7 +166,7 @@ private theorem up₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] upF := by
       Syn.subst_var, Syn.repl_zero, repl_one, repl_two, ConciseIPRA.PTm.subst_zero,
       ConciseIPRA.PTm.subst_succ]
     refine .impI (upper_step Prf.hyp0 (Prf.impE Prf.hyp1 (le_trans (le_of_eq_add (d := two) ?_) Prf.hyp0)))
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
 
 /-- The upper bound with its tail, for `K = k + 2`, `w = v + 1` and `2K + 1 ≤ L`. -/
 theorem upper_inv {k v L : PTm n} (hL : Γ ⊢[PRAAx] le (succ (two * succ (succ k))) L) :
@@ -193,13 +193,13 @@ theorem robbins_upper {k v L : PTm n} (hL : Γ ⊢[PRAAx] le (succ (two * succ (
 theorem margin (m : PTm n) :
     Γ ⊢[PRAAx] succ (num 12 * m) * (num 12 * m + num 13) + num 23 ≐
       num 36 * (succ (two * m) * succ (two * m)) + num 24 * m := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- `(2n+1)² = 4n(n+1) + 1`: with `z = 1/(2n+1)` and `h_n = 1/(12n)`,
 `z²/(3(1 − z²)) = 1/(12n(n+1)) = h_n − h_{n+1}`. -/
 theorem w_eq (m : PTm n) :
     Γ ⊢[PRAAx] succ (two * m) * succ (two * m) ≐ succ (num 4 * (m * succ m)) := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- `eq:dcompare` at `z = 1/(2n+1)`, for `K = k + 2` and `2K + 1 ≤ L`, with `w = 4n(n+1) + 1 = (2n+1)²`:
 `w^{K−1} F ≤ 3 · Tr K` and `15 w² v · Tr K + 2v w^K F ≤ 5 w² w^K F` with `v = 4n(n+1)`, i.e.
@@ -213,7 +213,7 @@ theorem robbins_core {m k L : PTm n} (hL : Γ ⊢[PRAAx] le (succ (two * succ (s
       (num 5 * (succ (num 4 * (m * succ m)) * succ (num 4 * (m * succ m))) *
         (pw (succ (num 4 * (m * succ m))) (succ (succ k)) * fact L)) := by
   have h3 : Γ ⊢[PRAAx] le (num 3) L :=
-    le_trans (le_of_eq_add (d := two * succ k) (by apply deriveNat; ipra_simps; ring)) hL
+    le_trans (le_of_eq_add (d := two * succ k) (by ipra_ring)) hL
   exact .andI (robbins_lower h3 (succ k)) (robbins_upper hL)
 
 end LeanProofs.IPRA.Analysis.RobbinsSeries

@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.LcmBridgeDPsi
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The loss `D(m²) ≤ 8/m` and the `ϑ`-form of the lcm-bridge transfer (`robin_ipra_research_2026-11-19`)
@@ -61,13 +62,10 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 /-! ## Numerical facts -/
 
 theorem pw3_4 : Γ ⊢[PRAAx] pw c3 (succ (succ (succ (succ zero)))) ≐ (num 81 : PTm n) := by
-  have e4 := natEq (pw_succ (Γ := Γ) (c3 : PTm n) (succ (succ (succ zero))))
-  have e3 := natEq (pw_succ (Γ := Γ) (c3 : PTm n) (succ (succ zero)))
-  have e2 := natEq (pw_succ (Γ := Γ) (c3 : PTm n) (succ zero))
-  have e1 := natEq (pw_succ (Γ := Γ) (c3 : PTm n) zero)
-  have e0 := natEq (pw_zero (Γ := Γ) (c3 : PTm n))
-  apply deriveNat; ipra_simps
-  linear_combination e4 + 3 * e3 + 9 * e2 + 27 * e1 + 81 * e0
+  ipra_lc natEq (pw_succ (Γ := Γ) (c3 : PTm n) (succ (succ (succ zero)))) +
+    3 * natEq (pw_succ (Γ := Γ) (c3 : PTm n) (succ (succ zero))) +
+    9 * natEq (pw_succ (Γ := Γ) (c3 : PTm n) (succ zero)) + 27 * natEq (pw_succ (Γ := Γ) (c3 : PTm n) zero) +
+    81 * natEq (pw_zero (Γ := Γ) (c3 : PTm n))
 
 /-- `9^K ≥ 81` for `K ≥ 2`. -/
 theorem G81 {K : PTm n} (hK : Γ ⊢[PRAAx] le two K) : Γ ⊢[PRAAx] le (num 81) (Rv K c3) := by
@@ -213,7 +211,6 @@ theorem hth_le {m k Kθ Kh : PTm n} (hm : Γ ⊢[PRAAx] le (num 16) m) (hK : Γ 
       (loD_pos h4 h4P _)) (loD_pos (le_refl one) h4 _)) (pos_of_one_le (by ipra_le sl hG + 80)))
       (loD_pos htd1 htn _)
   exact hth_alg hM ev sub four mono hle hG
-
 
 /-! ## Names used in the statements -/
 

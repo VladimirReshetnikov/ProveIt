@@ -75,7 +75,7 @@ theorem candidates (p i' : PTm n) :
         (one + num 1024 * succ p * succ i'))
       (pw (succ (num 320 * succ p)) (num 327680 * (succ p * succ p) * succ i')) := by
   have eN : Γ ⊢[PRAAx] succ (candK p i') ≐ num 327680 * (succ p * succ p) * succ i' := by
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   have b := LeanProofs.IPRA.DiophantineNumberTheory.KhinchinAmplify.bern (Γ := Γ) (candK p i') (num 320 * succ p)
   have e1 := natEq (congrAp2 (Γ := Γ) powF eN (.eqRefl (num 320 * succ p)))
   have e2 := natEq (congrAp2 (Γ := Γ) powF eN (.eqRefl (succ (num 320 * succ p))))

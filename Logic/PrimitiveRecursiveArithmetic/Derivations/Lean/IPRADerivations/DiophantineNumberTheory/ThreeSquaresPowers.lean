@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.ThreeSquares
 import IPRADerivations.DiophantineNumberTheory.FourSquares
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The three-square obstruction for `4^a (8b + 7)`
@@ -63,18 +64,15 @@ abbrev R3 (n : PTm k) : PTm k := exB r3B (bd n) n
 
 theorem rearr1 {a b c n : PTm k} (e : Γ ⊢[PRAAx] a * a + b * b + c * c ≐ n) :
     Γ ⊢[PRAAx] a * a + (b * b + c * c) ≐ n := by
-  have x := natEq e
-  apply deriveNat; ipra_simps; linear_combination x
+  ipra_lc natEq e
 
 theorem rearr2 {a b c n : PTm k} (e : Γ ⊢[PRAAx] a * a + b * b + c * c ≐ n) :
     Γ ⊢[PRAAx] b * b + (a * a + c * c) ≐ n := by
-  have x := natEq e
-  apply deriveNat; ipra_simps; linear_combination x
+  ipra_lc natEq e
 
 theorem rearr3 {a b c n : PTm k} (e : Γ ⊢[PRAAx] a * a + b * b + c * c ≐ n) :
     Γ ⊢[PRAAx] c * c + (a * a + b * b) ≐ n := by
-  have x := natEq e
-  apply deriveNat; ipra_simps; linear_combination x
+  ipra_lc natEq e
 
 /-- Any representation makes the bit `1`. -/
 theorem r3_intro {n a b c : PTm k} (e : Γ ⊢[PRAAx] a * a + b * b + c * c ≐ n) : Γ ⊢[PRAAx] R3 n ≐ one := by
@@ -109,8 +107,7 @@ theorem r3_elim {n : PTm k} (h : Γ ⊢[PRAAx] R3 n ≐ one) :
 
 theorem sq_par_alg {x h r : PTm k} (e : Γ ⊢[PRAAx] x ≐ two * h + r) (hr : Γ ⊢[PRAAx] r * r ≐ r) :
     Γ ⊢[PRAAx] x * x ≐ (two * two) * (h * h + h * r) + r := by
-  have a := natEq e; have b := natEq hr
-  apply deriveNat; ipra_simps; linear_combination (𝔞 x + 2 * 𝔞 h + 𝔞 r) * a + b
+  ipra_lc (𝔞 x + 2 * 𝔞 h + 𝔞 r) * natEq e + natEq hr
 
 theorem par_idem (x : PTm k) : Γ ⊢[PRAAx] par x * par x ≐ par x := by
   refine .orE (par_cases x) ?_ ?_
@@ -179,16 +176,13 @@ theorem sum_alg {x y z m ux uy uz rx ry rz : PTm k} (e : Γ ⊢[PRAAx] x * x + y
     (sx : Γ ⊢[PRAAx] x * x ≐ (two * two) * ux + rx) (sy : Γ ⊢[PRAAx] y * y ≐ (two * two) * uy + ry)
     (sz : Γ ⊢[PRAAx] z * z ≐ (two * two) * uz + rz) :
     Γ ⊢[PRAAx] (two * two) * m ≐ (two * two) * (ux + uy + uz) + (rx + ry + rz) := by
-  have a := natEq e; have b := natEq sx; have c := natEq sy; have d := natEq sz
-  apply deriveNat; ipra_simps; linear_combination b + c + d - a
+  ipra_lc natEq sx + natEq sy + natEq sz - natEq e
 
 theorem half_alg {x y z m hx hy hz : PTm k} (e : Γ ⊢[PRAAx] x * x + y * y + z * z ≐ (two * two) * m)
     (ex : Γ ⊢[PRAAx] x ≐ two * hx + zero) (ey : Γ ⊢[PRAAx] y ≐ two * hy + zero)
     (ez : Γ ⊢[PRAAx] z ≐ two * hz + zero) :
     Γ ⊢[PRAAx] (two * two) * (hx * hx + hy * hy + hz * hz) ≐ (two * two) * m := by
-  have a := natEq e; have b := natEq ex; have c := natEq ey; have d := natEq ez
-  apply deriveNat; ipra_simps
-  linear_combination a - (𝔞 x + 2 * 𝔞 hx) * b - (𝔞 y + 2 * 𝔞 hy) * c - (𝔞 z + 2 * 𝔞 hz) * d
+  ipra_lc natEq e - (𝔞 x + 2 * 𝔞 hx) * natEq ex - (𝔞 y + 2 * 𝔞 hy) * natEq ey - (𝔞 z + 2 * 𝔞 hz) * natEq ez
 
 /-- `x² + y² + z² = 4m` gives `(x/2)² + (y/2)² + (z/2)² = m`. -/
 theorem halve {x y z m : PTm k} (e : Γ ⊢[PRAAx] x * x + y * y + z * z ≐ (two * two) * m) :
@@ -220,8 +214,7 @@ theorem r3_base (b : PTm k) : Γ ⊢[PRAAx] R3 (pw (two * two) zero * (num 8 * b
 
 theorem step_alg (a c : PTm k) :
     Γ ⊢[PRAAx] pw (two * two) (succ a) * c ≐ (two * two) * (pw (two * two) a * c) := by
-  have p := natEq (pw_succ (Γ := Γ) (two * two) a)
-  apply deriveNat; ipra_simps; linear_combination 𝔞 c * p
+  ipra_lc 𝔞 c * natEq (pw_succ (Γ := Γ) (two * two) a)
 
 theorem r3_step {a c : PTm k} (ih : Γ ⊢[PRAAx] R3 (pw (two * two) a * c) ≐ zero) :
     Γ ⊢[PRAAx] R3 (pw (two * two) (succ a) * c) ≐ zero := by

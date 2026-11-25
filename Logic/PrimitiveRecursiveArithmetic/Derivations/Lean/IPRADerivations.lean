@@ -36,6 +36,9 @@ import IPRADerivations.Core.SumSplit
 import IPRADerivations.Core.SumPalindrome
 import IPRADerivations.Core.IntOrder
 import IPRADerivations.Core.IntCertificates
+import IPRADerivations.Core.CertificateAttr
+import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.CongruenceTactic
 import IPRADerivations.Algebra.CayleyHamilton
 import IPRADerivations.Algebra.AdjugateInverse
 import IPRADerivations.Algebra.CayleyHamiltonGeneral

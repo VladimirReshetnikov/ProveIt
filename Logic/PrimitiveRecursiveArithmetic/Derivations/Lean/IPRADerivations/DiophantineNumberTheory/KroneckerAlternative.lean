@@ -1,5 +1,6 @@
 import IPRADerivations.Geometry.TriangularNorm
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The obstruction alternative and the `√2` gap
@@ -60,8 +61,7 @@ theorem alt_D {Q C u l e δ : PTm n} (H1 : Γ ⊢[PRAAx] le (num 64 * succ C * e
 theorem sqrt2_core {h p : PTm n} (e : Γ ⊢[PRAAx] p * p ≐ two * (h * h)) : Γ ⊢[PRAAx] h ≐ zero := by
   have e' := natEq e
   refine Prf.andE₁ (no_sqrt2 (a := h) (b := zero) (c := p) (d := zero) ?_)
-  apply deriveNat; ipra_simps
-  linear_combination e'
+  ipra_lc e'
 
 /-- For `h ≥ 1`: `p² < 2h²` or `2h² < p²`, i.e. `|2h² − p²| ≥ 1`. -/
 theorem sqrt2_gap {h p : PTm n} (hh : Γ ⊢[PRAAx] h ≐ succ (pred h)) :

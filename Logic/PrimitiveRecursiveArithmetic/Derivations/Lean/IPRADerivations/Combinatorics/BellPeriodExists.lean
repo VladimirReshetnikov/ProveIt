@@ -4,6 +4,7 @@ import IPRADerivations.Foundations.TermCompiler
 import IPRADerivations.Topology.InjectionBound
 import IPRADerivations.AnalyticNumberTheory.Multiplicative
 import IPRADerivations.AnalyticNumberTheory.Primes
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The Bell numbers are periodic modulo every `m` (`bell_numbers_ipra`, `thm:all-moduli-period`)
@@ -225,10 +226,7 @@ theorem bell_uniform_period {m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m))
   have w := eq_of_dvd hd
   have e : Γ ⊢[PRAAx] fact (pw m m) + N ≐
       quo (fact (pw m m)) (succ (pred (Tm m))) * Tm m + N := by
-    have a := natEq w
-    have b := natEq hp
-    apply deriveNat; ipra_simps
-    linear_combination a - 𝔞 (quo (fact (pw m m)) (succ (pred (Tm m)))) * b
+    ipra_lc natEq w - 𝔞 (quo (fact (pw m m)) (succ (pred (Tm m)))) * natEq hp
   exact (cong_of_eq (congrBell e)).eqTrans (window_mul hm (period_test hm) _ N)
 
 /-- The uniform period, closed over `m − 1` and `N`. -/

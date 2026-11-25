@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.RationalCubeCoherentMinimizer
 import IPRADerivations.Analysis.RationalCubeInfimumComparison
 import IPRADerivations.Analysis.AggregateApproximateLipschitz
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Exact uniqueness of the cube-presented minimizing point name
@@ -135,7 +136,6 @@ theorem approximant_near (A : PR 3) (mu b : PR 2) (d x z e s : PTm n)
   simpa only [Syn.shift,subst_ap2] using approximant_near_at A mu b (Syn.shift (Syn.shift d)) (Syn.shift (Syn.shift x))
     (Syn.shift (Syn.shift z)) (Syn.shift (Syn.shift e)) (Syn.shift (Syn.shift s)) (var 1) (var 0) c t nn cc vv ss
 
-
 def tailIndex (mu u : PR 2) (k x : PTm n) : PTm n := k+succ (ap2 mu (succ (ap2 u k x)) x)
 @[simp] theorem subst_tailIndex {l : ℕ} (σ : Fin n → PTm l) (mu u : PR 2) (k x : PTm n) :
     Syn.subst σ (tailIndex mu u k x) = tailIndex mu u (Syn.subst σ k) (Syn.subst σ x) := by simp [tailIndex]
@@ -171,10 +171,7 @@ theorem approximate_cross_radius (A : PR 3) (mu u b : PR 2) (d x z q t k : PTm n
       (RationalAlgebra.positive_product (RationalCubeGrid.scale_positive q) (RationalCubeGrid.scale_positive k))
       (RationalAlgebra.positive_product (RationalCubeGrid.scale_positive s) (RationalCubeGrid.scale_positive t))) combined
   refine le_of_eq_add (d := (scale q*scale t)*(scale q*scale t)*scale k*monus (scale s) (scale k)) ?_
-  have ep := natEq (eq_add_of_le power)
-  apply deriveNat
-  ipra_simps
-  linear_combination 𝔞(scale q)^2*𝔞(scale t)^2*𝔞(scale k)*ep
+  ipra_lc 𝔞(scale q)^2*𝔞(scale t)^2*𝔞(scale k)*natEq (eq_add_of_le power)
 
 /-- Exact mixed-query equality follows by one actual rational distance-gap
 query. No unknown point, limiting choice or cross-name premise is used. -/
@@ -216,7 +213,6 @@ theorem unique_name (A : PR 3) (mu u b : PR 2) (d x z : PTm n)
     simpa only [Fm.shift,subst_sameValue,Syn.shift] using hV.shift.shift
   simpa only [Syn.shift,RationalCubeInfimumName.subst_data] using unique_name_radius A mu u b
     (Syn.shift (Syn.shift d)) (Syn.shift (Syn.shift x)) (Syn.shift (Syn.shift z)) (var 1) (var 0) c tt uu nn cc vv
-
 
 theorem selected_evaluation_at (A : PR 3) (mu u : PR 2) (d p x : PTm n) : Γ ⊢[PRAAx]
     evaluation A mu (RationalCubeCoherentMinimizer.pointF A mu u) p x (data d x) ≐ RationalCubeCoherentMinimizer.evaluation A mu u d p x :=

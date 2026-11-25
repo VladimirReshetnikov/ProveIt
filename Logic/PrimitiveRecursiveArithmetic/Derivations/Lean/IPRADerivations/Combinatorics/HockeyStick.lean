@@ -48,8 +48,8 @@ theorem hs_step {m d : PTm n} (ih : Γ ⊢[PRAAx] ap2 (sumF hB) (succ d) m ≐ g
     Γ ⊢[PRAAx] ap2 (sumF hB) (succ (succ d)) m ≐ gb (m + succ d + one) (succ d) := by
   have s := sum_succ' (Γ := Γ) hB (succ d) m
   rw [inst2_h] at s
-  have e₁ : Γ ⊢[PRAAx] m + succ d + one ≐ succ (m + d + one) := by apply deriveNat; ipra_simps; ring
-  have e₂ : Γ ⊢[PRAAx] m + succ d ≐ m + d + one := by apply deriveNat; ipra_simps; ring
+  have e₁ : Γ ⊢[PRAAx] m + succ d + one ≐ succ (m + d + one) := by ipra_ring
+  have e₂ : Γ ⊢[PRAAx] m + succ d ≐ m + d + one := by ipra_ring
   refine s.eqTrans ((congrAdd ih (congrGb e₂ (.eqRefl _))).eqTrans ?_)
   exact (add_comm _ _).eqTrans ((gb_pascal _ _).eqSymm.eqTrans (congrGb e₁.eqSymm (.eqRefl _)))
 
@@ -73,7 +73,7 @@ theorem hockey_stick (m d : PTm n) : Γ ⊢[PRAAx] ap2 (sumF hB) (succ d) m ≐ 
 /-- The stars-and-bars recursion for `N(n, d) = C(n + d, d)`: `N(n + 1, d) = ∑_{k ≤ d} N(n, k)`. -/
 theorem stars_bars_rec (m d : PTm n) :
     Γ ⊢[PRAAx] gb (succ m + d) d ≐ ap2 (sumF hB) (succ d) m := by
-  have e : Γ ⊢[PRAAx] succ m + d ≐ m + d + one := by apply deriveNat; ipra_simps; ring
+  have e : Γ ⊢[PRAAx] succ m + d ≐ m + d + one := by ipra_ring
   exact (congrGb e (.eqRefl _)).eqTrans (hockey_stick m d).eqSymm
 
 /-- `N(0, d) = 1`. -/

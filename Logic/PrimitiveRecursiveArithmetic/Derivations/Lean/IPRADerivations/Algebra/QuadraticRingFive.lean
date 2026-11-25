@@ -1,4 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.Coprime
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The norm of `ℤ[√−5]`: zero, units, and the absence of norms `2` and `3`
@@ -45,32 +46,28 @@ theorem big_b {a b p c e : PTm n} (hb : Γ ⊢[PRAAx] b ≐ succ p) (h : Γ ⊢[
     (hc : Γ ⊢[PRAAx] c + succ e ≐ num 5) : Γ ⊢[PRAAx] Fm.bot := by
   have b1 := natEq hb; have h1 := natEq h; have c1 := natEq hc
   refine succ_ne_zero' _ (a := a * a + num 5 * (p * p) + num 10 * p + e) ?_
-  apply deriveNat; ipra_simps; push_cast at b1 h1 c1 ⊢
-  linear_combination h1 - 5 * (𝔞 b + 𝔞 p + 1) * b1 + c1
+  ipra_lc h1 - 5 * (𝔞 b + 𝔞 p + 1) * b1 + c1
 
 /-- `a = 0`, `b = 0` and a positive norm are incompatible. -/
 theorem zero_zero {a b e : PTm n} (ha : Γ ⊢[PRAAx] a ≐ zero) (hb : Γ ⊢[PRAAx] b ≐ zero)
     (h : Γ ⊢[PRAAx] N5 a b ≐ succ e) : Γ ⊢[PRAAx] Fm.bot := by
   have a1 := natEq ha; have b1 := natEq hb; have h1 := natEq h
   refine succ_ne_zero' _ (a := e) ?_
-  apply deriveNat; ipra_simps; push_cast at a1 b1 h1 ⊢
-  linear_combination -h1 + 𝔞 a * a1 + 5 * 𝔞 b * b1
+  ipra_lc -h1 + 𝔞 a * a1 + 5 * 𝔞 b * b1
 
 /-- `a = 1`, `b = 0` and a norm `≥ 2` are incompatible. -/
 theorem one_zero {a b p e : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ p) (hp : Γ ⊢[PRAAx] p ≐ zero)
     (hb : Γ ⊢[PRAAx] b ≐ zero) (h : Γ ⊢[PRAAx] N5 a b ≐ succ (succ e)) : Γ ⊢[PRAAx] Fm.bot := by
   have a1 := natEq ha; have p1 := natEq hp; have b1 := natEq hb; have h1 := natEq h
   refine succ_ne_zero' _ (a := e) ?_
-  apply deriveNat; ipra_simps; push_cast at a1 p1 b1 h1 ⊢
-  linear_combination -h1 + (𝔞 a + 1) * (a1 + p1) + 5 * 𝔞 b * b1
+  ipra_lc -h1 + (𝔞 a + 1) * (a1 + p1) + 5 * 𝔞 b * b1
 
 /-- `a ≥ 2` makes the norm at least `4`. -/
 theorem big_a {a b p r c e : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ p) (hp : Γ ⊢[PRAAx] p ≐ succ r)
     (h : Γ ⊢[PRAAx] N5 a b ≐ c) (hc : Γ ⊢[PRAAx] c + succ e ≐ num 4) : Γ ⊢[PRAAx] Fm.bot := by
   have a1 := natEq ha; have p1 := natEq hp; have h1 := natEq h; have c1 := natEq hc
   refine succ_ne_zero' _ (a := r * r + num 4 * r + num 5 * (b * b) + e) ?_
-  apply deriveNat; ipra_simps; push_cast at a1 p1 h1 c1 ⊢
-  linear_combination h1 - (𝔞 a + 𝔞 r + 2) * (a1 + p1) + c1
+  ipra_lc h1 - (𝔞 a + 𝔞 r + 2) * (a1 + p1) + c1
 
 /-! ## No element of norm `2` or `3` -/
 
@@ -105,16 +102,16 @@ theorem no_small_norm {a b c e0 e4 e5 : PTm n} (hc : Γ ⊢[PRAAx] c ≐ succ (s
     exact big_b hb h.wk h5.wk.wk
 
 theorem c2_4 : Γ ⊢[PRAAx] (two : PTm n) + succ one ≐ num 4 := by
-  apply deriveNat; ipra_simps; push_cast; ring
+  ipra_lc
 
 theorem c2_5 : Γ ⊢[PRAAx] (two : PTm n) + succ two ≐ num 5 := by
-  apply deriveNat; ipra_simps; push_cast; ring
+  ipra_lc
 
 theorem c3_4 : Γ ⊢[PRAAx] (succ two : PTm n) + succ zero ≐ num 4 := by
-  apply deriveNat; ipra_simps; push_cast; ring
+  ipra_lc
 
 theorem c3_5 : Γ ⊢[PRAAx] (succ two : PTm n) + succ one ≐ num 5 := by
-  apply deriveNat; ipra_simps; push_cast; ring
+  ipra_lc
 
 /-- **No element of norm `2`**. -/
 theorem no_norm_two (a b : PTm n) : Γ ⊢[PRAAx] neg (N5 a b ≐ two) :=
@@ -130,13 +127,11 @@ theorem sq_zero_alg {a p X : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ p) (h : Γ �
     Γ ⊢[PRAAx] Fm.bot := by
   have a1 := natEq ha; have h1 := natEq h
   refine succ_ne_zero' _ (a := p * p + two * p + X) ?_
-  apply deriveNat; ipra_simps
-  linear_combination h1 - (𝔞 a + 𝔞 p + 1) * a1
+  ipra_lc h1 - (𝔞 a + 𝔞 p + 1) * a1
 
 theorem swap_alg {a b : PTm n} (h : Γ ⊢[PRAAx] N5 a b ≐ zero) :
     Γ ⊢[PRAAx] b * b + (a * a + num 4 * (b * b)) ≐ zero := by
-  have h1 := natEq h
-  apply deriveNat; ipra_simps; push_cast at h1 ⊢; linear_combination h1
+  ipra_lc natEq h
 
 /-- **The norm vanishes only at zero**. -/
 theorem norm_zero {a b : PTm n} (h : Γ ⊢[PRAAx] N5 a b ≐ zero) : Γ ⊢[PRAAx] (a ≐ zero) ⋏ (b ≐ zero) := by
@@ -147,13 +142,11 @@ theorem norm_zero {a b : PTm n} (h : Γ ⊢[PRAAx] N5 a b ≐ zero) : Γ ⊢[PRA
     exact .botE _ (sq_zero_alg (Prf.hyp0 (Γ := Γ) (φ := b ≐ succ (pred b))) (swap_alg h).wk)
 
 theorem one5 : Γ ⊢[PRAAx] (one : PTm n) + succ (succ two) ≐ num 5 := by
-  apply deriveNat; ipra_simps; push_cast; ring
+  ipra_lc
 
 theorem unit_alg {a b p : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ p) (hb : Γ ⊢[PRAAx] b ≐ zero)
     (h : Γ ⊢[PRAAx] N5 a b ≐ one) : Γ ⊢[PRAAx] zero ≐ p + (p * p + p) := by
-  have a1 := natEq ha; have b1 := natEq hb; have h1 := natEq h
-  apply deriveNat; ipra_simps; push_cast at a1 b1 h1 ⊢
-  linear_combination -h1 + (𝔞 a + 𝔞 p + 1) * a1 + 5 * 𝔞 b * b1
+  ipra_lc -natEq h + (𝔞 a + 𝔞 p + 1) * natEq ha + 5 * 𝔞 b * natEq hb
 
 /-- **The units**: `a² + 5b² = 1` gives `a = 1` and `b = 0`. -/
 theorem unit_norm {a b : PTm n} (h : Γ ⊢[PRAAx] N5 a b ≐ one) : Γ ⊢[PRAAx] (a ≐ one) ⋏ (b ≐ zero) := by
@@ -172,16 +165,16 @@ theorem unit_norm {a b : PTm n} (h : Γ ⊢[PRAAx] N5 a b ≐ one) : Γ ⊢[PRAA
 
 /-- The first coordinate of `u² − 2a u + N(u) = 0`: `a² + (a² + 5b²) = 5b² + 2a²`. -/
 theorem integrality_re (a b : PTm n) : Γ ⊢[PRAAx] a * a + N5 a b ≐ num 5 * (b * b) + two * (a * a) := by
-  apply deriveNat; ipra_simps; push_cast; ring
+  ipra_lc
 
 /-- The second coordinate: `2ab = (2a) b`. -/
 theorem integrality_im (a b : PTm n) : Γ ⊢[PRAAx] two * (a * b) ≐ (two * a) * b := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- `2 · 3 = 6 = N(1 ± θ)`. -/
 theorem six_two_ways : Γ ⊢[PRAAx] ((two : PTm n) * succ two ≐ num 6) ⋏ (N5 (one : PTm n) one ≐ num 6) := by
   refine .andI ?_ ?_
-  · apply deriveNat; ipra_simps; push_cast; ring
-  · apply deriveNat; ipra_simps; push_cast; ring
+  · ipra_lc
+  · ipra_lc
 
 end LeanProofs.IPRA.Algebra.QuadraticRingFive

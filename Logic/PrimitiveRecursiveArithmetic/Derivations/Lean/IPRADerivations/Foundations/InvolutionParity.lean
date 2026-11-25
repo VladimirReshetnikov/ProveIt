@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.EliminationDegree
 import IPRADerivations.Foundations.BoundedFormulas
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Counting under a fixed-point-free involution
@@ -45,9 +46,8 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 theorem sg_lt {a c : PTm n} (h : Γ ⊢[PRAAx] lt a c) :
     Γ ⊢[PRAAx] sg (monus c a) + sg (monus a c) ≐ one := by
   have z : Γ ⊢[PRAAx] sg (monus a c) ≐ zero := sg_of_zero (le_of_lt h)
-  have e := natEq (eq_add_of_le h)
   have e₂ : Γ ⊢[PRAAx] c ≐ succ (monus c (succ a)) + a := by
-    apply deriveNat; ipra_simps; linear_combination e
+    ipra_lc natEq (eq_add_of_le h)
   have p : Γ ⊢[PRAAx] sg (monus c a) ≐ one :=
     sg_of_pos ((congrMonus e₂ (.eqRefl a)).eqTrans (add_monus _ _))
   exact (congrAdd p z).eqTrans (add_zero _)
@@ -91,9 +91,7 @@ theorem lower_half {i x : PTm n} (hne : Γ ⊢[PRAAx] neg (inst2 ι i x ≐ i)) 
     Γ ⊢[PRAAx] inst2 b i x ≐ inst2 (addBody (loB b ι) (hiB b ι)) i x := by
   rw [inst2_addBody, inst2_loB, inst2_hiB]
   have hne' : Γ ⊢[PRAAx] neg (i ≐ inst2 ι i x) := .impI (.impE hne.wk Prf.hyp0.eqSymm)
-  have s := natEq (sg_split hne')
-  apply deriveNat; ipra_simps
-  linear_combination (-(𝔞 (inst2 b i x))) * s
+  ipra_lc (-(𝔞 (inst2 b i x))) * natEq (sg_split hne')
 
 /-- `hiB(i) = loB(ι(i))` below `N`. -/
 theorem upper_half {i x : PTm n} (hb : Γ ⊢[PRAAx] inst2 b (inst2 ι i x) x ≐ inst2 b i x)
@@ -124,10 +122,6 @@ theorem involution_even (b ι : PTm 2) {N x : PTm n} (hr : Γ ⊢[PRAAx] rangeAl
       exact .impE r.wk Prf.hyp0
     exact upper_half b ι (.impE hb.allOpen.wk Prf.hyp0) hii
   have perm := sum_perm (F := loB b ι) hr hinv hret
-  have e₁ := natEq split
-  have e₂ := natEq (sum_add (Γ := Γ) (loB b ι) (hiB b ι) N x)
-  have e₃ := natEq (swap.eqTrans perm)
-  apply deriveNat; ipra_simps
-  linear_combination e₁ + e₂ + e₃
+  ipra_lc natEq split + natEq (sum_add (Γ := Γ) (loB b ι) (hiB b ι) N x) + natEq (swap.eqTrans perm)
 
 end LeanProofs.IPRA.Foundations.InvolutionParity

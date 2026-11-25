@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.BaselQuadrature
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The independent Riemann-sum code of the Basel constant
@@ -54,7 +55,7 @@ theorem dec_tB (m F : PTm n) : Γ ⊢[PRAAx] Dec tB (succ m) F := by
   refine .allI (.impI ?_)
   rw [inst2_t, inst2_t]
   refine quo_anti (odd_pos _) (le_of_eq_add (d := two) ?_)
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- `0 ≤ A_N ≤ 1` for `N ≥ 1`, cleared: `A⁻ ≤ A⁺ ≤ A⁻ + F`. -/
 theorem A_bounds {N N₀ : PTm n} (L : PTm n) (hN : Γ ⊢[PRAAx] N ≐ succ N₀) :
@@ -68,15 +69,12 @@ theorem A_bounds {N N₀ : PTm n} (L : PTm n) (hN : Γ ⊢[PRAAx] N ≐ succ N�
 /-- `Q_M ≤ 1`, cleared: `Q(M) ≤ F` for `M = M₀ + 1`, `2M² ≤ L`. -/
 theorem Q_le {M₀ L : PTm n} (hM : Γ ⊢[PRAAx] le (two * (succ M₀ * succ M₀)) L) :
     Γ ⊢[PRAAx] le (Qs (succ M₀) L) (fact L) := by
-  have ub := natEq (eq_add_of_le (U_bound (N := zero) hM))
-  have u0 := natEq (U_zero (Γ := Γ) (succ M₀) L)
-  have p1 := natEq ((congrAp2 powF (congrSucc (by apply deriveNat; ipra_simps; ring :
+  have p1 := natEq ((congrAp2 powF (congrSucc (by ipra_ring :
       Γ ⊢[PRAAx] two * zero ≐ (zero : PTm n))) (.eqRefl (succ M₀))).eqTrans ((pw_succ _ _).eqTrans
     ((congrMul (pw_zero _) (.eqRefl _)).eqTrans (one_mul _))))
   refine mul_le_cancel (d' := M₀) (le_of_eq_add (d := monus (fact L * pw (succ M₀) (succ (two * zero)))
     (succ (two * zero) * U zero (succ M₀) L)) ?_)
-  apply deriveNat; ipra_simps
-  linear_combination ub + u0 - 𝔞 (fact L) * p1
+  ipra_lc natEq (eq_add_of_le (U_bound (N := zero) hM)) + natEq (U_zero (Γ := Γ) (succ M₀) L) - 𝔞 (fact L) * p1
 
 /-! ## The quadrature comparison at `M = N²` -/
 
@@ -87,8 +85,7 @@ theorem lin_cancel {P P' M c x y z F : PTm n} (hP : Γ ⊢[PRAAx] P ≐ succ (pr
   have h1 := natEq (eq_add_of_le h); have s := natEq hs
   refine mul_le_cancel (d' := pred P) (le_congr (congrMul hP (.eqRefl _)) (congrMul hP (.eqRefl _))
     (le_of_eq_add (d := monus (c * (P' * y) + c * (z * (F * P)) + F * P') (c * (P' * x))) ?_))
-  apply deriveNat; ipra_simps
-  linear_combination h1 + (𝔞 c * 𝔞 x - 𝔞 c * 𝔞 y - 𝔞 F) * s
+  ipra_lc h1 + (𝔞 c * 𝔞 x - 𝔞 c * 𝔞 y - 𝔞 F) * s
 
 /-- `prop:quadrature` without the power `M^{2N}`: `(2N+1) M |Q(M) − F A_N| ≤ (2N+1) N F + F M`. -/
 theorem quad_lin {N M₀ L : PTm n} (hM : Γ ⊢[PRAAx] le (two * (succ M₀ * succ M₀)) L)
@@ -110,14 +107,12 @@ theorem close_aux {N N₀ M F x y : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ N₀) 
     Γ ⊢[PRAAx] le (two * N * x) (two * N * y + num 3 * F) := by
   have l := natEq (eq_add_of_le h); have nN := natEq hN; have mM := natEq hM
   have hK : Γ ⊢[PRAAx] succ (two * N) * N ≐ succ (two * (N₀ * N₀) + num 5 * N₀ + two) := by
-    apply deriveNat; ipra_simps
-    linear_combination (2 * 𝔞 N + 2 * 𝔞 N₀ + 3) * nN
+    ipra_lc (2 * 𝔞 N + 2 * 𝔞 N₀ + 3) * nN
   refine mul_le_cancel (d' := two * (N₀ * N₀) + num 5 * N₀ + two)
     (le_congr (congrMul hK (.eqRefl _)) (congrMul hK (.eqRefl _))
       (le_of_eq_add (d := two * monus (succ (two * N) * (M * y) + succ (two * N) * (N * F) + F * M)
         (succ (two * N) * (M * x)) + N * F) ?_))
-  apply deriveNat; ipra_simps
-  linear_combination 2 * l + 2 * ((2 * 𝔞 N + 1) * 𝔞 x - (2 * 𝔞 N + 1) * 𝔞 y - 𝔞 F) * mM
+  ipra_lc 2 * l + 2 * ((2 * 𝔞 N + 1) * 𝔞 x - (2 * 𝔞 N + 1) * 𝔞 y - 𝔞 F) * mM
 
 /-- From `2N |q − (a − b)| ≤ 3F`, `0 ≤ a − b ≤ F` and `q ≤ F`: `N |16 q² − 16 (a − b)²| ≤ 48 F²`. -/
 theorem sq_aux {N q a b F : PTm n}
@@ -133,12 +128,10 @@ theorem sq_aux {N q a b F : PTm n}
       num 24 * (F * (monus F q + monus (b + F) a))) ?_)
     (le_of_eq_add (d := num 8 * (monus (two * N * (q + b) + num 3 * F) (two * N * a) * (q + monus a b)) +
       num 24 * (F * (monus F q + monus (b + F) a))) ?_)
-  · apply deriveNat; ipra_simps
-    linear_combination 8 * (𝔞 a - 𝔞 b + 𝔞 q) * e1 +
-      8 * 𝔞 (monus (two * N * a + num 3 * F) (two * N * (q + b))) * ea + 24 * 𝔞 F * (es + eb)
-  · apply deriveNat; ipra_simps
-    linear_combination 8 * (𝔞 a - 𝔞 b + 𝔞 q) * e2 +
-      8 * 𝔞 (monus (two * N * (q + b) + num 3 * F) (two * N * a)) * ea + 24 * 𝔞 F * (es + eb)
+  · ipra_lc 8 * (𝔞 a - 𝔞 b + 𝔞 q) * e1 + 8 * 𝔞 (monus (two * N * a + num 3 * F) (two * N * (q + b))) * ea +
+      24 * 𝔞 F * (es + eb)
+  · ipra_lc 8 * (𝔞 a - 𝔞 b + 𝔞 q) * e2 + 8 * 𝔞 (monus (two * N * (q + b) + num 3 * F) (two * N * a)) * ea +
+      24 * 𝔞 F * (es + eb)
 
 /-! ## The dyadic estimate for the Riemann-sum code -/
 
@@ -172,10 +165,8 @@ theorem riemann_dyadic {r M₀ m L : PTm n} (hm : Γ ⊢[PRAAx] le (pw two r) m)
       monus (pw two r * (num 16 * (Ap (pw two r) L * Ap (pw two r) L + Am (pw two r) L * Am (pw two r) L)) +
           num 48 * (fact L * fact L))
         (pw two r * (num 16 * (Qs (succ M₀) L * Qs (succ M₀) L + two * (Ap (pw two r) L * Am (pw two r) L))))) ?_)
-  · apply deriveNat; ipra_simps
-    linear_combination d1 + s2
-  · apply deriveNat; ipra_simps
-    linear_combination d2 + s1
+  · ipra_lc d1 + s2
+  · ipra_lc d2 + s1
 
 /-! ## The growth inequality -/
 
@@ -186,18 +177,14 @@ private theorem growth₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] growthF := by
   refine ind _ (le_QF _ _) ?_ ?_
   · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_num,
       Syn.subst_var, Syn.inst_zero, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have e := natEq (pw_zero (Γ := []) (two : PTm 0))
     refine le_of_eq_add (d := num 4) ?_
-    apply deriveNat; ipra_simps
-    linear_combination 128 * e
+    ipra_lc 128 * natEq (pw_zero (Γ := []) (two : PTm 0))
   · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_num,
       Syn.subst_var, Syn.repl_zero, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have e₁ := natEq (eq_add_of_le (Prf.hyp0 : [growthF] ⊢[PRAAx] growthF))
-    have e₂ := natEq (pw_succ (Γ := [growthF]) (two : PTm 1) (var 0))
     refine le_of_eq_add (d := num 16 * var 0 + num 108 + two * monus (num 128 * pw two (var 0))
       (num 16 * var 0 + num 124)) ?_
-    apply deriveNat; ipra_simps
-    linear_combination 128 * e₂ + 2 * e₁
+    ipra_lc 128 * natEq (pw_succ (Γ := [growthF]) (two : PTm 1) (var 0)) +
+      2 * natEq (eq_add_of_le (Prf.hyp0 : [growthF] ⊢[PRAAx] growthF))
 
 /-- `16k + 124 ≤ 128 · 2^k`. -/
 theorem growth' (k : PTm n) : Γ ⊢[PRAAx] le (num 16 * k + num 124) (num 128 * pw two k) := by
@@ -208,11 +195,8 @@ theorem growth' (k : PTm n) : Γ ⊢[PRAAx] le (num 16 * k + num 124) (num 128 *
 /-- `2^k (8r + 68) ≤ 2^r` for `r = 2k + 7`. -/
 theorem growth_cut' (k : PTm n) :
     Γ ⊢[PRAAx] le (pw two k * (num 8 * (two * k + num 7) + num 68)) (cut k) := by
-  have g := natEq (eq_add_of_le (growth' (Γ := Γ) k))
-  have c := natEq (cut_eq (Γ := Γ) k)
   refine le_of_eq_add (d := pw two k * monus (num 128 * pw two k) (num 16 * k + num 124)) ?_
-  apply deriveNat; ipra_simps
-  linear_combination c + 𝔞 (pw two k) * g
+  ipra_lc natEq (cut_eq (Γ := Γ) k) + 𝔞 (pw two k) * natEq (eq_add_of_le (growth' (Γ := Γ) k))
 
 /-! ## The independent code (`cor:riemann`) -/
 
@@ -229,14 +213,11 @@ theorem riemann {k m L : PTm n} (hm : Γ ⊢[PRAAx] le (cut k) m) (hL : Γ ⊢[P
   have eM : Γ ⊢[PRAAx] cut k * cut k ≐ succ (pred (cut k * cut k)) := by
     have hp' := natEq hp
     refine eq_succ_pred (y := pred (cut k) * pred (cut k) + two * pred (cut k)) ?_
-    apply deriveNat; ipra_simps
-    linear_combination (𝔞 (cut k) + 𝔞 (pred (cut k)) + 1) * hp'
+    ipra_lc (𝔞 (cut k) + 𝔞 (pred (cut k)) + 1) * hp'
   have hQ' : Γ ⊢[PRAAx] le (two * (succ (pred (cut k * cut k)) * succ (pred (cut k * cut k)))) L :=
     le_congr (congrMul (.eqRefl two) (congrMul eM eM)) (.eqRefl _) hQ
   have rd := riemann_dyadic (r := two * k + num 7) hm hL hmL eM.eqSymm hQ'
   have r1 := natEq (eq_add_of_le (Prf.andE₁ rd)); have r2 := natEq (eq_add_of_le (Prf.andE₂ rd))
-  have gc := natEq (eq_add_of_le (growth_cut' (Γ := Γ) k))
-  have qe := natEq (congrAp2 (sumF Qb) eM (congrPairT eM (.eqRefl L)))
   refine .andI
     (mul_le_cancel (d' := pred (cut k)) (le_congr (congrMul hp (.eqRefl _)) (congrMul hp (.eqRefl _))
       (le_of_eq_add (d := pw two k * monus (cut k * (num 16 * (Qs (succ (pred (cut k * cut k))) L *
@@ -248,13 +229,9 @@ theorem riemann {k m L : PTm n} (hm : Γ ⊢[PRAAx] le (cut k) m) (hL : Γ ⊢[P
             (num 8 * (two * k + num 7) + num 68) * (fact L * fact L))
           (cut k * (num 16 * (Qs (succ (pred (cut k * cut k))) L * Qs (succ (pred (cut k * cut k))) L))) +
         monus (cut k) (pw two k * (num 8 * (two * k + num 7) + num 68)) * (fact L * fact L)) ?_)))
-  · apply deriveNat; ipra_simps
-    linear_combination 𝔞 (pw two k) * r1 + 𝔞 (fact L) * 𝔞 (fact L) * gc +
-      16 * 𝔞 (pw two k) * 𝔞 (cut k) *
-        (𝔞 (Qs (cut k * cut k) L) + 𝔞 (Qs (succ (pred (cut k * cut k))) L)) * qe
-  · apply deriveNat; ipra_simps
-    linear_combination 𝔞 (pw two k) * r2 + 𝔞 (fact L) * 𝔞 (fact L) * gc -
-      16 * 𝔞 (pw two k) * 𝔞 (cut k) *
-        (𝔞 (Qs (cut k * cut k) L) + 𝔞 (Qs (succ (pred (cut k * cut k))) L)) * qe
+  · ipra_lc 𝔞 (pw two k) * r1 + 𝔞 (fact L) * 𝔞 (fact L) * natEq (eq_add_of_le (growth_cut' (Γ := Γ) k)) +
+      16 * 𝔞 (pw two k) * 𝔞 (cut k) * (𝔞 (Qs (cut k * cut k) L) + 𝔞 (Qs (succ (pred (cut k * cut k))) L)) * natEq (congrAp2 (sumF Qb) eM (congrPairT eM (.eqRefl L)))
+  · ipra_lc 𝔞 (pw two k) * r2 + 𝔞 (fact L) * 𝔞 (fact L) * natEq (eq_add_of_le (growth_cut' (Γ := Γ) k)) -
+      16 * 𝔞 (pw two k) * 𝔞 (cut k) * (𝔞 (Qs (cut k * cut k) L) + 𝔞 (Qs (succ (pred (cut k * cut k))) L)) * natEq (congrAp2 (sumF Qb) eM (congrPairT eM (.eqRefl L)))
 
 end LeanProofs.IPRA.Analysis.BaselRiemann

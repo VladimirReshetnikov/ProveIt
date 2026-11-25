@@ -5,6 +5,7 @@ import IPRADerivations.AnalyticNumberTheory.EulerProduct
 import IPRADerivations.AnalyticNumberTheory.FactorVector
 import IPRADerivations.DiophantineNumberTheory.ModularCertificate
 import IPRADerivations.Foundations.BoundedReflection
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Lucas's congruence, one digit at a time
@@ -59,8 +60,8 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The digits of a successor -/
 
-theorem mul_one_r (X : PTm n) : Γ ⊢[PRAAx] X * one ≐ X := by apply deriveNat; ipra_simps; ring
-theorem add_one_r (X : PTm n) : Γ ⊢[PRAAx] X + one ≐ succ X := by apply deriveNat; ipra_simps; ring
+theorem mul_one_r (X : PTm n) : Γ ⊢[PRAAx] X * one ≐ X := by ipra_ring
+theorem add_one_r (X : PTm n) : Γ ⊢[PRAAx] X + one ≐ succ X := by ipra_ring
 
 /-- No carry: when `(z mod K) + 1 ≠ K`, the quotient is unchanged and the remainder increases by one. -/
 theorem dig_no {z K : PTm n} (h : Γ ⊢[PRAAx] eqb (succ (rem z K)) K ≐ zero) :
@@ -131,18 +132,15 @@ theorem T_zero_N {p : PTm n} (hp : Γ ⊢[PRAAx] p ≐ succ (pred p)) (K : PTm n
 /-! ## The four cases of the step -/
 
 theorem dist_alg {X P A B : PTm n} (h : Γ ⊢[PRAAx] P ≐ A + B) : Γ ⊢[PRAAx] X * P ≐ X * A + X * B := by
-  have x := natEq h
-  apply deriveNat; ipra_simps; linear_combination 𝔞 X * x
+  ipra_lc 𝔞 X * natEq h
 
 theorem alg01 {X Y u v w : PTm n} (hu : Γ ⊢[PRAAx] u ≐ one) (hv : Γ ⊢[PRAAx] v ≐ one)
     (hw : Γ ⊢[PRAAx] w ≐ zero) : Γ ⊢[PRAAx] X * u ≐ X * v + Y * w := by
-  have a := natEq hu; have b := natEq hv; have c := natEq hw
-  apply deriveNat; ipra_simps; linear_combination 𝔞 X * a - 𝔞 X * b - 𝔞 Y * c
+  ipra_lc 𝔞 X * natEq hu - 𝔞 X * natEq hv - 𝔞 Y * natEq hw
 
 theorem alg11 {P A B u v w : PTm n} (hP : Γ ⊢[PRAAx] P ≐ A + B) (hu : Γ ⊢[PRAAx] u ≐ one)
     (hv : Γ ⊢[PRAAx] v ≐ one) (hw : Γ ⊢[PRAAx] w ≐ one) : Γ ⊢[PRAAx] P * u ≐ A * v + B * w := by
-  have x := natEq hP; have a := natEq hu; have b := natEq hv; have c := natEq hw
-  apply deriveNat; ipra_simps; linear_combination x + 𝔞 P * a - 𝔞 A * b - 𝔞 B * c
+  ipra_lc natEq hP + 𝔞 P * natEq hu - 𝔞 A * natEq hv - 𝔞 B * natEq hw
 
 /-- Only `N` carries: both sides vanish modulo `p`. -/
 theorem case10 {p X Y a b : PTm n} (hp : Γ ⊢[PRAAx] prime p) (ea : Γ ⊢[PRAAx] succ a ≐ p)

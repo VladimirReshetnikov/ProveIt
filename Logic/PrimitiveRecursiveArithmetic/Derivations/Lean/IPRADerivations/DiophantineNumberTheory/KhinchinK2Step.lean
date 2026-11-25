@@ -2,6 +2,7 @@ import IPRADerivations.DiophantineNumberTheory.KhinchinK2Widths
 import IPRADerivations.DiophantineNumberTheory.KhinchinK2RoundZ
 import IPRADerivations.Foundations.FiniteSetExponential
 import IPRADerivations.Foundations.BlockPartitionSum
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # One complete (K2) round from `ψ` and `D` (`hurwitz_khinchin_ipra`)
@@ -110,7 +111,7 @@ theorem hT_r (Dm : PTm 2) (p N C x : PTm n) :
     Γ ⊢[PRAAx] fact (Rr Dm p N C x) * Gr Dm p N C x ≐ rr Dm p N C x * succ p := by
   show Γ ⊢[PRAAx] fact (Rr Dm p N C x) * (succ p * (Rr Dm p N C x * Rr Dm p N C x)) ≐
     fact (Rr Dm p N C x) * (Rr Dm p N C x * Rr Dm p N C x) * succ p
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem hM_r (Dm : PTm 2) (p N C x : PTm n) : Γ ⊢[PRAAx] le one (pairT (pairT C x) (Qr Dm p N x)) :=
   le_trans (one_le_pw (K0r p N + Br Dm p N x)) (le_pairT_right (one_le_pw (K0r p N + Br Dm p N x)))
@@ -308,8 +309,7 @@ theorem cell_eq (wb : PTm 2) {g r X : PTm n} (hr : Γ ⊢[PRAAx] r ≐ succ (pre
   rw [inst2_blockB, inst2_rsB, inst2_eB, inst2_eB]
   have el : Γ ⊢[PRAAx] monus (succ g * fstT (sndT X)) (g * fstT (sndT X)) ≐ r := by
     refine monus_of_eq ?_
-    have e := natEq er
-    apply deriveNat; ipra_simps; linear_combination e
+    ipra_lc natEq er
   have inner : Γ ⊢[PRAAx] ap2 (sumF (offB (tB wb))) r (pairT (g * fstT (sndT X)) X) ≐
       ap2 (sumF (fB (vZ wb))) r (pairT (inst2 wbit g X) (pairT g X)) := by
     refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
@@ -352,7 +352,7 @@ theorem chain (wb : PTm 2) {p r X : PTm n} (hr : Γ ⊢[PRAAx] r ≐ succ (pred 
     have e' := natEq er
     apply deriveNat; ipra_simps; linear_combination -(𝔞 p + 1) * e'
   have h0 : Γ ⊢[PRAAx] inst2 eB zero X ≐ zero := by
-    rw [inst2_eB]; apply deriveNat; ipra_simps; ring
+    rw [inst2_eB]; ipra_ring
   have hmono : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift (succ p)) ⟶
       le (inst2 eB (var 0) (Syn.shift X)) (inst2 eB (succ (var 0)) (Syn.shift X))) := by
     refine .allI (.impI ?_)

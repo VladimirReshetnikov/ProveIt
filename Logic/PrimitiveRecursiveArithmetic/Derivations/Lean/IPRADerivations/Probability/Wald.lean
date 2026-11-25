@@ -1,4 +1,5 @@
 import IPRADerivations.Probability.ProductPower
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Wald's identity on the finite product law
@@ -165,7 +166,7 @@ theorem block_Q {a r M x : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) (ha :
   refine (congrMul (pr_peel w hM'.wk ha'.wk hu) (I_peel Y G hM'.wk ha'.wk hu)).eqTrans ?_
   refine .eqTrans ?_ (congrAdd (congrMul (.eqRefl _) (QB_at w Y G _ _ _ _))
     (congrAdd (congrMul (.eqRefl _) (GB_at w G _ _ _ _)) (.eqRefl _))).eqSymm
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- `Q_{r+1}(Y) = Q_r(Y) W + G_r (∑ w Y)`. -/
 theorem Q_succ {r M x : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) :
@@ -173,7 +174,7 @@ theorem Q_succ {r M x : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) :
   refine (peel_sum (QB w Y G) r M _).eqTrans ((lin3 w (w * Y) (zero : PTm 2) (BlockSum.blkB (QB w Y G))
     (K₁ := Qt w Y G r M x) (K₂ := Gt w G r M x) (K₃ := zero) (p := x) (.allI (.impI ?_))).eqTrans ?_)
   rotate_left
-  · apply deriveNat; ipra_simps; ring
+  · ipra_ring
   have hM' : Γ.map Fm.shift ⊢[PRAAx] Syn.shift M ≐ succ (pred (Syn.shift M)) := by simpa [Fm.shift, Syn.shift] using hM.shift
   simp only [shift_pairT, ProductPower.shift_zero']
   have hp : Syn.shift (pw M r) = pw (Syn.shift M) (Syn.shift r) := by simp [Syn.shift]
@@ -182,7 +183,7 @@ theorem Q_succ {r M x : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) :
   have hG : Syn.shift (Gt w G r M x) = Gt w G (Syn.shift r) (Syn.shift M) (Syn.shift x) := by simp [Syn.shift]
   rw [hp, hs, hQ, hG, inst2_mul', inst2_zero2]
   refine (block_Q w Y G hM'.wk Prf.hyp0).eqTrans ?_
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem Q_zero (M x : PTm n) : Γ ⊢[PRAAx] Qt w Y G zero M x ≐ zero :=
   (one_bound _ _ _).eqTrans ((QB_at w Y G _ _ _ _).eqTrans ((congrMul (.eqRefl _) (sum_zero (IB Y G) _)).eqTrans (mul_zero _)))
@@ -192,7 +193,7 @@ theorem sum_w_one (M x : PTm n) : Γ ⊢[PRAAx] ap2 (sumF (w * (one : PTm 2))) M
   rw [inst2_mul']
   have e : inst2 (one : PTm 2) (var 0) (Syn.shift x) = one := by simp [inst2]
   rw [e]
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 end Totals
 
@@ -214,15 +215,11 @@ theorem wald (w X G : PTm 2) {N M x : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pre
           ap2 (sumF (w * X)) (Syn.shift M) (Syn.shift x) * Qt w (one : PTm 2) G (var 0) (Syn.shift M) (Syn.shift x)) :: Γ.map Fm.shift
       have ih0 : C ⊢[PRAAx] ap2 (sumF w) (Syn.shift M) (Syn.shift x) * Qt w X G (var 0) (Syn.shift M) (Syn.shift x) ≐
           ap2 (sumF (w * X)) (Syn.shift M) (Syn.shift x) * Qt w (one : PTm 2) G (var 0) (Syn.shift M) (Syn.shift x) := Prf.hyp0
-      have ih := natEq ih0
-      have q1 := natEq (Q_succ (Γ := C) w X G (r := var 0) (x := Syn.shift x) hM'.wk)
-      have q2 := natEq (Q_succ (Γ := C) w (one : PTm 2) G (r := var 0) (x := Syn.shift x) hM'.wk)
-      have s1 := natEq (sum_w_one (Γ := C) w (Syn.shift M) (Syn.shift x))
       show C ⊢[PRAAx] _
-      apply deriveNat; ipra_simps
-      linear_combination 𝔞 (ap2 (sumF w) (Syn.shift M) (Syn.shift x)) * ih +
-        𝔞 (ap2 (sumF w) (Syn.shift M) (Syn.shift x)) * q1 - 𝔞 (ap2 (sumF (w * X)) (Syn.shift M) (Syn.shift x)) * q2 -
-        𝔞 (ap2 (sumF (w * X)) (Syn.shift M) (Syn.shift x)) * 𝔞 (Gt w G (var 0) (Syn.shift M) (Syn.shift x)) * s1
+      ipra_lc 𝔞 (ap2 (sumF w) (Syn.shift M) (Syn.shift x)) * natEq ih0 +
+        𝔞 (ap2 (sumF w) (Syn.shift M) (Syn.shift x)) * natEq (Q_succ (Γ := C) w X G (r := var 0) (x := Syn.shift x) hM'.wk) -
+        𝔞 (ap2 (sumF (w * X)) (Syn.shift M) (Syn.shift x)) * natEq (Q_succ (Γ := C) w (one : PTm 2) G (r := var 0) (x := Syn.shift x) hM'.wk) -
+        𝔞 (ap2 (sumF (w * X)) (Syn.shift M) (Syn.shift x)) * 𝔞 (Gt w G (var 0) (Syn.shift M) (Syn.shift x)) * natEq (sum_w_one (Γ := C) w (Syn.shift M) (Syn.shift x))
   have h := Prf.allE N hall
   simp only [Qt, Fm.subst_eq, PTm.subst_mul, subst_ap2, subst_pairT, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
     ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at h

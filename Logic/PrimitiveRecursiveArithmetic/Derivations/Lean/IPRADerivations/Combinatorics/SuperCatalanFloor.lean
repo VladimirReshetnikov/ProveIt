@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.SumReindex
 import IPRADerivations.AnalyticNumberTheory.Totient
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The floor inequality of the super-Catalan numbers (`catalan_numbers_ipra_2026-11-16`, (7.15))
@@ -44,31 +45,23 @@ theorem succ_pos₁ (a' : PTm k) : Γ ⊢[PRAAx] succ a' ≐ succ (pred (succ a'
 /-- `2 ⌊m/a⌋ ≤ ⌊2m/a⌋`. -/
 theorem two_quo_le (m a' : PTm k) :
     Γ ⊢[PRAAx] le (two * quo m (succ a')) (quo (two * m) (succ a')) := by
-  have e := natEq (Prf.andE₁ (div_mod (Γ := Γ) m a'))
   refine le_quo_of_mul_le (succ_pos₁ a') (le_of_eq_add (d := two * rem m (succ a')) ?_)
-  apply deriveNat; ipra_simps
-  linear_combination 2 * e
+  ipra_lc 2 * natEq (Prf.andE₁ (div_mod (Γ := Γ) m a'))
 
 /-- `2 ⌊m/a⌋ + 1 ≤ ⌊2m/a⌋` when the remainder is at least `a/2`. -/
 theorem two_quo_succ_le {m a' : PTm k}
     (h : Γ ⊢[PRAAx] le (succ a') (two * rem m (succ a'))) :
     Γ ⊢[PRAAx] le (succ (two * quo m (succ a'))) (quo (two * m) (succ a')) := by
-  have e := natEq (Prf.andE₁ (div_mod (Γ := Γ) m a'))
-  have g := natEq (eq_add_of_le h)
   refine le_quo_of_mul_le (succ_pos₁ a')
     (le_of_eq_add (d := monus (two * rem m (succ a')) (succ a')) ?_)
-  apply deriveNat; ipra_simps
-  linear_combination 2 * e + g
+  ipra_lc 2 * natEq (Prf.andE₁ (div_mod (Γ := Γ) m a')) + natEq (eq_add_of_le h)
 
 /-- No carry: `⌊(m + n)/a⌋ = ⌊m/a⌋ + ⌊n/a⌋`. -/
 theorem add_quo_lt {m n a' : PTm k}
     (h : Γ ⊢[PRAAx] lt (rem m (succ a') + rem n (succ a')) (succ a')) :
     Γ ⊢[PRAAx] quo (m + n) (succ a') ≐ quo m (succ a') + quo n (succ a') := by
-  have e₁ := natEq (Prf.andE₁ (div_mod (Γ := Γ) m a'))
-  have e₂ := natEq (Prf.andE₁ (div_mod (Γ := Γ) n a'))
   refine quo_eq (succ_pos₁ a') ?_ h
-  apply deriveNat; ipra_simps
-  linear_combination e₁ + e₂
+  ipra_lc natEq (Prf.andE₁ (div_mod (Γ := Γ) m a')) + natEq (Prf.andE₁ (div_mod (Γ := Γ) n a'))
 
 /-- A carry: `⌊(m + n)/a⌋ = ⌊m/a⌋ + ⌊n/a⌋ + 1`. -/
 theorem add_quo_ge {m n a' : PTm k}
@@ -76,18 +69,11 @@ theorem add_quo_ge {m n a' : PTm k}
     Γ ⊢[PRAAx] quo (m + n) (succ a') ≐ succ (quo m (succ a') + quo n (succ a')) := by
   have d₁ := div_mod (Γ := Γ) m a'
   have d₂ := div_mod (Γ := Γ) n a'
-  have e₁ := natEq (Prf.andE₁ d₁)
-  have e₂ := natEq (Prf.andE₁ d₂)
-  have f₁ := natEq (eq_add_of_le (Prf.andE₂ d₁))
-  have f₂ := natEq (eq_add_of_le (Prf.andE₂ d₂))
-  have g := natEq (eq_add_of_le h)
   refine quo_eq (r := monus (rem m (succ a') + rem n (succ a')) (succ a')) (succ_pos₁ a') ?_ ?_
-  · apply deriveNat; ipra_simps
-    linear_combination e₁ + e₂ + g
+  · ipra_lc natEq (Prf.andE₁ d₁) + natEq (Prf.andE₁ d₂) + natEq (eq_add_of_le h)
   · refine le_of_eq_add (d := succ (monus (succ a') (succ (rem m (succ a'))) +
       monus (succ a') (succ (rem n (succ a'))))) ?_
-    apply deriveNat; ipra_simps
-    linear_combination f₁ + f₂ + g
+    ipra_lc natEq (eq_add_of_le (Prf.andE₂ d₁)) + natEq (eq_add_of_le (Prf.andE₂ d₂)) + natEq (eq_add_of_le h)
 
 /-- If two numbers sum to at least `a`, one of them is at least `a/2`. -/
 theorem half_cases {r₁ r₂ a : PTm k} (h : Γ ⊢[PRAAx] le a (r₁ + r₂)) :
@@ -102,21 +88,17 @@ theorem half_cases {r₁ r₂ a : PTm k} (h : Γ ⊢[PRAAx] le a (r₁ + r₂)) 
     (lt (two * r₂) a :: lt (two * r₁) a :: Γ) ⊢[PRAAx] le a (r₁ + r₂)))
   refine succ_ne_zero' _ (a := succ (monus a (succ (two * r₁)) + monus a (succ (two * r₂)) +
     two * monus (r₁ + r₂) a)) ?_
-  apply deriveNat; ipra_simps
-  linear_combination -u₁ - u₂ - 2 * g
+  ipra_lc -u₁ - u₂ - 2 * g
 
 /-- The case without a carry. -/
 theorem case_lt {m n a' : PTm k}
     (h : Γ ⊢[PRAAx] lt (rem m (succ a') + rem n (succ a')) (succ a')) :
     Γ ⊢[PRAAx] le (quo m (succ a') + quo n (succ a') + quo (m + n) (succ a'))
       (quo (two * m) (succ a') + quo (two * n) (succ a')) := by
-  have w₁ := natEq (eq_add_of_le (two_quo_le (Γ := Γ) m a'))
-  have w₂ := natEq (eq_add_of_le (two_quo_le (Γ := Γ) n a'))
-  have q := natEq (add_quo_lt h)
   refine le_of_eq_add (d := monus (quo (two * m) (succ a')) (two * quo m (succ a')) +
     monus (quo (two * n) (succ a')) (two * quo n (succ a'))) ?_
-  apply deriveNat; ipra_simps
-  linear_combination w₁ + w₂ - q
+  ipra_lc natEq (eq_add_of_le (two_quo_le (Γ := Γ) m a')) + natEq (eq_add_of_le (two_quo_le (Γ := Γ) n a')) -
+    natEq (add_quo_lt h)
 
 /-- The case with a carry, the first remainder being at least `a/2`. -/
 theorem case_ge₁ {m n a' : PTm k}
@@ -124,13 +106,10 @@ theorem case_ge₁ {m n a' : PTm k}
     (h₁ : Γ ⊢[PRAAx] le (succ a') (two * rem m (succ a'))) :
     Γ ⊢[PRAAx] le (quo m (succ a') + quo n (succ a') + quo (m + n) (succ a'))
       (quo (two * m) (succ a') + quo (two * n) (succ a')) := by
-  have w₁ := natEq (eq_add_of_le (two_quo_succ_le h₁))
-  have w₂ := natEq (eq_add_of_le (two_quo_le (Γ := Γ) n a'))
-  have q := natEq (add_quo_ge h)
   refine le_of_eq_add (d := monus (quo (two * m) (succ a')) (succ (two * quo m (succ a'))) +
     monus (quo (two * n) (succ a')) (two * quo n (succ a'))) ?_
-  apply deriveNat; ipra_simps
-  linear_combination w₁ + w₂ - q
+  ipra_lc natEq (eq_add_of_le (two_quo_succ_le h₁)) + natEq (eq_add_of_le (two_quo_le (Γ := Γ) n a')) -
+    natEq (add_quo_ge h)
 
 /-- The case with a carry, the second remainder being at least `a/2`. -/
 theorem case_ge₂ {m n a' : PTm k}
@@ -138,13 +117,10 @@ theorem case_ge₂ {m n a' : PTm k}
     (h₂ : Γ ⊢[PRAAx] le (succ a') (two * rem n (succ a'))) :
     Γ ⊢[PRAAx] le (quo m (succ a') + quo n (succ a') + quo (m + n) (succ a'))
       (quo (two * m) (succ a') + quo (two * n) (succ a')) := by
-  have w₁ := natEq (eq_add_of_le (two_quo_le (Γ := Γ) m a'))
-  have w₂ := natEq (eq_add_of_le (two_quo_succ_le h₂))
-  have q := natEq (add_quo_ge h)
   refine le_of_eq_add (d := monus (quo (two * m) (succ a')) (two * quo m (succ a')) +
     monus (quo (two * n) (succ a')) (succ (two * quo n (succ a')))) ?_
-  apply deriveNat; ipra_simps
-  linear_combination w₁ + w₂ - q
+  ipra_lc natEq (eq_add_of_le (two_quo_le (Γ := Γ) m a')) + natEq (eq_add_of_le (two_quo_succ_le h₂)) -
+    natEq (add_quo_ge h)
 
 /-- (7.15): `⌊m/a⌋ + ⌊n/a⌋ + ⌊(m + n)/a⌋ ≤ ⌊2m/a⌋ + ⌊2n/a⌋` for every `a ≥ 1`. -/
 theorem super_floor (m n a' : PTm k) :

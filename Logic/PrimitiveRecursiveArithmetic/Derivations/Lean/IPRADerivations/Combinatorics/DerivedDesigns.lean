@@ -1,4 +1,4 @@
-import IPRADerivations.Core.IntCertificates
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Derived and residual designs: replication and incidence counts
@@ -46,30 +46,19 @@ theorem residual_replication (M : Fin (v + 1) → Fin b → ZT n) (r lam : ZT n)
 theorem derived_count {r k lam : ZT n}
     (h2 : Γ ⊢[PRAAx] ZT.eq (r * k) (r + ZT.natLit v * lam)) :
     Γ ⊢[PRAAx] ZT.eq (ZT.natLit v * lam) (r * (k - ZT.natLit 1)) := by
-  have e2 := ZT.toZ_eq h2
-  apply ZT.derive
-  simp only [ZT.toZ_add, ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_natLit, Nat.cast_one] at e2 ⊢
-  linear_combination -e2
+  ipra_lc -ZT.toZ_eq h2
 
 /-- The residual design: `v (r − λ) = (b − r) k`. -/
 theorem residual_count {r k lam : ZT n}
     (h1 : Γ ⊢[PRAAx] ZT.eq (ZT.natLit (v + 1) * r) (ZT.natLit b * k))
     (h2 : Γ ⊢[PRAAx] ZT.eq (r * k) (r + ZT.natLit v * lam)) :
     Γ ⊢[PRAAx] ZT.eq (ZT.natLit v * (r - lam)) ((ZT.natLit b - r) * k) := by
-  have e1 := ZT.toZ_eq h1
-  have e2 := ZT.toZ_eq h2
-  apply ZT.derive
-  simp only [ZT.toZ_add, ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_natLit, Nat.cast_add, Nat.cast_one] at e1 e2 ⊢
-  linear_combination e1 + e2
+  ipra_lc [Nat.cast_add] ZT.toZ_eq h1 + ZT.toZ_eq h2
 
 /-- A symmetric design: `λ v = k (k − 1)`. -/
 theorem symmetric_lambda {r k lam : ZT n} (hrk : Γ ⊢[PRAAx] ZT.eq r k)
     (h2 : Γ ⊢[PRAAx] ZT.eq (r * k) (r + ZT.natLit v * lam)) :
     Γ ⊢[PRAAx] ZT.eq (lam * ZT.natLit v) (k * (k - ZT.natLit 1)) := by
-  have e0 := ZT.toZ_eq hrk
-  have e2 := ZT.toZ_eq h2
-  apply ZT.derive
-  simp only [ZT.toZ_add, ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_natLit, Nat.cast_one] at e2 ⊢
-  linear_combination (ZT.toZ Γ k - 1) * e0 - e2
+  ipra_lc (ZT.toZ Γ k - 1) * ZT.toZ_eq hrk - ZT.toZ_eq h2
 
 end LeanProofs.IPRA.Combinatorics.DerivedDesigns

@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianDescentClock
 import IPRADerivations.Analysis.GaussianFactorBudget
 import IPRADerivations.Analysis.RationalNonnegativePowers
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The actual rational descent rate is monotone in the numerical degree
@@ -52,12 +53,8 @@ theorem rate_denominator_monotone (d N : PTm n) (h : Γ ⊢[PRAAx] le d N) : Γ 
 strict input order is used, including the boundary a=1. -/
 theorem pred_ratio_identity (a b : PTm n) (ha : Γ ⊢[PRAAx] le one a) (hab : Γ ⊢[PRAAx] le a b) : Γ ⊢[PRAAx]
     pred b*a ≐ pred a*b+monus b a := by
-  have ea := natEq (RationalIntegerNormalization.positive_form ha)
-  have eb := natEq (RationalIntegerNormalization.positive_form (le_trans ha hab))
-  have gap := natEq (eq_add_of_le hab)
-  apply deriveNat
-  ipra_simps
-  linear_combination 𝔞(b)*ea-𝔞(a)*eb+gap
+  ipra_lc 𝔞(b)*natEq (RationalIntegerNormalization.positive_form ha)-
+    𝔞(a)*natEq (RationalIntegerNormalization.positive_form (le_trans ha hab))+natEq (eq_add_of_le hab)
 
 theorem pred_ratio_cross (a b : PTm n) (ha : Γ ⊢[PRAAx] le one a) (hab : Γ ⊢[PRAAx] le a b) : Γ ⊢[PRAAx]
     le (pred a*b) (pred b*a) := le_of_eq_add (pred_ratio_identity a b ha hab)

@@ -52,7 +52,7 @@ local notation "𝔫" => succ n₀
 
 /-- `x^b = x^a x^c` for `b = a + c`. -/
 theorem pw_split (x : PTm n) : Γ ⊢[PRAAx] pw x 𝔅 ≐ pw x 𝔄 * pw x c :=
-  (congrAp2 powF (by apply deriveNat; ipra_simps; ring : Γ ⊢[PRAAx] 𝔅 ≐ 𝔄 + c) (.eqRefl x)).eqTrans
+  (congrAp2 powF (by ipra_ring : Γ ⊢[PRAAx] 𝔅 ≐ 𝔄 + c) (.eqRefl x)).eqTrans
     (pw_add x 𝔄 c)
 
 /-- `(1 + 1/n)^q ≤ (n + q)/n`, hence `B_{n+1}(q) ≤ B_n(q)`; in `b`-th powers:
@@ -62,7 +62,7 @@ theorem B_decreasing :
   have g := amgm (Γ := Γ) a₀ c (succ 𝔫) 𝔫
   have e1 := natEq ((pw_mul_base (Γ := Γ) 𝔅 𝔫 𝔅).eqTrans (congrMul (.eqRefl _) (pw_split 𝔫)))
   have e2 := natEq (congrAp2 powF (.eqRefl 𝔅)
-    (by apply deriveNat; ipra_simps; ring : Γ ⊢[PRAAx] 𝔄 * succ 𝔫 + c * 𝔫 ≐ 𝔅 * 𝔫 + 𝔄))
+    (by ipra_ring : Γ ⊢[PRAAx] 𝔄 * succ 𝔫 + c * 𝔫 ≐ 𝔅 * 𝔫 + 𝔄))
   ipra_le 𝔟 (pw 𝔫 𝔄) * sl g using rw [e1, e2]; ring
 
 /-- `(n + 1 + q)/(n + 1) ≤ (1 + 1/n)^q`, hence `A_n(q) ≤ A_{n+1}(q)`; in `b`-th powers:

@@ -1,6 +1,7 @@
 import IPRADerivations.Core.Pairing
 import IPRADerivations.AnalyticNumberTheory.GcdFiber
 import IPRADerivations.AnalyticNumberTheory.Multiplicative
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The exact mesh bracket for rational square roots
@@ -47,22 +48,18 @@ variable {p r k : PTm n}
 /-- Lower bracket: `r j² ≤ p S²`. -/
 theorem mesh_lower (hr : Γ ⊢[PRAAx] r ≐ succ (pred r)) :
     Γ ⊢[PRAAx] le (r * (rho p r k * rho p r k)) (XT p k) := by
-  have a := natEq (eq_add_of_le (isqrt_le (Γ := Γ) (quo (XT p k) r)))
   have d := natEq (div_eq (j := XT p k) hr)
   refine le_of_eq_add (d := r * monus (quo (XT p k) r) (rho p r k * rho p r k) + rem (XT p k) r) ?_
-  apply deriveNat; ipra_simps
-  linear_combination d + 𝔞 r * a
+  ipra_lc d + 𝔞 r * natEq (eq_add_of_le (isqrt_le (Γ := Γ) (quo (XT p k) r)))
 
 /-- Upper bracket: `p S² < r (j + 1)²`. -/
 theorem mesh_upper (hr : Γ ⊢[PRAAx] r ≐ succ (pred r)) :
     Γ ⊢[PRAAx] lt (XT p k) (r * ((rho p r k + one) * (rho p r k + one))) := by
-  have w₁ := natEq (eq_add_of_le (lt_isqrt_succ_sq (Γ := Γ) (quo (XT p k) r)))
-  have w₂ := natEq (eq_add_of_le (rem_lt' hr (XT p k)))
   have d := natEq (div_eq (j := XT p k) hr)
   refine le_of_eq_add (d := r * monus ((rho p r k + one) * (rho p r k + one)) (succ (quo (XT p k) r)) +
     monus r (succ (rem (XT p k) r))) ?_
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 r * w₁ + w₂ - d
+  ipra_lc 𝔞 r * natEq (eq_add_of_le (lt_isqrt_succ_sq (Γ := Γ) (quo (XT p k) r))) +
+    natEq (eq_add_of_le (rem_lt' hr (XT p k))) - d
 
 /-- The bracket determines the numerator: `r t² ≤ p S² < r (t + 1)²` gives `t = j`. -/
 theorem mesh_unique (hr : Γ ⊢[PRAAx] r ≐ succ (pred r)) {t : PTm n}
@@ -76,18 +73,15 @@ theorem mesh_unique (hr : Γ ⊢[PRAAx] r ≐ succ (pred r)) {t : PTm n}
     have w := natEq (eq_add_of_le (Prf.hyp0 : (lt (quo (XT p k) r) (t * t) :: Γ) ⊢[PRAAx] _))
     have e₁ := natEq (eq_add_of_le (h₁.wk (ψ := lt (quo (XT p k) r) (t * t))))
     have e₂ := natEq (dv.wk (ψ := lt (quo (XT p k) r) (t * t)))
-    have e₃ := natEq (eq_add_of_le (rl.wk (ψ := lt (quo (XT p k) r) (t * t))))
     refine succ_ne_zero' _ (a := monus r (succ (rem (XT p k) r)) +
       r * monus (t * t) (succ (quo (XT p k) r)) + monus (XT p k) (r * (t * t))) ?_
-    apply deriveNat; ipra_simps
-    linear_combination -e₁ + e₂ - 𝔞 r * w - e₃
+    ipra_lc -e₁ + e₂ - 𝔞 r * w - natEq (eq_add_of_le (rl.wk (ψ := lt (quo (XT p k) r) (t * t))))
   · refine .orE (lt_or_le (quo (XT p k) r) ((t + one) * (t + one))) Prf.hyp0 ?_
     have w := natEq (eq_add_of_le (Prf.hyp0 : (le ((t + one) * (t + one)) (quo (XT p k) r) :: Γ) ⊢[PRAAx] _))
     have e₁ := natEq (eq_add_of_le (h₂.wk (ψ := le ((t + one) * (t + one)) (quo (XT p k) r))))
     have e₂ := natEq (dv.wk (ψ := le ((t + one) * (t + one)) (quo (XT p k) r)))
     refine succ_ne_zero' _ (a := r * monus (quo (XT p k) r) ((t + one) * (t + one)) + rem (XT p k) r +
       monus (r * ((t + one) * (t + one))) (succ (XT p k))) ?_
-    apply deriveNat; ipra_simps
-    linear_combination -e₁ - e₂ - 𝔞 r * w
+    ipra_lc -e₁ - e₂ - 𝔞 r * w
 
 end LeanProofs.IPRA.Geometry.MeshBracket

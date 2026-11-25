@@ -1,4 +1,4 @@
-import IPRADerivations.Core.IntCertificates
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The butterfly theorem
@@ -55,9 +55,7 @@ theorem butterfly_ring {R : Type*} [CommRing R] {a b c d k c0 u1 u2 v1 v2 : R}
 theorem butterfly_numerator (a b c d u₂ v₂ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (a * d * (c * v₂ - b * u₂) + b * c * (d * v₂ - a * u₂))
       (c * d * (a + b) * v₂ - a * b * (c + d) * u₂) := by
-  apply ZT.derive
-  zsimp
-  ring
+  ipra_lc
 
 /-- The butterfly theorem, cleared: the numerator of `x_X + x_Y` times `|u|² |v|² (a − b)(c − d)` vanishes. -/
 theorem butterfly {a b c d k c0 u₁ u₂ v₁ v₂ : ZT n}

@@ -1,5 +1,6 @@
 import IPRADerivations.Probability.MedianSorted
 import IPRADerivations.Foundations.BoundedReflection
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The finite-sample replacement breakdown of the median
@@ -69,32 +70,30 @@ theorem bit_cmp_below (x z t : PTm n) :
   refine .orE (eqb_cases z x) ?_ ?_
   · let C := (eqb z x ≐ zero) :: Γ
     have h : C ⊢[PRAAx] monus one (eqb z x) ≐ one := (congrMonus (.eqRefl _) Prf.hyp0).eqTrans (monus_zero _)
-    have e := natEq h
     refine le_trans (sg_le_one _) (le_of_eq_add (d := sg (monus t z)) ?_)
-    apply deriveNat; ipra_simps; linear_combination e
+    ipra_lc natEq h
   · let C := (eqb z x ≐ one) :: Γ
     have ex : C ⊢[PRAAx] z ≐ x := eq_of_eqb Prf.hyp0
     have m : C ⊢[PRAAx] monus one (eqb z x) ≐ zero := (congrMonus (.eqRefl _) Prf.hyp0).eqTrans (monus_self _)
     have c : C ⊢[PRAAx] sg (monus t z) ≐ sg (monus t x) := congrSg (congrMonus (.eqRefl _) ex)
     have e1 := natEq m; have e2 := natEq c
     refine le_of_eq_add (d := zero) ?_
-    apply deriveNat; ipra_simps; linear_combination e1 + e2
+    ipra_lc e1 + e2
 
 theorem bit_cmp_above (x z t : PTm n) :
     Γ ⊢[PRAAx] le (sg (monus x t)) (sg (monus z t) + monus one (eqb z x)) := by
   refine .orE (eqb_cases z x) ?_ ?_
   · let C := (eqb z x ≐ zero) :: Γ
     have h : C ⊢[PRAAx] monus one (eqb z x) ≐ one := (congrMonus (.eqRefl _) Prf.hyp0).eqTrans (monus_zero _)
-    have e := natEq h
     refine le_trans (sg_le_one _) (le_of_eq_add (d := sg (monus z t)) ?_)
-    apply deriveNat; ipra_simps; linear_combination e
+    ipra_lc natEq h
   · let C := (eqb z x ≐ one) :: Γ
     have ex : C ⊢[PRAAx] z ≐ x := eq_of_eqb Prf.hyp0
     have m : C ⊢[PRAAx] monus one (eqb z x) ≐ zero := (congrMonus (.eqRefl _) Prf.hyp0).eqTrans (monus_self _)
     have c : C ⊢[PRAAx] sg (monus z t) ≐ sg (monus x t) := congrSg (congrMonus ex (.eqRefl _))
     have e1 := natEq m; have e2 := natEq c
     refine le_of_eq_add (d := zero) ?_
-    apply deriveNat; ipra_simps; linear_combination e1 + e2
+    ipra_lc e1 + e2
 
 section Compare
 
@@ -209,8 +208,7 @@ theorem count_contra {N cx cz D r : PTm n} (φ : Fm PTm n) (h1 : Γ ⊢[PRAAx] l
   have f4 := natEq (eq_add_of_le h4); have f5 := natEq (eq_add_of_le h5)
   refine not_succ_le_self N φ (le_of_eq_add (d := two * monus cx N + two * monus (cz + D) cx + two * monus r D +
     monus N (two * cz) + monus N (succ (two * r))) ?_)
-  apply deriveNat; ipra_simps
-  linear_combination 2 * f1 + 2 * f2 + 2 * f3 + f4 + f5
+  ipra_lc 2 * f1 + 2 * f2 + 2 * f3 + f4 + f5
 
 /-- `thm:breakdown`, bounded half: if at most `r` coordinates of `x` are replaced (`D ≤ r`) and `2r < N`,
 every balance median of the contaminated data lies in `[m, M]` for any bounds `m ≤ x_i ≤ M`. -/
@@ -270,7 +268,7 @@ theorem z_lt {i s H p : PTm n} (h : Γ ⊢[PRAAx] lt i s) :
     (congrSg (congrMonus fs (.eqRefl _))).eqTrans (sg_lt h)
   have m := (congrMonus (.eqRefl one) g).eqTrans (monus_self _)
   refine (congrAdd (congrMul g fH) (congrMul m (.eqRefl _))).eqTrans ?_
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem z_ge {i s H p : PTm n} (h : Γ ⊢[PRAAx] le s i) :
     Γ ⊢[PRAAx] inst2 (zB X) i (pairT (pairT s H) p) ≐ inst2 X i p := by
@@ -281,7 +279,7 @@ theorem z_ge {i s H p : PTm n} (h : Γ ⊢[PRAAx] le s i) :
   have m := (congrMonus (.eqRefl one) g).eqTrans (monus_zero _)
   have sp : Γ ⊢[PRAAx] inst2 X i (sndT (pairT (pairT s H) p)) ≐ inst2 X i p := congrInst2 X (.eqRefl _) (snd_pair _ _)
   refine (congrAdd (congrMul g (.eqRefl _)) (congrMul m sp)).eqTrans ?_
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- The replacement changes at most `s` coordinates. -/
 theorem rep_count {N s H p : PTm n} (hs : Γ ⊢[PRAAx] le s N) :
@@ -313,14 +311,11 @@ theorem driven_above {N s H p t : PTm n} (hs : Γ ⊢[PRAAx] le s N) (h2 : Γ �
     · exact le_congr (sg_lt Prf.hyp0).eqSymm (sg_lt (lt_congr (.eqRefl _) (z_lt X Prf.hyp0).eqSymm ht'.wk.wk)).eqSymm
         (le_refl _)
     · exact le_zero_of (sg_le Prf.hyp0)
-  have f1 := natEq (eq_add_of_le cnt)
-  have f2 := natEq (eq_add_of_le (Prf.andE₂ hmed).wk : C ⊢[PRAAx] _)
-  have f3 := natEq (eq_add_of_le h2.wk : C ⊢[PRAAx] _)
   refine not_succ_le_self N _ (le_of_eq_add (d := monus (two * s) (succ N) +
     two * monus (Ac (zB X) N t (pairT (pairT s H) p)) s +
     monus N (two * Ac (zB X) N t (pairT (pairT s H) p))) ?_)
-  apply deriveNat; ipra_simps
-  linear_combination 2 * f1 + f2 + f3
+  ipra_lc 2 * natEq (eq_add_of_le cnt) + natEq (eq_add_of_le (Prf.andE₂ hmed).wk : C ⊢[PRAAx] _) +
+    natEq (eq_add_of_le h2.wk : C ⊢[PRAAx] _)
 
 /-- `thm:breakdown`, attained: if at least half the coordinates are replaced by `H` (`N ≤ 2s`) and
 `H` bounds the data, then `H` itself is a balance median of the contaminated data. -/
@@ -344,13 +339,9 @@ theorem driven_med {N s H p : PTm n} (hs : Γ ⊢[PRAAx] le s N) (h2 : Γ ⊢[PR
     refine .orE (lt_or_le (var 0) (Syn.shift s)) ?_ ?_
     · exact le_congr (z_lt X Prf.hyp0).eqSymm (.eqRefl _) (le_refl _)
     · exact le_congr (z_ge X Prf.hyp0).eqSymm (.eqRefl _) (Prf.impE hH.allOpen.wk.wk Prf.hyp1)
-  have f1 := natEq (eq_add_of_le sB)
-  have f2 := natEq (count_ge (Γ := Γ) hs)
-  have f3 := natEq (eq_add_of_le h2)
   refine .andI (le_of_eq_add (d := two * monus (ap2 (sumF geB) N s) (Bc (zB X) N H (pairT (pairT s H) p)) +
     monus (two * s) N) ?_) (le_zero_of ((congrMul (.eqRefl _) hA).eqTrans (mul_zero _)))
-  apply deriveNat; ipra_simps
-  linear_combination 2 * f1 - 2 * f2 + f3
+  ipra_lc 2 * natEq (eq_add_of_le sB) - 2 * natEq (count_ge (Γ := Γ) hs) + natEq (eq_add_of_le h2)
 
 end Driven
 

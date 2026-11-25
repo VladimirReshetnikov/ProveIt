@@ -1,6 +1,7 @@
 import IPRADerivations.Core.SumOrder
 import IPRADerivations.Core.SumReflect
 import IPRADerivations.Core.Pairing
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Summing a pointwise linear relation (`ipra_coherent_methods_2026-11-15`, `prop:weighted-dimension`)
@@ -57,12 +58,8 @@ theorem sum_linear (A B E F : PTm 2) {N lam al kap be x : PTm k}
     · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul,
         Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
       refine .impI ?_
-      have a := natEq (sum_zero (Γ := le zero N :: Γ) A x)
-      have b := natEq (sum_zero (Γ := le zero N :: Γ) B x)
-      have e := natEq (sum_zero (Γ := le zero N :: Γ) E x)
-      have f := natEq (sum_zero (Γ := le zero N :: Γ) F x)
-      apply deriveNat; ipra_simps
-      linear_combination a + 𝔞 al * b - 𝔞 be * e - f
+      ipra_lc natEq (sum_zero (Γ := le zero N :: Γ) A x) + 𝔞 al * natEq (sum_zero (Γ := le zero N :: Γ) B x) -
+        𝔞 be * natEq (sum_zero (Γ := le zero N :: Γ) E x) - natEq (sum_zero (Γ := le zero N :: Γ) F x)
     · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul,
         Syn.subst_var, Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero,
         ConciseIPRA.PTm.subst_succ]
@@ -70,20 +67,12 @@ theorem sum_linear (A B E F : PTm 2) {N lam al kap be x : PTm k}
       have hm : (le (succ (var 0)) (Syn.shift N) :: linF A B E F N lam al kap be x ::
           Γ.map Fm.shift) ⊢[PRAAx] le (var 0) (Syn.shift N) :=
         le_trans (le_succ_self _) Prf.hyp0
-      have ih := natEq (Prf.impE Prf.hyp1 hm)
-      have pt := natEq (Prf.impE h.allOpen.wk.wk
-        (Prf.hyp0 (Γ := linF A B E F N lam al kap be x :: Γ.map Fm.shift)
-          (φ := le (succ (var 0)) (Syn.shift N))))
-      have sa := natEq (sum_succ' (Γ := le (succ (var 0)) (Syn.shift N) ::
-        linF A B E F N lam al kap be x :: Γ.map Fm.shift) A (var 0) (Syn.shift x))
-      have sb := natEq (sum_succ' (Γ := le (succ (var 0)) (Syn.shift N) ::
-        linF A B E F N lam al kap be x :: Γ.map Fm.shift) B (var 0) (Syn.shift x))
-      have se := natEq (sum_succ' (Γ := le (succ (var 0)) (Syn.shift N) ::
-        linF A B E F N lam al kap be x :: Γ.map Fm.shift) E (var 0) (Syn.shift x))
-      have sf := natEq (sum_succ' (Γ := le (succ (var 0)) (Syn.shift N) ::
-        linF A B E F N lam al kap be x :: Γ.map Fm.shift) F (var 0) (Syn.shift x))
-      apply deriveNat; ipra_simps
-      linear_combination sa + 𝔞 (Syn.shift al) * sb - 𝔞 (Syn.shift be) * se - sf + ih + pt
+      ipra_lc natEq (sum_succ' (Γ := le (succ (var 0)) (Syn.shift N) :: linF A B E F N lam al kap be x :: Γ.map Fm.shift) A (var 0) (Syn.shift x)) +
+        𝔞 (Syn.shift al) * natEq (sum_succ' (Γ := le (succ (var 0)) (Syn.shift N) :: linF A B E F N lam al kap be x :: Γ.map Fm.shift) B (var 0) (Syn.shift x)) -
+        𝔞 (Syn.shift be) * natEq (sum_succ' (Γ := le (succ (var 0)) (Syn.shift N) :: linF A B E F N lam al kap be x :: Γ.map Fm.shift) E (var 0) (Syn.shift x)) -
+        natEq (sum_succ' (Γ := le (succ (var 0)) (Syn.shift N) :: linF A B E F N lam al kap be x :: Γ.map Fm.shift) F (var 0) (Syn.shift x)) +
+        natEq (Prf.impE Prf.hyp1 hm) +
+        natEq (Prf.impE h.allOpen.wk.wk (Prf.hyp0 (Γ := linF A B E F N lam al kap be x :: Γ.map Fm.shift) (φ := le (succ (var 0)) (Syn.shift N))))
   have h2 := Prf.allE N hall
   simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul,
     Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero] at h2
@@ -102,22 +91,15 @@ private abbrev triF : Fm PTm 2 :=
 
 private theorem tri₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] triF := by
   refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-      Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have e := natEq (sum_zero (Γ := ([] : List (Fm PTm 1))) idB (var 0))
-    apply deriveNat; ipra_simps
-    linear_combination 2 * e
+  · ipra_lc [Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] 2 * natEq (sum_zero (Γ := ([] : List (Fm PTm 1))) idB (var 0))
   · simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
       Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
     have ih : [triF] ⊢[PRAAx]
         ap2 (sumF idB) (var 0) (var 1) + ap2 (sumF idB) (var 0) (var 1) + var 0 ≐
           var 0 * var 0 := Prf.hyp0
-    have i₀ := natEq ih
     have s₀ := sum_succ' (Γ := [triF]) idB (var 0) (var 1)
     rw [inst2_idB] at s₀
-    have s := natEq s₀
-    apply deriveNat; ipra_simps
-    linear_combination 2 * s + i₀
+    ipra_lc 2 * natEq s₀ + natEq ih
 
 /-- `2 ∑_{j<N} j + N = N²`. -/
 theorem tri (N x : PTm k) :

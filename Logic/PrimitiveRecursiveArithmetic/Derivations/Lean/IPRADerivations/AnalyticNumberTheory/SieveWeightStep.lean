@@ -4,6 +4,7 @@ import IPRADerivations.AnalyticNumberTheory.SumReindex
 import IPRADerivations.Foundations.SignedSums
 import IPRADerivations.Probability.Lotus
 import IPRADerivations.Core.SumOrder
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # One prime step of the weight bound
@@ -99,9 +100,7 @@ theorem chain {L F M G R H T : PTm n} (e1 : Γ ⊢[PRAAx] L ≐ F) (l2 : Γ ⊢[
   ipra_le sl l2 + sl l4 with -x5 - x3 - x1
 
 theorem split_alg {e ne T : PTm n} (h : Γ ⊢[PRAAx] ne + e ≐ one) : Γ ⊢[PRAAx] e * T + ne * T ≐ T := by
-  have a := natEq h
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 T * a
+  ipra_lc 𝔞 T * natEq h
 
 /-! ## The summand inequality -/
 
@@ -127,23 +126,18 @@ theorem main_pt {p D r P : PTm n} (hq : Γ ⊢[PRAAx] le one (fstT P)) (hp : Γ 
       have hp1' : C ⊢[PRAAx] p ≐ succ (pred p) := hp1.wk.wk
       have hD' : C ⊢[PRAAx] D ≐ succ (pred D) := hD.wk.wk
       have e0 : C ⊢[PRAAx] r ≐ (D * p) * quo r (D * p) := eq_of_dvd' hDp.wk.wk hdv
-      have x0 := natEq e0
       have eK : C ⊢[PRAAx] r ≐ p * (D * quo r (D * p)) + zero := by
-        apply deriveNat; ipra_simps
-        linear_combination x0
+        ipra_lc natEq e0
       have eDr : C ⊢[PRAAx] r ≐ D * (p * quo r (D * p)) + zero := by
-        apply deriveNat; ipra_simps
-        linear_combination x0
+        ipra_lc natEq e0
       have hrp : C ⊢[PRAAx] rem r p ≐ zero := rem_eq' hp1' eK (zero_lt' hp1')
       have hK : C ⊢[PRAAx] quo r p ≐ D * quo r (D * p) := quo_eq hp1' eK (zero_lt' hp1')
       have hrD : C ⊢[PRAAx] rem r D ≐ zero := rem_eq' hD' eDr (zero_lt' hD')
       have hKD : C ⊢[PRAAx] rem (quo r p) D ≐ zero :=
         (congrAp2 remF hK (.eqRefl _)).eqTrans
           (rem_eq' hD' (q := quo r (D * p)) (r := zero) (add_zero _).eqSymm (zero_lt' hD'))
-      have xK := natEq hK
       have eRK : C ⊢[PRAAx] r ≐ quo r p * p := by
-        apply deriveNat; ipra_simps
-        linear_combination x0 - 𝔞 p * xK
+        ipra_lc natEq e0 - 𝔞 p * natEq hK
       have hKpos : C ⊢[PRAAx] quo r p ≐ succ (pred (quo r p)) := by
         refine .orE (zero_or_succ (quo r p)) ?_ Prf.hyp0
         have z : ((quo r p ≐ zero) :: C) ⊢[PRAAx] r ≐ zero :=

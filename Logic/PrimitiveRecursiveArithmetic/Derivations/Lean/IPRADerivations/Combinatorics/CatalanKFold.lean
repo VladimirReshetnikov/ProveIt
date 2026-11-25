@@ -1,6 +1,7 @@
 import IPRADerivations.Combinatorics.CatalanPowers
 import IPRADerivations.Combinatorics.CatalanExtensions
 import IPRADerivations.Foundations.ShiftedInduction
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The `k`-fold Catalan convolution
@@ -69,17 +70,11 @@ theorem mul_compl (m : PTm n) : Γ ⊢[PRAAx] m * monus one m ≐ zero := by
       ((succ_monus_succ _ _).eqTrans (zero_monus _)))).eqTrans (mul_zero _)
 
 theorem kfold_zero (m : PTm n) : Γ ⊢[PRAAx] A zero m ≐ B zero m := by
-  have h := natEq (mul_compl (Γ := Γ) m)
-  have tz := natEq (T_zero (Γ := Γ) m)
-  apply deriveNat; ipra_simps
-  linear_combination (2 * 𝔞 m) * tz + 2 * h
+  ipra_lc (2 * 𝔞 m) * natEq (T_zero (Γ := Γ) m) + 2 * natEq (mul_compl (Γ := Γ) m)
 
 theorem kfold_one (m : PTm n) : Γ ⊢[PRAAx] A (succ zero) m ≐ B (succ zero) m := by
-  have t1 := natEq (T_one (Γ := Γ) m)
-  have bl := natEq ((congrBinom (a := two * m + succ zero) (a' := succ (two * m))
-    (by apply deriveNat; ipra_simps; ring) (.eqRefl m)).eqTrans (ballot (Γ := Γ) m))
-  apply deriveNat; ipra_simps
-  linear_combination (2 * 𝔞 m + 1) * t1 - bl
+  ipra_lc (2 * 𝔞 m + 1) * natEq (T_one (Γ := Γ) m) -
+    natEq ((congrBinom (a := two * m + succ zero) (a' := succ (two * m)) (by ipra_ring) (.eqRefl m)).eqTrans (ballot (Γ := Γ) m))
 
 /-! ## The step -/
 
@@ -89,25 +84,21 @@ theorem kfold_step {k m : PTm n} (h0 : Γ ⊢[PRAAx] A k (succ m) ≐ B k (succ 
     Γ ⊢[PRAAx] A (succ (succ k)) m ≐ B (succ (succ k)) m := by
   -- `N = 2m + k + 2`
   have hlt : Γ ⊢[PRAAx] lt m (two * m + succ (succ k)) :=
-    le_of_eq_add (d := m + succ k) (by apply deriveNat; ipra_simps; ring)
-  have pas := natEq (pascal_at hlt)
+    le_of_eq_add (d := m + succ k) (by ipra_ring)
   have mN : Γ ⊢[PRAAx] monus (two * m + succ (succ k)) m ≐ m + succ (succ k) :=
-    (congrMonus (by apply deriveNat; ipra_simps; ring :
+    (congrMonus (by ipra_ring :
       Γ ⊢[PRAAx] two * m + succ (succ k) ≐ (m + succ (succ k)) + m) (.eqRefl _)).eqTrans
       (add_monus _ _)
-  have rat := natEq ((congrMul mN.eqSymm (.eqRefl _)).eqTrans (binom_ratio hlt))
   have e0 := natEq (h0.eqTrans (congrMul (.eqRefl _) (congrBinom
-    (by apply deriveNat; ipra_simps; ring :
+    (by ipra_ring :
       Γ ⊢[PRAAx] two * succ m + k ≐ two * m + succ (succ k)) (.eqRefl _))))
   have e1 := natEq (h1.eqTrans (congrMul (.eqRefl _) (congrBinom
-    (by apply deriveNat; ipra_simps; ring :
+    (by ipra_ring :
       Γ ⊢[PRAAx] two * succ m + succ k ≐ succ (two * m + succ (succ k))) (.eqRefl _))))
-  have r := natEq (T_rec (Γ := Γ) k m)
   refine mul_cancel (D := succ (two * m + succ (succ k))) (congrSucc (pred_succ _).eqSymm) ?_
-  apply deriveNat; ipra_simps
-  linear_combination
-    (-(2 * 𝔞 m + 𝔞 k + 3) * (2 * 𝔞 m + 𝔞 k + 2)) * r + (2 * 𝔞 m + 𝔞 k + 2) * e1
-      - (2 * 𝔞 m + 𝔞 k + 3) * e0 + ((2 * 𝔞 m + 𝔞 k + 2) * (𝔞 k + 1)) * pas - 2 * rat
+  ipra_lc (-(2 * 𝔞 m + 𝔞 k + 3) * (2 * 𝔞 m + 𝔞 k + 2)) * natEq (T_rec (Γ := Γ) k m) + (2 * 𝔞 m + 𝔞 k + 2) * e1 -
+    (2 * 𝔞 m + 𝔞 k + 3) * e0 + ((2 * 𝔞 m + 𝔞 k + 2) * (𝔞 k + 1)) * natEq (pascal_at hlt) -
+    2 * natEq ((congrMul mN.eqSymm (.eqRefl _)).eqTrans (binom_ratio hlt))
 
 /-! ## The induction with a shifting parameter -/
 

@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # An approximate Brouwer fixed point on the interval, with a primitive recursive witness
@@ -89,9 +90,7 @@ theorem brouwer_interval (N x E : PTm n) (hN : Γ ⊢[PRAAx] le (inst2 g N x) N)
       ipra_le sl h' with e
     have ho := Prf.impE (hosc (monus (W g N x) (succ zero))).wk hjN
     have ec : (lt zero (W g N x) :: Γ) ⊢[PRAAx] succ (monus (W g N x) (succ zero)) ≐ W g N x := by
-      apply deriveNat
-      ipra_simps
-      linear_combination -e
+      ipra_lc -e
     have eg := natEq (congrInst2 g ec (.eqRefl x))
     ipra_le sl ho + sl hgj with eg + e
   · have h0 : (le (W g N x) zero :: Γ) ⊢[PRAAx] le (W g N x) zero := Prf.hyp0

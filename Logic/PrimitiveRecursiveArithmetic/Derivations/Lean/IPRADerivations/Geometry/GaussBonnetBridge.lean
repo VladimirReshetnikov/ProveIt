@@ -1,4 +1,5 @@
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Gauss–Bonnet: the incidence polynomial and the residual bounds
@@ -39,11 +40,7 @@ theorem incidence_polynomial
     Γ ⊢[PRAAx]
       p * (num 2 * vi + vb + num 2 * (ei + eb)) ≐
         p * (num 2 * (vi + vb + f) + f) := by
-  have ef := natEq hf
-  have ebv := natEq hb
-  apply deriveNat
-  ipra_simps
-  linear_combination -(𝔟 p) * ef + (𝔟 p) * ebv
+  ipra_lc -(𝔟 p) * natEq hf + (𝔟 p) * natEq hb
 
 /-- If R <= bf, -I <= be, and S <= bv, then R-I+S <= bf+be+bv.
     Positive/negative parts avoid integer subtraction in the object language. -/

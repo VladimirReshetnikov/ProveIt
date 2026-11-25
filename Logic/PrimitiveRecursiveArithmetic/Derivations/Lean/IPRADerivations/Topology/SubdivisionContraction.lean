@@ -1,6 +1,7 @@
 import IPRADerivations.Probability.GeometricTail
 import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.Probability.MedianWeighted
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The contraction count of barycentric subdivision
@@ -45,7 +46,7 @@ theorem half_contraction (e : PTm n) :
   have h := bern_hom (Γ := Γ) (succ e) one e
   have p := natEq (pw_succ (Γ := Γ) (succ e) e)
   have c := natEq (congrAp2 (Γ := Γ) powF (.eqRefl (succ e)) (show Γ ⊢[PRAAx] succ e + one ≐ succ (succ e) by
-    apply deriveNat; ipra_simps; ring))
+    ipra_ring))
   ipra_le sl h using
     rw [p] at *
     rw [← c]; ring
@@ -68,7 +69,7 @@ theorem bary_coord (vs : List (PTm n)) {b D : PTm n} (h : ∀ v ∈ vs, Γ ⊢[P
   induction vs with
   | nil =>
     show Γ ⊢[PRAAx] le (ad zero (num 0 * b)) (num 0 * D)
-    have e : Γ ⊢[PRAAx] num 0 * b ≐ zero := by apply deriveNat; ipra_simps; ring
+    have e : Γ ⊢[PRAAx] num 0 * b ≐ zero := by ipra_ring
     have ce : Γ ⊢[PRAAx] ad zero (num 0 * b) ≐ ad zero zero :=
       congrAdd (congrMonus (.eqRefl _) e) (congrMonus e (.eqRefl _))
     have hz : Γ ⊢[PRAAx] ad zero zero ≐ zero :=
@@ -80,7 +81,7 @@ theorem bary_coord (vs : List (PTm n)) {b D : PTm n} (h : ∀ v ∈ vs, Γ ⊢[P
     have hs := ih (fun w hw => h w (List.mem_cons_of_mem _ hw))
     have hab := ad_add_le (Γ := Γ) v (vsum vs) b (num vs.length * b)
     have e : Γ ⊢[PRAAx] num (vs.length + 1) * b ≐ b + num vs.length * b := by
-      apply deriveNat; ipra_simps; push_cast; ring
+      ipra_lc
     have ce : Γ ⊢[PRAAx] ad (v + vsum vs) (num (vs.length + 1) * b) ≐ ad (v + vsum vs) (b + num vs.length * b) :=
       congrAdd (congrMonus (.eqRefl _) e) (congrMonus e (.eqRefl _))
     have h1 := le_congr ce.eqSymm (.eqRefl _) hab

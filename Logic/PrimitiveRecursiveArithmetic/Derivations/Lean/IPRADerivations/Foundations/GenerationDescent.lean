@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.AbelianCodes
 import IPRADerivations.AnalyticNumberTheory.Totatives
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Finite generation from a computable reducing step
@@ -132,18 +133,13 @@ theorem step_active {j P : PTm n} (h : Γ ⊢[PRAAx] lt (num T) (ap1 H (Qs (st G
   have a1 : Γ ⊢[PRAAx] act T H (Qs (st G e T m H D I R j P)) ≐ one := sg_lt h
   have u0 : Γ ⊢[PRAAx] monus one (act T H (Qs (st G e T m H D I R j P))) ≐ zero :=
     (congrMonus (.eqRefl _) a1).eqTrans (monus_self _)
-  have eQ := natEq ((congrFst s).eqTrans (fst_pair _ _))
-  have eK := natEq ((congrFst (congrSnd s)).eqTrans ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)))
-  have eA := natEq ((congrSnd (congrSnd s)).eqTrans ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)))
   have ea := natEq a1; have eu := natEq u0
   refine .andI ?_ (.andI ?_ ?_)
-  · apply deriveNat; ipra_simps
-    linear_combination eQ + 𝔞 (ap1 D (Qs (st G e T m H D I R j P))) * ea + 𝔞 (Qs (st G e T m H D I R j P)) * eu
-  · apply deriveNat; ipra_simps
-    linear_combination eK + ea
-  · apply deriveNat; ipra_simps
-    linear_combination eA + 𝔞 (op G (As (st G e T m H D I R j P))
-      (smul G e (pw (num m) (ks (st G e T m H D I R j P))) (ap1 R (ap1 I (Qs (st G e T m H D I R j P)))))) * ea +
+  · ipra_lc natEq ((congrFst s).eqTrans (fst_pair _ _)) + 𝔞 (ap1 D (Qs (st G e T m H D I R j P))) * ea +
+      𝔞 (Qs (st G e T m H D I R j P)) * eu
+  · ipra_lc natEq ((congrFst (congrSnd s)).eqTrans ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))) + ea
+  · ipra_lc natEq ((congrSnd (congrSnd s)).eqTrans ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))) +
+      𝔞 (op G (As (st G e T m H D I R j P)) (smul G e (pw (num m) (ks (st G e T m H D I R j P))) (ap1 R (ap1 I (Qs (st G e T m H D I R j P)))))) * ea +
       𝔞 (As (st G e T m H D I R j P)) * eu
 
 /-- A stopped step leaves the state unchanged. -/
@@ -155,18 +151,13 @@ theorem step_stopped {j P : PTm n} (h : Γ ⊢[PRAAx] le (ap1 H (Qs (st G e T m 
   have a0 : Γ ⊢[PRAAx] act T H (Qs (st G e T m H D I R j P)) ≐ zero := sg_le h
   have u1 : Γ ⊢[PRAAx] monus one (act T H (Qs (st G e T m H D I R j P))) ≐ one :=
     (congrMonus (.eqRefl _) a0).eqTrans (monus_zero _)
-  have eQ := natEq ((congrFst s).eqTrans (fst_pair _ _))
-  have eK := natEq ((congrFst (congrSnd s)).eqTrans ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)))
-  have eA := natEq ((congrSnd (congrSnd s)).eqTrans ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)))
   have ea := natEq a0; have eu := natEq u1
   refine .andI ?_ (.andI ?_ ?_)
-  · apply deriveNat; ipra_simps
-    linear_combination eQ + 𝔞 (ap1 D (Qs (st G e T m H D I R j P))) * ea + 𝔞 (Qs (st G e T m H D I R j P)) * eu
-  · apply deriveNat; ipra_simps
-    linear_combination eK + ea
-  · apply deriveNat; ipra_simps
-    linear_combination eA + 𝔞 (op G (As (st G e T m H D I R j P))
-      (smul G e (pw (num m) (ks (st G e T m H D I R j P))) (ap1 R (ap1 I (Qs (st G e T m H D I R j P)))))) * ea +
+  · ipra_lc natEq ((congrFst s).eqTrans (fst_pair _ _)) + 𝔞 (ap1 D (Qs (st G e T m H D I R j P))) * ea +
+      𝔞 (Qs (st G e T m H D I R j P)) * eu
+  · ipra_lc natEq ((congrFst (congrSnd s)).eqTrans ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))) + ea
+  · ipra_lc natEq ((congrSnd (congrSnd s)).eqTrans ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))) +
+      𝔞 (op G (As (st G e T m H D I R j P)) (smul G e (pw (num m) (ks (st G e T m H D I R j P))) (ap1 R (ap1 I (Qs (st G e T m H D I R j P)))))) * ea +
       𝔞 (As (st G e T m H D I R j P)) * eu
 
 include hA hC hI hDesc in

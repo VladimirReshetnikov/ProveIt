@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.Coprime
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Tail and error identities of a continued fraction
@@ -58,13 +59,11 @@ include hdet
 
 /-- `N q = p D + v`: the value exceeds `p/q` by `v/(q D)`. -/
 theorem err_even (u v : PTm n) : Γ ⊢[PRAAx] Nm u v p p' * q ≐ p * Dn u v q q' + v := by
-  have x := natEq hdet
-  apply deriveNat; ipra_simps; linear_combination 𝔞 v * x
+  ipra_lc 𝔞 v * natEq hdet
 
 /-- `p' D = N q' + u`: the value is below `p'/q'` by `u/(q' D)`. -/
 theorem prev_even (u v : PTm n) : Γ ⊢[PRAAx] p' * Dn u v q q' ≐ Nm u v p p' * q' + u := by
-  have x := natEq hdet
-  apply deriveNat; ipra_simps; linear_combination 𝔞 u * x
+  ipra_lc 𝔞 u * natEq hdet
 
 /-- For `u, v ≥ 1`: `p/q < N/D < p'/q'`. -/
 theorem between_even {u v : PTm n} (hu : Γ ⊢[PRAAx] le one u) (hv : Γ ⊢[PRAAx] le one v) :
@@ -83,13 +82,11 @@ include hdet
 
 /-- `p D = N q + v`: the value is below `p/q` by `v/(q D)`. -/
 theorem err_odd (u v : PTm n) : Γ ⊢[PRAAx] p * Dn u v q q' ≐ Nm u v p p' * q + v := by
-  have x := natEq hdet
-  apply deriveNat; ipra_simps; linear_combination 𝔞 v * x
+  ipra_lc 𝔞 v * natEq hdet
 
 /-- `N q' = p' D + u`: the value exceeds `p'/q'` by `u/(q' D)`. -/
 theorem prev_odd (u v : PTm n) : Γ ⊢[PRAAx] Nm u v p p' * q' ≐ p' * Dn u v q q' + u := by
-  have x := natEq hdet
-  apply deriveNat; ipra_simps; linear_combination 𝔞 u * x
+  ipra_lc 𝔞 u * natEq hdet
 
 /-- For `u, v ≥ 1`: `p'/q' < N/D < p/q`. -/
 theorem between_odd {u v : PTm n} (hu : Γ ⊢[PRAAx] le one u) (hv : Γ ⊢[PRAAx] le one v) :

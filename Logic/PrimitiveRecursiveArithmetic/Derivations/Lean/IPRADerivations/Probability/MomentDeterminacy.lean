@@ -5,6 +5,7 @@ import IPRADerivations.Combinatorics.StirlingPowers
 import IPRADerivations.Combinatorics.BinomialIdentities
 import IPRADerivations.Core.SumReflect
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Finite-support moment determinacy: uniqueness by back substitution
@@ -111,20 +112,13 @@ theorem back_step {J x : PTm n}
     (hD : Γ ⊢[PRAAx] inst2 D J x ≐ succ (pred (inst2 D J x)))
     (ih : Γ ⊢[PRAAx] ap2 (sumF (adB P Q)) J x ≐ zero) :
     Γ ⊢[PRAAx] ap2 (sumF (adB P Q)) (succ J) x ≐ zero := by
-  have es := natEq (sum_agree c P Q ih)
-  have eE := natEq hE
   have hPQ : Γ ⊢[PRAAx] inst2 P J x ≐ inst2 Q J x := by
     refine mul_cancel hD ?_
-    apply deriveNat; ipra_simps
-    linear_combination eE - es
-  have m₁ := natEq ((congrMonus hPQ (.eqRefl (inst2 Q J x))).eqTrans (monus_self _))
-  have m₂ := natEq ((congrMonus (.eqRefl (inst2 Q J x)) hPQ).eqTrans (monus_self _))
+    ipra_lc natEq hE - natEq (sum_agree c P Q ih)
   have s := sum_succ' (Γ := Γ) (adB P Q) J x
   rw [inst2_adB] at s
-  have e₀ := natEq s
-  have i := natEq ih
-  apply deriveNat; ipra_simps
-  linear_combination e₀ + i + m₁ + m₂
+  ipra_lc natEq s + natEq ih + natEq ((congrMonus hPQ (.eqRefl (inst2 Q J x))).eqTrans (monus_self _)) +
+    natEq ((congrMonus (.eqRefl (inst2 Q J x)) hPQ).eqTrans (monus_self _))
 
 theorem back_guard {J B x : PTm n}
     (hJ : Γ ⊢[PRAAx] le (succ J) (succ B))

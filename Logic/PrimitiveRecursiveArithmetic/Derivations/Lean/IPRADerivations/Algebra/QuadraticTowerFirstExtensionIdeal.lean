@@ -1,5 +1,6 @@
 import IPRADerivations.Algebra.QuadraticTowerMultiplicationRecurrence
 import IPRADerivations.Algebra.QuadraticTowerFirstExtensionSign
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Semantic sign-zero products of the actual first extension
@@ -127,15 +128,11 @@ theorem product_coefficients (M D A C b : PTm n) (hb : Γ ⊢[PRAAx] le b M)
 
 theorem native_sign_code_congr (d : PTm n) {x y : PTm n} (e : Γ ⊢[PRAAx] x ≐ y) : Γ ⊢[PRAAx]
     QuadraticRationalNonnegativeRadicand.sign d x ≐ QuadraticRationalNonnegativeRadicand.sign d y := by
-  simpa only [QuadraticRationalNonnegativeRadicand.subst_sign,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using
-    Prf.eqCongr (QuadraticRationalNonnegativeRadicand.sign (var 0) (var 1) : PTm 2)
-      (σ := ![d,x]) (σ' := ![d,y]) (fun i => by fin_cases i; exact .eqRefl _; exact e)
+  ipra_congr (QuadraticRationalNonnegativeRadicand.sign (var 0) (var 1) : PTm 2) with [.eqRefl d, e]
 
 theorem projection_sign_code_congr {x y : PTm n} (e : Γ ⊢[PRAAx] x ≐ y) : Γ ⊢[PRAAx]
     QuadraticRationalZeroProjection.sign x ≐ QuadraticRationalZeroProjection.sign y := by
-  simpa only [QuadraticRationalZeroProjection.subst_sign,Syn.subst_var,Matrix.cons_val_zero] using
-    Prf.eqCongr (QuadraticRationalZeroProjection.sign (var 0) : PTm 1)
-      (σ := ![x]) (σ' := ![y]) (fun i => by fin_cases i; exact e)
+  ipra_congr (QuadraticRationalZeroProjection.sign (var 0) : PTm 1) with [e]
 
 theorem native_zero_multiply (d x y : PTm n)
     (hn : Γ ⊢[PRAAx] QuadraticRationalNonnegativeRadicand.nonnegative d)
@@ -191,10 +188,8 @@ theorem zero_multiply (M S D A C b : PTm n) (hM : Γ ⊢[PRAAx] le b M)
 
 theorem actual_sign_code_congr (S D : PTm n) {A C : PTm n} (e : Γ ⊢[PRAAx] A ≐ C) : Γ ⊢[PRAAx]
     QuadraticTowerSignTable.query one S D A ≐ QuadraticTowerSignTable.query one S D C := by
-  simpa [QuadraticTowerSignTable.subst_query] using
-    Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (QuadraticTowerSignTable.query (var 0) (var 1) (var 2) (var 3) : PTm 4)
-      (σ := ![one,S,D,A]) (σ' := ![one,S,D,C])
-      (fun i => by fin_cases i; exact .eqRefl _; exact .eqRefl _; exact .eqRefl _; exact e)
+  ipra_congr (QuadraticTowerSignTable.query (var 0) (var 1) (var 2) (var 3) : PTm 4) with
+    [.eqRefl one, .eqRefl S, .eqRefl D, e]
 
 theorem zero_multiply_right (M S D A C b : PTm n) (hM : Γ ⊢[PRAAx] le b M)
     (hS : Γ ⊢[PRAAx] le (productBound b) S) (hD : Γ ⊢[PRAAx] radicandsHeight D one b)

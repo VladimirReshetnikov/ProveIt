@@ -3,6 +3,7 @@ import IPRADerivations.AnalyticNumberTheory.MertensChebyshev
 import IPRADerivations.AnalyticNumberTheory.LcmUpto
 import IPRADerivations.Foundations.MixedRadix
 import IPRADerivations.Combinatorics.Binomial
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The product form of the Chebyshev identity for the Mertens function
@@ -92,8 +93,7 @@ theorem t_at (b w : PTm 2) (i N y : PTm n) :
 
 theorem step_alg {L LP LE S S' E Lw1 : PTm n} (h1 : Γ ⊢[PRAAx] L ≐ LP + LE) (h2 : Γ ⊢[PRAAx] LE ≐ E * Lw1)
     (ih : Γ ⊢[PRAAx] LP ≐ S) (h3 : Γ ⊢[PRAAx] S' ≐ S + E * Lw1) : Γ ⊢[PRAAx] L ≐ S' := by
-  have a := natEq h1; have b := natEq h2; have c := natEq ih; have d := natEq h3
-  apply deriveNat; ipra_simps; linear_combination a + b + c - d
+  ipra_lc natEq h1 + natEq h2 + natEq ih - natEq h3
 
 /-- `L_w(∏_{i < K} (i+1)^{e_i}) = ∑_{i < K} e_i · L_w(i + 1)`. -/
 theorem lw_prod (b w : PTm 2) (N y K : PTm n) :
@@ -134,8 +134,7 @@ theorem Bs_aN (m y : PTm n) : Γ ⊢[PRAAx] Bs aNB m y ≐ Bs aNB m zero := by
 
 theorem row_alg {s L B B' : PTm n} (hs : Γ ⊢[PRAAx] s ≐ one) (hB : Γ ⊢[PRAAx] B ≐ B') :
     Γ ⊢[PRAAx] (s * L) * B ≐ B' * L := by
-  have x := natEq hs; have y := natEq hB
-  apply deriveNat; ipra_simps; linear_combination 𝔞 L * 𝔞 B * x + 𝔞 L * y
+  ipra_lc 𝔞 L * 𝔞 B * natEq hs + 𝔞 L * natEq hB
 
 /-- `∑_{a ≤ N} [a ≥ 1] L_w(a) B_b(⌊N/a⌋) = ∑_{i < N} B_b(⌊N/(i+1)⌋) L_w(i + 1)` for a body `b` whose summatory
 function does not depend on the parameter. -/

@@ -6,6 +6,7 @@ import IPRADerivations.AnalyticNumberTheory.Multiplicative
 import IPRADerivations.Foundations.CrtCoprime
 import IPRADerivations.AnalyticNumberTheory.CoprimeModulus
 import IPRADerivations.AnalyticNumberTheory.Smooth
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Finite continued fractions of rationals
@@ -171,20 +172,16 @@ theorem inv_zero (a b : PTm n) : Γ ⊢[PRAAx] Inv zero a b := by
   have e3 := natEq (Qc_zero (Γ := Γ) a b); have e4 := natEq (Qc'_zero (Γ := Γ) a b)
   have e5 := natEq (EA_zero (Γ := Γ) a b); have e6 := natEq (EB_zero (Γ := Γ) a b)
   refine .andI ?_ (.andI ?_ ?_)
-  · apply deriveNat; ipra_simps
-    linear_combination -(𝔞 (EA zero a b)) * e1 - 𝔞 (EB zero a b) * e2 - e5
-  · apply deriveNat; ipra_simps
-    linear_combination -(𝔞 (EA zero a b)) * e3 - 𝔞 (EB zero a b) * e4 - e6
+  · ipra_lc -(𝔞 (EA zero a b)) * e1 - 𝔞 (EB zero a b) * e2 - e5
+  · ipra_lc -(𝔞 (EA zero a b)) * e3 - 𝔞 (EB zero a b) * e4 - e6
   · exact le_congr (.eqRefl _) ((congrAdd (EB_zero a b) (.eqRefl _)).eqTrans (add_zero _)) (le_refl _)
 
 theorem inv_alg {a P P' E E' A B Q R c : PTm n} (h : Γ ⊢[PRAAx] a ≐ P * A + P' * B)
     (hP : Γ ⊢[PRAAx] Q ≐ c * P + P') (hP' : Γ ⊢[PRAAx] R ≐ P) (hE : Γ ⊢[PRAAx] E ≐ B)
     (hE' : Γ ⊢[PRAAx] E' ≐ rem A B) (hd : Γ ⊢[PRAAx] A ≐ B * c + rem A B) :
     Γ ⊢[PRAAx] a ≐ Q * E + R * E' := by
-  have x1 := natEq h; have x2 := natEq hP; have x3 := natEq hP'; have x4 := natEq hE
-  have x5 := natEq hE'; have x6 := natEq hd
-  apply deriveNat; ipra_simps
-  linear_combination x1 - 𝔞 E * x2 - 𝔞 E' * x3 - (𝔞 c * 𝔞 P + 𝔞 P') * x4 - 𝔞 P * x5 + 𝔞 P * x6
+  ipra_lc natEq h - 𝔞 E * natEq hP - 𝔞 E' * natEq hP' - (𝔞 c * 𝔞 P + 𝔞 P') * natEq hE - 𝔞 P * natEq hE' +
+    𝔞 P * natEq hd
 
 theorem dec_alg {E B j b r : PTm n} (h : Γ ⊢[PRAAx] le (B + j) b) (hr : Γ ⊢[PRAAx] lt r B)
     (hE : Γ ⊢[PRAAx] E ≐ r) : Γ ⊢[PRAAx] le (E + succ j) b := by
@@ -281,8 +278,7 @@ theorem M_pos {a b : PTm n} (hb : Γ ⊢[PRAAx] b ≐ succ (pred b)) : Γ ⊢[PR
     ((congrEB_j e.eqSymm).eqTrans z))))
 theorem val_alg {a P P' A B : PTm n} (h : Γ ⊢[PRAAx] a ≐ P * A + P' * B) (hB : Γ ⊢[PRAAx] B ≐ zero) :
     Γ ⊢[PRAAx] a ≐ P * A := by
-  have x := natEq h; have y := natEq hB
-  apply deriveNat; ipra_simps; linear_combination x + 𝔞 P' * y
+  ipra_lc natEq h + 𝔞 P' * natEq hB
 
 /-- **`dio:cf-rational`, existence**: for `b ≥ 1`, the Euclidean stages stop at `m = M a b` with `1 ≤ m ≤ b + 1`,
 and `a = p_{m−1} g`, `b = q_{m−1} g` with `g = EA m ≥ 1`: `a/b = p_{m−1}/q_{m−1} = [cf 0; cf 1, …, cf (m−1)]`. -/
@@ -328,7 +324,6 @@ theorem cf_le {a b j : PTm n} (hj : Γ ⊢[PRAAx] lt j (M a b)) : Γ ⊢[PRAAx] 
     have eA : C ⊢[PRAAx] EA j a b ≐ EB (pred j) a b := (congrEA_j Prf.hyp0).eqTrans (EA_succ _ a b)
     have l := Prf.andE₂ (Prf.andE₂ I)
     exact le_congr eA.eqSymm (.eqRefl _) (le_trans (le_trans (le_add_right _ _) l) (le_add_left b a))
-
 
 /-! ## Later coefficients -/
 
@@ -378,7 +373,7 @@ theorem cf_last {a b : PTm n} (h2 : Γ ⊢[PRAAx] le two (M a b)) :
   have d := (div_eq (j := EA (pred (M a b)) a b) hB).eqTrans ((congrAdd (.eqRefl _) z).eqTrans (add_zero _))
   refine AnalyticNumberTheory.CoprimeModulus.two_le_of_ne (cf_pos hj h1) (.impI ?_)
   have e1 : ((cf (pred (M a b)) a b ≐ one) :: Γ) ⊢[PRAAx] EA (pred (M a b)) a b ≐ EB (pred (M a b)) a b :=
-    d.wk.eqTrans ((congrMul (.eqRefl _) Prf.hyp0).eqTrans (by apply deriveNat; ipra_simps; ring))
+    d.wk.eqTrans ((congrMul (.eqRefl _) Prf.hyp0).eqTrans (by ipra_ring))
   exact lt_irrefl _ _ (lt_congr (.eqRefl _) e1 lt'.wk)
 
 end LeanProofs.IPRA.DiophantineNumberTheory.CfRational

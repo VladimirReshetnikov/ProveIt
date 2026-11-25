@@ -1,5 +1,6 @@
 import IPRADerivations.Geometry.Distinct.AnalyticConicAffine
 import IPRADerivations.Analysis.RationalAlgebra
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Actual rational affine pullback and evaluation of conics
@@ -149,10 +150,7 @@ theorem rational_evaluation_covariance (c m p : PTm n) (hc : Γ ⊢[PRAAx] valid
 theorem native_discriminant_covariance (c m : PTm n) : Γ ⊢[PRAAx]
     ZT.eq (AnalyticConicAffine.discriminant (numerators (pullback c m)))
       ((AnalyticConicAffine.determinant (numerators m)).sq*AnalyticConicAffine.discriminant (numerators c)) := by
-  apply ZT.derive
-  simp only [AnalyticConicAffine.discriminant,AnalyticConicAffine.determinant,ZT.toZ_sq,ZT.toZ_sub,ZT.toZ_mul,pullback_read_value]
-  simp only [AnalyticConicAffine.pullback,lift,read_pack6_0,read_pack6_1,read_pack6_2,ZT.toZ_add,ZT.toZ_mul,ZT.toZ_natLit]
-  ring
+  ipra_lc [AnalyticConicAffine.pullback, lift, read_pack6_0, read_pack6_1, read_pack6_2, AnalyticConicAffine.discriminant, AnalyticConicAffine.determinant, pullback_read_value]
 
 theorem discriminant_value (c : PTm n) (hc : Γ ⊢[PRAAx] valid c) : Γ ⊢[PRAAx]
     represents (discriminant c) (AnalyticConicAffine.discriminant (numerators c)) (denominator c*denominator c) :=

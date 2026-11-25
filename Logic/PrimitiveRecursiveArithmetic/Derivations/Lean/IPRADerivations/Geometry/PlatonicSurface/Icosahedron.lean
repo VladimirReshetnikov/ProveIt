@@ -1,5 +1,6 @@
 import IPRADerivations.Geometry.PlatonicSurface.Intrinsic
 import IPRADerivations.Core.Tactic
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The icosahedral strip minimum
@@ -75,13 +76,9 @@ theorem icoMinimum (a b c d e f : PTm n) :
   let D := clearance a b c d e f
   have budget : Γ ⊢[PRAAx] le (t+u) (num 1008*D) := by
     refine le_of_eq_add (d := num 2*slack a b c d e f) ?_
-    have h₀ := ZT.toZ_eq (signedBudget (Γ := Γ) a b c d e f)
-    have h₁ := ZT.toZ_eq (cost_correct (Γ := Γ) true a b c d e f)
-    have h₂ := ZT.toZ_eq (cost_correct (Γ := Γ) false a b c d e f)
     dsimp only [D, t, u]
-    apply deriveNat
-    ipra_simps
-    linear_combination -2*h₀ - h₁ - h₂
+    ipra_lc -2*ZT.toZ_eq (signedBudget (Γ := Γ) a b c d e f) - ZT.toZ_eq (cost_correct (Γ := Γ) true a b c d e f) -
+      ZT.toZ_eq (cost_correct (Γ := Γ) false a b c d e f)
   have h := le_trans (add_le_add₂ (min_le_left t u) (min_le_right t u)) budget
   change Γ ⊢[PRAAx] le (least t u) (num 504*D)
   apply mul_le_cancel (d' := num 1)

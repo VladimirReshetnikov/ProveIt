@@ -1,4 +1,5 @@
 import IPRADerivations.Geometry.EuclideanSpace
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Pythagoras and its converse, equilateral triangles, and elementary areas and volumes
@@ -41,18 +42,14 @@ variable {n d : ℕ} {Γ : List (Fm PTm n)}
 local macro "gsimp" loc:(Lean.Parser.Tactic.location)? : tactic =>
   `(tactic| simp only [dot, det, nsq, cx, trip, zsl_def, ZT.toZ_add, ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_neg,
     ZT.toZ_sq, ZT.toZ_natLit, Nat.cast_ofNat, Nat.cast_zero, Nat.cast_one] $[$loc]?)
-
-local macro "geo" : tactic => `(tactic| (apply ZT.derive; gsimp; ring))
+attribute [local ipra_defs] dot det nsq cx trip
 
 /-! ## Pythagoras -/
 
 /-- A right angle at `A`: `|u − v|² = |u|² + |v|²`. -/
 theorem pythagoras {u₁ u₂ v₁ v₂ : ZT n} (hp : Γ ⊢[PRAAx] ZT.eq (dot u₁ u₂ v₁ v₂) (ZT.natLit 0)) :
     Γ ⊢[PRAAx] ZT.eq (nsq (u₁ - v₁) (u₂ - v₂)) (nsq u₁ u₂ + nsq v₁ v₂) := by
-  have e := ZT.toZ_eq hp
-  apply ZT.derive
-  gsimp at e ⊢
-  linear_combination (-2 : Groth (Q Γ)) * e
+  ipra_lc (-2 : Groth (Q Γ)) * ZT.toZ_eq hp
 
 /-- The converse: `|u − v|² = |u|² + |v|²` gives `u · v = 0`. -/
 theorem pythagoras_converse {u₁ u₂ v₁ v₂ : ZT n}
@@ -61,13 +58,9 @@ theorem pythagoras_converse {u₁ u₂ v₁ v₂ : ZT n}
   have e := ZT.toZ_eq h
   gsimp at e
   have h1 : Γ ⊢[PRAAx] zle (dot u₁ u₂ v₁ v₂) (ZT.natLit 0) := by
-    refine zle_of_comb_two 0 ?_ nn_zero
-    gsimp
-    linear_combination e
+    ipra_zle2 0 with e
   have h2 : Γ ⊢[PRAAx] zle (ZT.natLit 0) (dot u₁ u₂ v₁ v₂) := by
-    refine zle_of_comb_two 0 ?_ nn_zero
-    gsimp
-    linear_combination (-1 : Groth (Q Γ)) * e
+    ipra_zle2 0 with -e
   exact le_antisymm h1 h2
 
 /-- Pythagoras in dimension `d`: `u · v = 0` gives `N(u + v) = N(u) + N(v)`. -/
@@ -91,23 +84,20 @@ theorem pythagoras_dim {u v : Fin d → ZT n}
 theorem equilateral_AC (u₁ u₂ s : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (nsq (u₁ - s * u₂) (u₂ + s * u₁))
       (ZT.natLit 4 * nsq u₁ u₂ + (s * s - ZT.natLit 3) * nsq u₁ u₂) := by
-  geo
+  ipra_lc
 
 /-- `|−u + s J u|² = 4 |u|² + (s² − 3) |u|²`: the side `BC`. -/
 theorem equilateral_BC (u₁ u₂ s : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (nsq (-u₁ - s * u₂) (-u₂ + s * u₁))
       (ZT.natLit 4 * nsq u₁ u₂ + (s * s - ZT.natLit 3) * nsq u₁ u₂) := by
-  geo
+  ipra_lc
 
 /-! ## Areas and volumes -/
 
 /-- A rectangle: `u · v = 0` gives `[u, v]² = N(u) N(v)`. -/
 theorem rectangle_area {u₁ u₂ v₁ v₂ : ZT n} (hp : Γ ⊢[PRAAx] ZT.eq (dot u₁ u₂ v₁ v₂) (ZT.natLit 0)) :
     Γ ⊢[PRAAx] ZT.eq (ZT.sq (det u₁ u₂ v₁ v₂)) (nsq u₁ u₂ * nsq v₁ v₂) := by
-  have e := ZT.toZ_eq hp
-  apply ZT.derive
-  gsimp at e ⊢
-  linear_combination (-(ZT.toZ Γ u₁ * ZT.toZ Γ v₁ + ZT.toZ Γ u₂ * ZT.toZ Γ v₂)) * e
+  ipra_lc (-(ZT.toZ Γ u₁ * ZT.toZ Γ v₁ + ZT.toZ Γ u₂ * ZT.toZ Γ v₂)) * ZT.toZ_eq hp
 
 /-- The shoelace sum of the trapezoid `(0, 0), (a, 0), (t + b, h), (t, h)` is `a h + b h`. -/
 theorem trapezoid_shoelace (a b h t : ZT n) :
@@ -115,12 +105,12 @@ theorem trapezoid_shoelace (a b h t : ZT n) :
       (det (ZT.natLit 0) (ZT.natLit 0) a (ZT.natLit 0) + det a (ZT.natLit 0) (t + b) h +
         det (t + b) h t h + det t h (ZT.natLit 0) (ZT.natLit 0))
       (a * h + b * h) := by
-  geo
+  ipra_lc
 
 /-- Sliding the third vertex along the base: `[u, w + t u] = [u, w]`. -/
 theorem parallel_area (u₁ u₂ w₁ w₂ t : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (det u₁ u₂ (w₁ + t * u₁) (w₂ + t * u₂)) (det u₁ u₂ w₁ w₂) := by
-  geo
+  ipra_lc
 
 /-- The determinant of a pyramid's tetrahedron sees only the component of the apex off the base plane:
 `[b, c, w + β b + γ c] = [b, c, w]`. -/
@@ -128,6 +118,6 @@ theorem pyramid_det (b₁ b₂ b₃ c₁ c₂ c₃ w₁ w₂ w₃ β γ : ZT n) 
     Γ ⊢[PRAAx] ZT.eq
       (trip b₁ b₂ b₃ c₁ c₂ c₃ (w₁ + β * b₁ + γ * c₁) (w₂ + β * b₂ + γ * c₂) (w₃ + β * b₃ + γ * c₃))
       (trip b₁ b₂ b₃ c₁ c₂ c₃ w₁ w₂ w₃) := by
-  geo
+  ipra_lc
 
 end LeanProofs.IPRA.Geometry.ElementaryFigures

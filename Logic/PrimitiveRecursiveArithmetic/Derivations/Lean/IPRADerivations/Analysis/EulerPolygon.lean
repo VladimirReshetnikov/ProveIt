@@ -1,4 +1,5 @@
 import IPRADerivations.Topology.BarycentricMesh
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The exact Euler polygons: norm bounds, stability and segment clearance
@@ -111,9 +112,7 @@ theorem stability_bound (e : ℕ → PTm n) {N K G : ℕ} (hN : 1 ≤ N) (c : PT
 theorem clear_mid (A D E p q : ZT n) :
     Γ ⊢[PRAAx] zle ((E * A - D * D) * (q * q))
       (E * (A * (q * q) + ZT.natLit 2 * D * (p * q) + E * (p * p))) := by
-  refine zle_of_comb (ZT.toZ Γ (E * p + D * q) ^ 2) ?_ (nn_zsq _)
-  zsimp
-  ring
+  ipra_zle (ZT.toZ Γ (E * p + D * q) ^ 2)
 
 /-- The minimum at the left end: `D ≥ 0` gives `F ≥ A q²` for `p, q ≥ 0`. -/
 theorem clear_left {A D E p q : ZT n} (hD : Γ ⊢[PRAAx] zle (ZT.natLit 0) D)

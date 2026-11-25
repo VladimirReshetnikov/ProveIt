@@ -1,4 +1,4 @@
-import IPRADerivations.Core.IntCertificates
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Coordinates of the regular solids: edges, radii and supporting planes
@@ -46,11 +46,7 @@ def nm (a₁ a₂ a₃ : ZT n) : ZT n := a₁ * a₁ + a₂ * a₂ + a₃ * a₃
 /-- The defect `φ² − φ − 1` of the golden relation. -/
 def gold (φ : ZT n) : ZT n := φ * φ - φ - ZT.natLit 1
 
-local macro "gsimp" loc:(Lean.Parser.Tactic.location)? : tactic =>
-  `(tactic| simp only [dt, nm, gold, ZT.toZ_add, ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_neg, ZT.toZ_sq, ZT.toZ_natLit,
-    Nat.cast_ofNat, Nat.cast_zero, Nat.cast_one] $[$loc]?)
-
-local macro "geo" : tactic => `(tactic| (apply ZT.derive; gsimp; ring))
+attribute [local ipra_defs] dt nm gold
 
 local notation "𝟎" => (ZT.natLit 0 : ZT n)
 local notation "𝟏" => (ZT.natLit 1 : ZT n)
@@ -60,101 +56,101 @@ local notation "𝟏" => (ZT.natLit 1 : ZT n)
 /-- The tetrahedron edge `(1, 1, 1), (1, −1, −1)` has squared length `8`. -/
 theorem tetrahedron_edge :
     Γ ⊢[PRAAx] ZT.eq (nm (𝟏 - 𝟏) (𝟏 - (-𝟏)) (𝟏 - (-𝟏))) (ZT.natLit 8) := by
-  geo
+  ipra_lc
 
 /-- The cube edge `(1, 1, 1), (1, 1, −1)` has squared length `4`. -/
 theorem cube_edge :
     Γ ⊢[PRAAx] ZT.eq (nm (𝟏 - 𝟏) (𝟏 - 𝟏) (𝟏 - (-𝟏))) (ZT.natLit 4) := by
-  geo
+  ipra_lc
 
 /-- The octahedron edge `(1, 0, 0), (0, 1, 0)` has squared length `2`. -/
 theorem octahedron_edge :
     Γ ⊢[PRAAx] ZT.eq (nm (𝟏 - 𝟎) (𝟎 - 𝟏) (𝟎 - 𝟎)) (ZT.natLit 2) := by
-  geo
+  ipra_lc
 
 /-- The vertices `(±1, ±1, ±1)` of the cube and of the tetrahedron have squared radius `3`. -/
 theorem cube_radius :
     Γ ⊢[PRAAx] ZT.eq (nm 𝟏 𝟏 (-𝟏)) (ZT.natLit 3) := by
-  geo
+  ipra_lc
 
 /-- The vertices of the octahedron have squared radius `1`. -/
 theorem octahedron_radius :
     Γ ⊢[PRAAx] ZT.eq (nm 𝟎 (-𝟏) 𝟎) (ZT.natLit 1) := by
-  geo
+  ipra_lc
 
 /-! ## The icosahedron -/
 
 /-- `|(0, 1, φ)|² = φ + 2` on the golden relation. -/
 theorem icosahedron_radius (φ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (nm 𝟎 𝟏 φ) (φ + ZT.natLit 2 + gold φ) := by
-  geo
+  ipra_lc
 
 /-- `|(0, 1, φ) − (1, φ, 0)|² = 4` on the golden relation. -/
 theorem icosahedron_edge₁ (φ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (nm (𝟎 - 𝟏) (𝟏 - φ) (φ - 𝟎)) (ZT.natLit 4 + ZT.natLit 2 * gold φ) := by
-  geo
+  ipra_lc
 
 /-- `|(0, 1, φ) − (φ, 0, 1)|² = 4` on the golden relation. -/
 theorem icosahedron_edge₂ (φ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (nm (𝟎 - φ) (𝟏 - 𝟎) (φ - 𝟏)) (ZT.natLit 4 + ZT.natLit 2 * gold φ) := by
-  geo
+  ipra_lc
 
 /-- `|(1, φ, 0) − (φ, 0, 1)|² = 4` on the golden relation. -/
 theorem icosahedron_edge₃ (φ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (nm (𝟏 - φ) (φ - 𝟎) (𝟎 - 𝟏)) (ZT.natLit 4 + ZT.natLit 2 * gold φ) := by
-  geo
+  ipra_lc
 
 /-- `|(1, φ, 0) − (−1, φ, 0)|² = 4`. -/
 theorem icosahedron_edge₄ (φ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (nm (𝟏 - (-𝟏)) (φ - φ) (𝟎 - 𝟎)) (ZT.natLit 4) := by
-  geo
+  ipra_lc
 
 /-- The normal `(1, 1, 1)` at `(0, 1, φ)`: `φ²` on the golden relation. -/
 theorem icosahedron_support₁ (φ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (dt 𝟏 𝟏 𝟏 𝟎 𝟏 φ) (φ * φ - gold φ) := by
-  geo
+  ipra_lc
 
 /-- The normal `(0, φ, φ⁻¹)` at `(0, 1, φ)`: exactly `φ²`. -/
 theorem icosahedron_support₂ (φ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (dt 𝟎 φ (φ - 𝟏) 𝟎 𝟏 φ) (φ * φ) := by
-  geo
+  ipra_lc
 
 /-- The normal `(0, φ, φ⁻¹)` at `(1, φ, 0)`: exactly `φ²`. -/
 theorem icosahedron_support₃ (φ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (dt 𝟎 φ (φ - 𝟏) 𝟏 φ 𝟎) (φ * φ) := by
-  geo
+  ipra_lc
 
 /-- The normal `(0, φ, φ⁻¹)` at `(−1, φ, 0)`: exactly `φ²`. -/
 theorem icosahedron_support₄ (φ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (dt 𝟎 φ (φ - 𝟏) (-𝟏) φ 𝟎) (φ * φ) := by
-  geo
+  ipra_lc
 
 /-! ## A face of the dodecahedron -/
 
 /-- The normal `(0, φ, 1)` at `(1, 1, 1)`: `φ²` on the golden relation. -/
 theorem dodecahedron_support₁ (φ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (dt 𝟎 φ 𝟏 𝟏 𝟏 𝟏) (φ * φ - gold φ) := by
-  geo
+  ipra_lc
 
 /-- The normal `(0, φ, 1)` at `(φ⁻¹, φ, 0)`: exactly `φ²`. -/
 theorem dodecahedron_support₂ (φ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (dt 𝟎 φ 𝟏 (φ - 𝟏) φ 𝟎) (φ * φ) := by
-  geo
+  ipra_lc
 
 /-- The normal `(0, φ, 1)` at `(0, φ⁻¹, φ)`: exactly `φ²`. -/
 theorem dodecahedron_support₃ (φ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (dt 𝟎 φ 𝟏 𝟎 (φ - 𝟏) φ) (φ * φ) := by
-  geo
+  ipra_lc
 
 /-- The side `(1, 1, 1), (φ⁻¹, φ, 0)`: squared length `8 − 4φ` on the golden relation. -/
 theorem dodecahedron_edge (φ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (nm (𝟏 - (φ - 𝟏)) (𝟏 - φ) (𝟏 - 𝟎))
       (ZT.natLit 8 - ZT.natLit 4 * φ + ZT.natLit 2 * gold φ) := by
-  geo
+  ipra_lc
 
 /-- The diagonal `(1, 1, 1), (−φ⁻¹, φ, 0)`: squared length `4` on the golden relation. -/
 theorem dodecahedron_diagonal (φ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (nm (𝟏 - (-(φ - 𝟏))) (𝟏 - φ) (𝟏 - 𝟎)) (ZT.natLit 4 + ZT.natLit 2 * gold φ) := by
-  geo
+  ipra_lc
 
 end LeanProofs.IPRA.Geometry.RegularSolidCoordinates

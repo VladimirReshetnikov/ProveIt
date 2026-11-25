@@ -92,7 +92,7 @@ theorem head_pt (I J x : PTm n) :
   refine (congrMul (congrMul (congrMul (congrInst2 a (fst_pair _ _) (congrSnd (snd_pair _ _)))
     (congrGb (fst_pair _ _) (.eqRefl _))) (congrPw (congrSnd (congrFst (snd_pair _ _))) (.eqRefl _)))
     (congrPw (congrFst (congrFst (snd_pair _ _))) (congrMonus (fst_pair _ _) (.eqRefl _)))).eqTrans ?_
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem tail_pt (I J x : PTm n) :
     Γ ⊢[PRAAx] inst2 (offB (rowB (a3 a))) I (pairT (succ J) (pairT J x)) ≐ zero := by
@@ -165,7 +165,7 @@ theorem coef_pt (I d x : PTm n) :
     (congrPw (congrSnd (congrFst sx)) fI)) (congrPw (congrFst (congrFst sx)) (congrMonus (.eqRefl _) fI))).eqTrans ?_
   refine .eqTrans ?_ (congrMul (.eqRefl _) (congrMul (congrMul (congrInst2 a (.eqRefl _) (congrSnd sx))
     (congrGb (.eqRefl _) fI)) (congrPw (congrFst (congrFst sx)) (congrMonus (.eqRefl _) fI)))).eqSymm
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 end Expand
 

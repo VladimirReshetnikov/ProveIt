@@ -1,4 +1,5 @@
 import IPRADerivations.Geometry.TriangleCentres
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Angle bisectors, the incircle, the excircles and Euler's `OI` identity
@@ -39,11 +40,7 @@ open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
-local macro "gsimp" loc:(Lean.Parser.Tactic.location)? : tactic =>
-  `(tactic| simp only [dot, det, nsq, zsl_def, ZT.toZ_add, ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_neg,
-    ZT.toZ_sq, ZT.toZ_natLit, Nat.cast_ofNat, Nat.cast_zero, Nat.cast_one] $[$loc]?)
-
-local macro "geo" : tactic => `(tactic| (apply ZT.derive; gsimp; ring))
+attribute [local ipra_defs] dot det nsq
 
 /-! ## The internal bisector -/
 
@@ -51,18 +48,14 @@ local macro "geo" : tactic => `(tactic| (apply ZT.derive; gsimp; ring))
 theorem bisector_det (u₁ u₂ v₁ v₂ b c : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (b * det u₁ u₂ (b * u₁ + c * v₁) (b * u₂ + c * v₂))
       (c * det (b * u₁ + c * v₁) (b * u₂ + c * v₂) v₁ v₂) := by
-  geo
+  ipra_lc
 
 /-- `b (u · w) = c (w · v)` for `w = b u + c v`, when `c² = |u|²` and `b² = |v|²`. -/
 theorem bisector_dot {u₁ u₂ v₁ v₂ b c : ZT n} (hc : Γ ⊢[PRAAx] ZT.eq (c * c) (nsq u₁ u₂))
     (hb : Γ ⊢[PRAAx] ZT.eq (b * b) (nsq v₁ v₂)) :
     Γ ⊢[PRAAx] ZT.eq (b * dot u₁ u₂ (b * u₁ + c * v₁) (b * u₂ + c * v₂))
       (c * dot (b * u₁ + c * v₁) (b * u₂ + c * v₂) v₁ v₂) := by
-  have ec := ZT.toZ_eq hc
-  have eb := ZT.toZ_eq hb
-  apply ZT.derive
-  gsimp at ec eb ⊢
-  linear_combination (-(ZT.toZ Γ b * ZT.toZ Γ b)) * ec + (ZT.toZ Γ c * ZT.toZ Γ c) * eb
+  ipra_lc (-(ZT.toZ Γ b * ZT.toZ Γ b)) * ZT.toZ_eq hc + (ZT.toZ Γ c * ZT.toZ Γ c) * ZT.toZ_eq hb
 
 /-! ## The incentre -/
 
@@ -72,7 +65,7 @@ theorem incentre_BC (a₁ a₂ b₁ b₂ c₁ c₂ a b c : ZT n) :
       (det (c₁ - b₁) (c₂ - b₂) (a * a₁ + b * b₁ + c * c₁ - (a + b + c) * b₁)
         (a * a₂ + b * b₂ + c * c₂ - (a + b + c) * b₂))
       (a * det (b₁ - a₁) (b₂ - a₂) (c₁ - a₁) (c₂ - a₂)) := by
-  geo
+  ipra_lc
 
 /-- `[A − C, P I − P C] = b D`. -/
 theorem incentre_CA (a₁ a₂ b₁ b₂ c₁ c₂ a b c : ZT n) :
@@ -80,7 +73,7 @@ theorem incentre_CA (a₁ a₂ b₁ b₂ c₁ c₂ a b c : ZT n) :
       (det (a₁ - c₁) (a₂ - c₂) (a * a₁ + b * b₁ + c * c₁ - (a + b + c) * c₁)
         (a * a₂ + b * b₂ + c * c₂ - (a + b + c) * c₂))
       (b * det (b₁ - a₁) (b₂ - a₂) (c₁ - a₁) (c₂ - a₂)) := by
-  geo
+  ipra_lc
 
 /-- `[B − A, P I − P A] = c D`. -/
 theorem incentre_AB (a₁ a₂ b₁ b₂ c₁ c₂ a b c : ZT n) :
@@ -88,7 +81,7 @@ theorem incentre_AB (a₁ a₂ b₁ b₂ c₁ c₂ a b c : ZT n) :
       (det (b₁ - a₁) (b₂ - a₂) (a * a₁ + b * b₁ + c * c₁ - (a + b + c) * a₁)
         (a * a₂ + b * b₂ + c * c₂ - (a + b + c) * a₂))
       (c * det (b₁ - a₁) (b₂ - a₂) (c₁ - a₁) (c₂ - a₂)) := by
-  geo
+  ipra_lc
 
 /-- The foot of the incentre on `BC`: `2 (P I − P B) · (C − B) = a (a + c − b) P`. -/
 theorem incircle_foot {a₁ a₂ b₁ b₂ c₁ c₂ a b c : ZT n}
@@ -99,12 +92,7 @@ theorem incircle_foot {a₁ a₂ b₁ b₂ c₁ c₂ a b c : ZT n}
       (ZT.natLit 2 * dot (a * a₁ + b * b₁ + c * c₁ - (a + b + c) * b₁)
         (a * a₂ + b * b₂ + c * c₂ - (a + b + c) * b₂) (c₁ - b₁) (c₂ - b₂))
       (a * (a + c - b) * (a + b + c)) := by
-  have ea := ZT.toZ_eq ha
-  have eb := ZT.toZ_eq hb
-  have ec := ZT.toZ_eq hc
-  apply ZT.derive
-  gsimp at ea eb ec ⊢
-  linear_combination (-(ZT.toZ Γ a + 2 * ZT.toZ Γ c)) * ea - ZT.toZ Γ a * ec + ZT.toZ Γ a * eb
+  ipra_lc (-(ZT.toZ Γ a + 2 * ZT.toZ Γ c)) * ZT.toZ_eq ha - ZT.toZ Γ a * ZT.toZ_eq hc + ZT.toZ Γ a * ZT.toZ_eq hb
 
 /-! ## The excentre opposite `A` -/
 
@@ -114,7 +102,7 @@ theorem excentre_BC (a₁ a₂ b₁ b₂ c₁ c₂ a b c : ZT n) :
       (det (c₁ - b₁) (c₂ - b₂) (-a * a₁ + b * b₁ + c * c₁ - (-a + b + c) * b₁)
         (-a * a₂ + b * b₂ + c * c₂ - (-a + b + c) * b₂))
       (-a * det (b₁ - a₁) (b₂ - a₂) (c₁ - a₁) (c₂ - a₂)) := by
-  geo
+  ipra_lc
 
 /-- `[A − C, P_A I_A − P_A C] = b D`. -/
 theorem excentre_CA (a₁ a₂ b₁ b₂ c₁ c₂ a b c : ZT n) :
@@ -122,7 +110,7 @@ theorem excentre_CA (a₁ a₂ b₁ b₂ c₁ c₂ a b c : ZT n) :
       (det (a₁ - c₁) (a₂ - c₂) (-a * a₁ + b * b₁ + c * c₁ - (-a + b + c) * c₁)
         (-a * a₂ + b * b₂ + c * c₂ - (-a + b + c) * c₂))
       (b * det (b₁ - a₁) (b₂ - a₂) (c₁ - a₁) (c₂ - a₂)) := by
-  geo
+  ipra_lc
 
 /-- `[B − A, P_A I_A − P_A A] = c D`. -/
 theorem excentre_AB (a₁ a₂ b₁ b₂ c₁ c₂ a b c : ZT n) :
@@ -130,7 +118,7 @@ theorem excentre_AB (a₁ a₂ b₁ b₂ c₁ c₂ a b c : ZT n) :
       (det (b₁ - a₁) (b₂ - a₂) (-a * a₁ + b * b₁ + c * c₁ - (-a + b + c) * a₁)
         (-a * a₂ + b * b₂ + c * c₂ - (-a + b + c) * a₂))
       (c * det (b₁ - a₁) (b₂ - a₂) (c₁ - a₁) (c₂ - a₂)) := by
-  geo
+  ipra_lc
 
 /-! ## Euler's identity -/
 
@@ -140,7 +128,7 @@ theorem euler_identity (x₁ x₂ y₁ y₂ z₁ z₂ a b c : ZT n) :
       ((a + b + c) * (a * nsq x₁ x₂ + b * nsq y₁ y₂ + c * nsq z₁ z₂) -
         a * b * nsq (x₁ - y₁) (x₂ - y₂) - b * c * nsq (y₁ - z₁) (y₂ - z₂) -
         c * a * nsq (z₁ - x₁) (z₂ - x₂)) := by
-  geo
+  ipra_lc
 
 /-- With the circumcentre as origin: `|P I|² = P² ρ − a b c P`. -/
 theorem euler_OI {x₁ x₂ y₁ y₂ z₁ z₂ a b c ρ : ZT n}
@@ -151,19 +139,10 @@ theorem euler_OI {x₁ x₂ y₁ y₂ z₁ z₂ a b c ρ : ZT n}
     (hc : Γ ⊢[PRAAx] ZT.eq (c * c) (nsq (x₁ - y₁) (x₂ - y₂))) :
     Γ ⊢[PRAAx] ZT.eq (nsq (a * x₁ + b * y₁ + c * z₁) (a * x₂ + b * y₂ + c * z₂))
       ((a + b + c) * (a + b + c) * ρ - a * b * c * (a + b + c)) := by
-  have ex := ZT.toZ_eq hx
-  have ey := ZT.toZ_eq hy
-  have ez := ZT.toZ_eq hz
-  have ea := ZT.toZ_eq ha
-  have eb := ZT.toZ_eq hb
-  have ec := ZT.toZ_eq hc
-  apply ZT.derive
-  gsimp at ex ey ez ea eb ec ⊢
-  linear_combination
-    ((ZT.toZ Γ a + ZT.toZ Γ b + ZT.toZ Γ c) * ZT.toZ Γ a) * ex +
-      ((ZT.toZ Γ a + ZT.toZ Γ b + ZT.toZ Γ c) * ZT.toZ Γ b) * ey +
-      ((ZT.toZ Γ a + ZT.toZ Γ b + ZT.toZ Γ c) * ZT.toZ Γ c) * ez +
-      (ZT.toZ Γ b * ZT.toZ Γ c) * ea + (ZT.toZ Γ c * ZT.toZ Γ a) * eb + (ZT.toZ Γ a * ZT.toZ Γ b) * ec
+  ipra_lc ((ZT.toZ Γ a + ZT.toZ Γ b + ZT.toZ Γ c) * ZT.toZ Γ a) * ZT.toZ_eq hx +
+    ((ZT.toZ Γ a + ZT.toZ Γ b + ZT.toZ Γ c) * ZT.toZ Γ b) * ZT.toZ_eq hy +
+    ((ZT.toZ Γ a + ZT.toZ Γ b + ZT.toZ Γ c) * ZT.toZ Γ c) * ZT.toZ_eq hz + (ZT.toZ Γ b * ZT.toZ Γ c) * ZT.toZ_eq ha +
+    (ZT.toZ Γ c * ZT.toZ Γ a) * ZT.toZ_eq hb + (ZT.toZ Γ a * ZT.toZ Γ b) * ZT.toZ_eq hc
 
 /-- Euler's inequality `R ≥ 2r`, as `a b c P ≤ P² ρ`. -/
 theorem euler_inequality {x₁ x₂ y₁ y₂ z₁ z₂ a b c ρ : ZT n}
@@ -173,11 +152,7 @@ theorem euler_inequality {x₁ x₂ y₁ y₂ z₁ z₂ a b c ρ : ZT n}
     (hb : Γ ⊢[PRAAx] ZT.eq (b * b) (nsq (z₁ - x₁) (z₂ - x₂)))
     (hc : Γ ⊢[PRAAx] ZT.eq (c * c) (nsq (x₁ - y₁) (x₂ - y₂))) :
     Γ ⊢[PRAAx] zle (a * b * c * (a + b + c)) ((a + b + c) * (a + b + c) * ρ) := by
-  have e := ZT.toZ_eq (euler_OI hx hy hz ha hb hc)
-  gsimp at e
-  refine zle_of_comb (ZT.toZ Γ (a * x₁ + b * y₁ + c * z₁) ^ 2 + ZT.toZ Γ (a * x₂ + b * y₂ + c * z₂) ^ 2) ?_
-    (nn_add (nn_zsq _) (nn_zsq _))
-  gsimp
-  linear_combination (-1 : Groth (Q Γ)) * e
+  ipra_zle (ZT.toZ Γ (a * x₁ + b * y₁ + c * z₁) ^ 2 + ZT.toZ Γ (a * x₂ + b * y₂ + c * z₂) ^ 2) with
+    -ZT.toZ_eq (euler_OI hx hy hz ha hb hc)
 
 end LeanProofs.IPRA.Geometry.Incircle

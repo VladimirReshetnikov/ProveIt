@@ -108,7 +108,7 @@ theorem lw_delta {p m : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hm : Γ ⊢[PRAAx] 
 /-! ## The weight of a power -/
 
 theorem succ_mul_alg (v L : PTm n) : Γ ⊢[PRAAx] v * L + L ≐ succ v * L := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- **`L_w(a^e) = e · L_w(a)`** for `a ≥ 1`. -/
 theorem lw_pow (w : PTm 2) {a : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) (e y : PTm n) :

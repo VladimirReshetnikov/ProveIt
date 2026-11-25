@@ -1,5 +1,6 @@
 import IPRADerivations.Core.Powers
 import IPRADerivations.Core.Pairing
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The finite identity behind the mean of the geometric distribution
@@ -68,16 +69,10 @@ theorem geo_step {N u w : PTm n}
     (ih : Γ ⊢[PRAAx] w * w * gS N u w + succ N * pw u N * (u + w) ≐ pw (u + w) (succ N) + N * pw u (succ N)) :
     Γ ⊢[PRAAx] w * w * gS (succ N) u w + succ (succ N) * pw u (succ N) * (u + w) ≐
       pw (u + w) (succ (succ N)) + succ N * pw u (succ (succ N)) := by
-  have e := natEq ih
-  have es := natEq (gS_succ (Γ := Γ) N u w)
-  have a1 := natEq (pw_succ (Γ := Γ) u N)
-  have a2 := natEq (pw_succ (Γ := Γ) u (succ N))
-  have b1 := natEq (pw_succ (Γ := Γ) (u + w) (succ N))
-  apply deriveNat; ipra_simps
-  linear_combination (Groth.ι (Q.mk Γ w)) ^ 2 * es - (Groth.ι (Q.mk Γ N) + 1) * a2 - b1 +
-    (Groth.ι (Q.mk Γ u) + Groth.ι (Q.mk Γ w)) * e +
-    (Groth.ι (Q.mk Γ N) * Groth.ι (Q.mk Γ u) + 2 * Groth.ι (Q.mk Γ N) * Groth.ι (Q.mk Γ w) +
-      Groth.ι (Q.mk Γ u) + 2 * Groth.ι (Q.mk Γ w)) * a1
+  ipra_lc (Groth.ι (Q.mk Γ w)) ^ 2 * natEq (gS_succ (Γ := Γ) N u w) -
+    (Groth.ι (Q.mk Γ N) + 1) * natEq (pw_succ (Γ := Γ) u (succ N)) - natEq (pw_succ (Γ := Γ) (u + w) (succ N)) +
+    (Groth.ι (Q.mk Γ u) + Groth.ι (Q.mk Γ w)) * natEq ih +
+    (Groth.ι (Q.mk Γ N) * Groth.ι (Q.mk Γ u) + 2 * Groth.ι (Q.mk Γ N) * Groth.ι (Q.mk Γ w) + Groth.ι (Q.mk Γ u) + 2 * Groth.ι (Q.mk Γ w)) * natEq (pw_succ (Γ := Γ) u N)
 
 private theorem g₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] gF := by
   refine ind _ trivial ?_ ?_

@@ -1,4 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.Coprime
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Farey separation and the mediant
@@ -36,25 +37,19 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 theorem farey_separation {a b c d p q : PTm n} (hdet : Γ ⊢[PRAAx] b * c ≐ a * d + one)
     (h1 : Γ ⊢[PRAAx] lt (a * q) (b * p)) (h2 : Γ ⊢[PRAAx] lt (d * p) (c * q)) :
     Γ ⊢[PRAAx] le (b + d) q := by
-  have e0 := natEq hdet
-  have e1 := natEq (eq_add_of_le h1)
-  have e2 := natEq (eq_add_of_le h2)
   refine le_of_eq_add (d := d * monus (b * p) (succ (a * q)) + b * monus (c * q) (succ (d * p))) ?_
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 d * e1 + 𝔞 b * e2 - 𝔞 q * e0
+  ipra_lc 𝔞 d * natEq (eq_add_of_le h1) + 𝔞 b * natEq (eq_add_of_le h2) - 𝔞 q * natEq hdet
 
 /-- **The mediant lies strictly between**: `a/b < (a + c)/(b + d) < c/d`. -/
 theorem mediant_between {a b c d : PTm n} (hdet : Γ ⊢[PRAAx] b * c ≐ a * d + one) :
     Γ ⊢[PRAAx] lt (a * (b + d)) (b * (a + c)) ⋏ lt (d * (a + c)) (c * (b + d)) := by
-  have e0 := natEq hdet
   refine .andI (le_of_eq_add (d := zero) ?_) (le_of_eq_add (d := zero) ?_)
-  · apply deriveNat; ipra_simps; linear_combination e0
-  · apply deriveNat; ipra_simps; linear_combination e0
+  · ipra_lc natEq hdet
+  · ipra_lc natEq hdet
 
 theorem med_alg {a b c d : PTm n} (hdet : Γ ⊢[PRAAx] b * c ≐ a * d + one) :
     Γ ⊢[PRAAx] (a + c) * b ≐ one + (b + d) * a := by
-  have e0 := natEq hdet
-  apply deriveNat; ipra_simps; linear_combination e0
+  ipra_lc natEq hdet
 
 /-- **The mediant is reduced**: a common divisor of `a + c` and `b + d` is `1`. -/
 theorem mediant_reduced {a b c d g : PTm n} (hdet : Γ ⊢[PRAAx] b * c ≐ a * d + one)

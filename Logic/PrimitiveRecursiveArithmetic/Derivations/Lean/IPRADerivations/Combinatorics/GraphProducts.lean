@@ -1,4 +1,4 @@
-import IPRADerivations.Core.IntCertificates
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Degree sums of the four graph products
@@ -81,10 +81,7 @@ theorem strong_degree_sum (d : Fin p → ZT n) (e : Fin q → ZT n) {m l : ZT n}
   have s1 := sum_add_grid (fun u => ZT.toZ Γ (d u)) (fun x => ZT.toZ Γ (e x))
   have s2 := sum_mul_grid (fun u => ZT.toZ Γ (d u)) (fun x => ZT.toZ Γ (e x))
   beta_reduce at s1 s2
-  apply ZT.derive
-  simp only [ZT.toZ_sumFin, ZT.toZ_add, ZT.toZ_mul, ZT.toZ_natLit, Nat.cast_ofNat, Finset.sum_add_distrib]
-  simp only [Finset.sum_add_distrib] at s1
-  linear_combination s1 + s2 + ((q : Groth (Q Γ)) + ∑ x, ZT.toZ Γ (e x)) * ed +
+  ipra_lc [Finset.sum_add_distrib] s1 + s2 + ((q : Groth (Q Γ)) + ∑ x, ZT.toZ Γ (e x)) * ed +
     ((p : Groth (Q Γ)) + 2 * ZT.toZ Γ m) * ee
 
 /-- The lexicographic product: the degrees sum to `2 (m q² + p l)`. -/

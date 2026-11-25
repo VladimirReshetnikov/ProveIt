@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.ChebyshevUpper
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Two corollaries of the Chebyshev bounds
@@ -42,17 +43,15 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The product of the primes of `(n, 2n]` -/
 
-theorem mul_one_r (X : PTm n) : Γ ⊢[PRAAx] X * one ≐ X := by apply deriveNat; ipra_simps; ring
+theorem mul_one_r (X : PTm n) : Γ ⊢[PRAAx] X * one ≐ X := by ipra_ring
 
 theorem dbl_le (j m : PTm n) (e : Γ ⊢[PRAAx] m ≐ succ (succ j)) : Γ ⊢[PRAAx] le (two * succ j) (two * m) := by
-  have a := natEq e
   refine le_of_eq_add (d := two) ?_
-  apply deriveNat; ipra_simps; linear_combination 2 * a
+  ipra_lc 2 * natEq e
 
 theorem one_le_dbl (m : PTm n) (e : Γ ⊢[PRAAx] m ≐ one) : Γ ⊢[PRAAx] le one (two * m) := by
-  have a := natEq e
   refine le_of_eq_add (d := one) ?_
-  apply deriveNat; ipra_simps; linear_combination 2 * a
+  ipra_lc 2 * natEq e
 
 /-- **`an:binomial`, last assertion**: `∏_{p ≤ 2m} p ≤ ∏_{p ≤ m} p · 4^m` for `m ≥ 1`. -/
 theorem window_product {m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) :
@@ -81,10 +80,9 @@ theorem window_product {m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) :
 
 theorem two_le_of {k b : PTm n} (hk : Γ ⊢[PRAAx] k ≐ succ (pred k))
     (hb : Γ ⊢[PRAAx] le (succ (num 13 * k)) b) : Γ ⊢[PRAAx] le two b := by
-  have a := natEq hk
   have l : Γ ⊢[PRAAx] le two (succ (num 13 * k)) := by
     refine le_of_eq_add (d := num 13 * pred k + num 12) ?_
-    apply deriveNat; ipra_simps; push_cast; linear_combination 13 * a
+    ipra_lc 13 * natEq hk
   exact le_trans l hb
 
 /-- From `(13k + 1) P ≤ 13 N` and `N ≤ k P`: `P = 0`. -/
@@ -93,7 +91,7 @@ theorem zero_alg {k P N : PTm n} (h1 : Γ ⊢[PRAAx] le (succ (num 13 * k) * P) 
   have e1 := natEq (eq_add_of_le h1); have e2 := natEq (eq_add_of_le h3)
   have l : Γ ⊢[PRAAx] le P zero := by
     refine le_of_eq_add (d := monus (num 13 * N) (succ (num 13 * k) * P) + num 13 * monus (k * P) N) ?_
-    apply deriveNat; ipra_simps; push_cast; linear_combination e1 + 13 * e2
+    ipra_lc e1 + 13 * e2
   exact (monus_zero P).eqSymm.eqTrans l
 
 /-- **The density of the primes**: for `k ≥ 1`, `b ≥ 13k + 1` and `2^b ≤ N`, `k · π(N) < N`. -/

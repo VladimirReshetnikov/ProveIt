@@ -1,4 +1,5 @@
 import IPRADerivations.Probability.DyadicSLLN
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The union over the dyadic blocks
@@ -106,7 +107,6 @@ theorem union_bound {M x H : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M))
       exact le_congr (congrMul (.eqRefl _) eq.eqSymm) (.eqRefl _) b)))
   -- `c 2^K 2^J S + B ≤ 2^J B` gives `c 2^K S ≤ B`
   have pJ := AnalyticNumberTheory.Valuation.pw_pos' (congrSucc (pred_succ _).eqSymm : Γ ⊢[PRAAx] (two : PTm n) ≐ succ (pred two)) J
-  have eu := natEq (eq_add_of_le u)
   have ep := natEq pJ
   refine Geometry.HypercubeSplit.le_cancel_pos pJ (le_of_eq_add (d := monus (pw two J *
       (monus (ap2 (sumF w0) M x * ap2 (sumF (w0 * (X0 * X0))) M x)
@@ -116,8 +116,7 @@ theorem union_bound {M x H : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M))
           (ap2 (sumF (w0 * X0)) M x * ap2 (sumF (w0 * X0)) M x) * Tt w0 H M x) +
       monus (ap2 (sumF w0) M x * ap2 (sumF (w0 * (X0 * X0))) M x)
         (ap2 (sumF (w0 * X0)) M x * ap2 (sumF (w0 * X0)) M x) * Tt w0 H M x) ?_)
-  apply deriveNat; ipra_simps
-  linear_combination eu
+  ipra_lc natEq (eq_add_of_le u)
 
 end Union
 

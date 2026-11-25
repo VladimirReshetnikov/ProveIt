@@ -1,4 +1,5 @@
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The algebra of the refined space-worm bounds
@@ -39,15 +40,13 @@ theorem prism_test (a b d X y t h : ZT n) :
         d * d * (h * h * (ZT.natLit 9 + t * t) - ZT.natLit 9 * (t * h) * (t * h) * (y * y)))
       (h * h * (((a * X) * (a * X) + ZT.natLit 9 * (d * d) * (y * y) - d * d) * (t * t) +
         ZT.natLit 2 * (a * X) * b * t + (b * b - ZT.natLit 9 * (d * d)))) := by
-  apply ZT.derive
-  simp only [ZT.toZ_add, ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_natLit]; push_cast; ring
+  ipra_lc
 
 /-- `s² + s s'(H − z) = 1 − 9Hz` for `s² = 1 − 9z²`, `s s' = −9z`. -/
 theorem cone_identity (H z : ZT n) :
     Γ ⊢[PRAAx] ZT.eq ((ZT.natLit 1 - ZT.natLit 9 * (z * z)) + -(ZT.natLit 9 * z) * (H - z))
       (ZT.natLit 1 - ZT.natLit 9 * H * z) := by
-  apply ZT.derive
-  simp only [ZT.toZ_add, ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_neg, ZT.toZ_natLit]; push_cast; ring
+  ipra_lc
 
 /-- The two outside tests of the upper half and the oblique-width split. -/
 theorem edge_tests (x h d X Y a : ZT n) :

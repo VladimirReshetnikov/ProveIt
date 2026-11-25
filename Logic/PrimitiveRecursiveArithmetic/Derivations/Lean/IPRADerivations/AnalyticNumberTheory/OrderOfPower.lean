@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.OrderDivides
 import IPRADerivations.AnalyticNumberTheory.PlusPower
 import IPRADerivations.DiophantineNumberTheory.ConicGcd
 import IPRADerivations.Combinatorics.BinomialIdentities
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The order of a power
@@ -58,13 +59,11 @@ theorem cop_power {a M : PTm n} (ha0 : Γ ⊢[PRAAx] a ≐ succ (pred a)) (ha : 
 
 theorem ku_alg {k d K O u : PTm n} (eK : Γ ⊢[PRAAx] k ≐ d * K) (eO : Γ ⊢[PRAAx] O ≐ d * u) :
     Γ ⊢[PRAAx] k * u ≐ O * K := by
-  have x := natEq eK; have y := natEq eO
-  apply deriveNat; ipra_simps; linear_combination 𝔞 u * x - 𝔞 K * y
+  ipra_lc 𝔞 u * natEq eK - 𝔞 K * natEq eO
 
 theorem cancel_alg {k d K O u e q : PTm n} (eK : Γ ⊢[PRAAx] k ≐ d * K) (eO : Γ ⊢[PRAAx] O ≐ d * u)
     (eq1 : Γ ⊢[PRAAx] k * e ≐ O * q) : Γ ⊢[PRAAx] d * (e * K) ≐ d * (u * q) := by
-  have x := natEq eK; have y := natEq eO; have z := natEq eq1
-  apply deriveNat; ipra_simps; linear_combination -𝔞 e * x + z + 𝔞 q * y
+  ipra_lc -𝔞 e * natEq eK + natEq eq1 + 𝔞 q * natEq eO
 
 /-- **The order of a power**: `ord(a^k, M) = ord(a, M) / gcd(k, ord(a, M))`. -/
 theorem ord_pow {a M k : PTm n} (ha0 : Γ ⊢[PRAAx] a ≐ succ (pred a)) (ha : Γ ⊢[PRAAx] gcd a M ≐ one)
@@ -97,8 +96,7 @@ theorem ord_pow {a M k : PTm n} (ha0 : Γ ⊢[PRAAx] a ≐ succ (pred a)) (ha : 
 
 theorem mul_alg {E O d u : PTm n} (e : Γ ⊢[PRAAx] E ≐ u) (eO : Γ ⊢[PRAAx] O ≐ d * u) :
     Γ ⊢[PRAAx] E * d ≐ O := by
-  have x := natEq e; have y := natEq eO
-  apply deriveNat; ipra_simps; linear_combination 𝔞 d * x - y
+  ipra_lc 𝔞 d * natEq e - natEq eO
 
 /-- `ord(a^k, M) · gcd(k, ord(a, M)) = ord(a, M)`. -/
 theorem ord_pow_mul {a M k : PTm n} (ha0 : Γ ⊢[PRAAx] a ≐ succ (pred a)) (ha : Γ ⊢[PRAAx] gcd a M ≐ one)

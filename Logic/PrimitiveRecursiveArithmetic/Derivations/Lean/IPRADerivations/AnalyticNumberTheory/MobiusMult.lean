@@ -2,6 +2,7 @@ import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.AnalyticNumberTheory.Mobius
 import IPRADerivations.AnalyticNumberTheory.FactorialLambda
 import IPRADerivations.AnalyticNumberTheory.ValuationAdd
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The Möbius function is multiplicative
@@ -84,7 +85,7 @@ theorem cop_val {q a b : PTm n} (hq : Γ ⊢[PRAAx] prime q) (ha : Γ ⊢[PRAAx]
   exact not_succ_le_self zero _ (le_congr (.eqRefl _) v1 g)
 
 theorem distrib (i s t : PTm n) : Γ ⊢[PRAAx] i * (s + t) ≐ i * s + i * t := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem om_pt_cop {q a b : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) (hb : Γ ⊢[PRAAx] b ≐ succ (pred b))
     (hab : Γ ⊢[PRAAx] gcd a b ≐ one) : Γ ⊢[PRAAx] inst2 omB q (a * b) ≐ inst2 omB q a + inst2 omB q b := by
@@ -162,8 +163,8 @@ theorem par_base_alg {E O Ex Ox E0 O0 : PTm n} (h : Γ ⊢[PRAAx] E ≐ Ex) (h' 
     Γ ⊢[PRAAx] (E ≐ Ex * E0 + Ox * O0) ⋏ (O ≐ Ex * O0 + Ox * E0) := by
   have x := natEq h; have y := natEq h'; have z := natEq e0; have w := natEq o0
   refine .andI ?_ ?_
-  · apply deriveNat; ipra_simps; linear_combination x - 𝔞 Ex * z - 𝔞 Ox * w
-  · apply deriveNat; ipra_simps; linear_combination y - 𝔞 Ex * w - 𝔞 Ox * z
+  · ipra_lc x - 𝔞 Ex * z - 𝔞 Ox * w
+  · ipra_lc y - 𝔞 Ex * w - 𝔞 Ox * z
 
 theorem par_step_alg {E O Ex Ox Ey Oy E1 O1 Ey1 Oy1 : PTm n} (pe : Γ ⊢[PRAAx] E1 ≐ O) (po : Γ ⊢[PRAAx] O1 ≐ E)
     (ihE : Γ ⊢[PRAAx] E ≐ Ex * Ey + Ox * Oy) (ihO : Γ ⊢[PRAAx] O ≐ Ex * Oy + Ox * Ey)
@@ -172,8 +173,8 @@ theorem par_step_alg {E O Ex Ox Ey Oy E1 O1 Ey1 Oy1 : PTm n} (pe : Γ ⊢[PRAAx]
   have a := natEq pe; have b := natEq po; have c := natEq ihE; have d := natEq ihO
   have f := natEq se; have g := natEq so
   refine .andI ?_ ?_
-  · apply deriveNat; ipra_simps; linear_combination a + d - 𝔞 Ex * f - 𝔞 Ox * g
-  · apply deriveNat; ipra_simps; linear_combination b + c - 𝔞 Ex * g - 𝔞 Ox * f
+  · ipra_lc a + d - 𝔞 Ex * f - 𝔞 Ox * g
+  · ipra_lc b + c - 𝔞 Ex * g - 𝔞 Ox * f
 
 theorem rem_zero_two : Γ ⊢[PRAAx] rem (zero : PTm n) two ≐ zero :=
   rem_eq' two_pos' (q := zero) (by apply deriveNat; ipra_simps; try ring) (zero_lt' two_pos')
@@ -222,8 +223,7 @@ theorem eqb_add_zero (x y : PTm n) : Γ ⊢[PRAAx] eqb (x + y) zero ≐ eqb x ze
   · let C : List (Fm PTm n) := (x ≐ succ (pred x)) :: Γ
     have hs : C ⊢[PRAAx] x ≐ succ (pred x) := Prf.hyp0
     have E : C ⊢[PRAAx] x + y ≐ succ (pred x + y) := by
-      have z := natEq hs
-      apply deriveNat; ipra_simps; linear_combination z
+      ipra_lc natEq hs
     have ne1 : C ⊢[PRAAx] neg (x + y ≐ zero) := .impI (succ_ne_zero' _ (E.wk.eqSymm.eqTrans Prf.hyp0))
     have ne2 : C ⊢[PRAAx] neg (x ≐ zero) := .impI (succ_ne_zero' _ (hs.wk.eqSymm.eqTrans Prf.hyp0))
     exact (eqb_of_ne ne1).eqTrans (zero_mul_l (eqb_of_ne ne2) _).eqSymm
@@ -234,8 +234,8 @@ theorem mu_alg {S Sa Sb E O Ea Oa Eb Ob : PTm n} (hs : Γ ⊢[PRAAx] S ≐ Sa * 
       (S * O ≐ Sa * Ea * (Sb * Ob) + Sa * Oa * (Sb * Eb)) := by
   have x := natEq hs; have y := natEq he; have z := natEq ho
   refine .andI ?_ ?_
-  · apply deriveNat; ipra_simps; linear_combination 𝔞 E * x + 𝔞 Sa * 𝔞 Sb * y
-  · apply deriveNat; ipra_simps; linear_combination 𝔞 O * x + 𝔞 Sa * 𝔞 Sb * z
+  · ipra_lc 𝔞 E * x + 𝔞 Sa * 𝔞 Sb * y
+  · ipra_lc 𝔞 O * x + 𝔞 Sa * 𝔞 Sb * z
 
 /-- **`el:mobiuscancel`, multiplicativity**: for coprime `a, b ≥ 1` and every bound `N`,
 `μ⁺(ab) = μ⁺(a)μ⁺(b) + μ⁻(a)μ⁻(b)` and `μ⁻(ab) = μ⁺(a)μ⁻(b) + μ⁻(a)μ⁺(b)`, i.e. `μ(ab) = μ(a)μ(b)`. -/

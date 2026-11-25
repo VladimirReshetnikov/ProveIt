@@ -101,7 +101,7 @@ theorem cat_not_prime (m : PTm n) :
       prime (cat (succ (succ (succ (succ m))))) := Prf.hyp0
   have hN : (prime (cat (succ (succ (succ (succ m))))) :: Γ) ⊢[PRAAx]
       le two (succ (succ (succ (succ m)))) :=
-    le_of_eq_add (d := succ (succ m)) (by apply deriveNat; ipra_simps; ring)
+    le_of_eq_add (d := succ (succ m)) (by ipra_ring)
   have hlt := prime_dvd_cat_lt hN hp (dvd_self' (pos_of_two_le (Prf.andE₁ hp)))
   exact le_lt_absurd _ (cat_ge m) hlt
 

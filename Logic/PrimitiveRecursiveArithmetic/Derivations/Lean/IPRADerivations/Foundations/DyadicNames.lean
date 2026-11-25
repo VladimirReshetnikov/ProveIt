@@ -2,6 +2,7 @@ import IPRADerivations.Probability.Minkowski
 import IPRADerivations.AnalyticNumberTheory.Totatives
 import IPRADerivations.Foundations.ObservationEstimates
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Regular names on a common dyadic scale
@@ -66,10 +67,8 @@ theorem eps_anti {N m m' : PTm n} (h : Γ ⊢[PRAAx] le m m') : Γ ⊢[PRAAx] le
 /-- `2^{-m} = 2 · 2^{-(m+1)}` below the scale. -/
 theorem eps_half {N m : PTm n} (h : Γ ⊢[PRAAx] lt m N) :
     Γ ⊢[PRAAx] eps N m ≐ two * eps N (succ m) := by
-  have k₁ := natEq (congrAp2 powF (monus_succ_of_lt h) (Prf.eqRefl (two : PTm n)))
-  have k₂ := natEq (pw_succ (Γ := Γ) two (monus N (succ m)))
-  apply deriveNat; ipra_simps
-  linear_combination k₁ + k₂
+  ipra_lc natEq (congrAp2 powF (monus_succ_of_lt h) (Prf.eqRefl (two : PTm n))) +
+    natEq (pw_succ (Γ := Γ) two (monus N (succ m)))
 
 /-- `lem:sample-stability`: samples of index at least `k + 3` differ by at most `2^{-k-2}`. -/
 theorem sample_stability {N k m m' am am' : PTm n} (hk : Γ ⊢[PRAAx] lt (succ (succ k)) N)

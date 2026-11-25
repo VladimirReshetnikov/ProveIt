@@ -1,4 +1,5 @@
 import IPRADerivations.Combinatorics.Turan
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The middle third of the residues modulo `3q + 2` is sum-free
@@ -30,19 +31,12 @@ open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
-local macro "ssimp" loc:(Lean.Parser.Tactic.location)? : tactic =>
-  `(tactic| simp only [zsl_def, ZT.toZ_add, ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_neg, ZT.toZ_natLit, Nat.cast_ofNat,
-    Nat.cast_zero, Nat.cast_one] $[$loc]?)
-
 /-- `x, y ≥ q + 1` and `z ≤ 2q + 1` exclude `x + y = z`. -/
 theorem middle_no_sum {x y z q : ZT n}
     (hx : Γ ⊢[PRAAx] zle (q + ZT.natLit 1) x) (hy : Γ ⊢[PRAAx] zle (q + ZT.natLit 1) y)
     (hz : Γ ⊢[PRAAx] zle z (ZT.natLit 2 * q + ZT.natLit 1))
     (h : Γ ⊢[PRAAx] ZT.eq (x + y) z) (φ : Fm PTm n) : Γ ⊢[PRAAx] φ := by
-  have e := ZT.toZ_eq h
-  refine false_of_comb (zsl hx + zsl hy + zsl hz) ?_ (nn_add (nn_add (nn_zsl _) (nn_zsl _)) (nn_zsl _)) φ
-  ssimp at e ⊢
-  linear_combination e
+  ipra_absurd (zsl hx + zsl hy + zsl hz) with ZT.toZ_eq h
 
 /-- `x, y ≤ 2q + 1` and `z ≥ q + 1` exclude `x + y = z + (3q + 2)`. -/
 theorem middle_no_wrap {x y z q : ZT n}
@@ -50,10 +44,7 @@ theorem middle_no_wrap {x y z q : ZT n}
     (hy : Γ ⊢[PRAAx] zle y (ZT.natLit 2 * q + ZT.natLit 1))
     (hz : Γ ⊢[PRAAx] zle (q + ZT.natLit 1) z)
     (h : Γ ⊢[PRAAx] ZT.eq (x + y) (z + (ZT.natLit 3 * q + ZT.natLit 2))) (φ : Fm PTm n) : Γ ⊢[PRAAx] φ := by
-  have e := ZT.toZ_eq h
-  refine false_of_comb (zsl hx + zsl hy + zsl hz) ?_ (nn_add (nn_add (nn_zsl _) (nn_zsl _)) (nn_zsl _)) φ
-  ssimp at e ⊢
-  linear_combination (-1 : Groth (Q Γ)) * e
+  ipra_absurd (zsl hx + zsl hy + zsl hz) with -ZT.toZ_eq h
 
 /-- The middle third is sum-free modulo `3q + 2`: `x + y = z + (3q + 2) m` is contradictory. -/
 theorem middle_sum_free {x y z q m : ZT n} (hq : Γ ⊢[PRAAx] zle (ZT.natLit 0) q)
@@ -70,11 +61,7 @@ theorem middle_sum_free {x y z q m : ZT n} (hq : Γ ⊢[PRAAx] zle (ZT.natLit 0)
     have kx := hx2.wk (ψ := zle (ZT.natLit 0 + ZT.natLit 1) m)
     have ky := hy2.wk (ψ := zle (ZT.natLit 0 + ZT.natLit 1) m)
     have kz := hz1.wk (ψ := zle (ZT.natLit 0 + ZT.natLit 1) m)
-    refine false_of_comb (zsl kx + zsl ky + zsl kz + (3 * zsl kq + 2) * zsl hm) ?_
-      (nn_add (nn_add (nn_add (nn_zsl _) (nn_zsl _)) (nn_zsl _))
-        (nn_mul (nn_add (nn_mul (nn_ofNat 3) (nn_zsl _)) (nn_ofNat 2)) (nn_zsl _))) φ
-    ssimp at e ⊢
-    linear_combination (-1 : Groth (Q _)) * e
+    ipra_absurd (zsl kx + zsl ky + zsl kz + (3 * zsl kq + 2) * zsl hm) with -e
   · -- `m ≤ 0`: the sum would be at most `z`
     have hm : (zle m (ZT.natLit 0) :: Γ) ⊢[PRAAx] zle m (ZT.natLit 0) := Prf.hyp0
     have e := ZT.toZ_eq (h.wk (ψ := zle m (ZT.natLit 0)))
@@ -82,10 +69,6 @@ theorem middle_sum_free {x y z q m : ZT n} (hq : Γ ⊢[PRAAx] zle (ZT.natLit 0)
     have kx := hx1.wk (ψ := zle m (ZT.natLit 0))
     have ky := hy1.wk (ψ := zle m (ZT.natLit 0))
     have kz := hz2.wk (ψ := zle m (ZT.natLit 0))
-    refine false_of_comb (zsl kx + zsl ky + zsl kz + (3 * zsl kq + 2) * zsl hm) ?_
-      (nn_add (nn_add (nn_add (nn_zsl _) (nn_zsl _)) (nn_zsl _))
-        (nn_mul (nn_add (nn_mul (nn_ofNat 3) (nn_zsl _)) (nn_ofNat 2)) (nn_zsl _))) φ
-    ssimp at e ⊢
-    linear_combination e
+    ipra_absurd (zsl kx + zsl ky + zsl kz + (3 * zsl kq + 2) * zsl hm) with e
 
 end LeanProofs.IPRA.Combinatorics.SumFreeResidues

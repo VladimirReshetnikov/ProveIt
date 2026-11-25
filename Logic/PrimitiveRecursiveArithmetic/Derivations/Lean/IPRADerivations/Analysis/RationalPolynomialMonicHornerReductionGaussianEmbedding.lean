@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.RationalPolynomialConstantInjectionGaussianEmbedding
 import IPRADerivations.Analysis.RationalPolynomialMultiplicationMatrixGaussianEmbedding
 import IPRADerivations.Analysis.GaussianPolynomialMonicHornerReduction
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual original rational arbitrary-high-Y remainder
@@ -66,8 +67,7 @@ theorem zero_rows_lookup (m a r : PTm n) (hr : Γ ⊢[PRAAx] lt r m) : Γ ⊢[PR
     entry (zeroRows m a) r ≐ zeros (succ a) := by simpa only [zeroRows,inst2,Syn.subst_var,Matrix.cons_val_one,Matrix.cons_val_zero] using sequence_decode (Γ := Γ) (var 1 : PTm 2) (x := zeros (succ a)) hr
 theorem zero_rows_congr {m m' a a' : PTm n} (hm : Γ ⊢[PRAAx] m ≐ m') (ha : Γ ⊢[PRAAx] a ≐ a') : Γ ⊢[PRAAx]
     zeroRows m a ≐ zeroRows m' a' := by
-  simpa using Prf.eqCongr (Γ := Γ) (zeroRows (var 0) (var 1) : PTm 2) (σ := ![m,a]) (σ' := ![m',a'])
-    (fun i => by fin_cases i; exact hm; exact ha)
+  ipra_congr (zeroRows (var 0) (var 1) : PTm 2) with [hm, ha]
 theorem advance_program (F H m a c j R : PTm n) : Γ ⊢[PRAAx] app advanceF ![F,H,m,a,c,j,R] ≐ advance F H m a c j R := by
   simpa [advanceF] using toPR_eq (Γ := Γ) (advance (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) : PTm 7) ![F,H,m,a,c,j,R]
 theorem advance_congr {F F' H H' m m' a a' c c' j j' R R' : PTm n}
@@ -189,7 +189,6 @@ theorem stage_rows_embedded (F H m a c L j : PTm n) (hm : Γ ⊢[PRAAx] le one m
     (hF : Γ ⊢[PRAAx] rowShape F m c) (hH : Γ ⊢[PRAAx] rowShape H L a) (hj : Γ ⊢[PRAAx] le j L) : Γ ⊢[PRAAx]
     rowsEmbedded (stage F H m a c j) (targetStage F H m a c L j) m (width a c j) := .andE₂ (stage_profile _ _ _ _ _ _ _ hm hF hH hj)
 
-
 theorem stage_length (F H m a c j : PTm n) : Γ ⊢[PRAAx] length (stage F H m a c j) ≐ m := by
   have all : Γ ⊢[PRAAx] .all (length (stage (Syn.shift F) (Syn.shift H) (Syn.shift m) (Syn.shift a) (Syn.shift c) (var 0)) ≐ Syn.shift m) := by
     refine PRA.qfInd _ trivial ?_ ?_
@@ -216,7 +215,6 @@ theorem stage_computed_shape (F H m a c j : PTm n) : Γ ⊢[PRAAx] rowShape (sta
     · simp only [S,computed_shape_formula,GaussianPolynomialMonicCompanion.subst_rowShape,subst_stage,subst_width,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
       exact row_shape_congr (stage_succ _ _ _ _ _ _).eqSymm (.eqRefl _) (.eqRefl _) (RationalPolynomialConstantInjectionGaussianEmbedding.inject_shape _ _ _ _ _)
   simpa only [S,computed_shape_formula,GaussianPolynomialMonicCompanion.subst_rowShape,subst_stage,subst_width,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j
-
 
 def input (F H m a c N : PTm n) : Fm PTm n := le one m ⋏ ((length F ≐ m) ⋏
   (rowShape F m c ⋏ ((length H ≐ succ N) ⋏ rowShape H (succ N) a)))
@@ -268,8 +266,8 @@ theorem reduction_evaluation (F H m a c N x y : PTm n) (h : Γ ⊢[PRAAx] input 
 
 theorem bivariate_count_congr (P R S x y : PTm n) (hR : Γ ⊢[PRAAx] R ≐ S) : Γ ⊢[PRAAx]
     RationalBivariateGaussianEmbedding.bivariate P R x y ≐ RationalBivariateGaussianEmbedding.bivariate P S x y := by
-  simpa using Prf.eqCongr (Γ := Γ) (RationalBivariateGaussianEmbedding.bivariate (var 0) (var 1) (var 2) (var 3) : PTm 4)
-    (σ := ![P,R,x,y]) (σ' := ![P,S,x,y]) (fun i => by fin_cases i; exact .eqRefl _; exact hR; exact .eqRefl _; exact .eqRefl _)
+  ipra_congr (RationalBivariateGaussianEmbedding.bivariate (var 0) (var 1) (var 2) (var 3) : PTm 4) with
+    [.eqRefl P, hR, .eqRefl x, .eqRefl y]
 
 theorem original_evaluation (F H m a c N x y : PTm n) (h : Γ ⊢[PRAAx] input F H m a c N)
     (hCurve : Γ ⊢[PRAAx] RationalArgmin.rationalEq (RationalBivariateGaussianEmbedding.monic F m x y) scalarZero) : Γ ⊢[PRAAx]
@@ -288,7 +286,6 @@ theorem original_zero_iff (F H m a c N x y : PTm n) (h : Γ ⊢[PRAAx] input F H
       (e.wk.eqTrans ((RationalGaussianEmbedding.zero_iff _).iffMpr Prf.hyp0))))
     (.impI ((RationalGaussianEmbedding.zero_iff _).iffMp
       (e.wk.eqSymm.eqTrans ((RationalGaussianEmbedding.zero_iff _).iffMpr Prf.hyp0))))
-
 
 theorem remainder_length (F H m a c N : PTm n) : Γ ⊢[PRAAx] length (remainder F H m a c N) ≐ m := stage_length _ _ _ _ _ _
 theorem remainder_computed_shape (F H m a c N : PTm n) : Γ ⊢[PRAAx]
@@ -322,8 +319,8 @@ theorem returned_coefficient (F H m a c N r s : PTm n) (h : Γ ⊢[PRAAx] input 
 
 theorem bivariate_code_congr (P Q R x y : PTm n) (hP : Γ ⊢[PRAAx] P ≐ Q) : Γ ⊢[PRAAx]
     RationalBivariateGaussianEmbedding.bivariate P R x y ≐ RationalBivariateGaussianEmbedding.bivariate Q R x y := by
-  simpa using Prf.eqCongr (Γ := Γ) (RationalBivariateGaussianEmbedding.bivariate (var 0) (var 1) (var 2) (var 3) : PTm 4)
-    (σ := ![P,R,x,y]) (σ' := ![Q,R,x,y]) (fun i => by fin_cases i; exact hP; exact .eqRefl _; exact .eqRefl _; exact .eqRefl _)
+  ipra_congr (RationalBivariateGaussianEmbedding.bivariate (var 0) (var 1) (var 2) (var 3) : PTm 4) with
+    [hP, .eqRefl R, .eqRefl x, .eqRefl y]
 theorem returned_evaluation (F H m a c N x y : PTm n) (h : Γ ⊢[PRAAx] input F H m a c N)
     (hCurve : Γ ⊢[PRAAx] RationalArgmin.rationalEq (RationalBivariateGaussianEmbedding.monic F m x y) scalarZero) : Γ ⊢[PRAAx]
     RationalBivariateGaussianEmbedding.bivariate (run F H m a c N) m x y ≐ originalValue H x y :=

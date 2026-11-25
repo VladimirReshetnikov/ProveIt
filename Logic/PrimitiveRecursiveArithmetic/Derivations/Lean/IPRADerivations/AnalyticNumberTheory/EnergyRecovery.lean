@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.EnergyJordan
 import IPRADerivations.AnalyticNumberTheory.EnergyMobius
 import IPRADerivations.Analysis.WeightedCauchySchwarz
 import IPRADerivations.AnalyticNumberTheory.AbsDiff
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Recovery of `M` from the energy: `(N!)² M(N)² ≤ 8 Q_N` (`thm:energy`)
@@ -111,14 +112,12 @@ theorem eqb01_le (r : PTm n) : Γ ⊢[PRAAx] le (eqb r zero + eqb r one) one := 
 theorem mu_abs_le (B d : PTm n) : Γ ⊢[PRAAx] le (muS true B d + muS false B d) one := by
   show Γ ⊢[PRAAx] le (muP B d + muN B d) one
   have h := le_mul_mono (eqb_le_one (Γ := Γ) (Mobius.sq B d) zero) (eqb01_le (Γ := Γ) (rem (Mobius.om B d) two))
-  exact le_congr (by apply deriveNat; ipra_simps; ring) (by apply deriveNat; ipra_simps; ring) h
+  exact le_congr (by ipra_ring) (by ipra_ring) h
 
 /-! ## `b_d² ≤ w_d c_d` -/
 
 theorem sq_alg {D f q : PTm n} (hf : Γ ⊢[PRAAx] f ≐ D * q) : Γ ⊢[PRAAx] f * f ≐ (D * D) * (q * q) + zero := by
-  have e := natEq hf
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞 f + 𝔞 D * 𝔞 q) * e
+  ipra_lc (𝔞 f + 𝔞 D * 𝔞 q) * natEq hf
 
 theorem sq_alg' {D f q Qt : PTm n} (hf : Γ ⊢[PRAAx] f ≐ D * q) (hq : Γ ⊢[PRAAx] Qt ≐ q * q) :
     Γ ⊢[PRAAx] (D * D) * Qt ≐ f * f := by
@@ -133,7 +132,7 @@ theorem sq_exact {d' N : PTm n} (h : Γ ⊢[PRAAx] le (succ d') N) :
   have q : Γ ⊢[PRAAx] quo (fact N * fact N) (succ d' * succ d') ≐
       quo (fact N) (succ d') * quo (fact N) (succ d') :=
     quo_eq (pos_mul (pos_succ d') (pos_succ d')) (sq_alg fe)
-      (le_of_eq_add (d := d' * succ d' + d') (by apply deriveNat; ipra_simps; ring))
+      (le_of_eq_add (d := d' * succ d' + d') (by ipra_ring))
   exact sq_alg' fe q
 
 /-- Abstract form: `m ≤ 1`, `D q = f²`, `D ≤ 4J` give `(m f)² ≤ J · 4q`. -/
@@ -142,8 +141,8 @@ theorem hb_alg {m f J D q : PTm n} (hm : Γ ⊢[PRAAx] le m one) (hF : Γ ⊢[PR
   have a := le_mul_mono (le_mul_mono hm hm) (le_refl (f * f))
   have b := le_mul_mono hJ (le_refl q)
   have s1 : Γ ⊢[PRAAx] le ((m * f) * (m * f)) (f * f) :=
-    le_congr (by apply deriveNat; ipra_simps; ring) (by apply deriveNat; ipra_simps; ring) a
-  exact le_trans s1 (le_congr hF (by apply deriveNat; ipra_simps; ring) b)
+    le_congr (by ipra_ring) (by ipra_ring) a
+  exact le_trans s1 (le_congr hF (by ipra_ring) b)
 
 theorem hb_pt {d' N x : PTm n} (hd : Γ ⊢[PRAAx] lt d' N) :
     Γ ⊢[PRAAx] le (inst2 bB d' (pairT N x) * inst2 bB d' (pairT N x))
@@ -158,10 +157,8 @@ theorem four_pos : Γ ⊢[PRAAx] (num 4 : PTm n) ≐ succ (pred (num 4)) := cong
 
 theorem T_alg {N T F : PTm n} (h : Γ ⊢[PRAAx] le (num 4 * N * T + num 4 * F) (num 7 * N * F)) :
     Γ ⊢[PRAAx] le (num 4 * (N * T)) (num 4 * (N * (two * F))) := by
-  have e := natEq (eq_add_of_le h)
   refine le_of_eq_add (d := N * F + num 4 * F + monus (num 7 * N * F) (num 4 * N * T + num 4 * F)) ?_
-  apply deriveNat; ipra_simps
-  linear_combination e
+  ipra_lc natEq (eq_add_of_le h)
 
 /-- `T(N, F) = Σ_{d≤N} ⌊F/d²⌋ ≤ 2F` for `N ≥ 1`. -/
 theorem T_le {N F : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) :
@@ -173,7 +170,7 @@ theorem T_le {N F : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) :
     have e2 : Θ ⊢[PRAAx] SquareReciprocal.T (succ zero) F ≐ F :=
       (T_succ zero F).eqTrans ((congrAdd (sum_zero _ _) ((congrAp2 quoF (.eqRefl _) (one_mul _)).eqTrans
         (quo_one F))).eqTrans (zero_add _))
-    exact le_congr (e1.eqTrans e2).eqSymm (.eqRefl _) (le_of_eq_add (d := F) (by apply deriveNat; ipra_simps; ring))
+    exact le_congr (e1.eqTrans e2).eqSymm (.eqRefl _) (le_of_eq_add (d := F) (by ipra_ring))
   · let Θ : List (Fm PTm n) := (pred N ≐ succ (pred (pred N))) :: Γ
     have hN' : Θ ⊢[PRAAx] N ≐ succ (succ (pred (pred N))) := hN.wk.eqTrans (congrSucc Prf.hyp0)
     have e1 : Θ ⊢[PRAAx] SquareReciprocal.T N F ≐ SquareReciprocal.T (succ (succ (pred (pred N)))) F :=
@@ -192,7 +189,7 @@ theorem c_pt (j N x : PTm n) :
 theorem sum_c {N x : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) :
     Γ ⊢[PRAAx] le (ap2 (sumF cB) N (pairT N x)) (num 8 * (fact N * fact N)) := by
   have s := sum_scale (Γ := Γ) cB sqB N (num 4) (fact N * fact N) (pairT N x) (.allI (.impI ?_))
-  · refine le_congr s.eqSymm (by apply deriveNat; ipra_simps; ring) (le_mul_mono (le_refl (num 4)) (T_le hN))
+  · refine le_congr s.eqSymm (by ipra_ring) (le_mul_mono (le_refl (num 4)) (T_le hN))
   · have h4 : Syn.shift (num 4 : PTm n) = num 4 := by simp [Syn.shift]
     have hF : Syn.shift (fact N * fact N) = fact (Syn.shift N) * fact (Syn.shift N) := by simp [Syn.shift]
     rw [shift_pairT, h4, hF]
@@ -206,23 +203,18 @@ theorem absd_alg (p q A B : PTm n) :
   have hA := le_absd_l (Γ := Γ) A B
   have hB := le_absd_r (Γ := Γ) A B
   refine absd_le ?_ ?_
-  · exact le_congr (.eqRefl _) (by apply deriveNat; ipra_simps; ring)
+  · exact le_congr (.eqRefl _) (by ipra_ring)
       (add_le_add₂ (le_mul_mono (le_refl p) hA) (le_mul_mono (le_refl q) hB))
-  · exact le_congr (.eqRefl _) (by apply deriveNat; ipra_simps; ring)
+  · exact le_congr (.eqRefl _) (by ipra_ring)
       (add_le_add₂ (le_mul_mono (le_refl q) hA) (le_mul_mono (le_refl p) hB))
 
 /-- `P + u = R + v` gives `|v − u| ≤ |P − R|`. -/
 theorem shift_alg {P R u v : PTm n} (e : Γ ⊢[PRAAx] P + u ≐ R + v) : Γ ⊢[PRAAx] le (absd v u) (absd P R) := by
-  have e0 := natEq e
-  have e1 := natEq (eq_add_of_le (le_absd_l (Γ := Γ) P R))
-  have e2 := natEq (eq_add_of_le (le_absd_r (Γ := Γ) P R))
   refine absd_le ?_ ?_
   · refine le_of_eq_add (d := monus (R + absd P R) P) ?_
-    apply deriveNat; ipra_simps
-    linear_combination e1 + e0
+    ipra_lc natEq (eq_add_of_le (le_absd_l (Γ := Γ) P R)) + natEq e
   · refine le_of_eq_add (d := monus (P + absd P R) R) ?_
-    apply deriveNat; ipra_simps
-    linear_combination e2 - e0
+    ipra_lc natEq (eq_add_of_le (le_absd_r (Γ := Γ) P R)) - natEq e
 
 theorem abs_pt (Mp Mn : PTm 2) (d X : PTm n) :
     Γ ⊢[PRAAx] le (inst2 (adB (posB Mp Mn) (negB Mp Mn)) d X) (inst2 (amB * aB Mp Mn) d X) := by
@@ -247,7 +239,7 @@ theorem ab_pt (Mp Mn : PTm 2) (j N x : PTm n) :
   simp only [inst2_mulB, inst2_amB, inst2_factB]
   have f := congrAp2 (Γ := Γ) factF (fst_pair N x) (.eqRefl zero)
   refine (congrMul (.eqRefl _) (congrMul (.eqRefl _) f)).eqTrans ?_
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-! ## The recovery inequality -/
 
@@ -257,7 +249,7 @@ theorem close_alg {f m AB Qv C : PTm n} (h1 : Γ ⊢[PRAAx] le (f * (f * m)) AB)
     Γ ⊢[PRAAx] le ((f * f) * ((f * f) * (m * m))) ((f * f) * (num 8 * Qv)) := by
   have a := le_mul_mono h1 h1
   have b := le_mul_mono (le_refl Qv) h3
-  exact le_congr (by apply deriveNat; ipra_simps; ring) (by apply deriveNat; ipra_simps; ring)
+  exact le_congr (by ipra_ring) (by ipra_ring)
     (le_trans a (le_trans h2 b))
 
 /-- `thm:energy`, recovery direction, cleared: `(N!)² M(N)² ≤ 8 Q_N` for `N ≥ 1`. -/

@@ -1,4 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.SignedLine
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Square and cube denominators on an elliptic curve
@@ -80,9 +81,8 @@ theorem coprime_cube {q T : PTm k} (hq : Γ ⊢[PRAAx] q ≐ succ (pred q)) (h :
   · have hT : ((T ≐ zero) :: Γ) ⊢[PRAAx] T ≐ zero := Prf.hyp0
     have q1 : ((T ≐ zero) :: Γ) ⊢[PRAAx] q ≐ one :=
       (gcd_zero_right q).eqSymm.eqTrans ((congrGcd (.eqRefl _) hT.eqSymm).eqTrans h.wk)
-    have e := natEq q1
     have q3 : ((T ≐ zero) :: Γ) ⊢[PRAAx] q * q * q ≐ one := by
-      apply deriveNat; ipra_simps; linear_combination (𝔞 q * 𝔞 q + 𝔞 q + 1) * e
+      ipra_lc (𝔞 q * 𝔞 q + 𝔞 q + 1) * natEq q1
     exact (congrGcd q3 hT).eqTrans (gcd_zero_right one)
   · have hT : ((T ≐ succ (pred T)) :: Γ) ⊢[PRAAx] T ≐ succ (pred T) := Prf.hyp0
     have tq := gcd_comm_one hT h.wk
@@ -100,9 +100,9 @@ theorem coprime_sq {c e : PTm k} (he : Γ ⊢[PRAAx] e ≐ succ (pred e)) (h : �
       one_of_gcd_zero ((congrGcd hc.eqSymm (.eqRefl _)).eqTrans h.wk)
     have x1 := natEq e1; have x0 := natEq hc
     have ee : ((c ≐ zero) :: Γ) ⊢[PRAAx] e * e ≐ one := by
-      apply deriveNat; ipra_simps; linear_combination (𝔞 e + 1) * x1
+      ipra_lc (𝔞 e + 1) * x1
     have cc : ((c ≐ zero) :: Γ) ⊢[PRAAx] c * c ≐ zero := by
-      apply deriveNat; ipra_simps; linear_combination 𝔞 c * x0
+      ipra_lc 𝔞 c * x0
     exact (congrGcd ee cc).eqTrans (gcd_zero_right one)
   · have hc : ((c ≐ succ (pred c)) :: Γ) ⊢[PRAAx] c ≐ succ (pred c) := Prf.hyp0
     have e2 := coprime_mul (he.wk : ((c ≐ succ (pred c)) :: Γ) ⊢[PRAAx] _) ec.wk ec.wk
@@ -117,10 +117,9 @@ theorem sq_cube {q e : PTm k} (hq : Γ ⊢[PRAAx] q ≐ succ (pred q)) (h : Γ �
   have hq3 := pos_mul (pos_mul hq hq) hq
   have he : Γ ⊢[PRAAx] e ≐ succ (pred e) := by
     refine .orE (zero_or_succ e) ?_ Prf.hyp0
-    have e0 := natEq (Prf.hyp0 : ((e ≐ zero) :: Γ) ⊢[PRAAx] e ≐ zero)
     have hh := natEq (h.wk : ((e ≐ zero) :: Γ) ⊢[PRAAx] _)
     have z : ((e ≐ zero) :: Γ) ⊢[PRAAx] q * q * q ≐ zero := by
-      apply deriveNat; ipra_simps; linear_combination -hh + 𝔞 e * e0
+      ipra_lc -hh + 𝔞 e * natEq (Prf.hyp0 : ((e ≐ zero) :: Γ) ⊢[PRAAx] e ≐ zero)
     exact succ_ne_zero' _ (hq3.wk.eqSymm.eqTrans z)
   have hqq := pos_mul hq hq
   have dq : Γ ⊢[PRAAx] dvd (q * q) (e * e) := dvd_of_eq' hqq (w := q) h
@@ -129,12 +128,9 @@ theorem sq_cube {q e : PTm k} (hq : Γ ⊢[PRAAx] q ≐ succ (pred q)) (h : Γ �
   have x := natEq ee; have hh := natEq h
   have dd : Γ ⊢[PRAAx] quo e q * quo e q ≐ q := by
     refine mul_cancel hqq ?_
-    apply deriveNat; ipra_simps
-    linear_combination hh - (𝔞 e + 𝔞 q * 𝔞 (quo e q)) * x
-  have y := natEq dd
+    ipra_lc hh - (𝔞 e + 𝔞 q * 𝔞 (quo e q)) * x
   refine .andI dd.eqSymm ?_
-  apply deriveNat; ipra_simps
-  linear_combination x - 𝔞 (quo e q) * y
+  ipra_lc x - 𝔞 (quo e q) * natEq dd
 
 /-- `thm:denominators`, the arithmetic core: `y² = T/q³` in lowest terms (`c² q³ = T e²`, `gcd(c, e) = 1`),
 with `T ≡ a³ (mod q)` and `gcd(a, q) = 1`, gives `c² = T`, `q = d²`, `e = d³` for `d = ⌊e/q⌋`. -/

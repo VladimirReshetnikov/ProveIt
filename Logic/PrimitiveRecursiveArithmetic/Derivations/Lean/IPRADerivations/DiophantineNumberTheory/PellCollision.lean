@@ -3,6 +3,7 @@ import IPRADerivations.Foundations.ChineseRemainder
 import IPRADerivations.Combinatorics.LegendreDigits
 import IPRADerivations.Combinatorics.BinomialIdentities
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Two pairs of equal norm give a Pell solution
@@ -57,8 +58,7 @@ theorem norm_one {a N₁ N₂ D x y : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pre
     Γ ⊢[PRAAx] x * x ≐ D * (y * y) + one := by
   have x1 := natEq e1; have x2 := natEq e2; have x3 := natEq h
   refine mul_cancel (pos_mul ha ha) ?_
-  apply deriveNat; ipra_simps
-  linear_combination x3 - (𝔞 N₁ + 𝔞 a * 𝔞 x) * x1 + 𝔞 D * (𝔞 N₂ + 𝔞 a * 𝔞 y) * x2
+  ipra_lc x3 - (𝔞 N₁ + 𝔞 a * 𝔞 x) * x1 + 𝔞 D * (𝔞 N₂ + 𝔞 a * 𝔞 y) * x2
 
 /-- `y ≥ 1` once `N₂ = a y` is nonzero. -/
 theorem y_pos {a N y : PTm n} (e : Γ ⊢[PRAAx] N ≐ a * y) (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) :
@@ -126,24 +126,19 @@ theorem collision_pos {D a pi pj qi qj : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (
   have R := natEq hp; have T := natEq hq
   have d1 : Γ ⊢[PRAAx] dvd a (N1p D pi pj qi qj) :=
     dvd_of_cert ha (k₁ := pi * quo pi a + D * (qi * quo qj a)) (k₂ := one + pi * quo pj a + D * (qi * quo qi a)) (by
-      apply deriveNat; ipra_simps
-      linear_combination -e1 + 𝔞 pi * Pj - 𝔞 pi * R - 𝔞 pi * Pi - 𝔞 D * 𝔞 qi * Qj + 𝔞 D * 𝔞 qi * T +
-        𝔞 D * 𝔞 qi * Qi + xi)
+      ipra_lc -e1 + 𝔞 pi * Pj - 𝔞 pi * R - 𝔞 pi * Pi - 𝔞 D * 𝔞 qi * Qj + 𝔞 D * 𝔞 qi * T + 𝔞 D * 𝔞 qi * Qi + xi)
   have d2 : Γ ⊢[PRAAx] dvd a (N2p pi pj qi qj) :=
     dvd_of_cert ha (k₁ := a * (quo pj a * quo qi a) + rem pi a * quo qi a + rem qi a * quo pj a)
       (k₂ := a * (quo pi a * quo qj a) + rem pi a * quo qj a + rem qi a * quo pi a) (by
-      apply deriveNat; ipra_simps
-      linear_combination -e2 + 𝔞 qj * Pi + (𝔞 a * 𝔞 (quo pi a) + 𝔞 (rem pi a)) * (Qj - T) -
-        𝔞 qi * (Pj - R) - (𝔞 a * 𝔞 (quo pj a) + 𝔞 (rem pi a)) * Qi)
+      ipra_lc -e2 + 𝔞 qj * Pi + (𝔞 a * 𝔞 (quo pi a) + 𝔞 (rem pi a)) * (Qj - T) - 𝔞 qi * (Pj - R) -
+        (𝔞 a * 𝔞 (quo pj a) + 𝔞 (rem pi a)) * Qi)
   have f1 := eq_of_dvd' ha d1
   have f2 := eq_of_dvd' ha d2
   have hB : Γ ⊢[PRAAx] N1p D pi pj qi qj * N1p D pi pj qi qj ≐
       D * (N2p pi pj qi qj * N2p pi pj qi qj) + a * a := by
-    apply deriveNat; ipra_simps
-    linear_combination (𝔞 pi * 𝔞 pi - 𝔞 D * 𝔞 qi * 𝔞 qi - 𝔞 a) * xj + 𝔞 a * xi + 𝔞 a * xj -
+    ipra_lc (𝔞 pi * 𝔞 pi - 𝔞 D * 𝔞 qi * 𝔞 qi - 𝔞 a) * xj + 𝔞 a * xi + 𝔞 a * xj -
       2 * (𝔞 pi * 𝔞 pj - 𝔞 D * (𝔞 qi * 𝔞 qj)) * e1 +
-      (𝔞 pi * 𝔞 pj - 𝔞 D * (𝔞 qi * 𝔞 qj) - 𝔞 (N1p D pi pj qi qj)) * e1 +
-      2 * 𝔞 D * (𝔞 pi * 𝔞 qj - 𝔞 pj * 𝔞 qi) * e2 -
+      (𝔞 pi * 𝔞 pj - 𝔞 D * (𝔞 qi * 𝔞 qj) - 𝔞 (N1p D pi pj qi qj)) * e1 + 2 * 𝔞 D * (𝔞 pi * 𝔞 qj - 𝔞 pj * 𝔞 qi) * e2 -
       𝔞 D * (𝔞 pi * 𝔞 qj - 𝔞 pj * 𝔞 qi - 𝔞 (N2p pi pj qi qj)) * e2
   have hN2 : Γ ⊢[PRAAx] N2p pi pj qi qj ≐ succ (pred (N2p pi pj qi qj)) := by
     refine .orE (zero_or_succ (N2p pi pj qi qj)) ?_ Prf.hyp0
@@ -202,23 +197,19 @@ theorem collision_neg {D a pi pj qi qj : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (
   have R := natEq hp; have T := natEq hq
   have d1 : Γ ⊢[PRAAx] dvd a (N1n D pi pj qi qj) :=
     dvd_of_cert ha (k₁ := pi * quo pj a + D * (qi * quo qi a)) (k₂ := one + pi * quo pi a + D * (qi * quo qj a)) (by
-      apply deriveNat; ipra_simps
-      linear_combination -e1 + 𝔞 D * 𝔞 qi * (Qj - T - Qi) + 𝔞 pi * (R + Pi - Pj) + xi)
+      ipra_lc -e1 + 𝔞 D * 𝔞 qi * (Qj - T - Qi) + 𝔞 pi * (R + Pi - Pj) + xi)
   have d2 : Γ ⊢[PRAAx] dvd a (N2n pi pj qi qj) :=
     dvd_of_cert ha (k₁ := a * (quo pi a * quo qj a) + rem pi a * quo qj a + rem qi a * quo pi a)
       (k₂ := a * (quo pj a * quo qi a) + rem pi a * quo qi a + rem qi a * quo pj a) (by
-      apply deriveNat; ipra_simps
-      linear_combination -e2 - (𝔞 qj * Pi + (𝔞 a * 𝔞 (quo pi a) + 𝔞 (rem pi a)) * (Qj - T) -
-        𝔞 qi * (Pj - R) - (𝔞 a * 𝔞 (quo pj a) + 𝔞 (rem pi a)) * Qi))
+      ipra_lc -e2 -
+        (𝔞 qj * Pi + (𝔞 a * 𝔞 (quo pi a) + 𝔞 (rem pi a)) * (Qj - T) - 𝔞 qi * (Pj - R) - (𝔞 a * 𝔞 (quo pj a) + 𝔞 (rem pi a)) * Qi))
   have f1 := eq_of_dvd' ha d1
   have f2 := eq_of_dvd' ha d2
   have hB : Γ ⊢[PRAAx] N1n D pi pj qi qj * N1n D pi pj qi qj ≐
       D * (N2n pi pj qi qj * N2n pi pj qi qj) + a * a := by
-    apply deriveNat; ipra_simps
-    linear_combination (𝔞 D * 𝔞 qi * 𝔞 qi - 𝔞 pi * 𝔞 pi - 𝔞 a) * xj + 𝔞 a * xi + 𝔞 a * xj +
+    ipra_lc (𝔞 D * 𝔞 qi * 𝔞 qi - 𝔞 pi * 𝔞 pi - 𝔞 a) * xj + 𝔞 a * xi + 𝔞 a * xj +
       2 * (𝔞 pi * 𝔞 pj - 𝔞 D * (𝔞 qi * 𝔞 qj)) * e1 +
-      (𝔞 D * (𝔞 qi * 𝔞 qj) - 𝔞 pi * 𝔞 pj - 𝔞 (N1n D pi pj qi qj)) * e1 -
-      2 * 𝔞 D * (𝔞 pi * 𝔞 qj - 𝔞 pj * 𝔞 qi) * e2 -
+      (𝔞 D * (𝔞 qi * 𝔞 qj) - 𝔞 pi * 𝔞 pj - 𝔞 (N1n D pi pj qi qj)) * e1 - 2 * 𝔞 D * (𝔞 pi * 𝔞 qj - 𝔞 pj * 𝔞 qi) * e2 -
       𝔞 D * (𝔞 pj * 𝔞 qi - 𝔞 pi * 𝔞 qj - 𝔞 (N2n pi pj qi qj)) * e2
   have hN2 : Γ ⊢[PRAAx] N2n pi pj qi qj ≐ succ (pred (N2n pi pj qi qj)) := by
     refine .orE (zero_or_succ (N2n pi pj qi qj)) ?_ Prf.hyp0

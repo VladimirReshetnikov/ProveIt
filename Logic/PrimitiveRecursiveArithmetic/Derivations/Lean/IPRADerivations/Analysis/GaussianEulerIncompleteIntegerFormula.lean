@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianEulerIncompleteIntegerStep
 import IPRADerivations.Analysis.GaussianEulerIncompleteFactorialCombination
 import IPRADerivations.Analysis.GaussianEulerIncompleteUnitUpper
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The original upper incomplete Gamma factorial formula
@@ -63,11 +64,7 @@ theorem error_succ (i a b : PTm n) : Γ ⊢[PRAAx] error (succ i) a b ≐ succ i
   have recEq := rec2_succ (Γ := Γ) (two : PTm 1) errorBody i (pairT a b)
   have stepEq : Γ ⊢[PRAAx]
       stepCost i (fstT (pairT a b)) (sndT (pairT a b)) ≐ stepCost i a b := by
-    simpa only [GaussianEulerIncompleteIntegerStep.subst_stepCost,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-      Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using
-      Prf.eqCongr (Γ := Γ) (stepCost (var 0) (var 1) (var 2) : PTm 3)
-        (σ := ![i,fstT (pairT a b),sndT (pairT a b)]) (σ' := ![i,a,b])
-        (fun j => by fin_cases j; exact .eqRefl _; exact fst_pair _ _; exact snd_pair _ _)
+    ipra_congr (stepCost (var 0) (var 1) (var 2) : PTm 3) with [.eqRefl i, fst_pair _ _, snd_pair _ _]
   have raw : Γ ⊢[PRAAx] error (succ i) a b ≐ succ i*error i a b+
       stepCost i (fstT (pairT a b)) (sndT (pairT a b)) := by
     simpa only [error,errorF,errorBody,PTm.subst_add,PTm.subst_mul,PTm.subst_succ,subst_fstT,subst_sndT,

@@ -1,4 +1,4 @@
-import IPRADerivations.Core.IntCertificates
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The histogram sampler and the coherent realization: the finite budgets
@@ -37,12 +37,8 @@ theorem exact_mass {S p₀ N : ZT n} (hp : Γ ⊢[PRAAx] ZT.eq p₀ (N - S)) (hS
   have e := ZT.toZ_eq hp
   simp only [ZT.toZ_sub] at e
   refine ⟨?_, ?_⟩
-  · apply ZT.derive
-    simp only [ZT.toZ_add]
-    linear_combination e
-  · refine zle_of_comb (zsl hS) ?_ (nn_zsl _)
-    zsimp
-    linear_combination e
+  · ipra_lc e
+  · ipra_zle (zsl hS) with e
 
 /-- `eq:histogram-cdf`: `|ΔF| ≤ c + o₁ + o₂` with `4c, 4o₁, 4o₂ ≤ η` gives `4|ΔF| ≤ 3η`, two-sided. -/
 theorem histogram_cdf {ΔF c o₁ o₂ η : ZT n} (h₁ : Γ ⊢[PRAAx] zle (-(c + o₁ + o₂)) ΔF)

@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianScalarIdentityDeterminant
 import IPRADerivations.Foundations.RuntimePermutationDigitSum
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The actual numerical triangular determinant
@@ -53,11 +54,7 @@ theorem sum_gap_zero (f g : PTm 2) (N x : PTm n) (h : Γ ⊢[PRAAx] .all
     (lt (var 0) (Syn.shift N) ⟶ le (inst2 f (var 0) (Syn.shift x)) (inst2 g (var 0) (Syn.shift x))))
     (hSum : Γ ⊢[PRAAx] ap2 (sumF f) N x ≐ ap2 (sumF g) N x) : Γ ⊢[PRAAx]
     ap2 (sumF (gapBody f g)) N x ≐ zero := by
-  have balance := natEq (sum_gap_balance f g N x h)
-  have same := natEq hSum
-  apply deriveNat
-  ipra_simps
-  linear_combination balance - same
+  ipra_lc natEq (sum_gap_balance f g N x h) - natEq hSum
 
 theorem equal_term_of_order_and_sum (f g : PTm 2) (N x i : PTm n) (h : Γ ⊢[PRAAx] .all
     (lt (var 0) (Syn.shift N) ⟶ le (inst2 f (var 0) (Syn.shift x)) (inst2 g (var 0) (Syn.shift x))))

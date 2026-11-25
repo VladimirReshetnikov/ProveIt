@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianEulerIncompleteFactorialPolynomial
 import IPRADerivations.Analysis.GaussianEulerDecayFactorBounds
 import IPRADerivations.Combinatorics.BinomialIdentities
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Integer numerator and exact factorial quotients of the incomplete polynomial
@@ -138,11 +139,8 @@ theorem quotient_integer_form (N j : PTm n) (hj : Γ ⊢[PRAAx] le j N) : Γ ⊢
 
 theorem quotient_exact (N j : PTm n) (hj : Γ ⊢[PRAAx] le j N) : Γ ⊢[PRAAx]
     fact j*quotient N j ≐ fact N := by
-  have q := natEq (quotient_integer_form (Γ := Γ) N j hj)
-  have f := natEq (Combinatorics.BinomialIdentities.binom_eq hj)
-  apply deriveNat
-  ipra_simps
-  linear_combination (Groth.ι (Q.mk Γ (fact j)))*q-f
+  ipra_lc (Groth.ι (Q.mk Γ (fact j)))*natEq (quotient_integer_form (Γ := Γ) N j hj)-
+    natEq (Combinatorics.BinomialIdentities.binom_eq hj)
 
 theorem quotient_diagonal (N : PTm n) : Γ ⊢[PRAAx] quotient N N ≐ one :=
   Combinatorics.Binomial.quo_of_eq (AnalyticNumberTheory.Primes.fact_pos N) (by ipra_ring)
@@ -150,12 +148,8 @@ theorem quotient_diagonal (N : PTm n) : Γ ⊢[PRAAx] quotient N N ≐ one :=
 theorem quotient_succ (N j : PTm n) (hj : Γ ⊢[PRAAx] le j N) : Γ ⊢[PRAAx]
     quotient (succ N) j ≐ succ N*quotient N j := by
   apply Combinatorics.BinomialIdentities.mul_cancel (AnalyticNumberTheory.Primes.fact_pos j)
-  have first := natEq (quotient_exact (Γ := Γ) (succ N) j (le_trans hj (le_succ_self N)))
-  have old := natEq (quotient_exact (Γ := Γ) N j hj)
-  have step := natEq (fact_succ (Γ := Γ) N zero)
-  apply deriveNat
-  ipra_simps
-  linear_combination first-(𝔞 N+1)*old+step
+  ipra_lc natEq (quotient_exact (Γ := Γ) (succ N) j (le_trans hj (le_succ_self N)))-
+    (𝔞 N+1)*natEq (quotient_exact (Γ := Γ) N j hj)+natEq (fact_succ (Γ := Γ) N zero)
 
 def output (N a b : PTm n) : PTm n := pairT (polynomial N a b) (pairT (numerator N a b) (denominator N b))
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))

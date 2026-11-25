@@ -3,6 +3,7 @@ import IPRADerivations.Combinatorics.BellBounds
 import IPRADerivations.Combinatorics.BellTriangle
 import IPRADerivations.Combinatorics.CatalanBallot
 import IPRADerivations.Probability.Independence
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Normalized log-concavity of the Bell numbers
@@ -85,20 +86,15 @@ theorem shift_mul (a b : PTm n) : Syn.shift (a * b) = Syn.shift a * Syn.shift b 
 
 /-- `(N!/i!) i! = N!` for `i ≤ N`. -/
 theorem fq_fact {i N : PTm n} (h : Γ ⊢[PRAAx] le i N) : Γ ⊢[PRAAx] fq i N * fact i ≐ fact N := by
-  have e := natEq (binom_eq h)
   unfold fq
-  apply deriveNat; ipra_simps
-  linear_combination -e
+  ipra_lc -natEq (binom_eq h)
 
 /-- `N!/i! = (i + 1) · N!/(i + 1)!` for `i < N`. -/
 theorem fq_succ {i N : PTm n} (h : Γ ⊢[PRAAx] lt i N) :
     Γ ⊢[PRAAx] fq i N ≐ succ i * fq (succ i) N := by
   refine mul_cancel (fact_pos i) ?_
-  have a := natEq (fq_fact (le_of_lt h))
-  have b := natEq (fq_fact (i := succ i) (N := N) h)
-  have fs := natEq (fact_succ (Γ := Γ) i zero)
-  apply deriveNat; ipra_simps
-  linear_combination a - b + 𝔞 (fq (succ i) N) * fs
+  ipra_lc natEq (fq_fact (le_of_lt h)) - natEq (fq_fact (i := succ i) (N := N) h) +
+    𝔞 (fq (succ i) N) * natEq (fact_succ (Γ := Γ) i zero)
 
 theorem fq_self (N : PTm n) : Γ ⊢[PRAAx] fq N N ≐ one := by
   unfold fq
@@ -122,13 +118,9 @@ theorem fq_pos {i N : PTm n} (h : Γ ⊢[PRAAx] le i N) :
 theorem fq_mul {i r N : PTm n} (hi : Γ ⊢[PRAAx] le i r) (hr : Γ ⊢[PRAAx] le r N) :
     Γ ⊢[PRAAx] fq i N * fq (monus r i) N ≐ fact N * (fq r N * binom r i) := by
   refine mul_cancel (fact_pos i) (mul_cancel (fact_pos (monus r i)) ?_)
-  have a := natEq (fq_fact (le_trans hi hr))
-  have b := natEq (fq_fact (le_trans (monus_le_left r i) hr))
-  have c := natEq (fq_fact hr)
-  have d := natEq (binom_eq hi)
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞 (fq (monus r i) N) * 𝔞 (fact (monus r i))) * a + 𝔞 (fact N) * b -
-    𝔞 (fact N) * c + (𝔞 (fact N) * 𝔞 (fq r N)) * d
+  ipra_lc (𝔞 (fq (monus r i) N) * 𝔞 (fact (monus r i))) * natEq (fq_fact (le_trans hi hr)) +
+    𝔞 (fact N) * natEq (fq_fact (le_trans (monus_le_left r i) hr)) - 𝔞 (fact N) * natEq (fq_fact hr) +
+    (𝔞 (fact N) * 𝔞 (fq r N)) * natEq (binom_eq hi)
 
 /-! ## The scaled sequences -/
 
@@ -175,11 +167,7 @@ theorem rec_point {i r y : PTm n} (hi : Γ ⊢[PRAAx] le i r) (hr : Γ ⊢[PRAAx
       (congrMonus (fst_pair _ _) (.eqRefl _)).eqTrans (succ_monus_succ r i)
     exact (congrMul (congrBinom (snd_pair _ _) m) (congrBell m)).eqTrans
       (congrMul (binom_symm hi) (.eqRefl _))
-  have e₁ := natEq l'
-  have e₂ := natEq rr
-  have e₃ := natEq (fq_mul hi hr)
-  apply deriveNat; ipra_simps
-  linear_combination e₁ - (𝔞 (fact y) * 𝔞 (fq r y)) * e₂ + 𝔞 (bell (monus r i)) * e₃
+  ipra_lc natEq l' - (𝔞 (fact y) * 𝔞 (fq r y)) * natEq rr + 𝔞 (bell (monus r i)) * natEq (fq_mul hi hr)
 
 theorem bell_recur {r y : PTm n} (h : Γ ⊢[PRAAx] lt r y) :
     Γ ⊢[PRAAx] inst2 XB zero y * (succ r * inst2 AB (succ r) y) ≐
@@ -191,14 +179,10 @@ theorem bell_recur {r y : PTm n} (h : Γ ⊢[PRAAx] lt r y) :
       simpa [Fm.shift, Syn.shift] using h.shift
     simp only [shift_pair, shift_succ, shift_mul, shift_fact, shift_fq]
     exact rec_point (le_of_lt_succ Prf.hyp0) (le_of_lt hr'.wk)
-  have es := natEq s
-  have eb := natEq ((bell_succ (Γ := Γ) r).eqTrans (sum_reflect Bell.recB (succ r) r))
-  have ex := natEq (X_zero (Γ := Γ) y)
-  have ef := natEq (fq_succ h)
   rw [inst2_AB]
-  apply deriveNat; ipra_simps
-  linear_combination ((𝔞 r + 1) * 𝔞 (bell (succ r)) * 𝔞 (fq (succ r) y)) * ex - es -
-    (𝔞 (fact y) * 𝔞 (bell (succ r))) * ef + (𝔞 (fact y) * 𝔞 (fq r y)) * eb
+  ipra_lc ((𝔞 r + 1) * 𝔞 (bell (succ r)) * 𝔞 (fq (succ r) y)) * natEq (X_zero (Γ := Γ) y) - natEq s -
+    (𝔞 (fact y) * 𝔞 (bell (succ r))) * natEq (fq_succ h) +
+    (𝔞 (fact y) * 𝔞 (fq r y)) * natEq ((bell_succ (Γ := Γ) r).eqTrans (sum_reflect Bell.recB (succ r) r))
 
 theorem bell_xlc {j k y : PTm n} (hjk : Γ ⊢[PRAAx] lt j k) (hk : Γ ⊢[PRAAx] lt k y) :
     Γ ⊢[PRAAx] le (inst2 XB j y * inst2 XB (succ k) y) (inst2 XB (succ j) y * inst2 XB k y) := by
@@ -210,30 +194,25 @@ theorem bell_xlc {j k y : PTm n} (hjk : Γ ⊢[PRAAx] lt j k) (hk : Γ ⊢[PRAAx
       rw [inst2_XB, inst2_XB]
       exact congrFq ((congrPred Prf.hyp0).eqTrans
         (pred_zero.eqTrans ((pred_succ j).eqTrans Prf.hyp0).eqSymm)) (.eqRefl _)
-    have e := natEq xj
-    have kp := natEq (kpos.wk (ψ := j ≐ zero))
     have dk := natEq ((X_dec kpos hk).wk (ψ := j ≐ zero))
     refine le_of_eq_add (d := inst2 XB (succ j) y * (pred k * inst2 XB (succ k) y)) ?_
-    apply deriveNat; ipra_simps
-    linear_combination 𝔞 (inst2 XB (succ j) y) * dk +
-      (𝔞 (inst2 XB (succ j) y) * 𝔞 (inst2 XB (succ k) y)) * kp - 𝔞 (inst2 XB (succ k) y) * e
+    ipra_lc 𝔞 (inst2 XB (succ j) y) * dk +
+      (𝔞 (inst2 XB (succ j) y) * 𝔞 (inst2 XB (succ k) y)) * natEq (kpos.wk (ψ := j ≐ zero)) -
+      𝔞 (inst2 XB (succ k) y) * natEq xj
   · have hj : ((j ≐ succ (pred j)) :: Γ) ⊢[PRAAx] lt j y :=
       (lt_of_lt_of_le hjk (le_of_lt hk)).wk
-    have dj := natEq (X_dec Prf.hyp0 hj)
     have dk := natEq ((X_dec kpos hk).wk (ψ := j ≐ succ (pred j)))
-    have ejk := natEq ((eq_add_of_le hjk).wk (ψ := j ≐ succ (pred j)))
     refine le_of_eq_add (d := succ (monus k (succ j)) *
       (inst2 XB (succ j) y * inst2 XB (succ k) y)) ?_
-    apply deriveNat; ipra_simps
-    linear_combination 𝔞 (inst2 XB (succ j) y) * dk - 𝔞 (inst2 XB (succ k) y) * dj +
-      (𝔞 (inst2 XB (succ j) y) * 𝔞 (inst2 XB (succ k) y)) * ejk
+    ipra_lc 𝔞 (inst2 XB (succ j) y) * dk - 𝔞 (inst2 XB (succ k) y) * natEq (X_dec Prf.hyp0 hj) +
+      (𝔞 (inst2 XB (succ j) y) * 𝔞 (inst2 XB (succ k) y)) * natEq ((eq_add_of_le hjk).wk (ψ := j ≐ succ (pred j)))
 
 /-- The hypotheses of `lem:coefficient-logconcave` for `x_j = N!/(j − 1)!`, `a_r = B_r N!/r!`. -/
 theorem bell_hyp : Hyp XB AB NbB where
   pos := by
     intro n Γ y
     exact le_of_eq_add (d := pred (fact y))
-      ((X_zero y).eqTrans ((fact_pos y).eqTrans (by apply deriveNat; ipra_simps; ring)))
+      ((X_zero y).eqTrans ((fact_pos y).eqTrans (by ipra_ring)))
   recur := by
     intro n Γ r y h
     exact bell_recur h
@@ -250,29 +229,20 @@ theorem bell_logconcave (μ δ : PTm n) :
   have c := coefficient_logconcave (Γ := Γ) bell_hyp μ δ (succ (succ (μ + δ))) (le_refl _)
   simp only [inst2_AB] at c
   have hμ : Γ ⊢[PRAAx] lt μ (succ (succ (μ + δ))) :=
-    le_of_eq_add (d := succ δ) (by apply deriveNat; ipra_simps; ring)
+    le_of_eq_add (d := succ δ) (by ipra_ring)
   have hsμ : Γ ⊢[PRAAx] le (succ μ) (succ (succ (μ + δ))) := hμ
-  have f1 := natEq (fq_self (Γ := Γ) (succ (succ (μ + δ))))
-  have f2 := natEq (fq_succ (Γ := Γ) (i := succ (μ + δ)) (N := succ (succ (μ + δ))) (le_refl _))
-  have f3 := natEq (fq_succ hμ)
-  have ep := natEq (fq_pos hsμ)
   have big : Γ ⊢[PRAAx]
       le (succ (pred (fq (succ μ) (succ (succ (μ + δ))))) *
           (succ μ * (bell μ * bell (succ (succ (μ + δ))))))
         (succ (pred (fq (succ μ) (succ (succ (μ + δ))))) *
           (succ (succ (μ + δ)) * (bell (succ μ) * bell (succ (μ + δ))))) := by
     refine le_congr ?_ ?_ c
-    · apply deriveNat; ipra_simps
-      linear_combination
-        (𝔞 (bell μ) * 𝔞 (bell (succ (succ (μ + δ)))) * 𝔞 (fq μ (succ (succ (μ + δ))))) * f1 +
-        (𝔞 (bell μ) * 𝔞 (bell (succ (succ (μ + δ))))) * f3 +
-        (𝔞 (bell μ) * 𝔞 (bell (succ (succ (μ + δ)))) * (𝔞 μ + 1)) * ep
-    · apply deriveNat; ipra_simps
-      linear_combination
-        (𝔞 (bell (succ μ)) * 𝔞 (bell (succ (μ + δ))) * 𝔞 (fq (succ μ) (succ (succ (μ + δ))))) * f2 +
-        (𝔞 (bell (succ μ)) * 𝔞 (bell (succ (μ + δ))) * 𝔞 (fq (succ μ) (succ (succ (μ + δ)))) *
-          (𝔞 μ + 𝔞 δ + 1 + 1)) * f1 +
-        (𝔞 (bell (succ μ)) * 𝔞 (bell (succ (μ + δ))) * (𝔞 μ + 𝔞 δ + 1 + 1)) * ep
+    · ipra_lc (𝔞 (bell μ) * 𝔞 (bell (succ (succ (μ + δ)))) * 𝔞 (fq μ (succ (succ (μ + δ))))) * natEq (fq_self (Γ := Γ) (succ (succ (μ + δ)))) +
+        (𝔞 (bell μ) * 𝔞 (bell (succ (succ (μ + δ))))) * natEq (fq_succ hμ) +
+        (𝔞 (bell μ) * 𝔞 (bell (succ (succ (μ + δ)))) * (𝔞 μ + 1)) * natEq (fq_pos hsμ)
+    · ipra_lc (𝔞 (bell (succ μ)) * 𝔞 (bell (succ (μ + δ))) * 𝔞 (fq (succ μ) (succ (succ (μ + δ))))) * natEq (fq_succ (Γ := Γ) (i := succ (μ + δ)) (N := succ (succ (μ + δ))) (le_refl _)) +
+        (𝔞 (bell (succ μ)) * 𝔞 (bell (succ (μ + δ))) * 𝔞 (fq (succ μ) (succ (succ (μ + δ)))) * (𝔞 μ + 𝔞 δ + 1 + 1)) * natEq (fq_self (Γ := Γ) (succ (succ (μ + δ)))) +
+        (𝔞 (bell (succ μ)) * 𝔞 (bell (succ (μ + δ))) * (𝔞 μ + 𝔞 δ + 1 + 1)) * natEq (fq_pos hsμ)
   exact mul_le_cancel big
 
 /-- `eq:normalized-logconcavity`: `n B_{n−1} B_{n+1} ≤ (n + 1) B_n²` for `n = μ + 1 ≥ 1`. -/
@@ -296,11 +266,7 @@ theorem bell_normalized_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 1
 /-- Absorption: `(N + 1) C(N, j) = (j + 1) C(N + 1, j + 1)` for `j < N`. -/
 theorem absorb {j N : PTm n} (h : Γ ⊢[PRAAx] lt j N) :
     Γ ⊢[PRAAx] succ N * binom N j ≐ succ j * binom (succ N) (succ j) := by
-  have p := natEq (pascal_at h)
-  have r := natEq (binom_ratio h)
-  have e := natEq (eq_add_of_le (le_of_lt h))
-  apply deriveNat; ipra_simps
-  linear_combination -(𝔞 j + 1) * p + 𝔞 (binom N j) * e + r
+  ipra_lc -(𝔞 j + 1) * natEq (pascal_at h) + 𝔞 (binom N j) * natEq (eq_add_of_le (le_of_lt h)) + natEq (binom_ratio h)
 
 /-- One more factor: from `m` to `m + 1`, for `n = n' + 1 ≥ 1`. -/
 theorem upper_step {n' m : PTm n}
@@ -308,22 +274,18 @@ theorem upper_step {n' m : PTm n}
       (binom (succ n' + m) m * (bell (succ n') * bell m))) :
     Γ ⊢[PRAAx] le (bell (succ n' + succ m))
       (binom (succ n' + succ m) (succ m) * (bell (succ n') * bell (succ m))) := by
-  have lc := natEq (eq_add_of_le (bell_logconcave (Γ := Γ) m n'))
-  have ihe := natEq (eq_add_of_le ih)
   have hlt : Γ ⊢[PRAAx] lt m (succ n' + m) :=
-    le_of_eq_add (d := n') (by apply deriveNat; ipra_simps; ring)
-  have ab := natEq (absorb hlt)
+    le_of_eq_add (d := n') (by ipra_ring)
   have eY := natEq (congrBell (Γ := Γ) (a := succ (m + n')) (b := succ n' + m)
-    (by apply deriveNat; ipra_simps; ring))
+    (by ipra_ring))
   have eX := natEq (congrBell (Γ := Γ) (a := succ (succ (m + n'))) (b := succ n' + succ m)
-    (by apply deriveNat; ipra_simps; ring))
+    (by ipra_ring))
   have eC := natEq (congrBinom (Γ := Γ) (a := succ n' + succ m) (a' := succ (succ n' + m))
-    (b := succ m) (b' := succ m) (by apply deriveNat; ipra_simps; ring) (.eqRefl _))
+    (b := succ m) (b' := succ m) (by ipra_ring) (.eqRefl _))
   have bpos : Γ ⊢[PRAAx] bell m ≐ succ (pred (bell m)) :=
     eq_succ_pred ((eq_add_of_le (bell_pos m)).eqTrans
-      (by apply deriveNat; ipra_simps; ring :
+      (by ipra_ring :
         Γ ⊢[PRAAx] one + monus (bell m) one ≐ succ (monus (bell m) one)))
-  have eb := natEq bpos
   have big : Γ ⊢[PRAAx] le (succ m * (succ (pred (bell m)) * bell (succ n' + succ m)))
       (succ m * (succ (pred (bell m)) *
         (binom (succ n' + succ m) (succ m) * (bell (succ n') * bell (succ m))))) := by
@@ -331,14 +293,11 @@ theorem upper_step {n' m : PTm n}
         (succ m * (bell m * bell (succ (succ (m + n'))))) +
       succ (succ (m + n')) * (bell (succ m) *
         monus (binom (succ n' + m) m * (bell (succ n') * bell m)) (bell (succ n' + m)))) ?_
-    apply deriveNat; ipra_simps
-    linear_combination
-      -((𝔞 m + 1) * (𝔞 (binom (succ n' + succ m) (succ m)) * (𝔞 (bell (succ n')) *
-          𝔞 (bell (succ m))) - 𝔞 (bell (succ n' + succ m)))) * eb +
+    ipra_lc -((𝔞 m + 1) * (𝔞 (binom (succ n' + succ m) (succ m)) * (𝔞 (bell (succ n')) * 𝔞 (bell (succ m))) - 𝔞 (bell (succ n' + succ m)))) * natEq bpos +
       ((𝔞 m + 1) * 𝔞 (bell m) * 𝔞 (bell (succ n')) * 𝔞 (bell (succ m))) * eC -
-      (𝔞 (bell m) * 𝔞 (bell (succ n')) * 𝔞 (bell (succ m))) * ab +
-      ((𝔞 n' + 1 + 𝔞 m + 1) * 𝔞 (bell (succ m))) * ihe -
-      ((𝔞 n' + 1 + 𝔞 m + 1) * 𝔞 (bell (succ m))) * eY + lc +
+      (𝔞 (bell m) * 𝔞 (bell (succ n')) * 𝔞 (bell (succ m))) * natEq (absorb hlt) +
+      ((𝔞 n' + 1 + 𝔞 m + 1) * 𝔞 (bell (succ m))) * natEq (eq_add_of_le ih) -
+      ((𝔞 n' + 1 + 𝔞 m + 1) * 𝔞 (bell (succ m))) * eY + natEq (eq_add_of_le (bell_logconcave (Γ := Γ) m n')) +
       ((𝔞 m + 1) * 𝔞 (bell m)) * eX
   exact mul_le_cancel (mul_le_cancel big)
 
@@ -355,13 +314,9 @@ theorem bell_product_upper (n' m : PTm n) :
     refine PRA.qfInd _ (le_QF _ _) ?_ ?_
     · have b : Γ ⊢[PRAAx] le (bell (succ n' + zero))
           (binom (succ n' + zero) zero * (bell (succ n') * bell zero)) := by
-        have e₁ := natEq (congrBell (Γ := Γ) (add_zero (succ n')))
-        have e₂ := natEq (binom_zero' (Γ := Γ) (succ n' + zero))
-        have e₃ := natEq (bell_zero (Γ := Γ))
         refine le_of_eq_add (d := zero) ?_
-        apply deriveNat; ipra_simps
-        linear_combination (𝔞 (bell (succ n')) * 𝔞 (bell zero)) * e₂ +
-          𝔞 (bell (succ n')) * e₃ - e₁
+        ipra_lc (𝔞 (bell (succ n')) * 𝔞 (bell zero)) * natEq (binom_zero' (Γ := Γ) (succ n' + zero)) +
+          𝔞 (bell (succ n')) * natEq (bell_zero (Γ := Γ)) - natEq (congrBell (Γ := Γ) (add_zero (succ n')))
       simpa using b
     · have st : (upF n' :: Γ.map Fm.shift) ⊢[PRAAx]
           le (bell (succ (Syn.shift n') + succ (var 0)))

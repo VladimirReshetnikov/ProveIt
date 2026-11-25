@@ -2,6 +2,7 @@ import IPRADerivations.Core.SumReflect
 import IPRADerivations.Core.SumSplit
 import IPRADerivations.Core.Powers
 import IPRADerivations.Core.Tactic
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Global sections of `O(d)` on the projective line
@@ -96,9 +97,7 @@ theorem refl_pt (c : PTm 2) {i y : PTm n} (h : Γ ⊢[PRAAx] le i (dOf y)) :
     (congrMonus (fst_pair _ _) (.eqRefl _)).eqTrans (succ_monus_succ _ _)
   refine (congrInst2 (aB c) hk (snd_pair _ _)).eqTrans ?_
   rw [inst2_a, inst2_b]
-  have e := natEq (congrAp2 powF (monus_monus h) (.eqRefl (uOf y)))
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞(inst2 c (monus (dOf y) i) (xOf y)) * 𝔞(pw (tOf y) (monus (dOf y) i)) * e
+  ipra_lc 𝔞(inst2 c (monus (dOf y) i) (xOf y)) * 𝔞(pw (tOf y) (monus (dOf y) i)) * natEq (congrAp2 powF (monus_monus h) (.eqRefl (uOf y)))
 
 /-- `thm:p1-h0`, the correspondence: `∑_{e ≤ d} c_e T^e U^(d−e) = ∑_{j ≤ d} c_{d−j} U^j T^(d−j)`. -/
 theorem p1_sections (c : PTm 2) (y : PTm n) :
@@ -133,8 +132,7 @@ abbrev gle' {n : ℕ} (k N : PTm n) : PTm n := monus one (monus k N)
 
 theorem gle'_above {k N : PTm n} (h : Γ ⊢[PRAAx] le (succ N) k) : Γ ⊢[PRAAx] gle' k N ≐ zero := by
   have e : Γ ⊢[PRAAx] k ≐ succ (monus k (succ N)) + N := by
-    have a := natEq (eq_add_of_le h)
-    apply deriveNat; ipra_simps; linear_combination a
+    ipra_lc natEq (eq_add_of_le h)
   have m : Γ ⊢[PRAAx] monus k N ≐ succ (monus k (succ N)) := (congrMonus e (.eqRefl _)).eqTrans (add_monus _ _)
   exact (congrMonus (.eqRefl _) m).eqTrans ((succ_monus_succ _ _).eqTrans (zero_monus _))
 
@@ -155,10 +153,7 @@ theorem cob_zero_neg {A D e : PTm n} (pb : PTm n) (h₁ : Γ ⊢[PRAAx] lt (monu
 residuals `R₁, R₂` with `R₁ − R₂ = δ(a, b)` there are equal. -/
 theorem h1_unique {A D e R₁ R₂ pa pb : PTm n} (h₁ : Γ ⊢[PRAAx] lt (monus A D) e) (h₂ : Γ ⊢[PRAAx] lt e A)
     (h : Γ ⊢[PRAAx] R₁ + cobNeg A D e pb ≐ R₂ + cobPos A e pa) : Γ ⊢[PRAAx] R₁ ≐ R₂ := by
-  have a := natEq (cob_zero_neg (D := D) pb h₁); have b := natEq (cob_zero_pos pa h₂)
-  have c := natEq h
-  apply deriveNat; ipra_simps
-  linear_combination c - a + b
+  ipra_lc natEq h - natEq (cob_zero_neg (D := D) pb h₁) + natEq (cob_zero_pos pa h₂)
 
 /-- In particular a residual that is a coboundary is zero. -/
 theorem h1_residual_zero {A D e R pa pb : PTm n} (h₁ : Γ ⊢[PRAAx] lt (monus A D) e) (h₂ : Γ ⊢[PRAAx] lt e A)
@@ -171,7 +166,7 @@ theorem h1_dimension {A D : PTm n} (h : Γ ⊢[PRAAx] le D A) (hD : Γ ⊢[PRAAx
     Γ ⊢[PRAAx] monus A (succ (monus A D)) ≐ monus D one := by
   have e₁ := natEq (eq_add_of_le h); have e₂ := natEq (eq_add_of_le hD)
   have m₁ : Γ ⊢[PRAAx] A ≐ monus D one + succ (monus A D) := by
-    apply deriveNat; ipra_simps; linear_combination e₁ + e₂
+    ipra_lc e₁ + e₂
   exact (congrMonus m₁ (.eqRefl _)).eqTrans (add_monus _ _)
 
 end Residual
@@ -209,6 +204,5 @@ theorem ker_neg {A Ad e pa pb : PTm n} (hd : Γ ⊢[PRAAx] lt Ad A) (h : Γ ⊢[
     Γ ⊢[PRAAx] (le A e ⟶ (pa ≐ zero)) ⋏ (le e Ad ⟶ (pb ≐ zero)) :=
   .andI (.impI (ker_high h.wk Prf.hyp0 (lt_of_lt_of_le hd.wk Prf.hyp0)))
     (.impI (ker_low h.wk (lt_of_le_of_lt Prf.hyp0 hd.wk) Prf.hyp0))
-
 
 end LeanProofs.IPRA.Geometry.ProjectiveLine

@@ -2,6 +2,7 @@ import IPRADerivations.Combinatorics.LegendreDigits
 import IPRADerivations.DiophantineNumberTheory.ModularCertificate
 import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.AnalyticNumberTheory.ValuationMul
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The alternating digit rule modulo `b + 1`
@@ -95,11 +96,8 @@ theorem step_alg {m p Oq Od Eq Ed Q Q' d π c π' c' Oq' Od' Eq' Ed' : PTm n}
     (se : Γ ⊢[PRAAx] Eq' ≐ Eq + c * Q') (sed : Γ ⊢[PRAAx] Ed' ≐ Ed + c * d)
     (pc : Γ ⊢[PRAAx] π' ≐ c) (cp : Γ ⊢[PRAAx] c' ≐ π) :
     Γ ⊢[PRAAx] m + succ p * Oq' + Od' + π' * Q' ≐ succ p * Eq' + Ed' + c' * Q' := by
-  have eih := natEq ih; have eds := natEq ds; have eso := natEq so; have esd := natEq sd
-  have ese := natEq se; have esed := natEq sed; have epc := natEq pc; have ecp := natEq cp
-  apply deriveNat; ipra_simps
-  linear_combination eih + (𝔞 p + 1) * eso + esd - (𝔞 p + 1) * ese - esed + 𝔞 Q' * epc - 𝔞 Q' * ecp -
-    (𝔞 π - 𝔞 c) * eds
+  ipra_lc natEq ih + (𝔞 p + 1) * natEq so + natEq sd - (𝔞 p + 1) * natEq se - natEq sed + 𝔞 Q' * natEq pc -
+    𝔞 Q' * natEq cp - (𝔞 π - 𝔞 c) * natEq ds
 
 /-- The invariant at `K + 1` from the invariant at `K`. -/
 theorem alt_step {p m K : PTm n} (hp : Γ ⊢[PRAAx] p ≐ succ (pred p))
@@ -122,10 +120,8 @@ theorem base_alg {m p Oq Od Eq Ed π c Q : PTm n} (z1 : Γ ⊢[PRAAx] Oq ≐ zer
     (z3 : Γ ⊢[PRAAx] Eq ≐ zero) (z4 : Γ ⊢[PRAAx] Ed ≐ zero) (pz : Γ ⊢[PRAAx] π ≐ zero)
     (c1 : Γ ⊢[PRAAx] c ≐ one) (q0 : Γ ⊢[PRAAx] Q ≐ m) :
     Γ ⊢[PRAAx] m + succ p * Oq + Od + π * Q ≐ succ p * Eq + Ed + c * Q := by
-  have a1 := natEq z1; have a2 := natEq z2; have a3 := natEq z3; have a4 := natEq z4
-  have a5 := natEq pz; have a6 := natEq c1; have a7 := natEq q0
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞 p + 1) * a1 + a2 + 𝔞 Q * a5 - (𝔞 p + 1) * a3 - a4 - 𝔞 Q * a6 - a7
+  ipra_lc (𝔞 p + 1) * natEq z1 + natEq z2 + 𝔞 Q * natEq pz - (𝔞 p + 1) * natEq z3 - natEq z4 - 𝔞 Q * natEq c1 -
+    natEq q0
 
 /-- The invariant at `K = 0`. -/
 theorem alt_base (p m : PTm n) :
@@ -172,8 +168,7 @@ theorem alt_telescope {p : PTm n} (hp : Γ ⊢[PRAAx] p ≐ succ (pred p)) (K m 
 theorem fin_alg {m S Oq Od Eq Ed π c Q : PTm n}
     (t : Γ ⊢[PRAAx] m + S * Oq + Od + π * Q ≐ S * Eq + Ed + c * Q) (z : Γ ⊢[PRAAx] Q ≐ zero) :
     Γ ⊢[PRAAx] S * Oq + (m + Od) ≐ S * Eq + Ed := by
-  have a := natEq t; have b := natEq z
-  apply deriveNat; ipra_simps; linear_combination a - (𝔞 π - 𝔞 c) * b
+  ipra_lc natEq t - (𝔞 π - 𝔞 c) * natEq z
 
 /-- **The alternating rule**: for a base `b ≥ 2`,
 `(n + ∑_{j odd} d_j) mod (b + 1) = (∑_{j even} d_j) mod (b + 1)`. -/

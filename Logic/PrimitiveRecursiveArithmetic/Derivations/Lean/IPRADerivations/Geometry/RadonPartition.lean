@@ -1,4 +1,4 @@
-import IPRADerivations.Core.IntCertificates
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Radon partitions from an affine dependence
@@ -122,12 +122,8 @@ theorem line_dependence (x₀ x₁ x₂ : ZT n) :
     (Γ ⊢[PRAAx] ZT.eq ((x₁ - x₂) + (x₂ - x₀) + (x₀ - x₁)) (ZT.natLit 0)) ∧
       (Γ ⊢[PRAAx] ZT.eq ((x₁ - x₂) * x₀ + (x₂ - x₀) * x₁ + (x₀ - x₁) * x₂) (ZT.natLit 0)) := by
   refine ⟨?_, ?_⟩
-  · apply ZT.derive
-    zsimp
-    ring
-  · apply ZT.derive
-    zsimp
-    ring
+  · ipra_lc
+  · ipra_lc
 
 /-- Twice the signed area of the triangle `a b c`. -/
 def area (xa ya xb yb xc yc : ZT n) : ZT n := (xb - xa) * (yc - ya) - (xc - xa) * (yb - ya)
@@ -147,15 +143,9 @@ theorem plane_dependence (x₀ y₀ x₁ y₁ x₂ y₂ x₃ y₃ : ZT n) :
       (Γ ⊢[PRAAx] ZT.eq (area x₁ y₁ x₂ y₂ x₃ y₃ * y₀ - area x₀ y₀ x₂ y₂ x₃ y₃ * y₁ +
         area x₀ y₀ x₁ y₁ x₃ y₃ * y₂ - area x₀ y₀ x₁ y₁ x₂ y₂ * y₃) (ZT.natLit 0)) := by
   refine ⟨?_, ?_, ?_⟩
-  · apply ZT.derive
-    simp only [ZT.toZ_sub, ZT.toZ_add, ZT.toZ_mul, toZ_area, ZT.toZ_natLit, Nat.cast_zero]
-    ring
-  · apply ZT.derive
-    simp only [ZT.toZ_sub, ZT.toZ_add, ZT.toZ_mul, toZ_area, ZT.toZ_natLit, Nat.cast_zero]
-    ring
-  · apply ZT.derive
-    simp only [ZT.toZ_sub, ZT.toZ_add, ZT.toZ_mul, toZ_area, ZT.toZ_natLit, Nat.cast_zero]
-    ring
+  · ipra_lc [toZ_area]
+  · ipra_lc [toZ_area]
+  · ipra_lc [toZ_area]
 
 /-- The dependence of four points `(x j, y j)` in the plane. -/
 def planeZ (x y : Fin 4 → ZT n) : Fin 4 → ZT n :=

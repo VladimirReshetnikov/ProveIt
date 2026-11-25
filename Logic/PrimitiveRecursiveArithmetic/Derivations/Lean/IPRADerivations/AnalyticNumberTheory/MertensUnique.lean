@@ -7,6 +7,7 @@ import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.Combinatorics.Stirling
 import IPRADerivations.Core.SumSplit
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The floor recurrence determines the Mertens function
@@ -88,12 +89,11 @@ theorem inst2_mN (t y : PTm n) : inst2 mNB t y = MN t := by simp [inst2]
 
 /-! ## Splitting and comparing sums -/
 
-theorem two_add' (P : PTm n) : Γ ⊢[PRAAx] succ (succ P) ≐ two + P := by apply deriveNat; ipra_simps; ring
+theorem two_add' (P : PTm n) : Γ ⊢[PRAAx] succ (succ P) ≐ two + P := by ipra_ring
 
 theorem split_alg {S S2 S1 S0 T f0 f1 : PTm n} (s : Γ ⊢[PRAAx] S ≐ S2 + T) (h2 : Γ ⊢[PRAAx] S2 ≐ S1 + f1)
     (h1 : Γ ⊢[PRAAx] S1 ≐ S0 + f0) (h0 : Γ ⊢[PRAAx] S0 ≐ zero) : Γ ⊢[PRAAx] S ≐ f0 + f1 + T := by
-  have a := natEq s; have b := natEq h2; have c := natEq h1; have d := natEq h0
-  apply deriveNat; ipra_simps; linear_combination a + b + c + d
+  ipra_lc natEq s + natEq h2 + natEq h1 + natEq h0
 
 /-- `∑_{a ≤ t} f(a) = f(0) + f(1) + ∑_{k < t − 1} f(2 + k)` for `t ≥ 1`. -/
 theorem split_two (f : PTm 2) {t x : PTm n} (ht : Γ ⊢[PRAAx] t ≐ succ (pred t)) :
@@ -171,19 +171,17 @@ theorem lt_of_two {t a u : PTm n} (h1 : Γ ⊢[PRAAx] le (a * u) t) (ha : Γ ⊢
   ipra_le sl h1 + sl ha * 𝔞 u + sl hu
 
 theorem two_add_pos (k : PTm n) : Γ ⊢[PRAAx] two + k ≐ succ (pred (two + k)) :=
-  AnalyticNumberTheory.Primes.eq_succ_pred (y := succ k) (by apply deriveNat; ipra_simps; ring)
+  AnalyticNumberTheory.Primes.eq_succ_pred (y := succ k) (by ipra_ring)
 
-theorem mul_one_r (a : PTm n) : Γ ⊢[PRAAx] a * one ≐ a := by apply deriveNat; ipra_simps; ring
+theorem mul_one_r (a : PTm n) : Γ ⊢[PRAAx] a * one ≐ a := by ipra_ring
 
 theorem bits0 {s b V : PTm n} (hs : Γ ⊢[PRAAx] s ≐ one) (hb : Γ ⊢[PRAAx] b ≐ one)
     (h : Γ ⊢[PRAAx] s * (b * V) ≐ zero) : Γ ⊢[PRAAx] V ≐ zero := by
-  have x := natEq hs; have y := natEq hb; have w := natEq h
-  apply deriveNat; ipra_simps; linear_combination w - 𝔞 b * 𝔞 V * x - 𝔞 V * y
+  ipra_lc natEq h - 𝔞 b * 𝔞 V * natEq hs - 𝔞 V * natEq hb
 
 theorem scale_eq {s A B C D : PTm n} (h : Γ ⊢[PRAAx] A + B ≐ C + D) :
     Γ ⊢[PRAAx] s * A + s * B ≐ s * C + s * D := by
-  have x := natEq h
-  apply deriveNat; ipra_simps; linear_combination 𝔞 s * x
+  ipra_lc 𝔞 s * natEq h
 
 /-- `[u ≥ 1] = 1` for `u ≥ 1`. -/
 theorem sg_of_one_le {u : PTm n} (h : Γ ⊢[PRAAx] le one u) : Γ ⊢[PRAAx] sg u ≐ one :=
@@ -232,10 +230,7 @@ theorem fin_alg {SgP SgN SMP SMN TgP TgN TMP TMN gp gn mp mn s : PTm n}
     (e3 : Γ ⊢[PRAAx] SMP ≐ zero + mp + TMP) (e4 : Γ ⊢[PRAAx] SMN ≐ zero + mn + TMN)
     (eR : Γ ⊢[PRAAx] SgP ≐ s + SgN) (eM : Γ ⊢[PRAAx] SMP ≐ s + SMN)
     (eT : Γ ⊢[PRAAx] TgP + TMN ≐ TgN + TMP) : Γ ⊢[PRAAx] gp + mn ≐ gn + mp := by
-  have x1 := natEq e1; have x2 := natEq e2; have x3 := natEq e3; have x4 := natEq e4
-  have xR := natEq eR; have xM := natEq eM; have xT := natEq eT
-  apply deriveNat; ipra_simps
-  linear_combination -x1 - x4 + x2 + x3 + xR - xM - xT
+  ipra_lc -natEq e1 - natEq e4 + natEq e2 + natEq e3 + natEq eR - natEq eM - natEq eT
 
 theorem row_zero (g : PTm 2) (s y : PTm n) : Γ ⊢[PRAAx] inst2 (rowB g) zero (pairT s y) ≐ zero :=
   (row_at g zero s y).eqTrans (zero_mul_l sg_zero _)

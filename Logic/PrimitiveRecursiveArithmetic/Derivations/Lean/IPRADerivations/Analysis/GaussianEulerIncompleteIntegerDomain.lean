@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianEulerIncompleteName
 import IPRADerivations.Analysis.GaussianGammaFactorialValues
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Original incomplete Euler inputs along the positive integer trajectory
@@ -64,10 +65,8 @@ theorem original_source (i a b : PTm n) (h : Γ ⊢[PRAAx] source a b) : Γ ⊢[
 
 private theorem fields_congr (z R w S a b : PTm n) (hz : Γ ⊢[PRAAx] z ≐ w) (hR : Γ ⊢[PRAAx] R ≐ S) : Γ ⊢[PRAAx]
     GaussianEulerIncompleteName.data z R one one a b ≐ GaussianEulerIncompleteName.data w S one one a b := by
-  simpa using Prf.eqCongr (Γ := Γ) (Ax := PRAAx)
-    (GaussianEulerIncompleteName.data (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6)
-    (σ := ![z,R,one,one,a,b]) (σ' := ![w,S,one,one,a,b])
-    (fun j => by fin_cases j; exact hz; exact hR; exact .eqRefl _; exact .eqRefl _; exact .eqRefl _; exact .eqRefl _)
+  ipra_congr (GaussianEulerIncompleteName.data (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) with
+    [hz, hR, .eqRefl one, .eqRefl one, .eqRefl a, .eqRefl b]
 
 theorem data_zero (a b : PTm n) : Γ ⊢[PRAAx]
     data zero a b ≐ GaussianEulerIncompleteName.data oneCode one one one a b :=

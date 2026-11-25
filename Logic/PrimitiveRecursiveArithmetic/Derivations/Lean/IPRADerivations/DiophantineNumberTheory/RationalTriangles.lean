@@ -1,4 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.FermatQuarticPoints
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Rational right triangles with square area
@@ -53,10 +54,8 @@ theorem rational_square_area {a₁ a₂ b₁ b₂ c₁ c₂ q₁ q₂ : PTm n}
     (s := q₁ * a₂ * b₂ * c₂)
     (pos_mul (pos_mul (pos_mul ha₁ hb₂) hc₂) hq₂) (pos_mul (pos_mul (pos_mul hb₁ ha₂) hc₂) hq₂)
     (pos_mul (pos_mul (pos_mul hq₁ ha₂) hb₂) hc₂) ?_ ?_
-  · apply deriveNat; ipra_simps
-    linear_combination (𝔞 q₂ * 𝔞 q₂) * e₁
-  · apply deriveNat; ipra_simps
-    linear_combination (𝔞 a₂ * 𝔞 b₂ * 𝔞 c₂ * 𝔞 c₂) * e₂
+  · ipra_lc (𝔞 q₂ * 𝔞 q₂) * e₁
+  · ipra_lc (𝔞 a₂ * 𝔞 b₂ * 𝔞 c₂ * 𝔞 c₂) * e₂
 
 /-- No rational right triangle has area `1`: `(a₁/a₂)(b₁/b₂) = 2`. -/
 theorem no_area_one {a₁ a₂ b₁ b₂ c₁ c₂ : PTm n}
@@ -68,9 +67,7 @@ theorem no_area_one {a₁ a₂ b₁ b₂ c₁ c₂ : PTm n}
     (h₂ : Γ ⊢[PRAAx] a₁ * b₁ ≐ two * (a₂ * b₂)) : Γ ⊢[PRAAx] Fm.bot := by
   have one_pos : Γ ⊢[PRAAx] (one : PTm n) ≐ succ (pred one) := congrSucc (pred_succ _).eqSymm
   refine rational_square_area (q₁ := one) (q₂ := one) ha₁ ha₂ hb₁ hb₂ hc₂ one_pos one_pos h₁ ?_
-  have e := natEq h₂
-  apply deriveNat; ipra_simps
-  linear_combination e
+  ipra_lc natEq h₂
 
 /-- `cor:quartic-obstruction`: `x⁴ − y⁴ = z²` has no positive solutions. -/
 theorem quartic_obstruction {x y z : PTm n} (hx : Γ ⊢[PRAAx] x ≐ succ (pred x)) (hy : Γ ⊢[PRAAx] y ≐ succ (pred y))
@@ -89,21 +86,18 @@ theorem square_progression {R S T D : PTm n} (hD : Γ ⊢[PRAAx] D ≐ succ (pre
   -- `T > R`, since `T² = R² + 2 D² > R²`.
   have big : Γ ⊢[PRAAx] le (succ (R * R)) (T * T) := by
     refine le_of_eq_add (d := two * (pred D * pred D) + two * pred D + two * pred D + one) ?_
-    apply deriveNat; ipra_simps
-    linear_combination -e₂ - e₁ + 2 * (𝔞 D + 𝔞 (pred D) + 1) * d
+    ipra_lc -e₂ - e₁ + 2 * (𝔞 D + 𝔞 (pred D) + 1) * d
   refine .orE (lt_or_le R T) ?_ ?_
   · let C := lt R T :: Γ
-    have e := natEq (eq_add_of_le (Prf.hyp0 : C ⊢[PRAAx] lt R T))
     have f₁ := natEq (h₁.wk : C ⊢[PRAAx] _); have f₂ := natEq (h₂.wk : C ⊢[PRAAx] _)
     refine no_square_area (a := succ (monus T (succ R))) (b := T + R) (c := two * S) (s := D)
       (congrSucc (pred_succ _).eqSymm) ?_ hD.wk ?_ ?_
     · have p : C ⊢[PRAAx] T + R ≐ succ (R + monus T (succ R) + R) := by
-        apply deriveNat; ipra_simps; linear_combination e
+        ipra_lc natEq (eq_add_of_le (Prf.hyp0 : C ⊢[PRAAx] lt R T))
       exact AnalyticNumberTheory.Primes.eq_succ_pred p
-    · apply deriveNat; ipra_simps
-      linear_combination 2 * f₁ - 2 * f₂ - (𝔞 (monus T (succ R)) + 1 + 𝔞 T - 𝔞 R) * e
-    · apply deriveNat; ipra_simps
-      linear_combination -f₁ - f₂ - (𝔞 T + 𝔞 R) * e
+    · ipra_lc 2 * f₁ - 2 * f₂ -
+        (𝔞 (monus T (succ R)) + 1 + 𝔞 T - 𝔞 R) * natEq (eq_add_of_le (Prf.hyp0 : C ⊢[PRAAx] lt R T))
+    · ipra_lc -f₁ - f₂ - (𝔞 T + 𝔞 R) * natEq (eq_add_of_le (Prf.hyp0 : C ⊢[PRAAx] lt R T))
   · let C := le T R :: Γ
     have sq : C ⊢[PRAAx] le (T * T) (R * R) := AnalyticNumberTheory.PhiLower.le_mul_mono Prf.hyp0 Prf.hyp0
     exact not_succ_le_self (R * R) _ (le_trans big.wk sq)

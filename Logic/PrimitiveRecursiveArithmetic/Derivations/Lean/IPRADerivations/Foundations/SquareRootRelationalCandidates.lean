@@ -6,6 +6,7 @@ import IPRADerivations.Analysis.GaussianDescentClockArithmetic
 import IPRADerivations.Analysis.RationalRepresentations
 import IPRADerivations.Analysis.GaussianEuclideanDistanceName
 import IPRADerivations.Probability.Variance
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual finite rational square-root candidates
@@ -225,7 +226,6 @@ theorem rational_residual (u v k j : PTm n) (hv : Γ ⊢[PRAAx] le one v)
 theorem actual_candidate_rational_residual (u v k : PTm n) (hv : Γ ⊢[PRAAx] le one v) : Γ ⊢[PRAAx]
     rationalResidual u v k (candidate u v k) := rational_residual u v k _ hv (candidate_residual u v k hv)
 
-
 /-- The stored list records grid numerators. Its rational decoder is `point`;
 thus its size bound depends on the finite grid, not on an output-code oracle. -/
 def data (u v k : PTm n) : PTm n := pairT u (pairT v k)
@@ -255,8 +255,7 @@ def observed (u v k r : PTm n) : PTm n := point (entry (candidateList u v k) r) 
 
 theorem point_congr {j j' k k' : PTm n} (hj : Γ ⊢[PRAAx] j ≐ j') (hk : Γ ⊢[PRAAx] k ≐ k') : Γ ⊢[PRAAx]
     point j k ≐ point j' k' := by
-  simpa using Prf.eqCongr (point (var 0) (var 1) : PTm 2)
-    (σ := ![j,k]) (σ' := ![j',k']) (fun i => by fin_cases i; exact hj; exact hk)
+  ipra_congr (point (var 0) (var 1) : PTm 2) with [hj, hk]
 
 theorem defect_body_at (u v k j : PTm n) : Γ ⊢[PRAAx]
     inst2 defectBody j (data u v k) ≐ defect u v k j := by
@@ -310,7 +309,6 @@ theorem list_nonempty (u v k : PTm n) (hv : Γ ⊢[PRAAx] le one v) : Γ ⊢[PRA
 theorem actual_observation (u v k : PTm n) (hv : Γ ⊢[PRAAx] le one v) : Γ ⊢[PRAAx]
     observed u v k (position u v k (candidate u v k)) ≐ point (candidate u v k) k :=
   point_congr (Prf.andE₂ (actual_candidate_listed _ _ _ hv)) (.eqRefl k)
-
 
 /-- Exact source compatibility between adjacent mesh fractions. -/
 theorem rational_compatible (j l k : PTm n) (h : Γ ⊢[PRAAx] compatible j l) : Γ ⊢[PRAAx]

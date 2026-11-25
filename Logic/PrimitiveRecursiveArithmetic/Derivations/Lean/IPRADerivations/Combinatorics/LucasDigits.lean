@@ -3,6 +3,7 @@ import IPRADerivations.AnalyticNumberTheory.ConvolutionAssoc
 import IPRADerivations.AnalyticNumberTheory.Valuation
 import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.Foundations.MixedRadix
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Lucas's binomial congruence
@@ -82,8 +83,7 @@ abbrev DP (p L N K : PTm n) : PTm n := ap2 (prodF dgB) L (Y p N K)
 
 theorem base_alg {G G' D : PTm n} (hD : Γ ⊢[PRAAx] D ≐ one) (hG : Γ ⊢[PRAAx] G' ≐ G) :
     Γ ⊢[PRAAx] G ≐ D * G' := by
-  have x := natEq hD; have y := natEq hG
-  apply deriveNat; ipra_simps; linear_combination -(𝔞 G') * x - y
+  ipra_lc -(𝔞 G') * natEq hD - natEq hG
 
 theorem lucas_base (p N K : PTm n) :
     Γ ⊢[PRAAx] rem (gb N K) p ≐
@@ -94,8 +94,7 @@ theorem lucas_base (p N K : PTm n) :
 
 theorem step_alg {X G D P' G' : PTm n} (hP : Γ ⊢[PRAAx] P' ≐ X * D) (hG : Γ ⊢[PRAAx] G' ≐ G) :
     Γ ⊢[PRAAx] X * (G * D) ≐ P' * G' := by
-  have x := natEq hP; have y := natEq hG
-  apply deriveNat; ipra_simps; linear_combination -(𝔞 G') * x - 𝔞 X * 𝔞 D * y
+  ipra_lc -(𝔞 G') * natEq hP - 𝔞 X * 𝔞 D * natEq hG
 
 theorem lucas_succ {p L N K : PTm n} (hp : Γ ⊢[PRAAx] prime p)
     (ih : Γ ⊢[PRAAx] rem (gb N K) p ≐ rem (DP p L N K * gb (quo N (pw p L)) (quo K (pw p L))) p) :
@@ -168,11 +167,10 @@ theorem lucas_digits {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (L N K : PTm n) :
 
 theorem quo_small {X M : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) (h : Γ ⊢[PRAAx] lt X M) :
     Γ ⊢[PRAAx] quo X M ≐ zero :=
-  quo_eq hM (q := zero) (r := X) (by apply deriveNat; ipra_simps; ring) h
+  quo_eq hM (q := zero) (r := X) (by ipra_ring) h
 
 theorem last_alg {D G : PTm n} (hG : Γ ⊢[PRAAx] G ≐ one) : Γ ⊢[PRAAx] D * G ≐ D := by
-  have x := natEq hG
-  apply deriveNat; ipra_simps; linear_combination 𝔞 D * x
+  ipra_lc 𝔞 D * natEq hG
 
 /-- **Lucas's binomial congruence**: for a prime `p` and `N, K < p^L`,
 `C(N, K) ≡ ∏_{i < L} C(N_i, K_i) (mod p)` with the base-`p` digits `N_i = ⌊N/p^i⌋ mod p`. -/

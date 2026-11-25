@@ -1,4 +1,5 @@
 import IPRADerivations.Combinatorics.CatalanTouchard
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The alternating binomial transform of `C(k, ⌊k/2⌋)`
@@ -56,18 +57,16 @@ theorem r1 (N i W : PTm n) :
   · exact t1aux0 L.wk (gb_above Prf.hyp0)
   · have hl : (le i N :: Γ) ⊢[PRAAx] le i N := Prf.hyp0
     have e : (le i N :: Γ) ⊢[PRAAx] monus (succ N) i ≐ succ (monus N i) := by
-      have a := natEq (eq_add_of_le hl)
       have e₀ : (le i N :: Γ) ⊢[PRAAx] succ N ≐ succ (monus N i) + i := by
-        apply deriveNat; ipra_simps; linear_combination a
+        ipra_lc natEq (eq_add_of_le hl)
       exact (congrMonus e₀ (.eqRefl _)).eqTrans (add_monus _ _)
     exact t1aux L.wk ((congrAp2 powF e (.eqRefl two)).eqTrans (pw_succ two _))
 
 /-- `2^{N − i} = 2^{N − (i + 2)} · 2 · 2` for `i + 2 ≤ N`. -/
 theorem pw_two_step {N i : PTm n} (h : Γ ⊢[PRAAx] le (succ (succ i)) N) :
     Γ ⊢[PRAAx] pw two (monus N i) ≐ pw two (monus N (succ (succ i))) * two * two := by
-  have a := natEq (eq_add_of_le h)
   have e₀ : Γ ⊢[PRAAx] N ≐ succ (succ (monus N (succ (succ i)))) + i := by
-    apply deriveNat; ipra_simps; linear_combination a
+    ipra_lc natEq (eq_add_of_le h)
   have e : Γ ⊢[PRAAx] monus N i ≐ succ (succ (monus N (succ (succ i)))) :=
     (congrMonus e₀ (.eqRefl _)).eqTrans (add_monus _ _)
   exact (congrAp2 powF e (.eqRefl two)).eqTrans ((pw_succ two _).eqTrans (congrMul (pw_succ two _) (.eqRefl _)))
@@ -85,11 +84,9 @@ theorem e2aux {G0 Ga Gb Gb' Pb P0 C Cs K U V : PTm n} (E : Γ ⊢[PRAAx] Gb' ≐
     (cr : Γ ⊢[PRAAx] succ K * Cs ≐ two * succ (two * K) * C) (hp : Γ ⊢[PRAAx] P0 ≐ Pb * two * two) :
     Γ ⊢[PRAAx] num 4 * (succ K * succ K) * (Gb' * Pb * Cs) ≐ U * V * (G0 * P0 * C) := by
   refine mul_cancel (succ_pos (K + K)) ?_
-  have e := natEq E; have a := natEq r₁; have b := natEq r₂; have c := natEq cr; have p := natEq hp
-  apply deriveNat; ipra_simps
-  linear_combination (2 * 𝔞 K + 1) * 4 * (𝔞 K + 1) ^ 2 * 𝔞 Pb * 𝔞 Cs * e +
-    2 * (2 * 𝔞 K + 1) * 𝔞 Pb * (𝔞 K + 1) * 𝔞 Cs * b + 2 * (2 * 𝔞 K + 1) * 𝔞 Pb * 𝔞 V * 𝔞 Ga * c +
-    4 * (2 * 𝔞 K + 1) * 𝔞 Pb * 𝔞 V * 𝔞 C * a - (2 * 𝔞 K + 1) * 𝔞 U * 𝔞 V * 𝔞 G0 * 𝔞 C * p
+  ipra_lc (2 * 𝔞 K + 1) * 4 * (𝔞 K + 1) ^ 2 * 𝔞 Pb * 𝔞 Cs * natEq E +
+    2 * (2 * 𝔞 K + 1) * 𝔞 Pb * (𝔞 K + 1) * 𝔞 Cs * natEq r₂ + 2 * (2 * 𝔞 K + 1) * 𝔞 Pb * 𝔞 V * 𝔞 Ga * natEq cr +
+    4 * (2 * 𝔞 K + 1) * 𝔞 Pb * 𝔞 V * 𝔞 C * natEq r₁ - (2 * 𝔞 K + 1) * 𝔞 U * 𝔞 V * 𝔞 G0 * 𝔞 C * natEq hp
 
 /-- `4(k + 1)² e(N, k + 1) = (N − 2k)(N − 2k − 1) e(N, k)`. -/
 theorem r2e (N k : PTm n) :
@@ -125,10 +122,8 @@ theorem eaux0 {N K T tp t0 u v : PTm n} (hR1 : Γ ⊢[PRAAx] u * T ≐ two * suc
     (hR2 : Γ ⊢[PRAAx] num 4 * (succ K * succ K) * tp ≐ u * v * T) (hT : Γ ⊢[PRAAx] T ≐ zero) :
     Γ ⊢[PRAAx] succ N * succ N * T + num 4 * (succ K * succ K) * tp ≐
       two * succ N * (two * N + one) * t0 + num 4 * (K * K) * T := by
-  have r₁ := natEq hR1; have r₂ := natEq hR2; have z := natEq hT
-  apply deriveNat; ipra_simps
-  linear_combination r₂ + (2 * 𝔞 N + 1) * r₁ +
-    ((𝔞 N + 1) ^ 2 + 𝔞 u * 𝔞 v - (2 * 𝔞 N + 1) * 𝔞 u - 4 * 𝔞 K ^ 2) * z
+  ipra_lc natEq hR2 + (2 * 𝔞 N + 1) * natEq hR1 +
+    ((𝔞 N + 1) ^ 2 + 𝔞 u * 𝔞 v - (2 * 𝔞 N + 1) * 𝔞 u - 4 * 𝔞 K ^ 2) * natEq hT
 
 /-- `(n + 1)² e(n + 1, k) + V(k + 1) = 2(n + 1)(2n + 1) e(n, k) + V(k)`, `V(k) = 4k² e(n + 1, k)`. -/
 theorem ept (N k : PTm n) :
@@ -156,13 +151,11 @@ theorem o2aux {G0 Ga Gb Gb' Pb P0 C Cs K U V : PTm n} (E : Γ ⊢[PRAAx] Gb' ≐
     Γ ⊢[PRAAx] num 4 * (succ K * succ (succ K)) * (Gb' * Pb * (succ (two * succ K) * Cs)) ≐
       U * V * (G0 * P0 * (succ (two * K) * C)) := by
   refine mul_cancel (succ_pos (succ (succ (K + K)))) ?_
-  have e := natEq E; have a := natEq r₁; have b := natEq r₂; have c := natEq cr; have p := natEq hp
-  apply deriveNat; ipra_simps
-  linear_combination (2 * 𝔞 K + 3) * 4 * (𝔞 K + 1) * (𝔞 K + 2) * 𝔞 Pb * (2 * 𝔞 K + 3) * 𝔞 Cs * e +
-    4 * (𝔞 K + 1) * (𝔞 K + 2) * (2 * 𝔞 K + 3) * 𝔞 Pb * 𝔞 Cs * b +
-    4 * (𝔞 K + 1) * (2 * 𝔞 K + 3) * 𝔞 Pb * 𝔞 V * 𝔞 Ga * c +
-    4 * (2 * 𝔞 K + 3) * (2 * 𝔞 K + 1) * 𝔞 Pb * 𝔞 V * 𝔞 C * a -
-    (2 * 𝔞 K + 3) * (2 * 𝔞 K + 1) * 𝔞 U * 𝔞 V * 𝔞 G0 * 𝔞 C * p
+  ipra_lc (2 * 𝔞 K + 3) * 4 * (𝔞 K + 1) * (𝔞 K + 2) * 𝔞 Pb * (2 * 𝔞 K + 3) * 𝔞 Cs * natEq E +
+    4 * (𝔞 K + 1) * (𝔞 K + 2) * (2 * 𝔞 K + 3) * 𝔞 Pb * 𝔞 Cs * natEq r₂ +
+    4 * (𝔞 K + 1) * (2 * 𝔞 K + 3) * 𝔞 Pb * 𝔞 V * 𝔞 Ga * natEq cr +
+    4 * (2 * 𝔞 K + 3) * (2 * 𝔞 K + 1) * 𝔞 Pb * 𝔞 V * 𝔞 C * natEq r₁ -
+    (2 * 𝔞 K + 3) * (2 * 𝔞 K + 1) * 𝔞 U * 𝔞 V * 𝔞 G0 * 𝔞 C * natEq hp
 
 /-- `4(k + 1)(k + 2) o(N, k + 1) = (N − 2k − 1)(N − 2k − 2) o(N, k)`. -/
 theorem r2o (N k : PTm n) :
@@ -200,10 +193,8 @@ theorem oaux0 {N K T tp t0 u v : PTm n} (hR1 : Γ ⊢[PRAAx] u * T ≐ two * suc
     (hR2 : Γ ⊢[PRAAx] num 4 * (succ K * succ (succ K)) * tp ≐ u * v * T) (hT : Γ ⊢[PRAAx] T ≐ zero) :
     Γ ⊢[PRAAx] N * (N + two) * T + num 4 * (succ K * succ (succ K)) * tp ≐
       two * succ N * (two * N + one) * t0 + num 4 * (K * succ K) * T := by
-  have r₁ := natEq hR1; have r₂ := natEq hR2; have z := natEq hT
-  apply deriveNat; ipra_simps
-  linear_combination r₂ + (2 * 𝔞 N + 1) * r₁ +
-    (𝔞 N * (𝔞 N + 2) + 𝔞 u * 𝔞 v - (2 * 𝔞 N + 1) * 𝔞 u - 4 * 𝔞 K * (𝔞 K + 1)) * z
+  ipra_lc natEq hR2 + (2 * 𝔞 N + 1) * natEq hR1 +
+    (𝔞 N * (𝔞 N + 2) + 𝔞 u * 𝔞 v - (2 * 𝔞 N + 1) * 𝔞 u - 4 * 𝔞 K * (𝔞 K + 1)) * natEq hT
 
 /-- `n(n + 2) o(n + 1, k) + V(k + 1) = 2(n + 1)(2n + 1) o(n, k) + V(k)`, `V(k) = 4k(k + 1) o(n + 1, k)`. -/
 theorem opt (N k : PTm n) :
@@ -232,32 +223,24 @@ abbrev phiLo {n : ℕ} (N K : PTm n) : PTm n :=
 abbrev phiRo {n : ℕ} (N K : PTm n) : PTm n := two * succ N * (two * N + one) * ap2 (sumF oB) K N
 
 theorem phie_base (N : PTm n) : Γ ⊢[PRAAx] phiLe N zero ≐ phiRe N zero := by
-  have z₁ := natEq (sum_zero (Γ := Γ) eB (succ N)); have z₂ := natEq (sum_zero (Γ := Γ) eB N)
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞 N + 1) ^ 2 * z₁ - 2 * (𝔞 N + 1) * (2 * 𝔞 N + 1) * z₂
+  ipra_lc (𝔞 N + 1) ^ 2 * natEq (sum_zero (Γ := Γ) eB (succ N)) -
+    2 * (𝔞 N + 1) * (2 * 𝔞 N + 1) * natEq (sum_zero (Γ := Γ) eB N)
 
 theorem phie_step {N K : PTm n} (ih : Γ ⊢[PRAAx] phiLe N K ≐ phiRe N K) :
     Γ ⊢[PRAAx] phiLe N (succ K) ≐ phiRe N (succ K) := by
   have s₁ := sum_succ' (Γ := Γ) eB K (succ N); have s₂ := sum_succ' (Γ := Γ) eB K N
   rw [inst2_e] at s₁ s₂
-  have p := natEq (ept (Γ := Γ) N K)
-  have i := natEq ih; have a := natEq s₁; have b := natEq s₂
-  apply deriveNat; ipra_simps
-  linear_combination i + (𝔞 N + 1) ^ 2 * a - 2 * (𝔞 N + 1) * (2 * 𝔞 N + 1) * b + p
+  ipra_lc natEq ih + (𝔞 N + 1) ^ 2 * natEq s₁ - 2 * (𝔞 N + 1) * (2 * 𝔞 N + 1) * natEq s₂ + natEq (ept (Γ := Γ) N K)
 
 theorem phio_base (N : PTm n) : Γ ⊢[PRAAx] phiLo N zero ≐ phiRo N zero := by
-  have z₁ := natEq (sum_zero (Γ := Γ) oB (succ N)); have z₂ := natEq (sum_zero (Γ := Γ) oB N)
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 N * (𝔞 N + 2) * z₁ - 2 * (𝔞 N + 1) * (2 * 𝔞 N + 1) * z₂
+  ipra_lc 𝔞 N * (𝔞 N + 2) * natEq (sum_zero (Γ := Γ) oB (succ N)) -
+    2 * (𝔞 N + 1) * (2 * 𝔞 N + 1) * natEq (sum_zero (Γ := Γ) oB N)
 
 theorem phio_step {N K : PTm n} (ih : Γ ⊢[PRAAx] phiLo N K ≐ phiRo N K) :
     Γ ⊢[PRAAx] phiLo N (succ K) ≐ phiRo N (succ K) := by
   have s₁ := sum_succ' (Γ := Γ) oB K (succ N); have s₂ := sum_succ' (Γ := Γ) oB K N
   rw [inst2_o] at s₁ s₂
-  have p := natEq (opt (Γ := Γ) N K)
-  have i := natEq ih; have a := natEq s₁; have b := natEq s₂
-  apply deriveNat; ipra_simps
-  linear_combination i + 𝔞 N * (𝔞 N + 2) * a - 2 * (𝔞 N + 1) * (2 * 𝔞 N + 1) * b + p
+  ipra_lc natEq ih + 𝔞 N * (𝔞 N + 2) * natEq s₁ - 2 * (𝔞 N + 1) * (2 * 𝔞 N + 1) * natEq s₂ + natEq (opt (Γ := Γ) N K)
 
 /-- Variables: `0 = K`, `1 = N`. -/
 private abbrev phieF : Fm PTm 2 := phiLe (var 1) (var 0) ≐ phiRe (var 1) (var 0)
@@ -321,9 +304,7 @@ theorem Es_zero : Γ ⊢[PRAAx] Es (zero : PTm n) ≐ cb zero := by
 
 theorem Es_step {N : PTm n} (ih : Γ ⊢[PRAAx] Es N ≐ cb N) : Γ ⊢[PRAAx] Es (succ N) ≐ cb (succ N) := by
   refine mul_cancel (succ_pos N) ?_
-  have r := natEq (even_rec (Γ := Γ) N); have c := natEq (cb_rec (Γ := Γ) N); have i := natEq ih
-  apply deriveNat; ipra_simps
-  linear_combination r - c + 2 * (2 * 𝔞 N + 1) * i
+  ipra_lc natEq (even_rec (Γ := Γ) N) - natEq (cb_rec (Γ := Γ) N) + 2 * (2 * 𝔞 N + 1) * natEq ih
 
 private abbrev evenF : Fm PTm 1 := Es (var 0) ≐ cb (var 0)
 
@@ -375,12 +356,9 @@ theorem Os_one : Γ ⊢[PRAAx] Os (succ (zero : PTm n)) ≐ succ zero * cat (suc
   have p : Γ ⊢[PRAAx] pw two (monus (succ (zero : PTm n)) (succ (zero + zero))) ≐ one :=
     (congrAp2 powF ((congrMonus (.eqRefl _) (congrSucc (add_zero _))).eqTrans (monus_self _)) (.eqRefl two)).eqTrans
       (pw_zero two)
-  have a₁ := natEq s₁; have a₀ := natEq s₀; have b := natEq z₁; have gg := natEq g; have pp := natEq p
-  have c₀ := natEq (cat_zero (Γ := Γ)); have c₁ := natEq (cat_one (Γ := Γ))
-  have zz := natEq (sum_zero (Γ := Γ) oB (succ (zero : PTm n)))
-  apply deriveNat; ipra_simps
-  linear_combination a₁ + a₀ + zz + b + 𝔞 (pw two (monus (succ (zero : PTm n)) (succ (zero + zero)))) *
-      𝔞 (cat (zero : PTm n)) * gg + 𝔞 (cat (zero : PTm n)) * pp + c₀ - c₁
+  ipra_lc natEq s₁ + natEq s₀ + natEq (sum_zero (Γ := Γ) oB (succ (zero : PTm n))) + natEq z₁ +
+    𝔞 (pw two (monus (succ (zero : PTm n)) (succ (zero + zero)))) * 𝔞 (cat (zero : PTm n)) * natEq g +
+    𝔞 (cat (zero : PTm n)) * natEq p + natEq (cat_zero (Γ := Γ)) - natEq (cat_one (Γ := Γ))
 
 theorem Os_step {N : PTm n} (ih : Γ ⊢[PRAAx] Os (succ N) ≐ succ N * cat (succ N)) :
     Γ ⊢[PRAAx] Os (succ (succ N)) ≐ succ (succ N) * cat (succ (succ N)) := by
@@ -445,9 +423,7 @@ theorem odd_binom (N : PTm n) : Γ ⊢[PRAAx] ap2 (sumF oB) (succ N) N ≐ ap2 (
 `∑_{k even} 2^{n − k} C(n, k) a_k = Cat_n + ∑_{k odd} 2^{n − k} C(n, k) a_k`. -/
 theorem alternating (N : PTm n) :
     Γ ⊢[PRAAx] ap2 (sumF eB) (succ N) N ≐ cat N + ap2 (sumF obB) (succ N) N := by
-  have a := natEq (even_sum (Γ := Γ) N : Γ ⊢[PRAAx] ap2 (sumF eB) (succ N) N ≐ cb N); have b := natEq ((odd_binom (Γ := Γ) N).eqSymm.eqTrans (odd_sum N))
-  have c := natEq (cat_spec (Γ := Γ) N)
-  apply deriveNat; ipra_simps
-  linear_combination a - b - c
+  ipra_lc natEq (even_sum (Γ := Γ) N : Γ ⊢[PRAAx] ap2 (sumF eB) (succ N) N ≐ cb N) -
+    natEq ((odd_binom (Γ := Γ) N).eqSymm.eqTrans (odd_sum N)) - natEq (cat_spec (Γ := Γ) N)
 
 end LeanProofs.IPRA.Combinatorics.CatalanAlternating

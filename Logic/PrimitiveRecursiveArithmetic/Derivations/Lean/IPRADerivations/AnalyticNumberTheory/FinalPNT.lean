@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.PiModulus
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The arithmetic prime number theorem in iPRA (`pnt_ipra_constructive_2026-11-14`, Theorem `thm:main`)
@@ -111,13 +112,9 @@ theorem mesh_u {m K L : PTm n} (hm : Γ ⊢[PRAAx] le one m) (hmK : Γ ⊢[PRAAx
 theorem den_change {m L : PTm n} (hm : Γ ⊢[PRAAx] le one m) (hL : Γ ⊢[PRAAx] le (m * m) L) :
     Γ ⊢[PRAAx] Fn m * U m m (fact L) ≐ fact L * An m := by
   have hmm : Γ ⊢[PRAAx] le m (m * m) := by have q := le_scale m hm; ipra_le sl q
-  have a := natEq (S_denom (le_refl (m * m)) hL)
-  have b := natEq (S_denom hmm hL)
-  have e1 := natEq (eq_add_of_le (S_mono (fact L) hmm))
-  have e2 := natEq (eq_add_of_le (S_mono (Fn m) hmm))
-  apply deriveNat; ipra_simps
-  linear_combination a - b - 𝔞 (fact (m * m)) * e1 + 𝔞 (fact L) * e2
-
+  ipra_lc natEq (S_denom (le_refl (m * m)) hL) - natEq (S_denom hmm hL) -
+    𝔞 (fact (m * m)) * natEq (eq_add_of_le (S_mono (fact L) hmm)) +
+    𝔞 (fact L) * natEq (eq_add_of_le (S_mono (Fn m) hmm))
 
 /-! ## The theorem -/
 

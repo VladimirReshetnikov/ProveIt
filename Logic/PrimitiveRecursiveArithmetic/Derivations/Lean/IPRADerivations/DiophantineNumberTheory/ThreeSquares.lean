@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.NumeralPrimes
 import IPRADerivations.Combinatorics.LegendreDigits
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The three-square obstruction
@@ -40,27 +41,19 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 theorem sq_ee {x h g : PTm k} (ex : Γ ⊢[PRAAx] x ≐ two * h) (eh : Γ ⊢[PRAAx] h ≐ two * g) :
     Γ ⊢[PRAAx] x * x ≐ num 8 * (two * (g * g)) + num 0 := by
-  have a := natEq ex; have b := natEq eh
-  apply deriveNat; ipra_simps; push_cast
-  linear_combination (𝔞 x + 2 * 𝔞 h) * a + 4 * (𝔞 h + 2 * 𝔞 g) * b
+  ipra_lc (𝔞 x + 2 * 𝔞 h) * natEq ex + 4 * (𝔞 h + 2 * 𝔞 g) * natEq eh
 
 theorem sq_eo {x h g : PTm k} (ex : Γ ⊢[PRAAx] x ≐ two * h) (eh : Γ ⊢[PRAAx] h ≐ two * g + one) :
     Γ ⊢[PRAAx] x * x ≐ num 8 * (two * (g * g) + two * g) + num 4 := by
-  have a := natEq ex; have b := natEq eh
-  apply deriveNat; ipra_simps; push_cast
-  linear_combination (𝔞 x + 2 * 𝔞 h) * a + 4 * (𝔞 h + 2 * 𝔞 g + 1) * b
+  ipra_lc (𝔞 x + 2 * 𝔞 h) * natEq ex + 4 * (𝔞 h + 2 * 𝔞 g + 1) * natEq eh
 
 theorem sq_oe {x h g : PTm k} (ex : Γ ⊢[PRAAx] x ≐ two * h + one) (eh : Γ ⊢[PRAAx] h ≐ two * g) :
     Γ ⊢[PRAAx] x * x ≐ num 8 * (g * (two * g + one)) + num 1 := by
-  have a := natEq ex; have b := natEq eh
-  apply deriveNat; ipra_simps; push_cast
-  linear_combination (𝔞 x + 2 * 𝔞 h + 1) * a + 4 * (𝔞 h + 2 * 𝔞 g + 1) * b
+  ipra_lc (𝔞 x + 2 * 𝔞 h + 1) * natEq ex + 4 * (𝔞 h + 2 * 𝔞 g + 1) * natEq eh
 
 theorem sq_oo {x h g : PTm k} (ex : Γ ⊢[PRAAx] x ≐ two * h + one) (eh : Γ ⊢[PRAAx] h ≐ two * g + one) :
     Γ ⊢[PRAAx] x * x ≐ num 8 * ((two * g + one) * (g + one)) + num 1 := by
-  have a := natEq ex; have b := natEq eh
-  apply deriveNat; ipra_simps; push_cast
-  linear_combination (𝔞 x + 2 * 𝔞 h + 1) * a + 4 * (𝔞 h + 2 * 𝔞 g + 2) * b
+  ipra_lc (𝔞 x + 2 * 𝔞 h + 1) * natEq ex + 4 * (𝔞 h + 2 * 𝔞 g + 2) * natEq eh
 
 /-- A square is `8u + e` with `e ∈ {0, 1, 4}`. -/
 theorem sq_cases {φ : Fm PTm k} (x : PTm k)

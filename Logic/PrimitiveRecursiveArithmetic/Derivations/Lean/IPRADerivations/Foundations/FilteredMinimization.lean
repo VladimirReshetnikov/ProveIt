@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.ApproximateWitness
 import IPRADerivations.Core.Signum
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Finite minimization over admissible candidates
@@ -57,9 +58,7 @@ abbrev fmin (K x : PTm n) : PTm n := argmin (pB c a m) K x
 theorem score_adm {i x : PTm n} (h : Γ ⊢[PRAAx] inst2 a i x ≐ zero) :
     Γ ⊢[PRAAx] inst2 (pB c a m) i x ≐ inst2 c i x := by
   rw [inst2_pB]
-  have s := natEq ((congrMonus (.eqRefl _) (congrMonus (.eqRefl _) h)).eqTrans (sg_zero (Γ := Γ)))
-  apply deriveNat; ipra_simps
-  linear_combination 𝔟(inst2 m i x) * s
+  ipra_lc 𝔟(inst2 m i x) * natEq ((congrMonus (.eqRefl _) (congrMonus (.eqRefl _) h)).eqTrans (sg_zero (Γ := Γ)))
 
 variable {c a m}
 

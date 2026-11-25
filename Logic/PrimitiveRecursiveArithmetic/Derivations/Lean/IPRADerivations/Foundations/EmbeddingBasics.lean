@@ -1,5 +1,6 @@
 import IPRADerivations.Combinatorics.Stirling
 import IPRADerivations.Core.Search
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # No universal PR evaluator, and bounded choice of witnesses
@@ -90,7 +91,7 @@ theorem witness_list (Bd : PTm 2) {M i y x : PTm n} (hi : Γ ⊢[PRAAx] le i M)
     Γ ⊢[PRAAx] (inst2 f (nth (build (wB f Bd) (succ M) x) (monus M i)) (pairT i x) ≐ zero) ⋏
       lt (nth (build (wB f Bd) (succ M) x) (monus M i)) (inst2 Bd i x) := by
   have hj : Γ ⊢[PRAAx] le (monus M i) M := le_of_eq_add (d := i) (by
-    have e := natEq (eq_add_of_le hi); apply deriveNat; ipra_simps; linear_combination e)
+    ipra_lc natEq (eq_add_of_le hi))
   have back : Γ ⊢[PRAAx] monus M (monus M i) ≐ i := monus_monus hi
   have nb := (nth_build (wB f Bd) x hj).eqTrans (congrInst2 (wB f Bd) back (.eqRefl _))
   rw [inst2_wB] at nb

@@ -1,5 +1,6 @@
 import IPRADerivations.Core.SumReflect
 import IPRADerivations.Core.Tactic
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The open-path shoelace functional (`conway_criterion_ipra`, `lem:Jlaws`)
@@ -116,18 +117,11 @@ theorem translate_step {n u v p : PTm k}
   rw [inst2_mB] at s₃
   have s₄ := sum_succ' (Γ := Γ) (pB x y) n p
   rw [inst2_pB] at s₄
-  have e₁ := natEq s₁; have e₂ := natEq s₂; have e₃ := natEq s₃; have e₄ := natEq s₄
-  have a₀ := natEq (trX_at (Γ := Γ) x n u v p)
-  have a₁ := natEq (trX_at (Γ := Γ) x (succ n) u v p)
-  have b₀ := natEq (trY_at (Γ := Γ) y n u v p)
-  have b₁ := natEq (trY_at (Γ := Γ) y (succ n) u v p)
-  have i := natEq ih
-  apply deriveNat; ipra_simps
-  linear_combination i + e₁ + e₂ - e₃ - e₄ +
-    𝔞 (inst2 (trY y) (succ n) (pairT u (pairT v p))) * a₀ +
-    (𝔞 (inst2 x n p) + 𝔞 u) * b₁ -
-    𝔞 (inst2 (trY y) n (pairT u (pairT v p))) * a₁ -
-    (𝔞 (inst2 x (succ n) p) + 𝔞 u) * b₀
+  ipra_lc natEq ih + natEq s₁ + natEq s₂ - natEq s₃ - natEq s₄ +
+    𝔞 (inst2 (trY y) (succ n) (pairT u (pairT v p))) * natEq (trX_at (Γ := Γ) x n u v p) +
+    (𝔞 (inst2 x n p) + 𝔞 u) * natEq (trY_at (Γ := Γ) y (succ n) u v p) -
+    𝔞 (inst2 (trY y) n (pairT u (pairT v p))) * natEq (trX_at (Γ := Γ) x (succ n) u v p) -
+    (𝔞 (inst2 x (succ n) p) + 𝔞 u) * natEq (trY_at (Γ := Γ) y n u v p)
 
 /-- Variables: `0 = n`, `1 = u`, `2 = v`, `3 = p`. -/
 private def trF (x y : PTm 2) : Fm PTm 4 :=
@@ -138,17 +132,10 @@ private def trF (x y : PTm 2) : Fm PTm 4 :=
 
 private theorem tr₀ : ([] : List (Fm PTm 4)) ⊢[PRAAx] trF x y := by
   refine ind _ trivial ?_ ?_
-  · simp only [trF, Fm.subst_eq, PTm.subst_add, PTm.subst_mul, subst_ap2, subst_pairT,
-      subst_inst2, Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two, inst_three,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have z₁ := natEq (sum_zero (Γ := ([] : List (Fm PTm 3))) (pB (trX x) (trY y))
-      (pairT (var 0) (pairT (var 1) (var 2))))
-    have z₂ := natEq (sum_zero (Γ := ([] : List (Fm PTm 3))) (mB x y) (var 2))
-    have z₃ := natEq (sum_zero (Γ := ([] : List (Fm PTm 3))) (mB (trX x) (trY y))
-      (pairT (var 0) (pairT (var 1) (var 2))))
-    have z₄ := natEq (sum_zero (Γ := ([] : List (Fm PTm 3))) (pB x y) (var 2))
-    apply deriveNat; ipra_simps
-    linear_combination z₁ + z₂ - z₃ - z₄
+  · ipra_lc [trF, Fm.subst_eq, PTm.subst_add, PTm.subst_mul, subst_ap2, subst_pairT, subst_inst2, Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two, inst_three, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] natEq (sum_zero (Γ := ([] : List (Fm PTm 3))) (pB (trX x) (trY y)) (pairT (var 0) (pairT (var 1) (var 2)))) +
+      natEq (sum_zero (Γ := ([] : List (Fm PTm 3))) (mB x y) (var 2)) -
+      natEq (sum_zero (Γ := ([] : List (Fm PTm 3))) (mB (trX x) (trY y)) (pairT (var 0) (pairT (var 1) (var 2)))) -
+      natEq (sum_zero (Γ := ([] : List (Fm PTm 3))) (pB x y) (var 2))
   · simp only [trF, Fm.subst_eq, PTm.subst_add, PTm.subst_mul, subst_ap2, subst_pairT,
       subst_inst2, Syn.subst_var, Syn.repl_zero, repl_one, repl_two, repl_three,
       ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
@@ -191,10 +178,7 @@ variable (x y : PTm 2)
 /-- `(n ∸ (i + 1)) + 1 = n ∸ i` for `i < n`. -/
 theorem succ_monus_lt {i n : PTm k} (h : Γ ⊢[PRAAx] lt i n) :
     Γ ⊢[PRAAx] succ (monus n (succ i)) ≐ monus n i := by
-  have e₁ := natEq (eq_add_of_le h)
-  have e₂ := natEq (eq_add_of_le (le_trans (le_succ_self i) h))
-  apply deriveNat; ipra_simps
-  linear_combination e₂ - e₁
+  ipra_lc natEq (eq_add_of_le (le_trans (le_succ_self i) h)) - natEq (eq_add_of_le h)
 
 /-- The reversed coordinate `i ↦ x_{n ∸ i}`; variables `0 = i`, `1 = ⟨n, p⟩`. -/
 def rvB : PTm 2 := inst2 x (monus (fstT (var 1)) (var 0)) (sndT (var 1))

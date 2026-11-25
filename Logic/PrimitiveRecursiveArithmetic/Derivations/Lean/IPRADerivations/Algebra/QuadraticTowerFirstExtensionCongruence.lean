@@ -1,4 +1,5 @@
 import IPRADerivations.Algebra.QuadraticTowerFirstExtensionOrder
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual first-extension quotient operations
@@ -41,8 +42,7 @@ theorem native_negative_pair (a b : PTm n) : Γ ⊢[PRAAx]
   congrPairT (RationalAlgebra.negative_congr (fst_pair _ _)) (RationalAlgebra.negative_congr (snd_pair _ _))
 theorem native_negative_congr {A C : PTm n} (e : Γ ⊢[PRAAx] A ≐ C) : Γ ⊢[PRAAx]
     QuadraticRationalPairArithmetic.negative A ≐ QuadraticRationalPairArithmetic.negative C := by
-  simpa using Prf.eqCongr (QuadraticRationalPairArithmetic.negative (var 0) : PTm 1)
-    (σ := ![A]) (σ' := ![C]) (fun i => by fin_cases i; exact e)
+  ipra_congr (QuadraticRationalPairArithmetic.negative (var 0) : PTm 1) with [e]
 theorem negated_coefficients (A : PTm n) : Γ ⊢[PRAAx]
     coefficients (negated one A) ≐ QuadraticRationalPairArithmetic.negative (coefficients A) :=
   (coefficients_entries _).eqTrans
@@ -133,7 +133,6 @@ theorem positive_multiplication_order (M S D A C E b : PTm n) (hM : Γ ⊢[PRAAx
         (product_coefficients M D E C b hM hD he hc) (product_coefficients M D E A b hM hD he ha))).eqTrans
           (QuadraticRationalNonnegativeRadicand.less_multiply_positive _ _ _ _ hn (es.eqSymm.eqTrans hE)
             ((sign_difference S D C A b small hD hc ha hn).eqSymm.eqTrans hAC)))
-
 
 /-! The actual frontend computes caps covering every operation comparison. -/
 def signCap (b : PTm n) : PTm n := amp (productBound b)

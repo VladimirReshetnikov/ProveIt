@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.GaussianScalarTriangularDeterminant
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual left elimination of the completed Vandermonde table
@@ -50,9 +51,7 @@ def eliminated (R m : PTm n) : PTm n := matrixProduct (eliminator R m) (W R m) m
 
 theorem delta_congr {a b c d : PTm n} (ha : Γ ⊢[PRAAx] a ≐ b) (hc : Γ ⊢[PRAAx] c ≐ d) : Γ ⊢[PRAAx]
     delta a c ≐ delta b d := by
-  simpa only [GaussianRationalFiberVandermonde.subst_delta,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using
-    Prf.eqCongr (Γ := Γ) (delta (var 0) (var 1) : PTm 2) (σ := ![a,c]) (σ' := ![b,d])
-      (fun i => by fin_cases i; exact ha; exact hc)
+  ipra_congr (delta (var 0) (var 1) : PTm 2) with [ha, hc]
 theorem delta_symm (r j : PTm n) : Γ ⊢[PRAAx] delta r j ≐ delta j r := by
   refine .orE (eq_or_ne r j) ?_ ?_
   · exact (GaussianRationalLagrangeCardinals.delta_equal _ _ Prf.hyp0).eqTrans
@@ -100,10 +99,7 @@ def rowNegativeBody : PTm 2 := qnegative (power (entry (fstT (var 1)) (sndT (var
 theorem column_weight_at (R j k : PTm n) : Γ ⊢[PRAAx] inst2 columnWeightBody k (pairT R j) ≐ weight R k j := by
   simp only [columnWeightBody,inst2,GaussianRationalFiberVandermonde.subst_weight,subst_fstT,subst_sndT,
     Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
-  simpa only [GaussianRationalFiberVandermonde.subst_weight,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-    Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (weight (var 0) (var 1) (var 2) : PTm 3) (σ := ![fstT (pairT R j),k,sndT (pairT R j)])
-      (σ' := ![R,k,j]) (fun i => by fin_cases i; exact fst_pair _ _; exact .eqRefl _; exact snd_pair _ _)
+  ipra_congr (weight (var 0) (var 1) (var 2) : PTm 3) with [fst_pair _ _, .eqRefl k, snd_pair _ _]
 theorem row_negative_at (R r k : PTm n) : Γ ⊢[PRAAx] inst2 rowNegativeBody k (pairT R r) ≐ qnegative (power (entry R r) k) := by
   simp only [rowNegativeBody,inst2,GaussianRationalMetric.subst_qnegative,GaussianRationalReciprocal.subst_power,
     Foundations.MasterCertificate.subst_entry,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]

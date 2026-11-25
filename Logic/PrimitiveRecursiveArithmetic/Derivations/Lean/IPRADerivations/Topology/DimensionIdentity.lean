@@ -1,4 +1,5 @@
 import IPRADerivations.Topology.DimensionSchema
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The identity presentation (`dimension_invariance_ipra`, `cor:dimension`, the converse)
@@ -54,25 +55,18 @@ variable {Γ : List (Fm PTm n)}
 /-- `2^k G ≤ RR` gives `2^{k+p} G ≤ (2^p + 2^{k+1}) RR`. -/
 theorem idU_arith {G RR K Pp Pk1 Pkp : PTm n} (h : Γ ⊢[PRAAx] le (K * G) RR) (hkp : Γ ⊢[PRAAx] Pkp ≐ K * Pp) :
     Γ ⊢[PRAAx] le (Pkp * G) ((Pp + Pk1) * RR) := by
-  have eRR := natEq (eq_add_of_le h)
-  have ekp := natEq hkp
   refine le_of_eq_add (d := Pp * monus RR (K * G) + Pk1 * RR) ?_
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 Pp * eRR - 𝔞 G * ekp
+  ipra_lc 𝔞 Pp * natEq (eq_add_of_le h) - 𝔞 G * natEq hkp
 
 /-- `2^{1+p} G + 4 RR < 2^p RR` gives `2 G ≤ RR`. -/
 theorem idI_arith {G RR Pp P1p P2 : PTm n} (h : Γ ⊢[PRAAx] lt (P1p * G + P2 * RR) (Pp * RR))
     (h1p : Γ ⊢[PRAAx] P1p ≐ two * Pp) (h2 : Γ ⊢[PRAAx] P2 ≐ two * two) : Γ ⊢[PRAAx] le (two * G) RR := by
   refine .orE (lt_or_le RR (two * G)) ?_ Prf.hyp0
   let Δ : List (Fm PTm n) := lt RR (two * G) :: Γ
-  have e1 := natEq (eq_add_of_le (Γ := Δ) h.wk)
-  have e2 := natEq (eq_add_of_le (Γ := Δ) Prf.hyp0)
-  have e1p := natEq (Γ := Δ) h1p.wk
-  have e4 := natEq (Γ := Δ) h2.wk
   refine .botE _ (succ_ne_zero (a := Pp + Pp * monus (two * G) (succ RR) + two * two * RR +
     monus (Pp * RR) (succ (P1p * G + P2 * RR))) ?_)
-  apply deriveNat; ipra_simps
-  linear_combination -e1 - 𝔞 G * e1p - 𝔞 Pp * e2 - 𝔞 RR * e4
+  ipra_lc -natEq (eq_add_of_le (Γ := Δ) h.wk) - 𝔞 G * natEq (Γ := Δ) h1p.wk -
+    𝔞 Pp * natEq (eq_add_of_le (Γ := Δ) Prf.hyp0) - 𝔞 RR * natEq (Γ := Δ) h2.wk
 
 end Arith
 
@@ -109,10 +103,8 @@ theorem gap_id (j : Fin (d' + 1)) {x x' : PTm n} (p : PTm n) (hx : Γ ⊢[PRAAx]
   have ex' := natEq (pos_den d' hx')
   simp only [oGap, oP_id, oQ_id, oR_id]
   refine congrDist ?_ ?_
-  · apply deriveNat; simp only [crossX]; ipra_simps
-    linear_combination -(𝔞 (proj j.val x)) * ex'
-  · apply deriveNat; simp only [crossY]; ipra_simps
-    linear_combination -(𝔞 (proj j.val x')) * ex
+  · ipra_lc [crossX] -(𝔞 (proj j.val x)) * ex'
+  · ipra_lc [crossY] -(𝔞 (proj j.val x')) * ex
 
 theorem den_id (j : Fin (d' + 1)) {x x' : PTm n} (p : PTm n) (hx : Γ ⊢[PRAAx] valid d' x)
     (hx' : Γ ⊢[PRAAx] valid d' x') :

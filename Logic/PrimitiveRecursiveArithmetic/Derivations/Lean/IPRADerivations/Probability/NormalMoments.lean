@@ -1,5 +1,6 @@
 import IPRADerivations.Combinatorics.Catalan
 import IPRADerivations.DiophantineNumberTheory.FLTMultiples
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The moment numbers of the standard normal distribution
@@ -72,20 +73,16 @@ theorem edf_succ (r : PTm n) : Γ ⊢[PRAAx] edf (succ r) ≐ edf r * (two * suc
 
 theorem dfact_base :
     Γ ⊢[PRAAx] df (zero : PTm n) * (pw two zero * fact zero) ≐ fact (two * zero) := by
-  have zd := natEq (df_zero (Γ := Γ)); have zp := natEq (pw_zero (Γ := Γ) (two : PTm n))
-  have c := natEq (congrAp2 (Γ := Γ) factF (mul_zero (two : PTm n)) (.eqRefl zero))
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞(pw two zero) * 𝔞(fact zero) * zd + 𝔞(fact zero) * zp - c
+  ipra_lc 𝔞(pw two zero) * 𝔞(fact zero) * natEq (df_zero (Γ := Γ)) +
+    𝔞(fact zero) * natEq (pw_zero (Γ := Γ) (two : PTm n)) -
+    natEq (congrAp2 (Γ := Γ) factF (mul_zero (two : PTm n)) (.eqRefl zero))
 
 theorem dfact_step {r : PTm n} (ih : Γ ⊢[PRAAx] df r * (pw two r * fact r) ≐ fact (two * r)) :
     Γ ⊢[PRAAx] df (succ r) * (pw two (succ r) * fact (succ r)) ≐ fact (two * succ r) := by
-  have sd := natEq (df_succ (Γ := Γ) r); have sp := natEq (pw_succ (Γ := Γ) two r)
-  have sf := natEq (fact_succ (Γ := Γ) r zero); have f₂ := natEq (fact_two_succ (Γ := Γ) r)
-  have i := natEq ih
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞(pw two (succ r)) * 𝔞(fact (succ r)) * sd +
-    𝔞(df r) * (2 * 𝔞(r) + 1) * 𝔞(fact (succ r)) * sp + 𝔞(df r) * (2 * 𝔞(r) + 1) * 2 * 𝔞(pw two r) * sf +
-    (2 * 𝔞(r) + 1) * (2 * 𝔞(r) + 2) * i - f₂
+  ipra_lc 𝔞(pw two (succ r)) * 𝔞(fact (succ r)) * natEq (df_succ (Γ := Γ) r) +
+    𝔞(df r) * (2 * 𝔞(r) + 1) * 𝔞(fact (succ r)) * natEq (pw_succ (Γ := Γ) two r) +
+    𝔞(df r) * (2 * 𝔞(r) + 1) * 2 * 𝔞(pw two r) * natEq (fact_succ (Γ := Γ) r zero) +
+    (2 * 𝔞(r) + 1) * (2 * 𝔞(r) + 2) * natEq ih - natEq (fact_two_succ (Γ := Γ) r)
 
 /-- Variables: `0 = r`. -/
 private abbrev dfactF : Fm PTm 1 := df (var 0) * (pw two (var 0) * fact (var 0)) ≐ fact (two * var 0)
@@ -107,17 +104,13 @@ theorem df_fact (r : PTm n) : Γ ⊢[PRAAx] df r * (pw two r * fact r) ≐ fact 
 /-! ## `(2r)!! = 2^r r!` -/
 
 theorem edf_base : Γ ⊢[PRAAx] edf (zero : PTm n) ≐ pw two zero * fact zero := by
-  have ze := natEq (edf_zero (Γ := Γ)); have zp := natEq (pw_zero (Γ := Γ) (two : PTm n))
-  have zf := natEq (fact_zero (Γ := Γ) (zero : PTm n))
-  apply deriveNat; ipra_simps
-  linear_combination ze - 𝔞(fact zero) * zp - zf
+  ipra_lc natEq (edf_zero (Γ := Γ)) - 𝔞(fact zero) * natEq (pw_zero (Γ := Γ) (two : PTm n)) -
+    natEq (fact_zero (Γ := Γ) (zero : PTm n))
 
 theorem edf_step {r : PTm n} (ih : Γ ⊢[PRAAx] edf r ≐ pw two r * fact r) :
     Γ ⊢[PRAAx] edf (succ r) ≐ pw two (succ r) * fact (succ r) := by
-  have se := natEq (edf_succ (Γ := Γ) r); have sp := natEq (pw_succ (Γ := Γ) two r)
-  have sf := natEq (fact_succ (Γ := Γ) r zero); have i := natEq ih
-  apply deriveNat; ipra_simps
-  linear_combination se + 2 * (𝔞(r) + 1) * i - 𝔞(fact (succ r)) * sp - 2 * 𝔞(pw two r) * sf
+  ipra_lc natEq (edf_succ (Γ := Γ) r) + 2 * (𝔞(r) + 1) * natEq ih -
+    𝔞(fact (succ r)) * natEq (pw_succ (Γ := Γ) two r) - 2 * 𝔞(pw two r) * natEq (fact_succ (Γ := Γ) r zero)
 
 /-- Variables: `0 = r`. -/
 private abbrev edfF : Fm PTm 1 := edf (var 0) ≐ pw two (var 0) * fact (var 0)
@@ -145,9 +138,7 @@ theorem double_fact (r : PTm n) : Γ ⊢[PRAAx] df r * edf r ≐ fact (two * r) 
 /-- `(2r − 1)!! · 2^r = r! C(2r, r)`. -/
 theorem df_cb (r : PTm n) : Γ ⊢[PRAAx] df r * pw two r ≐ fact r * cb r := by
   refine mul_cancel (D := fact r) (fact_pos r) ?_
-  have a := natEq (df_fact (Γ := Γ) r); have b := natEq (cb_fact (Γ := Γ) r)
-  apply deriveNat; ipra_simps
-  linear_combination a + b
+  ipra_lc natEq (df_fact (Γ := Γ) r) + natEq (cb_fact (Γ := Γ) r)
 
 /-- `(2r − 1)!! > 0`. -/
 theorem df_pos (r : PTm n) : Γ ⊢[PRAAx] df r ≐ succ (pred (df r)) := by

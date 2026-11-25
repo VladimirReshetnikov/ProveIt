@@ -1,4 +1,5 @@
 import IPRADerivations.Combinatorics.BinomialSigned
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Alternating face counts of the simplex, the cube and the cross-polytope
@@ -34,35 +35,21 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 /-- The simplex: the even and the odd binomial sums of a row `d + 1` agree. -/
 theorem simplex_euler (d : PTm n) : Γ ⊢[PRAAx] E (succ d) one ≐ O (succ d) one := by
-  have e1 := natEq (E_succ (Γ := Γ) d one)
-  have e2 := natEq (O_succ (Γ := Γ) d one)
-  apply deriveNat; ipra_simps
-  linear_combination e1 - e2
+  ipra_lc natEq (E_succ (Γ := Γ) d one) - natEq (O_succ (Γ := Γ) d one)
 
 /-- `E_0(2) = O_0(2) + 1`. -/
 theorem alt_zero : Γ ⊢[PRAAx] E (zero : PTm n) two ≐ O zero two + one := by
-  have a := natEq (Prf.andE₁ (E_zero (Γ := Γ) two))
-  have b := natEq (Prf.andE₂ (E_zero (Γ := Γ) two))
-  apply deriveNat; ipra_simps
-  linear_combination a - b
+  ipra_lc natEq (Prf.andE₁ (E_zero (Γ := Γ) two)) - natEq (Prf.andE₂ (E_zero (Γ := Γ) two))
 
 /-- `O_1(2) = E_1(2) + 1`. -/
 theorem alt_one : Γ ⊢[PRAAx] O (succ (zero : PTm n)) two ≐ E (succ zero) two + one := by
-  have a := natEq (Prf.andE₁ (E_zero (Γ := Γ) two))
-  have b := natEq (Prf.andE₂ (E_zero (Γ := Γ) two))
-  have e1 := natEq (E_succ (Γ := Γ) zero two)
-  have e2 := natEq (O_succ (Γ := Γ) zero two)
-  apply deriveNat; ipra_simps
-  linear_combination e2 - e1 + a - b
+  ipra_lc natEq (O_succ (Γ := Γ) zero two) - natEq (E_succ (Γ := Γ) zero two) +
+    natEq (Prf.andE₁ (E_zero (Γ := Γ) two)) - natEq (Prf.andE₂ (E_zero (Γ := Γ) two))
 
 /-- `E_{m+2}(2) + O_m(2) = O_{m+2}(2) + E_m(2)`. -/
 theorem alt_step_two (m : PTm n) :
     Γ ⊢[PRAAx] E (succ (succ m)) two + O m two ≐ O (succ (succ m)) two + E m two := by
-  have e1 := natEq (E_succ (Γ := Γ) (succ m) two)
-  have e2 := natEq (O_succ (Γ := Γ) (succ m) two)
-  have e3 := natEq (E_succ (Γ := Γ) m two)
-  have e4 := natEq (O_succ (Γ := Γ) m two)
-  apply deriveNat; ipra_simps
-  linear_combination e1 - e2 - e3 + e4
+  ipra_lc natEq (E_succ (Γ := Γ) (succ m) two) - natEq (O_succ (Γ := Γ) (succ m) two) -
+    natEq (E_succ (Γ := Γ) m two) + natEq (O_succ (Γ := Γ) m two)
 
 end LeanProofs.IPRA.Combinatorics.FaceCounts

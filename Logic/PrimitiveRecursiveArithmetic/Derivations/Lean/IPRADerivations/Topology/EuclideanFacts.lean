@@ -118,7 +118,7 @@ theorem cube_same_sign (D b c : PTm n) :
     (Γ ⊢[PRAAx] (b + c) * (D + b) ≐ b * (D + (b + c)) + D * c) ∧
     (Γ ⊢[PRAAx] le (D * D * c) ((D + (b + c)) * (D + b) * c)) := by
   refine ⟨?_, ?_⟩
-  · apply deriveNat; ipra_simps; ring
+  · ipra_ring
   · ipra_le (𝔟 D * (2 * 𝔟 b + 𝔟 c) + (𝔟 b + 𝔟 c) * 𝔟 b) * 𝔟 c
 
 /-- `|h(t)| ≤ |t|`: `aD ≤ a(D + a)`. -/

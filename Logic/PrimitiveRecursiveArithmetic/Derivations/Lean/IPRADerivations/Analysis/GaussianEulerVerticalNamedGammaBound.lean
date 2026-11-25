@@ -2,6 +2,7 @@ import IPRADerivations.Analysis.GaussianEulerVerticalNamedReference
 import IPRADerivations.Analysis.GaussianEulerVerticalGammaBound
 import IPRADerivations.Analysis.GaussianNamedGammaPositiveLower
 import IPRADerivations.Analysis.RationalReciprocalPowerName
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Vertical domination at arbitrary regular named Gamma inputs
@@ -73,10 +74,7 @@ theorem radius_value (f : PR 2) (p q x A : PTm n) (h : Γ ⊢[PRAAx] source f x 
     (nonnegative_radius_base f q x A h)
   have add := RationalRepresentations.represents_add _ _ _ _ _ _ base (fraction_represents one (unit p) (unit_positive p))
   apply scalar_congr (.eqRefl _) _ (.eqRefl _) add
-  apply ZT.derive
-  simp only [radiusNumerator,ZT.toZ_add,ZT.toZ_mul,ZT.toZ_ofNat]
-  ipra_simps
-  ring
+  ipra_lc [radiusNumerator]
 
 private theorem late_complex (f : PR 2) (s x A : PTm n) (h : Γ ⊢[PRAAx] source f x A) : Γ ⊢[PRAAx]
     GaussianNamedGammaLateInput.input f s (clock f s x A) x A :=

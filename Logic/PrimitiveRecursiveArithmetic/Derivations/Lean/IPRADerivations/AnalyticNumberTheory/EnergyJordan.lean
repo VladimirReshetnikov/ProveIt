@@ -2,6 +2,7 @@ import IPRADerivations.Core.BlockSum
 import IPRADerivations.Probability.Independence
 import IPRADerivations.AnalyticNumberTheory.SquareReciprocal
 import IPRADerivations.AnalyticNumberTheory.SumPhi
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The Jordan count `J₂(d) ≥ d²/4` (`thm:energy`, recovery direction)
@@ -87,7 +88,7 @@ theorem one_le_good {d u v z : PTm n} (f : PTm 2) (hd : Γ ⊢[PRAAx] d ≐ succ
     have hj : Θ ⊢[PRAAx] lt (pred (pred (gcd (gcd d u) v))) d := le_trans (le_succ_self _) hle
     have t1 := hf _ _ hj (dvd_congr_left hg2 gd) (dvd_congr_left hg2 gu) (dvd_congr_left hg2 gv)
     have s := le_congr t1 (.eqRefl _) (term_le_sum f (x := z) hj)
-    exact le_trans s (le_of_eq_add (d := eqb (gcd (gcd d u) v) one) (by apply deriveNat; ipra_simps; ring))
+    exact le_trans s (le_of_eq_add (d := eqb (gcd (gcd d u) v) one) (by ipra_ring))
 
 /-! ## Summing the union bound -/
 
@@ -108,7 +109,7 @@ theorem pt_good (e k : PTm n) :
       refine (row_pt unB k j (succ e)).eqTrans ?_
       rw [inst3_un]
       exact (congrMul (eqb_of_eq h1) (congrMul (eqb_of_eq h2) (eqb_of_eq h3))).eqTrans
-        (by apply deriveNat; ipra_simps; ring))
+        (by ipra_ring))
   have fl := flat_at (Γ := Γ) goodB k (succ e) (succ e)
   rw [inst3_good] at fl
   exact le_congr (.eqRefl _) (congrAdd fl.eqSymm (oB_at unB k (succ e) (succ e)).eqSymm) base
@@ -197,7 +198,7 @@ theorem vb_le (j d : PTm n) : Γ ⊢[PRAAx] le (inst2 vB j d) (inst2 (shiftBody 
       refine quo_eq htt (z := d * d) (q := quo d (succ (succ j)) * quo d (succ (succ j))) (r := zero) ?_ ?_
       · have e1 := natEq ed
         apply deriveNat; ipra_simps; rw [e1]; ring
-      · exact le_of_eq_add (d := succ j * succ (succ j) + succ j) (by apply deriveNat; ipra_simps; ring)
+      · exact le_of_eq_add (d := succ j * succ (succ j) + succ j) (by ipra_ring)
     have v1 : Θ ⊢[PRAAx] eqb (rem d (succ (succ j))) zero *
         (quo (d + succ j) (succ (succ j)) * quo (d + succ j) (succ (succ j))) ≐
         quo d (succ (succ j)) * quo d (succ (succ j)) :=
@@ -211,14 +212,10 @@ theorem vb_le (j d : PTm n) : Γ ⊢[PRAAx] le (inst2 vB j d) (inst2 (shiftBody 
 theorem jordan_alg {N F J U' B T : PTm n} (h1 : Γ ⊢[PRAAx] le F (J + U')) (h2 : Γ ⊢[PRAAx] le U' B)
     (h3 : Γ ⊢[PRAAx] T ≐ F + B) (h5 : Γ ⊢[PRAAx] le (num 4 * N * T + num 4 * F) (num 7 * N * F)) :
     Γ ⊢[PRAAx] le (N * F) (N * (num 4 * J)) := by
-  have e1 := natEq (eq_add_of_le h1)
-  have e2 := natEq (eq_add_of_le h2)
-  have e3 := natEq h3
-  have e5 := natEq (eq_add_of_le h5)
   refine le_of_eq_add (d := num 4 * F + monus (num 7 * N * F) (num 4 * N * T + num 4 * F) +
     num 4 * N * (monus (J + U') F + monus B U')) ?_
-  apply deriveNat; ipra_simps
-  linear_combination 4 * 𝔞 N * e1 + 4 * 𝔞 N * e2 + 4 * 𝔞 N * e3 + e5
+  ipra_lc 4 * 𝔞 N * natEq (eq_add_of_le h1) + 4 * 𝔞 N * natEq (eq_add_of_le h2) + 4 * 𝔞 N * natEq h3 +
+    natEq (eq_add_of_le h5)
 
 /-- `d² ≤ 4 J₂(d)` for `d = e + 1`. -/
 theorem jordan_quarter (e : PTm n) : Γ ⊢[PRAAx] le (succ e * succ e) (num 4 * J2 (succ e)) := by

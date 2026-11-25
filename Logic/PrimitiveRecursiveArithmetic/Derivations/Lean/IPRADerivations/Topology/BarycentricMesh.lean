@@ -1,4 +1,5 @@
 import IPRADerivations.Topology.HairyBallEstimates
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The mesh of iterated barycentric subdivision
@@ -50,14 +51,7 @@ theorem num_pos {m : ℕ} (hm : 1 ≤ m) : Γ ⊢[PRAAx] le (succ zero) (num m :
 theorem bary_identity {B Dn C bB bD bC SD SC : ZT n} (hB : Γ ⊢[PRAAx] ZT.eq (B * bB) (SD + SC))
     (hD : Γ ⊢[PRAAx] ZT.eq (Dn * bD) SD) (hC : Γ ⊢[PRAAx] ZT.eq (C * bC) SC)
     (hsz : Γ ⊢[PRAAx] ZT.eq B (Dn + C)) : Γ ⊢[PRAAx] ZT.eq (B * (bB - bD)) (C * (bC - bD)) := by
-  have eB := ZT.toZ_eq hB
-  have eD := ZT.toZ_eq hD
-  have eC := ZT.toZ_eq hC
-  have es := ZT.toZ_eq hsz
-  simp only [ZT.toZ_mul, ZT.toZ_add] at eB eD eC es
-  apply ZT.derive
-  zsimp
-  linear_combination eB - ZT.toZ Γ bD * es - eD - eC
+  ipra_lc ZT.toZ_eq hB - ZT.toZ Γ bD * ZT.toZ_eq hsz - ZT.toZ_eq hD - ZT.toZ_eq hC
 
 /-- The contraction factor `n/(n+1)`: `|B| d ≤ C δ`, `C + 1 ≤ |B|` and `|B| ≤ N + 1` give
 `(N + 1) d ≤ N δ`. -/

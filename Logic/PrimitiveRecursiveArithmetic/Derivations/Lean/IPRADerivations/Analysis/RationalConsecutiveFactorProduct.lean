@@ -2,6 +2,7 @@ import IPRADerivations.Analysis.RationalPolynomialProductGaussianEmbedding
 import IPRADerivations.Analysis.GaussianRationalPolynomialProductDegree
 import IPRADerivations.Analysis.GaussianCoefficientNormOrder
 import IPRADerivations.Analysis.GaussianRationalFiniteProduct
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The actual rational polynomial with roots 1 through m
@@ -158,8 +159,7 @@ private theorem root_step (j m : PTm n) (h : Γ ⊢[PRAAx] rootLaw j m) : Γ ⊢
   · have ej : le m j :: lt j (succ m) :: Γ ⊢[PRAAx] j ≐ m :=
       le_antisymm ((succ_monus_succ j m).eqSymm.eqTrans Prf.hyp1) Prf.hyp0
     have er : le m j :: lt j (succ m) :: Γ ⊢[PRAAx] root j ≐ root m := by
-      simpa only [subst_root,Syn.subst_var,Matrix.cons_val_zero] using
-        Prf.eqCongr (root (var 0) : PTm 1) (σ := ![j]) (σ' := ![m]) (fun i => by fin_cases i; exact ej)
+      ipra_congr (root (var 0) : PTm 1) with [ej]
     exact (consecutive_evaluation_succ m (root j)).eqTrans
       ((qmul_congr (.eqRefl _) ((GaussianRationalSyntheticDivision.qsub_congr (embed_congr er) (.eqRefl _)).eqTrans
         (GaussianCoefficientNormOrder.qsub_self _))).eqTrans (qmul_zero_right _))

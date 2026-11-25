@@ -57,7 +57,7 @@ theorem G2_edge_i (a b c r i : PTm n) : Γ ⊢[PRAAx] G2 a b c r i zero ≐ G a 
   refine (congrMul (congrMonus (.eqRefl _) (congrMonus e0 (.eqRefl _)))
     (congrMul (congrMul (.eqRefl _) (binom_zero' _)) (congrMul (.eqRefl _) (congrMul (pw_zero _)
       (congrAp2 powF (congrMonus (.eqRefl _) e0) (.eqRefl _)))))).eqTrans ?_
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem G2_edge_k (a b c r k : PTm n) : Γ ⊢[PRAAx] G2 a b c r zero k ≐ G c b r k := by
   have e0 : Γ ⊢[PRAAx] zero + k ≐ k := zero_add _
@@ -65,7 +65,7 @@ theorem G2_edge_k (a b c r k : PTm n) : Γ ⊢[PRAAx] G2 a b c r zero k ≐ G c 
     (congrMul (congrMul (binom_zero' _) (Combinatorics.BinomialTheorem.congrBinom (monus_zero _) (.eqRefl _)))
       (congrMul (pw_zero _) (congrMul (.eqRefl _)
       (congrAp2 powF (congrMonus (.eqRefl _) e0) (.eqRefl _)))))).eqTrans ?_
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- `x = y + d` gives `x ∸ y = d`. -/
 theorem monus_of_eq {x y d : PTm n} (h : Γ ⊢[PRAAx] x ≐ y + d) : Γ ⊢[PRAAx] monus x y ≐ d :=
@@ -138,7 +138,7 @@ theorem G2_succ_ss (a b c r i k : PTm n) :
     have T2 := congrMul (.eqRefl a) (congrMul g3 (congrMul (congrMul (.eqRefl (binom r i)) b2t) (congrMul (.eqRefl (pw a i)) (congrMul pc.wk q3))))
     have T3 := congrMul (.eqRefl c) (congrMul g4 (congrMul (congrMul (.eqRefl (binom r (succ i))) b3t) (congrMul pa.wk (congrMul (.eqRefl (pw c k)) q4))))
     refine L.eqTrans (.eqTrans ?_ (congrAdd T1 (congrAdd T2 T3)).eqSymm)
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   · let C := le r (succ (i + k)) :: Γ
     refine .orE (lt_or_eq_of_le (Prf.hyp0 : C ⊢[PRAAx] le r (succ (i + k)))) ?_ ?_
     · -- `r ≤ i + k`: every term vanishes.
@@ -156,7 +156,7 @@ theorem G2_succ_ss (a b c r i k : PTm n) :
         (congrAdd (congrMul (.eqRefl _) (congrMul (ind_gt lt2) (.eqRefl _)))
           (congrAdd (congrMul (.eqRefl _) (congrMul (ind_gt lt3) (.eqRefl _)))
             (congrMul (.eqRefl _) (congrMul (ind_gt lt4) (.eqRefl _))))).eqSymm))
-      apply deriveNat; ipra_simps; ring
+      ipra_ring
     · -- `r = i + k + 1`: Pascal once, the first term vanishes.
       let C' := (r ≐ succ (i + k)) :: C
       have h : C' ⊢[PRAAx] r ≐ succ (i + k) := Prf.hyp0
@@ -192,7 +192,7 @@ theorem G2_succ_ss (a b c r i k : PTm n) :
       have T2 := congrMul (.eqRefl a) (congrMul g3 (congrMul (congrMul (.eqRefl (binom r i)) b2t) (congrMul (.eqRefl (pw a i)) (congrMul pc.wk.wk q3))))
       have T3 := congrMul (.eqRefl c) (congrMul g4 (congrMul (congrMul (.eqRefl (binom r (succ i))) b3t) (congrMul pa.wk.wk (congrMul (.eqRefl (pw c k)) q4))))
       refine L.eqTrans (.eqTrans ?_ (congrAdd T1 (congrAdd T2 T3)).eqSymm)
-      apply deriveNat; ipra_simps; ring
+      ipra_ring
 
 theorem G2_zero (a b c i k : PTm n) : Γ ⊢[PRAAx] G2 a b c zero i k ≐ eqb zero i * eqb zero k := by
   refine .orE (zero_or_succ i) ?_ ?_
@@ -205,7 +205,7 @@ theorem G2_zero (a b c i k : PTm n) : Γ ⊢[PRAAx] G2 a b c zero i k ≐ eqb ze
           (congrMul (congrAp2 powF hi (.eqRefl _)) (congrMul (.eqRefl _) (congrAp2 powF (congrMonus (.eqRefl _) (congrAdd hi (.eqRefl _))) (.eqRefl _)))))
     refine e.eqTrans ((G2_edge_k a b c _ _).eqTrans ((G_zero c b k).eqTrans ?_))
     refine .eqTrans ?_ (congrMul (eqb_of_eq hi.eqSymm) (.eqRefl _)).eqSymm
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   · let C := (i ≐ succ (pred i)) :: Γ
     have hlt : C ⊢[PRAAx] lt zero (i + k) := le_of_eq_add (d := pred i + k)
       (by have x := natEq (Prf.hyp0 : C ⊢[PRAAx] i ≐ succ (pred i)); apply deriveNat; ipra_simps; linear_combination x)
@@ -362,7 +362,7 @@ theorem block_F2 {a i k r M x : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) 
   refine (congrMul p1 ((congrMul (congrEqb sY (.eqRefl _)) (congrEqb sZ (.eqRefl _))).eqTrans (eqb_split2 hYZ'.wk))).eqTrans ?_
   refine .eqTrans ?_ (congrAdd (congrMul (.eqRefl _) (f2B_at w Y Z _ _ _ _ _ _)) (congrAdd (congrMul (.eqRefl _) (f2B1_at w Y Z _ _ _ _ _ _))
     (congrMul (.eqRefl _) (f2B2_at w Y Z _ _ _ _ _ _)))).eqSymm
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- `F₂_{r+1}(i, k) = F₂_r(i, k) b + F₂¹_r(i, k) a + F₂²_r(i, k) c`. -/
 theorem F2_succ {i k r M x : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M))
@@ -387,7 +387,7 @@ theorem F2_succ {i k r M x : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M))
       monus one (inst2 Y (var 0) (Syn.shift x) + inst2 Z (var 0) (Syn.shift x)) := by simp [inst2]
   rw [hm]
   refine (block_F2 w Y Z hM'.wk Prf.hyp0 hYZ').eqTrans ?_
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem F21_zero (k r M x : PTm n) : Γ ⊢[PRAAx] F21 w Y Z zero k r M x ≐ zero := by
   refine sum_zero_of_bounded _ _ _ (.allI (.impI ?_))
@@ -397,7 +397,7 @@ theorem F21_zero (k r M x : PTm n) : Γ ⊢[PRAAx] F21 w Y Z zero k r M x ≐ ze
       eqb (succ (Sr Y (Syn.shift r) (var 0) (Syn.shift M) (Syn.shift x))) (Syn.shift zero) ≐ zero := by
     rw [ConciseIPRA.PTm.shift_zero]
     exact eqb_zero_of_gt (le_of_eq_add (d := Sr Y (Syn.shift r) (var 0) (Syn.shift M) (Syn.shift x))
-      (by apply deriveNat; ipra_simps; ring))
+      (by ipra_ring))
   exact (congrMul (.eqRefl _) ((congrMul z (.eqRefl _)).eqTrans (zero_mul _))).eqTrans (mul_zero _)
 
 theorem F22_zero (i r M x : PTm n) : Γ ⊢[PRAAx] F22 w Y Z i zero r M x ≐ zero := by
@@ -408,7 +408,7 @@ theorem F22_zero (i r M x : PTm n) : Γ ⊢[PRAAx] F22 w Y Z i zero r M x ≐ ze
       eqb (succ (Sr Z (Syn.shift r) (var 0) (Syn.shift M) (Syn.shift x))) (Syn.shift zero) ≐ zero := by
     rw [ConciseIPRA.PTm.shift_zero]
     exact eqb_zero_of_gt (le_of_eq_add (d := Sr Z (Syn.shift r) (var 0) (Syn.shift M) (Syn.shift x))
-      (by apply deriveNat; ipra_simps; ring))
+      (by ipra_ring))
   exact (congrMul (.eqRefl _) ((congrMul (.eqRefl _) z).eqTrans (mul_zero _))).eqTrans (mul_zero _)
 
 theorem F21_succ (i k r M x : PTm n) : Γ ⊢[PRAAx] F21 w Y Z (succ i) k r M x ≐ F2 w Y Z i k r M x := by
@@ -457,7 +457,7 @@ theorem step_combine {F F1 F11 F12 X1 X2 X3 a b c Gs : PTm n} (fs : Γ ⊢[PRAAx
     (g : Γ ⊢[PRAAx] Gs ≐ b * X1 + (a * X2 + c * X3)) : Γ ⊢[PRAAx] F ≐ Gs := by
   refine fs.eqTrans ((congrAdd (congrMul e1 (.eqRefl _)) (congrAdd (congrMul e2 (.eqRefl _)) (congrMul e3 (.eqRefl _)))).eqTrans
     (.eqTrans ?_ g.eqSymm))
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 section Count2c
 
@@ -541,7 +541,7 @@ theorem case00 (zi : Γ ⊢[PRAAx] i ≐ zero) (zk : Γ ⊢[PRAAx] k ≐ zero) :
     ((F21_congr w Y Z zi (.eqRefl _)).eqTrans (F21_zero w Y Z _ _ _ _))
     ((F22_congr w Y Z (.eqRefl _) zk).eqTrans (F22_zero w Y Z _ _ _ _)) ?_
   refine (G2_congr (.eqRefl _) (.eqRefl _) (.eqRefl _) (.eqRefl _) zi zk).eqTrans ((G2_succ_00 a b c r).eqTrans ?_)
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem case0s (zi : Γ ⊢[PRAAx] i ≐ zero) (zk : Γ ⊢[PRAAx] k ≐ succ (pred k)) :
     Γ ⊢[PRAAx] F2 w Y Z i k (succ r) M x ≐ G2 a b c (succ r) i k := by
@@ -550,7 +550,7 @@ theorem case0s (zi : Γ ⊢[PRAAx] i ≐ zero) (zk : Γ ⊢[PRAAx] k ≐ succ (p
     ((F22_congr w Y Z (.eqRefl _) zk).eqTrans ((F22_succ w Y Z _ _ _ _ _).eqTrans ((V2_elim w Y Z hV hi (lt_pred' zk hk)).eqTrans
       (G2_congr (.eqRefl _) (.eqRefl _) (.eqRefl _) (.eqRefl _) zi (.eqRefl _))))) ?_
   refine (G2_congr (.eqRefl _) (.eqRefl _) (.eqRefl _) (.eqRefl _) zi zk).eqTrans ((G2_succ_0s a b c r (pred k)).eqTrans ?_)
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem cases0 (zi : Γ ⊢[PRAAx] i ≐ succ (pred i)) (zk : Γ ⊢[PRAAx] k ≐ zero) :
     Γ ⊢[PRAAx] F2 w Y Z i k (succ r) M x ≐ G2 a b c (succ r) i k := by
@@ -559,7 +559,7 @@ theorem cases0 (zi : Γ ⊢[PRAAx] i ≐ succ (pred i)) (zk : Γ ⊢[PRAAx] k �
       (G2_congr (.eqRefl _) (.eqRefl _) (.eqRefl _) (.eqRefl _) (.eqRefl _) zk))))
     ((F22_congr w Y Z (.eqRefl _) zk).eqTrans (F22_zero w Y Z _ _ _ _)) ?_
   refine (G2_congr (.eqRefl _) (.eqRefl _) (.eqRefl _) (.eqRefl _) zi zk).eqTrans ((G2_succ_s0 a b c r (pred i)).eqTrans ?_)
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem casess (zi : Γ ⊢[PRAAx] i ≐ succ (pred i)) (zk : Γ ⊢[PRAAx] k ≐ succ (pred k)) :
     Γ ⊢[PRAAx] F2 w Y Z i k (succ r) M x ≐ G2 a b c (succ r) i k :=
@@ -690,8 +690,8 @@ theorem count_law2 {i k r M x : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M))
   have h := Prf.allE r hall
   simp only [V2, Qt, Fm.subst_eq, subst_ap2, subst_pairT, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
     ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at h
-  have hi : Γ ⊢[PRAAx] lt i (succ (i + k)) := le_of_eq_add (d := k) (by apply deriveNat; ipra_simps; ring)
-  have hk : Γ ⊢[PRAAx] lt k (succ (i + k)) := le_of_eq_add (d := i) (by apply deriveNat; ipra_simps; ring)
+  have hi : Γ ⊢[PRAAx] lt i (succ (i + k)) := le_of_eq_add (d := k) (by ipra_ring)
+  have hk : Γ ⊢[PRAAx] lt k (succ (i + k)) := le_of_eq_add (d := i) (by ipra_ring)
   exact V2_elim w Y Z h hi hk
 
 end Count2c

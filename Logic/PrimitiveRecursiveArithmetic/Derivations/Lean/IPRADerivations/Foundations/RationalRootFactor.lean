@@ -3,6 +3,7 @@ import IPRADerivations.Foundations.RationalRootConstant
 import IPRADerivations.Foundations.EigenvalueBound
 import IPRADerivations.DiophantineNumberTheory.FLTMultiples
 import IPRADerivations.Combinatorics.BinomialIdentities
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Rational roots: removing the factor `T^e` (`ipra_presentations_to_witnesses`, `lem:norm-rational-roots`; `ipra_resources_and_elimination_2026-11-15`, `lem:elim-rational-roots`)
@@ -91,19 +92,12 @@ theorem high_pt (j p q e m x : PTm k) :
           (sndT (pairT e (pairT p (pairT q (pairT (e + m) x))))) ≐
         inst2 (tB a) (e + j) (pairT p (pairT q (pairT (e + m) x))) :=
     congrInst2 (tB a) (congrAdd (fst_pair _ _) (.eqRefl _)) (snd_pair _ _)
-  have e₁ := natEq (l₀.eqTrans (tB_at a (e + j) p q (e + m) x))
-  have e₂ := natEq (mB_at (Γ := Γ) (tB (shC a)) j (pw p e)
-    (pairT p (pairT q (pairT m (pairT e x)))))
-  have e₃ := natEq (tB_at (Γ := Γ) (shC a) j p q m (pairT e x))
-  have e₄ := natEq (shC_at (Γ := Γ) a j e x)
-  have e₅ := natEq (pw_add (Γ := Γ) p e j)
-  have e₆ := natEq (congrPw (Γ := Γ) (.eqRefl q)
-    ((congrMonus (add_comm e m) (add_comm e j)).eqTrans (monus_add_add m j e)))
-  apply deriveNat; ipra_simps
-  linear_combination e₁ - e₂ +
-    𝔞 (inst2 a (e + j) x) * 𝔞 (pw q (monus (e + m) (e + j))) * e₅ +
-    𝔞 (inst2 a (e + j) x) * 𝔞 (pw p e) * 𝔞 (pw p j) * e₆ - 𝔞 (pw p e) * e₃ -
-    𝔞 (pw p e) * 𝔞 (pw p j) * 𝔞 (pw q (monus m j)) * e₄
+  ipra_lc natEq (l₀.eqTrans (tB_at a (e + j) p q (e + m) x)) -
+    natEq (mB_at (Γ := Γ) (tB (shC a)) j (pw p e) (pairT p (pairT q (pairT m (pairT e x))))) +
+    𝔞 (inst2 a (e + j) x) * 𝔞 (pw q (monus (e + m) (e + j))) * natEq (pw_add (Γ := Γ) p e j) +
+    𝔞 (inst2 a (e + j) x) * 𝔞 (pw p e) * 𝔞 (pw p j) * natEq (congrPw (Γ := Γ) (.eqRefl q) ((congrMonus (add_comm e m) (add_comm e j)).eqTrans (monus_add_add m j e))) -
+    𝔞 (pw p e) * natEq (tB_at (Γ := Γ) (shC a) j p q m (pairT e x)) -
+    𝔞 (pw p e) * 𝔞 (pw p j) * 𝔞 (pw q (monus m j)) * natEq (shC_at (Γ := Γ) a j e x)
 
 variable (b : PTm 2)
 
@@ -111,11 +105,8 @@ variable (b : PTm 2)
 theorem low_pt {i p q d x : PTm k} (h : Γ ⊢[PRAAx] inst2 a i x ≐ inst2 b i x) :
     Γ ⊢[PRAAx] inst2 (tB a) i (pairT p (pairT q (pairT d x))) ≐
       inst2 (tB b) i (pairT p (pairT q (pairT d x))) := by
-  have e₁ := natEq (tB_at (Γ := Γ) a i p q d x)
-  have e₂ := natEq (tB_at (Γ := Γ) b i p q d x)
-  have e₃ := natEq h
-  apply deriveNat; ipra_simps
-  linear_combination e₁ - e₂ + 𝔞 (pw p i) * 𝔞 (pw q (monus d i)) * e₃
+  ipra_lc natEq (tB_at (Γ := Γ) a i p q d x) - natEq (tB_at (Γ := Γ) b i p q d x) +
+    𝔞 (pw p i) * 𝔞 (pw q (monus d i)) * natEq h
 
 /-- The homogeneous sum, split at the factor `T^e`. -/
 theorem decompose (p q e m x : PTm k) :
@@ -152,12 +143,8 @@ theorem factor_out {p' q e m x : PTm k}
     refine sum_congr_bounded _ _ _ _ e (.allI (.impI ?_))
     simp only [shift_pairT₁, shift_add₁, shift_succ₁]
     exact low_pt a b (.impE hlow.allOpen.wk Prf.hyp0)
-  have da := natEq (decompose (Γ := Γ) a (succ p') q e m x)
-  have db := natEq (decompose (Γ := Γ) b (succ p') q e m x)
-  have el := natEq hl
-  have eE := natEq hE
   refine mul_cancel (D := pw (succ p') e) (pw_pos p' e) ?_
-  apply deriveNat; ipra_simps
-  linear_combination eE - da + db - el
+  ipra_lc natEq hE - natEq (decompose (Γ := Γ) a (succ p') q e m x) + natEq (decompose (Γ := Γ) b (succ p') q e m x) -
+    natEq hl
 
 end LeanProofs.IPRA.Foundations.RationalRootFactor

@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.WilsonProduct
 import IPRADerivations.DiophantineNumberTheory.FermatTwoSquares
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Wilson's theorem for every prime, and its converse
@@ -65,8 +66,7 @@ theorem wilson_prime {p : PTm k} (hp : Γ ⊢[PRAAx] prime p) : Γ ⊢[PRAAx] re
 
 theorem pred_alg {n : PTm k} (hn1 : Γ ⊢[PRAAx] n ≐ succ (pred n)) :
     Γ ⊢[PRAAx] pred n + one ≐ n * one + zero := by
-  have a := natEq hn1
-  apply deriveNat; ipra_simps; linear_combination -a
+  ipra_lc -natEq hn1
 
 /-- `(n − 1)! mod n = n − 1` gives `n ∣ (n − 1)! + 1`. -/
 theorem succ_dvd {n : PTm k} (hn1 : Γ ⊢[PRAAx] n ≐ succ (pred n))

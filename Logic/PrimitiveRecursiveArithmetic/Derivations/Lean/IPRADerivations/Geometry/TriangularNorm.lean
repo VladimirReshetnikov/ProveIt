@@ -3,6 +3,7 @@ import IPRADerivations.Core.ProdLemmas
 import IPRADerivations.Core.ParityArith
 import IPRADerivations.Combinatorics.BinomialIdentities
 import IPRADerivations.Analysis.RationalClosure
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The triangular norm and its 2-adic descent
@@ -49,9 +50,7 @@ abbrev qn {N : ℕ} (m n : PTm N) : PTm N := m * m + m * n + n * n
 
 theorem q_congr {m n m' n' : PTm N} (hm : Γ ⊢[PRAAx] m ≐ m') (hn : Γ ⊢[PRAAx] n ≐ n') :
     Γ ⊢[PRAAx] qn m n ≐ qn m' n' := by
-  have em := natEq hm; have en := natEq hn
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞(m) + 𝔞(m') + 𝔞(n)) * em + (𝔞(m') + 𝔞(n) + 𝔞(n')) * en
+  ipra_lc (𝔞(m) + 𝔞(m') + 𝔞(n)) * natEq hm + (𝔞(m') + 𝔞(n) + 𝔞(n')) * natEq hn
 
 theorem two_congr {X Y : PTm N} (h : Γ ⊢[PRAAx] X ≐ Y) : Γ ⊢[PRAAx] two * X ≐ two * Y :=
   congrMul (.eqRefl _) h
@@ -60,20 +59,20 @@ theorem two_congr {X Y : PTm N} (h : Γ ⊢[PRAAx] X ≐ Y) : Γ ⊢[PRAAx] two 
 
 /-- `Q(2a, 2b) = 4 Q(a, b)`. -/
 theorem q_ee (a b : PTm N) : Γ ⊢[PRAAx] qn (two * a) (two * b) ≐ two * (two * qn a b) := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem q_oe (a b : PTm N) : Γ ⊢[PRAAx] qn (two * a + one) (two * b) ≐
     two * (two * (a * a) + two * a + two * (a * b) + b + two * (b * b)) + one := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem q_eo (a b : PTm N) : Γ ⊢[PRAAx] qn (two * a) (two * b + one) ≐
     two * (two * (a * a) + two * (a * b) + a + two * (b * b) + two * b) + one := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem q_oo (a b : PTm N) : Γ ⊢[PRAAx] qn (two * a + one) (two * b + one) ≐
     two * (two * (a * a) + (two + one) * a + two * (a * b) + (two + one) * b + two * (b * b) + one) +
       one := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-! ## Parity -/
 
@@ -160,9 +159,7 @@ theorem hf_succ (k x : PTm N) : Γ ⊢[PRAAx] hf (succ k) x ≐ half (hf k x) :=
 /-- `a = P H`, `H = 2 h`, `P' = P · 2`, `H' = h` give `a = P' H'`. -/
 theorem scale_step {a P P' H H' h : PTm N} (ia : Γ ⊢[PRAAx] a ≐ P * H) (eH : Γ ⊢[PRAAx] H ≐ two * h)
     (eP : Γ ⊢[PRAAx] P' ≐ P * two) (eH' : Γ ⊢[PRAAx] H' ≐ h) : Γ ⊢[PRAAx] a ≐ P' * H' := by
-  have e₁ := natEq ia; have e₂ := natEq eH; have e₃ := natEq eP; have e₄ := natEq eH'
-  apply deriveNat; ipra_simps
-  linear_combination e₁ + 𝔞(P) * e₂ - 𝔞(h) * e₃ - 𝔞(P') * e₄
+  ipra_lc natEq ia + 𝔞(P) * natEq eH - 𝔞(h) * natEq eP - 𝔞(P') * natEq eH'
 
 /-- The invariant after `k` halvings. -/
 abbrev Inv {N : ℕ} (k a b c d : PTm N) : Fm PTm N :=
@@ -218,10 +215,7 @@ theorem zero_of_pow {a H : PTm N} (h : Γ ⊢[PRAAx] a ≐ pw two a * H) : Γ �
     exact h'.eqTrans ((congrMul (.eqRefl _) Prf.hyp0).eqTrans (mul_zero _))
   · have h' : ((H ≐ succ (pred H)) :: Γ) ⊢[PRAAx] a ≐ pw two a * H := h.wk
     have e : ((H ≐ succ (pred H)) :: Γ) ⊢[PRAAx] a ≐ pw two a + pw two a * pred H := by
-      have e₁ := natEq h'
-      have e₂ := natEq (Prf.hyp0 (Ax := PRAAx) (Γ := Γ) (φ := H ≐ succ (pred H)))
-      apply deriveNat; ipra_simps
-      linear_combination e₁ + 𝔞(pw two a) * e₂
+      ipra_lc natEq h' + 𝔞(pw two a) * natEq (Prf.hyp0 (Ax := PRAAx) (Γ := Γ) (φ := H ≐ succ (pred H)))
     exact not_succ_le_self a _ (le_trans (succ_le_two_pow a) (le_of_eq_add e))
 
 /-- `lem:nosqrt2`: `Q(c, d) = 2 Q(a, b)` has only the solution `a = b = 0`. -/
@@ -234,9 +228,7 @@ theorem no_sqrt2 {a b c d : PTm N} (h : Γ ⊢[PRAAx] qn c d ≐ two * qn a b) :
 theorem no_sqrt2_norm {a b c d : PTm N} (h : Γ ⊢[PRAAx] qn c d ≐ two * qn a b) :
     Γ ⊢[PRAAx] qn a b ≐ zero := by
   have z := no_sqrt2 h
-  have e₁ := natEq (Prf.andE₁ z); have e₂ := natEq (Prf.andE₂ z)
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞(a) + 𝔞(b)) * e₁ + 𝔞(b) * e₂
+  ipra_lc (𝔞(a) + 𝔞(b)) * natEq (Prf.andE₁ z) + 𝔞(b) * natEq (Prf.andE₂ z)
 
 /-- Variables: `0 = a`, `1 = b`, `2 = c`, `3 = d`. -/
 def noSqrt2Formula : Fm PTm 4 :=

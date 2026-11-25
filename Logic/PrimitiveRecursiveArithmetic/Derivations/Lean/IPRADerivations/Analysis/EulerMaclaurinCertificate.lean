@@ -1,6 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.RungeProduct
 import IPRADerivations.AnalyticNumberTheory.PhiLower
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The rational Euler–Maclaurin certificate
@@ -51,9 +52,7 @@ local notation "𝔟" t:max => Groth.ι (IPRA.Q.mk _ t)
 theorem local_defect (P₀ P₁ F₀ F₁ p g h : ZT n) :
     Γ ⊢[PRAAx] ZT.eq ((P₁ * F₁ - P₀ * F₀) - h * (P₀ * g + p * F₀))
       (P₀ * ((F₁ - F₀) - h * g) + F₀ * ((P₁ - P₀) - h * p) + (P₁ - P₀) * (F₁ - F₀)) := by
-  apply ZT.derive
-  simp only [ZT.toZ_add, ZT.toZ_sub, ZT.toZ_mul]
-  ring
+  ipra_lc
 
 /-- The absolute value of `x u + y v + z w` is at most `C U + K V + W₁ W₂` when the factors are. -/
 theorem three_products {x u y v z w : ZT n} {C U K V W₁ W₂ : PTm n}

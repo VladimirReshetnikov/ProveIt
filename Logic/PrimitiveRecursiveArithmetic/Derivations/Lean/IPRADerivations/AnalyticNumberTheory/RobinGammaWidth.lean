@@ -73,7 +73,7 @@ abbrev WF (t K : PTm n) : Fm PTm n :=
   le (Pt t (pairT one K) * Ad t K * Zg K) (An t K * Qt t (pairT one K) * Zg K + num 9 * t * Qt t (pairT one K) * Ad t K)
 
 theorem gw_step (t K : PTm n) (ih : Γ ⊢[PRAAx] WF t K) : Γ ⊢[PRAAx] WF (succ t) K := by
-  have e : Γ ⊢[PRAAx] one + t ≐ succ t := by apply deriveNat; ipra_simps; ring
+  have e : Γ ⊢[PRAAx] one + t ≐ succ t := by ipra_ring
   have hm : Γ ⊢[PRAAx] le one (succ t) := by ipra_le 𝔞 t
   have tc := tw hm K
   have eQ : Γ ⊢[PRAAx] Qt (succ t) (pairT one K) ≐ Qt t (pairT one K) * dd (succ t) K :=

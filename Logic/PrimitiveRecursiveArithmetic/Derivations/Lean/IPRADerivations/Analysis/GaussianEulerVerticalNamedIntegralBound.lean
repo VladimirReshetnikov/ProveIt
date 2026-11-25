@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.GaussianEulerVerticalNamedGammaBound
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Vertical domination for the original named improper Euler integral
@@ -65,10 +66,7 @@ theorem radius_value (f : PR 2) (p q x A : PTm n) (h : Γ ⊢[PRAAx] source f x 
     (nonnegative_radius_base f q x A h)
   have add := RationalRepresentations.represents_add _ _ _ _ _ _ base (fraction_represents one (unit p) (unit_positive p))
   apply scalar_congr (.eqRefl _) _ (.eqRefl _) add
-  apply ZT.derive
-  simp only [radiusNumerator,ZT.toZ_add,ZT.toZ_mul,ZT.toZ_ofNat]
-  ipra_simps
-  ring
+  ipra_lc [radiusNumerator]
 
 private theorem Gamma_radius_bound (f : PR 2) (t x A : PTm n) (h : Γ ⊢[PRAAx] source f x A) : Γ ⊢[PRAAx]
     boundBy (GaussianEulerVerticalNamedGammaBound.point f t x A) (embed (GaussianEulerVerticalNamedGammaBound.realBound f t t x A)) := by

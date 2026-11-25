@@ -1,4 +1,5 @@
 import IPRADerivations.Topology.KnotLocalMoves
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Fox colourings of torus links, the figure-eight knot and rational tangles; affine colourings
@@ -50,149 +51,145 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 /-- The affine quandle operation `S_y(x) = t x + (1 − t) y`. -/
 def aff (t y x : ZT n) : ZT n := t * x + (ZT.natLit 1 - t) * y
 
-local macro "gsimp" loc:(Lean.Parser.Tactic.location)? : tactic =>
-  `(tactic| simp only [aff, KnotLocalMoves.refl, zsl_def, ZT.toZ_add, ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_neg, ZT.toZ_sq,
-    ZT.toZ_natLit, Nat.cast_ofNat, Nat.cast_zero, Nat.cast_one] $[$loc]?)
-
-local macro "geo" : tactic => `(tactic| (apply ZT.derive; gsimp; ring))
+attribute [local ipra_defs] aff KnotLocalMoves.refl
 
 /-! ## Torus links -/
 
 /-- A block negates and shifts the differences: `(Bx)_{i+1} − (Bx)_i = −(x_{i+2} − x_{i+1})`. -/
 theorem torus_block_diff (x₀ u v : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (refl x₀ v - refl x₀ u) (-(v - u)) := by
-  geo
+  ipra_lc
 
 /-- The last difference of a block: `x₀ − (Bx)_{p−2} = −(x₀ − x_{p−1})`. -/
 theorem torus_block_diff_last (x₀ u : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (x₀ - refl x₀ u) (-(x₀ - u)) := by
-  geo
+  ipra_lc
 
 /-- A block on the row `x_i = x₀ + i d`: the entry `i` of the row starting at `x₀ − d` with difference `−d`. -/
 theorem torus_block_entry (x₀ d i : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (refl x₀ (x₀ + (i + ZT.natLit 1) * d)) (x₀ - d + i * (-d)) := by
-  geo
+  ipra_lc
 
 /-- The last entry `x₀` of the block differs from the entry `p − 1` of that row by `p d`. -/
 theorem torus_block_last (x₀ d p : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (x₀ - (x₀ - d + (p - ZT.natLit 1) * (-d))) (p * d) := by
-  geo
+  ipra_lc
 
 /-- An alternating row: the entries `x₀ + d` become `x₀ − d`. -/
 theorem torus_alternating_even (x₀ d : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (refl x₀ (x₀ + d)) (x₀ - d) := by
-  geo
+  ipra_lc
 
 /-- An alternating row: the entries `x₀` become `(x₀ + d) − d`. -/
 theorem torus_alternating_odd (x₀ d : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (refl x₀ x₀) (x₀ + d - d) := by
-  geo
+  ipra_lc
 
 /-! ## The figure-eight knot -/
 
 /-- Two blocks, first position: `B²(x, x + d, x + e)₁ − x = −(2d + e)`. -/
 theorem figure_eight_first (x d e : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (refl (refl x (x + d)) (x + e) - x) (-(ZT.natLit 2 * d + e)) := by
-  geo
+  ipra_lc
 
 /-- Two blocks, second position: `B²(x, x + d, x + e)₂ − (x + d) = −d + 2e`. -/
 theorem figure_eight_second (x d e : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (refl (x + e) x - (x + d)) (-d + ZT.natLit 2 * e) := by
-  geo
+  ipra_lc
 
 /-- Two blocks, third position: `B²(x, x + d, x + e)₃ − (x + e) = d + 3e`. -/
 theorem figure_eight_third (x d e : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (refl (refl (x + e) x) (refl x (x + d)) - (x + e)) (d + ZT.natLit 3 * e) := by
-  geo
+  ipra_lc
 
 /-- `5 d = 2 (2d + e) − (−d + 2e)`: the first two closing equations give `5 d = 0`. -/
 theorem figure_eight_five (d e : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (ZT.natLit 5 * d)
       (ZT.natLit 2 * (ZT.natLit 2 * d + e) - (-d + ZT.natLit 2 * e)) := by
-  geo
+  ipra_lc
 
 /-- `d + 3e = (2d + e) + (−d + 2e)`: the third closing equation follows from the first two. -/
 theorem figure_eight_dependent (d e : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (d + ZT.natLit 3 * e) (ZT.natLit 2 * d + e + (-d + ZT.natLit 2 * e)) := by
-  geo
+  ipra_lc
 
 /-- `−d + 2e = 2 (2d + e) − 5d`: conversely `e = −2d` and `5d = 0` give the second closing equation. -/
 theorem figure_eight_converse₂ (d e : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (-d + ZT.natLit 2 * e) (ZT.natLit 2 * (ZT.natLit 2 * d + e) - ZT.natLit 5 * d) := by
-  geo
+  ipra_lc
 
 /-- `d + 3e = 3 (2d + e) − 5d`: conversely `e = −2d` and `5d = 0` give the third closing equation. -/
 theorem figure_eight_converse₃ (d e : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (d + ZT.natLit 3 * e) (ZT.natLit 3 * (ZT.natLit 2 * d + e) - ZT.natLit 5 * d) := by
-  geo
+  ipra_lc
 
 /-! ## Rational tangles -/
 
 /-- A right twist: the new south-east colour `2c − b` is `a + ((P + Q) + Q) u`. -/
 theorem twist_c (a u P Q : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (refl (a + (P + Q) * u) (a + P * u)) (a + (P + Q + Q) * u) := by
-  geo
+  ipra_lc
 
 /-- An inverse twist: the new north-east colour `2b − c` is `a + (P − Q) u`. -/
 theorem inverse_twist_b (a u P Q : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (refl (a + P * u) (a + (P + Q) * u)) (a + (P - Q) * u) := by
-  geo
+  ipra_lc
 
 /-- An inverse twist: the new south-east colour is the old north-east one, `a + ((P − Q) + Q) u`. -/
 theorem inverse_twist_c (a u P Q : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (a + P * u) (a + (P - Q + Q) * u) := by
-  geo
+  ipra_lc
 
 /-- A quarter-turn, `a′ = a + Q u`, `(P′, Q′) = (−Q, P)`: the new north-east colour is the old `a`. -/
 theorem turn_b (a u Q : ZT n) :
     Γ ⊢[PRAAx] ZT.eq a (a + Q * u + (-Q) * u) := by
-  geo
+  ipra_lc
 
 /-- A quarter-turn: the new south-east colour is the old `b = a + P u`. -/
 theorem turn_c (a u P Q : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (a + P * u) (a + Q * u + (-Q + P) * u) := by
-  geo
+  ipra_lc
 
 /-- A quarter-turn: the new south-west colour is the old `c = a + (P + Q) u`. -/
 theorem turn_d (a u P Q : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (a + (P + Q) * u) (a + Q * u + P * u) := by
-  geo
+  ipra_lc
 
 /-- The numerator closure, northern join: `b − a = P u`. -/
 theorem numerator_north (a u P : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (a + P * u - a) (P * u) := by
-  geo
+  ipra_lc
 
 /-- The numerator closure, southern join: `c − d = P u`. -/
 theorem numerator_south (a u P Q : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (a + (P + Q) * u - (a + Q * u)) (P * u) := by
-  geo
+  ipra_lc
 
 /-- The denominator closure, western join: `d − a = Q u`. -/
 theorem denominator_west (a u Q : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (a + Q * u - a) (Q * u) := by
-  geo
+  ipra_lc
 
 /-- The denominator closure, eastern join: `c − b = Q u`. -/
 theorem denominator_east (a u P Q : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (a + (P + Q) * u - (a + P * u)) (Q * u) := by
-  geo
+  ipra_lc
 
 /-! ## Affine colourings -/
 
 /-- `S_y(y) = y`. -/
 theorem affine_fixed (t y : ZT n) : Γ ⊢[PRAAx] ZT.eq (aff t y y) y := by
-  geo
+  ipra_lc
 
 /-- `A S_y(x) = S_{A(y)} A(x)` for `A(x) = α x + β`. -/
 theorem affine_conjugation (t y x α β : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (α * aff t y x + β) (aff t (α * y + β) (α * x + β)) := by
-  geo
+  ipra_lc
 
 /-- `S_y^{(s)} S_y^{(t)} x − x = (t s − 1)(x − y)`: the maps with parameters `t` and `s` are inverse exactly on
 the relation `t s = 1`. -/
 theorem affine_inverse (t s y x : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (aff s y (aff t y x) - x) ((t * s - ZT.natLit 1) * (x - y)) := by
-  geo
+  ipra_lc
 
 end LeanProofs.IPRA.Topology.KnotColourings

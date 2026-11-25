@@ -1,4 +1,5 @@
 import IPRADerivations.Core.Telescoping
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Exact facts about trapezoidal sums
@@ -142,9 +143,7 @@ end Closed
 theorem closed_polygon_zero (p q : PTm 2) {N x : PTm n}
     (hc : Γ ⊢[PRAAx] inst2 p N x + inst2 q zero x ≐ inst2 p zero x + inst2 q N x) :
     Γ ⊢[PRAAx] ZT.eq ⟨ap2 (sumF (upB p q)) N x, ap2 (sumF (dnB p q)) N x⟩ (ZT.natLit 0) := by
-  have c := natEq (closed_signed p q hc)
   show Γ ⊢[PRAAx] ap2 (sumF (upB p q)) N x + zero ≐ PTm.num 0 + ap2 (sumF (dnB p q)) N x
-  apply deriveNat; ipra_simps
-  linear_combination c
+  ipra_lc natEq (closed_signed p q hc)
 
 end LeanProofs.IPRA.Analysis.TrapezoidAffine

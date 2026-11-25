@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianGammaLocalPoleFormula
 import IPRADerivations.Analysis.GaussianRobinMeshExponential
 import IPRADerivations.Analysis.GaussianGammaInputProperness
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Exact center value of the original local Gamma regular part
@@ -61,9 +62,7 @@ theorem reciprocal_one : Γ ⊢[PRAAx] reciprocal (qone : PTm n) ≐ qone := by
   exact unit.eqSymm.eqTrans old
 
 theorem reciprocal_congr {q r : PTm n} (e : Γ ⊢[PRAAx] q ≐ r) : Γ ⊢[PRAAx] reciprocal q ≐ reciprocal r := by
-  simpa only [GaussianRationalReciprocal.subst_reciprocal,Syn.subst_var,Matrix.cons_val_zero] using
-    Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (reciprocal (var 0) : PTm 1) (σ := ![q]) (σ' := ![r])
-      (fun k => by fin_cases k; exact e)
+  ipra_congr (reciprocal (var 0) : PTm 1) with [e]
 
 def inverseZeroLaw (B j : PTm n) : Fm PTm n := inverseFactorProduct zeroCode B j ≐ qone
 @[simp] theorem subst_inverseZeroLaw {l : ℕ} (σ : Fin n → PTm l) (B j : PTm n) :
@@ -199,6 +198,5 @@ theorem actual_returned_original_C25_center_observations_closed : ([] : List (Fm
       (fstT (run (var 0) (var 1) (var 2) (var 3))) (sndT (sndT (run (var 0) (var 1) (var 2) (var 3))))
       (GaussianCoefficientNameBounds.unit (var 0)+GaussianCoefficientNameBounds.unit (var 1))
       (GaussianCoefficientNameBounds.unit (var 0)*GaussianCoefficientNameBounds.unit (var 1))) := closeUniv 4 (.impI (returned_center_distance _ _ _ _ Prf.hyp0))
-
 
 end LeanProofs.IPRA.Analysis.GaussianGammaPoleCenterValue

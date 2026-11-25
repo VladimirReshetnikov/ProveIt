@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.BoundedDescent
 import IPRADerivations.Foundations.BoundedFormulas
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Fixed points of an ascending bounded operator (`ipra_categorical_methods`, Section 4)
@@ -96,13 +97,9 @@ theorem descent (H : Ascent T m b V) : Descent T (rk m b) (fx T) V where
     rw [app1_fx] at hd
     rw [app1_rk, app1_rk]
     have hne : Γ ⊢[PRAAx] neg (app1 T s ≐ s) := .impI (.impE hd.wk (eqb_of_eq Prf.hyp0))
-    have e₁ := natEq (eq_add_of_le (H.bound (H.pres hv)))
-    have e₂ := natEq (eq_add_of_le (H.bound hv))
-    have e₃ := natEq (eq_add_of_le (H.asc hv hne))
-    have e₄ := natEq (H.stable hv)
     refine le_of_eq_add (d := monus (app1 m (app1 T s)) (succ (app1 m s))) ?_
-    apply deriveNat; ipra_simps
-    linear_combination e₁ - e₂ + e₃ - e₄
+    ipra_lc natEq (eq_add_of_le (H.bound (H.pres hv))) - natEq (eq_add_of_le (H.bound hv)) +
+      natEq (eq_add_of_le (H.asc hv hne)) - natEq (H.stable hv)
 
 /-- Every iterate of a valid state is valid. -/
 theorem valid_iter (H : Ascent T m b V) {s₀ : PTm k} (h₀ : Γ ⊢[PRAAx] app1 V s₀ ≐ one)
@@ -165,7 +162,7 @@ theorem saturate : Ascent upT sgT trueT trueT where
       have hp : ((s ≐ succ (pred s)) :: Γ) ⊢[PRAAx] s ≐ succ (pred s) := Prf.hyp0
       have hle : ((s ≐ succ (pred s)) :: Γ) ⊢[PRAAx] le one s :=
         le_congr (.eqRefl _) hp.eqSymm
-          (le_of_eq_add (d := pred s) (by apply deriveNat; ipra_simps; ring))
+          (le_of_eq_add (d := pred s) (by ipra_ring))
       exact .botE _ (.impE hne.wk ((congrAdd (.eqRefl s) hle).eqTrans (add_zero s)))
 
 /-- The saturating operator reaches its fixed point after `1 ∸ sg s₀` steps, as a closed

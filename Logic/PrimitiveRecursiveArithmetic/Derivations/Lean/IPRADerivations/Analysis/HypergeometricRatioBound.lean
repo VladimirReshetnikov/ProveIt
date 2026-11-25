@@ -100,7 +100,7 @@ theorem ratio_b (as bs : List (PTm n)) (hlen : as.length ≤ bs.length + 1) {p q
     have nE : ((p * shiftL as k ≐ zero) :: Γ) ⊢[PRAAx] Num as p (succ k) ≐
         (pw p k * p) * (pochL as k * shiftL as k) := congrMul (pw_succ p k) (pochL_succ as k)
     have re : ((p * shiftL as k ≐ zero) :: Γ) ⊢[PRAAx] (pw p k * p) * (pochL as k * shiftL as k) ≐
-        (pw p k * pochL as k) * (p * shiftL as k) := by apply deriveNat; ipra_simps; ring
+        (pw p k * pochL as k) * (p * shiftL as k) := by ipra_ring
     have n0 := nE.eqTrans (re.eqTrans ((congrMul (.eqRefl _) hz).eqTrans (mul_zero _)))
     have x0 : ((p * shiftL as k ≐ zero) :: Γ) ⊢[PRAAx] two * (Num as p (succ k) * Den bs k) ≐ zero :=
       (congrMul (.eqRefl _) ((congrMul n0 (.eqRefl _)).eqTrans (zero_mul _))).eqTrans (mul_zero _)
@@ -133,7 +133,7 @@ theorem shift_upper (as : List (PTm n)) {A k : PTm n} (hAk : Γ ⊢[PRAAx] le A 
 /-- `k ≥ 1` as positivity. -/
 theorem pos_of_one_le' {k : PTm n} (hk : Γ ⊢[PRAAx] le one k) : Γ ⊢[PRAAx] k ≐ succ (pred k) := by
   have e : Γ ⊢[PRAAx] k ≐ succ (monus k one) :=
-    (eq_add_of_le hk).eqTrans (by apply deriveNat; ipra_simps; ring)
+    (eq_add_of_le hk).eqTrans (by ipra_ring)
   exact e.eqTrans (congrSucc ((pred_succ _).eqSymm.eqTrans (congrPred e.eqSymm)))
 
 /-- `thm:hyp-conv` (b) with an explicit threshold: for `|as| ≤ |bs| + 1`, parameters `a_i ≤ A ≤ k`, `k ≥ 1` and
@@ -146,8 +146,8 @@ theorem threshold_b (as bs : List (PTm n)) (hlen : as.length ≤ bs.length + 1) 
   have h1 := le_mul_mono (le_refl (two * p)) su
   have h2 := le_mul_mono hq (le_refl (kL as k))
   have Hk : Γ ⊢[PRAAx] le (k * (two * (p * shiftL as k))) (k * ((p + q) * kL as k)) :=
-    le_trans (le_congr (by apply deriveNat; ipra_simps; ring) (by apply deriveNat; ipra_simps; ring) h1)
-      (le_congr (.eqRefl _) (by apply deriveNat; ipra_simps; ring) h2)
+    le_trans (le_congr (by ipra_ring) (by ipra_ring) h1)
+      (le_congr (.eqRefl _) (by ipra_ring) h2)
   have kpos := pos_of_one_le' hk
   exact ratio_b as bs hlen hk
     (mul_le_cancel (le_congr (congrMul kpos (.eqRefl _)) (congrMul kpos (.eqRefl _)) Hk))

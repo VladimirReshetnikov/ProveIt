@@ -1,6 +1,8 @@
 import IPRADerivations.Analysis.RationalPhiSharpFamily
 import IPRADerivations.Analysis.RationalBivariateGridCoefficients
 import IPRADerivations.Foundations.BoundedDecision
+import IPRADerivations.Core.CongruenceTactic
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The literal expanded quintic sharpness example
@@ -294,8 +296,7 @@ theorem Q_evaluation_code (x : PTm n) : Γ ⊢[PRAAx] evaluate Q (GaussianRation
   exact ZT.derive rfl
 
 theorem natCode_congr {x y : PTm n} (h : Γ ⊢[PRAAx] x ≐ y) : Γ ⊢[PRAAx] GaussianRationalSyntheticBounds.natCode x ≐ GaussianRationalSyntheticBounds.natCode y := by
-  simpa only [GaussianRationalSyntheticBounds.subst_natCode,Syn.subst_var,Matrix.cons_val_zero] using
-    Prf.eqCongr (Γ := Γ) (GaussianRationalSyntheticBounds.natCode (var 0) : PTm 1) (σ := ![x]) (σ' := ![y]) (fun i => by fin_cases i; exact h)
+  ipra_congr (GaussianRationalSyntheticBounds.natCode (var 0) : PTm 1) with [h]
 theorem integer_natural (k : ℕ) : (integer (k : ℤ) : PTm n) = GaussianRationalSyntheticBounds.natCode (num k) := by
   simp [integer,signed,GaussianRationalSyntheticBounds.natCode]
 
@@ -313,10 +314,7 @@ theorem named_point (j : ℕ) (hj : j < 5) : Γ ⊢[PRAAx] entry pointList (num 
     pairT (integer ((j+1 : ℕ) : ℤ)) (integer (((j+1)*(j+1)+1 : ℕ) : ℤ)) := by
   rw [integer_natural,integer_natural]
   have number : Γ ⊢[PRAAx] succ (num j)*succ (num j)+one ≐ num ((j+1)*(j+1)+1) := by
-    apply deriveNat
-    ipra_simps
-    simp only [Nat.cast_add,Nat.cast_mul,Nat.cast_one]
-    ring
+    ipra_lc [Nat.cast_add, Nat.cast_mul]
   exact (RationalPhiSharpFamily.point_lookup Q (num 5) (num j) (numeral_lt j 5 hj)).eqTrans
     (congrPairT (.eqRefl _) ((Q_evaluation_code (succ (num j))).eqTrans (natCode_congr number)))
 

@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.PrimesModFour
 import IPRADerivations.AnalyticNumberTheory.PowerResidue
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Primes `q ≡ 3 (mod 4)` and sums of two squares
@@ -54,7 +55,7 @@ theorem parities_three {q : PTm k} (h : Γ ⊢[PRAAx] rem q (two * two) ≐ succ
     Γ ⊢[PRAAx] (par q ≐ one) ⋏ (par (half q) ≐ one) := by
   have d := natEq (Prf.andE₁ (dm (Γ := Γ) four_pos q)); have hn := natEq h
   have e : Γ ⊢[PRAAx] q ≐ two * (two * quo q (two * two) + one) + one := by
-    apply deriveNat; ipra_simps; linear_combination d + hn
+    ipra_lc d + hn
   refine .andI ((congrAp1 parF e).eqTrans (par_double_succ _)) ?_
   exact (congrAp1 parF ((congrAp1 halfF e).eqTrans (half_double_succ _))).eqTrans (par_double_succ _)
 
@@ -62,8 +63,7 @@ theorem parities_three {q : PTm k} (h : Γ ⊢[PRAAx] rem q (two * two) ≐ succ
 
 theorem pred_alg {q : PTm k} (hq1 : Γ ⊢[PRAAx] q ≐ succ (pred q)) :
     Γ ⊢[PRAAx] pred q + one ≐ q * one + zero := by
-  have a := natEq hq1
-  apply deriveNat; ipra_simps; linear_combination -a
+  ipra_lc -natEq hq1
 
 /-- For a prime `q` with `q` and `⌊q/2⌋` odd, no `z² + 1` is divisible by `q`. -/
 theorem no_root {q : PTm k} (hq : Γ ⊢[PRAAx] prime q) (hodd : Γ ⊢[PRAAx] par q ≐ one)
@@ -86,7 +86,7 @@ theorem no_root {q : PTm k} (hq : Γ ⊢[PRAAx] prime q) (hodd : Γ ⊢[PRAAx] p
 
 theorem scaled (x y u : PTm k) :
     Γ ⊢[PRAAx] (x * x + y * y) * (u * u) ≐ (x * u) * (x * u) + (y * u) * (y * u) := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem one_one : Γ ⊢[PRAAx] (one : PTm k) * one ≐ one := one_mul one
 

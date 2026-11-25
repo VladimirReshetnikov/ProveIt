@@ -40,7 +40,7 @@ theorem lt_three_cases {x : PTm n} (h : Γ ⊢[PRAAx] lt x (num 3)) :
   · refine le_lt_absurd _ (a := num 3) (b := x) ?_ h.wk.wk.wk
     refine le_of_eq_add (d := pred (pred (pred x))) ?_
     refine hyp2.eqTrans ((congrSucc (Prf.hyp1.eqTrans (congrSucc Prf.hyp0))).eqTrans ?_)
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
 
 /-- The five Schläfli symbols, as values of `p' = p − 3` and `q' = q − 3`. -/
 def schlafli (a b : PTm n) : Fm PTm n :=
@@ -64,9 +64,9 @@ private theorem exclude {Θ : List (Fm PTm n)} {a b : PTm n} (c₁ c₂ k : ℕ)
 theorem classify {a b : PTm n} (hs : Γ ⊢[PRAAx] lt (a * b + a + b) (num 3)) :
     Γ ⊢[PRAAx] schlafli a b := by
   have ha : Γ ⊢[PRAAx] lt a (num 3) :=
-    lt_of_le_of_lt (le_of_eq_add (d := a * b + b) (by apply deriveNat; ipra_simps; ring)) hs
+    lt_of_le_of_lt (le_of_eq_add (d := a * b + b) (by ipra_ring)) hs
   have hb : Γ ⊢[PRAAx] lt b (num 3) :=
-    lt_of_le_of_lt (le_of_eq_add (d := a * b + a) (by apply deriveNat; ipra_simps; ring)) hs
+    lt_of_le_of_lt (le_of_eq_add (d := a * b + a) (by ipra_ring)) hs
   unfold schlafli
   refine .orE (lt_three_cases ha) ?_ (.orE Prf.hyp0 ?_ ?_)
   · -- a = 0

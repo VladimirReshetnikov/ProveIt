@@ -4,6 +4,7 @@ import IPRADerivations.Combinatorics.LucasIdentities
 import IPRADerivations.Combinatorics.BellPascalInversion
 import IPRADerivations.AnalyticNumberTheory.Fermat
 import IPRADerivations.AnalyticNumberTheory.PhiLower
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The prime-index Lucas congruence
@@ -128,10 +129,9 @@ theorem binet_base : Γ ⊢[PRAAx] pairT (pw two (zero : PTm n) * luc zero) (pw 
     pairT (two * W zero five) (two * V zero five) := by
   have a := natEq (pw_zero (Γ := Γ) (two : PTm n)); have b := natEq (luc_zero (Γ := Γ) (n := n))
   have c := natEq (fib_zero (Γ := Γ) (n := n)); have d := natEq (W_zero (Γ := Γ) (five : PTm n))
-  have e := natEq (V_zero (Γ := Γ) (five : PTm n))
   refine congrPair ?_ ?_
-  · apply deriveNat; ipra_simps; linear_combination (𝔞 (fibS (zero : PTm n)) + 𝔞 (monus (fibS (zero : PTm n)) (fib (zero : PTm n)))) * a + b - 2 * d
-  · apply deriveNat; ipra_simps; linear_combination 𝔞 (fib (zero : PTm n)) * a + c - 2 * e
+  · ipra_lc (𝔞 (fibS (zero : PTm n)) + 𝔞 (monus (fibS (zero : PTm n)) (fib (zero : PTm n)))) * a + b - 2 * d
+  · ipra_lc 𝔞 (fib (zero : PTm n)) * a + c - 2 * natEq (V_zero (Γ := Γ) (five : PTm n))
 where
   congrPair {a a' b b' : PTm n} (h₁ : Γ ⊢[PRAAx] a ≐ a') (h₂ : Γ ⊢[PRAAx] b ≐ b') :
       Γ ⊢[PRAAx] pairT a b ≐ pairT a' b' := LeanProofs.IPRA.DiophantineNumberTheory.FermatQuartic.congrPair h₁ h₂
@@ -140,18 +140,17 @@ theorem binet_step {m : PTm n} (ih : Γ ⊢[PRAAx] pairT (pw two m * luc m) (pw 
     pairT (two * W m five) (two * V m five)) :
     Γ ⊢[PRAAx] pairT (pw two (succ m) * luc (succ m)) (pw two (succ m) * fib (succ m)) ≐
       pairT (two * W (succ m) five) (two * V (succ m) five) := by
-  have i₁ := natEq ((fst_pair _ _).eqSymm.eqTrans ((congrFst ih).eqTrans (fst_pair _ _)))
-  have i₂ := natEq ((snd_pair _ _).eqSymm.eqTrans ((congrSnd ih).eqTrans (snd_pair _ _)))
-  have p := natEq (pw_succ (Γ := Γ) two m)
   have l₀ := natEq (luc_eq (Γ := Γ) m); have l₁ := natEq (luc_eq (Γ := Γ) (succ m))
   have f₀ := natEq (fib_succ (Γ := Γ) m); have f₁ := natEq (fibS_succ (Γ := Γ) m)
   have w := natEq (W_succ (Γ := Γ) m five); have v := natEq (V_succ (Γ := Γ) m five)
   refine LeanProofs.IPRA.DiophantineNumberTheory.FermatQuartic.congrPair ?_ ?_
-  · apply deriveNat; ipra_simps
-    linear_combination (𝔞 (fibS (succ m)) + 𝔞 (monus (fibS (succ m)) (fib (succ m)))) * p + 2 * 𝔞 (pw two m) * l₁ - 2 * 𝔞 (pw two m) * f₀ +
-      4 * 𝔞 (pw two m) * f₁ - 𝔞 (pw two m) * l₀ + i₁ + 5 * i₂ - 2 * w
-  · apply deriveNat; ipra_simps
-    linear_combination 𝔞 (fib (succ m)) * p + 2 * 𝔞 (pw two m) * f₀ - 𝔞 (pw two m) * l₀ + i₁ + i₂ - 2 * v
+  · ipra_lc (𝔞 (fibS (succ m)) + 𝔞 (monus (fibS (succ m)) (fib (succ m)))) * natEq (pw_succ (Γ := Γ) two m) +
+      2 * 𝔞 (pw two m) * l₁ - 2 * 𝔞 (pw two m) * f₀ + 4 * 𝔞 (pw two m) * f₁ - 𝔞 (pw two m) * l₀ +
+      natEq ((fst_pair _ _).eqSymm.eqTrans ((congrFst ih).eqTrans (fst_pair _ _))) +
+      5 * natEq ((snd_pair _ _).eqSymm.eqTrans ((congrSnd ih).eqTrans (snd_pair _ _))) - 2 * w
+  · ipra_lc 𝔞 (fib (succ m)) * natEq (pw_succ (Γ := Γ) two m) + 2 * 𝔞 (pw two m) * f₀ - 𝔞 (pw two m) * l₀ +
+      natEq ((fst_pair _ _).eqSymm.eqTrans ((congrFst ih).eqTrans (fst_pair _ _))) +
+      natEq ((snd_pair _ _).eqSymm.eqTrans ((congrSnd ih).eqTrans (snd_pair _ _))) - 2 * v
 
 private theorem binet₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] binetF := by
   refine ind _ trivial ?_ ?_
@@ -202,18 +201,13 @@ theorem W_prime {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (x : PTm n) :
   have tp : Γ ⊢[PRAAx] binom (fstT (pairT p x)) p * (ev p * pw (sndT (pairT p x)) (half p)) ≐ ev p * pw x (half p) :=
     (congrMul ((congrBinom (fst_pair _ _) (.eqRefl _)).eqTrans (binom_self' _))
       (congrMul (.eqRefl _) (congrPw (snd_pair _ _) (.eqRefl _)))).eqTrans (one_mul _)
-  have e₁ := natEq s₁; have e₂ := natEq ((congrAp2 (sumF (bgB gE)) hq (.eqRefl _)).eqTrans s₂)
-  have a := natEq t₀; have b := natEq tp; have c := natEq em
-  apply deriveNat; ipra_simps
-  linear_combination e₁ + e₂ + a + b + c
+  ipra_lc natEq s₁ + natEq ((congrAp2 (sumF (bgB gE)) hq (.eqRefl _)).eqTrans s₂) + natEq t₀ + natEq tp + natEq em
 
 /-! ## The congruence -/
 
 theorem luc_two : Γ ⊢[PRAAx] luc (two : PTm n) ≐ succ two := by
-  have r := natEq (luc_rec (Γ := Γ) (zero : PTm n)); have a := natEq (luc_one (Γ := Γ) (n := n))
-  have b := natEq (luc_zero (Γ := Γ) (n := n))
-  apply deriveNat; ipra_simps
-  linear_combination r + a + b
+  ipra_lc natEq (luc_rec (Γ := Γ) (zero : PTm n)) + natEq (luc_one (Γ := Γ) (n := n)) +
+    natEq (luc_zero (Γ := Γ) (n := n))
 
 theorem congrLuc {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) : Γ ⊢[PRAAx] luc a ≐ luc b :=
   congrAdd (congrFibS h) (congrMonus (congrFibS h) (congrFib h))
@@ -235,17 +229,13 @@ theorem even_prime {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (he : Γ ⊢[PRAAx] 
 theorem lucas_odd {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (ho : Γ ⊢[PRAAx] par p ≐ one) :
     Γ ⊢[PRAAx] rem (luc p) p ≐ rem one p := by
   have hq := LeanProofs.IPRA.prime_eq_succ_pred hp
-  have e₁ := natEq (binet_luc (Γ := Γ) p)
-  have e₂ := natEq (W_prime hp (five : PTm n))
-  have z := natEq ((congrMonus (.eqRefl (one : PTm n)) ho).eqTrans (monus_self one) : Γ ⊢[PRAAx] ev p ≐ zero)
-  have e₃ := natEq (cong_lin hq (fermat_at hp two))
   have e₄ := natEq (half_par (Γ := Γ) p); have h₁ := natEq ho
   refine rem_eq_of_eq hq (k₁ := luc p + succ (half p) * (quo (pw two p) p * luc p))
     (k₂ := one + succ (half p) * (two * quo (ap2 (sumF (shiftBody (bgB gE))) (pred p) (pairT p five)) p +
       quo two p * luc p)) ?_
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞 (half p) + 1) * (e₁ + 2 * e₂ + 2 * 𝔞 (pw five (half p)) * z) -
-    (𝔞 (half p) + 1) * (𝔞 (fibS p) + 𝔞 (monus (fibS p) (fib p))) * e₃ + ((𝔞 (fibS p) + 𝔞 (monus (fibS p) (fib p))) - 1) * (e₄ + h₁)
+  ipra_lc (𝔞 (half p) + 1) * (natEq (binet_luc (Γ := Γ) p) + 2 * natEq (W_prime hp (five : PTm n)) + 2 * 𝔞 (pw five (half p)) * natEq ((congrMonus (.eqRefl (one : PTm n)) ho).eqTrans (monus_self one) : Γ ⊢[PRAAx] ev p ≐ zero)) -
+    (𝔞 (half p) + 1) * (𝔞 (fibS p) + 𝔞 (monus (fibS p) (fib p))) * natEq (cong_lin hq (fermat_at hp two)) +
+    ((𝔞 (fibS p) + 𝔞 (monus (fibS p) (fib p))) - 1) * (e₄ + h₁)
 
 /-- The prime-index Lucas congruence: `L_p ≡ 1 (mod p)`. -/
 theorem lucas_prime {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) : Γ ⊢[PRAAx] rem (luc p) p ≐ rem one p := by

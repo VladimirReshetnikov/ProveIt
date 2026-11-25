@@ -1,4 +1,5 @@
 import IPRADerivations.Combinatorics.FisherInequality
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Hall's condition: necessity, and regular bipartite graphs
@@ -58,22 +59,14 @@ theorem regular_sides (A : Fin a → Fin b → ZT n) (d : ZT n) (hd1 : Γ ⊢[PR
   have e := ZT.toZ_eq (flag_count A d d hrow hcol)
   simp only [ZT.toZ_mul, ZT.toZ_natLit] at e
   have h1 : Γ ⊢[PRAAx] zle (ZT.natLit 0) (d * (ZT.natLit b - ZT.natLit a)) := by
-    refine zle_of_comb 0 ?_ nn_zero
-    zsimp
-    linear_combination (-1 : Groth (Q Γ)) * e
+    ipra_zle 0 with -e
   have h2 : Γ ⊢[PRAAx] zle (ZT.natLit 0) (d * (ZT.natLit a - ZT.natLit b)) := by
-    refine zle_of_comb 0 ?_ nn_zero
-    zsimp
-    linear_combination e
+    ipra_zle 0 with e
   have k1 := znn_of_pos_mul hd1 h1
   have k2 := znn_of_pos_mul hd1 h2
   constructor
-  · refine zle_of_comb (zsl k1) ?_ (nn_zsl _)
-    zsimp
-    ring
-  · refine zle_of_comb (zsl k2) ?_ (nn_zsl _)
-    zsimp
-    ring
+  · ipra_zle (zsl k1)
+  · ipra_zle (zsl k2)
 
 /-- `∑_j ∑_i a_{ij} x_i = d ∑_i x_i` when every row sums to `d`. -/
 theorem regular_sum {R : Type*} [CommRing R] (A : Fin a → Fin b → R) (x : Fin a → R) (d : R)
@@ -99,8 +92,6 @@ theorem regular_hall (A : Fin a → Fin b → ZT n) (x : Fin a → ZT n) (y : Fi
     rw [Finset.sum_sub_distrib, S, ← Finset.mul_sum]
     ring
   have k := znn_of_pos_mul hd1 hpos
-  refine zle_of_comb (zsl k) ?_ (nn_zsl _)
-  zsimp
-  ring
+  ipra_zle (zsl k)
 
 end LeanProofs.IPRA.Combinatorics.HallCondition

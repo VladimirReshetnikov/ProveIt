@@ -2,6 +2,7 @@ import IPRADerivations.DiophantineNumberTheory.QuadraticReciprocity
 import IPRADerivations.AnalyticNumberTheory.DivisorHyperbola
 import IPRADerivations.AnalyticNumberTheory.PhiDouble
 import IPRADerivations.Foundations.SignedSums
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The second supplementary law
@@ -121,29 +122,23 @@ theorem count_two {p : PTm n} (ep : Γ ⊢[PRAAx] p ≐ two * half p + one) :
 
 theorem even_alg {h t : PTm n} (e : Γ ⊢[PRAAx] h ≐ two * t) :
     Γ ⊢[PRAAx] h * succ h ≐ two * (t * succ (two * t)) + zero := by
-  have x := natEq e
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞 h + 2 * 𝔞 t + 1) * x
+  ipra_lc (𝔞 h + 2 * 𝔞 t + 1) * natEq e
 
 theorem odd_alg {h t : PTm n} (e : Γ ⊢[PRAAx] h ≐ two * t + one) :
     Γ ⊢[PRAAx] h * succ h ≐ two * (succ (two * t) * succ t) + zero := by
-  have x := natEq e
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞 h + 2 * 𝔞 t + 2) * x
+  ipra_lc (𝔞 h + 2 * 𝔞 t + 2) * natEq e
 
 theorem q_even (t : PTm n) : Γ ⊢[PRAAx] t * succ (two * t) ≐ t + two * (t * t) := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem q_odd (t : PTm n) : Γ ⊢[PRAAx] succ (two * t) * succ t ≐ succ t + two * (t * succ t) := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem n_alg {N t ρ h : PTm n} (hN : Γ ⊢[PRAAx] N + t ≐ h) (d : Γ ⊢[PRAAx] h ≐ two * t + ρ) :
     Γ ⊢[PRAAx] N ≐ t + ρ := by
-  have x := natEq hN; have y := natEq d
-  apply deriveNat; ipra_simps
-  linear_combination x + y
+  ipra_lc natEq hN + natEq d
 
-theorem succ_alg (t : PTm n) : Γ ⊢[PRAAx] t + one ≐ succ t := by apply deriveNat; ipra_simps; ring
+theorem succ_alg (t : PTm n) : Γ ⊢[PRAAx] t + one ≐ succ t := by ipra_ring
 
 /-- `N + ⌊h/2⌋ = h` gives `par N = par ⌊h (h + 1)/2⌋`. -/
 theorem par_two {h N : PTm n} (hN : Γ ⊢[PRAAx] N + quo h two ≐ h) :

@@ -2,6 +2,7 @@ import IPRADerivations.Analysis.GaussianGeneralPolynomialSamples
 import IPRADerivations.Analysis.GaussianRationalPowerDifference
 import IPRADerivations.Analysis.RationalArithmetic
 import IPRADerivations.AnalyticNumberTheory.Totatives
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Actual leading-zero degree padding of general coefficient names
@@ -120,13 +121,8 @@ theorem padding_sum (N P : PTm n) (hNP : Γ ⊢[PRAAx] le N P) : Γ ⊢[PRAAx] P
 theorem leading_degree (N P i : PTm n) (hNP : Γ ⊢[PRAAx] le N P)
     (hi : Γ ⊢[PRAAx] lt i (padding N P)) : Γ ⊢[PRAAx] le (succ N) (monus P i) := by
   have ip := le_trans (le_of_lt hi) (GaussianMonicResidualRadius.monus_le_left P N)
-  have hp := natEq (padding_sum N P hNP)
-  have hd := natEq (eq_add_of_le hi)
-  have ei := natEq (eq_add_of_le ip)
   apply le_of_eq_add (d := monus (padding N P) (succ i))
-  apply deriveNat
-  ipra_simps
-  linear_combination hp+hd-ei
+  ipra_lc natEq (padding_sum N P hNP)+natEq (eq_add_of_le hi)-natEq (eq_add_of_le ip)
 
 theorem tail_degree (N P j : PTm n) (hNP : Γ ⊢[PRAAx] le N P) : Γ ⊢[PRAAx]
     monus P (padding N P+j) ≐ monus N j :=
@@ -233,10 +229,7 @@ theorem padded_prefix (a : PR 3) (N P s x z r : PTm n) (hNP : Γ ⊢[PRAAx] le N
 theorem padded_evaluation (a : PR 3) (N P s x z : PTm n) (hNP : Γ ⊢[PRAAx] le N P) : Γ ⊢[PRAAx]
     evaluate (paddedSample a N P s x) z ≐ evaluate (GaussianGeneralPolynomialSamples.sample a N s x) z := by
   have count : Γ ⊢[PRAAx] succ P ≐ padding N P+succ N := by
-    have e := natEq (padding_sum N P hNP)
-    apply deriveNat
-    ipra_simps
-    linear_combination e
+    ipra_lc natEq (padding_sum N P hNP)
   exact (congrAp3 hornerF (padded_length a N P s x) (.eqRefl _) (.eqRefl _)).eqTrans
     ((congrAp3 hornerF count (.eqRefl _) (.eqRefl _)).eqTrans
       ((padded_prefix a N P s x z (succ N) hNP (le_refl _)).eqTrans

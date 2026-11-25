@@ -1,4 +1,5 @@
 import IPRADerivations.Geometry.RadonPartition
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Making approximate coordinates simplex-valued
@@ -52,9 +53,7 @@ theorem pos_sum_le : {Γ : List (Fm PTm n)} → (cs : List (ZT n)) → (t B : ZT
         have h'' : (ZT.eq (pp c) (ZT.natLit 0) :: Γ) ⊢[PRAAx] zle (t + (ZT.natLit 0 + ssum bs cs)) B :=
           (h (false :: bs)).wk
         ipra_zle zsl h''
-      refine zle_of_comb (zsl ih) ?_ (nn_zsl _)
-      zsimp
-      linear_combination -e
+      ipra_zle (zsl ih) with -e
     · have e0 : (ZT.eq (np c) (ZT.natLit 0) :: Γ) ⊢[PRAAx] ZT.eq (np c) (ZT.natLit 0) := Prf.hyp0
       have e := ZT.toZ_eq e0
       simp only [ZT.toZ_natLit, Nat.cast_zero] at e
@@ -63,9 +62,7 @@ theorem pos_sum_le : {Γ : List (Fm PTm n)} → (cs : List (ZT n)) → (t B : ZT
         have h'' : (ZT.eq (np c) (ZT.natLit 0) :: Γ) ⊢[PRAAx] zle (t + (c + ssum bs cs)) B :=
           (h (true :: bs)).wk
         ipra_zle zsl h''
-      refine zle_of_comb (zsl ih) ?_ (nn_zsl _)
-      zsimp
-      linear_combination -ep - e
+      ipra_zle (zsl ih) with -ep - e
 
 /-- Every subset sum is at most the sum of the positive parts. -/
 theorem sub_le_pos : (bs : List Bool) → (cs : List (ZT n)) → (Γ ⊢[PRAAx] zle (ssum bs cs) (psum cs))
@@ -89,9 +86,7 @@ theorem sub_le_pos : (bs : List Bool) → (cs : List (ZT n)) → (Γ ⊢[PRAAx] 
     · show Γ ⊢[PRAAx] zle (ZT.natLit 0 + ssum bs cs) (pp c + psum cs)
       ipra_zle zsl ih + zsl hp
     · show Γ ⊢[PRAAx] zle (c + ssum bs cs) (pp c + psum cs)
-      refine zle_of_comb (zsl ih + zsl hn) ?_ (nn_add (nn_zsl _) (nn_zsl _))
-      zsimp
-      linear_combination ep
+      ipra_zle (zsl ih + zsl hn) with ep
 
 /-- `∑_i Π_i(b) = 1`: every subset sum of the shifted coordinates is at most `one`, and one of them is
 `one`. -/

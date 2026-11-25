@@ -1,4 +1,5 @@
 import IPRADerivations.Combinatorics.CatalanGrowth
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The Wallis bounds for the central binomial coefficient
@@ -47,36 +48,26 @@ abbrev three : PTm n := succ two
 
 /-- `C(2, 1) = 2`. -/
 theorem cb_one : Γ ⊢[PRAAx] cb (succ (zero : PTm n)) ≐ two := by
-  have r := natEq (cb_rec (Γ := Γ) zero)
-  have z := natEq (cb_zero (Γ := Γ))
-  apply deriveNat; ipra_simps
-  linear_combination r + 2 * z
+  ipra_lc natEq (cb_rec (Γ := Γ) zero) + 2 * natEq (cb_zero (Γ := Γ))
 
 /-! ## The upper bound -/
 
 theorem upper_base :
     Γ ⊢[PRAAx] le (pw sixteen (succ (zero : PTm n)))
       (four * succ zero * (cb (succ zero) * cb (succ zero))) := by
-  have c := natEq (cb_one (Γ := Γ))
-  have p1 := natEq (pw_succ (Γ := Γ) sixteen zero)
-  have p0 := natEq (pw_zero (Γ := Γ) sixteen)
   refine le_of_eq_add (d := zero) ?_
-  apply deriveNat; ipra_simps
-  linear_combination -p1 - 16 * p0 + 4 * (𝔞 (cb (succ (zero : PTm n))) + 2) * c
+  ipra_lc -natEq (pw_succ (Γ := Γ) sixteen zero) - 16 * natEq (pw_zero (Γ := Γ) sixteen) +
+    4 * (𝔞 (cb (succ (zero : PTm n))) + 2) * natEq (cb_one (Γ := Γ))
 
 theorem upper_step {k : PTm n}
     (ih : Γ ⊢[PRAAx] le (pw sixteen (succ k)) (four * succ k * (cb (succ k) * cb (succ k)))) :
     Γ ⊢[PRAAx] le (pw sixteen (succ (succ k)))
       (four * succ (succ k) * (cb (succ (succ k)) * cb (succ (succ k)))) := by
-  have r := natEq (cb_rec (Γ := Γ) (succ k))
-  have e := natEq (eq_add_of_le ih)
-  have p := natEq (pw_succ (Γ := Γ) sixteen (succ k))
   refine mul_le_cancel (d' := succ k) (le_of_eq_add (d := sixteen * (cb (succ k) * cb (succ k)) +
     sixteen * succ (succ k) *
       monus (four * succ k * (cb (succ k) * cb (succ k))) (pw sixteen (succ k))) ?_)
-  apply deriveNat; ipra_simps
-  linear_combination (-(𝔞 k + 2)) * p + 16 * (𝔞 k + 2) * e +
-    4 * ((𝔞 k + 2) * 𝔞 (cb (succ (succ k))) + 2 * (2 * 𝔞 k + 3) * 𝔞 (cb (succ k))) * r
+  ipra_lc (-(𝔞 k + 2)) * natEq (pw_succ (Γ := Γ) sixteen (succ k)) + 16 * (𝔞 k + 2) * natEq (eq_add_of_le ih) +
+    4 * ((𝔞 k + 2) * 𝔞 (cb (succ (succ k))) + 2 * (2 * 𝔞 k + 3) * 𝔞 (cb (succ k))) * natEq (cb_rec (Γ := Γ) (succ k))
 
 /-- Variable: `0 = k`. -/
 private abbrev upF : Fm PTm 1 :=
@@ -102,30 +93,23 @@ theorem wallis_upper (k : PTm n) :
 theorem lower_base :
     Γ ⊢[PRAAx] le (four * succ (two * succ (zero : PTm n)) * (cb (succ zero) * cb (succ zero)))
       (three * pw sixteen (succ zero)) := by
-  have c := natEq (cb_one (Γ := Γ))
-  have p1 := natEq (pw_succ (Γ := Γ) sixteen zero)
-  have p0 := natEq (pw_zero (Γ := Γ) sixteen)
   refine le_of_eq_add (d := zero) ?_
-  apply deriveNat; ipra_simps
-  linear_combination 3 * p1 + 48 * p0 - 12 * (𝔞 (cb (succ (zero : PTm n))) + 2) * c
+  ipra_lc 3 * natEq (pw_succ (Γ := Γ) sixteen zero) + 48 * natEq (pw_zero (Γ := Γ) sixteen) -
+    12 * (𝔞 (cb (succ (zero : PTm n))) + 2) * natEq (cb_one (Γ := Γ))
 
 theorem lower_step {k : PTm n}
     (ih : Γ ⊢[PRAAx] le (four * succ (two * succ k) * (cb (succ k) * cb (succ k)))
       (three * pw sixteen (succ k))) :
     Γ ⊢[PRAAx] le (four * succ (two * succ (succ k)) * (cb (succ (succ k)) * cb (succ (succ k))))
       (three * pw sixteen (succ (succ k))) := by
-  have r := natEq (cb_rec (Γ := Γ) (succ k))
-  have e := natEq (eq_add_of_le ih)
-  have p := natEq (pw_succ (Γ := Γ) sixteen (succ k))
   refine mul_le_cancel (d' := succ k) (mul_le_cancel (d' := succ k)
     (le_of_eq_add (d := sixteen * succ (two * succ k) * (cb (succ k) * cb (succ k)) +
       sixteen * (succ (succ k) * succ (succ k)) *
         monus (three * pw sixteen (succ k))
           (four * succ (two * succ k) * (cb (succ k) * cb (succ k)))) ?_))
-  apply deriveNat; ipra_simps
-  linear_combination (3 * (𝔞 k + 2) ^ 2) * p + (16 * (𝔞 k + 2) ^ 2) * e -
-    (4 * (2 * (𝔞 k + 2) + 1) *
-      ((𝔞 k + 2) * 𝔞 (cb (succ (succ k))) + 2 * (2 * 𝔞 k + 3) * 𝔞 (cb (succ k)))) * r
+  ipra_lc (3 * (𝔞 k + 2) ^ 2) * natEq (pw_succ (Γ := Γ) sixteen (succ k)) +
+    (16 * (𝔞 k + 2) ^ 2) * natEq (eq_add_of_le ih) -
+    (4 * (2 * (𝔞 k + 2) + 1) * ((𝔞 k + 2) * 𝔞 (cb (succ (succ k))) + 2 * (2 * 𝔞 k + 3) * 𝔞 (cb (succ k)))) * natEq (cb_rec (Γ := Γ) (succ k))
 
 /-- Variable: `0 = k`. -/
 private abbrev loF : Fm PTm 1 :=

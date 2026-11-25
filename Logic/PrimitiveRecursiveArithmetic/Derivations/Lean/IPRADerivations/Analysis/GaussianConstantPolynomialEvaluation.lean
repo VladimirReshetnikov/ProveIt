@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianConstantCoefficientNames
 import IPRADerivations.Analysis.GaussianGeneralFTAValueZero
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The constant-name FTA program evaluates the original numerical polynomial
@@ -114,9 +115,7 @@ def originalValue (point : PR 2) (C N U y t : PTm n) : PTm n :=
 
 theorem recode_congr {z w : PTm n} (h : Γ ⊢[PRAAx] z ≐ w) : Γ ⊢[PRAAx]
     GaussianFastValueCut.recode z ≐ GaussianFastValueCut.recode w := by
-  simpa only [GaussianFastValueCut.subst_recode,Syn.subst_var,Matrix.cons_val_zero] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (GaussianFastValueCut.recode (var 0) : PTm 1)
-      (σ := ![z]) (σ' := ![w]) (fun i => by fin_cases i; exact h)
+  ipra_congr (GaussianFastValueCut.recode (var 0) : PTm 1) with [h]
 
 /-- The exact generic normalizer is a recoding of the ORIGINAL evaluation. -/
 theorem value_original (point : PR 2) (C N U y t : PTm n)

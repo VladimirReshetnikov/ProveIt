@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.PrimorialLower
 import IPRADerivations.AnalyticNumberTheory.PrimeRank
 import IPRADerivations.AnalyticNumberTheory.WeightedMangoldt
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # An integer Chebyshev lower bound for the prime count
@@ -63,8 +64,7 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 theorem alg_full {I V S : PTm n} (i : Γ ⊢[PRAAx] I ≐ one) (s : Γ ⊢[PRAAx] S ≐ one) :
     Γ ⊢[PRAAx] I * V * S ≐ V + zero := by
-  have a := natEq i; have b := natEq s
-  apply deriveNat; ipra_simps; linear_combination 𝔞 V * 𝔞 S * a + 𝔞 V * b
+  ipra_lc 𝔞 V * 𝔞 S * natEq i + 𝔞 V * natEq s
 
 /-- For a prime `q`: `v_q(L_P) ≤ [q prime] v_q(L_P) [q ≤ P]`. -/
 theorem val_full {q P : PTm n} (hq : Γ ⊢[PRAAx] prime q) :
@@ -167,7 +167,7 @@ theorem exp_le_of_pw_le {a b : PTm n} (h : Γ ⊢[PRAAx] le (pw two a) (pw two b
   exact le_lt_absurd _ h.wk (WeightedMangoldt.pw_lt_exp (le_refl two) hl)
 
 theorem expo_alg (B Q : PTm n) : Γ ⊢[PRAAx] succ B + succ B * Q ≐ succ B * succ Q := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- For `1 ≤ P < 2^{b+1}`: `P − 1 ≤ (b + 1)(π(P) + 1)`. -/
 theorem cheb_lower_log {P b : PTm n} (hP : Γ ⊢[PRAAx] P ≐ succ (pred P))
@@ -184,8 +184,7 @@ theorem cheb_lower_log {P b : PTm n} (hP : Γ ⊢[PRAAx] P ≐ succ (pred P))
 
 theorem ge_alg {c S C K : PTm n} (t : Γ ⊢[PRAAx] two * c + S ≐ (two * two) * C)
     (s : Γ ⊢[PRAAx] succ K * c ≐ C) : Γ ⊢[PRAAx] S ≐ two * C + two * (K * c) := by
-  have a := natEq t; have b := natEq s
-  apply deriveNat; ipra_simps; linear_combination a - 2 * b
+  ipra_lc natEq t - 2 * natEq s
 
 /-- `2 C(2k, k) ≤ C(2k + 2, k + 1)`. -/
 theorem cb_succ_ge (k : PTm n) : Γ ⊢[PRAAx] le (two * cb k) (cb (succ k)) :=

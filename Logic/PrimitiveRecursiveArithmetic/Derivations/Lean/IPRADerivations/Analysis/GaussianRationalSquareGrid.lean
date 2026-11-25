@@ -1,6 +1,8 @@
 import IPRADerivations.Analysis.GaussianRationalGridRounding
 import IPRADerivations.Analysis.GaussianRationalDirectionNormalizer
 import IPRADerivations.Foundations.MasterCertificate
+import IPRADerivations.Core.CongruenceTactic
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Actual signed square grids and nearest Gaussian points
@@ -144,16 +146,10 @@ theorem native_error_bound (R M z : PTm n) (h : Γ ⊢[PRAAx] bounded z R one) :
   have y := GaussianRationalGridRounding.error_square _ _ _ R M (raw_den_positive z) (.andE₂ boxes)
   let X := zabs (GaussianRationalGridRounding.error (re (rawGaussian z)).pos (re (rawGaussian z)).neg (rawDen z) R M)
   let Y := zabs (GaussianRationalGridRounding.error (im (rawGaussian z)).pos (im (rawGaussian z)).neg (rawDen z) R M)
-  have hx := natEq (eq_add_of_le x)
-  have hy := natEq (eq_add_of_le y)
-  have eq := natEq (native_error_norm (Γ := Γ) R M z)
   apply RationalValueBounds.positive_cancel (le_succ_self one)
   apply le_of_eq_add (d := monus (rawDen z*rawDen z) ((two*two)*(X*X))+
     monus (rawDen z*rawDen z) ((two*two)*(Y*Y))+two*normSq (nativeError R M z))
-  apply deriveNat
-  simp only [X,Y]
-  ipra_simps
-  linear_combination hx+hy-4*eq
+  ipra_lc [X, Y] natEq (eq_add_of_le x)+natEq (eq_add_of_le y)-4*natEq (native_error_norm (Γ := Γ) R M z)
 
 theorem nearest_difference_represents (R M z : PTm n) (hM : Γ ⊢[PRAAx] le one M) : Γ ⊢[PRAAx]
     represents (GaussianRationalMetric.qsub z (nearest R M z)) (nativeError R M z) (rawDen z*M) := by
@@ -173,9 +169,7 @@ theorem side_congr {R S M K : PTm n} (hR : Γ ⊢[PRAAx] R ≐ S) (hM : Γ ⊢[P
     side R M ≐ side S K := congrSucc (congrMul (congrMul (.eqRefl two) hR) hM)
 theorem point_congr {R S M K i u j v : PTm n} (hR : Γ ⊢[PRAAx] R ≐ S) (hM : Γ ⊢[PRAAx] M ≐ K)
     (hi : Γ ⊢[PRAAx] i ≐ u) (hj : Γ ⊢[PRAAx] j ≐ v) : Γ ⊢[PRAAx] point R M i j ≐ point S K u v := by
-  simpa only [subst_point,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_three,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (point (var 0) (var 1) (var 2) (var 3) : PTm 4)
-      (σ := ![R,M,i,j]) (σ' := ![S,K,u,v]) (fun k => by fin_cases k; exact hR; exact hM; exact hi; exact hj)
+  ipra_congr (point (var 0) (var 1) (var 2) (var 3) : PTm 4) with [hR, hM, hi, hj]
 
 theorem grid_length (R M : PTm n) : Γ ⊢[PRAAx] length (grid R M) ≐ side R M*side R M := sequence_length _ _ _
 theorem grid_body_at (R M r : PTm n) : Γ ⊢[PRAAx]

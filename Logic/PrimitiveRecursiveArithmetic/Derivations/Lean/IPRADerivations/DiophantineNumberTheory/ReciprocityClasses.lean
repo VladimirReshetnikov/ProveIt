@@ -1,6 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.QuadraticReciprocity
 import IPRADerivations.DiophantineNumberTheory.FermatTwoSquares
 import IPRADerivations.DiophantineNumberTheory.TwoSquaresObstruction
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Quadratic reciprocity by residue classes modulo 4
@@ -63,16 +64,16 @@ theorem sign_cases (p a : PTm n) : Γ ⊢[PRAAx] (signBit p a ≐ zero) ⋎ (sig
 /-! ## Two bits and the parity of their sum -/
 
 theorem p00 : Γ ⊢[PRAAx] par ((zero : PTm n) + zero) ≐ zero :=
-  (congrAp1 parF (by apply deriveNat; ipra_simps; ring)).eqTrans (par_double zero)
+  (congrAp1 parF (by ipra_ring)).eqTrans (par_double zero)
 
 theorem p01 : Γ ⊢[PRAAx] par ((zero : PTm n) + one) ≐ one :=
-  (congrAp1 parF (by apply deriveNat; ipra_simps; ring)).eqTrans (par_double_succ zero)
+  (congrAp1 parF (by ipra_ring)).eqTrans (par_double_succ zero)
 
 theorem p10 : Γ ⊢[PRAAx] par ((one : PTm n) + zero) ≐ one :=
-  (congrAp1 parF (by apply deriveNat; ipra_simps; ring)).eqTrans (par_double_succ zero)
+  (congrAp1 parF (by ipra_ring)).eqTrans (par_double_succ zero)
 
 theorem p11 : Γ ⊢[PRAAx] par ((one : PTm n) + one) ≐ zero :=
-  (congrAp1 parF (by apply deriveNat; ipra_simps; ring)).eqTrans (par_double one)
+  (congrAp1 parF (by ipra_ring)).eqTrans (par_double one)
 
 theorem sum_alg {x y a b c : PTm n} (ex : Γ ⊢[PRAAx] x ≐ a) (ey : Γ ⊢[PRAAx] y ≐ b)
     (e : Γ ⊢[PRAAx] a + b ≐ c) : Γ ⊢[PRAAx] x + y ≐ c := (congrAdd ex ey).eqTrans e
@@ -112,20 +113,16 @@ theorem bits_odd {x y : PTm n} (hx : Γ ⊢[PRAAx] (x ≐ zero) ⋎ (x ≐ one))
 
 theorem ev_alg {h k : PTm n} (e : Γ ⊢[PRAAx] h ≐ two * half h) :
     Γ ⊢[PRAAx] h * k ≐ two * (half h * k) := by
-  have x := natEq e
-  apply deriveNat; ipra_simps; linear_combination 𝔞 k * x
+  ipra_lc 𝔞 k * natEq e
 
 theorem ev_alg' {h k : PTm n} (e : Γ ⊢[PRAAx] k ≐ two * half k) :
     Γ ⊢[PRAAx] h * k ≐ two * (h * half k) := by
-  have x := natEq e
-  apply deriveNat; ipra_simps; linear_combination 𝔞 h * x
+  ipra_lc 𝔞 h * natEq e
 
 theorem od_alg {h k : PTm n} (e1 : Γ ⊢[PRAAx] h ≐ two * half h + one)
     (e2 : Γ ⊢[PRAAx] k ≐ two * half k + one) :
     Γ ⊢[PRAAx] h * k ≐ two * (two * (half h * half k) + half h + half k) + one := by
-  have x := natEq e1; have y := natEq e2
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 k * x + (2 * 𝔞 (half h) + 1) * y
+  ipra_lc 𝔞 k * natEq e1 + (2 * 𝔞 (half h) + 1) * natEq e2
 
 /-! ## The residue-class form -/
 

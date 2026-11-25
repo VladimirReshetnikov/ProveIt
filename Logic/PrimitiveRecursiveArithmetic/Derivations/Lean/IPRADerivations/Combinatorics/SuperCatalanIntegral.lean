@@ -3,6 +3,7 @@ import IPRADerivations.Combinatorics.BellTouchardPower
 import IPRADerivations.AnalyticNumberTheory.Primes
 import IPRADerivations.DiophantineNumberTheory.Coprime
 import IPRADerivations.Foundations.BoundedReflection
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The super-Catalan numbers are integers (`catalan_numbers_ipra_2026-11-16`, (7.14))
@@ -99,19 +100,19 @@ theorem gessel (m k : PTm n) :
   have Eb := fact_succ (Γ := Γ) k zero
   have Ec : Γ ⊢[PRAAx] fact (succ m + k) ≐ fact (m + k) * succ (m + k) :=
     (congrFact (a := succ m + k) (b := succ (m + k))
-      (by apply deriveNat; ipra_simps; ring)).eqTrans (fact_succ (m + k) zero)
+      (by ipra_ring)).eqTrans (fact_succ (m + k) zero)
   have Ed : Γ ⊢[PRAAx] fact (m + succ k) ≐ fact (m + k) * succ (m + k) :=
     (congrFact (a := m + succ k) (b := succ (m + k))
-      (by apply deriveNat; ipra_simps; ring)).eqTrans (fact_succ (m + k) zero)
+      (by ipra_ring)).eqTrans (fact_succ (m + k) zero)
   have Ee : Γ ⊢[PRAAx] fact (succ m + succ m) ≐
       fact (m + m) * succ (m + m) * succ (succ (m + m)) :=
     (congrFact (a := succ m + succ m) (b := succ (succ (m + m)))
-      (by apply deriveNat; ipra_simps; ring)).eqTrans
+      (by ipra_ring)).eqTrans
       ((fact_succ (succ (m + m)) zero).eqTrans (congrMul (fact_succ (m + m) zero) (.eqRefl _)))
   have Ef : Γ ⊢[PRAAx] fact (succ k + succ k) ≐
       fact (k + k) * succ (k + k) * succ (succ (k + k)) :=
     (congrFact (a := succ k + succ k) (b := succ (succ (k + k)))
-      (by apply deriveNat; ipra_simps; ring)).eqTrans
+      (by ipra_ring)).eqTrans
       ((fact_succ (succ (k + k)) zero).eqTrans (congrMul (fact_succ (k + k) zero) (.eqRefl _)))
   unfold Nu De
   have ea := natEq Ea
@@ -154,12 +155,8 @@ theorem dvd_step {m k : PTm n} (h1 : Γ ⊢[PRAAx] dvd (De m k) (Nu m k))
   have key : Γ ⊢[PRAAx] De m k * De (succ m) k *
         (Nu m (succ k) + De m (succ k) * quo (Nu (succ m) k) (De (succ m) k)) ≐
       De m k * De (succ m) k * (De m (succ k) * (num 4 * quo (Nu m k) (De m k))) := by
-    have g := natEq (gessel (Γ := Γ) m k)
-    have ea := natEq a
-    have eb := natEq b
-    apply deriveNat; ipra_simps
-    linear_combination g - 𝔞 (De m (succ k)) * 𝔞 (De m k) * eb +
-      4 * (𝔞 (De m (succ k)) * 𝔞 (De (succ m) k)) * ea
+    ipra_lc natEq (gessel (Γ := Γ) m k) - 𝔞 (De m (succ k)) * 𝔞 (De m k) * natEq b +
+      4 * (𝔞 (De m (succ k)) * 𝔞 (De (succ m) k)) * natEq a
   have c := mul_cancel (pos_mul (De_pos m k) (De_pos (succ m) k)) key
   exact dvd_sub' (De_pos m (succ k)) (dvd_of_eq' (De_pos m (succ k)) c)
     (dvd_of_eq' (De_pos m (succ k)) (.eqRefl _))
@@ -195,11 +192,7 @@ theorem level_at {m k T : PTm n} (hQ : Γ ⊢[PRAAx] allB vB (succ T) (lvP k T) 
 theorem lv_ne_gt {m k T : PTm n} (h : Γ ⊢[PRAAx] lt T (m + k))
     (hz : Γ ⊢[PRAAx] inst2 vB m (lvP k T) ≐ zero) : Γ ⊢[PRAAx] Fm.bot := by
   refine succ_ne_zero' _ (a := monus (m + k) (succ T) + eqb (rem (Nu m k) (De m k)) zero) ?_
-  have e₁ := natEq (v_at (Γ := Γ) m k T)
-  have e₂ := natEq hz
-  have e₃ := natEq (monus_of_lt h)
-  apply deriveNat; ipra_simps
-  linear_combination e₂ - e₁ - e₃
+  ipra_lc natEq hz - natEq (v_at (Γ := Γ) m k T) - natEq (monus_of_lt h)
 
 theorem lv_ne_le {m k T : PTm n} (h : Γ ⊢[PRAAx] dvd (De m k) (Nu m k))
     (hm : Γ ⊢[PRAAx] le (m + k) T)
@@ -234,8 +227,8 @@ theorem level_succ {k T : PTm n} (hQ : Γ ⊢[PRAAx] allB vB (succ T) (lvP k T) 
   refine lv_ne (.impI (dvd_step
     (level_at hQ'.wk.wk (le_trans (le_of_eq_add (d := one) ?_) Prf.hyp0))
     (level_at hQ'.wk.wk (le_congr ?_ (.eqRefl _) Prf.hyp0))))
-  · apply deriveNat; ipra_simps; ring
-  · apply deriveNat; ipra_simps; ring
+  · ipra_ring
+  · ipra_ring
 
 /-- The induction formula on `k`: the level bit below `T`. -/
 abbrev powF (T : PTm n) : Fm PTm (n + 1) :=

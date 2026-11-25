@@ -1,5 +1,6 @@
 import IPRADerivations.Combinatorics.Fibonacci
 import IPRADerivations.Combinatorics.HockeyStick
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Fibonacci numbers as diagonal sums of Pascal's triangle
@@ -101,7 +102,7 @@ theorem diag_succ_succ (m : PTm n) :
   have l := sum_succ' (Γ := Γ) (shiftBody dB) (succ m) (succ (succ m))
   rw [inst2_shiftBody, inst2_d] at l
   have hk : Γ ⊢[PRAAx] le (succ zero) (succ (succ m)) :=
-    le_of_eq_add (d := succ m) (by apply deriveNat; ipra_simps; ring)
+    le_of_eq_add (d := succ m) (by ipra_ring)
   have z : Γ ⊢[PRAAx] gb (monus (succ (succ m)) (succ (succ m))) (succ (succ m)) ≐ zero :=
     (congrGb (monus_self _) (.eqRefl _)).eqTrans (gb_above hk)
   have c : Γ ⊢[PRAAx] ap2 (sumF (shiftBody dB)) (succ m) (succ (succ m)) ≐
@@ -117,10 +118,7 @@ theorem diag_succ_succ (m : PTm n) :
 
 /-- `diag (m + 2) = diag (m + 1) + diag m`. -/
 theorem diag_rec (m : PTm n) : Γ ⊢[PRAAx] diag (succ (succ m)) ≐ diag (succ m) + diag m := by
-  have h1 := natEq (diag_succ (Γ := Γ) m)
-  have h2 := natEq (diag_succ_succ (Γ := Γ) m)
-  apply deriveNat; ipra_simps
-  linear_combination h2 - h1
+  ipra_lc natEq (diag_succ_succ (Γ := Γ) m) - natEq (diag_succ (Γ := Γ) m)
 
 /-! ## Identification with the Fibonacci numbers -/
 
@@ -130,13 +128,8 @@ theorem fibS_one : Γ ⊢[PRAAx] fibS (succ (zero : PTm n)) ≐ one :=
 theorem diag_step {k : PTm n} (a : Γ ⊢[PRAAx] diag k ≐ fibS k)
     (b : Γ ⊢[PRAAx] diag (succ k) ≐ fibS (succ k)) :
     Γ ⊢[PRAAx] diag (succ (succ k)) ≐ fibS (succ (succ k)) := by
-  have r := natEq (diag_rec (Γ := Γ) k)
-  have f1 := natEq (fibS_succ (Γ := Γ) (succ k))
-  have f2 := natEq (fib_succ (Γ := Γ) k)
-  have ea := natEq a
-  have eb := natEq b
-  apply deriveNat; ipra_simps
-  linear_combination r + eb + ea - f1 - f2
+  ipra_lc natEq (diag_rec (Γ := Γ) k) + natEq b + natEq a - natEq (fibS_succ (Γ := Γ) (succ k)) -
+    natEq (fib_succ (Γ := Γ) k)
 
 /-- Variable: `0 = k`. -/
 private abbrev fdF : Fm PTm 1 :=

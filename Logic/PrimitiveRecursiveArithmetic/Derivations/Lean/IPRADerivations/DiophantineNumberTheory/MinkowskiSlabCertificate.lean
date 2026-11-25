@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.MinkowskiSlabLinearity
 import IPRADerivations.DiophantineNumberTheory.MinkowskiCertificate
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # A numerical rational slab certificate for the actual Minkowski extractor
@@ -49,10 +50,7 @@ theorem multiply_double_balance (a b : PTm n) : Γ ⊢[PRAAx]
   have hr := represents_multiply (Γ := Γ) a (double b) _ _ _ _ (represents_self a) (double_value b)
   apply RationalFiniteSum.canonical_equal _ _ _ _ _ _ (multiply_guard _ _) (multiply_guard _ _) hl hr
     (RationalArithmetic.product_denominator_positive a b) (RationalArithmetic.product_denominator_positive a b)
-  apply ZT.derive
-  simp only [RationalArithmetic.productDenominator,ZT.toZ_mul,ZT.toZ_ofNat]
-  ipra_simps
-  ring
+  ipra_lc [RationalArithmetic.productDenominator]
 
 theorem dot_double_balance (N c q : PTm n) : Γ ⊢[PRAAx]
     dot N (doubleVector N c) q ≐ dot N c (doubleVector N q) := by

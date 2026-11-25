@@ -207,8 +207,8 @@ end Bounds
 theorem split_eq {M u v u' v' : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) (hv : Γ ⊢[PRAAx] lt v M)
     (hv' : Γ ⊢[PRAAx] lt v' M) (h : Γ ⊢[PRAAx] u * M + v ≐ u' * M + v') :
     Γ ⊢[PRAAx] (u ≐ u') ⋏ (v ≐ v') := by
-  have d1 := dmu (z := u * M + v) (q := u) (r := v) hM (by apply deriveNat; ipra_simps; ring) hv
-  have d2 := dmu (z := u' * M + v') (q := u') (r := v') hM (by apply deriveNat; ipra_simps; ring) hv'
+  have d1 := dmu (z := u * M + v) (q := u) (r := v) hM (by ipra_ring) hv
+  have d2 := dmu (z := u' * M + v') (q := u') (r := v') hM (by ipra_ring) hv'
   exact .andI ((Prf.andE₁ d1).eqSymm.eqTrans ((congrAp2 quoF h (.eqRefl _)).eqTrans (Prf.andE₁ d2)))
     ((Prf.andE₂ d1).eqSymm.eqTrans ((congrAp2 remF h (.eqRefl _)).eqTrans (Prf.andE₂ d2)))
 

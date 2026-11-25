@@ -2,6 +2,7 @@ import IPRADerivations.Foundations.FormalDerivation
 import IPRADerivations.Foundations.ChainViability
 import IPRADerivations.Probability.Variance
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Grid rotations and the scalar square-root inequality
@@ -76,19 +77,13 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 theorem ad_sq_diff_of_le {j k : PTm n} (h : Γ ⊢[PRAAx] le j k) :
     Γ ⊢[PRAAx] ad (k * k) (j * j) ≐ ad k j * (k + j) := by
-  have e₁ := natEq (eq_add_of_le h)
-  have e₂ := natEq (eq_add_of_le (sq_le_sq h))
-  have z₁ := natEq h
-  have z₂ := natEq (sq_le_sq h)
-  apply deriveNat; ipra_simps
-  linear_combination -e₂ + z₂ + (𝔟 k + 𝔟 j) * e₁ - (𝔟 k + 𝔟 j) * z₁
+  ipra_lc -natEq (eq_add_of_le (sq_le_sq h)) + natEq (sq_le_sq h) + (𝔟 k + 𝔟 j) * natEq (eq_add_of_le h) -
+    (𝔟 k + 𝔟 j) * natEq h
 
 /-- `|k² − j²| = |k − j| (k + j)`. -/
 theorem ad_sq_diff (j k : PTm n) : Γ ⊢[PRAAx] ad (k * k) (j * j) ≐ ad k j * (k + j) := by
   refine .orE (le_total j k) (ad_sq_diff_of_le Prf.hyp0) ?_
-  have e := natEq (ad_sq_diff_of_le (j := k) (k := j) (Γ := le k j :: Γ) Prf.hyp0)
-  apply deriveNat; ipra_simps
-  linear_combination e
+  ipra_lc natEq (ad_sq_diff_of_le (j := k) (k := j) (Γ := le k j :: Γ) Prf.hyp0)
 
 /-- `prop:grid`: `|c(j/L) − c(k/L)| ≤ 4 |j/L − k/L|` for `j, k ≤ L`, cleared of denominators. -/
 theorem cos_lipschitz {j k L : PTm n} (hj : Γ ⊢[PRAAx] le j L) (hk : Γ ⊢[PRAAx] le k L) :

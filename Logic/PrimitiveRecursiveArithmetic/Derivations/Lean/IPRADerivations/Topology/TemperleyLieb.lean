@@ -1,4 +1,4 @@
-import IPRADerivations.Core.IntCertificates
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The Temperley–Lieb table on three strands and the brackets of small links
@@ -158,13 +158,8 @@ def wu₃ (A B : ZT n) : ZT n := m3₃ (dl A B) A (ZT.natLit 0) (ZT.natLit 0) A 
 /-- Coefficient of `e₂ e₁` in `W U`, for `U = A I + B e₁`, `W = A I + B e₂`. -/
 def wu₄ (A B : ZT n) : ZT n := m3₄ (dl A B) A B (ZT.natLit 0) A B (ZT.natLit 0)
 
-local macro "gsimp" loc:(Lean.Parser.Tactic.location)? : tactic =>
-  `(tactic| simp only [blk₀, blk₁, blk₂, blk₃, blk₄, blkSq₀, blkSq₁, blkSq₂, blkSq₃, blkSq₄, toZ_pwr,
-    uw₀, uw₁, uw₂, uw₃, uw₄, wu₀, wu₁, wu₂, wu₃, wu₄,
-    dl, m2₀, m2₁, tr2, m3₀, m3₁, m3₂, m3₃, m3₄, tr3, zsl_def, ZT.toZ_add, ZT.toZ_sub,
-    ZT.toZ_mul, ZT.toZ_neg, ZT.toZ_sq, ZT.toZ_natLit, Nat.cast_ofNat, Nat.cast_zero, Nat.cast_one] $[$loc]?)
-
-local macro "geo" : tactic => `(tactic| (apply ZT.derive; gsimp; ring))
+attribute [local ipra_defs] blk₀ blk₁ blk₂ blk₃ blk₄ blkSq₀ blkSq₁ blkSq₂ blkSq₃ blkSq₄ toZ_pwr uw₀ uw₁ uw₂ uw₃ uw₄
+  wu₀ wu₁ wu₂ wu₃ wu₄ dl m2₀ m2₁ tr2 m3₀ m3₁ m3₂ m3₃ m3₄ tr3
 
 /-! ## Associativity of the three-strand table -/
 
@@ -173,35 +168,35 @@ theorem tl3_assoc₀ (a₀ b₀ c₀ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq
       (m3₀ (m3₀ a₀ b₀) c₀)
       (m3₀ a₀ (m3₀ b₀ c₀)) := by
-  geo
+  ipra_lc
 
 /-- Associativity, coefficient of `e₁`. -/
 theorem tl3_assoc₁ (d a₀ a₁ a₃ b₀ b₁ b₂ b₃ b₄ c₀ c₁ c₄ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq
       (m3₁ d (m3₀ a₀ b₀) (m3₁ d a₀ a₁ a₃ b₀ b₁ b₄) (m3₃ d a₀ a₁ a₃ b₀ b₂ b₃) c₀ c₁ c₄)
       (m3₁ d a₀ a₁ a₃ (m3₀ b₀ c₀) (m3₁ d b₀ b₁ b₃ c₀ c₁ c₄) (m3₄ d b₀ b₂ b₄ c₀ c₁ c₄)) := by
-  geo
+  ipra_lc
 
 /-- Associativity, coefficient of `e₂`. -/
 theorem tl3_assoc₂ (d a₀ a₂ a₄ b₀ b₁ b₂ b₃ b₄ c₀ c₂ c₃ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq
       (m3₂ d (m3₀ a₀ b₀) (m3₂ d a₀ a₂ a₄ b₀ b₂ b₃) (m3₄ d a₀ a₂ a₄ b₀ b₁ b₄) c₀ c₂ c₃)
       (m3₂ d a₀ a₂ a₄ (m3₀ b₀ c₀) (m3₂ d b₀ b₂ b₄ c₀ c₂ c₃) (m3₃ d b₀ b₁ b₃ c₀ c₂ c₃)) := by
-  geo
+  ipra_lc
 
 /-- Associativity, coefficient of `e₁ e₂`. -/
 theorem tl3_assoc₃ (d a₀ a₁ a₃ b₀ b₁ b₂ b₃ b₄ c₀ c₂ c₃ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq
       (m3₃ d (m3₀ a₀ b₀) (m3₁ d a₀ a₁ a₃ b₀ b₁ b₄) (m3₃ d a₀ a₁ a₃ b₀ b₂ b₃) c₀ c₂ c₃)
       (m3₃ d a₀ a₁ a₃ (m3₀ b₀ c₀) (m3₂ d b₀ b₂ b₄ c₀ c₂ c₃) (m3₃ d b₀ b₁ b₃ c₀ c₂ c₃)) := by
-  geo
+  ipra_lc
 
 /-- Associativity, coefficient of `e₂ e₁`. -/
 theorem tl3_assoc₄ (d a₀ a₂ a₄ b₀ b₁ b₂ b₃ b₄ c₀ c₁ c₄ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq
       (m3₄ d (m3₀ a₀ b₀) (m3₂ d a₀ a₂ a₄ b₀ b₂ b₃) (m3₄ d a₀ a₂ a₄ b₀ b₁ b₄) c₀ c₁ c₄)
       (m3₄ d a₀ a₂ a₄ (m3₀ b₀ c₀) (m3₁ d b₀ b₁ b₃ c₀ c₁ c₄) (m3₄ d b₀ b₂ b₄ c₀ c₁ c₄)) := by
-  geo
+  ipra_lc
 
 /-! ## Moves II and III and the curls, modulo `A B − 1` -/
 
@@ -211,7 +206,7 @@ theorem move_II_I (A B : ZT n) :
       (m2₀ A B)
       (ZT.natLit 1 +
         (ZT.natLit 1) * (A * B - ZT.natLit 1)) := by
-  geo
+  ipra_lc
 
 /-- Move II, coefficient of `e` in `(A I + B e)(B I + A e)`: `0` modulo `A B − 1`. -/
 theorem move_II_e (A B : ZT n) :
@@ -219,7 +214,7 @@ theorem move_II_e (A B : ZT n) :
       (m2₁ (dl A B) A B B A)
       (ZT.natLit 0 +
         (-(pwr A 2) - pwr B 2) * (A * B - ZT.natLit 1)) := by
-  geo
+  ipra_lc
 
 /-- A positive curl: the closure of `A I + B e` is `−A³` modulo `A B − 1`. -/
 theorem curl_pos (A B : ZT n) :
@@ -227,7 +222,7 @@ theorem curl_pos (A B : ZT n) :
       (tr2 (dl A B) A B)
       (-(pwr A 3) +
         (-(B)) * (A * B - ZT.natLit 1)) := by
-  geo
+  ipra_lc
 
 /-- A negative curl: the closure of `B I + A e` is `−B³` modulo `A B − 1`. -/
 theorem curl_neg (A B : ZT n) :
@@ -235,7 +230,7 @@ theorem curl_neg (A B : ZT n) :
       (tr2 (dl A B) B A)
       (-(pwr B 3) +
         (-(A)) * (A * B - ZT.natLit 1)) := by
-  geo
+  ipra_lc
 
 /-- Move III, coefficient of `e₁`: `U W U = W U W` modulo `A B − 1`, for `U = A I + B e₁`,
 `W = A I + B e₂`. -/
@@ -244,7 +239,7 @@ theorem move_III₁ (A B : ZT n) :
       (m3₁ (dl A B) (uw₀ A B) (uw₁ A B) (uw₃ A B) A B (ZT.natLit 0))
       (m3₁ (dl A B) (wu₀ A B) (wu₁ A B) (wu₃ A B) A (ZT.natLit 0) (ZT.natLit 0) +
         (-(pwr A 2 * B) - pwr B 3) * (A * B - ZT.natLit 1)) := by
-  geo
+  ipra_lc
 
 /-- Move III, coefficient of `e₂`: `U W U = W U W` modulo `A B − 1`, for `U = A I + B e₁`,
 `W = A I + B e₂`. -/
@@ -253,7 +248,7 @@ theorem move_III₂ (A B : ZT n) :
       (m3₂ (dl A B) (uw₀ A B) (uw₂ A B) (uw₄ A B) A (ZT.natLit 0) (ZT.natLit 0))
       (m3₂ (dl A B) (wu₀ A B) (wu₂ A B) (wu₄ A B) A B (ZT.natLit 0) +
         (pwr A 2 * B + pwr B 3) * (A * B - ZT.natLit 1)) := by
-  geo
+  ipra_lc
 
 /-- Move III, coefficient of `e₁ e₂`: `U W U = W U W` modulo `A B − 1`, for `U = A I + B e₁`,
 `W = A I + B e₂`. -/
@@ -262,7 +257,7 @@ theorem move_III₃ (A B : ZT n) :
       (m3₃ (dl A B) (uw₀ A B) (uw₁ A B) (uw₃ A B) A (ZT.natLit 0) (ZT.natLit 0))
       (m3₃ (dl A B) (wu₀ A B) (wu₁ A B) (wu₃ A B) A B (ZT.natLit 0) +
         (ZT.natLit 0) * (A * B - ZT.natLit 1)) := by
-  geo
+  ipra_lc
 
 /-- Move III, coefficient of `e₂ e₁`: `U W U = W U W` modulo `A B − 1`, for `U = A I + B e₁`,
 `W = A I + B e₂`. -/
@@ -271,7 +266,7 @@ theorem move_III₄ (A B : ZT n) :
       (m3₄ (dl A B) (uw₀ A B) (uw₂ A B) (uw₄ A B) A B (ZT.natLit 0))
       (m3₄ (dl A B) (wu₀ A B) (wu₂ A B) (wu₄ A B) A (ZT.natLit 0) (ZT.natLit 0) +
         (ZT.natLit 0) * (A * B - ZT.natLit 1)) := by
-  geo
+  ipra_lc
 
 /-! ## Brackets on two strands -/
 
@@ -281,7 +276,7 @@ theorem hopf_bracket (A B : ZT n) :
       (tr2 (dl A B) (m2₀ A A) (m2₁ (dl A B) A B A B))
       (-(pwr A 4) - pwr B 4 +
         (-(ZT.natLit 2 * A * B)) * (A * B - ZT.natLit 1)) := by
-  geo
+  ipra_lc
 
 /-- The trefoil, the closure of `σ₁³`: `−A⁵ − B³ + B⁷` modulo `A B − 1`. -/
 theorem trefoil_bracket (A B : ZT n) :
@@ -290,7 +285,7 @@ theorem trefoil_bracket (A B : ZT n) :
       (-(pwr A 5) + pwr B 7 - pwr B 3 +
         (pwr A 3 * pwr B 2 - ZT.natLit 3 * pwr A 2 * B + ZT.natLit 2 * A * pwr B 4 - pwr B 3) * (A * B -
         ZT.natLit 1)) := by
-  geo
+  ipra_lc
 
 /-- The writhe-normalized bracket of the trefoil: `t + t³ − t⁴` for `t = B⁴`, modulo `A B − 1`. -/
 theorem trefoil_jones (A B : ZT n) :
@@ -301,7 +296,7 @@ theorem trefoil_jones (A B : ZT n) :
         (pwr A 4 * pwr B 8 - pwr A 3 * pwr B 11 + pwr A 3 * pwr B 7 + ZT.natLit 3 * pwr A 2 * pwr B 10 +
         pwr A 2 * pwr B 6 - ZT.natLit 2 * A * pwr B 13 + A * pwr B 5 + pwr B 12 + pwr B 4) * (A * B -
         ZT.natLit 1)) := by
-  geo
+  ipra_lc
 
 /-! ## Brackets on three strands -/
 
@@ -312,7 +307,7 @@ theorem figure_eight_bracket (A B : ZT n) :
       (pwr A 8 - pwr A 4 + pwr B 8 - pwr B 4 + ZT.natLit 1 +
         (ZT.natLit 3 * pwr A 5 * B - pwr A 4 + ZT.natLit 4 * pwr A 3 * pwr B 3 - ZT.natLit 4 * pwr A 2 * pwr B 2 +
         ZT.natLit 3 * A * pwr B 5 + A * B - pwr B 4 + ZT.natLit 1) * (A * B - ZT.natLit 1)) := by
-  geo
+  ipra_lc
 
 /-- The Borromean rings, the closure of `(σ₁ σ₂⁻¹)³`, modulo `A B − 1`. -/
 theorem borromean_bracket (A B : ZT n) :
@@ -331,6 +326,6 @@ theorem borromean_bracket (A B : ZT n) :
         ZT.natLit 12 * pwr A 3 * pwr B 3 + ZT.natLit 13 * pwr A 2 * pwr B 6 + ZT.natLit 4 * pwr A 2 * pwr B 2 -
         ZT.natLit 3 * A * pwr B 9 - ZT.natLit 2 * A * pwr B 5 + ZT.natLit 4 * A * B + ZT.natLit 3 * pwr B 8 -
         ZT.natLit 2 * pwr B 4 + ZT.natLit 4) * (A * B - ZT.natLit 1)) := by
-  geo
+  ipra_lc
 
 end LeanProofs.IPRA.Topology.TemperleyLieb

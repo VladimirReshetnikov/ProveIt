@@ -1,5 +1,6 @@
 import IPRADerivations.Probability.Variance
 import IPRADerivations.Probability.FiniteLaws
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Strip budgets and cyclotomic norms for the intrinsic diameters of the Platonic solids
@@ -47,9 +48,7 @@ theorem octSixStrips (a b c d e f : PTm n) :
                        (a+b+c)*(a+b+c)*mixed d e f)))
        (z ((num 18) * ((a+b+c)*(a+b+c)*((d+e+f)*(d+e+f))))) := by
   unfold strip triQ mixed z
-  apply ZT.derive
-  ipra_simps
-  ring
+  ipra_ring
 
 /-- The two-weight Jensen identity for the non-orthogonal triangular norm.
 It also applies to real approximants after clearing denominators. -/
@@ -59,9 +58,7 @@ theorem twoWeightVariance (a b : PTm n) (x y u v : ZT n) :
        z (a*b)*triQ (x-u) (y-v))
       (z (a+b)*(z a*triQ x y + z b*triQ u v)) := by
   unfold triQ z
-  apply ZT.derive
-  ipra_simps
-  ring
+  ipra_ring
 
 open LeanProofs.IPRA.Probability.Variance (ad ad_sq)
 
@@ -74,13 +71,8 @@ def twiceSq (x y u v : PTm n) : PTm n :=
 theorem twiceSq_correct (x y u v : PTm n) :
     Γ ⊢[PRAAx] ZT.eq (z (twiceSq x y u v))
       (z (num 2) * triQ (z x-z u) (z y-z v)) := by
-  have h₁ := natEq (ad_sq (Γ := Γ) x u)
-  have h₂ := natEq (ad_sq (Γ := Γ) y v)
-  have h₃ := natEq (ad_sq (Γ := Γ) (x+y) (u+v))
   unfold twiceSq sqGap triQ z
-  apply ZT.derive
-  ipra_simps
-  linear_combination h₁ + h₂ + h₃
+  ipra_lc natEq (ad_sq (Γ := Γ) x u) + natEq (ad_sq (Γ := Γ) y v) + natEq (ad_sq (Γ := Γ) (x+y) (u+v))
 
 def stripNat (a b c d e f : PTm n) : PTm n :=
   let A := a+b+c
@@ -105,17 +97,11 @@ theorem stripBudget (a b c d e f : PTm n) :
       (num 36 * clearance a b c d e f) := by
   refine le_of_eq_add (d := num 12 * ((d+e+f)*(d+e+f)*mixed a b c +
                                       (a+b+c)*(a+b+c)*mixed d e f)) ?_
-  have h₀ := ZT.toZ_eq (octSixStrips (Γ := Γ) a b c d e f)
-  have h₁ := ZT.toZ_eq (stripNat_correct (Γ := Γ) a b c d e f)
-  have h₂ := ZT.toZ_eq (stripNat_correct (Γ := Γ) a c b d f e)
-  have h₃ := ZT.toZ_eq (stripNat_correct (Γ := Γ) b a c e d f)
-  have h₄ := ZT.toZ_eq (stripNat_correct (Γ := Γ) b c a e f d)
-  have h₅ := ZT.toZ_eq (stripNat_correct (Γ := Γ) c a b f d e)
-  have h₆ := ZT.toZ_eq (stripNat_correct (Γ := Γ) c b a f e d)
   unfold clearance
-  apply deriveNat
-  ipra_simps
-  linear_combination -2*h₀ - h₁ - h₂ - h₃ - h₄ - h₅ - h₆
+  ipra_lc -2*ZT.toZ_eq (octSixStrips (Γ := Γ) a b c d e f) - ZT.toZ_eq (stripNat_correct (Γ := Γ) a b c d e f) -
+    ZT.toZ_eq (stripNat_correct (Γ := Γ) a c b d f e) - ZT.toZ_eq (stripNat_correct (Γ := Γ) b a c e d f) -
+    ZT.toZ_eq (stripNat_correct (Γ := Γ) b c a e f d) - ZT.toZ_eq (stripNat_correct (Γ := Γ) c a b f d e) -
+    ZT.toZ_eq (stripNat_correct (Γ := Γ) c b a f e d)
 
 /-- A four-coefficient cyclotomic integer in the basis 1,ζ,ζ²,ζ³. -/
 structure Cycl (n : ℕ) where

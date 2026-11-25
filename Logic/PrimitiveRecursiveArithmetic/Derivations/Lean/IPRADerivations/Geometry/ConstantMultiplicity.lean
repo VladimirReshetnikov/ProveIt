@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.AnalyticNumberTheory.Valuation
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # A closed two-chain has constant coefficients (`conway_criterion_ipra_2026-11-16`, `lem:constantmultiplicity`)
@@ -68,10 +69,7 @@ theorem prop_step {J x : PTm n} (hQ : Γ ⊢[PRAAx] allB (eqB c) J x ≐ one)
   rw [inst2_eqB]
   have s : Γ ⊢[PRAAx] sg (eqb (inst2 c J x) (inst2 c zero x)) ≐ one :=
     (congrMonus (.eqRefl _) (congrMonus (.eqRefl _) (eqb_of_eq key))).eqTrans (sg_succ zero)
-  have a := natEq hQ
-  have b := natEq s
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 (sg (eqb (inst2 c J x) (inst2 c zero x))) * a + b
+  ipra_lc 𝔞 (sg (eqb (inst2 c J x) (inst2 c zero x))) * natEq hQ + natEq s
 
 /-- The tree edges: every face below `F` is the root or agrees with an earlier face. -/
 abbrev treeHyp (F x : PTm n) : Fm PTm n :=

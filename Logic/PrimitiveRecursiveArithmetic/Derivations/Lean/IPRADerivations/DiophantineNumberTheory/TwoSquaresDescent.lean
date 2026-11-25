@@ -1,4 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.FourSquaresDescent
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The two-square descent
@@ -57,15 +58,13 @@ theorem uv_zero {m : PTm k} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) : Γ ⊢[PR
 
 theorem sq_of_zero {W P Q : PTm k} (e : Γ ⊢[PRAAx] W * W + two * (P * Q) ≐ P * P + Q * Q)
     (hP : Γ ⊢[PRAAx] P ≐ zero) (hQ : Γ ⊢[PRAAx] Q ≐ zero) : Γ ⊢[PRAAx] W * W + zero ≐ zero := by
-  have a := natEq e; have b := natEq hP; have c := natEq hQ
-  apply deriveNat; ipra_simps; linear_combination a + (𝔞 P - 2 * 𝔞 Q) * b + 𝔞 Q * c
+  ipra_lc natEq e + (𝔞 P - 2 * 𝔞 Q) * natEq hP + 𝔞 Q * natEq hQ
 
 theorem sq_zero_alg {a p X : PTm k} (ha : Γ ⊢[PRAAx] a ≐ succ p) (h : Γ ⊢[PRAAx] a * a + X ≐ zero) :
     Γ ⊢[PRAAx] Fm.bot := by
   have a1 := natEq ha; have h1 := natEq h
   refine succ_ne_zero' _ (a := p * p + two * p + X) ?_
-  apply deriveNat; ipra_simps
-  linear_combination h1 - (𝔞 a + 𝔞 p + 1) * a1
+  ipra_lc h1 - (𝔞 a + 𝔞 p + 1) * a1
 
 /-- `|P − Q| = 0` when `P = Q = 0`. -/
 theorem ad_zero {P Q : PTm k} (hP : Γ ⊢[PRAAx] P ≐ zero) (hQ : Γ ⊢[PRAAx] Q ≐ zero) :
@@ -82,24 +81,16 @@ variable {a0 a1 a2 a3 u0 u1 u2 u3 s0 s1 s2 s3 : PTm k}
 include hu2 hu3 ha2 ha3
 
 theorem z3a : Γ ⊢[PRAAx] a0 * u2 + two * (a1 * u3 * s1) + (two * (a2 * u0 * s2) + a3 * u1) ≐ zero := by
-  have b2 := natEq hu2; have b3 := natEq hu3; have c2 := natEq ha2; have c3 := natEq ha3
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 a0 * b2 + 2 * 𝔞 a1 * 𝔞 s1 * b3 + 2 * 𝔞 u0 * 𝔞 s2 * c2 + 𝔞 u1 * c3
+  ipra_lc 𝔞 a0 * natEq hu2 + 2 * 𝔞 a1 * 𝔞 s1 * natEq hu3 + 2 * 𝔞 u0 * 𝔞 s2 * natEq ha2 + 𝔞 u1 * natEq ha3
 
 theorem z3b : Γ ⊢[PRAAx] two * (a0 * u2 * s0) + a1 * u3 + (a2 * u0 + two * (a3 * u1 * s3)) ≐ zero := by
-  have b2 := natEq hu2; have b3 := natEq hu3; have c2 := natEq ha2; have c3 := natEq ha3
-  apply deriveNat; ipra_simps
-  linear_combination 2 * 𝔞 a0 * 𝔞 s0 * b2 + 𝔞 a1 * b3 + 𝔞 u0 * c2 + 2 * 𝔞 u1 * 𝔞 s3 * c3
+  ipra_lc 2 * 𝔞 a0 * 𝔞 s0 * natEq hu2 + 𝔞 a1 * natEq hu3 + 𝔞 u0 * natEq ha2 + 2 * 𝔞 u1 * 𝔞 s3 * natEq ha3
 
 theorem z4a : Γ ⊢[PRAAx] a0 * u3 + a1 * u2 + (two * (a2 * u1 * s2) + two * (a3 * u0 * s3)) ≐ zero := by
-  have b2 := natEq hu2; have b3 := natEq hu3; have c2 := natEq ha2; have c3 := natEq ha3
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 a0 * b3 + 𝔞 a1 * b2 + 2 * 𝔞 u1 * 𝔞 s2 * c2 + 2 * 𝔞 u0 * 𝔞 s3 * c3
+  ipra_lc 𝔞 a0 * natEq hu3 + 𝔞 a1 * natEq hu2 + 2 * 𝔞 u1 * 𝔞 s2 * natEq ha2 + 2 * 𝔞 u0 * 𝔞 s3 * natEq ha3
 
 theorem z4b : Γ ⊢[PRAAx] two * (a0 * u3 * s0) + two * (a1 * u2 * s1) + (a2 * u1 + a3 * u0) ≐ zero := by
-  have b2 := natEq hu2; have b3 := natEq hu3; have c2 := natEq ha2; have c3 := natEq ha3
-  apply deriveNat; ipra_simps
-  linear_combination 2 * 𝔞 a0 * 𝔞 s0 * b3 + 2 * 𝔞 a1 * 𝔞 s1 * b2 + 𝔞 u1 * c2 + 𝔞 u0 * c3
+  ipra_lc 2 * 𝔞 a0 * 𝔞 s0 * natEq hu3 + 2 * 𝔞 a1 * 𝔞 s1 * natEq hu2 + 𝔞 u1 * natEq ha2 + 𝔞 u0 * natEq ha3
 
 end Zeros
 
@@ -107,13 +98,11 @@ end Zeros
 
 theorem n1_alg {x y M : PTm k} (h : Γ ⊢[PRAAx] x * x + y * y ≐ M) :
     Γ ⊢[PRAAx] N4 x y zero zero ≐ M := by
-  have a := natEq h
-  apply deriveNat; ipra_simps; linear_combination a
+  ipra_lc natEq h
 
 theorem two_alg {W1 W2 W3 W4 M : PTm k} (h : Γ ⊢[PRAAx] N4 W1 W2 W3 W4 ≐ M) (h3 : Γ ⊢[PRAAx] W3 ≐ zero)
     (h4 : Γ ⊢[PRAAx] W4 ≐ zero) : Γ ⊢[PRAAx] W1 * W1 + W2 * W2 ≐ M := by
-  have a := natEq h; have b := natEq h3; have c := natEq h4
-  apply deriveNat; ipra_simps; linear_combination a - 𝔞 W3 * b - 𝔞 W4 * c
+  ipra_lc natEq h - 𝔞 W3 * natEq h3 - 𝔞 W4 * natEq h4
 
 /-- The tuple `(x, y, 0, 0)`. -/
 abbrev xs (x y : PTm k) : Fin 4 → PTm k := ![x, y, zero, zero]

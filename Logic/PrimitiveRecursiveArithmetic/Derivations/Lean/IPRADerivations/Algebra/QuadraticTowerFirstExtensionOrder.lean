@@ -1,5 +1,6 @@
 import IPRADerivations.Algebra.QuadraticTowerFirstExtensionIdeal
 import IPRADerivations.Algebra.QuadraticTowerDifferenceIdentities
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual first-extension equivalence and order
@@ -48,8 +49,7 @@ theorem native_difference_pair (a b c e : PTm n) : Γ ⊢[PRAAx]
     (RationalAlgebra.add_congr (snd_pair _ _) ((snd_pair _ _).eqTrans (RationalAlgebra.negative_congr (snd_pair _ _))))
 theorem native_difference_congr {A A' C C' : PTm n} (ha : Γ ⊢[PRAAx] A ≐ A') (hc : Γ ⊢[PRAAx] C ≐ C') :
     Γ ⊢[PRAAx] QuadraticRationalEqualityOrder.difference A C ≐ QuadraticRationalEqualityOrder.difference A' C' := by
-  simpa using Prf.eqCongr (QuadraticRationalEqualityOrder.difference (var 0) (var 1) : PTm 2)
-    (σ := ![A,C]) (σ' := ![A',C']) (fun i => by fin_cases i; exact ha; exact hc)
+  ipra_congr (QuadraticRationalEqualityOrder.difference (var 0) (var 1) : PTm 2) with [ha, hc]
 
 /-- Literal pair equality is only for the actual two returned coefficients. -/
 theorem difference_coefficients (A C : PTm n) : Γ ⊢[PRAAx]
@@ -135,7 +135,6 @@ theorem trichotomy (S D A C b : PTm n) (hS : Γ ⊢[PRAAx] le (amp b) S)
     · exact .orI₂ (.orI₁ ((sign_difference S D A C b hS.wk.wk hD.wk.wk ha.wk.wk hc.wk.wk hn.wk.wk).eqTrans Prf.hyp0))
     · exact .orI₂ (.orI₂ ((sign_difference S D A C b hS.wk.wk hD.wk.wk ha.wk.wk hc.wk.wk hn.wk.wk).eqTrans Prf.hyp0))
 
-
 theorem native_add_pair (a b c e : PTm n) : Γ ⊢[PRAAx]
     QuadraticRationalPairArithmetic.add (pairT a b) (pairT c e) ≐
       pairT (RationalArithmetic.add a c) (RationalArithmetic.add b e) :=
@@ -143,8 +142,7 @@ theorem native_add_pair (a b c e : PTm n) : Γ ⊢[PRAAx]
     (RationalAlgebra.add_congr (snd_pair _ _) (snd_pair _ _))
 theorem native_add_congr {A A' C C' : PTm n} (ha : Γ ⊢[PRAAx] A ≐ A') (hc : Γ ⊢[PRAAx] C ≐ C') :
     Γ ⊢[PRAAx] QuadraticRationalPairArithmetic.add A C ≐ QuadraticRationalPairArithmetic.add A' C' := by
-  simpa using Prf.eqCongr (QuadraticRationalPairArithmetic.add (var 0) (var 1) : PTm 2)
-    (σ := ![A,C]) (σ' := ![A',C']) (fun i => by fin_cases i; exact ha; exact hc)
+  ipra_congr (QuadraticRationalPairArithmetic.add (var 0) (var 1) : PTm 2) with [ha, hc]
 theorem added_coefficients (A C : PTm n) : Γ ⊢[PRAAx]
     coefficients (added one A C) ≐ QuadraticRationalPairArithmetic.add (coefficients A) (coefficients C) :=
   (coefficients_entries _).eqTrans

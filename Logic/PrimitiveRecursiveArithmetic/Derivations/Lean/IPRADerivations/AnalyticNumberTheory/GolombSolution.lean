@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.ChebyshevCorollaries
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Golomb's theorem with a bounded witness
@@ -81,24 +82,21 @@ abbrev Ng (k : PTm n) : PTm n := wit gB (Bk k) k + two
 
 theorem bk_alg {B P : PTm n} (e : Γ ⊢[PRAAx] B ≐ P * two) (hP : Γ ⊢[PRAAx] P ≐ succ (pred P)) :
     Γ ⊢[PRAAx] B ≐ two + two * pred P := by
-  have a := natEq e; have b := natEq hP
-  apply deriveNat; ipra_simps; linear_combination a + 2 * b
+  ipra_lc natEq e + 2 * natEq hP
 
 theorem comm2 {B i : PTm n} (e : Γ ⊢[PRAAx] B ≐ two + i) : Γ ⊢[PRAAx] i + two ≐ B := by
-  have a := natEq e
-  apply deriveNat; ipra_simps; linear_combination -a
+  ipra_lc -natEq e
 
 theorem lt_of_add_two {B i : PTm n} (e : Γ ⊢[PRAAx] B ≐ two + i) : Γ ⊢[PRAAx] lt i B := by
-  have a := natEq e
   refine le_of_eq_add (d := one) ?_
-  apply deriveNat; ipra_simps; linear_combination a
+  ipra_lc natEq e
 
 theorem succ_two (j : PTm n) : Γ ⊢[PRAAx] succ (j + two) ≐ succ j + two := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem zero_two : Γ ⊢[PRAAx] (zero : PTm n) + two ≐ two := zero_add two
 
-theorem mul_one_r (X : PTm n) : Γ ⊢[PRAAx] X * one ≐ X := by apply deriveNat; ipra_simps; ring
+theorem mul_one_r (X : PTm n) : Γ ⊢[PRAAx] X * one ≐ X := by ipra_ring
 
 /-- **Golomb**: for `k ≥ 2`, `N(k) = k π(N(k))`, with `2 ≤ N(k) ≤ B(k) + 1`. -/
 theorem golomb {k : PTm n} (hk2 : Γ ⊢[PRAAx] le two k) :
@@ -117,9 +115,8 @@ theorem golomb {k : PTm n} (hk2 : Γ ⊢[PRAAx] le two k) :
   have hle := le_of_g_ne (Prf.andE₂ el)
   have hlow : Γ ⊢[PRAAx] le two (Ng k) := le_add_left two (wit gB (Bk k) k)
   have hup : Γ ⊢[PRAAx] le (Ng k) (succ (Bk k)) := by
-    have e := natEq (eq_add_of_le (Prf.andE₁ el))
     refine le_of_eq_add (d := monus (Bk k) (succ (wit gB (Bk k) k))) ?_
-    apply deriveNat; ipra_simps; linear_combination e
+    ipra_lc natEq (eq_add_of_le (Prf.andE₁ el))
   refine .andI ?_ (.andI hlow hup)
   refine le_antisymm ?_ hle
   refine .orE (zero_or_succ (wit gB (Bk k) k)) ?_ ?_

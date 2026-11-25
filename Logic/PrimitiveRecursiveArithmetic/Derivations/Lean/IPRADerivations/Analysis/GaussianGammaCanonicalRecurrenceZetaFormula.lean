@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.GaussianGammaCanonicalCoefficientRecurrence
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The literal original gamma plus signed-zeta recurrence formula
@@ -44,10 +45,7 @@ def formula (p s : PTm n) : PTm n :=
 
 theorem zeta_term_congr {p q e f j k : PTm n} (hp : Γ ⊢[PRAAx] p ≐ q)
     (he : Γ ⊢[PRAAx] e ≐ f) (hj : Γ ⊢[PRAAx] j ≐ k) : Γ ⊢[PRAAx] zetaTerm p e j ≐ zetaTerm q f k := by
-  simpa only [subst_zetaTerm,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (zetaTerm (var 0) (var 1) (var 2) : PTm 3)
-      (σ := ![p,e,j]) (σ' := ![q,f,k]) (fun i => by fin_cases i; exact hp; exact he; exact hj)
+  ipra_congr (zetaTerm (var 0) (var 1) (var 2) : PTm 3) with [hp, he, hj]
 
 theorem zeta_term_at (p e j : PTm n) : Γ ⊢[PRAAx] inst2 zetaBody j (data p e) ≐ zetaTerm p e j := by
   simp only [zetaBody,inst2,subst_zetaTerm,

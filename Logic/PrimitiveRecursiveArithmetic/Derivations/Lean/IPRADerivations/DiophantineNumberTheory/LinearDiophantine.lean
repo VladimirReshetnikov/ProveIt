@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.Coprime
 import IPRADerivations.Foundations.ChineseRemainder
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Linear Diophantine equations: the solvability criterion
@@ -70,13 +71,11 @@ theorem linear_necessary_pp {a b x y c : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (
 
 theorem sol_alg1 {a b c g q S T : PTm n} (e : Γ ⊢[PRAAx] g + T * b ≐ S * a) (ec : Γ ⊢[PRAAx] c ≐ g * q) :
     Γ ⊢[PRAAx] a * (S * q) ≐ c + b * (T * q) := by
-  have e1 := natEq e; have e2 := natEq ec
-  apply deriveNat; ipra_simps; linear_combination -𝔞 q * e1 - e2
+  ipra_lc -𝔞 q * natEq e - natEq ec
 
 theorem sol_alg2 {a b c g q S T : PTm n} (e : Γ ⊢[PRAAx] g + S * a ≐ T * b) (ec : Γ ⊢[PRAAx] c ≐ g * q) :
     Γ ⊢[PRAAx] b * (T * q) ≐ c + a * (S * q) := by
-  have e1 := natEq e; have e2 := natEq ec
-  apply deriveNat; ipra_simps; linear_combination -𝔞 q * e1 - e2
+  ipra_lc -𝔞 q * natEq e - natEq ec
 
 /-- **Sufficiency**: if `g = gcd(a, b)` divides `c`, the Bézout coefficients times `c/g` solve the equation. -/
 theorem linear_solution {a b c : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a))

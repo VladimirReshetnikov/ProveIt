@@ -4,6 +4,7 @@ import IPRADerivations.Foundations.ProductSumDomination
 import IPRADerivations.Combinatorics.CoefficientLogConcave
 import IPRADerivations.Probability.Variance
 import IPRADerivations.Foundations.FiniteAMGM
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Sums over a permuted range, and the total-degree audit of the elimination polynomial
@@ -161,7 +162,7 @@ theorem dl_sum (d e : PTm n) :
   refine t.eqTrans (sum_const_of _ _ _ _ (.allI (.impI ?_)))
   simp only [shift_pair]
   exact (dl_at _ _ _).eqTrans ((congrMul (.eqRefl _) (gle_of_le Prf.hyp0)).eqTrans
-    (by apply deriveNat; ipra_simps; ring))
+    (by ipra_ring))
 
 /-- `lem:elim-degree`: for a permutation `σ` of the `e + d` columns and degree bounds `β_i` of
 the selected entries with `β_i + σ(i) = i + d [i < e]`, the selected product has degree bound
@@ -173,7 +174,6 @@ theorem elim_degree {β S τ : PTm 2} {d e x : PTm n}
       (inst2 β (var 0) (Syn.shift x) + inst2 S (var 0) (Syn.shift x) ≐
         var 0 + Syn.shift d * gle (succ (var 0)) (Syn.shift e)))) :
     Γ ⊢[PRAAx] ap2 (sumF β) (e + d) x ≐ e * d := by
-  have A := natEq (sum_add (Γ := Γ) β S (e + d) x)
   have B : Γ ⊢[PRAAx] ap2 (sumF (addBody β S)) (e + d) x ≐
       ap2 (sumF (addBody (var 0) dlB)) (e + d) (pairT d e) := by
     refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
@@ -181,17 +181,13 @@ theorem elim_degree {β S τ : PTm 2} {d e x : PTm n}
     rw [inst2_addBody, inst2_addBody, inst2_var0]
     exact (Prf.impE hβ.allOpen.wk Prf.hyp0).eqTrans
       (congrAdd (.eqRefl _) (dl_at _ _ _).eqSymm)
-  have C := natEq (sum_add (Γ := Γ) (var 0 : PTm 2) dlB (e + d) (pairT d e))
   have D : Γ ⊢[PRAAx] ap2 (sumF (var 0 : PTm 2)) (e + d) (pairT d e) ≐
       ap2 (sumF (var 0 : PTm 2)) (e + d) x := by
     refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
     rw [inst2_var0, inst2_var0]
     exact .eqRefl _
-  have eB := natEq B
-  have eD := natEq D
-  have eP := natEq (sum_perm_id hr hinv hret)
-  have eL := natEq (dl_sum (Γ := Γ) d e)
-  apply deriveNat; ipra_simps
-  linear_combination -A + eB + C + eD - eP + eL
+  ipra_lc -natEq (sum_add (Γ := Γ) β S (e + d) x) + natEq B +
+    natEq (sum_add (Γ := Γ) (var 0 : PTm 2) dlB (e + d) (pairT d e)) + natEq D - natEq (sum_perm_id hr hinv hret) +
+    natEq (dl_sum (Γ := Γ) d e)
 
 end LeanProofs.IPRA.Foundations.EliminationDegree

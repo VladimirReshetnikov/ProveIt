@@ -5,6 +5,7 @@ import IPRADerivations.AnalyticNumberTheory.ChebyshevBounds
 import IPRADerivations.DiophantineNumberTheory.AperyMultibound
 import IPRADerivations.DiophantineNumberTheory.ResidueFacts
 import IPRADerivations.Foundations.NumeralPrimes
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Bertrand's postulate: the integer inequality
@@ -55,7 +56,7 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 /-- `A^6 = ((A A)(A A))(A A)`. -/
 theorem pw_six (A : PTm n) : Γ ⊢[PRAAx] pw A (num 6) ≐ ((A * A) * (A * A)) * (A * A) := by
   have e6 : Γ ⊢[PRAAx] (num 6 : PTm n) ≐ (two + two) + two := by
-    apply deriveNat; ipra_simps; push_cast; ring
+    ipra_lc
   exact (congrPw (.eqRefl _) e6).eqTrans ((pw_add A (two + two) two).eqTrans
     (congrMul ((pw_add A two two).eqTrans (congrMul (pw_two A) (pw_two A))) (pw_two A)))
 
@@ -69,17 +70,16 @@ theorem six_step (d : PTm n) :
 
 /-- `2^{(d+1)+36} = 2 · 2^{d+36}`. -/
 theorem two_step (d : PTm n) : Γ ⊢[PRAAx] pw two (succ d + num 36) ≐ two * pw two (d + num 36) := by
-  have e : Γ ⊢[PRAAx] succ d + num 36 ≐ succ (d + num 36) := by apply deriveNat; ipra_simps; ring
+  have e : Γ ⊢[PRAAx] succ d + num 36 ≐ succ (d + num 36) := by ipra_ring
   exact (congrPw (.eqRefl _) e).eqTrans ((pw_succ two (d + num 36)).eqTrans (mul_comm _ _))
 
 /-- `39^6 ≤ 2^{36}`, as `39^6 ≤ 64^6 = (2^6)^6`. -/
 theorem base_six : Γ ⊢[PRAAx] le (pw ((zero : PTm n) + num 39) (num 6)) (pw two (zero + num 36)) := by
   have h : Γ ⊢[PRAAx] le ((zero : PTm n) + num 39) (num 64) := by ipra_le 25 using (push_cast; ring)
-  have p6 := natEq (pw_six (Γ := Γ) two)
   have b2 : Γ ⊢[PRAAx] (num 64 : PTm n) ≐ pw two (num 6) := by
-    apply deriveNat; ipra_simps; push_cast; linear_combination (-1 : Groth (Q Γ)) * p6
+    ipra_lc -natEq (pw_six (Γ := Γ) two)
   have ex : Γ ⊢[PRAAx] (num 6 : PTm n) * num 6 ≐ zero + num 36 := by
-    apply deriveNat; ipra_simps; push_cast; ring
+    ipra_lc
   have b3 : Γ ⊢[PRAAx] pw (num 64 : PTm n) (num 6) ≐ pw two (zero + num 36) :=
     (congrPw b2 (.eqRefl _)).eqTrans ((pw_mul two (num 6) (num 6)).eqTrans (congrPw (.eqRefl _) ex))
   exact le_congr (.eqRefl _) b3 (pw_le_pw (num 6) h)
@@ -115,7 +115,7 @@ theorem cube {x u e m : PTm n} (G0 : Γ ⊢[PRAAx] le (pw two (two * x)) (pw u e
     Γ ⊢[PRAAx] le (pw two (two * x)) (pw u (e * succ two)) := by
   have c1 := pw_le_pw (succ two) G0
   have ex : Γ ⊢[PRAAx] (two * x) * succ two ≐ two * x + two * (two * x) := by
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   have L1 : Γ ⊢[PRAAx] pw (pw two (two * x)) (succ two) ≐ pw two (two * x) * pw two (two * (two * x)) :=
     (pw_mul two (two * x) (succ two)).eqTrans ((congrPw (.eqRefl _) ex).eqTrans (pw_add two _ _))
   have R1 : Γ ⊢[PRAAx] pw (pw u e * pw two (two * m)) (succ two) ≐
@@ -132,15 +132,14 @@ theorem cube {x u e m : PTm n} (G0 : Γ ⊢[PRAAx] le (pw two (two * x)) (pw u e
 theorem power_chain {u s d : PTm n} (hu : Γ ⊢[PRAAx] le u ((s + one) * (s + one)))
     (es : Γ ⊢[PRAAx] s ≐ d + num 38) :
     Γ ⊢[PRAAx] le (pw u ((s + two) * succ two)) (pw two ((d + num 36) * (s + two))) := by
-  have esn := natEq es
   have k1 := pw_le_pw ((s + two) * succ two) hu
   have ex : Γ ⊢[PRAAx] two * ((s + two) * succ two) ≐ num 6 * (s + two) := by
-    apply deriveNat; ipra_simps; push_cast; ring
+    ipra_lc
   have t1 : Γ ⊢[PRAAx] pw ((s + one) * (s + one)) ((s + two) * succ two) ≐ pw (pw (s + one) (num 6)) (s + two) :=
     (congrPw (pw_two (s + one)).eqSymm (.eqRefl _)).eqTrans ((pw_mul (s + one) two _).eqTrans
       ((congrPw (.eqRefl _) ex).eqTrans (pw_mul (s + one) (num 6) (s + two)).eqSymm))
   have e39 : Γ ⊢[PRAAx] d + num 39 ≐ s + one := by
-    apply deriveNat; ipra_simps; push_cast at esn ⊢; linear_combination -esn
+    ipra_lc -natEq es
   have t2 := pw_le_pw (s + two) (ten (Γ := Γ) d)
   have t3 := le_congr (congrPw (congrPw e39 (.eqRefl _)) (.eqRefl _)) (pw_mul two (d + num 36) (s + two)) t2
   exact le_trans (le_congr (.eqRefl _) t1 k1) t3
@@ -157,16 +156,15 @@ theorem growth_absurd {x s m d : PTm n}
     (hm : Γ ⊢[PRAAx] le (succ two * m) (two * x))
     (hs1 : Γ ⊢[PRAAx] le (s * s) (two * x)) (hs2 : Γ ⊢[PRAAx] lt (two * x) ((s + one) * (s + one)))
     (es : Γ ⊢[PRAAx] s ≐ d + num 38) : Γ ⊢[PRAAx] Fm.bot := by
-  have esn := natEq es
   have K1 := cube G0 hm
   have K2 := power_chain (u := succ (two * x)) hs2 es
   have ex2 : Γ ⊢[PRAAx] (d + num 36) * (s + two) + two * two ≐ s * s := by
-    apply deriveNat; ipra_simps; push_cast at esn ⊢; linear_combination (-(𝔞 s + 2)) * esn
+    ipra_lc (-(𝔞 s + 2)) * natEq es
   have k4 := pw_le_exp two_pos' (le_congr ex2.eqSymm (.eqRefl _) hs1)
   have K3 := le_congr (pw_add two ((d + num 36) * (s + two)) (two * two)) (.eqRefl _) k4
   have fin := le_trans (le_mul_mono (le_trans K1 K2) (le_refl (pw two (two * two)))) K3
   have h14 : Γ ⊢[PRAAx] le (one : PTm n) (two * two) :=
-    le_of_eq_add (d := succ two) (by apply deriveNat; ipra_simps; ring)
+    le_of_eq_add (d := succ two) (by ipra_ring)
   have hP : Γ ⊢[PRAAx] le two (pw two (two * two)) :=
     le_congr (pw_one two) (.eqRefl _) (pw_le_exp two_pos' h14)
   exact mul_absurd fin (one_le_pos (pw_pos' two_pos' _)) hP

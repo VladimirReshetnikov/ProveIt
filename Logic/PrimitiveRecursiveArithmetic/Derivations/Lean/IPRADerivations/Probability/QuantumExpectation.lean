@@ -1,4 +1,4 @@
-import IPRADerivations.Core.IntCertificates
+import IPRADerivations.Core.CertificateTactics
 import IPRADerivations.Core.Gcd
 import IPRADerivations.Core.Parity
 import Mathlib.Algebra.BigOperators.Fin
@@ -158,12 +158,10 @@ theorem quantum_real (hS : ∀ j k, Γ ⊢[PRAAx] ZT.eq (S j k) (S k j))
       (fun j k => (ZT.toZ_eq (hT j k)).trans (ZT.toZ_neg _)) hX_at hY_at
   have h2' : Γ ⊢[PRAAx] (imv a b S T).pos + (imv a b S T).pos + zero ≐ zero + ((imv a b S T).neg + (imv a b S T).neg) :=
     h2
-  have e := natEq h2'
   have h3 : Γ ⊢[PRAAx] two * (imv a b S T).pos ≐ two * (imv a b S T).neg := by
-    apply deriveNat; ipra_simps; linear_combination e
-  have h4 := natEq (two_cancel h3)
+    ipra_lc natEq h2'
   show Γ ⊢[PRAAx] (imv a b S T).pos + zero ≐ zero + (imv a b S T).neg
-  apply deriveNat; ipra_simps; linear_combination h4
+  ipra_lc natEq (two_cancel h3)
 
 /-- `ψ*A²ψ = ‖Aψ‖²` (real parts) for Hermitian `A`. -/
 theorem quantum_square (hS : ∀ j k, Γ ⊢[PRAAx] ZT.eq (S j k) (S k j))

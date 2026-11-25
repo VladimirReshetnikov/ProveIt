@@ -1,5 +1,6 @@
 import IPRADerivations.Combinatorics.LucasIdentities
 import IPRADerivations.Core.ParityArith
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Further Fibonacci and Lucas identities (`fibonacci_lucas_ipra`, (11), (17), (25))
@@ -41,15 +42,10 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 /-- `L_{m+1+n} = L_{m+1} F_{n+1} + L_m F_n`. -/
 theorem luc_add (m k : PTm n) :
     Γ ⊢[PRAAx] luc (succ (m + k)) ≐ luc (succ m) * fibS k + luc m * fib k := by
-  have a := natEq (luc_succ (Γ := Γ) (m + k))
-  have b := natEq (fibS_add (Γ := Γ) (succ m) k)
-  have c := natEq (congrFibS (succ_add (Γ := Γ) m k))
-  have d := natEq (fib_add_sym (Γ := Γ) m k)
-  have e := natEq (luc_succ (Γ := Γ) m)
-  have f := natEq (luc_eq (Γ := Γ) m)
-  have g := natEq (fib_succ (Γ := Γ) m)
-  apply deriveNat; ipra_simps
-  linear_combination a + b - c + 𝔞 (fib k) * g + d - 𝔞 (fibS k) * e - 𝔞 (fib k) * f
+  ipra_lc natEq (luc_succ (Γ := Γ) (m + k)) + natEq (fibS_add (Γ := Γ) (succ m) k) -
+    natEq (congrFibS (succ_add (Γ := Γ) m k)) + 𝔞 (fib k) * natEq (fib_succ (Γ := Γ) m) +
+    natEq (fib_add_sym (Γ := Γ) m k) - 𝔞 (fibS k) * natEq (luc_succ (Γ := Γ) m) -
+    𝔞 (fib k) * natEq (luc_eq (Γ := Γ) m)
 
 /-! ## Parities -/
 
@@ -77,7 +73,7 @@ abbrev flB : PTm 2 := fib (var 0) * luc (var 0)
 theorem inst2_fl (k x : PTm n) : inst2 flB k x = fib k * luc k := by simp [inst2]
 
 theorem fib_luc_term (k : PTm n) : Γ ⊢[PRAAx] fib k * luc k ≐ fib (two * k) := by
-  have e : Γ ⊢[PRAAx] two * k ≐ k + k := by apply deriveNat; ipra_simps; ring
+  have e : Γ ⊢[PRAAx] two * k ≐ k + k := by ipra_ring
   exact (fib_double_luc k).eqSymm.eqTrans (congrFib e.eqSymm)
 
 /-- `∑_{k≤N} F_k L_k + 1 = F_{2N+1}`. -/
@@ -94,12 +90,8 @@ theorem fib_luc_sum (N : PTm n) :
 /-- `F_{m+2} + 1 ≤ F_{m+3}`. -/
 theorem fib_strict (m : PTm n) :
     Γ ⊢[PRAAx] le (succ (fibS (succ m))) (fibS (succ (succ m))) := by
-  have a := natEq (fibS_succ (Γ := Γ) (succ m))
-  have g := natEq (fib_succ (Γ := Γ) m)
-  have p := natEq (fibS_pos (Γ := Γ) m)
   refine le_of_eq_add (d := pred (fibS m)) ?_
-  apply deriveNat; ipra_simps
-  linear_combination a + g + p
+  ipra_lc natEq (fibS_succ (Γ := Γ) (succ m)) + natEq (fib_succ (Γ := Γ) m) + natEq (fibS_pos (Γ := Γ) m)
 
 /-! ## Closed forms -/
 

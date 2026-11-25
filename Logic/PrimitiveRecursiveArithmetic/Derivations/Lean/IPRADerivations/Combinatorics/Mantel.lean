@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.GramBound
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Mantel's theorem: the triangle-free case of Turán's theorem
@@ -152,10 +153,7 @@ theorem multipartite_bound {r : ℕ} (a : Fin (r + 1) → ZT n) :
       (ZT.natLit (r + 1) * (ZT.sq (ZT.sumFin a) - ZT.sumFin fun i => ZT.sq (a i)))
       (ZT.natLit r * ZT.sq (ZT.sumFin a)) := by
   have hc := cauchy_int (Γ := Γ) a
-  refine zle_of_comb (zsl hc) ?_ (nn_zsl _)
-  zsimp
-  push_cast
-  ring
+  ipra_zle (zsl hc)
 
 /-- The induction step of Turán's bound: from `E ≤ E_S + 2 d (N − d)` and the bound `(ρ + 1) E_S ≤ ρ d²` for
 `ρ + 1` parts, the bound `(ρ + 2) E ≤ (ρ + 1) N²` for `ρ + 2` parts. -/
@@ -167,14 +165,7 @@ theorem turan_induction {ρ : ℕ} {E ES d N : ZT n}
     congrSucc (pred_succ (num ρ)).eqSymm
   have h2 : Γ ⊢[PRAAx] zle (ZT.natLit (ρ + 1) * (ZT.natLit (ρ + 2) * E))
       (ZT.natLit (ρ + 1) * (ZT.natLit (ρ + 1) * (N * N))) := by
-    refine zle_of_comb (((ρ + 2 : ℕ) : Groth (Q Γ)) * ((ρ + 1 : ℕ) : Groth (Q Γ)) * zsl hstep +
-        ((ρ + 2 : ℕ) : Groth (Q Γ)) * zsl hS +
-        ZT.toZ Γ (ZT.natLit (ρ + 1) * N - ZT.natLit (ρ + 2) * d) ^ 2) ?_
-      (nn_add (nn_add (nn_mul (nn_mul (nn_natCast _) (nn_natCast _)) (nn_zsl _))
-        (nn_mul (nn_natCast _) (nn_zsl _))) (nn_zsq _))
-    zsimp
-    push_cast
-    ring
+    ipra_zle (((ρ + 2 : ℕ) : Groth (Q Γ)) * ((ρ + 1 : ℕ) : Groth (Q Γ)) * zsl hstep + ((ρ + 2 : ℕ) : Groth (Q Γ)) * zsl hS + ZT.toZ Γ (ZT.natLit (ρ + 1) * N - ZT.natLit (ρ + 2) * d) ^ 2)
   exact zle_cancel hk h2
 
 end LeanProofs.IPRA.Combinatorics.Mantel

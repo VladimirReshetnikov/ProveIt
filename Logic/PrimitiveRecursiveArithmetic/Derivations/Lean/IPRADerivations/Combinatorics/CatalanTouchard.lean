@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.AperyRecurrence
 import IPRADerivations.Combinatorics.CatalanConvolution
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The two-colored Motzkin sum (Touchard's identity)
@@ -56,15 +57,11 @@ theorem mt_zero {N k : PTm n} (h : Γ ⊢[PRAAx] le (succ N) (k + k)) : Γ ⊢[P
 
 theorem t1aux {U G1 G0 P1 P0 C S : PTm n} (L : Γ ⊢[PRAAx] U * G1 ≐ S * G0) (hp : Γ ⊢[PRAAx] P1 ≐ P0 * two) :
     Γ ⊢[PRAAx] U * (G1 * P1 * C) ≐ two * S * (G0 * P0 * C) := by
-  have l := natEq L; have p := natEq hp
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 P1 * 𝔞 C * l + 𝔞 S * 𝔞 G0 * 𝔞 C * p
+  ipra_lc 𝔞 P1 * 𝔞 C * natEq L + 𝔞 S * 𝔞 G0 * 𝔞 C * natEq hp
 
 theorem t1aux0 {U G1 G0 P1 P0 C S : PTm n} (L : Γ ⊢[PRAAx] U * G1 ≐ S * G0) (hz : Γ ⊢[PRAAx] G0 ≐ zero) :
     Γ ⊢[PRAAx] U * (G1 * P1 * C) ≐ two * S * (G0 * P0 * C) := by
-  have l := natEq L; have z := natEq hz
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 P1 * 𝔞 C * l + 𝔞 S * (𝔞 P1 * 𝔞 C - 2 * 𝔞 P0 * 𝔞 C) * z
+  ipra_lc 𝔞 P1 * 𝔞 C * natEq L + 𝔞 S * (𝔞 P1 * 𝔞 C - 2 * 𝔞 P0 * 𝔞 C) * natEq hz
 
 /-- `(n + 1 − 2k) t(n + 1, k) = 2(n + 1) t(n, k)`. -/
 theorem t1 (N k : PTm n) : Γ ⊢[PRAAx] monus (succ N) (k + k) * mt (succ N) k ≐ two * succ N * mt N k := by
@@ -73,9 +70,8 @@ theorem t1 (N k : PTm n) : Γ ⊢[PRAAx] monus (succ N) (k + k) * mt (succ N) k 
   · exact t1aux0 L.wk (gb_above Prf.hyp0)
   · have hl : (le (k + k) N :: Γ) ⊢[PRAAx] le (k + k) N := Prf.hyp0
     have e : (le (k + k) N :: Γ) ⊢[PRAAx] monus (succ N) (k + k) ≐ succ (monus N (k + k)) := by
-      have a := natEq (eq_add_of_le hl)
       have e₀ : (le (k + k) N :: Γ) ⊢[PRAAx] succ N ≐ succ (monus N (k + k)) + (k + k) := by
-        apply deriveNat; ipra_simps; linear_combination a
+        ipra_lc natEq (eq_add_of_le hl)
       exact (congrMonus e₀ (.eqRefl _)).eqTrans (add_monus _ _)
     exact t1aux L.wk ((congrAp2 powF e (.eqRefl two)).eqTrans (pw_succ two _))
 
@@ -83,10 +79,8 @@ theorem t2aux {G0 Ga Gb Gb' Pb P0 C Cs K U V : PTm n} (E : Γ ⊢[PRAAx] Gb' ≐
     (r1 : Γ ⊢[PRAAx] succ (K + K) * Ga ≐ U * G0) (r2 : Γ ⊢[PRAAx] succ (succ (K + K)) * Gb ≐ V * Ga)
     (cr : Γ ⊢[PRAAx] succ (succ K) * Cs ≐ two * succ (two * K) * C) (hp : Γ ⊢[PRAAx] P0 ≐ Pb * two * two) :
     Γ ⊢[PRAAx] num 4 * (succ K * succ (succ K)) * (Gb' * Pb * Cs) ≐ U * V * (G0 * P0 * C) := by
-  have e := natEq E; have a := natEq r1; have b := natEq r2; have c := natEq cr; have p := natEq hp
-  apply deriveNat; ipra_simps
-  linear_combination 4 * (𝔞 K + 1) * (𝔞 K + 2) * 𝔞 Pb * 𝔞 Cs * e + 2 * 𝔞 Pb * (𝔞 K + 2) * 𝔞 Cs * b +
-    2 * 𝔞 Pb * 𝔞 V * 𝔞 Ga * c + 4 * 𝔞 Pb * 𝔞 V * 𝔞 C * a - 𝔞 U * 𝔞 V * 𝔞 G0 * 𝔞 C * p
+  ipra_lc 4 * (𝔞 K + 1) * (𝔞 K + 2) * 𝔞 Pb * 𝔞 Cs * natEq E + 2 * 𝔞 Pb * (𝔞 K + 2) * 𝔞 Cs * natEq r2 +
+    2 * 𝔞 Pb * 𝔞 V * 𝔞 Ga * natEq cr + 4 * 𝔞 Pb * 𝔞 V * 𝔞 C * natEq r1 - 𝔞 U * 𝔞 V * 𝔞 G0 * 𝔞 C * natEq hp
 
 /-- `4(k + 1)(k + 2) t(N, k + 1) = (N − 2k)(N − 2k − 1) t(N, k)`. -/
 theorem t2 (N k : PTm n) :
@@ -97,9 +91,8 @@ theorem t2 (N k : PTm n) :
   · have hl : (lt (succ (k + k)) N :: Γ) ⊢[PRAAx] lt (succ (k + k)) N := Prf.hyp0
     have hl' : (lt (succ (k + k)) N :: Γ) ⊢[PRAAx] le (succ k + succ k) N :=
       (congrMonus (by ipra_ring) (.eqRefl _)).eqTrans hl
-    have a := natEq (eq_add_of_le hl')
     have e₀ : (lt (succ (k + k)) N :: Γ) ⊢[PRAAx] N ≐ succ (succ (monus N (succ k + succ k))) + (k + k) := by
-      apply deriveNat; ipra_simps; linear_combination a
+      ipra_lc natEq (eq_add_of_le hl')
     have e : (lt (succ (k + k)) N :: Γ) ⊢[PRAAx] monus N (k + k) ≐ succ (succ (monus N (succ k + succ k))) :=
       (congrMonus e₀ (.eqRefl _)).eqTrans (add_monus _ _)
     have hp := (congrAp2 powF e (.eqRefl two)).eqTrans ((pw_succ two _).eqTrans (congrMul (pw_succ two _) (.eqRefl _)))
@@ -130,10 +123,8 @@ theorem ptaux0 {N K T tp t0 u v : PTm n} (hR1 : Γ ⊢[PRAAx] u * T ≐ two * su
     (hR2 : Γ ⊢[PRAAx] num 4 * (succ K * succ (succ K)) * tp ≐ u * v * T) (hT : Γ ⊢[PRAAx] T ≐ zero) :
     Γ ⊢[PRAAx] succ N * (N + num 3) * T + num 4 * (succ K * succ (succ K)) * tp ≐
       two * succ N * (two * N + num 3) * t0 + num 4 * (K * succ K) * T := by
-  have r1 := natEq hR1; have r2 := natEq hR2; have z := natEq hT
-  apply deriveNat; ipra_simps
-  linear_combination r2 + (2 * 𝔞 N + 3) * r1 +
-    ((𝔞 N + 1) * (𝔞 N + 3) + 𝔞 u * 𝔞 v - (2 * 𝔞 N + 3) * 𝔞 u - 4 * 𝔞 K * (𝔞 K + 1)) * z
+  ipra_lc natEq hR2 + (2 * 𝔞 N + 3) * natEq hR1 +
+    ((𝔞 N + 1) * (𝔞 N + 3) + 𝔞 u * 𝔞 v - (2 * 𝔞 N + 3) * 𝔞 u - 4 * 𝔞 K * (𝔞 K + 1)) * natEq hT
 
 /-- `(n + 1)(n + 3) t(n + 1, k) + V(k + 1) = 2(n + 1)(2n + 3) t(n, k) + V(k)`, `V(k) = 4k(k + 1) t(n + 1, k)`. -/
 theorem tpt (N k : PTm n) :
@@ -160,18 +151,15 @@ abbrev phiL {n : ℕ} (N K : PTm n) : PTm n :=
 abbrev phiR {n : ℕ} (N K : PTm n) : PTm n := two * succ N * (two * N + num 3) * Sx K N
 
 theorem phi_base (N : PTm n) : Γ ⊢[PRAAx] phiL N zero ≐ phiR N zero := by
-  have z₁ := natEq (sum_zero (Γ := Γ) mtB (succ N)); have z₂ := natEq (sum_zero (Γ := Γ) mtB N)
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞 N + 1) * (𝔞 N + 3) * z₁ - 2 * (𝔞 N + 1) * (2 * 𝔞 N + 3) * z₂
+  ipra_lc (𝔞 N + 1) * (𝔞 N + 3) * natEq (sum_zero (Γ := Γ) mtB (succ N)) -
+    2 * (𝔞 N + 1) * (2 * 𝔞 N + 3) * natEq (sum_zero (Γ := Γ) mtB N)
 
 theorem phi_step {N K : PTm n} (ih : Γ ⊢[PRAAx] phiL N K ≐ phiR N K) :
     Γ ⊢[PRAAx] phiL N (succ K) ≐ phiR N (succ K) := by
   have s₁ := sum_succ' (Γ := Γ) mtB K (succ N); have s₂ := sum_succ' (Γ := Γ) mtB K N
   rw [inst2_mt] at s₁ s₂
-  have p := natEq (tpt (Γ := Γ) N K)
-  have i := natEq ih; have a := natEq s₁; have b := natEq s₂
-  apply deriveNat; ipra_simps
-  linear_combination i + (𝔞 N + 1) * (𝔞 N + 3) * a - 2 * (𝔞 N + 1) * (2 * 𝔞 N + 3) * b + p
+  ipra_lc natEq ih + (𝔞 N + 1) * (𝔞 N + 3) * natEq s₁ - 2 * (𝔞 N + 1) * (2 * 𝔞 N + 3) * natEq s₂ +
+    natEq (tpt (Γ := Γ) N K)
 
 /-- Variables: `0 = K`, `1 = N`. -/
 private abbrev phiF : Fm PTm 2 := phiL (var 1) (var 0) ≐ phiR (var 1) (var 0)
@@ -220,9 +208,7 @@ theorem M_zero : Γ ⊢[PRAAx] M (zero : PTm n) ≐ cat (succ zero) := by
 
 theorem M_step {N : PTm n} (ih : Γ ⊢[PRAAx] M N ≐ cat (succ N)) : Γ ⊢[PRAAx] M (succ N) ≐ cat (succ (succ N)) := by
   refine mul_cancel (succ_pos (succ (succ N))) ?_
-  have r := natEq (touch_rec (Γ := Γ) N); have c := natEq (cat_rec (Γ := Γ) (succ N)); have i := natEq ih
-  apply deriveNat; ipra_simps
-  linear_combination r - c + 2 * (2 * 𝔞 N + 3) * i
+  ipra_lc natEq (touch_rec (Γ := Γ) N) - natEq (cat_rec (Γ := Γ) (succ N)) + 2 * (2 * 𝔞 N + 3) * natEq ih
 
 /-- Variable: `0 = N`. -/
 private abbrev touchF : Fm PTm 1 := M (var 0) ≐ cat (succ (var 0))

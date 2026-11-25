@@ -1,4 +1,5 @@
 import IPRADerivations.Combinatorics.DoubleCounting
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Euler bounds for spherical maps
@@ -38,30 +39,19 @@ theorem face_lengths {f m : ℕ} (M : Fin f → Fin (2 * m) → ZT n) (g : ZT n)
     (hc : ∀ j, Γ ⊢[PRAAx] zle (ZT.sumFin fun i => M i j) (ZT.natLit 1)) :
     Γ ⊢[PRAAx] zle (g * ZT.natLit f) (ZT.natLit 2 * ZT.natLit m) := by
   have h := count_le M _ _ hr hc
-  refine zle_of_comb (zsl h) ?_ (nn_zsl _)
-  zsimp
-  push_cast
-  ring
+  ipra_zle (zsl h)
 
 /-- `m ≤ 3v − 6` for a simple spherical map, as `m + 6 ≤ 3v`. -/
 theorem planar_edges {v m f : ZT n} (hE : Γ ⊢[PRAAx] ZT.eq (v + f) (m + ZT.natLit 2))
     (hF : Γ ⊢[PRAAx] zle (ZT.natLit 3 * f) (ZT.natLit 2 * m)) :
     Γ ⊢[PRAAx] zle (m + ZT.natLit 6) (ZT.natLit 3 * v) := by
-  have e := ZT.toZ_eq hE
-  simp only [ZT.toZ_add, ZT.toZ_natLit, Nat.cast_ofNat] at e
-  refine zle_of_comb (zsl hF) ?_ (nn_zsl _)
-  zsimp
-  linear_combination (3 : Groth (Q Γ)) * e
+  ipra_zle (zsl hF) with (3 : Groth (Q Γ)) * ZT.toZ_eq hE
 
 /-- `m ≤ 2v − 4` for a triangle-free simple spherical map, as `m + 4 ≤ 2v`. -/
 theorem planar_edges_triangle_free {v m f : ZT n} (hE : Γ ⊢[PRAAx] ZT.eq (v + f) (m + ZT.natLit 2))
     (hF : Γ ⊢[PRAAx] zle (ZT.natLit 4 * f) (ZT.natLit 2 * m)) :
     Γ ⊢[PRAAx] zle (m + ZT.natLit 4) (ZT.natLit 2 * v) := by
-  have e := ZT.toZ_eq hE
-  simp only [ZT.toZ_add, ZT.toZ_natLit, Nat.cast_ofNat] at e
-  refine zle_of_comb_two (zsl hF) ?_ (nn_zsl _)
-  zsimp
-  linear_combination (4 : Groth (Q Γ)) * e
+  ipra_zle2 (zsl hF) with (4 : Groth (Q Γ)) * ZT.toZ_eq hE
 
 /-- `K₅` is not a spherical map: five vertices and ten edges contradict `m + 6 ≤ 3v`. -/
 theorem k5_nonplanar {f : ZT n} (hE : Γ ⊢[PRAAx] ZT.eq (ZT.natLit 5 + f) (ZT.natLit 10 + ZT.natLit 2))

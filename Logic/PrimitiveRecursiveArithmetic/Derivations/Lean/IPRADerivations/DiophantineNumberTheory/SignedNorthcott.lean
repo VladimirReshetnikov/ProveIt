@@ -234,7 +234,7 @@ theorem signed_complete (S M : PTm 2) {B N x : PTm k}
   have kept : Γ ⊢[PRAAx] neg (inst2 kS (code (vS S M) (bse B) (pairT B x) N) (pairT B N) ≐ zero) := by
     have v : Γ ⊢[PRAAx] inst2 kS (code (vS S M) (bse B) (pairT B x) N) (pairT B N) ≐ one :=
       (kS_at _ B N).eqTrans ((congrMul (eqb_of_eq g1) (all_intro tS tst)).eqTrans
-        (by apply deriveNat; ipra_simps; ring))
+        (by ipra_ring))
     exact .impI (succ_ne_zero' _ (v.wk.eqSymm.eqTrans Prf.hyp0))
   have hlt := code_lt hV (le_refl N)
   exact .andI (.andI (rank_lt_size kS hlt kept) (sel_rank kS hlt kept)) dec

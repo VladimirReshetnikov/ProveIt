@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.SieveRecursion
 import IPRADerivations.AnalyticNumberTheory.Multiplicative
 import IPRADerivations.DiophantineNumberTheory.ModularCertificate
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The period of the sieve count
@@ -46,9 +47,9 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Periodicity of the term -/
 
-theorem add_alg (m P : PTm n) : Γ ⊢[PRAAx] m + P ≐ P * one + m := by apply deriveNat; ipra_simps; ring
+theorem add_alg (m P : PTm n) : Γ ⊢[PRAAx] m + P ≐ P * one + m := by ipra_ring
 
-theorem self_alg (P : PTm n) : Γ ⊢[PRAAx] P ≐ P * one + zero := by apply deriveNat; ipra_simps; ring
+theorem self_alg (P : PTm n) : Γ ⊢[PRAAx] P ≐ P * one + zero := by ipra_ring
 
 /-- `P mod P = 0`. -/
 theorem rem_self' {P : PTm n} (hP : Γ ⊢[PRAAx] P ≐ succ (pred P)) : Γ ⊢[PRAAx] rem P P ≐ zero :=
@@ -65,13 +66,11 @@ theorem cop_period {P : PTm n} (hP : Γ ⊢[PRAAx] P ≐ succ (pred P)) (m : PTm
 /-! ## One period -/
 
 theorem one_mul_l {s X : PTm n} (h : Γ ⊢[PRAAx] s ≐ one) : Γ ⊢[PRAAx] s * X ≐ X := by
-  have a := natEq h
-  apply deriveNat; ipra_simps; linear_combination 𝔞 X * a
+  ipra_lc 𝔞 X * natEq h
 
 theorem cancel_alg {A t0 B C tP : PTm n} (h1 : Γ ⊢[PRAAx] A ≐ t0 + B) (h2 : Γ ⊢[PRAAx] A ≐ C + tP)
     (ht : Γ ⊢[PRAAx] t0 ≐ tP) : Γ ⊢[PRAAx] B ≐ C := by
-  have a := natEq h1; have b := natEq h2; have c := natEq ht
-  apply deriveNat; ipra_simps; linear_combination -a + b - c
+  ipra_lc -natEq h1 + natEq h2 - natEq ht
 
 /-- `Φ(P; P) = φ(P)`: a full period has `φ(P)` members coprime to `P`. -/
 theorem period_one {P : PTm n} (hP : Γ ⊢[PRAAx] P ≐ succ (pred P)) : Γ ⊢[PRAAx] Phi P P ≐ phi P := by

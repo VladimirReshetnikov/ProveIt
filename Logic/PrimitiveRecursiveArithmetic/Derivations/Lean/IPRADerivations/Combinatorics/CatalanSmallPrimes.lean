@@ -1,5 +1,6 @@
 import IPRADerivations.Combinatorics.CatalanPrimes
 import IPRADerivations.Foundations.FiniteSetExponential
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The prime Catalan numbers: the small cases (`catalan_numbers_ipra_2026-11-16`, Section 5)
@@ -51,19 +52,13 @@ abbrev five : PTm n := succ four
 
 /-- `Cat_2 = 2`. -/
 theorem cat_two : Γ ⊢[PRAAx] cat (succ (succ (zero : PTm n))) ≐ two := by
-  have r := natEq (cat_rec (Γ := Γ) (succ zero))
-  have c₁ := natEq (cat_one (Γ := Γ))
   refine mul_cancel (D := three) (succ_pos two) ?_
-  apply deriveNat; ipra_simps
-  linear_combination r + 6 * c₁
+  ipra_lc natEq (cat_rec (Γ := Γ) (succ zero)) + 6 * natEq (cat_one (Γ := Γ))
 
 /-- `Cat_3 = 5`. -/
 theorem cat_three : Γ ⊢[PRAAx] cat (succ (succ (succ (zero : PTm n)))) ≐ five := by
-  have r := natEq (cat_rec (Γ := Γ) (succ (succ zero)))
-  have c₂ := natEq (cat_two (Γ := Γ))
   refine mul_cancel (D := four) (succ_pos three) ?_
-  apply deriveNat; ipra_simps
-  linear_combination r + 10 * c₂
+  ipra_lc natEq (cat_rec (Γ := Γ) (succ (succ zero))) + 10 * natEq (cat_two (Γ := Γ))
 
 /-- `Cat_0 = 1` is not prime. -/
 theorem cat_zero_not_prime : Γ ⊢[PRAAx] neg (prime (cat (zero : PTm n))) := by
@@ -152,22 +147,21 @@ theorem small_cases {e : PTm n} (h2 : Γ ⊢[PRAAx] le two e) (h5 : Γ ⊢[PRAAx
           (ψ := pred (pred (monus e two)) ≐ succ (pred (pred (pred (monus e two))))))
         refine le_lt_absurd _ (le_of_eq_add (d := pred (pred (pred (monus e two)))) ?_)
           h5.wk.wk.wk
-        apply deriveNat; ipra_simps
-        linear_combination a + s₁ + s₂ + s₃
+        ipra_lc a + s₁ + s₂ + s₃
 
 /-- `5` is prime. -/
 theorem prime_five : Γ ⊢[PRAAx] prime (five : PTm n) := by
   unfold prime
-  refine .andI (le_of_eq_add (d := three) (by apply deriveNat; ipra_simps; ring)) (.allI ?_)
+  refine .andI (le_of_eq_add (d := three) (by ipra_ring)) (.allI ?_)
   simp only [Syn.shift, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
   refine .impI (.impI ?_)
   refine .orE (small_cases Prf.hyp1 Prf.hyp0) ?_ (.orE Prf.hyp0 ?_ ?_)
   · exact not_dvd_of (m := two) (i := two) (c := zero) Prf.hyp0 (succ_pos one)
-      (by apply deriveNat; ipra_simps; ring) (le_refl two)
+      (by ipra_ring) (le_refl two)
   · exact not_dvd_of (m := three) (i := one) (c := one) Prf.hyp0 (succ_pos two)
-      (by apply deriveNat; ipra_simps; ring) (le_refl three)
+      (by ipra_ring) (le_refl three)
   · exact not_dvd_of (m := four) (i := one) (c := zero) Prf.hyp0 (succ_pos three)
-      (by apply deriveNat; ipra_simps; ring)
-      (le_of_eq_add (d := two) (by apply deriveNat; ipra_simps; ring))
+      (by ipra_ring)
+      (le_of_eq_add (d := two) (by ipra_ring))
 
 end LeanProofs.IPRA.Combinatorics.CatalanSmallPrimes

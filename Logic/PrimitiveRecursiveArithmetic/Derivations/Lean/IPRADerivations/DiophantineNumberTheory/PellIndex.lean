@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.PellAll
 import IPRADerivations.Core.SumOrder
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The index of a Pell solution
@@ -66,11 +67,9 @@ variable {ps : Fin 3 → PTm n} (hA : Γ ⊢[PRAAx] le one (ps 0)) (hB : Γ ⊢[
 include hA hB
 
 theorem X_step {m : PTm n} (ih : Γ ⊢[PRAAx] le one (Xp m ps)) : Γ ⊢[PRAAx] le one (Xp (succ m) ps) := by
-  have s := natEq (X_succ (Γ := Γ) m ps)
   have a := natEq (eq_add_of_le hA); have x := natEq (eq_add_of_le ih)
   refine le_of_eq_add (d := monus (Xp m ps) one + monus (ps 0) one * Xp m ps + ps 2 * (ps 1 * Yp m ps)) ?_
-  apply deriveNat; ipra_simps
-  linear_combination s + 𝔞 (Xp m ps) * a + x
+  ipra_lc natEq (X_succ (Γ := Γ) m ps) + 𝔞 (Xp m ps) * a + x
 
 /-- `X_m ≥ 1`. -/
 theorem X_pos (m : PTm n) : Γ ⊢[PRAAx] le one (Xp m ps) := by
@@ -88,12 +87,9 @@ theorem X_pos (m : PTm n) : Γ ⊢[PRAAx] le one (Xp m ps) := by
 
 /-- `Y_{m+1} ≥ Y_m + 1`. -/
 theorem Y_step (m : PTm n) : Γ ⊢[PRAAx] le (succ (Yp m ps)) (Yp (succ m) ps) := by
-  have s := natEq (Y_succ (Γ := Γ) m ps)
   have a := natEq (eq_add_of_le hA); have b := natEq (eq_add_of_le hB)
-  have x := natEq (eq_add_of_le (X_pos hA hB m))
   refine le_of_eq_add (d := monus (ps 1) one * Xp m ps + monus (Xp m ps) one + monus (ps 0) one * Yp m ps) ?_
-  apply deriveNat; ipra_simps
-  linear_combination s + 𝔞 (Xp m ps) * b + x + 𝔞 (Yp m ps) * a
+  ipra_lc natEq (Y_succ (Γ := Γ) m ps) + 𝔞 (Xp m ps) * b + natEq (eq_add_of_le (X_pos hA hB m)) + 𝔞 (Yp m ps) * a
 
 /-- `Y_m + k ≤ Y_{m+k}`. -/
 theorem Y_mono (m k : PTm n) : Γ ⊢[PRAAx] le (Yp m ps + k) (Yp (m + k) ps) := by
@@ -124,7 +120,7 @@ theorem lt_index_absurd {m m' : PTm n} (φ : Fm PTm n) (hlt : Γ ⊢[PRAAx] lt m
   have pos : Γ ⊢[PRAAx] le one (monus m' m) :=
     le_of_eq_add (d := monus m' (succ m)) (by apply deriveNat; ipra_simps; linear_combination e' - e'')
   have l2 : Γ ⊢[PRAAx] le (succ (Yp m ps)) (Yp m' ps) :=
-    le_trans (le_congr (by apply deriveNat; ipra_simps; ring) (.eqRefl _) (add_le_add₂ (le_refl _) pos)) l
+    le_trans (le_congr (by ipra_ring) (.eqRefl _) (add_le_add₂ (le_refl _) pos)) l
   exact lt_irrefl _ _ (le_congr (.eqRefl _) h.eqSymm l2)
 
 /-- `Y_m = Y_{m'}` forces `m = m'`. -/
@@ -164,8 +160,7 @@ theorem stormer_pell_powers :
   · refine le_trans cy (DiophantineNumberTheory.Coprime.le_of_sq_le ?_)
     have a := natEq hx; have d := natEq (eq_add_of_le hD)
     refine le_of_eq_add (d := one + monus (ps 2) one * (ps 4 * ps 4)) ?_
-    apply deriveNat; ipra_simps
-    linear_combination a + 𝔞 (ps 4) * 𝔞 (ps 4) * d
+    ipra_lc a + 𝔞 (ps 4) * 𝔞 (ps 4) * d
 
 include hA hB in
 /-- `lem:stormer-pell-powers`, uniqueness: any index `m` with `y = y_m` is `c`. -/

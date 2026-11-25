@@ -1,6 +1,7 @@
 import IPRADerivations.Core.Search
 import IPRADerivations.Core.Powers
 import IPRADerivations.Foundations.Adjunction
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Square roots without zero testing (`ipra_evidence_framework`, worked example)
@@ -95,15 +96,12 @@ theorem top_cross {u v n : PTm k} (hv : Γ ⊢[PRAAx] v ≐ succ (pred v)) :
   · have eu := natEq (Prf.hyp0 (Γ := Γ) (φ := u ≐ zero))
     have ev' := natEq (hv.wk (ψ := u ≐ zero))
     refine le_of_eq_add (d := succ (u * pw two n) * succ (u * pw two n) * v) ?_
-    apply deriveNat; ipra_simps
-    linear_combination (-(𝔞 (pw two n) * 𝔞 (pw two n))) * eu
+    ipra_lc (-(𝔞 (pw two n) * 𝔞 (pw two n))) * eu
   · have eu := natEq (Prf.hyp0 (Γ := Γ) (φ := u ≐ succ (pred u)))
     have ev' := natEq (hv.wk (ψ := u ≐ succ (pred u)))
     refine le_of_eq_add (d := pred u * u * (pw two n * pw two n) +
       (u * pw two n) * (u * pw two n) * pred v + two * (u * pw two n) * v + v) ?_
-    apply deriveNat; ipra_simps
-    linear_combination (𝔞 u * 𝔞 u * 𝔞 (pw two n) * 𝔞 (pw two n)) * ev' +
-      (𝔞 u * 𝔞 (pw two n) * 𝔞 (pw two n)) * eu
+    ipra_lc (𝔞 u * 𝔞 u * 𝔞 (pw two n) * 𝔞 (pw two n)) * ev' + (𝔞 u * 𝔞 (pw two n) * 𝔞 (pw two n)) * eu
 
 /-- The crossing exists: `u · (2^n)² ≤ j_n² · v`. -/
 theorem sqrt_cross {u v : PTm k} (hv : Γ ⊢[PRAAx] v ≐ succ (pred v)) (n : PTm k) :
@@ -127,29 +125,23 @@ theorem sqrt_upper {u v : PTm k} (hv : Γ ⊢[PRAAx] v ≐ succ (pred v)) (n : P
   refine .botE _ (.impE m (f_of_le ?_))
   have e := natEq (eq_add_of_le (sqrt_cross (Γ := lt (two * jn u v n) (jn u v (succ n)) :: Γ)
     (u := u) hv.wk n))
-  have ep := natEq (pw_succ (Γ := lt (two * jn u v n) (jn u v (succ n)) :: Γ) two n)
   refine le_of_eq_add (d := (two * two) *
     monus (jn u v n * jn u v n * v) (u * (pw two n * pw two n))) ?_
-  apply deriveNat; ipra_simps
-  linear_combination 4 * e - 𝔞 u * (𝔞 (pw two (succ n)) + 2 * 𝔞 (pw two n)) * ep
+  ipra_lc 4 * e -
+    𝔞 u * (𝔞 (pw two (succ n)) + 2 * 𝔞 (pw two n)) * natEq (pw_succ (Γ := lt (two * jn u v n) (jn u v (succ n)) :: Γ) two n)
 
 private theorem half_up (j' : PTm k) : Γ ⊢[PRAAx] le j' (two * half (succ j')) := by
-  have e₁ := natEq (half_par (Γ := Γ) (succ j'))
-  have e₂ := natEq (eq_add_of_le (par_le_one (Γ := Γ) (succ j')))
   refine le_of_eq_add (d := monus one (par (succ j'))) ?_
-  apply deriveNat; ipra_simps
-  linear_combination e₂ - e₁
+  ipra_lc natEq (eq_add_of_le (par_le_one (Γ := Γ) (succ j'))) - natEq (half_par (Γ := Γ) (succ j'))
 
 private theorem half_lt {j j' : PTm k} (h : Γ ⊢[PRAAx] lt (succ j') (two * j)) :
     Γ ⊢[PRAAx] lt (half (succ j')) j := by
   refine .orE (lt_or_le (half (succ j')) j) Prf.hyp0 ?_
-  have e₁ := natEq (half_par (Γ := le j (half (succ j')) :: Γ) (succ j'))
-  have ea := natEq (eq_add_of_le (h.wk (ψ := le j (half (succ j')))))
-  have eb := natEq (eq_add_of_le (Prf.hyp0 (Γ := Γ) (φ := le j (half (succ j')))))
   refine not_succ_le_self (succ j') _ (le_of_eq_add
     (d := monus (two * j) (succ (succ j')) + two * monus (half (succ j')) j + par (succ j')) ?_)
-  apply deriveNat; ipra_simps
-  linear_combination e₁ + 2 * eb + ea
+  ipra_lc natEq (half_par (Γ := le j (half (succ j')) :: Γ) (succ j')) +
+    2 * natEq (eq_add_of_le (Prf.hyp0 (Γ := Γ) (φ := le j (half (succ j'))))) +
+    natEq (eq_add_of_le (h.wk (ψ := le j (half (succ j')))))
 
 private theorem half_cross {u v n j' : PTm k}
     (hc : Γ ⊢[PRAAx] le (u * (pw two (succ n) * pw two (succ n))) (j' * j' * v)) :
@@ -170,8 +162,7 @@ private theorem half_cross {u v n j' : PTm k}
       succ (two * one) + (two * two) * monus (u * (pw two n * pw two n))
         (succ (half (succ j') * half (succ j') * v)) +
       monus (j' * j' * v) (u * (pw two (succ n) * pw two (succ n)))) ?_)
-  apply deriveNat; ipra_simps
-  linear_combination ec + 𝔞 u * (𝔞 (pw two (succ n)) + 2 * 𝔞 (pw two n)) * ep + 4 * es +
+  ipra_lc ec + 𝔞 u * (𝔞 (pw two (succ n)) + 2 * 𝔞 (pw two n)) * ep + 4 * es +
     𝔞 v * (2 * 𝔞 (half (succ j')) + 𝔞 j' + 𝔞 (monus (two * half (succ j')) j')) * et
 
 /-- `2 j_n ≤ j_{n+1} + 1`: otherwise `⌈j_{n+1} / 2⌉ < j_n` would already cross at precision

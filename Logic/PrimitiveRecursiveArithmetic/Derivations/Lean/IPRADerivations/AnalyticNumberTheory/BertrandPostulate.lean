@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.BertrandFactor
 import IPRADerivations.AnalyticNumberTheory.BertrandGrowth
 import IPRADerivations.AnalyticNumberTheory.BertrandCertificate
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Bertrand's postulate as a closed sentence of iPRA
@@ -59,9 +60,7 @@ theorem le_isqrt {y N : PTm n} (h : Γ ⊢[PRAAx] le (y * y) N) : Γ ⊢[PRAAx] 
 /-- `u · ((A W) u) = u^{s+2} W` when `A = u^s`. -/
 theorem asm_alg {u A W PW B2 : PTm n} (p1 : Γ ⊢[PRAAx] PW ≐ A * B2) (p2 : Γ ⊢[PRAAx] B2 ≐ u * u) :
     Γ ⊢[PRAAx] u * ((A * W) * u) ≐ PW * W := by
-  have a := natEq p1; have b := natEq p2
-  apply deriveNat; ipra_simps
-  linear_combination (-𝔞 W) * a - 𝔞 W * 𝔞 A * b
+  ipra_lc (-𝔞 W) * natEq p1 - 𝔞 W * 𝔞 A * natEq p2
 
 /-- `4^x ≤ (2x + 1)^{s+2} 4^m` after a failed search. -/
 theorem assemble {x : PTm n} (fail : Γ ⊢[PRAAx] found x ≐ zero) (h4 : Γ ⊢[PRAAx] le (two + two) x) :

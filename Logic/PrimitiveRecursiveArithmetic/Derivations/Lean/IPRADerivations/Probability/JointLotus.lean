@@ -1,6 +1,7 @@
 import IPRADerivations.Probability.Histogram
 import IPRADerivations.Probability.SignedParts
 import IPRADerivations.Core.BlockSum
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Joint LOTUS and componentwise expectation
@@ -58,9 +59,7 @@ theorem code_split (j : PTm n) {K : PTm n} (hK : Γ ⊢[PRAAx] K ≐ succ (pred 
   have q : Γ ⊢[PRAAx] quo j K ≐ quo j (succ (pred K)) := congrAp2 quoF (.eqRefl _) hK
   have r : Γ ⊢[PRAAx] rem j K ≐ rem j (succ (pred K)) := congrAp2 remF (.eqRefl _) hK
   refine .andI ?_ (lt_congr r.eqSymm hK.eqSymm (Prf.andE₂ d))
-  have a := natEq (Prf.andE₁ d); have b := natEq q; have c := natEq r; have k := natEq hK
-  apply deriveNat; ipra_simps
-  linear_combination -a + 𝔞 (quo j (succ (pred K))) * k + 𝔞 K * b + c
+  ipra_lc -natEq (Prf.andE₁ d) + 𝔞 (quo j (succ (pred K))) * natEq hK + 𝔞 K * natEq q + natEq r
 
 theorem one_ne_zero' {φ : Fm PTm n} (h : Γ ⊢[PRAAx] (one : PTm n) ≐ zero) : Γ ⊢[PRAAx] φ :=
   .botE _ (succ_ne_zero h)
@@ -191,12 +190,10 @@ theorem multi_lotus (w X₁ X₂ : PTm 2) (g : PTm 3) {M n₁ K x : PTm n} (hK :
     have hm : Syn.shift (n₁ * K) = Syn.shift n₁ * Syn.shift K := by simp [Syn.shift]
     rw [shift_pairT, hm]
     refine lt_congr (cB_at X₁ X₂ _ _ _).eqSymm (.eqRefl _) ?_
-    have a1 := natEq (eq_add_of_le (Prf.impE h₁.allOpen.wk Prf.hyp0))
-    have a2 := natEq (eq_add_of_le (Prf.impE h₂.allOpen.wk Prf.hyp0))
     refine le_of_eq_add (d := monus (Syn.shift K) (succ (inst2 X₂ (var 0) (Syn.shift x))) +
       monus (Syn.shift n₁) (succ (inst2 X₁ (var 0) (Syn.shift x))) * Syn.shift K) ?_
-    apply deriveNat; ipra_simps
-    linear_combination 𝔞 (Syn.shift K) * a1 + a2
+    ipra_lc 𝔞 (Syn.shift K) * natEq (eq_add_of_le (Prf.impE h₁.allOpen.wk Prf.hyp0)) +
+      natEq (eq_add_of_le (Prf.impE h₂.allOpen.wk Prf.hyp0))
   have s2 := lotus_bounded (sbq w) (cB X₁ X₂) (flatB g) hr
   -- Step 3: identify the code sum with the flattened joint sum.
   have s3 : Γ ⊢[PRAAx] ap2 (sumF (rB (sbq w) (cB X₁ X₂) (flatB g))) (n₁ * K) (pairT M (pairT K x)) ≐

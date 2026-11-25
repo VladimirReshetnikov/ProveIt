@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.BisectionInvariant
 import IPRADerivations.Core.Powers
 import IPRADerivations.AnalyticNumberTheory.Valuation
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The bisection bracket of the cubic `y³ + y = x`
@@ -133,10 +134,7 @@ theorem base {x : PTm k} (hq : Γ ⊢[PRAAx] le one (sndT x)) :
   have f := fst_pair (Γ := Γ) zero (succ (fstT x))
   have s := snd_pair (Γ := Γ) zero (succ (fstT x))
   refine .andI (I3_congr₁ CLo f.eqSymm (base_lo x)) (.andI (I3_congr₁ CHi s.eqSymm (base_hi hq)) ?_)
-  have k₁ := natEq s
-  have k₂ := natEq f
-  apply deriveNat; ipra_simps
-  linear_combination k₁ - k₂
+  ipra_lc natEq s - natEq f
 
 /-! ## The bracket at every stage -/
 

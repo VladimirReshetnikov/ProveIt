@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.PellAll
 import IPRADerivations.AnalyticNumberTheory.FactorVector
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # An explicit Pell family: `D = t² − 1`
@@ -37,8 +38,7 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 /-! ## The solution `(t, 1)` -/
 
 theorem sol_alg {T D : PTm n} (e : Γ ⊢[PRAAx] T ≐ succ D) : Γ ⊢[PRAAx] T ≐ one + D * (one * one) := by
-  have a := natEq e
-  apply deriveNat; ipra_simps; linear_combination a
+  ipra_lc natEq e
 
 /-- `t² = 1 + (t² − 1) · 1²` for `t ≥ 1`. -/
 theorem family_solution {t : PTm n} (ht : Γ ⊢[PRAAx] t ≐ succ (pred t)) :
@@ -57,24 +57,20 @@ theorem min_one (D : PTm n) : Γ ⊢[PRAAx] minimal D one := by
 theorem below_s {s t u D : PTm n} (e1 : Γ ⊢[PRAAx] t ≐ succ s + u) (e2 : Γ ⊢[PRAAx] s * s ≐ D)
     (e3 : Γ ⊢[PRAAx] t * t ≐ succ D) :
     Γ ⊢[PRAAx] zero ≐ s + (s + two * u + two * (s * u) + u * u) := by
-  have a := natEq e1; have b := natEq e2; have c := natEq e3
-  apply deriveNat; ipra_simps; linear_combination b - c + (𝔞 t + 𝔞 s + 1 + 𝔞 u) * a
+  ipra_lc natEq e2 - natEq e3 + (𝔞 t + 𝔞 s + 1 + 𝔞 u) * natEq e1
 
 theorem below_u {s t u D : PTm n} (e1 : Γ ⊢[PRAAx] t ≐ succ s + u) (e2 : Γ ⊢[PRAAx] s * s ≐ D)
     (e3 : Γ ⊢[PRAAx] t * t ≐ succ D) :
     Γ ⊢[PRAAx] zero ≐ u + (two * s + u + two * (s * u) + u * u) := by
-  have a := natEq e1; have b := natEq e2; have c := natEq e3
-  apply deriveNat; ipra_simps; linear_combination b - c + (𝔞 t + 𝔞 s + 1 + 𝔞 u) * a
+  ipra_lc natEq e2 - natEq e3 + (𝔞 t + 𝔞 s + 1 + 𝔞 u) * natEq e1
 
 theorem t_one {s t u : PTm n} (e1 : Γ ⊢[PRAAx] t ≐ succ s + u) (hs : Γ ⊢[PRAAx] s ≐ zero)
     (hu : Γ ⊢[PRAAx] u ≐ zero) : Γ ⊢[PRAAx] t ≐ one := by
-  have a := natEq e1; have b := natEq hs; have c := natEq hu
-  apply deriveNat; ipra_simps; linear_combination a + b + c
+  ipra_lc natEq e1 + natEq hs + natEq hu
 
 theorem above_alg {s t v D : PTm n} (e1 : Γ ⊢[PRAAx] s ≐ t + v) (e2 : Γ ⊢[PRAAx] s * s ≐ D)
     (e3 : Γ ⊢[PRAAx] t * t ≐ succ D) : Γ ⊢[PRAAx] succ (two * (t * v) + v * v) ≐ zero := by
-  have a := natEq e1; have b := natEq e2; have c := natEq e3
-  apply deriveNat; ipra_simps; linear_combination b - c - (𝔞 s + 𝔞 t + 𝔞 v) * a
+  ipra_lc natEq e2 - natEq e3 - (𝔞 s + 𝔞 t + 𝔞 v) * natEq e1
 
 theorem zero_of_le_zero {X : PTm n} (h : Γ ⊢[PRAAx] le X zero) : Γ ⊢[PRAAx] X ≐ zero :=
   (monus_zero X).eqSymm.eqTrans h

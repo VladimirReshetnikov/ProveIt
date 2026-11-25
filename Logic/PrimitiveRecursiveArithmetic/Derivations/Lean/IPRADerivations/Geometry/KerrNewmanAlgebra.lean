@@ -1,4 +1,5 @@
 import IPRADerivations.Core.Tactic
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The radial algebra of the Kerr–Newman family
@@ -92,9 +93,6 @@ satisfies `r² − a² + d − r d′ = q²` has `c₀ = a² + q²`. -/
 theorem radial_unique {n : ℕ} {Γ : List (Fm PTm n)} {r c₀ c₁ a q : ZT n}
     (h : Γ ⊢[PRAAx] ZT.eq (r * r - a * a + (r * r + c₁ * r + c₀) - r * (ZT.natLit 2 * r + c₁)) (q * q)) :
     Γ ⊢[PRAAx] ZT.eq c₀ (a * a + q * q) := by
-  have e := ZT.toZ_eq h
-  apply ZT.derive
-  ipra_simps
-  linear_combination e
+  ipra_lc ZT.toZ_eq h
 
 end LeanProofs.IPRA.Geometry.KerrNewmanAlgebra

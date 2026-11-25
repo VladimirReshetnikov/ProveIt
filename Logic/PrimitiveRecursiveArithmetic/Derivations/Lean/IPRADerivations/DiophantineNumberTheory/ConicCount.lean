@@ -33,7 +33,7 @@ local notation "𝔟" t:max => Groth.ι (IPRA.Q.mk _ t)
 theorem canonical_pairs {S : PTm n} (hS : Γ ⊢[PRAAx] le one S) :
     (Γ ⊢[PRAAx] num 4 * S * S + num 4 * S ≐ num 2 * (num 2 * S * S + num 2 * S)) ∧
     (Γ ⊢[PRAAx] le (num 2 * S * S + num 2 * S) (num 4 * S * S)) := by
-  refine ⟨by apply deriveNat; ipra_simps; ring, ?_⟩
+  refine ⟨by ipra_ring, ?_⟩
   ipra_le 2 * 𝔟 S * sl hS
 
 /-- `N_q ≤ 2S² + 2S`, `S² ≤ KB`, `S ≥ 1` give `N_q ≤ 4KB`. -/

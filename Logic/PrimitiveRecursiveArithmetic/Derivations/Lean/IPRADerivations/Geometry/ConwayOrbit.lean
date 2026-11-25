@@ -1,5 +1,6 @@
 import IPRADerivations.Core.Tactic
 import IPRADerivations.Core.Integers
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The two-orbit placement of the Conway criterion
@@ -61,24 +62,24 @@ abbrev P1 (m k x : ZT n) : ZT n := (r - x) + m * t + k * up p r
 
 /-- `h_r h_p = τ_u`. -/
 theorem comp_p (x : ZT n) : Γ ⊢[PRAAx] ZT.eq (r - (p - x)) (x + up p r) := by
-  apply ZT.derive; ipra_simps; ring
+  ipra_ring
 
 /-- `h_r h_q = τ_{u−t}`. -/
 theorem comp_q (x : ZT n) : Γ ⊢[PRAAx] ZT.eq (r - (qc p t - x)) (x + (up p r - t)) := by
-  apply ZT.derive; ipra_simps; ring
+  ipra_ring
 
 /-- `h_r h_r = id`. -/
 theorem comp_r (x : ZT n) : Γ ⊢[PRAAx] ZT.eq (r - (r - x)) x := by
-  apply ZT.derive; ipra_simps; ring
+  ipra_ring
 
 /-- `h_r h_s = τ_t`. -/
 theorem comp_s (x : ZT n) : Γ ⊢[PRAAx] ZT.eq (r - (sc r t - x)) (x + t) := by
-  apply ZT.derive; ipra_simps; ring
+  ipra_ring
 
 /-- `lem:orbitpairs`, last assertion: the translated pair stays a translated pair in the turned
 tile, `h_r(τ_t(x)) = τ_{−t}(h_r(x))`. -/
 theorem turned_pair (x : ZT n) : Γ ⊢[PRAAx] ZT.eq (r - (x + t)) ((r - x) - t) := by
-  apply ZT.derive; ipra_simps; ring
+  ipra_ring
 
 /-! ## The adjacency table of a direct tile -/
 
@@ -87,55 +88,55 @@ variable (m k : ZT n)
 /-- Path `a` of `T⁰_{m,k}` is path `d` of `T⁰_{m−1,k}`. -/
 theorem row_a (x : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (P0 p r t m k x) (P0 p r t (m - ZT.natLit 1) k (x + t)) := by
-  apply ZT.derive; ipra_simps; ring
+  ipra_ring
 
 /-- Path `d` of `T⁰_{m,k}` is path `a` of `T⁰_{m+1,k}`. -/
 theorem row_d (x : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (P0 p r t m k (x + t)) (P0 p r t (m + ZT.natLit 1) k x) := by
-  apply ZT.derive; ipra_simps; ring
+  ipra_ring
 
 /-- Path `b` of `T⁰_{m,k}` is path `b` of `T¹_{m,k−1}`. -/
 theorem row_b (x : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (P0 p r t m k x) (P1 p r t m (k - ZT.natLit 1) (p - x)) := by
-  apply ZT.derive; ipra_simps; ring
+  ipra_ring
 
 /-- Path `c` of `T⁰_{m,k}` is path `c` of `T¹_{m+1,k−1}`. -/
 theorem row_c (x : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (P0 p r t m k x)
       (P1 p r t (m + ZT.natLit 1) (k - ZT.natLit 1) (qc p t - x)) := by
-  apply ZT.derive; ipra_simps; ring
+  ipra_ring
 
 /-- Path `e` of `T⁰_{m,k}` is path `e` of `T¹_{m,k}`. -/
 theorem row_e (x : ZT n) : Γ ⊢[PRAAx] ZT.eq (P0 p r t m k x) (P1 p r t m k (r - x)) := by
-  apply ZT.derive; ipra_simps; ring
+  ipra_ring
 
 /-- Path `f` of `T⁰_{m,k}` is path `f` of `T¹_{m−1,k}`. -/
 theorem row_f (x : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (P0 p r t m k x) (P1 p r t (m - ZT.natLit 1) k (sc r t - x)) := by
-  apply ZT.derive; ipra_simps; ring
+  ipra_ring
 
 /-! ## The adjacency table of a turned tile -/
 
 /-- Path `a` of `T¹_{m,k}` is path `d` of `T¹_{m+1,k}`. -/
 theorem turned_a (x : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (P1 p r t m k x) (P1 p r t (m + ZT.natLit 1) k (x + t)) := by
-  apply ZT.derive; ipra_simps; ring
+  ipra_ring
 
 /-- Path `d` of `T¹_{m,k}` is path `a` of `T¹_{m−1,k}`. -/
 theorem turned_d (x : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (P1 p r t m k (x + t)) (P1 p r t (m - ZT.natLit 1) k x) := by
-  apply ZT.derive; ipra_simps; ring
+  ipra_ring
 
 /-- Path `b` of `T¹_{m,k}` is path `b` of `T⁰_{m,k+1}`. -/
 theorem turned_b (x : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (P1 p r t m k x) (P0 p r t m (k + ZT.natLit 1) (p - x)) := by
-  apply ZT.derive; ipra_simps; ring
+  ipra_ring
 
 /-- Path `c` of `T¹_{m,k}` is path `c` of `T⁰_{m−1,k+1}`. -/
 theorem turned_c (x : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (P1 p r t m k x)
       (P0 p r t (m - ZT.natLit 1) (k + ZT.natLit 1) (qc p t - x)) := by
-  apply ZT.derive; ipra_simps; ring
+  ipra_ring
 
 /-- Path `e` of `T¹_{m,k}` is path `e` of `T⁰_{m,k}`. -/
 theorem turned_e (x : ZT n) : Γ ⊢[PRAAx] ZT.eq (P1 p r t m k x) (P0 p r t m k (r - x)) :=
@@ -144,7 +145,7 @@ theorem turned_e (x : ZT n) : Γ ⊢[PRAAx] ZT.eq (P1 p r t m k x) (P0 p r t m k
 /-- Path `f` of `T¹_{m,k}` is path `f` of `T⁰_{m+1,k}`. -/
 theorem turned_f (x : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (P1 p r t m k x) (P0 p r t (m + ZT.natLit 1) k (sc r t - x)) := by
-  apply ZT.derive; ipra_simps; ring
+  ipra_ring
 
 end Orbit
 
@@ -152,10 +153,10 @@ end Orbit
 
 /-- "Applying any map twice returns the original index": `(m − 1) + 1 = m`. -/
 theorem index_back (m : ZT n) : Γ ⊢[PRAAx] ZT.eq ((m - ZT.natLit 1) + ZT.natLit 1) m := by
-  apply ZT.derive; simp only [ZT.toZ_add, ZT.toZ_sub]; ring
+  ipra_lc
 
 /-- `(m + 1) − 1 = m`. -/
 theorem index_forth (m : ZT n) : Γ ⊢[PRAAx] ZT.eq ((m + ZT.natLit 1) - ZT.natLit 1) m := by
-  apply ZT.derive; ipra_simps; ring
+  ipra_ring
 
 end LeanProofs.IPRA.Geometry.ConwayOrbit

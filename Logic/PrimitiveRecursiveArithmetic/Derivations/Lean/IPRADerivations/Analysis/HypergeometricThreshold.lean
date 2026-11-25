@@ -2,6 +2,7 @@ import IPRADerivations.Analysis.HypergeometricRatio
 import IPRADerivations.AnalyticNumberTheory.PhiLower
 import IPRADerivations.Core.Gcd
 import IPRADerivations.Core.Parity
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # An explicit ratio threshold for hypergeometric terms
@@ -42,10 +43,8 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 /-- `a + k ≤ (1 + a)(b + k)` for `k ≥ 1`. -/
 theorem pair_le (a b : PTm n) {k : PTm n} (hk : Γ ⊢[PRAAx] le one k) :
     Γ ⊢[PRAAx] le (a + k) ((one + a) * (b + k)) := by
-  have e := natEq (eq_add_of_le hk)
   refine le_of_eq_add (d := b + a * b + a * monus k one) ?_
-  apply deriveNat; ipra_simps
-  linear_combination Groth.ι (Q.mk Γ a) * e
+  ipra_lc Groth.ι (Q.mk Γ a) * natEq (eq_add_of_le hk)
 
 /-- `1 ≤ ∏_j (b_j + k)` for `k ≥ 1`. -/
 theorem one_le_shift (bs : List (PTm n)) {k : PTm n} (hk : Γ ⊢[PRAAx] le one k) :
@@ -79,7 +78,7 @@ theorem shift_le (as : List (PTm n)) {k : PTm n} (hk : Γ ⊢[PRAAx] le one k) :
         le_mul_mono (pair_le a b hk) ih'
       have h' : Γ ⊢[PRAAx] le ((a + k) * shiftL l k)
           (((one + a) * prodL (l.map fun a => one + a)) * ((b + k) * shiftL bs' k)) :=
-        le_congr (.eqRefl _) (by apply deriveNat; ipra_simps; ring) h
+        le_congr (.eqRefl _) (by ipra_ring) h
       exact h'
 
 /-- From `S X = u Y` and `S = 2u + D`: `u Y = u (2X) + D X`. -/
@@ -101,7 +100,7 @@ theorem half_ratio (as bs : List (PTm n)) (hlen : as.length ≤ bs.length) {z k 
   have H : Γ ⊢[PRAAx] le (two * (z * shiftL as k)) (succ k * shiftL bs k) := by
     have h1 := le_mul_mono (le_refl (two * z)) hS
     have h2 := le_mul_mono hN (le_refl (shiftL bs k))
-    exact le_trans (le_congr (by apply deriveNat; ipra_simps; ring) (by apply deriveNat; ipra_simps; ring) h1) h2
+    exact le_trans (le_congr (by ipra_ring) (by ipra_ring) h1) h2
   have pf := pfq_ratio (Γ := Γ) as bs z k
   refine .orE (zero_or_succ (z * shiftL as k)) ?_ ?_
   · -- the factor vanishes: `T_{k+1} = 0`
@@ -109,7 +108,7 @@ theorem half_ratio (as bs : List (PTm n)) (hlen : as.length ≤ bs.length) {z k 
     have nE : ((z * shiftL as k ≐ zero) :: Γ) ⊢[PRAAx] Num as z (succ k) ≐
         (pw z k * z) * (pochL as k * shiftL as k) := congrMul (pw_succ z k) (pochL_succ as k)
     have re : ((z * shiftL as k ≐ zero) :: Γ) ⊢[PRAAx] (pw z k * z) * (pochL as k * shiftL as k) ≐
-        (pw z k * pochL as k) * (z * shiftL as k) := by apply deriveNat; ipra_simps; ring
+        (pw z k * pochL as k) * (z * shiftL as k) := by ipra_ring
     have n0 := nE.eqTrans (re.eqTrans ((congrMul (.eqRefl _) hz).eqTrans (mul_zero _)))
     have x0 : ((z * shiftL as k ≐ zero) :: Γ) ⊢[PRAAx] two * (Num as z (succ k) * Den bs k) ≐ zero :=
       (congrMul (.eqRefl _) ((congrMul n0 (.eqRefl _)).eqTrans (zero_mul _))).eqTrans (mul_zero _)

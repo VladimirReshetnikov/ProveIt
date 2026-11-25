@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.BohrMollerupUniqueness
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The global Euler approximants and their convergence from below
@@ -53,11 +54,9 @@ theorem off_at (i M a b x : PTm n) :
 theorem en_factor (m N a b x : PTm n) :
     Γ ⊢[PRAAx] ap2 (prodF (offB rB)) (succ N) (pairT m (pairT a (pairT b x))) * Pq m a b x ≐
       Pq (succ N) a b x * ap2 (prodF (offB rB)) m (pairT (succ N) (pairT a (pairT b x))) := by
-  have s₁ := natEq (prod_split (Γ := Γ) rB m (succ N) (pairT a (pairT b x)))
-  have s₂ := natEq (prod_split (Γ := Γ) rB (succ N) m (pairT a (pairT b x)))
-  have c := natEq (congrAp2 (Γ := Γ) (prodF rB) (add_comm m (succ N)) (.eqRefl (pairT a (pairT b x))))
-  apply deriveNat; ipra_simps
-  linear_combination -s₁ + c + s₂
+  ipra_lc -natEq (prod_split (Γ := Γ) rB m (succ N) (pairT a (pairT b x))) +
+    natEq (congrAp2 (Γ := Γ) (prodF rB) (add_comm m (succ N)) (.eqRefl (pairT a (pairT b x)))) +
+    natEq (prod_split (Γ := Γ) rB (succ N) m (pairT a (pairT b x)))
 
 /-! ## The product defect -/
 

@@ -1,4 +1,4 @@
-import IPRADerivations.Core.IntCertificates
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Flows across cuts: the balance identity, weak duality and the optimality certificate
@@ -100,9 +100,7 @@ theorem cut_balance (F : Fin k → Fin k → ZT n) (x e : Fin k → ZT n) (κ : 
   have L := net_sum (fun u v => ZT.toZ Γ (F u v)) (fun v => ZT.toZ Γ (x v))
   beta_reduce at L
   rw [Finset.sum_congr rfl fun v _ => t v, ← Finset.mul_sum, hx1, _root_.mul_one] at L
-  apply ZT.derive
-  zsimp
-  linear_combination L
+  ipra_lc L
 
 /-- Weak duality: the value of a feasible flow is at most the capacity of every cut. -/
 theorem weak_duality (F c : Fin k → Fin k → ZT n) (x e : Fin k → ZT n) (κ : ZT n)
@@ -151,9 +149,7 @@ theorem saturated_cut (F c : Fin k → Fin k → ZT n) (x e : Fin k → ZT n) (�
       ∑ u, ∑ v, ZT.toZ Γ (c u v) * (ZT.toZ Γ (x u) * (1 - ZT.toZ Γ (x v))) :=
     Finset.sum_congr rfl fun u _ => Finset.sum_congr rfl fun v _ => hsat1 u v
   rw [hin, hout] at E
-  apply ZT.derive
-  zsimp
-  linear_combination E
+  ipra_lc E
 
 /-- A matching is at most as large as a vertex cover: rows of sum at least one and column sums bounded by
 the cover bits give `a ≤ ∑ w_j`. -/

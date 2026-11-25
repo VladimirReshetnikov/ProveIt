@@ -1,4 +1,4 @@
-import IPRADerivations.Core.IntCertificates
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Linking numbers: crossing bounds and crossing changes
@@ -38,18 +38,12 @@ local macro "lsimp" loc:(Lean.Parser.Tactic.location)? : tactic =>
 /-- A sign is at most one. -/
 theorem sign_le_one {ε : ZT n} (h : Γ ⊢[PRAAx] ZT.eq (ε * ε) (ZT.natLit 1)) :
     Γ ⊢[PRAAx] zle ε (ZT.natLit 1) := by
-  have e := ZT.toZ_eq h
-  refine zle_of_comb_two (ZT.toZ Γ (ZT.natLit 1 - ε) ^ 2) ?_ (nn_zsq _)
-  lsimp at e ⊢
-  linear_combination -e
+  ipra_zle2 (ZT.toZ Γ (ZT.natLit 1 - ε) ^ 2) with -ZT.toZ_eq h
 
 /-- A sign is at least minus one. -/
 theorem neg_one_le_sign {ε : ZT n} (h : Γ ⊢[PRAAx] ZT.eq (ε * ε) (ZT.natLit 1)) :
     Γ ⊢[PRAAx] zle (-(ZT.natLit 1)) ε := by
-  have e := ZT.toZ_eq h
-  refine zle_of_comb_two (ZT.toZ Γ (ZT.natLit 1 + ε) ^ 2) ?_ (nn_zsq _)
-  lsimp at e ⊢
-  linear_combination -e
+  ipra_zle2 (ZT.toZ Γ (ZT.natLit 1 + ε) ^ 2) with -ZT.toZ_eq h
 
 /-- `∑_p (1 − x_p)² = 2k − 2 ∑_p x_p` for signs `x_p`. -/
 theorem sum_one_sub_sq {R : Type*} [CommRing R] (x : Fin k → R) (h : ∀ p, x p * x p = 1) :
@@ -106,24 +100,17 @@ theorem crossing_change (ε ε' : Fin k → ZT n) (q : Fin k)
     (hoff : ∀ p, p ≠ q → (Γ ⊢[PRAAx] ZT.eq (ε' p) (ε p)))
     (hq : Γ ⊢[PRAAx] ZT.eq (ε' q) (-(ε q))) :
     Γ ⊢[PRAAx] ZT.eq (ZT.sumFin ε') (ZT.sumFin ε - ZT.natLit 2 * ε q) := by
-  have e0 := ZT.toZ_eq hq
   have D : ∑ p, (ZT.toZ Γ (ε' p) - ZT.toZ Γ (ε p)) = ZT.toZ Γ (ε' q) - ZT.toZ Γ (ε q) :=
     Finset.sum_eq_single q (fun p _ hp => by rw [ZT.toZ_eq (hoff p hp), sub_self])
       (fun hn => absurd (Finset.mem_univ q) hn)
   rw [Finset.sum_sub_distrib] at D
-  apply ZT.derive
-  lsimp at e0 ⊢
-  linear_combination D + e0
+  ipra_lc D + ZT.toZ_eq hq
 
 /-- `w = w₁ + w₂ + 2 ℓ` for two components. -/
 theorem writhe_two {w w₁ w₂ l s : ZT n}
     (hw : Γ ⊢[PRAAx] ZT.eq w (w₁ + w₂ + s)) (hl : Γ ⊢[PRAAx] ZT.eq (ZT.natLit 2 * l) s) :
     Γ ⊢[PRAAx] ZT.eq w (w₁ + w₂ + ZT.natLit 2 * l) := by
-  have e1 := ZT.toZ_eq hw
-  have e2 := ZT.toZ_eq hl
-  apply ZT.derive
-  lsimp at e1 e2 ⊢
-  linear_combination e1 - e2
+  ipra_lc ZT.toZ_eq hw - ZT.toZ_eq hl
 
 /-- The closure of `σ₁^{2r}`: `2 r` is the sum of its `2r` crossing signs, all equal to one. -/
 theorem torus_link_linking (r : ℕ) :

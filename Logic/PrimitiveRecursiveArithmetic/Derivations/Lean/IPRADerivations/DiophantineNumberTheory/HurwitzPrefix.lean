@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.HurwitzLoop
 import IPRADerivations.Core.Fubini
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Precision independence of the continued-fraction prefix (`hurwitz_khinchin_ipra`)
@@ -51,8 +52,7 @@ theorem quo_of_between {A Dn q : PTm n} (hD : Γ ⊢[PRAAx] Dn ≐ succ (pred Dn
     have hl := Prf.andE₂ h
     ipra_le sl hl with em
   have hz : Γ ⊢[PRAAx] A ≐ succ (pred Dn) * q + monus A (q * Dn) := by
-    have eD := natEq hD
-    apply deriveNat; ipra_simps; linear_combination em + 𝔞 q * eD
+    ipra_lc em + 𝔞 q * natEq hD
   exact (congrAp2 quoF (.eqRefl _) hD).eqTrans
     (Prf.andE₁ (div_mod_unique hz (lt_congr (.eqRefl _) hD hr)))
 

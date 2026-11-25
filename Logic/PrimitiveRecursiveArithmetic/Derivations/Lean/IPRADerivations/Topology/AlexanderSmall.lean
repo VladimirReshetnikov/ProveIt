@@ -1,4 +1,5 @@
 import IPRADerivations.Topology.KnotColourings
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The Alexander polynomials of the two-strand knots and of the figure-eight knot
@@ -47,8 +48,7 @@ def sm (t : ZT n) : ℕ → ZT n
 local macro "asimp" loc:(Lean.Parser.Tactic.location)? : tactic =>
   `(tactic| simp only [aff, ZT.toZ_add, ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_neg, ZT.toZ_sq, ZT.toZ_natLit,
     Nat.cast_ofNat, Nat.cast_zero, Nat.cast_one] $[$loc]?)
-
-local macro "geo" : tactic => `(tactic| (apply ZT.derive; asimp; ring))
+attribute [local ipra_defs] aff
 
 /-! ## Two strands -/
 
@@ -114,14 +114,14 @@ theorem sm_fox (m : ℕ) :
 /-- The first entry of `Q²` on `(x, x + d, x + e)`: `x + t ((1 − t) d + e)`. -/
 theorem fig8_first (t x d e : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (aff t (aff t x (x + d)) (x + e) - x) (t * ((ZT.natLit 1 - t) * d + e)) := by
-  geo
+  ipra_lc
 
 /-- The second difference at `e = (t − 1) d`, times `t`: `(t² − 3t + 1) d` modulo `s t − 1`. -/
 theorem fig8_second (t s x d : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (t * (aff s (x + (t - ZT.natLit 1) * d) x - (x + d)))
       ((t * t - ZT.natLit 3 * t + ZT.natLit 1) * d +
         (-(d * (t - ZT.natLit 1))) * (s * t - ZT.natLit 1)) := by
-  geo
+  ipra_lc
 
 /-- The third difference at `e = (t − 1) d`, times `t²`: `−(t² − 3t + 1) d` modulo `s t − 1`. -/
 theorem fig8_third (t s x d : ZT n) :
@@ -129,14 +129,14 @@ theorem fig8_third (t s x d : ZT n) :
       (t * t * (aff s (aff s (x + (t - ZT.natLit 1) * d) x) (aff t x (x + d)) - (x + (t - ZT.natLit 1) * d)))
       (-((t * t - ZT.natLit 3 * t + ZT.natLit 1) * d) +
         d * (s * (t * t) - s * t - t * t + ZT.natLit 3 * t - ZT.natLit 1) * (s * t - ZT.natLit 1)) := by
-  geo
+  ipra_lc
 
 /-- `t² − 3t + 1` at `t = −1` is `5`: the determinant of the figure-eight knot. -/
 theorem fig8_determinant :
     Γ ⊢[PRAAx] ZT.eq
       ((-(ZT.natLit 1 : ZT n)) * (-(ZT.natLit 1)) - ZT.natLit 3 * (-(ZT.natLit 1)) + ZT.natLit 1)
       (ZT.natLit 5) := by
-  geo
+  ipra_lc
 
 /-! ## Conway normalization -/
 
@@ -144,12 +144,12 @@ theorem fig8_determinant :
 theorem conway_trefoil (u v : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (v * v - ZT.natLit 1 + u * u)
       (ZT.natLit 1 + ZT.sq (u - v) + ZT.natLit 2 * (u * v - ZT.natLit 1)) := by
-  geo
+  ipra_lc
 
 /-- `−t + 3 − t⁻¹ = 1 − z²` for `z = t^{1/2} − t^{−1/2}`, up to `−2 (u v − 1)`. -/
 theorem conway_fig8 (u v : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (-(u * u) + ZT.natLit 3 - v * v)
       (ZT.natLit 1 - ZT.sq (u - v) - ZT.natLit 2 * (u * v - ZT.natLit 1)) := by
-  geo
+  ipra_lc
 
 end LeanProofs.IPRA.Topology.AlexanderSmall

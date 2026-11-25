@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.FeedbackInexact
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Monomial difference bounds, the a posteriori estimate and parameter stability
@@ -163,13 +164,9 @@ theorem budget_const (E₀ e₁ e₂ : PTm n) :
     ∀ k, Γ ⊢[PRAAx] budget E₀ (fun _ => e₁) (fun _ => e₂) k + num 2 * (e₁ + e₂) ≐ E₀ + num (2 ^ (k + 1)) * (e₁ + e₂)
   | 0 => .eqRefl _
   | k + 1 => by
-    have h := natEq (budget_const E₀ e₁ e₂ k)
     show Γ ⊢[PRAAx] (budget E₀ (fun _ => e₁) (fun _ => e₂) k + num (2 ^ (k + 1)) * (e₁ + e₂)) + num 2 * (e₁ + e₂) ≐
       E₀ + num (2 ^ (k + 1 + 1)) * (e₁ + e₂)
-    apply deriveNat
-    ipra_simps
-    push_cast at h ⊢
-    linear_combination h
+    ipra_lc natEq (budget_const E₀ e₁ e₂ k)
 
 variable {a : Fin m → Fin m → PTm n} {w : Fin m → PTm n} {T : (Fin m → PTm n) → Fin m → PTm n}
   {D : (Fin m → PTm n) → Prop}

@@ -1,6 +1,7 @@
 import IPRADerivations.Core.MultiSums
 import IPRADerivations.Core.Pairing
 import IPRADerivations.Geometry.Distinct.AnalyticGeometryPolynomialCertificates
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Actual coded affine pullback of a binary conic
@@ -137,17 +138,11 @@ def pullback (c m : PTm n) : PTm n :=
 
 theorem evaluation_covariance (c m : PTm n) (x y : ZT n) : Γ ⊢[PRAAx]
     ZT.eq (evaluate (pullback c m) x y) (evaluate c (imageX m x y) (imageY m x y)) := by
-  apply ZT.derive
-  simp only [evaluate,imageX,imageY,ZT.toZ_add,ZT.toZ_mul,pullback,
-    read_pack6_0,read_pack6_1,read_pack6_2,read_pack6_3,read_pack6_4,read_pack6_5,ZT.toZ_natLit]
-  ring
+  ipra_lc [evaluate, imageX, imageY, pullback, read_pack6_0, read_pack6_1, read_pack6_2, read_pack6_3, read_pack6_4, read_pack6_5]
 
 theorem discriminant_covariance (c m : PTm n) : Γ ⊢[PRAAx]
     ZT.eq (discriminant (pullback c m)) ((determinant m).sq*discriminant c) := by
-  apply ZT.derive
-  simp only [discriminant,determinant,ZT.toZ_sq,ZT.toZ_sub,ZT.toZ_mul,pullback,
-    read_pack6_0,read_pack6_1,read_pack6_2,ZT.toZ_add,ZT.toZ_natLit]
-  ring
+  ipra_lc [discriminant, determinant, pullback, read_pack6_0, read_pack6_1, read_pack6_2]
 
 def pullbackF : PR 2 := PTm.toPR (pullback (var 0) (var 1))
 def evaluateF : PR 3 := PTm.toPR (encode (evaluate (var 0) (decode (var 1)) (decode (var 2))))

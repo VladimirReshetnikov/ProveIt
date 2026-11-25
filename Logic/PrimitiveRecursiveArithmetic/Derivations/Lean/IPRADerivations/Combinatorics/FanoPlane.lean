@@ -1,4 +1,4 @@
-import IPRADerivations.Core.IntCertificates
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The Fano plane as a symmetric `2-(7, 3, 1)` design
@@ -50,46 +50,26 @@ theorem inc_meet : ∀ B C : Fin 7, B ≠ C → ∑ i, inc i B * inc i C = 1 := 
 /-- The entries of the incidence table are bits. -/
 theorem fano_bit (i B : Fin 7) :
     Γ ⊢[PRAAx] ZT.eq (ZT.natLit (inc i B) * ZT.natLit (inc i B)) (ZT.natLit (inc i B) : ZT n) := by
-  apply ZT.derive
-  simp only [ZT.toZ_mul, ZT.toZ_natLit]
-  have h := congrArg (Nat.cast : ℕ → Groth (Q Γ)) (inc_bit i B)
-  push_cast at h
-  exact h
+  ipra_cast inc_bit i B
 
 /-- Every point is on three lines. -/
 theorem fano_point (i : Fin 7) :
     Γ ⊢[PRAAx] ZT.eq (ZT.sumFin fun B => (ZT.natLit (inc i B) : ZT n)) (ZT.natLit 3) := by
-  apply ZT.derive
-  simp only [ZT.toZ_sumFin, ZT.toZ_natLit, Nat.cast_ofNat, Nat.cast_one]
-  have h := congrArg (Nat.cast : ℕ → Groth (Q Γ)) (inc_point i)
-  push_cast at h
-  exact h
+  ipra_cast inc_point i
 
 /-- Every line has three points. -/
 theorem fano_line (B : Fin 7) :
     Γ ⊢[PRAAx] ZT.eq (ZT.sumFin fun i => (ZT.natLit (inc i B) : ZT n)) (ZT.natLit 3) := by
-  apply ZT.derive
-  simp only [ZT.toZ_sumFin, ZT.toZ_natLit, Nat.cast_ofNat, Nat.cast_one]
-  have h := congrArg (Nat.cast : ℕ → Groth (Q Γ)) (inc_line B)
-  push_cast at h
-  exact h
+  ipra_cast inc_line B
 
 /-- Two distinct points are on exactly one common line. -/
 theorem fano_pair (i j : Fin 7) (hij : i ≠ j) :
     Γ ⊢[PRAAx] ZT.eq (ZT.sumFin fun B => (ZT.natLit (inc i B) : ZT n) * ZT.natLit (inc j B)) (ZT.natLit 1) := by
-  apply ZT.derive
-  simp only [ZT.toZ_sumFin, ZT.toZ_mul, ZT.toZ_natLit, Nat.cast_ofNat, Nat.cast_one]
-  have h := congrArg (Nat.cast : ℕ → Groth (Q Γ)) (inc_pair i j hij)
-  push_cast at h
-  exact h
+  ipra_cast inc_pair i j hij
 
 /-- Two distinct lines have exactly one common point. -/
 theorem fano_meet (B C : Fin 7) (hBC : B ≠ C) :
     Γ ⊢[PRAAx] ZT.eq (ZT.sumFin fun i => (ZT.natLit (inc i B) : ZT n) * ZT.natLit (inc i C)) (ZT.natLit 1) := by
-  apply ZT.derive
-  simp only [ZT.toZ_sumFin, ZT.toZ_mul, ZT.toZ_natLit, Nat.cast_ofNat, Nat.cast_one]
-  have h := congrArg (Nat.cast : ℕ → Groth (Q Γ)) (inc_meet B C hBC)
-  push_cast at h
-  exact h
+  ipra_cast inc_meet B C hBC
 
 end LeanProofs.IPRA.Combinatorics.FanoPlane

@@ -4,6 +4,7 @@ import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.Core.ProdLemmas
 import IPRADerivations.DiophantineNumberTheory.SuperellipticFamily
 import IPRADerivations.Geometry.HypercubeSplit
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Finite Hölder and Lyapunov inequalities with rational exponents
@@ -65,14 +66,9 @@ theorem lin_base (f g h : PTm 2) (c₀ c₁ c₂ x : PTm n) : Γ ⊢[PRAAx] LinF
 theorem lin_step {f g h : PTm 2} {c₀ c₁ c₂ N x : PTm n}
     (hN : Γ ⊢[PRAAx] le (c₀ * inst2 f N x) (c₁ * inst2 g N x + c₂ * inst2 h N x))
     (ih : Γ ⊢[PRAAx] LinF f g h c₀ c₁ c₂ N x) : Γ ⊢[PRAAx] LinF f g h c₀ c₁ c₂ (succ N) x := by
-  have sf := natEq (sum_succ' (Γ := Γ) f N x)
-  have sg := natEq (sum_succ' (Γ := Γ) g N x)
-  have sh := natEq (sum_succ' (Γ := Γ) h N x)
   refine le_congr ?_ ?_ (add_le_add ih hN)
-  · apply deriveNat; ipra_simps
-    linear_combination (-𝔞 c₀) * sf
-  · apply deriveNat; ipra_simps
-    linear_combination (-𝔞 c₁) * sg - 𝔞 c₂ * sh
+  · ipra_lc (-𝔞 c₀) * natEq (sum_succ' (Γ := Γ) f N x)
+  · ipra_lc (-𝔞 c₁) * natEq (sum_succ' (Γ := Γ) g N x) - 𝔞 c₂ * natEq (sum_succ' (Γ := Γ) h N x)
 
 /-- `c₀ f_m ≤ c₁ g_m + c₂ h_m` for `m < N` gives `c₀ Σ_{m<N} f ≤ c₁ Σ_{m<N} g + c₂ Σ_{m<N} h`. -/
 theorem lin3_le {f g h : PTm 2} {c₀ c₁ c₂ N x : PTm n}
@@ -109,7 +105,7 @@ section Young
 variable (a b : ℕ)
 
 theorem pw_comm_exp (u e d : PTm n) : Γ ⊢[PRAAx] pw (pw u e) d ≐ pw (pw u d) e :=
-  (pw_mul u e d).eqTrans ((congrAp2 powF (show Γ ⊢[PRAAx] e * d ≐ d * e by apply deriveNat; ipra_simps; ring)
+  (pw_mul u e d).eqTrans ((congrAp2 powF (show Γ ⊢[PRAAx] e * d ≐ d * e by ipra_ring)
     (.eqRefl u)).eqTrans (pw_mul u d e).eqSymm)
 
 /-- Young's inequality `k X^i Y^j ≤ i X^k + j Y^k`, `k = i + j`, `i ≥ 1`. -/
@@ -131,8 +127,8 @@ theorem young_pt (u v α β ω : PTm n) :
   have e4 := pw_mul_base (Γ := Γ) v α (eK a b)
   refine le_congr ((congrMul (.eqRefl ω) (congrMul (.eqRefl _) (congrMul e1 e2))).eqTrans ?_)
     ((congrMul (.eqRefl ω) (congrAdd (congrMul (.eqRefl _) e3) (congrMul (.eqRefl _) e4))).eqTrans ?_) y
-  · apply deriveNat; ipra_simps; ring
-  · apply deriveNat; ipra_simps; ring
+  · ipra_ring
+  · ipra_ring
 
 end Young
 
@@ -159,7 +155,7 @@ theorem holder {α β N x : PTm n} (hα : Γ ⊢[PRAAx] α ≐ succ (pred α)) (
       (eI a * pw β (eK a b) * (pw α (eK a b) * Wt w N x) + eJ b * pw α (eK a b) * (pw β (eK a b) * Wt w N x)) :=
     add_le_add (le_mul_mono (le_refl _) hX) (le_mul_mono (le_refl _) hY)
   -- `α^k β^k = (β^i α^j)(α^i β^j)` and `k = i + j`
-  have ek : Γ ⊢[PRAAx] (eK a b : PTm n) ≐ eI a + eJ b := by apply deriveNat; ipra_simps; ring
+  have ek : Γ ⊢[PRAAx] (eK a b : PTm n) ≐ eI a + eJ b := by ipra_ring
   have qa : Γ ⊢[PRAAx] pw α (eK a b) ≐ pw α (eI a) * pw α (eJ b) :=
     (congrAp2 powF ek (.eqRefl α)).eqTrans (pw_add α (eI a) (eJ b))
   have qb : Γ ⊢[PRAAx] pw β (eK a b) ≐ pw β (eI a) * pw β (eJ b) :=
@@ -169,7 +165,7 @@ theorem holder {α β N x : PTm n} (hα : Γ ⊢[PRAAx] α ≐ succ (pred α)) (
     pos_mul' (AnalyticNumberTheory.Primes.eq_succ_pred (.eqRefl _)) (pos_mul' (pw_pos' hβ _) (pw_pos' hα _))
   refine le_cancel_pos hc (le_congr (.eqRefl _) ((congrAdd (congrMul (congrMul (.eqRefl _) qb) (congrMul qa (.eqRefl _)))
     (congrMul (congrMul (.eqRefl _) qa) (congrMul qb (.eqRefl _)))).eqTrans ?_) T)
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- `cor:lyapunov`: `Ew(X^k) ≤ α^k W` (`α > 0`) gives `Ew(X^i) ≤ α^i W` for `i ≤ k`. -/
 theorem lyapunov {α N x : PTm n} (hα : Γ ⊢[PRAAx] α ≐ succ (pred α))

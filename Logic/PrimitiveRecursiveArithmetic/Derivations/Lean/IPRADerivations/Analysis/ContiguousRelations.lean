@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.Pochhammer
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The contiguous relations of the Gauss series, coefficientwise
@@ -60,22 +61,16 @@ abbrev Tn (a b k : PTm n) : PTm n := poch a k * poch b k
 
 /-- `T_{k+1} = T_k (a + k)(b + k)`. -/
 theorem Tn_succ (a b k : PTm n) : Γ ⊢[PRAAx] Tn a b (succ k) ≐ Tn a b k * ((a + k) * (b + k)) := by
-  have sa := natEq (poch_succ (Γ := Γ) a k)
-  have sb := natEq (poch_succ (Γ := Γ) b k)
-  apply deriveNat; ipra_simps
-  linear_combination 𝔟(poch b (succ k)) * sa + 𝔟(poch a k) * (𝔟 a + 𝔟 k) * sb
+  ipra_lc 𝔟(poch b (succ k)) * natEq (poch_succ (Γ := Γ) a k) +
+    𝔟(poch a k) * (𝔟 a + 𝔟 k) * natEq (poch_succ (Γ := Γ) b k)
 
 /-- `eq:contig-a+`: `a T_k(a + 1, b) = (a + k) T_k(a, b)`. -/
 theorem contig_a_plus (a b k : PTm n) : Γ ⊢[PRAAx] a * Tn (succ a) b k ≐ (a + k) * Tn a b k := by
-  have s := natEq (poch_shift (Γ := Γ) a k)
-  apply deriveNat; ipra_simps
-  linear_combination 𝔟(poch b k) * s
+  ipra_lc 𝔟(poch b k) * natEq (poch_shift (Γ := Γ) a k)
 
 /-- `eq:contig-b+`: `b T_k(a, b + 1) = (b + k) T_k(a, b)`. -/
 theorem contig_b_plus (a b k : PTm n) : Γ ⊢[PRAAx] b * Tn a (succ b) k ≐ (b + k) * Tn a b k := by
-  have s := natEq (poch_shift (Γ := Γ) b k)
-  apply deriveNat; ipra_simps
-  linear_combination 𝔟(poch a k) * s
+  ipra_lc 𝔟(poch a k) * natEq (poch_shift (Γ := Γ) b k)
 
 /-- `eq:contig-c-`, the denominators: `c (c + 1)_k = (c + k) (c)_k`. -/
 theorem contig_c_minus (c k : PTm n) : Γ ⊢[PRAAx] c * poch (succ c) k ≐ (c + k) * poch c k :=
@@ -86,43 +81,29 @@ theorem contig_a_minus (α b c k : PTm n) :
     Γ ⊢[PRAAx] (succ k + c) * Tn (succ α) b (succ k) + succ α * Tn α b (succ k) ≐
       (k + b) * (c + k) * succ k * Tn (succ α) b k + c * Tn α b (succ k) +
         succ α * Tn (succ α) b (succ k) := by
-  have s₁ := natEq (poch_succ (Γ := Γ) (succ α) k)
-  have sb := natEq (poch_succ (Γ := Γ) b k)
-  have s₀ := natEq (poch_shift' (Γ := Γ) α k)
-  apply deriveNat; ipra_simps
-  linear_combination (𝔟 k + 𝔟 c - 𝔟 α) *
-      (𝔟(poch b (succ k)) * s₁ + 𝔟(poch (succ α) k) * (𝔟 α + 1 + 𝔟 k) * sb) +
-    (𝔟 α + 1 - 𝔟 c) * (𝔟(poch b (succ k)) * s₀ + 𝔟 α * 𝔟(poch (succ α) k) * sb)
+  ipra_lc (𝔟 k + 𝔟 c - 𝔟 α) * (𝔟(poch b (succ k)) * natEq (poch_succ (Γ := Γ) (succ α) k) + 𝔟(poch (succ α) k) * (𝔟 α + 1 + 𝔟 k) * natEq (poch_succ (Γ := Γ) b k)) +
+    (𝔟 α + 1 - 𝔟 c) * (𝔟(poch b (succ k)) * natEq (poch_shift' (Γ := Γ) α k) + 𝔟 α * 𝔟(poch (succ α) k) * natEq (poch_succ (Γ := Γ) b k))
 
 /-- `eq:contig-b-` at `b = β + 1`. -/
 theorem contig_b_minus (a β c k : PTm n) :
     Γ ⊢[PRAAx] (succ k + c) * Tn a (succ β) (succ k) + succ β * Tn a β (succ k) ≐
       (k + a) * (c + k) * succ k * Tn a (succ β) k + c * Tn a β (succ k) +
         succ β * Tn a (succ β) (succ k) := by
-  have e := natEq (contig_a_minus (Γ := Γ) β a c k)
-  apply deriveNat; ipra_simps
-  linear_combination e
+  ipra_lc natEq (contig_a_minus (Γ := Γ) β a c k)
 
 /-- `eq:contig-c+`, the coefficient of `z^{k+1}` multiplied by `(c)_{k+1} (k + 1)!` and divided by
 `c (k + 1)`. -/
 theorem contig_c_plus (a b c k : PTm n) :
     Γ ⊢[PRAAx] (c * c + a * b) * Tn a b k + (a + b) * (c + k) * Tn a b k + k * (c + k) * Tn a b k ≐
       Tn a b (succ k) + (a + b) * c * Tn a b k + c * (c + k) * Tn a b k := by
-  have s := natEq (Tn_succ (Γ := Γ) a b k)
-  apply deriveNat; ipra_simps
-  linear_combination -s
+  ipra_lc -natEq (Tn_succ (Γ := Γ) a b k)
 
 /-- `lem:gauss-chain`, coefficientwise: with `c = a + e`,
 `(c + 1 + k) T_{k+1}(a, b) + e b (k + 1) T_k(a + 1, b + 1) = c T_{k+1}(a + 1, b)`. -/
 theorem gauss_chain (a b e k : PTm n) :
     Γ ⊢[PRAAx] (a + e + succ k) * Tn a b (succ k) + e * b * succ k * Tn (succ a) (succ b) k ≐
       (a + e) * Tn (succ a) b (succ k) := by
-  have sa := natEq (poch_shift' (Γ := Γ) a k)
-  have sb := natEq (poch_shift' (Γ := Γ) b k)
-  have s₁ := natEq (poch_succ (Γ := Γ) (succ a) k)
-  apply deriveNat; ipra_simps
-  linear_combination (𝔟 a + 𝔟 e + 1 + 𝔟 k) *
-      (𝔟(poch b (succ k)) * sa + 𝔟 a * 𝔟(poch (succ a) k) * sb) -
-    (𝔟 a + 𝔟 e) * (𝔟(poch b (succ k)) * s₁ + 𝔟(poch (succ a) k) * (𝔟 a + 1 + 𝔟 k) * sb)
+  ipra_lc (𝔟 a + 𝔟 e + 1 + 𝔟 k) * (𝔟(poch b (succ k)) * natEq (poch_shift' (Γ := Γ) a k) + 𝔟 a * 𝔟(poch (succ a) k) * natEq (poch_shift' (Γ := Γ) b k)) -
+    (𝔟 a + 𝔟 e) * (𝔟(poch b (succ k)) * natEq (poch_succ (Γ := Γ) (succ a) k) + 𝔟(poch (succ a) k) * (𝔟 a + 1 + 𝔟 k) * natEq (poch_shift' (Γ := Γ) b k))
 
 end LeanProofs.IPRA.Analysis.ContiguousRelations

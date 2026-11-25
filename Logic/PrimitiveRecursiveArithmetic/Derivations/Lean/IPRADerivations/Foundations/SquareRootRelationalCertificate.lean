@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.SquareRootRelationalCandidates
 import IPRADerivations.Foundations.ViableChainSelection
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual certified finite relational square-root paths
@@ -146,11 +147,7 @@ theorem witness_edge (i p : PTm n) (hv : Γ ⊢[PRAAx] le one (inputDenominator 
   have e : Γ ⊢[PRAAx] edgeDefect (gridLabel i (witnessAt i p) p) (gridLabel (succ i) (witnessAt (succ i) p) p) ≐
       edgeDefect (SquareRootRelationalCandidates.candidate (inputNumerator p) (inputDenominator p) i)
         (SquareRootRelationalCandidates.candidate (inputNumerator p) (inputDenominator p) (succ i)) := by
-    simpa using Prf.eqCongr (edgeDefect (var 0) (var 1) : PTm 2)
-      (σ := ![gridLabel i (witnessAt i p) p,gridLabel (succ i) (witnessAt (succ i) p) p])
-      (σ' := ![SquareRootRelationalCandidates.candidate (inputNumerator p) (inputDenominator p) i,
-        SquareRootRelationalCandidates.candidate (inputNumerator p) (inputDenominator p) (succ i)])
-      (fun j => by fin_cases j; exact witness_label i p hv; exact witness_label (succ i) p hv)
+    ipra_congr (edgeDefect (var 0) (var 1) : PTm 2) with [witness_label i p hv, witness_label (succ i) p hv]
   exact e.eqTrans (edge_of_compatible _ _ (SquareRootRelationalCandidates.candidate_compatible _ _ _ hv))
 
 theorem witness_lookup (p i : PTm n) (hi : Γ ⊢[PRAAx] le i (horizon p)) : Γ ⊢[PRAAx]
@@ -190,7 +187,6 @@ theorem success (p : PTm n) (hv : Γ ⊢[PRAAx] le one (inputDenominator p)) : �
 theorem chain_correct (p : PTm n) (hv : Γ ⊢[PRAAx] le one (inputDenominator p)) : Γ ⊢[PRAAx]
     CodedViableChain.admissibleCode compatibility (chain p) p :=
   ViableChainSelection.rawChain_correct compatibility p (success p hv)
-
 
 /-- The local and edge meanings are the original rational observations,
 not just acceptance by a renamed checker. -/

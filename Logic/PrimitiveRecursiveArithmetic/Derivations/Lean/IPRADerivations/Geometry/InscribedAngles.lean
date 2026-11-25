@@ -1,4 +1,5 @@
 import IPRADerivations.Geometry.TriangleCentres
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The inscribed angle theorem and its companions
@@ -39,8 +40,7 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 local macro "gsimp" loc:(Lean.Parser.Tactic.location)? : tactic =>
   `(tactic| simp only [dot, det, nsq, zsl_def, ZT.toZ_add, ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_neg,
     ZT.toZ_sq, ZT.toZ_natLit, Nat.cast_ofNat, Nat.cast_zero, Nat.cast_one] $[$loc]?)
-
-local macro "geo" : tactic => `(tactic| (apply ZT.derive; gsimp; ring))
+attribute [local ipra_defs] dot det nsq
 
 /-! ## The inscribed angle -/
 
@@ -61,18 +61,12 @@ theorem inscribed_core {a₁ a₂ b₁ b₂ p₁ p₂ ρ : ZT n}
   have eP := ZT.toZ_eq hp
   gsimp at eA eB eP
   constructor
-  · apply ZT.derive
-    gsimp
-    linear_combination
-      ((ZT.toZ Γ b₁ - ZT.toZ Γ p₁) * ZT.toZ Γ b₁ + (ZT.toZ Γ b₂ - ZT.toZ Γ p₂) * ZT.toZ Γ b₂) * eA +
-        (ZT.toZ Γ ρ - (ZT.toZ Γ a₁ * ZT.toZ Γ p₁ + ZT.toZ Γ a₂ * ZT.toZ Γ p₂)) * eB +
-        (ZT.toZ Γ a₁ * ZT.toZ Γ b₁ + ZT.toZ Γ a₂ * ZT.toZ Γ b₂ - ZT.toZ Γ ρ) * eP
-  · apply ZT.derive
-    gsimp
-    linear_combination
-      ((ZT.toZ Γ b₁ - ZT.toZ Γ p₁) * ZT.toZ Γ b₂ - (ZT.toZ Γ b₂ - ZT.toZ Γ p₂) * ZT.toZ Γ b₁) * eA -
-        (ZT.toZ Γ a₁ * ZT.toZ Γ p₂ - ZT.toZ Γ a₂ * ZT.toZ Γ p₁) * eB +
-        (ZT.toZ Γ a₁ * ZT.toZ Γ b₂ - ZT.toZ Γ a₂ * ZT.toZ Γ b₁) * eP
+  · ipra_lc ((ZT.toZ Γ b₁ - ZT.toZ Γ p₁) * ZT.toZ Γ b₁ + (ZT.toZ Γ b₂ - ZT.toZ Γ p₂) * ZT.toZ Γ b₂) * eA +
+      (ZT.toZ Γ ρ - (ZT.toZ Γ a₁ * ZT.toZ Γ p₁ + ZT.toZ Γ a₂ * ZT.toZ Γ p₂)) * eB +
+      (ZT.toZ Γ a₁ * ZT.toZ Γ b₁ + ZT.toZ Γ a₂ * ZT.toZ Γ b₂ - ZT.toZ Γ ρ) * eP
+  · ipra_lc ((ZT.toZ Γ b₁ - ZT.toZ Γ p₁) * ZT.toZ Γ b₂ - (ZT.toZ Γ b₂ - ZT.toZ Γ p₂) * ZT.toZ Γ b₁) * eA -
+      (ZT.toZ Γ a₁ * ZT.toZ Γ p₂ - ZT.toZ Γ a₂ * ZT.toZ Γ p₁) * eB +
+      (ZT.toZ Γ a₁ * ZT.toZ Γ b₂ - ZT.toZ Γ a₂ * ZT.toZ Γ b₁) * eP
 
 /-- (C12), real part: `ρ ((u · v)² − [u, v]²) = |u|² |v|² (a · b)`. -/
 theorem inscribed_real {a₁ a₂ b₁ b₂ p₁ p₂ ρ : ZT n}
@@ -82,15 +76,8 @@ theorem inscribed_real {a₁ a₂ b₁ b₂ p₁ p₂ ρ : ZT n}
       (ρ * (ZT.sq (dot (a₁ - p₁) (a₂ - p₂) (b₁ - p₁) (b₂ - p₂)) -
         ZT.sq (det (a₁ - p₁) (a₂ - p₂) (b₁ - p₁) (b₂ - p₂))))
       (nsq (a₁ - p₁) (a₂ - p₂) * nsq (b₁ - p₁) (b₂ - p₂) * dot a₁ a₂ b₁ b₂) := by
-  have c1 := ZT.toZ_eq (inscribed_core ha hb hp).1
-  have c2 := ZT.toZ_eq (inscribed_core ha hb hp).2
-  apply ZT.derive
-  gsimp at c1 c2 ⊢
-  linear_combination
-    (-((ZT.toZ Γ a₁ - ZT.toZ Γ p₁) * (ZT.toZ Γ b₁ - ZT.toZ Γ p₁) +
-        (ZT.toZ Γ a₂ - ZT.toZ Γ p₂) * (ZT.toZ Γ b₂ - ZT.toZ Γ p₂))) * c1 +
-      ((ZT.toZ Γ a₁ - ZT.toZ Γ p₁) * (ZT.toZ Γ b₂ - ZT.toZ Γ p₂) -
-        (ZT.toZ Γ a₂ - ZT.toZ Γ p₂) * (ZT.toZ Γ b₁ - ZT.toZ Γ p₁)) * c2
+  ipra_lc (-((ZT.toZ Γ a₁ - ZT.toZ Γ p₁) * (ZT.toZ Γ b₁ - ZT.toZ Γ p₁) + (ZT.toZ Γ a₂ - ZT.toZ Γ p₂) * (ZT.toZ Γ b₂ - ZT.toZ Γ p₂))) * ZT.toZ_eq (inscribed_core ha hb hp).1 +
+    ((ZT.toZ Γ a₁ - ZT.toZ Γ p₁) * (ZT.toZ Γ b₂ - ZT.toZ Γ p₂) - (ZT.toZ Γ a₂ - ZT.toZ Γ p₂) * (ZT.toZ Γ b₁ - ZT.toZ Γ p₁)) * ZT.toZ_eq (inscribed_core ha hb hp).2
 
 /-- (C12), imaginary part: `2 ρ (u · v)[u, v] = |u|² |v|² [a, b]`. -/
 theorem inscribed_imag {a₁ a₂ b₁ b₂ p₁ p₂ ρ : ZT n}
@@ -100,15 +87,8 @@ theorem inscribed_imag {a₁ a₂ b₁ b₂ p₁ p₂ ρ : ZT n}
       (ZT.natLit 2 * ρ * (dot (a₁ - p₁) (a₂ - p₂) (b₁ - p₁) (b₂ - p₂) *
         det (a₁ - p₁) (a₂ - p₂) (b₁ - p₁) (b₂ - p₂)))
       (nsq (a₁ - p₁) (a₂ - p₂) * nsq (b₁ - p₁) (b₂ - p₂) * det a₁ a₂ b₁ b₂) := by
-  have c1 := ZT.toZ_eq (inscribed_core ha hb hp).1
-  have c2 := ZT.toZ_eq (inscribed_core ha hb hp).2
-  apply ZT.derive
-  gsimp at c1 c2 ⊢
-  linear_combination
-    (-((ZT.toZ Γ a₁ - ZT.toZ Γ p₁) * (ZT.toZ Γ b₁ - ZT.toZ Γ p₁) +
-        (ZT.toZ Γ a₂ - ZT.toZ Γ p₂) * (ZT.toZ Γ b₂ - ZT.toZ Γ p₂))) * c2 -
-      ((ZT.toZ Γ a₁ - ZT.toZ Γ p₁) * (ZT.toZ Γ b₂ - ZT.toZ Γ p₂) -
-        (ZT.toZ Γ a₂ - ZT.toZ Γ p₂) * (ZT.toZ Γ b₁ - ZT.toZ Γ p₁)) * c1
+  ipra_lc (-((ZT.toZ Γ a₁ - ZT.toZ Γ p₁) * (ZT.toZ Γ b₁ - ZT.toZ Γ p₁) + (ZT.toZ Γ a₂ - ZT.toZ Γ p₂) * (ZT.toZ Γ b₂ - ZT.toZ Γ p₂))) * ZT.toZ_eq (inscribed_core ha hb hp).2 -
+    ((ZT.toZ Γ a₁ - ZT.toZ Γ p₁) * (ZT.toZ Γ b₂ - ZT.toZ Γ p₂) - (ZT.toZ Γ a₂ - ZT.toZ Γ p₂) * (ZT.toZ Γ b₁ - ZT.toZ Γ p₁)) * ZT.toZ_eq (inscribed_core ha hb hp).1
 
 /-! ## The converse circle and the tangent–chord angle -/
 
@@ -118,7 +98,7 @@ theorem angle_circle (x₁ x₂ d₁ d₂ k : ZT n) :
       (nsq (ZT.natLit 2 * x₁ - (d₁ - k * d₂)) (ZT.natLit 2 * x₂ - (d₂ + k * d₁)) -
         nsq (d₁ - k * d₂) (d₂ + k * d₁))
       (ZT.natLit 4 * (nsq x₁ x₂ - dot d₁ d₂ x₁ x₂ - k * det d₁ d₂ x₁ x₂)) := by
-  geo
+  ipra_lc
 
 /-- The fourth point of the converse criterion: `T(b) (F(e) − k T(e)) = 0`. -/
 theorem angle_circle_fourth {b₁ b₂ e₁ e₂ d₁ d₂ k : ZT n}
@@ -127,20 +107,12 @@ theorem angle_circle_fourth {b₁ b₂ e₁ e₂ d₁ d₂ k : ZT n}
       ((nsq b₁ b₂ - dot d₁ d₂ b₁ b₂) * det d₁ d₂ e₁ e₂)) :
     Γ ⊢[PRAAx] ZT.eq
       (det d₁ d₂ b₁ b₂ * (nsq e₁ e₂ - dot d₁ d₂ e₁ e₂ - k * det d₁ d₂ e₁ e₂)) (ZT.natLit 0) := by
-  have ek := ZT.toZ_eq hk
-  have er := ZT.toZ_eq hr
-  apply ZT.derive
-  gsimp at ek er ⊢
-  linear_combination er - (ZT.toZ Γ d₁ * ZT.toZ Γ e₂ - ZT.toZ Γ d₂ * ZT.toZ Γ e₁) * ek
+  ipra_lc ZT.toZ_eq hr - (ZT.toZ Γ d₁ * ZT.toZ Γ e₂ - ZT.toZ Γ d₂ * ZT.toZ Γ e₁) * ZT.toZ_eq hk
 
 /-- The tangent direction `J a` and the chord `v = b − a`: `2 [J a, v] = |v|²`. -/
 theorem tangent_chord_det {a₁ a₂ b₁ b₂ ρ : ZT n}
     (ha : Γ ⊢[PRAAx] ZT.eq (nsq a₁ a₂) ρ) (hb : Γ ⊢[PRAAx] ZT.eq (nsq b₁ b₂) ρ) :
     Γ ⊢[PRAAx] ZT.eq (ZT.natLit 2 * det (-a₂) a₁ (b₁ - a₁) (b₂ - a₂)) (nsq (b₁ - a₁) (b₂ - a₂)) := by
-  have eA := ZT.toZ_eq ha
-  have eB := ZT.toZ_eq hb
-  apply ZT.derive
-  gsimp at eA eB ⊢
-  linear_combination eA - eB
+  ipra_lc ZT.toZ_eq ha - ZT.toZ_eq hb
 
 end LeanProofs.IPRA.Geometry.InscribedAngles

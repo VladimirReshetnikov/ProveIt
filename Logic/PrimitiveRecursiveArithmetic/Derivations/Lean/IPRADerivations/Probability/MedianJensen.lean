@@ -1,4 +1,5 @@
 import IPRADerivations.Probability.MedianTransport
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The finite Jensen inequality for medians
@@ -44,9 +45,8 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 /-- `[y < t] + [y = t] ≤ 1`. -/
 theorem le_bits_le_one (y t : PTm n) : Γ ⊢[PRAAx] le (sg (monus t y) + eqb y t) one := by
-  have e := natEq (trichotomy_bits (Γ := Γ) y t)
   refine le_of_eq_add (d := sg (monus y t)) ?_
-  apply deriveNat; ipra_simps; linear_combination -e
+  ipra_lc -natEq (trichotomy_bits (Γ := Γ) y t)
 
 theorem le_bits_zero {y t : PTm n} (h : Γ ⊢[PRAAx] lt t y) : Γ ⊢[PRAAx] sg (monus t y) + eqb y t ≐ zero :=
   (congrAdd (sg_le (le_of_lt h)) (eqb_zero_of_gt h)).eqTrans (add_zero _)

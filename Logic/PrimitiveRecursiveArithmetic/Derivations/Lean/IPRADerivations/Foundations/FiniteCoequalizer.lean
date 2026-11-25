@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.FiniteSetCategory
 import IPRADerivations.Foundations.FiniteQuotient
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Coequalizers of finite sets by sequential merging (`ipra_categorical_methods`, Section 4)
@@ -84,17 +85,11 @@ abbrev rho (i N Λ l : PTm k) : PTm k :=
 
 theorem rho_eq {i N Λ l : PTm k} (h : Γ ⊢[PRAAx] eqb l (gv g i N Λ) ≐ one) :
     Γ ⊢[PRAAx] rho f g i N Λ l ≐ fv f i N Λ := by
-  have b := natEq h
-  have c := natEq ((congrMonus (.eqRefl (one : PTm k)) h).eqTrans (le_refl one))
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 (fv f i N Λ) * b + 𝔞 l * c
+  ipra_lc 𝔞 (fv f i N Λ) * natEq h + 𝔞 l * natEq ((congrMonus (.eqRefl (one : PTm k)) h).eqTrans (le_refl one))
 
 theorem rho_ne {i N Λ l : PTm k} (h : Γ ⊢[PRAAx] eqb l (gv g i N Λ) ≐ zero) :
     Γ ⊢[PRAAx] rho f g i N Λ l ≐ l := by
-  have b := natEq h
-  have c := natEq ((congrMonus (.eqRefl (one : PTm k)) h).eqTrans (monus_zero _))
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 (fv f i N Λ) * b + 𝔞 l * c
+  ipra_lc 𝔞 (fv f i N Λ) * natEq h + 𝔞 l * natEq ((congrMonus (.eqRefl (one : PTm k)) h).eqTrans (monus_zero _))
 
 theorem rho_congr {i N Λ l l' : PTm k} (h : Γ ⊢[PRAAx] l ≐ l') :
     Γ ⊢[PRAAx] rho f g i N Λ l ≐ rho f g i N Λ l' :=

@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.RationalSquareRootBounds
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The dyadic square-root bracket used in polygonal isoperimetry
@@ -141,10 +142,7 @@ theorem upper_is_next (A B t : PTm n) : Γ ⊢[PRAAx]
     (fraction_represents j H hH) (fraction_represents one H hH)
   apply RationalFiniteSum.canonical_equal _ _ _ _ _ _ (RationalArithmetic.add_guard _ _)
     (RationalNormalForm.normalize_well_formed _ _ hH) lhs (fraction_represents (succ j) H hH) hH hH
-  apply ZT.derive
-  simp only [ZT.toZ_add,ZT.toZ_mul,ZT.toZ_ofNat]
-  ipra_simps
-  ring
+  ipra_lc
 
 def output (A B t : PTm n) : PTm n := pairT (index A B t) (pairT (sd A B t) (upper A B t))
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))

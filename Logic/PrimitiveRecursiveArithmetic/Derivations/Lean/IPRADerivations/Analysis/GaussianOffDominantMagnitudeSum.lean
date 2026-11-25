@@ -3,6 +3,8 @@ import IPRADerivations.Analysis.GaussianDominantPairAlgebra
 import IPRADerivations.Foundations.FiniteFiberGrouping
 import IPRADerivations.Analysis.GaussianTranslatedDominantPlateau
 import IPRADerivations.Analysis.GaussianTranslatedNonconstant
+import IPRADerivations.Core.CongruenceTactic
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Finite lower cuts for the sum of individual off-dominant magnitudes
@@ -43,8 +45,7 @@ def positiveSum (f : PTm 2) (N x : PTm n) : PTm n := gaussianSum (positiveF f) N
     Syn.subst σ (positiveSum f N x) = positiveSum f (Syn.subst σ N) (Syn.subst σ x) := by simp [positiveSum]
 
 theorem natural_point_congr {A B : PTm n} (h : Γ ⊢[PRAAx] A ≐ B) : Γ ⊢[PRAAx] radiusNumerator A ≐ radiusNumerator B := by
-  simpa only [GaussianDominantPairAlgebra.subst_radiusNumerator,Syn.subst_var,Matrix.cons_val_zero] using
-    Prf.eqCongr (Γ := Γ) (radiusNumerator (var 0) : PTm 1) (σ := ![A]) (σ' := ![B]) (fun i => by fin_cases i; exact h)
+  ipra_congr (radiusNumerator (var 0) : PTm 1) with [h]
 theorem natural_point_add (A B : PTm n) : Γ ⊢[PRAAx]
     equal (add (radiusNumerator A) (radiusNumerator B)) (radiusNumerator (A+B)) := by
   apply GaussianRootAlgebra.equal_of_values <;>
@@ -547,10 +548,7 @@ theorem fraction_gap (A B E : PTm n) (hE : Γ ⊢[PRAAx] le one E) : Γ ⊢[PRAA
     (RationalRepresentations.represents_negative _ _ _ (GaussianEuclideanDistanceName.fraction_represents (Γ := Γ) A E hE))
   apply RationalFiniteSum.canonical_equal _ _ _ _ _ _ (RationalArithmetic.add_guard _ _)
     (RationalNormalForm.normalize_well_formed _ _ hE) value (GaussianEuclideanDistanceName.fraction_represents _ _ hE) hE hE
-  apply ZT.derive
-  simp only [ZT.toZ_mul,ZT.toZ_add,ZT.toZ_neg,ZT.toZ_ofNat]
-  ipra_simps
-  ring
+  ipra_lc
 
 theorem total_bracket_width (N k S T ref H : PTm n) (hH : Γ ⊢[PRAAx] le one H) : Γ ⊢[PRAAx]
     RationalArithmetic.add (upperValue N k S T ref H) (RationalArithmetic.negative (lowerValue N k S T ref H)) ≐

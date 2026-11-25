@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.OrderOfPower
 import IPRADerivations.AnalyticNumberTheory.LocalFactor
 import IPRADerivations.DiophantineNumberTheory.ModularCertificate
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The order of a product with coprime orders
@@ -66,11 +67,8 @@ theorem mul_dvd_of_coprime {s t e : PTm n} (hs : Γ ⊢[PRAAx] s ≐ succ (pred 
     (congrAp2 remF ((mul_comm _ _).eqTrans E.eqSymm) (.eqRefl _)).eqTrans hte
   have h2 : Γ ⊢[PRAAx] dvd t (quo e s * t) := dvd_of_eq' ht (mul_comm _ _)
   have te := dvd_of_coprime_pair ht h1 h2 hst
-  have E2 := natEq (eq_of_dvd' ht te)
-  have E1 := natEq E
   refine dvd_of_eq' (pos_mul hs ht) (w := quo (quo e s) t) ?_
-  apply deriveNat; ipra_simps
-  linear_combination E1 + 𝔞 s * E2
+  ipra_lc natEq E + 𝔞 s * natEq (eq_of_dvd' ht te)
 
 section Units
 

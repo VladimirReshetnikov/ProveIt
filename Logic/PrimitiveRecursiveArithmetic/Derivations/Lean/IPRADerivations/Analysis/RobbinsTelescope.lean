@@ -55,7 +55,7 @@ theorem vT_le {k v L : PTm n} (hL : Γ ⊢[PRAAx] le (succ (two * succ (succ k))
     Γ ⊢[PRAAx] le (num 3 * v * Tr (succ v) L (succ (succ k))) (pw (succ v) (succ (succ k)) * fact L) := by
   have ru := robbins_upper (v := v) hL
   have h5 : Γ ⊢[PRAAx] num 5 * (succ v * succ v) ≐ succ (num 5 * (v * v) + num 10 * v + num 4) := by
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   refine mul_le_cancel (d' := num 5 * (v * v) + num 10 * v + num 4)
     (le_congr (congrMul h5 (.eqRefl _)) (congrMul h5 (.eqRefl _)) ?_)
   ipra_le sl ru + 2 * 𝔞 v * (𝔞 (pw (succ v) (succ (succ k))) * 𝔞 (fact L))
@@ -128,7 +128,7 @@ theorem r_step {t n₀ k L : PTm n} (hL : Γ ⊢[PRAAx] le (succ (two * succ (su
     (ih : Γ ⊢[PRAAx] RInv t n₀ k L) : Γ ⊢[PRAAx] RInv (succ t) n₀ k L := by
   have ihL := Prf.andE₁ ih; have ihU := Prf.andE₂ ih
   have h3 : Γ ⊢[PRAAx] le (num 3) L :=
-    le_trans (le_of_eq_add (d := two * succ k) (by apply deriveNat; ipra_simps; ring)) hL
+    le_trans (le_of_eq_add (d := two * succ k) (by ipra_ring)) hL
   have rl := robbins_lower (w := wn (succ n₀ + t)) h3 (succ k)
   have hv := vT_le (v := vn (succ n₀ + t)) hL
   have eA := natEq (As_succ (Γ := Γ) t (pairT n₀ (pairT k L)))
@@ -143,7 +143,7 @@ theorem r_step {t n₀ k L : PTm n} (hL : Γ ⊢[PRAAx] le (succ (two * succ (su
           ((24 * (𝔞 n₀ + 𝔞 t) + 1) * 𝔞 (Tr (wn (succ n₀ + t)) L (succ (succ k))) +
             12 * 𝔞 (wn (succ n₀ + t)) * sl rl) using
       rw [eA, eB, iW, iT, pW]; ring
-  · have em : Γ ⊢[PRAAx] succ n₀ + t ≐ succ (n₀ + t) := by apply deriveNat; ipra_simps; ring
+  · have em : Γ ⊢[PRAAx] succ n₀ + t ≐ succ (n₀ + t) := by ipra_ring
     refine mul_le_cancel (d' := n₀ + t) (le_congr (congrMul em (.eqRefl _)) (congrMul em (.eqRefl _)) ?_)
     ipra_le (𝔞 n₀ + 1 + 𝔞 t + 1) * 𝔞 (pw (wn (succ n₀ + t)) (succ (succ k))) * sl ihU +
         (𝔞 n₀ + 1) * 𝔞 (Bs t (pairT n₀ (pairT k L))) * sl hv using

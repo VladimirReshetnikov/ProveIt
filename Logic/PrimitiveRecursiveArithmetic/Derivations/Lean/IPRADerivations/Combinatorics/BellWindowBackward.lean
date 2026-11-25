@@ -1,4 +1,5 @@
 import IPRADerivations.Combinatorics.BellWindowPeriod
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The backward recurrence for Bell windows modulo `m` (`bell_numbers_ipra`, `thm:all-moduli-period`)
@@ -102,9 +103,9 @@ theorem mid_pt2 {a b m K : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m))
   have h0 := w_elim (all_elim wB hW hlt)
   have h : Γ ⊢[PRAAx] rem (bell (a + succ K)) m ≐ rem (bell (b + succ K)) m :=
     (cong_of_eq (congrBell (a := a + succ K) (b := succ a + K)
-      (by apply deriveNat; ipra_simps; ring))).eqTrans
+      (by ipra_ring))).eqTrans
       (h0.eqTrans (cong_of_eq (congrBell (a := succ b + K) (b := b + succ K)
-        (by apply deriveNat; ipra_simps; ring))))
+        (by ipra_ring))))
   exact (cong_of_eq (sh_at K m a)).eqTrans
     ((cong_mul (cyc m (succ K)) hm h).eqTrans (cong_of_eq (sh_at K m b)).eqSymm)
 
@@ -182,9 +183,7 @@ theorem back_link {a T m k : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m))
     Γ ⊢[PRAAx] W (monus a (succ k)) (monus a (succ k) + T) m ≐ one := by
   have e := monus_of_lt hk
   have e2 : Γ ⊢[PRAAx] monus a k + T ≐ succ (monus a (succ k) + T) := by
-    have x := natEq e
-    apply deriveNat; ipra_simps
-    linear_combination x
+    ipra_lc natEq e
   exact back_step hm ((congrW e e2).eqSymm.eqTrans ih)
 
 /-- `v_a = v_{a+T}` gives `v_0 = v_T`. -/

@@ -3,6 +3,7 @@ import IPRADerivations.AnalyticNumberTheory.FactorialLambda
 import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.Core.SumSplit
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Kummer's carry formula
@@ -64,10 +65,8 @@ theorem quo_add_split {P : PTm n} (hP : Γ ⊢[PRAAx] P ≐ succ (pred P)) (a b 
     Γ ⊢[PRAAx] quo (a + b) P ≐ quo a P + quo b P + quo (rem a P + rem b P) P := by
   have da := natEq (Prf.andE₁ (dm hP a)); have db := natEq (Prf.andE₁ (dm hP b))
   have s := dm hP (rem a P + rem b P)
-  have es := natEq (Prf.andE₁ s)
   refine Prf.andE₁ (dmu hP (r := rem (rem a P + rem b P) P) ?_ (Prf.andE₂ s))
-  apply deriveNat; ipra_simps
-  linear_combination da + db + es
+  ipra_lc da + db + natEq (Prf.andE₁ s)
 
 theorem two_contra {P q r ra rb : PTm n} (la : Γ ⊢[PRAAx] le (succ ra) P) (lb : Γ ⊢[PRAAx] le (succ rb) P)
     (hq : Γ ⊢[PRAAx] le two q) (e : Γ ⊢[PRAAx] ra + rb ≐ P * q + r) : Γ ⊢[PRAAx] le one zero := by
@@ -93,11 +92,9 @@ theorem rem_digit {p P : PTm n} (hP : Γ ⊢[PRAAx] P ≐ succ (pred P)) (hp : �
   have f₁ := natEq (eq_add_of_le hr₁); have f₂ := natEq (eq_add_of_le hr₂)
   have lt₁ : Γ ⊢[PRAAx] lt (P * rem (quo a P) p + rem a P) (P * p) := by
     refine le_of_eq_add (d := monus P (succ (rem a P)) + P * monus p (succ (rem (quo a P) p))) ?_
-    apply deriveNat; ipra_simps
-    linear_combination f₁ + 𝔞 P * f₂
+    ipra_lc f₁ + 𝔞 P * f₂
   refine Prf.andE₂ (dmu (pos_mul' hP hp) (q := quo (quo a P) p) ?_ lt₁)
-  apply deriveNat; ipra_simps
-  linear_combination e₁ + 𝔞 P * e₂
+  ipra_lc e₁ + 𝔞 P * e₂
 
 /-- The carry out of a position from the two digits and the carry into it. -/
 theorem carry_rec {p P : PTm n} (hP : Γ ⊢[PRAAx] P ≐ succ (pred P)) (hp : Γ ⊢[PRAAx] p ≐ succ (pred p))
@@ -106,12 +103,10 @@ theorem carry_rec {p P : PTm n} (hP : Γ ⊢[PRAAx] P ≐ succ (pred P)) (hp : �
       quo (rem (quo a P) p + rem (quo b P) p + quo (rem a P + rem b P) P) p := by
   have x₁ := natEq (rem_digit hP hp a); have x₂ := natEq (rem_digit hP hp b)
   have s := dm hP (rem a P + rem b P)
-  have es := natEq (Prf.andE₁ s)
   have q1 : Γ ⊢[PRAAx] quo (rem a (P * p) + rem b (P * p)) P ≐
       rem (quo a P) p + rem (quo b P) p + quo (rem a P + rem b P) P := by
     refine Prf.andE₁ (dmu hP (r := rem (rem a P + rem b P) P) ?_ (Prf.andE₂ s))
-    apply deriveNat; ipra_simps
-    linear_combination x₁ + x₂ + es
+    ipra_lc x₁ + x₂ + natEq (Prf.andE₁ s)
   exact (quo_quo hP hp _).eqSymm.eqTrans (congrAp2 quoF q1 (.eqRefl _))
 
 /-! ## The carry array -/
@@ -160,7 +155,7 @@ theorem cy_at (j p a b : PTm n) :
 /-! ## Sums -/
 
 theorem assoc_r (A B C : PTm n) : Γ ⊢[PRAAx] (A + B) + C ≐ A + (B + C) := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- `k(j, z) = f(j, x) + g(j, y) + h(j, w)` below the bound gives `∑ k = ∑ f + ∑ g + ∑ h`. -/
 theorem sum_add3 (f g h k : PTm 2) {N x y w z : PTm n}
@@ -207,8 +202,7 @@ theorem pt_split {p : PTm n} (hp : Γ ⊢[PRAAx] p ≐ succ (pred p)) (j a b : P
 theorem fin_alg {Vn Va Vb Vc Sa Sb Sn C : PTm n} (vn : Γ ⊢[PRAAx] Vn ≐ (Va + Vb) + Vc)
     (La : Γ ⊢[PRAAx] Va ≐ Sa) (Lb : Γ ⊢[PRAAx] Vb ≐ Sb) (Ln : Γ ⊢[PRAAx] Vn ≐ Sn)
     (S3 : Γ ⊢[PRAAx] Sn ≐ Sa + Sb + C) : Γ ⊢[PRAAx] Vc ≐ C := by
-  have e0 := natEq vn; have e1 := natEq La; have e2 := natEq Lb; have e3 := natEq Ln; have e4 := natEq S3
-  apply deriveNat; ipra_simps; linear_combination -e0 + e3 - e1 - e2 + e4
+  ipra_lc -natEq vn + natEq Ln - natEq La - natEq Lb + natEq S3
 
 /-- **Kummer's carry formula**: for a prime `p`, `v_p(C(a + b, a)) = ∑_{j < a + b} c_{j+1}`, the number of carries
 in the base-`p` addition of `a` and `b`. -/

@@ -1,6 +1,7 @@
 import IPRADerivations.Core.SumOrder
 import IPRADerivations.Core.Pairing
 import IPRADerivations.Core.Tactic
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Finite calculus: summed increments and the cell error of a rectangle sum
@@ -71,7 +72,7 @@ theorem increments_le (F g : PTm 2) (x N : PTm n)
 /-! ## A Lipschitz bound for equally spaced samples -/
 
 theorem lin_step (a D i : PTm n) : Γ ⊢[PRAAx] (a + D * i) + D ≐ a + D * succ i := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- If `f(j + 1) ≤ f(j) + D` for `j < N`, then `f(i) ≤ f(0) + D i` for `i ≤ N`. -/
 theorem lip_up (f : PTm 2) (x N D : PTm n)
@@ -105,9 +106,7 @@ theorem inst2_lin (i y : PTm n) : inst2 linB i y = fstT y + sndT y * i := by sim
 
 theorem lin_base (c D : PTm n) :
     Γ ⊢[PRAAx] two * ap2 (sumF linB) zero (pairT c D) + D * zero ≐ two * (zero * c) + D * (zero * zero) := by
-  have z := natEq (sum_zero (Γ := Γ) linB (pairT c D))
-  apply deriveNat; ipra_simps
-  linear_combination 2 * z
+  ipra_lc 2 * natEq (sum_zero (Γ := Γ) linB (pairT c D))
 
 theorem lin_succ {r c D : PTm n}
     (ih : Γ ⊢[PRAAx] two * ap2 (sumF linB) r (pairT c D) + D * r ≐ two * (r * c) + D * (r * r)) :
@@ -117,9 +116,7 @@ theorem lin_succ {r c D : PTm n}
   rw [inst2_lin] at e
   have t : Γ ⊢[PRAAx] fstT (pairT c D) + sndT (pairT c D) * r ≐ c + D * r :=
     congrAdd (fst_pair _ _) (congrMul (snd_pair _ _) (.eqRefl _))
-  have a := natEq (e.eqTrans (congrAdd (.eqRefl _) t)); have i := natEq ih
-  apply deriveNat; ipra_simps
-  linear_combination 2 * a + i
+  ipra_lc 2 * natEq (e.eqTrans (congrAdd (.eqRefl _) t)) + natEq ih
 
 /-- Variables: `0 = r` (induction), `1 = c`, `2 = D`. -/
 private abbrev linF : Fm PTm 3 :=
@@ -166,7 +163,7 @@ theorem cell_upper (f : PTm 2) (x r D : PTm n)
 /-! ## Lower bounds -/
 
 theorem lin_step' (a D i : PTm n) : Γ ⊢[PRAAx] (a + D) + D * i ≐ a + D * succ i := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- If `f(j) ≤ f(j + 1) + D` for `j < N`, then `f(0) ≤ f(i) + D i` for `i ≤ N`. -/
 theorem lip_down (f : PTm 2) (x N D : PTm n)
@@ -232,14 +229,10 @@ theorem cell_lower (f : PTm 2) (x r D : PTm n)
     rw [e₂, e₃, inst2_linZ, inst2_lin]
     exact (congrMul (snd_pair _ _) (.eqRefl _)).eqTrans
       ((congrAdd (fst_pair _ _) (congrMul (snd_pair _ _) (.eqRefl _))).eqTrans (zero_add _)).eqSymm
-  have a₁ := natEq (lin_sum (Γ := Γ) r (inst2 f zero x) zero)
-  have a₂ := natEq (sum_add (Γ := Γ) (fp f) linZ r (pairT x D))
-  have a₃ := natEq (lin_sum (Γ := Γ) r zero D)
   have b₁ := natEq c₁; have b₂ := natEq c₂
   refine le_congr ?_ ?_ (add_le_add_right (D * r) (two_mul_le_two_mul s₁))
-  · apply deriveNat; ipra_simps
-    linear_combination a₁
-  · apply deriveNat; ipra_simps
-    linear_combination 2 * a₂ + 2 * b₁ + 2 * b₂ + a₃
+  · ipra_lc natEq (lin_sum (Γ := Γ) r (inst2 f zero x) zero)
+  · ipra_lc 2 * natEq (sum_add (Γ := Γ) (fp f) linZ r (pairT x D)) + 2 * b₁ + 2 * b₂ +
+      natEq (lin_sum (Γ := Γ) r zero D)
 
 end LeanProofs.IPRA.Analysis.FiniteCalculus

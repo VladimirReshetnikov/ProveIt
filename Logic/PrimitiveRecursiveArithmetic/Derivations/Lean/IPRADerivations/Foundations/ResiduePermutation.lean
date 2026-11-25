@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.WeightedDimension
 import IPRADerivations.AnalyticNumberTheory.Totatives
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The residues are a permutation (`ipra_coherent_methods_2026-11-15`, `prop:weighted-dimension`)
@@ -110,17 +111,13 @@ theorem sig_tau {r L m' d u v : PTm k} (hBz : Γ ⊢[PRAAx] u * d ≐ v * succ m
       r := by
   have hm : Γ ⊢[PRAAx] succ m' ≐ succ (pred (succ m')) := pos_of_eq_succ (c := m') (.eqRefl _)
   have hτ := rem_lt'' hm (u * (L + monus (succ m') r))
-  have e₁ := natEq (T_add (L := L) (d := d) hτ)
-  have e₂ := natEq (div_eq' (t := u * (L + monus (succ m') r)) hm)
   have e₃ := natEq (div_eq'
     (t := T (rem (u * (L + monus (succ m') r)) (succ m')) L (succ m') d) hm)
-  have e₄ := natEq hBz
-  have e₅ := natEq (eq_add_of_le (le_of_lt hr))
   refine rem_unique (a := quo (T (rem (u * (L + monus (succ m') r)) (succ m')) L (succ m') d)
       (succ m') + v * (L + monus (succ m') r) + one)
     (b := d + d * quo (u * (L + monus (succ m') r)) (succ m')) hm ?_ (rem_lt'' hm _) hr
-  apply deriveNat; ipra_simps
-  linear_combination e₁ - (𝔞 L + 𝔞 (monus (succ m') r)) * e₄ + 𝔞 d * e₂ - e₃ + e₅
+  ipra_lc natEq (T_add (L := L) (d := d) hτ) - (𝔞 L + 𝔞 (monus (succ m') r)) * natEq hBz +
+    𝔞 d * natEq (div_eq' (t := u * (L + monus (succ m') r)) hm) - e₃ + natEq (eq_add_of_le (le_of_lt hr))
 
 /-- `τ(σ(j)) = j` for `j < m`. -/
 theorem tau_sig {j L m' d u v : PTm k} (hBz : Γ ⊢[PRAAx] u * d ≐ v * succ m' + one)
@@ -129,17 +126,13 @@ theorem tau_sig {j L m' d u v : PTm k} (hBz : Γ ⊢[PRAAx] u * d ≐ v * succ m
       rem (u * (L + monus (succ m') (rem (T j L (succ m') d) (succ m')))) (succ m') ≐ j := by
   have hm : Γ ⊢[PRAAx] succ m' ≐ succ (pred (succ m')) := pos_of_eq_succ (c := m') (.eqRefl _)
   have hσ := rem_lt'' hm (T j L (succ m') d)
-  have e₁ := natEq (T_add (L := L) (d := d) hj)
   have e₂ := natEq (div_eq'
     (t := u * (L + monus (succ m') (rem (T j L (succ m') d) (succ m')))) hm)
-  have e₃ := natEq (div_eq' (t := T j L (succ m') d) hm)
-  have e₄ := natEq hBz
-  have e₅ := natEq (eq_add_of_le (le_of_lt hσ))
   refine rem_unique
     (a := quo (u * (L + monus (succ m') (rem (T j L (succ m') d) (succ m')))) (succ m') + u * d)
     (b := v * j + u + u * quo (T j L (succ m') d) (succ m')) hm ?_ (rem_lt'' hm _) hj
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 u * e₃ - 𝔞 u * e₁ - 𝔞 u * e₅ - e₂ + 𝔞 j * e₄
+  ipra_lc 𝔞 u * natEq (div_eq' (t := T j L (succ m') d) hm) - 𝔞 u * natEq (T_add (L := L) (d := d) hj) -
+    𝔞 u * natEq (eq_add_of_le (le_of_lt hσ)) - e₂ + 𝔞 j * natEq hBz
 
 /-! ## The permutation hypotheses -/
 

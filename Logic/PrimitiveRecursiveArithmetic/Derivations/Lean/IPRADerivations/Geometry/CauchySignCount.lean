@@ -3,6 +3,7 @@ import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.Combinatorics.CoefficientLogConcave
 import IPRADerivations.Probability.Variance
 import IPRADerivations.Core.Parity
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The sign count of Cauchy's rigidity argument
@@ -63,11 +64,9 @@ abbrev four : PTm n := succ three
 /-- A term with `a² = a` is `0` or `1`. -/
 theorem bit_cases {a : PTm n} (h : Γ ⊢[PRAAx] a * a ≐ a) : Γ ⊢[PRAAx] (a ≐ zero) ⋎ (a ≐ one) := by
   refine .orE (zero_or_succ a) (.orI₁ Prf.hyp0) (.orI₂ ?_)
-  have e := natEq (Prf.hyp0 (Γ := Γ) (φ := a ≐ succ (pred a)))
   have h' := natEq (h.wk (ψ := a ≐ succ (pred a)))
   have z : ((a ≐ succ (pred a)) :: Γ) ⊢[PRAAx] pred a * a ≐ zero := by
-    apply deriveNat; ipra_simps
-    linear_combination h' - 𝔞 a * e
+    ipra_lc h' - 𝔞 a * natEq (Prf.hyp0 (Γ := Γ) (φ := a ≐ succ (pred a)))
   refine .orE (zero_or_zero_of_mul z) ?_ ?_
   · exact Prf.hyp1.eqTrans (congrSucc Prf.hyp0)
   · exact .botE _ (succ_ne_zero (Prf.hyp1.eqSymm.eqTrans Prf.hyp0))
@@ -88,15 +87,15 @@ theorem xor_bit {a b : PTm n} (ha : Γ ⊢[PRAAx] (a ≐ zero) ⋎ (a ≐ one))
     Γ ⊢[PRAAx] monus one (eqb a b) + two * (a * b) ≐ a + b := by
   refine .orE ha ?_ ?_
   · refine .orE hb.wk ?_ ?_
-    · exact xor_val Prf.hyp1 Prf.hyp0 (xor_same zero) (by apply deriveNat; ipra_simps; ring)
+    · exact xor_val Prf.hyp1 Prf.hyp0 (xor_same zero) (by ipra_ring)
     · exact xor_val (v := one) Prf.hyp1 Prf.hyp0
         ((congrMonus (.eqRefl _) (eqb_zero_of_lt (zero_lt_succ zero))).eqTrans (monus_zero one))
-        (by apply deriveNat; ipra_simps; ring)
+        (by ipra_ring)
   · refine .orE hb.wk ?_ ?_
     · exact xor_val (v := one) Prf.hyp1 Prf.hyp0
         ((congrMonus (.eqRefl _) (eqb_zero_of_gt (zero_lt_succ zero))).eqTrans (monus_zero one))
-        (by apply deriveNat; ipra_simps; ring)
-    · exact xor_val Prf.hyp1 Prf.hyp0 (xor_same one) (by apply deriveNat; ipra_simps; ring)
+        (by ipra_ring)
+    · exact xor_val Prf.hyp1 Prf.hyp0 (xor_same one) (by ipra_ring)
 
 /-! ## Changes along a walk -/
 
@@ -133,17 +132,12 @@ theorem path_step {x k : PTm n}
       two * ap2 (sumF (mB f)) k x ≐ two * ap2 (sumF (sgB f)) (succ k) x) :
     Γ ⊢[PRAAx] ap2 (sumF (cB f)) (succ k) x + sgn f zero x + sgn f (succ k) x +
       two * ap2 (sumF (mB f)) (succ k) x ≐ two * ap2 (sumF (sgB f)) (succ (succ k)) x := by
-  have x1 := natEq (xor_bit (sgn_bit (Γ := Γ) f k x) (sgn_bit f (succ k) x))
-  have e₀ := natEq ih
   have c₁ := sum_succ' (Γ := Γ) (cB f) k x
   rw [inst2_cB] at c₁
   have m₁ := sum_succ' (Γ := Γ) (mB f) k x
   rw [inst2_mB] at m₁
-  have ec := natEq c₁
-  have em := natEq m₁
-  have et := natEq (sum_succ' (Γ := Γ) (sgB f) (succ k) x)
-  apply deriveNat; ipra_simps
-  linear_combination ec + 2 * em - 2 * et + e₀ + x1
+  ipra_lc natEq c₁ + 2 * natEq m₁ - 2 * natEq (sum_succ' (Γ := Γ) (sgB f) (succ k) x) + natEq ih +
+    natEq (xor_bit (sgn_bit (Γ := Γ) f k x) (sgn_bit f (succ k) x))
 
 /-- The induction formula of `path_changes`; variable `0 = k`. -/
 abbrev pathF (x : PTm n) : Fm PTm (n + 1) :=
@@ -159,12 +153,8 @@ theorem path_changes (k x : PTm n) :
     refine PRA.qfInd _ trivial ?_ ?_
     · have b : Γ ⊢[PRAAx] ap2 (sumF (cB f)) zero x + sgn f zero x + sgn f zero x +
           two * ap2 (sumF (mB f)) zero x ≐ two * ap2 (sumF (sgB f)) (succ zero) x := by
-        have e₁ := natEq (sum_zero (Γ := Γ) (cB f) x)
-        have e₂ := natEq (sum_zero (Γ := Γ) (mB f) x)
-        have e₃ := natEq ((sum_succ' (Γ := Γ) (sgB f) zero x).eqTrans
-          (congrAdd (sum_zero _ _) (.eqRefl _)))
-        apply deriveNat; ipra_simps
-        linear_combination e₁ + 2 * e₂ - 2 * e₃
+        ipra_lc natEq (sum_zero (Γ := Γ) (cB f) x) + 2 * natEq (sum_zero (Γ := Γ) (mB f) x) -
+          2 * natEq ((sum_succ' (Γ := Γ) (sgB f) zero x).eqTrans (congrAdd (sum_zero _ _) (.eqRefl _)))
       simpa [subst_inst2] using b
     · have st : (pathF f x :: Γ.map Fm.shift) ⊢[PRAAx]
           ap2 (sumF (cB f)) (succ (var 0)) (Syn.shift x) + sgn f zero (Syn.shift x) +
@@ -184,10 +174,7 @@ theorem cyclic_changes_even (e x : PTm n) :
       (ap2 (sumF (cB f)) e x + monus one (eqb (sgn f e x) (sgn f zero x))) +
         two * (ap2 (sumF (mB f)) e x + sgn f e x * sgn f zero x) ≐
       two * ap2 (sumF (sgB f)) (succ e) x := by
-  have p := natEq (path_changes (Γ := Γ) f e x)
-  have c := natEq (xor_bit (sgn_bit (Γ := Γ) f e x) (sgn_bit f zero x))
-  apply deriveNat; ipra_simps
-  linear_combination p + c
+  ipra_lc natEq (path_changes (Γ := Γ) f e x) + natEq (xor_bit (sgn_bit (Γ := Γ) f e x) (sgn_bit f zero x))
 
 end Walk
 
@@ -198,27 +185,20 @@ theorem face_bound {c d M T : PTm n} (h3 : Γ ⊢[PRAAx] le three d) (hc : Γ �
     (hpar : Γ ⊢[PRAAx] c + two * M ≐ two * T) : Γ ⊢[PRAAx] le (c + four) (two * d) := by
   refine .orE (lt_or_eq_of_le h3) ?_ ?_
   · -- `d ≥ 4`
-    have e₄ := natEq (eq_add_of_le (Prf.hyp0 (Γ := Γ) (φ := lt three d)))
-    have ec := natEq (eq_add_of_le (hc.wk (ψ := lt three d)))
     refine le_of_eq_add (d := monus d c + monus d (succ three)) ?_
-    apply deriveNat; ipra_simps
-    linear_combination ec + e₄
+    ipra_lc natEq (eq_add_of_le (hc.wk (ψ := lt three d))) +
+      natEq (eq_add_of_le (Prf.hyp0 (Γ := Γ) (φ := lt three d)))
   · -- `d = 3`
     have hd : ((three ≐ d) :: Γ) ⊢[PRAAx] three ≐ d := Prf.hyp0
     have hc3 : ((three ≐ d) :: Γ) ⊢[PRAAx] le c three := le_congr (.eqRefl _) hd.eqSymm hc.wk
     refine .orE (lt_or_eq_of_le hc3) ?_ ?_
     · have hc2 : (lt c three :: (three ≐ d) :: Γ) ⊢[PRAAx] le c two :=
         (succ_monus_succ c two).eqSymm.eqTrans Prf.hyp0
-      have e₂ := natEq (eq_add_of_le hc2)
-      have ed := natEq (hd.wk (ψ := lt c three))
       refine le_of_eq_add (d := monus two c) ?_
-      apply deriveNat; ipra_simps
-      linear_combination e₂ - 2 * ed
+      ipra_lc natEq (eq_add_of_le hc2) - 2 * natEq (hd.wk (ψ := lt c three))
     · have e₃ := natEq (Prf.hyp0 (Γ := (three ≐ d) :: Γ) (φ := c ≐ three))
-      have ep := natEq ((hpar.wk (ψ := three ≐ d)).wk (ψ := c ≐ three))
       refine even_ne_odd (k := T) (m := succ M) _ ?_
-      apply deriveNat; ipra_simps
-      linear_combination -ep + e₃
+      ipra_lc -natEq ((hpar.wk (ψ := three ≐ d)).wk (ψ := c ≐ three)) + e₃
 
 /-! ## The count -/
 
@@ -237,10 +217,10 @@ theorem sign_count (cF dF wV : PTm 2) {V E F x : PTm n} (φ : Fm PTm n)
     refine le_congr ?_ ?_ (Prf.impE hf.allOpen.wk Prf.hyp0)
     · simp only [inst2, Syn.shift]
       simp
-      apply deriveNat; ipra_simps; ring
+      ipra_ring
     · simp only [inst2, Syn.shift]
       simp
-      apply deriveNat; ipra_simps; ring
+      ipra_ring
   have s₂ : Γ ⊢[PRAAx] le (ap2 (sumF (one : PTm 2)) V x * four +
         zero * ap2 (sumF (zero : PTm 2)) V x)
       (ap2 (sumF wV) V x * one + zero * ap2 (sumF (zero : PTm 2)) V x) := by
@@ -248,27 +228,21 @@ theorem sign_count (cF dF wV : PTm 2) {V E F x : PTm n} (φ : Fm PTm n)
     refine le_congr ?_ ?_ (Prf.impE hw.allOpen.wk Prf.hyp0)
     · simp only [inst2, Syn.shift]
       simp
-      apply deriveNat; ipra_simps; ring
+      ipra_ring
     · simp only [inst2, Syn.shift]
       simp
-      apply deriveNat; ipra_simps; ring
-  have oF := natEq (sum_one (Γ := Γ) F x)
-  have oV := natEq (sum_one (Γ := Γ) V x)
-  have eE := natEq hE
-  have eC := natEq hcorner
-  have eU := natEq hEuler
+      ipra_ring
   have a₁ : Γ ⊢[PRAAx] le (ap2 (sumF cF) F x + four * F) (two * (two * E)) := by
     refine le_congr ?_ ?_ s₁
-    · apply deriveNat; ipra_simps; linear_combination 4 * oF
-    · apply deriveNat; ipra_simps; linear_combination 2 * eE
+    · ipra_lc 4 * natEq (sum_one (Γ := Γ) F x)
+    · ipra_lc 2 * natEq hE
   have a₂ : Γ ⊢[PRAAx] le (four * V) (ap2 (sumF cF) F x) := by
     refine le_congr ?_ ?_ s₂
-    · apply deriveNat; ipra_simps; linear_combination 4 * oV
-    · apply deriveNat; ipra_simps; linear_combination eC
+    · ipra_lc 4 * natEq (sum_one (Γ := Γ) V x)
+    · ipra_lc natEq hcorner
   have tot : Γ ⊢[PRAAx] le (four * V + four * F) (two * (two * E)) :=
     le_trans (add_le_add_right (four * F) a₂) a₁
   refine not_succ_le_self (two * (two * E)) φ (le_trans (le_of_eq_add (d := four + three) ?_) tot)
-  apply deriveNat; ipra_simps
-  linear_combination 4 * eU
+  ipra_lc 4 * natEq hEuler
 
 end LeanProofs.IPRA.Geometry.CauchySignCount

@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.WeightedAMGM
 import IPRADerivations.Combinatorics.BinomialTheorem
 import IPRADerivations.AnalyticNumberTheory.PhiLower
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The finite arithmetic–geometric mean inequality
@@ -69,21 +70,16 @@ theorem amgm_step {N x : PTm n}
           (pw (succ (succ N)) (succ (succ N)) * inst2 y (succ N) x))
         (pw (succ N) (succ N) *
           pw (ap2 (sumF y) (succ N) x + inst2 y (succ N) x) (succ (succ N))) :=
-    le_trans s₁ (le_congr (by apply deriveNat; ipra_simps; ring) (.eqRefl _) s₂)
+    le_trans s₁ (le_congr (by ipra_ring) (.eqRefl _) s₂)
   have hpos := pw_pos' (Γ := Γ) (p := succ N) (congrSucc (pred_succ N).eqSymm) (succ N)
-  have ep := natEq hpos
-  have eP := natEq (prod_succ'' (Γ := Γ) y (succ N) x)
   have big : Γ ⊢[PRAAx]
       le (succ (pred (pw (succ N) (succ N))) *
           (pw (succ (succ N)) (succ (succ N)) * ap2 (prodF y) (succ (succ N)) x))
         (succ (pred (pw (succ N) (succ N))) *
           pw (ap2 (sumF y) (succ (succ N)) x) (succ (succ N))) := by
     refine le_congr ?_ (congrMul hpos (congrPw (sum_succ' y (succ N) x).eqSymm (.eqRefl _))) tot
-    apply deriveNat; ipra_simps
-    linear_combination
-      (𝔞 (pw (succ (succ N)) (succ (succ N))) * 𝔞 (ap2 (prodF y) (succ N) x) *
-        𝔞 (inst2 y (succ N) x)) * ep -
-      ((𝔞 (pred (pw (succ N) (succ N))) + 1) * 𝔞 (pw (succ (succ N)) (succ (succ N)))) * eP
+    ipra_lc (𝔞 (pw (succ (succ N)) (succ (succ N))) * 𝔞 (ap2 (prodF y) (succ N) x) * 𝔞 (inst2 y (succ N) x)) * natEq hpos -
+      ((𝔞 (pred (pw (succ N) (succ N))) + 1) * 𝔞 (pw (succ (succ N)) (succ (succ N)))) * natEq (prod_succ'' (Γ := Γ) y (succ N) x)
   exact mul_le_cancel big
 
 /-- The induction formula of `finite_amgm`; variable `0 = N`. -/
@@ -99,14 +95,12 @@ theorem finite_amgm (N x : PTm n) :
     refine PRA.qfInd _ (le_QF _ _) ?_ ?_
     · have b : Γ ⊢[PRAAx] le (pw (succ zero) (succ zero) * ap2 (prodF y) (succ zero) x)
           (pw (ap2 (sumF y) (succ zero) x) (succ zero)) := by
-        have e₁ := natEq (pw_one (Γ := Γ) (succ zero))
         have e₂ := natEq ((prod_succ'' (Γ := Γ) y zero x).eqTrans
           (congrMul (prod_zero y x) (.eqRefl _)))
         have e₃ := natEq ((pw_one (Γ := Γ) (ap2 (sumF y) (succ zero) x)).eqTrans
           ((sum_succ' y zero x).eqTrans (congrAdd (sum_zero y x) (.eqRefl _))))
         refine le_of_eq_add (d := zero) ?_
-        apply deriveNat; ipra_simps
-        linear_combination e₃ - 𝔞 (ap2 (prodF y) (succ zero) x) * e₁ - e₂
+        ipra_lc e₃ - 𝔞 (ap2 (prodF y) (succ zero) x) * natEq (pw_one (Γ := Γ) (succ zero)) - e₂
       simpa using b
     · have st : (amgmF y x :: Γ.map Fm.shift) ⊢[PRAAx]
           le (pw (succ (succ (var 0))) (succ (succ (var 0))) *

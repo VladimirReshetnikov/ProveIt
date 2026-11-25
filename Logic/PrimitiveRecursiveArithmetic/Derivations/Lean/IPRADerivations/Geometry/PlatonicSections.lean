@@ -1,5 +1,6 @@
 import IPRADerivations.Geometry.TetraShadow
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The exact certificates for the largest sections of the small Platonic solids
@@ -62,9 +63,7 @@ abbrev Den (a b c d : PTm n) : PTm n := (a + c) * (a + d) * (b + c) * (b + d)
 /-- The tetrahedral slack: `Den (p + q − r) + (ab − cd)² = Den`. -/
 theorem tetra_slack (a b c d : PTm n) :
     Γ ⊢[PRAAx] Npqr a b c d + ad (a * b) (c * d) * ad (a * b) (c * d) ≐ Den a b c d := by
-  have e := natEq (ad_sq (Γ := Γ) (a * b) (c * d))
-  apply deriveNat; ipra_simps
-  linear_combination e
+  ipra_lc natEq (ad_sq (Γ := Γ) (a * b) (c * d))
 
 /-- `p + q − r ≤ 1`: `Den (p + q − r) ≤ Den`. -/
 theorem tetra_le_one (a b c d : PTm n) : Γ ⊢[PRAAx] le (Npqr a b c d) (Den a b c d) :=

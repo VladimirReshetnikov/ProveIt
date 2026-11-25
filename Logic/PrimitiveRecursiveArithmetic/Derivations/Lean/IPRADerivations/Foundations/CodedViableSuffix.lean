@@ -1,4 +1,6 @@
 import IPRADerivations.Foundations.CodedViableChain
+import IPRADerivations.Core.CongruenceTactic
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Coded viable suffixes at an arbitrary numerical level
@@ -119,18 +121,11 @@ theorem absolute_reverse (I : Instance) {i p j : PTm n}
     (hi : Γ ⊢[PRAAx] le i (I.h p)) (hj : Γ ⊢[PRAAx] le j (remaining I i p)) :
     Γ ⊢[PRAAx] i + monus (remaining I i p) j ≐ monus (I.h p) j := by
   have hjH := le_trans hj (ChainViability.monus_le _ _)
-  have e1 := natEq (eq_add_of_le hi)
-  have e2 := natEq (eq_add_of_le hj)
-  have e3 := natEq (eq_add_of_le hjH)
-  simp only [remaining] at e2 ⊢
-  apply deriveNat; ipra_simps
-  linear_combination e3 - e1 - e2
+  ipra_lc [remaining] natEq (eq_add_of_le hjH) - natEq (eq_add_of_le hi) - natEq (eq_add_of_le hj)
 
 theorem nxt_index_congr (I : Instance) {j k a p : PTm n} (h : Γ ⊢[PRAAx] j ≐ k) :
     Γ ⊢[PRAAx] I.nxt j a p ≐ I.nxt k a p := by
-  have e := Prf.eqCongr (Γ := Γ) (I.nxt (var 0) (var 1) (var 2) : PTm 3)
-    (σ := ![j,a,p]) (σ' := ![k,a,p]) (fun l => by fin_cases l; exact h; exact .eqRefl _; exact .eqRefl _)
-  simpa using e
+  ipra_congr (I.nxt (var 0) (var 1) (var 2) : PTm 3) with [h, .eqRefl a, .eqRefl p]
 
 /-- Unfold the original viability table at an arbitrary absolute level. -/
 theorem viable_step (I : Instance) {l c p : PTm n} (hl : Γ ⊢[PRAAx] lt l (I.h p))

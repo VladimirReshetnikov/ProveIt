@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.RationalOriginalSpanMembership
 import IPRADerivations.Analysis.RationalSuperellipticSubspace
 import IPRADerivations.Foundations.FiniteCoverAssignment
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # First-cover counting for original rational superelliptic points
@@ -83,11 +84,8 @@ def group (m e L P D g : PTm n) : PTm n :=
 private theorem candidate_congr {m m' e e' L L' D D' : PTm n} (g v : PTm n)
     (hm : Γ ⊢[PRAAx] m ≐ m') (he : Γ ⊢[PRAAx] e ≐ e') (hL : Γ ⊢[PRAAx] L ≐ L') (hD : Γ ⊢[PRAAx] D ≐ D') :
     Γ ⊢[PRAAx] candidate m e L D g v ≐ candidate m' e' L' D' g v := by
-  simpa only [subst_candidate,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.cons_val_three,Matrix.cons_val_four,GaussianAnnihilatorPolynomial.val_five,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (candidate (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6)
-      (σ := ![m,e,L,D,g,v]) (σ' := ![m',e',L',D',g,v])
-      (fun r => by fin_cases r; exact hm; exact he; exact hL; exact hD; exact .eqRefl g; exact .eqRefl v)
+  ipra_congr (candidate (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) with
+    [hm, he, hL, hD, .eqRefl g, .eqRefl v] using [GaussianAnnihilatorPolynomial.val_five]
 
 theorem test_body_at (m e L D g v : PTm n) : Γ ⊢[PRAAx]
     inst3 testBody g v (data m e L D) ≐ eqb (candidate m e L D g v) one := by

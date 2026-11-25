@@ -1,4 +1,5 @@
 import IPRADerivations.Combinatorics.LucasIdentities
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Catalan's Fibonacci identity
@@ -29,17 +30,9 @@ theorem catalan_add (a r : PTm n) :
     Γ ⊢[PRAAx]
       fib (a + r) * fib (a + r) + par a * (fib r * fib r) ≐
         fib a * fib ((a + r) + r) + monus one (par a) * (fib r * fib r) := by
-  have e₁ := natEq (fib_add_sym (Γ := Γ) a r)
-  have e₂ := natEq (fibS_add (Γ := Γ) a r)
-  have e₃ := natEq (fib_add_sym (Γ := Γ) (a + r) r)
-  have c := natEq (cassini (Γ := Γ) a)
-  have s := natEq (fibS_succ (Γ := Γ) a)
-  apply deriveNat
-  ipra_simps
-  linear_combination
-    (𝔞(fib (a + r)) + 𝔞(fibS a) * 𝔞(fib r)) * e₁ -
-      𝔞(fib a) * 𝔞(fib r) * e₂ - 𝔞(fib a) * e₃ -
-      𝔞(fib r) ^ 2 * c + 𝔞(fib a) * 𝔞(fib r) ^ 2 * s
+  ipra_lc (𝔞(fib (a + r)) + 𝔞(fibS a) * 𝔞(fib r)) * natEq (fib_add_sym (Γ := Γ) a r) -
+    𝔞(fib a) * 𝔞(fib r) * natEq (fibS_add (Γ := Γ) a r) - 𝔞(fib a) * natEq (fib_add_sym (Γ := Γ) (a + r) r) -
+    𝔞(fib r) ^ 2 * natEq (cassini (Γ := Γ) a) + 𝔞(fib a) * 𝔞(fib r) ^ 2 * natEq (fibS_succ (Γ := Γ) a)
 
 /-- The conventional Catalan formula, with `r ≤ N` in the local context. -/
 theorem catalan {N r : PTm n} (bound : Γ ⊢[PRAAx] le r N) :

@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.TwoSquaresDescent
 import IPRADerivations.DiophantineNumberTheory.FourSquares
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Fermat's two-square theorem by bounded descent
@@ -75,8 +76,7 @@ abbrev X (n : PTm k) : PTm k := rem (wit tB (bd n) n) (succ n)
 abbrev Y (n : PTm k) : PTm k := quo (wit tB (bd n) n) (succ n)
 
 theorem sq_comm {a b n : PTm k} (e : Γ ⊢[PRAAx] a * a + b * b ≐ n) : Γ ⊢[PRAAx] b * b + a * a ≐ n := by
-  have x := natEq e
-  apply deriveNat; ipra_simps; linear_combination x
+  ipra_lc natEq e
 
 theorem code_lt {B a b : PTm k} (ha : Γ ⊢[PRAAx] lt a B) (hb : Γ ⊢[PRAAx] lt b B) :
     Γ ⊢[PRAAx] lt (B * b + a) (B * B) := by
@@ -106,18 +106,16 @@ theorem rep_elim {n : PTm k} (h : Γ ⊢[PRAAx] T n ≐ one) : Γ ⊢[PRAAx] X n
 
 theorem seed_alg {r p m0 : PTm k} (es : Γ ⊢[PRAAx] r * r + one ≐ p * m0 + zero) :
     Γ ⊢[PRAAx] r * r + one * one ≐ m0 * p := by
-  have x := natEq es
-  apply deriveNat; ipra_simps; linear_combination x
+  ipra_lc natEq es
 
 /-- `t < p` and `t² + 1 = p m₀` give `1 ≤ m₀ < p`. -/
 theorem seed_bounds {r p m0 : PTm k} (hp2 : Γ ⊢[PRAAx] le two p) (hr : Γ ⊢[PRAAx] lt r p)
     (es : Γ ⊢[PRAAx] r * r + one ≐ p * m0 + zero) : Γ ⊢[PRAAx] le one m0 ⋏ lt m0 p := by
   refine .andI ?_ ?_
   · refine .orE (zero_or_succ m0) ?_ (one_le_pos Prf.hyp0)
-    have z0 := natEq (Prf.hyp0 (Γ := Γ) (φ := m0 ≐ zero))
     have esn := natEq (es.wk (ψ := m0 ≐ zero))
     refine succ_ne_zero' (a := r * r) _ ?_
-    apply deriveNat; ipra_simps; linear_combination esn + 𝔞 p * z0
+    ipra_lc esn + 𝔞 p * natEq (Prf.hyp0 (Γ := Γ) (φ := m0 ≐ zero))
   · refine .orE (lt_or_le m0 p) Prf.hyp0 ?_
     have hle : (le p m0 :: Γ) ⊢[PRAAx] le p m0 := Prf.hyp0
     have hr' := hr.wk (ψ := le p m0)
@@ -172,9 +170,8 @@ theorem rep_mod4 {p : PTm k} (hp : Γ ⊢[PRAAx] prime p) (hodd : Γ ⊢[PRAAx] 
     have nz := l_one (Prf.andE₁ (Prf.andE₂ dsc)) r'
     exact .botE _ (.impE nz (ex_least lB (Prf.andE₂ (Prf.andE₂ dsc))))
   · -- `m* = 1`
-    have h1 := natEq (Prf.hyp0 (Γ := Γ) (φ := one ≐ ms p))
     have e : ((one ≐ ms p) :: Γ) ⊢[PRAAx] ms p * p ≐ p := by
-      apply deriveNat; ipra_simps; linear_combination (-𝔞 p) * h1
+      ipra_lc (-𝔞 p) * natEq (Prf.hyp0 (Γ := Γ) (φ := one ≐ ms p))
     exact rep_intro (nx.wk.eqTrans e)
 
 /-- **Fermat's two-square theorem by descent**: `X(p)² + Y(p)² = p` for a prime `p ≡ 1 (mod 4)`. -/

@@ -1,4 +1,5 @@
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Exact families of hyperbox surface distances
@@ -78,8 +79,7 @@ theorem prism_difference (C d : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (ZT.natLit 4 * (C * C) * (C * C) + d * ((C + ZT.natLit 1) * (C + ZT.natLit 1)) +
         ZT.natLit 4 * (C * C) * (C + ZT.natLit 1) - ZT.natLit 4 * (C * C) * (C * C + d + ZT.natLit 2))
       ((C - ZT.natLit 1) * (ZT.natLit 4 * (C * C) - ZT.natLit 3 * d * C - d)) := by
-  apply ZT.derive
-  simp only [ZT.toZ_add, ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_natLit]; push_cast; ring
+  ipra_lc
 
 /-- The `1×1×1×5` prism: `25 R² = 802` and `25 L² = 750 < 802`. -/
 theorem prism_example :

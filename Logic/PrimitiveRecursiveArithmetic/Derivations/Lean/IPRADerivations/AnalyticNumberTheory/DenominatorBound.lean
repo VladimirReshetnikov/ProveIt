@@ -7,6 +7,7 @@ import IPRADerivations.AnalyticNumberTheory.SumReindex
 import IPRADerivations.Probability.Independence
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Foundations.StrongInduction
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The denominator bound `G_q(z) ≥ (φ(q)/q) H_z` and the second sieve inequality
@@ -110,8 +111,7 @@ theorem quo_mul_le {m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (F : PTm
     Γ ⊢[PRAAx] le (m * quo F m) F := le_of_eq_add (d := rem F m) (div_eq hm)
 
 theorem scale_alg {p k m Q : PTm n} (e : Γ ⊢[PRAAx] m ≐ p * k) : Γ ⊢[PRAAx] m * Q ≐ k * (p * Q) := by
-  have x := natEq e
-  apply deriveNat; ipra_simps; linear_combination 𝔞 Q * x
+  ipra_lc 𝔞 Q * natEq e
 
 /-- `p ⌊F/(pk)⌋ ≤ ⌊F/k⌋` for `k ≥ 1`. -/
 theorem quo_scale {p k m : PTm n} (F : PTm n) (hk : Γ ⊢[PRAAx] k ≐ succ (pred k))
@@ -121,15 +121,13 @@ theorem quo_scale {p k m : PTm n} (F : PTm n) (hk : Γ ⊢[PRAAx] k ≐ succ (pr
 
 theorem bits1 {s b X : PTm n} (hs : Γ ⊢[PRAAx] s ≐ one) (hb : Γ ⊢[PRAAx] b ≐ one) :
     Γ ⊢[PRAAx] s * (b * X) ≐ X := by
-  have x := natEq hs; have y := natEq hb
-  apply deriveNat; ipra_simps; linear_combination 𝔞 b * 𝔞 X * x + 𝔞 X * y
+  ipra_lc 𝔞 b * 𝔞 X * natEq hs + 𝔞 X * natEq hb
 
 theorem bits2 {c s b X : PTm n} (hc : Γ ⊢[PRAAx] c ≐ one) (hs : Γ ⊢[PRAAx] s ≐ one)
     (hb : Γ ⊢[PRAAx] b ≐ one) : Γ ⊢[PRAAx] c * (s * (b * X)) ≐ X := by
-  have w := natEq hc; have x := natEq hs; have y := natEq hb
-  apply deriveNat; ipra_simps; linear_combination 𝔞 s * 𝔞 b * 𝔞 X * w + 𝔞 b * 𝔞 X * x + 𝔞 X * y
+  ipra_lc 𝔞 s * 𝔞 b * 𝔞 X * natEq hc + 𝔞 b * 𝔞 X * natEq hs + 𝔞 X * natEq hb
 
-theorem comm_alg (P R : PTm n) : Γ ⊢[PRAAx] P + R ≐ R + P := by apply deriveNat; ipra_simps; ring
+theorem comm_alg (P R : PTm n) : Γ ⊢[PRAAx] P + R ≐ R + P := by ipra_ring
 
 /-- The term at `m`: `p · t_a(m) ≤ p · t_{ap}(m) + [p ∣ m] t_a(m/p)`. -/
 theorem pt_step {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (a F m : PTm n) :
@@ -272,8 +270,7 @@ theorem viol_of {K A B : PTm n} (h : Γ ⊢[PRAAx] le A B) : Γ ⊢[PRAAx] sg K 
 
 theorem one_fac {s X : PTm n} (hs : Γ ⊢[PRAAx] s ≐ one) (h : Γ ⊢[PRAAx] s * X ≐ zero) :
     Γ ⊢[PRAAx] X ≐ zero := by
-  have x := natEq hs; have w := natEq h
-  apply deriveNat; ipra_simps; linear_combination w - 𝔞 X * x
+  ipra_lc natEq h - 𝔞 X * natEq hs
 
 theorem of_viol {K A B : PTm n} (hK : Γ ⊢[PRAAx] K ≐ succ (pred K))
     (h : Γ ⊢[PRAAx] sg K * sg (monus A B) ≐ zero) : Γ ⊢[PRAAx] le A B :=
@@ -376,7 +373,7 @@ theorem transfer {c c' t B R : PTm n} (h1 : Γ ⊢[PRAAx] le c' c)
   · exact transfer_le R Prf.hyp0
 
 theorem assoc_alg (a b c : PTm n) : Γ ⊢[PRAAx] a * (b * c) ≐ (a * b) * c := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- **`thm:finite-sieve`, second inequality**, for `q ≥ 1`: with `H = ∑_{1 ≤ m ≤ z} ⌊z!/m⌋ = z! H_z`,
 `φ(q) H · π(X; q, a) ≤ X z! + φ(q) H (z² + z)`. -/

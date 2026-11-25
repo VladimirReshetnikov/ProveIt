@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.KroneckerBinomialTail
 import IPRADerivations.Probability.BinomialLaw
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # `C(r, k) ≥ (r/k)^k` and the full binomial kernel estimate
@@ -52,7 +53,7 @@ theorem bp_step {r K j : PTm n} (hKr : Γ ⊢[PRAAx] le K r) (hj : Γ ⊢[PRAAx]
   have hjm : Γ ⊢[PRAAx] le j (monus r K + j) := le_add_left j (monus r K)
   have eab := natEq (absorption hjm)
   have eC := natEq (congrBinom (Γ := Γ) (show Γ ⊢[PRAAx] monus r K + succ j ≐ succ (monus r K + j) by
-    apply deriveNat; ipra_simps; ring) (.eqRefl (succ j)))
+    ipra_ring) (.eqRefl (succ j)))
   have er := natEq (eq_add_of_le hKr)
   have pr := natEq (pw_succ (Γ := Γ) r j)
   have pK := natEq (pw_succ (Γ := Γ) K j)
@@ -82,8 +83,7 @@ theorem binom_power_lower {r K : PTm n} (hKr : Γ ⊢[PRAAx] le K r) :
   simp at h
   have h' := Prf.impE (Prf.impE h hKr) (le_refl K)
   have e : Γ ⊢[PRAAx] monus r K + K ≐ r := by
-    have er := natEq (eq_add_of_le hKr)
-    apply deriveNat; ipra_simps; linear_combination -er
+    ipra_lc -natEq (eq_add_of_le hKr)
   exact le_congr (.eqRefl _) (congrMul (.eqRefl _) (congrBinom e (.eqRefl K))) h'
 
 /-- The same for the guarded coefficient. -/

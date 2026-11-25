@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.RationalHausdorffConcat
 import IPRADerivations.Analysis.RationalNearest
 import IPRADerivations.Foundations.FiniteHausdorffProduct
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual Cartesian products of original rational-vector lists
@@ -92,9 +93,7 @@ theorem product_pair_range (T T' j l : PTm n) (hj : Γ ⊢[PRAAx] lt j (length T
 
 theorem append_congr {x x' y y' : PTm n} (hx : Γ ⊢[PRAAx] x ≐ x') (hy : Γ ⊢[PRAAx] y ≐ y') :
     Γ ⊢[PRAAx] append x y ≐ append x' y' := by
-  have h := Prf.eqCongr (Γ := Γ) (append (var 0) (var 1) : PTm 2)
-    (σ := ![x,y]) (σ' := ![x',y']) (fun i => by fin_cases i; exact hx; exact hy)
-  simpa only [subst_append,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using h
+  ipra_congr (append (var 0) (var 1) : PTm 2) with [hx, hy]
 
 theorem product_pair_entry (T T' j l : PTm n) (hT' : Γ ⊢[PRAAx] le one (length T'))
     (hj : Γ ⊢[PRAAx] lt j (length T)) (hl : Γ ⊢[PRAAx] lt l (length T')) :

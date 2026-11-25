@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.FiniteExponential
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Literal finite logarithm polynomial and its differential residual
@@ -120,14 +121,10 @@ theorem prefix_step (d p : Bool) (N x D : PTm n) :
   rw [show Syn.shift (data N x D) = data (Syn.shift N) (Syn.shift x) (Syn.shift D) by simp [Syn.shift]]
   simp only [Syn.shift,PTm.subst_mul,ConciseIPRA.PTm.subst_succ]
   let Δ : List (Fm PTm (n+1)) := lt (var 0) (Syn.shift N) :: Γ.map Fm.shift
-  have a := natEq (body_at (Γ := Δ) d p (var 0) (succ (Syn.shift N)) (Syn.shift x) (Syn.shift D))
-  have b := natEq (body_at (Γ := Δ) d p (var 0) (Syn.shift N) (Syn.shift x) (Syn.shift D))
-  have w := natEq (coefficient_step (Γ := Δ) d (Syn.shift N) (var 0) (Syn.shift D) Prf.hyp0)
   change Δ ⊢[PRAAx] inst2 (body d p) (var 0) (data (succ (Syn.shift N)) (Syn.shift x) (Syn.shift D)) ≐
     (succ (Syn.shift N)*Syn.shift D)*inst2 (body d p) (var 0) (data (Syn.shift N) (Syn.shift x) (Syn.shift D))
-  apply deriveNat; ipra_simps
-  linear_combination a-(𝔞(Syn.shift N)+1)*𝔞(Syn.shift D)*b+
-    𝔞(component p (value (monomialCode d (Syn.shift x) (var 0))))*w
+  ipra_lc natEq (body_at (Γ := Δ) d p (var 0) (succ (Syn.shift N)) (Syn.shift x) (Syn.shift D))-
+    (𝔞(Syn.shift N)+1)*𝔞(Syn.shift D)*natEq (body_at (Γ := Δ) d p (var 0) (Syn.shift N) (Syn.shift x) (Syn.shift D))+ 𝔞(component p (value (monomialCode d (Syn.shift x) (var 0))))*natEq (coefficient_step (Γ := Δ) d (Syn.shift N) (var 0) (Syn.shift D) Prf.hyp0)
 
 theorem coefficient_endpoint (d : Bool) (N D : PTm n) :
     Γ ⊢[PRAAx] coefficient d (succ N) N D ≐ (if d then succ N else one) := by
@@ -194,14 +191,7 @@ theorem logarithmic_coefficient (N k D : PTm n) (hk : Γ ⊢[PRAAx] lt k N) : Γ
     ZT.eq (ZT.ofNat (succ k*pw D (succ k)*coefficient false N k D)*kernel k)
       (ZT.ofNat (FiniteExponential.denominator D N)*
         (⟨LogarithmExponentialCoefficients.evenBit k,LogarithmExponentialCoefficients.oddBit k⟩ : ZT n)) := by
-  have c := ZT.toZ_eq (LogarithmExponentialCoefficients.logarithmic_coefficient (Γ := Γ) k)
-  have w := natEq (FiniteExponential.coefficient_clearing (Γ := Γ) N (succ k) D hk)
-  apply ZT.derive
-  simp only [ZT.toZ_mul,ZT.toZ_ofNat] at c ⊢
-  simp only [coefficient,Bool.false_eq_true,if_false]
-  ipra_simps
-  linear_combination 𝔞(pw D (succ k))*𝔞(scalar N (succ k) D)*c+
-    ZT.toZ Γ (⟨LogarithmExponentialCoefficients.evenBit k,LogarithmExponentialCoefficients.oddBit k⟩ : ZT n)*w
+  ipra_lc [coefficient, Bool.false_eq_true, if_false] 𝔞(pw D (succ k))*𝔞(scalar N (succ k) D)*ZT.toZ_eq (LogarithmExponentialCoefficients.logarithmic_coefficient (Γ := Γ) k)+ ZT.toZ Γ (⟨LogarithmExponentialCoefficients.evenBit k,LogarithmExponentialCoefficients.oddBit k⟩ : ZT n)*natEq (FiniteExponential.coefficient_clearing (Γ := Γ) N (succ k) D hk)
 
 theorem denominator_recurrence (D N : PTm n) : Γ ⊢[PRAAx]
     FiniteExponential.denominator D (succ N) ≐ (succ N*D)*FiniteExponential.denominator D N := by

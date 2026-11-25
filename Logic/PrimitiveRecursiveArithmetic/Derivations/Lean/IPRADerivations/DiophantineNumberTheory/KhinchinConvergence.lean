@@ -3,6 +3,7 @@ import IPRADerivations.Foundations.AuxiliaryEnvelope
 import IPRADerivations.Probability.Independence
 import IPRADerivations.AnalyticNumberTheory.Totient
 import IPRADerivations.DiophantineNumberTheory.HurwitzMargin
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The convergent half of the finite Khinchin theorem (`hurwitz_khinchin_ipra`, (K1))
@@ -181,13 +182,13 @@ theorem width_le (A B : PTm n) : Γ ⊢[PRAAx] le (monus (A + B) (monus A B)) (t
   refine .orE (le_total B A) ?_ ?_
   · have e := natEq (eq_add_of_le (Γ := le B A :: Γ) Prf.hyp0)
     have h : (le B A :: Γ) ⊢[PRAAx] A + B ≐ monus A B + two * B := by
-      apply deriveNat; ipra_simps; linear_combination e
+      ipra_lc e
     exact le_congr ((congrMonus h (.eqRefl _)).eqTrans (add_monus' _ _)).eqSymm (.eqRefl _) (le_refl _)
   · have h0 : (le A B :: Γ) ⊢[PRAAx] monus A B ≐ zero := Prf.hyp0
     have e := natEq (eq_add_of_le (Γ := le A B :: Γ) Prf.hyp0)
     refine le_congr ((congrMonus (.eqRefl _) h0).eqTrans (monus_zero _)).eqSymm (.eqRefl _) ?_
     refine le_of_eq_add (d := monus B A) ?_
-    apply deriveNat; ipra_simps; linear_combination e
+    ipra_lc e
 
 end Arith
 

@@ -66,7 +66,7 @@ theorem ind_le {k r : PTm n} (h : Γ ⊢[PRAAx] le k r) : Γ ⊢[PRAAx] ind k r 
 theorem ind_gt {k r : PTm n} (h : Γ ⊢[PRAAx] lt r k) : Γ ⊢[PRAAx] ind k r ≐ zero := by
   have e := eq_add_of_le h
   have m : Γ ⊢[PRAAx] monus k r ≐ succ (monus k (succ r)) :=
-    (congrMonus e (.eqRefl _)).eqTrans ((congrMonus (by apply deriveNat; ipra_simps; ring) (.eqRefl _)).eqTrans
+    (congrMonus e (.eqRefl _)).eqTrans ((congrMonus (by ipra_ring) (.eqRefl _)).eqTrans
       (add_monus' _ _))
   exact (congrMonus (.eqRefl _) m).eqTrans ((succ_monus_succ _ _).eqTrans (zero_monus _))
 
@@ -83,10 +83,10 @@ theorem G_zero (a c k : PTm n) : Γ ⊢[PRAAx] G a c zero k ≐ eqb zero k := by
     have p2 : C ⊢[PRAAx] pw c (monus zero k) ≐ one := (congrAp2 powF (zero_monus _) (.eqRefl _)).eqTrans (pw_zero _)
     refine (congrMul i (congrMul b (congrMul p1 p2))).eqTrans ?_
     refine .eqTrans ?_ (eqb_of_eq hk.eqSymm).eqSymm
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   · let C := (k ≐ succ (pred k)) :: Γ
     have hk : C ⊢[PRAAx] lt zero k := le_congr (.eqRefl _) Prf.hyp0.eqSymm
-      (le_of_eq_add (d := pred k) (by apply deriveNat; ipra_simps; ring))
+      (le_of_eq_add (d := pred k) (by ipra_ring))
     refine (congrMul (ind_gt hk) (.eqRefl _)).eqTrans ((zero_mul _).eqTrans ?_)
     exact (eqb_zero_of_lt hk).eqSymm
 
@@ -98,7 +98,7 @@ theorem G_succ_zero (a c r : PTm n) : Γ ⊢[PRAAx] G a c (succ r) zero ≐ c * 
   have e0 : Γ ⊢[PRAAx] pw c (monus r zero) ≐ pw c r := congrAp2 powF (monus_zero _) (.eqRefl _)
   refine (congrMul i1 (congrMul (binom_zero' _) (congrMul (pw_zero _) e1))).eqTrans (.eqTrans ?_
     (congrMul (.eqRefl _) (congrMul i0 (congrMul (binom_zero' _) (congrMul (pw_zero _) e0)))).eqSymm)
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem G_succ_succ (a c r k : PTm n) :
     Γ ⊢[PRAAx] G a c (succ r) (succ k) ≐ c * G a c r (succ k) + a * G a c r k := by
@@ -113,14 +113,14 @@ theorem G_succ_succ (a c r k : PTm n) :
     have g3 := ind_le (Γ := C) (le_of_lt h)
     have er : C ⊢[PRAAx] monus r k ≐ succ (monus r (succ k)) := by
       have e := eq_add_of_le h
-      exact (congrMonus e (.eqRefl _)).eqTrans ((congrMonus (by apply deriveNat; ipra_simps; ring) (.eqRefl _)).eqTrans
+      exact (congrMonus e (.eqRefl _)).eqTrans ((congrMonus (by ipra_ring) (.eqRefl _)).eqTrans
         (add_monus' _ _))
     have pc : C ⊢[PRAAx] pw c (monus r k) ≐ pw c (monus r (succ k)) * c := (congrAp2 powF er (.eqRefl _)).eqTrans (pw_succ _ _)
     have pa := pascal_at (Γ := C) h
     refine (congrMul g1 (congrMul pa (congrMul ea.wk ((congrAp2 powF em.wk (.eqRefl _)).eqTrans pc)))).eqTrans (.eqTrans ?_
       (congrAdd (congrMul (.eqRefl _) (congrMul g2 (congrMul (.eqRefl _) (congrMul ea.wk (.eqRefl _))))) (congrMul (.eqRefl _) (congrMul g3 (congrMul (.eqRefl _)
         (congrMul (.eqRefl _) pc))))).eqSymm)
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   · let C := le r k :: Γ
     refine .orE (lt_or_eq_of_le (Prf.hyp0 : C ⊢[PRAAx] le r k)) ?_ ?_
     · -- `r < k`: every term vanishes.
@@ -131,7 +131,7 @@ theorem G_succ_succ (a c r k : PTm n) :
       have z3 := ind_gt (Γ := C') h
       refine (congrMul z1 (.eqRefl _)).eqTrans ((zero_mul _).eqTrans (.eqTrans ?_
         (congrAdd (congrMul (.eqRefl _) (congrMul z2 (.eqRefl _))) (congrMul (.eqRefl _) (congrMul z3 (.eqRefl _)))).eqSymm))
-      apply deriveNat; ipra_simps; ring
+      ipra_ring
     · -- `r = k`: only `a G(r, r)` survives.
       let C' := (r ≐ k) :: C
       have h : C' ⊢[PRAAx] r ≐ k := Prf.hyp0
@@ -146,7 +146,7 @@ theorem G_succ_succ (a c r k : PTm n) :
       refine (congrMul g1 (congrMul b1 (congrMul ea.wk.wk ((congrAp2 powF em.wk.wk (.eqRefl _)).eqTrans m0)))).eqTrans (.eqTrans ?_
         (congrAdd (congrMul (.eqRefl _) (congrMul z2 (.eqRefl _))) (congrMul (.eqRefl _) (congrMul g3 (congrMul b3
           (congrMul (.eqRefl _) m0))))).eqSymm)
-      apply deriveNat; ipra_simps; ring
+      ipra_ring
 
 /-! ## The count law on the product space -/
 
@@ -159,7 +159,7 @@ theorem eqb_split {s x k : PTm n} (hx : Γ ⊢[PRAAx] le x one) :
     refine (congrEqb ((congrAdd (.eqRefl _) hz).eqTrans (add_zero _)) (.eqRefl _)).eqTrans ?_
     refine .eqTrans ?_ (congrAdd (congrMul ((congrMonus (.eqRefl _) hz.eqSymm).eqSymm.eqTrans (monus_zero _) |>.eqSymm) (.eqRefl _))
       (congrMul hz.eqSymm (.eqRefl _)))
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   · let C := (x ≐ succ (pred x)) :: Γ
     have h1 : C ⊢[PRAAx] x ≐ one := by
       have l : C ⊢[PRAAx] le (pred x) zero := (succ_monus_succ _ _).eqSymm.eqTrans (congrMonus Prf.hyp0.eqSymm (.eqRefl _) |>.eqTrans hx.wk)
@@ -168,7 +168,7 @@ theorem eqb_split {s x k : PTm n} (hx : Γ ⊢[PRAAx] le x one) :
     refine (congrEqb ((congrAdd (.eqRefl _) h1).eqTrans (succ_eq_add_one _).eqSymm) (.eqRefl _)).eqTrans ?_
     refine .eqTrans ?_ (congrAdd (congrMul ((congrMonus (.eqRefl _) h1.eqSymm).eqSymm.eqTrans (monus_self _) |>.eqSymm) (.eqRefl _))
       (congrMul h1.eqSymm (.eqRefl _)))
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
 
 section Count
 
@@ -236,7 +236,7 @@ theorem block_F {a k r M x : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) (ha
   refine (congrMul p1 ((congrEqb s1 (.eqRefl _)).eqTrans (eqb_split hX'.wk))).eqTrans ?_
   refine .eqTrans ?_ (congrAdd (congrMul (.eqRefl _) (fB_at w X _ _ _ _ _)) (congrAdd (congrMul (.eqRefl _) (fB'_at w X _ _ _ _ _))
     (congrMul (.eqRefl _) (fB_at w X _ _ _ _ _)))).eqSymm
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- `F_{r+1}(k) = F_r(k) c + F'_r(k) a`, with `c = ∑ w (1 − X)`, `a = ∑ w X`. -/
 theorem F_succ {k r M x : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M))
@@ -255,7 +255,7 @@ theorem F_succ {k r M x : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M))
   have hm : inst2 (monus one X) (var 0) (Syn.shift x) = monus one (inst2 X (var 0) (Syn.shift x)) := by simp [inst2]
   rw [hm]
   refine (block_F w X hM'.wk Prf.hyp0 hX').eqTrans ?_
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem F'_zero (r M x : PTm n) : Γ ⊢[PRAAx] Ft' w X zero r M x ≐ zero := by
   refine sum_zero_of_bounded _ _ _ (.allI (.impI ?_))
@@ -265,7 +265,7 @@ theorem F'_zero (r M x : PTm n) : Γ ⊢[PRAAx] Ft' w X zero r M x ≐ zero := b
       eqb (succ (Sr X (Syn.shift r) (var 0) (Syn.shift M) (Syn.shift x))) (Syn.shift zero) ≐ zero := by
     rw [ConciseIPRA.PTm.shift_zero]
     exact eqb_zero_of_gt (le_of_eq_add (d := Sr X (Syn.shift r) (var 0) (Syn.shift M) (Syn.shift x))
-      (by apply deriveNat; ipra_simps; ring))
+      (by ipra_ring))
   exact (congrMul (.eqRefl _) z).eqTrans (mul_zero _)
 
 theorem F'_succ (k r M x : PTm n) : Γ ⊢[PRAAx] Ft' w X (succ k) r M x ≐ Ft w X k r M x := by

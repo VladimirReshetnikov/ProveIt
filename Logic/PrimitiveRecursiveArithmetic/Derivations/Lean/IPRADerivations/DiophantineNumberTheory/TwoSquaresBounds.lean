@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.TwoSquaresByDescent
 import IPRADerivations.AnalyticNumberTheory.PrimeGaps
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Fermat's two-square theorem: sorted bounds and the biconditional
@@ -73,12 +74,10 @@ theorem prime_not_square {p h : PTm n} (hp : Γ ⊢[PRAAx] prime p) (e : Γ ⊢[
 
 theorem zero_part {a b p : PTm n} (e : Γ ⊢[PRAAx] a * a + b * b ≐ p) (ha : Γ ⊢[PRAAx] a ≐ zero) :
     Γ ⊢[PRAAx] b * b ≐ p := by
-  have x := natEq e; have y := natEq ha
-  apply deriveNat; ipra_simps; linear_combination x - 𝔞 a * y
+  ipra_lc natEq e - 𝔞 a * natEq ha
 
 theorem sq_swap {a b p : PTm n} (e : Γ ⊢[PRAAx] a * a + b * b ≐ p) : Γ ⊢[PRAAx] b * b + a * a ≐ p := by
-  have x := natEq e
-  apply deriveNat; ipra_simps; linear_combination x
+  ipra_lc natEq e
 
 /-- In `a² + b² = p` with `p` prime, `a ≥ 1`. -/
 theorem pos_part {a b p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (e : Γ ⊢[PRAAx] a * a + b * b ≐ p) :

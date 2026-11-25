@@ -3,6 +3,7 @@ import IPRADerivations.Foundations.FiniteSetExponential
 import IPRADerivations.Foundations.BoundedFormulas
 import IPRADerivations.Foundations.EigenvalueGrid
 import IPRADerivations.Core.Fubini
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The eventual dimension formula (`ipra_coherent_methods_2026-11-15`, `prop:weighted-dimension`)
@@ -108,9 +109,7 @@ theorem T_add {j L m' d : PTm k} (hj : Γ ⊢[PRAAx] lt j (succ m')) :
   have hle : Γ ⊢[PRAAx] le (d * j) (L + succ m' * d) :=
     le_of_eq_add (d := L + d * succ (monus (succ m') (succ j)))
       (by apply deriveNat; ipra_simps; linear_combination 𝔞 d * e)
-  have t := natEq (eq_add_of_le hle)
-  apply deriveNat; ipra_simps
-  linear_combination -t
+  ipra_lc -natEq (eq_add_of_le hle)
 
 /-- The slack `L + m - d j`, written without subtraction of `d j`. -/
 abbrev s2 (j L m' d' : PTm k) : PTm k :=
@@ -137,8 +136,7 @@ theorem count_pt {j L m' d' : PTm k} (hj : Γ ⊢[PRAAx] lt j (succ m'))
     have hT : (lt L (succ d' * j) :: Γ) ⊢[PRAAx]
         T j L (succ m') (succ d') ≐ d' * succ m' + s2 j L m' d' := by
       refine add_right_cancel (c := succ d' * j) ?_
-      apply deriveNat; ipra_simps
-      linear_combination ta' + el + (𝔞 d' + 1) * ej
+      ipra_lc ta' + el + (𝔞 d' + 1) * ej
     have hs : (lt L (succ d' * j) :: Γ) ⊢[PRAAx] lt (s2 j L m' d') (succ m') :=
       le_of_eq_add (d := monus (succ d' * j) (succ L))
         (by apply deriveNat; ipra_simps; linear_combination el + ex + (𝔞 d' + 1) * ej)
@@ -152,17 +150,15 @@ theorem count_pt {j L m' d' : PTm k} (hj : Γ ⊢[PRAAx] lt j (succ m'))
         monus (succ L) (succ d' * j) ≐ succ (monus L (succ d' * j)) := by
       have e1 : (le (succ d' * j) L :: Γ) ⊢[PRAAx]
           succ L ≐ succ d' * j + succ (monus L (succ d' * j)) := by
-        apply deriveNat; ipra_simps; linear_combination ex
+        ipra_lc ex
       exact (congrMonus e1 (.eqRefl _)).eqTrans (add_monus' _ _)
     have sg1 := natEq (sg_of_pos hs1)
-    have dv := natEq (div_eq' (t := monus L (succ d' * j)) (hm.wk (ψ := le (succ d' * j) L)))
     have ta' := natEq (ta.wk (ψ := le (succ d' * j) L))
     have hT : (le (succ d' * j) L :: Γ) ⊢[PRAAx] T j L (succ m') (succ d') ≐
         (quo (monus L (succ d' * j)) (succ m') + succ d') * succ m' +
           rem (monus L (succ d' * j)) (succ m') := by
       refine add_right_cancel (c := succ d' * j) ?_
-      apply deriveNat; ipra_simps
-      linear_combination ta' + ex + dv
+      ipra_lc ta' + ex + natEq (div_eq' (t := monus L (succ d' * j)) (hm.wk (ψ := le (succ d' * j) L)))
     have hq := natEq ((congrAp2 quoF hT (.eqRefl _)).eqTrans
       (pair_fst hm.wk (rem_lt'' hm.wk _)))
     apply deriveNat; ipra_simps
@@ -173,32 +169,22 @@ theorem count_pt {j L m' d' : PTm k} (hj : Γ ⊢[PRAAx] lt j (succ m'))
 theorem ptA {j L m' d' : PTm k} (hj : Γ ⊢[PRAAx] lt j (succ m')) :
     Γ ⊢[PRAAx] inst2 (bd TG) j (pairT L (pairT (succ m') (succ d'))) + zero + succ d' * j ≐
       (L + succ m' * succ d') + zero * zero + zero := by
-  have t := natEq (T_at (Γ := Γ) j L (succ m') (succ d'))
-  have ta := natEq (T_add (L := L) (d := succ d') hj)
-  apply deriveNat; ipra_simps
-  linear_combination t + ta
+  ipra_lc natEq (T_at (Γ := Γ) j L (succ m') (succ d')) + natEq (T_add (L := L) (d := succ d') hj)
 
 theorem ptB (j L m' d' : PTm k) :
     Γ ⊢[PRAAx] inst2 (bd TG) j (pairT L (pairT (succ m') (succ d'))) + zero + zero * zero ≐
       zero + succ m' * inst2 (bd QG) j (pairT L (pairT (succ m') (succ d'))) +
         inst2 (bd RG) j (pairT L (pairT (succ m') (succ d'))) := by
-  have t := natEq (T_at (Γ := Γ) j L (succ m') (succ d'))
-  have q := natEq (Q_at (Γ := Γ) j L (succ m') (succ d'))
-  have r := natEq (R_at (Γ := Γ) j L (succ m') (succ d'))
-  have dv := natEq (div_eq' (Γ := Γ) (t := T j L (succ m') (succ d'))
-    (pos_of_eq_succ (c := m') (.eqRefl _)))
-  apply deriveNat; ipra_simps
-  linear_combination t - (𝔞 m' + 1) * q - r + dv
+  ipra_lc natEq (T_at (Γ := Γ) j L (succ m') (succ d')) - (𝔞 m' + 1) * natEq (Q_at (Γ := Γ) j L (succ m') (succ d')) -
+    natEq (R_at (Γ := Γ) j L (succ m') (succ d')) +
+    natEq (div_eq' (Γ := Γ) (t := T j L (succ m') (succ d')) (pos_of_eq_succ (c := m') (.eqRefl _)))
 
 theorem ptC {j L m' d' : PTm k} (hj : Γ ⊢[PRAAx] lt j (succ m'))
     (hL : Γ ⊢[PRAAx] le (succ d' * m') (L + succ m')) :
     Γ ⊢[PRAAx] inst2 (bd CG) j (pairT L (pairT (succ m') (succ d'))) + succ d' + zero * zero ≐
       one + one * inst2 (bd QG) j (pairT L (pairT (succ m') (succ d'))) + zero := by
-  have c := natEq (C_at (Γ := Γ) j L (succ m') (succ d'))
-  have q := natEq (Q_at (Γ := Γ) j L (succ m') (succ d'))
-  have p := natEq (count_pt hj hL)
-  apply deriveNat; ipra_simps
-  linear_combination c - q + p
+  ipra_lc natEq (C_at (Γ := Γ) j L (succ m') (succ d')) - natEq (Q_at (Γ := Γ) j L (succ m') (succ d')) +
+    natEq (count_pt hj hL)
 
 /-! ## The dimension formula -/
 
@@ -233,12 +219,9 @@ theorem weighted_dimension {L m' d' : PTm k}
     (x := pairT L (pairT (succ m') (succ d'))) (Γ := Γ) (.allI (.impI (by
       simp only [shift_pairT, sh_zero, sh_succ, sh_add, sh_mul, inst2_zB]
       exact ptC Prf.hyp0 hL'.wk))))
-  have tr := natEq (tri (Γ := Γ) (succ m') (pairT L (pairT (succ m') (succ d'))))
-  have z := natEq (sum_zeroB (Γ := Γ) (succ m') (pairT L (pairT (succ m') (succ d'))))
-  have hr := natEq hR
   refine mul_cancel (d' := m') ?_
-  apply deriveNat; ipra_simps
-  linear_combination (2 * (𝔞 m' + 1)) * rc + (2 * (𝔞 m' + 1) + 2) * z - 2 * rb + 2 * ra -
-    2 * hr - (𝔞 d' + 2) * tr
+  ipra_lc (2 * (𝔞 m' + 1)) * rc +
+    (2 * (𝔞 m' + 1) + 2) * natEq (sum_zeroB (Γ := Γ) (succ m') (pairT L (pairT (succ m') (succ d')))) - 2 * rb +
+    2 * ra - 2 * natEq hR - (𝔞 d' + 2) * natEq (tri (Γ := Γ) (succ m') (pairT L (pairT (succ m') (succ d'))))
 
 end LeanProofs.IPRA.Foundations.WeightedDimension

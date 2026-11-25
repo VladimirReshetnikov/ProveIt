@@ -2,6 +2,7 @@ import IPRADerivations.Core.Gcd
 import IPRADerivations.Core.Order
 import IPRADerivations.Core.SumOrder
 import IPRADerivations.Core.Tactic
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The recursion step of the rational Brunn–Minkowski theorem
@@ -42,25 +43,16 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 theorem child_hyp {VX VY VXm VYm Qn En p r : PTm n} (hr : Γ ⊢[PRAAx] r ≐ succ (pred r))
     (hX : Γ ⊢[PRAAx] r * VXm ≐ p * VX) (hY : Γ ⊢[PRAAx] r * VYm ≐ p * VY)
     (H : Γ ⊢[PRAAx] le (Qn * VX) (En * VY)) : Γ ⊢[PRAAx] le (Qn * VXm) (En * VYm) := by
-  have eX := natEq hX
-  have eY := natEq hY
-  have er := natEq hr
-  have eH := natEq (eq_add_of_le H)
   refine mul_le_cancel (d' := pred r) (le_of_eq_add (d := p * monus (En * VY) (Qn * VX)) ?_)
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞 En * 𝔞 VYm - 𝔞 Qn * 𝔞 VXm) * (-er) + 𝔞 En * eY - 𝔞 Qn * eX + 𝔞 p * eH
+  ipra_lc (𝔞 En * 𝔞 VYm - 𝔞 Qn * 𝔞 VXm) * (-natEq hr) + 𝔞 En * natEq hY - 𝔞 Qn * natEq hX +
+    𝔞 p * natEq (eq_add_of_le H)
 
 /-- The two lower bounds add. -/
 theorem combine {VX VXm VXp Wm Wp W En Sn : PTm n} (hX : Γ ⊢[PRAAx] VX ≐ VXm + VXp)
     (hW : Γ ⊢[PRAAx] le (Wm + Wp) W) (im : Γ ⊢[PRAAx] le (VXm * Sn) (En * Wm))
     (ip : Γ ⊢[PRAAx] le (VXp * Sn) (En * Wp)) : Γ ⊢[PRAAx] le (VX * Sn) (En * W) := by
-  have eX := natEq hX
-  have eW := natEq (eq_add_of_le hW)
-  have em := natEq (eq_add_of_le im)
-  have ep := natEq (eq_add_of_le ip)
   refine le_of_eq_add (d := monus (En * Wm) (VXm * Sn) + monus (En * Wp) (VXp * Sn) +
     En * monus W (Wm + Wp)) ?_
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 En * eW + em + ep - 𝔞 Sn * eX
+  ipra_lc 𝔞 En * natEq (eq_add_of_le hW) + natEq (eq_add_of_le im) + natEq (eq_add_of_le ip) - 𝔞 Sn * natEq hX
 
 end LeanProofs.IPRA.Geometry.RationalBrunnMinkowski

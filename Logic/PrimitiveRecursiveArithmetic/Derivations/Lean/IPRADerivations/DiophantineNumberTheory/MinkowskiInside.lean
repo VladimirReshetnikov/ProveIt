@@ -1,5 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.MinkowskiWellFormed
 import IPRADerivations.DiophantineNumberTheory.MinkowskiRationalBoxes
+import IPRADerivations.Core.CongruenceTactic
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The original guarded Inside scheme at canonical half-cell centers
@@ -78,20 +80,10 @@ theorem double_half_center (a : ZT n) (m : PTm n) (hm : Γ ⊢[PRAAx] le one m) 
   have positive : Γ ⊢[PRAAx] le one (m*denominatorOf (halfCenter a m)) :=
     le_congr (one_mul one) (.eqRefl _) (le_mul_mono hm (denominator_positive _))
   apply integer_cancel (m*denominatorOf (halfCenter a m)) _ _ positive
-  have h := ZT.toZ_eq (half_value (Γ := Γ) a m hm)
-  have d := ZT.toZ_eq (double_value (Γ := Γ) (halfCenter a m))
-  have c := ZT.toZ_eq (center_value (Γ := Γ) a m hm)
-  apply ZT.derive
-  simp only [ZT.toZ_mul,ZT.toZ_add,ZT.toZ_ofNat,centerNumerator] at h d c ⊢
-  ipra_simps
-  linear_combination -𝔞(m)*𝔞(denominatorOf (center a m))*d-
-    𝔞(denominatorOf (center a m))*𝔞(denominatorOf (double (halfCenter a m)))*h+
-    𝔞(denominatorOf (halfCenter a m))*𝔞(denominatorOf (double (halfCenter a m)))*c
+  ipra_lc [centerNumerator] -𝔞(m)*𝔞(denominatorOf (center a m))*ZT.toZ_eq (double_value (Γ := Γ) (halfCenter a m))- 𝔞(denominatorOf (center a m))*𝔞(denominatorOf (double (halfCenter a m)))*ZT.toZ_eq (half_value (Γ := Γ) a m hm)+ 𝔞(denominatorOf (halfCenter a m))*𝔞(denominatorOf (double (halfCenter a m)))*ZT.toZ_eq (center_value (Γ := Γ) a m hm)
 
 theorem double_congr {c d : PTm n} (h : Γ ⊢[PRAAx] c ≐ d) : Γ ⊢[PRAAx] double c ≐ double d := by
-  have e := Prf.eqCongr (double (var 0) : PTm 1) (σ := ![c]) (σ' := ![d])
-    (fun i => by fin_cases i; exact h)
-  simpa using e
+  ipra_congr (double (var 0) : PTm 1) with [h]
 
 theorem half_lookup (N m a k : PTm n) (hk : Γ ⊢[PRAAx] lt k N) :
     Γ ⊢[PRAAx] entry (halfVector N m a) k ≐ halfCenter (signedCoordinate a k) m := center_lookup _ _ _ _ hk

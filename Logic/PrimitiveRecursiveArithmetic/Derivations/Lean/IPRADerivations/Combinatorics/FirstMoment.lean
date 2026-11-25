@@ -1,4 +1,5 @@
 import IPRADerivations.Combinatorics.CodingBounds
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The first-moment bound and the Schröder–Hipparchus recurrence
@@ -49,9 +50,7 @@ theorem first_moment_absurd (B : Fin M → Fin N → ZT n) (c : ZT n)
     (hlt : Γ ⊢[PRAAx] zle (ZT.natLit N * c + ZT.natLit 1) (ZT.natLit M)) (φ : Fm PTm n) :
     Γ ⊢[PRAAx] φ := by
   have h := first_moment B c hrow hcol
-  refine false_of_comb (zsl h + zsl hlt) ?_ (nn_add (nn_zsl _) (nn_zsl _)) φ
-  simp only [zsl_def, ZT.toZ_add, ZT.toZ_mul, ZT.toZ_natLit, Nat.cast_one]
-  ring
+  ipra_absurd (zsl h + zsl hlt)
 
 /-- The Schröder–Hipparchus numbers `H_0, …, H_{10}`. -/
 def hip (k : ℕ) : ℕ := [0, 1, 1, 3, 11, 45, 197, 903, 4279, 20793, 103049].getD k 0
@@ -66,11 +65,6 @@ theorem hipparchus_recurrence (m : Fin 11) (hm : 2 ≤ m.val) :
     Γ ⊢[PRAAx] ZT.eq ((ZT.natLit (hip m.val) : ZT n) + ZT.natLit (hip (m.val - 1)))
       (ZT.natLit 2 * ZT.sumFin fun i : Fin 11 =>
         ZT.natLit (if 1 ≤ i.val ∧ i.val < m.val then hip i.val * hip (m.val - i.val) else 0)) := by
-  apply ZT.derive
-  simp only [ZT.toZ_sumFin, ZT.toZ_add, ZT.toZ_mul, ZT.toZ_natLit, Nat.cast_ofNat, Nat.cast_one]
-  have h := congrArg (Nat.cast : ℕ → Groth (Q Γ)) (hip_rec m hm)
-  push_cast at h
-  push_cast
-  exact h
+  ipra_cast hip_rec m hm
 
 end LeanProofs.IPRA.Combinatorics.FirstMoment

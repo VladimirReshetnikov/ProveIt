@@ -137,7 +137,7 @@ theorem low_lt {D : PTm n} (hD : Γ ⊢[PRAAx] le two D) (hns : Γ ⊢[PRAAx] ne
   ipra_le sl r1 * 𝔞 (Cv D) + sl r2
 
 theorem C_pos (D : PTm n) : Γ ⊢[PRAAx] Cv D ≐ succ (pred (Cv D)) :=
-  AnalyticNumberTheory.Primes.eq_succ_pred (y := succ (num 4 * D)) (by apply deriveNat; ipra_simps; ring)
+  AnalyticNumberTheory.Primes.eq_succ_pred (y := succ (num 4 * D)) (by ipra_ring)
 
 /-- The case where both norms have the sign `+`. -/
 theorem finish_pos {D pi pj qi qj a : PTm n} (hD : Γ ⊢[PRAAx] le two D) (ha : Γ ⊢[PRAAx] a ≐ succ (pred a))
@@ -162,7 +162,7 @@ theorem finish_neg {D pi pj qi qj a : PTm n} (hD : Γ ⊢[PRAAx] le two D) (ha :
   have c := collision_neg ha hi hj hp hq hlt
   have y1 := Prf.andE₁ (Prf.andE₂ c)
   have hx : Γ ⊢[PRAAx] le (D * (qi * qj)) (num 4 * (succ D * succ D) * (succ U * succ U)) :=
-    le_congr (by apply deriveNat; ipra_simps; ring) (.eqRefl _) (prod_le_H sDqi sqj)
+    le_congr (by ipra_ring) (.eqRefl _) (prod_le_H sDqi sqj)
   exact box_intro (.andI (.andI (two_le hD y1 (Prf.andE₁ c)) (le_trans (Prf.andE₁ (Prf.andE₂ (Prf.andE₂ c))) hx))
     (.andI (.andI y1 (le_trans (Prf.andE₂ (Prf.andE₂ (Prf.andE₂ c))) (prod_le_H spj sqi))) (Prf.andE₁ c)))
 
@@ -173,7 +173,6 @@ abbrev NP (i D : PTm n) : Fm PTm n := (S i D ≐ zero) ⋏ (pS i D * pS i D ≐ 
 
 /-- The `−` case of `norm_cases`. -/
 abbrev NN (i D : PTm n) : Fm PTm n := (S i D ≐ one) ⋏ (D * (qS i D * qS i D) ≐ pS i D * pS i D + A i D)
-
 
 /-- **`dio:pell-existence`**: for nonsquare `D ≥ 2` there are `2 ≤ x ≤ H`, `1 ≤ y ≤ H` with `x² − D y² = 1`. -/
 theorem pell_existence {D : PTm n} (hD : Γ ⊢[PRAAx] le two D) (hns : Γ ⊢[PRAAx] neg (D ≐ isqrt D * isqrt D)) :

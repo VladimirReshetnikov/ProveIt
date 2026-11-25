@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.ErrorBudgets
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Observational descent along a rooted spanning tree
@@ -156,13 +157,11 @@ theorem exact_descent {y r : PTm n} (hD : Γ ⊢[PRAAx] Fm.all (DepEdge par dep 
     PTm.subst_add, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] at h2
   have c := Prf.impE h2 (le_refl _)
   have z : Γ ⊢[PRAAx] inst2 dep (anc par v (inst2 dep v y) y) y ≐ zero := by
-    have e := natEq (Prf.andE₂ c)
-    apply deriveNat; ipra_simps; linear_combination e
+    ipra_lc natEq (Prf.andE₂ c)
   have r := Prf.allE (anc par v (inst2 dep v y) y) hR
   simp only [RootObs, Fm.subst_imp, Fm.subst_eq, subst_inst2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
     ConciseIPRA.PTm.subst_zero] at r
   exact (Prf.andE₁ c).eqSymm.eqTrans (Prf.impE r z)
-
 
 /-- The edge error `ε(anc(v, i))`, over `(i, ⟨v, y⟩)`. -/
 def epsA : PTm 2 := Syn.subst ![ap2 (ancF par) (var 0) (var 1), sndT (var 1)] eps
@@ -248,8 +247,7 @@ theorem metric_descent {y r : PTm n} (hD : Γ ⊢[PRAAx] Fm.all (DepEdge par dep
     PTm.subst_add, PTm.subst_monus, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] at h2
   have cc := Prf.impE h2 (le_refl _)
   have z : Γ ⊢[PRAAx] inst2 dep (anc par v (inst2 dep v y) y) y ≐ zero := by
-    have e := natEq (Prf.andE₂ cc)
-    apply deriveNat; ipra_simps; linear_combination e
+    ipra_lc natEq (Prf.andE₂ cc)
   have r' := Prf.allE (anc par v (inst2 dep v y) y) hR
   simp only [RootObs, Fm.subst_imp, Fm.subst_eq, subst_inst2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
     ConciseIPRA.PTm.subst_zero] at r'

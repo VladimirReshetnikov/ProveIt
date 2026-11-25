@@ -1,4 +1,4 @@
-import IPRADerivations.Core.IntCertificates
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Double counting of a finite table
@@ -78,9 +78,7 @@ theorem injection_count (M : Fin a → Fin b → ZT n)
     (hc : ∀ j, Γ ⊢[PRAAx] zle (ZT.sumFin fun i => M i j) (ZT.natLit 1)) :
     Γ ⊢[PRAAx] zle (ZT.natLit a : ZT n) (ZT.natLit b) := by
   have h := count_le M _ _ hr hc
-  refine zle_of_comb (zsl h) ?_ (nn_zsl _)
-  zsimp
-  ring
+  ipra_zle (zsl h)
 
 /-- Packing: `a` disjoint sets of at least `V` elements among `b` elements give `a V ≤ b`. -/
 theorem packing_bound (M : Fin a → Fin b → ZT n) (V : ZT n)
@@ -88,9 +86,7 @@ theorem packing_bound (M : Fin a → Fin b → ZT n) (V : ZT n)
     (hc : ∀ j, Γ ⊢[PRAAx] zle (ZT.sumFin fun i => M i j) (ZT.natLit 1)) :
     Γ ⊢[PRAAx] zle (ZT.natLit a * V) (ZT.natLit b) := by
   have h := count_le M _ _ hr hc
-  refine zle_of_comb (zsl h) ?_ (nn_zsl _)
-  zsimp
-  ring
+  ipra_zle (zsl h)
 
 /-- Covering: `a` sets of at most `V` elements covering `b` elements give `b ≤ a V`. -/
 theorem covering_bound (M : Fin a → Fin b → ZT n) (V : ZT n)
@@ -98,9 +94,7 @@ theorem covering_bound (M : Fin a → Fin b → ZT n) (V : ZT n)
     (hc : ∀ j, Γ ⊢[PRAAx] zle (ZT.natLit 1) (ZT.sumFin fun i => M i j)) :
     Γ ⊢[PRAAx] zle (ZT.natLit b) (ZT.natLit a * V) := by
   have h := count_le (fun j i => M i j) _ _ hc hr
-  refine zle_of_comb (zsl h) ?_ (nn_zsl _)
-  zsimp
-  ring
+  ipra_zle (zsl h)
 
 /-- `n ≤ α χ`: a colouring of `a` vertices with `b` colours whose classes have at most `α` vertices. -/
 theorem colour_classes (C : Fin a → Fin b → ZT n) (alpha : ZT n)
@@ -108,9 +102,7 @@ theorem colour_classes (C : Fin a → Fin b → ZT n) (alpha : ZT n)
     (hc : ∀ c, Γ ⊢[PRAAx] zle (ZT.sumFin fun v => C v c) alpha) :
     Γ ⊢[PRAAx] zle (ZT.natLit a) (ZT.natLit b * alpha) := by
   have h := count_le C _ _ hr hc
-  refine zle_of_comb (zsl h) ?_ (nn_zsl _)
-  zsimp
-  ring
+  ipra_zle (zsl h)
 
 /-- With `a + 1` rows of sum at least `q + 1` and `3q + 1` columns, some column has `3 · (sum) > a + 1`: the
 contrary bounds are contradictory. -/

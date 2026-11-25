@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianRationalDeflation
 import IPRADerivations.Analysis.GaussianVandermondeNewtonPolynomials
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The exact residual sum of the computed deflation loop
@@ -93,9 +94,9 @@ theorem sum_body_at (S R y i : PTm n) :
   have tail := snd_pair (Γ := Γ) S (pairT R y)
   have productEq : Γ ⊢[PRAAx] differenceProduct (fstT (sumData S R y)) (sndT (sndT (sumData S R y))) i ≐
       differenceProduct S y i := by
-    simpa using Prf.eqCongr (Γ := Γ) (differenceProduct (var 0) (var 1) (var 2) : PTm 3)
-      (σ := ![fstT (sumData S R y), sndT (sndT (sumData S R y)), i]) (σ' := ![S, y, i])
-      (fun j => by fin_cases j; exact fst_pair _ _; exact (congrSnd tail).eqTrans (snd_pair _ _); exact .eqRefl _)
+    ipra_congr (differenceProduct (var 0) (var 1) (var 2) : PTm 3) with
+      [(show _ ⊢[PRAAx] fstT (sumData S R y) ≐ S from fst_pair _ _),
+        (show _ ⊢[PRAAx] sndT (sndT (sumData S R y)) ≐ y from (congrSnd tail).eqTrans (snd_pair _ _)), .eqRefl i]
   simp only [sumBody, inst2, GaussianRationalHorner.subst_qmul, GaussianVandermondeNewtonPolynomials.subst_differenceProduct,
     Foundations.MasterCertificate.subst_entry, subst_fstT, subst_sndT, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one]
   exact qmul_congr (Foundations.SequenceComposition.entry_congr ((congrFst tail).eqTrans (fst_pair _ _)) (.eqRefl i)) productEq

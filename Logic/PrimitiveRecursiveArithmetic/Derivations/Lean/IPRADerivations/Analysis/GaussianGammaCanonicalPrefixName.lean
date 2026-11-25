@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.GaussianGammaOriginalPrefixRegularity
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual finite evaluation of the canonical Gamma coefficient names
@@ -61,8 +62,7 @@ def sample (p d R w : PTm n) : PTm n := ap2 nameF p (data d R w)
 
 theorem term_congr {p q w v e f : PTm n} (hp : Γ ⊢[PRAAx] p ≐ q) (hw : Γ ⊢[PRAAx] w ≐ v)
     (he : Γ ⊢[PRAAx] e ≐ f) : Γ ⊢[PRAAx] term p w e ≐ term q v f := by
-  simpa using Prf.eqCongr (Γ := Γ) (term (var 0) (var 1) (var 2) : PTm 3)
-    (σ := ![p,w,e]) (σ' := ![q,v,f]) (fun i => by fin_cases i; exact hp; exact hw; exact he)
+  ipra_congr (term (var 0) (var 1) (var 2) : PTm 3) with [hp, hw, he]
 theorem term_at (p w e : PTm n) : Γ ⊢[PRAAx] inst2 termBody e (termData p w) ≐ term p w e := by
   simp only [termBody,inst2,subst_term,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
   exact term_congr (fst_pair _ _) (snd_pair _ _) (.eqRefl _)
@@ -121,8 +121,7 @@ theorem raw_regularity (p q R d w : PTm n) (hR : Γ ⊢[PRAAx] le one R) (hw : �
 
 theorem raw_value_congr {p q d e w v : PTm n} (hp : Γ ⊢[PRAAx] p ≐ q) (hd : Γ ⊢[PRAAx] d ≐ e)
     (hw : Γ ⊢[PRAAx] w ≐ v) : Γ ⊢[PRAAx] rawValue p d w ≐ rawValue q e v := by
-  simpa using Prf.eqCongr (Γ := Γ) (rawValue (var 0) (var 1) (var 2) : PTm 3)
-    (σ := ![p,d,w]) (σ' := ![q,e,v]) (fun i => by fin_cases i; exact hp; exact hd; exact hw)
+  ipra_congr (rawValue (var 0) (var 1) (var 2) : PTm 3) with [hp, hd, hw]
 theorem raw_at (p d w : PTm n) : Γ ⊢[PRAAx] ap2 rawF p (pairT d w) ≐ rawValue p d w :=
   (show Γ ⊢[PRAAx] ap2 rawF p (pairT d w) ≐ rawValue p (fstT (pairT d w)) (sndT (pairT d w)) by
     simpa only [rawF,ap2,subst_rawValue,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using

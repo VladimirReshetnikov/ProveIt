@@ -2,6 +2,7 @@ import IPRADerivations.Foundations.BoundedSyntax
 import IPRADerivations.Foundations.FiniteQueryDemand
 import IPRADerivations.Foundations.GapDecision
 import IPRADerivations.Foundations.SequenceComposition
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Integer-facet enlargement preserves the integer lattice points
@@ -307,11 +308,7 @@ theorem expanded_bound_gap {facets i : PTm n} (hi : Γ ⊢[PRAAx] lt i (length f
     Γ ⊢[PRAAx] lt (lambdaNumerator facets * bound facets i)
       (lambdaDenominator facets * succ (bound facets i)) := by
   apply le_of_eq_add (d := PTm.monus (maximumBound facets) (bound facets i))
-  have e := natEq (eq_add_of_le (bound_le_maximum hi))
-  apply deriveNat
-  simp only [lambdaNumerator, lambdaDenominator]
-  ipra_simps
-  linear_combination e
+  ipra_lc [lambdaNumerator, lambdaDenominator] natEq (eq_add_of_le (bound_le_maximum hi))
 
 /-- Source guards are retained explicitly even though the lattice identity
 itself holds for every finite slab code and for zero right sides. -/

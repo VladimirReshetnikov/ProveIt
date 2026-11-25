@@ -1,5 +1,6 @@
 import IPRADerivations.Geometry.TriangleCentres
 import IPRADerivations.Combinatorics.FisherInequality
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Convexity of the disc, the power of a point, common points and the rational parametrization
@@ -45,11 +46,7 @@ def pm (a₁ a₂ x₁ x₂ : ZT n) : ZT n := det a₁ a₂ x₁ x₂
 
 local notation:max "ζ" t:max => ZT.toZ Γ t
 
-local macro "gsimp" loc:(Lean.Parser.Tactic.location)? : tactic =>
-  `(tactic| simp only [pk, pm, dot, det, nsq, zsl_def, ZT.toZ_add, ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_neg,
-    ZT.toZ_sq, ZT.toZ_natLit, Nat.cast_ofNat, Nat.cast_zero, Nat.cast_one] $[$loc]?)
-
-local macro "geo" : tactic => `(tactic| (apply ZT.derive; gsimp; ring))
+attribute [local ipra_defs] pk pm dot det nsq
 
 /-! ## Convexity -/
 
@@ -58,50 +55,32 @@ theorem chord_convex {a₁ a₂ b₁ b₂ ρ : ZT n} (r s : ZT n)
     (ha : Γ ⊢[PRAAx] ZT.eq (nsq a₁ a₂) ρ) (hb : Γ ⊢[PRAAx] ZT.eq (nsq b₁ b₂) ρ) :
     Γ ⊢[PRAAx] ZT.eq (nsq (r * a₁ + s * b₁) (r * a₂ + s * b₂))
       (ZT.sq (r + s) * ρ - r * s * nsq (b₁ - a₁) (b₂ - a₂)) := by
-  have ea := ZT.toZ_eq ha
-  have eb := ZT.toZ_eq hb
-  apply ZT.derive
-  gsimp at ea eb ⊢
-  linear_combination (ζ r * ζ r + ζ r * ζ s) * ea + (ζ s * ζ s + ζ r * ζ s) * eb
+  ipra_lc (ζ r * ζ r + ζ r * ζ s) * ZT.toZ_eq ha + (ζ s * ζ s + ζ r * ζ s) * ZT.toZ_eq hb
 
 /-- A point of a chord is inside the closed disc. -/
 theorem chord_inside {a₁ a₂ b₁ b₂ ρ r s : ZT n}
     (hr : Γ ⊢[PRAAx] zle (ZT.natLit 0) r) (hs : Γ ⊢[PRAAx] zle (ZT.natLit 0) s)
     (ha : Γ ⊢[PRAAx] ZT.eq (nsq a₁ a₂) ρ) (hb : Γ ⊢[PRAAx] ZT.eq (nsq b₁ b₂) ρ) :
     Γ ⊢[PRAAx] zle (nsq (r * a₁ + s * b₁) (r * a₂ + s * b₂)) (ZT.sq (r + s) * ρ) := by
-  have c := ZT.toZ_eq (chord_convex r s ha hb)
-  refine zle_of_comb (zsl hr * zsl hs * (ZT.toZ Γ (b₁ - a₁) ^ 2 + ZT.toZ Γ (b₂ - a₂) ^ 2)) ?_
-    (nn_mul (nn_mul (nn_zsl _) (nn_zsl _)) (nn_add (nn_zsq _) (nn_zsq _)))
-  gsimp at c ⊢
-  linear_combination (-1 : Groth (Q Γ)) * c
+  ipra_zle (zsl hr * zsl hs * (ZT.toZ Γ (b₁ - a₁) ^ 2 + ZT.toZ Γ (b₂ - a₂) ^ 2)) with
+    -ZT.toZ_eq (chord_convex r s ha hb)
 
 /-- `|X − A|² = 2ρ − 2 (X − O) · (A − O)`. -/
 theorem tangent_gap {x₁ x₂ a₁ a₂ ρ : ZT n}
     (hx : Γ ⊢[PRAAx] ZT.eq (nsq x₁ x₂) ρ) (ha : Γ ⊢[PRAAx] ZT.eq (nsq a₁ a₂) ρ) :
     Γ ⊢[PRAAx] ZT.eq (nsq (x₁ - a₁) (x₂ - a₂)) (ZT.natLit 2 * (ρ - dot x₁ x₂ a₁ a₂)) := by
-  have ex := ZT.toZ_eq hx
-  have ea := ZT.toZ_eq ha
-  apply ZT.derive
-  gsimp at ex ea ⊢
-  linear_combination ex + ea
+  ipra_lc ZT.toZ_eq hx + ZT.toZ_eq ha
 
 /-- The circle lies on one side of its tangent: `(X − O) · (A − O) ≤ ρ`. -/
 theorem tangent_side {x₁ x₂ a₁ a₂ ρ : ZT n}
     (hx : Γ ⊢[PRAAx] ZT.eq (nsq x₁ x₂) ρ) (ha : Γ ⊢[PRAAx] ZT.eq (nsq a₁ a₂) ρ) :
     Γ ⊢[PRAAx] zle (dot x₁ x₂ a₁ a₂) ρ := by
-  have c := ZT.toZ_eq (tangent_gap hx ha)
   have h2 : Γ ⊢[PRAAx] zle (ZT.natLit 0) (ZT.natLit 2 * (ρ - dot x₁ x₂ a₁ a₂)) := by
-    refine zle_of_comb (ZT.toZ Γ (x₁ - a₁) ^ 2 + ZT.toZ Γ (x₂ - a₂) ^ 2) ?_ (nn_add (nn_zsq _) (nn_zsq _))
-    gsimp at c ⊢
-    linear_combination (-1 : Groth (Q Γ)) * c
+    ipra_zle (ZT.toZ Γ (x₁ - a₁) ^ 2 + ZT.toZ Γ (x₂ - a₂) ^ 2) with -ZT.toZ_eq (tangent_gap hx ha)
   have one_two : Γ ⊢[PRAAx] zle (ZT.natLit 1) (ZT.natLit 2) := by
-    refine zle_of_comb 1 ?_ nn_one
-    gsimp
-    ring
+    ipra_zle 1
   have k := znn_of_pos_mul one_two h2
-  refine zle_of_comb (zsl k) ?_ (nn_zsl _)
-  gsimp
-  ring
+  ipra_zle (zsl k)
 
 /-! ## The power of a point -/
 
@@ -110,32 +89,20 @@ theorem power_product {w₁ w₂ v₁ v₂ t u ρ : ZT n}
     (ht : Γ ⊢[PRAAx] ZT.eq (nsq (w₁ + t * v₁) (w₂ + t * v₂)) ρ)
     (hu : Γ ⊢[PRAAx] ZT.eq (nsq (w₁ + u * v₁) (w₂ + u * v₂)) ρ) :
     Γ ⊢[PRAAx] ZT.eq ((t - u) * (nsq v₁ v₂ * (t * u) - (nsq w₁ w₂ - ρ))) (ZT.natLit 0) := by
-  have et := ZT.toZ_eq ht
-  have eu := ZT.toZ_eq hu
-  apply ZT.derive
-  gsimp at et eu ⊢
-  linear_combination ζ u * et - ζ t * eu
+  ipra_lc ζ u * ZT.toZ_eq ht - ζ t * ZT.toZ_eq hu
 
 /-- The sum of the two parameters: `(t − u)(|v|² (t + u) + 2 (P − O) · v) = 0`. -/
 theorem power_sum {w₁ w₂ v₁ v₂ t u ρ : ZT n}
     (ht : Γ ⊢[PRAAx] ZT.eq (nsq (w₁ + t * v₁) (w₂ + t * v₂)) ρ)
     (hu : Γ ⊢[PRAAx] ZT.eq (nsq (w₁ + u * v₁) (w₂ + u * v₂)) ρ) :
     Γ ⊢[PRAAx] ZT.eq ((t - u) * (nsq v₁ v₂ * (t + u) + ZT.natLit 2 * dot w₁ w₂ v₁ v₂)) (ZT.natLit 0) := by
-  have et := ZT.toZ_eq ht
-  have eu := ZT.toZ_eq hu
-  apply ZT.derive
-  gsimp at et eu ⊢
-  linear_combination et - eu
+  ipra_lc ZT.toZ_eq ht - ZT.toZ_eq hu
 
 /-- (C6): `|P − O|² = |P − T|² + ρ` for a tangent at `T` (`p = P − T`, `r = T − O`). -/
 theorem tangent_power {p₁ p₂ r₁ r₂ ρ : ZT n}
     (hr : Γ ⊢[PRAAx] ZT.eq (nsq r₁ r₂) ρ) (hp : Γ ⊢[PRAAx] ZT.eq (dot p₁ p₂ r₁ r₂) (ZT.natLit 0)) :
     Γ ⊢[PRAAx] ZT.eq (nsq (p₁ + r₁) (p₂ + r₂)) (nsq p₁ p₂ + ρ) := by
-  have er := ZT.toZ_eq hr
-  have ep := ZT.toZ_eq hp
-  apply ZT.derive
-  gsimp at er ep ⊢
-  linear_combination er + 2 * ep
+  ipra_lc ZT.toZ_eq hr + 2 * ZT.toZ_eq hp
 
 /-! ## Three common points -/
 
@@ -147,15 +114,8 @@ theorem three_common₁ {x₁ x₂ y₁ y₂ z₁ z₂ o₁ o₂ q₁ q₂ ρ σ
     (hz2 : Γ ⊢[PRAAx] ZT.eq (nsq (z₁ - q₁) (z₂ - q₂)) σ) :
     Γ ⊢[PRAAx] ZT.eq (ZT.natLit 2 * det (y₁ - x₁) (y₂ - x₂) (z₁ - x₁) (z₂ - x₂) * (q₁ - o₁))
       (ZT.natLit 0) := by
-  have ex1 := ZT.toZ_eq hx1
-  have ey1 := ZT.toZ_eq hy1
-  have ez1 := ZT.toZ_eq hz1
-  have ex2 := ZT.toZ_eq hx2
-  have ey2 := ZT.toZ_eq hy2
-  have ez2 := ZT.toZ_eq hz2
-  apply ZT.derive
-  gsimp at ex1 ey1 ez1 ex2 ey2 ez2 ⊢
-  linear_combination (ζ z₂ - ζ x₂) * (ey1 - ex1 - (ey2 - ex2)) - (ζ y₂ - ζ x₂) * (ez1 - ex1 - (ez2 - ex2))
+  ipra_lc (ζ z₂ - ζ x₂) * (ZT.toZ_eq hy1 - ZT.toZ_eq hx1 - (ZT.toZ_eq hy2 - ZT.toZ_eq hx2)) -
+    (ζ y₂ - ζ x₂) * (ZT.toZ_eq hz1 - ZT.toZ_eq hx1 - (ZT.toZ_eq hz2 - ZT.toZ_eq hx2))
 
 /-- Three common points of two circles: `2 [y − x, z − x] (O′ − O)₂ = 0`. -/
 theorem three_common₂ {x₁ x₂ y₁ y₂ z₁ z₂ o₁ o₂ q₁ q₂ ρ σ : ZT n}
@@ -165,15 +125,8 @@ theorem three_common₂ {x₁ x₂ y₁ y₂ z₁ z₂ o₁ o₂ q₁ q₂ ρ σ
     (hz2 : Γ ⊢[PRAAx] ZT.eq (nsq (z₁ - q₁) (z₂ - q₂)) σ) :
     Γ ⊢[PRAAx] ZT.eq (ZT.natLit 2 * det (y₁ - x₁) (y₂ - x₂) (z₁ - x₁) (z₂ - x₂) * (q₂ - o₂))
       (ZT.natLit 0) := by
-  have ex1 := ZT.toZ_eq hx1
-  have ey1 := ZT.toZ_eq hy1
-  have ez1 := ZT.toZ_eq hz1
-  have ex2 := ZT.toZ_eq hx2
-  have ey2 := ZT.toZ_eq hy2
-  have ez2 := ZT.toZ_eq hz2
-  apply ZT.derive
-  gsimp at ex1 ey1 ez1 ex2 ey2 ez2 ⊢
-  linear_combination (ζ y₁ - ζ x₁) * (ez1 - ex1 - (ez2 - ex2)) - (ζ z₁ - ζ x₁) * (ey1 - ex1 - (ey2 - ex2))
+  ipra_lc (ζ y₁ - ζ x₁) * (ZT.toZ_eq hz1 - ZT.toZ_eq hx1 - (ZT.toZ_eq hz2 - ZT.toZ_eq hx2)) -
+    (ζ z₁ - ζ x₁) * (ZT.toZ_eq hy1 - ZT.toZ_eq hx1 - (ZT.toZ_eq hy2 - ZT.toZ_eq hx2))
 
 /-! ## The rational parametrization -/
 
@@ -182,7 +135,7 @@ theorem parameter_on_circle (a₁ a₂ k m : ZT n) :
     Γ ⊢[PRAAx] ZT.eq
       (nsq ((k * k - m * m) * a₁ - ZT.natLit 2 * m * k * a₂) ((k * k - m * m) * a₂ + ZT.natLit 2 * m * k * a₁))
       (ZT.sq (k * k + m * m) * nsq a₁ a₂) := by
-  geo
+  ipra_lc
 
 /-- The inverse of (C14), first coordinate. -/
 theorem parameter_inverse₁ {a₁ a₂ x₁ x₂ ρ : ZT n}
@@ -191,13 +144,8 @@ theorem parameter_inverse₁ {a₁ a₂ x₁ x₂ ρ : ZT n}
       ((pk a₁ a₂ x₁ x₂ ρ * pk a₁ a₂ x₁ x₂ ρ - pm a₁ a₂ x₁ x₂ * pm a₁ a₂ x₁ x₂) * a₁ -
         ZT.natLit 2 * pm a₁ a₂ x₁ x₂ * pk a₁ a₂ x₁ x₂ ρ * a₂)
       ((pk a₁ a₂ x₁ x₂ ρ * pk a₁ a₂ x₁ x₂ ρ + pm a₁ a₂ x₁ x₂ * pm a₁ a₂ x₁ x₂) * x₁) := by
-  have ea := ZT.toZ_eq ha
-  have ex := ZT.toZ_eq hx
-  apply ZT.derive
-  gsimp at ea ex ⊢
-  linear_combination
-    (-(ζ x₁ * ζ x₁ + ζ x₂ * ζ x₂) * ζ a₁ + (2 * (ζ a₁ * ζ x₁ + ζ a₂ * ζ x₂) + ζ ρ) * ζ x₁) * ea +
-      (-ζ ρ * ζ a₁ - (ζ a₁ * ζ a₁ + ζ a₂ * ζ a₂) * ζ x₁) * ex
+  ipra_lc (-(ζ x₁ * ζ x₁ + ζ x₂ * ζ x₂) * ζ a₁ + (2 * (ζ a₁ * ζ x₁ + ζ a₂ * ζ x₂) + ζ ρ) * ζ x₁) * ZT.toZ_eq ha +
+    (-ζ ρ * ζ a₁ - (ζ a₁ * ζ a₁ + ζ a₂ * ζ a₂) * ζ x₁) * ZT.toZ_eq hx
 
 /-- The inverse of (C14), second coordinate. -/
 theorem parameter_inverse₂ {a₁ a₂ x₁ x₂ ρ : ZT n}
@@ -206,12 +154,7 @@ theorem parameter_inverse₂ {a₁ a₂ x₁ x₂ ρ : ZT n}
       ((pk a₁ a₂ x₁ x₂ ρ * pk a₁ a₂ x₁ x₂ ρ - pm a₁ a₂ x₁ x₂ * pm a₁ a₂ x₁ x₂) * a₂ +
         ZT.natLit 2 * pm a₁ a₂ x₁ x₂ * pk a₁ a₂ x₁ x₂ ρ * a₁)
       ((pk a₁ a₂ x₁ x₂ ρ * pk a₁ a₂ x₁ x₂ ρ + pm a₁ a₂ x₁ x₂ * pm a₁ a₂ x₁ x₂) * x₂) := by
-  have ea := ZT.toZ_eq ha
-  have ex := ZT.toZ_eq hx
-  apply ZT.derive
-  gsimp at ea ex ⊢
-  linear_combination
-    (-(ζ x₁ * ζ x₁ + ζ x₂ * ζ x₂) * ζ a₂ + (2 * (ζ a₁ * ζ x₁ + ζ a₂ * ζ x₂) + ζ ρ) * ζ x₂) * ea +
-      (-ζ ρ * ζ a₂ - (ζ a₁ * ζ a₁ + ζ a₂ * ζ a₂) * ζ x₂) * ex
+  ipra_lc (-(ζ x₁ * ζ x₁ + ζ x₂ * ζ x₂) * ζ a₂ + (2 * (ζ a₁ * ζ x₁ + ζ a₂ * ζ x₂) + ζ ρ) * ζ x₂) * ZT.toZ_eq ha +
+    (-ζ ρ * ζ a₂ - (ζ a₁ * ζ a₁ + ζ a₂ * ζ a₂) * ζ x₂) * ZT.toZ_eq hx
 
 end LeanProofs.IPRA.Geometry.CirclePower

@@ -1,4 +1,4 @@
-import IPRADerivations.Core.IntCertificates
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Certified factor transport: the contraction arithmetic
@@ -36,9 +36,7 @@ local notation "𝔟" t:max => Groth.ι (IPRA.Q.mk _ t)
 /-- `uv − u'v' = (u − u')v + u'(v − v')`. -/
 theorem split_product (u v u' v' : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (u * v - u' * v') ((u - u') * v + u' * (v - v')) := by
-  apply ZT.derive
-  zsimp
-  ring
+  ipra_lc
 
 /-- The gain of the product: `P ≤ a V + U' b`, `V ≤ ρ`, `U' ≤ ρ` give `P ≤ ρ (a + b)`. -/
 theorem gain_bound {P a b V U' ρ : PTm n} (hP : Γ ⊢[PRAAx] le P (a * V + U' * b)) (hV : Γ ⊢[PRAAx] le V ρ)
@@ -60,9 +58,7 @@ theorem quarter_gain {D K P ρ d J : PTm n} (hD : Γ ⊢[PRAAx] le D (K * P)) (h
 /-- The exact residual identity: `f − (g₀ + u)(h₀ + v) = (f − g₀ h₀) − (h₀ u + g₀ v) − u v`. -/
 theorem residual_identity (f g₀ h₀ u v : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (f - (g₀ + u) * (h₀ + v)) (f - g₀ * h₀ - (h₀ * u + g₀ * v) - u * v) := by
-  apply ZT.derive
-  zsimp
-  ring
+  ipra_lc
 
 /-- `eq:factorstability`: `d_0 = 0` and `2 d_{k+1} ≤ 2B + d_k` give `d_k ≤ 2B` for every `k`. -/
 theorem stability (d : ℕ → PTm n) (B : PTm n) (h0 : Γ ⊢[PRAAx] le (d 0) zero)

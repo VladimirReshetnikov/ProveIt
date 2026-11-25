@@ -1,6 +1,7 @@
 import IPRADerivations.Combinatorics.FisherInequality
 import IPRADerivations.Combinatorics.DoubleCounting
 import Mathlib.Data.Nat.Choose.Basic
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # From the LYM inequality to Sperner's bound, and the Erdős–Ko–Rado cancellation
@@ -103,9 +104,7 @@ theorem sperner_bound (N ρ : ℕ) (a : Fin (N + 1) → ZT n) (ha : ∀ j, Γ �
     simp only [hc]
     linear_combination I
   have hX := znn_of_pos_mul hW1 hpos
-  refine zle_of_comb (zsl hX) ?_ (nn_zsl _)
-  zsimp
-  ring
+  ipra_zle (zsl hX)
 
 /-- Sperner's bound from the incidence table of sets and linear orders: `a ≤ ρ C(N, ⌊N/2⌋)`. -/
 theorem sperner_family (N ρ a : ℕ) (s : Fin a → Fin (N + 1)) (M : Fin a → Fin N.factorial → ZT n)
@@ -138,9 +137,7 @@ theorem sperner_family (N ρ a : ℕ) (s : Fin a → Fin (N + 1)) (M : Fin a →
     simp only [hc]
     linear_combination I
   have hX := znn_of_pos_mul hW1 hpos
-  refine zle_of_comb (zsl hX) ?_ (nn_zsl _)
-  zsimp
-  ring
+  ipra_zle (zsl hX)
 
 /-- The Erdős–Ko–Rado cancellation: `|F| n k! (n − k)! ≤ k n!` gives `|F| ≤ C(n − 1, k − 1)`, with
 `n = N + 1` and `k = K + 1`. -/
@@ -161,12 +158,8 @@ theorem ekr_bound (N K : ℕ) (hK : K ≤ N) {f : ZT n}
       (Nat.factorial_pos _)))
   have hpos : Γ ⊢[PRAAx] zle (ZT.natLit 0)
       (ZT.natLit ((N + 1) * (K + 1).factorial * (N - K).factorial) * (ZT.natLit (N.choose K) - f)) := by
-    refine zle_of_comb (zsl h) ?_ (nn_zsl _)
-    zsimp
-    linear_combination ec
+    ipra_zle (zsl h) with ec
   have hX := znn_of_pos_mul hP hpos
-  refine zle_of_comb (zsl hX) ?_ (nn_zsl _)
-  zsimp
-  ring
+  ipra_zle (zsl hX)
 
 end LeanProofs.IPRA.Combinatorics.SpernerBound

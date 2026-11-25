@@ -5,6 +5,7 @@ import IPRADerivations.Foundations.AuxiliaryEnvelope
 import IPRADerivations.Core.SumPalindrome
 import IPRADerivations.Core.SumSplit
 import IPRADerivations.AnalyticNumberTheory.Valuation
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The block hypotheses from `ψ` and the divergence modulus (`hurwitz_khinchin_ipra`, (K2))
@@ -237,12 +238,9 @@ theorem hex_pt (Ψ : PTm 2) {k K0 C x Q R G α γ b0 : PTm n} (hC : Γ ⊢[PRAAx
     (hR : Γ ⊢[PRAAx] le (num 4 * (Qk K0 k * Qk K0 k) * C) R) :
     Γ ⊢[PRAAx] num 4 * C * inst2 (uB (wbK Ψ)) k (Xt K0 (pairT (pairT C x) Q) R G α γ b0) ≐
       fact R * G * inst2 (MB (dyB Ψ)) k (pairT C (pairT K0 x)) := by
-  have eu := natEq (u_at (Γ := Γ) (wbK Ψ) k K0 (pairT (pairT C x) Q) R G α γ b0)
-  have ew := natEq (w_at (Γ := Γ) Ψ k K0 C x Q R G α γ b0)
-  have ex := natEq (w_exact (G := G) (x := x) Ψ hC hR)
-  have et := natEq (mb_at (Γ := Γ) Ψ k K0 C x)
-  apply deriveNat; ipra_simps
-  linear_combination 4 * 𝔞 C * eu + 4 * 𝔞 C * 𝔞 (Qk K0 k) * 𝔞 (Qk K0 k) * ew + ex - 𝔞 (fact R) * 𝔞 G * et
+  ipra_lc 4 * 𝔞 C * natEq (u_at (Γ := Γ) (wbK Ψ) k K0 (pairT (pairT C x) Q) R G α γ b0) +
+    4 * 𝔞 C * 𝔞 (Qk K0 k) * 𝔞 (Qk K0 k) * natEq (w_at (Γ := Γ) Ψ k K0 C x Q R G α γ b0) +
+    natEq (w_exact (G := G) (x := x) Ψ hC hR) - 𝔞 (fact R) * 𝔞 G * natEq (mb_at (Γ := Γ) Ψ k K0 C x)
 
 /-- Shifting a closed hypothesis under one binder. -/
 theorem sh {φ : Fm PTm n} (ψ : Fm PTm (n + 1)) (h : Γ ⊢[PRAAx] φ) : (ψ :: Γ.map Fm.shift) ⊢[PRAAx] Fm.shift φ :=

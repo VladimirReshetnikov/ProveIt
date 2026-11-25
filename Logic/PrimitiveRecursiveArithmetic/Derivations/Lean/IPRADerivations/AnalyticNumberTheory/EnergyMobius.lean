@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.MobiusBounds
 import IPRADerivations.Probability.Independence
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Divisor inversion for the energy statistic (`thm:energy`, recovery direction)
@@ -145,7 +146,7 @@ theorem col_point (s : Bool) (d i Z : PTm n) : Γ ⊢[PRAAx] inst2 (colB (aS g s
     (congrMul (sg_succ _) (congrEqb' (congrAp2 remF (snd_pair _ _) (.eqRefl _)) (.eqRefl _))).eqTrans (one_mul _)
   have e2 := congrMuS (Γ := Γ) s (d := succ d) (fst_pair (succ (fstT Z)) (succ i))
   refine .eqTrans ?_ (congrMul (.eqRefl _) (congrMul e1 e2)).eqSymm
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem col_eq (s : Bool) (i Z : PTm n) : Γ ⊢[PRAAx] inst2 (pB (aS g s)) i (pairT (fstT Z) Z) ≐
     inst2 g i Z * ap2 (sumF (shiftBody (GS s))) (fstT Z) (pairT (succ (fstT Z)) (succ i)) := by
@@ -160,21 +161,16 @@ theorem col_eq (s : Bool) (i Z : PTm n) : Γ ⊢[PRAAx] inst2 (pB (aS g s)) i (p
 theorem col_cancel {i Z : PTm n} (hi : Γ ⊢[PRAAx] lt i (fstT Z)) :
     Γ ⊢[PRAAx] inst2 (pB (aS g true)) i (pairT (fstT Z) Z) ≐
       inst2 (pB (aS g false)) i (pairT (fstT Z) Z) + inst2 g i Z * eqb (succ i) one := by
-  have cP := natEq (col_eq (Γ := Γ) g true i Z)
-  have cN := natEq (col_eq (Γ := Γ) g false i Z)
   have g0 : ∀ s : Bool, Γ ⊢[PRAAx] inst2 (GS s) zero (pairT (succ (fstT Z)) (succ i)) ≐ zero := by
     intro s; rw [inst2_GS]; exact zero_mul_l (zero_mul_l sg_zero _) _
   have z1 := natEq (g0 true); have z2 := natEq (g0 false)
-  have shP := natEq (sum_shift (Γ := Γ) (GS true) (fstT Z) (pairT (succ (fstT Z)) (succ i)))
-  have shN := natEq (sum_shift (Γ := Γ) (GS false) (fstT Z) (pairT (succ (fstT Z)) (succ i)))
   have hk : Γ ⊢[PRAAx] succ i ≐ succ (pred (succ i)) := congrSucc (pred_succ _).eqSymm
   have hle : Γ ⊢[PRAAx] le (succ (succ i)) (succ (fstT Z)) := (succ_monus_succ _ _).eqTrans hi
   have cg : Γ ⊢[PRAAx] ap2 (sumF (GS true)) (succ (fstT Z)) (pairT (succ (fstT Z)) (succ i)) ≐
       ap2 (sumF (GS false)) (succ (fstT Z)) (pairT (succ (fstT Z)) (succ i)) + eqb (succ i) one :=
     cancel_gen hk hle hle
-  have c := natEq cg
-  apply deriveNat; ipra_simps
-  linear_combination cP - cN + 𝔞 (inst2 g i Z) * (-shP + shN - z1 + z2 + c)
+  ipra_lc natEq (col_eq (Γ := Γ) g true i Z) - natEq (col_eq (Γ := Γ) g false i Z) +
+    𝔞 (inst2 g i Z) * (-natEq (sum_shift (Γ := Γ) (GS true) (fstT Z) (pairT (succ (fstT Z)) (succ i))) + natEq (sum_shift (Γ := Γ) (GS false) (fstT Z) (pairT (succ (fstT Z)) (succ i))) - z1 + z2 + natEq cg)
 
 /-- `g(i, snd y) [i + 1 = 1]`. -/
 def dlB : PTm 2 := lB g * eqb (succ (var 0)) one
@@ -199,7 +195,7 @@ theorem dl_sum {Z : PTm n} (hN : Γ ⊢[PRAAx] fstT Z ≐ succ (pred (fstT Z))) 
     exact (congrMul (.eqRefl _) (eqb_of_ne ne)).eqTrans (mul_zero _)
   rw [inst2_dl]
   have e0 : Γ ⊢[PRAAx] inst2 g zero (sndT (pairT (fstT Z) Z)) * eqb (succ zero) one ≐ inst2 g zero Z :=
-    (congrMul (congrInst2 g (.eqRefl _) (snd_pair _ _)) (eqb_of_eq (.eqRefl _))).eqTrans (by apply deriveNat; ipra_simps; ring)
+    (congrMul (congrInst2 g (.eqRefl _) (snd_pair _ _)) (eqb_of_eq (.eqRefl _))).eqTrans (by ipra_ring)
   exact (congrAdd e0 z).eqTrans (add_zero _)
 
 /-- Divisor inversion for any body: `Σ_{d≤N} μ⁺(d) T_g(d) = Σ_{d≤N} μ⁻(d) T_g(d) + g(0)`, `N = fst Z ≥ 1`. -/
@@ -243,7 +239,7 @@ theorem inst2_gM (Ms : PTm 2) (i Z : PTm n) : inst2 (gM Ms) i Z =
   rw [h1, h2]
 
 theorem quo_one (z : PTm n) : Γ ⊢[PRAAx] quo z (succ zero) ≐ z :=
-  quo_eq (q := z) (r := zero) (congrSucc (pred_succ _).eqSymm) (by apply deriveNat; ipra_simps; ring) (le_refl _)
+  quo_eq (q := z) (r := zero) (congrSucc (pred_succ _).eqSymm) (by ipra_ring) (le_refl _)
 
 /-- `g^±(0) = N! M^±(N, x)`. -/
 theorem gM_zero (Ms : PTm 2) (N x : PTm n) :
@@ -269,13 +265,9 @@ theorem mobius_energy (Mp Mn : PTm 2) {N x : PTm n} (hN : Γ ⊢[PRAAx] N ≐ su
   have f := fst_pair (Γ := Γ) N x
   have hZ : Γ ⊢[PRAAx] fstT (pairT N x) ≐ succ (pred (fstT (pairT N x))) :=
     f.eqTrans (hN.eqTrans (congrSucc (congrPred f.eqSymm)))
-  have rP := natEq ((congrAp2 (sumF (mtS (gM Mp) true)) f.eqSymm (.eqRefl _)).eqTrans
-    ((mobius_rows (gM Mp) hZ).eqTrans (congrAdd (congrAp2 (sumF (mtS (gM Mp) false)) f (.eqRefl _)) (gM_zero Mp N x))))
-  have rN := natEq ((congrAp2 (sumF (mtS (gM Mn) true)) f.eqSymm (.eqRefl _)).eqTrans
-    ((mobius_rows (gM Mn) hZ).eqTrans (congrAdd (congrAp2 (sumF (mtS (gM Mn) false)) f (.eqRefl _)) (gM_zero Mn N x))))
-  have s1 := natEq (sum_add (Γ := Γ) (mtS (gM Mp) true) (mtS (gM Mn) false) N (pairT N x))
-  have s2 := natEq (sum_add (Γ := Γ) (mtS (gM Mp) false) (mtS (gM Mn) true) N (pairT N x))
-  apply deriveNat; ipra_simps
-  linear_combination s1 - s2 + rP - rN
+  ipra_lc natEq (sum_add (Γ := Γ) (mtS (gM Mp) true) (mtS (gM Mn) false) N (pairT N x)) -
+    natEq (sum_add (Γ := Γ) (mtS (gM Mp) false) (mtS (gM Mn) true) N (pairT N x)) +
+    natEq ((congrAp2 (sumF (mtS (gM Mp) true)) f.eqSymm (.eqRefl _)).eqTrans ((mobius_rows (gM Mp) hZ).eqTrans (congrAdd (congrAp2 (sumF (mtS (gM Mp) false)) f (.eqRefl _)) (gM_zero Mp N x)))) -
+    natEq ((congrAp2 (sumF (mtS (gM Mn) true)) f.eqSymm (.eqRefl _)).eqTrans ((mobius_rows (gM Mn) hZ).eqTrans (congrAdd (congrAp2 (sumF (mtS (gM Mn) false)) f (.eqRefl _)) (gM_zero Mn N x))))
 
 end LeanProofs.IPRA.AnalyticNumberTheory.EnergyMobius

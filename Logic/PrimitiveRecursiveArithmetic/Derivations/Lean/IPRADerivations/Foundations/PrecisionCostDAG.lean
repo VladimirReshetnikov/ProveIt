@@ -5,6 +5,8 @@ import IPRADerivations.Foundations.BoundedSyntaxInduction
 import IPRADerivations.Foundations.BoundedEnumeration
 import IPRADerivations.Core.SumLemmas
 import IPRADerivations.Foundations.RealizerComposition
+import IPRADerivations.Core.CongruenceTactic
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Actual rational budgets on finite topologically ordered dependency graphs
@@ -116,9 +118,7 @@ theorem fraction_well_formed (p q : PTm n) (hq : Γ ⊢[PRAAx] le one q) : Γ �
   Analysis.RationalNormalForm.normalize_well_formed _ _ hq
 theorem fraction_congr {p p' q q' : PTm n} (hp : Γ ⊢[PRAAx] p ≐ p') (hq : Γ ⊢[PRAAx] q ≐ q') : Γ ⊢[PRAAx]
     fraction p q ≐ fraction p' q' := by
-  simpa only [subst_fraction,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (fraction (var 0) (var 1) : PTm 2)
-      (σ := ![p,q]) (σ' := ![p',q']) (fun i => by fin_cases i; exact hp; exact hq)
+  ipra_congr (fraction (var 0) (var 1) : PTm 2) with [hp, hq]
 theorem decode_represents (c : PTm n) : Γ ⊢[PRAAx]
     represents (decodeFraction c) (ZT.ofNat (fstT c)) (succ (sndT c)) :=
   fraction_represents _ _ (zero_lt_succ _)
@@ -135,9 +135,7 @@ theorem singleton_zero (c : PTm n) : Γ ⊢[PRAAx] entry (singleton c) zero ≐ 
     MasterCertificate.sequence_decode (var 1 : PTm 2) (x := c) (le_refl one)
 theorem singleton_congr {c d : PTm n} (h : Γ ⊢[PRAAx] c ≐ d) : Γ ⊢[PRAAx]
     singleton c ≐ singleton d := by
-  simpa only [subst_singleton,Syn.subst_var,Matrix.cons_val_zero] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (singleton (var 0) : PTm 1)
-      (σ := ![c]) (σ' := ![d]) (fun i => by fin_cases i; exact h)
+  ipra_congr (singleton (var 0) : PTm 1) with [h]
 
 theorem next_at (G Eta v R : PTm n) : Γ ⊢[PRAAx] ap4 nextF G Eta v R ≐ next G Eta v R := by
   simpa [nextF,ap4] using toPR_eq (Γ := Γ) (next (var 0) (var 1) (var 2) (var 3) : PTm 4) ![G,Eta,v,R]
@@ -177,7 +175,6 @@ theorem row_new (G Eta r : PTm n) : Γ ⊢[PRAAx] entry (row G Eta (succ r)) r �
   exact (entry_congr (row_succ _ _ _) (.eqRefl _)).eqTrans
     ((entry_congr (.eqRefl _) ((congrAdd (row_length _ _ _) (.eqRefl zero)).eqTrans (add_zero r)).eqSymm).eqTrans
       (last.eqTrans (singleton_zero _)))
-
 
 theorem next_congr {G G' Eta Eta' v v' R R' : PTm n}
     (hG : Γ ⊢[PRAAx] G ≐ G') (hEta : Γ ⊢[PRAAx] Eta ≐ Eta')
@@ -264,7 +261,6 @@ theorem final_recurrence (G Eta N v : PTm n) (hv : Γ ⊢[PRAAx] lt v N) : Γ �
     (row_lookup (Syn.shift G) (Syn.shift Eta) (Syn.shift v) (var 0) Prf.hyp0).eqTrans
       (row_lookup (Syn.shift G) (Syn.shift Eta) (Syn.shift N) (var 0) (lt_of_lt_of_le Prf.hyp0 (le_of_lt range))).eqSymm
 
-
 /-- Reuse the existing independent-denominator scalar arithmetic. -/
 theorem fraction_add (a b D : PTm n) (hD : Γ ⊢[PRAAx] le one D) : Γ ⊢[PRAAx]
     add (fraction a D) (fraction b D) ≐ fraction (a+b) D :=
@@ -277,10 +273,7 @@ theorem fraction_order (a b D : PTm n) (hD : Γ ⊢[PRAAx] le one D) (hab : Γ �
 
 theorem zero_integer : Γ ⊢[PRAAx] (zeroCode : PTm n) ≐ Analysis.RationalIntegerNormalization.integerCode (ZT.natLit 0) := by
   apply Analysis.RationalIntegerNormalization.normalize_integer _ _ _ (le_refl one)
-  apply ZT.derive
-  simp only [ZT.toZ_mul,ZT.toZ_ofNat,ZT.toZ_natLit]
-  ipra_simps
-  ring
+  ipra_lc
 
 theorem fraction_nonnegative (p D : PTm n) (hD : Γ ⊢[PRAAx] le one D) : Γ ⊢[PRAAx]
     rationalLE zeroCode (fraction p D) := by
@@ -305,10 +298,7 @@ theorem multiply_zero (c : PTm n) : Γ ⊢[PRAAx] multiply c zeroCode ≐ zeroCo
     (Analysis.RationalArithmetic.multiply_guard _ _) (fraction_well_formed zero one (le_refl _))
     rep (fraction_represents zero one (le_refl _))
     (Analysis.RationalAlgebra.positive_product (Analysis.RationalArgmin.denominator_positive c) (le_refl one)) (le_refl one)
-  apply ZT.derive
-  simp only [ZT.toZ_mul,ZT.toZ_ofNat]
-  ipra_simps
-  ring
+  ipra_lc
 
 theorem add_nonnegative (a b : PTm n) (ha : Γ ⊢[PRAAx] rationalLE zeroCode a)
     (hb : Γ ⊢[PRAAx] rationalLE zeroCode b) : Γ ⊢[PRAAx] rationalLE zeroCode (add a b) :=
@@ -360,7 +350,6 @@ theorem sum_nonnegative (A : PTm 2) (N x : PTm n) (h : Γ ⊢[PRAAx] nonnegative
   have final : Γ ⊢[PRAAx] sumNonnegativeLaw A N x N := by
     simpa only [subst_sumNonnegativeLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE N
   exact .impE final (le_refl _)
-
 
 /-- This finite all-bit, not a quantified induction predicate, records
 nonnegativity of every already computed scalar budget. -/
@@ -440,7 +429,6 @@ theorem rows_nonnegative (G Eta r : PTm n) : Γ ⊢[PRAAx] rowsNonnegative r (ro
       exact rows_nonnegative_step _ _ _ Prf.hyp0
   simpa only [subst_rowsNonnegative,subst_row,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE r
 
-
 theorem zero_fst : Γ ⊢[PRAAx] fstT (zero : PTm n) ≐ zero :=
   (congrFst (show Γ ⊢[PRAAx] zero ≐ pairT zero zero by unfold pairT; ipra_ring)).eqTrans (fst_pair zero zero)
 theorem zero_snd : Γ ⊢[PRAAx] sndT (zero : PTm n) ≐ zero :=
@@ -451,9 +439,7 @@ theorem safeEntry_zero (i : PTm n) : Γ ⊢[PRAAx] safeEntry zero i ≐ zero :=
   safeEntry_absent _ _ (le_congr zero_fst.eqSymm (.eqRefl _) (zero_le _))
 theorem safeEntry_congr {L L' i i' : PTm n} (hL : Γ ⊢[PRAAx] L ≐ L') (hi : Γ ⊢[PRAAx] i ≐ i') : Γ ⊢[PRAAx]
     safeEntry L i ≐ safeEntry L' i' := by
-  simpa only [subst_safeEntry,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (safeEntry (var 0) (var 1) : PTm 2)
-      (σ := ![L,i]) (σ' := ![L',i']) (fun j => by fin_cases j; exact hL; exact hi)
+  ipra_congr (safeEntry (var 0) (var 1) : PTm 2) with [hL, hi]
 theorem decode_congr {c d : PTm n} (h : Γ ⊢[PRAAx] c ≐ d) : Γ ⊢[PRAAx] decodeFraction c ≐ decodeFraction d :=
   fraction_congr (congrFst h) (congrSucc (congrSnd h))
 theorem missing_row_weight (G v w : PTm n) (h : Γ ⊢[PRAAx] le (length G) v) : Γ ⊢[PRAAx]

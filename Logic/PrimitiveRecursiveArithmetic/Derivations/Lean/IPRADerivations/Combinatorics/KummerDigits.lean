@@ -3,6 +3,7 @@ import IPRADerivations.Combinatorics.LegendreFact
 import IPRADerivations.Combinatorics.LegendreDigits
 import IPRADerivations.Combinatorics.BinomialIdentities
 import IPRADerivations.Foundations.CrossingSearch
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Kummer's formula in digit-sum form
@@ -59,8 +60,7 @@ theorem legendre_sum {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (m : PTm n) :
 theorem kummer_alg {P Va Vb Vn Vc sa sb sn a b : PTm n} (vn : Γ ⊢[PRAAx] Vn ≐ (Va + Vb) + Vc)
     (ka : Γ ⊢[PRAAx] sa + P * Va ≐ a) (kb : Γ ⊢[PRAAx] sb + P * Vb ≐ b)
     (kn : Γ ⊢[PRAAx] sn + P * Vn ≐ a + b) : Γ ⊢[PRAAx] P * Vc + sn ≐ sa + sb := by
-  have e0 := natEq vn; have e1 := natEq ka; have e2 := natEq kb; have e3 := natEq kn
-  apply deriveNat; ipra_simps; linear_combination e3 - e1 - e2 - 𝔞 P * e0
+  ipra_lc natEq kn - natEq ka - natEq kb - 𝔞 P * natEq vn
 
 /-- **Kummer's formula**, digit-sum form: `(p − 1) v_p(C(a + b, a)) + s_p(a + b) = s_p(a) + s_p(b)`. -/
 theorem kummer_digits {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (a b : PTm n) :

@@ -1,6 +1,7 @@
 import IPRADerivations.Combinatorics.BellDobinski
 import IPRADerivations.Combinatorics.BellTouchardPower
 import IPRADerivations.Probability.Lotus
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The exact truncation identity of Dobinski's formula (`bell_numbers_ipra`, `thm:dobinski`, `eq:finite-dobinski`)
@@ -108,7 +109,7 @@ theorem row_cm {j k N M c : PTm n} (hc : Γ ⊢[PRAAx] c ≐ ff M (monus M k)) :
     congrMul ((fst_pair _ _).eqTrans hc)
       ((congrInst2 tB (.eqRefl _) (snd_pair _ _)).eqTrans (tB_at j N k))
   refine ((row_at aD j k (pairT N M)).eqTrans (aD_at k j N M)).eqTrans (.eqTrans ?_ r.eqSymm)
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem row_eval (k N M : PTm n) :
     Γ ⊢[PRAAx] ap2 (sumF (rowB aD)) (succ N) (pairT k (pairT N M)) ≐
@@ -133,9 +134,7 @@ theorem ff_shift {i j M : PTm n} (hi : Γ ⊢[PRAAx] le (j + i) M) :
   have m1 : Γ ⊢[PRAAx] monus M (monus M (j + i)) ≐ j + i := monus_monus hi
   have m2 : Γ ⊢[PRAAx] monus M i ≐ monus M (j + i) + j := by
     have w : Γ ⊢[PRAAx] M ≐ i + (monus M (j + i) + j) := by
-      have a := natEq eM
-      apply deriveNat; ipra_simps
-      linear_combination a
+      ipra_lc natEq eM
     exact (congrMonus w (.eqRefl i)).eqTrans (add_monus' _ i)
   have k1 : Γ ⊢[PRAAx] ff M (monus M i) ≐ ff M (monus M (j + i)) * ff (j + i) j :=
     (congrFF (.eqRefl M) m2).eqTrans
@@ -164,18 +163,13 @@ theorem col_pt {i j N M s : PTm n} (hs : Γ ⊢[PRAAx] s ≐ stir N j)
 theorem add_le_of {i j M : PTm n} (hj : Γ ⊢[PRAAx] le j M)
     (hi : Γ ⊢[PRAAx] lt i (succ (monus M j))) : Γ ⊢[PRAAx] le (j + i) M := by
   refine le_of_eq_add (d := monus (monus M j) i) ?_
-  have a := natEq (eq_add_of_le hj)
-  have b := natEq (eq_add_of_le (le_of_lt_succ hi))
-  apply deriveNat; ipra_simps
-  linear_combination a + b
+  ipra_lc natEq (eq_add_of_le hj) + natEq (eq_add_of_le (le_of_lt_succ hi))
 
 theorem col_eval {j N M : PTm n} (hj : Γ ⊢[PRAAx] le j M) :
     Γ ⊢[PRAAx] ap2 (sumF (colB aD)) (succ M) (pairT j (pairT N M)) ≐
       stir N j * ap2 (sumF eD) (succ (monus M j)) M := by
   have split : Γ ⊢[PRAAx] succ M ≐ j + succ (monus M j) := by
-    have a := natEq (eq_add_of_le hj)
-    apply deriveNat; ipra_simps
-    linear_combination a
+    ipra_lc natEq (eq_add_of_le hj)
   have hj' : (Γ.map Fm.shift) ⊢[PRAAx] le (Syn.shift j) (Syn.shift M) := by
     simpa [Fm.shift, Syn.shift] using hj.shift
   refine (congrAp2 _ split (.eqRefl _)).eqTrans

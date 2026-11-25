@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.DenominatorSmooth
 import IPRADerivations.AnalyticNumberTheory.SieveWeightOne
 import IPRADerivations.AnalyticNumberTheory.PrimorialUpper
 import IPRADerivations.AnalyticNumberTheory.TotientCorollaries
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The right endpoint of the denominator bound: `H_q(z) ≤ G_q(z)`
@@ -68,7 +69,7 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Coprimality to `q` -/
 
-theorem mul_one_r (X : PTm n) : Γ ⊢[PRAAx] X * one ≐ X := by apply deriveNat; ipra_simps; ring
+theorem mul_one_r (X : PTm n) : Γ ⊢[PRAAx] X * one ≐ X := by ipra_ring
 
 theorem cop_step {y q : PTm n} (hq : Γ ⊢[PRAAx] q ≐ succ (pred q))
     (ih : Γ ⊢[PRAAx] gcd q (Aq y q) ≐ one) : Γ ⊢[PRAAx] gcd q (Aq (succ y) q) ≐ one := by
@@ -127,7 +128,7 @@ theorem cop_of_dvd {d z q : PTm n} (hq : Γ ⊢[PRAAx] q ≐ succ (pred q)) (hd 
 
 /-! ## Squarefreeness -/
 
-theorem ones_alg : Γ ⊢[PRAAx] ((one : PTm n) * one) * one ≐ one := by apply deriveNat; ipra_simps; ring
+theorem ones_alg : Γ ⊢[PRAAx] ((one : PTm n) * one) * one ≐ one := by ipra_ring
 
 /-- `v_p(A_q(z)) ≤ 1` for a prime `p`. -/
 theorem val_Aq_le {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (z q : PTm n) :
@@ -170,8 +171,7 @@ theorem bit_sum {r : PTm n} (h : Γ ⊢[PRAAx] lt r two) : Γ ⊢[PRAAx] eqb r z
 
 theorem mu_alg {E e0 e1 : PTm n} (hE : Γ ⊢[PRAAx] E ≐ one) (hb : Γ ⊢[PRAAx] e0 + e1 ≐ one) :
     Γ ⊢[PRAAx] E * e0 + E * e1 ≐ one := by
-  have x := natEq hE; have y := natEq hb
-  apply deriveNat; ipra_simps; linear_combination (𝔞 e0 + 𝔞 e1) * x + y
+  ipra_lc (𝔞 e0 + 𝔞 e1) * natEq hE + natEq hb
 
 /-- `μ⁺(d) + μ⁻(d) = 1` when `d` has no square prime factor. -/
 theorem mu_sum_one {d : PTm n} (hs : Γ ⊢[PRAAx] sq (succ d) d ≐ zero) :
@@ -183,9 +183,7 @@ theorem mu_sum_one {d : PTm n} (hs : Γ ⊢[PRAAx] sq (succ d) d ≐ zero) :
 theorem rhs_alg {c s mP mN Q' Q : PTm n} (hc : Γ ⊢[PRAAx] c ≐ one) (hs : Γ ⊢[PRAAx] s ≐ one)
     (hm : Γ ⊢[PRAAx] mP + mN ≐ one) (hQ : Γ ⊢[PRAAx] Q' ≐ Q) :
     Γ ⊢[PRAAx] c * ((s * mP) * Q') + c * ((s * mN) * Q') ≐ Q := by
-  have a := natEq hc; have b := natEq hs; have e := natEq hm; have f := natEq hQ
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 c * 𝔞 s * 𝔞 Q' * e + 𝔞 s * 𝔞 Q' * a + 𝔞 Q' * b + f
+  ipra_lc 𝔞 c * 𝔞 s * 𝔞 Q' * natEq hm + 𝔞 s * 𝔞 Q' * natEq hc + 𝔞 Q' * natEq hs + natEq hQ
 
 /-- The term at `d`: `[d ∣ A_q(z)] ⌊z!/φ(d)⌋ ≤ Y⁺_d + Y⁻_d`. -/
 theorem term_le {q : PTm n} (hq : Γ ⊢[PRAAx] q ≐ succ (pred q)) (a z d : PTm n) :

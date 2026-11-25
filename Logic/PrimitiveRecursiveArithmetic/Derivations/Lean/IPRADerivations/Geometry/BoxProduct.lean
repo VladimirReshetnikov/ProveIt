@@ -2,6 +2,7 @@ import IPRADerivations.Foundations.FiniteAMGM
 import IPRADerivations.Combinatorics.CoefficientLogConcave
 import IPRADerivations.Probability.Variance
 import IPRADerivations.Core.ProdLemmas
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The box inequality of the rational Brunn–Minkowski theorem
@@ -344,12 +345,9 @@ theorem box_case₁ (hxy : Γ ⊢[PRAAx] x + y ≐ 𝔪 * P)
     (sA : Γ ⊢[PRAAx] le (pw 𝔪 𝔪 * (Pa * pw P 𝔪)) (pw x 𝔪 * P))
     (hP : Γ ⊢[PRAAx] P ≐ succ (pred P)) (c₁ : Γ ⊢[PRAAx] le (x * Q) (E * y)) :
     Γ ⊢[PRAAx] le (Pa * pw (E + Q) 𝔪) (pw E 𝔪 * P) := by
-  have ec := natEq (eq_add_of_le c₁)
-  have eh := natEq hxy
   have k₁ : Γ ⊢[PRAAx] le (x * (E + Q)) (E * (𝔪 * P)) := by
     refine le_of_eq_add (d := monus (E * y) (x * Q)) ?_
-    apply deriveNat; ipra_simps
-    linear_combination ec - 𝔞 E * eh
+    ipra_lc natEq (eq_add_of_le c₁) - 𝔞 E * natEq hxy
   have k₃ : Γ ⊢[PRAAx] le (pw x 𝔪 * pw (E + Q) 𝔪) (pw E 𝔪 * (pw 𝔪 𝔪 * pw P 𝔪)) :=
     le_congr (pw_mul_base x (E + Q) 𝔪)
       ((pw_mul_base E (𝔪 * P) 𝔪).eqTrans (congrMul (.eqRefl _) (pw_mul_base 𝔪 P 𝔪)))
@@ -358,15 +356,12 @@ theorem box_case₁ (hxy : Γ ⊢[PRAAx] x + y ≐ 𝔪 * P)
   have m₂ := mul_le_mul_right P k₃
   have tot : Γ ⊢[PRAAx] le (pw 𝔪 𝔪 * (Pa * pw P 𝔪) * pw (E + Q) 𝔪)
       (pw E 𝔪 * (pw 𝔪 𝔪 * pw P 𝔪) * P) :=
-    le_trans m₁ (le_congr (by apply deriveNat; ipra_simps; ring) (.eqRefl _) m₂)
-  have ek := natEq (k_pos (n₀ := n₀) hP)
+    le_trans m₁ (le_congr (by ipra_ring) (.eqRefl _) m₂)
   have big : Γ ⊢[PRAAx] le (succ (pred (pw 𝔪 𝔪 * pw P 𝔪)) * (Pa * pw (E + Q) 𝔪))
       (succ (pred (pw 𝔪 𝔪 * pw P 𝔪)) * (pw E 𝔪 * P)) := by
     refine le_congr ?_ ?_ tot
-    · apply deriveNat; ipra_simps
-      linear_combination (𝔞 Pa * 𝔞 (pw (E + Q) 𝔪)) * ek
-    · apply deriveNat; ipra_simps
-      linear_combination (𝔞 (pw E 𝔪) * 𝔞 P) * ek
+    · ipra_lc (𝔞 Pa * 𝔞 (pw (E + Q) 𝔪)) * natEq (k_pos (n₀ := n₀) hP)
+    · ipra_lc (𝔞 (pw E 𝔪) * 𝔞 P) * natEq (k_pos (n₀ := n₀) hP)
   exact mul_le_cancel big
 
 /-- The case `E y ≤ x Q`, `Q ≥ 1`. -/
@@ -375,12 +370,9 @@ theorem box_case₂ (hxy : Γ ⊢[PRAAx] x + y ≐ 𝔪 * P)
     (hP : Γ ⊢[PRAAx] P ≐ succ (pred P)) (hQ : Γ ⊢[PRAAx] Q ≐ succ (pred Q))
     (H : Γ ⊢[PRAAx] le (pw Q 𝔪 * Pa) (pw E 𝔪 * Pb)) (c₂ : Γ ⊢[PRAAx] le (E * y) (x * Q)) :
     Γ ⊢[PRAAx] le (Pa * pw (E + Q) 𝔪) (pw E 𝔪 * P) := by
-  have ec := natEq (eq_add_of_le c₂)
-  have eh := natEq hxy
   have k₁ : Γ ⊢[PRAAx] le (y * (E + Q)) (Q * (𝔪 * P)) := by
     refine le_of_eq_add (d := monus (x * Q) (E * y)) ?_
-    apply deriveNat; ipra_simps
-    linear_combination ec - 𝔞 Q * eh
+    ipra_lc natEq (eq_add_of_le c₂) - 𝔞 Q * natEq hxy
   have k₃ : Γ ⊢[PRAAx] le (pw y 𝔪 * pw (E + Q) 𝔪) (pw Q 𝔪 * (pw 𝔪 𝔪 * pw P 𝔪)) :=
     le_congr (pw_mul_base y (E + Q) 𝔪)
       ((pw_mul_base Q (𝔪 * P) 𝔪).eqTrans (congrMul (.eqRefl _) (pw_mul_base 𝔪 P 𝔪)))
@@ -390,18 +382,15 @@ theorem box_case₂ (hxy : Γ ⊢[PRAAx] x + y ≐ 𝔪 * P)
   have t₃ := mul_le_mul_right (pw E 𝔪 * P) k₃
   have tot : Γ ⊢[PRAAx] le (pw Q 𝔪 * Pa * (pw 𝔪 𝔪 * pw P 𝔪 * pw (E + Q) 𝔪))
       (pw Q 𝔪 * (pw 𝔪 𝔪 * pw P 𝔪) * (pw E 𝔪 * P)) :=
-    le_trans t₁ (le_trans (le_congr (by apply deriveNat; ipra_simps; ring) (.eqRefl _) t₂)
-      (le_congr (by apply deriveNat; ipra_simps; ring) (.eqRefl _) t₃))
+    le_trans t₁ (le_trans (le_congr (by ipra_ring) (.eqRefl _) t₂)
+      (le_congr (by ipra_ring) (.eqRefl _) t₃))
   have hK := pos_mul' (pw_pos' hQ 𝔪) (k_pos (n₀ := n₀) hP)
-  have ek := natEq hK
   have big : Γ ⊢[PRAAx]
       le (succ (pred (pw Q 𝔪 * (pw 𝔪 𝔪 * pw P 𝔪))) * (Pa * pw (E + Q) 𝔪))
         (succ (pred (pw Q 𝔪 * (pw 𝔪 𝔪 * pw P 𝔪))) * (pw E 𝔪 * P)) := by
     refine le_congr ?_ ?_ tot
-    · apply deriveNat; ipra_simps
-      linear_combination (𝔞 Pa * 𝔞 (pw (E + Q) 𝔪)) * ek
-    · apply deriveNat; ipra_simps
-      linear_combination (𝔞 (pw E 𝔪) * 𝔞 P) * ek
+    · ipra_lc (𝔞 Pa * 𝔞 (pw (E + Q) 𝔪)) * natEq hK
+    · ipra_lc (𝔞 (pw E 𝔪) * 𝔞 P) * natEq hK
   exact mul_le_cancel big
 
 /-- The comparison of `x Q` with `E y` decides which of the two families is used. -/
@@ -445,8 +434,7 @@ theorem box_base {N x E Q : PTm n}
     have e := natEq (prod_fam (Γ := Γ) (addBody a b) a (succ N) x)
     refine le_congr ?_ (.eqRefl _) (mul_le_mul_right (ap2 (prodF (addBody a b)) (succ N) x)
       (finite_amgm (fam (addBody a b) a) N (pairT (succ N) x)))
-    apply deriveNat; ipra_simps
-    linear_combination 𝔞 (pw (succ N) (succ N)) * e
+    ipra_lc 𝔞 (pw (succ N) (succ N)) * e
   have sB : Γ ⊢[PRAAx] le (pw (succ N) (succ N) *
         (ap2 (prodF b) (succ N) x * pw (ap2 (prodF (addBody a b)) (succ N) x) (succ N)))
       (pw (ap2 (sumF (fam (addBody a b) b)) (succ N) (pairT (succ N) x)) (succ N) *
@@ -454,8 +442,7 @@ theorem box_base {N x E Q : PTm n}
     have e := natEq (prod_fam (Γ := Γ) (addBody a b) b (succ N) x)
     refine le_congr ?_ (.eqRefl _) (mul_le_mul_right (ap2 (prodF (addBody a b)) (succ N) x)
       (finite_amgm (fam (addBody a b) b) N (pairT (succ N) x)))
-    apply deriveNat; ipra_simps
-    linear_combination 𝔞 (pw (succ N) (succ N)) * e
+    ipra_lc 𝔞 (pw (succ N) (succ N)) * e
   exact box_alg (sum_fam a b (succ N) x) sA sB hP H
 
 end Box
@@ -510,11 +497,8 @@ theorem box_product {N x D Q : PTm n} (hD : Γ ⊢[PRAAx] D ≐ succ (pred D))
       simpa [Fm.shift, Syn.shift] using hD.shift
     simp only [shift_pair]
     refine eq_succ_pred (y := pred (Syn.shift D) + inst2 t (var 0) (Syn.shift x)) ?_
-    have e₁ := natEq (dt_at (Γ := lt (var 0) (Syn.shift (succ N)) :: Γ.map Fm.shift) t (var 0)
-      (Syn.shift D) (Syn.shift x))
-    have e₂ := natEq (hD'.wk (ψ := lt (var 0) (Syn.shift (succ N))))
-    apply deriveNat; ipra_simps
-    linear_combination e₁ + e₂
+    ipra_lc natEq (dt_at (Γ := lt (var 0) (Syn.shift (succ N)) :: Γ.map Fm.shift) t (var 0) (Syn.shift D) (Syn.shift x)) +
+      natEq (hD'.wk (ψ := lt (var 0) (Syn.shift (succ N))))
   have H : Γ ⊢[PRAAx] le (pw Q (succ N) * ap2 (prodF dB) (succ N) (pairT D x))
       (pw D (succ N) * ap2 (prodF (tB t)) (succ N) (pairT D x)) :=
     le_congr (congrMul (.eqRefl _) pa.eqSymm)

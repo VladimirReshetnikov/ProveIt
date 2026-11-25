@@ -204,7 +204,7 @@ private theorem per₀ (P : Persist o) : ([] : List (Fm PTm 3)) ⊢[PRAAx] perF 
       .impE Prf.hyp1 hp
     have st := P.keep (pos_of_eq_succ (c := pred (inst2 o (var 1 : PTm 3) (var 2)))
       (ih.eqTrans hp))
-    exact ((congrInst2 o (by apply deriveNat; ipra_simps; ring) (.eqRefl _)).eqTrans st).eqTrans ih
+    exact ((congrInst2 o (by ipra_ring) (.eqRefl _)).eqTrans st).eqTrans ih
 
 /-- A nonzero observation is kept `d` steps later. -/
 theorem persist_add (P : Persist o) {n e : PTm k} (d : PTm k)

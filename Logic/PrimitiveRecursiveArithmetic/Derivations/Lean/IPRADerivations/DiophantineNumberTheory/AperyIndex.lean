@@ -64,7 +64,7 @@ theorem key {q N : PTm k} (hN : Γ ⊢[PRAAx] le (num 6 * (q + num 243)) N) :
     (pw_add _ _ _).eqTrans (congrMul (.eqRefl _) (pw_num 2 243))
   have e28 := base_split (Γ := Γ) (a := 28) (b := 4) (c := 7) rfl N
   have e32 := base_split (Γ := Γ) (a := 32) (b := 4) (c := 8) rfl N
-  have h2 : Γ ⊢[PRAAx] le two (num 2) := le_of_eq_add (d := zero) (by apply deriveNat; ipra_simps; ring)
+  have h2 : Γ ⊢[PRAAx] le two (num 2) := le_of_eq_add (d := zero) (by ipra_ring)
   have hq := lt_pw h2 q
   have hq' : Γ ⊢[PRAAx] le (succ q) (pw (num 2) q) := hq
   have h4 : Γ ⊢[PRAAx] (num 4 : PTm k) ≐ succ (pred (num 4)) :=
@@ -98,7 +98,7 @@ theorem index (q : PTm k) :
   have h42 : Γ ⊢[PRAAx] (num 42 : PTm k) ≐ succ (pred (num 42)) :=
     show Γ ⊢[PRAAx] succ (num 41) ≐ succ (pred (succ (num 41))) from congrSucc (pred_succ _).eqSymm
   have p0 := natEq (pw_pos' h42 q)
-  have h2 : Γ ⊢[PRAAx] le two (num 42) := le_of_eq_add (d := num 40) (by apply deriveNat; ipra_simps; ring)
+  have h2 : Γ ⊢[PRAAx] le two (num 42) := le_of_eq_add (d := num 40) (by ipra_ring)
   have hl : Γ ⊢[PRAAx] le (succ (succ q)) (pw (num 42) (succ q)) := lt_pw h2 (succ q)
   have n48 : Γ ⊢[PRAAx] le (num 48) (nq q) := by
     ipra_le 1764 * 𝔞 (pred (pw (num 42) q)) + 1716 using linear_combination p1 + 42 * p2 + 1764 * p0

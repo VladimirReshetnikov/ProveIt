@@ -1,4 +1,5 @@
 import IPRADerivations.Probability.ExpectationCorollaries
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The weighted Lagrange identity and equality in Cauchy–Schwarz
@@ -82,33 +83,24 @@ theorem row_identity (U V x M : PTm n) :
       Syn.shift U * Syn.shift U * ap2 (sumF (Bb w v)) (var 0) (Syn.shift x) +
         Syn.shift V * Syn.shift V * ap2 (sumF (Ab w u)) (var 0) (Syn.shift x)) := by
     refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq, PTm.subst_add, PTm.subst_mul, subst_ap2, subst_pairT, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      have z1 := natEq (sum_zero (Γ := Γ) (eB w u v) (pairT (pairT U V) x))
-      have z2 := natEq (sum_zero (Γ := Γ) (Cb w u v) x)
-      have z3 := natEq (sum_zero (Γ := Γ) (Bb w v) x)
-      have z4 := natEq (sum_zero (Γ := Γ) (Ab w u) x)
-      apply deriveNat; ipra_simps
-      linear_combination z1 + 2 * 𝔞 U * 𝔞 V * z2 - 𝔞 U * 𝔞 U * z3 - 𝔞 V * 𝔞 V * z4
+    · ipra_lc [Fm.subst_eq, PTm.subst_add, PTm.subst_mul, subst_ap2, subst_pairT, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] natEq (sum_zero (Γ := Γ) (eB w u v) (pairT (pairT U V) x)) +
+        2 * 𝔞 U * 𝔞 V * natEq (sum_zero (Γ := Γ) (Cb w u v) x) - 𝔞 U * 𝔞 U * natEq (sum_zero (Γ := Γ) (Bb w v) x) -
+        𝔞 V * 𝔞 V * natEq (sum_zero (Γ := Γ) (Ab w u) x)
     · simp only [Fm.subst_eq, PTm.subst_add, PTm.subst_mul, subst_ap2, subst_pairT, Syn.subst_var, Syn.repl_zero,
         subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
       let D : List (Fm PTm (n + 1)) := (ap2 (sumF (eB w u v)) (var 0) (pairT (pairT (Syn.shift U) (Syn.shift V)) (Syn.shift x)) +
         two * (Syn.shift U * Syn.shift V) * ap2 (sumF (Cb w u v)) (var 0) (Syn.shift x) ≐
         Syn.shift U * Syn.shift U * ap2 (sumF (Bb w v)) (var 0) (Syn.shift x) +
           Syn.shift V * Syn.shift V * ap2 (sumF (Ab w u)) (var 0) (Syn.shift x)) :: Γ.map Fm.shift
-      have ih := natEq (Prf.hyp0 : D ⊢[PRAAx] _)
       have s1 := sum_succ' (Γ := D) (eB w u v) (var 0) (pairT (pairT (Syn.shift U) (Syn.shift V)) (Syn.shift x))
       have s2 := sum_succ' (Γ := D) (Cb w u v) (var 0) (Syn.shift x)
       have s3 := sum_succ' (Γ := D) (Bb w v) (var 0) (Syn.shift x)
       have s4 := sum_succ' (Γ := D) (Ab w u) (var 0) (Syn.shift x)
       rw [inst2_mul', inst2_mul'] at s2 s3 s4
-      have e1 := natEq (s1.eqTrans (congrAdd (.eqRefl _) (eB_at w u v _ _ _ _)))
-      have e2 := natEq s2; have e3 := natEq s3; have e4 := natEq s4
-      have sq := natEq (ad_sq (Γ := D) (Syn.shift U * inst2 v (var 0) (Syn.shift x)) (Syn.shift V * inst2 u (var 0) (Syn.shift x)))
-      apply deriveNat; ipra_simps
-      linear_combination ih + e1 + 2 * 𝔞 (Syn.shift U) * 𝔞 (Syn.shift V) * e2 -
-        𝔞 (Syn.shift U) * 𝔞 (Syn.shift U) * e3 - 𝔞 (Syn.shift V) * 𝔞 (Syn.shift V) * e4 +
-        𝔞 (inst2 w (var 0) (Syn.shift x)) * sq
+      ipra_lc natEq (Prf.hyp0 : D ⊢[PRAAx] _) + natEq (s1.eqTrans (congrAdd (.eqRefl _) (eB_at w u v _ _ _ _))) +
+        2 * 𝔞 (Syn.shift U) * 𝔞 (Syn.shift V) * natEq s2 - 𝔞 (Syn.shift U) * 𝔞 (Syn.shift U) * natEq s3 -
+        𝔞 (Syn.shift V) * 𝔞 (Syn.shift V) * natEq s4 +
+        𝔞 (inst2 w (var 0) (Syn.shift x)) * natEq (ad_sq (Γ := D) (Syn.shift U * inst2 v (var 0) (Syn.shift x)) (Syn.shift V * inst2 u (var 0) (Syn.shift x)))
   have h := Prf.allE M hall
   simp only [Fm.subst_eq, PTm.subst_add, PTm.subst_mul, subst_ap2, subst_pairT, Syn.subst_var, Syn.inst_zero,
     Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at h
@@ -122,35 +114,26 @@ theorem lagrange (M x : PTm n) :
       ap2 (sumF (Cb w u v)) (var 0) (Syn.shift x) * ap2 (sumF (Cb w u v)) (var 0) (Syn.shift x) +
         ap2 (sumF (DB w u v)) (var 0) (Syn.shift x)) := by
     refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq, PTm.subst_add, PTm.subst_mul, subst_ap2, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
-      have z1 := natEq (sum_zero (Γ := Γ) (Ab w u) x); have z2 := natEq (sum_zero (Γ := Γ) (Bb w v) x)
-      have z3 := natEq (sum_zero (Γ := Γ) (Cb w u v) x); have z4 := natEq (sum_zero (Γ := Γ) (DB w u v) x)
-      apply deriveNat; ipra_simps
-      linear_combination 𝔞 (ap2 (sumF (Bb w v)) zero x) * z1 - z4 -
-        (𝔞 (ap2 (sumF (Cb w u v)) zero x)) * z3
+    · ipra_lc [Fm.subst_eq, PTm.subst_add, PTm.subst_mul, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero] 𝔞 (ap2 (sumF (Bb w v)) zero x) * natEq (sum_zero (Γ := Γ) (Ab w u) x) -
+        natEq (sum_zero (Γ := Γ) (DB w u v) x) -
+        (𝔞 (ap2 (sumF (Cb w u v)) zero x)) * natEq (sum_zero (Γ := Γ) (Cb w u v) x)
     · simp only [Fm.subst_eq, PTm.subst_add, PTm.subst_mul, subst_ap2, Syn.subst_var, Syn.repl_zero,
         subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
       let D : List (Fm PTm (n + 1)) := (ap2 (sumF (Ab w u)) (var 0) (Syn.shift x) * ap2 (sumF (Bb w v)) (var 0) (Syn.shift x) ≐
         ap2 (sumF (Cb w u v)) (var 0) (Syn.shift x) * ap2 (sumF (Cb w u v)) (var 0) (Syn.shift x) +
           ap2 (sumF (DB w u v)) (var 0) (Syn.shift x)) :: Γ.map Fm.shift
-      have ih := natEq (Prf.hyp0 : D ⊢[PRAAx] _)
       have sA := sum_succ' (Γ := D) (Ab w u) (var 0) (Syn.shift x)
       have sB := sum_succ' (Γ := D) (Bb w v) (var 0) (Syn.shift x)
       have sC := sum_succ' (Γ := D) (Cb w u v) (var 0) (Syn.shift x)
       have sD := sum_succ' (Γ := D) (DB w u v) (var 0) (Syn.shift x)
       rw [inst2_mul', inst2_mul'] at sA sB sC
       rw [inst2_DB] at sD
-      have ri := natEq (row_identity (Γ := D) w u v (inst2 u (var 0) (Syn.shift x)) (inst2 v (var 0) (Syn.shift x))
-        (Syn.shift x) (var 0))
-      have a := natEq sA; have b := natEq sB; have c := natEq sC; have d := natEq sD
-      apply deriveNat; ipra_simps
-      linear_combination ih - 𝔞 (inst2 w (var 0) (Syn.shift x)) * ri +
-        𝔞 (ap2 (sumF (Bb w v)) (succ (var 0)) (Syn.shift x)) * a +
-        (𝔞 (ap2 (sumF (Ab w u)) (var 0) (Syn.shift x)) + 𝔞 (inst2 w (var 0) (Syn.shift x)) *
-          (𝔞 (inst2 u (var 0) (Syn.shift x)) * 𝔞 (inst2 u (var 0) (Syn.shift x)))) * b -
-        (𝔞 (ap2 (sumF (Cb w u v)) (succ (var 0)) (Syn.shift x)) + 𝔞 (ap2 (sumF (Cb w u v)) (var 0) (Syn.shift x)) +
-          𝔞 (inst2 w (var 0) (Syn.shift x)) * (𝔞 (inst2 u (var 0) (Syn.shift x)) * 𝔞 (inst2 v (var 0) (Syn.shift x)))) * c - d
+      ipra_lc natEq (Prf.hyp0 : D ⊢[PRAAx] _) -
+        𝔞 (inst2 w (var 0) (Syn.shift x)) * natEq (row_identity (Γ := D) w u v (inst2 u (var 0) (Syn.shift x)) (inst2 v (var 0) (Syn.shift x)) (Syn.shift x) (var 0)) +
+        𝔞 (ap2 (sumF (Bb w v)) (succ (var 0)) (Syn.shift x)) * natEq sA +
+        (𝔞 (ap2 (sumF (Ab w u)) (var 0) (Syn.shift x)) + 𝔞 (inst2 w (var 0) (Syn.shift x)) * (𝔞 (inst2 u (var 0) (Syn.shift x)) * 𝔞 (inst2 u (var 0) (Syn.shift x)))) * natEq sB -
+        (𝔞 (ap2 (sumF (Cb w u v)) (succ (var 0)) (Syn.shift x)) + 𝔞 (ap2 (sumF (Cb w u v)) (var 0) (Syn.shift x)) + 𝔞 (inst2 w (var 0) (Syn.shift x)) * (𝔞 (inst2 u (var 0) (Syn.shift x)) * 𝔞 (inst2 v (var 0) (Syn.shift x)))) * natEq sC -
+        natEq sD
   have h := Prf.allE M hall
   simp only [Fm.subst_eq, PTm.subst_add, PTm.subst_mul, subst_ap2, Syn.subst_var, Syn.inst_zero,
     Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero] at h
@@ -163,10 +146,9 @@ theorem cs_equality {M x i j : PTm n}
     (hj : Γ ⊢[PRAAx] lt j M) (hi : Γ ⊢[PRAAx] lt i j) :
     Γ ⊢[PRAAx] inst2 w j x * (inst2 w i x * (ad (inst2 u j x * inst2 v i x) (inst2 v j x * inst2 u i x) *
       ad (inst2 u j x * inst2 v i x) (inst2 v j x * inst2 u i x))) ≐ zero := by
-  have l := natEq (lagrange (Γ := Γ) w u v M x)
   have h' := natEq h
   have d0 : Γ ⊢[PRAAx] ap2 (sumF (DB w u v)) M x ≐ zero := by
-    apply deriveNat; ipra_simps; linear_combination h' - l
+    ipra_lc h' - natEq (lagrange (Γ := Γ) w u v M x)
   have r := sum_zero_elim (DB w u v) d0 hj
   rw [inst2_DB] at r
   refine .orE (zero_or_zero_of_mul r) (zml Prf.hyp0 _) ?_

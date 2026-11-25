@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.LogarithmExponentialCoefficients
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Literal finite exponential polynomials and their differential residual
@@ -82,12 +83,9 @@ theorem weight_self (N : PTm n) : Γ ⊢[PRAAx] weight N N ≐ one := by
 
 theorem weight_step (N k : PTm n) (hk : Γ ⊢[PRAAx] le k N) :
     Γ ⊢[PRAAx] weight (succ N) k ≐ succ N*weight N k := by
-  have a := natEq (weight_exact (succ N) k (le_trans hk (le_succ_self N)))
-  have b := natEq (weight_exact N k hk)
-  have f := natEq (fact_succ (Γ := Γ) N zero)
   refine mul_cancel (fact_pos k) ?_
-  apply deriveNat; ipra_simps
-  linear_combination a+f-(𝔞(N)+1)*b
+  ipra_lc natEq (weight_exact (succ N) k (le_trans hk (le_succ_self N)))+natEq (fact_succ (Γ := Γ) N zero)-
+    (𝔞(N)+1)*natEq (weight_exact N k hk)
 
 theorem weight_quotient (N k : PTm n) (hk : Γ ⊢[PRAAx] le k N) :
     Γ ⊢[PRAAx] quo (fact N) (fact k) ≐ weight N k :=

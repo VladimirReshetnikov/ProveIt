@@ -95,7 +95,7 @@ theorem martingale_rate (hm : ∀ i, Γ ⊢[PRAAx] (nsum fun j => if p j = i the
     have e : ∀ j, Γ ⊢[PRAAx] W j * (A (p j) + C (p j) * ad (x (p j)) (X j)) ≐
         A (p j) * W j + C (p j) * (W j * ad (X j) (x (p j))) := fun j =>
       (congrMul (.eqRefl _) (congrAdd (.eqRefl _) (congrMul (.eqRefl _) (ad_symm _ _)))).eqTrans
-        (by apply deriveNat; ipra_simps; ring)
+        (by ipra_ring)
     have ee : ∀ j, Groth.ι (Q.mk Γ (W j * (A (p j) + C (p j) * ad (x (p j)) (X j)))) =
         Groth.ι (Q.mk Γ (A (p j) * W j)) + Groth.ι (Q.mk Γ (C (p j) * (W j * ad (X j) (x (p j))))) := fun j => by
       rw [natEq (e j), Q.mk_add, map_add]
@@ -107,7 +107,7 @@ theorem martingale_rate (hm : ∀ i, Γ ⊢[PRAAx] (nsum fun j => if p j = i the
       (two * nsum fun j => C (p j) * (W j * ad (X j) (x (p j)))) := by
     have b := le_congr r1.eqSymm r2 h2
     refine le_congr (.eqRefl _) ?_ (LeanProofs.IPRA.DiophantineNumberTheory.Hurwitz.add_le_add b (le_refl _))
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   exact le_trans h12 h3
 
 end Rate

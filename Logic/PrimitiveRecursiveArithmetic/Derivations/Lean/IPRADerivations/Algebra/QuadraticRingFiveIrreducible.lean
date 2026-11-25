@@ -1,5 +1,6 @@
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Algebra.QuadraticRingFive
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Irreducibility of `2`, `3` and `1 ± θ` in `ℤ[√−5]`
@@ -99,7 +100,7 @@ theorem core {x y c : PTm n} (hx : Γ ⊢[PRAAx] (x ≐ zero) ⋎ ((x ≐ one) �
 /-! ## The three norms -/
 
 theorem one_le_4 : Γ ⊢[PRAAx] le (one : PTm n) (two * two) :=
-  le_of_eq_add (d := succ two) (by apply deriveNat; ipra_simps; ring)
+  le_of_eq_add (d := succ two) (by ipra_ring)
 
 theorem lt_4 : Γ ⊢[PRAAx] lt (two * two : PTm n) (four * four) :=
   le_of_eq_add (d := num 11) (by apply deriveNat; ipra_simps; push_cast; ring)
@@ -136,9 +137,9 @@ theorem norm_values :
     Γ ⊢[PRAAx] (N5 (two : PTm n) zero ≐ two * two) ⋏ ((N5 (succ two : PTm n) zero ≐ succ two * succ two) ⋏
       (N5 (one : PTm n) one ≐ two * succ two)) := by
   refine .andI ?_ (.andI ?_ ?_)
-  · apply deriveNat; ipra_simps; push_cast; ring
-  · apply deriveNat; ipra_simps; push_cast; ring
-  · apply deriveNat; ipra_simps; push_cast; ring
+  · ipra_lc
+  · ipra_lc
+  · ipra_lc
 
 /-! ## No matching associates, and `2` is not prime -/
 
@@ -148,10 +149,10 @@ theorem norms_distinct :
   refine .andI (.impI ?_) (.impI ?_)
   · have e := natEq (Prf.hyp0 (Γ := Γ) (φ := (two * two : PTm n) ≐ two * succ two))
     refine succ_ne_zero' _ (a := one) ?_
-    apply deriveNat; ipra_simps; linear_combination -e
+    ipra_lc -e
   · have e := natEq (Prf.hyp0 (Γ := Γ) (φ := (succ two * succ two : PTm n) ≐ two * succ two))
     refine succ_ne_zero' _ (a := two) ?_
-    apply deriveNat; ipra_simps; linear_combination e
+    ipra_lc e
 
 /-- **`2` is not prime**: `2a ≠ 1`, so `2` divides neither `1 + θ` nor `1 − θ`. -/
 theorem two_not_dvd (a : PTm n) : Γ ⊢[PRAAx] neg (two * a ≐ one) := by
@@ -159,12 +160,10 @@ theorem two_not_dvd (a : PTm n) : Γ ⊢[PRAAx] neg (two * a ≐ one) := by
   have e : ((two * a ≐ one) :: Γ) ⊢[PRAAx] two * a ≐ one := Prf.hyp0
   refine .orE (zero_or_succ a) ?_ ?_
   · have x := natEq (e.wk (ψ := a ≐ zero))
-    have a0 := natEq (Prf.hyp0 (Γ := (two * a ≐ one) :: Γ) (φ := a ≐ zero))
     refine succ_ne_zero' _ (a := zero) ?_
-    apply deriveNat; ipra_simps; linear_combination -x + 2 * a0
+    ipra_lc -x + 2 * natEq (Prf.hyp0 (Γ := (two * a ≐ one) :: Γ) (φ := a ≐ zero))
   · have x := natEq (e.wk (ψ := a ≐ succ (pred a)))
-    have ap := natEq (Prf.hyp0 (Γ := (two * a ≐ one) :: Γ) (φ := a ≐ succ (pred a)))
     refine succ_ne_zero' _ (a := two * pred a) ?_
-    apply deriveNat; ipra_simps; linear_combination x - 2 * ap
+    ipra_lc x - 2 * natEq (Prf.hyp0 (Γ := (two * a ≐ one) :: Γ) (φ := a ≐ succ (pred a)))
 
 end LeanProofs.IPRA.Algebra.QuadraticRingFiveIrreducible

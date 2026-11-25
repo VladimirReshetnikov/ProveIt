@@ -1,5 +1,6 @@
 import IPRADerivations.Algebra.QuadraticTowerDifferenceIdentities
 import IPRADerivations.Algebra.QuadraticRationalSignDispatch
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Actual rational difference signs and order at every numerical tower depth
@@ -113,9 +114,7 @@ theorem equal_of_cross_zero (q r : PTm n) (h : Γ ⊢[PRAAx] ZT.eq (QuadraticRat
     Γ ⊢[PRAAx] RationalArgmin.rationalEq q r := by
   have hz := ZT.toZ_eq h
   rw [cross_value,ZT.toZ_ofNat] at hz
-  simp only [Q.mk_zero,map_zero] at hz
-  apply deriveNat
-  linear_combination hz
+  ipra_lc hz
 
 theorem positive_cross_of_less (q r : PTm n) (h : Γ ⊢[PRAAx] rationalLess q r) : Γ ⊢[PRAAx]
     zle (ZT.ofNat one) (QuadraticRationalEmbedding.crossNumerator r q) :=

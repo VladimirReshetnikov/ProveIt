@@ -1,4 +1,5 @@
 import IPRADerivations.Geometry.TriangleCentres
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Lines, intersections, Pasch, Ceva, Menelaus, affine maps and Desargues
@@ -47,131 +48,94 @@ def det3 (a b c d e f g h i : ZT n) : ZT n := a * (e * i - f * h) - b * (d * i -
 
 local notation:max "ζ" t:max => ZT.toZ Γ t
 
-local macro "gsimp" loc:(Lean.Parser.Tactic.location)? : tactic =>
-  `(tactic| simp only [hw, det3, dot, det, nsq, zsl_def, ZT.toZ_add, ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_neg,
-    ZT.toZ_sq, ZT.toZ_natLit, Nat.cast_ofNat, Nat.cast_zero, Nat.cast_one] $[$loc]?)
-
-local macro "geo" : tactic => `(tactic| (apply ZT.derive; gsimp; ring))
+attribute [local ipra_defs] hw det3 dot det nsq
 
 /-! ## Lines and their intersection -/
 
 /-- `N(u) v = (u · v) u + [u, v] J u`, first coordinate. -/
 theorem frame₁ (u₁ u₂ v₁ v₂ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (nsq u₁ u₂ * v₁) (dot u₁ u₂ v₁ v₂ * u₁ - det u₁ u₂ v₁ v₂ * u₂) := by
-  geo
+  ipra_lc
 
 /-- `N(u) v = (u · v) u + [u, v] J u`, second coordinate. -/
 theorem frame₂ (u₁ u₂ v₁ v₂ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (nsq u₁ u₂ * v₂) (dot u₁ u₂ v₁ v₂ * u₂ + det u₁ u₂ v₁ v₂ * u₁) := by
-  geo
+  ipra_lc
 
 /-- A vector with `[u, v] = 0` is a multiple of `u`, first coordinate. -/
 theorem parallel_multiple₁ {u₁ u₂ v₁ v₂ : ZT n} (h : Γ ⊢[PRAAx] ZT.eq (det u₁ u₂ v₁ v₂) (ZT.natLit 0)) :
     Γ ⊢[PRAAx] ZT.eq (nsq u₁ u₂ * v₁) (dot u₁ u₂ v₁ v₂ * u₁) := by
-  have e := ZT.toZ_eq h
-  apply ZT.derive
-  gsimp at e ⊢
-  linear_combination -ζ u₂ * e
+  ipra_lc -ζ u₂ * ZT.toZ_eq h
 
 /-- A vector with `[u, v] = 0` is a multiple of `u`, second coordinate. -/
 theorem parallel_multiple₂ {u₁ u₂ v₁ v₂ : ZT n} (h : Γ ⊢[PRAAx] ZT.eq (det u₁ u₂ v₁ v₂) (ZT.natLit 0)) :
     Γ ⊢[PRAAx] ZT.eq (nsq u₁ u₂ * v₂) (dot u₁ u₂ v₁ v₂ * u₂) := by
-  have e := ZT.toZ_eq h
-  apply ZT.derive
-  gsimp at e ⊢
-  linear_combination ζ u₁ * e
+  ipra_lc ζ u₁ * ZT.toZ_eq h
 
 /-- `[w, v] u − [w, u] v = [u, v] w`, first coordinate. -/
 theorem cramer₁ (u₁ u₂ v₁ v₂ w₁ w₂ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (det w₁ w₂ v₁ v₂ * u₁ - det w₁ w₂ u₁ u₂ * v₁) (det u₁ u₂ v₁ v₂ * w₁) := by
-  geo
+  ipra_lc
 
 /-- `[w, v] u − [w, u] v = [u, v] w`, second coordinate. -/
 theorem cramer₂ (u₁ u₂ v₁ v₂ w₁ w₂ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (det w₁ w₂ v₁ v₂ * u₂ - det w₁ w₂ u₁ u₂ * v₂) (det u₁ u₂ v₁ v₂ * w₂) := by
-  geo
+  ipra_lc
 
 /-- An intersection `t u − s v = w` has `t [u, v] = [w, v]`. -/
 theorem intersection_t {u₁ u₂ v₁ v₂ w₁ w₂ t s : ZT n}
     (h1 : Γ ⊢[PRAAx] ZT.eq (t * u₁ - s * v₁) w₁) (h2 : Γ ⊢[PRAAx] ZT.eq (t * u₂ - s * v₂) w₂) :
     Γ ⊢[PRAAx] ZT.eq (t * det u₁ u₂ v₁ v₂) (det w₁ w₂ v₁ v₂) := by
-  have e1 := ZT.toZ_eq h1
-  have e2 := ZT.toZ_eq h2
-  apply ZT.derive
-  gsimp at e1 e2 ⊢
-  linear_combination ζ v₂ * e1 - ζ v₁ * e2
+  ipra_lc ζ v₂ * ZT.toZ_eq h1 - ζ v₁ * ZT.toZ_eq h2
 
 /-- An intersection `t u − s v = w` has `s [u, v] = [w, u]`. -/
 theorem intersection_s {u₁ u₂ v₁ v₂ w₁ w₂ t s : ZT n}
     (h1 : Γ ⊢[PRAAx] ZT.eq (t * u₁ - s * v₁) w₁) (h2 : Γ ⊢[PRAAx] ZT.eq (t * u₂ - s * v₂) w₂) :
     Γ ⊢[PRAAx] ZT.eq (s * det u₁ u₂ v₁ v₂) (det w₁ w₂ u₁ u₂) := by
-  have e1 := ZT.toZ_eq h1
-  have e2 := ZT.toZ_eq h2
-  apply ZT.derive
-  gsimp at e1 e2 ⊢
-  linear_combination ζ u₂ * e1 - ζ u₁ * e2
+  ipra_lc ζ u₂ * ZT.toZ_eq h1 - ζ u₁ * ZT.toZ_eq h2
 
 /-- Parallel lines with a common point coincide: `[w, u] = 0`. -/
 theorem parallel_coincide {u₁ u₂ v₁ v₂ w₁ w₂ t s : ZT n}
     (hd : Γ ⊢[PRAAx] ZT.eq (det u₁ u₂ v₁ v₂) (ZT.natLit 0))
     (h1 : Γ ⊢[PRAAx] ZT.eq (t * u₁ - s * v₁) w₁) (h2 : Γ ⊢[PRAAx] ZT.eq (t * u₂ - s * v₂) w₂) :
     Γ ⊢[PRAAx] ZT.eq (det w₁ w₂ u₁ u₂) (ZT.natLit 0) := by
-  have ed := ZT.toZ_eq hd
-  have e1 := ZT.toZ_eq h1
-  have e2 := ZT.toZ_eq h2
-  apply ZT.derive
-  gsimp at ed e1 e2 ⊢
-  linear_combination ζ s * ed - (ζ u₂ * e1 - ζ u₁ * e2)
+  ipra_lc ζ s * ZT.toZ_eq hd - (ζ u₂ * ZT.toZ_eq h1 - ζ u₁ * ZT.toZ_eq h2)
 
 /-! ## Pasch -/
 
 /-- The weights of the Pasch point on `B P` add up to `H`. -/
 theorem pasch_BP_weights (r s m k : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (s * m + r * (k - s)) (hw r s m k) := by
-  geo
+  ipra_lc
 
 /-- The weights of the Pasch point on `A Q` add up to `H`. -/
 theorem pasch_AQ_weights (r s m k : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (s * (m - r) + r * k) (hw r s m k) := by
-  geo
+  ipra_lc
 
 /-- The Pasch point is on `B P`: `H X = (s m) P + r (k − s) B`. -/
 theorem pasch_on_BP {A B C P X r s m k : ZT n}
     (hP : Γ ⊢[PRAAx] ZT.eq (m * P) ((m - r) * A + r * C))
     (hX : Γ ⊢[PRAAx] ZT.eq (hw r s m k * X) (s * (m - r) * A + r * (k - s) * B + r * s * C)) :
     Γ ⊢[PRAAx] ZT.eq (hw r s m k * X) (s * (m * P) + r * (k - s) * B) := by
-  have eP := ZT.toZ_eq hP
-  have eX := ZT.toZ_eq hX
-  apply ZT.derive
-  gsimp at eP eX ⊢
-  linear_combination eX - ζ s * eP
+  ipra_lc ZT.toZ_eq hX - ζ s * ZT.toZ_eq hP
 
 /-- The Pasch point is on `A Q`: `H X = s (m − r) A + (r k) Q`. -/
 theorem pasch_on_AQ {A B C Q X r s m k : ZT n}
     (hQ : Γ ⊢[PRAAx] ZT.eq (k * Q) ((k - s) * B + s * C))
     (hX : Γ ⊢[PRAAx] ZT.eq (hw r s m k * X) (s * (m - r) * A + r * (k - s) * B + r * s * C)) :
     Γ ⊢[PRAAx] ZT.eq (hw r s m k * X) (s * (m - r) * A + r * (k * Q)) := by
-  have eQ := ZT.toZ_eq hQ
-  have eX := ZT.toZ_eq hX
-  apply ZT.derive
-  gsimp at eQ eX ⊢
-  linear_combination eX - ζ r * eQ
+  ipra_lc ZT.toZ_eq hX - ζ r * ZT.toZ_eq hQ
 
 /-- The weight of `B` on `B P` is positive. -/
 theorem pasch_pos_BP {r s k : ZT n} (hr : Γ ⊢[PRAAx] zle (ZT.natLit 1) r)
     (hsk : Γ ⊢[PRAAx] zle (s + ZT.natLit 1) k) : Γ ⊢[PRAAx] zle (ZT.natLit 1) (r * (k - s)) := by
-  refine zle_of_comb (zsl hr * zsl hsk + zsl hr + zsl hsk) ?_
-    (nn_add (nn_add (nn_mul (nn_zsl _) (nn_zsl _)) (nn_zsl _)) (nn_zsl _))
-  gsimp
-  ring
+  ipra_zle (zsl hr * zsl hsk + zsl hr + zsl hsk)
 
 /-- The weight of `A` on `A Q` is positive. -/
 theorem pasch_pos_AQ {r s m : ZT n} (hs : Γ ⊢[PRAAx] zle (ZT.natLit 1) s)
     (hrm : Γ ⊢[PRAAx] zle (r + ZT.natLit 1) m) : Γ ⊢[PRAAx] zle (ZT.natLit 1) (s * (m - r)) := by
-  refine zle_of_comb (zsl hs * zsl hrm + zsl hs + zsl hrm) ?_
-    (nn_add (nn_add (nn_mul (nn_zsl _) (nn_zsl _)) (nn_zsl _)) (nn_zsl _))
-  gsimp
-  ring
+  ipra_zle (zsl hs * zsl hrm + zsl hs + zsl hrm)
 
 /-! ## Ceva and Menelaus -/
 
@@ -180,37 +144,29 @@ theorem ceva_necessary {d dc e ec f fc x y z : ZT n}
     (h1 : Γ ⊢[PRAAx] ZT.eq (d * y) (dc * z)) (h2 : Γ ⊢[PRAAx] ZT.eq (ec * x) (e * z))
     (h3 : Γ ⊢[PRAAx] ZT.eq (f * x) (fc * y)) :
     Γ ⊢[PRAAx] ZT.eq (d * e * f * (x * y * z)) (dc * ec * fc * (x * y * z)) := by
-  have e1 := ZT.toZ_eq h1
-  have e2 := ZT.toZ_eq h2
-  have e3 := ZT.toZ_eq h3
-  apply ZT.derive
-  gsimp at e1 e2 e3 ⊢
-  linear_combination (ζ e * ζ z) * (ζ f * ζ x) * e1 - (ζ dc * ζ z) * (ζ f * ζ x) * e2 +
-    (ζ dc * ζ z) * (ζ ec * ζ x) * e3
+  ipra_lc (ζ e * ζ z) * (ζ f * ζ x) * ZT.toZ_eq h1 - (ζ dc * ζ z) * (ζ f * ζ x) * ZT.toZ_eq h2 +
+    (ζ dc * ζ z) * (ζ ec * ζ x) * ZT.toZ_eq h3
 
 /-- The point `(d e, dc ec, d ec)` is on the cevian `A D`. -/
 theorem ceva_point_AD (d dc ec : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (d * (dc * ec)) (dc * (d * ec)) := by
-  geo
+  ipra_lc
 
 /-- The point `(d e, dc ec, d ec)` is on the cevian `B E`. -/
 theorem ceva_point_BE (d e ec : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (ec * (d * e)) (e * (d * ec)) := by
-  geo
+  ipra_lc
 
 /-- Under Ceva's condition the point `(d e, dc ec, d ec)` is on the cevian `C F`. -/
 theorem ceva_point_CF {d dc e ec f fc : ZT n} (h : Γ ⊢[PRAAx] ZT.eq (d * e * f) (dc * ec * fc)) :
     Γ ⊢[PRAAx] ZT.eq (f * (d * e)) (fc * (dc * ec)) := by
-  have e0 := ZT.toZ_eq h
-  apply ZT.derive
-  gsimp at e0 ⊢
-  linear_combination e0
+  ipra_lc ZT.toZ_eq h
 
 /-- The barycentric determinant of Menelaus: `dc ec fc + d e f`. -/
 theorem menelaus_bary (d dc e ec f fc : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (det3 (ZT.natLit 0) dc d e (ZT.natLit 0) ec fc f (ZT.natLit 0))
       (dc * ec * fc + d * e * f) := by
-  geo
+  ipra_lc
 
 /-- The determinant of the three division points, in homogeneous coordinates. -/
 theorem menelaus_det (d dc e ec f fc a₁ a₂ b₁ b₂ c₁ c₂ : ZT n) :
@@ -219,7 +175,7 @@ theorem menelaus_det (d dc e ec f fc a₁ a₂ b₁ b₂ c₁ c₂ : ZT n) :
         (fc * a₁ + f * b₁) (fc * a₂ + f * b₂) (f + fc))
       ((dc * ec * fc + d * e * f) *
         det3 a₁ a₂ (ZT.natLit 1) b₁ b₂ (ZT.natLit 1) c₁ c₂ (ZT.natLit 1)) := by
-  geo
+  ipra_lc
 
 /-! ## Affine maps and Desargues -/
 
@@ -228,23 +184,23 @@ theorem map_det (t₁₁ t₁₂ t₂₁ t₂₂ u₁ u₂ v₁ v₂ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq
       (det (t₁₁ * u₁ + t₁₂ * u₂) (t₂₁ * u₁ + t₂₂ * u₂) (t₁₁ * v₁ + t₁₂ * v₂) (t₂₁ * v₁ + t₂₂ * v₂))
       ((t₁₁ * t₂₂ - t₁₂ * t₂₁) * det u₁ u₂ v₁ v₂) := by
-  geo
+  ipra_lc
 
 /-- A linear map commutes with combinations (one row). -/
 theorem map_combination (t₁ t₂ r s a₁ a₂ b₁ b₂ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (t₁ * (r * a₁ + s * b₁) + t₂ * (r * a₂ + s * b₂))
       (r * (t₁ * a₁ + t₂ * a₂) + s * (t₁ * b₁ + t₂ * b₂)) := by
-  geo
+  ipra_lc
 
 /-- `t_j B_i − t_i B_j = t_j A_i − t_i A_j` for `B_i = A_i + t_i O`. -/
 theorem desargues_side (a b o ti tj : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (tj * (a + ti * o) - ti * (b + tj * o)) (tj * a - ti * b) := by
-  geo
+  ipra_lc
 
 /-- `t₃ P₁₂ − t₂ P₁₃ + t₁ P₂₃ = 0`. -/
 theorem desargues_collinear (a₁ a₂ a₃ t₁ t₂ t₃ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq
       (t₃ * (t₂ * a₁ - t₁ * a₂) - t₂ * (t₃ * a₁ - t₁ * a₃) + t₁ * (t₃ * a₂ - t₂ * a₃)) (ZT.natLit 0) := by
-  geo
+  ipra_lc
 
 end LeanProofs.IPRA.Geometry.AffineIncidence

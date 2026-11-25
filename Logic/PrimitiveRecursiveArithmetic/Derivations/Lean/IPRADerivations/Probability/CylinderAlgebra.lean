@@ -1,6 +1,7 @@
 import IPRADerivations.Core.SumLemmas
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Probability.Variance
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The cylinder algebra: union, intersection and additivity as bounded sums
@@ -46,10 +47,7 @@ theorem monus_le_self (B A : PTm n) : Γ ⊢[PRAAx] le (monus B A) B := by
 
 /-- The row identity `(A ∨ B) + (A ∧ B) = A + B`. -/
 theorem point_law (A B : PTm n) : Γ ⊢[PRAAx] A + monus B A + monus B (monus B A) ≐ A + B := by
-  have e := natEq (eq_add_of_le (monus_le_self (Γ := Γ) B A))
-  apply deriveNat
-  ipra_simps
-  linear_combination -e
+  ipra_lc -natEq (eq_add_of_le (monus_le_self (Γ := Γ) B A))
 
 variable (a b : PTm 2)
 
@@ -86,11 +84,7 @@ theorem union_bound (N x : PTm n) :
 /-- Finite additivity: events whose intersection has mass zero. -/
 theorem additivity (N x : PTm n) (h0 : Γ ⊢[PRAAx] ap2 (sumF (andB a b)) N x ≐ zero) :
     Γ ⊢[PRAAx] ap2 (sumF (orB a b)) N x ≐ ap2 (sumF a) N x + ap2 (sumF b) N x := by
-  have e := natEq (union_law (Γ := Γ) a b N x)
-  have e0 := natEq h0
-  apply deriveNat
-  ipra_simps
-  linear_combination e - e0
+  ipra_lc natEq (union_law (Γ := Γ) a b N x) - natEq h0
 
 /-- The complement of an event. -/
 def notB : PTm 2 := monus one a
@@ -108,10 +102,7 @@ theorem complement_law (N x : PTm n)
     have e1 : inst2 (one : PTm 2) (var 0) (Syn.shift x) = one := by simp [inst2]
     rw [inst2_addBody, inst2_notB, e1]
     have hle := Prf.impE h01.allOpen.wk Prf.hyp0
-    have e := natEq (eq_add_of_le hle)
-    apply deriveNat
-    ipra_simps
-    linear_combination -e
+    ipra_lc -natEq (eq_add_of_le hle)
   exact h₁.eqSymm.eqTrans (h₃.eqTrans (sum_one N x))
 
 end LeanProofs.IPRA.Probability.CylinderAlgebra

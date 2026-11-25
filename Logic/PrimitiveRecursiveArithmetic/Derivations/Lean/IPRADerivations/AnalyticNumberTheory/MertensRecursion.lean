@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.MobiusFloor
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The recursion of the Mertens function
@@ -57,8 +58,7 @@ theorem gN_one (x : PTm n) : Γ ⊢[PRAAx] inst2 GNB one x ≐ MN x := by
   exact (congrMul s1 (congrAp2 _ (RSA.quo_one x) (.eqRefl _))).eqTrans (one_mul _)
 
 theorem succ_split {x : PTm n} (hx : Γ ⊢[PRAAx] x ≐ succ (pred x)) : Γ ⊢[PRAAx] succ x ≐ two + pred x := by
-  have a := natEq hx
-  apply deriveNat; ipra_simps; linear_combination a
+  ipra_lc natEq hx
 
 /-- `∑_{a ≤ x} G(a) = (G(0) + G(1)) + ∑_{2 ≤ a ≤ x} G(a)` for `x ≥ 1`. -/
 theorem peel (G : PTm 2) {x : PTm n} (hx : Γ ⊢[PRAAx] x ≐ succ (pred x)) :

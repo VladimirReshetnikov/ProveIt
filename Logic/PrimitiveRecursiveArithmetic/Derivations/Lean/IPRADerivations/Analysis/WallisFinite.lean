@@ -289,7 +289,7 @@ theorem J1_bounds {M₀ L : PTm n} (hL : Γ ⊢[PRAAx] le (two * (succ M₀ * su
 /-! ## The iterated bounds (`eq:evenerr`, `eq:odderr`) -/
 
 theorem two_succ (m : PTm n) : Γ ⊢[PRAAx] two * succ m ≐ succ (succ (two * m)) := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- `eq:evenerr`: `|J_{2m} − p_m J_0| ≤ 8m(m+1)/M`, cleared:
 `|db m · 𝒥_{2m} − da m · F^{2m} 𝒥_0| ≤ 8m(m+1) · db m · F^{2m+1}`. -/
@@ -302,7 +302,7 @@ abbrev EvInv (m M₀ L : PTm n) : Fm PTm n :=
 
 theorem ev_base (M₀ L : PTm n) : Γ ⊢[PRAAx] EvInv zero M₀ L := by
   have a0 := natEq (da_zero (Γ := Γ)); have b0 := natEq (db_zero (Γ := Γ))
-  have ez : Γ ⊢[PRAAx] two * zero ≐ (zero : PTm n) := by apply deriveNat; ipra_simps; ring
+  have ez : Γ ⊢[PRAAx] two * zero ≐ (zero : PTm n) := by ipra_ring
   have jz := natEq (congrAp2 (sumF Jb) (.eqRefl (succ M₀)) (congrPairT ez (.eqRefl (pairT (succ M₀) L))))
   have pz := natEq ((congrAp2 powF ez (.eqRefl (fact L))).eqTrans (pw_zero _))
   refine .andI ?_ ?_
@@ -368,8 +368,8 @@ theorem od_base {M₀ L : PTm n} (hL : Γ ⊢[PRAAx] le (two * (succ M₀ * succ
   have j1 := Prf.andE₁ jb; have j2 := Prf.andE₂ jb
   have a1 := natEq (da_succ (Γ := Γ) zero)
   have a0 := natEq (da_zero (Γ := Γ)); have b0 := natEq (db_zero (Γ := Γ))
-  have ez : Γ ⊢[PRAAx] two * zero ≐ (zero : PTm n) := by apply deriveNat; ipra_simps; ring
-  have e1 : Γ ⊢[PRAAx] two * succ zero ≐ (succ (succ zero) : PTm n) := by apply deriveNat; ipra_simps; ring
+  have ez : Γ ⊢[PRAAx] two * zero ≐ (zero : PTm n) := by ipra_ring
+  have e1 : Γ ⊢[PRAAx] two * succ zero ≐ (succ (succ zero) : PTm n) := by ipra_ring
   have jz := natEq (congrAp2 (sumF Jb) (.eqRefl (succ M₀))
     (congrPairT (congrSucc ez) (.eqRefl (pairT (succ M₀) L))))
   have pf := natEq ((congrAp2 powF e1 (.eqRefl (fact L))).eqTrans ((pw_succ (fact L) (succ zero)).eqTrans
@@ -386,7 +386,7 @@ theorem od_step {m M₀ L : PTm n} (hL : Γ ⊢[PRAAx] le (two * (succ M₀ * su
   have ihU := Prf.andE₁ ih; have ihD := Prf.andE₂ ih
   have e2 := two_succ (Γ := Γ) m
   have e4 : Γ ⊢[PRAAx] two * succ (succ m) ≐ succ (succ (succ (succ (two * m)))) := by
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   have qJ := natEq (congrAp2 (sumF Jb) (.eqRefl (succ M₀))
     (congrPairT (congrSucc e2) (.eqRefl (pairT (succ M₀) L))))
   have pF := natEq (congrAp2 powF e2 (.eqRefl (fact L)))

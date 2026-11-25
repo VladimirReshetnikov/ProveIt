@@ -4,6 +4,7 @@ import IPRADerivations.Topology.CollisionScales
 import IPRADerivations.DiophantineNumberTheory.FLTMultiples
 import IPRADerivations.AnalyticNumberTheory.SquareReciprocal
 import IPRADerivations.AnalyticNumberTheory.Totient
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Optimality of `1/√5` for the golden ratio (`hurwitz_khinchin_ipra`)
@@ -92,7 +93,7 @@ theorem both_even {P Q : PTm n} (h : Γ ⊢[PRAAx] P * P ≐ P * Q + Q * Q) :
         (h.wk.wk.eqTrans (congrAdd (congrMul eP.wk eQ) (congrMul eQ eQ))))
       refine even_ne_odd (k := two * half P * half P)
         (m := two * half P * half Q + half P + two * half Q * half Q + two * half Q) _ ?_
-      apply deriveNat; ipra_simps; linear_combination h'
+      ipra_lc h'
   · let Δ : List (Fm PTm n) := (par P ≐ one) :: Γ
     have eP : Δ ⊢[PRAAx] P ≐ two * half P + one := hP.wk.eqTrans (congrAdd (.eqRefl _) Prf.hyp0)
     refine .orE (par_cases (Γ := Δ) Q) ?_ ?_
@@ -103,7 +104,7 @@ theorem both_even {P Q : PTm n} (h : Γ ⊢[PRAAx] P * P ≐ P * Q + Q * Q) :
         (h.wk.wk.eqTrans (congrAdd (congrMul eP.wk eQ) (congrMul eQ eQ))))
       refine even_ne_odd (k := (two * half P + one) * half Q + two * half Q * half Q)
         (m := two * half P * half P + two * half P) _ ?_
-      apply deriveNat; ipra_simps; linear_combination -h'
+      ipra_lc -h'
     · -- both odd
       let Δ' : List (Fm PTm n) := (par Q ≐ one) :: Δ
       have eQ : Δ' ⊢[PRAAx] Q ≐ two * half Q + one := hQ.wk.wk.eqTrans (congrAdd (.eqRefl _) Prf.hyp0)
@@ -111,7 +112,7 @@ theorem both_even {P Q : PTm n} (h : Γ ⊢[PRAAx] P * P ≐ P * Q + Q * Q) :
         (h.wk.wk.eqTrans (congrAdd (congrMul eP.wk eQ) (congrMul eQ eQ))))
       refine even_ne_odd (k := two * half P * half Q + half P + num 3 * half Q + two * half Q * half Q + one)
         (m := two * half P * half P + two * half P) _ ?_
-      apply deriveNat; ipra_simps; linear_combination -h'
+      ipra_lc -h'
 
 /-- The descent invariant: `p² = pq + q²` gives `2^j ∣ p` and `2^j ∣ q`. -/
 def nInv (j p q : PTm n) : Fm PTm n :=
@@ -139,7 +140,7 @@ theorem descent_step {j p q : PTm n} (ih : Γ ⊢[PRAAx] nInv j p q) : Γ ⊢[PR
   have hN : Δ ⊢[PRAAx] pw two j * pw two j ≐ succ (pred (pw two j * pw two j)) := by
     refine pos_of_eq (e := pred (pw two j) * succ (pred (pw two j)) + pred (pw two j)) ?_
     refine (congrMul hA hA).eqTrans ?_
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   have hPQ : Δ ⊢[PRAAx] quo p (pw two j) * quo p (pw two j) ≐
       quo p (pw two j) * quo q (pw two j) + quo q (pw two j) * quo q (pw two j) := by
     refine cancel_eq hN ?_
@@ -152,11 +153,11 @@ theorem descent_step {j p q : PTm n} (ih : Γ ⊢[PRAAx] nInv j p q) : Γ ⊢[PR
   have xp : Δ ⊢[PRAAx] p ≐ pw two (succ j) * half (quo p (pw two j)) := by
     refine dp.eqTrans ((congrMul (.eqRefl _) (Prf.andE₁ ev)).eqTrans ?_)
     refine .eqTrans ?_ (congrMul es (.eqRefl _)).eqSymm
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   have xq : Δ ⊢[PRAAx] q ≐ pw two (succ j) * half (quo q (pw two j)) := by
     refine dq.eqTrans ((congrMul (.eqRefl _) (Prf.andE₂ ev)).eqTrans ?_)
     refine .eqTrans ?_ (congrMul es (.eqRefl _)).eqSymm
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   exact .andI (xp.eqTrans (congrMul (.eqRefl _) (quo_mul hB xp).eqSymm))
     (xq.eqTrans (congrMul (.eqRefl _) (quo_mul hB xq).eqSymm))
 

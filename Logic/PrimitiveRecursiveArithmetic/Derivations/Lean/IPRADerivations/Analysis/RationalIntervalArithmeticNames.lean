@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.RationalIntervalArithmeticPrecision
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual positive interval arithmetic at any sufficient common offset
@@ -26,9 +27,7 @@ local notation "𝔟" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 theorem power_congr {q r e f : PTm n} (hq : Γ ⊢[PRAAx] q ≐ r) (he : Γ ⊢[PRAAx] e ≐ f) : Γ ⊢[PRAAx]
     RationalMultiplicativeConvexity.power q e ≐ RationalMultiplicativeConvexity.power r f := by
-  have h := Prf.eqCongr (RationalMultiplicativeConvexity.power (var 0) (var 1) : PTm 2)
-    (σ := ![q,e]) (σ' := ![r,f]) (fun i => by fin_cases i; exact hq; exact he)
-  simpa using h
+  ipra_congr (RationalMultiplicativeConvexity.power (var 0) (var 1) : PTm 2) with [hq, he]
 
 theorem power_endpoint_congr (F : PR 3) {q r e f o v k l x y : PTm n}
     (hq : Γ ⊢[PRAAx] q ≐ r) (he : Γ ⊢[PRAAx] e ≐ f) (ho : Γ ⊢[PRAAx] o ≐ v)

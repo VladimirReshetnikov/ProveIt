@@ -1,4 +1,5 @@
 import IPRADerivations.Geometry.TriangleCentres
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Intersection tests for lines and circles, and inversion of generalized circles
@@ -36,11 +37,7 @@ open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
-local macro "gsimp" loc:(Lean.Parser.Tactic.location)? : tactic =>
-  `(tactic| simp only [dot, det, nsq, zsl_def, ZT.toZ_add, ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_neg,
-    ZT.toZ_sq, ZT.toZ_natLit, Nat.cast_ofNat, Nat.cast_zero, Nat.cast_one] $[$loc]?)
-
-local macro "geo" : tactic => `(tactic| (apply ZT.derive; gsimp; ring))
+attribute [local ipra_defs] dot det nsq
 
 /-! ## A line and a circle -/
 
@@ -50,27 +47,23 @@ theorem line_circle_square (w₁ w₂ v₁ v₂ t ρ : ZT n) :
       (nsq v₁ v₂ * (nsq (w₁ + t * v₁) (w₂ + t * v₂) - ρ))
       (ZT.sq (nsq v₁ v₂ * t + dot w₁ w₂ v₁ v₂) -
         (ZT.sq (dot w₁ w₂ v₁ v₂) - nsq v₁ v₂ * (nsq w₁ w₂ - ρ))) := by
-  geo
+  ipra_lc
 
 /-- A negative discriminant: a point of the line on the circle is contradictory. -/
 theorem line_misses_circle {w₁ w₂ v₁ v₂ t ρ : ZT n}
     (hon : Γ ⊢[PRAAx] ZT.eq (nsq (w₁ + t * v₁) (w₂ + t * v₂)) ρ)
     (hD : Γ ⊢[PRAAx] zle (ZT.sq (dot w₁ w₂ v₁ v₂) - nsq v₁ v₂ * (nsq w₁ w₂ - ρ) + ZT.natLit 1)
       (ZT.natLit 0)) (φ : Fm PTm n) : Γ ⊢[PRAAx] φ := by
-  have e := ZT.toZ_eq hon
-  have c := ZT.toZ_eq (line_circle_square (Γ := Γ) w₁ w₂ v₁ v₂ t ρ)
-  refine false_of_comb (ZT.toZ Γ (nsq v₁ v₂ * t + dot w₁ w₂ v₁ v₂) ^ 2 + zsl hD) ?_
-    (nn_add (nn_zsq _) (nn_zsl _)) φ
-  gsimp at e c ⊢
-  linear_combination (-1 : Groth (Q Γ)) * c +
-    (ZT.toZ Γ v₁ * ZT.toZ Γ v₁ + ZT.toZ Γ v₂ * ZT.toZ Γ v₂) * e
+  ipra_absurd (ZT.toZ Γ (nsq v₁ v₂ * t + dot w₁ w₂ v₁ v₂) ^ 2 + zsl hD) with
+    (-1 : Groth (Q Γ)) * ZT.toZ_eq (line_circle_square (Γ := Γ) w₁ w₂ v₁ v₂ t ρ) +
+    (ZT.toZ Γ v₁ * ZT.toZ Γ v₁ + ZT.toZ Γ v₂ * ZT.toZ Γ v₂) * ZT.toZ_eq hon
 
 /-- The foot of the centre on the line: `|a w − b v|² = a² |w|² − a b²`. -/
 theorem line_foot (w₁ w₂ v₁ v₂ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq
       (nsq (nsq v₁ v₂ * w₁ - dot w₁ w₂ v₁ v₂ * v₁) (nsq v₁ v₂ * w₂ - dot w₁ w₂ v₁ v₂ * v₂))
       (nsq v₁ v₂ * nsq v₁ v₂ * nsq w₁ w₂ - nsq v₁ v₂ * (dot w₁ w₂ v₁ v₂ * dot w₁ w₂ v₁ v₂)) := by
-  geo
+  ipra_lc
 
 /-! ## Two circles -/
 
@@ -79,7 +72,7 @@ theorem two_circle_axis (d₁ d₂ ρ₁ ρ₂ τ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq
       (dot ((nsq d₁ d₂ + ρ₁ - ρ₂) * d₁ - τ * d₂) ((nsq d₁ d₂ + ρ₁ - ρ₂) * d₂ + τ * d₁) d₁ d₂)
       ((nsq d₁ d₂ + ρ₁ - ρ₂) * nsq d₁ d₂) := by
-  geo
+  ipra_lc
 
 /-- The point of (C9) is on the first circle. -/
 theorem two_circle_first {d₁ d₂ ρ₁ ρ₂ τ : ZT n}
@@ -88,10 +81,7 @@ theorem two_circle_first {d₁ d₂ ρ₁ ρ₂ τ : ZT n}
     Γ ⊢[PRAAx] ZT.eq
       (nsq ((nsq d₁ d₂ + ρ₁ - ρ₂) * d₁ - τ * d₂) ((nsq d₁ d₂ + ρ₁ - ρ₂) * d₂ + τ * d₁))
       (ZT.natLit 4 * nsq d₁ d₂ * nsq d₁ d₂ * ρ₁) := by
-  have e := ZT.toZ_eq hτ
-  apply ZT.derive
-  gsimp at e ⊢
-  linear_combination (ZT.toZ Γ d₁ * ZT.toZ Γ d₁ + ZT.toZ Γ d₂ * ZT.toZ Γ d₂) * e
+  ipra_lc (ZT.toZ Γ d₁ * ZT.toZ Γ d₁ + ZT.toZ Γ d₂ * ZT.toZ Γ d₂) * ZT.toZ_eq hτ
 
 /-- The point of (C9) is on the second circle. -/
 theorem two_circle_second {d₁ d₂ ρ₁ ρ₂ τ : ZT n}
@@ -101,10 +91,7 @@ theorem two_circle_second {d₁ d₂ ρ₁ ρ₂ τ : ZT n}
       (nsq ((nsq d₁ d₂ + ρ₁ - ρ₂) * d₁ - τ * d₂ - ZT.natLit 2 * nsq d₁ d₂ * d₁)
         ((nsq d₁ d₂ + ρ₁ - ρ₂) * d₂ + τ * d₁ - ZT.natLit 2 * nsq d₁ d₂ * d₂))
       (ZT.natLit 4 * nsq d₁ d₂ * nsq d₁ d₂ * ρ₂) := by
-  have e := ZT.toZ_eq hτ
-  apply ZT.derive
-  gsimp at e ⊢
-  linear_combination (ZT.toZ Γ d₁ * ZT.toZ Γ d₁ + ZT.toZ Γ d₂ * ZT.toZ Γ d₂) * e
+  ipra_lc (ZT.toZ Γ d₁ * ZT.toZ Γ d₁ + ZT.toZ Γ d₂ * ZT.toZ Γ d₂) * ZT.toZ_eq hτ
 
 /-- A common point `y` of the two circles (`w = y − O₁`): `E = (2 [d, w])²`. -/
 theorem two_circle_square {d₁ d₂ w₁ w₂ ρ₁ ρ₂ : ZT n}
@@ -112,23 +99,15 @@ theorem two_circle_square {d₁ d₂ w₁ w₂ ρ₁ ρ₂ : ZT n}
     Γ ⊢[PRAAx] ZT.eq
       (ZT.natLit 4 * nsq d₁ d₂ * ρ₁ - ZT.sq (nsq d₁ d₂ + ρ₁ - ρ₂))
       (ZT.sq (ZT.natLit 2 * det d₁ d₂ w₁ w₂)) := by
-  have e1 := ZT.toZ_eq h1
-  have e2 := ZT.toZ_eq h2
-  apply ZT.derive
-  gsimp at e1 e2 ⊢
-  linear_combination
-    (-4 * (ZT.toZ Γ d₁ * ZT.toZ Γ d₁ + ZT.toZ Γ d₂ * ZT.toZ Γ d₂) +
-        (2 * (ZT.toZ Γ w₁ * ZT.toZ Γ d₁ + ZT.toZ Γ w₂ * ZT.toZ Γ d₂) +
-          (ZT.toZ Γ d₁ * ZT.toZ Γ d₁ + ZT.toZ Γ d₂ * ZT.toZ Γ d₂) + ZT.toZ Γ ρ₁ - ZT.toZ Γ ρ₂)) * e1 -
-      (2 * (ZT.toZ Γ w₁ * ZT.toZ Γ d₁ + ZT.toZ Γ w₂ * ZT.toZ Γ d₂) +
-        (ZT.toZ Γ d₁ * ZT.toZ Γ d₁ + ZT.toZ Γ d₂ * ZT.toZ Γ d₂) + ZT.toZ Γ ρ₁ - ZT.toZ Γ ρ₂) * e2
+  ipra_lc (-4 * (ZT.toZ Γ d₁ * ZT.toZ Γ d₁ + ZT.toZ Γ d₂ * ZT.toZ Γ d₂) + (2 * (ZT.toZ Γ w₁ * ZT.toZ Γ d₁ + ZT.toZ Γ w₂ * ZT.toZ Γ d₂) + (ZT.toZ Γ d₁ * ZT.toZ Γ d₁ + ZT.toZ Γ d₂ * ZT.toZ Γ d₂) + ZT.toZ Γ ρ₁ - ZT.toZ Γ ρ₂)) * ZT.toZ_eq h1 -
+    (2 * (ZT.toZ Γ w₁ * ZT.toZ Γ d₁ + ZT.toZ Γ w₂ * ZT.toZ Γ d₂) + (ZT.toZ Γ d₁ * ZT.toZ Γ d₁ + ZT.toZ Γ d₂ * ZT.toZ Γ d₂) + ZT.toZ Γ ρ₁ - ZT.toZ Γ ρ₂) * ZT.toZ_eq h2
 
 /-- `4 δ² r₁² − (δ² + r₁² − r₂²)² = ((r₁ + r₂)² − δ²)(δ² − (r₁ − r₂)²)`. -/
 theorem two_circle_factor (r₁ r₂ δ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq
       (ZT.natLit 4 * (δ * δ) * (r₁ * r₁) - ZT.sq (δ * δ + r₁ * r₁ - r₂ * r₂))
       ((ZT.sq (r₁ + r₂) - δ * δ) * (δ * δ - ZT.sq (r₁ - r₂))) := by
-  geo
+  ipra_lc
 
 /-! ## Inversion -/
 
@@ -139,16 +118,7 @@ theorem inversion_circle {x₁ x₂ y₁ y₂ a₁ a₂ k lam b : ZT n}
     Γ ⊢[PRAAx] ZT.eq
       (nsq y₁ y₂ * nsq y₁ y₂ * (lam * nsq x₁ x₂ + ZT.natLit 2 * dot a₁ a₂ x₁ x₂ + b))
       (nsq y₁ y₂ * (b * nsq y₁ y₂ + ZT.natLit 2 * k * dot a₁ a₂ y₁ y₂ + lam * (k * k))) := by
-  have e1 := ZT.toZ_eq hx1
-  have e2 := ZT.toZ_eq hx2
-  apply ZT.derive
-  gsimp at e1 e2 ⊢
-  linear_combination
-    (ZT.toZ Γ lam * ((ZT.toZ Γ y₁ * ZT.toZ Γ y₁ + ZT.toZ Γ y₂ * ZT.toZ Γ y₂) * ZT.toZ Γ x₁ +
-          ZT.toZ Γ k * ZT.toZ Γ y₁) +
-        2 * (ZT.toZ Γ y₁ * ZT.toZ Γ y₁ + ZT.toZ Γ y₂ * ZT.toZ Γ y₂) * ZT.toZ Γ a₁) * e1 +
-      (ZT.toZ Γ lam * ((ZT.toZ Γ y₁ * ZT.toZ Γ y₁ + ZT.toZ Γ y₂ * ZT.toZ Γ y₂) * ZT.toZ Γ x₂ +
-          ZT.toZ Γ k * ZT.toZ Γ y₂) +
-        2 * (ZT.toZ Γ y₁ * ZT.toZ Γ y₁ + ZT.toZ Γ y₂ * ZT.toZ Γ y₂) * ZT.toZ Γ a₂) * e2
+  ipra_lc (ZT.toZ Γ lam * ((ZT.toZ Γ y₁ * ZT.toZ Γ y₁ + ZT.toZ Γ y₂ * ZT.toZ Γ y₂) * ZT.toZ Γ x₁ + ZT.toZ Γ k * ZT.toZ Γ y₁) + 2 * (ZT.toZ Γ y₁ * ZT.toZ Γ y₁ + ZT.toZ Γ y₂ * ZT.toZ Γ y₂) * ZT.toZ Γ a₁) * ZT.toZ_eq hx1 +
+    (ZT.toZ Γ lam * ((ZT.toZ Γ y₁ * ZT.toZ Γ y₁ + ZT.toZ Γ y₂ * ZT.toZ Γ y₂) * ZT.toZ Γ x₂ + ZT.toZ Γ k * ZT.toZ Γ y₂) + 2 * (ZT.toZ Γ y₁ * ZT.toZ Γ y₁ + ZT.toZ Γ y₂ * ZT.toZ Γ y₂) * ZT.toZ Γ a₂) * ZT.toZ_eq hx2
 
 end LeanProofs.IPRA.Geometry.CircleIntersections

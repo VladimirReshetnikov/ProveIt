@@ -71,7 +71,7 @@ theorem half_bound (e : PTm n) : Γ ⊢[PRAAx] le (num 2 * pw e (succ e)) (pw (s
   have h := bern_hom (Γ := Γ) e one e
   have p := natEq (pw_succ (Γ := Γ) e e)
   have c := natEq (congrAp2 (Γ := Γ) powF (.eqRefl (succ e)) (show Γ ⊢[PRAAx] e + one ≐ succ e by
-    apply deriveNat; ipra_simps; ring))
+    ipra_ring))
   ipra_le sl h + 𝔟 (pw e e) using
     rw [p] at *
     rw [← c]; ring

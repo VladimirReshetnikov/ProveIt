@@ -1,5 +1,6 @@
 import IPRADerivations.Combinatorics.CatalanConvolution
 import IPRADerivations.Core.ProdLemmas
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The weighted Catalan convolution
@@ -41,8 +42,8 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 /-- `C(2k + 1, k + 1) = C(2k + 1, k)`. -/
 theorem binom_odd_symm (k : PTm n) :
     Γ ⊢[PRAAx] binom (succ (two * k)) (succ k) ≐ binom (succ (two * k)) k := by
-  have hN : Γ ⊢[PRAAx] succ (two * k) ≐ k + succ k := by apply deriveNat; ipra_simps; ring
-  have hN' : Γ ⊢[PRAAx] succ (two * k) ≐ succ k + k := by apply deriveNat; ipra_simps; ring
+  have hN : Γ ⊢[PRAAx] succ (two * k) ≐ k + succ k := by ipra_ring
+  have hN' : Γ ⊢[PRAAx] succ (two * k) ≐ succ k + k := by ipra_ring
   have l₁ : Γ ⊢[PRAAx] le (succ k) (succ (two * k)) := le_of_eq_add hN'
   have l₀ : Γ ⊢[PRAAx] le k (succ (two * k)) := le_of_eq_add hN
   have g₁ : Γ ⊢[PRAAx] fact (monus (succ (two * k)) (succ k)) ≐ fact k :=
@@ -50,11 +51,9 @@ theorem binom_odd_symm (k : PTm n) :
   have g₀ : Γ ⊢[PRAAx] fact (monus (succ (two * k)) k) ≐ fact (succ k) :=
     congrAp2 factF ((congrMonus hN (.eqRefl _)).eqTrans (add_monus' _ _)) (.eqRefl _)
   refine mul_cancel (D := fact k * fact (succ k)) (pos_mul' (fact_pos _) (fact_pos _)) ?_
-  have a := natEq (binom_eq l₁); have b := natEq (binom_eq l₀)
-  have c := natEq g₁; have d := natEq g₀
-  apply deriveNat; ipra_simps
-  linear_combination -a + b - 𝔞(fact (succ k)) * 𝔞(binom (succ (two * k)) (succ k)) * c +
-    𝔞(fact k) * 𝔞(binom (succ (two * k)) k) * d
+  ipra_lc -natEq (binom_eq l₁) + natEq (binom_eq l₀) -
+    𝔞(fact (succ k)) * 𝔞(binom (succ (two * k)) (succ k)) * natEq g₁ +
+    𝔞(fact k) * 𝔞(binom (succ (two * k)) k) * natEq g₀
 
 /-! ## The odd-weighted convolution; variables `0 = i`, `1 = m` -/
 
@@ -73,7 +72,7 @@ theorem inst2_bw (i m : PTm n) :
 
 theorem odd_pt (i m : PTm n) : Γ ⊢[PRAAx] inst2 oddB i m ≐ inst2 (addBody twoW convB) i m := by
   rw [inst2_addBody, inst2_twoW, inst2_odd, inst2_w, inst2_conv]
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- `∑_{k ≤ m} (2k + 1) Cat_k Cat_{m−k} = (m + 1) Cat_{m+1}`. -/
 theorem odd_sum (m : PTm n) : Γ ⊢[PRAAx] ap2 (sumF oddB) (succ m) m ≐ succ m * cat (succ m) := by
@@ -92,9 +91,8 @@ theorem odd_sum (m : PTm n) : Γ ⊢[PRAAx] ap2 (sumF oddB) (succ m) m ≐ succ 
 
 theorem bw_pt (i m : PTm n) : Γ ⊢[PRAAx] inst2 bwB i m ≐ inst2 oddB i m := by
   rw [inst2_bw, inst2_odd]
-  have s := natEq (binom_odd_symm (Γ := Γ) i); have o := natEq (cat_odd_binom (Γ := Γ) i)
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞(cat (monus m i)) * s - 𝔞(cat (monus m i)) * o
+  ipra_lc 𝔞(cat (monus m i)) * natEq (binom_odd_symm (Γ := Γ) i) -
+    𝔞(cat (monus m i)) * natEq (cat_odd_binom (Γ := Γ) i)
 
 /-- (2.16): `∑_{k ≤ m} Cat_{m−k} C(2k + 1, k + 1) = (m + 1) Cat_{m+1}`. -/
 theorem weighted_convolution (m : PTm n) :

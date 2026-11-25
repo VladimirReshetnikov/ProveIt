@@ -1,4 +1,4 @@
-import IPRADerivations.Core.IntCertificates
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The constructive hairy ball theorem: correction, chart and search estimates
@@ -174,11 +174,6 @@ theorem round_bound {Lw L u : PTm n} (h : Γ ⊢[PRAAx] le L (num 192 * u))
 theorem round_last (Db c : Fin d → ZT n) {D Dbd cd : ZT n}
     (hb : Γ ⊢[PRAAx] ZT.eq (ZT.sumFin Db + Dbd) D) (hc : Γ ⊢[PRAAx] ZT.eq cd (D - ZT.sumFin c)) :
     Γ ⊢[PRAAx] ZT.eq (Dbd - cd) (-(ZT.sumFin fun i => Db i - c i)) := by
-  have eb := ZT.toZ_eq hb
-  have ec := ZT.toZ_eq hc
-  simp only [ZT.toZ_add, ZT.toZ_sub, ZT.toZ_sumFin] at eb ec
-  apply ZT.derive
-  simp only [ZT.toZ_sub, ZT.toZ_neg, ZT.toZ_sumFin, Finset.sum_sub_distrib]
-  linear_combination eb - ec
+  ipra_lc [Finset.sum_sub_distrib] ZT.toZ_eq hb - ZT.toZ_eq hc
 
 end LeanProofs.IPRA.Topology.HairyBallEstimates

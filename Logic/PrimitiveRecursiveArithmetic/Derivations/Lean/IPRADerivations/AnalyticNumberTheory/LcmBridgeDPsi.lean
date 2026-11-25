@@ -3,6 +3,7 @@ import IPRADerivations.AnalyticNumberTheory.RobinUpperEnd
 import IPRADerivations.AnalyticNumberTheory.RobinLogWidth
 import IPRADerivations.AnalyticNumberTheory.LcmBridgeSide
 import IPRADerivations.AnalyticNumberTheory.LcmBridgeTransfer
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # `ψ ≤ ϑ + m log P` on the logarithm names (`robin_ipra_research_2026-11-19`, `paper/lcm_bridge.tex`)
@@ -168,13 +169,10 @@ theorem theta_hi {m Kθ : PTm n} (hm : Γ ⊢[PRAAx] le (num 16) m) (hK : Γ ⊢
 abbrev four : PTm n := succ (succ (succ (succ zero)))
 
 theorem pw2_4 : Γ ⊢[PRAAx] pw two (four : PTm n) ≐ (num 16 : PTm n) := by
-  have e4 := natEq (pw_succ (Γ := Γ) (two : PTm n) (succ (succ (succ zero))))
-  have e3 := natEq (pw_succ (Γ := Γ) (two : PTm n) (succ (succ zero)))
-  have e2 := natEq (pw_succ (Γ := Γ) (two : PTm n) (succ zero))
-  have e1 := natEq (pw_succ (Γ := Γ) (two : PTm n) zero)
-  have e0 := natEq (pw_zero (Γ := Γ) (two : PTm n))
-  apply deriveNat; ipra_simps
-  linear_combination e4 + 2 * e3 + 4 * e2 + 8 * e1 + 16 * e0
+  ipra_lc natEq (pw_succ (Γ := Γ) (two : PTm n) (succ (succ (succ zero)))) +
+    2 * natEq (pw_succ (Γ := Γ) (two : PTm n) (succ (succ zero))) +
+    4 * natEq (pw_succ (Γ := Γ) (two : PTm n) (succ zero)) + 8 * natEq (pw_succ (Γ := Γ) (two : PTm n) zero) +
+    16 * natEq (pw_zero (Γ := Γ) (two : PTm n))
 
 theorem pw_two_eight : Γ ⊢[PRAAx] pw two ((four : PTm n) + four) ≐ (num 256 : PTm n) :=
   (pw_add _ _ _).eqTrans ((congrMul pw2_4 pw2_4).eqTrans (by ipra_ring))

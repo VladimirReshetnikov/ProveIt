@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianEulerEtaToOneQuadratureBound
 import IPRADerivations.Analysis.GaussianEulerNamedLowerTail
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The actual original eta-to-one Euler compact name has radius A
@@ -75,10 +76,8 @@ private theorem modulus_congr (F : PR 3) (a C E a' C' E' L x : PTm n)
 private theorem quadrature_congr (F : PR 3) (s N a C E N' a' C' E' x : PTm n)
     (hN : Γ ⊢[PRAAx] N ≐ N') (ha : Γ ⊢[PRAAx] a ≐ a') (hC : Γ ⊢[PRAAx] C ≐ C') (hE : Γ ⊢[PRAAx] E ≐ E') :
     Γ ⊢[PRAAx] quadrature F s N a C E x ≐ quadrature F s N' a' C' E' x := by
-  simpa using Prf.eqCongr (Γ := Γ) (Ax := PRAAx)
-    (quadrature F (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6)
-    (σ := ![s,N,a,C,E,x]) (σ' := ![s,N',a',C',E',x])
-    (fun i => by fin_cases i; exact .eqRefl _; exact hN; exact ha; exact hC; exact hE; exact .eqRefl _)
+  ipra_congr (quadrature F (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) with
+    [.eqRefl s, hN, ha, hC, hE, .eqRefl x]
 
 theorem finite_source (z R B H k e : PTm n) (hH : Γ ⊢[PRAAx] le one H)
     (h : Γ ⊢[PRAAx] GaussianEulerLowerPowerCoefficients.source z R B (succ e)) : Γ ⊢[PRAAx]

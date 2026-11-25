@@ -2,6 +2,7 @@ import IPRADerivations.Algebra.PowerDifference
 import IPRADerivations.AnalyticNumberTheory.PowerCleared
 import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.Core.ProdLemmas
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Dyadic arithmetic of the analytic moduli
@@ -49,13 +50,9 @@ theorem modulus_exponent (r : PTm n) :
     apply deriveNat; ipra_simps; norm_num
   have e₂ : Γ ⊢[PRAAx] (num 100 + num 140 : PTm n) ≐ num 240 := by
     apply deriveNat; ipra_simps; norm_num
-  have a := natEq (pw_mul_base (Γ := Γ) (pw two (num 14)) (succ r) (num 10))
-  have b := natEq ((pw_mul (Γ := Γ) two (num 14) (num 10)).eqTrans (congrAp2 powF e₁ (.eqRefl two)))
-  have d := natEq ((congrAp2 powF e₂.eqSymm (.eqRefl (two : PTm n))).eqTrans
-    (pw_add (Γ := Γ) two (num 100) (num 140)))
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞(pw two (num 100)) * a +
-    𝔞(pw two (num 100)) * 𝔞(pw (succ r) (num 10)) * b - 𝔞(pw (succ r) (num 10)) * d
+  ipra_lc 𝔞(pw two (num 100)) * natEq (pw_mul_base (Γ := Γ) (pw two (num 14)) (succ r) (num 10)) +
+    𝔞(pw two (num 100)) * 𝔞(pw (succ r) (num 10)) * natEq ((pw_mul (Γ := Γ) two (num 14) (num 10)).eqTrans (congrAp2 powF e₁ (.eqRefl two))) -
+    𝔞(pw (succ r) (num 10)) * natEq ((congrAp2 powF e₂.eqSymm (.eqRefl (two : PTm n))).eqTrans (pw_add (Γ := Γ) two (num 100) (num 140)))
 
 /-- `8 (r + 1) ≤ k = 8q + ρ` with `ρ < 8` gives `r + 1 ≤ q`. -/
 theorem floor_bound {r q ρ k : PTm n} (hk : Γ ⊢[PRAAx] le (num 8 * succ r) k)
@@ -64,13 +61,10 @@ theorem floor_bound {r q ρ k : PTm n} (hk : Γ ⊢[PRAAx] le (num 8 * succ r) k
   have hk' : (lt q (succ r) :: Γ) ⊢[PRAAx] le (num 8 * succ r) k := hk.wk
   have hd' : (lt q (succ r) :: Γ) ⊢[PRAAx] k ≐ num 8 * q + ρ := hd.wk
   have hρ' : (lt q (succ r) :: Γ) ⊢[PRAAx] lt ρ (num 8) := hρ.wk
-  have e₁ := natEq (eq_add_of_le (Prf.hyp0 : (lt q (succ r) :: Γ) ⊢[PRAAx] le (succ q) (succ r)))
-  have e₂ := natEq (eq_add_of_le hρ')
-  have e₃ := natEq hd'
   have big : (lt q (succ r) :: Γ) ⊢[PRAAx] le (succ k) (num 8 * succ r) := by
     refine le_of_eq_add (d := monus (num 8) (succ ρ) + num 8 * monus (succ r) (succ q)) ?_
-    apply deriveNat; ipra_simps
-    linear_combination 8 * e₁ - e₃ + e₂
+    ipra_lc 8 * natEq (eq_add_of_le (Prf.hyp0 : (lt q (succ r) :: Γ) ⊢[PRAAx] le (succ q) (succ r))) - natEq hd' +
+      natEq (eq_add_of_le hρ')
   exact not_succ_le_self k _ (le_trans big hk')
 
 theorem two_pos : Γ ⊢[PRAAx] (two : PTm n) ≐ succ (pred two) := pos_of_eq_succ (.eqRefl _)
@@ -88,8 +82,6 @@ theorem theta_rate {r q ρ k : PTm n} (hk : Γ ⊢[PRAAx] le (num 8 * succ r) k)
 /-- `1 + ∑_{j<R} 2^j = 2^R`. -/
 theorem geom_two (R : PTm n) : Γ ⊢[PRAAx] succ (gd two one R) ≐ pw two R := by
   refine add_right_cancel (c := gd two one R) ?_
-  have e := natEq (geom_sum (Γ := Γ) two R)
-  apply deriveNat; ipra_simps
-  linear_combination -e
+  ipra_lc -natEq (geom_sum (Γ := Γ) two R)
 
 end LeanProofs.IPRA.AnalyticNumberTheory.DyadicModulus

@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.ChebyshevPi
 import IPRADerivations.AnalyticNumberTheory.PrimorialUpper
 import IPRADerivations.Topology.CollisionScales
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The dyadic Chebyshev upper bound for the prime count
@@ -73,14 +74,13 @@ theorem pc_le (x : PTm n) : Γ ⊢[PRAAx] le (pc x) x := by
 /-! ## The primes of a window -/
 
 theorem mul_pos_ge {X P : PTm n} (hP : Γ ⊢[PRAAx] P ≐ succ (pred P)) : Γ ⊢[PRAAx] le X (X * P) := by
-  have a := natEq hP
   refine le_of_eq_add (d := X * pred P) ?_
-  apply deriveNat; ipra_simps; linear_combination 𝔞 X * a
+  ipra_lc 𝔞 X * natEq hP
 
-theorem mul_one_r (X : PTm n) : Γ ⊢[PRAAx] X * one ≐ X := by apply deriveNat; ipra_simps; ring
+theorem mul_one_r (X : PTm n) : Γ ⊢[PRAAx] X * one ≐ X := by ipra_ring
 
 theorem assoc_alg (A B C : PTm n) : Γ ⊢[PRAAx] (A * B) * C ≐ A * (B * C) := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- One step: from `Y^{π(m)} ≤ Y^{π(Y)} ∏_{p ≤ m} p` and `Y ≤ m + 1` to the same at `m + 1`. -/
 theorem window_step {Y m : PTm n} (hY : Γ ⊢[PRAAx] le Y (succ m))
@@ -143,9 +143,8 @@ theorem cheb_upper_gen {L N : PTm n} (h : Γ ⊢[PRAAx] le (pw two L) N) :
   exact exp_le_of_pw_le (le_congr el er w)
 
 theorem add_mono_r {a b c : PTm n} (h : Γ ⊢[PRAAx] le a b) : Γ ⊢[PRAAx] le (a + c) (b + c) := by
-  have e := natEq (eq_add_of_le h)
   refine le_of_eq_add (d := monus b a) ?_
-  apply deriveNat; ipra_simps; linear_combination e
+  ipra_lc natEq (eq_add_of_le h)
 
 /-- For `2^L ≤ N`: `L π(N) ≤ L 2^L + 2N`. -/
 theorem cheb_upper_gen' {L N : PTm n} (h : Γ ⊢[PRAAx] le (pw two L) N) :
@@ -158,19 +157,19 @@ theorem even_fin {m P Q T : PTm n} (h : Γ ⊢[PRAAx] le (m * P) (m * Q + two * 
     (hq : Γ ⊢[PRAAx] le (m * Q) T) : Γ ⊢[PRAAx] le ((two * m) * P) (num 6 * T) := by
   have e1 := natEq (eq_add_of_le h); have e2 := natEq (eq_add_of_le hq)
   refine le_of_eq_add (d := two * monus (m * Q + two * T) (m * P) + two * monus T (m * Q)) ?_
-  apply deriveNat; ipra_simps; push_cast; linear_combination 2 * e1 + 2 * e2
+  ipra_lc 2 * e1 + 2 * e2
 
 theorem odd_fin {m P Q T : PTm n} (h : Γ ⊢[PRAAx] le (succ m * P) (succ m * Q + two * T))
     (hq : Γ ⊢[PRAAx] le (succ m * Q) T) : Γ ⊢[PRAAx] le ((two * m + one) * P) (num 6 * T) := by
   have e1 := natEq (eq_add_of_le h); have e2 := natEq (eq_add_of_le hq)
   refine le_of_eq_add (d := two * monus (succ m * Q + two * T) (succ m * P) + two * monus T (succ m * Q) + P) ?_
-  apply deriveNat; ipra_simps; push_cast; linear_combination 2 * e1 + 2 * e2
+  ipra_lc 2 * e1 + 2 * e2
 
-theorem dbl (m : PTm n) : Γ ⊢[PRAAx] two * m ≐ m + m := by apply deriveNat; ipra_simps; ring
+theorem dbl (m : PTm n) : Γ ⊢[PRAAx] two * m ≐ m + m := by ipra_ring
 
-theorem odd_split (m : PTm n) : Γ ⊢[PRAAx] two * m + one ≐ succ m + m := by apply deriveNat; ipra_simps; ring
+theorem odd_split (m : PTm n) : Γ ⊢[PRAAx] two * m + one ≐ succ m + m := by ipra_ring
 
-theorem odd_exp (m : PTm n) : Γ ⊢[PRAAx] m + succ m ≐ two * m + one := by apply deriveNat; ipra_simps; ring
+theorem odd_exp (m : PTm n) : Γ ⊢[PRAAx] m + succ m ≐ two * m + one := by ipra_ring
 
 /-- `K = 2m`: `(2m) π(2^{2m}) ≤ 6 · 2^{2m}`. -/
 theorem cheb_even (m : PTm n) :
@@ -218,7 +217,7 @@ theorem thirteen_alg {b h P Q N : PTm n} (g : Γ ⊢[PRAAx] le (h * P) (h * Q + 
   have e1 := natEq (eq_add_of_le g); have e2 := natEq (eq_add_of_le hq); have e3 := natEq (eq_add_of_le hb3)
   refine le_of_eq_add (d := num 4 * N + num 3 * monus (h * Q + two * N) (h * P) + num 3 * monus N (h * Q) +
     monus (num 3 * h) b * P) ?_
-  apply deriveNat; ipra_simps; push_cast; linear_combination 3 * e1 + 3 * e2 + 𝔞 P * e3
+  ipra_lc 3 * e1 + 3 * e2 + 𝔞 P * e3
 
 /-- `b = 2h + r`, `r ≤ 1` and `b ≥ 2` give `b ≤ 3h`. -/
 theorem le_three_half {b h r : PTm n} (e : Γ ⊢[PRAAx] b ≐ two * h + r) (hr : Γ ⊢[PRAAx] le r one)
@@ -237,11 +236,10 @@ theorem le_three_half {b h r : PTm n} (e : Γ ⊢[PRAAx] b ≐ two * h + r) (hr 
     have hrw : ((h ≐ succ (pred h)) :: Γ) ⊢[PRAAx] le r one := hr.wk
     have a := natEq ew; have c := natEq hp; have s := natEq (eq_add_of_le hrw)
     refine le_of_eq_add (d := pred h + monus one r) ?_
-    apply deriveNat; ipra_simps; push_cast; linear_combination -a + c + s
+    ipra_lc -a + c + s
 
 theorem half_alg {b h r : PTm n} (e : Γ ⊢[PRAAx] b ≐ two * h + r) : Γ ⊢[PRAAx] b ≐ (h + h) + r := by
-  have a := natEq e
-  apply deriveNat; ipra_simps; linear_combination a
+  ipra_lc natEq e
 
 /-- **Upper half**: for `b ≥ 2` and `2^b ≤ N`, `b π(N) ≤ 13 N`. -/
 theorem cheb_upper_b {b N : PTm n} (hb : Γ ⊢[PRAAx] le two b) (hN : Γ ⊢[PRAAx] le (pw two b) N) :
@@ -265,9 +263,8 @@ theorem cheb_upper_b {b N : PTm n} (hb : Γ ⊢[PRAAx] le two b) (hN : Γ ⊢[PR
 theorem two_half_le (N : PTm n) : Γ ⊢[PRAAx] le (two * half N) N := le_of_eq_add (half_par N)
 
 theorem one_le_double {m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) : Γ ⊢[PRAAx] le one (two * m) := by
-  have a := natEq hm
   refine le_of_eq_add (d := two * pred m + one) ?_
-  apply deriveNat; ipra_simps; linear_combination 2 * a
+  ipra_lc 2 * natEq hm
 
 /-- **Lower half**, in the packet's form: for `N < 2^{b+1}`, `⌊N/2⌋ ≤ (b + 1) π(N)`. -/
 theorem cheb_lower_half {N b : PTm n} (hb : Γ ⊢[PRAAx] lt N (pw two (succ b))) :

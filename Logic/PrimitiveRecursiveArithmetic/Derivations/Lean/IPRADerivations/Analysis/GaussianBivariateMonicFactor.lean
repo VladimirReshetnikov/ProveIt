@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.GaussianPolynomialMonicCompanion
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The full stored monic factor
@@ -47,10 +48,7 @@ def table (F m c : PTm n) : PTm n := sequence rowBody (succ m) (pairT F c)
 theorem row_body_at (F c i : PTm n) : Γ ⊢[PRAAx] inst2 rowBody i (pairT F c) ≐ row F c i := by
   simp only [rowBody, inst2, subst_row, subst_fstT, subst_sndT, Syn.subst_var, Matrix.cons_val_zero,
     Matrix.cons_val_one]
-  simpa only [subst_row, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
-    Matrix.head_cons, Matrix.tail_cons] using Prf.eqCongr (Γ := Γ) (row (var 0) (var 1) (var 2) : PTm 3)
-      (σ := ![fstT (pairT F c), sndT (pairT F c), i]) (σ' := ![F, c, i])
-      (fun k => by fin_cases k; exact fst_pair _ _; exact snd_pair _ _; exact .eqRefl _)
+  ipra_congr (row (var 0) (var 1) (var 2) : PTm 3) with [fst_pair _ _, snd_pair _ _, .eqRefl i]
 
 theorem table_length (F m c : PTm n) : Γ ⊢[PRAAx] length (table F m c) ≐ succ m := sequence_length _ _ _
 

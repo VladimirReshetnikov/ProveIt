@@ -48,25 +48,25 @@ def shiftL (as : List (PTm n)) (k : PTm n) : PTm n := prodL (as.map fun a => a +
 theorem pochL_succ (as : List (PTm n)) (k : PTm n) :
     Γ ⊢[PRAAx] pochL as (succ k) ≐ pochL as k * shiftL as k := by
   induction as with
-  | nil => simp only [pochL, shiftL, List.map, prodL]; apply deriveNat; ipra_simps; ring
+  | nil => simp only [pochL, shiftL, List.map, prodL]; ipra_ring
   | cons a l ih =>
     simp only [pochL, shiftL, List.map, prodL] at ih ⊢
     refine (congrMul (poch_succ a k) ih).eqTrans ?_
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
 
 theorem pochL_zero (as : List (PTm n)) : Γ ⊢[PRAAx] pochL as zero ≐ one := by
   induction as with
   | nil => simp only [pochL, List.map, prodL]; exact .eqRefl _
   | cons a l ih =>
     simp only [pochL, List.map, prodL] at ih ⊢
-    exact (congrMul (poch_zero a) ih).eqTrans (by apply deriveNat; ipra_simps; ring)
+    exact (congrMul (poch_zero a) ih).eqTrans (by ipra_ring)
 
 /-- Products over a list are invariant under permutation. -/
 theorem prodL_perm {l₁ l₂ : List (PTm n)} (h : l₁.Perm l₂) : Γ ⊢[PRAAx] prodL l₁ ≐ prodL l₂ := by
   induction h with
   | nil => exact .eqRefl _
   | cons t _ ih => exact congrMul (.eqRefl t) ih
-  | swap s t l => simp only [prodL]; apply deriveNat; ipra_simps; ring
+  | swap s t l => simp only [prodL]; ipra_ring
   | trans _ _ ih₁ ih₂ => exact ih₁.eqTrans ih₂
 
 /-- `prop:symmetry` in general form: permuting the parameters does not change the Pochhammer products. -/
@@ -90,7 +90,7 @@ theorem pfq_ratio (as bs : List (PTm n)) (z k : PTm n) :
     congrMul (fact_succ k zero) (pochL_succ bs k)
   refine (congrMul (.eqRefl _) (congrMul nE (.eqRefl _))).eqTrans (.eqTrans ?_
     (congrMul (.eqRefl _) (congrMul (.eqRefl _) dE)).eqSymm)
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- `₂F₁` symmetry: `(a)_k (b)_k = (b)_k (a)_k`. -/
 theorem gauss_symm (a b k : PTm n) : Γ ⊢[PRAAx] pochL [a, b] k ≐ pochL [b, a] k :=
@@ -100,7 +100,7 @@ theorem gauss_symm (a b k : PTm n) : Γ ⊢[PRAAx] pochL [a, b] k ≐ pochL [b, 
 `(c)_0 0! = 1`. -/
 theorem gauss_norm (a b c z : PTm n) :
     Γ ⊢[PRAAx] (Num [a, b] z zero ≐ one) ⋏ (Den [c] zero ≐ one) := by
-  refine .andI ((congrMul (pw_zero z) (pochL_zero _)).eqTrans (by apply deriveNat; ipra_simps; ring)) ?_
-  exact (congrMul (fact_zero zero) (pochL_zero _)).eqTrans (by apply deriveNat; ipra_simps; ring)
+  refine .andI ((congrMul (pw_zero z) (pochL_zero _)).eqTrans (by ipra_ring)) ?_
+  exact (congrMul (fact_zero zero) (pochL_zero _)).eqTrans (by ipra_ring)
 
 end LeanProofs.IPRA.Analysis.HypergeometricRatio

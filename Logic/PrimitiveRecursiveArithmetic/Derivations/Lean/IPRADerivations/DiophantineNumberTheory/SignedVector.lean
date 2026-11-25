@@ -1,6 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.SignedLine
 import IPRADerivations.DiophantineNumberTheory.NorthcottLocus
 import IPRADerivations.Foundations.BoundedReflection
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Signed primitive representatives in every dimension
@@ -49,34 +50,24 @@ variable {sa ma sb mb sc mc sd md : PTm k}
 theorem sum_01 (ha : Γ ⊢[PRAAx] sa ≐ zero) (hc : Γ ⊢[PRAAx] sc ≐ zero)
     (hb : Γ ⊢[PRAAx] sb ≐ zero) (hd : Γ ⊢[PRAAx] sd ≐ one)
     (h : Γ ⊢[PRAAx] crossF sa ma sb mb sc mc sd md) : Γ ⊢[PRAAx] ma * md + mb * mc ≐ zero := by
-  have e := natEq (cross_nat h)
-  have za := natEq ha; have zc := natEq hc
-  have ua := natEq ((congrMonus (.eqRefl one) ha).eqTrans (monus_zero (Γ := Γ) one))
-  have uc := natEq ((congrMonus (.eqRefl one) hc).eqTrans (monus_zero (Γ := Γ) one))
-  have zb := natEq hb; have zd := natEq hd
-  have ub := natEq ((congrMonus (.eqRefl one) hb).eqTrans (monus_zero (Γ := Γ) one))
-  have ud := natEq ((congrMonus (.eqRefl one) hd).eqTrans (monus_self (Γ := Γ) one))
-  apply deriveNat; ipra_simps
-  linear_combination -e - 𝔞 ma * 𝔞 md * (𝔞 (monus one sd) - 𝔞 sd) * za +
-    𝔞 mb * 𝔞 mc * (𝔞 (monus one sb) - 𝔞 sb) * zc + 𝔞 ma * 𝔞 md * (𝔞 (monus one sd) - 𝔞 sd) * ua -
-    𝔞 mb * 𝔞 mc * (𝔞 (monus one sb) - 𝔞 sb) * uc + 𝔞 mb * 𝔞 mc * zb - 𝔞 ma * 𝔞 md * zd -
-    𝔞 mb * 𝔞 mc * ub + 𝔞 ma * 𝔞 md * ud
+  ipra_lc -natEq (cross_nat h) - 𝔞 ma * 𝔞 md * (𝔞 (monus one sd) - 𝔞 sd) * natEq ha +
+    𝔞 mb * 𝔞 mc * (𝔞 (monus one sb) - 𝔞 sb) * natEq hc +
+    𝔞 ma * 𝔞 md * (𝔞 (monus one sd) - 𝔞 sd) * natEq ((congrMonus (.eqRefl one) ha).eqTrans (monus_zero (Γ := Γ) one)) -
+    𝔞 mb * 𝔞 mc * (𝔞 (monus one sb) - 𝔞 sb) * natEq ((congrMonus (.eqRefl one) hc).eqTrans (monus_zero (Γ := Γ) one)) +
+    𝔞 mb * 𝔞 mc * natEq hb - 𝔞 ma * 𝔞 md * natEq hd -
+    𝔞 mb * 𝔞 mc * natEq ((congrMonus (.eqRefl one) hb).eqTrans (monus_zero (Γ := Γ) one)) +
+    𝔞 ma * 𝔞 md * natEq ((congrMonus (.eqRefl one) hd).eqTrans (monus_self (Γ := Γ) one))
 
 theorem sum_10 (ha : Γ ⊢[PRAAx] sa ≐ zero) (hc : Γ ⊢[PRAAx] sc ≐ zero)
     (hb : Γ ⊢[PRAAx] sb ≐ one) (hd : Γ ⊢[PRAAx] sd ≐ zero)
     (h : Γ ⊢[PRAAx] crossF sa ma sb mb sc mc sd md) : Γ ⊢[PRAAx] ma * md + mb * mc ≐ zero := by
-  have e := natEq (cross_nat h)
-  have za := natEq ha; have zc := natEq hc
-  have ua := natEq ((congrMonus (.eqRefl one) ha).eqTrans (monus_zero (Γ := Γ) one))
-  have uc := natEq ((congrMonus (.eqRefl one) hc).eqTrans (monus_zero (Γ := Γ) one))
-  have zb := natEq hb; have zd := natEq hd
-  have ub := natEq ((congrMonus (.eqRefl one) hb).eqTrans (monus_self (Γ := Γ) one))
-  have ud := natEq ((congrMonus (.eqRefl one) hd).eqTrans (monus_zero (Γ := Γ) one))
-  apply deriveNat; ipra_simps
-  linear_combination e + 𝔞 ma * 𝔞 md * (𝔞 (monus one sd) - 𝔞 sd) * za -
-    𝔞 mb * 𝔞 mc * (𝔞 (monus one sb) - 𝔞 sb) * zc - 𝔞 ma * 𝔞 md * (𝔞 (monus one sd) - 𝔞 sd) * ua +
-    𝔞 mb * 𝔞 mc * (𝔞 (monus one sb) - 𝔞 sb) * uc - 𝔞 mb * 𝔞 mc * zb + 𝔞 ma * 𝔞 md * zd +
-    𝔞 mb * 𝔞 mc * ub - 𝔞 ma * 𝔞 md * ud
+  ipra_lc natEq (cross_nat h) + 𝔞 ma * 𝔞 md * (𝔞 (monus one sd) - 𝔞 sd) * natEq ha -
+    𝔞 mb * 𝔞 mc * (𝔞 (monus one sb) - 𝔞 sb) * natEq hc -
+    𝔞 ma * 𝔞 md * (𝔞 (monus one sd) - 𝔞 sd) * natEq ((congrMonus (.eqRefl one) ha).eqTrans (monus_zero (Γ := Γ) one)) +
+    𝔞 mb * 𝔞 mc * (𝔞 (monus one sb) - 𝔞 sb) * natEq ((congrMonus (.eqRefl one) hc).eqTrans (monus_zero (Γ := Γ) one)) -
+    𝔞 mb * 𝔞 mc * natEq hb + 𝔞 ma * 𝔞 md * natEq hd +
+    𝔞 mb * 𝔞 mc * natEq ((congrMonus (.eqRefl one) hb).eqTrans (monus_self (Γ := Γ) one)) -
+    𝔞 ma * 𝔞 md * natEq ((congrMonus (.eqRefl one) hd).eqTrans (monus_zero (Γ := Γ) one))
 
 theorem left_zero {x y : PTm k} (h : Γ ⊢[PRAAx] x + y ≐ zero) : Γ ⊢[PRAAx] x ≐ zero := by
   have s := natEq h
@@ -304,11 +295,9 @@ theorem signed_vector_unique
   -- (H) conclusion
   refine .allI (.impI ?_)
   have r := Prf.impE rel.allOpen.wk Prf.hyp0
-  have e1 := natEq (Prf.andE₁ r)
-  have e2 := natEq (abs.wk : (lt (var 0) (Syn.shift N) :: Γ.map Fm.shift) ⊢[PRAAx] _)
   refine .andI (mul_cancel pAs.wk ?_) (Prf.andE₂ r).eqSymm
-  apply deriveNat; ipra_simps
-  linear_combination e1 + 𝔞 (inst2 MV (var 0) (Syn.shift x)) * e2
+  ipra_lc natEq (Prf.andE₁ r) +
+    𝔞 (inst2 MV (var 0) (Syn.shift x)) * natEq (abs.wk : (lt (var 0) (Syn.shift N) :: Γ.map Fm.shift) ⊢[PRAAx] _)
 
 end Main
 

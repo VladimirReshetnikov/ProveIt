@@ -1,4 +1,4 @@
-import IPRADerivations.Core.IntCertificates
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The Ising chain and ring by the transfer matrix
@@ -56,6 +56,7 @@ def tp (a b : ZT n) : ℕ → ZT n × ZT n
 local macro "isimp" loc:(Lean.Parser.Tactic.location)? : tactic =>
   `(tactic| simp only [toZ_pwr, ZT.toZ_add, ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_neg, ZT.toZ_natLit, Nat.cast_ofNat,
     Nat.cast_zero, Nat.cast_one] $[$loc]?)
+attribute [local ipra_defs] toZ_pwr
 
 /-- The eigenvalues: `α_N + β_N = (a + b)^N` and `α_N − β_N = (a − b)^N`. -/
 theorem tp_eigen (a b : ZT n) (N : ℕ) :
@@ -91,38 +92,22 @@ theorem tp_eigen (a b : ZT n) (N : ℕ) :
 /-- The open chain with `N + 1` sites: `Z = 2 p^N`. -/
 theorem chain_partition (a b : ZT n) (N : ℕ) :
     Γ ⊢[PRAAx] ZT.eq (ZT.natLit 2 * ((tp a b N).1 + (tp a b N).2)) (ZT.natLit 2 * pwr (a + b) N) := by
-  have e1 := ZT.toZ_eq (tp_eigen (Γ := Γ) a b N).1
-  isimp at e1
-  apply ZT.derive
-  isimp
-  linear_combination 2 * e1
+  ipra_lc 2 * ZT.toZ_eq (tp_eigen (Γ := Γ) a b N).1
 
 /-- The ring with `N` sites: `Z = p^N + q^N`. -/
 theorem ring_partition (a b : ZT n) (N : ℕ) :
     Γ ⊢[PRAAx] ZT.eq (ZT.natLit 2 * (tp a b N).1) (pwr (a + b) N + pwr (a - b) N) := by
-  have e1 := ZT.toZ_eq (tp_eigen (Γ := Γ) a b N).1
-  have e2 := ZT.toZ_eq (tp_eigen (Γ := Γ) a b N).2
-  isimp at e1 e2
-  apply ZT.derive
-  isimp
-  linear_combination e1 + e2
+  ipra_lc ZT.toZ_eq (tp_eigen (Γ := Γ) a b N).1 + ZT.toZ_eq (tp_eigen (Γ := Γ) a b N).2
 
 /-- The two-point function of the ring: `2 (α_d α_m − β_d β_m) = q^d p^m + p^d q^m`. -/
 theorem ring_two_point (a b : ZT n) (d m : ℕ) :
     Γ ⊢[PRAAx] ZT.eq
       (ZT.natLit 2 * ((tp a b d).1 * (tp a b m).1 - (tp a b d).2 * (tp a b m).2))
       (pwr (a - b) d * pwr (a + b) m + pwr (a + b) d * pwr (a - b) m) := by
-  have d1 := ZT.toZ_eq (tp_eigen (Γ := Γ) a b d).1
-  have d2 := ZT.toZ_eq (tp_eigen (Γ := Γ) a b d).2
-  have m1 := ZT.toZ_eq (tp_eigen (Γ := Γ) a b m).1
-  have m2 := ZT.toZ_eq (tp_eigen (Γ := Γ) a b m).2
-  isimp at d1 d2 m1 m2
-  apply ZT.derive
-  isimp
-  linear_combination
-    (ZT.toZ Γ (tp a b m).1 - ZT.toZ Γ (tp a b m).2) * d1 +
-      (ZT.toZ Γ (tp a b m).1 + ZT.toZ Γ (tp a b m).2) * d2 +
-      (ZT.toZ Γ a - ZT.toZ Γ b) ^ d * m1 + (ZT.toZ Γ a + ZT.toZ Γ b) ^ d * m2
+  ipra_lc (ZT.toZ Γ (tp a b m).1 - ZT.toZ Γ (tp a b m).2) * ZT.toZ_eq (tp_eigen (Γ := Γ) a b d).1 +
+    (ZT.toZ Γ (tp a b m).1 + ZT.toZ Γ (tp a b m).2) * ZT.toZ_eq (tp_eigen (Γ := Γ) a b d).2 +
+    (ZT.toZ Γ a - ZT.toZ Γ b) ^ d * ZT.toZ_eq (tp_eigen (Γ := Γ) a b m).1 +
+    (ZT.toZ Γ a + ZT.toZ Γ b) ^ d * ZT.toZ_eq (tp_eigen (Γ := Γ) a b m).2
 
 /-- The two-point function of the chain: the middle segment contributes `α_d − β_d = q^d`, so
 `Z_{x,y} p^d = Z q^d` for `Z = 2 p^i p^d p^j`. -/
@@ -130,11 +115,6 @@ theorem chain_two_point (a b : ZT n) (i d j : ℕ) :
     Γ ⊢[PRAAx] ZT.eq
       (ZT.natLit 2 * pwr (a + b) i * ((tp a b d).1 - (tp a b d).2) * pwr (a + b) j * pwr (a + b) d)
       (ZT.natLit 2 * pwr (a + b) i * pwr (a + b) d * pwr (a + b) j * pwr (a - b) d) := by
-  have d2 := ZT.toZ_eq (tp_eigen (Γ := Γ) a b d).2
-  isimp at d2
-  apply ZT.derive
-  isimp
-  linear_combination 2 * (ZT.toZ Γ a + ZT.toZ Γ b) ^ i * (ZT.toZ Γ a + ZT.toZ Γ b) ^ j *
-    (ZT.toZ Γ a + ZT.toZ Γ b) ^ d * d2
+  ipra_lc 2 * (ZT.toZ Γ a + ZT.toZ Γ b) ^ i * (ZT.toZ Γ a + ZT.toZ Γ b) ^ j * (ZT.toZ Γ a + ZT.toZ Γ b) ^ d * ZT.toZ_eq (tp_eigen (Γ := Γ) a b d).2
 
 end LeanProofs.IPRA.Combinatorics.IsingChain

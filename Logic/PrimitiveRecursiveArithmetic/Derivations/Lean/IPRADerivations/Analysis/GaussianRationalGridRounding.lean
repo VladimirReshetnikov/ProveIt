@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianRationalMetric
 import IPRADerivations.AnalyticNumberTheory.Multiplicative
 import IPRADerivations.Foundations.GapDecision
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Actual nearest signed coordinate on a protected rational mesh
@@ -72,12 +73,8 @@ theorem box_of_absolute (P Q D R : PTm n)
 
 theorem shifted_bound (P Q D R : PTm n) (h : Γ ⊢[PRAAx] box P Q D R) : Γ ⊢[PRAAx]
     le (shifted P Q D R) (two*R*D) := by
-  have lo := natEq (shifted_identity P Q D R h)
-  have hi := natEq (eq_add_of_le (.andE₂ h))
   apply le_of_eq_add (d := monus (Q+R*D) P)
-  apply deriveNat
-  ipra_simps
-  linear_combination lo+hi
+  ipra_lc natEq (shifted_identity P Q D R h)+natEq (eq_add_of_le (.andE₂ h))
 
 theorem division (P Q D R M : PTm n) (hD : Γ ⊢[PRAAx] le one D) : Γ ⊢[PRAAx]
     (dividend P Q D R M ≐ two*D*index P Q D R M+residual P Q D R M) ⋏
@@ -92,10 +89,7 @@ theorem dividend_bound (P Q D R M : PTm n) (hD : Γ ⊢[PRAAx] le one D)
     add_le_add_right D (le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right (two*M) (shifted_bound P Q D R h)))
   have next : Γ ⊢[PRAAx] lt (two*M*(two*R*D)+D) ((two*D)*succ (two*R*M)) := by
     apply le_of_eq_add (d := monus D one)
-    have pos := natEq (eq_add_of_le hD)
-    apply deriveNat
-    ipra_simps
-    linear_combination pos
+    ipra_lc natEq (eq_add_of_le hD)
   exact lt_of_le_of_lt first next
 
 theorem index_bound (P Q D R M : PTm n) (hD : Γ ⊢[PRAAx] le one D)

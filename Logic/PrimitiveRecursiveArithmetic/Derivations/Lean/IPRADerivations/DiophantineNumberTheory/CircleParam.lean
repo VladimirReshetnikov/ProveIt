@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.ConicNonzero
 import IPRADerivations.DiophantineNumberTheory.ConicGcd
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The unit circle `X² + Y² = Z²`
@@ -66,13 +67,12 @@ theorem two_pos : Γ ⊢[PRAAx] num 2 ≐ succ (pred (num 2)) := congrSucc (pred
 theorem circle_gcd_two {g s t D : PTm n} (hg : Γ ⊢[PRAAx] g ≐ succ (pred g)) (hs : Γ ⊢[PRAAx] s ≐ succ (pred s))
     (ht : Γ ⊢[PRAAx] t ≐ succ (pred t)) (hst : Γ ⊢[PRAAx] gcd s t ≐ one) (hD : Γ ⊢[PRAAx] D + t * t ≐ s * s)
     (h1 : Γ ⊢[PRAAx] dvd g D) (h3 : Γ ⊢[PRAAx] dvd g (s * s + t * t)) : Γ ⊢[PRAAx] dvd g (num 2) := by
-  have e := natEq hD
   have a : Γ ⊢[PRAAx] dvd g (num 2 * (s * s)) := by
     refine dvd_congr ?_ (dvd_add' hg h3 h1)
-    apply deriveNat; ipra_simps; linear_combination e
+    ipra_lc natEq hD
   have b : Γ ⊢[PRAAx] dvd g (num 2 * (t * t)) := by
     refine dvd_sub' hg (dvd_congr ?_ h3) h1
-    apply deriveNat; ipra_simps; linear_combination -e
+    ipra_lc -natEq hD
   exact dvd_of_coprime_pair hg a b (coprime_squares hs ht hst)
 
 /-- Both inputs odd: all three coordinates are even. -/
@@ -89,10 +89,10 @@ theorem circle_both_odd {s t a b D : PTm n} (hs : Γ ⊢[PRAAx] s ≐ num 2 * a 
     linear_combination e
   have h4 : Γ ⊢[PRAAx] dvd (succ (num 1)) (num 4 * (b * b + b)) := by
     refine dvd_of_eq (w := num 2 * (b * b + b)) ?_
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   have h2 : Γ ⊢[PRAAx] dvd (succ (num 1)) (num 2 * s * t) := by
     refine dvd_of_eq (w := s * t) ?_
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   have h3 : Γ ⊢[PRAAx] dvd (succ (num 1)) (s * s + t * t) := by
     refine dvd_of_eq (w := num 2 * (a * a + a + b * b + b) + one) ?_
     apply deriveNat; ipra_simps
@@ -117,8 +117,7 @@ theorem circle_mixed_parity {s t a b : PTm n} (hs : Γ ⊢[PRAAx] s ≐ num 2 * 
 /-- `s² − t² ≤ s² + t²`. -/
 theorem circle_le_D {s t D : PTm n} (hD : Γ ⊢[PRAAx] D + t * t ≐ s * s) : Γ ⊢[PRAAx] le D (s * s + t * t) := by
   refine le_of_eq_add (d := t * t + t * t) ?_
-  have e := natEq hD
-  apply deriveNat; ipra_simps; linear_combination -e
+  ipra_lc -natEq hD
 
 /-- `2st ≤ s² + t²` (for `s = t + u`). -/
 theorem circle_le_2st {s t u : PTm n} (hu : Γ ⊢[PRAAx] s ≐ t + u) :

@@ -1,5 +1,6 @@
 import IPRADerivations.Geometry.TriangleCentres
 import IPRADerivations.Geometry.ConwayAlgebra
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Motions, angle pairs and the congruence theorems for triangles
@@ -57,11 +58,7 @@ def mot₂ (e₁ e₂ f₁ f₂ ε x₁ x₂ : ZT n) : ZT n := dot x₁ x₂ e�
 
 local notation:max "ζ" t:max => ZT.toZ Γ t
 
-local macro "gsimp" loc:(Lean.Parser.Tactic.location)? : tactic =>
-  `(tactic| simp only [mot₁, mot₂, dot, det, nsq, zsl_def, ZT.toZ_add, ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_neg,
-    ZT.toZ_sq, ZT.toZ_natLit, Nat.cast_ofNat, Nat.cast_zero, Nat.cast_one] $[$loc]?)
-
-local macro "geo" : tactic => `(tactic| (apply ZT.derive; gsimp; ring))
+attribute [local ipra_defs] mot₁ mot₂ dot det nsq
 
 /-! ## Motions -/
 
@@ -73,11 +70,7 @@ theorem motion_dot {ε : ZT n} (e₁ e₂ f₁ f₂ x₁ x₂ y₁ y₂ : ZT n)
       (dot (mot₁ e₁ e₂ f₁ f₂ ε x₁ x₂) (mot₂ e₁ e₂ f₁ f₂ ε x₁ x₂)
         (mot₁ e₁ e₂ f₁ f₂ ε y₁ y₂) (mot₂ e₁ e₂ f₁ f₂ ε y₁ y₂))
       (nsq e₁ e₂ * nsq f₁ f₂ * dot x₁ x₂ y₁ y₂) := by
-  have a3 := ZT.toZ_eq h3
-  apply ZT.derive
-  gsimp at a3 ⊢
-  linear_combination
-    (ζ f₁ * ζ f₁ + ζ f₂ * ζ f₂) * (ζ e₁ * ζ x₂ - ζ e₂ * ζ x₁) * (ζ e₁ * ζ y₂ - ζ e₂ * ζ y₁) * a3
+  ipra_lc (ζ f₁ * ζ f₁ + ζ f₂ * ζ f₂) * (ζ e₁ * ζ x₂ - ζ e₂ * ζ x₁) * (ζ e₁ * ζ y₂ - ζ e₂ * ζ y₁) * ZT.toZ_eq h3
 
 /-- `[Q x, Q y] = ε |e|² |f|² [x, y]`: a motion multiplies determinants by `ε`. -/
 theorem motion_det (e₁ e₂ f₁ f₂ ε x₁ x₂ y₁ y₂ : ZT n) :
@@ -85,7 +78,7 @@ theorem motion_det (e₁ e₂ f₁ f₂ ε x₁ x₂ y₁ y₂ : ZT n) :
       (det (mot₁ e₁ e₂ f₁ f₂ ε x₁ x₂) (mot₂ e₁ e₂ f₁ f₂ ε x₁ x₂)
         (mot₁ e₁ e₂ f₁ f₂ ε y₁ y₂) (mot₂ e₁ e₂ f₁ f₂ ε y₁ y₂))
       (ε * (nsq e₁ e₂ * nsq f₁ f₂) * det x₁ x₂ y₁ y₂) := by
-  geo
+  ipra_lc
 
 /-! ## The angle sum -/
 
@@ -93,45 +86,41 @@ theorem motion_det (e₁ e₂ f₁ f₂ ε x₁ x₂ y₁ y₂ : ZT n) :
 theorem angle_sum_re (u₁ u₂ v₁ v₂ w₁ w₂ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (det u₁ u₂ v₁ v₂ * det w₁ w₂ u₁ u₂ - dot u₁ u₂ v₁ v₂ * dot w₁ w₂ u₁ u₂)
       (-(nsq u₁ u₂ * dot v₁ v₂ w₁ w₂)) := by
-  geo
+  ipra_lc
 
 /-- Imaginary part of `(ū v)(w̄ (−u)) = −|u|² (v w̄)`. -/
 theorem angle_sum_im (u₁ u₂ v₁ v₂ w₁ w₂ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (-(dot u₁ u₂ v₁ v₂ * det w₁ w₂ u₁ u₂) - det u₁ u₂ v₁ v₂ * dot w₁ w₂ u₁ u₂)
       (nsq u₁ u₂ * det v₁ v₂ w₁ w₂) := by
-  geo
+  ipra_lc
 
 /-- The sine numerator at `B` is the determinant at `A`. -/
 theorem det_at_B (u₁ u₂ v₁ v₂ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (det (v₁ - u₁) (v₂ - u₂) (-u₁) (-u₂)) (det u₁ u₂ v₁ v₂) := by
-  geo
+  ipra_lc
 
 /-- The sine numerator at `C` is the determinant at `A`. -/
 theorem det_at_C (u₁ u₂ v₁ v₂ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (det v₁ v₂ (v₁ - u₁) (v₂ - u₂)) (det u₁ u₂ v₁ v₂) := by
-  geo
+  ipra_lc
 
 /-- A nonacute angle at `A` makes the angle at `B` acute. -/
 theorem acute_at_B {u₁ u₂ v₁ v₂ : ZT n} (hp : Γ ⊢[PRAAx] zle (dot u₁ u₂ v₁ v₂) (ZT.natLit 0))
     (hu : Γ ⊢[PRAAx] zle (ZT.natLit 1) (nsq u₁ u₂)) :
     Γ ⊢[PRAAx] zle (ZT.natLit 1) (dot (-u₁) (-u₂) (v₁ - u₁) (v₂ - u₂)) := by
-  refine zle_of_comb (zsl hp + zsl hu) ?_ (nn_add (nn_zsl _) (nn_zsl _))
-  gsimp
-  ring
+  ipra_zle (zsl hp + zsl hu)
 
 /-- A nonacute angle at `A` makes the angle at `C` acute. -/
 theorem acute_at_C {u₁ u₂ v₁ v₂ : ZT n} (hp : Γ ⊢[PRAAx] zle (dot u₁ u₂ v₁ v₂) (ZT.natLit 0))
     (hv : Γ ⊢[PRAAx] zle (ZT.natLit 1) (nsq v₁ v₂)) :
     Γ ⊢[PRAAx] zle (ZT.natLit 1) (dot (-v₁) (-v₂) (u₁ - v₁) (u₂ - v₂)) := by
-  refine zle_of_comb (zsl hp + zsl hv) ?_ (nn_add (nn_zsl _) (nn_zsl _))
-  gsimp
-  ring
+  ipra_zle (zsl hp + zsl hv)
 
 /-- `2abc (cos α − cos β) = (a − b)(c² − (a + b)²)`. -/
 theorem side_angle (a b c : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (a * (b * b + c * c - a * a) - b * (c * c + a * a - b * b))
       ((a - b) * (c * c - ZT.sq (a + b))) := by
-  geo
+  ipra_lc
 
 /-! ## Congruence -/
 
@@ -140,36 +129,26 @@ theorem sss_dot {u₁ u₂ v₁ v₂ p₁ p₂ q₁ q₂ : ZT n}
     (h1 : Γ ⊢[PRAAx] ZT.eq (nsq u₁ u₂) (nsq p₁ p₂)) (h2 : Γ ⊢[PRAAx] ZT.eq (nsq v₁ v₂) (nsq q₁ q₂))
     (h3 : Γ ⊢[PRAAx] ZT.eq (nsq (v₁ - u₁) (v₂ - u₂)) (nsq (q₁ - p₁) (q₂ - p₂))) :
     Γ ⊢[PRAAx] ZT.eq (dot u₁ u₂ v₁ v₂) (dot p₁ p₂ q₁ q₂) := by
-  have a1 := ZT.toZ_eq h1
-  have a2 := ZT.toZ_eq h2
-  have a3 := ZT.toZ_eq h3
   refine ConwayAlgebra.zt_cancel_two ?_
-  apply ZT.derive
-  gsimp at a1 a2 a3 ⊢
-  linear_combination a1 + a2 - a3
+  ipra_lc ZT.toZ_eq h1 + ZT.toZ_eq h2 - ZT.toZ_eq h3
 
 /-- SSS: the determinants have equal squares. -/
 theorem sss_det_sq {u₁ u₂ v₁ v₂ p₁ p₂ q₁ q₂ : ZT n}
     (h1 : Γ ⊢[PRAAx] ZT.eq (nsq u₁ u₂) (nsq p₁ p₂)) (h2 : Γ ⊢[PRAAx] ZT.eq (nsq v₁ v₂) (nsq q₁ q₂))
     (hp : Γ ⊢[PRAAx] ZT.eq (dot u₁ u₂ v₁ v₂) (dot p₁ p₂ q₁ q₂)) :
     Γ ⊢[PRAAx] ZT.eq (det u₁ u₂ v₁ v₂ * det u₁ u₂ v₁ v₂) (det p₁ p₂ q₁ q₂ * det p₁ p₂ q₁ q₂) := by
-  have a1 := ZT.toZ_eq h1
-  have a2 := ZT.toZ_eq h2
-  have ap := ZT.toZ_eq hp
-  apply ZT.derive
-  gsimp at a1 a2 ap ⊢
-  linear_combination (ζ v₁ * ζ v₁ + ζ v₂ * ζ v₂) * a1 + (ζ p₁ * ζ p₁ + ζ p₂ * ζ p₂) * a2 -
-    ((ζ u₁ * ζ v₁ + ζ u₂ * ζ v₂) + (ζ p₁ * ζ q₁ + ζ p₂ * ζ q₂)) * ap
+  ipra_lc (ζ v₁ * ζ v₁ + ζ v₂ * ζ v₂) * ZT.toZ_eq h1 + (ζ p₁ * ζ p₁ + ζ p₂ * ζ p₂) * ZT.toZ_eq h2 -
+    ((ζ u₁ * ζ v₁ + ζ u₂ * ζ v₂) + (ζ p₁ * ζ q₁ + ζ p₂ * ζ q₂)) * ZT.toZ_eq hp
 
 /-- The scaled motion sends `u` to `p` (first coordinate). -/
 theorem motion_base₁ (u₁ u₂ p₁ p₂ ε : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (mot₁ u₁ u₂ p₁ p₂ ε u₁ u₂) (nsq u₁ u₂ * p₁) := by
-  geo
+  ipra_lc
 
 /-- The scaled motion sends `u` to `p` (second coordinate). -/
 theorem motion_base₂ (u₁ u₂ p₁ p₂ ε : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (mot₂ u₁ u₂ p₁ p₂ ε u₁ u₂) (nsq u₁ u₂ * p₂) := by
-  geo
+  ipra_lc
 
 /-- The scaled motion sends `v` to `q` (first coordinate). -/
 theorem sss_motion₁ {u₁ u₂ v₁ v₂ p₁ p₂ q₁ q₂ ε : ZT n}
@@ -177,12 +156,7 @@ theorem sss_motion₁ {u₁ u₂ v₁ v₂ p₁ p₂ q₁ q₂ ε : ZT n}
     (hp : Γ ⊢[PRAAx] ZT.eq (dot u₁ u₂ v₁ v₂) (dot p₁ p₂ q₁ q₂))
     (hε : Γ ⊢[PRAAx] ZT.eq (ε * det u₁ u₂ v₁ v₂) (det p₁ p₂ q₁ q₂)) :
     Γ ⊢[PRAAx] ZT.eq (mot₁ u₁ u₂ p₁ p₂ ε v₁ v₂) (nsq u₁ u₂ * q₁) := by
-  have a1 := ZT.toZ_eq h1
-  have ap := ZT.toZ_eq hp
-  have ae := ZT.toZ_eq hε
-  apply ZT.derive
-  gsimp at a1 ap ae ⊢
-  linear_combination ζ p₁ * ap - ζ p₂ * ae - ζ q₁ * a1
+  ipra_lc ζ p₁ * ZT.toZ_eq hp - ζ p₂ * ZT.toZ_eq hε - ζ q₁ * ZT.toZ_eq h1
 
 /-- The scaled motion sends `v` to `q` (second coordinate). -/
 theorem sss_motion₂ {u₁ u₂ v₁ v₂ p₁ p₂ q₁ q₂ ε : ZT n}
@@ -190,50 +164,34 @@ theorem sss_motion₂ {u₁ u₂ v₁ v₂ p₁ p₂ q₁ q₂ ε : ZT n}
     (hp : Γ ⊢[PRAAx] ZT.eq (dot u₁ u₂ v₁ v₂) (dot p₁ p₂ q₁ q₂))
     (hε : Γ ⊢[PRAAx] ZT.eq (ε * det u₁ u₂ v₁ v₂) (det p₁ p₂ q₁ q₂)) :
     Γ ⊢[PRAAx] ZT.eq (mot₂ u₁ u₂ p₁ p₂ ε v₁ v₂) (nsq u₁ u₂ * q₂) := by
-  have a1 := ZT.toZ_eq h1
-  have ap := ZT.toZ_eq hp
-  have ae := ZT.toZ_eq hε
-  apply ZT.derive
-  gsimp at a1 ap ae ⊢
-  linear_combination ζ p₂ * ap + ζ p₁ * ae - ζ q₂ * a1
+  ipra_lc ζ p₂ * ZT.toZ_eq hp + ζ p₁ * ZT.toZ_eq hε - ζ q₂ * ZT.toZ_eq h1
 
 /-- SAS: two sides and the included dot product give the third side. -/
 theorem sas {u₁ u₂ v₁ v₂ p₁ p₂ q₁ q₂ : ZT n}
     (h1 : Γ ⊢[PRAAx] ZT.eq (nsq u₁ u₂) (nsq p₁ p₂)) (h2 : Γ ⊢[PRAAx] ZT.eq (nsq v₁ v₂) (nsq q₁ q₂))
     (hp : Γ ⊢[PRAAx] ZT.eq (dot u₁ u₂ v₁ v₂) (dot p₁ p₂ q₁ q₂)) :
     Γ ⊢[PRAAx] ZT.eq (nsq (v₁ - u₁) (v₂ - u₂)) (nsq (q₁ - p₁) (q₂ - p₂)) := by
-  have a1 := ZT.toZ_eq h1
-  have a2 := ZT.toZ_eq h2
-  have ap := ZT.toZ_eq hp
-  apply ZT.derive
-  gsimp at a1 a2 ap ⊢
-  linear_combination a1 + a2 - 2 * ap
+  ipra_lc ZT.toZ_eq h1 + ZT.toZ_eq h2 - 2 * ZT.toZ_eq hp
 
 /-! ## Isosceles and equilateral triangles -/
 
 /-- Equal legs give equal dot products at the base. -/
 theorem isosceles_base {u₁ u₂ v₁ v₂ : ZT n} (h : Γ ⊢[PRAAx] ZT.eq (nsq u₁ u₂) (nsq v₁ v₂)) :
     Γ ⊢[PRAAx] ZT.eq (dot (-u₁) (-u₂) (v₁ - u₁) (v₂ - u₂)) (dot (-v₁) (-v₂) (u₁ - v₁) (u₂ - v₂)) := by
-  have a := ZT.toZ_eq h
-  apply ZT.derive
-  gsimp at a ⊢
-  linear_combination a
+  ipra_lc ZT.toZ_eq h
 
 /-- Equal dot products at the base give equal legs. -/
 theorem isosceles_converse {u₁ u₂ v₁ v₂ : ZT n}
     (h : Γ ⊢[PRAAx] ZT.eq (dot (-u₁) (-u₂) (v₁ - u₁) (v₂ - u₂)) (dot (-v₁) (-v₂) (u₁ - v₁) (u₂ - v₂))) :
     Γ ⊢[PRAAx] ZT.eq (nsq u₁ u₂) (nsq v₁ v₂) := by
-  have a := ZT.toZ_eq h
-  apply ZT.derive
-  gsimp at a ⊢
-  linear_combination a
+  ipra_lc ZT.toZ_eq h
 
 /-- Equilateral triangle: `2 u · v − ℓ` is the sum of the defects of `|u|² = ℓ`, `|v|² = ℓ` minus that of
 `|v − u|² = ℓ`. -/
 theorem equilateral_cos (u₁ u₂ v₁ v₂ l : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (dot u₁ u₂ v₁ v₂ + dot u₁ u₂ v₁ v₂ - l)
       (nsq u₁ u₂ - l + (nsq v₁ v₂ - l) - (nsq (v₁ - u₁) (v₂ - u₂) - l)) := by
-  geo
+  ipra_lc
 
 /-- Equilateral triangle: `4 [u, v]² − 3 ℓ²` in terms of the defects of the three side equations. -/
 theorem equilateral_sin (u₁ u₂ v₁ v₂ l : ZT n) :
@@ -241,7 +199,7 @@ theorem equilateral_sin (u₁ u₂ v₁ v₂ l : ZT n) :
       (ZT.natLit 4 * nsq v₁ v₂ * (nsq u₁ u₂ - l) + ZT.natLit 4 * l * (nsq v₁ v₂ - l) -
         (dot u₁ u₂ v₁ v₂ + dot u₁ u₂ v₁ v₂ + l) *
           (nsq u₁ u₂ - l + (nsq v₁ v₂ - l) - (nsq (v₁ - u₁) (v₂ - u₂) - l))) := by
-  geo
+  ipra_lc
 
 /-! ## The SSA counterexample -/
 
@@ -249,30 +207,27 @@ theorem equilateral_sin (u₁ u₂ v₁ v₂ l : ZT n) :
 theorem ssa_sides :
     Γ ⊢[PRAAx] ZT.eq (nsq (ZT.natLit 6 - ZT.natLit 25) (ZT.natLit 8))
       (nsq (ZT.natLit 12 - ZT.natLit 25) (ZT.natLit 16)) := by
-  geo
+  ipra_lc
 
 /-- The cosine components at `A` agree: `(B · C₁) |C₂| = (B · C₂) |C₁|`. -/
 theorem ssa_cos :
     Γ ⊢[PRAAx] ZT.eq
       (dot (ZT.natLit 25) (ZT.natLit 0) (ZT.natLit 6) (ZT.natLit 8) * ZT.natLit 20)
       (dot (ZT.natLit 25) (ZT.natLit 0) (ZT.natLit 12) (ZT.natLit 16) * ZT.natLit 10) := by
-  geo
+  ipra_lc
 
 /-- The sine components at `A` agree: `[B, C₁] |C₂| = [B, C₂] |C₁|`. -/
 theorem ssa_sin :
     Γ ⊢[PRAAx] ZT.eq
       (det (ZT.natLit 25) (ZT.natLit 0) (ZT.natLit 6) (ZT.natLit 8) * ZT.natLit 20)
       (det (ZT.natLit 25) (ZT.natLit 0) (ZT.natLit 12) (ZT.natLit 16) * ZT.natLit 10) := by
-  geo
+  ipra_lc
 
 /-- The third sides differ: `|A C₁|² = |A C₂|²` is contradictory. -/
 theorem ssa_distinct
     (h : Γ ⊢[PRAAx] ZT.eq (nsq (ZT.natLit 6) (ZT.natLit 8)) (nsq (ZT.natLit 12) (ZT.natLit 16)))
     (φ : Fm PTm n) : Γ ⊢[PRAAx] φ := by
-  have e := ZT.toZ_eq h
-  refine false_of_comb (299 : Groth (Q Γ)) ?_ (nn_ofNat 299) φ
-  gsimp at e
-  linear_combination (-1 : Groth (Q Γ)) * e
+  ipra_absurd (299 : Groth (Q Γ)) with -ZT.toZ_eq h
 
 /-! ## A triangle from its sides, and Viviani -/
 
@@ -280,26 +235,20 @@ theorem ssa_distinct
 theorem side_construction_b {a b c Y : ZT n}
     (hY : Γ ⊢[PRAAx] ZT.eq (Y * Y) (ZT.natLit 4 * (b * b) * (c * c) - ZT.sq (b * b + c * c - a * a))) :
     Γ ⊢[PRAAx] ZT.eq (nsq (b * b + c * c - a * a) Y) (ZT.natLit 4 * (c * c) * (b * b)) := by
-  have e := ZT.toZ_eq hY
-  apply ZT.derive
-  gsimp at e ⊢
-  linear_combination e
+  ipra_lc ZT.toZ_eq hY
 
 /-- The witness has `|B C|² = (2c)² a²` for `B = (2c², 0)`. -/
 theorem side_construction_a {a b c Y : ZT n}
     (hY : Γ ⊢[PRAAx] ZT.eq (Y * Y) (ZT.natLit 4 * (b * b) * (c * c) - ZT.sq (b * b + c * c - a * a))) :
     Γ ⊢[PRAAx] ZT.eq (nsq (b * b + c * c - a * a - ZT.natLit 2 * (c * c)) Y)
       (ZT.natLit 4 * (c * c) * (a * a)) := by
-  have e := ZT.toZ_eq hY
-  apply ZT.derive
-  gsimp at e ⊢
-  linear_combination e
+  ipra_lc ZT.toZ_eq hY
 
 /-- `4 b² c² − (b² + c² − a²)² = (a + b + c)(−a + b + c)(a − b + c)(a + b − c)`. -/
 theorem side_construction_factor (a b c : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (ZT.natLit 4 * (b * b) * (c * c) - ZT.sq (b * b + c * c - a * a))
       ((a + b + c) * (b + c - a) * (a - b + c) * (a + b - c)) := by
-  geo
+  ipra_lc
 
 /-- The three determinants at a point add up to the determinant of the triangle. -/
 theorem viviani_det (a₁ a₂ b₁ b₂ c₁ c₂ x₁ x₂ : ZT n) :
@@ -307,7 +256,7 @@ theorem viviani_det (a₁ a₂ b₁ b₂ c₁ c₂ x₁ x₂ : ZT n) :
       (det (b₁ - x₁) (b₂ - x₂) (c₁ - x₁) (c₂ - x₂) + det (c₁ - x₁) (c₂ - x₂) (a₁ - x₁) (a₂ - x₂) +
         det (a₁ - x₁) (a₂ - x₂) (b₁ - x₁) (b₂ - x₂))
       (det (b₁ - a₁) (b₂ - a₂) (c₁ - a₁) (c₂ - a₂)) := by
-  geo
+  ipra_lc
 
 /-- Viviani: `ℓ (d_a + d_b + d_c) = ℓ h`. -/
 theorem viviani {a₁ a₂ b₁ b₂ c₁ c₂ x₁ x₂ l da db dc h : ZT n}
@@ -316,12 +265,6 @@ theorem viviani {a₁ a₂ b₁ b₂ c₁ c₂ x₁ x₂ l da db dc h : ZT n}
     (hc : Γ ⊢[PRAAx] ZT.eq (l * dc) (det (a₁ - x₁) (a₂ - x₂) (b₁ - x₁) (b₂ - x₂)))
     (hh : Γ ⊢[PRAAx] ZT.eq (l * h) (det (b₁ - a₁) (b₂ - a₂) (c₁ - a₁) (c₂ - a₂))) :
     Γ ⊢[PRAAx] ZT.eq (l * (da + db + dc)) (l * h) := by
-  have ea := ZT.toZ_eq ha
-  have eb := ZT.toZ_eq hb
-  have ec := ZT.toZ_eq hc
-  have eh := ZT.toZ_eq hh
-  apply ZT.derive
-  gsimp at ea eb ec eh ⊢
-  linear_combination ea + eb + ec - eh
+  ipra_lc ZT.toZ_eq ha + ZT.toZ_eq hb + ZT.toZ_eq hc - ZT.toZ_eq hh
 
 end LeanProofs.IPRA.Geometry.TriangleCongruence

@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.MangoldtMobius
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The weighted Vaughan identity
@@ -57,7 +58,7 @@ theorem ind_split (t : PTm n) : Γ ⊢[PRAAx] monus one t + monus one (monus one
 /-- `X = [t = 0] X + [t > 0] X`. -/
 theorem split_term (t X : PTm n) : Γ ⊢[PRAAx] X ≐ monus one t * X + monus one (monus one t) * X :=
   (one_mul X).eqSymm.eqTrans ((congrMul (ind_split t).eqSymm (.eqRefl X)).eqTrans
-    (by apply deriveNat; ipra_simps; ring))
+    (by ipra_ring))
 
 section Outer
 
@@ -141,7 +142,7 @@ theorem row_split_P (e z : PTm n) :
   rw [inst2_rowB, inst2_rowB, inst2_rowB, inst3_aP, inst3_aP, inst3_aP, inst2_lamF, inst2_fle, inst2_fgt]
   refine (congrMul (.eqRefl _) (congrMul (.eqRefl _)
     (split_term (monus e (Syn.subst ![sndT z] Vb)) (Lam w e zero)))).eqTrans ?_
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem row_split_N (e z : PTm n) :
     Γ ⊢[PRAAx] inst2 (rowB (aN (lamF w))) e z ≐
@@ -149,7 +150,7 @@ theorem row_split_N (e z : PTm n) :
   rw [inst2_rowB, inst2_rowB, inst2_rowB, inst3_aN, inst3_aN, inst3_aN, inst2_lamF, inst2_fle, inst2_fgt]
   refine (congrMul (.eqRefl _) (congrMul (.eqRefl _)
     (split_term (monus e (Syn.subst ![sndT z] Vb)) (Lam w e zero)))).eqTrans ?_
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem inner_split_P (d y : PTm n) :
     Γ ⊢[PRAAx] inst2 (oB (aP (lamF w))) d y ≐
@@ -181,7 +182,7 @@ theorem tail_pt_P {d U N : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) :
   refine (congrMul (.eqRefl _) ((Prf.andE₁ (row_lam_mob w (d := d) hN)).eqSymm.eqTrans
     (inner_split_P w Vb d _))).eqTrans ?_
   refine Prf.eqTrans ?_ (congrAdd (hi_at _ _ _ _) (hi_at _ _ _ _)).eqSymm
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem tail_pt_N {d U N : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) :
     Γ ⊢[PRAAx] inst2 (hiB (QLN w)) d (pairT U N) ≐
@@ -190,7 +191,7 @@ theorem tail_pt_N {d U N : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) :
   refine (congrMul (.eqRefl _) ((Prf.andE₂ (row_lam_mob w (d := d) hN)).eqSymm.eqTrans
     (inner_split_N w Vb d _))).eqTrans ?_
   refine Prf.eqTrans ?_ (congrAdd (hi_at _ _ _ _) (hi_at _ _ _ _)).eqSymm
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- `μ⁺_{>U} * L_w = μ⁺_{>U} * 𝟏 * Λ_{≤V} + μ⁺_{>U} * 𝟏 * Λ_{>V}` at `N ≥ 1`. -/
 theorem tail_sum_P {N : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) (U : PTm n) :
@@ -230,16 +231,11 @@ theorem vaughan {N : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) (U : PTm n)
       inst2 (fle w Vb) N N + ap2 (sumF (loB (QLP w))) (succ N) (pairT U N) +
         ap2 (sumF (loB (oB (aN (fle w Vb))))) (succ N) (pairT U (Yv N)) +
         ap2 (sumF (hiB (oB (aP (fgt w Vb))))) (succ N) (pairT U (Yv N)) := by
-  have a := natEq (lambda_mobius (Γ := Γ) w hN)
-  have s1P := natEq (sum_split (Γ := Γ) (QLP w) U N (succ N))
-  have s1N := natEq (sum_split (Γ := Γ) (QLN w) U N (succ N))
-  have bP := natEq (tail_sum_P (Γ := Γ) w Vb hN U)
-  have bN := natEq (tail_sum_N (Γ := Γ) w Vb hN U)
-  have c := natEq (mobius_inversion (Γ := Γ) (fle w Vb) hN)
-  have s2P := natEq (sum_split (Γ := Γ) (oB (aP (fle w Vb))) U (Yv N) (succ N))
-  have s2N := natEq (sum_split (Γ := Γ) (oB (aN (fle w Vb))) U (Yv N) (succ N))
-  apply deriveNat; ipra_simps
-  linear_combination -a + s1P - s1N + bP - bN + c - s2P + s2N
+  ipra_lc -natEq (lambda_mobius (Γ := Γ) w hN) + natEq (sum_split (Γ := Γ) (QLP w) U N (succ N)) -
+    natEq (sum_split (Γ := Γ) (QLN w) U N (succ N)) + natEq (tail_sum_P (Γ := Γ) w Vb hN U) -
+    natEq (tail_sum_N (Γ := Γ) w Vb hN U) + natEq (mobius_inversion (Γ := Γ) (fle w Vb) hN) -
+    natEq (sum_split (Γ := Γ) (oB (aP (fle w Vb))) U (Yv N) (succ N)) +
+    natEq (sum_split (Γ := Γ) (oB (aN (fle w Vb))) U (Yv N) (succ N))
 
 end Vaughan
 

@@ -1,5 +1,6 @@
 import IPRADerivations.Core.SumSplit
 import IPRADerivations.Core.SumLemmas
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Finite orthogonality by pairing (`isoperimetric_ipra`, `lem:ortho`)
@@ -146,7 +147,7 @@ theorem off2_at (g : PTm 2) (j M B x : PTm n) :
     Γ ⊢[PRAAx] inst2 (offB (offB g)) j (pairT M (pairT B x)) ≐ inst2 g (M + (B + j)) x := by
   refine (off_at (offB g) j M (pairT B x)).eqTrans ((off_at g (M + j) B x).eqTrans ?_)
   refine congrInst2 g ?_ (.eqRefl x)
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem block_point {M B x j : PTm n}
     (h : Γ ⊢[PRAAx] inst2 p (M + (B + j)) x + inst2 p (B + j) x ≐
@@ -175,9 +176,7 @@ theorem block_cancel {M x : PTm n} (B : PTm n) (H : Γ ⊢[PRAAx] antiF p q M x)
         simpa [subst_repl_shift, Syn.repl_zero] using h
       exact block_point p q h'.wk)))
   refine sp.eqTrans (.eqTrans ?_ sq.eqSymm)
-  have k := natEq key
-  apply deriveNat; ipra_simps
-  linear_combination k
+  ipra_lc natEq key
 
 end Blocks
 
@@ -189,7 +188,7 @@ theorem blocks_step (p q : PTm 2) {M x K : PTm n}
     (H : Γ ⊢[PRAAx] antiF p q M x) :
     Γ ⊢[PRAAx] ap2 (sumF p) (succ K * (M + M)) x ≐ ap2 (sumF q) (succ K * (M + M)) x := by
   have eb : Γ ⊢[PRAAx] succ K * (M + M) ≐ K * (M + M) + (M + M) := by
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   have sp := (congrAp2 (sumF p) eb (.eqRefl x)).eqTrans (sum_split p (K * (M + M)) (M + M) x)
   have sq := (congrAp2 (sumF q) eb (.eqRefl x)).eqTrans (sum_split q (K * (M + M)) (M + M) x)
   exact sp.eqTrans ((congrAdd ih (block_cancel p q (K * (M + M)) H)).eqTrans sq.eqSymm)

@@ -56,12 +56,12 @@ theorem g_step {r y P Q : PTm n} (hr : Γ ⊢[PRAAx] le one r) (hQ : Γ ⊢[PRAA
   have hρ : Γ ⊢[PRAAx] rho r Q ≐ succ (pred (rho r Q)) := pos_of_one_le (rho_pos r Q)
   have uS := uu_succ hr hQ
   have qq : ∀ (X : PTm n), Γ ⊢[PRAAx] rho r Q * X ≐ pred (rho r Q) * X + X := fun X =>
-    (congrMul hρ (.eqRefl X)).eqTrans (by apply deriveNat; ipra_simps; ring)
+    (congrMul hρ (.eqRefl X)).eqTrans (by ipra_ring)
   have qP := natEq (qq (Mv aP y Q * uu r P))
   have qN := natEq (qq (Mv aN y Q * uu r P))
-  have uP := natEq ((congrMul (.eqRefl (EP aP aN r y P)) uS).eqTrans (by apply deriveNat; ipra_simps; ring) :
+  have uP := natEq ((congrMul (.eqRefl (EP aP aN r y P)) uS).eqTrans (by ipra_ring) :
     Γ ⊢[PRAAx] EP aP aN r y P * uu r (succ Q) ≐ rho r Q * (EP aP aN r y P * uu r Q))
-  have uN := natEq ((congrMul (.eqRefl (EN aP aN r y P)) uS).eqTrans (by apply deriveNat; ipra_simps; ring) :
+  have uN := natEq ((congrMul (.eqRefl (EN aP aN r y P)) uS).eqTrans (by ipra_ring) :
     Γ ⊢[PRAAx] EN aP aN r y P * uu r (succ Q) ≐ rho r Q * (EN aP aN r y P * uu r Q))
   have l1 := le_mul_mono (le_refl (rho r Q)) (le_absd_l (Γ := Γ) (GP aP aN r y P Q) (GN aP aN r y P Q))
   have l2 := le_mul_mono (le_refl (rho r Q)) (le_absd_r (Γ := Γ) (GP aP aN r y P Q) (GN aP aN r y P Q))
@@ -129,7 +129,7 @@ theorem ginv_step {r c y P Q : PTm n} (hr : Γ ⊢[PRAAx] le one r) (hQ : Γ ⊢
   have hρ : Γ ⊢[PRAAx] rho r Q ≐ succ (pred (rho r Q)) := pos_of_one_le (rho_pos r Q)
   have g4p : Γ ⊢[PRAAx] rho r Q * (Ac r c * UU r P Q * Hh r P) ≐
       pred (rho r Q) * (Ac r c * UU r P Q * Hh r P) + Ac r c * UU r P Q * Hh r P :=
-    (congrMul hρ (.eqRefl _)).eqTrans (by apply deriveNat; ipra_simps; ring)
+    (congrMul hρ (.eqRefl _)).eqTrans (by ipra_ring)
   -- `ρ'·(2^{h_P} u_P)·(2^{h_Q}|M(Q)|) ≤ ρ'·(2^{h_P} u_P)·(2 A u_Q)`
   have f3 := le_mul_mono (le_refl (pred (rho r Q) * (Hh r P * uu r P))) mb
   refine .orE (lt_or_le (jj r Q) (jj r (succ Q))) ?_ ?_
@@ -137,7 +137,7 @@ theorem ginv_step {r c y P Q : PTm n} (hr : Γ ⊢[PRAAx] le one r) (hQ : Γ ⊢
     have hJ : C ⊢[PRAAx] jj r (succ Q) ≐ succ (jj r Q) := le_antisymm js.wk Prf.hyp0
     have eU : C ⊢[PRAAx] uu r (succ Q) ≐ rho r Q * uu r Q := uu_succ hr.wk hQ.wk
     have eUU : C ⊢[PRAAx] UU r P (succ Q) ≐ rho r Q * UU r P Q :=
-      (congrMul (.eqRefl _) eU).eqTrans (by apply deriveNat; ipra_simps; ring)
+      (congrMul (.eqRefl _) eU).eqTrans (by ipra_ring)
     have f1 := le_mul_mono (le_refl (Hh r Q * Hh r P)) (gs.wk : C ⊢[PRAAx] _)
     have f2 := le_mul_mono (le_refl (rho r Q)) (ih.wk : C ⊢[PRAAx] _)
     refine .orE (LeanProofs.IPRA.AnalyticNumberTheory.RateShell.half_succ (Γ := C) (j := jj r Q)) ?_ ?_
@@ -359,7 +359,7 @@ theorem threshold {r P t K : PTm n} (hr : Γ ⊢[PRAAx] le one r) (hT : Γ ⊢[P
     LeanProofs.IPRA.AnalyticNumberTheory.LogRefinement.quo_mul (two_r_pos hr) (.eqRefl _)
   have hj : Γ ⊢[PRAAx] le (two * (t + K)) (jj r P) := by
     have q := LeanProofs.IPRA.DiophantineNumberTheory.Dirichlet.quo_mono (two_r_pos hr)
-      (le_congr (by apply deriveNat; ipra_simps; ring) (.eqRefl _) hl : Γ ⊢[PRAAx] le (two * r * (two * (t + K))) (lg P))
+      (le_congr (by ipra_ring) (.eqRefl _) hl : Γ ⊢[PRAAx] le (two * r * (two * (t + K))) (lg P))
     exact le_congr hq (.eqRefl _) q
   have hq2 : Γ ⊢[PRAAx] quo (two * (t + K)) two ≐ t + K :=
     LeanProofs.IPRA.AnalyticNumberTheory.LogRefinement.quo_mul two_pos (.eqRefl _)
@@ -376,7 +376,7 @@ theorem kc_ge (r c : PTm n) :
     refine ((pw_succ two _).eqTrans (congrMul ((pw_succ two _).eqTrans (congrMul ((pw_succ two _).eqTrans
       (congrMul ((pw_succ two _).eqTrans (congrMul (pw_add two c r) (.eqRefl _))) (.eqRefl _))) (.eqRefl _)))
       (.eqRefl _))).eqTrans ?_
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   have f := natEq eK
   ipra_le sl cb' with f
 

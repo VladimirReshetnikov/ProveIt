@@ -1,5 +1,6 @@
 import IPRADerivations.Core.SumLemmas
 import IPRADerivations.Core.Pairing
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The midpoint moment of a segment
@@ -38,9 +39,7 @@ theorem inst2_odd (j x : PTm n) : inst2 oddB j x = succ (two * j) := by simp [in
 
 theorem af_base (c δ : PTm n) :
     Γ ⊢[PRAAx] ap2 (sumF afB) zero (pairT c δ) ≐ zero * c + zero * zero * δ := by
-  have z := natEq (sum_zero (Γ := Γ) afB (pairT c δ))
-  apply deriveNat; ipra_simps
-  linear_combination z
+  ipra_lc natEq (sum_zero (Γ := Γ) afB (pairT c δ))
 
 theorem af_step {N c δ : PTm n} (ih : Γ ⊢[PRAAx] ap2 (sumF afB) N (pairT c δ) ≐ N * c + N * N * δ) :
     Γ ⊢[PRAAx] ap2 (sumF afB) (succ N) (pairT c δ) ≐ succ N * c + succ N * succ N * δ := by
@@ -48,9 +47,7 @@ theorem af_step {N c δ : PTm n} (ih : Γ ⊢[PRAAx] ap2 (sumF afB) N (pairT c �
   rw [inst2_af] at e
   have t : Γ ⊢[PRAAx] fstT (pairT c δ) + succ (two * N) * sndT (pairT c δ) ≐ c + succ (two * N) * δ :=
     congrAdd (fst_pair _ _) (congrMul (.eqRefl _) (snd_pair _ _))
-  have a := natEq (e.eqTrans (congrAdd (.eqRefl _) t)); have i := natEq ih
-  apply deriveNat; ipra_simps
-  linear_combination a + i
+  ipra_lc natEq (e.eqTrans (congrAdd (.eqRefl _) t)) + natEq ih
 
 /-- Variables: `0 = N`, `1 = c`, `2 = δ`. -/
 private abbrev afF : Fm PTm 3 :=
@@ -73,12 +70,12 @@ theorem affine_sum (N c δ : PTm n) : Γ ⊢[PRAAx] ap2 (sumF afB) N (pairT c δ
 theorem odd_pt (j x : PTm n) : Γ ⊢[PRAAx] inst2 oddB j x ≐ inst2 afB j (pairT zero one) := by
   rw [inst2_odd, inst2_af]
   exact ((congrAdd (fst_pair _ _) (congrMul (.eqRefl _) (snd_pair _ _))).eqTrans
-    (by apply deriveNat; ipra_simps; ring)).eqSymm
+    (by ipra_ring)).eqSymm
 
 /-- `∑_{j<N} (2j + 1) = N²`. -/
 theorem sum_odd (N x : PTm n) : Γ ⊢[PRAAx] ap2 (sumF oddB) N x ≐ N * N := by
   refine (sum_congr_bounded oddB afB x (pairT zero one) N (.allI (.impI ?_))).eqTrans
-    ((affine_sum N zero one).eqTrans (by apply deriveNat; ipra_simps; ring))
+    ((affine_sum N zero one).eqTrans (by ipra_ring))
   simp only [Syn.shift, subst_pairT, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
   exact odd_pt _ _
 
@@ -86,6 +83,6 @@ theorem sum_odd (N x : PTm n) : Γ ⊢[PRAAx] ap2 (sumF oddB) N x ≐ N * N := b
 `r₁ = r₀ + δ`. Dividing by `2N²` and multiplying by the length gives `M_N = ℓ (r₀ + r₁)/2`. -/
 theorem midpoint_moment (N r₀ δ : PTm n) :
     Γ ⊢[PRAAx] ap2 (sumF afB) N (pairT (two * N * r₀) δ) ≐ N * N * (r₀ + (r₀ + δ)) :=
-  (affine_sum N (two * N * r₀) δ).eqTrans (by apply deriveNat; ipra_simps; ring)
+  (affine_sum N (two * N * r₀) δ).eqTrans (by ipra_ring)
 
 end LeanProofs.IPRA.Geometry.PappusSegment

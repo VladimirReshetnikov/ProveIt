@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianEulerDecayQuadrature
 import IPRADerivations.Analysis.GaussianGammaEncodingRescaling
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The original Euler integrand at one
@@ -53,9 +54,7 @@ theorem equal_radius (z B a b : PTm n) (h : Γ ⊢[PRAAx] coefficient z B ≐ qz
   have hs := (unit_exponent_at zero z B a b h).eqTrans (constant_at zero (decayPoint a b)).eqSymm
   unfold GaussianEulerIntegrandName.radius GaussianNameBounds.U GaussianNameBounds.ceiling GaussianNameBounds.initial
   apply congrAdd _ (.eqRefl two)
-  simpa using Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (GaussianGeneralFTAConstants.ceilL1 (var 0) : PTm 1)
-    (σ := ![ap2 exponentF zero (exponentData z B a b)]) (σ' := ![ap2 constantF zero (decayPoint a b)])
-    (fun i => by fin_cases i; exact hs)
+  ipra_congr (GaussianGeneralFTAConstants.ceilL1 (var 0) : PTm 1) with [hs]
 
 theorem exact_sample (p z B a b : PTm n) (h : Γ ⊢[PRAAx] coefficient z B ≐ qzero) :
     Γ ⊢[PRAAx] sample p z B a b ≐ observation a b p := by

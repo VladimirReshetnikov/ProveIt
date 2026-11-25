@@ -5,6 +5,7 @@ import IPRADerivations.Probability.Variance
 import IPRADerivations.Core.Fubini
 import IPRADerivations.Combinatorics.CatalanConvolution
 import IPRADerivations.Analysis.RationalClosure
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The canonical root decomposition
@@ -85,10 +86,8 @@ theorem ad_of_eq {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) : Γ ⊢[PRAAx] ad a 
   (congrAdd (le_congr (.eqRefl a) h (le_refl a)) (le_congr h (.eqRefl a) (le_refl a))).eqTrans (add_zero _)
 
 theorem two_le_pos {N : PTm n} (h : Γ ⊢[PRAAx] le two N) : Γ ⊢[PRAAx] N ≐ succ (pred N) := by
-  have e := natEq (eq_add_of_le h)
   refine eq_succ_pred (y := one + monus N two) ?_
-  apply deriveNat; ipra_simps
-  linear_combination e
+  ipra_lc natEq (eq_add_of_le h)
 
 /-- `x^k = M ≥ 2` forces `x ≥ 2`. -/
 theorem two_le_base {x k M : PTm n} (h : Γ ⊢[PRAAx] pw x k ≐ M) (hM : Γ ⊢[PRAAx] le two M) :
@@ -128,28 +127,21 @@ theorem g_zero_of {w e N : PTm n} (hw : Γ ⊢[PRAAx] pw w e ≐ N) (hwN : Γ �
 /-- Maximality: `w^{e'} = N`, `w, e' ≤ N`, `e' ≥ 1` give `e' ≤ eT N`. -/
 theorem maximal {w e N : PTm n} (hw : Γ ⊢[PRAAx] pw w e ≐ N) (hwN : Γ ⊢[PRAAx] le w N)
     (heN : Γ ⊢[PRAAx] le e N) (he : Γ ⊢[PRAAx] e ≐ succ (pred e)) : Γ ⊢[PRAAx] le e (eT N) := by
-  have e₁ := natEq (eq_add_of_le heN)
-  have ee := natEq he
   have hlt : Γ ⊢[PRAAx] lt (monus N e) N := by
     refine le_of_eq_add (d := pred e) ?_
-    apply deriveNat; ipra_simps
-    linear_combination e₁ + ee
+    ipra_lc natEq (eq_add_of_le heN) + natEq he
   have s := Search.search_found (f := gB) (g_zero_of hw hwN heN) hlt
-  have k₁ := natEq (eq_add_of_le (Prf.andE₂ (Prf.andE₂ s)))
-  have k₂ := natEq (eq_add_of_le (le_trans (le_succ_self _) (Prf.andE₁ s)))
   refine le_of_eq_add (d := monus (monus N e) (KT N)) ?_
-  apply deriveNat; ipra_simps
-  linear_combination -k₂ + e₁ + k₁
+  ipra_lc -natEq (eq_add_of_le (le_trans (le_succ_self _) (Prf.andE₁ s))) + natEq (eq_add_of_le heN) +
+    natEq (eq_add_of_le (Prf.andE₂ (Prf.andE₂ s)))
 
 theorem K_lt {N : PTm n} (hN : Γ ⊢[PRAAx] le two N) :
     Γ ⊢[PRAAx] lt (KT N) N ⋏ (inst2 gB (KT N) N ≐ zero) := by
   have h₁ : Γ ⊢[PRAAx] le one N := le_trans (le_succ_self one) hN
   have g := g_zero_of (pw_one N) (le_refl N) h₁
-  have e₁ := natEq (eq_add_of_le h₁)
   have hlt : Γ ⊢[PRAAx] lt (monus N one) N := by
     refine le_of_eq_add (d := zero) ?_
-    apply deriveNat; ipra_simps
-    linear_combination e₁
+    ipra_lc natEq (eq_add_of_le h₁)
   have s := Search.search_found (f := gB) g hlt
   exact .andI (Prf.andE₁ s) (Prf.andE₁ (Prf.andE₂ s))
 
@@ -162,12 +154,9 @@ theorem canonical_pow {N : PTm n} (hN : Γ ⊢[PRAAx] le two N) : Γ ⊢[PRAAx] 
 /-- `eT N ≥ 1`. -/
 theorem e_pos {N : PTm n} (hN : Γ ⊢[PRAAx] le two N) : Γ ⊢[PRAAx] eT N ≐ succ (pred (eT N)) := by
   have k := Prf.andE₁ (K_lt hN)
-  have k₁ := natEq (eq_add_of_le k)
-  have k₂ := natEq (eq_add_of_le (le_trans (le_succ_self _) k))
   show Γ ⊢[PRAAx] monus N (KT N) ≐ succ (pred (monus N (KT N)))
   refine eq_succ_pred (y := monus N (succ (KT N))) ?_
-  apply deriveNat; ipra_simps
-  linear_combination k₁ - k₂
+  ipra_lc natEq (eq_add_of_le k) - natEq (eq_add_of_le (le_trans (le_succ_self _) k))
 
 /-! ## Root-freeness and uniqueness -/
 
@@ -188,12 +177,9 @@ theorem no_root {N w d : PTm n} (hN : Γ ⊢[PRAAx] le two N) (hd : Γ ⊢[PRAAx
     le_trans (le_succ_self _) (le_trans (succ_le_two_pow _)
       (le_congr (.eqRefl _) hwN' (pw_le_pw (d * eT N) hw2)))
   have m := maximal hwN' hwN hdeN hde
-  have x₁ := natEq (eq_add_of_le hd)
-  have x₂ := natEq he
   have l₃ : Γ ⊢[PRAAx] le (succ (eT N)) (d * eT N) := by
     refine le_of_eq_add (d := pred (eT N) + monus d two * eT N) ?_
-    apply deriveNat; ipra_simps
-    linear_combination 𝔞 (eT N) * x₁ + x₂
+    ipra_lc 𝔞 (eT N) * natEq (eq_add_of_le hd) + natEq he
   exact not_succ_le_self (eT N) _ (le_trans l₃ m)
 
 theorem shift_shift_rT (N : PTm n) : Syn.shift (Syn.shift (rT N)) = rT (Syn.shift (Syn.shift N)) := by

@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.TotientCorollaries
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # `gcd · lcm = ab`
@@ -30,12 +31,8 @@ theorem gcd_mul_lcm {a b : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) (hb :
     Γ ⊢[PRAAx] gcd a b * lcm a b ≐ a * b := by
   have hd := gcd_pos (B := b) ha
   have hgd := gcd_dvd' (b := b) ha
-  have hL := natEq (lcm_eq ha hb)
-  have ea := natEq (eq_of_dvd' hd (Prf.andE₁ hgd))
-  have eb := natEq (eq_of_dvd' hd (Prf.andE₂ hgd))
-  apply deriveNat; ipra_simps
-  linear_combination -(Groth.ι (Q.mk _ b) * ea) -
-    Groth.ι (Q.mk _ (gcd a b)) * Groth.ι (Q.mk _ (quo a (gcd a b))) * eb +
-    Groth.ι (Q.mk _ (gcd a b)) * hL
+  ipra_lc -(Groth.ι (Q.mk _ b) * natEq (eq_of_dvd' hd (Prf.andE₁ hgd))) -
+    Groth.ι (Q.mk _ (gcd a b)) * Groth.ι (Q.mk _ (quo a (gcd a b))) * natEq (eq_of_dvd' hd (Prf.andE₂ hgd)) +
+    Groth.ι (Q.mk _ (gcd a b)) * natEq (lcm_eq ha hb)
 
 end LeanProofs.IPRA.AnalyticNumberTheory.GcdLcm

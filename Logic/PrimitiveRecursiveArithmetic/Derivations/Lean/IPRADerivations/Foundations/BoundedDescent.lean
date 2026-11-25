@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.IterationFusion
 import IPRADerivations.Foundations.BoundedReflection
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Bounded descent with a rank (`ipra_coherent_methods_2026-11-15`, `thm:rank`)
@@ -78,7 +79,6 @@ theorem inv_step (H : Descent T r D V) {t s₀ : PTm k}
     have hdec := H.dec (hv.wk (ψ := neg (app1 D (iter T t s₀) ≐ one))).wk
       (Prf.hyp1 (Γ := Γ) (φ := neg (app1 D (iter T t s₀) ≐ one))
         (ψ := le (app1 r (iter T t s₀) + t) (app1 r s₀)))
-    have e₁ := natEq (eq_add_of_le hdec)
     have e₂ := natEq (eq_add_of_le (Prf.hyp0 (Γ := neg (app1 D (iter T t s₀) ≐ one) :: Γ)
       (φ := le (app1 r (iter T t s₀) + t) (app1 r s₀))))
     have e₃ := natEq (congrApp1 r ((cs.wk (ψ := neg (app1 D (iter T t s₀) ≐ one))).wk
@@ -86,8 +86,7 @@ theorem inv_step (H : Descent T r D V) {t s₀ : PTm k}
     refine .orI₂ (le_of_eq_add (d := monus (app1 r (iter T t s₀))
       (succ (app1 r (app1 T (iter T t s₀)))) +
       monus (app1 r s₀) (app1 r (iter T t s₀) + t)) ?_)
-    apply deriveNat; ipra_simps
-    linear_combination e₂ + e₁ - e₃
+    ipra_lc e₂ + natEq (eq_add_of_le hdec) - e₃
 
 /-- Variables: `0 = t`, `1 = s₀`. -/
 private def invF (T r D V : PTm 1) : Fm PTm 2 :=
@@ -135,7 +134,6 @@ theorem terminal (H : Descent T r D V) {s₀ : PTm k} (h₀ : Γ ⊢[PRAAx] app1
     (ψ := le (app1 r (iter T (app1 r s₀) s₀) + app1 r s₀) (app1 r s₀))).wk
     (Prf.hyp0 (Γ := le (app1 r (iter T (app1 r s₀) s₀) + app1 r s₀) (app1 r s₀) :: Γ)
       (φ := neg (app1 D (iter T (app1 r s₀) s₀) ≐ one)))
-  have e₁ := natEq (eq_add_of_le hdec)
   have e₂ := natEq (eq_add_of_le (Prf.hyp1 (Γ := Γ)
     (φ := le (app1 r (iter T (app1 r s₀) s₀) + app1 r s₀) (app1 r s₀))
     (ψ := neg (app1 D (iter T (app1 r s₀) s₀) ≐ one))))
@@ -144,8 +142,7 @@ theorem terminal (H : Descent T r D V) {s₀ : PTm k} (h₀ : Γ ⊢[PRAAx] app1
       (succ (app1 r (app1 T (iter T (app1 r s₀) s₀)))) +
       monus (app1 r s₀) (app1 r (iter T (app1 r s₀) s₀) + app1 r s₀) +
       app1 r (app1 T (iter T (app1 r s₀) s₀))) ?_)
-  apply deriveNat; ipra_simps
-  linear_combination e₂ + e₁
+  ipra_lc e₂ + natEq (eq_add_of_le hdec)
 
 /-- `thm:rank` as a closed sentence. Variable: `0 = s₀`. -/
 theorem terminal_closed (H : Descent T r D V) : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 1

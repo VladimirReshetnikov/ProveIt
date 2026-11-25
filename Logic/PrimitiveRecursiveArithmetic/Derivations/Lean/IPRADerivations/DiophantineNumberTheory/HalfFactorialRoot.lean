@@ -2,6 +2,7 @@ import IPRADerivations.DiophantineNumberTheory.WilsonConverse
 import IPRADerivations.AnalyticNumberTheory.FactorVector
 import IPRADerivations.AnalyticNumberTheory.Euler
 import IPRADerivations.Foundations.CrossingSearch
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The half-factorial is a root of `−1`
@@ -60,31 +61,23 @@ theorem even_alg {A B r k p m P W W1 w : PTm n} (eW : Γ ⊢[PRAAx] W ≐ (A * s
     (eW1 : Γ ⊢[PRAAx] W1 ≐ A * (B * succ k)) (er : Γ ⊢[PRAAx] P ≐ succ k + r)
     (ep : Γ ⊢[PRAAx] p ≐ succ P) (eIH : Γ ⊢[PRAAx] W + one ≐ p * m) (hW : Γ ⊢[PRAAx] W1 ≐ succ w) :
     Γ ⊢[PRAAx] succ k * w + p * (succ k * m) ≐ p * W1 := by
-  have x1 := natEq eW; have x2 := natEq eW1; have x3 := natEq er; have x4 := natEq ep
-  have x5 := natEq eIH; have x6 := natEq hW
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞 k + 1) * x1 - (𝔞 r + 1) * x2 - 𝔞 W1 * x3 - 𝔞 W1 * x4 - (𝔞 k + 1) * x5 -
-    (𝔞 k + 1) * x6
+  ipra_lc (𝔞 k + 1) * natEq eW - (𝔞 r + 1) * natEq eW1 - 𝔞 W1 * natEq er - 𝔞 W1 * natEq ep - (𝔞 k + 1) * natEq eIH -
+    (𝔞 k + 1) * natEq hW
 
 theorem odd_alg {A B r k p m P W W1 : PTm n} (eW : Γ ⊢[PRAAx] W ≐ (A * succ r) * B)
     (eW1 : Γ ⊢[PRAAx] W1 ≐ A * (B * succ k)) (er : Γ ⊢[PRAAx] P ≐ succ k + r)
     (ep : Γ ⊢[PRAAx] p ≐ succ P) (eIH : Γ ⊢[PRAAx] W ≐ p * m + one) :
     Γ ⊢[PRAAx] succ k * (W1 + one) + p * (succ k * m) ≐ p * W1 := by
-  have x1 := natEq eW; have x2 := natEq eW1; have x3 := natEq er; have x4 := natEq ep
-  have x5 := natEq eIH
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞 k + 1) * x1 - (𝔞 r + 1) * x2 - 𝔞 W1 * x3 - 𝔞 W1 * x4 - (𝔞 k + 1) * x5
+  ipra_lc (𝔞 k + 1) * natEq eW - (𝔞 r + 1) * natEq eW1 - 𝔞 W1 * natEq er - 𝔞 W1 * natEq ep - (𝔞 k + 1) * natEq eIH
 
 theorem r_alg {P k r : PTm n} (er : Γ ⊢[PRAAx] P ≐ succ k + r) : Γ ⊢[PRAAx] P ≐ k + succ r := by
-  have x := natEq er
-  apply deriveNat; ipra_simps; linear_combination x
+  ipra_lc natEq er
 
 theorem one_alg {W1 w p q : PTm n} (hW : Γ ⊢[PRAAx] W1 ≐ succ w) (e : Γ ⊢[PRAAx] w ≐ p * q) :
     Γ ⊢[PRAAx] W1 ≐ p * q + one := by
-  have x := natEq hW; have y := natEq e
-  apply deriveNat; ipra_simps; linear_combination x + y
+  ipra_lc natEq hW + natEq e
 
-theorem mul_one_r (X : PTm n) : Γ ⊢[PRAAx] X * one ≐ X := by apply deriveNat; ipra_simps; ring
+theorem mul_one_r (X : PTm n) : Γ ⊢[PRAAx] X * one ≐ X := by ipra_ring
 
 /-! ## The induction -/
 
@@ -195,8 +188,7 @@ theorem wilson_split {p k : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hk : Γ ⊢[PRA
 /-! ## The half-factorial -/
 
 theorem half_alg {p h : PTm n} (e : Γ ⊢[PRAAx] p ≐ two * h + one) : Γ ⊢[PRAAx] p ≐ succ (h + h) := by
-  have x := natEq e
-  apply deriveNat; ipra_simps; linear_combination x
+  ipra_lc natEq e
 
 /-- At `p = 2h + 1`: `((h!)² + (1 − par h)) mod p = par h`. -/
 theorem half_split {p h : PTm n} (hp : Γ ⊢[PRAAx] prime p) (e : Γ ⊢[PRAAx] p ≐ two * h + one) :
@@ -220,8 +212,7 @@ theorem half_factorial_odd {p h : PTm n} (hp : Γ ⊢[PRAAx] prime p) (e : Γ �
     (add_zero _)).eqSymm (.eqRefl _)).eqTrans ((half_split hp e).eqTrans hh)
 
 theorem tz_alg {t : PTm n} (h : Γ ⊢[PRAAx] t ≐ zero) : Γ ⊢[PRAAx] t * t + one ≐ one := by
-  have x := natEq h
-  apply deriveNat; ipra_simps; linear_combination 𝔞 t * x
+  ipra_lc 𝔞 t * natEq h
 
 /-- **`lem:root`**: for a prime `p = 2h + 1` with `h` even, `t = h! mod p` has `0 < t < p` and
 `p ∣ t² + 1`. -/

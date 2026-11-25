@@ -90,10 +90,10 @@ theorem jensen (w X Φ : PTm 2) {M x e c sp sm : PTm n}
     rw [inst2_mul', inst2_mul']
     simp only [shift_add'', shift_mul'', shift_zero']
     have m := le_mul_mono (le_refl (inst2 w (var 0) (Syn.shift x))) (Prf.impE hc.allOpen.wk Prf.hyp0)
-    refine le_congr ?_ ?_ m <;> (apply deriveNat; ipra_simps; ring)
+    refine le_congr ?_ ?_ m <;> (ipra_ring)
   have m2 := le_congr L R mono
   have m3 : Γ ⊢[PRAAx] le (e * (W * (c * W)) + (sp * W * S + sm * S * W)) (e * (W * F) + (sp * W * S + sm * S * W)) := by
-    refine le_congr ?_ ?_ m2 <;> (apply deriveNat; ipra_simps; ring)
+    refine le_congr ?_ ?_ m2 <;> (ipra_ring)
   exact le_cancel_pos hW (le_cancel_pos he (le_of_add_le_add_right m3))
 
 /-! ## Conditional Jensen -/

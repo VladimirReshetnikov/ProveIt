@@ -64,7 +64,7 @@ theorem sgm_facts {p x : PTm n} (hl : Γ ⊢[PRAAx] le (num 131136 * Q3 p) (ell 
       (le (num 16 * (succ p * succ (sgm p x)) + one) (monus (ell x) (sgm p x)) ⋏
         (le (sgm p x) (muP x) ⋏ le one (sgm p x))) := by
   have dm := div_mod_at (Γ := Γ) (x := ell x) (y := num 64 * succ p) (c := num 63 + num 64 * p)
-    (by apply deriveNat; ipra_simps; ring)
+    (by ipra_ring)
   have e := natEq (Prf.andE₁ dm)
   have r := Prf.andE₂ dm
   have hq : Γ ⊢[PRAAx] le (num 64 * succ p * (num 2048 * (succ p * succ p))) (num 64 * succ p * sgm p x) := by
@@ -85,7 +85,6 @@ theorem sgm_facts {p x : PTm n} (hl : Γ ⊢[PRAAx] le (num 131136 * Q3 p) (ell 
   · ipra_le sl pg + 8 * (𝔞 p + 1) * sl r with 8 * (𝔞 p + 1) * e
   · ipra_le (48 * 𝔞 p + 47) * sl h1 + 32 * 𝔞 p + 30 + 𝔞 (rem (ell x) (num 64 * succ p)) with e - f
   · ipra_le sl hsm + sl h1
-
 
 /-- Prime counting at the harmonic logarithm: `|π(x) u_x − Fx| ≤ 4Fx/q`. -/
 theorem pi_modulus {p x : PTm n} (hx : Γ ⊢[PRAAx] le (pw two (sT (Jst p) (Dq p))) x)

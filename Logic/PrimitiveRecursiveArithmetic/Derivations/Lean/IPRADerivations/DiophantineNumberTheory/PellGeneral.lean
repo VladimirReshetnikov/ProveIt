@@ -1,6 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.PellAll
 import IPRADerivations.DiophantineNumberTheory.PellGenDescent
 import IPRADerivations.DiophantineNumberTheory.PellCFStep
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Finite seeds and uniform decision for `x² − D y² = N`
@@ -152,9 +153,9 @@ theorem seed_square {D T K : PTm n} (hD : Γ ⊢[PRAAx] D ≐ succ (pred D)) (hK
     (le_mul_mono (le_refl D) (one_le_of_pos hD)))
   have kk : Γ ⊢[PRAAx] le K (K * K) := le_congr (mul_one' _) (.eqRefl _) (le_mul_mono (le_refl K) (one_le_of_pos hK))
   refine le_trans (le_add_mono dd kk) (le_of_eq_add (d := two * (D * T * K)) ?_)
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 where
-  mul_one' (a : PTm n) : Γ ⊢[PRAAx] a * one ≐ a := by apply deriveNat; ipra_simps; ring
+  mul_one' (a : PTm n) : Γ ⊢[PRAAx] a * one ≐ a := by ipra_ring
 
 /-! ## The case N > 0 -/
 
@@ -274,7 +275,7 @@ theorem general_pos {ps : Fin 6 → PTm n} (hA : Γ ⊢[PRAAx] ps 0 * ps 0 ≐ o
     have z : (le (T (ps 4) ps + ps 4) (ps 4) :: Γ) ⊢[PRAAx] T (ps 4) ps ≐ zero := by
       refine add_eq_zero_left (y := monus (ps 4) (T (ps 4) ps + ps 4)) (add_right_cancel (c := ps 4) ?_)
       refine withEq w fun e => ?_
-      apply deriveNat; ipra_simps; linear_combination -e
+      ipra_lc -e
     exact le_congr z.eqSymm (.eqRefl _) (zero_le _)
   have hn := Prf.andE₁ (Prf.andE₂ (Prf.andE₂ h))
   have hr : Γ ⊢[PRAAx] le (R (ps 4) ps) (ps 2 * (ps 0 * ps 5) + ps 5) := by
@@ -301,10 +302,7 @@ theorem seed_pos {A B D K r t : PTm n} (hA : Γ ⊢[PRAAx] A * A ≐ one + D * (
     simp only [Recurrences.Y, sim₂, subst_sndT, ConciseIPRA.PTm.subst_app]
     congr 2; funext i; refine Fin.cases rfl (fun j => ?_) i; fin_cases j <;> rfl
   rw [eX, eY] at pw
-  have hp := natEq (Prf.impE pw ((hA.eqTrans (add_comm _ _))))
-  have e := natEq hs
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞 r * 𝔞 r - 𝔞 D * 𝔞 t * 𝔞 t) * hp + e
+  ipra_lc (𝔞 r * 𝔞 r - 𝔞 D * 𝔞 t * 𝔞 t) * natEq (Prf.impE pw ((hA.eqTrans (add_comm _ _)))) + natEq hs
 
 end Pos
 
@@ -426,7 +424,7 @@ theorem general_neg {ps : Fin 6 → PTm n} (hA : Γ ⊢[PRAAx] ps 0 * ps 0 ≐ o
     have z : (le (T (ps 4) ps + ps 4) (ps 4) :: Γ) ⊢[PRAAx] T (ps 4) ps ≐ zero := by
       refine add_eq_zero_left (y := monus (ps 4) (T (ps 4) ps + ps 4)) (add_right_cancel (c := ps 4) ?_)
       refine withEq w fun e => ?_
-      apply deriveNat; ipra_simps; linear_combination -e
+      ipra_lc -e
     exact le_congr z.eqSymm (.eqRefl _) (zero_le _)
   have hn := Prf.andE₁ (Prf.andE₂ (Prf.andE₂ h))
   have hr : Γ ⊢[PRAAx] le (R (ps 4) ps) (ps 2 * (ps 0 * ps 5) + ps 5) := by
@@ -453,10 +451,7 @@ theorem seed_neg {A B D K r t : PTm n} (hA : Γ ⊢[PRAAx] A * A ≐ one + D * (
     simp only [Recurrences.Y, sim₂, subst_sndT, ConciseIPRA.PTm.subst_app]
     congr 2; funext i; refine Fin.cases rfl (fun j => ?_) i; fin_cases j <;> rfl
   rw [eX, eY] at pw
-  have hp := natEq (Prf.impE pw ((hA.eqTrans (add_comm _ _))))
-  have e := natEq hs
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞 r * 𝔞 r - 𝔞 D * 𝔞 t * 𝔞 t) * hp + e
+  ipra_lc (𝔞 r * 𝔞 r - 𝔞 D * 𝔞 t * 𝔞 t) * natEq (Prf.impE pw ((hA.eqTrans (add_comm _ _)))) + natEq hs
 
 end Neg
 

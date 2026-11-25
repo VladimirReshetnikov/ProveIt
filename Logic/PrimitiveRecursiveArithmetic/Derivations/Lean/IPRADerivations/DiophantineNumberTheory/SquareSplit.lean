@@ -1,4 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.Coprime
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Coprime cancellation and square splitting
@@ -32,8 +33,6 @@ theorem square_split {a b c : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) (h
   have sb := square_of_coprime hb (gcd_comm_one hb hg) ((mul_comm _ _).eqTrans h)
   refine .andI ra (.andI sb ?_)
   refine sq_inj ?_
-  have e1 := natEq ra; have e2 := natEq sb; have e3 := natEq h
-  apply deriveNat; ipra_simps
-  linear_combination -e3 + 𝔞 b * e1 + 𝔞 (gcd a c) * 𝔞 (gcd a c) * e2
+  ipra_lc -natEq h + 𝔞 b * natEq ra + 𝔞 (gcd a c) * 𝔞 (gcd a c) * natEq sb
 
 end LeanProofs.IPRA.DiophantineNumberTheory.SquareSplit

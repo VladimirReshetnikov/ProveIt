@@ -1,5 +1,6 @@
 import IPRADerivations.Geometry.TriangleCentres
 import IPRADerivations.Geometry.ConwayAlgebra
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Straightedge and compass: copying a segment, the perpendicular bisector, and the field operations
@@ -35,12 +36,7 @@ open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
-
-local macro "gsimp" loc:(Lean.Parser.Tactic.location)? : tactic =>
-  `(tactic| simp only [dot, det, nsq, zsl_def, ZT.toZ_add, ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_neg, ZT.toZ_sq,
-    ZT.toZ_natLit, Nat.cast_ofNat, Nat.cast_zero, Nat.cast_one] $[$loc]?)
-
-local macro "geo" : tactic => `(tactic| (apply ZT.derive; gsimp; ring))
+attribute [local ipra_defs] dot det nsq
 
 /-! ## Copying a segment -/
 
@@ -48,92 +44,70 @@ local macro "geo" : tactic => `(tactic| (apply ZT.derive; gsimp; ring))
 theorem copy_segment {u₁ u₂ v₁ v₂ t : ZT n}
     (h : Γ ⊢[PRAAx] ZT.eq (t * t * nsq v₁ v₂) (nsq u₁ u₂)) :
     Γ ⊢[PRAAx] ZT.eq (nsq (t * v₁) (t * v₂)) (nsq u₁ u₂) := by
-  have e := ZT.toZ_eq h
-  apply ZT.derive
-  gsimp at e ⊢
-  linear_combination e
+  ipra_lc ZT.toZ_eq h
 
 /-- Two parameters of copied endpoints: `(t − s)(t + s) |v|² = 0`. -/
 theorem copy_parameters {u₁ u₂ v₁ v₂ t s : ZT n}
     (ht : Γ ⊢[PRAAx] ZT.eq (t * t * nsq v₁ v₂) (nsq u₁ u₂))
     (hs : Γ ⊢[PRAAx] ZT.eq (s * s * nsq v₁ v₂) (nsq u₁ u₂)) :
     Γ ⊢[PRAAx] ZT.eq ((t - s) * (t + s) * nsq v₁ v₂) (ZT.natLit 0) := by
-  have et := ZT.toZ_eq ht
-  have es := ZT.toZ_eq hs
-  apply ZT.derive
-  gsimp at et es ⊢
-  linear_combination et - es
+  ipra_lc ZT.toZ_eq ht - ZT.toZ_eq hs
 
 /-! ## The perpendicular bisector -/
 
 /-- `[u, J u] = |u|²`. -/
 theorem bisector_transversal (u₁ u₂ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (det u₁ u₂ (-u₂) u₁) (nsq u₁ u₂) := by
-  geo
+  ipra_lc
 
 /-- A point equidistant from `U` and `V` is on the perpendicular bisector. -/
 theorem bisector_equidistant {x₁ x₂ u₁ u₂ v₁ v₂ : ZT n}
     (h : Γ ⊢[PRAAx] ZT.eq (nsq (x₁ - u₁) (x₂ - u₂)) (nsq (x₁ - v₁) (x₂ - v₂))) :
     Γ ⊢[PRAAx] ZT.eq
       (dot (ZT.natLit 2 * x₁ - u₁ - v₁) (ZT.natLit 2 * x₂ - u₂ - v₂) (v₁ - u₁) (v₂ - u₂)) (ZT.natLit 0) := by
-  have e := ZT.toZ_eq h
-  apply ZT.derive
-  gsimp at e ⊢
-  linear_combination e
+  ipra_lc ZT.toZ_eq h
 
 /-- A point of the perpendicular bisector is equidistant from `U` and `V`. -/
 theorem bisector_equidistant_converse {x₁ x₂ u₁ u₂ v₁ v₂ : ZT n}
     (h : Γ ⊢[PRAAx] ZT.eq
       (dot (ZT.natLit 2 * x₁ - u₁ - v₁) (ZT.natLit 2 * x₂ - u₂ - v₂) (v₁ - u₁) (v₂ - u₂)) (ZT.natLit 0)) :
     Γ ⊢[PRAAx] ZT.eq (nsq (x₁ - u₁) (x₂ - u₂)) (nsq (x₁ - v₁) (x₂ - v₂)) := by
-  have e := ZT.toZ_eq h
-  apply ZT.derive
-  gsimp at e ⊢
-  linear_combination e
+  ipra_lc ZT.toZ_eq h
 
 /-! ## The field operations -/
 
 /-- Addition: `(a + b, 1) − (a, 0)` is parallel to `(b, 1)`. -/
 theorem add_construction (a b : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (det (a + b - a) (ZT.natLit 1 - ZT.natLit 0) b (ZT.natLit 1)) (ZT.natLit 0) := by
-  geo
+  ipra_lc
 
 /-- Multiplication: `(ab, b)` is on the line through the origin and `(a, 1)`. -/
 theorem mul_construction (a b : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (det (a * b) b a (ZT.natLit 1)) (ZT.natLit 0) := by
-  geo
+  ipra_lc
 
 /-- Reciprocal: `[(1, y), (a, 1)] = −(a y − 1)`, so `(1, y)` is on the line through the origin and `(a, 1)`
 exactly when `a y = 1`. -/
 theorem reciprocal_construction (a y : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (det (ZT.natLit 1) y a (ZT.natLit 1)) (-(a * y - ZT.natLit 1)) := by
-  geo
+  ipra_lc
 
 /-- Square root: `(0, y)` with `y² = a` is on the circle of diameter `(−1, 0), (a, 0)` (doubled form). -/
 theorem sqrt_construction {a y : ZT n} (h : Γ ⊢[PRAAx] ZT.eq (y * y) a) :
     Γ ⊢[PRAAx] ZT.eq (nsq (-(a - ZT.natLit 1)) (ZT.natLit 2 * y)) (ZT.sq (a + ZT.natLit 1)) := by
-  have e := ZT.toZ_eq h
-  apply ZT.derive
-  gsimp at e ⊢
-  linear_combination 4 * e
+  ipra_lc 4 * ZT.toZ_eq h
 
 /-- Square root, Thales' form: the chords from `(0, y)` to the ends of the diameter are perpendicular. -/
 theorem sqrt_construction_thales {a y : ZT n} (h : Γ ⊢[PRAAx] ZT.eq (y * y) a) :
     Γ ⊢[PRAAx] ZT.eq (dot (ZT.natLit 1) y (-a) y) (ZT.natLit 0) := by
-  have e := ZT.toZ_eq h
-  apply ZT.derive
-  gsimp at e ⊢
-  linear_combination e
+  ipra_lc ZT.toZ_eq h
 
 /-- Conversely a point `(0, y)` of that circle has `y² = a`. -/
 theorem sqrt_construction_converse {a y : ZT n}
     (h : Γ ⊢[PRAAx] ZT.eq (nsq (-(a - ZT.natLit 1)) (ZT.natLit 2 * y)) (ZT.sq (a + ZT.natLit 1))) :
     Γ ⊢[PRAAx] ZT.eq (y * y) a := by
-  have e := ZT.toZ_eq h
   have h4 : Γ ⊢[PRAAx] ZT.eq ((y * y + y * y) + (y * y + y * y)) ((a + a) + (a + a)) := by
-    apply ZT.derive
-    gsimp at e ⊢
-    linear_combination e
+    ipra_lc ZT.toZ_eq h
   exact ConwayAlgebra.zt_cancel_two (ConwayAlgebra.zt_cancel_two h4)
 
 end LeanProofs.IPRA.Geometry.Constructions

@@ -1,4 +1,5 @@
 import IPRADerivations.Probability.MedianCounts
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # A skewed sample whose median exceeds its mean
@@ -101,14 +102,14 @@ theorem B_count (t : ℕ) (p : PTm n) :
       (if t - xv 2 = 0 then 0 else 1) + (if t - xv 3 = 0 then 0 else 1) + (if t - xv 4 = 0 then 0 else 1)) := by
   refine (sum_five _ _).eqTrans ((congrAdd (congrAdd (congrAdd (congrAdd (below_at t 0 p) (below_at t 1 p))
     (below_at t 2 p)) (below_at t 3 p)) (below_at t 4 p)).eqTrans ?_)
-  apply deriveNat; ipra_simps; push_cast; ring
+  ipra_lc
 
 theorem A_count (t : ℕ) (p : PTm n) :
     Γ ⊢[PRAAx] Ac xB (num 5) (num t) p ≐ num ((if xv 0 - t = 0 then 0 else 1) + (if xv 1 - t = 0 then 0 else 1) +
       (if xv 2 - t = 0 then 0 else 1) + (if xv 3 - t = 0 then 0 else 1) + (if xv 4 - t = 0 then 0 else 1)) := by
   refine (sum_five _ _).eqTrans ((congrAdd (congrAdd (congrAdd (congrAdd (above_at t 0 p) (above_at t 1 p))
     (above_at t 2 p)) (above_at t 3 p)) (above_at t 4 p)).eqTrans ?_)
-  apply deriveNat; ipra_simps; push_cast; ring
+  ipra_lc
 
 /-- `1` is a balance median of the sample (`B(1) = 2`, `A(1) = 1`), while `0` (`A(0) = 3`) and `2`
 (`B(2) = 4`) are not. -/

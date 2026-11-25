@@ -1,4 +1,5 @@
 import IPRADerivations.Probability.MedianSymmetry
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Rank perturbation and the median envelope, by counting
@@ -39,10 +40,8 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 theorem le_of_ne {u v x z : PTm n} (h : Γ ⊢[PRAAx] eqb x z ≐ zero) (hu : Γ ⊢[PRAAx] le u one) :
     Γ ⊢[PRAAx] le u (v + monus one (eqb x z)) := by
-  have k := natEq ((congrMonus (.eqRefl one) h).eqTrans (monus_zero one))
   refine le_trans hu (le_of_eq_add (d := v) ?_)
-  apply deriveNat; ipra_simps
-  linear_combination k
+  ipra_lc natEq ((congrMonus (.eqRefl one) h).eqTrans (monus_zero one))
 
 theorem le_of_same {u v x z : PTm n} (h : Γ ⊢[PRAAx] u ≐ v) : Γ ⊢[PRAAx] le u (v + monus one (eqb x z)) :=
   le_of_eq_add (d := monus one (eqb x z)) (congrAdd h.eqSymm (.eqRefl _))

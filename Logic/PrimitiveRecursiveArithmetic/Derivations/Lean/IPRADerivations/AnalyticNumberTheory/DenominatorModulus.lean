@@ -125,7 +125,7 @@ theorem Cz_one (L z : PTm n) : Γ ⊢[PRAAx] Cz one L z ≐ zero := by
 
 /-! ## The induction over the primes -/
 
-theorem mul_one_r (X : PTm n) : Γ ⊢[PRAAx] X * one ≐ X := by apply deriveNat; ipra_simps; ring
+theorem mul_one_r (X : PTm n) : Γ ⊢[PRAAx] X * one ≐ X := by ipra_ring
 
 theorem out_step {y q L z : PTm n} (ih : Γ ⊢[PRAAx] Cz (Aq y q) L z ≐ zero) :
     Γ ⊢[PRAAx] Cz (Aq (succ y) q) L z ≐ zero := by

@@ -1,4 +1,5 @@
 import IPRADerivations.Combinatorics.BellPeriodNp
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The order-`m` recurrence of the Bell numbers modulo `m` (`bell_numbers_ipra`, `thm:all-moduli-period`)
@@ -107,10 +108,7 @@ theorem recurrence_split {m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (N
       ((cyc_succ_zero (pred m)).eqTrans (congrMul hm.eqSymm (.eqRefl _)))
   have e : Γ ⊢[PRAAx] Act bellB m N zero ≐
       bell (N + m) + MidB m N + m * (cyc (pred m) zero * bell N) := by
-    have a := natEq (act_split hm N)
-    have b := natEq cz
-    apply deriveNat; ipra_simps
-    linear_combination a + 𝔞 (bell N) * b
+    ipra_lc natEq (act_split hm N) + 𝔞 (bell N) * natEq cz
   exact (cong_drop _ _ hm).eqSymm.eqTrans
     ((cong_of_eq e).eqSymm.eqTrans (bell_recurrence_mod hm N))
 

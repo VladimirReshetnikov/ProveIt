@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.SievePeriod
 import IPRADerivations.AnalyticNumberTheory.SumReindex
 import IPRADerivations.Foundations.BoundedReflection
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Exact finite independence of divisibility events
@@ -95,12 +96,11 @@ theorem tot_period {b : PTm n} (hb : Γ ⊢[PRAAx] b ≐ succ (pred b)) (x : PTm
   exact .impE i hb
 
 theorem mul_succ_alg (b c : PTm n) : Γ ⊢[PRAAx] b * succ c ≐ b * c + b := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem blk_alg {U' U ph c : PTm n} (a : Γ ⊢[PRAAx] U' ≐ U + ph) (ih : Γ ⊢[PRAAx] U ≐ c * ph) :
     Γ ⊢[PRAAx] U' ≐ succ c * ph := by
-  have x := natEq a; have y := natEq ih
-  apply deriveNat; ipra_simps; linear_combination x + y
+  ipra_lc natEq a + natEq ih
 
 theorem tb_zero (b : PTm n) : Γ ⊢[PRAAx] Tot (b * zero) b ≐ zero * phi b :=
   (congrAp2 (sumF totBody) (mul_zero b) (.eqRefl _)).eqTrans ((sum_zero totBody b).eqTrans (zero_mul _).eqSymm)
@@ -218,7 +218,7 @@ theorem joint_count {a b : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) (hb :
     ((congrAp2 (sumF totBody) (cM_mul ha (b * c)) (.eqRefl _)).eqTrans (tot_blocks hb c)))
 
 theorem comm_alg (a b c : PTm n) : Γ ⊢[PRAAx] a * (b * c) ≐ b * (a * c) := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- `#{m < a b c : gcd(m, b) = 1} = a c φ(b)`. -/
 theorem coprime_count {b : PTm n} (hb : Γ ⊢[PRAAx] b ≐ succ (pred b)) (a c : PTm n) :
@@ -227,9 +227,7 @@ theorem coprime_count {b : PTm n} (hb : Γ ⊢[PRAAx] b ≐ succ (pred b)) (a c 
 
 theorem ind_alg {J N A B a b c ph : PTm n} (hJ : Γ ⊢[PRAAx] J ≐ c * ph) (hN : Γ ⊢[PRAAx] N ≐ a * (b * c))
     (hA : Γ ⊢[PRAAx] A ≐ b * c) (hB : Γ ⊢[PRAAx] B ≐ (a * c) * ph) : Γ ⊢[PRAAx] J * N ≐ A * B := by
-  have w := natEq hJ; have x := natEq hN; have y := natEq hA; have z := natEq hB
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 N * w + 𝔞 c * 𝔞 ph * x - 𝔞 B * y - 𝔞 b * 𝔞 c * z
+  ipra_lc 𝔞 N * natEq hJ + 𝔞 c * 𝔞 ph * natEq hN - 𝔞 B * natEq hA - 𝔞 b * 𝔞 c * natEq hB
 
 /-- **Independence**: in the sample `m < N = a b c`, with `#A = #{a ∣ m}`, `#B = #{gcd(m, b) = 1}`,
 `#(A ∩ B) · N = #A · #B`. -/

@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.AperyLcmTerms
 import IPRADerivations.DiophantineNumberTheory.AperyLcmVal
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The per-prime count of the Apéry divisibility step
@@ -132,7 +133,6 @@ theorem point_bound {p m j E E' : PTm k} (hp2 : Γ ⊢[PRAAx] le two p)
   · have s0 := natEq (sg_le (Prf.hyp0 : (le E j :: Γ) ⊢[PRAAx] le E j))
     have tle' : (le E j :: Γ) ⊢[PRAAx] le (fl m (pw p (succ j))) (quo (num 42 * m) (pw p (succ j))) := tle.wk
     ipra_le sl tle' + 𝔞 (sg (monus E' j)) using linear_combination -s0
-
 
 /-! ## Summing the comparison -/
 
@@ -273,14 +273,13 @@ theorem val_lcm_le {p : PTm k} (hp : Γ ⊢[PRAAx] prime p) (m : PTm k) :
   have cE := count_lt (Γ := Γ) (le_trans (e_le_N hp2 I1) (le_succ_self _))
   have cE' := count_lt (Γ := Γ) (K := succ (num 42 * m))
     (le_trans (e_le_N hp2 J1) (by ipra_le 41 * 𝔞 m + 1 : Γ ⊢[PRAAx] le m (succ (num 42 * m))))
-  have vM := natEq (val_Mm hp m)
   have u1 := natEq ca; have u2 := natEq cb; have u3 := natEq c1; have u4 := natEq c2; have u5 := natEq c3
   have w1 := natEq t21; have w2 := natEq t14; have w3 := natEq t6; have w4 := natEq tm; have w5 := natEq tN
   have x1 := natEq cE; have x2 := natEq cE'
   refine le_of_add_le_add_right (c := L p (num 21 * m) + L p (num 14 * m) + L p (num 6 * m) + L p m) ?_
   refine le_congr ?_ ?_ sl
-  · apply deriveNat; ipra_simps; linear_combination u1 + u3 + u4 + u5 + w1 + w2 + w3 + w4 + x1
-  · apply deriveNat; ipra_simps; linear_combination u2 + w5 + x2 - vM
+  · ipra_lc u1 + u3 + u4 + u5 + w1 + w2 + w3 + w4 + x1
+  · ipra_lc u2 + w5 + x2 - natEq (val_Mm hp m)
 
 theorem Mm_pos (m : PTm k) : Γ ⊢[PRAAx] Mm m ≐ succ (pred (Mm m)) := by
   have l1 : Γ ⊢[PRAAx] le (num 21 * m) (num 42 * m) := by ipra_le 21 * 𝔞 m

@@ -1,4 +1,5 @@
 import IPRADerivations.Core.Powers
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Integral points by squeezing between squares (`siegel_ipra`, `ipra_framework`)
@@ -53,8 +54,7 @@ theorem siegel_nonneg : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3 nonnegFormula :
     apply deriveNat; ipra_simps; rw [e]; ring
   · refine le_of_eq_add (d := pred (var 1) + succ (succ zero) * monus s (var 1)) ?_
     refine withEq Prf.hyp1 fun e₁ => withEq ht fun e₂ => withEq w fun e₃ => ?_
-    apply deriveNat; ipra_simps
-    linear_combination -e₁ + 2 * e₃ + e₂
+    ipra_lc -e₁ + 2 * e₃ + e₂
 
 /-- `y² + t = s² + 1`. -/
 abbrev Hneg : Fm PTm 3 := var 2 * var 2 + var 1 ≐ s * s + one
@@ -85,12 +85,10 @@ theorem siegel_nonpos : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3 nonposFormula :
   refine no_square_between (k := pred s) (y := var 2) _ ?_ ?_
   · refine le_of_eq_add (d := monus s (var 1) + pred s) ?_
     refine withEq hyp2 fun e₁ => withEq ht fun e₂ => withEq w fun e₃ => withEq hs fun e₄ => ?_
-    apply deriveNat; ipra_simps
-    linear_combination e₁ + e₃ + (Groth.ι (Q.mk Θ s) + Groth.ι (Q.mk Θ (pred s))) * e₄
+    ipra_lc e₁ + e₃ + (Groth.ι (Q.mk Θ s) + Groth.ι (Q.mk Θ (pred s))) * e₄
   · refine le_of_eq_add (d := pred (pred (var 1))) ?_
     refine withEq hyp2 fun e₁ => withEq ht fun e₂ => withEq hs fun e₄ => ?_
-    apply deriveNat; ipra_simps
-    linear_combination -e₁ + e₂ - (Groth.ι (Q.mk Θ (pred s)) + 1 + Groth.ι (Q.mk Θ s)) * e₄
+    ipra_lc -e₁ + e₂ - (Groth.ι (Q.mk Θ (pred s)) + 1 + Groth.ι (Q.mk Θ s)) * e₄
 
 end Squeeze
 

@@ -1,4 +1,5 @@
 import IPRADerivations.Combinatorics.HallCondition
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Sphere packing, sphere covering and the Singleton bound
@@ -45,11 +46,8 @@ theorem sphere_packing (B : Fin m → Fin N → ZT n) (V : ZT n)
     (hdisj : ∀ w, Γ ⊢[PRAAx] zle (ZT.sumFin fun c => B c w) (ZT.natLit 1)) :
     Γ ⊢[PRAAx] zle (ZT.natLit m * V) (ZT.natLit N) := by
   have h := double_weighted B (fun _ => V) (fun _ => ZT.natLit 1) hball hdisj
-  have e1 := ZT.toZ_eq (sumFin_const (Γ := Γ) (m := m) V)
-  have e2 := ZT.toZ_eq (sumFin_const (Γ := Γ) (m := N) (ZT.natLit 1))
-  refine zle_of_comb (zsl h) ?_ (nn_zsl _)
-  simp only [zsl_def, ZT.toZ_mul, ZT.toZ_natLit, Nat.cast_one] at e1 e2 ⊢
-  linear_combination e1 - e2
+  ipra_zle (zsl h) with ZT.toZ_eq (sumFin_const (Γ := Γ) (m := m) V) -
+    ZT.toZ_eq (sumFin_const (Γ := Γ) (m := N) (ZT.natLit 1))
 
 /-- The Singleton bound in its counting form: an injection of `m` words into `K` words gives `m ≤ K`. -/
 theorem singleton_bound (T : Fin m → Fin K → ZT n)
@@ -57,9 +55,7 @@ theorem singleton_bound (T : Fin m → Fin K → ZT n)
     (hinj : ∀ w, Γ ⊢[PRAAx] zle (ZT.sumFin fun c => T c w) (ZT.natLit 1)) :
     Γ ⊢[PRAAx] zle (ZT.natLit m) (ZT.natLit K) := by
   have h := sphere_packing T (ZT.natLit 1) hrow hinj
-  refine zle_of_comb (zsl h) ?_ (nn_zsl _)
-  simp only [zsl_def, ZT.toZ_mul, ZT.toZ_natLit, Nat.cast_one]
-  ring
+  ipra_zle (zsl h)
 
 /-- The sphere-covering bound: `N ≤ m V`. -/
 theorem sphere_covering (B : Fin m → Fin N → ZT n) (V : ZT n)
@@ -67,11 +63,8 @@ theorem sphere_covering (B : Fin m → Fin N → ZT n) (V : ZT n)
     (hcov : ∀ w, Γ ⊢[PRAAx] zle (ZT.natLit 1) (ZT.sumFin fun c => B c w)) :
     Γ ⊢[PRAAx] zle (ZT.natLit N) (ZT.natLit m * V) := by
   have h := double_weighted (fun w c => B c w) (fun _ => ZT.natLit 1) (fun _ => V) hcov hball
-  have e1 := ZT.toZ_eq (sumFin_const (Γ := Γ) (m := m) V)
-  have e2 := ZT.toZ_eq (sumFin_const (Γ := Γ) (m := N) (ZT.natLit 1))
-  refine zle_of_comb (zsl h) ?_ (nn_zsl _)
-  simp only [zsl_def, ZT.toZ_mul, ZT.toZ_natLit, Nat.cast_one] at e1 e2 ⊢
-  linear_combination e2 - e1
+  ipra_zle (zsl h) with ZT.toZ_eq (sumFin_const (Γ := Γ) (m := N) (ZT.natLit 1)) -
+    ZT.toZ_eq (sumFin_const (Γ := Γ) (m := m) V)
 
 /-- A perfect code: balls of `V` points partitioning the words give `m V ≤ N` and `N ≤ m V`. -/
 theorem perfect_code (B : Fin m → Fin N → ZT n) (V : ZT n)

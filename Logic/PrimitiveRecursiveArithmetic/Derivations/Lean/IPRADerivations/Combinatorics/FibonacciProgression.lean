@@ -33,13 +33,9 @@ theorem fib_progression (a k r : PTm n) :
       fib (a + succ (succ k) * r) + monus one (par r) * fib (a + k * r) ≐
         luc r * fib (a + succ k * r) + par r * fib (a + k * r) := by
   have middle : Γ ⊢[PRAAx] r + (a + k * r) ≐ a + succ k * r := by
-    apply deriveNat
-    ipra_simps
-    ring
+    ipra_ring
   have top : Γ ⊢[PRAAx] (r + (a + k * r)) + r ≐ a + succ (succ k) * r := by
-    apply deriveNat
-    ipra_simps
-    ring
+    ipra_ring
   have left := congrAdd (congrFib top)
     (.eqRefl (monus one (par r) * fib (a + k * r)))
   have right := congrAdd
@@ -53,13 +49,9 @@ theorem luc_progression (a k r : PTm n) :
       luc (a + succ (succ k) * r) + monus one (par r) * luc (a + k * r) ≐
         luc r * luc (a + succ k * r) + par r * luc (a + k * r) := by
   have middle : Γ ⊢[PRAAx] r + (a + k * r) ≐ a + succ k * r := by
-    apply deriveNat
-    ipra_simps
-    ring
+    ipra_ring
   have top : Γ ⊢[PRAAx] (r + (a + k * r)) + r ≐ a + succ (succ k) * r := by
-    apply deriveNat
-    ipra_simps
-    ring
+    ipra_ring
   have left := congrAdd (congrLuc top)
     (.eqRefl (monus one (par r) * luc (a + k * r)))
   have right := congrAdd

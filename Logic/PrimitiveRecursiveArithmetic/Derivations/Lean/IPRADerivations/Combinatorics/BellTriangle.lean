@@ -1,5 +1,6 @@
 import IPRADerivations.Combinatorics.BellBounds
 import IPRADerivations.Core.SumReflect
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The Bell triangle
@@ -92,7 +93,7 @@ theorem tri_step (m k : PTm n) : Γ ⊢[PRAAx] tri (succ m) (succ k) ≐ tri (su
     refine .eqTrans ?_ (congrAdd (congrMul (congrBinom (fst_pair _ _) (.eqRefl _)) (congrBell (congrMonus
       (snd_pair _ _) (.eqRefl _)))) (congrMul (congrBinom (fst_pair _ _) (.eqRefl _)) (congrBell (congrMonus
       (snd_pair _ _) (.eqRefl _))))).eqSymm
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   have e₁ : Γ ⊢[PRAAx] tri (succ m) (succ k) ≐
       bell (succ m) + (ap2 (sumF tB) k (pairT k m) + ap2 (sumF sB) k (pairT k m)) + bell (monus m k) :=
     (sum_succ' tB (succ k) _).eqTrans (congrAdd ((sum_shift tB k _).eqTrans (congrAdd (first_term _ _) x₁))
@@ -109,9 +110,7 @@ theorem tri_step (m k : PTm n) : Γ ⊢[PRAAx] tri (succ m) (succ k) ≐ tri (su
   -- `T(m, k) = A + B_{m−k}`.
   have e₃ : Γ ⊢[PRAAx] tri m k ≐ ap2 (sumF tB) k (pairT k m) + bell (monus m k) :=
     (sum_succ' tB k _).eqTrans (congrAdd (.eqRefl _) (last_term _ _))
-  have h₁ := natEq e₁; have h₂ := natEq e₂; have h₃ := natEq e₃
-  apply deriveNat; ipra_simps
-  linear_combination h₁ - h₂ - h₃
+  ipra_lc natEq e₁ - natEq e₂ - natEq e₃
 
 /-- `T(N, N) = B_{N+1}`. -/
 theorem tri_diag (N : PTm n) : Γ ⊢[PRAAx] tri N N ≐ bell (succ N) := by

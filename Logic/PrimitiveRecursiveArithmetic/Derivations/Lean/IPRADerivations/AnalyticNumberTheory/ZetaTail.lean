@@ -4,6 +4,7 @@ import IPRADerivations.AnalyticNumberTheory.PhiDivides
 import IPRADerivations.AnalyticNumberTheory.GcdFiber
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.AnalyticNumberTheory.Mobius
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The rational tail estimate for `∑ 1/n^s`, every `s ≥ 2`
@@ -57,12 +58,9 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 theorem key_base (m : PTm n) :
     Γ ⊢[PRAAx] le (pw m one * succ (succ m)) (pw (succ m) (succ one)) := by
-  have eB := natEq (pw_succ (Γ := Γ) (succ m) one)
-  have eP := natEq (pw_one (Γ := Γ) (succ m))
-  have eM := natEq (pw_one (Γ := Γ) m)
   refine le_of_eq_add (d := one) ?_
-  apply deriveNat; ipra_simps
-  linear_combination eB + (𝔞 m + 1) * eP - (𝔞 m + 2) * eM
+  ipra_lc natEq (pw_succ (Γ := Γ) (succ m) one) + (𝔞 m + 1) * natEq (pw_one (Γ := Γ) (succ m)) -
+    (𝔞 m + 2) * natEq (pw_one (Γ := Γ) m)
 
 theorem key_step {m u : PTm n}
     (ih : Γ ⊢[PRAAx] le (pw m (succ u) * succ (succ m)) (pw (succ m) (succ (succ u)))) :
@@ -196,7 +194,7 @@ theorem tele_step {N F u K : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N))
     sg_zero_inv ((v_at (N + K) F u).eqSymm.eqTrans (right_zero hE'))
   have mpos : Γ ⊢[PRAAx] N + K ≐ succ (pred (N + K)) :=
     AnalyticNumberTheory.Primes.eq_succ_pred (y := pred N + K)
-      ((congrAdd hN (.eqRefl _)).eqTrans (by apply deriveNat; ipra_simps; ring))
+      ((congrAdd hN (.eqRefl _)).eqTrans (by ipra_ring))
   have lt0 : Γ ⊢[PRAAx] lt (pred (N + K)) (N + K) :=
     le_congr (.eqRefl _) mpos.eqSymm (le_refl _)
   have hk0 := exact_at (left_zero hE') lt0

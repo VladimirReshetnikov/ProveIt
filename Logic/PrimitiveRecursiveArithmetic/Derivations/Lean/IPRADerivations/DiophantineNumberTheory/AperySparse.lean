@@ -53,12 +53,12 @@ theorem sparse_step {m : PTm k} (h : Γ ⊢[PRAAx] le (pw (lcmu m) (num 3)) (pw 
   have a1 := pw_le_pw (num 3) (lcm_step (Γ := Γ) m)
   have a2 := mul_pw (Γ := Γ) (lcmu m) (pw (num Aval) m) (num 3)
   have a3 : Γ ⊢[PRAAx] pw (pw (num Aval) m) (num 3) ≐ pw (pw (num Aval) (num 3)) m :=
-    (pw_mul _ _ _).eqTrans ((congrPw (.eqRefl _) (by apply deriveNat; ipra_simps; ring)).eqTrans
+    (pw_mul _ _ _).eqTrans ((congrPw (.eqRefl _) (by ipra_ring)).eqTrans
       (pw_mul _ _ _).eqSymm)
   have a4 := pw_le_pw m (le_of_lt (cube_lt (Γ := Γ)))
   have a5 := pw_mul (Γ := Γ) (num 28) (num 41) m
   have a6 : Γ ⊢[PRAAx] pw (num 28) (num 42 * m) ≐ pw (num 28) m * pw (num 28) (num 41 * m) :=
-    (congrPw (.eqRefl _) (by apply deriveNat; ipra_simps; ring)).eqTrans (pw_add _ _ _)
+    (congrPw (.eqRefl _) (by ipra_ring)).eqTrans (pw_add _ _ _)
   have hP : Γ ⊢[PRAAx] le (pw (pw (num Aval) m) (num 3)) (pw (num 28) (num 41 * m)) := le_congr a3.eqSymm a5 a4
   have hm : Γ ⊢[PRAAx] le (pw (lcmu m) (num 3) * pw (pw (num Aval) m) (num 3))
       (pw (num 28) m * pw (num 28) (num 41 * m)) := by

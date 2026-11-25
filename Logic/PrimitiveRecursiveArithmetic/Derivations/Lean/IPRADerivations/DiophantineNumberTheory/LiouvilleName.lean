@@ -9,6 +9,7 @@ import IPRADerivations.AnalyticNumberTheory.PlusPower
 import IPRADerivations.AnalyticNumberTheory.Multiplicative
 import IPRADerivations.DiophantineNumberTheory.ModularCertificate
 import IPRADerivations.DiophantineNumberTheory.QuarticStep
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The rational name of Liouville's number
@@ -115,17 +116,16 @@ theorem le_pw_self {a : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) (j : PTm
   le_congr ha.eqSymm (congrPw ha.eqSymm (.eqRefl _)) (le_self_pw (pred a) j)
 
 theorem two_le_ten : Γ ⊢[PRAAx] le (two : PTm n) ten :=
-  le_of_eq_add (d := succ (succ (succ (succ (succ (succ two)))))) (by apply deriveNat; ipra_simps; ring)
+  le_of_eq_add (d := succ (succ (succ (succ (succ (succ two)))))) (by ipra_ring)
 
 theorem one_le_ten : Γ ⊢[PRAAx] le (one : PTm n) ten :=
-  le_of_eq_add (d := nine) (by apply deriveNat; ipra_simps; ring)
+  le_of_eq_add (d := nine) (by ipra_ring)
 
 /-! ## The increments -/
 
 theorem incr_alg {P P' q q' Q : PTm n} (eP : Γ ⊢[PRAAx] P' ≐ P * Q + one) (eq : Γ ⊢[PRAAx] q' ≐ Q * q) :
     Γ ⊢[PRAAx] P' * q ≐ P * q' + q := by
-  have a := natEq eP; have b := natEq eq
-  apply deriveNat; ipra_simps; linear_combination 𝔞 q * a - 𝔞 P * b
+  ipra_lc 𝔞 q * natEq eP - 𝔞 P * natEq eq
 
 /-- `P_{k+1} q_k = P_k q_{k+1} + q_k`: `r_{k+1} − r_k = 1/q_{k+1}`. -/
 theorem incr (k : PTm n) : Γ ⊢[PRAAx] Pn (succ k) * qn k ≐ Pn k * qn (succ k) + qn k :=
@@ -150,8 +150,7 @@ theorem ninth_first {P P' q q' Q : PTm n} (hP : Γ ⊢[PRAAx] P ≐ zero) (hq : 
     Γ ⊢[PRAAx] le (nine * P' + one) q' := by
   have a := natEq eP; have b := natEq eq; have c := natEq hP; have d := natEq hq; have e := natEq hQ
   refine le_of_eq_add (d := zero) ?_
-  apply deriveNat; ipra_simps
-  linear_combination b - 9 * a + (𝔞 q - 9 * 𝔞 P) * e + d - 9 * c
+  ipra_lc b - 9 * a + (𝔞 q - 9 * 𝔞 P) * e + d - 9 * c
 
 theorem q_zero : Γ ⊢[PRAAx] qn (zero : PTm n) ≐ ten :=
   (congrPw (.eqRefl _) (fact_zero zero)).eqTrans (pw_one ten)
@@ -237,8 +236,7 @@ theorem tail_open : ([] : List (Fm PTm 2)) ⊢[PRAAx] tailF := by
       (tail_next (Prf.hyp0 (Γ := []) (φ := tailF)))
 
 theorem m_alg {m k t : PTm n} (e : Γ ⊢[PRAAx] m ≐ succ k + t) : Γ ⊢[PRAAx] succ (k + t) ≐ m := by
-  have x := natEq e
-  apply deriveNat; ipra_simps; linear_combination -x
+  ipra_lc -natEq e
 
 /-- **The tail bound**: for `k < m`, `(P_m q_k + q_k) q_{k+1} ≤ 2 q_m q_k + P_k q_m q_{k+1}`, that is
 `r_m − r_k + 1/q_m ≤ 2/q_{k+1}`. -/
@@ -260,13 +258,11 @@ theorem q_ten (k : PTm n) : Γ ⊢[PRAAx] qn k ≐ ten * pw ten (pred (fact k)) 
 
 theorem first_alg {Ps P Q : PTm n} (eP : Γ ⊢[PRAAx] Ps ≐ P * Q + one) (hP : Γ ⊢[PRAAx] P ≐ zero) :
     Γ ⊢[PRAAx] Ps ≐ ten * zero + one := by
-  have a := natEq eP; have b := natEq hP
-  apply deriveNat; ipra_simps; linear_combination a + 𝔞 Q * b
+  ipra_lc natEq eP + 𝔞 Q * natEq hP
 
 theorem later_alg {Ps P Q R q X : PTm n} (eP : Γ ⊢[PRAAx] Ps ≐ P * Q + one) (eQ : Γ ⊢[PRAAx] Q ≐ R * q)
     (eq : Γ ⊢[PRAAx] q ≐ ten * X) : Γ ⊢[PRAAx] Ps ≐ ten * (P * (R * X)) + one := by
-  have a := natEq eP; have b := natEq eQ; have c := natEq eq
-  apply deriveNat; ipra_simps; linear_combination a + 𝔞 P * b + 𝔞 P * 𝔞 R * c
+  ipra_lc natEq eP + 𝔞 P * natEq eQ + 𝔞 P * 𝔞 R * natEq eq
 
 theorem rem_one_ten : Γ ⊢[PRAAx] rem (one : PTm n) ten ≐ one := rem_small two_le_ten
 

@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.RationalCofactorBorderedRows
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Exact transport from original rational cells to the cleared row
@@ -53,9 +54,7 @@ theorem cleared_rational_scale (P d i j : PTm n) (hi : Γ ⊢[PRAAx] lt i (lengt
     (RationalNormalForm.normalize_well_formed a one (le_refl one)) scaled
     (RationalIntegerNormalization.normalize_preserves_value a one (le_refl one))
     (positive_product _ _ (le_refl one) hD) (le_refl one)
-  apply ZT.derive
-  simp only [ZT.toZ_mul,ZT.toZ_ofNat,Q.mk_mul,map_mul,Q.mk_one,map_one]
-  ring
+  ipra_lc
 
 /-- Each actual cleared Gaussian cell equals the SAME embedded denominator
 times the original embedded rational cell. Only original index bounds enter. -/

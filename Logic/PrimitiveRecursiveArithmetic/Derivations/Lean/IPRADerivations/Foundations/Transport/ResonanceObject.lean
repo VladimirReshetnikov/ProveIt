@@ -1,5 +1,6 @@
 import IPRADerivations.Core.SumOrder
 import IPRADerivations.Core.Tactic
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 Packet: `foundations/ipra_transport_framework_2026-11-20`. Imported from the packet's `lean/ResonanceObject.lean`:
@@ -100,10 +101,7 @@ def firstLog (a b pos neg : PTm n) : Fm PTm n :=
 theorem firstLogSound (a b pos neg : PTm n) :
     Γ ⊢[PRAAx] firstLog a b pos neg := by
   apply Prf.impI
-  have eqn := natEq (Γ := (pos + succ a * succ b ≐ neg + succ (a+b)) :: Γ) Prf.hyp0
-  apply deriveNat
-  ipra_simps
-  linear_combination eqn
+  ipra_lc natEq (Γ := (pos + succ a * succ b ≐ neg + succ (a+b)) :: Γ) Prf.hyp0
 
 theorem closedFirstLog :
     ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 4

@@ -1,4 +1,4 @@
-import IPRADerivations.Core.IntCertificates
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The eigenvectors of the Petersen graph in the Kneser model
@@ -164,11 +164,7 @@ theorem kneser_column (i : Fin 5) :
 /-- `A 1 = 3 · 1`: the constant vector has eigenvalue `3`. -/
 theorem kneser_degree (u : Fin 10) :
     Γ ⊢[PRAAx] ZT.eq (ZT.sumFin fun v => (ZT.natLit (kadj u v) : ZT n)) (ZT.natLit 3) := by
-  apply ZT.derive
-  simp only [ZT.toZ_sumFin, ZT.toZ_natLit, Nat.cast_ofNat]
-  have h := congrArg (Nat.cast : ℕ → Groth (Q Γ)) (degree_nat u)
-  push_cast at h
-  exact h
+  ipra_cast degree_nat u
 
 /-- `A (C b) = −2 C b` for `∑ b_i = 0`. -/
 theorem petersen_neg_two (b : Fin 5 → ZT n) (hb : Γ ⊢[PRAAx] ZT.eq (ZT.sumFin b) (ZT.natLit 0))

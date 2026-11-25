@@ -354,8 +354,8 @@ theorem crt_unique {x x' K y : PTm n} (hx : Γ ⊢[PRAAx] CrtCoprime.V mB aB x K
     have h2 : Γ.map Fm.shift ⊢[PRAAx] CrtCoprime.V mB aB (Syn.shift x') (Syn.shift K) (Syn.shift y) ≐ zero := by
       simpa [Fm.shift, Syn.shift] using hx'.shift
     exact (sol_at mB aB h1.wk Prf.hyp0).eqTrans (sol_at mB aB h2.wk Prf.hyp0).eqSymm
-  have r1 := Prf.andE₂ (dmu (z := x) (q := zero) (r := x) Lp (by apply deriveNat; ipra_simps; ring) lx)
-  have r2 := Prf.andE₂ (dmu (z := x') (q := zero) (r := x') Lp (by apply deriveNat; ipra_simps; ring) lx')
+  have r1 := Prf.andE₂ (dmu (z := x) (q := zero) (r := x) Lp (by ipra_ring) lx)
+  have r2 := Prf.andE₂ (dmu (z := x') (q := zero) (r := x') Lp (by ipra_ring) lx')
   exact r1.eqSymm.eqTrans (hc.eqTrans r2)
 
 end System

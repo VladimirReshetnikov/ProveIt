@@ -1,4 +1,5 @@
 import IPRADerivations.Core.Tactic
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # One step of coprime Hensel lifting, and the simple-root identities
@@ -47,28 +48,19 @@ variable {G C₁ C₂ E₁ E₂ R S T Q₁ Q₂ V₁ V₂ : ZT n}
 
 theorem hensel_combine (hB : Γ ⊢[PRAAx] ZT.eq (E₁ * C₂ + E₂ * C₁) (ZT.natLit 1)) (R : ZT n) :
     Γ ⊢[PRAAx] ZT.eq ((E₁ * R) * C₂ + (E₂ * R) * C₁) R := by
-  have e := ZT.toZ_eq hB
-  apply ZT.derive
-  ipra_simps
-  linear_combination 𝔷(R) * e
+  ipra_lc 𝔷(R) * ZT.toZ_eq hB
 
 theorem hensel_remainder (hB : Γ ⊢[PRAAx] ZT.eq (E₁ * C₂ + E₂ * C₁) (ZT.natLit 1))
     (h₁ : Γ ⊢[PRAAx] ZT.eq (E₁ * R) (Q₁ * C₁ + V₁)) (h₂ : Γ ⊢[PRAAx] ZT.eq (E₂ * R) (Q₂ * C₂ + V₂)) :
     Γ ⊢[PRAAx] ZT.eq (V₁ * C₂ + V₂ * C₁ + (Q₁ + Q₂) * (C₁ * C₂)) R := by
-  have e := ZT.toZ_eq hB; have e₁ := ZT.toZ_eq h₁; have e₂ := ZT.toZ_eq h₂
-  apply ZT.derive
-  ipra_simps
-  linear_combination -𝔷(C₂) * e₁ - 𝔷(C₁) * e₂ + 𝔷(R) * e
+  ipra_lc -𝔷(C₂) * ZT.toZ_eq h₁ - 𝔷(C₁) * ZT.toZ_eq h₂ + 𝔷(R) * ZT.toZ_eq hB
 
 /-- One order of lifting. -/
 theorem hensel_step (hB : Γ ⊢[PRAAx] ZT.eq (E₁ * C₂ + E₂ * C₁) (ZT.natLit 1))
     (hG : Γ ⊢[PRAAx] ZT.eq G (C₁ * C₂ + T * R + T * T * S)) :
     Γ ⊢[PRAAx] ZT.eq G
       ((C₁ + T * (E₁ * R)) * (C₂ + T * (E₂ * R)) + T * T * (S - (E₁ * R) * (E₂ * R))) := by
-  have e := ZT.toZ_eq hB; have eG := ZT.toZ_eq hG
-  apply ZT.derive
-  ipra_simps
-  linear_combination eG - 𝔷(T) * 𝔷(R) * e
+  ipra_lc ZT.toZ_eq hG - 𝔷(T) * 𝔷(R) * ZT.toZ_eq hB
 
 /-- Three pairwise coprime factors, with the Bézout identity
 `E₁ C₂ C₃ + E₂ C₁ C₃ + E₃ C₁ C₂ = 1`: the corrections `V_j = E_j R` satisfy
@@ -76,10 +68,7 @@ theorem hensel_step (hB : Γ ⊢[PRAAx] ZT.eq (E₁ * C₂ + E₂ * C₁) (ZT.na
 theorem hensel_combine₃ {C₃ E₃ : ZT n}
     (hB : Γ ⊢[PRAAx] ZT.eq (E₁ * (C₂ * C₃) + E₂ * (C₁ * C₃) + E₃ * (C₁ * C₂)) (ZT.natLit 1)) (R : ZT n) :
     Γ ⊢[PRAAx] ZT.eq ((E₁ * R) * (C₂ * C₃) + (E₂ * R) * (C₁ * C₃) + (E₃ * R) * (C₁ * C₂)) R := by
-  have e := ZT.toZ_eq hB
-  apply ZT.derive
-  ipra_simps
-  linear_combination 𝔷(R) * e
+  ipra_lc 𝔷(R) * ZT.toZ_eq hB
 
 /-- One order of lifting for three factors: if `G = C₁ C₂ C₃ + T R + T² S`, then with
 `V_j = E_j R`,
@@ -91,10 +80,7 @@ theorem hensel_step₃ {C₃ E₃ : ZT n}
       ((C₁ + T * (E₁ * R)) * (C₂ + T * (E₂ * R)) * (C₃ + T * (E₃ * R)) +
         T * T * (S - ((E₁ * R) * (E₂ * R) * C₃ + (E₁ * R) * (E₃ * R) * C₂ + (E₂ * R) * (E₃ * R) * C₁) -
           T * ((E₁ * R) * (E₂ * R) * (E₃ * R)))) := by
-  have e := ZT.toZ_eq hB; have eG := ZT.toZ_eq hG
-  apply ZT.derive
-  ipra_simps
-  linear_combination eG - 𝔷(T) * 𝔷(R) * e
+  ipra_lc ZT.toZ_eq hG - 𝔷(T) * 𝔷(R) * ZT.toZ_eq hB
 
 end Lifting
 
@@ -105,10 +91,7 @@ variable {A B p p' : ZT n}
 /-- At a root of `p`, a Bézout identity for `p` and `p'` inverts the derivative. -/
 theorem bezout_root (hB : Γ ⊢[PRAAx] ZT.eq (A * p + B * p') (ZT.natLit 1))
     (hp : Γ ⊢[PRAAx] ZT.eq p (ZT.natLit 0)) : Γ ⊢[PRAAx] ZT.eq (B * p') (ZT.natLit 1) := by
-  have e := ZT.toZ_eq hB; have e₀ := ZT.toZ_eq hp
-  apply ZT.derive
-  ipra_simps
-  linear_combination e - 𝔷(A) * e₀
+  ipra_lc ZT.toZ_eq hB - 𝔷(A) * ZT.toZ_eq hp
 
 end Roots
 

@@ -55,7 +55,7 @@ abbrev qv (D Y : PTm n) : PTm n := dq D (Qv D Y)
 
 theorem Q_pos (D Y : PTm n) : Γ ⊢[PRAAx] Qv D Y ≐ succ (pred (Qv D Y)) :=
   AnalyticNumberTheory.Primes.eq_succ_pred (y := num 3 + num 4 * (D + Y + D * Y))
-    (by apply deriveNat; ipra_simps; ring)
+    (by ipra_ring)
 
 theorem one_pos (x : PTm n) : Γ ⊢[PRAAx] le one (succ x) := (succ_monus_succ _ _).eqTrans (zero_le x)
 
@@ -156,7 +156,7 @@ theorem pell_approx {D Y : PTm n} (hD : Γ ⊢[PRAAx] le two D) (hns : Γ ⊢[PR
   have hl := sq_lower hX lo
   have hu := sq_upper up
   have hqp : Γ ⊢[PRAAx] qv D Y ≐ succ (pred (qv D Y)) := AnalyticNumberTheory.Primes.eq_succ_pred
-    ((eq_add_of_le q1).eqTrans (by apply deriveNat; ipra_simps; ring : Γ ⊢[PRAAx] one + monus (qv D Y) one ≐ succ (monus (qv D Y) one)))
+    ((eq_add_of_le q1).eqTrans (by ipra_ring : Γ ⊢[PRAAx] one + monus (qv D Y) one ≐ succ (monus (qv D Y) one)))
   have hne : Γ ⊢[PRAAx] neg (pv D Y * pv D Y ≐ D * (qv D Y * qv D Y)) :=
     .impI (.impE hns.wk (square_of_rational_root hqp.wk Prf.hyp0))
   exact .andI (.andI (q_large pDq hl hu hne) qQ)

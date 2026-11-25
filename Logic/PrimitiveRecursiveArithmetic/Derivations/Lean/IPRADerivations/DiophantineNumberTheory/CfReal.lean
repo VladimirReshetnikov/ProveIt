@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.HurwitzLoop
 import IPRADerivations.AnalyticNumberTheory.PhiLower
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # A primitive recursive continued-fraction real
@@ -82,14 +83,10 @@ theorem lin_alg {c x1 x2 x3 x4 y1 y2 y3 y4 u v u' v' U V U' V' P Q P' Q' : PTm n
   have e1 := natEq h1; have e2 := natEq h2; have e3 := natEq h3; have e4 := natEq h4
   have f1 := natEq g1; have f2 := natEq g2; have f3 := natEq g3; have f4 := natEq g4
   refine .andI (.andI ?_ ?_) (.andI ?_ ?_)
-  · apply deriveNat; ipra_simps
-    linear_combination e1 + 𝔞 c * j1 + j3 - 𝔞 P * f1 - 𝔞 P' * f2
-  · apply deriveNat; ipra_simps
-    linear_combination e2 + 𝔞 c * j2 + j4 - 𝔞 Q * f1 - 𝔞 Q' * f2
-  · apply deriveNat; ipra_simps
-    linear_combination e3 + j1 - 𝔞 P * f3 - 𝔞 P' * f4
-  · apply deriveNat; ipra_simps
-    linear_combination e4 + j2 - 𝔞 Q * f3 - 𝔞 Q' * f4
+  · ipra_lc e1 + 𝔞 c * j1 + j3 - 𝔞 P * f1 - 𝔞 P' * f2
+  · ipra_lc e2 + 𝔞 c * j2 + j4 - 𝔞 Q * f1 - 𝔞 Q' * f2
+  · ipra_lc e3 + j1 - 𝔞 P * f3 - 𝔞 P' * f4
+  · ipra_lc e4 + j2 - 𝔞 Q * f3 - 𝔞 Q' * f4
 
 theorem lin_base_alg {x1 x2 x3 x4 u v u' v' P Q P' Q' : PTm n}
     (s1 : Γ ⊢[PRAAx] x1 ≐ P) (s2 : Γ ⊢[PRAAx] x2 ≐ Q) (s3 : Γ ⊢[PRAAx] x3 ≐ P') (s4 : Γ ⊢[PRAAx] x4 ≐ Q')
@@ -100,14 +97,10 @@ theorem lin_base_alg {x1 x2 x3 x4 u v u' v' P Q P' Q' : PTm n}
   have t1 := natEq s1; have t2 := natEq s2; have t3 := natEq s3; have t4 := natEq s4
   have w1 := natEq u1; have w2 := natEq u2; have w3 := natEq u3; have w4 := natEq u4
   refine .andI (.andI ?_ ?_) (.andI ?_ ?_)
-  · apply deriveNat; ipra_simps
-    linear_combination t1 - 𝔞 P * w1 - 𝔞 P' * w2
-  · apply deriveNat; ipra_simps
-    linear_combination t2 - 𝔞 Q * w1 - 𝔞 Q' * w2
-  · apply deriveNat; ipra_simps
-    linear_combination t3 - 𝔞 P * w3 - 𝔞 P' * w4
-  · apply deriveNat; ipra_simps
-    linear_combination t4 - 𝔞 Q * w3 - 𝔞 Q' * w4
+  · ipra_lc t1 - 𝔞 P * w1 - 𝔞 P' * w2
+  · ipra_lc t2 - 𝔞 Q * w1 - 𝔞 Q' * w2
+  · ipra_lc t3 - 𝔞 P * w3 - 𝔞 P' * w4
+  · ipra_lc t4 - 𝔞 Q * w3 - 𝔞 Q' * w4
 
 theorem lin_step {c s s' C w w' : PTm n} (hs : Γ ⊢[PRAAx] s' ≐ nx c s) (hw : Γ ⊢[PRAAx] w' ≐ nx c w)
     (ih : Γ ⊢[PRAAx] Lin4 s C w) : Γ ⊢[PRAAx] Lin4 s' C w' := by
@@ -132,17 +125,13 @@ theorem det_pos {c P Q P' Q' P1 Q1 P1' Q1' : PTm n}
     (h1 : Γ ⊢[PRAAx] P1 ≐ c * P + P') (h2 : Γ ⊢[PRAAx] Q1 ≐ c * Q + Q') (h3 : Γ ⊢[PRAAx] P1' ≐ P)
     (h4 : Γ ⊢[PRAAx] Q1' ≐ Q) (d : Γ ⊢[PRAAx] P' * Q ≐ P * Q' + one) :
     Γ ⊢[PRAAx] P1 * Q1' ≐ P1' * Q1 + one := by
-  have e1 := natEq h1; have e2 := natEq h2; have e3 := natEq h3; have e4 := natEq h4; have x := natEq d
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 Q1' * e1 + (𝔞 c * 𝔞 P + 𝔞 P') * e4 - 𝔞 Q1 * e3 - 𝔞 P * e2 + x
+  ipra_lc 𝔞 Q1' * natEq h1 + (𝔞 c * 𝔞 P + 𝔞 P') * natEq h4 - 𝔞 Q1 * natEq h3 - 𝔞 P * natEq h2 + natEq d
 
 theorem det_neg {c P Q P' Q' P1 Q1 P1' Q1' : PTm n}
     (h1 : Γ ⊢[PRAAx] P1 ≐ c * P + P') (h2 : Γ ⊢[PRAAx] Q1 ≐ c * Q + Q') (h3 : Γ ⊢[PRAAx] P1' ≐ P)
     (h4 : Γ ⊢[PRAAx] Q1' ≐ Q) (d : Γ ⊢[PRAAx] P * Q' ≐ P' * Q + one) :
     Γ ⊢[PRAAx] P1' * Q1 ≐ P1 * Q1' + one := by
-  have e1 := natEq h1; have e2 := natEq h2; have e3 := natEq h3; have e4 := natEq h4; have x := natEq d
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 Q1 * e3 + 𝔞 P * e2 - 𝔞 Q1' * e1 - (𝔞 c * 𝔞 P + 𝔞 P') * e4 + x
+  ipra_lc 𝔞 Q1 * natEq h3 + 𝔞 P * natEq h2 - 𝔞 Q1' * natEq h1 - (𝔞 c * 𝔞 P + 𝔞 P') * natEq h4 + natEq d
 
 theorem det_step {c s s' : PTm n} (hs : Γ ⊢[PRAAx] s' ≐ nx c s) (hd : Γ ⊢[PRAAx] Det s) :
     Γ ⊢[PRAAx] Det s' := by
@@ -156,8 +145,7 @@ theorem det_base {P Q P' Q' : PTm n} (p2 : Γ ⊢[PRAAx] Q ≐ one) (p3 : Γ ⊢
     (p4 : Γ ⊢[PRAAx] Q' ≐ zero) : Γ ⊢[PRAAx] (P' * Q ≐ P * Q' + one) ⋎ (P * Q' ≐ P' * Q + one) := by
   have f2 := natEq p2; have f3 := natEq p3; have f4 := natEq p4
   refine .orI₁ ?_
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 Q * f3 + f2 - 𝔞 P * f4
+  ipra_lc 𝔞 Q * f3 + f2 - 𝔞 P * f4
 
 /-- `v ≤ u` and `v + v' ≤ u + u'` for `w = ⟨u, v, u', v'⟩`. -/
 def Jf (w : PTm n) : Fm PTm n := le (sQ w) (sP w) ⋏ le (sQ w + sQ' w) (sP w + sP' w)
@@ -414,7 +402,7 @@ theorem q_pow (k : PTm n) : Γ ⊢[PRAAx] le (pw two (succ k)) (sQ (cv a' (idx k
         Syn.repl_zero, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
       have eI : (le (pw two (succ (var 0))) (sQ (cv a' (idx (var 0)))) :: Γ.map Fm.shift) ⊢[PRAAx]
           idx (succ (var 0)) ≐ succ (succ (idx (var 0))) := by
-        apply deriveNat; ipra_simps; ring
+        ipra_ring
       exact pow_step_alg Prf.hyp0 (pw_succ two _) (two_step _)
         (congrFst (congrSnd (congrAp2 _ eI (.eqRefl _))))
   have h2 := Prf.allE k hall
@@ -476,7 +464,7 @@ theorem q_pow_even (k : PTm n) : Γ ⊢[PRAAx] le (pw two k) (sQ (cv a' (k + k))
         Syn.repl_zero, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
       have eI : (le (pw two (var 0)) (sQ (cv a' (var 0 + var 0))) :: Γ.map Fm.shift) ⊢[PRAAx]
           succ (var 0) + succ (var 0) ≐ succ (succ (var 0 + var 0)) := by
-        apply deriveNat; ipra_simps; ring
+        ipra_ring
       exact pow_step_alg Prf.hyp0 (pw_succ two _) (two_step _)
         (congrFst (congrSnd (congrAp2 _ eI (.eqRefl _))))
   have h2 := Prf.allE k hall

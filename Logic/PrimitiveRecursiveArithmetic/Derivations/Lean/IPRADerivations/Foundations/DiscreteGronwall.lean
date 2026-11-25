@@ -158,7 +158,7 @@ theorem growth_quad {j k : PTm n} (hj : Γ ⊢[PRAAx] le j k) : Γ ⊢[PRAAx] QI
   exact Prf.impE h hj
 
 theorem sq_pos (k₀ : PTm n) : Γ ⊢[PRAAx] succ k₀ * succ k₀ ≐ succ (k₀ * k₀ + two * k₀) := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- `(k+1)^k ≤ 3 k^k` for `k = k₀ + 1`. -/
 theorem three_bound (k₀ : PTm n) :

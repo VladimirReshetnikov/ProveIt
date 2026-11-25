@@ -1,5 +1,6 @@
 import IPRADerivations.Geometry.Distinct.AnalyticConicRationalAffine
 import IPRADerivations.Foundations.GapDecision
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Actual rational inverse of an affine conic substitution
@@ -114,10 +115,7 @@ theorem roundtrip_denominators (m p : PTm n) : Γ ⊢[PRAAx]
       (denominator (image m (image (inverse m) p)) ≐ multiplier m*denominator p) := by
   refine .andI ?_ ?_
   all_goals
-    apply deriveNat
-    simp only [image_denominator_value,inverse_denominator_value,multiplier]
-    ipra_simps
-    ring
+    ipra_lc [image_denominator_value, inverse_denominator_value, multiplier]
 
 private theorem coordinate_rescaling (k : ℕ) (p q L : PTm n) (hp : Γ ⊢[PRAAx] valid p) (hq : Γ ⊢[PRAAx] valid q)
     (hn : Γ ⊢[PRAAx] ZT.eq (read k (numerators q)) (ZT.ofNat L*read k (numerators p)))

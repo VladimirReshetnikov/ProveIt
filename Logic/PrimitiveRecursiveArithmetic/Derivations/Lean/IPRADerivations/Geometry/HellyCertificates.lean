@@ -1,4 +1,4 @@
-import IPRADerivations.Core.IntCertificates
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Finite rational Helly: the certificate identities
@@ -108,22 +108,13 @@ theorem elim_dual (L V v : Fin s → ZT n) (a b δ : ZT n)
 theorem radon_mass (zp zn : Fin s → ZT n)
     (hz : Γ ⊢[PRAAx] ZT.eq (ZT.sumFin fun j => zp j - zn j) (ZT.natLit 0)) :
     Γ ⊢[PRAAx] ZT.eq (ZT.sumFin zp) (ZT.sumFin zn) := by
-  have e := ZT.toZ_eq hz
-  simp only [ZT.toZ_sumFin, ZT.toZ_sub, ZT.toZ_natLit, Nat.cast_zero, Finset.sum_sub_distrib] at e
-  apply ZT.derive
-  simp only [ZT.toZ_sumFin]
-  linear_combination e
+  ipra_lc [Finset.sum_sub_distrib] ZT.toZ_eq hz
 
 /-- The weighted sums of the two parts agree (one coordinate `x`). -/
 theorem radon_moment (zp zn x : Fin s → ZT n)
     (hz : Γ ⊢[PRAAx] ZT.eq (ZT.sumFin fun j => (zp j - zn j) * x j) (ZT.natLit 0)) :
     Γ ⊢[PRAAx] ZT.eq (ZT.sumFin fun j => zp j * x j) (ZT.sumFin fun j => zn j * x j) := by
-  have e := ZT.toZ_eq hz
-  simp only [ZT.toZ_sumFin, ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_natLit, Nat.cast_zero, sub_mul,
-    Finset.sum_sub_distrib] at e
-  apply ZT.derive
-  simp only [ZT.toZ_sumFin, ZT.toZ_mul]
-  linear_combination e
+  ipra_lc [sub_mul, Finset.sum_sub_distrib] ZT.toZ_eq hz
 
 /-- "If `M = 0`, all parts are zero by nonnegativity." -/
 theorem part_zero (zp : Fin s → ZT n) (h0 : ∀ j, Γ ⊢[PRAAx] zle (ZT.natLit 0) (zp j))
@@ -229,11 +220,7 @@ theorem fm_lift {aL pL bL aU pU bU τ : ZT n}
     (hproj : Γ ⊢[PRAAx] zle (pU * aL - pL * aU) (pU * bL - pL * bU))
     (hτ : Γ ⊢[PRAAx] ZT.eq (pL * τ) (bL - aL)) :
     Γ ⊢[PRAAx] zle (-pL * (aU + pU * τ)) (-pL * bU) := by
-  have e := ZT.toZ_eq hτ
-  simp only [ZT.toZ_mul, ZT.toZ_sub] at e
-  refine zle_of_comb (zsl hproj) ?_ (nn_zsl _)
-  zsimp
-  linear_combination ZT.toZ Γ pU * e
+  ipra_zle (zsl hproj) with ZT.toZ Γ pU * ZT.toZ_eq hτ
 
 /-! ## The centerpoint count -/
 

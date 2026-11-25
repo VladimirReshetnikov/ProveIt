@@ -1,6 +1,7 @@
 import IPRADerivations.Combinatorics.BinomialTwo
 import IPRADerivations.Combinatorics.CatalanPowers
 import IPRADerivations.Core.SumSplit
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Bézout witnesses for two coprime powers
@@ -89,28 +90,26 @@ theorem g_at (k M X Y a c : PTm n) :
 theorem q_point {k r' s' X Y : PTm n} (hk : Γ ⊢[PRAAx] le k r') :
     Γ ⊢[PRAAx] gb (r' + succ s') k * pw X k * pw Y (monus (r' + succ s') k) ≐
       pw Y (succ s') * (gb (r' + succ s') (zero + k) * pw X k * pw Y (monus r' k)) := by
-  have e := natEq (eq_add_of_le hk)
   have m₁ : Γ ⊢[PRAAx] monus (r' + succ s') k ≐ succ s' + monus r' k := by
     refine (congrMonus (b := (succ s' + monus r' k) + k) ?_ (.eqRefl _)).eqTrans (add_monus _ _)
-    apply deriveNat; ipra_simps; linear_combination e
+    ipra_lc natEq (eq_add_of_le hk)
   have pwE := (congrPw (.eqRefl Y) m₁).eqTrans (pw_add Y (succ s') (monus r' k))
   have gE : Γ ⊢[PRAAx] gb (r' + succ s') k ≐ gb (r' + succ s') (zero + k) :=
     congrGb (.eqRefl _) (zero_add k).eqSymm
   refine (congrMul (congrMul gE (.eqRefl _)) pwE).eqTrans ?_
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- A term with exponent of `x` at least `r = r' + 1`: `x^r` factors out. -/
 theorem p_point {j r' s' X Y : PTm n} (hj : Γ ⊢[PRAAx] le j s') :
     Γ ⊢[PRAAx] gb (r' + succ s') (succ r' + j) * pw X (succ r' + j) *
         pw Y (monus (r' + succ s') (succ r' + j)) ≐
       pw X (succ r') * (gb (r' + succ s') (succ r' + j) * pw X j * pw Y (monus s' j)) := by
-  have e := natEq (eq_add_of_le hj)
   have m₂ : Γ ⊢[PRAAx] monus (r' + succ s') (succ r' + j) ≐ monus s' j := by
     refine (congrMonus (b := monus s' j + (succ r' + j)) ?_ (.eqRefl _)).eqTrans (add_monus _ _)
-    apply deriveNat; ipra_simps; linear_combination e
+    ipra_lc natEq (eq_add_of_le hj)
   have xE := pw_add (Γ := Γ) X (succ r') j
   refine (congrMul (congrMul (.eqRefl _) xE) (congrPw (.eqRefl Y) m₂)).eqTrans ?_
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- Bézout witnesses for `x^r` and `y^s`: `(x + y)^{r+s−1} = y^s Q + x^r P`. -/
 theorem power_bezout (r' s' X Y : PTm n) :
@@ -120,7 +119,7 @@ theorem power_bezout (r' s' X Y : PTm n) :
         pw X (succ r') * ap2 (sumF gbody) (succ s')
           (pairT (r' + succ s') (pairT X (pairT Y (pairT (succ r') s')))) := by
   have hM : Γ ⊢[PRAAx] succ (r' + succ s') ≐ succ r' + succ s' := by
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   have B := (binomial_two (Γ := Γ) (r' + succ s') X Y).eqSymm
   have E₀ : Γ ⊢[PRAAx] ap2 (sumF bt) (succ (r' + succ s')) (pairT (r' + succ s') (pairT X Y)) ≐
       ap2 (sumF bt) (succ r' + succ s') (pairT (r' + succ s') (pairT X Y)) :=

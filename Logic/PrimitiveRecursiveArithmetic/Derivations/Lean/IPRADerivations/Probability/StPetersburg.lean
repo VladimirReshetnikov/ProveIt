@@ -1,6 +1,7 @@
 import IPRADerivations.Probability.Variance
 import IPRADerivations.Foundations.DyadicNames
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The St Petersburg game
@@ -54,10 +55,8 @@ theorem inst2_eB (i N : PTm n) : inst2 eB i N = inst2 pB i N * pw two (succ i) :
 theorem term_const {i N : PTm n} (h : Γ ⊢[PRAAx] lt i N) : Γ ⊢[PRAAx] inst2 eB i N ≐ pw two N := by
   rw [inst2_eB, inst2_pB]
   have h' : Γ ⊢[PRAAx] le (succ i) N := h
-  have k := natEq (eq_add_of_le h')
   have e₂ : Γ ⊢[PRAAx] monus N (succ i) + succ i ≐ N := by
-    apply deriveNat; ipra_simps
-    linear_combination -k
+    ipra_lc -natEq (eq_add_of_le h')
   exact (pw_add two (monus N (succ i)) (succ i)).eqSymm.eqTrans (congrAp2 powF e₂ (Prf.eqRefl (two : PTm n)))
 
 /-- `prop:st-petersburg`: the partial expectation through outcome `N` is `N` (on the scale `2^N`). -/
@@ -74,11 +73,7 @@ theorem norm_step {K N : PTm n} (hK : Γ ⊢[PRAAx] lt K N)
     Γ ⊢[PRAAx] ap2 (sumF pB) (succ K) N + eps N (succ K) ≐ pw two N := by
   have s' := sum_succ' (Γ := Γ) pB K N
   rw [inst2_pB] at s'
-  have es := natEq s'
-  have eh := natEq (eps_half hK)
-  have ei := natEq ih
-  apply deriveNat; ipra_simps
-  linear_combination es + ei - eh
+  ipra_lc natEq s' + natEq ih - natEq (eps_half hK)
 
 theorem norm_guard {K N : PTm n} (hK : Γ ⊢[PRAAx] le (succ K) N)
     (ih : Γ ⊢[PRAAx] le K N ⟶ (ap2 (sumF pB) K N + eps N K ≐ pw two N)) :
@@ -86,10 +81,7 @@ theorem norm_guard {K N : PTm n} (hK : Γ ⊢[PRAAx] le (succ K) N)
   norm_step hK (Prf.impE ih (le_trans (le_succ_self K) hK))
 
 theorem norm_base (N : PTm n) : Γ ⊢[PRAAx] ap2 (sumF pB) zero N + eps N zero ≐ pw two N := by
-  have z := natEq (sum_zero (Γ := Γ) pB N)
-  have m := natEq (congrAp2 powF (monus_zero (Γ := Γ) N) (Prf.eqRefl (two : PTm n)))
-  apply deriveNat; ipra_simps
-  linear_combination z + m
+  ipra_lc natEq (sum_zero (Γ := Γ) pB N) + natEq (congrAp2 powF (monus_zero (Γ := Γ) N) (Prf.eqRefl (two : PTm n)))
 
 theorem norm_all (N : PTm n) :
     Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
@@ -121,9 +113,7 @@ theorem normalization (N : PTm n) : Γ ⊢[PRAAx] ap2 (sumF pB) N N + one ≐ pw
       (le N N ⟶ (ap2 (sumF pB) N N + eps N N ≐ pw two N)) := by
     simp
   rw [e] at a
-  have k₁ := natEq (Prf.impE a (le_refl N))
-  have k₂ := natEq ((congrAp2 powF (monus_self (Γ := Γ) N) (Prf.eqRefl (two : PTm n))).eqTrans (pw_zero two))
-  apply deriveNat; ipra_simps
-  linear_combination k₁ - k₂
+  ipra_lc natEq (Prf.impE a (le_refl N)) -
+    natEq ((congrAp2 powF (monus_self (Γ := Γ) N) (Prf.eqRefl (two : PTm n))).eqTrans (pw_zero two))
 
 end LeanProofs.IPRA.Probability.StPetersburg

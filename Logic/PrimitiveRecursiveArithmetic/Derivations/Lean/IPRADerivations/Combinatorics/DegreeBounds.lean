@@ -1,4 +1,4 @@
-import IPRADerivations.Core.IntCertificates
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Degree sequences: parity, regular graphs and the edge bound
@@ -43,9 +43,7 @@ theorem odd_vertices_even (d q b : Fin k → ZT n) (m : ZT n)
   have e := ZT.toZ_eq hs
   simp only [ZT.toZ_sumFin, ZT.toZ_mul, ZT.toZ_natLit, Nat.cast_ofNat] at e
   rw [Finset.sum_congr rfl fun v _ => hd1 v, sum_parity] at e
-  apply ZT.derive
-  zsimp
-  linear_combination e
+  ipra_lc e
 
 /-- An `r`-regular graph on `k` vertices: `k r = 2m`. -/
 theorem regular_count (d : Fin k → ZT n) (r m : ZT n) (hd : ∀ v, Γ ⊢[PRAAx] ZT.eq (d v) r)
@@ -76,11 +74,6 @@ theorem complement_degrees (d : Fin (k + 1) → ZT n) (m : ZT n)
     (hs : Γ ⊢[PRAAx] ZT.eq (ZT.sumFin d) (ZT.natLit 2 * m)) :
     Γ ⊢[PRAAx] ZT.eq (ZT.sumFin fun v => ZT.natLit k - d v)
       (ZT.natLit (k + 1) * ZT.natLit k - ZT.natLit 2 * m) := by
-  have e := ZT.toZ_eq hs
-  simp only [ZT.toZ_sumFin, ZT.toZ_mul, ZT.toZ_natLit, Nat.cast_ofNat] at e
-  apply ZT.derive
-  zsimp
-  simp only [Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
-  linear_combination (-1 : Groth (Q Γ)) * e
+  ipra_lc [Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul] -ZT.toZ_eq hs
 
 end LeanProofs.IPRA.Combinatorics.DegreeBounds

@@ -1,6 +1,7 @@
 import IPRADerivations.Probability.PoissonShift
 import IPRADerivations.Combinatorics.BinomialIdentities
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The Pascal recurrence of the binomial distribution function
@@ -96,19 +97,11 @@ theorem cdf_step {k x : PTm n} (hk : Γ ⊢[PRAAx] lt k (fstT x)) (ih : Γ ⊢[P
   rw [inst2_cdB] at s₁
   have s₂ := sum_succ' (Γ := Γ) cdB' (succ k) x
   rw [inst2_cdB'] at s₂
-  have e₁ := natEq s₁; have e₂ := natEq s₂
-  have i := natEq ih
-  have pa := natEq (pascal_at hk)
-  have pb₁ := natEq (congrAp2 powF (succ_monus_succ (Γ := Γ) (fstT x) k) (.eqRefl (sndT (sndT x))))
-  have pb := natEq ((congrAp2 powF (monus_pred hk) (.eqRefl (sndT (sndT x)))).eqTrans
-    (pw_succ (Γ := Γ) (sndT (sndT x)) (monus (fstT x) (succ k))))
-  have pA := natEq (pw_succ (Γ := Γ) (fstT (sndT x)) (succ k))
-  apply deriveNat; ipra_simps
-  linear_combination (𝔟(fstT (sndT x)) + 𝔟(sndT (sndT x))) * e₁ + i - e₂ -
-    𝔟(binom (fstT x) (succ k)) * 𝔟(pw (sndT (sndT x)) (monus (fstT x) (succ k))) * pA -
-    𝔟(pw (fstT (sndT x)) (succ k)) * 𝔟(pw (sndT (sndT x)) (monus (fstT x) k)) * pa -
-    𝔟(binom (succ (fstT x)) (succ k)) * 𝔟(pw (fstT (sndT x)) (succ k)) * pb₁ -
-    𝔟(binom (fstT x) (succ k)) * 𝔟(pw (fstT (sndT x)) (succ k)) * pb
+  ipra_lc (𝔟(fstT (sndT x)) + 𝔟(sndT (sndT x))) * natEq s₁ + natEq ih - natEq s₂ -
+    𝔟(binom (fstT x) (succ k)) * 𝔟(pw (sndT (sndT x)) (monus (fstT x) (succ k))) * natEq (pw_succ (Γ := Γ) (fstT (sndT x)) (succ k)) -
+    𝔟(pw (fstT (sndT x)) (succ k)) * 𝔟(pw (sndT (sndT x)) (monus (fstT x) k)) * natEq (pascal_at hk) -
+    𝔟(binom (succ (fstT x)) (succ k)) * 𝔟(pw (fstT (sndT x)) (succ k)) * natEq (congrAp2 powF (succ_monus_succ (Γ := Γ) (fstT x) k) (.eqRefl (sndT (sndT x)))) -
+    𝔟(binom (fstT x) (succ k)) * 𝔟(pw (fstT (sndT x)) (succ k)) * natEq ((congrAp2 powF (monus_pred hk) (.eqRefl (sndT (sndT x)))).eqTrans (pw_succ (Γ := Γ) (sndT (sndT x)) (monus (fstT x) (succ k))))
 
 theorem cdf_guard {k x : PTm n} (hk : Γ ⊢[PRAAx] le (succ k) (fstT x))
     (ih : Γ ⊢[PRAAx] le k (fstT x) ⟶ CInv k x) : Γ ⊢[PRAAx] CInv (succ k) x :=

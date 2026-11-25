@@ -1,5 +1,6 @@
 import IPRADerivations.Core.SumLemmas
 import IPRADerivations.Core.Tactic
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Telescoping sums
@@ -27,9 +28,7 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 /-- `∑_{i<N} a(i+1) + a(0) = ∑_{i<N} a(i) + a(N)`. -/
 theorem tele_nat (a : PTm 2) (N x : PTm n) :
     Γ ⊢[PRAAx] ap2 (sumF (shiftBody a)) N x + inst2 a zero x ≐ ap2 (sumF a) N x + inst2 a N x := by
-  have e₁ := natEq (sum_shift (Γ := Γ) a N x); have e₂ := natEq (sum_succ' (Γ := Γ) a N x)
-  apply deriveNat; ipra_simps
-  linear_combination e₂ - e₁
+  ipra_lc natEq (sum_succ' (Γ := Γ) a N x) - natEq (sum_shift (Γ := Γ) a N x)
 
 /-- The body `p(i+1) + q(i)`. -/
 abbrev upB (p q : PTm 2) : PTm 2 := addBody (shiftBody p) q
@@ -39,9 +38,7 @@ abbrev dnB (p q : PTm 2) : PTm 2 := addBody p (shiftBody q)
 theorem tele_signed_base (p q : PTm 2) (x : PTm n) :
     Γ ⊢[PRAAx] ap2 (sumF (upB p q)) zero x + inst2 p zero x + inst2 q zero x ≐
       ap2 (sumF (dnB p q)) zero x + inst2 p zero x + inst2 q zero x := by
-  have z₁ := natEq (sum_zero (Γ := Γ) (upB p q) x); have z₂ := natEq (sum_zero (Γ := Γ) (dnB p q) x)
-  apply deriveNat; ipra_simps
-  linear_combination z₁ - z₂
+  ipra_lc natEq (sum_zero (Γ := Γ) (upB p q) x) - natEq (sum_zero (Γ := Γ) (dnB p q) x)
 
 theorem tele_signed_step (p q : PTm 2) {N x : PTm n}
     (ih : Γ ⊢[PRAAx] ap2 (sumF (upB p q)) N x + inst2 p zero x + inst2 q N x ≐
@@ -52,9 +49,7 @@ theorem tele_signed_step (p q : PTm 2) {N x : PTm n}
   rw [inst2_addBody, inst2_shiftBody] at s₁
   have s₂ := sum_succ' (Γ := Γ) (dnB p q) N x
   rw [inst2_addBody, inst2_shiftBody] at s₂
-  have a₁ := natEq s₁; have a₂ := natEq s₂; have i := natEq ih
-  apply deriveNat; ipra_simps
-  linear_combination i + a₁ - a₂
+  ipra_lc natEq ih + natEq s₁ - natEq s₂
 
 /-- Variables: `0 = N` (induction), `1 = x`. -/
 private abbrev teleF (p q : PTm 2) : Fm PTm 2 :=

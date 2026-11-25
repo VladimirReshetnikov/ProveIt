@@ -3,6 +3,7 @@ import IPRADerivations.AnalyticNumberTheory.PhiLower
 import IPRADerivations.Core.SumOrder
 import IPRADerivations.Core.SumLemmas
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Many coprime pairs in a square
@@ -121,25 +122,20 @@ theorem coprime_count (N₁ : PTm k) :
     (congrAp2 remF om_two_one (.eqRefl _)).eqTrans (rem_zero _)
   have mp : Γ ⊢[PRAAx] muP (succ one) (one : PTm k) ≐ one :=
     (congrMul s0 ((congrEqb' o0 (.eqRefl _)).eqTrans (eqb_of_eq (.eqRefl _)))).eqTrans
-      (by apply deriveNat; ipra_simps; ring)
+      (by ipra_ring)
   have mn : Γ ⊢[PRAAx] muN (succ one) (one : PTm k) ≐ zero :=
     (congrMul s0 ((congrEqb' o0 (.eqRefl _)).eqTrans (eqb_of_ne zero_ne_one'))).eqTrans
-      (by apply deriveNat; ipra_simps; ring)
+      (by ipra_ring)
   -- `D⁺ ≥ N²` from the term `d = 1`
   have q1 := Prf.andE₁ (div_mod_unique (Γ := Γ) (z := succ N₁) (q := succ N₁) (r := zero) (K' := zero)
-    (by apply deriveNat; ipra_simps; ring) (zero_lt_succ zero))
+    (by ipra_ring) (zero_lt_succ zero))
   have t := term_le_sum (Γ := Γ) DPB (i := one) (M := succ (succ N₁)) (x := succ N₁)
     (by show Γ ⊢[PRAAx] le (succ one) (succ (succ N₁)); ipra_le 𝔞 N₁)
   rw [inst2_DP] at t
-  have esg := natEq (sg_succ (Γ := Γ) (zero : PTm k))
-  have emp := natEq mp
-  have eq1 := natEq q1
   have ev : Γ ⊢[PRAAx] (sg one * muP (succ one) one) * (quo (succ N₁) one * quo (succ N₁) one) ≐
       succ N₁ * succ N₁ := by
-    apply deriveNat; ipra_simps
-    linear_combination (𝔞 (eqb (AnalyticNumberTheory.Mobius.sq (succ one) (one : PTm k)) zero) * 𝔞 (eqb (rem (AnalyticNumberTheory.Mobius.om (succ one) (one : PTm k)) two) zero) *
-        𝔞 (quo (succ N₁) one) * 𝔞 (quo (succ N₁) one)) * esg +
-      (𝔞 (quo (succ N₁) one) * 𝔞 (quo (succ N₁) one)) * emp + (𝔞 (quo (succ N₁) one) + 𝔞 N₁ + 1) * eq1
+    ipra_lc (𝔞 (eqb (AnalyticNumberTheory.Mobius.sq (succ one) (one : PTm k)) zero) * 𝔞 (eqb (rem (AnalyticNumberTheory.Mobius.om (succ one) (one : PTm k)) two) zero) * 𝔞 (quo (succ N₁) one) * 𝔞 (quo (succ N₁) one)) * natEq (sg_succ (Γ := Γ) (zero : PTm k)) +
+      (𝔞 (quo (succ N₁) one) * 𝔞 (quo (succ N₁) one)) * natEq mp + (𝔞 (quo (succ N₁) one) + 𝔞 N₁ + 1) * natEq q1
   have tP := le_congr ev (.eqRefl _) t
   -- `D⁻ = 0 + 0 + ∑_{i<N₁} DNB(i+2)`
   have e1 := natEq (sum_shift (Γ := Γ) DNB (succ N₁) (succ N₁))
@@ -148,15 +144,10 @@ theorem coprime_count (N₁ : PTm k) :
   have e2 := natEq e2'
   have z0 : Γ ⊢[PRAAx] inst2 DNB zero (succ N₁) ≐ zero := by
     rw [inst2_DN]
-    have es0 := natEq (sg_zero (Γ := Γ) (n := k))
-    apply deriveNat; ipra_simps
-    linear_combination (𝔞 (eqb (AnalyticNumberTheory.Mobius.sq (succ zero) zero) zero) * 𝔞 (eqb (rem (AnalyticNumberTheory.Mobius.om (succ zero) zero) two) one) *
-      𝔞 (quo (succ N₁) zero) * 𝔞 (quo (succ N₁) zero)) * es0
+    ipra_lc (𝔞 (eqb (AnalyticNumberTheory.Mobius.sq (succ zero) zero) zero) * 𝔞 (eqb (rem (AnalyticNumberTheory.Mobius.om (succ zero) zero) two) one) * 𝔞 (quo (succ N₁) zero) * 𝔞 (quo (succ N₁) zero)) * natEq (sg_zero (Γ := Γ) (n := k))
   have z1 : Γ ⊢[PRAAx] inst2 DNB (succ zero) (succ N₁) ≐ zero := by
     rw [inst2_DN]
-    have emn := natEq mn
-    apply deriveNat; ipra_simps
-    linear_combination (𝔞 (sg (succ zero)) * 𝔞 (quo (succ N₁) (succ zero)) * 𝔞 (quo (succ N₁) (succ zero))) * emn
+    ipra_lc (𝔞 (sg (succ zero)) * 𝔞 (quo (succ N₁) (succ zero)) * 𝔞 (quo (succ N₁) (succ zero))) * natEq mn
   have ez0 := natEq z0
   have ez1 := natEq z1
   have tS := sum_le_params (Γ := Γ) (shiftBody (shiftBody DNB)) qB (succ N₁) (succ N₁) N₁

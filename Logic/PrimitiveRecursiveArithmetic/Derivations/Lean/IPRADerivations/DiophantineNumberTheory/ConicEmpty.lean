@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.Coprime
 import IPRADerivations.Geometry.PlatonicSolids
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # An empty conic detected by a prime-power obstruction
@@ -54,8 +55,7 @@ theorem sq_res (x : PTm n) :
       (Prf.andE₁ d).wk.eqTrans (congrAdd (.eqRefl _) Prf.hyp0)
     have e := natEq hx
     refine Prf.andE₂ (div_mod_unique (K' := num 2) (q := num 3 * quo x (num 3) * quo x (num 3)) ?_ (zero_lt_succ _))
-    apply deriveNat; ipra_simps
-    linear_combination (𝔞 x + 3 * 𝔞 (quo x (num 3))) * e
+    ipra_lc (𝔞 x + 3 * 𝔞 (quo x (num 3))) * e
   · -- `x = 3a + 1`
     refine .orI₂ ?_
     have hx : ((rem x (num 3) ≐ num 1) :: ((rem x (num 3) ≐ num 1) ⋎ (rem x (num 3) ≐ num 2)) :: Γ) ⊢[PRAAx] x ≐ num 3 * quo x (num 3) + num 1 :=
@@ -63,8 +63,7 @@ theorem sq_res (x : PTm n) :
     have e := natEq hx
     refine Prf.andE₂ (div_mod_unique (K' := num 2) (q := num 3 * quo x (num 3) * quo x (num 3) + num 2 * quo x (num 3))
       ?_ one_lt_three)
-    apply deriveNat; ipra_simps
-    linear_combination (𝔞 x + 3 * 𝔞 (quo x (num 3)) + 1) * e
+    ipra_lc (𝔞 x + 3 * 𝔞 (quo x (num 3)) + 1) * e
   · -- `x = 3a + 2`
     refine .orI₂ ?_
     have hx : ((rem x (num 3) ≐ num 2) :: ((rem x (num 3) ≐ num 1) ⋎ (rem x (num 3) ≐ num 2)) :: Γ) ⊢[PRAAx] x ≐ num 3 * quo x (num 3) + num 2 :=
@@ -72,8 +71,7 @@ theorem sq_res (x : PTm n) :
     have e := natEq hx
     refine Prf.andE₂ (div_mod_unique (K' := num 2)
       (q := num 3 * quo x (num 3) * quo x (num 3) + num 4 * quo x (num 3) + num 1) ?_ one_lt_three)
-    apply deriveNat; ipra_simps
-    linear_combination (𝔞 x + 3 * 𝔞 (quo x (num 3)) + 2) * e
+    ipra_lc (𝔞 x + 3 * 𝔞 (quo x (num 3)) + 2) * e
 
 /-- A nonzero residue `S c < 3` contradicts `x² + y² = 3w`. -/
 theorem residue_absurd {x y w Qx Qy c : PTm n} (h : Γ ⊢[PRAAx] x * x + y * y ≐ num 3 * w)
@@ -89,13 +87,7 @@ theorem sum_residue {Δ : List (Fm PTm n)} {x y rx ry c : PTm n} (hrx : Δ ⊢[P
     Δ ⊢[PRAAx] x * x + y * y ≐ num 3 * (quo (x * x) (num 3) + quo (y * y) (num 3)) + succ c := by
   have dx : Δ ⊢[PRAAx] x * x ≐ num 3 * quo (x * x) (num 3) + rem (x * x) (num 3) := Prf.andE₁ (div_mod (x * x) (num 2))
   have dy : Δ ⊢[PRAAx] y * y ≐ num 3 * quo (y * y) (num 3) + rem (y * y) (num 3) := Prf.andE₁ (div_mod (y * y) (num 2))
-  have ex := natEq dx
-  have ey := natEq dy
-  have r1 := natEq hrx
-  have r2 := natEq hry
-  have e3 := natEq hc
-  apply deriveNat; ipra_simps
-  linear_combination ex + ey + r1 + r2 + e3
+  ipra_lc natEq dx + natEq dy + natEq hrx + natEq hry + natEq hc
 
 /-- `x² + y² = 3w` gives `3 ∣ x` and `3 ∣ y`. -/
 theorem sum_sq_dvd {x y w : PTm n} (h : Γ ⊢[PRAAx] x * x + y * y ≐ num 3 * w) :
@@ -115,19 +107,13 @@ theorem empty_conic {x y z : PTm n} (h : Γ ⊢[PRAAx] x * x + y * y ≐ num 3 *
     Γ ⊢[PRAAx] dvd (num 3) x ⋏ (dvd (num 3) y ⋏ dvd (num 3) z) := by
   have hxy := sum_sq_dvd h
   have hx3 : Γ ⊢[PRAAx] x ≐ num 3 * quo x (num 3) := eq_of_dvd (d' := num 2) (Prf.andE₁ hxy)
-  have ex := natEq hx3
   have hy3 : Γ ⊢[PRAAx] y ≐ num 3 * quo y (num 3) := eq_of_dvd (d' := num 2) (Prf.andE₂ hxy)
-  have ey := natEq hy3
-  have eh := natEq h
   have hz : Γ ⊢[PRAAx] z * z ≐ num 3 * (quo x (num 3) * quo x (num 3) + quo y (num 3) * quo y (num 3)) := by
     refine mul_cancel three_pos ?_
-    apply deriveNat; ipra_simps
-    linear_combination -eh + (𝔞 x + 3 * 𝔞 (quo x (num 3))) * ex + (𝔞 y + 3 * 𝔞 (quo y (num 3))) * ey
-  have ez := natEq hz
+    ipra_lc -natEq h + (𝔞 x + 3 * 𝔞 (quo x (num 3))) * natEq hx3 + (𝔞 y + 3 * 𝔞 (quo y (num 3))) * natEq hy3
   have hz' : Γ ⊢[PRAAx] z * z + zero * zero ≐
       num 3 * (quo x (num 3) * quo x (num 3) + quo y (num 3) * quo y (num 3)) := by
-    apply deriveNat; ipra_simps
-    linear_combination ez
+    ipra_lc natEq hz
   exact .andI (Prf.andE₁ hxy) (.andI (Prf.andE₂ hxy) (Prf.andE₁ (sum_sq_dvd hz')))
 
 /-- No solution of `x² + y² = 3z²` is primitive. -/

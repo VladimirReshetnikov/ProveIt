@@ -1,5 +1,6 @@
 import IPRADerivations.Geometry.ConwayAlgebra
 import IPRADerivations.Core.IntCancel
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The period lattice of the Conway criterion
@@ -52,7 +53,7 @@ theorem zpos_congr {X Y : ZT n} (h : Γ ⊢[PRAAx] ZT.eq X Y) (hY : Γ ⊢[PRAAx
     Γ ⊢[PRAAx] zpos X := by
   have a : Γ ⊢[PRAAx] le (succ Y.neg + X.neg) (Y.pos + X.neg) := add_le_add_right X.neg hY
   have e₁ : Γ ⊢[PRAAx] succ Y.neg + X.neg ≐ succ X.neg + Y.neg := by
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   have h' : Γ ⊢[PRAAx] X.pos + Y.neg ≐ Y.pos + X.neg := h
   exact le_of_add_le_add_right (le_congr e₁ h'.eqSymm a)
 
@@ -142,30 +143,30 @@ variable (t₁ t₂ u₁ u₂ x₁ x₂ : ZT n)
 /-- `eq:latticecoords`, first coordinate, cleared of the denominator `det(t, u)`. -/
 theorem cramer₁ : Γ ⊢[PRAAx] ZT.eq (det t₁ t₂ u₁ u₂ * x₁)
     (det x₁ x₂ u₁ u₂ * t₁ + det t₁ t₂ x₁ x₂ * u₁) := by
-  apply ZT.derive; ipra_simps; ring
+  ipra_ring
 
 /-- `eq:latticecoords`, second coordinate, cleared of the denominator `det(t, u)`. -/
 theorem cramer₂ : Γ ⊢[PRAAx] ZT.eq (det t₁ t₂ u₁ u₂ * x₂)
     (det x₁ x₂ u₁ u₂ * t₂ + det t₁ t₂ x₁ x₂ * u₂) := by
-  apply ZT.derive; ipra_simps; ring
+  ipra_ring
 
 /-- Translating by `t` adds `det(t, u)` to the first cleared coordinate and fixes the second. -/
 theorem coord_shift_t :
     Γ ⊢[PRAAx] ZT.eq (det (x₁ + t₁) (x₂ + t₂) u₁ u₂) (det x₁ x₂ u₁ u₂ + det t₁ t₂ u₁ u₂) ⋏
       ZT.eq (det t₁ t₂ (x₁ + t₁) (x₂ + t₂)) (det t₁ t₂ x₁ x₂) :=
-  .andI (by apply ZT.derive; ipra_simps; ring) (by apply ZT.derive; ipra_simps; ring)
+  .andI (by ipra_ring) (by ipra_ring)
 
 /-- Translating by `u` fixes the first cleared coordinate and adds `det(t, u)` to the second. -/
 theorem coord_shift_u :
     Γ ⊢[PRAAx] ZT.eq (det (x₁ + u₁) (x₂ + u₂) u₁ u₂) (det x₁ x₂ u₁ u₂) ⋏
       ZT.eq (det t₁ t₂ (x₁ + u₁) (x₂ + u₂)) (det t₁ t₂ x₁ x₂ + det t₁ t₂ u₁ u₂) :=
-  .andI (by apply ZT.derive; ipra_simps; ring) (by apply ZT.derive; ipra_simps; ring)
+  .andI (by ipra_ring) (by ipra_ring)
 
 /-- The cleared coordinates of the half-turn image `s − x`. -/
 theorem coord_half (s₁ s₂ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (det (s₁ - x₁) (s₂ - x₂) u₁ u₂) (det s₁ s₂ u₁ u₂ - det x₁ x₂ u₁ u₂) ⋏
       ZT.eq (det t₁ t₂ (s₁ - x₁) (s₂ - x₂)) (det t₁ t₂ s₁ s₂ - det t₁ t₂ x₁ x₂) :=
-  .andI (by apply ZT.derive; ipra_simps; ring) (by apply ZT.derive; ipra_simps; ring)
+  .andI (by ipra_ring) (by ipra_ring)
 
 end Coordinates
 
@@ -180,12 +181,8 @@ theorem coords_of_mem
       ZT.eq (det t₁ t₂ x₁ x₂) (b * det t₁ t₂ u₁ u₂) := by
   have e₁ := ZT.toZ_eq h₁; have e₂ := ZT.toZ_eq h₂
   refine .andI ?_ ?_
-  · apply ZT.derive
-    ipra_simps
-    linear_combination (ZT.toZ Γ u₂) * e₁ - (ZT.toZ Γ u₁) * e₂
-  · apply ZT.derive
-    ipra_simps
-    linear_combination (ZT.toZ Γ t₁) * e₂ - (ZT.toZ Γ t₂) * e₁
+  · ipra_lc (ZT.toZ Γ u₂) * e₁ - (ZT.toZ Γ u₁) * e₂
+  · ipra_lc (ZT.toZ Γ t₁) * e₂ - (ZT.toZ Γ t₂) * e₁
 
 /-- If `det(t, u) ≠ 0` and the cleared coordinates of `x` are `a det(t, u)` and `b det(t, u)`,
 then `x = a t + b u`. -/

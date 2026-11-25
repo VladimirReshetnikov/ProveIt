@@ -42,7 +42,7 @@ theorem cap_lower {δ D z χ : PTm n} (hD : Γ ⊢[PRAAx] le δ D) (h : Γ ⊢[P
     Γ ⊢[PRAAx] le (δ * χ) (meet D z) := by
   refine .orE h ?_ ?_
   · let Δ := ((χ ≐ one) ⋏ lt δ z) :: Γ
-    have e : Δ ⊢[PRAAx] δ * χ ≐ δ := (congrMul (.eqRefl _) (Prf.andE₁ Prf.hyp0)).eqTrans (by apply deriveNat; ipra_simps; ring)
+    have e : Δ ⊢[PRAAx] δ * χ ≐ δ := (congrMul (.eqRefl _) (Prf.andE₁ Prf.hyp0)).eqTrans (by ipra_ring)
     have hz : Δ ⊢[PRAAx] le δ z := le_trans (le_succ_self δ) (Prf.andE₂ Prf.hyp0)
     refine le_congr e.eqSymm (.eqRefl _) ?_
     refine .orE (le_total D z) ?_ ?_

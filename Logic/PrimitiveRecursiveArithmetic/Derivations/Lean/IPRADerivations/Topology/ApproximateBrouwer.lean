@@ -1,4 +1,4 @@
-import IPRADerivations.Core.IntCertificates
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Approximate Brouwer fixed points: the certificate-to-error steps
@@ -262,9 +262,7 @@ theorem ball_outer (z w : Fin d → ZT n) :
         ZT.sumFin fun j => ZT.sq (z j - w j)) := by
   have e := outer_identity (fun j => ZT.toZ Γ (z j)) (fun j => ZT.toZ Γ (w j))
   beta_reduce at e
-  apply ZT.derive
-  zsimp
-  linear_combination e
+  ipra_lc e
 
 /-- One point outside (`s ≥ 1`), one inside (`t ≤ 1`): `‖z − s w‖² ≤ s² ‖z − w‖²`, so
 `‖R(z) − w‖ ≤ ‖z − w‖`. -/

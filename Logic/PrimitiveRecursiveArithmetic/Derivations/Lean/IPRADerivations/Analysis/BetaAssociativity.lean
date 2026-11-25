@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.BetaIntegers
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The associativity identity of the Beta function at positive integers
@@ -34,18 +35,14 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
 /-- `cor:beta-assoc` at positive integers: `R(m, k) R(m + k + 1, j) = R(k, j) R(k + j + 1, m)`. -/
 theorem rbeta_assoc (m k j : PTm n) :
     Γ ⊢[PRAAx] rbeta m k * rbeta (succ (m + k)) j ≐ rbeta k j * rbeta (succ (k + j)) m := by
-  have f₁ := natEq (rbeta_fact (Γ := Γ) m k)
-  have f₂ := natEq (rbeta_fact (Γ := Γ) (succ (m + k)) j)
-  have f₃ := natEq (rbeta_fact (Γ := Γ) k j)
-  have f₄ := natEq (rbeta_fact (Γ := Γ) (succ (k + j)) m)
   have hc : Γ ⊢[PRAAx] succ (succ (m + k) + j) ≐ succ (succ (k + j) + m) := by
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   have c₅ := natEq (congrAp2 factF hc (.eqRefl _) :
     Γ ⊢[PRAAx] fact (succ (succ (m + k) + j)) ≐ fact (succ (succ (k + j) + m)))
   refine mul_cancel (D := fact m * fact k * fact j)
     (pos_mul (pos_mul (fact_pos m) (fact_pos k)) (fact_pos j)) ?_
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞 (rbeta (succ (m + k)) j) * 𝔞 (fact j)) * f₁ + f₂ + c₅ - f₄ -
-    (𝔞 (rbeta (succ (k + j)) m) * 𝔞 (fact m)) * f₃
+  ipra_lc (𝔞 (rbeta (succ (m + k)) j) * 𝔞 (fact j)) * natEq (rbeta_fact (Γ := Γ) m k) +
+    natEq (rbeta_fact (Γ := Γ) (succ (m + k)) j) + c₅ - natEq (rbeta_fact (Γ := Γ) (succ (k + j)) m) -
+    (𝔞 (rbeta (succ (k + j)) m) * 𝔞 (fact m)) * natEq (rbeta_fact (Γ := Γ) k j)
 
 end LeanProofs.IPRA.Analysis.BetaAssociativity

@@ -1,6 +1,7 @@
 import IPRADerivations.Core.IntOrder
 import IPRADerivations.Core.Gcd
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The numerical stability budget of Bayes updating
@@ -42,8 +43,7 @@ theorem zle_of_toZ2 {u v : ZT n} (D : PTm n)
     (h : 2 * ZT.toZ Γ u + Groth.ι (Q.mk Γ D) = 2 * ZT.toZ Γ v) : Γ ⊢[PRAAx] zle u v := by
   refine mul_le_cancel (d' := one) (le_of_eq_add (d := D) ?_)
   rw [toZ_def, toZ_def] at h
-  apply deriveNat; ipra_simps
-  linear_combination -h
+  ipra_lc -h
 
 /-- `eq:bayes-budget`, cleared: `|z_0 (a' Z − a Z')| ≤ 2(δ_a + Mδ_Z) Z Z'`. -/
 theorem bayes_budget {a a' : ZT n} {Z Z' da dZ M z0 : PTm n}

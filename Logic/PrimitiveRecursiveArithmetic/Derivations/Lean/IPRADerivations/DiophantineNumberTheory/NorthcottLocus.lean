@@ -61,7 +61,7 @@ theorem kL_at (T : PTm 2) (e b N q : PTm k) :
 theorem kept_of (T : PTm 2) {e b N q : PTm k} (hg : Γ ⊢[PRAAx] gv digB N (pairT b e) ≐ one)
     (ht : Γ ⊢[PRAAx] inst2 T e q ≐ zero) : Γ ⊢[PRAAx] neg (inst2 (kL T) e (prm b N q) ≐ zero) := by
   have v : Γ ⊢[PRAAx] inst2 (kL T) e (prm b N q) ≐ one :=
-    (kL_at T e b N q).eqTrans ((congrMul (eqb_of_eq hg) (eqb_of_eq ht)).eqTrans (by apply deriveNat; ipra_simps; ring))
+    (kL_at T e b N q).eqTrans ((congrMul (eqb_of_eq hg) (eqb_of_eq ht)).eqTrans (by ipra_ring))
   exact .impI (succ_ne_zero' _ (v.wk.eqSymm.eqTrans Prf.hyp0))
 
 theorem factors_of_kept (T : PTm 2) {e b N q : PTm k} (h : Γ ⊢[PRAAx] neg (inst2 (kL T) e (prm b N q) ≐ zero)) :

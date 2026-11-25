@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.RationalCofactorBorderedMinors
 import IPRADerivations.Analysis.RationalCofactorCoefficientValues
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The actual cofactor vector annihilates the cleared rows
@@ -64,10 +65,7 @@ def supportDot (P d i : PTm n) : PTm n :=
 theorem cleared_term_congr {P Q d e i k j l : PTm n} (hP : Γ ⊢[PRAAx] P ≐ Q)
     (hd : Γ ⊢[PRAAx] d ≐ e) (hi : Γ ⊢[PRAAx] i ≐ k) (hj : Γ ⊢[PRAAx] j ≐ l) :
     Γ ⊢[PRAAx] clearedTerm P d i j ≐ clearedTerm Q e k l := by
-  simpa only [subst_clearedTerm,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.cons_val_three,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (clearedTerm (var 0) (var 1) (var 2) (var 3) : PTm 4)
-      (σ := ![P,d,i,j]) (σ' := ![Q,e,k,l]) (fun t => by fin_cases t; exact hP; exact hd; exact hi; exact hj)
+  ipra_congr (clearedTerm (var 0) (var 1) (var 2) (var 3) : PTm 4) with [hP, hd, hi, hj]
 
 theorem cleared_body_at (P d i j : PTm n) :
     Γ ⊢[PRAAx] inst2 clearedBody j (data P d i) ≐ clearedTerm P d i j := by

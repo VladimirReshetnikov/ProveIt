@@ -3,6 +3,7 @@ import IPRADerivations.AnalyticNumberTheory.SieveWeightStep
 import IPRADerivations.AnalyticNumberTheory.FactorVector
 import IPRADerivations.AnalyticNumberTheory.FactorialLambda
 import IPRADerivations.Foundations.StrongInduction
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The weight bound of the Selberg sieve
@@ -68,7 +69,7 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 /-! ## Certificates over opaque terms -/
 
 theorem dist3 (k a b : PTm n) : Γ ⊢[PRAAx] k * (a + b) ≐ k * a + k * b := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem ind_drop {k h : PTm n} (hk : Γ ⊢[PRAAx] le k one) : Γ ⊢[PRAAx] le (k * h) h := by
   ipra_le 𝔞 h * sl hk
@@ -80,9 +81,7 @@ theorem ind_alg {N D p WN WDp WD A : PTm n} (eN : Γ ⊢[PRAAx] N ≐ D * p) (eW
   ipra_le sl ih + 𝔞 D * sl st with -(𝔞 WN * x1) - 𝔞 D * 𝔞 p * x2
 
 theorem unit_r {m s : PTm n} (h : Γ ⊢[PRAAx] m * s ≐ zero) (hs : Γ ⊢[PRAAx] s ≐ one) : Γ ⊢[PRAAx] m ≐ zero := by
-  have a := natEq h; have b := natEq hs
-  apply deriveNat; ipra_simps
-  linear_combination a - 𝔞 m * b
+  ipra_lc natEq h - 𝔞 m * natEq hs
 
 /-- `[q ≥ 1] = 1` for `q ≥ 1`. -/
 theorem sg_q {q : PTm n} (hq : Γ ⊢[PRAAx] le one q) : Γ ⊢[PRAAx] sg q ≐ one :=
@@ -132,7 +131,7 @@ theorem bound_step {N P : PTm n} (hq : Γ ⊢[PRAAx] le one (fstT P))
       have hN1 : C ⊢[PRAAx] N ≐ succ (pred N) := Prf.hyp1
       have e : C ⊢[PRAAx] N ≐ succ (succ (pred (pred N))) := Prf.hyp1.eqTrans (congrSucc Prf.hyp0)
       have hN2 : C ⊢[PRAAx] le two N :=
-        le_of_eq_add (d := pred (pred N)) (e.eqTrans (by apply deriveNat; ipra_simps; ring))
+        le_of_eq_add (d := pred (pred N)) (e.eqTrans (by ipra_ring))
       have hp := lpf_prime' hN2
       have hpd := lpf_dvd' hN2
       have hp2 := prime_two hp
@@ -143,13 +142,9 @@ theorem bound_step {N P : PTm n} (hq : Γ ⊢[PRAAx] le one (fstT P))
         have z : ((quo N (lpf N) ≐ zero) :: C) ⊢[PRAAx] N ≐ zero :=
           eN.wk.eqTrans ((congrMul (.eqRefl _) Prf.hyp0).eqTrans (mul_zero _))
         exact succ_ne_zero' _ (hN1.wk.eqSymm.eqTrans z)
-      have xN := natEq eN
-      have x2 := natEq (eq_add_of_le hp2)
-      have x3 := natEq hD
       have hlt : C ⊢[PRAAx] lt (quo N (lpf N)) N := by
         refine le_of_eq_add (d := monus (lpf N) two * quo N (lpf N) + pred (quo N (lpf N))) ?_
-        apply deriveNat; ipra_simps
-        linear_combination xN + 𝔞 (quo N (lpf N)) * x2 + x3
+        ipra_lc natEq eN + 𝔞 (quo N (lpf N)) * natEq (eq_add_of_le hp2) + natEq hD
       have ih0 := sum_zero_elim vB hV.wk.wk hlt
       rw [inst2_vB] at ih0
       have ih1 : C ⊢[PRAAx] monus (quo N (lpf N) * inst2 (wS habs) (quo N (lpf N)) P) (Asum P) ≐ zero :=

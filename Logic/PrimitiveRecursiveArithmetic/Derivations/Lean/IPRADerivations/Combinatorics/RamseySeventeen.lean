@@ -1,4 +1,5 @@
 import IPRADerivations.Combinatorics.Turan
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # `R(3, 3, 3) ≤ 17`
@@ -475,8 +476,6 @@ theorem ramsey333 (C : Fin 3 → Fin 17 → Fin 17 → ZT n)
       Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, Finset.sum_ite_eq,
       if_pos (Finset.mem_univ 0), nsmul_eq_mul]
     norm_num
-  refine false_of_comb (zsl h0 + zsl h1 + zsl h2) ?_ (nn_add (nn_add (nn_zsl _) (nn_zsl _)) (nn_zsl _)) φ
-  simp only [zsl_def, ZT.toZ_natLit, ZT.toZ_sumFin, Nat.cast_ofNat]
-  linear_combination (-1 : Groth (Q Γ)) * E16
+  ipra_absurd (zsl h0 + zsl h1 + zsl h2) with -E16
 
 end LeanProofs.IPRA.Combinatorics.RamseySeventeen

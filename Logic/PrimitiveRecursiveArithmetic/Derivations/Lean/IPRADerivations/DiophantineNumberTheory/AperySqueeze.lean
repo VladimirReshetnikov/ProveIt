@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.EllipticSearch
 import IPRADerivations.Core.IntOrder
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The finite rational squeeze
@@ -44,8 +45,7 @@ theorem squeeze_absurd {Δ : List (Fm PTm n)} {p q : ZT n} {u' v' : PTm n}
   have big : Δ ⊢[PRAAx] le (num 2 * (succ u' * succ v')) (succ u' * succ v') := by
     refine le_of_eq_add (d := num 2 * (succ u' * succ v') * monus ((p * ZT.ofNat (succ v')).pos + (q * ZT.ofNat (succ u')).neg) (succ ((q * ZT.ofNat (succ u')).pos + (p * ZT.ofNat (succ v')).neg)) +
       monus ((ZT.ofNat (num 2 * succ u' * succ v') * (q * ZT.ofNat (succ u')) + ZT.ofNat (succ u' * succ v')).pos + (ZT.ofNat (num 2 * succ u' * succ v') * (p * ZT.ofNat (succ v'))).neg) ((ZT.ofNat (num 2 * succ u' * succ v') * (p * ZT.ofNat (succ v'))).pos + (ZT.ofNat (num 2 * succ u' * succ v') * (q * ZT.ofNat (succ u')) + ZT.ofNat (succ u' * succ v')).neg)) ?_
-    apply deriveNat; ipra_simps
-    linear_combination -e + (2 * (𝔟 u' + 1) * (𝔟 v' + 1)) * h2
+    ipra_lc -e + (2 * (𝔟 u' + 1) * (𝔟 v' + 1)) * h2
   refine le_lt_absurd _ big ?_
   show Δ ⊢[PRAAx] le (succ (succ u' * succ v')) (num 2 * (succ u' * succ v'))
   ipra_le 𝔟 u' * 𝔟 v' + 𝔟 u' + 𝔟 v'

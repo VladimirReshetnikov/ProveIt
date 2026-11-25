@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianEulerVerticalQuadrature
 import IPRADerivations.Analysis.GaussianEulerVerticalShiftedRadius
 import IPRADerivations.Analysis.GaussianEulerIntegralPositiveLower
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Vertical norm domination for the original Gamma observations
@@ -73,10 +74,7 @@ theorem radius_value (p q z R B A : PTm n) (h : Γ ⊢[PRAAx] source z R B A) : 
     (nonnegative_radius_base q z R B A h)
   have add := RationalRepresentations.represents_add _ _ _ _ _ _ base (fraction_represents one (unit p) (unit_positive p))
   apply GaussianRationalHorner.scalar_congr (.eqRefl _) _ (.eqRefl _) add
-  apply ZT.derive
-  simp only [radiusNumerator,ZT.toZ_add,ZT.toZ_mul,ZT.toZ_ofNat]
-  ipra_simps
-  ring
+  ipra_lc [radiusNumerator]
 
 private theorem cutoff_coordinate (t A R : PTm n) : Γ ⊢[PRAAx]
     upper (fstT (cutoffRadius (t+num 4) t A R)) (fstT qzero) one (unit t) := by

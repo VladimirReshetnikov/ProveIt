@@ -67,7 +67,7 @@ theorem theta_sum (k : PTm n) :
       simp only [Syn.subst_var, Syn.inst_zero]
       have e0 := natEq (S_zero (Γ := Γ) (n := n))
       have z : Γ ⊢[PRAAx] pw two (num 3 * (zero * zero)) ≐ one :=
-        (congrPw2 (show Γ ⊢[PRAAx] num 3 * (zero * zero) ≐ (zero : PTm n) by apply deriveNat; ipra_simps; ring)).eqTrans
+        (congrPw2 (show Γ ⊢[PRAAx] num 3 * (zero * zero) ≐ (zero : PTm n) by ipra_ring)).eqTrans
           (pw_zero _)
       have e1 := natEq z
       have e2 := natEq (pw_zero (Γ := Γ) (two : PTm n))
@@ -83,7 +83,7 @@ theorem theta_sum (k : PTm n) :
       have eS := natEq (S_succ (Γ := Δ) (var 0))
       have eP := natEq (pw_succ (Γ := Δ) two (var 0))
       have eE := natEq ((congrPw2 (Γ := Δ) (show Δ ⊢[PRAAx] num 3 * (succ (var 0) * succ (var 0)) ≐
-          num 3 * (var 0 * var 0) + (num 6 * var 0 + num 3) by apply deriveNat; ipra_simps; ring)).eqTrans
+          num 3 * (var 0 * var 0) + (num 6 * var 0 + num 3) by ipra_ring)).eqTrans
         (pw_add (Γ := Δ) two (num 3 * (var 0 * var 0)) (num 6 * var 0 + num 3)))
       show Δ ⊢[PRAAx] le (pw two (succ (var 0)) * Sk (succ (var 0)) + pw two (num 3 * (succ (var 0) * succ (var 0))))
         (pw two (num 3 * (succ (var 0) * succ (var 0))) * pw two (succ (var 0)))

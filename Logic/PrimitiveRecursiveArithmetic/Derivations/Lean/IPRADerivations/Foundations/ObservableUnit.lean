@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.EigenvalueBound
 import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.Core.Fubini
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The unit identity gives a nonzero coordinate (`ipra_presentations_to_witnesses`, `thm:finite-observable-image`)
@@ -54,10 +55,7 @@ theorem sum_vanish {D x : PTm k} (h : Γ ⊢[PRAAx] exB β D x ≐ zero) :
   have e : Fm.shift (exB β D x ≐ zero) = (exB β (Syn.shift D) (Syn.shift x) ≐ zero) := by
     simp [Fm.shift, Syn.shift]
   rw [e] at h'
-  have z := natEq (ex_none β h'.wk
-    (Prf.hyp0 (Γ := Γ.map Fm.shift) (φ := lt (var 0) (Syn.shift D))))
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 (inst2 c (var 0) (Syn.shift x)) * z
+  ipra_lc 𝔞 (inst2 c (var 0) (Syn.shift x)) * natEq (ex_none β h'.wk (Prf.hyp0 (Γ := Γ.map Fm.shift) (φ := lt (var 0) (Syn.shift D))))
 
 variable (cp cn : PTm 2)
 
@@ -67,12 +65,8 @@ theorem unit_seed {D x : PTm k}
     Γ ⊢[PRAAx] lt (wit β D x) D ⋏ neg (inst2 β (wit β D x) x ≐ zero) := by
   refine .orE (ex_cases β D x) ?_ (ex_elim β Prf.hyp0)
   have hz : ((exB β D x ≐ zero) :: Γ) ⊢[PRAAx] exB β D x ≐ zero := Prf.hyp0
-  have sp := natEq (sum_vanish cp β hz)
-  have sn := natEq (sum_vanish cn β hz)
-  have e := natEq (h.wk (ψ := exB β D x ≐ zero))
   refine succ_ne_zero' (a := zero) _ ?_
-  apply deriveNat; ipra_simps
-  linear_combination sp - sn - e
+  ipra_lc natEq (sum_vanish cp β hz) - natEq (sum_vanish cn β hz) - natEq (h.wk (ψ := exB β D x ≐ zero))
 
 /-- The coordinate found by the search is positive. -/
 theorem unit_seed_pos {D x : PTm k}

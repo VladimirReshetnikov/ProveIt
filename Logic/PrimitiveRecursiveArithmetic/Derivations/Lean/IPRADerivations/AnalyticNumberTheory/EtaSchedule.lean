@@ -4,6 +4,7 @@ import IPRADerivations.AnalyticNumberTheory.PowerCleared
 import IPRADerivations.AnalyticNumberTheory.PhiLower
 import IPRADerivations.AnalyticNumberTheory.Valuation
 import IPRADerivations.DiophantineNumberTheory.CoprimeModulus
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The finite schedule of the eta certificate checker
@@ -54,13 +55,9 @@ theorem two_pos : Γ ⊢[PRAAx] (two : PTm n) ≐ succ (pred two) := congrSucc (
 
 theorem fs_step {h i : PTm n} (ih : Γ ⊢[PRAAx] le (fact h * pw h i) (fact (h + i))) :
     Γ ⊢[PRAAx] le (fact h * pw h (succ i)) (fact (h + succ i)) := by
-  have e1 := natEq (congrAp2 (Γ := Γ) factF (add_succ h i) (.eqRefl zero))
-  have e2 := natEq (fact_succ' (Γ := Γ) (h + i))
-  have e3 := natEq (eq_add_of_le ih)
-  have e4 := natEq (pw_succ (Γ := Γ) h i)
   refine le_of_eq_add (d := succ (h + i) * monus (fact (h + i)) (fact h * pw h i) + fact h * pw h i * succ i) ?_
-  apply deriveNat; ipra_simps
-  linear_combination e1 + e2 + (𝔞 h + 𝔞 i + 1) * e3 - 𝔞 (fact h) * e4
+  ipra_lc natEq (congrAp2 (Γ := Γ) factF (add_succ h i) (.eqRefl zero)) + natEq (fact_succ' (Γ := Γ) (h + i)) +
+    (𝔞 h + 𝔞 i + 1) * natEq (eq_add_of_le ih) - 𝔞 (fact h) * natEq (pw_succ (Γ := Γ) h i)
 
 /-- `h! h^i ≤ (h + i)!`. -/
 theorem fact_shift (h i : PTm n) : Γ ⊢[PRAAx] le (fact h * pw h i) (fact (h + i)) := by
@@ -68,11 +65,8 @@ theorem fact_shift (h i : PTm n) : Γ ⊢[PRAAx] le (fact h * pw h i) (fact (h +
     refine PRA.qfInd _ trivial ?_ ?_
     · simp only [subst_le, subst_ap2, PTm.subst_mul, PTm.subst_add, Syn.subst_var, Syn.inst_zero,
         Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      have e1 := natEq (pw_zero (Γ := Γ) h)
-      have e2 := natEq (congrAp2 (Γ := Γ) factF (add_zero h) (.eqRefl zero))
       refine le_of_eq_add (d := zero) ?_
-      apply deriveNat; ipra_simps
-      linear_combination e2 - 𝔞 (fact h) * e1
+      ipra_lc natEq (congrAp2 (Γ := Γ) factF (add_zero h) (.eqRefl zero)) - 𝔞 (fact h) * natEq (pw_zero (Γ := Γ) h)
     · simp only [subst_le, subst_ap2, PTm.subst_mul, PTm.subst_add, Syn.subst_var, Syn.repl_zero,
         subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
       let D : List (Fm PTm (n + 1)) :=
@@ -91,7 +85,7 @@ theorem first_term {D h q : PTm n} (hD : Γ ⊢[PRAAx] D ≐ succ (pred D)) (hh 
   have a1 : Γ ⊢[PRAAx] le (pw two q) (pw two (succ h)) :=
     PowerCleared.pw_le_exp two_pos (le_trans hq (le_succ_self h))
   have a2 : Γ ⊢[PRAAx] le (pw D (succ (two * h))) (pw D (two * succ h)) :=
-    PowerCleared.pw_le_exp hD (le_of_eq_add (d := one) (by apply deriveNat; ipra_simps; ring))
+    PowerCleared.pw_le_exp hD (le_of_eq_add (d := one) (by ipra_ring))
   have e3 : Γ ⊢[PRAAx] pw (two * (D * D)) (succ h) ≐ pw two (succ h) * pw D (two * succ h) :=
     (LocalFactor.pw_mul_base two (D * D) (succ h)).eqTrans
       (congrMul (.eqRefl _) (DiophantineNumberTheory.CoprimeModulus.pw_sq D (succ h)))
@@ -101,7 +95,7 @@ theorem first_term {D h q : PTm n} (hD : Γ ⊢[PRAAx] D ≐ succ (pred D)) (hh 
   have b3 : Γ ⊢[PRAAx] le (pw h (succ h)) (fact h * pw h (succ h)) :=
     le_of_eq_add (d := pred (fact h) * pw h (succ h))
       (by apply deriveNat; ipra_simps; linear_combination 𝔞 (pw h (succ h)) * fp)
-  have eh : Γ ⊢[PRAAx] h + succ h ≐ succ (two * h) := by apply deriveNat; ipra_simps; ring
+  have eh : Γ ⊢[PRAAx] h + succ h ≐ succ (two * h) := by ipra_ring
   have b4 := le_congr (.eqRefl _) (congrAp2 factF eh (.eqRefl zero)) (fact_shift h (succ h))
   exact le_trans b1 (le_trans b2 (le_trans b3 b4))
 
@@ -111,13 +105,11 @@ theorem tb_step {c D K i : PTm n} (hk : Γ ⊢[PRAAx] le (two * D) (succ (succ K
     (ih : Γ ⊢[PRAAx] le (pw two i * (c * pw D (succ K + i))) (fact (succ K + i))) :
     Γ ⊢[PRAAx] le (pw two (succ i) * (c * pw D (succ K + succ i))) (fact (succ K + succ i)) := by
   have hk' : Γ ⊢[PRAAx] le (two * D) (succ (succ K + i)) :=
-    le_trans hk (le_of_eq_add (d := i) (by apply deriveNat; ipra_simps; ring))
+    le_trans hk (le_of_eq_add (d := i) (by ipra_ring))
   have m := le_mul_mono ih hk'
   refine le_congr ?_ ?_ m
-  · have e1 := natEq (pw_succ (Γ := Γ) two i)
-    have e2 := natEq ((congrAp2 (Γ := Γ) powF (add_succ (succ K) i) (.eqRefl D)).eqTrans (pw_succ D (succ K + i)))
-    apply deriveNat; ipra_simps
-    linear_combination (-(𝔞 c * 𝔞 (pw D (succ K + succ i)))) * e1 - 2 * 𝔞 (pw two i) * 𝔞 c * e2
+  · ipra_lc (-(𝔞 c * 𝔞 (pw D (succ K + succ i)))) * natEq (pw_succ (Γ := Γ) two i) -
+      2 * 𝔞 (pw two i) * 𝔞 c * natEq ((congrAp2 (Γ := Γ) powF (add_succ (succ K) i) (.eqRefl D)).eqTrans (pw_succ D (succ K + i)))
   · exact ((congrAp2 factF (add_succ (succ K) i) (.eqRefl zero)).eqTrans (fact_succ' _)).eqSymm
 
 /-- If `c D^{K+1} ≤ (K+1)!` and `2D ≤ K + 2`, then `2^i c D^{K+1+i} ≤ (K+1+i)!` for every `i`. -/
@@ -129,11 +121,9 @@ theorem term_bound {c D K : PTm n} (hB : Γ ⊢[PRAAx] le (c * pw D (succ K)) (f
     refine PRA.qfInd _ trivial ?_ ?_
     · simp only [subst_le, subst_ap2, PTm.subst_mul, PTm.subst_add, Syn.subst_var, Syn.inst_zero,
         Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      have e1 := natEq (pw_zero (Γ := Γ) (two : PTm n))
-      have e2 := natEq (congrAp2 (Γ := Γ) powF (add_zero (succ K)) (.eqRefl D))
       refine le_congr ?_ (congrAp2 factF (add_zero (succ K)) (.eqRefl zero)).eqSymm hB
-      apply deriveNat; ipra_simps
-      linear_combination (-(𝔞 c * 𝔞 (pw D (succ K + zero)))) * e1 - 𝔞 c * e2
+      ipra_lc (-(𝔞 c * 𝔞 (pw D (succ K + zero)))) * natEq (pw_zero (Γ := Γ) (two : PTm n)) -
+        𝔞 c * natEq (congrAp2 (Γ := Γ) powF (add_zero (succ K)) (.eqRefl D))
     · simp only [subst_le, subst_ap2, PTm.subst_mul, PTm.subst_add, Syn.subst_var, Syn.repl_zero,
         subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
       let Δ : List (Fm PTm (n + 1)) := le (pw two (var 0) * (Syn.shift c * pw (Syn.shift D) (succ (Syn.shift K) + var 0)))
@@ -182,19 +172,14 @@ abbrev TI (c K D T : PTm n) : Fm PTm n :=
 theorem ti_step {c K D T : PTm n}
     (tb : Γ ⊢[PRAAx] le (pw two T * (two * c * pw D (succ K + T))) (fact (succ K + T)))
     (ih : Γ ⊢[PRAAx] TI c K D T) : Γ ⊢[PRAAx] TI c K D (succ T) := by
-  have sa : Γ ⊢[PRAAx] succ K + T ≐ succ (K + T) := by apply deriveNat; ipra_simps; ring
-  have E1 := natEq (eq_add_of_le ih)
-  have E2 := natEq (eq_add_of_le tb)
-  have E3 := natEq (A_succ (Γ := Γ) T K D)
-  have E4 := natEq ((congrAp2 (Γ := Γ) factF (add_succ K T) (.eqRefl zero)).eqTrans (fact_succ' (K + T)))
-  have E5 := natEq ((congrAp2 (Γ := Γ) factF sa (.eqRefl zero)).eqTrans (fact_succ' (K + T)))
-  have E6 := natEq (pw_succ (Γ := Γ) two T)
-  have E7 := natEq (congrAp2 (Γ := Γ) powF sa (.eqRefl D))
+  have sa : Γ ⊢[PRAAx] succ K + T ≐ succ (K + T) := by ipra_ring
   refine le_of_eq_add (d := monus (fact (succ K + T)) (pw two T * (two * c * pw D (succ K + T))) +
     two * succ (K + T) * monus (pw two T * fact (K + T)) (c * pw two T * Av T K D + fact (K + T))) ?_
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞 (fact (K + succ T)) - 𝔞 c * 𝔞 (Av (succ T) K D)) * E6 + (2 * 𝔞 (pw two T) - 1) * E4
-    - 2 * 𝔞 (pw two T) * 𝔞 c * E3 + 2 * (𝔞 K + 𝔞 T + 1) * E1 - E5 + E2 + 2 * 𝔞 c * 𝔞 (pw two T) * E7
+  ipra_lc (𝔞 (fact (K + succ T)) - 𝔞 c * 𝔞 (Av (succ T) K D)) * natEq (pw_succ (Γ := Γ) two T) +
+    (2 * 𝔞 (pw two T) - 1) * natEq ((congrAp2 (Γ := Γ) factF (add_succ K T) (.eqRefl zero)).eqTrans (fact_succ' (K + T))) -
+    2 * 𝔞 (pw two T) * 𝔞 c * natEq (A_succ (Γ := Γ) T K D) + 2 * (𝔞 K + 𝔞 T + 1) * natEq (eq_add_of_le ih) -
+    natEq ((congrAp2 (Γ := Γ) factF sa (.eqRefl zero)).eqTrans (fact_succ' (K + T))) + natEq (eq_add_of_le tb) +
+    2 * 𝔞 c * 𝔞 (pw two T) * natEq (congrAp2 (Γ := Γ) powF sa (.eqRefl D))
 
 /-- If `2c D^{K+1} ≤ (K+1)!` and `2D ≤ K + 2`, the tail invariant holds for every `T`. -/
 theorem tail_inv {c K D : PTm n} (hB : Γ ⊢[PRAAx] le (two * c * pw D (succ K)) (fact (succ K)))
@@ -203,11 +188,9 @@ theorem tail_inv {c K D : PTm n} (hB : Γ ⊢[PRAAx] le (two * c * pw D (succ K)
     refine PRA.qfInd _ trivial ?_ ?_
     · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_mul, PTm.subst_add, Syn.subst_var, Syn.inst_zero,
         Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      have e1 := natEq (pw_zero (Γ := Γ) (two : PTm n))
-      have e2 := natEq (A_zero (Γ := Γ) K D)
       refine le_of_eq_add (d := zero) ?_
-      apply deriveNat; ipra_simps
-      linear_combination 𝔞 (fact (K + zero)) * e1 - 𝔞 c * 𝔞 (pw two zero) * e2
+      ipra_lc 𝔞 (fact (K + zero)) * natEq (pw_zero (Γ := Γ) (two : PTm n)) -
+        𝔞 c * 𝔞 (pw two zero) * natEq (A_zero (Γ := Γ) K D)
     · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_mul, PTm.subst_add, Syn.subst_var, Syn.repl_zero,
         subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
       let Δ : List (Fm PTm (n + 1)) := TI (Syn.shift c) (Syn.shift K) (Syn.shift D) (var 0) :: Γ.map Fm.shift
@@ -239,7 +222,7 @@ theorem taylor_tail {D h p : PTm n} (hD : Γ ⊢[PRAAx] D ≐ succ (pred D)) (hh
   have dd : Γ ⊢[PRAAx] le (two * D) (two * (D * D)) :=
     le_of_eq_add (d := two * (D * pred D)) (by apply deriveNat; ipra_simps; linear_combination 2 * 𝔞 D * fp)
   have hk : Γ ⊢[PRAAx] le (two * D) (succ (succ (two * h))) :=
-    le_trans dd (le_trans hh (le_of_eq_add (d := h + two) (by apply deriveNat; ipra_simps; ring)))
+    le_trans dd (le_trans hh (le_of_eq_add (d := h + two) (by ipra_ring)))
   exact tail_inv hB hk T
 
 /-! ## The error budget of the schedule -/
@@ -248,24 +231,18 @@ theorem taylor_tail {D h p : PTm n} (hD : Γ ⊢[PRAAx] D ≐ succ (pred D)) (hh
 theorem tail_schedule (M k : PTm n) :
     Γ ⊢[PRAAx] two * (num 8 * (M * M) * (pw two k * pw two k)) ≐
       (num 4 * M * pw two k) * (num 4 * M * pw two k) := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- The per-term budget `p = k + L + 4` with `N ≤ 2^L`: `4N 2^k < 2^p`, i.e. `2^{−p} < ε/(4N)` for `ε = 2^{−k}`. -/
 theorem term_schedule {N L : PTm n} (hN : Γ ⊢[PRAAx] le N (pw two L)) (k : PTm n) :
     Γ ⊢[PRAAx] lt (num 4 * N * pw two k) (pw two (succ (succ (succ (succ (k + L)))))) := by
-  have X := natEq (pw_pos' (Γ := Γ) two_pos k)
-  have Y := natEq (pw_pos' (Γ := Γ) two_pos L)
-  have s := natEq (eq_add_of_le hN)
-  have a := natEq (pw_add (Γ := Γ) two k L)
-  have p1 := natEq (pw_succ (Γ := Γ) two (succ (succ (succ (k + L)))))
-  have p2 := natEq (pw_succ (Γ := Γ) two (succ (succ (k + L))))
-  have p3 := natEq (pw_succ (Γ := Γ) two (succ (k + L)))
-  have p4 := natEq (pw_succ (Γ := Γ) two (k + L))
   refine le_of_eq_add (d := num 4 * pw two k * monus (pw two L) N + num 12 * (pred (pw two k) * pred (pw two L)) +
     num 12 * pred (pw two k) + num 12 * pred (pw two L) + num 11) ?_
-  apply deriveNat; ipra_simps
-  linear_combination p1 + 2 * p2 + 4 * p3 + 8 * p4 + 16 * a + 4 * 𝔞 (pw two k) * s + 12 * 𝔞 (pw two L) * X +
-    12 * (𝔞 (pred (pw two k)) + 1) * Y
+  ipra_lc natEq (pw_succ (Γ := Γ) two (succ (succ (succ (k + L))))) +
+    2 * natEq (pw_succ (Γ := Γ) two (succ (succ (k + L)))) + 4 * natEq (pw_succ (Γ := Γ) two (succ (k + L))) +
+    8 * natEq (pw_succ (Γ := Γ) two (k + L)) + 16 * natEq (pw_add (Γ := Γ) two k L) +
+    4 * 𝔞 (pw two k) * natEq (eq_add_of_le hN) + 12 * 𝔞 (pw two L) * natEq (pw_pos' (Γ := Γ) two_pos k) +
+    12 * (𝔞 (pred (pw two k)) + 1) * natEq (pw_pos' (Γ := Γ) two_pos L)
 
 /-- The perturbation budget `h = p + L + 2(D+1) + 4` with `1 ≤ M ≤ 2^L`: `3^{D+1} M 2^{p+4} < 2^h`, i.e.
 `3^{D+1} M 2^{−h} < 2^{−p−4}`. -/
@@ -273,39 +250,26 @@ theorem perturb_schedule {M L : PTm n} (hM : Γ ⊢[PRAAx] le M (pw two L)) (p D
     Γ ⊢[PRAAx] lt (pw (succ two) (succ D) * M * pw two (succ (succ (succ (succ p)))))
       (pw two (succ (succ (succ (succ (p + L + two * succ D)))))) := by
   have t3 : Γ ⊢[PRAAx] le (pw (succ two) D) (pw (two * two) D) :=
-    pw_le_pw D (le_of_eq_add (d := one) (by apply deriveNat; ipra_simps; ring))
-  have pB := natEq (pw_pos' (Γ := Γ) (Combinatorics.Binomial.pos_mul two_pos two_pos) D)
-  have pY := natEq (pw_pos' (Γ := Γ) two_pos L)
-  have pW := natEq (pw_pos' (Γ := Γ) two_pos p)
-  have ue := natEq (eq_add_of_le t3)
-  have ve := natEq (eq_add_of_le hM)
-  have c3 := natEq (pw_succ (Γ := Γ) (succ two) D)
-  have c4 := natEq (pw_succ (Γ := Γ) (two * two) D)
-  have sq := natEq (DiophantineNumberTheory.CoprimeModulus.pw_sq (Γ := Γ) two (succ D))
-  have ad1 := natEq (pw_add (Γ := Γ) two (p + L) (two * succ D))
-  have ad2 := natEq (pw_add (Γ := Γ) two p L)
-  have w1 := natEq (pw_succ (Γ := Γ) two (succ (succ (succ p))))
-  have w2 := natEq (pw_succ (Γ := Γ) two (succ (succ p)))
-  have w3 := natEq (pw_succ (Γ := Γ) two (succ p))
-  have w4 := natEq (pw_succ (Γ := Γ) two p)
-  have e1 := natEq (pw_succ (Γ := Γ) two (succ (succ (succ (p + L + two * succ D)))))
-  have e2 := natEq (pw_succ (Γ := Γ) two (succ (succ (p + L + two * succ D))))
-  have e3 := natEq (pw_succ (Γ := Γ) two (succ (p + L + two * succ D)))
-  have e4 := natEq (pw_succ (Γ := Γ) two (p + L + two * succ D))
+    pw_le_pw D (le_of_eq_add (d := one) (by ipra_ring))
   refine le_of_eq_add (d := num 48 * pw two p * (M * monus (pw (two * two) D) (pw (succ two) D) +
       monus (pw two L) M * pw (succ two) D + monus (pw two L) M * monus (pw (two * two) D) (pw (succ two) D)) +
     num 16 * (pred (pw two p) * pred (pw two L) * pred (pw (two * two) D) + pred (pw two p) * pred (pw two L) +
       pred (pw two p) * pred (pw (two * two) D) + pred (pw two L) * pred (pw (two * two) D) + pred (pw two p) +
       pred (pw two L) + pred (pw (two * two) D)) + num 15) ?_
-  apply deriveNat; ipra_simps
-  linear_combination e1 + 2 * e2 + 4 * e3 + 8 * e4 + 16 * ad1 + 16 * 𝔞 (pw two (two * succ D)) * ad2
-    - 16 * 𝔞 (pw two p) * 𝔞 (pw two L) * sq + 16 * 𝔞 (pw two p) * 𝔞 (pw two L) * c4
-    - 3 * 𝔞 (pw (succ two) D) * 𝔞 M * (w1 + 2 * w2 + 4 * w3 + 8 * w4)
-    - 𝔞 M * 𝔞 (pw two (succ (succ (succ (succ p))))) * c3
-    + 48 * 𝔞 (pw two p) * 𝔞 (pw (two * two) D) * ve
-    + 48 * 𝔞 (pw two p) * (𝔞 M + 𝔞 (monus (pw two L) M)) * ue
-    + 16 * 𝔞 (pw two L) * 𝔞 (pw (two * two) D) * pW
-    + 16 * (𝔞 (pred (pw two p)) + 1) * 𝔞 (pw (two * two) D) * pY
-    + 16 * (𝔞 (pred (pw two p)) + 1) * (𝔞 (pred (pw two L)) + 1) * pB
+  ipra_lc natEq (pw_succ (Γ := Γ) two (succ (succ (succ (p + L + two * succ D))))) +
+    2 * natEq (pw_succ (Γ := Γ) two (succ (succ (p + L + two * succ D)))) +
+    4 * natEq (pw_succ (Γ := Γ) two (succ (p + L + two * succ D))) +
+    8 * natEq (pw_succ (Γ := Γ) two (p + L + two * succ D)) +
+    16 * natEq (pw_add (Γ := Γ) two (p + L) (two * succ D)) +
+    16 * 𝔞 (pw two (two * succ D)) * natEq (pw_add (Γ := Γ) two p L) -
+    16 * 𝔞 (pw two p) * 𝔞 (pw two L) * natEq (DiophantineNumberTheory.CoprimeModulus.pw_sq (Γ := Γ) two (succ D)) +
+    16 * 𝔞 (pw two p) * 𝔞 (pw two L) * natEq (pw_succ (Γ := Γ) (two * two) D) -
+    3 * 𝔞 (pw (succ two) D) * 𝔞 M * (natEq (pw_succ (Γ := Γ) two (succ (succ (succ p)))) + 2 * natEq (pw_succ (Γ := Γ) two (succ (succ p))) + 4 * natEq (pw_succ (Γ := Γ) two (succ p)) + 8 * natEq (pw_succ (Γ := Γ) two p)) -
+    𝔞 M * 𝔞 (pw two (succ (succ (succ (succ p))))) * natEq (pw_succ (Γ := Γ) (succ two) D) +
+    48 * 𝔞 (pw two p) * 𝔞 (pw (two * two) D) * natEq (eq_add_of_le hM) +
+    48 * 𝔞 (pw two p) * (𝔞 M + 𝔞 (monus (pw two L) M)) * natEq (eq_add_of_le t3) +
+    16 * 𝔞 (pw two L) * 𝔞 (pw (two * two) D) * natEq (pw_pos' (Γ := Γ) two_pos p) +
+    16 * (𝔞 (pred (pw two p)) + 1) * 𝔞 (pw (two * two) D) * natEq (pw_pos' (Γ := Γ) two_pos L) +
+    16 * (𝔞 (pred (pw two p)) + 1) * (𝔞 (pred (pw two L)) + 1) * natEq (pw_pos' (Γ := Γ) (Combinatorics.Binomial.pos_mul two_pos two_pos) D)
 
 end LeanProofs.IPRA.AnalyticNumberTheory.EtaSchedule

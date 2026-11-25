@@ -76,7 +76,7 @@ theorem root_lipschitz {X X' Y Z q₀ : PTm n}
     (hZY : Γ ⊢[PRAAx] le Z Y) : Γ ⊢[PRAAx] le (X' + Y) (X + Z) := by
   have a := natEq e1; have b := natEq e2
   have hq : Γ ⊢[PRAAx] succ q₀ * succ q₀ ≐ succ (q₀ * q₀ + two * q₀) := by
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   refine mul_le_cancel (d' := q₀ * q₀ + two * q₀)
     (le_congr (congrMul hq (.eqRefl _)) (congrMul hq (.eqRefl _)) ?_)
   ipra_le sl hZY * (𝔞 Y * 𝔞 Y + 𝔞 Y * 𝔞 Z + 𝔞 Z * 𝔞 Z) with b - a

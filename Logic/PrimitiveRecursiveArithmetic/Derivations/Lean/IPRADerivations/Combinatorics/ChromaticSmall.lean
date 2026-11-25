@@ -1,4 +1,5 @@
 import IPRADerivations.Combinatorics.IsingChain
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Chromatic polynomials of trees, cycles and small complete graphs
@@ -46,31 +47,26 @@ def sg : ℕ → ZT n
 local macro "csimp" loc:(Lean.Parser.Tactic.location)? : tactic =>
   `(tactic| simp only [toZ_pwr, ZT.toZ_add, ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_neg, ZT.toZ_natLit, Nat.cast_ofNat,
     Nat.cast_zero, Nat.cast_one] $[$loc]?)
+attribute [local ipra_defs] toZ_pwr
 
 /-- A pendant edge: `q P_T − P_T = (q − 1) P_T` for `P_T = q (q − 1)^N`. -/
 theorem chromatic_tree_step (q : ZT n) (N : ℕ) :
     Γ ⊢[PRAAx] ZT.eq (q * (q * pwr (q - ZT.natLit 1) N) - q * pwr (q - ZT.natLit 1) N)
       (q * pwr (q - ZT.natLit 1) (N + 1)) := by
-  apply ZT.derive
-  csimp
-  ring
+  ipra_lc
 
 /-- `P(K₃) = P(P₃) − P(K₂)`. -/
 theorem chromatic_triangle (q : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (q * (q - ZT.natLit 1) * (q - ZT.natLit 1) - q * (q - ZT.natLit 1))
       (q * (q - ZT.natLit 1) * (q - ZT.natLit 2)) := by
-  apply ZT.derive
-  csimp
-  ring
+  ipra_lc
 
 /-- `P(K₄) = P(K₄ − e) − P(K₃)`. -/
 theorem chromatic_K4 (q : ZT n) :
     Γ ⊢[PRAAx] ZT.eq
       (q * (q - ZT.natLit 1) * (q - ZT.natLit 2) * (q - ZT.natLit 2) - q * (q - ZT.natLit 1) * (q - ZT.natLit 2))
       (q * (q - ZT.natLit 1) * (q - ZT.natLit 2) * (q - ZT.natLit 3)) := by
-  apply ZT.derive
-  csimp
-  ring
+  ipra_lc
 
 /-- `P(C_{N+3}) = (q − 1)^{N+3} + (−1)^{N+3} (q − 1)`. -/
 theorem chromatic_cycle (q : ZT n) (N : ℕ) :
@@ -96,15 +92,9 @@ theorem neg_two_pow (N : ℕ) :
     Γ ⊢[PRAAx] ZT.eq (pwr (-(ZT.natLit 1 : ZT n)) N * pwr (-(ZT.natLit 2)) N) (pwr (ZT.natLit 2) N) := by
   induction N with
   | zero =>
-    apply ZT.derive
-    csimp
-    ring
+    ipra_lc
   | succ N ih =>
-    have e := ZT.toZ_eq ih
-    csimp at e
-    apply ZT.derive
-    csimp
-    linear_combination 2 * e
+    ipra_lc 2 * ZT.toZ_eq ih
 
 /-- A tree with `N` edges has `2^N` acyclic orientations: `(−1)^{N+1} P(−1) = 2^N`. -/
 theorem stanley_tree (N : ℕ) :
@@ -131,8 +121,6 @@ theorem stanley_cycle (N : ℕ) :
   have sq : ((-1 : Groth (Q Γ)) ^ (N + 3)) * ((-1) ^ (N + 3)) = 1 := by
     rw [← _root_.mul_pow]
     norm_num
-  apply ZT.derive
-  csimp
-  linear_combination e - 2 * sq
+  ipra_lc e - 2 * sq
 
 end LeanProofs.IPRA.Combinatorics.ChromaticSmall

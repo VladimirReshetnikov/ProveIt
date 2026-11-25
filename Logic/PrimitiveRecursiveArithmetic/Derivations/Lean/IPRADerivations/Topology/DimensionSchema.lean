@@ -1,6 +1,7 @@
 import IPRADerivations.Topology.DimensionRational
 import IPRADerivations.Topology.CollisionScales
 import IPRADerivations.DiophantineNumberTheory.FLTMultiples
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The arithmetic dimension schema (`dimension_invariance_ipra`, `thm:schema`)
@@ -81,27 +82,16 @@ theorem small_arith {G RR K T F P2p P2k1 P2kp w c r : PTm n} (d' : ℕ)
   have h1 : Γ ⊢[PRAAx] le (K * G) (two * RR) := by
     refine .orE (lt_or_le (two * RR) (K * G)) ?_ Prf.hyp0
     let Δ : List (Fm PTm n) := lt (two * RR) (K * G) :: Γ
-    have eU := natEq (Γ := Δ) hU.wk
-    have ep := natEq (Γ := Δ) hp.wk
-    have ek1 := natEq (Γ := Δ) hk1.wk
-    have ekp := natEq (Γ := Δ) hkp.wk
-    have ez := natEq (eq_add_of_le (Γ := Δ) Prf.hyp0)
-    have eκ := natEq (Γ := Δ) hKpos.wk
     refine .botE _ (succ_ne_zero (a := pred K + pred K + one + two * K * monus (K * G) (succ (two * RR)) + w) ?_)
-    apply deriveNat; ipra_simps
-    linear_combination -(eU - 𝔞 RR * ep - 𝔞 RR * ek1 + 𝔞 G * ekp) - (2 * 𝔞 K) * ez - 2 * eκ
+    ipra_lc -(natEq (Γ := Δ) hU.wk - 𝔞 RR * natEq (Γ := Δ) hp.wk - 𝔞 RR * natEq (Γ := Δ) hk1.wk + 𝔞 G * natEq (Γ := Δ) hkp.wk) -
+      (2 * 𝔞 K) * natEq (eq_add_of_le (Γ := Δ) Prf.hyp0) - 2 * natEq (Γ := Δ) hKpos.wk
   -- step 2: `D · 2T · G < RR`
   refine .orE (lt_or_le (num (d' + 1) * (T * two) * G) RR) Prf.hyp0 ?_
   let Δ : List (Fm PTm n) := le RR (num (d' + 1) * (T * two) * G) :: Γ
-  have e1 := natEq (eq_add_of_le (Γ := Δ) Prf.hyp0)
-  have e2 := natEq (eq_add_of_le (Γ := Δ) h1.wk)
-  have eK := natEq (Γ := Δ) hK.wk
-  have eF := natEq (Γ := Δ) hF.wk
-  have e3 := natEq (Γ := Δ) hRR.wk
   refine .botE _ (succ_ne_zero (a := num 6 * r + num 8 * monus (num (d' + 1) * (T * two) * G) RR +
     num 16 * T * c * G + monus (two * RR) (K * G) + num 5) ?_)
-  apply deriveNat; ipra_simps; push_cast at *
-  linear_combination -e2 - 𝔞 G * eK - (16 * 𝔞 T * 𝔞 G) * eF - 8 * e1 - 6 * e3
+  ipra_lc -natEq (eq_add_of_le (Γ := Δ) h1.wk) - 𝔞 G * natEq (Γ := Δ) hK.wk -
+    (16 * 𝔞 T * 𝔞 G) * natEq (Γ := Δ) hF.wk - 8 * natEq (eq_add_of_le (Γ := Δ) Prf.hyp0) - 6 * natEq (Γ := Δ) hRR.wk
 
 /-- `G/RR < 2^{−a−1}` gives `G/RR + 2^{1−p} < 2^{−a}` for `p = a + d' + 5`:
 `2^{a+p} G + 2^{a+1} RR < 2^p RR`. -/
@@ -127,12 +117,8 @@ theorem sep_arith {G RR T F E P2p P2ap P2a1 e c : PTm n} (d' : ℕ)
 /-- `2 · (N N) ≤ N N` is impossible for `N ≥ 1`. -/
 theorem double_absurd {N X : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) (hX : Γ ⊢[PRAAx] X ≐ N * N)
     (h : Γ ⊢[PRAAx] le (two * X) X) : Γ ⊢[PRAAx] Fm.bot := by
-  have e := natEq (eq_add_of_le h)
-  have eX := natEq hX
-  have eN := natEq hN
   refine succ_ne_zero (a := pred N * pred N + two * pred N + monus X (two * X)) ?_
-  apply deriveNat; ipra_simps
-  linear_combination -e - eX - (𝔞 N + 𝔞 (pred N) + 1) * eN
+  ipra_lc -natEq (eq_add_of_le h) - natEq hX - (𝔞 N + 𝔞 (pred N) + 1) * natEq hN
 
 end Arith
 
@@ -383,9 +369,9 @@ theorem vert_close {Γ : List (Fm PTm n)} {N Mx My : PTm n} (hx : Γ ⊢[PRAAx] 
     cases s <;> cases t
     · exact le_congr ((congrAdd (monus_self _) (monus_self _)).eqTrans (add_zero _)).eqSymm (.eqRefl _) (zero_le _)
     · refine le_congr (dist_comm _ _) (.eqRefl _) (le_congr (dist_of_add ?_).eqSymm (.eqRefl _) (le_refl _))
-      apply deriveNat; simp only [bump]; ipra_simps; ring
+      ipra_lc [bump]
     · refine le_congr (dist_of_add ?_).eqSymm (.eqRefl _) (le_refl _)
-      apply deriveNat; simp only [bump]; ipra_simps; ring
+      ipra_lc [bump]
     · exact le_congr ((congrAdd (monus_self _) (monus_self _)).eqTrans (add_zero _)).eqSymm (.eqRefl _) (zero_le _)
   have hd' := le_congr (congrDist (congrMul (.eqRefl _) hy.eqSymm) (congrMul (.eqRefl _) hx.eqSymm)) (.eqRefl _) hd
   have hm : Γ ⊢[PRAAx] le (N * dist (bump s z * My) (bump t z * Mx)) (N * N) := le_mul_mono_left N hd'
@@ -394,8 +380,7 @@ theorem vert_close {Γ : List (Fm PTm n)} {N Mx My : PTm n} (hx : Γ ⊢[PRAAx] 
     le_mul_mono_left {Δ : List (Fm PTm n)} (c : PTm n) {p q : PTm n} (h : Δ ⊢[PRAAx] le p q) :
         Δ ⊢[PRAAx] le (c * p) (c * q) := by
       refine le_of_eq_add (d := c * monus q p) ?_
-      have e := natEq (eq_add_of_le h)
-      apply deriveNat; ipra_simps; linear_combination 𝔞 c * e
+      ipra_lc 𝔞 c * natEq (eq_add_of_le h)
 
 /-- `2^{d'+4} = 2^{d'} · 16`. -/
 theorem pw16 {Γ : List (Fm PTm n)} (d' : ℕ) :
@@ -499,7 +484,7 @@ theorem sep_from_I {Γ : List (Fm PTm n)} {a u v : PTm n} {g : ℕ} (hg : g ≤ 
       refine (congrDist (congrMul (hext _ h0) (hext _ (den_eq d' μ hv)))
         (congrMul ((hext _ hN).eqTrans (fst_pair _ _)) (hext _ (den_eq d' μ hu)))).eqTrans ?_
       refine (dist_comm _ _).eqTrans (dist_of_add ?_)
-      apply deriveNat; ipra_simps; ring
+      ipra_ring
     have hle : Δ' ⊢[PRAAx] le (two * (pw two (Syn.subst ![kOf d' a] μ) * pw two (Syn.subst ![kOf d' a] μ)))
         (pw two (Syn.subst ![kOf d' a] μ) * pw two (Syn.subst ![kOf d' a] μ)) :=
       le_congr (congrMul (pw_one two) hNN) (congrMul (hext _ (den_eq d' μ hu)) (hext _ (den_eq d' μ hv))) hq

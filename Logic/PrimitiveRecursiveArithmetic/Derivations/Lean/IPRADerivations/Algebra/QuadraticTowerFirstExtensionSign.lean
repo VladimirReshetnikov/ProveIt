@@ -1,5 +1,6 @@
 import IPRADerivations.Algebra.QuadraticRationalSignDispatch
 import IPRADerivations.Algebra.QuadraticTowerSignEmbedding
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Correctness of the actual first-extension sign-table query
@@ -48,11 +49,9 @@ theorem ground_product_head (B D A C : PTm n) (ha : Γ ⊢[PRAAx] arrayHeight ze
     (QuadraticTowerCoefficients.singleton_entry _)
 
 theorem scalar_tag_congr {q r : PTm n} (h : Γ ⊢[PRAAx] q ≐ r) : Γ ⊢[PRAAx] scalarTag q ≐ scalarTag r := by
-  simpa [QuadraticRationalSignDispatch.subst_scalarTag] using Prf.eqCongr (scalarTag (var 0) : PTm 1)
-    (σ := ![q]) (σ' := ![r]) (fun i => by fin_cases i; exact h)
+  ipra_congr (scalarTag (var 0) : PTm 1) with [h]
 theorem zero_test_congr {q r : PTm n} (h : Γ ⊢[PRAAx] q ≐ r) : Γ ⊢[PRAAx] eqb q zero ≐ eqb r zero := by
-  simpa using Prf.eqCongr (eqb (var 0) zero : PTm 1)
-    (σ := ![q]) (σ' := ![r]) (fun i => by fin_cases i; exact h)
+  ipra_congr (eqb (var 0) zero : PTm 1) with [h]
 
 theorem norm_pair (d a b : PTm n) : Γ ⊢[PRAAx]
     QuadraticRationalSignDispatch.norm d (pairT a b) ≐

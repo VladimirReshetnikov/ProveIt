@@ -1,4 +1,5 @@
 import IPRADerivations.Core.IntCancel
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Power of a point (`docs/proofs/geometry/mollweide_circle_ipra`, Section 7–8)
@@ -53,9 +54,7 @@ variable (Px Py Ox Oy ρ Vx Vy : ZT n)
 /-- `lem:line-power`. -/
 theorem line_power (t : ZT n) : Γ ⊢[PRAAx] ZT.eq (pow (Px + t * Vx) (Py + t * Vy) Ox Oy ρ)
     (pow Px Py Ox Oy ρ + ZT.natLit 2 * hh Px Py Ox Oy Vx Vy * t + qq Vx Vy * (t * t)) := by
-  apply ZT.derive
-  simp only [toZ_pow, toZ_hh, toZ_qq, ZT.toZ_add, ZT.toZ_mul, ZT.toZ_natLit]
-  push_cast; ring
+  ipra_lc [toZ_pow, toZ_hh, toZ_qq]
 
 variable {Px Py Ox Oy ρ Vx Vy}
 
@@ -65,50 +64,30 @@ theorem signed_power {u w : ZT n}
     (hw : Γ ⊢[PRAAx] ZT.eq (pow (Px + w * Vx) (Py + w * Vy) Ox Oy ρ) (ZT.natLit 0))
     (huw : Γ ⊢[PRAAx] neg (ZT.eq u w)) :
     Γ ⊢[PRAAx] ZT.eq (pow Px Py Ox Oy ρ) (qq Vx Vy * u * w) := by
-  have e₁ := ZT.toZ_eq hu
-  have e₂ := ZT.toZ_eq hw
-  have l₁ := ZT.toZ_eq (line_power (Γ := Γ) Px Py Ox Oy ρ Vx Vy u)
-  have l₂ := ZT.toZ_eq (line_power (Γ := Γ) Px Py Ox Oy ρ Vx Vy w)
   -- `(u − w)(2h + q(u + w)) = 0`.
   have hK := zt_mul_cancel_sub (K := ZT.natLit 2 * hh Px Py Ox Oy Vx Vy + qq Vx Vy * (u + w)) huw (by
-    apply ZT.derive
-    simp only [ZT.toZ_add, ZT.toZ_mul, ZT.toZ_sub, ZT.toZ_natLit] at e₁ e₂ l₁ l₂ ⊢
-    push_cast at e₁ e₂ l₁ l₂ ⊢
-    linear_combination e₁ - e₂ - l₁ + l₂)
-  have k := ZT.toZ_eq hK
-  apply ZT.derive
-  simp only [ZT.toZ_add, ZT.toZ_mul, ZT.toZ_natLit] at e₁ l₁ k ⊢
-  push_cast at e₁ l₁ k ⊢
-  linear_combination e₁ - l₁ - ZT.toZ Γ u * k
+    ipra_lc ZT.toZ_eq hu - ZT.toZ_eq hw - ZT.toZ_eq (line_power (Γ := Γ) Px Py Ox Oy ρ Vx Vy u) +
+      ZT.toZ_eq (line_power (Γ := Γ) Px Py Ox Oy ρ Vx Vy w))
+  ipra_lc ZT.toZ_eq hu - ZT.toZ_eq (line_power (Γ := Γ) Px Py Ox Oy ρ Vx Vy u) - ZT.toZ Γ u * ZT.toZ_eq hK
 
 /-- At a tangency, `Pow(P) = q τ²`. -/
 theorem tangent_power {τ : ZT n}
     (hτ : Γ ⊢[PRAAx] ZT.eq (pow (Px + τ * Vx) (Py + τ * Vy) Ox Oy ρ) (ZT.natLit 0))
     (htan : Γ ⊢[PRAAx] ZT.eq (hh Px Py Ox Oy Vx Vy + qq Vx Vy * τ) (ZT.natLit 0)) :
     Γ ⊢[PRAAx] ZT.eq (pow Px Py Ox Oy ρ) (qq Vx Vy * (τ * τ)) := by
-  have e₁ := ZT.toZ_eq hτ
-  have l₁ := ZT.toZ_eq (line_power (Γ := Γ) Px Py Ox Oy ρ Vx Vy τ)
-  have k := ZT.toZ_eq htan
-  apply ZT.derive
-  simp only [ZT.toZ_add, ZT.toZ_mul, ZT.toZ_natLit] at e₁ l₁ k ⊢
-  push_cast at e₁ l₁ k ⊢
-  linear_combination e₁ - l₁ - 2 * ZT.toZ Γ τ * k
+  ipra_lc ZT.toZ_eq hτ - ZT.toZ_eq (line_power (Γ := Γ) Px Py Ox Oy ρ Vx Vy τ) - 2 * ZT.toZ Γ τ * ZT.toZ_eq htan
 
 /-- `lem:secant-factor`, (7.6): with `f(t) = p + 2ht + qt²`, `w f(u) − u f(w) = (w − u)(p − q u w)`. -/
 theorem secant_factor (p h q u w : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (w * (p + ZT.natLit 2 * h * u + q * (u * u)) - u * (p + ZT.natLit 2 * h * w + q * (w * w)))
       ((w - u) * (p - q * u * w)) := by
-  apply ZT.derive
-  simp only [ZT.toZ_add, ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_natLit]
-  push_cast; ring
+  ipra_lc
 
 /-- `lem:tangent-power`, the second equality of (7.9): for the touching point `T = P + τV`,
 `|P − T|² = |τV|² = q τ²`. -/
 theorem tangent_length (Vx Vy τ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (qq (τ * Vx) (τ * Vy)) (qq Vx Vy * (τ * τ)) := by
-  apply ZT.derive
-  simp only [toZ_qq, ZT.toZ_mul]
-  ring
+  ipra_lc [toZ_qq]
 
 /-! ## Lengths: the order/sign readings of `thm:power-final` -/
 
@@ -118,12 +97,12 @@ abbrev zab (u : ZT n) : PTm n := PTm.monus u.pos u.neg + PTm.monus u.neg u.pos
 theorem zab_nonneg {u : ZT n} (h : Γ ⊢[PRAAx] le u.neg u.pos) : Γ ⊢[PRAAx] ZT.eq (ZT.ofNat (zab u)) u := by
   have e := natEq (eq_add_of_le h); have z := natEq h
   show Γ ⊢[PRAAx] zab u + u.neg ≐ u.pos + ConciseIPRA.PTm.zero
-  apply deriveNat; ipra_simps; linear_combination z - e
+  ipra_lc z - e
 
 theorem zab_nonpos {u : ZT n} (h : Γ ⊢[PRAAx] le u.pos u.neg) : Γ ⊢[PRAAx] ZT.eq (ZT.ofNat (zab u)) (-u) := by
   have e := natEq (eq_add_of_le h); have z := natEq h
   show Γ ⊢[PRAAx] zab u + u.pos ≐ u.neg + ConciseIPRA.PTm.zero
-  apply deriveNat; ipra_simps; linear_combination z - e
+  ipra_lc z - e
 
 variable {u w : ZT n}
   (hu : Γ ⊢[PRAAx] ZT.eq (pow (Px + u * Vx) (Py + u * Vy) Ox Oy ρ) (ZT.natLit 0))
@@ -135,30 +114,24 @@ include hu hw huw
 (`u, w ≥ 0`), and `Pow(P) = q |u| |w|`, the product of the two secant lengths `|u| ‖V‖` and `|w| ‖V‖`. -/
 theorem secant_lengths (su : Γ ⊢[PRAAx] le u.neg u.pos) (sw : Γ ⊢[PRAAx] le w.neg w.pos) :
     Γ ⊢[PRAAx] ZT.eq (pow Px Py Ox Oy ρ) (qq Vx Vy * ZT.ofNat (zab u) * ZT.ofNat (zab w)) := by
-  have p := ZT.toZ_eq (signed_power hu hw huw)
-  have a := ZT.toZ_eq (zab_nonneg su); have b := ZT.toZ_eq (zab_nonneg sw)
-  apply ZT.derive
-  simp only [ZT.toZ_mul] at p ⊢
-  linear_combination p - (ZT.toZ Γ (qq Vx Vy) * ZT.toZ Γ (ZT.ofNat (zab w))) * a - (ZT.toZ Γ (qq Vx Vy) * ZT.toZ Γ u) * b
+  ipra_lc ZT.toZ_eq (signed_power hu hw huw) -
+    (ZT.toZ Γ (qq Vx Vy) * ZT.toZ Γ (ZT.ofNat (zab w))) * ZT.toZ_eq (zab_nonneg su) -
+    (ZT.toZ Γ (qq Vx Vy) * ZT.toZ Γ u) * ZT.toZ_eq (zab_nonneg sw)
 
 /-- Part 2 with both intersections on the other side (`u, w ≤ 0`). -/
 theorem secant_lengths' (su : Γ ⊢[PRAAx] le u.pos u.neg) (sw : Γ ⊢[PRAAx] le w.pos w.neg) :
     Γ ⊢[PRAAx] ZT.eq (pow Px Py Ox Oy ρ) (qq Vx Vy * ZT.ofNat (zab u) * ZT.ofNat (zab w)) := by
-  have p := ZT.toZ_eq (signed_power hu hw huw)
-  have a := ZT.toZ_eq (zab_nonpos su); have b := ZT.toZ_eq (zab_nonpos sw)
-  apply ZT.derive
-  simp only [ZT.toZ_mul, ZT.toZ_neg] at p a b ⊢
-  linear_combination p - (ZT.toZ Γ (qq Vx Vy) * ZT.toZ Γ (ZT.ofNat (zab w))) * a + (ZT.toZ Γ (qq Vx Vy) * ZT.toZ Γ u) * b
+  ipra_lc ZT.toZ_eq (signed_power hu hw huw) -
+    (ZT.toZ Γ (qq Vx Vy) * ZT.toZ Γ (ZT.ofNat (zab w))) * ZT.toZ_eq (zab_nonpos su) +
+    (ZT.toZ Γ (qq Vx Vy) * ZT.toZ Γ u) * ZT.toZ_eq (zab_nonpos sw)
 
 /-- `thm:power-final`, part 3: for an interior point the chord's intersections lie on opposite sides
 (`u ≤ 0 ≤ w`), and `−Pow(P) = q |u| |w|`, the product of the two chord pieces. -/
 theorem chord_lengths (su : Γ ⊢[PRAAx] le u.pos u.neg) (sw : Γ ⊢[PRAAx] le w.neg w.pos) :
     Γ ⊢[PRAAx] ZT.eq (pow Px Py Ox Oy ρ + qq Vx Vy * ZT.ofNat (zab u) * ZT.ofNat (zab w)) (ZT.natLit 0) := by
-  have p := ZT.toZ_eq (signed_power hu hw huw)
-  have a := ZT.toZ_eq (zab_nonpos su); have b := ZT.toZ_eq (zab_nonneg sw)
-  apply ZT.derive
-  simp only [ZT.toZ_mul, ZT.toZ_add, ZT.toZ_neg, ZT.toZ_natLit, Nat.cast_zero] at p a b ⊢
-  linear_combination p + (ZT.toZ Γ (qq Vx Vy) * ZT.toZ Γ (ZT.ofNat (zab w))) * a - (ZT.toZ Γ (qq Vx Vy) * ZT.toZ Γ u) * b
+  ipra_lc ZT.toZ_eq (signed_power hu hw huw) +
+    (ZT.toZ Γ (qq Vx Vy) * ZT.toZ Γ (ZT.ofNat (zab w))) * ZT.toZ_eq (zab_nonpos su) -
+    (ZT.toZ Γ (qq Vx Vy) * ZT.toZ Γ u) * ZT.toZ_eq (zab_nonneg sw)
 
 end Generic
 

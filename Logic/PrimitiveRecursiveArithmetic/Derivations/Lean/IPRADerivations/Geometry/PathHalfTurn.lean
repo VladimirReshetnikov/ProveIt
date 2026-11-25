@@ -2,6 +2,7 @@ import IPRADerivations.Geometry.PathShoelace
 import IPRADerivations.Combinatorics.CatalanPowers
 import IPRADerivations.Core.SumSplit
 import IPRADerivations.Geometry.ConwayAlgebra
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The half-turn law, concatenation and centrally symmetric paths (`lem:Jlaws`, `lem:Jcentral`)
@@ -119,16 +120,9 @@ theorem half_step {B n s₁ s₂ q p : PTm k}
   rw [inst2_mB] at s₃'
   have s₄' := sum_succ' (Γ := Γ) (PathShoelace.pB x y) n p
   rw [PathShoelace.inst2_pB] at s₄'
-  have e₁ := natEq s₁'; have e₂ := natEq s₂'; have e₃ := natEq s₃'; have e₄ := natEq s₄'
-  have a₀ := natEq (half_at x x' hx h₀)
-  have a₁ := natEq (half_at x x' hx h₁)
-  have b₀ := natEq (half_at y y' hy h₀)
-  have b₁ := natEq (half_at y y' hy h₁)
-  have i := natEq ih
-  apply deriveNat; ipra_simps
-  linear_combination i + e₁ + e₂ - e₃ - e₄ + 𝔞 (inst2 y' (succ n) q) * a₀ +
-    (𝔞 s₁ - 𝔞 (inst2 x n p)) * b₁ - 𝔞 (inst2 y' n q) * a₁ -
-    (𝔞 s₁ - 𝔞 (inst2 x (succ n) p)) * b₀
+  ipra_lc natEq ih + natEq s₁' + natEq s₂' - natEq s₃' - natEq s₄' +
+    𝔞 (inst2 y' (succ n) q) * natEq (half_at x x' hx h₀) + (𝔞 s₁ - 𝔞 (inst2 x n p)) * natEq (half_at y y' hy h₁) -
+    𝔞 (inst2 y' n q) * natEq (half_at x x' hx h₁) - (𝔞 s₁ - 𝔞 (inst2 x (succ n) p)) * natEq (half_at y y' hy h₀)
 
 /-- The induction formula of `J_half`; variable `0 = m`. -/
 abbrev halfF (N s₁ s₂ q p : PTm k) : Fm PTm (k + 1) :=
@@ -144,13 +138,11 @@ theorem J_half {N s₁ s₂ q p : PTm k}
   have hall : Γ ⊢[PRAAx] Fm.all (halfF x y x' y' N s₁ s₂ q p) := by
     refine PRA.qfInd _ ⟨le_QF _ _, trivial⟩ ?_ ?_
     · have z₁ := natEq (sum_zero (Γ := le zero N :: Γ) (PathShoelace.pB x' y') q)
-      have z₂ := natEq (sum_zero (Γ := le zero N :: Γ) (mB x y) p)
-      have z₃ := natEq (sum_zero (Γ := le zero N :: Γ) (mB x' y') q)
-      have z₄ := natEq (sum_zero (Γ := le zero N :: Γ) (PathShoelace.pB x y) p)
       have b : Γ ⊢[PRAAx] le zero N ⟶ halfEq x y x' y' zero s₁ s₂ q p := by
         refine .impI ?_
-        apply deriveNat; ipra_simps
-        linear_combination z₁ + z₂ - z₃ - z₄
+        ipra_lc z₁ + natEq (sum_zero (Γ := le zero N :: Γ) (mB x y) p) -
+          natEq (sum_zero (Γ := le zero N :: Γ) (mB x' y') q) -
+          natEq (sum_zero (Γ := le zero N :: Γ) (PathShoelace.pB x y) p)
       simpa using b
     · have hx' : (Γ.map Fm.shift) ⊢[PRAAx]
           halfBit x x' (succ (Syn.shift N)) (Syn.shift s₁) (Syn.shift q) (Syn.shift p) ≐ one := by
@@ -236,12 +228,9 @@ theorem J_central {N p : PTm k}
       halfBit y (rvB y) (succ N) (inst2 y zero p + inst2 y N p) (pairT N p) p ≐ one) :
     Γ ⊢[PRAAx] jp x y N p + inst2 x N p * inst2 y zero p ≐
       jm x y N p + inst2 x zero p * inst2 y N p := by
-  have h := natEq (J_half x y (rvB x) (rvB y) hx hy)
-  have r₁ := natEq (J_reverse_plus (Γ := Γ) x y N p)
-  have r₂ := natEq (J_reverse_minus (Γ := Γ) x y N p)
   refine cancel_two_nat ?_
-  apply deriveNat; ipra_simps
-  linear_combination -h + r₁ - r₂
+  ipra_lc -natEq (J_half x y (rvB x) (rvB y) hx hy) + natEq (J_reverse_plus (Γ := Γ) x y N p) -
+    natEq (J_reverse_minus (Γ := Γ) x y N p)
 
 end Central
 

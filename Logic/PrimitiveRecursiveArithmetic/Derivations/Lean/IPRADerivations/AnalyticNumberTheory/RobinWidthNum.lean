@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.RobinGammaWidth
 import IPRADerivations.AnalyticNumberTheory.RobinExpWidth
 import IPRADerivations.AnalyticNumberTheory.LcmBridgeDPsi
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The numerical side of `(n + 12)2^{−r} ≤ 2^{−k}` (`robin_ipra_research_2026-11-19`, §"Composing the double logarithm")
@@ -101,8 +102,7 @@ theorem tg_le (N k : PTm n) : Γ ⊢[PRAAx] le (tg N k) (pw two (num 4 + rr N k)
   ipra_le 1 with p
 
 theorem one_tg (N k : PTm n) : Γ ⊢[PRAAx] one + tg N k ≐ pw two (num 4 + rr N k) := by
-  have p := natEq (pw_pos' (Γ := Γ) two_pos' (num 4 + rr N k))
-  apply deriveNat; ipra_simps; linear_combination -p
+  ipra_lc -natEq (pw_pos' (Γ := Γ) two_pos' (num 4 + rr N k))
 
 /-- `216 t n 2^k ≤ Z_{K_γ}`. -/
 theorem n_two {N : PTm n} (hN1 : Γ ⊢[PRAAx] le one N) (k : PTm n) :

@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.SquareArea
 import IPRADerivations.DiophantineNumberTheory.FermatQuartic
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The rational points of the Fermat quartic
@@ -67,18 +68,16 @@ theorem flt4' {a b c : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) (hb : Γ 
 theorem fourth_difference {x y z : PTm n} (hx : Γ ⊢[PRAAx] x ≐ succ (pred x))
     (hy : Γ ⊢[PRAAx] y ≐ succ (pred y)) (hz : Γ ⊢[PRAAx] z ≐ succ (pred z))
     (h : Γ ⊢[PRAAx] q4 y + z * z ≐ q4 x) : Γ ⊢[PRAAx] Fm.bot := by
-  have e := natEq h
   refine no_square_area (a := two * ((x * x) * (y * y))) (b := z * z) (c := q4 x + q4 y) (s := x * y * z)
     (pos_mul two_pos' (pos_mul (pos_mul hx hx) (pos_mul hy hy))) (pos_mul hz hz)
     (pos_mul (pos_mul hx hy) hz) ?_ ?_
-  · apply deriveNat; ipra_simps
-    linear_combination (𝔞 z * 𝔞 z + 𝔞 x * 𝔞 x * 𝔞 x * 𝔞 x - 𝔞 y * 𝔞 y * 𝔞 y * 𝔞 y) * e
-  · apply deriveNat; ipra_simps; ring
+  · ipra_lc (𝔞 z * 𝔞 z + 𝔞 x * 𝔞 x * 𝔞 x * 𝔞 x - 𝔞 y * 𝔞 y * 𝔞 y * 𝔞 y) * natEq h
+  · ipra_ring
 
 theorem q4_inj {u v : PTm n} (h : Γ ⊢[PRAAx] q4 u ≐ q4 v) : Γ ⊢[PRAAx] u ≐ v := sq_inj (sq_inj h)
 
 theorem q4_zero {u : PTm n} (h : Γ ⊢[PRAAx] u ≐ zero) : Γ ⊢[PRAAx] q4 u ≐ zero :=
-  (congrMul (congrMul h h) (congrMul h h)).eqTrans (by apply deriveNat; ipra_simps; ring)
+  (congrMul (congrMul h h) (congrMul h h)).eqTrans (by ipra_ring)
 
 /-- `thm:fq-complete`, absolute values: `x⁴ + y⁴ = z⁴` forces a zero coordinate among `x, y`, and
 then the other equals `z`. -/

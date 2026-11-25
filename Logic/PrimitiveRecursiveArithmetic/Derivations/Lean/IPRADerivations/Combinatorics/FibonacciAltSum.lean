@@ -1,5 +1,6 @@
 import IPRADerivations.Combinatorics.LucasIdentities
 import IPRADerivations.Core.SumLemmas
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The alternating sum of Fibonacci numbers
@@ -72,17 +73,13 @@ theorem shift_even (M : PTm n) : Γ ⊢[PRAAx] ap2 (sumF (shiftBody evkB)) M zer
 theorem alt_sum_fib (N : PTm n) :
     Γ ⊢[PRAAx] ap2 (sumF evkB) (succ (succ N)) zero + monus one (par N) * fib N + one ≐
       ap2 (sumF odkB) (succ (succ N)) zero + par N * fib N := by
-  have a := natEq (alt_sum (Γ := Γ) N)
   have s1 := natEq (sum_shift (Γ := Γ) odkB (succ N) zero)
   have s2 := natEq (sum_shift (Γ := Γ) evkB (succ N) zero)
-  have c1 := natEq (shift_odd (Γ := Γ) (succ N))
-  have c2 := natEq (shift_even (Γ := Γ) (succ N))
-  have z1 := natEq (fib_zero (Γ := Γ) (n := n))
   have i1 : inst2 odkB zero (zero : PTm n) = par zero * fib zero := by simp [inst2]
   have i2 : inst2 evkB zero (zero : PTm n) = monus one (par zero) * fib zero := by simp [inst2]
   rw [i1] at s1
   rw [i2] at s2
-  apply deriveNat; ipra_simps
-  linear_combination s2 - s1 + c2 - c1 - a + (𝔟 (monus one (par zero)) - 𝔟 (par zero)) * z1
+  ipra_lc s2 - s1 + natEq (shift_even (Γ := Γ) (succ N)) - natEq (shift_odd (Γ := Γ) (succ N)) -
+    natEq (alt_sum (Γ := Γ) N) + (𝔟 (monus one (par zero)) - 𝔟 (par zero)) * natEq (fib_zero (Γ := Γ) (n := n))
 
 end LeanProofs.IPRA.Combinatorics.FibonacciAltSum

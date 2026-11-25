@@ -2,6 +2,7 @@ import IPRADerivations.Foundations.ShiftedInduction
 import IPRADerivations.Combinatorics.BinomialSigned
 import IPRADerivations.Analysis.Pochhammer
 import IPRADerivations.Foundations.HurwitzProduct
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The Chu–Vandermonde summation
@@ -96,10 +97,8 @@ theorem vB_at (k M b d : PTm n) :
 /-- `(c + k)_{m+1−k} = (c + k)_{m−k} (c + m)` for `k ≤ m`. -/
 theorem poch_top {k m c : PTm n} (h : Γ ⊢[PRAAx] le k m) :
     Γ ⊢[PRAAx] poch (c + k) (monus (succ m) k) ≐ poch (c + k) (monus m k) * (c + m) := by
-  have e := natEq (eq_add_of_le h)
   have t : Γ ⊢[PRAAx] c + k + monus m k ≐ c + m := by
-    apply deriveNat; ipra_simps
-    linear_combination -e
+    ipra_lc -natEq (eq_add_of_le h)
   exact ((congrPoch (.eqRefl (c + k)) (succ_monus_of_le h)).eqTrans (poch_succ (c + k) (monus m k))).eqTrans
     (congrMul (.eqRefl _) t)
 
@@ -108,25 +107,18 @@ theorem raise_vB {k m b d : PTm n} (hk : Γ ⊢[PRAAx] lt k (succ m)) :
     Γ ⊢[PRAAx] inst2 vB k (pairT (succ m) (pairT b d)) ≐
       (b + d + m) * inst2 vB k (pairT m (pairT b d)) := by
   have hk' : Γ ⊢[PRAAx] le k m := (succ_monus_succ k m).eqSymm.eqTrans hk
-  have a₁ := natEq (vB_at (Γ := Γ) k (succ m) b d)
-  have a₀ := natEq (vB_at (Γ := Γ) k m b d)
-  have t := natEq (poch_top (c := b + d) hk')
-  apply deriveNat; ipra_simps
-  linear_combination a₁ - (𝔟 b + 𝔟 d + 𝔟 m) * a₀ + 𝔟(poch b k) * t
+  ipra_lc natEq (vB_at (Γ := Γ) k (succ m) b d) - (𝔟 b + 𝔟 d + 𝔟 m) * natEq (vB_at (Γ := Γ) k m b d) +
+    𝔟(poch b k) * natEq (poch_top (c := b + d) hk')
 
 /-- Shifting the index: `v_{m+1}(k + 1; b, d) = b v_m(k; b + 1, d)`. -/
 theorem index_vB (k m b d : PTm n) :
     Γ ⊢[PRAAx] inst2 vB (succ k) (pairT (succ m) (pairT b d)) ≐
       b * inst2 vB k (pairT m (pairT (succ b) d)) := by
-  have a₁ := natEq (vB_at (Γ := Γ) (succ k) (succ m) b d)
-  have a₀ := natEq (vB_at (Γ := Γ) k m (succ b) d)
-  have pp := natEq (poch_shift' (Γ := Γ) b k)
   have s : Γ ⊢[PRAAx] b + d + succ k ≐ succ b + d + k := by
-    apply deriveNat; ipra_simps; ring
-  have pq := natEq (congrPoch s (succ_monus_succ (Γ := Γ) m k))
-  apply deriveNat; ipra_simps
-  linear_combination a₁ - 𝔟 b * a₀ + 𝔟(poch (b + d + succ k) (monus (succ m) (succ k))) * pp +
-    𝔟 b * 𝔟(poch (succ b) k) * pq
+    ipra_ring
+  ipra_lc natEq (vB_at (Γ := Γ) (succ k) (succ m) b d) - 𝔟 b * natEq (vB_at (Γ := Γ) k m (succ b) d) +
+    𝔟(poch (b + d + succ k) (monus (succ m) (succ k))) * natEq (poch_shift' (Γ := Γ) b k) +
+    𝔟 b * 𝔟(poch (succ b) k) * natEq (congrPoch s (succ_monus_succ (Γ := Γ) m k))
 
 /-! ## The two parts of the sum -/
 
@@ -141,10 +133,8 @@ theorem raise_pt_E {k m b d : PTm n} (hk : Γ ⊢[PRAAx] lt k (succ m)) :
   have c₁ := cB_at (Γ := Γ) vE k m (pairT (succ m) (pairT b d))
   have c₀ := cB_at (Γ := Γ) vE k m (pairT m (pairT b d))
   rw [inst2_vE] at c₁ c₀
-  have e₁ := natEq c₁; have e₀ := natEq c₀
-  have r := natEq (raise_vB (b := b) (d := d) hk)
-  apply deriveNat; ipra_simps
-  linear_combination e₁ - (𝔟 b + 𝔟 d + 𝔟 m) * e₀ + 𝔟(binom m k) * 𝔟(eqb (rem k two) zero) * r
+  ipra_lc natEq c₁ - (𝔟 b + 𝔟 d + 𝔟 m) * natEq c₀ +
+    𝔟(binom m k) * 𝔟(eqb (rem k two) zero) * natEq (raise_vB (b := b) (d := d) hk)
 
 theorem raise_pt_O {k m b d : PTm n} (hk : Γ ⊢[PRAAx] lt k (succ m)) :
     Γ ⊢[PRAAx] inst2 (cB vO) k (pairT m (pairT (succ m) (pairT b d))) ≐
@@ -152,10 +142,8 @@ theorem raise_pt_O {k m b d : PTm n} (hk : Γ ⊢[PRAAx] lt k (succ m)) :
   have c₁ := cB_at (Γ := Γ) vO k m (pairT (succ m) (pairT b d))
   have c₀ := cB_at (Γ := Γ) vO k m (pairT m (pairT b d))
   rw [inst2_vO] at c₁ c₀
-  have e₁ := natEq c₁; have e₀ := natEq c₀
-  have r := natEq (raise_vB (b := b) (d := d) hk)
-  apply deriveNat; ipra_simps
-  linear_combination e₁ - (𝔟 b + 𝔟 d + 𝔟 m) * e₀ + 𝔟(binom m k) * 𝔟(eqb (rem k two) one) * r
+  ipra_lc natEq c₁ - (𝔟 b + 𝔟 d + 𝔟 m) * natEq c₀ +
+    𝔟(binom m k) * 𝔟(eqb (rem k two) one) * natEq (raise_vB (b := b) (d := d) hk)
 
 theorem index_pt_E (k m b d : PTm n) :
     Γ ⊢[PRAAx] inst2 (cS vE) k (pairT m (pairT (succ m) (pairT b d))) ≐
@@ -163,13 +151,9 @@ theorem index_pt_E (k m b d : PTm n) :
   have c₁ := cS_at (Γ := Γ) vE k m (pairT (succ m) (pairT b d))
   have c₀ := cB_at (Γ := Γ) vO k m (pairT m (pairT (succ b) d))
   rw [inst2_vE] at c₁; rw [inst2_vO] at c₀
-  have e₁ := natEq c₁; have e₀ := natEq c₀
-  have p := natEq (Prf.andE₁ (LeanProofs.IPRA.AnalyticNumberTheory.Mobius.par_succ (Γ := Γ) k))
-  have r := natEq (index_vB (Γ := Γ) k m b d)
-  apply deriveNat; ipra_simps
-  linear_combination e₁ - 𝔟 b * e₀ +
-    𝔟(binom m k) * 𝔟(inst2 vB (succ k) (pairT (succ m) (pairT b d))) * p +
-    𝔟(binom m k) * 𝔟(eqb (rem k two) one) * r
+  ipra_lc natEq c₁ - 𝔟 b * natEq c₀ +
+    𝔟(binom m k) * 𝔟(inst2 vB (succ k) (pairT (succ m) (pairT b d))) * natEq (Prf.andE₁ (LeanProofs.IPRA.AnalyticNumberTheory.Mobius.par_succ (Γ := Γ) k)) +
+    𝔟(binom m k) * 𝔟(eqb (rem k two) one) * natEq (index_vB (Γ := Γ) k m b d)
 
 theorem index_pt_O (k m b d : PTm n) :
     Γ ⊢[PRAAx] inst2 (cS vO) k (pairT m (pairT (succ m) (pairT b d))) ≐
@@ -177,13 +161,9 @@ theorem index_pt_O (k m b d : PTm n) :
   have c₁ := cS_at (Γ := Γ) vO k m (pairT (succ m) (pairT b d))
   have c₀ := cB_at (Γ := Γ) vE k m (pairT m (pairT (succ b) d))
   rw [inst2_vO] at c₁; rw [inst2_vE] at c₀
-  have e₁ := natEq c₁; have e₀ := natEq c₀
-  have p := natEq (Prf.andE₂ (LeanProofs.IPRA.AnalyticNumberTheory.Mobius.par_succ (Γ := Γ) k))
-  have r := natEq (index_vB (Γ := Γ) k m b d)
-  apply deriveNat; ipra_simps
-  linear_combination e₁ - 𝔟 b * e₀ +
-    𝔟(binom m k) * 𝔟(inst2 vB (succ k) (pairT (succ m) (pairT b d))) * p +
-    𝔟(binom m k) * 𝔟(eqb (rem k two) zero) * r
+  ipra_lc natEq c₁ - 𝔟 b * natEq c₀ +
+    𝔟(binom m k) * 𝔟(inst2 vB (succ k) (pairT (succ m) (pairT b d))) * natEq (Prf.andE₂ (LeanProofs.IPRA.AnalyticNumberTheory.Mobius.par_succ (Γ := Γ) k)) +
+    𝔟(binom m k) * 𝔟(eqb (rem k two) zero) * natEq (index_vB (Γ := Γ) k m b d)
 
 theorem shift_params (m b d : PTm n) :
     Syn.shift (pairT m (pairT (succ m) (pairT b d))) =
@@ -241,33 +221,22 @@ theorem cv_base (b d : PTm n) : Γ ⊢[PRAAx] TE zero b d ≐ TO zero b d + poch
   have cE := cB_at (Γ := Γ) vE zero zero (pairT zero (pairT b d))
   have cO := cB_at (Γ := Γ) vO zero zero (pairT zero (pairT b d))
   rw [inst2_vE] at cE; rw [inst2_vO] at cO
-  have eE := natEq cE; have eO := natEq cO
-  have v := natEq (vB_at (Γ := Γ) zero zero b d)
-  have bz := natEq (binom_zero' (Γ := Γ) (zero : PTm n))
-  have p₁ := natEq (poch_zero (Γ := Γ) b)
-  have p₂ := natEq ((congrPoch (.eqRefl (b + d + zero)) (monus_self (Γ := Γ) (zero : PTm n))).eqTrans
-    (poch_zero (b + d + zero)))
-  have p₃ := natEq (poch_zero (Γ := Γ) d)
-  have sE := natEq (sum_succ' (Γ := Γ) (cB vE) zero (pairT zero (pairT zero (pairT b d))))
-  have sO := natEq (sum_succ' (Γ := Γ) (cB vO) zero (pairT zero (pairT zero (pairT b d))))
-  have zE := natEq (sum_zero (Γ := Γ) (cB vE) (pairT zero (pairT zero (pairT b d))))
-  have zO := natEq (sum_zero (Γ := Γ) (cB vO) (pairT zero (pairT zero (pairT b d))))
-  apply deriveNat; ipra_simps
-  linear_combination sE + zE + eE - sO - zO - eO - p₃ +
+  ipra_lc natEq (sum_succ' (Γ := Γ) (cB vE) zero (pairT zero (pairT zero (pairT b d)))) +
+    natEq (sum_zero (Γ := Γ) (cB vE) (pairT zero (pairT zero (pairT b d)))) + natEq cE -
+    natEq (sum_succ' (Γ := Γ) (cB vO) zero (pairT zero (pairT zero (pairT b d)))) -
+    natEq (sum_zero (Γ := Γ) (cB vO) (pairT zero (pairT zero (pairT b d)))) - natEq cO -
+    natEq (poch_zero (Γ := Γ) d) +
     𝔟(binom (zero : PTm n) zero) * 𝔟(inst2 vB zero (pairT zero (pairT b d))) * (ev - od) +
-    𝔟(inst2 vB zero (pairT zero (pairT b d))) * bz + v +
-    𝔟(poch (b + d + zero) (monus zero zero)) * p₁ + p₂
+    𝔟(inst2 vB zero (pairT zero (pairT b d))) * natEq (binom_zero' (Γ := Γ) (zero : PTm n)) +
+    natEq (vB_at (Γ := Γ) zero zero b d) + 𝔟(poch (b + d + zero) (monus zero zero)) * natEq (poch_zero (Γ := Γ) b) +
+    natEq ((congrPoch (.eqRefl (b + d + zero)) (monus_self (Γ := Γ) (zero : PTm n))).eqTrans (poch_zero (b + d + zero)))
 
 theorem cv_step {m b d : PTm n}
     (h₀ : Γ ⊢[PRAAx] TE m b d ≐ TO m b d + poch d m)
     (h₁ : Γ ⊢[PRAAx] TE m (succ b) d ≐ TO m (succ b) d + poch d m) :
     Γ ⊢[PRAAx] TE (succ m) b d ≐ TO (succ m) b d + poch d (succ m) := by
-  have rE := natEq (TE_succ (Γ := Γ) m b d)
-  have rO := natEq (TO_succ (Γ := Γ) m b d)
-  have ps := natEq (poch_succ (Γ := Γ) d m)
-  have a₀ := natEq h₀; have a₁ := natEq h₁
-  apply deriveNat; ipra_simps
-  linear_combination rE - rO - ps + (𝔟 b + 𝔟 d + 𝔟 m) * a₀ - 𝔟 b * a₁
+  ipra_lc natEq (TE_succ (Γ := Γ) m b d) - natEq (TO_succ (Γ := Γ) m b d) - natEq (poch_succ (Γ := Γ) d m) +
+    (𝔟 b + 𝔟 d + 𝔟 m) * natEq h₀ - 𝔟 b * natEq h₁
 
 /-- The two sides as terms in `0 = m`, `1 = b`, `2 = d`. -/
 def LT : PTm 3 := TE (var 0) (var 1) (var 2)

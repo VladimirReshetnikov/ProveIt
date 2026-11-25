@@ -1,6 +1,7 @@
 import IPRADerivations.Combinatorics.BinomialIdentities
 import IPRADerivations.DiophantineNumberTheory.Coprime
 import IPRADerivations.Core.ProdLemmas
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The positive half-angle roots of a Ravi triangle
@@ -94,7 +95,7 @@ end Ring
 /-! ## Positivity -/
 
 theorem pos_add_r {x : PTm n} (hx : Γ ⊢[PRAAx] x ≐ succ (pred x)) (z : PTm n) : Γ ⊢[PRAAx] z + x ≐ succ (pred (z + x)) :=
-  AnalyticNumberTheory.Primes.eq_succ_pred (y := z + pred x) ((congrAdd (.eqRefl _) hx).eqTrans (by apply deriveNat; ipra_simps; ring))
+  AnalyticNumberTheory.Primes.eq_succ_pred (y := z + pred x) ((congrAdd (.eqRefl _) hx).eqTrans (by ipra_ring))
 
 theorem pos_add_l {x : PTm n} (hx : Γ ⊢[PRAAx] x ≐ succ (pred x)) (y : PTm n) : Γ ⊢[PRAAx] x + y ≐ succ (pred (x + y)) :=
   (congrAdd (.eqRefl _) (.eqRefl _) : Γ ⊢[PRAAx] x + y ≐ x + y).eqTrans
@@ -192,9 +193,7 @@ theorem side_A (hx : Γ ⊢[PRAAx] x ≐ succ (pred x)) (hA : Γ ⊢[PRAAx] (z +
     (hd : Γ ⊢[PRAAx] two * K * d ≐ (y + z) * (z + x) * (x + y)) :
     Γ ⊢[PRAAx] y + z ≐ two * d * sA * cA := by
   refine mul_cancel (D := (z + x) * (x + y)) (pos_mul' (pos_add_r hx z) (pos_add_l hx y)) ?_
-  have a := natEq hA; have b := natEq hd
-  apply deriveNat; ipra_simps
-  linear_combination -b - 2 * 𝔞 d * a
+  ipra_lc -natEq hd - 2 * 𝔞 d * natEq hA
 
 /-- `lem:cot-basic` (`thm:cotangent-law` cleared): `r c_A = x s_A` for `r s = K`. -/
 theorem cot_A (hx : Γ ⊢[PRAAx] x ≐ succ (pred x)) (hs : Γ ⊢[PRAAx] (z + x) * (x + y) * (sA * sA) ≐ y * z)
@@ -215,9 +214,7 @@ theorem halfangle_cos {x y z sA cA : PTm n} (hs : Γ ⊢[PRAAx] (z + x) * (x + y
     (hc : Γ ⊢[PRAAx] (z + x) * (x + y) * (cA * cA) ≐ (x + y + z) * x) :
     Γ ⊢[PRAAx] two * ((z + x) * (x + y)) * (cA * cA) + (y + z) * (y + z) ≐
       (z + x) * (z + x) + (x + y) * (x + y) + two * ((z + x) * (x + y)) * (sA * sA) := by
-  have a := natEq hs; have b := natEq hc
-  apply deriveNat; ipra_simps
-  linear_combination 2 * b - 2 * a
+  ipra_lc 2 * natEq hc - 2 * natEq hs
 
 end Scale
 

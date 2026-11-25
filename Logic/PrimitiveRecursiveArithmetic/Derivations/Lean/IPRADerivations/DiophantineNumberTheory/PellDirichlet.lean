@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.PellCFStep
 import IPRADerivations.Core.Pigeonhole
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The finite Dirichlet construction for `√D`
@@ -49,16 +50,16 @@ theorem le_isqrt {x N : PTm n} (h : Γ ⊢[PRAAx] le (x * x) N) : Γ ⊢[PRAAx] 
 theorem sqrt_add_le {u v b d D : PTm n} (h₁ : Γ ⊢[PRAAx] le (u * u) (v * v * D)) (h₂ : Γ ⊢[PRAAx] le (b * b) (d * d * D)) :
     Γ ⊢[PRAAx] le ((u + b) * (u + b)) ((v + d) * (v + d) * D) := by
   have x : Γ ⊢[PRAAx] le (u * b) (v * d * D) :=
-    le_of_sq_le (le_congr (by apply deriveNat; ipra_simps; ring) (by apply deriveNat; ipra_simps; ring) (le_mul_mono h₁ h₂))
-  refine le_congr ?_ ?_ (le_add_mono (le_add_mono h₁ (le_add_mono x x)) h₂) <;> (apply deriveNat; ipra_simps; ring)
+    le_of_sq_le (le_congr (by ipra_ring) (by ipra_ring) (le_mul_mono h₁ h₂))
+  refine le_congr ?_ ?_ (le_add_mono (le_add_mono h₁ (le_add_mono x x)) h₂) <;> (ipra_ring)
 
 /-- The strict dual: `v√D ≤ u`, `d√D < b` give `(v + d)√D < u + b`. -/
 theorem sqrt_add_lt {u v b d D : PTm n} (h₁ : Γ ⊢[PRAAx] le (v * v * D) (u * u)) (h₂ : Γ ⊢[PRAAx] lt (d * d * D) (b * b)) :
     Γ ⊢[PRAAx] lt ((v + d) * (v + d) * D) ((u + b) * (u + b)) := by
   have x : Γ ⊢[PRAAx] le (v * d * D) (u * b) :=
-    le_of_sq_le (le_congr (by apply deriveNat; ipra_simps; ring) (by apply deriveNat; ipra_simps; ring)
+    le_of_sq_le (le_congr (by ipra_ring) (by ipra_ring)
       (le_mul_mono h₁ (le_of_lt h₂)))
-  refine le_congr ?_ ?_ (le_add_mono (le_add_mono h₁ (le_add_mono x x)) h₂) <;> (apply deriveNat; ipra_simps; ring)
+  refine le_congr ?_ ?_ (le_add_mono (le_add_mono h₁ (le_add_mono x x)) h₂) <;> (ipra_ring)
 
 /-! ## The bins -/
 
@@ -82,14 +83,13 @@ theorem bB_at (j D Q : PTm n) : Γ ⊢[PRAAx] inst2 bB j (pairT D Q) ≐ monus (
 /-- `Q t_j ≤ w_j < Q (t_j + 1)`. -/
 theorem w_bounds {Q : PTm n} (hQ : Γ ⊢[PRAAx] Q ≐ succ (pred Q)) (D j : PTm n) :
     Γ ⊢[PRAAx] le (Q * tj D j) (wj D Q j) ⋏ lt (wj D Q j) (Q * succ (tj D j)) := by
-  refine .andI (le_isqrt (le_congr (by apply deriveNat; ipra_simps; ring) (by apply deriveNat; ipra_simps; ring)
+  refine .andI (le_isqrt (le_congr (by ipra_ring) (by ipra_ring)
     (mul_le_mul_right (Q * Q) (isqrt_le (D * (j * j)))))) ?_
   refine lt_of_sq_lt (lt_of_le_of_lt (isqrt_le _) ?_)
   have l1 := mul_le_mul_right (Q * Q) (lt_isqrt_succ_sq (Γ := Γ) (D * (j * j)))
-  have qq := natEq (pos_mul hQ hQ)
   refine le_trans (le_of_eq_add (d := pred (Q * Q)) ?_) (le_congr (.eqRefl _) ?_ l1)
-  · apply deriveNat; ipra_simps; linear_combination qq
-  · apply deriveNat; ipra_simps; ring
+  · ipra_lc natEq (pos_mul hQ hQ)
+  · ipra_ring
 
 /-! ## The construction -/
 
@@ -116,7 +116,7 @@ theorem dirichlet {D Q : PTm n} (hD : Γ ⊢[PRAAx] D ≐ succ (pred D)) (hQ : �
     refine lt_congr (bB_at _ _ _).eqSymm (.eqRefl _) (le_of_add_le_add_right (c := Syn.shift Q * tj (Syn.shift D) (var 0)) ?_)
     refine le_congr ?_ ?_ (Prf.andE₂ wb)
     · have x := natEq e; apply deriveNat; ipra_simps; linear_combination x
-    · apply deriveNat; ipra_simps; ring
+    · ipra_ring
   have ph := Pigeonhole.pigeonhole (S := bB) hr
   have hIJ := Prf.andE₁ ph
   have hJQ := Prf.andE₁ (Prf.andE₂ ph)
@@ -124,7 +124,7 @@ theorem dirichlet {D Q : PTm n} (hD : Γ ⊢[PRAAx] D ≐ succ (pred D)) (hQ : �
   -- `J = I + q`, `t_J = t_I + p`, `w_J = w_I + Q p`.
   have eJ := eq_add_of_le (le_of_lt hIJ)
   have hq1 : Γ ⊢[PRAAx] le one (dq D Q) := le_of_add_le_add_right (c := Iz D Q)
-    (le_congr (by apply deriveNat; ipra_simps; ring) (eJ.eqTrans (add_comm _ _)) hIJ)
+    (le_congr (by ipra_ring) (eJ.eqTrans (add_comm _ _)) hIJ)
   have htm : Γ ⊢[PRAAx] le (tj D (Iz D Q)) (tj D (Jz D Q)) :=
     le_isqrt (le_trans (isqrt_le _) (le_mul_mono (le_refl D) (le_mul_mono (le_of_lt hIJ) (le_of_lt hIJ))))
   have eT := eq_add_of_le htm
@@ -138,13 +138,13 @@ theorem dirichlet {D Q : PTm n} (hD : Γ ⊢[PRAAx] D ≐ succ (pred D)) (hQ : �
     apply deriveNat; ipra_simps; linear_combination y - x + 𝔞 Q * t - z
   -- Square-root facts at `I` and `J`, in the form `x² ≤ y² D`.
   have sqI : Γ ⊢[PRAAx] le (wj D Q (Iz D Q) * wj D Q (Iz D Q)) (Q * Iz D Q * (Q * Iz D Q) * D) :=
-    le_congr (.eqRefl _) (by apply deriveNat; ipra_simps; ring) (isqrt_le _)
+    le_congr (.eqRefl _) (by ipra_ring) (isqrt_le _)
   have ltI : Γ ⊢[PRAAx] lt (Q * Iz D Q * (Q * Iz D Q) * D) ((wj D Q (Iz D Q) + one) * (wj D Q (Iz D Q) + one)) :=
-    lt_congr (by apply deriveNat; ipra_simps; ring) (.eqRefl _) (lt_isqrt_succ_sq _)
+    lt_congr (by ipra_ring) (.eqRefl _) (lt_isqrt_succ_sq _)
   have sqJ : Γ ⊢[PRAAx] le (wj D Q (Jz D Q) * wj D Q (Jz D Q)) (Q * Jz D Q * (Q * Jz D Q) * D) :=
-    le_congr (.eqRefl _) (by apply deriveNat; ipra_simps; ring) (isqrt_le _)
+    le_congr (.eqRefl _) (by ipra_ring) (isqrt_le _)
   have ltJ : Γ ⊢[PRAAx] lt (Q * Jz D Q * (Q * Jz D Q) * D) ((wj D Q (Jz D Q) + one) * (wj D Q (Jz D Q) + one)) :=
-    lt_congr (by apply deriveNat; ipra_simps; ring) (.eqRefl _) (lt_isqrt_succ_sq _)
+    lt_congr (by ipra_ring) (.eqRefl _) (lt_isqrt_succ_sq _)
   have eQJ : Γ ⊢[PRAAx] Q * dq D Q + Q * Iz D Q ≐ Q * Jz D Q := by
     have x := natEq eJ; apply deriveNat; ipra_simps; linear_combination -𝔞 Q * x
   -- The upper error bound.
@@ -188,15 +188,15 @@ theorem dirichlet {D Q : PTm n} (hD : Γ ⊢[PRAAx] D ≐ succ (pred D)) (hQ : �
   -- `p ≤ D q`.
   have hpD : Γ ⊢[PRAAx] le (dp D Q) (D * dq D Q) := by
     have dD0 : Γ ⊢[PRAAx] le (D * one) (D * D) := le_mul_mono (le_refl D) hD1
-    have dD : Γ ⊢[PRAAx] le D (D * D) := le_congr (by apply deriveNat; ipra_simps; ring) (.eqRefl _) dD0
+    have dD : Γ ⊢[PRAAx] le D (D * D) := le_congr (by ipra_ring) (.eqRefl _) dD0
     have hDD0 : Γ ⊢[PRAAx] le (Q * dq D Q * (Q * dq D Q) * D) (Q * dq D Q * (Q * dq D Q) * (D * D)) :=
       le_mul_mono (le_refl _) dD
     have hDD : Γ ⊢[PRAAx] le (Q * dq D Q * (Q * dq D Q) * D) (Q * dq D Q * D * (Q * dq D Q * D)) :=
-      le_congr (.eqRefl _) (by apply deriveNat; ipra_simps; ring) hDD0
+      le_congr (.eqRefl _) (by ipra_ring) hDD0
     have l := lt_of_sq_lt (lt_of_lt_of_le hL hDD)
     have l2 : Γ ⊢[PRAAx] le (Q * dp D Q) (Q * (D * dq D Q)) :=
-      le_congr (.eqRefl _) (by apply deriveNat; ipra_simps; ring)
-        (le_trans (le_congr (.eqRefl _) (by apply deriveNat; ipra_simps; ring) (le_add_monus_l (Q * dp D Q) one)) l)
+      le_congr (.eqRefl _) (by ipra_ring)
+        (le_trans (le_congr (.eqRefl _) (by ipra_ring) (le_add_monus_l (Q * dp D Q) one)) l)
     exact le_cancel_pos hQ l2
   have hqQ : Γ ⊢[PRAAx] le (dq D Q) Q :=
     le_trans (le_of_eq_add (d := Iz D Q) (eJ.eqTrans (add_comm _ _))) hJQ

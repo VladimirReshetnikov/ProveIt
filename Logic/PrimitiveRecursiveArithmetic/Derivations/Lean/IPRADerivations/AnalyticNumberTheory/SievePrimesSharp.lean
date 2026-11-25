@@ -84,7 +84,7 @@ theorem count_pos (X Z : PTm n) : Γ ⊢[PRAAx] le (ap2 (sumF lowP) X Z) (pred Z
   · exact zero_le_of ((congrAp2 (sumF lowP) Prf.hyp0 (.eqRefl _)).eqTrans (sum_zero _ _))
   · let C : List (Fm PTm n) := (X ≐ succ (pred X)) :: Γ
     have e : C ⊢[PRAAx] X ≐ one + pred X :=
-      Prf.hyp0.eqTrans (by apply deriveNat; ipra_simps; ring)
+      Prf.hyp0.eqTrans (by ipra_ring)
     have E := (congrAp2 (sumF lowP) e (.eqRefl Z)).eqTrans (sum_split lowP one (pred X) Z)
     have F : C ⊢[PRAAx] ap2 (sumF lowP) one Z ≐ zero := by
       refine (sum_succ' lowP zero Z).eqTrans ((congrAdd (sum_zero lowP Z) ?_).eqTrans (add_zero _))
@@ -97,7 +97,7 @@ theorem count_pos (X Z : PTm n) : Γ ⊢[PRAAx] le (ap2 (sumF lowP) X Z) (pred Z
       rw [s1, s2, inst2_offB, inst2_lowB]
       have a1 : (lt (var 0) (Syn.shift (pred X)) :: C.map Fm.shift) ⊢[PRAAx]
           fstT (pairT one (Syn.shift Z)) + var 0 ≐ succ (var 0) :=
-        (congrAdd (fst_pair _ _) (.eqRefl _)).eqTrans (by apply deriveNat; ipra_simps; ring)
+        (congrAdd (fst_pair _ _) (.eqRefl _)).eqTrans (by ipra_ring)
       have a2 := congrInst2 lowP a1 (snd_pair (Γ := lt (var 0) (Syn.shift (pred X)) :: C.map Fm.shift)
         one (Syn.shift Z))
       rw [inst2_lowP (succ (var 0)) (Syn.shift Z)] at a2

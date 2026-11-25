@@ -1,4 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.DescentTools
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # All integer right triangles are multiples of primitive ones
@@ -40,16 +41,12 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 theorem sq_alg {a b c g A B : PTm n} (hE : Γ ⊢[PRAAx] a * a + b * b ≐ c * c) (eA : Γ ⊢[PRAAx] a ≐ g * A)
     (eB : Γ ⊢[PRAAx] b ≐ g * B) : Γ ⊢[PRAAx] c * c ≐ (g * g) * (A * A + B * B) := by
-  have x := natEq hE; have y := natEq eA; have z := natEq eB
-  apply deriveNat; ipra_simps
-  linear_combination -x + (𝔞 a + 𝔞 g * 𝔞 A) * y + (𝔞 b + 𝔞 g * 𝔞 B) * z
+  ipra_lc -natEq hE + (𝔞 a + 𝔞 g * 𝔞 A) * natEq eA + (𝔞 b + 𝔞 g * 𝔞 B) * natEq eB
 
 theorem pyth_alg {a b c g A B C : PTm n} (hE : Γ ⊢[PRAAx] a * a + b * b ≐ c * c)
     (eA : Γ ⊢[PRAAx] a ≐ g * A) (eB : Γ ⊢[PRAAx] b ≐ g * B) (eC : Γ ⊢[PRAAx] c ≐ g * C) :
     Γ ⊢[PRAAx] (g * g) * (A * A + B * B) ≐ (g * g) * (C * C) := by
-  have x := natEq hE; have y := natEq eA; have z := natEq eB; have w := natEq eC
-  apply deriveNat; ipra_simps
-  linear_combination x - (𝔞 a + 𝔞 g * 𝔞 A) * y - (𝔞 b + 𝔞 g * 𝔞 B) * z + (𝔞 c + 𝔞 g * 𝔞 C) * w
+  ipra_lc natEq hE - (𝔞 a + 𝔞 g * 𝔞 A) * natEq eA - (𝔞 b + 𝔞 g * 𝔞 B) * natEq eB + (𝔞 c + 𝔞 g * 𝔞 C) * natEq eC
 
 /-- **Every right triangle is `gcd(a, b)` times a primitive one**. -/
 theorem triple_normalize {a b c : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a))
@@ -74,20 +71,17 @@ theorem triple_normalize {a b c : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)
 /-- Scaling preserves the equation. -/
 theorem triple_scale {g A B C : PTm n} (h : Γ ⊢[PRAAx] A * A + B * B ≐ C * C) :
     Γ ⊢[PRAAx] (g * A) * (g * A) + (g * B) * (g * B) ≐ (g * C) * (g * C) := by
-  have x := natEq h
-  apply deriveNat; ipra_simps; linear_combination 𝔞 g * 𝔞 g * x
+  ipra_lc 𝔞 g * 𝔞 g * natEq h
 
 /-! ## The scale is the gcd -/
 
 theorem cancel_alg {a k A g h q : PTm n} (ea : Γ ⊢[PRAAx] a ≐ k * A) (e1 : Γ ⊢[PRAAx] a ≐ g * q)
     (eg : Γ ⊢[PRAAx] g ≐ k * h) : Γ ⊢[PRAAx] k * A ≐ k * (h * q) := by
-  have x := natEq ea; have y := natEq e1; have z := natEq eg
-  apply deriveNat; ipra_simps; linear_combination -x + y + 𝔞 q * z
+  ipra_lc -natEq ea + natEq e1 + 𝔞 q * natEq eg
 
 theorem one_alg {g k h : PTm n} (eg : Γ ⊢[PRAAx] g ≐ k * h) (h1 : Γ ⊢[PRAAx] h ≐ one) :
     Γ ⊢[PRAAx] k ≐ g := by
-  have x := natEq eg; have y := natEq h1
-  apply deriveNat; ipra_simps; linear_combination -x - 𝔞 k * y
+  ipra_lc -natEq eg - 𝔞 k * natEq h1
 
 /-- **The scale is forced**: `a = k A'`, `b = k B'`, `gcd(A', B') = 1` give `k = gcd(a, b)`. -/
 theorem scale_unique {a b k A B : PTm n} (hk : Γ ⊢[PRAAx] k ≐ succ (pred k))

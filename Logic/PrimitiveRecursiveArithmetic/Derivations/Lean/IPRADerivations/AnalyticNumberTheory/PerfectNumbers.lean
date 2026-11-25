@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.SigmaPrimePower
 import IPRADerivations.AnalyticNumberTheory.PhiLower
 import IPRADerivations.AnalyticNumberTheory.PowerCleared
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Euclid's even perfect numbers
@@ -41,7 +42,7 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 theorem two_pos : Γ ⊢[PRAAx] (two : PTm n) ≐ succ (pred two) := congrSucc (pred_succ _).eqSymm
 
-theorem mul_one_r (X : PTm n) : Γ ⊢[PRAAx] X * one ≐ X := by apply deriveNat; ipra_simps; ring
+theorem mul_one_r (X : PTm n) : Γ ⊢[PRAAx] X * one ≐ X := by ipra_ring
 
 /-- `σ(2^a) + 1 = 2^{a+1}`. -/
 theorem sig_two_pow (a : PTm n) : Γ ⊢[PRAAx] sig (pw two a) + one ≐ pw two (succ a) := by
@@ -62,14 +63,12 @@ theorem lt_alg {T q P : PTm n} (h2 : Γ ⊢[PRAAx] le two T) (e2 : Γ ⊢[PRAAx]
     (e3 : Γ ⊢[PRAAx] P ≐ T * two) : Γ ⊢[PRAAx] lt T q := by
   have s := natEq (eq_add_of_le h2); have a := natEq e2; have b := natEq e3
   refine le_of_eq_add (d := monus T two) ?_
-  apply deriveNat; ipra_simps; linear_combination a + b + s
+  ipra_lc a + b + s
 
 theorem perfect_alg {S T q P Sq SN : PTm n} (e1 : Γ ⊢[PRAAx] S + one ≐ P) (e2 : Γ ⊢[PRAAx] succ q ≐ P)
     (e3 : Γ ⊢[PRAAx] P ≐ T * two) (e4 : Γ ⊢[PRAAx] Sq ≐ q + one) (e5 : Γ ⊢[PRAAx] SN ≐ S * Sq) :
     Γ ⊢[PRAAx] SN ≐ two * (T * q) := by
-  have a1 := natEq e1; have a2 := natEq e2; have a3 := natEq e3; have a4 := natEq e4; have a5 := natEq e5
-  apply deriveNat; ipra_simps
-  linear_combination a5 + 𝔞 S * a4 + (𝔞 q + 1) * a1 - a2 + 𝔞 q * a3
+  ipra_lc natEq e5 + 𝔞 S * natEq e4 + (𝔞 q + 1) * natEq e1 - natEq e2 + 𝔞 q * natEq e3
 
 /-- `gcd(2^a, q) = 1` for a prime `q = 2^{a+1} − 1`, `a ≥ 1`. -/
 theorem coprime {a q : PTm n} (ha : Γ ⊢[PRAAx] le one a) (hq : Γ ⊢[PRAAx] prime q)

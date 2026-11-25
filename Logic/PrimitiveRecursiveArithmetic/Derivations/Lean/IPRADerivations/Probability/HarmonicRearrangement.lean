@@ -1,5 +1,6 @@
 import IPRADerivations.Probability.Independence
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Finite harmonic identities behind the rearranged alternating series
@@ -63,12 +64,8 @@ theorem inst2_odB (k x : PTm n) : inst2 (odB g) k x = inst2 g (succ (two * k)) x
 
 theorem split_base (x : PTm n) :
     Γ ⊢[PRAAx] ap2 (sumF (evB g)) zero x + ap2 (sumF (odB g)) zero x ≐ ap2 (sumF g) (two * zero) x := by
-  have z₁ := natEq (sum_zero (Γ := Γ) (evB g) x)
-  have z₂ := natEq (sum_zero (Γ := Γ) (odB g) x)
-  have z₃ := natEq ((congrAp2 (sumF g) (mul_zero (Γ := Γ) (two : PTm n)) (.eqRefl x)).eqTrans
-    (sum_zero g x))
-  apply deriveNat; ipra_simps
-  linear_combination z₁ + z₂ - z₃
+  ipra_lc natEq (sum_zero (Γ := Γ) (evB g) x) + natEq (sum_zero (Γ := Γ) (odB g) x) -
+    natEq ((congrAp2 (sumF g) (mul_zero (Γ := Γ) (two : PTm n)) (.eqRefl x)).eqTrans (sum_zero g x))
 
 theorem split_step {M x : PTm n}
     (ih : Γ ⊢[PRAAx] ap2 (sumF (evB g)) M x + ap2 (sumF (odB g)) M x ≐ ap2 (sumF g) (two * M) x) :
@@ -79,14 +76,9 @@ theorem split_step {M x : PTm n}
   have s₂ := sum_succ' (Γ := Γ) (odB g) M x
   rw [inst2_odB] at s₂
   have e₂ : Γ ⊢[PRAAx] two * succ M ≐ succ (succ (two * M)) := by
-    apply deriveNat; ipra_simps; ring
-  have c := natEq (congrAp2 (sumF g) e₂ (.eqRefl x))
-  have t₁ := natEq (sum_succ' (Γ := Γ) g (succ (two * M)) x)
-  have t₂ := natEq (sum_succ' (Γ := Γ) g (two * M) x)
-  have a₁ := natEq s₁; have a₂ := natEq s₂
-  have h := natEq ih
-  apply deriveNat; ipra_simps
-  linear_combination a₁ + a₂ + h - c - t₁ - t₂
+    ipra_ring
+  ipra_lc natEq s₁ + natEq s₂ + natEq ih - natEq (congrAp2 (sumF g) e₂ (.eqRefl x)) -
+    natEq (sum_succ' (Γ := Γ) g (succ (two * M)) x) - natEq (sum_succ' (Γ := Γ) g (two * M) x)
 
 /-- Variables: `0 = M`, `1 = x`. -/
 private abbrev splitF : Fm PTm 2 :=
@@ -131,10 +123,7 @@ theorem alt_harmonic {N x : PTm n}
       (inst2 g (var 0) (Syn.shift x) ≐ two * inst2 g (succ (two * var 0)) (Syn.shift x)))) :
     Γ ⊢[PRAAx] ap2 (sumF (evB g)) N x + ap2 (sumF g) N x ≐
       ap2 (sumF (odB g)) N x + ap2 (sumF g) (two * N) x := by
-  have s := natEq (parity_split (Γ := Γ) g N x)
-  have h := natEq (halving g hh)
-  apply deriveNat; ipra_simps
-  linear_combination s + h
+  ipra_lc natEq (parity_split (Γ := Γ) g N x) + natEq (halving g hh)
 
 /-- `∑_{k ≤ M} 1/(2k − 1) = H_{2M} − ½ H_M`:
 `2 ∑_{k<M} g(2k) + ∑_{k<M} g(k) = 2 ∑_{k<2M} g(k)`. -/
@@ -142,10 +131,7 @@ theorem odd_sum {M x : PTm n}
     (hh : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift M) ⟶
       (inst2 g (var 0) (Syn.shift x) ≐ two * inst2 g (succ (two * var 0)) (Syn.shift x)))) :
     Γ ⊢[PRAAx] two * ap2 (sumF (evB g)) M x + ap2 (sumF g) M x ≐ two * ap2 (sumF g) (two * M) x := by
-  have s := natEq (parity_split (Γ := Γ) g M x)
-  have h := natEq (halving g hh)
-  apply deriveNat; ipra_simps
-  linear_combination 2 * s + h
+  ipra_lc 2 * natEq (parity_split (Γ := Γ) g M x) + natEq (halving g hh)
 
 end Harmonic
 

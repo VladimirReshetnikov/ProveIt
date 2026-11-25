@@ -3,6 +3,7 @@ import IPRADerivations.AnalyticNumberTheory.PowerCleared
 import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.Combinatorics.BinomialIdentities
 import IPRADerivations.Core.EuclidLemma
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Injectivity of canonical powering
@@ -54,10 +55,8 @@ abbrev RF (r : PTm n) : Fm PTm n :=
   le two r ⋏ Fm.all (Fm.all (le two (var 0) ⟶ neg (pw (var 1) (var 0) ≐ Syn.shift (Syn.shift r))))
 
 theorem RF_pos {r : PTm n} (h : Γ ⊢[PRAAx] RF r) : Γ ⊢[PRAAx] r ≐ succ (pred r) := by
-  have e := natEq (eq_add_of_le (Prf.andE₁ h))
   refine eq_succ_pred (y := one + monus r two) ?_
-  apply deriveNat; ipra_simps
-  linear_combination e
+  ipra_lc natEq (eq_add_of_le (Prf.andE₁ h))
 
 theorem subst_up_shift_rf {m : ℕ} (σ : Fin n → PTm m) (t : PTm n) :
     Syn.subst (Syn.up σ) (Syn.shift t) = Syn.shift (Syn.subst σ t) := by
@@ -120,19 +119,13 @@ theorem bezout_pos {a b : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) (hg : 
     have hz : C ⊢[PRAAx] gcd a b + U * a ≐ V * b := Prf.hyp0
     have e := natEq hz
     have g := natEq (hg.wk : C ⊢[PRAAx] _)
-    have ea := natEq (ha.wk : C ⊢[PRAAx] _)
     have lx : C ⊢[PRAAx] le U (b * V) := by
       refine le_of_eq_add (d := U * pred a + one) ?_
-      apply deriveNat; ipra_simps
-      linear_combination -e + g + 𝔞 U * ea
+      ipra_lc -e + g + 𝔞 U * natEq (ha.wk : C ⊢[PRAAx] _)
     have ly : C ⊢[PRAAx] le V (V * a) := by
       refine le_of_eq_add (d := V * pred a) ?_
-      apply deriveNat; ipra_simps
-      linear_combination 𝔞 V * ea
-    have ex := natEq (eq_add_of_le lx)
-    have ey := natEq (eq_add_of_le ly)
-    apply deriveNat; ipra_simps
-    linear_combination -𝔞 a * ex + 𝔞 b * ey - e + g
+      ipra_lc 𝔞 V * natEq (ha.wk : C ⊢[PRAAx] _)
+    ipra_lc -𝔞 a * natEq (eq_add_of_le lx) + 𝔞 b * natEq (eq_add_of_le ly) - e + g
 
 /-- If `r` is root-free, `r^a = u^b`, `a, b ≥ 1` and `gcd(a, b) = 1`, then `b = 1`. -/
 theorem exp_one {r u a b : PTm n} (hRF : Γ ⊢[PRAAx] RF r) (hu : Γ ⊢[PRAAx] u ≐ succ (pred u))

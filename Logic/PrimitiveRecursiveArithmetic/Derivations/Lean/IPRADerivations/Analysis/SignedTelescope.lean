@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.ErrorBudgets
 import IPRADerivations.DiophantineNumberTheory.RungeProduct
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Signed telescoping with an error budget
@@ -69,14 +70,10 @@ theorem tel_step {K x δ : PTm n}
     (hd : Γ ⊢[PRAAx] le (ad (DU Gn Rp Mn K x) (DV Gp Rn Mp K x)) δ)
     (ih : Γ ⊢[PRAAx] le (ad (TX Gp Gn Mn K x) (TY Gp Gn Mp K x)) (K * δ)) :
     Γ ⊢[PRAAx] le (ad (TX Gp Gn Mn (succ K) x) (TY Gp Gn Mp (succ K) x)) (succ K * δ) := by
-  have sn := natEq (sum_succ' (Γ := Γ) Mn K x)
-  have sp := natEq (sum_succ' (Γ := Γ) Mp K x)
-  have r := natEq hR
   have c : Γ ⊢[PRAAx] ad (TX Gp Gn Mn (succ K) x) (TY Gp Gn Mp (succ K) x) ≐
       ad (TX Gp Gn Mn K x + DU Gn Rp Mn K x) (TY Gp Gn Mp K x + DV Gp Rn Mp K x) := by
     refine ad_eq_of_cross ?_
-    apply deriveNat; ipra_simps
-    linear_combination sn - sp - r
+    ipra_lc natEq (sum_succ' (Γ := Γ) Mn K x) - natEq (sum_succ' (Γ := Γ) Mp K x) - natEq hR
   have t := ad_add_le (Γ := Γ) (TX Gp Gn Mn K x) (DU Gn Rp Mn K x) (TY Gp Gn Mp K x) (DV Gp Rn Mp K x)
   have e := natEq c
   ipra_le sl t + sl ih + sl hd using linear_combination -e

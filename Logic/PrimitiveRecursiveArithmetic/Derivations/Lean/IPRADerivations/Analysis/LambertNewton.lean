@@ -2,6 +2,7 @@ import IPRADerivations.DiophantineNumberTheory.RungeProduct
 import IPRADerivations.Core.IntCancel
 import IPRADerivations.AnalyticNumberTheory.PhiLower
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Newton, Halley and logarithmic Newton steps for the Lambert function
@@ -48,11 +49,7 @@ variable {w a F D R w' : ZT n}
 /-- `f′(w) (w′ − α) = R`. -/
 theorem newton_residual (hT : Γ ⊢[PRAAx] ZT.eq (F + D * (a - w) + R) (ZT.natLit 0))
     (hN : Γ ⊢[PRAAx] ZT.eq (D * w') (D * w - F)) : Γ ⊢[PRAAx] ZT.eq (D * (w' - a)) R := by
-  apply ZT.derive
-  have t := ZT.toZ_eq hT
-  have u := ZT.toZ_eq hN
-  simp only [ZT.toZ_add, ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_natLit, Nat.cast_zero] at t u ⊢
-  linear_combination u - t
+  ipra_lc ZT.toZ_eq hN - ZT.toZ_eq hT
 
 /-- `thm:newton-error`: `2m |w′ − α| ≤ M |w − α|²`. -/
 theorem newton_error {m M : PTm n} (hT : Γ ⊢[PRAAx] ZT.eq (F + D * (a - w) + R) (ZT.natLit 0))
@@ -74,16 +71,12 @@ theorem halley_form (f e w : ZT n) :
         (ZT.natLit 2 * (w + ZT.natLit 1) * (e * (ZT.natLit 1 + w)) - (w + ZT.natLit 2) * f))
       ((ZT.natLit 2 * (e * (ZT.natLit 1 + w)) * (e * (ZT.natLit 1 + w)) - f * (e * (w + ZT.natLit 2))) *
         (ZT.natLit 2 * (w + ZT.natLit 1) * f)) := by
-  apply ZT.derive
-  simp only [ZT.toZ_add, ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_natLit]
-  push_cast; ring
+  ipra_lc
 
 /-- `thm:log-newton`: `(1 + w) w − w (w − L) = w (1 + L)` with `L = log x − log w`. -/
 theorem log_newton_form (w L : ZT n) :
     Γ ⊢[PRAAx] ZT.eq ((ZT.natLit 1 + w) * w - w * (w - L)) (w * (ZT.natLit 1 + L)) := by
-  apply ZT.derive
-  simp only [ZT.toZ_add, ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_natLit]
-  push_cast; ring
+  ipra_lc
 
 /-- A fixed point of the logarithmic Newton step with `w ≠ 0` satisfies `w = L`, i.e. `w + log w = log x`. -/
 theorem log_newton_fixed {w L : ZT n} (hw : Γ ⊢[PRAAx] neg (ZT.eq w (ZT.natLit 0)))

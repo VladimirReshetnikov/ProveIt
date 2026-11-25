@@ -2,6 +2,7 @@ import IPRADerivations.Probability.DyadicBlock
 import IPRADerivations.Probability.DyadicUnion
 import IPRADerivations.Geometry.HypercubeSplit
 import IPRADerivations.AnalyticNumberTheory.Valuation
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The dyadic eventual-uniform bound (dyadic strong law), the block parameters
@@ -131,21 +132,16 @@ theorem blk_alg {A e R W P T N S Q : PTm n} (hA : Γ ⊢[PRAAx] A ≐ two * e * 
     (bc : Γ ⊢[PRAAx] le (A * A * P + T * (N * (S * S))) (T * (N * (W * Q))))
     (hN : Γ ⊢[PRAAx] le N (two * R)) (hR : Γ ⊢[PRAAx] R ≐ succ (pred R)) :
     Γ ⊢[PRAAx] le (two * (e * e * (W * W)) * R * P) (monus (W * Q) (S * S) * T) := by
-  have mm := natEq (monus_max (Γ := Γ) (W * Q) (S * S))
-  have eb := natEq (eq_add_of_le bc)
   have st1 : Γ ⊢[PRAAx] le (A * A * P) (T * N * monus (W * Q) (S * S)) := by
     refine le_of_eq_add (d := T * N * monus (S * S) (W * Q) +
       monus (T * (N * (W * Q))) (A * A * P + T * (N * (S * S)))) ?_
-    apply deriveNat; ipra_simps
-    linear_combination (𝔞 T * 𝔞 N) * mm + eb
+    ipra_lc (𝔞 T * 𝔞 N) * natEq (monus_max (Γ := Γ) (W * Q) (S * S)) + natEq (eq_add_of_le bc)
   have st2 : Γ ⊢[PRAAx] le (T * N * monus (W * Q) (S * S)) (T * (two * R) * monus (W * Q) (S * S)) :=
     le_mul_mono (le_mul_mono (le_refl T) hN) (le_refl _)
-  have ea := natEq hA
   have two_pos : Γ ⊢[PRAAx] (two : PTm n) ≐ succ (pred two) := congrSucc (pred_succ _).eqSymm
   refine le_cancel_pos (Combinatorics.Binomial.pos_mul two_pos hR) (le_congr ?_ ?_ (le_trans st1 st2))
-  · apply deriveNat; ipra_simps
-    linear_combination (𝔞 A + 2 * 𝔞 e * 𝔞 R * 𝔞 W) * 𝔞 P * ea
-  · apply deriveNat; ipra_simps; ring
+  · ipra_lc (𝔞 A + 2 * 𝔞 e * 𝔞 R * 𝔞 W) * 𝔞 P * natEq hA
+  · ipra_ring
 
 /-- The sample sum of the lifted values is that of the original values. -/
 theorem sr_lift (X0 : PTm 2) (l t M r e x : PTm n) :

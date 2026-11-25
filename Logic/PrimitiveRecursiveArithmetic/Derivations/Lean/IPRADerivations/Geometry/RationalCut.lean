@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.Combinatorics.CoefficientLogConcave
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The rational volume cut
@@ -122,9 +123,6 @@ theorem cut {τ N x : PTm n} (h : Γ ⊢[PRAAx] lt τ (ap2 (sumF (A * L)) N x)) 
   have upper := Prf.andE₂ (Prf.andE₂ c)
   have s := sum_succ' (Γ := Γ) (A * L) (idx (A * L) τ N x) x
   rw [inst2_mul] at s
-  have es := natEq s
-  have el := natEq (eq_add_of_le lower)
-  have eu := natEq (eq_add_of_le upper)
   -- `F(k) + c = τ`
   have left : Γ ⊢[PRAAx] ap2 (sumF (A * L)) (idx (A * L) τ N x) x +
       monus τ (ap2 (sumF (A * L)) (idx (A * L) τ N x) x) ≐ τ := (eq_add_of_le lower).eqSymm
@@ -132,8 +130,7 @@ theorem cut {τ N x : PTm n} (h : Γ ⊢[PRAAx] lt τ (ap2 (sumF (A * L)) N x)) 
   have inside : Γ ⊢[PRAAx] lt (monus τ (ap2 (sumF (A * L)) (idx (A * L) τ N x) x))
       (inst2 A (idx (A * L) τ N x) x * inst2 L (idx (A * L) τ N x) x) := by
     refine le_of_eq_add (d := monus (ap2 (sumF (A * L)) (succ (idx (A * L) τ N x)) x) (succ τ)) ?_
-    apply deriveNat; ipra_simps
-    linear_combination eu - es + el
+    ipra_lc natEq (eq_add_of_le upper) - natEq s + natEq (eq_add_of_le lower)
   -- `A_k ≥ 1`
   have pos : Γ ⊢[PRAAx] inst2 A (idx (A * L) τ N x) x ≐
       succ (pred (inst2 A (idx (A * L) τ N x) x)) := by

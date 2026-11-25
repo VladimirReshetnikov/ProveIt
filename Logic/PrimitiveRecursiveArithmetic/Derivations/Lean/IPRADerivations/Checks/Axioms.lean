@@ -927,6 +927,8 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.pair_sq
 #print axioms LeanProofs.IPRA.cauchy_int
 #print axioms LeanProofs.IPRA.zabs_mul
+#print axioms LeanProofs.IPRA.ZT.derive_cast
+#print axioms LeanProofs.IPRA.eqCongrPairs
 #print axioms LeanProofs.IPRA.zle_toZ
 #print axioms LeanProofs.IPRA.sq_nat
 #print axioms LeanProofs.IPRA.nat_sqrt_mono

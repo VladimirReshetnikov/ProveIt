@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.Pochhammer
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The rising-factorial form of a hypergeometric term, and the Lambert polynomials
@@ -88,11 +89,8 @@ theorem hd_succ (B k : PTm n) : Γ ⊢[PRAAx] hd B (succ k) ≐ hd B k * ((B + k
 
 theorem num_step {A w k : PTm n} (ih : Γ ⊢[PRAAx] hn A w k ≐ poch A k * pw w k) :
     Γ ⊢[PRAAx] hn A w (succ k) ≐ poch A (succ k) * pw w (succ k) := by
-  have e := natEq ih; have s := natEq (hn_succ (Γ := Γ) A w k)
-  have sp := natEq (poch_succ (Γ := Γ) A k); have sw := natEq (pw_succ (Γ := Γ) w k)
-  apply deriveNat; ipra_simps
-  linear_combination s + (𝔞(A) + 𝔞(k)) * 𝔞(w) * e - 𝔞(pw w (succ k)) * sp -
-    𝔞(poch A k) * (𝔞(A) + 𝔞(k)) * sw
+  ipra_lc natEq (hn_succ (Γ := Γ) A w k) + (𝔞(A) + 𝔞(k)) * 𝔞(w) * natEq ih -
+    𝔞(pw w (succ k)) * natEq (poch_succ (Γ := Γ) A k) - 𝔞(poch A k) * (𝔞(A) + 𝔞(k)) * natEq (pw_succ (Γ := Γ) w k)
 
 /-- Variables: `0 = k` (induction), `1 = A`, `2 = w`. -/
 private abbrev numF : Fm PTm 3 :=
@@ -103,10 +101,8 @@ private theorem num₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] numF := by
   · simp only [Fm.subst_eq, subst_ap2, subst_pairT, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
       Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
     refine (hn_zero _ _).eqTrans ?_
-    have e₁ := natEq (poch_zero (Γ := []) (var 0 : PTm 2))
-    have e₂ := natEq (pw_zero (Γ := []) (var 1 : PTm 2))
-    apply deriveNat; ipra_simps
-    linear_combination -e₁ - 𝔞(poch (var 0 : PTm 2) zero) * e₂
+    ipra_lc -natEq (poch_zero (Γ := []) (var 0 : PTm 2)) -
+      𝔞(poch (var 0 : PTm 2) zero) * natEq (pw_zero (Γ := []) (var 1 : PTm 2))
   · simp only [Fm.subst_eq, subst_ap2, subst_pairT, PTm.subst_mul, Syn.subst_var, Syn.repl_zero,
       repl_one, repl_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
     exact num_step Prf.hyp0
@@ -118,11 +114,9 @@ theorem rising_num (A w k : PTm n) : Γ ⊢[PRAAx] hn A w k ≐ poch A k * pw w 
 
 theorem den_step {B k : PTm n} (ih : Γ ⊢[PRAAx] hd B k ≐ poch B k * fact k) :
     Γ ⊢[PRAAx] hd B (succ k) ≐ poch B (succ k) * fact (succ k) := by
-  have e := natEq ih; have s := natEq (hd_succ (Γ := Γ) B k)
-  have sp := natEq (poch_succ (Γ := Γ) B k); have sf := natEq (fact_succ (Γ := Γ) k zero)
-  apply deriveNat; ipra_simps
-  linear_combination s + (𝔞(B) + 𝔞(k)) * (𝔞(k) + 1) * e - 𝔞(fact (succ k)) * sp -
-    𝔞(poch B k) * (𝔞(B) + 𝔞(k)) * sf
+  ipra_lc natEq (hd_succ (Γ := Γ) B k) + (𝔞(B) + 𝔞(k)) * (𝔞(k) + 1) * natEq ih -
+    𝔞(fact (succ k)) * natEq (poch_succ (Γ := Γ) B k) -
+    𝔞(poch B k) * (𝔞(B) + 𝔞(k)) * natEq (fact_succ (Γ := Γ) k zero)
 
 /-- Variables: `0 = k` (induction), `1 = B`. -/
 private abbrev denF : Fm PTm 2 := hd (var 1) (var 0) ≐ poch (var 1) (var 0) * fact (var 0)
@@ -132,10 +126,8 @@ private theorem den₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] denF := by
   · simp only [Fm.subst_eq, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
       ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
     refine (hd_zero _).eqTrans ?_
-    have e₁ := natEq (poch_zero (Γ := []) (var 0 : PTm 1))
-    have e₂ := natEq (fact_zero (Γ := []) (zero : PTm 1))
-    apply deriveNat; ipra_simps
-    linear_combination -e₁ - 𝔞(poch (var 0 : PTm 1) zero) * e₂
+    ipra_lc -natEq (poch_zero (Γ := []) (var 0 : PTm 1)) -
+      𝔞(poch (var 0 : PTm 1) zero) * natEq (fact_zero (Γ := []) (zero : PTm 1))
   · simp only [Fm.subst_eq, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.repl_zero, repl_one,
       ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
     exact den_step Prf.hyp0
@@ -148,9 +140,8 @@ theorem rising_den (B k : PTm n) : Γ ⊢[PRAAx] hd B k ≐ poch B k * fact k :=
 /-- `lem:rising`, cross-multiplied: `t_k = hn/hd = (A)_k w^k / ((B)_k k!)`. -/
 theorem rising_term (A B w k : PTm n) :
     Γ ⊢[PRAAx] hn A w k * (poch B k * fact k) ≐ (poch A k * pw w k) * hd B k := by
-  have e₁ := natEq (rising_num (Γ := Γ) A w k); have e₂ := natEq (rising_den (Γ := Γ) B k)
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞(poch B k) * 𝔞(fact k) * e₁ - 𝔞(poch A k) * 𝔞(pw w k) * e₂
+  ipra_lc 𝔞(poch B k) * 𝔞(fact k) * natEq (rising_num (Γ := Γ) A w k) -
+    𝔞(poch A k) * 𝔞(pw w k) * natEq (rising_den (Γ := Γ) B k)
 
 /-! ## The Lambert polynomials -/
 

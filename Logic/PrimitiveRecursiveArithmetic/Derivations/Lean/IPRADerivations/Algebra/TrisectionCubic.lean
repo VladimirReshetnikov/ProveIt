@@ -1,5 +1,6 @@
 import IPRADerivations.Algebra.CubeRootTwo
 import IPRADerivations.Core.Descent
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # `X³ − 3X − 1` has no rational root (`three_impossibilities_ipra`)
@@ -93,7 +94,7 @@ theorem half_lt {Δ : List (Fm PTm 2)} (hb : Δ ⊢[PRAAx] B ≐ succ (pred B))
     exact hb.wk.eqSymm.eqTrans (h2.wk.eqTrans ((congrMul (.eqRefl _) Prf.hyp0).eqTrans (mul_zero _)))
   refine .andI Prf.hyp0 (le_of_eq_add (d := pred G) ?_)
   refine withEq Prf.hyp0 fun e₁ => withEq h2.wk fun e₂ => ?_
-  apply deriveNat; ipra_simps; linear_combination e₂ + e₁
+  ipra_lc e₂ + e₁
 
 /-! ## The case `a ≥ 0`: `a³ = 3ab² + b³` -/
 

@@ -285,7 +285,7 @@ theorem eu_all (N M : PTm n) : Γ ⊢[PRAAx] EInv N M := by
 
 theorem sq_pos (M₀ : PTm n) : Γ ⊢[PRAAx] succ M₀ * succ M₀ ≐ succ (pred (succ M₀ * succ M₀)) :=
   LeanProofs.IPRA.AnalyticNumberTheory.Primes.eq_succ_pred (y := M₀ * M₀ + two * M₀)
-    (by apply deriveNat; ipra_simps; ring)
+    (by ipra_ring)
 
 /-- `eq:pibound` with its mesh error, for `M = M₀ + 1`, `2M² ≤ L`, `F = L!`, `Q = Q(M)` the Riemann-sum code
 of `π/4`: `F M · Eu N ≤ 2^N da N (M Q + 3F)` and

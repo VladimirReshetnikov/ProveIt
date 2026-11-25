@@ -1,5 +1,6 @@
 import IPRADerivations.Geometry.PowerCover
 import IPRADerivations.Geometry.PowerCover3
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Principal-cover gluing
@@ -46,10 +47,7 @@ theorem cross_common {W V Ni Nj Ki Kj ai aj : ZT n}
     (hw : Γ ⊢[PRAAx] ZT.eq (W * (Nj * ai - Ni * aj)) (ZT.natLit 0))
     (hv : Γ ⊢[PRAAx] ZT.eq (Ki * Kj) (V * W)) :
     Γ ⊢[PRAAx] ZT.eq ((Nj * Kj) * (Ki * ai)) ((Ni * Ki) * (Kj * aj)) := by
-  have ew := ZT.toZ_eq hw; have ev := ZT.toZ_eq hv
-  apply ZT.derive
-  ipra_simps
-  linear_combination (𝔷(Nj) * 𝔷(ai) - 𝔷(Ni) * 𝔷(aj)) * ev + 𝔷(V) * ew
+  ipra_lc (𝔷(Nj) * 𝔷(ai) - 𝔷(Ni) * 𝔷(aj)) * ZT.toZ_eq hv + 𝔷(V) * ZT.toZ_eq hw
 
 /-! ## Existence -/
 
@@ -63,21 +61,14 @@ theorem glue₂ (hc : Γ ⊢[PRAAx] ZT.eq (d₀ * Q₀ + d₁ * Q₁) (ZT.natLit
     Γ ⊢[PRAAx] ZT.eq (Q₀ * (d₀ * b₀ + d₁ * b₁)) b₀ ⋏ ZT.eq (Q₁ * (d₀ * b₀ + d₁ * b₁)) b₁ := by
   have ec := ZT.toZ_eq hc; have ex := ZT.toZ_eq hx
   refine .andI ?_ ?_
-  · apply ZT.derive
-    ipra_simps
-    linear_combination 𝔷(b₀) * ec - 𝔷(d₁) * ex
-  · apply ZT.derive
-    ipra_simps
-    linear_combination 𝔷(b₁) * ec + 𝔷(d₀) * ex
+  · ipra_lc 𝔷(b₀) * ec - 𝔷(d₁) * ex
+  · ipra_lc 𝔷(b₁) * ec + 𝔷(d₀) * ex
 
 /-- Two charts: sections with the same restrictions are equal. -/
 theorem unique₂ {u₀ u₁ m m' : ZT n} (hc : Γ ⊢[PRAAx] ZT.eq (u₀ * Q₀ + u₁ * Q₁) (ZT.natLit 1))
     (h₀ : Γ ⊢[PRAAx] ZT.eq (Q₀ * (m - m')) (ZT.natLit 0))
     (h₁ : Γ ⊢[PRAAx] ZT.eq (Q₁ * (m - m')) (ZT.natLit 0)) : Γ ⊢[PRAAx] ZT.eq m m' := by
-  have ec := ZT.toZ_eq hc; have e₀ := ZT.toZ_eq h₀; have e₁ := ZT.toZ_eq h₁
-  apply ZT.derive
-  ipra_simps
-  linear_combination -(𝔷(m) - 𝔷(m')) * ec + 𝔷(u₀) * e₀ + 𝔷(u₁) * e₁
+  ipra_lc -(𝔷(m) - 𝔷(m')) * ZT.toZ_eq hc + 𝔷(u₀) * ZT.toZ_eq h₀ + 𝔷(u₁) * ZT.toZ_eq h₁
 
 end Two
 
@@ -91,18 +82,11 @@ theorem glue₃ (hc : Γ ⊢[PRAAx] ZT.eq (d₀ * Q₀ + d₁ * Q₁ + d₂ * Q�
     (h₁₂ : Γ ⊢[PRAAx] ZT.eq (Q₂ * b₁) (Q₁ * b₂)) :
     Γ ⊢[PRAAx] ZT.eq (Q₀ * (d₀ * b₀ + d₁ * b₁ + d₂ * b₂)) b₀ ⋏
       (ZT.eq (Q₁ * (d₀ * b₀ + d₁ * b₁ + d₂ * b₂)) b₁ ⋏ ZT.eq (Q₂ * (d₀ * b₀ + d₁ * b₁ + d₂ * b₂)) b₂) := by
-  have ec := ZT.toZ_eq hc
   have e₀₁ := ZT.toZ_eq h₀₁; have e₀₂ := ZT.toZ_eq h₀₂; have e₁₂ := ZT.toZ_eq h₁₂
   refine .andI ?_ (.andI ?_ ?_)
-  · apply ZT.derive
-    ipra_simps
-    linear_combination 𝔷(b₀) * ec - 𝔷(d₁) * e₀₁ - 𝔷(d₂) * e₀₂
-  · apply ZT.derive
-    ipra_simps
-    linear_combination 𝔷(b₁) * ec + 𝔷(d₀) * e₀₁ - 𝔷(d₂) * e₁₂
-  · apply ZT.derive
-    ipra_simps
-    linear_combination 𝔷(b₂) * ec + 𝔷(d₀) * e₀₂ + 𝔷(d₁) * e₁₂
+  · ipra_lc 𝔷(b₀) * ZT.toZ_eq hc - 𝔷(d₁) * e₀₁ - 𝔷(d₂) * e₀₂
+  · ipra_lc 𝔷(b₁) * ZT.toZ_eq hc + 𝔷(d₀) * e₀₁ - 𝔷(d₂) * e₁₂
+  · ipra_lc 𝔷(b₂) * ZT.toZ_eq hc + 𝔷(d₀) * e₀₂ + 𝔷(d₁) * e₁₂
 
 /-- Three charts: sections with the same restrictions are equal. -/
 theorem unique₃ {u₀ u₁ u₂ m m' : ZT n}
@@ -110,10 +94,7 @@ theorem unique₃ {u₀ u₁ u₂ m m' : ZT n}
     (h₀ : Γ ⊢[PRAAx] ZT.eq (Q₀ * (m - m')) (ZT.natLit 0))
     (h₁ : Γ ⊢[PRAAx] ZT.eq (Q₁ * (m - m')) (ZT.natLit 0))
     (h₂ : Γ ⊢[PRAAx] ZT.eq (Q₂ * (m - m')) (ZT.natLit 0)) : Γ ⊢[PRAAx] ZT.eq m m' := by
-  have ec := ZT.toZ_eq hc; have e₀ := ZT.toZ_eq h₀; have e₁ := ZT.toZ_eq h₁; have e₂ := ZT.toZ_eq h₂
-  apply ZT.derive
-  ipra_simps
-  linear_combination -(𝔷(m) - 𝔷(m')) * ec + 𝔷(u₀) * e₀ + 𝔷(u₁) * e₁ + 𝔷(u₂) * e₂
+  ipra_lc -(𝔷(m) - 𝔷(m')) * ZT.toZ_eq hc + 𝔷(u₀) * ZT.toZ_eq h₀ + 𝔷(u₁) * ZT.toZ_eq h₁ + 𝔷(u₂) * ZT.toZ_eq h₂
 
 end Three
 
@@ -124,10 +105,7 @@ killing exponent `q − n_j`, that `m / 1 = m_j / f_j^(n_j)`. -/
 theorem restrict_witness {Q m b K L F mj : ZT n} (hQ : Γ ⊢[PRAAx] ZT.eq (Q * m) b)
     (hb : Γ ⊢[PRAAx] ZT.eq b (K * (L * mj))) (hq : Γ ⊢[PRAAx] ZT.eq Q ((K * L) * F)) :
     Γ ⊢[PRAAx] ZT.eq ((K * L) * (F * m - ZT.natLit 1 * mj)) (ZT.natLit 0) := by
-  have e₁ := ZT.toZ_eq hQ; have e₂ := ZT.toZ_eq hb; have e₃ := ZT.toZ_eq hq
-  apply ZT.derive
-  ipra_simps
-  linear_combination e₁ + e₂ - 𝔷(m) * e₃
+  ipra_lc ZT.toZ_eq hQ + ZT.toZ_eq hb - 𝔷(m) * ZT.toZ_eq hq
 
 /-! ## Gluing from the cover certificate alone -/
 

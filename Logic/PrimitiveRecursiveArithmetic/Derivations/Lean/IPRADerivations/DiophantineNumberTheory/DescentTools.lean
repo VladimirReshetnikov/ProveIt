@@ -1,6 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.QuarticStep
 import IPRADerivations.Core.EuclidLemma
 import IPRADerivations.AnalyticNumberTheory.PhiLower
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The gcd tools and the primitive Pythagorean parametrization
@@ -72,9 +73,7 @@ theorem square_split {a b c : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) (h
   have ea := square_of_coprime ha hg h
   have eb := square_of_coprime hb (gcd_comm_one hb hg) ((mul_comm _ _).eqTrans h)
   refine .andI ea (.andI eb (sq_inj ?_))
-  have x := natEq h; have y := natEq ea; have z := natEq eb
-  apply deriveNat; ipra_simps
-  linear_combination -x + 𝔞 b * y + (𝔞 (gcd a c) * 𝔞 (gcd a c)) * z
+  ipra_lc -natEq h + 𝔞 b * natEq ea + (𝔞 (gcd a c) * 𝔞 (gcd a c)) * natEq eb
 
 /-! ## Primitive Pythagorean triples -/
 
@@ -97,9 +96,7 @@ theorem lt_of_sq_gap {B m n' : PTm n} (hB : Γ ⊢[PRAAx] B ≐ succ (pred B)) (
   have sq : (le m n' :: Γ) ⊢[PRAAx] le (m * m) (n' * n') := le_mul_mono Prf.hyp0 Prf.hyp0
   have big : (le m n' :: Γ) ⊢[PRAAx] le (succ (n' * n')) (m * m) := by
     refine le_of_eq_add (d := pred B) ?_
-    have e := natEq (h.wk : (le m n' :: Γ) ⊢[PRAAx] _); have b := natEq (hB.wk : (le m n' :: Γ) ⊢[PRAAx] _)
-    apply deriveNat; ipra_simps
-    linear_combination -e + b
+    ipra_lc -natEq (h.wk : (le m n' :: Γ) ⊢[PRAAx] _) + natEq (hB.wk : (le m n' :: Γ) ⊢[PRAAx] _)
   exact not_succ_le_self _ _ (le_trans big sq)
 
 /-- `lem:pythagorean-descent`: the parametrization of a primitive triple with odd leg `B` and even leg `2H`. -/
@@ -131,17 +128,14 @@ theorem pyth_param {B H C : PTm n} (hB : Γ ⊢[PRAAx] B ≐ succ (pred B)) (hH 
       have u := natEq (Prf.hyp1 : C₂ ⊢[PRAAx] _); have v := natEq (Prf.hyp0 : C₂ ⊢[PRAAx] _)
       refine even_ne_odd _ (k := two * (half (pm B H C) * half (pm B H C)))
         (m := half B + two * (half (pn B H C) * half (pn B H C))) ?_
-      apply deriveNat; ipra_simps
-      linear_combination -x - (𝔞 (pm B H C) + 2 * 𝔞 (half (pm B H C))) * u +
-        (𝔞 (pn B H C) + 2 * 𝔞 (half (pn B H C))) * v + o
+      ipra_lc -x - (𝔞 (pm B H C) + 2 * 𝔞 (half (pm B H C))) * u + (𝔞 (pn B H C) + 2 * 𝔞 (half (pn B H C))) * v + o
     · refine .orE (even_or_odd (pn B H C)) (.orI₂ (.andI Prf.hyp1 Prf.hyp0)) ?_
       let C₂ := (pn B H C ≐ two * half (pn B H C) + one) :: (pm B H C ≐ two * half (pm B H C) + one) :: Γ
       have x := natEq (e₁.wk.wk : C₂ ⊢[PRAAx] _); have o := natEq (hBo.wk.wk : C₂ ⊢[PRAAx] _)
       have u := natEq (Prf.hyp1 : C₂ ⊢[PRAAx] _); have v := natEq (Prf.hyp0 : C₂ ⊢[PRAAx] _)
       refine even_ne_odd _ (k := two * (half (pm B H C) * half (pm B H C)) + two * half (pm B H C))
         (m := half B + two * (half (pn B H C) * half (pn B H C)) + two * half (pn B H C)) ?_
-      apply deriveNat; ipra_simps
-      linear_combination -x + o - (𝔞 (pm B H C) + 2 * 𝔞 (half (pm B H C)) + 1) * u +
+      ipra_lc -x + o - (𝔞 (pm B H C) + 2 * 𝔞 (half (pm B H C)) + 1) * u +
         (𝔞 (pn B H C) + 2 * 𝔞 (half (pn B H C)) + 1) * v
   exact .andI (congrMul (.eqRefl _) e₂) (.andI e₁ (.andI e₃ (.andI e₄ (.andI e₅
     (.andI (lt_of_sq_gap hB e₁) par)))))
@@ -154,12 +148,9 @@ theorem pyth_unique {B C m n' m₁ n₁ : PTm n}
   have a := natEq h₁; have b := natEq h₂; have c := natEq k₁; have d := natEq k₂
   have nn : Γ ⊢[PRAAx] n₁ * n₁ ≐ n' * n' := by
     refine mul_cancel two_pos ?_
-    apply deriveNat; ipra_simps
-    linear_combination c - d - a + b
+    ipra_lc c - d - a + b
   have mm : Γ ⊢[PRAAx] m₁ * m₁ ≐ m * m := by
-    have e := natEq nn
-    apply deriveNat; ipra_simps
-    linear_combination -c + a + e
+    ipra_lc -c + a + natEq nn
   exact .andI (sq_inj mm) (sq_inj nn)
 
 end LeanProofs.IPRA.DiophantineNumberTheory.DescentTools

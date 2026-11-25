@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianScalarDifferenceEmbedding
 import IPRADerivations.Analysis.GaussianCompactRiemannName
 import IPRADerivations.Analysis.RationalCubeInfimumIntervals
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Exact displacement geometry for two native affine panels
@@ -38,15 +39,10 @@ def endpointSource (a C b D A : PTm n) : Fm PTm n :=
 theorem convex_upper (j N a C b D A : PTm n) (hj : Γ ⊢[PRAAx] le j N)
     (h0 : Γ ⊢[PRAAx] le a (b+A)) (h1 : Γ ⊢[PRAAx] le (a+C) (b+D+A)) : Γ ⊢[PRAAx]
     le (a*N+C*j) (b*N+D*j+A*N) := by
-  have split := natEq (eq_add_of_le hj)
   have sum := add_le_add₂ (mul_le_mul_right (monus N j) h0) (mul_le_mul_right j h1)
   apply le_congr _ _ sum
-  · apply deriveNat
-    ipra_simps
-    linear_combination -(𝔞 a)*split
-  · apply deriveNat
-    ipra_simps
-    linear_combination -(𝔞 b+𝔞 A)*split
+  · ipra_lc -(𝔞 a)*natEq (eq_add_of_le hj)
+  · ipra_lc -(𝔞 b+𝔞 A)*natEq (eq_add_of_le hj)
 
 theorem grid_native_bounds (j N a C b D A : PTm n) (hj : Γ ⊢[PRAAx] le j N)
     (h : Γ ⊢[PRAAx] endpointSource a C b D A) : Γ ⊢[PRAAx]

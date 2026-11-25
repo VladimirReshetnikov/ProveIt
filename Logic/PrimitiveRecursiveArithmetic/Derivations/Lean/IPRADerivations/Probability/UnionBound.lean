@@ -73,7 +73,7 @@ theorem union_le_sum (fs : List (α → PTm n)) (r : α) : Γ ⊢[PRAAx] le (uni
 theorem wsum_add (w f g : α → PTm n) (L : List α) :
     Γ ⊢[PRAAx] wsum w (fun r => f r + g r) L ≐ wsum w f L + wsum w g L := by
   induction L with
-  | nil => show Γ ⊢[PRAAx] zero ≐ zero + zero; apply deriveNat; ipra_simps; ring
+  | nil => show Γ ⊢[PRAAx] zero ≐ zero + zero; ipra_ring
   | cons r rs ih =>
     show Γ ⊢[PRAAx] w r * (f r + g r) + wsum w (fun r => f r + g r) rs ≐
       (w r * f r + wsum w f rs) + (w r * g r + wsum w g rs)

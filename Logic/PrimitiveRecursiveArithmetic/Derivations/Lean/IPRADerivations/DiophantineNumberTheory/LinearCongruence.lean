@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.LinearDiophantine
 import IPRADerivations.DiophantineNumberTheory.ModularCertificate
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Linear congruences: solvability
@@ -42,8 +43,7 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 theorem cross_alg {A m b q1 q2 r1 r2 : PTm n} (d1 : Γ ⊢[PRAAx] A ≐ m * q1 + r1)
     (d2 : Γ ⊢[PRAAx] b ≐ m * q2 + r2) (h : Γ ⊢[PRAAx] r1 ≐ r2) : Γ ⊢[PRAAx] A + m * q2 ≐ b + m * q1 := by
-  have a := natEq d1; have c := natEq d2; have e := natEq h
-  apply deriveNat; ipra_simps; linear_combination a - c + e
+  ipra_lc natEq d1 - natEq d2 + natEq h
 
 /-- `a x ≡ b (mod m)` gives `gcd(a, m) ∣ b`. -/
 theorem congruence_necessary {a m b x : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a))
@@ -61,8 +61,7 @@ theorem congruence_necessary {a m b x : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (p
 
 theorem neg_alg {a m b pm X Y : PTm n} (e : Γ ⊢[PRAAx] m * Y ≐ b + a * X) (hm : Γ ⊢[PRAAx] m ≐ succ pm) :
     Γ ⊢[PRAAx] a * (pm * X) + m * Y ≐ m * (a * X) + b := by
-  have e1 := natEq e; have e2 := natEq hm
-  apply deriveNat; ipra_simps; linear_combination e1 - 𝔞 a * 𝔞 X * e2
+  ipra_lc natEq e - 𝔞 a * 𝔞 X * natEq hm
 
 /-- `a X = b + m Y` gives `a X ≡ b (mod m)`. -/
 theorem sol_pos {a m b X Y : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (e : Γ ⊢[PRAAx] a * X ≐ b + m * Y) :

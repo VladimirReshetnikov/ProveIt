@@ -76,13 +76,13 @@ theorem terms_le (m q' : PTm k) :
     Γ ⊢[PRAAx] le (quo (num 21 * m) (succ q') + quo (num 14 * m) (succ q') + quo (num 6 * m) (succ q') +
       quo m (succ q')) (quo (num 42 * m) (succ q')) := by
   have c2 := comp42 (Γ := Γ) (num 1) (Y := num 21 * m) (X := num 42 * m) (q' := q')
-    (by apply deriveNat; ipra_simps; ring)
+    (by ipra_ring)
   have c3 := comp42 (Γ := Γ) (num 2) (Y := num 14 * m) (X := num 42 * m) (q' := q')
-    (by apply deriveNat; ipra_simps; ring)
+    (by ipra_ring)
   have c7 := comp42 (Γ := Γ) (num 6) (Y := num 6 * m) (X := num 42 * m) (q' := q')
-    (by apply deriveNat; ipra_simps; ring)
+    (by ipra_ring)
   have c42 := comp42 (Γ := Γ) (num 41) (Y := m) (X := num 42 * m) (q' := q')
-    (by apply deriveNat; ipra_simps; ring)
+    (by ipra_ring)
   exact le_congr (congrAdd (congrAdd (congrAdd c2 c3) c7) c42) (.eqRefl _)
     (floor_sum_le (quo (num 42 * m) (succ q')))
 
@@ -92,13 +92,13 @@ theorem terms_lt {m q' : PTm k} (hm : Γ ⊢[PRAAx] lt m (succ q'))
     Γ ⊢[PRAAx] lt (quo (num 21 * m) (succ q') + quo (num 14 * m) (succ q') + quo (num 6 * m) (succ q') +
       quo m (succ q')) (quo (num 42 * m) (succ q')) := by
   have c2 := comp42 (Γ := Γ) (num 1) (Y := num 21 * m) (X := num 42 * m) (q' := q')
-    (by apply deriveNat; ipra_simps; ring)
+    (by ipra_ring)
   have c3 := comp42 (Γ := Γ) (num 2) (Y := num 14 * m) (X := num 42 * m) (q' := q')
-    (by apply deriveNat; ipra_simps; ring)
+    (by ipra_ring)
   have c7 := comp42 (Γ := Γ) (num 6) (Y := num 6 * m) (X := num 42 * m) (q' := q')
-    (by apply deriveNat; ipra_simps; ring)
+    (by ipra_ring)
   have c42 := comp42 (Γ := Γ) (num 41) (Y := m) (X := num 42 * m) (q' := q')
-    (by apply deriveNat; ipra_simps; ring)
+    (by ipra_ring)
   -- `J ≤ 41`
   have h41 : Γ ⊢[PRAAx] le (quo (num 42 * m) (succ q')) (num 41) := by
     have d := div_mod (Γ := Γ) (num 42 * m) q'

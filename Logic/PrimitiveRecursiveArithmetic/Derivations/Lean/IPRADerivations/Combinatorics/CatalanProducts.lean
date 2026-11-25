@@ -1,5 +1,6 @@
 import IPRADerivations.Combinatorics.Catalan
 import IPRADerivations.Combinatorics.BellTriangle
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Product form, the form `C(2n, n − 1) / n` and the central binomial bound (`catalan_numbers_ipra_2026-11-16`)
@@ -60,21 +61,14 @@ theorem oddProd_succ (N : PTm n) :
   exact h
 
 theorem fact_prod_base : Γ ⊢[PRAAx] fact (succ (zero : PTm n)) * cat zero ≐ oddProd zero := by
-  have a := natEq (fact_succ (Γ := Γ) zero zero)
-  have b := natEq (fact_zero (Γ := Γ) zero)
-  have c := natEq (cat_zero (Γ := Γ))
-  have d := natEq (oddProd_zero (Γ := Γ))
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 (cat (zero : PTm n)) * a + 𝔞 (cat (zero : PTm n)) * b + c - d
+  ipra_lc 𝔞 (cat (zero : PTm n)) * natEq (fact_succ (Γ := Γ) zero zero) +
+    𝔞 (cat (zero : PTm n)) * natEq (fact_zero (Γ := Γ) zero) + natEq (cat_zero (Γ := Γ)) -
+    natEq (oddProd_zero (Γ := Γ))
 
 theorem fact_prod_step {N : PTm n} (ih : Γ ⊢[PRAAx] fact (succ N) * cat N ≐ oddProd N) :
     Γ ⊢[PRAAx] fact (succ (succ N)) * cat (succ N) ≐ oddProd (succ N) := by
-  have a := natEq (fact_succ (Γ := Γ) (succ N) zero)
-  have r := natEq (cat_rec (Γ := Γ) N)
-  have p := natEq (oddProd_succ (Γ := Γ) N)
-  have i := natEq ih
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 (cat (succ N)) * a + 𝔞 (fact (succ N)) * r + (2 * (2 * 𝔞 N + 1)) * i - p
+  ipra_lc 𝔞 (cat (succ N)) * natEq (fact_succ (Γ := Γ) (succ N) zero) +
+    𝔞 (fact (succ N)) * natEq (cat_rec (Γ := Γ) N) + (2 * (2 * 𝔞 N + 1)) * natEq ih - natEq (oddProd_succ (Γ := Γ) N)
 
 /-- Variable: `0 = n`. -/
 abbrev factProdFormula : Fm PTm 1 := fact (succ (var 0)) * cat (var 0) ≐ oddProd (var 0)
@@ -109,16 +103,13 @@ theorem ratio_at (m : PTm n) :
 theorem cat_upper_binom (m : PTm n) :
     Γ ⊢[PRAAx] succ m * cat (succ m) ≐ binom (two * succ m) (succ (succ m)) := by
   refine mul_cancel (D := succ (succ m)) (succ_pos _) ?_
-  have s := natEq (cat_spec (Γ := Γ) (succ m))
-  have hr := natEq (ratio_at (Γ := Γ) m)
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞 m + 1) * s + hr
+  ipra_lc (𝔞 m + 1) * natEq (cat_spec (Γ := Γ) (succ m)) + natEq (ratio_at (Γ := Γ) m)
 
 /-- (2.6): `(m + 1) Cat_{m+1} = C(2m + 2, m)`. -/
 theorem cat_lower_binom (m : PTm n) :
     Γ ⊢[PRAAx] succ m * cat (succ m) ≐ binom (two * succ m) m := by
   have e : Γ ⊢[PRAAx] two * succ m ≐ succ (succ m) + m := by
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   have hle : Γ ⊢[PRAAx] le (succ (succ m)) (two * succ m) := le_of_eq_add e
   have hm : Γ ⊢[PRAAx] monus (two * succ m) (succ (succ m)) ≐ m :=
     (congrMonus e (.eqRefl _)).eqTrans (add_monus' m (succ (succ m)))
@@ -140,23 +131,17 @@ abbrev sixteen : PTm n := (two * two) * (two * two)
 
 theorem cb_sq_base :
     Γ ⊢[PRAAx] le (succ (zero : PTm n) * (cb zero * cb zero)) (pw sixteen zero) := by
-  have c := natEq (cb_zero (Γ := Γ))
-  have p := natEq (pw_zero (Γ := Γ) (sixteen : PTm n))
   refine le_of_eq_add (d := zero) ?_
-  apply deriveNat; ipra_simps
-  linear_combination p - (𝔞 (cb (zero : PTm n)) + 1) * c
+  ipra_lc natEq (pw_zero (Γ := Γ) (sixteen : PTm n)) - (𝔞 (cb (zero : PTm n)) + 1) * natEq (cb_zero (Γ := Γ))
 
 theorem cb_sq_step {m : PTm n} (ih : Γ ⊢[PRAAx] le (succ m * (cb m * cb m)) (pw sixteen m)) :
     Γ ⊢[PRAAx] le (succ (succ m) * (cb (succ m) * cb (succ m))) (pw sixteen (succ m)) := by
-  have i := natEq (eq_add_of_le ih)
-  have p := natEq (pw_succ (Γ := Γ) (sixteen : PTm n) m)
-  have r := natEq (cb_rec (Γ := Γ) m)
   refine mul_le_cancel (d' := m) (mul_le_cancel (d' := m) ?_)
   refine le_of_eq_add (d := (two * two) * ((succ two * m + two) * (cb m * cb m) +
     (two * two) * (succ m * succ m) * monus (pw sixteen m) (succ m * (cb m * cb m)))) ?_
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞 m + 1) ^ 2 * p + 16 * (𝔞 m + 1) ^ 2 * i -
-    ((𝔞 m + 2) * ((𝔞 m + 1) * 𝔞 (cb (succ m)) + 2 * (2 * 𝔞 m + 1) * 𝔞 (cb m))) * r
+  ipra_lc (𝔞 m + 1) ^ 2 * natEq (pw_succ (Γ := Γ) (sixteen : PTm n) m) +
+    16 * (𝔞 m + 1) ^ 2 * natEq (eq_add_of_le ih) -
+    ((𝔞 m + 2) * ((𝔞 m + 1) * 𝔞 (cb (succ m)) + 2 * (2 * 𝔞 m + 1) * 𝔞 (cb m))) * natEq (cb_rec (Γ := Γ) m)
 
 /-- Variable: `0 = m`. -/
 abbrev cbSqFormula : Fm PTm 1 :=

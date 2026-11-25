@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianVandermondeNewtonPolynomials
 import IPRADerivations.Analysis.GaussianScalarTriangularDeterminant
 import IPRADerivations.Analysis.GaussianScalarDeterminantMultiplication
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The actual Newton matrix and square Vandermonde product
@@ -184,10 +185,7 @@ theorem returned_equality (R : PTm n) : Γ ⊢[PRAAx] fields (run R) 3 ≐ field
   (returned_fields R 3).eqTrans ((square_det R).eqTrans (returned_fields R 4).eqSymm)
 theorem returned_change_det (R : PTm n) : Γ ⊢[PRAAx] scalarDet (fields (run R) 1) (length R) ≐ qone := by
   have eq : Γ ⊢[PRAAx] scalarDet (fields (run R) 1) (length R) ≐ scalarDet (change R (length R)) (length R) := by
-    simpa only [GaussianScalarDeterminant.subst_scalarDet,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using
-      Prf.eqCongr (Γ := Γ) (scalarDet (var 0) (var 1) : PTm 2)
-        (σ := ![fields (run R) 1,length R]) (σ' := ![change R (length R),length R])
-        (fun i => by fin_cases i; exact returned_fields R 1; exact .eqRefl _)
+    ipra_congr (scalarDet (var 0) (var 1) : PTm 2) with [returned_fields R 1, .eqRefl (length R)]
   exact eq.eqTrans (change_det R (length R))
 
 theorem actual_change_lookup_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 4

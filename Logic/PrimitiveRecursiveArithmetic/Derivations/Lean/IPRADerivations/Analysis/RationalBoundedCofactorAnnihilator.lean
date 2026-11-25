@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.RationalCofactorDotProduct
 import IPRADerivations.Analysis.RationalCofactorOriginalClearing
 import IPRADerivations.Analysis.RationalOriginalAnnihilator
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The bounded integer annihilator of the original rational rows
@@ -63,11 +64,7 @@ theorem rational_vector_lookup (P d j : PTm n) (hj : Γ ⊢[PRAAx] lt j d) :
   refine (sequence_decode rationalBody (x := pairT P d) hj).eqTrans ?_
   simp only [rationalBody,inst2,subst_coefficientValue,subst_fstT,subst_sndT,Syn.subst_var,
     Matrix.cons_val_zero,Matrix.cons_val_one]
-  simpa only [subst_coefficientValue,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-    Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (coefficientValue (var 0) (var 1) (var 2) : PTm 3)
-      (σ := ![fstT (pairT P d),sndT (pairT P d),j]) (σ' := ![P,d,j])
-      (fun t => by fin_cases t; exact fst_pair _ _; exact snd_pair _ _; exact .eqRefl _)
+  ipra_congr (coefficientValue (var 0) (var 1) (var 2) : PTm 3) with [fst_pair _ _, snd_pair _ _, .eqRefl j]
 
 private theorem embed_dot_term (P d i j : PTm n) (hj : Γ ⊢[PRAAx] lt j d) :
     Γ ⊢[PRAAx] inst2 (embedBody dotBody) j (dotData P (rationalVector P d) i) ≐

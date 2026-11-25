@@ -51,7 +51,7 @@ theorem witness_alg {A B E Qr c R P₁ P₂ : PTm n} (pr : Γ ⊢[PRAAx] le P₁
     (e₂ : Γ ⊢[PRAAx] P₂ ≐ E * Qr) (hE : Γ ⊢[PRAAx] le Qr (c * A * R)) :
     Γ ⊢[PRAAx] le (A * B) (A * (E * c * R)) :=
   le_trans (le_congr e₁ e₂ pr)
-    (le_congr (.eqRefl _) (by apply deriveNat; ipra_simps; ring) (le_mul_mono (le_refl E) hE))
+    (le_congr (.eqRefl _) (by ipra_ring) (le_mul_mono (le_refl E) hE))
 
 /-- `thm:energy`, the second witness: `Q_N^r ≤ c (N!)^{2r} N^{r+1}` gives `|M(N)|^{2r} ≤ 8^r c N^{r+1}`. -/
 theorem energy_witness (Mp Mn : PTm 2) {N x c r : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N))

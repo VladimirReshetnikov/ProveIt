@@ -2,6 +2,7 @@ import IPRADerivations.Geometry.HypercubeSplit
 import IPRADerivations.Combinatorics.IndependentSets
 import IPRADerivations.DiophantineNumberTheory.FLTMultiples
 import IPRADerivations.Combinatorics.BinomialTwo
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The hypercube edge inequality
@@ -61,22 +62,19 @@ theorem two_pw_pos (i : PTm n) : Γ ⊢[PRAAx] pw two i ≐ succ (pred (pw two i
 theorem bit_succ {i w e : PTm n} (he : Γ ⊢[PRAAx] le e one) : Γ ⊢[PRAAx] bit (succ i) (two * w + e) ≐ bit i w := by
   have hP := two_pw_pos (Γ := Γ) i
   have hP' := two_pw_pos (Γ := Γ) (succ i)
-  have dv := natEq (div_eq (j := w) hP)
-  have p := natEq (pw_succ (Γ := Γ) two i)
   have hr := rem_lt' hP w
   have q : Γ ⊢[PRAAx] quo (two * w + e) (pw two (succ i)) ≐ quo w (pw two i) := by
     refine quo_eq hP' (r := two * rem w (pw two i) + e) ?_ ?_
-    · apply deriveNat; ipra_simps; linear_combination 2 * dv - 𝔞 (quo w (pw two i)) * p
+    · ipra_lc 2 * natEq (div_eq (j := w) hP) - 𝔞 (quo w (pw two i)) * natEq (pw_succ (Γ := Γ) two i)
     · have w₁ := natEq (eq_add_of_le hr); have w₂ := natEq (eq_add_of_le he)
       refine le_of_eq_add (d := two * monus (pw two i) (succ (rem w (pw two i))) + monus one e) ?_
-      apply deriveNat; ipra_simps; linear_combination p + 2 * w₁ + w₂
+      ipra_lc natEq (pw_succ (Γ := Γ) two i) + 2 * w₁ + w₂
   exact congrAp1 parF q
 
 theorem bit_zero (v : PTm n) : Γ ⊢[PRAAx] bit zero v ≐ par v := by
   have h1 := two_pw_pos (Γ := Γ) (zero : PTm n)
   refine congrAp1 parF (quo_eq h1 (r := zero) ?_ ?_)
-  · have p := natEq (pw_zero (Γ := Γ) (two : PTm n))
-    apply deriveNat; ipra_simps; linear_combination -𝔞 v * p
+  · ipra_lc -𝔞 v * natEq (pw_zero (Γ := Γ) (two : PTm n))
   · exact le_congr (.eqRefl _) (pw_zero two).eqSymm (le_refl _)
 
 theorem bit_double (i w : PTm n) : Γ ⊢[PRAAx] bit (succ i) (two * w) ≐ bit i w :=
@@ -407,9 +405,8 @@ theorem psi_step {d D x : PTm n}
   have ih' := Prf.impE ih.wk (le_trans (le_succ_self d) hle)
   -- `2^{D−d} = 2 · 2^{D−(d+1)}`.
   have eD : (le (succ d) D :: Γ) ⊢[PRAAx] pw two (monus D d) ≐ two * pw two (monus D (succ d)) := by
-    have a := natEq (eq_add_of_le hle)
     have e₀ : (le (succ d) D :: Γ) ⊢[PRAAx] D ≐ succ (monus D (succ d)) + d := by
-      apply deriveNat; ipra_simps; linear_combination a
+      ipra_lc natEq (eq_add_of_le hle)
     exact (congrPw (.eqRefl _) ((congrMonus e₀ (.eqRefl _)).eqTrans (add_monus _ _))).eqTrans (pw_two_succ _)
   refine (sum_congr_bounded (vB χ) LeanProofs.IPRA.Combinatorics.Vandermonde.zB (pairT (succ d) (pairT D x))
     (pairT (succ d) (pairT D x)) (pw two (monus D (succ d))) (.allI (.impI ?_))).eqTrans
@@ -429,18 +426,17 @@ theorem psi_step {d D x : PTm n}
     simpa [Fm.shift, Syn.shift] using eD.shift
   have ht : (lt (var 0) (pw two (monus (Syn.shift D) (succ (Syn.shift d)))) :: (le (succ d) D :: Γ).map Fm.shift) ⊢[PRAAx]
       lt (var 0) (pw two (monus (Syn.shift D) (succ (Syn.shift d)))) := Prf.hyp0
-  have w := natEq (eq_add_of_le ht)
   have h₀ : (lt (var 0) (pw two (monus (Syn.shift D) (succ (Syn.shift d)))) :: (le (succ d) D :: Γ).map Fm.shift) ⊢[PRAAx]
       lt (var 0) (pw two (monus (Syn.shift D) (Syn.shift d))) := by
     have e := natEq (eD'.wk (ψ := lt (var 0) (pw two (monus (Syn.shift D) (succ (Syn.shift d))))))
     refine le_of_eq_add (d := pw two (monus (Syn.shift D) (succ (Syn.shift d))) + monus (pw two (monus (Syn.shift D)
       (succ (Syn.shift d)))) (succ (var 0))) ?_
-    apply deriveNat; ipra_simps; linear_combination e + w
+    ipra_lc e + natEq (eq_add_of_le ht)
   have h₁ : (lt (var 0) (pw two (monus (Syn.shift D) (succ (Syn.shift d)))) :: (le (succ d) D :: Γ).map Fm.shift) ⊢[PRAAx]
       lt (pw two (monus (Syn.shift D) (succ (Syn.shift d))) + var 0) (pw two (monus (Syn.shift D) (Syn.shift d))) := by
     have e := natEq (eD'.wk (ψ := lt (var 0) (pw two (monus (Syn.shift D) (succ (Syn.shift d))))))
     refine le_of_eq_add (d := monus (pw two (monus (Syn.shift D) (succ (Syn.shift d)))) (succ (var 0))) ?_
-    apply deriveNat; ipra_simps; linear_combination e + w
+    ipra_lc e + natEq (eq_add_of_le ht)
   have v₀ := sum_zero_elim (vB χ) ih''.wk h₀
   have v₁ := sum_zero_elim (vB χ) ih''.wk h₁
   have P₀ := congrPd χ eD'.wk (.eqRefl _) (P_of_viol χ ((v_at _ _ _ _ _).eqSymm.eqTrans v₀))

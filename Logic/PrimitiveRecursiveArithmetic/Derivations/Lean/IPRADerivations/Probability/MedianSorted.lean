@@ -1,5 +1,6 @@
 import IPRADerivations.Probability.MedianCounts
 import IPRADerivations.Combinatorics.LegendreFact
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The middle-interval theorem for sorted data, and the odd and even median formulas
@@ -59,9 +60,9 @@ theorem inst2_geB {m : ℕ} (i y : PTm m) : inst2 geB i y = sg (monus (succ i) y
 /-- `[c ≤ i] + [i < c] = 1`. -/
 theorem ge_lt_bits (i c : PTm n) : Γ ⊢[PRAAx] sg (monus (succ i) c) + sg (monus c i) ≐ one := by
   refine .orE (lt_or_le i c) ?_ ?_
-  · exact (congrAdd (sg_le Prf.hyp0) (sg_lt Prf.hyp0)).eqTrans (by apply deriveNat; ipra_simps; ring)
+  · exact (congrAdd (sg_le Prf.hyp0) (sg_lt Prf.hyp0)).eqTrans (by ipra_ring)
   · have h : (le c i :: Γ) ⊢[PRAAx] lt c (succ i) := (succ_monus_succ _ _).eqTrans Prf.hyp0
-    exact (congrAdd (sg_lt h) (sg_le Prf.hyp0)).eqTrans (by apply deriveNat; ipra_simps; ring)
+    exact (congrAdd (sg_lt h) (sg_le Prf.hyp0)).eqTrans (by ipra_ring)
 
 /-- `#{j < N : c ≤ j} + c = N` for `c ≤ N`. -/
 theorem count_ge {c N : PTm n} (h : Γ ⊢[PRAAx] le c N) : Γ ⊢[PRAAx] ap2 (sumF geB) N c + c ≐ N := by
@@ -120,7 +121,7 @@ theorem mono_add {N p : PTm n} (hS : Γ ⊢[PRAAx] Sorted X N p) (i d : PTm n) (
           le (inst2 X (Syn.shift i) (Syn.shift p)) (inst2 X (Syn.shift i + var 0) (Syn.shift p))) :: Γ.map Fm.shift
       have hl : C ⊢[PRAAx] lt (Syn.shift i + succ (var 0)) (Syn.shift N) := Prf.hyp0
       have e : C ⊢[PRAAx] Syn.shift i + succ (var 0) ≐ succ (Syn.shift i + var 0) := by
-        apply deriveNat; ipra_simps; ring
+        ipra_ring
       have hl' : C ⊢[PRAAx] lt (succ (Syn.shift i + var 0)) (Syn.shift N) := lt_congr e (.eqRefl _) hl
       have hl0 : C ⊢[PRAAx] lt (Syn.shift i + var 0) (Syn.shift N) := le_of_lt hl'
       have ih := Prf.impE Prf.hyp1 hl0
@@ -227,11 +228,8 @@ theorem between_med {N p t l u : PTm n} (hS : Γ ⊢[PRAAx] Sorted X N p) (hl : 
     (hu : Γ ⊢[PRAAx] lt u N) (F1 : Γ ⊢[PRAAx] le (two * u) N) (F2 : Γ ⊢[PRAAx] le N (two * l + two))
     (h₁ : Γ ⊢[PRAAx] le (inst2 X l p) t) (h₂ : Γ ⊢[PRAAx] le t (inst2 X u p)) : Γ ⊢[PRAAx] isMed X N t p := by
   refine .andI (le_trans (le_mul_mono (le_refl two) (below_le X hS (le_of_lt hu) h₂)) F1) ?_
-  have e1 := natEq (eq_add_of_le (above_le X hS hl h₁))
-  have e2 := natEq (eq_add_of_le F2)
   refine le_of_eq_add (d := monus (two * l + two) N + two * monus N (Ac X N t p + succ l)) ?_
-  apply deriveNat; ipra_simps
-  linear_combination 2 * e1 + e2
+  ipra_lc 2 * natEq (eq_add_of_le (above_le X hS hl h₁)) + natEq (eq_add_of_le F2)
 
 /-- `thm:middle-interval`, necessity: if `2ℓ < N < 2u + 2`, every balance median lies in `[y_ℓ, y_u]`. -/
 theorem med_between {N p t l u : PTm n} (hS : Γ ⊢[PRAAx] Sorted X N p) (hl : Γ ⊢[PRAAx] lt l N)
@@ -241,40 +239,34 @@ theorem med_between {N p t l u : PTm n} (hS : Γ ⊢[PRAAx] Sorted X N p) (hl : 
   · refine .orE (lt_or_le t (inst2 X l p)) ?_ Prf.hyp0
     let C := lt t (inst2 X l p) :: Γ
     have g := above_ge X hS.wk (le_of_lt hl.wk) (Prf.hyp0 : C ⊢[PRAAx] _)
-    have f1 := natEq (eq_add_of_le g)
-    have f2 := natEq (eq_add_of_le (Prf.andE₂ hm.wk : C ⊢[PRAAx] _))
-    have f3 := natEq (eq_add_of_le (F3.wk : C ⊢[PRAAx] _))
     refine not_succ_le_self N _ (le_of_eq_add (d := monus N (two * Ac X N t p) +
       two * monus (Ac X N t p + l) N + monus N (succ (two * l))) ?_)
-    apply deriveNat; ipra_simps
-    linear_combination 2 * f1 + f2 + f3
+    ipra_lc 2 * natEq (eq_add_of_le g) + natEq (eq_add_of_le (Prf.andE₂ hm.wk : C ⊢[PRAAx] _)) +
+      natEq (eq_add_of_le (F3.wk : C ⊢[PRAAx] _))
   · refine .orE (lt_or_le (inst2 X u p) t) ?_ Prf.hyp0
     let C := lt (inst2 X u p) t :: Γ
     have g := below_ge X hS.wk hu.wk (Prf.hyp0 : C ⊢[PRAAx] _)
-    have g1 := natEq (eq_add_of_le g)
-    have g2 := natEq (eq_add_of_le (Prf.andE₁ hm.wk : C ⊢[PRAAx] _))
-    have g3 := natEq (eq_add_of_le (F4.wk : C ⊢[PRAAx] _))
     refine not_succ_le_self N _ (le_of_eq_add (d := monus (two * u + two) (succ N) +
       two * monus (Bc X N t p) (succ u) + monus N (two * Bc X N t p)) ?_)
-    apply deriveNat; ipra_simps
-    linear_combination 2 * g1 + g2 + g3
+    ipra_lc 2 * natEq (eq_add_of_le g) + natEq (eq_add_of_le (Prf.andE₁ hm.wk : C ⊢[PRAAx] _)) +
+      natEq (eq_add_of_le (F4.wk : C ⊢[PRAAx] _))
 
 /-! ## The odd and even formulas -/
 
 /-- `cor:odd-even`, odd case: for `N = 2q + 1`, `y_q` is a balance median. -/
 theorem odd_med {q p : PTm n} (hS : Γ ⊢[PRAAx] Sorted X (succ (two * q)) p) :
     Γ ⊢[PRAAx] isMed X (succ (two * q)) (inst2 X q p) p :=
-  between_med X hS (le_of_eq_add (d := q) (by apply deriveNat; ipra_simps; ring))
-    (le_of_eq_add (d := q) (by apply deriveNat; ipra_simps; ring))
-    (le_of_eq_add (d := one) (by apply deriveNat; ipra_simps; ring))
-    (le_of_eq_add (d := one) (by apply deriveNat; ipra_simps; ring)) (le_refl _) (le_refl _)
+  between_med X hS (le_of_eq_add (d := q) (by ipra_ring))
+    (le_of_eq_add (d := q) (by ipra_ring))
+    (le_of_eq_add (d := one) (by ipra_ring))
+    (le_of_eq_add (d := one) (by ipra_ring)) (le_refl _) (le_refl _)
 
 /-- `cor:odd-even`, odd case: for `N = 2q + 1` the balance median is unique, `t = y_q`. -/
 theorem odd_unique {q p t : PTm n} (hS : Γ ⊢[PRAAx] Sorted X (succ (two * q)) p)
     (hm : Γ ⊢[PRAAx] isMed X (succ (two * q)) t p) : Γ ⊢[PRAAx] t ≐ inst2 X q p := by
-  have h := med_between X hS (le_of_eq_add (d := q) (by apply deriveNat; ipra_simps; ring))
-    (le_of_eq_add (d := q) (by apply deriveNat; ipra_simps; ring)) (le_refl _)
-    (le_of_eq_add (d := zero) (by apply deriveNat; ipra_simps; ring)) hm
+  have h := med_between X hS (le_of_eq_add (d := q) (by ipra_ring))
+    (le_of_eq_add (d := q) (by ipra_ring)) (le_refl _)
+    (le_of_eq_add (d := zero) (by ipra_ring)) hm
   exact le_antisymm (Prf.andE₂ h) (Prf.andE₁ h)
 
 /-- `cor:odd-even`, even case: for `N = 2q` (`q ≥ 1`), every `t ∈ [y_{q−1}, y_q]` is a balance median. -/
@@ -293,7 +285,7 @@ theorem even_between {q p t : PTm n} (hq : Γ ⊢[PRAAx] q ≐ succ (pred q)) (h
   exact med_between X hS (le_of_eq_add (d := q) (by apply deriveNat; ipra_simps; linear_combination e))
     (le_of_eq_add (d := pred q) (by apply deriveNat; ipra_simps; linear_combination e))
     (le_of_eq_add (d := one) (by apply deriveNat; ipra_simps; linear_combination 2 * e))
-    (le_of_eq_add (d := one) (by apply deriveNat; ipra_simps; ring)) hm
+    (le_of_eq_add (d := one) (by ipra_ring)) hm
 
 /-- The doubled conventional median `M = y_{q−1} + y_q` of an even sample lies in the doubled median
 interval: `2 y_{q−1} ≤ M ≤ 2 y_q`. -/
@@ -303,11 +295,10 @@ theorem doubled_median {q p : PTm n} (hq : Γ ⊢[PRAAx] q ≐ succ (pred q)) (h
   have e := natEq hq
   have m := mono X (i := pred q) (j := q) hS (le_of_eq_add (d := one) (by apply deriveNat; ipra_simps; linear_combination e))
     (le_of_eq_add (d := pred q) (by apply deriveNat; ipra_simps; linear_combination e))
-  have f := natEq (eq_add_of_le m)
   refine .andI (le_of_eq_add (d := monus (inst2 X q p) (inst2 X (pred q) p)) ?_)
     (le_of_eq_add (d := monus (inst2 X q p) (inst2 X (pred q) p)) ?_)
-  · apply deriveNat; ipra_simps; linear_combination f
-  · apply deriveNat; ipra_simps; linear_combination f
+  · ipra_lc natEq (eq_add_of_le m)
+  · ipra_lc natEq (eq_add_of_le m)
 
 end Sorted
 

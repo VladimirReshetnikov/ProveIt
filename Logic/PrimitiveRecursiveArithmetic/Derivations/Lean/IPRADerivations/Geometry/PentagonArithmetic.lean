@@ -1,5 +1,6 @@
 import IPRADerivations.Core.Tactic
 import IPRADerivations.Core.Gcd
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Arithmetic of pentagonal tilings
@@ -45,55 +46,39 @@ variable {k K K₁ K₂ K₃ l l₁ l₂ : PTm n}
 theorem leaf_l2 (hk : Γ ⊢[PRAAx] k ≐ succ K) (hl : Γ ⊢[PRAAx] l ≐ succ (succ l₂))
     (h : Γ ⊢[PRAAx] num 3 * k + num 5 * l ≐ num 10) : Γ ⊢[PRAAx] Fm.bot := by
   refine absurd_of (a := num 10) (c := num 2 + num 3 * K + num 5 * l₂) ?_
-  have ek := natEq hk; have el := natEq hl; have e := natEq h
-  apply deriveNat; ipra_simps
-  linear_combination e - 3 * ek - 5 * el
+  ipra_lc natEq h - 3 * natEq hk - 5 * natEq hl
 
 theorem leaf_3 (hk : Γ ⊢[PRAAx] k ≐ succ K) (hK : Γ ⊢[PRAAx] K ≐ zero) (hl : Γ ⊢[PRAAx] l ≐ zero)
     (h : Γ ⊢[PRAAx] num 3 * k + num 5 * l ≐ num 10) : Γ ⊢[PRAAx] Fm.bot := by
   refine absurd_of (a := num 3) (c := num 6) ?_
-  have ek := natEq hk; have eK := natEq hK; have el := natEq hl; have e := natEq h
-  apply deriveNat; ipra_simps
-  linear_combination -e + 3 * ek + 3 * eK + 5 * el
+  ipra_lc -natEq h + 3 * natEq hk + 3 * natEq hK + 5 * natEq hl
 
 theorem leaf_6 (hk : Γ ⊢[PRAAx] k ≐ succ K) (hK : Γ ⊢[PRAAx] K ≐ succ K₁) (hK₁ : Γ ⊢[PRAAx] K₁ ≐ zero)
     (hl : Γ ⊢[PRAAx] l ≐ zero) (h : Γ ⊢[PRAAx] num 3 * k + num 5 * l ≐ num 10) : Γ ⊢[PRAAx] Fm.bot := by
   refine absurd_of (a := num 6) (c := num 3) ?_
-  have ek := natEq hk; have eK := natEq hK; have eK₁ := natEq hK₁; have el := natEq hl; have e := natEq h
-  apply deriveNat; ipra_simps
-  linear_combination -e + 3 * ek + 3 * eK + 3 * eK₁ + 5 * el
+  ipra_lc -natEq h + 3 * natEq hk + 3 * natEq hK + 3 * natEq hK₁ + 5 * natEq hl
 
 theorem leaf_9 (hk : Γ ⊢[PRAAx] k ≐ succ K) (hK : Γ ⊢[PRAAx] K ≐ succ K₁) (hK₁ : Γ ⊢[PRAAx] K₁ ≐ succ K₂)
     (hK₂ : Γ ⊢[PRAAx] K₂ ≐ zero) (hl : Γ ⊢[PRAAx] l ≐ zero)
     (h : Γ ⊢[PRAAx] num 3 * k + num 5 * l ≐ num 10) : Γ ⊢[PRAAx] Fm.bot := by
   refine absurd_of (a := num 9) (c := zero) ?_
-  have ek := natEq hk; have eK := natEq hK; have eK₁ := natEq hK₁; have eK₂ := natEq hK₂
-  have el := natEq hl; have e := natEq h
-  apply deriveNat; ipra_simps
-  linear_combination -e + 3 * ek + 3 * eK + 3 * eK₁ + 3 * eK₂ + 5 * el
+  ipra_lc -natEq h + 3 * natEq hk + 3 * natEq hK + 3 * natEq hK₁ + 3 * natEq hK₂ + 5 * natEq hl
 
 theorem leaf_12 (hk : Γ ⊢[PRAAx] k ≐ succ K) (hK : Γ ⊢[PRAAx] K ≐ succ K₁) (hK₁ : Γ ⊢[PRAAx] K₁ ≐ succ K₂)
     (hK₂ : Γ ⊢[PRAAx] K₂ ≐ succ K₃) (hl : Γ ⊢[PRAAx] l ≐ zero)
     (h : Γ ⊢[PRAAx] num 3 * k + num 5 * l ≐ num 10) : Γ ⊢[PRAAx] Fm.bot := by
   refine absurd_of (a := num 10) (c := num 1 + num 3 * K₃) ?_
-  have ek := natEq hk; have eK := natEq hK; have eK₁ := natEq hK₁; have eK₂ := natEq hK₂
-  have el := natEq hl; have e := natEq h
-  apply deriveNat; ipra_simps
-  linear_combination e - 3 * ek - 3 * eK - 3 * eK₁ - 3 * eK₂ - 5 * el
+  ipra_lc natEq h - 3 * natEq hk - 3 * natEq hK - 3 * natEq hK₁ - 3 * natEq hK₂ - 5 * natEq hl
 
 theorem leaf_8 (hk : Γ ⊢[PRAAx] k ≐ succ K) (hK : Γ ⊢[PRAAx] K ≐ zero) (hl : Γ ⊢[PRAAx] l ≐ succ l₁)
     (hl₁ : Γ ⊢[PRAAx] l₁ ≐ zero) (h : Γ ⊢[PRAAx] num 3 * k + num 5 * l ≐ num 10) : Γ ⊢[PRAAx] Fm.bot := by
   refine absurd_of (a := num 8) (c := num 1) ?_
-  have ek := natEq hk; have eK := natEq hK; have el := natEq hl; have el₁ := natEq hl₁; have e := natEq h
-  apply deriveNat; ipra_simps
-  linear_combination -e + 3 * ek + 3 * eK + 5 * el + 5 * el₁
+  ipra_lc -natEq h + 3 * natEq hk + 3 * natEq hK + 5 * natEq hl + 5 * natEq hl₁
 
 theorem leaf_11 (hk : Γ ⊢[PRAAx] k ≐ succ K) (hK : Γ ⊢[PRAAx] K ≐ succ K₁) (hl : Γ ⊢[PRAAx] l ≐ succ l₁)
     (hl₁ : Γ ⊢[PRAAx] l₁ ≐ zero) (h : Γ ⊢[PRAAx] num 3 * k + num 5 * l ≐ num 10) : Γ ⊢[PRAAx] Fm.bot := by
   refine absurd_of (a := num 10) (c := num 3 * K₁) ?_
-  have ek := natEq hk; have eK := natEq hK; have el := natEq hl; have el₁ := natEq hl₁; have e := natEq h
-  apply deriveNat; ipra_simps
-  linear_combination e - 3 * ek - 3 * eK - 5 * el - 5 * el₁
+  ipra_lc natEq h - 3 * natEq hk - 3 * natEq hK - 5 * natEq hl - 5 * natEq hl₁
 
 /-- No straight angle: `3k = 10` with `k ≥ 1` is impossible. -/
 theorem obs_l0 (hk : Γ ⊢[PRAAx] k ≐ succ K) (hl : Γ ⊢[PRAAx] l ≐ zero)
@@ -122,20 +107,15 @@ theorem local_obstruction {k l : PTm n} (hk : Γ ⊢[PRAAx] k ≐ succ (pred k))
 
 /-- `4 ≤ m` gives `10 < 3m`. -/
 theorem hyperbolic_of_le {m : PTm n} (h : Γ ⊢[PRAAx] le (num 4) m) : Γ ⊢[PRAAx] lt (num 10) (num 3 * m) := by
-  have e := natEq (eq_add_of_le h)
   refine le_of_eq_add (d := succ (num 3 * monus m (num 4))) ?_
-  apply deriveNat; ipra_simps
-  linear_combination 3 * e
+  ipra_lc 3 * natEq (eq_add_of_le h)
 
 /-- `m < 4` and `10 < 3m` are incompatible. -/
 theorem small_absurd {m : PTm n} (h₁ : Γ ⊢[PRAAx] lt m (num 4)) (h₂ : Γ ⊢[PRAAx] lt (num 10) (num 3 * m)) :
     Γ ⊢[PRAAx] Fm.bot := by
-  have e₁ := natEq (eq_add_of_le h₁)
-  have e₂ := natEq (eq_add_of_le h₂)
   refine absurd_of (a := num 9)
     (c := num 1 + monus (num 3 * m) (succ (num 10)) + num 3 * monus (num 4) (succ m)) ?_
-  apply deriveNat; ipra_simps
-  linear_combination -e₂ - 3 * e₁
+  ipra_lc -natEq (eq_add_of_le h₂) - 3 * natEq (eq_add_of_le h₁)
 
 /-- `10 < 3m` gives `4 ≤ m`. -/
 theorem le_of_hyperbolic {m : PTm n} (h : Γ ⊢[PRAAx] lt (num 10) (num 3 * m)) : Γ ⊢[PRAAx] le (num 4) m :=
@@ -172,12 +152,10 @@ theorem coxeter_hyperbolic (m : PTm n) :
   · let C := lt (num 7 * m + num 10) (num 10 * m) :: Γ
     have e := natEq (eq_add_of_le (Prf.hyp0 : C ⊢[PRAAx] lt (num 7 * m + num 10) (num 10 * m)))
     refine le_of_hyperbolic (le_of_eq_add (d := monus (num 10 * m) (succ (num 7 * m + num 10))) ?_)
-    apply deriveNat; ipra_simps
-    linear_combination e
+    ipra_lc e
   · let C := le (num 4) m :: Γ
     have e := natEq (eq_add_of_le (hyperbolic_of_le (Prf.hyp0 : C ⊢[PRAAx] le (num 4) m)))
     refine le_of_eq_add (d := monus (num 3 * m) (succ (num 10))) ?_
-    apply deriveNat; ipra_simps
-    linear_combination e
+    ipra_lc e
 
 end LeanProofs.IPRA.Geometry.PentagonArithmetic

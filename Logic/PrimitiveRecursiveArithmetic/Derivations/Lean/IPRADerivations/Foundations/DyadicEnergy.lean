@@ -1,5 +1,6 @@
 import IPRADerivations.Probability.Variance
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Dyadic energy identities
@@ -35,15 +36,13 @@ local notation "𝔟" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 theorem energy_identity (a b : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (ZT.natLit 2 * (a * a + b * b)) ((a + b) * (a + b) + (a - b) * (a - b)) := by
-  apply ZT.derive
-  simp only [ZT.toZ_add, ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_natLit]; push_cast; ring
+  ipra_lc
 
 theorem residual_identity (a b : ZT n) :
     Γ ⊢[PRAAx] ZT.eq ((ZT.natLit 2 * a - (a + b)) * (ZT.natLit 2 * a - (a + b)) +
         (ZT.natLit 2 * b - (a + b)) * (ZT.natLit 2 * b - (a + b)))
       (ZT.natLit 2 * ((a - b) * (a - b))) := by
-  apply ZT.derive
-  simp only [ZT.toZ_add, ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_natLit]; push_cast; ring
+  ipra_lc
 
 theorem energy_monotone (a b : PTm n) : Γ ⊢[PRAAx] le ((a + b) * (a + b)) (two * (a * a + b * b)) := by
   have e := natEq (ad_sq (Γ := Γ) a b)
@@ -74,11 +73,6 @@ theorem orthogonal_energy (w f g : α → ZT n) (L : List α)
     (hcross : Γ ⊢[PRAAx] ZT.eq (zsum (fun r => w r * (f r * g r)) L) (zsum (fun r => w r * (g r * g r)) L)) :
     Γ ⊢[PRAAx] ZT.eq (zsum (fun r => w r * ((f r - g r) * (f r - g r))) L)
       (zsum (fun r => w r * (f r * f r)) L - zsum (fun r => w r * (g r * g r)) L) := by
-  have h := ZT.toZ_eq (square_expansion (Γ := Γ) w f g L)
-  have c := ZT.toZ_eq hcross
-  apply ZT.derive
-  simp only [ZT.toZ_add, ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_natLit] at h c ⊢
-  push_cast at h
-  linear_combination h - 2 * c
+  ipra_lc ZT.toZ_eq (square_expansion (Γ := Γ) w f g L) - 2 * ZT.toZ_eq hcross
 
 end LeanProofs.IPRA.Foundations.DyadicEnergy

@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianAggregateCoverTransport
 import IPRADerivations.Analysis.GaussianCharacteristicRootSupport
 import IPRADerivations.Analysis.GaussianRootSynchronizedHit
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The original characteristic root lists as a rational aggregate
@@ -44,10 +45,7 @@ def pointF (point : PR 2) : PR 2 := PTm.toPR (vector (ap2 point (var 0) (var 1))
 theorem stages_congr (a : PR 4) {N N' t t' x x' : PTm n} (hn : Γ ⊢[PRAAx] N ≐ N')
     (ht : Γ ⊢[PRAAx] t ≐ t') (hx : Γ ⊢[PRAAx] x ≐ x') :
     Γ ⊢[PRAAx] stages a N t x ≐ stages a N' t' x' := by
-  simpa only [subst_stages,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-    Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (stages a (var 0) (var 1) (var 2) : PTm 3)
-      (σ := ![N,t,x]) (σ' := ![N',t',x']) (fun i => by fin_cases i; exact hn; exact ht; exact hx)
+  ipra_congr (stages a (var 0) (var 1) (var 2) : PTm 3) with [hn, ht, hx]
 
 theorem stage_at (a : PR 4) (N t x : PTm n) : Γ ⊢[PRAAx] sample (stageF a) t (data N x) ≐ stages a N t x := by
   have reified : Γ ⊢[PRAAx] sample (stageF a) t (data N x) ≐

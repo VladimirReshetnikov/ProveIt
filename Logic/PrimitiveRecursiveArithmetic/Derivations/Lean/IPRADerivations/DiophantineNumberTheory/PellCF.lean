@@ -1,6 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.PellCFStep
 import IPRADerivations.Core.Fubini
 import IPRADerivations.Combinatorics.BinomialIdentities
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The continued fraction of `√D` and its integer invariants
@@ -276,19 +277,16 @@ theorem inv_step {k : PTm n} (h : Γ ⊢[PRAAx] InvF k D a) : Γ ⊢[PRAAx] InvF
   have i1 := natEq (Prf.andE₁ h); have i2 := natEq (Prf.andE₁ (Prf.andE₂ h)); have dt := natEq (Prf.andE₂ (Prf.andE₂ h))
   refine .andI ?_ (.andI ?_ ?_)
   · refine Combinatorics.BinomialIdentities.mul_cancel hd ?_
-    apply deriveNat; ipra_simps
-    linear_combination 𝔞 (Dd k D a) * sP - 𝔞 (Dd k D a) * 𝔞 (M (succ k) D a) * sQ +
-      (𝔞 (P k D a) - 𝔞 (M (succ k) D a) * 𝔞 (Q k D a)) * e1 - i2 + 𝔞 (M (succ k) D a) * i1 +
-      𝔞 (Q k D a) * e2 - 𝔞 (Dd k D a) * 𝔞 (Dd (succ k) D a) * sQ'
+    ipra_lc 𝔞 (Dd k D a) * sP - 𝔞 (Dd k D a) * 𝔞 (M (succ k) D a) * sQ +
+      (𝔞 (P k D a) - 𝔞 (M (succ k) D a) * 𝔞 (Q k D a)) * e1 - i2 + 𝔞 (M (succ k) D a) * i1 + 𝔞 (Q k D a) * e2 -
+      𝔞 (Dd k D a) * 𝔞 (Dd (succ k) D a) * sQ'
   · refine Combinatorics.BinomialIdentities.mul_cancel hd ?_
-    apply deriveNat; ipra_simps
-    linear_combination 𝔞 D * 𝔞 (Dd k D a) * sQ - 𝔞 (Dd k D a) * 𝔞 (M (succ k) D a) * sP +
+    ipra_lc 𝔞 D * 𝔞 (Dd k D a) * sQ - 𝔞 (Dd k D a) * 𝔞 (M (succ k) D a) * sP +
       (𝔞 D * 𝔞 (Q k D a) - 𝔞 (M (succ k) D a) * 𝔞 (P k D a)) * e1 - 𝔞 D * i1 + 𝔞 (M (succ k) D a) * i2 +
       𝔞 (P k D a) * e2 - 𝔞 (Dd k D a) * 𝔞 (Dd (succ k) D a) * sP'
-  · have ps := natEq (par_succ (Γ := Γ) k); have pu := natEq (par_flip (Γ := Γ) k)
-    apply deriveNat; ipra_simps
-    linear_combination 𝔞 (P (succ k) D a) * sQ' + 𝔞 (Q k D a) * sP - 𝔞 (P' (succ k) D a) * sQ -
-      (𝔞 (C k D a) * 𝔞 (Q k D a) + 𝔞 (Q' k D a)) * sP' + ps - pu - dt
+  · ipra_lc 𝔞 (P (succ k) D a) * sQ' + 𝔞 (Q k D a) * sP - 𝔞 (P' (succ k) D a) * sQ -
+      (𝔞 (C k D a) * 𝔞 (Q k D a) + 𝔞 (Q' k D a)) * sP' + natEq (par_succ (Γ := Γ) k) - natEq (par_flip (Γ := Γ) k) -
+      dt
 
 /-- `lem:cfinvariants`: `p_{k−1} = m_k q_{k−1} + d_k q_{k−2}`, `D q_{k−1} = m_k p_{k−1} + d_k p_{k−2}`, and
 `p_{k−1} q_{k−2} − p_{k−2} q_{k−1} = (−1)^k`, for every `k`. -/
@@ -317,9 +315,8 @@ theorem cf_invariants (k : PTm n) : Γ ⊢[PRAAx] InvF k D a := by
 theorem cf_norm (k : PTm n) :
     Γ ⊢[PRAAx] P k D a * P k D a + par k * Dd k D a ≐ D * (Q k D a * Q k D a) + monus one (par k) * Dd k D a := by
   have h := cf_invariants hA hB (Γ := Γ) k
-  have i1 := natEq (Prf.andE₁ h); have i2 := natEq (Prf.andE₁ (Prf.andE₂ h)); have dt := natEq (Prf.andE₂ (Prf.andE₂ h))
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 (P k D a) * i1 - 𝔞 (Q k D a) * i2 + 𝔞 (Dd k D a) * dt
+  ipra_lc 𝔞 (P k D a) * natEq (Prf.andE₁ h) - 𝔞 (Q k D a) * natEq (Prf.andE₁ (Prf.andE₂ h)) +
+    𝔞 (Dd k D a) * natEq (Prf.andE₂ (Prf.andE₂ h))
 
 end Seq
 

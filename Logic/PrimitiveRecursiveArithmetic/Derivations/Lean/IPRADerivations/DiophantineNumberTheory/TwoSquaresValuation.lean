@@ -1,4 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.TwoSquaresObstruction
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The valuation of a sum of two squares at a prime `q ≡ 3 (mod 4)`
@@ -42,11 +43,10 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 theorem decomp_alg {n x y u w Pt P2 : PTm k} (en : Γ ⊢[PRAAx] x * x + y * y ≐ n)
     (ex : Γ ⊢[PRAAx] x ≐ Pt * u) (ey : Γ ⊢[PRAAx] y ≐ Pt * w) (pp : Γ ⊢[PRAAx] P2 ≐ Pt * Pt) :
     Γ ⊢[PRAAx] n ≐ P2 * (u * u + w * w) := by
-  have a := natEq en; have b := natEq ex; have c := natEq ey; have d := natEq pp
-  apply deriveNat; ipra_simps
-  linear_combination -a + (𝔞 x + 𝔞 Pt * 𝔞 u) * b + (𝔞 y + 𝔞 Pt * 𝔞 w) * c - (𝔞 u * 𝔞 u + 𝔞 w * 𝔞 w) * d
+  ipra_lc -natEq en + (𝔞 x + 𝔞 Pt * 𝔞 u) * natEq ex + (𝔞 y + 𝔞 Pt * 𝔞 w) * natEq ey -
+    (𝔞 u * 𝔞 u + 𝔞 w * 𝔞 w) * natEq pp
 
-theorem dbl (t : PTm k) : Γ ⊢[PRAAx] two * t ≐ t + t := by apply deriveNat; ipra_simps; ring
+theorem dbl (t : PTm k) : Γ ⊢[PRAAx] two * t ≐ t + t := by ipra_ring
 
 theorem pw_dbl (q t : PTm k) : Γ ⊢[PRAAx] pw q (two * t) ≐ pw q t * pw q t :=
   (congrAp2 powF (dbl t) (.eqRefl q)).eqTrans (pw_add q t t)
@@ -83,8 +83,7 @@ end Prime
 
 theorem re_alg {y A B C U : PTm k} (e0 : Γ ⊢[PRAAx] y ≐ A * U) (ep : Γ ⊢[PRAAx] A ≐ B * C) :
     Γ ⊢[PRAAx] y ≐ B * (C * U) := by
-  have a := natEq e0; have b := natEq ep
-  apply deriveNat; ipra_simps; linear_combination a + 𝔞 U * b
+  ipra_lc natEq e0 + 𝔞 U * natEq ep
 
 /-- `y = q^{s} U` and `t ≤ s` give `y = q^t (q^{s − t} U)`. -/
 theorem shift_decomp {q y s t U : PTm k} (e0 : Γ ⊢[PRAAx] y ≐ pw q s * U) (h : Γ ⊢[PRAAx] le t s) :
@@ -93,13 +92,11 @@ theorem shift_decomp {q y s t U : PTm k} (e0 : Γ ⊢[PRAAx] y ≐ pw q s * U) (
 
 theorem zero_sq_alg {x y n : PTm k} (e : Γ ⊢[PRAAx] x * x + y * y ≐ n) (hx : Γ ⊢[PRAAx] x ≐ zero) :
     Γ ⊢[PRAAx] y * y ≐ n := by
-  have a := natEq e; have b := natEq hx
-  apply deriveNat; ipra_simps; linear_combination a - 𝔞 x * b
+  ipra_lc natEq e - 𝔞 x * natEq hx
 
 theorem zero_zero_alg {x y n : PTm k} (e : Γ ⊢[PRAAx] x * x + y * y ≐ n) (hx : Γ ⊢[PRAAx] x ≐ zero)
     (hy : Γ ⊢[PRAAx] y ≐ zero) : Γ ⊢[PRAAx] n ≐ zero := by
-  have a := natEq e; have b := natEq hx; have c := natEq hy
-  apply deriveNat; ipra_simps; linear_combination -a + 𝔞 x * b + 𝔞 y * c
+  ipra_lc -natEq e + 𝔞 x * natEq hx + 𝔞 y * natEq hy
 
 /-- **`qr:two-obstruction`, second assertion**: for a prime `q ≡ 3 (mod 4)` and `n = x² + y² > 0`, the valuation
 `v_q(n)` is even. -/

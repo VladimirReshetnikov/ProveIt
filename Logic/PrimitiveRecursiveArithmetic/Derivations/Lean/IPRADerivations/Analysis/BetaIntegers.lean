@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.Pochhammer
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The Beta function at positive integers
@@ -59,30 +60,24 @@ theorem succ_pos (a : PTm n) : Γ ⊢[PRAAx] succ a ≐ succ (pred (succ a)) := 
 /-- `R(m, k) m! k! = (m + k + 1)!`, i.e. `B(m + 1, k + 1) = m! k! / (m + k + 1)!`. -/
 theorem rbeta_fact (m k : PTm n) : Γ ⊢[PRAAx] rbeta m k * (fact m * fact k) ≐ fact (succ (m + k)) := by
   have g : Γ ⊢[PRAAx] fact (monus (m + k) m) ≐ fact k := congrAp2 factF (add_monus' k m) (.eqRefl _)
-  have e := natEq ((binom_eq (Γ := Γ) (le_add_right m k)).eqTrans (congrMul (congrMul (.eqRefl _) g) (.eqRefl _)))
-  have fs := natEq (fact_succ (Γ := Γ) (m + k) zero)
   unfold rbeta
-  apply deriveNat; ipra_simps
-  linear_combination -fs - (𝔞(m) + 𝔞(k) + 1) * e
+  ipra_lc -natEq (fact_succ (Γ := Γ) (m + k) zero) -
+    (𝔞(m) + 𝔞(k) + 1) * natEq ((binom_eq (Γ := Γ) (le_add_right m k)).eqTrans (congrMul (congrMul (.eqRefl _) g) (.eqRefl _)))
 
 /-- `B(a, b) = B(b, a)`. -/
 theorem rbeta_symm (m k : PTm n) : Γ ⊢[PRAAx] rbeta m k ≐ rbeta k m := by
   refine mul_cancel (D := fact m * fact k) (pos_mul (fact_pos m) (fact_pos k)) ?_
-  have f₁ := natEq (rbeta_fact (Γ := Γ) m k); have f₂ := natEq (rbeta_fact (Γ := Γ) k m)
-  have c := natEq (congrAp2 (Γ := Γ) factF (congrSucc (add_comm m k)) (.eqRefl zero))
-  apply deriveNat; ipra_simps
-  linear_combination f₁ - f₂ + c
+  ipra_lc natEq (rbeta_fact (Γ := Γ) m k) - natEq (rbeta_fact (Γ := Γ) k m) +
+    natEq (congrAp2 (Γ := Γ) factF (congrSucc (add_comm m k)) (.eqRefl zero))
 
 /-- `(m + 1) R(m + 1, k) = (m + k + 2) R(m, k)`. -/
 theorem rbeta_step_left (m k : PTm n) :
     Γ ⊢[PRAAx] succ m * rbeta (succ m) k ≐ succ (succ (m + k)) * rbeta m k := by
   refine mul_cancel (D := fact m * fact k) (pos_mul (fact_pos m) (fact_pos k)) ?_
-  have f₁ := natEq (rbeta_fact (Γ := Γ) (succ m) k); have f₀ := natEq (rbeta_fact (Γ := Γ) m k)
-  have fm := natEq (fact_succ (Γ := Γ) m zero)
-  have cc := natEq ((congrAp2 (Γ := Γ) factF (congrSucc (succ_add m k)) (.eqRefl zero)).eqTrans
-    (fact_succ (succ (m + k)) zero))
-  apply deriveNat; ipra_simps
-  linear_combination f₁ + cc - (𝔞(m) + 𝔞(k) + 2) * f₀ - 𝔞(fact k) * 𝔞(rbeta (succ m) k) * fm
+  ipra_lc natEq (rbeta_fact (Γ := Γ) (succ m) k) +
+    natEq ((congrAp2 (Γ := Γ) factF (congrSucc (succ_add m k)) (.eqRefl zero)).eqTrans (fact_succ (succ (m + k)) zero)) -
+    (𝔞(m) + 𝔞(k) + 2) * natEq (rbeta_fact (Γ := Γ) m k) -
+    𝔞(fact k) * 𝔞(rbeta (succ m) k) * natEq (fact_succ (Γ := Γ) m zero)
 
 /-- `(k + 1) R(m, k + 1) = (m + k + 2) R(m, k)`. -/
 theorem rbeta_step_right (m k : PTm n) :
@@ -99,17 +94,14 @@ theorem rbeta_balanced (m k : PTm n) : Γ ⊢[PRAAx] succ m * rbeta (succ m) k �
 theorem rbeta_pascal (m k : PTm n) :
     Γ ⊢[PRAAx] rbeta (succ m) k * rbeta m (succ k) ≐ rbeta m k * (rbeta (succ m) k + rbeta m (succ k)) := by
   refine mul_cancel (D := succ m * succ k) (pos_mul (succ_pos m) (succ_pos k)) ?_
-  have l := natEq (rbeta_step_left (Γ := Γ) m k); have r := natEq (rbeta_step_right (Γ := Γ) m k)
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞(k) + 1) * (𝔞(rbeta m (succ k)) - 𝔞(rbeta m k)) * l + 𝔞(rbeta m k) * (𝔞(k) + 1) * r
+  ipra_lc (𝔞(k) + 1) * (𝔞(rbeta m (succ k)) - 𝔞(rbeta m k)) * natEq (rbeta_step_left (Γ := Γ) m k) +
+    𝔞(rbeta m k) * (𝔞(k) + 1) * natEq (rbeta_step_right (Γ := Γ) m k)
 
 /-- `R(m, N) N! = (m + 1)_{N+1}`, i.e. `B(a, N + 1) = N! / (a (a + 1) ⋯ (a + N))`. -/
 theorem rbeta_poch (m N : PTm n) : Γ ⊢[PRAAx] rbeta m N * fact N ≐ poch (succ m) (succ N) := by
   refine mul_cancel (D := fact m) (fact_pos m) ?_
-  have f₀ := natEq (rbeta_fact (Γ := Γ) m N); have pf := natEq (poch_fact (Γ := Γ) m (succ N))
-  have c := natEq (congrAp2 (Γ := Γ) factF (add_succ m N) (.eqRefl zero))
-  apply deriveNat; ipra_simps
-  linear_combination f₀ - pf - c
+  ipra_lc natEq (rbeta_fact (Γ := Γ) m N) - natEq (poch_fact (Γ := Γ) m (succ N)) -
+    natEq (congrAp2 (Γ := Γ) factF (add_succ m N) (.eqRefl zero))
 
 /-- `(a + 1)_i (b + 1)_j R(a + i, b + j) = (a + b + 2)_{i+j} R(a, b)`, i.e.
 `B(a + i, b + j) = (a)_i (b)_j / (a + b)_{i+j} · B(a, b)`. -/
@@ -119,13 +111,10 @@ theorem rbeta_general (a b i j : PTm n) :
   refine mul_cancel (D := fact a * fact b) (pos_mul (fact_pos a) (fact_pos b)) ?_
   have pa := natEq (poch_fact (Γ := Γ) a i); have pb := natEq (poch_fact (Γ := Γ) b j)
   have f₁ := natEq (rbeta_fact (Γ := Γ) (a + i) (b + j)); have f₀ := natEq (rbeta_fact (Γ := Γ) a b)
-  have pc := natEq (poch_fact (Γ := Γ) (succ (a + b)) (i + j))
   have hc : Γ ⊢[PRAAx] succ ((a + i) + (b + j)) ≐ succ (a + b) + (i + j) := by
-    apply deriveNat; ipra_simps; ring
-  have c := natEq (congrAp2 (Γ := Γ) factF hc (.eqRefl zero))
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞(rbeta (a + i) (b + j)) * 𝔞(fact b) * 𝔞(poch (succ b) j) * pa +
-    𝔞(rbeta (a + i) (b + j)) * 𝔞(fact (a + i)) * pb + f₁ -
-    𝔞(poch (succ (succ (a + b))) (i + j)) * f₀ - pc + c
+    ipra_ring
+  ipra_lc 𝔞(rbeta (a + i) (b + j)) * 𝔞(fact b) * 𝔞(poch (succ b) j) * pa +
+    𝔞(rbeta (a + i) (b + j)) * 𝔞(fact (a + i)) * pb + f₁ - 𝔞(poch (succ (succ (a + b))) (i + j)) * f₀ -
+    natEq (poch_fact (Γ := Γ) (succ (a + b)) (i + j)) + natEq (congrAp2 (Γ := Γ) factF hc (.eqRefl zero))
 
 end LeanProofs.IPRA.Analysis.BetaIntegers

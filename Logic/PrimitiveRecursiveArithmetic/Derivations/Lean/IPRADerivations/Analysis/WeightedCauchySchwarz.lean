@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.WeierstrassProduct
 import IPRADerivations.AnalyticNumberTheory.PowerCleared
 import IPRADerivations.AnalyticNumberTheory.PhiLower
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The weighted Cauchy–Schwarz inequality for finite sums
@@ -40,12 +41,10 @@ theorem four_le_sq (X Y : PTm n) : Γ ⊢[PRAAx] le (two * two * (X * Y)) ((X + 
   refine .orE (le_total X Y) ?_ ?_
   · have e := natEq (eq_add_of_le (Prf.hyp0 : (le X Y :: Γ) ⊢[PRAAx] le X Y))
     refine le_of_eq_add (d := monus Y X * monus Y X) ?_
-    apply deriveNat; ipra_simps
-    linear_combination (𝔞 X + 𝔞 Y + 𝔞 (monus Y X) - 2 * 𝔞 X) * e + 0
+    ipra_lc (𝔞 X + 𝔞 Y + 𝔞 (monus Y X) - 2 * 𝔞 X) * e + 0
   · have e := natEq (eq_add_of_le (Prf.hyp0 : (le Y X :: Γ) ⊢[PRAAx] le Y X))
     refine le_of_eq_add (d := monus X Y * monus X Y) ?_
-    apply deriveNat; ipra_simps
-    linear_combination (𝔞 X + 𝔞 Y + 𝔞 (monus X Y) - 2 * 𝔞 Y) * e + 0
+    ipra_lc (𝔞 X + 𝔞 Y + 𝔞 (monus X Y) - 2 * 𝔞 Y) * e + 0
 
 theorem sq_pw (a : PTm n) : Γ ⊢[PRAAx] pw a (succ one) ≐ a * a :=
   (pw_succ a one).eqTrans (congrMul (pw_one a) (.eqRefl _))
@@ -67,17 +66,13 @@ theorem cs_alg {S A C α β ω γ : PTm n} (ih : Γ ⊢[PRAAx] le (S * S) (A * C
   -- the cross terms: `(Aγ)(ωα²C) ≥ (Sαβ)²`
   have m1 := le_mul_mono (le_mul_mono ih hk) (le_refl (α * α))
   have m2 : Γ ⊢[PRAAx] le ((S * α * β) * (S * α * β)) ((A * γ) * (ω * α * α * C)) :=
-    le_congr (by apply deriveNat; ipra_simps; ring) (by apply deriveNat; ipra_simps; ring) m1
+    le_congr (by ipra_ring) (by ipra_ring) m1
   have cr := amgm2 m2
   -- the diagonal term: `ωα²γ ≥ α²β²`
   have dg := le_mul_mono (le_refl (α * α)) hk
-  have e1 := natEq (eq_add_of_le ih)
-  have e2 := natEq (eq_add_of_le cr)
-  have e3 := natEq (eq_add_of_le dg)
   refine le_of_eq_add (d := monus (A * C) (S * S) + monus (A * γ + ω * α * α * C) (two * (S * α * β)) +
     monus (α * α * (ω * γ)) (α * α * (β * β))) ?_
-  apply deriveNat; ipra_simps
-  linear_combination e1 + e2 + e3
+  ipra_lc natEq (eq_add_of_le ih) + natEq (eq_add_of_le cr) + natEq (eq_add_of_le dg)
 
 /-! ## The induction -/
 
@@ -96,12 +91,9 @@ abbrev CSF (k x : PTm n) : Fm PTm n := le (Sab a b k x * Sab a b k x) (Swa a w k
 theorem inst2_mul (f g : PTm 2) (i x : PTm n) : inst2 (f * g) i x = inst2 f i x * inst2 g i x := by simp [inst2]
 
 theorem cs_base (x : PTm n) : Γ ⊢[PRAAx] CSF a b w c zero x := by
-  have e1 := natEq (sum_zero (Γ := Γ) (a * b) x)
-  have e2 := natEq (sum_zero (Γ := Γ) (w * (a * a)) x)
-  have e3 := natEq (sum_zero (Γ := Γ) c x)
   refine le_of_eq_add (d := zero) ?_
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞 (ap2 (sumF c) zero x)) * e2 - (𝔞 (ap2 (sumF (a * b)) zero x)) * e1 + 0 * e3
+  ipra_lc (𝔞 (ap2 (sumF c) zero x)) * natEq (sum_zero (Γ := Γ) (w * (a * a)) x) -
+    (𝔞 (ap2 (sumF (a * b)) zero x)) * natEq (sum_zero (Γ := Γ) (a * b) x) + 0 * natEq (sum_zero (Γ := Γ) c x)
 
 theorem cs_step {k x : PTm n}
     (hk : Γ ⊢[PRAAx] le (inst2 b k x * inst2 b k x) (inst2 w k x * inst2 c k x)) (ih : Γ ⊢[PRAAx] CSF a b w c k x) :

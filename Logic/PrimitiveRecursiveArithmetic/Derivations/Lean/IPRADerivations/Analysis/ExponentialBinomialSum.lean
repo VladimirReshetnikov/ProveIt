@@ -4,6 +4,7 @@ import IPRADerivations.Analysis.BohrMollerupUniqueness
 import IPRADerivations.Combinatorics.BinomialTheorem
 import IPRADerivations.Combinatorics.BellTriangle
 import IPRADerivations.Probability.Independence
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The exponential sums against `(1 + 1/m)^m`, summed
@@ -107,7 +108,7 @@ theorem en_base : Γ ⊢[PRAAx] ap2 (sumF fB) (succ zero) (zero : PTm n) ≐ en 
 
 theorem en_step {m : PTm n} (ih : Γ ⊢[PRAAx] ap2 (sumF fB) (succ m) m ≐ en m) :
     Γ ⊢[PRAAx] ap2 (sumF fB) (succ (succ m)) (succ m) ≐ en (succ m) := by
-  have b : Γ ⊢[PRAAx] succ (succ m) ≐ succ zero + succ m := by apply deriveNat; ipra_simps; ring
+  have b : Γ ⊢[PRAAx] succ (succ m) ≐ succ zero + succ m := by ipra_ring
   have s := (congrAp2 (sumF fB) b (.eqRefl (succ m))).eqTrans (sum_split fB (succ zero) (succ m) (succ m))
   have s₁' := sum_succ' (Γ := Γ) fB zero (succ m)
   rw [inst2_fB] at s₁'
@@ -164,7 +165,6 @@ theorem term_gap {m k : PTm n} (h : Γ ⊢[PRAAx] le k m) :
       𝔟 (pw m k) * 𝔟 (pw m (monus m k)) * 𝔟 (ff m k) * 𝔟 (monus m k) * e₄ +
       𝔟 (ff m k) * 𝔟 (pw m k) * 𝔟 (pw m (monus m k)) * e₅
 
-
 /-! ## The shifted falling factorials -/
 
 /-- `(m)_{k+2}` over `(k, m)`. -/
@@ -175,25 +175,20 @@ theorem inst2_f2B (k m : PTm n) : inst2 f2B k m = ff m (succ (succ k)) := by sim
 /-- `∑_{k≤m} (m)_{k+2} + 1 + m = en m`. -/
 theorem shifted_ff_sum (m : PTm n) :
     Γ ⊢[PRAAx] ap2 (sumF f2B) (succ m) m + succ zero + m ≐ en m := by
-  have sp := natEq (sum_split (Γ := Γ) fB (succ (succ zero)) (succ m) m)
   have cv := natEq (sum_congr_bounded (Γ := Γ) (offB fB) f2B (pairT (succ (succ zero)) m) m (succ m)
     (.allI (.impI (by
       have e₁ : Syn.shift (pairT (succ (succ zero)) m) = pairT (succ (succ zero)) (Syn.shift m) := by
         simp [Syn.shift]
       rw [e₁, inst2_offB, inst2_fB, inst2_f2B]
       exact congrFF (snd_pair _ _) ((congrAdd (fst_pair _ _) (.eqRefl _)).eqTrans
-        (by apply deriveNat; ipra_simps; ring))))))
+        (by ipra_ring))))))
   have t₁' := sum_succ' (Γ := Γ) fB (succ zero) m
   rw [inst2_fB] at t₁'
   have t₀' := sum_succ' (Γ := Γ) fB zero m
   rw [inst2_fB] at t₀'
   have t₁ := natEq t₁'
   have t₀ := natEq t₀'
-  have z := natEq (sum_zero (Γ := Γ) fB m)
-  have f₀ := natEq (ff_zero (Γ := Γ) m)
-  have f₁ := natEq (ff_one (Γ := Γ) m)
-  have b : Γ ⊢[PRAAx] succ (succ zero) + succ m ≐ succ (succ (succ m)) := by apply deriveNat; ipra_simps; ring
-  have cb := natEq (congrAp2 (Γ := Γ) (sumF fB) b (.eqRefl m))
+  have b : Γ ⊢[PRAAx] succ (succ zero) + succ m ≐ succ (succ (succ m)) := by ipra_ring
   have u₂' := sum_succ' (Γ := Γ) fB (succ (succ m)) m
   rw [inst2_fB] at u₂'
   have u₁' := sum_succ' (Γ := Γ) fB (succ m) m
@@ -202,11 +197,9 @@ theorem shifted_ff_sum (m : PTm n) :
   have u₁ := natEq u₁'
   have h₁ : Γ ⊢[PRAAx] lt m (succ m) := by ipra_le 0
   have h₂ : Γ ⊢[PRAAx] lt m (succ (succ m)) := by ipra_le 1
-  have z₁ := natEq (ff_zero_above h₁)
-  have z₂ := natEq (ff_zero_above h₂)
-  have es := natEq (en_sum (Γ := Γ) m)
-  apply deriveNat; ipra_simps
-  linear_combination es + z₁ + u₁ + z₂ + u₂ + cb - f₁ - f₀ - z - t₀ - t₁ - sp - cv
+  ipra_lc natEq (en_sum (Γ := Γ) m) + natEq (ff_zero_above h₁) + u₁ + natEq (ff_zero_above h₂) + u₂ +
+    natEq (congrAp2 (Γ := Γ) (sumF fB) b (.eqRefl m)) - natEq (ff_one (Γ := Γ) m) - natEq (ff_zero (Γ := Γ) m) -
+    natEq (sum_zero (Γ := Γ) fB m) - t₀ - t₁ - natEq (sum_split (Γ := Γ) fB (succ (succ zero)) (succ m) m) - cv
 
 /-! ## Summing -/
 
@@ -348,7 +341,7 @@ theorem b_lower (m₀ : PTm n) :
     Γ ⊢[PRAAx] le (two * pw (succ m₀) (succ m₀)) (pw (succ (succ m₀)) (succ m₀)) := by
   have b := bernoulli (Γ := Γ) (succ m₀) one m₀
   have c := le_congr (.eqRefl _) (Combinatorics.BinomialTheorem.congrPw
-    (by apply deriveNat; ipra_simps; ring : Γ ⊢[PRAAx] succ m₀ + one ≐ succ (succ m₀)) (.eqRefl _)) b
+    (by ipra_ring : Γ ⊢[PRAAx] succ m₀ + one ≐ succ (succ m₀)) (.eqRefl _)) b
   have p := natEq (pw_succ (Γ := Γ) (succ m₀) m₀)
   ipra_le sl c using rw [p]; ring
 

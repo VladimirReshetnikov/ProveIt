@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.ChuVandermonde
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The binomial sum for the Beta function at integers
@@ -43,19 +44,13 @@ local notation "𝔟" t:max => Groth.ι (IPRA.Q.mk _ t)
 theorem term_eq {j N m : PTm n} (h : Γ ⊢[PRAAx] le j N) :
     Γ ⊢[PRAAx] (succ m + j) * (poch (succ m) j * poch (succ m + one + j) (monus N j)) ≐
       poch (succ m) (succ N) := by
-  have e := natEq (eq_add_of_le h)
   have eN : Γ ⊢[PRAAx] succ N ≐ j + succ (monus N j) := by
-    apply deriveNat; ipra_simps
-    linear_combination e
-  have c₁ := natEq (congrPoch (.eqRefl (succ m)) eN)
-  have sp := natEq (poch_split (Γ := Γ) (succ m) j (succ (monus N j)))
-  have sh := natEq (poch_shift' (Γ := Γ) (succ m + j) (monus N j))
+    ipra_lc natEq (eq_add_of_le h)
   have ex : Γ ⊢[PRAAx] succ (succ m + j) ≐ succ m + one + j := by
-    apply deriveNat; ipra_simps; ring
-  have c₂ := natEq (congrPoch ex (.eqRefl (monus N j)))
-  apply deriveNat; ipra_simps
-  linear_combination -c₁ - sp - 𝔟(poch (succ m) j) * sh -
-    (𝔟 m + 1 + 𝔟 j) * 𝔟(poch (succ m) j) * c₂
+    ipra_ring
+  ipra_lc -natEq (congrPoch (.eqRefl (succ m)) eN) - natEq (poch_split (Γ := Γ) (succ m) j (succ (monus N j))) -
+    𝔟(poch (succ m) j) * natEq (poch_shift' (Γ := Γ) (succ m + j) (monus N j)) -
+    (𝔟 m + 1 + 𝔟 j) * 𝔟(poch (succ m) j) * natEq (congrPoch ex (.eqRefl (monus N j)))
 
 /-- `thm:inc-polynomial` at `x = 1`, cleared by `(m + 1)_{N+1}`:
 `∑_{j ≤ N} (−1)^j C(N, j) (m + 1)_j (m + 2 + j)_{N−j} = N!`, the signed sum by its even and odd parts. -/

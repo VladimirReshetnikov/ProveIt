@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.GaussianPolynomialConstantInjection
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual multiplication of rectangular bivariate coefficient lists
@@ -75,8 +76,8 @@ theorem data_fields (A B q a b k : PTm n) (i : Fin 6) : Γ ⊢[PRAAx] fields (da
   have e (j : Fin 5) : Γ ⊢[PRAAx] GaussianPolynomialConstantInjection.fields (fstT (data A B q a b k)) j ≐ ![A,B,q,a,b] j := by
     have cong : Γ ⊢[PRAAx] GaussianPolynomialConstantInjection.fields (fstT (data A B q a b k)) j ≐
         GaussianPolynomialConstantInjection.fields (GaussianPolynomialMonicCompanion.data A B q a b) j := by
-      simpa using Prf.eqCongr (Γ := Γ) (GaussianPolynomialConstantInjection.fields (var 0) j : PTm 1)
-        (σ := ![fstT (data A B q a b k)]) (σ' := ![GaussianPolynomialMonicCompanion.data A B q a b]) (fun r => by fin_cases r; exact base)
+      ipra_congr (GaussianPolynomialConstantInjection.fields (var 0) j : PTm 1) with
+        [(show _ ⊢[PRAAx] fstT (data A B q a b k) ≐ GaussianPolynomialMonicCompanion.data A B q a b from base)]
     exact cong.eqTrans (GaussianPolynomialConstantInjection.fields_at _ _ _ _ _ j)
   fin_cases i
   · exact e 0
@@ -88,8 +89,7 @@ theorem data_fields (A B q a b k : PTm n) (i : Fin 6) : Γ ⊢[PRAAx] fields (da
 
 theorem sel_congr {b b' u u' v v' : PTm n} (hb : Γ ⊢[PRAAx] b ≐ b') (hu : Γ ⊢[PRAAx] u ≐ u')
     (hv : Γ ⊢[PRAAx] v ≐ v') : Γ ⊢[PRAAx] sel b u v ≐ sel b' u' v' := by
-  simpa using Prf.eqCongr (Γ := Γ) (sel (var 0) (var 1) (var 2) : PTm 3)
-    (σ := ![b,u,v]) (σ' := ![b',u',v']) (fun i => by fin_cases i; exact hb; exact hu; exact hv)
+  ipra_congr (sel (var 0) (var 1) (var 2) : PTm 3) with [hb, hu, hv]
 theorem product_congr {A A' B B' a a' b b' : PTm n} (hA : Γ ⊢[PRAAx] A ≐ A') (hB : Γ ⊢[PRAAx] B ≐ B')
     (ha : Γ ⊢[PRAAx] a ≐ a') (hb : Γ ⊢[PRAAx] b ≐ b') : Γ ⊢[PRAAx]
     GaussianRationalPolynomialProduct.product A B a b ≐ GaussianRationalPolynomialProduct.product A' B' a' b' :=
@@ -243,8 +243,8 @@ theorem row_sum_evaluation (A B P q a b k x t : PTm n) (hA : Γ ⊢[PRAAx] rowSh
 theorem stage_data_field (A B q a b t : PTm n) (j : Fin 6) : Γ ⊢[PRAAx]
     fields (fstT (stageData A B q a b t)) j ≐ ![A,B,q,a,b,zero] j := by
   have e : Γ ⊢[PRAAx] fields (fstT (stageData A B q a b t)) j ≐ fields (data A B q a b zero) j := by
-    simpa using Prf.eqCongr (Γ := Γ) (fields (var 0) j : PTm 1)
-      (σ := ![fstT (stageData A B q a b t)]) (σ' := ![data A B q a b zero]) (fun i => by fin_cases i; exact fst_pair _ _)
+    ipra_congr (fields (var 0) j : PTm 1) with
+      [(show _ ⊢[PRAAx] fstT (stageData A B q a b t) ≐ data A B q a b zero from fst_pair _ _)]
   exact e.eqTrans (data_fields _ _ _ _ _ _ j)
 theorem data_congr {A A' B B' q q' a a' b b' k k' : PTm n} (hA : Γ ⊢[PRAAx] A ≐ A')
     (hB : Γ ⊢[PRAAx] B ≐ B') (hq : Γ ⊢[PRAAx] q ≐ q') (ha : Γ ⊢[PRAAx] a ≐ a')
@@ -313,8 +313,7 @@ def coefficient (A B q a b k s t : PTm n) : PTm n :=
     Syn.subst σ (coefficient A B q a b k s t) = coefficient (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ q)
       (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ k) (Syn.subst σ s) (Syn.subst σ t) := by simp [coefficient]
 theorem pair_fields (p s : PTm n) (j : Fin 6) : Γ ⊢[PRAAx] fields (fstT (pairT p s)) j ≐ fields p j := by
-  simpa using Prf.eqCongr (Γ := Γ) (fields (var 0) j : PTm 1)
-    (σ := ![fstT (pairT p s)]) (σ' := ![p]) (fun i => by fin_cases i; exact fst_pair _ _)
+  ipra_congr (fields (var 0) j : PTm 1) with [fst_pair _ _]
 theorem coefficient_body_at (A B q a b k s i : PTm n) : Γ ⊢[PRAAx]
     inst2 coefficientBody i (coefficientData A B q a b k s) ≐ entry (contribution A B q a b k i) s := by
   simp only [coefficientBody,inst2,Foundations.MasterCertificate.subst_entry,subst_contribution,subst_fields,subst_fstT,subst_sndT,

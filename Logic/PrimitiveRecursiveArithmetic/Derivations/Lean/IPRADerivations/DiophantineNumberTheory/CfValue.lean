@@ -1,4 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.CfReal
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The value identity `[a_0; a_1, …, a_m] = p_m/q_m`
@@ -57,19 +58,14 @@ theorem pre_base_alg {c c' U V U' V' x1 x2 x3 x4 u v u' v' : PTm n} (ec : Γ ⊢
     (e1 : Γ ⊢[PRAAx] x1 ≐ one) (e2 : Γ ⊢[PRAAx] x2 ≐ zero) (e3 : Γ ⊢[PRAAx] x3 ≐ zero) (e4 : Γ ⊢[PRAAx] x4 ≐ one)
     (f1 : Γ ⊢[PRAAx] u ≐ one) (f2 : Γ ⊢[PRAAx] v ≐ zero) (f3 : Γ ⊢[PRAAx] u' ≐ zero) (f4 : Γ ⊢[PRAAx] v' ≐ one) :
     Γ ⊢[PRAAx] ((U ≐ c * u + v) ⋏ (V ≐ u)) ⋏ ((U' ≐ c * u' + v') ⋏ (V' ≐ u')) := by
-  have xc := natEq ec
   have k1 := natEq h1; have k2 := natEq h2; have k3 := natEq h3; have k4 := natEq h4
   have j1 := natEq e1; have j2 := natEq e2; have j3 := natEq e3; have j4 := natEq e4
   have g1 := natEq f1; have g2 := natEq f2; have g3 := natEq f3; have g4 := natEq f4
   refine .andI (.andI ?_ ?_) (.andI ?_ ?_)
-  · apply deriveNat; ipra_simps
-    linear_combination k1 + 𝔞 x1 * xc + 𝔞 c * j1 + j3 - 𝔞 c * g1 - g2
-  · apply deriveNat; ipra_simps
-    linear_combination k2 + 𝔞 x2 * xc + 𝔞 c * j2 + j4 - g1
-  · apply deriveNat; ipra_simps
-    linear_combination k3 + j1 - 𝔞 c * g3 - g4
-  · apply deriveNat; ipra_simps
-    linear_combination k4 + j2 - g3
+  · ipra_lc k1 + 𝔞 x1 * natEq ec + 𝔞 c * j1 + j3 - 𝔞 c * g1 - g2
+  · ipra_lc k2 + 𝔞 x2 * natEq ec + 𝔞 c * j2 + j4 - g1
+  · ipra_lc k3 + j1 - 𝔞 c * g3 - g4
+  · ipra_lc k4 + j2 - g3
 
 theorem pre_alg {c d d' U V U' V' U1 V1 U1' V1' u v u' v' u1 v1 u1' v1' : PTm n}
     (r1 : Γ ⊢[PRAAx] U ≐ c * u + v) (r2 : Γ ⊢[PRAAx] V ≐ u) (r3 : Γ ⊢[PRAAx] U' ≐ c * u' + v')
@@ -82,17 +78,12 @@ theorem pre_alg {c d d' U V U' V' U1 V1 U1' V1' u v u' v' u1 v1 u1' v1' : PTm n}
     Γ ⊢[PRAAx] ((U1 ≐ c * u1 + v1) ⋏ (V1 ≐ u1)) ⋏ ((U1' ≐ c * u1' + v1') ⋏ (V1' ≐ u1')) := by
   have s1 := natEq r1; have s2 := natEq r2; have s3 := natEq r3; have s4 := natEq r4
   have k1 := natEq h1; have k2 := natEq h2; have k3 := natEq h3; have k4 := natEq h4
-  have xd := natEq ed
   have t1 := natEq g1; have t2 := natEq g2; have t3 := natEq g3; have t4 := natEq g4
   refine .andI (.andI ?_ ?_) (.andI ?_ ?_)
-  · apply deriveNat; ipra_simps
-    linear_combination k1 + 𝔞 d * s1 + s3 - 𝔞 c * (t1 + 𝔞 u * xd) - (t2 + 𝔞 v * xd)
-  · apply deriveNat; ipra_simps
-    linear_combination k2 + 𝔞 d * s2 + s4 - (t1 + 𝔞 u * xd)
-  · apply deriveNat; ipra_simps
-    linear_combination k3 + s1 - 𝔞 c * t3 - t4
-  · apply deriveNat; ipra_simps
-    linear_combination k4 + s2 - t3
+  · ipra_lc k1 + 𝔞 d * s1 + s3 - 𝔞 c * (t1 + 𝔞 u * natEq ed) - (t2 + 𝔞 v * natEq ed)
+  · ipra_lc k2 + 𝔞 d * s2 + s4 - (t1 + 𝔞 u * natEq ed)
+  · ipra_lc k3 + s1 - 𝔞 c * t3 - t4
+  · ipra_lc k4 + s2 - t3
 
 variable {a' : PR 1}
 
@@ -112,7 +103,7 @@ theorem pre_step {N k : PTm n} (ih : Γ ⊢[PRAAx] Pre (uv a' (succ k) N) (co a'
     Γ ⊢[PRAAx] Pre (uv a' (succ (succ k)) N) (co a' (succ N)) (uv a' (succ k) (succ N)) := by
   obtain ⟨h1, h2, h3, h4⟩ := proj_nx (uv_succ (Γ := Γ) (a' := a') (succ k) N)
   obtain ⟨g1, g2, g3, g4⟩ := proj_nx (uv_succ (Γ := Γ) (a' := a') k (succ N))
-  have E : Γ ⊢[PRAAx] succ N + k ≐ N + succ k := by apply deriveNat; ipra_simps; ring
+  have E : Γ ⊢[PRAAx] succ N + k ≐ N + succ k := by ipra_ring
   have ed : Γ ⊢[PRAAx] co a' (succ (succ N + k)) ≐ co a' (succ (N + succ k)) :=
     congrSucc (congrAp1 a' (congrSucc E))
   unfold Pre at ih ⊢
@@ -178,16 +169,14 @@ theorem bk_succ (j m : PTm n) : Γ ⊢[PRAAx] bk a' (succ j) m ≐
 theorem monus_step {j m : PTm n} (h : Γ ⊢[PRAAx] le (succ (succ j)) m) :
     Γ ⊢[PRAAx] succ (monus m (succ (succ j))) ≐ monus m (succ j) := by
   have e := eq_add_of_le h
-  have x := natEq e
   have e1 : Γ ⊢[PRAAx] m ≐ succ (monus m (succ (succ j))) + succ j := by
-    apply deriveNat; ipra_simps; linear_combination x
+    ipra_lc natEq e
   have e2 : Γ ⊢[PRAAx] succ j ≐ zero + succ j := by apply deriveNat; ipra_simps; try ring
   exact ((congrMonus e1 e2).eqTrans ((monus_add_add _ _ _).eqTrans (monus_zero _))).eqSymm
 
 /-- `m ≥ 1` gives `(m − 1) + 1 = m`. -/
 theorem monus_one {m : PTm n} (h : Γ ⊢[PRAAx] le one m) : Γ ⊢[PRAAx] succ (monus m one) ≐ m := by
-  have x := natEq (eq_add_of_le h)
-  apply deriveNat; ipra_simps; linear_combination -x
+  ipra_lc -natEq (eq_add_of_le h)
 
 theorem tail_base_alg {F S A Z s c U V x1 x2 x3 x4 : PTm n} (hF : Γ ⊢[PRAAx] F ≐ A) (hS : Γ ⊢[PRAAx] S ≐ one)
     (hA : Γ ⊢[PRAAx] A ≐ Z + s) (hs : Γ ⊢[PRAAx] s ≐ one) (hc : Γ ⊢[PRAAx] c ≐ succ Z)
@@ -198,10 +187,8 @@ theorem tail_base_alg {F S A Z s c U V x1 x2 x3 x4 : PTm n} (hF : Γ ⊢[PRAAx] 
   have k1 := natEq h1; have k2 := natEq h2
   have j1 := natEq e1; have j2 := natEq e2; have j3 := natEq e3; have j4 := natEq e4
   refine .andI ?_ ?_
-  · apply deriveNat; ipra_simps
-    linear_combination f + a + b - k1 - 𝔞 c * j1 - j3 - k
-  · apply deriveNat; ipra_simps
-    linear_combination g - k2 - 𝔞 c * j2 - j4
+  · ipra_lc f + a + b - k1 - 𝔞 c * j1 - j3 - k
+  · ipra_lc g - k2 - 𝔞 c * j2 - j4
 
 theorem tail_step_alg {F S A X Y Z s c U V P Q : PTm n} (hb1 : Γ ⊢[PRAAx] F ≐ A * X + Y) (hb2 : Γ ⊢[PRAAx] S ≐ X)
     (ihX : Γ ⊢[PRAAx] X ≐ P) (ihY : Γ ⊢[PRAAx] Y ≐ Q) (pr1 : Γ ⊢[PRAAx] U ≐ c * P + Q) (pr2 : Γ ⊢[PRAAx] V ≐ P)
@@ -210,10 +197,8 @@ theorem tail_step_alg {F S A X Y Z s c U V P Q : PTm n} (hb1 : Γ ⊢[PRAAx] F �
   have b1 := natEq hb1; have b2 := natEq hb2; have x := natEq ihX; have y := natEq ihY
   have q1 := natEq pr1; have q2 := natEq pr2; have a := natEq hA; have b := natEq hs; have k := natEq hc
   refine .andI ?_ ?_
-  · apply deriveNat; ipra_simps
-    linear_combination b1 + 𝔞 X * a + 𝔞 X * b + (𝔞 Z + 1) * x + y - q1 - 𝔞 P * k
-  · apply deriveNat; ipra_simps
-    linear_combination b2 + x - q2
+  · ipra_lc b1 + 𝔞 X * a + 𝔞 X * b + (𝔞 Z + 1) * x + y - q1 - 𝔞 P * k
+  · ipra_lc b2 + x - q2
 
 /-- The claim at stage `j`: `bk j m` is the first column of `uv (j+1) (m − j − 1)`. -/
 abbrev TailF (j m : PTm n) : Fm PTm n :=
@@ -289,10 +274,8 @@ theorem last_alg {F S A X Y U V a0 x1 x2 x3 x4 : PTm n} (hb1 : Γ ⊢[PRAAx] F �
   have b1 := natEq hb1; have b2 := natEq hb2; have a := natEq hA; have q1 := natEq l1; have q2 := natEq l2
   have j1 := natEq e1; have j2 := natEq e2; have j3 := natEq e3; have j4 := natEq e4
   refine .andI ?_ ?_
-  · apply deriveNat; ipra_simps
-    linear_combination b1 + 𝔞 X * a - q1 - 𝔞 X * j1 - 𝔞 Y * j3
-  · apply deriveNat; ipra_simps
-    linear_combination b2 - q2 - 𝔞 X * j2 - 𝔞 Y * j4
+  · ipra_lc b1 + 𝔞 X * a - q1 - 𝔞 X * j1 - 𝔞 Y * j3
+  · ipra_lc b2 - q2 - 𝔞 X * j2 - 𝔞 Y * j4
 
 /-- **`dio:continuants`, the value identity**: the nested fraction `[a_0; a_1, …, a_m]`, evaluated from the
 inside out, is exactly `(p_m, q_m)`. -/
@@ -311,10 +294,9 @@ theorem nest_value (m : PTm n) :
     have S : ((m ≐ zero) :: Γ) ⊢[PRAAx] sndT (nest a' m) ≐ one := (congrSnd eb).eqTrans (snd_pair _ _)
     have P : ((m ≐ zero) :: Γ) ⊢[PRAAx] sP (cv a' m) ≐ ap1 a' zero := (congrFst ec).eqTrans c1.wk
     have Q : ((m ≐ zero) :: Γ) ⊢[PRAAx] sQ (cv a' m) ≐ one := (congrFst (congrSnd ec)).eqTrans c2.wk
-    have z := natEq (sg_zero (Γ := ((m ≐ zero) :: Γ)) (n := n))
     have f := natEq F; have p := natEq P
     refine .andI ?_ (S.eqTrans Q.eqSymm)
-    apply deriveNat; ipra_simps; linear_combination f - p + z
+    ipra_lc f - p + natEq (sg_zero (Γ := ((m ≐ zero) :: Γ)) (n := n))
   · -- `m = m' + 1`
     let Θ : List (Fm PTm n) := (m ≐ succ (pred m)) :: Γ
     have hm : Θ ⊢[PRAAx] m ≐ succ (pred m) := Prf.hyp0
@@ -327,8 +309,7 @@ theorem nest_value (m : PTm n) :
     have hb2 := (congrSnd b).eqTrans (snd_pair _ _)
     have e0 : Θ ⊢[PRAAx] monus m (succ (pred m)) ≐ zero := (congrMonus (.eqRefl _) hm.eqSymm).eqTrans (monus_self _)
     have hA : Θ ⊢[PRAAx] Av a' (monus m (succ (pred m))) ≐ ap1 a' zero := by
-      have x := natEq (congrAp1 a' e0); have y := natEq ((congrSg' e0).eqTrans (sg_zero (n := n)))
-      apply deriveNat; ipra_simps; linear_combination x + y
+      ipra_lc natEq (congrAp1 a' e0) + natEq ((congrSg' e0).eqTrans (sg_zero (n := n)))
     -- the tail matrix of `a_1, …, a_m` and `cv m = uv m 0 · cv 0`
     have eU : Θ ⊢[PRAAx] uv a' (succ (pred m)) (monus m (succ (pred m))) ≐ uv a' m zero :=
       congrAp2 _ hm.eqSymm e0

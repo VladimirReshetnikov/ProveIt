@@ -1,4 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.DirichletReal
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Transfer of the simultaneous approximation to the named inputs
@@ -69,8 +70,7 @@ theorem zero_of_abs_lt_one {p : ZT n} {b : PTm n} (hp : Γ ⊢[PRAAx] AbsLe p b)
   have hl := abs_lo hp
   have u : Γ ⊢[PRAAx] le p.pos p.neg := by ipra_le sl hi + sl h1
   have v : Γ ⊢[PRAAx] le p.neg p.pos := by ipra_le sl hl + sl h1
-  have e := natEq (le_antisymm u v)
   show Γ ⊢[PRAAx] p.pos + zero ≐ num 0 + p.neg
-  apply deriveNat; ipra_simps; linear_combination e
+  ipra_lc natEq (le_antisymm u v)
 
 end LeanProofs.IPRA.DiophantineNumberTheory.SimultaneousTransfer

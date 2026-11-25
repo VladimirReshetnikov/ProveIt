@@ -1,6 +1,7 @@
 import IPRADerivations.Probability.Expectation
 import IPRADerivations.Probability.FirstCrossing
 import IPRADerivations.Core.Fubini
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The bounded optional stopping theorem
@@ -130,11 +131,8 @@ abbrev SInv (t N x : PTm n) : Fm PTm n :=
     ap2 (sumF (bR w τ M)) N (pairT t x) + inst2 w t x * inst3 M (mN N (inst2 τ t x)) t x
 
 theorem tele_base (t x : PTm n) : Γ ⊢[PRAAx] SInv w τ M t zero x := by
-  have za := natEq (sum_zero (Γ := Γ) (aR w τ M) (pairT t x))
-  have zb := natEq (sum_zero (Γ := Γ) (bR w τ M) (pairT t x))
-  have em := natEq (congrInst3 (Γ := Γ) M (zero_monus (monus zero (inst2 τ t x))) (.eqRefl t) (.eqRefl x))
-  apply deriveNat; ipra_simps
-  linear_combination za - zb - 𝔟 (inst2 w t x) * em
+  ipra_lc natEq (sum_zero (Γ := Γ) (aR w τ M) (pairT t x)) - natEq (sum_zero (Γ := Γ) (bR w τ M) (pairT t x)) -
+    𝔟 (inst2 w t x) * natEq (congrInst3 (Γ := Γ) M (zero_monus (monus zero (inst2 τ t x))) (.eqRefl t) (.eqRefl x))
 
 theorem tele_step {t N x : PTm n} (ih : Γ ⊢[PRAAx] SInv w τ M t N x) : Γ ⊢[PRAAx] SInv w τ M t (succ N) x := by
   have sa := natEq (sum_succ' (Γ := Γ) (aR w τ M) N (pairT t x))

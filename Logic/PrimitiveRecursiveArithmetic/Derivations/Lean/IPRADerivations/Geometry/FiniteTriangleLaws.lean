@@ -1,4 +1,5 @@
 import IPRADerivations.Core.PolynomialInequalities
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The finite radical Heron and finite trigonometric laws (`triangle_formulas_ipra`, `thm:finite-heron`, `thm:finite-trig`)
@@ -244,9 +245,7 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 /-- `w ≤ u ⟹ w² ≤ u²`. -/
 theorem sq_mono {u w : PTm n} (h : Γ ⊢[PRAAx] le w u) : Γ ⊢[PRAAx] le (w * w) (u * u) := by
   refine le_of_eq_add (d := w * monus u w + w * monus u w + monus u w * monus u w) ?_
-  have e₁ := natEq (eq_add_of_le h)
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞 u + 𝔞 w + 𝔞 (monus u w)) * e₁
+  ipra_lc (𝔞 u + 𝔞 w + 𝔞 (monus u w)) * natEq (eq_add_of_le h)
 
 /-- `u² < w² ⟹ u < w`. -/
 theorem square_lt {u w : PTm n} (h : Γ ⊢[PRAAx] lt (u * u) (w * w)) : Γ ⊢[PRAAx] lt u w :=
@@ -255,9 +254,7 @@ theorem square_lt {u w : PTm n} (h : Γ ⊢[PRAAx] lt (u * u) (w * w)) : Γ ⊢[
 private theorem sq_gap {u v e d : PTm n} (hu : Γ ⊢[PRAAx] u ≐ succ (v + e) + d) :
     Γ ⊢[PRAAx] u * u ≐ succ (v * v + e * e +
       (v * e + v * e + ((v + e) * succ d + (v + e) * succ d) + (d * d + (d + d)))) := by
-  have e₁ := natEq hu
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞 u + 𝔞 v + 𝔞 e + 1 + 𝔞 d) * e₁
+  ipra_lc (𝔞 u + 𝔞 v + 𝔞 e + 1 + 𝔞 d) * natEq hu
 
 /-- The square comparison: `u² ≤ v² + e² ⟹ u ≤ v + e`. -/
 theorem square_compare {u v e : PTm n} (h : Γ ⊢[PRAAx] le (u * u) (v * v + e * e)) :
@@ -273,10 +270,7 @@ theorem clip_upper {a b c : PTm n} (h : Γ ⊢[PRAAx] le a (b + c)) :
     Γ ⊢[PRAAx] le (monus a c) b := by
   refine .orE (le_total c a) ?_ ?_
   · refine le_of_eq_add (d := monus (b + c) a) ?_
-    have e₁ := natEq (eq_add_of_le (Prf.hyp0 (Γ := Γ) (φ := le c a)))
-    have e₂ := natEq (eq_add_of_le (h.wk (ψ := le c a)))
-    apply deriveNat; ipra_simps
-    linear_combination e₂ + e₁
+    ipra_lc natEq (eq_add_of_le (h.wk (ψ := le c a))) + natEq (eq_add_of_le (Prf.hyp0 (Γ := Γ) (φ := le c a)))
   · exact le_congr (Prf.eqSymm Prf.hyp0) (.eqRefl b) (zero_le b)
 
 /-- `b + c ≤ a + e ⟹ b ≤ (a ∸ c) + e`: clipping `P = a − c` at zero keeps the bound
@@ -308,10 +302,7 @@ theorem heron_lower {H D q η : PTm n} (h₂ : Γ ⊢[PRAAx] lt q ((H + η) * (H
     (h₄ : Γ ⊢[PRAAx] le (D * D) (q + η * η)) : Γ ⊢[PRAAx] lt D (H + (η + η)) := by
   refine square_lt (le_of_eq_add (d := monus (q + η * η) (D * D) +
     monus ((H + η) * (H + η)) (succ q) + (H * η + H * η + (η * η + η * η))) ?_)
-  have e₂ := natEq (eq_add_of_le h₂)
-  have e₄ := natEq (eq_add_of_le h₄)
-  apply deriveNat; ipra_simps
-  linear_combination e₄ + e₂
+  ipra_lc natEq (eq_add_of_le h₄) + natEq (eq_add_of_le h₂)
 
 /-- `thm:finite-heron`, the last step: for an integer radicand `P = p⁺ − p⁻` with
 `|P − D²| ≤ η²`, clipped to `q = p⁺ ∸ p⁻`, and the mesh bracket `H² ≤ q < (H + η)²`:

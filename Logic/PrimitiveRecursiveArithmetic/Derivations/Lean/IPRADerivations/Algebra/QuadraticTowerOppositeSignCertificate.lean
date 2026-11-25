@@ -1,5 +1,6 @@
 import IPRADerivations.Algebra.QuadraticTowerOppositeMultiplier
 import IPRADerivations.Algebra.QuadraticTowerExtensionSign
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Original opposite-sign dispatch and its actual multiplier certificate
@@ -136,12 +137,10 @@ theorem product_inserted (h B D A b : PTm n) (p : Γ ⊢[PRAAx] QuadraticTowerOp
 
 theorem lower_first_congr (h B D : PTm n) {A C : PTm n} (e : Γ ⊢[PRAAx] A ≐ C) : Γ ⊢[PRAAx]
     lowerFirst h B D A ≐ lowerFirst h B D C := by
-  simpa using Prf.eqCongr (lowerFirst (var 0) (var 1) (var 2) (var 3) : PTm 4) (σ := ![h,B,D,A]) (σ' := ![h,B,D,C])
-    (fun i => by fin_cases i; exact .eqRefl _; exact .eqRefl _; exact .eqRefl _; exact e)
+  ipra_congr (lowerFirst (var 0) (var 1) (var 2) (var 3) : PTm 4) with [.eqRefl h, .eqRefl B, .eqRefl D, e]
 theorem lower_second_congr (h B D : PTm n) {A C : PTm n} (e : Γ ⊢[PRAAx] A ≐ C) : Γ ⊢[PRAAx]
     lowerSecond h B D A ≐ lowerSecond h B D C := by
-  simpa using Prf.eqCongr (lowerSecond (var 0) (var 1) (var 2) (var 3) : PTm 4) (σ := ![h,B,D,A]) (σ' := ![h,B,D,C])
-    (fun i => by fin_cases i; exact .eqRefl _; exact .eqRefl _; exact .eqRefl _; exact e)
+  ipra_congr (lowerSecond (var 0) (var 1) (var 2) (var 3) : PTm 4) with [.eqRefl h, .eqRefl B, .eqRefl D, e]
 
 theorem inserted_first (h B D L : PTm n) : Γ ⊢[PRAAx]
     lowerFirst h B D (QuadraticTowerExtensionSign.inserted h L) ≐ QuadraticTowerSignTable.query h (budget h B D) D L :=

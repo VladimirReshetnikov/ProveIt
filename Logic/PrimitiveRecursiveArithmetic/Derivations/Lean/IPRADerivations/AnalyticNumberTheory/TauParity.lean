@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.AnalyticNumberTheory.DivisorHyperbola
 import IPRADerivations.AnalyticNumberTheory.MertensTotient
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The parity of the divisor function
@@ -63,7 +64,7 @@ theorem T_succ (x : PTm n) : Γ ⊢[PRAAx] T (succ x) ≐ T x + tau (succ x) := 
   exact h
 
 theorem one_alg (X : PTm n) : Γ ⊢[PRAAx] ((one : PTm n) * one) * X ≐ X := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- `T(x) = ∑_{d=1}^{x} ⌊x/d⌋`. -/
 theorem T_eq_S (x : PTm n) : Γ ⊢[PRAAx] T x ≐ S x x := by
@@ -82,13 +83,11 @@ theorem T_eq_S (x : PTm n) : Γ ⊢[PRAAx] T x ≐ S x x := by
 /-! ## Parities -/
 
 theorem sq_even {s h : PTm n} (e : Γ ⊢[PRAAx] s ≐ two * h) : Γ ⊢[PRAAx] s * s ≐ two * (h * s) := by
-  have x := natEq e
-  apply deriveNat; ipra_simps; linear_combination 𝔞 s * x
+  ipra_lc 𝔞 s * natEq e
 
 theorem sq_odd {s h : PTm n} (e : Γ ⊢[PRAAx] s ≐ two * h + one) :
     Γ ⊢[PRAAx] s * s ≐ two * (h * s + h) + one := by
-  have x := natEq e
-  apply deriveNat; ipra_simps; linear_combination (𝔞 s + 1) * x
+  ipra_lc (𝔞 s + 1) * natEq e
 
 /-- `par (s²) = par s`. -/
 theorem par_sq (s : PTm n) : Γ ⊢[PRAAx] par (s * s) ≐ par s := by
@@ -101,7 +100,7 @@ theorem par_sq (s : PTm n) : Γ ⊢[PRAAx] par (s * s) ≐ par s := by
       ((congrAp1 parF e).eqTrans (par_double_succ _)).eqSymm
 
 theorem sq_succ (s : PTm n) : Γ ⊢[PRAAx] (s + one) * (s + one) ≐ succ s * succ s := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- `par T(x) = par ⌊√x⌋`. -/
 theorem par_T (x : PTm n) : Γ ⊢[PRAAx] par (T x) ≐ par (isqrt x) := by
@@ -119,12 +118,10 @@ theorem bit_par {e : PTm n} (h : Γ ⊢[PRAAx] (e ≐ zero) ⋎ (e ≐ one)) : �
   · exact ((congrAp1 parF Prf.hyp0).eqTrans par_one).eqTrans Prf.hyp0.eqSymm
 
 theorem tau_alg {Ts Tx t : PTm n} (h : Γ ⊢[PRAAx] Ts ≐ Tx + t) : Γ ⊢[PRAAx] t + two * Tx ≐ Ts + Tx := by
-  have x := natEq h
-  apply deriveNat; ipra_simps; linear_combination -x
+  ipra_lc -natEq h
 
 theorem s_alg {s' s e : PTm n} (h : Γ ⊢[PRAAx] s' ≐ s + e) : Γ ⊢[PRAAx] s' + s ≐ e + two * s := by
-  have x := natEq h
-  apply deriveNat; ipra_simps; linear_combination x
+  ipra_lc natEq h
 
 /-- **The parity of `τ`**: `par τ(x + 1) = [(⌊√x⌋ + 1)² = x + 1]`. -/
 theorem tau_parity (x : PTm n) :
@@ -147,8 +144,7 @@ theorem square_of_bit {x : PTm n}
 
 theorem up_alg {k x : PTm n} (h : Γ ⊢[PRAAx] k * k ≐ succ x) :
     Γ ⊢[PRAAx] (k + one) * (k + one) ≐ succ (succ x) + two * k := by
-  have a := natEq h
-  apply deriveNat; ipra_simps; linear_combination a
+  ipra_lc natEq h
 
 /-- A square `x + 1 = k²` makes the bit `1`. -/
 theorem bit_of_square {k x : PTm n} (h : Γ ⊢[PRAAx] k * k ≐ succ x) :

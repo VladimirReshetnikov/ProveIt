@@ -1,6 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.SecondSupplement
 import IPRADerivations.DiophantineNumberTheory.QuadraticSupplements
 import IPRADerivations.Combinatorics.BinomialIdentities
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The supplementary signs by `p mod 8`
@@ -50,8 +51,7 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 theorem half_alg {p H h : PTm n} (e : Γ ⊢[PRAAx] p ≐ two * H + one) (eh : Γ ⊢[PRAAx] p ≐ two * h + one) :
     Γ ⊢[PRAAx] two * H ≐ two * h := by
-  have x := natEq e; have y := natEq eh
-  apply deriveNat; ipra_simps; linear_combination y - x
+  ipra_lc natEq eh - natEq e
 
 /-- `p = 2h + 1` is odd and `⌊p/2⌋ = h`. -/
 theorem half_of {p h : PTm n} (eh : Γ ⊢[PRAAx] p ≐ two * h + one) :
@@ -75,12 +75,11 @@ theorem two_of {p h X : PTm n} (hp : Γ ⊢[PRAAx] prime p) (eh : Γ ⊢[PRAAx] 
 /-! ## The four residues -/
 
 theorem h1 {p t : PTm n} (e : Γ ⊢[PRAAx] p ≐ num 8 * t + one) : Γ ⊢[PRAAx] p ≐ two * (two * (two * t)) + one := by
-  have x := natEq e
-  apply deriveNat; ipra_simps; push_cast at x ⊢; linear_combination x
+  ipra_lc natEq e
 
 theorem x1 (t : PTm n) :
     Γ ⊢[PRAAx] (two * (two * t)) * succ (two * (two * t)) ≐ two * (two * (t * (num 4 * t + one))) + zero := by
-  apply deriveNat; ipra_simps; push_cast; ring
+  ipra_lc
 
 /-- **`p ≡ 1 (mod 8)`**: `−1` and `2` are squares modulo `p`. -/
 theorem table_one {p t : PTm n} (hp : Γ ⊢[PRAAx] prime p) (e : Γ ⊢[PRAAx] p ≐ num 8 * t + one) :
@@ -90,13 +89,12 @@ theorem table_one {p t : PTm n} (hp : Γ ⊢[PRAAx] prime p) (e : Γ ⊢[PRAAx] 
 
 theorem h3 {p t : PTm n} (e : Γ ⊢[PRAAx] p ≐ num 8 * t + num 3) :
     Γ ⊢[PRAAx] p ≐ two * (two * (two * t) + one) + one := by
-  have x := natEq e
-  apply deriveNat; ipra_simps; push_cast at x ⊢; linear_combination x
+  ipra_lc natEq e
 
 theorem x3 (t : PTm n) :
     Γ ⊢[PRAAx] (two * (two * t) + one) * succ (two * (two * t) + one) ≐
       two * (two * (num 4 * (t * t) + num 3 * t) + one) + zero := by
-  apply deriveNat; ipra_simps; push_cast; ring
+  ipra_lc
 
 /-- **`p ≡ 3 (mod 8)`**: neither `−1` nor `2` is a square modulo `p`. -/
 theorem table_three {p t : PTm n} (hp : Γ ⊢[PRAAx] prime p) (e : Γ ⊢[PRAAx] p ≐ num 8 * t + num 3) :
@@ -106,13 +104,12 @@ theorem table_three {p t : PTm n} (hp : Γ ⊢[PRAAx] prime p) (e : Γ ⊢[PRAAx
 
 theorem h5 {p t : PTm n} (e : Γ ⊢[PRAAx] p ≐ num 8 * t + num 5) :
     Γ ⊢[PRAAx] p ≐ two * (two * (two * t + one)) + one := by
-  have x := natEq e
-  apply deriveNat; ipra_simps; push_cast at x ⊢; linear_combination x
+  ipra_lc natEq e
 
 theorem x5 (t : PTm n) :
     Γ ⊢[PRAAx] (two * (two * t + one)) * succ (two * (two * t + one)) ≐
       two * (two * (num 4 * (t * t) + num 5 * t + one) + one) + zero := by
-  apply deriveNat; ipra_simps; push_cast; ring
+  ipra_lc
 
 /-- **`p ≡ 5 (mod 8)`**: `−1` is a square modulo `p` and `2` is not. -/
 theorem table_five {p t : PTm n} (hp : Γ ⊢[PRAAx] prime p) (e : Γ ⊢[PRAAx] p ≐ num 8 * t + num 5) :
@@ -122,13 +119,12 @@ theorem table_five {p t : PTm n} (hp : Γ ⊢[PRAAx] prime p) (e : Γ ⊢[PRAAx]
 
 theorem h7 {p t : PTm n} (e : Γ ⊢[PRAAx] p ≐ num 8 * t + num 7) :
     Γ ⊢[PRAAx] p ≐ two * (two * (two * t + one) + one) + one := by
-  have x := natEq e
-  apply deriveNat; ipra_simps; push_cast at x ⊢; linear_combination x
+  ipra_lc natEq e
 
 theorem x7 (t : PTm n) :
     Γ ⊢[PRAAx] (two * (two * t + one) + one) * succ (two * (two * t + one) + one) ≐
       two * (two * ((num 4 * t + num 3) * (t + one))) + zero := by
-  apply deriveNat; ipra_simps; push_cast; ring
+  ipra_lc
 
 /-- **`p ≡ 7 (mod 8)`**: `2` is a square modulo `p` and `−1` is not. -/
 theorem table_seven {p t : PTm n} (hp : Γ ⊢[PRAAx] prime p) (e : Γ ⊢[PRAAx] p ≐ num 8 * t + num 7) :

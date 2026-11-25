@@ -1,4 +1,5 @@
 import IPRADerivations.Combinatorics.CatalanBallot
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Ballot, two-fold and Fuss–Catalan identities (`catalan_numbers_ipra_2026-11-16`, Section 7)
@@ -49,37 +50,28 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `m < 2(m + 1)`. -/
 theorem lt_double (m : PTm n) : Γ ⊢[PRAAx] lt m (two * succ m) :=
-  le_of_eq_add (d := succ m) (by apply deriveNat; ipra_simps; ring)
+  le_of_eq_add (d := succ m) (by ipra_ring)
 
 /-- (7.3) for `k = 2`, right side: `C(2m + 2, m) = (m + 1) Cat_{m+1}`. -/
 theorem two_fold (m : PTm n) :
     Γ ⊢[PRAAx] binom (two * succ m) m ≐ succ m * cat (succ m) := by
   have hm : Γ ⊢[PRAAx] monus (two * succ m) m ≐ succ (succ m) :=
-    (congrMonus (by apply deriveNat; ipra_simps; ring :
+    (congrMonus (by ipra_ring :
       Γ ⊢[PRAAx] two * succ m ≐ succ (succ m) + m) (.eqRefl _)).eqTrans (add_monus _ _)
-  have r := natEq (binom_ratio (lt_double (Γ := Γ) m))
-  have hmE := natEq hm
-  have s := natEq (cat_spec (Γ := Γ) (succ m))
   refine mul_cancel (D := succ (succ m)) (succ_pos _) ?_
-  apply deriveNat; ipra_simps
-  linear_combination r - 𝔞 (binom (two * succ m) m) * hmE - (𝔞 m + 1) * s
+  ipra_lc natEq (binom_ratio (lt_double (Γ := Γ) m)) - 𝔞 (binom (two * succ m) m) * natEq hm -
+    (𝔞 m + 1) * natEq (cat_spec (Γ := Γ) (succ m))
 
 /-- (7.1) at `n = 0`. -/
 theorem ballot_zero :
     Γ ⊢[PRAAx] binom (succ (two * (zero : PTm n))) zero ≐ succ (two * zero) * cat zero := by
-  have c := natEq (cat_zero (Γ := Γ) (n := n))
   refine (binom_zero' _).eqTrans ?_
-  apply deriveNat; ipra_simps
-  linear_combination -c
+  ipra_lc -natEq (cat_zero (Γ := Γ) (n := n))
 
 /-- (7.1) at a successor: `C(2k + 3, k + 1) = (2k + 3) Cat_{k+1}`. -/
 theorem ballot_succ (m : PTm n) :
     Γ ⊢[PRAAx] binom (succ (two * succ m)) (succ m) ≐ succ (two * succ m) * cat (succ m) := by
-  have p := natEq (pascal_at (lt_double (Γ := Γ) m))
-  have t := natEq (two_fold (Γ := Γ) m)
-  have s := natEq (cat_spec (Γ := Γ) (succ m))
-  apply deriveNat; ipra_simps
-  linear_combination p + t - s
+  ipra_lc natEq (pascal_at (lt_double (Γ := Γ) m)) + natEq (two_fold (Γ := Γ) m) - natEq (cat_spec (Γ := Γ) (succ m))
 
 /-- Variables: `0 = n`. -/
 private abbrev ballotF : Fm PTm 1 :=
@@ -111,9 +103,9 @@ theorem fuss (p' k' : PTm n) :
     Γ ⊢[PRAAx] succ k' * binom (succ p' * succ k') (succ k') ≐
       succ (p' * succ k') * binom (succ p' * succ k') k' := by
   have hlt : Γ ⊢[PRAAx] lt k' (succ p' * succ k') :=
-    le_of_eq_add (d := p' * succ k') (by apply deriveNat; ipra_simps; ring)
+    le_of_eq_add (d := p' * succ k') (by ipra_ring)
   have hm : Γ ⊢[PRAAx] monus (succ p' * succ k') k' ≐ succ (p' * succ k') :=
-    (congrMonus (by apply deriveNat; ipra_simps; ring :
+    (congrMonus (by ipra_ring :
       Γ ⊢[PRAAx] succ p' * succ k' ≐ succ (p' * succ k') + k') (.eqRefl _)).eqTrans
       (add_monus _ _)
   exact (binom_ratio hlt).eqSymm.eqTrans (congrMul hm (.eqRefl _))

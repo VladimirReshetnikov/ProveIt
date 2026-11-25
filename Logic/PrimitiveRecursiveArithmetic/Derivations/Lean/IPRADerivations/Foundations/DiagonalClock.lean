@@ -54,7 +54,7 @@ theorem cost_exp {A X q : PTm n} (hq : Γ ⊢[PRAAx] le one q) (hX : Γ ⊢[PRAA
   have s1 : Γ ⊢[PRAAx] le (pw X (num 4)) (pw two (succ q * num 4)) :=
     le_congr (.eqRefl _) (pw_mul _ _ _) (pw_le_pw (num 4) hX)
   have e4 := natEq ((congrAp2 (Γ := Γ) powF (show Γ ⊢[PRAAx] succ q * num 4 ≐ num 4 + num 4 * q by
-    apply deriveNat; ipra_simps; ring) (.eqRefl two)).eqTrans (pw_add _ _ _))
+    ipra_ring) (.eqRefl two)).eqTrans (pw_add _ _ _))
   have e16 := natEq (show Γ ⊢[PRAAx] pw two (num 4) ≐ num 16 from pw_num 2 4)
   have u1 : Γ ⊢[PRAAx] le (A * pw X (num 4)) (num 16 * A * pw two (num 4 * q)) := by
     ipra_le 𝔟 A * sl s1 with -𝔟 A * e4 - 𝔟 A * 𝔟 (pw two (num 4 * q)) * e16

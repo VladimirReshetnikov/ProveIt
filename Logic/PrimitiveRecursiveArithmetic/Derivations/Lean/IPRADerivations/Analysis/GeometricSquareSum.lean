@@ -1,6 +1,7 @@
 import IPRADerivations.Core.SumLemmas
 import IPRADerivations.Core.Powers
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The finite identity for `∑ (n + 1) zⁿ`
@@ -42,10 +43,7 @@ theorem inst2_gB (k z : PTm n) : inst2 gB k z = succ k * pw z k := by
 theorem gs_base (y : PTm n) :
     Γ ⊢[PRAAx] y * y * ap2 (sumF gB) zero (succ y) + succ zero * pw (succ y) zero ≐
       one + zero * pw (succ y) (succ zero) := by
-  have z₀ := natEq (sum_zero (Γ := Γ) gB (succ y))
-  have p₀ := natEq (pw_zero (Γ := Γ) (succ y))
-  apply deriveNat; ipra_simps
-  linear_combination 𝔟 y * 𝔟 y * z₀ + p₀
+  ipra_lc 𝔟 y * 𝔟 y * natEq (sum_zero (Γ := Γ) gB (succ y)) + natEq (pw_zero (Γ := Γ) (succ y))
 
 theorem gs_step {N y : PTm n}
     (ih : Γ ⊢[PRAAx] y * y * ap2 (sumF gB) N (succ y) + succ N * pw (succ y) N ≐
@@ -54,12 +52,8 @@ theorem gs_step {N y : PTm n}
       one + succ N * pw (succ y) (succ (succ N)) := by
   have s := sum_succ' (Γ := Γ) gB N (succ y)
   rw [inst2_gB] at s
-  have es := natEq s
-  have h := natEq ih
-  have p₂ := natEq (pw_succ (Γ := Γ) (succ y) (succ N))
-  have p₁ := natEq (pw_succ (Γ := Γ) (succ y) N)
-  apply deriveNat; ipra_simps
-  linear_combination 𝔟 y * 𝔟 y * es + h + (𝔟 N + 1) * (1 - 𝔟 y) * p₁ - (𝔟 N + 1) * p₂
+  ipra_lc 𝔟 y * 𝔟 y * natEq s + natEq ih + (𝔟 N + 1) * (1 - 𝔟 y) * natEq (pw_succ (Γ := Γ) (succ y) N) -
+    (𝔟 N + 1) * natEq (pw_succ (Γ := Γ) (succ y) (succ N))
 
 /-- Variables: `0 = N`, `1 = y`. -/
 private abbrev gsF : Fm PTm 2 :=

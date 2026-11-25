@@ -2,6 +2,7 @@ import IPRADerivations.Probability.ProductPower
 import IPRADerivations.Probability.ExpectationCorollaries
 import IPRADerivations.AnalyticNumberTheory.Valuation
 import IPRADerivations.DiophantineNumberTheory.SquareArea
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The weak law and Monte Carlo frequencies
@@ -119,9 +120,7 @@ theorem GB_at (t K R C p : PTm n) : Γ ⊢[PRAAx] inst2 (GB w X) t (pairT (pairT
   have s0 := sb_at (Γ := Γ) X t K R C p
   refine (congrAdd (congrMul w0 (congrMul d0 d0)) (congrMul (congrMul (.eqRefl _) (congrMul sel_K sel_R))
     (congrMul w0 s0))).eqTrans ?_
-  have sq := natEq (ad_sq (Γ := Γ) (K * inst2 (SB X) t p) R)
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 (inst2 (TB w) t p) * sq
+  ipra_lc 𝔞 (inst2 (TB w) t p) * natEq (ad_sq (Γ := Γ) (K * inst2 (SB X) t p) R)
 
 /-- `∑_t P_r |K S_r − R|² + 2 K R A = K² B + R² T`. -/
 theorem dev_sum (r M x K R C : PTm n) :
@@ -151,9 +150,7 @@ theorem dev_sum (r M x K R C : PTm n) :
       simp only [inst2, PTm.subst_mul, subst_fstT, subst_sndT]; simp
     rw [e, inst2_AB]
     exact congrMul (congrMul (.eqRefl _) (congrMul sel_K sel_R)) (congrMul (wz_at w _ _ _ _ _) (sb_at X _ _ _ _ _))
-  have a := natEq l; have b := natEq sa; have c := natEq sc
-  apply deriveNat; ipra_simps
-  linear_combination -b + a - c
+  ipra_lc -natEq sa + natEq l - natEq sc
 
 /-- `thm:weak-law`: for the `r`-fold product law with `W = ∑ w ≥ 1`, `S = ∑ w X`, `Q = ∑ w X²`,
 `T = W^r`, the cleared deviation `D = |W S_r − r S|` and any threshold `C`:
@@ -174,16 +171,13 @@ theorem weak_law {M x : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M))
   have sc := sel_C (Γ := Γ) (K := W) (R := r * S) (C := C) (p := pairT r (pairT M x))
   have ch' := le_congr (congrMul (congrMul sc sc) (.eqRefl _)) (.eqRefl _) ch
   have m := sample_moments (Γ := Γ) w X (x := x) hM r
-  have d := natEq (dev_sum (Γ := Γ) w X r M x W (r * S) C)
   have i2 := natEq (Prf.andE₁ m); have i3 := natEq (Prf.andE₂ m)
-  have tp := natEq (total_pow (Γ := Γ) w (x := x) hM r)
   have hP := pw_pos' hW r
   refine le_cancel_pos hP ?_
   refine le_congr (.eqRefl _) ?_ (le_mul_mono (le_refl _) (le_add_mono ch' (le_refl _)))
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 (Tt w r M x) * d + (𝔞 W * 𝔞 (At w X r M x) - 𝔞 r * 𝔞 S * 𝔞 (Tt w r M x)) * i2 + i3 -
-    (𝔞 (Ew (wz w) (dz X * dz X) (pw M r) z) + 𝔞 r * 𝔞 (Tt w r M x) * (𝔞 S * 𝔞 S) -
-      𝔞 r * 𝔞 (Tt w r M x) * (𝔞 W * 𝔞 (ap2 (sumF (w * (X * X))) M x))) * tp
+  ipra_lc 𝔞 (Tt w r M x) * natEq (dev_sum (Γ := Γ) w X r M x W (r * S) C) +
+    (𝔞 W * 𝔞 (At w X r M x) - 𝔞 r * 𝔞 S * 𝔞 (Tt w r M x)) * i2 + i3 -
+    (𝔞 (Ew (wz w) (dz X * dz X) (pw M r) z) + 𝔞 r * 𝔞 (Tt w r M x) * (𝔞 S * 𝔞 S) - 𝔞 r * 𝔞 (Tt w r M x) * (𝔞 W * 𝔞 (ap2 (sumF (w * (X * X))) M x))) * natEq (total_pow (Γ := Γ) w (x := x) hM r)
 
 end Laws
 

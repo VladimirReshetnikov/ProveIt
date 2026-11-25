@@ -53,6 +53,6 @@ theorem block_count {t s H Hb : PTm n} (h8s : Γ ⊢[PRAAx] le (num 8 * s) t)
 /-- `1/(4H̄ · 64q²) = 4δ`: `4 · (4H̄ · 64q²) = D`. -/
 theorem delta_identity (p : PTm n) :
     Γ ⊢[PRAAx] num 4 * (num 4 * (num 1024 * succ p) * (num 64 * (succ p * succ p))) ≐ Dq p := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 end LeanProofs.IPRA.AnalyticNumberTheory.PNTOneStep

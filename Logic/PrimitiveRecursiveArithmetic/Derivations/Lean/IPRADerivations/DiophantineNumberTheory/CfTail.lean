@@ -1,4 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.CfValue
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The nested fraction with a rational tail
@@ -46,11 +47,8 @@ theorem tb_base_alg {F S A Z s c u v P1 Q1 P1' Q1' x1 x2 x3 x4 : PTm n}
   have k1 := natEq h1; have k2 := natEq h2; have k3 := natEq h3; have k4 := natEq h4
   have j1 := natEq e1; have j2 := natEq e2; have j3 := natEq e3; have j4 := natEq e4
   refine .andI ?_ ?_
-  · apply deriveNat; ipra_simps
-    linear_combination f + 𝔞 u * a + 𝔞 u * b - 𝔞 u * k1 - 𝔞 u * 𝔞 c * j1 - 𝔞 u * j3 - 𝔞 u * k -
-      𝔞 v * k3 - 𝔞 v * j1
-  · apply deriveNat; ipra_simps
-    linear_combination g - 𝔞 u * k2 - 𝔞 u * 𝔞 c * j2 - 𝔞 u * j4 - 𝔞 v * k4 - 𝔞 v * j2
+  · ipra_lc f + 𝔞 u * a + 𝔞 u * b - 𝔞 u * k1 - 𝔞 u * 𝔞 c * j1 - 𝔞 u * j3 - 𝔞 u * k - 𝔞 v * k3 - 𝔞 v * j1
+  · ipra_lc g - 𝔞 u * k2 - 𝔞 u * 𝔞 c * j2 - 𝔞 u * j4 - 𝔞 v * k4 - 𝔞 v * j2
 
 theorem tb_step_alg {F S A X Y Z s c u v P Q P' Q' U1 V1 U1' V1' : PTm n}
     (hb1 : Γ ⊢[PRAAx] F ≐ A * X + Y) (hb2 : Γ ⊢[PRAAx] S ≐ X)
@@ -63,10 +61,8 @@ theorem tb_step_alg {F S A X Y Z s c u v P Q P' Q' U1 V1 U1' V1' : PTm n}
   have q1 := natEq r1; have q2 := natEq r2; have q3 := natEq r3; have q4 := natEq r4
   have a := natEq hA; have b := natEq hs; have k := natEq hc
   refine .andI ?_ ?_
-  · apply deriveNat; ipra_simps
-    linear_combination b1 + 𝔞 X * a + 𝔞 X * b - 𝔞 u * q1 - 𝔞 v * q3 + 𝔞 c * x + y - 𝔞 X * k
-  · apply deriveNat; ipra_simps
-    linear_combination b2 + x - 𝔞 u * q2 - 𝔞 v * q4
+  · ipra_lc b1 + 𝔞 X * a + 𝔞 X * b - 𝔞 u * q1 - 𝔞 v * q3 + 𝔞 c * x + y - 𝔞 X * k
+  · ipra_lc b2 + x - 𝔞 u * q2 - 𝔞 v * q4
 
 theorem tb_last_alg {F S A X Y a0 U V U' V' u v x1 x2 x3 x4 pm qm pm' qm' : PTm n}
     (hb1 : Γ ⊢[PRAAx] F ≐ A * X + Y) (hb2 : Γ ⊢[PRAAx] S ≐ X) (hA : Γ ⊢[PRAAx] A ≐ a0)
@@ -79,12 +75,9 @@ theorem tb_last_alg {F S A X Y a0 U V U' V' u v x1 x2 x3 x4 pm qm pm' qm' : PTm 
   have m1 := natEq l1; have m2 := natEq l2; have m3 := natEq l3; have m4 := natEq l4
   have j1 := natEq e1; have j2 := natEq e2; have j3 := natEq e3; have j4 := natEq e4
   refine .andI ?_ ?_
-  · apply deriveNat; ipra_simps
-    linear_combination b1 + 𝔞 X * a + 𝔞 a0 * x + y - 𝔞 u * m1 - 𝔞 u * 𝔞 U * j1 - 𝔞 u * 𝔞 V * j3 -
-      𝔞 v * m3 - 𝔞 v * 𝔞 U' * j1 - 𝔞 v * 𝔞 V' * j3
-  · apply deriveNat; ipra_simps
-    linear_combination b2 + x - 𝔞 u * m2 - 𝔞 u * 𝔞 U * j2 - 𝔞 u * 𝔞 V * j4 -
-      𝔞 v * m4 - 𝔞 v * 𝔞 U' * j2 - 𝔞 v * 𝔞 V' * j4
+  · ipra_lc b1 + 𝔞 X * a + 𝔞 a0 * x + y - 𝔞 u * m1 - 𝔞 u * 𝔞 U * j1 - 𝔞 u * 𝔞 V * j3 - 𝔞 v * m3 - 𝔞 v * 𝔞 U' * j1 -
+      𝔞 v * 𝔞 V' * j3
+  · ipra_lc b2 + x - 𝔞 u * m2 - 𝔞 u * 𝔞 U * j2 - 𝔞 u * 𝔞 V * j4 - 𝔞 v * m4 - 𝔞 v * 𝔞 U' * j2 - 𝔞 v * 𝔞 V' * j4
 
 theorem tb_zero_alg {F S A X Y a0 u v pm qm pm' qm' : PTm n}
     (hb1 : Γ ⊢[PRAAx] F ≐ A * X + Y) (hb2 : Γ ⊢[PRAAx] S ≐ X) (hA : Γ ⊢[PRAAx] A ≐ a0)
@@ -94,10 +87,8 @@ theorem tb_zero_alg {F S A X Y a0 u v pm qm pm' qm' : PTm n}
   have b1 := natEq hb1; have b2 := natEq hb2; have a := natEq hA; have x := natEq hX; have y := natEq hY
   have j1 := natEq e1; have j2 := natEq e2; have j3 := natEq e3; have j4 := natEq e4
   refine .andI ?_ ?_
-  · apply deriveNat; ipra_simps
-    linear_combination b1 + 𝔞 X * a + 𝔞 a0 * x + y - 𝔞 u * j1 - 𝔞 v * j3
-  · apply deriveNat; ipra_simps
-    linear_combination b2 + x - 𝔞 u * j2 - 𝔞 v * j4
+  · ipra_lc b1 + 𝔞 X * a + 𝔞 a0 * x + y - 𝔞 u * j1 - 𝔞 v * j3
+  · ipra_lc b2 + x - 𝔞 u * j2 - 𝔞 v * j4
 
 /-! ## The evaluation -/
 

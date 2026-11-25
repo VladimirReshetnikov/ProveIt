@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianDeflationTelescoping
 import IPRADerivations.Analysis.GaussianApproximateFactorization
 import IPRADerivations.Analysis.GaussianRationalGridCoefficientEquality
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The stored telescoping residual polynomial
@@ -95,8 +96,7 @@ theorem fold_zero (S R N : PTm n) : Γ ⊢[PRAAx] fold S R N zero ≐ zeros (suc
   simp only [baseBody, GaussianRationalPolynomialBuffers.subst_zeros, ConciseIPRA.PTm.subst_succ,
     subst_sndT, Syn.subst_var, Matrix.cons_val_zero] at base
   have eq : Γ ⊢[PRAAx] zeros (succ (sndT (sndT (data S R N)))) ≐ zeros (succ N) := by
-    simpa using Prf.eqCongr (Γ := Γ) (zeros (succ (var 0)) : PTm 1)
-      (σ := ![sndT (sndT (data S R N))]) (σ' := ![N]) (fun i => by fin_cases i; exact inner)
+    ipra_congr (zeros (succ (var 0)) : PTm 1) with [(show _ ⊢[PRAAx] sndT (sndT (data S R N)) ≐ N from inner)]
   exact base.eqTrans eq
 
 theorem fold_succ (S R N j : PTm n) :

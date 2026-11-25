@@ -1,4 +1,5 @@
 import IPRADerivations.Probability.ProductPower
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Finite uniqueness supplies coherence (`ipra_coherent_methods_2026-11-15`, `thm:coherence`)
@@ -103,13 +104,10 @@ theorem rem_rem {x n m : PTm k} (h : Γ ⊢[PRAAx] le n m) :
     Γ ⊢[PRAAx] rem (rem x (pw two m)) (pw two n) ≐ rem x (pw two n) := by
   have hm : Γ ⊢[PRAAx] pw two m ≐ pw two n * pw two (monus m n) :=
     (congrPw (.eqRefl _) (eq_add_of_le h)).eqTrans (pw_add _ _ _)
-  have e₁ := natEq (div_eq' (Γ := Γ) (t := x) (pw_pos' two_pos m))
-  have e₂ := natEq hm
   -- `x = (⌊x / 2^m⌋ · 2^{m−n}) · 2^n + (x mod 2^m)`
   have ex : Γ ⊢[PRAAx] x ≐
       (quo x (pw two m) * pw two (monus m n)) * pw two n + rem x (pw two m) := by
-    apply deriveNat; ipra_simps
-    linear_combination e₁ + 𝔞 (quo x (pw two m)) * e₂
+    ipra_lc natEq (div_eq' (Γ := Γ) (t := x) (pw_pos' two_pos m)) + 𝔞 (quo x (pw two m)) * natEq hm
   exact ((congrAp2 remF ex (.eqRefl _)).eqTrans (rem_shift (pw_pos' two_pos n))).eqSymm
 
 /-- Residues modulo `2^n`: `C(x, n, z)` is `z = x mod 2^n`, the equivalence is equality, and

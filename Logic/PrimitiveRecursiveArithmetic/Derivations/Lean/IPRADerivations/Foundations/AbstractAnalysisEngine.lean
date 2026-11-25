@@ -4,6 +4,7 @@ import IPRADerivations.Analysis.RationalClosure
 import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.DiophantineNumberTheory.AperyMultibound
 import IPRADerivations.DiophantineNumberTheory.SimultaneousGrid
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The elementary quantitative engine of abstract analysis
@@ -180,7 +181,6 @@ theorem coercive_gap {m M Z P Q : PTm n} (hP : Γ ⊢[PRAAx] le (m * Z) P) (hQ :
 theorem gap_square (m M : ZT n) :
     Γ ⊢[PRAAx] ZT.eq ((ZT.natLit 2 * (M * M) - m * m) * (ZT.natLit 2 * (M * M) - m * m))
       (ZT.natLit 4 * (M * M * (M * M) - m * m * (M * M)) + m * m * (m * m)) := by
-  apply ZT.derive
-  simp only [ZT.toZ_add, ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_natLit]; push_cast; ring
+  ipra_lc
 
 end LeanProofs.IPRA.Foundations.AbstractAnalysisEngine

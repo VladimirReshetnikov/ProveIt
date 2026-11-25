@@ -1,5 +1,6 @@
 import IPRADerivations.Probability.DyadicAssembly
 import IPRADerivations.AnalyticNumberTheory.RobinLogInterval
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The bad event is covered by the dyadic blocks
@@ -172,15 +173,14 @@ theorem bad_zero {m t H M K e x : PTm n}
   have hH1 : C2 ⊢[PRAAx] le one H := le_trans hm1 hmH
   have spH := eb_spec (le_refl one) hH1
   have hq : C2 ⊢[PRAAx] le (m * one) (H * one) :=
-    le_congr (by apply deriveNat; ipra_simps; ring) (by apply deriveNat; ipra_simps; ring) hmH
+    le_congr (by ipra_ring) (by ipra_ring) hmH
   have hrH : C2 ⊢[PRAAx] le (eb m one) (eb H one) := exp_le (le_refl one) (Prf.andE₁ sp) (Prf.andE₂ spH) hq
   -- the block index `j = r ∸ K < J`
   have eK := eq_add_of_le hKr
   have eH := eq_add_of_le hrH
   have hjJ : C2 ⊢[PRAAx] lt (monus (eb m one) K) (Jb H K) := by
     have e1 : C2 ⊢[PRAAx] succ (eb H one) ≐ K + (succ (monus (eb m one) K) + monus (eb H one) (eb m one)) := by
-      have a := natEq eK; have b := natEq eH
-      apply deriveNat; ipra_simps; linear_combination b + a
+      ipra_lc natEq eH + natEq eK
     have e2 : C2 ⊢[PRAAx] Jb H K ≐ succ (monus (eb m one) K) + monus (eb H one) (eb m one) :=
       (congrMonus e1 (.eqRefl _)).eqTrans (add_monus' _ _)
     exact le_of_eq_add (d := monus (eb H one) (eb m one)) e2

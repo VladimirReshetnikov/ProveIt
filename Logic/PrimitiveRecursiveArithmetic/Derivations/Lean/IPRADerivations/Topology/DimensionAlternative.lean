@@ -1,6 +1,7 @@
 import IPRADerivations.Topology.DimensionRational
 import IPRADerivations.Foundations.DigitCodes
 import IPRADerivations.Foundations.LeastBoundedWitness
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The finite witness alternative (`dimension_invariance_ipra`, `thm:alternative`)
@@ -185,7 +186,7 @@ theorem dec_code {Γ : List (Fm PTm n)} {Pb cP u w b : PTm n} (hP : Γ ⊢[PRAAx
 
 theorem enc_zero (k : ℕ) {Γ : List (Fm PTm n)} (Pb x : PTm n) :
     Γ ⊢[PRAAx] enc k Pb x ≐ enc k Pb x + pwr k Pb * zero := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- A failing search (i) for coordinate `g`: every opposite-face pair has a separated entry. -/
 theorem sep_point_search {Γ : List (Fm PTm n)} {g : ℕ} {b u v : PTm n}
@@ -209,7 +210,7 @@ theorem sep_point_search {Γ : List (Fm PTm n)} {g : ℕ} {b u v : PTm n}
       ((congrMonus (.eqRefl _) (congrMonus (.eqRefl _) h0)).eqTrans Signum.sg_zero))
       ((congrAdd (congrMonus hN (.eqRefl _)) (congrMonus (.eqRefl _) hN)).eqTrans
         ((congrAdd (monus_self _) (monus_self _)).eqTrans (add_zero _)))) (.eqRefl _)).eqTrans ?_
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   have hne : Γ ⊢[PRAAx] neg (fsum m (fun j => monus one (closeBit m P Q R hn hd j u v b)) ≐ zero) := by
     refine .impI (.impE hfail.wk ?_)
     exact ((fBodyI_congr d' m P Q R hn hd g b du dv).eqTrans hsum).wk.eqTrans Prf.hyp0
@@ -257,8 +258,7 @@ theorem small_point_search {Γ : List (Fm PTm n)} {b a : PTm n}
   have hlt : ∀ q, q < d' + 1 → (Γ ⊢[PRAAx] lt (proj q a) (fstT b)) := fun q hq =>
     fsum_zero_elim (d' + 1) _ h₂ ⟨q, hq⟩
   have hP : Γ ⊢[PRAAx] fstT b ≐ succ (proj 0 a + monus (fstT b) (succ (proj 0 a))) := by
-    have e := natEq (eq_add_of_le (hlt 0 (by omega)))
-    apply deriveNat; ipra_simps; linear_combination e
+    ipra_lc natEq (eq_add_of_le (hlt 0 (by omega)))
   let c : PTm n := enc (d' + 1) (fstT b) a
   have hc : Γ ⊢[PRAAx] lt c (BII d' b) := enc_lt _ _ hlt
   have da : Γ ⊢[PRAAx] dec (d' + 1) (fstT b) c b ≐ a :=
