@@ -10026,6 +10026,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PerfectNumbers.perfect_alg
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PerfectNumbers.coprime
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PerfectNumbers.euclid_perfect
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.MersenneExponent.mersenne
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.MersenneExponent.succ_mersenne
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.MersenneExponent.two_le_mersenne
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.MersenneExponent.mersenne_lt
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.MersenneExponent.mersenne_divides
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.MersenneExponent.prime_exponent
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.MersenneExponent.exponentFormula
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.MersenneExponent.prime_exponent_closed
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.OrderDivides.order_dvd_of_pow
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.OrderDivides.pow_of_order_dvd
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.TwoSquaresObstruction.parities_three

@@ -380,6 +380,7 @@ import IPRADerivations.AnalyticNumberTheory.PrimeRank
 import IPRADerivations.AnalyticNumberTheory.PrimeClasses
 import IPRADerivations.AnalyticNumberTheory.ChebyshevPi
 import IPRADerivations.AnalyticNumberTheory.PerfectNumbers
+import IPRADerivations.AnalyticNumberTheory.MersenneExponent
 import IPRADerivations.AnalyticNumberTheory.OrderDivides
 import IPRADerivations.DiophantineNumberTheory.TwoSquaresObstruction
 import IPRADerivations.DiophantineNumberTheory.WilsonConverse
