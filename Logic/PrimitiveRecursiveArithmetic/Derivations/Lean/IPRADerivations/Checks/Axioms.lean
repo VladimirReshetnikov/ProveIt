@@ -19172,6 +19172,119 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianImaginaryCoordinateName.actual_imaginary_coordinate_name_regular_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianImaginaryCoordinateName.actual_imaginary_coordinate_equivalence_closed
 
+/-! ### GaussianArctangentClippedParameter -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentClippedParameter.denominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentClippedParameter.numerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentClippedParameter.value
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentClippedParameter.subst_denominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentClippedParameter.subst_numerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentClippedParameter.denominator_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentClippedParameter.numerator_le
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentClippedParameter.radius_of_cleared
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentClippedParameter.value_radius
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentClippedParameter.representation_clips_exactly
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentClippedParameter.actual_arctangent_clipped_parameter_distance_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentClippedParameter.actual_arctangent_clipped_parameter_specialization_closed
+
+/-! ### GaussianArctangentForwardLipschitz -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentForwardLipschitz.ordinate_radius
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentForwardLipschitz.forward_distance
+
+/-! ### GaussianArctangentNamedExtension -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedExtension.clock
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedExtension.parameter
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedExtension.numerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedExtension.denominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedExtension.sample
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedExtension.nameF
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedExtension.subst_clock
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedExtension.subst_parameter
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedExtension.subst_numerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedExtension.subst_denominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedExtension.subst_sample
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedExtension.denominator_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedExtension.numerator_le
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedExtension.sample_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedExtension.parameter_specialization
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedExtension.parameter_represents_of_embedding
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedExtension.partial_specialization
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedExtension.partial_distance
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedExtension.unit_clock
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedExtension.sample_regularity
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedExtension.name_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedExtension.actual_named_arctangent_extension_sample_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedExtension.actual_named_arctangent_extension_regular_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedExtension.actual_named_arctangent_extension_specialization_closed
+
+/-! ### GaussianArctangentExtensionRange -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentExtensionRange.lower_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentExtensionRange.upper_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentExtensionRange.inverse_input
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentExtensionRange.actual_arctangent_extension_inverse_input_closed
+
+/-! ### GaussianArctangentExtensionAxis -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentExtensionAxis.prefix_axis_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentExtensionAxis.extension_axis_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentExtensionAxis.actual_arctangent_extension_imaginary_axis_closed
+
+/-! ### GaussianImaginaryAxisMetric -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianImaginaryAxisMetric.imaginary
+#print axioms LeanProofs.IPRA.Analysis.GaussianImaginaryAxisMetric.axis_represents
+#print axioms LeanProofs.IPRA.Analysis.GaussianImaginaryAxisMetric.axis_distance_from_radius
+#print axioms LeanProofs.IPRA.Analysis.GaussianImaginaryAxisMetric.actual_imaginary_axis_scalar_distance_closed
+
+/-! ### GaussianArctangentInverseCorrectness -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentInverseCorrectness.roundTripF
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentInverseCorrectness.imaginarySamples
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentInverseCorrectness.subst_imaginarySamples
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentInverseCorrectness.imaginary_sample_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentInverseCorrectness.ordinate_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentInverseCorrectness.right_inverse
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentInverseCorrectness.imaginary_right_inverse
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentInverseCorrectness.actual_arctangent_right_inverse_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentInverseCorrectness.actual_arctangent_imaginary_right_inverse_closed
+
+/-! ### GaussianArctangentNamedExtensionUniqueness -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedExtensionUniqueness.original_extension_injective
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedExtensionUniqueness.original_left_inverse
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedExtensionUniqueness.original_extension_left_inverse
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedExtensionUniqueness.actual_arctangent_named_extension_injective_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedExtensionUniqueness.actual_arctangent_named_extension_left_inverse_closed
+
+/-! ### GaussianArctangentNamedCayley -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedCayley.exponentialF
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedCayley.exponentialData
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedCayley.queryPrecision
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedCayley.raw
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedCayley.rawF
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedCayley.modulus
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedCayley.nameF
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedCayley.data
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedCayley.subst_exponentialData
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedCayley.subst_queryPrecision
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedCayley.subst_raw
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedCayley.subst_data
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedCayley.argument_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedCayley.exp_input
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedCayley.exp_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedCayley.raw_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedCayley.raw_canonical
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedCayley.raw_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedCayley.raw_distance
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedCayley.raw_regularity
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedCayley.name_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedCayley.sample_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedCayley.sample_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedCayley.exponential_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedCayley.actual_named_arctangent_Cayley_literal_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedCayley.actual_named_arctangent_Cayley_distance_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedCayley.actual_named_arctangent_Cayley_exponential_closed
+
+/-! ### GaussianArctangentImaginaryOrderTransport -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentImaginaryOrderTransport.imaginary_order_congr_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentImaginaryOrderTransport.imaginary_order_congr
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentImaginaryOrderTransport.actual_named_arctangent_imaginary_order_transport_closed
+
 /-! ### GaussianGammaHalfSquareLimit -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaHalfSquareLimit.gammaHalf
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaHalfSquareLimit.gammaSquareF
