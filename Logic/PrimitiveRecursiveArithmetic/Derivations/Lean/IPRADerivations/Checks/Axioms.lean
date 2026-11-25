@@ -19285,6 +19285,64 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianArctangentImaginaryOrderTransport.imaginary_order_congr
 #print axioms LeanProofs.IPRA.Analysis.GaussianArctangentImaginaryOrderTransport.actual_named_arctangent_imaginary_order_transport_closed
 
+/-! ### GaussianImaginaryNameConjugation -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianImaginaryNameConjugation.imaginarySamples
+#print axioms LeanProofs.IPRA.Analysis.GaussianImaginaryNameConjugation.subst_imaginarySamples
+#print axioms LeanProofs.IPRA.Analysis.GaussianImaginaryNameConjugation.imaginary_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianImaginaryNameConjugation.negative_point
+#print axioms LeanProofs.IPRA.Analysis.GaussianImaginaryNameConjugation.negative_conjugate_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianImaginaryNameConjugation.negative_exponential_conjugate_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianImaginaryNameConjugation.actual_imaginary_name_negation_conjugation_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianImaginaryNameConjugation.actual_imaginary_exponential_conjugation_closed
+
+/-! ### GaussianArctangentCayleyProjections -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyProjections.sine_projection
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyProjections.cosine_projection
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyProjections.samplePrecision
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyProjections.subst_samplePrecision
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyProjections.sineProjectionF
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyProjections.cosineProjectionF
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyProjections.sine_sample_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyProjections.cosine_sample_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyProjections.conjugate_sample_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyProjections.actual_named_Cayley_trigonometric_samples_closed
+
+/-! ### GaussianArctangentNamedCayleyTrig -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedCayleyTrig.negativeExpF
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedCayleyTrig.negativeExpData
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedCayleyTrig.extension_imaginary_samples
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedCayleyTrig.conjugate_exponential_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedCayleyTrig.sineBudget
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedCayleyTrig.cosineBudget
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedCayleyTrig.subst_sineBudget
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedCayleyTrig.subst_cosineBudget
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedCayleyTrig.sine_observation_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedCayleyTrig.cosine_observation_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedCayleyTrig.sine_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedCayleyTrig.cosine_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedCayleyTrig.actual_named_arctangent_extension_sine_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedCayleyTrig.actual_named_arctangent_extension_cosine_closed
+
+/-! ### GaussianArctangentNamedChordExtension -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedChordExtension.sineF
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedChordExtension.sineData
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedChordExtension.productF
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedChordExtension.productData
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedChordExtension.parameterPrecision
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedChordExtension.subst_productData
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedChordExtension.sine_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedChordExtension.product_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedChordExtension.slackCost
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedChordExtension.original_chord_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedChordExtension.original_chord
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedChordExtension.actual_named_arctangent_sine_chord_closed
+
+/-! ### GaussianArctangentAngleChord -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentAngleChord.productF
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentAngleChord.productData
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentAngleChord.original_chord
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentAngleChord.actual_original_sine_chord_on_angle_interval_closed
+
 /-! ### GaussianGammaHalfSquareLimit -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaHalfSquareLimit.gammaHalf
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaHalfSquareLimit.gammaSquareF
