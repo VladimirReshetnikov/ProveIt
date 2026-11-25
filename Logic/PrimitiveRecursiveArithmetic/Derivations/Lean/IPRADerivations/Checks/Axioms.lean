@@ -18989,6 +18989,38 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialTrig.actual_rational_arctangent_sine_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialTrig.actual_rational_arctangent_cosine_closed
 
+/-! ### GaussianArctangentChordComparison -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentChordComparison.cleared_row
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentChordComparison.matched_prefix_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentChordComparison.actual_arctangent_matched_prefix_chord_closed
+
+/-! ### GaussianArctangentNamedChord -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedChord.observation_chord_order
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedChord.observation_zero
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedChord.zero_chord_order
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedChord.sine_point_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedChord.imaginary_coordinate_radius
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedChord.original_chord_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedChord.actual_original_arctangent_sine_chord_closed
+
+/-! ### GaussianArctangentSlope -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentSlope.lowerSlope
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentSlope.upperSlope
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentSlope.slope
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentSlope.subst_lowerSlope
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentSlope.subst_upperSlope
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentSlope.subst_slope
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentSlope.row_slope
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentSlope.finite_slope
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentSlope.actual_finite_arctangent_slope_closed
+
+/-! ### GaussianArctangentGridSearch -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentGridSearch.crossing
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentGridSearch.crossing_spec
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentGridSearch.crossing_residual
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentGridSearch.actual_arctangent_grid_crossing_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentGridSearch.actual_arctangent_grid_crossing_residual_closed
+
 /-! ### GaussianGammaHalfSquareLimit -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaHalfSquareLimit.gammaHalf
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaHalfSquareLimit.gammaSquareF
