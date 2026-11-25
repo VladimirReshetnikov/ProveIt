@@ -7,7 +7,7 @@ import IPRADerivations.Analysis.GaussianStirlingGammaFractionalIncrementLogGap
 
 The harmonic interval from a/b to a/b+N, subtracted from the
 original cutoff logarithm, approaches the actual harmonic name of log(a/b).
-All errors use the same dyadic observation clock with N=2^p.
+The cutoff N may be any integer at least 2^p at observation p.
 -/
 
 set_option autoImplicit false
@@ -49,12 +49,10 @@ private theorem same_ratio_at (p a b c d : PTm n)
     (AnalyticNumberTheory.PhiLower.le_mul_mono (le_refl two) (mesh_later p))
     (distance_congr (sample_at p a b).eqSymm (sample_at p c d).eqSymm (.eqRefl _) (.eqRefl _) raw)
 
-private theorem nearby_at (p a b : PTm n) (hs : Γ ⊢[PRAAx] source a b) :
-    Γ ⊢[PRAAx] distanceBounded (sample p (index a b (unit p)) (unit p*b)) qzero a (unit p) := by
-  let N := unit p
+private theorem nearby_at (p a b N : PTm n) (hs : Γ ⊢[PRAAx] source a b) (hN : Γ ⊢[PRAAx] le one N) :
+    Γ ⊢[PRAAx] distanceBounded (sample p (index a b N) (N*b)) qzero a N := by
   let A := index a b N
   let B := N*b
-  have hN := unit_positive (Γ := Γ) p
   have hB := positive_product _ _ hN hs.andE₂
   have hBA : Γ ⊢[PRAAx] le B A := le_add_left _ _
   have hA := le_trans hB hBA
@@ -72,11 +70,11 @@ private theorem nearby_at (p a b : PTm n) (hs : Γ ⊢[PRAAx] source a b) :
   have hc := GaussianRationalHorner.canonical_congr (sample_at (Γ := Γ) p A B) (embed_canonical (interval A B (mesh p)))
   exact GaussianRationalReciprocal.bound_congr (GaussianRationalReconstruction.qsub_zero_right _ hc).eqSymm (.eqRefl _) (.eqRefl _) h
 
-theorem cutoff_balance (p a b : PTm n) (hs : Γ ⊢[PRAAx] source a b) :
+theorem cutoff_balance_of_le (p a b N : PTm n) (hs : Γ ⊢[PRAAx] source a b) (hLater : Γ ⊢[PRAAx] le (unit p) N) :
     Γ ⊢[PRAAx] distanceBounded
-      (qsub (ap2 logF p (unit p)) (sample p (index a b (unit p)) a))
+      (qsub (ap2 logF p N) (sample p (index a b N) a))
       (sample p a b) (a+num 10) (unit p) := by
-  let N := unit p
+  let U := unit p
   let A := index a b N
   let B := N*b
   let X := sample p a b
@@ -85,7 +83,8 @@ theorem cutoff_balance (p a b : PTm n) (hs : Γ ⊢[PRAAx] source a b) :
   let V := sample p N one
   let old := ap2 logF p N
   let common := sample p A b
-  have hN := unit_positive (Γ := Γ) p
+  have hU := unit_positive (Γ := Γ) p
+  have hN := le_trans hU hLater
   have hB := positive_product _ _ hN hs.andE₂
   have hA : Γ ⊢[PRAAx] le one A := le_trans hs.andE₁ (le_add_right _ _)
   have hLeft := finite_samples p A a a b (.andI (.andI hA hs.andE₁) hs)
@@ -94,28 +93,36 @@ theorem cutoff_balance (p a b : PTm n) (hs : Γ ⊢[PRAAx] source a b) :
     (positive_product _ _ hs.andE₁ hs.andE₂) hA hs.andE₂ (by ipra_ring)
   have eRight := same_ratio_at p (N*A) (one*B) A b (positive_product _ _ hN hA)
     (positive_product _ _ (le_refl one) hB) hA hs.andE₂ (by unfold B; ipra_ring)
-  have left := distance_triangle_same common _ (qadd L X) two two N hN
-    (distance_symmetric _ _ _ _ hN eLeft) hLeft
-  have right := distance_triangle_same (qadd V T) _ common two two N hN
-    (distance_symmetric _ _ _ _ hN hRight) eRight
-  have together := distance_triangle_same (qadd V T) common (qadd L X) (two+two) (two+two) N hN right left
+  have left := distance_triangle_same common _ (qadd L X) two two U hU
+    (distance_symmetric _ _ _ _ hU eLeft) hLeft
+  have right := distance_triangle_same (qadd V T) _ common two two U hU
+    (distance_symmetric _ _ _ _ hU hRight) eRight
+  have together := distance_triangle_same (qadd V T) common (qadd L X) (two+two) (two+two) U hU right left
   have e := (GaussianNameArithmetic.sum_difference (Γ := Γ) V L T X).eqTrans
     (qadd_congr (.eqRefl _) (GaussianRationalDistanceOrder.reversed_difference X T).eqSymm)
-  have balanced : Γ ⊢[PRAAx] distanceBounded (qsub V L) (qsub X T) (num 8) N :=
+  have balanced : Γ ⊢[PRAAx] distanceBounded (qsub V L) (qsub X T) (num 8) U :=
     GaussianRationalReciprocal.bound_congr e (by ipra_ring) (.eqRefl _) together
   have eV := GaussianStirlingGammaFractionalIncrementLogGap.sample_from_one N p hN
-  have ht : Γ ⊢[PRAAx] le N (unit (clock p)) :=
+  have ht : Γ ⊢[PRAAx] le U (unit (clock p)) :=
     GaussianExponentialReference.unit_monotone (le_add_right p (num 9))
   have original := GaussianNameEquivalence.point_at logF N p (clock p) (log_regular N hN)
-  have originalV : Γ ⊢[PRAAx] distanceBounded old V two N :=
-    distance_radius_mono _ _ _ _ _ _ (positive_product _ _ hN (le_trans hN ht)) hN
-      (by ipra_le 𝔞 N*sl ht)
+  have originalV : Γ ⊢[PRAAx] distanceBounded old V two U :=
+    distance_radius_mono _ _ _ _ _ _ (positive_product _ _ hU (le_trans hU ht)) hU
+      (by ipra_le 𝔞 U*sl ht)
       (distance_congr (.eqRefl _) eV.eqSymm (.eqRefl _) (.eqRefl _) original)
-  have logClock := difference_distance old V L L two zero N hN originalV (distance_refl_zero L N hN)
+  have logClock := difference_distance old V L L two zero U hU originalV (distance_refl_zero L U hU)
   have hX := GaussianRationalHorner.canonical_congr (sample_at (Γ := Γ) p a b) (embed_canonical (interval a b (mesh p)))
-  have endGap := difference_distance X X T qzero zero a N hN (distance_refl_zero X N hN) (nearby_at p a b hs)
-  have shifted := distance_triangle_same _ _ _ _ _ N hN logClock balanced
+  have near := distance_radius_mono _ _ _ _ _ _ hN hU
+    (AnalyticNumberTheory.PhiLower.le_mul_mono (le_refl a) hLater) (nearby_at p a b N hs hN)
+  have endGap := difference_distance X X T qzero zero a U hU (distance_refl_zero X U hU) near
+  have shifted := distance_triangle_same _ _ _ _ _ U hU logClock balanced
   exact distance_congr (.eqRefl _) (GaussianRationalReconstruction.qsub_zero_right _ hX)
-    (by ipra_ring) (.eqRefl _) (distance_triangle_same _ _ _ _ _ N hN shifted endGap)
+    (by ipra_ring) (.eqRefl _) (distance_triangle_same _ _ _ _ _ U hU shifted endGap)
+
+theorem cutoff_balance (p a b : PTm n) (hs : Γ ⊢[PRAAx] source a b) :
+    Γ ⊢[PRAAx] distanceBounded
+      (qsub (ap2 logF p (unit p)) (sample p (index a b (unit p)) a))
+      (sample p a b) (a+num 10) (unit p) :=
+  cutoff_balance_of_le p a b (unit p) hs (le_refl _)
 
 end LeanProofs.IPRA.Analysis.GaussianGammaDigammaHarmonicLogBalance
