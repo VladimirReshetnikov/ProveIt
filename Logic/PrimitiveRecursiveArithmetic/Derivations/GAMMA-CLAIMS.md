@@ -2223,6 +2223,13 @@ odd term. Cancelling the original denominator yields
 reciprocal sampler. At zero the original kernel equals `1/12`.
 [GaussianBinetKernelSinhOddLower](Lean/IPRADerivations/Analysis/GaussianBinetKernelSinhOddLower.lean), [GaussianBinetKernelSinhApartness](Lean/IPRADerivations/Analysis/GaussianBinetKernelSinhApartness.lean), [GaussianNamedClearedScalarQuotient](Lean/IPRADerivations/Analysis/GaussianNamedClearedScalarQuotient.lean), [GaussianBinetKernelElementaryRational](Lean/IPRADerivations/Analysis/GaussianBinetKernelElementaryRational.lean).
 
+Multiplying the cleared kernel identity by the original negative
+half-time exponential identifies `(1−exp(−t))k(t)` with the actual
+cofinal quadrature of `(1/2−u)exp(−tu)` on `[0,1]`. The positive
+branch cancels an exact nonzero rational scale. At `t = 0` the
+weighted grid bound proves exact agreement and regularity.
+[GaussianBinetKernelHalfExponential](Lean/IPRADerivations/Analysis/GaussianBinetKernelHalfExponential.lean), [GaussianBinetKernelWeightedBridge](Lean/IPRADerivations/Analysis/GaussianBinetKernelWeightedBridge.lean), [GaussianBinetKernelWeightedBridgeZero](Lean/IPRADerivations/Analysis/GaussianBinetKernelWeightedBridgeZero.lean).
+
 The Binet kernel series uses the original named π in each positive row
 `2/(t²+4π²n²)`. On `0 ≤ t ≤ T` the actual finite and cofinal samples
 are bounded below by `2/(T²+100)` at positive cutoffs. The row majorant
