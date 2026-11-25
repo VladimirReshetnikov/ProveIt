@@ -2561,3 +2561,6 @@ The weighted sine column can be evaluated at the sine rectangle clock even when 
 
 The literal frozen Pi prefix uses an explicit size-dependent tail independent of observation precision. The original positive frequency tags and integration weight read back exactly, and the literal late damping clock can be chosen independently of the Pi clock.
 [GaussianBinetKernelFrozenIndependent](Lean/IPRADerivations/Analysis/GaussianBinetKernelFrozenIndependent.lean), [GaussianBinetKernelFrequencyGrid](Lean/IPRADerivations/Analysis/GaussianBinetKernelFrequencyGrid.lean)
+
+The original tags of the compact interval from 1/E to T match the corresponding suffix of the complete frozen time grid. The mesh weights agree exactly, and the time-tag comparison retains a uniform dyadic allowance.
+[GaussianBinetBoseFrozenTimeRescale](Lean/IPRADerivations/Analysis/GaussianBinetBoseFrozenTimeRescale.lean), [GaussianBinetBoseFrozenSuffix](Lean/IPRADerivations/Analysis/GaussianBinetBoseFrozenSuffix.lean)
