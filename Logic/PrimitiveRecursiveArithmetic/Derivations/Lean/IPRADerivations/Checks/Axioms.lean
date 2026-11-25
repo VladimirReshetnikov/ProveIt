@@ -28072,6 +28072,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetSecondWeightedSineGrid.row_at
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetSecondWeightedSineGrid.grid_error
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetSecondWeightedSineGrid.actual_second_Binet_frozen_grid_sine_substitution_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetSecondWeightedSinePrefix.body
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetSecondWeightedSinePrefix.data
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetSecondWeightedSinePrefix.value
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetSecondWeightedSinePrefix.subst_data
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetSecondWeightedSinePrefix.subst_value
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetSecondWeightedSinePrefix.column_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetSecondWeightedSinePrefix.prefix_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetSecondWeightedSinePrefix.actual_second_Binet_frozen_prefix_sine_substitution_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetSineDampedTransform.value
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetSineDampedTransform.coefficient_product
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetSineDampedTransform.coefficient_lower

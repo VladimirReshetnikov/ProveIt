@@ -2552,3 +2552,6 @@ The original cofinal Laplace integrand has norm at most one half. Each compact l
 
 The original frozen decay observation is moved to the exact sine evaluation clock. Replacing the original arctangent by the scheduled sine rectangle on that same grid has error T*(20+2KT)/2^q, including the original time-zero tag.
 [GaussianBinetSecondWeightedSinePoint](Lean/IPRADerivations/Analysis/GaussianBinetSecondWeightedSinePoint.lean), [GaussianBinetSecondWeightedSineGrid](Lean/IPRADerivations/Analysis/GaussianBinetSecondWeightedSineGrid.lean)
+
+The exact zero-start frozen matrix equals the original finite geometric row sum. Its scheduled sine replacement has error at most NT(20+2KT)/2^q for N rows on the same physical mesh and with the same frozen Pi sample.
+[GaussianBinetSecondWeightedSinePrefix](Lean/IPRADerivations/Analysis/GaussianBinetSecondWeightedSinePrefix.lean)
