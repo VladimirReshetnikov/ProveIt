@@ -2573,3 +2573,6 @@ Exact finite interchange exposes each positive transposed column as the original
 
 Compare the literal positive sine suffix with the original first Binet improper observation via its arbitrary-mesh compact quadrature. The per-tag comparison permits different certified damping radii.
 [GaussianBinetKernelFrequencyRadius](Lean/IPRADerivations/Analysis/GaussianBinetKernelFrequencyRadius.lean), [GaussianBinetLaplaceFrequencySuffix](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceFrequencySuffix.lean)
+
+Checked the later frozen prefix against the weighted sine prefix on the same time grid, with an independent angular clock. The retained angular cells compare to the original frozen kernel with separately bounded observation and time-tail errors.
+[GaussianBinetSecondDecayRetiming](Lean/IPRADerivations/Analysis/GaussianBinetSecondDecayRetiming.lean), [GaussianBinetSineKernelFrequency](Lean/IPRADerivations/Analysis/GaussianBinetSineKernelFrequency.lean)

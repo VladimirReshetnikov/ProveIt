@@ -28205,6 +28205,17 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetSineKernelCommonClock.value
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetSineKernelCommonClock.cost
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetSineKernelCommonClock.kernel_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetSecondDecayRetiming.cost
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetSecondDecayRetiming.subst_cost
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetSecondDecayRetiming.row_distance
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetSecondDecayRetiming.grid_distance
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetSecondDecayRetiming.prefix_distance
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetSecondDecayRetiming.scheduled_prefix_distance
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetSineKernelFrequency.damping_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetSineKernelFrequency.frequency_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetSineKernelFrequency.angularCost
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetSineKernelFrequency.subst_angularCost
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetSineKernelFrequency.scheduled_frequency_error
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetSineQuotientMajorant.pairDifference
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetSineQuotientMajorant.coefficient_bound_exact
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetSineQuotientMajorant.pair_bound
