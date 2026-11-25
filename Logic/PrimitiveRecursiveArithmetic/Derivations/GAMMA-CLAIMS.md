@@ -1990,6 +1990,22 @@ The chart decoding preserves the exact value of each observation,
 including comparisons between observations with different denominators.
 [GaussianNamedRightHalfPlaneSigned](Lean/IPRADerivations/Analysis/GaussianNamedRightHalfPlaneSigned.lean).
 
+On a common positive real margin `1/K`, the actual finite complex
+reciprocal sums have variation bounded by `(K²+2)|z-w|` across rational
+representations with independent denominators. The same leading bound
+holds for the cofinal Euler slope and the C27 digamma series, with one
+dyadic error for each independently chosen output observation. Retiming
+the actual input observations gives a regular digamma name on the
+certified right half-plane. Equivalent input names on a common margin
+and disk give equivalent digamma names.
+[GaussianLogGammaEulerSlopeContinuity](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerSlopeContinuity.lean), [GaussianLogGammaEulerDigammaContinuity](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerDigammaContinuity.lean), [GaussianLogGammaEulerNamedDigamma](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerNamedDigamma.lean).
+
+The shared evaluator lift allocates half of each observation error to
+retiming the input and half to evaluating at the resulting rational
+chart. It proves the exact independent rate to the rational evaluator
+at any sufficiently late input observation.
+[GaussianNamedRightHalfPlaneLift](Lean/IPRADerivations/Analysis/GaussianNamedRightHalfPlaneLift.lean).
+
 ## Source artifacts and representation boundaries
 
 The delivered [Lean companion](../docs/proofs/analysis/gamma_ipra/lean/README.md)
