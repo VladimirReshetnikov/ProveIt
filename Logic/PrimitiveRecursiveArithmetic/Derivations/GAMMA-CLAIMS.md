@@ -2744,3 +2744,6 @@ The actual compact name on nested powered positive cutoffs obeys an origin bound
 
 The actual inverse-power row equals the reciprocal-time original power times its exact rational scale. A certified real-part margin gives a dyadic block decay bound at arbitrary original observation clocks.
 [GaussianGammaZetaDirichletReciprocalRow](Lean/IPRADerivations/Analysis/GaussianGammaZetaDirichletReciprocalRow.lean), [GaussianGammaZetaDirichletPowerOrder](Lean/IPRADerivations/Analysis/GaussianGammaZetaDirichletPowerOrder.lean), [GaussianGammaZetaDirichletRowDecay](Lean/IPRADerivations/Analysis/GaussianGammaZetaDirichletRowDecay.lean)
+
+The actual same-clock shifted improper observation compares to the original base minus the exact increment times the successor moment. The quadratic allowance uses a uniform norm bound on the actual higher moment and the remaining term is 10/2^p.
+[GaussianBinetLaplaceMomentImproperBound](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentImproperBound.lean), [GaussianBinetLaplaceMomentImproperTaylor](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentImproperTaylor.lean)
