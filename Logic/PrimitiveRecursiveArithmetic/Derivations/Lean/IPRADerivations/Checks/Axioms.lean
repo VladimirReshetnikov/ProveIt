@@ -18636,6 +18636,31 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedSqrtFive.square_is_five
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedSqrtFive.actual_positive_square_root_five_closed
 
+/-! ### GaussianNamedDiagonalRate -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedDiagonalRate.diagonalRate
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedDiagonalRate.subst_diagonalRate
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedDiagonalRate.cross_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedDiagonalRate.cross_of_diagonal_rate
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedDiagonalRate.actual_named_diagonal_rate_equivalence_closed
+
+/-! ### GaussianNamedGoldenRatio -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGoldenRatio.numerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGoldenRatio.denominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGoldenRatio.sample
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGoldenRatio.nameF
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGoldenRatio.nameData
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGoldenRatio.onePoint
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGoldenRatio.sample_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGoldenRatio.denominator_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGoldenRatio.sample_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGoldenRatio.observations
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGoldenRatio.name_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGoldenRatio.raw_quadratic
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGoldenRatio.quadraticAllowance
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGoldenRatio.quadratic_observation
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGoldenRatio.quadratic_identity
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGoldenRatio.actual_named_golden_ratio_quadratic_closed
+
 /-! ### GaussianGammaHalfWallisConvergence -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaHalfWallisConvergence.twiceWallis
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaHalfWallisConvergence.lowerSlack
@@ -24065,6 +24090,31 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingArbitraryObservation.original_enclosing_observations
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingArbitraryObservation.actual_original_enclosing_power_damped_panel_observations_closed
 
+/-! ### GaussianCompactTailFromComparison -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianCompactTailFromComparison.observation
+#print axioms LeanProofs.IPRA.Analysis.GaussianCompactTailFromComparison.subst_observation
+#print axioms LeanProofs.IPRA.Analysis.GaussianCompactTailFromComparison.observation_additivity
+#print axioms LeanProofs.IPRA.Analysis.GaussianCompactTailFromComparison.suffix_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianCompactTailFromComparison.prefix_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianCompactTailFromComparison.actual_compact_suffix_from_common_comparison_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianCompactTailFromComparison.actual_compact_prefix_from_common_comparison_closed
+
+/-! ### GaussianEulerPowerScalingTailGeometry -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingTailGeometry.upperPrefix
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingTailGeometry.lowerSuffix
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingTailGeometry.upperPrepared
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingTailGeometry.lowerPrepared
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingTailGeometry.physical_cutoffs_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingTailGeometry.upper_geometry
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingTailGeometry.lower_geometry
+
+/-! ### GaussianEulerPowerScalingArbitraryTails -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingArbitraryTails.above
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingArbitraryTails.below
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingArbitraryTails.original_upper_tail_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingArbitraryTails.original_lower_tail_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingArbitraryTails.actual_rational_power_damped_arbitrary_physical_tails_closed
+
 /-! ### GaussianEulerPositivePowerChartLower -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerPositivePowerChartLower.exponentRadius
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerPositivePowerChartLower.powerDenominator
@@ -24321,6 +24371,18 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerNamedPowerScalingArbitraryPanel.frozenIndex
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerNamedPowerScalingArbitraryPanel.original_observations
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerNamedPowerScalingArbitraryPanel.actual_original_named_power_damped_Euler_arbitrary_enclosing_panels_closed
+
+/-! ### GaussianEulerNamedPowerScalingArbitraryLimit -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerNamedPowerScalingArbitraryLimit.subst_panelSource
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerNamedPowerScalingArbitraryLimit.original_formula_rate
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerNamedPowerScalingArbitraryLimit.original_improper_rate
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerNamedPowerScalingArbitraryLimit.actual_original_named_power_damped_arbitrary_panels_improper_rate_closed
+
+/-! ### GaussianEulerNamedPowerScalingArbitraryTails -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerNamedPowerScalingArbitraryTails.outside
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerNamedPowerScalingArbitraryTails.tailSource
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerNamedPowerScalingArbitraryTails.original_tail_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerNamedPowerScalingArbitraryTails.actual_named_power_damped_Euler_arbitrary_physical_tails_closed
 
 /-! ### GaussianEulerNamedPowerScalingFormula -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerNamedPowerScalingFormula.source
