@@ -2108,6 +2108,15 @@ exact first-order expansion uses a primitive recursive second-order
 remainder and retains the original sine product at both inputs.
 [GaussianSineProductImaginaryLogDerivative](Lean/IPRADerivations/Analysis/GaussianSineProductImaginaryLogDerivative.lean), [GaussianSineProductImaginaryFirstOrder](Lean/IPRADerivations/Analysis/GaussianSineProductImaginaryFirstOrder.lean).
 
+The imaginary-axis sine-product expansion has a quadratic error
+uniform in the cutoff on each bounded interval. The literal row
+sum has a quantitative tail and a regular cofinal sampler. Passing
+the derivative expansion to the original cofinal sine product keeps
+the weighted cofinal derivative term and the exact quadratic rate
+with independent observation clocks. The product and reciprocal row
+names are invariant under exact rational rescaling.
+[GaussianSineProductImaginaryLogDerivativeTail](Lean/IPRADerivations/Analysis/GaussianSineProductImaginaryLogDerivativeTail.lean), [GaussianSineProductImaginaryFirstOrderBound](Lean/IPRADerivations/Analysis/GaussianSineProductImaginaryFirstOrderBound.lean), [GaussianSineProductImaginaryCofinalDerivative](Lean/IPRADerivations/Analysis/GaussianSineProductImaginaryCofinalDerivative.lean), [GaussianSineProductImaginaryScaling](Lean/IPRADerivations/Analysis/GaussianSineProductImaginaryScaling.lean).
+
 The Binet kernel series uses the original named π in each positive row
 `2/(t²+4π²n²)`. On `0 ≤ t ≤ T` the actual finite and cofinal samples
 are bounded below by `2/(T²+100)` at positive cutoffs. The row majorant
