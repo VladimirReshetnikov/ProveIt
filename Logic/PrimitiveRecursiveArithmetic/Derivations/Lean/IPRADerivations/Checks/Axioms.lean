@@ -61219,6 +61219,65 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianStirlingDifferenceBounds.endpoint_bounds
 #print axioms LeanProofs.IPRA.Analysis.GaussianStirlingDifferenceBounds.actual_positive_rational_Stirling_endpoint_order_closed
 
+/-! ### GaussianStirlingCubicCell -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingCubicCell.cube
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingCubicCell.fourth
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingCubicCell.secondTerm
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingCubicCell.cubicValue
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingCubicCell.cellCorrection
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingCubicCell.correctedCell
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingCubicCell.marginNumerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingCubicCell.marginDenominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingCubicCell.margin
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingCubicCell.subst_cube
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingCubicCell.subst_fourth
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingCubicCell.subst_cubicValue
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingCubicCell.subst_correctedCell
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingCubicCell.subst_margin
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingCubicCell.cube_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingCubicCell.cubic_den_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingCubicCell.margin_den_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingCubicCell.margin_num_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingCubicCell.cubic_telescope_cell
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingCubicCell.margin_balance
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingCubicCell.corrected_cell_margin
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingCubicCell.cell_observation
+
+/-! ### GaussianStirlingCubicFinite -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingCubicFinite.cubicDifference
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingCubicFinite.subst_cubicDifference
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingCubicFinite.cubic_diff_den_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingCubicFinite.cubic_telescope
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingCubicFinite.cubic_step
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingCubicFinite.upper_step
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingCubicFinite.strong_cell
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingCubicFinite.rawLower
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingCubicFinite.subst_rawLower
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingCubicFinite.raw_lower
+
+/-! ### GaussianStirlingCubicBound -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingCubicBound.cap
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingCubicBound.correctedF
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingCubicBound.correctedData
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingCubicBound.limitF
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingCubicBound.limitData
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingCubicBound.cubic_diff_le
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingCubicBound.original_margin
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingCubicBound.original_cubic_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingCubicBound.actual_positive_rational_signed_cubic_Stirling_closed
+
+/-! ### GaussianStirlingCubicRate -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingCubicRate.lowerValue
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingCubicRate.lower_strict
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingCubicRate.actual_positive_rational_signed_Stirling_bracket_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingCubicRate.cubic_rate_at
+
+/-! ### GaussianStirlingExpansionSecondOrder -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingExpansionSecondOrder.second_log_polynomial
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingExpansionSecondOrder.second_log_rate_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingExpansionSecondOrder.second_log_rate
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingExpansionSecondOrder.actual_second_Stirling_multiplicative_error_program_closed
+
 /-! ### GaussianStirlingGlobalBoundsFinite -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianStirlingGlobalBoundsFinite.upperCap
 #print axioms LeanProofs.IPRA.Analysis.GaussianStirlingGlobalBoundsFinite.subst_upperCap
