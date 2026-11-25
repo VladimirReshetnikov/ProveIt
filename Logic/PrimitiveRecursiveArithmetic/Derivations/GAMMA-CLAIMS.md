@@ -2789,3 +2789,6 @@ The integer factorial normalization and exact finite log recurrence transport th
 
 The checked integer Gamma trajectory and actual factorial readback give Gamma(2)=1 on the native Mellin chart. The closed specialization equates the original improper sampler with its original cofinal Dirichlet name at two.
 [GaussianGammaZetaMellinTwoDirichlet](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinTwoDirichlet.lean)
+
+Using the same paper cutoff for both presentations gives an independent-clock comparison through their original bracket names. Removing the dyadic error identifies the two presentations and gives the corresponding original positive Gamma uniqueness statement.
+[GaussianBohrMollerupLiteralUniqueness](Lean/IPRADerivations/Analysis/GaussianBohrMollerupLiteralUniqueness.lean)
