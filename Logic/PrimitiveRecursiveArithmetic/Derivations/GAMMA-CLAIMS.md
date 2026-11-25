@@ -2066,6 +2066,14 @@ transfers the result back to the original quotient program. In
 particular `192P(K²+2)2ʳ ≤ Q` suffices for leading error `2⁻ʳ`.
 [GaussianNamedTaylorDifferenceQuotient](Lean/IPRADerivations/Analysis/GaussianNamedTaylorDifferenceQuotient.lean), [GaussianNamedMinimumApartness](Lean/IPRADerivations/Analysis/GaussianNamedMinimumApartness.lean), [GaussianNamedLogGammaDerivativeUniform](Lean/IPRADerivations/Analysis/GaussianNamedLogGammaDerivativeUniform.lean).
 
+On positive rational inputs, the literal complex digamma series
+agrees with the original real `Γ′/Γ` evaluator. The finite formulas
+differ by one terminal reciprocal, which is bounded by `1/N`.
+For every certified positive real name, a shared late observation
+then identifies the two actual named evaluators. The comparison with
+the original `Γ′/Γ` programs at nonreal inputs remains open.
+[GaussianLogGammaEulerDigammaPositiveAxis](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerDigammaPositiveAxis.lean), [GaussianLogGammaEulerNamedDigammaPositiveAxis](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerNamedDigammaPositiveAxis.lean).
+
 ## Source artifacts and representation boundaries
 
 The delivered [Lean companion](../docs/proofs/analysis/gamma_ipra/lean/README.md)
