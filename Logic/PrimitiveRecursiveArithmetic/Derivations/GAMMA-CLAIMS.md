@@ -2230,6 +2230,14 @@ branch cancels an exact nonzero rational scale. At `t = 0` the
 weighted grid bound proves exact agreement and regularity.
 [GaussianBinetKernelHalfExponential](Lean/IPRADerivations/Analysis/GaussianBinetKernelHalfExponential.lean), [GaussianBinetKernelWeightedBridge](Lean/IPRADerivations/Analysis/GaussianBinetKernelWeightedBridge.lean), [GaussianBinetKernelWeightedBridgeZero](Lean/IPRADerivations/Analysis/GaussianBinetKernelWeightedBridgeZero.lean).
 
+On each bounded rational time panel, the original exponential
+at `−(z+1)t` equals the product of the original names at `−zt` and
+`−t`. The actual integrand difference across `z` and `z+1` therefore
+equals the original `exp(−zt)` times the cofinal weighted exponential
+unit quadrature. This applies to any admitted radii for the two
+original integrands and includes time zero.
+[GaussianBinetLaplaceExponentialShift](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceExponentialShift.lean), [GaussianBinetLaplaceIntegrandShift](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceIntegrandShift.lean), [GaussianBinetLaplaceWeightedShiftRow](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceWeightedShiftRow.lean).
+
 The Binet kernel series uses the original named π in each positive row
 `2/(t²+4π²n²)`. On `0 ≤ t ≤ T` the actual finite and cofinal samples
 are bounded below by `2/(T²+100)` at positive cutoffs. The row majorant
