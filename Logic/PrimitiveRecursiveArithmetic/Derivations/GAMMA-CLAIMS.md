@@ -2633,3 +2633,6 @@ At every actual logarithm observation on a large positive unit interval, the ele
 
 An explicit modulus combines the original Laplace time estimate with the exact power t^j. It certifies regularity of the original weighted quadrature on arbitrary admissible compact strips and on [1,2].
 [GaussianBinetLaplaceMomentCompact](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentCompact.lean)
+
+The centered left grid has exact mean −1/(2N). Averaging the checked elementary Stirling samples gives the literal endpoint primitive with the explicit inverse-argument error, dyadic error, and a mesh-bias coefficient independent of the mesh.
+[GaussianRaabeCenteredMesh](Lean/IPRADerivations/Analysis/GaussianRaabeCenteredMesh.lean), [GaussianRaabeAffineMean](Lean/IPRADerivations/Analysis/GaussianRaabeAffineMean.lean), [GaussianRaabeStirlingMesh](Lean/IPRADerivations/Analysis/GaussianRaabeStirlingMesh.lean)
