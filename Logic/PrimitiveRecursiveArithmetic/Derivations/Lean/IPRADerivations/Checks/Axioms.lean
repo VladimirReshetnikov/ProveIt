@@ -61051,6 +61051,63 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianStirlingMultiplicative.factor_inverse
 #print axioms LeanProofs.IPRA.Analysis.GaussianStirlingMultiplicative.actual_positive_rational_Stirling_multiplicative_closed
 
+/-! ### GaussianStirlingMultiplicativeBoundsOrder -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingMultiplicativeBoundsOrder.fraction_real_part
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingMultiplicativeBoundsOrder.exponential_order
+
+/-! ### GaussianStirlingMultiplicativeBoundsLog -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingMultiplicativeBoundsLog.constant_order
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingMultiplicativeBoundsLog.fractions_order
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingMultiplicativeBoundsLog.logarithm_rectangles
+
+/-! ### GaussianStirlingMultiplicativeBounds -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingMultiplicativeBounds.lowerFactor
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingMultiplicativeBounds.upperDen
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingMultiplicativeBounds.upperBase
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingMultiplicativeBounds.upperFactor
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingMultiplicativeBounds.conventionalUpper
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingMultiplicativeBounds.remainder_real
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingMultiplicativeBounds.weak_upper_log
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingMultiplicativeBounds.weak_lower_log
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingMultiplicativeBounds.threshold_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingMultiplicativeBounds.upper_log_barrier
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingMultiplicativeBounds.ratio_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingMultiplicativeBounds.relative_interval
+
+/-! ### GaussianStirlingMultiplicativeBoundsCaps -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingMultiplicativeBoundsCaps.strict_fractions
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingMultiplicativeBoundsCaps.cap_denominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingMultiplicativeBoundsCaps.cap_strict
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingMultiplicativeBoundsCaps.conventional_le_factor
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingMultiplicativeBoundsCaps.strict_lower_order
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingMultiplicativeBoundsCaps.strict_upper_order
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingMultiplicativeBoundsCaps.interval
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingMultiplicativeBoundsCaps.strict_interval
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingMultiplicativeBoundsCaps.integer_interval
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingMultiplicativeBoundsCaps.rational_interval
+
+/-! ### GaussianStirlingFactorialRobbinsQuotient -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingFactorialRobbinsQuotient.factorialDenominatorF
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingFactorialRobbinsQuotient.factorialDenominatorData
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingFactorialRobbinsQuotient.factorialReciprocalF
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingFactorialRobbinsQuotient.factorialReciprocalData
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingFactorialRobbinsQuotient.factorialRatioF
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingFactorialRobbinsQuotient.factorialRatioData
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingFactorialRobbinsQuotient.integer_gamma_scaled
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingFactorialRobbinsQuotient.factorial_ratio_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingFactorialRobbinsQuotient.factorial_denominator_inverse
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingFactorialRobbinsQuotient.factorial_ratio
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingFactorialRobbinsQuotient.exp_remainder_is_factorial_ratio
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingFactorialRobbinsQuotient.actual_factorial_Stirling_ratio_closed
+
+/-! ### GaussianStirlingFactorialRobbins -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingFactorialRobbins.factorial_interval
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingFactorialRobbins.dyadicUpper
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingFactorialRobbins.errorAt
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingFactorialRobbins.dyadic_modulus
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingFactorialRobbins.actual_factorial_Robbins_multiplicative_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingFactorialRobbins.actual_factorial_Stirling_dyadic_modulus_closed
+
 /-! ### GaussianStirlingFiniteSeries -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianStirlingFiniteSeries.denominator
 #print axioms LeanProofs.IPRA.Analysis.GaussianStirlingFiniteSeries.folded
