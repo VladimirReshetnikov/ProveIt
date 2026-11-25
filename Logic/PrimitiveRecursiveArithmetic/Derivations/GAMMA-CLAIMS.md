@@ -2771,3 +2771,6 @@ A fixed positive core panel, count-independent exterior estimates and original f
 
 The fixed-presentation convexity law gives the paper’s chord for every natural block size, including the right endpoint. The literal named bracket difference is x times the logarithm of the endpoint ratio. Its checked bounds give both the exact rational width bound and the stated dyadic cutoff.
 [GaussianBohrMollerupBlockChord](Lean/IPRADerivations/Analysis/GaussianBohrMollerupBlockChord.lean), [GaussianBohrMollerupBracketEndpoints](Lean/IPRADerivations/Analysis/GaussianBohrMollerupBracketEndpoints.lean), [GaussianBohrMollerupBracketWidth](Lean/IPRADerivations/Analysis/GaussianBohrMollerupBracketWidth.lean)
+
+Any two positive rational input charts with the same quotient give equivalent observations of the original improper Binet moment. The closed theorem compares independently chosen observation precisions and allows separate certified chart radii.
+[GaussianBinetLaplaceMomentRescale](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentRescale.lean)

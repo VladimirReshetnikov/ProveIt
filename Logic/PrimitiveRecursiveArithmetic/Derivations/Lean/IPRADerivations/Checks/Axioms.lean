@@ -30242,6 +30242,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentMarginBound.observation_bound
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentMarginBound.cofinal_grid_bound
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentMarginBound.actual_improper_Binet_moment_margin_bound_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentRescale.data_congr
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentRescale.source_congr
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentRescale.diagonal_rescale
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentRescale.rescale
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentRescale.rational_proper
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentRescale.actual_improper_Binet_moment_rational_proper_closed
 
 /-! ### GaussianEulerDecayCompactUpper -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerDecayCompactUpper.upperPoint
