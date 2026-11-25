@@ -29754,6 +29754,27 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceCompactRealFloor.unit_panel_floor
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceCompactRealFloor.late_unit_panel_floor
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceCompactRealFloor.actual_real_Binet_unit_panel_positive_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentFloor.weight
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentFloor.clock
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentFloor.observation
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentFloor.subst_weight
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentFloor.subst_clock
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentFloor.subst_observation
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentFloor.observation_floor
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentFloor.fixedData
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentFloor.evaluatorTerm
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentFloor.evaluatorF
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentFloor.nameF
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentFloor.gain
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentFloor.unitPanelData
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentFloor.subst_fixedData
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentFloor.subst_evaluatorTerm
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentFloor.subst_gain
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentFloor.subst_unitPanelData
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentFloor.evaluator_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentFloor.unit_panel_floor
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentFloor.late_unit_panel_floor
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentFloor.actual_real_Binet_natural_moment_unit_panel_positive_closed
 
 /-! ### GaussianEulerDecayCompactUpper -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerDecayCompactUpper.upperPoint

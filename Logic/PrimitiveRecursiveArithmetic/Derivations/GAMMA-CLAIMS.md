@@ -2618,3 +2618,6 @@ At the actual reciprocal clock, every retained geometric term compares to the or
 
 The original logarithm observations on equal positive rational charts compare at independent precisions. Multiplication by the common physical endpoint preserves a uniform rate, including the exact grid rescaling.
 [GaussianRaabeLogPrimitiveRescale](Lean/IPRADerivations/Analysis/GaussianRaabeLogPrimitiveRescale.lean)
+
+An exact rational t^j factor weights the original cofinal Laplace sample. On the original compact grid [1,2], every late natural moment has the same strict positive floor as the unweighted panel.
+[GaussianBinetLaplaceMomentFloor](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentFloor.lean)
