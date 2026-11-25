@@ -2720,3 +2720,6 @@ Every sufficiently late actual rational observation of the input and every suffi
 
 A certified enclosing panel, shared mesh and observation clock give an explicit independent-precision rate from the literal finite damped quadrature sum to Gamma times the original finite Dirichlet sum.
 [GaussianGammaZetaMellinDampedWindow](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinDampedWindow.lean)
+
+For every internal finite prefix, the explicit widened physical panel contains the given positive panel. The chosen bounds and mesh make its literal damped sum agree with the original finite Gamma–Dirichlet product within 10/2^p+1/2^r at independent precisions.
+[GaussianGammaZetaMellinDampedWindowSchedule](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinDampedWindowSchedule.lean)
