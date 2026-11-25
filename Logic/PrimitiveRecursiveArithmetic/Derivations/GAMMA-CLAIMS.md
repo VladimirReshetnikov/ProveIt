@@ -2398,3 +2398,10 @@ zero. The difference of the original signed-pole Laplace panels
 approximates the cleared sine resolvent with uniform bounds on the
 bounded frequency interval.
 [GaussianBinetImaginaryExponentialIntegral](Lean/IPRADerivations/Analysis/GaussianBinetImaginaryExponentialIntegral.lean), [GaussianBinetSineLaplaceResolvent](Lean/IPRADerivations/Analysis/GaussianBinetSineLaplaceResolvent.lean).
+
+On a common grid, the original finite arctangent quadrature compares
+with the original rectangle of cosine transforms. The outer grid
+multiplies the uniform resolvent error by its physical width. Each
+actual shifted exponential factors with explicit error into the
+original damping and the purely imaginary oscillatory sample.
+[GaussianBinetArctangentCosineRectangle](Lean/IPRADerivations/Analysis/GaussianBinetArctangentCosineRectangle.lean), [GaussianBinetOscillatoryPanelFactor](Lean/IPRADerivations/Analysis/GaussianBinetOscillatoryPanelFactor.lean).
