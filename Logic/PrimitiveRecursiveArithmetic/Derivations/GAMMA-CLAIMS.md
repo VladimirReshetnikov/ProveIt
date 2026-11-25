@@ -1735,6 +1735,14 @@ observations whose order differs from the named input order by observation
 error. This gives exact strict monotonicity on the named positive domain.
 [GaussianGammaDigammaCompactLipschitz](Lean/IPRADerivations/Analysis/GaussianGammaDigammaCompactLipschitz.lean), [GaussianNamedPositiveDigammaReal](Lean/IPRADerivations/Analysis/GaussianNamedPositiveDigammaReal.lean), [GaussianGammaPositiveNamedDigammaOrder](Lean/IPRADerivations/Analysis/GaussianGammaPositiveNamedDigammaOrder.lean).
 
+The two original normalized Euler digamma names at a positive real input
+and its unit shift satisfy the digamma recurrence. A common frozen
+positive rational observation gives the literal shift with a shared
+denominator. The positive margin supplies a reciprocal certificate
+for the original input. The comparison rate removes the observation
+errors from both digamma terms and the reciprocal.
+[GaussianGammaPositiveNamedDigammaRecurrenceInput](Lean/IPRADerivations/Analysis/GaussianGammaPositiveNamedDigammaRecurrenceInput.lean), [GaussianGammaPositiveNamedDigammaRecurrence](Lean/IPRADerivations/Analysis/GaussianGammaPositiveNamedDigammaRecurrence.lean).
+
 ## Real Gamma away from the poles
 
 A single late sample of a real pole-free input gives a positive margin or
