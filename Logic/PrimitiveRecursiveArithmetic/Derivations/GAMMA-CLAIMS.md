@@ -2519,3 +2519,6 @@ The time margin E·t≥1 permits a common cutoff N≥E²·2^p. Each original arc
 
 The actual finite frozen-Pi prefixes of lengths C+r and C are compared at the same supplied time mesh and observation clock. The explicit certified mesh and clock floors give the uniform tail 11K/C.
 [GaussianBinetSecondDecaySharedTail](Lean/IPRADerivations/Analysis/GaussianBinetSecondDecaySharedTail.lean)
+
+The actual shifted exponential antiderivative uses the rate-versus-horizon inequality directly. A common physical horizon independent of the Pi denominator now suffices to compare the actual weighted sine quadrature to each literal Binet kernel row.
+[GaussianBinetFixedHorizonDecay](Lean/IPRADerivations/Analysis/GaussianBinetFixedHorizonDecay.lean), [GaussianBinetFixedHorizonPole](Lean/IPRADerivations/Analysis/GaussianBinetFixedHorizonPole.lean), [GaussianBinetFixedHorizonSine](Lean/IPRADerivations/Analysis/GaussianBinetFixedHorizonSine.lean), [GaussianBinetFixedHorizonFrozenRows](Lean/IPRADerivations/Analysis/GaussianBinetFixedHorizonFrozenRows.lean)
