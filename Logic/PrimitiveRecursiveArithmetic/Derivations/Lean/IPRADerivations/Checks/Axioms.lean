@@ -62289,6 +62289,31 @@ import IPRADerivations
 /-! ### GaussianStirlingAllOrderPairedReadback -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderPairedReadback.original_paired_term
 #print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderPairedReadback.actual_original_reflected_panel_product_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalSumReversal.sum_first
+#print axioms LeanProofs.IPRA.Analysis.RationalSumReversal.reversal
+#print axioms LeanProofs.IPRA.Analysis.RationalSumReversal.subst_reversal
+#print axioms LeanProofs.IPRA.Analysis.RationalSumReversal.reverse
+#print axioms LeanProofs.IPRA.Analysis.RationalSumReversal.actual_scalar_rational_sum_reversal_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalSumMirror.mirrorBody
+#print axioms LeanProofs.IPRA.Analysis.RationalSumMirror.mirrorData
+#print axioms LeanProofs.IPRA.Analysis.RationalSumMirror.subst_mirrorData
+#print axioms LeanProofs.IPRA.Analysis.RationalSumMirror.mirror_at
+#print axioms LeanProofs.IPRA.Analysis.RationalSumMirror.mirror_sum
+#print axioms LeanProofs.IPRA.Analysis.RationalSumMirror.actual_scalar_rational_mirror_pairing_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderPairedPanel.left_panel_fold
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderPairedPanel.original_panel
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderPairedPanel.actual_original_panel_half_grid_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGridSum.rowDen
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGridSum.body
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGridSum.prefixNumerator
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGridSum.subst_rowDen
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGridSum.subst_prefixNumerator
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGridSum.body_at
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGridSum.denominator_positive
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGridSum.foldLaw
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGridSum.subst_foldLaw
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGridSum.fold_eq
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGridSum.actual_literal_polynomial_grid_fold_closed
 
 /-! ### RationalPowerMoments -/
 #print axioms LeanProofs.IPRA.Analysis.RationalPowerMoments.integerBody
