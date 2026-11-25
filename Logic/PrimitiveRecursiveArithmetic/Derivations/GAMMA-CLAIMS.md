@@ -2444,3 +2444,11 @@ at most `1/(1+4t)`. For `t=A/B>0` its literal geometric prefix of
 length `N` differs from the original reciprocal observation by
 at most `B²/[4A(B+4NA)]`, independently of the observation clock.
 [GaussianBinetBoseGeometricRatio](Lean/IPRADerivations/Analysis/GaussianBinetBoseGeometricRatio.lean), [GaussianRationalGeometricPowerTail](Lean/IPRADerivations/Analysis/GaussianRationalGeometricPowerTail.lean), [GaussianBinetBoseSeries](Lean/IPRADerivations/Analysis/GaussianBinetBoseSeries.lean).
+
+The literal arctangent-decay row admits a common half-decay majorant
+with an explicit clock allowance, including at time zero. The rescaled
+zero-start scalar quadrature yields the bound `11K/m²` for row `m`
+on every integer horizon with the verified mesh and clock budgets.
+A shared grid and one frozen Pi sample give the actual tail bound
+`11K/C` for every finite block after row `C`.
+[GaussianBinetSecondDecayEnvelope](Lean/IPRADerivations/Analysis/GaussianBinetSecondDecayEnvelope.lean), [GaussianBinetSecondDecayPointwise](Lean/IPRADerivations/Analysis/GaussianBinetSecondDecayPointwise.lean), [GaussianBinetSecondDecayQuadrature](Lean/IPRADerivations/Analysis/GaussianBinetSecondDecayQuadrature.lean), [GaussianBinetSecondDecayGrid](Lean/IPRADerivations/Analysis/GaussianBinetSecondDecayGrid.lean), [GaussianBinetSecondDecayFinite](Lean/IPRADerivations/Analysis/GaussianBinetSecondDecayFinite.lean), [GaussianBinetSecondDecayTail](Lean/IPRADerivations/Analysis/GaussianBinetSecondDecayTail.lean), [GaussianBinetSecondDecayFrozenTail](Lean/IPRADerivations/Analysis/GaussianBinetSecondDecayFrozenTail.lean).
