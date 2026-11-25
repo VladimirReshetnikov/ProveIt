@@ -2534,3 +2534,6 @@ The actual arctangent-weighted quadrature expands to a finite matrix and transpo
 
 The normalized factor of two preserves the original improper name with twice the compact-cutoff error. A comparison with the first Binet integral suffices for the second identity. The positive weighted cells agree exactly with the original sine transform cells, and the zero-frequency cell has its removable value.
 [GaussianBinetSecondFormulaReduction](Lean/IPRADerivations/Analysis/GaussianBinetSecondFormulaReduction.lean), [GaussianBinetSecondRowCell](Lean/IPRADerivations/Analysis/GaussianBinetSecondRowCell.lean)
+
+A single sine clock, horizon and grid count give error 10/2^p between the original arctangent observation and its actual damped sine rectangle for all encoded time tags bounded by the chosen horizon.
+[GaussianBinetArctangentSineUniform](Lean/IPRADerivations/Analysis/GaussianBinetArctangentSineUniform.lean)
