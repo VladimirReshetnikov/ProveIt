@@ -27520,6 +27520,17 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetArctangentCosineLaplace.subst_value
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetArctangentCosineLaplace.mean_distance
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetArctangentCosineLaplace.finite_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetImaginaryExponentialIntegral.coefficient
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetImaginaryExponentialIntegral.subst_coefficient
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetImaginaryExponentialIntegral.coefficient_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetImaginaryExponentialIntegral.exponent_nonpositive
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetImaginaryExponentialIntegral.imaginary_finite_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetImaginaryExponentialIntegral.actual_Binet_imaginary_exponential_antiderivative_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetSineLaplaceResolvent.value
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetSineLaplaceResolvent.antisymmetric
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetSineLaplaceResolvent.panelValue
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetSineLaplaceResolvent.reciprocal_difference
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetSineLaplaceResolvent.finite_error
 #print axioms LeanProofs.IPRA.Analysis.GaussianCompactPointwiseDifference.differenceAt
 #print axioms LeanProofs.IPRA.Analysis.GaussianCompactPointwiseDifference.pointwise
 #print axioms LeanProofs.IPRA.Analysis.GaussianCompactPointwiseDifference.subst_differenceAt

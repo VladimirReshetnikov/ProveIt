@@ -2391,3 +2391,10 @@ on one common horizon. Their symmetric average approximates the exact
 cosine resolvent uniformly over a bounded rational frequency interval,
 with explicit finite-mesh and exponential-tail errors.
 [GaussianBinetArctangentSignedPole](Lean/IPRADerivations/Analysis/GaussianBinetArctangentSignedPole.lean), [GaussianBinetArctangentPoleLaplace](Lean/IPRADerivations/Analysis/GaussianBinetArctangentPoleLaplace.lean), [GaussianBinetArctangentCosineLaplace](Lean/IPRADerivations/Analysis/GaussianBinetArctangentCosineLaplace.lean).
+
+The original pure-imaginary exponential quadrature satisfies the
+cleared finite antiderivative with both frequency signs, including
+zero. The difference of the original signed-pole Laplace panels
+approximates the cleared sine resolvent with uniform bounds on the
+bounded frequency interval.
+[GaussianBinetImaginaryExponentialIntegral](Lean/IPRADerivations/Analysis/GaussianBinetImaginaryExponentialIntegral.lean), [GaussianBinetSineLaplaceResolvent](Lean/IPRADerivations/Analysis/GaussianBinetSineLaplaceResolvent.lean).
