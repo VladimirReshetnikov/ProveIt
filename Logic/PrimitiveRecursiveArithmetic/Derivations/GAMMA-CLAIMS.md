@@ -2385,3 +2385,9 @@ margin. The resulting original compact arctangent quadrature is
 regular, and every actual observation at time `t` has norm bounded
 by `t/Re(z)`.
 [GaussianBinetArctangentResolvent](Lean/IPRADerivations/Analysis/GaussianBinetArctangentResolvent.lean), [GaussianBinetArctangentResolventRate](Lean/IPRADerivations/Analysis/GaussianBinetArctangentResolventRate.lean), [GaussianBinetArctangentQuadrature](Lean/IPRADerivations/Analysis/GaussianBinetArctangentQuadrature.lean), [GaussianBinetArctangentQuadratureBound](Lean/IPRADerivations/Analysis/GaussianBinetArctangentQuadratureBound.lean).
+
+The two original exponential panel sums at the signed poles read back
+on one common horizon. Their symmetric average approximates the exact
+cosine resolvent uniformly over a bounded rational frequency interval,
+with explicit finite-mesh and exponential-tail errors.
+[GaussianBinetArctangentSignedPole](Lean/IPRADerivations/Analysis/GaussianBinetArctangentSignedPole.lean), [GaussianBinetArctangentPoleLaplace](Lean/IPRADerivations/Analysis/GaussianBinetArctangentPoleLaplace.lean), [GaussianBinetArctangentCosineLaplace](Lean/IPRADerivations/Analysis/GaussianBinetArctangentCosineLaplace.lean).
