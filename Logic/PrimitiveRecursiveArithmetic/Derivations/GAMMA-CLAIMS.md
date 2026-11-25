@@ -2006,6 +2006,17 @@ chart. It proves the exact independent rate to the rational evaluator
 at any sufficiently late input observation.
 [GaussianNamedRightHalfPlaneLift](Lean/IPRADerivations/Analysis/GaussianNamedRightHalfPlaneLift.lean).
 
+Two independently retimed samples of regular names with a common
+real margin can be placed over their literal product denominator.
+The common charts preserve both values and both disk bounds. The native
+displacement radius is bounded by twice the distance bound times this
+denominator, including at zero for the continuity radius. For distinct
+samples under the explicit local guard, the quotient of their rational
+log-Gamma names has leading error `16P(K²+2)/Q` to the original digamma
+partial fractions at the base sample, where `P/Q` bounds their distance
+and `K=2M` bounds the reciprocal real margin of the samples.
+[GaussianLogGammaEulerCommonDenominator](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerCommonDenominator.lean), [GaussianLogGammaEulerSampleDigamma](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerSampleDigamma.lean).
+
 ## Source artifacts and representation boundaries
 
 The delivered [Lean companion](../docs/proofs/analysis/gamma_ipra/lean/README.md)
