@@ -140,75 +140,72 @@ private theorem cleared_allowance (a b c d V : PTm n)
   ipra_simps
   linear_combination -se
 
-def containsPanel (k e f d h Q S H C V N A B : PTm n) : Fm PTm n :=
-  let E := lowerDenominator S V H
-  let T := upperNumerator C V H
-  let W := width H C S V
-  let a := GaussianEulerPositivePowerChartCorrectedPanel.start k e f d h Q S E T one W N
-  let D := GaussianEulerPositivePowerChartCorrectedPanel.denominator k e f d h Q S E T one W N
-  let L := GaussianEulerPositivePowerChartCorrectedPanel.span k e f d h Q S E T one W N
+def containsImage (k e f d h Q S E T base W N A B : PTm n) : Fm PTm n :=
+  let a := GaussianEulerPositivePowerChartCorrectedPanel.start k e f d h Q S E T base W N
+  let D := GaussianEulerPositivePowerChartCorrectedPanel.denominator k e f d h Q S E T base W N
+  let L := GaussianEulerPositivePowerChartCorrectedPanel.span k e f d h Q S E T base W N
   le (a*A) D ⋏ le (B*D) (a+L)
 
-theorem original_uniform_rounded_panel (k e f d h Q S H C V N A B : PTm n)
-    (hs : Γ ⊢[PRAAx] source e f d h Q S H C V) (hN : Γ ⊢[PRAAx] le one N)
+/-- Preserve an image enclosure using bounds at the two actual grid times. -/
+theorem rounded_panel_of_orders (k e f d h Q S U V E T base W N A B : PTm n)
+    (mesh : Γ ⊢[PRAAx] GaussianEulerPositivePowerChartMesh.source e f d h Q S E T base W N)
+    (hV : Γ ⊢[PRAAx] le one V)
+    (hLeft : Γ ⊢[PRAAx] le (d*V) (h*(S*V)))
+    (hRight : Γ ⊢[PRAAx] le (h*V) (d*(U*V)))
+    (leftOrder : Γ ⊢[PRAAx] realOrder nameF constantF
+      (data e f d h S (timeNumerator zero N base W) (timeDenominator N E)) (fraction d (h*(S*V))))
+    (rightOrder : Γ ⊢[PRAAx] realOrder constantF nameF (fraction (d*(U*V)) h)
+      (data e f d h S (timeNumerator N N base W) (timeDenominator N E)))
     (hA : Γ ⊢[PRAAx] le (two*A) V) (hB : Γ ⊢[PRAAx] le (B+one) V)
-    (hk : Γ ⊢[PRAAx] le (chartBudget N V)
-      (unit (query k h Q (lowerDenominator S V H) (upperNumerator C V H)))) :
-    Γ ⊢[PRAAx] containsPanel k e f d h Q S H C V N A B := by
-  let E := lowerDenominator S V H
-  let T := upperNumerator C V H
-  let W := width H C S V
+    (hk : Γ ⊢[PRAAx] le (chartBudget N V) (unit (query k h Q E T))) :
+    Γ ⊢[PRAAx] containsImage k e f d h Q S E T base W N A B := by
   let p := query k h Q E T
-  let a := imageNumerator k zero e f d h Q S E T one W N
-  let b := imageDenominator k zero e f d h Q S E T one W N
-  let c := imageNumerator k N e f d h Q S E T one W N
-  let j := imageDenominator k N e f d h Q S E T one W N
+  let a := imageNumerator k zero e f d h Q S E T base W N
+  let b := imageDenominator k zero e f d h Q S E T base W N
+  let c := imageNumerator k N e f d h Q S E T base W N
+  let j := imageDenominator k N e f d h Q S E T base W N
   let L := fraction d (h*(S*V))
-  let U := fraction (d*(C*V)) h
-  have hV : Γ ⊢[PRAAx] le one V := le_trans (le_succ_self one) hs.andE₂.andE₂.andE₂
-  have hh := hs.andE₁.andE₂.andE₁.andE₂
-  have hS := hs.andE₁.andE₂.andE₂.andE₁.andE₂
+  let R := fraction (d*(U*V)) h
+  have hh := mesh.andE₁.andE₂.andE₁.andE₂
+  have hS := mesh.andE₁.andE₂.andE₂.andE₁.andE₂
   have hL := positive_product h (S*V) hh (positive_product S V hS hV)
-  have mesh := uniform_mesh_source e f d h Q S H C V N hs hN
   have paid : Γ ⊢[PRAAx] le (two*N) (chartBudget N V) := by
     unfold chartBudget
     ipra_le 𝔞(two*N)*sl hV+𝔞(two*V)
-  have good : Γ ⊢[PRAAx] GaussianEulerPositivePowerChartCorrectedImage.input k e f d h Q S E T one W N :=
+  have good : Γ ⊢[PRAAx] GaussianEulerPositivePowerChartCorrectedImage.input k e f d h Q S E T base W N :=
     .andI mesh (le_trans paid hk)
-  have hb := (GaussianEulerPositivePowerChartCorrectedImage.corrected_domain k zero e f d h Q S E T one W N
+  have hb := (GaussianEulerPositivePowerChartCorrectedImage.corrected_domain k zero e f d h Q S E T base W N
     good (zero_le N)).andE₁.andE₂
-  have hj := (GaussianEulerPositivePowerChartCorrectedImage.corrected_domain k N e f d h Q S E T one W N
+  have hj := (GaussianEulerPositivePowerChartCorrectedImage.corrected_domain k N e f d h Q S E T base W N
     good (le_refl N)).andE₁.andE₂
-  have bounds := uniform_reference_bounds d h S C V hs.andE₁.andE₂.andE₂.andE₂.andE₂ hs.andE₂.andE₂.andE₁.andE₂
-  have endpoints := grid_orders e f d h Q S H C V N hs hN
   have lowerChart := upper_congr (.eqRefl _) (congrFst (constant_at p L)) (.eqRefl _) (.eqRefl _)
-    (real_order_at nameF constantF _ L p p endpoints.andE₁)
-  have upperChart := upper_congr (congrFst (constant_at p U)) (.eqRefl _) (.eqRefl _) (.eqRefl _)
-    (real_order_at constantF nameF U _ p p endpoints.andE₂)
+    (real_order_at nameF constantF _ L p p leftOrder)
+  have upperChart := upper_congr (congrFst (constant_at p R)) (.eqRefl _) (.eqRefl _) (.eqRefl _)
+    (real_order_at constantF nameF R _ p p rightOrder)
   have sameClock : Γ ⊢[PRAAx] le ((unit p+unit p)*unit p) (two*(unit p*unit p)) :=
     le_congr (by ipra_ring) (.eqRefl _) (le_refl _)
   have hUnits : Γ ⊢[PRAAx] le one (unit p*unit p) :=
     positive_product (unit p) (unit p) (unit_positive p) (unit_positive p)
   have before := upper_mono _ _ _ _ two (unit p) hUnits lowerChart sameClock
   have after := upper_mono _ _ _ _ two (unit p) hUnits upperChart sameClock
-  have leftShift := (observation_displacement k zero e f d h Q S E T one W N mesh (zero_le N)).andE₁
-  have rightShift := (observation_displacement k N e f d h Q S E T one W N mesh (le_refl N)).andE₂
+  have leftShift := (observation_displacement k zero e f d h Q S E T base W N mesh (zero_le N)).andE₁
+  have rightShift := (observation_displacement k N e f d h Q S E T base W N mesh (le_refl N)).andE₂
   have leftError : Γ ⊢[PRAAx] upper (fstT (fraction a b)) (fstT L) one V :=
     pay_observation_errors _ _ _ (two*N) two p V leftShift before hk
   have rearranged : Γ ⊢[PRAAx] le ((two+two*N)*V) (unit p) :=
     le_congr (by unfold chartBudget; ipra_ring) (.eqRefl _) hk
-  have rightError : Γ ⊢[PRAAx] upper (fstT U) (fstT (fraction c j)) one V :=
+  have rightError : Γ ⊢[PRAAx] upper (fstT R) (fstT (fraction c j)) one V :=
     pay_observation_errors _ _ _ two (two*N) p V after rightShift rearranged
   have lowerNative := cleared_allowance a b d (h*(S*V)) V hb hL leftError
   have lowerClear : Γ ⊢[PRAAx] le ((h*(S*V))*(V*a)) ((h*(S*V))*(two*b)) := by
-    ipra_le sl lowerNative+𝔞 b*sl bounds.andE₁
+    ipra_le sl lowerNative+𝔞 b*sl hLeft
   have leftCleared := le_cancel_pos (pos_of_one_le hL) lowerClear
   have low : Γ ⊢[PRAAx] le (a*A) b := by
     apply mul_le_cancel (d' := one)
     ipra_le 𝔞 a*sl hA+sl leftCleared
-  have upperNative := cleared_allowance (d*(C*V)) h c j V hh hj rightError
+  have upperNative := cleared_allowance (d*(U*V)) h c j V hh hj rightError
   have upperClear : Γ ⊢[PRAAx] le (h*(V*V*j)) (h*(V*c+j)) := by
-    ipra_le 𝔞(V*j)*sl bounds.andE₂+sl upperNative
+    ipra_le 𝔞(V*j)*sl hRight+sl upperNative
   have rightCleared := le_cancel_pos (pos_of_one_le hh) upperClear
   have high : Γ ⊢[PRAAx] le (B*j) c := by
     have bound : Γ ⊢[PRAAx] le (V*(B*j)+j) (V*c+j) := by
@@ -219,7 +216,23 @@ theorem original_uniform_rounded_panel (k e f d h Q S H C V N A B : PTm n)
   have upper : Γ ⊢[PRAAx] le (B*(b*j)) (c*b) :=
     le_congr (by ipra_ring) (.eqRefl _) (mul_le_mul_right b high)
   exact .andI lower (le_congr (.eqRefl _)
-    (GaussianEulerPositivePowerChartCorrectedPanel.endpoint_identity k e f d h Q S E T one W N mesh).eqSymm upper)
+    (GaussianEulerPositivePowerChartCorrectedPanel.endpoint_identity k e f d h Q S E T base W N mesh).eqSymm upper)
+
+def containsPanel (k e f d h Q S H C V N A B : PTm n) : Fm PTm n :=
+  containsImage k e f d h Q S (lowerDenominator S V H) (upperNumerator C V H) one (width H C S V) N A B
+
+theorem original_uniform_rounded_panel (k e f d h Q S H C V N A B : PTm n)
+    (hs : Γ ⊢[PRAAx] source e f d h Q S H C V) (hN : Γ ⊢[PRAAx] le one N)
+    (hA : Γ ⊢[PRAAx] le (two*A) V) (hB : Γ ⊢[PRAAx] le (B+one) V)
+    (hk : Γ ⊢[PRAAx] le (chartBudget N V)
+      (unit (query k h Q (lowerDenominator S V H) (upperNumerator C V H)))) :
+    Γ ⊢[PRAAx] containsPanel k e f d h Q S H C V N A B := by
+  have hV : Γ ⊢[PRAAx] le one V := le_trans (le_succ_self one) hs.andE₂.andE₂.andE₂
+  have mesh := uniform_mesh_source e f d h Q S H C V N hs hN
+  have bounds := uniform_reference_bounds d h S C V hs.andE₁.andE₂.andE₂.andE₂.andE₂ hs.andE₂.andE₂.andE₁.andE₂
+  have endpoints := grid_orders e f d h Q S H C V N hs hN
+  exact rounded_panel_of_orders k e f d h Q S C V _ _ one _ N A B mesh hV
+    bounds.andE₁ bounds.andE₂ endpoints.andE₁ endpoints.andE₂ hA hB hk
 
 theorem actual_original_uniform_rounded_power_chart_panel_closed :
     ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 13

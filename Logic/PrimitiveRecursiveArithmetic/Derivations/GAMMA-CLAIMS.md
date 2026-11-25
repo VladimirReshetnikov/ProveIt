@@ -1562,6 +1562,10 @@ cofinal ordinary quadrature with that product for all certified positive
 names. [GaussianNamedDampingPowerLowerCutoff](Lean/IPRADerivations/Analysis/GaussianNamedDampingPowerLowerCutoff.lean) gives the independent compact lower-cutoff bound on the
 original root grid, including zero width. [GaussianNamedDampingPowerReciprocalTail](Lean/IPRADerivations/Analysis/GaussianNamedDampingPowerReciprocalTail.lean) checks a finite
 affine-grid reciprocal-square comparison.
+[GaussianEulerNamedPowerScalingExhaustion](Lean/IPRADerivations/Analysis/GaussianEulerNamedPowerScalingExhaustion.lean) identifies the exact selected named panel and proves that it
+eventually encloses each fixed positive rational interval. [GaussianEulerPowerScalingArbitraryObservation](Lean/IPRADerivations/Analysis/GaussianEulerPowerScalingArbitraryObservation.lean)
+and [GaussianEulerNamedPowerScalingArbitraryPanel](Lean/IPRADerivations/Analysis/GaussianEulerNamedPowerScalingArbitraryPanel.lean) prove the rate for any enclosing positive rational physical
+panel with arbitrary independent observation precisions.
 [GaussianBetaSharpPartition](Lean/IPRADerivations/Analysis/GaussianBetaSharpPartition.lean)
 locates one and the two degree endpoints on the same original dyadic
 grid and identifies the original half-time decay at the split with
