@@ -2017,6 +2017,13 @@ partial fractions at the base sample, where `P/Q` bounds their distance
 and `K=2M` bounds the reciprocal real margin of the samples.
 [GaussianLogGammaEulerCommonDenominator](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerCommonDenominator.lean), [GaussianLogGammaEulerSampleDigamma](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerSampleDigamma.lean).
 
+The named digamma program agrees with the C27 series when the input
+is an admissible constant name for a signed rational. The same program
+has an independent comparison with a series evaluated at any sufficiently
+late original input observation, with leading error `2⁻ˢ` for the verified
+freeze clock at precision `s`.
+[GaussianLogGammaEulerNamedDigammaRational](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerNamedDigammaRational.lean).
+
 ## Source artifacts and representation boundaries
 
 The delivered [Lean companion](../docs/proofs/analysis/gamma_ipra/lean/README.md)
