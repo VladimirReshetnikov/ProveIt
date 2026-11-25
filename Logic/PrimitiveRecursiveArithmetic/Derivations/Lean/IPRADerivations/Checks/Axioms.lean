@@ -27812,6 +27812,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetBoseLiteralCofinal.error_at
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetBoseLiteralCofinal.equivalent
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetBoseLiteralCofinal.actual_Bose_literal_exponential_sum_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetBoseLiteralUniform.clock
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetBoseLiteralUniform.subst_clock
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetBoseLiteralUniform.row_clock_later
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetBoseLiteralUniform.finite_uniform
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetBoseLiteralUniform.actual_Bose_uniform_prefix_on_positive_margin_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetBoseLiteralFrozen.cell_error
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetArctangentSignedPole.imagNumerator
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetArctangentSignedPole.branch
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetArctangentSignedPole.subst_imagNumerator
