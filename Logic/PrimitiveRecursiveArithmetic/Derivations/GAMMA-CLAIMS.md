@@ -2460,3 +2460,10 @@ term at that clock. Comparing with the original divided arctangent
 gives leading error `(K³+100K)t` for `0<t≤1/10` and
 `1/Re(z)≤K`, with independent observation errors.
 [GaussianBinetBoseLinearApproximation](Lean/IPRADerivations/Analysis/GaussianBinetBoseLinearApproximation.lean), [GaussianBinetBoseIntegrandEndpoint](Lean/IPRADerivations/Analysis/GaussianBinetBoseIntegrandEndpoint.lean).
+
+The original signed Pi-scaled decay row compares with the actual
+frozen-Pi decay evaluator on the same compact time interval. Its
+rate is uniform in the encoded rational tag and therefore works
+across every later time mesh. The product rate also applies to
+the original arctangent-weighted rows.
+[GaussianBinetSecondDecayPiBridge](Lean/IPRADerivations/Analysis/GaussianBinetSecondDecayPiBridge.lean).
