@@ -2564,3 +2564,6 @@ The literal frozen Pi prefix uses an explicit size-dependent tail independent of
 
 The original tags of the compact interval from 1/E to T match the corresponding suffix of the complete frozen time grid. The mesh weights agree exactly, and the time-tag comparison retains a uniform dyadic allowance.
 [GaussianBinetBoseFrozenTimeRescale](Lean/IPRADerivations/Analysis/GaussianBinetBoseFrozenTimeRescale.lean), [GaussianBinetBoseFrozenSuffix](Lean/IPRADerivations/Analysis/GaussianBinetBoseFrozenSuffix.lean)
+
+The original positive row majorant controls the geometric tail before the omitted zero-start time cells are restored. The combined error is 11K/I + 2KI/E², independent of the discarded geometric count.
+[GaussianRationalSuffixMask](Lean/IPRADerivations/Analysis/GaussianRationalSuffixMask.lean), [GaussianBinetSecondDecaySuffixBound](Lean/IPRADerivations/Analysis/GaussianBinetSecondDecaySuffixBound.lean), [GaussianBinetBoseFrozenSuffixCut](Lean/IPRADerivations/Analysis/GaussianBinetBoseFrozenSuffixCut.lean), [GaussianBinetBoseFrozenOriginCut](Lean/IPRADerivations/Analysis/GaussianBinetBoseFrozenOriginCut.lean)

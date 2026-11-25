@@ -89,7 +89,7 @@ private theorem observation_congr (p a b c d : PTm n)
     Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (observation (var 0) (var 1) (var 2) : PTm 3)
       (σ := ![a,b,p]) (σ' := ![c,d,p]) (fun i => by fin_cases i; exact ha; exact hb; exact .eqRefl _)
 
-private theorem terms_majorized (p N T H J m K X Y D sign : PTm n)
+theorem terms_majorized (p N T H J m K X Y D sign : PTm n)
     (hz : Γ ⊢[PRAAx] source X D sign) (hN : Γ ⊢[PRAAx] le one N) (hJ : Γ ⊢[PRAAx] le one J)
     (hm : Γ ⊢[PRAAx] le one m) (hr : Γ ⊢[PRAAx] le (m*J) H) (hK : Γ ⊢[PRAAx] le D (K*X))
     (hc : Γ ⊢[PRAAx] le (two*(T*N*H)) (unit p)) :
@@ -174,19 +174,19 @@ private theorem envelope_grid_distance (p N T H J m K : PTm n)
   exact distance_congr (scalar_left_embedding envelopeBody N x T one (le_refl one) hN).eqSymm
     e (.eqRefl _) (one_mul U) d
 
-theorem finite_bound (p N T H J m K X Y D sign : PTm n)
-    (hz : Γ ⊢[PRAAx] source X D sign) (hN : Γ ⊢[PRAAx] le one N) (hT : Γ ⊢[PRAAx] le one T)
+/-- The full scalar envelope bounds any Gaussian grid dominated by its rows. -/
+theorem dominated_bound (f : PTm 2) (x p N T H J m K : PTm n)
+    (hN : Γ ⊢[PRAAx] le one N) (hT : Γ ⊢[PRAAx] le one T)
     (hJ : Γ ⊢[PRAAx] le one J) (hm : Γ ⊢[PRAAx] le one m) (hRate : Γ ⊢[PRAAx] le (m*J) H)
-    (hK : Γ ⊢[PRAAx] le D (K*X)) (hstep : Γ ⊢[PRAAx] le (H*T) (J*N))
+    (hstep : Γ ⊢[PRAAx] le (H*T) (J*N))
     (hmesh : Γ ⊢[PRAAx] le (num 3*((H*T)*(H*T))) N) (hclock : Γ ⊢[PRAAx] le (num 20*N) (unit p))
-    (hrow : Γ ⊢[PRAAx] le (two*(T*N*H)) (unit p))
-    (hslack : Γ ⊢[PRAAx] le ((m*m)*T*(num 8+num 10*T)) (unit p)) :
-    Γ ⊢[PRAAx] bounded (value p N T H J X Y D sign) (num 11*K) (m*m) := by
+    (hslack : Γ ⊢[PRAAx] le ((m*m)*T*(num 8+num 10*T)) (unit p))
+    (rows : Γ ⊢[PRAAx] termsMajorized f envelopeBody N x (envelopeData p N T H J m K)) :
+    Γ ⊢[PRAAx] bounded (leftSum f N x T one) (num 11*K) (m*m) := by
   let U := unit p
   let b := m*m
   let z := physicalValue p N T H J
   let c := fraction (two*K) m
-  let x := rowData p N T H J X Y D sign
   let y := envelopeData p N T H J m K
   let w := scalarLeft envelopeBody N y T one
   have hH := le_trans (positive_product _ _ hm hJ) hRate
@@ -200,8 +200,18 @@ theorem finite_bound (p N T H J m K X Y D sign : PTm n)
   have upper : Γ ⊢[PRAAx] bounded (embed w) (num 11*K) (m*m) :=
     bounded_radius_mono _ _ _ _ _ (positive_product _ _ hU hb) hb
       (by dsimp only [U,b,allowance]; ipra_le 𝔞(K)*𝔞(m)*𝔞(m)*sl hslack) raw
-  have major := weighted_majorant rowBody envelopeBody N x y T one hN (le_refl one)
-    (terms_majorized p N T H J m K X Y D sign hz hN hJ hm hRate hK hrow)
+  have major := weighted_majorant f envelopeBody N x y T one hN (le_refl one) rows
   exact majorant_bound _ _ _ _ hb major upper
+
+theorem finite_bound (p N T H J m K X Y D sign : PTm n)
+    (hz : Γ ⊢[PRAAx] source X D sign) (hN : Γ ⊢[PRAAx] le one N) (hT : Γ ⊢[PRAAx] le one T)
+    (hJ : Γ ⊢[PRAAx] le one J) (hm : Γ ⊢[PRAAx] le one m) (hRate : Γ ⊢[PRAAx] le (m*J) H)
+    (hK : Γ ⊢[PRAAx] le D (K*X)) (hstep : Γ ⊢[PRAAx] le (H*T) (J*N))
+    (hmesh : Γ ⊢[PRAAx] le (num 3*((H*T)*(H*T))) N) (hclock : Γ ⊢[PRAAx] le (num 20*N) (unit p))
+    (hrow : Γ ⊢[PRAAx] le (two*(T*N*H)) (unit p))
+    (hslack : Γ ⊢[PRAAx] le ((m*m)*T*(num 8+num 10*T)) (unit p)) :
+    Γ ⊢[PRAAx] bounded (value p N T H J X Y D sign) (num 11*K) (m*m) :=
+  dominated_bound rowBody (rowData p N T H J X Y D sign) p N T H J m K hN hT hJ hm hRate hstep hmesh hclock hslack
+    (terms_majorized p N T H J m K X Y D sign hz hN hJ hm hRate hK hrow)
 
 end LeanProofs.IPRA.Analysis.GaussianBinetSecondDecayFinite
