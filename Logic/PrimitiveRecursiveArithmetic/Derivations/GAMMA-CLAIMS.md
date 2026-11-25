@@ -2126,6 +2126,14 @@ estimate. The normalized first-order Stirling expression
 observations.
 [GaussianBinetLogVerticalStep](Lean/IPRADerivations/Analysis/GaussianBinetLogVerticalStep.lean), [GaussianBinetStirlingSlopeBound](Lean/IPRADerivations/Analysis/GaussianBinetStirlingSlopeBound.lean).
 
+The actual vertical remainder increment has the first-order term
+formed from the literal displacement and the same-clock original
+digamma, logarithm and half reciprocal. Exact subtraction cancels the
+common Stirling constant. The observation bound retains separate
+quadratic log-Gamma and logarithm contributions and normalization
+allowances for the original remainder samples.
+[GaussianBinetStirlingVerticalAlgebra](Lean/IPRADerivations/Analysis/GaussianBinetStirlingVerticalAlgebra.lean), [GaussianBinetLogGammaVerticalStep](Lean/IPRADerivations/Analysis/GaussianBinetLogGammaVerticalStep.lean), [GaussianBinetStirlingVerticalStep](Lean/IPRADerivations/Analysis/GaussianBinetStirlingVerticalStep.lean).
+
 For the imaginary-axis sine product used in the Binet kernel
 identification, the actual finite factor derivative terms give the
 literal derivative of the encoded product at any internal cutoff. The
