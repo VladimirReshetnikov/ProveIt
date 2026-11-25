@@ -18909,6 +18909,7 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialQuadrature.observation_source
 #print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialQuadrature.observation_bound
 #print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialQuadrature.refinement_cells
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialQuadrature.physical_refinement
 #print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialQuadrature.finite_refinement
 #print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialQuadrature.finite_comparison
 #print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialQuadrature.mesh
@@ -19057,6 +19058,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianArctangentClampedTarget.native_clamped
 #print axioms LeanProofs.IPRA.Analysis.GaussianArctangentClampedTarget.actual_native_arctangent_clamped_target_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianArctangentClampedTarget.actual_arctangent_clamped_zero_target_closed
+
+/-! ### GaussianArctangentPhysicalRefinement -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPhysicalRefinement.single_grid
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPhysicalRefinement.grid_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPhysicalRefinement.ordinate_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPhysicalRefinement.actual_arctangent_single_grid_forward_error_closed
 
 /-! ### GaussianGammaHalfSquareLimit -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaHalfSquareLimit.gammaHalf

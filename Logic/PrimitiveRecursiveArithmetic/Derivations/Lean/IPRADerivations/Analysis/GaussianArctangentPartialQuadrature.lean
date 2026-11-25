@@ -218,10 +218,10 @@ theorem refinement_cells (R A B N : PTm n) (hR : Γ ⊢[PRAAx] le one R)
   simpa only [cellDistances,Syn.shift,PTm.subst_num,PTm.subst_mul,subst_pairT,row_at,r,a,b,m,i,Δ] using
     distance_congr (.eqRefl _) (aligned_at r (b*m) (quo i r)).eqSymm (.eqRefl _) (.eqRefl _) d
 
-theorem finite_refinement (A B N R : PTm n)
+theorem physical_refinement (A B N R : PTm n)
     (hB : Γ ⊢[PRAAx] le one B) (hA : Γ ⊢[PRAAx] le A B)
     (hN : Γ ⊢[PRAAx] le one N) (hR : Γ ⊢[PRAAx] le one R) :
-    Γ ⊢[PRAAx] distanceBounded (observation A B (R*N)) (observation A B N) (num 4) N := by
+    Γ ⊢[PRAAx] distanceBounded (observation A B (R*N)) (observation A B N) (num 4) (B*N) := by
   let M := B*N
   let K := A*N
   let E := R*(M*M)
@@ -239,12 +239,19 @@ theorem finite_refinement (A B N R : PTm n)
     (by dsimp only [M]; ipra_ring)).eqTrans
       (prefix_as_sum (A*(R*N)) (B*(R*N)) (clearing (B*(R*N)))
         (.andI hs (le_refl _)) (le_mul_mono hA (le_refl _))).eqSymm
-  have hnM : Γ ⊢[PRAAx] le N M := le_congr (one_mul N) (.eqRefl _) (le_mul_mono hB (le_refl N))
-  have rate : Γ ⊢[PRAAx] le (((R*K)*num 4)*N) (num 4*E) :=
+  have rate : Γ ⊢[PRAAx] le (((R*K)*num 4)*M) (num 4*E) :=
     le_congr (by ipra_ring) (by dsimp only [E]; ipra_ring)
-      (le_mul_mono (le_refl (num 4*R)) (le_mul_mono order hnM))
-  exact distance_radius_mono _ _ _ _ _ _ hE hN rate
+      (le_mul_mono (le_refl (num 4*R)) (le_mul_mono order (le_refl M)))
+  exact distance_radius_mono _ _ _ _ _ _ hE hM rate
     (distance_congr fine coarse (.eqRefl _) (.eqRefl _) sums)
+
+theorem finite_refinement (A B N R : PTm n)
+    (hB : Γ ⊢[PRAAx] le one B) (hA : Γ ⊢[PRAAx] le A B)
+    (hN : Γ ⊢[PRAAx] le one N) (hR : Γ ⊢[PRAAx] le one R) :
+    Γ ⊢[PRAAx] distanceBounded (observation A B (R*N)) (observation A B N) (num 4) N := by
+  have hnM := le_congr (one_mul N) (.eqRefl _) (le_mul_mono hB (le_refl N))
+  exact distance_radius_mono _ _ _ _ _ _ (positive_product B N hB hN) hN
+    (le_mul_mono (le_refl (num 4)) hnM) (physical_refinement A B N R hB hA hN hR)
 
 theorem finite_comparison (A B N K : PTm n)
     (hB : Γ ⊢[PRAAx] le one B) (hA : Γ ⊢[PRAAx] le A B)
