@@ -2452,3 +2452,11 @@ on every integer horizon with the verified mesh and clock budgets.
 A shared grid and one frozen Pi sample give the actual tail bound
 `11K/C` for every finite block after row `C`.
 [GaussianBinetSecondDecayEnvelope](Lean/IPRADerivations/Analysis/GaussianBinetSecondDecayEnvelope.lean), [GaussianBinetSecondDecayPointwise](Lean/IPRADerivations/Analysis/GaussianBinetSecondDecayPointwise.lean), [GaussianBinetSecondDecayQuadrature](Lean/IPRADerivations/Analysis/GaussianBinetSecondDecayQuadrature.lean), [GaussianBinetSecondDecayGrid](Lean/IPRADerivations/Analysis/GaussianBinetSecondDecayGrid.lean), [GaussianBinetSecondDecayFinite](Lean/IPRADerivations/Analysis/GaussianBinetSecondDecayFinite.lean), [GaussianBinetSecondDecayTail](Lean/IPRADerivations/Analysis/GaussianBinetSecondDecayTail.lean), [GaussianBinetSecondDecayFrozenTail](Lean/IPRADerivations/Analysis/GaussianBinetSecondDecayFrozenTail.lean).
+
+The original unscaled second Binet integrand has the continuous
+endpoint `1/(2π z)` at zero. The denominator's original observation
+keeps its own Pi sample and has quadratic error from the linear
+term at that clock. Comparing with the original divided arctangent
+gives leading error `(K³+100K)t` for `0<t≤1/10` and
+`1/Re(z)≤K`, with independent observation errors.
+[GaussianBinetBoseLinearApproximation](Lean/IPRADerivations/Analysis/GaussianBinetBoseLinearApproximation.lean), [GaussianBinetBoseIntegrandEndpoint](Lean/IPRADerivations/Analysis/GaussianBinetBoseIntegrandEndpoint.lean).
