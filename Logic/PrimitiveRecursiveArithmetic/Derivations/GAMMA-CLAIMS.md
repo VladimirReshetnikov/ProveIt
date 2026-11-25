@@ -2210,6 +2210,15 @@ with the kernel. The majorant retains the leading coefficient `1/12`
 and explicit errors at the original product and real decay clocks.
 [GaussianBinetLaplaceDecay](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceDecay.lean), [GaussianBinetLaplaceDomination](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceDomination.lean).
 
+The compact tail after a rational endpoint is bounded uniformly in
+the strip width and the certified horizon. The original nonnegative
+real decay sample at the starting endpoint supplies the sharp leading
+coefficient `1/(12 Re(z))`, with explicit independent observation
+errors. At physical cutoff `D L`, an effective envelope gives leading
+bound `D 2⁻ᴸ/(12 X)` for `Re(z)=X/D`. A zero-width strip evaluates
+exactly to zero.
+[GaussianBinetLaplaceScalarMajorant](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceScalarMajorant.lean), [GaussianBinetLaplaceStripDomination](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceStripDomination.lean), [GaussianBinetLaplaceStripTail](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceStripTail.lean), [GaussianBinetLaplaceStripTailEnvelope](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceStripTailEnvelope.lean), [GaussianBinetLaplaceSharpTail](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceSharpTail.lean).
+
 ## Source artifacts and representation boundaries
 
 The delivered [Lean companion](../docs/proofs/analysis/gamma_ipra/lean/README.md)
