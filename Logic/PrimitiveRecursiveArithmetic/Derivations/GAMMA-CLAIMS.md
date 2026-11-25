@@ -2522,3 +2522,6 @@ The actual finite frozen-Pi prefixes of lengths C+r and C are compared at the sa
 
 The actual shifted exponential antiderivative uses the rate-versus-horizon inequality directly. A common physical horizon independent of the Pi denominator now suffices to compare the actual weighted sine quadrature to each literal Binet kernel row.
 [GaussianBinetFixedHorizonDecay](Lean/IPRADerivations/Analysis/GaussianBinetFixedHorizonDecay.lean), [GaussianBinetFixedHorizonPole](Lean/IPRADerivations/Analysis/GaussianBinetFixedHorizonPole.lean), [GaussianBinetFixedHorizonSine](Lean/IPRADerivations/Analysis/GaussianBinetFixedHorizonSine.lean), [GaussianBinetFixedHorizonFrozenRows](Lean/IPRADerivations/Analysis/GaussianBinetFixedHorizonFrozenRows.lean)
+
+Both cutoff limits now give the original improper integral as a regular name on the encoded rational right half-plane. At independent clocks its comparison to the original compact interval [2^(-L-1),T] has leading error 2K/T + D/(4X·2^(L+1)) when D≤KX.
+[GaussianBinetBoseHorizonRate](Lean/IPRADerivations/Analysis/GaussianBinetBoseHorizonRate.lean), [GaussianBinetBoseImproperName](Lean/IPRADerivations/Analysis/GaussianBinetBoseImproperName.lean)
