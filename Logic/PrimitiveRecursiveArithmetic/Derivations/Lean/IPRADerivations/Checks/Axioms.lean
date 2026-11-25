@@ -28614,6 +28614,16 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianRaabeLogPrimitiveGrid.denominator
 #print axioms LeanProofs.IPRA.Analysis.GaussianRaabeLogPrimitiveGrid.finite_grid
 #print axioms LeanProofs.IPRA.Analysis.GaussianRaabeLogPrimitiveGrid.actual_positive_logarithm_primitive_grid_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianRaabeUnitGridShift.deviation
+#print axioms LeanProofs.IPRA.Analysis.GaussianRaabeUnitGridShift.numerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianRaabeUnitGridShift.denominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianRaabeUnitGridShift.subst_deviation
+#print axioms LeanProofs.IPRA.Analysis.GaussianRaabeUnitGridShift.subst_numerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianRaabeUnitGridShift.subst_denominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianRaabeUnitGridShift.deviation_congr
+#print axioms LeanProofs.IPRA.Analysis.GaussianRaabeUnitGridShift.step_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianRaabeUnitGridShift.shift_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianRaabeUnitGridShift.actual_real_log_Gamma_unit_quadrature_shift_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianRaabeLogPrimitiveRescale.equal_ratio
 #print axioms LeanProofs.IPRA.Analysis.GaussianRaabeLogPrimitiveRescale.scaled_to_original
 #print axioms LeanProofs.IPRA.Analysis.GaussianRaabeLogPrimitiveRescale.actual_positive_logarithm_primitive_rescale_closed

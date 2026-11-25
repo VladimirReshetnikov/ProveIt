@@ -2624,3 +2624,6 @@ An exact rational t^j factor weights the original cofinal Laplace sample. On the
 
 Each original right-tag observation is weighted by its exact powered cell width. The finite rooted grid sum is bounded by 4·2^-h as soon as its span in the root coordinate meets the certified dyadic budget.
 [GaussianGammaZetaMellinOriginCell](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinOriginCell.lean), [GaussianGammaZetaMellinOriginGrid](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinOriginGrid.lean)
+
+The deviation of the actual unit log-Gamma quadrature from the logarithm primitive has an explicit finite bound under an arbitrary integer shift. The same mesh count and observation clock are used throughout the telescope.
+[GaussianRaabeUnitGridShift](Lean/IPRADerivations/Analysis/GaussianRaabeUnitGridShift.lean)
