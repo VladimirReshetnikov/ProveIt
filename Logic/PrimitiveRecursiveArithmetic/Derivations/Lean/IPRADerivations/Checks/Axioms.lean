@@ -28018,6 +28018,10 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetFrozenKernelLaplace.subst_errorNumerator
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetFrozenKernelLaplace.suffix_error
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetFrozenKernelLaplace.sine_suffix_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetSecondFormula.observation_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetSecondFormula.improper_comparison
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetSecondFormula.equivalent
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetSecondFormula.actual_second_Binet_formula_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetBosePrefixRefinement.refined_prefix_error
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetBosePrefixRefinement.actual_second_Binet_refined_Bose_prefix_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetArctangentSignedPole.imagNumerator
