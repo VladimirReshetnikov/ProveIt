@@ -2350,6 +2350,15 @@ common grid. The horizon `D L` is shared and the condition
 further and the row clock increased while preserving the bound.
 [GaussianCompactPointwiseDifference](Lean/IPRADerivations/Analysis/GaussianCompactPointwiseDifference.lean), [GaussianCompactDifferenceRefinement](Lean/IPRADerivations/Analysis/GaussianCompactDifferenceRefinement.lean), [GaussianBinetLaplaceDifferencePrefix](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceDifferencePrefix.lean), [GaussianBinetLaplaceDifferenceGrid](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceDifferenceGrid.lean).
 
+For the original finite exponential rectangle, interchanging the two
+sums leaves the actual serialized weights and observations in place.
+The complex exponential columns telescope to their original endpoint
+expression, and their tails decay on the selected horizon. At the
+prescribed finite budgets, the rectangle is within `2/2^p` of the
+literal weighted-resolvent grid. The cofinal comparison binds its
+limit to the canonical Stirling unit difference.
+[GaussianBinetExponentialPanel](Lean/IPRADerivations/Analysis/GaussianBinetExponentialPanel.lean), [GaussianBinetExponentialIntegralGrid](Lean/IPRADerivations/Analysis/GaussianBinetExponentialIntegralGrid.lean), [GaussianBinetExponentialIntegral](Lean/IPRADerivations/Analysis/GaussianBinetExponentialIntegral.lean), [GaussianBinetExponentialRectangle](Lean/IPRADerivations/Analysis/GaussianBinetExponentialRectangle.lean), [GaussianBinetExponentialRectangleShift](Lean/IPRADerivations/Analysis/GaussianBinetExponentialRectangleShift.lean), [GaussianBinetExponentialRectangleColumn](Lean/IPRADerivations/Analysis/GaussianBinetExponentialRectangleColumn.lean), [GaussianBinetExponentialRectangleEndpoint](Lean/IPRADerivations/Analysis/GaussianBinetExponentialRectangleEndpoint.lean), [GaussianBinetExponentialRectangleResolvent](Lean/IPRADerivations/Analysis/GaussianBinetExponentialRectangleResolvent.lean), [GaussianBinetExponentialRectangleEvaluation](Lean/IPRADerivations/Analysis/GaussianBinetExponentialRectangleEvaluation.lean).
+
 The normalized discrepancy `R(z+j)−J(z+j)` uses the actual remainder and
 actual improper Binet names. Its bound decays uniformly as the internal
 shift `j` grows, with a separate dyadic observation allowance. An adjacent
