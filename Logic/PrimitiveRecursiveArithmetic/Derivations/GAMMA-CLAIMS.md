@@ -2645,3 +2645,6 @@ At a common admissible horizon, the original weighted quadrature on consecutive 
 
 The original positive-window Mellin observations compare with the finite weighted Euler decay prefix on the same physical tags. A computed common clock controls the decay rows and leaves the exact geometric truncation allowance.
 [GaussianGammaZetaMellinDecayPrefix](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinDecayPrefix.lean), [GaussianGammaZetaMellinStrip](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinStrip.lean)
+
+The original real Stirling remainder controls actual common-clock log-Gamma and logarithm observations. Explicit schedules bound the finite shift, elementary and remainder errors after choosing the distant interval and mesh. The right side is the regular name for the logarithm primitive plus the original Stirling constant.
+[GaussianRaabeStirlingRemainder](Lean/IPRADerivations/Analysis/GaussianRaabeStirlingRemainder.lean), [GaussianRaabeRightSide](Lean/IPRADerivations/Analysis/GaussianRaabeRightSide.lean), [GaussianRaabeCofinalSchedule](Lean/IPRADerivations/Analysis/GaussianRaabeCofinalSchedule.lean)
