@@ -2160,7 +2160,10 @@ reads each tag at its exact physical rational time, including zero.
 The arbitrary grid-refinement and same-grid cutoff comparisons give
 the named compact truncation estimate with leading error
 `(panel width)/(8N)` at independent observation clocks.
-[GaussianBinetLaplaceStrip](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceStrip.lean), [GaussianBinetLaplaceStripCutoff](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceStripCutoff.lean).
+Changing the certified disk radius or time horizon preserves the actual
+integrand at each physical tag and preserves the compact name for the
+same panel.
+[GaussianBinetLaplaceStrip](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceStrip.lean), [GaussianBinetLaplaceStripCutoff](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceStripCutoff.lean), [GaussianBinetLaplaceStripHorizon](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceStripHorizon.lean).
 
 ## Source artifacts and representation boundaries
 

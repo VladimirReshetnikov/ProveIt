@@ -27023,6 +27023,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceStripCutoff.quadrature_cutoff
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceStripCutoff.cutoff_rate
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceStripCutoff.actual_Binet_compact_strip_cutoff_rate_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceStripHorizon.integrand_coherence
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceStripHorizon.evaluator_coherence
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceStripHorizon.local_agreement
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceStripHorizon.coherence
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceStripHorizon.actual_Binet_strip_horizon_coherence_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianRightHalfPlaneArgumentIncrementGeometry.step
 #print axioms LeanProofs.IPRA.Analysis.GaussianRightHalfPlaneArgumentIncrementGeometry.signBit
 #print axioms LeanProofs.IPRA.Analysis.GaussianRightHalfPlaneArgumentIncrementGeometry.oppositeBits
