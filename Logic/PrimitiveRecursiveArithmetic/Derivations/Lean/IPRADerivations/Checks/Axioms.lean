@@ -18559,6 +18559,30 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaHalfPiName.actual_Pi_arctangent_name_regular_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaHalfPiName.actual_Pi_arctangent_late_grid_error_closed
 
+/-! ### GaussianArctangentCayleyValues -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyValues.numerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyValues.denominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyValues.value
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyValues.imaginaryCode
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyValues.imaginaryPoint
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyValues.denominator_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyValues.exact_square_norm
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyValues.unit_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyValues.left_endpoint
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyValues.right_endpoint
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyValues.actual_original_Cayley_arctangent_grid_closed
+
+/-! ### GaussianArctangentCayleyStep -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyStep.conjugateValue
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyStep.incrementCode
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyStep.increment
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyStep.linearCode
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyStep.defectCode
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyStep.linear_value
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyStep.defect_representation
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyStep.local_defect
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyStep.actual_original_arctangent_Cayley_step_closed
+
 /-! ### GaussianGammaHalfSquareLimit -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaHalfSquareLimit.gammaHalf
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaHalfSquareLimit.gammaSquareF
