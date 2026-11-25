@@ -2165,6 +2165,13 @@ integrand at each physical tag and preserves the compact name for the
 same panel.
 [GaussianBinetLaplaceStrip](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceStrip.lean), [GaussianBinetLaplaceStripCutoff](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceStripCutoff.lean), [GaussianBinetLaplaceStripHorizon](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceStripHorizon.lean).
 
+The squared norm of the actual complex exponential at `−zt` agrees
+with the square of the original real decay at `−Re(z)t`. The observation
+norm estimate transfers that decay to the actual normalized product
+with the kernel. The majorant retains the leading coefficient `1/12`
+and explicit errors at the original product and real decay clocks.
+[GaussianBinetLaplaceDecay](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceDecay.lean), [GaussianBinetLaplaceDomination](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceDomination.lean).
+
 ## Source artifacts and representation boundaries
 
 The delivered [Lean companion](../docs/proofs/analysis/gamma_ipra/lean/README.md)
