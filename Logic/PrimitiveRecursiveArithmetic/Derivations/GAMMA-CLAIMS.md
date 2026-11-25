@@ -2188,6 +2188,12 @@ the original apart π factor to get `cosh(πx) = P(x)+xD(x)` for the
 cofinal sine product `P` and its actual derivative `D`.
 [GaussianSineProductImaginaryDerivativeComparison](Lean/IPRADerivations/Analysis/GaussianSineProductImaginaryDerivativeComparison.lean), [GaussianSineProductImaginaryCofinalLogDerivative](Lean/IPRADerivations/Analysis/GaussianSineProductImaginaryCofinalLogDerivative.lean).
 
+Combining that derivative with the exact hyperbolic sine identity
+proves the cleared partial fractions
+`(πx) cosh(πx) = sinh(πx) (1+x Σⱼ 2x/(j²+x²))` at the original
+rational inputs. This uses the actual cofinal reciprocal row name.
+[GaussianSineProductImaginaryCothExpansion](Lean/IPRADerivations/Analysis/GaussianSineProductImaginaryCothExpansion.lean).
+
 The Binet kernel series uses the original named π in each positive row
 `2/(t²+4π²n²)`. On `0 ≤ t ≤ T` the actual finite and cofinal samples
 are bounded below by `2/(T²+100)` at positive cutoffs. The row majorant
