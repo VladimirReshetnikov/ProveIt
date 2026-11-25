@@ -60259,6 +60259,22 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianStirlingDuplication.duplication
 #print axioms LeanProofs.IPRA.Analysis.GaussianStirlingDuplication.actual_positive_rational_Stirling_duplication_closed
 
+/-! ### GaussianStirlingDuplicationResidual -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingDuplicationResidual.productF
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingDuplicationResidual.productData
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingDuplicationResidual.nameF
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingDuplicationResidual.nameData
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingDuplicationResidual.log_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingDuplicationResidual.name_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingDuplicationResidual.observationBudget
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingDuplicationResidual.numerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingDuplicationResidual.denominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingDuplicationResidual.sample_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingDuplicationResidual.uniformNumerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingDuplicationResidual.uniformDenominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingDuplicationResidual.uniform_sample_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingDuplicationResidual.actual_stirling_duplication_residual_bound_closed
+
 /-! ### GaussianStirlingWallisFactor -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianStirlingWallisFactor.halfSquareFactor
 #print axioms LeanProofs.IPRA.Analysis.GaussianStirlingWallisFactor.integerDivisor
@@ -60352,6 +60368,47 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianStirlingWallisLogIdentity.multiply_denominator
 #print axioms LeanProofs.IPRA.Analysis.GaussianStirlingWallisLogIdentity.logarithmic_identity
 #print axioms LeanProofs.IPRA.Analysis.GaussianStirlingWallisLogIdentity.actual_Stirling_Wallis_log_ratio_identity_closed
+
+/-! ### GaussianStirlingHalfStepAlgebra -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingHalfStepAlgebra.rawHalfGamma
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingHalfStepAlgebra.half_step_value
+
+/-! ### GaussianStirlingHalfStepIdentity -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingHalfStepIdentity.differenceF
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingHalfStepIdentity.differenceData
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingHalfStepIdentity.scaledLogF
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingHalfStepIdentity.scaledLogData
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingHalfStepIdentity.rightF
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingHalfStepIdentity.rightData
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingHalfStepIdentity.subst_differenceData
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingHalfStepIdentity.subst_scaledLogData
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingHalfStepIdentity.subst_rightData
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingHalfStepIdentity.integer_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingHalfStepIdentity.scaled_log_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingHalfStepIdentity.nestedBudget
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingHalfStepIdentity.halfGammaBudget
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingHalfStepIdentity.residualBudget
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingHalfStepIdentity.errorBudget
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingHalfStepIdentity.identity_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingHalfStepIdentity.half_step_identity
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingHalfStepIdentity.actual_stirling_half_step_identity_closed
+
+/-! ### GaussianStirlingHalfStep -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingHalfStep.half_step_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingHalfStep.actual_stirling_half_step_error_closed
+
+/-! ### GaussianStirlingConstantIdentificationCore -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingConstantIdentificationCore.HalfStepBound
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingConstantIdentificationCore.ResidualBound
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingConstantIdentificationCore.sampleBudget
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingConstantIdentificationCore.sample_budget_value
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingConstantIdentificationCore.sample_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingConstantIdentificationCore.identification
+
+/-! ### GaussianStirlingConstantIdentification -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingConstantIdentification.sample_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingConstantIdentification.identification
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingConstantIdentification.actual_Stirling_integer_limit_equals_constant_closed
 
 /-! ### GaussianStirlingTelescope -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescope.shifted
