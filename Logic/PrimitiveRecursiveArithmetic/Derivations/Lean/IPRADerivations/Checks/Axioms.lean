@@ -19043,6 +19043,21 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianArctangentRationalTarget.actual_rational_arctangent_target_brackets_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianArctangentRationalTarget.actual_rational_arctangent_target_distance_closed
 
+/-! ### GaussianArctangentClampedTarget -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentClampedTarget.upper
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentClampedTarget.above
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentClampedTarget.clamped
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentClampedTarget.in_range
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentClampedTarget.above_range
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentClampedTarget.cutoff_independent
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentClampedTarget.clamped_le
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentClampedTarget.zero_index
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentClampedTarget.nativeValue
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentClampedTarget.clampedSpec
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentClampedTarget.native_clamped
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentClampedTarget.actual_native_arctangent_clamped_target_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentClampedTarget.actual_arctangent_clamped_zero_target_closed
+
 /-! ### GaussianGammaHalfSquareLimit -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaHalfSquareLimit.gammaHalf
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaHalfSquareLimit.gammaSquareF
