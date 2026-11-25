@@ -2609,3 +2609,6 @@ At a rooted time t=(a/b)^A, the actual Mellin observation for the parameter s is
 
 The actual compact quadrature inherits the pointwise rational floor with its physical width. On [1,2] the late samples have real part at least 1/(104·3^(2X)), with explicit dyadic admission.
 [GaussianBinetLaplaceCompactRealFloor](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceCompactRealFloor.lean)
+
+The actual unscaled reciprocal is approximated by the finite powers of the inverse of its exact positive exponential sample. On a strip with time at least 1/H the uniform error is bounded by H²/(H+N), before weighting by the original Euler power.
+[GaussianGammaZetaMellinGeometric](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinGeometric.lean)

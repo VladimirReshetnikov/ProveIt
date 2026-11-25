@@ -35000,6 +35000,24 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinIntegrand.regular
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinIntegrand.sample_at
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinIntegrand.actual_gamma_zeta_mellin_integrand_regular_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinGeometric.positiveSample
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinGeometric.ratio
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinGeometric.prefixValue
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinGeometric.weightedValue
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinGeometric.subst_positiveSample
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinGeometric.subst_ratio
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinGeometric.subst_prefixValue
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinGeometric.subst_weightedValue
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinGeometric.positive_sample_lower
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinGeometric.ratio_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinGeometric.inverse_pair
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinGeometric.prefix_term
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinGeometric.partial_cleared
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinGeometric.partial_value
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinGeometric.partial_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinGeometric.partial_error_on_strip
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinGeometric.integrand_error_on_strip
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinGeometric.actual_gamma_zeta_mellin_geometric_prefix_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinOriginBound.origin_bound
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinOriginBound.actual_gamma_zeta_mellin_origin_bound_closed
 
