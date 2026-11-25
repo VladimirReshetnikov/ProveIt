@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.ConvolutionAssoc
 import IPRADerivations.AnalyticNumberTheory.MangoldtMobius
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.AnalyticNumberTheory.DivisorCases
 
 /-!
 # Selberg's exact symmetry identity `μ * L² = Λ * Λ + 𝒟Λ` (`pnt_ipra_constructive_2026-11-14`)
@@ -103,78 +104,22 @@ theorem inner_sq {k N : PTm n} (hk : Γ ⊢[PRAAx] k ≐ succ (pred k)) (hkN : �
 theorem row_sq_mob {d N : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) :
     Γ ⊢[PRAAx] (inst2 (oB (aP (GB w))) d (pairT (succ N) N) ≐ inst2 (QSP w) d N) ⋏
       (inst2 (oB (aN (GB w))) d (pairT (succ N) N) ≐ inst2 (QSN w) d N) := by
-  rw [inst2_oB, inst2_oB, inst2_QSP, inst2_QSN]
-  have f₁ : Γ ⊢[PRAAx] fstT (pairT (succ N) N) ≐ succ N := fst_pair _ _
-  have s₁ : Γ ⊢[PRAAx] sndT (pairT (succ N) N) ≐ N := snd_pair _ _
-  have cR := congrAp2 (sumF (rowB (aP (GB w)))) f₁ (congrPairT (.eqRefl d) s₁)
-  have cR' := congrAp2 (sumF (rowB (aN (GB w)))) f₁ (congrPairT (.eqRefl d) s₁)
-  have hcP : Syn.shift ((sg d * eqb (rem N d) zero) * muP (succ N) d) =
-      (sg (Syn.shift d) * eqb (rem (Syn.shift N) (Syn.shift d)) zero) * muP (succ (Syn.shift N)) (Syn.shift d) := by
-    simp [Syn.shift]
-  have hcN : Syn.shift ((sg d * eqb (rem N d) zero) * muN (succ N) d) =
-      (sg (Syn.shift d) * eqb (rem (Syn.shift N) (Syn.shift d)) zero) * muN (succ (Syn.shift N)) (Syn.shift d) := by
-    simp [Syn.shift]
-  have hq : Syn.shift (pairT (quo N d) (zero : PTm n)) = pairT (quo (Syn.shift N) (Syn.shift d)) zero := by
-    simp [Syn.shift]
-  have epq : ∀ {Δ : List (Fm PTm (n + 1))} (e N' d' : PTm (n + 1)),
-      Δ ⊢[PRAAx] (sg e * eqb (rem (quo N' d') e) zero) * inst2 (GB w) e N' ≐
-        inst2 (EB w) e (pairT (quo N' d') zero) := fun e N' d' => by
-    rw [inst2_GB, inst2_EB]
-    exact congrMul (congrMul (.eqRefl _) (congrEqb' (congrAp2 remF (fst_pair _ _).eqSymm (.eqRefl _)) (.eqRefl _)))
-      (.eqRefl _)
-  have scP : Γ ⊢[PRAAx] ap2 (sumF (rowB (aP (GB w)))) (succ N) (pairT d N) ≐
-      ((sg d * eqb (rem N d) zero) * muP (succ N) d) * ap2 (sumF (EB w)) (succ N) (pairT (quo N d) zero) := by
-    refine sum_scale _ _ _ _ _ _ (.allI (.impI ?_))
-    rw [inst2_rowB, shift_pairT, hcP, hq]
-    refine (congrInst3 _ (fst_pair _ _) (.eqRefl _) (snd_pair _ _)).eqTrans ?_
-    rw [inst3_aP]
-    exact congrMul (.eqRefl _) (epq _ _ _)
-  have scN : Γ ⊢[PRAAx] ap2 (sumF (rowB (aN (GB w)))) (succ N) (pairT d N) ≐
-      ((sg d * eqb (rem N d) zero) * muN (succ N) d) * ap2 (sumF (EB w)) (succ N) (pairT (quo N d) zero) := by
-    refine sum_scale _ _ _ _ _ _ (.allI (.impI ?_))
-    rw [inst2_rowB, shift_pairT, hcN, hq]
-    refine (congrInst3 _ (fst_pair _ _) (.eqRefl _) (snd_pair _ _)).eqTrans ?_
-    rw [inst3_aN]
-    exact congrMul (.eqRefl _) (epq _ _ _)
-  have key : ∀ (X : PTm n), Γ ⊢[PRAAx] ((sg d * eqb (rem N d) zero) * X) * ap2 (sumF (EB w)) (succ N) (pairT (quo N d) zero) ≐
-      ((sg d * eqb (rem N d) zero) * X) * (Lw w (quo N d) zero * Lw w (quo N d) zero) := by
-    intro X
-    refine .orE (zero_or_succ d) ?_ ?_
-    · have s0 : ((d ≐ zero) :: Γ) ⊢[PRAAx] sg d ≐ zero := (congrSg Prf.hyp0).eqTrans sg_zero
-      exact (zero_mul_l (zero_mul_l (zero_mul_l s0 _) _) _).eqTrans (zero_mul_l (zero_mul_l (zero_mul_l s0 _) _) _).eqSymm
-    · refine .orE (eq_or_ne (rem N d) zero) ?_ ?_
-      · let C : List (Fm PTm n) := (rem N d ≐ zero) :: (d ≐ succ (pred d)) :: Γ
-        have hd : C ⊢[PRAAx] d ≐ succ (pred d) := Prf.hyp1
-        have eN := eq_of_dvd' hd (Prf.hyp0 : C ⊢[PRAAx] dvd d N)
-        have hk := pos_of_eq_mul hN.wk.wk eN
-        have ww := natEq eN; have wp := natEq hd
-        have hkN : C ⊢[PRAAx] le (succ (quo N d)) (succ N) := by
-          refine (succ_monus_succ _ _).eqTrans (le_of_eq_add (d := pred d * quo N d) ?_)
-          ipra_lc ww + 𝔞 (quo N d) * wp
-        exact congrMul (.eqRefl _) (inner_sq w hk hkN)
-      · have z : (neg (rem N d ≐ zero) :: (d ≐ succ (pred d)) :: Γ) ⊢[PRAAx] sg d * eqb (rem N d) zero ≐ zero :=
-          (congrMul (.eqRefl _) (eqb_of_ne Prf.hyp0)).eqTrans (by ipra_ring)
-        exact (zero_mul_l (zero_mul_l z _) _).eqTrans (zero_mul_l (zero_mul_l z _) _).eqSymm
-  exact .andI (cR.eqTrans (scP.eqTrans (key _))) (cR'.eqTrans (scN.eqTrans (key _)))
+  rw [inst2_QSP, inst2_QSN]
+  refine MobiusInversion.row_closed (GB w) (EB w) d N (pairT (quo N d) zero)
+    (Lw w (quo N d) zero * Lw w (quo N d) zero) hN ?_ fun hk hkN => inner_sq w hk hkN
+  intro Δ
+  rw [show Syn.shift (pairT (quo N d) (zero : PTm n)) = pairT (quo (Syn.shift N) (Syn.shift d)) zero by
+    simp [Syn.shift], inst2_GB, inst2_EB]
+  exact congrMul (congrMul (.eqRefl _) (congrEqb' (congrAp2 remF (fst_pair _ _).eqSymm (.eqRefl _)) (.eqRefl _)))
+    (.eqRefl _)
 
 /-- (sb:exact-symmetry) `μ * L_w² = 𝒟_w Λ_w + Λ_w * Λ_w`:
 `Σ_{d ∣ N} μ⁺(d) L_w(N/d)² = L_w(N) Λ_w(N) + (Λ_w * Λ_w)(N) + Σ_{d ∣ N} μ⁻(d) L_w(N/d)²` for `N ≥ 1`. -/
 theorem selberg_mobius {N : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) :
     Γ ⊢[PRAAx] ap2 (sumF (QSP w)) (succ N) N ≐
       (Lw w N zero * Lam w N zero + conv (lamF w) (lamF w) N zero) + ap2 (sumF (QSN w)) (succ N) N := by
-  have inv := mobius_inversion (Γ := Γ) (GB w) hN
-  rw [inst2_GB] at inv
-  have hN' := shift_pos hN
-  have hs : Syn.shift (succ N) = succ (Syn.shift N) := by simp [Syn.shift]
-  have cP : Γ ⊢[PRAAx] ap2 (sumF (oB (aP (GB w)))) (succ N) (pairT (succ N) N) ≐ ap2 (sumF (QSP w)) (succ N) N := by
-    refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
-    rw [shift_pairT, hs]
-    exact Prf.andE₁ (row_sq_mob w hN'.wk)
-  have cN : Γ ⊢[PRAAx] ap2 (sumF (oB (aN (GB w)))) (succ N) (pairT (succ N) N) ≐ ap2 (sumF (QSN w)) (succ N) N := by
-    refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
-    rw [shift_pairT, hs]
-    exact Prf.andE₂ (row_sq_mob w hN'.wk)
-  ipra_lc -natEq cP + natEq inv + natEq cN
+  have h := MobiusInversion.inversion_of_rows (GB w) (QSP w) (QSN w) hN fun h => row_sq_mob w h
+  rwa [inst2_GB] at h
 
 end Selberg
 

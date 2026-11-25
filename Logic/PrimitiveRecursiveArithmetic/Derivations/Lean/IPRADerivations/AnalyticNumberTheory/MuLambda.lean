@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.MangoldtMobius
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.AnalyticNumberTheory.DivisorCases
 
 /-!
 # The Möbius–Mangoldt convolution
@@ -225,32 +226,11 @@ theorem row_diff {N : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) (d : PTm n
   have r1 := row_gen (Γ := Γ) (fN w) d N
   have r2 := row_gen (Γ := Γ) (fP w) d N
   rw [inst2_QAP, inst2_QAN]
-  have key : ∀ (X : PTm n), Γ ⊢[PRAAx] ((sg d * eqb (rem N d) zero) * X) *
+  have key (X : PTm n) : Γ ⊢[PRAAx] ((sg d * eqb (rem N d) zero) * X) *
         ap2 (sumF (ivB (fN w))) (succ N) (pairT (quo N d) N) ≐
       ((sg d * eqb (rem N d) zero) * X) * Lam w (quo N d) zero +
-        ((sg d * eqb (rem N d) zero) * X) * ap2 (sumF (ivB (fP w))) (succ N) (pairT (quo N d) N) := by
-    intro X
-    refine .orE (zero_or_succ d) ?_ ?_
-    · have s0 : ((d ≐ zero) :: Γ) ⊢[PRAAx] sg d ≐ zero := (congrSg Prf.hyp0).eqTrans sg_zero
-      have z : ∀ {Y : PTm n}, ((d ≐ zero) :: Γ) ⊢[PRAAx] ((sg d * eqb (rem N d) zero) * X) * Y ≐ zero :=
-        fun {Y} => zero_mul_l (zero_mul_l (zero_mul_l s0 _) _) _
-      exact z.eqTrans ((congrAdd z z).eqTrans (add_zero _)).eqSymm
-    · refine .orE (eq_or_ne (rem N d) zero) ?_ ?_
-      · let C : List (Fm PTm n) := (rem N d ≐ zero) :: (d ≐ succ (pred d)) :: Γ
-        have hd : C ⊢[PRAAx] d ≐ succ (pred d) := Prf.hyp1
-        have eN := eq_of_dvd' hd (Prf.hyp0 : C ⊢[PRAAx] dvd d N)
-        have hk := pos_of_eq_mul hN.wk.wk eN
-        have ww := natEq eN; have wp := natEq hd
-        have hkN : C ⊢[PRAAx] le (succ (quo N d)) (succ N) := by
-          refine (succ_monus_succ _ _).eqTrans (le_of_eq_add (d := pred d * quo N d) ?_)
-          ipra_lc ww + 𝔞 (quo N d) * wp
-        exact (congrMul (.eqRefl _) (key_inner w hk hkN)).eqTrans (by ipra_ring)
-      · let C : List (Fm PTm n) := neg (rem N d ≐ zero) :: (d ≐ succ (pred d)) :: Γ
-        have zz : C ⊢[PRAAx] sg d * eqb (rem N d) zero ≐ zero :=
-          (congrMul (.eqRefl _) (eqb_of_ne Prf.hyp0)).eqTrans (by ipra_ring)
-        have z : ∀ {Y : PTm n}, C ⊢[PRAAx] ((sg d * eqb (rem N d) zero) * X) * Y ≐ zero :=
-          fun {Y} => zero_mul_l (zero_mul_l zz _) _
-        exact z.eqTrans ((congrAdd z z).eqTrans (add_zero _)).eqSymm
+        ((sg d * eqb (rem N d) zero) * X) * ap2 (sumF (ivB (fP w))) (succ N) (pairT (quo N d) N) :=
+    (DivisorCases.divisor_quo_congr X hN fun hk hkN => key_inner w hk hkN).eqTrans (by ipra_ring)
   exact .andI ((Prf.andE₁ r1).eqTrans ((key _).eqTrans (congrAdd (.eqRefl _) (Prf.andE₁ r2).eqSymm)))
     ((Prf.andE₂ r1).eqTrans ((key _).eqTrans (congrAdd (.eqRefl _) (Prf.andE₂ r2).eqSymm)))
 

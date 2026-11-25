@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.MobiusInversion
+import IPRADerivations.AnalyticNumberTheory.DivisorCases
 import IPRADerivations.Core.LinearCombination
 
 /-!
@@ -174,6 +175,72 @@ theorem mobius_inversion_p {Z : PTm n} (hN : Γ ⊢[PRAAx] fstT Z ≐ succ (pred
   ipra_lc natEq (fubini (Γ := Γ) (aP f) (succ (fstT Z)) (succ (fstT Z)) Z) + natEq cs +
     natEq (sum_add (Γ := Γ) (pB (aN f)) (dltB f) (succ (fstT Z)) (pairT (succ (fstT Z)) Z)) + natEq dl -
     natEq (fubini (Γ := Γ) (aN f) (succ (fstT Z)) (succ (fstT Z)) Z)
+
+/-- A row of the double sum in closed form, with a parameter: if `I(e, P)` is the summand
+`[e ≥ 1][e ∣ N/d] f(e, Z)` of the inner sum (`hI`) and that sum is `F` whenever `1 ≤ N/d ≤ N` (`hF`), `N = fst Z`,
+then the row of `d` is `[d ∣ N] μ^±(d) F`. -/
+theorem row_closed_p (I : PTm 2) (d Z P F : PTm n) (hN : Γ ⊢[PRAAx] fstT Z ≐ succ (pred (fstT Z)))
+    (hI : ∀ {Δ : List (Fm PTm (n + 1))}, Δ ⊢[PRAAx]
+      (sg (var 0) * eqb (rem (quo (fstT (Syn.shift Z)) (Syn.shift d)) (var 0)) zero) *
+          inst2 f (var 0) (Syn.shift Z) ≐ inst2 I (var 0) (Syn.shift P))
+    (hF : ∀ {C : List (Fm PTm n)}, (C ⊢[PRAAx] quo (fstT Z) d ≐ succ (pred (quo (fstT Z) d))) →
+      (C ⊢[PRAAx] le (succ (quo (fstT Z) d)) (succ (fstT Z))) → (C ⊢[PRAAx] ap2 (sumF I) (succ (fstT Z)) P ≐ F)) :
+    Γ ⊢[PRAAx] (inst2 (oB (aP f)) d (pairT (succ (fstT Z)) Z) ≐
+        ((sg d * eqb (rem (fstT Z) d) zero) * muP (succ (fstT Z)) d) * F) ⋏
+      (inst2 (oB (aN f)) d (pairT (succ (fstT Z)) Z) ≐
+        ((sg d * eqb (rem (fstT Z) d) zero) * muN (succ (fstT Z)) d) * F) := by
+  rw [inst2_oB, inst2_oB]
+  have f₁ : Γ ⊢[PRAAx] fstT (pairT (succ (fstT Z)) Z) ≐ succ (fstT Z) := fst_pair _ _
+  have s₁ : Γ ⊢[PRAAx] sndT (pairT (succ (fstT Z)) Z) ≐ Z := snd_pair _ _
+  have hcP : Syn.shift ((sg d * eqb (rem (fstT Z) d) zero) * muP (succ (fstT Z)) d) =
+      (sg (Syn.shift d) * eqb (rem (fstT (Syn.shift Z)) (Syn.shift d)) zero) *
+        muP (succ (fstT (Syn.shift Z))) (Syn.shift d) := by
+    simp [Syn.shift]
+  have hcN : Syn.shift ((sg d * eqb (rem (fstT Z) d) zero) * muN (succ (fstT Z)) d) =
+      (sg (Syn.shift d) * eqb (rem (fstT (Syn.shift Z)) (Syn.shift d)) zero) *
+        muN (succ (fstT (Syn.shift Z))) (Syn.shift d) := by
+    simp [Syn.shift]
+  refine .andI
+    ((congrAp2 (sumF (rowB (aP f))) f₁ (congrPairT (.eqRefl d) s₁)).eqTrans
+      ((sum_scale (rowB (aP f)) I (succ (fstT Z)) ((sg d * eqb (rem (fstT Z) d) zero) * muP (succ (fstT Z)) d) P
+        (pairT d Z) (.allI (.impI ?_))).eqTrans (DivisorCases.divisor_quo_congr _ hN hF)))
+    ((congrAp2 (sumF (rowB (aN f))) f₁ (congrPairT (.eqRefl d) s₁)).eqTrans
+      ((sum_scale (rowB (aN f)) I (succ (fstT Z)) ((sg d * eqb (rem (fstT Z) d) zero) * muN (succ (fstT Z)) d) P
+        (pairT d Z) (.allI (.impI ?_))).eqTrans (DivisorCases.divisor_quo_congr _ hN hF)))
+  · rw [inst2_rowB, shift_pairT, hcP]
+    refine (congrInst3 _ (fst_pair _ _) (.eqRefl _) (snd_pair _ _)).eqTrans ?_
+    rw [inst3_aP]
+    exact congrMul (.eqRefl _) hI
+  · rw [inst2_rowB, shift_pairT, hcN]
+    refine (congrInst3 _ (fst_pair _ _) (.eqRefl _) (snd_pair _ _)).eqTrans ?_
+    rw [inst3_aN]
+    exact congrMul (.eqRefl _) hI
+
+/-- Möbius inversion with a parameter and the rows in closed form: if the row of `d` is `Q^±(d, Z)` (`row`), then
+`∑_{d ≤ N} Q⁺(d, Z) = f(N, Z) + ∑_{d ≤ N} Q⁻(d, Z)` for `N = fst Z ≥ 1`. -/
+theorem inversion_of_rows_p (QP QN : PTm 2) {Z : PTm n} (hN : Γ ⊢[PRAAx] fstT Z ≐ succ (pred (fstT Z)))
+    (row : ∀ {Δ : List (Fm PTm (n + 1))},
+      (Δ ⊢[PRAAx] fstT (Syn.shift Z) ≐ succ (pred (fstT (Syn.shift Z)))) →
+      (Δ ⊢[PRAAx] (inst2 (oB (aP f)) (var 0) (pairT (succ (fstT (Syn.shift Z))) (Syn.shift Z)) ≐
+          inst2 QP (var 0) (Syn.shift Z)) ⋏
+        (inst2 (oB (aN f)) (var 0) (pairT (succ (fstT (Syn.shift Z))) (Syn.shift Z)) ≐
+          inst2 QN (var 0) (Syn.shift Z)))) :
+    Γ ⊢[PRAAx] ap2 (sumF QP) (succ (fstT Z)) Z ≐ inst2 f (fstT Z) Z + ap2 (sumF QN) (succ (fstT Z)) Z := by
+  have inv := mobius_inversion_p (Γ := Γ) f hN
+  have hN' := shift_pos hN
+  rw [show Syn.shift (fstT Z) = fstT (Syn.shift Z) by simp [Syn.shift]] at hN'
+  have hs : Syn.shift (succ (fstT Z)) = succ (fstT (Syn.shift Z)) := by simp [Syn.shift]
+  have cP : Γ ⊢[PRAAx] ap2 (sumF (oB (aP f))) (succ (fstT Z)) (pairT (succ (fstT Z)) Z) ≐
+      ap2 (sumF QP) (succ (fstT Z)) Z := by
+    refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
+    rw [shift_pairT, hs]
+    exact Prf.andE₁ (row hN'.wk)
+  have cN : Γ ⊢[PRAAx] ap2 (sumF (oB (aN f))) (succ (fstT Z)) (pairT (succ (fstT Z)) Z) ≐
+      ap2 (sumF QN) (succ (fstT Z)) Z := by
+    refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
+    rw [shift_pairT, hs]
+    exact Prf.andE₂ (row hN'.wk)
+  ipra_lc -natEq cP + natEq inv + natEq cN
 
 end Inversion
 

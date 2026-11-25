@@ -3,6 +3,7 @@ import IPRADerivations.AnalyticNumberTheory.SumPhi
 import IPRADerivations.Core.Fubini
 import IPRADerivations.Probability.Independence
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.AnalyticNumberTheory.DivisorCases
 
 /-!
 # Möbius inversion and the Möbius formula for `φ`
@@ -287,6 +288,63 @@ theorem mobius_inversion {N : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) :
     natEq (sum_add (Γ := Γ) (pB (aN f)) (δB f) (succ N) (pairT (succ N) N)) + natEq dl -
     natEq (fubini (Γ := Γ) (aN f) (succ N) (succ N) N)
 
+/-- A row of the double sum in closed form. Let `I(e, P)` be the summand `[e ≥ 1][e ∣ N/d] f(e, N)` of the inner
+sum (`hI`, under the binder of `e`), and let that sum be `F` whenever `1 ≤ N/d ≤ N` (`hF`). Then the row of `d` is
+`[d ∣ N] μ^±(d) F`. -/
+theorem row_closed (I : PTm 2) (d N P F : PTm n) (hN : Γ ⊢[PRAAx] N ≐ succ (pred N))
+    (hI : ∀ {Δ : List (Fm PTm (n + 1))}, Δ ⊢[PRAAx]
+      (sg (var 0) * eqb (rem (quo (Syn.shift N) (Syn.shift d)) (var 0)) zero) * inst2 f (var 0) (Syn.shift N) ≐
+        inst2 I (var 0) (Syn.shift P))
+    (hF : ∀ {C : List (Fm PTm n)}, (C ⊢[PRAAx] quo N d ≐ succ (pred (quo N d))) →
+      (C ⊢[PRAAx] le (succ (quo N d)) (succ N)) → (C ⊢[PRAAx] ap2 (sumF I) (succ N) P ≐ F)) :
+    Γ ⊢[PRAAx] (inst2 (oB (aP f)) d (pairT (succ N) N) ≐ ((sg d * eqb (rem N d) zero) * muP (succ N) d) * F) ⋏
+      (inst2 (oB (aN f)) d (pairT (succ N) N) ≐ ((sg d * eqb (rem N d) zero) * muN (succ N) d) * F) := by
+  rw [inst2_oB, inst2_oB]
+  have f₁ : Γ ⊢[PRAAx] fstT (pairT (succ N) N) ≐ succ N := fst_pair _ _
+  have s₁ : Γ ⊢[PRAAx] sndT (pairT (succ N) N) ≐ N := snd_pair _ _
+  have hcP : Syn.shift ((sg d * eqb (rem N d) zero) * muP (succ N) d) =
+      (sg (Syn.shift d) * eqb (rem (Syn.shift N) (Syn.shift d)) zero) * muP (succ (Syn.shift N)) (Syn.shift d) := by
+    simp [Syn.shift]
+  have hcN : Syn.shift ((sg d * eqb (rem N d) zero) * muN (succ N) d) =
+      (sg (Syn.shift d) * eqb (rem (Syn.shift N) (Syn.shift d)) zero) * muN (succ (Syn.shift N)) (Syn.shift d) := by
+    simp [Syn.shift]
+  refine .andI
+    ((congrAp2 (sumF (rowB (aP f))) f₁ (congrPairT (.eqRefl d) s₁)).eqTrans
+      ((sum_scale (rowB (aP f)) I (succ N) ((sg d * eqb (rem N d) zero) * muP (succ N) d) P (pairT d N)
+        (.allI (.impI ?_))).eqTrans (DivisorCases.divisor_quo_congr _ hN hF)))
+    ((congrAp2 (sumF (rowB (aN f))) f₁ (congrPairT (.eqRefl d) s₁)).eqTrans
+      ((sum_scale (rowB (aN f)) I (succ N) ((sg d * eqb (rem N d) zero) * muN (succ N) d) P (pairT d N)
+        (.allI (.impI ?_))).eqTrans (DivisorCases.divisor_quo_congr _ hN hF)))
+  · rw [inst2_rowB, shift_pairT, hcP]
+    refine (congrInst3 _ (fst_pair _ _) (.eqRefl _) (snd_pair _ _)).eqTrans ?_
+    rw [inst3_aP]
+    exact congrMul (.eqRefl _) hI
+  · rw [inst2_rowB, shift_pairT, hcN]
+    refine (congrInst3 _ (fst_pair _ _) (.eqRefl _) (snd_pair _ _)).eqTrans ?_
+    rw [inst3_aN]
+    exact congrMul (.eqRefl _) hI
+
+/-- Möbius inversion with the rows in closed form: if the row of `d` is `Q^±(d, N)` (`row`), then
+`∑_{d ≤ N} Q⁺(d, N) = f(N) + ∑_{d ≤ N} Q⁻(d, N)` for `N ≥ 1`. -/
+theorem inversion_of_rows (QP QN : PTm 2) {N : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N))
+    (row : ∀ {Δ : List (Fm PTm (n + 1))}, (Δ ⊢[PRAAx] Syn.shift N ≐ succ (pred (Syn.shift N))) →
+      (Δ ⊢[PRAAx] (inst2 (oB (aP f)) (var 0) (pairT (succ (Syn.shift N)) (Syn.shift N)) ≐
+          inst2 QP (var 0) (Syn.shift N)) ⋏
+        (inst2 (oB (aN f)) (var 0) (pairT (succ (Syn.shift N)) (Syn.shift N)) ≐ inst2 QN (var 0) (Syn.shift N)))) :
+    Γ ⊢[PRAAx] ap2 (sumF QP) (succ N) N ≐ inst2 f N N + ap2 (sumF QN) (succ N) N := by
+  have inv := mobius_inversion (Γ := Γ) f hN
+  have hN' := shift_pos hN
+  have hs : Syn.shift (succ N) = succ (Syn.shift N) := by simp [Syn.shift]
+  have cP : Γ ⊢[PRAAx] ap2 (sumF (oB (aP f))) (succ N) (pairT (succ N) N) ≐ ap2 (sumF QP) (succ N) N := by
+    refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
+    rw [shift_pairT, hs]
+    exact Prf.andE₁ (row hN'.wk)
+  have cN : Γ ⊢[PRAAx] ap2 (sumF (oB (aN f))) (succ N) (pairT (succ N) N) ≐ ap2 (sumF QN) (succ N) N := by
+    refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
+    rw [shift_pairT, hs]
+    exact Prf.andE₂ (row hN'.wk)
+  ipra_lc -natEq cP + natEq inv + natEq cN
+
 end Inversion3
 
 /-! ## The Möbius formula for `φ` -/
@@ -344,70 +402,17 @@ theorem inner_sum {k N : PTm n} (hk : Γ ⊢[PRAAx] k ≐ succ (pred k)) (hkN : 
 theorem row_phi {d N : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) :
     Γ ⊢[PRAAx] (inst2 (oB (aP phiB)) d (pairT (succ N) N) ≐ inst2 QP d N) ⋏
       (inst2 (oB (aN phiB)) d (pairT (succ N) N) ≐ inst2 QN d N) := by
-  rw [inst2_oB, inst2_oB, inst2_QP, inst2_QN]
-  have f₁ : Γ ⊢[PRAAx] fstT (pairT (succ N) N) ≐ succ N := fst_pair _ _
-  have s₁ : Γ ⊢[PRAAx] sndT (pairT (succ N) N) ≐ N := snd_pair _ _
-  have cR := congrAp2 (sumF (rowB (aP phiB))) f₁ (congrPairT (.eqRefl d) s₁)
-  have cR' := congrAp2 (sumF (rowB (aN phiB))) f₁ (congrPairT (.eqRefl d) s₁)
-  have hcP : Syn.shift ((sg d * eqb (rem N d) zero) * muP (succ N) d) =
-      (sg (Syn.shift d) * eqb (rem (Syn.shift N) (Syn.shift d)) zero) * muP (succ (Syn.shift N)) (Syn.shift d) := by
-    simp [Syn.shift]
-  have hcN : Syn.shift ((sg d * eqb (rem N d) zero) * muN (succ N) d) =
-      (sg (Syn.shift d) * eqb (rem (Syn.shift N) (Syn.shift d)) zero) * muN (succ (Syn.shift N)) (Syn.shift d) := by
-    simp [Syn.shift]
-  have hq : Syn.shift (quo N d) = quo (Syn.shift N) (Syn.shift d) := by simp [Syn.shift]
-  have scP : Γ ⊢[PRAAx] ap2 (sumF (rowB (aP phiB))) (succ N) (pairT d N) ≐
-      ((sg d * eqb (rem N d) zero) * muP (succ N) d) * ap2 (sumF innerB) (succ N) (quo N d) := by
-    refine sum_scale _ _ _ _ _ _ (.allI (.impI ?_))
-    rw [inst2_rowB, shift_pairT, hcP, hq, inst2_inner]
-    refine (congrInst3 _ (fst_pair _ _) (.eqRefl _) (snd_pair _ _)).eqTrans ?_
-    rw [inst3_aP, inst2_phiB]
-    exact .eqRefl _
-  have scN : Γ ⊢[PRAAx] ap2 (sumF (rowB (aN phiB))) (succ N) (pairT d N) ≐
-      ((sg d * eqb (rem N d) zero) * muN (succ N) d) * ap2 (sumF innerB) (succ N) (quo N d) := by
-    refine sum_scale _ _ _ _ _ _ (.allI (.impI ?_))
-    rw [inst2_rowB, shift_pairT, hcN, hq, inst2_inner]
-    refine (congrInst3 _ (fst_pair _ _) (.eqRefl _) (snd_pair _ _)).eqTrans ?_
-    rw [inst3_aN, inst2_phiB]
-    exact .eqRefl _
-  -- the sum `∑_{e ≤ N} [e ∣ N/d] φ(e)` is `N/d` when the prefactor is nonzero
-  have key : ∀ (X : PTm n), Γ ⊢[PRAAx] ((sg d * eqb (rem N d) zero) * X) * ap2 (sumF innerB) (succ N) (quo N d) ≐
-      ((sg d * eqb (rem N d) zero) * X) * quo N d := by
-    intro X
-    refine .orE (zero_or_succ d) ?_ ?_
-    · have s0 : ((d ≐ zero) :: Γ) ⊢[PRAAx] sg d ≐ zero := (congrSg Prf.hyp0).eqTrans sg_zero
-      exact (zero_mul_l (zero_mul_l (zero_mul_l s0 _) _) _).eqTrans (zero_mul_l (zero_mul_l (zero_mul_l s0 _) _) _).eqSymm
-    · refine .orE (eq_or_ne (rem N d) zero) ?_ ?_
-      · let C : List (Fm PTm n) := (rem N d ≐ zero) :: (d ≐ succ (pred d)) :: Γ
-        have hd : C ⊢[PRAAx] d ≐ succ (pred d) := Prf.hyp1
-        have eN := eq_of_dvd' hd (Prf.hyp0 : C ⊢[PRAAx] dvd d N)
-        have hk := pos_of_eq_mul hN.wk.wk eN
-        have w := natEq eN; have wp := natEq hd
-        have hkN : C ⊢[PRAAx] le (succ (quo N d)) (succ N) := by
-          refine (succ_monus_succ _ _).eqTrans (le_of_eq_add (d := pred d * quo N d) ?_)
-          ipra_lc w + 𝔞 (quo N d) * wp
-        exact congrMul (.eqRefl _) (inner_sum hk hkN)
-      · have z : (neg (rem N d ≐ zero) :: (d ≐ succ (pred d)) :: Γ) ⊢[PRAAx] sg d * eqb (rem N d) zero ≐ zero :=
-          (congrMul (.eqRefl _) (eqb_of_ne Prf.hyp0)).eqTrans (by ipra_ring)
-        exact (zero_mul_l (zero_mul_l z _) _).eqTrans (zero_mul_l (zero_mul_l z _) _).eqSymm
-  exact .andI (cR.eqTrans (scP.eqTrans (key _))) (cR'.eqTrans (scN.eqTrans (key _)))
+  rw [inst2_QP, inst2_QN]
+  refine row_closed phiB innerB d N (quo N d) (quo N d) hN ?_ fun hk hkN => inner_sum hk hkN
+  intro Δ
+  rw [show Syn.shift (quo N d) = quo (Syn.shift N) (Syn.shift d) by simp [Syn.shift], inst2_inner, inst2_phiB]
+  exact .eqRefl _
 
 /-- `cor:phi-mobius`: `φ(N) = ∑_{d ∣ N} μ(d) N/d` for `N ≥ 1`, as
 `∑_{d ∣ N} μ⁺(d) N/d = φ(N) + ∑_{d ∣ N} μ⁻(d) N/d`. -/
 theorem phi_mobius {N : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) :
     Γ ⊢[PRAAx] ap2 (sumF QP) (succ N) N ≐ Totient.phi N + ap2 (sumF QN) (succ N) N := by
-  have inv := mobius_inversion (Γ := Γ) phiB hN
-  rw [inst2_phiB] at inv
-  have hN' := shift_pos hN
-  have hs : Syn.shift (succ N) = succ (Syn.shift N) := by simp [Syn.shift]
-  have cP : Γ ⊢[PRAAx] ap2 (sumF (oB (aP phiB))) (succ N) (pairT (succ N) N) ≐ ap2 (sumF QP) (succ N) N := by
-    refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
-    rw [shift_pairT, hs]
-    exact Prf.andE₁ (row_phi hN'.wk)
-  have cN : Γ ⊢[PRAAx] ap2 (sumF (oB (aN phiB))) (succ N) (pairT (succ N) N) ≐ ap2 (sumF QN) (succ N) N := by
-    refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
-    rw [shift_pairT, hs]
-    exact Prf.andE₂ (row_phi hN'.wk)
-  ipra_lc -natEq cP + natEq inv + natEq cN
+  have h := inversion_of_rows phiB QP QN hN fun h => row_phi h
+  rwa [inst2_phiB] at h
 
 end LeanProofs.IPRA.AnalyticNumberTheory.MobiusInversion

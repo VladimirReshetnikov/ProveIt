@@ -8226,10 +8226,16 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds.G_tail
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds.G_fix
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds.cancel_gen
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.DivisorCases.quo_lt'
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.DivisorCases.divisor_orE
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.DivisorCases.divisor_congr
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.DivisorCases.divisor_quo_congr
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.MobiusInversion.dv_prod
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.MobiusInversion.dv_symm
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.MobiusInversion.col_pt
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.MobiusInversion.mobius_inversion
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.MobiusInversion.row_closed
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.MobiusInversion.inversion_of_rows
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.MobiusInversion.inner_sum
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.MobiusInversion.row_phi
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.MobiusInversion.phi_mobius
@@ -10576,6 +10582,8 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.MobiusInversionP.col_scale
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.MobiusInversionP.col_pt
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.MobiusInversionP.mobius_inversion_p
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.MobiusInversionP.row_closed_p
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.MobiusInversionP.inversion_of_rows_p
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.MobiusInversionP.inst2_dlt
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.SelbergMobiusP.inst2_GB
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.SelbergMobiusP.congrGx

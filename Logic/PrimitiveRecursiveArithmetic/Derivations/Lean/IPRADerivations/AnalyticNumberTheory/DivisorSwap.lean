@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.MobiusInversion
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.AnalyticNumberTheory.DivisorCases
 
 /-!
 # The divisor involution `d ↦ N/d`
@@ -35,11 +36,7 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
-/-- `N/d ≤ N` for `d ≥ 1`. -/
-theorem quo_lt' {d N : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) : Γ ⊢[PRAAx] lt (quo N d) (succ N) := by
-  have dv := natEq (GcdFiber.div_eq (j := N) hd); have wp := natEq hd
-  refine (succ_monus_succ _ _).eqTrans (le_of_eq_add (d := pred d * quo N d + rem N d) ?_)
-  ipra_lc dv + 𝔞 (quo N d) * wp
+alias quo_lt' := DivisorCases.quo_lt'
 
 /-- `[d ≥ 1][d ∣ N][N/d = e]`. -/
 abbrev zt (d e N : PTm n) : PTm n := (sg d * eqb (rem N d) zero) * eqb (quo N d) e
