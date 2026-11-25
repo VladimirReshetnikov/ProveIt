@@ -2678,3 +2678,6 @@ The original weighted Mellin strip compares to a finite sum of the actual positi
 
 The arbitrary-width recurrence binds the original positive-strip observations exactly. Equal rational tags give aligned grids for the full and trimmed unit panels. A uniform unit-panel bound controls the omitted strip, and the original logarithm primitive has an explicit bound at the dyadic endpoint.
 [GaussianRaabeStripGridRecurrence](Lean/IPRADerivations/Analysis/GaussianRaabeStripGridRecurrence.lean), [GaussianRaabeLogGammaAlignedTime](Lean/IPRADerivations/Analysis/GaussianRaabeLogGammaAlignedTime.lean), [GaussianRaabeUnitStripBound](Lean/IPRADerivations/Analysis/GaussianRaabeUnitStripBound.lean), [GaussianRaabeOriginStripAlignment](Lean/IPRADerivations/Analysis/GaussianRaabeOriginStripAlignment.lean), [GaussianRaabeDyadicPrimitive](Lean/IPRADerivations/Analysis/GaussianRaabeDyadicPrimitive.lean)
+
+On the aligned trimmed grid, the actual logarithm quadrature approximates minus one with separate mesh, observation, and dyadic-endpoint errors.
+[GaussianRaabeOriginLogStrip](Lean/IPRADerivations/Analysis/GaussianRaabeOriginLogStrip.lean)

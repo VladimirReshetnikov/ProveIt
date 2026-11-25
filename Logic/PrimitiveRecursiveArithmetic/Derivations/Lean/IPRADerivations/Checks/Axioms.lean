@@ -28750,6 +28750,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianRaabeOriginStripAlignment.transferNumerator
 #print axioms LeanProofs.IPRA.Analysis.GaussianRaabeOriginStripAlignment.shifted_to_full
 #print axioms LeanProofs.IPRA.Analysis.GaussianRaabeOriginStripAlignment.actual_shifted_Raabe_truncation_near_full_grid_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianRaabeOriginLogStrip.lowerCost
+#print axioms LeanProofs.IPRA.Analysis.GaussianRaabeOriginLogStrip.numerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianRaabeOriginLogStrip.denominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianRaabeOriginLogStrip.quadrature_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianRaabeOriginLogStrip.actual_dyadic_truncated_logarithm_grid_near_neg_one_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianRaabeDyadicPrimitive.log_sample_bound
 #print axioms LeanProofs.IPRA.Analysis.GaussianRaabeDyadicPrimitive.cost
 #print axioms LeanProofs.IPRA.Analysis.GaussianRaabeDyadicPrimitive.primitive_bound
