@@ -2336,6 +2336,13 @@ the finite-precision interfaces remain the target.
 
 See [PROGRESS.md](PROGRESS.md) for the full repository packet scope.
 
+The difference of the two actual improper observations is within
+`16/2^p` of the literal difference of the compact quadratures on a
+common grid. The horizon `D L` is shared and the condition
+`D 2^p ≤ 2^L` absorbs both original tails. The grid can be refined
+further and the row clock increased while preserving the bound.
+[GaussianCompactPointwiseDifference](Lean/IPRADerivations/Analysis/GaussianCompactPointwiseDifference.lean), [GaussianCompactDifferenceRefinement](Lean/IPRADerivations/Analysis/GaussianCompactDifferenceRefinement.lean), [GaussianBinetLaplaceDifferencePrefix](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceDifferencePrefix.lean), [GaussianBinetLaplaceDifferenceGrid](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceDifferenceGrid.lean).
+
 The normalized discrepancy `R(z+j)−J(z+j)` uses the actual remainder and
 actual improper Binet names. Its bound decays uniformly as the internal
 shift `j` grows, with a separate dyadic observation allowance. An adjacent
