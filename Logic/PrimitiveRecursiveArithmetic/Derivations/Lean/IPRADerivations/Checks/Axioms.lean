@@ -18661,6 +18661,69 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedGoldenRatio.quadratic_identity
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedGoldenRatio.actual_named_golden_ratio_quadratic_closed
 
+/-! ### GaussianGoldenRatioRationalUniqueness -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianGoldenRatioRationalUniqueness.residual
+#print axioms LeanProofs.IPRA.Analysis.GaussianGoldenRatioRationalUniqueness.residual_distance
+#print axioms LeanProofs.IPRA.Analysis.GaussianGoldenRatioRationalUniqueness.actual_positive_quadratic_residual_distance_closed
+
+/-! ### GaussianNamedGoldenRatioUniqueness -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGoldenRatioUniqueness.quadratic
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGoldenRatioUniqueness.allowance
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGoldenRatioUniqueness.observation_distance
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGoldenRatioUniqueness.root_unique
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGoldenRatioUniqueness.equal_root_is_quadratic
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGoldenRatioUniqueness.actual_positive_named_golden_ratio_unique_closed
+
+/-! ### GaussianNamedGoldenRatioFormula -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGoldenRatioFormula.sqrtF
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGoldenRatioFormula.sumF
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGoldenRatioFormula.nameF
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGoldenRatioFormula.half
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGoldenRatioFormula.data
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGoldenRatioFormula.allowance
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGoldenRatioFormula.affine_sample
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGoldenRatioFormula.observation
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGoldenRatioFormula.original_formula
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGoldenRatioFormula.actual_independent_named_golden_ratio_formula_closed
+
+/-! ### GaussianNamedGammaHalfShift -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaHalfShift.half
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaHalfShift.negativeHalf
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaHalfShift.threeHalves
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaHalfShift.minusF
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaHalfShift.minusData
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaHalfShift.plusF
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaHalfShift.plusData
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaHalfShift.floorPoint
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaHalfShift.source
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaHalfShift.subst_minusData
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaHalfShift.subst_plusData
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaHalfShift.subst_floorPoint
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaHalfShift.half_exact
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaHalfShift.three_halves_exact
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaHalfShift.negative_half_real
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaHalfShift.add_constant_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaHalfShift.minus_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaHalfShift.minus_real
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaHalfShift.add_subtract_half
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaHalfShift.add_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaHalfShift.constant_sum
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaHalfShift.plus_associated
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaHalfShift.minus_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaHalfShift.plus_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaHalfShift.minus_half_reflects_one
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaHalfShift.three_halves_gives_minus_one
+
+/-! ### GaussianNamedGammaFirstCrossing -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaFirstCrossing.inverseClock
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaFirstCrossing.crossing
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaFirstCrossing.equalsThreeHalves
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaFirstCrossing.positive_gamma_apart
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaFirstCrossing.cancel_right
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaFirstCrossing.crossing_implies_three_halves
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaFirstCrossing.three_halves_implies_crossing
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaFirstCrossing.actual_original_named_Gamma_first_crossing_closed
+
 /-! ### GaussianGammaHalfWallisConvergence -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaHalfWallisConvergence.twiceWallis
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaHalfWallisConvergence.lowerSlack
