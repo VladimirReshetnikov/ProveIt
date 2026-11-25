@@ -1853,6 +1853,15 @@ The late difference samples have norm at most `3/4`, where the
 quadratic exponential remainder gives an internal uniqueness proof.
 [GaussianFiniteExponentialLocalUniqueness](Lean/IPRADerivations/Analysis/GaussianFiniteExponentialLocalUniqueness.lean), [GaussianNamedExponentialLocalUniqueness](Lean/IPRADerivations/Analysis/GaussianNamedExponentialLocalUniqueness.lean), [GaussianRightHalfPlaneLogarithmMercator](Lean/IPRADerivations/Analysis/GaussianRightHalfPlaneLogarithmMercator.lean).
 
+The exact difference between two finite Euler heads is the weighted
+positive-real logarithm difference minus the sum of the canonical
+residual logarithms on the intervening interval. Given a bound `R`
+for `|z|`, a row at `k ≥ 8R` differs from its linear term `z/k`
+by at most `R²/k²` plus its explicit observation error. The linear
+terms sum exactly to `z(H_{N+r}−H_N)`, which also approximates
+`z(log(N+r)−log(N))` with error `R/N` plus its observation error.
+[GaussianLogGammaEulerNormalizedDifference](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerNormalizedDifference.lean), [GaussianLogGammaEulerResidualCanonicalError](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerResidualCanonicalError.lean), [GaussianLogGammaEulerLinearInterval](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerLinearInterval.lean), [GaussianLogGammaEulerWeightedIntervalError](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerWeightedIntervalError.lean).
+
 ## Source artifacts and representation boundaries
 
 The delivered [Lean companion](../docs/proofs/analysis/gamma_ipra/lean/README.md)
