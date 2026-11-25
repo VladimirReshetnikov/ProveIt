@@ -2092,6 +2092,15 @@ to the already proved positive-rational identity. This yields equality
 of the actual named evaluators for every admissible disk bound.
 [GaussianLogGammaEulerNamedPositiveAxis](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerNamedPositiveAxis.lean).
 
+For the complex digamma comparison used in the first Binet formula,
+the actual reciprocal at any rational tag in a horizontal unit cell
+differs from the left reciprocal by at most the adjacent difference of
+positive real reciprocals. The same sharp bound holds for the literal
+finite average over the tags. For a small horizontal step the original
+canonical logarithm observations satisfy the quadratic estimate with
+the actual rational width times the left reciprocal as linear term.
+[GaussianBinetReciprocalRows](Lean/IPRADerivations/Analysis/GaussianBinetReciprocalRows.lean), [GaussianBinetReciprocalMean](Lean/IPRADerivations/Analysis/GaussianBinetReciprocalMean.lean), [GaussianBinetLogHorizontalStep](Lean/IPRADerivations/Analysis/GaussianBinetLogHorizontalStep.lean).
+
 ## Source artifacts and representation boundaries
 
 The delivered [Lean companion](../docs/proofs/analysis/gamma_ipra/lean/README.md)
