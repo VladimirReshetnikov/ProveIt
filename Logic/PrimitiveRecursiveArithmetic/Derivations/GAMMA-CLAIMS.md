@@ -2594,3 +2594,6 @@ The lifted program reads the original scaled Bose sampler at each selected ratio
 
 The actual compact quadratures on adjacent unit intervals differ by the original logarithm quadrature with error at most 8·2^-p at the common observation clock, on every positive mesh. The upper and lower unit integrals use the same physical tags.
 [GaussianRaabeUnitGridRecurrence](Lean/IPRADerivations/Analysis/GaussianRaabeUnitGridRecurrence.lean)
+
+A checked regular point evaluator uses the original positive-time Euler power and the reciprocal of the unscaled exponential minus one. The reciprocal has norm at most the inverse time at every observation. The improper integral identity remains open.
+[GaussianGammaZetaMellinIntegrand](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinIntegrand.lean)

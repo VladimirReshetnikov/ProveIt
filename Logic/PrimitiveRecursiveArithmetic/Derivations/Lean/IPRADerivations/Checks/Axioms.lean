@@ -34948,6 +34948,30 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrandName.actual_Euler_integrand_finite_observation_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrandName.actual_Euler_integrand_sample_regularity_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrandName.actual_Euler_integrand_computed_bound_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinIntegrand.exponentialF
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinIntegrand.exponentialData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinIntegrand.denominatorF
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinIntegrand.denominatorData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinIntegrand.denominatorClock
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinIntegrand.reciprocalF
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinIntegrand.reciprocalData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinIntegrand.reciprocalClock
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinIntegrand.nameF
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinIntegrand.data
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinIntegrand.factorClock
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinIntegrand.subst_exponentialData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinIntegrand.subst_denominatorData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinIntegrand.subst_reciprocalData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinIntegrand.subst_data
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinIntegrand.denominator_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinIntegrand.denominator_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinIntegrand.denominator_lower
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinIntegrand.denominator_apart
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinIntegrand.reciprocal_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinIntegrand.reciprocal_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinIntegrand.regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinIntegrand.sample_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinIntegrand.actual_gamma_zeta_mellin_integrand_regular_closed
 
 /-! ### GaussianNamedEulerIntegrand -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedEulerIntegrand.coefficientF
