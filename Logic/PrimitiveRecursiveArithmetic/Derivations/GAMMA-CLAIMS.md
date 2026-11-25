@@ -2735,3 +2735,6 @@ At a common observation clock, the actual weighted moments have the next time po
 
 The original quadratures on a shared physical grid satisfy the right Taylor comparison. The leading norm allowance is three times the squared increment times a norm bound for the original moment two orders higher. The remaining dyadic cost is proportional to physical width and independent of mesh size.
 [GaussianBinetLaplaceMomentTaylorMajorant](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentTaylorMajorant.lean), [GaussianBinetLaplaceMomentTaylorGrid](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentTaylorGrid.lean)
+
+Every certified positive rational panel has an explicit sampled modulus at independent time encodings and observation clocks. The actual ordinary affine quadrature is a regular name, proved in iPRA.
+[GaussianGammaZetaMellinReciprocalRate](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinReciprocalRate.lean), [GaussianGammaZetaMellinCompact](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinCompact.lean)
