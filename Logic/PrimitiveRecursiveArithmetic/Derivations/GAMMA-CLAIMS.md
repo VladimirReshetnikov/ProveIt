@@ -2648,3 +2648,6 @@ The original positive-window Mellin observations compare with the finite weighte
 
 The original real Stirling remainder controls actual common-clock log-Gamma and logarithm observations. Explicit schedules bound the finite shift, elementary and remainder errors after choosing the distant interval and mesh. The right side is the regular name for the logarithm primitive plus the original Stirling constant.
 [GaussianRaabeStirlingRemainder](Lean/IPRADerivations/Analysis/GaussianRaabeStirlingRemainder.lean), [GaussianRaabeRightSide](Lean/IPRADerivations/Analysis/GaussianRaabeRightSide.lean), [GaussianRaabeCofinalSchedule](Lean/IPRADerivations/Analysis/GaussianRaabeCofinalSchedule.lean)
+
+The original weighted finite Mellin rectangle can be summed first over time or first over the decay index. The transposed columns retain the actual Euler samples at positive integer multiples of the original time tags.
+[GaussianGammaZetaMellinTranspose](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinTranspose.lean)
