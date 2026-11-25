@@ -2,6 +2,10 @@
 
 Research report prepared for Vladimir Reshetnikov, 19 November 2026.
 
+The [repo-wide iPRA unification plan](../../../../UNIFICATION-PLAN.md)
+describes the shared proof interface and the checks for moving reusable
+derivations into the main library.
+
 ## Read first
 
 - `paper/report.pdf` is the complete human-readable report.
