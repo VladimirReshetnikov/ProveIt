@@ -2226,6 +2226,13 @@ bound `D 2⁻ᴸ/(12 X)` for `Re(z)=X/D`. A zero-width strip evaluates
 exactly to zero.
 [GaussianBinetLaplaceScalarMajorant](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceScalarMajorant.lean), [GaussianBinetLaplaceStripDomination](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceStripDomination.lean), [GaussianBinetLaplaceStripTail](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceStripTail.lean), [GaussianBinetLaplaceStripTailEnvelope](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceStripTailEnvelope.lean), [GaussianBinetLaplaceSharpTail](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceSharpTail.lean).
 
+The original compact quadrature is additive at a physical split.
+The prefix comparison retains the effective leading tail
+`D 2⁻ᴸ/(12 X)` at independent clocks for a prefix ending at `D L`.
+This also compares two actual exhaustion prefixes at their own
+horizons and covers equality of cutoffs.
+[GaussianBinetLaplaceExhaustion](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceExhaustion.lean), [GaussianBinetLaplaceOrderedPrefixes](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceOrderedPrefixes.lean).
+
 ## Source artifacts and representation boundaries
 
 The delivered [Lean companion](../docs/proofs/analysis/gamma_ipra/lean/README.md)
