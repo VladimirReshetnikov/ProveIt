@@ -25742,6 +25742,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianLogGammaEulerHead.sum_regular
 #print axioms LeanProofs.IPRA.Analysis.GaussianLogGammaEulerHead.regular
 #print axioms LeanProofs.IPRA.Analysis.GaussianLogGammaEulerHead.actual_log_Gamma_finite_Euler_head_regular_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianRightHalfPlaneLogarithmRescale.rescale
+#print axioms LeanProofs.IPRA.Analysis.GaussianRightHalfPlaneLogarithmRescale.split_denominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianRightHalfPlaneLogarithmRescale.split_shift
+#print axioms LeanProofs.IPRA.Analysis.GaussianRightHalfPlaneLogarithmRescale.actual_right_half_plane_logarithm_rescale_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianRightHalfPlaneLogarithmRescale.actual_right_half_plane_logarithm_shift_split_closed
 
 /-! ### RationalHarmonicInterval -/
 #print axioms LeanProofs.IPRA.Analysis.RationalHarmonicInterval.numerator

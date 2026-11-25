@@ -1817,6 +1817,13 @@ The cofinal limit and its identification with the original Gamma
 evaluator remain open.
 [GaussianNamedFiniteSumFamily](Lean/IPRADerivations/Analysis/GaussianNamedFiniteSumFamily.lean), [GaussianLogGammaEulerHead](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerHead.lean).
 
+Common positive rescaling of both numerators and the denominator
+preserves the complete logarithm name. For any internal positive
+integer `k`, the same program satisfies
+`Log(z+k) = log(k) + Log(1+z/k)` with the original sign bit and
+the exact shifted numerator and residual denominator.
+[GaussianRightHalfPlaneLogarithmRescale](Lean/IPRADerivations/Analysis/GaussianRightHalfPlaneLogarithmRescale.lean).
+
 ## Source artifacts and representation boundaries
 
 The delivered [Lean companion](../docs/proofs/analysis/gamma_ipra/lean/README.md)
