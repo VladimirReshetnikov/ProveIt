@@ -2627,3 +2627,6 @@ Each original right-tag observation is weighted by its exact powered cell width.
 
 The deviation of the actual unit log-Gamma quadrature from the logarithm primitive has an explicit finite bound under an arbitrary integer shift. The same mesh count and observation clock are used throughout the telescope.
 [GaussianRaabeUnitGridShift](Lean/IPRADerivations/Analysis/GaussianRaabeUnitGridShift.lean)
+
+At every actual logarithm observation on a large positive unit interval, the elementary Stirling term compares to a centered affine model with an explicit inverse-argument and dyadic error. This supplies the local estimate for the far-field average.
+[GaussianRaabeStirlingCell](Lean/IPRADerivations/Analysis/GaussianRaabeStirlingCell.lean)
