@@ -1710,6 +1710,17 @@ function. A supplied final approximation certificate would be a conditional
 consumer; constructing that certificate for the actual evaluator remains
 part of the task.
 
+## Positive critical point and the original named derivative
+
+The named positive digamma is the first logarithmic Euler integral times the
+certified reciprocal of the original Gamma. Its zero is equivalent to a zero
+of the first Euler derivative. The two original evaluation programs can be
+compared to literal rational evaluations read at a common late observation.
+At the selected positive offset an explicit nonzero dyadic increment meets the
+original derivative source at each precision, and its original quotient has
+leading error at most `2^{-p}` from zero.
+[GaussianNamedPositiveDigamma](Lean/IPRADerivations/Analysis/GaussianNamedPositiveDigamma.lean), [GaussianGammaPositiveNamedRationalFreeze](Lean/IPRADerivations/Analysis/GaussianGammaPositiveNamedRationalFreeze.lean), [GaussianGammaDigammaLocationGammaDerivative](Lean/IPRADerivations/Analysis/GaussianGammaDigammaLocationGammaDerivative.lean).
+
 ## Source artifacts and representation boundaries
 
 The delivered [Lean companion](../docs/proofs/analysis/gamma_ipra/lean/README.md)
