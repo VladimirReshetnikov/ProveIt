@@ -2173,6 +2173,15 @@ slope names when their weighted approximants differ quadratically at
 the common nonzero step.
 [GaussianPiRationalScaleRepresentation](Lean/IPRADerivations/Analysis/GaussianPiRationalScaleRepresentation.lean), [GaussianNamedScaledDerivativeUniqueness](Lean/IPRADerivations/Analysis/GaussianNamedScaledDerivativeUniqueness.lean), [GaussianSineProductImaginaryHyperbolic](Lean/IPRADerivations/Analysis/GaussianSineProductImaginaryHyperbolic.lean).
 
+The actual hyperbolic exponential expression has a first-order rate
+at a fixed rational base under a positive change of encoding. The
+quadratic numerator is uniform as the rational step tends to zero.
+The derivative expression equals the original named `π cosh(πx)`.
+The original sine product representation has a matching independent
+product-rule estimate whose quadratic coefficient is also uniform
+under rescaling.
+[GaussianNamedDifferenceAlgebra](Lean/IPRADerivations/Analysis/GaussianNamedDifferenceAlgebra.lean), [GaussianPiRationalScaleFactors](Lean/IPRADerivations/Analysis/GaussianPiRationalScaleFactors.lean), [GaussianSineProductImaginaryExponentialShift](Lean/IPRADerivations/Analysis/GaussianSineProductImaginaryExponentialShift.lean), [GaussianSineProductImaginaryHyperbolicDerivative](Lean/IPRADerivations/Analysis/GaussianSineProductImaginaryHyperbolicDerivative.lean), [GaussianSineProductImaginaryCoshIdentity](Lean/IPRADerivations/Analysis/GaussianSineProductImaginaryCoshIdentity.lean), [GaussianSineProductImaginaryHyperbolicProductRuleAlgebra](Lean/IPRADerivations/Analysis/GaussianSineProductImaginaryHyperbolicProductRuleAlgebra.lean), [GaussianSineProductImaginaryHyperbolicProductRule](Lean/IPRADerivations/Analysis/GaussianSineProductImaginaryHyperbolicProductRule.lean).
+
 The Binet kernel series uses the original named π in each positive row
 `2/(t²+4π²n²)`. On `0 ≤ t ≤ T` the actual finite and cofinal samples
 are bounded below by `2/(T²+100)` at positive cutoffs. The row majorant
