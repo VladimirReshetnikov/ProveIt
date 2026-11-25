@@ -1721,6 +1721,14 @@ original derivative source at each precision, and its original quotient has
 leading error at most `2^{-p}` from zero.
 [GaussianNamedPositiveDigamma](Lean/IPRADerivations/Analysis/GaussianNamedPositiveDigamma.lean), [GaussianGammaPositiveNamedRationalFreeze](Lean/IPRADerivations/Analysis/GaussianGammaPositiveNamedRationalFreeze.lean), [GaussianGammaDigammaLocationGammaDerivative](Lean/IPRADerivations/Analysis/GaussianGammaDigammaLocationGammaDerivative.lean).
 
+The recurrence gives a strict rational digamma lower slope across arbitrary
+positive encodings with a common upper bound. Its inverse bounds the exact
+input separation from independent output observations. Freezing the original
+named reciprocal and Euler derivative together transports the bound to regular
+positive real names. The original derivative vanishes precisely at the
+selected location, under arbitrary independently chosen positive margins.
+[GaussianGammaDigammaCompactSlopeLower](Lean/IPRADerivations/Analysis/GaussianGammaDigammaCompactSlopeLower.lean), [GaussianRationalLowerSlopeDistance](Lean/IPRADerivations/Analysis/GaussianRationalLowerSlopeDistance.lean), [GaussianGammaDigammaCompactInverseSlope](Lean/IPRADerivations/Analysis/GaussianGammaDigammaCompactInverseSlope.lean), [GaussianGammaPositiveNamedReciprocalFrozen](Lean/IPRADerivations/Analysis/GaussianGammaPositiveNamedReciprocalFrozen.lean), [GaussianGammaPositiveNamedDigammaFrozen](Lean/IPRADerivations/Analysis/GaussianGammaPositiveNamedDigammaFrozen.lean), [GaussianGammaPositiveNamedDigammaInjective](Lean/IPRADerivations/Analysis/GaussianGammaPositiveNamedDigammaInjective.lean), [GaussianNamedPositiveDigammaProperness](Lean/IPRADerivations/Analysis/GaussianNamedPositiveDigammaProperness.lean), [GaussianGammaPositiveNamedCritical](Lean/IPRADerivations/Analysis/GaussianGammaPositiveNamedCritical.lean).
+
 ## Source artifacts and representation boundaries
 
 The delivered [Lean companion](../docs/proofs/analysis/gamma_ipra/lean/README.md)
