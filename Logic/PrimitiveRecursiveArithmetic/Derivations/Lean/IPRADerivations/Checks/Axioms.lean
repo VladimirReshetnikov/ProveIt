@@ -19474,6 +19474,137 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianCyclicRootHalfAngle.doubled_cross
 #print axioms LeanProofs.IPRA.Analysis.GaussianCyclicRootHalfAngle.exponential_square
 
+/-! ### GaussianCyclicFullHalfAngle -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicFullHalfAngle.sineData
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicFullHalfAngle.sineSample
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicFullHalfAngle.subst_sineData
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicFullHalfAngle.subst_sineSample
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicFullHalfAngle.half_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicFullHalfAngle.doubled_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicFullHalfAngle.coefficient_double
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicFullHalfAngle.exponential_square
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicFullHalfAngle.sine_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicFullHalfAngle.actual_full_cyclic_half_angle_closed
+
+/-! ### GaussianCyclicHalfAngleAgreement -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicHalfAngleAgreement.phase
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicHalfAngleAgreement.divided_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicHalfAngleAgreement.sine_divided_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicHalfAngleAgreement.half_turn_input
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicHalfAngleAgreement.endpoint_angle_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicHalfAngleAgreement.endpoint_exp_cross
+
+/-! ### GaussianCyclicSineSupplement -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSineSupplement.productError
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSineSupplement.unitError
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSineSupplement.supplementError
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSineSupplement.supplementary_sine_distance
+
+/-! ### GaussianCyclicSinePositiveRows -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSinePositiveRows.first_half_upper
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSinePositiveRows.scalar_nonnegative_of_upper
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSinePositiveRows.first_half_nonnegative
+
+/-! ### GaussianCyclicAngleAxis -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicAngleAxis.axis_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicAngleAxis.imaginary_samples
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicAngleAxis.actual_cyclic_angle_axis_closed
+
+/-! ### GaussianCyclicChordSquare -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicChordSquare.realSine
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicChordSquare.doubledSine
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicChordSquare.chord
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicChordSquare.chordRadius
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicChordSquare.twiceSineRadius
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicChordSquare.sineSquareRadius
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicChordSquare.compareRadius
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicChordSquare.chordError
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicChordSquare.unitError
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicChordSquare.squareError
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicChordSquare.subst_realSine
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicChordSquare.subst_doubledSine
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicChordSquare.subst_chord
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicChordSquare.real_sine_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicChordSquare.doubled_sine_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicChordSquare.chord_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicChordSquare.sine_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicChordSquare.square_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicChordSquare.actual_cyclic_chord_square_closed
+
+/-! ### GaussianCyclicSineProductSquare -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSineProductSquare.data
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSineProductSquare.index
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSineProductSquare.chordBody
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSineProductSquare.sineBody
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSineProductSquare.chordF
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSineProductSquare.sineF
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSineProductSquare.radius
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSineProductSquare.normBudget
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSineProductSquare.subst_data
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSineProductSquare.subst_index
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSineProductSquare.chord_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSineProductSquare.sine_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSineProductSquare.product_agrees
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSineProductSquare.chord_rows
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSineProductSquare.norm_rows
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSineProductSquare.square_rows
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSineProductSquare.row_square_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSineProductSquare.product_square_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSineProductSquare.actual_original_cyclic_sine_product_square_closed
+
+/-! ### GaussianCyclicSineProductNormalization -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSineProductNormalization.reserve
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSineProductNormalization.fine
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSineProductNormalization.clock
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSineProductNormalization.subst_reserve
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSineProductNormalization.clock_later
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSineProductNormalization.clock_fine
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSineProductNormalization.positive_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSineProductNormalization.nonnegative_rows
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSineProductNormalization.product_real_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSineProductNormalization.actual_cyclic_sine_product_normalization_closed
+
+/-! ### GaussianCyclicOriginalSineProduct -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicOriginalSineProduct.body
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicOriginalSineProduct.originalF
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicOriginalSineProduct.doubleBody
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicOriginalSineProduct.doubledF
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicOriginalSineProduct.radius
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicOriginalSineProduct.budget
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicOriginalSineProduct.original_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicOriginalSineProduct.doubled_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicOriginalSineProduct.original_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicOriginalSineProduct.original_rows
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicOriginalSineProduct.real_rows
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicOriginalSineProduct.same_clock_rows
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicOriginalSineProduct.actual_doubled_product_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicOriginalSineProduct.actual_original_doubled_sine_product_closed
+
+/-! ### GaussianCyclicSineProductRatio -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSineProductRatio.half
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSineProductRatio.ratio
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSineProductRatio.halfPoint
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSineProductRatio.subst_half
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSineProductRatio.unscale_product
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSineProductRatio.original_product_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSineProductRatio.original_cyclic_sine_product_ratio_closed
+
+/-! ### GaussianCyclicSineProductName -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSineProductName.data
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSineProductName.observation
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSineProductName.body
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSineProductName.nameF
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSineProductName.productData
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSineProductName.subst_data
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSineProductName.subst_observation
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSineProductName.subst_budget
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSineProductName.subst_productData
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSineProductName.name_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSineProductName.envelope
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSineProductName.normalization
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSineProductName.name_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianCyclicSineProductName.actual_original_cyclic_sine_product_name_closed
+
 /-! ### GaussianCyclicHalfSineMargin -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianCyclicHalfSineMargin.sineSample
 #print axioms LeanProofs.IPRA.Analysis.GaussianCyclicHalfSineMargin.subst_sineSample
@@ -58977,6 +59108,44 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianRationalProductAlgebra.actual_pointwise_product_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianRationalProductAlgebra.actual_product_algebra_program_closed
 
+/-! ### GaussianRationalNormSquareTransport -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalNormSquareTransport.value
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalNormSquareTransport.subst_value
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalNormSquareTransport.value_congr
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalNormSquareTransport.product_value
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalNormSquareTransport.embed_value
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalNormSquareTransport.actual_squared_norm
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalNormSquareTransport.distance
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalNormSquareTransport.actual_product_norm_square_closed
+
+/-! ### GaussianRationalImaginaryChord -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalImaginaryChord.sine
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalImaginaryChord.twiceSine
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalImaginaryChord.subst_sine
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalImaginaryChord.subst_twiceSine
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalImaginaryChord.sine_recode
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalImaginaryChord.sine_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalImaginaryChord.conjugate_chord_square
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalImaginaryChord.reverse_chord_square
+
+/-! ### GaussianRationalSquareCancellation -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalSquareCancellation.difference_factorization
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalSquareCancellation.cancel_square
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalSquareCancellation.natural_sum_lower
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalSquareCancellation.actual_rational_square_cancellation_closed
+
+/-! ### GaussianRationalNonnegativeProducts -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalNonnegativeProducts.nonnegative
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalNonnegativeProducts.subst_nonnegative
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalNonnegativeProducts.congr
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalNonnegativeProducts.nonnegative_one
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalNonnegativeProducts.nonnegative_mul
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalNonnegativeProducts.nonnegative_double
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalNonnegativeProducts.nonnegativeRows
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalNonnegativeProducts.subst_nonnegativeRows
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalNonnegativeProducts.row_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalNonnegativeProducts.sample_nonnegative
+
 /-! ### GaussianRationalRectangularProduct -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianRationalRectangularProduct.rowBody
 #print axioms LeanProofs.IPRA.Analysis.GaussianRationalRectangularProduct.row
@@ -59063,6 +59232,23 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedFiniteProductName.approximant_distance
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedFiniteProductName.actual_finite_product_name_regular_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedFiniteProductName.actual_finite_product_approximant_closed
+
+/-! ### GaussianNamedFiniteProductMap -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedFiniteProductMap.applyMap
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedFiniteProductMap.mapBody
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedFiniteProductMap.mapF
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedFiniteProductMap.subst_applyMap
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedFiniteProductMap.apply_map_congr
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedFiniteProductMap.map_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedFiniteProductMap.law
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedFiniteProductMap.subst_law
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedFiniteProductMap.sample_map
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedFiniteProductMap.normF
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedFiniteProductMap.squareF
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedFiniteProductMap.norm_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedFiniteProductMap.square_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedFiniteProductMap.sample_norm
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedFiniteProductMap.sample_square
 
 /-! ### GaussianNamedFiniteProductAlgebra -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedFiniteProductAlgebra.rowProductBody
