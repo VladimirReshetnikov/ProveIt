@@ -1746,6 +1746,15 @@ computed demand supplies both derivative guards and preserves the pole
 separation of the perturbed input.
 [GaussianGammaNamedHalfPlanePoleFree](Lean/IPRADerivations/Analysis/GaussianGammaNamedHalfPlanePoleFree.lean), [GaussianGammaNamedHalfPlanePoleFreeQuotient](Lean/IPRADerivations/Analysis/GaussianGammaNamedHalfPlanePoleFreeQuotient.lean), [GaussianGammaNamedPoleFreePositiveAdmission](Lean/IPRADerivations/Analysis/GaussianGammaNamedPoleFreePositiveAdmission.lean), [GaussianGammaNamedPoleFreeNegativeSnapshot](Lean/IPRADerivations/Analysis/GaussianGammaNamedPoleFreeNegativeSnapshot.lean), [GaussianGammaNamedPoleFreeRealAdmission](Lean/IPRADerivations/Analysis/GaussianGammaNamedPoleFreeRealAdmission.lean), [GaussianGammaNamedPoleFreeNegativeChartDerivative](Lean/IPRADerivations/Analysis/GaussianGammaNamedPoleFreeNegativeChartDerivative.lean), [GaussianGammaNamedPoleFreeIncrementSource](Lean/IPRADerivations/Analysis/GaussianGammaNamedPoleFreeIncrementSource.lean), [GaussianGammaNamedRealDerivativeDemand](Lean/IPRADerivations/Analysis/GaussianGammaNamedRealDerivativeDemand.lean).
 
+The sign of the same late observation selects the derivative program,
+using a fixed branch for every subsequent observation. For an arbitrary
+regular real increment with a reciprocal certificate and the computed
+smallness bound, the actual pole-free quotient has an independent-clock
+rate to this derivative. A nonzero dyadic increment meets the demand
+at each precision. The derivative is zero exactly at the selected
+positive location or the selected offset in the computed negative chart.
+[GaussianNameBranch](Lean/IPRADerivations/Analysis/GaussianNameBranch.lean), [GaussianGammaNamedRealDerivativeStep](Lean/IPRADerivations/Analysis/GaussianGammaNamedRealDerivativeStep.lean), [GaussianGammaNamedRealDerivative](Lean/IPRADerivations/Analysis/GaussianGammaNamedRealDerivative.lean), [GaussianGammaNamedRealCritical](Lean/IPRADerivations/Analysis/GaussianGammaNamedRealCritical.lean).
+
 ## Source artifacts and representation boundaries
 
 The delivered [Lean companion](../docs/proofs/analysis/gamma_ipra/lean/README.md)
