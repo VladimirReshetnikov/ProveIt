@@ -2112,6 +2112,20 @@ shifted canonical logarithm and passing to the cofinal names proves
 right half-plane. The statement allows independent observation clocks.
 [GaussianBinetLogCellGrid](Lean/IPRADerivations/Analysis/GaussianBinetLogCellGrid.lean), [GaussianBinetLogCellComparison](Lean/IPRADerivations/Analysis/GaussianBinetLogCellComparison.lean), [GaussianBinetReciprocalPrefix](Lean/IPRADerivations/Analysis/GaussianBinetReciprocalPrefix.lean), [GaussianBinetDigammaLogBound](Lean/IPRADerivations/Analysis/GaussianBinetDigammaLogBound.lean).
 
+The complex Stirling remainder uses the actual cofinal log-Gamma, the
+canonical logarithm and the named Stirling constant. Its restriction to
+the positive real axis agrees exactly with the original real remainder,
+including the sharp absolute bound `1/(12x)`. The canonical recurrence
+gives its exact unit difference
+`R(z)−R(z+1) = (z+1/2)(Log(z+1)−Log(z))−1`.
+[GaussianBinetStirlingRemainder](Lean/IPRADerivations/Analysis/GaussianBinetStirlingRemainder.lean), [GaussianBinetStirlingRealBound](Lean/IPRADerivations/Analysis/GaussianBinetStirlingRealBound.lean), [GaussianBinetStirlingUnitDifferenceAlgebra](Lean/IPRADerivations/Analysis/GaussianBinetStirlingUnitDifferenceAlgebra.lean), [GaussianBinetStirlingUnitDifference](Lean/IPRADerivations/Analysis/GaussianBinetStirlingUnitDifference.lean).
+
+A literal signed vertical step has the checked quadratic logarithm
+estimate. The normalized first-order Stirling expression
+`ψ(z)−Log(z)+1/(2z)` has absolute bound `3/(2 Re(z))` at independent
+observations.
+[GaussianBinetLogVerticalStep](Lean/IPRADerivations/Analysis/GaussianBinetLogVerticalStep.lean), [GaussianBinetStirlingSlopeBound](Lean/IPRADerivations/Analysis/GaussianBinetStirlingSlopeBound.lean).
+
 For the imaginary-axis sine product used in the Binet kernel
 identification, the actual finite factor derivative terms give the
 literal derivative of the encoded product at any internal cutoff. The
