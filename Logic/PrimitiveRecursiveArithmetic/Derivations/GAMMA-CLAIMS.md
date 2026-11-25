@@ -2504,3 +2504,6 @@ actual Binet kernel row, up to explicit mesh, horizon and clock
 errors. Independent radii and clocks for the same positive sine
 quotient have a separate quantitative comparison.
 [GaussianBinetSineDampedTransform](Lean/IPRADerivations/Analysis/GaussianBinetSineDampedTransform.lean), [GaussianBinetSineFrozenPiTerm](Lean/IPRADerivations/Analysis/GaussianBinetSineFrozenPiTerm.lean), [GaussianBinetSineDampedAxis](Lean/IPRADerivations/Analysis/GaussianBinetSineDampedAxis.lean), [GaussianBinetSineDampedPanels](Lean/IPRADerivations/Analysis/GaussianBinetSineDampedPanels.lean), [GaussianBinetSineRealDampedPanels](Lean/IPRADerivations/Analysis/GaussianBinetSineRealDampedPanels.lean), [GaussianBinetSineDampedQuadrature](Lean/IPRADerivations/Analysis/GaussianBinetSineDampedQuadrature.lean), [GaussianBinetSineQuotientClock](Lean/IPRADerivations/Analysis/GaussianBinetSineQuotientClock.lean)
+
+A single frozen Pi clock supplies every literal reciprocal row. The truncated kernel and the actual exponential-weighted prefix compare with the cofinal kernel and the original first Binet Laplace integrand, with quantitative cutoff and clock budgets.
+[GaussianBinetKernelFrozenPrefix](Lean/IPRADerivations/Analysis/GaussianBinetKernelFrozenPrefix.lean)
