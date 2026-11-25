@@ -61195,6 +61195,89 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderCenteredBernoulli.actual_centered_Bernoulli_mesh_reflection_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderCenteredBernoulli.actual_centered_Bernoulli_mesh_endpoints_closed
 
+/-! ### GaussianStirlingAllOrderBernoulliGreen -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliGreen.atom
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliGreen.lift
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliGreen.basis
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliGreen.laplacian
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliGreen.alpha
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliGreen.beta
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliGreen.alpha_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliGreen.beta_nonnegative
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliGreen.basis_one_laplacian
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliGreen.basis_succ_laplacian
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliGreen.green
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliGreen.green_nonnegative
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliGreen.green_constant
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliGreen.green_inverse
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliGreen.solve
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliGreen.solve_nonnegative
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliGreen.solve_constant
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliGreen.solve_inverse
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliGreen.lift_at_zero
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliGreen.lift_at_one
+
+/-! ### GaussianStirlingAllOrderBernoulliPositive -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliPositive.halfCoordinate
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliPositive.oddProfile
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliPositive.coefficients
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliPositive.coefficients_nonnegative
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliPositive.odd_profile_value
+
+/-! ### GaussianStirlingAllOrderBernoulliShape -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliShape.primitive
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliShape.primitive_constant
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliShape.primitive_nonnegative
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliShape.primitive_derivative
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliShape.green_linear_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliShape.coefficients_have_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliShape.centeredShape
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliShape.centeredProfile
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliShape.centered_shape_constant
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliShape.centered_shape_nonnegative
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliShape.centered_shape_has_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliShape.centered_profile
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliShape.centered_at_rational
+
+/-! ### GaussianStirlingAllOrderBernoulliShapeClearing -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliShapeClearing.degree
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliShapeClearing.scale
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliShapeClearing.scale_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliShapeClearing.coefficient
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliShapeClearing.coefficient_value
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliShapeClearing.value
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliShapeClearing.left
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliShapeClearing.right
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliShapeClearing.cleared_identity
+
+/-! ### GaussianStirlingAllOrderBernoulliMeshOrder -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliMeshOrder.shapeInput
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliMeshOrder.shapeDen
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliMeshOrder.shape_input_monotone
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliMeshOrder.shape_den_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliMeshOrder.numerator_identity
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliMeshOrder.numerator_monotone
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliMeshOrder.sample_monotone
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliMeshOrder.sample_nonnegative_first_half
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliMeshOrder.actual_positive_coefficient_Bernoulli_mesh_order_closed
+
+/-! ### GaussianStirlingAllOrderBernoulliMeshRefinement -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliMeshRefinement.homogeneous_scale
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliMeshRefinement.numerator_scale
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliMeshRefinement.denominator_scale
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliMeshRefinement.sample_refinement
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliMeshRefinement.actual_centered_Bernoulli_grid_refinement_closed
+
+/-! ### GaussianStirlingAllOrderBernoulliMeshMargin -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliMeshMargin.difference
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliMeshMargin.difference_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliMeshMargin.coarseDen
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliMeshMargin.margin
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliMeshMargin.positive_margin
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliMeshMargin.exact_center_gap
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliMeshMargin.separated_mesh_margin
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliMeshMargin.actual_strict_Bernoulli_grid_box_margin_closed
+
 /-! ### GaussianStirlingGlobalBoundsTranslatedRate -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianStirlingGlobalBoundsTranslatedRate.incrementRate
 #print axioms LeanProofs.IPRA.Analysis.GaussianStirlingGlobalBoundsTranslatedRate.subst_incrementRate
