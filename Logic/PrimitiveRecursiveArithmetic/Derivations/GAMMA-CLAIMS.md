@@ -1729,6 +1729,23 @@ positive real names. The original derivative vanishes precisely at the
 selected location, under arbitrary independently chosen positive margins.
 [GaussianGammaDigammaCompactSlopeLower](Lean/IPRADerivations/Analysis/GaussianGammaDigammaCompactSlopeLower.lean), [GaussianRationalLowerSlopeDistance](Lean/IPRADerivations/Analysis/GaussianRationalLowerSlopeDistance.lean), [GaussianGammaDigammaCompactInverseSlope](Lean/IPRADerivations/Analysis/GaussianGammaDigammaCompactInverseSlope.lean), [GaussianGammaPositiveNamedReciprocalFrozen](Lean/IPRADerivations/Analysis/GaussianGammaPositiveNamedReciprocalFrozen.lean), [GaussianGammaPositiveNamedDigammaFrozen](Lean/IPRADerivations/Analysis/GaussianGammaPositiveNamedDigammaFrozen.lean), [GaussianGammaPositiveNamedDigammaInjective](Lean/IPRADerivations/Analysis/GaussianGammaPositiveNamedDigammaInjective.lean), [GaussianNamedPositiveDigammaProperness](Lean/IPRADerivations/Analysis/GaussianNamedPositiveDigammaProperness.lean), [GaussianGammaPositiveNamedCritical](Lean/IPRADerivations/Analysis/GaussianGammaPositiveNamedCritical.lean).
 
+The original positive digamma is equivalent to a name with exact real
+observations. The quantitative rational upper bound controls late finite
+observations whose order differs from the named input order by observation
+error. This gives exact strict monotonicity on the named positive domain.
+[GaussianGammaDigammaCompactLipschitz](Lean/IPRADerivations/Analysis/GaussianGammaDigammaCompactLipschitz.lean), [GaussianNamedPositiveDigammaReal](Lean/IPRADerivations/Analysis/GaussianNamedPositiveDigammaReal.lean), [GaussianGammaPositiveNamedDigammaOrder](Lean/IPRADerivations/Analysis/GaussianGammaPositiveNamedDigammaOrder.lean).
+
+## Real Gamma away from the poles
+
+A single late sample of a real pole-free input gives a positive margin or
+a computed negative interval chart. In the negative case the two adjacent
+pole separations certify a regular offset, and the literal affine shift
+recovers the original input. The positive and negative quotient transfers
+both preserve the caller's original reciprocal of the increment. One
+computed demand supplies both derivative guards and preserves the pole
+separation of the perturbed input.
+[GaussianGammaNamedHalfPlanePoleFree](Lean/IPRADerivations/Analysis/GaussianGammaNamedHalfPlanePoleFree.lean), [GaussianGammaNamedHalfPlanePoleFreeQuotient](Lean/IPRADerivations/Analysis/GaussianGammaNamedHalfPlanePoleFreeQuotient.lean), [GaussianGammaNamedPoleFreePositiveAdmission](Lean/IPRADerivations/Analysis/GaussianGammaNamedPoleFreePositiveAdmission.lean), [GaussianGammaNamedPoleFreeNegativeSnapshot](Lean/IPRADerivations/Analysis/GaussianGammaNamedPoleFreeNegativeSnapshot.lean), [GaussianGammaNamedPoleFreeRealAdmission](Lean/IPRADerivations/Analysis/GaussianGammaNamedPoleFreeRealAdmission.lean), [GaussianGammaNamedPoleFreeNegativeChartDerivative](Lean/IPRADerivations/Analysis/GaussianGammaNamedPoleFreeNegativeChartDerivative.lean), [GaussianGammaNamedPoleFreeIncrementSource](Lean/IPRADerivations/Analysis/GaussianGammaNamedPoleFreeIncrementSource.lean), [GaussianGammaNamedRealDerivativeDemand](Lean/IPRADerivations/Analysis/GaussianGammaNamedRealDerivativeDemand.lean).
+
 ## Source artifacts and representation boundaries
 
 The delivered [Lean companion](../docs/proofs/analysis/gamma_ipra/lean/README.md)
