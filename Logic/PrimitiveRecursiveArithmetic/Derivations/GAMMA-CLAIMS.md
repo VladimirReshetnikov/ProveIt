@@ -2651,3 +2651,6 @@ The original real Stirling remainder controls actual common-clock log-Gamma and 
 
 The original weighted finite Mellin rectangle can be summed first over time or first over the decay index. The transposed columns retain the actual Euler samples at positive integer multiples of the original time tags.
 [GaussianGammaZetaMellinTranspose](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinTranspose.lean)
+
+The original weighted compact observations have a physical width bound. In the unit time window the bound is the width itself, uniformly in the internal natural moment order.
+[GaussianBinetLaplaceMomentWidth](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentWidth.lean)

@@ -29876,6 +29876,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentHorizon.actual_weighted_Binet_strip_horizon_coherence_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentAdditivity.additivity
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentAdditivity.actual_weighted_Binet_compact_additivity_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentWidth.observation_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentWidth.quadrature_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentWidth.width_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentWidth.small_origin_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentWidth.actual_weighted_Binet_small_origin_bound_closed
 
 /-! ### GaussianEulerDecayCompactUpper -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerDecayCompactUpper.upperPoint
