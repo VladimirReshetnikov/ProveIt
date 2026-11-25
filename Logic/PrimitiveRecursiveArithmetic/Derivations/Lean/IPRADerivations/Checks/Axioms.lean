@@ -29919,6 +29919,24 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentPrefixes.prefix_regular
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentPrefixes.ordered_rate
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentPrefixes.actual_weighted_Binet_ordered_prefix_rate_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentImproper.cutoff
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentImproper.data
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentImproper.sample
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentImproper.nameF
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentImproper.subst_cutoff
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentImproper.subst_data
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentImproper.subst_sample
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentImproper.sample_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentImproper.cutoff_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentImproper.cutoff_monotone
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentImproper.cutoff_budget
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentImproper.sample_canonical
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentImproper.late_observations
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentImproper.observations
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentImproper.regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentImproper.prefix_rate
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentImproper.actual_weighted_Binet_improper_regular_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentImproper.actual_weighted_Binet_improper_prefix_rate_closed
 
 /-! ### GaussianEulerDecayCompactUpper -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerDecayCompactUpper.upperPoint
