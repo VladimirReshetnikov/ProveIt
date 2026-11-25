@@ -1905,6 +1905,12 @@ head also equals the original finite Gamma inverse on its pole-safe
 domain.
 [GaussianLogGammaEulerNormalization](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerNormalization.lean), [GaussianLogGammaEulerExponentialFiniteGamma](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerExponentialFiniteGamma.lean).
 
+The finite Euler expression for the complex slope uses the original
+integer logarithm and the literal reciprocal sum through index `N`.
+For positive indices, each reciprocal differs from the corresponding
+harmonic term by at most `R/k²` on a certified right-half-plane input.
+[GaussianLogGammaEulerReciprocalSlope](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerReciprocalSlope.lean).
+
 ## Source artifacts and representation boundaries
 
 The delivered [Lean companion](../docs/proofs/analysis/gamma_ipra/lean/README.md)
