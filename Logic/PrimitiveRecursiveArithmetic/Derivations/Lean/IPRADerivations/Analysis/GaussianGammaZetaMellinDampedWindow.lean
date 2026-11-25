@@ -115,13 +115,15 @@ private theorem sum_budget (p N G : PTm n) : Γ ⊢[PRAAx]
   unfold num
   ipra_le 𝔞(unit s)*sl first + 8*𝔞(D)*sl second
 
-theorem finite_improper_error (p N z R B A a C E T G M : PTm n)
-    (h : Γ ⊢[PRAAx] source N p z R B A a C E T G M) (hM : Γ ⊢[PRAAx] le one M) :
-    Γ ⊢[PRAAx] distanceBounded (dampedValue (clock p N T) z B M N a C E)
+/-- The shared damped grid can use any later original evaluation clock. -/
+theorem finite_improper_error_at (p q N z R B A a C E T G M : PTm n)
+    (h : Γ ⊢[PRAAx] source N p z R B A a C E T G M) (hM : Γ ⊢[PRAAx] le one M)
+    (hq : Γ ⊢[PRAAx] le (clock p N T) q) :
+    Γ ⊢[PRAAx] distanceBounded (dampedValue q z B M N a C E)
       (ap2 GaussianGammaZetaMellinDampedImproper.nameF p (GaussianGammaZetaMellinDampedImproper.data N z R B A)) (num 9) (unit p) := by
   let s := rowClock p N
   let k := cutoff p N G
-  let L := GaussianGammaZetaMellinStrip.data (clock p N T) z B M N a C E
+  let L := GaussianGammaZetaMellinStrip.data q z B M N a C E
   let D := GaussianGammaZetaMellinDampedImproper.parameters z R B A
   let Body := GaussianNamedFiniteSumFamily.body Damped GaussianGammaZetaMellinDampedImproper.dampedBody
   let U := rowNumerator s k G
@@ -140,16 +142,19 @@ theorem finite_improper_error (p N z R B A a C E T G M : PTm n)
         using hM.shift.wk
     have row := row_source_at _ _ _ _ _ _ _ _ _ _ _ _ j hs (Prf.hyp0)
     let S := rowClock (sh p) (sh N)
-    let Q := clock (sh p) (sh N) (sh T)
+    let Q := sh q
+    have hb : Δ ⊢[PRAAx] le (gridPrecision S (sh T)) Q := by
+      simpa only [Fm.shift,subst_le,Syn.shift,sh,Δ,S,Q,clock,gridPrecision,GaussianCompactRiemannName.precision,rowClock,
+        GaussianFastValueCut.subst_exponent,PTm.subst_add,LeanProofs.IPRA.PTm.subst_num] using hq.shift.wk
     let K := cutoff (sh p) (sh N) (sh G)
     have e := row_error S Q (sh M) (sh z) (sh R) (sh B) (sh A) K (succ j) (sh a) (sh C) (sh E) (sh T)
-      (sh G) row.andE₁ hMs (le_refl Q) row.andE₂.andE₂ row.andE₂.andE₁
+      (sh G) row.andE₁ hMs hb row.andE₂.andE₂ row.andE₂.andE₁
     have left := damped_index_at (Γ := Δ) j Q (sh z) (sh B) (sh M) (sh N) (sh a) (sh C) (sh E)
     have right := (term_at (Γ := Δ) Damped GaussianGammaZetaMellinDampedImproper.dampedBody j S (GaussianGammaZetaMellinDampedImproper.parameters (sh z) (sh R) (sh B) (sh A))).eqTrans
       (congrAp2 Damped (.eqRefl S) (GaussianGammaZetaMellinDampedImproper.damped_at j (sh z) (sh R) (sh B) (sh A)))
     change Δ ⊢[PRAAx] distanceBounded (inst2 dampedBody j (sh L)) (inst2 Body j (sh (pairT s D)))
       (sh U) (sh V)
-    simpa only [Body,L,D,U,V,s,k,sh,Syn.shift,clock,gridPrecision,GaussianCompactRiemannName.precision,rowClock,cutoff,
+    simpa only [Body,L,D,U,V,s,k,sh,Syn.shift,rowClock,cutoff,
       rowNumerator,rowDenominator,denominator,GaussianGammaZetaMellinStrip.subst_data,GaussianGammaZetaMellinDampedImproper.subst_parameters,
       GaussianFastValueCut.subst_exponent,GaussianCoefficientNameBounds.subst_unit,LeanProofs.IPRA.PTm.subst_num,
       subst_pairT,PTm.subst_mul,PTm.subst_add,j,Q,S,K,dampedRow] using
@@ -158,16 +163,31 @@ theorem finite_improper_error (p N z R B A a C E T G M : PTm n)
   have narrowed := distance_radius_mono _ _ _ _ (num 9) (unit p) hV (unit_positive p) (sum_budget p N G) summed
   exact distance_congr (.eqRefl _) (sample_at Damped GaussianGammaZetaMellinDampedImproper.dampedBody p N D).eqSymm (.eqRefl _) (.eqRefl _) narrowed
 
+theorem finite_improper_error (p N z R B A a C E T G M : PTm n)
+    (h : Γ ⊢[PRAAx] source N p z R B A a C E T G M) (hM : Γ ⊢[PRAAx] le one M) :
+    Γ ⊢[PRAAx] distanceBounded (dampedValue (clock p N T) z B M N a C E)
+      (ap2 GaussianGammaZetaMellinDampedImproper.nameF p (GaussianGammaZetaMellinDampedImproper.data N z R B A)) (num 9) (unit p) :=
+  finite_improper_error_at p (clock p N T) N z R B A a C E T G M h hM (le_refl _)
+
 /-- Compare the literal original strip sum to the genuine finite Dirichlet product name. -/
+theorem finite_gamma_dirichlet_error_at (p q r N z R B A a C E T G M : PTm n)
+    (h : Γ ⊢[PRAAx] source N p z R B A a C E T G M) (hM : Γ ⊢[PRAAx] le one M)
+    (hq : Γ ⊢[PRAAx] le (clock p N T) q)
+    (hz : Γ ⊢[PRAAx] GaussianEulerIntegralGammaIdentification.source z R B A) :
+    Γ ⊢[PRAAx] distanceBounded (dampedValue q z B M N a C E)
+      (ap2 GaussianGammaZetaMellinDampedImproper.gammaProductF r (GaussianGammaZetaMellinDampedImproper.gammaProductData N z R B A))
+      (num 9*(unit p*unit r)+(unit p+unit r)*unit p) (unit p*(unit p*unit r)) :=
+  GaussianReconstructionRoots.distance_triangle _ _ _ _ _ _ _ (unit_positive _)
+    (positive_product _ _ (unit_positive _) (unit_positive _))
+    (finite_improper_error_at p q N z R B A a C E T G M h hM hq)
+    (cross_at GaussianGammaZetaMellinDampedImproper.nameF GaussianGammaZetaMellinDampedImproper.gammaProductF _ _ p r (GaussianGammaZetaMellinDampedImproper.finite_gamma_dirichlet N z R B A hz))
+
 theorem finite_gamma_dirichlet_error (p r N z R B A a C E T G M : PTm n)
     (h : Γ ⊢[PRAAx] source N p z R B A a C E T G M) (hM : Γ ⊢[PRAAx] le one M)
     (hz : Γ ⊢[PRAAx] GaussianEulerIntegralGammaIdentification.source z R B A) :
     Γ ⊢[PRAAx] distanceBounded (dampedValue (clock p N T) z B M N a C E)
       (ap2 GaussianGammaZetaMellinDampedImproper.gammaProductF r (GaussianGammaZetaMellinDampedImproper.gammaProductData N z R B A))
       (num 9*(unit p*unit r)+(unit p+unit r)*unit p) (unit p*(unit p*unit r)) :=
-  GaussianReconstructionRoots.distance_triangle _ _ _ _ _ _ _ (unit_positive _)
-    (positive_product _ _ (unit_positive _) (unit_positive _))
-    (finite_improper_error p N z R B A a C E T G M h hM)
-    (cross_at GaussianGammaZetaMellinDampedImproper.nameF GaussianGammaZetaMellinDampedImproper.gammaProductF _ _ p r (GaussianGammaZetaMellinDampedImproper.finite_gamma_dirichlet N z R B A hz))
+  finite_gamma_dirichlet_error_at p (clock p N T) r N z R B A a C E T G M h hM (le_refl _) hz
 
 end LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinDampedWindow
