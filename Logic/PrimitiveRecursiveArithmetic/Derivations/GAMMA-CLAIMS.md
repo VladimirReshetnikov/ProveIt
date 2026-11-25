@@ -2702,3 +2702,6 @@ The original [1,2] quadratures at each exact shifted unit-grid tag give a regula
 
 Every nonnegative rational argument s admits an original observation bound 3s²+2/2^p against 1−s. This bound will control the Taylor remainder in the weighted Binet integral.
 [GaussianEulerDecayGlobalTaylor](Lean/IPRADerivations/Analysis/GaussianEulerDecayGlobalTaylor.lean)
+
+The actual weighted and unweighted quadratures agree in the zeroth order on every shared physical panel. The checked cofinal rates then identify the two original improper names.
+[GaussianBinetLaplaceMomentZeroOrder](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentZeroOrder.lean)
