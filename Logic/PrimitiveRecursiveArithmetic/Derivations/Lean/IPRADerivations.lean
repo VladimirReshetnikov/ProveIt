@@ -685,6 +685,7 @@ import IPRADerivations.Combinatorics.BellDobinski
 import IPRADerivations.Combinatorics.Vandermonde
 import IPRADerivations.Combinatorics.HockeyStick
 import IPRADerivations.Combinatorics.Fibonacci
+import IPRADerivations.Combinatorics.FibonacciBinet
 import IPRADerivations.Combinatorics.FibonacciCatalan
 import IPRADerivations.Combinatorics.FibonacciProgression
 import IPRADerivations.Combinatorics.FibonacciGcd
