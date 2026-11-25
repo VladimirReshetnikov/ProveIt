@@ -2792,3 +2792,6 @@ The checked integer Gamma trajectory and actual factorial readback give Gamma(2)
 
 Using the same paper cutoff for both presentations gives an independent-clock comparison through their original bracket names. Removing the dyadic error identifies the two presentations and gives the corresponding original positive Gamma uniqueness statement.
 [GaussianBohrMollerupLiteralUniqueness](Lean/IPRADerivations/Analysis/GaussianBohrMollerupLiteralUniqueness.lean)
+
+At every common finite cutoff the actual exponential rows give the literal finite reciprocal-square sum. The two checked tail rates then identify the original cofinal Dirichlet name with the original rational reciprocal-power name and transfer the Basel evaluation.
+[GaussianGammaZetaDirichletSquareFinite](Lean/IPRADerivations/Analysis/GaussianGammaZetaDirichletSquareFinite.lean), [GaussianGammaZetaDirichletSquareCofinal](Lean/IPRADerivations/Analysis/GaussianGammaZetaDirichletSquareCofinal.lean)
