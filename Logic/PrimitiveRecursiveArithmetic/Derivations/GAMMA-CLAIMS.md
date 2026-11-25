@@ -2600,3 +2600,6 @@ A checked regular point evaluator uses the original positive-time Euler power an
 
 The original real decay and cofinal Binet kernel give a positive rational floor on every bounded time interval, with an explicit observation allowance. This supplies the positive-interval estimate for the Stirling remainder moments.
 [GaussianBinetLaplaceRealFloor](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceRealFloor.lean)
+
+The literal same-clock logarithm samples give a quadratic primitive estimate on each positive rational cell. Telescoping compares the original compact logarithm quadrature to the actual endpoint difference with separate mesh and observation errors.
+[GaussianRaabeLogPrimitiveCell](Lean/IPRADerivations/Analysis/GaussianRaabeLogPrimitiveCell.lean), [GaussianRaabeLogPrimitiveGrid](Lean/IPRADerivations/Analysis/GaussianRaabeLogPrimitiveGrid.lean)
