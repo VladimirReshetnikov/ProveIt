@@ -28142,6 +28142,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetFixedHorizonPositiveMargin.multiplier_bound
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetFixedHorizonPositiveMargin.sine_error
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetFixedHorizonPositiveMargin.common_horizon_kernel_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetSineDampedRetiming.panel_distance
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetSineDampedRetiming.quadrature_distance
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetSineKernelCommonClock.value
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetSineKernelCommonClock.cost
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetSineKernelCommonClock.kernel_error
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetSineQuotientMajorant.pairDifference
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetSineQuotientMajorant.coefficient_bound_exact
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetSineQuotientMajorant.pair_bound

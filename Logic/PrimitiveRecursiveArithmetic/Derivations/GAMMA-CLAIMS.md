@@ -2555,3 +2555,6 @@ The original frozen decay observation is moved to the exact sine evaluation cloc
 
 The exact zero-start frozen matrix equals the original finite geometric row sum. Its scheduled sine replacement has error at most NT(20+2KT)/2^q for N rows on the same physical mesh and with the same frozen Pi sample.
 [GaussianBinetSecondWeightedSinePrefix](Lean/IPRADerivations/Analysis/GaussianBinetSecondWeightedSinePrefix.lean)
+
+The weighted sine column can be evaluated at the sine rectangle clock even when the antiderivative uses a later mesh clock. The comparison to the frozen kernel row separates the dyadic clock error from the endpoint error controlled by the positive frequency margin.
+[GaussianBinetSineDampedRetiming](Lean/IPRADerivations/Analysis/GaussianBinetSineDampedRetiming.lean), [GaussianBinetSineKernelCommonClock](Lean/IPRADerivations/Analysis/GaussianBinetSineKernelCommonClock.lean)
