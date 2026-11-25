@@ -2708,3 +2708,6 @@ The actual weighted and unweighted quadratures agree in the zeroth order on ever
 
 The original real Stirling remainder is cross-equivalent to the actual improper Binet moment at order zero and its canonical radius, by a universally closed iPRA proof.
 [GaussianBinetLaplaceMomentStirling](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentStirling.lean)
+
+Each original finite damped panel on a rational grid compares to its actual improper Euler row with a certified scaled endpoint allowance and a common mesh and observation clock.
+[GaussianGammaZetaMellinDampedExhaustion](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinDampedExhaustion.lean)
