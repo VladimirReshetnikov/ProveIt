@@ -2525,3 +2525,6 @@ The actual shifted exponential antiderivative uses the rate-versus-horizon inequ
 
 Both cutoff limits now give the original improper integral as a regular name on the encoded rational right half-plane. At independent clocks its comparison to the original compact interval [2^(-L-1),T] has leading error 2K/T + D/(4X·2^(L+1)) when D≤KX.
 [GaussianBinetBoseHorizonRate](Lean/IPRADerivations/Analysis/GaussianBinetBoseHorizonRate.lean), [GaussianBinetBoseImproperName](Lean/IPRADerivations/Analysis/GaussianBinetBoseImproperName.lean)
+
+The original compact product compares with the literal exponential prefix on any certified refinement. The angular precision and cutoff may be chosen before the mesh, so the same positive time tags can be used for later decay rows.
+[GaussianBinetBosePrefixQuadrature](Lean/IPRADerivations/Analysis/GaussianBinetBosePrefixQuadrature.lean), [GaussianBinetBosePrefixRefinement](Lean/IPRADerivations/Analysis/GaussianBinetBosePrefixRefinement.lean)
