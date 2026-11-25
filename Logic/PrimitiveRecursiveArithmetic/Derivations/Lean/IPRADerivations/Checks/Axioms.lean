@@ -30307,6 +30307,25 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentSignedVariation.signed_observations
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentSignedVariation.signed_rate
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentSignedVariation.actual_improper_Binet_moment_signed_variation_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentNamed.clock
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentNamed.frozenData
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentNamed.sample
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentNamed.data
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentNamed.nameF
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentNamed.subst_clock
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentNamed.subst_frozenData
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentNamed.subst_sample
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentNamed.subst_data
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentNamed.sample_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentNamed.clock_margin
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentNamed.clock_budget
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentNamed.late_observations
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentNamed.proper
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentNamed.name_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentNamed.frozen_observations
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentNamed.frozen_rate
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentNamed.actual_named_Binet_moment_regular_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentNamed.actual_named_Binet_moment_frozen_rate_closed
 
 /-! ### GaussianEulerDecayCompactUpper -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerDecayCompactUpper.upperPoint
