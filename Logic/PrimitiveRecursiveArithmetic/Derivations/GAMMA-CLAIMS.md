@@ -2558,3 +2558,6 @@ The exact zero-start frozen matrix equals the original finite geometric row sum.
 
 The weighted sine column can be evaluated at the sine rectangle clock even when the antiderivative uses a later mesh clock. The comparison to the frozen kernel row separates the dyadic clock error from the endpoint error controlled by the positive frequency margin.
 [GaussianBinetSineDampedRetiming](Lean/IPRADerivations/Analysis/GaussianBinetSineDampedRetiming.lean), [GaussianBinetSineKernelCommonClock](Lean/IPRADerivations/Analysis/GaussianBinetSineKernelCommonClock.lean)
+
+The literal frozen Pi prefix uses an explicit size-dependent tail independent of observation precision. The original positive frequency tags and integration weight read back exactly, and the literal late damping clock can be chosen independently of the Pi clock.
+[GaussianBinetKernelFrozenIndependent](Lean/IPRADerivations/Analysis/GaussianBinetKernelFrozenIndependent.lean), [GaussianBinetKernelFrequencyGrid](Lean/IPRADerivations/Analysis/GaussianBinetKernelFrequencyGrid.lean)
