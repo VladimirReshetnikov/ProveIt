@@ -35471,6 +35471,17 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinDampedExhaustion.gridCount
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinDampedExhaustion.grid_to_panel
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinDampedExhaustion.original_grid_observations
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinDampedWindow.cutoff
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinDampedWindow.rowClock
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinDampedWindow.clock
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinDampedWindow.rowSource
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinDampedWindow.source
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinDampedWindow.subst_rowSource
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinDampedWindow.subst_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinDampedWindow.rowNumerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinDampedWindow.rowDenominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinDampedWindow.finite_improper_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinDampedWindow.finite_gamma_dirichlet_error
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinOriginBound.origin_bound
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinOriginBound.actual_gamma_zeta_mellin_origin_bound_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinOriginCell.value

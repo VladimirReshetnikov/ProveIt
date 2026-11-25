@@ -2717,3 +2717,6 @@ The named expression x log x − x plus the original Stirling constant admits a 
 
 Every sufficiently late actual rational observation of the input and every sufficiently fine original log-Gamma grid at that base satisfy an independent-precision comparison with the named Raabe expression. The selected primitive-recursive schedule gives a regular name and a universally closed equivalence for each input sampler.
 [GaussianRaabeNamedGrid](Lean/IPRADerivations/Analysis/GaussianRaabeNamedGrid.lean)
+
+A certified enclosing panel, shared mesh and observation clock give an explicit independent-precision rate from the literal finite damped quadrature sum to Gamma times the original finite Dirichlet sum.
+[GaussianGammaZetaMellinDampedWindow](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinDampedWindow.lean)
