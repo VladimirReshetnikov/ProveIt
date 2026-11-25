@@ -18506,6 +18506,27 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaRationalWendelUniformLog.quarter_error
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaRationalWendelUniformLog.actual_positive_rational_Wendel_uniform_log_estimate_closed
 
+/-! ### GaussianRationalExponentialTangent -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalExponentialTangent.exponential_nonnegative
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalExponentialTangent.negative_fraction_real
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalExponentialTangent.harmonic_inverse
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalExponentialTangent.harmonic_exponential_fraction
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalExponentialTangent.fraction_one
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalExponentialTangent.sum_to_one
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalExponentialTangent.tangent_small
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalExponentialTangent.tangent_large
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalExponentialTangent.tangent
+
+/-! ### GaussianGammaRationalWendelUniform -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaRationalWendelUniform.deficitF
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaRationalWendelUniform.deficitData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaRationalWendelUniform.zero_constant
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaRationalWendelUniform.one_constant
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaRationalWendelUniform.one_le_relative_plus_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaRationalWendelUniform.estimate
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaRationalWendelUniform.uniform_estimate
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaRationalWendelUniform.actual_positive_rational_Wendel_uniform_relative_estimate_closed
+
 /-! ### GaussianGammaEulerHeadContinuity -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerHeadContinuity.input
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerHeadContinuity.gain
