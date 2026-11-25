@@ -2528,3 +2528,6 @@ Both cutoff limits now give the original improper integral as a regular name on 
 
 The original compact product compares with the literal exponential prefix on any certified refinement. The angular precision and cutoff may be chosen before the mesh, so the same positive time tags can be used for later decay rows.
 [GaussianBinetBosePrefixQuadrature](Lean/IPRADerivations/Analysis/GaussianBinetBosePrefixQuadrature.lean), [GaussianBinetBosePrefixRefinement](Lean/IPRADerivations/Analysis/GaussianBinetBosePrefixRefinement.lean)
+
+The actual arctangent-weighted quadrature expands to a finite matrix and transposes with the original time weight. Each cell retains the exact signed exponential and its original time-tag-dependent observation clock.
+[GaussianBinetBosePrefixTranspose](Lean/IPRADerivations/Analysis/GaussianBinetBosePrefixTranspose.lean)
