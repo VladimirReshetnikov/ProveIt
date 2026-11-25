@@ -2726,3 +2726,6 @@ For every internal finite prefix, the explicit widened physical panel contains t
 
 The same-clock original Mellin observation factors the finite geometric prefix. Its uniform factor two gives a prefix-count independent norm bound at each positive time and on the powered lower endpoint cells.
 [GaussianGammaZetaMellinGeometricEnvelope](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinGeometricEnvelope.lean)
+
+The original Mellin evaluator agrees exactly with the finite-strip grid. Its sampled denominator retains a positive factorial monomial after subtracting one, giving an inverse-square observation bound. The checked scalar telescoper bounds any shared-step upper panel independently of its right endpoint.,
+[GaussianGammaZetaMellinGrid](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinGrid.lean), [GaussianGammaZetaMellinUpperPoint](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinUpperPoint.lean), [GaussianGammaZetaMellinUpperGrid](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinUpperGrid.lean)
