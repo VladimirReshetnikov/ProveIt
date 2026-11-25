@@ -2149,6 +2149,15 @@ additive increments. Multiplication by the literal imaginary unit
 agrees with the actual rotation name used by the sine connection.
 [GaussianNamedExponentialLinearRate](Lean/IPRADerivations/Analysis/GaussianNamedExponentialLinearRate.lean), [GaussianNamedExponentialShiftDerivative](Lean/IPRADerivations/Analysis/GaussianNamedExponentialShiftDerivative.lean), [GaussianPiRationalScale](Lean/IPRADerivations/Analysis/GaussianPiRationalScale.lean), [GaussianNamedImaginaryProduct](Lean/IPRADerivations/Analysis/GaussianNamedImaginaryProduct.lean).
 
+At nonnegative rational `x` in a certified bounded interval, the
+actual original exponential expression for `sinh(πx)` equals the
+product of `πx` and the original cofinal sine product on the imaginary
+axis. Positive rescaling preserves the original signed π inputs
+exactly. A separate dyadic uniqueness theorem identifies two regular
+slope names when their weighted approximants differ quadratically at
+the common nonzero step.
+[GaussianPiRationalScaleRepresentation](Lean/IPRADerivations/Analysis/GaussianPiRationalScaleRepresentation.lean), [GaussianNamedScaledDerivativeUniqueness](Lean/IPRADerivations/Analysis/GaussianNamedScaledDerivativeUniqueness.lean), [GaussianSineProductImaginaryHyperbolic](Lean/IPRADerivations/Analysis/GaussianSineProductImaginaryHyperbolic.lean).
+
 The Binet kernel series uses the original named π in each positive row
 `2/(t²+4π²n²)`. On `0 ≤ t ≤ T` the actual finite and cofinal samples
 are bounded below by `2/(T²+100)` at positive cutoffs. The row majorant
