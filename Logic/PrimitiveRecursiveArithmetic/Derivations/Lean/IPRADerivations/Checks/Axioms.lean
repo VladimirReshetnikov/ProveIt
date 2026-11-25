@@ -28592,6 +28592,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetFirstFormulaNamed.original_observation
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetFirstFormulaNamed.equivalent
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetFirstFormulaNamed.actual_first_Binet_formula_named_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianRaabeUnitGridRecurrence.logGammaEvaluator
+#print axioms LeanProofs.IPRA.Analysis.GaussianRaabeUnitGridRecurrence.logEvaluator
+#print axioms LeanProofs.IPRA.Analysis.GaussianRaabeUnitGridRecurrence.log_gamma_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianRaabeUnitGridRecurrence.log_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianRaabeUnitGridRecurrence.real_recurrence
+#print axioms LeanProofs.IPRA.Analysis.GaussianRaabeUnitGridRecurrence.sample_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianRaabeUnitGridRecurrence.quadrature_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianRaabeUnitGridRecurrence.actual_real_log_Gamma_adjacent_unit_quadratures_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetKernelPi.sample
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetKernelPi.subst_sample
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetKernelPi.sample_fraction

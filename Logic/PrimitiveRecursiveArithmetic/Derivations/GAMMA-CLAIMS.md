@@ -2591,3 +2591,6 @@ The actual first and scaled second improper observations differ by at most 35·2
 
 The lifted program reads the original scaled Bose sampler at each selected rational argument. It is regular, admits an independent comparison to every sufficiently late rational observation, and is equivalent to the original named Stirling remainder on the certified right half-plane.
 [GaussianNamedRightHalfPlaneLiftTransport](Lean/IPRADerivations/Analysis/GaussianNamedRightHalfPlaneLiftTransport.lean), [GaussianBinetSecondFormulaNamed](Lean/IPRADerivations/Analysis/GaussianBinetSecondFormulaNamed.lean)
+
+The actual compact quadratures on adjacent unit intervals differ by the original logarithm quadrature with error at most 8·2^-p at the common observation clock, on every positive mesh. The upper and lower unit integrals use the same physical tags.
+[GaussianRaabeUnitGridRecurrence](Lean/IPRADerivations/Analysis/GaussianRaabeUnitGridRecurrence.lean)
