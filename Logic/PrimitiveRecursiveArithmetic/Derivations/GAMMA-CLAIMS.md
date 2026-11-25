@@ -1911,6 +1911,14 @@ For positive indices, each reciprocal differs from the corresponding
 harmonic term by at most `R/k²` on a certified right-half-plane input.
 [GaussianLogGammaEulerReciprocalSlope](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerReciprocalSlope.lean).
 
+Summing the reciprocal-row error and comparing it with the actual
+integer-logarithm increment gives an Euler slope tail of `(R+1)/N`
+at every positive cutoff. A primitive-recursive cofinal slope name
+has this convergence rate with independent observation errors on the
+signed rational right half-plane. Its identification as the derivative
+of the cofinal logarithm remains open.
+[GaussianLogGammaEulerReciprocalSlopeGap](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerReciprocalSlopeGap.lean), [GaussianLogGammaEulerReciprocalSlopeCofinal](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerReciprocalSlopeCofinal.lean).
+
 ## Source artifacts and representation boundaries
 
 The delivered [Lean companion](../docs/proofs/analysis/gamma_ipra/lean/README.md)
