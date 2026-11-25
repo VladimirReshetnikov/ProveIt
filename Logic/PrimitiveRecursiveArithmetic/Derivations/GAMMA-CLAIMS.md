@@ -2127,6 +2127,13 @@ increment expression. The resulting cofinal unit quadrature equals
 the actual remainder difference `R(z)−R(z+1)`.
 [GaussianBinetWeightedResolventGrid](Lean/IPRADerivations/Analysis/GaussianBinetWeightedResolventGrid.lean), [GaussianBinetWeightedResolvent](Lean/IPRADerivations/Analysis/GaussianBinetWeightedResolvent.lean).
 
+The actual unit grid for `(1/2−u) exp(−tu)` has a checked mesh and
+observation error against the elementary endpoint primitive. At
+positive rational `t`, the regular cofinal name equals
+`(1+exp(−t))/(2t)−(1−exp(−t))/t²`. At zero the literal left grid of
+size `N` gives `1/(2N)` and its cofinal value is zero.
+[GaussianBinetWeightedExponentialAlgebra](Lean/IPRADerivations/Analysis/GaussianBinetWeightedExponentialAlgebra.lean), [GaussianBinetWeightedExponentialGrid](Lean/IPRADerivations/Analysis/GaussianBinetWeightedExponentialGrid.lean), [GaussianBinetWeightedExponentialZero](Lean/IPRADerivations/Analysis/GaussianBinetWeightedExponentialZero.lean), [GaussianBinetWeightedExponential](Lean/IPRADerivations/Analysis/GaussianBinetWeightedExponential.lean).
+
 A literal signed vertical step has the checked quadratic logarithm
 estimate. The normalized first-order Stirling expression
 `ψ(z)−Log(z)+1/(2z)` has absolute bound `3/(2 Re(z))` at independent
