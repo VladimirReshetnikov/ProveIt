@@ -29796,6 +29796,18 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentFloor.unit_panel_floor
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentFloor.late_unit_panel_floor
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentFloor.actual_real_Binet_natural_moment_unit_panel_positive_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentCompact.weight_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentCompact.weight_distance
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentCompact.observation_rate
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentCompact.data
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentCompact.subst_data
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentCompact.wrapped_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentCompact.local_modulus_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentCompact.sampled_modulus
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentCompact.compact_input
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentCompact.regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentCompact.unit_panel_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentCompact.actual_weighted_Binet_compact_regular_closed
 
 /-! ### GaussianEulerDecayCompactUpper -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerDecayCompactUpper.upperPoint

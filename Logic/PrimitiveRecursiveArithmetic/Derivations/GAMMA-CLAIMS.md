@@ -2630,3 +2630,6 @@ The deviation of the actual unit log-Gamma quadrature from the logarithm primiti
 
 At every actual logarithm observation on a large positive unit interval, the elementary Stirling term compares to a centered affine model with an explicit inverse-argument and dyadic error. This supplies the local estimate for the far-field average.
 [GaussianRaabeStirlingCell](Lean/IPRADerivations/Analysis/GaussianRaabeStirlingCell.lean)
+
+An explicit modulus combines the original Laplace time estimate with the exact power t^j. It certifies regularity of the original weighted quadrature on arbitrary admissible compact strips and on [1,2].
+[GaussianBinetLaplaceMomentCompact](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentCompact.lean)
