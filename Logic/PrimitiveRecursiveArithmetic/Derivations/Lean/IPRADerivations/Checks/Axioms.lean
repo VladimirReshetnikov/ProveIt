@@ -35018,6 +35018,17 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinGeometric.partial_error_on_strip
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinGeometric.integrand_error_on_strip
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinGeometric.actual_gamma_zeta_mellin_geometric_prefix_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinDecayRows.clock
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinDecayRows.baseRadius
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinDecayRows.rowCost
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinDecayRows.subst_clock
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinDecayRows.subst_baseRadius
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinDecayRows.subst_rowCost
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinDecayRows.scaled_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinDecayRows.signed_stage
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinDecayRows.inverse_clock_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinDecayRows.row_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinDecayRows.prefix_row_error
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinOriginBound.origin_bound
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinOriginBound.actual_gamma_zeta_mellin_origin_bound_closed
 

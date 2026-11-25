@@ -2612,3 +2612,6 @@ The actual compact quadrature inherits the pointwise rational floor with its phy
 
 The actual unscaled reciprocal is approximated by the finite powers of the inverse of its exact positive exponential sample. On a strip with time at least 1/H the uniform error is bounded by H²/(H+N), before weighting by the original Euler power.
 [GaussianGammaZetaMellinGeometric](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinGeometric.lean)
+
+At the actual reciprocal clock, every retained geometric term compares to the original Euler decay evaluated at the positive integer multiple of time. Its inverse retiming cost has an explicit dyadic denominator.
+[GaussianGammaZetaMellinDecayRows](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinDecayRows.lean)
