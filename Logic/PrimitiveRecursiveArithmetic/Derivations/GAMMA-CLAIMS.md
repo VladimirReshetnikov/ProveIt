@@ -2549,3 +2549,6 @@ The literal first Binet Laplace strip and the shared-Pi finite kernel prefix use
 
 The original cofinal Laplace integrand has norm at most one half. Each compact left sum is bounded by half the physical width, and exact additivity gives the same leading error for the removed left interval at independent clocks.
 [GaussianBinetLaplaceLowerWindow](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceLowerWindow.lean)
+
+The original frozen decay observation is moved to the exact sine evaluation clock. Replacing the original arctangent by the scheduled sine rectangle on that same grid has error T*(20+2KT)/2^q, including the original time-zero tag.
+[GaussianBinetSecondWeightedSinePoint](Lean/IPRADerivations/Analysis/GaussianBinetSecondWeightedSinePoint.lean), [GaussianBinetSecondWeightedSineGrid](Lean/IPRADerivations/Analysis/GaussianBinetSecondWeightedSineGrid.lean)
