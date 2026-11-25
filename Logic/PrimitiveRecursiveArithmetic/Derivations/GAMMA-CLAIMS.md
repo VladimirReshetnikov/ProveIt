@@ -1950,8 +1950,18 @@ equals the relative Mercator name. The argument charts agree at unit
 ratio, and the radial and angular comparisons keep the corrected name
 inside the exponential uniqueness radius. At row `k`, the original
 logarithm increment differs from its linear reciprocal term by at most
-`4H²/(A+kD)²` plus the independent dyadic observation allowance.
+`4H²/(A+kD)²` plus its common-clock dyadic observation allowance.
 [GaussianRightHalfPlaneArgumentContinuity](Lean/IPRADerivations/Analysis/GaussianRightHalfPlaneArgumentContinuity.lean), [GaussianRightHalfPlaneRadialContinuity](Lean/IPRADerivations/Analysis/GaussianRightHalfPlaneRadialContinuity.lean), [GaussianRightHalfPlaneLogarithmIncrement](Lean/IPRADerivations/Analysis/GaussianRightHalfPlaneLogarithmIncrement.lean).
+
+At every positive internal cutoff, the original finite Euler
+logarithm increment differs from the actual displacement times the
+finite slope by at most `4H²(K²+2)/D²+25/2^p` at common precision
+`p`. Here `H` bounds the native displacement, `D` is the common
+denominator, and `K` bounds the reciprocal real margin. The observation
+allowance is uniform in the cutoff. A computed admission from the two
+real margins and the common size bound supplies the local logarithm
+guards for sufficiently small displacements.
+[GaussianLogGammaEulerTaylorRows](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerTaylorRows.lean), [GaussianLogGammaEulerTaylorFinite](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerTaylorFinite.lean), [GaussianRightHalfPlaneLogarithmIncrementMargin](Lean/IPRADerivations/Analysis/GaussianRightHalfPlaneLogarithmIncrementMargin.lean).
 
 ## Source artifacts and representation boundaries
 
