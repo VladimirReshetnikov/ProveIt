@@ -2639,3 +2639,6 @@ The centered left grid has exact mean −1/(2N). Averaging the checked elementar
 
 The exact rational weight commutes with the original horizon comparison. Weighted compact integrals agree whenever both charts cover the same physical panel, including the independently sampled row comparison.
 [GaussianBinetLaplaceMomentHorizon](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentHorizon.lean)
+
+At a common admissible horizon, the original weighted quadrature on consecutive strips agrees with the sum of their regular names.
+[GaussianBinetLaplaceMomentAdditivity](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentAdditivity.lean)
