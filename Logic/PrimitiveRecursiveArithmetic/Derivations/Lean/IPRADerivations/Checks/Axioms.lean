@@ -27463,6 +27463,25 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaInteger.digamma_integer
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaInteger.actual_original_integer_digamma_closed
 
+/-! ### GaussianGammaDigammaFiniteSum -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaFiniteSum.index
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaFiniteSum.sampleBody
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaFiniteSum.reciprocalBody
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaFiniteSum.reciprocalSum
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaFiniteSum.differenceData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaFiniteSum.budget
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaFiniteSum.subst_index
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaFiniteSum.subst_reciprocalSum
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaFiniteSum.subst_differenceData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaFiniteSum.subst_budget
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaFiniteSum.row_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaFiniteSum.reciprocal_entry
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaFiniteSum.sample_entry
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaFiniteSum.step_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaFiniteSum.finite_sample_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaFiniteSum.finite_reciprocal_sum
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaFiniteSum.actual_original_finite_digamma_reciprocal_sum_closed
+
 /-! ### GaussianGammaFallingFactorial -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaFallingFactorial.start
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaFallingFactorial.baseRadius
@@ -61485,6 +61504,51 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliMeshMargin.exact_center_gap
 #print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliMeshMargin.separated_mesh_margin
 #print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliMeshMargin.actual_strict_Bernoulli_grid_box_margin_closed
+
+/-! ### GaussianStirlingAllOrderBernoulliEnvelope -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliEnvelope.subst_sample
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliEnvelope.sample_congr
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliEnvelope.cap
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliEnvelope.subst_cap
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliEnvelope.cap_nonnegative
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliEnvelope.sample_envelope
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliEnvelope.actual_centered_Bernoulli_full_panel_envelope_closed
+
+/-! ### GaussianStirlingAllOrderKernel -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderKernel.offset
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderKernel.rowWeight
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderKernel.row
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderKernel.subst_offset
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderKernel.subst_rowWeight
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderKernel.subst_row
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderKernel.offset_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderKernel.weight_pos_den
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderKernel.weight_nonnegative
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderKernel.weight_order
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderKernel.multiply_zero_right
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderKernel.row_envelope
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderKernel.reflected_rows
+
+/-! ### GaussianStirlingAllOrderPanelTail -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderPanelTail.panelData
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderPanelTail.panelBody
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderPanelTail.panel
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderPanelTail.subst_panelData
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderPanelTail.subst_panel
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderPanelTail.panel_row_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderPanelTail.panel_envelope
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderPanelTail.tailBody
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderPanelTail.tail
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderPanelTail.subst_tail
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderPanelTail.tail_term_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderPanelTail.tail_bound
+
+/-! ### GaussianStirlingAllOrderFirstPanel -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanel.first_sample
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanel.base
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanel.splitNumerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanel.splitRow
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanel.first_kernel_decomposition
 
 /-! ### GaussianStirlingGlobalBoundsTranslatedRate -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianStirlingGlobalBoundsTranslatedRate.incrementRate
