@@ -1755,6 +1755,14 @@ at each precision. The derivative is zero exactly at the selected
 positive location or the selected offset in the computed negative chart.
 [GaussianNameBranch](Lean/IPRADerivations/Analysis/GaussianNameBranch.lean), [GaussianGammaNamedRealDerivativeStep](Lean/IPRADerivations/Analysis/GaussianGammaNamedRealDerivativeStep.lean), [GaussianGammaNamedRealDerivative](Lean/IPRADerivations/Analysis/GaussianGammaNamedRealDerivative.lean), [GaussianGammaNamedRealCritical](Lean/IPRADerivations/Analysis/GaussianGammaNamedRealCritical.lean).
 
+A shared explicit dyadic increment meets the demands at two equivalent
+inputs. Their original pole-free quotients agree under independent radius
+and pole-separation certificates. Combining the two rates gives exact
+extensionality of the derivative. On the positive domain, equality with
+the selected minimum value excludes every finite apartness witness,
+so the input name is equivalent to the selected minimizer.
+[GaussianNamedDyadicIncrement](Lean/IPRADerivations/Analysis/GaussianNamedDyadicIncrement.lean), [GaussianGammaNamedPoleFreeQuotientProperness](Lean/IPRADerivations/Analysis/GaussianGammaNamedPoleFreeQuotientProperness.lean), [GaussianGammaNamedRealDerivativeProperness](Lean/IPRADerivations/Analysis/GaussianGammaNamedRealDerivativeProperness.lean), [GaussianGammaMinimumGlobalUniqueness](Lean/IPRADerivations/Analysis/GaussianGammaMinimumGlobalUniqueness.lean).
+
 ## Source artifacts and representation boundaries
 
 The delivered [Lean companion](../docs/proofs/analysis/gamma_ipra/lean/README.md)
