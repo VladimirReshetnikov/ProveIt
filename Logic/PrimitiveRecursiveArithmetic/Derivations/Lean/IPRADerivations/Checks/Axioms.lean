@@ -61857,6 +61857,67 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelError.normalized_panel
 #print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelError.panel_error
 
+/-! ### GaussianStirlingAllOrderFirstPanelReadback -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelReadback.upper_of_add_order
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelReadback.halve_reference
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelReadback.halfPanel
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelReadback.harmonic_distance
+
+/-! ### GaussianStirlingAllOrderFirstPanelNamed -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelNamed.logClock
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelNamed.mesh
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelNamed.radiusCoefficient
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelNamed.mesh_large
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelNamed.observation_distance
+
+/-! ### GaussianStirlingAllOrderFirstPanelName -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelName.clock
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelName.body
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelName.data
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelName.nameF
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelName.subst_clock
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelName.subst_body
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelName.subst_data
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelName.name_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelName.point_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelName.name_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelName.point_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelName.name_regular
+
+/-! ### GaussianStirlingAllOrderFirstPanelFiniteSum -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelFiniteSum.row
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelFiniteSum.rowBody
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelFiniteSum.subst_row
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelFiniteSum.row_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelFiniteSum.raw
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelFiniteSum.rawF
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelFiniteSum.nameF
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelFiniteSum.data
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelFiniteSum.subst_raw
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelFiniteSum.subst_data
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelFiniteSum.raw_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelFiniteSum.distance_to_telescope
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelFiniteSum.raw_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelFiniteSum.name_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelFiniteSum.telescope_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelFiniteSum.endpoint_cross
+
+/-! ### GaussianStirlingAllOrderFirstPanelImproper -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelImproper.raw
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelImproper.rawF
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelImproper.rawData
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelImproper.nameF
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelImproper.data
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelImproper.subst_raw
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelImproper.subst_rawData
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelImproper.subst_data
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelImproper.raw_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelImproper.cutoff_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelImproper.raw_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelImproper.name_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelImproper.original_improper_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelImproper.actual_first_periodic_improper_remainder_closed
+
 /-! ### RationalReverseChebyshevCell -/
 #print axioms LeanProofs.IPRA.Analysis.RationalReverseChebyshevCell.difference
 #print axioms LeanProofs.IPRA.Analysis.RationalReverseChebyshevCell.restore
