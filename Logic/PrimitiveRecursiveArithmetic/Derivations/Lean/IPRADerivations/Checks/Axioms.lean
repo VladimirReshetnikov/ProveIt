@@ -62164,6 +62164,85 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.RationalReverseChebyshevCell.rectangle_margin
 #print axioms LeanProofs.IPRA.Analysis.RationalReverseChebyshevCell.reverse_Chebyshev_cell_margin_closed
 
+/-! ### RationalSumConstants -/
+#print axioms LeanProofs.IPRA.Analysis.RationalSumConstants.constantBody
+#print axioms LeanProofs.IPRA.Analysis.RationalSumConstants.term_constant
+#print axioms LeanProofs.IPRA.Analysis.RationalSumConstants.multiply_one_right
+#print axioms LeanProofs.IPRA.Analysis.RationalSumConstants.count_add
+#print axioms LeanProofs.IPRA.Analysis.RationalSumConstants.sum_constant
+
+/-! ### RationalCrossedProductSums -/
+#print axioms LeanProofs.IPRA.Analysis.RationalCrossedProductSums.productBody
+#print axioms LeanProofs.IPRA.Analysis.RationalCrossedProductSums.product_at
+#print axioms LeanProofs.IPRA.Analysis.RationalCrossedProductSums.cell
+#print axioms LeanProofs.IPRA.Analysis.RationalCrossedProductSums.subst_cell
+#print axioms LeanProofs.IPRA.Analysis.RationalCrossedProductSums.rowCells
+#print axioms LeanProofs.IPRA.Analysis.RationalCrossedProductSums.subst_rowCells
+#print axioms LeanProofs.IPRA.Analysis.RationalCrossedProductSums.rectangleCells
+#print axioms LeanProofs.IPRA.Analysis.RationalCrossedProductSums.subst_rectangleCells
+#print axioms LeanProofs.IPRA.Analysis.RationalCrossedProductSums.row_order
+#print axioms LeanProofs.IPRA.Analysis.RationalCrossedProductSums.rectangle_order
+#print axioms LeanProofs.IPRA.Analysis.RationalCrossedProductSums.finite_crossed_product_rectangle_closed
+
+/-! ### RationalSumSegments -/
+#print axioms LeanProofs.IPRA.Analysis.RationalSumSegments.sum_congr
+#print axioms LeanProofs.IPRA.Analysis.RationalSumSegments.splitLaw
+#print axioms LeanProofs.IPRA.Analysis.RationalSumSegments.subst_splitLaw
+#print axioms LeanProofs.IPRA.Analysis.RationalSumSegments.split
+#print axioms LeanProofs.IPRA.Analysis.RationalSumSegments.actual_rational_segment_split_closed
+
+/-! ### GaussianStirlingAllOrderCrossedCells -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderCrossedCells.weak_cell
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderCrossedCells.strong_cell
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderCrossedCells.segmentData
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderCrossedCells.bernoulliBody
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderCrossedCells.reflectedBody
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderCrossedCells.subst_segmentData
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderCrossedCells.subst_sampleAt
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderCrossedCells.subst_weightAt
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderCrossedCells.bernoulli_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderCrossedCells.reflected_at
+
+/-! ### GaussianStirlingAllOrderCrossedRectangles -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderCrossedRectangles.subst_boxMargin
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderCrossedRectangles.gridCells
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderCrossedRectangles.weak_cells
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderCrossedRectangles.box_cells
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderCrossedRectangles.bernoulliSum
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderCrossedRectangles.reflectedSum
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderCrossedRectangles.pairedSum
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderCrossedRectangles.comparison
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderCrossedRectangles.weak_rectangle
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderCrossedRectangles.strict_rectangle
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderCrossedRectangles.actual_reflected_grid_strict_rectangle_closed
+
+/-! ### GaussianStirlingAllOrderCrossedSegments -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderCrossedSegments.bernoulli_split
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderCrossedSegments.reflected_split
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderCrossedSegments.paired_split
+
+/-! ### GaussianStirlingAllOrderHalfGridMargin -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderHalfGridMargin.leftSide
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderHalfGridMargin.rightSide
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderHalfGridMargin.withMargin
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderHalfGridMargin.swap_axes
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderHalfGridMargin.merge_first
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderHalfGridMargin.merge_second
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderHalfGridMargin.change_indices
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderHalfGridMargin.half_grid_margin
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderHalfGridMargin.actual_reflected_half_grid_margin_closed
+
+/-! ### GaussianStirlingAllOrderHalfGridMean -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderHalfGridMean.margin
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderHalfGridMean.inequality
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderHalfGridMean.normalized_margin_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderHalfGridMean.half_grid_mean
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderHalfGridMean.actual_reflected_half_grid_mean_closed
+
+/-! ### GaussianStirlingAllOrderPairedReadback -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderPairedReadback.original_paired_term
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderPairedReadback.actual_original_reflected_panel_product_closed
+
 /-! ### GaussianStirlingAllOrderBoxProductGap -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBoxProductGap.sampleAt
 #print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBoxProductGap.weightAt
