@@ -2510,3 +2510,6 @@ A single frozen Pi clock supplies every literal reciprocal row. The truncated ke
 
 Exact compact rescaling and additivity compare the original intervals whose lower endpoints are dyadic. The omitted strip has norm at most its width divided by four times the real part. The resulting regular name integrates the original product from zero to each positive integer horizon.
 [GaussianBinetBoseCompactAlignment](Lean/IPRADerivations/Analysis/GaussianBinetBoseCompactAlignment.lean), [GaussianBinetBoseOriginExhaustion](Lean/IPRADerivations/Analysis/GaussianBinetBoseOriginExhaustion.lean), [GaussianBinetBoseOriginName](Lean/IPRADerivations/Analysis/GaussianBinetBoseOriginName.lean)
+
+The original exponential-minus-one observation retains a cubic Taylor lower bound. The arctangent times the original reciprocal is bounded by K/t² when D≤KX. Its actual compact integral on [A/E,(A+C)/E] is bounded by 2KE/A with an explicit sample allowance, independently of the upper endpoint.
+[GaussianBinetBoseCubicGap](Lean/IPRADerivations/Analysis/GaussianBinetBoseCubicGap.lean), [GaussianBinetBoseFarBound](Lean/IPRADerivations/Analysis/GaussianBinetBoseFarBound.lean), [GaussianBinetBoseFarQuadrature](Lean/IPRADerivations/Analysis/GaussianBinetBoseFarQuadrature.lean)
