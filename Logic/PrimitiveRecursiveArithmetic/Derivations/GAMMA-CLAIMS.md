@@ -2732,3 +2732,6 @@ The original Mellin evaluator agrees exactly with the finite-strip grid. Its sam
 
 At a common observation clock, the actual weighted moments have the next time power as the exact linear coefficient. The quadratic majorant is the nonnegative frozen moment two orders higher, plus a uniform dyadic observation allowance.
 [GaussianEulerDecayGlobalIncrement](Lean/IPRADerivations/Analysis/GaussianEulerDecayGlobalIncrement.lean), [GaussianBinetLaplaceMomentFrozenRows](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentFrozenRows.lean), [GaussianBinetLaplaceMomentTaylorRows](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentTaylorRows.lean)
+
+The original quadratures on a shared physical grid satisfy the right Taylor comparison. The leading norm allowance is three times the squared increment times a norm bound for the original moment two orders higher. The remaining dyadic cost is proportional to physical width and independent of mesh size.
+[GaussianBinetLaplaceMomentTaylorMajorant](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentTaylorMajorant.lean), [GaussianBinetLaplaceMomentTaylorGrid](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentTaylorGrid.lean)
