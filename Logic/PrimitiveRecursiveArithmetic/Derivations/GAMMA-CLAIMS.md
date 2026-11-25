@@ -2367,3 +2367,11 @@ conditional derives the first Binet identity from the hypothesis that the
 actual unit difference of `J` equals the weighted-resolvent quadrature
 along the entire translated family.
 [GaussianNamedRecurrencePinning](Lean/IPRADerivations/Analysis/GaussianNamedRecurrencePinning.lean), [GaussianNamedDifferenceZero](Lean/IPRADerivations/Analysis/GaussianNamedDifferenceZero.lean), [GaussianBinetFirstFormulaDecay](Lean/IPRADerivations/Analysis/GaussianBinetFirstFormulaDecay.lean), [GaussianBinetFirstFormulaPinning](Lean/IPRADerivations/Analysis/GaussianBinetFirstFormulaPinning.lean).
+
+For the second Binet formula, the original rational integrand
+`z/(z²+u²)` equals the average of the two resolvents at `z±iu` on the
+right half-plane. The admitted poles have the same positive-real
+margin. The resulting original compact arctangent quadrature is
+regular, and every actual observation at time `t` has norm bounded
+by `t/Re(z)`.
+[GaussianBinetArctangentResolvent](Lean/IPRADerivations/Analysis/GaussianBinetArctangentResolvent.lean), [GaussianBinetArctangentResolventRate](Lean/IPRADerivations/Analysis/GaussianBinetArctangentResolventRate.lean), [GaussianBinetArctangentQuadrature](Lean/IPRADerivations/Analysis/GaussianBinetArctangentQuadrature.lean), [GaussianBinetArctangentQuadratureBound](Lean/IPRADerivations/Analysis/GaussianBinetArctangentQuadratureBound.lean).
