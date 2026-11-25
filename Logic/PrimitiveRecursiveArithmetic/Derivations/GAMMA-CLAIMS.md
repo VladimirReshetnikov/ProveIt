@@ -2423,3 +2423,10 @@ original arctangent times this reciprocal has norm at most
 inverse pair `xy = 1`, the literal geometric power sum has the
 cleared finite identity `(x−1) Σ_{j=1}^N y^j = 1−y^N`.
 [GaussianExponentialAffineLower](Lean/IPRADerivations/Analysis/GaussianExponentialAffineLower.lean), [GaussianBinetBoseExponential](Lean/IPRADerivations/Analysis/GaussianBinetBoseExponential.lean), [GaussianBinetBoseDenominator](Lean/IPRADerivations/Analysis/GaussianBinetBoseDenominator.lean), [GaussianBinetBoseIntegrandBound](Lean/IPRADerivations/Analysis/GaussianBinetBoseIntegrandBound.lean), [GaussianRationalInverseGeometric](Lean/IPRADerivations/Analysis/GaussianRationalInverseGeometric.lean).
+
+The original finite cosine rectangle equals the transposed sum with
+both literal mesh weights. The transposed entries have an explicit
+comparison to the original damping multiplied by the mean of the
+two imaginary exponentials. Exact signed rational rescaling binds
+their frequency charts at the actual grid tags.
+[GaussianRationalQuadratureMean](Lean/IPRADerivations/Analysis/GaussianRationalQuadratureMean.lean), [GaussianBinetOscillatoryRectangleTranspose](Lean/IPRADerivations/Analysis/GaussianBinetOscillatoryRectangleTranspose.lean), [GaussianBinetOscillatoryMatrixCell](Lean/IPRADerivations/Analysis/GaussianBinetOscillatoryMatrixCell.lean), [GaussianBinetImaginaryExponentialScale](Lean/IPRADerivations/Analysis/GaussianBinetImaginaryExponentialScale.lean).
