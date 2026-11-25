@@ -1537,8 +1537,7 @@ that these physical source panels eventually contain every fixed positive
 rational interval. [GaussianEulerPowerScalingImproper](Lean/IPRADerivations/Analysis/GaussianEulerPowerScalingImproper.lean) compiles the ordinary panel observations
 into the original cofinal improper sampler and derives its equality with
 `(1/r) c^(-z/r) Γ(z/r)` for every positive rational `c,r` under the
-original encoded right-half-plane assumptions. The extension to arbitrary
-positive real parameter names remains open.
+original encoded right-half-plane assumptions.
 [GaussianNamedPositiveReciprocal](Lean/IPRADerivations/Analysis/GaussianNamedPositiveReciprocal.lean) gives a regular name by taking exact reciprocals of
 literal retimed observations. [GaussianEulerNamedPowerScalingParameter](Lean/IPRADerivations/Analysis/GaussianEulerNamedPowerScalingParameter.lean) derives the positive
 half-plane margin at the named argument `z/r`, and [GaussianEulerNamedPowerScalingFormula](Lean/IPRADerivations/Analysis/GaussianEulerNamedPowerScalingFormula.lean) constructs
@@ -1555,6 +1554,14 @@ physical panel, and [GaussianNamedDampingPowerCompactAdditivity](Lean/IPRADeriva
 gives the independent rate for the actual Gamma at the named and exact
 payload rational arguments. [GaussianEulerPowerChartExponentOrder](Lean/IPRADerivations/Analysis/GaussianEulerPowerChartExponentOrder.lean) orders the rational charts by
 exponent on either side of one using their original observations.
+[GaussianEulerPowerChartUniformRounded](Lean/IPRADerivations/Analysis/GaussianEulerPowerChartUniformRounded.lean) and [GaussianEulerPowerScalingUniformObservation](Lean/IPRADerivations/Analysis/GaussianEulerPowerScalingUniformObservation.lean) choose physical endpoints before either parameter
+is frozen, then compare the original enclosing rational quadrature. [GaussianEulerPowerChartUniformExhaustion](Lean/IPRADerivations/Analysis/GaussianEulerPowerChartUniformExhaustion.lean)
+proves cofinality of those physical panels. [GaussianEulerNamedPowerScalingFormulaFrozen](Lean/IPRADerivations/Analysis/GaussianEulerNamedPowerScalingFormulaFrozen.lean) gives the independent
+rate for the full named Gamma product. [GaussianEulerNamedPowerScalingImproper](Lean/IPRADerivations/Analysis/GaussianEulerNamedPowerScalingImproper.lean) identifies the actual
+cofinal ordinary quadrature with that product for all certified positive
+names. [GaussianNamedDampingPowerLowerCutoff](Lean/IPRADerivations/Analysis/GaussianNamedDampingPowerLowerCutoff.lean) gives the independent compact lower-cutoff bound on the
+original root grid, including zero width. [GaussianNamedDampingPowerReciprocalTail](Lean/IPRADerivations/Analysis/GaussianNamedDampingPowerReciprocalTail.lean) checks a finite
+affine-grid reciprocal-square comparison.
 [GaussianBetaSharpPartition](Lean/IPRADerivations/Analysis/GaussianBetaSharpPartition.lean)
 locates one and the two degree endpoints on the same original dyadic
 grid and identifies the original half-time decay at the split with
