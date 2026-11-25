@@ -2690,3 +2690,6 @@ Every moment on the positive real chart has a named positive lower bound, witnes
 
 The actual left sums on [x,x+1] give a regular name at every encoded positive rational x and are independently-precision cross-equivalent to x log x − x plus the original Stirling constant. The comparison is universally closed in iPRA.
 [GaussianRaabeFormula](Lean/IPRADerivations/Analysis/GaussianRaabeFormula.lean)
+
+An internally finite sum of positively scaled improper Euler values is independently-precision equivalent to the original Gamma name times the corresponding finite Dirichlet sum. This proves the finite factorization on the original scaled evaluators before the infinite limit.
+[GaussianNamedFiniteSumFamilyMultiply](Lean/IPRADerivations/Analysis/GaussianNamedFiniteSumFamilyMultiply.lean), [GaussianGammaZetaMellinDampedImproper](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinDampedImproper.lean)
