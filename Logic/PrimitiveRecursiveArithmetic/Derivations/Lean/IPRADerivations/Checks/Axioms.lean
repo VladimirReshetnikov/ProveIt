@@ -30031,6 +30031,8 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentZeroOrder.observation_zero
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentZeroOrder.compact_equivalent
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentZeroOrder.improper_equivalent
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentStirling.stirling_equivalent
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentStirling.actual_zeroth_Binet_moment_original_Stirling_closed
 
 /-! ### GaussianEulerDecayCompactUpper -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerDecayCompactUpper.upperPoint

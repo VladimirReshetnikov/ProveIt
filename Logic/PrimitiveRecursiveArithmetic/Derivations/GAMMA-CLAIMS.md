@@ -2705,3 +2705,6 @@ Every nonnegative rational argument s admits an original observation bound 3s²+
 
 The actual weighted and unweighted quadratures agree in the zeroth order on every shared physical panel. The checked cofinal rates then identify the two original improper names.
 [GaussianBinetLaplaceMomentZeroOrder](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentZeroOrder.lean)
+
+The original real Stirling remainder is cross-equivalent to the actual improper Binet moment at order zero and its canonical radius, by a universally closed iPRA proof.
+[GaussianBinetLaplaceMomentStirling](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentStirling.lean)
