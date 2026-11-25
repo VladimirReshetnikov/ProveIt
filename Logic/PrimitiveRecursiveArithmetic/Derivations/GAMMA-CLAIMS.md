@@ -1944,6 +1944,15 @@ original reciprocal sum. The squared row errors have a uniform finite
 majorant, with the observation errors counted explicitly.
 [GaussianLogGammaEulerPositiveAxis](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerPositiveAxis.lean), [GaussianLogGammaEulerLinearSlope](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerLinearSlope.lean), [GaussianLogGammaEulerTaylorMajorant](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerTaylorMajorant.lean).
 
+For two sufficiently close signed rational inputs on the certified
+right half-plane, the actual difference of their canonical logarithms
+equals the relative Mercator name. The argument charts agree at unit
+ratio, and the radial and angular comparisons keep the corrected name
+inside the exponential uniqueness radius. At row `k`, the original
+logarithm increment differs from its linear reciprocal term by at most
+`4H²/(A+kD)²` plus the independent dyadic observation allowance.
+[GaussianRightHalfPlaneArgumentContinuity](Lean/IPRADerivations/Analysis/GaussianRightHalfPlaneArgumentContinuity.lean), [GaussianRightHalfPlaneRadialContinuity](Lean/IPRADerivations/Analysis/GaussianRightHalfPlaneRadialContinuity.lean), [GaussianRightHalfPlaneLogarithmIncrement](Lean/IPRADerivations/Analysis/GaussianRightHalfPlaneLogarithmIncrement.lean).
+
 ## Source artifacts and representation boundaries
 
 The delivered [Lean companion](../docs/proofs/analysis/gamma_ipra/lean/README.md)
