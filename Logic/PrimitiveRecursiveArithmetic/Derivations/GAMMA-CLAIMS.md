@@ -2747,3 +2747,6 @@ The actual inverse-power row equals the reciprocal-time original power times its
 
 The actual same-clock shifted improper observation compares to the original base minus the exact increment times the successor moment. The quadratic allowance uses a uniform norm bound on the actual higher moment and the remaining term is 10/2^p.
 [GaussianBinetLaplaceMomentImproperBound](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentImproperBound.lean), [GaussianBinetLaplaceMomentImproperTaylor](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentImproperTaylor.lean)
+
+The original Dirichlet sums converge at the certified margin with the explicit dyadic-block rate for every sufficiently long finite prefix. The original normalized Gamma product has the corresponding independent-observation rate.
+[GaussianGammaZetaDirichletBlock](Lean/IPRADerivations/Analysis/GaussianGammaZetaDirichletBlock.lean), [GaussianGammaZetaDirichletTail](Lean/IPRADerivations/Analysis/GaussianGammaZetaDirichletTail.lean), [GaussianGammaZetaDirichletFiniteRate](Lean/IPRADerivations/Analysis/GaussianGammaZetaDirichletFiniteRate.lean), [GaussianGammaZetaDirichletCofinal](Lean/IPRADerivations/Analysis/GaussianGammaZetaDirichletCofinal.lean), [GaussianGammaZetaDirichletProduct](Lean/IPRADerivations/Analysis/GaussianGammaZetaDirichletProduct.lean)
