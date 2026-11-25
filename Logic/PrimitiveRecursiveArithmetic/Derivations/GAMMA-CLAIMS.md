@@ -1743,6 +1743,14 @@ for the original input. The comparison rate removes the observation
 errors from both digamma terms and the reciprocal.
 [GaussianGammaPositiveNamedDigammaRecurrenceInput](Lean/IPRADerivations/Analysis/GaussianGammaPositiveNamedDigammaRecurrenceInput.lean), [GaussianGammaPositiveNamedDigammaRecurrence](Lean/IPRADerivations/Analysis/GaussianGammaPositiveNamedDigammaRecurrence.lean).
 
+For every internal derivative order `m ≥ 1`, the literal signed
+polygamma tail on a certified Gaussian-rational disk satisfies the
+C30 bound `(m−1)! · 2^(m+1) / N^m`. The cutoff meets `N ≥ 2R` and
+`N ≥ 1` and the finite last index is arbitrary. The proof computes
+the reciprocal powers of the actual translated numerator and keeps
+their original signed factorial scaling.
+[GaussianGammaPolygammaTailRows](Lean/IPRADerivations/Analysis/GaussianGammaPolygammaTailRows.lean), [GaussianGammaPolygammaTail](Lean/IPRADerivations/Analysis/GaussianGammaPolygammaTail.lean).
+
 ## Real Gamma away from the poles
 
 A single late sample of a real pole-free input gives a positive margin or
