@@ -2546,3 +2546,6 @@ The original removable column and an explicit sine quotient bound control the di
 
 The literal first Binet Laplace strip and the shared-Pi finite kernel prefix use exactly the same physical tags and left weights. Their explicit cutoff bound is 14 times the physical width divided by 2^p.
 [GaussianBinetKernelFrozenStrip](Lean/IPRADerivations/Analysis/GaussianBinetKernelFrozenStrip.lean)
+
+The original cofinal Laplace integrand has norm at most one half. Each compact left sum is bounded by half the physical width, and exact additivity gives the same leading error for the removed left interval at independent clocks.
+[GaussianBinetLaplaceLowerWindow](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceLowerWindow.lean)

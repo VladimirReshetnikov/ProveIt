@@ -28490,6 +28490,9 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetKernelFrozenStrip.evaluator_at
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetKernelFrozenStrip.row_at
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetKernelFrozenStrip.quadrature_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceLowerWindow.quadrature_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceLowerWindow.name_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceLowerWindow.left_gap_rate
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceStrip.integrandF
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceStrip.integrandData
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceStrip.source
