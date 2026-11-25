@@ -2467,3 +2467,11 @@ rate is uniform in the encoded rational tag and therefore works
 across every later time mesh. The product rate also applies to
 the original arctangent-weighted rows.
 [GaussianBinetSecondDecayPiBridge](Lean/IPRADerivations/Analysis/GaussianBinetSecondDecayPiBridge.lean).
+
+At each positive rational time, the corresponding original signed
+exponential rows approximate the powers of the actual geometric ratio.
+Their literal finite sums give a regular cofinal evaluator. Its normalized
+samples read back the exact finite prefix and differ from the reciprocal
+of the original Bose denominator by at most `6/2^p`. The object theory
+proves equivalence of the two names.
+[GaussianBinetBoseIntegerScale](Lean/IPRADerivations/Analysis/GaussianBinetBoseIntegerScale.lean), [GaussianBinetBoseSeriesRows](Lean/IPRADerivations/Analysis/GaussianBinetBoseSeriesRows.lean), [GaussianBinetBoseLiteralPrefix](Lean/IPRADerivations/Analysis/GaussianBinetBoseLiteralPrefix.lean), [GaussianBinetBoseLiteralCofinal](Lean/IPRADerivations/Analysis/GaussianBinetBoseLiteralCofinal.lean)
