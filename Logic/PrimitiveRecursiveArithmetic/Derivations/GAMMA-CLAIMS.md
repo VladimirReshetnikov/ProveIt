@@ -2101,6 +2101,17 @@ canonical logarithm observations satisfy the quadratic estimate with
 the actual rational width times the left reciprocal as linear term.
 [GaussianBinetReciprocalRows](Lean/IPRADerivations/Analysis/GaussianBinetReciprocalRows.lean), [GaussianBinetReciprocalMean](Lean/IPRADerivations/Analysis/GaussianBinetReciprocalMean.lean), [GaussianBinetLogHorizontalStep](Lean/IPRADerivations/Analysis/GaussianBinetLogHorizontalStep.lean).
 
+At a common horizontal unit mesh, the actual logarithm increment
+approaches the literal reciprocal average. At any internal prefix
+length `N`, quantifier-free induction compares the logarithm
+increment to the original reciprocal sum, with leading bound
+`1/Re(z) − 1/(Re(z)+N)`. The finite Euler slope shares the same
+reciprocal prefix. Comparing its terminal real logarithm to the
+shifted canonical logarithm and passing to the cofinal names proves
+`|ψ(z)−Log(z)| ≤ 1/Re(z)` for every signed rational chart in the
+right half-plane. The statement allows independent observation clocks.
+[GaussianBinetLogCellGrid](Lean/IPRADerivations/Analysis/GaussianBinetLogCellGrid.lean), [GaussianBinetLogCellComparison](Lean/IPRADerivations/Analysis/GaussianBinetLogCellComparison.lean), [GaussianBinetReciprocalPrefix](Lean/IPRADerivations/Analysis/GaussianBinetReciprocalPrefix.lean), [GaussianBinetDigammaLogBound](Lean/IPRADerivations/Analysis/GaussianBinetDigammaLogBound.lean).
+
 For the imaginary-axis sine product used in the Binet kernel
 identification, the actual finite factor derivative terms give the
 literal derivative of the encoded product at any internal cutoff. The
