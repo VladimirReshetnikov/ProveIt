@@ -18942,6 +18942,56 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaGaussPositiveReference.positive_root
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaGaussPositiveReference.actual_Gauss_reference_positive_root_closed
 
+/-! ### GaussianRationalNonnegativeFractions -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalNonnegativeFractions.numerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalNonnegativeFractions.denominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalNonnegativeFractions.subst_numerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalNonnegativeFractions.subst_denominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalNonnegativeFractions.denominator_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalNonnegativeFractions.fraction_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalNonnegativeFractions.fraction_nonnegative
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalNonnegativeFractions.nonnegative_of_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalNonnegativeFractions.multiply_nonnegative_at
+
+/-! ### GaussianNamedBoundedSquareRoot -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedBoundedSquareRoot.observations
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedBoundedSquareRoot.subst_observations
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedBoundedSquareRoot.observation_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedBoundedSquareRoot.rootClock
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedBoundedSquareRoot.radicandClock
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedBoundedSquareRoot.rootPoint
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedBoundedSquareRoot.sqrtF
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedBoundedSquareRoot.subst_rootClock
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedBoundedSquareRoot.subst_radicandClock
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedBoundedSquareRoot.subst_rootPoint
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedBoundedSquareRoot.sample_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedBoundedSquareRoot.square_root_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedBoundedSquareRoot.square_root_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedBoundedSquareRoot.square_root_unique
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedBoundedSquareRoot.actual_independent_named_square_root_closed
+
+/-! ### GaussianGammaGaussIndependentSquareRoot -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaGaussIndependentSquareRoot.doubled_power_nonnegative
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaGaussIndependentSquareRoot.reciprocal_fraction
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaGaussIndependentSquareRoot.normalization_observation
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaGaussIndependentSquareRoot.normalization_observations
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaGaussIndependentSquareRoot.positive_reference_observations
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaGaussIndependentSquareRoot.nameF
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaGaussIndependentSquareRoot.nameData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaGaussIndependentSquareRoot.positive_reference_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaGaussIndependentSquareRoot.original_reference_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaGaussIndependentSquareRoot.actual_Gauss_independent_square_root_closed
+
+/-! ### GaussianGaussMultiplicationIndependentNormalization -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationIndependentNormalization.normalizerF
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationIndependentNormalization.normalizerData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationIndependentNormalization.normalizedF
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationIndependentNormalization.normalizedData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationIndependentNormalization.normalizer_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationIndependentNormalization.normalized_right
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationIndependentNormalization.normalize_Gauss
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationIndependentNormalization.actual_Gauss_independent_normalized_right_closed
+
 /-! ### GaussianGaussMultiplicationNormalization -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationNormalization.normalizerF
 #print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationNormalization.normalizerData
@@ -19135,6 +19185,37 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianGaussEulerFiniteIdentity.cleared_Gauss_multiplication
 #print axioms LeanProofs.IPRA.Analysis.GaussianGaussEulerFiniteIdentity.actual_finite_Euler_Gauss_identity_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianGaussEulerFiniteIdentity.actual_cleared_Gauss_multiplication_closed
+
+/-! ### GaussianGaussEulerFiniteApartness -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussEulerFiniteApartness.inverse_name_lower
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussEulerFiniteApartness.inverseApartClock
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussEulerFiniteApartness.inverse_name_apart
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussEulerFiniteApartness.euler_apart
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussEulerFiniteApartness.referenceQBody
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussEulerFiniteApartness.referenceDenominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussEulerFiniteApartness.referenceApartClock
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussEulerFiniteApartness.subst_referenceDenominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussEulerFiniteApartness.reference_rows_lower
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussEulerFiniteApartness.reference_input
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussEulerFiniteApartness.actual_fixed_Gauss_reference_product_apart_closed
+
+/-! ### GaussianGaussEulerRelativeQuotient -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussEulerRelativeQuotient.inverseEulerF
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussEulerRelativeQuotient.unitInverseData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussEulerRelativeQuotient.scaledInverseData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussEulerRelativeQuotient.refInverseData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussEulerRelativeQuotient.argumentUF
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussEulerRelativeQuotient.referenceUF
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussEulerRelativeQuotient.argumentUData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussEulerRelativeQuotient.referenceUData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussEulerRelativeQuotient.referenceInverseCandidateF
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussEulerRelativeQuotient.referenceInverseCandidateData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussEulerRelativeQuotient.relativeHeight
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussEulerRelativeQuotient.quotientF
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussEulerRelativeQuotient.quotientData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussEulerRelativeQuotient.reference_quotient_input
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussEulerRelativeQuotient.relative_quotient
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussEulerRelativeQuotient.actual_finite_Gauss_relative_quotient_closed
 
 /-! ### GaussianGaussMultiplicationQuotient -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationQuotient.scaledReciprocalHeight
@@ -34033,6 +34114,73 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationPowerRate.exponent_rate
 #print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationPowerRate.power_rate
 #print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationPowerRate.actual_gauss_multiplication_power_rate_closed
+
+/-! ### GaussianGaussMultiplicationHalfPower -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationHalfPower.exponentF
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationHalfPower.exponentData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationHalfPower.ratioPowerF
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationHalfPower.ratioPowerData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationHalfPower.halfCoefficient
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationHalfPower.quarterCoefficient
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationHalfPower.regroupedCoefficient
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationHalfPower.halfF
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationHalfPower.halfData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationHalfPower.regroupedData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationHalfPower.subst_exponentData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationHalfPower.subst_ratioPowerData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationHalfPower.subst_halfData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationHalfPower.subst_regroupedData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationHalfPower.exponent_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationHalfPower.ratio_power_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationHalfPower.coefficient_congr
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationHalfPower.ratio_power_sum
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationHalfPower.half_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationHalfPower.half_sample_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationHalfPower.half_sample_canonical
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationHalfPower.half_axis_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationHalfPower.half_nonnegative_samples
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationHalfPower.exponent_real
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationHalfPower.half_coefficient_axis
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationHalfPower.half_exponential
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationHalfPower.half_square
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationHalfPower.regrouped_coefficient
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationHalfPower.original_limit_power
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationHalfPower.regroup
+
+/-! ### GaussianGaussMultiplicationHalfPowerLower -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationHalfPowerLower.lowerDenominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationHalfPowerLower.positiveMargin
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationHalfPowerLower.subst_lowerDenominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationHalfPowerLower.subst_positiveMargin
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationHalfPowerLower.lower_denominator_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationHalfPowerLower.half_lower_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationHalfPowerLower.half_lower
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationHalfPowerLower.positiveRoot
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationHalfPowerLower.positive_root
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationHalfPowerLower.actual_reciprocal_half_power_positive_root_closed
+
+/-! ### GaussianGaussPiPowerSquareRoot -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussPiPowerSquareRoot.scaleF
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussPiPowerSquareRoot.scaleData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussPiPowerSquareRoot.witnessF
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussPiPowerSquareRoot.witnessData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussPiPowerSquareRoot.nameF
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussPiPowerSquareRoot.nameData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussPiPowerSquareRoot.witness_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussPiPowerSquareRoot.name_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussPiPowerSquareRoot.name_square
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussPiPowerSquareRoot.sample_nonnegative
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussPiPowerSquareRoot.reference_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussPiPowerSquareRoot.actual_Gauss_reference_through_pi_half_power_closed
+
+/-! ### GaussianGaussMultiplicationHalfPowers -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationHalfPowers.coefficientF
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationHalfPowers.normalizedF
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationHalfPowers.coefficientData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationHalfPowers.normalizedData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationHalfPowers.normalized_right
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationHalfPowers.normalized_multiplication
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationHalfPowers.actual_Gauss_multiplication_separate_half_powers_closed
 
 /-! ### GaussianGaussMultiplicationRelativeLog -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationRelativeLog.relativeLogF
@@ -59825,6 +59973,74 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedFiniteProductName.actual_finite_product_name_regular_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedFiniteProductName.actual_finite_product_approximant_closed
 
+/-! ### GaussianNamedFiniteProductAppend -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedFiniteProductAppend.lastRow
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedFiniteProductAppend.subst_lastRow
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedFiniteProductAppend.last_row_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedFiniteProductAppend.empty_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedFiniteProductAppend.empty_bounds
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedFiniteProductAppend.empty_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedFiniteProductAppend.append_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedFiniteProductAppend.singleton_cross
+
+/-! ### GaussianNamedFiniteProductFamilyAppend -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedFiniteProductFamilyAppend.regular_prefix
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedFiniteProductFamilyAppend.family_append_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedFiniteProductFamilyAppend.family_singleton_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedFiniteProductFamilyAppend.actual_family_append_closed
+
+/-! ### GaussianGaussExplicitShiftedProducts -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussExplicitShiftedProducts.prefixData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussExplicitShiftedProducts.gammaRowData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussExplicitShiftedProducts.twoRowsF
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussExplicitShiftedProducts.twoRowsData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussExplicitShiftedProducts.threeRowsF
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussExplicitShiftedProducts.threeRowsData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussExplicitShiftedProducts.subst_gammaRowData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussExplicitShiftedProducts.gamma_row_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussExplicitShiftedProducts.prefix_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussExplicitShiftedProducts.append_shifted
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussExplicitShiftedProducts.singleton_prefix
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussExplicitShiftedProducts.two_rows_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussExplicitShiftedProducts.three_rows_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussExplicitShiftedProducts.two_prefix
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussExplicitShiftedProducts.three_prefix
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussExplicitShiftedProducts.two_factors
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussExplicitShiftedProducts.three_factors
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussExplicitShiftedProducts.actual_Gauss_two_shifted_factors_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussExplicitShiftedProducts.actual_Gauss_three_shifted_factors_closed
+
+/-! ### GaussianGaussDuplicationFactor -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussDuplicationFactor.first_reference_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussDuplicationFactor.reference_half
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussDuplicationFactor.reference_sqrt_pi
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussDuplicationFactor.actual_Gauss_duplication_factor_closed
+
+/-! ### GaussianGaussDuplication -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussDuplication.coefficientF
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussDuplication.duplicationF
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussDuplication.coefficientData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussDuplication.duplicationData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussDuplication.duplication_right
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussDuplication.duplication
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussDuplication.actual_Gauss_duplication_closed
+
+/-! ### GaussianGaussTriplicationPi -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussTriplicationPi.doubledPiF
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussTriplicationPi.doubledPiData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussTriplicationPi.doubled_pi_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussTriplicationPi.pi_half_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussTriplicationPi.actual_triplication_pi_factor_closed
+
+/-! ### GaussianGaussTriplication -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussTriplication.triplicationCoefficientF
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussTriplication.triplicationF
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussTriplication.triplicationCoefficientData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussTriplication.triplicationData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussTriplication.triplication_right
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussTriplication.triplication
+#print axioms LeanProofs.IPRA.Analysis.GaussianGaussTriplication.actual_Gauss_triplication_closed
+
 /-! ### GaussianNamedFiniteProductMap -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedFiniteProductMap.applyMap
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedFiniteProductMap.mapBody
@@ -59892,6 +60108,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedFiniteProductFamilyAlgebra.row_comparison
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedFiniteProductFamilyAlgebra.family_multiply_cross
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedFiniteProductFamilyAlgebra.actual_family_multiply_closed
+
+/-! ### GaussianNamedProductSquare -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedProductSquare.square_product
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedProductSquare.right_unit
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedProductSquare.left_unit
 
 /-! ### GaussianNamedConstantFamilyProduct -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedConstantFamilyProduct.constant_rows_regular
