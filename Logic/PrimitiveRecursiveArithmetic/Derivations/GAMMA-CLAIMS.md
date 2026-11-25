@@ -2615,3 +2615,6 @@ The actual unscaled reciprocal is approximated by the finite powers of the inver
 
 At the actual reciprocal clock, every retained geometric term compares to the original Euler decay evaluated at the positive integer multiple of time. Its inverse retiming cost has an explicit dyadic denominator.
 [GaussianGammaZetaMellinDecayRows](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinDecayRows.lean)
+
+The original logarithm observations on equal positive rational charts compare at independent precisions. Multiplication by the common physical endpoint preserves a uniform rate, including the exact grid rescaling.
+[GaussianRaabeLogPrimitiveRescale](Lean/IPRADerivations/Analysis/GaussianRaabeLogPrimitiveRescale.lean)

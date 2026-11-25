@@ -28614,6 +28614,9 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianRaabeLogPrimitiveGrid.denominator
 #print axioms LeanProofs.IPRA.Analysis.GaussianRaabeLogPrimitiveGrid.finite_grid
 #print axioms LeanProofs.IPRA.Analysis.GaussianRaabeLogPrimitiveGrid.actual_positive_logarithm_primitive_grid_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianRaabeLogPrimitiveRescale.equal_ratio
+#print axioms LeanProofs.IPRA.Analysis.GaussianRaabeLogPrimitiveRescale.scaled_to_original
+#print axioms LeanProofs.IPRA.Analysis.GaussianRaabeLogPrimitiveRescale.actual_positive_logarithm_primitive_rescale_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetKernelPi.sample
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetKernelPi.subst_sample
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetKernelPi.sample_fraction
