@@ -2233,6 +2233,13 @@ This also compares two actual exhaustion prefixes at their own
 horizons and covers equality of cutoffs.
 [GaussianBinetLaplaceExhaustion](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceExhaustion.lean), [GaussianBinetLaplaceOrderedPrefixes](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceOrderedPrefixes.lean).
 
+The improper Binet Laplace name reads the actual compact quadrature
+at an internal cutoff and a later clock. It is regular on each
+certified signed rational right-half-plane chart. Its observations
+compare to those of every positive finite prefix with the same
+leading bound `D 2⁻ᴸ/(12 X)`.
+[GaussianBinetLaplaceImproperName](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceImproperName.lean).
+
 ## Source artifacts and representation boundaries
 
 The delivered [Lean companion](../docs/proofs/analysis/gamma_ipra/lean/README.md)
