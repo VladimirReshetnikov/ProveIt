@@ -2154,6 +2154,14 @@ leading error `1/(8N)`. The integrand has a computable Lipschitz gain
 uniform in the cutoff on each finite strip and a finite mesh bound.
 [GaussianBinetKernelCoarseBound](Lean/IPRADerivations/Analysis/GaussianBinetKernelCoarseBound.lean), [GaussianBinetLaplaceExponential](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceExponential.lean), [GaussianBinetLaplaceIntegrand](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceIntegrand.lean).
 
+The original integrands yield regular compact quadrature names on
+any admitted finite panel in nonnegative time. The translated chart
+reads each tag at its exact physical rational time, including zero.
+The arbitrary grid-refinement and same-grid cutoff comparisons give
+the named compact truncation estimate with leading error
+`(panel width)/(8N)` at independent observation clocks.
+[GaussianBinetLaplaceStrip](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceStrip.lean), [GaussianBinetLaplaceStripCutoff](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceStripCutoff.lean).
+
 ## Source artifacts and representation boundaries
 
 The delivered [Lean companion](../docs/proofs/analysis/gamma_ipra/lean/README.md)
