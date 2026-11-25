@@ -2762,3 +2762,6 @@ Exact transposition binds the finite evaluator to the original damped grid. Unif
 
 The original compact Mellin pullback and the actual finite Euler damped compact sampler agree up to the checked uniform error on a fixed positive panel, with a concrete lower threshold on the count.
 [GaussianGammaZetaMellinFiniteDampedComparison](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinFiniteDampedComparison.lean)
+
+A primitive-recursive envelope depending on the order and the positive rational margin bounds all observations of the original improper moment uniformly in the base chart denominator.
+[GaussianBinetLaplaceMomentMarginRows](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentMarginRows.lean), [GaussianBinetLaplaceMomentMarginTail](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentMarginTail.lean), [GaussianBinetLaplaceMomentMarginBound](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentMarginBound.lean)
