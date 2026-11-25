@@ -2570,3 +2570,6 @@ The original positive row majorant controls the geometric tail before the omitte
 
 Exact finite interchange exposes each positive transposed column as the original complex damping times the original real-damped sine quadrature. The physical floor cut and low-frequency error hold on that same grid.
 [GaussianBinetSecondWeightedSineMatrix](Lean/IPRADerivations/Analysis/GaussianBinetSecondWeightedSineMatrix.lean), [GaussianBinetSecondWeightedSineTranspose](Lean/IPRADerivations/Analysis/GaussianBinetSecondWeightedSineTranspose.lean), [GaussianBinetSecondWeightedSineSuffix](Lean/IPRADerivations/Analysis/GaussianBinetSecondWeightedSineSuffix.lean), [GaussianBinetSecondWeightedSineCut](Lean/IPRADerivations/Analysis/GaussianBinetSecondWeightedSineCut.lean)
+
+Compare the literal positive sine suffix with the original first Binet improper observation via its arbitrary-mesh compact quadrature. The per-tag comparison permits different certified damping radii.
+[GaussianBinetKernelFrequencyRadius](Lean/IPRADerivations/Analysis/GaussianBinetKernelFrequencyRadius.lean), [GaussianBinetLaplaceFrequencySuffix](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceFrequencySuffix.lean)
