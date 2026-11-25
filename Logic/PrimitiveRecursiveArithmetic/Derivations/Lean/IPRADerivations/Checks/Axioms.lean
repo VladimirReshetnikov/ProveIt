@@ -27582,6 +27582,90 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaFiniteSum.finite_reciprocal_sum
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaFiniteSum.actual_original_finite_digamma_reciprocal_sum_closed
 
+/-! ### GaussianGammaDigammaConvexChords -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaConvexChords.forwardData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaConvexChords.upperWeighted
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaConvexChords.lowerWeighted
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaConvexChords.weighted_upper
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaConvexChords.weighted_lower
+
+/-! ### GaussianGammaDigammaConvexComparison -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaConvexComparison.sumF
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaConvexComparison.innerData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaConvexComparison.outerData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaConvexComparison.subst_innerData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaConvexComparison.subst_outerData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaConvexComparison.inner_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaConvexComparison.outer_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaConvexComparison.natScale_sum
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaConvexComparison.gap
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaConvexComparison.budget
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaConvexComparison.subst_budget
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaConvexComparison.diagonal_order
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaConvexComparison.log_comparison_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaConvexComparison.log_comparison
+
+/-! ### GaussianGammaDigammaExponentialOrder -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaExponentialOrder.radius
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaExponentialOrder.bias
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaExponentialOrder.cost
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaExponentialOrder.subst_radius
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaExponentialOrder.bias_positive_fraction_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaExponentialOrder.bias_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaExponentialOrder.bias_gap
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaExponentialOrder.bias_real
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaExponentialOrder.biased_order_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaExponentialOrder.bias_rate_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaExponentialOrder.subst_bias
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaExponentialOrder.bias_rate
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaExponentialOrder.exp_order_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaExponentialOrder.exp_order
+
+/-! ### GaussianGammaDigammaGammaComparison -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaGammaComparison.productF
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaGammaComparison.innerProductData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaGammaComparison.outerProductData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaGammaComparison.subst_innerProductData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaGammaComparison.subst_outerProductData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaGammaComparison.product_from_exp
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaGammaComparison.gamma_comparison
+
+/-! ### GaussianGammaDigammaDerivativeProductOrder -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaDerivativeProductOrder.leftF
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaDerivativeProductOrder.rightF
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaDerivativeProductOrder.leftData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaDerivativeProductOrder.rightData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaDerivativeProductOrder.subst_leftData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaDerivativeProductOrder.subst_rightData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaDerivativeProductOrder.natural_inverse
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaDerivativeProductOrder.rawSlope
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaDerivativeProductOrder.quotientCost
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaDerivativeProductOrder.gammaCost
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaDerivativeProductOrder.raw_slope_order
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaDerivativeProductOrder.raw_slope_near
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaDerivativeProductOrder.productCost
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaDerivativeProductOrder.product_near
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaDerivativeProductOrder.diagonalCost
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaDerivativeProductOrder.diagonal_order
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaDerivativeProductOrder.product_order_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaDerivativeProductOrder.derivative_product_order
+
+/-! ### GaussianGammaDigammaMonotone -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaMonotone.weightF
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaMonotone.weightData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaMonotone.weightedF
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaMonotone.leftData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaMonotone.rightData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaMonotone.weightCost
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaMonotone.sampleCost
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaMonotone.productCost
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaMonotone.diagonalCost
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaMonotone.raw_weighted_order
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaMonotone.diagonal_order
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaMonotone.monotone_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaMonotone.monotone
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDigammaMonotone.actual_original_positive_rational_digamma_monotone_closed
+
 /-! ### GaussianGammaFallingFactorial -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaFallingFactorial.start
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaFallingFactorial.baseRadius
