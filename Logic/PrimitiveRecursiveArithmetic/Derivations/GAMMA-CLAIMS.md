@@ -2675,3 +2675,6 @@ The actual weighted rows have nonnegative real limits, and the common quadrature
 
 The original weighted Mellin strip compares to a finite sum of the actual positive-scaling damped Euler quadratures for the scales 1 through N, with a scheduled geometric and dyadic error.
 [GaussianGammaZetaMellinDampedPoint](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinDampedPoint.lean), [GaussianGammaZetaMellinDampedStrip](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinDampedStrip.lean)
+
+The arbitrary-width recurrence binds the original positive-strip observations exactly. Equal rational tags give aligned grids for the full and trimmed unit panels. A uniform unit-panel bound controls the omitted strip, and the original logarithm primitive has an explicit bound at the dyadic endpoint.
+[GaussianRaabeStripGridRecurrence](Lean/IPRADerivations/Analysis/GaussianRaabeStripGridRecurrence.lean), [GaussianRaabeLogGammaAlignedTime](Lean/IPRADerivations/Analysis/GaussianRaabeLogGammaAlignedTime.lean), [GaussianRaabeUnitStripBound](Lean/IPRADerivations/Analysis/GaussianRaabeUnitStripBound.lean), [GaussianRaabeOriginStripAlignment](Lean/IPRADerivations/Analysis/GaussianRaabeOriginStripAlignment.lean), [GaussianRaabeDyadicPrimitive](Lean/IPRADerivations/Analysis/GaussianRaabeDyadicPrimitive.lean)
