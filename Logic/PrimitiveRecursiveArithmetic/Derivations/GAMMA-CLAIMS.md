@@ -2579,3 +2579,6 @@ Checked the later frozen prefix against the weighted sine prefix on the same tim
 
 The compact comparison fixes the retained geometric count before choosing the literal observation clock. Refinement, freezing, suffix alignment, and the origin correction connect the original improper sample to the retained full frozen matrix with error at most 9·2^-h.
 [GaussianBinetBoseLiteralLate](Lean/IPRADerivations/Analysis/GaussianBinetBoseLiteralLate.lean), [GaussianBinetBosePrefixRefinementLate](Lean/IPRADerivations/Analysis/GaussianBinetBosePrefixRefinementLate.lean), [GaussianBinetBoseImproperFrozen](Lean/IPRADerivations/Analysis/GaussianBinetBoseImproperFrozen.lean)
+
+Explicit primitive-recursive schedules choose the time, geometric, and strip cutoffs, then pay independent angular, kernel, and Laplace sample budgets on one dyadic denominator.
+[GaussianBinetSecondEarlySchedule](Lean/IPRADerivations/Analysis/GaussianBinetSecondEarlySchedule.lean), [GaussianBinetSecondFrequencySchedule](Lean/IPRADerivations/Analysis/GaussianBinetSecondFrequencySchedule.lean), [GaussianBinetSecondErrorBudget](Lean/IPRADerivations/Analysis/GaussianBinetSecondErrorBudget.lean)
