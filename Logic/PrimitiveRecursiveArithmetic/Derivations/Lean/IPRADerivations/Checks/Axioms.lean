@@ -18583,6 +18583,110 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyStep.local_defect
 #print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyStep.actual_original_arctangent_Cayley_step_closed
 
+/-! ### GaussianArctangentCayleyExponentialStep -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyExponentialStep.sample
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyExponentialStep.row
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyExponentialStep.subst_sample
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyExponentialStep.subst_row
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyExponentialStep.sample_canonical
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyExponentialStep.row_canonical
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyExponentialStep.conjugate_unit_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyExponentialStep.conjugate_left_endpoint
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyExponentialStep.conjugate_right_endpoint
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyExponentialStep.right_inverse_endpoint
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyExponentialStep.increment_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyExponentialStep.sample_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyExponentialStep.sample_zero
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyExponentialStep.local_exponential_step
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyExponentialStep.actual_original_arctangent_exponential_step_closed
+
+/-! ### GaussianArctangentExponentialPrefix -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentExponentialPrefix.source
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentExponentialPrefix.total
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentExponentialPrefix.prefixValue
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentExponentialPrefix.halfI
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentExponentialPrefix.subst_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentExponentialPrefix.subst_total
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentExponentialPrefix.subst_prefixValue
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentExponentialPrefix.prefix_zero
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentExponentialPrefix.prefix_succ
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentExponentialPrefix.prefix_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentExponentialPrefix.original_mesh_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentExponentialPrefix.at_pi_observation
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentExponentialPrefix.actual_original_arctangent_exponential_prefix_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentExponentialPrefix.actual_original_arctangent_exponential_prefix_bound_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentExponentialPrefix.actual_original_arctangent_exponential_mesh_closed
+
+/-! ### GaussianArctangentCayleyBudget -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyBudget.stage
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyBudget.subst_stage
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyBudget.mesh_two
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyBudget.mesh_ge_unit
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyBudget.stage_ge
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyBudget.stage_absorbs_mesh
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyBudget.budget
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyBudget.mesh_budget
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyBudget.actual_original_arctangent_exponential_mesh_budget_closed
+
+/-! ### GaussianArctangentQuarterExponential -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentQuarterExponential.radius
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentQuarterExponential.halfImaginary
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentQuarterExponential.argument
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentQuarterExponential.stage
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentQuarterExponential.finiteValue
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentQuarterExponential.finiteEstimate
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentQuarterExponential.boundedArguments
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentQuarterExponential.quarterF
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentQuarterExponential.exponentialF
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentQuarterExponential.exponentialData
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentQuarterExponential.subst_argument
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentQuarterExponential.subst_stage
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentQuarterExponential.subst_finiteValue
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentQuarterExponential.subst_finiteEstimate
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentQuarterExponential.subst_boundedArguments
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentQuarterExponential.sample_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentQuarterExponential.half_imaginary_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentQuarterExponential.argument_distance
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentQuarterExponential.quarter_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentQuarterExponential.bounded_argument_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentQuarterExponential.quarter_input
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentQuarterExponential.original_argument_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentQuarterExponential.original_bounded_arguments
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentQuarterExponential.finite_estimate_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentQuarterExponential.scheduled_comparison
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentQuarterExponential.quarter_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentQuarterExponential.original_quarter_cross
+
+/-! ### GaussianArctangentExponentialPeriod -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentExponentialPeriod.twiceF
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentExponentialPeriod.twiceData
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentExponentialPeriod.twiceRadius
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentExponentialPeriod.fullTurnF
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentExponentialPeriod.fullTurnData
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentExponentialPeriod.fullTurnRadius
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentExponentialPeriod.minusOneCode
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentExponentialPeriod.minusOne
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentExponentialPeriod.twiceImaginary
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentExponentialPeriod.half_imaginary_doubled
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentExponentialPeriod.twice_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentExponentialPeriod.full_turn_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentExponentialPeriod.full_turn_input
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentExponentialPeriod.square_gaussian_point
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentExponentialPeriod.imaginary_square
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentExponentialPeriod.negative_one_square
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentExponentialPeriod.constant_product
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentExponentialPeriod.constant_cross_congr
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentExponentialPeriod.double_exponential_constant
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentExponentialPeriod.full_turn_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentExponentialPeriod.original_full_turn_input
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentExponentialPeriod.original_full_turn_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentExponentialPeriod.enlarge_input
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentExponentialPeriod.same_exp_different_radius_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentExponentialPeriod.same_exp_different_radius
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentExponentialPeriod.constant_one_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentExponentialPeriod.translationRadius
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentExponentialPeriod.full_turn_translation
+
 /-! ### GaussianGammaHalfSquareLimit -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaHalfSquareLimit.gammaHalf
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaHalfSquareLimit.gammaSquareF
