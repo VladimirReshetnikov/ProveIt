@@ -2654,3 +2654,6 @@ The original weighted finite Mellin rectangle can be summed first over time or f
 
 The original weighted compact observations have a physical width bound. In the unit time window the bound is the width itself, uniformly in the internal natural moment order.
 [GaussianBinetLaplaceMomentWidth](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentWidth.lean)
+
+The original reciprocal exponential and exact weight yield an inverse-square bound with the explicit factorial coefficient and uniform dyadic allowance.
+[GaussianBinetLaplaceMomentDecay](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentDecay.lean)

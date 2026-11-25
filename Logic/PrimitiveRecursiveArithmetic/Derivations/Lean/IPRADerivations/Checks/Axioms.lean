@@ -29881,6 +29881,10 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentWidth.width_bound
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentWidth.small_origin_bound
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentWidth.actual_weighted_Binet_small_origin_bound_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentDecay.tailScale
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentDecay.subst_tailScale
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentDecay.observation_inverse_square_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentDecay.actual_weighted_Binet_inverse_square_bound_closed
 
 /-! ### GaussianEulerDecayCompactUpper -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerDecayCompactUpper.upperPoint
