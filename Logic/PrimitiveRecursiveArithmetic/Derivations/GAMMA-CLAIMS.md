@@ -2642,3 +2642,6 @@ The exact rational weight commutes with the original horizon comparison. Weighte
 
 At a common admissible horizon, the original weighted quadrature on consecutive strips agrees with the sum of their regular names.
 [GaussianBinetLaplaceMomentAdditivity](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentAdditivity.lean)
+
+The original positive-window Mellin observations compare with the finite weighted Euler decay prefix on the same physical tags. A computed common clock controls the decay rows and leaves the exact geometric truncation allowance.
+[GaussianGammaZetaMellinDecayPrefix](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinDecayPrefix.lean), [GaussianGammaZetaMellinStrip](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinStrip.lean)
