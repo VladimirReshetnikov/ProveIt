@@ -2182,6 +2182,12 @@ product-rule estimate whose quadratic coefficient is also uniform
 under rescaling.
 [GaussianNamedDifferenceAlgebra](Lean/IPRADerivations/Analysis/GaussianNamedDifferenceAlgebra.lean), [GaussianPiRationalScaleFactors](Lean/IPRADerivations/Analysis/GaussianPiRationalScaleFactors.lean), [GaussianSineProductImaginaryExponentialShift](Lean/IPRADerivations/Analysis/GaussianSineProductImaginaryExponentialShift.lean), [GaussianSineProductImaginaryHyperbolicDerivative](Lean/IPRADerivations/Analysis/GaussianSineProductImaginaryHyperbolicDerivative.lean), [GaussianSineProductImaginaryCoshIdentity](Lean/IPRADerivations/Analysis/GaussianSineProductImaginaryCoshIdentity.lean), [GaussianSineProductImaginaryHyperbolicProductRuleAlgebra](Lean/IPRADerivations/Analysis/GaussianSineProductImaginaryHyperbolicProductRuleAlgebra.lean), [GaussianSineProductImaginaryHyperbolicProductRule](Lean/IPRADerivations/Analysis/GaussianSineProductImaginaryHyperbolicProductRule.lean).
 
+At a fixed rational base `x`, the two actual derivative names are
+equal by comparison at a common nonzero dyadic displacement. Cancel
+the original apart π factor to get `cosh(πx) = P(x)+xD(x)` for the
+cofinal sine product `P` and its actual derivative `D`.
+[GaussianSineProductImaginaryDerivativeComparison](Lean/IPRADerivations/Analysis/GaussianSineProductImaginaryDerivativeComparison.lean), [GaussianSineProductImaginaryCofinalLogDerivative](Lean/IPRADerivations/Analysis/GaussianSineProductImaginaryCofinalLogDerivative.lean).
+
 The Binet kernel series uses the original named π in each positive row
 `2/(t²+4π²n²)`. On `0 ≤ t ≤ T` the actual finite and cofinal samples
 are bounded below by `2/(T²+100)` at positive cutoffs. The row majorant
