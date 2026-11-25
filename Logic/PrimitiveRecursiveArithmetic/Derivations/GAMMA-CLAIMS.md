@@ -1751,6 +1751,14 @@ the reciprocal powers of the actual translated numerator and keeps
 their original signed factorial scaling.
 [GaussianGammaPolygammaTailRows](Lean/IPRADerivations/Analysis/GaussianGammaPolygammaTailRows.lean), [GaussianGammaPolygammaTail](Lean/IPRADerivations/Analysis/GaussianGammaPolygammaTail.lean).
 
+The C29 regular series evaluator uses the literal signed prefix from
+the zeroth term, with a primitive-recursive cofinal cutoff. The pole
+certificate excludes zero denominators at every index. Its comparison
+with any admissible cutoff retains the C30 bound and the dyadic
+observation error. Identifying the series with the corresponding
+derivative remains open.
+[GaussianGammaPolygammaPrefix](Lean/IPRADerivations/Analysis/GaussianGammaPolygammaPrefix.lean), [GaussianGammaPolygammaSeriesName](Lean/IPRADerivations/Analysis/GaussianGammaPolygammaSeriesName.lean).
+
 ## Real Gamma away from the poles
 
 A single late sample of a real pole-free input gives a positive margin or
