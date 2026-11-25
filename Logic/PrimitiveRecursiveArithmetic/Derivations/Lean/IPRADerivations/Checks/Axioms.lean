@@ -35055,6 +35055,18 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinDecayRows.prefix_row_error
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinOriginBound.origin_bound
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinOriginBound.actual_gamma_zeta_mellin_origin_bound_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinOriginCell.value
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinOriginCell.subst_value
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinOriginCell.right_cell_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinOriginCell.actual_gamma_zeta_mellin_origin_cell_bound_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinOriginGrid.data
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinOriginGrid.body
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinOriginGrid.gridValue
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinOriginGrid.subst_data
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinOriginGrid.cell_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinOriginGrid.grid_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinOriginGrid.shrinking_grid_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinOriginGrid.actual_gamma_zeta_mellin_shrinking_grid_bound_closed
 
 /-! ### GaussianNamedEulerIntegrand -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedEulerIntegrand.coefficientF

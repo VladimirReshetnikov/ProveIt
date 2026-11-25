@@ -2621,3 +2621,6 @@ The original logarithm observations on equal positive rational charts compare at
 
 An exact rational t^j factor weights the original cofinal Laplace sample. On the original compact grid [1,2], every late natural moment has the same strict positive floor as the unweighted panel.
 [GaussianBinetLaplaceMomentFloor](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentFloor.lean)
+
+Each original right-tag observation is weighted by its exact powered cell width. The finite rooted grid sum is bounded by 4·2^-h as soon as its span in the root coordinate meets the certified dyadic budget.
+[GaussianGammaZetaMellinOriginCell](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinOriginCell.lean), [GaussianGammaZetaMellinOriginGrid](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinOriginGrid.lean)
