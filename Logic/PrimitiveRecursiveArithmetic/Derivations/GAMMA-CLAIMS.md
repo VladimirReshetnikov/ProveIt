@@ -1864,13 +1864,13 @@ terms sum exactly to `z(H_{N+r}−H_N)`, which also approximates
 
 For any independently chosen observation precisions, the original Euler
 heads at `N+r` and `N` differ by at most `(R²+R)/N` plus the two
-observation errors when `N ≥ max(1,8R)`. The residual sum uses the
+observation errors when `N ≥ max(1,2R)`. The residual sum uses the
 original count-dependent sampler, which absorbs its row count into the
 observation precision. A primitive-recursive schedule gives a regular
 cofinal name, independent of the chosen admissible radius. The concrete
 radius `A+B` covers every signed rational admitted by the original
-right-half-plane certificate. The cutoffs here start at `8R`, and
-the source's sharper `2R` threshold remains open.
+right-half-plane certificate. The half-disk branch proof below gives
+the source threshold `N ≥ 2R`.
 [GaussianLogGammaEulerResidualInterval](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerResidualInterval.lean), [GaussianLogGammaEulerHeadGap](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerHeadGap.lean), [GaussianLogGammaEulerCofinal](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerCofinal.lean).
 
 Exponentiating the negative of either finite Euler logarithm head
@@ -1927,6 +1927,13 @@ Mercator observation error. Its exponential, multiplied by the base
 argument, recovers the later rational argument. Coordinate and chart
 ratio bounds come from the same native displacement.
 [GaussianLogGammaEulerArgumentIncrement](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerArgumentIncrement.lean), [GaussianRightHalfPlaneLogarithmRelativeStep](Lean/IPRADerivations/Analysis/GaussianRightHalfPlaneLogarithmRelativeStep.lean), [GaussianRightHalfPlaneLogarithmRelativeExponential](Lean/IPRADerivations/Analysis/GaussianRightHalfPlaneLogarithmRelativeExponential.lean).
+
+The canonical logarithm agrees with the original Mercator logarithm
+on the closed signed rational disk `|w| ≤ 1/2`. The proof bounds the
+original radial name using the harmonic rectangle sums and selects the
+logarithm by the fourth-root separation estimate. The same Euler
+residual sampler now has its quadratic bound as soon as `k ≥ 2R`.
+[GaussianRightHalfPlaneLogarithmHalfDiskBound](Lean/IPRADerivations/Analysis/GaussianRightHalfPlaneLogarithmHalfDiskBound.lean), [GaussianLogGammaEulerResidualHalfDisk](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerResidualHalfDisk.lean), [GaussianLogGammaEulerCofinal](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerCofinal.lean).
 
 ## Source artifacts and representation boundaries
 

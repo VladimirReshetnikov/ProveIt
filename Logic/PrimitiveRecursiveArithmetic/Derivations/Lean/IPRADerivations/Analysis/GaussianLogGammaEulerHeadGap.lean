@@ -74,14 +74,14 @@ private theorem synchronous_from_window (f g j : PR 2) (x y u v p lin A B C D N 
 open GaussianLogGammaEulerResidualDomain (source subst_source)
 
 private theorem diagonal_gap_from_window (f : PR 2) (x y t A B D neg R N r : PTm n)
-    (h : Γ ⊢[PRAAx] source A B D neg R) (hN : Γ ⊢[PRAAx] le one N) (hlarge : Γ ⊢[PRAAx] le (num 8*R) N)
+    (h : Γ ⊢[PRAAx] source A B D neg R) (hN : Γ ⊢[PRAAx] le one N) (hlarge : Γ ⊢[PRAAx] le (two*R) N)
     (hx : Γ ⊢[PRAAx] pointCN f x) (hy : Γ ⊢[PRAAx] pointCN f y)
     (he : Γ ⊢[PRAAx] crossEquivalent (F f f) windowF (X x y) (windowData A B D neg N r)) :
     Γ ⊢[PRAAx] distanceBounded (ap2 f t x) (ap2 f t y)
       ((R*R+R)*unit t+(num 14+num 8*R+num 3)*N) (N*unit t) := by
   let C := num 14+num 8*R+num 3
   have left := GaussianLogGammaEulerWeightedIntervalError.sample_error t A B D neg R N r h hN
-  have right := GaussianLogGammaEulerResidualInterval.named_interval_sample_error t A B D neg R N r h hN hlarge
+  have right := GaussianLogGammaEulerResidualInterval.sharp_named_interval_sample_error t A B D neg R N r h hN hlarge
   have adjusted := GaussianRationalDistanceOrder.distance_congr (.eqRefl _) (.eqRefl _)
     (show Γ ⊢[PRAAx] GaussianLogGammaEulerWeightedIntervalError.errorNumerator t R N ≐ R*unit t+(num 8*R)*N by
       unfold GaussianLogGammaEulerWeightedIntervalError.errorNumerator
@@ -96,7 +96,7 @@ private theorem diagonal_gap_from_window (f : PR 2) (x y t A B D neg R N r : PTm
     (.eqRefl (N*unit t)) localGap
 
 private theorem gap_from_window (f : PR 2) (x y p q A B D neg R N r : PTm n)
-    (h : Γ ⊢[PRAAx] source A B D neg R) (hN : Γ ⊢[PRAAx] le one N) (hlarge : Γ ⊢[PRAAx] le (num 8*R) N)
+    (h : Γ ⊢[PRAAx] source A B D neg R) (hN : Γ ⊢[PRAAx] le one N) (hlarge : Γ ⊢[PRAAx] le (two*R) N)
     (hx : Γ ⊢[PRAAx] pointCN f x) (hy : Γ ⊢[PRAAx] pointCN f y)
     (he : Γ ⊢[PRAAx] crossEquivalent (F f f) windowF (X x y) (windowData A B D neg N r)) :
     Γ ⊢[PRAAx] distanceBounded (ap2 f p x) (ap2 f q y)
@@ -109,7 +109,7 @@ private theorem gap_from_window (f : PR 2) (x y p q A B D neg R N r : PTm n)
     simpa only [Δ,s,Fm.shift,Syn.shift,subst_source] using h.shift
   have hn : Δ ⊢[PRAAx] le one (s N) := by
     simpa [Δ,s,Fm.shift,Syn.shift] using hN.shift
-  have hl : Δ ⊢[PRAAx] le (num 8*s R) (s N) := by
+  have hl : Δ ⊢[PRAAx] le (two*s R) (s N) := by
     simpa [Δ,s,Fm.shift,Syn.shift] using hlarge.shift
   have hrx : Δ ⊢[PRAAx] pointCN f (s x) := by
     simpa only [Δ,s,Fm.shift,subst_pointCN,Syn.shift] using hx.shift
@@ -123,8 +123,8 @@ private theorem gap_from_window (f : PR 2) (x y p q A B D neg R N r : PTm n)
     Syn.shift,PTm.subst_add,PTm.subst_mul,LeanProofs.IPRA.PTm.subst_num,s,Δ] using
     diagonal_gap_from_window f (s x) (s y) (var 0) (s A) (s B) (s D) (s neg) (s R) (s N) (s r) hs hn hl hrx hry hes
 
-theorem ordered_gap (p q A B D neg R N r : PTm n)
-    (h : Γ ⊢[PRAAx] source A B D neg R) (hN : Γ ⊢[PRAAx] le one N) (hlarge : Γ ⊢[PRAAx] le (num 8*R) N) :
+theorem sharp_ordered_gap (p q A B D neg R N r : PTm n)
+    (h : Γ ⊢[PRAAx] source A B D neg R) (hN : Γ ⊢[PRAAx] le one N) (hlarge : Γ ⊢[PRAAx] le (two*R) N) :
     Γ ⊢[PRAAx] distanceBounded
       (ap2 GaussianLogGammaEulerHead.nameF p (GaussianLogGammaEulerHead.data A B D neg (N+r)))
       (ap2 GaussianLogGammaEulerHead.nameF q (GaussianLogGammaEulerHead.data A B D neg N))
@@ -135,8 +135,8 @@ theorem ordered_gap (p q A B D neg R N r : PTm n)
     (GaussianLogGammaEulerHead.regular A B D neg N h.andE₁ hN)
     (GaussianLogGammaEulerNormalizedDifference.original_equivalent A B D neg N r h.andE₁ hN)
 
-theorem normalized_ordered_gap (p q A B D neg R N r : PTm n)
-    (h : Γ ⊢[PRAAx] source A B D neg R) (hN : Γ ⊢[PRAAx] le one N) (hlarge : Γ ⊢[PRAAx] le (num 8*R) N) :
+theorem sharp_normalized_ordered_gap (p q A B D neg R N r : PTm n)
+    (h : Γ ⊢[PRAAx] source A B D neg R) (hN : Γ ⊢[PRAAx] le one N) (hlarge : Γ ⊢[PRAAx] le (two*R) N) :
     Γ ⊢[PRAAx] distanceBounded
       (ap2 GaussianLogGammaEulerNormalizedHead.nameF p (GaussianLogGammaEulerNormalizedHead.data A B D neg (N+r)))
       (ap2 GaussianLogGammaEulerNormalizedHead.nameF q (GaussianLogGammaEulerNormalizedHead.data A B D neg N))
@@ -146,6 +146,24 @@ theorem normalized_ordered_gap (p q A B D neg R N r : PTm n)
     (GaussianLogGammaEulerNormalizedHead.regular A B D neg (N+r) h.andE₁ (le_trans hN (le_add_right N r)))
     (GaussianLogGammaEulerNormalizedHead.regular A B D neg N h.andE₁ hN)
     (GaussianLogGammaEulerNormalizedDifference.equivalent A B D neg N r h.andE₁ hN)
+
+theorem ordered_gap (p q A B D neg R N r : PTm n)
+    (h : Γ ⊢[PRAAx] source A B D neg R) (hN : Γ ⊢[PRAAx] le one N) (hlarge : Γ ⊢[PRAAx] le (num 8*R) N) :
+    Γ ⊢[PRAAx] distanceBounded
+      (ap2 GaussianLogGammaEulerHead.nameF p (GaussianLogGammaEulerHead.data A B D neg (N+r)))
+      (ap2 GaussianLogGammaEulerHead.nameF q (GaussianLogGammaEulerHead.data A B D neg N))
+      ((R*R+R)*unit p*unit q+N*(unit p+unit q)) (N*unit p*unit q) :=
+  sharp_ordered_gap p q A B D neg R N r h hN
+    (le_trans (AnalyticNumberTheory.PhiLower.le_mul_mono (by ipra_le 6) (le_refl R)) hlarge)
+
+theorem normalized_ordered_gap (p q A B D neg R N r : PTm n)
+    (h : Γ ⊢[PRAAx] source A B D neg R) (hN : Γ ⊢[PRAAx] le one N) (hlarge : Γ ⊢[PRAAx] le (num 8*R) N) :
+    Γ ⊢[PRAAx] distanceBounded
+      (ap2 GaussianLogGammaEulerNormalizedHead.nameF p (GaussianLogGammaEulerNormalizedHead.data A B D neg (N+r)))
+      (ap2 GaussianLogGammaEulerNormalizedHead.nameF q (GaussianLogGammaEulerNormalizedHead.data A B D neg N))
+      ((R*R+R)*unit p*unit q+N*(unit p+unit q)) (N*unit p*unit q) :=
+  sharp_normalized_ordered_gap p q A B D neg R N r h hN
+    (le_trans (AnalyticNumberTheory.PhiLower.le_mul_mono (by ipra_le 6) (le_refl R)) hlarge)
 
 theorem actual_original_Euler_logarithm_head_gap_closed :
     ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 9
@@ -157,5 +175,16 @@ theorem actual_original_Euler_logarithm_head_gap_closed :
           ((var 4*var 4+var 4)*unit (var 7)*unit (var 8)+var 5*(unit (var 7)+unit (var 8)))
           (var 5*unit (var 7)*unit (var 8))) :=
   closeUniv 9 (.impI (ordered_gap _ _ _ _ _ _ _ _ _ Prf.hyp0.andE₁ Prf.hyp0.andE₂.andE₁ Prf.hyp0.andE₂.andE₂))
+
+theorem actual_original_Euler_logarithm_sharp_head_gap_closed :
+    ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 9
+      ((source (var 0) (var 1) (var 2) (var 3) (var 4) ⋏ (le one (var 5) ⋏ le (two*var 4) (var 5))) ⟶
+        distanceBounded (ap2 GaussianLogGammaEulerHead.nameF (var 7)
+            (GaussianLogGammaEulerHead.data (var 0) (var 1) (var 2) (var 3) (var 5+var 6)))
+          (ap2 GaussianLogGammaEulerHead.nameF (var 8)
+            (GaussianLogGammaEulerHead.data (var 0) (var 1) (var 2) (var 3) (var 5)))
+          ((var 4*var 4+var 4)*unit (var 7)*unit (var 8)+var 5*(unit (var 7)+unit (var 8)))
+          (var 5*unit (var 7)*unit (var 8))) :=
+  closeUniv 9 (.impI (sharp_ordered_gap _ _ _ _ _ _ _ _ _ Prf.hyp0.andE₁ Prf.hyp0.andE₂.andE₁ Prf.hyp0.andE₂.andE₂))
 
 end LeanProofs.IPRA.Analysis.GaussianLogGammaEulerHeadGap

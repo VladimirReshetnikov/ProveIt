@@ -131,11 +131,11 @@ private theorem head_congr (q A B D neg : PTm n) {N M : PTm n}
 
 private theorem ordered_distance (p q A B D neg R N M : PTm n)
     (h : Γ ⊢[PRAAx] source A B D neg R) (hN : Γ ⊢[PRAAx] le one N)
-    (hlarge : Γ ⊢[PRAAx] le (num 8*R) N) (hle : Γ ⊢[PRAAx] le N M) :
+    (hlarge : Γ ⊢[PRAAx] le (two*R) N) (hle : Γ ⊢[PRAAx] le N M) :
     Γ ⊢[PRAAx] distanceBounded (ap2 F p (headData A B D neg M)) (ap2 F q (headData A B D neg N))
       (radiusNumerator (cost R) N p q) (radiusDenominator N p q) := by
   have e : Γ ⊢[PRAAx] N+monus M N ≐ M := (eq_add_of_le hle).eqSymm
-  have gap := GaussianLogGammaEulerHeadGap.normalized_ordered_gap p q A B D neg R N (monus M N) h hN hlarge
+  have gap := GaussianLogGammaEulerHeadGap.sharp_normalized_ordered_gap p q A B D neg R N (monus M N) h hN hlarge
   exact distance_congr (head_congr p A B D neg e) (.eqRefl _) (.eqRefl _) (.eqRefl _) gap
 
 private theorem lower_precision (x y C N p q : PTm n) (hN : Γ ⊢[PRAAx] le one N)
@@ -188,7 +188,9 @@ theorem late_cutoff_distance (p q A B D neg R N : PTm n)
       (unit p+unit q) (unit p*unit q) := by
   let M := cutoff R p
   have hM := cutoff_positive (Γ := Γ) R p
-  have raw := ordered_distance q (succ p) A B D neg R M N h hM (cutoff_large R p) hle
+  have sharp : Γ ⊢[PRAAx] le (two*R) M :=
+    le_trans (AnalyticNumberTheory.PhiLower.le_mul_mono (by ipra_le 6) (le_refl R)) (cutoff_large R p)
+  have raw := ordered_distance q (succ p) A B D neg R M N h hM sharp hle
   have forward := distance_symmetric _ _ _ _ (radius_positive M (succ p) q hM)
     (swap_radius _ _ _ _ _ _ raw)
   exact absorb_tail _ _ (cost R) M p q hM (cutoff_budget R p) forward
@@ -216,9 +218,9 @@ theorem regular (A B D neg R : PTm n) (h : Γ ⊢[PRAAx] source A B D neg R) :
     distance_congr (e (var 1)).eqSymm (e (var 0)).eqSymm (.eqRefl _) (.eqRefl _)
       (observed_distance (var 1) (var 0) (sh A) (sh B) (sh D) (sh neg) (sh R) hs)
 
-theorem cutoff_distance (p q A B D neg R N : PTm n)
+theorem sharp_cutoff_distance (p q A B D neg R N : PTm n)
     (h : Γ ⊢[PRAAx] source A B D neg R) (hN : Γ ⊢[PRAAx] le one N)
-    (hlarge : Γ ⊢[PRAAx] le (num 8*R) N) :
+    (hlarge : Γ ⊢[PRAAx] le (two*R) N) :
     Γ ⊢[PRAAx] distanceBounded (ap2 nameF p (data A B D neg R)) (ap2 F q (headData A B D neg N))
       (cost R*unit p*unit q+N*(unit p+unit q)) (N*unit p*unit q) := by
   apply distance_congr (sample_at p A B D neg R).eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _)
@@ -263,9 +265,9 @@ theorem radius_independent (A B D neg R S : PTm n)
   simpa only [Syn.shift,sh,subst_data,PTm.subst_num] using
     radius_diagonal (var 0) (sh A) (sh B) (sh D) (sh neg) (sh R) (sh S) hr hs
 
-theorem original_cutoff_distance (p q A B D neg R N : PTm n)
+theorem sharp_original_cutoff_distance (p q A B D neg R N : PTm n)
     (h : Γ ⊢[PRAAx] source A B D neg R) (hN : Γ ⊢[PRAAx] le one N)
-    (hlarge : Γ ⊢[PRAAx] le (num 8*R) N) :
+    (hlarge : Γ ⊢[PRAAx] le (two*R) N) :
     Γ ⊢[PRAAx] distanceBounded (ap2 nameF p (data A B D neg R)) (ap2 G q (originalData A B D neg N))
       (cost R*unit p*unit q+N*(unit p+unit q)) (N*unit p*unit q) := by
   let x := ap2 nameF p (data A B D neg R)
@@ -276,7 +278,7 @@ theorem original_cutoff_distance (p q A B D neg R N : PTm n)
   let z := ap2 F t (headData A B D neg N)
   have hb := radius_positive N p q hN
   have ht := unit_positive (Γ := Γ) t
-  have left := cutoff_distance p t A B D neg R N h hN hlarge
+  have left := sharp_cutoff_distance p t A B D neg R N h hN hlarge
   have eq := GaussianLogGammaEulerNormalizedHead.equivalent A B D neg N h.andE₁ hN
   have right := cross_at F G _ _ t q (cross_symm G F _ _ eq)
   have hLeft := radius_positive N p t hN
@@ -291,12 +293,36 @@ theorem canonical_regular (A B D neg : PTm n) (h : Γ ⊢[PRAAx] GaussianRightHa
     Γ ⊢[PRAAx] pointCN nameF (canonicalData A B D neg) :=
   regular A B D neg (radius A B) (source_of_right_half_plane A B D neg h)
 
+theorem canonical_sharp_original_cutoff_distance (p q A B D neg N : PTm n)
+    (h : Γ ⊢[PRAAx] GaussianRightHalfPlaneLogarithm.source A D neg) (hN : Γ ⊢[PRAAx] le one N)
+    (hlarge : Γ ⊢[PRAAx] le (two*radius A B) N) :
+    Γ ⊢[PRAAx] distanceBounded (ap2 nameF p (canonicalData A B D neg)) (ap2 G q (originalData A B D neg N))
+      (cost (radius A B)*unit p*unit q+N*(unit p+unit q)) (N*unit p*unit q) :=
+  sharp_original_cutoff_distance p q A B D neg (radius A B) N (source_of_right_half_plane A B D neg h) hN hlarge
+
+theorem cutoff_distance (p q A B D neg R N : PTm n)
+    (h : Γ ⊢[PRAAx] source A B D neg R) (hN : Γ ⊢[PRAAx] le one N)
+    (hlarge : Γ ⊢[PRAAx] le (num 8*R) N) :
+    Γ ⊢[PRAAx] distanceBounded (ap2 nameF p (data A B D neg R)) (ap2 F q (headData A B D neg N))
+      (cost R*unit p*unit q+N*(unit p+unit q)) (N*unit p*unit q) :=
+  sharp_cutoff_distance p q A B D neg R N h hN
+    (le_trans (AnalyticNumberTheory.PhiLower.le_mul_mono (by ipra_le 6) (le_refl R)) hlarge)
+
+theorem original_cutoff_distance (p q A B D neg R N : PTm n)
+    (h : Γ ⊢[PRAAx] source A B D neg R) (hN : Γ ⊢[PRAAx] le one N)
+    (hlarge : Γ ⊢[PRAAx] le (num 8*R) N) :
+    Γ ⊢[PRAAx] distanceBounded (ap2 nameF p (data A B D neg R)) (ap2 G q (originalData A B D neg N))
+      (cost R*unit p*unit q+N*(unit p+unit q)) (N*unit p*unit q) :=
+  sharp_original_cutoff_distance p q A B D neg R N h hN
+    (le_trans (AnalyticNumberTheory.PhiLower.le_mul_mono (by ipra_le 6) (le_refl R)) hlarge)
+
 theorem canonical_original_cutoff_distance (p q A B D neg N : PTm n)
     (h : Γ ⊢[PRAAx] GaussianRightHalfPlaneLogarithm.source A D neg) (hN : Γ ⊢[PRAAx] le one N)
     (hlarge : Γ ⊢[PRAAx] le (num 8*radius A B) N) :
     Γ ⊢[PRAAx] distanceBounded (ap2 nameF p (canonicalData A B D neg)) (ap2 G q (originalData A B D neg N))
       (cost (radius A B)*unit p*unit q+N*(unit p+unit q)) (N*unit p*unit q) :=
-  original_cutoff_distance p q A B D neg (radius A B) N (source_of_right_half_plane A B D neg h) hN hlarge
+  canonical_sharp_original_cutoff_distance p q A B D neg N h hN
+    (le_trans (AnalyticNumberTheory.PhiLower.le_mul_mono (by ipra_le 6) (le_refl (radius A B))) hlarge)
 
 theorem actual_Euler_log_Gamma_cofinal_regular_closed :
     ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 5
@@ -336,5 +362,15 @@ theorem actual_canonical_Euler_log_Gamma_original_cutoff_rate_closed :
           (cost (radius (var 0) (var 1))*unit (var 5)*unit (var 6)+var 4*(unit (var 5)+unit (var 6)))
           (var 4*unit (var 5)*unit (var 6))) :=
   closeUniv 7 (.impI (.impI (canonical_original_cutoff_distance _ _ _ _ _ _ _ Prf.hyp1 Prf.hyp0.andE₁ Prf.hyp0.andE₂)))
+
+theorem actual_canonical_Euler_log_Gamma_sharp_original_cutoff_rate_closed :
+    ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 7
+      (GaussianRightHalfPlaneLogarithm.source (var 0) (var 2) (var 3) ⟶
+        (le one (var 4) ⋏ le (two*radius (var 0) (var 1)) (var 4)) ⟶
+        distanceBounded (ap2 nameF (var 5) (canonicalData (var 0) (var 1) (var 2) (var 3)))
+          (ap2 G (var 6) (originalData (var 0) (var 1) (var 2) (var 3) (var 4)))
+          (cost (radius (var 0) (var 1))*unit (var 5)*unit (var 6)+var 4*(unit (var 5)+unit (var 6)))
+          (var 4*unit (var 5)*unit (var 6))) :=
+  closeUniv 7 (.impI (.impI (canonical_sharp_original_cutoff_distance _ _ _ _ _ _ _ Prf.hyp1 Prf.hyp0.andE₁ Prf.hyp0.andE₂)))
 
 end LeanProofs.IPRA.Analysis.GaussianLogGammaEulerCofinal

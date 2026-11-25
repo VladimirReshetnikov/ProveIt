@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.GaussianLogGammaEulerResidualCanonicalError
+import IPRADerivations.Analysis.GaussianLogGammaEulerResidualHalfDisk
 import IPRADerivations.Analysis.GaussianLogGammaEulerResidualIntervalMajorant
 import IPRADerivations.Analysis.GaussianLogGammaEulerLinearInterval
 import IPRADerivations.Analysis.GaussianLogGammaEulerFactorSum
@@ -29,7 +29,8 @@ open GaussianFastValueCut (exponent query_budget)
 open GaussianLogGammaEulerFactorSum (residualBody residual_at residual_rows)
 open GaussianLogGammaEulerHead (rowData subst_rowData)
 open GaussianLogGammaEulerLinearInterval (linearRows linearBody linearSum subst_linearRows)
-open GaussianLogGammaEulerResidualCanonicalError (canonicalPoint canonical_sample_error)
+open GaussianLogGammaEulerResidualCanonicalError (canonicalPoint)
+open GaussianLogGammaEulerResidualHalfDisk (canonical_sample_error)
 open GaussianLogGammaEulerResidualDomain (source linearTerm subst_source)
 open GaussianLogGammaEulerResidualIntervalMajorant (budgetBody budgetData budgetSum budget_term
   subst_budgetData scalar_bound)
@@ -75,7 +76,7 @@ theorem interval_regular (A B D neg N r : PTm n)
   range_regular G residualBody N r (rowData A B D neg) (residual_rows A B D neg (N + r) h)
 
 private theorem row_majorized (p A B D neg R N i : PTm n)
-    (h : Γ ⊢[PRAAx] source A B D neg R) (hlarge : Γ ⊢[PRAAx] le (num 8 * R) N) :
+    (h : Γ ⊢[PRAAx] source A B D neg R) (hlarge : Γ ⊢[PRAAx] le (two * R) N) :
     Γ ⊢[PRAAx] majorized
       (inst2 (differenceBody intervalBody linearBody) i
         (pairT (intervalData p N (rowData A B D neg)) (linearRows A B D neg N)))
@@ -104,9 +105,9 @@ def errorNumerator (p R N r : PTm n) : PTm n := R * R * unit p + num 3 * r * N
 def errorDenominator (p N : PTm n) : PTm n := N * unit p
 
 /-- The common-clock error for the two literal finite sums. -/
-theorem interval_sample_error (p A B D neg R N r : PTm n)
+theorem sharp_interval_sample_error (p A B D neg R N r : PTm n)
     (h : Γ ⊢[PRAAx] source A B D neg R) (hN : Γ ⊢[PRAAx] le one N)
-    (hlarge : Γ ⊢[PRAAx] le (num 8 * R) N) :
+    (hlarge : Γ ⊢[PRAAx] le (two * R) N) :
     Γ ⊢[PRAAx] distanceBounded (interval p A B D neg N r) (linearSum A B D neg N r)
       (errorNumerator p R N r) (errorDenominator p N) := by
   let x := intervalData p N (rowData A B D neg)
@@ -121,8 +122,9 @@ theorem interval_sample_error (p A B D neg R N r : PTm n)
     let Δ := lt (var 0) (s r) :: Γ.map Fm.shift
     have hs : Δ ⊢[PRAAx] source (s A) (s B) (s D) (s neg) (s R) := by
       simpa only [Δ, s, Fm.shift, Syn.shift, subst_source] using h.shift.wk
-    have hL : Δ ⊢[PRAAx] le (num 8 * s R) (s N) := by
-      simpa only [Δ, s, Fm.shift, Syn.shift, subst_le, PTm.subst_mul, PTm.subst_num] using hlarge.shift.wk
+    have hL : Δ ⊢[PRAAx] le (two * s R) (s N) := by
+      simpa only [Δ, s, Fm.shift, Syn.shift, subst_le, PTm.subst_mul, two, one, ConciseIPRA.PTm.subst_succ,
+        ConciseIPRA.PTm.subst_zero] using hlarge.shift.wk
     simpa only [Δ, diff, s, x, y, Syn.shift, subst_pairT, subst_intervalData, subst_rowData, subst_linearRows,
       subst_budgetData, PTm.subst_mul, subst_unit, PTm.subst_num] using row_majorized
       (s p) (s A) (s B) (s D) (s neg) (s R) (s N) (var 0) hs hL
@@ -139,14 +141,14 @@ theorem interval_sample_error (p A B D neg R N r : PTm n)
   exact bound_congr (finite_sum_difference intervalBody linearBody r x y) (.eqRefl _) (.eqRefl _) small
 
 /-- The interval's own named sampler already pays for its row count. -/
-theorem named_interval_sample_error (p A B D neg R N r : PTm n)
+theorem sharp_named_interval_sample_error (p A B D neg R N r : PTm n)
     (h : Γ ⊢[PRAAx] source A B D neg R) (hN : Γ ⊢[PRAAx] le one N)
-    (hlarge : Γ ⊢[PRAAx] le (num 8 * R) N) :
+    (hlarge : Γ ⊢[PRAAx] le (two * R) N) :
     Γ ⊢[PRAAx] distanceBounded
       (ap2 (nameF G (rangeBody residualBody)) p (rangeData N r (rowData A B D neg)))
       (linearSum A B D neg N r) (R * R * unit p + num 3 * N) (errorDenominator p N) := by
   let k := exponent r p
-  have hi := interval_sample_error k A B D neg R N r h hN hlarge
+  have hi := sharp_interval_sample_error k A B D neg R N r h hN hlarge
   have hk := positive_product _ _ hN (unit_positive k)
   have hp := positive_product _ _ hN (unit_positive p)
   have cmp : Γ ⊢[PRAAx] le (errorNumerator k R N r * errorDenominator p N)
@@ -155,6 +157,23 @@ theorem named_interval_sample_error (p A B D neg R N r : PTm n)
     ipra_le 3 * 𝔞 N * 𝔞 N * sl (query_budget (Γ := Γ) r p)
   exact distance_congr (sample_at G (rangeBody residualBody) p r (pairT N (rowData A B D neg))).eqSymm
     (.eqRefl _) (.eqRefl _) (.eqRefl _) (distance_radius_mono _ _ _ _ _ _ hk hp cmp hi)
+
+theorem interval_sample_error (p A B D neg R N r : PTm n)
+    (h : Γ ⊢[PRAAx] source A B D neg R) (hN : Γ ⊢[PRAAx] le one N)
+    (hlarge : Γ ⊢[PRAAx] le (num 8 * R) N) :
+    Γ ⊢[PRAAx] distanceBounded (interval p A B D neg N r) (linearSum A B D neg N r)
+      (errorNumerator p R N r) (errorDenominator p N) :=
+  sharp_interval_sample_error p A B D neg R N r h hN
+    (le_trans (AnalyticNumberTheory.PhiLower.le_mul_mono (by ipra_le 6) (le_refl R)) hlarge)
+
+theorem named_interval_sample_error (p A B D neg R N r : PTm n)
+    (h : Γ ⊢[PRAAx] source A B D neg R) (hN : Γ ⊢[PRAAx] le one N)
+    (hlarge : Γ ⊢[PRAAx] le (num 8 * R) N) :
+    Γ ⊢[PRAAx] distanceBounded
+      (ap2 (nameF G (rangeBody residualBody)) p (rangeData N r (rowData A B D neg)))
+      (linearSum A B D neg N r) (R * R * unit p + num 3 * N) (errorDenominator p N) :=
+  sharp_named_interval_sample_error p A B D neg R N r h hN
+    (le_trans (AnalyticNumberTheory.PhiLower.le_mul_mono (by ipra_le 6) (le_refl R)) hlarge)
 
 theorem actual_Euler_residual_common_clock_interval_closed :
     ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 8
@@ -174,5 +193,15 @@ theorem actual_Euler_residual_named_interval_closed :
             (linearSum (var 1) (var 2) (var 3) (var 4) (var 6) (var 7))
             (var 5 * var 5 * unit (var 0) + num 3 * var 6) (errorDenominator (var 0) (var 6))) :=
   closeUniv 8 (.impI (.impI (.impI (named_interval_sample_error _ _ _ _ _ _ _ _ hyp2 Prf.hyp1 Prf.hyp0))))
+
+theorem actual_Euler_residual_sharp_named_interval_closed :
+    ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 8
+      (source (var 1) (var 2) (var 3) (var 4) (var 5) ⟶
+        le one (var 6) ⟶ le (two * var 5) (var 6) ⟶
+          distanceBounded (ap2 (nameF G (rangeBody residualBody)) (var 0)
+            (rangeData (var 6) (var 7) (rowData (var 1) (var 2) (var 3) (var 4))))
+            (linearSum (var 1) (var 2) (var 3) (var 4) (var 6) (var 7))
+            (var 5 * var 5 * unit (var 0) + num 3 * var 6) (errorDenominator (var 0) (var 6))) :=
+  closeUniv 8 (.impI (.impI (.impI (sharp_named_interval_sample_error _ _ _ _ _ _ _ _ hyp2 Prf.hyp1 Prf.hyp0))))
 
 end LeanProofs.IPRA.Analysis.GaussianLogGammaEulerResidualInterval
