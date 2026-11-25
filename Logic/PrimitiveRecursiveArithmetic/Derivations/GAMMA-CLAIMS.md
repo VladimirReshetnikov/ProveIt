@@ -2488,3 +2488,11 @@ gives a finite damped sine integral. It approximates both the original
 finite arctangent quadrature and the original arctangent observations,
 with explicit mesh, horizon and clock errors.
 [GaussianBinetOscillatorySineRectangle](Lean/IPRADerivations/Analysis/GaussianBinetOscillatorySineRectangle.lean), [GaussianBinetArctangentSineGridComparison](Lean/IPRADerivations/Analysis/GaussianBinetArctangentSineGridComparison.lean)
+
+The original second Binet product admits a compact integral on every
+positive rational interval `[A/E,(A+C)/E]`. The original arctangent
+and reciprocal have time rates on that interval, so the literal
+left quadrature defines a regular name. Every actual sample has
+norm at most `CD/(4EX)` for real part `X/D`, including intervals
+whose lower endpoint tends to zero.
+[GaussianBinetBoseReciprocalTimeRate](Lean/IPRADerivations/Analysis/GaussianBinetBoseReciprocalTimeRate.lean), [GaussianBinetArctangentTimeRate](Lean/IPRADerivations/Analysis/GaussianBinetArctangentTimeRate.lean), [GaussianBinetBoseCompact](Lean/IPRADerivations/Analysis/GaussianBinetBoseCompact.lean), [GaussianBinetBoseCompactBound](Lean/IPRADerivations/Analysis/GaussianBinetBoseCompactBound.lean)
