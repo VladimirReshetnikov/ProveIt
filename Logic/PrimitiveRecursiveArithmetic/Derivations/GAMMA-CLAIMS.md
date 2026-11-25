@@ -2663,3 +2663,6 @@ The common affine-grid inverse-square estimate bounds the original weighted quad
 
 At any mesh above the computed floor, the actual log-Gamma quadrature and the regular right side differ by at most 14·2^-h at the selected clock. The mesh may be aligned to a separate endpoint partition. The exact encoded unit argument has an explicit comparison to the original Stirling constant minus one.
 [GaussianRaabeStirlingGridRemainder](Lean/IPRADerivations/Analysis/GaussianRaabeStirlingGridRemainder.lean), [GaussianRaabePositiveComparison](Lean/IPRADerivations/Analysis/GaussianRaabePositiveComparison.lean), [GaussianRaabeAtOne](Lean/IPRADerivations/Analysis/GaussianRaabeAtOne.lean)
+
+The exact moment names on ordered positive windows have the original inverse-square tail rate at independent precisions.
+[GaussianBinetLaplaceMomentPrefixes](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentPrefixes.lean)
