@@ -1846,6 +1846,13 @@ denominator row. The bounded prefix and interval split reads the exact
 original row at its offset.
 [GaussianLogGammaFactorialLogSum](Lean/IPRADerivations/Analysis/GaussianLogGammaFactorialLogSum.lean), [GaussianLogGammaEulerFactorSum](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerFactorSum.lean), [GaussianLogGammaEulerNormalizedHead](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerNormalizedHead.lean), [GaussianNamedFiniteSumFamilyRange](Lean/IPRADerivations/Analysis/GaussianNamedFiniteSumFamilyRange.lean).
 
+On the signed rational disk `|w| ≤ 1/8`, the actual canonical logarithm
+of `1+w` equals the actual Mercator logarithm at independently chosen
+precisions. Both logarithms exponentiate to the same encoded rational.
+The late difference samples have norm at most `3/4`, where the
+quadratic exponential remainder gives an internal uniqueness proof.
+[GaussianFiniteExponentialLocalUniqueness](Lean/IPRADerivations/Analysis/GaussianFiniteExponentialLocalUniqueness.lean), [GaussianNamedExponentialLocalUniqueness](Lean/IPRADerivations/Analysis/GaussianNamedExponentialLocalUniqueness.lean), [GaussianRightHalfPlaneLogarithmMercator](Lean/IPRADerivations/Analysis/GaussianRightHalfPlaneLogarithmMercator.lean).
+
 ## Source artifacts and representation boundaries
 
 The delivered [Lean companion](../docs/proofs/analysis/gamma_ipra/lean/README.md)
