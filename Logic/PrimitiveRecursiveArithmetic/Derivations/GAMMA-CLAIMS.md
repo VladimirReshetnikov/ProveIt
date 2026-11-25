@@ -2120,6 +2120,13 @@ gives its exact unit difference
 `R(z)−R(z+1) = (z+1/2)(Log(z+1)−Log(z))−1`.
 [GaussianBinetStirlingRemainder](Lean/IPRADerivations/Analysis/GaussianBinetStirlingRemainder.lean), [GaussianBinetStirlingRealBound](Lean/IPRADerivations/Analysis/GaussianBinetStirlingRealBound.lean), [GaussianBinetStirlingUnitDifferenceAlgebra](Lean/IPRADerivations/Analysis/GaussianBinetStirlingUnitDifferenceAlgebra.lean), [GaussianBinetStirlingUnitDifference](Lean/IPRADerivations/Analysis/GaussianBinetStirlingUnitDifference.lean).
 
+On the original uniform grid of `[0,1]`, the weighted resolvent
+`(1/2−t)/(z+t)` has an exact affine reduction at every tag. Its literal
+finite sum and cofinal quadrature agree with the canonical logarithm
+increment expression. The resulting cofinal unit quadrature equals
+the actual remainder difference `R(z)−R(z+1)`.
+[GaussianBinetWeightedResolventGrid](Lean/IPRADerivations/Analysis/GaussianBinetWeightedResolventGrid.lean), [GaussianBinetWeightedResolvent](Lean/IPRADerivations/Analysis/GaussianBinetWeightedResolvent.lean).
+
 A literal signed vertical step has the checked quadratic logarithm
 estimate. The normalized first-order Stirling expression
 `ψ(z)−Log(z)+1/(2z)` has absolute bound `3/(2 Re(z))` at independent
