@@ -2786,3 +2786,6 @@ At the concrete argument two, the original exponential Dirichlet row equals the 
 
 The integer factorial normalization and exact finite log recurrence transport the two convexity chords to the original finite lower and upper bracket names. A closed iPRA derivation places the fixed presentation between those names for every encoded positive rational x at most B and every n at least two.
 [GaussianBohrMollerupFactorialNormalization](Lean/IPRADerivations/Analysis/GaussianBohrMollerupFactorialNormalization.lean), [GaussianBohrMollerupBracketIncrements](Lean/IPRADerivations/Analysis/GaussianBohrMollerupBracketIncrements.lean), [GaussianBohrMollerupBracketEnclosure](Lean/IPRADerivations/Analysis/GaussianBohrMollerupBracketEnclosure.lean)
+
+The checked integer Gamma trajectory and actual factorial readback give Gamma(2)=1 on the native Mellin chart. The closed specialization equates the original improper sampler with its original cofinal Dirichlet name at two.
+[GaussianGammaZetaMellinTwoDirichlet](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinTwoDirichlet.lean)
