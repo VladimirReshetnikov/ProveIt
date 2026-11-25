@@ -29988,6 +29988,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentImproper.prefix_rate
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentImproper.actual_weighted_Binet_improper_regular_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentImproper.actual_weighted_Binet_improper_prefix_rate_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentPositive.marginPoint
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentPositive.subst_marginPoint
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentPositive.margin_scalar
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentPositive.panel_order
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentPositive.unit_panel_order
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentPositive.prefix_order
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentPositive.improper_order
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentPositive.actual_improper_Binet_moments_positive_closed
 
 /-! ### GaussianEulerDecayCompactUpper -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerDecayCompactUpper.upperPoint

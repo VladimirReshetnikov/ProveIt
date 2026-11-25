@@ -2684,3 +2684,6 @@ On the aligned trimmed grid, the actual logarithm quadrature approximates minus 
 
 Certifies a common finite cutoff, aligned meshes and observation clock, with separate bounds for both omitted endpoint contributions and the original truncated logarithm quadrature.
 [GaussianRaabeOriginSchedule](Lean/IPRADerivations/Analysis/GaussianRaabeOriginSchedule.lean)
+
+Every moment on the positive real chart has a named positive lower bound, witnessed by the compact unit panel and the nonnegative exterior strips of each cofinal prefix.
+[GaussianBinetLaplaceMomentPositive](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentPositive.lean)
