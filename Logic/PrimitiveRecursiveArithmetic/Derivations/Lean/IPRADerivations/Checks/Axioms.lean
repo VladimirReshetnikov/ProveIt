@@ -35500,6 +35500,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinDampedWindowSchedule.shared_source
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinDampedWindowSchedule.strip_window
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinDampedWindowSchedule.scheduled_product_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinGeometricEnvelope.factor
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinGeometricEnvelope.factorization
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinGeometricEnvelope.factor_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinGeometricEnvelope.weighted_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinGeometricEnvelope.weighted_product_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinGeometricEnvelope.originCell
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinGeometricEnvelope.origin_cell_bound
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinOriginBound.origin_bound
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinOriginBound.actual_gamma_zeta_mellin_origin_bound_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinOriginCell.value

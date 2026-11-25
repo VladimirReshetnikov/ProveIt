@@ -2723,3 +2723,6 @@ A certified enclosing panel, shared mesh and observation clock give an explicit 
 
 For every internal finite prefix, the explicit widened physical panel contains the given positive panel. The chosen bounds and mesh make its literal damped sum agree with the original finite Gamma–Dirichlet product within 10/2^p+1/2^r at independent precisions.
 [GaussianGammaZetaMellinDampedWindowSchedule](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinDampedWindowSchedule.lean)
+
+The same-clock original Mellin observation factors the finite geometric prefix. Its uniform factor two gives a prefix-count independent norm bound at each positive time and on the powered lower endpoint cells.
+[GaussianGammaZetaMellinGeometricEnvelope](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinGeometricEnvelope.lean)
