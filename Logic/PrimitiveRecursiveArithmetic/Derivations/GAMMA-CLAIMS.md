@@ -1983,6 +1983,13 @@ real margin. The literal finite series has a leading cutoff error of
 uses `8H(K²+2)2ʳ ≤ D` to obtain a leading error of `2⁻ʳ`.
 [GaussianLogGammaEulerDerivativeQuotient](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerDerivativeQuotient.lean), [GaussianLogGammaEulerDigammaFractionsRate](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerDigammaFractionsRate.lean), [GaussianLogGammaEulerDigammaFractionsCofinal](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerDigammaFractionsCofinal.lean), [GaussianLogGammaEulerDigammaDerivative](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerDigammaDerivative.lean).
 
+For a regular complex name with a certified positive real margin
+`1/M`, the actual retimed observations admit a signed rational chart
+with real part at least `1/(2M)` and a single computed disk bound.
+The chart decoding preserves the exact value of each observation,
+including comparisons between observations with different denominators.
+[GaussianNamedRightHalfPlaneSigned](Lean/IPRADerivations/Analysis/GaussianNamedRightHalfPlaneSigned.lean).
+
 ## Source artifacts and representation boundaries
 
 The delivered [Lean companion](../docs/proofs/analysis/gamma_ipra/lean/README.md)
