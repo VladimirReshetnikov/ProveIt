@@ -27951,6 +27951,17 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetBoseFrozenOriginCut.prefix_bound
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetBoseFrozenOriginCut.prefix_gap
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetBoseFrozenOriginCut.cut_and_restore
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetBoseLiteralLate.finite_uniform_late
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetBosePrefixRefinementLate.point_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetBosePrefixRefinementLate.quadrature_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetBosePrefixRefinementLate.refined_prefix_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetBoseImproperFrozen.baseMesh
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetBoseImproperFrozen.refinementCost
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetBoseImproperFrozen.freezingCost
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetBoseImproperFrozen.alignmentCost
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetBoseImproperFrozen.time_geometry
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetBoseImproperFrozen.compact_window_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetBoseImproperFrozen.observation_error
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetBosePrefixRefinement.refined_prefix_error
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetBosePrefixRefinement.actual_second_Binet_refined_Bose_prefix_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetArctangentSignedPole.imagNumerator

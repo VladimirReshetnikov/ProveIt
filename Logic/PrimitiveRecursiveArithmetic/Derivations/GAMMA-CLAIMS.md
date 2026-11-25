@@ -2576,3 +2576,6 @@ Compare the literal positive sine suffix with the original first Binet improper 
 
 Checked the later frozen prefix against the weighted sine prefix on the same time grid, with an independent angular clock. The retained angular cells compare to the original frozen kernel with separately bounded observation and time-tail errors.
 [GaussianBinetSecondDecayRetiming](Lean/IPRADerivations/Analysis/GaussianBinetSecondDecayRetiming.lean), [GaussianBinetSineKernelFrequency](Lean/IPRADerivations/Analysis/GaussianBinetSineKernelFrequency.lean)
+
+The compact comparison fixes the retained geometric count before choosing the literal observation clock. Refinement, freezing, suffix alignment, and the origin correction connect the original improper sample to the retained full frozen matrix with error at most 9·2^-h.
+[GaussianBinetBoseLiteralLate](Lean/IPRADerivations/Analysis/GaussianBinetBoseLiteralLate.lean), [GaussianBinetBosePrefixRefinementLate](Lean/IPRADerivations/Analysis/GaussianBinetBosePrefixRefinementLate.lean), [GaussianBinetBoseImproperFrozen](Lean/IPRADerivations/Analysis/GaussianBinetBoseImproperFrozen.lean)
