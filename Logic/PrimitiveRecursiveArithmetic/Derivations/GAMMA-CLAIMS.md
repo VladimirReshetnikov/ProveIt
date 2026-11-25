@@ -1771,6 +1771,29 @@ the selected minimum value excludes every finite apartness witness,
 so the input name is equivalent to the selected minimizer.
 [GaussianNamedDyadicIncrement](Lean/IPRADerivations/Analysis/GaussianNamedDyadicIncrement.lean), [GaussianGammaNamedPoleFreeQuotientProperness](Lean/IPRADerivations/Analysis/GaussianGammaNamedPoleFreeQuotientProperness.lean), [GaussianGammaNamedRealDerivativeProperness](Lean/IPRADerivations/Analysis/GaussianGammaNamedRealDerivativeProperness.lean), [GaussianGammaMinimumGlobalUniqueness](Lean/IPRADerivations/Analysis/GaussianGammaMinimumGlobalUniqueness.lean).
 
+## The right-half-plane logarithm and finite Euler heads
+
+For a rational input with positive real numerator and positive common
+denominator, the actual radial program reads half the logarithm of the
+squared modulus. Its exponential agrees with an independent dyadic
+square-root program. The signed phase uses the arctangent on the unit
+interval and the reciprocal chart beyond it. Equal ratios give exactly
+equivalent phase names. The combined logarithm has the positive-axis
+readback and positive rational scaling formula of the source.
+[GaussianNamedHalf](Lean/IPRADerivations/Analysis/GaussianNamedHalf.lean), [GaussianPositiveRationalHalfLogarithm](Lean/IPRADerivations/Analysis/GaussianPositiveRationalHalfLogarithm.lean), [GaussianRightHalfPlaneRadialLogarithm](Lean/IPRADerivations/Analysis/GaussianRightHalfPlaneRadialLogarithm.lean), [GaussianRightHalfPlaneArgument](Lean/IPRADerivations/Analysis/GaussianRightHalfPlaneArgument.lean), [GaussianRightHalfPlaneArgumentProperness](Lean/IPRADerivations/Analysis/GaussianRightHalfPlaneArgumentProperness.lean), [GaussianRightHalfPlaneArgumentAxis](Lean/IPRADerivations/Analysis/GaussianRightHalfPlaneArgumentAxis.lean), [GaussianRightHalfPlaneLogarithm](Lean/IPRADerivations/Analysis/GaussianRightHalfPlaneLogarithm.lean).
+
+The small-chart phase exponential has the exact Cayley square and
+nonnegative real part at every observation. Both reciprocal and
+conjugate charts have explicit exponential transfer.
+[GaussianRightHalfPlaneArgumentExponential](Lean/IPRADerivations/Analysis/GaussianRightHalfPlaneArgumentExponential.lean), [GaussianRightHalfPlaneArgumentCosine](Lean/IPRADerivations/Analysis/GaussianRightHalfPlaneArgumentCosine.lean), [GaussianRightHalfPlaneArgumentExponentialBranches](Lean/IPRADerivations/Analysis/GaussianRightHalfPlaneArgumentExponentialBranches.lean).
+
+A common precision computed from the number of terms gives a regular
+sum of the actual shifted logarithms. This yields the finite Euler head
+`log(N!) + z log(N) − Σ Log(z+k)` on the rational right half-plane.
+The cofinal limit and its identification with the original Gamma
+evaluator remain open.
+[GaussianNamedFiniteSumFamily](Lean/IPRADerivations/Analysis/GaussianNamedFiniteSumFamily.lean), [GaussianLogGammaEulerHead](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerHead.lean).
+
 ## Source artifacts and representation boundaries
 
 The delivered [Lean companion](../docs/proofs/analysis/gamma_ipra/lean/README.md)
