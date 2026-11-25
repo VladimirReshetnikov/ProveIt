@@ -18686,6 +18686,35 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedGoldenRatioFormula.original_formula
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedGoldenRatioFormula.actual_independent_named_golden_ratio_formula_closed
 
+/-! ### GaussianNamedGoldenRatioProduct -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGoldenRatioProduct.minusOne
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGoldenRatioProduct.minusF
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGoldenRatioProduct.minusData
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGoldenRatioProduct.productF
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGoldenRatioProduct.productData
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGoldenRatioProduct.equation
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGoldenRatioProduct.rearranged
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGoldenRatioProduct.product_implies_quadratic
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGoldenRatioProduct.quadratic_implies_product
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGoldenRatioProduct.actual_named_golden_ratio_product_closed
+
+/-! ### GaussianNamedPositiveLateLogSource -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedPositiveLateLogSource.retimedF
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedPositiveLateLogSource.retimedData
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedPositiveLateLogSource.subst_retimedData
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedPositiveLateLogSource.sample_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedPositiveLateLogSource.original_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedPositiveLateLogSource.name_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedPositiveLateLogSource.late_sample_admissible
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedPositiveLateLogSource.positive_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedPositiveLateLogSource.actual_original_positive_late_retiming_sample_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedPositiveLateLogSource.actual_original_positive_late_log_source_closed
+
+/-! ### GaussianNamedGoldenRatioRightHalfPlane -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGoldenRatioRightHalfPlane.quadratic_transport
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGoldenRatioRightHalfPlane.root_unique
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGoldenRatioRightHalfPlane.actual_original_positive_real_named_golden_ratio_unique_closed
+
 /-! ### GaussianNamedGammaHalfShift -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaHalfShift.half
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaHalfShift.negativeHalf
@@ -18723,6 +18752,91 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaFirstCrossing.crossing_implies_three_halves
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaFirstCrossing.three_halves_implies_crossing
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaFirstCrossing.actual_original_named_Gamma_first_crossing_closed
+
+/-! ### GaussianGammaNativeShiftRecurrence -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaNativeShiftRecurrence.resultF
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaNativeShiftRecurrence.resultData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaNativeShiftRecurrence.input_norm_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaNativeShiftRecurrence.original_gamma_shift_inverse
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaNativeShiftRecurrence.original_gamma_shift_observations
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaNativeShiftRecurrence.actual_original_pole_free_Gamma_one_shift_closed
+
+/-! ### GaussianGammaNativeBackwardGuard -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaNativeBackwardGuard.back
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaNativeBackwardGuard.subst_back
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaNativeBackwardGuard.translated_back_succ
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaNativeBackwardGuard.shifted_back
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaNativeBackwardGuard.backward_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaNativeBackwardGuard.actual_original_Gamma_backward_guard_closed
+
+/-! ### GaussianNamedGammaBackwardShift -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaBackwardShift.negativeOne
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaBackwardShift.minusOneF
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaBackwardShift.minusOneData
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaBackwardShift.source
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaBackwardShift.reciprocalF
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaBackwardShift.reciprocalData
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaBackwardShift.nameF
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaBackwardShift.data
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaBackwardShift.subst_minusOneData
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaBackwardShift.subst_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaBackwardShift.subst_data
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaBackwardShift.minus_one_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaBackwardShift.minus_one_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaBackwardShift.reciprocal_input
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaBackwardShift.name_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaBackwardShift.shifted_product
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaBackwardShift.actual_named_backward_Gamma_recurrence_closed
+
+/-! ### GaussianNamedGammaBackwardFrozen -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaBackwardFrozen.nativeZ
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaBackwardFrozen.nativeDen
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaBackwardFrozen.nativeW
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaBackwardFrozen.frozenF
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaBackwardFrozen.frozenReciprocal
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaBackwardFrozen.frozenData
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaBackwardFrozen.accuracy
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaBackwardFrozen.freezeClock
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaBackwardFrozen.subst_frozenData
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaBackwardFrozen.subst_freezeClock
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaBackwardFrozen.minus_one_fraction
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaBackwardFrozen.late_anchor
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaBackwardFrozen.positive_late_input
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaBackwardFrozen.original_native_lower
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaBackwardFrozen.original_positive_quotient_rate
+
+/-! ### GaussianNamedGammaBackwardIdentification -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaBackwardIdentification.encodedData
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaBackwardIdentification.original_native_backward_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaBackwardIdentification.original_independent_rate
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaBackwardIdentification.actual_original_named_backward_Gamma_frozen_rate_closed
+
+/-! ### GaussianNamedGammaSecondCrossingProduct -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSecondCrossingProduct.source
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSecondCrossingProduct.lowerF
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSecondCrossingProduct.upperF
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSecondCrossingProduct.lowerData
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSecondCrossingProduct.upperData
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSecondCrossingProduct.crossing
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSecondCrossingProduct.gamma_plus_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSecondCrossingProduct.weighted_upper
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSecondCrossingProduct.crossing_implies_product
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSecondCrossingProduct.product_implies_crossing
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSecondCrossingProduct.actual_original_named_Gamma_second_crossing_product_closed
+
+/-! ### GaussianNamedGammaSecondCrossing -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSecondCrossing.equalsGoldenRatio
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSecondCrossing.crossing_implies_golden_ratio
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSecondCrossing.golden_ratio_implies_crossing
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSecondCrossing.actual_original_named_Gamma_second_crossing_closed
+
+/-! ### GaussianNamedGammaSecondCrossingWitness -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSecondCrossingWitness.real_name
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSecondCrossingWitness.half_plane
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSecondCrossingWitness.away_from_one
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSecondCrossingWitness.admitted
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSecondCrossingWitness.original_crossing
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSecondCrossingWitness.actual_original_named_golden_ratio_Gamma_crossing_closed
 
 /-! ### GaussianGammaHalfWallisConvergence -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaHalfWallisConvergence.twiceWallis
