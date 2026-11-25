@@ -28716,6 +28716,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianRaabePositiveComparison.subst_value
 #print axioms LeanProofs.IPRA.Analysis.GaussianRaabePositiveComparison.observation_for
 #print axioms LeanProofs.IPRA.Analysis.GaussianRaabePositiveComparison.observation_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianRaabeFormula.data
+#print axioms LeanProofs.IPRA.Analysis.GaussianRaabeFormula.nameF
+#print axioms LeanProofs.IPRA.Analysis.GaussianRaabeFormula.subst_data
+#print axioms LeanProofs.IPRA.Analysis.GaussianRaabeFormula.sample_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianRaabeFormula.independent_observations
+#print axioms LeanProofs.IPRA.Analysis.GaussianRaabeFormula.equivalent
+#print axioms LeanProofs.IPRA.Analysis.GaussianRaabeFormula.regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianRaabeFormula.actual_Raabe_positive_rational_formula_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianRaabeAtOne.primitive_at_unit
 #print axioms LeanProofs.IPRA.Analysis.GaussianRaabeAtOne.right_side_at_unit
 #print axioms LeanProofs.IPRA.Analysis.GaussianRaabeLogPrimitiveRescale.equal_ratio
