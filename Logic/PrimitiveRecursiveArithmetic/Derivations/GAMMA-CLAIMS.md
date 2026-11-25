@@ -2741,3 +2741,6 @@ Every certified positive rational panel has an explicit sampled modulus at indep
 
 The actual compact name on nested powered positive cutoffs obeys an origin bound independent of the inner endpoint. The proof groups the original affine quadrature into powered cells and controls the drift to each right tag.
 [GaussianEulerLowerTailRootedMajorant](Lean/IPRADerivations/Analysis/GaussianEulerLowerTailRootedMajorant.lean), [GaussianGammaZetaMellinLowerRooted](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinLowerRooted.lean)
+
+The actual inverse-power row equals the reciprocal-time original power times its exact rational scale. A certified real-part margin gives a dyadic block decay bound at arbitrary original observation clocks.
+[GaussianGammaZetaDirichletReciprocalRow](Lean/IPRADerivations/Analysis/GaussianGammaZetaDirichletReciprocalRow.lean), [GaussianGammaZetaDirichletPowerOrder](Lean/IPRADerivations/Analysis/GaussianGammaZetaDirichletPowerOrder.lean), [GaussianGammaZetaDirichletRowDecay](Lean/IPRADerivations/Analysis/GaussianGammaZetaDirichletRowDecay.lean)
