@@ -2699,3 +2699,6 @@ The original quadratures on [2⁻ʰ,1] satisfy the certified 39/2^k comparison w
 
 The original [1,2] quadratures at each exact shifted unit-grid tag give a regular name for the integral of logΓ(1+t) on [0,1]. It is cross-equivalent to the named Stirling constant minus the exact rational unit.
 [GaussianRaabeShiftedUnitFormula](Lean/IPRADerivations/Analysis/GaussianRaabeShiftedUnitFormula.lean)
+
+Every nonnegative rational argument s admits an original observation bound 3s²+2/2^p against 1−s. This bound will control the Taylor remainder in the weighted Binet integral.
+[GaussianEulerDecayGlobalTaylor](Lean/IPRADerivations/Analysis/GaussianEulerDecayGlobalTaylor.lean)

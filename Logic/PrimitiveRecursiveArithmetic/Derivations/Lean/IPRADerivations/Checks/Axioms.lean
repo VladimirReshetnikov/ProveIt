@@ -29059,6 +29059,8 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceScalarMajorant.fraction_norm
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceScalarMajorant.scalar_observation_distance
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceScalarMajorant.actual_Binet_Laplace_scalar_majorant_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerDecayGlobalTaylor.original_decay_linear_remainder
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerDecayGlobalTaylor.actual_global_original_decay_linear_remainder_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceStripDomination.scalarCell
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceStripDomination.scalarBody
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceStripDomination.subst_scalarCell
