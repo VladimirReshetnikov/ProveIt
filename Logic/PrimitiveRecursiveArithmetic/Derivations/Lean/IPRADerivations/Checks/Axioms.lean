@@ -30292,6 +30292,21 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentBackwardQuotient.forwardData
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentBackwardQuotient.two_sided_rate
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentBackwardQuotient.actual_improper_Binet_moment_two_sided_quotient_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentVariation.gain
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentVariation.input
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentVariation.subst_gain
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentVariation.subst_input
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentVariation.gain_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentVariation.ordered_observations
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentVariation.ordered_rate
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentVariation.actual_improper_Binet_moment_ordered_variation_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentSignedVariation.pointData
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentSignedVariation.subst_pointData
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentSignedVariation.projected_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentSignedVariation.real_representation
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentSignedVariation.signed_observations
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentSignedVariation.signed_rate
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentSignedVariation.actual_improper_Binet_moment_signed_variation_closed
 
 /-! ### GaussianEulerDecayCompactUpper -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerDecayCompactUpper.upperPoint

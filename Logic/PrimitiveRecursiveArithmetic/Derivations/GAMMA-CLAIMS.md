@@ -2798,3 +2798,6 @@ At every common finite cutoff the actual exponential rows give the literal finit
 
 The specialized Mellin integrand is the rational time multiplied by the original reciprocal of the unscaled exponential minus one at all positive rational points. The original improper name equals pi squared divided by six by closed iPRA name equality.
 [GaussianGammaZetaMellinTwoIntegrand](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinTwoIntegrand.lean), [GaussianGammaZetaMellinBasel](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinBasel.lean)
+
+The original moment varies linearly with the step on a common certified positive margin. The signed chart version transports this bound through exact rational coordinates and covers either order of the endpoints at independent observation clocks.
+[GaussianBinetLaplaceMomentVariation](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentVariation.lean), [GaussianBinetLaplaceMomentSignedVariation](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentSignedVariation.lean)
