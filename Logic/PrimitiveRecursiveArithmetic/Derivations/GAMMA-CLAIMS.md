@@ -2126,6 +2126,14 @@ order gives the global upper bound `k(t) ≤ 1/12` for nonnegative rational
 `t`. A sample at clock `p` obeys the upper bound `1/12 + 2⁻ᵖ`.
 [GaussianBinetBaselBinding](Lean/IPRADerivations/Analysis/GaussianBinetBaselBinding.lean), [GaussianBinetBaselName](Lean/IPRADerivations/Analysis/GaussianBinetBaselName.lean), [GaussianBinetKernelZero](Lean/IPRADerivations/Analysis/GaussianBinetKernelZero.lean), [GaussianBinetKernelUpper](Lean/IPRADerivations/Analysis/GaussianBinetKernelUpper.lean).
 
+On a certified finite strip the original Gaussian exponential is
+evaluated at the exact argument `−zt`. Its normalized product with
+the kernel samples gives the finite and cofinal Binet integrands.
+The independent observation comparison with the finite cutoff has
+leading error `1/(8N)`. The integrand has a computable Lipschitz gain
+uniform in the cutoff on each finite strip and a finite mesh bound.
+[GaussianBinetKernelCoarseBound](Lean/IPRADerivations/Analysis/GaussianBinetKernelCoarseBound.lean), [GaussianBinetLaplaceExponential](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceExponential.lean), [GaussianBinetLaplaceIntegrand](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceIntegrand.lean).
+
 ## Source artifacts and representation boundaries
 
 The delivered [Lean companion](../docs/proofs/analysis/gamma_ipra/lean/README.md)
