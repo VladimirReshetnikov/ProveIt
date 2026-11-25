@@ -1919,6 +1919,15 @@ signed rational right half-plane. Its identification as the derivative
 of the cofinal logarithm remains open.
 [GaussianLogGammaEulerReciprocalSlopeGap](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerReciprocalSlopeGap.lean), [GaussianLogGammaEulerReciprocalSlopeCofinal](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerReciprocalSlopeCofinal.lean).
 
+The difference of the two original finite log-Gamma heads at a common
+cutoff is the displacement times the original integer logarithm minus
+the sum of the original shifted logarithm increments. Each relative
+step has an exact reciprocal expression and a checked quadratic
+Mercator observation error. Its exponential, multiplied by the base
+argument, recovers the later rational argument. Coordinate and chart
+ratio bounds come from the same native displacement.
+[GaussianLogGammaEulerArgumentIncrement](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerArgumentIncrement.lean), [GaussianRightHalfPlaneLogarithmRelativeStep](Lean/IPRADerivations/Analysis/GaussianRightHalfPlaneLogarithmRelativeStep.lean), [GaussianRightHalfPlaneLogarithmRelativeExponential](Lean/IPRADerivations/Analysis/GaussianRightHalfPlaneLogarithmRelativeExponential.lean).
+
 ## Source artifacts and representation boundaries
 
 The delivered [Lean companion](../docs/proofs/analysis/gamma_ipra/lean/README.md)
