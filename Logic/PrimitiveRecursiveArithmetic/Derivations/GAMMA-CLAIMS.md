@@ -1838,6 +1838,14 @@ These statements compare the actual count-dependent samplers at
 independent observation clocks.
 [GaussianNamedFiniteSumFamilySplit](Lean/IPRADerivations/Analysis/GaussianNamedFiniteSumFamilySplit.lean), [GaussianNamedFiniteSumFamilyCongruence](Lean/IPRADerivations/Analysis/GaussianNamedFiniteSumFamilyCongruence.lean), [GaussianNamedFiniteSumFamilyAdd](Lean/IPRADerivations/Analysis/GaussianNamedFiniteSumFamilyAdd.lean).
 
+For every positive internal cutoff `N`, the same finite Euler head has
+the value `z log(N) − (Log(z) + Σ_{k=1}^N Log(1+z/k))` at
+independent observation clocks. An internal finite sum of the integer
+logarithms equals `log(N!)`, which cancels after splitting each
+denominator row. The bounded prefix and interval split reads the exact
+original row at its offset.
+[GaussianLogGammaFactorialLogSum](Lean/IPRADerivations/Analysis/GaussianLogGammaFactorialLogSum.lean), [GaussianLogGammaEulerFactorSum](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerFactorSum.lean), [GaussianLogGammaEulerNormalizedHead](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerNormalizedHead.lean), [GaussianNamedFiniteSumFamilyRange](Lean/IPRADerivations/Analysis/GaussianNamedFiniteSumFamilyRange.lean).
+
 ## Source artifacts and representation boundaries
 
 The delivered [Lean companion](../docs/proofs/analysis/gamma_ipra/lean/README.md)
