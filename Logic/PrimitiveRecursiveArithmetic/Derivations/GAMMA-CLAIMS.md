@@ -2537,3 +2537,6 @@ The normalized factor of two preserves the original improper name with twice the
 
 A single sine clock, horizon and grid count give error 10/2^p between the original arctangent observation and its actual damped sine rectangle for all encoded time tags bounded by the chosen horizon.
 [GaussianBinetArctangentSineUniform](Lean/IPRADerivations/Analysis/GaussianBinetArctangentSineUniform.lean)
+
+The literal transposed prefix compares with the frozen-Pi matrix at a separately chosen later observation clock. Each frozen column is the exact geometric row, and the zero-start matrix binds to the existing shared-mesh tail.
+[GaussianBinetBoseFrozenMatrix](Lean/IPRADerivations/Analysis/GaussianBinetBoseFrozenMatrix.lean), [GaussianBinetBoseFrozenOrigin](Lean/IPRADerivations/Analysis/GaussianBinetBoseFrozenOrigin.lean)
