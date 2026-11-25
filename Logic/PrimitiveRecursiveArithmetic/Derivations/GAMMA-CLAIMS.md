@@ -2414,3 +2414,12 @@ multiplies the uniform resolvent error by its physical width. Each
 actual shifted exponential factors with explicit error into the
 original damping and the purely imaginary oscillatory sample.
 [GaussianBinetArctangentCosineRectangle](Lean/IPRADerivations/Analysis/GaussianBinetArctangentCosineRectangle.lean), [GaussianBinetOscillatoryPanelFactor](Lean/IPRADerivations/Analysis/GaussianBinetOscillatoryPanelFactor.lean).
+
+The actual positive Pi-scaled exponential has a Taylor gap from one
+of at least `4t` at every positive rational time. Its reciprocal is
+regular and has norm at most `1/(4t)` at every observation. The
+original arctangent times this reciprocal has norm at most
+`1/(4 Re(z))` all the way toward the origin. For an exact rational
+inverse pair `xy = 1`, the literal geometric power sum has the
+cleared finite identity `(x−1) Σ_{j=1}^N y^j = 1−y^N`.
+[GaussianExponentialAffineLower](Lean/IPRADerivations/Analysis/GaussianExponentialAffineLower.lean), [GaussianBinetBoseExponential](Lean/IPRADerivations/Analysis/GaussianBinetBoseExponential.lean), [GaussianBinetBoseDenominator](Lean/IPRADerivations/Analysis/GaussianBinetBoseDenominator.lean), [GaussianBinetBoseIntegrandBound](Lean/IPRADerivations/Analysis/GaussianBinetBoseIntegrandBound.lean), [GaussianRationalInverseGeometric](Lean/IPRADerivations/Analysis/GaussianRationalInverseGeometric.lean).
