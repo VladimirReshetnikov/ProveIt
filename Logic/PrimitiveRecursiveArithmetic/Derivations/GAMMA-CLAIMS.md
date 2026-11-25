@@ -2475,3 +2475,10 @@ samples read back the exact finite prefix and differ from the reciprocal
 of the original Bose denominator by at most `6/2^p`. The object theory
 proves equivalence of the two names.
 [GaussianBinetBoseIntegerScale](Lean/IPRADerivations/Analysis/GaussianBinetBoseIntegerScale.lean), [GaussianBinetBoseSeriesRows](Lean/IPRADerivations/Analysis/GaussianBinetBoseSeriesRows.lean), [GaussianBinetBoseLiteralPrefix](Lean/IPRADerivations/Analysis/GaussianBinetBoseLiteralPrefix.lean), [GaussianBinetBoseLiteralCofinal](Lean/IPRADerivations/Analysis/GaussianBinetBoseLiteralCofinal.lean)
+
+The original transposed cosine columns approximate the sine
+quotient on the same mesh. At positive time the cleared cosine
+antiderivative gives the quotient by the imaginary frequency. At
+zero the regularized quotient has its exact removable value. A
+single primitive-recursive row inherits uniform norm and mesh bounds.
+[GaussianBinetCosinePrimitive](Lean/IPRADerivations/Analysis/GaussianBinetCosinePrimitive.lean), [GaussianBinetOscillatoryColumns](Lean/IPRADerivations/Analysis/GaussianBinetOscillatoryColumns.lean), [GaussianBinetOscillatorySineQuotient](Lean/IPRADerivations/Analysis/GaussianBinetOscillatorySineQuotient.lean), [GaussianBinetOscillatoryZeroColumn](Lean/IPRADerivations/Analysis/GaussianBinetOscillatoryZeroColumn.lean), [GaussianBinetOscillatorySineRows](Lean/IPRADerivations/Analysis/GaussianBinetOscillatorySineRows.lean)
