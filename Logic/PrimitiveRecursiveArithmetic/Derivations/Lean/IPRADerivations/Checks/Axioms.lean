@@ -30326,6 +30326,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentNamed.frozen_rate
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentNamed.actual_named_Binet_moment_regular_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentNamed.actual_named_Binet_moment_frozen_rate_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentNamedStirling.frozen_axis
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentNamedStirling.observations
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentNamedStirling.laplace_equivalent
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentNamedStirling.stirling_equivalent
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentNamedStirling.actual_named_zeroth_Binet_moment_Stirling_closed
 
 /-! ### GaussianEulerDecayCompactUpper -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerDecayCompactUpper.upperPoint

@@ -2804,3 +2804,6 @@ The original moment varies linearly with the step on a common certified positive
 
 The primitive-recursive evaluator takes the actual late signed samples of a regular input with a certified positive real-part margin. The named moment is regular and proper for every internal order, and the comparison with each sufficiently late original rational evaluation has an independent observation rate.
 [GaussianBinetLaplaceMomentNamed](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentNamed.lean)
+
+On canonical real input observations with a certified positive margin, the original named Stirling remainder agrees with the named zeroth Binet moment. The comparison retains the original observation clocks on both names.
+[GaussianBinetLaplaceMomentNamedStirling](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentNamedStirling.lean)
