@@ -1,6 +1,7 @@
 import IPRADerivations.Probability.Lotus
 import IPRADerivations.Probability.Variance
 import IPRADerivations.Core.SumOrder
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The cardinality bounds of the auxiliary envelope (`ipra_resources_and_elimination_2026-11-15`, `thm:elim-envelope`)
@@ -83,9 +84,7 @@ abbrev cnt (N k x : PTm n) : PTm n := ap2 (sumF (vB (one : PTm 2) σ)) N (pairT 
 theorem shift_pair (a b : PTm n) : Syn.shift (pairT a b) = pairT (Syn.shift a) (Syn.shift b) := by
   simp [Syn.shift]
 
-theorem pair_congr {a a' c c' : PTm n} (ha : Γ ⊢[PRAAx] a ≐ a') (hc : Γ ⊢[PRAAx] c ≐ c') :
-    Γ ⊢[PRAAx] pairT a c ≐ pairT a' c' :=
-  congrAdd (congrMul (congrAdd ha hc) (congrAdd ha hc)) ha
+alias pair_congr := Common.congrPairT
 
 /-- If every position has a class below `M` and every class has at most `L` positions among
 the first `N`, then `N ≤ M · L`. -/

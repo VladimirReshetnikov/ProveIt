@@ -1,5 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.DescentTools
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # All integer right triangles are multiples of primitive ones

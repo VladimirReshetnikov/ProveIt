@@ -1,6 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.HurwitzMargin
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Foundations.IntervalPacking
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Bounded-precision extraction of a continued-fraction digit (`hurwitz_khinchin_ipra`)
@@ -208,10 +209,7 @@ theorem sep_numerator {P Q P' Q' Y W A Dn k : PTm n}
     (hA : Γ ⊢[PRAAx] P' * W ≐ Q' * Y + A) (hD : Γ ⊢[PRAAx] Q * Y ≐ P * W + Dn) :
     Γ ⊢[PRAAx] adist A (k * Dn) ≐ adist ((P' + k * P) * W) ((Q' + k * Q) * Y) := by
   refine adist_of_eq ?_
-  have eA := natEq hA
-  have eD := natEq hD
-  apply deriveNat; ipra_simps
-  linear_combination -eA + 𝔞 k * eD
+  ipra_lc -natEq hA + 𝔞 k * natEq hD
 
 /-- The digit step: two approximations `Y/W`, `Z/V` of `x` (same region, determinant `±1`) whose difference is
 small (`6 L_d |WZ − VY| ≤ L_n Dn Dn'`), with `Y/W` separated from the two fractions
@@ -248,12 +246,12 @@ sign region, with new numerator `Dn` and new denominator `A − a Dn`: the compl
 /-- `P'Q = PQ' + 1` gives `(aP + P')Q = P(aQ + Q') + 1` for the next state. -/
 theorem det_step {P Q P' Q' a : PTm n} (h : Γ ⊢[PRAAx] P' * Q ≐ P * Q' + one) :
     Γ ⊢[PRAAx] (a * P + P') * Q ≐ P * (a * Q + Q') + one := by
-  have e := natEq h; apply deriveNat; ipra_simps; linear_combination e
+  ipra_lc natEq h
 
 /-- `PQ' = P'Q + 1` gives `P(aQ + Q') = (aP + P')Q + 1` for the next state. -/
 theorem det_step' {P Q P' Q' a : PTm n} (h : Γ ⊢[PRAAx] P * Q' ≐ P' * Q + one) :
     Γ ⊢[PRAAx] P * (a * Q + Q') ≐ (a * P + P') * Q + one := by
-  have e := natEq h; apply deriveNat; ipra_simps; linear_combination e
+  ipra_lc natEq h
 
 /-- From region 1 (`P'W = Q'Y + A`, `QY = PW + Dn`) with `a Dn ≤ A`, the next state is in region 2:
 `(aP + P')W = (aQ + Q')Y + (A − a Dn)` and `QY = PW + Dn`. -/
@@ -261,11 +259,7 @@ theorem region_flip {P Q P' Q' Y W A Dn a : PTm n}
     (hA : Γ ⊢[PRAAx] P' * W ≐ Q' * Y + A) (hD : Γ ⊢[PRAAx] Q * Y ≐ P * W + Dn)
     (ha : Γ ⊢[PRAAx] le (a * Dn) A) :
     Γ ⊢[PRAAx] (a * P + P') * W ≐ (a * Q + Q') * Y + monus A (a * Dn) := by
-  have eA := natEq hA
-  have eD := natEq hD
-  have em := natEq (eq_add_of_le ha)
-  apply deriveNat; ipra_simps
-  linear_combination eA - 𝔞 a * eD + em
+  ipra_lc natEq hA - 𝔞 a * natEq hD + natEq (eq_add_of_le ha)
 
 /-- From region 2 (`Q'Y = P'W + A`, `PW = QY + Dn`) with `a Dn ≤ A`, the next state is in region 1:
 `(aQ + Q')Y = (aP + P')W + (A − a Dn)` and `PW = QY + Dn`. -/
@@ -273,11 +267,7 @@ theorem region_flip' {P Q P' Q' Y W A Dn a : PTm n}
     (hA : Γ ⊢[PRAAx] Q' * Y ≐ P' * W + A) (hD : Γ ⊢[PRAAx] P * W ≐ Q * Y + Dn)
     (ha : Γ ⊢[PRAAx] le (a * Dn) A) :
     Γ ⊢[PRAAx] (a * Q + Q') * Y ≐ (a * P + P') * W + monus A (a * Dn) := by
-  have eA := natEq hA
-  have eD := natEq hD
-  have em := natEq (eq_add_of_le ha)
-  apply deriveNat; ipra_simps
-  linear_combination eA - 𝔞 a * eD + em
+  ipra_lc natEq hA - 𝔞 a * natEq hD + natEq (eq_add_of_le ha)
 
 /-- The digit step in region 2 (`Qx < P`, `P' < Q'x`): the region-1 step with `P ↔ Q`, `P' ↔ Q'`,
 `Y ↔ W`, `Z ↔ V`. -/

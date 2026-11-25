@@ -4,6 +4,7 @@ import IPRADerivations.Analysis.GaussianRationalFiniteProduct
 import IPRADerivations.Analysis.GaussianRationalCurveFibers
 import IPRADerivations.Analysis.GaussianScalarColumnSelection
 import IPRADerivations.Foundations.BoundedSyntaxInduction
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Computed degree and leading values of the actual determinant stages
@@ -70,12 +71,10 @@ def leadingProduct (M m L w j : PTm n) : PTm n := GaussianRationalFiniteProduct.
 
 theorem first_congr {C D N M : PTm n} (hC : Γ ⊢[PRAAx] C ≐ D) (hN : Γ ⊢[PRAAx] N ≐ M) : Γ ⊢[PRAAx]
     first C N ≐ first D M := by
-  simpa using Prf.eqCongr (Γ := Γ) (first (var 0) (var 1) : PTm 2) (σ := ![C,N]) (σ' := ![D,M])
-    (fun i => by fin_cases i; exact hC; exact hN)
+  ipra_congr (first (var 0) (var 1) : PTm 2) with [hC, hN]
 theorem flag_congr {C D N M : PTm n} (hC : Γ ⊢[PRAAx] C ≐ D) (hN : Γ ⊢[PRAAx] N ≐ M) : Γ ⊢[PRAAx]
     flag C N ≐ flag D M := by
-  simpa using Prf.eqCongr (Γ := Γ) (flag (var 0) (var 1) : PTm 2) (σ := ![C,N]) (σ' := ![D,M])
-    (fun i => by fin_cases i; exact hC; exact hN)
+  ipra_congr (flag (var 0) (var 1) : PTm 2) with [hC, hN]
 theorem degree_congr {C D N M : PTm n} (hC : Γ ⊢[PRAAx] C ≐ D) (hN : Γ ⊢[PRAAx] N ≐ M) : Γ ⊢[PRAAx]
     degree C N ≐ degree D M := congrMonus hN (first_congr hC hN)
 theorem leading_congr {C D N M : PTm n} (hC : Γ ⊢[PRAAx] C ≐ D) (hN : Γ ⊢[PRAAx] N ≐ M) : Γ ⊢[PRAAx]

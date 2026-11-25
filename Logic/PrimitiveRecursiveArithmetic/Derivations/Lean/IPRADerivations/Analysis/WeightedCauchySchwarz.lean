@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.WeierstrassProduct
 import IPRADerivations.AnalyticNumberTheory.PowerCleared
 import IPRADerivations.AnalyticNumberTheory.PhiLower
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The weighted Cauchy–Schwarz inequality for finite sums

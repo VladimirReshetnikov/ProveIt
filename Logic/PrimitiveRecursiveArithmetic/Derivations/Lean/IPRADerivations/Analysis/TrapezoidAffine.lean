@@ -1,5 +1,5 @@
 import IPRADerivations.Core.Telescoping
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Exact facts about trapezoidal sums

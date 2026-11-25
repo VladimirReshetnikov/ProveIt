@@ -3,6 +3,7 @@ import IPRADerivations.AnalyticNumberTheory.MobiusInversion
 import IPRADerivations.AnalyticNumberTheory.SumReindex
 import IPRADerivations.Core.MultiSums
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Associativity of the finite Dirichlet convolution
@@ -60,19 +61,17 @@ theorem rem_small {k a : PTm n} (h : Γ ⊢[PRAAx] lt k a) : Γ ⊢[PRAAx] rem k
   have ha : Γ ⊢[PRAAx] a ≐ succ (pred a) :=
     pos_of_eq (e := k + monus a (succ k)) (by apply deriveNat; ipra_simps; linear_combination e)
   refine (congrAp2 remF (.eqRefl _) ha).eqTrans (Prf.andE₂ (div_mod_unique (q := zero) ?_ (lt_congr (.eqRefl _) ha h)))
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- `⌊⌊m/d⌋/e⌋ = ⌊m/(de)⌋` for `d, e ≥ 1`. -/
 theorem quo_quo {m d e : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) (he : Γ ⊢[PRAAx] e ≐ succ (pred e)) :
     Γ ⊢[PRAAx] quo (quo m d) e ≐ quo m (d * e) := by
   have d1 := div_mod_at (Γ := Γ) (x := m) hd
   have d2 := div_mod_at (Γ := Γ) (x := quo m d) he
-  have e1 := natEq (Prf.andE₁ d1)
-  have e2 := natEq (Prf.andE₁ d2)
   have r1 : Γ ⊢[PRAAx] lt (rem m d) d := Prf.andE₂ d1
   have r2 : Γ ⊢[PRAAx] lt (rem (quo m d) e) e := Prf.andE₂ d2
   refine (quo_eq (pos_mul' hd he) (r := d * rem (quo m d) e + rem m d) ?_ ?_).eqSymm
-  · apply deriveNat; ipra_simps; linear_combination e1 + 𝔞 d * e2
+  · ipra_lc natEq (Prf.andE₁ d1) + 𝔞 d * natEq (Prf.andE₁ d2)
   · ipra_le 𝔞 d * sl r2 + sl r1
 
 /-- `Q + 1 + (d − 1) = d (⌊Q/d⌋ + 1) + (Q mod d)`, with atoms. -/
@@ -80,7 +79,7 @@ theorem quo_add_aux {Q d u r e : PTm n} (h1 : Γ ⊢[PRAAx] Q ≐ d * u + r) (h2
     Γ ⊢[PRAAx] succ Q + e ≐ d * succ u + r := by
   refine (congrAdd (congrSucc (h1.eqTrans (congrAdd (congrMul h2 (.eqRefl _)) (.eqRefl _)))) (.eqRefl _)).eqTrans ?_
   refine .eqTrans ?_ (congrAdd (congrMul h2.eqSymm (.eqRefl _)) (.eqRefl _))
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- `#{k ≤ m : d ∣ k} = ⌊m/d⌋ + 1` for `d ≥ 1`. -/
 theorem multiples_upto {Q d : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) :
@@ -176,7 +175,7 @@ theorem row_pt {e d m y : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) :
     refine (congrMul (congrMul (congrMul dp.eqSymm se) (.eqRefl _)) (congrInst2 h qq.eqSymm (.eqRefl _))).eqTrans ?_
     refine .eqTrans ?_ (congrMul (congrMul (congrMul sd.eqSymm (.eqRefl _)) (.eqRefl _))
       (congrMul (congrMul se.eqSymm (.eqRefl _)) (.eqRefl _)))
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
 
 /-- For `d ≥ 1`, the row `d` of `f * (g * h)` is `Σ_{e ≤ m/d} [de ∣ m] f(d) g(e) h(m/(de))`. -/
 theorem lhs_row {d m y : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) :
@@ -187,7 +186,7 @@ theorem lhs_row {d m y : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) :
   have sc := sum_scale (Γ := Γ) (HB f g h) (cvB g h) (succ (quo m d)) (dv d m * inst2 f d y) (pairT (quo m d) y)
     (pairT d (pairT m y)) (.allI (.impI ?_))
   · refine .eqTrans ?_ sc.eqSymm
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   · rw [shift_pairT, shift_pairT, shift_pairT,
       show Syn.shift (dv d m * inst2 f d y) = dv (Syn.shift d) (Syn.shift m) * inst2 f (Syn.shift d) (Syn.shift y) by
         rw [← shift_inst2]; simp [Syn.shift],
@@ -220,7 +219,7 @@ theorem rhs_row {k m y : PTm n} (hk : Γ ⊢[PRAAx] lt k (succ m)) :
         refine (congrMul (.eqRefl _) ((congrEqb' ((rem_small hl).eqTrans hk') (.eqRefl _)).eqTrans
           (eqb_succ_zero _))).eqTrans (mul_zero _)
       refine (congrMul (.eqRefl _) (congrMul ext.eqSymm (.eqRefl _))).eqTrans ?_
-      apply deriveNat; ipra_simps; ring
+      ipra_ring
   · simp only [shift_pairT]
     rw [inst2_rowB,
       show Syn.shift (dv k m * inst2 h (quo m k) y) =
@@ -236,7 +235,7 @@ theorem rhs_row {k m y : PTm n} (hk : Γ ⊢[PRAAx] lt k (succ m)) :
     refine (congrMul (congrMul (congrMul (.eqRefl _) (congrEqb' (congrAp2 remF fm (.eqRefl _)) (.eqRefl _)))
       (congrInst2 (cvB f g) (.eqRefl _) (congrPairT (.eqRefl _) sy)))
       (congrInst2 h (congrAp2 quoF fm (.eqRefl _)) sy)).eqTrans ?_
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
 
 /-! ## The columns -/
 
@@ -281,7 +280,7 @@ theorem col_pt {k d m y : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) :
       refine (congrMul (congrMul (congrMul sk (congrEqb' (congrAp2 remF (.eqRefl _) kq') (.eqRefl _)))
         (congrMul (congrMul sd.wk er.wk) (.eqRefl _))) (congrInst2 h (congrAp2 quoF (.eqRefl _) kq') (.eqRefl _))).eqTrans ?_
       refine .eqTrans ?_ (congrMul er.wk (congrMul (congrMul (congrMul (.eqRefl _) sq) (.eqRefl _)) (.eqRefl _))).eqSymm
-      apply deriveNat; ipra_simps; ring
+      ipra_ring
   · let Δ : List (Fm PTm n) := neg (rem k d ≐ zero) :: Γ
     have e0 : Δ ⊢[PRAAx] eqb (rem k d) zero ≐ zero := eqb_of_ne Prf.hyp0
     refine (zero_mul_l ((congrMul (.eqRefl _) (zero_mul_l ((congrMul (.eqRefl _) e0).eqTrans (mul_zero _)) _)).eqTrans

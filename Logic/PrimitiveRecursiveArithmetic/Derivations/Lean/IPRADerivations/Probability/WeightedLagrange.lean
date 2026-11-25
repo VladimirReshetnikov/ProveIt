@@ -1,5 +1,5 @@
 import IPRADerivations.Probability.ExpectationCorollaries
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The weighted Lagrange identity and equality in Cauchy–Schwarz

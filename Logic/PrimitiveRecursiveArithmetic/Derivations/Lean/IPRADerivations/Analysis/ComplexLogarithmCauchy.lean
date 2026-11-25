@@ -1,4 +1,6 @@
 import IPRADerivations.Analysis.ComplexLogarithmRemainder
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Cauchy bounds for finite complex Taylor-logarithm tails
@@ -118,17 +120,11 @@ theorem strong_zero (L R N : PTm n) : Γ ⊢[PRAAx] strong L R N zero := by
 
 theorem strong_step {L R N K : PTm n} (hN : Γ ⊢[PRAAx] le (two * R) N)
     (ih : Γ ⊢[PRAAx] strong L R N K) : Γ ⊢[PRAAx] strong L R N (succ K) := by
-  have i := natEq (eq_add_of_le ih)
-  have h := natEq (eq_add_of_le hN)
-  have a := natEq (positive_succ (Γ := Γ) L R N K)
   have d := natEq ((congr_denominator (N := N) (Γ := Γ) (add_succ L K)).eqTrans
     (denominator_succ N (L + K)))
   have e₂ : Γ ⊢[PRAAx] L + succ K + two ≐ succ (L + K + two) := by ipra_ring
   have e₃ : Γ ⊢[PRAAx] L + succ K + three ≐ succ (L + K + three) := by ipra_ring
   have e : Γ ⊢[PRAAx] L + three ≐ succ (L + two) := by ipra_ring
-  have f := natEq ((congrAp2 factF e₂ (.eqRefl zero)).eqTrans (fact_succ (L + K + two) zero))
-  have p := natEq ((congrAp2 powF e₃ (.eqRefl R)).eqTrans (pw_succ R (L + K + three)))
-  have q := natEq ((congrAp2 powF e (.eqRefl N)).eqTrans (pw_succ N (L + two)))
   unfold strong at *
   refine le_of_eq_add (d :=
     (L + K + three) * N * monus
@@ -137,18 +133,13 @@ theorem strong_step {L R N K : PTm n} (hN : Γ ⊢[PRAAx] le (two * R) N)
         two * denominator N L * fact (L + K + two) * pw N (L + two) * pw R (L + K + three)) +
     denominator N L * fact (L + K + two) * pw N (L + two) * pw R (L + K + three) *
       ((L + K + three) * monus N (two * R) + (L + K) * N)) ?_
-  apply deriveNat
-  ipra_simps
-  linear_combination
-    (𝔞(L) + 𝔞(K) + 3) * 𝔞(N) * i +
-    𝔞(denominator N L) * 𝔞(fact (L + K + two)) * 𝔞(pw N (L + two)) *
-      𝔞(pw R (L + K + three)) * (𝔞(L) + 𝔞(K) + 3) * h +
+  ipra_lc (𝔞(L) + 𝔞(K) + 3) * 𝔞(N) * natEq (eq_add_of_le ih) +
+    𝔞(denominator N L) * 𝔞(fact (L + K + two)) * 𝔞(pw N (L + two)) * 𝔞(pw R (L + K + three)) * (𝔞(L) + 𝔞(K) + 3) * natEq (eq_add_of_le hN) +
     2 * 𝔞(pw R (L + three)) * 𝔞(denominator N L) * d -
-    3 * 𝔞(pw N (L + three)) * a -
-    2 * 𝔞(denominator N L) * 𝔞(pw N (L + two)) * 𝔞(pw R (L + succ K + three)) * f -
-    2 * 𝔞(denominator N L) * 𝔞(pw N (L + two)) * 𝔞(fact (L + K + two)) *
-      (𝔞(L) + 𝔞(K) + 3) * p -
-    3 * 𝔞(denominator N L) * 𝔞(fact (L + K + two)) * 𝔞(pw R (L + K + three)) * q
+    3 * 𝔞(pw N (L + three)) * natEq (positive_succ (Γ := Γ) L R N K) -
+    2 * 𝔞(denominator N L) * 𝔞(pw N (L + two)) * 𝔞(pw R (L + succ K + three)) * natEq ((congrAp2 factF e₂ (.eqRefl zero)).eqTrans (fact_succ (L + K + two) zero)) -
+    2 * 𝔞(denominator N L) * 𝔞(pw N (L + two)) * 𝔞(fact (L + K + two)) * (𝔞(L) + 𝔞(K) + 3) * natEq ((congrAp2 powF e₃ (.eqRefl R)).eqTrans (pw_succ R (L + K + three))) -
+    3 * 𝔞(denominator N L) * 𝔞(fact (L + K + two)) * 𝔞(pw R (L + K + three)) * natEq ((congrAp2 powF e (.eqRefl N)).eqTrans (pw_succ N (L + two)))
 
 theorem finite_positive_strong (L R N K : PTm n) (hN : Γ ⊢[PRAAx] le (two * R) N) :
     Γ ⊢[PRAAx] strong L R N K := by
@@ -322,16 +313,10 @@ theorem coefficient_step {R N L : PTm n} (hN : Γ ⊢[PRAAx] le (two * R) N)
     Γ ⊢[PRAAx] coefficientFormula R N (succ L) := by
   have b := le_mul_mono ih hN
   have e : Γ ⊢[PRAAx] succ L + three ≐ succ (L + three) := by ipra_ring
-  have a := natEq (pw_succ (Γ := Γ) two L)
-  have r := natEq ((congrAp2 powF e (.eqRefl R)).eqTrans (pw_succ R (L + three)))
-  have p := natEq ((congrAp2 powF e (.eqRefl N)).eqTrans (pw_succ N (L + three)))
   refine le_congr ?_ ?_ b
-  · apply deriveNat
-    ipra_simps
-    linear_combination -2 * 𝔞(pw R (succ L + three)) * a - 4 * 𝔞(pw two L) * r
-  · apply deriveNat
-    ipra_simps
-    linear_combination -3 * p
+  · ipra_lc -2 * 𝔞(pw R (succ L + three)) * natEq (pw_succ (Γ := Γ) two L) -
+      4 * 𝔞(pw two L) * natEq ((congrAp2 powF e (.eqRefl R)).eqTrans (pw_succ R (L + three)))
+  · ipra_lc -3 * natEq ((congrAp2 powF e (.eqRefl N)).eqTrans (pw_succ N (L + three)))
 
 theorem dyadic_coefficient (R N L : PTm n) (hN : Γ ⊢[PRAAx] le (two * R) N) :
     Γ ⊢[PRAAx] coefficientFormula R N L := by
@@ -364,11 +349,7 @@ theorem power_positive (N k : PTm n) (hN : Γ ⊢[PRAAx] le one N) :
   simpa only [subst_le, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
     ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] using Prf.allE k all
 
-private theorem cancel_positive {c a b : PTm n} (hc : Γ ⊢[PRAAx] le one c)
-    (h : Γ ⊢[PRAAx] le (c * a) (c * b)) : Γ ⊢[PRAAx] le a b := by
-  have ce : Γ ⊢[PRAAx] c ≐ succ (monus c one) :=
-    (eq_add_of_le hc).eqTrans (by ipra_ring)
-  exact mul_le_cancel (le_congr (congrMul ce (.eqRefl _)) (congrMul ce (.eqRefl _)) h)
+private alias cancel_positive := Common.mul_cancel_le
 
 theorem positive_dyadic_bound (L R N K : PTm n) (hN : Γ ⊢[PRAAx] le one N)
     (hR : Γ ⊢[PRAAx] le (two * R) N) :

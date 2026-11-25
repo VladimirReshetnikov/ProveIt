@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.RationalPolynomialMonicCompanionGaussianEmbedding
 import IPRADerivations.Analysis.GaussianPolynomialMultiplicationMatrix
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual original rational polynomial multiplication matrix
@@ -65,9 +66,7 @@ theorem normalized_rows_lookup (G m r : PTm n) (hr : Γ ⊢[PRAAx] lt r m) : Γ 
     Foundations.MasterCertificate.subst_entry,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using sequence_decode normalizeBody (x := G) hr
 theorem normalized_rows_congr {G G' m m' : PTm n} (hG : Γ ⊢[PRAAx] G ≐ G') (hm : Γ ⊢[PRAAx] m ≐ m') : Γ ⊢[PRAAx]
     normalizedRows G m ≐ normalizedRows G' m' := by
-  simpa only [subst_normalizedRows,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using
-    Prf.eqCongr (Γ := Γ) (normalizedRows (var 0) (var 1) : PTm 2) (σ := ![G,m]) (σ' := ![G',m'])
-      (fun i => by fin_cases i; exact hG; exact hm)
+  ipra_congr (normalizedRows (var 0) (var 1) : PTm 2) with [hG, hm]
 theorem advance_program (F m a c j H : PTm n) : Γ ⊢[PRAAx] PTm.app advanceF ![F,m,a,c,j,H] ≐ advance F m a c j H := by
   simpa [advanceF] using toPR_eq (Γ := Γ) (advance (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) ![F,m,a,c,j,H]
 theorem stage_zero (F G m a c : PTm n) : Γ ⊢[PRAAx] stage F G m a c zero ≐ normalizedRows G m := by

@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.MinkowskiMixedRadix
 import IPRADerivations.DiophantineNumberTheory.MinkowskiMesh
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Runtime-dimensional integer-box point lists
@@ -215,19 +216,13 @@ theorem point_inside (N L U i : PTm n) (h : Γ ⊢[PRAAx] sides N L U) :
   simpa only [Syn.shift, subst_point] using
     point_inside_at (Syn.shift N) (Syn.shift L) (Syn.shift U) (Syn.shift i) (var 0) guards.wk Prf.hyp0
 
-
 /-- Equality of decoded points forces equality of their actual natural digits;
 the common signed lower endpoint cancels in the object-theory ring. -/
 theorem digit_equal_of_coordinate_equal (N L U i j k : PTm n)
     (hk : Γ ⊢[PRAAx] lt k N)
     (he : Γ ⊢[PRAAx] ZT.eq (decode (entry (point N L U i) k)) (decode (entry (point N L U j) k))) :
     Γ ⊢[PRAAx] MinkowskiMixedRadix.digit (widths N L U) i k ≐ MinkowskiMixedRadix.digit (widths N L U) j k := by
-  have pi := ZT.toZ_eq (point_value N L U i k hk)
-  have pj := ZT.toZ_eq (point_value N L U j k hk)
-  have same := ZT.toZ_eq he
-  simp only [coordinate, ZT.toZ_add, ZT.toZ_ofNat] at pi pj
-  apply deriveNat
-  linear_combination -pi+pj+same
+  ipra_lc [coordinate] -ZT.toZ_eq (point_value N L U i k hk)+ZT.toZ_eq (point_value N L U j k hk)+ZT.toZ_eq he
 
 /-- Different valid mixed-radix indices give an explicit coordinate witnessing
 difference of the decoded signed points. The witness is the actual finite
@@ -320,7 +315,6 @@ theorem points_distinct (N L U i j : PTm n) (h : Γ ⊢[PRAAx] sides N L U)
     Γ ⊢[PRAAx] MinkowskiMesh.differentCoordinate N (entry (points N L U) i) (entry (points N L U) j) :=
   differentCoordinate_congr N _ _ _ _ (points_lookup N L U i hi).eqSymm
     (points_lookup N L U j hj).eqSymm (point_distinct N L U i j h hi hj hij)
-
 
 /-- Restrict the proved decoded distinctness to the actual pigeonhole prefix. -/
 theorem points_prefixDistinct (N m L U : PTm n) (h : Γ ⊢[PRAAx] sides N L U)

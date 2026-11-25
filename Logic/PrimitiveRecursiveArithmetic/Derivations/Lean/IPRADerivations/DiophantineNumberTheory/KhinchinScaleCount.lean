@@ -145,7 +145,7 @@ theorem scale_count {M Q T α γ β : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pre
         (pairT (Syn.shift (Syn.shift α)) (pairT (Syn.shift (Syn.shift γ)) (Syn.shift (Syn.shift β)))) by
       simp [Syn.shift]]
   exact (congrInst3 gS (fst_pair _ _) (.eqRefl _) (snd_pair _ _)).eqTrans
-    ((row_pt _ _ _ _ _ _ _).eqTrans ((bit_eq (by apply deriveNat; ipra_simps; ring)).eqTrans
+    ((row_pt _ _ _ _ _ _ _).eqTrans ((bit_eq (by ipra_ring)).eqTrans
       (cop_pt _ _ _ _ _).eqSymm))
 
 /-- (K8) for `Q = 2^k ≤ M`: on the grid `T = Q! G` with `Q²w ≤ T`, the union `E` of the intervals of the

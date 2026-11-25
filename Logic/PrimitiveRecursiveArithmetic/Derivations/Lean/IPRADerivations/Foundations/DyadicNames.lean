@@ -2,7 +2,7 @@ import IPRADerivations.Probability.Minkowski
 import IPRADerivations.AnalyticNumberTheory.Totatives
 import IPRADerivations.Foundations.ObservationEstimates
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Regular names on a common dyadic scale

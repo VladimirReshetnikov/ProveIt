@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianGammaLogHarmonicName
 import IPRADerivations.Analysis.GaussianGammaExponentStep
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The correction between the folded Gamma exponents
@@ -70,12 +71,9 @@ theorem fixed_and_log_at (p N : PTm n) (hN : Γ ⊢[PRAAx] le one N) :
   let l := GammaMeshRobinLogBridge.meshLogSample p N
   have h := GammaMeshRobinLogBridge.fixed_log_samples_sum p N hN
   have e : Γ ⊢[PRAAx] RationalGaussianEmbedding.embed (RationalArithmetic.add g l) ≐ harmonicPoint N := by
-    simpa only [RationalGaussianEmbedding.subst_embed, Syn.subst_var, Matrix.cons_val_zero,
-      harmonicPoint, GaussianGammaCanonicalExponent.harmonic, GammaMeshRobinLogBridge.harmonicValue,
-      RationalCubeMidpoint.fraction] using
-      Prf.eqCongr (RationalGaussianEmbedding.embed (var 0) : PTm 1)
-        (σ := ![RationalArithmetic.add g l]) (σ' := ![GammaMeshRobinLogBridge.harmonicValue N])
-        (fun i => by fin_cases i; exact h)
+    ipra_congr (RationalGaussianEmbedding.embed (var 0) : PTm 1) with
+      [h] using [harmonicPoint, GaussianGammaCanonicalExponent.harmonic, GammaMeshRobinLogBridge.harmonicValue,
+        RationalCubeMidpoint.fraction]
   exact (qadd_congr (RationalGaussianNameEmbedding.sample_at GammaEulerConstantName.fixedF p N)
       (RationalGaussianNameEmbedding.sample_at GammaMeshRobinLogBridge.meshLogF p N)).eqTrans
     ((RationalGaussianEmbedding.embed_add g l).eqSymm.eqTrans e)
@@ -84,10 +82,7 @@ theorem gamma_independent_parameter (p N : PTm n) : Γ ⊢[PRAAx] ap2 gammaF p N
   have h := (GammaEulerConstantName.gamma_at (Γ := Γ) p N).eqTrans (GammaEulerConstantName.gamma_at p zero).eqSymm
   have e : Γ ⊢[PRAAx] RationalGaussianEmbedding.embed (GammaEulerConstantName.gammaSample p N) ≐
       RationalGaussianEmbedding.embed (GammaEulerConstantName.gammaSample p zero) := by
-    simpa only [RationalGaussianEmbedding.subst_embed, Syn.subst_var, Matrix.cons_val_zero] using
-      Prf.eqCongr (RationalGaussianEmbedding.embed (var 0) : PTm 1)
-        (σ := ![GammaEulerConstantName.gammaSample p N]) (σ' := ![GammaEulerConstantName.gammaSample p zero])
-        (fun i => by fin_cases i; exact h)
+    ipra_congr (RationalGaussianEmbedding.embed (var 0) : PTm 1) with [h]
   exact (RationalGaussianNameEmbedding.sample_at GammaEulerConstantName.gammaF p N).eqTrans
     (e.eqTrans (gamma_sample_at p).eqSymm)
 

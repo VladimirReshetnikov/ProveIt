@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.FiniteExponential
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Literal finite logarithm polynomial and its differential residual

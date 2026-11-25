@@ -1,4 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.ConicGcd
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Cancellation of nonzero integers
@@ -40,22 +41,19 @@ theorem zt_cancel {r x y : ZT n} (hr : Γ ⊢[PRAAx] neg (ZT.eq r (ZT.natLit 0))
     have e := natEq (eq_add_of_le hl)
     have e' := natEq (h'.wk : (lt r.neg r.pos :: Γ) ⊢[PRAAx] _)
     refine mul_cancel (D := succ (monus r.pos (succ r.neg))) (congrSucc (pred_succ _).eqSymm) ?_
-    apply deriveNat; ipra_simps
-    linear_combination e' - (𝔞 x.pos + 𝔞 y.neg - 𝔞 y.pos - 𝔞 x.neg) * e
+    ipra_lc e' - (𝔞 x.pos + 𝔞 y.neg - 𝔞 y.pos - 𝔞 x.neg) * e
   · refine .orE (lt_or_le r.pos r.neg) ?_ ?_
     · have hl : (lt r.pos r.neg :: le r.pos r.neg :: Γ) ⊢[PRAAx] le (succ r.pos) r.neg := Prf.hyp0
       have e := natEq (eq_add_of_le hl)
       have e' := natEq (h'.wk.wk : (lt r.pos r.neg :: le r.pos r.neg :: Γ) ⊢[PRAAx] _)
       refine (mul_cancel (D := succ (monus r.neg (succ r.pos))) (congrSucc (pred_succ _).eqSymm) ?_)
-      apply deriveNat; ipra_simps
-      linear_combination -e' - (𝔞 x.pos + 𝔞 y.neg - 𝔞 y.pos - 𝔞 x.neg) * e
+      ipra_lc -e' - (𝔞 x.pos + 𝔞 y.neg - 𝔞 y.pos - 𝔞 x.neg) * e
     · -- `r⁺ = r⁻` contradicts `r ≠ 0`
       have eq := le_antisymm (Prf.hyp0 : (le r.neg r.pos :: le r.pos r.neg :: Γ) ⊢[PRAAx] le r.neg r.pos)
         (Prf.hyp1 : (le r.neg r.pos :: le r.pos r.neg :: Γ) ⊢[PRAAx] le r.pos r.neg)
-      have ee := natEq eq
       have z : (le r.neg r.pos :: le r.pos r.neg :: Γ) ⊢[PRAAx] ZT.eq r (ZT.natLit 0) := by
         show _ ⊢[PRAAx] r.pos + zero ≐ num 0 + r.neg
-        apply deriveNat; ipra_simps; linear_combination -ee
+        ipra_lc -natEq eq
       exact .botE _ (Prf.impE hr.wk.wk z)
 
 /-- `r x = 0` with `r ≠ 0` gives `x = 0`. -/

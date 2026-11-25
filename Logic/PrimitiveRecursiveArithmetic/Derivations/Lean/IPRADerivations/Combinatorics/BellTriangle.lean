@@ -1,6 +1,6 @@
 import IPRADerivations.Combinatorics.BellBounds
 import IPRADerivations.Core.SumReflect
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The Bell triangle

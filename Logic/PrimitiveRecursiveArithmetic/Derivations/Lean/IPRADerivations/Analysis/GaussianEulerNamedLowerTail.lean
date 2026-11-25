@@ -2,6 +2,7 @@ import IPRADerivations.Analysis.GaussianEulerCompactLowerTail
 import IPRADerivations.Analysis.GaussianEulerLowerTailFiniteBudget
 import IPRADerivations.Analysis.GaussianEulerLowerCofinalQuadrature
 import IPRADerivations.Analysis.GaussianEulerCutoffCauchyComparison
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The actual lower-cutoff Euler name and its sharp tail bound
@@ -75,10 +76,8 @@ private theorem modulus_congr (F : PR 3) (a C E a' C' E' L x : PTm n)
 private theorem quadrature_congr (F : PR 3) (s N a C E N' a' C' E' x : PTm n)
     (hN : Γ ⊢[PRAAx] N ≐ N') (ha : Γ ⊢[PRAAx] a ≐ a') (hC : Γ ⊢[PRAAx] C ≐ C') (hE : Γ ⊢[PRAAx] E ≐ E') :
     Γ ⊢[PRAAx] quadrature F s N a C E x ≐ quadrature F s N' a' C' E' x := by
-  simpa using Prf.eqCongr (Γ := Γ) (Ax := PRAAx)
-    (quadrature F (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6)
-    (σ := ![s,N,a,C,E,x]) (σ' := ![s,N',a',C',E',x])
-    (fun i => by fin_cases i; exact .eqRefl _; exact hN; exact ha; exact hC; exact hE; exact .eqRefl _)
+  ipra_congr (quadrature F (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) with
+    [.eqRefl s, hN, ha, hC, hE, .eqRefl x]
 
 theorem finite_source (z R B N p q k : PTm n) (hN : Γ ⊢[PRAAx] le one N)
     (h : Γ ⊢[PRAAx] source z R B (succ k)) (hpq : Γ ⊢[PRAAx] lt p q) :
@@ -205,8 +204,7 @@ theorem point_zero (s z R B p q A : PTm n) (h : Γ ⊢[PRAAx] lowerWidth p q A �
 theorem equal_bound (s z R B p q A : PTm n) (hpq : Γ ⊢[PRAAx] p ≐ q) :
     Γ ⊢[PRAAx] result s z R B p q A := by
   have width : Γ ⊢[PRAAx] lowerWidth p q A ≐ lowerWidth p p A := by
-    simpa using Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (lowerWidth (var 0) (var 1) (var 2) : PTm 3)
-      (σ := ![p,q,A]) (σ' := ![p,p,A]) (fun i => by fin_cases i; exact .eqRefl _; exact hpq.eqSymm; exact .eqRefl _)
+    ipra_congr (lowerWidth (var 0) (var 1) (var 2) : PTm 3) with [.eqRefl p, hpq.eqSymm, .eqRefl A]
   have e := point_zero s z R B p q A (width.eqTrans (GaussianGammaCompactCutoffGeometry.same_lower p A))
   exact bound_congr e.eqSymm (.eqRefl _) (.eqRefl _)
     (GaussianEulerNamedUpperTail.zero_bound _ _ (positive_product _ _ (unit_positive _) (unit_positive s)))

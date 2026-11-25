@@ -1,4 +1,4 @@
-import IPRADerivations.Core.IntCertificates
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The finite steps of the rational Gram certificate
@@ -77,12 +77,6 @@ theorem pair_bound {k : PTm n} {z₁ z₂ : ZT n} (u₁ u₂ v₁ v₂ : ZT n)
     Γ ⊢[PRAAx] zle
       (ZT.natLit 2 * ZT.ofNat k * (u₁ * (z₁ * v₁ - z₂ * v₂) + u₂ * (z₁ * v₂ + z₂ * v₁)))
       (ZT.ofNat (k * k) * (ZT.sq u₁ + ZT.sq u₂ + (ZT.sq v₁ + ZT.sq v₂))) := by
-  refine zle_of_comb (ZT.toZ Γ (ZT.ofNat k * u₁ - (z₁ * v₁ - z₂ * v₂)) ^ 2 +
-      ZT.toZ Γ (ZT.ofNat k * u₂ - (z₁ * v₂ + z₂ * v₁)) ^ 2 +
-      zsl hz * (ZT.toZ Γ v₁ ^ 2 + ZT.toZ Γ v₂ ^ 2)) ?_
-    (nn_add (nn_add (nn_zsq _) (nn_zsq _)) (nn_mul (nn_zsl _) (nn_add (nn_zsq _) (nn_zsq _))))
-  simp only [zsl_def, ZT.toZ_add, ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_sq, ZT.toZ_natLit, ZT.toZ_ofNat, Q.mk_mul, map_mul,
-    Nat.cast_ofNat]
-  ring
+  ipra_zle (ZT.toZ Γ (ZT.ofNat k * u₁ - (z₁ * v₁ - z₂ * v₂)) ^ 2 + ZT.toZ Γ (ZT.ofNat k * u₂ - (z₁ * v₂ + z₂ * v₁)) ^ 2 + zsl hz * (ZT.toZ Γ v₁ ^ 2 + ZT.toZ Γ v₂ ^ 2))
 
 end LeanProofs.IPRA.AnalyticNumberTheory.GramCertificate

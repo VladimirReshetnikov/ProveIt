@@ -3,6 +3,9 @@ import IPRADerivations.Foundations.GuardedTotalization
 import IPRADerivations.Core.SumSplit
 import IPRADerivations.Core.Fubini
 import IPRADerivations.Core.ParityArith
+import IPRADerivations.Core.CongruenceTactic
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Actual adjacent position swaps of numeric permutation words
@@ -50,14 +53,12 @@ def rankSwap (m j t : PTm n) : PTm n := RuntimePermutationWords.position
 @[simp] theorem subst_rankSwap {l : ℕ} (σ : Fin n → PTm l) (m j t : PTm n) :
     Syn.subst σ (rankSwap m j t) = rankSwap (Syn.subst σ m) (Syn.subst σ j) (Syn.subst σ t) := by simp [rankSwap]
 
-theorem different_of_lt {a b : PTm n} (h : Γ ⊢[PRAAx] lt a b) : Γ ⊢[PRAAx] neg (a ≐ b) :=
-  .impI (lt_irrefl _ Fm.bot (lt_congr (.eqRefl _) Prf.hyp0.eqSymm h.wk))
+alias different_of_lt := Common.ne_of_lt
 theorem different_symm {a b : PTm n} (h : Γ ⊢[PRAAx] neg (a ≐ b)) : Γ ⊢[PRAAx] neg (b ≐ a) :=
   .impI (.impE h.wk Prf.hyp0.eqSymm)
 theorem tau_congr {j j' i i' : PTm n} (hj : Γ ⊢[PRAAx] j ≐ j') (hi : Γ ⊢[PRAAx] i ≐ i') :
     Γ ⊢[PRAAx] tau j i ≐ tau j' i' := by
-  simpa using Prf.eqCongr (Γ := Γ) (tau (var 0) (var 1) : PTm 2)
-    (σ := ![j,i]) (σ' := ![j',i']) (fun k => by fin_cases k; exact hj; exact hi)
+  ipra_congr (tau (var 0) (var 1) : PTm 2) with [hj, hi]
 theorem tau_left (j : PTm n) : Γ ⊢[PRAAx] tau j j ≐ succ j := sel_one (eqb_of_eq (.eqRefl _))
 theorem tau_right (j : PTm n) : Γ ⊢[PRAAx] tau j (succ j) ≐ j :=
   (sel_zero (eqb_of_ne (different_symm (different_of_lt (le_refl (succ j)))))).eqTrans
@@ -153,13 +154,11 @@ theorem swapped_digit (m w j i : PTm n) (hj : Γ ⊢[PRAAx] lt (succ j) m) (hi :
 theorem digit_congr {m m' w w' i i' : PTm n} (hm : Γ ⊢[PRAAx] m ≐ m')
     (hw : Γ ⊢[PRAAx] w ≐ w') (hi : Γ ⊢[PRAAx] i ≐ i') : Γ ⊢[PRAAx]
     RuntimePermutationWords.digit m w i ≐ RuntimePermutationWords.digit m' w' i' := by
-  simpa using Prf.eqCongr (Γ := Γ) (RuntimePermutationWords.digit (var 0) (var 1) (var 2) : PTm 3)
-    (σ := ![m,w,i]) (σ' := ![m',w',i']) (fun k => by fin_cases k; exact hm; exact hw; exact hi)
+  ipra_congr (RuntimePermutationWords.digit (var 0) (var 1) (var 2) : PTm 3) with [hm, hw, hi]
 theorem swapWord_congr {m m' w w' j j' : PTm n} (hm : Γ ⊢[PRAAx] m ≐ m')
     (hw : Γ ⊢[PRAAx] w ≐ w') (hj : Γ ⊢[PRAAx] j ≐ j') : Γ ⊢[PRAAx]
     swapWord m w j ≐ swapWord m' w' j' := by
-  simpa using Prf.eqCongr (Γ := Γ) (swapWord (var 0) (var 1) (var 2) : PTm 3)
-    (σ := ![m,w,j]) (σ' := ![m',w',j']) (fun k => by fin_cases k; exact hm; exact hw; exact hj)
+  ipra_congr (swapWord (var 0) (var 1) (var 2) : PTm 3) with [hm, hw, hj]
 theorem swapped_permutation (m w j : PTm n) (h : Γ ⊢[PRAAx] RuntimePermutationWords.permutation m w)
     (hj : Γ ⊢[PRAAx] lt (succ j) m) : Γ ⊢[PRAAx] RuntimePermutationWords.permutation m (swapWord m w j) :=
   RuntimePermutationWords.encoded_tuple _ _ (tuple_preserved _ _ _ h hj)
@@ -195,7 +194,6 @@ theorem rank_involution (m j t : PTm n) (ht : Γ ⊢[PRAAx] lt t (RuntimePermuta
   exact (Prf.andE₂ next).eqTrans
     ((swapWord_congr (.eqRefl _) (Prf.andE₂ first) (.eqRefl _)).eqTrans
       (word_involution _ _ _ (RuntimePermutationWords.retained_bound _ _ ht) hj))
-
 
 /-! Adjacent finite-sum exchange uses genuine numeric cut points. In
 particular no unbounded rangeAll hypothesis is imposed on the raw swap. -/
@@ -273,7 +271,6 @@ theorem adjacent_sum (g : PTm 2) (m j x : PTm n) (hj : Γ ⊢[PRAAx] lt (succ j)
       ((congrAdd (congrAdd (swap_sum_prefix _ _ _) (swap_sum_middle _ _ _)) (swap_sum_tail _ _ _ _)).eqTrans
         ((sum_split₃ g j two t x).eqSymm.eqTrans (congrAp2 (sumF g) span.eqSymm (.eqRefl _)))))
 
-
 theorem pair_first {a b c d : PTm n} (h : Γ ⊢[PRAAx] pairT a b ≐ pairT c d) : Γ ⊢[PRAAx] a ≐ c :=
   (fst_pair _ _).eqSymm.eqTrans ((congrFst h).eqTrans (fst_pair _ _))
 theorem pair_second {a b c d : PTm n} (h : Γ ⊢[PRAAx] pairT a b ≐ pairT c d) : Γ ⊢[PRAAx] b ≐ d :=
@@ -330,7 +327,6 @@ theorem tau_order_iff (j i l : PTm n)
     exact .impE hr.wk.wk (congrPairT ei el)
   exact lt_congr (tau_involution _ _) (tau_involution _ _) (tau_order_forward _ _ _ Prf.hyp0 no)
 
-
 /-! The exceptional ordered pairs are handled by actual Boolean/delta
 values; every other inversion bit is transported through its reflection. -/
 def pairDelta (i l a b : PTm n) : PTm n := eqb i a*eqb l b
@@ -348,8 +344,7 @@ theorem inversion_congr {m m' w w' i i' l l' : PTm n}
     (hm : Γ ⊢[PRAAx] m ≐ m') (hw : Γ ⊢[PRAAx] w ≐ w')
     (hi : Γ ⊢[PRAAx] i ≐ i') (hl : Γ ⊢[PRAAx] l ≐ l') : Γ ⊢[PRAAx]
     RuntimePermutationWords.inversionBit m w i l ≐ RuntimePermutationWords.inversionBit m' w' i' l' := by
-  simpa using Prf.eqCongr (Γ := Γ) (RuntimePermutationWords.inversionBit (var 0) (var 1) (var 2) (var 3) : PTm 4)
-    (σ := ![m,w,i,l]) (σ' := ![m',w',i',l']) (fun k => by fin_cases k; exact hm; exact hw; exact hi; exact hl)
+  ipra_congr (RuntimePermutationWords.inversionBit (var 0) (var 1) (var 2) (var 3) : PTm 4) with [hm, hw, hi, hl]
 theorem inversion_zero_position (m w i l : PTm n) (h : Γ ⊢[PRAAx] le l i) : Γ ⊢[PRAAx]
     RuntimePermutationWords.inversionBit m w i l ≐ zero :=
   .orE (RuntimePermutationWords.inversion_cases _ _ _ _) Prf.hyp0
@@ -442,7 +437,6 @@ theorem inversion_point_balance (m w j i l : PTm n) (hj : Γ ⊢[PRAAx] lt (succ
       rw [a,b,c]
       ring
 
-
 /-! Genuine double sums. Row agreements and additivity are derived from
 the checked finite-sum kernels, with both numerical bounds internal. -/
 def doubleSum (g : PTm 3) (m p : PTm n) : PTm n := ap2 (sumF (oB g)) m (pairT m p)
@@ -504,7 +498,6 @@ theorem double_add (g h : PTm 3) (m p : PTm n) : Γ ⊢[PRAAx]
         (congrAdd (oB_at g (var 0) (Syn.shift m) (Syn.shift p)).eqSymm (oB_at h (var 0) (Syn.shift m) (Syn.shift p)).eqSymm))
   exact rows.eqTrans (sum_add _ _ _ _)
 
-
 def swapTable (g : PTm 3) : PTm 3 := inst3 g (tau (fstT (var 2)) (var 0))
   (tau (fstT (var 2)) (var 1)) (sndT (var 2))
 theorem swap_table_at (g : PTm 3) (j i l p : PTm n) : Γ ⊢[PRAAx]
@@ -550,8 +543,7 @@ def deltaData (a b v : PTm n) : PTm n := pairT a (pairT b v)
 def deltaTable : PTm 3 := pairDelta (var 0) (var 1) (fstT (var 2)) (fstT (sndT (var 2)))*sndT (sndT (var 2))
 @[simp] theorem subst_deltaData {k : ℕ} (σ : Fin n → PTm k) (a b v : PTm n) :
     Syn.subst σ (deltaData a b v) = deltaData (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ v) := by simp [deltaData]
-theorem eqb_congr {a a' b b' : PTm n} (ha : Γ ⊢[PRAAx] a ≐ a') (hb : Γ ⊢[PRAAx] b ≐ b') : Γ ⊢[PRAAx]
-    eqb a b ≐ eqb a' b' := congrMonus (.eqRefl _) (congrAdd (congrMonus ha hb) (congrMonus hb ha))
+alias eqb_congr := Common.congrEqb
 theorem eqb_symmetric (a b : PTm n) : Γ ⊢[PRAAx] eqb a b ≐ eqb b a := congrMonus (.eqRefl _) (add_comm _ _)
 theorem delta_table_at (a b v i l : PTm n) : Γ ⊢[PRAAx]
     inst3 deltaTable i l (deltaData a b v) ≐ pairDelta i l a b*v := by
@@ -626,7 +618,6 @@ theorem inversion_double_bridge (m w : PTm n) : Γ ⊢[PRAAx]
       inst2 RuntimePermutationWords.inversionRow (var 0) (RuntimePermutationWords.data (Syn.shift m) (Syn.shift w)) :=
     (oB_at inversionTable _ _ _).eqTrans ((inversion_row_bridge _ _ _).eqTrans (RuntimePermutationWords.inversion_row_at _ _ _).eqSymm)
   simpa only [Δ,Syn.shift,subst_pairT,RuntimePermutationWords.subst_data] using e
-
 
 /-! Fixed-syntax reparameterization keeps all numerical data inside actual
 unary bodies. It introduces no evaluator or semantic composition premise. -/
@@ -709,7 +700,6 @@ theorem new_delta_data_at (m w j : PTm n) : Γ ⊢[PRAAx] at1 newDeltaDataBody (
   simpa [newDeltaDataBody] using packed_at (Γ := Γ) (deltaData (var 2) (succ (var 2))
     (RuntimePermutationWords.inversionBit (var 0) (swapWord (var 0) (var 1) (var 2)) (var 2) (succ (var 2))) : PTm 3) m w j
 
-
 theorem new_point_at (m w j i l : PTm n) : Γ ⊢[PRAAx] inst3 newInversionTable i l (baseData m w j) ≐
     RuntimePermutationWords.inversionBit m (swapWord m w j) i l := by
   rw [newInversionTable,map_table_at]
@@ -780,7 +770,6 @@ theorem inversion_balance (m w j : PTm n) (hj : Γ ⊢[PRAAx] lt (succ j) m) : �
   exact (congrAdd (new_double _ _ _) (old_delta_double _ _ _ hj)).eqSymm.eqTrans
     (sums.eqTrans (congrAdd (reordered_double _ _ _ hj) (new_delta_double _ _ _ hj)))
 
-
 /-! Complementarity uses only the actual adjacent digit inequality.
 The global permutation domain derives that inequality below. -/
 theorem old_pair_one (m w j : PTm n)
@@ -830,11 +819,7 @@ theorem inversion_odd_balance (m w j : PTm n) (hj : Γ ⊢[PRAAx] lt (succ j) m)
     (hne : Γ ⊢[PRAAx] neg (RuntimePermutationWords.digit m w j ≐ RuntimePermutationWords.digit m w (succ j))) : Γ ⊢[PRAAx]
     RuntimePermutationWords.inversions m (swapWord m w j)+two*RuntimePermutationWords.inversionBit m w j (succ j) ≐
       RuntimePermutationWords.inversions m w+one := by
-  have a := natEq (inversion_balance m w j hj)
-  have b := natEq (pair_bits_sum m w j hj hne)
-  apply deriveNat
-  ipra_simps
-  linear_combination a+b
+  ipra_lc natEq (inversion_balance m w j hj)+natEq (pair_bits_sum m w j hj hne)
 theorem parity_flip (m w j : PTm n) (hj : Γ ⊢[PRAAx] lt (succ j) m)
     (hne : Γ ⊢[PRAAx] neg (RuntimePermutationWords.digit m w j ≐ RuntimePermutationWords.digit m w (succ j))) : Γ ⊢[PRAAx]
     RuntimePermutationWords.parity m (swapWord m w j) ≐ monus one (RuntimePermutationWords.parity m w) :=
@@ -854,10 +839,8 @@ theorem retained_parity_flip (m j t : PTm n) (ht : Γ ⊢[PRAAx] lt t (RuntimePe
       monus one (RuntimePermutationWords.parity m (entry (RuntimePermutationWords.words m) t)) := by
   have e : Γ ⊢[PRAAx] RuntimePermutationWords.parity m (entry (RuntimePermutationWords.words m) (rankSwap m j t)) ≐
       RuntimePermutationWords.parity m (swapWord m (entry (RuntimePermutationWords.words m) t) j) := by
-    simpa using Prf.eqCongr (Γ := Γ) (RuntimePermutationWords.parity (var 0) (var 1) : PTm 2)
-      (σ := ![m,entry (RuntimePermutationWords.words m) (rankSwap m j t)])
-      (σ' := ![m,swapWord m (entry (RuntimePermutationWords.words m) t) j])
-      (fun k => by fin_cases k; exact .eqRefl _; exact .andE₂ (retained_transport _ _ _ ht hj))
+    ipra_congr (RuntimePermutationWords.parity (var 0) (var 1) : PTm 2) with
+      [.eqRefl m, .andE₂ (retained_transport _ _ _ ht hj)]
   exact e.eqTrans (parity_flip _ _ _ hj (adjacent_digits_different _ _ _ (RuntimePermutationWords.retained_valid _ _ ht) hj))
 
 theorem word_no_fixed (m w j : PTm n) (h : Γ ⊢[PRAAx] RuntimePermutationWords.permutation m w)

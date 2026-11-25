@@ -6,6 +6,7 @@ import IPRADerivations.Analysis.GaussianIntegerCircleProjection
 import IPRADerivations.Combinatorics.FiniteBijection
 import IPRADerivations.Analysis.GaussianRationalPowerDifference
 import IPRADerivations.Analysis.GaussianReconstructionRoots
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # An actual principal rational half-angle step
@@ -265,14 +266,10 @@ def circleNumerator (q H : PTm n) : PTm n := GaussianRationalCircleParametrizati
 
 theorem roots_deficit (q H : PTm n) (h : Γ ⊢[PRAAx] unit q) : Γ ⊢[PRAAx]
     plusRoot q H*plusRoot q H+minusRoot q H*minusRoot q H+deficit q H ≐ grid q H*grid q H := by
-  have a := natEq (RationalSquareRootBounds.root_deficit (Γ := Γ) (plus q) (base q) H)
-  have b := natEq (RationalSquareRootBounds.root_deficit (Γ := Γ) (minus q) (base q) H)
-  have sm := natEq (plus_minus_sum q h)
   unfold plusRoot minusRoot deficit plusDeficit minusDeficit grid
-  apply deriveNat
-  simp only [RationalSquareRootBounds.radicand,base] at a b sm ⊢
-  ipra_simps
-  linear_combination a+b+2*𝔞(rawDen q)*𝔞(H)*𝔞(H)*sm
+  ipra_lc [RationalSquareRootBounds.radicand, base] natEq (RationalSquareRootBounds.root_deficit (Γ := Γ) (plus q) (base q) H)+
+    natEq (RationalSquareRootBounds.root_deficit (Γ := Γ) (minus q) (base q) H)+
+    2*𝔞(rawDen q)*𝔞(H)*𝔞(H)*natEq (plus_minus_sum q h)
 
 theorem deficit_bound (q H : PTm n) (hH : Γ ⊢[PRAAx] le one H) (h : Γ ⊢[PRAAx] unit q) : Γ ⊢[PRAAx]
     le (deficit q H) ((two*RationalSquareRootBounds.three)*grid q H) :=
@@ -365,12 +362,8 @@ theorem imaginary_root_order (q H : PTm n) (h : Γ ⊢[PRAAx] unit q) : Γ ⊢[P
 
 theorem ad_square_gap (a b : PTm n) (h : Γ ⊢[PRAAx] le b a) : Γ ⊢[PRAAx]
     le (Probability.Variance.ad a b*Probability.Variance.ad a b+b*b) (a*a) := by
-  have ad := natEq (Probability.Variance.ad_sq (Γ := Γ) a b)
-  have gap := natEq (eq_add_of_le h)
   refine le_of_eq_add (d := two*b*monus a b) ?_
-  apply deriveNat
-  ipra_simps
-  linear_combination -ad+2*𝔞(b)*gap
+  ipra_lc -natEq (Probability.Variance.ad_sq (Γ := Γ) a b)+2*𝔞(b)*natEq (eq_add_of_le h)
 
 def floorSquareDifference (q H : PTm n) : PTm n := GaussianRootAlgebra.sub
   (ComplexLogarithmRemainder.scale (rawDen q) (ComplexLogarithmRemainder.mul (floorNumerator q H) (floorNumerator q H)))
@@ -431,15 +424,7 @@ theorem imaginary_gap_identity (q H : PTm n) (h : Γ ⊢[PRAAx] unit q) : Γ ⊢
     (grid q H*grid q H*zabs (im (rawGaussian q)))*(grid q H*grid q H*zabs (im (rawGaussian q))) ≐
       (two*rawDen q*plusRoot q H*minusRoot q H)*(two*rawDen q*plusRoot q H*minusRoot q H)+
         base q*base q*imaginaryDefect q H := by
-  have ip := natEq (imaginary_product q h)
-  have rp := natEq (RationalSquareRootBounds.root_deficit (Γ := Γ) (plus q) (base q) H)
-  have rm := natEq (RationalSquareRootBounds.root_deficit (Γ := Γ) (minus q) (base q) H)
-  apply deriveNat
-  simp only [imaginaryDefect,plusDeficit,minusDeficit,plusRoot,minusRoot,grid,RationalSquareRootBounds.radicand,base] at rp rm ⊢
-  ipra_simps
-  linear_combination -(2*𝔞(rawDen q)*𝔞(H))^4*ip-
-    (2*𝔞(rawDen q))^2*(𝔞(minus q)*(2*𝔞(rawDen q))*𝔞(H)^2)*rp-
-    (2*𝔞(rawDen q))^2*𝔞(RationalSquareRootBounds.root (plus q) (two*rawDen q) H)^2*rm
+  ipra_lc [imaginaryDefect, plusDeficit, minusDeficit, plusRoot, minusRoot, grid, RationalSquareRootBounds.radicand, base] -(2*𝔞(rawDen q)*𝔞(H))^4*natEq (imaginary_product q h)- (2*𝔞(rawDen q))^2*(𝔞(minus q)*(2*𝔞(rawDen q))*𝔞(H)^2)*natEq (RationalSquareRootBounds.root_deficit (Γ := Γ) (plus q) (base q) H)- (2*𝔞(rawDen q))^2*𝔞(RationalSquareRootBounds.root (plus q) (two*rawDen q) H)^2*natEq (RationalSquareRootBounds.root_deficit (Γ := Γ) (minus q) (base q) H)
 
 theorem ad_le_sum (a b : PTm n) : Γ ⊢[PRAAx] le (Probability.Variance.ad a b) (a+b) :=
   Probability.MedianWeighted.ad_le_of
@@ -649,20 +634,17 @@ def precision (J : PTm n) : PTm n := pw two (two*J+num 10)
     Syn.subst σ (precision J) = precision (Syn.subst σ J) := by simp [precision]
 
 theorem two_power_ten : Γ ⊢[PRAAx] pw (two : PTm n) (num 10) ≐ num 1024 := by
-  have e10 := natEq (((congrAp2 powF (by ipra_ring : Γ ⊢[PRAAx] num 10 ≐ succ (num 9)) (.eqRefl (two : PTm n))).eqTrans (pw_succ two (num 9))))
-  have e9 := natEq (((congrAp2 powF (by ipra_ring : Γ ⊢[PRAAx] num 9 ≐ succ (num 8)) (.eqRefl (two : PTm n))).eqTrans (pw_succ two (num 8))))
-  have e8 := natEq (((congrAp2 powF (by ipra_ring : Γ ⊢[PRAAx] num 8 ≐ succ (num 7)) (.eqRefl (two : PTm n))).eqTrans (pw_succ two (num 7))))
-  have e7 := natEq (((congrAp2 powF (by ipra_ring : Γ ⊢[PRAAx] num 7 ≐ succ (num 6)) (.eqRefl (two : PTm n))).eqTrans (pw_succ two (num 6))))
-  have e6 := natEq (((congrAp2 powF (by ipra_ring : Γ ⊢[PRAAx] num 6 ≐ succ (num 5)) (.eqRefl (two : PTm n))).eqTrans (pw_succ two (num 5))))
-  have e5 := natEq (((congrAp2 powF (by ipra_ring : Γ ⊢[PRAAx] num 5 ≐ succ (num 4)) (.eqRefl (two : PTm n))).eqTrans (pw_succ two (num 4))))
-  have e4 := natEq (((congrAp2 powF (by ipra_ring : Γ ⊢[PRAAx] num 4 ≐ succ (num 3)) (.eqRefl (two : PTm n))).eqTrans (pw_succ two (num 3))))
-  have e3 := natEq (((congrAp2 powF (by ipra_ring : Γ ⊢[PRAAx] num 3 ≐ succ (num 2)) (.eqRefl (two : PTm n))).eqTrans (pw_succ two (num 2))))
-  have e2 := natEq (((congrAp2 powF (by ipra_ring : Γ ⊢[PRAAx] num 2 ≐ succ (num 1)) (.eqRefl (two : PTm n))).eqTrans (pw_succ two (num 1))))
-  have e1 := natEq (((congrAp2 powF (by ipra_ring : Γ ⊢[PRAAx] num 1 ≐ succ zero) (.eqRefl (two : PTm n))).eqTrans (pw_succ two zero)))
-  have e0 := natEq (pw_zero (Γ := Γ) (two : PTm n))
-  apply deriveNat
-  ipra_simps
-  linear_combination e10+2*e9+4*e8+8*e7+16*e6+32*e5+64*e4+128*e3+256*e2+512*e1+1024*e0
+  ipra_lc natEq (((congrAp2 powF (by ipra_ring : Γ ⊢[PRAAx] num 10 ≐ succ (num 9)) (.eqRefl (two : PTm n))).eqTrans (pw_succ two (num 9))))+
+    2*natEq (((congrAp2 powF (by ipra_ring : Γ ⊢[PRAAx] num 9 ≐ succ (num 8)) (.eqRefl (two : PTm n))).eqTrans (pw_succ two (num 8))))+
+    4*natEq (((congrAp2 powF (by ipra_ring : Γ ⊢[PRAAx] num 8 ≐ succ (num 7)) (.eqRefl (two : PTm n))).eqTrans (pw_succ two (num 7))))+
+    8*natEq (((congrAp2 powF (by ipra_ring : Γ ⊢[PRAAx] num 7 ≐ succ (num 6)) (.eqRefl (two : PTm n))).eqTrans (pw_succ two (num 6))))+
+    16*natEq (((congrAp2 powF (by ipra_ring : Γ ⊢[PRAAx] num 6 ≐ succ (num 5)) (.eqRefl (two : PTm n))).eqTrans (pw_succ two (num 5))))+
+    32*natEq (((congrAp2 powF (by ipra_ring : Γ ⊢[PRAAx] num 5 ≐ succ (num 4)) (.eqRefl (two : PTm n))).eqTrans (pw_succ two (num 4))))+
+    64*natEq (((congrAp2 powF (by ipra_ring : Γ ⊢[PRAAx] num 4 ≐ succ (num 3)) (.eqRefl (two : PTm n))).eqTrans (pw_succ two (num 3))))+
+    128*natEq (((congrAp2 powF (by ipra_ring : Γ ⊢[PRAAx] num 3 ≐ succ (num 2)) (.eqRefl (two : PTm n))).eqTrans (pw_succ two (num 2))))+
+    256*natEq (((congrAp2 powF (by ipra_ring : Γ ⊢[PRAAx] num 2 ≐ succ (num 1)) (.eqRefl (two : PTm n))).eqTrans (pw_succ two (num 1))))+
+    512*natEq (((congrAp2 powF (by ipra_ring : Γ ⊢[PRAAx] num 1 ≐ succ zero) (.eqRefl (two : PTm n))).eqTrans (pw_succ two zero)))+
+    1024*natEq (pw_zero (Γ := Γ) (two : PTm n))
 
 theorem precision_factor (J : PTm n) : Γ ⊢[PRAAx]
     precision J ≐ pw two J*pw two J*(num 1024) :=

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.GaussianScalarIdentityDeterminant
 import IPRADerivations.Foundations.RuntimePermutationDigitSum
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The actual numerical triangular determinant

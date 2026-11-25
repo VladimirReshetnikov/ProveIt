@@ -71,12 +71,12 @@ theorem tri (i s : PTm n) :
       have l2 : ((s ≐ i) :: le s i :: Γ) ⊢[PRAAx] le i s := le_congr e (.eqRefl _) (le_refl s)
       exact .orI₂ (.orI₂ (.andI (sg_le l1) (.andI (sg_le l2) (eqb_of_eq e.eqSymm))))
 
-theorem v100 : Γ ⊢[PRAAx] (one : PTm n) + zero + zero ≐ one := by apply deriveNat; ipra_simps; ring
-theorem v010 : Γ ⊢[PRAAx] (zero : PTm n) + one + zero ≐ one := by apply deriveNat; ipra_simps; ring
-theorem v001 : Γ ⊢[PRAAx] (zero : PTm n) + zero + one ≐ one := by apply deriveNat; ipra_simps; ring
-theorem m100 (f : PTm n) : Γ ⊢[PRAAx] f * one * one ≐ f := by apply deriveNat; ipra_simps; ring
-theorem m010 (f : PTm n) : Γ ⊢[PRAAx] one * f * one ≐ f := by apply deriveNat; ipra_simps; ring
-theorem m001 (f : PTm n) : Γ ⊢[PRAAx] one * one * f ≐ f := by apply deriveNat; ipra_simps; ring
+theorem v100 : Γ ⊢[PRAAx] (one : PTm n) + zero + zero ≐ one := by ipra_ring
+theorem v010 : Γ ⊢[PRAAx] (zero : PTm n) + one + zero ≐ one := by ipra_ring
+theorem v001 : Γ ⊢[PRAAx] (zero : PTm n) + zero + one ≐ one := by ipra_ring
+theorem m100 (f : PTm n) : Γ ⊢[PRAAx] f * one * one ≐ f := by ipra_ring
+theorem m010 (f : PTm n) : Γ ⊢[PRAAx] one * f * one ≐ f := by ipra_ring
+theorem m001 (f : PTm n) : Γ ⊢[PRAAx] one * one * f ≐ f := by ipra_ring
 
 /-- `[i < s] + [s < i] + [i = s] = 1`. -/
 theorem tri_sum (i s : PTm n) : Γ ⊢[PRAAx] sg (monus s i) + sg (monus i s) + eqb i s ≐ one := by

@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.SieveWeightFacts
 import IPRADerivations.AnalyticNumberTheory.SieveInversion
 import IPRADerivations.AnalyticNumberTheory.SieveClosedForms
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The sieve weights defined by inversion, and their sums over multiples
@@ -63,25 +64,21 @@ theorem sg_idem (d : PTm n) : Γ ⊢[PRAAx] sg d * sg d ≐ sg d := by
 
 theorem r1_alg {SE H H1 A A' K : PTm n} (h1 : Γ ⊢[PRAAx] H1 ≐ one) (hA : Γ ⊢[PRAAx] A ≐ A') :
     Γ ⊢[PRAAx] (SE * (H * A)) * K ≐ H * ((SE * (H1 * A')) * K) := by
-  have e1 := natEq h1; have eA := natEq hA
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 SE * 𝔞 H * 𝔞 K * eA - 𝔞 SE * 𝔞 H * 𝔞 K * 𝔞 A' * e1
+  ipra_lc 𝔞 SE * 𝔞 H * 𝔞 K * natEq hA - 𝔞 SE * 𝔞 H * 𝔞 K * 𝔞 A' * natEq h1
 
 theorem r2_alg {S gd E H A R G Y0 : PTm n} (hS : Γ ⊢[PRAAx] S * S ≐ S)
     (hg : Γ ⊢[PRAAx] S * (gd * (E * G)) ≐ S * (E * G)) :
     Γ ⊢[PRAAx] (S * gd) * (((S * E) * (H * A)) * (R * (G * Y0))) ≐ ((S * E) * (H * A)) * (R * (G * Y0)) := by
-  have es := natEq hS; have eg := natEq hg
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 S * (𝔞 H * 𝔞 A * 𝔞 R * 𝔞 Y0) * eg + 𝔞 E * 𝔞 G * (𝔞 H * 𝔞 A * 𝔞 R * 𝔞 Y0) * es
+  ipra_lc 𝔞 S * (𝔞 H * 𝔞 A * 𝔞 R * 𝔞 Y0) * natEq hg + 𝔞 E * 𝔞 G * (𝔞 H * 𝔞 A * 𝔞 R * 𝔞 Y0) * natEq hS
 
 theorem r3_alg (H S g W : PTm n) : Γ ⊢[PRAAx] H * ((S * g) * W) ≐ (H * (S * g)) * W := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem r4_alg (S H g T : PTm n) : Γ ⊢[PRAAx] (S * H) * (g * T) ≐ (H * (S * g)) * T := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem r5_alg (H S g T F : PTm n) : Γ ⊢[PRAAx] H * ((S * g) * T) * F ≐ F * ((H * (S * g)) * T) := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-! ## The summand at `s` and at `s = 1` -/
 

@@ -1,5 +1,6 @@
 import IPRADerivations.Combinatorics.Binomial
 import IPRADerivations.Core.SumLemmas
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Binomial sums, the central binomial coefficient and Catalan numbers
@@ -101,7 +102,7 @@ theorem central_binomial : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 1 centralFormu
   simp only [Fm.subst_eq, subst_ap2, PTm.subst_mul, Syn.subst_var, Matrix.cons_val_zero,
     ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] at hs
   have hn : ([] : List (Fm PTm 1)) ⊢[PRAAx] lt (var 0) (succ (two * var 0)) :=
-    (succ_monus_succ _ _).eqTrans (le_of_eq_add (d := var 0) (by apply deriveNat; ipra_simps; ring))
+    (succ_monus_succ _ _).eqTrans (le_of_eq_add (d := var 0) (by ipra_ring))
   have ht := term_le_sum bBody (x := two * var 0) hn
   rw [inst2_b] at ht
   exact le_congr (.eqRefl _) hs ht
@@ -129,9 +130,9 @@ theorem binom_eq {k n : PTm m} (h : Γ ⊢[PRAAx] le k n) : Γ ⊢[PRAAx] fact n
 
 theorem catalan_ratio_open : ([] : List (Fm PTm 1)) ⊢[PRAAx] catalanRatioFormula := by
   have hN₁ : ([] : List (Fm PTm 1)) ⊢[PRAAx] N ≐ succ (var 0) + succ (var 0) := by
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   have hN₂ : ([] : List (Fm PTm 1)) ⊢[PRAAx] N ≐ succ (succ (var 0)) + var 0 := by
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   have e₁ := binom_eq (k := succ (var 0)) (le_of_eq_add (d := succ (var 0)) hN₁)
   have e₂ := binom_eq (k := succ (succ (var 0))) (le_of_eq_add (d := var 0) hN₂)
   have g₁ : ([] : List (Fm PTm 1)) ⊢[PRAAx] fact (monus N (succ (var 0))) ≐ fact (succ (var 0)) :=
@@ -161,9 +162,8 @@ theorem catalan : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 1 catalanFormula := by
   have hr := catalan_ratio_open
   have hC : ([] : List (Fm PTm 1)) ⊢[PRAAx] le C₂ C₁ := by
     refine mul_le_cancel (d' := succ (var 0)) (le_congr hr (.eqRefl _) (le_of_eq_add (d := C₁) ?_))
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   refine withEq hr fun f₁ => withEq (eq_add_of_le hC) fun f₂ => ?_
-  apply deriveNat; ipra_simps
-  linear_combination f₁ - (Groth.ι (Q.mk ([] : List (Fm PTm 1)) (var 0)) + 2) * f₂
+  ipra_lc f₁ - (Groth.ι (Q.mk ([] : List (Fm PTm 1)) (var 0)) + 2) * f₂
 
 end LeanProofs.IPRA.Combinatorics.BinomialIdentities

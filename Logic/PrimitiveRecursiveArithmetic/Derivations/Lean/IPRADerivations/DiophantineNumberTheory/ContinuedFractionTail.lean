@@ -1,6 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.Coprime
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Tail and error identities of a continued fraction

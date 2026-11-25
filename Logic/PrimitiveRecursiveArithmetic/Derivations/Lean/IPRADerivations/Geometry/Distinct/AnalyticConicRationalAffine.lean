@@ -1,6 +1,6 @@
 import IPRADerivations.Geometry.Distinct.AnalyticConicAffine
 import IPRADerivations.Analysis.RationalAlgebra
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Actual rational affine pullback and evaluation of conics

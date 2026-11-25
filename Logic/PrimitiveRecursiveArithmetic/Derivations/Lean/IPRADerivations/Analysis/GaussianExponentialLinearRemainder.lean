@@ -3,6 +3,7 @@ import IPRADerivations.Analysis.GaussianRationalPowerDifference
 import IPRADerivations.Analysis.GaussianIntegerFractionPowers
 import IPRADerivations.Analysis.GaussianRadiusExponentialName
 import IPRADerivations.Analysis.GaussianGammaCanonicalExponent
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Quadratic error of the original finite exponential
@@ -75,8 +76,7 @@ theorem factorial_reserve (k : PTm n) : Γ ⊢[PRAAx] le (count k+two) (weight k
       ipra_le 𝔞(succ (two+j))*sl ih+sl larger using rw [c,w]; ring
   simpa only [subst_le, PTm.subst_add, subst_count, subst_weight, Syn.subst_var, Syn.inst_zero, two, subst_zero, subst_succ] using all.allE k
 
-private theorem square_power (a : PTm n) : Γ ⊢[PRAAx] pw a two ≐ a*a :=
-  (pw_succ a one).eqTrans (congrMul (pw_one a) (.eqRefl a))
+private alias square_power := Common.pw_two
 
 theorem fractional_term_bound (q A B k : PTm n) (hb : Γ ⊢[PRAAx] le one B)
     (ha : Γ ⊢[PRAAx] le A B) (hq : Γ ⊢[PRAAx] bounded q A B) :

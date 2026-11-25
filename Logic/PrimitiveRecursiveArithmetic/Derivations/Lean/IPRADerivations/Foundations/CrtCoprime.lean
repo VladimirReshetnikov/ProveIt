@@ -7,6 +7,8 @@ import IPRADerivations.AnalyticNumberTheory.EulerProduct
 import IPRADerivations.Combinatorics.LegendreDigits
 import IPRADerivations.DiophantineNumberTheory.Coprime
 import IPRADerivations.AnalyticNumberTheory.MobiusInversion
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The Chinese remainder theorem for a finite system of coprime moduli
@@ -121,7 +123,7 @@ abbrev H (K y : PTm n) : PTm n := ap2 (sumF (hB mB)) K y
 
 /-! ## Positivity and divisibility -/
 
-theorem succ_pos' (t : PTm n) : Γ ⊢[PRAAx] succ t ≐ succ (pred (succ t)) := congrSucc (pred_succ _).eqSymm
+alias succ_pos' := Common.succ_pos
 
 theorem m_pos (i y : PTm n) : Γ ⊢[PRAAx] inst2 (mS mB) i y ≐ succ (pred (inst2 (mS mB) i y)) := by
   rw [mS_at]; exact succ_pos' _
@@ -140,22 +142,17 @@ end System
 /-- `(x mod M) mod d = x mod d` for `d ∣ M`, `d, M ≥ 1`. -/
 theorem remdvd {d M x : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) (hM : Γ ⊢[PRAAx] M ≐ succ (pred M))
     (h : Γ ⊢[PRAAx] dvd d M) : Γ ⊢[PRAAx] rem (rem x M) d ≐ rem x d := by
-  have e1 := natEq (Prf.andE₁ (dm hM x))
-  have e2 := natEq (eq_of_dvd' hd h)
   refine rem_eq_of_eq hd (k₁ := quo M d * quo x M) (k₂ := zero) ?_
-  apply deriveNat; ipra_simps
-  linear_combination -e1 - 𝔞 (quo x M) * e2
+  ipra_lc -natEq (Prf.andE₁ (dm hM x)) - 𝔞 (quo x M) * natEq (eq_of_dvd' hd h)
 
 /-- `x ≡ X (mod M)` and `d ∣ M` give `x ≡ X (mod d)`. -/
 theorem rem_down {d M x X : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) (hM : Γ ⊢[PRAAx] M ≐ succ (pred M))
     (h : Γ ⊢[PRAAx] dvd d M) (hx : Γ ⊢[PRAAx] rem x M ≐ rem X M) : Γ ⊢[PRAAx] rem x d ≐ rem X d :=
   (remdvd hd hM h).eqSymm.eqTrans ((congrAp2 remF hx (.eqRefl _)).eqTrans (remdvd hd hM h))
 
-theorem left_zero {a b : PTm n} (h : Γ ⊢[PRAAx] a + b ≐ zero) : Γ ⊢[PRAAx] a ≐ zero :=
-  (monus_zero a).eqSymm.eqTrans (le_congr (.eqRefl _) h (le_add_right a b))
+alias left_zero := Common.add_eq_zero_left
 
-theorem right_zero {a b : PTm n} (h : Γ ⊢[PRAAx] a + b ≐ zero) : Γ ⊢[PRAAx] b ≐ zero :=
-  (monus_zero b).eqSymm.eqTrans (le_congr (.eqRefl _) h (le_add_left b a))
+alias right_zero := Common.add_eq_zero_right
 
 section Step
 

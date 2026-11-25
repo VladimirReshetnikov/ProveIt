@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.DivisorExchange
 import IPRADerivations.Foundations.SignedSums
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Expanding a product of two divisor sums over a weighted range
@@ -40,9 +41,7 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `(C T) E = (C E) T'` for `T' = T`. -/
 theorem sw {C T T' E : PTm n} (h : Γ ⊢[PRAAx] T' ≐ T) : Γ ⊢[PRAAx] (C * T) * E ≐ (C * E) * T' := by
-  have e := natEq h
-  apply deriveNat; ipra_simps
-  linear_combination -𝔞 C * 𝔞 E * e
+  ipra_lc -𝔞 C * 𝔞 E * natEq h
 
 /-! ## A parameter component that is not used -/
 

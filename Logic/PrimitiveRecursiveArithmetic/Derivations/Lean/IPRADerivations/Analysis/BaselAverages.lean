@@ -1,5 +1,7 @@
 import IPRADerivations.Analysis.BaselSquares
 import IPRADerivations.Combinatorics.BellDobinski
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Tail averages of the Basel packet
@@ -66,10 +68,7 @@ theorem H_le' {P N L : PTm n} (h : Γ ⊢[PRAAx] le P N) : Γ ⊢[PRAAx] le (H P
 
 /-! ## The tails `C(d)` -/
 
-theorem monus_le_self (N d : PTm n) : Γ ⊢[PRAAx] le (monus N d) N := by
-  refine .orE (lt_or_le N d) ?_ ?_
-  · exact le_congr (le_of_lt Prf.hyp0 : (lt N d :: Γ) ⊢[PRAAx] monus N d ≐ zero).eqSymm (.eqRefl _) (zero_le _)
-  · exact le_of_eq_add (d := d) ((eq_add_of_le Prf.hyp0).eqTrans (add_comm _ _))
+alias monus_le_self := Common.monus_le_self
 
 theorem C_split (d N L : PTm n) : Γ ⊢[PRAAx] H N L ≐ H (monus N d) L + C d N L :=
   eq_add_of_le (H_le' (monus_le_self N d))
@@ -77,7 +76,7 @@ theorem C_split (d N L : PTm n) : Γ ⊢[PRAAx] H N L ≐ H (monus N d) L + C d 
 /-- `N ∸ d = (N ∸ (d + 1)) + 1` for `d + 1 ≤ N`. -/
 theorem monus_succ_eq {d N : PTm n} (h : Γ ⊢[PRAAx] le (succ d) N) :
     Γ ⊢[PRAAx] monus N d ≐ succ (monus N (succ d)) :=
-  monus_of_eq ((eq_add_of_le h).eqTrans (by apply deriveNat; ipra_simps; ring))
+  monus_of_eq ((eq_add_of_le h).eqTrans (by ipra_ring))
 
 theorem C_succ {d N L : PTm n} (h : Γ ⊢[PRAAx] le (succ d) N) :
     Γ ⊢[PRAAx] C (succ d) N L ≐ C d N L + g (monus N (succ d)) L := by
@@ -93,64 +92,52 @@ theorem C_le {d N L : PTm n} (h : Γ ⊢[PRAAx] le d N) :
   have bu := block_up (Γ := Γ) (monus N d) d (fact L)
   have e : Γ ⊢[PRAAx] monus N d + d ≐ N := ((eq_add_of_le h).eqTrans (add_comm _ _)).eqSymm
   have bu' := natEq (eq_add_of_le (le_congr (congrAp2 (sumF tB) e (.eqRefl _)) (.eqRefl _) bu))
-  have a := natEq (C_split (Γ := Γ) d N L)
   refine le_of_eq_add (d := monus (H (monus N d) L + d * g (monus N d) L) (H N L)) ?_
-  apply deriveNat; ipra_simps
-  linear_combination bu' + a
+  ipra_lc bu' + natEq (C_split (Γ := Γ) d N L)
 
 /-! ## Increasing averages -/
 
 /-- `lem:average`, cleared: `b(d) ≤ b(d + 1)` for `d = d₀ + 1`, `d + 1 ≤ N`, `d + 1 ≤ L`. -/
 theorem average {d₀ N L : PTm n} (hN : Γ ⊢[PRAAx] le (succ (succ d₀)) N) (hL : Γ ⊢[PRAAx] le (succ (succ d₀)) L) :
     Γ ⊢[PRAAx] le (b (succ d₀) N L) (b (succ (succ d₀)) N L) := by
-  have f0 := natEq (fact_eq (le_trans (le_succ_self _) hL))
-  have f1 := natEq (fact_eq hL)
-  have cs := natEq (C_succ (L := L) hN)
   have cl := C_le (L := L) (le_trans (le_succ_self _) hN)
   have hq := quo_anti (Γ := Γ) (F := fact L) (odd_pos (two * monus N (succ (succ d₀))))
     (le_of_eq_add (d := two) ((congrSucc (congrMul (.eqRefl two) (monus_succ_eq hN))).eqTrans
-      (by apply deriveNat; ipra_simps; ring)))
-  have ct := natEq (eq_add_of_le (le_trans cl (le_mul_mono (le_refl (succ d₀)) hq)))
+      (by ipra_ring)))
   refine mul_le_cancel (d' := d₀) (mul_le_cancel (d' := succ d₀) ?_)
   refine le_of_eq_add (d := fact L * monus (succ d₀ * g (monus N (succ (succ d₀))) L) (C (succ d₀) N L)) ?_
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 (fact L) * ct + (𝔞 d₀ + 1) * 𝔞 (fact L) * cs -
-    (𝔞 d₀ + 1) * 𝔞 (C (succ (succ d₀)) N L) * f1 + (𝔞 d₀ + 2) * 𝔞 (C (succ d₀) N L) * f0
+  ipra_lc 𝔞 (fact L) * natEq (eq_add_of_le (le_trans cl (le_mul_mono (le_refl (succ d₀)) hq))) +
+    (𝔞 d₀ + 1) * 𝔞 (fact L) * natEq (C_succ (L := L) hN) -
+    (𝔞 d₀ + 1) * 𝔞 (C (succ (succ d₀)) N L) * natEq (fact_eq hL) +
+    (𝔞 d₀ + 2) * 𝔞 (C (succ d₀) N L) * natEq (fact_eq (le_trans (le_succ_self _) hL))
 
 /-! ## The last average and the boundary term -/
 
 theorem quo_one' (F : PTm n) : Γ ⊢[PRAAx] quo F (succ (two * zero)) ≐ F :=
-  LeanProofs.IPRA.AnalyticNumberTheory.Totient.quo_eq (q := F) (r := zero) (odd_pos _) (by apply deriveNat; ipra_simps; ring)
-    (le_of_eq_add (d := two * zero) (by apply deriveNat; ipra_simps; ring))
+  LeanProofs.IPRA.AnalyticNumberTheory.Totient.quo_eq (q := F) (r := zero) (odd_pos _) (by ipra_ring)
+    (le_of_eq_add (d := two * zero) (by ipra_ring))
 
 /-- `H(N) ≤ N F`: every `g_j ≤ F`. -/
 theorem H_le_N (N L : PTm n) : Γ ⊢[PRAAx] le (H N L) (N * fact L) := by
   have bu := block_up (Γ := Γ) zero N (fact L)
-  have a := natEq (congrAp2 (sumF tB) (zero_add N) (.eqRefl (fact L)) (Γ := Γ))
-  have z := natEq (sum_zero (Γ := Γ) tB (fact L))
-  have q := natEq (quo_one' (Γ := Γ) (fact L))
-  have w := natEq (eq_add_of_le bu)
   refine le_of_eq_add (d := monus (T zero (fact L) + N * quo (fact L) (succ (two * zero))) (T (zero + N) (fact L))) ?_
-  apply deriveNat; ipra_simps
-  linear_combination w + a - z - 𝔞 N * q
+  ipra_lc natEq (eq_add_of_le bu) + natEq (congrAp2 (sumF tB) (zero_add N) (.eqRefl (fact L)) (Γ := Γ)) -
+    natEq (sum_zero (Γ := Γ) tB (fact L)) - 𝔞 N * natEq (quo_one' (Γ := Γ) (fact L))
 
 /-- `N b(N − 1) ≤ F H(N)` for `N = m + 2 ≤ L`, i.e. `b_{N−1} = (H_N − 1)/(N − 1) ≤ H_N/N`. -/
 theorem last_bound {m N L : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (succ m)) (hL : Γ ⊢[PRAAx] le N L) :
     Γ ⊢[PRAAx] le (N * b (succ m) N L) (fact L * H N L) := by
   have hL' : Γ ⊢[PRAAx] le (succ m) L :=
     le_trans (le_succ_self _) (le_congr hN (.eqRefl _) hL)
-  have f := natEq (fact_eq hL')
-  have cs := natEq (C_split (Γ := Γ) (succ m) N L)
   have e1 : Γ ⊢[PRAAx] monus N (succ m) ≐ succ zero :=
-    monus_of_eq (hN.eqTrans (by apply deriveNat; ipra_simps; ring))
+    monus_of_eq (hN.eqTrans (by ipra_ring))
   have h1 := natEq ((congrAp2 (sumF tB) e1 (.eqRefl (fact L))).eqTrans ((H_succ (Γ := Γ) zero L).eqTrans
     ((congrAdd (sum_zero _ _) (quo_one' _)).eqTrans (zero_add _))))
-  have hb := natEq (eq_add_of_le (H_le_N (Γ := Γ) N L))
-  have en := natEq hN
   refine mul_le_cancel (d' := m) ?_
   refine le_of_eq_add (d := fact L * monus (N * fact L) (H N L)) ?_
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 (fact L) * hb - 𝔞 (fact L) * 𝔞 (H N L) * en + 𝔞 N * 𝔞 (fact L) * h1 + 𝔞 N * 𝔞 (fact L) * cs + 𝔞 N * 𝔞 (C (succ m) N L) * f
+  ipra_lc 𝔞 (fact L) * natEq (eq_add_of_le (H_le_N (Γ := Γ) N L)) - 𝔞 (fact L) * 𝔞 (H N L) * natEq hN +
+    𝔞 N * 𝔞 (fact L) * h1 + 𝔞 N * 𝔞 (fact L) * natEq (C_split (Γ := Γ) (succ m) N L) +
+    𝔞 N * 𝔞 (C (succ m) N L) * natEq (fact_eq hL')
 
 /-- The weight `b(i + 1)` over `0 = i`, `1 = ⟨N, L⟩`. -/
 abbrev wB : PTm 2 := quo (fact (sndT (var 1))) (succ (var 0)) *
@@ -194,11 +181,9 @@ theorem boundary_E {m L : PTm n} (hL : Γ ⊢[PRAAx] le (succ (succ m)) L) :
   rw [inst2_w] at a
   have lb := last_bound (m := m) (N := fstT (pairT (succ (succ m)) L)) (L := sndT (pairT (succ (succ m)) L))
     (fst_pair _ _) (le_congr (fst_pair _ _).eqSymm (snd_pair _ _).eqSymm hL)
-  have lbw := natEq (eq_add_of_le lb)
   have efh := natEq (congrMul (congrAp2 factF (snd_pair (Γ := Γ) (succ (succ m)) L) (.eqRefl zero))
     (congrAp2 (sumF tB) (fst_pair (Γ := Γ) (succ (succ m)) L)
       (congrAp2 factF (snd_pair (Γ := Γ) (succ (succ m)) L) (.eqRefl zero))))
-  have en := natEq (fst_pair (Γ := Γ) (succ (succ m)) L)
   have j1 := natEq (eq_add_of_le (Prf.andE₁ a)); have j2 := natEq (eq_add_of_le (Prf.andE₂ a))
   refine .andI (le_of_eq_add (d := succ (succ m) * monus (Od wB (succ m) (pairT (succ (succ m)) L) +
       b (succ m) (fstT (pairT (succ (succ m)) L)) (sndT (pairT (succ (succ m)) L)))
@@ -212,13 +197,9 @@ theorem boundary_E {m L : PTm n} (hL : Γ ⊢[PRAAx] le (succ (succ m)) L) :
     monus (fact (sndT (pairT (succ (succ m)) L)) * H (fstT (pairT (succ (succ m)) L)) (sndT (pairT (succ (succ m)) L)))
       (fstT (pairT (succ (succ m)) L) * b (succ m) (fstT (pairT (succ (succ m)) L)) (sndT (pairT (succ (succ m)) L))))
     ?_)
-  · apply deriveNat; ipra_simps
-    linear_combination (𝔞 m + 2) * j1 + lbw - efh +
-      𝔞 (quo (fact (sndT (pairT (succ (succ m)) L))) (succ m)) *
-        𝔞 (C (succ m) (fstT (pairT (succ (succ m)) L)) (sndT (pairT (succ (succ m)) L))) * en
-  · apply deriveNat; ipra_simps
-    linear_combination (𝔞 m + 2) * j2 + lbw - efh +
-      𝔞 (quo (fact (sndT (pairT (succ (succ m)) L))) (succ m)) *
-        𝔞 (C (succ m) (fstT (pairT (succ (succ m)) L)) (sndT (pairT (succ (succ m)) L))) * en
+  · ipra_lc (𝔞 m + 2) * j1 + natEq (eq_add_of_le lb) - efh +
+      𝔞 (quo (fact (sndT (pairT (succ (succ m)) L))) (succ m)) * 𝔞 (C (succ m) (fstT (pairT (succ (succ m)) L)) (sndT (pairT (succ (succ m)) L))) * natEq (fst_pair (Γ := Γ) (succ (succ m)) L)
+  · ipra_lc (𝔞 m + 2) * j2 + natEq (eq_add_of_le lb) - efh +
+      𝔞 (quo (fact (sndT (pairT (succ (succ m)) L))) (succ m)) * 𝔞 (C (succ m) (fstT (pairT (succ (succ m)) L)) (sndT (pairT (succ (succ m)) L))) * natEq (fst_pair (Γ := Γ) (succ (succ m)) L)
 
 end LeanProofs.IPRA.Analysis.BaselAverages

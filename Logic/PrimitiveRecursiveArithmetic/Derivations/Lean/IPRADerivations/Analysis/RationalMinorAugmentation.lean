@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.RationalMinorMaskExtension
 import IPRADerivations.AnalyticNumberTheory.SumPhi
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The actual larger minors at the first free column
@@ -97,11 +98,8 @@ theorem extended_inserted_cell (P d i : PTm n) (h : Γ ⊢[PRAAx] lt (rank P d) 
   have rows := extended_row_position P d i hi
   have columns := extended_column_position P d h
   refine (normalized_lookup P d (extendedRow P d i) (extendedColumn P d) _ _ rows.andE₁ columns.andE₁).eqTrans ?_
-  simpa [RationalSupMetric.coordinate,one,ZT.subst] using
-    Prf.eqCongr (normalize (coordinate (entry (var 0) (var 1)) (var 2)) one : PTm 3)
-      (σ := ![normalizedList P d,index (length P) (extendedRow P d i) (count i (bestRow P d)),
-        index d (extendedColumn P d) (free P d)]) (σ' := ![normalizedList P d,i,free P d])
-      (fun j => by fin_cases j; exact .eqRefl _; exact rows.andE₂; exact columns.andE₂)
+  ipra_congr (normalize (coordinate (entry (var 0) (var 1)) (var 2)) one : PTm 3) with
+    [.eqRefl (normalizedList P d), rows.andE₂, columns.andE₂] using [RationalSupMetric.coordinate, one, ZT.subst]
 
 theorem actual_extended_minor_size_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3
     (lt (rank (var 0) (var 1)) (var 1) ⟶ lt (var 2) (length (var 0)) ⟶

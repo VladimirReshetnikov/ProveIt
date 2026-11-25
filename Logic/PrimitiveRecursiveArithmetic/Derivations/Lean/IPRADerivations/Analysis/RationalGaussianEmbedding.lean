@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.RationalAlgebra
 import IPRADerivations.Analysis.GaussianRationalValueEquality
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The original rational codes inside the Gaussian rational codes
@@ -54,19 +55,12 @@ theorem scalar_recode_represents (q : PTm n) (a : ZT n) (A : PTm n)
     (hq : Γ ⊢[PRAAx] RationalArithmetic.represents q a A) :
     Γ ⊢[PRAAx] RationalArithmetic.represents (RationalArithmetic.recode q) a A := by
   apply RationalNormalForm.positive_integer_cancel (denominatorOf q) _ _ (denominator_positive q)
-  apply ZT.derive
-  have e := ZT.toZ_eq hq
-  have r := ZT.toZ_eq (RationalArithmetic.recode_value (Γ := Γ) q)
-  simp only [RationalArithmetic.represents,ZT.toZ_mul,ZT.toZ_ofNat] at e r ⊢
-  linear_combination 𝔞(denominatorOf (RationalArithmetic.recode q))*e+𝔞(A)*r
+  ipra_lc [RationalArithmetic.represents] 𝔞(denominatorOf (RationalArithmetic.recode q))*ZT.toZ_eq hq+
+    𝔞(A)*ZT.toZ_eq (RationalArithmetic.recode_value (Γ := Γ) q)
 
 theorem scalar_zero_represents (A : PTm n) : Γ ⊢[PRAAx]
     RationalArithmetic.represents scalarZero (ZT.ofNat zero) A := by
-  apply ZT.derive
-  have e := ZT.toZ_eq (normalize_preserves_value (Γ := Γ) (ZT.ofNat zero) one (le_refl one))
-  simp only [RationalArithmetic.represents,scalarZero,ZT.toZ_mul,ZT.toZ_ofNat] at e ⊢
-  simp only [Q.mk_zero,Q.mk_one,map_zero,map_one,zero_mul,mul_one] at e ⊢
-  linear_combination 𝔞(A)*e
+  ipra_lc [zero_mul, mul_one, RationalArithmetic.represents, scalarZero] 𝔞(A)*ZT.toZ_eq (normalize_preserves_value (Γ := Γ) (ZT.ofNat zero) one (le_refl one))
 
 theorem embed_canonical (q : PTm n) : Γ ⊢[PRAAx] canonical (embed q) :=
   canonical_pair _ _ (RationalArithmetic.recode_guard q)

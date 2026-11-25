@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.MobiusInversion
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Möbius inversion with a parameter (`pnt_ipra_constructive_2026-11-14`, towards `sb:symmetry`)
@@ -67,15 +68,12 @@ theorem a_pt (d e Z : PTm n) :
         inst2 GN d (pairT (succ (fstT Z)) (quo (fstT Z) e))) := by
   rw [inst3_aP, inst3_aN]
   have g := G_at (Γ := Γ) d (succ (fstT Z)) (quo (fstT Z) e)
-  have s := natEq (dv_symm (Γ := Γ) (fstT Z) d e)
   have g₁ := natEq (Prf.andE₁ g); have g₂ := natEq (Prf.andE₂ g)
   refine .andI ?_ ?_
-  · apply deriveNat; ipra_simps
-    linear_combination 𝔞 (eqb (sq (succ (fstT Z)) d) zero) * 𝔞 (eqb (rem (om (succ (fstT Z)) d) two) zero) *
-      𝔞 (inst2 f e Z) * s - 𝔞 (sg e) * 𝔞 (eqb (rem (fstT Z) e) zero) * 𝔞 (inst2 f e Z) * g₁
-  · apply deriveNat; ipra_simps
-    linear_combination 𝔞 (eqb (sq (succ (fstT Z)) d) zero) * 𝔞 (eqb (rem (om (succ (fstT Z)) d) two) one) *
-      𝔞 (inst2 f e Z) * s - 𝔞 (sg e) * 𝔞 (eqb (rem (fstT Z) e) zero) * 𝔞 (inst2 f e Z) * g₂
+  · ipra_lc 𝔞 (eqb (sq (succ (fstT Z)) d) zero) * 𝔞 (eqb (rem (om (succ (fstT Z)) d) two) zero) * 𝔞 (inst2 f e Z) * natEq (dv_symm (Γ := Γ) (fstT Z) d e) -
+      𝔞 (sg e) * 𝔞 (eqb (rem (fstT Z) e) zero) * 𝔞 (inst2 f e Z) * g₁
+  · ipra_lc 𝔞 (eqb (sq (succ (fstT Z)) d) zero) * 𝔞 (eqb (rem (om (succ (fstT Z)) d) two) one) * 𝔞 (inst2 f e Z) * natEq (dv_symm (Γ := Γ) (fstT Z) d e) -
+      𝔞 (sg e) * 𝔞 (eqb (rem (fstT Z) e) zero) * 𝔞 (inst2 f e Z) * g₂
 
 theorem col_scale (e Z : PTm n) :
     Γ ⊢[PRAAx] (ap2 (sumF (colB (aP f))) (succ (fstT Z)) (pairT e Z) ≐
@@ -123,21 +121,17 @@ theorem col_pt {e Z : PTm n} (hN : Γ ⊢[PRAAx] fstT Z ≐ succ (pred (fstT Z))
       have w := natEq eN; have wp := natEq he
       have hkN : C ⊢[PRAAx] le (succ (quo (fstT Z) e)) (succ (fstT Z)) := by
         refine (succ_monus_succ _ _).eqTrans (le_of_eq_add (d := pred e * quo (fstT Z) e) ?_)
-        apply deriveNat; ipra_simps; linear_combination w + 𝔞 (quo (fstT Z) e) * wp
-      have cg := natEq (cancel_gen hk hkN hkN)
-      have eq := natEq (eqb_quo he eN)
+        ipra_lc w + 𝔞 (quo (fstT Z) e) * wp
       have one₁ : C ⊢[PRAAx] sg e * eqb (rem (fstT Z) e) zero ≐ one :=
-        (congrMul ((congrSg he).eqTrans (sg_succ _)) (eqb_of_eq hd)).eqTrans (by apply deriveNat; ipra_simps; ring)
-      have o₁ := natEq one₁
-      have cP := natEq ((Prf.andE₁ cs).wk.wk : C ⊢[PRAAx] _)
-      have cN := natEq ((Prf.andE₂ cs).wk.wk : C ⊢[PRAAx] _)
-      apply deriveNat; ipra_simps
-      linear_combination cP - cN + 𝔞 (sg e) * 𝔞 (eqb (rem (fstT Z) e) zero) * 𝔞 (inst2 f e Z) * cg +
-        𝔞 (sg e) * 𝔞 (eqb (rem (fstT Z) e) zero) * 𝔞 (inst2 f e Z) * eq + 𝔞 (inst2 f e Z) * 𝔞 (eqb (fstT Z) e) * o₁
+        (congrMul ((congrSg he).eqTrans (sg_succ _)) (eqb_of_eq hd)).eqTrans (by ipra_ring)
+      ipra_lc natEq ((Prf.andE₁ cs).wk.wk : C ⊢[PRAAx] _) - natEq ((Prf.andE₂ cs).wk.wk : C ⊢[PRAAx] _) +
+        𝔞 (sg e) * 𝔞 (eqb (rem (fstT Z) e) zero) * 𝔞 (inst2 f e Z) * natEq (cancel_gen hk hkN hkN) +
+        𝔞 (sg e) * 𝔞 (eqb (rem (fstT Z) e) zero) * 𝔞 (inst2 f e Z) * natEq (eqb_quo he eN) +
+        𝔞 (inst2 f e Z) * 𝔞 (eqb (fstT Z) e) * natEq one₁
     · let C : List (Fm PTm n) := neg (rem (fstT Z) e ≐ zero) :: (e ≐ succ (pred e)) :: Γ
       have he : C ⊢[PRAAx] e ≐ succ (pred e) := Prf.hyp1
       have hc : C ⊢[PRAAx] sg e * eqb (rem (fstT Z) e) zero ≐ zero :=
-        (congrMul (.eqRefl _) (eqb_of_ne Prf.hyp0)).eqTrans (by apply deriveNat; ipra_simps; ring)
+        (congrMul (.eqRefl _) (eqb_of_ne Prf.hyp0)).eqTrans (by ipra_ring)
       have hq : C ⊢[PRAAx] eqb (fstT Z) e ≐ zero := by
         refine eqb_of_ne (.impI ?_)
         have r : ((fstT Z ≐ e) :: C) ⊢[PRAAx] rem (fstT Z) e ≐ zero :=
@@ -160,8 +154,6 @@ theorem inst2_dlt (e y : PTm n) : inst2 (dltB f) e y = eqb (fstT (sndT y)) e * i
 theorem mobius_inversion_p {Z : PTm n} (hN : Γ ⊢[PRAAx] fstT Z ≐ succ (pred (fstT Z))) :
     Γ ⊢[PRAAx] ap2 (sumF (oB (aP f))) (succ (fstT Z)) (pairT (succ (fstT Z)) Z) ≐
       ap2 (sumF (oB (aN f))) (succ (fstT Z)) (pairT (succ (fstT Z)) Z) + inst2 f (fstT Z) Z := by
-  have fP := natEq (fubini (Γ := Γ) (aP f) (succ (fstT Z)) (succ (fstT Z)) Z)
-  have fN := natEq (fubini (Γ := Γ) (aN f) (succ (fstT Z)) (succ (fstT Z)) Z)
   have hN' := shift_pos hN
   rw [show Syn.shift (fstT Z) = fstT (Syn.shift Z) by simp [Syn.shift]] at hN'
   have hs : Syn.shift (succ (fstT Z)) = succ (fstT (Syn.shift Z)) := by simp [Syn.shift]
@@ -173,16 +165,15 @@ theorem mobius_inversion_p {Z : PTm n} (hN : Γ ⊢[PRAAx] fstT Z ≐ succ (pred
       ((col_pt f (e := var 0) (Z := Syn.shift Z) hN'.wk).eqTrans ?_)
     exact congrAdd (congrAp2 (sumF (colB (aN f))) (fst_pair _ _) (congrPairT (.eqRefl _) (snd_pair _ _))).eqSymm
       (congrMul (congrEqb' (congrFst (snd_pair _ _)).eqSymm (.eqRefl _)) (congrInst2 f (.eqRefl _) (snd_pair _ _).eqSymm))
-  have sa := natEq (sum_add (Γ := Γ) (pB (aN f)) (dltB f) (succ (fstT Z)) (pairT (succ (fstT Z)) Z))
   have dl : Γ ⊢[PRAAx] ap2 (sumF (dltB f)) (succ (fstT Z)) (pairT (succ (fstT Z)) Z) ≐ inst2 f (fstT Z) Z := by
     refine (sum_congr_bounded (dltB f) (dB f) _ (pairT (fstT Z) Z) (succ (fstT Z)) (.allI (.impI ?_))).eqTrans
       (sum_delta f (monus_self _))
     rw [inst2_dlt, inst2_dB, shift_pairT, shift_pairT, hs, show Syn.shift (fstT Z) = fstT (Syn.shift Z) by simp [Syn.shift]]
     exact congrMul (congrEqb' ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _).eqSymm) (.eqRefl _))
       (congrInst2 f (.eqRefl _) ((snd_pair _ _).eqTrans (snd_pair _ _).eqSymm))
-  have e₁ := natEq cs; have e₂ := natEq dl
-  apply deriveNat; ipra_simps
-  linear_combination fP + e₁ + sa + e₂ - fN
+  ipra_lc natEq (fubini (Γ := Γ) (aP f) (succ (fstT Z)) (succ (fstT Z)) Z) + natEq cs +
+    natEq (sum_add (Γ := Γ) (pB (aN f)) (dltB f) (succ (fstT Z)) (pairT (succ (fstT Z)) Z)) + natEq dl -
+    natEq (fubini (Γ := Γ) (aN f) (succ (fstT Z)) (succ (fstT Z)) Z)
 
 end Inversion
 

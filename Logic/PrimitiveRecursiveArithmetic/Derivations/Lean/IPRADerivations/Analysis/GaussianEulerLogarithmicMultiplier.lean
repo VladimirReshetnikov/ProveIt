@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianEulerCompactModulus
 import IPRADerivations.Analysis.GaussianPositiveExponentialMajorant
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual logarithmic factors in compact Euler integrands
@@ -74,17 +75,12 @@ theorem evaluator_at (p t x : PTm n) : Γ ⊢[PRAAx] ap3 evaluatorF p t x ≐ ev
 theorem original_sample_at (p j z B a b : PTm n) : Γ ⊢[PRAAx]
     ap3 evaluatorF p (pairT a b) (fixedData j z B) ≐ sample p j z B a b := by
   refine (evaluator_at p (pairT a b) (fixedData j z B)).eqTrans ?_
-  simpa [evaluatorTerm] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (sample (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6)
-      (σ := ![p,fstT (fixedData j z B),fstT (sndT (fixedData j z B)),sndT (sndT (fixedData j z B)),fstT (pairT a b),sndT (pairT a b)])
-      (σ' := ![p,j,z,B,a,b]) (fun i => by
-        fin_cases i
-        exact .eqRefl _
-        exact fst_pair _ _
-        exact (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
-        exact (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)
-        exact fst_pair _ _
-        exact snd_pair _ _)
+  ipra_congr (sample (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) with
+    [.eqRefl p, (show _ ⊢[PRAAx] fstT (fixedData j z B) ≐ j from fst_pair _ _),
+      (show _ ⊢[PRAAx] fstT (sndT (fixedData j z B)) ≐ z from (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)),
+      (show _ ⊢[PRAAx] sndT (sndT (fixedData j z B)) ≐ B from (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)),
+      (show _ ⊢[PRAAx] fstT (pairT a b) ≐ a from fst_pair _ _),
+      (show _ ⊢[PRAAx] sndT (pairT a b) ≐ b from snd_pair _ _)] using [evaluatorTerm]
 
 theorem euler_bound (p z R B E T a b : PTm n) (h : Γ ⊢[PRAAx] source z R B E T a b) : Γ ⊢[PRAAx]
     bounded (GaussianEulerIntegrandName.sample p z B a b) (eulerMajorant R E T) one := by

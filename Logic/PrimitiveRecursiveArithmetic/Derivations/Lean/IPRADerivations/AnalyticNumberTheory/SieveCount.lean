@@ -4,6 +4,8 @@ import IPRADerivations.AnalyticNumberTheory.Multiplicative
 import IPRADerivations.AnalyticNumberTheory.ConvolutionAssoc
 import IPRADerivations.AnalyticNumberTheory.EulerProduct
 import IPRADerivations.AnalyticNumberTheory.CoprimeModulus
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Counting a progression inside the multiples of `l` (the sieve counting step)
@@ -99,17 +101,11 @@ abbrev cnt (X q l a : PTm n) : PTm n := A fB X (succ (pred (q * l))) (par q l a)
 
 /-! ## Arithmetic helpers -/
 
-theorem pos_mul {q l : PTm n} (hq : Γ ⊢[PRAAx] q ≐ succ (pred q)) (hl : Γ ⊢[PRAAx] l ≐ succ (pred l)) :
-    Γ ⊢[PRAAx] q * l ≐ succ (pred (q * l)) := by
-  refine pos_of_eq (e := pred q * pred l + pred q + pred l) ?_
-  have a := natEq hq; have b := natEq hl
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 l * a + (𝔞 (pred q) + 1) * b
+alias pos_mul := Common.pos_mul
 
-theorem pred_lt {l : PTm n} (hl : Γ ⊢[PRAAx] l ≐ succ (pred l)) : Γ ⊢[PRAAx] lt (pred l) l :=
-  le_congr (.eqRefl _) hl.eqSymm (le_refl (succ (pred l)))
+alias pred_lt := Common.pred_lt
 
-theorem mul_one'' (X : PTm n) : Γ ⊢[PRAAx] X * one ≐ X := by apply deriveNat; ipra_simps; ring
+alias mul_one'' := Common.mul_one_right
 
 theorem shift_res0 (l q a : PTm n) : Syn.shift (res l q a) = res (Syn.shift l) (Syn.shift q) (Syn.shift a) := by
   simp only [Syn.shift, PTm.subst_mul, PTm.subst_add, PTm.subst_monus, LeanProofs.IPRA.PTm.subst_pred, subst_eqb,
@@ -117,15 +113,11 @@ theorem shift_res0 (l q a : PTm n) : Syn.shift (res l q a) = res (Syn.shift l) (
 
 /-- `X R + D R = X + D` for `R = 1`. -/
 theorem one_fold {X D R : PTm n} (h : Γ ⊢[PRAAx] R ≐ one) : Γ ⊢[PRAAx] X * R + D * R ≐ X + D := by
-  have e := natEq h
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞 X + 𝔞 D) * e
+  ipra_lc (𝔞 X + 𝔞 D) * natEq h
 
 /-- `D C + D R = D C + D` for `R = 1`. -/
 theorem one_fold' {C D R : PTm n} (h : Γ ⊢[PRAAx] R ≐ one) : Γ ⊢[PRAAx] D * C + D * R ≐ D * C + D := by
-  have e := natEq h
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 D * e
+  ipra_lc 𝔞 D * natEq h
 
 /-! ## The summand -/
 
@@ -167,9 +159,7 @@ theorem ri_pt {q l a : PTm n} (hl : Γ ⊢[PRAAx] l ≐ succ (pred l)) (t : PTm 
 theorem cM_eq {q l D : PTm n} (hl : Γ ⊢[PRAAx] l ≐ succ (pred l)) (hD : Γ ⊢[PRAAx] D ≐ q * l) :
     Γ ⊢[PRAAx] cM D l ≐ q := by
   refine (count_multiples hl).eqTrans (quo_eq hl ?_ (pred_lt hl))
-  have e := natEq hD
-  apply deriveNat; ipra_simps
-  linear_combination e
+  ipra_lc natEq hD
 
 /-- `[l j ≡ a (mod q)] = [j = b]` for `j < q`, with `b = res l q a`. -/
 theorem h_pt {q l a j : PTm n} (hq : Γ ⊢[PRAAx] le two q) (hc : Γ ⊢[PRAAx] gcd l q ≐ one)

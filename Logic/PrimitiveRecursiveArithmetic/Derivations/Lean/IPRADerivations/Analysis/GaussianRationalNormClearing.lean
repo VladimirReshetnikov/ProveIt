@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianDominantScoreWeights
 import IPRADerivations.Analysis.GaussianRelativeNormTriangle
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Exact transport of relative norm bounds through a common denominator
@@ -71,10 +72,7 @@ theorem scaled_bound (q r a b C D : PTm n) (hC : Γ ⊢[PRAAx] le one C) (hD : �
 
 theorem norm_sum_scaled (A u v : PTm n) : Γ ⊢[PRAAx]
     normSq (add (scale A u) (scale A v)) ≐ A*A*normSq (add u v) := by
-  apply deriveNat
-  simp only [ComplexLogarithmRemainder.normSq_eval,GaussianRootAlgebra.re_add,GaussianRootAlgebra.im_add,
-    GaussianRootAlgebra.re_scale,GaussianRootAlgebra.im_scale,Q.mk_mul,map_mul]
-  ring
+  ipra_lc [ComplexLogarithmRemainder.normSq_eval, GaussianRootAlgebra.re_add, GaussianRootAlgebra.im_add, GaussianRootAlgebra.re_scale, GaussianRootAlgebra.im_scale]
 
 /-- Combine the two actual finite Gaussian sums without applying a linear
 norm estimate to their squared norms. -/

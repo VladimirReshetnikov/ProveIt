@@ -1,6 +1,7 @@
 import IPRADerivations.Algebra.DescentDomination
 import IPRADerivations.Analysis.GaussianDominantScoreWeights
 import IPRADerivations.Analysis.GaussianRelativeNormTriangle
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Computed finite geometric weights for the off-dominant terms
@@ -93,10 +94,7 @@ theorem lower_sum_program (N k payload : PTm n) : Γ ⊢[PRAAx]
 theorem upper_sum_program (N k payload : PTm n) : Γ ⊢[PRAAx]
     sumUpper N k payload ≐ ap2 (sumF (weightBody gUpper)) (upperCount N k) (data N k payload) := .eqRefl _
 
-theorem difference_le (a b : PTm n) : Γ ⊢[PRAAx] le (monus a b) a := by
-  refine .orE (le_total a b) ?_ ?_
-  · exact le_congr Prf.hyp0.eqSymm (.eqRefl _) (zero_le a)
-  · exact le_of_eq_add ((eq_add_of_le Prf.hyp0).eqTrans (add_comm _ _))
+alias difference_le := Common.monus_le_self
 
 theorem positive_succ_pred (k : PTm n) (hk : Γ ⊢[PRAAx] le one k) : Γ ⊢[PRAAx] k ≐ succ (pred k) :=
   pos_of_eq_succ ((eq_add_of_le hk).eqTrans (by ipra_ring))

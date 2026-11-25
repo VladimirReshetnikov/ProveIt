@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.SummatoryCompose
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Reordering the double sum of the weighted identity (`pnt_ipra_constructive_2026-11-14`, `sb:weighted-sum`)
@@ -93,13 +94,10 @@ theorem dS1 {m : ℕ} {Δ : List (Fm PTm m)} (i y : PTm m) :
         monus (inst2 (S1B f b) (succ (pred i)) y) (inst2 (S1B f b) (pred i) y) :=
       congrMonus (congrInst2 _ hi (.eqRefl _)) (.eqRefl _)
     refine mi.eqTrans ?_
-    have A := natEq (S1_eq (Γ := C) f b hm h0 (succ (pred i)) y)
-    have B := natEq (S1_eq (Γ := C) f b hm h0 (pred i) y)
-    have s := natEq (sum_succ' (Γ := C) (cvF b (dH f)) (succ (pred i)) y)
-    have gi := natEq (congrInst2 (Γ := C) (cvF b (dH f)) hi (.eqRefl y))
-    have mo := natEq (eq_add_of_le (S1_mono f b hm h0 (Δ := C) (pred i) y))
-    apply deriveNat; ipra_simps
-    linear_combination -mo + A - B + s - gi
+    ipra_lc -natEq (eq_add_of_le (S1_mono f b hm h0 (Δ := C) (pred i) y)) +
+      natEq (S1_eq (Γ := C) f b hm h0 (succ (pred i)) y) - natEq (S1_eq (Γ := C) f b hm h0 (pred i) y) +
+      natEq (sum_succ' (Γ := C) (cvF b (dH f)) (succ (pred i)) y) -
+      natEq (congrInst2 (Γ := C) (cvF b (dH f)) hi (.eqRefl y))
 
 /-- `Σ_k a(k) Σ_j b(j) f(⌊⌊x/k⌋/j⌋) = Σ_n (a * b)(n) f(⌊x/n⌋)`. -/
 theorem reorder (a : PTm 2) (x y : PTm n) :

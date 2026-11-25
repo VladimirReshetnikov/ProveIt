@@ -1,6 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.ConicNonzero
 import IPRADerivations.DiophantineNumberTheory.ConicGcd
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The unit circle `X² + Y² = Z²`

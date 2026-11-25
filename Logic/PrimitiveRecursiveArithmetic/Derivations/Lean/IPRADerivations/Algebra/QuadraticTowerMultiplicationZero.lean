@@ -1,5 +1,7 @@
 import IPRADerivations.Algebra.QuadraticTowerMultiplicationCoherence
 import IPRADerivations.Algebra.QuadraticTowerScalarArrays
+import IPRADerivations.Core.CongruenceTactic
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Actual tower multiplication absorbs the constructed zero array
@@ -45,9 +47,7 @@ theorem scalar_multiply_zero (q : PTm n) : Γ ⊢[PRAAx]
   apply RationalFiniteSum.canonical_equal _ _ _ _ _ _ (RationalArithmetic.multiply_guard _ _)
     QuadraticTowerScalarArrays.zero_canonical rep (QuadraticRationalEmbedding.zero_scalar_represents one)
     (RationalAlgebra.positive_product (RationalArgmin.denominator_positive q) (le_refl one)) (le_refl one)
-  apply ZT.derive
-  simp only [ZT.toZ_mul,ZT.toZ_ofNat,Q.mk_zero,Q.mk_one,map_zero,map_one]
-  ring
+  ipra_lc
 
 theorem scalar_zero_multiply (q : PTm n) : Γ ⊢[PRAAx]
     RationalArithmetic.multiply zeroScalar q ≐ zeroScalar :=
@@ -61,17 +61,12 @@ theorem scalar_add_zero_zero : Γ ⊢[PRAAx]
   apply RationalFiniteSum.canonical_equal _ _ _ _ _ _ (RationalArithmetic.add_guard _ _)
     QuadraticTowerScalarArrays.zero_canonical rep (QuadraticRationalEmbedding.zero_scalar_represents one)
     (RationalAlgebra.positive_product (le_refl one) (le_refl one)) (le_refl one)
-  apply ZT.derive
-  simp only [ZT.toZ_mul,ZT.toZ_add,ZT.toZ_ofNat,Q.mk_zero,Q.mk_one,map_zero,map_one]
-  ring
+  ipra_lc
 
 theorem sequence_congr (f : PTm 2) {N M x y : PTm n}
     (hN : Γ ⊢[PRAAx] N ≐ M) (hx : Γ ⊢[PRAAx] x ≐ y) : Γ ⊢[PRAAx]
     sequence f N x ≐ sequence f M y := by
-  simpa only [Foundations.MasterCertificate.subst_sequence,Syn.subst_var,
-    Matrix.cons_val_zero,Matrix.cons_val_one] using
-    Prf.eqCongr (sequence f (var 0) (var 1) : PTm 2) (σ := ![N,x]) (σ' := ![M,y])
-      (fun i => by fin_cases i; exact hN; exact hx)
+  ipra_congr (sequence f (var 0) (var 1) : PTm 2) with [hN, hx]
 
 theorem singleton_zero : Γ ⊢[PRAAx] singleton (zeroScalar : PTm n) ≐ zeroArray zero := by
   have eq : Γ ⊢[PRAAx] sequence (var 1) one zeroScalar ≐ sequence QuadraticTowerScalarArrays.zeroBody one zero := by

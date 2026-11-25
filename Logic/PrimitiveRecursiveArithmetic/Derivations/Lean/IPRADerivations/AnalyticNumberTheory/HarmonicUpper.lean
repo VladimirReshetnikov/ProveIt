@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.Harmonic
 import IPRADerivations.Core.SumOrder
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The dyadic upper bound for harmonic numbers
@@ -51,7 +52,7 @@ theorem block_up {Γ : List (Fm PTm n)} (d F M : PTm n) : Γ ⊢[PRAAx] blockInv
     · rw [subst_blockInv]
       simp only [Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
       refine le_congr (congrAp2 (sumF hB) (add_zero _) (.eqRefl _)).eqSymm ?_ (le_refl _)
-      apply deriveNat; ipra_simps; ring
+      ipra_ring
     · rw [subst_blockInv]
       simp only [Syn.subst_var, Syn.repl_zero, subst_repl_shift]
       let Δ := blockInv (var 0) (Syn.shift F) (Syn.shift M) :: Γ.map Fm.shift
@@ -65,7 +66,7 @@ theorem block_up {Γ : List (Fm PTm n)} (d F M : PTm n) : Γ ⊢[PRAAx] blockInv
         quo_anti (congrSucc (pred_succ _).eqSymm) ((succ_monus_succ _ _).eqTrans (le_add_right _ _))
       have hs := add_le_add₂ ih hq
       refine le_congr es.eqSymm ?_ hs
-      apply deriveNat; ipra_simps; ring
+      ipra_ring
   have a := Prf.allE d hall
   rw [subst_blockInv] at a
   simpa [Syn.subst_inst_shift] using a
@@ -81,9 +82,8 @@ def dyInv (k F : PTm n) : Fm PTm n := le (S (pw two k) F) (succ k * F)
 /-- `2^k ⌊F/(2^k + 1)⌋ ≤ F`. -/
 theorem block_le {Γ : List (Fm PTm n)} (K F : PTm n) : Γ ⊢[PRAAx] le (K * quo F (succ K)) F := by
   have d := div_mod_at (Γ := Γ) (x := F) (y := succ K) (c := K) (.eqRefl _)
-  have e := natEq (Prf.andE₁ d)
   refine le_of_eq_add (d := quo F (succ K) + rem F (succ K)) ?_
-  apply deriveNat; ipra_simps; linear_combination e
+  ipra_lc natEq (Prf.andE₁ d)
 
 /-- `S(2^k, F) ≤ (k + 1) F`. -/
 theorem harmonic_upper {Γ : List (Fm PTm n)} (k F : PTm n) : Γ ⊢[PRAAx] dyInv k F := by
@@ -102,7 +102,7 @@ theorem harmonic_upper {Γ : List (Fm PTm n)} (k F : PTm n) : Γ ⊢[PRAAx] dyIn
       have hb := block_up (Γ := Δ) (pw two (var 0)) (Syn.shift F) (pw two (var 0))
       have hs := le_trans hb (add_le_add₂ ih (block_le _ _))
       refine le_congr (congrAp2 (sumF hB) ep (.eqRefl _)).eqSymm ?_ hs
-      apply deriveNat; ipra_simps; ring
+      ipra_ring
   have a := Prf.allE k hall
   rw [subst_dyInv] at a
   simpa [Syn.subst_inst_shift] using a

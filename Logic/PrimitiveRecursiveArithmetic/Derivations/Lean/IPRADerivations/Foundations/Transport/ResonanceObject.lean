@@ -1,6 +1,6 @@
 import IPRADerivations.Core.SumOrder
 import IPRADerivations.Core.Tactic
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 Packet: `foundations/ipra_transport_framework_2026-11-20`. Imported from the packet's `lean/ResonanceObject.lean`:

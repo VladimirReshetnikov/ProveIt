@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.GcdNormalize
 import IPRADerivations.DiophantineNumberTheory.ProjectiveVectorUnique
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Uniqueness of gcd-primitive representatives in every dimension
@@ -67,8 +68,7 @@ theorem all_zero_of {V W : PTm 2} {j N x : PTm k} (hp : Γ ⊢[PRAAx] propJ V W 
   have hw' := (sh_pos hw).wk (ψ := lt (var 0) (Syn.shift N))
   have z' := natEq z
   refine mul_cancel hw' ?_
-  apply deriveNat; ipra_simps
-  linear_combination -e + 𝔞 (inst2 W (var 0) (Syn.shift x)) * z'
+  ipra_lc -e + 𝔞 (inst2 W (var 0) (Syn.shift x)) * z'
 
 /-- The per-index argument: `w_j = v_j`. -/
 theorem index_eq {V W : PTm 2} {j N x : PTm k} (hp : Γ ⊢[PRAAx] propJ V W j N x)
@@ -124,14 +124,13 @@ theorem index_eq {V W : PTm 2} {j N x : PTm k} (hp : Γ ⊢[PRAAx] propJ V W j N
         have e := natEq (Prf.impE (hp.wk.wk : E ⊢[PRAAx] _).allOpen.wk Prf.hyp0)
         have a1 := sh eA; have b1 := sh eB
         rw [shift_mul2, sh_inst] at a1 b1
-        have a2 := natEq (a1.wk : (lt (var 0) (Syn.shift N) :: E.map Fm.shift) ⊢[PRAAx] _)
-        have b2 := natEq (b1.wk : (lt (var 0) (Syn.shift N) :: E.map Fm.shift) ⊢[PRAAx] _)
         have hh' : (lt (var 0) (Syn.shift N) :: E.map Fm.shift) ⊢[PRAAx]
             Syn.shift (gcd (inst2 V j x) (inst2 W j x)) ≐ succ (pred (Syn.shift (gcd (inst2 V j x) (inst2 W j x)))) := by
           have e := sh hh; rw [shift_succ', shift_pred'] at e; exact e.wk
         refine mul_cancel hh' ?_
-        apply deriveNat; ipra_simps
-        linear_combination e - 𝔞 (inst2 W (var 0) (Syn.shift x)) * a2 + 𝔞 (inst2 V (var 0) (Syn.shift x)) * b2
+        ipra_lc e -
+          𝔞 (inst2 W (var 0) (Syn.shift x)) * natEq (a1.wk : (lt (var 0) (Syn.shift N) :: E.map Fm.shift) ⊢[PRAAx] _) +
+          𝔞 (inst2 V (var 0) (Syn.shift x)) * natEq (b1.wk : (lt (var 0) (Syn.shift N) :: E.map Fm.shift) ⊢[PRAAx] _)
       have cross' : E ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶
           Syn.shift (quo (inst2 W j x) (gcd (inst2 V j x) (inst2 W j x))) * inst2 V (var 0) (Syn.shift x) ≐
             Syn.shift (quo (inst2 V j x) (gcd (inst2 V j x) (inst2 W j x))) * inst2 W (var 0) (Syn.shift x)) :=
@@ -140,9 +139,7 @@ theorem index_eq {V W : PTm 2} {j N x : PTm k} (hp : Γ ⊢[PRAAx] propJ V W j N
       have db := gv_greatest W (dv _ _ W V pb cba cross')
       have a1 := eq_one_of_dvd_one pa (dvd_congr_left pa.eqSymm (dvd_congr (hv1.wk.wk : E ⊢[PRAAx] _) da))
       have b1 := eq_one_of_dvd_one pb (dvd_congr_left pb.eqSymm (dvd_congr (hw1.wk.wk : E ⊢[PRAAx] _) db))
-      have x1 := natEq eA; have x2 := natEq eB; have y1 := natEq a1; have y2 := natEq b1
-      apply deriveNat; ipra_simps
-      linear_combination x2 - x1 + 𝔞 (gcd (inst2 V j x) (inst2 W j x)) * (y2 - y1)
+      ipra_lc natEq eB - natEq eA + 𝔞 (gcd (inst2 V j x) (inst2 W j x)) * (natEq b1 - natEq a1)
 
 /-- `lem:normalize`, uniqueness: two natural vectors with gcd `1` on the same projective point are equal. -/
 theorem vector_unique_gcd {V W : PTm 2} {N x : PTm k} (hp : Γ ⊢[PRAAx] propAll V W N x)

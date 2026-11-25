@@ -1,5 +1,6 @@
 import IPRADerivations.Probability.Variance
 import IPRADerivations.Geometry.HypercubeSplit
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Corollaries of the finite expectation kernel
@@ -57,7 +58,7 @@ theorem exp_scale (c : PTm 1) (w X : PTm 2) (N x : PTm n) :
   refine (sum_congr_bounded (w * (cst c * X)) (mulParam c (w * X)) x x N (.allI (.impI ?_))).eqTrans
     (sum_mul_param c (w * X) N x)
   rw [inst2_mul', inst2_mul', inst2_mulParam, inst2_mul', inst2_cst]
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem inst2_one' (i x : PTm n) : inst2 (one : PTm 2) i x = one := by simp [inst2]
 
@@ -112,11 +113,9 @@ weight, i.e. `X = E[X]` almost surely. -/
 theorem var_zero (w X : PTm 2) {N x i : PTm n}
     (hv : Γ ⊢[PRAAx] Wt w N x * Ew w (X * X) N x ≐ Ew w X N x * Ew w X N x) (hi : Γ ⊢[PRAAx] lt i N) :
     Γ ⊢[PRAAx] inst2 w i x * (Wt w N x * inst2 X i x) ≐ inst2 w i x * Ew w X N x := by
-  have vi := natEq (variance_identity (Γ := Γ) w X N x)
   have hv' := natEq hv
   have v0 : Γ ⊢[PRAAx] Vr w X N x ≐ zero := by
-    apply deriveNat; ipra_simps
-    linear_combination vi + Groth.ι (IPRA.Q.mk Γ (Wt w N x)) * hv'
+    ipra_lc natEq (variance_identity (Γ := Γ) w X N x) + Groth.ι (IPRA.Q.mk Γ (Wt w N x)) * hv'
   have z := (dv_pt w X i _ _ x).eqSymm.eqTrans (sum_zero_elim (dvB w X) v0 hi)
   refine .orE (zero_or_zero_of_mul z) ?_ ?_
   · exact (zml Prf.hyp0 _).eqTrans (zml Prf.hyp0 _).eqSymm
@@ -146,7 +145,7 @@ theorem power_pt (a X w r : PTm n) : Γ ⊢[PRAAx] le (pw a r * (w * geI a X)) (
       (mul_zero _))
   · refine le_congr ?_ (.eqRefl _) (le_mul_mono (le_refl w) (pw_mono Prf.hyp0 r))
     refine .eqTrans ?_ (congrMul (.eqRefl _) (congrMul (.eqRefl _) (geI_true Prf.hyp0))).eqSymm
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
 
 theorem inst2_pwR (X : PTm 2) (r : PTm 1) (i x : PTm n) :
     inst2 (pw X (cst r)) i x = pw (inst2 X i x) (Syn.subst ![x] r) := by
@@ -175,6 +174,6 @@ theorem three_quarters (s : PTm 1) (w D : PTm 2) {N x : PTm n}
   have e : Syn.subst ![x] (two * s * (two * s)) = two * Syn.subst ![x] s * (two * Syn.subst ![x] s) := by simp
   rw [e] at ch
   refine le_cancel_pos (Combinatorics.Binomial.pos_mul hs hs) (le_congr ?_ hv (le_congr (.eqRefl _) (.eqRefl _) ch))
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 end LeanProofs.IPRA.Probability.ExpectationCorollaries

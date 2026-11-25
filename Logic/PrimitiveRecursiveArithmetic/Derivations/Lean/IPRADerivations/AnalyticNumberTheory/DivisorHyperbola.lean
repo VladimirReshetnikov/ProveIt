@@ -5,6 +5,7 @@ import IPRADerivations.Probability.Independence
 import IPRADerivations.Core.SumSplit
 import IPRADerivations.Core.MultiSums
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The Dirichlet hyperbola identity (`pnt_ipra_constructive_2026-11-14`)
@@ -57,8 +58,7 @@ theorem leI_zero {x F : PTm n} (h : Γ ⊢[PRAAx] lt F x) : Γ ⊢[PRAAx] leI x 
   show Γ ⊢[PRAAx] le one (monus x F)
   ipra_le sl h with e
 
-theorem sg_one {t : PTm n} (h : Γ ⊢[PRAAx] le one t) : Γ ⊢[PRAAx] sg t ≐ one :=
-  (congrMonus (.eqRefl _) h).eqTrans (monus_zero _)
+alias sg_one := Common.sg_of_one_le
 
 /-- `[(a + 1)(b + 1) ≤ F] = [b < ⌊F/(a+1)⌋]`. -/
 theorem ind_eq (a b F : PTm n) :

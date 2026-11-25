@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.ContractionMain
 import IPRADerivations.AnalyticNumberTheory.WeightedAbel
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Splitting the weighted sum of the contraction (`pnt_ipra_constructive_2026-11-14`, `con:one-step`)
@@ -75,7 +76,7 @@ theorem body_at (j x K L : PTm n) :
       (two * (sndT (pairT K (fact L)) * inst2 uw (succ (succ j)) (pairT K (fact L)))) ≐
       two * (fact L * U (succ (succ j)) K (fact L)) :=
     (congrMul (sg_succ _) (congrMul (.eqRefl two) (congrMul (snd_pair _ _) (uw_at _ _ _)))).eqTrans
-      (by apply deriveNat; ipra_simps; ring)
+      (by ipra_ring)
   exact congrMul l (congrAdd (congrMonus (.eqRefl _) e) (congrMonus e (.eqRefl _)))
 
 theorem body_zero (x K L : PTm n) : Γ ⊢[PRAAx] inst2 wbB zero (pairT x (pairT K (fact L))) ≐ zero :=
@@ -84,12 +85,12 @@ theorem body_zero (x K L : PTm n) : Γ ⊢[PRAAx] inst2 wbB zero (pairT x (pairT
 theorem body_one (x K L : PTm n) : Γ ⊢[PRAAx] inst2 wbB (succ zero) (pairT x (pairT K (fact L))) ≐ zero := by
   refine (hRB_at _ _ _ _ _).eqTrans (zero_mul_l ?_ _)
   rw [inst2_a2]
-  have k1 : Γ ⊢[PRAAx] K * succ zero ≐ K := by apply deriveNat; ipra_simps; ring
+  have k1 : Γ ⊢[PRAAx] K * succ zero ≐ K := by ipra_ring
   have u1 : Γ ⊢[PRAAx] U (succ zero) K (fact L) ≐ zero :=
     (congrMonus (congrAp2 (sumF hB) k1 (.eqRefl (fact L))) (.eqRefl _)).eqTrans (le_refl _)
   have u := (uw_at (Γ := Γ) (succ zero) K (fact L)).eqTrans u1
   exact (congrMul (.eqRefl _) (congrMul (.eqRefl _) (congrMul (.eqRefl _) u))).eqTrans
-    (by apply deriveNat; ipra_simps; ring)
+    (by ipra_ring)
 
 /-- `Σ_{d<M+2} body(d) = Σ_{j<M} body(j+2)`. -/
 theorem head_eq (M x K L : PTm n) :
@@ -191,7 +192,7 @@ theorem tail_pt {j x K L : PTm n} (hK : Γ ⊢[PRAAx] le one K)
   have hjL : Γ ⊢[PRAAx] le (succ (succ j)) L := by
     have h1 : Γ ⊢[PRAAx] le (succ (succ j)) (K * succ (succ j)) :=
       le_of_eq_add (d := pred K * succ (succ j)) (by
-        have w := natEq (pos_of_lt_zero hK); apply deriveNat; ipra_simps; linear_combination (𝔞 j + 2) * w)
+        ipra_lc (𝔞 j + 2) * natEq (pos_of_lt_zero hK))
     exact le_trans h1 hL'
   have f := fq_le (x := x) hsj hjL
   have d := le_scale x (dl_ge hK hL')
@@ -208,7 +209,7 @@ theorem tail_off {i M x K L : PTm n} (hK : Γ ⊢[PRAAx] le one K)
   have e1 : Γ ⊢[PRAAx] inst2 (offB wbB) i (pairT (succ (succ M)) (pairT x (pairT K (fact L)))) ≐
       inst2 wbB (succ (succ (M + i))) (pairT x (pairT K (fact L))) := by
     rw [inst2_offB]
-    exact congrInst2 wbB ((congrAdd (fst_pair _ _) (.eqRefl _)).eqTrans (by apply deriveNat; ipra_simps; ring))
+    exact congrInst2 wbB ((congrAdd (fst_pair _ _) (.eqRefl _)).eqTrans (by ipra_ring))
       (snd_pair _ _)
   have e2 : Γ ⊢[PRAAx] inst2 (cmB (offB udB)) i (pairT (two * (two * (two * (fact L * x)))) (pairT M (pairT K (fact L)))) ≐
       two * (two * (two * (fact L * x))) * (U (succ (succ (M + i))) K (fact L) * Dl (M + i) K (fact L)) := by
@@ -220,8 +221,7 @@ theorem tail_off {i M x K L : PTm n} (hK : Γ ⊢[PRAAx] le one K)
     exact congrMul (u2_at _ _ _) (dl_at _ _ _)
   have hj : Γ ⊢[PRAAx] le (succ (succ (M + i))) x :=
     le_of_eq_add (d := monus (monus x (succ M)) (succ i)) (by
-      have a := natEq (eq_add_of_le hMx); have b := natEq (eq_add_of_le hi)
-      apply deriveNat; ipra_simps; linear_combination a + b)
+      ipra_lc natEq (eq_add_of_le hMx) + natEq (eq_add_of_le hi))
   exact le_congr e1.eqSymm e2.eqSymm (tail_pt hK hP hKx hj)
 
 /-- The tail `N < d ≤ x`, `N = M + 1`: `Σ 2F u_d |R(⌊x/d⌋)| + 4Fx u_N² ≤ 4Fx (u_x² + 2F²)`. -/
@@ -258,7 +258,7 @@ theorem tail_bound {M x K L : PTm n} (hK : Γ ⊢[PRAAx] le one K)
   have hsM := natEq (half_square (Γ := Γ) M K (fact L))
   have dd := dd_le (Γ := Γ) (M + monus x (succ M)) (fact L) hK
   have ex : Γ ⊢[PRAAx] K * succ (M + monus x (succ M)) ≐ K * x := by
-    have a := natEq (eq_add_of_le hMx); apply deriveNat; ipra_simps; linear_combination (-𝔞 K) * a
+    ipra_lc (-𝔞 K) * natEq (eq_add_of_le hMx)
   have eU := natEq ((congrMonus (congrAp2 (sumF hB) ex (.eqRefl (fact L))) (.eqRefl _) :
     Γ ⊢[PRAAx] U (succ (M + monus x (succ M))) K (fact L) ≐ U x K (fact L)))
   ipra_le sl p + 4 * 𝔞 (fact L) * 𝔞 x * sl dd +
@@ -279,7 +279,7 @@ theorem no_growth {M x K L D A Y : PTm n} (hK : Γ ⊢[PRAAx] le one K)
   have h := head_bound hK hL hY hst
   have t := le_scale D (tail_bound hK hP hKx hMx)
   have ex : Γ ⊢[PRAAx] succ x ≐ succ (succ M) + monus x (succ M) := by
-    have a := natEq (eq_add_of_le hMx); apply deriveNat; ipra_simps; linear_combination a
+    ipra_lc natEq (eq_add_of_le hMx)
   have sp := natEq ((congrAp2 (sumF wbB) ex (.eqRefl _)).eqTrans
     (sum_split (Γ := Γ) wbB (succ (succ M)) (monus x (succ M)) (pairT x (pairT K (fact L)))))
   ipra_le sl h + sl t with 𝔞 D * sp

@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.ChebyshevCorollaries
 import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Golomb's theorem with a bounded witness
@@ -96,7 +97,7 @@ theorem succ_two (j : PTm n) : Γ ⊢[PRAAx] succ (j + two) ≐ succ j + two := 
 
 theorem zero_two : Γ ⊢[PRAAx] (zero : PTm n) + two ≐ two := zero_add two
 
-theorem mul_one_r (X : PTm n) : Γ ⊢[PRAAx] X * one ≐ X := by ipra_ring
+alias mul_one_r := Common.mul_one_right
 
 /-- **Golomb**: for `k ≥ 2`, `N(k) = k π(N(k))`, with `2 ≤ N(k) ≤ B(k) + 1`. -/
 theorem golomb {k : PTm n} (hk2 : Γ ⊢[PRAAx] le two k) :

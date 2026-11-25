@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.RationalAnnihilatorOnSpan
 import IPRADerivations.Analysis.GaussianRationalPowerExpansion
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The original (1,x,...,x^s,y) feature buffer and annihilator equation
@@ -62,10 +63,7 @@ def equation (a s x y : PTm n) : PTm n := RationalArithmetic.add (evaluate (poly
 private theorem coordinate_congr {s t x u y v i j : PTm n} (hs : Γ ⊢[PRAAx] s ≐ t)
     (hx : Γ ⊢[PRAAx] x ≐ u) (hy : Γ ⊢[PRAAx] y ≐ v) (hi : Γ ⊢[PRAAx] i ≐ j) : Γ ⊢[PRAAx]
     coordinate s x y i ≐ coordinate t u v j := by
-  simpa only [subst_coordinate,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.cons_val_three,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (coordinate (var 0) (var 1) (var 2) (var 3) : PTm 4) (σ := ![s,x,y,i]) (σ' := ![t,u,v,j])
-      (fun k => by fin_cases k; exact hs; exact hx; exact hy; exact hi)
+  ipra_congr (coordinate (var 0) (var 1) (var 2) (var 3) : PTm 4) with [hs, hx, hy, hi]
 theorem feature_body_at (s x y i : PTm n) : Γ ⊢[PRAAx] inst2 featureBody i (data s x y) ≐ coordinate s x y i := by
   simp only [featureBody,inst2,subst_coordinate,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
   exact coordinate_congr (fst_pair _ _) ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
@@ -88,8 +86,7 @@ theorem features_last (s x y : PTm n) : Γ ⊢[PRAAx] entry (features s x y) (su
   (features_lookup s x y (succ s) (le_refl _)).eqTrans (coordinate_last _ _ _)
 
 private theorem recode_congr {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) : Γ ⊢[PRAAx] RationalArithmetic.recode a ≐ RationalArithmetic.recode b := by
-  simpa only [RationalArithmetic.subst_recode,Syn.subst_var,Matrix.cons_val_zero] using
-    Prf.eqCongr (RationalArithmetic.recode (var 0) : PTm 1) (σ := ![a]) (σ' := ![b]) (fun i => by fin_cases i; exact h)
+  ipra_congr (RationalArithmetic.recode (var 0) : PTm 1) with [h]
 theorem polynomial_body_at (a s i : PTm n) : Γ ⊢[PRAAx] inst2 polynomialBody i (pairT a s) ≐
     RationalArithmetic.recode (entry a (monus s i)) := by
   simp only [polynomialBody,inst2,RationalArithmetic.subst_recode,subst_fstT,subst_sndT,

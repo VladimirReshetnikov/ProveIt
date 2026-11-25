@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianPositiveRealArithmetic
 import IPRADerivations.Analysis.RationalGaussianRealPart
 import IPRADerivations.Analysis.RationalRepresentedUpper
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Finite Euclidean domination by nonnegative rational rows
@@ -48,13 +49,8 @@ theorem from_representation (z r A D : PTm n)
   let E := denominatorOf (fstT r)
   let M := numerator (fstT r)
   have hE := RationalArgmin.denominator_positive (Γ := Γ) (fstT r)
-  have e := ZT.toZ_eq rep
-  have d := ZT.toZ_eq (natural_representation (fstT r) hr.andE₂)
   have scaled : Γ ⊢[PRAAx] E*(A*E) ≐ E*(M*D) := by
-    apply deriveNat
-    simp only [ZT.toZ_mul,ZT.toZ_ofNat] at e d
-    ipra_simps
-    linear_combination 𝔞(E)*e-𝔞(D)*d
+    ipra_lc 𝔞(E)*ZT.toZ_eq rep-𝔞(D)*ZT.toZ_eq (natural_representation (fstT r) hr.andE₂)
   have order := RationalValueBounds.positive_cancel hE (le_congr (.eqRefl _) scaled (le_refl _))
   exact .andI hr (GaussianCoefficientNameBounds.bounded_radius_mono _ _ _ _ _ hD hE order h)
 
@@ -95,10 +91,7 @@ theorem add_bound (z w r s : PTm n) (h : Γ ⊢[PRAAx] boundBy z r) (k : Γ ⊢[
   have rep : Γ ⊢[PRAAx] RationalArithmetic.represents (fstT (qadd r s)) (ZT.ofNat (A*E+C*D)) (D*E) := by
     apply GaussianRationalHorner.scalar_congr (RationalGaussianRealPart.real_add _ _).eqSymm _ (.eqRefl _)
       (RationalRepresentations.represents_add _ _ _ _ _ _ first second)
-    apply ZT.derive
-    simp only [ZT.toZ_add,ZT.toZ_mul,ZT.toZ_ofNat]
-    ipra_simps
-    ring
+    ipra_lc
   exact from_representation _ _ _ _ (positive_product _ _ hD hE)
     (GaussianPositiveRealArithmetic.positive_add _ _ h.andE₁ k.andE₁) rep
     (GaussianRationalReciprocal.bounded_sum z w A D C E hD hE h.andE₂ k.andE₂)

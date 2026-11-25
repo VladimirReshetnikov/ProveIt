@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.BlockMean
 import IPRADerivations.AnalyticNumberTheory.PointDeficit
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Block sums over divisors (`pnt_ipra_constructive_2026-11-14`, `con:deficit`)
@@ -82,7 +83,7 @@ theorem ind1 {d D : PTm n} (h : Γ ⊢[PRAAx] le d D) : Γ ⊢[PRAAx] monus one 
 
 theorem ind0 {d D : PTm n} (h : Γ ⊢[PRAAx] lt D d) : Γ ⊢[PRAAx] monus one (monus d D) ≐ zero := by
   have e : Γ ⊢[PRAAx] d ≐ succ (monus d (succ D)) + D := by
-    have a := natEq (eq_add_of_le h); apply deriveNat; ipra_simps; linear_combination a
+    ipra_lc natEq (eq_add_of_le h)
   exact (congrMonus (.eqRefl one) ((congrMonus e (.eqRefl D)).eqTrans (add_monus _ _))).eqTrans
     ((succ_monus_succ _ _).eqTrans (zero_monus _))
 
@@ -104,7 +105,7 @@ theorem bi_split {d D₁ D₂ : PTm n} (h : Γ ⊢[PRAAx] le D₁ D₂) :
 
 theorem split_alg {s a1 a2 b p : PTm n} (h : Γ ⊢[PRAAx] a2 ≐ a1 + b) :
     Γ ⊢[PRAAx] (s * a2) * p ≐ (s * a1) * p + (s * b) * p := by
-  have e := natEq h; apply deriveNat; ipra_simps; linear_combination 𝔞 s * 𝔞 p * e
+  ipra_lc 𝔞 s * 𝔞 p * natEq h
 
 theorem bs_lam (m D K F : PTm n) : Γ ⊢[PRAAx] Bs lB m (pairT D (pairT K F)) ≐ Psi wt m (pairT K F) := by
   have c : Γ ⊢[PRAAx] Bs lB m (pairT D (pairT K F)) ≐ Bs lamW m (pairT K F) :=

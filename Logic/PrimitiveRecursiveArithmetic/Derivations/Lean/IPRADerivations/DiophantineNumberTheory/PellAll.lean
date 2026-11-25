@@ -3,6 +3,7 @@ import IPRADerivations.DiophantineNumberTheory.Recurrences
 import IPRADerivations.Core.Bezout
 import IPRADerivations.AnalyticNumberTheory.Fermat
 import IPRADerivations.Algebra.CubeRootTwo
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # All solutions of Pell's equation
@@ -181,20 +182,16 @@ theorem alg_x {x Xc Yc Xc' Yc' A B D R T r t : PTm n}
     (e₁ : Γ ⊢[PRAAx] x ≐ Xc * R + D * (Yc * T)) (hR : Γ ⊢[PRAAx] R ≐ A * r + D * (B * t))
     (hT : Γ ⊢[PRAAx] T ≐ B * r + A * t) (hX : Γ ⊢[PRAAx] Xc' ≐ A * Xc + D * (B * Yc))
     (hY : Γ ⊢[PRAAx] Yc' ≐ B * Xc + A * Yc) : Γ ⊢[PRAAx] x ≐ Xc' * r + D * (Yc' * t) := by
-  have h₁ := natEq e₁; have h₂ := natEq hR; have h₃ := natEq hT; have h₄ := natEq hX; have h₅ := natEq hY
-  apply deriveNat; ipra_simps
-  linear_combination h₁ + Groth.ι (IPRA.Q.mk Γ Xc) * h₂ +
-    Groth.ι (IPRA.Q.mk Γ D) * Groth.ι (IPRA.Q.mk Γ Yc) * h₃ - Groth.ι (IPRA.Q.mk Γ r) * h₄ -
-    Groth.ι (IPRA.Q.mk Γ D) * Groth.ι (IPRA.Q.mk Γ t) * h₅
+  ipra_lc natEq e₁ + Groth.ι (IPRA.Q.mk Γ Xc) * natEq hR +
+    Groth.ι (IPRA.Q.mk Γ D) * Groth.ι (IPRA.Q.mk Γ Yc) * natEq hT - Groth.ι (IPRA.Q.mk Γ r) * natEq hX -
+    Groth.ι (IPRA.Q.mk Γ D) * Groth.ι (IPRA.Q.mk Γ t) * natEq hY
 
 theorem alg_y {y Xc Yc Xc' Yc' A B D R T r t : PTm n}
     (e₂ : Γ ⊢[PRAAx] y ≐ Yc * R + Xc * T) (hR : Γ ⊢[PRAAx] R ≐ A * r + D * (B * t))
     (hT : Γ ⊢[PRAAx] T ≐ B * r + A * t) (hX : Γ ⊢[PRAAx] Xc' ≐ A * Xc + D * (B * Yc))
     (hY : Γ ⊢[PRAAx] Yc' ≐ B * Xc + A * Yc) : Γ ⊢[PRAAx] y ≐ Yc' * r + Xc' * t := by
-  have h₁ := natEq e₂; have h₂ := natEq hR; have h₃ := natEq hT; have h₄ := natEq hX; have h₅ := natEq hY
-  apply deriveNat; ipra_simps
-  linear_combination h₁ + Groth.ι (IPRA.Q.mk Γ Yc) * h₂ + Groth.ι (IPRA.Q.mk Γ Xc) * h₃ -
-    Groth.ι (IPRA.Q.mk Γ t) * h₄ - Groth.ι (IPRA.Q.mk Γ r) * h₅
+  ipra_lc natEq e₂ + Groth.ι (IPRA.Q.mk Γ Yc) * natEq hR + Groth.ι (IPRA.Q.mk Γ Xc) * natEq hT -
+    Groth.ι (IPRA.Q.mk Γ t) * natEq hX - Groth.ι (IPRA.Q.mk Γ r) * natEq hY
 
 /-- One stage preserves the invariant. -/
 theorem inv_step {ps : Fin 5 → PTm n} {k : PTm n} (hA : Γ ⊢[PRAAx] ps 0 * ps 0 ≐ one + ps 2 * (ps 1 * ps 1))
@@ -281,7 +278,7 @@ theorem pell_all_at {ps : Fin 5 → PTm n} (hA : Γ ⊢[PRAAx] ps 0 * ps 0 ≐ o
     have w := eq_add_of_le (Prf.hyp0 : (le (T (ps 4) ps + ps 4) (ps 4) :: Γ) ⊢[PRAAx] _)
     refine add_eq_zero_left (y := monus (ps 4) (T (ps 4) ps + ps 4)) (add_right_cancel (c := ps 4) ?_)
     refine withEq w fun e => ?_
-    apply deriveNat; ipra_simps; linear_combination -e
+    ipra_lc -e
   have hr : Γ ⊢[PRAAx] R (ps 4) ps ≐ one := by
     refine sq_inj ((Prf.andE₁ (Prf.andE₂ (Prf.andE₂ h))).eqTrans ?_)
     refine withEq ht fun e => ?_

@@ -4,6 +4,8 @@ import IPRADerivations.AnalyticNumberTheory.Order
 import IPRADerivations.AnalyticNumberTheory.Valuation
 import IPRADerivations.Probability.SortingBound
 import IPRADerivations.Geometry.HypercubeSplit
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The binomial bound `(1 + 1/a)^a ≤ 3`
@@ -45,9 +47,7 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
-theorem pos_of_one_le {x : PTm n} (h : Γ ⊢[PRAAx] le one x) : Γ ⊢[PRAAx] x ≐ succ (pred x) := by
-  have e := natEq (eq_add_of_le h)
-  exact pos_of_eq_succ (c := monus x one) (by apply deriveNat; ipra_simps; linear_combination e)
+alias pos_of_one_le := Common.pos_of_one_le
 
 /-! ## Factorial bounds -/
 
@@ -73,11 +73,10 @@ theorem two_pow_le_fact (j : PTm n) : Γ ⊢[PRAAx] le (pw two j) (fct (succ j))
 theorem fl_step {m k : PTm n} (ih : Γ ⊢[PRAAx] le (ap2 factF (m + k) zero) (ap2 factF m zero * pw (m + k) k)) :
     Γ ⊢[PRAAx] le (ap2 factF (m + succ k) zero) (ap2 factF m zero * pw (m + succ k) (succ k)) := by
   have hle : Γ ⊢[PRAAx] le (pw (m + k) k) (pw (m + succ k) k) :=
-    pw_le_pw _ (le_of_eq_add (d := one) (by apply deriveNat; ipra_simps; ring))
+    pw_le_pw _ (le_of_eq_add (d := one) (by ipra_ring))
   refine le_congr ((congrAp2 factF (add_succ _ _) (.eqRefl _)).eqTrans (fact_succ _ _)).eqSymm ?_
     (le_mul_mono (le_trans ih (le_mul_mono (le_refl _) hle)) (le_refl (succ (m + k))))
-  have p := natEq (pw_succ (Γ := Γ) (m + succ k) k)
-  apply deriveNat; ipra_simps; linear_combination -𝔞 (ap2 factF m zero) * p
+  ipra_lc -𝔞 (ap2 factF m zero) * natEq (pw_succ (Γ := Γ) (m + succ k) k)
 
 /-- Variables: `0 = k`, `1 = m`. -/
 private abbrev flF : Fm PTm 2 :=
@@ -107,7 +106,7 @@ theorem binom_fact_le {k a : PTm n} (h : Γ ⊢[PRAAx] le k a) : Γ ⊢[PRAAx] l
   have hc := pos_of_one_le (fact_pos (Γ := Γ) (monus a k))
   refine le_cancel_pos hc (le_congr ?_ ?_ fl)
   · refine (congrAp2 factF ex (.eqRefl _)).eqTrans (be.eqTrans ?_)
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   · exact congrMul (.eqRefl _) (LeanProofs.IPRA.Combinatorics.BinomialTheorem.congrPw ex (.eqRefl _))
 
 /-! ## The terms -/
@@ -121,16 +120,15 @@ theorem term_in {j a : PTm n} (h : Γ ⊢[PRAAx] le (succ j) a) :
   have pa := pw_add (Γ := Γ) a (succ j) (monus a (succ j))
   have c₁ := le_mul_mono (two_pow_le_fact (Γ := Γ) j) (le_refl (binom a (succ j) * pw a (monus a (succ j))))
   have c₂ := le_mul_mono (binom_fact_le h) (le_refl (pw a (monus a (succ j))))
-  refine le_congr ?_ ?_ (le_trans c₁ (le_congr (by apply deriveNat; ipra_simps; ring) (.eqRefl _) c₂))
-  · have e := natEq ev
-    apply deriveNat; ipra_simps; linear_combination -𝔞 (pw two j) * e
+  refine le_congr ?_ ?_ (le_trans c₁ (le_congr (by ipra_ring) (.eqRefl _) c₂))
+  · ipra_lc -𝔞 (pw two j) * natEq ev
   · exact pa.eqSymm.eqTrans (LeanProofs.IPRA.Combinatorics.BinomialTheorem.congrPw (.eqRefl _) ea.eqSymm)
 
 theorem term_out {j a : PTm n} (h : Γ ⊢[PRAAx] lt a (succ j)) :
     Γ ⊢[PRAAx] le (pw two j * inst2 bt (succ j) (pairT a (pairT one a))) (pw a a) := by
   have z : Γ ⊢[PRAAx] inst2 bt (succ j) (pairT a (pairT one a)) ≐ zero :=
     (bt_at _ _ _ _).eqTrans ((congrMul (congrMul (gb_above h) (.eqRefl _)) (.eqRefl _)).eqTrans
-      (by apply deriveNat; ipra_simps; ring))
+      (by ipra_ring))
   exact le_congr ((congrMul (.eqRefl _) z).eqTrans (mul_zero _)).eqSymm (.eqRefl _) (zero_le _)
 
 /-- `2^j · C(a, j + 1) a^{a−j−1} ≤ a^a`. -/
@@ -148,15 +146,11 @@ theorem geom_step {K a : PTm n}
   have s := sum_succ' (Γ := Γ) (shiftBody bt) K (pairT a (pairT one a))
   rw [inst2_shiftBody] at s
   have s' := natEq s
-  have p := natEq (pw_succ (Γ := Γ) two K)
-  have t := natEq (eq_add_of_le (term_bound (Γ := Γ) K a))
-  have i := natEq (eq_add_of_le ih)
   refine le_of_eq_add (d := two * monus (two * pw a a * pw two K)
       (pw two K * ap2 (sumF (shiftBody bt)) K (pairT a (pairT one a)) + two * pw a a) +
     two * monus (pw a a) (pw two K * inst2 bt (succ K) (pairT a (pairT one a)))) ?_
-  apply deriveNat; ipra_simps
-  linear_combination (2 * 𝔞 (pw a a) - 𝔞 (ap2 (sumF (shiftBody bt)) (succ K) (pairT a (pairT one a)))) * p -
-    2 * 𝔞 (pw two K) * s' + 2 * i + 2 * t
+  ipra_lc (2 * 𝔞 (pw a a) - 𝔞 (ap2 (sumF (shiftBody bt)) (succ K) (pairT a (pairT one a)))) * natEq (pw_succ (Γ := Γ) two K) -
+    2 * 𝔞 (pw two K) * s' + 2 * natEq (eq_add_of_le ih) + 2 * natEq (eq_add_of_le (term_bound (Γ := Γ) K a))
 
 /-- Variables: `0 = K`, `1 = a`. -/
 private abbrev geomF : Fm PTm 2 :=
@@ -168,11 +162,9 @@ private theorem geom₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] geomF := by
   refine ind _ (le_QF _ _) ?_ ?_
   · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
       Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have z := natEq (sum_zero (Γ := ([] : List (Fm PTm 1))) (shiftBody bt) (pairT (var 0) (pairT one (var 0))))
-    have p := natEq (pw_zero (Γ := ([] : List (Fm PTm 1))) two)
     refine le_of_eq_add (d := zero) ?_
-    apply deriveNat; ipra_simps
-    linear_combination 2 * 𝔞 (pw (var 0) (var 0) : PTm 1) * p - 𝔞 (pw two zero : PTm 1) * z
+    ipra_lc 2 * 𝔞 (pw (var 0) (var 0) : PTm 1) * natEq (pw_zero (Γ := ([] : List (Fm PTm 1))) two) -
+      𝔞 (pw two zero : PTm 1) * natEq (sum_zero (Γ := ([] : List (Fm PTm 1))) (shiftBody bt) (pairT (var 0) (pairT one (var 0))))
   · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.repl_zero,
       repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
     exact geom_step Prf.hyp0
@@ -195,13 +187,10 @@ theorem binomial_three (a : PTm n) : Γ ⊢[PRAAx] le (pw (succ a) a) (num 3 * p
   have hp := pos_of_one_le (le_trans (le_one_succ a) (lt_pw (Γ := Γ) (le_refl two) a))
   have sb : Γ ⊢[PRAAx] le (ap2 (sumF (shiftBody bt)) a (pairT a (pairT one a))) (two * pw a a) := by
     refine le_cancel_pos hp (le_trans (le_of_eq_add (d := two * pw a a) (.eqRefl _)) (le_congr (.eqRefl _) ?_ g))
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   have e₁ := natEq bin; have e₂ := natEq sh; have e₃ := natEq t0
-  have e₄ := natEq (eq_add_of_le sb)
   refine le_of_eq_add (d := monus (two * pw a a) (ap2 (sumF (shiftBody bt)) a (pairT a (pairT one a)))) ?_
-  have ec := natEq (LeanProofs.IPRA.Combinatorics.BinomialTheorem.congrPw (Γ := Γ)
-    (show Γ ⊢[PRAAx] one + a ≐ succ a by ipra_ring) (.eqRefl a))
-  apply deriveNat; ipra_simps
-  linear_combination ec + e₁ - e₂ - e₃ + e₄
+  ipra_lc natEq (LeanProofs.IPRA.Combinatorics.BinomialTheorem.congrPw (Γ := Γ) (show Γ ⊢[PRAAx] one + a ≐ succ a by ipra_ring) (.eqRefl a)) +
+    e₁ - e₂ - e₃ + natEq (eq_add_of_le sb)
 
 end LeanProofs.IPRA.AnalyticNumberTheory.BinomialThree

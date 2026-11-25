@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.RationalCofactorBorderedRows
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Exact transport from original rational cells to the cleared row

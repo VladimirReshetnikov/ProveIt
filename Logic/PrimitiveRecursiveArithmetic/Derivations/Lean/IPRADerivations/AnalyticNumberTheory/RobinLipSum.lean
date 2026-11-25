@@ -1,4 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.RobinLipLog
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The finitary artanh addition theorem for `LogI` (`robin_ipra_research_2026-11-19`, §"Explicit interval arithmetic")
@@ -66,25 +68,18 @@ theorem lo_one {x : PTm n} (hx : Γ ⊢[PRAAx] le one x) (K : PTm n) : Γ ⊢[PR
   have h1 : Γ ⊢[PRAAx] le (x * pw two zero) x := by ipra_le 0 with -(𝔞 x) * eP0
   have h2 : Γ ⊢[PRAAx] lt x (x * pw two (succ zero)) := by ipra_le sl hx with 𝔞 x * eP1 + 2 * 𝔞 x * eP0
   have e0 : Γ ⊢[PRAAx] eb x x ≐ zero := eb_eq hx (le_refl x) h1 h2
-  have ePe := natEq (congrAp2 powF e0 (.eqRefl (two : PTm n)))
-  have ea := natEq (a_eq hx (le_refl x))
   have hdt : Γ ⊢[PRAAx] dt x x ≐ zero := by
-    apply deriveNat; ipra_simps
-    linear_combination -ea - 𝔞 x * ePe - 𝔞 x * eP0
+    ipra_lc -natEq (a_eq hx (le_refl x)) - 𝔞 x * natEq (congrAp2 powF e0 (.eqRefl (two : PTm n))) - 𝔞 x * eP0
   have hN : Γ ⊢[PRAAx] Nz K (dt x x) (st x x) ≐ zero :=
     (congrAp2 _ (.eqRefl _) (congrPairT hdt (.eqRefl _))).eqTrans (Nz_p0 K _)
-  have e1 := natEq e0
-  have e2 := natEq hN
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 (Nz K one c3) * 𝔞 (Lv K zero) * 𝔞 (Pv K (st x x)) * e1 + 𝔞 (Lv K zero) * 𝔞 (Pv K c3) * e2
+  ipra_lc 𝔞 (Nz K one c3) * 𝔞 (Lv K zero) * 𝔞 (Pv K (st x x)) * natEq e0 + 𝔞 (Lv K zero) * 𝔞 (Pv K c3) * natEq hN
 
 /-- A name of value `1` has numerator `0`. -/
 theorem lo_zero_at {x y : PTm n} (hy : Γ ⊢[PRAAx] le one y) (he : Γ ⊢[PRAAx] x ≐ y) (K : PTm n) :
     Γ ⊢[PRAAx] loN x y K ≐ zero := by
   have hyx : Γ ⊢[PRAAx] le y x := le_congr (.eqRefl _) he.eqSymm (le_refl _)
   have v := lo_val hy hyx (le_refl one) (le_refl one) (by
-    have e := natEq he
-    apply deriveNat; ipra_simps; linear_combination e) K
+    ipra_lc natEq he) K
   have o := lo_one (Γ := Γ) (le_refl one) K
   have p := loD_pos (Γ := Γ) (le_refl one) (le_refl one) K
   have w : Γ ⊢[PRAAx] loN x y K * succ (pred (loD one one K)) ≐ zero :=
@@ -235,15 +230,13 @@ theorem lim_le {L R E : PTm n} (h : Γ ⊢[PRAAx] le (succ E * L) (succ E * R + 
   have h' : (lt R L :: Γ) ⊢[PRAAx] le (succ E * L) (succ E * R + E) := h.wk
   exact le_lt_absurd _ h' (by ipra_le 𝔞 (succ E) * sl (Prf.hyp0 : (lt R L :: Γ) ⊢[PRAAx] lt R L))
 
-
 /-! ## The addition theorem -/
 
 theorem one_le_mul {a b : PTm n} (ha : Γ ⊢[PRAAx] le one a) (hb : Γ ⊢[PRAAx] le one b) : Γ ⊢[PRAAx] le one (a * b) := by
   have m := le_mul_mono ha hb
   ipra_le sl m
 
-theorem one_le_of_pos' {x : PTm n} (h : Γ ⊢[PRAAx] x ≐ succ (pred x)) : Γ ⊢[PRAAx] le one x :=
-  le_congr (.eqRefl _) h.eqSymm (by ipra_le 𝔞 (pred x))
+alias one_le_of_pos' := Common.one_le_of_pos
 
 theorem G_pos (K : PTm n) : Γ ⊢[PRAAx] le one (Rv K c3) :=
   one_le_of_pos' (pw_pos' (pos_of_one_le (by ipra_le 2 : Γ ⊢[PRAAx] le one (c3 : PTm n))) (two * K))

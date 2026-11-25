@@ -2,6 +2,7 @@ import IPRADerivations.Combinatorics.BinomialTransform
 import IPRADerivations.Probability.Variance
 import IPRADerivations.Core.SumReflect
 import IPRADerivations.Combinatorics.Bell
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The Hurwitz product and its derivation (`ipra_coherent_methods_2026-11-15`, (6), (7))
@@ -64,10 +65,7 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 /-- `(n + 1) ∸ j = (n ∸ j) + 1` for `j ≤ n`. -/
 theorem succ_monus_of_le {j n : PTm k} (h : Γ ⊢[PRAAx] le j n) :
     Γ ⊢[PRAAx] monus (succ n) j ≐ succ (monus n j) := by
-  have e₁ := natEq (eq_add_of_le h)
-  have e₂ := natEq (eq_add_of_le (le_trans h (le_succ_self n)))
-  apply deriveNat; ipra_simps
-  linear_combination e₁ - e₂
+  ipra_lc natEq (eq_add_of_le h) - natEq (eq_add_of_le (le_trans h (le_succ_self n)))
 
 section Product
 
@@ -109,14 +107,11 @@ theorem shift_term_at (j n N x : PTm k) :
 /-- `(a ⋆ b)_0 = a_0 b_0`. -/
 theorem hw_zero (x : PTm k) :
     Γ ⊢[PRAAx] hw a b zero x ≐ inst2 a zero x * inst2 b zero x := by
-  have s := natEq (sum_succ' (Γ := Γ) (bgB (cv a b)) zero (pairT zero (pairT zero x)))
-  have z := natEq (sum_zero (Γ := Γ) (bgB (cv a b)) (pairT zero (pairT zero x)))
-  have t := natEq (term_at (Γ := Γ) a b zero zero zero x)
-  have c := natEq (binom_zero' (Γ := Γ) (zero : PTm k))
-  have m := natEq (congrInst2 (Γ := Γ) b (monus_zero (zero : PTm k)) (.eqRefl x))
-  apply deriveNat; ipra_simps
-  linear_combination s + z + t +
-    𝔞 (inst2 a zero x) * 𝔞 (inst2 b (monus zero zero) x) * c + 𝔞 (inst2 a zero x) * m
+  ipra_lc natEq (sum_succ' (Γ := Γ) (bgB (cv a b)) zero (pairT zero (pairT zero x))) +
+    natEq (sum_zero (Γ := Γ) (bgB (cv a b)) (pairT zero (pairT zero x))) +
+    natEq (term_at (Γ := Γ) a b zero zero zero x) +
+    𝔞 (inst2 a zero x) * 𝔞 (inst2 b (monus zero zero) x) * natEq (binom_zero' (Γ := Γ) (zero : PTm k)) +
+    𝔞 (inst2 a zero x) * natEq (congrInst2 (Γ := Γ) b (monus_zero (zero : PTm k)) (.eqRefl x))
 
 /-- The first sum after the Pascal step is `(a ⋆ D b)_n`: `(n + 1) ∸ j = (n ∸ j) + 1`. -/
 theorem first_pt {j n x : PTm k} (h : Γ ⊢[PRAAx] lt j (succ n)) :
@@ -181,9 +176,7 @@ theorem monus_monus_of_le {j n : PTm k} (h : Γ ⊢[PRAAx] le j n) :
   have e₁ := natEq (eq_add_of_le h)
   have hd : Γ ⊢[PRAAx] le (monus n j) n :=
     le_of_eq_add (d := j) (by apply deriveNat; ipra_simps; linear_combination e₁)
-  have e₂ := natEq (eq_add_of_le hd)
-  apply deriveNat; ipra_simps
-  linear_combination e₁ - e₂
+  ipra_lc e₁ - natEq (eq_add_of_le hd)
 
 /-- `C(n, n ∸ j) = C(n, j)` for `j ≤ n`. -/
 theorem binom_symm_of_le {j n : PTm k} (h : Γ ⊢[PRAAx] le j n) :
@@ -206,14 +199,9 @@ theorem comm_pt {j n x : PTm k} (h : Γ ⊢[PRAAx] lt j (succ n)) :
     (congrMonus (fst_pair _ _) (.eqRefl _)).eqTrans (succ_monus_succ n j)
   have c₁ := (congrInst2 (bgB (cv a b)) i₁ (snd_pair (succ n) (pairT n (pairT n x)))).eqTrans
     (term_at (Γ := Γ) a b (monus n j) n n x)
-  have m := natEq c₁
-  have t := natEq (term_at (Γ := Γ) b a j n n x)
-  have s := natEq (binom_symm_of_le hle)
-  have r := natEq (congrInst2 (Γ := Γ) b (monus_monus_of_le hle) (.eqRefl x))
-  apply deriveNat; ipra_simps
-  linear_combination m - t +
-    𝔞 (inst2 a (monus n j) x) * 𝔞 (inst2 b (monus n (monus n j)) x) * s +
-    𝔞 (binom n j) * 𝔞 (inst2 a (monus n j) x) * r
+  ipra_lc natEq c₁ - natEq (term_at (Γ := Γ) b a j n n x) +
+    𝔞 (inst2 a (monus n j) x) * 𝔞 (inst2 b (monus n (monus n j)) x) * natEq (binom_symm_of_le hle) +
+    𝔞 (binom n j) * 𝔞 (inst2 a (monus n j) x) * natEq (congrInst2 (Γ := Γ) b (monus_monus_of_le hle) (.eqRefl x))
 
 /-- The Hurwitz product is commutative: `(a ⋆ b)_n = (b ⋆ a)_n`. -/
 theorem hw_comm (n x : PTm k) : Γ ⊢[PRAAx] hw a b n x ≐ hw b a n x := by

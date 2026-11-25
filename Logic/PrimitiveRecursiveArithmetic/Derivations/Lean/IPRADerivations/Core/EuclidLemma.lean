@@ -1,5 +1,6 @@
 import IPRADerivations.Core.Bezout
 import IPRADerivations.AnalyticNumberTheory.Primes
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Euclid's lemma
@@ -96,7 +97,7 @@ theorem prime_eq_succ_succ {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) :
     Γ ⊢[PRAAx] p ≐ succ (succ (monus p two)) := by
   unfold prime at hp
   refine (eq_add_of_le (Prf.andE₁ hp)).eqTrans ?_
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem prime_eq_succ_pred {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) : Γ ⊢[PRAAx] p ≐ succ (pred p) :=
   (prime_eq_succ_succ hp).eqTrans
@@ -133,7 +134,7 @@ theorem gcd_prime {p a : PTm n} (hp : Γ ⊢[PRAAx] prime p)
   · refine .impE (.impE (.impE hall.wk.wk.wk ?_) Prf.hyp0) (Prf.andE₁ hd).wk.wk
     refine le_of_eq_add (d := pred (pred (gcd p a))) ?_
     refine hg.wk.wk.eqTrans ((congrSucc Prf.hyp1).eqTrans ?_)
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   · exact .impE hna.wk.wk.wk (dvd_congr_left Prf.hyp0 (Prf.andE₂ hd).wk.wk)
 
 /-- The algebra of case one: `g + X a = Y p`, `g = 1`, `a b = q w`, `p = q` give
@@ -141,20 +142,16 @@ theorem gcd_prime {p a : PTm n} (hp : Γ ⊢[PRAAx] prime p)
 theorem euclid_alg₁ {g X Y a b p q w : PTm n} (e₁ : Γ ⊢[PRAAx] g + X * a ≐ Y * p)
     (e₂ : Γ ⊢[PRAAx] g ≐ one) (e₃ : Γ ⊢[PRAAx] a * b ≐ q * w) (e₄ : Γ ⊢[PRAAx] p ≐ q) :
     Γ ⊢[PRAAx] b + q * (X * w) ≐ q * (Y * b) := by
-  have h₁ := natEq e₁; have h₂ := natEq e₂; have h₃ := natEq e₃; have h₄ := natEq e₄
-  apply deriveNat; ipra_simps
-  linear_combination (Groth.ι (Q.mk Γ b)) * h₁ - (Groth.ι (Q.mk Γ b)) * h₂ -
-    (Groth.ι (Q.mk Γ X)) * h₃ + (Groth.ι (Q.mk Γ Y)) * (Groth.ι (Q.mk Γ b)) * h₄
+  ipra_lc (Groth.ι (Q.mk Γ b)) * natEq e₁ - (Groth.ι (Q.mk Γ b)) * natEq e₂ - (Groth.ι (Q.mk Γ X)) * natEq e₃ +
+    (Groth.ι (Q.mk Γ Y)) * (Groth.ι (Q.mk Γ b)) * natEq e₄
 
 /-- The algebra of case two: `g + Y p = X a`, `g = 1`, `a b = q w`, `p = q` give
 `b + q (Y b) = q (X w)`. -/
 theorem euclid_alg₂ {g X Y a b p q w : PTm n} (e₁ : Γ ⊢[PRAAx] g + Y * p ≐ X * a)
     (e₂ : Γ ⊢[PRAAx] g ≐ one) (e₃ : Γ ⊢[PRAAx] a * b ≐ q * w) (e₄ : Γ ⊢[PRAAx] p ≐ q) :
     Γ ⊢[PRAAx] b + q * (Y * b) ≐ q * (X * w) := by
-  have h₁ := natEq e₁; have h₂ := natEq e₂; have h₃ := natEq e₃; have h₄ := natEq e₄
-  apply deriveNat; ipra_simps
-  linear_combination (Groth.ι (Q.mk Γ b)) * h₁ - (Groth.ι (Q.mk Γ b)) * h₂ +
-    (Groth.ι (Q.mk Γ X)) * h₃ - (Groth.ι (Q.mk Γ Y)) * (Groth.ι (Q.mk Γ b)) * h₄
+  ipra_lc (Groth.ι (Q.mk Γ b)) * natEq e₁ - (Groth.ι (Q.mk Γ b)) * natEq e₂ + (Groth.ι (Q.mk Γ X)) * natEq e₃ -
+    (Groth.ι (Q.mk Γ Y)) * (Groth.ι (Q.mk Γ b)) * natEq e₄
 
 /-- Euclid's lemma: a prime dividing `a b` divides `a` or `b`. -/
 theorem euclid_lemma_at {p a b : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hab : Γ ⊢[PRAAx] dvd p (a * b)) :

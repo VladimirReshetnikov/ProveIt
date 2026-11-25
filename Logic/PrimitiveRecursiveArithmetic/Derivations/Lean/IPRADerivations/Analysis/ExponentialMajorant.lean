@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.ExponentialSeries
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The finite exponential majorant
@@ -97,21 +98,14 @@ theorem Rr_succ (N x : PTm n) :
 
 theorem geom_base (x : PTm n) :
     Γ ⊢[PRAAx] sndT x * Gg zero x + pw (fstT x) zero ≐ pw (fstT x + sndT x) zero := by
-  have g := natEq (Gg_zero (Γ := Γ) x)
-  have pa := natEq (pw_zero (Γ := Γ) (fstT x))
-  have pb := natEq (pw_zero (Γ := Γ) (fstT x + sndT x))
-  apply deriveNat; ipra_simps
-  linear_combination 𝔟(sndT x) * g + pa - pb
+  ipra_lc 𝔟(sndT x) * natEq (Gg_zero (Γ := Γ) x) + natEq (pw_zero (Γ := Γ) (fstT x)) -
+    natEq (pw_zero (Γ := Γ) (fstT x + sndT x))
 
 theorem geom_step {i x : PTm n}
     (ih : Γ ⊢[PRAAx] sndT x * Gg i x + pw (fstT x) i ≐ pw (fstT x + sndT x) i) :
     Γ ⊢[PRAAx] sndT x * Gg (succ i) x + pw (fstT x) (succ i) ≐ pw (fstT x + sndT x) (succ i) := by
-  have gs := natEq (Gg_succ (Γ := Γ) i x)
-  have pa := natEq (pw_succ (Γ := Γ) (fstT x) i)
-  have pb := natEq (pw_succ (Γ := Γ) (fstT x + sndT x) i)
-  have h := natEq ih
-  apply deriveNat; ipra_simps
-  linear_combination 𝔟(sndT x) * gs + pa - pb + (𝔟(fstT x) + 𝔟(sndT x)) * h
+  ipra_lc 𝔟(sndT x) * natEq (Gg_succ (Γ := Γ) i x) + natEq (pw_succ (Γ := Γ) (fstT x) i) -
+    natEq (pw_succ (Γ := Γ) (fstT x + sndT x) i) + (𝔟(fstT x) + 𝔟(sndT x)) * natEq ih
 
 /-- Variables: `0 = i`, `1 = x`. -/
 private abbrev geomF : Fm PTm 2 :=
@@ -278,16 +272,11 @@ theorem split_step {N x : PTm n}
     Γ ⊢[PRAAx] Ee (succ (succ N)) x ≐
       fact (succ (succ N)) * pw (fstT x + sndT x) (succ (succ N)) +
         fact (succ (succ N)) * fstT x * pw (fstT x + sndT x) (succ N) + Rr (succ N) x := by
-  have es := natEq (Ee_succ (Γ := Γ) (succ N) x)
-  have h := natEq ih
-  have rs := natEq (Rr_succ (Γ := Γ) N x)
-  have fs := natEq (fact_succ (Γ := Γ) (succ N) zero)
-  have pb₂ := natEq (pw_succ (Γ := Γ) (fstT x + sndT x) (succ N))
-  have pb₁ := natEq (pw_succ (Γ := Γ) (fstT x + sndT x) N)
-  apply deriveNat; ipra_simps
-  linear_combination es + (𝔟 N + 2) * (𝔟(fstT x) + 𝔟(sndT x)) * h - rs -
-    (𝔟(pw (fstT x + sndT x) (succ (succ N))) + 𝔟(fstT x) * 𝔟(pw (fstT x + sndT x) (succ N))) * fs -
-    𝔟(fact (succ N)) * (𝔟 N + 2) * pb₂ - 𝔟(fact (succ N)) * (𝔟 N + 2) * 𝔟(fstT x) * pb₁
+  ipra_lc natEq (Ee_succ (Γ := Γ) (succ N) x) + (𝔟 N + 2) * (𝔟(fstT x) + 𝔟(sndT x)) * natEq ih -
+    natEq (Rr_succ (Γ := Γ) N x) -
+    (𝔟(pw (fstT x + sndT x) (succ (succ N))) + 𝔟(fstT x) * 𝔟(pw (fstT x + sndT x) (succ N))) * natEq (fact_succ (Γ := Γ) (succ N) zero) -
+    𝔟(fact (succ N)) * (𝔟 N + 2) * natEq (pw_succ (Γ := Γ) (fstT x + sndT x) (succ N)) -
+    𝔟(fact (succ N)) * (𝔟 N + 2) * 𝔟(fstT x) * natEq (pw_succ (Γ := Γ) (fstT x + sndT x) N)
 
 /-- Variables: `0 = N`, `1 = x`. -/
 private abbrev splitF : Fm PTm 2 :=

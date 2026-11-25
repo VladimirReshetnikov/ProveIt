@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.SymmetryInstances
 import IPRADerivations.AnalyticNumberTheory.WeightBridge
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The comparison at one inner endpoint (`pnt_ipra_constructive_2026-11-14`, `sb:symmetry`)
@@ -86,8 +87,7 @@ theorem le_Q4 (x : PTm n) : Γ ⊢[PRAAx] le x (Q4 x) := by
 theorem cube_le_Q4 (x : PTm n) : Γ ⊢[PRAAx] le (succ x * (succ x * succ x)) (Q4 x) := by
   ipra_le 𝔞 x * 𝔞 x * 𝔞 x * 𝔞 x + 3 * (𝔞 x * 𝔞 x * 𝔞 x) + 3 * (𝔞 x * 𝔞 x) + 𝔞 x
 
-theorem le_succ' {a b : PTm n} (h : Γ ⊢[PRAAx] le a b) : Γ ⊢[PRAAx] le (succ a) (succ b) :=
-  (succ_monus_succ _ _).eqTrans h
+alias le_succ' := Common.succ_le_succ
 
 theorem Q4_mono {a b : PTm n} (h : Γ ⊢[PRAAx] le a b) : Γ ⊢[PRAAx] le (Q4 a) (Q4 b) :=
   have s := le_succ' h
@@ -98,7 +98,7 @@ theorem Q4_mono {a b : PTm n} (h : Γ ⊢[PRAAx] le a b) : Γ ⊢[PRAAx] le (Q4 
 theorem u_le_kF {K : PTm n} (k F : PTm n) (hK : Γ ⊢[PRAAx] le one K) : Γ ⊢[PRAAx] le (U (succ k) K F) (k * F) := by
   have l := lam_succ (Γ := Γ) k F (pos_of_lt_zero hK)
   have m1 : Γ ⊢[PRAAx] le (S K F) (S (K * succ k) F) :=
-    S_mono F (le_of_eq_add (d := K * k) (by apply deriveNat; ipra_simps; ring))
+    S_mono F (le_of_eq_add (d := K * k) (by ipra_ring))
   have Eu := natEq (eq_add_of_le m1)
   ipra_le sl l with Eu
 
@@ -164,7 +164,7 @@ theorem Hyp.hL4 : Γ ⊢[PRAAx] le (K * Q4 (qr (succ k))) L :=
 
 /-- `(m + 1) m m ⌊F/K⌋ ≤ F` for `m = k + 1`. -/
 theorem Hyp.cubic : Γ ⊢[PRAAx] le (succ k * (succ (succ k) * (succ k * quo (fact L) K))) (fact L) := by
-  have s1 : Γ ⊢[PRAAx] le (succ k) (succ x) := le_trans h.hkx (le_of_eq_add (d := one) (by apply deriveNat; ipra_simps; ring))
+  have s1 : Γ ⊢[PRAAx] le (succ k) (succ x) := le_trans h.hkx (le_of_eq_add (d := one) (by ipra_ring))
   have c := le_trans (le_mul2 (le_succ' h.hkx) (le_mul2 s1 s1)) (le_trans (cube_le_Q4 x) h.hx4)
   have q := mul_le_mul_right (quo (fact L) K) c
   have r := quo_mul_le (Γ := Γ) (x := fact L) (pos_of_lt_zero h.hK)

@@ -1,5 +1,6 @@
 import IPRADerivations.Geometry.DesarguesInternal
 import IPRADerivations.Probability.MedianWeighted
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Absolute values of integer terms and the Runge product bound
@@ -50,7 +51,7 @@ theorem D_congr₁ {x y : ZT n} (h : Γ ⊢[PRAAx] ZT.eq x y) (hl : Γ ⊢[PRAAx
   have e := eq_add_of_le hl
   have e' := natEq e
   have ey : Γ ⊢[PRAAx] y.pos ≐ y.neg + monus x.pos x.neg := by
-    apply deriveNat; ipra_simps; linear_combination -h' + e'
+    ipra_lc -h' + e'
   exact (ad_of_eq_add e).eqTrans (ad_of_eq_add ey).eqSymm
 
 theorem D_congr₂ {x y : ZT n} (h : Γ ⊢[PRAAx] ZT.eq x y) (hl : Γ ⊢[PRAAx] le x.pos x.neg) :
@@ -59,7 +60,7 @@ theorem D_congr₂ {x y : ZT n} (h : Γ ⊢[PRAAx] ZT.eq x y) (hl : Γ ⊢[PRAAx
   have e := eq_add_of_le hl
   have e' := natEq e
   have ey : Γ ⊢[PRAAx] y.neg ≐ y.pos + monus x.neg x.pos := by
-    apply deriveNat; ipra_simps; linear_combination h' + e'
+    ipra_lc h' + e'
   exact (ad_of_eq_add' e).eqTrans (ad_of_eq_add' ey).eqSymm
 
 theorem D_congr {x y : ZT n} (h : Γ ⊢[PRAAx] ZT.eq x y) : Γ ⊢[PRAAx] za x ≐ za y :=
@@ -81,8 +82,7 @@ theorem D_mul₁ (h₁ : Γ ⊢[PRAAx] le u.neg u.pos) (h₂ : Γ ⊢[PRAAx] le 
   have a := natEq e₁; have b := natEq e₂
   have r : Γ ⊢[PRAAx] u.pos * v.pos + u.neg * v.neg ≐
       (u.pos * v.neg + u.neg * v.pos) + monus u.pos u.neg * monus v.pos v.neg := by
-    apply deriveNat; ipra_simps
-    linear_combination (𝔞 v.pos - 𝔞 v.neg) * a + 𝔞 (monus u.pos u.neg) * b
+    ipra_lc (𝔞 v.pos - 𝔞 v.neg) * a + 𝔞 (monus u.pos u.neg) * b
   exact (ad_of_eq_add r).eqTrans (congrMul (ad_of_eq_add e₁) (ad_of_eq_add e₂)).eqSymm
 
 theorem D_mul₂ (h₁ : Γ ⊢[PRAAx] le u.neg u.pos) (h₂ : Γ ⊢[PRAAx] le v.pos v.neg) :
@@ -91,8 +91,7 @@ theorem D_mul₂ (h₁ : Γ ⊢[PRAAx] le u.neg u.pos) (h₂ : Γ ⊢[PRAAx] le 
   have a := natEq e₁; have b := natEq e₂
   have r : Γ ⊢[PRAAx] u.pos * v.neg + u.neg * v.pos ≐
       (u.pos * v.pos + u.neg * v.neg) + monus u.pos u.neg * monus v.neg v.pos := by
-    apply deriveNat; ipra_simps
-    linear_combination (𝔞 v.neg - 𝔞 v.pos) * a + 𝔞 (monus u.pos u.neg) * b
+    ipra_lc (𝔞 v.neg - 𝔞 v.pos) * a + 𝔞 (monus u.pos u.neg) * b
   exact (ad_of_eq_add' r).eqTrans (congrMul (ad_of_eq_add e₁) (ad_of_eq_add' e₂)).eqSymm
 
 theorem D_mul₃ (h₁ : Γ ⊢[PRAAx] le u.pos u.neg) (h₂ : Γ ⊢[PRAAx] le v.neg v.pos) :
@@ -101,8 +100,7 @@ theorem D_mul₃ (h₁ : Γ ⊢[PRAAx] le u.pos u.neg) (h₂ : Γ ⊢[PRAAx] le 
   have a := natEq e₁; have b := natEq e₂
   have r : Γ ⊢[PRAAx] u.pos * v.neg + u.neg * v.pos ≐
       (u.pos * v.pos + u.neg * v.neg) + monus u.neg u.pos * monus v.pos v.neg := by
-    apply deriveNat; ipra_simps
-    linear_combination (𝔞 v.pos - 𝔞 v.neg) * a + 𝔞 (monus u.neg u.pos) * b
+    ipra_lc (𝔞 v.pos - 𝔞 v.neg) * a + 𝔞 (monus u.neg u.pos) * b
   exact (ad_of_eq_add' r).eqTrans (congrMul (ad_of_eq_add' e₁) (ad_of_eq_add e₂)).eqSymm
 
 theorem D_mul₄ (h₁ : Γ ⊢[PRAAx] le u.pos u.neg) (h₂ : Γ ⊢[PRAAx] le v.pos v.neg) :
@@ -111,8 +109,7 @@ theorem D_mul₄ (h₁ : Γ ⊢[PRAAx] le u.pos u.neg) (h₂ : Γ ⊢[PRAAx] le 
   have a := natEq e₁; have b := natEq e₂
   have r : Γ ⊢[PRAAx] u.pos * v.pos + u.neg * v.neg ≐
       (u.pos * v.neg + u.neg * v.pos) + monus u.neg u.pos * monus v.neg v.pos := by
-    apply deriveNat; ipra_simps
-    linear_combination (𝔞 v.neg - 𝔞 v.pos) * a + 𝔞 (monus u.neg u.pos) * b
+    ipra_lc (𝔞 v.neg - 𝔞 v.pos) * a + 𝔞 (monus u.neg u.pos) * b
   exact (ad_of_eq_add r).eqTrans (congrMul (ad_of_eq_add' e₁) (ad_of_eq_add' e₂)).eqSymm
 
 /-- `|uv| = |u| |v|`. -/
@@ -125,19 +122,18 @@ end Mul
 
 theorem D_two : Γ ⊢[PRAAx] za (ZT.natLit 2 : ZT n) ≐ two := by
   show Γ ⊢[PRAAx] monus (num 2) zero + monus zero (num 2) ≐ two
-  exact (congrAdd (monus_zero _) (zero_monus _)).eqTrans ((add_zero _).eqTrans (by apply deriveNat; ipra_simps; ring))
+  exact (congrAdd (monus_zero _) (zero_monus _)).eqTrans ((add_zero _).eqTrans (by ipra_ring))
 
 theorem nat_ge {U V W : PTm n} (hm : Γ ⊢[PRAAx] W ≐ U * V) (hv : Γ ⊢[PRAAx] le one V) : Γ ⊢[PRAAx] le U W := by
   have m := natEq hm; have e := natEq (eq_add_of_le hv)
   refine le_of_eq_add (d := U * monus V one) ?_
-  apply deriveNat; ipra_simps; linear_combination m + 𝔞 U * e
+  ipra_lc m + 𝔞 U * e
 
 theorem nat_sum {U V W : PTm n} (hm : Γ ⊢[PRAAx] W ≐ U * V) (hu : Γ ⊢[PRAAx] le one U) (hv : Γ ⊢[PRAAx] le one V) :
     Γ ⊢[PRAAx] le (U + V) (W + one) := by
   have m := natEq hm; have a := natEq (eq_add_of_le hu); have b := natEq (eq_add_of_le hv)
   refine le_of_eq_add (d := monus U one * monus V one) ?_
-  apply deriveNat; ipra_simps
-  linear_combination m + 𝔞 (monus U one) * b + (𝔞 V - 1) * a
+  ipra_lc m + 𝔞 (monus U one) * b + (𝔞 V - 1) * a
 
 /-! ## `lem:runge-product-bound` -/
 
@@ -182,8 +178,8 @@ theorem half_le_max {u v z : ZT n} (hz : Γ ⊢[PRAAx] ZT.eq (v - u) (ZT.natLit 
   have hl := half_le hz
   refine .orE (le_total (za u) (za v)) (.orI₂ ?_) (.orI₁ ?_)
   · refine mul_le_cancel (d' := one) (le_trans hl.wk ?_)
-    exact le_congr (.eqRefl _) (by apply deriveNat; ipra_simps; ring) (add_le_add₂ Prf.hyp0 (le_refl _))
+    exact le_congr (.eqRefl _) (by ipra_ring) (add_le_add₂ Prf.hyp0 (le_refl _))
   · refine mul_le_cancel (d' := one) (le_trans hl.wk ?_)
-    exact le_congr (.eqRefl _) (by apply deriveNat; ipra_simps; ring) (add_le_add₂ (le_refl _) Prf.hyp0)
+    exact le_congr (.eqRefl _) (by ipra_ring) (add_le_add₂ (le_refl _) Prf.hyp0)
 
 end LeanProofs.IPRA.DiophantineNumberTheory.RungeProduct

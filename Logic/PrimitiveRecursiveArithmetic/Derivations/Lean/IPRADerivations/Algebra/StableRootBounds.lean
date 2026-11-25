@@ -2,7 +2,7 @@ import IPRADerivations.Foundations.FormalDerivation
 import IPRADerivations.Foundations.ChainViability
 import IPRADerivations.Probability.Variance
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Grid rotations and the scalar square-root inequality

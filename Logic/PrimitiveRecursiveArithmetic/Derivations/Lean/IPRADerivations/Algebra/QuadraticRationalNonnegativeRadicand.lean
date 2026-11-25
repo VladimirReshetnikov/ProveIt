@@ -1,5 +1,6 @@
 import IPRADerivations.Algebra.QuadraticRationalRing
 import IPRADerivations.Algebra.QuadraticRationalZeroProjection
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # One quadratic sign program for nonnegative rational radicands
@@ -88,10 +89,7 @@ private theorem mul_zero_numerator (d a : PTm n) (hd : Γ ⊢[PRAAx] radicandZer
 
 private theorem zero_scalar_numerator : Γ ⊢[PRAAx]
     radicandZero (QuadraticRationalPairArithmetic.scalar (zero : PTm n)) := by
-  apply ZT.derive
-  have h := ZT.toZ_eq (QuadraticRationalPairArithmetic.scalar_represents (Γ := Γ) (zero : PTm n))
-  simp only [ZT.toZ_mul,ZT.toZ_ofNat,Q.mk_zero,Q.mk_one,map_zero,map_one] at h ⊢
-  linear_combination -h
+  ipra_lc -ZT.toZ_eq (QuadraticRationalPairArithmetic.scalar_represents (Γ := Γ) (zero : PTm n))
 
 private theorem add_right_congr (b a a' : PTm n) (h : Γ ⊢[PRAAx] a ≐ a') : Γ ⊢[PRAAx]
     RationalArithmetic.add b a ≐ RationalArithmetic.add b a' := by

@@ -1,5 +1,7 @@
 import IPRADerivations.Analysis.RationalMinorFreeColumn
 import IPRADerivations.Analysis.RationalFiniteSpanCover
+import IPRADerivations.Core.CongruenceTactic
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Extending a selected minor by an actual new row or column
@@ -39,9 +41,8 @@ def insert (N M c : PTm n) : PTm n := Cd (two : PTm 2) digitBody N (pairT c M)
     Syn.subst σ (insert N M c) = insert (Syn.subst σ N) (Syn.subst σ M) (Syn.subst σ c) := by simp [insert]
 
 theorem digit_body_at (M c i : PTm n) : Γ ⊢[PRAAx] inst2 digitBody i (pairT c M) ≐ insertedBit M c i := by
-  simpa [digitBody,inst2] using Prf.eqCongr (insertedBit (var 0) (var 1) (var 2) : PTm 3)
-    (σ := ![sndT (pairT c M),fstT (pairT c M),i]) (σ' := ![M,c,i])
-    (fun j => by fin_cases j; exact snd_pair _ _; exact fst_pair _ _; exact .eqRefl _)
+  ipra_congr (insertedBit (var 0) (var 1) (var 2) : PTm 3) with
+    [snd_pair _ _, fst_pair _ _, .eqRefl i] using [digitBody, inst2]
 
 theorem inserted_bit_hit (M c i : PTm n) (h : Γ ⊢[PRAAx] i ≐ c) : Γ ⊢[PRAAx] insertedBit M c i ≐ one :=
   select_one _ _ _ (eqb_of_eq h)
@@ -87,16 +88,13 @@ theorem old_bit (N M c i : PTm n) (hi : Γ ⊢[PRAAx] lt i N) (hne : Γ ⊢[PRAA
     Γ ⊢[PRAAx] bit (insert N M c) i ≐ bit M i :=
   (insert_digit _ _ _ _ hi).eqTrans (inserted_bit_miss _ _ _ hne)
 
-private theorem sg_congr {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) : Γ ⊢[PRAAx] Signum.sg a ≐ Signum.sg b :=
-  congrMonus (.eqRefl one) (congrMonus (.eqRefl one) h)
+private alias sg_congr := Common.congrSg
 
 theorem indicator_changes (N M c i : PTm n) (hi : Γ ⊢[PRAAx] lt i N) (hc : Γ ⊢[PRAAx] bit M c ≐ zero) :
     Γ ⊢[PRAAx] Signum.sg (bit (insert N M c) i) ≐ Signum.sg (bit M i) + eqb c i := by
   refine .orE (eq_or_ne i c) ?_ ?_
   · have e : (i ≐ c) :: Γ ⊢[PRAAx] bit M i ≐ bit M c := by
-      simpa only [RationalSubtupleSpan.subst_bit,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using
-        Prf.eqCongr (bit (var 0) (var 1) : PTm 2) (σ := ![M,i]) (σ' := ![M,c])
-        (fun j => by fin_cases j; exact .eqRefl _; exact Prf.hyp0)
+      ipra_congr (bit (var 0) (var 1) : PTm 2) with [.eqRefl M, Prf.hyp0]
     have b := e.eqTrans hc.wk
     exact ((sg_congr ((insert_digit N M c i hi.wk).eqTrans (inserted_bit_hit M c i Prf.hyp0))).eqTrans
       (Signum.sg_succ zero)).eqTrans

@@ -1,6 +1,6 @@
 import IPRADerivations.Combinatorics.Catalan
 import IPRADerivations.DiophantineNumberTheory.FLTMultiples
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The moment numbers of the standard normal distribution

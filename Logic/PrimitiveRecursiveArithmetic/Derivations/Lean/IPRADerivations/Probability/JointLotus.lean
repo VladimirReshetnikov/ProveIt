@@ -1,7 +1,7 @@
 import IPRADerivations.Probability.Histogram
 import IPRADerivations.Probability.SignedParts
 import IPRADerivations.Core.BlockSum
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Joint LOTUS and componentwise expectation

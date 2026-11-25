@@ -1,5 +1,6 @@
 import IPRADerivations.Combinatorics.DesignCounts
 import IPRADerivations.Combinatorics.Turan
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Fisher's inequality
@@ -107,10 +108,7 @@ theorem znn_of_pos_mul {P X : ZT n} (hP : Γ ⊢[PRAAx] zle (ZT.natLit 1) P)
     Prf.hyp0
   have hP1 := hP.wk (ψ := zle (X + ZT.natLit 1) (ZT.natLit 0))
   have h1 := h.wk (ψ := zle (X + ZT.natLit 1) (ZT.natLit 0))
-  refine false_of_comb (zsl h1 + zsl hP1 * zsl hlt + zsl hlt + zsl hP1) ?_
-    (nn_add (nn_add (nn_add (nn_zsl _) (nn_mul (nn_zsl _) (nn_zsl _))) (nn_zsl _)) (nn_zsl _)) _
-  zsimp
-  ring
+  ipra_absurd (zsl h1 + zsl hP1 * zsl hlt + zsl hlt + zsl hP1)
 
 /-! ## Fisher's inequality -/
 
@@ -152,9 +150,7 @@ theorem fisher (M : Fin (p + 1) → Fin (b + 1) → ZT n) (r k lam : ZT n)
   have hc := cauchy_int (Γ := Γ)
     (fun B : Fin b => ZT.sumFin fun i => M i (Fin.castSucc B) * M i (Fin.last b))
   have hk0 : Γ ⊢[PRAAx] zle (ZT.natLit 0) k := by
-    refine zle_of_comb (zsl hk1 + 1) ?_ (nn_add (nn_zsl _) nn_one)
-    zsimp
-    ring
+    ipra_zle (zsl hk1 + 1)
   have hpos : Γ ⊢[PRAAx] zle (ZT.natLit 0)
       ((k * r * ZT.sq (ZT.natLit (p + 1) - k)) * (r - k)) := by
     refine zle_of_comb (ZT.toZ Γ k * (p : Groth (Q Γ)) * zsl hc) ?_
@@ -167,22 +163,12 @@ theorem fisher (M : Fin (p + 1) → Fin (b + 1) → ZT n) (r k lam : ZT n)
           (p : Groth (Q Γ)) * ZT.toZ Γ lam * ZT.toZ Γ k * (ZT.toZ Γ k - 1)) * h1p +
         ((((p : Groth (Q Γ)) + 1) * ZT.toZ Γ r - ZT.toZ Γ k) * ZT.toZ Γ k * (ZT.toZ Γ k - 1)) * h2
   have hP : Γ ⊢[PRAAx] zle (ZT.natLit 1) (k * r * ZT.sq (ZT.natLit (p + 1) - k)) := by
-    refine zle_of_comb (zsl hk1 + zsl hr1 + zsl hk1 * zsl hr1 +
-        (1 + zsl hk1) * (1 + zsl hr1) * (2 * zsl hkv + zsl hkv * zsl hkv)) ?_
-      (nn_add (nn_add (nn_add (nn_zsl _) (nn_zsl _)) (nn_mul (nn_zsl _) (nn_zsl _)))
-        (nn_mul (nn_mul (nn_add nn_one (nn_zsl _)) (nn_add nn_one (nn_zsl _)))
-          (nn_add (nn_mul (nn_ofNat 2) (nn_zsl _)) (nn_mul (nn_zsl _) (nn_zsl _)))))
-    zsimp
-    ring
+    ipra_zle (zsl hk1 + zsl hr1 + zsl hk1 * zsl hr1 + (1 + zsl hk1) * (1 + zsl hr1) * (2 * zsl hkv + zsl hkv * zsl hkv))
   have hrk : Γ ⊢[PRAAx] zle (ZT.natLit 0) (r - k) := znn_of_pos_mul hP hpos
   have hkb : Γ ⊢[PRAAx] zle (ZT.natLit 0) (k * (ZT.natLit (b + 1) - ZT.natLit (p + 1))) := by
-    refine zle_of_comb (((p + 1 : ℕ) : Groth (Q Γ)) * zsl hrk) ?_ (nn_mul (nn_natCast _) (nn_zsl _))
-    zsimp
-    linear_combination (-1 : Groth (Q Γ)) * h1
+    ipra_zle (((p + 1 : ℕ) : Groth (Q Γ)) * zsl hrk) with -h1
   have hfin : Γ ⊢[PRAAx] zle (ZT.natLit 0) (ZT.natLit (b + 1) - ZT.natLit (p + 1)) :=
     znn_of_pos_mul hk1 hkb
-  refine zle_of_comb (zsl hfin) ?_ (nn_zsl _)
-  zsimp
-  ring
+  ipra_zle (zsl hfin)
 
 end LeanProofs.IPRA.Combinatorics.FisherInequality

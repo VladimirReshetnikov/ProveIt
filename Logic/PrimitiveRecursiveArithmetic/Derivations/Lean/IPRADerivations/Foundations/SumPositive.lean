@@ -38,7 +38,7 @@ theorem sum_le_pos_const (f : PTm 2) {x c N : PTm n} (h0 : Γ ⊢[PRAAx] inst2 f
     (h : (lt (var 0) (Syn.shift N) :: Γ.map Fm.shift) ⊢[PRAAx]
       le (inst2 f (succ (var 0)) (Syn.shift x)) (Syn.shift c)) :
     Γ ⊢[PRAAx] le (ap2 (sumF f) (succ N) x) (N * c) := by
-  have e : Γ ⊢[PRAAx] succ N ≐ one + N := by apply deriveNat; ipra_simps; ring
+  have e : Γ ⊢[PRAAx] succ N ≐ one + N := by ipra_ring
   have E := (congrAp2 (sumF f) e (.eqRefl x)).eqTrans (sum_split f one N x)
   have F : Γ ⊢[PRAAx] ap2 (sumF f) one x ≐ zero :=
     (sum_succ' f zero x).eqTrans ((congrAdd (sum_zero f x) h0).eqTrans (add_zero _))
@@ -47,7 +47,7 @@ theorem sum_le_pos_const (f : PTm 2) {x c N : PTm n} (h0 : Γ ⊢[PRAAx] inst2 f
     have s1 : Syn.shift (pairT one x) = pairT one (Syn.shift x) := by simp [Syn.shift]
     rw [s1, inst2_offB]
     refine le_congr (congrInst2 f ?_ (snd_pair _ _)).eqSymm (.eqRefl _) h
-    exact (congrAdd (fst_pair _ _) (.eqRefl _)).eqTrans (by apply deriveNat; ipra_simps; ring)
+    exact (congrAdd (fst_pair _ _) (.eqRefl _)).eqTrans (by ipra_ring)
   exact sum_pos_comb E F T
 
 end LeanProofs.IPRA

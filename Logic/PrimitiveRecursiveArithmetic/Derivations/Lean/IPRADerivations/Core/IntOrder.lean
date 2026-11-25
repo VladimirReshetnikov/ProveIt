@@ -1,6 +1,8 @@
 import IPRADerivations.Core.Integers
 import IPRADerivations.Probability.Variance
 import IPRADerivations.AnalyticNumberTheory.PhiLower
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Order on integer terms, and the triangle inequality without square roots
@@ -45,8 +47,7 @@ theorem zle_of_toZ {u v : ZT n} (D : PTm n) (h : ZT.toZ Γ u + Groth.ι (Q.mk Γ
     Γ ⊢[PRAAx] zle u v := by
   refine le_of_eq_add (d := D) ?_
   rw [toZ_def, toZ_def] at h
-  apply deriveNat; ipra_simps
-  linear_combination -h
+  ipra_lc -h
 
 /-- The witness of `u ≤ v`. -/
 theorem zle_toZ {u v : ZT n} (h : Γ ⊢[PRAAx] zle u v) :
@@ -65,12 +66,7 @@ theorem sq_nat (x : ZT n) :
   linear_combination -e
 
 /-- `S² ≤ T² → S ≤ T` for natural numbers. -/
-theorem nat_sqrt_mono {S T : PTm n} (h : Γ ⊢[PRAAx] le (S * S) (T * T)) : Γ ⊢[PRAAx] le S T := by
-  refine .orE (lt_or_le T S) ?_ Prf.hyp0
-  have l : (lt T S :: Γ) ⊢[PRAAx] le (succ T * succ T) (S * S) := le_mul_mono Prf.hyp0 Prf.hyp0
-  have g : (lt T S :: Γ) ⊢[PRAAx] le (succ (T * T)) (succ T * succ T) :=
-    le_of_eq_add (d := T + T) (by apply deriveNat; ipra_simps; ring)
-  exact not_succ_le_self (T * T) _ (le_trans g (le_trans l h.wk))
+alias nat_sqrt_mono := Common.le_of_sq_le
 
 section Triangle
 
@@ -121,14 +117,7 @@ theorem dot_le (h₁ : Γ ⊢[PRAAx] zle (ZT.sq x₁ + ZT.sq y₁) (ZT.ofNat (a 
       refine le_of_eq_add (d := (ad x₁.pos x₁.neg * ad x₁.pos x₁.neg + ad y₁.pos y₁.neg * ad y₁.pos y₁.neg) * D₂ +
         (ad x₂.pos x₂.neg * ad x₂.pos x₂.neg + ad y₂.pos y₂.neg * ad y₂.pos y₂.neg) * D₁ + D₁ * D₂ +
         ad c.pos c.neg * ad c.pos c.neg) ?_
-      apply deriveNat; ipra_simps
-      linear_combination (-1 : Groth (Q (le s.neg s.pos :: Γ))) * (
-        (Groth.ι (Q.mk _ b) * Groth.ι (Q.mk _ b)) * w₁' +
-        (ZT.toZ (le s.neg s.pos :: Γ) x₁ ^ 2 + ZT.toZ _ y₁ ^ 2 + Groth.ι (Q.mk _ D₁)) * w₂' -
-        (Groth.ι (Q.mk _ (monus s.pos s.neg)) + ZT.toZ _ s) * tσ +
-        (ZT.toZ _ s + ZT.toZ _ x₁ * ZT.toZ _ x₂ + ZT.toZ _ y₁ * ZT.toZ _ y₂) * es' +
-        (ZT.toZ _ c + ZT.toZ _ x₁ * ZT.toZ _ y₂ - ZT.toZ _ x₂ * ZT.toZ _ y₁) * ec' -
-        Groth.ι (Q.mk _ D₂) * (px₁ + py₁) - Groth.ι (Q.mk _ D₁) * (px₂ + py₂) - pc)
+      ipra_lc (-1 : Groth (Q (le s.neg s.pos :: Γ))) * ( (Groth.ι (Q.mk _ b) * Groth.ι (Q.mk _ b)) * w₁' + (ZT.toZ (le s.neg s.pos :: Γ) x₁ ^ 2 + ZT.toZ _ y₁ ^ 2 + Groth.ι (Q.mk _ D₁)) * w₂' - (Groth.ι (Q.mk _ (monus s.pos s.neg)) + ZT.toZ _ s) * tσ + (ZT.toZ _ s + ZT.toZ _ x₁ * ZT.toZ _ x₂ + ZT.toZ _ y₁ * ZT.toZ _ y₂) * es' + (ZT.toZ _ c + ZT.toZ _ x₁ * ZT.toZ _ y₂ - ZT.toZ _ x₂ * ZT.toZ _ y₁) * ec' - Groth.ι (Q.mk _ D₂) * (px₁ + py₁) - Groth.ι (Q.mk _ D₁) * (px₂ + py₂) - pc)
     have le' := nat_sqrt_mono sq
     have e₂ := natEq (eq_add_of_le le')
     refine zle_of_toZ (monus (a * b) (monus s.pos s.neg)) ?_

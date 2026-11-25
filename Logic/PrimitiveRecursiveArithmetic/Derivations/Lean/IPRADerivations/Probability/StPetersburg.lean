@@ -1,7 +1,7 @@
 import IPRADerivations.Probability.Variance
 import IPRADerivations.Foundations.DyadicNames
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The St Petersburg game

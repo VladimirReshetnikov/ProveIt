@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianRationalRowElimination
 import IPRADerivations.Analysis.GaussianRationalFubini
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual finite row combinations and their homogeneous dot equations
@@ -252,8 +253,7 @@ theorem empty_rows_at (A N C j : PTm n) (hj : Γ ⊢[PRAAx] lt j N) : Γ ⊢[PRA
 theorem empty_dot (v l : PTm n) : Γ ⊢[PRAAx] vectorDot zero v l ≐ qzero := GaussianRationalRowElimination.empty_dot _ _ _
 theorem vector_dot_congr {N N' v v' l l' : PTm n} (hN : Γ ⊢[PRAAx] N ≐ N')
     (hv : Γ ⊢[PRAAx] v ≐ v') (hl : Γ ⊢[PRAAx] l ≐ l') : Γ ⊢[PRAAx] vectorDot N v l ≐ vectorDot N' v' l' := by
-  simpa using Prf.eqCongr (Γ := Γ) (vectorDot (var 0) (var 1) (var 2) : PTm 3)
-    (σ := ![N,v,l]) (σ' := ![N',v',l']) (fun k => by fin_cases k; exact hN; exact hv; exact hl)
+  ipra_congr (vectorDot (var 0) (var 1) (var 2) : PTm 3) with [hN, hv, hl]
 
 /-! The PR4 producer has no lambda or presumed span witness as an extra
 input. The supplied C is the original numerical coefficient vector. -/

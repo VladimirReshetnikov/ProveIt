@@ -1,7 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.RungeProduct
 import IPRADerivations.AnalyticNumberTheory.PhiLower
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The rational Euler–Maclaurin certificate

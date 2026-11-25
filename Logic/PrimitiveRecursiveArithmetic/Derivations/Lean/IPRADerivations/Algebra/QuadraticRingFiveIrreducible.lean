@@ -1,6 +1,6 @@
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Algebra.QuadraticRingFive
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Irreducibility of `2`, `3` and `1 ± θ` in `ℤ[√−5]`

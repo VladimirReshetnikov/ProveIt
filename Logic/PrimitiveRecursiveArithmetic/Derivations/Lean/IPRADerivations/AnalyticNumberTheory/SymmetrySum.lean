@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.SelbergMobiusP
 import IPRADerivations.AnalyticNumberTheory.ConvSummatory
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Selberg's identity summed up to `x` (`pnt_ipra_constructive_2026-11-14`, towards `sb:symmetry-bound`)
@@ -71,10 +72,8 @@ theorem congrGx1 {e e' y : PTm n} (h : Γ ⊢[PRAAx] e ≐ e') : Γ ⊢[PRAAx] G
 /-- The row algebra over opaque terms: `(S E') M' (L'L') = (S E)(M (L L))` from `L' = L`, `M' = M`, `E' = E`. -/
 theorem row_alg {S E E' M' Md L L' : PTm n} (eL : Γ ⊢[PRAAx] L' ≐ L) (eM : Γ ⊢[PRAAx] M' ≐ Md)
     (eE : Γ ⊢[PRAAx] E' ≐ E) : Γ ⊢[PRAAx] ((S * E') * M') * (L' * L') ≐ (S * E) * (Md * (L * L)) := by
-  have a := natEq eL; have b := natEq eM; have c := natEq eE
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 S * 𝔞 E' * 𝔞 M' * (𝔞 L' + 𝔞 L) * a + 𝔞 S * 𝔞 E' * 𝔞 L * 𝔞 L * b +
-    𝔞 S * 𝔞 Md * 𝔞 L * 𝔞 L * c
+  ipra_lc 𝔞 S * 𝔞 E' * 𝔞 M' * (𝔞 L' + 𝔞 L) * natEq eL + 𝔞 S * 𝔞 E' * 𝔞 L * 𝔞 L * natEq eM +
+    𝔞 S * 𝔞 Md * 𝔞 L * 𝔞 L * natEq eE
 
 /-- Both sides vanish when `S = 0`. -/
 theorem row_zero {S E E' M' Md L L' : PTm n} (hS : Γ ⊢[PRAAx] S ≐ zero) :
@@ -149,9 +148,7 @@ theorem pt_n (N y : PTm n) :
     have rc := row_conv (Γ := C) w N y
     have gx := congrGx1 (Γ := C) w (y := sndT (pairT N y)) (fst_pair N y)
     have gy := LeanProofs.IPRA.AnalyticNumberTheory.SelbergMobiusP.congrGx (Γ := C) w (e := N) (snd_pair N y)
-    have e1 := natEq sm; have e2 := natEq (Prf.andE₁ rc); have e3 := natEq (Prf.andE₂ rc)
-    have e4 := natEq gx; have e5 := natEq gy
-    apply deriveNat; ipra_simps; linear_combination -e2 + e1 + e3 + e4 + e5
+    ipra_lc -natEq (Prf.andE₁ rc) + natEq sm + natEq (Prf.andE₂ rc) + natEq gx + natEq gy
 
 /-- Selberg's identity summed up to `x` and reversed:
 `Σ_{1≤d≤x} μ⁺(d) B(⌊x/d⌋) = A_w(x) + Σ_{1≤d≤x} μ⁻(d) B(⌊x/d⌋)`, `B(m) = Σ_{1≤k≤m} L_w(k, y)²`. -/
@@ -162,8 +159,7 @@ theorem symmetry_sum (x y : PTm n) :
   have cN := conv_summatory (Γ := Γ) aNB (bL w) x y
   have s := sum_add2 (Γ := Γ) (GxB w) (cvF aNB (bL w)) (cvF aPB (bL w)) (K := succ x) (x := y) (x' := y) (z := y)
     (.allI (.impI (pt_n w _ _)))
-  have e1 := natEq cP; have e2 := natEq cN; have e3 := natEq s
-  apply deriveNat; ipra_simps; linear_combination -e1 + e3 + e2
+  ipra_lc -natEq cP + natEq s + natEq cN
 
 end Sym
 

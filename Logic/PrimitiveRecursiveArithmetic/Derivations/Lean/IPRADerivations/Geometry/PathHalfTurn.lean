@@ -2,7 +2,7 @@ import IPRADerivations.Geometry.PathShoelace
 import IPRADerivations.Combinatorics.CatalanPowers
 import IPRADerivations.Core.SumSplit
 import IPRADerivations.Geometry.ConwayAlgebra
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The half-turn law, concatenation and centrally symmetric paths (`lem:Jlaws`, `lem:Jcentral`)

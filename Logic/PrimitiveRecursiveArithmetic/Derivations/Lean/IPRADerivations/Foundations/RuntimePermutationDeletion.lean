@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.RuntimePermutationSums
 import IPRADerivations.Foundations.RuntimeWordAppend
 import IPRADerivations.Foundations.InjectionCount
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual deletion of the maximum digit of a numerical permutation word
@@ -114,10 +115,9 @@ theorem slot_strict (p i j : PTm n) (hij : Γ ⊢[PRAAx] lt i j) : Γ ⊢[PRAAx]
 
 theorem delete_body_at (m w i : PTm n) : Γ ⊢[PRAAx] inst2 deleteBody i (data m w) ≐ deletedValue m w i := by
   simp only [deleteBody,inst2,subst_deletedValue,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
-  simpa only [subst_deletedValue,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.head_cons,Matrix.tail_cons] using Prf.eqCongr (Γ := Γ) (deletedValue (var 0) (var 1) (var 2) : PTm 3)
-      (σ := ![sndT (data m w),fstT (data m w),i]) (σ' := ![m,w,i])
-      (fun j => by fin_cases j; exact snd_pair _ _; exact fst_pair _ _; exact .eqRefl _)
+  ipra_congr (deletedValue (var 0) (var 1) (var 2) : PTm 3) with
+    [(show _ ⊢[PRAAx] sndT (data m w) ≐ m from snd_pair _ _),
+      (show _ ⊢[PRAAx] fstT (data m w) ≐ w from fst_pair _ _), .eqRefl i]
 theorem deleted_length (m w : PTm n) : Γ ⊢[PRAAx] length (deleted m w) ≐ m := sequence_length _ _ _
 theorem deleted_lookup (m w i : PTm n) (hi : Γ ⊢[PRAAx] lt i m) : Γ ⊢[PRAAx]
     entry (deleted m w) i ≐ digit (succ m) w (slot (maximumPosition m w) i) := (sequence_decode deleteBody hi).eqTrans (delete_body_at _ _ _)
@@ -196,10 +196,7 @@ def recovered (m p d k : PTm n) : PTm n := sel (eqb k p) m
     Syn.subst σ (recovered m p d k) = recovered (Syn.subst σ m) (Syn.subst σ p) (Syn.subst σ d) (Syn.subst σ k) := by simp [recovered,sel,Signum.sg]
 theorem recovered_congr {m p p' d d' k : PTm n} (hp : Γ ⊢[PRAAx] p ≐ p') (hd : Γ ⊢[PRAAx] d ≐ d') : Γ ⊢[PRAAx]
     recovered m p d k ≐ recovered m p' d' k := by
-  simpa only [subst_recovered,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.cons_val_three,Matrix.head_cons,Matrix.tail_cons] using Prf.eqCongr (Γ := Γ)
-      (recovered (var 0) (var 1) (var 2) (var 3) : PTm 4) (σ := ![m,p,d,k]) (σ' := ![m,p',d',k])
-      (fun i => by fin_cases i; exact .eqRefl _; exact hp; exact hd; exact .eqRefl _)
+  ipra_congr (recovered (var 0) (var 1) (var 2) (var 3) : PTm 4) with [.eqRefl m, hp, hd, .eqRefl k]
 theorem recovered_correct (m w k : PTm n) (hw : Γ ⊢[PRAAx] lt w (horizon (succ m)))
     (hp : Γ ⊢[PRAAx] permutationBit (succ m) w ≐ one) (hk : Γ ⊢[PRAAx] lt k (succ m)) : Γ ⊢[PRAAx]
     recovered m (maximumPosition m w) (deletedWord m w) k ≐ digit (succ m) w k := by

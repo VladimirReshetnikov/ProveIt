@@ -1,7 +1,7 @@
 import IPRADerivations.Core.SumOrder
 import IPRADerivations.Core.Pairing
 import IPRADerivations.Core.Tactic
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Finite calculus: summed increments and the cell error of a rectangle sum

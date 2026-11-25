@@ -3,7 +3,7 @@ import IPRADerivations.AnalyticNumberTheory.ConvolutionAssoc
 import IPRADerivations.AnalyticNumberTheory.Valuation
 import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.Foundations.MixedRadix
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Lucas's binomial congruence

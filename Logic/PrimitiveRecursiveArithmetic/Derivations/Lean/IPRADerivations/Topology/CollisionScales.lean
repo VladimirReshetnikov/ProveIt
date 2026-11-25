@@ -1,6 +1,7 @@
 import IPRADerivations.Core.Powers
 import IPRADerivations.Core.Order
 import IPRADerivations.Core.Parity
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The scales of the approximate face collision (`dimension_invariance_ipra`, `thm:collision`)
@@ -53,14 +54,11 @@ private theorem lt_pw₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] ltPwF := by
   refine ind _ trivial ?_ ?_
   · pw_subst
     refine le_of_eq_add (d := zero) ((pw_zero two).eqTrans ?_)
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   · pw_subst
     refine le_of_eq_add (d := var 0 + monus (pw two (var 0)) (succ (var 0)) +
       monus (pw two (var 0)) (succ (var 0))) ?_
-    have e := natEq (eq_add_of_le (Prf.hyp0 (Γ := []) (φ := ltPwF)))
-    have s := natEq (pw_succ (Γ := [ltPwF]) two (var 0))
-    apply deriveNat; ipra_simps
-    linear_combination s + 2 * e
+    ipra_lc natEq (pw_succ (Γ := [ltPwF]) two (var 0)) + 2 * natEq (eq_add_of_le (Prf.hyp0 (Γ := []) (φ := ltPwF)))
 
 /-- `d < 2^d`. -/
 theorem lt_pw_two (d : PTm n) : Γ ⊢[PRAAx] lt d (pw two d) := by
@@ -80,27 +78,18 @@ theorem small_bound {d s : PTm n} (hs : Γ ⊢[PRAAx] le s (num 4)) :
     Γ ⊢[PRAAx] lt (d * s) (pw two (e3 d)) := by
   refine le_of_eq_add (d := d * monus (num 4) s + num 4 * d + num 7 +
     num 8 * monus (pw two d) (succ d)) ?_
-  have s3 := natEq (pw_succ (Γ := Γ) two (succ (succ d)))
-  have s2 := natEq (pw_succ (Γ := Γ) two (succ d))
-  have s1 := natEq (pw_succ (Γ := Γ) two d)
-  have eu := natEq (eq_add_of_le (lt_pw_two (Γ := Γ) d))
-  have et := natEq (eq_add_of_le hs)
-  apply deriveNat; ipra_simps
-  linear_combination s3 + 2 * s2 + 4 * s1 + 8 * eu + 𝔞 d * et
+  ipra_lc natEq (pw_succ (Γ := Γ) two (succ (succ d))) + 2 * natEq (pw_succ (Γ := Γ) two (succ d)) +
+    4 * natEq (pw_succ (Γ := Γ) two d) + 8 * natEq (eq_add_of_le (lt_pw_two (Γ := Γ) d)) +
+    𝔞 d * natEq (eq_add_of_le hs)
 
 /-- The last chain of `thm:collision`: `D < 2^{d+3} = δ/2` gives `D + 2 < 2^{d+4} = δ`. -/
 theorem final_bound {d D : PTm n} (h : Γ ⊢[PRAAx] lt D (pw two (e3 d))) :
     Γ ⊢[PRAAx] lt (D + two) (pw two (e4 d)) := by
   refine le_of_eq_add (d := monus (pw two (e3 d)) (succ D) + num 8 * d + num 6 +
     num 8 * monus (pw two d) (succ d)) ?_
-  have s4 := natEq (pw_succ (Γ := Γ) two (e3 d))
-  have s3 := natEq (pw_succ (Γ := Γ) two (succ (succ d)))
-  have s2 := natEq (pw_succ (Γ := Γ) two (succ d))
-  have s1 := natEq (pw_succ (Γ := Γ) two d)
-  have eu := natEq (eq_add_of_le (lt_pw_two (Γ := Γ) d))
-  have ew := natEq (eq_add_of_le h)
-  apply deriveNat; ipra_simps
-  linear_combination s4 + ew + s3 + 2 * s2 + 4 * s1 + 8 * eu
+  ipra_lc natEq (pw_succ (Γ := Γ) two (e3 d)) + natEq (eq_add_of_le h) +
+    natEq (pw_succ (Γ := Γ) two (succ (succ d))) + 2 * natEq (pw_succ (Γ := Γ) two (succ d)) +
+    4 * natEq (pw_succ (Γ := Γ) two d) + 8 * natEq (eq_add_of_le (lt_pw_two (Γ := Γ) d))
 
 /-- `δ = 2^{-a}` is `2^{d+4}` units of `2^{-p}`, `p = a + d + 4`. -/
 theorem delta_units (a d : PTm n) :

@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.RationalNonnegativePowerOrder
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # A finite geometric-tail potential
@@ -89,18 +90,10 @@ theorem gap_identity (C K j : PTm n) (hK : Γ ⊢[PRAAx] le one K)
     pw K j*gap C K (succ j) ≐
       K*(pw K j+C*pw (pred K) j)*gap C K j+tailNumerator C K j*tailNumerator C K j := by
   have next := small_mono C K j (succ j) hK h (le_succ_self j)
-  have e := natEq (gap_decomposition C K j h)
-  have eNext := natEq (gap_decomposition C K (succ j) next)
-  have k := natEq (RationalIntegerNormalization.positive_form hK)
-  have f := natEq (pw_succ (Γ := Γ) K j)
-  have g := natEq (tail_numerator_succ (Γ := Γ) C K j)
-  apply deriveNat
-  simp only [tailNumerator] at *
-  ipra_simps
-  linear_combination -𝔞 (pw K j)*eNext +
-    (𝔞 K*𝔞 (pw K j)+𝔞 C*𝔞 K*𝔞 (pw (pred K) j))*e +
-    (𝔞 (pw K j)*𝔞 C*𝔞 K*𝔞 (pw (pred K) j))*k +
-    𝔞 (pw K j)*f - 𝔞 (pw K j)*g
+  ipra_lc [tailNumerator] -𝔞 (pw K j)*natEq (gap_decomposition C K (succ j) next) +
+    (𝔞 K*𝔞 (pw K j)+𝔞 C*𝔞 K*𝔞 (pw (pred K) j))*natEq (gap_decomposition C K j h) +
+    (𝔞 (pw K j)*𝔞 C*𝔞 K*𝔞 (pw (pred K) j))*natEq (RationalIntegerNormalization.positive_form hK) +
+    𝔞 (pw K j)*natEq (pw_succ (Γ := Γ) K j) - 𝔞 (pw K j)*natEq (tail_numerator_succ (Γ := Γ) C K j)
 
 theorem gap_product_le (C K j : PTm n) (hK : Γ ⊢[PRAAx] le one K)
     (h : Γ ⊢[PRAAx] small C K j) : Γ ⊢[PRAAx]

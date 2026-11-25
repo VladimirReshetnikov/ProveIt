@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianEulerUnitNormalizationCompact
 import IPRADerivations.Analysis.GaussianEulerIntegralGammaIdentification
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Unit normalization derived from the original Euler integral
@@ -85,14 +86,9 @@ theorem compact_endpoint (p q k : PTm n) : Γ ⊢[PRAAx]
     (le_refl one) (width_positive k) hE (lipschitz_positive one E T) (GaussianGammaCompactQuadratureBoundary.width_bound k one one)
   have scale : Γ ⊢[PRAAx] GaussianEulerDecayMesh.observation (one+C) E (q+one) ≐
       GaussianEulerDecayMesh.observation (T*E) (one*E) (q+one) := by
-    simpa only [GaussianEulerDecayMesh.subst_observation,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-      Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using
-      Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (GaussianEulerDecayMesh.observation (var 0) (var 1) (var 2) : PTm 3)
-        (σ := ![one+C,E,q+one]) (σ' := ![T*E,one*E,q+one])
-        (fun i => by fin_cases i
-                     exact (GaussianGammaCompactQuadratureBoundary.exact_right_endpoint k one one).eqTrans (mul_comm E T)
-                     exact (one_mul E).eqSymm
-                     exact .eqRefl _)
+    ipra_congr (GaussianEulerDecayMesh.observation (var 0) (var 1) (var 2) : PTm 3) with
+      [(GaussianGammaCompactQuadratureBoundary.exact_right_endpoint k one one).eqTrans (mul_comm E T),
+        (one_mul E).eqSymm, .eqRefl (q+one)]
   have right := scale.eqTrans (GaussianEulerDecayMesh.observation_rescale T one E (q+one) (le_refl one) hE)
   exact distance_congr (.eqRefl _) (GaussianRationalSyntheticDivision.qsub_congr (.eqRefl _) right) (.eqRefl _) (.eqRefl _) actual
 

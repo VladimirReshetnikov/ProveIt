@@ -2,6 +2,7 @@ import IPRADerivations.DiophantineNumberTheory.FoldedResidues
 import IPRADerivations.DiophantineNumberTheory.EisensteinParity
 import IPRADerivations.AnalyticNumberTheory.Totatives
 import IPRADerivations.AnalyticNumberTheory.PowerResidue
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The folded residues form a permutation
@@ -112,14 +113,14 @@ include ep
 theorem b_range (hh : Γ ⊢[PRAAx] half p ≐ succ (pred (half p))) (i c : PTm n) :
     Γ ⊢[PRAAx] lt (pred (bF i p c)) (half p) := by
   have hp1 : Γ ⊢[PRAAx] p ≐ succ (pred p) :=
-    pos_of_eq_succ (c := two * half p) (ep.eqTrans (by apply deriveNat; ipra_simps; ring))
+    pos_of_eq_succ (c := two * half p) (ep.eqTrans (by ipra_ring))
   exact pred_lt (fold_le ep (rem_lt' hp1 _)) hh
 
 /-- `b_{i+1} ≥ 1` for `i < h` and `gcd(p, a) = 1`. -/
 theorem b_pos {i : PTm n} (hc : Γ ⊢[PRAAx] gcd p a ≐ one) (hi : Γ ⊢[PRAAx] lt i (half p)) :
     Γ ⊢[PRAAx] bF i p a ≐ succ (pred (bF i p a)) := by
   have hp1 : Γ ⊢[PRAAx] p ≐ succ (pred p) :=
-    pos_of_eq_succ (c := two * half p) (ep.eqTrans (by apply deriveNat; ipra_simps; ring))
+    pos_of_eq_succ (c := two * half p) (ep.eqTrans (by ipra_ring))
   exact Prf.andE₁ (fold_spec (rem_pos ep hc hi) (rem_lt' hp1 _))
 
 /-- `τ(σ(i)) = i` for `i < h`: `b_{b_{i+1}(a)}(a') = i + 1`. -/
@@ -225,17 +226,15 @@ theorem perm_sum_inv {p a : PTm n} (hp : Γ ⊢[PRAAx] par p ≐ one) (ha1 : Γ 
     Γ ⊢[PRAAx] ap2 (sumF bB) (half p) (pairT p a) ≐ ap2 (sumF idB) (half p) (pairT p a) := by
   have ep := odd_of hp
   have hp1 : Γ ⊢[PRAAx] p ≐ succ (pred p) :=
-    pos_of_eq_succ (c := two * half p) (ep.eqTrans (by apply deriveNat; ipra_simps; ring))
+    pos_of_eq_succ (c := two * half p) (ep.eqTrans (by ipra_ring))
   refine .orE (zero_or_succ (half p)) ?_ ?_
   · exact (congrAp2 (sumF bB) Prf.hyp0 (.eqRefl _)).eqTrans ((sum_zero _ _).eqTrans
       ((congrAp2 (sumF idB) Prf.hyp0 (.eqRefl _)).eqTrans (sum_zero _ _)).eqSymm)
   · let C : List (Fm PTm n) := (half p ≐ succ (pred (half p))) :: Γ
-    have hh := natEq (Prf.hyp0 : C ⊢[PRAAx] half p ≐ succ (pred (half p)))
-    have x := natEq (ep.wk : C ⊢[PRAAx] p ≐ two * half p + one)
     have hq : C ⊢[PRAAx] le two p := by
       refine le_of_eq_add (d := succ (two * pred (half p))) ?_
-      apply deriveNat; ipra_simps
-      linear_combination x + 2 * hh
+      ipra_lc natEq (ep.wk : C ⊢[PRAAx] p ≐ two * half p + one) +
+        2 * natEq (Prf.hyp0 : C ⊢[PRAAx] half p ≐ succ (pred (half p)))
     have hD : C ⊢[PRAAx] gcd a p ≐ one := gcd_comm_one ha1.wk hc.wk
     have hc' : C ⊢[PRAAx] gcd p (inv a p) ≐ one := gcd_comm_one hp1.wk (inv_cop hq hD)
     exact perm_sum ep.wk hc.wk hc' (inv_spec hq hD)
@@ -246,7 +245,7 @@ theorem floor_gauss_parity {p a : PTm n} (hp : Γ ⊢[PRAAx] par p ≐ one) (ha 
     (hc : Γ ⊢[PRAAx] gcd p a ≐ one) :
     Γ ⊢[PRAAx] par (floorSum p a) ≐ par (ap2 (sumF eB) (half p) (pairT p a)) := by
   have ha1 : Γ ⊢[PRAAx] a ≐ succ (pred a) :=
-    pos_of_eq_succ (c := two * half a) ((odd_of ha).eqTrans (by apply deriveNat; ipra_simps; ring))
+    pos_of_eq_succ (c := two * half a) ((odd_of ha).eqTrans (by ipra_ring))
   exact floor_parity hp ha (perm_sum_inv hp ha1 hc)
 
 end LeanProofs.IPRA.DiophantineNumberTheory.FoldedPermutation

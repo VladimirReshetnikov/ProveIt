@@ -4,6 +4,7 @@ import IPRADerivations.Foundations.IntervalCover
 import IPRADerivations.AnalyticNumberTheory.Mobius
 import IPRADerivations.Combinatorics.FiniteBijection
 import IPRADerivations.DiophantineNumberTheory.KhinchinMoment
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The second-moment method on a finite grid
@@ -70,10 +71,7 @@ theorem cs_moment (T B x : PTm n) :
       ap2 (sumF (oB b * oB b)) T (pairT B x) := by
     refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
     rw [inst2_wv2B, inst2_sgF, inst2_FF]
-    have e := natEq (sg_mul_self (Γ := lt (var 0) (Syn.shift T) :: Γ.map Fm.shift)
-      (inst2 (oB b) (var 0) (Syn.shift (pairT B x))))
-    apply deriveNat; ipra_simps
-    linear_combination 𝔞 (inst2 (oB b) (var 0) (Syn.shift (pairT B x))) * e
+    ipra_lc 𝔞 (inst2 (oB b) (var 0) (Syn.shift (pairT B x))) * natEq (sg_mul_self (Γ := lt (var 0) (Syn.shift T) :: Γ.map Fm.shift) (inst2 (oB b) (var 0) (Syn.shift (pairT B x))))
   exact le_congr (congrMul e1 e1) (congrMul (.eqRefl _) e2) cs
 
 /-! ## The pair expansion of `Σ_c F²` -/

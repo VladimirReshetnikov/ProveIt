@@ -1,5 +1,6 @@
 import IPRADerivations.Core.SumOrder
 import IPRADerivations.Core.SumLemmas
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Domination of a product of two sums, one index at a time
@@ -67,13 +68,9 @@ theorem sum_lin_le (F G H K : PTm 2) {a b c d x N : PTm n}
     · simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul,
         Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
       refine .impI ?_
-      have e₁ := natEq (sum_zero (Γ := le zero N :: Γ) F x)
-      have e₂ := natEq (sum_zero (Γ := le zero N :: Γ) G x)
-      have e₃ := natEq (sum_zero (Γ := le zero N :: Γ) H x)
-      have e₄ := natEq (sum_zero (Γ := le zero N :: Γ) K x)
       refine le_of_eq_add (d := zero) ?_
-      apply deriveNat; ipra_simps
-      linear_combination 𝔞 c * e₃ + 𝔞 d * e₄ - 𝔞 a * e₁ - 𝔞 b * e₂
+      ipra_lc 𝔞 c * natEq (sum_zero (Γ := le zero N :: Γ) H x) + 𝔞 d * natEq (sum_zero (Γ := le zero N :: Γ) K x) -
+        𝔞 a * natEq (sum_zero (Γ := le zero N :: Γ) F x) - 𝔞 b * natEq (sum_zero (Γ := le zero N :: Γ) G x)
     · simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul,
         Syn.subst_var, Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero,
         ConciseIPRA.PTm.subst_succ]
@@ -93,10 +90,8 @@ theorem sum_lin_le (F G H K : PTm 2) {a b c d x N : PTm n}
       have eK := natEq (sum_succ' (Γ := le (succ (var 0)) (Syn.shift N) ::
         linLeF F G H K a b c d x N :: Γ.map Fm.shift) K (var 0) (Syn.shift x))
       refine le_congr ?_ ?_ (add_le_add₂ ih pt)
-      · apply deriveNat; ipra_simps
-        linear_combination -(𝔞 (Syn.shift a)) * eF - 𝔞 (Syn.shift b) * eG
-      · apply deriveNat; ipra_simps
-        linear_combination -(𝔞 (Syn.shift c)) * eH - 𝔞 (Syn.shift d) * eK
+      · ipra_lc -(𝔞 (Syn.shift a)) * eF - 𝔞 (Syn.shift b) * eG
+      · ipra_lc -(𝔞 (Syn.shift c)) * eH - 𝔞 (Syn.shift d) * eK
   have h2 := Prf.allE N hall
   simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul,
     Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero] at h2
@@ -152,13 +147,9 @@ theorem sum_trunc (f : PTm 2) {M N x : PTm n} (h : Γ ⊢[PRAAx] le M N)
 theorem dom_alg {P Q R S p q r s : PTm n} (ih : Γ ⊢[PRAAx] le (R * S) (P * Q))
     (hd : Γ ⊢[PRAAx] le (r * s) (p * q)) (hc : Γ ⊢[PRAAx] le (R * s + r * S) (P * q + p * Q)) :
     Γ ⊢[PRAAx] le ((R + r) * (S + s)) ((P + p) * (Q + q)) := by
-  have e₁ := natEq (eq_add_of_le ih)
-  have e₂ := natEq (eq_add_of_le hd)
-  have e₃ := natEq (eq_add_of_le hc)
   refine le_of_eq_add (d := monus (P * Q) (R * S) + monus (p * q) (r * s) +
     monus (P * q + p * Q) (R * s + r * S)) ?_
-  apply deriveNat; ipra_simps
-  linear_combination e₁ + e₂ + e₃
+  ipra_lc natEq (eq_add_of_le ih) + natEq (eq_add_of_le hd) + natEq (eq_add_of_le hc)
 
 theorem shift_inst2 (f : PTm 2) (i x : PTm n) :
     Syn.shift (inst2 f i x) = inst2 f (Syn.shift i) (Syn.shift x) := by

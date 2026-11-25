@@ -1,5 +1,5 @@
 import IPRADerivations.Topology.DimensionSchema
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The identity presentation (`dimension_invariance_ipra`, `cor:dimension`, the converse)

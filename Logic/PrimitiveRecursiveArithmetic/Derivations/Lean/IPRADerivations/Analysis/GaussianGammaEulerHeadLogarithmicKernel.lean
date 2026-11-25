@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianGammaEulerHeadHarmonicNewton
 import IPRADerivations.Analysis.GaussianPolynomialFirstCoefficients
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The actual harmonic-power kernel multiplies the original head Euler buffer
@@ -48,14 +49,10 @@ def kernel (N D : PTm n) : PTm n := sequence rowBody (succ D) (pairT N D)
 
 theorem coefficient_congr {N M m k : PTm n} (hN : Γ ⊢[PRAAx] N ≐ M) (hm : Γ ⊢[PRAAx] m ≐ k) :
     Γ ⊢[PRAAx] sourceCoefficient N m ≐ sourceCoefficient M k := by
-  simpa only [subst_sourceCoefficient,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (sourceCoefficient (var 0) (var 1) : PTm 2)
-      (σ := ![N,m]) (σ' := ![M,k]) (fun i => by fin_cases i; exact hN; exact hm)
+  ipra_congr (sourceCoefficient (var 0) (var 1) : PTm 2) with [hN, hm]
 
 theorem parity_congr {j k : PTm n} (h : Γ ⊢[PRAAx] j ≐ k) : Γ ⊢[PRAAx] parityPoint j ≐ parityPoint k := by
-  simpa only [GaussianRationalEulerCoefficients.subst_parityPoint,Syn.subst_var,Matrix.cons_val_zero] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (parityPoint (var 0) : PTm 1)
-      (σ := ![j]) (σ' := ![k]) (fun i => by fin_cases i; exact h)
+  ipra_congr (parityPoint (var 0) : PTm 1) with [h]
 
 theorem coefficient_zero (N : PTm n) : Γ ⊢[PRAAx] sourceCoefficient N zero ≐ qone :=
   RationalArithmetic.select_zero _ _ _ Signum.sg_zero

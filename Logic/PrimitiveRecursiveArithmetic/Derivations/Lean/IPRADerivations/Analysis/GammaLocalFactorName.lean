@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GammaCanonicalRemainder
 import IPRADerivations.Analysis.DyadicComplexLogarithm
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # A regular local canonical factor name with its sharp cutoff certificate
@@ -107,9 +108,7 @@ theorem regular_dyadic_bound (p k z R N : PTm n) (hN : Γ ⊢[PRAAx] le one N)
     (le_of_eq_add (d := one) (by ipra_ring) : Γ ⊢[PRAAx] le one two)))
   refine bounded_mono (regular_bound p k z R N hN hz hR) ?_
   refine le_of_eq_add (d := two*monus (pw two k) one) ?_
-  apply deriveNat
-  ipra_simps
-  linear_combination 2*hp
+  ipra_lc 2*hp
 
 theorem observation_congr {p q : PTm n} (z R N : PTm n) (h : Γ ⊢[PRAAx] p ≐ q) :
     Γ ⊢[PRAAx] observation p z R N ≐ observation q z R N := by
@@ -290,12 +289,9 @@ theorem ordered_pair_bound (p q z R N : PTm n) (hN : Γ ⊢[PRAAx] le one N)
     (hz : Γ ⊢[PRAAx] bounded z R) (hR : Γ ⊢[PRAAx] le (two*R) N)
     (hpq : Γ ⊢[PRAAx] le p q) : Γ ⊢[PRAAx]
     bounded (pairDifference p q z R N) (num 5*(unit p+unit q)) := by
-  have e := natEq ((unit_congr (Γ := Γ) (eq_add_of_le hpq)).eqTrans (unit_add p (monus q p)))
   have budget : Γ ⊢[PRAAx] le (unit p*(num 5*pw two (monus q p))) (num 5*(unit p+unit q)) := by
     refine le_of_eq_add (d := num 5*unit p) ?_
-    apply deriveNat
-    ipra_simps
-    linear_combination 5*e
+    ipra_lc 5*natEq ((unit_congr (Γ := Γ) (eq_add_of_le hpq)).eqTrans (unit_add p (monus q p)))
   exact le_congr (ordered_pair_identity p q z R N hpq).eqSymm (.eqRefl _)
     (bounded_mono (bounded_scale (unit p) (regular_endpoints p q z R N hN hz hR hpq)) budget)
 

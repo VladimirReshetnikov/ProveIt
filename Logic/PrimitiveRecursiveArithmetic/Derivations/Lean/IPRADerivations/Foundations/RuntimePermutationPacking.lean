@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.RuntimePermutationInsertion
 import IPRADerivations.Foundations.RuntimePermutationFactorialBound
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Exact rectangular indexing of the actual retained permutation list
@@ -64,9 +65,7 @@ theorem unpack_spec (m z : PTm n) (hz : Γ ⊢[PRAAx] lt z (grid m)) : Γ ⊢[PR
   RuntimePermutationWords.listed _ _ (inserted_tuple _ _ _ (column_bound m z hz) (minor_valid m z))
 
 theorem packed_congr (m : PTm n) {u v : PTm n} (h : Γ ⊢[PRAAx] u ≐ v) : Γ ⊢[PRAAx] packed m u ≐ packed m v := by
-  simpa only [RuntimePermutationDeletion.subst_packed,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using
-    Prf.eqCongr (packed (var 0) (var 1) : PTm 2) (σ := ![m,u]) (σ' := ![m,v])
-      (fun j => by fin_cases j; exact .eqRefl _; exact h)
+  ipra_congr (packed (var 0) (var 1) : PTm 2) with [.eqRefl m, h]
 
 theorem pack_unpack (m z : PTm n) (hz : Γ ⊢[PRAAx] lt z (grid m)) : Γ ⊢[PRAAx] ap2 packingF (unpackRank m z) m ≐ z := by
   let p := column m z

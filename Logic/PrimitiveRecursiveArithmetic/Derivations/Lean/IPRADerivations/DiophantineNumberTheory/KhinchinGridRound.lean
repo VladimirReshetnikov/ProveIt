@@ -72,6 +72,6 @@ theorem round_grid (w rs cv : PTm 2) (c r G x : PTm n)
     show Syn.shift (c * r) = Syn.shift c * Syn.shift r by simp [Syn.shift]]
   have b := block_pt (Prf.andE₁ (Prf.andE₁ p)) (Prf.andE₂ (Prf.andE₁ p)) (Prf.andE₁ (Prf.andE₂ p))
     (Prf.andE₂ (Prf.andE₂ p))
-  exact le_congr (.eqRefl _) (by apply deriveNat; ipra_simps; ring) b
+  exact le_congr (.eqRefl _) (by ipra_ring) b
 
 end LeanProofs.IPRA.DiophantineNumberTheory.KhinchinGridRound

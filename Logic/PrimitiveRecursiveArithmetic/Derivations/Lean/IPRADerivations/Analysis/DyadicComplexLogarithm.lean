@@ -1,5 +1,7 @@
 import IPRADerivations.Analysis.ComplexLogarithmCauchy
 import IPRADerivations.Foundations.GapDecision
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Primitive-recursive dyadic observations of finite complex log tails
@@ -157,11 +159,7 @@ theorem comparison_identity (a b D E A B : PTm n) :
     ZT.toZ_add, ZT.toZ_neg, ZT.toZ_mul, ZT.toZ_ofNat, Q.mk_mul, map_mul]
   ring
 
-private theorem cancel_positive {c a b : PTm n} (hc : Γ ⊢[PRAAx] le one c)
-    (h : Γ ⊢[PRAAx] le (c * a) (c * b)) : Γ ⊢[PRAAx] le a b := by
-  have ce : Γ ⊢[PRAAx] c ≐ succ (monus c one) :=
-    (eq_add_of_le hc).eqTrans (by ipra_ring)
-  exact mul_le_cancel (le_congr (congrMul ce (.eqRefl _)) (congrMul ce (.eqRefl _)) h)
+private alias cancel_positive := Common.mul_cancel_le
 
 theorem cancel_bounded_scale {C a R : PTm n} (hC : Γ ⊢[PRAAx] le one C)
     (h : Γ ⊢[PRAAx] bounded (scale C a) (C * R)) : Γ ⊢[PRAAx] bounded a R := by
@@ -315,12 +313,9 @@ theorem regular_dyadic_bound (p k z R N : PTm n) (hN : Γ ⊢[PRAAx] le one N)
     (hz : Γ ⊢[PRAAx] bounded z R) (hR : Γ ⊢[PRAAx] le (two * R) N) :
     Γ ⊢[PRAAx] bounded (discrepancy p k z R N) (num 5 * pw two k) := by
   have h12 : Γ ⊢[PRAAx] le one two := le_of_eq_add (d := one) (by ipra_ring)
-  have positive := natEq (eq_add_of_le (power_positive two k h12))
   refine bounded_mono (regular_bound p k z R N hN hz hR) ?_
   refine le_of_eq_add (d := two * monus (pw two k) one) ?_
-  apply deriveNat
-  ipra_simps
-  linear_combination 2 * positive
+  ipra_lc 2 * natEq (eq_add_of_le (power_positive two k h12))
 
 /-- Variables `0=p`, `1=k`, `2=z`, `3=R`, `4=N`. Each actual observation
 represents its coded numerator divided by `2^(p+4)`. -/

@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianBetaSharpFiniteBinding
 import IPRADerivations.Analysis.GaussianCompactAlignedThreeSplit
 import IPRADerivations.Analysis.GaussianCompactModulusAlignedTime
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The unit panel in the original Euler cutoff interval
@@ -62,12 +63,8 @@ theorem last_endpoint (k A R : PTm n) : Γ ⊢[PRAAx]
 
 theorem total_width (k A R : PTm n) : Γ ⊢[PRAAx]
     leftWidth k A R+etaDen k A R+rightWidth k A R ≐ width k A R := by
-  have e := natEq (left_endpoint (Γ := Γ) k A R)
-  have h := natEq (last_endpoint (Γ := Γ) k A R)
-  have w := natEq (exact_right_endpoint (Γ := Γ) k A R)
-  apply deriveNat
-  ipra_simps
-  linear_combination e+h-w
+  ipra_lc natEq (left_endpoint (Γ := Γ) k A R)+natEq (last_endpoint (Γ := Γ) k A R)-
+    natEq (exact_right_endpoint (Γ := Γ) k A R)
 
 theorem widths_positive (k A R : PTm n) (hA : Γ ⊢[PRAAx] le one A) : Γ ⊢[PRAAx]
     le one (leftWidth k A R) ⋏ le one (etaDen k A R) ⋏ le one (rightWidth k A R) := by

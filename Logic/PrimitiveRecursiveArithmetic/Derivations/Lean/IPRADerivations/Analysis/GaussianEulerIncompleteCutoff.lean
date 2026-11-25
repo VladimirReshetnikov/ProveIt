@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianGammaCompactCutoffSplit
 import IPRADerivations.Analysis.GaussianBetaRefinedFixedCompactComparison
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Splitting an original Euler cutoff at a positive rational point
@@ -97,10 +98,7 @@ theorem original_partition (t k z R B A a b : PTm n)
     (by dsimp only [M]; ipra_ring : Γ ⊢[PRAAx] b+M ≐ b*(one+width k A R)).eqTrans
       ((congrMul (.eqRefl b) (exact_right_endpoint k A R)).eqTrans (by dsimp only [D, T, denominator]; ipra_ring))
   have total : Γ ⊢[PRAAx] L+U ≐ M := by
-    have same := natEq (join.eqTrans whole.eqSymm)
-    apply deriveNat
-    ipra_simps
-    linear_combination same
+    ipra_lc natEq (join.eqTrans whole.eqSymm)
   have disk : Γ ⊢[PRAAx] GaussianEulerExponentCompactBounds.source z R B D :=
     .andI h.andE₁.andE₁ (.andI (positive_product _ _ hb (GaussianGammaIntegralCutoffs.eta_den_positive k A R)) h.andE₁.andE₂)
   exact .andI left (.andI total

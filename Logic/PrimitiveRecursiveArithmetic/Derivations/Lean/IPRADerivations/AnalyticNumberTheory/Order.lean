@@ -127,7 +127,7 @@ theorem phi_pos_of {N j : PTm n} (hj : Γ ⊢[PRAAx] lt j N) (hg : Γ ⊢[PRAAx]
   rw [inst2_tot] at t
   have w := eq_add_of_le t
   exact AnalyticNumberTheory.Primes.eq_succ_pred (y := monus (phi N) (eqb (gcd j N) one))
-    ((w.eqTrans (congrAdd (eqb_of_eq hg) (.eqRefl _))).eqTrans (by apply deriveNat; ipra_simps; ring))
+    ((w.eqTrans (congrAdd (eqb_of_eq hg) (.eqRefl _))).eqTrans (by ipra_ring))
 
 section Spec
 
@@ -142,7 +142,7 @@ theorem phi_pos : Γ ⊢[PRAAx] phi N ≐ succ (pred (phi N)) := by
     exact gcd_eq_one_of_dvd (gcd_pos_right hN.wk) (.orI₂ e)
   · have h2 : ((pred N ≐ succ (pred (pred N))) :: Γ) ⊢[PRAAx] lt one N :=
       le_of_eq_add (d := pred (pred N)) (hN.wk.eqTrans ((congrSucc Prf.hyp0).eqTrans
-        (by apply deriveNat; ipra_simps; ring)))
+        (by ipra_ring)))
     exact phi_pos_of h2 (gcd_eq_one_of_dvd (gcd_pos (congrSucc (pred_succ _).eqSymm)) (.orI₁ (.eqRefl _)))
 
 include ha

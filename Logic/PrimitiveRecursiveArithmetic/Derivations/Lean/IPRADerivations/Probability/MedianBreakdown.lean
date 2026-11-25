@@ -1,6 +1,6 @@
 import IPRADerivations.Probability.MedianSorted
 import IPRADerivations.Foundations.BoundedReflection
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The finite-sample replacement breakdown of the median

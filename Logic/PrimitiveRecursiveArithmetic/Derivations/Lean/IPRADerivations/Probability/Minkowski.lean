@@ -1,5 +1,6 @@
 import IPRADerivations.Probability.ExpectationCorollaries
 import IPRADerivations.DiophantineNumberTheory.SquareArea
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Finite Minkowski for `p = 1` and `p = 2`
@@ -45,28 +46,24 @@ theorem monus_le_of_le_add {x y z : PTm n} (h : Γ ⊢[PRAAx] le x (y + z)) : Γ
   refine .orE (le_total x y) ?_ ?_
   · exact le_congr (show (le x y :: Γ) ⊢[PRAAx] monus x y ≐ zero from Prf.hyp0).eqSymm (.eqRefl _) (zero_le _)
   · let C := le y x :: Γ
-    have e1 := natEq (eq_add_of_le (Prf.hyp0 : C ⊢[PRAAx] le y x))
-    have e2 := natEq (eq_add_of_le (h.wk : C ⊢[PRAAx] le x (y + z)))
     refine le_of_eq_add (d := monus (y + z) x) ?_
-    apply deriveNat; ipra_simps
-    linear_combination e2 + e1
+    ipra_lc natEq (eq_add_of_le (h.wk : C ⊢[PRAAx] le x (y + z))) +
+      natEq (eq_add_of_le (Prf.hyp0 : C ⊢[PRAAx] le y x))
 
 /-- `a ≤ b + (a ∸ b)`. -/
 theorem le_add_monus (a b : PTm n) : Γ ⊢[PRAAx] le a (b + monus a b) := by
-  have m := natEq (monus_max (Γ := Γ) a b)
   refine le_of_eq_add (d := monus b a) ?_
-  apply deriveNat; ipra_simps
-  linear_combination m
+  ipra_lc natEq (monus_max (Γ := Γ) a b)
 
 /-- `(a + a') ∸ (b + b') ≤ (a ∸ b) + (a' ∸ b')`. -/
 theorem monus_add_le (a a' b b' : PTm n) : Γ ⊢[PRAAx] le (monus (a + a') (b + b')) (monus a b + monus a' b') := by
   refine monus_le_of_le_add (le_congr (.eqRefl _) ?_ (le_add_mono (le_add_monus a b) (le_add_monus a' b')))
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- `|(a + a') − (b + b')| ≤ |a − b| + |a' − b'|`. -/
 theorem ad_triangle (a a' b b' : PTm n) : Γ ⊢[PRAAx] le (ad (a + a') (b + b')) (ad a b + ad a' b') := by
   refine le_congr (.eqRefl _) ?_ (le_add_mono (monus_add_le a a' b b') (monus_add_le b b' a a'))
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-! ## Minkowski -/
 
@@ -89,10 +86,10 @@ theorem minkowski_two (w X Y : PTm 2) {M x A B : PTm n}
   have cs := cauchy_schwarz (Γ := Γ) w X Y M x
   have hx : Γ ⊢[PRAAx] le (Ew w (X * Y) M x * Ew w (X * Y) M x) (A * B * Wt w M x * (A * B * Wt w M x)) := by
     refine le_trans cs (le_congr (.eqRefl _) ?_ (le_mul_mono hA hB))
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   have xy := le_of_sq_le hx
   refine le_congr (second_moment_add w X Y M x).eqSymm (.eqRefl _) ?_
   refine le_congr (.eqRefl _) ?_ (le_add_mono (le_add_mono hA (le_add_mono xy xy)) hB)
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 end LeanProofs.IPRA.Probability.Minkowski

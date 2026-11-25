@@ -1,5 +1,6 @@
 import IPRADerivations.Combinatorics.Bell
 import IPRADerivations.Analysis.PowerSums
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Positivity and the bounds `2^{n−1} ≤ B_n ≤ n^n`
@@ -40,9 +41,9 @@ theorem congrBell {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) : Γ ⊢[PRAAx] bell
   congrFst (congrAp1 _ h)
 
 theorem zero_lt_succ' (M : PTm n) : Γ ⊢[PRAAx] lt zero (succ M) :=
-  le_of_eq_add (d := M) (by apply deriveNat; ipra_simps; ring)
+  le_of_eq_add (d := M) (by ipra_ring)
 
-theorem mul_one' (X : PTm n) : Γ ⊢[PRAAx] X * one ≐ X := by apply deriveNat; ipra_simps; ring
+alias mul_one' := Common.mul_one_right
 
 theorem binom_zero' (M : PTm n) : Γ ⊢[PRAAx] binom M zero ≐ one := quo_of_eq (bden_pos _ _) (bden_zero _)
 
@@ -52,7 +53,7 @@ theorem bell_pos_succ (M : PTm n) : Γ ⊢[PRAAx] le one (bell (succ M)) := by
   have t := term_le_sum recB (x := M) (zero_lt_succ' (Γ := Γ) M)
   rw [inst2_rec] at t
   refine le_congr ?_ (bell_succ M).eqSymm t
-  exact (congrMul (binom_zero' M) bell_zero).eqTrans (by apply deriveNat; ipra_simps; ring)
+  exact (congrMul (binom_zero' M) bell_zero).eqTrans (by ipra_ring)
 
 /-- `B_N ≥ 1`. -/
 theorem bell_pos (N : PTm n) : Γ ⊢[PRAAx] le one (bell N) := by
@@ -122,7 +123,7 @@ theorem upper_step {M : PTm n} (hS : Γ ⊢[PRAAx] ap2 (sumF uB) (succ M) zero �
     exact le_mul_mono (le_refl _) (le_trans hk (pw_le_pw _ hkM))
   have hpw : Γ ⊢[PRAAx] le (pw (succ M) M) (pw (succ M) (succ M)) := by
     refine le_of_eq_add (d := pw (succ M) M * M) ((pw_succ _ _).eqTrans ?_)
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   exact le_trans (le_congr (bell_succ M).eqSymm (sum_w M) hle) hpw
 
 /-- Variable `0 = N`. -/

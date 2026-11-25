@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.BackwardViability
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The certified finite chain (`ipra_evidence_framework`, "certified finite chain")
@@ -58,10 +59,7 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 /-- `(h ∸ (t + 1)) + 1 = h ∸ t` for `t < h`. -/
 theorem succ_monus {t h : PTm k} (ht : Γ ⊢[PRAAx] lt t h) :
     Γ ⊢[PRAAx] succ (monus h (succ t)) ≐ monus h t := by
-  have e₁ := natEq (eq_add_of_le ht)
-  have e₂ := natEq (eq_add_of_le (le_trans (le_succ_self t) ht))
-  apply deriveNat; ipra_simps
-  linear_combination e₂ - e₁
+  ipra_lc natEq (eq_add_of_le (le_trans (le_succ_self t) ht)) - natEq (eq_add_of_le ht)
 
 /-- `h ∸ (h ∸ (t + 1)) = t + 1` for `t < h`. -/
 theorem monus_sub {t h : PTm k} (ht : Γ ⊢[PRAAx] lt t h) :
@@ -69,9 +67,7 @@ theorem monus_sub {t h : PTm k} (ht : Γ ⊢[PRAAx] lt t h) :
   have e₁ := natEq (eq_add_of_le ht)
   have hd : Γ ⊢[PRAAx] le (monus h (succ t)) h :=
     le_of_eq_add (d := succ t) (by apply deriveNat; ipra_simps; linear_combination e₁)
-  have e₂ := natEq (eq_add_of_le hd)
-  apply deriveNat; ipra_simps
-  linear_combination e₁ - e₂
+  ipra_lc e₁ - natEq (eq_add_of_le hd)
 
 /-- `h ∸ ((h ∸ (t + 1)) + 1) = t` for `t < h`. -/
 theorem monus_succ_sub {t h : PTm k} (ht : Γ ⊢[PRAAx] lt t h) :
@@ -79,9 +75,7 @@ theorem monus_succ_sub {t h : PTm k} (ht : Γ ⊢[PRAAx] lt t h) :
   have e₁ := natEq (eq_add_of_le ht)
   have hd : Γ ⊢[PRAAx] le (succ (monus h (succ t))) h :=
     le_of_eq_add (d := t) (by apply deriveNat; ipra_simps; linear_combination e₁)
-  have e₂ := natEq (eq_add_of_le hd)
-  apply deriveNat; ipra_simps
-  linear_combination e₁ - e₂
+  ipra_lc e₁ - natEq (eq_add_of_le hd)
 
 /-! ## Congruence of the instance terms -/
 

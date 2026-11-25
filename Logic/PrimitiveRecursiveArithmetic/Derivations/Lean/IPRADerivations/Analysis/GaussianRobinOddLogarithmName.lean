@@ -2,6 +2,7 @@ import IPRADerivations.Analysis.GaussianRobinLogarithmParity
 import IPRADerivations.Analysis.GaussianLocalLogarithmName
 import IPRADerivations.Analysis.GaussianNameRingLaws
 import IPRADerivations.Analysis.GaussianBalancedRadiusArithmetic
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Cofinal observations of the original Robin artanh series
@@ -170,11 +171,9 @@ theorem point_at (p a b : PTm n) : Γ ⊢[PRAAx] point p a b ≐ sample p a b :=
     simpa only [point,pointF,ap2,subst_pointTerm,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using
       toPR_eq (Γ := Γ) (pointTerm (var 0) (var 1) : PTm 2) ![p,inputs a b]
   refine prog.eqTrans ?_
-  simpa only [pointTerm,subst_sample,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.cons_val_succ,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (sample (var 0) (var 1) (var 2) : PTm 3)
-      (σ := ![p,fstT (inputs a b),sndT (inputs a b)]) (σ' := ![p,a,b])
-      (fun j => by fin_cases j; exact .eqRefl _; exact fst_pair _ _; exact snd_pair _ _)
+  ipra_congr (sample (var 0) (var 1) (var 2) : PTm 3) with
+    [.eqRefl p, (show _ ⊢[PRAAx] fstT (inputs a b) ≐ a from fst_pair _ _),
+      (show _ ⊢[PRAAx] sndT (inputs a b) ≐ b from snd_pair _ _)] using [pointTerm]
 
 theorem name_regular (a b : PTm n) (h : Γ ⊢[PRAAx] source a b) :
     Γ ⊢[PRAAx] GaussianEuclideanDistanceName.pointCN pointF (inputs a b) := by

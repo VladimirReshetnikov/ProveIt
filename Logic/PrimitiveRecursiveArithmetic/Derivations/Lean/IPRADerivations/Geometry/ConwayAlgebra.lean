@@ -1,6 +1,8 @@
 import IPRADerivations.Core.Tactic
 import IPRADerivations.Core.Gcd
 import IPRADerivations.Core.Parity
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The affine and area algebra of the Conway criterion
@@ -173,17 +175,13 @@ section Rules
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
-theorem cancel_two_nat {a b : PTm n} (h : Γ ⊢[PRAAx] two * a ≐ two * b) : Γ ⊢[PRAAx] a ≐ b :=
-  le_antisymm (mul_le_cancel (d' := one) (le_congr (.eqRefl _) h (le_refl _)))
-    (mul_le_cancel (d' := one) (le_congr (.eqRefl _) h.eqSymm (le_refl _)))
+alias cancel_two_nat := Common.two_mul_cancel
 
 /-- `u + u = v + v` gives `u = v`. -/
 theorem zt_cancel_two {u v : ZT n} (h : Γ ⊢[PRAAx] ZT.eq (u + u) (v + v)) : Γ ⊢[PRAAx] ZT.eq u v := by
   have h' : Γ ⊢[PRAAx] (u.pos + u.pos) + (v.neg + v.neg) ≐ (v.pos + v.pos) + (u.neg + u.neg) := h
   have d : Γ ⊢[PRAAx] two * (u.pos + v.neg) ≐ two * (v.pos + u.neg) := by
-    have e := natEq h'
-    apply deriveNat; ipra_simps
-    linear_combination e
+    ipra_lc natEq h'
   exact cancel_two_nat d
 
 /-- `lem:Jcentral`: an integer `J` with `−J = J + det(X + Y, X − Y)` equals `det(X, Y)`. -/
@@ -204,11 +202,7 @@ theorem period_area_paths {Ja Jb Jc Jd Je Jf P₁ P₂ Q₁ Q₂ R₁ R₂ S₁ 
     (hf : Γ ⊢[PRAAx] ZT.eq Jf (det S₁ S₂ P₁ P₂)) :
     Γ ⊢[PRAAx] ZT.eq (Ja + Jb + Jc + Jd + Je + Jf)
       (det w₁ w₂ (P₁ + w₁ + S₁ - Q₁ - R₁) (P₂ + w₂ + S₂ - Q₂ - R₂)) := by
-  have e₁ := ZT.toZ_eq had; have e₂ := ZT.toZ_eq hb; have e₃ := ZT.toZ_eq hc
-  have e₄ := ZT.toZ_eq he; have e₅ := ZT.toZ_eq hf
-  apply ZT.derive
-  ipra_simps
-  linear_combination e₁ + e₂ + e₃ + e₄ + e₅
+  ipra_lc ZT.toZ_eq had + ZT.toZ_eq hb + ZT.toZ_eq hc + ZT.toZ_eq he + ZT.toZ_eq hf
 
 end Rules
 

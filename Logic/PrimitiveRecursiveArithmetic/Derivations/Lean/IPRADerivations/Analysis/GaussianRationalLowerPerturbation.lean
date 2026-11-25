@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianRationalLowerBounds
 import IPRADerivations.Analysis.GaussianCoordinateRadius
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Exact lower bounds from finite Gaussian rational observations
@@ -55,11 +56,8 @@ theorem lower_near_unit (q A B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (add_le_add₂ (le_refl (B*zabs u)) coordinate)
   have step : Γ ⊢[PRAAx] le (D*monus B A) (B*zabs u) := by
     apply le_of_add_le_add_right (c := A*D)
-    have e := natEq (eq_add_of_le hAB)
     exact le_congr (by
-      apply deriveNat
-      ipra_simps
-      linear_combination 𝔞(D)*e) (.eqRefl _) compare
+      ipra_lc 𝔞(D)*natEq (eq_add_of_le hAB)) (.eqRefl _) compare
   have lowSq := le_mul_mono step step
   have uSq : Γ ⊢[PRAAx] le (zabs u*zabs u) (normSq t) :=
     le_congr (.eqRefl _) (GaussianCoordinateRadius.native_squared t).eqSymm (le_add_right _ _)

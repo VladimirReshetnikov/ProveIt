@@ -1,4 +1,5 @@
 import IPRADerivations.Combinatorics.BinomialIdentities
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Cancellation of a nonzero integer factor
@@ -63,11 +64,11 @@ theorem zt_mul_cancel_left {X K : ZT n} (hX : Γ ⊢[PRAAx] neg (ZT.eq X (ZT.nat
   · -- `a = b + S d`.
     have w := eq_add_of_le (Prf.hyp0 : (lt X.neg X.pos :: Γ) ⊢[PRAAx] le (succ X.neg) X.pos)
     refine cancel_case (δ := succ (monus X.pos (succ X.neg))) (congrSucc (pred_succ _).eqSymm)
-      (.orI₁ (w.eqTrans (by apply deriveNat; ipra_simps; ring))) h.wk
+      (.orI₁ (w.eqTrans (by ipra_ring))) h.wk
   · refine .orE (lt_or_eq_of_le Prf.hyp0) ?_ ?_
     · have w := eq_add_of_le (Prf.hyp0 : (lt X.pos X.neg :: le X.pos X.neg :: Γ) ⊢[PRAAx] le (succ X.pos) X.neg)
       refine cancel_case (δ := succ (monus X.neg (succ X.pos))) (congrSucc (pred_succ _).eqSymm)
-        (.orI₂ (w.eqTrans (by apply deriveNat; ipra_simps; ring))) h.wk.wk
+        (.orI₂ (w.eqTrans (by ipra_ring))) h.wk.wk
     · refine .botE _ (.impE hX.wk.wk ?_)
       apply ZT.derive
       have h₁ := natEq (Prf.hyp0 : ((X.pos ≐ X.neg) :: le X.pos X.neg :: Γ) ⊢[PRAAx] _)
@@ -79,9 +80,6 @@ theorem zt_mul_cancel_left {X K : ZT n} (hX : Γ ⊢[PRAAx] neg (ZT.eq X (ZT.nat
 theorem zt_mul_cancel_sub {X Y K : ZT n} (hXY : Γ ⊢[PRAAx] neg (ZT.eq X Y))
     (h : Γ ⊢[PRAAx] ZT.eq ((X - Y) * K) (ZT.natLit 0)) : Γ ⊢[PRAAx] ZT.eq K (ZT.natLit 0) := by
   refine zt_mul_cancel_left (.impI (.impE hXY.wk ?_)) h
-  apply ZT.derive
-  have e := ZT.toZ_eq (Prf.hyp0 : (ZT.eq (X - Y) (ZT.natLit 0) :: Γ) ⊢[PRAAx] _)
-  simp only [ZT.toZ_sub, ZT.toZ_natLit] at e
-  linear_combination e
+  ipra_lc ZT.toZ_eq (Prf.hyp0 : (ZT.eq (X - Y) (ZT.natLit 0) :: Γ) ⊢[PRAAx] _)
 
 end LeanProofs.IPRA

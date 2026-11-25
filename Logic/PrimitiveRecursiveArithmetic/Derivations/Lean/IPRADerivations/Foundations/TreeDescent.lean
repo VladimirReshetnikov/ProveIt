@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.ErrorBudgets
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Observational descent along a rooted spanning tree

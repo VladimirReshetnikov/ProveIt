@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.CfReal
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The value identity `[a_0; a_1, …, a_m] = p_m/q_m`
@@ -36,8 +37,7 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
-theorem congrSg' {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) : Γ ⊢[PRAAx] sg a ≐ sg b :=
-  congrMonus (.eqRefl _) (congrMonus (.eqRefl _) h)
+alias congrSg' := Common.congrSg
 
 /-! ## Prepending a coefficient -/
 

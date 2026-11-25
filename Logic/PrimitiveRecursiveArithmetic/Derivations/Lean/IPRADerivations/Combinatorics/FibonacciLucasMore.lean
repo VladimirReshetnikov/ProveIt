@@ -1,6 +1,6 @@
 import IPRADerivations.Combinatorics.LucasIdentities
 import IPRADerivations.Core.ParityArith
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Further Fibonacci and Lucas identities (`fibonacci_lucas_ipra`, (11), (17), (25))

@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.TotientCorollaries
 import IPRADerivations.AnalyticNumberTheory.PrimePowerMangoldt
 import IPRADerivations.AnalyticNumberTheory.MuLambda
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The initial lcm `lcm(1, …, N)` and its valuations
@@ -47,7 +48,7 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 theorem pdvd_of_val_pos {p A : PTm n} (hp : Γ ⊢[PRAAx] le two p) (hA : Γ ⊢[PRAAx] A ≐ succ (pred A))
     (h : Γ ⊢[PRAAx] val p A ≐ succ (pred (val p A))) : Γ ⊢[PRAAx] dvd p A := by
   have l1 : Γ ⊢[PRAAx] le one (val p A) :=
-    le_of_eq_add (d := pred (val p A)) (h.eqTrans (by apply deriveNat; ipra_simps; ring))
+    le_of_eq_add (d := pred (val p A)) (h.eqTrans (by ipra_ring))
   exact dvd_congr_left (pw_one p) ((WeightedMangoldt.dvd_iff_le_val hp hA).2 l1)
 
 /-- Coprime numbers are not both divisible by a prime. -/
@@ -85,13 +86,12 @@ theorem val_lcm {p m N : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hm : Γ ⊢[PRAAx]
     have r := (congrMonus vN.wk (vm.wk.eqTrans ((congrAdd (.eqRefl _) h0).eqTrans (add_zero _)))).eqTrans
       (add_monus' _ _)
     refine v1.wk.eqTrans (.eqTrans ?_ (congrAdd vm.wk.eqSymm r.eqSymm))
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   · have h0 : ((val p (quo N (gcd m N)) ≐ zero) :: Γ) ⊢[PRAAx] val p (quo N (gcd m N)) ≐ zero := Prf.hyp0
     have r := (congrMonus (vN.wk.eqTrans ((congrAdd (.eqRefl _) h0).eqTrans (add_zero _))) vm.wk).eqTrans
       (monus_add _ _)
     refine v1.wk.eqTrans (.eqTrans ?_ (congrAdd vm.wk.eqSymm r.eqSymm))
-    have z := natEq h0
-    apply deriveNat; ipra_simps; linear_combination z
+    ipra_lc natEq h0
 
 /-! ## `lcm(1, …, N)` -/
 
@@ -117,10 +117,10 @@ theorem lcmu_succ (N : PTm n) : Γ ⊢[PRAAx] lcmu (succ N) ≐ lcm (lcmu N) (su
 
 theorem pos_of_lt_zero {X : PTm n} (h : Γ ⊢[PRAAx] lt zero X) : Γ ⊢[PRAAx] X ≐ succ (pred X) :=
   Primes.eq_succ_pred ((eq_add_of_le h).eqTrans
-    (by apply deriveNat; ipra_simps; ring : Γ ⊢[PRAAx] one + monus X one ≐ succ (monus X one)))
+    (by ipra_ring : Γ ⊢[PRAAx] one + monus X one ≐ succ (monus X one)))
 
 theorem lt_zero_of_pos {X : PTm n} (h : Γ ⊢[PRAAx] X ≐ succ (pred X)) : Γ ⊢[PRAAx] lt zero X :=
-  le_of_eq_add (d := pred X) (h.eqTrans (by apply deriveNat; ipra_simps; ring))
+  le_of_eq_add (d := pred X) (h.eqTrans (by ipra_ring))
 
 /-- `lcm(m, N) ≥ 1` for `m, N ≥ 1`. -/
 theorem lcm_pos {m N : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) :
@@ -178,7 +178,7 @@ theorem inv_step {p N : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hI : Γ ⊢[PRAAx] 
     have h : C ⊢[PRAAx] lt (val p (lcmu N)) (val p (succ N)) := Prf.hyp0
     have ee : C ⊢[PRAAx] val p (lcmu (succ N)) ≐ val p (succ N) := ve.wk.eqTrans (eq_add_of_le (le_of_lt h)).eqSymm
     have wpos : C ⊢[PRAAx] val p (succ N) ≐ succ (pred (val p (succ N))) :=
-      Primes.eq_succ_pred ((eq_add_of_le h).eqTrans (by apply deriveNat; ipra_simps; ring :
+      Primes.eq_succ_pred ((eq_add_of_le h).eqTrans (by ipra_ring :
         C ⊢[PRAAx] succ (val p (lcmu N)) + monus (val p (succ N)) (succ (val p (lcmu N))) ≐
           succ (val p (lcmu N) + monus (val p (succ N)) (succ (val p (lcmu N))))))
     have l1 : C ⊢[PRAAx] le (pw p (val p (succ N))) (succ N) :=
@@ -191,11 +191,11 @@ theorem inv_step {p N : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hI : Γ ⊢[PRAAx] 
     have ew : C ⊢[PRAAx] succ (val p (lcmu N)) ≐ val p (succ N) := WeightedMangoldt.pw_inj_exp hp2.wk eqP
     have sw : C ⊢[PRAAx] sg (val p (succ N)) ≐ one := (congrSg wpos).eqTrans (sg_succ _)
     have pp1 : C ⊢[PRAAx] ppI p (succ N) ≐ one :=
-      (congrMul sw (eqb_of_eq eqN.eqSymm)).eqTrans (by apply deriveNat; ipra_simps; ring)
+      (congrMul sw (eqb_of_eq eqN.eqSymm)).eqTrans (by ipra_ring)
     refine .andI ?_ (.andI ?_ ?_)
     · refine ee.eqTrans (ew.eqSymm.eqTrans ?_)
       refine .eqTrans ?_ (congrAdd (.eqRefl _) pp1.eqSymm)
-      apply deriveNat; ipra_simps; ring
+      ipra_ring
     · have s1 : C ⊢[PRAAx] sg (val p (lcmu (succ N))) * pw p (val p (lcmu (succ N))) ≐ pw p (val p (succ N)) :=
         (congrMul ((congrSg ee).eqTrans sw) (congrPw (.eqRefl _) ee)).eqTrans (one_mul _)
       exact le_congr s1.eqSymm (.eqRefl _) l1
@@ -213,7 +213,7 @@ theorem inv_step {p N : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hI : Γ ⊢[PRAAx] 
       · let D : List (Fm PTm n) := (val p (succ N) ≐ succ (pred (val p (succ N)))) :: C
         have epos : D ⊢[PRAAx] val p (lcmu N) ≐ succ (pred (val p (lcmu N))) :=
           Primes.eq_succ_pred ((eq_add_of_le h.wk).eqTrans ((congrAdd Prf.hyp0 (.eqRefl _)).eqTrans
-            (by apply deriveNat; ipra_simps; ring : D ⊢[PRAAx] succ (pred (val p (succ N))) +
+            (by ipra_ring : D ⊢[PRAAx] succ (pred (val p (succ N))) +
               monus (val p (lcmu N)) (val p (succ N)) ≐
                 succ (pred (val p (succ N)) + monus (val p (lcmu N)) (val p (succ N))))))
         have se : D ⊢[PRAAx] sg (val p (lcmu N)) ≐ one := (congrSg epos).eqTrans (sg_succ _)
@@ -273,13 +273,12 @@ theorem lcmu_dvd (N : PTm n) :
   have hN : Γ ⊢[PRAAx] succ N ≐ succ (pred (succ N)) := congrSucc (pred_succ _).eqSymm
   have gpos := gcd_pos (B := succ N) hm
   have hgd := gcd_dvd' (b := succ N) hm
-  have e₁ := natEq (eq_of_dvd' gpos (Prf.andE₁ hgd))
-  have e₂ := natEq (eq_of_dvd' gpos (Prf.andE₂ hgd))
-  have l := natEq ((lcmu_succ (Γ := Γ) N).eqTrans (lcm_eq hm hN))
   refine .andI (DiophantineNumberTheory.Coprime.dvd_of_eq' hm (w := quo (succ N) (gcd (lcmu N) (succ N))) ?_)
     (DiophantineNumberTheory.Coprime.dvd_of_eq' hN (w := quo (lcmu N) (gcd (lcmu N) (succ N))) ?_)
-  · apply deriveNat; ipra_simps; linear_combination l - 𝔞 (quo (succ N) (gcd (lcmu N) (succ N))) * e₁
-  · apply deriveNat; ipra_simps; linear_combination l - 𝔞 (quo (lcmu N) (gcd (lcmu N) (succ N))) * e₂
+  · ipra_lc natEq ((lcmu_succ (Γ := Γ) N).eqTrans (lcm_eq hm hN)) -
+      𝔞 (quo (succ N) (gcd (lcmu N) (succ N))) * natEq (eq_of_dvd' gpos (Prf.andE₁ hgd))
+  · ipra_lc natEq ((lcmu_succ (Γ := Γ) N).eqTrans (lcm_eq hm hN)) -
+      𝔞 (quo (lcmu N) (gcd (lcmu N) (succ N))) * natEq (eq_of_dvd' gpos (Prf.andE₂ hgd))
 
 /-! ## The weighted Chebyshev sum -/
 
@@ -318,7 +317,7 @@ theorem lw_lcmu_succ (N y : PTm n) :
       · exact (zero_mul_l (zero_mul_l Prf.hyp0 _) _).eqTrans ((congrAdd (zero_mul_l (zero_mul_l Prf.hyp0 _) _)
           (zero_mul_l (zero_mul_l Prf.hyp0 _) _)).eqTrans (add_zero _)).eqSymm
       · refine (congrMul (congrMul (.eqRefl _) (val_lcmu_succ (Valuation.prime_of_isP Prf.hyp0) _)) (.eqRefl _)).eqTrans ?_
-        apply deriveNat; ipra_simps; ring)))
+        ipra_ring)))
   have c1 : Γ ⊢[PRAAx] ap2 (sumF (ellB w)) (succ (lcmu (succ N))) (pairT (lcmu N) y) ≐ Lw w (lcmu N) y := by
     refine sum_ext (ellB w) (fun Δ q hs hl => ?_) le1
     rw [shift_pairT, inst2_ell, hs2]

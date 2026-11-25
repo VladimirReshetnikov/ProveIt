@@ -4,7 +4,7 @@ import IPRADerivations.Analysis.RationalClosure
 import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.DiophantineNumberTheory.AperyMultibound
 import IPRADerivations.DiophantineNumberTheory.SimultaneousGrid
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The elementary quantitative engine of abstract analysis

@@ -1,6 +1,8 @@
 import IPRADerivations.DiophantineNumberTheory.FractionSeparation
 import IPRADerivations.Foundations.InjectionCount
 import IPRADerivations.DiophantineNumberTheory.QuarticStep
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Counting separated reduced fractions in an interval (`hurwitz_khinchin_ipra`, (K3), (K9))
@@ -47,10 +49,7 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Arithmetic -/
 
-theorem pos_of_le_one {q : PTm n} (h : Γ ⊢[PRAAx] le one q) : Γ ⊢[PRAAx] q ≐ succ (pred q) := by
-  have e := natEq (eq_add_of_le h)
-  have h1 : Γ ⊢[PRAAx] q ≐ succ (monus q one) := by apply deriveNat; ipra_simps; linear_combination e
-  exact h1.eqTrans (congrSucc ((pred_succ _).eqSymm.eqTrans (congrPred h1.eqSymm)))
+alias pos_of_le_one := Common.pos_of_one_le
 
 /-- `a/b ≤ c/d` (`a d ≤ c b`) gives `⌊Fa/b⌋ ≤ ⌊Fc/d⌋` for `b, d ≥ 1`. -/
 theorem floor_mono {a b c d F : PTm n} (hb : Γ ⊢[PRAAx] b ≐ succ (pred b)) (hd : Γ ⊢[PRAAx] d ≐ succ (pred d))
@@ -73,11 +72,7 @@ theorem monus_mono {a b c : PTm n} (h : Γ ⊢[PRAAx] le a b) : Γ ⊢[PRAAx] le
 
 theorem monus_cancel {a b c : PTm n} (ha : Γ ⊢[PRAAx] le c a) (hb : Γ ⊢[PRAAx] le c b)
     (h : Γ ⊢[PRAAx] monus a c ≐ monus b c) : Γ ⊢[PRAAx] a ≐ b := by
-  have e1 := natEq (eq_add_of_le ha)
-  have e2 := natEq (eq_add_of_le hb)
-  have e3 := natEq h
-  apply deriveNat; ipra_simps
-  linear_combination e1 - e2 + e3
+  ipra_lc natEq (eq_add_of_le ha) - natEq (eq_add_of_le hb) + natEq h
 
 /-! ## The conditions -/
 

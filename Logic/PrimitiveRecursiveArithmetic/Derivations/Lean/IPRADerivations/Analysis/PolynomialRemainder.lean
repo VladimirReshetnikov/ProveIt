@@ -1,6 +1,7 @@
 import IPRADerivations.Core.IntOrder
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Core.Gcd
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # A first-order Taylor remainder for multivariate polynomial expressions
@@ -99,18 +100,14 @@ theorem abs_mul {u w : ZT k} {a b : PTm k} (hu : Γ ⊢[PRAAx] AbsLe u a) (hw : 
     refine mul_le_cancel (d' := one) ?_
     refine le_of_eq_add (d := monus (a + u.neg) (u.pos + zero) * monus (w.pos + b) (zero + w.neg) +
       monus (u.pos + a) (zero + u.neg) * monus (b + w.neg) (w.pos + zero)) ?_
-    apply deriveNat; ipra_simps
-    linear_combination 𝔞 (monus (w.pos + b) (zero + w.neg)) * eu1 +
-      𝔞 (monus (b + w.neg) (w.pos + zero)) * eu2 + (𝔞 a - 𝔞 u.neg + 𝔞 u.pos) * ew1 +
-      (𝔞 a + 𝔞 u.neg - 𝔞 u.pos) * ew2
+    ipra_lc 𝔞 (monus (w.pos + b) (zero + w.neg)) * eu1 + 𝔞 (monus (b + w.neg) (w.pos + zero)) * eu2 +
+      (𝔞 a - 𝔞 u.neg + 𝔞 u.pos) * ew1 + (𝔞 a + 𝔞 u.neg - 𝔞 u.pos) * ew2
   · show Γ ⊢[PRAAx] le (zero + (u.pos * w.neg + u.neg * w.pos)) ((u.pos * w.pos + u.neg * w.neg) + a * b)
     refine mul_le_cancel (d' := one) ?_
     refine le_of_eq_add (d := monus (a + u.neg) (u.pos + zero) * monus (b + w.neg) (w.pos + zero) +
       monus (u.pos + a) (zero + u.neg) * monus (w.pos + b) (zero + w.neg)) ?_
-    apply deriveNat; ipra_simps
-    linear_combination 𝔞 (monus (b + w.neg) (w.pos + zero)) * eu1 +
-      𝔞 (monus (w.pos + b) (zero + w.neg)) * eu2 + (𝔞 a + 𝔞 u.neg - 𝔞 u.pos) * ew1 +
-      (𝔞 a - 𝔞 u.neg + 𝔞 u.pos) * ew2
+    ipra_lc 𝔞 (monus (b + w.neg) (w.pos + zero)) * eu1 + 𝔞 (monus (w.pos + b) (zero + w.neg)) * eu2 +
+      (𝔞 a + 𝔞 u.neg - 𝔞 u.pos) * ew1 + (𝔞 a - 𝔞 u.neg + 𝔞 u.pos) * ew2
 
 /-! ## Polynomial expressions -/
 

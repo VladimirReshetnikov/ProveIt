@@ -5,6 +5,7 @@ import IPRADerivations.Analysis.GaussianRationalDistanceOrder
 import IPRADerivations.Analysis.GaussianRationalSyntheticCoefficientValues
 import IPRADerivations.Analysis.GaussianRationalRelativeTwoTerm
 import IPRADerivations.Algebra.PowerDifference
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Finite telescoping of the actual changing-precision trajectory
@@ -149,11 +150,8 @@ theorem finite_bound (a : PR 3) (N h x j m : PTm n)
 
 theorem geometric_complement (N m : PTm n) (hK : Γ ⊢[PRAAx] le one (K N)) : Γ ⊢[PRAAx]
     pw (K N) m ≐ pw (rhoNum N) m+gd (K N) (rhoNum N) m := by
-  have p := natEq (power_diff (Γ := Γ) (K N) (rhoNum N) m)
   have shape : Γ ⊢[PRAAx] K N ≐ rhoNum N+one := GaussianGeneralFTARates.predecessor_form (K N) hK
-  have e := natEq shape
-  apply deriveNat; ipra_simps
-  linear_combination p+(Groth.ι (IPRA.Q.mk Γ (gd (K N) (rhoNum N) m)))*e
+  ipra_lc natEq (power_diff (Γ := Γ) (K N) (rhoNum N) m)+(Groth.ι (IPRA.Q.mk Γ (gd (K N) (rhoNum N) m)))*natEq shape
 
 theorem geometric_le (N m : PTm n) (hK : Γ ⊢[PRAAx] le one (K N)) : Γ ⊢[PRAAx]
     le (gd (K N) (rhoNum N) m) (pw (K N) m) :=

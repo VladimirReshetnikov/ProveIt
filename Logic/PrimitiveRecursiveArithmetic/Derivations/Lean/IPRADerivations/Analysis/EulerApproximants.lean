@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.BohrMollerupUniqueness
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The global Euler approximants and their convergence from below

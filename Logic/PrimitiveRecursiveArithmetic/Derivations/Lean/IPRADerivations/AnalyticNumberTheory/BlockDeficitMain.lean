@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.BlockDispatch
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The finite block deficit (`pnt_ipra_constructive_2026-11-14`, Lemma `con:deficit`)
@@ -110,7 +111,7 @@ theorem interior (hi0 : Γ ⊢[PRAAx] neg (inst2 (offB loB) i0 (PP x D₁ D₂ A
       lt (var 0) (Syn.shift (succ x)) :: Γ.map Fm.shift) ⊢[PRAAx]
       pred (succ (Syn.shift D₁) + vT (offB hiB) (Syn.shift i0) (Syn.shift j0) (Syn.shift (PP x D₁ D₂ A Ds K L))) ≐
         Syn.shift D₁ + vT (offB hiB) (Syn.shift i0) (Syn.shift j0) (Syn.shift (PP x D₁ D₂ A Ds K L)) :=
-    (congrPred (by apply deriveNat; ipra_simps; ring)).eqTrans (pred_succ _)
+    (congrPred (by ipra_ring)).eqTrans (pred_succ _)
   have e3 := natEq (eq_add_of_le (le_congr (.eqRefl _) ps hB))
   have hu : ICtx x D₁ D₂ A Ds K L i0 j0 Γ ⊢[PRAAx] lt (uT (offB loB) (offB hiB) (Syn.shift i0) (Syn.shift j0) (Syn.shift (PP x D₁ D₂ A Ds K L)))
       (monus (var 0) (succ (Syn.shift D₁))) := by ipra_le sl hA with e1
@@ -178,7 +179,7 @@ theorem blk_C (h1 : Γ ⊢[PRAAx] le one D₁) (h1h : Γ ⊢[PRAAx] le D₁ Dh) 
   have el := ex_elim (offB loB) hzl
   have ar : Γ ⊢[PRAAx] succ Dh + wit (offB hiB) (monus D₂ Dh) (pairT (succ Dh) (Pl x D₁ D₂ A Ds K L)) ≐
       succ D₁ + (monus Dh D₁ + wit (offB hiB) (monus D₂ Dh) (pairT (succ Dh) (Pl x D₁ D₂ A Ds K L))) := by
-    have e := natEq (eq_add_of_le h1h); apply deriveNat; ipra_simps; linear_combination e
+    ipra_lc natEq (eq_add_of_le h1h)
   have hj0 : Γ ⊢[PRAAx] neg (inst2 (offB hiB)
       (monus Dh D₁ + wit (offB hiB) (monus D₂ Dh) (pairT (succ Dh) (Pl x D₁ D₂ A Ds K L)))
       (PP x D₁ D₂ A Ds K L) ≐ zero) :=

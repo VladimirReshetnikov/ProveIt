@@ -1,6 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.AperyRecurrence
 import IPRADerivations.Core.SumOrder
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Growth of the Apéry numbers
@@ -39,10 +40,7 @@ variable {k : ℕ} {Γ : List (Fm PTm k)}
 
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
-theorem monus_le_self (N d : PTm k) : Γ ⊢[PRAAx] le (monus N d) N := by
-  refine .orE (lt_or_le N d) ?_ ?_
-  · exact le_congr (le_of_lt Prf.hyp0 : (lt N d :: Γ) ⊢[PRAAx] monus N d ≐ zero).eqSymm (.eqRefl _) (zero_le _)
-  · exact le_of_eq_add (d := d) ((eq_add_of_le Prf.hyp0).eqTrans (add_comm _ _))
+alias monus_le_self := Common.monus_le_self
 
 /-- `C(M, k) ≤ C(M + 1, k)` (guarded binomials). -/
 theorem gb_mono (M j : PTm k) : Γ ⊢[PRAAx] le (gb M j) (gb (succ M) j) := by

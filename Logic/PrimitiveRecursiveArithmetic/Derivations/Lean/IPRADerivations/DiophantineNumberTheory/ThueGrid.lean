@@ -2,6 +2,7 @@ import IPRADerivations.Core.Pigeonhole
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.DiophantineNumberTheory.ModularCertificate
 import IPRADerivations.Foundations.BoundedReflection
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # A modular root of `−1` gives a sum of two squares
@@ -89,17 +90,16 @@ theorem le_of_diff {a a' X h : PTm k} (hx : Γ ⊢[PRAAx] (a' ≐ a + X) ⋎ (a 
 theorem rem_cancel {n c a b : PTm k} (hn : Γ ⊢[PRAAx] n ≐ succ (pred n))
     (h : Γ ⊢[PRAAx] rem (c + a) n ≐ rem (c + b) n) : Γ ⊢[PRAAx] rem a n ≐ rem b n := by
   have d1 := natEq (Prf.andE₁ (dm hn (c + a))); have d2 := natEq (Prf.andE₁ (dm hn (c + b)))
-  have hh := natEq h
   have e : Γ ⊢[PRAAx] n * quo (c + b) n + a ≐ n * quo (c + a) n + b := by
-    apply deriveNat; ipra_simps; linear_combination d1 - d2 + hh
+    ipra_lc d1 - d2 + natEq h
   exact (rem_add_mul hn (quo (c + b) n) a).eqSymm.eqTrans
     ((congrAp2 remF e (.eqRefl _)).eqTrans (rem_add_mul hn (quo (c + a) n) b))
 
 theorem sq_alg1 (X T : PTm k) : Γ ⊢[PRAAx] (X + T) * X ≐ T * X + X * X := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem sq_alg2 (X T : PTm k) : Γ ⊢[PRAAx] (X + T) * T ≐ T * X + T * T := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- `x + T ≡ 0` gives `x² ≡ T²`. -/
 theorem same_orient {n c X T : PTm k} (hn : Γ ⊢[PRAAx] n ≐ succ (pred n))
@@ -115,18 +115,15 @@ theorem same_orient {n c X T : PTm k} (hn : Γ ⊢[PRAAx] n ≐ succ (pred n))
 
 theorem lin1 {t uI vI uJ vJ X Y : PTm k} (ex : Γ ⊢[PRAAx] uJ ≐ uI + X) (ey : Γ ⊢[PRAAx] vJ ≐ vI + Y) :
     Γ ⊢[PRAAx] uJ + t * vJ ≐ (uI + t * vI) + (X + t * Y) := by
-  have a := natEq ex; have b := natEq ey
-  apply deriveNat; ipra_simps; linear_combination a + 𝔞 t * b
+  ipra_lc natEq ex + 𝔞 t * natEq ey
 
 theorem lin2 {t v v' Y c : PTm k} (ey : Γ ⊢[PRAAx] v ≐ v' + Y) :
     Γ ⊢[PRAAx] c + t * v ≐ (c + t * v') + t * Y := by
-  have b := natEq ey
-  apply deriveNat; ipra_simps; linear_combination 𝔞 t * b
+  ipra_lc 𝔞 t * natEq ey
 
 theorem lin3 {t u u' X w : PTm k} (ex : Γ ⊢[PRAAx] u ≐ u' + X) :
     Γ ⊢[PRAAx] u + t * w ≐ (u' + t * w) + X := by
-  have a := natEq ex
-  apply deriveNat; ipra_simps; linear_combination a
+  ipra_lc natEq ex
 
 /-- The collision in each of the four sign patterns: `x² ≡ (t y)² (mod n)`. -/
 theorem congr_sq {n t uI vI uJ vJ X Y : PTm k} (hn : Γ ⊢[PRAAx] n ≐ succ (pred n))
@@ -155,7 +152,7 @@ theorem congr_sq {n t uI vI uJ vJ X Y : PTm k} (hn : Γ ⊢[PRAAx] n ≐ succ (p
       exact same_orient hn.wk.wk (hc.wk.wk.eqSymm.eqTrans (congrAp2 remF (lin1 Prf.hyp1 Prf.hyp0) (.eqRefl _)))
 
 theorem norm_alg (t Y : PTm k) : Γ ⊢[PRAAx] (t * Y) * (t * Y) + Y * Y ≐ (t * t + one) * (Y * Y) := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- `n ∣ t² + 1` and `x² ≡ (t y)²` give `n ∣ x² + y²`. -/
 theorem sum_dvd {n t X Y : PTm k} (hn : Γ ⊢[PRAAx] n ≐ succ (pred n)) (hd : Γ ⊢[PRAAx] dvd n (t * t + one))
@@ -315,18 +312,14 @@ abbrev G2 (n t : PTm k) : PTm k :=
 theorem sq_case {M Eb X Y h n : PTm k} (m0 : Γ ⊢[PRAAx] M ≐ zero) (e1 : Γ ⊢[PRAAx] Eb ≐ one)
     (ehn : Γ ⊢[PRAAx] h * h ≐ n) :
     Γ ⊢[PRAAx] (M * X) * (M * X) + (Eb * h + M * Y) * (Eb * h + M * Y) ≐ n := by
-  have a := natEq m0; have b := natEq e1; have c := natEq ehn
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞 M * 𝔞 X * 𝔞 X + 2 * 𝔞 Eb * 𝔞 h * 𝔞 Y + 𝔞 M * 𝔞 Y * 𝔞 Y) * a +
-    (𝔞 Eb + 1) * 𝔞 h * 𝔞 h * b + c
+  ipra_lc (𝔞 M * 𝔞 X * 𝔞 X + 2 * 𝔞 Eb * 𝔞 h * 𝔞 Y + 𝔞 M * 𝔞 Y * 𝔞 Y) * natEq m0 + (𝔞 Eb + 1) * 𝔞 h * 𝔞 h * natEq e1 +
+    natEq ehn
 
 theorem grid_case {M Eb X Y h n : PTm k} (m1 : Γ ⊢[PRAAx] M ≐ one) (e0 : Γ ⊢[PRAAx] Eb ≐ zero)
     (hXY : Γ ⊢[PRAAx] X * X + Y * Y ≐ n) :
     Γ ⊢[PRAAx] (M * X) * (M * X) + (Eb * h + M * Y) * (Eb * h + M * Y) ≐ n := by
-  have a := natEq m1; have b := natEq e0; have c := natEq hXY
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞 M + 1) * (𝔞 X * 𝔞 X + 𝔞 Y * 𝔞 Y) * a +
-    (𝔞 Eb * 𝔞 h * 𝔞 h + 2 * 𝔞 h * 𝔞 M * 𝔞 Y) * b + c
+  ipra_lc (𝔞 M + 1) * (𝔞 X * 𝔞 X + 𝔞 Y * 𝔞 Y) * natEq m1 + (𝔞 Eb * 𝔞 h * 𝔞 h + 2 * 𝔞 h * 𝔞 M * 𝔞 Y) * natEq e0 +
+    natEq hXY
 
 /-- `thm:root-to-squares`: for `n > 0` and `n ∣ t² + 1`: `G₁(n, t)² + G₂(n, t)² = n`. -/
 theorem root_to_squares {n t : PTm k} (hn : Γ ⊢[PRAAx] n ≐ succ (pred n))

@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.RationalCubeMinimum
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual numerical cube midpoints
@@ -111,8 +112,7 @@ theorem coordinate_midpoint (q r : PTm n) (hq : Γ ⊢[PRAAx] interval q) (hr : 
 
 theorem coordinate_congr {q q' r r' : PTm n} (hq : Γ ⊢[PRAAx] q ≐ q') (hr : Γ ⊢[PRAAx] r ≐ r') :
     Γ ⊢[PRAAx] coordinate q r ≐ coordinate q' r' := by
-  simpa only [subst_coordinate,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using
-    Prf.eqCongr (coordinate (var 0) (var 1) : PTm 2) (σ := ![q,r]) (σ' := ![q',r']) (fun i => by fin_cases i; exact hq; exact hr)
+  ipra_congr (coordinate (var 0) (var 1) : PTm 2) with [hq, hr]
 
 theorem point_length (d y z : PTm n) : Γ ⊢[PRAAx] length (point d y z) ≐ d := Foundations.MasterCertificate.sequence_length _ _ _
 theorem point_lookup (d y z i : PTm n) (hi : Γ ⊢[PRAAx] lt i d) : Γ ⊢[PRAAx]

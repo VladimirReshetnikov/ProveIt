@@ -1,6 +1,6 @@
 import IPRADerivations.Core.SumReflect
 import IPRADerivations.Core.Tactic
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The open-path shoelace functional (`conway_criterion_ipra`, `lem:Jlaws`)

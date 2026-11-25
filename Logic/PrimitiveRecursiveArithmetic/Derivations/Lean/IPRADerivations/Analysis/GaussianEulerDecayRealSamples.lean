@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianEulerIntegrandName
 import IPRADerivations.Analysis.GaussianNameConjugation
 import IPRADerivations.Analysis.GaussianGammaRealValues
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Exact reality of the original rational decay observations
@@ -47,10 +48,7 @@ theorem fixed_raw_imaginary_zero (q : PTm n) (h : Γ ⊢[PRAAx] point q ≐ q) :
   have eq := GaussianRootAlgebra.equal_im same
   simp only [GaussianRationalReciprocal.im_conjugate] at eq
   apply RationalNormalForm.positive_integer_cancel two _ _ (le_succ_self one)
-  apply ZT.derive
-  simp only [ZT.toZ_mul,ZT.toZ_ofNat]
-  ipra_simps
-  linear_combination eq
+  ipra_lc eq
 
 theorem fixed_axis_embedding (q : PTm n) (h : Γ ⊢[PRAAx] point q ≐ q) : Γ ⊢[PRAAx]
     embed (fstT q) ≐ q := by
@@ -104,11 +102,7 @@ theorem fixed_scalar_norm_square (q : PTm n) (h : Γ ⊢[PRAAx] point q ≐ q) :
   apply RationalFiniteSum.canonical_equal _ _ _ _ _ _ (GaussianRationalMetric.qnormSq_canonical q)
     (RationalArithmetic.multiply_guard _ _) (GaussianRationalMetric.qnormSq_represents q (rawGaussian q) (rawDen q) hd (raw_represents q))
     square (GaussianRationalHorner.positive_product _ _ hd hd) (GaussianRationalHorner.positive_product _ _ hd hd)
-  apply ZT.derive
-  have eq := natEq (fixed_norm_square q h)
-  simp only [ZT.toZ_mul,ZT.toZ_ofNat]
-  ipra_simps
-  linear_combination -(Groth.ι (IPRA.Q.mk Γ (rawDen q)))^2*eq
+  ipra_lc -(Groth.ι (IPRA.Q.mk Γ (rawDen q)))^2*natEq (fixed_norm_square q h)
 
 theorem decay_point_fixed (a b : PTm n) (hb : Γ ⊢[PRAAx] le one b) : Γ ⊢[PRAAx]
     point (decayPoint a b) ≐ decayPoint a b := by

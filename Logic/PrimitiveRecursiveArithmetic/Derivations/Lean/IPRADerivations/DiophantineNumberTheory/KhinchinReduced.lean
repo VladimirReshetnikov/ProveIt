@@ -1,6 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.KhinchinBadBound
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Core.SumSplit
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Enough separated reduced fractions in every interval: (K3) (`hurwitz_khinchin_ipra`)
@@ -86,11 +87,11 @@ theorem split_point (p x : PTm n) :
   · have h : ((eqb (gcd p (xq x)) one ≐ zero) :: Γ) ⊢[PRAAx] eqb (gcd p (xq x)) one ≐ zero := Prf.hyp0
     refine .eqTrans ?_ (congrAdd (congrMul (.eqRefl _) h)
       (congrMul (.eqRefl _) ((congrMonus (.eqRefl _) h).eqTrans (monus_zero _)))).eqSymm
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   · have h : ((eqb (gcd p (xq x)) one ≐ one) :: Γ) ⊢[PRAAx] eqb (gcd p (xq x)) one ≐ one := Prf.hyp0
     refine .eqTrans ?_ (congrAdd (congrMul (.eqRefl _) h)
       (congrMul (.eqRefl _) ((congrMonus (.eqRefl _) h).eqTrans (monus_self _)))).eqSymm
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
 
 theorem count_split (M x : PTm n) :
     Γ ⊢[PRAAx] ap2 (sumF cntB) M x ≐ ap2 (sumF copB) M x + ap2 (sumF badB) M x := by
@@ -125,8 +126,7 @@ theorem count_le {Q y : PTm n} (hQ' : Γ ⊢[PRAAx] le (quo Q (num 4)) Q) :
     Γ ⊢[PRAAx] le (ap2 (sumF aK) Q y) (redR Q y + ap2 (sumF aK) (quo Q (num 4)) y + ap2 (sumF bqB) (succ Q) y) ⋏
       le (redR Q y) (ap2 (sumF aK) Q y) := by
   have hs : Γ ⊢[PRAAx] succ Q ≐ succ (quo Q (num 4)) + monus Q (quo Q (num 4)) := by
-    have e := natEq (eq_add_of_le hQ')
-    apply deriveNat; ipra_simps; linear_combination e
+    ipra_lc natEq (eq_add_of_le hQ')
   -- `cop(≤ Q) = cop(≤ Q') + #𝓡`
   have eC : Γ ⊢[PRAAx] ap2 (sumF cqB) (succ Q) y ≐ ap2 (sumF cqB) (succ (quo Q (num 4))) y + redR Q y :=
     (congrAp2 (sumF cqB) hs (.eqRefl _)).eqTrans (sum_split cqB _ _ y)
@@ -177,8 +177,7 @@ theorem sq_le_two_pow {k : PTm n} (h : Γ ⊢[PRAAx] le (num 4) k) : Γ ⊢[PRAA
   have i := inst (Γ := Γ) sq4₀ (![monus k (num 4)] : Fin 1 → PTm n)
   simp at i
   have ek : Γ ⊢[PRAAx] k ≐ f4 (monus k (num 4)) := by
-    have e := natEq (eq_add_of_le h)
-    apply deriveNat; ipra_simps; linear_combination e
+    ipra_lc natEq (eq_add_of_le h)
   exact le_congr (congrMul ek ek).eqSymm (congrAp2 powF ek (.eqRefl _)).eqSymm i
 
 /-! ## The arithmetic of (K7) -/
@@ -247,8 +246,7 @@ theorem k3_bounds {α γ b0 M k : PTm n} (hαγ : Γ ⊢[PRAAx] le α γ) (hγ :
     ipra_le sl hsq + 65534 + 512 * sl hk256 + sl hk256 * sl hk256
   have hQ1 : Γ ⊢[PRAAx] le one (pw two k) := by ipra_le sl hQ2 + 1
   have hQs : Γ ⊢[PRAAx] pw two k ≐ succ (succ (monus (pw two k) two)) := by
-    have e := natEq (eq_add_of_le hQ2)
-    apply deriveNat; ipra_simps; linear_combination e
+    ipra_lc natEq (eq_add_of_le hQ2)
   have dm := div_mod_at (Γ := Γ) (x := pw two k) (y := num 4) (c := num 3) (.eqRefl _)
   have hq4 : Γ ⊢[PRAAx] le (num 4 * quo (pw two k) (num 4)) (pw two k) := le_of_eq_add (Prf.andE₁ dm)
   have hQ' : Γ ⊢[PRAAx] le (quo (pw two k) (num 4)) (pw two k) := by

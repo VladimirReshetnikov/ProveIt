@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.GaussianGammaEulerShiftLimit
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The actual native successor trajectory in the Gamma shift
@@ -46,11 +47,8 @@ theorem point_succ (z B i : PTm n) : Γ ⊢[PRAAx] point z B (succ i) ≐ shifte
   simp only [GaussianGammaEulerHeadShift.subst_shifted,Syn.subst_var,subst_sndT,
     Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] at h
   have finish : Γ ⊢[PRAAx] shifted (point z B i) (sndT (data z B)) ≐ shifted (point z B i) B := by
-    simpa only [GaussianGammaEulerHeadShift.subst_shifted,Syn.subst_var,
-      Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using
-      Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (shifted (var 0) (var 1) : PTm 2)
-        (σ := ![point z B i,sndT (data z B)]) (σ' := ![point z B i,B])
-        (fun j => by fin_cases j; exact .eqRefl _; exact snd_pair z B)
+    ipra_congr (shifted (var 0) (var 1) : PTm 2) with
+      [.eqRefl (point z B i), (show _ ⊢[PRAAx] sndT (data z B) ≐ B from snd_pair z B)]
   exact h.eqTrans finish
 
 theorem point_native_step (z B i : PTm n) (ih : Γ ⊢[PRAAx] equal (point z B i) (translated z B i)) : Γ ⊢[PRAAx]

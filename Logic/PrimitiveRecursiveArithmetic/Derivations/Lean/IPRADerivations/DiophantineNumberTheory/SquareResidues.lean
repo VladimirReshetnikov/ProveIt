@@ -1,5 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.FourSquaresSeed
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The square residues modulo an odd prime

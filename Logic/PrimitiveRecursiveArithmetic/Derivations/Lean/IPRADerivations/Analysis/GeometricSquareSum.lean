@@ -1,7 +1,7 @@
 import IPRADerivations.Core.SumLemmas
 import IPRADerivations.Core.Powers
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The finite identity for `∑ (n + 1) zⁿ`

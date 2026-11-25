@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianBetaPrimitiveGridTelescope
 import IPRADerivations.Analysis.GaussianBetaPrimitiveCompactStep
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Source-only beta primitive comparison on the unchanged compact grid
@@ -54,11 +55,8 @@ private theorem endpoint_congr {p p' z z' B B' a a' b b' N N' : PTm n}
     endpoint p z B a b N ≐ endpoint p' z' B' a' b' N' := by
   have lastInput : ![p,z,B,a,b,N] (5 : Fin 6) = N := rfl
   have lastOutput : ![p',z',B',a',b',N'] (5 : Fin 6) = N' := rfl
-  simpa only [GaussianBetaPrimitiveGridTelescope.subst_endpoint,Syn.subst_var,
-    Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_three,Matrix.cons_val_four,
-    Matrix.cons_val_succ,Matrix.head_cons,Matrix.tail_cons,lastInput,lastOutput] using
-    Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (endpoint (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6)
-      (σ := ![p,z,B,a,b,N]) (σ' := ![p',z',B',a',b',N']) (fun i => by fin_cases i; exact hp; exact hz; exact hB; exact ha; exact hb; exact hN)
+  ipra_congr (endpoint (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) with
+    [hp, hz, hB, ha, hb, hN] using [lastInput, lastOutput]
 
 private theorem domain_num_congr {u v b E T : PTm n} (he : Γ ⊢[PRAAx] u ≐ v)
     (h : Γ ⊢[PRAAx] domain u b E T) : Γ ⊢[PRAAx] domain v b E T :=

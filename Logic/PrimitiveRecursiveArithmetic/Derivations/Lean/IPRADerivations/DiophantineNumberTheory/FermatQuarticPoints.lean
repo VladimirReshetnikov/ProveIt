@@ -1,6 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.SquareArea
 import IPRADerivations.DiophantineNumberTheory.FermatQuartic
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The rational points of the Fermat quartic

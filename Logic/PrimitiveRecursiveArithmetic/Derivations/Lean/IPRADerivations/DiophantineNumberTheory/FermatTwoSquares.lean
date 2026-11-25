@@ -2,6 +2,7 @@ import IPRADerivations.DiophantineNumberTheory.ThueGrid
 import IPRADerivations.DiophantineNumberTheory.QuadraticSupplements
 import IPRADerivations.Combinatorics.IndependentSets
 import IPRADerivations.AnalyticNumberTheory.BertrandFactor
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Fermat's theorem on sums of two squares, with primitive recursive witnesses
@@ -60,14 +61,14 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 abbrev rt (p : PTm n) : PTm n := wit sqB p (pairT p (pred p))
 
 theorem four_pos : Γ ⊢[PRAAx] (two * two : PTm n) ≐ succ (pred (two * two)) :=
-  pos_of_eq_succ (c := succ two) (by apply deriveNat; ipra_simps; ring)
+  pos_of_eq_succ (c := succ two) (by ipra_ring)
 
 /-- `p ≡ 1 (mod 4)` gives `p` odd and `⌊p/2⌋` even. -/
 theorem mod4_parities {p : PTm n} (h : Γ ⊢[PRAAx] rem p (two * two) ≐ one) :
     Γ ⊢[PRAAx] (par p ≐ one) ⋏ (par (half p) ≐ zero) := by
   have d := natEq (Prf.andE₁ (dm (Γ := Γ) four_pos p)); have hn := natEq h
   have e : Γ ⊢[PRAAx] p ≐ two * (two * quo p (two * two)) + one := by
-    apply deriveNat; ipra_simps; linear_combination d + hn
+    ipra_lc d + hn
   refine .andI ((congrAp1 parF e).eqTrans (par_double_succ _)) ?_
   exact (congrAp1 parF ((congrAp1 halfF e).eqTrans (half_double_succ _))).eqTrans (par_double _)
 
@@ -77,9 +78,8 @@ theorem root_minus_one {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hodd : Γ ⊢[P
   have hp1 := p_pos (prime_two hp)
   have r := Prf.andE₂ (root_of_sign ((minus_one_law hp hodd).eqTrans hh))
   have a := rem_add_congr hp1 r (.eqRefl (rem one p))
-  have pn := natEq hp1
   have e : Γ ⊢[PRAAx] pred p + one ≐ p * one + zero := by
-    apply deriveNat; ipra_simps; linear_combination -pn
+    ipra_lc -natEq hp1
   exact a.eqTrans ((congrAp2 remF e (.eqRefl _)).eqTrans ((rem_add_mul hp1 one zero).eqTrans (rem_zero p)))
 
 /-- For an odd prime `p` with `⌊p/2⌋` even: `G₁² + G₂² = p`. -/
@@ -99,21 +99,17 @@ abbrev Bw (p : PTm n) : PTm n := eqb p two + monus one (eqb p two) * G2 p (rt p)
 theorem two_case {Eb M X Y p : PTm n} (e1 : Γ ⊢[PRAAx] Eb ≐ one) (m0 : Γ ⊢[PRAAx] M ≐ zero)
     (ep : Γ ⊢[PRAAx] p ≐ two) :
     Γ ⊢[PRAAx] (Eb + M * X) * (Eb + M * X) + (Eb + M * Y) * (Eb + M * Y) ≐ p := by
-  have b := natEq e1; have a := natEq m0; have c := natEq ep
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞 Eb + 𝔞 M * 𝔞 X + 1) * b + 𝔞 X * (𝔞 Eb + 𝔞 M * 𝔞 X + 1) * a +
-    (𝔞 Eb + 𝔞 M * 𝔞 Y + 1) * b + 𝔞 Y * (𝔞 Eb + 𝔞 M * 𝔞 Y + 1) * a - c
+  ipra_lc (𝔞 Eb + 𝔞 M * 𝔞 X + 1) * natEq e1 + 𝔞 X * (𝔞 Eb + 𝔞 M * 𝔞 X + 1) * natEq m0 +
+    (𝔞 Eb + 𝔞 M * 𝔞 Y + 1) * natEq e1 + 𝔞 Y * (𝔞 Eb + 𝔞 M * 𝔞 Y + 1) * natEq m0 - natEq ep
 
 theorem odd_case {Eb M X Y p : PTm n} (e0 : Γ ⊢[PRAAx] Eb ≐ zero) (m1 : Γ ⊢[PRAAx] M ≐ one)
     (h : Γ ⊢[PRAAx] X * X + Y * Y ≐ p) :
     Γ ⊢[PRAAx] (Eb + M * X) * (Eb + M * X) + (Eb + M * Y) * (Eb + M * Y) ≐ p := by
-  have b := natEq e0; have a := natEq m1; have c := natEq h
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞 Eb + 𝔞 M * 𝔞 X + 𝔞 X) * b + 𝔞 X * (𝔞 Eb + 𝔞 M * 𝔞 X + 𝔞 X) * a +
-    (𝔞 Eb + 𝔞 M * 𝔞 Y + 𝔞 Y) * b + 𝔞 Y * (𝔞 Eb + 𝔞 M * 𝔞 Y + 𝔞 Y) * a + c
+  ipra_lc (𝔞 Eb + 𝔞 M * 𝔞 X + 𝔞 X) * natEq e0 + 𝔞 X * (𝔞 Eb + 𝔞 M * 𝔞 X + 𝔞 X) * natEq m1 +
+    (𝔞 Eb + 𝔞 M * 𝔞 Y + 𝔞 Y) * natEq e0 + 𝔞 Y * (𝔞 Eb + 𝔞 M * 𝔞 Y + 𝔞 Y) * natEq m1 + natEq h
 
 theorem par_two : Γ ⊢[PRAAx] par (two : PTm n) ≐ zero := by
-  have e : Γ ⊢[PRAAx] (two : PTm n) ≐ two * one := by apply deriveNat; ipra_simps; ring
+  have e : Γ ⊢[PRAAx] (two : PTm n) ≐ two * one := by ipra_ring
   exact (congrAp1 parF e).eqTrans (par_double one)
 
 /-- The witness-bearing form of `thm:main`: for a prime `p` with `p = 2` or `p ≡ 1 (mod 4)`:
@@ -154,26 +150,20 @@ theorem odd_of_prime_ne_two {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hne : Γ �
 
 theorem ee_alg {a b p a' b' : PTm n} (ea : Γ ⊢[PRAAx] a ≐ two * a') (eb : Γ ⊢[PRAAx] b ≐ two * b')
     (e : Γ ⊢[PRAAx] a * a + b * b ≐ p) : Γ ⊢[PRAAx] p ≐ two * (two * (a' * a') + two * (b' * b')) := by
-  have y := natEq ea; have z := natEq eb; have x := natEq e
-  apply deriveNat; ipra_simps
-  linear_combination -x + (𝔞 a + 2 * 𝔞 a') * y + (𝔞 b + 2 * 𝔞 b') * z
+  ipra_lc -natEq e + (𝔞 a + 2 * 𝔞 a') * natEq ea + (𝔞 b + 2 * 𝔞 b') * natEq eb
 
 theorem oo_alg {a b p a' b' : PTm n} (ea : Γ ⊢[PRAAx] a ≐ two * a' + one)
     (eb : Γ ⊢[PRAAx] b ≐ two * b' + one) (e : Γ ⊢[PRAAx] a * a + b * b ≐ p) :
     Γ ⊢[PRAAx] p ≐ two * (two * (a' * a') + two * a' + two * (b' * b') + two * b' + one) := by
-  have y := natEq ea; have z := natEq eb; have x := natEq e
-  apply deriveNat; ipra_simps
-  linear_combination -x + (𝔞 a + 2 * 𝔞 a' + 1) * y + (𝔞 b + 2 * 𝔞 b' + 1) * z
+  ipra_lc -natEq e + (𝔞 a + 2 * 𝔞 a' + 1) * natEq ea + (𝔞 b + 2 * 𝔞 b' + 1) * natEq eb
 
 theorem eo_alg {a b p a' b' : PTm n} (ea : Γ ⊢[PRAAx] a ≐ two * a') (eb : Γ ⊢[PRAAx] b ≐ two * b' + one)
     (e : Γ ⊢[PRAAx] a * a + b * b ≐ p) :
     Γ ⊢[PRAAx] p ≐ (two * two) * (a' * a' + b' * b' + b') + one := by
-  have y := natEq ea; have z := natEq eb; have x := natEq e
-  apply deriveNat; ipra_simps
-  linear_combination -x + (𝔞 a + 2 * 𝔞 a') * y + (𝔞 b + 2 * 𝔞 b' + 1) * z
+  ipra_lc -natEq e + (𝔞 a + 2 * 𝔞 a') * natEq ea + (𝔞 b + 2 * 𝔞 b' + 1) * natEq eb
 
 theorem one_lt_four : Γ ⊢[PRAAx] lt (one : PTm n) (two * two) :=
-  le_of_eq_add (d := two) (by apply deriveNat; ipra_simps; ring)
+  le_of_eq_add (d := two) (by ipra_ring)
 
 /-- An even number is not odd. -/
 theorem even_absurd {p c : PTm n} (φ : Fm PTm n) (hodd : Γ ⊢[PRAAx] par p ≐ one)

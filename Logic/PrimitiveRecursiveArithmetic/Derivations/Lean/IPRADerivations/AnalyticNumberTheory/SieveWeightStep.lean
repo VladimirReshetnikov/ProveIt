@@ -5,6 +5,7 @@ import IPRADerivations.Foundations.SignedSums
 import IPRADerivations.Probability.Lotus
 import IPRADerivations.Core.SumOrder
 import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # One prime step of the weight bound
@@ -76,8 +77,7 @@ theorem Ab_h (r D P : PTm n) :
 
 /-! ## Certificates over opaque terms -/
 
-theorem zero_le_of {L R : PTm n} (h : Γ ⊢[PRAAx] L ≐ zero) : Γ ⊢[PRAAx] le L R :=
-  le_congr h.eqSymm (.eqRefl _) (zero_le _)
+alias zero_le_of := Common.le_of_eq_zero
 
 theorem core_alg {p pm hr hk : PTm n} (xp : Γ ⊢[PRAAx] p ≐ one + pm) (S : Γ ⊢[PRAAx] le (pm * hr) hk) :
     Γ ⊢[PRAAx] le (p * ((one * one) * hr)) (one * ((one * one) * hr) + one * (one * ((one * one) * hk))) := by

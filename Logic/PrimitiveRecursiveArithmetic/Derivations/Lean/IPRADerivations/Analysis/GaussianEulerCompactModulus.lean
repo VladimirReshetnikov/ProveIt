@@ -3,6 +3,7 @@ import IPRADerivations.Analysis.GaussianRadiusExponentialLipschitzRate
 import IPRADerivations.Analysis.GaussianExponentialRadiusIndependence
 import IPRADerivations.Analysis.GaussianNamedRateTransport
 import IPRADerivations.Analysis.GaussianCompactRiemannName
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual constructive Euler-integrand compact modulus
@@ -91,9 +92,10 @@ theorem evaluator_raw_at (p t z B : PTm n) : Γ ⊢[PRAAx]
       ap2 GaussianEulerIntegrandName.nameF p (GaussianEulerIntegrandName.data z B (fstT t) (sndT t)) := by
   apply (GaussianEulerIntegrandName.evaluator_at p t (GaussianEulerIntegrandName.fixedData z B)).eqTrans
   apply congrAp2 GaussianEulerIntegrandName.nameF (.eqRefl p)
-  simpa using Prf.eqCongr (GaussianEulerIntegrandName.data (var 0) (var 1) (var 2) (var 3) : PTm 4)
-    (σ := ![fstT (GaussianEulerIntegrandName.fixedData z B),sndT (GaussianEulerIntegrandName.fixedData z B),fstT t,sndT t])
-    (σ' := ![z,B,fstT t,sndT t]) (fun i => by fin_cases i; exact fst_pair _ _; exact snd_pair _ _; exact .eqRefl _; exact .eqRefl _)
+  ipra_congr (GaussianEulerIntegrandName.data (var 0) (var 1) (var 2) (var 3) : PTm 4) with
+    [(show _ ⊢[PRAAx] fstT (GaussianEulerIntegrandName.fixedData z B) ≐ z from fst_pair _ _),
+      (show _ ⊢[PRAAx] sndT (GaussianEulerIntegrandName.fixedData z B) ≐ B from snd_pair _ _), .eqRefl (fstT t),
+      .eqRefl (sndT t)]
 
 theorem wrapped_at (p t z B : PTm n) : Γ ⊢[PRAAx]
     ap2 (GaussianCompactRiemannName.evaluatorName GaussianEulerIntegrandName.evaluatorF) p

@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.RationalSubspaceCoverCandidates
 import IPRADerivations.Foundations.BoundedSyntax
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Exact bounded testing and search of finite rational subspace covers
@@ -143,10 +144,7 @@ def chosen (T M N : PTm n) : PTm n := candidate T M (selected T M N)
 private theorem test_congr {T S M P N Q w v : PTm n} (hT : Γ ⊢[PRAAx] T ≐ S)
     (hM : Γ ⊢[PRAAx] M ≐ P) (hN : Γ ⊢[PRAAx] N ≐ Q) (hw : Γ ⊢[PRAAx] w ≐ v) : Γ ⊢[PRAAx]
     test T M N w ≐ test S P Q v := by
-  simpa only [subst_test,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.cons_val_three,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (test (var 0) (var 1) (var 2) (var 3) : PTm 4) (σ := ![T,M,N,w]) (σ' := ![S,P,Q,v])
-      (fun i => by fin_cases i; exact hT; exact hM; exact hN; exact hw)
+  ipra_congr (test (var 0) (var 1) (var 2) (var 3) : PTm 4) with [hT, hM, hN, hw]
 theorem test_body_at (T M N w : PTm n) : Γ ⊢[PRAAx] inst2 testBody w (data T M N) ≐ test T M N w := by
   simp only [testBody,inst2,subst_test,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
   exact test_congr (fst_pair _ _) ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))

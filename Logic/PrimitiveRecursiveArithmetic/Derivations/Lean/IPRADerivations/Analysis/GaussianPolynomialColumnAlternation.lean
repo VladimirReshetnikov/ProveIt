@@ -4,6 +4,7 @@ import IPRADerivations.Analysis.GaussianRationalAdjacentProduct
 import IPRADerivations.Analysis.GaussianRationalPermutationSum
 import IPRADerivations.Analysis.GaussianRationalMatrixFiniteSums
 import IPRADerivations.Analysis.GaussianPolynomialDeterminant
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual numerical column swaps and evaluated determinant alternation
@@ -55,8 +56,7 @@ def CS (M m j : PTm n) : PTm n := sequence rowBody m (rowData M m j)
 theorem selected_row_congr {R R' m m' j j' : PTm n}
     (hR : Γ ⊢[PRAAx] R ≐ R') (hm : Γ ⊢[PRAAx] m ≐ m') (hj : Γ ⊢[PRAAx] j ≐ j') : Γ ⊢[PRAAx]
     selectedRow R m j ≐ selectedRow R' m' j' := by
-  simpa using Prf.eqCongr (Γ := Γ) (selectedRow (var 0) (var 1) (var 2) : PTm 3)
-    (σ := ![R,m,j]) (σ' := ![R',m',j']) (fun i => by fin_cases i; exact hR; exact hm; exact hj)
+  ipra_congr (selectedRow (var 0) (var 1) (var 2) : PTm 3) with [hR, hm, hj]
 theorem selected_row_active (R m j : PTm n) (hj : Γ ⊢[PRAAx] lt (succ j) m) : Γ ⊢[PRAAx]
     selectedRow R m j ≐ Foundations.RuntimeAdjacentPermutationSwap.swapTuple R m j :=
   sel_one (AnalyticNumberTheory.Totatives.sg_lt hj)
@@ -125,8 +125,7 @@ theorem CS_shape (M m L j : PTm n) (h : Γ ⊢[PRAAx] tableShape M m L) : Γ ⊢
 theorem CS_congr {M M' m m' j j' : PTm n}
     (hM : Γ ⊢[PRAAx] M ≐ M') (hm : Γ ⊢[PRAAx] m ≐ m') (hj : Γ ⊢[PRAAx] j ≐ j') : Γ ⊢[PRAAx]
     CS M m j ≐ CS M' m' j' := by
-  simpa using Prf.eqCongr (Γ := Γ) (CS (var 0) (var 1) (var 2) : PTm 3)
-    (σ := ![M,m,j]) (σ' := ![M',m',j']) (fun i => by fin_cases i; exact hM; exact hm; exact hj)
+  ipra_congr (CS (var 0) (var 1) (var 2) : PTm 3) with [hM, hm, hj]
 
 /-- Columns compose a permutation word at its positions. This is not a
 row-label swap, which would compose its digit values instead. -/
@@ -178,8 +177,8 @@ theorem value_term_congr {M M' m m' L L' t t' z z' : PTm n}
     (hM : Γ ⊢[PRAAx] M ≐ M') (hm : Γ ⊢[PRAAx] m ≐ m') (hL : Γ ⊢[PRAAx] L ≐ L')
     (ht : Γ ⊢[PRAAx] t ≐ t') (hz : Γ ⊢[PRAAx] z ≐ z') : Γ ⊢[PRAAx]
     GaussianPolynomialDeterminant.valueTerm M m L t z ≐ GaussianPolynomialDeterminant.valueTerm M' m' L' t' z' := by
-  simpa using Prf.eqCongr (Γ := Γ) (GaussianPolynomialDeterminant.valueTerm (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5)
-    (σ := ![M,m,L,t,z]) (σ' := ![M',m',L',t',z']) (fun i => by fin_cases i; exact hM; exact hm; exact hL; exact ht; exact hz)
+  ipra_congr (GaussianPolynomialDeterminant.valueTerm (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) with
+    [hM, hm, hL, ht, hz]
 theorem value_reindexed (M m L j z t : PTm n)
     (ht : Γ ⊢[PRAAx] lt t (Foundations.RuntimePermutationWords.count m))
     (hj : Γ ⊢[PRAAx] lt (succ j) m) : Γ ⊢[PRAAx]
@@ -219,8 +218,7 @@ theorem field_at (M m L j z : PTm n) (i : Fin 5) : Γ ⊢[PRAAx] fields (pack M 
 theorem rank_congr {m m' j j' t t' : PTm n} (hm : Γ ⊢[PRAAx] m ≐ m')
     (hj : Γ ⊢[PRAAx] j ≐ j') (ht : Γ ⊢[PRAAx] t ≐ t') : Γ ⊢[PRAAx]
     Foundations.RuntimeAdjacentPermutationSwap.rankSwap m j t ≐ Foundations.RuntimeAdjacentPermutationSwap.rankSwap m' j' t' := by
-  simpa using Prf.eqCongr (Γ := Γ) (Foundations.RuntimeAdjacentPermutationSwap.rankSwap (var 0) (var 1) (var 2) : PTm 3)
-    (σ := ![m,j,t]) (σ' := ![m',j',t']) (fun i => by fin_cases i; exact hm; exact hj; exact ht)
+  ipra_congr (Foundations.RuntimeAdjacentPermutationSwap.rankSwap (var 0) (var 1) (var 2) : PTm 3) with [hm, hj, ht]
 theorem rank_body_at (M m L j z t : PTm n) : Γ ⊢[PRAAx]
     inst2 rankBody t (pack M m L j z) ≐ Foundations.RuntimeAdjacentPermutationSwap.rankSwap m j t := by
   simp only [rankBody,inst2,Foundations.RuntimeAdjacentPermutationSwap.subst_rankSwap,subst_fields,

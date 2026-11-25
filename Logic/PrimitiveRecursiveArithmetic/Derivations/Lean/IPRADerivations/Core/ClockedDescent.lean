@@ -1,4 +1,5 @@
 import IPRADerivations.Core.Descent
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Clocked descent
@@ -90,12 +91,10 @@ theorem inv_step (hstep : ([] : List (Fm PTm 1)) ⊢[PRAAx] P ⟶ (Pat P D ⋏ l
   refine .andI (Pat_congr e.eqSymm (Prf.andE₁ st)) ?_
   have lt' : Γ ⊢[PRAAx] lt (inst1 r (orb D (succ k) s)) (inst1 r (orb D k s)) :=
     le_congr (congrSucc (inst1_congr r e).eqSymm) (.eqRefl _) (Prf.andE₂ st)
-  have f := natEq (eq_add_of_le lt')
   have l : Γ ⊢[PRAAx] le (inst1 r (orb D (succ k) s) + succ k) (inst1 r (orb D k s) + k) :=
     le_of_eq_add (d := monus (inst1 r (orb D k s)) (succ (inst1 r (orb D (succ k) s)))) (by
-      apply deriveNat; ipra_simps; linear_combination f)
+      ipra_lc natEq (eq_add_of_le lt'))
   exact le_trans l (Prf.andE₂ ih)
-
 
 theorem subst_orb {m : ℕ} (σ : Fin n → PTm m) (k s : PTm n) :
     Syn.subst σ (orb D k s) = orb D (Syn.subst σ k) (Syn.subst σ s) := by simp [orb]
@@ -124,7 +123,7 @@ theorem clocked_at (hP : P.QF) (hstep : ([] : List (Fm PTm 1)) ⊢[PRAAx] P ⟶ 
   refine .impI ?_
   have c := Prf.andE₂ (Prf.impE i.wk Prf.hyp0)
   exact lt_irrefl (inst1 r s) _ (le_trans (le_of_eq_add (d := inst1 r (orb D (succ (inst1 r s)) s))
-    (by apply deriveNat; ipra_simps; ring)) c)
+    (by ipra_ring)) c)
 
 theorem Pat_var (P : Fm PTm 1) : Pat P (var 0 : PTm 1) = P := by
   simp only [Pat]

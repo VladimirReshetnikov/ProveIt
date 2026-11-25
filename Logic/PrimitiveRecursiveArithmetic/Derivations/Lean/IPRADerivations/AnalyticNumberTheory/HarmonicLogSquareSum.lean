@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.HarmonicLogSum
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The square-logarithm sum for the harmonic logarithm (`pnt_ipra_constructive_2026-11-14`, `sb:log-square-sum`)
@@ -83,7 +84,7 @@ abbrev J (k K L : PTm n) : Fm PTm n :=
 abbrev Hq (k K L N0 : PTm n) : Fm PTm n := le one K ⋏ (le (K * N0) L ⋏ le (succ k) N0)
 
 theorem j_zero (K L : PTm n) : Γ ⊢[PRAAx] J zero K L := by
-  have q1 : Γ ⊢[PRAAx] K * succ zero ≐ K := by apply deriveNat; ipra_simps; ring
+  have q1 : Γ ⊢[PRAAx] K * succ zero ≐ K := by ipra_ring
   have eu := natEq ((congrMonus (congrAp2 (sumF hB) q1 (.eqRefl (fact L))) (.eqRefl _)).eqTrans
     (le_refl (S K (fact L))) : Γ ⊢[PRAAx] U (succ zero) K (fact L) ≐ zero)
   have eQs := natEq (Q_succ (Γ := Γ) zero K (fact L))
@@ -91,7 +92,7 @@ theorem j_zero (K L : PTm n) : Γ ⊢[PRAAx] J zero K L := by
   have eS1 := natEq (S_succ (Γ := Γ) zero (fact L))
   have eS0 := natEq (sum_zero (Γ := Γ) hB (fact L))
   have eq1 := natEq (quo_eq (congrSucc (pred_succ _).eqSymm) (q := fact L) (r := zero)
-    (by apply deriveNat; ipra_simps; ring) (le_refl _) : Γ ⊢[PRAAx] quo (fact L) (succ zero) ≐ fact L)
+    (by ipra_ring) (le_refl _) : Γ ⊢[PRAAx] quo (fact L) (succ zero) ≐ fact L)
   refine .andI ?_ ?_
   · ipra_le 2 * 𝔞 (fact L) * 𝔞 (fact L) with eQs + eQ0 + 𝔞 (fact L) * eu -
       2 * 𝔞 (S (succ zero) (fact L)) * eu
@@ -103,17 +104,16 @@ theorem j_step {k K L N0 : PTm n} (h : Γ ⊢[PRAAx] Hq (succ k) K L N0) (ih : �
   have hL := Prf.andE₁ (Prf.andE₂ h)
   have hk := Prf.andE₂ (Prf.andE₂ h)
   have hKp := pos_of_lt_zero hK
-  have wK := natEq hKp
   have hKL : Γ ⊢[PRAAx] le (K * succ (succ k)) L := le_trans (le_scale K hk) hL
   have hNL : Γ ⊢[PRAAx] le (succ (succ k)) L := by
     refine le_trans (le_of_eq_add (d := pred K * succ (succ k)) ?_) hKL
-    apply deriveNat; ipra_simps; linear_combination (𝔞 k + 2) * wK
+    ipra_lc (𝔞 k + 2) * natEq hKp
   have inc := inc_lower hKp hKL
   have dl := delta_le (Γ := Γ) (succ k) (fact L) hKp
   have m1 : Γ ⊢[PRAAx] le (S K (fact L)) (S (K * succ k) (fact L)) :=
-    S_mono (fact L) (le_of_eq_add (d := K * k) (by apply deriveNat; ipra_simps; ring))
+    S_mono (fact L) (le_of_eq_add (d := K * k) (by ipra_ring))
   have m2 : Γ ⊢[PRAAx] le (S K (fact L)) (S (K * succ (succ k)) (fact L)) :=
-    S_mono (fact L) (le_of_eq_add (d := K * succ k) (by apply deriveNat; ipra_simps; ring))
+    S_mono (fact L) (le_of_eq_add (d := K * succ k) (by ipra_ring))
   have ex := natEq (eq_add_of_le m1)
   have ex' := natEq (eq_add_of_le m2)
   have f2 : Γ ⊢[PRAAx] le (U (succ k) K (fact L) + quo (fact L) (succ (succ k))) (U (succ (succ k)) K (fact L)) := by

@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.BlockSums
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The mass of a block of divisors (`pnt_ipra_constructive_2026-11-14`, `con:deficit`)
@@ -59,25 +60,15 @@ theorem t_f_prefix {x D K F : PTm n} (hD : Γ ⊢[PRAAx] le D x) :
     refine (RB_at _ _ _ _ _).eqTrans ?_
     have z := (ia_at (Γ := (le (Syn.shift (succ D)) (var 0) :: lt (var 0) (Syn.shift (succ x)) :: Γ.map Fm.shift))
       (var 0) (Syn.shift D) (pairT (Syn.shift K) (Syn.shift F))).eqTrans (ind0 hv)
-    have w := natEq z
-    apply deriveNat; ipra_simps
-    linear_combination (𝔞 (sg (var 0)) * 𝔞 (ap2 (sumF (LeanProofs.IPRA.AnalyticNumberTheory.ConvSummatory.bS fB))
-      (quo (Syn.shift x) (var 0)) (pairT (Syn.shift D) (pairT (Syn.shift K) (Syn.shift F))))) * w
+    ipra_lc (𝔞 (sg (var 0)) * 𝔞 (ap2 (sumF (LeanProofs.IPRA.AnalyticNumberTheory.ConvSummatory.bS fB)) (quo (Syn.shift x) (var 0)) (pairT (Syn.shift D) (pairT (Syn.shift K) (Syn.shift F))))) * natEq z
   · refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
     simp only [shift_pairT]
     have hv : (lt (var 0) (Syn.shift (succ D)) :: Γ.map Fm.shift) ⊢[PRAAx] le (var 0) (Syn.shift D) :=
       (succ_monus_succ _ _).eqSymm.eqTrans hyp_shift_succ
     refine (RB_at _ _ _ _ _).eqTrans (.eqTrans ?_ (gB_at _ _ _ _).eqSymm)
-    have o := natEq ((ia_at (Γ := (lt (var 0) (Syn.shift (succ D)) :: Γ.map Fm.shift)) (var 0) (Syn.shift D)
-      (pairT (Syn.shift K) (Syn.shift F))).eqTrans (ind1 hv))
-    have b := natEq (bs_f (Γ := (lt (var 0) (Syn.shift (succ D)) :: Γ.map Fm.shift)) (quo (Syn.shift x) (var 0))
-      (Syn.shift D) (Syn.shift K) (Syn.shift F))
-    have f := natEq (fB_at (Γ := (lt (var 0) (Syn.shift (succ D)) :: Γ.map Fm.shift)) (var 0) (Syn.shift D)
-      (Syn.shift K) (Syn.shift F))
-    apply deriveNat; ipra_simps
-    linear_combination (𝔞 (sg (var 0)) * 𝔞 (ap2 (sumF (LeanProofs.IPRA.AnalyticNumberTheory.ConvSummatory.bS fB))
-      (quo (Syn.shift x) (var 0)) (pairT (Syn.shift D) (pairT (Syn.shift K) (Syn.shift F))))) * o +
-      𝔞 (sg (var 0)) * b - 𝔞 (sg (var 0)) * 𝔞 (quo (Syn.shift x) (var 0)) * f
+    ipra_lc (𝔞 (sg (var 0)) * 𝔞 (ap2 (sumF (LeanProofs.IPRA.AnalyticNumberTheory.ConvSummatory.bS fB)) (quo (Syn.shift x) (var 0)) (pairT (Syn.shift D) (pairT (Syn.shift K) (Syn.shift F))))) * natEq ((ia_at (Γ := (lt (var 0) (Syn.shift (succ D)) :: Γ.map Fm.shift)) (var 0) (Syn.shift D) (pairT (Syn.shift K) (Syn.shift F))).eqTrans (ind1 hv)) +
+      𝔞 (sg (var 0)) * natEq (bs_f (Γ := (lt (var 0) (Syn.shift (succ D)) :: Γ.map Fm.shift)) (quo (Syn.shift x) (var 0)) (Syn.shift D) (Syn.shift K) (Syn.shift F)) -
+      𝔞 (sg (var 0)) * 𝔞 (quo (Syn.shift x) (var 0)) * natEq (fB_at (Γ := (lt (var 0) (Syn.shift (succ D)) :: Γ.map Fm.shift)) (var 0) (Syn.shift D) (Syn.shift K) (Syn.shift F))
 
 /-- `x S(D) − F D ≤ Σ_{n≤D} F⌊x/n⌋ ≤ x S(D)`, from `BlockFloor.f_sum` (any level in the parameter). -/
 theorem prefix_bounds {x D D' K L : PTm n} (hDL : Γ ⊢[PRAAx] le D L) :

@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.PowerDivisorPrefix
 import IPRADerivations.AnalyticNumberTheory.ConvolutionAssoc
 import IPRADerivations.AnalyticNumberTheory.SumReindex
 import IPRADerivations.AnalyticNumberTheory.LogRefinement
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # One row of the inversion along perfect powers (`riemann_ipra_prime_criteria_2026-11-20`, `thm:powerdivisor`)
@@ -124,12 +125,10 @@ theorem sg_mul_pos {d : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) (q : PTm
   refine .orE (lt_or_le zero q) ?_ ?_
   · let C : List (Fm PTm n) := lt zero q :: Γ
     have hq : C ⊢[PRAAx] q ≐ succ (pred q) := pos_of_one_le Prf.hyp0
-    have wd := natEq (hd.wk : C ⊢[PRAAx] _)
-    have wq := natEq hq
     have e : C ⊢[PRAAx] d * q ≐ succ (pred (d * q) ) := by
       refine pos_of_one_le ?_
       have p : C ⊢[PRAAx] d * q ≐ succ (pred d * q + pred q) := by
-        apply deriveNat; ipra_simps; linear_combination 𝔞 q * wd + wq
+        ipra_lc 𝔞 q * natEq (hd.wk : C ⊢[PRAAx] _) + natEq hq
       exact le_congr (.eqRefl _) p.eqSymm (by ipra_le 𝔞 (pred d * q + pred q))
     exact ((congrSg e).eqTrans (sg_succ _)).eqTrans ((congrSg hq).eqTrans (sg_succ _)).eqSymm
   · let C : List (Fm PTm n) := le q zero :: Γ
@@ -270,12 +269,12 @@ theorem row_identity {d h : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) (hh 
     have hl : (Γ.map Fm.shift) ⊢[PRAAx] lt (Syn.shift N) (pw (succ (Syn.shift N) + var 0) (Syn.shift h)) := by
       have l := lt_succ_pw hp' (Syn.shift N + var 0)
       have e : (Γ.map Fm.shift) ⊢[PRAAx] succ (Syn.shift N + var 0) ≐ succ (Syn.shift N) + var 0 := by
-        apply deriveNat; ipra_simps; ring
+        ipra_ring
       exact le_trans (by ipra_le 𝔞 (var 0)) (le_congr (.eqRefl _) (congrAp2 powF (.eqRefl _) e) l)
     have hq : (Γ.map Fm.shift) ⊢[PRAAx] pw (succ (Syn.shift N) + var 0) (Syn.shift h) ≐
         succ (pred (pw (succ (Syn.shift N) + var 0) (Syn.shift h))) := by
       have e : (Γ.map Fm.shift) ⊢[PRAAx] succ (Syn.shift N) + var 0 ≐ succ (Syn.shift N + var 0) := by
-        apply deriveNat; ipra_simps; ring
+        ipra_ring
       exact (congrAp2 powF (.eqRefl _) e).eqTrans ((pw_pos1 _).eqTrans
         (congrSucc (congrPred (congrAp2 powF (.eqRefl _) e.eqSymm))))
     refine (dmB_at a _ _ _ _ _).eqTrans ?_

@@ -50,7 +50,7 @@ theorem cell_hg {g p : PTm n} (hg : Γ ⊢[PRAAx] lt g (succ p)) : Γ ⊢[PRAAx]
   ipra_le 4 * sl hg + 1
 
 theorem cell_gap (g : PTm n) : Γ ⊢[PRAAx] monus (γc g) (αc g) ≐ two :=
-  monus_of_eq (by apply deriveNat; ipra_simps; ring)
+  monus_of_eq (by ipra_ring)
 
 theorem cell_hD (g : PTm n) : Γ ⊢[PRAAx] monus (γc g) (αc g) ≐ succ (pred (monus (γc g) (αc g))) :=
   pos_of_eq (cell_gap g)

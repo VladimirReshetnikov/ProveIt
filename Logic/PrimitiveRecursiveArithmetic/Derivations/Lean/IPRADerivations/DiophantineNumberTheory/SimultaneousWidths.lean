@@ -49,7 +49,7 @@ abbrev aT (N' : PTm n) : PTm n := num 8 * N' + num 9
 theorem widths_top (N' d' : PTm n) :
     Γ ⊢[PRAAx] le (aT N' * pw (HT N' d') (succ d')) (cT N' * pw (hT N' d') (succ d')) := by
   have hy : Γ ⊢[PRAAx] le (hT N' d') (HT N' d') :=
-    le_of_eq_add (d := one) (by apply deriveNat; ipra_simps; ring)
+    le_of_eq_add (d := one) (by ipra_ring)
   have gl := gd_le d' (le_refl (HT N' d')) hy
   have pd := natEq (power_diff (Γ := Γ) (HT N' d') (hT N' d') (succ d'))
   have ps := natEq (pw_succ (Γ := Γ) (HT N' d') d')
@@ -59,7 +59,7 @@ theorem widths_top (N' d' : PTm n) :
 
 /-- `1 ≤ H^{d'}`. -/
 theorem one_le_pw (N' d' : PTm n) : Γ ⊢[PRAAx] le one (pw (HT N' d') d') := by
-  have h1 : Γ ⊢[PRAAx] le one (HT N' d') := le_of_eq_add (d := hT N' d') (by apply deriveNat; ipra_simps; ring)
+  have h1 : Γ ⊢[PRAAx] le one (HT N' d') := le_of_eq_add (d := hT N' d') (by ipra_ring)
   exact le_congr (pw_one_base d') (.eqRefl _) (pw_le_pw d' h1)
 
 /-- `eq:sim-S`: if `k − 1` does not qualify and `k + 1 ≤ H`, then `N (k + 1)^d < H^d`. -/
@@ -68,7 +68,7 @@ theorem widths_S {N' d' k' : PTm n}
     (hk : Γ ⊢[PRAAx] le (succ (succ k')) (HT N' d')) :
     Γ ⊢[PRAAx] lt (succ N' * pw (succ (succ k')) (succ d')) (pw (HT N' d') (succ d')) := by
   have hy : Γ ⊢[PRAAx] le k' (HT N' d') :=
-    le_trans (le_of_eq_add (d := num 2) (by apply deriveNat; ipra_simps; ring)) hk
+    le_trans (le_of_eq_add (d := num 2) (by ipra_ring)) hk
   have gl := gd_le d' hk hy
   have pd := natEq (power_diff (Γ := Γ) (succ (succ k')) k' (succ d'))
   have ps := natEq (pw_succ (Γ := Γ) (HT N' d') d')

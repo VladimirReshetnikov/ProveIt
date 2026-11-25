@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.GaussianGammaEulerConvergence
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # A primitive-recursive C10 cutoff for the folded Euler approximants
@@ -86,11 +87,7 @@ def sample (p z R B : PTm n) : PTm n := ap2 nameF p (data z R B)
 theorem observation_congr {p p' z z' R R' B B' : PTm n}
     (hp : Γ ⊢[PRAAx] p ≐ p') (hz : Γ ⊢[PRAAx] z ≐ z') (hR : Γ ⊢[PRAAx] R ≐ R') (hB : Γ ⊢[PRAAx] B ≐ B') :
     Γ ⊢[PRAAx] observation p z R B ≐ observation p' z' R' B' := by
-  simpa only [subst_observation, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
-    Matrix.cons_val_three, Matrix.head_cons, Matrix.tail_cons] using
-    Prf.eqCongr (observation (var 0) (var 1) (var 2) (var 3) : PTm 4)
-      (σ := ![p,z,R,B]) (σ' := ![p',z',R',B'])
-      (fun i => by fin_cases i; exact hp; exact hz; exact hR; exact hB)
+  ipra_congr (observation (var 0) (var 1) (var 2) (var 3) : PTm 4) with [hp, hz, hR, hB]
 
 theorem sample_at (p z R B : PTm n) : Γ ⊢[PRAAx] sample p z R B ≐ observation p z R B := by
   have raw := toPR_eq (Γ := Γ)

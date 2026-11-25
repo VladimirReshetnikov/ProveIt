@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.FiniteSetExponential
 import IPRADerivations.Foundations.FilteredEnumeration
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The mixed-radix enumeration of a coordinate grid (`ipra_presentations_to_witnesses`, `thm:module-enumeration`)
@@ -132,10 +133,7 @@ theorem digit_neg {Z R : PTm k} (h : Γ ⊢[PRAAx] le Z R) :
 theorem pos_recover (Z R : PTm k) : Γ ⊢[PRAAx] monus (R + Z) R ≐ Z := add_monus' Z R
 
 /-- The absolute value is recovered from the digit of a negative coordinate. -/
-theorem neg_recover {Z R : PTm k} (h : Γ ⊢[PRAAx] le Z R) :
-    Γ ⊢[PRAAx] monus R (monus R Z) ≐ Z :=
-  (congrMonus ((eq_add_of_le h).eqTrans (add_comm _ _)) (.eqRefl _)).eqTrans
-    (add_monus' Z (monus R Z))
+alias neg_recover := Common.monus_monus_of_le
 
 /-! ## The list of retained tuples -/
 

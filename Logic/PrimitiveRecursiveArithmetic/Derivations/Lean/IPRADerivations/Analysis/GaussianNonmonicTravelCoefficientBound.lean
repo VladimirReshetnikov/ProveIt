@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianTranslationCoefficientBound
 import IPRADerivations.Analysis.GaussianDescentClock
 import IPRADerivations.Analysis.GaussianDominantAlpha
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Original coefficient apartness and the actual balanced starting radius
@@ -155,10 +156,7 @@ theorem weighted_selected_represents (C N z A B K : PTm n) (hB : Γ ⊢[PRAAx] l
   have rep := RationalRepresentations.represents_multiply (Γ := Γ) _ _ _ _ _ _
     (fraction_represents K one (le_refl one)) (selected_norm_represents C N z A B hB)
   apply GaussianRationalHorner.scalar_congr (.eqRefl _) (hAB := one_mul _) (h := rep)
-  apply ZT.derive
-  simp only [ZT.toZ_mul,ZT.toZ_ofNat]
-  ipra_simps
-  ring
+  ipra_lc
 
 theorem selected_lower (C N z A B k L M : PTm n)
     (hInput : Γ ⊢[PRAAx] GaussianTranslationCoefficientBound.input C N z A B)

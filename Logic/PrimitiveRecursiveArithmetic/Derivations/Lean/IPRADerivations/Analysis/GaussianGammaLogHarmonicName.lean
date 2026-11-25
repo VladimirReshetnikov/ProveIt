@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianGammaFiniteApproximantName
 import IPRADerivations.Analysis.GaussianExponentialReference
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The exact named harmonic identity for the two finite approximants
@@ -42,12 +43,9 @@ theorem sum_sample_at (p N : PTm n) (hN : Γ ⊢[PRAAx] le one N) :
   let l := GammaMeshRobinLogBridge.meshLogSample t N
   have hs := GammaMeshRobinLogBridge.fixed_log_samples_sum t N hN
   have ha : Γ ⊢[PRAAx] RationalGaussianEmbedding.embed (RationalArithmetic.add g l) ≐ harmonicPoint N := by
-    simpa only [RationalGaussianEmbedding.subst_embed, Syn.subst_var, Matrix.cons_val_zero,
-      harmonicPoint, GaussianGammaCanonicalExponent.harmonic, GammaMeshRobinLogBridge.harmonicValue,
-      RationalCubeMidpoint.fraction] using
-      Prf.eqCongr (RationalGaussianEmbedding.embed (var 0) : PTm 1)
-        (σ := ![RationalArithmetic.add g l]) (σ' := ![GammaMeshRobinLogBridge.harmonicValue N])
-        (fun i => by fin_cases i; exact hs)
+    ipra_congr (RationalGaussianEmbedding.embed (var 0) : PTm 1) with
+      [hs] using [harmonicPoint, GaussianGammaCanonicalExponent.harmonic, GammaMeshRobinLogBridge.harmonicValue,
+        RationalCubeMidpoint.fraction]
   have hg := RationalGaussianNameEmbedding.sample_at (Γ := Γ) GammaEulerConstantName.fixedF t N
   have hl := RationalGaussianNameEmbedding.sample_at (Γ := Γ) GammaMeshRobinLogBridge.meshLogF t N
   have main := (GaussianRationalSyntheticDivision.qadd_congr hg hl).eqTrans

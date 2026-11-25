@@ -1,7 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.PellAll
 import IPRADerivations.DiophantineNumberTheory.PellGenDescent
 import IPRADerivations.DiophantineNumberTheory.PellCFStep
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Finite seeds and uniform decision for `x² − D y² = N`

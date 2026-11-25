@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianRationalCurveFibers
 import IPRADerivations.Analysis.GaussianPolynomialMonicNorm
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual numerical fiber Vandermonde rows and polynomial row products
@@ -63,8 +64,7 @@ theorem row_lookup (f : PTm 3) (b x r j : PTm n) (hj : Γ ⊢[PRAAx] lt j b) : �
 theorem row_congr (f : PTm 3) {b b' x x' r r' : PTm n}
     (hb : Γ ⊢[PRAAx] b ≐ b') (hx : Γ ⊢[PRAAx] x ≐ x') (hr : Γ ⊢[PRAAx] r ≐ r') : Γ ⊢[PRAAx]
     row f b x r ≐ row f b' x' r' := by
-  simpa using Prf.eqCongr (Γ := Γ) (row f (var 0) (var 1) (var 2) : PTm 3)
-    (σ := ![b,x,r]) (σ' := ![b',x',r']) (fun i => by fin_cases i; exact hb; exact hx; exact hr)
+  ipra_congr (row f (var 0) (var 1) (var 2) : PTm 3) with [hb, hx, hr]
 theorem table_body_at (f : PTm 3) (b x r : PTm n) : Γ ⊢[PRAAx]
     inst2 (tableBody f) r (pairT b x) ≐ row f b x r := by
   simp only [tableBody,inst2,subst_row,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]

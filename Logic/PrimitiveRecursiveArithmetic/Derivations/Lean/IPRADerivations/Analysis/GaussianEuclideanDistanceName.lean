@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.GaussianEuclideanPointDistance
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Actual Euclidean distance names and their finite cuts
@@ -85,10 +86,7 @@ theorem cut_represents (A B m : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PR
   have h := RationalRepresentations.represents_add (Γ := Γ) _ _ _ _ _ _
     (fraction_represents A B hB) (fraction_represents one (unit m) (unit_positive m))
   apply GaussianRationalHorner.scalar_congr (.eqRefl _) (hAB := .eqRefl _) (h := h)
-  apply ZT.derive
-  simp only [ZT.toZ_add,ZT.toZ_mul,ZT.toZ_ofNat]
-  ipra_simps
-  ring
+  ipra_lc
 
 theorem cut_fraction (A B m : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx]
     cutRadius A B m ≐ fraction (A*unit m+B) (B*unit m) := by

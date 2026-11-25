@@ -69,7 +69,7 @@ theorem invariant_open : ([] : List (Fm PTm 1)) ⊢[PRAAx] invariant (a' := a') 
     have hq : [invariant (a' := a')] ⊢[PRAAx] le (succ (var 0)) (q a' (succ (var 0))) := by
       refine le_trans h₂ (le_congr (.eqRefl _) e₁.eqSymm (le_of_eq_add
         (d := ap1 a' (succ (var 0)) * q a' (var 0)) ?_))
-      apply deriveNat; ipra_simps; ring
+      ipra_ring
     refine .andI hq (.andI ?_ ?_)
     · refine le_congr ((succ_eq_add_one _).eqSymm) (congrAdd (.eqRefl _) e₂.eqSymm) (add_le_add hq h₃)
     · exact le_trans (le_congr (.eqRefl _) (.eqRefl _) (le_of_eq_add (d := var 0)

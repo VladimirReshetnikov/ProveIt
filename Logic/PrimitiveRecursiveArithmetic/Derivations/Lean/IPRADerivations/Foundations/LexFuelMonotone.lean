@@ -194,7 +194,7 @@ theorem fuel_step {h : PTm 2}
         rw [F_succ_at]
         refine le_trans ?_ (grow_iter (F h d) (fuel_step hh d) _ x u)
         refine le_of_eq_add (d := inst2 h x u) ?_
-        apply deriveNat; ipra_simps; ring }
+        ipra_ring }
 
 /-- `F_d(x, s) ≥ s + 1`. -/
 theorem fuel_grow {h : PTm 2}

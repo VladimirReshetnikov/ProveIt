@@ -2,6 +2,7 @@ import IPRADerivations.DiophantineNumberTheory.FourSquaresDescent
 import IPRADerivations.DiophantineNumberTheory.FourSquaresSeed
 import IPRADerivations.DiophantineNumberTheory.FermatTwoSquares
 import IPRADerivations.Foundations.StrongInduction
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Lagrange's four-square theorem with primitive recursive witnesses
@@ -164,8 +165,7 @@ theorem l_one {i p : PTm k} (hi : Γ ⊢[PRAAx] le one i) (hr : Γ ⊢[PRAAx] R 
 
 theorem seed_alg {a b p m0 : PTm k} (es : Γ ⊢[PRAAx] a * a + (b * b + one) ≐ p * m0 + zero) :
     Γ ⊢[PRAAx] N4 a b one zero ≐ m0 * p := by
-  have x := natEq es
-  apply deriveNat; ipra_simps; linear_combination x
+  ipra_lc natEq es
 
 /-- Every odd prime is a sum of four squares. -/
 theorem rep_odd_prime {p : PTm k} (hp : Γ ⊢[PRAAx] prime p) (ep : Γ ⊢[PRAAx] p ≐ two * half p + one) :
@@ -179,10 +179,9 @@ theorem rep_odd_prime {p : PTm k} (hp : Γ ⊢[PRAAx] prime p) (ep : Γ ⊢[PRAA
     (Prf.andE₁ (dm hp1 _)).eqTrans (congrAdd (.eqRefl _) (Prf.andE₁ sd))
   have m0pos : Γ ⊢[PRAAx] le one (quo (sa p * sa p + (sb p * sb p + one)) p) := by
     refine .orE (zero_or_succ (quo (sa p * sa p + (sb p * sb p + one)) p)) ?_ (one_le_pos Prf.hyp0)
-    have z0 := natEq (Prf.hyp0 (Γ := Γ) (φ := quo (sa p * sa p + (sb p * sb p + one)) p ≐ zero))
     have esn' := natEq (es.wk (ψ := quo (sa p * sa p + (sb p * sb p + one)) p ≐ zero))
     refine succ_ne_zero' (a := sa p * sa p + sb p * sb p) _ ?_
-    apply deriveNat; ipra_simps; linear_combination esn' + 𝔞 p * z0
+    ipra_lc esn' + 𝔞 p * natEq (Prf.hyp0 (Γ := Γ) (φ := quo (sa p * sa p + (sb p * sb p + one)) p ≐ zero))
   have m0lt : Γ ⊢[PRAAx] lt (quo (sa p * sa p + (sb p * sb p + one)) p) p := by
     refine .orE (lt_or_le (quo (sa p * sa p + (sb p * sb p + one)) p) p) Prf.hyp0 ?_
     have hle : (le p (quo (sa p * sa p + (sb p * sb p + one)) p) :: Γ) ⊢[PRAAx]
@@ -217,9 +216,8 @@ theorem rep_odd_prime {p : PTm k} (hp : Γ ⊢[PRAAx] prime p) (ep : Γ ⊢[PRAA
     have nz := l_one (Prf.andE₁ (Prf.andE₂ dsc)) r'
     exact .botE _ (.impE nz (ex_least lB (Prf.andE₂ (Prf.andE₂ dsc))))
   · -- `m* = 1`
-    have h1 := natEq (Prf.hyp0 (Γ := Γ) (φ := one ≐ ms p))
     have e : ((one ≐ ms p) :: Γ) ⊢[PRAAx] ms p * p ≐ p := by
-      apply deriveNat; ipra_simps; linear_combination (-𝔞 p) * h1
+      ipra_lc (-𝔞 p) * natEq (Prf.hyp0 (Γ := Γ) (φ := one ≐ ms p))
     exact rep_intro (nx.wk.eqTrans e)
 
 /-- Every prime is a sum of four squares. -/

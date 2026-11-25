@@ -2,6 +2,8 @@ import IPRADerivations.Analysis.GaussianRationalDirectionNormalizer
 import IPRADerivations.Analysis.GaussianRationalPhaseCertificate
 import IPRADerivations.Analysis.RationalNonnegativePowers
 import IPRADerivations.Analysis.GaussianDominantScalarOrder
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The computed rational amplitude of a dominant pair
@@ -106,8 +108,7 @@ theorem phase_positive (b0 bk : PTm n) (h0 : Γ ⊢[PRAAx] le one (norm b0))
   exact GaussianDominantScalarOrder.factor_positive_left (norm (phase b0 bk)) ((rawDen b0*rawDen b0)*(rawDen bk*rawDen bk))
     (le_congr (.eqRefl _) (by ipra_ring) scaled)
 
-theorem power_double (A k : PTm n) : Γ ⊢[PRAAx] pw A (two*k) ≐ pw A k*pw A k :=
-  (congrAp2 powF (by ipra_ring) (.eqRefl A)).eqTrans (pw_add A k k)
+alias power_double := Common.pw_double
 
 theorem radial_represents (bk A B k : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx]
     RationalArithmetic.represents (radialScore bk A B k) (ZT.ofNat (pw A k*pw A k*norm bk))
@@ -142,10 +143,7 @@ theorem radial_lower_cleared (b0 bk A B k D : PTm n) (hB : Γ ⊢[PRAAx] le one 
       (ZT.ofNat (D*D*pw A k*pw A k*norm bk))
       ((pw B k*pw B k)*(rawDen bk*rawDen bk)) := by
     apply GaussianRationalHorner.scalar_congr (.eqRefl _) (hAB := one_mul _) (h := scaledRaw)
-    apply ZT.derive
-    simp only [ZT.toZ_mul,ZT.toZ_ofNat]
-    ipra_simps
-    ring
+    ipra_lc
   have raw := GaussianRationalMetric.comparison_to_cleared _ _ _ _ _ _
     (GaussianRationalMetric.qnormSq_represents _ _ _ (raw_den_positive b0) (raw_represents b0)) scaled h
   exact le_congr (by unfold norm; ipra_ring) (.eqRefl _) raw
@@ -161,11 +159,7 @@ theorem upper_kernel (r t u v a b c f s z : PTm n)
   have first : Γ ⊢[PRAAx] le ((r*v*f*c)*(r*v*f*c)*(a*a))
       ((t*t*b*b*b*b*a*a)*(z*f*f)) := by
     apply le_congr (by ipra_ring) ?_ (mul_le_mul_right (v*f*f*c*c) hScore)
-    apply deriveNat
-    have e := natEq hPhase
-    simp only [IPRA.Q.mk_mul,map_mul] at e
-    ipra_simps
-    linear_combination -(𝔞(t)*𝔞(t)*𝔞(b)*𝔞(b)*𝔞(f)*𝔞(f))*e
+    ipra_lc -(𝔞(t)*𝔞(t)*𝔞(b)*𝔞(b)*𝔞(f)*𝔞(f))*natEq hPhase
   have second : Γ ⊢[PRAAx] le ((t*t*b*b*b*b*a*a)*(z*f*f))
       ((t*b*b*s)*(t*b*b*s)*(a*a)) :=
     le_congr (by ipra_ring) (by ipra_ring) (mul_le_mul_right (t*t*b*b*b*b*a*a) hNormalizer)
@@ -182,11 +176,7 @@ theorem lower_kernel (r t u v a b c f s z D : PTm n)
   have first : Γ ⊢[PRAAx] le ((sixtyFour*(t*b*b*s))*(sixtyFour*(t*b*b*s))*(a*a))
       ((sixtyFive*sixtyFive*v*f*f*c*c)*(t*t*u*b*b)) := by
     apply le_congr (by ipra_ring) ?_ (mul_le_mul_right (t*t*b*b*b*b*a*a) hNormalizer)
-    apply deriveNat
-    have e := natEq hPhase
-    simp only [IPRA.Q.mk_mul,map_mul] at e
-    ipra_simps
-    linear_combination (𝔞(sixtyFive)*𝔞(sixtyFive)*𝔞(t)*𝔞(t)*𝔞(b)*𝔞(b)*𝔞(f)*𝔞(f))*e
+    ipra_lc (𝔞(sixtyFive)*𝔞(sixtyFive)*𝔞(t)*𝔞(t)*𝔞(b)*𝔞(b)*𝔞(f)*𝔞(f))*natEq hPhase
   have second : Γ ⊢[PRAAx] le ((sixtyFive*sixtyFive*v*f*f*c*c)*(t*t*u*b*b))
       ((sixtyFive*D*(r*v*f*c))*(sixtyFive*D*(r*v*f*c))*(a*a)) :=
     le_congr (by ipra_ring) (by ipra_ring) (mul_le_mul_right (sixtyFive*sixtyFive*v*f*f*c*c) hScore)
@@ -202,11 +192,7 @@ theorem relative_kernel (r t u v a b c f s z : PTm n)
     le ((a*a)*((sixtyFour*(t*b*b*s))*(sixtyFour*(t*b*b*s))*(r*r*v)))
       (((sixtyFive*(r*v*f*c))*(sixtyFive*(r*v*f*c))*u)*(t*t*b*b)) := by
   apply le_congr (by ipra_ring) ?_ (mul_le_mul_right (t*t*b*b*b*b*a*a*r*r*v) hNormalizer)
-  apply deriveNat
-  have e := natEq hPhase
-  simp only [IPRA.Q.mk_mul,map_mul] at e
-  ipra_simps
-  linear_combination (𝔞(sixtyFive)*𝔞(sixtyFive)*𝔞(t)*𝔞(t)*𝔞(b)*𝔞(b)*𝔞(f)*𝔞(f)*𝔞(r)*𝔞(r)*𝔞(v))*e
+  ipra_lc (𝔞(sixtyFive)*𝔞(sixtyFive)*𝔞(t)*𝔞(t)*𝔞(b)*𝔞(b)*𝔞(f)*𝔞(f)*𝔞(r)*𝔞(r)*𝔞(v))*natEq hPhase
 
 theorem denominator_positive (b0 bk B k H : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx]
     le one (Q b0 bk B k H) := positive_product _ _

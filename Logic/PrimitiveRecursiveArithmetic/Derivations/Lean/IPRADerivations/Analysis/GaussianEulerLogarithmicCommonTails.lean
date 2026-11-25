@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianEulerLogarithmicLowerGuardBound
 import IPRADerivations.Analysis.GaussianEulerLogarithmicUpperCutoffBudget
 import IPRADerivations.Analysis.GaussianEulerLogarithmicCommonCutoff
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Both actual logarithmic tails at the common expanded cutoffs
@@ -149,12 +150,8 @@ theorem upper_zero (p j z R B A k l : PTm n) (hkl : Γ ⊢[PRAAx] k ≐ l) : Γ 
   let a := E*top k (two*A) (R+j)
   have width : Γ ⊢[PRAAx] upperWidth k l (two*A) (R+j) ≐ zero := by
     have first : Γ ⊢[PRAAx] upperWidth k l (two*A) (R+j) ≐ upperWidth k k (two*A) (R+j) := by
-      simpa only [GaussianGammaCompactCutoffGeometry.subst_upperWidth,Syn.subst_var,
-        Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_three,Matrix.cons_val_four,
-        Matrix.cons_val_succ,Matrix.head_cons,Matrix.tail_cons] using
-        Prf.eqCongr (Γ := Γ) (upperWidth (var 0) (var 1) (var 2) (var 3) : PTm 4)
-        (σ := ![k,l,two*A,R+j]) (σ' := ![k,k,two*A,R+j])
-        (fun i => by fin_cases i; exact .eqRefl _; exact hkl.eqSymm; exact .eqRefl _; exact .eqRefl _)
+      ipra_congr (upperWidth (var 0) (var 1) (var 2) (var 3) : PTm 4) with
+        [.eqRefl k, hkl.eqSymm, .eqRefl (two*A), .eqRefl (R+j)]
     exact first.eqTrans (GaussianGammaCompactCutoffGeometry.same_upper k (two*A) (R+j))
   have sameData : Γ ⊢[PRAAx] upperData j z R B A k l ≐ data j z R B a zero E T :=
     data_congr j z R B a (upperWidth k l (two*A) (R+j)) E T a zero E T (.eqRefl _) width (.eqRefl _) (.eqRefl _)

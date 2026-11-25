@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.RationalPolynomialMonicNorm
 import IPRADerivations.Analysis.GaussianSuperellipticTail
 import IPRADerivations.Foundations.SequenceEquality
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The original rational coefficient table of Y^m - f(X)
@@ -87,9 +88,7 @@ theorem tail_shape (f m c : PTm n) (hf : Γ ⊢[PRAAx] length f ≐ succ c) :
 
 private theorem sequence_width_congr (b : PTm 2) (x : PTm n) {N M : PTm n} (h : Γ ⊢[PRAAx] N ≐ M) :
     Γ ⊢[PRAAx] sequence b N x ≐ sequence b M x := by
-  simpa [Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using
-    Prf.eqCongr (Γ := Γ) (sequence b (var 0) (var 1) : PTm 2) (σ := ![N,x]) (σ' := ![M,x])
-      (fun i => by fin_cases i; exact h; exact .eqRefl _)
+  ipra_congr (sequence b (var 0) (var 1) : PTm 2) with [h, .eqRefl x]
 
 /-- Only constructed sequences are compared by their protected entries. -/
 private theorem sequence_layout_equal (A B N M x y : PTm n) (p q : PTm 2)
@@ -199,11 +198,8 @@ theorem returned_table_embedding (f m c : PTm n) (hm : Γ ⊢[PRAAx] le one m) (
       GaussianSuperellipticTail.tailRows (coefficients f (succ c)) m c := by
   have moved : Γ ⊢[PRAAx] RationalRowSpanGaussianEmbedding.matrix (ap3 tailF f m c) m (succ c) ≐
       RationalRowSpanGaussianEmbedding.matrix (tailRows f m c) m (succ c) := by
-    simpa only [RationalRowSpanGaussianEmbedding.subst_matrix,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-      Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using
-      Prf.eqCongr (Γ := Γ) (RationalRowSpanGaussianEmbedding.matrix (var 0) (var 1) (var 2) : PTm 3)
-        (σ := ![ap3 tailF f m c,m,succ c]) (σ' := ![tailRows f m c,m,succ c])
-        (fun i => by fin_cases i; exact program_at f m c; exact .eqRefl _; exact .eqRefl _)
+    ipra_congr (RationalRowSpanGaussianEmbedding.matrix (var 0) (var 1) (var 2) : PTm 3) with
+      [program_at f m c, .eqRefl m, .eqRefl (succ c)]
   exact moved.eqTrans (table_embedding f m c hm hf)
 
 theorem actual_rational_superelliptic_tail_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3

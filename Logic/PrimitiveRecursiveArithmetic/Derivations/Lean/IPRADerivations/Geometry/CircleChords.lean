@@ -1,4 +1,5 @@
 import IPRADerivations.Geometry.TriangleCentres
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Chords, Thales' theorem, inversion and Ptolemy's inequality
@@ -46,6 +47,7 @@ def pm₂ (u₁ u₂ v₁ v₂ : ZT n) : ZT n := u₁ * v₂ + u₂ * v₁
 local macro "gsimp" loc:(Lean.Parser.Tactic.location)? : tactic =>
   `(tactic| simp only [dot, det, nsq, pm₁, pm₂, zsl_def, ZT.toZ_add, ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_neg,
     ZT.toZ_sq, ZT.toZ_natLit, Nat.cast_ofNat, Nat.cast_zero, Nat.cast_one] $[$loc]?)
+attribute [local ipra_defs] dot det nsq pm₁ pm₂
 
 local macro "geo" : tactic => `(tactic| (apply ZT.derive; gsimp; ring))
 
@@ -55,36 +57,33 @@ local macro "geo" : tactic => `(tactic| (apply ZT.derive; gsimp; ring))
 theorem chord_midpoint (a₁ a₂ b₁ b₂ o₁ o₂ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (dot (a₁ + b₁ - ZT.natLit 2 * o₁) (a₂ + b₂ - ZT.natLit 2 * o₂) (b₁ - a₁) (b₂ - a₂))
       (nsq (b₁ - o₁) (b₂ - o₂) - nsq (a₁ - o₁) (a₂ - o₂)) := by
-  geo
+  ipra_lc
 
 /-- `|B − A|² + |A + B − 2O|² = 2 |A − O|² + 2 |B − O|²`. -/
 theorem chord_distance (a₁ a₂ b₁ b₂ o₁ o₂ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq
       (nsq (b₁ - a₁) (b₂ - a₂) + nsq (a₁ + b₁ - ZT.natLit 2 * o₁) (a₂ + b₂ - ZT.natLit 2 * o₂))
       (ZT.natLit 2 * nsq (a₁ - o₁) (a₂ - o₂) + ZT.natLit 2 * nsq (b₁ - o₁) (b₂ - o₂)) := by
-  geo
+  ipra_lc
 
 /-- A chord is at most the diameter: `|B − A|² ≤ 2 |A − O|² + 2 |B − O|²` (`= 4ρ` on the circle). -/
 theorem chord_le_diameter (a₁ a₂ b₁ b₂ o₁ o₂ : ZT n) :
     Γ ⊢[PRAAx] zle (nsq (b₁ - a₁) (b₂ - a₂))
       (ZT.natLit 2 * nsq (a₁ - o₁) (a₂ - o₂) + ZT.natLit 2 * nsq (b₁ - o₁) (b₂ - o₂)) := by
-  refine zle_of_comb (ZT.toZ Γ (a₁ + b₁ - ZT.natLit 2 * o₁) ^ 2 +
-    ZT.toZ Γ (a₂ + b₂ - ZT.natLit 2 * o₂) ^ 2) ?_ (nn_add (nn_zsq _) (nn_zsq _))
-  gsimp
-  ring
+  ipra_zle (ZT.toZ Γ (a₁ + b₁ - ZT.natLit 2 * o₁) ^ 2 + ZT.toZ Γ (a₂ + b₂ - ZT.natLit 2 * o₂) ^ 2)
 
 /-- Thales: `4 (A − P) · (C − P) = |2P − A − C|² − |C − A|²`. -/
 theorem thales (a₁ a₂ c₁ c₂ p₁ p₂ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (ZT.natLit 4 * dot (a₁ - p₁) (a₂ - p₂) (c₁ - p₁) (c₂ - p₂))
       (nsq (ZT.natLit 2 * p₁ - a₁ - c₁) (ZT.natLit 2 * p₂ - a₂ - c₂) - nsq (c₁ - a₁) (c₂ - a₂)) := by
-  geo
+  ipra_lc
 
 /-- The line–circle equation: `|A + t v − O|² − |A − O|² = t (t |v|² + 2 (A − O) · v)`. -/
 theorem line_circle (a₁ a₂ o₁ o₂ v₁ v₂ t : ZT n) :
     Γ ⊢[PRAAx] ZT.eq
       (nsq (a₁ + t * v₁ - o₁) (a₂ + t * v₂ - o₂) - nsq (a₁ - o₁) (a₂ - o₂))
       (t * (t * nsq v₁ v₂ + ZT.natLit 2 * dot (a₁ - o₁) (a₂ - o₂) v₁ v₂)) := by
-  geo
+  ipra_lc
 
 /-! ## Inversion and the pair product -/
 
@@ -93,12 +92,12 @@ theorem inversion_distance (p₁ p₂ q₁ q₂ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq
       (nsq (nsq q₁ q₂ * p₁ - nsq p₁ p₂ * q₁) (nsq q₁ q₂ * p₂ - nsq p₁ p₂ * q₂))
       (nsq p₁ p₂ * nsq q₁ q₂ * nsq (p₁ - q₁) (p₂ - q₂)) := by
-  geo
+  ipra_lc
 
 /-- `|u ⋆ v|² = |u|² |v|²`. -/
 theorem pair_norm (u₁ u₂ v₁ v₂ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (nsq (pm₁ u₁ u₂ v₁ v₂) (pm₂ u₁ u₂ v₁ v₂)) (nsq u₁ u₂ * nsq v₁ v₂) := by
-  geo
+  ipra_lc
 
 /-- `c ⋆ (d − b) = b ⋆ (d − c) + d ⋆ (c − b)`, in both coordinates. -/
 theorem ptolemy_identity (b₁ b₂ c₁ c₂ d₁ d₂ : ZT n) :
@@ -137,9 +136,7 @@ theorem ptolemy_inequality {b₁ b₂ c₁ c₂ d₁ d₂ s t : ZT n}
   have et := ZT.toZ_eq ht
   gsimp at es et
   have hst : Γ ⊢[PRAAx] zle (ZT.natLit 0) (s * t) := by
-    refine zle_of_comb (zsl hs0 * zsl ht0) ?_ (nn_mul (nn_zsl _) (nn_zsl _))
-    gsimp
-    ring
+    ipra_zle (zsl hs0 * zsl ht0)
   have hsq : Γ ⊢[PRAAx] zle
       (ZT.sq (dot (pm₁ b₁ b₂ (d₁ - c₁) (d₂ - c₂)) (pm₂ b₁ b₂ (d₁ - c₁) (d₂ - c₂))
         (pm₁ d₁ d₂ (c₁ - b₁) (c₂ - b₂)) (pm₂ d₁ d₂ (c₁ - b₁) (c₂ - b₂))))
@@ -150,8 +147,6 @@ theorem ptolemy_inequality {b₁ b₂ c₁ c₂ d₁ d₂ s t : ZT n}
     have eprod := congr (congrArg HMul.hMul es) et
     linear_combination eprod
   have hP := zle_of_sq_le hst hsq
-  refine zle_of_comb (2 * zsl hP) ?_ (nn_mul (nn_ofNat 2) (nn_zsl _))
-  gsimp
-  linear_combination es + et
+  ipra_zle (2 * zsl hP) with es + et
 
 end LeanProofs.IPRA.Geometry.CircleChords

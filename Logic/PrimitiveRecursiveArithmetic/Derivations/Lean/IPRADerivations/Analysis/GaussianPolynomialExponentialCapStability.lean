@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.GaussianRationalPolynomialExponentialStability
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Exact cap independence of the original finite exponential coefficients
@@ -37,11 +38,7 @@ def parts (N j Q P : PTm n) : PTm n :=
 
 theorem parts_congr (N j : PTm n) {Q Q' P P' : PTm n} (hQ : Γ ⊢[PRAAx] Q ≐ Q')
     (hP : Γ ⊢[PRAAx] P ≐ P') : Γ ⊢[PRAAx] parts N j Q P ≐ parts N j Q' P' := by
-  simpa only [subst_parts,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-    Matrix.cons_val_two,Matrix.cons_val_three,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (parts (var 0) (var 1) (var 2) (var 3) : PTm 4)
-      (σ := ![N,j,Q,P]) (σ' := ![N,j,Q',P'])
-      (fun i => by fin_cases i; exact .eqRefl _; exact .eqRefl _; exact hQ; exact hP)
+  ipra_congr (parts (var 0) (var 1) (var 2) (var 3) : PTm 4) with [.eqRefl N, .eqRefl j, hQ, hP]
 
 def capLaw (C N K H j : PTm n) : Fm PTm n := le j K ⟶ le j H ⟶
   powerPrefix C N K j ≐ powerPrefix C N H j ⋏ stage C N K j ≐ stage C N H j

@@ -2,6 +2,7 @@ import IPRADerivations.DiophantineNumberTheory.RectangleCount
 import IPRADerivations.DiophantineNumberTheory.ModularCertificate
 import IPRADerivations.AnalyticNumberTheory.ConvolutionAssoc
 import IPRADerivations.AnalyticNumberTheory.RSA
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Folded residues
@@ -59,15 +60,11 @@ abbrev fold (p r : PTm n) : PTm n :=
 
 theorem f_zero {E ne M r : PTm n} (hE : Γ ⊢[PRAAx] E ≐ zero) (hn : Γ ⊢[PRAAx] ne ≐ one) :
     Γ ⊢[PRAAx] E * M + ne * r ≐ r := by
-  have a := natEq hE; have b := natEq hn
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 M * a + 𝔞 r * b
+  ipra_lc 𝔞 M * natEq hE + 𝔞 r * natEq hn
 
 theorem f_one {E ne M r : PTm n} (hE : Γ ⊢[PRAAx] E ≐ one) (hn : Γ ⊢[PRAAx] ne ≐ zero) :
     Γ ⊢[PRAAx] E * M + ne * r ≐ M := by
-  have a := natEq hE; have b := natEq hn
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 M * a + 𝔞 r * b
+  ipra_lc 𝔞 M * natEq hE + 𝔞 r * natEq hn
 
 /-- `fold p r = r` for `r ≤ ⌊p/2⌋`. -/
 theorem fold_small {p r : PTm n} (h : Γ ⊢[PRAAx] le r (half p)) : Γ ⊢[PRAAx] fold p r ≐ r := by
@@ -144,7 +141,7 @@ theorem rem_pos {p a P i : PTm n} (e2 : Γ ⊢[PRAAx] p ≐ two * P + one) (hc :
     (hi : Γ ⊢[PRAAx] lt i P) :
     Γ ⊢[PRAAx] rem (succ i * a) p ≐ succ (pred (rem (succ i * a) p)) := by
   have hp1 : Γ ⊢[PRAAx] p ≐ succ (pred p) :=
-    pos_of_eq_succ (c := two * P) (e2.eqTrans (by apply deriveNat; ipra_simps; ring))
+    pos_of_eq_succ (c := two * P) (e2.eqTrans (by ipra_ring))
   refine .orE (zero_or_succ (rem (succ i * a) p)) ?_ Prf.hyp0
   have d1 : ((rem (succ i * a) p ≐ zero) :: Γ) ⊢[PRAAx] dvd p (a * succ i) :=
     (congrAp2 remF (mul_comm _ _) (.eqRefl _)).eqTrans Prf.hyp0
@@ -177,7 +174,7 @@ theorem eq_of_dvd_lt_two {s p : PTm n} (hp1 : Γ ⊢[PRAAx] p ≐ succ (pred p))
   · refine .orE (zero_or_succ (pred (quo s p))) ?_ ?_
     · have k1 : ((pred (quo s p) ≐ zero) :: (quo s p ≐ succ (pred (quo s p))) :: Γ) ⊢[PRAAx] quo s p ≐ one :=
         Prf.hyp1.eqTrans (congrSucc Prf.hyp0)
-      exact e.wk.wk.eqTrans ((congrMul (.eqRefl _) k1).eqTrans (by apply deriveNat; ipra_simps; ring))
+      exact e.wk.wk.eqTrans ((congrMul (.eqRefl _) k1).eqTrans (by ipra_ring))
     · have k2 : ((pred (quo s p) ≐ succ (pred (pred (quo s p)))) :: (quo s p ≐ succ (pred (quo s p))) :: Γ)
           ⊢[PRAAx] quo s p ≐ succ (succ (pred (pred (quo s p)))) := Prf.hyp1.eqTrans (congrSucc Prf.hyp0)
       exact two_absurd _ hs2.wk.wk (e.wk.wk.eqTrans (congrMul (.eqRefl _) k2))
@@ -191,23 +188,21 @@ theorem sum_lt_two {rx c p h : PTm n} (ep : Γ ⊢[PRAAx] p ≐ two * h + one) (
 
 theorem add_alg {b R a' p : PTm n} (h : Γ ⊢[PRAAx] b + R ≐ p) :
     Γ ⊢[PRAAx] b * a' + R * a' ≐ p * a' + zero := by
-  have x := natEq h
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 a' * x
+  ipra_lc 𝔞 a' * natEq h
 
 /-- `rem (R a') p = i + 1` for `R = (i + 1) a mod p` when `a a' ≡ 1 (mod p)`. -/
 theorem back {p a a' i : PTm n} (ep : Γ ⊢[PRAAx] p ≐ two * half p + one)
     (hinv : Γ ⊢[PRAAx] rem (a * a') p ≐ rem one p) (hi : Γ ⊢[PRAAx] lt i (half p)) :
     Γ ⊢[PRAAx] rem (rem (succ i * a) p * a') p ≐ succ i := by
   have hp1 : Γ ⊢[PRAAx] p ≐ succ (pred p) :=
-    pos_of_eq_succ (c := two * half p) (ep.eqTrans (by apply deriveNat; ipra_simps; ring))
+    pos_of_eq_succ (c := two * half p) (ep.eqTrans (by ipra_ring))
   have h1 : Γ ⊢[PRAAx] rem (rem (succ i * a) p) p ≐ rem (succ i * a) p := rem_small (rem_lt' hp1 _)
   have s1 := rem_mul_congr a' hp1 h1
   have s2 : Γ ⊢[PRAAx] rem (succ i * a * a') p ≐ rem (succ i * (a * a')) p :=
     congrAp2 remF (mul_assoc _ _ _) (.eqRefl _)
   have s3 := rem_mul_congr2 hp1 (.eqRefl (rem (succ i) p)) hinv
   have s4 : Γ ⊢[PRAAx] rem (succ i * one) p ≐ succ i :=
-    (congrAp2 remF (by apply deriveNat; ipra_simps; ring) (.eqRefl _)).eqTrans (rem_small (succ_lt ep hi))
+    (congrAp2 remF (by ipra_ring) (.eqRefl _)).eqTrans (rem_small (succ_lt ep hi))
   exact s1.eqTrans (s2.eqTrans (s3.eqTrans s4))
 
 /-- `fold p (b_i a' mod p) = i + 1` for `b_i = fold p ((i + 1) a mod p)`, `i < h`, `gcd(p, a) = 1` and
@@ -216,7 +211,7 @@ theorem comp {p a a' i : PTm n} (ep : Γ ⊢[PRAAx] p ≐ two * half p + one) (h
     (hinv : Γ ⊢[PRAAx] rem (a * a') p ≐ rem one p) (hi : Γ ⊢[PRAAx] lt i (half p)) :
     Γ ⊢[PRAAx] fold p (rem (fold p (rem (succ i * a) p) * a') p) ≐ succ i := by
   have hp1 : Γ ⊢[PRAAx] p ≐ succ (pred p) :=
-    pos_of_eq_succ (c := two * half p) (ep.eqTrans (by apply deriveNat; ipra_simps; ring))
+    pos_of_eq_succ (c := two * half p) (ep.eqTrans (by ipra_ring))
   have hR1 := rem_pos ep hc hi
   have hRp : Γ ⊢[PRAAx] lt (rem (succ i * a) p) p := rem_lt' hp1 _
   have sp := fold_spec hR1 hRp
@@ -239,7 +234,7 @@ theorem comp {p a a' i : PTm n} (ep : Γ ⊢[PRAAx] p ≐ two * half p + one) (h
         ((congrAp2 remF bk.wk.eqSymm (.eqRefl _)).eqTrans (rem_small (rem_lt' hp1' _)))
     have s1 : C ⊢[PRAAx] rem (fold p (rem (succ i * a) p) * a') p + succ i ≐
         succ (pred (rem (fold p (rem (succ i * a) p) * a') p + succ i)) :=
-      pos_of_eq_succ (c := rem (fold p (rem (succ i * a) p) * a') p + i) (by apply deriveNat; ipra_simps; ring)
+      pos_of_eq_succ (c := rem (fold p (rem (succ i * a) p) * a') p + i) (by ipra_ring)
     exact .orI₂ (eq_of_dvd_lt_two hp1' (c1.eqTrans z) s1 (sum_lt_two ep.wk hrx hi.wk))
 
 end LeanProofs.IPRA.DiophantineNumberTheory.FoldedResidues

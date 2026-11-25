@@ -1,5 +1,6 @@
 import IPRADerivations.Probability.SampleMedian
 import IPRADerivations.Probability.JointLotus
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The trinomial count law and the exact odd-sample median mass
@@ -68,8 +69,7 @@ theorem G2_edge_k (a b c r k : PTm n) : Γ ⊢[PRAAx] G2 a b c r zero k ≐ G c 
   ipra_ring
 
 /-- `x = y + d` gives `x ∸ y = d`. -/
-theorem monus_of_eq {x y d : PTm n} (h : Γ ⊢[PRAAx] x ≐ y + d) : Γ ⊢[PRAAx] monus x y ≐ d :=
-  (congrMonus h (.eqRefl _)).eqTrans ((congrMonus (add_comm _ _) (.eqRefl _)).eqTrans (add_monus _ _))
+alias monus_of_eq := Common.monus_of_eq
 
 theorem G2_succ_00 (a b c r : PTm n) : Γ ⊢[PRAAx] G2 a b c (succ r) zero zero ≐ b * G2 a b c r zero zero :=
   (G2_edge_i a b c _ _).eqTrans ((G_succ_zero a b r).eqTrans (congrMul (.eqRefl _) (G2_edge_i a b c _ _).eqSymm))

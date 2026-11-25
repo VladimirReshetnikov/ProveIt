@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianFiniteLogarithmWeightedNorm
 import IPRADerivations.Analysis.ExponentialMajorant
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The actual finite exponential's auxiliary-radius coefficient norm
@@ -53,10 +54,7 @@ theorem power_denominator_positive (j : PTm n) : Γ ⊢[PRAAx] le one (pw (num 7
 theorem weighted_congr {C D N M t u : PTm n} (hC : Γ ⊢[PRAAx] C ≐ D)
     (hN : Γ ⊢[PRAAx] N ≐ M) (ht : Γ ⊢[PRAAx] t ≐ u) : Γ ⊢[PRAAx]
     weightedNorm C N t ≐ weightedNorm D M u := by
-  simpa only [GaussianRationalPolynomialDilation.subst_weightedNorm,Syn.subst_var,
-    Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (weightedNorm (var 0) (var 1) (var 2) : PTm 3)
-      (σ := ![C,N,t]) (σ' := ![D,M,u]) (fun i => by fin_cases i; exact hC; exact hN; exact ht)
+  ipra_congr (weightedNorm (var 0) (var 1) (var 2) : PTm 3) with [hC, hN, ht]
 
 theorem weighted_nonnegative (C N t : PTm n) : Γ ⊢[PRAAx]
     le (numeratorOf (weightedNorm C N t)).neg (numeratorOf (weightedNorm C N t)).pos :=

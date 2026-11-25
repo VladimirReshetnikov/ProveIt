@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.MobiusInversion
 import IPRADerivations.AnalyticNumberTheory.PowerCleared
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The weighted von Mangoldt function
@@ -60,8 +61,7 @@ theorem pw_lt_exp {a b : PTm n} (hp : Γ ⊢[PRAAx] le two p) (h : Γ ⊢[PRAAx]
   have x := natEq hX; have w := natEq (eq_add_of_le hp); have s := natEq (pw_succ (Γ := Γ) p a)
   have l : Γ ⊢[PRAAx] le (succ (pw p a)) (pw p (succ a)) := by
     refine le_of_eq_add (d := pred (pw p a) + pw p a * monus p two) ?_
-    apply deriveNat; ipra_simps
-    linear_combination s + 𝔞 (pw p a) * w + x
+    ipra_lc s + 𝔞 (pw p a) * w + x
   exact le_trans l (pw_le_exp hp1 h)
 
 /-- `p^a = p^b → a = b` for `p ≥ 2`. -/
@@ -74,7 +74,7 @@ theorem pw_inj_exp {a b : PTm n} (hp : Γ ⊢[PRAAx] le two p) (h : Γ ⊢[PRAAx
 
 /-- `v_p(p^j) = j`. -/
 theorem val_pw (j : PTm n) (hp : Γ ⊢[PRAAx] le two p) : Γ ⊢[PRAAx] val p (pw p j) ≐ j :=
-  val_unique hp (pw_pos' (p_pos hp) j) (c := one) (by apply deriveNat; ipra_simps; ring) (not_dvd_one hp)
+  val_unique hp (pw_pos' (p_pos hp) j) (c := one) (by ipra_ring) (not_dvd_one hp)
 
 /-- `p^a ∣ p^b` for `a ≤ b`. -/
 theorem pw_dvd_pw {a b : PTm n} (hp : Γ ⊢[PRAAx] le two p) (h : Γ ⊢[PRAAx] le a b) :
@@ -164,7 +164,7 @@ theorem jsum (j v : PTm n) : Γ ⊢[PRAAx] ap2 (sumF jB) v j ≐ sg j * eqb (mon
       have hs : Syn.shift (succ (pred j)) = succ (Syn.shift (pred j)) := by simp [Syn.shift]
       rw [hs]
       exact (eqb_succ_succ _ _).eqTrans ((congrEqb' (fst_pair _ _).eqSymm (.eqRefl _)).eqTrans
-        (by apply deriveNat; ipra_simps; ring))
+        (by ipra_ring))
     refine toD.eqTrans ?_
     refine .orE (lt_or_le (pred j) v) ?_ ?_
     · let D : List (Fm PTm n) := lt (pred j) v :: C
@@ -173,7 +173,7 @@ theorem jsum (j v : PTm n) : Γ ⊢[PRAAx] ap2 (sumF jB) v j ≐ sg j * eqb (mon
         eqb_one_le ((congrMonus hj.wk (.eqRefl _)).eqTrans hl)
       refine (sum_delta (one : PTm 2) hl).eqTrans ?_
       rw [one_inst]
-      exact (by apply deriveNat; ipra_simps; ring : D ⊢[PRAAx] one ≐ one * one).eqTrans (congrMul sj.wk e1).eqSymm
+      exact (by ipra_ring : D ⊢[PRAAx] one ≐ one * one).eqTrans (congrMul sj.wk e1).eqSymm
     · let D : List (Fm PTm n) := le v (pred j) :: C
       have hv : D ⊢[PRAAx] le v (pred j) := Prf.hyp0
       have e0 : D ⊢[PRAAx] eqb (monus j v) zero ≐ zero :=
@@ -186,8 +186,7 @@ theorem jsum (j v : PTm n) : Γ ⊢[PRAAx] ap2 (sumF jB) v j ≐ sg j * eqb (mon
         refine (congrMul (congrEqb' (fst_pair _ _) (.eqRefl _)) (.eqRefl _)).eqTrans (zero_mul_l ?_ _)
         refine eqb_of_ne (.impI ?_)
         exact le_lt_absurd _ (le_congr (.eqRefl _) Prf.hyp0 hv'.wk.wk) Prf.hyp1
-      exact z.eqTrans ((congrMul sj.wk e0).eqTrans (by apply deriveNat; ipra_simps; ring)).eqSymm
-
+      exact z.eqTrans ((congrMul sj.wk e0).eqTrans (by ipra_ring)).eqSymm
 
 /-! ## Counting the prime-power divisors -/
 
@@ -235,7 +234,7 @@ theorem pp_pt {p m d : PTm n} (hp : Γ ⊢[PRAAx] Primes.prime p) (hm : Γ ⊢[P
         have dm : D ⊢[PRAAx] dvd d m := (congrAp2 remF (.eqRefl _) h.wk.eqSymm).eqTrans dd
         exact (eqb_of_eq dm).eqTrans (eqb_one_le Prf.hyp0).eqSymm
     have l₂ : C ⊢[PRAAx] ppI p d ≐ sg (val p d) := (congrMul (.eqRefl _) (eqb_of_eq h)).eqTrans
-      (by apply deriveNat; ipra_simps; ring)
+      (by ipra_ring)
     exact (congrMul l₁ l₂).eqTrans ((mul_comm _ _).eqTrans r₂.eqSymm)
   · let C : List (Fm PTm n) := neg (pw p (val p d) ≐ d) :: Γ
     have hne : C ⊢[PRAAx] neg (pw p (val p d) ≐ d) := Prf.hyp0
@@ -250,7 +249,6 @@ theorem pp_pt {p m d : PTm n} (hp : Γ ⊢[PRAAx] Primes.prime p) (hm : Γ ⊢[P
         (List.mem_map.mpr ⟨_, List.mem_cons_of_mem _ (List.mem_map.mp hx).choose_spec.1,
           (List.mem_map.mp hx).choose_spec.2⟩))) hne'.wk)
     exact l.eqTrans r.eqSymm
-
 
 /-- `[d = p^{k+1}]` over `0 = d`, `1 = k`, `2 = ⟨p, m⟩`. -/
 abbrev a3 : PTm 3 := eqb (var 0) (pw (fstT (var 2)) (succ (var 1)))
@@ -305,7 +303,7 @@ theorem col_one {p m k : PTm n} (hp : Γ ⊢[PRAAx] Primes.prime p) (hm : Γ ⊢
   refine (congrEqb' (.eqRefl _) (congrPw ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
     (congrSucc (fst_pair _ _)))).eqTrans ?_
   exact (eqb_comm' _ _).eqTrans ((congrEqb' (fst_pair _ _).eqSymm (.eqRefl _)).eqTrans
-    (by apply deriveNat; ipra_simps; ring))
+    (by ipra_ring))
 
 /-- The number of divisors of `m ≥ 1` that are positive powers of the prime `p` is `v_p(m)`. -/
 theorem count_pp {p m : PTm n} (hp : Γ ⊢[PRAAx] Primes.prime p) (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) :
@@ -380,7 +378,6 @@ theorem inst2_ell (q z : PTm n) : inst2 (ellB w) q z = (isP q * val q (fstT z)) 
 
 end Weighted
 
-
 section Divsum
 
 variable (w : PTm 2)
@@ -454,7 +451,7 @@ theorem col_lam {q m y : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) :
     rw [hc]
     refine (congrInst3 _ (.eqRefl _) (fst_pair _ _) (snd_pair _ _)).eqTrans ((a4_at w _ _ _ _).eqTrans ?_)
     refine .eqTrans ?_ (congrMul (.eqRefl _) (cnt_at _ _ _).eqSymm)
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   rw [inst2_ell]
   refine sc.eqTrans ?_
   have v : Γ ⊢[PRAAx] isP q * val q (fstT (pairT m y)) * inst2 w q (sndT (pairT m y)) ≐ isP q * val q m * inst2 w q y :=
@@ -465,7 +462,7 @@ theorem col_lam {q m y : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) :
     exact (zero_mul_l (zero_mul_l h0 _) _).eqTrans (zero_mul_l (zero_mul_l h0 _) _).eqSymm
   · have h1 : ((isP q ≐ one) :: Γ) ⊢[PRAAx] isP q ≐ one := Prf.hyp0
     exact (congrMul (.eqRefl _) (count_cnt (prime_of_isP h1) hm.wk)).eqTrans
-      (by apply deriveNat; ipra_simps; ring)
+      (by ipra_ring)
 
 /-- `thm:lambda-divsum`: `∑_{d ∣ m} Λ_w(d) = L_w(m)` for every weight `w` and `m ≥ 1`. -/
 theorem lambda_divsum {m y : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) :
@@ -493,6 +490,5 @@ theorem lambda_divsum {m y : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) :
   exact col_lam w hm'.wk
 
 end Divsum
-
 
 end LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt

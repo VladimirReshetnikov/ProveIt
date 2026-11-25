@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.Harmonic
 import IPRADerivations.DiophantineNumberTheory.FLTMultiples
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The local Euler-factor bound `p^p ≤ 4 (p − 1)^p`
@@ -43,7 +44,7 @@ private theorem pw_mul_base₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] pwMulBaseF :=
   · simp only [Fm.subst_eq, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two,
       ConciseIPRA.PTm.subst_zero]
     refine (pw_zero _).eqTrans (.eqTrans ?_ (congrMul (pw_zero _) (pw_zero _)).eqSymm)
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   · simp only [Fm.subst_eq, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.repl_zero, repl_one, repl_two,
       ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
     refine withEq Prf.hyp0 fun e₀ => withEq (pw_succ (var 1 * var 2) (var 0)) fun e₁ =>
@@ -62,9 +63,7 @@ theorem bern_step {X m : PTm n}
   have h := le_mul_mono ih (le_refl (succ X))
   refine le_trans ?_ (le_congr (.eqRefl _) (pw_succ _ _).eqSymm h)
   refine le_of_eq_add (d := succ m * pw X m) ?_
-  have e₁ := natEq (pw_succ (Γ := Γ) X (succ m)); have e₂ := natEq (pw_succ (Γ := Γ) X m)
-  apply deriveNat; ipra_simps
-  linear_combination -e₁ - (Groth.ι (IPRA.Q.mk Γ m) + 1) * e₂
+  ipra_lc -natEq (pw_succ (Γ := Γ) X (succ m)) - (Groth.ι (IPRA.Q.mk Γ m) + 1) * natEq (pw_succ (Γ := Γ) X m)
 
 /-- Variables: `0 = m`, `1 = X`. -/
 private abbrev bernF : Fm PTm 2 :=
@@ -94,20 +93,16 @@ theorem decr (m : PTm n) :
     Γ ⊢[PRAAx] le (pw (succ (succ m)) (succ (succ m)) * pw m (succ m))
       (pw (succ m) (succ m) * pw (succ m) (succ (succ m))) := by
   have hb := bernoulli (Γ := Γ) (m * succ (succ m)) m
-  have eb := natEq (eq_add_of_le hb)
-  have eX := natEq (pw_succ (Γ := Γ) (m * succ (succ m)) m)
-  have eL₁ := natEq (pw_succ (Γ := Γ) (succ (succ m)) (succ m))
-  have eL₂ := natEq (pw_mul_base (Γ := Γ) m (succ (succ m)) (succ m))
-  have eR₁ := natEq (pw_succ (Γ := Γ) (succ m) (succ m))
-  have eR₂ := natEq ((congrPw (Γ := Γ) (by apply deriveNat; ipra_simps; ring :
+  have eR₂ := natEq ((congrPw (Γ := Γ) (by ipra_ring :
       Γ ⊢[PRAAx] succ (m * succ (succ m)) ≐ succ m * succ m) (.eqRefl (succ m))).eqTrans
     (pw_mul_base (succ m) (succ m) (succ m)))
   refine le_of_eq_add (d := pw (m * succ (succ m)) m + succ m * monus (pw (succ (m * succ (succ m))) (succ m))
     (pw (m * succ (succ m)) (succ m) + succ m * pw (m * succ (succ m)) m)) ?_
-  apply deriveNat; ipra_simps
-  linear_combination (Groth.ι (IPRA.Q.mk Γ m) + 1) * eb - eX - (Groth.ι (IPRA.Q.mk Γ m) + 1) * eR₂ +
-    Groth.ι (IPRA.Q.mk Γ (pw (succ m) (succ m))) * eR₁ + (Groth.ι (IPRA.Q.mk Γ m) + 2) * eL₂ -
-    Groth.ι (IPRA.Q.mk Γ (pw m (succ m))) * eL₁
+  ipra_lc (Groth.ι (IPRA.Q.mk Γ m) + 1) * natEq (eq_add_of_le hb) - natEq (pw_succ (Γ := Γ) (m * succ (succ m)) m) -
+    (Groth.ι (IPRA.Q.mk Γ m) + 1) * eR₂ +
+    Groth.ι (IPRA.Q.mk Γ (pw (succ m) (succ m))) * natEq (pw_succ (Γ := Γ) (succ m) (succ m)) +
+    (Groth.ι (IPRA.Q.mk Γ m) + 2) * natEq (pw_mul_base (Γ := Γ) m (succ (succ m)) (succ m)) -
+    Groth.ι (IPRA.Q.mk Γ (pw m (succ m))) * natEq (pw_succ (Γ := Γ) (succ (succ m)) (succ m))
 
 /-! ## The bound -/
 
@@ -121,7 +116,7 @@ theorem local_step {m : PTm n}
   have h₂ : Γ ⊢[PRAAx] le (pw (succ m) (succ (succ m)) * pw (succ (succ (succ m))) (succ (succ (succ m))))
       (pw (succ m) (succ (succ m)) * ((two * two) * pw (succ (succ m)) (succ (succ (succ m))))) := by
     refine le_congr (mul_comm _ _) ?_ (le_trans d h₁)
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   exact mul_le_cancel (le_congr (congrMul hp (.eqRefl _)) (congrMul hp (.eqRefl _)) h₂)
 
 /-- Variable `0 = p − 2`. -/

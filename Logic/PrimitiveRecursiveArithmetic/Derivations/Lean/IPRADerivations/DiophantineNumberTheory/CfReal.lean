@@ -1,6 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.HurwitzLoop
 import IPRADerivations.AnalyticNumberTheory.PhiLower
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # A primitive recursive continued-fraction real

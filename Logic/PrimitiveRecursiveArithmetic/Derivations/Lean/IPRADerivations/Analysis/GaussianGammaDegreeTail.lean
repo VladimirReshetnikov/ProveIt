@@ -3,6 +3,7 @@ import IPRADerivations.Analysis.GaussianGammaCanonicalTailMetric
 import IPRADerivations.Analysis.GaussianProductStability
 import IPRADerivations.Analysis.GaussianNameArithmetic
 import IPRADerivations.Analysis.GaussianCoefficientNormOrder
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Exact degree tails of the original finite canonical Gamma program
@@ -30,8 +31,7 @@ open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
-theorem power_two (X : PTm n) : Γ ⊢[PRAAx] pw X two ≐ X*X :=
-  (pw_succ X one).eqTrans (congrMul (pw_one X) (.eqRefl _))
+alias power_two := Common.pw_two
 theorem power_three_split (X L : PTm n) : Γ ⊢[PRAAx]
     pw X (L+LogarithmRemainder.three) ≐ X*X*pw X (succ L) :=
   ((congrAp2 powF (by ipra_ring) (.eqRefl _)).eqTrans (pw_add X two (succ L))).eqTrans

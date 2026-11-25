@@ -1,7 +1,7 @@
 import IPRADerivations.Foundations.ApproximateWitness
 import IPRADerivations.Core.Signum
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Finite minimization over admissible candidates

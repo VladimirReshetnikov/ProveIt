@@ -1,5 +1,7 @@
 import IPRADerivations.Analysis.RationalArgmin
 import IPRADerivations.Analysis.RationalSupMetric
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Exact signed rational endpoint clearing for Minkowski boxes
@@ -52,10 +54,7 @@ def scaledGap (a b c d : PTm n) : PTm n := monus (scaledLeft b a d c) (scaledLef
     Syn.subst σ (scaledGap a b c d) = scaledGap (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ d) := by
   simp only [scaledGap, PTm.subst_monus, subst_scaledLeft]
 
-theorem positive_cancel {c a b : PTm n} (hc : Γ ⊢[PRAAx] le one c)
-    (h : Γ ⊢[PRAAx] le (c*a) (c*b)) : Γ ⊢[PRAAx] le a b := by
-  have e : Γ ⊢[PRAAx] c ≐ succ (monus c one) := (eq_add_of_le hc).eqTrans (by ipra_ring)
-  exact mul_le_cancel (le_congr (congrMul e (.eqRefl _)) (congrMul e (.eqRefl _)) h)
+alias positive_cancel := Common.mul_cancel_le
 
 theorem cofactor_positive (a c m : PTm n) (hm : Γ ⊢[PRAAx] le one m)
     (h : Γ ⊢[PRAAx] denominatorOf a*c ≐ m) : Γ ⊢[PRAAx] le one c := by
@@ -68,13 +67,8 @@ theorem cofactor_positive (a c m : PTm n) (hm : Γ ⊢[PRAAx] le one m)
 theorem scaled_left_identity (a b c d m : PTm n)
     (ha : Γ ⊢[PRAAx] denominatorOf a*c ≐ m) (hb : Γ ⊢[PRAAx] denominatorOf b*d ≐ m) :
     Γ ⊢[PRAAx] (c*d)*left a b ≐ m*scaledLeft a b c d := by
-  have A := natEq ha
-  have B := natEq hb
   unfold left scaledLeft scaled
-  apply deriveNat
-  simp only [Q.mk_mul, map_mul] at A B
-  ipra_simps
-  linear_combination (𝔞((numeratorOf a).pos)*𝔞 c)*B+(𝔞((numeratorOf b).neg)*𝔞 d)*A
+  ipra_lc (𝔞((numeratorOf a).pos)*𝔞 c)*natEq hb+(𝔞((numeratorOf b).neg)*𝔞 d)*natEq ha
 
 theorem weak_clear (a b c d m : PTm n) (hm : Γ ⊢[PRAAx] le one m)
     (ha : Γ ⊢[PRAAx] denominatorOf a*c ≐ m) (hb : Γ ⊢[PRAAx] denominatorOf b*d ≐ m)
@@ -105,19 +99,12 @@ theorem width_clears (a b c d m : PTm n) (hm : Γ ⊢[PRAAx] le one m)
     (ha : Γ ⊢[PRAAx] denominatorOf a*c ≐ m) (hb : Γ ⊢[PRAAx] denominatorOf b*d ≐ m)
     (h : Γ ⊢[PRAAx] rationalLT a b) :
     Γ ⊢[PRAAx] (denominatorOf a*denominatorOf b)*scaledGap a b c d ≐ m*gap a b := by
-  have original := natEq (eq_add_of_le (le_of_lt h))
-  have integer := natEq (eq_add_of_le (le_of_lt (strict_clear a b c d m hm ha hb h)))
   have A := natEq ha
   have B := natEq hb
   simp only [Q.mk_mul, map_mul] at A B
   unfold scaledGap gap
-  apply deriveNat
-  simp only [left, scaledLeft, scaled, Q.mk_add, Q.mk_mul, map_add, map_mul] at original integer ⊢
-  linear_combination
-    ((𝔞((numeratorOf b).pos)-𝔞((numeratorOf b).neg))*𝔞(denominatorOf a))*B-
-    ((𝔞((numeratorOf a).pos)-𝔞((numeratorOf a).neg))*𝔞(denominatorOf b))*A-
-    (𝔞(denominatorOf a)*𝔞(denominatorOf b))*integer+𝔞 m*original
-
+  ipra_lc [left, scaledLeft, scaled] ((𝔞((numeratorOf b).pos)-𝔞((numeratorOf b).neg))*𝔞(denominatorOf a))*B- ((𝔞((numeratorOf a).pos)-𝔞((numeratorOf a).neg))*𝔞(denominatorOf b))*A- (𝔞(denominatorOf a)*𝔞(denominatorOf b))*natEq (eq_add_of_le (le_of_lt (strict_clear a b c d m hm ha hb h)))+
+    𝔞 m*natEq (eq_add_of_le (le_of_lt h))
 
 theorem width_clears_closed :
     ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 5

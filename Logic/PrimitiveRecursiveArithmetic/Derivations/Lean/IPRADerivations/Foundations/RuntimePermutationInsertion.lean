@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.RuntimePermutationDeletion
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual insertion of the largest numerical permutation label
@@ -48,15 +49,11 @@ def insertedWord (m p d : PTm n) : PTm n := encode (inserted m p d) (succ m)
 
 theorem slot_congr {p q i j : PTm n} (hp : Γ ⊢[PRAAx] p ≐ q) (hi : Γ ⊢[PRAAx] i ≐ j) :
     Γ ⊢[PRAAx] slot p i ≐ slot q j := by
-  simpa only [RuntimePermutationDeletion.subst_slot,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using
-    Prf.eqCongr (slot (var 0) (var 1) : PTm 2) (σ := ![p,i]) (σ' := ![q,j])
-      (fun k => by fin_cases k; exact hp; exact hi)
+  ipra_congr (slot (var 0) (var 1) : PTm 2) with [hp, hi]
 
 theorem compressed_congr (p : PTm n) {i j : PTm n} (h : Γ ⊢[PRAAx] i ≐ j) :
     Γ ⊢[PRAAx] compressed p i ≐ compressed p j := by
-  simpa only [subst_compressed,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using
-    Prf.eqCongr (compressed (var 0) (var 1) : PTm 2) (σ := ![p,i]) (σ' := ![p,j])
-      (fun k => by fin_cases k; exact .eqRefl _; exact h)
+  ipra_congr (compressed (var 0) (var 1) : PTm 2) with [.eqRefl p, h]
 
 theorem recovered_at (m p d k : PTm n) (h : Γ ⊢[PRAAx] k ≐ p) : Γ ⊢[PRAAx] recovered m p d k ≐ m :=
   sel_one (eqb_of_eq h)

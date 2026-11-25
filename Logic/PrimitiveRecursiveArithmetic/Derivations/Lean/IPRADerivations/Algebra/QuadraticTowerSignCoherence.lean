@@ -1,5 +1,6 @@
 import IPRADerivations.Algebra.QuadraticTowerSignTable
 import IPRADerivations.Algebra.QuadraticTowerMultiplicationCoherence
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Independent-cap coherence of the actual recursive sign table
@@ -126,16 +127,13 @@ theorem norm_coherent (h B C D A b : PTm n) (hb : Γ ⊢[PRAAx] le b B) (hc : Γ
 theorem third_select_congr {s s' d d' q q' : PTm n}
     (hs : Γ ⊢[PRAAx] s ≐ s') (hd : Γ ⊢[PRAAx] d ≐ d') (hq : Γ ⊢[PRAAx] q ≐ q') : Γ ⊢[PRAAx]
     Foundations.GuardedTotalization.sel (eqb s zero) d q ≐ Foundations.GuardedTotalization.sel (eqb s' zero) d' q' := by
-  simpa [Foundations.GuardedTotalization.sel] using
-    Prf.eqCongr (Foundations.GuardedTotalization.sel (eqb (var 0) zero) (var 1) (var 2) : PTm 3)
-      (σ := ![s,d,q]) (σ' := ![s',d',q']) (fun i => by fin_cases i; exact hs; exact hd; exact hq)
+  ipra_congr (Foundations.GuardedTotalization.sel (eqb (var 0) zero) (var 1) (var 2) : PTm 3) with
+    [hs, hd, hq] using [Foundations.GuardedTotalization.sel]
 
 theorem dispatch_congr {s s' t t' u u' : PTm n}
     (hs : Γ ⊢[PRAAx] s ≐ s') (ht : Γ ⊢[PRAAx] t ≐ t') (hu : Γ ⊢[PRAAx] u ≐ u') : Γ ⊢[PRAAx]
     QuadraticTowerSignRecipe.dispatch s t u ≐ QuadraticTowerSignRecipe.dispatch s' t' u' := by
-  simpa [QuadraticTowerSignRecipe.subst_dispatch] using
-    Prf.eqCongr (QuadraticTowerSignRecipe.dispatch (var 0) (var 1) (var 2) : PTm 3)
-      (σ := ![s,t,u]) (σ' := ![s',t',u']) (fun i => by fin_cases i; exact hs; exact ht; exact hu)
+  ipra_congr (QuadraticTowerSignRecipe.dispatch (var 0) (var 1) (var 2) : PTm 3) with [hs, ht, hu]
 
 theorem recipe_coherent (h B C D T U b A : PTm n)
     (hL : Γ ⊢[PRAAx] localLaw h (budget h B D) (budget h C D) D T U)

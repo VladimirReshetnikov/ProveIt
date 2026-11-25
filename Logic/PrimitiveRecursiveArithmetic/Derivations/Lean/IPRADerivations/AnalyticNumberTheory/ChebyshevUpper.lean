@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.ChebyshevPi
 import IPRADerivations.AnalyticNumberTheory.PrimorialUpper
 import IPRADerivations.Topology.CollisionScales
 import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The dyadic Chebyshev upper bound for the prime count
@@ -77,7 +78,7 @@ theorem mul_pos_ge {X P : PTm n} (hP : Γ ⊢[PRAAx] P ≐ succ (pred P)) : Γ �
   refine le_of_eq_add (d := X * pred P) ?_
   ipra_lc 𝔞 X * natEq hP
 
-theorem mul_one_r (X : PTm n) : Γ ⊢[PRAAx] X * one ≐ X := by ipra_ring
+alias mul_one_r := Common.mul_one_right
 
 theorem assoc_alg (A B C : PTm n) : Γ ⊢[PRAAx] (A * B) * C ≐ A * (B * C) := by
   ipra_ring

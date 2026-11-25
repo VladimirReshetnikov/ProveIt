@@ -1,5 +1,6 @@
 import IPRADerivations.Algebra.QuadraticTowerMultiplicationHeight
 import IPRADerivations.Foundations.GuardedTotalization
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Three-call sign recipe and genuine lower operand bounds
@@ -221,14 +222,11 @@ theorem dispatch_opposite (s t u : PTm n) (hs : Γ ⊢[PRAAx] neg (s ≐ zero)) 
 
 theorem read_operand_congr (h B S A E : PTm n) (hA : Γ ⊢[PRAAx] A ≐ E) : Γ ⊢[PRAAx]
     read h B S A ≐ read h B S E := by
-  simpa [subst_read] using Prf.eqCongr (read (var 0) (var 1) (var 2) (var 3) : PTm 4)
-    (σ := ![h,B,S,A]) (σ' := ![h,B,S,E])
-    (fun i => by fin_cases i; exact .eqRefl _; exact .eqRefl _; exact .eqRefl _; exact hA)
+  ipra_congr (read (var 0) (var 1) (var 2) (var 3) : PTm 4) with [.eqRefl h, .eqRefl B, .eqRefl S, hA]
 
 theorem tag_product_congr {s s' t t' : PTm n} (hs : Γ ⊢[PRAAx] s ≐ s') (ht : Γ ⊢[PRAAx] t ≐ t') : Γ ⊢[PRAAx]
     tagProduct s t ≐ tagProduct s' t' := by
-  simpa [subst_tagProduct] using Prf.eqCongr (tagProduct (var 0) (var 1) : PTm 2)
-    (σ := ![s,t]) (σ' := ![s',t']) (fun i => by fin_cases i; exact hs; exact ht)
+  ipra_congr (tagProduct (var 0) (var 1) : PTm 2) with [hs, ht]
 
 theorem recipe_a_zero (h B D S A : PTm n) (ha : Γ ⊢[PRAAx] firstTag h B D S A ≐ zero) : Γ ⊢[PRAAx]
     recipe h B D S A ≐ tagProduct (secondTag h B D S A) (read h (budget h B D) S (entry D h)) :=

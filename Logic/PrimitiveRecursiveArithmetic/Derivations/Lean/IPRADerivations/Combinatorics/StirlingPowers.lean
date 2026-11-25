@@ -1,6 +1,7 @@
 import IPRADerivations.Combinatorics.Stirling
 import IPRADerivations.Core.ProdLemmas
 import IPRADerivations.Probability.Independence
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Powers as sums of falling factorials
@@ -54,14 +55,10 @@ theorem ff_zero_above {X k : PTm n} (h : Γ ⊢[PRAAx] lt X k) : Γ ⊢[PRAAx] f
 /-- `X (X)_k = (X)_{k+1} + k (X)_k`. -/
 theorem ff_mul (X k : PTm n) : Γ ⊢[PRAAx] X * ff X k ≐ ff X (succ k) + k * ff X k := by
   refine .orE (lt_or_le X k) ?_ ?_
-  · have a := natEq (ff_zero_above (Prf.hyp0 (Ax := PRAAx) (Γ := Γ) (φ := lt X k)))
-    have b := natEq (ff_succ (Γ := lt X k :: Γ) X k)
-    apply deriveNat; ipra_simps
-    linear_combination (𝔞(X) - 𝔞(k) - 𝔞(monus X k)) * a - b
-  · have e := natEq (eq_add_of_le (Prf.hyp0 (Ax := PRAAx) (Γ := Γ) (φ := le k X)))
-    have s := natEq (ff_succ (Γ := le k X :: Γ) X k)
-    apply deriveNat; ipra_simps
-    linear_combination 𝔞(ff X k) * e - s
+  · ipra_lc (𝔞(X) - 𝔞(k) - 𝔞(monus X k)) * natEq (ff_zero_above (Prf.hyp0 (Ax := PRAAx) (Γ := Γ) (φ := lt X k))) -
+      natEq (ff_succ (Γ := lt X k :: Γ) X k)
+  · ipra_lc 𝔞(ff X k) * natEq (eq_add_of_le (Prf.hyp0 (Ax := PRAAx) (Γ := Γ) (φ := le k X))) -
+      natEq (ff_succ (Γ := le k X :: Γ) X k)
 
 /-! ## Bodies; variables `0 = k`, `1 = ⟨N, X⟩` -/
 
@@ -98,31 +95,25 @@ theorem uB_at (k N X : PTm n) : Γ ⊢[PRAAx] inst2 uB k (pairT N X) ≐ stir N 
 /-- `∑_{k ≤ N} (k + 1) S(N, k + 1) (X)_{k+1} = ∑_{k ≤ N} k S(N, k) (X)_k`. -/
 theorem wsum (N X : PTm n) :
     Γ ⊢[PRAAx] ap2 (sumF (shiftBody wB)) (succ N) (pairT N X) ≐ ap2 (sumF wB) (succ N) (pairT N X) := by
-  have s₁ := natEq (sum_shift (Γ := Γ) wB (succ N) (pairT N X))
-  have s₂ := natEq (sum_succ' (Γ := Γ) wB (succ N) (pairT N X))
   have w₀ : Γ ⊢[PRAAx] inst2 wB zero (pairT N X) ≐ zero := by rw [inst2_w]; exact zero_mul _
   have wt : Γ ⊢[PRAAx] inst2 wB (succ N) (pairT N X) ≐ zero :=
     (wB_at _ _ _).eqTrans ((congrMul (.eqRefl _) ((congrMul (stir_above (le_refl _)) (.eqRefl _)).eqTrans
       (zero_mul _))).eqTrans (mul_zero _))
-  have a := natEq w₀; have b := natEq wt
-  apply deriveNat; ipra_simps
-  linear_combination -s₁ + s₂ - a + b
+  ipra_lc -natEq (sum_shift (Γ := Γ) wB (succ N) (pairT N X)) + natEq (sum_succ' (Γ := Γ) wB (succ N) (pairT N X)) -
+    natEq w₀ + natEq wt
 
 theorem step_pt {k N : PTm n} (X : PTm n) (h : Γ ⊢[PRAAx] le k N) :
     Γ ⊢[PRAAx] inst2 (shiftBody tB) k (pairT (succ N) X) ≐ inst2 (addBody (shiftBody wB) uB) k (pairT N X) := by
   rw [inst2_shiftBody, inst2_addBody, inst2_shiftBody]
   refine (tB_at _ _ _).eqTrans ((congrMul (stir_succ_succ h) (.eqRefl _)).eqTrans ?_)
   refine .eqTrans ?_ (congrAdd (wB_at _ _ _) (uB_at _ _ _)).eqSymm
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem x_pt (k N X : PTm n) :
     Γ ⊢[PRAAx] inst2 (addBody uB wB) k (pairT N X) ≐ X * inst2 tB k (pairT N X) := by
   rw [inst2_addBody]
-  have a := natEq (uB_at (Γ := Γ) k N X); have b := natEq (wB_at (Γ := Γ) k N X)
-  have c := natEq (tB_at (Γ := Γ) k N X); have fm := natEq (ff_mul (Γ := Γ) X k)
-  apply deriveNat; ipra_simps
-  linear_combination a + b - 𝔞(X) * c -
-    𝔞(Stirling.gle k N) * 𝔞(nth (Stirling.row N) (monus N k)) * fm
+  ipra_lc natEq (uB_at (Γ := Γ) k N X) + natEq (wB_at (Γ := Γ) k N X) - 𝔞(X) * natEq (tB_at (Γ := Γ) k N X) -
+    𝔞(Stirling.gle k N) * 𝔞(nth (Stirling.row N) (monus N k)) * natEq (ff_mul (Γ := Γ) X k)
 
 /-! ## The identity -/
 
@@ -130,12 +121,9 @@ theorem x_pt (k N X : PTm n) :
 abbrev Am {n : ℕ} (N X : PTm n) : PTm n := ap2 (sumF tB) (succ N) (pairT N X)
 
 theorem pf_base (X : PTm n) : Γ ⊢[PRAAx] Am zero X ≐ pw X zero := by
-  have s := natEq (sum_succ' (Γ := Γ) tB zero (pairT zero X))
-  have z := natEq (sum_zero (Γ := Γ) tB (pairT zero X))
-  have t := natEq ((tB_at (Γ := Γ) zero zero X).eqTrans ((congrMul stir_zero (ff_zero X)).eqTrans (one_mul one)))
-  have p := natEq (pw_zero (Γ := Γ) X)
-  apply deriveNat; ipra_simps
-  linear_combination s + z + t - p
+  ipra_lc natEq (sum_succ' (Γ := Γ) tB zero (pairT zero X)) + natEq (sum_zero (Γ := Γ) tB (pairT zero X)) +
+    natEq ((tB_at (Γ := Γ) zero zero X).eqTrans ((congrMul stir_zero (ff_zero X)).eqTrans (one_mul one))) -
+    natEq (pw_zero (Γ := Γ) X)
 
 theorem pf_step {N X : PTm n} (ih : Γ ⊢[PRAAx] Am N X ≐ pw X N) :
     Γ ⊢[PRAAx] Am (succ N) X ≐ pw X (succ N) := by

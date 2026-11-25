@@ -1,5 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.LcmBridgeDPsi
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The loss `D(m²) ≤ 8/m` and the `ϑ`-form of the lcm-bridge transfer (`robin_ipra_research_2026-11-19`)

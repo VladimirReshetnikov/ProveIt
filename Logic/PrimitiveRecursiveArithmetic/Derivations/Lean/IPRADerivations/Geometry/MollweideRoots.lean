@@ -1,7 +1,7 @@
 import IPRADerivations.Combinatorics.BinomialIdentities
 import IPRADerivations.DiophantineNumberTheory.Coprime
 import IPRADerivations.Core.ProdLemmas
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The positive half-angle roots of a Ravi triangle

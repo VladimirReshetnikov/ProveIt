@@ -1,6 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.EllipticSearch
 import IPRADerivations.Core.IntOrder
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The finite rational squeeze

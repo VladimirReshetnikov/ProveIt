@@ -2,6 +2,7 @@ import IPRADerivations.Analysis.GaussianDominantScalarOrder
 import IPRADerivations.Analysis.GaussianDominantSyntax
 import IPRADerivations.Analysis.GaussianBalancedRadiusSearch
 import IPRADerivations.Analysis.GaussianDominantScaleArithmetic
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual least dominant coefficient at every balanced-radius scale
@@ -146,10 +147,7 @@ theorem winner_positive_from_candidate (C N E j h i : PTm n) (hN : Γ ⊢[PRAAx]
 
 theorem index_congr (C N : PTm n) {h l : PTm n} (hl : Γ ⊢[PRAAx] h ≐ l) : Γ ⊢[PRAAx]
     index C N h ≐ index C N l := by
-  simpa only [subst_index,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.head_cons,Matrix.tail_cons] using Prf.eqCongr (Ax := PRAAx) (Γ := Γ)
-      (index (var 0) (var 1) (var 2) : PTm 3) (σ := ![C,N,h]) (σ' := ![C,N,l])
-      (fun i => by fin_cases i; exact .eqRefl _; exact .eqRefl _; exact hl)
+  ipra_congr (index (var 0) (var 1) (var 2) : PTm 3) with [.eqRefl C, .eqRefl N, hl]
 
 theorem index_at (C N h : PTm n) : Γ ⊢[PRAAx] ap2 indexF h (indexData C N) ≐ index C N h := by
   have fields := Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (index (var 0) (var 1) (var 2) : PTm 3)

@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.Fermat
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # RSA correctness and Fermat's theorem for units
@@ -44,7 +45,7 @@ private theorem pw_mul₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] pwMulF := by
       repl_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
     refine (pw_succ _ _).eqTrans ((congrMul Prf.hyp0 (.eqRefl _)).eqTrans ?_)
     refine (pw_add _ _ _).eqSymm.eqTrans (congrPw (.eqRefl _) ?_)
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
 
 theorem pw_mul (x e d : PTm n) : Γ ⊢[PRAAx] pw (pw x e) d ≐ pw x (e * d) := by
   have h := inst (Γ := Γ) pw_mul₀ (![d, x, e] : Fin 3 → PTm n)
@@ -60,12 +61,9 @@ theorem rem_mul_congr {M x y : PTm n} (c : PTm n) (hM : Γ ⊢[PRAAx] M ≐ succ
   have h' : Γ ⊢[PRAAx] rem x (succ (pred M)) ≐ rem y (succ (pred M)) :=
     (congrAp2 remF (.eqRefl _) hM.eqSymm).eqTrans (h.eqTrans (congrAp2 remF (.eqRefl _) hM))
   refine rem_eq_of_eq hM (k₁ := quo y (succ (pred M)) * c) (k₂ := quo x (succ (pred M)) * c) ?_
-  have h₁ := natEq (Prf.andE₁ dx); have h₂ := natEq (Prf.andE₁ dy); have h₃ := natEq h'
-  have h₄ := natEq hM
-  apply deriveNat; ipra_simps
-  linear_combination Groth.ι (IPRA.Q.mk Γ c) * h₁ - Groth.ι (IPRA.Q.mk Γ c) * h₂ +
-    Groth.ι (IPRA.Q.mk Γ c) * h₃ + Groth.ι (IPRA.Q.mk Γ c) *
-    (Groth.ι (IPRA.Q.mk Γ (quo y (succ (pred M)))) - Groth.ι (IPRA.Q.mk Γ (quo x (succ (pred M))))) * h₄
+  ipra_lc Groth.ι (IPRA.Q.mk Γ c) * natEq (Prf.andE₁ dx) - Groth.ι (IPRA.Q.mk Γ c) * natEq (Prf.andE₁ dy) +
+    Groth.ι (IPRA.Q.mk Γ c) * natEq h' +
+    Groth.ι (IPRA.Q.mk Γ c) * (Groth.ι (IPRA.Q.mk Γ (quo y (succ (pred M)))) - Groth.ι (IPRA.Q.mk Γ (quo x (succ (pred M))))) * natEq hM
 
 /-! ## `x^{1 + k(p - 1)} ≡ x (mod p)` -/
 
@@ -74,7 +72,7 @@ theorem fermat_step {P X K : PTm n} (hP : Γ ⊢[PRAAx] prime P)
     Γ ⊢[PRAAx] rem (pw X (succ (succ K * pred P))) P ≐ rem X P := by
   have hq := prime_eq_succ_pred hP
   have e₁ : Γ ⊢[PRAAx] pw X (succ (succ K * pred P)) ≐ pw X (succ (K * pred P)) * pw X (pred P) :=
-    (congrPw (.eqRefl _) (by apply deriveNat; ipra_simps; ring)).eqTrans (pw_add _ _ _)
+    (congrPw (.eqRefl _) (by ipra_ring)).eqTrans (pw_add _ _ _)
   have e₂ : Γ ⊢[PRAAx] X * pw X (pred P) ≐ pw X P :=
     (mul_comm _ _).eqTrans ((pw_succ _ _).eqSymm.eqTrans (congrPw (.eqRefl _) hq.eqSymm))
   refine (congrAp2 remF e₁ (.eqRefl _)).eqTrans ?_
@@ -133,7 +131,7 @@ theorem fermat_unit_at {p a : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hna : Γ ⊢[
     (Δ := dvd p (monus (pw a (pred p)) one) :: (a ≐ succ (pred a)) :: Γ) hq.wk.wk Prf.hyp0)
   refine rem_eq_of_eq hq.wk.wk (k₁ := zero) (k₂ := quo (monus (pw a (pred p)) one) (succ (pred p))) ?_
   refine withEq eu.wk fun e₂ => withEq ev fun e₃ => withEq hq.wk.wk fun e₄ => ?_
-  apply deriveNat; ipra_simps; linear_combination e₂ + e₃ - Groth.ι (IPRA.Q.mk _ (quo (monus (pw a (pred p)) one) (succ (pred p)))) * e₄
+  ipra_lc e₂ + e₃ - Groth.ι (IPRA.Q.mk _ (quo (monus (pw a (pred p)) one) (succ (pred p)))) * e₄
 where
   le_succ_succ' {Δ : List (Fm PTm n)} {x y : PTm n} (h : Δ ⊢[PRAAx] le x y) : Δ ⊢[PRAAx] le (succ x) (succ y) :=
     (succ_monus_succ x y).eqTrans h
@@ -177,11 +175,11 @@ theorem rsa_at {p q e d t x : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hq : Γ ⊢[P
   have hYp : Γ ⊢[PRAAx] rem (pw (pw x e) d) p ≐ rem x p := by
     refine (congrAp2 remF (hY.eqTrans (congrPw (.eqRefl _) ?_)) (.eqRefl _)).eqTrans
       (fermat_pow hp x (t * pred q))
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   have hYq : Γ ⊢[PRAAx] rem (pw (pw x e) d) q ≐ rem x q := by
     refine (congrAp2 remF (hY.eqTrans (congrPw (.eqRefl _) ?_)) (.eqRefl _)).eqTrans
       (fermat_pow hq x (t * pred p))
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   have hc := crt_unique_at (prime_eq_succ_pred hp) (prime_eq_succ_pred hq) hYp hYq
   have hL : Γ ⊢[PRAAx] p * quo q (gcd p q) ≐ p * q :=
     congrMul (.eqRefl _) ((congrAp2 quoF (.eqRefl _) (gcd_distinct_primes hp hq hne)).eqTrans (quo_one q))

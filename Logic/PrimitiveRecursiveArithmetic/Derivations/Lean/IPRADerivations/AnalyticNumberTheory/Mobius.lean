@@ -7,6 +7,8 @@ import IPRADerivations.Probability.Expectation
 import IPRADerivations.AnalyticNumberTheory.FactorVector
 import IPRADerivations.AnalyticNumberTheory.SumPhi
 import IPRADerivations.Core.SumSplit
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The Möbius function and Möbius cancellation
@@ -123,7 +125,7 @@ theorem val_pp {q p : PTm n} (hq : Γ ⊢[PRAAx] prime q) (hp : Γ ⊢[PRAAx] pr
   · let C : List (Fm PTm n) := (q ≐ p) :: Γ
     have e : C ⊢[PRAAx] q ≐ p := Prf.hyp0
     have v : C ⊢[PRAAx] val q p ≐ one :=
-      val_unique hq2.wk hp1.wk (c := one) (e.eqSymm.eqTrans ((pw_one q).eqSymm.eqTrans (by apply deriveNat; ipra_simps; ring)))
+      val_unique hq2.wk hp1.wk (c := one) (e.eqSymm.eqTrans ((pw_one q).eqSymm.eqTrans (by ipra_ring)))
         (not_dvd_one hq2.wk)
     exact v.eqTrans (eqb_of_eq e).eqSymm
   · let C : List (Fm PTm n) := neg (q ≐ p) :: Γ
@@ -139,15 +141,9 @@ theorem val_mul_prime {q a p : PTm n} (hq : Γ ⊢[PRAAx] prime q) (hp : Γ ⊢[
 
 /-! ## Pointwise effect of a prime factor -/
 
-theorem congrSg {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) : Γ ⊢[PRAAx] sg a ≐ sg b := by
-  have e := Prf.eqCongr (Γ := Γ) (sg (var 0) : PTm 1) (σ := ![a]) (σ' := ![b]) (fun j => by fin_cases j; assumption)
-  simpa using e
+alias congrSg := Common.congrSg
 
-theorem congrEqb' {a a' b b' : PTm n} (h₁ : Γ ⊢[PRAAx] a ≐ a') (h₂ : Γ ⊢[PRAAx] b ≐ b') :
-    Γ ⊢[PRAAx] eqb a b ≐ eqb a' b' := by
-  have e := Prf.eqCongr (Γ := Γ) (eqb (var 0) (var 1) : PTm 2) (σ := ![a, b]) (σ' := ![a', b'])
-    (fun j => by fin_cases j <;> assumption)
-  simpa using e
+alias congrEqb' := Common.congrEqb
 
 theorem congrIsP {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) : Γ ⊢[PRAAx] isP a ≐ isP b := by
   have e := Prf.eqCongr (Γ := Γ) (isP (var 0) : PTm 1) (σ := ![a]) (σ' := ![b]) (fun j => by fin_cases j; assumption)
@@ -161,7 +157,7 @@ theorem isP_ne {q p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (h0 : Γ ⊢[PRAAx] is
   exact succ_ne_zero' _ e
 
 theorem zero_mul_l {x : PTm n} (h : Γ ⊢[PRAAx] x ≐ zero) (z : PTm n) : Γ ⊢[PRAAx] x * z ≐ zero :=
-  (congrMul h (.eqRefl _)).eqTrans (by apply deriveNat; ipra_simps; ring)
+  (congrMul h (.eqRefl _)).eqTrans (by ipra_ring)
 
 /-- `[q prime] sg(v_q(a p)) = [q prime] sg(v_q(a)) + [q = p]` for `p ∤ a`. -/
 theorem om_pt {q a p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (ha : Γ ⊢[PRAAx] a ≐ succ (pred a))
@@ -184,7 +180,7 @@ theorem om_pt {q a p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (ha : Γ ⊢[PRAAx] a
         (congrSg (hv.wk.eqTrans ((congrAdd v0 eb).eqTrans (zero_add _)))).eqTrans (sg_succ zero)
       have s0 : D ⊢[PRAAx] sg (val q a) ≐ zero := (congrSg v0).eqTrans sg_zero
       refine (congrMul h1.wk s1).eqTrans (.eqTrans ?_ (congrAdd (congrMul h1.wk s0) eb).eqSymm)
-      apply deriveNat; ipra_simps; ring
+      ipra_ring
     · let D : List (Fm PTm n) := neg (q ≐ p) :: C
       have eb := eqb_of_ne (Prf.hyp0 : D ⊢[PRAAx] _)
       have s : D ⊢[PRAAx] sg (val q (a * p)) ≐ sg (val q a) :=
@@ -221,10 +217,10 @@ theorem sq_kill_pt {a p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (ha : Γ ⊢[PRAAx
     (congrMonus (hv.eqTrans (congrAdd (.eqRefl _) (eqb_of_eq (.eqRefl p)))) (.eqRefl _)).eqTrans (add_monus _ _)
   have w := eq_add_of_le hpa
   have s : Γ ⊢[PRAAx] sg (val p a) ≐ one :=
-    (congrSg (w.eqTrans (by apply deriveNat; ipra_simps; ring : Γ ⊢[PRAAx] one + monus (val p a) one ≐
+    (congrSg (w.eqTrans (by ipra_ring : Γ ⊢[PRAAx] one + monus (val p a) one ≐
       succ (monus (val p a) one)))).eqTrans (sg_succ _)
   refine (congrMul (isP_of_prime hp) ((congrSg m).eqTrans s)).eqTrans ?_
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-! ## Sums -/
 
@@ -253,16 +249,13 @@ theorem om_mul {N a p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hpN : Γ ⊢[PRAAx]
     rw [inst2_addBody, inst2_lB, inst2_dB, one_inst, shift_pairT, shift_mul']
     refine (om_pt hp'.wk ha'.wk hpa'.wk).eqTrans (congrAdd (congrInst2 omB (.eqRefl _) (snd_pair _ _)).eqSymm ?_)
     exact (eqb_comm' _ _).eqTrans ((congrEqb' (fst_pair _ _).eqSymm (.eqRefl _)).eqTrans (mul_one' _).eqSymm)
-  have c₂ := natEq (sum_add (Γ := Γ) (lB omB) (dB (one : PTm 2)) N (pairT p a))
   have c₃ : Γ ⊢[PRAAx] ap2 (sumF (lB omB)) N (pairT p a) ≐ om N a := by
     refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
     rw [inst2_lB, shift_pairT]
     exact congrInst2 omB (.eqRefl _) (snd_pair _ _)
   have c₄ : Γ ⊢[PRAAx] ap2 (sumF (dB (one : PTm 2))) N (pairT p a) ≐ one :=
     (sum_delta (one : PTm 2) hpN).eqTrans (by rw [one_inst]; exact .eqRefl _)
-  have e₁ := natEq c₁; have e₃ := natEq c₃; have e₄ := natEq c₄
-  apply deriveNat; ipra_simps
-  linear_combination e₁ + c₂ + e₃ + e₄
+  ipra_lc natEq c₁ + natEq (sum_add (Γ := Γ) (lB omB) (dB (one : PTm 2)) N (pairT p a)) + natEq c₃ + natEq c₄
 
 /-- `s_N(a p) = s_N(a)` for a prime `p` with `p ∤ a`. -/
 theorem sq_mul {N a p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (ha : Γ ⊢[PRAAx] a ≐ succ (pred a))
@@ -372,11 +365,7 @@ theorem inst2_mB (F : PTm 2) (a M : PTm n) : inst2 (mB F) a M = inst2 F (a * lpf
   simp only [inst2, mB, Syn.subst_subst]
   congr 1; funext k; fin_cases k <;> simp
 
-theorem pos_of_two {M : PTm n} (h : Γ ⊢[PRAAx] le two M) : Γ ⊢[PRAAx] M ≐ succ (pred M) := by
-  have e := natEq (eq_add_of_le h)
-  refine eq_succ_pred (y := one + monus M two) ?_
-  apply deriveNat; ipra_simps
-  linear_combination e
+alias pos_of_two := Common.pos_of_two_le
 
 theorem eqb_split (a b : PTm n) : Γ ⊢[PRAAx] monus one (eqb a b) + eqb a b ≐ one := by
   unfold eqb
@@ -407,7 +396,7 @@ theorem mult_pt (hM : Γ ⊢[PRAAx] le two M) (a : PTm n) :
   · let C : List (Fm PTm n) := (a ≐ zero) :: Γ
     have h0 : C ⊢[PRAAx] a ≐ zero := Prf.hyp0
     have s0 : C ⊢[PRAAx] sg (a * lpf M) ≐ zero :=
-      (congrSg ((congrMul h0 (.eqRefl _)).eqTrans (by apply deriveNat; ipra_simps; ring))).eqTrans sg_zero
+      (congrSg ((congrMul h0 (.eqRefl _)).eqTrans (by ipra_ring))).eqTrans sg_zero
     have c0 : C ⊢[PRAAx] monus one (eqb (rem a (lpf M)) zero) ≐ zero :=
       (congrMonus (.eqRefl _) (eqb_of_eq ((congrAp2 remF h0 (.eqRefl _)).eqTrans (rem_zero _)))).eqTrans
         (monus_self _)
@@ -429,7 +418,7 @@ theorem mult_pt (hM : Γ ⊢[PRAAx] le two M) (a : PTm n) :
       have k := kill (N := succ M) hp.wk.wk hpN.wk.wk ha.wk hv1
       have c1 : D ⊢[PRAAx] monus one (eqb (rem a (lpf M)) zero) ≐ zero :=
         (congrMonus (.eqRefl _) (eqb_of_eq hd)).eqTrans (monus_self _)
-      have zr : ∀ {x : PTm n}, D ⊢[PRAAx] x * zero ≐ zero := fun {x} => by apply deriveNat; ipra_simps; ring
+      have zr : ∀ {x : PTm n}, D ⊢[PRAAx] x * zero ≐ zero := fun {x} => by ipra_ring
       exact .andI ((congrMul (.eqRefl _) (Prf.andE₁ k)).eqTrans (zr.eqTrans (zero_mul_l c1 _).eqSymm))
         ((congrMul (.eqRefl _) (Prf.andE₂ k)).eqTrans (zr.eqTrans (zero_mul_l c1 _).eqSymm))
     · let D : List (Fm PTm n) := neg (rem a (lpf M) ≐ zero) :: C
@@ -451,11 +440,9 @@ theorem mult_pt (hM : Γ ⊢[PRAAx] le two M) (a : PTm n) :
           have hpk : E ⊢[PRAAx] dvd (lpf M) (quo M a) :=
             gauss hp1.wk.wk.wk (gcd_prime hp.wk.wk.wk hna.wk)
               ((congrAp2 remF eM.eqSymm (.eqRefl _)).eqTrans hpd.wk.wk.wk)
-          have ek := natEq (eq_of_dvd' hp1.wk.wk.wk hpk)
           have eM' := natEq eM
           have eq2 : E ⊢[PRAAx] M ≐ a * lpf M * quo (quo M a) (lpf M) := by
-            apply deriveNat; ipra_simps
-            linear_combination eM' + 𝔞 a * ek
+            ipra_lc eM' + 𝔞 a * natEq (eq_of_dvd' hp1.wk.wk.wk hpk)
           have hd2 : E ⊢[PRAAx] dvd (a * lpf M) M := dvd_of_eq' hap.wk eq2
           exact (eqb_of_eq hd2).eqTrans (eqb_of_eq hdM).eqSymm
         · let E : List (Fm PTm n) := neg (rem M a ≐ zero) :: D
@@ -463,8 +450,7 @@ theorem mult_pt (hM : Γ ⊢[PRAAx] le two M) (a : PTm n) :
             refine .impI ?_
             have e := natEq (eq_of_dvd' hap.wk.wk (Prf.hyp0 : (dvd (a * lpf M) M :: E) ⊢[PRAAx] _))
             have eq3 : (dvd (a * lpf M) M :: E) ⊢[PRAAx] M ≐ a * (lpf M * quo M (a * lpf M)) := by
-              apply deriveNat; ipra_simps
-              linear_combination e
+              ipra_lc e
             have hdM : (dvd (a * lpf M) M :: E) ⊢[PRAAx] dvd a M := dvd_of_eq' ha.wk.wk.wk eq3
             exact Prf.impE Prf.hyp1 hdM
           exact (eqb_of_ne ne).eqTrans (eqb_of_ne Prf.hyp0).eqSymm
@@ -482,12 +468,12 @@ theorem tail_pt {d : PTm n} (hM : Γ ⊢[PRAAx] le two M) (h : Γ ⊢[PRAAx] lt 
   have w := natEq (eq_add_of_le h)
   have hd : Γ ⊢[PRAAx] d ≐ succ (pred d) :=
     eq_succ_pred (y := M + monus d (succ M)) (by apply deriveNat; ipra_simps; linear_combination w)
-  have r : Γ ⊢[PRAAx] rem M d ≐ M := rem_eq' hd (q := zero) (by apply deriveNat; ipra_simps; ring) h
+  have r : Γ ⊢[PRAAx] rem M d ≐ M := rem_eq' hd (q := zero) (by ipra_ring) h
   have hM1 := pos_of_two hM
   have z : Γ ⊢[PRAAx] eqb (rem M d) zero ≐ zero :=
     (congrEqb' r (.eqRefl _)).eqTrans (eqb_of_ne (.impI (succ_ne_zero' _ (hM1.wk.eqSymm.eqTrans Prf.hyp0))))
   have zz : ∀ {x : PTm n}, Γ ⊢[PRAAx] (sg d * eqb (rem M d) zero) * x ≐ zero := fun {x} =>
-    zero_mul_l ((congrMul (.eqRefl _) z).eqTrans (by apply deriveNat; ipra_simps; ring)) x
+    zero_mul_l ((congrMul (.eqRefl _) z).eqTrans (by ipra_ring)) x
   exact .andI zz zz
 
 end Divisors
@@ -513,7 +499,6 @@ theorem split_reindex (F G : PTm 2) {M : PTm n} (hM : Γ ⊢[PRAAx] le two M)
       (rem (var 0) (lpf (Syn.shift M))) zero)
     apply deriveNat; ipra_simps
     linear_combination (-𝔞 (inst2 F (var 0) (Syn.shift M))) * e
-  have sa := natEq (sum_add (Γ := Γ) (cpB * F) (pdB * F) (succ M) M)
   -- extend the multiple part to `(succ M + pred (lpf M) * M) = (M + 1) + (p − 1) M`
   have ex : Γ ⊢[PRAAx] ap2 (sumF (pdB * F)) (succ M + pred (lpf M) * M) M ≐ ap2 (sumF (pdB * F)) (succ M) M := by
     refine (sum_split (pdB * F) (succ M) (pred (lpf M) * M) M).eqTrans ((congrAdd (.eqRefl _) ?_).eqTrans (add_zero _))
@@ -521,7 +506,7 @@ theorem split_reindex (F G : PTm 2) {M : PTm n} (hM : Γ ⊢[PRAAx] le two M)
     have hs : Syn.shift (succ M) = succ (Syn.shift M) := by simp [Syn.shift]
     rw [inst2_offB, shift_pairT, inst2_mulB, hs]
     refine (congrMul (.eqRefl _) ((congrInst2 F (congrAdd (fst_pair _ _) (.eqRefl _)) (snd_pair _ _)).eqTrans
-      (hT hM'.wk ?_))).eqTrans (by apply deriveNat; ipra_simps; ring)
+      (hT hM'.wk ?_))).eqTrans (by ipra_ring)
     exact le_of_eq_add (d := var 0) (by apply deriveNat; ipra_simps; try ring)
   -- reindex
   have r₁ : Γ ⊢[PRAAx] ap2 (sumF (pdB * F)) (succ M + pred (lpf M) * M) M ≐
@@ -554,20 +539,14 @@ theorem split_reindex (F G : PTm 2) {M : PTm n} (hM : Γ ⊢[PRAAx] le two M)
     refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
     rw [inst2_mB, inst2_mulB]
     exact hH _ hM'.wk
-  have e₁ := natEq sp; have e₂ := natEq ex; have e₃ := natEq r₁; have e₄ := natEq r₂
-  have e₅ := natEq (congrAp2 (sumF (mB F)) bq (.eqRefl M)); have e₆ := natEq r₃
-  apply deriveNat; ipra_simps
-  linear_combination e₁ + sa - e₂ + e₃ + e₄ + e₅ + e₆
+  ipra_lc natEq sp + natEq (sum_add (Γ := Γ) (cpB * F) (pdB * F) (succ M) M) - natEq ex + natEq r₁ + natEq r₂ +
+    natEq (congrAp2 (sumF (mB F)) bq (.eqRefl M)) + natEq r₃
 
 /-- `lem:mobius-cancel` for `m ≥ 2`: `∑_{d ∣ m} μ⁺(d) = ∑_{d ∣ m} μ⁻(d)`, i.e. `∑_{d ∣ m} μ(d) = 0`. -/
 theorem mobius_cancel {M : PTm n} (hM : Γ ⊢[PRAAx] le two M) :
     Γ ⊢[PRAAx] ap2 (sumF PB) (succ M) M ≐ ap2 (sumF NB) (succ M) M := by
-  have a := natEq (split_reindex PB NB hM (fun a h => Prf.andE₁ (mult_pt h a))
-    (fun h₁ h₂ => Prf.andE₁ (tail_pt h₁ h₂)))
-  have b := natEq (split_reindex NB PB hM (fun a h => Prf.andE₂ (mult_pt h a))
-    (fun h₁ h₂ => Prf.andE₂ (tail_pt h₁ h₂)))
-  apply deriveNat; ipra_simps
-  linear_combination a - b
+  ipra_lc natEq (split_reindex PB NB hM (fun a h => Prf.andE₁ (mult_pt h a)) (fun h₁ h₂ => Prf.andE₁ (tail_pt h₁ h₂))) -
+    natEq (split_reindex NB PB hM (fun a h => Prf.andE₂ (mult_pt h a)) (fun h₁ h₂ => Prf.andE₂ (tail_pt h₁ h₂)))
 
 /-! ## The case `m = 1` -/
 
@@ -594,20 +573,20 @@ theorem mobius_one :
     Γ ⊢[PRAAx] (ap2 (sumF PB) (succ one) (one : PTm n) ≐ one) ⋏ (ap2 (sumF NB) (succ one) (one : PTm n) ≐ zero) := by
   have hone : Γ ⊢[PRAAx] (one : PTm n) ≐ succ (pred one) := congrSucc (pred_succ _).eqSymm
   have r : Γ ⊢[PRAAx] rem (one : PTm n) one ≐ zero :=
-    rem_eq' hone (q := one) (by apply deriveNat; ipra_simps; ring) (zero_lt' hone)
+    rem_eq' hone (q := one) (by ipra_ring) (zero_lt' hone)
   have dv1 : Γ ⊢[PRAAx] sg (one : PTm n) * eqb (rem one one) zero ≐ one :=
     (congrMul (sg_succ _) ((congrEqb' r (.eqRefl _)).eqTrans (eqb_of_eq (.eqRefl _)))).eqTrans
-      (by apply deriveNat; ipra_simps; ring)
+      (by ipra_ring)
   have s0 : Γ ⊢[PRAAx] eqb (sq (succ one) (one : PTm n)) zero ≐ one :=
     (congrEqb' sq_two_one (.eqRefl _)).eqTrans (eqb_of_eq (.eqRefl _))
   have o0 : Γ ⊢[PRAAx] rem (om (succ one) (one : PTm n)) two ≐ zero :=
     (congrAp2 remF om_two_one (.eqRefl _)).eqTrans (rem_zero _)
   have mp : Γ ⊢[PRAAx] muP (succ one) (one : PTm n) ≐ one :=
     (congrMul s0 ((congrEqb' o0 (.eqRefl _)).eqTrans (eqb_of_eq (.eqRefl _)))).eqTrans
-      (by apply deriveNat; ipra_simps; ring)
+      (by ipra_ring)
   have mn : Γ ⊢[PRAAx] muN (succ one) (one : PTm n) ≐ zero :=
     (congrMul s0 ((congrEqb' o0 (.eqRefl _)).eqTrans (eqb_of_ne zero_ne_one'))).eqTrans
-      (by apply deriveNat; ipra_simps; ring)
+      (by ipra_ring)
   have p0 : ∀ {X : PTm n}, Γ ⊢[PRAAx] (sg (zero : PTm n) * eqb (rem one zero) zero) * X ≐ zero :=
     fun {X} => zero_mul_l (zero_mul_l sg_zero _) X
   have two_sum : ∀ (B : PTm 2), Γ ⊢[PRAAx] ap2 (sumF B) (succ one) (one : PTm n) ≐
@@ -616,8 +595,8 @@ theorem mobius_one :
       ((congrAdd (sum_zero _ _) (.eqRefl _)).eqTrans (zero_add _))) (.eqRefl _))
   refine .andI ((two_sum PB).eqTrans ?_) ((two_sum NB).eqTrans ?_)
   · rw [inst2_PB, inst2_PB]
-    exact (congrAdd p0 ((congrMul dv1 mp).eqTrans (by apply deriveNat; ipra_simps; ring))).eqTrans (zero_add _)
+    exact (congrAdd p0 ((congrMul dv1 mp).eqTrans (by ipra_ring))).eqTrans (zero_add _)
   · rw [inst2_NB, inst2_NB]
-    exact (congrAdd p0 ((congrMul dv1 mn).eqTrans (by apply deriveNat; ipra_simps; ring))).eqTrans (add_zero _)
+    exact (congrAdd p0 ((congrMul dv1 mn).eqTrans (by ipra_ring))).eqTrans (add_zero _)
 
 end LeanProofs.IPRA.AnalyticNumberTheory.Mobius

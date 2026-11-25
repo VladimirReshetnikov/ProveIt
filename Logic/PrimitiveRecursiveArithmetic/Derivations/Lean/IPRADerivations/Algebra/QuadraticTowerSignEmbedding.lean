@@ -1,5 +1,6 @@
 import IPRADerivations.Algebra.QuadraticTowerScalarArrays
 import IPRADerivations.Algebra.QuadraticTowerSignCoherence
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual scalar and zero sign queries at numerical tower depth
@@ -58,10 +59,7 @@ theorem cap_floor (H B t D : PTm n) : Γ ⊢[PRAAx] le B (cap H B t D) :=
 
 theorem read_cap_congr (h B C S A : PTm n) (hB : Γ ⊢[PRAAx] B ≐ C) : Γ ⊢[PRAAx]
     read h B S A ≐ read h C S A := by
-  simpa [QuadraticTowerSignRecipe.subst_read] using
-    Prf.eqCongr (read (var 0) (var 1) (var 2) (var 3) : PTm 4)
-      (σ := ![h,B,S,A]) (σ' := ![h,C,S,A])
-      (fun i => by fin_cases i; exact .eqRefl _; exact hB; exact .eqRefl _; exact .eqRefl _)
+  ipra_congr (read (var 0) (var 1) (var 2) (var 3) : PTm 4) with [.eqRefl h, hB, .eqRefl S, .eqRefl A]
 
 theorem dispatch_b_zero_total (s t u : PTm n) (ht : Γ ⊢[PRAAx] t ≐ zero) : Γ ⊢[PRAAx]
     dispatch s t u ≐ s := by

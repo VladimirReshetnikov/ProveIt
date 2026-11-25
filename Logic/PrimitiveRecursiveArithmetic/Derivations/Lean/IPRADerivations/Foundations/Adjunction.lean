@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.PresentedCategory
 import IPRADerivations.Core.ParityArith
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Adjunctions from unit and counit (`ipra_categorical_methods`, Section 4)
@@ -493,11 +494,9 @@ private theorem mono_aux {a b ha hb pa pb : PTm n} (ea : Γ ⊢[PRAAx] a ≐ two
     Γ ⊢[PRAAx] le (succ (two * hb + one)) (two * hb + one) := by
   have e₁ := natEq ea; have e₂ := natEq eb
   have e₃ := natEq (eq_add_of_le h); have e₄ := natEq (eq_add_of_le hp)
-  have e₅ := natEq (eq_add_of_le hlt)
   refine le_of_eq_add
     (d := monus b a + monus one pb + two * monus ha (succ hb) + pa) ?_
-  apply deriveNat; ipra_simps
-  linear_combination e₁ - e₂ + e₃ + e₄ + 2 * e₅
+  ipra_lc e₁ - e₂ + e₃ + e₄ + 2 * natEq (eq_add_of_le hlt)
 
 /-- Halving is monotone. -/
 theorem half_mono {a b : PTm n} (h : Γ ⊢[PRAAx] le a b) : Γ ⊢[PRAAx] le (half a) (half b) := by
@@ -508,23 +507,19 @@ theorem half_mono {a b : PTm n} (h : Γ ⊢[PRAAx] le a b) : Γ ⊢[PRAAx] le (h
 /-- Doubling is monotone. -/
 theorem double_mono {a b : PTm n} (h : Γ ⊢[PRAAx] le a b) :
     Γ ⊢[PRAAx] le (two * a) (two * b) := by
-  have e := natEq (eq_add_of_le h)
   refine le_of_eq_add (d := two * monus b a) ?_
-  apply deriveNat; ipra_simps
-  linear_combination 2 * e
+  ipra_lc 2 * natEq (eq_add_of_le h)
 
 /-- `x ≤ ⌊2x / 2⌋`. -/
 theorem le_half_double (x : PTm n) : Γ ⊢[PRAAx] le x (half (two * x)) := by
   -- `2x = 2 ⌊2x/2⌋ + par(2x)` with `par(2x) = 0`
   have e₁ := natEq (half_par (Γ := Γ) (two * x)); have e₂ := natEq (par_double (Γ := Γ) x)
   refine .orE (lt_or_le (half (two * x)) x) ?_ Prf.hyp0
-  have e₃ := natEq (eq_add_of_le (Prf.hyp0 (Γ := Γ) (φ := lt (half (two * x)) x)))
   have e₁' := natEq (half_par (Γ := lt (half (two * x)) x :: Γ) (two * x))
   have e₂' := natEq (par_double (Γ := lt (half (two * x)) x :: Γ) x)
   refine not_succ_le_self (two * x) _ (le_of_eq_add
     (d := succ zero + two * monus x (succ (half (two * x)))) ?_)
-  apply deriveNat; ipra_simps
-  linear_combination -e₁' - e₂' + 2 * e₃
+  ipra_lc -e₁' - e₂' + 2 * natEq (eq_add_of_le (Prf.hyp0 (Γ := Γ) (φ := lt (half (two * x)) x)))
 
 /-- `2 ⌊y / 2⌋ ≤ y`. -/
 theorem double_half_le (y : PTm n) : Γ ⊢[PRAAx] le (two * half y) y :=

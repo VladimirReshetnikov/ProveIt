@@ -3,7 +3,7 @@ import IPRADerivations.AnalyticNumberTheory.RobinUpperEnd
 import IPRADerivations.AnalyticNumberTheory.RobinLogWidth
 import IPRADerivations.AnalyticNumberTheory.LcmBridgeSide
 import IPRADerivations.AnalyticNumberTheory.LcmBridgeTransfer
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # `ψ ≤ ϑ + m log P` on the logarithm names (`robin_ipra_research_2026-11-19`, `paper/lcm_bridge.tex`)

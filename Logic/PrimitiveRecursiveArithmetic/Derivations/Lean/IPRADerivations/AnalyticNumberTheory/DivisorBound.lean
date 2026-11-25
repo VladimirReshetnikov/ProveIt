@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.DivisorHarmonic
 import IPRADerivations.AnalyticNumberTheory.HarmonicMertens
 import IPRADerivations.DiophantineNumberTheory.HurwitzLoop
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The divisor bound for the harmonic logarithm (`pnt_ipra_constructive_2026-11-14`, `sb:divisor-bound`)
@@ -52,17 +53,15 @@ theorem eta_bounds {m X K L : PTm n} (hm : Γ ⊢[PRAAx] le one m) (hmX : Γ ⊢
     Γ ⊢[PRAAx] le (S X (fact L) + S (K * m) (fact L)) (S (K * X) (fact L) + S m (fact L)) ⋏
       le (S (K * X) (fact L) + S m (fact L)) (S (K * m) (fact L) + S X (fact L) + quo (fact L) m) := by
   have hmp := pos_of_lt_zero hm
-  have wm := natEq hmp
-  have wX := natEq (eq_add_of_le hmX)
   have q1 : Γ ⊢[PRAAx] K * (succ (pred m) + monus X m) ≐ K * X := by
-    apply deriveNat; ipra_simps; linear_combination -(𝔞 K) * wm - 𝔞 K * wX
+    ipra_lc -(𝔞 K) * natEq hmp - 𝔞 K * natEq (eq_add_of_le hmX)
   have r := log_refine (c₁ := pred m) (T := monus X m) (pos_of_lt_zero hK) (le_congr q1.eqSymm (.eqRefl _) hL)
   have qa : Γ ⊢[PRAAx] succ (pred m) + monus X m ≐ X := by
-    apply deriveNat; ipra_simps; linear_combination -wm - wX
+    ipra_lc -natEq hmp - natEq (eq_add_of_le hmX)
   have qb : Γ ⊢[PRAAx] K * succ (pred m) ≐ K * m := by
-    apply deriveNat; ipra_simps; linear_combination -(𝔞 K) * wm
+    ipra_lc -(𝔞 K) * natEq hmp
   have qc : Γ ⊢[PRAAx] X ≐ succ (pred m + monus X m) := by
-    apply deriveNat; ipra_simps; linear_combination wX + wm
+    ipra_lc natEq (eq_add_of_le hmX) + natEq hmp
   have e1 := natEq (congrAp2 (Γ := Γ) (sumF hB) qa (.eqRefl (fact L)))
   have e2 := natEq (congrAp2 (Γ := Γ) (sumF hB) qb (.eqRefl (fact L)))
   have e3 := natEq (congrAp2 (Γ := Γ) (sumF hB) q1 (.eqRefl (fact L)))
@@ -88,7 +87,7 @@ theorem eta_bounds {m X K L : PTm n} (hm : Γ ⊢[PRAAx] le one m) (hmX : Γ ⊢
 theorem lam_upper {K : PTm n} (a d F : PTm n) (hK : Γ ⊢[PRAAx] K ≐ succ (pred K)) :
     Γ ⊢[PRAAx] le (a * S (K * (a + d)) F) (a * S (K * a) F + d * F) := by
   have lu := log_upper (Γ := Γ) (K * a) (K * d) F
-  have q : Γ ⊢[PRAAx] K * (a + d) ≐ K * a + K * d := by apply deriveNat; ipra_simps; ring
+  have q : Γ ⊢[PRAAx] K * (a + d) ≐ K * a + K * d := by ipra_ring
   have e := natEq (congrAp2 (Γ := Γ) (sumF hB) q (.eqRefl F))
   have mono := S_mono (Γ := Γ) F (le_of_eq_add q : Γ ⊢[PRAAx] le (K * a) (K * (a + d)))
   refine mul_le_cancel (d' := pred K) ?_
@@ -98,9 +97,8 @@ theorem lam_upper {K : PTm n} (a d F : PTm n) (hK : Γ ⊢[PRAAx] K ≐ succ (pr
 
 /-- `y ≤ m² + 2m` from `y < (m + 1)²`. -/
 theorem y_le {y m : PTm n} (h2 : Γ ⊢[PRAAx] lt y (succ m * succ m)) : Γ ⊢[PRAAx] le y (m * m + two * m) := by
-  have w := natEq (eq_add_of_le h2)
   refine le_of_eq_add (d := monus (succ m * succ m) (succ y)) ?_
-  apply deriveNat; ipra_simps; linear_combination w
+  ipra_lc natEq (eq_add_of_le h2)
 
 /-- `sb:divisor-bound`, upper half: `D(y) − yλ_K(y) − (2c − 1)y ≤ 8m` with `c = H_X − λ_K(X)`, i.e.
 `F D(y) + 2y S(KX) + Fy ≤ y S(Ky) + y S(K) + 2y S(X) + 8mF`. -/

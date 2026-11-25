@@ -1,6 +1,8 @@
 import IPRADerivations.Analysis.GaussianCoefficientL1
 import IPRADerivations.Analysis.GaussianRationalSyntheticBounds
 import IPRADerivations.Analysis.RationalSumLinearity
+import IPRADerivations.Core.CongruenceTactic
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Actual rational multiplication by a linear polynomial
@@ -67,10 +69,7 @@ theorem delayed_zero (C N : PTm n) : Γ ⊢[PRAAx] delayed C N zero ≐ qzero :=
 
 theorem padded_congr {C C' N N' i i' : PTm n} (hC : Γ ⊢[PRAAx] C ≐ C')
     (hN : Γ ⊢[PRAAx] N ≐ N') (hi : Γ ⊢[PRAAx] i ≐ i') : Γ ⊢[PRAAx] padded C N i ≐ padded C' N' i' := by
-  simpa only [subst_padded,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.head_cons,Matrix.tail_cons] using Prf.eqCongr (Ax := PRAAx) (Γ := Γ)
-      (padded (var 0) (var 1) (var 2) : PTm 3) (σ := ![C,N,i]) (σ' := ![C',N',i'])
-        (fun j => by fin_cases j; exact hC; exact hN; exact hi)
+  ipra_congr (padded (var 0) (var 1) (var 2) : PTm 3) with [hC, hN, hi]
 
 theorem delayed_succ (C N i : PTm n) : Γ ⊢[PRAAx] delayed C N (succ i) ≐ padded C N i :=
   (RationalArithmetic.select_one _ _ _ (Signum.sg_succ i)).eqTrans
@@ -285,10 +284,7 @@ theorem linear_evaluation (C z y N : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ N)
 
 theorem scalar_zero_code : Γ ⊢[PRAAx] natCode zero ≐ RationalIntegerNormalization.integerCode (ZT.natLit 0) := by
   apply RationalIntegerNormalization.normalize_integer _ _ _ (le_refl one)
-  apply ZT.derive
-  simp only [ZT.toZ_mul,ZT.toZ_ofNat,ZT.toZ_natLit]
-  ipra_simps
-  ring
+  ipra_lc
 
 theorem scalar_add_zero (a : PTm n) (ha : Γ ⊢[PRAAx] RationalNormalForm.wellFormed a) : Γ ⊢[PRAAx]
     add a (natCode zero) ≐ a := by
@@ -298,10 +294,7 @@ theorem scalar_add_zero (a : PTm n) (ha : Γ ⊢[PRAAx] RationalNormalForm.wellF
     (RationalRepresentations.represents_self a)
     (RationalAlgebra.positive_product (RationalArgmin.denominator_positive a) (le_refl one))
     (RationalArgmin.denominator_positive a)
-  apply ZT.derive
-  simp only [ZT.toZ_mul,ZT.toZ_add,ZT.toZ_ofNat]
-  ipra_simps
-  ring
+  ipra_lc
 
 theorem scalar_zero_add (a : PTm n) (ha : Γ ⊢[PRAAx] RationalNormalForm.wellFormed a) : Γ ⊢[PRAAx]
     add (natCode zero) a ≐ a := (RationalAlgebra.add_commutative _ _).eqTrans (scalar_add_zero a ha)
@@ -314,10 +307,7 @@ theorem scalar_multiply_one (a : PTm n) (ha : Γ ⊢[PRAAx] RationalNormalForm.w
     (RationalRepresentations.represents_self a)
     (RationalAlgebra.positive_product (RationalArgmin.denominator_positive a) (le_refl one))
     (RationalArgmin.denominator_positive a)
-  apply ZT.derive
-  simp only [ZT.toZ_mul,ZT.toZ_ofNat]
-  ipra_simps
-  ring
+  ipra_lc
 
 theorem qzero_norm : Γ ⊢[PRAAx] qL1 (qzero : PTm n) ≐ natCode zero := by
   have rep := GaussianRationalL1.qL1_represents (Γ := Γ) qzero ComplexLogarithmRemainder.zeroCode one (le_refl _)

@@ -1,5 +1,5 @@
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Gauss–Bonnet: the incidence polynomial and the residual bounds

@@ -1,5 +1,6 @@
 import IPRADerivations.Core.Search
 import IPRADerivations.Core.Signum
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Least bounded witnesses, the found bit and the bounded decision
@@ -137,9 +138,8 @@ theorem found_bit (N x : PTm n) : Γ ⊢[PRAAx] (fnd f N x ≐ zero) ⋎ (fnd f 
     (.orI₂ ((fnd_congr Prf.hyp0).eqTrans (sg_succ _)))
 
 theorem found_of_lt {N x : PTm n} (h : Γ ⊢[PRAAx] lt (mu f N x) N) : Γ ⊢[PRAAx] fnd f N x ≐ succ zero := by
-  have e₁ := natEq (eq_add_of_le h)
   have e' : Γ ⊢[PRAAx] N ≐ mu f N x + succ (monus N (succ (mu f N x))) := by
-    apply deriveNat; ipra_simps; linear_combination e₁
+    ipra_lc natEq (eq_add_of_le h)
   exact (fnd_congr ((congrMonus e' (.eqRefl _)).eqTrans (add_monus' _ _))).eqTrans (sg_succ _)
 
 theorem not_found_of_eq {N x : PTm n} (h : Γ ⊢[PRAAx] mu f N x ≐ N) : Γ ⊢[PRAAx] fnd f N x ≐ zero :=

@@ -5,6 +5,7 @@ import IPRADerivations.Analysis.GaussianRationalMatrixFiniteSums
 import IPRADerivations.Analysis.RationalScalarPowerGaussianEmbedding
 import IPRADerivations.Analysis.RationalPolynomialGaussianEmbedding
 import IPRADerivations.Analysis.GaussianNormFiberDivisibility
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The collapse polynomial of the original rational section equation
@@ -118,9 +119,7 @@ private theorem evaluate_input (C d x : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ 
 
 private theorem scalar_power_congr {x y : PTm n} (r : PTm n) (h : Γ ⊢[PRAAx] x ≐ y) :
     Γ ⊢[PRAAx] GaussianRationalReciprocal.power x r ≐ GaussianRationalReciprocal.power y r := by
-  simpa only [GaussianRationalReciprocal.subst_power,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using
-    Prf.eqCongr (GaussianRationalReciprocal.power (var 0) (var 1) : PTm 2)
-      (σ := ![x,r]) (σ' := ![y,r]) (fun i => by fin_cases i; exact h; exact .eqRefl _)
+  ipra_congr (GaussianRationalReciprocal.power (var 0) (var 1) : PTm 2) with [h, .eqRefl r]
 
 theorem first_evaluation (P s r m x : PTm n) (hP : Γ ⊢[PRAAx] length P ≐ succ s) : Γ ⊢[PRAAx]
     evaluate (firstSummand P s r m) (embed x) ≐

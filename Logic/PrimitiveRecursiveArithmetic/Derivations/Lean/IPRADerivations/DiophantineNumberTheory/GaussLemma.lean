@@ -2,6 +2,7 @@ import IPRADerivations.DiophantineNumberTheory.GaussProduct
 import IPRADerivations.DiophantineNumberTheory.WilsonProduct
 import IPRADerivations.DiophantineNumberTheory.ResidueFacts
 import IPRADerivations.Foundations.BoundedReflection
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Euler's criterion and Gauss's lemma
@@ -90,7 +91,7 @@ theorem pred_ne_one {p : PTm n} (hp1 : Γ ⊢[PRAAx] p ≐ succ (pred p)) (hodd 
       ((par_succ _).eqTrans ((congrMonus (.eqRefl _) par_zero).eqTrans (monus_zero _)))).eqTrans (monus_self _)))
   exact one_ne_zero φ (hodd.eqSymm.eqTrans pe)
 
-theorem mul_one_r (t : PTm n) : Γ ⊢[PRAAx] t ≐ t * one := by apply deriveNat; ipra_simps; ring
+alias mul_one_r := Common.mul_one_right'
 
 /-- `par N = 1` from `par (N + 1) = 0`. -/
 theorem par_of_succ {N : PTm n} (h : Γ ⊢[PRAAx] par (succ N) ≐ zero) : Γ ⊢[PRAAx] par N ≐ one := by

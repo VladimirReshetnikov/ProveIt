@@ -61,16 +61,16 @@ theorem log_pair {P K L : PTm n} (hP1 : Γ ⊢[PRAAx] le one P) (hK1 : Γ ⊢[PR
     Γ ⊢[PRAAx] le (S (K * P) (fact L)) (S K (fact L) + S P (fact L)) ⋏
       le (S P (fact L) + S K (fact L)) (S (K * P) (fact L) + fact L) := by
   have hP' : Γ ⊢[PRAAx] P ≐ succ zero + pred P :=
-    (pos_of_one_le hP1).eqTrans (by apply deriveNat; ipra_simps; ring)
+    (pos_of_one_le hP1).eqTrans (by ipra_ring)
   have lr := log_refine (c₁ := zero) (T := pred P) (pos_of_one_le hK1)
     (le_congr (congrMul (.eqRefl K) hP') (.eqRefl L) hKP)
   have cP := natEq (congrAp2 (Γ := Γ) (sumF hB) hP'.eqSymm (.eqRefl (fact L)))
   have cKP := natEq (congrAp2 (Γ := Γ) (sumF hB) (congrMul (.eqRefl K) hP'.eqSymm) (.eqRefl (fact L)))
-  have k1 : Γ ⊢[PRAAx] K * succ zero ≐ K := by apply deriveNat; ipra_simps; ring
+  have k1 : Γ ⊢[PRAAx] K * succ zero ≐ K := by ipra_ring
   have cK := natEq (congrAp2 (Γ := Γ) (sumF hB) k1 (.eqRefl (fact L)))
   have q1 : Γ ⊢[PRAAx] inst2 hB zero (fact L) ≐ fact L := by
     rw [inst2_h]
-    exact quo_mul (congrSucc (pred_succ _).eqSymm) (by apply deriveNat; ipra_simps; ring)
+    exact quo_mul (congrSucc (pred_succ _).eqSymm) (by ipra_ring)
   have c1 := natEq ((sum_succ' (Γ := Γ) hB zero (fact L)).eqTrans
     ((congrAdd (sum_zero _ _) q1).eqTrans (zero_add _)))
   have c0 := natEq (sum_zero (Γ := Γ) hB (fact L))
@@ -100,7 +100,7 @@ theorem e_f (hD1 : Γ ⊢[PRAAx] le one D) :
 
 include hD1 hDx in
 theorem p_pos : Γ ⊢[PRAAx] le one (quo x D) :=
-  le_quo_of_mul_le (pos_of_one_le hD1) (le_congr (by apply deriveNat; ipra_simps; ring) (.eqRefl _) hDx)
+  le_quo_of_mul_le (pos_of_one_le hD1) (le_congr (by ipra_ring) (.eqRefl _) hDx)
 
 include hD1 in
 theorem p_le_x : Γ ⊢[PRAAx] le (quo x D) x := by

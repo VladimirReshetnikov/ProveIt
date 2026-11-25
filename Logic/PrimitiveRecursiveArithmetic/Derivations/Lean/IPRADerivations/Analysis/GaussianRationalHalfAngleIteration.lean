@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianRationalHalfAngle
 import IPRADerivations.Analysis.GaussianBalancedRadiusArithmetic
 import IPRADerivations.Analysis.RationalNonnegativePowers
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual repeated rational half-angles
@@ -71,16 +72,12 @@ theorem iterate_index_congr (q H : PTm n) {j k : PTm n} (h : Γ ⊢[PRAAx] j ≐
 
 theorem distance_congr {q r : PTm n} (h : Γ ⊢[PRAAx] q ≐ r) :
     Γ ⊢[PRAAx] distance q ≐ distance r := by
-  simpa only [subst_distance,Syn.subst_var,Matrix.cons_val_zero] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (distance (var 0) : PTm 1) (σ := ![q]) (σ' := ![r])
-      (fun i => by fin_cases i; exact h)
+  ipra_congr (distance (var 0) : PTm 1) with [h]
 
 theorem unit_congr {q r : PTm n} (h : Γ ⊢[PRAAx] q ≐ r)
     (hr : Γ ⊢[PRAAx] GaussianRationalHalfAngle.unit r) : Γ ⊢[PRAAx] GaussianRationalHalfAngle.unit q := by
   have hn : Γ ⊢[PRAAx] qnormSq q ≐ qnormSq r := by
-    simpa only [GaussianRationalMetric.subst_qnormSq,Syn.subst_var,Matrix.cons_val_zero] using
-      Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (qnormSq (var 0) : PTm 1) (σ := ![q]) (σ' := ![r])
-        (fun i => by fin_cases i; exact h)
+    ipra_congr (qnormSq (var 0) : PTm 1) with [h]
   exact hn.eqTrans hr
 
 theorem iterate_unit (q H j : PTm n) (hH : Γ ⊢[PRAAx] le one H)

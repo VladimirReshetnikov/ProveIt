@@ -5,7 +5,7 @@ import IPRADerivations.Combinatorics.StirlingPowers
 import IPRADerivations.Combinatorics.BinomialIdentities
 import IPRADerivations.Core.SumReflect
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Finite-support moment determinacy: uniqueness by back substitution

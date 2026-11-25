@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianEulerSquareJacobianRate
 import IPRADerivations.Analysis.GaussianEulerCompactAdditivity
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # An actual compact name of the retimed quadratic Euler Jacobian
@@ -52,11 +53,9 @@ theorem evaluator_at (p t z B c d T : PTm n) : Γ ⊢[PRAAx]
     simpa [evaluatorF,ap3] using toPR_eq (Γ := Γ) (evaluatorTerm (var 0) (var 1) (var 2) : PTm 3) ![p,t,fixedData z B c d T]
   have tail := snd_pair (Γ := Γ) T (rawData z B c d)
   have qc : Γ ⊢[PRAAx] query p (fstT (fixedData z B c d T)) (fstT (sndT (fixedData z B c d T))) ≐ query p T c := by
-    simpa only [GaussianEulerSquareJacobianRate.subst_query,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-      Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using
-      Prf.eqCongr (query (var 0) (var 1) (var 2) : PTm 3)
-        (σ := ![p,fstT (fixedData z B c d T),fstT (sndT (fixedData z B c d T))]) (σ' := ![p,T,c])
-        (fun i => by fin_cases i; exact .eqRefl _; exact fst_pair _ _; exact (congrFst tail).eqTrans (fst_pair _ _))
+    ipra_congr (query (var 0) (var 1) (var 2) : PTm 3) with
+      [.eqRefl p, (show _ ⊢[PRAAx] fstT (fixedData z B c d T) ≐ T from fst_pair _ _),
+        (show _ ⊢[PRAAx] fstT (sndT (fixedData z B c d T)) ≐ c from (congrFst tail).eqTrans (fst_pair _ _))]
   exact term.eqTrans (congrAp3 rawF qc (.eqRefl _) tail)
 
 theorem evaluator_decoded_at (p t z B c d T : PTm n) : Γ ⊢[PRAAx]

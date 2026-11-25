@@ -2,6 +2,7 @@ import IPRADerivations.Core.Powers
 import IPRADerivations.Core.Gcd
 import IPRADerivations.DiophantineNumberTheory.FLTMultiples
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # An integer root bound
@@ -41,9 +42,7 @@ local notation "𝔟" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `t ≥ 1` gives `t = (t ∸ 1) + 1`. -/
 theorem pos_of_one_le {t : PTm n} (h : Γ ⊢[PRAAx] le one t) : Γ ⊢[PRAAx] t ≐ succ (monus t one) := by
-  have e := natEq (eq_add_of_le h)
-  apply deriveNat; ipra_simps
-  linear_combination e
+  ipra_lc natEq (eq_add_of_le h)
 
 /-- `t^m ≥ 1` for `t ≥ 1`. -/
 theorem pw_pos_of {t : PTm n} (h : Γ ⊢[PRAAx] le one t) (m : PTm n) :

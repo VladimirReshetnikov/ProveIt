@@ -50,7 +50,7 @@ theorem rem_by_zero (z : PTm k) : Γ ⊢[PRAAx] rem z zero ≐ z := by
         eqb_zero_of_gt (zero_lt_succ _)
       refine (rem_succ _ _).eqTrans ?_
       refine (congrMul (congrSucc ih) ((congrMonus (.eqRefl _) e0).eqTrans (monus_zero _))).eqTrans ?_
-      apply deriveNat; ipra_simps; ring
+      ipra_ring
   have h := Prf.allE z hall
   simpa only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero, ConciseIPRA.PTm.subst_zero] using h
 

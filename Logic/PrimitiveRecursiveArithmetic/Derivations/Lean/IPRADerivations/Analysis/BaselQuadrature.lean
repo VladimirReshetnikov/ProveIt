@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.BaselUniform
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The rational identification of the Basel constant
@@ -94,7 +95,7 @@ theorem inst_kb (i N M L : PTm n) :
 
 theorem d_pos (i M₀ : PTm n) : Γ ⊢[PRAAx] succ M₀ * succ M₀ + i * i ≐ succ (pred (succ M₀ * succ M₀ + i * i)) :=
   LeanProofs.IPRA.AnalyticNumberTheory.Primes.eq_succ_pred (y := M₀ * M₀ + two * M₀ + i * i)
-    (by apply deriveNat; ipra_simps; ring)
+    (by ipra_ring)
 
 /-- `L! = (M² + i²) u_i` for `i < M = M₀ + 1` and `2M² ≤ L`. -/
 theorem u_eq {i M₀ L : PTm n} (hi : Γ ⊢[PRAAx] lt i (succ M₀)) (hL : Γ ⊢[PRAAx] le (two * (succ M₀ * succ M₀)) L) :
@@ -103,8 +104,7 @@ theorem u_eq {i M₀ L : PTm n} (hi : Γ ⊢[PRAAx] lt i (succ M₀)) (hL : Γ �
     LeanProofs.IPRA.AnalyticNumberTheory.PhiLower.le_mul_mono (le_of_lt hi) (le_of_lt hi)
   have hd : Γ ⊢[PRAAx] le (succ M₀ * succ M₀ + i * i) L := by
     refine le_trans (le_of_eq_add (d := monus (succ M₀ * succ M₀) (i * i)) ?_) hL
-    have w := natEq (eq_add_of_le hii)
-    apply deriveNat; ipra_simps; linear_combination w
+    ipra_lc natEq (eq_add_of_le hii)
   have dv : Γ ⊢[PRAAx] dvd (succ M₀ * succ M₀ + i * i) (fact L) :=
     dvd_congr_left (d_pos i M₀).eqSymm
       (LeanProofs.IPRA.AnalyticNumberTheory.Primes.dvd_fact (le_congr (d_pos i M₀) (.eqRefl _) hd))
@@ -136,7 +136,7 @@ theorem U_step {N M₀ L : PTm n} (hL : Γ ⊢[PRAAx] le (two * (succ M₀ * suc
       have i3 := natEq (inst_kb (Γ := lt (var 0) (succ (Syn.shift M₀)) :: Γ.map Fm.shift) (var 0)
         (Syn.shift N) (succ (Syn.shift M₀)) (Syn.shift L))
       have ue := natEq (u_eq Prf.hyp0 hLs)
-      have pe := natEq ((congrAp2 powF (by apply deriveNat; ipra_simps; ring :
+      have pe := natEq ((congrAp2 powF (by ipra_ring :
           (lt (var 0) (succ (Syn.shift M₀)) :: Γ.map Fm.shift) ⊢[PRAAx]
             two * succ (Syn.shift N) ≐ succ (succ (two * Syn.shift N))) (.eqRefl (var 0))).eqTrans
         ((pw_succ _ _).eqTrans (congrMul (pw_succ _ _) (.eqRefl _))))
@@ -151,7 +151,7 @@ theorem U_step {N M₀ L : PTm n} (hL : Γ ⊢[PRAAx] le (two * (succ M₀ * suc
       have e' : Syn.shift (two * N) = two * Syn.shift N := by simp [Syn.shift]
       rw [e, e', LeanProofs.IPRA.Analysis.PowerSums.inst2_B]
       refine (inst_kb _ _ _ _).eqTrans ?_
-      apply deriveNat; ipra_simps; ring))))
+      ipra_ring))))
   apply deriveNat; ipra_simps
   linear_combination s1 + s2
 
@@ -164,7 +164,7 @@ theorem U_zero (M L : PTm n) : Γ ⊢[PRAAx] U zero M L ≐ M * Q M L := by
   rw [e0]
   have a := natEq (inst_Ub (Γ := lt (var 0) (Syn.shift M) :: Γ.map Fm.shift) (var 0) zero (Syn.shift M) (Syn.shift L))
   have b := natEq (inst_Qb (Γ := lt (var 0) (Syn.shift M) :: Γ.map Fm.shift) (var 0) (Syn.shift M) (Syn.shift L))
-  have c := natEq ((congrAp2 powF (by apply deriveNat; ipra_simps; ring :
+  have c := natEq ((congrAp2 powF (by ipra_ring :
       (lt (var 0) (Syn.shift M) :: Γ.map Fm.shift) ⊢[PRAAx] two * zero ≐ (zero : PTm (n + 1))) (.eqRefl (var 0))).eqTrans
     (pw_zero _))
   apply deriveNat; ipra_simps
@@ -179,14 +179,12 @@ theorem step_cost {N M L : PTm n} (hN : Γ ⊢[PRAAx] le (succ (two * N)) L) :
       le (pw M (succ (two * N)) * g N L) (fact L * Pm (two * N) M + fact L * pw M (two * N)) := by
   have m := moment (Γ := Γ) (two * N) M
   have m1 := natEq (eq_add_of_le (Prf.andE₁ m)); have m2 := natEq (eq_add_of_le (Prf.andE₂ m))
-  have f := natEq (LeanProofs.IPRA.Analysis.BaselSquares.fact_eq hN)
   refine .andI (le_of_eq_add (d := g N L * monus (pw M (succ (two * N))) (succ (two * N) * Pm (two * N) M)) ?_)
     (le_of_eq_add (d := g N L * monus (succ (two * N) * Pm (two * N) M + succ (two * N) * pw M (two * N))
       (pw M (succ (two * N)))) ?_)
-  · apply deriveNat; ipra_simps
-    linear_combination 𝔞 (g N L) * m1 - 𝔞 (Pm (two * N) M) * f
-  · apply deriveNat; ipra_simps
-    linear_combination 𝔞 (g N L) * m2 + (𝔞 (Pm (two * N) M) + 𝔞 (pw M (two * N))) * f
+  · ipra_lc 𝔞 (g N L) * m1 - 𝔞 (Pm (two * N) M) * natEq (LeanProofs.IPRA.Analysis.BaselSquares.fact_eq hN)
+  · ipra_lc 𝔞 (g N L) * m2 +
+      (𝔞 (Pm (two * N) M) + 𝔞 (pw M (two * N))) * natEq (LeanProofs.IPRA.Analysis.BaselSquares.fact_eq hN)
 
 /-! ## The invariant -/
 
@@ -220,7 +218,7 @@ theorem inv_zero (M L : PTm n) : Γ ⊢[PRAAx] Inv zero M L := by
   have b0 := natEq (sum_zero (Γ := Γ) (LeanProofs.IPRA.Analysis.BaselFinite.oB tB) (fact L))
   have z0 := natEq ((congrMonus (.eqRefl one) (par_zero (Γ := Γ))).eqTrans (monus_zero _))
   have z1 := natEq (par_zero (Γ := Γ) (n := n))
-  have p1 := natEq ((congrAp2 powF (congrSucc (by apply deriveNat; ipra_simps; ring :
+  have p1 := natEq ((congrAp2 powF (congrSucc (by ipra_ring :
       Γ ⊢[PRAAx] two * zero ≐ (zero : PTm n))) (.eqRefl M)).eqTrans ((pw_succ _ _).eqTrans
     ((congrMul (pw_zero _) (.eqRefl _)).eqTrans (one_mul _))))
   refine .andI (le_of_eq_add (d := zero) ?_) (le_of_eq_add (d := zero) ?_)
@@ -233,7 +231,7 @@ theorem inv_step {N M₀ L : PTm n} (hL : Γ ⊢[PRAAx] le (two * (succ M₀ * s
     (ih : Γ ⊢[PRAAx] le (succ (two * N)) L ⟶ Inv N (succ M₀) L)
     (h : Γ ⊢[PRAAx] le (succ (two * succ N)) L) : Γ ⊢[PRAAx] Inv (succ N) (succ M₀) L := by
   have h' : Γ ⊢[PRAAx] le (succ (two * N)) L :=
-    le_trans (le_of_eq_add (d := two) (by apply deriveNat; ipra_simps; ring)) h
+    le_trans (le_of_eq_add (d := two) (by ipra_ring)) h
   have i := Prf.impE ih h'
   have i1 := natEq (eq_add_of_le (Prf.andE₁ i)); have i2 := natEq (eq_add_of_le (Prf.andE₂ i))
   have ap := natEq (Ap_succ (Γ := Γ) N L); have am := natEq (Am_succ (Γ := Γ) N L)
@@ -242,10 +240,10 @@ theorem inv_step {N M₀ L : PTm n} (hL : Γ ⊢[PRAAx] le (two * (succ M₀ * s
   have e1 := natEq (eq_add_of_le (Prf.andE₁ c)); have e2 := natEq (eq_add_of_le (Prf.andE₂ c))
   have p1 := natEq (par_succ (Γ := Γ) N); have q1 := natEq (compl_succ (Γ := Γ) N)
   have ps := natEq (par_sum (Γ := Γ) N)
-  have pw1 := natEq ((congrAp2 powF (by apply deriveNat; ipra_simps; ring :
+  have pw1 := natEq ((congrAp2 powF (by ipra_ring :
       Γ ⊢[PRAAx] succ (two * succ N) ≐ succ (succ (succ (two * N)))) (.eqRefl (succ M₀))).eqTrans
     ((pw_succ _ _).eqTrans (congrMul (pw_succ _ _) (.eqRefl _))))
-  have pw2 := natEq ((congrAp2 powF (by apply deriveNat; ipra_simps; ring :
+  have pw2 := natEq ((congrAp2 powF (by ipra_ring :
       Γ ⊢[PRAAx] two * succ N ≐ succ (succ (two * N))) (.eqRefl (succ M₀))).eqTrans
     ((pw_succ _ _).eqTrans (congrMul (pw_succ _ _) (.eqRefl _))))
   ipra_simps
@@ -276,10 +274,8 @@ theorem inv_step {N M₀ L : PTm n} (hL : Γ ⊢[PRAAx] le (two * (succ M₀ * s
           (pw (succ M₀) (succ (two * N)) * g N L) +
         par N * (fact L * pw (succ M₀) (two * N) +
           monus (pw (succ M₀) (succ (two * N)) * g N L) (fact L * Pm (two * N) (succ M₀))))) ?_)
-  · apply deriveNat; ipra_simps
-    linear_combination r.1
-  · apply deriveNat; ipra_simps
-    linear_combination r.2
+  · ipra_lc r.1
+  · ipra_lc r.2
 
 /-- Variables: `0 = N`, `1 = M₀`, `2 = L`. -/
 private abbrev invF : Fm PTm 3 :=
@@ -341,14 +337,12 @@ theorem U_bound {N M₀ L : PTm n} (hM : Γ ⊢[PRAAx] le (two * (succ M₀ * su
       have e' : Syn.shift (two * N) = two * Syn.shift N := by simp [Syn.shift]
       rw [e, e', LeanProofs.IPRA.Analysis.PowerSums.inst2_B]
       refine (inst_kF _ _ _ _).eqTrans ?_
-      apply deriveNat; ipra_simps; ring))))
-  have w := natEq (eq_add_of_le l)
-  have m := natEq (eq_add_of_le (Prf.andE₁ (moment (Γ := Γ) (two * N) (succ M₀))))
+      ipra_ring))))
   refine le_of_eq_add (d := succ (two * N) * monus (ap2 (sumF kF) (succ M₀) (pairT N (pairT (succ M₀) L)))
       (U N (succ M₀) L) +
     fact L * monus (pw (succ M₀) (succ (two * N))) (succ (two * N) * Pm (two * N) (succ M₀))) ?_
-  apply deriveNat; ipra_simps
-  linear_combination (2 * 𝔞 N + 1) * w - (2 * 𝔞 N + 1) * s + 𝔞 (fact L) * m
+  ipra_lc (2 * 𝔞 N + 1) * natEq (eq_add_of_le l) - (2 * 𝔞 N + 1) * s +
+    𝔞 (fact L) * natEq (eq_add_of_le (Prf.andE₁ (moment (Γ := Γ) (two * N) (succ M₀))))
 
 /-! ## The rational identification -/
 
@@ -365,17 +359,15 @@ theorem quadrature {N M₀ L : PTm n} (hM : Γ ⊢[PRAAx] le (two * (succ M₀ *
           succ (two * N) * (N * (fact L * pw (succ M₀) (two * N))) + fact L * pw (succ M₀) (succ (two * N))) := by
   have i := inv (N := N) hM hN
   have i1 := natEq (eq_add_of_le (Prf.andE₁ i)); have i2 := natEq (eq_add_of_le (Prf.andE₂ i))
-  have ub := natEq (eq_add_of_le (U_bound (N := N) hM))
-  have ps := natEq (par_sum (Γ := Γ) N)
   refine .andI (le_of_eq_add (d := succ (two * N) * monus (Xm N (succ M₀) L + N * (fact L * pw (succ M₀) (two * N)))
         (Xp N (succ M₀) L) + succ (two * N) * (two * (par N * U N (succ M₀) L)) +
       monus (fact L * pw (succ M₀) (succ (two * N))) (succ (two * N) * U N (succ M₀) L)) ?_)
     (le_of_eq_add (d := succ (two * N) * monus (Xp N (succ M₀) L + N * (fact L * pw (succ M₀) (two * N)))
         (Xm N (succ M₀) L) + succ (two * N) * (two * (monus one (par N) * U N (succ M₀) L)) +
       monus (fact L * pw (succ M₀) (succ (two * N))) (succ (two * N) * U N (succ M₀) L)) ?_)
-  · apply deriveNat; ipra_simps
-    linear_combination (2 * 𝔞 N + 1) * i1 + ub - (2 * 𝔞 N + 1) * 𝔞 (U N (succ M₀) L) * ps
-  · apply deriveNat; ipra_simps
-    linear_combination (2 * 𝔞 N + 1) * i2 + ub - (2 * 𝔞 N + 1) * 𝔞 (U N (succ M₀) L) * ps
+  · ipra_lc (2 * 𝔞 N + 1) * i1 + natEq (eq_add_of_le (U_bound (N := N) hM)) -
+      (2 * 𝔞 N + 1) * 𝔞 (U N (succ M₀) L) * natEq (par_sum (Γ := Γ) N)
+  · ipra_lc (2 * 𝔞 N + 1) * i2 + natEq (eq_add_of_le (U_bound (N := N) hM)) -
+      (2 * 𝔞 N + 1) * 𝔞 (U N (succ M₀) L) * natEq (par_sum (Γ := Γ) N)
 
 end LeanProofs.IPRA.Analysis.BaselQuadrature

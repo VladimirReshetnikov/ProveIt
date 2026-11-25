@@ -113,7 +113,7 @@ theorem res_unique {D q b x : PTm n} (hq : Γ ⊢[PRAAx] le two q) (hD : Γ ⊢[
     (rem_mul_rem hq (inv D q) (D * x)).eqSymm.eqTrans ((congrAp2 remF (congrMul (.eqRefl _) h) (.eqRefl _)).eqTrans
       (rem_mul_rem hq (inv D q) b))
   have b' : Γ ⊢[PRAAx] rem (inv D q * (D * x)) q ≐ rem x q :=
-    (congrAp2 remF (by apply deriveNat; ipra_simps; ring : Γ ⊢[PRAAx] inv D q * (D * x) ≐ D * inv D q * x)
+    (congrAp2 remF (by ipra_ring : Γ ⊢[PRAAx] inv D q * (D * x) ≐ D * inv D q * x)
       (.eqRefl _)).eqTrans (mul_inv_rem hq hD x)
   exact (rem_small hq hx).eqSymm.eqTrans (b'.eqSymm.eqTrans a)
 
@@ -174,7 +174,7 @@ theorem res_comp {D E q b : PTm n} (hq : Γ ⊢[PRAAx] le two q) (hD : Γ ⊢[PR
   have s1 : Γ ⊢[PRAAx] rem (E * res E q (res D q b)) q ≐ res D q b :=
     (res_spec hq hE).eqTrans (rem_rem hq _)
   have ch : Γ ⊢[PRAAx] rem (D * E * res E q (res D q b)) q ≐ rem b q := by
-    refine (congrAp2 remF (by apply deriveNat; ipra_simps; ring :
+    refine (congrAp2 remF (by ipra_ring :
       Γ ⊢[PRAAx] D * E * res E q (res D q b) ≐ D * (E * res E q (res D q b))) (.eqRefl _)).eqTrans ?_
     refine (rem_mul_rem hq D _).eqSymm.eqTrans ?_
     exact (congrAp2 remF (congrMul (.eqRefl _) s1) (.eqRefl _)).eqTrans (res_spec hq hD)

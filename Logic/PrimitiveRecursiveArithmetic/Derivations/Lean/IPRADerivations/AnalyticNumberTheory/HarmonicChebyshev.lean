@@ -4,6 +4,7 @@ import IPRADerivations.AnalyticNumberTheory.FactorTrace
 import IPRADerivations.AnalyticNumberTheory.PrimePowerMangoldt
 import IPRADerivations.AnalyticNumberTheory.ChebyshevBounds
 import IPRADerivations.AnalyticNumberTheory.MuLambda
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Chebyshev's bound for the harmonic logarithm (`pnt_ipra_constructive_2026-11-14`, `con:global`)
@@ -66,13 +67,13 @@ theorem superadd {M a b L : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) (ha 
     Γ ⊢[PRAAx] le (S (M * a) (fact L) + S (M * b) (fact L)) (S (M * (a * b)) (fact L) + S M (fact L)) := by
   have wM := natEq hM; have wb := natEq hb
   have q1 : Γ ⊢[PRAAx] M * (a * b) ≐ a * (succ (pred M) + M * pred b) := by
-    apply deriveNat; ipra_simps; linear_combination 𝔞 a * wM + 𝔞 a * 𝔞 M * wb
+    ipra_lc 𝔞 a * wM + 𝔞 a * 𝔞 M * wb
   have hL' : Γ ⊢[PRAAx] le (a * (succ (pred M) + M * pred b)) L := le_congr q1 (.eqRefl _) hL
   have r := Prf.andE₁ (log_refine (c₁ := pred M) (T := M * pred b) ha hL')
   have q2 : Γ ⊢[PRAAx] M * b ≐ succ (pred M) + M * pred b := by
-    apply deriveNat; ipra_simps; linear_combination wM + 𝔞 M * wb
+    ipra_lc wM + 𝔞 M * wb
   have q3 : Γ ⊢[PRAAx] M * a ≐ a * succ (pred M) := by
-    apply deriveNat; ipra_simps; linear_combination 𝔞 a * wM
+    ipra_lc 𝔞 a * wM
   have fab := natEq (congrAp2 (Γ := Γ) (sumF hB) q1 (.eqRefl (fact L)))
   have fb := natEq (congrAp2 (Γ := Γ) (sumF hB) q2 (.eqRefl (fact L)))
   have fa := natEq (congrAp2 (Γ := Γ) (sumF hB) q3 (.eqRefl (fact L)))
@@ -167,19 +168,16 @@ theorem j_step {m M L i : PTm n} (hm : Γ ⊢[PRAAx] le one m) (hM : Γ ⊢[PRAA
     have hx'p := pos_of_lt_zero (tr_pos (Γ := Δ) hm.wk (succ i))
     have hpp : Δ ⊢[PRAAx] lpf (trT i m) ≐ succ (pred (lpf (trT i m))) := lpf_pos _
     have hMp := pos_of_lt_zero (Γ := Δ) hM.wk
-    have w1 := natEq (eq_add_of_le (Γ := Δ) hxm.wk)
-    have w2 := natEq ex
-    have wp := natEq hpp
     have hL' : Δ ⊢[PRAAx] le (M * (lpf (trT i m) * trT (succ i) m)) L := by
       refine le_trans (le_of_eq_add (d := M * monus m (trT i m)) ?_) hL.wk
-      apply deriveNat; ipra_simps; linear_combination 𝔞 M * w1 - 𝔞 M * w2
+      ipra_lc 𝔞 M * natEq (eq_add_of_le (Γ := Δ) hxm.wk) - 𝔞 M * natEq ex
     have sa := superadd hMp hpp hx'p hL'
     have q1 : Δ ⊢[PRAAx] M * (lpf (trT i m) * trT (succ i) m) ≐ M * trT i m := by
-      apply deriveNat; ipra_simps; linear_combination 𝔞 M * w2
+      ipra_lc 𝔞 M * natEq ex
     have e1 := natEq (congrAp2 (Γ := Δ) (sumF hB) q1 (.eqRefl (fact L)))
     have hmono : Δ ⊢[PRAAx] le M (M * lpf (trT i m)) := by
       refine le_of_eq_add (d := M * pred (lpf (trT i m))) ?_
-      apply deriveNat; ipra_simps; linear_combination 𝔞 M * wp
+      ipra_lc 𝔞 M * natEq hpp
     have dec := natEq (eq_add_of_le (S_mono (fact L) hmono))
     have sp : Δ ⊢[PRAAx] Lw wt (trT i m) (pairT M (fact L)) ≐
         monus (S (M * lpf (trT i m)) (fact L)) (S M (fact L)) + Lw wt (trT (succ i) m) (pairT M (fact L)) :=
@@ -222,7 +220,7 @@ theorem harmonic_lw {m M L : PTm n} (hm : Γ ⊢[PRAAx] le one m) (hM : Γ ⊢[P
   simp at i
   have I : Γ ⊢[PRAAx] J m M L m := Prf.impE i (.andI hm (.andI hM hL))
   have te := trace_end (pos_of_lt_zero hm)
-  have q : Γ ⊢[PRAAx] M * trT m m ≐ M := (congrMul (.eqRefl M) te).eqTrans (by apply deriveNat; ipra_simps; ring)
+  have q : Γ ⊢[PRAAx] M * trT m m ≐ M := (congrMul (.eqRefl M) te).eqTrans (by ipra_ring)
   have eS := natEq (congrAp2 (Γ := Γ) (sumF hB) q (.eqRefl (fact L)))
   have eL := natEq ((congrLw (w := wt) (pairT M (fact L)) te).eqTrans (MuLambda.lw_one (w := wt) _))
   ipra_le sl I with eL - eS
@@ -234,10 +232,9 @@ every mesh `M ≥ 1` with denominator `F = L!`, `M 2^{4N} ≤ L`. -/
 theorem psi_le {N M L : PTm n} (hM : Γ ⊢[PRAAx] le one M) (hL : Γ ⊢[PRAAx] le (M * pw two (two * (two * N))) L) :
     Γ ⊢[PRAAx] le (Psi wt N (pairT M (fact L))) (two * (two * N) * fact L) := by
   have lu := lcmu_upper (Γ := Γ) N
-  have w := natEq (eq_add_of_le lu)
   have mono : Γ ⊢[PRAAx] le (M * lcmu N) (M * pw two (two * (two * N))) := by
     refine le_of_eq_add (d := M * monus (pw two (two * (two * N))) (lcmu N)) ?_
-    apply deriveNat; ipra_simps; linear_combination 𝔞 M * w
+    ipra_lc 𝔞 M * natEq (eq_add_of_le lu)
   have main := harmonic_lw (lt_zero_of_pos (lcmu_pos N)) hM (le_trans mono hL)
   have sm := S_mono (fact L) mono
   have sp := S_pow2 (Γ := Γ) M (fact L) (two * (two * N))

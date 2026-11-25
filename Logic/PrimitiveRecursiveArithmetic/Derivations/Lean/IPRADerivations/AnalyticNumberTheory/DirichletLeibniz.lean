@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.FactorialLambda
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The Leibniz rule for the weighted derivation of Dirichlet convolution
@@ -89,13 +90,10 @@ theorem leib_pt (f g : PTm 2) {d m y : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pr
       have hd : C ⊢[PRAAx] d ≐ succ (pred d) := Prf.hyp1
       have eN := eq_of_dvd' hd (Prf.hyp0 : C ⊢[PRAAx] dvd d m)
       have hk := pos_of_eq_mul hm.wk.wk eN
-      have e := natEq ((congrLw w y eN).eqTrans (lw_mul w hd hk))
-      apply deriveNat; ipra_simps
-      linear_combination -(𝔞 (sg d) * 𝔞 (eqb (rem m d) zero) * 𝔞 (inst2 f d y) *
-        𝔞 (inst2 g (quo m d) y)) * e
+      ipra_lc -(𝔞 (sg d) * 𝔞 (eqb (rem m d) zero) * 𝔞 (inst2 f d y) * 𝔞 (inst2 g (quo m d) y)) * natEq ((congrLw w y eN).eqTrans (lw_mul w hd hk))
     · let C : List (Fm PTm n) := neg (rem m d ≐ zero) :: (d ≐ succ (pred d)) :: Γ
       have zz : C ⊢[PRAAx] sg d * eqb (rem m d) zero ≐ zero :=
-        (congrMul (.eqRefl _) (eqb_of_ne Prf.hyp0)).eqTrans (by apply deriveNat; ipra_simps; ring)
+        (congrMul (.eqRefl _) (eqb_of_ne Prf.hyp0)).eqTrans (by ipra_ring)
       have z : ∀ {X : PTm n}, C ⊢[PRAAx] (sg d * eqb (rem m d) zero) * X ≐ zero :=
         fun {X} => zero_mul_l zz _
       exact (congrAdd z z).eqTrans ((add_zero _).eqTrans

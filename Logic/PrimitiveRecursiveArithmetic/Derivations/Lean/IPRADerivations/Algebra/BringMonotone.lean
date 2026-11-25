@@ -1,5 +1,6 @@
 import IPRADerivations.Core.IntOrder
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Strong monotonicity of the Bring quintic, as an order statement
@@ -59,10 +60,8 @@ theorem quintic_mono {x y : ZT n} (W : PTm n) (h : Γ ⊢[PRAAx] zle x y) :
     (num 12 * W + num 3 * ((monus (AT x y).pos (AT x y).neg + monus (AT x y).neg (AT x y).pos) * (monus (AT x y).pos (AT x y).neg + monus (AT x y).neg (AT x y).pos)) +
       (monus (BT x y).pos (BT x y).neg + monus (BT x y).neg (BT x y).pos) * (monus (BT x y).pos (BT x y).neg + monus (BT x y).neg (BT x y).pos) +
       num 8 * ((monus y.pos y.neg + monus y.neg y.pos) * (monus y.pos y.neg + monus y.neg y.pos)) * ((monus y.pos y.neg + monus y.neg y.pos) * (monus y.pos y.neg + monus y.neg y.pos)))) ?_
-  apply deriveNat; ipra_simps
-  linear_combination 12 * hV - 12 * hU -
-    (12 * 𝔟 W + 3 * ((𝔟 (monus (AT x y).pos (AT x y).neg) + 𝔟 (monus (AT x y).neg (AT x y).pos))) ^ 2 + ((𝔟 (monus (BT x y).pos (BT x y).neg) + 𝔟 (monus (BT x y).neg (BT x y).pos))) ^ 2 +
-      8 * (((𝔟 (monus y.pos y.neg) + 𝔟 (monus y.neg y.pos))) ^ 2) ^ 2) * e +
+  ipra_lc 12 * hV - 12 * hU -
+    (12 * 𝔟 W + 3 * ((𝔟 (monus (AT x y).pos (AT x y).neg) + 𝔟 (monus (AT x y).neg (AT x y).pos))) ^ 2 + ((𝔟 (monus (BT x y).pos (BT x y).neg) + 𝔟 (monus (BT x y).neg (BT x y).pos))) ^ 2 + 8 * (((𝔟 (monus y.pos y.neg) + 𝔟 (monus y.neg y.pos))) ^ 2) ^ 2) * e +
     (ZT.toZ Γ y - ZT.toZ Γ x) * (3 * sA + sB + 8 * (((𝔟 (monus y.pos y.neg) + 𝔟 (monus y.neg y.pos))) ^ 2 + ZT.toZ Γ y ^ 2) * sC)
 
 end LeanProofs.IPRA.Algebra.BringMonotone

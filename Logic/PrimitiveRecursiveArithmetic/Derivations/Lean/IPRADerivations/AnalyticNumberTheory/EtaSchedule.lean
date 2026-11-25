@@ -4,7 +4,7 @@ import IPRADerivations.AnalyticNumberTheory.PowerCleared
 import IPRADerivations.AnalyticNumberTheory.PhiLower
 import IPRADerivations.AnalyticNumberTheory.Valuation
 import IPRADerivations.DiophantineNumberTheory.CoprimeModulus
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The finite schedule of the eta certificate checker

@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.RationalSuperellipticNormDegree
 import IPRADerivations.Analysis.RationalWeightedMonomialEvaluation
 import IPRADerivations.Analysis.GaussianRationalOriginalSpanRank
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Original rational proper spans on the superelliptic curve
@@ -205,11 +206,8 @@ private theorem proper_columns_congr (m L A R e e' : PTm n) (hd : Γ ⊢[PRAAx] 
 private theorem evaluation_congr (m e L x y x' y' : PTm n) (hx : Γ ⊢[PRAAx] x ≐ x') (hy : Γ ⊢[PRAAx] y ≐ y') :
     Γ ⊢[PRAAx] GaussianWeightedMonomialBasis.evaluationVector m e L x y ≐
       GaussianWeightedMonomialBasis.evaluationVector m e L x' y' := by
-  simpa only [GaussianWeightedMonomialBasis.subst_evaluationVector,Syn.subst_var,Matrix.head_cons,Matrix.tail_cons,
-    Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_three,Matrix.cons_val_four] using
-    Prf.eqCongr (Γ := Γ) (GaussianWeightedMonomialBasis.evaluationVector (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5)
-      (σ := ![m,e,L,x,y]) (σ' := ![m,e,L,x',y'])
-      (fun i => by fin_cases i; exact .eqRefl m; exact .eqRefl e; exact .eqRefl L; exact hx; exact hy)
+  ipra_congr (GaussianWeightedMonomialBasis.evaluationVector (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) with
+    [.eqRefl m, .eqRefl e, .eqRefl L, hx, hy]
 
 theorem mapped_membership_at (m e L P A R i : PTm n) (h : Γ ⊢[PRAAx] pointMembership m e L P A R)
     (hi : Γ ⊢[PRAAx] lt i (length P)) : Γ ⊢[PRAAx]

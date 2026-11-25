@@ -1,7 +1,7 @@
 import IPRADerivations.Combinatorics.BellDobinski
 import IPRADerivations.Combinatorics.BellTouchardPower
 import IPRADerivations.Probability.Lotus
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The exact truncation identity of Dobinski's formula (`bell_numbers_ipra`, `thm:dobinski`, `eq:finite-dobinski`)

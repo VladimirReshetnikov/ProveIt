@@ -3,6 +3,7 @@ import IPRADerivations.AnalyticNumberTheory.MobiusInversionReverse
 import IPRADerivations.AnalyticNumberTheory.MertensTotient
 import IPRADerivations.AnalyticNumberTheory.FactorialLambda
 import IPRADerivations.AnalyticNumberTheory.DivisorFactor
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Legendre's sieve formula
@@ -76,13 +77,11 @@ theorem inst2_wB (f : PTm 2) (d P : PTm n) : inst2 (wB f) d P = inst2 f d P * eq
 
 theorem pt_alg {s bn bP bg F : PTm n} (h : Γ ⊢[PRAAx] bg ≐ bn * bP) :
     Γ ⊢[PRAAx] (s * bn) * ((F * bP) * one) ≐ (s * bg) * (F * one) := by
-  have x := natEq h
-  apply deriveNat; ipra_simps; linear_combination -𝔞 s * 𝔞 F * x
+  ipra_lc -𝔞 s * 𝔞 F * natEq h
 
 theorem z_alg {s X Y X' Y' : PTm n} (h : Γ ⊢[PRAAx] s ≐ zero) :
     Γ ⊢[PRAAx] (s * X) * Y ≐ (s * X') * Y' := by
-  have x := natEq h
-  apply deriveNat; ipra_simps; linear_combination (𝔞 X * 𝔞 Y - 𝔞 X' * 𝔞 Y') * x
+  ipra_lc (𝔞 X * 𝔞 Y - 𝔞 X' * 𝔞 Y') * natEq h
 
 /-- The term of `(f · [· ∣ P]) * 𝟏` at `m` is the term of `f * 𝟏` at `gcd(m, P)`. -/
 theorem term_pt (f : PTm 2) (d m P : PTm n) :
@@ -118,8 +117,7 @@ theorem conv_gcd (f : PTm 2) {m P : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred 
 
 theorem z3 {X s e Y : PTm n} (hX : Γ ⊢[PRAAx] X ≐ zero) (hs : Γ ⊢[PRAAx] s ≐ zero)
     (hY : Γ ⊢[PRAAx] Y ≐ zero) : Γ ⊢[PRAAx] X ≐ s * e + Y := by
-  have a := natEq hX; have b := natEq hs; have c := natEq hY
-  apply deriveNat; ipra_simps; linear_combination a - 𝔞 e * b - c
+  ipra_lc natEq hX - 𝔞 e * natEq hs - natEq hY
 
 /-- `((μ⁺ · [· ∣ P]) * 𝟏)(m) = [m ≥ 1][gcd(m, P) = 1] + ((μ⁻ · [· ∣ P]) * 𝟏)(m)` for every `m`. -/
 theorem legendre_pt (m P : PTm n) :

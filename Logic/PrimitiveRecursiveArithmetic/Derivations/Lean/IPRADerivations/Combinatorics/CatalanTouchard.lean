@@ -1,6 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.AperyRecurrence
 import IPRADerivations.Combinatorics.CatalanConvolution
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The two-colored Motzkin sum (Touchard's identity)

@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.LatticeCount
 import IPRADerivations.Core.SumOrder
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Lattice points under a line (`hurwitz_khinchin_ipra`, (K5))
@@ -52,14 +53,10 @@ theorem ceil_le_q {q γ β b0 : PTm n} (hβ : Γ ⊢[PRAAx] β ≐ succ b0) (hγ
   refine .orE (lt_or_le q (quo (q * γ + b0) β)) ?_ Prf.hyp0
   let Δ : List (Fm PTm n) := lt q (quo (q * γ + b0) β) :: Γ
   have d := div_mod_at (Γ := Δ) (x := q * γ + b0) hβ.wk
-  have ew := natEq (Prf.andE₁ d)
-  have eQ := natEq (eq_add_of_le (Γ := Δ) Prf.hyp0)
-  have eg := natEq (eq_add_of_le (Γ := Δ) hγ.wk)
-  have eb := natEq (Γ := Δ) hβ.wk
   -- `qγ + b0 = βQ + R ≥ β(q + 1)` while `qγ + b0 ≤ qβ + b0 < β(q + 1)`
   refine .botE _ (succ_ne_zero (a := q * monus β γ + β * monus (quo (q * γ + b0) β) (succ q) + rem (q * γ + b0) β) ?_)
-  apply deriveNat; ipra_simps
-  linear_combination -ew - 𝔞 β * eQ - 𝔞 q * eg - eb
+  ipra_lc -natEq (Prf.andE₁ d) - 𝔞 β * natEq (eq_add_of_le (Γ := Δ) Prf.hyp0) -
+    𝔞 q * natEq (eq_add_of_le (Γ := Δ) hγ.wk) - natEq (Γ := Δ) hβ.wk
 
 /-- The invariant. -/
 def latInv (X M α γ β : PTm n) : Fm PTm n :=
@@ -97,22 +94,16 @@ theorem lat_step {X M α γ β b0 : PTm n} (hβ : Γ ⊢[PRAAx] β ≐ succ b0) 
   have hB : Δ ⊢[PRAAx] le (quo (succ X * γ + b0) β) M := le_trans (ceil_le_q hβ.wk hγ.wk) Prf.hyp0
   have huv : Δ ⊢[PRAAx] le (succ X * α) (succ X * γ) := by
     refine le_of_eq_add (d := succ X * monus γ α) ?_
-    have e := natEq (eq_add_of_le (Γ := Δ) hαγ.wk)
-    apply deriveNat; ipra_simps; linear_combination (𝔞 X + 1) * e
+    ipra_lc (𝔞 X + 1) * natEq (eq_add_of_le (Γ := Δ) hαγ.wk)
   have db := dilated_bounds M hβ.wk hB huv
-  have ea := natEq (latticeA_succ (Γ := Δ) X M α γ β)
-  have u1 := natEq (eq_add_of_le (Prf.andE₁ hI))
-  have l1 := natEq (eq_add_of_le (Prf.andE₂ hI))
-  have u2 := natEq (eq_add_of_le (Prf.andE₁ db))
-  have l2 := natEq (eq_add_of_le (Prf.andE₂ db))
   refine .andI (le_of_eq_add (d := monus (γ * (X * succ X) + two * β * X) (two * β * latticeA X M α γ β + α * (X * succ X)) +
       two * monus (succ X * γ + β) (β * Foundations.LatticeCount.dS M (succ X * α) (succ X * γ) β + succ X * α)) ?_)
     (le_of_eq_add (d := monus (two * β * latticeA X M α γ β + α * (X * succ X) + two * β * X) (γ * (X * succ X)) +
       two * monus (β * Foundations.LatticeCount.dS M (succ X * α) (succ X * γ) β + succ X * α + β) (succ X * γ)) ?_)
-  · apply deriveNat; ipra_simps
-    linear_combination u1 + 2 * u2 - 2 * 𝔞 β * ea
-  · apply deriveNat; ipra_simps
-    linear_combination l1 + 2 * l2 + 2 * 𝔞 β * ea
+  · ipra_lc natEq (eq_add_of_le (Prf.andE₁ hI)) + 2 * natEq (eq_add_of_le (Prf.andE₁ db)) -
+      2 * 𝔞 β * natEq (latticeA_succ (Γ := Δ) X M α γ β)
+  · ipra_lc natEq (eq_add_of_le (Prf.andE₂ hI)) + 2 * natEq (eq_add_of_le (Prf.andE₂ db)) +
+      2 * 𝔞 β * natEq (latticeA_succ (Γ := Δ) X M α γ β)
 
 /-- (K5) for given `α ≤ γ ≤ β = b0 + 1` and `X ≤ M`. -/
 theorem lattice_core {X M α γ b0 : PTm n} (hαγ : Γ ⊢[PRAAx] le α γ) (hγ : Γ ⊢[PRAAx] le γ (succ b0))

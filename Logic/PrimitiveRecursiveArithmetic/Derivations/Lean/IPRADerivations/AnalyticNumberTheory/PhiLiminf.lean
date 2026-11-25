@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.EulerDomination
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Finite witnesses for `liminf φ(n)/n = 0`
@@ -135,12 +136,10 @@ theorem liminf_at (K : PTm n) :
   have c : Γ ⊢[PRAAx] le (fact (pw two (two * K)) * ((one + K) * DenE (pw two (two * K))))
       (fact (pw two (two * K)) * ProdP (pw two (two * K))) := by
     refine le_congr ?_ (.eqRefl _) (le_trans (le_mul_mono hd (le_refl (DenE (pw two (two * K))))) ed)
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   have c' := mul_le_cancel (le_congr (congrMul hF (.eqRefl _)) (congrMul hF (.eqRefl _)) c)
   refine le_trans (le_of_eq_add (d := pred (DenE (pw two (two * K)))) ?_) c'
-  have e₁ := natEq (phi_A (Γ := Γ) (succ (pw two (two * K)))); have e₂ := natEq hD
-  apply deriveNat; ipra_simps
-  linear_combination -Groth.ι (IPRA.Q.mk Γ K) * e₁ + e₂
+  ipra_lc -Groth.ι (IPRA.Q.mk Γ K) * natEq (phi_A (Γ := Γ) (succ (pw two (two * K)))) + natEq hD
 
 /-- `thm:liminf-phi`, variable `0 = K`. -/
 abbrev liminfFormula : Fm PTm 1 :=

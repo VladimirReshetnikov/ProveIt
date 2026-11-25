@@ -1,6 +1,7 @@
 import IPRADerivations.Combinatorics.Catalan
 import IPRADerivations.Combinatorics.CentralBinomial
 import IPRADerivations.DiophantineNumberTheory.ResidueFacts
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Bertrand's postulate: the odd central binomial coefficient
@@ -47,10 +48,8 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 /-- `C(2k + 2, k + 1) = 2 C(2k + 1, k)`. -/
 theorem cb_succ_odd (k : PTm n) : Γ ⊢[PRAAx] cb (succ k) ≐ two * binom (succ (two * k)) k := by
   refine mul_cancel (D := succ k) (succ_pos k) ?_
-  have r := natEq (cb_rec (Γ := Γ) k); have s₀ := natEq (cat_spec (Γ := Γ) k)
-  have o := natEq (cat_odd_binom (Γ := Γ) k)
-  apply deriveNat; ipra_simps
-  linear_combination r - 2 * (2 * 𝔞(k) + 1) * s₀ + 2 * (𝔞(k) + 1) * o
+  ipra_lc natEq (cb_rec (Γ := Γ) k) - 2 * (2 * 𝔞(k) + 1) * natEq (cat_spec (Γ := Γ) k) +
+    2 * (𝔞(k) + 1) * natEq (cat_odd_binom (Γ := Γ) k)
 
 /-- `C(2k + 2, k + 1) ≤ 4 C(2k, k)`. -/
 theorem cb_succ_le (k : PTm n) : Γ ⊢[PRAAx] le (cb (succ k)) ((two * two) * cb k) :=
@@ -58,19 +57,17 @@ theorem cb_succ_le (k : PTm n) : Γ ⊢[PRAAx] le (cb (succ k)) ((two * two) * c
 
 /-- `C(2, 1) = 2`. -/
 theorem cb_one : Γ ⊢[PRAAx] cb (succ (zero : PTm n)) ≐ two := by
-  have r := natEq (cb_rec (Γ := Γ) zero); have z := natEq (cb_zero (Γ := Γ))
-  apply deriveNat; ipra_simps
-  linear_combination r + 2 * z
+  ipra_lc natEq (cb_rec (Γ := Γ) zero) + 2 * natEq (cb_zero (Γ := Γ))
 
 /-- `4^{k+1} = 4 · 4^k`, as `2^{2(k+1)} = 4 · 2^{2k}`. -/
 theorem four_step (k : PTm n) : Γ ⊢[PRAAx] pw two (two * succ k) ≐ (two * two) * pw two (two * k) := by
-  have e : Γ ⊢[PRAAx] two * succ k ≐ two * k + two := by apply deriveNat; ipra_simps; ring
+  have e : Γ ⊢[PRAAx] two * succ k ≐ two * k + two := by ipra_ring
   exact (congrPw (.eqRefl _) e).eqTrans ((pw_add two (two * k) two).eqTrans
     ((congrMul (.eqRefl _) (pw_two two)).eqTrans (mul_comm _ _)))
 
 /-- `4^0 = 1`. -/
 theorem four_zero : Γ ⊢[PRAAx] pw two (two * (zero : PTm n)) ≐ one := by
-  have e : Γ ⊢[PRAAx] two * (zero : PTm n) ≐ zero := by apply deriveNat; ipra_simps; ring
+  have e : Γ ⊢[PRAAx] two * (zero : PTm n) ≐ zero := by ipra_ring
   exact (congrPw (.eqRefl _) e).eqTrans (pw_zero two)
 
 /-- Variable: `0 = k` (induction). -/
@@ -86,10 +83,8 @@ private theorem half₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] halfF := by
   · simp only [subst_le, PTm.subst_mul, PTm.subst_monus, subst_ap2, Syn.subst_var, Syn.repl_zero, ConciseIPRA.PTm.subst_zero,
       ConciseIPRA.PTm.subst_succ]
     have ih : [halfF] ⊢[PRAAx] le (cb (succ (var 0))) (two * pw two (two * var 0)) := Prf.hyp0
-    have f := natEq (four_step (Γ := [halfF]) (var 0))
     have E : [halfF] ⊢[PRAAx] (two * two) * (two * pw two (two * var 0)) ≐ two * pw two (two * succ (var 0)) := by
-      apply deriveNat; ipra_simps
-      linear_combination -2 * f
+      ipra_lc -2 * natEq (four_step (Γ := [halfF]) (var 0))
     exact le_trans (cb_succ_le (succ (var 0))) (le_congr (.eqRefl _) E (le_mul_mono (le_refl (two * two)) ih))
 
 /-- `C(2k + 2, k + 1) ≤ 2 · 4^k`. -/
@@ -106,11 +101,9 @@ theorem odd_binom_le (k : PTm n) : Γ ⊢[PRAAx] le (binom (succ (two * k)) k) (
 theorem odd_binom_pos (k : PTm n) :
     Γ ⊢[PRAAx] binom (succ (two * k)) k ≐ succ (pred (binom (succ (two * k)) k)) := by
   refine .orE (zero_or_succ (binom (succ (two * k)) k)) ?_ Prf.hyp0
-  have z := natEq (Prf.hyp0 (Γ := Γ) (φ := binom (succ (two * k)) k ≐ zero))
-  have o := natEq ((cb_succ_odd (Γ := Γ) k).wk (ψ := binom (succ (two * k)) k ≐ zero))
-  have e1 := natEq (eq_add_of_le (central_pos (Γ := (binom (succ (two * k)) k ≐ zero) :: Γ) (succ k)))
   refine succ_ne_zero' (a := monus (cb (succ k)) one) _ ?_
-  apply deriveNat; ipra_simps
-  linear_combination o + 2 * z - e1
+  ipra_lc natEq ((cb_succ_odd (Γ := Γ) k).wk (ψ := binom (succ (two * k)) k ≐ zero)) +
+    2 * natEq (Prf.hyp0 (Γ := Γ) (φ := binom (succ (two * k)) k ≐ zero)) -
+    natEq (eq_add_of_le (central_pos (Γ := (binom (succ (two * k)) k ≐ zero) :: Γ) (succ k)))
 
 end LeanProofs.IPRA.AnalyticNumberTheory.BertrandCentral

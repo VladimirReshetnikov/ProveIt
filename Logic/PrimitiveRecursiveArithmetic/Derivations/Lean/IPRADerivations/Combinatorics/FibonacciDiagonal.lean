@@ -1,6 +1,6 @@
 import IPRADerivations.Combinatorics.Fibonacci
 import IPRADerivations.Combinatorics.HockeyStick
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Fibonacci numbers as diagonal sums of Pascal's triangle

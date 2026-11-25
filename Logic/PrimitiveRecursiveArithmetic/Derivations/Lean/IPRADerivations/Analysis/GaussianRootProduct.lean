@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianRootAlgebra
 import IPRADerivations.Analysis.RationalNormalForm
 import IPRADerivations.Foundations.SequenceEquality
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual runtime-degree Gaussian root-product polynomials
@@ -61,9 +62,7 @@ theorem delayed_succ (C i : PTm n) : Γ ⊢[PRAAx] equal (delayed C (succ i)) (p
   have e := natEq (Signum.sg_succ (Γ := Γ) i)
   have p := natEq (pred_succ (Γ := Γ) i)
   have codeEq : Γ ⊢[PRAAx] padded C (pred (succ i)) ≐ padded C i := by
-    have q := Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (padded (var 0) (var 1) : PTm 2)
-      (σ := ![C,pred (succ i)]) (σ' := ![C,i]) (fun j => by fin_cases j; exact .eqRefl _; exact pred_succ i)
-    simpa only [subst_padded,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using q
+    ipra_congr (padded (var 0) (var 1) : PTm 2) with [.eqRefl C, pred_succ i]
   have v := values_of_code codeEq
   apply equal_of_values <;> simp only [delayed,re_scale,im_scale] <;> rw [e] <;> ipra_simps
   · linear_combination v.1
@@ -130,9 +129,7 @@ theorem previous_horner (C z k : PTm n) :
     have predEq : (k ≐ zero) :: Γ ⊢[PRAAx] horner C z (pred k) ≐ zeroCode :=
       (congrAp3 hornerF ((congrPred eqK).eqTrans pred_zero) (.eqRefl _) (.eqRefl _)).eqTrans (horner_zero C z)
     have delayEq : (k ≐ zero) :: Γ ⊢[PRAAx] delayed C k ≐ delayed C zero := by
-      have h := Prf.eqCongr (Ax := PRAAx) (Γ := (k ≐ zero) :: Γ) (delayed (var 0) (var 1) : PTm 2) (σ := ![C,k]) (σ' := ![C,zero])
-        (fun i => by fin_cases i; exact .eqRefl _; exact eqK)
-      simpa only [subst_delayed,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using h
+      ipra_congr (delayed (var 0) (var 1) : PTm 2) with [.eqRefl C, eqK]
     have dh := equal_trans (equal_of_code delayEq) (delayed_zero C)
     apply equal_of_values
     · simp only [re_add,re_mul]
@@ -144,9 +141,7 @@ theorem previous_horner (C z k : PTm n) :
   · have eqK := Prf.hyp0 (Ax := PRAAx) (Γ := Γ) (φ := k ≐ succ (pred k))
     have h := equal_of_code (horner_succ (Γ := (k ≐ succ (pred k)) :: Γ) C z (pred k))
     have delayEq : (k ≐ succ (pred k)) :: Γ ⊢[PRAAx] delayed C k ≐ delayed C (succ (pred k)) := by
-      have h := Prf.eqCongr (Ax := PRAAx) (Γ := (k ≐ succ (pred k)) :: Γ) (delayed (var 0) (var 1) : PTm 2) (σ := ![C,k]) (σ' := ![C,succ (pred k)])
-        (fun i => by fin_cases i; exact .eqRefl _; exact eqK)
-      simpa only [subst_delayed,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using h
+      ipra_congr (delayed (var 0) (var 1) : PTm 2) with [.eqRefl C, eqK]
     have dh := equal_trans (equal_of_code delayEq) (delayed_succ C (pred k))
     have kh := values_of_code (a := horner C z k) (b := horner C z (succ (pred k))) (congrAp3 hornerF eqK (.eqRefl C) (.eqRefl z))
     apply equal_of_values
@@ -314,9 +309,7 @@ theorem factors_succ (R z N : PTm n) : Γ ⊢[PRAAx]
 
 theorem evaluate_code_congr {C C' z z' : PTm n} (hC : Γ ⊢[PRAAx] C ≐ C') (hz : Γ ⊢[PRAAx] z ≐ z') :
     Γ ⊢[PRAAx] evaluate C z ≐ evaluate C' z' := by
-  have e := Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (evaluate (var 0) (var 1) : PTm 2)
-    (σ := ![C,z]) (σ' := ![C',z']) (fun i => by fin_cases i; exact hC; exact hz)
-  simpa only [subst_evaluate,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using e
+  ipra_congr (evaluate (var 0) (var 1) : PTm 2) with [hC, hz]
 
 theorem initial_entry : Γ ⊢[PRAAx] entry (initial : PTm n) zero ≐ oneCode := by
   simpa [initial,inst2] using sequence_decode (Γ := Γ) (oneCode : PTm 2) (x := (zero : PTm n)) (zero_lt_succ zero)

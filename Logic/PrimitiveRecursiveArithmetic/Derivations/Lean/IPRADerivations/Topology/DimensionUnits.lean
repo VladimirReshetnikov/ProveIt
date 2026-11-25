@@ -1,5 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.Dirichlet
 import IPRADerivations.Topology.DimensionTwo
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The dimension obstruction for tables in an arbitrary unit (`thm:finite`, `d = 2`, `h = 2M`)
@@ -47,18 +49,14 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Floors and distances -/
 
-theorem pos_succ {M : PTm n} (h : Γ ⊢[PRAAx] le one M) : Γ ⊢[PRAAx] M ≐ succ (pred M) := by
-  refine .orE (zero_or_succ M) ?_ Prf.hyp0
-  exact not_succ_le_self zero _ (le_congr (.eqRefl _) Prf.hyp0 h.wk)
+alias pos_succ := Common.pos_of_one_le
 
 /-- `⌊(z + M) / M⌋ = ⌊z / M⌋ + 1`. -/
 theorem quo_add_self {z M : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) :
     Γ ⊢[PRAAx] quo (z + M) M ≐ succ (quo z M) := by
   have d := div_mod_at (Γ := Γ) (x := z) hM
   refine quo_eq hM ?_ (.andE₂ d)
-  have e := natEq (Prf.andE₁ d)
-  apply deriveNat; ipra_simps
-  linear_combination e
+  ipra_lc natEq (Prf.andE₁ d)
 
 theorem dist_of_add {X Y e : PTm n} (h : Γ ⊢[PRAAx] X ≐ Y + e) : Γ ⊢[PRAAx] dist X Y ≐ e :=
   (congrAdd ((congrMonus h (.eqRefl _)).eqTrans (add_monus' _ _))
@@ -73,20 +71,15 @@ theorem dist_congr {a a' b b' : PTm n} (h₁ : Γ ⊢[PRAAx] a ≐ a') (h₂ : �
 theorem two_le_dist_of_gap {x y : PTm n} (h : Γ ⊢[PRAAx] le (succ (succ x)) y) :
     Γ ⊢[PRAAx] le two (dist y x) := by
   have e : Γ ⊢[PRAAx] y ≐ x + (two + monus y (succ (succ x))) := by
-    have a := natEq (eq_add_of_le h)
-    apply deriveNat; ipra_simps
-    linear_combination a
+    ipra_lc natEq (eq_add_of_le h)
   exact le_congr (.eqRefl _) (dist_of_add e).eqSymm (le_add_right _ _)
 
 private theorem far_aux {a b M : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) (hab : Γ ⊢[PRAAx] le a b)
     (hd : Γ ⊢[PRAAx] le (two * M) (monus b a)) :
     Γ ⊢[PRAAx] le (succ (succ (quo a M))) (quo b M) := by
   have hb : Γ ⊢[PRAAx] le (a + M + M) b := by
-    have e₁ := natEq (eq_add_of_le hab)
-    have e₂ := natEq (eq_add_of_le hd)
     refine le_of_eq_add (d := monus (monus b a) (two * M)) ?_
-    apply deriveNat; ipra_simps
-    linear_combination e₁ + e₂
+    ipra_lc natEq (eq_add_of_le hab) + natEq (eq_add_of_le hd)
   have e : Γ ⊢[PRAAx] quo (a + M + M) M ≐ succ (succ (quo a M)) :=
     (quo_add_self hM).eqTrans (congrSucc (quo_add_self hM))
   exact le_congr e (.eqRefl _) (quo_mono hM hb)

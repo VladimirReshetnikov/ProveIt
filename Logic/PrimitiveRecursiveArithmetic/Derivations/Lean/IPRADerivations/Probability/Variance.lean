@@ -1,4 +1,5 @@
 import IPRADerivations.Probability.TailSum
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Variance, squared error and the sample mean
@@ -45,18 +46,13 @@ abbrev ad (a b : PTm n) : PTm n := monus a b + monus b a
 
 theorem ad_sq_of_le {a b : PTm n} (h : Γ ⊢[PRAAx] le a b) :
     Γ ⊢[PRAAx] ad a b * ad a b + (a * b + a * b) ≐ a * a + b * b := by
-  have h1 := natEq h
-  have h2 := natEq (eq_add_of_le h)
-  apply deriveNat; ipra_simps
-  linear_combination (Groth.ι (IPRA.Q.mk Γ (monus a b)) + 2 * Groth.ι (IPRA.Q.mk Γ (monus b a))) * h1 -
-    (Groth.ι (IPRA.Q.mk Γ (monus b a)) + Groth.ι (IPRA.Q.mk Γ b) - Groth.ι (IPRA.Q.mk Γ a)) * h2
+  ipra_lc (Groth.ι (IPRA.Q.mk Γ (monus a b)) + 2 * Groth.ι (IPRA.Q.mk Γ (monus b a))) * natEq h -
+    (Groth.ι (IPRA.Q.mk Γ (monus b a)) + Groth.ι (IPRA.Q.mk Γ b) - Groth.ι (IPRA.Q.mk Γ a)) * natEq (eq_add_of_le h)
 
 /-- `|a − b|² + 2ab = a² + b²`. -/
 theorem ad_sq (a b : PTm n) : Γ ⊢[PRAAx] ad a b * ad a b + (a * b + a * b) ≐ a * a + b * b := by
   refine .orE (le_total a b) (ad_sq_of_le Prf.hyp0) ?_
-  have e := natEq (ad_sq_of_le (a := b) (b := a) (Γ := le b a :: Γ) Prf.hyp0)
-  apply deriveNat; ipra_simps
-  linear_combination e
+  ipra_lc natEq (ad_sq_of_le (a := b) (b := a) (Γ := le b a :: Γ) Prf.hyp0)
 
 /-! ## The squared-deviation sum -/
 
@@ -114,16 +110,11 @@ theorem dv_step {N A B x : PTm n}
   rw [inst2_mul'] at e1
   have e2 := sum_succ' (Γ := Γ) (w * (X * X)) N x
   rw [inst2_mul', inst2_mul'] at e2
-  have s1 := natEq e1
-  have s2 := natEq e2
-  have s3 := natEq (sum_succ' (Γ := Γ) w N x)
-  have pt := natEq (ad_sq (Γ := Γ) (A * inst2 X N x) B)
-  have i := natEq ih
-  apply deriveNat; ipra_simps
-  linear_combination i + s0 +
-    (Groth.ι (IPRA.Q.mk Γ A) * Groth.ι (IPRA.Q.mk Γ B) + Groth.ι (IPRA.Q.mk Γ A) * Groth.ι (IPRA.Q.mk Γ B)) * s1 -
-    Groth.ι (IPRA.Q.mk Γ A) * Groth.ι (IPRA.Q.mk Γ A) * s2 -
-    Groth.ι (IPRA.Q.mk Γ B) * Groth.ι (IPRA.Q.mk Γ B) * s3 + Groth.ι (IPRA.Q.mk Γ (inst2 w N x)) * pt
+  ipra_lc natEq ih + s0 +
+    (Groth.ι (IPRA.Q.mk Γ A) * Groth.ι (IPRA.Q.mk Γ B) + Groth.ι (IPRA.Q.mk Γ A) * Groth.ι (IPRA.Q.mk Γ B)) * natEq e1 -
+    Groth.ι (IPRA.Q.mk Γ A) * Groth.ι (IPRA.Q.mk Γ A) * natEq e2 -
+    Groth.ι (IPRA.Q.mk Γ B) * Groth.ι (IPRA.Q.mk Γ B) * natEq (sum_succ' (Γ := Γ) w N x) +
+    Groth.ι (IPRA.Q.mk Γ (inst2 w N x)) * natEq (ad_sq (Γ := Γ) (A * inst2 X N x) B)
 
 /-- Variables: `0 = N`, `1 = A`, `2 = B`, `3 = x`. -/
 private abbrev dvF : Fm PTm 4 :=
@@ -155,9 +146,7 @@ abbrev Vr (N x : PTm n) : PTm n := dS w X N (Wt w N x) (Ew w X N x) x
 theorem variance_identity (N x : PTm n) :
     Γ ⊢[PRAAx] Vr w X N x + Wt w N x * (Ew w X N x * Ew w X N x) ≐
       Wt w N x * Wt w N x * Ew w (X * X) N x := by
-  have d := natEq (dev_sum (Γ := Γ) w X N (Wt w N x) (Ew w X N x) x)
-  apply deriveNat; ipra_simps
-  linear_combination d
+  ipra_lc natEq (dev_sum (Γ := Γ) w X N (Wt w N x) (Ew w X N x) x)
 
 /-- `thm:mean-minimizes`: for `a = p / q`,
 `W² ∑ w_i |q X_i − p|² = q² ∑ w_i |W X_i − S|² + W |q S − p W|²`. -/
@@ -165,13 +154,9 @@ theorem mean_square_decomp (N p q x : PTm n) :
     Γ ⊢[PRAAx] Wt w N x * Wt w N x * dS w X N q p x ≐
       q * q * Vr w X N x +
         Wt w N x * (ad (q * Ew w X N x) (p * Wt w N x) * ad (q * Ew w X N x) (p * Wt w N x)) := by
-  have hM := natEq (dev_sum (Γ := Γ) w X N q p x)
-  have hV := natEq (variance_identity (Γ := Γ) w X N x)
-  have he := natEq (ad_sq (Γ := Γ) (q * Ew w X N x) (p * Wt w N x))
-  apply deriveNat; ipra_simps
-  linear_combination
-    Groth.ι (IPRA.Q.mk Γ (ap2 (sumF w) N x)) * Groth.ι (IPRA.Q.mk Γ (ap2 (sumF w) N x)) * hM -
-    Groth.ι (IPRA.Q.mk Γ q) * Groth.ι (IPRA.Q.mk Γ q) * hV - Groth.ι (IPRA.Q.mk Γ (ap2 (sumF w) N x)) * he
+  ipra_lc Groth.ι (IPRA.Q.mk Γ (ap2 (sumF w) N x)) * Groth.ι (IPRA.Q.mk Γ (ap2 (sumF w) N x)) * natEq (dev_sum (Γ := Γ) w X N q p x) -
+    Groth.ι (IPRA.Q.mk Γ q) * Groth.ι (IPRA.Q.mk Γ q) * natEq (variance_identity (Γ := Γ) w X N x) -
+    Groth.ι (IPRA.Q.mk Γ (ap2 (sumF w) N x)) * natEq (ad_sq (Γ := Γ) (q * Ew w X N x) (p * Wt w N x))
 
 /-- The mean minimizes the squared error: `q² · W² Var(X) ≤ W² · ∑ w_i |q X_i − p|²`. -/
 theorem mean_minimizes (N p q x : PTm n) :
@@ -188,8 +173,7 @@ theorem second_moment_add (w X Y : PTm 2) (N x : PTm n) :
     (.allI (.impI ?_))).eqTrans ((exp_add w (X * X + (X * Y + X * Y)) (Y * Y) N x).eqTrans
       (congrAdd ((exp_add w (X * X) (X * Y + X * Y) N x).eqTrans
         (congrAdd (.eqRefl _) (exp_add w (X * Y) (X * Y) N x))) (.eqRefl _)))
-  simp only [inst2_mul', inst2_add']
-  apply deriveNat; ipra_simps; ring
+  ipra_lc [inst2_mul', inst2_add']
 
 /-! ## Constant sums and the sample mean -/
 

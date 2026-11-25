@@ -40,7 +40,7 @@ theorem gain_at_precision {B c : PTm n} (p : PTm n) (hB : Γ ⊢[PRAAx] le B c) 
     Γ ⊢[PRAAx] le (B * pw two (p + num 2)) (pw two (p + c + num 2)) := by
   have ha := amplitude_absorb (Γ := Γ) c
   have e := natEq ((congrAp2 (Γ := Γ) powF (show Γ ⊢[PRAAx] p + c + num 2 ≐ (p + num 2) + c by
-    apply deriveNat; ipra_simps; ring) (.eqRefl two)).eqTrans (pw_add _ _ _))
+    ipra_ring) (.eqRefl two)).eqTrans (pw_add _ _ _))
   ipra_le 𝔟 (pw two (p + num 2)) * (sl hB + sl ha) with e
 
 end LeanProofs.IPRA.Foundations.DyadicGain

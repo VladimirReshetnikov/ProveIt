@@ -1,4 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.HurwitzExtraction
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The extraction loop of the continued-fraction prefix (`hurwitz_khinchin_ipra`)
@@ -152,18 +153,13 @@ theorem inv_congr {s s' Y W : PTm n} (h : Γ ⊢[PRAAx] s ≐ s') (hi : Γ ⊢[P
     · exact .orI₂ ((congrMul eP.wk eQ'.wk).eqSymm.eqTrans (Prf.hyp0.eqTrans (congrAdd (congrMul eP'.wk eQ.wk) (.eqRefl _))))
   exact .andI hR hd
 
-
 /-- `x ≤ y` gives `y = x + |y − x|`. -/
 theorem add_adist {x y : PTm n} (h : Γ ⊢[PRAAx] le x y) : Γ ⊢[PRAAx] y ≐ x + adist y x := by
-  have e1 := natEq h
-  have e2 := natEq (eq_add_of_le h)
-  apply deriveNat; ipra_simps; linear_combination e2 - e1
+  ipra_lc natEq (eq_add_of_le h) - natEq h
 
 /-- `x ≤ y` gives `y = x + |x − y|`. -/
 theorem add_adist' {x y : PTm n} (h : Γ ⊢[PRAAx] le x y) : Γ ⊢[PRAAx] y ≐ x + adist x y := by
-  have e1 := natEq h
-  have e2 := natEq (eq_add_of_le h)
-  apply deriveNat; ipra_simps; linear_combination e2 - e1
+  ipra_lc natEq (eq_add_of_le h) - natEq h
 
 /-- `⌊x/y⌋ y ≤ x` for `y ≥ 1`. -/
 theorem quo_mul_le {x y : PTm n} (hy : Γ ⊢[PRAAx] y ≐ succ (pred y)) : Γ ⊢[PRAAx] le (quo x y * y) x := by

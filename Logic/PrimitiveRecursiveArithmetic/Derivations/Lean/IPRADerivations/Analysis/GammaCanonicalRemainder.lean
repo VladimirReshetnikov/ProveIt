@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.GammaCanonicalFactors
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Exact degree-dependent finite canonical Gamma remainder
@@ -28,7 +29,6 @@ open scoped Fm
 open ConciseIPRA.PTm (app zero succ)
 open LeanProofs.IPRA.PTm (monus)
 open LeanProofs.IPRA.Analysis.Products (fact)
-
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -72,15 +72,10 @@ theorem strong_zero (L R N : PTm n) : Γ ⊢[PRAAx] strong L R N zero := by
 /-- The next stage leaves precisely a nonnegative `K*(N-R)` tail slack. -/
 theorem strong_step {L R N K : PTm n} (hRN : Γ ⊢[PRAAx] le R N)
     (ih : Γ ⊢[PRAAx] strong L R N K) : Γ ⊢[PRAAx] strong L R N (succ K) := by
-  have i := natEq (eq_add_of_le ih)
-  have h := natEq (eq_add_of_le hRN)
-  have a := natEq (ComplexLogarithmCauchy.positive_succ (Γ := Γ) L R N K)
   have d := natEq ((ComplexLogarithmCauchy.congr_denominator (N := N) (Γ := Γ) (add_succ L K)).eqTrans
     (denominator_succ N (L+K)))
   have e₂ : Γ ⊢[PRAAx] L+succ K+two ≐ succ (L+K+two) := by ipra_ring
   have e₃ : Γ ⊢[PRAAx] L+succ K+three ≐ succ (L+K+three) := by ipra_ring
-  have f := natEq ((congrAp2 factF e₂ (.eqRefl zero)).eqTrans (fact_succ (L+K+two) zero))
-  have p := natEq ((congrAp2 powF e₃ (.eqRefl R)).eqTrans (pw_succ R (L+K+three)))
   unfold strong at *
   refine le_of_eq_add (d :=
     (L+K+three)*N*monus
@@ -88,18 +83,12 @@ theorem strong_step {L R N K : PTm n} (hRN : Γ ⊢[PRAAx] le R N)
       (tailScale L R N*ComplexLogarithmCauchy.positive L R N K +
         denominator N L*fact (L+K+two)*pw N (L+two)*pw R (L+K+three)) +
     K*monus N R*denominator N L*fact (L+K+two)*pw N (L+two)*pw R (L+K+three)) ?_
-  apply deriveNat
-  simp only [tailScale] at *
-  ipra_simps
-  linear_combination
-    (𝔞(L)+𝔞(K)+3)*𝔞(N)*i +
-    (𝔞(L)+𝔞(K)+3)*𝔞(denominator N L)*𝔞(fact (L+K+two))*
-      𝔞(pw N (L+two))*𝔞(pw R (L+K+three))*h +
+  ipra_lc [tailScale] (𝔞(L)+𝔞(K)+3)*𝔞(N)*natEq (eq_add_of_le ih) +
+    (𝔞(L)+𝔞(K)+3)*𝔞(denominator N L)*𝔞(fact (L+K+two))* 𝔞(pw N (L+two))*𝔞(pw R (L+K+three))*natEq (eq_add_of_le hRN) +
     𝔞(pw R (L+three))*𝔞(denominator N L)*d -
-    (𝔞(L)+3)*𝔞(pw N (L+two))*𝔞(monus N R)*a -
-    𝔞(denominator N L)*𝔞(pw N (L+two))*𝔞(pw R (L+succ K+three))*f -
-    𝔞(denominator N L)*𝔞(pw N (L+two))*𝔞(fact (L+K+two))*
-      (𝔞(L)+𝔞(K)+3)*p
+    (𝔞(L)+3)*𝔞(pw N (L+two))*𝔞(monus N R)*natEq (ComplexLogarithmCauchy.positive_succ (Γ := Γ) L R N K) -
+    𝔞(denominator N L)*𝔞(pw N (L+two))*𝔞(pw R (L+succ K+three))*natEq ((congrAp2 factF e₂ (.eqRefl zero)).eqTrans (fact_succ (L+K+two) zero)) -
+    𝔞(denominator N L)*𝔞(pw N (L+two))*𝔞(fact (L+K+two))* (𝔞(L)+𝔞(K)+3)*natEq ((congrAp2 powF e₃ (.eqRefl R)).eqTrans (pw_succ R (L+K+three)))
 
 theorem finite_positive_strong (L R N K : PTm n) (hRN : Γ ⊢[PRAAx] le R N) :
     Γ ⊢[PRAAx] strong L R N K := by

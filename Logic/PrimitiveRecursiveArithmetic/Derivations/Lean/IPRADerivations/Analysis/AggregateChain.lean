@@ -1,5 +1,7 @@
 import IPRADerivations.Analysis.AggregateEquality
 import IPRADerivations.Analysis.RationalNearest
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The actual least-neighbor chain of a regular rational aggregate
@@ -45,10 +47,7 @@ open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
-private theorem positive_cancel {c a b : PTm n} (hc : Γ ⊢[PRAAx] le one c)
-    (h : Γ ⊢[PRAAx] le (c*a) (c*b)) : Γ ⊢[PRAAx] le a b := by
-  have e : Γ ⊢[PRAAx] c ≐ succ (monus c one) := (eq_add_of_le hc).eqTrans (by ipra_ring)
-  exact mul_le_cancel (le_congr (congrMul e (.eqRefl _)) (congrMul e (.eqRefl _)) h)
+private alias positive_cancel := Common.mul_cancel_le
 
 theorem coordinate_congr {x x' y y' k k' A A' B B' : PTm n}
     (hx : Γ ⊢[PRAAx] x ≐ x') (hy : Γ ⊢[PRAAx] y ≐ y') (hk : Γ ⊢[PRAAx] k ≐ k')
@@ -238,10 +237,7 @@ theorem adjacent (S : PR 2) (r s i d x : PTm n)
     Γ ⊢[PRAAx] pointRadius (point S r s i d x) (point S (succ r) s i d x) d
       (num 3) (unit (s+succ r)) := by
   have numerator : Γ ⊢[PRAAx] unit (s+r)+unit (s+succ r) ≐ unit (s+r)*num 3 := by
-    have e := natEq (unit_next (Γ := Γ) s r)
-    apply deriveNat
-    ipra_simps
-    linear_combination e
+    ipra_lc natEq (unit_next (Γ := Γ) s r)
   exact point_cancel _ _ _ _ _ _ (unit_positive (s+r))
     (point_congr (.eqRefl _) (.eqRefl _) (.eqRefl _) numerator (.eqRefl _) (adjacent_raw S r s i d x hS hR hi))
 
@@ -259,13 +255,9 @@ theorem tailNumerator_zero : Γ ⊢[PRAAx] tailNumerator (zero : PTm n) ≐ zero
 
 theorem tailNumerator_succ (r : PTm n) :
     Γ ⊢[PRAAx] tailNumerator (succ r) ≐ two*tailNumerator r+num 3 := by
-  have nextGap := natEq (eq_add_of_le (unit_positive (Γ := Γ) (succ r)))
-  have currentGap := natEq (eq_add_of_le (unit_positive (Γ := Γ) r))
-  have power := natEq (unit_succ (Γ := Γ) r)
   unfold tailNumerator
-  apply deriveNat
-  ipra_simps
-  linear_combination -3*nextGap + 6*currentGap + 3*power
+  ipra_lc -3*natEq (eq_add_of_le (unit_positive (Γ := Γ) (succ r))) +
+    6*natEq (eq_add_of_le (unit_positive (Γ := Γ) r)) + 3*natEq (unit_succ (Γ := Γ) r)
 
 theorem tailDenominator_succ (s j r : PTm n) :
     Γ ⊢[PRAAx] tailDenominator s j (succ r) ≐ two*tailDenominator s j r :=
@@ -385,10 +377,7 @@ theorem name_ordered (S : PR 2) (t u s i d x : PTm n)
     (hi : Γ ⊢[PRAAx] lt i (length (sample S s x))) (htu : Γ ⊢[PRAAx] le t u) :
     Γ ⊢[PRAAx] pointRadius (name S t s i d x) (name S u s i d x) d one (unit t) := by
   have endpoint : Γ ⊢[PRAAx] succ (succ t)+monus u t ≐ succ (succ u) := by
-    have e := natEq (eq_add_of_le htu)
-    apply deriveNat
-    ipra_simps
-    linear_combination -e
+    ipra_lc -natEq (eq_add_of_le htu)
   have tail := point_congr (.eqRefl _) (point_index_congr S s i d x endpoint) (.eqRefl _) (.eqRefl _) (.eqRefl _)
     (coarse_tail S (monus u t) (succ (succ t)) s i d x hS hR hi)
   exact point_mono _ _ _ _ _ _ _ (unit_positive _) tail

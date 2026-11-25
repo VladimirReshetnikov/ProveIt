@@ -1,7 +1,7 @@
 import IPRADerivations.Probability.PoissonShift
 import IPRADerivations.Combinatorics.BinomialIdentities
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The Pascal recurrence of the binomial distribution function

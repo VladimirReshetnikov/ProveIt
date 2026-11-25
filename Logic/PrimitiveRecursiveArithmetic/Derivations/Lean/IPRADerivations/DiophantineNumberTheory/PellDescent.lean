@@ -1,4 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.Coprime
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Positive unit descent for Pell's equation
@@ -30,23 +32,20 @@ open LeanProofs.IPRA.PTm (num monus pred)
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 /-- `a² < b² → a < b`. -/
-theorem lt_of_sq_lt {a b : PTm n} (h : Γ ⊢[PRAAx] lt (a * a) (b * b)) : Γ ⊢[PRAAx] lt a b :=
-  .orE (lt_or_le a b) Prf.hyp0 (le_lt_absurd _ (sq_le_sq Prf.hyp0) h.wk)
+alias lt_of_sq_lt := Common.lt_of_sq_lt
 
 theorem A_pos {A B D : PTm n} (hA : Γ ⊢[PRAAx] A * A ≐ one + D * (B * B)) : Γ ⊢[PRAAx] A ≐ succ (pred A) := by
   refine .orE (zero_or_succ A) ?_ Prf.hyp0
   refine succ_ne_zero' _ (a := D * (B * B)) ((hA.wk.eqSymm.eqTrans ((congrMul Prf.hyp0 Prf.hyp0).eqTrans
     (mul_zero _))).eqSymm.eqTrans ?_ |>.eqSymm)
-  exact (by apply deriveNat; ipra_simps; ring)
+  exact (by ipra_ring)
 
 /-- `D B y ≤ A x`. -/
 theorem le_r {A B D x y : PTm n} (hA : Γ ⊢[PRAAx] A * A ≐ one + D * (B * B))
     (hx : Γ ⊢[PRAAx] x * x ≐ one + D * (y * y)) : Γ ⊢[PRAAx] le (D * (B * y)) (A * x) := by
   refine le_of_sq_le (le_of_eq_add (d := one + D * (y * y) + D * (B * B)) ?_)
-  have h₁ := natEq hA; have h₂ := natEq hx
-  apply deriveNat; ipra_simps
-  linear_combination (1 + Groth.ι (IPRA.Q.mk Γ D) * Groth.ι (IPRA.Q.mk Γ y) ^ 2) * h₁ +
-    Groth.ι (IPRA.Q.mk Γ A) ^ 2 * h₂
+  ipra_lc (1 + Groth.ι (IPRA.Q.mk Γ D) * Groth.ι (IPRA.Q.mk Γ y) ^ 2) * natEq hA +
+    Groth.ι (IPRA.Q.mk Γ A) ^ 2 * natEq hx
 
 /-- `B x ≤ A y` when `B ≤ y`. -/
 theorem le_t {A B D x y : PTm n} (hA : Γ ⊢[PRAAx] A * A ≐ one + D * (B * B))
@@ -54,10 +53,8 @@ theorem le_t {A B D x y : PTm n} (hA : Γ ⊢[PRAAx] A * A ≐ one + D * (B * B)
     Γ ⊢[PRAAx] le (B * x) (A * y) := by
   have e := eq_add_of_le hBy
   refine le_of_sq_le (le_of_eq_add (d := monus y B * (monus y B + two * B)) ?_)
-  have h₁ := natEq hA; have h₂ := natEq hx; have h₃ := natEq e
-  apply deriveNat; ipra_simps
-  linear_combination Groth.ι (IPRA.Q.mk Γ y) ^ 2 * h₁ - Groth.ι (IPRA.Q.mk Γ B) ^ 2 * h₂ +
-    (Groth.ι (IPRA.Q.mk Γ y) + Groth.ι (IPRA.Q.mk Γ B) + Groth.ι (IPRA.Q.mk Γ (monus y B))) * h₃
+  ipra_lc Groth.ι (IPRA.Q.mk Γ y) ^ 2 * natEq hA - Groth.ι (IPRA.Q.mk Γ B) ^ 2 * natEq hx +
+    (Groth.ι (IPRA.Q.mk Γ y) + Groth.ι (IPRA.Q.mk Γ B) + Groth.ι (IPRA.Q.mk Γ (monus y B))) * natEq e
 
 /-- `(A - 1) y < B x` when `B ≥ 1`. -/
 theorem lt_t {A B D x y : PTm n} (hA : Γ ⊢[PRAAx] A * A ≐ one + D * (B * B))
@@ -65,10 +62,9 @@ theorem lt_t {A B D x y : PTm n} (hA : Γ ⊢[PRAAx] A * A ≐ one + D * (B * B)
     Γ ⊢[PRAAx] lt (pred A * y) (B * x) := by
   have hAp := A_pos hA
   refine lt_of_sq_lt (le_of_eq_add (d := pred (B * B) + two * (pred A * (y * y))) ?_)
-  have h₁ := natEq hA; have h₂ := natEq hx; have h₃ := natEq hAp; have h₄ := natEq (pos_mul hB hB)
-  apply deriveNat; ipra_simps
-  linear_combination Groth.ι (IPRA.Q.mk Γ B) ^ 2 * h₂ - Groth.ι (IPRA.Q.mk Γ y) ^ 2 * h₁ +
-    Groth.ι (IPRA.Q.mk Γ y) ^ 2 * (Groth.ι (IPRA.Q.mk Γ A) + Groth.ι (IPRA.Q.mk Γ (pred A)) + 1) * h₃ + h₄
+  ipra_lc Groth.ι (IPRA.Q.mk Γ B) ^ 2 * natEq hx - Groth.ι (IPRA.Q.mk Γ y) ^ 2 * natEq hA +
+    Groth.ι (IPRA.Q.mk Γ y) ^ 2 * (Groth.ι (IPRA.Q.mk Γ A) + Groth.ι (IPRA.Q.mk Γ (pred A)) + 1) * natEq hAp +
+    natEq (pos_mul hB hB)
 
 /-- The residual `(r, t)`. -/
 abbrev rr (A B D x y : PTm n) : PTm n := monus (A * x) (D * (B * y))
@@ -85,24 +81,16 @@ theorem unit_descent {A B D x y : PTm n} (hA : Γ ⊢[PRAAx] A * A ≐ one + D *
   have et := ((eq_add_of_le (le_t hA hx hBy)).eqTrans (add_comm _ _)).eqSymm
   have h₁ := natEq hA; have h₂ := natEq hx; have h₃ := natEq er; have h₄ := natEq et
   refine .andI ?_ (.andI ?_ (.andI ?_ ?_))
-  · apply deriveNat; ipra_simps
-    linear_combination (Groth.ι (IPRA.Q.mk Γ (rr A B D x y)) + Groth.ι (IPRA.Q.mk Γ A) * Groth.ι (IPRA.Q.mk Γ x) -
-        Groth.ι (IPRA.Q.mk Γ D) * Groth.ι (IPRA.Q.mk Γ B) * Groth.ι (IPRA.Q.mk Γ y)) * h₃ -
-      Groth.ι (IPRA.Q.mk Γ D) * (Groth.ι (IPRA.Q.mk Γ (tt A B D x y)) + Groth.ι (IPRA.Q.mk Γ A) *
-        Groth.ι (IPRA.Q.mk Γ y) - Groth.ι (IPRA.Q.mk Γ B) * Groth.ι (IPRA.Q.mk Γ x)) * h₄ +
+  · ipra_lc (Groth.ι (IPRA.Q.mk Γ (rr A B D x y)) + Groth.ι (IPRA.Q.mk Γ A) * Groth.ι (IPRA.Q.mk Γ x) - Groth.ι (IPRA.Q.mk Γ D) * Groth.ι (IPRA.Q.mk Γ B) * Groth.ι (IPRA.Q.mk Γ y)) * h₃ -
+      Groth.ι (IPRA.Q.mk Γ D) * (Groth.ι (IPRA.Q.mk Γ (tt A B D x y)) + Groth.ι (IPRA.Q.mk Γ A) * Groth.ι (IPRA.Q.mk Γ y) - Groth.ι (IPRA.Q.mk Γ B) * Groth.ι (IPRA.Q.mk Γ x)) * h₄ +
       (Groth.ι (IPRA.Q.mk Γ x) ^ 2 - Groth.ι (IPRA.Q.mk Γ D) * Groth.ι (IPRA.Q.mk Γ y) ^ 2) * h₁ + h₂
   · -- `t + B x = A y` and `(A - 1) y + 1 ≤ B x`.
     have l := lt_t hA hx hB
     have w := eq_add_of_le l
     refine le_of_eq_add (d := monus (B * x) (succ (pred A * y))) ?_
-    have h₅ := natEq w; have h₆ := natEq (A_pos hA)
-    apply deriveNat; ipra_simps
-    linear_combination -h₄ + h₅ - Groth.ι (IPRA.Q.mk Γ y) * h₆
-  · apply deriveNat; ipra_simps
-    linear_combination -Groth.ι (IPRA.Q.mk Γ x) * h₁ - Groth.ι (IPRA.Q.mk Γ A) * h₃ -
+    ipra_lc -h₄ + natEq w - Groth.ι (IPRA.Q.mk Γ y) * natEq (A_pos hA)
+  · ipra_lc -Groth.ι (IPRA.Q.mk Γ x) * h₁ - Groth.ι (IPRA.Q.mk Γ A) * h₃ -
       Groth.ι (IPRA.Q.mk Γ D) * Groth.ι (IPRA.Q.mk Γ B) * h₄
-  · apply deriveNat; ipra_simps
-    linear_combination -Groth.ι (IPRA.Q.mk Γ y) * h₁ - Groth.ι (IPRA.Q.mk Γ B) * h₃ -
-      Groth.ι (IPRA.Q.mk Γ A) * h₄
+  · ipra_lc -Groth.ι (IPRA.Q.mk Γ y) * h₁ - Groth.ι (IPRA.Q.mk Γ B) * h₃ - Groth.ι (IPRA.Q.mk Γ A) * h₄
 
 end LeanProofs.IPRA.DiophantineNumberTheory.PellDescent

@@ -4,6 +4,7 @@ import IPRADerivations.Analysis.GaussianGammaEulerHeadShift
 import IPRADerivations.Analysis.GaussianGammaEulerHeadLower
 import IPRADerivations.Analysis.GaussianInverseBinomialRows
 import IPRADerivations.Analysis.GaussianPolynomialLinearFactorCoefficients
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # A literal finite Beta primitive for arbitrary complex rational exponents
@@ -93,8 +94,7 @@ theorem kernel_evaluation (N t : PTm n) (ht : Γ ⊢[PRAAx] canonical t) : Γ �
 
 theorem coefficient_congr {z z' B B' N N' i i' : PTm n} (hz : Γ ⊢[PRAAx] z ≐ z') (hB : Γ ⊢[PRAAx] B ≐ B')
     (hN : Γ ⊢[PRAAx] N ≐ N') (hi : Γ ⊢[PRAAx] i ≐ i') : Γ ⊢[PRAAx] coefficient z B N i ≐ coefficient z' B' N' i' := by
-  simpa using Prf.eqCongr (coefficient (var 0) (var 1) (var 2) (var 3) : PTm 4)
-    (σ := ![z,B,N,i]) (σ' := ![z',B',N',i']) (fun k => by fin_cases k; exact hz; exact hB; exact hN; exact hi)
+  ipra_congr (coefficient (var 0) (var 1) (var 2) (var 3) : PTm 4) with [hz, hB, hN, hi]
 
 theorem row_at (z B N i : PTm n) : Γ ⊢[PRAAx] inst2 rowBody i (data z B N) ≐ coefficient z B N i := by
   simp only [rowBody,inst2,subst_coefficient,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]

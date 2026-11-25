@@ -1,5 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.TotientCorollaries
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # `gcd · lcm = ab`

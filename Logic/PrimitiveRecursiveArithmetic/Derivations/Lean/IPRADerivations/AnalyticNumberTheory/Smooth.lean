@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.SumReindex
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Every `m ≤ N` divides a power of the primorial
@@ -42,9 +43,8 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 theorem dvd_mul_mul {a b x y : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) (hb : Γ ⊢[PRAAx] b ≐ succ (pred b))
     (h₁ : Γ ⊢[PRAAx] dvd a x) (h₂ : Γ ⊢[PRAAx] dvd b y) : Γ ⊢[PRAAx] dvd (a * b) (x * y) := by
   refine dvd_of_eq' (pos_mul ha hb) (w := quo x a * quo y b) ?_
-  have e₁ := natEq (eq_of_dvd' ha h₁); have e₂ := natEq (eq_of_dvd' hb h₂)
-  apply deriveNat; ipra_simps
-  linear_combination Groth.ι (IPRA.Q.mk Γ y) * e₁ + Groth.ι (IPRA.Q.mk Γ a) * Groth.ι (IPRA.Q.mk Γ (quo x a)) * e₂
+  ipra_lc Groth.ι (IPRA.Q.mk Γ y) * natEq (eq_of_dvd' ha h₁) +
+    Groth.ι (IPRA.Q.mk Γ a) * Groth.ι (IPRA.Q.mk Γ (quo x a)) * natEq (eq_of_dvd' hb h₂)
 
 theorem pw_dvd_base {x y : PTm n} (e : PTm n) (hx : Γ ⊢[PRAAx] x ≐ succ (pred x)) (h : Γ ⊢[PRAAx] dvd x y) :
     Γ ⊢[PRAAx] dvd (pw x e) (pw y e) :=
@@ -97,7 +97,7 @@ include hK
 
 theorem K_eq : Γ ⊢[PRAAx] K ≐ succ (succ (monus K two)) := by
   refine (eq_add_of_le hK).eqTrans ?_
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem lpf_two : Γ ⊢[PRAAx] prime (lpf K) ⋏ dvd (lpf K) K := by
   have e := K_eq hK
@@ -116,9 +116,7 @@ theorem cof_lt : Γ ⊢[PRAAx] le (succ (quo K (lpf K))) K := by
   have hp2 : Γ ⊢[PRAAx] le two (lpf K) := by
     have h := Prf.andE₁ (lpf_two hK); unfold prime at h; exact Prf.andE₁ h
   refine le_of_eq_add (d := pred (quo K (lpf K)) + monus (lpf K) two * quo K (lpf K)) ?_
-  have e₁ := natEq (K_split hK); have e₂ := natEq (eq_add_of_le hp2); have e₃ := natEq (cof_pos hK)
-  apply deriveNat; ipra_simps
-  linear_combination e₁ + Groth.ι (IPRA.Q.mk Γ (quo K (lpf K))) * e₂ + e₃
+  ipra_lc natEq (K_split hK) + Groth.ι (IPRA.Q.mk Γ (quo K (lpf K))) * natEq (eq_add_of_le hp2) + natEq (cof_pos hK)
 
 /-- The step of the strong induction. -/
 theorem sm_core (hm : Γ ⊢[PRAAx] dvd (quo K (lpf K)) (pw (A (succ (quo K (lpf K)))) (quo K (lpf K)))) :
@@ -169,7 +167,7 @@ theorem sm_step {K : PTm n} (ih : Γ ⊢[PRAAx] ap2 (sumF vB) K zero ≐ zero) :
     · -- `K ≥ 2`.
       have hK : ((pred K ≐ succ (pred (pred K))) :: (K ≐ succ (pred K)) :: Γ) ⊢[PRAAx] le two K := by
         refine le_of_eq_add (d := pred (pred K)) (Prf.hyp1.eqTrans ((congrSucc Prf.hyp0).eqTrans ?_))
-        apply deriveNat; ipra_simps; ring
+        ipra_ring
       have z := sum_zero_elim vB ih.wk.wk (cof_lt hK)
       rw [inst2_v] at z
       exact viol_of (sm_core hK (of_viol (cof_pos hK) z))

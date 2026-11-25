@@ -1,6 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.AperyMultinomial
 import IPRADerivations.AnalyticNumberTheory.BinomialLcm
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The valuation of the Apéry multinomial

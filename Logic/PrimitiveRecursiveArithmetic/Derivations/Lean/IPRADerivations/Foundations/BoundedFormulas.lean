@@ -144,10 +144,10 @@ theorem sg_of_zero {x : PTm n} (h : Γ ⊢[PRAAx] x ≐ zero) : Γ ⊢[PRAAx] sg
   (congrMonus (.eqRefl _) (congrMonus (.eqRefl _) h)).eqTrans sg_zero
 
 theorem or_left {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ one) : Γ ⊢[PRAAx] sg (a + b) ≐ one :=
-  sg_of_pos (c := b) ((congrAdd h (.eqRefl _)).eqTrans (by apply deriveNat; ipra_simps; ring))
+  sg_of_pos (c := b) ((congrAdd h (.eqRefl _)).eqTrans (by ipra_ring))
 
 theorem or_right {a b : PTm n} (h : Γ ⊢[PRAAx] b ≐ one) : Γ ⊢[PRAAx] sg (a + b) ≐ one :=
-  sg_of_pos (c := a) ((congrAdd (.eqRefl _) h).eqTrans (by apply deriveNat; ipra_simps; ring))
+  sg_of_pos (c := a) ((congrAdd (.eqRefl _) h).eqTrans (by ipra_ring))
 
 theorem or_none {a b : PTm n} (ha : Γ ⊢[PRAAx] a ≐ zero) (hb : Γ ⊢[PRAAx] b ≐ zero) :
     Γ ⊢[PRAAx] sg (a + b) ≐ zero :=

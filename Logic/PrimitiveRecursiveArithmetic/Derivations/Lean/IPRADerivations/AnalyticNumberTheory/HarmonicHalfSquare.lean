@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.ChebyshevAbel
 import IPRADerivations.AnalyticNumberTheory.FloorTelescope
 import IPRADerivations.AnalyticNumberTheory.SumReindex
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # `Σ log k / k = (log x)²/2 + O(1)` exactly (`pnt_ipra_constructive_2026-11-14`, `con:one-step`)
@@ -71,17 +72,14 @@ theorem u2_at (j K F : PTm n) : Γ ⊢[PRAAx] inst2 u2B j (pairT K F) ≐ U (suc
 /-- `u_{j+2} = u_{j+1} + Δ_{j+2}`. -/
 theorem u_step (j K F : PTm n) : Γ ⊢[PRAAx] U (succ (succ j)) K F ≐ U (succ j) K F + Dl j K F := by
   have m1 : Γ ⊢[PRAAx] le (S K F) (S (K * succ j) F) :=
-    S_mono F (le_of_eq_add (d := K * j) (by apply deriveNat; ipra_simps; ring))
+    S_mono F (le_of_eq_add (d := K * j) (by ipra_ring))
   have m2 : Γ ⊢[PRAAx] le (S (K * succ j) F) (S (K * succ (succ j)) F) :=
-    S_mono F (le_of_eq_add (d := K) (by apply deriveNat; ipra_simps; ring))
-  have e1 := natEq (eq_add_of_le m1); have e2 := natEq (eq_add_of_le m2)
-  have e3 := natEq (eq_add_of_le (le_trans m1 m2))
-  apply deriveNat; ipra_simps; linear_combination -e3 + e1 + e2
+    S_mono F (le_of_eq_add (d := K) (by ipra_ring))
+  ipra_lc -natEq (eq_add_of_le (le_trans m1 m2)) + natEq (eq_add_of_le m1) + natEq (eq_add_of_le m2)
 
 theorem half_alg {S1 Sd u1 u2 d : PTm n} (ih : Γ ⊢[PRAAx] two * S1 ≐ u1 * u1 + Sd) (e : Γ ⊢[PRAAx] u2 ≐ u1 + d) :
     Γ ⊢[PRAAx] two * (S1 + u2 * d) ≐ u2 * u2 + (Sd + d * d) := by
-  have a := natEq ih; have b := natEq e
-  apply deriveNat; ipra_simps; linear_combination a - (𝔞 u2 + 𝔞 u1 - 𝔞 d) * b
+  ipra_lc natEq ih - (𝔞 u2 + 𝔞 u1 - 𝔞 d) * natEq e
 
 /-- The invariant, over `0 = M`, `1 = K`, `2 = F`. -/
 abbrev hsF : Fm PTm 3 :=
@@ -91,12 +89,10 @@ abbrev hsF : Fm PTm 3 :=
 theorem hs_zero (K F : PTm n) : Γ ⊢[PRAAx]
     two * ap2 (sumF udB) zero (pairT K F) ≐ U (succ zero) K F * U (succ zero) K F + ap2 (sumF ddB) zero (pairT K F) := by
   have z1 := natEq (sum_zero (Γ := Γ) udB (pairT K F)); have z2 := natEq (sum_zero (Γ := Γ) ddB (pairT K F))
-  have k1 : Γ ⊢[PRAAx] K * succ zero ≐ K := by apply deriveNat; ipra_simps; ring
+  have k1 : Γ ⊢[PRAAx] K * succ zero ≐ K := by ipra_ring
   have u1 : Γ ⊢[PRAAx] U (succ zero) K F ≐ zero :=
     (congrMonus (congrAp2 (sumF hB) k1 (.eqRefl F)) (.eqRefl _)).eqTrans (le_refl _)
-  have w := natEq u1
-  apply deriveNat; ipra_simps
-  linear_combination 2 * z1 - z2 - 𝔞 (U (succ zero) K F) * w
+  ipra_lc 2 * z1 - z2 - 𝔞 (U (succ zero) K F) * natEq u1
 
 theorem hs_step {M K F : PTm n} (ih : Γ ⊢[PRAAx]
       two * ap2 (sumF udB) M (pairT K F) ≐ U (succ M) K F * U (succ M) K F + ap2 (sumF ddB) M (pairT K F)) :

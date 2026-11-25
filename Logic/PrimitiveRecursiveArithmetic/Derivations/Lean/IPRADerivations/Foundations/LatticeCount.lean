@@ -1,5 +1,7 @@
 import IPRADerivations.Foundations.IntervalCover
 import IPRADerivations.Core.Gcd
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Counting integers in intervals
@@ -86,8 +88,7 @@ theorem exact_step {T lo hi : PTm n} (ih : Γ ⊢[PRAAx] exactInv T lo hi) :
     have hs : Δ ⊢[PRAAx] sg (monus hi T) ≐ one := by
       have hm : Δ ⊢[PRAAx] monus hi T ≐ succ (monus hi (succ T)) := by
         refine (congrMonus (?_ : _ ⊢[PRAAx] hi ≐ T + succ (monus hi (succ T))) (.eqRefl _)).eqTrans (add_monus' _ _)
-        have a := natEq e3
-        apply deriveNat; ipra_simps; linear_combination a
+        ipra_lc natEq e3
       exact (congrMonus (.eqRefl _) (congrMonus (.eqRefl _) hm)).eqTrans (sg_succ _)
     have hc : Δ ⊢[PRAAx] cnt lo hi T ≐ monus one (monus lo T) :=
       (congrMul (.eqRefl _) hs).eqTrans ((mul_comm _ _).eqTrans (one_mul _))
@@ -163,7 +164,7 @@ theorem floor_ind (hβ : Γ ⊢[PRAAx] β ≐ succ b0) :
     have hs : Δ ⊢[PRAAx] monus (succ (quo u β)) p ≐ succ (monus (quo u β) p) := by
       refine (congrMonus (?_ : _ ⊢[PRAAx] succ (quo u β) ≐ p + succ (monus (quo u β) p)) (.eqRefl _)).eqTrans
         (add_monus' _ _)
-      apply deriveNat; ipra_simps; linear_combination ep
+      ipra_lc ep
     exact ((congrMonus (.eqRefl _) (congrMonus (.eqRefl _) hm)).eqTrans sg_zero).eqTrans
       ((congrMonus (.eqRefl _) hs).eqTrans ((succ_monus_succ _ _).eqTrans (zero_monus _))).eqSymm
 
@@ -181,24 +182,21 @@ theorem ceil_ind (hβ : Γ ⊢[PRAAx] β ≐ succ b0) :
     have hm : Δ ⊢[PRAAx] monus v (p * β) ≐ succ (β * monus (quo (v + b0) β) (succ p) + rem (v + b0) β) := by
       refine (congrMonus (?_ : _ ⊢[PRAAx] v ≐ p * β + succ (β * monus (quo (v + b0) β) (succ p) + rem (v + b0) β))
         (.eqRefl _)).eqTrans (add_monus' _ _)
-      apply deriveNat; ipra_simps
-      linear_combination ew + 𝔞 β * ep + eb
+      ipra_lc ew + 𝔞 β * ep + eb
     have hq : Δ ⊢[PRAAx] monus (quo (v + b0) β) p ≐ succ (monus (quo (v + b0) β) (succ p)) := by
       refine (congrMonus (?_ : _ ⊢[PRAAx] quo (v + b0) β ≐ p + succ (monus (quo (v + b0) β) (succ p))) (.eqRefl _)).eqTrans
         (add_monus' _ _)
-      apply deriveNat; ipra_simps; linear_combination ep
+      ipra_lc ep
     exact ((congrMonus (.eqRefl _) (congrMonus (.eqRefl _) hm)).eqTrans (sg_succ _)).eqTrans
       ((congrMonus (.eqRefl _) (congrMonus (.eqRefl _) hq)).eqTrans (sg_succ _)).eqSymm
   · -- `⌈v/β⌉ ≤ p`: both `0`
     let Δ : List (Fm PTm n) := le (quo (v + b0) β) p :: Γ
     have ep := natEq (eq_add_of_le (Γ := Δ) Prf.hyp0)
     have ew := natEq (Γ := Δ) (Prf.andE₁ d).wk
-    have er := natEq (Γ := Δ) (eq_add_of_le (Prf.andE₂ d)).wk
     have eb := natEq (Γ := Δ) hβ.wk
     have hm : Δ ⊢[PRAAx] monus v (p * β) ≐ zero := by
       refine le_of_eq_add (d := β * monus p (quo (v + b0) β) + monus β (succ (rem (v + b0) β))) ?_
-      apply deriveNat; ipra_simps
-      linear_combination 𝔞 β * ep - ew - eb + er
+      ipra_lc 𝔞 β * ep - ew - eb + natEq (Γ := Δ) (eq_add_of_le (Prf.andE₂ d)).wk
     exact ((congrMonus (.eqRefl _) (congrMonus (.eqRefl _) hm)).eqTrans sg_zero).eqTrans
       ((congrMonus (.eqRefl _) (congrMonus (.eqRefl _) Prf.hyp0)).eqTrans sg_zero).eqSymm
 
@@ -209,8 +207,7 @@ abbrev dcB : PTm 2 :=
 /-- `#{p < B : u < pβ < v}`. -/
 abbrev dS (B u v β : PTm n) : PTm n := ap2 (sumF dcB) B (pairT u (pairT v β))
 
-theorem sg_congr {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) : Γ ⊢[PRAAx] sg a ≐ sg b :=
-  congrMonus (.eqRefl _) (congrMonus (.eqRefl _) h)
+alias sg_congr := Common.congrSg
 
 theorem dc_point (hβ : Γ ⊢[PRAAx] β ≐ succ b0) (p : PTm n) :
     Γ ⊢[PRAAx] inst2 dcB p (pairT u (pairT v β)) ≐ inst2 icB p (pairT (succ (quo u β)) (quo (v + b0) β)) := by
@@ -259,22 +256,16 @@ theorem dilated_bounds (B : PTm n) (hβ : Γ ⊢[PRAAx] β ≐ succ b0) (hB : Γ
   · -- `⌈v/β⌉ ≤ ⌊u/β⌋`: no integers
     let Δ : List (Fm PTm n) := lt (quo (v + b0) β) (succ (quo u β)) :: Γ
     have h0 : Δ ⊢[PRAAx] monus (quo (v + b0) β) (succ (quo u β)) ≐ zero := le_of_lt Prf.hyp0
-    have eds0 := natEq (hds.wk.eqTrans h0)
-    have eq := natEq (eq_add_of_le (Γ := Δ) ((succ_monus_succ _ _).eqSymm.eqTrans Prf.hyp0))
-    have eh := natEq (eq_add_of_le (Γ := Δ) huv.wk)
     have eu' := natEq (Γ := Δ) (Prf.andE₁ du).wk
     have ew' := natEq (Γ := Δ) (Prf.andE₁ dv).wk
     have eR' := natEq (Γ := Δ) (eq_add_of_le (Prf.andE₂ dv)).wk
     refine .andI (le_of_eq_add (d := monus v u + β) ?_)
       (le_of_eq_add (d := β * monus (quo u β) (quo (v + b0) β) + rem u β + monus β (succ (rem (v + b0) β)) + succ b0) ?_)
-    · apply deriveNat; ipra_simps
-      linear_combination eh - 𝔞 β * eds0
-    · apply deriveNat; ipra_simps
-      linear_combination 𝔞 β * eds0 + 𝔞 β * eq + eu' - ew' + eR'
+    · ipra_lc natEq (eq_add_of_le (Γ := Δ) huv.wk) - 𝔞 β * natEq (hds.wk.eqTrans h0)
+    · ipra_lc 𝔞 β * natEq (hds.wk.eqTrans h0) +
+        𝔞 β * natEq (eq_add_of_le (Γ := Δ) ((succ_monus_succ _ _).eqSymm.eqTrans Prf.hyp0)) + eu' - ew' + eR'
   · -- `⌊u/β⌋ + 1 ≤ ⌈v/β⌉`: the count is `D = Q − q − 1`
     let Δ : List (Fm PTm n) := le (succ (quo u β)) (quo (v + b0) β) :: Γ
-    have eD := natEq (eq_add_of_le (Γ := Δ) Prf.hyp0)
-    have eds := natEq (Γ := Δ) hds.wk
     have eu' := natEq (Γ := Δ) (Prf.andE₁ du).wk
     have er' := natEq (Γ := Δ) (eq_add_of_le (Prf.andE₂ du)).wk
     have ew' := natEq (Γ := Δ) (Prf.andE₁ dv).wk
@@ -282,10 +273,8 @@ theorem dilated_bounds (B : PTm n) (hβ : Γ ⊢[PRAAx] β ≐ succ b0) (hB : Γ
     have eb' := natEq (Γ := Δ) hβ.wk
     refine .andI (le_of_eq_add (d := two + monus β (succ (rem u β)) + rem (v + b0) β) ?_)
       (le_of_eq_add (d := monus β (succ (rem (v + b0) β)) + rem u β) ?_)
-    · apply deriveNat; ipra_simps
-      linear_combination eb' + er' + ew' - eu' + 𝔞 β * eD - 𝔞 β * eds
-    · apply deriveNat; ipra_simps
-      linear_combination eR' - eb' - ew' + eu' - 𝔞 β * eD + 𝔞 β * eds
+    · ipra_lc eb' + er' + ew' - eu' + 𝔞 β * natEq (eq_add_of_le (Γ := Δ) Prf.hyp0) - 𝔞 β * natEq (Γ := Δ) hds.wk
+    · ipra_lc eR' - eb' - ew' + eu' - 𝔞 β * natEq (eq_add_of_le (Γ := Δ) Prf.hyp0) + 𝔞 β * natEq (Γ := Δ) hds.wk
 
 end Dilated
 

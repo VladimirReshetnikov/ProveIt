@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.Chebyshev
 import IPRADerivations.Analysis.Pochhammer
 import IPRADerivations.AnalyticNumberTheory.Mobius
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The terminating hypergeometric series
@@ -71,17 +72,17 @@ theorem ff_vanish (j m : PTm n) : Γ ⊢[PRAAx] FF j m * monus j m ≐ zero := b
   refine .orE (zero_or_succ j) ?_ ?_
   · have h : ((j ≐ zero) :: Γ) ⊢[PRAAx] monus j m ≐ zero :=
       (congrMonus Prf.hyp0 (.eqRefl _)).eqTrans (zero_monus _)
-    exact (congrMul (.eqRefl _) h).eqTrans (by apply deriveNat; ipra_simps; ring)
+    exact (congrMul (.eqRefl _) h).eqTrans (by ipra_ring)
   · let C : List (Fm PTm n) := (j ≐ succ (pred j)) :: Γ
     have hj : C ⊢[PRAAx] j ≐ succ (pred j) := Prf.hyp0
     have e : C ⊢[PRAAx] FF j m * monus j m ≐ FF (pred j) m * (monus m (pred j) * monus (succ (pred j)) m) :=
       (congrMul ((congrAp2 ffF hj (.eqRefl _)).eqTrans (FF_succ _ _)) (congrMonus hj (.eqRefl _))).eqTrans
-        (by apply deriveNat; ipra_simps; ring)
+        (by ipra_ring)
     have z : C ⊢[PRAAx] monus m (pred j) * monus (succ (pred j)) m ≐ zero := by
       refine .orE (lt_or_le (pred j) m) ?_ ?_
-      · exact (congrMul (.eqRefl _) Prf.hyp0).eqTrans (by apply deriveNat; ipra_simps; ring)
-      · exact (congrMul Prf.hyp0 (.eqRefl _)).eqTrans (by apply deriveNat; ipra_simps; ring)
-    exact e.eqTrans ((congrMul (.eqRefl _) z).eqTrans (by apply deriveNat; ipra_simps; ring))
+      · exact (congrMul (.eqRefl _) Prf.hyp0).eqTrans (by ipra_ring)
+      · exact (congrMul Prf.hyp0 (.eqRefl _)).eqTrans (by ipra_ring)
+    exact e.eqTrans ((congrMul (.eqRefl _) z).eqTrans (by ipra_ring))
 
 theorem NP_succ (j : PTm n) (ps : Fin 1 → PTm n) : Γ ⊢[PRAAx] NP (succ j) ps ≐ NP j ps * j + NN j ps * ps 0 := by
   have h := sim₁_succ (Γ := Γ) one zero sP sN ps j
@@ -100,17 +101,14 @@ theorem sign_step {j : PTm n} {ps : Fin 1 → PTm n}
     (ih : Γ ⊢[PRAAx] NP j ps + oB j * FF j (ps 0) ≐ eB j * FF j (ps 0) + NN j ps) :
     Γ ⊢[PRAAx] NP (succ j) ps + oB (succ j) * FF (succ j) (ps 0) ≐
       eB (succ j) * FF (succ j) (ps 0) + NN (succ j) ps := by
-  have hm := natEq ih
   have e₁ := natEq (NP_succ (Γ := Γ) j ps); have e₂ := natEq (NN_succ (Γ := Γ) j ps)
   have f := natEq (FF_succ (Γ := Γ) j (ps 0)); have v := natEq (ff_vanish (Γ := Γ) j (ps 0))
   have pr := LeanProofs.IPRA.AnalyticNumberTheory.Mobius.par_succ (Γ := Γ) j
   have p1 : 𝔞 (eB (succ j)) = 𝔞 (oB j) := natEq (Prf.andE₁ pr)
   have p2 : 𝔞 (oB (succ j)) = 𝔞 (eB j) := natEq (Prf.andE₂ pr)
-  have mx := natEq (monus_max (Γ := Γ) j (ps 0))
-  apply deriveNat; ipra_simps
-  linear_combination e₁ - e₂ + (𝔞 j - 𝔞 (ps 0)) * hm + 𝔞 (FF (succ j) (ps 0)) * p2 -
-    𝔞 (FF (succ j) (ps 0)) * p1 + (𝔞 (eB j) - 𝔞 (oB j)) * f + (𝔞 (eB j) - 𝔞 (oB j)) * v -
-    (𝔞 (eB j) - 𝔞 (oB j)) * 𝔞 (FF j (ps 0)) * mx
+  ipra_lc e₁ - e₂ + (𝔞 j - 𝔞 (ps 0)) * natEq ih + 𝔞 (FF (succ j) (ps 0)) * p2 - 𝔞 (FF (succ j) (ps 0)) * p1 +
+    (𝔞 (eB j) - 𝔞 (oB j)) * f + (𝔞 (eB j) - 𝔞 (oB j)) * v -
+    (𝔞 (eB j) - 𝔞 (oB j)) * 𝔞 (FF j (ps 0)) * natEq (monus_max (Γ := Γ) j (ps 0))
 
 /-! ## The sign identity -/
 
@@ -152,7 +150,7 @@ theorem neg_poch (j m : PTm n) :
 
 theorem ff_fact_base (m : PTm n) : Γ ⊢[PRAAx] le zero m ⟶ FF zero m * fact (monus m zero) ≐ fact m :=
   .impI ((congrMul (FF_zero m) (congrAp2 factF (monus_zero m) (.eqRefl zero))).eqTrans
-    (by apply deriveNat; ipra_simps; ring))
+    (by ipra_ring))
 
 theorem ff_fact_step {j m : PTm n} (ih : Γ ⊢[PRAAx] le j m ⟶ FF j m * fact (monus m j) ≐ fact m) :
     Γ ⊢[PRAAx] le (succ j) m ⟶ FF (succ j) m * fact (monus m (succ j)) ≐ fact m := by
@@ -162,14 +160,12 @@ theorem ff_fact_step {j m : PTm n} (ih : Γ ⊢[PRAAx] le j m ⟶ FF j m * fact 
   have ih' := Prf.impE ih.wk (le_trans (le_succ_self j) h)
   have a1 : C ⊢[PRAAx] monus m j ≐ succ (monus m (succ j)) :=
     (congrMonus (eq_add_of_le h) (.eqRefl _)).eqTrans ((congrMonus
-      (by apply deriveNat; ipra_simps; ring : C ⊢[PRAAx] succ j + monus m (succ j) ≐ j + succ (monus m (succ j)))
+      (by ipra_ring : C ⊢[PRAAx] succ j + monus m (succ j) ≐ j + succ (monus m (succ j)))
       (.eqRefl _)).eqTrans (add_monus' _ _))
   have fe : C ⊢[PRAAx] fact (monus m j) ≐ fact (monus m (succ j)) * succ (monus m (succ j)) :=
     (congrAp2 factF a1 (.eqRefl zero)).eqTrans (fact_succ _ _)
-  have f := natEq (FF_succ (Γ := C) j m); have a := natEq a1; have e := natEq fe; have i := natEq ih'
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 (fact (monus m (succ j))) * f + 𝔞 (FF j m) * 𝔞 (fact (monus m (succ j))) * a -
-    𝔞 (FF j m) * e + i
+  ipra_lc 𝔞 (fact (monus m (succ j))) * natEq (FF_succ (Γ := C) j m) +
+    𝔞 (FF j m) * 𝔞 (fact (monus m (succ j))) * natEq a1 - 𝔞 (FF j m) * natEq fe + natEq ih'
 
 /-- Variables: `0 = j`, `1 = m`. -/
 private abbrev ffFactF : Fm PTm 2 :=
@@ -194,23 +190,21 @@ theorem ff_fact {j m : PTm n} (h : Γ ⊢[PRAAx] le j m) : Γ ⊢[PRAAx] FF j m 
 theorem ff_binom {j m : PTm n} (h : Γ ⊢[PRAAx] le j m) : Γ ⊢[PRAAx] FF j m ≐ fact j * binom m j := by
   refine mul_cancel (fact_pos (monus m j)) ?_
   have b : Γ ⊢[PRAAx] fact m ≐ (fact j * fact (monus m j)) * binom m j := binom_eq h
-  exact (mul_comm _ _).eqTrans ((ff_fact h).eqTrans (b.eqTrans (by apply deriveNat; ipra_simps; ring)))
+  exact (mul_comm _ _).eqTrans ((ff_fact h).eqTrans (b.eqTrans (by ipra_ring)))
 
 /-! ## Termination -/
 
 /-- `thm:termination`: `(−m)_j = (−1)^j j! C(m, j)` for `j ≤ m`, so `(−m)_j / j! = (−1)^j C(m, j)`. -/
 theorem termination {j m : PTm n} (h : Γ ⊢[PRAAx] le j m) :
     Γ ⊢[PRAAx] NP j (fun _ => m) + oB j * (fact j * binom m j) ≐ eB j * (fact j * binom m j) + NN j (fun _ => m) := by
-  have s := natEq (neg_poch (Γ := Γ) j m); have fb := natEq (ff_binom h)
-  apply deriveNat; ipra_simps
-  linear_combination s - (𝔞 (oB j) - 𝔞 (eB j)) * fb
+  ipra_lc natEq (neg_poch (Γ := Γ) j m) - (𝔞 (oB j) - 𝔞 (eB j)) * natEq (ff_binom h)
 
 /-- `(−m)_j = 0` for `j > m`: the series terminates. -/
 theorem termination_vanish {j m : PTm n} (h : Γ ⊢[PRAAx] lt m j) : Γ ⊢[PRAAx] NP j (fun _ => m) ≐ NN j (fun _ => m) := by
   have w := eq_add_of_le h
   have a1 : Γ ⊢[PRAAx] monus j m ≐ succ (monus j (succ m)) :=
     (congrMonus w (.eqRefl _)).eqTrans ((congrMonus
-      (by apply deriveNat; ipra_simps; ring : Γ ⊢[PRAAx] succ m + monus j (succ m) ≐ m + succ (monus j (succ m)))
+      (by ipra_ring : Γ ⊢[PRAAx] succ m + monus j (succ m) ≐ m + succ (monus j (succ m)))
       (.eqRefl _)).eqTrans (add_monus' _ _))
   have v := ff_vanish (Γ := Γ) j m
   have z : Γ ⊢[PRAAx] FF j m ≐ zero :=

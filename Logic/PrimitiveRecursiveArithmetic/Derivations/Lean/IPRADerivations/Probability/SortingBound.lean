@@ -1,5 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.Probability.MedianCounts
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The comparison-sorting lower bound and the interpolated median
@@ -42,8 +44,7 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 /-- `N!`. -/
 abbrev fct (x : PTm n) : PTm n := ap2 factF x zero
 
-theorem le_one_succ (x : PTm n) : Γ ⊢[PRAAx] le one (succ x) :=
-  le_of_eq_add (d := x) (by ipra_ring)
+alias le_one_succ := Common.one_le_succ
 
 /-- Variable: `0 = x`. -/
 private abbrev fpF : Fm PTm 1 := le one (ap2 factF (var 0) zero)
@@ -97,9 +98,7 @@ theorem sorting_bound {d m r : PTm n} (hd : Γ ⊢[PRAAx] le (fct (m + m)) (pw t
 `2jm − jw + w(N − 2i) = 2jm + w(k − i)`, written `2jm + wN + wi = 2jm + wk + jw + 2wi`. -/
 theorem interpolated {N i j k m w : PTm n} (h : Γ ⊢[PRAAx] N ≐ i + j + k) :
     Γ ⊢[PRAAx] two * j * m + w * N + w * i ≐ two * j * m + w * k + j * w + w * i + w * i := by
-  have e := natEq h
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 w * e
+  ipra_lc 𝔞 w * natEq h
 
 /-- The packet's example: `3 · 66 + (45 − 22) = 221`, i.e. `m_int = 221/66`. -/
 theorem interpolated_example :

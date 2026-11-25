@@ -224,7 +224,7 @@ theorem double_iter : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 2
     have e₂ : app1 stepTwo (app1 dblMap x) = succ (succ (two * x)) := by
       simp [app1, dblMap, stepTwo]
     rw [e₁, e₂]
-    apply deriveNat; ipra_simps; ring)
+    ipra_ring)
 
 /-- Multiplication `a · b`; variables `0 = a`, `1 = b`. -/
 def mulT : PTm 2 := var 0 * var 1
@@ -242,6 +242,6 @@ theorem square_squaring : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 2
     have e₂ : inst2 mulT (app1 sqMap a) (app1 sqMap b) = (a * a) * (b * b) := by
       simp [app1, sqMap, mulT, inst2]
     rw [e₁, e₂]
-    apply deriveNat; ipra_simps; ring) _ _)
+    ipra_ring) _ _)
 
 end LeanProofs.IPRA.Foundations.IterationFusion

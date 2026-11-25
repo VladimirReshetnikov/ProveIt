@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.RationalSubtupleSpan
 import IPRADerivations.Analysis.RationalOriginalSpanMembership
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual finite covers normalized to spans of subtuples
@@ -66,10 +67,7 @@ theorem member_bit_sound (A N T i : PTm n) (hm : Γ ⊢[PRAAx] neg (memberBit A 
 private theorem member_bit_congr {A B N M T S i j : PTm n} (hA : Γ ⊢[PRAAx] A ≐ B)
     (hN : Γ ⊢[PRAAx] N ≐ M) (hT : Γ ⊢[PRAAx] T ≐ S) (hi : Γ ⊢[PRAAx] i ≐ j) : Γ ⊢[PRAAx]
     memberBit A N T i ≐ memberBit B M S j := by
-  simpa only [subst_memberBit,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.cons_val_three,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (memberBit (var 0) (var 1) (var 2) (var 3) : PTm 4) (σ := ![A,N,T,i]) (σ' := ![B,M,S,j])
-      (fun r => by fin_cases r; exact hA; exact hN; exact hT; exact hi)
+  ipra_congr (memberBit (var 0) (var 1) (var 2) (var 3) : PTm 4) with [hA, hN, hT, hi]
 
 theorem digit_body_at (A N T i : PTm n) : Γ ⊢[PRAAx] inst2 digitBody i (data A N T) ≐ memberBit A N T i := by
   simp only [digitBody,inst2,subst_memberBit,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
@@ -150,10 +148,7 @@ private theorem member_congr {A B R S N M v w : PTm n} (hA : Γ ⊢[PRAAx] A ≐
         Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_three,Matrix.head_cons,Matrix.tail_cons] using h)
 private theorem subtuple_congr {A B N M T S : PTm n} (hA : Γ ⊢[PRAAx] A ≐ B)
     (hN : Γ ⊢[PRAAx] N ≐ M) (hT : Γ ⊢[PRAAx] T ≐ S) : Γ ⊢[PRAAx] subtuple A N T ≐ subtuple B M S := by
-  simpa only [subst_subtuple,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (subtuple (var 0) (var 1) (var 2) : PTm 3) (σ := ![A,N,T]) (σ' := ![B,M,S])
-      (fun i => by fin_cases i; exact hA; exact hN; exact hT)
+  ipra_congr (subtuple (var 0) (var 1) (var 2) : PTm 3) with [hA, hN, hT]
 
 /-- A family consists of actual original rational row matrices. -/
 def family (D N : PTm n) : Fm PTm n := .all (lt (var 0) (length (Syn.shift D)) ⟶
@@ -249,10 +244,7 @@ theorem subtuple_count_bound (A N T : PTm n) : Γ ⊢[PRAAx] le (count A N T) (l
 
 private theorem mask_congr {A B N M T S : PTm n} (hA : Γ ⊢[PRAAx] A ≐ B)
     (hN : Γ ⊢[PRAAx] N ≐ M) (hT : Γ ⊢[PRAAx] T ≐ S) : Γ ⊢[PRAAx] mask A N T ≐ mask B M S := by
-  simpa only [subst_mask,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (mask (var 0) (var 1) (var 2) : PTm 3) (σ := ![A,N,T]) (σ' := ![B,M,S])
-      (fun i => by fin_cases i; exact hA; exact hN; exact hT)
+  ipra_congr (mask (var 0) (var 1) (var 2) : PTm 3) with [hA, hN, hT]
 
 def maskBody : PTm 2 := mask (entry (fstT (var 1)) (var 0)) (fstT (sndT (var 1))) (sndT (sndT (var 1)))
 def masks (D N T : PTm n) : PTm n := sequence maskBody (length D) (data D N T)

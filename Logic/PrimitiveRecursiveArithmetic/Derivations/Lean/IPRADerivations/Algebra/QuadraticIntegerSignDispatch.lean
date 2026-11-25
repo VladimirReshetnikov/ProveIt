@@ -1,5 +1,7 @@
 import IPRADerivations.Algebra.QuadraticTowerSignRecipe
 import IPRADerivations.Algebra.QuadraticIntegerEmbedding
+import IPRADerivations.Core.CongruenceTactic
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The source three-query dispatch at an actual integer quadratic stage
@@ -60,8 +62,7 @@ theorem strict_negative (a : ZT n) (h : Γ ⊢[PRAAx] zle (ZT.ofNat one) a) : Γ
 theorem multiply_code_congr {d e x u y v : PTm n} (hd : Γ ⊢[PRAAx] d ≐ e)
     (hx : Γ ⊢[PRAAx] x ≐ u) (hy : Γ ⊢[PRAAx] y ≐ v) : Γ ⊢[PRAAx]
     multiply d x y ≐ multiply e u v := by
-  simpa [subst_multiply] using Prf.eqCongr (multiply (var 0) (var 1) (var 2) : PTm 3)
-    (σ := ![d,x,y]) (σ' := ![e,u,v]) (fun i => by fin_cases i; exact hd; exact hx; exact hy)
+  ipra_congr (multiply (var 0) (var 1) (var 2) : PTm 3) with [hd, hx, hy]
 
 theorem positive_mass_first (x : PTm n) (ha : Γ ⊢[PRAAx] zle (ZT.ofNat one) (first x)) : Γ ⊢[PRAAx] le one (mass x) := by
   have h : Nonneg Γ (ZT.toZ Γ (first x)-1) := by simpa only [zsl_def,ZT.toZ_ofNat,Q.mk_one,map_one] using nn_zsl ha
@@ -281,9 +282,7 @@ theorem positive_radicand_dispatch (d x : PTm n) (hd : Γ ⊢[PRAAx] le one d) :
 
 theorem dispatch_third_congr (s t u v : PTm n) (hu : Γ ⊢[PRAAx] u ≐ v) : Γ ⊢[PRAAx]
     dispatch s t u ≐ dispatch s t v := by
-  simpa [QuadraticTowerSignRecipe.subst_dispatch] using Prf.eqCongr
-    (dispatch (var 0) (var 1) (var 2) : PTm 3) (σ := ![s,t,u]) (σ' := ![s,t,v])
-    (fun i => by fin_cases i; exact .eqRefl _; exact .eqRefl _; exact hu)
+  ipra_congr (dispatch (var 0) (var 1) (var 2) : PTm 3) with [.eqRefl s, .eqRefl t, hu]
 
 theorem dispatch_nonzero_unit (a : ZT n) (t : PTm n) (ha : Γ ⊢[PRAAx] neg (tag a ≐ zero)) : Γ ⊢[PRAAx]
     dispatch (tag a) t one ≐ tag a := by
@@ -307,16 +306,12 @@ theorem positive_square (a : ZT n) (ha : Γ ⊢[PRAAx] zle (ZT.ofNat one) a) : �
 theorem zero_norm_tag_positive (x : PTm n) (ha : Γ ⊢[PRAAx] zle (ZT.ofNat one) (first x)) : Γ ⊢[PRAAx]
     tag (norm zero x) ≐ one := by
   have hn : Γ ⊢[PRAAx] ZT.eq (norm zero x) (first x*first x) := by
-    apply ZT.derive
-    simp only [norm,ZT.toZ_sub,ZT.toZ_mul,ZT.toZ_ofNat,Q.mk_zero,map_zero]
-    ring
+    ipra_lc [norm]
   exact (tag_value_congr _ _ hn).eqTrans (tag_of_positive _ (positive_square _ ha))
 theorem zero_norm_tag_negative (x : PTm n) (ha : Γ ⊢[PRAAx] zle (ZT.ofNat one) (-first x)) : Γ ⊢[PRAAx]
     tag (norm zero x) ≐ one := by
   have hn : Γ ⊢[PRAAx] ZT.eq (norm zero x) ((-first x)*(-first x)) := by
-    apply ZT.derive
-    simp only [norm,ZT.toZ_sub,ZT.toZ_mul,ZT.toZ_neg,ZT.toZ_ofNat,Q.mk_zero,map_zero]
-    ring
+    ipra_lc [norm]
   exact (tag_value_congr _ _ hn).eqTrans (tag_of_positive _ (positive_square _ ha))
 
 /-- The redundant zero extension is actually projected; no positive-d
@@ -346,8 +341,7 @@ def uniformSign (d x : PTm n) : PTm n := sel (eqb d zero) (tag (first x)) (sign 
 @[simp] theorem subst_uniformSign {k : ℕ} (σ : Fin n → PTm k) (d x : PTm n) :
     Syn.subst σ (uniformSign d x) = uniformSign (Syn.subst σ d) (Syn.subst σ x) := by simp [uniformSign,sel]
 theorem recipe_radicand_congr {d e : PTm n} (x : PTm n) (hd : Γ ⊢[PRAAx] d ≐ e) : Γ ⊢[PRAAx] recipe d x ≐ recipe e x := by
-  simpa [subst_recipe] using Prf.eqCongr (recipe (var 0) (var 1) : PTm 2)
-    (σ := ![d,x]) (σ' := ![e,x]) (fun i => by fin_cases i; exact hd; exact .eqRefl _)
+  ipra_congr (recipe (var 0) (var 1) : PTm 2) with [hd, .eqRefl x]
 
 /-- All numerical natural radicands, with the actual zero projection branch. -/
 theorem uniform_dispatch (d x : PTm n) : Γ ⊢[PRAAx] recipe d x ≐ uniformSign d x := by

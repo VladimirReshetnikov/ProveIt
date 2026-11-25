@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianPositiveRationalLogarithmProperness
 import IPRADerivations.Analysis.GaussianEulerIntegrandName
 import IPRADerivations.Analysis.GaussianRobinMeshExponential
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Cancellation of the actual two exponential factors at the upper beta endpoint
@@ -59,9 +60,7 @@ theorem integer_log_at_one (p : PTm n) : Γ ⊢[PRAAx] ap2 logF p one ≐ (qzero
   have e := mesh_at_one (Γ := Γ) (GammaEulerConstantName.mesh p)
   have embed : Γ ⊢[PRAAx] RationalGaussianEmbedding.embed
       (GammaMeshRobinLogBridge.harmonicLog one (GammaEulerConstantName.mesh p)) ≐ RationalGaussianEmbedding.embed RationalGaussianEmbedding.scalarZero := by
-    simpa only [RationalGaussianEmbedding.subst_embed,Syn.subst_var,Matrix.cons_val_zero] using
-      Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (RationalGaussianEmbedding.embed (var 0) : PTm 1) (σ := ![_]) (σ' := ![_])
-        (fun i => by fin_cases i; exact e)
+    ipra_congr (RationalGaussianEmbedding.embed (var 0) : PTm 1) with [e]
   exact (GaussianGammaFiniteApproximantName.log_sample_at p one).eqTrans (embed.eqTrans RationalGaussianEmbedding.embed_zero)
 
 theorem negative_log_at_one (p : PTm n) : Γ ⊢[PRAAx] ap2 logExponentF p (negativeLogData one) ≐ (qzero : PTm n) := by

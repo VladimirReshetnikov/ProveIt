@@ -1,5 +1,5 @@
 import IPRADerivations.Core.IntCancel
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Power of a point (`docs/proofs/geometry/mollweide_circle_ipra`, Section 7–8)

@@ -6,6 +6,8 @@ import IPRADerivations.DiophantineNumberTheory.ModularCertificate
 import IPRADerivations.AnalyticNumberTheory.Order
 import IPRADerivations.AnalyticNumberTheory.DivisorSplit
 import IPRADerivations.Core.ParityArith
+import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The pair product modulo a prime
@@ -121,11 +123,9 @@ theorem pair_congr {p a : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hc : Γ ⊢[PRAAx
 
 theorem count_alg {c e M p h : PTm n} (pc : Γ ⊢[PRAAx] c + c + e ≐ M) (se : Γ ⊢[PRAAx] e ≐ zero)
     (ep : Γ ⊢[PRAAx] p ≐ two * h + one) (hp1 : Γ ⊢[PRAAx] p ≐ succ M) : Γ ⊢[PRAAx] two * c ≐ two * h := by
-  have x1 := natEq pc; have x2 := natEq se; have x3 := natEq ep; have x4 := natEq hp1
-  apply deriveNat; ipra_simps
-  linear_combination x1 - x2 + x3 - x4
+  ipra_lc natEq pc - natEq se + natEq ep - natEq hp1
 
-theorem mul_one_r (t : PTm n) : Γ ⊢[PRAAx] t * one ≐ t := by apply deriveNat; ipra_simps; ring
+alias mul_one_r := Common.mul_one_right
 
 /-- If `σ` has no fixed point below `p − 1`, then `(p − 1)! ≡ a^h (mod p)` for an odd prime `p = 2h + 1`. -/
 theorem no_fixed {p a : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hodd : Γ ⊢[PRAAx] par p ≐ one)

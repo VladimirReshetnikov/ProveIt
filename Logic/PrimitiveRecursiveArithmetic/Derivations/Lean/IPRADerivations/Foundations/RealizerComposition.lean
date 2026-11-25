@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.SequenceComposition
 import IPRADerivations.Foundations.BoundedFormulas
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Composition of bounded finite-query certificate realizers
@@ -55,9 +56,7 @@ def ap4 (f : PR 4) (a b c d : PTm n) : PTm n := app f ![a, b, c, d]
   funext i
   fin_cases i <;> rfl
 
-theorem pair_congr {a a' b b' : PTm n} (ha : Γ ⊢[PRAAx] a ≐ a') (hb : Γ ⊢[PRAAx] b ≐ b') :
-    Γ ⊢[PRAAx] pairT a b ≐ pairT a' b' :=
-  congrAdd (congrMul (congrAdd ha hb) (congrAdd ha hb)) ha
+alias pair_congr := Common.congrPairT
 
 /-- Monotonicity of the actual quadratic pairing code. -/
 theorem pair_mono {a b A B : PTm n} (ha : Γ ⊢[PRAAx] le a A) (hb : Γ ⊢[PRAAx] le b B) :

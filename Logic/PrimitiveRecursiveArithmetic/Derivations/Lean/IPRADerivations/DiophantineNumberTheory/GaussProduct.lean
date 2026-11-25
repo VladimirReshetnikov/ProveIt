@@ -3,6 +3,8 @@ import IPRADerivations.AnalyticNumberTheory.LcmBridgeExact
 import IPRADerivations.Combinatorics.BellTouchard
 import IPRADerivations.Combinatorics.BinomialTheorem
 import IPRADerivations.Foundations.SignedSums
+import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Gauss's product
@@ -76,9 +78,7 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 /-- `(p − 1) r = p (r − 1) + (p − r)` for `p, r ≥ 1`. -/
 theorem big_alg {p pp R pr M : PTm n} (xp : Γ ⊢[PRAAx] p ≐ succ pp) (xR : Γ ⊢[PRAAx] R ≐ succ pr)
     (xM : Γ ⊢[PRAAx] p ≐ R + M) : Γ ⊢[PRAAx] pp * R ≐ p * pr + M := by
-  have a := natEq xp; have b := natEq xR; have c := natEq xM
-  apply deriveNat; ipra_simps
-  linear_combination c - 𝔞 R * a + 𝔞 p * b
+  ipra_lc natEq xM - 𝔞 R * natEq xp + 𝔞 p * natEq xR
 
 /-- `(p − 1)^{e_i} r_i`. -/
 abbrev cV (i p a : PTm n) : PTm n := pw (pred p) (eV i p a) * rV i p a
@@ -98,7 +98,7 @@ theorem congrC {i i' p p' a a' : PTm n} (h₁ : Γ ⊢[PRAAx] i ≐ i') (h₂ : 
 theorem c_pt {p a i : PTm n} (ep : Γ ⊢[PRAAx] p ≐ two * half p + one) (hc : Γ ⊢[PRAAx] gcd p a ≐ one)
     (hi : Γ ⊢[PRAAx] lt i (half p)) : Γ ⊢[PRAAx] rem (cV i p a) p ≐ rem (bF i p a) p := by
   have hp1 : Γ ⊢[PRAAx] p ≐ succ (pred p) :=
-    pos_of_eq_succ (c := two * half p) (ep.eqTrans (by apply deriveNat; ipra_simps; ring))
+    pos_of_eq_succ (c := two * half p) (ep.eqTrans (by ipra_ring))
   have hR1 := rem_pos ep hc hi
   have hRp : Γ ⊢[PRAAx] lt (rV i p a) p := rem_lt' hp1 _
   refine .orE (lt_or_le (half p) (rV i p a)) ?_ ?_
@@ -149,7 +149,7 @@ theorem b_at (i p a : PTm n) : Γ ⊢[PRAAx] inst2 bB i (pairT p a) ≐ bF i p a
 /-! ## Cancellation -/
 
 theorem swap_alg (v u x : PTm n) : Γ ⊢[PRAAx] v * (u * x) ≐ u * v * x := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- `u x ≡ u y (mod p)` gives `x ≡ y (mod p)` for `gcd(u, p) = 1`, `p ≥ 2`. -/
 theorem cancel_unit {u x y p : PTm n} (hq : Γ ⊢[PRAAx] le two p) (hu : Γ ⊢[PRAAx] gcd u p ≐ one)
@@ -179,7 +179,7 @@ theorem gauss_product {p a a' : PTm n} (ep : Γ ⊢[PRAAx] p ≐ two * half p + 
     Γ ⊢[PRAAx] rem (pw (pred p) (ap2 (sumF eB) (half p) (pairT p a)) * (fact (half p) * pw a (half p))) p ≐
       rem (fact (half p)) p := by
   have hp1 : Γ ⊢[PRAAx] p ≐ succ (pred p) :=
-    pos_of_eq_succ (c := two * half p) (ep.eqTrans (by apply deriveNat; ipra_simps; ring))
+    pos_of_eq_succ (c := two * half p) (ep.eqTrans (by ipra_ring))
   have sH : Syn.shift (half p) = half (Syn.shift p) := by simp [Syn.shift, subst_ap1]
   have sP : Syn.shift (pred p) = pred (Syn.shift p) := by simp [Syn.shift]
   have ep' : (Γ.map Fm.shift) ⊢[PRAAx] Syn.shift p ≐ two * half (Syn.shift p) + one := by
@@ -256,9 +256,9 @@ theorem half_lt {p h : PTm n} (ep : Γ ⊢[PRAAx] p ≐ two * h + one) : Γ ⊢[
   ipra_le 𝔞 h with x
 
 theorem shuffle (A F Pw : PTm n) : Γ ⊢[PRAAx] A * (F * Pw) ≐ F * (A * Pw) := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
-theorem mul_one_r (F : PTm n) : Γ ⊢[PRAAx] F ≐ F * one := by apply deriveNat; ipra_simps; ring
+alias mul_one_r := Common.mul_one_right'
 
 /-- `(p − 1)^{N_p(a)} · a^h ≡ 1 (mod p)` for an odd prime `p = 2h + 1`, `a ≥ 1` and `gcd(p, a) = 1`:
 `a^h ≡ (−1)^{N_p(a)}`. -/

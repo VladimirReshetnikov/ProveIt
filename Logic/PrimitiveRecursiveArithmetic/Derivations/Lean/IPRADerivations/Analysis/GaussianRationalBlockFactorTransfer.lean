@@ -4,6 +4,7 @@ import IPRADerivations.Analysis.GaussianRationalPowerNonzero
 import IPRADerivations.Analysis.GaussianPolynomialRowQuotient
 import IPRADerivations.Analysis.GaussianRationalTranslationStages
 import IPRADerivations.Foundations.BoundedSyntaxInduction
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual inner fixed-width factor transfer
@@ -89,22 +90,13 @@ def input (C Q J T D E t x : PTm n) : Fm PTm n := (length C ≐ succ T) ⋏
 theorem product_congr {A A' B B' N N' M M' : PTm n} (hA : Γ ⊢[PRAAx] A ≐ A')
     (hB : Γ ⊢[PRAAx] B ≐ B') (hN : Γ ⊢[PRAAx] N ≐ N') (hM : Γ ⊢[PRAAx] M ≐ M') : Γ ⊢[PRAAx]
     product A B N M ≐ product A' B' N' M' := by
-  simpa only [GaussianRationalPolynomialProduct.subst_product,Syn.subst_var,Matrix.cons_val_zero,
-    Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_three,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (product (var 0) (var 1) (var 2) (var 3) : PTm 4)
-      (σ := ![A,B,N,M]) (σ' := ![A',B',N',M']) (fun i => by fin_cases i; exact hA; exact hB; exact hN; exact hM)
+  ipra_congr (product (var 0) (var 1) (var 2) (var 3) : PTm 4) with [hA, hB, hN, hM]
 theorem pad_congr {A B s t : PTm n} (hA : Γ ⊢[PRAAx] A ≐ B) (hs : Γ ⊢[PRAAx] s ≐ t) : Γ ⊢[PRAAx]
     leftPad A s ≐ leftPad B t := by
-  simpa only [GaussianRationalPolynomialBuffers.subst_leftPad,Syn.subst_var,Matrix.cons_val_zero,
-    Matrix.cons_val_one,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (leftPad (var 0) (var 1) : PTm 2)
-      (σ := ![A,s]) (σ' := ![B,t]) (fun i => by fin_cases i; exact hA; exact hs)
+  ipra_congr (leftPad (var 0) (var 1) : PTm 2) with [hA, hs]
 theorem H_congr {x y s t : PTm n} (hx : Γ ⊢[PRAAx] x ≐ y) (hs : Γ ⊢[PRAAx] s ≐ t) : Γ ⊢[PRAAx]
     H x s ≐ H y t := by
-  simpa only [GaussianPolynomialRowQuotient.subst_H,Syn.subst_var,Matrix.cons_val_zero,
-    Matrix.cons_val_one,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (H (var 0) (var 1) : PTm 2)
-      (σ := ![x,s]) (σ' := ![y,t]) (fun i => by fin_cases i; exact hx; exact hs)
+  ipra_congr (H (var 0) (var 1) : PTm 2) with [hx, hs]
 theorem coefficients_congr {A A' B B' N : PTm n} (hA : Γ ⊢[PRAAx] A ≐ A')
     (hB : Γ ⊢[PRAAx] B ≐ B') (h : Γ ⊢[PRAAx] coefficientsEqual A B N) : Γ ⊢[PRAAx] coefficientsEqual A' B' N := by
   have transport := Prf.eqSubst (Ax := PRAAx) (Γ := Γ) (coefficientsEqual (var 0) (var 1) (var 2) : Fm PTm 3)

@@ -5,6 +5,7 @@ import IPRADerivations.Combinatorics.LegendreFact
 import IPRADerivations.Combinatorics.FallingFactorial
 import IPRADerivations.Core.SumSplit
 import IPRADerivations.AnalyticNumberTheory.ValuationMul
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Touchard's congruence
@@ -115,17 +116,15 @@ theorem G_split {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (j : PTm n) :
   rw [inst2_shiftBody] at s3
   have t0 : Γ ⊢[PRAAx] inst2 gB zero (pairT p j) ≐ pw j p :=
     (g_at _ _ _).eqTrans ((congrMul (congrMul (gb_zero p) (congrPw (.eqRefl j) (monus_zero p))) bell_zero).eqTrans
-      (by apply deriveNat; ipra_simps; ring))
+      (by ipra_ring))
   have tq : Γ ⊢[PRAAx] inst2 gB (succ (pred p)) (pairT p j) ≐ bell p := by
     refine (g_at _ _ _).eqTrans ?_
     have g1 : Γ ⊢[PRAAx] gb p (succ (pred p)) ≐ one := (congrGb (.eqRefl p) hq.eqSymm).eqTrans (gb_self p)
     have g2 : Γ ⊢[PRAAx] pw j (monus p (succ (pred p))) ≐ one :=
       (congrPw (.eqRefl j) ((congrMonus (.eqRefl p) hq.eqSymm).eqTrans (monus_self p))).eqTrans (pw_zero _)
     refine (congrMul (congrMul g1 g2) (congrBell hq.eqSymm)).eqTrans ?_
-    apply deriveNat; ipra_simps; ring
-  have a := natEq s1; have b := natEq s2; have c := natEq s3; have d := natEq t0; have e := natEq tq
-  apply deriveNat; ipra_simps
-  linear_combination a + b + c + d + e
+    ipra_ring
+  ipra_lc natEq s1 + natEq s2 + natEq s3 + natEq t0 + natEq tq
 
 /-- `p ∣ Mid(p, j)`: each middle binomial coefficient is divisible by `p`. -/
 theorem Mid_dvd {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (j : PTm n) : Γ ⊢[PRAAx] dvd p (Mid p j) := by
@@ -147,21 +146,14 @@ theorem Mid_dvd {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (j : PTm n) : Γ ⊢[PR
 
 theorem divmod_p {p : PTm n} (hq : Γ ⊢[PRAAx] p ≐ succ (pred p)) (x : PTm n) :
     Γ ⊢[PRAAx] x ≐ p * quo x p + rem x p := by
-  have d := natEq (Prf.andE₁ (div_mod (Γ := Γ) x (pred p)))
-  have e1 := natEq (congrAp2 (Γ := Γ) quoF (.eqRefl x) hq.eqSymm)
-  have e2 := natEq (congrAp2 (Γ := Γ) remF (.eqRefl x) hq.eqSymm)
-  have e3 := natEq hq
-  apply deriveNat; ipra_simps
-  linear_combination d + e2 + (𝔞 (pred p) + 1) * e1 - 𝔞 (quo x p) * e3
+  ipra_lc natEq (Prf.andE₁ (div_mod (Γ := Γ) x (pred p))) + natEq (congrAp2 (Γ := Γ) remF (.eqRefl x) hq.eqSymm) +
+    (𝔞 (pred p) + 1) * natEq (congrAp2 (Γ := Γ) quoF (.eqRefl x) hq.eqSymm) - 𝔞 (quo x p) * natEq hq
 
 /-- Fermat's little theorem as a witness equation: `j^p + p ⌊j/p⌋ = j + p ⌊j^p/p⌋`. -/
 theorem fermat_witness {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (j : PTm n) :
     Γ ⊢[PRAAx] pw j p + p * quo j p ≐ j + p * quo (pw j p) p := by
   have hq := prime_eq_succ_pred hp
-  have a := natEq (divmod_p hq (pw j p)); have b := natEq (divmod_p hq j)
-  have f := natEq (fermat_at hp j)
-  apply deriveNat; ipra_simps
-  linear_combination a - b + f
+  ipra_lc natEq (divmod_p hq (pw j p)) - natEq (divmod_p hq j) + natEq (fermat_at hp j)
 
 /-- Bodies over `0 = j`, `1 = ⟨n, p⟩`. -/
 abbrev aB : PTm 2 := stir (fstT (var 1)) (var 0) * (sndT (var 1) * quo (var 0) (sndT (var 1)))
@@ -252,7 +244,7 @@ theorem aB_dvd {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (N : PTm n) :
   rw [← e] at hq2
   refine dvd_congr_left hq2 (dvd_of_eq' hq' (w := stir (Syn.shift N) (var 0) * quo (var 0) (Syn.shift p)) ?_)
   refine (aB_at _ _ _).eqTrans ?_
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem qB_dvd {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (N : PTm n) :
     Γ ⊢[PRAAx] dvd p (ap2 (sumF qB) (succ N) (pairT N p)) := by
@@ -277,10 +269,8 @@ theorem touchard_witness {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (N : PTm n) :
     Γ ⊢[PRAAx] bell (p + N) + bell N + p * quo (ap2 (sumF aB) (succ N) (pairT N p)) p ≐
       bell (succ N) + bell p * bell N + p * quo (ap2 (sumF qB) (succ N) (pairT N p)) p := by
   have hq := prime_eq_succ_pred hp
-  have a := natEq (spivey_prime hp N); have w := natEq (weighted_stirling (Γ := Γ) N)
-  have x := natEq (eq_of_dvd' hq (aB_dvd hp N)); have y := natEq (eq_of_dvd' hq (qB_dvd hp N))
-  apply deriveNat; ipra_simps
-  linear_combination a + w - x + y
+  ipra_lc natEq (spivey_prime hp N) + natEq (weighted_stirling (Γ := Γ) N) - natEq (eq_of_dvd' hq (aB_dvd hp N)) +
+    natEq (eq_of_dvd' hq (qB_dvd hp N))
 
 /-- `B_{p+n} + B_n ≡ B_{n+1} + B_p B_n (mod p)`. -/
 theorem touchard_pre {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (N : PTm n) :
@@ -323,9 +313,8 @@ private theorem sd₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] stir (var 0) (var 0) �
   · simp only [Fm.subst_eq, subst_stir, Syn.subst_var, Syn.repl_zero, ConciseIPRA.PTm.subst_zero,
       ConciseIPRA.PTm.subst_succ]
     refine (stir_rec (var 0 : PTm 1) (var 0)).eqTrans ?_
-    have a := natEq (Prf.hyp0 : [stir (var 0 : PTm 1) (var 0) ≐ one] ⊢[PRAAx] _)
-    have b := natEq (stir_above (Γ := [stir (var 0 : PTm 1) (var 0) ≐ one]) (le_refl (succ (var 0 : PTm 1))))
-    apply deriveNat; ipra_simps; linear_combination a + (𝔞 (var 0 : PTm 1) + 1) * b
+    ipra_lc natEq (Prf.hyp0 : [stir (var 0 : PTm 1) (var 0) ≐ one] ⊢[PRAAx] _) +
+      (𝔞 (var 0 : PTm 1) + 1) * natEq (stir_above (Γ := [stir (var 0 : PTm 1) (var 0) ≐ one]) (le_refl (succ (var 0 : PTm 1))))
 
 /-- `S(n, n) = 1`. -/
 theorem stir_diag (N : PTm n) : Γ ⊢[PRAAx] stir N N ≐ one := by
@@ -430,16 +419,14 @@ theorem stir_dvd_step {p K2 : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hK : Γ ⊢[P
     rw [← e] at hq2
     exact dvd_congr_left hq2 (dvd_congr (tB_at' _ _ _).eqSymm (dvd_mul' hq' _ z))
   -- Fermat: `K^p ≡ K`, hence `p ∣ S(p, K) K!`
-  have fw := natEq (fermat_witness hp (succ (succ K2)))
-  have m := natEq (eq_of_dvd' hq mid)
   have a1 := natEq pw1; have a2 := natEq whole; have a3 := natEq c1; have a4 := natEq c2; have a5 := natEq c3
   have b0 := natEq t0; have b1 := natEq t1; have bK := natEq tK
   have key : Γ ⊢[PRAAx] dvd p (stir p (succ (succ K2)) * ap2 factF (succ (succ K2)) zero +
       (p * quo (ap2 (sumF (shiftBody (shiftBody StirlingPowers.tB))) K2 (pairT p (succ (succ K2)))) p +
         p * quo (succ (succ K2)) p)) := by
     refine dvd_of_eq' hq (w := quo (pw (succ (succ K2)) p) p) ?_
-    apply deriveNat; ipra_simps
-    linear_combination fw - m - b0 - b1 - bK - a5 - a4 - a3 - a2 + a1
+    ipra_lc natEq (fermat_witness hp (succ (succ K2))) - natEq (eq_of_dvd' hq mid) - b0 - b1 - bK - a5 - a4 - a3 -
+      a2 + a1
   have hsk : Γ ⊢[PRAAx] dvd p (stir p (succ (succ K2)) * ap2 factF (succ (succ K2)) zero) :=
     dvd_sub' hq key (dvd_add' hq (dvd_of_eq' hq (.eqRefl _)) (dvd_of_eq' hq (.eqRefl _)))
   exact .orE (euclid_lemma_at hp hsk) Prf.hyp0 (.botE _ (.impE (not_dvd_fact hp _ hK).wk Prf.hyp0))
@@ -506,11 +493,8 @@ theorem bell_prime {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) :
     have e : Syn.shift (pred p) = pred (Syn.shift p) := by simp [Syn.shift]
     rw [← e] at hq2
     exact dvd_congr_left hq2 z
-  have m := natEq (eq_of_dvd' hq mid)
-  have a := natEq b; have a0 := natEq cg; have a1 := natEq c1; have a2 := natEq c2; have a3 := natEq c3
-  have u0 := natEq t0; have u1 := natEq t1; have up := natEq tp
-  apply deriveNat; ipra_simps
-  linear_combination -a + a0 + a1 + a2 + a3 + u0 + u1 + up + m
+  ipra_lc -natEq b + natEq cg + natEq c1 + natEq c2 + natEq c3 + natEq t0 + natEq t1 + natEq tp +
+    natEq (eq_of_dvd' hq mid)
 
 /-- `thm:touchard`: `B_{p+n} ≡ B_{n+1} + B_n (mod p)` for a prime `p`. -/
 theorem touchard {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (N : PTm n) :
@@ -520,9 +504,7 @@ theorem touchard {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (N : PTm n) :
     (k₁ := quo (ap2 (sumF aB) (succ N) (pairT N p)) p)
     (k₂ := quo (ap2 (sumF qB) (succ N) (pairT N p)) p +
       quo (ap2 (sumF (shiftBody (shiftBody BellStirling.tB))) (monus p two) p) p * bell N) ?_
-  have tw := natEq (touchard_witness hp N); have bp := natEq (bell_prime hp)
-  apply deriveNat; ipra_simps
-  linear_combination tw + 𝔞 (bell N) * bp
+  ipra_lc natEq (touchard_witness hp N) + 𝔞 (bell N) * natEq (bell_prime hp)
 
 /-- `thm:touchard`, in particular `B_p ≡ 2 (mod p)`. -/
 theorem bell_prime_two {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) : Γ ⊢[PRAAx] rem (bell p) p ≐ rem two p :=

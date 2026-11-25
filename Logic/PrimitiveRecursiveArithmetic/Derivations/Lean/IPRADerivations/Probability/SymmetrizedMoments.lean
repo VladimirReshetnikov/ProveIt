@@ -2,6 +2,7 @@ import IPRADerivations.Probability.Independence
 import IPRADerivations.Probability.Variance
 import IPRADerivations.Analysis.PowerSums
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Moments of the symmetrization `Y − Y′`
@@ -108,9 +109,7 @@ theorem second_pt (i j x : PTm n) : Γ ⊢[PRAAx] inst3 (LA w Y) i j x ≐ inst3
         inst2 w i x * (inst2 w j x * (inst2 Y j x * inst2 Y j x)) := by
     simp only [RA, inst3_add', inst3_mul', inst3_pmB, inst2_mul']
   rw [el, er]
-  have s := natEq (ad_sq (Γ := Γ) (inst2 Y i x) (inst2 Y j x))
-  apply deriveNat; ipra_simps
-  linear_combination 𝔟(inst2 w i x) * 𝔟(inst2 w j x) * s
+  ipra_lc 𝔟(inst2 w i x) * 𝔟(inst2 w j x) * natEq (ad_sq (Γ := Γ) (inst2 Y i x) (inst2 Y j x))
 
 /-- (6.4): `∑∑ w_i w_j |Y_i − Y_j|² + 2 S² = 2 W Q`, i.e. `E (Y − Y′)² = 2 Var(Y)`. -/
 theorem symm_second_moment (N x : PTm n) :
@@ -119,16 +118,12 @@ theorem symm_second_moment (N x : PTm n) :
           ap2 (sumF (w * Y)) N x * ap2 (sumF (w * Y)) N x) ≐
       ap2 (sumF (w * (Y * Y))) N x * ap2 (sumF w) N x +
         ap2 (sumF w) N x * ap2 (sumF (w * (Y * Y))) N x := by
-  have c := natEq (dsum_congr (Γ := Γ) (LA w Y) (RA w Y) (fun i j x => second_pt w Y i j x) N N x)
-  have a₁ := natEq (dsum_add (Γ := Γ) (pmB w w * (dB Y * dB Y))
-    (pmB (w * Y) (w * Y) + pmB (w * Y) (w * Y)) N N x)
-  have a₂ := natEq (dsum_add (Γ := Γ) (pmB (w * Y) (w * Y)) (pmB (w * Y) (w * Y)) N N x)
-  have m₂ := natEq (sum_mul_sum (Γ := Γ) (w * Y) (w * Y) N N x)
-  have a₃ := natEq (dsum_add (Γ := Γ) (pmB (w * (Y * Y)) w) (pmB w (w * (Y * Y))) N N x)
-  have m₄ := natEq (sum_mul_sum (Γ := Γ) (w * (Y * Y)) w N N x)
-  have m₅ := natEq (sum_mul_sum (Γ := Γ) w (w * (Y * Y)) N N x)
-  apply deriveNat; ipra_simps
-  linear_combination -a₁ + c + a₃ + m₄ + m₅ - a₂ - 2 * m₂
+  ipra_lc -natEq (dsum_add (Γ := Γ) (pmB w w * (dB Y * dB Y)) (pmB (w * Y) (w * Y) + pmB (w * Y) (w * Y)) N N x) +
+    natEq (dsum_congr (Γ := Γ) (LA w Y) (RA w Y) (fun i j x => second_pt w Y i j x) N N x) +
+    natEq (dsum_add (Γ := Γ) (pmB (w * (Y * Y)) w) (pmB w (w * (Y * Y))) N N x) +
+    natEq (sum_mul_sum (Γ := Γ) (w * (Y * Y)) w N N x) + natEq (sum_mul_sum (Γ := Γ) w (w * (Y * Y)) N N x) -
+    natEq (dsum_add (Γ := Γ) (pmB (w * Y) (w * Y)) (pmB (w * Y) (w * Y)) N N x) -
+    2 * natEq (sum_mul_sum (Γ := Γ) (w * Y) (w * Y) N N x)
 
 end Second
 

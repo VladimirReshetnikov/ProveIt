@@ -98,7 +98,7 @@ theorem code_lt {V : PTm 2} {b x N M : PTm k} (hV : Γ ⊢[PRAAx] entriesLt V b 
 /-- `z mod b = z` for `z < b`. -/
 theorem rem_small {b z : PTm k} (hb : Γ ⊢[PRAAx] b ≐ succ (pred b)) (h : Γ ⊢[PRAAx] lt z b) :
     Γ ⊢[PRAAx] rem z b ≐ z :=
-  Prf.andE₂ (dmu hb (q := zero) (r := z) (by apply deriveNat; ipra_simps; ring) h)
+  Prf.andE₂ (dmu hb (q := zero) (r := z) (by ipra_ring) h)
 
 /-- Adding a multiple of `b^{j+1}` does not change the `j`-th digit. -/
 theorem digit_shift {b z c j : PTm k} (hb : Γ ⊢[PRAAx] b ≐ succ (pred b)) :

@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.MinkowskiResidues
 import IPRADerivations.Core.ProdLemmas
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Actual runtime mixed-radix digits for finite boxes
@@ -112,10 +113,7 @@ theorem rem_product (i P d : PTm n) (hP : Γ ⊢[PRAAx] le one P)
   have bound : Γ ⊢[PRAAx] lt (rem i P+P*rem (quo i P) d) (P*d) :=
     lt_congr (add_comm _ _) (mul_comm _ _) (MinkowskiResidues.range_step (Prf.andE₂ second) (Prf.andE₂ first))
   have reconstruct : Γ ⊢[PRAAx] i ≐ (P*d)*quo (quo i P) d+(rem i P+P*rem (quo i P) d) := by
-    have a := natEq (Prf.andE₁ first)
-    have b := natEq (Prf.andE₁ second)
-    apply deriveNat; ipra_simps
-    linear_combination a + Groth.ι (Q.mk Γ P)*b
+    ipra_lc natEq (Prf.andE₁ first) + Groth.ι (Q.mk Γ P)*natEq (Prf.andE₁ second)
   have actual := natural_divmod i (P*d) hp
   exact Prf.andE₂ (euclid_unique ((Prf.andE₁ actual).eqSymm.eqTrans reconstruct) (Prf.andE₂ actual) bound)
 
@@ -187,7 +185,6 @@ theorem index_injective (N W i j : PTm n) (h : Γ ⊢[PRAAx] positive N W)
     (he : Γ ⊢[PRAAx] digitsEqual N W i j) : Γ ⊢[PRAAx] i ≐ j :=
   (rem_small i _ (count_positive N W h) hi).eqSymm.eqTrans
     ((prefix_remainders_equal N W i j h he).eqTrans (rem_small j _ (count_positive N W h) hj))
-
 
 /-- Test actual digits; zero means a genuine natural digit difference. -/
 def comparisonData (W i j : PTm n) : PTm n := pairT W (pairT i j)

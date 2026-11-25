@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianEulerIntegrationByPartsCompactNameObservations
 import IPRADerivations.Analysis.GaussianCompactZeroWidth
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Original regular compact Euler integration by parts
@@ -101,11 +102,8 @@ private theorem endpoint_zero_width (t z B a E : PTm n) : Γ ⊢[PRAAx]
     GaussianEulerIntegrationByPartsCompact.boundary t z B a zero E ≐ qzero := by
   have e : Γ ⊢[PRAAx] GaussianEulerIntegrandName.sample t (shifted z B) B (a+zero) E ≐
       GaussianEulerIntegrandName.sample t (shifted z B) B a E := by
-    simpa only [GaussianEulerIntegrandName.subst_sample,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-      Matrix.cons_val_two,Matrix.cons_val_three,Matrix.cons_val_four,Matrix.head_cons,Matrix.tail_cons] using
-      Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (GaussianEulerIntegrandName.sample (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5)
-        (σ := ![t,shifted z B,B,a+zero,E]) (σ' := ![t,shifted z B,B,a,E])
-        (fun i => by fin_cases i; exact .eqRefl _; exact .eqRefl _; exact .eqRefl _; exact add_zero a; exact .eqRefl _)
+    ipra_congr (GaussianEulerIntegrandName.sample (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) with
+      [.eqRefl t, .eqRefl (shifted z B), .eqRefl B, add_zero a, .eqRefl E]
   exact (GaussianRationalSyntheticDivision.qsub_congr e (.eqRefl _)).eqTrans (GaussianCoefficientNormOrder.qsub_self _)
 
 theorem zero_diagonal (t z R B a E T : PTm n) (h : Γ ⊢[PRAAx] intervalSource z R B a zero E T) : Γ ⊢[PRAAx]

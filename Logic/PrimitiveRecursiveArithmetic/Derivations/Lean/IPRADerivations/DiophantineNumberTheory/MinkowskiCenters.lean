@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.RationalIntegerNormalization
 import IPRADerivations.Analysis.RationalArgmin
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Literal normalized midpoint cancellation for Minkowski cell centers
@@ -87,19 +88,7 @@ theorem midpoint_input_integer (a b z : ZT n) (m : PTm n) (hm : Γ ⊢[PRAAx] le
   have positive : Γ ⊢[PRAAx] le one (m*denominatorOf (center b m)) :=
     le_congr (one_mul one) (.eqRefl _) (le_mul_mono hm (denominator_positive _))
   apply integer_cancel (m*denominatorOf (center b m)) _ _ positive
-  apply ZT.derive
-  have ca := ZT.toZ_eq (center_value (Γ := Γ) a m hm)
-  have cb := ZT.toZ_eq (center_value (Γ := Γ) b m hm)
-  have nc := ZT.toZ_eq (opposite_value (Γ := Γ) (center b m))
-  have ab := ZT.toZ_eq h
-  simp only [ZT.toZ_mul, ZT.toZ_add, ZT.toZ_sub, ZT.toZ_neg, ZT.toZ_ofNat,
-    centerNumerator, midpointNumerator, midpointDenominator] at ca cb nc ab ⊢
-  ipra_simps
-  linear_combination
-    -(𝔞(denominatorOf (center b m))*𝔞(denominatorOf (opposite (center b m))))*ca+
-    (𝔞(denominatorOf (center a m))*𝔞(denominatorOf (opposite (center b m))))*cb-
-    (𝔞 m*𝔞(denominatorOf (center a m)))*nc+
-    (2*𝔞(denominatorOf (center a m))*𝔞(denominatorOf (center b m))*𝔞(denominatorOf (opposite (center b m))))*ab
+  ipra_lc [centerNumerator, midpointNumerator, midpointDenominator] -(𝔞(denominatorOf (center b m))*𝔞(denominatorOf (opposite (center b m))))*ZT.toZ_eq (center_value (Γ := Γ) a m hm)+ (𝔞(denominatorOf (center a m))*𝔞(denominatorOf (opposite (center b m))))*ZT.toZ_eq (center_value (Γ := Γ) b m hm)- (𝔞 m*𝔞(denominatorOf (center a m)))*ZT.toZ_eq (opposite_value (Γ := Γ) (center b m))+ (2*𝔞(denominatorOf (center a m))*𝔞(denominatorOf (center b m))*𝔞(denominatorOf (opposite (center b m))))*ZT.toZ_eq h
 
 /-- This conclusion is equality of actual natural codes. -/
 theorem midpoint_code_integer (a b z : ZT n) (m : PTm n) (hm : Γ ⊢[PRAAx] le one m)

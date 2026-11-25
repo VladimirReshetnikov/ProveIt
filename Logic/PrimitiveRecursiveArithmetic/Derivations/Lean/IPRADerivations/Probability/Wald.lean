@@ -1,5 +1,5 @@
 import IPRADerivations.Probability.ProductPower
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Wald's identity on the finite product law

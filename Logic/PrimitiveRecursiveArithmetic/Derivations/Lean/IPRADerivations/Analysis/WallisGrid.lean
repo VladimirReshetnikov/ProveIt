@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.BaselQuadrature
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The rational quarter circle on a uniform grid
@@ -120,7 +121,7 @@ end point
 /-! ## The end values -/
 
 theorem sg_zero (M L : PTm n) : Γ ⊢[PRAAx] sg zero M L ≐ zero := by
-  apply deriveNat; simp only [sg]; ipra_simps; ring
+  ipra_lc [sg]
 
 theorem gm_top (M L : PTm n) : Γ ⊢[PRAAx] gm M M L ≐ zero := by
   have e := natEq (monus_self (Γ := Γ) (M * M))
@@ -188,7 +189,7 @@ theorem gm_step (hj : Γ ⊢[PRAAx] le (succ j) (succ M₀)) (hL : Γ ⊢[PRAAx]
 /-- `T = M² + j(j + 1)` is positive. -/
 theorem T_pos (j M₀ : PTm n) :
     Γ ⊢[PRAAx] succ M₀ * succ M₀ + j * succ j ≐ succ (M₀ * M₀ + two * M₀ + j * succ j) := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- `s` increases along the grid. -/
 theorem sg_mono (hj : Γ ⊢[PRAAx] le (succ j) (succ M₀)) (hL : Γ ⊢[PRAAx] le (two * (succ M₀ * succ M₀)) L) :

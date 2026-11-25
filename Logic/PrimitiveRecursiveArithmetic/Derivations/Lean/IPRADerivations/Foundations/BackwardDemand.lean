@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.MasterCertificate
 import IPRADerivations.Foundations.BoundedFormulas
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Backward schedules for nonmonotone finite observations
@@ -36,10 +37,7 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
     Syn.subst σ (one : PTm n) = one := by
   simp only [one, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
 
-private theorem pair_congr {a a' b b' : PTm n}
-    (ha : Γ ⊢[PRAAx] a ≐ a') (hb : Γ ⊢[PRAAx] b ≐ b') :
-    Γ ⊢[PRAAx] pairT a b ≐ pairT a' b' :=
-  congrAdd (congrMul (congrAdd ha hb) (congrAdd ha hb)) ha
+private alias pair_congr := Common.congrPairT
 
 /-- Step variables are backward offset, previous demand and packed `(N,K,x)`. -/
 def backwardStep (D : PR 3) : PTm 3 :=

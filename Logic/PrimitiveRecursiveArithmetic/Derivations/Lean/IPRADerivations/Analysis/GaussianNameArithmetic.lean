@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianNameBounds
 import IPRADerivations.Analysis.GaussianValueNormalizerExtensionality
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual addition and multiplication of fast Gaussian names
@@ -183,9 +184,7 @@ theorem multiply_regular (f g : PR 2) (x y : PTm n)
 
 theorem recode_congr {z w : PTm n} (h : Γ ⊢[PRAAx] z ≐ w) : Γ ⊢[PRAAx]
     GaussianFastValueCut.recode z ≐ GaussianFastValueCut.recode w := by
-  simpa only [GaussianFastValueCut.subst_recode,Syn.subst_var,Matrix.cons_val_zero] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (GaussianFastValueCut.recode (var 0) : PTm 1)
-      (σ := ![z]) (σ' := ![w]) (fun i => by fin_cases i; exact h)
+  ipra_congr (GaussianFastValueCut.recode (var 0) : PTm 1) with [h]
 
 theorem add_at (f g : PR 2) (x y k : PTm n) : Γ ⊢[PRAAx]
     ap2 (addF f g) k (addData x y) ≐ GaussianFastValueCut.recode

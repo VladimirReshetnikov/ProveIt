@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianCoefficientNameBounds
 import IPRADerivations.Analysis.GaussianBalancedRadiusArithmetic
 import IPRADerivations.Analysis.GaussianRationalProductWitness
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # General Gaussian coefficient names and their actual apart tail
@@ -99,16 +100,11 @@ theorem native_apart_tail (r t D K : PTm n)
     (hDiff : Γ ⊢[PRAAx] le (K*K*normSq (sub r t)) (D*D)) : Γ ⊢[PRAAx]
     le (D*D) (K*K*normSq t) := by
   have triangle := mul_le_mul_right (K*K) (native_reference_triangle (Γ := Γ) r t)
-  have eRef := natEq (eq_add_of_le hRef)
-  have eDiff := natEq (eq_add_of_le hDiff)
-  have eTri := natEq (eq_add_of_le triangle)
   have lower : Γ ⊢[PRAAx] le (two*(D*D)) (two*(K*K*normSq t)) := by
     apply le_of_eq_add (d := PTm.monus (K*K*normSq r) (two*two*(D*D)) +
       PTm.monus ((two*normSq t+two*normSq (sub r t))*(K*K)) (normSq r*(K*K)) +
         two*PTm.monus (D*D) (K*K*normSq (sub r t)))
-    apply deriveNat
-    ipra_simps
-    linear_combination eRef+eTri+2*eDiff
+    ipra_lc natEq (eq_add_of_le hRef)+natEq (eq_add_of_le triangle)+2*natEq (eq_add_of_le hDiff)
   exact RationalValueBounds.positive_cancel (le_succ_self one) lower
 
 /-- The actual h+2 observation and genuine coherence give the complete

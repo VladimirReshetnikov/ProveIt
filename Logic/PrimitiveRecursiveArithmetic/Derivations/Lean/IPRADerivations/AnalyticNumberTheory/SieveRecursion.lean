@@ -2,6 +2,8 @@ import IPRADerivations.AnalyticNumberTheory.SieveSurvivors
 import IPRADerivations.AnalyticNumberTheory.SumReindex
 import IPRADerivations.AnalyticNumberTheory.SievePairSum
 import IPRADerivations.DiophantineNumberTheory.QuarticStep
+import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The recursion of Legendre's sieve
@@ -65,20 +67,16 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 theorem z_alg {s b3 b1 e su b2 : PTm n} (hs : Γ ⊢[PRAAx] s ≐ zero) (hsu : Γ ⊢[PRAAx] su ≐ zero) :
     Γ ⊢[PRAAx] s * b3 ≐ s * b1 + e * (su * b2) := by
-  have a := natEq hs; have b := natEq hsu
-  apply deriveNat; ipra_simps; linear_combination (𝔞 b3 - 𝔞 b1) * a - 𝔞 e * 𝔞 b2 * b
+  ipra_lc (𝔞 b3 - 𝔞 b1) * natEq hs - 𝔞 e * 𝔞 b2 * natEq hsu
 
 theorem a_alg {s b3 b1 e su b2 : PTm n} (hs : Γ ⊢[PRAAx] s ≐ one) (hb1 : Γ ⊢[PRAAx] b1 ≐ zero)
     (he : Γ ⊢[PRAAx] e ≐ one) (hsu : Γ ⊢[PRAAx] su ≐ one) (h : Γ ⊢[PRAAx] b2 ≐ b3) :
     Γ ⊢[PRAAx] s * b3 ≐ s * b1 + e * (su * b2) := by
-  have a := natEq hs; have b := natEq hb1; have c := natEq he; have d := natEq hsu; have f := natEq h
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 b3 * a - 𝔞 s * b - 𝔞 su * 𝔞 b2 * c - 𝔞 b2 * d - f
+  ipra_lc 𝔞 b3 * natEq hs - 𝔞 s * natEq hb1 - 𝔞 su * 𝔞 b2 * natEq he - 𝔞 b2 * natEq hsu - natEq h
 
 theorem b_alg {s b3 b1 e X : PTm n} (he : Γ ⊢[PRAAx] e ≐ zero) (h : Γ ⊢[PRAAx] b1 ≐ b3) :
     Γ ⊢[PRAAx] s * b3 ≐ s * b1 + e * X := by
-  have a := natEq he; have b := natEq h
-  apply deriveNat; ipra_simps; linear_combination -𝔞 s * b - 𝔞 X * a
+  ipra_lc -𝔞 s * natEq h - 𝔞 X * natEq he
 
 /-- `[gcd(m, P) = 1] = [gcd(m, P p) = 1] + [p ∣ m][gcd(m/p, P) = 1]` for a prime `p` coprime to `P ≥ 1`. -/
 theorem pt {m p P : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hP : Γ ⊢[PRAAx] P ≐ succ (pred P))
@@ -161,8 +159,7 @@ theorem pt {m p P : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hP : Γ ⊢[PRAAx] P �
 
 theorem cm_alg {x p Q R : PTm n} (d : Γ ⊢[PRAAx] x ≐ p * Q + R) (hp1 : Γ ⊢[PRAAx] p ≐ succ (pred p)) :
     Γ ⊢[PRAAx] succ x + pred p ≐ p * succ Q + R := by
-  have a := natEq d; have b := natEq hp1
-  apply deriveNat; ipra_simps; linear_combination a - b
+  ipra_lc natEq d - natEq hp1
 
 /-- There are `⌊x/p⌋ + 1` multiples of `p` in `[0, x]`. -/
 theorem cM_succ {x p : PTm n} (hp1 : Γ ⊢[PRAAx] p ≐ succ (pred p)) :
@@ -207,7 +204,7 @@ theorem recursion {p P : PTm n} (hI : Γ ⊢[PRAAx] isP p ≐ one) (hP : Γ ⊢[
 
 /-! ## Primorials -/
 
-theorem mul_one_r (X : PTm n) : Γ ⊢[PRAAx] X * one ≐ X := by apply deriveNat; ipra_simps; ring
+alias mul_one_r := Common.mul_one_right
 
 /-- At a prime `r + 1`: `Φ(x; P(r)) = Φ(x; P(r + 1)) + Φ(⌊x/(r + 1)⌋; P(r))`. -/
 theorem phi_step_prime {r : PTm n} (hI : Γ ⊢[PRAAx] isP (succ r) ≐ one) (x : PTm n) :
@@ -228,13 +225,11 @@ theorem phi_step_comp {r : PTm n} (hI : Γ ⊢[PRAAx] isP (succ r) ≐ zero) (x 
 
 theorem step_alg0 {A B I X : PTm n} (h : Γ ⊢[PRAAx] B ≐ A) (hI : Γ ⊢[PRAAx] I ≐ zero) :
     Γ ⊢[PRAAx] A ≐ B + I * X := by
-  have a := natEq h; have b := natEq hI
-  apply deriveNat; ipra_simps; linear_combination -a - 𝔞 X * b
+  ipra_lc -natEq h - 𝔞 X * natEq hI
 
 theorem step_alg1 {A B I X : PTm n} (h : Γ ⊢[PRAAx] A ≐ B + X) (hI : Γ ⊢[PRAAx] I ≐ one) :
     Γ ⊢[PRAAx] A ≐ B + I * X := by
-  have a := natEq h; have b := natEq hI
-  apply deriveNat; ipra_simps; linear_combination a - 𝔞 X * b
+  ipra_lc natEq h - 𝔞 X * natEq hI
 
 /-- **The sieve recursion over the primorials**:
 `Φ(x; P(r)) = Φ(x; P(r + 1)) + [r + 1 prime] Φ(⌊x/(r + 1)⌋; P(r))`. -/

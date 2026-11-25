@@ -1,7 +1,7 @@
 import IPRADerivations.Combinatorics.LegendreDigits
 import IPRADerivations.DiophantineNumberTheory.ModularCertificate
 import IPRADerivations.Foundations.CrossingSearch
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Base-expansion divisibility rules

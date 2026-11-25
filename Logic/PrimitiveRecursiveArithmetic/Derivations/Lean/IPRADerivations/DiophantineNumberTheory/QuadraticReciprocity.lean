@@ -110,7 +110,7 @@ theorem sign_eq (p a : PTm n) : Γ ⊢[PRAAx] signBit p a ≐ monus one (rb p a)
 theorem eisenstein_lemma {p a : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hodd : Γ ⊢[PRAAx] par p ≐ one)
     (ha : Γ ⊢[PRAAx] par a ≐ one) (hc : Γ ⊢[PRAAx] gcd p a ≐ one) : Γ ⊢[PRAAx] eisenstein p a := by
   have ha1 : Γ ⊢[PRAAx] a ≐ succ (pred a) :=
-    pos_of_eq_succ (c := two * half a) ((odd_of ha).eqTrans (by apply deriveNat; ipra_simps; ring))
+    pos_of_eq_succ (c := two * half a) ((odd_of ha).eqTrans (by ipra_ring))
   exact (sign_eq p a).eqTrans ((gauss_lemma hp hodd ha1 hc).eqSymm.eqTrans (floor_gauss_parity hodd ha hc).eqSymm)
 
 /-! ## The law of quadratic reciprocity -/

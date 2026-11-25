@@ -4,6 +4,7 @@ import IPRADerivations.Analysis.RationalScalarPowerGaussianEmbedding
 import IPRADerivations.Analysis.RationalPolynomialLeadingGaussianEmbedding
 import IPRADerivations.Analysis.GaussianSuperellipticNormDegree
 import IPRADerivations.Foundations.PrimitiveScaling
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Exact degree and leading coefficient of the original rational norm
@@ -173,18 +174,12 @@ theorem source_leading_embedding (f G m a c : PTm n) (h : Γ ⊢[PRAAx] input f 
   have ef : Γ ⊢[PRAAx] embed (leading f c) ≐ GaussianSuperellipticCyclicLeading.fLeading f' c :=
     leading_embedding _ _ _ (coefficient_list_embedding _ _) (flag_of_nonzero _ _ fm)
   have rot : Γ ⊢[PRAAx] rotation f G m a c ≐ GaussianSuperellipticCyclicLeading.rotation f' G' m a c := by
-    simpa only [rotation,GaussianSuperellipticCyclicLeading.rotation,Foundations.RuntimeCyclicPermutation.subst_rotationCode,
-      Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using
-      Prf.eqCongr (Γ := Γ) (Foundations.RuntimeCyclicPermutation.rotationCode (var 0) (var 1) : PTm 2)
-        (σ := ![m,i]) (σ' := ![m,j]) (fun r => by fin_cases r; exact .eqRefl m; exact kij)
+    ipra_congr (Foundations.RuntimeCyclicPermutation.rotationCode (var 0) (var 1) : PTm 2) with
+      [.eqRefl m, kij] using [rotation, GaussianSuperellipticCyclicLeading.rotation]
   have sign : Γ ⊢[PRAAx] embed (RationalScalarDeterminantGaussianEmbedding.sign m (rotation f G m a c)) ≐
       GaussianPolynomialDeterminantTerms.signPoint m (GaussianSuperellipticCyclicLeading.rotation f' G' m a c) := by
     refine (RationalScalarDeterminantGaussianEmbedding.sign_embedding _ _).eqTrans ?_
-    simpa only [GaussianPolynomialDeterminantTerms.subst_signPoint,Syn.subst_var,
-      Matrix.cons_val_zero,Matrix.cons_val_one] using
-      Prf.eqCongr (Γ := Γ) (GaussianPolynomialDeterminantTerms.signPoint (var 0) (var 1) : PTm 2)
-      (σ := ![m,rotation f G m a c]) (σ' := ![m,GaussianSuperellipticCyclicLeading.rotation f' G' m a c])
-      (fun r => by fin_cases r; exact .eqRefl m; exact rot)
+    ipra_congr (GaussianPolynomialDeterminantTerms.signPoint (var 0) (var 1) : PTm 2) with [.eqRefl m, rot]
   exact (RationalGaussianEmbedding.embed_multiply _ _).eqTrans
     (GaussianRationalSyntheticDivision.qmul_congr sign ((RationalGaussianEmbedding.embed_multiply _ _).eqTrans
       (GaussianRationalSyntheticDivision.qmul_congr
@@ -214,11 +209,8 @@ theorem curve_equation (f m c x y : PTm n) (hm : Γ ⊢[PRAAx] le one m) (hf : �
   let T' := GaussianSuperellipticTail.tailRows f' m c
   have tv : Γ ⊢[PRAAx] GaussianPolynomialMonicCompanion.monicValues T m (embed x) ≐
       GaussianPolynomialMonicCompanion.monicValues T' m (embed x) := by
-    simpa only [GaussianPolynomialMonicCompanion.subst_monicValues,Syn.subst_var,Matrix.cons_val_zero,
-      Matrix.cons_val_one,Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using
-      Prf.eqCongr (Γ := Γ) (GaussianPolynomialMonicCompanion.monicValues (var 0) (var 1) (var 2) : PTm 3)
-      (σ := ![T,m,embed x]) (σ' := ![T',m,embed x])
-      (fun i => by fin_cases i; exact table_embedding f m c hm hf; exact .eqRefl m; exact .eqRefl (embed x))
+    ipra_congr (GaussianPolynomialMonicCompanion.monicValues (var 0) (var 1) (var 2) : PTm 3) with
+      [table_embedding f m c hm hf, .eqRefl m, .eqRefl (embed x)]
   have gv := GaussianRationalMonicReduction.evaluate_congr tv (.eqRefl (embed y))
   have hv := RationalPolynomialBuffersGaussianEmbedding.evaluation_transport f f' (succ c) x hf
     (coefficients_length _ _) (coefficient_list_embedding _ _)

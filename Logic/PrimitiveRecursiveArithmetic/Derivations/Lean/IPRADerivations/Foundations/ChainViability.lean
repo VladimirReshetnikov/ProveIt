@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.ViableChain
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # An admissible chain makes its start viable (`ipra_evidence_framework`)
@@ -44,11 +45,7 @@ variable {k : ℕ} {Γ : List (Fm PTm k)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `h ∸ j ≤ h`. -/
-theorem monus_le (h j : PTm k) : Γ ⊢[PRAAx] le (monus h j) h := by
-  refine .orE (le_total j h) ?_ ?_
-  · have e := natEq (eq_add_of_le (Prf.hyp0 (Γ := Γ) (φ := le j h)))
-    exact le_of_eq_add (d := j) (by apply deriveNat; ipra_simps; linear_combination e)
-  · exact le_congr (Prf.hyp0 (Γ := Γ) (φ := le h j)).eqSymm (.eqRefl _) (zero_le h)
+alias monus_le := Common.monus_le_self
 
 /-- `h ∸ (j + 1) < h` for `j < h`. -/
 theorem monus_succ_lt {h j : PTm k} (hj : Γ ⊢[PRAAx] lt j h) :

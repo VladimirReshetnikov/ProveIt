@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.GaussianGammaAdjacentCutoff
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Independence of every valid numerical cutoff in the original C7 name
@@ -35,11 +36,7 @@ theorem source_after (z R B N j : PTm n) (h : Γ ⊢[PRAAx] source z R B N) :
 
 theorem data_cutoff_congr (z R B : PTm n) {N M : PTm n} (h : Γ ⊢[PRAAx] N ≐ M) :
     Γ ⊢[PRAAx] data z R B N ≐ data z R B M := by
-  simpa only [GaussianGammaCutoffName.subst_data,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-    Matrix.cons_val_two,Matrix.cons_val_three,Matrix.cons_val_succ,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (data (var 0) (var 1) (var 2) (var 3) : PTm 4)
-      (σ := ![z,R,B,N]) (σ' := ![z,R,B,M])
-      (fun i => by fin_cases i; exact .eqRefl _; exact .eqRefl _; exact .eqRefl _; exact h)
+  ipra_congr (data (var 0) (var 1) (var 2) (var 3) : PTm 4) with [.eqRefl z, .eqRefl R, .eqRefl B, h]
 theorem sample_cutoff_congr (p z R B : PTm n) {N M : PTm n} (h : Γ ⊢[PRAAx] N ≐ M) :
     Γ ⊢[PRAAx] sample p z R B N ≐ sample p z R B M :=
   congrAp2 nameF (.eqRefl p) (data_cutoff_congr z R B h)

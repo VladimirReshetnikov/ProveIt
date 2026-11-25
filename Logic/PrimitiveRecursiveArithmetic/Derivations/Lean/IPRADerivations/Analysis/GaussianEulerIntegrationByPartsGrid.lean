@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianEulerIntegrationByPartsGridObservation
 import IPRADerivations.Analysis.GaussianEulerIntegrationByPartsStep
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual finite Euler integration-by-parts telescope
@@ -65,22 +66,22 @@ theorem operator_at (p z B a b : PTm n) : Γ ⊢[PRAAx]
   have program : Γ ⊢[PRAAx] ap3 operatorF p (pairT a b) (fixedData z B) ≐ operatorTerm p (pairT a b) (fixedData z B) :=
     by simpa [operatorF,ap3] using toPR_eq (Γ := Γ) (operatorTerm (var 0) (var 1) (var 2) : PTm 3) ![p,pairT a b,fixedData z B]
   apply program.eqTrans
-  simpa only [operatorTerm,subst_operator,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.cons_val_three,Matrix.cons_val_four,Matrix.cons_val_succ,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (operator (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5)
-      (σ := ![p,fstT (fixedData z B),sndT (fixedData z B),fstT (pairT a b),sndT (pairT a b)]) (σ' := ![p,z,B,a,b])
-      (fun i => by fin_cases i; exact .eqRefl _; exact fst_pair _ _; exact snd_pair _ _; exact fst_pair _ _; exact snd_pair _ _)
+  ipra_congr (operator (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) with
+    [.eqRefl p, (show _ ⊢[PRAAx] fstT (fixedData z B) ≐ z from fst_pair _ _),
+      (show _ ⊢[PRAAx] sndT (fixedData z B) ≐ B from snd_pair _ _),
+      (show _ ⊢[PRAAx] fstT (pairT a b) ≐ a from fst_pair _ _),
+      (show _ ⊢[PRAAx] sndT (pairT a b) ≐ b from snd_pair _ _)] using [operatorTerm]
 
 theorem endpoint_at (p z B a b : PTm n) : Γ ⊢[PRAAx]
     ap3 endpointF p (pairT a b) (fixedData z B) ≐ primitive p z B a b := by
   have program : Γ ⊢[PRAAx] ap3 endpointF p (pairT a b) (fixedData z B) ≐ endpointTerm p (pairT a b) (fixedData z B) :=
     by simpa [endpointF,ap3] using toPR_eq (Γ := Γ) (endpointTerm (var 0) (var 1) (var 2) : PTm 3) ![p,pairT a b,fixedData z B]
   apply program.eqTrans
-  simpa only [endpointTerm,GaussianEulerIntegrationByPartsLinear.subst_primitive,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.cons_val_three,Matrix.cons_val_four,Matrix.cons_val_succ,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (primitive (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5)
-      (σ := ![p,fstT (fixedData z B),sndT (fixedData z B),fstT (pairT a b),sndT (pairT a b)]) (σ' := ![p,z,B,a,b])
-      (fun i => by fin_cases i; exact .eqRefl _; exact fst_pair _ _; exact snd_pair _ _; exact fst_pair _ _; exact snd_pair _ _)
+  ipra_congr (primitive (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) with
+    [.eqRefl p, (show _ ⊢[PRAAx] fstT (fixedData z B) ≐ z from fst_pair _ _),
+      (show _ ⊢[PRAAx] sndT (fixedData z B) ≐ B from snd_pair _ _),
+      (show _ ⊢[PRAAx] fstT (pairT a b) ≐ a from fst_pair _ _),
+      (show _ ⊢[PRAAx] sndT (pairT a b) ≐ b from snd_pair _ _)] using [endpointTerm]
 
 theorem endpoint_grid_at (i p z B a C E N : PTm n) : Γ ⊢[PRAAx]
     inst2 (sampleBody endpointF) i (sampleData p N a C E (fixedData z B)) ≐ endpoint i p z B a C E N :=
@@ -88,10 +89,8 @@ theorem endpoint_grid_at (i p z B a C E N : PTm n) : Γ ⊢[PRAAx]
 
 theorem primitive_numerator_congr (p z B a a' b : PTm n) (h : Γ ⊢[PRAAx] a ≐ a') : Γ ⊢[PRAAx]
     primitive p z B a b ≐ primitive p z B a' b := by
-  simpa only [GaussianEulerIntegrationByPartsLinear.subst_primitive,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.cons_val_three,Matrix.cons_val_four,Matrix.cons_val_succ,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (primitive (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5)
-      (σ := ![p,z,B,a,b]) (σ' := ![p,z,B,a',b]) (fun i => by fin_cases i; exact .eqRefl _; exact .eqRefl _; exact .eqRefl _; exact h; exact .eqRefl _)
+  ipra_congr (primitive (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) with
+    [.eqRefl p, .eqRefl z, .eqRefl B, h, .eqRefl b]
 
 private def forward (f : PTm 2) : PTm 2 := qsub (inst2 f (succ (var 0)) (var 1)) (inst2 f (var 0) (var 1))
 @[simp] private theorem forward_at (f : PTm 2) (i x : PTm n) :

@@ -1,7 +1,7 @@
 import IPRADerivations.Topology.DimensionRational
 import IPRADerivations.Foundations.DigitCodes
 import IPRADerivations.Foundations.LeastBoundedWitness
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The finite witness alternative (`dimension_invariance_ipra`, `thm:alternative`)

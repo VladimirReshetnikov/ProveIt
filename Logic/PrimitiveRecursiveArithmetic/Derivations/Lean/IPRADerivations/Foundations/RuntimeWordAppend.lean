@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.RuntimePermutationWords
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Appending a numerical mixed-radix word digit
@@ -99,10 +100,7 @@ theorem digit_before (m d w v i : PTm n) (hm : Γ ⊢[PRAAx] le one m)
   have q := Prf.andE₁ (divide_unique P (append m d w v) (quo w P+m*(v*T)) (rem w P) (power_positive m i hm) e (.andE₂ ws))
   have qs := divide_spec m (quo w P) hm
   have qe : Γ ⊢[PRAAx] quo w P+m*(v*T) ≐ m*(quo (quo w P) m+v*T)+rem (quo w P) m := by
-    have eq := natEq (Prf.andE₁ qs)
-    apply deriveNat
-    ipra_simps
-    linear_combination eq
+    ipra_lc natEq (Prf.andE₁ qs)
   exact (congrAp2 remF q (.eqRefl _)).eqTrans
     (.andE₂ (divide_unique m _ (quo (quo w P) m+v*T) (rem (quo w P) m) hm qe (.andE₂ qs)))
 

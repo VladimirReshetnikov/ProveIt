@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GammaCanonicalNames
 import IPRADerivations.Analysis.GaussianLocalLogarithmName
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The original canonical Gamma tail as a Gaussian regular name
@@ -117,9 +118,8 @@ theorem ordered_unit_distance (p k z R B N : PTm n) (h : Γ ⊢[PRAAx] source z 
 
 theorem value_congr_precision (z R B N : PTm n) {p q : PTm n} (h : Γ ⊢[PRAAx] p ≐ q) : Γ ⊢[PRAAx]
     value p z R B N ≐ value q z R B N := by
-  simpa only [subst_value,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_three,Matrix.cons_val_four,Matrix.cons_val_succ,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (value (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5)
-      (σ := ![p,z,R,B,N]) (σ' := ![q,z,R,B,N]) (fun i => by fin_cases i; exact h; exact .eqRefl _; exact .eqRefl _; exact .eqRefl _; exact .eqRefl _)
+  ipra_congr (value (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) with
+    [h, .eqRefl z, .eqRefl R, .eqRefl B, .eqRefl N]
 
 theorem later_distance (s t z R B N : PTm n) (h : Γ ⊢[PRAAx] source z R B N) (hst : Γ ⊢[PRAAx] le s t) : Γ ⊢[PRAAx]
     distanceBounded (value t z R B N) (value s z R B N) one (GaussianCoefficientNameBounds.unit s) :=

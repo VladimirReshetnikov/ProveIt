@@ -2,6 +2,7 @@ import IPRADerivations.Core.Division
 import IPRADerivations.Topology.StaggeredCells
 import IPRADerivations.Foundations.TermSums
 import IPRADerivations.Foundations.BoundedDecision
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Staggered grids and the injection count in every dimension (`dimension_invariance_ipra`)
@@ -71,7 +72,7 @@ theorem two_boundaries (d' g g' : ℕ) (hgg : g < g') (hg' : g' < d' + 1) (x : P
     Γ ⊢[PRAAx] (cell d' g (succ x) ≐ cell d' g x) ⋎ (cell d' g' (succ x) ≐ cell d' g' x) := by
   obtain ⟨δ, rfl⟩ := Nat.exists_eq_add_of_lt hgg
   have hs : ∀ (k : ℕ) (Δ : List (Fm PTm n)), Δ ⊢[PRAAx] succ x + num k ≐ succ (x + num k) := fun k Δ => by
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   refine .orE (eqb01' (succ (rem (x + num g) (succ (num d')))) (succ (num d'))) ?_ ?_
   · -- no boundary of grid `g` between `x` and `x + 1`
     refine .orI₁ ?_
@@ -84,11 +85,7 @@ theorem two_boundaries (d' g g' : ℕ) (hgg : g < g') (hg' : g' < d' + 1) (x : P
     have hdm := div_mod (Γ := Δ) (x + num g) (num d')
     have hz : Δ ⊢[PRAAx] x + num (g + δ + 1) ≐
         succ (num d') * (quo (x + num g) (succ (num d')) + one) + num δ := by
-      have e₁ := natEq (Prf.andE₁ hdm)
-      have e₂ := natEq hr
-      apply deriveNat; ipra_simps
-      push_cast at e₁ e₂ ⊢
-      linear_combination e₁ + e₂
+      ipra_lc natEq (Prf.andE₁ hdm) + natEq hr
     have hu := div_mod_unique hz (num_lt (a := δ) (b := d' + 1) (by omega))
     have hr' : Δ ⊢[PRAAx] eqb (succ (rem (x + num (g + δ + 1)) (succ (num d')))) (succ (num d')) ≐ zero :=
       (congrEqb' (congrSucc (Prf.andE₂ hu)) (.eqRefl _)).eqTrans
@@ -151,9 +148,7 @@ theorem cell_ne_of_gap (d' g : ℕ) {a b : PTm n} (h : Γ ⊢[PRAAx] le (a + suc
   have e : Δ ⊢[PRAAx] succ (num d') * quo (b + num g) (succ (num d')) + rem (b + num g) (succ (num d')) ≐
       succ (num d') * quo (b + num g) (succ (num d')) +
         (succ (num d') + (rem (a + num g) (succ (num d')) + monus b (a + succ (num d')))) := by
-    have e₁ := natEq da'; have e₂ := natEq (Prf.andE₁ db); have e₃ := natEq hb
-    apply deriveNat; ipra_simps
-    linear_combination -e₂ + e₁ + e₃
+    ipra_lc -natEq (Prf.andE₁ db) + natEq da' + natEq hb
   have hle : Δ ⊢[PRAAx] le (succ (num d')) (rem (b + num g) (succ (num d'))) :=
     le_of_eq_add (add_left_cancel e)
   exact le_lt_absurd _ hle (Prf.andE₂ db)

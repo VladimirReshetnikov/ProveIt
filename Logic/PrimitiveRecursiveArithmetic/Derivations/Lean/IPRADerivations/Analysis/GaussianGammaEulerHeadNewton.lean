@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianGammaEulerHeadGeometricStep
 import IPRADerivations.Analysis.GaussianRationalSyntheticCoefficientValues
 import IPRADerivations.Foundations.BoundedSyntaxInduction
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Newton identity for the unchanged original Euler-head program
@@ -45,10 +46,7 @@ def newtonSum (N s : PTm n) : PTm n := sum body N (data N s)
 
 theorem value_congr {a b N M s t : PTm n} (ha : Γ ⊢[PRAAx] a ≐ b)
     (hN : Γ ⊢[PRAAx] N ≐ M) (hs : Γ ⊢[PRAAx] s ≐ t) : Γ ⊢[PRAAx] value a N s ≐ value b M t := by
-  simpa only [GaussianGammaEulerHeadGeometricStep.subst_value,Syn.subst_var,
-    Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (value (var 0) (var 1) (var 2) : PTm 3)
-      (σ := ![a,N,s]) (σ' := ![b,M,t]) (fun i => by fin_cases i; exact ha; exact hN; exact hs)
+  ipra_congr (value (var 0) (var 1) (var 2) : PTm 3) with [ha, hN, hs]
 
 theorem term_at (N s k : PTm n) : Γ ⊢[PRAAx] inst2 body k (data N s) ≐ value (reciprocalPoint k) N s := by
   simp only [body,inst2,GaussianGammaEulerHeadGeometricStep.subst_value,

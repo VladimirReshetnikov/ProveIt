@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianGammaCofinalCoefficientName
 import IPRADerivations.Analysis.GaussianGammaRadiusOverlap
 import IPRADerivations.Analysis.GaussianRationalTravelScaling
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Original C7 observations versus an actual computed C19 coefficient prefixValue
@@ -84,10 +85,7 @@ theorem query_recovery (z R B : PTm n) (h : Γ ⊢[PRAAx] source z R B) : Γ ⊢
       (GaussianPolynomialDeterminantTerms.one_mul_canonical _ (GaussianRationalHorner.ofGaussian_canonical _ _ h.andE₂.andE₁)))
 
 theorem prefix_query_congr (C N u v k : PTm n) (h : Γ ⊢[PRAAx] u ≐ v) : Γ ⊢[PRAAx] partialSum C N u k ≐ partialSum C N v k := by
-  simpa only [GaussianRationalPowerExpansion.subst_prefix,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-    Matrix.cons_val_two,Matrix.cons_val_three,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (partialSum (var 0) (var 1) (var 2) (var 3) : PTm 4)
-      (σ := ![C,N,u,k]) (σ' := ![C,N,v,k]) (fun i => by fin_cases i; exact .eqRefl _; exact .eqRefl _; exact h; exact .eqRefl _)
+  ipra_congr (partialSum (var 0) (var 1) (var 2) (var 3) : PTm 4) with [.eqRefl C, .eqRefl N, h, .eqRefl k]
 
 theorem finite_prefix_tail (q z R B d : PTm n) (h : Γ ⊢[PRAAx] source z R B) : Γ ⊢[PRAAx]
     distanceBounded (GaussianGammaCofinalCoefficientName.sample (stage q d) z (two*R) B)

@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.PrimorialLower
 import IPRADerivations.AnalyticNumberTheory.SymmetryPointwise
 import IPRADerivations.Geometry.HypercubeSplit
 import IPRADerivations.Analysis.WeierstrassProduct
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The prime-power reciprocal loss of the lcm bridge: `Σ_{p≤m²} p^{−a_p−1} ≤ 2/m`
@@ -75,9 +76,7 @@ theorem uA (i P : PTm n) : Γ ⊢[PRAAx] le (P * (isP i * quo (LD P) (ex i P))) 
   have q := SymmetryPointwise.quo_mul_le (x := LD P) dpos
   have a := le_mul_mono (le_refl (quo (LD P) (ex i P))) (le_of_lt I2)
   refine le_congr ?_ (.eqRefl _) (le_trans a q)
-  have e := natEq (Prf.hyp0 : C ⊢[PRAAx] isP i ≐ one)
-  apply deriveNat; ipra_simps
-  linear_combination (-(𝔞 P * 𝔞 (quo (LD P) (ex i P)))) * e
+  ipra_lc (-(𝔞 P * 𝔞 (quo (LD P) (ex i P)))) * natEq (Prf.hyp0 : C ⊢[PRAAx] isP i ≐ one)
 
 /-- `i² u_i ≤ L²` for `i ≤ P`. -/
 theorem uB_sq {i P : PTm n} (hiP : Γ ⊢[PRAAx] le i P) :
@@ -89,7 +88,6 @@ theorem uB_sq {i P : PTm n} (hiP : Γ ⊢[PRAAx] le i P) :
   have I2 := Prf.andE₂ (lcm_valuation hi P)
   have dpos := pw_pos' ipos (succ (val i (lcmu P)))
   have q := SymmetryPointwise.quo_mul_le (x := LD P) dpos
-  have e := natEq (Prf.hyp0 : C ⊢[PRAAx] isP i ≐ one)
   -- `v_i(L) ≥ 1`, so `i² ≤ i^{v+1}`
   have ii : C ⊢[PRAAx] le (i * i) (ex i P) := by
     refine .orE (zero_or_succ (val i (lcmu P))) ?_ ?_
@@ -100,15 +98,14 @@ theorem uB_sq {i P : PTm n} (hiP : Γ ⊢[PRAAx] le i P) :
     · let C' : List (Fm PTm n) := (val i (lcmu P) ≐ succ (pred (val i (lcmu P)))) :: C
       have h2 : C' ⊢[PRAAx] le (succ (succ zero)) (succ (val i (lcmu P))) :=
         le_congr (.eqRefl _) (congrSucc Prf.hyp0).eqSymm
-          (le_of_eq_add (d := pred (val i (lcmu P))) (by apply deriveNat; ipra_simps; ring))
+          (le_of_eq_add (d := pred (val i (lcmu P))) (by ipra_ring))
       have p2 : C' ⊢[PRAAx] pw i (succ (succ zero)) ≐ i * i :=
         (pw_succ i (succ zero)).eqTrans (congrMul ((pw_succ i zero).eqTrans
           ((congrMul (pw_zero i) (.eqRefl _)).eqTrans (one_mul i))) (.eqRefl _))
       exact le_congr p2 (.eqRefl _) (PowerCleared.pw_le_exp ipos.wk h2)
   have a := le_mul_mono ii (le_refl (quo (LD P) (ex i P)))
   refine le_congr ?_ (.eqRefl _) (le_trans a (le_congr (mul_comm _ _) (.eqRefl _) q))
-  apply deriveNat; ipra_simps
-  linear_combination (-(𝔞 i * 𝔞 i * 𝔞 (quo (LD P) (ex i P)))) * e
+  ipra_lc (-(𝔞 i * 𝔞 i * 𝔞 (quo (LD P) (ex i P)))) * natEq (Prf.hyp0 : C ⊢[PRAAx] isP i ≐ one)
 
 /-! ## The running bound -/
 
@@ -116,13 +113,9 @@ theorem p1_step {N P : PTm n} (ih : Γ ⊢[PRAAx] le (P * U N P) (N * LD P)) :
     Γ ⊢[PRAAx] le (P * U (succ N) P) (succ N * LD P) := by
   have sU := sum_succ' (Γ := Γ) uB N P
   rw [inst2_uB] at sU
-  have eU := natEq sU
-  have e1 := natEq (eq_add_of_le ih)
-  have e2 := natEq (eq_add_of_le (uA (Γ := Γ) N P))
   refine le_of_eq_add (d := monus (N * LD P) (P * U N P) +
     monus (LD P) (P * (isP N * quo (LD P) (ex N P)))) ?_
-  apply deriveNat; ipra_simps
-  linear_combination e1 + e2 - 𝔞 P * eU
+  ipra_lc natEq (eq_add_of_le ih) + natEq (eq_add_of_le (uA (Γ := Γ) N P)) - 𝔞 P * natEq sU
 
 /-- `P · U(N) ≤ N L²`. -/
 theorem phase1 (N P : PTm n) : Γ ⊢[PRAAx] le (P * U N P) (N * LD P) := by
@@ -130,10 +123,8 @@ theorem phase1 (N P : PTm n) : Γ ⊢[PRAAx] le (P * U N P) (N * LD P) := by
     refine PRA.qfInd _ trivial ?_ ?_
     · simp only [subst_le, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
         ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      have e := natEq (sum_zero (Γ := Γ) uB P)
       refine le_of_eq_add (d := zero) ?_
-      apply deriveNat; ipra_simps
-      linear_combination (-(𝔞 P)) * e
+      ipra_lc (-(𝔞 P)) * natEq (sum_zero (Γ := Γ) uB P)
     · simp only [subst_le, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
         ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
       let D : List (Fm PTm (n + 1)) :=
@@ -152,25 +143,20 @@ abbrev J (m N P : PTm n) : Fm PTm n :=
 
 theorem jbase {m N P : PTm n} (hmN : Γ ⊢[PRAAx] m ≐ N) : Γ ⊢[PRAAx] J m N P := by
   have p := phase1 (Γ := Γ) (succ N) P
-  have e1 := natEq (eq_add_of_le p)
-  have em := natEq hmN
   refine le_of_eq_add (d := m * N * monus (succ N * LD P) (P * U (succ N) P)) ?_
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 m * 𝔞 N * e1 - (𝔞 P * (𝔞 (lcmu P) * 𝔞 (lcmu P)) - 𝔞 m * 𝔞 N * (𝔞 (lcmu P) * 𝔞 (lcmu P))) * em
+  ipra_lc 𝔞 m * 𝔞 N * natEq (eq_add_of_le p) -
+    (𝔞 P * (𝔞 (lcmu P) * 𝔞 (lcmu P)) - 𝔞 m * 𝔞 N * (𝔞 (lcmu P) * 𝔞 (lcmu P))) * natEq hmN
 
 theorem jstep {m N P : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) (hNP : Γ ⊢[PRAAx] le (succ N) P)
     (ih : Γ ⊢[PRAAx] J m N P) : Γ ⊢[PRAAx] J m (succ N) P := by
   have sU := sum_succ' (Γ := Γ) uB (succ N) P
   rw [inst2_uB] at sU
-  have eU := natEq sU
-  have eJ := natEq (eq_add_of_le ih)
-  have eB := natEq (eq_add_of_le (uB_sq (Γ := Γ) hNP))
   refine le_cancel_pos hN (le_of_eq_add (d := succ N * monus (N * P * LD P + m * N * succ m * LD P)
       (m * N * P * U (succ N) P + m * P * LD P) +
     m * P * (monus (LD P) (succ N * succ N * (isP (succ N) * quo (LD P) (ex (succ N) P))) +
       succ N * (isP (succ N) * quo (LD P) (ex (succ N) P)))) ?_)
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞 N + 1) * eJ + 𝔞 m * 𝔞 P * eB - 𝔞 N * 𝔞 m * (𝔞 N + 1) * 𝔞 P * eU
+  ipra_lc (𝔞 N + 1) * natEq (eq_add_of_le ih) + 𝔞 m * 𝔞 P * natEq (eq_add_of_le (uB_sq (Γ := Γ) hNP)) -
+    𝔞 N * 𝔞 m * (𝔞 N + 1) * 𝔞 P * natEq sU
 
 /-- `Φ(N): m ≤ N → N ≤ P → J(N)`. -/
 abbrev Phi (m N P : PTm n) : Fm PTm n := le m N ⟶ (le N P ⟶ J m N P)
@@ -224,12 +210,10 @@ theorem loss_sum {m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) :
     have e := natEq hm
     exact le_of_eq_add (d := m * pred m) (by apply deriveNat; ipra_simps; linear_combination 𝔞 m * e)
   have j := Prf.impE (Prf.impE (phase2 (P := m * m) hm (m * m)) hmP) (le_refl _)
-  have eJ := natEq (eq_add_of_le j)
   refine le_cancel_pos (Combinatorics.Binomial.pos_mul hP hP) (le_of_eq_add
     (d := monus ((m * m) * (m * m) * LD (m * m) + m * (m * m) * succ m * LD (m * m))
       (m * (m * m) * (m * m) * U (succ (m * m)) (m * m) + m * (m * m) * LD (m * m))) ?_)
-  apply deriveNat; ipra_simps
-  linear_combination eJ
+  ipra_lc natEq (eq_add_of_le j)
 
 /-! ## The product form -/
 
@@ -265,14 +249,11 @@ theorem prod_lower {m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) :
   have W := Analysis.WeierstrassProduct.weierstrass_lower (a := uB) (c := cB) (D := LD (m * m)) (x := m * m)
     (N := succ (m * m)) hb
   have L := loss_sum hm
-  have eW := natEq (eq_add_of_le W)
-  have eL := natEq (eq_add_of_le L)
-  have ep := natEq (pw_succ (Γ := Γ) (LD (m * m)) (succ (m * m)))
   have Dpos := Combinatorics.Binomial.pos_mul (LcmUpto.lcmu_pos (Γ := Γ) (m * m)) (LcmUpto.lcmu_pos (m * m))
   refine le_cancel_pos Dpos (le_of_eq_add (d := m * monus (pw (LD (m * m)) (succ (m * m)) * U (succ (m * m)) (m * m) +
       LD (m * m) * ap2 (prodF cB) (succ (m * m)) (m * m)) (pw (LD (m * m)) (succ (succ (m * m)))) +
     pw (LD (m * m)) (succ (m * m)) * monus (two * LD (m * m)) (m * U (succ (m * m)) (m * m))) ?_)
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 m * eW + 𝔞 (pw (LD (m * m)) (succ (m * m))) * eL + 𝔞 m * ep
+  ipra_lc 𝔞 m * natEq (eq_add_of_le W) + 𝔞 (pw (LD (m * m)) (succ (m * m))) * natEq (eq_add_of_le L) +
+    𝔞 m * natEq (pw_succ (Γ := Γ) (LD (m * m)) (succ (m * m)))
 
 end LeanProofs.IPRA.AnalyticNumberTheory.LcmBridgeLoss

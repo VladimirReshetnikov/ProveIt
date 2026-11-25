@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.PowerCleared
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Summing over multiples
@@ -66,13 +67,10 @@ theorem le_quo_of_mul_le {k t F : PTm n} (hk : Γ ⊢[PRAAx] k ≐ succ (pred k)
     Γ ⊢[PRAAx] le t (quo F k) := by
   refine .orE (lt_or_le (quo F k) t) ?_ Prf.hyp0
   refine .botE _ ?_
-  have a₁ := natEq ((div_eq (j := F) hk).wk (ψ := lt (quo F k) t))
-  have a₂ := natEq (eq_add_of_le (Prf.hyp0 : (lt (quo F k) t :: Γ) ⊢[PRAAx] _))
-  have a₃ := natEq ((eq_add_of_le (rem_lt' hk F)).wk (ψ := lt (quo F k) t))
-  have a₄ := natEq ((eq_add_of_le h).wk (ψ := lt (quo F k) t))
   refine succ_ne_zero' _ (a := monus k (succ (rem F k)) + k * monus t (succ (quo F k)) + monus F (k * t)) ?_
-  apply deriveNat; ipra_simps
-  linear_combination a₁ - a₄ - a₃ - Groth.ι (IPRA.Q.mk _ k) * a₂
+  ipra_lc natEq ((div_eq (j := F) hk).wk (ψ := lt (quo F k) t)) - natEq ((eq_add_of_le h).wk (ψ := lt (quo F k) t)) -
+    natEq ((eq_add_of_le (rem_lt' hk F)).wk (ψ := lt (quo F k) t)) -
+    Groth.ι (IPRA.Q.mk _ k) * natEq (eq_add_of_le (Prf.hyp0 : (lt (quo F k) t :: Γ) ⊢[PRAAx] _))
 
 /-! ## Reindexing the multiples of `p` -/
 

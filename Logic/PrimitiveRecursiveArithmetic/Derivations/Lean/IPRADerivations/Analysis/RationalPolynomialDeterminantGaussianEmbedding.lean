@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.RationalPolynomialDeterminantTermsGaussianEmbedding
 import IPRADerivations.Analysis.GaussianPolynomialDeterminant
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual original rational polynomial determinant
@@ -43,9 +44,7 @@ def determinant (M m L : PTm n) : PTm n := partialDeterminant M m L (Foundations
     Syn.subst σ (determinant M m L) = determinant (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L) := by simp [determinant]
 theorem summand_congr {M M' m m' L L' t t' : PTm n} (hM : Γ ⊢[PRAAx] M ≐ M') (hm : Γ ⊢[PRAAx] m ≐ m')
     (hL : Γ ⊢[PRAAx] L ≐ L') (ht : Γ ⊢[PRAAx] t ≐ t') : Γ ⊢[PRAAx] summand M m L t ≐ summand M' m' L' t' := by
-  simpa only [subst_summand,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_three,
-    Matrix.head_cons,Matrix.tail_cons] using Prf.eqCongr (Γ := Γ) (summand (var 0) (var 1) (var 2) (var 3) : PTm 4)
-      (σ := ![M,m,L,t]) (σ' := ![M',m',L',t']) (fun i => by fin_cases i; exact hM; exact hm; exact hL; exact ht)
+  ipra_congr (summand (var 0) (var 1) (var 2) (var 3) : PTm 4) with [hM, hm, hL, ht]
 theorem partial_congr {M M' m m' L L' t t' : PTm n} (hM : Γ ⊢[PRAAx] M ≐ M') (hm : Γ ⊢[PRAAx] m ≐ m')
     (hL : Γ ⊢[PRAAx] L ≐ L') (ht : Γ ⊢[PRAAx] t ≐ t') : Γ ⊢[PRAAx]
     partialDeterminant M m L t ≐ partialDeterminant M' m' L' t' :=

@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.SymmetryBound
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Partial summation against the harmonic logarithm (`pnt_ipra_constructive_2026-11-14`, `sb:error-equation`)
@@ -95,22 +96,14 @@ theorem U_zero (K F : PTm n) : Γ ⊢[PRAAx] U zero K F ≐ zero :=
     (zero_monus _)
 
 theorem ab_zero (K F : PTm n) : Γ ⊢[PRAAx] Ab a zero K F := by
-  have s := natEq (sum_succ' (Γ := Γ) (auB a) zero (pairT K F))
-  have s0 := natEq (sum_zero (Γ := Γ) (auB a) (pairT K F))
-  have t0 := natEq ((auB_at (Γ := Γ) a zero K F).eqTrans ((congrMul (.eqRefl _) (U_zero K F)).eqTrans (mul_zero _)))
-  have a0 := natEq (sum_zero (Γ := Γ) (adB a) (pairT K F))
-  have u0 := natEq (U_zero (Γ := Γ) K F)
-  apply deriveNat; ipra_simps
-  linear_combination s + s0 + t0 + a0 - 𝔞 (ap2 (sumF a) (succ zero) (pairT K F)) * u0
+  ipra_lc natEq (sum_succ' (Γ := Γ) (auB a) zero (pairT K F)) + natEq (sum_zero (Γ := Γ) (auB a) (pairT K F)) +
+    natEq ((auB_at (Γ := Γ) a zero K F).eqTrans ((congrMul (.eqRefl _) (U_zero K F)).eqTrans (mul_zero _))) +
+    natEq (sum_zero (Γ := Γ) (adB a) (pairT K F)) -
+    𝔞 (ap2 (sumF a) (succ zero) (pairT K F)) * natEq (U_zero (Γ := Γ) K F)
 
 theorem ab_step {N K F : PTm n} (h0 : Γ ⊢[PRAAx] inst2 a zero (pairT K F) ≐ zero) (ih : Γ ⊢[PRAAx] Ab a N K F) :
     Γ ⊢[PRAAx] Ab a (succ N) K F := by
-  have e0 := natEq ih
-  have s := natEq (sum_succ' (Γ := Γ) (auB a) (succ N) (pairT K F))
-  have t := natEq (auB_at (Γ := Γ) a (succ N) K F)
   have d := natEq (sum_succ' (Γ := Γ) (adB a) N (pairT K F))
-  have dt := natEq (adB_at (Γ := Γ) a N K F)
-  have sa := natEq (sum_succ' (Γ := Γ) a (succ N) (pairT K F))
   have key : Γ ⊢[PRAAx] ap2 (sumF a) (succ N) (pairT K F) * (U N K F + monus (S (K * succ N) F) (S (K * N) F)) ≐
       ap2 (sumF a) (succ N) (pairT K F) * U (succ N) K F := by
     refine .orE (zero_or_succ N) ?_ ?_
@@ -126,15 +119,13 @@ theorem ab_step {N K F : PTm n} (h0 : Γ ⊢[PRAAx] inst2 a zero (pairT K F) ≐
       have m1 : C ⊢[PRAAx] le (S K F) (S (K * N) F) :=
         S_mono F (le_of_eq_add (d := K * pred N) (by apply deriveNat; ipra_simps; linear_combination 𝔞 K * wN))
       have m2 : C ⊢[PRAAx] le (S K F) (S (K * succ N) F) :=
-        S_mono F (le_of_eq_add (d := K * N) (by apply deriveNat; ipra_simps; ring))
+        S_mono F (le_of_eq_add (d := K * N) (by ipra_ring))
       have m3 : C ⊢[PRAAx] le (S (K * N) F) (S (K * succ N) F) :=
-        S_mono F (le_of_eq_add (d := K) (by apply deriveNat; ipra_simps; ring))
-      have e1 := natEq (eq_add_of_le m1); have e2 := natEq (eq_add_of_le m2); have e3 := natEq (eq_add_of_le m3)
-      apply deriveNat; ipra_simps
-      linear_combination 𝔞 (ap2 (sumF a) (succ N) (pairT K F)) * (e2 - e1 - e3)
-  have k := natEq key
-  apply deriveNat; ipra_simps
-  linear_combination s + t + d + dt + e0 + k - 𝔞 (U (succ N) K F) * sa
+        S_mono F (le_of_eq_add (d := K) (by ipra_ring))
+      ipra_lc 𝔞 (ap2 (sumF a) (succ N) (pairT K F)) * (natEq (eq_add_of_le m2) - natEq (eq_add_of_le m1) - natEq (eq_add_of_le m3))
+  ipra_lc natEq (sum_succ' (Γ := Γ) (auB a) (succ N) (pairT K F)) + natEq (auB_at (Γ := Γ) a (succ N) K F) + d +
+    natEq (adB_at (Γ := Γ) a N K F) + natEq ih + natEq key -
+    𝔞 (U (succ N) K F) * natEq (sum_succ' (Γ := Γ) a (succ N) (pairT K F))
 
 /-- Variables `0 = N`, `1 = K`, `2 = F`. -/
 private abbrev abF : Fm PTm 3 :=
@@ -197,7 +188,7 @@ omit hP in
 theorem dlt_k (k F : PTm n) : Γ ⊢[PRAAx] le (k * monus (S (K * succ k) F) (S (K * k) F)) F := by
   have dl := delta_le (Γ := Γ) k F (pos_of_lt_zero hK)
   have m : Γ ⊢[PRAAx] le (S (K * k) F) (S (K * succ k) F) :=
-    S_mono F (le_of_eq_add (d := K) (by apply deriveNat; ipra_simps; ring))
+    S_mono F (le_of_eq_add (d := K) (by ipra_ring))
   have e := natEq (eq_add_of_le m)
   ipra_le sl dl with 𝔞 k * e
 

@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianRationalPolynomialDegree
 import IPRADerivations.Analysis.GaussianRationalMonicReconstruction
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Actual convolution, leading coefficient and computed product degree
@@ -53,22 +54,13 @@ theorem product_recodes (a b : PTm n) : Γ ⊢[PRAAx] qmul a b ≐ qmul (recode 
 
 theorem difference_before (e f k i : PTm n) (hk : Γ ⊢[PRAAx] lt k (e+f))
     (hei : Γ ⊢[PRAAx] le e i) (hik : Γ ⊢[PRAAx] le i k) : Γ ⊢[PRAAx] lt (monus k i) f := by
-  have a := natEq (eq_add_of_le hk)
-  have b := natEq (eq_add_of_le hei)
-  have c := natEq (eq_add_of_le hik)
   apply le_of_eq_add (d := monus i e+monus (e+f) (succ k))
-  apply deriveNat
-  ipra_simps
-  linear_combination a+b+c
+  ipra_lc natEq (eq_add_of_le hk)+natEq (eq_add_of_le hei)+natEq (eq_add_of_le hik)
 
 theorem difference_at (e f i : PTm n) (hei : Γ ⊢[PRAAx] lt e i)
     (hik : Γ ⊢[PRAAx] le i (e+f)) : Γ ⊢[PRAAx] lt (monus (e+f) i) f := by
-  have a := natEq (eq_add_of_le hei)
-  have b := natEq (eq_add_of_le hik)
   apply le_of_eq_add (d := monus i (succ e))
-  apply deriveNat
-  ipra_simps
-  linear_combination a+b
+  ipra_lc natEq (eq_add_of_le hei)+natEq (eq_add_of_le hik)
 
 theorem prefix_contribution_zero (P Q M e f k i : PTm n)
     (hP : Γ ⊢[PRAAx] zeroPrefix P e) (hQ : Γ ⊢[PRAAx] zeroPrefix Q f)
@@ -257,12 +249,7 @@ theorem product_leading (P Q N M : PTm n) (hP : Γ ⊢[PRAAx] nonzeroCoefficient
 
 theorem degree_difference (N M e f : PTm n) (he : Γ ⊢[PRAAx] le e N) (hf : Γ ⊢[PRAAx] le f M) : Γ ⊢[PRAAx]
     monus (N+M) (e+f) ≐ monus N e+monus M f := by
-  have a := natEq (eq_add_of_le he)
-  have b := natEq (eq_add_of_le hf)
-  have c := natEq (eq_add_of_le (sum_bound e f N M he hf))
-  apply deriveNat
-  ipra_simps
-  linear_combination a+b-c
+  ipra_lc natEq (eq_add_of_le he)+natEq (eq_add_of_le hf)-natEq (eq_add_of_le (sum_bound e f N M he hf))
 
 theorem product_degree (P Q N M : PTm n) (hP : Γ ⊢[PRAAx] nonzeroCoefficients P N)
     (hQ : Γ ⊢[PRAAx] nonzeroCoefficients Q M) : Γ ⊢[PRAAx]

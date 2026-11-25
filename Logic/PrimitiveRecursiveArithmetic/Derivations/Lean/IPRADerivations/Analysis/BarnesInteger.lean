@@ -4,7 +4,7 @@ import IPRADerivations.Combinatorics.Binomial
 import IPRADerivations.AnalyticNumberTheory.Euler
 import IPRADerivations.Core.ProdLemmas
 import IPRADerivations.Core.CongruenceTactic
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The Barnes G-function at positive integers

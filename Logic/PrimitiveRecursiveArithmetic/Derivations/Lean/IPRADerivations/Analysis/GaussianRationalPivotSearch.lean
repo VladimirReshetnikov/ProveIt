@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianRationalRowElimination
 import IPRADerivations.Foundations.BoundedReflection
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual least available Gaussian-rational pivot
@@ -107,11 +108,8 @@ theorem fields_at (A H c p : PTm n) (i : Fin 4) : Γ ⊢[PRAAx] fields (data A H
 theorem candidate_body_at (A H c p r : PTm n) : Γ ⊢[PRAAx]
     inst2 candidateBody r (data A H c p) ≐ candidate A H c p r := by
   simp only [candidateBody,inst2,subst_candidate,subst_fields,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
-  simpa only [subst_candidate,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.cons_val_three,Matrix.cons_val_four,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (candidate (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5)
-      (σ := ![fields (data A H c p) 0,fields (data A H c p) 1,fields (data A H c p) 2,fields (data A H c p) 3,r])
-      (σ' := ![A,H,c,p,r]) (fun i => by fin_cases i; exact fields_at _ _ _ _ 0; exact fields_at _ _ _ _ 1; exact fields_at _ _ _ _ 2; exact fields_at _ _ _ _ 3; exact .eqRefl _)
+  ipra_congr (candidate (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) with
+    [fields_at _ _ _ _ 0, fields_at _ _ _ _ 1, fields_at _ _ _ _ 2, fields_at _ _ _ _ 3, .eqRefl r]
 
 theorem candidate_one (A H c p r : PTm n) (h : Γ ⊢[PRAAx] eligible A H c p r) : Γ ⊢[PRAAx] candidate A H c p r ≐ one :=
   (congrMul (unmarked_available H c r (.andE₁ h)) ((congrMonus (.eqRefl _) (eqb_of_ne (.andE₂ h))).eqTrans (monus_zero _))).eqTrans (one_mul _)

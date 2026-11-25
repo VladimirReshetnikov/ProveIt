@@ -2,6 +2,7 @@ import IPRADerivations.Analysis.GaussianLagrangeInterpolation
 import IPRADerivations.Analysis.GaussianInitialCoefficientBound
 import IPRADerivations.Analysis.GaussianFiniteSumL1Variation
 import IPRADerivations.Analysis.GaussianFiniteExponentialWeightedNorm
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # A computed finite-grid gain for original polynomial coefficients
@@ -59,8 +60,7 @@ theorem row_body_at (N e s : PTm n) : Γ ⊢[PRAAx] inst2 rowBody s (pairT N e) 
   simp only [rowBody,inst2,GaussianRationalLagrangeCardinals.subst_inverseCoefficient,
     GaussianRationalFiniteGridIdentity.subst_grid,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
   have gridEq : Γ ⊢[PRAAx] grid (fstT (pairT N e)) ≐ grid N := by
-    simpa using Prf.eqCongr (Γ := Γ) (grid (var 0) : PTm 1)
-      (σ := ![fstT (pairT N e)]) (σ' := ![N]) (fun i => by fin_cases i; exact fst_pair N e)
+    ipra_congr (grid (var 0) : PTm 1) with [fst_pair N e]
   exact GaussianRationalLagrangeCardinals.inverse_coefficient_congr
     gridEq (snd_pair _ _) (.eqRefl _)
 

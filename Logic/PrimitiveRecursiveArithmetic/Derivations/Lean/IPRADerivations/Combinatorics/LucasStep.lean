@@ -5,7 +5,8 @@ import IPRADerivations.AnalyticNumberTheory.EulerProduct
 import IPRADerivations.AnalyticNumberTheory.FactorVector
 import IPRADerivations.DiophantineNumberTheory.ModularCertificate
 import IPRADerivations.Foundations.BoundedReflection
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Lucas's congruence, one digit at a time
@@ -60,7 +61,7 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The digits of a successor -/
 
-theorem mul_one_r (X : PTm n) : Γ ⊢[PRAAx] X * one ≐ X := by ipra_ring
+alias mul_one_r := Common.mul_one_right
 theorem add_one_r (X : PTm n) : Γ ⊢[PRAAx] X + one ≐ succ X := by ipra_ring
 
 /-- No carry: when `(z mod K) + 1 ≠ K`, the quotient is unchanged and the remainder increases by one. -/

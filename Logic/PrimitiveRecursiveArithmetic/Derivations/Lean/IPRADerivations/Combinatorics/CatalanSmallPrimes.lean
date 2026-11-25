@@ -1,6 +1,6 @@
 import IPRADerivations.Combinatorics.CatalanPrimes
 import IPRADerivations.Foundations.FiniteSetExponential
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The prime Catalan numbers: the small cases (`catalan_numbers_ipra_2026-11-16`, Section 5)

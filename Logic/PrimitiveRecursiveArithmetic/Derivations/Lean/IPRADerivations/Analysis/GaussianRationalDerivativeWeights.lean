@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianRationalVariableHornerBudget
 import IPRADerivations.Analysis.GaussianRationalPowerExpansion
 import IPRADerivations.Foundations.BoundedSyntaxBackwardInduction
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Exact coefficient-dependent derivative weights of the actual Horner budget
@@ -51,9 +52,7 @@ def prefixLaw (C N U k : PTm n) : Fm PTm n := le k N ⟶ prefixSum C N U k ≐ c
 
 theorem weight_congr {C D N K U V i j : PTm n} (hC : Γ ⊢[PRAAx] C ≐ D) (hN : Γ ⊢[PRAAx] N ≐ K)
     (hU : Γ ⊢[PRAAx] U ≐ V) (hi : Γ ⊢[PRAAx] i ≐ j) : Γ ⊢[PRAAx] weight C N U i ≐ weight D K V j := by
-  simpa only [subst_weight,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_three,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (weight (var 0) (var 1) (var 2) (var 3) : PTm 4)
-      (σ := ![C,N,U,i]) (σ' := ![D,K,V,j]) (fun k => by fin_cases k; exact hC; exact hN; exact hU; exact hi)
+  ipra_congr (weight (var 0) (var 1) (var 2) (var 3) : PTm 4) with [hC, hN, hU, hi]
 theorem body_at (C N U i : PTm n) : Γ ⊢[PRAAx] inst2 body i (data C N U) ≐ weight C N U i := by
   simp only [body,inst2,subst_weight,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
   exact weight_congr (fst_pair _ _) ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))

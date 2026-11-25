@@ -1,7 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.PellCFStep
 import IPRADerivations.Core.Fubini
 import IPRADerivations.Combinatorics.BinomialIdentities
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The continued fraction of `√D` and its integer invariants

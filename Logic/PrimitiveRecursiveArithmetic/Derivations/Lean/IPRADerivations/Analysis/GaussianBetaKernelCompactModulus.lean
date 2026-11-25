@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianBetaKernelLipschitz
 import IPRADerivations.Analysis.GaussianEulerCompactPowerVariation
 import IPRADerivations.Analysis.GaussianBetaKernelGridComparison
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # A degree-independent compact time modulus for original beta rows
@@ -105,11 +106,11 @@ theorem evaluator_raw_at (p t z B N : PTm n) : Γ ⊢[PRAAx]
   have lastOutput : ![p,z,B,fstT t,sndT t,N] (5 : Fin 6) = N := rfl
   apply program.eqTrans
   change Γ ⊢[PRAAx] row p (fstT (fstT x)) (sndT (fstT x)) (fstT t) (sndT t) (sndT x) ≐ row p z B (fstT t) (sndT t) N
-  simpa only [GaussianBetaKernelGridComparison.subst_row,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-    Matrix.cons_val_two,Matrix.cons_val_three,Matrix.cons_val_four,Matrix.cons_val_succ,Matrix.head_cons,Matrix.tail_cons,lastInput,lastOutput] using
-    Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (row (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6)
-      (σ := ![p,fstT (fstT x),sndT (fstT x),fstT t,sndT t,sndT x]) (σ' := ![p,z,B,fstT t,sndT t,N])
-      (fun i => by fin_cases i; exact .eqRefl _; exact zarg; exact barg; exact .eqRefl _; exact .eqRefl _; exact snd_pair (GaussianEulerIntegrandName.fixedData z B) N)
+  ipra_congr (row (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) with
+    [.eqRefl p, (show _ ⊢[PRAAx] fstT (fstT x) ≐ z from zarg), (show _ ⊢[PRAAx] sndT (fstT x) ≐ B from barg),
+      .eqRefl (fstT t), .eqRefl (sndT t),
+      (show _ ⊢[PRAAx] sndT x ≐ N from snd_pair (GaussianEulerIntegrandName.fixedData z B) N)] using [lastInput,
+      lastOutput]
 
 theorem wrapped_at (p t z B N : PTm n) : Γ ⊢[PRAAx]
     ap2 (GaussianCompactRiemannName.evaluatorName evaluatorF) p (GaussianCompactRiemannName.nameData t (sampleDataBeta z B N)) ≐

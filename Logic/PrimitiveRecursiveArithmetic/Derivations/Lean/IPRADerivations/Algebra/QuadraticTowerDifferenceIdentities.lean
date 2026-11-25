@@ -1,4 +1,5 @@
 import IPRADerivations.Algebra.QuadraticTowerSignEmbedding
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Actual numerical-tower difference and order-translation identities
@@ -61,9 +62,7 @@ theorem scalar_cancel (a : PTm n) : Γ ⊢[PRAAx] scalarDifference a a ≐ zeroS
   apply RationalFiniteSum.canonical_equal _ _ _ _ _ _ (RationalArithmetic.add_guard _ _) QuadraticTowerScalarArrays.zero_canonical total
     (QuadraticRationalEmbedding.zero_scalar_represents one)
     (RationalAlgebra.positive_product (RationalArgmin.denominator_positive a) (RationalArgmin.denominator_positive a)) (le_refl one)
-  apply ZT.derive
-  simp only [ZT.toZ_mul,ZT.toZ_add,ZT.toZ_neg,ZT.toZ_ofNat,Q.mk_one,Q.mk_zero,map_one,map_zero]
-  ring
+  ipra_lc
 
 /-- Canonical original rational differences are literally invariant under
 common addition, with all raw denominators retained in the proof. -/
@@ -89,9 +88,7 @@ theorem scalar_translation (a b c : PTm n) : Γ ⊢[PRAAx]
       (RationalAlgebra.positive_product (RationalArgmin.denominator_positive a) (RationalArgmin.denominator_positive c))
       (RationalAlgebra.positive_product (RationalArgmin.denominator_positive b) (RationalArgmin.denominator_positive c)))
     (RationalAlgebra.positive_product (RationalArgmin.denominator_positive a) (RationalArgmin.denominator_positive b))
-  apply ZT.derive
-  simp only [ZT.toZ_mul,ZT.toZ_add,ZT.toZ_neg,ZT.toZ_ofNat,Q.mk_mul,map_mul]
-  ring
+  ipra_lc
 
 theorem difference_body_at (h A B i : PTm n) (hi : Γ ⊢[PRAAx] lt i (width h)) : Γ ⊢[PRAAx]
     inst2 QuadraticTowerCoefficientArithmetic.addBody i (pairT A (negated h B)) ≐ scalarDifference (entry A i) (entry B i) :=

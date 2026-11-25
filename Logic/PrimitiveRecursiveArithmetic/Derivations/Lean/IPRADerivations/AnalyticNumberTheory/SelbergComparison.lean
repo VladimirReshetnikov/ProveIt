@@ -65,7 +65,7 @@ theorem divisor_at {k K L X : PTm n} (hK : Γ ⊢[PRAAx] le one K) (hL : Γ ⊢[
   have hm1 := isqrt_pos (Γ := Γ) k
   have h1 := isqrt_le (Γ := Γ) (succ k)
   have hm2 : Γ ⊢[PRAAx] lt (succ k) (succ (isqrt (succ k)) * succ (isqrt (succ k))) :=
-    le_congr (.eqRefl _) (by apply deriveNat; ipra_simps; ring) (lt_isqrt_succ_sq (succ k))
+    le_congr (.eqRefl _) (by ipra_ring) (lt_isqrt_succ_sq (succ k))
   have hmy : Γ ⊢[PRAAx] le (isqrt (succ k)) (succ k) := by
     have t := le_scale (isqrt (succ k)) hm1
     exact le_trans (by ipra_le sl t) h1
@@ -90,9 +90,9 @@ theorem comparison_upper {k K L X : PTm n} (hK : Γ ⊢[PRAAx] le one K) (hL : �
   have ta := tau_abel hK hL hyX hyK
   have J := log_square_sum (k := k) hK (le_trans (le_scale K hyX) hL)
   have hX : Γ ⊢[PRAAx] le one X :=
-    le_trans (le_of_eq_add (d := k) (by apply deriveNat; ipra_simps; ring) : Γ ⊢[PRAAx] le one (succ k)) hyX
+    le_trans (le_of_eq_add (d := k) (by ipra_ring) : Γ ⊢[PRAAx] le one (succ k)) hyX
   have m1x : Γ ⊢[PRAAx] le (S K (fact L)) (S (K * succ k) (fact L)) :=
-    S_mono (fact L) (le_of_eq_add (d := K * k) (by apply deriveNat; ipra_simps; ring))
+    S_mono (fact L) (le_of_eq_add (d := K * k) (by ipra_ring))
   have Eu := natEq (eq_add_of_le m1x)
   have EC := natEq (eq_add_of_le (c_nonneg hK hX hL))
   have s1 := le_scale (U (succ k) K (fact L)) (Prf.andE₁ dv)
@@ -115,9 +115,9 @@ theorem comparison_lower {k K L X : PTm n} (hK : Γ ⊢[PRAAx] le one K) (hL : �
   have ta := tau_abel hK hL hyX hyK
   have J := log_square_sum (k := k) hK (le_trans (le_scale K hyX) hL)
   have hX : Γ ⊢[PRAAx] le one X :=
-    le_trans (le_of_eq_add (d := k) (by apply deriveNat; ipra_simps; ring) : Γ ⊢[PRAAx] le one (succ k)) hyX
+    le_trans (le_of_eq_add (d := k) (by ipra_ring) : Γ ⊢[PRAAx] le one (succ k)) hyX
   have m1x : Γ ⊢[PRAAx] le (S K (fact L)) (S (K * succ k) (fact L)) :=
-    S_mono (fact L) (le_of_eq_add (d := K * k) (by apply deriveNat; ipra_simps; ring))
+    S_mono (fact L) (le_of_eq_add (d := K * k) (by ipra_ring))
   have Eu := natEq (eq_add_of_le m1x)
   have EC := natEq (eq_add_of_le (c_nonneg hK hX hL))
   have s1 := le_scale (two * CT K X (fact L)) (Prf.andE₁ dv)

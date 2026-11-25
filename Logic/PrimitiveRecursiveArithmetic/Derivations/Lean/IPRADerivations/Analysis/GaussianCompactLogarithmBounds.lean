@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.GaussianPositiveRationalLogarithmVariation
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Actual logarithm bounds on an original positive compact time interval
@@ -86,10 +87,7 @@ theorem gap_to_one (a b T : PTm n) (h : Γ ⊢[PRAAx] le a (T*b)) : Γ ⊢[PRAAx
     congrAdd (congrMonus (by ipra_ring) (by ipra_ring)) (congrMonus (by ipra_ring) (by ipra_ring))
   have abs : Γ ⊢[PRAAx] le (Probability.Variance.ad a b*Probability.Variance.ad a b) ((a+b)*(a+b)) := by
     refine le_of_eq_add (d := num 4*a*b) ?_
-    have ns := natEq (Probability.Variance.ad_sq (Γ := Γ) a b)
-    apply deriveNat
-    ipra_simps
-    linear_combination -ns
+    ipra_lc -natEq (Probability.Variance.ad_sq (Γ := Γ) a b)
   have sq := le_congr (congrMul eg eg).eqSymm (.eqRefl _) abs
   have first := nat_sqrt_mono sq
   exact le_trans first (le_congr (.eqRefl _) (by ipra_ring) (add_le_add₂ h (le_refl b)))
@@ -120,7 +118,6 @@ theorem sample_bound (p a b E T : PTm n) (hE : Γ ⊢[PRAAx] le one E) (h : Γ �
   · exact (GaussianReconstructionRoots.distance_zero_iff _ _ _ (le_refl one)).iffMp near
   · unfold radius
     ipra_le 25*sl (unit_positive (Γ := Γ) p)
-
 
 def rateInput (a b c d E A D : PTm n) : Fm PTm n := source a b ⋏ (source c d ⋏ (le one D ⋏
   (le b (E*a) ⋏ (le d (E*c) ⋏ distanceBounded (fraction a b) (fraction c d) A D))))

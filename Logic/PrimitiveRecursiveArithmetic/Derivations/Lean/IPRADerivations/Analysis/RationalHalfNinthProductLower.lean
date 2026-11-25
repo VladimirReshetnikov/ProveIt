@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.RationalConvexEndpointBudget
 import IPRADerivations.Analysis.GaussianPositiveRealArithmetic
 import IPRADerivations.Analysis.RationalCubeInfimumIntervals
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The finite half-times-ninth lower bound with observation errors
@@ -37,10 +38,7 @@ theorem add_negative_cancel (a e : PTm n) (ha : Γ ⊢[PRAAx] RationalNormalForm
     (RationalRepresentations.represents_self a)
     (positive_product _ _ (RationalArithmetic.product_denominator_positive a e) (RationalArgmin.denominator_positive e))
     (RationalArgmin.denominator_positive a)
-  apply ZT.derive
-  simp only [RationalArithmetic.addNumerator,RationalArithmetic.productDenominator,ZT.toZ_mul,ZT.toZ_add,ZT.toZ_neg,ZT.toZ_ofNat]
-  ipra_simps
-  ring
+  ipra_lc [RationalArithmetic.addNumerator, RationalArithmetic.productDenominator]
 
 theorem lowered_below (m U r : PTm n) (hU : Γ ⊢[PRAAx] le one U)
     (hr : Γ ⊢[PRAAx] RationalNormalForm.wellFormed r)
@@ -58,11 +56,7 @@ theorem lowered_represents (m U : PTm n) (hm : Γ ⊢[PRAAx] le one m)
   have e := RationalIntegerNormalization.normalize_preserves_value (Γ := Γ) (ZT.ofNat one) U hU
   have sum := RationalRepresentations.represents_add _ _ _ _ _ _ c (RationalRepresentations.represents_negative _ _ _ e)
   apply GaussianRationalHorner.scalar_congr (.eqRefl _) _ (.eqRefl _) sum
-  apply ZT.derive
-  have eq := natEq (eq_add_of_le hmu)
-  simp only [ZT.toZ_mul,ZT.toZ_add,ZT.toZ_neg,ZT.toZ_ofNat]
-  ipra_simps
-  linear_combination eq
+  ipra_lc natEq (eq_add_of_le hmu)
 
 theorem lowered_sign (m U : PTm n) (hm : Γ ⊢[PRAAx] le one m)
     (hU : Γ ⊢[PRAAx] le one U) (hmu : Γ ⊢[PRAAx] le m U) : Γ ⊢[PRAAx]

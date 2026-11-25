@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianPolynomialPerturbation
 import IPRADerivations.Analysis.GaussianProductNorm
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Finite root-product stability for Gaussian integer presentations
@@ -263,10 +264,7 @@ theorem nearest_certificate (S T N R δ A B i : PTm n)
   have bound := le_congr (Prf.andE₂ spec).eqSymm (.eqRefl _) minimum
   exact .andI (Prf.andE₁ spec) (le_congr (squared_distance_at _ _ _) (.eqRefl _) bound)
 
-private theorem cancel_positive {c a b : PTm n} (hc : Γ ⊢[PRAAx] le one c)
-    (h : Γ ⊢[PRAAx] le (c*a) (c*b)) : Γ ⊢[PRAAx] le a b := by
-  refine .orE (lt_or_le b a) ?_ Prf.hyp0
-  exact le_lt_absurd _ h.wk (RationalProductWitness.strict_mul_left hc.wk Prf.hyp0)
+private alias cancel_positive := Common.mul_cancel_le
 
 /-- With the legitimate positive rational denominator, the actual selected
 point minimizes the unscaled Gaussian squared norm as well. -/

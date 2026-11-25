@@ -1,6 +1,8 @@
 import IPRADerivations.AnalyticNumberTheory.Multiplicative
 import IPRADerivations.Topology.Sperner2D
 import IPRADerivations.Topology.StaggeredCells
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The finite dimension obstruction from the square to the line (`thm:finite`, `d = 2`)
@@ -100,62 +102,42 @@ theorem sum2_zero_le (f : PTm 3) {M p q : PTm n}
 
 /-! ## Equality tests and small values -/
 
-theorem eqb_congr {a a' b b' : PTm n} (h₁ : Γ ⊢[PRAAx] a ≐ a') (h₂ : Γ ⊢[PRAAx] b ≐ b') :
-    Γ ⊢[PRAAx] eqb a b ≐ eqb a' b' :=
-  congrMonus (.eqRefl _) (congrAdd (congrMonus h₁ h₂) (congrMonus h₂ h₁))
+alias eqb_congr := Common.congrEqb
 
-theorem eqb01 (a b : PTm n) : Γ ⊢[PRAAx] (eqb a b ≐ zero) ⋎ (eqb a b ≐ one) :=
-  .orE (eq_or_ne a b) (.orI₂ (eqb_of_eq Prf.hyp0)) (.orI₁ (eqb_of_ne Prf.hyp0))
+alias eqb01 := Common.eqb_zero_or_one
 
-theorem eqb_le_one' (a b : PTm n) : Γ ⊢[PRAAx] le (eqb a b) one := by
-  refine .orE (eqb01 a b) ?_ ?_
-  · exact le_congr Prf.hyp0.eqSymm (.eqRefl _) (zero_le one)
-  · exact le_congr Prf.hyp0.eqSymm (.eqRefl _) (le_refl one)
+alias eqb_le_one' := Common.eqb_le_one
 
 theorem eqb_zero_of_pos {c : PTm n} (h : Γ ⊢[PRAAx] le one c) : Γ ⊢[PRAAx] eqb c zero ≐ zero :=
   eqb_of_ne (.impI (not_succ_le_self zero _ (le_congr (.eqRefl _) Prf.hyp0 h.wk)))
 
 theorem two_mul_one : Γ ⊢[PRAAx] two * (one : PTm n) ≐ two := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem val_e0_zero {e0 e1 : PTm n} (h : Γ ⊢[PRAAx] e0 ≐ zero) :
     Γ ⊢[PRAAx] e0 * (one + e1) ≐ zero := by
-  have a := natEq h
-  apply deriveNat; ipra_simps
-  linear_combination (1 + 𝔞 e1) * a
+  ipra_lc (1 + 𝔞 e1) * natEq h
 
 theorem val_e0_one {e0 e1 : PTm n} (h : Γ ⊢[PRAAx] e0 ≐ one) :
     Γ ⊢[PRAAx] e0 * (one + e1) ≐ succ e1 := by
-  have a := natEq h
-  apply deriveNat; ipra_simps
-  linear_combination (1 + 𝔞 e1) * a
+  ipra_lc (1 + 𝔞 e1) * natEq h
 
 theorem val_e1_zero {e0 e1 : PTm n} (h : Γ ⊢[PRAAx] e1 ≐ zero) :
     Γ ⊢[PRAAx] e0 * (one + e1) ≐ e0 := by
-  have a := natEq h
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 e0 * a
+  ipra_lc 𝔞 e0 * natEq h
 
 theorem val_e1_one {e0 e1 : PTm n} (h : Γ ⊢[PRAAx] e1 ≐ one) :
     Γ ⊢[PRAAx] e0 * (one + e1) ≐ two * e0 := by
-  have a := natEq h
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 e0 * a
+  ipra_lc 𝔞 e0 * natEq h
 
 theorem prod_zero₁ {x y z : PTm n} (h : Γ ⊢[PRAAx] x ≐ zero) : Γ ⊢[PRAAx] x * y * z ≐ zero := by
-  have a := natEq h
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞 y * 𝔞 z) * a
+  ipra_lc (𝔞 y * 𝔞 z) * natEq h
 
 theorem prod_zero₂ {x y z : PTm n} (h : Γ ⊢[PRAAx] y ≐ zero) : Γ ⊢[PRAAx] x * y * z ≐ zero := by
-  have a := natEq h
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞 x * 𝔞 z) * a
+  ipra_lc (𝔞 x * 𝔞 z) * natEq h
 
 theorem prod_zero₃ {x y z : PTm n} (h : Γ ⊢[PRAAx] z ≐ zero) : Γ ⊢[PRAAx] x * y * z ≐ zero := by
-  have a := natEq h
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞 x * 𝔞 y) * a
+  ipra_lc (𝔞 x * 𝔞 y) * natEq h
 
 /-! ## The colour bits of a vertex with a known value -/
 
@@ -324,16 +306,11 @@ theorem full_zero {X₁ Y₁ X₂ Y₂ X₃ Y₃ N p : PTm n}
     (h13 : Γ ⊢[PRAAx] near (ap3 G X₁ Y₁ p) (ap3 G X₃ Y₃ p))
     (h23 : Γ ⊢[PRAAx] near (ap3 G X₂ Y₂ p) (ap3 G X₃ Y₃ p)) :
     Γ ⊢[PRAAx] full (lamF G) X₁ Y₁ X₂ Y₂ X₃ Y₃ (pairT N p) ≐ zero := by
-  have t₁ := natEq (triple_zero G (N := N) h13 h23 h12)
-  have t₂ := natEq (triple_zero G (N := N) h12 (near_symm h23) h13)
-  have t₃ := natEq (triple_zero G (N := N) h23 h13 (near_symm h12))
-  have t₄ := natEq (triple_zero G (N := N) (near_symm h23) h12 (near_symm h13))
-  have t₅ := natEq (triple_zero G (N := N) (near_symm h12) (near_symm h13) h23)
-  have t₆ := natEq (triple_zero G (N := N) (near_symm h13) (near_symm h12) (near_symm h23))
-  apply deriveNat
-  simp only [full, permT]
-  ipra_simps
-  linear_combination t₁ + t₂ + t₃ + t₄ + t₅ + t₆
+  ipra_lc [full, permT] natEq (triple_zero G (N := N) h13 h23 h12) +
+    natEq (triple_zero G (N := N) h12 (near_symm h23) h13) + natEq (triple_zero G (N := N) h23 h13 (near_symm h12)) +
+    natEq (triple_zero G (N := N) (near_symm h23) h12 (near_symm h13)) +
+    natEq (triple_zero G (N := N) (near_symm h12) (near_symm h13) h23) +
+    natEq (triple_zero G (N := N) (near_symm h13) (near_symm h12) (near_symm h23))
 
 /-! ## Admissibility of the colouring -/
 
@@ -476,10 +453,8 @@ theorem fullCount_zero {N p : PTm n} (hs : Γ ⊢[PRAAx] smallF G N p) :
   have hPR := near_of_dist (.andE₁ (.andE₂ (.andE₂ h5)))
   have hPS := near_of_dist (.andE₁ (.andE₂ (.andE₂ (.andE₂ h5))))
   have hSR := near_of_dist (.andE₂ (.andE₂ (.andE₂ (.andE₂ h5))))
-  have f₁ := natEq (full_zero G (N := Syn.shift (Syn.shift N)) hPQ hPR hQR)
-  have f₂ := natEq (full_zero G (N := Syn.shift (Syn.shift N)) hPS hPR hSR)
-  apply deriveNat; ipra_simps
-  linear_combination f₁ + f₂
+  ipra_lc natEq (full_zero G (N := Syn.shift (Syn.shift N)) hPQ hPR hQR) +
+    natEq (full_zero G (N := Syn.shift (Syn.shift N)) hPS hPR hSR)
 
 /-! ## The obstruction -/
 

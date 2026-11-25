@@ -4,6 +4,7 @@ import IPRADerivations.Core.SumOrder
 import IPRADerivations.AnalyticNumberTheory.LocalFactor
 import IPRADerivations.AnalyticNumberTheory.PowerCleared
 import IPRADerivations.Probability.Expectation
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The split inequality of the hypercube edge theorem
@@ -72,9 +73,7 @@ theorem le_cancel_pos {c a b : PTm N} (hc : Γ ⊢[PRAAx] c ≐ succ (pred c))
 theorem le_mul_pos (u : PTm N) {v : PTm N} (hv : Γ ⊢[PRAAx] v ≐ succ (pred v)) :
     Γ ⊢[PRAAx] le u (u * v) := by
   refine le_of_eq_add (d := u * pred v) ?_
-  have e := natEq hv
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞(u) * e
+  ipra_lc 𝔞(u) * natEq hv
 
 /-- `x^x ≥ 1`, with `0^0 = 1`. -/
 theorem pw_self_pos (x : PTm N) : Γ ⊢[PRAAx] pw x x ≐ succ (pred (pw x x)) := by
@@ -94,7 +93,7 @@ theorem amgm4 (x₁ x₂ x₃ x₄ : PTm N) :
   have hAB := mul_le_mul_right (four * four) (le_mul_mono hA hB)
   have hCC := le_mul_mono hC hC
   refine le_trans (le_congr ?_ ?_ hAB) (le_congr (.eqRefl _) (.eqRefl _) hCC)
-  all_goals (apply deriveNat; ipra_simps; ring)
+  all_goals (ipra_ring)
 
 /-- `lem:box-product` for two factors: with `tᵢ = Tᵢ / D` and `q = Q / D`, `t₁ t₂ ≥ q²` gives
 `(1 + t₁)(1 + t₂) ≥ (1 + q)²`. -/
@@ -103,17 +102,15 @@ theorem box_product2 {q t₁ t₂ : PTm N} (D : PTm N) (h : Γ ⊢[PRAAx] le (q 
   have h2 := two_mul_le h
   have m := add_le_add₂ (add_le_add₂ (le_refl (D * D)) (mul_le_mul_right D h2)) h
   refine le_congr ?_ ?_ m
-  all_goals (apply deriveNat; ipra_simps; ring)
+  all_goals (ipra_ring)
 
 /-! ## Bernoulli's inequality -/
 
 theorem bern_base (y : PTm N) :
     Γ ⊢[PRAAx] le (pw (succ y) (succ zero)) (pw y zero * succ y + zero * pw (succ y) zero) := by
   refine le_of_eq_add (d := zero) ?_
-  have e₁ := natEq (pw_succ (Γ := Γ) (succ y) zero); have e₂ := natEq (pw_zero (Γ := Γ) (succ y))
-  have e₃ := natEq (pw_zero (Γ := Γ) y)
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞(y) + 1) * e₃ - e₁ - (𝔞(y) + 1) * e₂
+  ipra_lc (𝔞(y) + 1) * natEq (pw_zero (Γ := Γ) y) - natEq (pw_succ (Γ := Γ) (succ y) zero) -
+    (𝔞(y) + 1) * natEq (pw_zero (Γ := Γ) (succ y))
 
 theorem bern_step {y k : PTm N}
     (ih : Γ ⊢[PRAAx] le (pw (succ y) (succ k)) (pw y k * succ y + k * pw (succ y) k)) :
@@ -121,11 +118,8 @@ theorem bern_step {y k : PTm N}
       (pw y (succ k) * succ y + succ k * pw (succ y) (succ k)) := by
   refine le_of_eq_add (d := y * monus (pw y k * succ y + k * pw (succ y) k) (pw (succ y) (succ k)) +
     k * pw (succ y) k) ?_
-  have e := natEq (eq_add_of_le ih)
-  have s₁ := natEq (pw_succ (Γ := Γ) y k); have s₂ := natEq (pw_succ (Γ := Γ) (succ y) k)
-  have s₃ := natEq (pw_succ (Γ := Γ) (succ y) (succ k))
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞(y) + 1) * s₁ - s₃ + 𝔞(y) * e + 𝔞(k) * s₂
+  ipra_lc (𝔞(y) + 1) * natEq (pw_succ (Γ := Γ) y k) - natEq (pw_succ (Γ := Γ) (succ y) (succ k)) +
+    𝔞(y) * natEq (eq_add_of_le ih) + 𝔞(k) * natEq (pw_succ (Γ := Γ) (succ y) k)
 
 /-- Variables: `0 = k` (induction), `1 = y`. -/
 private abbrev bernF : Fm PTm 2 :=
@@ -151,13 +145,9 @@ theorem bernoulli (y k : PTm N) :
 theorem lc_zero : Γ ⊢[PRAAx] le (pw (succ zero) (succ zero) * pw (succ zero) (succ zero))
     (pw (succ (succ zero)) (succ (succ zero)) * pw (zero : PTm N) zero) := by
   refine le_of_eq_add (d := succ (succ (succ zero))) ?_
-  have e₁ := natEq (pw_one (Γ := Γ) (succ zero))
-  have e₂ := natEq (pw_succ (Γ := Γ) (succ (succ zero)) (succ zero))
-  have e₃ := natEq (pw_one (Γ := Γ) (succ (succ zero)))
-  have e₄ := natEq (pw_zero (Γ := Γ) zero)
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞(pw (zero : PTm N) zero) * e₂ + 2 * 𝔞(pw (zero : PTm N) zero) * e₃ + 4 * e₄ -
-    (𝔞(pw (succ (zero : PTm N)) (succ zero)) + 1) * e₁
+  ipra_lc 𝔞(pw (zero : PTm N) zero) * natEq (pw_succ (Γ := Γ) (succ (succ zero)) (succ zero)) +
+    2 * 𝔞(pw (zero : PTm N) zero) * natEq (pw_one (Γ := Γ) (succ (succ zero))) + 4 * natEq (pw_zero (Γ := Γ) zero) -
+    (𝔞(pw (succ (zero : PTm N)) (succ zero)) + 1) * natEq (pw_one (Γ := Γ) (succ zero))
 
 /-- The positive case, from Bernoulli at `y = x (x + 2)`, `n = x + 1`. -/
 theorem lc_pos {x : PTm N} (hx : Γ ⊢[PRAAx] x ≐ succ (pred x)) :
@@ -165,7 +155,7 @@ theorem lc_pos {x : PTm N} (hx : Γ ⊢[PRAAx] x ≐ succ (pred x)) :
       (pw (succ (succ x)) (succ (succ x)) * pw x x) := by
   -- `y + 1 = n²`.
   have s : Γ ⊢[PRAAx] succ (x * succ (succ x)) ≐ succ x * succ x := by
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   have B0 := bernoulli (Γ := Γ) (x * succ (succ x)) (succ x)
   -- `W n² ≤ A n² + n W`, with `W = (n²)^n`, `A = y^n`.
   have B1 : Γ ⊢[PRAAx] le (pw (succ x * succ x) (succ x) * (succ x * succ x))
@@ -175,27 +165,21 @@ theorem lc_pos {x : PTm N} (hx : Γ ⊢[PRAAx] x ≐ succ (pred x)) :
   have B2 : Γ ⊢[PRAAx] le (succ x * (pw (succ x * succ x) (succ x) * x) + succ x * pw (succ x * succ x) (succ x))
       (succ x * (pw (x * succ (succ x)) (succ x) * succ x) + succ x * pw (succ x * succ x) (succ x)) := by
     refine le_congr ?_ ?_ B1
-    all_goals (apply deriveNat; ipra_simps; ring)
+    all_goals (ipra_ring)
   -- `W x ≤ A n`.
   have B3 : Γ ⊢[PRAAx] le (pw (succ x * succ x) (succ x) * x) (pw (x * succ (succ x)) (succ x) * succ x) :=
     mul_le_cancel (le_of_add_le_add_right B2)
   have e₄ : Γ ⊢[PRAAx] pw (succ x * succ x) (succ x) * x ≐
       x * (pw (succ x) (succ x) * pw (succ x) (succ x)) := by
-    have eW := natEq (pw_mul_base (Γ := Γ) (succ x) (succ x) (succ x))
-    apply deriveNat; ipra_simps
-    linear_combination 𝔞(x) * eW
+    ipra_lc 𝔞(x) * natEq (pw_mul_base (Γ := Γ) (succ x) (succ x) (succ x))
   have e₅ : Γ ⊢[PRAAx] pw (x * succ (succ x)) (succ x) * succ x ≐
       x * (pw x x * pw (succ (succ x)) (succ x) * succ x) := by
-    have eA := natEq (pw_mul_base (Γ := Γ) x (succ (succ x)) (succ x))
-    have eP := natEq (pw_succ (Γ := Γ) x x)
-    apply deriveNat; ipra_simps
-    linear_combination (𝔞(x) + 1) * eA + 𝔞(pw (succ (succ x)) (succ x)) * (𝔞(x) + 1) * eP
+    ipra_lc (𝔞(x) + 1) * natEq (pw_mul_base (Γ := Γ) x (succ (succ x)) (succ x)) +
+      𝔞(pw (succ (succ x)) (succ x)) * (𝔞(x) + 1) * natEq (pw_succ (Γ := Γ) x x)
   have B5 : Γ ⊢[PRAAx] le (pw (succ x) (succ x) * pw (succ x) (succ x))
       (pw x x * pw (succ (succ x)) (succ x) * succ x) := le_cancel_pos hx (le_congr e₄ e₅ B3)
   refine le_trans B5 (le_of_eq_add (d := pw x x * pw (succ (succ x)) (succ x)) ?_)
-  have eT := natEq (pw_succ (Γ := Γ) (succ (succ x)) (succ x))
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞(pw x x) * eT
+  ipra_lc 𝔞(pw x x) * natEq (pw_succ (Γ := Γ) (succ (succ x)) (succ x))
 
 /-- Variable: `0 = x`. The induction is used only as a case distinction. -/
 private abbrev lcF : Fm PTm 1 :=
@@ -229,7 +213,7 @@ theorem chain_step {a x : PTm N}
   have h₂ := le_mul_mono c (le_refl (pw a a))
   refine le_cancel_pos (pw_self_pos x) ?_
   refine le_trans (le_congr ?_ ?_ h₁) (le_congr (.eqRefl _) ?_ h₂)
-  all_goals (apply deriveNat; ipra_simps; ring)
+  all_goals (ipra_ring)
 
 theorem chain_base (a : PTm N) :
     Γ ⊢[PRAAx] le (pw (succ a) (succ a) * pw (a + zero) (a + zero))
@@ -274,13 +258,9 @@ theorem four_pow (b : PTm N) : Γ ⊢[PRAAx] pw four b ≐ pw two b * pw two b :
 
 /-- The equality case: `4^b b^b b^b = (2b)^(2b)`. -/
 theorem split_eq (b : PTm N) : Γ ⊢[PRAAx] pw four b * pw b b * pw b b ≐ pw (b + b) (b + b) := by
-  have t : Γ ⊢[PRAAx] b + b ≐ two * b := by apply deriveNat; ipra_simps; ring
-  have e₁ := natEq (four_pow (Γ := Γ) b)
-  have e₂ := natEq (pw_add (Γ := Γ) (b + b) b b)
-  have e₃ := natEq ((pw_congr t (.eqRefl b)).eqTrans (pw_mul_base two b b))
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞(pw b b) * 𝔞(pw b b) * e₁ - e₂ -
-    (𝔞(pw (b + b) b) + 𝔞(pw two b) * 𝔞(pw b b)) * e₃
+  have t : Γ ⊢[PRAAx] b + b ≐ two * b := by ipra_ring
+  ipra_lc 𝔞(pw b b) * 𝔞(pw b b) * natEq (four_pow (Γ := Γ) b) - natEq (pw_add (Γ := Γ) (b + b) b b) -
+    (𝔞(pw (b + b) b) + 𝔞(pw two b) * 𝔞(pw b b)) * natEq ((pw_congr t (.eqRefl b)).eqTrans (pw_mul_base two b b))
 
 theorem split_step {a b : PTm N}
     (ih : Γ ⊢[PRAAx] le (pw four b * pw a a * pw b b) (pw (a + b) (a + b))) :
@@ -289,7 +269,7 @@ theorem split_step {a b : PTm N}
   have h₁ := le_mul_mono ih (le_refl (pw (succ a) (succ a)))
   refine le_cancel_pos (pw_self_pos a) ?_
   refine le_trans (le_congr ?_ ?_ h₁) (le_congr (.eqRefl _) ?_ c)
-  all_goals (apply deriveNat; ipra_simps; ring)
+  all_goals (ipra_ring)
 
 theorem split_base (b : PTm N) :
     Γ ⊢[PRAAx] le (pw four b * pw (b + zero) (b + zero) * pw b b) (pw (b + zero + b) (b + zero + b)) := by
@@ -303,7 +283,7 @@ theorem split_succ {b d : PTm N}
     Γ ⊢[PRAAx] le (pw four b * pw (b + succ d) (b + succ d) * pw b b)
       (pw (b + succ d + b) (b + succ d + b)) := by
   have s := (add_succ (Γ := Γ) b d).eqSymm
-  have s' : Γ ⊢[PRAAx] succ (b + d + b) ≐ b + succ d + b := by apply deriveNat; ipra_simps; ring
+  have s' : Γ ⊢[PRAAx] succ (b + d + b) ≐ b + succ d + b := by ipra_ring
   exact le_congr (congrMul (congrMul (.eqRefl _) (pw_congr s s)) (.eqRefl _)) (pw_congr s' s')
     (split_step ih)
 
@@ -346,7 +326,7 @@ theorem pw_four_le {c b : PTm N} (h : Γ ⊢[PRAAx] le c b) : Γ ⊢[PRAAx] le (
 
 /-- `2^(2c) = 4^c`. -/
 theorem four_pow' (c : PTm N) : Γ ⊢[PRAAx] pw two (two * c) ≐ pw four c := by
-  have t : Γ ⊢[PRAAx] two * c ≐ c + c := by apply deriveNat; ipra_simps; ring
+  have t : Γ ⊢[PRAAx] two * c ≐ c + c := by ipra_ring
   exact ((pw_congr (.eqRefl two) t).eqTrans (pw_add two c c)).eqTrans (four_pow c).eqSymm
 
 /-- The step of `thm:cube-edge`: sections with `a ≥ b` vertices, `e₀` and `e₁` internal edges
@@ -356,14 +336,14 @@ theorem edge_step {a b c e₀ e₁ : PTm N} (h₀ : Γ ⊢[PRAAx] le (pw two (tw
     (hba : Γ ⊢[PRAAx] le b a) :
     Γ ⊢[PRAAx] le (pw two (two * (e₀ + e₁ + c))) (pw (a + b) (a + b)) := by
   have t : Γ ⊢[PRAAx] two * (e₀ + e₁ + c) ≐ two * e₀ + two * e₁ + two * c := by
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   have hE : Γ ⊢[PRAAx] pw two (two * (e₀ + e₁ + c)) ≐
       pw two (two * e₀) * pw two (two * e₁) * pw four c :=
     (pw_congr (.eqRefl two) t).eqTrans ((pw_add two (two * e₀ + two * e₁) (two * c)).eqTrans
       (congrMul (pw_add two (two * e₀) (two * e₁)) (four_pow' c)))
   have m := le_mul_mono (le_mul_mono h₀ h₁) (pw_four_le hc)
   refine le_trans (le_congr hE.eqSymm ?_ m) (cube_split hba)
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-! ## Consequences of the edge inequality -/
 
@@ -389,10 +369,7 @@ theorem exp_le_of_pw_le {u v : PTm N} (h : Γ ⊢[PRAAx] le (pw two u) (pw two v
   have m : (lt v u :: Γ) ⊢[PRAAx] le (pw two (succ v)) (pw two u) := pw_le_exp two_pos Prf.hyp0
   have g : (lt v u :: Γ) ⊢[PRAAx] le (succ (pw two v)) (pw two (succ v)) := by
     refine le_of_eq_add (d := pred (pw two v)) ?_
-    have e₁ := natEq (pw_succ (Γ := lt v u :: Γ) two v)
-    have e₂ := natEq (pw_pos (Γ := lt v u :: Γ) one v)
-    apply deriveNat; ipra_simps
-    linear_combination e₁ + e₂
+    ipra_lc natEq (pw_succ (Γ := lt v u :: Γ) two v) + natEq (pw_pos (Γ := lt v u :: Γ) one v)
   exact not_succ_le_self (pw two v) _ (le_trans g (le_trans m h'))
 
 /-- Sharp expansion at half volume: in `Q_d` with `d = d' + 1`, a family of `k ≤ 2^(d−1)` vertices
@@ -408,6 +385,6 @@ theorem half_cube_expansion {d' k e b : PTm N} (hdeg : Γ ⊢[PRAAx] succ d' * k
     le_trans I (le_congr (.eqRefl _) (pw_add two b (d' * k)).eqSymm K)
   have M := exp_le_of_pw_le L
   refine le_of_add_le_add_right (c := d' * k) (le_congr ?_ (.eqRefl _) M)
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 end LeanProofs.IPRA.Geometry.HypercubeSplit

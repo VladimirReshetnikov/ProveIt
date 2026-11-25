@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.GaussianGammaCompactQuadratureBoundary
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Exact original Euler cutoffs on a common later denominator
@@ -86,10 +87,7 @@ theorem three_endpoint (p q A R : PTm n) (h : Γ ⊢[PRAAx] le p q) : Γ ⊢[PRA
 
 theorem widths_total (p q A R : PTm n) (h : Γ ⊢[PRAAx] le p q) : Γ ⊢[PRAAx]
     lowerWidth p q A+middleWidth p q A R+upperWidth p q A R ≐ width q A R := by
-  have e := natEq ((three_endpoint p q A R h).eqTrans (exact_right_endpoint q A R).eqSymm)
-  apply deriveNat
-  ipra_simps
-  linear_combination e
+  ipra_lc natEq ((three_endpoint p q A R h).eqTrans (exact_right_endpoint q A R).eqSymm)
 
 theorem gap_positive (p q : PTm n) (h : Γ ⊢[PRAAx] lt p q) : Γ ⊢[PRAAx] le one (delta p q) := by
   have e : Γ ⊢[PRAAx] q ≐ p+succ (monus q (succ p)) := (eq_add_of_le h).eqTrans (by ipra_ring)

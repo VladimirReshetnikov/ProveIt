@@ -2,7 +2,7 @@ import IPRADerivations.Foundations.ShiftedInduction
 import IPRADerivations.Combinatorics.BinomialSigned
 import IPRADerivations.Analysis.Pochhammer
 import IPRADerivations.Foundations.HurwitzProduct
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The Chu–Vandermonde summation

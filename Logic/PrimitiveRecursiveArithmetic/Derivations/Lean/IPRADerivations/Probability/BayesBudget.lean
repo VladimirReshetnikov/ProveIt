@@ -1,7 +1,7 @@
 import IPRADerivations.Core.IntOrder
 import IPRADerivations.Core.Gcd
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The numerical stability budget of Bayes updating

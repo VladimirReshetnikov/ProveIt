@@ -80,7 +80,7 @@ theorem prec_bound (k e : PTm n) :
   have g := prec_gen h1 h2 hX hY hA
   -- `3^{2K+1} = 3^k 3^k 3^e 3^e 3^9`
   have ex : Γ ⊢[PRAAx] succ (two * (k + e + succ (succ (succ (succ zero))))) ≐ k + (k + (e + (e + num 9))) := by
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   have e0 := natEq (congrAp2 powF ex (.eqRefl (c3 : PTm n)))
   have e1 := natEq (pw_add (Γ := Γ) c3 k (k + (e + (e + num 9))))
   have e2 := natEq (pw_add (Γ := Γ) c3 k (e + (e + num 9)))

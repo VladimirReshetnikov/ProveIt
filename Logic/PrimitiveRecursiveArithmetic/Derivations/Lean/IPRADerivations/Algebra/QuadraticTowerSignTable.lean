@@ -1,5 +1,6 @@
 import IPRADerivations.Algebra.QuadraticTowerSignRecipe
 import IPRADerivations.Algebra.QuadraticTowerOperandProperness
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual numerical-depth recursive sign tables
@@ -96,14 +97,11 @@ theorem table_succ (h B D : PTm n) : Γ ⊢[PRAAx]
 
 theorem table_congr {h h' B B' D D' : PTm n} (hh : Γ ⊢[PRAAx] h ≐ h')
     (hb : Γ ⊢[PRAAx] B ≐ B') (hd : Γ ⊢[PRAAx] D ≐ D') : Γ ⊢[PRAAx] table h B D ≐ table h' B' D' := by
-  simpa [subst_table] using Prf.eqCongr (table (var 0) (var 1) (var 2) : PTm 3)
-    (σ := ![h,B,D]) (σ' := ![h',B',D']) (fun i => by fin_cases i; exact hh; exact hb; exact hd)
+  ipra_congr (table (var 0) (var 1) (var 2) : PTm 3) with [hh, hb, hd]
 theorem row_value_congr {h h' B B' S S' D D' i i' : PTm n} (hh : Γ ⊢[PRAAx] h ≐ h')
     (hb : Γ ⊢[PRAAx] B ≐ B') (hs : Γ ⊢[PRAAx] S ≐ S') (hd : Γ ⊢[PRAAx] D ≐ D') (hi : Γ ⊢[PRAAx] i ≐ i') :
     Γ ⊢[PRAAx] rowValue h B S D i ≐ rowValue h' B' S' D' i' := by
-  simpa [subst_rowValue] using Prf.eqCongr (rowValue (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5)
-    (σ := ![h,B,S,D,i]) (σ' := ![h',B',S',D',i'])
-    (fun j => by fin_cases j; exact hh; exact hb; exact hs; exact hd; exact hi)
+  ipra_congr (rowValue (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) with [hh, hb, hs, hd, hi]
 
 theorem base_body_at (B i : PTm n) : inst2 baseBody i B = baseRow B i := by simp [baseBody,inst2]
 theorem row_body_at (h B S D i : PTm n) : Γ ⊢[PRAAx]
@@ -131,9 +129,7 @@ theorem step_entry_bound (h B S D i : PTm n) (hi : Γ ⊢[PRAAx] lt i (horizon (
 
 theorem horizon_congr {h h' B B' : PTm n} (hh : Γ ⊢[PRAAx] h ≐ h') (hb : Γ ⊢[PRAAx] B ≐ B') : Γ ⊢[PRAAx]
     horizon h B ≐ horizon h' B' := by
-  simpa [QuadraticTowerArrayCodec.subst_horizon] using
-    Prf.eqCongr (horizon (var 0) (var 1) : PTm 2) (σ := ![h,B]) (σ' := ![h',B'])
-      (fun i => by fin_cases i; exact hh; exact hb)
+  ipra_congr (horizon (var 0) (var 1) : PTm 2) with [hh, hb]
 
 theorem table_length (h B D : PTm n) : Γ ⊢[PRAAx] length (table h B D) ≐ horizon h B := by
   refine .orE (zero_or_succ h) ?_ ?_
@@ -168,8 +164,7 @@ theorem query_exact (h B D A : PTm n) (ha : Γ ⊢[PRAAx] arrayHeight h A B) : �
     (table_entry_bound h B D (code h A B) (QuadraticTowerArrayCodec.code_bound h A B ha))
 
 theorem ground_tag_congr {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) : Γ ⊢[PRAAx] groundTag a ≐ groundTag b := by
-  simpa [subst_groundTag] using Prf.eqCongr (groundTag (var 0) : PTm 1) (σ := ![a]) (σ' := ![b])
-    (fun i => by fin_cases i; exact h)
+  ipra_congr (groundTag (var 0) : PTm 1) with [h]
 
 theorem ground_tag_from_projection (q : PTm n) : Γ ⊢[PRAAx]
     QuadraticRationalZeroProjection.sign (pairT q zero) ≐ groundTag q :=
@@ -185,10 +180,8 @@ theorem ground_tag_proper (q r : PTm n) (h : Γ ⊢[PRAAx] RationalArgmin.ration
 
 theorem recipe_operand_congr (h B D S A E : PTm n) (ha : Γ ⊢[PRAAx] A ≐ E) : Γ ⊢[PRAAx]
     QuadraticTowerSignRecipe.recipe h B D S A ≐ QuadraticTowerSignRecipe.recipe h B D S E := by
-  simpa [QuadraticTowerSignRecipe.subst_recipe] using
-    Prf.eqCongr (QuadraticTowerSignRecipe.recipe (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5)
-      (σ := ![h,B,D,S,A]) (σ' := ![h,B,D,S,E])
-      (fun i => by fin_cases i; exact .eqRefl _; exact .eqRefl _; exact .eqRefl _; exact .eqRefl _; exact ha)
+  ipra_congr (QuadraticTowerSignRecipe.recipe (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) with
+    [.eqRefl h, .eqRefl B, .eqRefl D, .eqRefl S, ha]
 
 theorem query_zero (B D A : PTm n) (ha : Γ ⊢[PRAAx] arrayHeight zero A B) : Γ ⊢[PRAAx]
     query zero B D A ≐ groundTag (RationalArithmetic.recode (entry A zero)) :=

@@ -2,6 +2,8 @@ import IPRADerivations.Analysis.GaussianPositiveExponentialProduct
 import IPRADerivations.Analysis.GaussianExponentialDiskMajorant
 import IPRADerivations.Analysis.GaussianRationalExponentialLipschitz
 import IPRADerivations.DiophantineNumberTheory.SuperellipticFamily
+import IPRADerivations.Core.CongruenceTactic
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The all-cutoff finite exponential majorant 3^R
@@ -43,8 +45,7 @@ def value (R K : PTm n) : PTm n := fstT (scalarSum (naturalPoint R) K)
     Syn.subst σ (value R K) = value (Syn.subst σ R) (Syn.subst σ K) := by simp [value]
 
 theorem natCode_congr {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) : Γ ⊢[PRAAx] natCode a ≐ natCode b := by
-  simpa using Prf.eqCongr (Γ := Γ) (natCode (var 0) : PTm 1) (σ := ![a]) (σ' := ![b])
-    (fun i => by fin_cases i; exact h)
+  ipra_congr (natCode (var 0) : PTm 1) with [h]
 
 theorem natural_successor_sum (R : PTm n) : Γ ⊢[PRAAx]
     qadd (naturalPoint R) (naturalPoint one) ≐ naturalPoint (succ R) := by
@@ -118,11 +119,7 @@ theorem value_at_zero (K : PTm n) : Γ ⊢[PRAAx] value zero K ≐ natCode one :
     (GaussianRationalFiniteSum.sum_canonical _ _ _).andE₂.andE₁
     (RationalNormalForm.normalize_well_formed _ _ (le_refl one))
     (real_majorant_represents zero K) (natCode_represents one) (factorial_positive _) (le_refl one)
-  apply ZT.derive
-  have e := natEq (zero_numerator (Γ := Γ) K)
-  simp only [ZT.toZ_mul,ZT.toZ_ofNat]
-  ipra_simps
-  linear_combination e
+  ipra_lc natEq (zero_numerator (Γ := Γ) K)
 
 theorem value_at_one_bound (K : PTm n) : Γ ⊢[PRAAx] rationalLE (value one K) (natCode (num 3)) := by
   apply GaussianRationalMetric.comparison_of_cleared _ _ _ _ (fact (succ K)) one

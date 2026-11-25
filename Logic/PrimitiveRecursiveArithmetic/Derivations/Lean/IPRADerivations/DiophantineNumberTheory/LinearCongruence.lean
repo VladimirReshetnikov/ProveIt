@@ -1,6 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.LinearDiophantine
 import IPRADerivations.DiophantineNumberTheory.ModularCertificate
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Linear congruences: solvability

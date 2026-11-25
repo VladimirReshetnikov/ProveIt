@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.RuntimeAdjacentPermutationSwap
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual bounded adjacent sorting of numerical words
@@ -87,9 +88,7 @@ theorem descent_body_at (m w i : PTm n) : Γ ⊢[PRAAx]
     inst2 descentBody i (RuntimePermutationWords.data m w) ≐ descentBit m w i := by
   simp only [descentBody,inst2,subst_descentBit,subst_fstT,subst_sndT,Syn.subst_var,
     Matrix.cons_val_zero,Matrix.cons_val_one,RuntimePermutationWords.data]
-  simpa using Prf.eqCongr (Γ := Γ) (descentBit (var 0) (var 1) (var 2) : PTm 3)
-    (σ := ![sndT (pairT w m),fstT (pairT w m),i]) (σ' := ![m,w,i])
-    (fun k => by fin_cases k; exact snd_pair _ _; exact fst_pair _ _; exact .eqRefl _)
+  ipra_congr (descentBit (var 0) (var 1) (var 2) : PTm 3) with [snd_pair _ _, fst_pair _ _, .eqRefl i]
 theorem active_cases (m w : PTm n) : Γ ⊢[PRAAx] (active m w ≐ zero) ⋎ (active m w ≐ one) := BoundedReflection.ex_cases _ _ _
 theorem inactive_of_active_zero (m w : PTm n) (h : Γ ⊢[PRAAx] active m w ≐ zero) :
     Γ ⊢[PRAAx] inactive m w ≐ one := (congrMonus (.eqRefl _) h).eqTrans (monus_zero _)
@@ -135,9 +134,7 @@ theorem active_inversion_drop (m w : PTm n) (h : Γ ⊢[PRAAx] active m w ≐ on
       RuntimeAdjacentPermutationSwap.new_pair_lt m w (descentIndex m w) (.andE₁ df.wk) Prf.hyp0
     exact lt_irrefl _ _ (lt_of_lt_of_le hr (le_of_lt (.andE₂ df.wk)))
   have se : Γ ⊢[PRAAx] RuntimePermutationWords.inversions m (sortStep m w) ≐ RuntimePermutationWords.inversions m (RuntimeAdjacentPermutationSwap.swapWord m w (descentIndex m w)) := by
-    simpa using Prf.eqCongr (Γ := Γ) (RuntimePermutationWords.inversions (var 0) (var 1) : PTm 2)
-      (σ := ![m,sortStep m w]) (σ' := ![m,RuntimeAdjacentPermutationSwap.swapWord m w (descentIndex m w)])
-      (fun k => by fin_cases k; exact .eqRefl _; exact step_active _ _ h)
+    ipra_congr (RuntimePermutationWords.inversions (var 0) (var 1) : PTm 2) with [.eqRefl m, step_active _ _ h]
   exact (congrAdd se ho.eqSymm).eqTrans ((RuntimeAdjacentPermutationSwap.inversion_balance _ _ _ (.andE₁ df)).eqTrans
     ((congrAdd (.eqRefl _) hz).eqTrans (add_zero _)))
 
@@ -184,12 +181,10 @@ theorem state_succ (m w j : PTm n) : Γ ⊢[PRAAx] state m w (succ j) ≐ sortSt
 
 theorem inactive_congr {m m' w w' : PTm n} (hm : Γ ⊢[PRAAx] m ≐ m') (hw : Γ ⊢[PRAAx] w ≐ w') :
     Γ ⊢[PRAAx] inactive m w ≐ inactive m' w' := by
-  simpa using Prf.eqCongr (Γ := Γ) (inactive (var 0) (var 1) : PTm 2)
-    (σ := ![m,w]) (σ' := ![m',w']) (fun k => by fin_cases k; exact hm; exact hw)
+  ipra_congr (inactive (var 0) (var 1) : PTm 2) with [hm, hw]
 theorem inversions_congr {m m' w w' : PTm n} (hm : Γ ⊢[PRAAx] m ≐ m') (hw : Γ ⊢[PRAAx] w ≐ w') :
     Γ ⊢[PRAAx] RuntimePermutationWords.inversions m w ≐ RuntimePermutationWords.inversions m' w' := by
-  simpa using Prf.eqCongr (Γ := Γ) (RuntimePermutationWords.inversions (var 0) (var 1) : PTm 2)
-    (σ := ![m,w]) (σ' := ![m',w']) (fun k => by fin_cases k; exact hm; exact hw)
+  ipra_congr (RuntimePermutationWords.inversions (var 0) (var 1) : PTm 2) with [hm, hw]
 theorem checker_congr {m m' w w' : PTm n} (hm : Γ ⊢[PRAAx] m ≐ m') (hw : Γ ⊢[PRAAx] w ≐ w') :
     Γ ⊢[PRAAx] RuntimePermutationWords.permutationBit m w ≐ RuntimePermutationWords.permutationBit m' w' := by
   simpa [RuntimePermutationWords.permutationBit] using congrAp2 RuntimePermutationWords.checkerF hm hw
@@ -454,9 +449,7 @@ theorem tie_cases (m w i : PTm n) : Γ ⊢[PRAAx] (tieBit m w i ≐ zero) ⋎ (t
 theorem tie_body_at (m w i : PTm n) : Γ ⊢[PRAAx] inst2 tieBody i (RuntimePermutationWords.data m w) ≐ tieBit m w i := by
   simp only [tieBody,inst2,subst_tieBit,subst_fstT,subst_sndT,Syn.subst_var,
     Matrix.cons_val_zero,Matrix.cons_val_one,RuntimePermutationWords.data]
-  simpa using Prf.eqCongr (Γ := Γ) (tieBit (var 0) (var 1) (var 2) : PTm 3)
-    (σ := ![sndT (pairT w m),fstT (pairT w m),i]) (σ' := ![m,w,i])
-    (fun k => by fin_cases k; exact snd_pair _ _; exact fst_pair _ _; exact .eqRefl _)
+  ipra_congr (tieBit (var 0) (var 1) (var 2) : PTm 3) with [snd_pair _ _, fst_pair _ _, .eqRefl i]
 theorem tie_exists_cases (m w : PTm n) : Γ ⊢[PRAAx] (tieExists m w ≐ zero) ⋎ (tieExists m w ≐ one) :=
   BoundedReflection.ex_cases _ _ _
 theorem tie_found (m w : PTm n) (h : Γ ⊢[PRAAx] tieExists m w ≐ one) : Γ ⊢[PRAAx]
@@ -499,8 +492,7 @@ theorem nonpermutation_final_tie (m w : PTm n) (hw : Γ ⊢[PRAAx] lt w (Runtime
 
 theorem sortStep_congr {m m' w w' : PTm n} (hm : Γ ⊢[PRAAx] m ≐ m') (hw : Γ ⊢[PRAAx] w ≐ w') :
     Γ ⊢[PRAAx] sortStep m w ≐ sortStep m' w' := by
-  simpa using Prf.eqCongr (Γ := Γ) (sortStep (var 0) (var 1) : PTm 2)
-    (σ := ![m,w]) (σ' := ![m',w']) (fun k => by fin_cases k; exact hm; exact hw)
+  ipra_congr (sortStep (var 0) (var 1) : PTm 2) with [hm, hw]
 theorem state_from_inactive (m w j : PTm n) (h : Γ ⊢[PRAAx] inactive m w ≐ one) :
     Γ ⊢[PRAAx] state m w j ≐ w := by
   have all : Γ ⊢[PRAAx] .all (state (Syn.shift m) (Syn.shift w) (var 0) ≐ Syn.shift w) := by

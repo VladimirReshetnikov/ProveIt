@@ -2,7 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.OrderDivides
 import IPRADerivations.AnalyticNumberTheory.PlusPower
 import IPRADerivations.DiophantineNumberTheory.ConicGcd
 import IPRADerivations.Combinatorics.BinomialIdentities
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The order of a power

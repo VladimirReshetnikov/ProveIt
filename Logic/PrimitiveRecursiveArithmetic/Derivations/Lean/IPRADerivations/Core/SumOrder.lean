@@ -1,4 +1,5 @@
 import IPRADerivations.Core.SumLemmas
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Comparing sums with different parameters
@@ -24,9 +25,7 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 theorem add_le_add₂ {a b c d : PTm n} (h₁ : Γ ⊢[PRAAx] le a b) (h₂ : Γ ⊢[PRAAx] le c d) :
     Γ ⊢[PRAAx] le (a + c) (b + d) := by
   refine le_of_eq_add (d := monus b a + monus d c) ?_
-  have e₁ := natEq (eq_add_of_le h₁); have e₂ := natEq (eq_add_of_le h₂)
-  apply deriveNat; ipra_simps
-  linear_combination e₁ + e₂
+  ipra_lc natEq (eq_add_of_le h₁) + natEq (eq_add_of_le h₂)
 
 /-- Sums of pointwise smaller bodies are smaller, with possibly different parameters. -/
 theorem sum_le_params (f g : PTm 2) (x y N : PTm n)

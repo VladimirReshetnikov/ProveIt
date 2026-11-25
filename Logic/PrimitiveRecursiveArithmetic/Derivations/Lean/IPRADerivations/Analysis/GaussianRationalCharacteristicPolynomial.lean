@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianScalarIdentityDeterminant
 import IPRADerivations.Analysis.GaussianRationalPolynomialProductDegree
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The actual characteristic polynomial at numerical matrix size
@@ -126,10 +127,7 @@ def polynomial (A m : PTm n) : PTm n := GaussianPolynomialDeterminant.determinan
 
 theorem cell_coefficient_congr {A B r s j k i t : PTm n} (hA : Γ ⊢[PRAAx] A ≐ B) (hr : Γ ⊢[PRAAx] r ≐ s)
     (hj : Γ ⊢[PRAAx] j ≐ k) (hi : Γ ⊢[PRAAx] i ≐ t) : Γ ⊢[PRAAx] cellCoefficient A r j i ≐ cellCoefficient B s k t := by
-  simpa only [subst_cellCoefficient,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.cons_val_three,Matrix.head_cons,Matrix.tail_cons] using Prf.eqCongr (Γ := Γ)
-      (cellCoefficient (var 0) (var 1) (var 2) (var 3) : PTm 4) (σ := ![A,r,j,i]) (σ' := ![B,s,k,t])
-      (fun q => by fin_cases q; exact hA; exact hr; exact hj; exact hi)
+  ipra_congr (cellCoefficient (var 0) (var 1) (var 2) (var 3) : PTm 4) with [hA, hr, hj, hi]
 theorem cell_body_at (A r j k : PTm n) : Γ ⊢[PRAAx] inst2 cellBody k (cellData A r j) ≐ cellCoefficient A r j k := by
   simp only [cellBody,inst2,subst_cellCoefficient,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
   exact cell_coefficient_congr (fst_pair _ _) ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
@@ -190,10 +188,7 @@ def shiftedTable (A m z : PTm n) : PTm n := table shiftedBody m m (pairT A z)
     Syn.subst σ (shiftedTable A m z) = shiftedTable (Syn.subst σ A) (Syn.subst σ m) (Syn.subst σ z) := by simp [shiftedTable]
 theorem shifted_weight_congr {A B z y r s j k : PTm n} (hA : Γ ⊢[PRAAx] A ≐ B) (hz : Γ ⊢[PRAAx] z ≐ y)
     (hr : Γ ⊢[PRAAx] r ≐ s) (hj : Γ ⊢[PRAAx] j ≐ k) : Γ ⊢[PRAAx] shiftedWeight A z r j ≐ shiftedWeight B y s k := by
-  simpa only [subst_shiftedWeight,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.cons_val_three,Matrix.head_cons,Matrix.tail_cons] using Prf.eqCongr (Γ := Γ)
-      (shiftedWeight (var 0) (var 1) (var 2) (var 3) : PTm 4) (σ := ![A,z,r,j]) (σ' := ![B,y,s,k])
-      (fun q => by fin_cases q; exact hA; exact hz; exact hr; exact hj)
+  ipra_congr (shiftedWeight (var 0) (var 1) (var 2) (var 3) : PTm 4) with [hA, hz, hr, hj]
 theorem shifted_lookup (A m z r j : PTm n) (hr : Γ ⊢[PRAAx] lt r m) (hj : Γ ⊢[PRAAx] lt j m) : Γ ⊢[PRAAx]
     cell (shiftedTable A m z) r j ≐ shiftedWeight A z r j := by
   have e := table_lookup shiftedBody m m (pairT A z) r j hr hj

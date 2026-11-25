@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.WallisRecurrence
 import IPRADerivations.Analysis.BaselRiemann
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The finite Wallis inequality
@@ -203,8 +204,7 @@ end cell
 
 /-! ## The partial sums for `k = 1` -/
 
-theorem pw_one' (x : PTm n) : Γ ⊢[PRAAx] pw x one ≐ x :=
-  (pw_succ x zero).eqTrans ((congrMul (pw_zero x) (.eqRefl x)).eqTrans (one_mul x))
+alias pw_one' := Common.pw_one
 
 abbrev U1Inv (j M₀ L : PTm n) : Fm PTm n :=
   le (succ M₀ * (succ M₀ * fact L * gm zero (succ M₀) L))
@@ -288,8 +288,7 @@ theorem J1_bounds {M₀ L : PTm n} (hL : Γ ⊢[PRAAx] le (two * (succ M₀ * su
 
 /-! ## The iterated bounds (`eq:evenerr`, `eq:odderr`) -/
 
-theorem two_succ (m : PTm n) : Γ ⊢[PRAAx] two * succ m ≐ succ (succ (two * m)) := by
-  ipra_ring
+alias two_succ := Common.two_mul_succ
 
 /-- `eq:evenerr`: `|J_{2m} − p_m J_0| ≤ 8m(m+1)/M`, cleared:
 `|db m · 𝒥_{2m} − da m · F^{2m} 𝒥_0| ≤ 8m(m+1) · db m · F^{2m+1}`. -/

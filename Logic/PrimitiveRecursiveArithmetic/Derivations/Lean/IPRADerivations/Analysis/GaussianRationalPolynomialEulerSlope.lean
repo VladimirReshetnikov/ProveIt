@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianRationalFirstOrderPolynomial
 import IPRADerivations.Analysis.GaussianRationalSumAlgebra
 import IPRADerivations.Analysis.GaussianEulerBetaPoleGuard
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The actual synthetic slope is the original Euler polynomial value
@@ -108,11 +109,7 @@ theorem prefix_zero (C N t : PTm n) : Γ ⊢[PRAAx]
 
 theorem weight_successor (N k : PTm n) (hk : Γ ⊢[PRAAx] le (succ k) N) : Γ ⊢[PRAAx]
     monus N k ≐ succ (monus N (succ k)) := by
-  have e := natEq (eq_add_of_le hk)
-  have f := natEq (eq_add_of_le (le_trans (le_succ_self k) hk))
-  apply deriveNat
-  ipra_simps
-  linear_combination e-f
+  ipra_lc natEq (eq_add_of_le hk)-natEq (eq_add_of_le (le_trans (le_succ_self k) hk))
 
 theorem prefix_step (C N t k : PTm n) (hk : Γ ⊢[PRAAx] le (succ k) N)
     (ih : Γ ⊢[PRAAx] horner (euler C N) t (succ k) ≐

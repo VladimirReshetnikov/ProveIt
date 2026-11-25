@@ -1,6 +1,7 @@
 import IPRADerivations.Combinatorics.Vandermonde
 import IPRADerivations.Combinatorics.CatalanHalving
 import IPRADerivations.Probability.Independence
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The binomial theorem in two variables
@@ -106,19 +107,19 @@ theorem p_pascal (k M X Y : PTm n) :
   rw [inst2_shiftBody, inst2_addBody]
   refine (bt_at _ _ _ _).eqTrans (.eqTrans ?_ (congrAdd (aB_at _ _ _ _) (cB_at _ _ _ _)).eqSymm)
   refine (congrMul (congrMul (gb_pascal M k) (.eqRefl _)) (congrPw (.eqRefl _) (succ_monus_succ _ _))).eqTrans ?_
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem p_x (k M X Y : PTm n) :
     Γ ⊢[PRAAx] inst2 cB k (pairT M (pairT X Y)) ≐ X * inst2 bt k (pairT M (pairT X Y)) := by
   refine (cB_at _ _ _ _).eqTrans (.eqTrans ?_ (congrMul (.eqRefl _) (bt_at _ _ _ _)).eqSymm)
   refine (congrMul (congrMul (.eqRefl _) (pw_succ X k)) (.eqRefl _)).eqTrans ?_
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem p_y {j M : PTm n} (X Y : PTm n) (hj : Γ ⊢[PRAAx] le j M) :
     Γ ⊢[PRAAx] inst2 dB j (pairT M (pairT X Y)) ≐ Y * inst2 bt j (pairT M (pairT X Y)) := by
   refine (dB_at _ _ _ _).eqTrans (.eqTrans ?_ (congrMul (.eqRefl _) (bt_at _ _ _ _)).eqSymm)
   refine (congrMul (.eqRefl _) ((congrPw (.eqRefl Y) (monus_succ_le hj)).eqTrans (pw_succ Y _))).eqTrans ?_
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem p_shift (k M X Y : PTm n) :
     Γ ⊢[PRAAx] inst2 (shiftBody dB) k (pairT M (pairT X Y)) ≐ inst2 aB k (pairT M (pairT X Y)) := by
@@ -168,14 +169,10 @@ theorem binom2_step {M X Y : PTm n} (ih : Γ ⊢[PRAAx] S M X Y ≐ pw (X + Y) M
 private abbrev b2F : Fm PTm 3 := S (var 0) (var 1) (var 2) ≐ pw (var 1 + var 2) (var 0)
 
 theorem binom2_base (X Y : PTm n) : Γ ⊢[PRAAx] S zero X Y ≐ pw (X + Y) zero := by
-  have s := natEq (sum_succ' (Γ := Γ) bt zero (pairT zero (pairT X Y)))
-  have z := natEq (sum_zero (Γ := Γ) bt (pairT zero (pairT X Y)))
-  have t := natEq ((bt_at (Γ := Γ) zero zero X Y).eqTrans
-    ((congrMul (congrMul (gb_zero _) (pw_zero X)) ((congrPw (.eqRefl Y) (monus_zero _)).eqTrans (pw_zero Y))).eqTrans
-      ((congrMul (one_mul one) (.eqRefl _)).eqTrans (one_mul _))))
-  have p := natEq (pw_zero (Γ := Γ) (X + Y))
-  apply deriveNat; ipra_simps
-  linear_combination s + z + t - p
+  ipra_lc natEq (sum_succ' (Γ := Γ) bt zero (pairT zero (pairT X Y))) +
+    natEq (sum_zero (Γ := Γ) bt (pairT zero (pairT X Y))) +
+    natEq ((bt_at (Γ := Γ) zero zero X Y).eqTrans ((congrMul (congrMul (gb_zero _) (pw_zero X)) ((congrPw (.eqRefl Y) (monus_zero _)).eqTrans (pw_zero Y))).eqTrans ((congrMul (one_mul one) (.eqRefl _)).eqTrans (one_mul _)))) -
+    natEq (pw_zero (Γ := Γ) (X + Y))
 
 private theorem b2₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] b2F := by
   refine ind _ trivial ?_ ?_

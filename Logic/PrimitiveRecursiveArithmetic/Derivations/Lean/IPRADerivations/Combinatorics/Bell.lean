@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.PhiUpper
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Bell numbers by course-of-values recursion
@@ -128,9 +129,7 @@ private theorem viol₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] violF := by
     rw [e]
     exact viol_shift _ _
 
-theorem monus_monus {v N : PTm n} (h : Γ ⊢[PRAAx] le v N) : Γ ⊢[PRAAx] monus N (monus N v) ≐ v :=
-  (congrMonus (eq_add_of_le h) ((congrMonus (eq_add_of_le h) (.eqRefl _)).eqTrans (add_monus' _ _))).eqTrans
-    (add_monus _ _)
+alias monus_monus := Common.monus_monus_of_le
 
 theorem monus_le' {v N : PTm n} (h : Γ ⊢[PRAAx] le v N) : Γ ⊢[PRAAx] le (monus N v) N :=
   le_of_eq_add (d := v) ((eq_add_of_le h).eqTrans (add_comm _ _))

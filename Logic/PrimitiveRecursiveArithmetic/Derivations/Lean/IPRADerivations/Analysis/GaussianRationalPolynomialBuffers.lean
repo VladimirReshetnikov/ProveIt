@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianRationalFiniteSum
 import IPRADerivations.Analysis.GaussianRationalLinearProduct
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual zero buffers, padding and addition for rational polynomials
@@ -75,10 +76,7 @@ theorem append_lookup (C i : PTm n) (hi : Γ ⊢[PRAAx] le i (length C)) : Γ �
 theorem pad_coefficient_congr {C D t u i j : PTm n} (hC : Γ ⊢[PRAAx] C ≐ D)
     (ht : Γ ⊢[PRAAx] t ≐ u) (hi : Γ ⊢[PRAAx] i ≐ j) : Γ ⊢[PRAAx]
     padCoefficient C t i ≐ padCoefficient D u j := by
-  simpa only [subst_padCoefficient,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-    Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using
-      Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (padCoefficient (var 0) (var 1) (var 2) : PTm 3)
-        (σ := ![C,t,i]) (σ' := ![D,u,j]) (fun k => by fin_cases k; exact hC; exact ht; exact hi)
+  ipra_congr (padCoefficient (var 0) (var 1) (var 2) : PTm 3) with [hC, ht, hi]
 
 theorem pad_body_at (C t i : PTm n) : Γ ⊢[PRAAx]
     inst2 padBody i (padData C t) ≐ padCoefficient C t i := by

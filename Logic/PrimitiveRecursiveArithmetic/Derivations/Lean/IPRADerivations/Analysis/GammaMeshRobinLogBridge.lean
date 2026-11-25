@@ -4,6 +4,7 @@ import IPRADerivations.Analysis.GapRemoval
 import IPRADerivations.Analysis.RationalRepresentations
 import IPRADerivations.AnalyticNumberTheory.RobinLipSum
 import IPRADerivations.AnalyticNumberTheory.LogElementary
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The actual harmonic mesh and Robin logarithm at the same rational argument
@@ -78,9 +79,7 @@ theorem left_succ (Q i F : PTm n) (hQ : Γ ⊢[PRAAx] le one Q) :
   have e := (sum_succ' (Γ := Γ) (offB hB) i (pairT (pred Q) F)).eqTrans
     (congrAdd (.eqRefl _) (LeanProofs.IPRA.AnalyticNumberTheory.LogElementary.off_at i (pred Q) F))
   exact e.eqTrans (congrAdd (.eqRefl _) (congrAp2 quoF (.eqRefl _) (by
-    have p := natEq (pos_of_one_le hQ)
-    apply deriveNat; ipra_simps
-    linear_combination -p)))
+    ipra_lc -natEq (pos_of_one_le hQ))))
 
 theorem right_succ (Q i F : PTm n) :
     Γ ⊢[PRAAx] rightSum Q (succ i) F ≐ rightSum Q i F+quo F (Q+succ i) :=

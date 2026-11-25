@@ -1,6 +1,7 @@
 import IPRADerivations.Algebra.QuadraticTowerMultiplicationTable
 import IPRADerivations.Foundations.SequenceEquality
 import IPRADerivations.Analysis.RationalGaussianEmbedding
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual normalization of numerical quadratic-tower arrays
@@ -39,9 +40,7 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 theorem recode_congr {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) :
     Γ ⊢[PRAAx] RationalArithmetic.recode a ≐ RationalArithmetic.recode b := by
-  simpa [RationalArithmetic.subst_recode] using
-    Prf.eqCongr (RationalArithmetic.recode (var 0) : PTm 1)
-      (σ := ![a]) (σ' := ![b]) (fun i => by fin_cases i; exact h)
+  ipra_congr (RationalArithmetic.recode (var 0) : PTm 1) with [h]
 
 theorem normalized_proper (h A C : PTm n)
     (hV : Γ ⊢[PRAAx] equalValues h A C) : Γ ⊢[PRAAx]

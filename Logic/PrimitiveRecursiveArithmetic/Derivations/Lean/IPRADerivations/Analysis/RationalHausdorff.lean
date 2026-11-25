@@ -1,6 +1,8 @@
 import IPRADerivations.Analysis.RationalSupMetric
 import IPRADerivations.Foundations.FiniteHausdorffImage
 import IPRADerivations.Foundations.RealizerComposition
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Hausdorff distance of arbitrary finite rational vector lists
@@ -218,10 +220,7 @@ theorem pointRadius_at (x y d A B k : PTm n) (h : Γ ⊢[PRAAx] pointRadius x y 
       Syn.inst_zero, Syn.subst_inst_shift] using Prf.allE k h
   exact .impE rule hk
 
-private theorem positive_cancel {c a b : PTm n} (hc : Γ ⊢[PRAAx] le one c)
-    (h : Γ ⊢[PRAAx] le (c * a) (c * b)) : Γ ⊢[PRAAx] le a b := by
-  have e : Γ ⊢[PRAAx] c ≐ succ (monus c one) := (eq_add_of_le hc).eqTrans (by ipra_ring)
-  exact mul_le_cancel (le_congr (congrMul e (.eqRefl _)) (congrMul e (.eqRefl _)) h)
+private alias positive_cancel := Common.mul_cancel_le
 
 theorem rationalDenominator_one_le (x k : PTm n) : Γ ⊢[PRAAx] le one (rationalDenominator x k) :=
   (succ_monus_succ zero _).eqTrans (zero_le _)
@@ -236,14 +235,12 @@ theorem source_coordinate_bound (s t : Side) (S T d i j k A B : PTm n)
     (h : Γ ⊢[PRAAx] coordinateRadius (entry (source s S T) i) (entry (source t S T) j) k A B) :
     Γ ⊢[PRAAx] le (B * coordinateDistance (entry (grid s S T d) i) (entry (grid t S T d) j) k)
       (A * denominator S T d) := by
-  have clear := natEq (grid_distance_clears s t S T d i j k hi hj hk)
   have scaled := mul_le_mul_right (denominator S T d) h
   have left : Γ ⊢[PRAAx]
       (B * zabs (crossNumerator (entry (source s S T) i) (entry (source t S T) j) k)) * denominator S T d ≐
       denominatorProduct (entry (source s S T) i) (entry (source t S T) j) k *
         (B * coordinateDistance (entry (grid s S T d) i) (entry (grid t S T d) j) k) := by
-    apply deriveNat; ipra_simps
-    linear_combination -(Groth.ι (Q.mk Γ B)) * clear
+    ipra_lc -(Groth.ι (Q.mk Γ B)) * natEq (grid_distance_clears s t S T d i j k hi hj hk)
   exact positive_cancel (denominatorProduct_one_le _ _ _) (le_congr left (by ipra_ring) scaled)
 
 theorem grid_coordinate_bound (s t : Side) (S T d i j k A B : PTm n)
@@ -252,14 +249,12 @@ theorem grid_coordinate_bound (s t : Side) (S T d i j k A B : PTm n)
     (h : Γ ⊢[PRAAx] le (B * coordinateDistance (entry (grid s S T d) i) (entry (grid t S T d) j) k)
       (A * denominator S T d)) :
     Γ ⊢[PRAAx] coordinateRadius (entry (source s S T) i) (entry (source t S T) j) k A B := by
-  have clear := natEq (grid_distance_clears s t S T d i j k hi hj hk)
   have scaled := mul_le_mul_right (denominatorProduct (entry (source s S T) i) (entry (source t S T) j) k) h
   have left : Γ ⊢[PRAAx]
       (B * coordinateDistance (entry (grid s S T d) i) (entry (grid t S T d) j) k) *
         denominatorProduct (entry (source s S T) i) (entry (source t S T) j) k ≐
       denominator S T d * (B * zabs (crossNumerator (entry (source s S T) i) (entry (source t S T) j) k)) := by
-    apply deriveNat; ipra_simps
-    linear_combination (Groth.ι (Q.mk Γ B)) * clear
+    ipra_lc (Groth.ι (Q.mk Γ B)) * natEq (grid_distance_clears s t S T d i j k hi hj hk)
   have positive : Γ ⊢[PRAAx] le one (denominator S T d) := commonDenominator_one_le _ _
   exact positive_cancel positive (le_congr left (by ipra_ring) scaled)
 

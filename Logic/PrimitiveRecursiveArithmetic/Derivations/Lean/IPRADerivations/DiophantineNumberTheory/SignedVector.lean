@@ -1,7 +1,8 @@
 import IPRADerivations.DiophantineNumberTheory.SignedLine
 import IPRADerivations.DiophantineNumberTheory.NorthcottLocus
 import IPRADerivations.Foundations.BoundedReflection
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Signed primitive representatives in every dimension
@@ -69,13 +70,9 @@ theorem sum_10 (ha : Γ ⊢[PRAAx] sa ≐ zero) (hc : Γ ⊢[PRAAx] sc ≐ zero)
     𝔞 mb * 𝔞 mc * natEq ((congrMonus (.eqRefl one) hb).eqTrans (monus_self (Γ := Γ) one)) -
     𝔞 ma * 𝔞 md * natEq ((congrMonus (.eqRefl one) hd).eqTrans (monus_zero (Γ := Γ) one))
 
-theorem left_zero {x y : PTm k} (h : Γ ⊢[PRAAx] x + y ≐ zero) : Γ ⊢[PRAAx] x ≐ zero := by
-  have s := natEq h
-  exact le_zero_eq (by ipra_le 𝔞 y using linear_combination -s)
+alias left_zero := Common.add_eq_zero_left
 
-theorem right_zero {x y : PTm k} (h : Γ ⊢[PRAAx] x + y ≐ zero) : Γ ⊢[PRAAx] y ≐ zero := by
-  have s := natEq h
-  exact le_zero_eq (by ipra_le 𝔞 x using linear_combination -s)
+alias right_zero := Common.add_eq_zero_right
 
 /-- `p ≥ 1` and `p q = 0` give `q = 0`. -/
 theorem zero_of_mul {p q : PTm k} (hp : Γ ⊢[PRAAx] p ≐ succ (pred p)) (h : Γ ⊢[PRAAx] p * q ≐ zero) :

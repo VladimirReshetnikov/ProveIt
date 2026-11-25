@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.SigmaPrimePower
 import IPRADerivations.AnalyticNumberTheory.LocalFactor
 import IPRADerivations.AnalyticNumberTheory.Order
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The divisor functions `τ` and `σ_r`
@@ -434,8 +435,7 @@ theorem sigr_pow {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (a r : PTm n) :
 
 /-! ## `σ_1 = σ` -/
 
-theorem pw_one_exp (d : PTm n) : Γ ⊢[PRAAx] pw d one ≐ d :=
-  (pw_succ d zero).eqTrans ((congrMul (pw_zero d) (.eqRefl _)).eqTrans (one_mul _))
+alias pw_one_exp := Common.pw_one
 
 theorem one_pt (d K : PTm n) : Γ ⊢[PRAAx] inst2 srB d (pairT K one) ≐ inst2 sB d K := by
   rw [inst2_sB]

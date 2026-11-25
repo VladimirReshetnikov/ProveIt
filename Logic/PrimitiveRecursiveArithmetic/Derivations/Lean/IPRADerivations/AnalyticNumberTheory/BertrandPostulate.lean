@@ -1,7 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.BertrandFactor
 import IPRADerivations.AnalyticNumberTheory.BertrandGrowth
 import IPRADerivations.AnalyticNumberTheory.BertrandCertificate
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Bertrand's postulate as a closed sentence of iPRA

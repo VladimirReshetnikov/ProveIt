@@ -1,5 +1,5 @@
 import IPRADerivations.Core.Tactic
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # One step of coprime Hensel lifting, and the simple-root identities

@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.SumReindex
 import IPRADerivations.Foundations.CoverLocal
 import IPRADerivations.Core.Gcd
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The scale intervals stay inside their gap (`hurwitz_khinchin_ipra`, (K8))
@@ -63,14 +64,10 @@ theorem scale_margin {T p q α β γ L H w : PTm n} (hq : Γ ⊢[PRAAx] q ≐ su
     ipra_le sl hA + sl hH
 
 /-- `h ∸ j ≤ h`. -/
-theorem monus_le' (h j : PTm n) : Γ ⊢[PRAAx] le (monus h j) h := by
-  refine .orE (le_total j h) ?_ ?_
-  · have e := natEq (eq_add_of_le (Prf.hyp0 (Γ := Γ) (φ := le j h)))
-    exact le_of_eq_add (d := j) (by apply deriveNat; ipra_simps; linear_combination e)
-  · exact le_congr (Prf.hyp0 (Γ := Γ) (φ := le h j)).eqSymm (.eqRefl _) (zero_le h)
+alias monus_le' := Common.monus_le_self
 
 /-- `sg a ≤ 1`. -/
-theorem sg_le_one (a : PTm n) : Γ ⊢[PRAAx] le (sg a) one := monus_le' _ _
+alias sg_le_one := Common.sg_le_one
 
 /-- A member `[A, A + sg(act) w)` that is inactive or inside the margins is empty or inside `[L, H)`. -/
 theorem member_in {A act w L H : PTm n} (h : Γ ⊢[PRAAx] (sg act ≐ zero) ⋎ (le L A ⋏ le (A + w) H)) :

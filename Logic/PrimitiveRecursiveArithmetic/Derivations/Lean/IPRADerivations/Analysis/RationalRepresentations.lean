@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic
 import IPRADerivations.DiophantineNumberTheory.MinkowskiCenters
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Composition of rational cross-value representations
@@ -34,43 +35,21 @@ theorem represents_add (c d : PTm n) (a b : ZT n) (A B : PTm n)
     Γ ⊢[PRAAx] represents (add c d) (a*ZT.ofNat B+b*ZT.ofNat A) (A*B) := by
   apply DiophantineNumberTheory.MinkowskiCenters.integer_cancel (productDenominator c d) _ _
     (product_denominator_positive c d)
-  apply ZT.derive
-  have ec := ZT.toZ_eq hc
-  have ed := ZT.toZ_eq hd
-  have ea := ZT.toZ_eq (add_value (Γ := Γ) c d)
-  simp only [represents,productDenominator,addNumerator,ZT.toZ_mul,ZT.toZ_add,ZT.toZ_ofNat] at ec ed ea ⊢
-  ipra_simps
-  linear_combination
-    𝔞(B)*𝔞(denominatorOf d)*𝔞(denominatorOf (add c d))*ec+
-    𝔞(A)*𝔞(denominatorOf c)*𝔞(denominatorOf (add c d))*ed+
-    𝔞(A)*𝔞(B)*ea
+  ipra_lc [represents, productDenominator, addNumerator] 𝔞(B)*𝔞(denominatorOf d)*𝔞(denominatorOf (add c d))*ZT.toZ_eq hc+ 𝔞(A)*𝔞(denominatorOf c)*𝔞(denominatorOf (add c d))*ZT.toZ_eq hd+ 𝔞(A)*𝔞(B)*ZT.toZ_eq (add_value (Γ := Γ) c d)
 
 theorem represents_multiply (c d : PTm n) (a b : ZT n) (A B : PTm n)
     (hc : Γ ⊢[PRAAx] represents c a A) (hd : Γ ⊢[PRAAx] represents d b B) :
     Γ ⊢[PRAAx] represents (multiply c d) (a*b) (A*B) := by
   apply DiophantineNumberTheory.MinkowskiCenters.integer_cancel (productDenominator c d) _ _
     (product_denominator_positive c d)
-  apply ZT.derive
-  have ec := ZT.toZ_eq hc
-  have ed := ZT.toZ_eq hd
-  have em := ZT.toZ_eq (multiply_value (Γ := Γ) c d)
-  simp only [represents,productDenominator,ZT.toZ_mul,ZT.toZ_ofNat] at ec ed em ⊢
-  ipra_simps
-  linear_combination
-    ZT.toZ Γ b*𝔞(denominatorOf d)*𝔞(denominatorOf (multiply c d))*ec+
-    ZT.toZ Γ (numeratorOf c)*𝔞(A)*𝔞(denominatorOf (multiply c d))*ed+
-    𝔞(A)*𝔞(B)*em
+  ipra_lc [represents, productDenominator] ZT.toZ Γ b*𝔞(denominatorOf d)*𝔞(denominatorOf (multiply c d))*ZT.toZ_eq hc+ ZT.toZ Γ (numeratorOf c)*𝔞(A)*𝔞(denominatorOf (multiply c d))*ZT.toZ_eq hd+ 𝔞(A)*𝔞(B)*ZT.toZ_eq (multiply_value (Γ := Γ) c d)
 
 theorem represents_negative (c : PTm n) (a : ZT n) (A : PTm n)
     (hc : Γ ⊢[PRAAx] represents c a A) :
     Γ ⊢[PRAAx] represents (negative c) (-a) A := by
   apply DiophantineNumberTheory.MinkowskiCenters.integer_cancel (denominatorOf c) _ _
     (RationalArgmin.denominator_positive c)
-  apply ZT.derive
-  have ec := ZT.toZ_eq hc
-  have en := ZT.toZ_eq (negative_value (Γ := Γ) c)
-  simp only [represents,ZT.toZ_mul,ZT.toZ_neg,ZT.toZ_ofNat] at ec en ⊢
-  linear_combination -𝔞(denominatorOf (negative c))*ec+𝔞(A)*en
+  ipra_lc [represents] -𝔞(denominatorOf (negative c))*ZT.toZ_eq hc+𝔞(A)*ZT.toZ_eq (negative_value (Γ := Γ) c)
 
 theorem representation_composition_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 8
     (represents (var 0) (⟨var 2,var 3⟩ : ZT 8) (var 6) ⟶

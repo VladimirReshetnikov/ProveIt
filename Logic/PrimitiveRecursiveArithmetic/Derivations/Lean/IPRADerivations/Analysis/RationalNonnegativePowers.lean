@@ -1,5 +1,7 @@
 import IPRADerivations.Analysis.GaussianEuclideanDistanceName
 import IPRADerivations.Analysis.GaussianDescentClockArithmetic
+import IPRADerivations.Core.CongruenceTactic
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Actual nonnegative rational powers
@@ -26,9 +28,7 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 theorem fraction_congr {A B C D : PTm n} (hA : Γ ⊢[PRAAx] A ≐ C) (hB : Γ ⊢[PRAAx] B ≐ D) :
     Γ ⊢[PRAAx] fraction A B ≐ fraction C D := by
-  simpa only [subst_fraction,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (fraction (var 0) (var 1) : PTm 2)
-      (σ := ![A,B]) (σ' := ![C,D]) (fun i => by fin_cases i; exact hA; exact hB)
+  ipra_congr (fraction (var 0) (var 1) : PTm 2) with [hA, hB]
 
 theorem fraction_multiply (A B C D : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hD : Γ ⊢[PRAAx] le one D) :
     Γ ⊢[PRAAx] RationalArithmetic.multiply (fraction A B) (fraction C D) ≐ fraction (A*C) (B*D) := by
@@ -60,8 +60,7 @@ theorem power_canonical (A B k : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[P
 theorem power_zero (A B : PTm n) : Γ ⊢[PRAAx] power A B zero ≐ fraction one one :=
   fraction_congr (pw_zero A) (pw_zero B)
 
-theorem natural_power_one (A : PTm n) : Γ ⊢[PRAAx] pw A one ≐ A :=
-  (pw_succ A zero).eqTrans ((congrMul (pw_zero A) (.eqRefl _)).eqTrans (one_mul _))
+alias natural_power_one := Common.pw_one
 
 theorem power_one (A B : PTm n) : Γ ⊢[PRAAx] power A B one ≐ fraction A B :=
   fraction_congr (natural_power_one A) (natural_power_one B)

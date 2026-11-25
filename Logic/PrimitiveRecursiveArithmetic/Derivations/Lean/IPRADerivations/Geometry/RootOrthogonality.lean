@@ -1,6 +1,6 @@
 import IPRADerivations.Core.SumSplit
 import IPRADerivations.Core.SumLemmas
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Finite orthogonality by pairing (`isoperimetric_ipra`, `lem:ortho`)

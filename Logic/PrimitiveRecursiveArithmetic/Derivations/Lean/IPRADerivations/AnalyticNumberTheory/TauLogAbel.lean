@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.DivisorBound
 import IPRADerivations.AnalyticNumberTheory.HarmonicLogSquareSum
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The divisor–logarithm sum by finite partial summation (`pnt_ipra_constructive_2026-11-14`, `sb:divisor-approx`)
@@ -73,14 +74,14 @@ theorem A_succ (N K F : PTm n) :
 abbrev CT (K X F : PTm n) : PTm n := monus (S X F + S K F) (S (K * X) F)
 
 theorem quo_one' (F : PTm n) : Γ ⊢[PRAAx] quo F (succ zero) ≐ F :=
-  quo_eq (congrSucc (pred_succ _).eqSymm) (q := F) (r := zero) (by apply deriveNat; ipra_simps; ring) (le_refl _)
+  quo_eq (congrSucc (pred_succ _).eqSymm) (q := F) (r := zero) (by ipra_ring) (le_refl _)
 
 /-- `0 ≤ c`: `S(KX) ≤ S(X) + S(K)` for `K, X ≥ 1`, `KX ≤ L` (`eta_bounds` at `m = 1`). -/
 theorem c_nonneg {K X L : PTm n} (hK : Γ ⊢[PRAAx] le one K) (hX : Γ ⊢[PRAAx] le one X)
     (hL : Γ ⊢[PRAAx] le (K * X) L) :
     Γ ⊢[PRAAx] le (S (K * X) (fact L)) (S X (fact L) + S K (fact L)) := by
   have c2 := Prf.andE₂ (eta_bounds (m := one) (le_refl _) hX hK hL)
-  have q1 : Γ ⊢[PRAAx] K * one ≐ K := by apply deriveNat; ipra_simps; ring
+  have q1 : Γ ⊢[PRAAx] K * one ≐ K := by ipra_ring
   have eK1 := natEq (congrAp2 (Γ := Γ) (sumF hB) q1 (.eqRefl (fact L)))
   have eSs := natEq (S_succ (Γ := Γ) zero (fact L))
   have eS0 := natEq (sum_zero (Γ := Γ) hB (fact L))
@@ -119,7 +120,7 @@ theorem i_zero {K L X N0 : PTm n} (h : Γ ⊢[PRAAx] Ht zero K L X N0) : Γ ⊢[
   have eA1 := natEq (A_succ (Γ := Γ) zero K (fact L))
   have eA0 := natEq (sum_zero (Γ := Γ) AB (pairT K (fact L)))
   have eD0 := natEq (sum_zero (Γ := Γ) hB (zero : PTm n))
-  have q1 : Γ ⊢[PRAAx] K * succ zero ≐ K := by apply deriveNat; ipra_simps; ring
+  have q1 : Γ ⊢[PRAAx] K * succ zero ≐ K := by ipra_ring
   have ex1 := natEq (congrAp2 (Γ := Γ) (sumF hB) q1 (.eqRefl (fact L)))
   have eu1 := natEq ((congrMonus (congrAp2 (sumF hB) q1 (.eqRefl (fact L))) (.eqRefl _)).eqTrans
     (le_refl (S K (fact L))) : Γ ⊢[PRAAx] U (succ zero) K (fact L) ≐ zero)
@@ -146,11 +147,10 @@ theorem isqrt_pos (k : PTm n) : Γ ⊢[PRAAx] le one (isqrt (succ k)) := by
   have m0 : (le (isqrt (succ k)) zero :: Γ) ⊢[PRAAx] isqrt (succ k) ≐ zero := le_antisymm Prf.hyp0 (zero_le _)
   have sp := lt_isqrt_succ_sq (Γ := le (isqrt (succ k)) zero :: Γ) (succ k)
   have e : (le (isqrt (succ k)) zero :: Γ) ⊢[PRAAx] (isqrt (succ k) + one) * (isqrt (succ k) + one) ≐ one := by
-    have w := natEq m0
-    apply deriveNat; ipra_simps; linear_combination (𝔞 (isqrt (succ k)) + 2) * w
+    ipra_lc (𝔞 (isqrt (succ k)) + 2) * natEq m0
   have c : (le (isqrt (succ k)) zero :: Γ) ⊢[PRAAx] le (succ (succ k)) (succ zero) := le_congr (.eqRefl _) e sp
   have c' : (le (isqrt (succ k)) zero :: Γ) ⊢[PRAAx] le (succ zero) zero :=
-    le_trans (le_of_eq_add (d := k) (by apply deriveNat; ipra_simps; ring) : (le (isqrt (succ k)) zero :: Γ) ⊢[PRAAx] le (succ zero) (succ k))
+    le_trans (le_of_eq_add (d := k) (by ipra_ring) : (le (isqrt (succ k)) zero :: Γ) ⊢[PRAAx] le (succ zero) (succ k))
       ((succ_monus_succ _ _).eqSymm.eqTrans c)
   exact not_succ_le_self zero _ c'
 
@@ -162,17 +162,16 @@ theorem i_step {k K L X N0 : PTm n} (h : Γ ⊢[PRAAx] Ht (succ k) K L X N0)
   have hN0K := Prf.andE₁ (Prf.andE₂ (Prf.andE₂ (Prf.andE₂ h)))
   have hk := Prf.andE₂ (Prf.andE₂ (Prf.andE₂ (Prf.andE₂ h)))
   have hKp := pos_of_lt_zero hK
-  have wK := natEq hKp
   have hy1 : Γ ⊢[PRAAx] le (succ k) N0 := le_trans (le_succ_self _) hk
   have hyX := le_trans hy1 hN0X
   have hyK := le_trans hy1 hN0K
   have hX : Γ ⊢[PRAAx] le one X :=
-    le_trans (le_of_eq_add (d := k) (by apply deriveNat; ipra_simps; ring) : Γ ⊢[PRAAx] le one (succ k)) hyX
+    le_trans (le_of_eq_add (d := k) (by ipra_ring) : Γ ⊢[PRAAx] le one (succ k)) hyX
   -- the divisor bound at `y = k + 1`
   have hm1 := isqrt_pos (Γ := Γ) k
   have h1 := isqrt_le (Γ := Γ) (succ k)
   have hm2 : Γ ⊢[PRAAx] lt (succ k) (succ (isqrt (succ k)) * succ (isqrt (succ k))) :=
-    le_congr (.eqRefl _) (by apply deriveNat; ipra_simps; ring) (lt_isqrt_succ_sq (succ k))
+    le_congr (.eqRefl _) (by ipra_ring) (lt_isqrt_succ_sq (succ k))
   have hmy : Γ ⊢[PRAAx] le (isqrt (succ k)) (succ k) := by
     have t := le_scale (isqrt (succ k)) hm1
     exact le_trans (by ipra_le sl t) h1
@@ -186,17 +185,17 @@ theorem i_step {k K L X N0 : PTm n} (h : Γ ⊢[PRAAx] Ht (succ k) K L X N0)
   have hKL2 : Γ ⊢[PRAAx] le (K * succ (succ k)) L := le_trans (le_scale K (le_trans hk hN0X)) hL
   have hNL : Γ ⊢[PRAAx] le (succ (succ k)) L := by
     refine le_trans (le_of_eq_add (d := pred K * succ (succ k)) ?_) hKL2
-    apply deriveNat; ipra_simps; linear_combination (𝔞 k + 2) * wK
+    ipra_lc (𝔞 k + 2) * natEq hKp
   have inc := inc_lower hKp hKL2
   have dl := delta_le (Γ := Γ) (succ k) (fact L) hKp
   have mm : Γ ⊢[PRAAx] le (isqrt (succ k)) (isqrt (succ (succ k))) :=
     le_of_eq_add (isqrt_succ (succ k))
   have m1x : Γ ⊢[PRAAx] le (S K (fact L)) (S (K * succ k) (fact L)) :=
-    S_mono (fact L) (le_of_eq_add (d := K * k) (by apply deriveNat; ipra_simps; ring))
+    S_mono (fact L) (le_of_eq_add (d := K * k) (by ipra_ring))
   have m2x : Γ ⊢[PRAAx] le (S K (fact L)) (S (K * succ (succ k)) (fact L)) :=
-    S_mono (fact L) (le_of_eq_add (d := K * succ k) (by apply deriveNat; ipra_simps; ring))
+    S_mono (fact L) (le_of_eq_add (d := K * succ k) (by ipra_ring))
   have m3 : Γ ⊢[PRAAx] le (S (K * succ k) (fact L)) (S (K * succ (succ k)) (fact L)) :=
-    S_mono (fact L) (le_of_eq_add (d := K) (by apply deriveNat; ipra_simps; ring))
+    S_mono (fact L) (le_of_eq_add (d := K) (by ipra_ring))
   have Eu := natEq (eq_add_of_le m1x)
   have Eup := natEq (eq_add_of_le m2x)
   have Ed := natEq (eq_add_of_le m3)

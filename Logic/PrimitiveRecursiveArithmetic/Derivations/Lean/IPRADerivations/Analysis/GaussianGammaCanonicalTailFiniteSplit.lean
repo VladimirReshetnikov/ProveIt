@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.GaussianGammaCanonicalTailName
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The original finite canonical Gamma tail and its first factor
@@ -44,9 +45,7 @@ def value (z B N r L : PTm n) : PTm n := ofGaussian (finiteTail z B N r L) (tail
     Syn.subst σ (value z B N r L) = value (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) (Syn.subst σ r) (Syn.subst σ L) := by simp [value]
 
 theorem term_index_congr (z B L : PTm n) {i j : PTm n} (h : Γ ⊢[PRAAx] i ≐ j) : Γ ⊢[PRAAx] term z B i L ≐ term z B j L := by
-  simpa only [subst_term,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_three,Matrix.cons_val_succ,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (term (var 0) (var 1) (var 2) (var 3) : PTm 4) (σ := ![z,B,i,L]) (σ' := ![z,B,j,L])
-      (fun a => by fin_cases a; exact .eqRefl _; exact .eqRefl _; exact h; exact .eqRefl _)
+  ipra_congr (term (var 0) (var 1) (var 2) (var 3) : PTm 4) with [.eqRefl z, .eqRefl B, h, .eqRefl L]
 theorem body_at (z B N L i : PTm n) : Γ ⊢[PRAAx] inst2 body i (data z B N L) ≐ term z B (succ (N+i)) L := by
   simp only [body,inst2,subst_term,subst_fstT,subst_sndT,PTm.subst_add,ConciseIPRA.PTm.subst_succ,Syn.subst_var,
     Matrix.cons_val_zero,Matrix.cons_val_one]

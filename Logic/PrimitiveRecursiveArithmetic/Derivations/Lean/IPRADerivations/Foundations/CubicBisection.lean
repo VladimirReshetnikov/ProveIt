@@ -1,7 +1,7 @@
 import IPRADerivations.Foundations.BisectionInvariant
 import IPRADerivations.Core.Powers
 import IPRADerivations.AnalyticNumberTheory.Valuation
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The bisection bracket of the cubic `y³ + y = x`

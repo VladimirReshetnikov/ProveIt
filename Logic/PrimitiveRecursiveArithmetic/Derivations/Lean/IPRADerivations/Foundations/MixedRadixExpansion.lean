@@ -61,7 +61,7 @@ theorem exp_base (r : PTm 2) (y : PTm n) :
     Γ ⊢[PRAAx] Cd r (dgB r) zero y + Pl r zero y * quo (fstT y) (Pl r zero y) ≐ fstT y := by
   have pz := prod_zero (Γ := Γ) r y
   have u := div_mod_unique (Γ := Γ) (z := fstT y) (q := fstT y) (r := zero) (K' := zero)
-    (by apply deriveNat; ipra_simps; ring) (zero_lt_succ zero)
+    (by ipra_ring) (zero_lt_succ zero)
   have q := natEq ((congrAp2 quoF (.eqRefl (fstT y)) pz).eqTrans (Prf.andE₁ u))
   have z := natEq (sum_zero (Γ := Γ) (dP r (dgB r)) y)
   have p := natEq pz

@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianEulerHalfDecayQuadrature
 import IPRADerivations.Analysis.GaussianEulerDecayEndpointBound
 import IPRADerivations.Analysis.GaussianGammaIntegralCutoffs
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # A finite upper-tail bound for the actual half-decay quadrature
@@ -42,11 +43,7 @@ theorem integer_left_observation (L E q : PTm n) (he : Γ ⊢[PRAAx] le one E) :
   have hn : Γ ⊢[PRAAx] two*L*E ≐ L*(two*E) := by ipra_ring
   have hd : Γ ⊢[PRAAx] two*E ≐ one*(two*E) := (one_mul _).eqSymm
   have eq : Γ ⊢[PRAAx] observation (two*L*E) (two*E) q ≐ observation (L*(two*E)) (one*(two*E)) q := by
-    simpa only [GaussianEulerDecayMesh.subst_observation,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-      Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using Prf.eqCongr (Γ := Γ) (Ax := PRAAx)
-      (observation (var 0) (var 1) (var 2) : PTm 3)
-      (σ := ![two*L*E,two*E,q]) (σ' := ![L*(two*E),one*(two*E),q])
-      (fun i => by fin_cases i; exact hn; exact hd; exact .eqRefl q)
+    ipra_congr (observation (var 0) (var 1) (var 2) : PTm 3) with [hn, hd, .eqRefl q]
   exact eq.eqTrans (observation_rescale L one (two*E) q (le_refl one)
     (positive_product two E (le_succ_self one) he))
 

@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.RationalPhiSharpFamily
 import IPRADerivations.Analysis.RationalBivariateGridCoefficients
 import IPRADerivations.Foundations.BoundedDecision
 import IPRADerivations.Core.CongruenceTactic
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The literal expanded quintic sharpness example

@@ -2,7 +2,7 @@ import IPRADerivations.Foundations.BoundedSyntax
 import IPRADerivations.Foundations.FiniteQueryDemand
 import IPRADerivations.Foundations.GapDecision
 import IPRADerivations.Foundations.SequenceComposition
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Integer-facet enlargement preserves the integer lattice points

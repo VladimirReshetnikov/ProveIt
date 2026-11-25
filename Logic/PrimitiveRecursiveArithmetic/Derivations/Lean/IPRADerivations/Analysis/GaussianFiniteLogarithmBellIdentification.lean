@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianFiniteLogarithmCoefficientRecursion
 import IPRADerivations.Analysis.GaussianFiniteLogarithmLinearRecursion
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Literal finite exponential coefficients are the original Bell coefficients
@@ -44,9 +45,7 @@ def bellValue (e : PTm n) : PTm n := signedFraction
     Syn.subst σ (bellValue e) = bellValue (Syn.subst σ e) := by simp [bellValue]
 theorem signed_fraction_congr {c c' D D' : PTm n} (hc : Γ ⊢[PRAAx] c ≐ c') (hD : Γ ⊢[PRAAx] D ≐ D') :
     Γ ⊢[PRAAx] signedFraction c D ≐ signedFraction c' D' := by
-  simpa only [subst_signedFraction,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using
-    Prf.eqCongr (signedFraction (var 0) (var 1) : PTm 2) (σ := ![c,D]) (σ' := ![c',D'])
-      (fun i => by fin_cases i; exact hc; exact hD)
+  ipra_congr (signedFraction (var 0) (var 1) : PTm 2) with [hc, hD]
 theorem bell_congr {e f : PTm n} (h : Γ ⊢[PRAAx] e ≐ f) : Γ ⊢[PRAAx] bellValue e ≐ bellValue f :=
   signed_fraction_congr (congrFst (congrAp1 LogarithmExponentialCoefficients.rationalCoefficientF h))
     (congrSnd (congrAp1 LogarithmExponentialCoefficients.rationalCoefficientF h))

@@ -4,7 +4,7 @@ import IPRADerivations.Foundations.TermCompiler
 import IPRADerivations.Topology.InjectionBound
 import IPRADerivations.AnalyticNumberTheory.Multiplicative
 import IPRADerivations.AnalyticNumberTheory.Primes
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The Bell numbers are periodic modulo every `m` (`bell_numbers_ipra`, `thm:all-moduli-period`)

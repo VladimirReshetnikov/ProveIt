@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.GcdFiber
 import IPRADerivations.AnalyticNumberTheory.RSA
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The divisor-sum identity `∑_{d ∣ n} φ(d) = n`
@@ -118,7 +119,7 @@ private theorem sum_ones₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] onesF := by
     refine (sum_succ' _ _ _).eqTrans ?_
     have e : inst2 (one : PTm 2) (var 0 : PTm 2) (var 1) = one := by simp [inst2]
     rw [e]
-    exact (congrAdd Prf.hyp0 (.eqRefl _)).eqTrans (by apply deriveNat; ipra_simps; ring)
+    exact (congrAdd Prf.hyp0 (.eqRefl _)).eqTrans (by ipra_ring)
 
 theorem sum_ones (N x : PTm n) : Γ ⊢[PRAAx] ap2 (sumF one) N x ≐ N := by
   have h := inst (Γ := Γ) sum_ones₀ (![N, x] : Fin 2 → PTm n)
@@ -181,9 +182,7 @@ theorem N_eq (k : PTm n) : Γ ⊢[PRAAx] N ≐ gcd k N * quo N (gcd k N) :=
 
 theorem q_le (k : PTm n) : Γ ⊢[PRAAx] le (quo N (gcd k N)) N := by
   refine le_of_eq_add (d := pred (gcd k N) * quo N (gcd k N)) ?_
-  have e₁ := natEq (N_eq hN k); have e₂ := natEq (gcd_pos_right (a := k) hN)
-  apply deriveNat; ipra_simps
-  linear_combination e₁ + Groth.ι (Q.mk _ (quo N (gcd k N))) * e₂
+  ipra_lc natEq (N_eq hN k) + Groth.ι (Q.mk _ (quo N (gcd k N))) * natEq (gcd_pos_right (a := k) hN)
 
 omit hN in
 theorem q_range (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) : Γ ⊢[PRAAx] Permutation.rangeAll qB (succ N) N := by
@@ -204,11 +203,8 @@ theorem q_iff {j e : PTm n} (hj : Γ ⊢[PRAAx] j ≐ succ (pred j)) (he : Γ �
     Γ ⊢[PRAAx] eqb (quo N (gcd k N)) j ≐ eqb (gcd k N) e := by
   refine eqb_iff (.impI ?_) (.impI ?_)
   · refine mul_cancel hj.wk ?_
-    have a := natEq (N_eq (hN.wk : ((quo N (gcd k N) ≐ j) :: Γ) ⊢[PRAAx] _) k)
-    have b := natEq (Prf.hyp0 : ((quo N (gcd k N) ≐ j) :: Γ) ⊢[PRAAx] quo N (gcd k N) ≐ j)
-    have c := natEq (hNe.wk (ψ := quo N (gcd k N) ≐ j))
-    apply deriveNat; ipra_simps
-    linear_combination -Groth.ι (Q.mk _ (gcd k N)) * b - a + c
+    ipra_lc -Groth.ι (Q.mk _ (gcd k N)) * natEq (Prf.hyp0 : ((quo N (gcd k N) ≐ j) :: Γ) ⊢[PRAAx] quo N (gcd k N) ≐ j) -
+      natEq (N_eq (hN.wk : ((quo N (gcd k N) ≐ j) :: Γ) ⊢[PRAAx] _) k) + natEq (hNe.wk (ψ := quo N (gcd k N) ≐ j))
   · refine (congrAp2 quoF (.eqRefl _) Prf.hyp0).eqTrans (quo_eq he.wk (q := j) (r := zero)
       (hNe.wk.eqTrans (add_zero _).eqSymm) (lt_congr (.eqRefl _) he.wk.eqSymm (zero_lt_succ _)))
 

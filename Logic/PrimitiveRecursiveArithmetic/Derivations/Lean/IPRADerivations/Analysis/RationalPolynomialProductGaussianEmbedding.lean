@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.RationalPolynomialBuffersGaussianEmbedding
 import IPRADerivations.Analysis.RationalGaussianRealPart
 import IPRADerivations.Analysis.GaussianRationalPolynomialProduct
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual original rational convolution and coefficient transport
@@ -57,11 +58,7 @@ theorem contribution_congr {P P' Q Q' M M' k k' i i' : PTm n}
     (hP : Γ ⊢[PRAAx] P ≐ P') (hQ : Γ ⊢[PRAAx] Q ≐ Q') (hM : Γ ⊢[PRAAx] M ≐ M')
     (hk : Γ ⊢[PRAAx] k ≐ k') (hi : Γ ⊢[PRAAx] i ≐ i') : Γ ⊢[PRAAx]
     contribution P Q M k i ≐ contribution P' Q' M' k' i' := by
-  simpa only [subst_contribution,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.cons_val_three,Matrix.cons_val_four,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (contribution (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5)
-      (σ := ![P,Q,M,k,i]) (σ' := ![P',Q',M',k',i'])
-      (fun j => by fin_cases j; exact hP; exact hQ; exact hM; exact hk; exact hi)
+  ipra_congr (contribution (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) with [hP, hQ, hM, hk, hi]
 theorem contribution_body_at (P Q M k i : PTm n) : Γ ⊢[PRAAx]
     RationalFiniteSum.term contributionBody i (data P Q M k) ≐ contribution P Q M k i := by
   simp only [RationalFiniteSum.term,contributionBody,inst2,subst_contribution,subst_fstT,subst_sndT,

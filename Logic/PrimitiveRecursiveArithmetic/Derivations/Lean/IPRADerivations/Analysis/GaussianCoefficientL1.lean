@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianRationalL1Algebra
 import IPRADerivations.Analysis.RationalSumAdditivity
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual finite Gaussian-rational coefficient norms
@@ -45,9 +46,7 @@ theorem norm_body_at (C i : PTm n) : RationalFiniteSum.term normBody i C = qL1 (
     Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
 
 theorem qL1_congr {q r : PTm n} (h : Γ ⊢[PRAAx] q ≐ r) : Γ ⊢[PRAAx] qL1 q ≐ qL1 r := by
-  simpa only [GaussianRationalL1.subst_qL1,Syn.subst_var,Matrix.cons_val_zero] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (qL1 (var 0) : PTm 1)
-      (σ := ![q]) (σ' := ![r]) (fun i => by fin_cases i; exact h)
+  ipra_congr (qL1 (var 0) : PTm 1) with [h]
 
 theorem prefix_zero (C : PTm n) : Γ ⊢[PRAAx]
     prefixNorm C zero ≐ RationalIntegerNormalization.integerCode (ZT.natLit 0) :=

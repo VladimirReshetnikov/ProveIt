@@ -279,7 +279,7 @@ theorem tc_split (x y : PTm n) :
   have s := sum_add2 (Γ := Γ) (hRB (fuB f) lamW) (hRB (S1B f lamW) lamW) (hRB (EfB f) lamW) (K := succ x)
     (x := pairT x y) (x' := pairT x y) (z := pairT x y) (.allI (.impI (by
       rw [inst2_hRB, inst2_hRB, inst2_hRB, inst2_EfB, inst2_mul]
-      apply deriveNat; ipra_simps; ring)))
+      ipra_ring)))
   exact s.eqTrans (congrAdd (.eqRefl _) (reorder f lamW hm h0 lamW x y))
 
 include hm h0 hK hL

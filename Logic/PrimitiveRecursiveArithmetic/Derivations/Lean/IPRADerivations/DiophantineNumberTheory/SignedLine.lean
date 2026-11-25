@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.ProjectiveNormalize
 import IPRADerivations.DiophantineNumberTheory.GcdNormalize
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Signed primitive representatives on the projective line
@@ -63,7 +64,7 @@ theorem mag_zero {a b c d : PTm k} (g1 : Γ ⊢[PRAAx] gcd a b ≐ one) (g2 : Γ
     one_of_gcd_zero ((LeanProofs.IPRA.DiophantineNumberTheory.GcdNormalize.congrGcd ha.eqSymm (.eqRefl _)).eqTrans g1)
   have e := natEq h; have za := natEq ha; have ob := natEq hb
   have hc : Γ ⊢[PRAAx] c ≐ zero := by
-    apply deriveNat; ipra_simps; linear_combination -e + 𝔞 d * za - 𝔞 c * ob
+    ipra_lc -e + 𝔞 d * za - 𝔞 c * ob
   have hd : Γ ⊢[PRAAx] d ≐ one :=
     one_of_gcd_zero ((LeanProofs.IPRA.DiophantineNumberTheory.GcdNormalize.congrGcd hc.eqSymm (.eqRefl _)).eqTrans g2)
   exact .andI (ha.eqTrans hc.eqSymm) (hb.eqTrans hd.eqSymm)
@@ -74,7 +75,7 @@ theorem mag_pos_zero {a b c d : PTm k} (g2 : Γ ⊢[PRAAx] gcd c d ≐ one)
   have e := natEq h; have zc := natEq hc
   have hd : Γ ⊢[PRAAx] d ≐ zero := by
     refine mul_cancel ha ?_
-    apply deriveNat; ipra_simps; linear_combination e + 𝔞 b * zc
+    ipra_lc e + 𝔞 b * zc
   have g0 := (LeanProofs.IPRA.DiophantineNumberTheory.GcdNormalize.congrGcd hc hd).eqTrans gcd_zero_zero
   exact succ_ne_zero' _ (g2.eqSymm.eqTrans g0)
 
@@ -102,54 +103,41 @@ variable {sa ma sb mb sc mc sd md : PTm k}
 theorem case_00 (ha : Γ ⊢[PRAAx] sa ≐ zero) (hc : Γ ⊢[PRAAx] sc ≐ zero)
     (hb : Γ ⊢[PRAAx] sb ≐ zero) (hd : Γ ⊢[PRAAx] sd ≐ zero)
     (h : Γ ⊢[PRAAx] crossF sa ma sb mb sc mc sd md) : Γ ⊢[PRAAx] ma * md ≐ mb * mc := by
-  have e := natEq (cross_nat h)
-  have za := natEq ha; have zc := natEq hc
-  have ua := natEq ((congrMonus (.eqRefl one) ha).eqTrans (monus_zero (Γ := Γ) one))
-  have uc := natEq ((congrMonus (.eqRefl one) hc).eqTrans (monus_zero (Γ := Γ) one))
-  have zb := natEq hb; have zd := natEq hd
-  have ub := natEq ((congrMonus (.eqRefl one) hb).eqTrans (monus_zero (Γ := Γ) one))
-  have ud := natEq ((congrMonus (.eqRefl one) hd).eqTrans (monus_zero (Γ := Γ) one))
-  apply deriveNat; ipra_simps
-  linear_combination e + 𝔞 ma * 𝔞 md * (𝔞 (monus one sd) - 𝔞 sd) * za -
-    𝔞 mb * 𝔞 mc * (𝔞 (monus one sb) - 𝔞 sb) * zc - 𝔞 ma * 𝔞 md * (𝔞 (monus one sd) - 𝔞 sd) * ua +
-    𝔞 mb * 𝔞 mc * (𝔞 (monus one sb) - 𝔞 sb) * uc - 𝔞 mb * 𝔞 mc * zb + 𝔞 ma * 𝔞 md * zd +
-    𝔞 mb * 𝔞 mc * ub - 𝔞 ma * 𝔞 md * ud
+  ipra_lc natEq (cross_nat h) + 𝔞 ma * 𝔞 md * (𝔞 (monus one sd) - 𝔞 sd) * natEq ha -
+    𝔞 mb * 𝔞 mc * (𝔞 (monus one sb) - 𝔞 sb) * natEq hc -
+    𝔞 ma * 𝔞 md * (𝔞 (monus one sd) - 𝔞 sd) * natEq ((congrMonus (.eqRefl one) ha).eqTrans (monus_zero (Γ := Γ) one)) +
+    𝔞 mb * 𝔞 mc * (𝔞 (monus one sb) - 𝔞 sb) * natEq ((congrMonus (.eqRefl one) hc).eqTrans (monus_zero (Γ := Γ) one)) -
+    𝔞 mb * 𝔞 mc * natEq hb + 𝔞 ma * 𝔞 md * natEq hd +
+    𝔞 mb * 𝔞 mc * natEq ((congrMonus (.eqRefl one) hb).eqTrans (monus_zero (Γ := Γ) one)) -
+    𝔞 ma * 𝔞 md * natEq ((congrMonus (.eqRefl one) hd).eqTrans (monus_zero (Γ := Γ) one))
 
 /-- Equal signs `s_b = s_d = 1`: the magnitudes satisfy `a d = b c`. -/
 theorem case_11 (ha : Γ ⊢[PRAAx] sa ≐ zero) (hc : Γ ⊢[PRAAx] sc ≐ zero)
     (hb : Γ ⊢[PRAAx] sb ≐ one) (hd : Γ ⊢[PRAAx] sd ≐ one)
     (h : Γ ⊢[PRAAx] crossF sa ma sb mb sc mc sd md) : Γ ⊢[PRAAx] ma * md ≐ mb * mc := by
-  have e := natEq (cross_nat h)
-  have za := natEq ha; have zc := natEq hc
-  have ua := natEq ((congrMonus (.eqRefl one) ha).eqTrans (monus_zero (Γ := Γ) one))
-  have uc := natEq ((congrMonus (.eqRefl one) hc).eqTrans (monus_zero (Γ := Γ) one))
-  have zb := natEq hb; have zd := natEq hd
-  have ub := natEq ((congrMonus (.eqRefl one) hb).eqTrans (monus_self (Γ := Γ) one))
-  have ud := natEq ((congrMonus (.eqRefl one) hd).eqTrans (monus_self (Γ := Γ) one))
-  apply deriveNat; ipra_simps
-  linear_combination -e - 𝔞 ma * 𝔞 md * (𝔞 (monus one sd) - 𝔞 sd) * za +
-    𝔞 mb * 𝔞 mc * (𝔞 (monus one sb) - 𝔞 sb) * zc + 𝔞 ma * 𝔞 md * (𝔞 (monus one sd) - 𝔞 sd) * ua -
-    𝔞 mb * 𝔞 mc * (𝔞 (monus one sb) - 𝔞 sb) * uc + 𝔞 mb * 𝔞 mc * zb - 𝔞 ma * 𝔞 md * zd -
-    𝔞 mb * 𝔞 mc * ub + 𝔞 ma * 𝔞 md * ud
+  ipra_lc -natEq (cross_nat h) - 𝔞 ma * 𝔞 md * (𝔞 (monus one sd) - 𝔞 sd) * natEq ha +
+    𝔞 mb * 𝔞 mc * (𝔞 (monus one sb) - 𝔞 sb) * natEq hc +
+    𝔞 ma * 𝔞 md * (𝔞 (monus one sd) - 𝔞 sd) * natEq ((congrMonus (.eqRefl one) ha).eqTrans (monus_zero (Γ := Γ) one)) -
+    𝔞 mb * 𝔞 mc * (𝔞 (monus one sb) - 𝔞 sb) * natEq ((congrMonus (.eqRefl one) hc).eqTrans (monus_zero (Γ := Γ) one)) +
+    𝔞 mb * 𝔞 mc * natEq hb - 𝔞 ma * 𝔞 md * natEq hd -
+    𝔞 mb * 𝔞 mc * natEq ((congrMonus (.eqRefl one) hb).eqTrans (monus_self (Γ := Γ) one)) +
+    𝔞 ma * 𝔞 md * natEq ((congrMonus (.eqRefl one) hd).eqTrans (monus_self (Γ := Γ) one))
 
 /-- `s_b = 0`, `s_d = 1` is impossible. -/
 theorem case_01 (ha : Γ ⊢[PRAAx] sa ≐ zero) (hc : Γ ⊢[PRAAx] sc ≐ zero)
     (hb : Γ ⊢[PRAAx] sb ≐ zero) (hd : Γ ⊢[PRAAx] sd ≐ one)
     (ld : Γ ⊢[PRAAx] le sd mc) (ldd : Γ ⊢[PRAAx] le sd md) (g1 : Γ ⊢[PRAAx] gcd ma mb ≐ one)
     (h : Γ ⊢[PRAAx] crossF sa ma sb mb sc mc sd md) : Γ ⊢[PRAAx] Fm.bot := by
-  have e := natEq (cross_nat h)
   have za := natEq ha; have zc := natEq hc
-  have ua := natEq ((congrMonus (.eqRefl one) ha).eqTrans (monus_zero (Γ := Γ) one))
-  have uc := natEq ((congrMonus (.eqRefl one) hc).eqTrans (monus_zero (Γ := Γ) one))
   have zb := natEq hb; have zd := natEq hd
-  have ub := natEq ((congrMonus (.eqRefl one) hb).eqTrans (monus_zero (Γ := Γ) one))
-  have ud := natEq ((congrMonus (.eqRefl one) hd).eqTrans (monus_self (Γ := Γ) one))
   have sm : Γ ⊢[PRAAx] ma * md + mb * mc ≐ zero := by
-    apply deriveNat; ipra_simps
-    linear_combination -e - 𝔞 ma * 𝔞 md * (𝔞 (monus one sd) - 𝔞 sd) * za +
-      𝔞 mb * 𝔞 mc * (𝔞 (monus one sb) - 𝔞 sb) * zc + 𝔞 ma * 𝔞 md * (𝔞 (monus one sd) - 𝔞 sd) * ua -
-      𝔞 mb * 𝔞 mc * (𝔞 (monus one sb) - 𝔞 sb) * uc + 𝔞 mb * 𝔞 mc * zb - 𝔞 ma * 𝔞 md * zd -
-      𝔞 mb * 𝔞 mc * ub + 𝔞 ma * 𝔞 md * ud
+    ipra_lc -natEq (cross_nat h) - 𝔞 ma * 𝔞 md * (𝔞 (monus one sd) - 𝔞 sd) * za +
+      𝔞 mb * 𝔞 mc * (𝔞 (monus one sb) - 𝔞 sb) * zc +
+      𝔞 ma * 𝔞 md * (𝔞 (monus one sd) - 𝔞 sd) * natEq ((congrMonus (.eqRefl one) ha).eqTrans (monus_zero (Γ := Γ) one)) -
+      𝔞 mb * 𝔞 mc * (𝔞 (monus one sb) - 𝔞 sb) * natEq ((congrMonus (.eqRefl one) hc).eqTrans (monus_zero (Γ := Γ) one)) +
+      𝔞 mb * 𝔞 mc * zb - 𝔞 ma * 𝔞 md * zd -
+      𝔞 mb * 𝔞 mc * natEq ((congrMonus (.eqRefl one) hb).eqTrans (monus_zero (Γ := Γ) one)) +
+      𝔞 ma * 𝔞 md * natEq ((congrMonus (.eqRefl one) hd).eqTrans (monus_self (Γ := Γ) one))
   have s := natEq sm
   have pc : Γ ⊢[PRAAx] le one mc := le_congr hd (.eqRefl _) ld
   have pd : Γ ⊢[PRAAx] le one md := le_congr hd (.eqRefl _) ldd
@@ -164,19 +152,16 @@ theorem case_10 (ha : Γ ⊢[PRAAx] sa ≐ zero) (hc : Γ ⊢[PRAAx] sc ≐ zero
     (hb : Γ ⊢[PRAAx] sb ≐ one) (hd : Γ ⊢[PRAAx] sd ≐ zero)
     (lb : Γ ⊢[PRAAx] le sb ma) (lbb : Γ ⊢[PRAAx] le sb mb) (g2 : Γ ⊢[PRAAx] gcd mc md ≐ one)
     (h : Γ ⊢[PRAAx] crossF sa ma sb mb sc mc sd md) : Γ ⊢[PRAAx] Fm.bot := by
-  have e := natEq (cross_nat h)
   have za := natEq ha; have zc := natEq hc
-  have ua := natEq ((congrMonus (.eqRefl one) ha).eqTrans (monus_zero (Γ := Γ) one))
-  have uc := natEq ((congrMonus (.eqRefl one) hc).eqTrans (monus_zero (Γ := Γ) one))
   have zb := natEq hb; have zd := natEq hd
-  have ub := natEq ((congrMonus (.eqRefl one) hb).eqTrans (monus_self (Γ := Γ) one))
-  have ud := natEq ((congrMonus (.eqRefl one) hd).eqTrans (monus_zero (Γ := Γ) one))
   have sm : Γ ⊢[PRAAx] ma * md + mb * mc ≐ zero := by
-    apply deriveNat; ipra_simps
-    linear_combination e + 𝔞 ma * 𝔞 md * (𝔞 (monus one sd) - 𝔞 sd) * za -
-      𝔞 mb * 𝔞 mc * (𝔞 (monus one sb) - 𝔞 sb) * zc - 𝔞 ma * 𝔞 md * (𝔞 (monus one sd) - 𝔞 sd) * ua +
-      𝔞 mb * 𝔞 mc * (𝔞 (monus one sb) - 𝔞 sb) * uc - 𝔞 mb * 𝔞 mc * zb + 𝔞 ma * 𝔞 md * zd +
-      𝔞 mb * 𝔞 mc * ub - 𝔞 ma * 𝔞 md * ud
+    ipra_lc natEq (cross_nat h) + 𝔞 ma * 𝔞 md * (𝔞 (monus one sd) - 𝔞 sd) * za -
+      𝔞 mb * 𝔞 mc * (𝔞 (monus one sb) - 𝔞 sb) * zc -
+      𝔞 ma * 𝔞 md * (𝔞 (monus one sd) - 𝔞 sd) * natEq ((congrMonus (.eqRefl one) ha).eqTrans (monus_zero (Γ := Γ) one)) +
+      𝔞 mb * 𝔞 mc * (𝔞 (monus one sb) - 𝔞 sb) * natEq ((congrMonus (.eqRefl one) hc).eqTrans (monus_zero (Γ := Γ) one)) -
+      𝔞 mb * 𝔞 mc * zb + 𝔞 ma * 𝔞 md * zd +
+      𝔞 mb * 𝔞 mc * natEq ((congrMonus (.eqRefl one) hb).eqTrans (monus_self (Γ := Γ) one)) -
+      𝔞 ma * 𝔞 md * natEq ((congrMonus (.eqRefl one) hd).eqTrans (monus_zero (Γ := Γ) one))
   have s := natEq sm
   have pa : Γ ⊢[PRAAx] le one ma := le_congr hb (.eqRefl _) lb
   have pb : Γ ⊢[PRAAx] le one mb := le_congr hb (.eqRefl _) lbb

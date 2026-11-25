@@ -2,6 +2,7 @@ import IPRADerivations.Analysis.GaussianGammaFiniteValueProperness
 import IPRADerivations.Analysis.GaussianNameConjugation
 import IPRADerivations.Analysis.GaussianGammaWeierstrassLimit
 import IPRADerivations.Analysis.GaussianGammaReciprocalInverse
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Original Gamma names respect native input values at the same denominator
@@ -75,9 +76,7 @@ def positiveData (q : PTm n) : PTm n := GaussianGammaFiniteApproximantName.expon
 theorem positive_exp_data_equal (z w B : PTm n) (hB : Γ ⊢[PRAAx] le one B) (h : Γ ⊢[PRAAx] equal z w) : Γ ⊢[PRAAx]
     positiveExpData z B ≐ positiveExpData w B := by
   change Γ ⊢[PRAAx] positiveData (GaussianRationalHorner.ofGaussian z B) ≐ positiveData (GaussianRationalHorner.ofGaussian w B)
-  simpa only [subst_positiveData,Syn.subst_var,Matrix.cons_val_zero,Matrix.head_cons] using
-    Prf.eqCongr (positiveData (var 0) : PTm 1) (σ := ![GaussianRationalHorner.ofGaussian z B])
-      (σ' := ![GaussianRationalHorner.ofGaussian w B]) (fun i => by fin_cases i; exact fraction_equal z w B hB h)
+  ipra_congr (positiveData (var 0) : PTm 1) with [fraction_equal z w B hB h]
 
 theorem positive_exp_proper (z w B : PTm n) (hB : Γ ⊢[PRAAx] le one B) (h : Γ ⊢[PRAAx] equal z w) : Γ ⊢[PRAAx]
     crossEquivalent positiveExpF positiveExpF (positiveExpData z B) (positiveExpData w B) :=

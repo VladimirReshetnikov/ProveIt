@@ -1,6 +1,6 @@
 import IPRADerivations.Combinatorics.CatalanConvolution
 import IPRADerivations.Core.ProdLemmas
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The weighted Catalan convolution

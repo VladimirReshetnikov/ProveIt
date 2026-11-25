@@ -1,6 +1,6 @@
 import IPRADerivations.Foundations.WeightedDimension
 import IPRADerivations.AnalyticNumberTheory.Totatives
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The residues are a permutation (`ipra_coherent_methods_2026-11-15`, `prop:weighted-dimension`)

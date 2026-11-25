@@ -1,5 +1,6 @@
 import IPRADerivations.Combinatorics.LinearFactorTable
 import IPRADerivations.Combinatorics.BellPrimePeriod
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The period `N_p` of the Bell numbers modulo a prime (`bell_numbers_ipra`, `thm:prime-period`)
@@ -80,7 +81,7 @@ theorem term_dvd {p N k : PTm n} (hq : Γ ⊢[PRAAx] p ≐ succ (pred p)) (hk : 
   refine dvd_of_eq' hq (w := gb N k * pw p (monus N (succ k)) * bell k) ?_
   refine (g_at k N p).eqTrans ((congrMul (congrMul (.eqRefl _)
     ((congrPw (.eqRefl p) (monus_of_lt hk)).eqTrans (pw_succ p _))) (.eqRefl _)).eqTrans ?_)
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- `G(N, p) ≡ B_N (mod p)`: every term of `∑_k C(N, k) p^{N−k} B_k` with `k < N` has a factor
 `p`. -/
@@ -90,7 +91,7 @@ theorem G_prime {p : PTm n} (hq : Γ ⊢[PRAAx] p ≐ succ (pred p)) (N : PTm n)
   have last : Γ ⊢[PRAAx] inst2 gB N (pairT N p) ≐ bell N :=
     (g_at N N p).eqTrans ((congrMul (congrMul (gb_self N)
       ((congrPw (.eqRefl p) (monus_self N)).eqTrans (pw_zero p))) (.eqRefl _)).eqTrans
-        (by apply deriveNat; ipra_simps; ring))
+        (by ipra_ring))
   have hd : Γ ⊢[PRAAx] dvd p (ap2 (sumF gB) N (pairT N p)) := by
     refine dvd_congr_left hq.eqSymm (dvd_sum _ (.allI (.impI ?_)))
     rw [shift_pair]
@@ -102,11 +103,7 @@ theorem G_prime {p : PTm n} (hq : Γ ⊢[PRAAx] p ≐ succ (pred p)) (N : PTm n)
     exact dvd_congr_left hq2 (term_dvd hq'.wk Prf.hyp0)
   have w := eq_of_dvd' hq hd
   have e : Γ ⊢[PRAAx] G N p ≐ bell N + p * quo (ap2 (sumF gB) N (pairT N p)) p := by
-    have a := natEq s
-    have b := natEq last
-    have c := natEq w
-    apply deriveNat; ipra_simps
-    linear_combination a + b + c
+    ipra_lc natEq s + natEq last + natEq w
   exact (cong_of_eq e).eqTrans (cong_drop _ _ hq)
 
 /-! ## The remaining shifts -/
@@ -137,7 +134,7 @@ theorem Hs_step {p j : PTm n} (h : Γ ⊢[PRAAx] lt j p) :
         rw [inst2_shiftBody]
         simp only [shift_pair, shift_succ]
         exact (h_at _ _ _).eqTrans ((congrPw (.eqRefl _)
-          (congrSucc (by apply deriveNat; ipra_simps; ring))).eqTrans (h_at _ _ _).eqSymm))))
+          (congrSucc (by ipra_ring))).eqTrans (h_at _ _ _).eqSymm))))
   exact e₁.eqTrans (s.eqTrans (congrAdd t0 sh))
 
 theorem Hs_end (p : PTm n) : Γ ⊢[PRAAx] Hs p p ≐ zero :=
@@ -152,16 +149,14 @@ theorem link1 {p j m : PTm n} (hp : Γ ⊢[PRAAx] prime p) :
   have hq := prime_eq_succ_pred hp
   refine act_cong bellB bellB hq (.allI (.impI ?_))
   simp only [inst2_bellB, shift_add, shift_pw, shift_succ]
-  exact (cong_of_eq (congrBell (by apply deriveNat; ipra_simps; ring))).eqTrans
+  exact (cong_of_eq (congrBell (by ipra_ring))).eqTrans
     (touchard_power (prime_shift hp).wk (succ (Syn.shift j)) (Syn.shift m + var 0))
 
 theorem link1' {p j m : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hlt : Γ ⊢[PRAAx] lt j p) :
     Γ ⊢[PRAAx] rem (Act bellB j (m + Hs p j) zero) p ≐
       rem (Act bellB (succ j) (m + Hs p (succ j)) zero) p := by
   have e : Γ ⊢[PRAAx] m + Hs p j ≐ m + Hs p (succ j) + pw p (succ j) := by
-    have a := natEq (Hs_step hlt)
-    apply deriveNat; ipra_simps
-    linear_combination a
+    ipra_lc natEq (Hs_step hlt)
   exact (cong_of_eq (congrAct bellB e (.eqRefl zero))).eqTrans (link1 hp)
 
 /-- The induction formula; variable `0` is the number of converted shifts. -/
@@ -192,9 +187,7 @@ theorem tele1 {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (N : PTm n) :
       rem (Act bellB p (N + Hs p p) zero) p) := by
     simpa [Syn.subst_inst_shift, Syn.inst_zero] using h2
   refine (Prf.impE h3 (le_refl p)).eqTrans (cong_of_eq (congrAct bellB ?_ (.eqRefl zero)))
-  have e := natEq (Hs_end (Γ := Γ) p)
-  apply deriveNat; ipra_simps
-  linear_combination e
+  ipra_lc natEq (Hs_end (Γ := Γ) p)
 
 /-! ## The falling factorials produce the same factors -/
 
@@ -204,11 +197,8 @@ theorem G_cong {p t m : PTm n} (hq : Γ ⊢[PRAAx] p ≐ succ (pred p)) (hlt : �
       rem (G (succ m) (monus p (succ t)) + succ t * G m (monus p (succ t))) p := by
   refine Foundations.ChineseRemainder.rem_eq_of_eq hq
     (k₁ := G m (monus p (succ t))) (k₂ := zero) ?_
-  have e₁ := natEq (congrG (Γ := Γ) (.eqRefl m) (monus_of_lt hlt))
-  have e₂ := natEq (G_succ (Γ := Γ) m (monus p (succ t)))
-  have e₃ := natEq (eq_add_of_le hlt)
-  apply deriveNat; ipra_simps
-  linear_combination e₁ - e₂ + 𝔞 (G m (monus p (succ t))) * e₃
+  ipra_lc natEq (congrG (Γ := Γ) (.eqRefl m) (monus_of_lt hlt)) - natEq (G_succ (Γ := Γ) m (monus p (succ t))) +
+    𝔞 (G m (monus p (succ t))) * natEq (eq_add_of_le hlt)
 
 theorem link2 {p t m : PTm n} (hq : Γ ⊢[PRAAx] p ≐ succ (pred p)) (hlt : Γ ⊢[PRAAx] lt t p) :
     Γ ⊢[PRAAx] rem (Act gyB t m (monus p t)) p ≐
@@ -287,11 +277,7 @@ theorem Np_split {p : PTm n} (hq : Γ ⊢[PRAAx] p ≐ succ (pred p)) :
   have c : Γ ⊢[PRAAx] Np p ≐ ap2 (sumF nB) (succ (pred p)) p := congrAp2 _ hq (.eqRefl p)
   have s := sum_shift (Γ := Γ) nB (pred p) p
   rw [inst2_nB] at s
-  have a := natEq c
-  have b := natEq s
-  have z := natEq (pw_zero (Γ := Γ) p)
-  apply deriveNat; ipra_simps
-  linear_combination a + b + z
+  ipra_lc natEq c + natEq s + natEq (pw_zero (Γ := Γ) p)
 
 /-- `(p + ⋯ + p^{p−1}) + p^p = p + p² + ⋯ + p^p`. -/
 theorem tail_eq {p : PTm n} (hq : Γ ⊢[PRAAx] p ≐ succ (pred p)) :
@@ -305,11 +291,7 @@ theorem tail_eq {p : PTm n} (hq : Γ ⊢[PRAAx] p ≐ succ (pred p)) :
     rw [inst2_shiftBody, inst2_nB]
     simp only [shift_pair, shift_zero]
     exact (congrPw (.eqRefl _) (congrSucc (zero_add _).eqSymm)).eqTrans (h_at _ _ _).eqSymm
-  have a := natEq s
-  have b := natEq top
-  have d := natEq c
-  apply deriveNat; ipra_simps
-  linear_combination -a - b + d
+  ipra_lc -natEq s - natEq top + natEq c
 
 /-- `thm:prime-period`: `B_{N + N_p} ≡ B_N (mod p)` for a prime `p`, with
 `N_p = 1 + p + ⋯ + p^{p−1}`. -/

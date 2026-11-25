@@ -4,7 +4,7 @@ import IPRADerivations.Combinatorics.LucasIdentities
 import IPRADerivations.Combinatorics.BellPascalInversion
 import IPRADerivations.AnalyticNumberTheory.Fermat
 import IPRADerivations.AnalyticNumberTheory.PhiLower
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The prime-index Lucas congruence

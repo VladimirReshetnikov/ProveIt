@@ -1,6 +1,8 @@
 import IPRADerivations.Analysis.PowerSums
 import IPRADerivations.AnalyticNumberTheory.PhiLower
 import IPRADerivations.DiophantineNumberTheory.Hurwitz
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The finite kernel of expectation
@@ -58,7 +60,7 @@ theorem exp_add (w X Y : PTm 2) (N x : PTm n) : Γ ⊢[PRAAx] Ew w (X + Y) N x �
   refine (sum_congr_bounded (w * (X + Y)) (addBody (w * X) (w * Y)) x x N (.allI (.impI ?_))).eqTrans
     (sum_add (w * X) (w * Y) N x)
   rw [inst2_addBody, inst2_mul', inst2_mul', inst2_mul', inst2_add']
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- `X ≤ Y` pointwise gives `Ew(X) ≤ Ew(Y)`. -/
 theorem exp_mono (w X Y : PTm 2) (N x : PTm n)
@@ -87,7 +89,7 @@ theorem exp_upper (c : PTm 1) (w X : PTm 2) (N x : PTm n)
   rw [inst2_mulParam, inst2_mul']
   exact le_congr (.eqRefl _) (mul_comm _ _) (le_mul_mono (le_refl _) (Prf.impE h.allOpen.wk Prf.hyp0))
 
-theorem mul_one' (X : PTm n) : Γ ⊢[PRAAx] X * one ≐ X := by apply deriveNat; ipra_simps; ring
+alias mul_one' := Common.mul_one_right
 
 /-- `A_i ≤ 1` gives `∑ w_i A_i ≤ W`: probabilities are at most one. -/
 theorem prob_le (w A : PTm 2) (N x : PTm n)
@@ -106,12 +108,11 @@ theorem geI_true {a X : PTm n} (h : Γ ⊢[PRAAx] le a X) : Γ ⊢[PRAAx] geI a 
   (congrMonus (.eqRefl _) h).eqTrans (monus_zero _)
 
 theorem geI_false {a X : PTm n} (h : Γ ⊢[PRAAx] lt X a) : Γ ⊢[PRAAx] geI a X ≐ zero := by
-  have e : Γ ⊢[PRAAx] a ≐ X + succ (monus a (succ X)) := (eq_add_of_le h).eqTrans (by apply deriveNat; ipra_simps; ring)
+  have e : Γ ⊢[PRAAx] a ≐ X + succ (monus a (succ X)) := (eq_add_of_le h).eqTrans (by ipra_ring)
   exact (congrMonus (.eqRefl _) ((congrMonus e (.eqRefl _)).eqTrans (add_monus' _ _))).eqTrans
     ((succ_monus_succ _ _).eqTrans (zero_monus _))
 
-theorem le_zero_of {P Q : PTm n} (h : Γ ⊢[PRAAx] P ≐ zero) : Γ ⊢[PRAAx] le P Q :=
-  le_congr h.eqSymm (.eqRefl _) (zero_monus _)
+alias le_zero_of := Common.le_of_eq_zero
 
 /-- `a · w [X ≥ a] ≤ w X`. -/
 theorem markov_pt (a w X : PTm n) : Γ ⊢[PRAAx] le (a * (w * geI a X)) (w * X) :=
@@ -166,9 +167,7 @@ theorem chebyshev (c : PTm 1) (w D : PTm 2) (N x : PTm n) :
 theorem four_mul_le_of {u v e : PTm n} (h : Γ ⊢[PRAAx] v ≐ u + e) :
     Γ ⊢[PRAAx] le (two * two * (u * v)) ((u + v) * (u + v)) := by
   refine le_of_eq_add (d := e * e) ?_
-  have a := natEq h
-  apply deriveNat; ipra_simps
-  linear_combination (Groth.ι (IPRA.Q.mk Γ v) - Groth.ι (IPRA.Q.mk Γ u) + Groth.ι (IPRA.Q.mk Γ e)) * a
+  ipra_lc (Groth.ι (IPRA.Q.mk Γ v) - Groth.ι (IPRA.Q.mk Γ u) + Groth.ι (IPRA.Q.mk Γ e)) * natEq h
 
 /-- `4uv ≤ (u + v)²`. -/
 theorem four_mul_le (u v : PTm n) : Γ ⊢[PRAAx] le (two * two * (u * v)) ((u + v) * (u + v)) :=
@@ -180,21 +179,19 @@ theorem four_mul_le (u v : PTm n) : Γ ⊢[PRAAx] le (two * two * (u * v)) ((u +
 /-- `P² ≤ uv → 2P ≤ u + v`. -/
 theorem two_mul_le {P u v : PTm n} (h : Γ ⊢[PRAAx] le (P * P) (u * v)) : Γ ⊢[PRAAx] le (two * P) (u + v) := by
   refine le_of_sq_le (le_trans (le_congr ?_ (.eqRefl _) (le_mul_mono (le_refl (two * two)) h)) (four_mul_le u v))
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- The step: adding one outcome of weight `w` and values `a`, `b`. -/
 theorem cs_step {Sxy Sxx Syy w a b : PTm n} (ih : Γ ⊢[PRAAx] le (Sxy * Sxy) (Sxx * Syy)) :
     Γ ⊢[PRAAx] le ((Sxy + w * (a * b)) * (Sxy + w * (a * b))) ((Sxx + w * (a * a)) * (Syy + w * (b * b))) := by
   have hP : Γ ⊢[PRAAx] le ((Sxy * (a * b)) * (Sxy * (a * b))) ((Sxx * (b * b)) * (Syy * (a * a))) := by
     refine le_congr ?_ ?_ (le_mul_mono ih (le_refl ((a * b) * (a * b))))
-    · apply deriveNat; ipra_simps; ring
-    · apply deriveNat; ipra_simps; ring
+    · ipra_ring
+    · ipra_ring
   have h2 := two_mul_le hP
   refine le_of_eq_add (d := monus (Sxx * Syy) (Sxy * Sxy) +
     w * monus (Sxx * (b * b) + Syy * (a * a)) (two * (Sxy * (a * b)))) ?_
-  have e₁ := natEq (eq_add_of_le ih); have e₂ := natEq (eq_add_of_le h2)
-  apply deriveNat; ipra_simps
-  linear_combination e₁ + Groth.ι (IPRA.Q.mk Γ w) * e₂
+  ipra_lc natEq (eq_add_of_le ih) + Groth.ι (IPRA.Q.mk Γ w) * natEq (eq_add_of_le h2)
 
 theorem cs_sum_step (w X Y : PTm 2) {N x : PTm n}
     (ih : Γ ⊢[PRAAx] le (Ew w (X * Y) N x * Ew w (X * Y) N x) (Ew w (X * X) N x * Ew w (Y * Y) N x)) :
@@ -242,7 +239,7 @@ theorem second_moment (w X : PTm 2) (N x : PTm n) :
     rw [inst2_mul', inst2_mul']
     have e : inst2 (one : PTm 2) (var 0 : PTm (n + 1)) (Syn.shift x) = one := by simp [inst2]
     rw [e]
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   exact le_congr (congrMul e₁ e₁) (congrMul (.eqRefl _) e₂) c
 
 end LeanProofs.IPRA.Probability.Expectation

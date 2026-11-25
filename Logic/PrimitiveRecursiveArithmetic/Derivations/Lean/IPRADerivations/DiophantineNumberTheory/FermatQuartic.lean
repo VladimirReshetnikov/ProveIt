@@ -1,6 +1,8 @@
 import IPRADerivations.DiophantineNumberTheory.QuarticStep
 import IPRADerivations.Core.DescentEx
 import IPRADerivations.Algebra.CubeRootTwo
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Fermat's quartic theorem
@@ -45,18 +47,13 @@ theorem alg_np {x y z g x₁ y₁ : PTm n} (hE : Γ ⊢[PRAAx] q4 x + q4 y ≐ z
 
 theorem alg_np₂ {z G K z₁ : PTm n} (hzz : Γ ⊢[PRAAx] z * z ≐ (G * G) * K) (ez : Γ ⊢[PRAAx] z ≐ G * z₁) :
     Γ ⊢[PRAAx] (G * G) * K ≐ (G * G) * (z₁ * z₁) := by
-  have h₁ := natEq hzz; have h₂ := natEq ez
-  apply deriveNat; ipra_simps
-  linear_combination -h₁ + (Groth.ι (IPRA.Q.mk Γ z) + Groth.ι (IPRA.Q.mk Γ G) * Groth.ι (IPRA.Q.mk Γ z₁)) * h₂
+  ipra_lc -natEq hzz + (Groth.ι (IPRA.Q.mk Γ z) + Groth.ι (IPRA.Q.mk Γ G) * Groth.ι (IPRA.Q.mk Γ z₁)) * natEq ez
 
 theorem alg_lt {z g c z₁ : PTm n} (ez : Γ ⊢[PRAAx] z ≐ (g * g) * z₁) (hg : Γ ⊢[PRAAx] g ≐ succ (succ c))
     (hz₁ : Γ ⊢[PRAAx] z₁ ≐ succ (pred z₁)) :
     Γ ⊢[PRAAx] z ≐ succ z₁ + ((c * c + two * two * c + succ two) * pred z₁ + (c * c + two * two * c + two)) := by
-  have h₁ := natEq ez; have h₂ := natEq hg; have h₃ := natEq hz₁
-  apply deriveNat; ipra_simps
-  linear_combination h₁ + Groth.ι (IPRA.Q.mk Γ z₁) *
-      (Groth.ι (IPRA.Q.mk Γ g) + Groth.ι (IPRA.Q.mk Γ c) + 2) * h₂ +
-    (Groth.ι (IPRA.Q.mk Γ c) * Groth.ι (IPRA.Q.mk Γ c) + 4 * Groth.ι (IPRA.Q.mk Γ c) + 3) * h₃
+  ipra_lc natEq ez + Groth.ι (IPRA.Q.mk Γ z₁) * (Groth.ι (IPRA.Q.mk Γ g) + Groth.ι (IPRA.Q.mk Γ c) + 2) * natEq hg +
+    (Groth.ι (IPRA.Q.mk Γ c) * Groth.ι (IPRA.Q.mk Γ c) + 4 * Groth.ι (IPRA.Q.mk Γ c) + 3) * natEq hz₁
 
 theorem z_pos {x y z : PTm n} (hx : Γ ⊢[PRAAx] x ≐ succ (pred x)) (hE : Γ ⊢[PRAAx] q4 x + q4 y ≐ z * z) :
     Γ ⊢[PRAAx] z ≐ succ (pred z) := by
@@ -122,21 +119,13 @@ theorem inst2_chi (a b : PTm n) : inst2 chiF a b = eqb a (pairT (fstT a) (sndT a
 theorem inst1_beta (b : PTm n) : inst1 betaF b = succ ((two * b) * (two * b) + b) := by
   simp [inst1]
 
-theorem congrSg {x x' : PTm n} (h : Γ ⊢[PRAAx] x ≐ x') : Γ ⊢[PRAAx] sg x ≐ sg x' :=
-  congrMonus (.eqRefl _) (congrMonus (.eqRefl _) h)
+alias congrSg := Common.congrSg
 
-theorem congrPair {a a' b b' : PTm n} (h₁ : Γ ⊢[PRAAx] a ≐ a') (h₂ : Γ ⊢[PRAAx] b ≐ b') :
-    Γ ⊢[PRAAx] pairT a b ≐ pairT a' b' := by
-  have h := Prf.eqCongr (Γ := Γ) (pairT (var 0) (var 1) : PTm 2) (σ := ![a, b]) (σ' := ![a', b'])
-    (fun j => by fin_cases j <;> assumption)
-  simpa using h
+alias congrPair := Common.congrPairT
 
-theorem zo_eqb (a b : PTm n) : Γ ⊢[PRAAx] (eqb a b ≐ zero) ⋎ (eqb a b ≐ one) :=
-  .orE (eq_or_ne a b) (.orI₂ (eqb_of_eq Prf.hyp0)) (.orI₁ (eqb_of_ne Prf.hyp0))
+alias zo_eqb := Common.eqb_zero_or_one
 
-theorem zo_sg (x : PTm n) : Γ ⊢[PRAAx] (sg x ≐ zero) ⋎ (sg x ≐ one) :=
-  .orE (zero_or_succ x) (.orI₁ ((congrSg Prf.hyp0).eqTrans sg_zero))
-    (.orI₂ ((congrSg Prf.hyp0).eqTrans (sg_succ _)))
+alias zo_sg := Common.sg_zero_or_one
 
 theorem zo_mul {u v : PTm n} (hu : Γ ⊢[PRAAx] (u ≐ zero) ⋎ (u ≐ one)) (hv : Γ ⊢[PRAAx] (v ≐ zero) ⋎ (v ≐ one)) :
     Γ ⊢[PRAAx] (u * v ≐ zero) ⋎ (u * v ≐ one) := by
@@ -150,8 +139,7 @@ theorem mul_one_split {u v : PTm n} (hu : Γ ⊢[PRAAx] (u ≐ zero) ⋎ (u ≐ 
   · exact succ_ne_zero' _ (h.wk.eqSymm.eqTrans ((congrMul Prf.hyp0 (.eqRefl _)).eqTrans (zero_mul _)))
   · exact .andI Prf.hyp0 ((one_mul _).eqSymm.eqTrans ((congrMul Prf.hyp0.eqSymm (.eqRefl _)).eqTrans h.wk))
 
-theorem eq_of_eqb {a b : PTm n} (h : Γ ⊢[PRAAx] eqb a b ≐ one) : Γ ⊢[PRAAx] a ≐ b :=
-  .orE (eq_or_ne a b) Prf.hyp0 (succ_ne_zero' _ (h.wk.eqSymm.eqTrans (eqb_of_ne Prf.hyp0)))
+alias eq_of_eqb := Common.eq_of_eqb
 
 theorem pos_of_sg {x : PTm n} (h : Γ ⊢[PRAAx] sg x ≐ one) : Γ ⊢[PRAAx] x ≐ succ (pred x) :=
   .orE (zero_or_succ x) (succ_ne_zero' _ (h.wk.eqSymm.eqTrans ((congrSg Prf.hyp0).eqTrans sg_zero)))
@@ -220,7 +208,7 @@ theorem hb : ([inst2 chiF (var 0) (var 1) ≐ one] : List (Fm PTm 2)) ⊢[PRAAx]
       le (fstT (var 0) + sndT (var 0)) (two * var 1) := by
     refine le_of_eq_add (d := monus (var 1) (fstT (var 0)) + monus (var 1) (sndT (var 0))) ?_
     refine withEq wx fun e₁ => withEq wy fun e₂ => ?_
-    apply deriveNat; ipra_simps; linear_combination e₁ + e₂
+    ipra_lc e₁ + e₂
   have hsq := sq_le_sq hs
   have wq := eq_add_of_le hsq
   refine (succ_monus_succ _ _).eqTrans (le_of_eq_add (d := monus ((two * var 1) * (two * var 1))
@@ -228,7 +216,7 @@ theorem hb : ([inst2 chiF (var 0) (var 1) ≐ one] : List (Fm PTm 2)) ⊢[PRAAx]
   have ea' : ([inst2 chiF (var 0) (var 1) ≐ one] : List (Fm PTm 2)) ⊢[PRAAx]
       var 0 ≐ (fstT (var 0) + sndT (var 0)) * (fstT (var 0) + sndT (var 0)) + fstT (var 0) := ea
   refine withEq ea' fun e₁ => withEq wq fun e₂ => withEq wx fun e₃ => ?_
-  apply deriveNat; ipra_simps; linear_combination e₂ + e₃ - e₁
+  ipra_lc e₂ + e₃ - e₁
 
 theorem hstep : ([var 1 ≐ succ (pred (var 1)), inst2 chiF (var 0) (var 1) ≐ one] : List (Fm PTm 2)) ⊢[PRAAx]
     Fm.ex (Fm.ex ((inst2 chiF (var 1) (var 0) ≐ one) ⋏ lt (var 0) (var 3))) := by

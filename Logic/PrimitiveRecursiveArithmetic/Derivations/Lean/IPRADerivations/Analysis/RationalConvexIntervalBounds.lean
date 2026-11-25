@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.RationalNestedIntervals
 import IPRADerivations.Analysis.RationalMultiplicativeConvexity
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Finite secants from the original interval comparisons
@@ -75,10 +76,7 @@ theorem half_width_twice (p : PTm n) : Γ ⊢[PRAAx] add (halfWidth p) (halfWidt
     (RationalNormalForm.normalize_well_formed _ _ e)
     (RationalRepresentations.represents_add _ _ _ _ _ _ r r) (fraction_represents one _ e)
     (RationalAlgebra.positive_product h h) e
-  apply ZT.derive
-  simp only [ZT.toZ_mul,ZT.toZ_add,ZT.toZ_ofNat]
-  ipra_simps
-  ring
+  ipra_lc
 
 private theorem add_shuffle (a b c d : PTm n) : Γ ⊢[PRAAx] add (add a b) (add c d) ≐ add (add a c) (add b d) :=
   (add_associative a b (add c d)).eqTrans

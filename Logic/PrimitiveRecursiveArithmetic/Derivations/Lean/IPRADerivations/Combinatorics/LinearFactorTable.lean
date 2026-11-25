@@ -1,5 +1,7 @@
 import IPRADerivations.Combinatorics.Stirling
 import IPRADerivations.Combinatorics.BellTouchardPower
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The coefficients of `(X + 1)(X + 2) ⋯ (X + N)` and their action on a sequence
@@ -131,10 +133,8 @@ theorem cyc_succ_succ {N K : PTm n} (h : Γ ⊢[PRAAx] le K N) :
     congrNth (snd_pair _ _) (congrMonus (fst_pair _ _) (pred_succ _))
   have n₂ := n₁.eqTrans (congrAdd (congrMul (congrSucc (fst_pair _ _)) (congrMul a₁ b₁))
     (congrMul (sg_succ K) d₁))
-  have g₂ := natEq (gle_of_le h)
   refine (congrMul g₁ n₂).eqTrans ?_
-  apply deriveNat; ipra_simps
-  linear_combination -(𝔞 (nth (row N) (monus N K))) * g₂
+  ipra_lc -(𝔞 (nth (row N) (monus N K))) * natEq (gle_of_le h)
 
 /-! ## A linear relation between three sums -/
 
@@ -219,9 +219,7 @@ theorem act_at (K N m x : PTm n) :
 /-- `Act f N m x = ∑_{K ≤ N} c(N, K) f(m + K, x)`. -/
 abbrev Act (N m x : PTm n) : PTm n := ap2 (sumF (actB f)) (succ N) (par N m x)
 
-theorem pair_congr {a a' c c' : PTm n} (ha : Γ ⊢[PRAAx] a ≐ a') (hc : Γ ⊢[PRAAx] c ≐ c') :
-    Γ ⊢[PRAAx] pairT a c ≐ pairT a' c' :=
-  congrAdd (congrMul (congrAdd ha hc) (congrAdd ha hc)) ha
+alias pair_congr := Common.congrPairT
 
 theorem congrAct {N m m' x x' : PTm n} (hm : Γ ⊢[PRAAx] m ≐ m') (hx : Γ ⊢[PRAAx] x ≐ x') :
     Γ ⊢[PRAAx] Act f N m x ≐ Act f N m' x' :=
@@ -232,23 +230,19 @@ theorem act_zero (m x : PTm n) : Γ ⊢[PRAAx] Act f zero m x ≐ inst2 f m x :=
   have t : Γ ⊢[PRAAx] inst2 (actB f) zero (par zero m x) ≐ inst2 f m x :=
     (act_at f zero zero m x).eqTrans
       ((congrMul cyc_zero (congrInst2 f (add_zero m) (.eqRefl x))).eqTrans (one_mul _))
-  have a := natEq (sum_succ' (Γ := Γ) (actB f) zero (par zero m x))
-  have b := natEq (sum_zero (Γ := Γ) (actB f) (par zero m x))
-  have d := natEq t
-  apply deriveNat; ipra_simps
-  linear_combination a + b + d
+  ipra_lc natEq (sum_succ' (Γ := Γ) (actB f) zero (par zero m x)) +
+    natEq (sum_zero (Γ := Γ) (actB f) (par zero m x)) + natEq t
 
 theorem act_pt_succ {N K m x : PTm n} (h : Γ ⊢[PRAAx] lt K (succ N)) :
     Γ ⊢[PRAAx] inst2 (shiftBody (actB f)) K (par (succ N) m x) ≐
       succ N * inst2 (shiftBody (actB f)) K (par N m x) + inst2 (actB f) K (par N (succ m) x) := by
   rw [inst2_shiftBody, inst2_shiftBody]
-  have c := natEq (cyc_succ_succ (le_of_lt_succ h))
   have ef := natEq (congrInst2 f (Γ := Γ) (i := m + succ K) (i' := succ m + K) (x := x) (x' := x)
-    (by apply deriveNat; ipra_simps; ring) (.eqRefl x))
+    (by ipra_ring) (.eqRefl x))
   refine (act_at f (succ K) (succ N) m x).eqTrans (.eqTrans ?_
     (congrAdd (congrMul (.eqRefl _) (act_at f (succ K) N m x)) (act_at f K N (succ m) x)).eqSymm)
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 (inst2 f (m + succ K) x) * c + (𝔞 (gle K N) * 𝔞 (nth (row N) (monus N K))) * ef
+  ipra_lc 𝔞 (inst2 f (m + succ K) x) * natEq (cyc_succ_succ (le_of_lt_succ h)) +
+    (𝔞 (gle K N) * 𝔞 (nth (row N) (monus N K))) * ef
 
 /-- The factor `E + (N + 1)`:
 `Act f (N + 1) m x = (N + 1) · Act f N m x + Act f N (m + 1) x`. -/
@@ -264,9 +258,7 @@ theorem act_step (N m x : PTm n) :
       succ N * inst2 (actB f) zero (par N m x) := by
     refine (act_at f zero (succ N) m x).eqTrans (.eqTrans ?_
       (congrMul (.eqRefl _) (act_at f zero N m x)).eqSymm)
-    have c := natEq (cyc_succ_zero (Γ := Γ) N)
-    apply deriveNat; ipra_simps
-    linear_combination 𝔞 (inst2 f (m + zero) x) * c
+    ipra_lc 𝔞 (inst2 f (m + zero) x) * natEq (cyc_succ_zero (Γ := Γ) N)
   have mid := natEq (sum_lin (Γ := Γ) (shiftBody (actB f)) (shiftBody (actB f)) (actB f)
     (ρ := succ N) (x := par (succ N) m x) (y := par N m x) (z := par N (succ m) x) (N := succ N)
     (.allI (.impI (by
@@ -292,10 +284,7 @@ theorem act_pt_cong (f₁ f₂ : PTm 2) {p ρ N K m₁ x₁ m₂ x₂ : PTm n}
         inst2 (actB f₂) K (par N (succ m₂) x₂) + ρ * inst2 (actB f₂) K (par N m₂ x₂) := by
     refine .eqTrans ?_ (congrAdd (act_at f₂ K N (succ m₂) x₂)
       (congrMul (.eqRefl ρ) (act_at f₂ K N m₂ x₂))).eqSymm
-    have es := natEq (congrInst2 f₂ (Γ := Γ) (i := succ (m₂ + K)) (i' := succ m₂ + K)
-      (x := x₂) (x' := x₂) (by apply deriveNat; ipra_simps; ring) (.eqRefl x₂))
-    apply deriveNat; ipra_simps
-    linear_combination (𝔞 (gle K N) * 𝔞 (nth (row N) (monus N K))) * es
+    ipra_lc (𝔞 (gle K N) * 𝔞 (nth (row N) (monus N K))) * natEq (congrInst2 f₂ (Γ := Γ) (i := succ (m₂ + K)) (i' := succ m₂ + K) (x := x₂) (x' := x₂) (by ipra_ring) (.eqRefl x₂))
   exact (cong_of_eq (act_at f₁ K N m₁ x₁)).eqTrans ((cong_mul _ hq h).eqTrans (cong_of_eq r))
 
 /-- If `f₁(m₁ + K) ≡ f₂(m₂ + K + 1) + (N + 1) f₂(m₂ + K) (mod p)` for all `K ≤ N`, then
@@ -313,8 +302,6 @@ theorem act_cong (f₁ f₂ : PTm 2) {p N m₁ x₁ m₂ x₂ : PTm n}
     (y := par N (succ m₂) x₂) (z := par N m₂ x₂) hq (.allI (.impI ?_))).eqTrans (cong_of_eq ?_)
   · simp only [shift_pair, shift_succ]
     exact act_pt_cong f₁ f₂ hq'.wk (.impE H.allOpen.wk Prf.hyp0)
-  · have e := natEq (act_step (Γ := Γ) f₂ N m₂ x₂)
-    apply deriveNat; ipra_simps
-    linear_combination -e
+  · ipra_lc -natEq (act_step (Γ := Γ) f₂ N m₂ x₂)
 
 end LeanProofs.IPRA.Combinatorics.LinearFactorTable

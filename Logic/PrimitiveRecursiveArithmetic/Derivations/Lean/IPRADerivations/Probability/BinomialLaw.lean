@@ -1,5 +1,6 @@
 import IPRADerivations.Combinatorics.BinomialTheorem
 import IPRADerivations.Probability.Independence
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The binomial law
@@ -49,12 +50,9 @@ theorem absorption {k m : PTm n} (h : Γ ⊢[PRAAx] le k m) :
   have h' : Γ ⊢[PRAAx] le (succ k) (succ m) := (succ_monus_succ _ _).eqTrans h
   have e₁ := natEq (binom_eq h'); have e₂ := natEq (binom_eq h)
   have f₁ := natEq (fact_succ (Γ := Γ) m zero); have f₂ := natEq (fact_succ (Γ := Γ) k zero)
-  have f₃ := natEq (congrAp2 factF (succ_monus_succ (Γ := Γ) m k) (.eqRefl zero))
   refine (mul_cancel (bden_pos m k) ?_).eqSymm
-  apply deriveNat; ipra_simps
-  linear_combination -(𝔞(m) + 1) * e₂ - f₁ + e₁ +
-    𝔞(ap2 factF (monus (succ m) (succ k)) zero) * 𝔞(binom (succ m) (succ k)) * f₂ +
-    𝔞(ap2 factF k zero) * (𝔞(k) + 1) * 𝔞(binom (succ m) (succ k)) * f₃
+  ipra_lc -(𝔞(m) + 1) * e₂ - f₁ + e₁ + 𝔞(ap2 factF (monus (succ m) (succ k)) zero) * 𝔞(binom (succ m) (succ k)) * f₂ +
+    𝔞(ap2 factF k zero) * (𝔞(k) + 1) * 𝔞(binom (succ m) (succ k)) * natEq (congrAp2 factF (succ_monus_succ (Γ := Γ) m k) (.eqRefl zero))
 
 /-! ## The mean -/
 
@@ -74,9 +72,7 @@ theorem mean_pt {i m a : PTm n} (h : Γ ⊢[PRAAx] le i m) :
       (succ m * a) * (binom m i * pw a i) :=
     congrMul (.eqRefl _) (congrMul (congrBinom (fst_pair _ _) (.eqRefl _)) (congrPw (snd_pair _ _) (.eqRefl _)))
   refine c₁.eqTrans (.eqTrans ?_ c₂.eqSymm)
-  have ab := natEq (absorption h); have ps := natEq (pw_succ (Γ := Γ) a i)
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞(pw a (succ i)) * ab + (𝔞(m) + 1) * 𝔞(binom m i) * ps
+  ipra_lc 𝔞(pw a (succ i)) * natEq (absorption h) + (𝔞(m) + 1) * 𝔞(binom m i) * natEq (pw_succ (Γ := Γ) a i)
 
 /-- `∑_{k ≤ m+1} k C(m + 1, k) a^k = (m + 1) a (a + 1)^m`. -/
 theorem binomial_mean (m a : PTm n) :
@@ -88,9 +84,7 @@ theorem binomial_mean (m a : PTm n) :
     refine sum_scale _ _ _ _ _ _ (.allI (.impI ?_))
     simp only [Syn.shift, subst_pairT, PTm.subst_mul, ConciseIPRA.PTm.subst_succ]
     exact mean_pt ((succ_monus_succ _ _).eqSymm.eqTrans Prf.hyp0)
-  have e₀ := natEq s; have e₁ := natEq sc; have e₂ := natEq (binomial_at (Γ := Γ) m a)
-  apply deriveNat; ipra_simps
-  linear_combination e₀ + e₁ + (𝔞(m) + 1) * 𝔞(a) * e₂
+  ipra_lc natEq s + natEq sc + (𝔞(m) + 1) * 𝔞(a) * natEq (binomial_at (Γ := Γ) m a)
 
 /-! ## The second moment and the variance -/
 
@@ -112,10 +106,8 @@ theorem second_pt {j m a : PTm n} (h : Γ ⊢[PRAAx] le j (succ m)) :
     congrMul (congrBinom (fst_pair _ _) (.eqRefl _)) (congrPw (snd_pair _ _) (.eqRefl _))
   refine (congrMul (.eqRefl _) cb₁).eqTrans (.eqTrans ?_
     (congrMul (.eqRefl _) (congrAdd (congrMul (.eqRefl _) cb₂) cb₂)).eqSymm)
-  have ab := natEq (absorption h); have ps := natEq (pw_succ (Γ := Γ) a j)
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞(j) + 1) * 𝔞(pw a (succ j)) * ab +
-    (𝔞(j) + 1) * (𝔞(m) + 1 + 1) * 𝔞(binom (succ m) j) * ps
+  ipra_lc (𝔞(j) + 1) * 𝔞(pw a (succ j)) * natEq (absorption h) +
+    (𝔞(j) + 1) * (𝔞(m) + 1 + 1) * 𝔞(binom (succ m) j) * natEq (pw_succ (Γ := Γ) a j)
 
 /-- `∑_{k ≤ m+2} k² C(m + 2, k) a^k = (m + 2) a ((m + 2) a + 1) (a + 1)^m`. -/
 theorem binomial_second (m a : PTm n) :
@@ -128,12 +120,8 @@ theorem binomial_second (m a : PTm n) :
     refine sum_scale _ _ _ _ _ _ (.allI (.impI ?_))
     simp only [Syn.shift, subst_pairT, PTm.subst_mul, ConciseIPRA.PTm.subst_succ]
     exact second_pt ((succ_monus_succ _ _).eqSymm.eqTrans Prf.hyp0)
-  have e₀ := natEq s; have e₁ := natEq sc
-  have e₂ := natEq (sum_add (Γ := Γ) kBody tBody (succ (succ m)) (pairT (succ m) a))
-  have e₃ := natEq (binomial_mean (Γ := Γ) m a); have e₄ := natEq (binomial_at (Γ := Γ) (succ m) a)
-  have e₅ := natEq (pw_succ (Γ := Γ) (succ a) m)
-  apply deriveNat; ipra_simps
-  linear_combination e₀ + e₁ + (𝔞(m) + 1 + 1) * 𝔞(a) * (e₂ + e₃ + e₄ + e₅)
+  ipra_lc natEq s + natEq sc +
+    (𝔞(m) + 1 + 1) * 𝔞(a) * (natEq (sum_add (Γ := Γ) kBody tBody (succ (succ m)) (pairT (succ m) a)) + natEq (binomial_mean (Γ := Γ) m a) + natEq (binomial_at (Γ := Γ) (succ m) a) + natEq (pw_succ (Γ := Γ) (succ a) m))
 
 /-- The variance of `Bin(n, p)`, `n = m + 2`, cleared of the total `W = (a + 1)^n`:
 `W ∑ k² w_k = (∑ k w_k)² + n a (a + 1)^(2n−2)`, i.e. `Var B_n = n a/(a + 1)² = n p q`. -/
@@ -157,11 +145,11 @@ theorem binomial_variance (m a : PTm n) :
 /-- `σ² = p q`, cleared: `b a² + a b² = a b (a + b)`. -/
 theorem bernoulli_variance (a b : PTm n) :
     Γ ⊢[PRAAx] b * (a * a) + a * (b * b) ≐ a * b * (a + b) := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- `ρ₃ = p q (p² + q²)`, cleared: `b a³ + a b³ = a b (a² + b²)`. -/
 theorem bernoulli_third (a b : PTm n) :
     Γ ⊢[PRAAx] b * (a * a * a) + a * (b * b * b) ≐ a * b * (a * a + b * b) := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 end LeanProofs.IPRA.Probability.BinomialLaw

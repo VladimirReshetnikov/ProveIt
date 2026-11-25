@@ -4,6 +4,7 @@ import IPRADerivations.AnalyticNumberTheory.Order
 import IPRADerivations.Combinatorics.BellStirling
 import IPRADerivations.AnalyticNumberTheory.PhiLower
 import IPRADerivations.Analysis.PowerSums
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Spivey's identity
@@ -75,25 +76,18 @@ theorem revision {N k i : PTm n} (hik : Γ ⊢[PRAAx] le i k) (hkn : Γ ⊢[PRAA
   -- `N − i = (k − i) + (N − k)`.
   have hNi : Γ ⊢[PRAAx] monus N i ≐ monus k i + monus N k := by
     have e : Γ ⊢[PRAAx] N ≐ (monus k i + monus N k) + i := by
-      apply deriveNat; ipra_simps; linear_combination a₂ + a₁
+      ipra_lc a₂ + a₁
     exact (congrMonus e (.eqRefl _)).eqTrans (add_monus _ _)
   have hle : Γ ⊢[PRAAx] le (monus k i) (monus N i) := le_of_eq_add hNi
   have e5 : Γ ⊢[PRAAx] monus (monus N i) (monus k i) ≐ monus N k :=
     (congrMonus hNi (.eqRefl _)).eqTrans (add_monus' _ _)
   have g₁ := natEq (gle_of_le hkn); have g₂ := natEq (gle_of_le hik); have g₃ := natEq (gle_of_le hin)
-  have g₄ := natEq (gle_of_le hle)
   have D := pos_mul (pos_mul (fact_pos (Γ := Γ) i) (fact_pos (Γ := Γ) (monus k i))) (fact_pos (Γ := Γ) (monus N k))
   have f₁ := natEq (binom_eq hkn); have f₂ := natEq (binom_eq hik); have f₃ := natEq (binom_eq hin)
-  have f₄ := natEq (binom_eq hle)
-  have f₅ := natEq (congrAp2 factF e5 (.eqRefl zero) : Γ ⊢[PRAAx] fact (monus (monus N i) (monus k i)) ≐ fact (monus N k))
   refine mul_cancel D ?_
-  apply deriveNat; ipra_simps
-  linear_combination
-    𝔞 (fact i) * 𝔞 (fact (monus k i)) * 𝔞 (fact (monus N k)) *
-      (𝔞 (binom N k) * 𝔞 (binom k i) * (𝔞 (gle i k) * g₁ + g₂) -
-        𝔞 (binom N i) * 𝔞 (binom (monus N i) (monus k i)) * (𝔞 (gle (monus k i) (monus N i)) * g₃ + g₄)) -
-    f₁ - 𝔞 (fact (monus N k)) * 𝔞 (binom N k) * f₂ + f₃ + 𝔞 (fact i) * 𝔞 (binom N i) * f₄ +
-    𝔞 (fact i) * 𝔞 (binom N i) * 𝔞 (fact (monus k i)) * 𝔞 (binom (monus N i) (monus k i)) * f₅
+  ipra_lc 𝔞 (fact i) * 𝔞 (fact (monus k i)) * 𝔞 (fact (monus N k)) * (𝔞 (binom N k) * 𝔞 (binom k i) * (𝔞 (gle i k) * g₁ + g₂) - 𝔞 (binom N i) * 𝔞 (binom (monus N i) (monus k i)) * (𝔞 (gle (monus k i) (monus N i)) * g₃ + natEq (gle_of_le hle))) -
+    f₁ - 𝔞 (fact (monus N k)) * 𝔞 (binom N k) * f₂ + f₃ + 𝔞 (fact i) * 𝔞 (binom N i) * natEq (binom_eq hle) +
+    𝔞 (fact i) * 𝔞 (binom N i) * 𝔞 (fact (monus k i)) * 𝔞 (binom (monus N i) (monus k i)) * natEq (congrAp2 factF e5 (.eqRefl zero) : Γ ⊢[PRAAx] fact (monus (monus N i) (monus k i)) ≐ fact (monus N k))
 
 /-! ## The inner convolution -/
 
@@ -119,7 +113,7 @@ theorem conv_pt {l i N x : PTm n} (hl : Γ ⊢[PRAAx] le l (monus N i)) (hi : Γ
   rw [inst2_offB]
   have a₁ := natEq (eq_add_of_le hi); have a₂ := natEq (eq_add_of_le hl)
   have eN : Γ ⊢[PRAAx] N ≐ monus (monus N i) l + (i + l) := by
-    apply deriveNat; ipra_simps; linear_combination a₁ + a₂
+    ipra_lc a₁ + a₂
   have hle : Γ ⊢[PRAAx] le (i + l) N := le_of_eq_add (eN.eqTrans (add_comm _ _))
   have em : Γ ⊢[PRAAx] monus N (i + l) ≐ monus (monus N i) l := (congrMonus eN (.eqRefl _)).eqTrans (add_monus _ _)
   have el : Γ ⊢[PRAAx] monus (i + l) i ≐ l := add_monus' _ _
@@ -150,9 +144,8 @@ theorem conv_inner (N i x : PTm n) : Γ ⊢[PRAAx] CV N i x ≐ gb N i * pw (suc
         (zero_mul _))
     · exact ((congrMul (gb_above hl) (.eqRefl _)).eqTrans (zero_mul _)).eqSymm
   · have hi : (le i N :: Γ) ⊢[PRAAx] le i N := Prf.hyp0
-    have a₁ := natEq (eq_add_of_le hi)
     have eS : (le i N :: Γ) ⊢[PRAAx] succ N ≐ i + succ (monus N i) := by
-      apply deriveNat; ipra_simps; linear_combination a₁
+      ipra_lc natEq (eq_add_of_le hi)
     refine (congrAp2 (sumF cvB) eS (.eqRefl _)).eqTrans ((sum_split cvB i _ _).eqTrans ?_)
     have z₁ : (le i N :: Γ) ⊢[PRAAx] ap2 (sumF cvB) i (pairT N (pairT i x)) ≐ zero := by
       refine (sum_congr_bounded cvB zB (pairT N (pairT i x)) (pairT N (pairT i x)) i
@@ -221,8 +214,7 @@ theorem bi_bell (k : PTm n) : Γ ⊢[PRAAx] ap2 (sumF biB) (succ k) k ≐ bell (
 theorem bi_ext {k N : PTm n} (h : Γ ⊢[PRAAx] le k N) :
     Γ ⊢[PRAAx] ap2 (sumF biB) (succ N) k ≐ ap2 (sumF biB) (succ k) k := by
   have eD : Γ ⊢[PRAAx] succ N ≐ succ k + monus N k := by
-    have e := natEq (eq_add_of_le h)
-    apply deriveNat; ipra_simps; linear_combination e
+    ipra_lc natEq (eq_add_of_le h)
   refine (congrAp2 (sumF biB) eD (.eqRefl _)).eqTrans ((sum_split biB (succ k) (monus N k) k).eqTrans ?_)
   refine (congrAdd (.eqRefl _) ?_).eqTrans (add_zero _)
   refine (sum_congr_bounded (offB biB) zB (pairT (succ k) k) (pairT (succ k) k) _ (.allI (.impI ?_))).eqTrans
@@ -322,9 +314,8 @@ theorem hpt (k N j : PTm n) : Γ ⊢[PRAAx] inst2 hB k (pairT N j) ≐ j * inst2
   refine (h_at _ _ _).eqTrans (.eqTrans ?_ (congrMul (.eqRefl _) (g_at _ _ _)).eqSymm)
   refine .orE (lt_or_le k N) ?_ ?_
   · have hl : (lt k N :: Γ) ⊢[PRAAx] lt k N := Prf.hyp0
-    have a := natEq (eq_add_of_le hl)
     have e₀ : (lt k N :: Γ) ⊢[PRAAx] N ≐ succ (monus N (succ k)) + k := by
-      apply deriveNat; ipra_simps; linear_combination a
+      ipra_lc natEq (eq_add_of_le hl)
     have e : (lt k N :: Γ) ⊢[PRAAx] monus N k ≐ succ (monus N (succ k)) :=
       (congrMonus e₀ (.eqRefl _)).eqTrans (add_monus _ _)
     refine (congrMul (congrMul (.eqRefl _) ((congrPw (.eqRefl _) e).eqTrans (pw_succ _ _))) (.eqRefl _)).eqTrans ?_
@@ -361,11 +352,8 @@ theorem G_succ (N j : PTm n) : Γ ⊢[PRAAx] G (succ N) j ≐ j * G N j + G N (s
     refine sum_scale _ _ _ _ _ _ (.allI (.impI ?_))
     simp only [shift_y]
     exact hpt _ _ _
-  have a := natEq s₁; have b := natEq (hs.eqTrans (sum_add _ _ _ _)); have c := natEq hh
-  have d := natEq (G_split (Γ := Γ) N j); have e := natEq (G_shift (Γ := Γ) N j)
-  have z₀ := natEq (g_zero_term (Γ := Γ) (succ N) j); have p := natEq (pw_succ (Γ := Γ) j N)
-  apply deriveNat; ipra_simps
-  linear_combination a + z₀ + b + c - 𝔞 j * d + e + p
+  ipra_lc natEq s₁ + natEq (g_zero_term (Γ := Γ) (succ N) j) + natEq (hs.eqTrans (sum_add _ _ _ _)) + natEq hh -
+    𝔞 j * natEq (G_split (Γ := Γ) N j) + natEq (G_shift (Γ := Γ) N j) + natEq (pw_succ (Γ := Γ) j N)
 
 theorem G_zero (N : PTm n) : Γ ⊢[PRAAx] G N zero ≐ bell N := by
   refine (sum_succ' gB N (pairT N zero)).eqTrans ?_
@@ -375,10 +363,9 @@ theorem G_zero (N : PTm n) : Γ ⊢[PRAAx] G N zero ≐ bell N := by
     simp only [shift_y, ez]
     rw [inst2_z]
     have hl : (lt (var 0) (Syn.shift N) :: Γ.map Fm.shift) ⊢[PRAAx] lt (var 0) (Syn.shift N) := Prf.hyp0
-    have a := natEq (eq_add_of_le hl)
     have e₀ : (lt (var 0) (Syn.shift N) :: Γ.map Fm.shift) ⊢[PRAAx]
         Syn.shift N ≐ succ (monus (Syn.shift N) (succ (var 0))) + var 0 := by
-      apply deriveNat; ipra_simps; linear_combination a
+      ipra_lc natEq (eq_add_of_le hl)
     have e : (lt (var 0) (Syn.shift N) :: Γ.map Fm.shift) ⊢[PRAAx]
         monus (Syn.shift N) (var 0) ≐ succ (monus (Syn.shift N) (succ (var 0))) :=
       (congrMonus e₀ (.eqRefl _)).eqTrans (add_monus _ _)

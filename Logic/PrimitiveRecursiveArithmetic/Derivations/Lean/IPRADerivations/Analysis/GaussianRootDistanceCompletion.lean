@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianEuclideanDistanceVariation
 import IPRADerivations.Analysis.GaussianRootSupport
 import IPRADerivations.Analysis.GaussianLinearDistanceName
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual Euclidean distance to the collision-tolerant root-support name
@@ -136,10 +137,7 @@ def nameData (N x : PTm n) : PTm n := normalizeData two (data N x)
 theorem raw_congr (step a : PR 3) (point : PR 2) {N N' x x' t t' : PTm n}
     (hN : Γ ⊢[PRAAx] N ≐ N') (hx : Γ ⊢[PRAAx] x ≐ x') (ht : Γ ⊢[PRAAx] t ≐ t') : Γ ⊢[PRAAx]
     raw step a point N x t ≐ raw step a point N' x' t' := by
-  simpa only [subst_raw,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.head_cons,Matrix.tail_cons] using Prf.eqCongr (Ax := PRAAx) (Γ := Γ)
-      (raw step a point (var 0) (var 1) (var 2) : PTm 3) (σ := ![N,x,t]) (σ' := ![N',x',t'])
-      (fun i => by fin_cases i; exact hN; exact hx; exact ht)
+  ipra_congr (raw step a point (var 0) (var 1) (var 2) : PTm 3) with [hN, hx, ht]
 
 theorem raw_at (step a : PR 3) (point : PR 2) (N x t : PTm n) : Γ ⊢[PRAAx]
     ap2 (rawF step a point) t (data N x) ≐ raw step a point N x t := by

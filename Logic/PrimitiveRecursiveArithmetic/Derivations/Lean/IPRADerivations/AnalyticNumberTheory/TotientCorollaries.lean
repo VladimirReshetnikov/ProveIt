@@ -1,4 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.GeneralMul
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Corollaries: gcd–lcm identity, odd nontotients, `φ(n) < n`
@@ -47,12 +49,9 @@ include hm hN
 theorem lcm_eq : Γ ⊢[PRAAx] lcm m N ≐ gcd m N * (quo m (gcd m N) * quo N (gcd m N)) := by
   have hd := gcd_pos (B := N) hm
   have hgd := gcd_dvd' (b := N) hm
-  have e₁ := natEq (eq_of_dvd' hd (Prf.andE₁ hgd))
-  have e₂ := natEq (eq_of_dvd' hd (Prf.andE₂ hgd))
   refine quo_eq hd (r := zero) ?_ (zero_lt' hd)
-  apply deriveNat; ipra_simps
-  linear_combination Groth.ι (Q.mk _ N) * e₁ +
-    Groth.ι (Q.mk _ (gcd m N)) * Groth.ι (Q.mk _ (quo m (gcd m N))) * e₂
+  ipra_lc Groth.ι (Q.mk _ N) * natEq (eq_of_dvd' hd (Prf.andE₁ hgd)) +
+    Groth.ι (Q.mk _ (gcd m N)) * Groth.ι (Q.mk _ (quo m (gcd m N))) * natEq (eq_of_dvd' hd (Prf.andE₂ hgd))
 
 /-- `φ(gcd) φ(lcm) = φ(m) φ(n)`. -/
 theorem gcd_lcm_at : Γ ⊢[PRAAx] phi (gcd m N) * phi (lcm m N) ≐ phi m * phi N := by
@@ -99,7 +98,7 @@ theorem phi_zero : Γ ⊢[PRAAx] phi (zero : PTm n) ≐ zero := sum_zero _ _
 theorem even_ne_odd {T k : PTm n} (h : Γ ⊢[PRAAx] two * T ≐ succ (succ (succ (two * k)))) : Γ ⊢[PRAAx] Fm.bot := by
   have r₀ := rem_eq' (two_pos' (Γ := Γ)) (z := two * T) (q := T) (r := zero) (add_zero _).eqSymm (zero_lt' two_pos')
   have r₁ := rem_eq' (two_pos' (Γ := Γ)) (z := succ (succ (succ (two * k)))) (q := succ k) (r := one)
-    (by apply deriveNat; ipra_simps; ring) (le_refl _)
+    (by ipra_ring) (le_refl _)
   exact succ_ne_zero (a := zero) (r₁.eqSymm.eqTrans ((congrAp2 remF h.eqSymm (.eqRefl _)).eqTrans r₀))
 
 theorem one_ne_odd {k : PTm n} (h : Γ ⊢[PRAAx] one ≐ succ (succ (succ (two * k)))) : Γ ⊢[PRAAx] Fm.bot :=
@@ -136,10 +135,7 @@ theorem odd_nontotient : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 2 oddNontotientF
 
 /-! ## `φ(n) < n` -/
 
-theorem eqb_le_one (a b : PTm n) : Γ ⊢[PRAAx] le (eqb a b) one := by
-  refine .orE (eq_or_ne a b) ?_ ?_
-  · exact le_congr (eqb_of_eq Prf.hyp0).eqSymm (.eqRefl _) (le_refl _)
-  · exact le_congr (eqb_of_ne Prf.hyp0).eqSymm (.eqRefl _) (zero_monus _)
+alias eqb_le_one := Common.eqb_le_one
 
 /-- `φ(n) ≤ n − 1` for `n ≥ 2`. -/
 theorem phi_lt {N : PTm n} (hN : Γ ⊢[PRAAx] le two N) : Γ ⊢[PRAAx] lt (phi N) N := by
@@ -159,6 +155,6 @@ theorem phi_lt {N : PTm n} (hN : Γ ⊢[PRAAx] le two N) : Γ ⊢[PRAAx] lt (phi
 abbrev phiLtFormula : Fm PTm 1 := lt (phi (succ (succ (var 0)))) (succ (succ (var 0)))
 
 theorem phi_lt_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 1 phiLtFormula :=
-  closeUniv 1 (phi_lt (le_of_eq_add (d := var 0) (by apply deriveNat; ipra_simps; ring)))
+  closeUniv 1 (phi_lt (le_of_eq_add (d := var 0) (by ipra_ring)))
 
 end LeanProofs.IPRA.AnalyticNumberTheory.TotientCorollaries

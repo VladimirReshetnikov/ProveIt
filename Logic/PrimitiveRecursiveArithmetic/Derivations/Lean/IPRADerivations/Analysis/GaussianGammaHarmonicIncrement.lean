@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianGammaCanonicalExponent
 import IPRADerivations.Analysis.RationalRepresentations
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The exact harmonic increment in the original Gamma exponent
@@ -57,13 +58,9 @@ theorem harmonic_increment (N : PTm n) : Γ ⊢[PRAAx]
   apply RationalFiniteSum.canonical_equal _ _ _ _ _ _ (harmonic_canonical _)
     (RationalArithmetic.add_guard _ _) (harmonic_represents _) sum
     (factorial_positive _) (RationalAlgebra.positive_product (factorial_positive N) (zero_lt_succ N))
-  apply ZT.derive
-  have step := natEq (S_succ (Γ := Γ) N (fact (succ N)))
-  have scale := natEq (S_denom (Γ := Γ) (le_refl N) (le_succ_self N))
-  have exactQuotient := natEq (factorial_quotient (Γ := Γ) (succ N) (succ N) (zero_lt_succ N) (le_refl _))
-  simp only [ZT.toZ_mul,ZT.toZ_add,ZT.toZ_ofNat]
-  ipra_simps
-  linear_combination 𝔞 (fact N)*(𝔞 N+1)*step+(𝔞 N+1)*scale+𝔞 (fact N)*exactQuotient
+  ipra_lc 𝔞 (fact N)*(𝔞 N+1)*natEq (S_succ (Γ := Γ) N (fact (succ N)))+
+    (𝔞 N+1)*natEq (S_denom (Γ := Γ) (le_refl N) (le_succ_self N))+
+    𝔞 (fact N)*natEq (factorial_quotient (Γ := Γ) (succ N) (succ N) (zero_lt_succ N) (le_refl _))
 
 theorem embedded_reciprocal (N : PTm n) : Γ ⊢[PRAAx] embed (reciprocal N) ≐ reciprocalPoint N :=
   GaussianRationalHorner.canonical_unique _ _ _ _ (RationalGaussianEmbedding.embed_canonical _)

@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianScalarExponentialProductLowDegrees
 import IPRADerivations.Analysis.GaussianRationalExponentialTail
 import IPRADerivations.Foundations.DyadicGain
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The tail of the actual rectangular exponential product
@@ -89,13 +90,7 @@ theorem contribution_degree (K e i : PTm n)
     (he : Γ ⊢[PRAAx] le e (K+K)) (hi : Γ ⊢[PRAAx] le i K)
     (hd : Γ ⊢[PRAAx] le i (monus (K+K) e)) (hj : Γ ⊢[PRAAx] le (monus (monus (K+K) e) i) K) :
     Γ ⊢[PRAAx] monus K i+monus K (monus (monus (K+K) e) i) ≐ e := by
-  have a := natEq (eq_add_of_le he)
-  have b := natEq (eq_add_of_le hi)
-  have c := natEq (eq_add_of_le hd)
-  have d := natEq (eq_add_of_le hj)
-  apply deriveNat
-  ipra_simps
-  linear_combination a-b+c-d
+  ipra_lc natEq (eq_add_of_le he)-natEq (eq_add_of_le hi)+natEq (eq_add_of_le hd)-natEq (eq_add_of_le hj)
 
 theorem large_degree {a b e H : PTm n} (h : Γ ⊢[PRAAx] a+b ≐ e) (he : Γ ⊢[PRAAx] le (H+H) e) :
     Γ ⊢[PRAAx] le H a ⋎ le H b := by

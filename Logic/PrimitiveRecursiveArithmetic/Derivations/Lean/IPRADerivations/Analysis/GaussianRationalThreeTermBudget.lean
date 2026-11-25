@@ -1,6 +1,8 @@
 import IPRADerivations.Analysis.GaussianResidualDecreaseWeights
 import IPRADerivations.Analysis.GaussianRationalRelativeNormAlgebra
 import IPRADerivations.Analysis.GaussianRationalSyntheticDivision
+import IPRADerivations.Core.CongruenceTactic
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Three actual Gaussian-rational terms in the residual budget
@@ -100,10 +102,7 @@ theorem native_three_triangle (a b c A B C R : PTm n)
 theorem native_scale_sum (L a b c : PTm n) : Γ ⊢[PRAAx]
     normSq (nativeSum (ComplexLogarithmRemainder.scale L a) (ComplexLogarithmRemainder.scale L b)
       (ComplexLogarithmRemainder.scale L c)) ≐ L*L*normSq (nativeSum a b c) := by
-  apply deriveNat
-  simp only [nativeSum,normSq_eval,GaussianRootAlgebra.re_add,GaussianRootAlgebra.im_add,
-    GaussianRootAlgebra.re_scale,GaussianRootAlgebra.im_scale,Q.mk_mul,map_mul]
-  ring
+  ipra_lc [nativeSum, normSq_eval, GaussianRootAlgebra.re_add, GaussianRootAlgebra.im_add, GaussianRootAlgebra.re_scale, GaussianRootAlgebra.im_scale]
 
 theorem from_representations (u v w base a b c d E A B C L X Y : PTm n)
     (hE : Γ ⊢[PRAAx] le one E) (hL : Γ ⊢[PRAAx] le one L) (hY : Γ ⊢[PRAAx] le one Y)
@@ -188,9 +187,7 @@ theorem from_alpha_input (u v w base D P Q : PTm n)
     (Prf.andE₁ (Prf.andE₂ (Prf.andE₂ hInput))) (Prf.andE₂ (Prf.andE₂ (Prf.andE₂ hInput))) h0 h1 h2
 
 theorem norm_congr {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) : Γ ⊢[PRAAx] qnormSq a ≐ qnormSq b := by
-  simpa only [GaussianRationalMetric.subst_qnormSq,Syn.subst_var,Matrix.cons_val_zero] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (qnormSq (var 0) : PTm 1) (σ := ![a]) (σ' := ![b])
-      (fun i => by fin_cases i; exact h)
+  ipra_congr (qnormSq (var 0) : PTm 1) with [h]
 
 /-- Literal output/evaluator equalities transport the actual sum bound. -/
 theorem budget_of_sum {u v w z base D : PTm n} (hSum : Γ ⊢[PRAAx] sum u v w ≐ z)
@@ -233,9 +230,7 @@ theorem returned_rate_den (u v w D : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run u v 
 
 theorem tolerance_congr {X X' Y Y' : PTm n} (hX : Γ ⊢[PRAAx] X ≐ X') (hY : Γ ⊢[PRAAx] Y ≐ Y') : Γ ⊢[PRAAx]
     squaredTolerance X Y ≐ squaredTolerance X' Y' := by
-  simpa only [GaussianRationalMetric.subst_squaredTolerance,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.head_cons] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (squaredTolerance (var 0) (var 1) : PTm 2)
-      (σ := ![X,Y]) (σ' := ![X',Y']) (fun i => by fin_cases i; exact hX; exact hY)
+  ipra_congr (squaredTolerance (var 0) (var 1) : PTm 2) with [hX, hY]
 
 theorem returned_certificate (u v w base D P Q : PTm n)
     (hInput : Γ ⊢[PRAAx] GaussianResidualDecreaseWeights.input D P Q)

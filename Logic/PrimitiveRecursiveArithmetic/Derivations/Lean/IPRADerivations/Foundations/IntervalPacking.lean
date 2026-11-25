@@ -71,7 +71,7 @@ theorem sg_one_of_lt {a b : PTm n} (h : Γ ⊢[PRAAx] lt a b) : Γ ⊢[PRAAx] sg
   have e2 := natEq (eq_add_of_le hp)
   refine (congrSg ((eq_add_of_le hp).eqTrans (?_ : Γ ⊢[PRAAx] one + monus (monus b a) one ≐ succ (monus (monus b a) one)))).eqTrans
     (sg_succ _)
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- A cell indicator `cnt lo hi c = 1` gives `lo ≤ c < hi`. -/
 theorem cnt_one {lo hi c : PTm n} (h : Γ ⊢[PRAAx] cnt lo hi c ≐ one) : Γ ⊢[PRAAx] le lo c ⋏ lt c hi := by
@@ -133,7 +133,7 @@ theorem pt_zero {c A' A act' act w : PTm n}
       have one2 := sg_one_of_lt g2
       refine .eqTrans ?_ hsep.wk.wk
       refine .eqTrans ?_ (congrMul (congrMul (congrMul act1 act2) one1) one2).eqSymm
-      apply deriveNat; ipra_simps; ring
+      ipra_ring
 
 /-! ## Bodies -/
 

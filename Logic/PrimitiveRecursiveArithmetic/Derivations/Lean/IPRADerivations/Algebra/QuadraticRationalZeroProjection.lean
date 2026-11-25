@@ -1,5 +1,6 @@
 import IPRADerivations.Algebra.QuadraticRationalEmbedding
 import IPRADerivations.Algebra.QuadraticZeroProjection
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Actual rational zero-radicand projection
@@ -115,11 +116,7 @@ theorem cross_projection (x y : PTm n) : Γ ⊢[PRAAx]
       (scale (denominatorOf (sndT x)*denominatorOf (sndT y))
         (QuadraticIntegerEmbedding.integer (QuadraticRationalEmbedding.crossNumerator (fstT x) (fstT y)))) := by
   apply QuadraticZeroProjection.equivalent_of_projection
-  apply ZT.derive
-  simp only [QuadraticRationalEqualityOrder.crossOf,QuadraticRationalEqualityOrder.cross,QuadraticIntegerOrder.difference,
-    add_first,negative_first,scale_first,QuadraticRationalClearing.clear_first,QuadraticIntegerEmbedding.integer_first,
-    QuadraticRationalEmbedding.crossNumerator,ZT.toZ_sub,ZT.toZ_mul,ZT.toZ_ofNat,denominator,Q.mk_mul,map_mul]
-  ring
+  ipra_lc [QuadraticRationalEqualityOrder.crossOf, QuadraticRationalEqualityOrder.cross, QuadraticIntegerOrder.difference, add_first, negative_first, scale_first, QuadraticRationalClearing.clear_first, QuadraticIntegerEmbedding.integer_first, QuadraticRationalEmbedding.crossNumerator, denominator]
 theorem difference_sign (x y : PTm n) : Γ ⊢[PRAAx] sign (difference x y) ≐
     QuadraticSignCertificates.tag (QuadraticRationalEmbedding.crossNumerator (fstT x) (fstT y)) :=
   (representation_sign _ _ _ (LeanProofs.IPRA.Analysis.RationalAlgebra.positive_product (denominator_positive x) (denominator_positive y))

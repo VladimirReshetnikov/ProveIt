@@ -1,4 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.FactorVector
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The least-factor trace
@@ -70,13 +72,12 @@ theorem step_big {x : PTm n} (hx : Γ ⊢[PRAAx] le two x) :
 theorem step_small {x : PTm n} (hx : Γ ⊢[PRAAx] le x one) : Γ ⊢[PRAAx] stepT x ≐ one := by
   have hlt : Γ ⊢[PRAAx] lt x (lpf x) := le_trans ((succ_monus_succ _ _).eqTrans hx) (lpf_two x)
   have q₀ : Γ ⊢[PRAAx] quo x (lpf x) ≐ zero :=
-    quo_eq (lpf_pos x) (by apply deriveNat; ipra_simps; ring) hlt
+    quo_eq (lpf_pos x) (by ipra_ring) hlt
   have m₀ : Γ ⊢[PRAAx] monus one (monus x one) ≐ one :=
     (congrMonus (.eqRefl one) hx).eqTrans (monus_zero _)
   exact (congrAdd q₀ m₀).eqTrans (zero_add _)
 
-theorem two_pos {x : PTm n} (hx : Γ ⊢[PRAAx] le two x) : Γ ⊢[PRAAx] x ≐ succ (pred x) :=
-  eq_succ_pred (two_eq hx)
+alias two_pos := Common.pos_of_two_le
 
 theorem step_pos (x : PTm n) : Γ ⊢[PRAAx] le one (stepT x) := by
   refine .orE (lt_or_le one x) ?_ ?_
@@ -88,29 +89,24 @@ theorem step_pos (x : PTm n) : Γ ⊢[PRAAx] le one (stepT x) := by
 /-- For `x ≥ 2`, `x/ℓ(x) + 1 ≤ x`. -/
 theorem quo_succ_le {x : PTm n} (hx : Γ ⊢[PRAAx] le two x) : Γ ⊢[PRAAx] le (succ (quo x (lpf x))) x := by
   have b := step_big hx
-  have hq := natEq (pos_of_eq_mul (two_pos hx) (Prf.andE₂ b))
-  have eX := natEq (Prf.andE₂ b)
-  have eL := natEq (eq_add_of_le (lpf_two (Γ := Γ) x))
   refine le_of_eq_add (d := pred (quo x (lpf x)) + monus (lpf x) two * quo x (lpf x)) ?_
-  apply deriveNat; ipra_simps
-  linear_combination eX + 𝔞 (quo x (lpf x)) * eL + hq
+  ipra_lc natEq (Prf.andE₂ b) + 𝔞 (quo x (lpf x)) * natEq (eq_add_of_le (lpf_two (Γ := Γ) x)) +
+    natEq (pos_of_eq_mul (two_pos hx) (Prf.andE₂ b))
 
 theorem step_bound {x i N : PTm n} (h : Γ ⊢[PRAAx] le (succ i) N) (ih : Γ ⊢[PRAAx] le (x + i) (succ N)) :
     Γ ⊢[PRAAx] le (stepT x + succ i) (succ N) := by
   refine .orE (lt_or_le one x) ?_ ?_
   · have hx : (lt one x :: Γ) ⊢[PRAAx] le two x := Prf.hyp0
     have l := quo_succ_le hx
-    have w := natEq (eq_add_of_le l)
     have l' : (lt one x :: Γ) ⊢[PRAAx] le (stepT x + succ i) (x + i) := by
       refine le_congr (congrAdd (Prf.andE₁ (step_big hx)).eqSymm (.eqRefl _)) (.eqRefl _) ?_
       refine le_of_eq_add (d := monus x (succ (quo x (lpf x)))) ?_
-      apply deriveNat; ipra_simps
-      linear_combination w
+      ipra_lc natEq (eq_add_of_le l)
     exact le_trans l' ih.wk
   · have s := step_small (Prf.hyp0 : (le x one :: Γ) ⊢[PRAAx] le x one)
     have h₂ : (le x one :: Γ) ⊢[PRAAx] le (succ (succ i)) (succ N) := (succ_monus_succ _ _).eqTrans h.wk
     refine le_congr ?_ (.eqRefl _) h₂
-    exact (by apply deriveNat; ipra_simps; ring : (le x one :: Γ) ⊢[PRAAx] succ (succ i) ≐ one + succ i).eqTrans
+    exact (by ipra_ring : (le x one :: Γ) ⊢[PRAAx] succ (succ i) ≐ one + succ i).eqTrans
       (congrAdd s.eqSymm (.eqRefl _))
 
 /-! ## The invariant -/
@@ -138,11 +134,9 @@ theorem trace_bound (i N : PTm n) : Γ ⊢[PRAAx] le i N ⟶ le (trT i N + i) (s
 /-- The trace reaches `1` by stage `n`, for `n ≥ 1`. -/
 theorem trace_end {N : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) : Γ ⊢[PRAAx] trT N N ≐ one := by
   have b := Prf.impE (trace_bound (Γ := Γ) N N) (le_refl N)
-  have w := natEq (eq_add_of_le b)
   have up : Γ ⊢[PRAAx] le (trT N N) one := by
     refine le_of_eq_add (d := monus (succ N) (trT N N + N)) ?_
-    apply deriveNat; ipra_simps
-    linear_combination w
+    ipra_lc natEq (eq_add_of_le b)
   have lo : Γ ⊢[PRAAx] le one (trT N N) :=
     le_congr (.eqRefl _) ((tr_succ (pred N) N).eqSymm.eqTrans (congrAp2 trF hN.eqSymm (.eqRefl N)))
       (step_pos _)

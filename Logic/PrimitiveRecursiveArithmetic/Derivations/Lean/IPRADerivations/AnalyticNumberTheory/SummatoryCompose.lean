@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.SymmetryBound
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Hyperbola sums of monotone functions (`pnt_ipra_constructive_2026-11-14`, towards `sb:weighted-sum`)
@@ -60,18 +61,14 @@ private theorem tele₀ (hm : Mono h) : ([] : List (Fm PTm 2)) ⊢[PRAAx] teleF 
     exact (congrAdd (sum_zero _ _) (.eqRefl _)).eqTrans (zero_add _)
   · simp only [Fm.subst_eq, PTm.subst_add, subst_ap2, subst_inst2, Syn.subst_var, Syn.repl_zero, repl_one,
       ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have ih := natEq (Prf.hyp0 : [teleF h] ⊢[PRAAx] _)
     have s := sum_succ' (Γ := [teleF h]) (bS (dH h)) (var 0) (var 1)
     rw [inst2_bS, inst2_dH] at s
-    have e := natEq s
     have p := natEq (congrInst2 (Γ := [teleF h]) h (pred_succ (var 0)) (.eqRefl (var 1)))
     have mo := natEq (eq_add_of_le (hm (Δ := [teleF h]) (var 0) (var 1)))
     have mo' : [teleF h] ⊢[PRAAx] monus (inst2 h (succ (var 0)) (var 1)) (inst2 h (pred (succ (var 0))) (var 1)) ≐
         monus (inst2 h (succ (var 0)) (var 1)) (inst2 h (var 0) (var 1)) :=
       congrMonus (.eqRefl _) (congrInst2 h (pred_succ _) (.eqRefl _))
-    have f := natEq mo'
-    apply deriveNat; ipra_simps
-    linear_combination e + ih + f - mo
+    ipra_lc natEq s + natEq (Prf.hyp0 : [teleF h] ⊢[PRAAx] _) + natEq mo' - mo
 
 /-- `Σ_{k<m} ΔH(k + 1) = H(m) − H(0)`. -/
 theorem tele (hm : Mono h) (m y : PTm n) : Γ ⊢[PRAAx] Bs (dH h) m y + inst2 h zero y ≐ inst2 h m y := by
@@ -102,17 +99,8 @@ theorem compose (hm : Mono h) (h0 : ∀ {m : ℕ} {Δ : List (Fm PTm m)} (y : PT
   refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
   rw [inst2_hRB, shift_pairT]
   refine .eqTrans ?_ (RB_at a (dH h) _ _ _).eqSymm
-  have t := natEq (tele (Γ := (lt (var 0) (Syn.shift (succ x)) :: Γ.map Fm.shift)) h hm
-    (quo (Syn.shift x) (var 0)) (Syn.shift y))
-  have z := natEq (h0 (Δ := (lt (var 0) (Syn.shift (succ x)) :: Γ.map Fm.shift)) (Syn.shift y))
-  have e1 := natEq (congrInst2 (Γ := (lt (var 0) (Syn.shift (succ x)) :: Γ.map Fm.shift)) a (.eqRefl (var 0))
-    (snd_pair (Syn.shift x) (Syn.shift y)))
-  have e2 := natEq (congrInst2 (Γ := (lt (var 0) (Syn.shift (succ x)) :: Γ.map Fm.shift)) h
-    (congrAp2 quoF (fst_pair (Syn.shift x) (Syn.shift y)) (.eqRefl (var 0))) (snd_pair (Syn.shift x) (Syn.shift y)))
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞 (sg (var 0)) * 𝔞 (inst2 h (quo (fstT (pairT (Syn.shift x) (Syn.shift y))) (var 0))
-      (sndT (pairT (Syn.shift x) (Syn.shift y))))) * e1 +
-    𝔞 (sg (var 0)) * 𝔞 (inst2 a (var 0) (Syn.shift y)) * (e2 - t + z)
+  ipra_lc (𝔞 (sg (var 0)) * 𝔞 (inst2 h (quo (fstT (pairT (Syn.shift x) (Syn.shift y))) (var 0)) (sndT (pairT (Syn.shift x) (Syn.shift y))))) * natEq (congrInst2 (Γ := (lt (var 0) (Syn.shift (succ x)) :: Γ.map Fm.shift)) a (.eqRefl (var 0)) (snd_pair (Syn.shift x) (Syn.shift y))) +
+    𝔞 (sg (var 0)) * 𝔞 (inst2 a (var 0) (Syn.shift y)) * (natEq (congrInst2 (Γ := (lt (var 0) (Syn.shift (succ x)) :: Γ.map Fm.shift)) h (congrAp2 quoF (fst_pair (Syn.shift x) (Syn.shift y)) (.eqRefl (var 0))) (snd_pair (Syn.shift x) (Syn.shift y))) - natEq (tele (Γ := (lt (var 0) (Syn.shift (succ x)) :: Γ.map Fm.shift)) h hm (quo (Syn.shift x) (var 0)) (Syn.shift y)) + natEq (h0 (Δ := (lt (var 0) (Syn.shift (succ x)) :: Γ.map Fm.shift)) (Syn.shift y)))
 
 end Compose
 

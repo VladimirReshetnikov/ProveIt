@@ -3,6 +3,7 @@ import IPRADerivations.AnalyticNumberTheory.SieveWeightOne
 import IPRADerivations.AnalyticNumberTheory.PrimorialUpper
 import IPRADerivations.AnalyticNumberTheory.TotientCorollaries
 import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The right endpoint of the denominator bound: `H_q(z) ≤ G_q(z)`
@@ -69,7 +70,7 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Coprimality to `q` -/
 
-theorem mul_one_r (X : PTm n) : Γ ⊢[PRAAx] X * one ≐ X := by ipra_ring
+alias mul_one_r := Common.mul_one_right
 
 theorem cop_step {y q : PTm n} (hq : Γ ⊢[PRAAx] q ≐ succ (pred q))
     (ih : Γ ⊢[PRAAx] gcd q (Aq y q) ≐ one) : Γ ⊢[PRAAx] gcd q (Aq (succ y) q) ≐ one := by

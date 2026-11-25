@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.RationalFiniteSpanCover
 import IPRADerivations.Foundations.SequenceEquality
 import IPRADerivations.AnalyticNumberTheory.RSA
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual finite mask-tuple candidates for rational span covers
@@ -97,15 +98,10 @@ theorem encode_digit (T D N g : PTm n) (hg : Γ ⊢[PRAAx] lt g (length D)) : Γ
 
 private theorem digit_congr {T S w v g h : PTm n} (hT : Γ ⊢[PRAAx] T ≐ S)
     (hw : Γ ⊢[PRAAx] w ≐ v) (hg : Γ ⊢[PRAAx] g ≐ h) : Γ ⊢[PRAAx] digit T w g ≐ digit S v h := by
-  simpa only [subst_digit,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (digit (var 0) (var 1) (var 2) : PTm 3) (σ := ![T,w,g]) (σ' := ![S,v,h])
-      (fun i => by fin_cases i; exact hT; exact hw; exact hg)
+  ipra_congr (digit (var 0) (var 1) (var 2) : PTm 3) with [hT, hw, hg]
 private theorem selected_congr {T S u v : PTm n} (hT : Γ ⊢[PRAAx] T ≐ S)
     (hu : Γ ⊢[PRAAx] u ≐ v) : Γ ⊢[PRAAx] RationalSubtupleSpan.selected T u ≐ RationalSubtupleSpan.selected S v := by
-  simpa only [RationalSubtupleSpan.subst_selected,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using
-    Prf.eqCongr (RationalSubtupleSpan.selected (var 0) (var 1) : PTm 2) (σ := ![T,u]) (σ' := ![S,v])
-      (fun i => by fin_cases i; exact hT; exact hu)
+  ipra_congr (RationalSubtupleSpan.selected (var 0) (var 1) : PTm 2) with [hT, hu]
 
 theorem candidate_body_at (T w g : PTm n) : Γ ⊢[PRAAx] inst2 candidateBody g (pairT T w) ≐
     RationalSubtupleSpan.selected T (digit T w g) := by

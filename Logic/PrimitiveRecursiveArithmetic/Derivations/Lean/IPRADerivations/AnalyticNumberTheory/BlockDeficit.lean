@@ -156,7 +156,7 @@ theorem tw_cases {d D₁ D₂ : PTm n} (h12 : Γ ⊢[PRAAx] le D₁ D₂) (φ : 
   · refine .orE (lt_or_le D₂ d) ?_ ?_
     · have z := bv_above (h12.wk.wk) (Prf.hyp0 : ((lt D₂ d) :: (lt D₁ d) :: Γ) ⊢[PRAAx] lt D₂ d)
       have t : ((lt D₂ d) :: (lt D₁ d) :: Γ) ⊢[PRAAx] tw d D₁ D₂ ≐ zero :=
-        (congrMul (.eqRefl _) z).eqTrans (by apply deriveNat; ipra_simps; ring)
+        (congrMul (.eqRefl _) z).eqTrans (by ipra_ring)
       exact Prf.impE (Prf.impI h0).wk.wk t
     · have hd : ((le d D₂) :: (lt D₁ d) :: Γ) ⊢[PRAAx] d ≐ succ (pred d) :=
         LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep.pos_of_one_le
@@ -164,11 +164,11 @@ theorem tw_cases {d D₁ D₂ : PTm n} (h12 : Γ ⊢[PRAAx] le D₁ D₂) (φ : 
       have o := bv_in (Prf.hyp1 : ((le d D₂) :: (lt D₁ d) :: Γ) ⊢[PRAAx] lt D₁ d) Prf.hyp0
       have s := (congrSg hd).eqTrans (sg_succ _)
       have t : ((le d D₂) :: (lt D₁ d) :: Γ) ⊢[PRAAx] tw d D₁ D₂ ≐ one :=
-        (congrMul s o).eqTrans (by apply deriveNat; ipra_simps; ring)
+        (congrMul s o).eqTrans (by ipra_ring)
       exact Prf.impE (Prf.impI h1) t
   · have z := bv_below h12.wk (Prf.hyp0 : ((le d D₁) :: Γ) ⊢[PRAAx] le d D₁)
     have t : ((le d D₁) :: Γ) ⊢[PRAAx] tw d D₁ D₂ ≐ zero :=
-      (congrMul (.eqRefl _) z).eqTrans (by apply deriveNat; ipra_simps; ring)
+      (congrMul (.eqRefl _) z).eqTrans (by ipra_ring)
     exact Prf.impE (Prf.impI h0).wk t
 
 /-! ## The case sums -/

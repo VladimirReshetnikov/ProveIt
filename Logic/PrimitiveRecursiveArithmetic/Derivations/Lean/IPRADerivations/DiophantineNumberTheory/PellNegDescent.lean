@@ -1,5 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.PellDescent
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Negative descent for Pell's equation

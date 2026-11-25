@@ -3,6 +3,7 @@ import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Core.SumLemmas
 import IPRADerivations.Probability.FiniteLaws
 import IPRADerivations.Foundations.FrontierSoundness
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Finite-window stability: the two selection arguments
@@ -103,11 +104,7 @@ theorem incr_step {a d : PTm 2} {k x c : PTm n}
     (hd : Γ ⊢[PRAAx] inst2 d k x + inst2 a k x ≐ inst2 a (succ k) x + c)
     (ih : Γ ⊢[PRAAx] ap2 (sumF d) k x + inst2 a zero x ≐ inst2 a k x + k * c) :
     Γ ⊢[PRAAx] ap2 (sumF d) (succ k) x + inst2 a zero x ≐ inst2 a (succ k) x + succ k * c := by
-  have e₁ := natEq (sum_succ' (Γ := Γ) d k x)
-  have e₂ := natEq hd
-  have e₃ := natEq ih
-  apply deriveNat; ipra_simps
-  linear_combination e₁ + e₂ + e₃
+  ipra_lc natEq (sum_succ' (Γ := Γ) d k x) + natEq hd + natEq ih
 
 theorem incr_guard {a d : PTm 2} {k x c N : PTm n} (hkN : Γ ⊢[PRAAx] le (succ k) N)
     (hd : Γ ⊢[PRAAx] inst2 d k x + inst2 a k x ≐ inst2 a (succ k) x + c)
@@ -129,9 +126,7 @@ theorem telescope_incr {a d : PTm 2} {N x c : PTm n}
         Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero,
         ConciseIPRA.PTm.subst_succ]
       refine .impI ?_
-      have z := natEq (sum_zero (Γ := le zero N :: Γ) d x)
-      apply deriveNat; ipra_simps
-      linear_combination z
+      ipra_lc natEq (sum_zero (Γ := le zero N :: Γ) d x)
     · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, subst_inst2, PTm.subst_add, PTm.subst_mul,
         Syn.subst_var, Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero,
         ConciseIPRA.PTm.subst_succ]

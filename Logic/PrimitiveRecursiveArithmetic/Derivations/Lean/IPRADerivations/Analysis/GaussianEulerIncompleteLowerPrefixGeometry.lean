@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianEulerIncompleteName
 import IPRADerivations.Analysis.GaussianEulerCompactAlignment
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Original lower Euler pieces below a dyadic endpoint
@@ -117,11 +118,7 @@ theorem whole_width (s z R B A k j a b : PTm n) (h : Γ ⊢[PRAAx] source s z R 
       ((congrMul (.eqRefl _) (GaussianGammaCompactCutoffGeometry.lower_endpoint k j A)).eqTrans
         ((by unfold start; ipra_ring : Γ ⊢[PRAAx] start k A R b*GaussianGammaCompactCutoffGeometry.ratio k j A ≐
           b*(GaussianGammaCompactCutoffGeometry.ratio k j A*etaDen k A R)).eqTrans (congrMul (.eqRefl _) refined.eqSymm)))
-  have before := natEq original
-  have after := natEq (whole_endpoint s z R B A k j a b h)
-  apply deriveNat
-  ipra_simps
-  linear_combination after-before
+  ipra_lc natEq (whole_endpoint s z R B A k j a b h)-natEq original
 
 theorem interval_sources (s z R B A k j a b : PTm n) (h : Γ ⊢[PRAAx] source s z R B A k j a b) : Γ ⊢[PRAAx]
     intervalSource z R B (start k A R b) (firstWidth k j A R a b) (denominator k j A R b) (top j A R) ⋏

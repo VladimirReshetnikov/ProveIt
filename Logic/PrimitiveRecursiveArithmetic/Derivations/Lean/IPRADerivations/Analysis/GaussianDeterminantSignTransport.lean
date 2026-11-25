@@ -2,6 +2,7 @@ import IPRADerivations.Foundations.RuntimeAdjacentPermutationSwap
 import IPRADerivations.Analysis.GaussianPolynomialDeterminantTerms
 import IPRADerivations.Analysis.GaussianInverseBinomialRows
 import IPRADerivations.Analysis.GaussianCoefficientNormOrder
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual Gaussian sign transport for numerical permutation words
@@ -56,8 +57,7 @@ theorem negative_involution (q : PTm n) (hq : Γ ⊢[PRAAx] canonical q) : Γ �
 
 theorem sign_congr {m m' w w' : PTm n} (hm : Γ ⊢[PRAAx] m ≐ m')
     (hw : Γ ⊢[PRAAx] w ≐ w') : Γ ⊢[PRAAx] signPoint m w ≐ signPoint m' w' := by
-  simpa using Prf.eqCongr (Γ := Γ) (signPoint (var 0) (var 1) : PTm 2)
-    (σ := ![m,w]) (σ' := ![m',w']) (fun i => by fin_cases i; exact hm; exact hw)
+  ipra_congr (signPoint (var 0) (var 1) : PTm 2) with [hm, hw]
 
 theorem sign_flip (m w j : PTm n)
     (hPerm : Γ ⊢[PRAAx] Foundations.RuntimePermutationWords.permutation m w)

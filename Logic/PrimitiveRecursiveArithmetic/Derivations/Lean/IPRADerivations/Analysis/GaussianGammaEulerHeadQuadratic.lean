@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianPolynomialLinearFactorCoefficients
 import IPRADerivations.Analysis.GaussianGammaPolynomialConstantLinear
 import IPRADerivations.Analysis.GaussianRationalFiniteRoots
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The actual original Euler head quadratic coefficient
@@ -98,9 +99,7 @@ theorem head_quadratic (N : PTm n) (hN : Γ ⊢[PRAAx] le one N) : Γ ⊢[PRAAx]
     (congrMonus (congrSucc form) (.eqRefl two)).eqTrans
       ((succ_monus_succ _ _).eqTrans ((succ_monus_succ _ _).eqTrans (monus_zero _)))
   have harmonic : Γ ⊢[PRAAx] harmonicPoint N ≐ harmonicPoint (succ (LeanProofs.IPRA.PTm.pred N)) := by
-    simpa only [GaussianGammaCanonicalExponent.subst_harmonicPoint,Syn.subst_var,Matrix.cons_val_zero] using
-      Prf.eqCongr (Γ := Γ) (harmonicPoint (var 0) : PTm 1)
-        (σ := ![N]) (σ' := ![succ (LeanProofs.IPRA.PTm.pred N)]) (fun i => by fin_cases i; exact form)
+    ipra_congr (harmonicPoint (var 0) : PTm 1) with [form]
   exact (entry_congr (congrAp2 GaussianGammaEulerHeadPolynomial.headF form (.eqRefl zero)) idx).eqTrans
     ((head_quadratic_positive _).eqTrans harmonic.eqSymm)
 

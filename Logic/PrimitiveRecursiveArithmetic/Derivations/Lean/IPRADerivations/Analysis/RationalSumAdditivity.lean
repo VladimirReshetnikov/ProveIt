@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.RationalFiniteSum
 import IPRADerivations.DiophantineNumberTheory.MinkowskiCenters
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Actual rational finite sums commute with pointwise addition
@@ -141,19 +142,7 @@ theorem sum_additive (A B : PTm 2) (N x y : PTm n) : Γ ⊢[PRAAx]
   have positive : Γ ⊢[PRAAx] le one (denominator A N x*denominator B N y) :=
     le_congr (one_mul one) (.eqRefl _) (le_mul_mono (denominator_positive A N x) (denominator_positive B N y))
   apply DiophantineNumberTheory.MinkowskiCenters.integer_cancel (denominator A N x*denominator B N y) _ _ positive
-  apply ZT.derive
-  have ih := ZT.toZ_eq (raw_add (Γ := Γ) A B N x y)
-  have va := ZT.toZ_eq (sum_value (Γ := Γ) A N x)
-  have vb := ZT.toZ_eq (sum_value (Γ := Γ) B N y)
-  simp only [rawAdd,RationalArithmetic.productDenominator,RationalArithmetic.addNumerator,
-    ZT.toZ_mul,ZT.toZ_add,ZT.toZ_ofNat] at ih va vb ⊢
-  ipra_simps
-  linear_combination
-    𝔞(denominatorOf (sum A N x))*𝔞(denominatorOf (sum B N y))*ih+
-    𝔞(denominator (addedBody A B) N (pairT x y))*𝔞(denominator B N y)*
-      𝔞(denominatorOf (sum B N y))*va+
-    𝔞(denominator (addedBody A B) N (pairT x y))*𝔞(denominator A N x)*
-      𝔞(denominatorOf (sum A N x))*vb
+  ipra_lc [rawAdd, RationalArithmetic.productDenominator, RationalArithmetic.addNumerator] 𝔞(denominatorOf (sum A N x))*𝔞(denominatorOf (sum B N y))*ZT.toZ_eq (raw_add (Γ := Γ) A B N x y)+ 𝔞(denominator (addedBody A B) N (pairT x y))*𝔞(denominator B N y)* 𝔞(denominatorOf (sum B N y))*ZT.toZ_eq (sum_value (Γ := Γ) A N x)+ 𝔞(denominator (addedBody A B) N (pairT x y))*𝔞(denominator A N x)* 𝔞(denominatorOf (sum A N x))*ZT.toZ_eq (sum_value (Γ := Γ) B N y)
 
 def addedSumF (A B : PTm 2) : PR 3 := PTm.toPR (addedSum A B (var 0) (var 1) (var 2))
 

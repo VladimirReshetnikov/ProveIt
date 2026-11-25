@@ -1,6 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.MinkowskiCenters
 import IPRADerivations.DiophantineNumberTheory.SignedEuclidean
 import IPRADerivations.Foundations.SequenceEquality
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Literal runtime-vector midpoint cancellation for Minkowski centers
@@ -61,17 +62,12 @@ def integerVector (N z : PTm n) : PTm n := sequence integerBody N z
 
 theorem center_congr {a a' m m' : PTm n} (ha : Γ ⊢[PRAAx] a ≐ a') (hm : Γ ⊢[PRAAx] m ≐ m') :
     Γ ⊢[PRAAx] center (decode a) m ≐ center (decode a') m' := by
-  have h := Prf.eqCongr (center (decode (var 0)) (var 1) : PTm 2) (σ := ![a,m]) (σ' := ![a',m'])
-    (fun i => by fin_cases i; exact ha; exact hm)
-  simpa using h
+  ipra_congr (center (decode (var 0)) (var 1) : PTm 2) with [ha, hm]
 theorem opposite_congr {c c' : PTm n} (hc : Γ ⊢[PRAAx] c ≐ c') : Γ ⊢[PRAAx] opposite c ≐ opposite c' := by
-  have h := Prf.eqCongr (opposite (var 0) : PTm 1) (σ := ![c]) (σ' := ![c']) (fun i => by fin_cases i; exact hc)
-  simpa using h
+  ipra_congr (opposite (var 0) : PTm 1) with [hc]
 theorem midpoint_congr {c c' d d' : PTm n} (hc : Γ ⊢[PRAAx] c ≐ c') (hd : Γ ⊢[PRAAx] d ≐ d') :
     Γ ⊢[PRAAx] midpoint c d ≐ midpoint c' d' := by
-  have h := Prf.eqCongr (midpoint (var 0) (var 1) : PTm 2) (σ := ![c,d]) (σ' := ![c',d'])
-    (fun i => by fin_cases i; exact hc; exact hd)
-  simpa using h
+  ipra_congr (midpoint (var 0) (var 1) : PTm 2) with [hc, hd]
 
 theorem center_body_at (k m a : PTm n) :
     Γ ⊢[PRAAx] inst2 centerBody k (pairT m a) ≐ center (signedCoordinate a k) m := by

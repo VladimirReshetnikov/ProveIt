@@ -2,6 +2,7 @@ import IPRADerivations.Analysis.GaussianPolynomialRowQuotient
 import IPRADerivations.Analysis.GaussianRationalPolynomialProductDegree
 import IPRADerivations.Analysis.GaussianRationalPowerNonzero
 import IPRADerivations.Core.SumSplit
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual accumulated factors of the original numerical abscissa groups
@@ -58,9 +59,9 @@ theorem size_body_at (L p g : PTm n) : Γ ⊢[PRAAx]
     inst2 (Foundations.FiniteFiberGrouping.sizeBody xKeyF) g (data L p) ≐ fiberCount L p g := by
   simp only [Foundations.FiniteFiberGrouping.sizeBody,inst2,Foundations.FiniteFiberGrouping.subst_fiberCount,
     subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
-  simpa using Prf.eqCongr (Γ := Γ) (fiberCount (var 0) (var 1) (var 2) : PTm 3)
-    (σ := ![fstT (data L p),sndT (data L p),g]) (σ' := ![L,p,g])
-    (fun i => by fin_cases i; exact fst_pair _ _; exact snd_pair _ _; exact .eqRefl _)
+  ipra_congr (fiberCount (var 0) (var 1) (var 2) : PTm 3) with
+    [(show _ ⊢[PRAAx] fstT (data L p) ≐ L from fst_pair _ _),
+      (show _ ⊢[PRAAx] sndT (data L p) ≐ p from snd_pair _ _), .eqRefl g]
 theorem T_zero (L p : PTm n) : Γ ⊢[PRAAx] T L p zero ≐ zero := sum_zero _ _
 theorem T_succ (L p g : PTm n) : Γ ⊢[PRAAx] T L p (succ g) ≐ T L p g+fiberCount L p g :=
   (sum_succ _ _ _).eqTrans (congrAdd (.eqRefl _) (size_body_at _ _ _))
@@ -74,8 +75,7 @@ theorem T_bound (L p g : PTm n) (hg : Γ ⊢[PRAAx] le g (groupCount L p)) : Γ 
 theorem update_congr {Q Q' L L' p p' g g' : PTm n} (hQ : Γ ⊢[PRAAx] Q ≐ Q')
     (hL : Γ ⊢[PRAAx] L ≐ L') (hp : Γ ⊢[PRAAx] p ≐ p') (hg : Γ ⊢[PRAAx] g ≐ g') : Γ ⊢[PRAAx]
     update Q L p g ≐ update Q' L' p' g' := by
-  simpa using Prf.eqCongr (Γ := Γ) (update (var 0) (var 1) (var 2) (var 3) : PTm 4)
-    (σ := ![Q,L,p,g]) (σ' := ![Q',L',p',g']) (fun i => by fin_cases i; exact hQ; exact hL; exact hp; exact hg)
+  ipra_congr (update (var 0) (var 1) (var 2) (var 3) : PTm 4) with [hQ, hL, hp, hg]
 theorem C_index_congr (L p : PTm n) {g h : PTm n} (he : Γ ⊢[PRAAx] g ≐ h) : Γ ⊢[PRAAx]
     C L p g ≐ C L p h := congrAp2 productF he (.eqRefl _)
 theorem C_zero (L p : PTm n) : Γ ⊢[PRAAx] C L p zero ≐ singleton qone := by

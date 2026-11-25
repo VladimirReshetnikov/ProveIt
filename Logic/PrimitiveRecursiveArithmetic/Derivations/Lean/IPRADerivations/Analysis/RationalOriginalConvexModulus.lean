@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.RationalConvexArguments
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The named modulus at the original rational arguments
@@ -102,9 +103,7 @@ theorem order_queries_congr (L U : PR 3) (X Y Z X' Y' Z' A B o x : PTm n)
 
 theorem center_query_congr (L U : PR 3) (p x : PTm n) {q r : PTm n} (e : Γ ⊢[PRAAx] q ≐ r) :
     Γ ⊢[PRAAx] center L U q p x ≐ center L U r p x := by
-  simpa only [subst_center,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (center L U (var 0) (var 1) (var 2) : PTm 3)
-      (σ := ![q,p,x]) (σ' := ![r,p,x]) (fun j => by fin_cases j; exact e; exact .eqRefl _; exact .eqRefl _)
+  ipra_congr (center L U (var 0) (var 1) (var 2) : PTm 3) with [e, .eqRefl p, .eqRefl x]
 
 theorem original_named_modulus (L U : PR 3) (W : PR 2) (a b u v k t o x : PTm n)
     (h : Γ ⊢[PRAAx] arguments a b u v) (hi : Γ ⊢[PRAAx] sourceInputs L U W a b u v o x)

@@ -1,4 +1,5 @@
 import IPRADerivations.Algebra.QuadraticIntegerOrder
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The integer scalar embedding in the actual positive quadratic stage
@@ -128,10 +129,7 @@ theorem integer_equivalent (d : PTm n) (a b : ZT n) (hd : Γ ⊢[PRAAx] le one d
 theorem integer_equivalent_reflect (d : PTm n) (a b : ZT n) (hd : Γ ⊢[PRAAx] le one d)
     (h : Γ ⊢[PRAAx] equivalent d (integer a) (integer b)) : Γ ⊢[PRAAx] ZT.eq a b := by
   have hz := integer_zero_reflect d (a-b) hd (zero_value_congr _ _ _ hd (integer_difference a b) h)
-  apply ZT.derive
-  have hv := ZT.toZ_eq hz
-  simp only [ZT.toZ_sub,ZT.toZ_ofNat,Q.mk_zero,map_zero] at hv
-  linear_combination hv
+  ipra_lc ZT.toZ_eq hz
 theorem integer_equivalent_iff (d : PTm n) (a b : ZT n) (hd : Γ ⊢[PRAAx] le one d) : Γ ⊢[PRAAx]
     Fm.iff (equivalent d (integer a) (integer b)) (ZT.eq a b) :=
   .andI (.impI (integer_equivalent_reflect _ _ _ hd.wk Prf.hyp0)) (.impI (integer_equivalent _ _ _ hd.wk Prf.hyp0))

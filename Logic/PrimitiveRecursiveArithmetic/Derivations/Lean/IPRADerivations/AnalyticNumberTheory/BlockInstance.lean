@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.BlockChain
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Every dyadic block carries the deficit (`pnt_ipra_constructive_2026-11-14`, `con:one-step`)
@@ -96,10 +97,8 @@ theorem block_at (hk : Γ ⊢[PRAAx] lt k B) (hE0 : Γ ⊢[PRAAx] le one E0)
   have h1 : Γ ⊢[PRAAx] le one (E0 * pw (pw two (h + h)) k) := le_trans hE0 (e0_le hQ k)
   have h1h := e0_le (E0 := E0 * pw (pw two (h + h)) k) h12 h
   have e12 : Γ ⊢[PRAAx] E0 * pw (pw two (h + h)) (succ k) ≐ E0 * pw (pw two (h + h)) k * pw two h * pw two h := by
-    have a := natEq (pw_succ (Γ := Γ) (pw two (h + h)) k)
-    have b := natEq (pw_add (Γ := Γ) two h h)
-    apply deriveNat; ipra_simps
-    linear_combination 𝔞 E0 * a + 𝔞 E0 * 𝔞 (pw (pw two (h + h)) k) * b
+    ipra_lc 𝔞 E0 * natEq (pw_succ (Γ := Γ) (pw two (h + h)) k) +
+      𝔞 E0 * 𝔞 (pw (pw two (h + h)) k) * natEq (pw_add (Γ := Γ) two h h)
   have hh2 := le_congr (.eqRefl _) e12.eqSymm (e0_le (E0 := E0 * pw (pw two (h + h)) k * pw two h) h12 h)
   have hEN := le_trans (ek_le (E0 := E0) hQ hk') hBN
   have hEB := le_trans hEN hNx

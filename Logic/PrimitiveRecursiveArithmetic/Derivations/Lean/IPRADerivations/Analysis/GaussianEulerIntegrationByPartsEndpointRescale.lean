@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianEulerIntegrationByPartsEndpoints
 import IPRADerivations.Analysis.GaussianEulerPowerInputProperness
 import IPRADerivations.Analysis.GaussianGammaCompactQuadratureBoundary
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The literal affine-grid endpoint observations
@@ -51,10 +52,7 @@ private theorem decay_rescale (p a b S : PTm n)
   have e : Γ ⊢[PRAAx] decayPoint (a*S) (b*S) ≐ decayPoint a b :=
     GaussianInverseBinomialRows.negative_congr (fraction_rescale a b S hb hS)
   have data : Γ ⊢[PRAAx] decayData (a*S) (b*S) ≐ decayData a b := by
-    simpa only [decayData,exponentialInputData,GaussianRadiusExponentialName.subst_data,
-      GaussianNameBounds.subst_U,Syn.subst_var,Matrix.cons_val_zero] using
-      Prf.eqCongr (Γ := Γ) (exponentialInputData constantF (var 0) : PTm 1)
-      (σ := ![decayPoint (a*S) (b*S)]) (σ' := ![decayPoint a b]) (fun i => by fin_cases i; exact e)
+    ipra_congr (exponentialInputData constantF (var 0) : PTm 1) with [e] using [decayData, exponentialInputData]
   exact congrAp2 decayF (.eqRefl _) data
 
 theorem original_boundary_rescale (p z B a b S T : PTm n)
@@ -84,9 +82,8 @@ theorem original_boundary_rescale (p z B a b S T : PTm n)
 private theorem primitive_time_congr (p z B a a' b b' : PTm n)
     (ha : Γ ⊢[PRAAx] a ≐ a') (hb : Γ ⊢[PRAAx] b ≐ b') : Γ ⊢[PRAAx]
     primitive p z B a b ≐ primitive p z B a' b' := by
-  simpa using Prf.eqCongr (Γ := Γ) (primitive (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5)
-    (σ := ![p,z,B,a,b]) (σ' := ![p,z,B,a',b'])
-    (fun i => by fin_cases i; exact .eqRefl _; exact .eqRefl _; exact .eqRefl _; exact ha; exact hb)
+  ipra_congr (primitive (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) with
+    [.eqRefl p, .eqRefl z, .eqRefl B, ha, hb]
 
 theorem original_affine_cutoff_endpoints (p z R B k A N : PTm n)
     (hB : Γ ⊢[PRAAx] le one B) (hN : Γ ⊢[PRAAx] le one N) : Γ ⊢[PRAAx]

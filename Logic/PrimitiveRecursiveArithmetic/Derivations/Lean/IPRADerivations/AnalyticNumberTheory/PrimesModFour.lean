@@ -1,4 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.FourSquares
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Primes in the classes `1` and `3` modulo `4`, with bounds
@@ -99,7 +100,7 @@ theorem mod4_of_parities {p : PTm k} (po : Γ ⊢[PRAAx] par p ≐ one) (hz : Γ
   have a := natEq (half_par (Γ := Γ) p); have b := natEq (half_par (Γ := Γ) (half p))
   have c := natEq po; have d := natEq hz
   have e : Γ ⊢[PRAAx] p ≐ (two * two) * half (half p) + one := by
-    apply deriveNat; ipra_simps; linear_combination a + 2 * b + c + 2 * d
+    ipra_lc a + 2 * b + c + 2 * d
   exact Prf.andE₂ (dmu four_pos e one_lt_four)
 
 /-- `(N!)² + 1`. -/
@@ -110,8 +111,7 @@ abbrev P1 (N : PTm k) : PTm k := lpf (T1 N)
 
 theorem pred_alg {p : PTm k} (hp1 : Γ ⊢[PRAAx] p ≐ succ (pred p)) :
     Γ ⊢[PRAAx] pred p + one ≐ p * one + zero := by
-  have a := natEq hp1
-  apply deriveNat; ipra_simps; linear_combination -a
+  ipra_lc -natEq hp1
 
 /-- For `N ≥ 2`: `P1 N` is a prime `> N`, `≡ 1 (mod 4)`, and at most `(N!)² + 1`. -/
 theorem prime_one_mod_four {N : PTm k} (hN : Γ ⊢[PRAAx] le two N) :
@@ -166,8 +166,7 @@ abbrev q3 (n : PTm k) : PTm k := wit qB (succ n) n
 
 theorem bits_alg {a b c : PTm k} (ha : Γ ⊢[PRAAx] a ≐ one) (hb : Γ ⊢[PRAAx] b ≐ one)
     (hc : Γ ⊢[PRAAx] c ≐ one) : Γ ⊢[PRAAx] a * (b * c) ≐ one := by
-  have x := natEq ha; have y := natEq hb; have z := natEq hc
-  apply deriveNat; ipra_simps; linear_combination 𝔞 b * 𝔞 c * x + 𝔞 c * y + z
+  ipra_lc 𝔞 b * 𝔞 c * natEq ha + 𝔞 c * natEq hb + natEq hc
 
 /-- A prime divisor `≡ 3 (mod 4)` at most `n` makes the bit `1`. -/
 theorem q3_intro {n d : PTm k} (hd : Γ ⊢[PRAAx] prime d) (hdv : Γ ⊢[PRAAx] dvd d n)
@@ -211,21 +210,18 @@ theorem ge_two_of_three {n q : PTm k} (e : Γ ⊢[PRAAx] n ≐ (two * two) * q +
 theorem odd_of_three {n q : PTm k} (e : Γ ⊢[PRAAx] n ≐ (two * two) * q + succ two) :
     Γ ⊢[PRAAx] par n ≐ one := by
   have e' : Γ ⊢[PRAAx] n ≐ two * (two * q + one) + one := by
-    have a := natEq e
-    apply deriveNat; ipra_simps; linear_combination a
+    ipra_lc natEq e
   exact (congrAp1 parF e').eqTrans (par_double_succ _)
 
 theorem even_mul {n l c a r' : PTm k} (eN : Γ ⊢[PRAAx] n ≐ l * c + zero)
     (el : Γ ⊢[PRAAx] l ≐ (two * two) * a + two * r') : Γ ⊢[PRAAx] n ≐ two * ((two * a + r') * c) := by
-  have x := natEq eN; have y := natEq el
-  apply deriveNat; ipra_simps; linear_combination x + 𝔞 c * y
+  ipra_lc natEq eN + 𝔞 c * natEq el
 
 theorem one_mul_alg {n l c a : PTm k} (eN : Γ ⊢[PRAAx] n ≐ l * c + zero)
     (el : Γ ⊢[PRAAx] l ≐ (two * two) * a + one) : Γ ⊢[PRAAx] n ≐ (two * two) * (a * c) + c := by
-  have x := natEq eN; have y := natEq el
-  apply deriveNat; ipra_simps; linear_combination x + 𝔞 c * y
+  ipra_lc natEq eN + 𝔞 c * natEq el
 
-theorem two_one : Γ ⊢[PRAAx] (two : PTm k) ≐ two * one := by apply deriveNat; ipra_simps; ring
+theorem two_one : Γ ⊢[PRAAx] (two : PTm k) ≐ two * one := by ipra_ring
 
 theorem cofactor_lt {N L c : PTm k} (hL : Γ ⊢[PRAAx] le two L) (c1 : Γ ⊢[PRAAx] le one c)
     (eN : Γ ⊢[PRAAx] N ≐ L * c + zero) : Γ ⊢[PRAAx] lt c N := by
@@ -261,7 +257,7 @@ theorem q3_step {N x : PTm k} (hS : Γ ⊢[PRAAx] ap2 (sumF vQ) N x ≐ zero)
   have eN : Γ ⊢[PRAAx] N ≐ lpf N * quo N (lpf N) + zero :=
     (Prf.andE₁ (dm hp1 N)).eqTrans (congrAdd (.eqRefl _) (lpf_dvd' hN2))
   have dl := dm (Γ := Γ) four_pos (lpf N)
-  have e4 : Γ ⊢[PRAAx] (two * two : PTm k) ≐ succ (succ two) := by apply deriveNat; ipra_simps; ring
+  have e4 : Γ ⊢[PRAAx] (two * two : PTm k) ≐ succ (succ two) := by ipra_ring
   have hr : Γ ⊢[PRAAx] lt (rem (lpf N) (two * two)) (succ (succ two)) := lt_congr (.eqRefl _) e4 (Prf.andE₂ dl)
   refine .orE (lt_succ_cases hr) ?_ ?_
   · refine .orE (lt_succ_cases (Prf.hyp0 (Γ := Γ) (φ := lt (rem (lpf N) (two * two)) (succ two)))) ?_ ?_
@@ -344,16 +340,15 @@ theorem prime_three_mod_four (N : PTm k) :
   have h1 : Γ ⊢[PRAAx] le one ((two * two) * fact N) := by
     ipra_le 4 * 𝔞 (pred (fact N)) + 3 with 4 * fp
   have eT := eq_add_of_le h1
-  have eTn := natEq eT
   have e3 : Γ ⊢[PRAAx] T3 N ≐ (two * two) * pred (fact N) + succ two := by
-    apply deriveNat; ipra_simps; linear_combination 4 * fp - eTn
+    ipra_lc 4 * fp - natEq eT
   have l3 : Γ ⊢[PRAAx] lt (succ two : PTm k) (two * two) :=
-    le_of_eq_add (d := zero) (by apply deriveNat; ipra_simps; ring)
+    le_of_eq_add (d := zero) (by ipra_ring)
   have r3 := Prf.andE₂ (dmu four_pos e3 l3)
   have qc := q3_elim (q3_all r3)
   have hd := Prf.andE₁ qc
   have e' : Γ ⊢[PRAAx] T3 N + one ≐ fact N * (two * two) := by
-    apply deriveNat; ipra_simps; linear_combination -eTn
+    ipra_lc -natEq eT
   exact .andI hd (.andI (gt_of_dvd' (prime_two hd) (Prf.andE₁ (Prf.andE₂ qc)) e')
     (.andI (Prf.andE₁ (Prf.andE₂ (Prf.andE₂ qc))) (Prf.andE₂ (Prf.andE₂ (Prf.andE₂ qc)))))
 

@@ -79,7 +79,6 @@ theorem arg_bound {h : PTm n} (hh : Γ ⊢[PRAAx] le two h) (N y : PTm n) :
     exact b.wk
   exact le_congr (congrMul (.eqRefl _) (mq_at _ _ _ _)).eqSymm (.eqRefl _) (arg_bound_pt hh' (var 0) (Syn.shift N))
 
-
 /-! ## Instantiating a shifted universal at a term -/
 
 /-- The substitution `0 ↦ t`, `j + 1 ↦ j + 1` fixes shifted terms. -/
@@ -379,7 +378,7 @@ abbrev Cout (k c : PTm n) : PTm n := succ c * pw (r8 (succ k)) (two * succ k)
 theorem exps (k : PTm n) :
     (Γ ⊢[PRAAx] two * succ (succ (two * k)) ≐ k4 (succ k)) ∧
       (Γ ⊢[PRAAx] succ (succ (succ (two * k))) ≐ succ (two * succ k)) :=
-  ⟨by apply deriveNat; ipra_simps; ring, by apply deriveNat; ipra_simps; ring⟩
+  ⟨by ipra_ring, by ipra_ring⟩
 
 theorem upf_one {a b : ℕ} (σ : Fin (a + 1) → PTm b) : (up σ : Fin (a + 2) → PTm (b + 1)) 1 = Syn.shift (σ 0) := rfl
 theorem upf_two {a b : ℕ} (σ : Fin (a + 2) → PTm b) : (up σ : Fin (a + 3) → PTm (b + 1)) 2 = Syn.shift (σ 1) := rfl

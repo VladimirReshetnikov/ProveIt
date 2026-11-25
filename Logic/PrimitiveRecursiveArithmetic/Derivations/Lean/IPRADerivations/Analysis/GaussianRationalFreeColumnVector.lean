@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.GaussianRationalRowElimination
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # An actual finite vector from one free column
@@ -63,10 +64,7 @@ def nonzeroVector (v N : PTm n) : Fm PTm n := .ex
 theorem value_congr {E E' H H' s s' j j' : PTm n} (hE : Γ ⊢[PRAAx] E ≐ E')
     (hH : Γ ⊢[PRAAx] H ≐ H') (hs : Γ ⊢[PRAAx] s ≐ s') (hj : Γ ⊢[PRAAx] j ≐ j') :
     Γ ⊢[PRAAx] value E H s j ≐ value E' H' s' j' := by
-  simpa only [subst_value,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.cons_val_three,Matrix.head_cons,Matrix.tail_cons] using Prf.eqCongr (Γ := Γ)
-      (value (var 0) (var 1) (var 2) (var 3) : PTm 4) (σ := ![E,H,s,j]) (σ' := ![E',H',s',j'])
-      (fun k => by fin_cases k; exact hE; exact hH; exact hs; exact hj)
+  ipra_congr (value (var 0) (var 1) (var 2) (var 3) : PTm 4) with [hE, hH, hs, hj]
 
 theorem body_at (E H s j : PTm n) : Γ ⊢[PRAAx] inst2 body j (data E H s) ≐ value E H s j := by
   simp only [body,inst2,subst_value,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]

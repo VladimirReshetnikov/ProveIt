@@ -1,5 +1,6 @@
 import IPRADerivations.Probability.TailSum
 import IPRADerivations.Probability.Variance
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Signed observables, parts, and finite linear combinations
@@ -56,7 +57,7 @@ theorem neg_tail_pt (a b k : PTm n) : Γ ⊢[PRAAx] geI (succ k) (monus b a) ≐
     have h : C ⊢[PRAAx] lt b a := Prf.hyp0
     have e := eq_add_of_le h
     have hz : C ⊢[PRAAx] le b a := le_of_eq_add (d := succ (monus a (succ b)))
-      (e.eqTrans (by apply deriveNat; ipra_simps; ring))
+      (e.eqTrans (by ipra_ring))
     have hl : C ⊢[PRAAx] lt b (a + succ k) := le_of_eq_add (d := monus a (succ b) + succ k)
       (by have e' := natEq e; apply deriveNat; ipra_simps; linear_combination e')
     refine .eqTrans ?_ (geI_false hl).eqSymm
@@ -96,16 +97,14 @@ theorem abs_expect_le (M x : PTm n) :
     have hz := natEq (show C ⊢[PRAAx] monus (Ew w P M x) (Ew w N M x) ≐ zero from Prf.hyp0)
     have e := natEq (eq_add_of_le (Prf.hyp0 : C ⊢[PRAAx] le (Ew w P M x) (Ew w N M x)))
     refine le_of_eq_add (d := Ew w (monus P N) M x + Ew w (monus P N) M x) ?_
-    apply deriveNat; ipra_simps
-    linear_combination h2 - h1 + e - hz
+    ipra_lc h2 - h1 + e - hz
   · let C := le (Ew w N M x) (Ew w P M x) :: Γ
     have h1 := natEq (Prf.andE₁ (expect_parts (Γ := C) w P N M x))
     have h2 := natEq (Prf.andE₂ (expect_parts (Γ := C) w P N M x))
     have hz := natEq (show C ⊢[PRAAx] monus (Ew w N M x) (Ew w P M x) ≐ zero from Prf.hyp0)
     have e := natEq (eq_add_of_le (Prf.hyp0 : C ⊢[PRAAx] le (Ew w N M x) (Ew w P M x)))
     refine le_of_eq_add (d := Ew w (monus N P) M x + Ew w (monus N P) M x) ?_
-    apply deriveNat; ipra_simps
-    linear_combination h2 + h1 + e - hz
+    ipra_lc h2 + h1 + e - hz
 
 /-- `thm:nonneg`: `X = P − N ≥ 0` at every outcome gives `E X ≥ 0`, i.e. `Ew N ≤ Ew P`. -/
 theorem signed_nonneg {M x : PTm n}
@@ -134,11 +133,8 @@ theorem signed_tail {M A B x : PTm n}
     (hA : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift M) ⟶ le (inst2 (monus N P) (var 0) (Syn.shift x)) (Syn.shift A))) :
     Γ ⊢[PRAAx] Ew w P M x + ap2 (sumF (pB (tlA w (monus N P)))) A (pairT M x) ≐
       ap2 (sumF (pB (tlA w (monus P N)))) B (pairT M x) + Ew w N M x := by
-  have t1 := natEq (tail_sum w (monus P N) hB)
-  have t2 := natEq (tail_sum w (monus N P) hA)
-  have e := natEq (Prf.andE₁ (expect_parts (Γ := Γ) w P N M x))
-  apply deriveNat; ipra_simps
-  linear_combination -e + t1 - t2
+  ipra_lc -natEq (Prf.andE₁ (expect_parts (Γ := Γ) w P N M x)) + natEq (tail_sum w (monus P N) hB) -
+    natEq (tail_sum w (monus N P) hA)
 
 end Parts
 
@@ -197,7 +193,7 @@ theorem finite_linearity (M r x : PTm n) :
     simp only [shift_pairT, shift_inst2]
     refine (col_pt _ _ _ _).eqTrans (.eqTrans ?_ (congrMul (.eqRefl _) (col_pt _ _ _ _).eqSymm))
     rw [inst3_eB, inst3_lcB, inst3_wXB]
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   exact r1.eqSymm.eqTrans (r2.eqTrans r3)
 
 end Lin

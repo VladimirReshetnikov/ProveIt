@@ -1,6 +1,8 @@
 import IPRADerivations.Combinatorics.Vandermonde
 import IPRADerivations.Combinatorics.Catalan
 import IPRADerivations.Core.ProdLemmas
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Squares of binomial coefficients and the Narayana sum
@@ -48,10 +50,8 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 theorem gb_symm {j M : PTm n} (h : Γ ⊢[PRAAx] le j M) : Γ ⊢[PRAAx] gb M (monus M j) ≐ gb M j := by
   have s : Γ ⊢[PRAAx] binom M (monus M j) ≐ binom M j := by
     refine mul_cancel (D := fact j * fact (monus M j)) (pos_mul' (fact_pos _) (fact_pos _)) ?_
-    have b₁ := natEq (binom_eq (monus_le' h)); have b₀ := natEq (binom_eq h)
-    have c := natEq (congrAp2 factF (monus_monus (Γ := Γ) h) (.eqRefl zero))
-    apply deriveNat; ipra_simps
-    linear_combination -b₁ + b₀ - 𝔞(fact (monus M j)) * 𝔞(binom M (monus M j)) * c
+    ipra_lc -natEq (binom_eq (monus_le' h)) + natEq (binom_eq h) -
+      𝔞(fact (monus M j)) * 𝔞(binom M (monus M j)) * natEq (congrAp2 factF (monus_monus (Γ := Γ) h) (.eqRefl zero))
   have g₁ := natEq (gle_of_le (monus_le' h) : Γ ⊢[PRAAx] gle (monus M j) M ≐ one)
   have g₂ := natEq (gle_of_le h)
   have s' := natEq s
@@ -68,8 +68,7 @@ abbrev nB : PTm 2 := gb (var 1) (var 0) * gb (var 1) (succ (var 0))
 theorem inst2_sq (k m : PTm n) : inst2 sqB k m = gb m k * gb m k := by simp [inst2]
 theorem inst2_n (k M : PTm n) : inst2 nB k M = gb M k * gb M (succ k) := by simp [inst2]
 
-theorem le_of_lt_succ {k m : PTm n} (h : Γ ⊢[PRAAx] lt k (succ m)) : Γ ⊢[PRAAx] le k m :=
-  (succ_monus_succ _ _).eqSymm.eqTrans h
+alias le_of_lt_succ := Common.le_of_lt_succ
 
 /-- `∑_{k ≤ m} C(m, k)² = C(2m, m)`. -/
 theorem central_squares (m : PTm n) :
@@ -99,7 +98,7 @@ theorem narayana_sum (m : PTm n) :
       (congrGb (.eqRefl _) (succ_monus_succ _ _))
   refine c.eqTrans ((vandermonde _ _ _).eqTrans ?_)
   have l : Γ ⊢[PRAAx] le m (succ m + succ m) :=
-    le_of_eq_add (d := succ (succ m)) (by apply deriveNat; ipra_simps; ring)
+    le_of_eq_add (d := succ (succ m)) (by ipra_ring)
   exact (congrMul (gle_of_le l) (.eqRefl _)).eqTrans (one_mul _)
 
 /-- `C(2M, M + 1) = M Cat_M` for `M = m + 1`. -/
@@ -118,16 +117,16 @@ Catalan number. -/
 theorem narayana_catalan (m : PTm n) :
     Γ ⊢[PRAAx] ap2 (sumF nB) (succ m) (succ m) ≐ succ m * cat (succ m) := by
   refine (narayana_sum m).eqTrans ?_
-  have hN : Γ ⊢[PRAAx] succ m + succ m ≐ two * succ m := by apply deriveNat; ipra_simps; ring
+  have hN : Γ ⊢[PRAAx] succ m + succ m ≐ two * succ m := by ipra_ring
   have hj : Γ ⊢[PRAAx] le (succ (succ m)) (succ m + succ m) :=
-    le_of_eq_add (d := m) (by apply deriveNat; ipra_simps; ring)
+    le_of_eq_add (d := m) (by ipra_ring)
   have hm : Γ ⊢[PRAAx] monus (succ m + succ m) (succ (succ m)) ≐ m := by
-    have e : Γ ⊢[PRAAx] succ m + succ m ≐ m + succ (succ m) := by apply deriveNat; ipra_simps; ring
+    have e : Γ ⊢[PRAAx] succ m + succ m ≐ m + succ (succ m) := by ipra_ring
     exact (congrMonus e (.eqRefl _)).eqTrans (add_monus _ _)
   -- `C(2M, m) = C(2M, M + 1)`, read through the guarded coefficient.
   have sy := (congrGb (.eqRefl _) hm).eqSymm.eqTrans (gb_symm hj)
   have l : Γ ⊢[PRAAx] le m (succ m + succ m) :=
-    le_of_eq_add (d := succ (succ m)) (by apply deriveNat; ipra_simps; ring)
+    le_of_eq_add (d := succ (succ m)) (by ipra_ring)
   have g₁ := natEq (gle_of_le l); have g₂ := natEq (gle_of_le hj)
   have sy' := natEq sy
   have b := natEq ((congrBinom hN (.eqRefl _)).eqTrans (binom_succ_cat (Γ := Γ) m))

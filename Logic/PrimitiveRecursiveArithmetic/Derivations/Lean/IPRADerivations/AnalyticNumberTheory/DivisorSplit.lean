@@ -1,6 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.Coprime
 import IPRADerivations.DiophantineNumberTheory.GcdList
 import IPRADerivations.Foundations.BoundedReflection
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Divisors of a coprime product (`robin_ipra_research_2026-11-19`, multiplicativity of `σ`)
@@ -73,8 +74,7 @@ theorem split_exists {d m N : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) (h
   have he := pos_of_eq_mul hd eD
   have c1 : Γ ⊢[PRAAx] gcd d m * (quo m (gcd d m) * N) ≐ gcd d m * (quo d (gcd d m) * quo (m * N) d) := by
     refine withEq eM fun h1 => withEq eD fun h2 => withEq hk fun h3 => ?_
-    apply deriveNat; ipra_simps
-    linear_combination h3 - 𝔞 N * h1 + 𝔞 (quo (m * N) d) * h2
+    ipra_lc h3 - 𝔞 N * h1 + 𝔞 (quo (m * N) d) * h2
   have c2 := mul_cancel hu c1
   have hdv : Γ ⊢[PRAAx] dvd (quo d (gcd d m)) (quo m (gcd d m) * N) := dvd_of_eq' he c2
   exact ⟨Prf.andE₂ hud, gauss he cq hdv, eD⟩
@@ -125,8 +125,7 @@ theorem pass_dvd {d m N a b : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) (h
   have eN := eq_of_dvd' (pos_of_dvd hN hb) hb
   refine dvd_of_eq' hd (w := quo m a * quo N b) ?_
   refine withEq em fun h1 => withEq eN fun h2 => withEq hab fun h3 => ?_
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 N * h1 + 𝔞 a * 𝔞 (quo m a) * h2 + 𝔞 (quo m a) * 𝔞 (quo N b) * h3
+  ipra_lc 𝔞 N * h1 + 𝔞 a * 𝔞 (quo m a) * h2 + 𝔞 (quo m a) * 𝔞 (quo N b) * h3
 
 /-- `[a ∣ m][b ∣ N][ab = d] = [d ∣ mN][a = gcd(d,m)][b = d/gcd(d,m)]` for `d, m, N ≥ 1`, `gcd(m, N) = 1`. -/
 theorem cnt_pt {d m N : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) (hm : Γ ⊢[PRAAx] m ≐ succ (pred m))

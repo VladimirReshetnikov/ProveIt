@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.RationalCubeCoherentMinimizer
 import IPRADerivations.Analysis.RationalCubeInfimumComparison
 import IPRADerivations.Analysis.AggregateApproximateLipschitz
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Exact uniqueness of the cube-presented minimizing point name

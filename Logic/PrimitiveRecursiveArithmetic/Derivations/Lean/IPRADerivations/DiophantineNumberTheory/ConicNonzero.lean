@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.ZTCancel
 import IPRADerivations.DiophantineNumberTheory.ConicLower
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # `L` and `R` have no common projective zero
@@ -49,9 +50,8 @@ theorem zt_dec (s : ZT n) : Γ ⊢[PRAAx] ZT.eq s (ZT.natLit 0) ⋎ neg (ZT.eq s
     · refine .orI₁ ?_
       have eq := le_antisymm (Prf.hyp0 : (le s.neg s.pos :: le s.pos s.neg :: Γ) ⊢[PRAAx] le s.neg s.pos)
         (Prf.hyp1 : (le s.neg s.pos :: le s.pos s.neg :: Γ) ⊢[PRAAx] le s.pos s.neg)
-      have ee := natEq eq
       show _ ⊢[PRAAx] s.pos + zero ≐ num 0 + s.neg
-      apply deriveNat; ipra_simps; linear_combination -ee
+      ipra_lc -natEq eq
 
 /-- `s² = 0` gives `s = 0`. -/
 theorem zt_sq_zero {s : ZT n} (h : Γ ⊢[PRAAx] ZT.eq (s * s) (ZT.natLit 0)) : Γ ⊢[PRAAx] ZT.eq s (ZT.natLit 0) :=

@@ -1,6 +1,6 @@
 import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.AnalyticNumberTheory.Valuation
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # A closed two-chain has constant coefficients (`conway_criterion_ipra_2026-11-16`, `lem:constantmultiplicity`)

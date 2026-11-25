@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.SelbergComparison
 import IPRADerivations.AnalyticNumberTheory.FourthRootSum
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The fourth-root envelope of the comparison error (`pnt_ipra_constructive_2026-11-14`, towards `sb:symmetry`)
@@ -48,16 +49,14 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
-theorem le_mul2 {x X y Y : PTm n} (h₁ : Γ ⊢[PRAAx] le x X) (h₂ : Γ ⊢[PRAAx] le y Y) :
-    Γ ⊢[PRAAx] le (x * y) (X * Y) :=
-  le_trans (mul_le_mul_right y h₁) (le_scale X h₂)
+alias le_mul2 := Common.mul_le_mul
 
 /-- `H_X ≤ λ_K(X) + 1`: `S(X) + S(K) ≤ S(KX) + F` for `K, X ≥ 1`, `KX ≤ L`. -/
 theorem harm_one {K X L : PTm n} (hK : Γ ⊢[PRAAx] le one K) (hX : Γ ⊢[PRAAx] le one X)
     (hL : Γ ⊢[PRAAx] le (K * X) L) :
     Γ ⊢[PRAAx] le (S X (fact L) + S K (fact L)) (S (K * X) (fact L) + fact L) := by
   have c1 := Prf.andE₁ (eta_bounds (m := one) (le_refl _) hX hK hL)
-  have q1 : Γ ⊢[PRAAx] K * one ≐ K := by apply deriveNat; ipra_simps; ring
+  have q1 : Γ ⊢[PRAAx] K * one ≐ K := by ipra_ring
   have eK1 := natEq (congrAp2 (Γ := Γ) (sumF hB) q1 (.eqRefl (fact L)))
   have eSs := natEq (S_succ (Γ := Γ) zero (fact L))
   have eS0 := natEq (sum_zero (Γ := Γ) hB (fact L))
@@ -68,7 +67,7 @@ theorem harm_one {K X L : PTm n} (hK : Γ ⊢[PRAAx] le one K) (hX : Γ ⊢[PRAA
 theorem lam_succ {K : PTm n} (r F : PTm n) (hK : Γ ⊢[PRAAx] K ≐ succ (pred K)) :
     Γ ⊢[PRAAx] le (S (K * succ r) F) (S K F + r * F) := by
   have lu := log_upper (Γ := Γ) K (K * r) F
-  have q : Γ ⊢[PRAAx] K * succ r ≐ K + K * r := by apply deriveNat; ipra_simps; ring
+  have q : Γ ⊢[PRAAx] K * succ r ≐ K + K * r := by ipra_ring
   have e := natEq (congrAp2 (Γ := Γ) (sumF hB) q (.eqRefl F))
   have wK := natEq hK
   refine mul_le_cancel (d' := K) ?_
@@ -79,10 +78,10 @@ theorem y_le_Q4 (y : PTm n) : Γ ⊢[PRAAx] le y (Q4 (qr y)) := by
   have a := lt_isqrt_succ_sq (Γ := Γ) y
   have b := lt_isqrt_succ_sq (Γ := Γ) (isqrt y)
   have b' : Γ ⊢[PRAAx] le (succ (isqrt y)) (succ (qr y) * succ (qr y)) :=
-    le_congr (.eqRefl _) (by apply deriveNat; ipra_simps; ring) b
+    le_congr (.eqRefl _) (by ipra_ring) b
   have c := sq_le_sq b'
   have a' : Γ ⊢[PRAAx] le (succ y) (succ (isqrt y) * succ (isqrt y)) :=
-    le_congr (.eqRefl _) (by apply deriveNat; ipra_simps; ring) a
+    le_congr (.eqRefl _) (by ipra_ring) a
   exact le_trans (le_succ_self _) (le_trans a' c)
 
 /-- `λ_K(y) ≤ 4r + 3` for `r = qr(y)`: `S(Ky) ≤ S(K) + 4rF + 3F`, for `K ≥ 1`, `K (r+1)⁴ ≤ L`. -/
@@ -96,7 +95,7 @@ theorem lam_fourth {y K L : PTm n} (hK : Γ ⊢[PRAAx] le one K) (hL : Γ ⊢[PR
   have s2 := subadd (M := K) hKp hRR hRR hL
   have hL2 : Γ ⊢[PRAAx] le (K * (succ (qr y) * succ (qr y))) L := by
     refine le_trans (le_of_eq_add (d := K * (succ (qr y) * succ (qr y)) *
-      (qr y * qr y + two * qr y)) (by apply deriveNat; ipra_simps; ring)) hL
+      (qr y * qr y + two * qr y)) (by ipra_ring)) hL
   have s1 := subadd (M := K) hKp hR hR hL2
   have ls := lam_succ (Γ := Γ) (qr y) (fact L) hKp
   have qK := le_congr (congrAp2 quoF (.eqRefl _) hKp).eqSymm (.eqRefl _) (quo_le_self (pred K) (fact L))
@@ -122,7 +121,7 @@ theorem env_upper {y K L X : PTm n} (hK : Γ ⊢[PRAAx] le one K) (hy : Γ ⊢[P
   have hC : Γ ⊢[PRAAx] le (CT K X (fact L)) (fact L) := by
     have h := harm_one hK hX hLX; ipra_le sl h with -EC
   have hm : Γ ⊢[PRAAx] le (isqrt y) (succ (qr y) * succ (qr y)) :=
-    le_trans (le_succ_self _) (le_congr (.eqRefl _) (by apply deriveNat; ipra_simps; ring)
+    le_trans (le_succ_self _) (le_congr (.eqRefl _) (by ipra_ring)
       (lt_isqrt_succ_sq (isqrt y)))
   have bu : Γ ⊢[PRAAx] le (U y K (fact L)) (two * two * (fact L * succ (qr y))) := by
     ipra_le sl hu + 𝔞 (fact L)
@@ -161,7 +160,7 @@ theorem env_lower {y K L X : PTm n} (hK : Γ ⊢[PRAAx] le one K) (hy : Γ ⊢[P
   have hC : Γ ⊢[PRAAx] le (CT K X (fact L)) (fact L) := by
     have h := harm_one hK hX hLX; ipra_le sl h with -EC
   have hm : Γ ⊢[PRAAx] le (isqrt y) (succ (qr y) * succ (qr y)) :=
-    le_trans (le_succ_self _) (le_congr (.eqRefl _) (by apply deriveNat; ipra_simps; ring)
+    le_trans (le_succ_self _) (le_congr (.eqRefl _) (by ipra_ring)
       (lt_isqrt_succ_sq (isqrt y)))
   have bu : Γ ⊢[PRAAx] le (U y K (fact L)) (two * two * (fact L * succ (qr y))) := by
     ipra_le sl hu + 𝔞 (fact L)

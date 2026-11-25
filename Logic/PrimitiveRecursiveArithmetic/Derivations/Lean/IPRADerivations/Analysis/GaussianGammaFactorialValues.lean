@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianGammaShift
 import IPRADerivations.Analysis.GaussianGammaShiftTrajectory
 import IPRADerivations.Analysis.GaussianNamedNaturalScale
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual Gamma factorial values by a numerical error induction
@@ -114,9 +115,7 @@ theorem integer_source (i : PTm n) : Γ ⊢[PRAAx]
 theorem gamma_fields_congr {z R B d a S C e : PTm n} (hz : Γ ⊢[PRAAx] z ≐ a) (hR : Γ ⊢[PRAAx] R ≐ S)
     (hB : Γ ⊢[PRAAx] B ≐ C) (hd : Γ ⊢[PRAAx] d ≐ e) : Γ ⊢[PRAAx]
     gammaData z R B d ≐ gammaData a S C e := by
-  simpa [gammaData,gammaHeight] using
-    Prf.eqCongr (gammaData (var 0) (var 1) (var 2) (var 3) : PTm 4)
-      (σ := ![z,R,B,d]) (σ' := ![a,S,C,e]) (fun i => by fin_cases i; exact hz; exact hR; exact hB; exact hd)
+  ipra_congr (gammaData (var 0) (var 1) (var 2) (var 3) : PTm 4) with [hz, hR, hB, hd] using [gammaData, gammaHeight]
 
 theorem data_zero : Γ ⊢[PRAAx] data (zero : PTm n) ≐ gammaData oneCode one one one :=
   gamma_fields_congr (GaussianGammaShiftTrajectory.point_zero oneCode one) (by unfold radius; ipra_ring) (.eqRefl _) (.eqRefl _)
@@ -150,8 +149,7 @@ theorem error_succ (i : PTm n) : Γ ⊢[PRAAx] error (succ i) ≐ succ i*error i
   exact h
 
 theorem natural_congr {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) : Γ ⊢[PRAAx] naturalPoint a ≐ naturalPoint b := by
-  simpa [naturalPoint] using Prf.eqCongr (naturalPoint (var 0) : PTm 1) (σ := ![a]) (σ' := ![b])
-    (fun i => by fin_cases i; exact h)
+  ipra_congr (naturalPoint (var 0) : PTm 1) with [h] using [naturalPoint]
 
 theorem natural_one : Γ ⊢[PRAAx] naturalPoint (one : PTm n) ≐ GaussianRationalSyntheticDivision.qone := by
   apply canonical_unique _ _ _ one (GaussianRationalHorner.ofGaussian_canonical _ _ (le_refl _))

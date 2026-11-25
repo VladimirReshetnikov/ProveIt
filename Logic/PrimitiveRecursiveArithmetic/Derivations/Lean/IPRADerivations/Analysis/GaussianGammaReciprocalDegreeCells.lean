@@ -3,6 +3,7 @@ import IPRADerivations.Analysis.RationalReciprocalPowerTail
 import IPRADerivations.Analysis.RationalGaussianRealPart
 import IPRADerivations.Analysis.GaussianIntegerFractionPowers
 import IPRADerivations.AnalyticNumberTheory.LocalFactor
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Original Gamma degree cells and reciprocal-power partial sums
@@ -139,11 +140,7 @@ def separatedSum (z B N r L : PTm n) : PTm n := sum separatedBody (succ L) (sepa
 theorem source_part_congr {z B N r j a C M s k : PTm n} (hz : Γ ⊢[PRAAx] z ≐ a) (hB : Γ ⊢[PRAAx] B ≐ C)
     (hN : Γ ⊢[PRAAx] N ≐ M) (hr : Γ ⊢[PRAAx] r ≐ s) (hj : Γ ⊢[PRAAx] j ≐ k) : Γ ⊢[PRAAx]
     sourcePart z B N r j ≐ sourcePart a C M s k := by
-  simpa only [subst_sourcePart,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.cons_val_three,Matrix.cons_val_four,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (sourcePart (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5)
-      (σ := ![z,B,N,r,j]) (σ' := ![a,C,M,s,k])
-      (fun i => by fin_cases i; exact hz; exact hB; exact hN; exact hr; exact hj)
+  ipra_congr (sourcePart (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) with [hz, hB, hN, hr, hj]
 
 theorem separated_term_at (z B N r j : PTm n) : Γ ⊢[PRAAx]
     inst2 separatedBody j (separatedData z B N r) ≐ sourcePart z B N r j := by

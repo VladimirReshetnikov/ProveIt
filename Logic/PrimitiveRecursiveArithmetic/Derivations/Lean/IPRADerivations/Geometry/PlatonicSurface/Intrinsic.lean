@@ -1,6 +1,6 @@
 import IPRADerivations.Probability.Variance
 import IPRADerivations.Probability.FiniteLaws
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Strip budgets and cyclotomic norms for the intrinsic diameters of the Platonic solids

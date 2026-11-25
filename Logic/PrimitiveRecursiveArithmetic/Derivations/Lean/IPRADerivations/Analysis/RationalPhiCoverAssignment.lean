@@ -2,6 +2,7 @@ import IPRADerivations.Analysis.RationalPhiFeatures
 import IPRADerivations.Analysis.RationalSubspaceCoverSearch
 import IPRADerivations.Analysis.RationalCurvePointsGaussianEmbedding
 import IPRADerivations.Foundations.FiniteCoverAssignment
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual Phi_s feature tuples and first-cover point groups
@@ -63,9 +64,7 @@ def group (s P D g : PTm n) : PTm n := Foundations.FiniteCoverAssignment.group t
 
 private theorem point_feature_congr {s t v w : PTm n} (hs : Γ ⊢[PRAAx] s ≐ t) (hv : Γ ⊢[PRAAx] v ≐ w) : Γ ⊢[PRAAx]
     pointFeature s v ≐ pointFeature t w := by
-  simpa only [subst_pointFeature,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using
-    Prf.eqCongr (pointFeature (var 0) (var 1) : PTm 2) (σ := ![s,v]) (σ' := ![t,w])
-      (fun i => by fin_cases i; exact hs; exact hv)
+  ipra_congr (pointFeature (var 0) (var 1) : PTm 2) with [hs, hv]
 theorem feature_body_at (s P i : PTm n) : Γ ⊢[PRAAx] inst2 featureBody i (pairT s P) ≐ pointFeature s (entry P i) := by
   simp only [featureBody,inst2,subst_pointFeature,Foundations.MasterCertificate.subst_entry,subst_fstT,subst_sndT,
     Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
@@ -76,10 +75,7 @@ theorem feature_list_lookup (s P i : PTm n) (hi : Γ ⊢[PRAAx] lt i (length P))
 
 private theorem candidate_congr {s t D E : PTm n} (g v : PTm n) (hs : Γ ⊢[PRAAx] s ≐ t) (hD : Γ ⊢[PRAAx] D ≐ E) : Γ ⊢[PRAAx]
     candidate s D g v ≐ candidate t E g v := by
-  simpa only [subst_candidate,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.cons_val_three,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (candidate (var 0) (var 1) (var 2) (var 3) : PTm 4) (σ := ![s,D,g,v]) (σ' := ![t,E,g,v])
-      (fun i => by fin_cases i; exact hs; exact hD; exact .eqRefl g; exact .eqRefl v)
+  ipra_congr (candidate (var 0) (var 1) (var 2) (var 3) : PTm 4) with [hs, hD, .eqRefl g, .eqRefl v]
 theorem test_body_at (s D g v : PTm n) : Γ ⊢[PRAAx] inst3 testBody g v (data s D) ≐ eqb (candidate s D g v) one := by
   simp only [testBody,inst3,subst_eqb,subst_candidate,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
     one,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero]

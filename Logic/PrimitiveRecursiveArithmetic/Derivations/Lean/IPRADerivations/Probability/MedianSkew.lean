@@ -1,5 +1,5 @@
 import IPRADerivations.Probability.MedianCounts
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # A skewed sample whose median exceeds its mean

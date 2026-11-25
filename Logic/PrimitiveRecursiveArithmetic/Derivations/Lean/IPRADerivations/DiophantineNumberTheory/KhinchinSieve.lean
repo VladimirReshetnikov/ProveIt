@@ -3,6 +3,7 @@ import IPRADerivations.DiophantineNumberTheory.Coprime
 import IPRADerivations.AnalyticNumberTheory.Order
 import IPRADerivations.Topology.StaggeredGrids
 import IPRADerivations.Core.EuclidLemma
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The coprimality sieve for (K3) (`hurwitz_khinchin_ipra`)
@@ -86,7 +87,7 @@ theorem sieve_point {p q w : PTm n} (hq : Γ ⊢[PRAAx] q ≐ succ (pred q)) :
         eqb_of_eq ((congrAp2 remF (fst_pair _ _) (.eqRefl _)).eqTrans (Prf.andE₁ hd))
       have hw : Δ ⊢[PRAAx] sndT (sndT (pairT p (pairT q w))) ≐ w := (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)
       refine (congrMul (congrMul (congrMul h2 hq') hp') hw).eqTrans ?_
-      apply deriveNat; ipra_simps; ring
+      ipra_ring
     have hlt : Δ ⊢[PRAAx] lt (gcd p q) (succ q) := (succ_monus_succ _ _).eqTrans hgq
     exact le_congr (hterm.eqTrans hL.eqSymm) (.eqRefl _) (term_le_sum sieveB hlt)
   · -- coprime: the left side is `0`
@@ -105,7 +106,7 @@ theorem sg_scale {d x y : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) :
     have e := natEq (eq_add_of_le (Γ := Δ) Prf.hyp0)
     have h1 : Δ ⊢[PRAAx] le (d * x) (d * y) := by
       refine le_of_eq_add (d := d * monus y x) ?_
-      apply deriveNat; ipra_simps; linear_combination 𝔞 d * e
+      ipra_lc 𝔞 d * e
     exact ((congrMonus (.eqRefl _) (congrMonus (.eqRefl _) h1)).eqTrans sg_zero).eqTrans
       ((congrMonus (.eqRefl _) (congrMonus (.eqRefl _) Prf.hyp0)).eqTrans sg_zero).eqSymm
   · -- `y ≤ x`: `x = y + e`; both are `sg e` (`d e` and `e` vanish together)
@@ -113,7 +114,7 @@ theorem sg_scale {d x y : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) :
     have ex := eq_add_of_le (Γ := Δ) Prf.hyp0
     have e := natEq ex
     have hdx : Δ ⊢[PRAAx] d * x ≐ d * y + d * monus x y := by
-      apply deriveNat; ipra_simps; linear_combination 𝔞 d * e
+      ipra_lc 𝔞 d * e
     have m1 : Δ ⊢[PRAAx] monus (d * x) (d * y) ≐ d * monus x y :=
       (congrMonus hdx (.eqRefl _)).eqTrans (add_monus' _ _)
     refine (sg_congr m1).eqTrans ?_

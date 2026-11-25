@@ -2,6 +2,7 @@ import IPRADerivations.Analysis.GaussianRootResidualFromHit
 import IPRADerivations.Analysis.GaussianRootApproximationWitness
 import IPRADerivations.Analysis.GaussianEuclideanDistanceName
 import IPRADerivations.Analysis.GaussianRationalSlackRemoval
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The actual Gaussian polynomial value name
@@ -244,11 +245,7 @@ theorem value_congr (a : PR 3) (point : PR 2) {N N' U U' x x' k k' : PTm n}
     (hN : Γ ⊢[PRAAx] N ≐ N') (hU : Γ ⊢[PRAAx] U ≐ U')
     (hx : Γ ⊢[PRAAx] x ≐ x') (hk : Γ ⊢[PRAAx] k ≐ k') : Γ ⊢[PRAAx]
     value a point N U x k ≐ value a point N' U' x' k' := by
-  simpa only [subst_value,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-    Matrix.cons_val_two,Matrix.cons_val_three,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (value a point (var 0) (var 1) (var 2) (var 3) : PTm 4)
-      (σ := ![N,U,x,k]) (σ' := ![N',U',x',k'])
-      (fun i => by fin_cases i; exact hN; exact hU; exact hx; exact hk)
+  ipra_congr (value a point (var 0) (var 1) (var 2) (var 3) : PTm 4) with [hN, hU, hx, hk]
 
 theorem name_at (a : PR 3) (point : PR 2) (N U x k : PTm n) : Γ ⊢[PRAAx]
     ap2 (nameF a point) k (nameData N U x) ≐ value a point N U x k := by

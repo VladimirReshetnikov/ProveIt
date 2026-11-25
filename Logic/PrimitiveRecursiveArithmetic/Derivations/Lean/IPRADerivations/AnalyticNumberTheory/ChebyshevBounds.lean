@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.BinomialLcm
 import IPRADerivations.Probability.MedianOfMedians
 import IPRADerivations.DiophantineNumberTheory.QuarticStep
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Explicit Chebyshev bounds, integer form
@@ -93,7 +94,7 @@ theorem val_double {q k : PTm n} (hq : Γ ⊢[PRAAx] prime q) :
   have pE : C ⊢[PRAAx] le (pw q (val q (lcmu (two * k)))) (two * k) :=
     le_congr ((congrMul sE (.eqRefl _)).eqTrans (one_mul _)) (.eqRefl _) A1.wk
   have l1E : C ⊢[PRAAx] le one (val q (lcmu (two * k))) :=
-    le_of_eq_add (d := pred (val q (lcmu (two * k)))) (Ep.eqTrans (by apply deriveNat; ipra_simps; ring))
+    le_of_eq_add (d := pred (val q (lcmu (two * k)))) (Ep.eqTrans (by ipra_ring))
   have qE : C ⊢[PRAAx] le q (pw q (val q (lcmu (two * k)))) :=
     le_congr (pw_one q) (.eqRefl _) (PowerCleared.pw_le_exp qpos.wk l1E)
   have s1 : C ⊢[PRAAx] sg (monus (succ (two * k)) q) ≐ one :=
@@ -114,9 +115,9 @@ theorem val_double {q k : PTm n} (hq : Γ ⊢[PRAAx] prime q) :
       have p2 := le_congr (pw_succ _ _) (.eqRefl _) p1
       have p3 := le_trans (le_mul_mono B2.wk.wk.wk hq2.wk.wk.wk) p2
       have p4 : (lt (succ (val q (lcmu k))) (val q (lcmu (two * k))) :: C1) ⊢[PRAAx]
-          le (succ (two * k)) (succ k * two) := le_of_eq_add (d := one) (by apply deriveNat; ipra_simps; ring)
+          le (succ (two * k)) (succ k * two) := le_of_eq_add (d := one) (by ipra_ring)
       exact not_succ_le_self _ _ (le_trans p4 p3)
-    · exact le_congr (.eqRefl _) (by apply deriveNat; ipra_simps; ring) Prf.hyp0
+    · exact le_congr (.eqRefl _) (by ipra_ring) Prf.hyp0
   · -- `q^E ≤ k`: `E ≤ e`
     let C2 : List (Fm PTm n) := le (pw q (val q (lcmu (two * k)))) k :: C
     refine le_congr (.eqRefl _) ((congrAdd (.eqRefl _) (sg_le Prf.hyp0)).eqTrans (add_zero _)).eqSymm ?_
@@ -165,7 +166,7 @@ theorem lcmu_one : Γ ⊢[PRAAx] lcmu (one : PTm n) ≐ one := by
   have cg : Γ ⊢[PRAAx] gcd (lcmu (zero : PTm n)) (succ zero) ≐ one :=
     (DiophantineNumberTheory.QuarticStep.congrGcd lcmu_zero (.eqRefl _)).eqTrans g1
   refine (lcmu_succ zero).eqTrans ((congrAp2 quoF (congrMul lcmu_zero (.eqRefl _)) cg).eqTrans ?_)
-  exact Totient.quo_eq h1 (r := zero) (by apply deriveNat; ipra_simps; ring) (Multiplicative.zero_lt' h1)
+  exact Totient.quo_eq h1 (r := zero) (by ipra_ring) (Multiplicative.zero_lt' h1)
 
 /-- The course-of-values step: from `lcm(1, …, i) ≤ 2^{4i}` for all `i < m`, the bound at `m`. -/
 theorem upper_step {m x : PTm n} (hS : Γ ⊢[PRAAx] ap2 (sumF QB) m x ≐ zero) :
@@ -231,11 +232,10 @@ theorem two_pow_ge {N : PTm n} (h : Γ ⊢[PRAAx] le (succ two) N) : Γ ⊢[PRAA
     · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.repl_zero,
         ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
       let D : List (Fm PTm (n + 1)) := le (succ (two * (succ two + var 0))) (pw two (succ two + var 0)) :: Γ.map Fm.shift
-      have e1 := natEq (eq_add_of_le (Prf.hyp0 : D ⊢[PRAAx] _))
-      have e2 := natEq ((congrAp2 powF (add_succ (Γ := D) (succ two) (var 0)) (.eqRefl two)).eqTrans (pw_succ two _))
       refine le_of_eq_add (d := monus (pw two (succ two + var 0)) (succ (two * (succ two + var 0))) +
         monus (pw two (succ two + var 0)) (succ (two * (succ two + var 0))) + two * var 0 + succ (succ (succ two))) ?_
-      apply deriveNat; ipra_simps; linear_combination e2 + 2 * e1
+      ipra_lc natEq ((congrAp2 powF (add_succ (Γ := D) (succ two) (var 0)) (.eqRefl two)).eqTrans (pw_succ two _)) +
+        2 * natEq (eq_add_of_le (Prf.hyp0 : D ⊢[PRAAx] _))
   have i := Prf.allE (monus N (succ two)) hall
   simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
     ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at i
@@ -248,7 +248,7 @@ theorem lcmu_lower2 {N : PTm n} (h : Γ ⊢[PRAAx] le (succ two) N) : Γ ⊢[PRA
   have cl := Combinatorics.CentralBinomial.central_lower (Γ := Γ) N
   have m1 := mul_le_mul_right (binom (two * N) N) (two_pow_ge h)
   have e : Γ ⊢[PRAAx] pw two (two * N) ≐ pw two N * pw two N :=
-    (congrAp2 powF (by apply deriveNat; ipra_simps; ring : Γ ⊢[PRAAx] two * N ≐ N + N) (.eqRefl two)).eqTrans (pw_add _ _ _)
+    (congrAp2 powF (by ipra_ring : Γ ⊢[PRAAx] two * N ≐ N + N) (.eqRefl two)).eqTrans (pw_add _ _ _)
   have c := le_cancel_pos (pw_pos' two_pos' N) (le_congr e (.eqRefl _) (le_trans cl m1))
   exact le_trans c (dvd_le' cpos (central_dvd_lcm N) (lcmu_pos _))
 
@@ -267,7 +267,7 @@ theorem lcmu_lower {x : PTm n} (h : Γ ⊢[PRAAx] le (succ (succ (succ (succ two
     have dv' := natEq (dvP.wk : C ⊢[PRAAx] _); have r1' := natEq (eq_add_of_le (rl.wk : C ⊢[PRAAx] _))
     have h6' := natEq (eq_add_of_le (h.wk : C ⊢[PRAAx] _))
     refine succ_ne_zero' (a := two * monus two (quo x two) + monus one (rem x two) + monus x (succ (succ (succ (succ two))))) _ ?_
-    apply deriveNat; ipra_simps; linear_combination -h6' + dv' - 2 * l - r1'
+    ipra_lc -h6' + dv' - 2 * l - r1'
   have l2 : Γ ⊢[PRAAx] le (two * quo x two) x := le_of_eq_add (d := rem x two) dvP
   have l3 : Γ ⊢[PRAAx] le x (quo x two + (quo x two + quo x two)) := by
     have e3 := natEq (eq_add_of_le s3)

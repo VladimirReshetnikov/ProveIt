@@ -1,4 +1,5 @@
 import IPRADerivations.Combinatorics.BellTouchardPower
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # An explicit period of the Bell numbers modulo a prime (`bell_numbers_ipra`, `thm:prime-period`)
@@ -45,18 +46,14 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 theorem cong_drop {p : PTm n} (x y : PTm n) (hq : Γ ⊢[PRAAx] p ≐ succ (pred p)) :
     Γ ⊢[PRAAx] rem (x + p * y) p ≐ rem x p :=
   Foundations.ChineseRemainder.rem_eq_of_eq hq (k₁ := zero) (k₂ := y)
-    (by apply deriveNat; ipra_simps; ring)
+    (by ipra_ring)
 
 /-- A common summand cancels from a congruence. -/
 theorem cong_cancel {p a b c : PTm n} (hq : Γ ⊢[PRAAx] p ≐ succ (pred p))
     (h : Γ ⊢[PRAAx] rem (c + a) p ≐ rem (c + b) p) : Γ ⊢[PRAAx] rem a p ≐ rem b p := by
   refine Foundations.ChineseRemainder.rem_eq_of_eq hq
     (k₁ := quo (c + b) p) (k₂ := quo (c + a) p) ?_
-  have d₁ := natEq (divmod_p hq (c + a))
-  have d₂ := natEq (divmod_p hq (c + b))
-  have e := natEq h
-  apply deriveNat; ipra_simps
-  linear_combination d₁ - d₂ + e
+  ipra_lc natEq (divmod_p hq (c + a)) - natEq (divmod_p hq (c + b)) + natEq h
 
 /-- `B_{M+p^p} ≡ B_{M+1} (mod p)`: `thm:touchard-power` at `r = p`. -/
 theorem shift_pp {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (M : PTm n) :
@@ -68,9 +65,7 @@ theorem period_succ {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (M : PTm n) :
     Γ ⊢[PRAAx] rem (bell (succ M + pred (pw p p))) p ≐ rem (bell (succ M)) p := by
   have hq := prime_eq_succ_pred hp
   have e : Γ ⊢[PRAAx] succ M + pred (pw p p) ≐ M + pw p p := by
-    have a := natEq (pw_pos' hq p)
-    apply deriveNat; ipra_simps
-    linear_combination -a
+    ipra_lc -natEq (pw_pos' hq p)
   exact (cong_of_eq (congrBell e)).eqTrans (shift_pp hp M)
 
 /-- The index `0`: `B_{p^p−1} ≡ B_0 (mod p)`. -/
@@ -81,7 +76,7 @@ theorem period_zero {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) :
   have t0 := touchard hp (zero : PTm n)
   have s1 : Γ ⊢[PRAAx] rem (bell (succ (pred (pw p p)))) p ≐ rem (bell (succ zero)) p :=
     (cong_of_eq (congrBell (a := succ (pred (pw p p))) (b := succ zero + pred (pw p p))
-      (by apply deriveNat; ipra_simps; ring))).eqTrans (period_succ hp zero)
+      (by ipra_ring))).eqTrans (period_succ hp zero)
   have sp : Γ ⊢[PRAAx] rem (bell (p + pred (pw p p))) p ≐ rem (bell (p + zero)) p := by
     refine (cong_of_eq (congrBell (congrAdd hq (.eqRefl _)))).eqTrans
       ((period_succ hp (pred p)).eqTrans (cong_of_eq (congrBell ?_)))
@@ -96,9 +91,7 @@ theorem bell_period {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (N : PTm n) :
     Γ ⊢[PRAAx] rem (bell (N + pred (pw p p))) p ≐ rem (bell N) p := by
   refine .orE (zero_or_succ N) ?_ ?_
   · have e : ((N ≐ zero) :: Γ) ⊢[PRAAx] N + pred (pw p p) ≐ pred (pw p p) := by
-      have a := natEq (Prf.hyp0 (Γ := Γ) (φ := N ≐ zero))
-      apply deriveNat; ipra_simps
-      linear_combination a
+      ipra_lc natEq (Prf.hyp0 (Γ := Γ) (φ := N ≐ zero))
     exact (cong_of_eq (congrBell e)).eqTrans
       ((period_zero hp.wk).eqTrans (cong_of_eq (congrBell (Prf.eqSymm Prf.hyp0))))
   · exact (cong_of_eq (congrBell (congrAdd Prf.hyp0 (.eqRefl _)))).eqTrans

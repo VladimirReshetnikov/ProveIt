@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianPolynomialMonicCompanion
 import IPRADerivations.Analysis.GaussianRationalPowerExpansion
 import IPRADerivations.Foundations.BoundedSyntaxInduction
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # An actual internally sized polynomial multiplication matrix
@@ -617,10 +618,8 @@ theorem returned_coefficient (F G m a c r j s : PTm n) (hm : Γ ⊢[PRAAx] le on
 
 theorem pairing_congr {M M' : PTm n} (m j x y : PTm n) (hM : Γ ⊢[PRAAx] M ≐ M') : Γ ⊢[PRAAx]
     pairing M m j x y ≐ pairing M' m j x y := by
-  simpa only [subst_pairing,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.cons_val_three,Matrix.cons_val_four,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (pairing (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5)
-      (σ := ![M,m,j,x,y]) (σ' := ![M',m,j,x,y]) (fun i => by fin_cases i; exact hM; exact .eqRefl _; exact .eqRefl _; exact .eqRefl _; exact .eqRefl _)
+  ipra_congr (pairing (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) with
+    [hM, .eqRefl m, .eqRefl j, .eqRefl x, .eqRefl y]
 theorem returned_evaluation_row (F G m a c j x y : PTm n)
     (hm : Γ ⊢[PRAAx] le one m) (hF : Γ ⊢[PRAAx] rowShape F m c)
     (hG : Γ ⊢[PRAAx] rowShape G m a) (hj : Γ ⊢[PRAAx] lt j m)

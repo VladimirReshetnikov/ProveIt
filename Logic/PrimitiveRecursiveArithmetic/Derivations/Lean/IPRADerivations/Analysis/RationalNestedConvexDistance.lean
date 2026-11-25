@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.RationalNestedConvexModulus
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Exact named distance from the original convex sampling bound
@@ -37,10 +38,7 @@ theorem allowance_representation (k e : PTm n) : Γ ⊢[PRAAx]
     (RationalCubeMidpoint.fraction_represents one _ (power_positive k))
     (RationalCubeMidpoint.fraction_represents one _ (power_positive e))
   refine GaussianRationalHorner.scalar_congr (.eqRefl _) ?_ (.eqRefl _) h
-  apply ZT.derive
-  simp only [ZT.toZ_mul,ZT.toZ_add,ZT.toZ_ofNat]
-  ipra_simps
-  ring
+  ipra_lc
 
 theorem upper_of_sample_allowance (a b k e : PTm n)
     (h : Γ ⊢[PRAAx] rationalLE a (add b (allowance k e))) :

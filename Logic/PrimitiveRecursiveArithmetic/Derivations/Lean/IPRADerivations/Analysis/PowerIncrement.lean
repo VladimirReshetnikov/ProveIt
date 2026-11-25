@@ -1,4 +1,5 @@
 import IPRADerivations.Algebra.PowerDifference
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The second-order increment of a power
@@ -77,12 +78,8 @@ abbrev Second (x y i : PTm n) : Fm PTm n :=
     pw y (succ i) + succ i * pw y i * x + (x * x + y * y) * kd x y i
 
 theorem second_base (x y : PTm n) : Γ ⊢[PRAAx] Second x y zero := by
-  have e1 := natEq (pw_succ (Γ := Γ) x zero); have e0 := natEq (pw_zero (Γ := Γ) x)
-  have f1 := natEq (pw_succ (Γ := Γ) y zero); have f0 := natEq (pw_zero (Γ := Γ) y)
-  have k := natEq (kd_zero (Γ := Γ) x y)
-  apply deriveNat; ipra_simps
-  linear_combination e1 + 𝔞 x * e0 - f1 - 𝔞 x * f0 +
-    (2 * (𝔞 x * 𝔞 y) - 𝔞 x * 𝔞 x - 𝔞 y * 𝔞 y) * k
+  ipra_lc natEq (pw_succ (Γ := Γ) x zero) + 𝔞 x * natEq (pw_zero (Γ := Γ) x) - natEq (pw_succ (Γ := Γ) y zero) -
+    𝔞 x * natEq (pw_zero (Γ := Γ) y) + (2 * (𝔞 x * 𝔞 y) - 𝔞 x * 𝔞 x - 𝔞 y * 𝔞 y) * natEq (kd_zero (Γ := Γ) x y)
 
 theorem second_step {x y i : PTm n} (ih : Γ ⊢[PRAAx] Second x y i) : Γ ⊢[PRAAx] Second x y (succ i) := by
   have e := natEq ih
@@ -127,10 +124,8 @@ abbrev GdKd (x y i : PTm n) : Fm PTm n :=
   gd x y (succ i) + y * kd x y i ≐ succ i * pw y i + x * kd x y i
 
 theorem gd_kd_base (x y : PTm n) : Γ ⊢[PRAAx] GdKd x y zero := by
-  have g1 := natEq (gd_succ (Γ := Γ) x y zero); have g0 := natEq (gd_zero (Γ := Γ) x y)
-  have k := natEq (kd_zero (Γ := Γ) x y)
-  apply deriveNat; ipra_simps
-  linear_combination g1 + 𝔞 x * g0 + (𝔞 y - 𝔞 x) * k
+  ipra_lc natEq (gd_succ (Γ := Γ) x y zero) + 𝔞 x * natEq (gd_zero (Γ := Γ) x y) +
+    (𝔞 y - 𝔞 x) * natEq (kd_zero (Γ := Γ) x y)
 
 theorem gd_kd_step {x y i : PTm n} (ih : Γ ⊢[PRAAx] GdKd x y i) : Γ ⊢[PRAAx] GdKd x y (succ i) := by
   have e := natEq ih
@@ -166,21 +161,15 @@ theorem gd_kd (x y i : PTm n) : Γ ⊢[PRAAx] GdKd x y i := by
 theorem kd_le_base (x y R : PTm n) :
     Γ ⊢[PRAAx] le (two * R * kd x y zero) (zero * succ zero * pw R zero) := by
   refine le_of_eq_add (d := zero) ?_
-  have k := natEq (kd_zero (Γ := Γ) x y)
-  apply deriveNat; ipra_simps
-  linear_combination -2 * 𝔞 R * k
+  ipra_lc -2 * 𝔞 R * natEq (kd_zero (Γ := Γ) x y)
 
 theorem kd_le_step {x y R i : PTm n} (hx : Γ ⊢[PRAAx] le x R) (hy : Γ ⊢[PRAAx] le y R)
     (ih : Γ ⊢[PRAAx] le (two * R * kd x y i) (i * succ i * pw R i)) :
     Γ ⊢[PRAAx] le (two * R * kd x y (succ i)) (succ i * succ (succ i) * pw R (succ i)) := by
   have m := add_le_add₂ (le_mul_mono hx ih) (le_mul_mono (le_refl (two * succ i * R)) (pw_le_pw i hy))
-  have s := natEq (pw_succ (Γ := Γ) R i)
-  have k := natEq (kd_succ (Γ := Γ) x y i)
   refine le_congr ?_ ?_ m
-  · apply deriveNat; ipra_simps
-    linear_combination -2 * 𝔞 R * k
-  · apply deriveNat; ipra_simps
-    linear_combination -(𝔞 i + 1) * (𝔞 i + 1 + 1) * s
+  · ipra_lc -2 * 𝔞 R * natEq (kd_succ (Γ := Γ) x y i)
+  · ipra_lc -(𝔞 i + 1) * (𝔞 i + 1 + 1) * natEq (pw_succ (Γ := Γ) R i)
 
 /-- Variables: `0 = i` (induction), `1 = x`, `2 = y`, `3 = R`. -/
 private abbrev klF : Fm PTm 4 :=
@@ -211,9 +200,7 @@ theorem kd_le {x y R : PTm n} (i : PTm n) (hx : Γ ⊢[PRAAx] le x R) (hy : Γ �
 /-- `(a + h)^{i+1} = a^{i+1} + (i + 1) a^i h + h² · kd (a + h) a i`. -/
 theorem power_inc (a h i : PTm n) :
     Γ ⊢[PRAAx] pw (a + h) (succ i) ≐ pw a (succ i) + succ i * pw a i * h + h * h * kd (a + h) a i := by
-  have e := natEq (power_second (Γ := Γ) (a + h) a i)
-  apply deriveNat; ipra_simps
-  linear_combination e
+  ipra_lc natEq (power_second (Γ := Γ) (a + h) a i)
 
 /-- `a^{i+1} + (i + 1) a^i h ≤ (a + h)^{i+1}`. -/
 theorem power_inc_lower (a h i : PTm n) :
@@ -225,10 +212,7 @@ theorem power_inc_upper {a h R : PTm n} (i : PTm n) (hR : Γ ⊢[PRAAx] le (a + 
     Γ ⊢[PRAAx] le (two * R * pw (a + h) (succ i))
       (two * R * (pw a (succ i) + succ i * pw a i * h) + i * succ i * pw R i * (h * h)) := by
   have ha : Γ ⊢[PRAAx] le a R := le_trans (le_add_right a h) hR
-  have k := natEq (eq_add_of_le (kd_le (Γ := Γ) i hR ha))
-  have e := natEq (power_inc (Γ := Γ) a h i)
   refine le_of_eq_add (d := h * h * monus (i * succ i * pw R i) (two * R * kd (a + h) a i)) ?_
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 h * 𝔞 h * k - 2 * 𝔞 R * e
+  ipra_lc 𝔞 h * 𝔞 h * natEq (eq_add_of_le (kd_le (Γ := Γ) i hR ha)) - 2 * 𝔞 R * natEq (power_inc (Γ := Γ) a h i)
 
 end LeanProofs.IPRA.Analysis.PowerIncrement

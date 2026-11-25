@@ -3,6 +3,8 @@ import IPRADerivations.Analysis.GaussianTranslationCoefficientValues
 import IPRADerivations.Analysis.GaussianRationalPowerAlgebra
 import IPRADerivations.Combinatorics.Vandermonde
 import IPRADerivations.Foundations.BoundedSyntaxBackwardInduction
+import IPRADerivations.Core.CongruenceTactic
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Literal finite binomial rows of actual translation stages
@@ -65,19 +67,13 @@ theorem b_canonical (C N z i : PTm n) : Γ ⊢[PRAAx] canonical (b C N z i) :=
 theorem b_congr {C C' N N' z z' i i' : PTm n}
     (hC : Γ ⊢[PRAAx] C ≐ C') (hN : Γ ⊢[PRAAx] N ≐ N')
     (hz : Γ ⊢[PRAAx] z ≐ z') (hi : Γ ⊢[PRAAx] i ≐ i') : Γ ⊢[PRAAx] b C N z i ≐ b C' N' z' i' := by
-  simpa only [subst_b,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.cons_val_three,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (b (var 0) (var 1) (var 2) (var 3) : PTm 4)
-      (σ := ![C,N,z,i]) (σ' := ![C',N',z',i'])
-      (fun j => by fin_cases j; exact hC; exact hN; exact hz; exact hi)
+  ipra_congr (b (var 0) (var 1) (var 2) (var 3) : PTm 4) with [hC, hN, hz, hi]
 
 theorem b_index_congr (C N z : PTm n) {i l : PTm n} (h : Γ ⊢[PRAAx] i ≐ l) :
     Γ ⊢[PRAAx] b C N z i ≐ b C N z l := b_congr (.eqRefl _) (.eqRefl _) (.eqRefl _) h
 
 theorem negative_congr {z w : PTm n} (h : Γ ⊢[PRAAx] z ≐ w) : Γ ⊢[PRAAx] qnegative z ≐ qnegative w := by
-  simpa only [GaussianRationalMetric.subst_qnegative,Syn.subst_var,Matrix.cons_val_zero] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (qnegative (var 0) : PTm 1)
-      (σ := ![z]) (σ' := ![w]) (fun i => by fin_cases i; exact h)
+  ipra_congr (qnegative (var 0) : PTm 1) with [h]
 
 theorem term_congr {C C' N N' z z' j j' k k' r r' : PTm n}
     (hC : Γ ⊢[PRAAx] C ≐ C') (hN : Γ ⊢[PRAAx] N ≐ N') (hz : Γ ⊢[PRAAx] z ≐ z')
@@ -147,10 +143,7 @@ theorem weighted_pascal (k r z v : PTm n) (hk : Γ ⊢[PRAAx] le one k) : Γ ⊢
   have ek := RationalIntegerNormalization.positive_form (Γ := Γ) hk
   have upper : Γ ⊢[PRAAx] k+succ r ≐ succ (k+r) := by ipra_ring
   have left : Γ ⊢[PRAAx] k+r ≐ pred k+succ r := by
-    have e := natEq ek
-    apply deriveNat
-    ipra_simps
-    linear_combination e
+    ipra_lc natEq ek
   have pascal := ((congrGb upper ek).eqTrans (gb_pascal (k+r) (pred k))).eqTrans
     ((add_comm _ _).eqTrans (congrAdd (congrGb left (.eqRefl _)) (congrGb (.eqRefl _) ek.eqSymm)))
   exact (natScale_congr pascal (.eqRefl _)).eqTrans
@@ -160,11 +153,8 @@ theorem weighted_pascal (k r z v : PTm n) (hk : Γ ⊢[PRAAx] le one k) : Γ ⊢
 theorem term_pascal (C N z j k r : PTm n) (hk : Γ ⊢[PRAAx] le one k) : Γ ⊢[PRAAx]
     term C N z j k (succ r) ≐ qadd (term C N z (succ j) (pred k) (succ r))
       (qmul (qnegative z) (term C N z (succ j) k r)) := by
-  have ek := natEq (RationalIntegerNormalization.positive_form (Γ := Γ) hk)
   have left : Γ ⊢[PRAAx] succ j+pred k+succ r ≐ j+k+succ r := by
-    apply deriveNat
-    ipra_simps
-    linear_combination -ek
+    ipra_lc -natEq (RationalIntegerNormalization.positive_form (Γ := Γ) hk)
   have right : Γ ⊢[PRAAx] succ j+k+r ≐ j+k+succ r := by ipra_ring
   exact (weighted_pascal k r z (b C N z (j+k+succ r)) hk).eqTrans
     (qadd_congr (natScale_congr (.eqRefl _) (qmul_congr (b_index_congr C N z left.eqSymm) (.eqRefl _)))
@@ -343,21 +333,14 @@ theorem pascal_terms (C N z j k m : PTm n) (hk : Γ ⊢[PRAAx] le one k) : Γ �
 theorem active_sum_index (N j k : PTm n) (hj : Γ ⊢[PRAAx] lt j N)
     (hk : Γ ⊢[PRAAx] lt k (remaining N j)) : Γ ⊢[PRAAx] lt (j+k) N := by
   change Γ ⊢[PRAAx] lt k (monus N j) at hk
-  have en := natEq (eq_add_of_le (le_of_lt hj))
-  have ek := natEq (eq_add_of_le hk)
   apply le_of_eq_add (d := monus (monus N j) (succ k))
-  apply deriveNat
-  ipra_simps
-  linear_combination en+ek
+  ipra_lc natEq (eq_add_of_le (le_of_lt hj))+natEq (eq_add_of_le hk)
 
 theorem R_interior (C N z j k : PTm n) (hj : Γ ⊢[PRAAx] lt j N)
     (hk : Γ ⊢[PRAAx] le one k) (hkM : Γ ⊢[PRAAx] lt k (remaining N j)) : Γ ⊢[PRAAx]
     R C N z j k ≐ qsub (R C N z (succ j) (pred k)) (qmul z (R C N z (succ j) k)) := by
-  have ek := natEq (RationalIntegerNormalization.positive_form (Γ := Γ) hk)
   have previous : Γ ⊢[PRAAx] succ j+pred k ≐ j+k := by
-    apply deriveNat
-    ipra_simps
-    linear_combination -ek
+    ipra_lc -natEq (RationalIntegerNormalization.positive_form (Γ := Γ) hk)
   have next : Γ ⊢[PRAAx] succ j+k ≐ succ (j+k) := by ipra_ring
   have count : Γ ⊢[PRAAx] succ (monus N (succ j+k)) ≐ monus N (j+k) :=
     (congrSucc (congrMonus (.eqRefl _) next)).eqTrans
@@ -381,11 +364,7 @@ theorem R_leading (C N z j : PTm n) (hj : Γ ⊢[PRAAx] lt j N) : Γ ⊢[PRAAx]
   simp only [remaining] at em
   have next : Γ ⊢[PRAAx] succ j+pred (remaining N j) ≐ N := by
     change Γ ⊢[PRAAx] succ j+pred (monus N j) ≐ N
-    have a := natEq en
-    have b := natEq em
-    apply deriveNat
-    ipra_simps
-    linear_combination -a-b
+    ipra_lc -natEq en-natEq em
   exact (R_singleton C N z j (remaining N j) en.eqSymm).eqTrans
     (R_singleton C N z (succ j) _ next).eqSymm
 

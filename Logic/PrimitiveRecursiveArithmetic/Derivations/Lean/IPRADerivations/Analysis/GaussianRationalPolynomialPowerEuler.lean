@@ -2,6 +2,7 @@ import IPRADerivations.Analysis.GaussianRationalEulerCoefficients
 import IPRADerivations.Analysis.GaussianRationalGridCoefficientEquality
 import IPRADerivations.Analysis.GaussianRationalPolynomialExponentialStability
 import IPRADerivations.Foundations.BoundedSyntaxInduction
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual Euler identity for the original finite polynomial powers
@@ -136,14 +137,10 @@ theorem power_euler_length (C N K r : PTm n) : Γ ⊢[PRAAx]
 
 theorem euler_congr {C D N M : PTm n} (hC : Γ ⊢[PRAAx] C ≐ D) (hN : Γ ⊢[PRAAx] N ≐ M) : Γ ⊢[PRAAx]
     euler C N ≐ euler D M := by
-  simpa only [GaussianRationalEulerCoefficients.subst_euler,Syn.subst_var,Matrix.cons_val_zero,
-    Matrix.cons_val_one,Matrix.head_cons,Matrix.tail_cons] using Prf.eqCongr (Γ := Γ) (euler (var 0) (var 1) : PTm 2)
-      (σ := ![C,N]) (σ' := ![D,M]) (fun i => by fin_cases i; exact hC; exact hN)
+  ipra_congr (euler (var 0) (var 1) : PTm 2) with [hC, hN]
 theorem scaled_congr {P Q a b : PTm n} (hP : Γ ⊢[PRAAx] P ≐ Q) (ha : Γ ⊢[PRAAx] a ≐ b) : Γ ⊢[PRAAx]
     scaled P a ≐ scaled Q b := by
-  simpa only [GaussianRationalCoefficientScaling.subst_scaled,Syn.subst_var,Matrix.cons_val_zero,
-    Matrix.cons_val_one,Matrix.head_cons,Matrix.tail_cons] using Prf.eqCongr (Γ := Γ) (scaled (var 0) (var 1) : PTm 2)
-      (σ := ![P,a]) (σ' := ![Q,b]) (fun i => by fin_cases i; exact hP; exact ha)
+  ipra_congr (scaled (var 0) (var 1) : PTm 2) with [hP, ha]
 
 theorem canonical_at (C N i : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ succ N)
     (hCan : Γ ⊢[PRAAx] canonicalCoefficients C) (hi : Γ ⊢[PRAAx] le i N) : Γ ⊢[PRAAx]

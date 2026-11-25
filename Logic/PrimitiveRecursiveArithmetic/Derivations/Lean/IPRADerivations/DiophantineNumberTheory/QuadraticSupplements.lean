@@ -126,7 +126,7 @@ theorem minus_one_law {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hodd : Γ ⊢[PR
 /-! ## The short witness for `p = 4t + 3` -/
 
 theorem exp_alg (t : PTm n) : Γ ⊢[PRAAx] succ t + succ t ≐ (two * t + one) + one := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem one_mul_r (a : PTm n) : Γ ⊢[PRAAx] one * a ≐ a := one_mul a
 

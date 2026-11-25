@@ -1,4 +1,4 @@
-import IPRADerivations.Core.IntCertificates
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Medians, the orthocentre, the Euler line and the nine-point circle
@@ -69,6 +69,7 @@ def orth₂ (u₁ u₂ v₁ v₂ : ZT n) : ZT n :=
 local macro "gsimp" loc:(Lean.Parser.Tactic.location)? : tactic =>
   `(tactic| simp only [dot, det, nsq, circ₁, circ₂, orth₁, orth₂, ZT.toZ_add, ZT.toZ_sub, ZT.toZ_mul,
     ZT.toZ_neg, ZT.toZ_sq, ZT.toZ_natLit, Nat.cast_ofNat, Nat.cast_zero, Nat.cast_one] $[$loc]?)
+attribute [local ipra_defs] dot det nsq circ₁ circ₂ orth₁ orth₂
 
 /-- Derive an identity of integer terms that is a polynomial identity. -/
 local macro "geo" : tactic => `(tactic| (apply ZT.derive; gsimp; ring))
@@ -80,33 +81,25 @@ theorem apollonius (a₁ a₂ b₁ b₂ c₁ c₂ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (nsq (ZT.natLit 2 * a₁ - b₁ - c₁) (ZT.natLit 2 * a₂ - b₂ - c₂))
       (ZT.natLit 2 * nsq (a₁ - b₁) (a₂ - b₂) + ZT.natLit 2 * nsq (a₁ - c₁) (a₂ - c₂) -
         nsq (b₁ - c₁) (b₂ - c₂)) := by
-  geo
+  ipra_lc
 
 /-- Stewart: `(m + n) (m |v|² + n |u|²) = |n u + m v|² + m n |u − v|²`. -/
 theorem stewart (u₁ u₂ v₁ v₂ m k : ZT n) :
     Γ ⊢[PRAAx] ZT.eq ((m + k) * (m * nsq v₁ v₂ + k * nsq u₁ u₂))
       (nsq (k * u₁ + m * v₁) (k * u₂ + m * v₂) + m * k * nsq (u₁ - v₁) (u₂ - v₂)) := by
-  geo
+  ipra_lc
 
 /-- Right angle at `A`: the point `|v|² u + |u|² v` lies on the altitude, `(A − F) · (C − B) = 0`. -/
 theorem altitude_perp {u₁ u₂ v₁ v₂ : ZT n} (hp : Γ ⊢[PRAAx] ZT.eq (dot u₁ u₂ v₁ v₂) (ZT.natLit 0)) :
     Γ ⊢[PRAAx] ZT.eq (dot (nsq v₁ v₂ * u₁ + nsq u₁ u₂ * v₁) (nsq v₁ v₂ * u₂ + nsq u₁ u₂ * v₂)
       (v₁ - u₁) (v₂ - u₂)) (ZT.natLit 0) := by
-  have e := ZT.toZ_eq hp
-  apply ZT.derive
-  gsimp at e ⊢
-  linear_combination (ZT.toZ Γ v₁ * ZT.toZ Γ v₁ + ZT.toZ Γ v₂ * ZT.toZ Γ v₂ -
-    (ZT.toZ Γ u₁ * ZT.toZ Γ u₁ + ZT.toZ Γ u₂ * ZT.toZ Γ u₂)) * e
+  ipra_lc (ZT.toZ Γ v₁ * ZT.toZ Γ v₁ + ZT.toZ Γ v₂ * ZT.toZ Γ v₂ - (ZT.toZ Γ u₁ * ZT.toZ Γ u₁ + ZT.toZ Γ u₂ * ZT.toZ Γ u₂)) * ZT.toZ_eq hp
 
 /-- Right angle at `A`: `|a² F|² = b² c² a²` for `a² F = |v|² u + |u|² v`. -/
 theorem altitude_sq {u₁ u₂ v₁ v₂ : ZT n} (hp : Γ ⊢[PRAAx] ZT.eq (dot u₁ u₂ v₁ v₂) (ZT.natLit 0)) :
     Γ ⊢[PRAAx] ZT.eq (nsq (nsq v₁ v₂ * u₁ + nsq u₁ u₂ * v₁) (nsq v₁ v₂ * u₂ + nsq u₁ u₂ * v₂))
       (nsq u₁ u₂ * nsq v₁ v₂ * (nsq u₁ u₂ + nsq v₁ v₂)) := by
-  have e := ZT.toZ_eq hp
-  apply ZT.derive
-  gsimp at e ⊢
-  linear_combination (2 * (ZT.toZ Γ u₁ * ZT.toZ Γ u₁ + ZT.toZ Γ u₂ * ZT.toZ Γ u₂) *
-    (ZT.toZ Γ v₁ * ZT.toZ Γ v₁ + ZT.toZ Γ v₂ * ZT.toZ Γ v₂)) * e
+  ipra_lc (2 * (ZT.toZ Γ u₁ * ZT.toZ Γ u₁ + ZT.toZ Γ u₂ * ZT.toZ Γ u₂) * (ZT.toZ Γ v₁ * ZT.toZ Γ v₁ + ZT.toZ Γ v₂ * ZT.toZ Γ v₂)) * ZT.toZ_eq hp
 
 /-! ## The centroid -/
 
@@ -116,16 +109,13 @@ theorem leibniz (x₁ x₂ a₁ a₂ b₁ b₂ c₁ c₂ : ZT n) :
       (ZT.natLit 3 * (nsq (x₁ - a₁) (x₂ - a₂) + nsq (x₁ - b₁) (x₂ - b₂) + nsq (x₁ - c₁) (x₂ - c₂)))
       (nsq (ZT.natLit 3 * x₁ - a₁ - b₁ - c₁) (ZT.natLit 3 * x₂ - a₂ - b₂ - c₂) +
         (nsq (b₁ - c₁) (b₂ - c₂) + nsq (c₁ - a₁) (c₂ - a₂) + nsq (a₁ - b₁) (a₂ - b₂))) := by
-  geo
+  ipra_lc
 
 /-- The centroid minimizes the sum of the squared distances: `a² + b² + c² ≤ 3 ∑ |X − P|²`. -/
 theorem leibniz_min (x₁ x₂ a₁ a₂ b₁ b₂ c₁ c₂ : ZT n) :
     Γ ⊢[PRAAx] zle (nsq (b₁ - c₁) (b₂ - c₂) + nsq (c₁ - a₁) (c₂ - a₂) + nsq (a₁ - b₁) (a₂ - b₂))
       (ZT.natLit 3 * (nsq (x₁ - a₁) (x₂ - a₂) + nsq (x₁ - b₁) (x₂ - b₂) + nsq (x₁ - c₁) (x₂ - c₂))) := by
-  refine zle_of_comb (ZT.toZ Γ (ZT.natLit 3 * x₁ - a₁ - b₁ - c₁) ^ 2 +
-    ZT.toZ Γ (ZT.natLit 3 * x₂ - a₂ - b₂ - c₂) ^ 2) ?_ (nn_add (nn_zsq _) (nn_zsq _))
-  gsimp
-  ring
+  ipra_zle (ZT.toZ Γ (ZT.natLit 3 * x₁ - a₁ - b₁ - c₁) ^ 2 + ZT.toZ Γ (ZT.natLit 3 * x₂ - a₂ - b₂ - c₂) ^ 2)
 
 /-! ## The circumcentre and the orthocentre -/
 
@@ -133,30 +123,30 @@ theorem leibniz_min (x₁ x₂ a₁ a₂ b₁ b₂ c₁ c₂ : ZT n) :
 theorem circumcentre_u (u₁ u₂ v₁ v₂ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (dot (circ₁ u₁ u₂ v₁ v₂) (circ₂ u₁ u₂ v₁ v₂) u₁ u₂)
       (det u₁ u₂ v₁ v₂ * nsq u₁ u₂) := by
-  geo
+  ipra_lc
 
 /-- `O' · v = D |v|²`, the perpendicular bisector of `AC`. -/
 theorem circumcentre_v (u₁ u₂ v₁ v₂ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (dot (circ₁ u₁ u₂ v₁ v₂) (circ₂ u₁ u₂ v₁ v₂) v₁ v₂)
       (det u₁ u₂ v₁ v₂ * nsq v₁ v₂) := by
-  geo
+  ipra_lc
 
 /-- The altitude through `A`: `H' · (v − u) = 0`. -/
 theorem altitude_A (u₁ u₂ v₁ v₂ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (dot (orth₁ u₁ u₂ v₁ v₂) (orth₂ u₁ u₂ v₁ v₂) (v₁ - u₁) (v₂ - u₂)) (ZT.natLit 0) := by
-  geo
+  ipra_lc
 
 /-- The altitude through `B`: `(H' − 2 D u) · v = 0`. -/
 theorem altitude_B (u₁ u₂ v₁ v₂ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (dot (orth₁ u₁ u₂ v₁ v₂ - ZT.natLit 2 * det u₁ u₂ v₁ v₂ * u₁)
       (orth₂ u₁ u₂ v₁ v₂ - ZT.natLit 2 * det u₁ u₂ v₁ v₂ * u₂) v₁ v₂) (ZT.natLit 0) := by
-  geo
+  ipra_lc
 
 /-- The altitude through `C`: `(H' − 2 D v) · u = 0`. -/
 theorem altitude_C (u₁ u₂ v₁ v₂ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (dot (orth₁ u₁ u₂ v₁ v₂ - ZT.natLit 2 * det u₁ u₂ v₁ v₂ * v₁)
       (orth₂ u₁ u₂ v₁ v₂ - ZT.natLit 2 * det u₁ u₂ v₁ v₂ * v₂) u₁ u₂) (ZT.natLit 0) := by
-  geo
+  ipra_lc
 
 /-- The Euler line, `H − G = 2 (G − O)`, times `6 D`, in both coordinates. -/
 theorem euler_line (u₁ u₂ v₁ v₂ : ZT n) :
@@ -173,13 +163,13 @@ theorem euler_line (u₁ u₂ v₁ v₂ : ZT n) :
 /-- A side midpoint: `|2 M_A − 2 N|² = |x|²`. -/
 theorem nine_point_midpoint (x₁ x₂ y₁ y₂ z₁ z₂ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (nsq (y₁ + z₁ - (x₁ + y₁ + z₁)) (y₂ + z₂ - (x₂ + y₂ + z₂))) (nsq x₁ x₂) := by
-  geo
+  ipra_lc
 
 /-- The midpoint of a vertex and the orthocentre: `|2 K_A − 2 N|² = |x|²`. -/
 theorem nine_point_vertex (x₁ x₂ y₁ y₂ z₁ z₂ : ZT n) :
     Γ ⊢[PRAAx] ZT.eq (nsq (x₁ + (x₁ + y₁ + z₁) - (x₁ + y₁ + z₁)) (x₂ + (x₂ + y₂ + z₂) - (x₂ + y₂ + z₂)))
       (nsq x₁ x₂) := by
-  geo
+  ipra_lc
 
 /-- An altitude foot: `|2 L F_A − L h|² = L² |x|²` when `|y|² = |z|²`. -/
 theorem nine_point_foot {x₁ x₂ y₁ y₂ z₁ z₂ : ZT n}
@@ -191,15 +181,6 @@ theorem nine_point_foot {x₁ x₂ y₁ y₂ z₁ z₂ : ZT n}
         (ZT.natLit 2 * (nsq (z₁ - y₁) (z₂ - y₂) * y₂ + dot (x₁ - y₁) (x₂ - y₂) (z₁ - y₁) (z₂ - y₂) * (z₂ - y₂)) -
           nsq (z₁ - y₁) (z₂ - y₂) * (x₂ + y₂ + z₂)))
       (nsq (z₁ - y₁) (z₂ - y₂) * nsq (z₁ - y₁) (z₂ - y₂) * nsq x₁ x₂) := by
-  have e := ZT.toZ_eq hyz
-  apply ZT.derive
-  gsimp at e ⊢
-  linear_combination
-    ((2 * ((ZT.toZ Γ x₁ - ZT.toZ Γ y₁) * (ZT.toZ Γ z₁ - ZT.toZ Γ y₁) +
-          (ZT.toZ Γ x₂ - ZT.toZ Γ y₂) * (ZT.toZ Γ z₂ - ZT.toZ Γ y₂)) -
-        ((ZT.toZ Γ z₁ - ZT.toZ Γ y₁) * (ZT.toZ Γ z₁ - ZT.toZ Γ y₁) +
-          (ZT.toZ Γ z₂ - ZT.toZ Γ y₂) * (ZT.toZ Γ z₂ - ZT.toZ Γ y₂))) *
-      ((ZT.toZ Γ z₁ - ZT.toZ Γ y₁) * (ZT.toZ Γ z₁ - ZT.toZ Γ y₁) +
-        (ZT.toZ Γ z₂ - ZT.toZ Γ y₂) * (ZT.toZ Γ z₂ - ZT.toZ Γ y₂))) * e
+  ipra_lc ((2 * ((ZT.toZ Γ x₁ - ZT.toZ Γ y₁) * (ZT.toZ Γ z₁ - ZT.toZ Γ y₁) + (ZT.toZ Γ x₂ - ZT.toZ Γ y₂) * (ZT.toZ Γ z₂ - ZT.toZ Γ y₂)) - ((ZT.toZ Γ z₁ - ZT.toZ Γ y₁) * (ZT.toZ Γ z₁ - ZT.toZ Γ y₁) + (ZT.toZ Γ z₂ - ZT.toZ Γ y₂) * (ZT.toZ Γ z₂ - ZT.toZ Γ y₂))) * ((ZT.toZ Γ z₁ - ZT.toZ Γ y₁) * (ZT.toZ Γ z₁ - ZT.toZ Γ y₁) + (ZT.toZ Γ z₂ - ZT.toZ Γ y₂) * (ZT.toZ Γ z₂ - ZT.toZ Γ y₂))) * ZT.toZ_eq hyz
 
 end LeanProofs.IPRA.Geometry.TriangleCentres

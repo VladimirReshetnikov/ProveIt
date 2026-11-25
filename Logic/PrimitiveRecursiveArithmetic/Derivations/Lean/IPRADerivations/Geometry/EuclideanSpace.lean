@@ -1,4 +1,5 @@
 import IPRADerivations.Geometry.CircleChords
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Lagrange's identity in finite dimension, planes and the circumsphere
@@ -118,9 +119,7 @@ theorem norm_triangle {u v : Fin d → ZT n} {s t : ZT n}
   simp only [ZT.toZ_sq, ZT.toZ_sumFin] at es et
   have hcs := cauchy_schwarz (Γ := Γ) u v
   have hst : Γ ⊢[PRAAx] zle (ZT.natLit 0) (s * t) := by
-    refine zle_of_comb (zsl hs0 * zsl ht0) ?_ (nn_mul (nn_zsl _) (nn_zsl _))
-    zsimp
-    ring
+    ipra_zle (zsl hs0 * zsl ht0)
   have hsq : Γ ⊢[PRAAx] zle (ZT.sq (ZT.sumFin fun i => u i * v i)) (ZT.sq (s * t)) := by
     refine zle_of_comb (zsl hcs) ?_ (nn_zsl _)
     zsimp
@@ -182,9 +181,7 @@ coordinates of each vector that enter the cross products. -/
 def sc (U V W u₂ u₃ v₂ v₃ w₂ w₃ : ZT n) : ZT n :=
   U * cx v₂ v₃ w₂ w₃ + V * cx w₂ w₃ u₂ u₃ + W * cx u₂ u₃ v₂ v₃
 
-local macro "ssimp" : tactic =>
-  `(tactic| simp only [cx, n3, trip, sc, ZT.toZ_add, ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_neg, ZT.toZ_sq,
-    ZT.toZ_natLit, Nat.cast_ofNat, Nat.cast_zero, Nat.cast_one])
+attribute [local ipra_defs] cx n3 trip sc
 
 /-- `O' · u = N(u) [u, v, w]`. -/
 theorem circumsphere_u (u₁ u₂ u₃ v₁ v₂ v₃ w₁ w₂ w₃ : ZT n) :
@@ -193,9 +190,7 @@ theorem circumsphere_u (u₁ u₂ u₃ v₁ v₂ v₃ w₁ w₂ w₃ : ZT n) :
         sc (n3 u₁ u₂ u₃) (n3 v₁ v₂ v₃) (n3 w₁ w₂ w₃) u₃ u₁ v₃ v₁ w₃ w₁ * u₂ +
         sc (n3 u₁ u₂ u₃) (n3 v₁ v₂ v₃) (n3 w₁ w₂ w₃) u₁ u₂ v₁ v₂ w₁ w₂ * u₃)
       (n3 u₁ u₂ u₃ * trip u₁ u₂ u₃ v₁ v₂ v₃ w₁ w₂ w₃) := by
-  apply ZT.derive
-  ssimp
-  ring
+  ipra_lc
 
 /-- `O' · v = N(v) [u, v, w]`. -/
 theorem circumsphere_v (u₁ u₂ u₃ v₁ v₂ v₃ w₁ w₂ w₃ : ZT n) :
@@ -204,9 +199,7 @@ theorem circumsphere_v (u₁ u₂ u₃ v₁ v₂ v₃ w₁ w₂ w₃ : ZT n) :
         sc (n3 u₁ u₂ u₃) (n3 v₁ v₂ v₃) (n3 w₁ w₂ w₃) u₃ u₁ v₃ v₁ w₃ w₁ * v₂ +
         sc (n3 u₁ u₂ u₃) (n3 v₁ v₂ v₃) (n3 w₁ w₂ w₃) u₁ u₂ v₁ v₂ w₁ w₂ * v₃)
       (n3 v₁ v₂ v₃ * trip u₁ u₂ u₃ v₁ v₂ v₃ w₁ w₂ w₃) := by
-  apply ZT.derive
-  ssimp
-  ring
+  ipra_lc
 
 /-- `O' · w = N(w) [u, v, w]`. -/
 theorem circumsphere_w (u₁ u₂ u₃ v₁ v₂ v₃ w₁ w₂ w₃ : ZT n) :
@@ -215,8 +208,6 @@ theorem circumsphere_w (u₁ u₂ u₃ v₁ v₂ v₃ w₁ w₂ w₃ : ZT n) :
         sc (n3 u₁ u₂ u₃) (n3 v₁ v₂ v₃) (n3 w₁ w₂ w₃) u₃ u₁ v₃ v₁ w₃ w₁ * w₂ +
         sc (n3 u₁ u₂ u₃) (n3 v₁ v₂ v₃) (n3 w₁ w₂ w₃) u₁ u₂ v₁ v₂ w₁ w₂ * w₃)
       (n3 w₁ w₂ w₃ * trip u₁ u₂ u₃ v₁ v₂ v₃ w₁ w₂ w₃) := by
-  apply ZT.derive
-  ssimp
-  ring
+  ipra_lc
 
 end LeanProofs.IPRA.Geometry.EuclideanSpace

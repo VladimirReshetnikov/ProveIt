@@ -1,4 +1,5 @@
 import IPRADerivations.Algebra.QuadraticTowerMultiplicationCommutativity
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The actual multiplicative unit at numerical tower depth
@@ -57,9 +58,7 @@ theorem scalar_multiply_one (q : PTm n) : Γ ⊢[PRAAx] RationalArithmetic.multi
   apply RationalFiniteSum.canonical_equal _ _ _ _ _ _ (RationalArithmetic.multiply_guard _ _)
     (RationalArithmetic.recode_guard _) rep (RationalArithmetic.recode_value q)
     (RationalAlgebra.positive_product (RationalArgmin.denominator_positive q) (le_refl one)) (RationalArgmin.denominator_positive q)
-  apply ZT.derive
-  simp only [ZT.toZ_mul,ZT.toZ_ofNat,Q.mk_one,map_one,Q.mk_mul,map_mul]
-  ring
+  ipra_lc
 
 theorem scalar_one_multiply (q : PTm n) : Γ ⊢[PRAAx] RationalArithmetic.multiply oneScalar q ≐ RationalArithmetic.recode q :=
   (RationalAlgebra.multiply_commutative _ _).eqTrans (scalar_multiply_one q)
@@ -71,9 +70,7 @@ theorem scalar_add_zero (q : PTm n) : Γ ⊢[PRAAx] RationalArithmetic.add q zer
   apply RationalFiniteSum.canonical_equal _ _ _ _ _ _ (RationalArithmetic.add_guard _ _)
     (RationalArithmetic.recode_guard _) rep (RationalArithmetic.recode_value q)
     (RationalAlgebra.positive_product (RationalArgmin.denominator_positive q) (le_refl one)) (RationalArgmin.denominator_positive q)
-  apply ZT.derive
-  simp only [ZT.toZ_mul,ZT.toZ_add,ZT.toZ_ofNat,Q.mk_zero,Q.mk_one,map_zero,map_one,Q.mk_mul,map_mul]
-  ring
+  ipra_lc
 
 theorem added_zero_normalized (h A : PTm n) : Γ ⊢[PRAAx] added h A (zeroArray h) ≐ normalized h A := by
   apply sequence_equal QuadraticTowerCoefficientArithmetic.addBody QuadraticTowerArrayCodec.normalizeBody

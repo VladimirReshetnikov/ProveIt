@@ -3,6 +3,8 @@ import IPRADerivations.Combinatorics.CatalanBallot
 import IPRADerivations.Combinatorics.StirlingBinomial
 import IPRADerivations.Combinatorics.BellStirling
 import IPRADerivations.AnalyticNumberTheory.Totient
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Inclusion–exclusion for the Stirling numbers
@@ -72,9 +74,7 @@ theorem absorb_succ (k j : PTm n) :
     have z0 : (lt k j :: Γ) ⊢[PRAAx] gb k j ≐ zero := gb_above Prf.hyp0
     have z1 : (lt k j :: Γ) ⊢[PRAAx] gb k (succ j) ≐ zero :=
       gb_above (le_trans Prf.hyp0 (le_succ_self _))
-    have a := natEq z0; have b := natEq z1
-    apply deriveNat; ipra_simps
-    linear_combination (𝔞 j - 𝔞 k) * p + (𝔞 j - 𝔞 k) * a + (𝔞 j + 1) * b
+    ipra_lc (𝔞 j - 𝔞 k) * p + (𝔞 j - 𝔞 k) * natEq z0 + (𝔞 j + 1) * natEq z1
   · have p := natEq (gb_pascal (Γ := le j k :: Γ) k j)
     have r := natEq (gb_ratio (Γ := le j k :: Γ) k j)
     have e := natEq (eq_add_of_le (Prf.hyp0 : (le j k :: Γ) ⊢[PRAAx] le j k))
@@ -90,7 +90,7 @@ theorem gb_absorb (k i : PTm n) :
     have g2 : ((i ≐ zero) :: Γ) ⊢[PRAAx] gb k i ≐ gb k zero := congrGb (.eqRefl _) hz
     refine (congrAdd (congrMul hz (.eqRefl _)) (congrMul (.eqRefl _) (g2.eqTrans (gb_zero k)))).eqTrans ?_
     refine .eqTrans ?_ (congrMul (.eqRefl _) (g1.eqTrans (gb_zero (succ k)))).eqSymm
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   · have hs : ((i ≐ succ (pred i)) :: Γ) ⊢[PRAAx] i ≐ succ (pred i) := Prf.hyp0
     have g1 : ((i ≐ succ (pred i)) :: Γ) ⊢[PRAAx] gb (succ k) i ≐ gb (succ k) (succ (pred i)) := congrGb (.eqRefl _) hs
     have g2 : ((i ≐ succ (pred i)) :: Γ) ⊢[PRAAx] gb k i ≐ gb k (succ (pred i)) := congrGb (.eqRefl _) hs
@@ -125,10 +125,7 @@ theorem oB_at (i N K : PTm n) :
   have s : Γ ⊢[PRAAx] sndT (pairT N K) ≐ K := snd_pair _ _
   exact congrMul (congrOd (congrMonus s (.eqRefl _))) (congrMul (congrGb s (.eqRefl _)) (congrAp2 powF (fst_pair _ _) (.eqRefl _)))
 
-theorem monus_succ_le {i k : PTm n} (h : Γ ⊢[PRAAx] le i k) : Γ ⊢[PRAAx] monus (succ k) i ≐ succ (monus k i) := by
-  have e := natEq (eq_add_of_le h)
-  have e' : Γ ⊢[PRAAx] succ k ≐ succ (monus k i) + i := by apply deriveNat; ipra_simps; linear_combination e
-  exact (congrMonus e' (.eqRefl _)).eqTrans (add_monus _ _)
+alias monus_succ_le := Common.monus_succ_of_le
 
 /-- The pointwise step for the even part. -/
 theorem step_e (N k i : PTm n) :
@@ -209,14 +206,12 @@ theorem sum_affine (f g h : PTm 2) {M K x y z : PTm n}
 theorem Om_ext (N k : PTm n) : Γ ⊢[PRAAx] ap2 (sumF oB) (succ (succ k)) (pairT N k) ≐ Om N k := by
   refine (sum_succ' _ _ _).eqTrans ((congrAdd (.eqRefl _) ?_).eqTrans (add_zero _))
   refine (oB_at _ _ _).eqTrans ?_
-  have z := natEq (gb_above (Γ := Γ) (le_refl (succ k)))
-  apply deriveNat; ipra_simps; linear_combination 𝔞(od (monus k (succ k))) * 𝔞(pw (succ k) N) * z
+  ipra_lc 𝔞(od (monus k (succ k))) * 𝔞(pw (succ k) N) * natEq (gb_above (Γ := Γ) (le_refl (succ k)))
 
 theorem Ep_ext (N k : PTm n) : Γ ⊢[PRAAx] ap2 (sumF eB) (succ (succ k)) (pairT N k) ≐ Ep N k := by
   refine (sum_succ' _ _ _).eqTrans ((congrAdd (.eqRefl _) ?_).eqTrans (add_zero _))
   refine (eB_at _ _ _).eqTrans ?_
-  have z := natEq (gb_above (Γ := Γ) (le_refl (succ k)))
-  apply deriveNat; ipra_simps; linear_combination 𝔞(ev (monus k (succ k))) * 𝔞(pw (succ k) N) * z
+  ipra_lc 𝔞(ev (monus k (succ k))) * 𝔞(pw (succ k) N) * natEq (gb_above (Γ := Γ) (le_refl (succ k)))
 
 /-- `E⁺(N + 1, k + 1) + (k + 1) E⁻(N, k) = (k + 1) E⁺(N, k + 1)`. -/
 theorem Ep_step (N k : PTm n) : Γ ⊢[PRAAx] Ep (succ N) (succ k) + succ k * Om N k ≐ succ k * Ep N (succ k) := by
@@ -258,23 +253,21 @@ theorem shift_e (i k : PTm n) :
     Γ ⊢[PRAAx] inst2 (shiftBody eB) i (pairT zero (succ k)) ≐ inst2 (addBody eB xeB) i (pairT zero k) := by
   rw [inst2_shiftBody, inst2_addBody]
   refine (eB_at _ _ _).eqTrans (.eqTrans ?_ (congrAdd (eB_at _ _ _) (xeB_at _ _ _)).eqSymm)
-  have a := natEq (congrEv (succ_monus_succ (Γ := Γ) k i))
-  have p := natEq (gb_pascal (Γ := Γ) k i)
-  have z1 := natEq (pw_zero' (Γ := Γ) (succ i)); have z0 := natEq (pw_zero' (Γ := Γ) i)
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞(gle (succ i) (succ k)) * 𝔞(binom (succ k) (succ i))) * 𝔞(pw (succ i) zero) * a + 𝔞(ev (monus k i)) * 𝔞(pw (succ i) zero) * p + 𝔞(ev (monus k i)) * (𝔞(gle (succ i) k) * 𝔞(binom k (succ i))) * z1 + 𝔞(ev (monus k i)) * (𝔞(gle i k) * 𝔞(binom k i)) * (z1 - z0)
+  ipra_lc (𝔞(gle (succ i) (succ k)) * 𝔞(binom (succ k) (succ i))) * 𝔞(pw (succ i) zero) * natEq (congrEv (succ_monus_succ (Γ := Γ) k i)) +
+    𝔞(ev (monus k i)) * 𝔞(pw (succ i) zero) * natEq (gb_pascal (Γ := Γ) k i) +
+    𝔞(ev (monus k i)) * (𝔞(gle (succ i) k) * 𝔞(binom k (succ i))) * natEq (pw_zero' (Γ := Γ) (succ i)) +
+    𝔞(ev (monus k i)) * (𝔞(gle i k) * 𝔞(binom k i)) * (natEq (pw_zero' (Γ := Γ) (succ i)) - natEq (pw_zero' (Γ := Γ) i))
 
 theorem shift_o (i k : PTm n) :
     Γ ⊢[PRAAx] inst2 (shiftBody oB) i (pairT zero (succ k)) ≐ inst2 (addBody oB xoB) i (pairT zero k) := by
   rw [inst2_shiftBody, inst2_addBody]
   refine (oB_at _ _ _).eqTrans (.eqTrans ?_ (congrAdd (oB_at _ _ _) (xoB_at _ _ _)).eqSymm)
-  have a := natEq (congrOd (succ_monus_succ (Γ := Γ) k i))
-  have p := natEq (gb_pascal (Γ := Γ) k i)
-  have z1 := natEq (pw_zero' (Γ := Γ) (succ i)); have z0 := natEq (pw_zero' (Γ := Γ) i)
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞(gle (succ i) (succ k)) * 𝔞(binom (succ k) (succ i))) * 𝔞(pw (succ i) zero) * a + 𝔞(od (monus k i)) * 𝔞(pw (succ i) zero) * p + 𝔞(od (monus k i)) * (𝔞(gle (succ i) k) * 𝔞(binom k (succ i))) * z1 + 𝔞(od (monus k i)) * (𝔞(gle i k) * 𝔞(binom k i)) * (z1 - z0)
+  ipra_lc (𝔞(gle (succ i) (succ k)) * 𝔞(binom (succ k) (succ i))) * 𝔞(pw (succ i) zero) * natEq (congrOd (succ_monus_succ (Γ := Γ) k i)) +
+    𝔞(od (monus k i)) * 𝔞(pw (succ i) zero) * natEq (gb_pascal (Γ := Γ) k i) +
+    𝔞(od (monus k i)) * (𝔞(gle (succ i) k) * 𝔞(binom k (succ i))) * natEq (pw_zero' (Γ := Γ) (succ i)) +
+    𝔞(od (monus k i)) * (𝔞(gle i k) * 𝔞(binom k i)) * (natEq (pw_zero' (Γ := Γ) (succ i)) - natEq (pw_zero' (Γ := Γ) i))
 
-theorem mul_one' (a : PTm n) : Γ ⊢[PRAAx] a * one ≐ a := by apply deriveNat; ipra_simps; ring
+alias mul_one' := Common.mul_one_right
 
 theorem shift_pairT0 (k : PTm n) : Syn.shift (pairT zero k) = pairT zero (Syn.shift k) := by simp [Syn.shift]
 
@@ -327,12 +320,8 @@ theorem alt_e (k : PTm n) : Γ ⊢[PRAAx] Ep zero (succ k) ≐ Om zero k + Ep ze
     refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
     rw [shift_pairT0, shift_pairT0, show Syn.shift (succ k) = succ (Syn.shift k) by simp [Syn.shift]]
     exact shift_e _ _
-  have a := natEq (head_e (Γ := Γ) (succ k)); have b := natEq hs
-  have c := natEq (sum_add (Γ := Γ) eB xeB (succ k) (pairT zero k))
-  have d := natEq (Om0_split (Γ := Γ) k); have x := natEq (xe_ext (Γ := Γ) k)
-  have ev1 := natEq (ev_succ (Γ := Γ) k)
-  apply deriveNat; ipra_simps
-  linear_combination a + b + c - d + x + ev1
+  ipra_lc natEq (head_e (Γ := Γ) (succ k)) + natEq hs + natEq (sum_add (Γ := Γ) eB xeB (succ k) (pairT zero k)) -
+    natEq (Om0_split (Γ := Γ) k) + natEq (xe_ext (Γ := Γ) k) + natEq (ev_succ (Γ := Γ) k)
 
 /-- `E⁻(0, k + 1) = E⁺(0, k) + E⁻(0, k)`. -/
 theorem alt_o (k : PTm n) : Γ ⊢[PRAAx] Om zero (succ k) ≐ Ep zero k + Om zero k := by
@@ -342,12 +331,8 @@ theorem alt_o (k : PTm n) : Γ ⊢[PRAAx] Om zero (succ k) ≐ Ep zero k + Om ze
     refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
     rw [shift_pairT0, shift_pairT0, show Syn.shift (succ k) = succ (Syn.shift k) by simp [Syn.shift]]
     exact shift_o _ _
-  have a := natEq (head_o (Γ := Γ) (succ k)); have b := natEq hs
-  have c := natEq (sum_add (Γ := Γ) oB xoB (succ k) (pairT zero k))
-  have d := natEq (Ep0_split (Γ := Γ) k); have x := natEq (xo_ext (Γ := Γ) k)
-  have od1 := natEq (od_succ (Γ := Γ) k)
-  apply deriveNat; ipra_simps
-  linear_combination a + b + c - d + x + od1
+  ipra_lc natEq (head_o (Γ := Γ) (succ k)) + natEq hs + natEq (sum_add (Γ := Γ) oB xoB (succ k) (pairT zero k)) -
+    natEq (Ep0_split (Γ := Γ) k) + natEq (xo_ext (Γ := Γ) k) + natEq (od_succ (Γ := Γ) k)
 
 /-! ## The inclusion–exclusion identity -/
 
@@ -365,18 +350,14 @@ theorem sum1 (f : PTm 2) (x : PTm n) : Γ ⊢[PRAAx] ap2 (sumF f) (succ zero) x 
   (sum_succ' f zero x).eqTrans ((congrAdd (sum_zero f x) (.eqRefl _)).eqTrans (zero_add _))
 
 theorem base0 : Γ ⊢[PRAAx] P (zero : PTm n) zero := by
-  have f0 := natEq (fact_zero (Γ := Γ) (zero : PTm n))
-  have s0 := natEq (Stirling.stir_zero (Γ := Γ) (n := n))
-  have o0 := natEq ((sum1 oB _).eqTrans ((head_o (Γ := Γ) (zero : PTm n)).eqTrans (par_zero (Γ := Γ))))
-  have e0 := natEq ((sum1 eB _).eqTrans ((head_e (Γ := Γ) (zero : PTm n)).eqTrans ev_zero))
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞(gle (zero : PTm n) zero) * 𝔞(Bell.nth (Stirling.row (zero : PTm n)) (monus zero zero)) * f0 + s0 + o0 - e0
+  ipra_lc 𝔞(gle (zero : PTm n) zero) * 𝔞(Bell.nth (Stirling.row (zero : PTm n)) (monus zero zero)) * natEq (fact_zero (Γ := Γ) (zero : PTm n)) +
+    natEq (Stirling.stir_zero (Γ := Γ) (n := n)) +
+    natEq ((sum1 oB _).eqTrans ((head_o (Γ := Γ) (zero : PTm n)).eqTrans (par_zero (Γ := Γ)))) -
+    natEq ((sum1 eB _).eqTrans ((head_e (Γ := Γ) (zero : PTm n)).eqTrans ev_zero))
 
 theorem base_succ (k : PTm n) : Γ ⊢[PRAAx] P zero (succ k) := by
   have z : Γ ⊢[PRAAx] stir zero (succ k) ≐ zero := Stirling.stir_above ((succ_monus_succ _ _).eqTrans (zero_le k))
-  have a := natEq (alt_e (Γ := Γ) k); have b := natEq (alt_o (Γ := Γ) k); have c := natEq z
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞(fact (succ k)) * c + b - a
+  ipra_lc 𝔞(fact (succ k)) * natEq z + natEq (alt_o (Γ := Γ) k) - natEq (alt_e (Γ := Γ) k)
 
 /-- `n = 0`: `k! S(0, k) + E⁻(0, k) = E⁺(0, k)`, the alternating binomial sum. -/
 theorem base (K : PTm n) : Γ ⊢[PRAAx] P zero K := by
@@ -385,24 +366,16 @@ theorem base (K : PTm n) : Γ ⊢[PRAAx] P zero K := by
   · exact congrP Prf.hyp0 (base_succ _)
 
 theorem pt_zero (N : PTm n) : Γ ⊢[PRAAx] P (succ N) zero := by
-  have s := natEq (Stirling.stir_succ_zero (Γ := Γ) N)
-  have pz := natEq ((pw_succ (Γ := Γ) zero N).eqTrans (mul_zero _))
-  have o := natEq ((sum1 oB _).eqTrans (oB_at (Γ := Γ) zero (succ N) zero))
-  have e := natEq ((sum1 eB _).eqTrans (eB_at (Γ := Γ) zero (succ N) zero))
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞(fact (zero : PTm n)) * s + o - e +
-    (𝔞(od (monus (zero : PTm n) zero)) - 𝔞(ev (monus (zero : PTm n) zero))) *
-      (𝔞(gle (zero : PTm n) zero) * 𝔞(binom (zero : PTm n) zero)) * pz
+  ipra_lc 𝔞(fact (zero : PTm n)) * natEq (Stirling.stir_succ_zero (Γ := Γ) N) +
+    natEq ((sum1 oB _).eqTrans (oB_at (Γ := Γ) zero (succ N) zero)) -
+    natEq ((sum1 eB _).eqTrans (eB_at (Γ := Γ) zero (succ N) zero)) +
+    (𝔞(od (monus (zero : PTm n) zero)) - 𝔞(ev (monus (zero : PTm n) zero))) * (𝔞(gle (zero : PTm n) zero) * 𝔞(binom (zero : PTm n) zero)) * natEq ((pw_succ (Γ := Γ) zero N).eqTrans (mul_zero _))
 
 theorem pt_succ {N k : PTm n} (h1 : Γ ⊢[PRAAx] P N (succ k)) (h0 : Γ ⊢[PRAAx] P N k) :
     Γ ⊢[PRAAx] P (succ N) (succ k) := by
-  have s := natEq (StirlingBinomial.stir_rec (Γ := Γ) N k)
-  have fk := natEq (fact_succ (Γ := Γ) k zero)
-  have ep := natEq (Ep_step (Γ := Γ) N k); have om := natEq (Om_step (Γ := Γ) N k)
-  have a := natEq h1; have b := natEq h0
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞(ap2 factF (succ k) zero) * s + om - ep + (𝔞 k + 1) * a + (𝔞 k + 1) * b +
-    𝔞(gle k N) * 𝔞(Bell.nth (Stirling.row N) (monus N k)) * fk
+  ipra_lc 𝔞(ap2 factF (succ k) zero) * natEq (StirlingBinomial.stir_rec (Γ := Γ) N k) + natEq (Om_step (Γ := Γ) N k) -
+    natEq (Ep_step (Γ := Γ) N k) + (𝔞 k + 1) * natEq h1 + (𝔞 k + 1) * natEq h0 +
+    𝔞(gle k N) * 𝔞(Bell.nth (Stirling.row N) (monus N k)) * natEq (fact_succ (Γ := Γ) k zero)
 
 /-- The violation body `1 ∸ [k! S(N, k) + E⁻ = E⁺]`, over `0 = k`, `1 = N`. -/
 abbrev vB : PTm 2 :=
@@ -468,7 +441,7 @@ theorem q_eq (N K : PTm n) : Γ ⊢[PRAAx] quo (monus (Ep N K) (Om N K)) (fact K
   have hl : Γ ⊢[PRAAx] lt zero (fact K) :=
     le_of_eq_add (d := pred (fact K)) (by have e := natEq hf; apply deriveNat; ipra_simps; linear_combination e)
   exact (congrAp2 quoF d (.eqRefl _)).eqTrans
-    (AnalyticNumberTheory.Totient.quo_eq hf (r := zero) (by apply deriveNat; ipra_simps; ring) hl)
+    (AnalyticNumberTheory.Totient.quo_eq hf (r := zero) (by ipra_ring) hl)
 
 /-- `eq:bell-ie`: `B_n = ∑_{k ≤ n} (1/k!) ∑_{i ≤ k} (−1)^{k−i} C(k, i) iⁿ`, each summand an exact quotient. -/
 theorem bell_ie (N : PTm n) : Γ ⊢[PRAAx] ap2 (sumF qB) (succ N) N ≐ Bell.bell N := by

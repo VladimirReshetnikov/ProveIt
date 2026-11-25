@@ -1,5 +1,6 @@
 import IPRADerivations.Combinatorics.BinomialTheorem
 import IPRADerivations.Foundations.ChineseRemainder
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Fermat's little theorem
@@ -58,12 +59,9 @@ theorem absorption_alg {Fq' Fq Fj' Fj Fm' Fm C₁ C₀ j q : PTm n}
     (f₁ : Γ ⊢[PRAAx] Fq' ≐ Fq * succ q) (f₂ : Γ ⊢[PRAAx] Fj' ≐ Fj * succ j)
     (f₃ : Γ ⊢[PRAAx] Fm' ≐ Fm) :
     Γ ⊢[PRAAx] (Fj * Fm) * (succ j * C₁) ≐ (Fj * Fm) * (succ q * C₀) := by
-  have h₁ := natEq e₁; have h₂ := natEq e₂; have h₃ := natEq f₁; have h₄ := natEq f₂
-  have h₅ := natEq f₃
-  apply deriveNat; ipra_simps
-  linear_combination -h₁ - Groth.ι (IPRA.Q.mk Γ Fm') * Groth.ι (IPRA.Q.mk Γ C₁) * h₄ -
-    Groth.ι (IPRA.Q.mk Γ Fj) * (Groth.ι (IPRA.Q.mk Γ j) + 1) * Groth.ι (IPRA.Q.mk Γ C₁) * h₅ + h₃ +
-    (Groth.ι (IPRA.Q.mk Γ q) + 1) * h₂
+  ipra_lc -natEq e₁ - Groth.ι (IPRA.Q.mk Γ Fm') * Groth.ι (IPRA.Q.mk Γ C₁) * natEq f₂ -
+    Groth.ι (IPRA.Q.mk Γ Fj) * (Groth.ι (IPRA.Q.mk Γ j) + 1) * Groth.ι (IPRA.Q.mk Γ C₁) * natEq f₃ + natEq f₁ +
+    (Groth.ι (IPRA.Q.mk Γ q) + 1) * natEq e₂
 
 /-- `(j + 1) C(q + 1, j + 1) = (q + 1) C(q, j)` for `j < q`. -/
 theorem absorption {q j : PTm n} (hj : Γ ⊢[PRAAx] lt j q) :
@@ -117,10 +115,8 @@ theorem freshman_alg {L Pw T₀ Sp Sq M T₃ Ap p q w : PTm n}
     (s₂ : Γ ⊢[PRAAx] Sp ≐ Sq) (s₃ : Γ ⊢[PRAAx] Sq ≐ M + T₃) (t₃ : Γ ⊢[PRAAx] T₃ ≐ one * Ap)
     (eM : Γ ⊢[PRAAx] M ≐ succ q * w) (hq : Γ ⊢[PRAAx] p ≐ succ q) :
     Γ ⊢[PRAAx] Pw + p * zero ≐ succ Ap + p * w := by
-  have h₁ := natEq bt; have h₂ := natEq s₁; have h₃ := natEq t₀; have h₄ := natEq s₂
-  have h₅ := natEq s₃; have h₆ := natEq t₃; have h₇ := natEq eM; have h₈ := natEq hq
-  apply deriveNat; ipra_simps
-  linear_combination -h₁ + h₂ + h₃ + h₄ + h₅ + h₆ + h₇ - Groth.ι (IPRA.Q.mk Γ w) * h₈
+  ipra_lc -natEq bt + natEq s₁ + natEq t₀ + natEq s₂ + natEq s₃ + natEq t₃ + natEq eM -
+    Groth.ι (IPRA.Q.mk Γ w) * natEq hq
 
 /-- `(a + 1)ᵖ ≡ aᵖ + 1 (mod p)` for a prime `p`. -/
 theorem freshman {p a : PTm n} (hp : Γ ⊢[PRAAx] prime p) :
@@ -160,11 +156,8 @@ theorem rem_succ_congr {M x y : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M))
   have h' : Γ ⊢[PRAAx] rem x (succ (pred M)) ≐ rem y (succ (pred M)) :=
     (congrAp2 remF (.eqRefl _) hM.eqSymm).eqTrans (h.eqTrans (congrAp2 remF (.eqRefl _) hM))
   refine rem_eq_of_eq hM (k₁ := quo y (succ (pred M))) (k₂ := quo x (succ (pred M))) ?_
-  have h₁ := natEq (Prf.andE₁ dx); have h₂ := natEq (Prf.andE₁ dy); have h₃ := natEq h'
-  have h₄ := natEq hM
-  apply deriveNat; ipra_simps
-  linear_combination h₁ - h₂ + h₃ +
-    (Groth.ι (IPRA.Q.mk Γ (quo y (succ (pred M)))) - Groth.ι (IPRA.Q.mk Γ (quo x (succ (pred M))))) * h₄
+  ipra_lc natEq (Prf.andE₁ dx) - natEq (Prf.andE₁ dy) + natEq h' +
+    (Groth.ι (IPRA.Q.mk Γ (quo y (succ (pred M)))) - Groth.ι (IPRA.Q.mk Γ (quo x (succ (pred M))))) * natEq hM
 
 /-- `aᵖ ≡ a (mod p)` for a prime `p`. -/
 theorem fermat_at {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (a : PTm n) :

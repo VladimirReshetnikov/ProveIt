@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.GaussianScalarDeterminantRowSelection
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual last-row transports for a vanishing scalar determinant
@@ -45,9 +46,7 @@ def moveToLast (A m p : PTm n) : PTm n := selected moveBody A (succ m) (pairT m 
 
 theorem move_index_congr {m b p q r s : PTm n} (hm : Γ ⊢[PRAAx] m ≐ b) (hp : Γ ⊢[PRAAx] p ≐ q)
     (hr : Γ ⊢[PRAAx] r ≐ s) : Γ ⊢[PRAAx] moveIndex m p r ≐ moveIndex b q s := by
-  simpa only [subst_moveIndex,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.head_cons,Matrix.tail_cons] using Prf.eqCongr (Γ := Γ) (moveIndex (var 0) (var 1) (var 2) : PTm 3)
-      (σ := ![m,p,r]) (σ' := ![b,q,s]) (fun i => by fin_cases i; exact hm; exact hp; exact hr)
+  ipra_congr (moveIndex (var 0) (var 1) (var 2) : PTm 3) with [hm, hp, hr]
 
 theorem move_body_at (m p r : PTm n) : Γ ⊢[PRAAx] inst2 moveBody r (pairT m p) ≐ moveIndex m p r := by
   simpa only [moveBody,inst2,subst_moveIndex,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using
@@ -129,9 +128,7 @@ theorem zeroed_determinant (A m : PTm n) : Γ ⊢[PRAAx] scalarDet (zeroedLast A
 
 theorem duplicate_index_congr {m b k l r s : PTm n} (hm : Γ ⊢[PRAAx] m ≐ b) (hk : Γ ⊢[PRAAx] k ≐ l)
     (hr : Γ ⊢[PRAAx] r ≐ s) : Γ ⊢[PRAAx] duplicateIndex m k r ≐ duplicateIndex b l s := by
-  simpa only [subst_duplicateIndex,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.head_cons,Matrix.tail_cons] using Prf.eqCongr (Γ := Γ) (duplicateIndex (var 0) (var 1) (var 2) : PTm 3)
-      (σ := ![m,k,r]) (σ' := ![b,l,s]) (fun i => by fin_cases i; exact hm; exact hk; exact hr)
+  ipra_congr (duplicateIndex (var 0) (var 1) (var 2) : PTm 3) with [hm, hk, hr]
 theorem duplicate_body_at (m k r : PTm n) : Γ ⊢[PRAAx] inst2 duplicateBody r (pairT m k) ≐ duplicateIndex m k r := by
   simpa only [duplicateBody,inst2,subst_duplicateIndex,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using
     duplicate_index_congr (fst_pair (Γ := Γ) m k) (snd_pair m k) (.eqRefl r)

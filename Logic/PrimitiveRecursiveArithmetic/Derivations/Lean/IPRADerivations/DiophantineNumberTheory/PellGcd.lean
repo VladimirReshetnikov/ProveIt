@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.Recurrences
 import IPRADerivations.AnalyticNumberTheory.PhiUpper
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Strong divisibility of the Pell sequence
@@ -168,11 +169,9 @@ theorem pell_norm (k : PTm n) : Γ ⊢[PRAAx] normF u v D k := by
 
 theorem X_pos (k : PTm n) : Γ ⊢[PRAAx] PX u v D k ≐ succ (pred (PX u v D k)) := by
   refine .orE (zero_or_succ (PX u v D k)) ?_ Prf.hyp0
-  have h₁ := natEq ((pell_norm hU k).wk (ψ := PX u v D k ≐ zero))
   refine succ_ne_zero' _ (a := D * (PY u v D k * PY u v D k)) ?_
-  have h₂ := natEq (Prf.hyp0 : ((PX u v D k ≐ zero) :: Γ) ⊢[PRAAx] _)
-  apply deriveNat; ipra_simps
-  linear_combination -h₁ + Groth.ι (Q.mk _ (PX u v D k)) * h₂
+  ipra_lc -natEq ((pell_norm hU k).wk (ψ := PX u v D k ≐ zero)) +
+    Groth.ι (Q.mk _ (PX u v D k)) * natEq (Prf.hyp0 : ((PX u v D k ≐ zero) :: Γ) ⊢[PRAAx] _)
 
 /-- `gcd(Y_k, X_k) = 1`. -/
 theorem cop_XY (k : PTm n) : Γ ⊢[PRAAx] gcd (PY u v D k) (PX u v D k) ≐ one := by
@@ -193,10 +192,7 @@ theorem Y_pos {u v D k : PTm n} (hU : Γ ⊢[PRAAx] u * u ≐ D * (v * v) + one)
   have e := (congrPY u v D hk).eqTrans (Y_succ u v D (pred k))
   refine eq_succ_pred (y := pred v * pred (PX u v D (pred k)) + pred v + pred (PX u v D (pred k)) +
     u * PY u v D (pred k)) ?_
-  have h₁ := natEq e; have h₂ := natEq hv; have h₃ := natEq hX
-  apply deriveNat; ipra_simps
-  linear_combination h₁ + Groth.ι (Q.mk _ (PX u v D (pred k))) * h₂ +
-    (Groth.ι (Q.mk _ (pred v)) + 1) * h₃
+  ipra_lc natEq e + Groth.ι (Q.mk _ (PX u v D (pred k))) * natEq hv + (Groth.ι (Q.mk _ (pred v)) + 1) * natEq hX
 
 /-! ## `Y_g ∣ Y_{qg}` -/
 
@@ -223,7 +219,7 @@ theorem Y_dvd_mul {u v D g : PTm n} (hg : Γ ⊢[PRAAx] PY u v D g ≐ succ (pre
               PY (Syn.shift u) (Syn.shift v) (Syn.shift D) (Syn.shift g) +
             PX (Syn.shift u) (Syn.shift v) (Syn.shift D) (Syn.shift g) *
               PY (Syn.shift u) (Syn.shift v) (Syn.shift D) (var 0 * Syn.shift g) :=
-        (congrPY _ _ _ (by apply deriveNat; ipra_simps; ring)).eqTrans (Prf.andE₂ (add_formula _ _))
+        (congrPY _ _ _ (by ipra_ring)).eqTrans (Prf.andE₂ (add_formula _ _))
       refine dvd_congr e.eqSymm (dvd_add' hg'.wk ?_ ?_)
       · exact dvd_congr (mul_comm _ _) (dvd_mul' hg'.wk _ (dvd_self' hg'.wk))
       · exact dvd_congr (mul_comm _ _) (dvd_mul' hg'.wk _ Prf.hyp0)

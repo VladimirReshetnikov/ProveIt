@@ -1,6 +1,6 @@
 import IPRADerivations.Combinatorics.FibonacciGcd
 import IPRADerivations.DiophantineNumberTheory.PellModular
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Periodicity of the Fibonacci and Lucas numbers modulo `d`

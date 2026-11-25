@@ -1,6 +1,7 @@
 import IPRADerivations.Combinatorics.CatalanGrowth
 import IPRADerivations.Combinatorics.BellTouchard
 import IPRADerivations.DiophantineNumberTheory.Coprime
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Prime Catalan numbers (`catalan_numbers_ipra_2026-11-16`, Section 5)
@@ -49,10 +50,7 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `2 ≤ p` gives `p ≥ 1`. -/
-theorem pos_of_two_le {p : PTm n} (h : Γ ⊢[PRAAx] le two p) : Γ ⊢[PRAAx] p ≐ succ (pred p) := by
-  have e := natEq (eq_add_of_le h)
-  exact pos_of_eq_succ (c := succ (monus p two))
-    (by apply deriveNat; ipra_simps; linear_combination e)
+alias pos_of_two_le := Common.pos_of_two_le
 
 /-- A prime divisor of `Cat_N` is at most `2N`. -/
 theorem prime_dvd_cat_le {p N : PTm n} (hp : Γ ⊢[PRAAx] prime p)

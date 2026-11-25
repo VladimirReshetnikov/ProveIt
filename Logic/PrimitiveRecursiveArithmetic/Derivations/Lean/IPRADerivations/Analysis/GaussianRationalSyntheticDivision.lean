@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianSyntheticDivision
 import IPRADerivations.Analysis.GaussianRationalMetric
 import IPRADerivations.Analysis.GaussianRationalL1
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual canonical Gaussian-rational synthetic division
@@ -40,16 +41,13 @@ local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
 /-- Small congruence adapters keep the fixed normalizing programs opaque. -/
 theorem qadd_congr {a a' b b' : PTm n} (ha : Γ ⊢[PRAAx] a ≐ a') (hb : Γ ⊢[PRAAx] b ≐ b') :
     Γ ⊢[PRAAx] qadd a b ≐ qadd a' b' := by
-  simpa using Prf.eqCongr (qadd (var 0) (var 1) : PTm 2) (σ := ![a,b]) (σ' := ![a',b'])
-    (fun i => by fin_cases i; exact ha; exact hb)
+  ipra_congr (qadd (var 0) (var 1) : PTm 2) with [ha, hb]
 theorem qmul_congr {a a' b b' : PTm n} (ha : Γ ⊢[PRAAx] a ≐ a') (hb : Γ ⊢[PRAAx] b ≐ b') :
     Γ ⊢[PRAAx] qmul a b ≐ qmul a' b' := by
-  simpa using Prf.eqCongr (qmul (var 0) (var 1) : PTm 2) (σ := ![a,b]) (σ' := ![a',b'])
-    (fun i => by fin_cases i; exact ha; exact hb)
+  ipra_congr (qmul (var 0) (var 1) : PTm 2) with [ha, hb]
 theorem qsub_congr {a a' b b' : PTm n} (ha : Γ ⊢[PRAAx] a ≐ a') (hb : Γ ⊢[PRAAx] b ≐ b') :
     Γ ⊢[PRAAx] qsub a b ≐ qsub a' b' := by
-  simpa using Prf.eqCongr (qsub (var 0) (var 1) : PTm 2) (σ := ![a,b]) (σ' := ![a',b'])
-    (fun i => by fin_cases i; exact ha; exact hb)
+  ipra_congr (qsub (var 0) (var 1) : PTm 2) with [ha, hb]
 
 theorem rescale_to (q a A t E : PTm n) (h : Γ ⊢[PRAAx] represents q a A)
     (he : Γ ⊢[PRAAx] A*t ≐ E) : Γ ⊢[PRAAx] represents q (scale t a) E :=

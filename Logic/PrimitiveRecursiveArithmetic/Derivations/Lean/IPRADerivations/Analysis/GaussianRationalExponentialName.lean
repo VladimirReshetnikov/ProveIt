@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianRationalExponentialTail
 import IPRADerivations.Analysis.GaussianEuclideanDistanceName
 import IPRADerivations.Analysis.GaussianRationalDistanceOrder
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # An actual finite-series exponential name at an original rational input
@@ -115,10 +116,8 @@ theorem original_rational_name (q B : PTm n) (hq : Γ ⊢[PRAAx] bounded q B one
 and the computed original finite scalarSum, without raw code eta. -/
 theorem source_sample (p q B : PTm n) : Γ ⊢[PRAAx] sample p (data q B) ≐ scalarSum q (lastIndex B p) := by
   have idx : Γ ⊢[PRAAx] lastIndex (fstT (data q B)) p ≐ lastIndex B p := by
-    simpa only [GaussianRationalExponentialTail.subst_lastIndex,Syn.subst_var,Matrix.cons_val_zero,
-      Matrix.cons_val_one] using Prf.eqCongr (lastIndex (var 0) (var 1) : PTm 2)
-        (σ := ![fstT (data q B),p]) (σ' := ![B,p])
-        (fun i => by fin_cases i; exact fst_pair B q; exact .eqRefl _)
+    ipra_congr (lastIndex (var 0) (var 1) : PTm 2) with
+      [(show _ ⊢[PRAAx] fstT (data q B) ≐ B from fst_pair B q), .eqRefl p]
   exact (sample_at p (data q B)).eqTrans
     (GaussianRationalFiniteSum.sum_index_congr scalarBody (congrSucc idx) (snd_pair B q))
 

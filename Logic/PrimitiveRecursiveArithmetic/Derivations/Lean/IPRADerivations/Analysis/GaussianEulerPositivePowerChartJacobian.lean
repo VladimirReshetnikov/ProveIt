@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianEulerPositivePowerChart
 import IPRADerivations.Analysis.GaussianEulerPowerIncrement
 import IPRADerivations.Analysis.GaussianEulerDampedTimeRate
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Evaluated Jacobian and exact first-order step of the positive power chart
@@ -87,10 +88,7 @@ theorem original_linear_factor (e f a step : PTm n) (hf : Γ ⊢[PRAAx] le one f
 
 theorem fraction_congr {a b c d : PTm n} (hA : Γ ⊢[PRAAx] a ≐ c) (hB : Γ ⊢[PRAAx] b ≐ d) : Γ ⊢[PRAAx]
     fraction a b ≐ fraction c d := by
-  simpa only [GaussianPositiveRationalLogarithm.subst_fraction,Syn.subst_var,
-    Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (fraction (var 0) (var 1) : PTm 2)
-      (σ := ![a,b]) (σ' := ![c,d]) (fun i => by fin_cases i; exact hA; exact hB)
+  ipra_congr (fraction (var 0) (var 1) : PTm 2) with [hA, hB]
 
 /-- Genuine canonical rational cancellation, including a zero numerator. -/
 theorem fraction_cancel (a b t : PTm n) (hb : Γ ⊢[PRAAx] le one b) (ht : Γ ⊢[PRAAx] le one t) : Γ ⊢[PRAAx]

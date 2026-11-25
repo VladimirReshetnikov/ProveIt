@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianRationalPolynomialProduct
 import IPRADerivations.Analysis.GaussianRationalMonicReduction
 import IPRADerivations.Analysis.GaussianRationalMonicReconstruction
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # A polynomial-valued monic companion step
@@ -450,10 +451,7 @@ theorem returned_coefficient_reconstruction (F G m a c r s : PTm n)
 theorem values_congr {F G m l x y : PTm n} (hF : Γ ⊢[PRAAx] F ≐ G)
     (hm : Γ ⊢[PRAAx] m ≐ l) (hx : Γ ⊢[PRAAx] x ≐ y) : Γ ⊢[PRAAx]
     values F m x ≐ values G l y := by
-  simpa only [subst_values,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (values (var 0) (var 1) (var 2) : PTm 3)
-      (σ := ![F,m,x]) (σ' := ![G,l,y]) (fun j => by fin_cases j; exact hF; exact hm; exact hx)
+  ipra_congr (values (var 0) (var 1) (var 2) : PTm 3) with [hF, hm, hx]
 theorem returned_evaluation (F G m a c x y : PTm n)
     (hm : Γ ⊢[PRAAx] le one m) (hF : Γ ⊢[PRAAx] rowShape F m c)
     (hG : Γ ⊢[PRAAx] rowShape G m a) : Γ ⊢[PRAAx]

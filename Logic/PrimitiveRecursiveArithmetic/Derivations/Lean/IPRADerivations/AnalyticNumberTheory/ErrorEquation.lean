@@ -74,7 +74,7 @@ theorem A_split (x K L : PTm n) :
   have s := sum_add2 (Γ := Γ) lwB (cvF (lamF wt) (lamF wt)) (GxB wt) (K := succ x) (x := pairT K (fact L))
     (x' := pairT K (fact L)) (z := pairT K (fact L)) (.allI (.impI (by
       rw [inst2_GxB, inst2_lwB, inst2_cvF]
-      apply deriveNat; ipra_simps; ring)))
+      ipra_ring)))
   exact s.eqTrans (congrAdd (.eqRefl _) (conv_summatory (lamF wt) (lamF wt) x _))
 
 /-! ## `Σ_{n≤x} L_w(n)` against `x u_x` -/
@@ -82,7 +82,7 @@ theorem A_split (x K L : PTm n) :
 theorem U_mono {k m K : PTm n} (F : PTm n) (hkm : Γ ⊢[PRAAx] le (succ k) m) :
     Γ ⊢[PRAAx] le (U (succ k) K F) (U m K F) := by
   have m1 : Γ ⊢[PRAAx] le (S K F) (S (K * succ k) F) :=
-    S_mono F (le_of_eq_add (d := K * k) (by apply deriveNat; ipra_simps; ring))
+    S_mono F (le_of_eq_add (d := K * k) (by ipra_ring))
   have m2 : Γ ⊢[PRAAx] le (S (K * succ k) F) (S (K * m) F) := S_mono F (le_scale K hkm)
   have m3 : Γ ⊢[PRAAx] le (S K F) (S (K * m) F) := le_trans m1 m2
   have Eu := natEq (eq_add_of_le m1)

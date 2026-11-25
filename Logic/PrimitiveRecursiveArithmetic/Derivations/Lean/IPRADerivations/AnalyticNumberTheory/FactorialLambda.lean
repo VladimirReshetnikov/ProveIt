@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.WeightedMangoldt
 import IPRADerivations.AnalyticNumberTheory.SummatoryPhi
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The factorial identity for the weighted von Mangoldt function
@@ -95,7 +96,7 @@ theorem ell_mul_pt {q a b y : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) (h
       (zero_mul_l (zero_mul_l h0 _) _)).eqTrans (add_zero _)).eqSymm
   · have h1 : ((isP q ≐ one) :: Γ) ⊢[PRAAx] isP q ≐ one := Prf.hyp0
     exact (congrMul (congrMul (.eqRefl _) (val_mul (prime_of_isP h1) ha.wk hb.wk)) (.eqRefl _)).eqTrans
-      (by apply deriveNat; ipra_simps; ring)
+      (by ipra_ring)
 
 /-- Complete additivity: `L_w(a b) = L_w(a) + L_w(b)` for `a, b ≥ 1`. -/
 theorem lw_mul {a b y : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) (hb : Γ ⊢[PRAAx] b ≐ succ (pred b)) :
@@ -157,10 +158,8 @@ theorem fl_pt (d N y : PTm n) :
     exact (zero_mul_l l0 _).eqTrans ((congrAdd (zero_mul_l l0 _)
       (zero_mul_l (zero_mul_l ((congrSg h0).eqTrans sg_zero) _) _)).eqTrans (add_zero _)).eqSymm
   · have hd : ((d ≐ succ (pred d)) :: Γ) ⊢[PRAAx] d ≐ succ (pred d) := Prf.hyp0
-    have q := natEq (SummatoryPhi.quo_succ (N := N) hd)
-    have s := natEq ((congrSg hd).eqTrans (sg_succ _))
-    apply deriveNat; ipra_simps
-    linear_combination 𝔞 (Lam w d y) * q - 𝔞 (eqb (rem (succ N) d) zero) * 𝔞 (Lam w d y) * s
+    ipra_lc 𝔞 (Lam w d y) * natEq (SummatoryPhi.quo_succ (N := N) hd) -
+      𝔞 (eqb (rem (succ N) d) zero) * 𝔞 (Lam w d y) * natEq ((congrSg hd).eqTrans (sg_succ _))
 
 /-- `∑_{d ≤ N+1} Λ_w(d) ⌊(N+1)/d⌋ = ∑_{d ≤ N} Λ_w(d) ⌊N/d⌋ + L_w(N + 1)`. -/
 theorem fl_step (N y : PTm n) :
@@ -176,9 +175,7 @@ theorem fl_step (N y : PTm n) :
   have c : Γ ⊢[PRAAx] inst2 (FLB w) (succ N) (pairT N y) ≐ zero :=
     (FL_at w _ _ _).eqTrans ((congrMul (.eqRefl _) (SummatoryPhi.quo_lt_self N)).eqTrans (mul_zero _))
   have d := lambda_divsum (Γ := Γ) w (m := succ N) (y := y) (congrSucc (pred_succ _).eqSymm)
-  have e₁ := natEq a; have e₂ := natEq b; have e₃ := natEq c; have e₄ := natEq d
-  apply deriveNat; ipra_simps
-  linear_combination e₁ + e₂ + e₃ + e₄
+  ipra_lc natEq a + natEq b + natEq c + natEq d
 
 /-- Variables: `0 = N`, `1 = y`. -/
 private abbrev flF : Fm PTm 2 :=

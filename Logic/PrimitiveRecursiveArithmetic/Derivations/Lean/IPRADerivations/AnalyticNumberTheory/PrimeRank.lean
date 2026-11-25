@@ -2,6 +2,8 @@ import IPRADerivations.AnalyticNumberTheory.PrimesModFour
 import IPRADerivations.AnalyticNumberTheory.PiTheta
 import IPRADerivations.Foundations.IterationFusion
 import IPRADerivations.Foundations.CrossingSearch
+import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Rank and inverse rank of the primes
@@ -52,25 +54,20 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Order helpers -/
 
-theorem le_of_lt_succ {a b : PTm n} (h : Γ ⊢[PRAAx] lt a (succ b)) : Γ ⊢[PRAAx] le a b :=
-  (succ_monus_succ _ _).eqSymm.eqTrans h
+alias le_of_lt_succ := Common.le_of_lt_succ
 
-theorem succ_le_succ {a b : PTm n} (h : Γ ⊢[PRAAx] le a b) : Γ ⊢[PRAAx] le (succ a) (succ b) :=
-  (succ_monus_succ _ _).eqTrans h
+alias succ_le_succ := Common.succ_le_succ
 
 theorem lt_succ_self (a : PTm n) : Γ ⊢[PRAAx] lt a (succ a) := le_refl (succ a)
 
 theorem succ_add_alg {a b d : PTm n} (e : Γ ⊢[PRAAx] b ≐ a + d) : Γ ⊢[PRAAx] succ b ≐ succ a + d := by
-  have e1 := natEq e
-  apply deriveNat; ipra_simps; linear_combination e1
+  ipra_lc natEq e
 
 theorem alg0 {A B I : PTm n} (e : Γ ⊢[PRAAx] A ≐ B + I) (z : Γ ⊢[PRAAx] I ≐ zero) : Γ ⊢[PRAAx] B ≐ A := by
-  have a := natEq e; have b := natEq z
-  apply deriveNat; ipra_simps; linear_combination -a - b
+  ipra_lc -natEq e - natEq z
 
 theorem alg1 {A B I : PTm n} (e : Γ ⊢[PRAAx] A ≐ B + I) (o : Γ ⊢[PRAAx] I ≐ one) : Γ ⊢[PRAAx] A ≐ succ B := by
-  have a := natEq e; have b := natEq o
-  apply deriveNat; ipra_simps; linear_combination a + b
+  ipra_lc natEq e + natEq o
 
 /-! ## The counting function -/
 

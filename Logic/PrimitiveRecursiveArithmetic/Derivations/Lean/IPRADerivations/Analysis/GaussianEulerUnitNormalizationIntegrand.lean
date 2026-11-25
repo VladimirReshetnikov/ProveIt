@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianEulerDecayQuadrature
 import IPRADerivations.Analysis.GaussianCoefficientNormOrder
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The original Euler integrand at one is literally the decay evaluator
@@ -33,16 +34,11 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 private theorem ceil_congr (u v : PTm n) (h : Γ ⊢[PRAAx] u ≐ v) : Γ ⊢[PRAAx]
     GaussianGeneralFTAConstants.ceilL1 u ≐ GaussianGeneralFTAConstants.ceilL1 v := by
-  simpa only [GaussianGeneralFTAConstants.subst_ceilL1,Syn.subst_var,Matrix.cons_val_zero,Matrix.head_cons] using
-    Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (GaussianGeneralFTAConstants.ceilL1 (var 0) : PTm 1)
-      (σ := ![u]) (σ' := ![v]) (fun i => by fin_cases i; exact h)
+  ipra_congr (GaussianGeneralFTAConstants.ceilL1 (var 0) : PTm 1) with [h]
 
 private theorem index_radius_congr (R S p : PTm n) (h : Γ ⊢[PRAAx] R ≐ S) : Γ ⊢[PRAAx]
     GaussianRadiusExponentialName.index R p ≐ GaussianRadiusExponentialName.index S p := by
-  simpa only [GaussianRadiusExponentialName.subst_index,Syn.subst_var,
-    Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (GaussianRadiusExponentialName.index (var 0) (var 1) : PTm 2)
-      (σ := ![R,p]) (σ' := ![S,p]) (fun i => by fin_cases i; exact h; exact .eqRefl _)
+  ipra_congr (GaussianRadiusExponentialName.index (var 0) (var 1) : PTm 2) with [h, .eqRefl p]
 
 theorem coefficient_one : Γ ⊢[PRAAx] coefficient (oneCode : PTm n) one ≐ qzero :=
   GaussianCoefficientNormOrder.qsub_self qone

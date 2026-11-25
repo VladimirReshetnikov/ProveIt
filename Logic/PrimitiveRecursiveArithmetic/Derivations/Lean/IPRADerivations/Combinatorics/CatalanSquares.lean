@@ -1,5 +1,6 @@
 import IPRADerivations.Combinatorics.CatalanNarayana
 import IPRADerivations.Probability.Variance
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The square sum of the Catalan numbers
@@ -56,23 +57,17 @@ theorem inst2_twoN (j N : PTm n) : inst2 twoNB j N = two * inst2 nB j N := by si
 theorem square_pt (j N : PTm n) :
     Γ ⊢[PRAAx] inst2 (addBody dB twoNB) j N ≐ inst2 (addBody (shiftBody sqB) sqB) j N := by
   rw [inst2_addBody, inst2_addBody, inst2_d, inst2_twoN, inst2_n, inst2_shiftBody, inst2_sq, inst2_sq]
-  have e := natEq (ad_sq (Γ := Γ) (gb N (succ j)) (gb N j))
-  apply deriveNat; ipra_simps
-  linear_combination e
+  ipra_lc natEq (ad_sq (Γ := Γ) (gb N (succ j)) (gb N j))
 
 /-- `1 + ∑_{j ≤ n} C(n, j + 1)² = C(2n, n)`. -/
 theorem shift_squares (N : PTm n) :
     Γ ⊢[PRAAx] one + ap2 (sumF (shiftBody sqB)) (succ N) N ≐ binom (N + N) N := by
-  have s₁ := natEq (sum_shift (Γ := Γ) sqB (succ N) N)
-  have s₂ := natEq (sum_succ' (Γ := Γ) sqB (succ N) N)
   have z₀ : Γ ⊢[PRAAx] inst2 sqB zero N ≐ one := by
     rw [inst2_sq]; exact (congrMul (gb_zero N) (gb_zero N)).eqTrans (one_mul one)
   have zt : Γ ⊢[PRAAx] inst2 sqB (succ N) N ≐ zero := by
     rw [inst2_sq]; exact (congrMul (gb_above (le_refl _)) (.eqRefl _)).eqTrans (zero_mul _)
-  have a := natEq z₀; have b := natEq zt
-  have c := natEq (central_squares (Γ := Γ) N)
-  apply deriveNat; ipra_simps
-  linear_combination -s₁ + s₂ - a + b + c
+  ipra_lc -natEq (sum_shift (Γ := Γ) sqB (succ N) N) + natEq (sum_succ' (Γ := Γ) sqB (succ N) N) - natEq z₀ +
+    natEq zt + natEq (central_squares (Γ := Γ) N)
 
 /-- (2.20), cleared: `1 + ∑_{j ≤ n} abs(C(n, j + 1) − C(n, j))² = 2 Cat_n` for `n = m + 1`. -/
 theorem signed_square (m : PTm n) :
@@ -95,7 +90,7 @@ theorem signed_square (m : PTm n) :
   have Sh := natEq (shift_squares (Γ := Γ) (succ m))
   have Cq := natEq (central_squares (Γ := Γ) (succ m))
   have cs := natEq (cat_spec (Γ := Γ) (succ m))
-  have bc := natEq (congrBinom (Γ := Γ) (by apply deriveNat; ipra_simps; ring :
+  have bc := natEq (congrBinom (Γ := Γ) (by ipra_ring :
     Γ ⊢[PRAAx] succ m + succ m ≐ two * succ m) (.eqRefl (succ m)))
   apply deriveNat; ipra_simps
   linear_combination -AL + P + AR + Sh + Cq + 2 * bc - 2 * cs - Ts - 2 * Ns - 2 * nM - 2 * narr

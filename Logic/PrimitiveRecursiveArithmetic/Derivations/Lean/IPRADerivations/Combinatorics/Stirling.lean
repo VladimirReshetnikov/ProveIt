@@ -1,4 +1,5 @@
 import IPRADerivations.Combinatorics.Bell
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Stirling numbers of the second kind
@@ -160,9 +161,7 @@ theorem sg_succ (k : PTm n) : Γ ⊢[PRAAx] sg (succ k) ≐ one :=
 
 theorem gle_above {k N : PTm n} (h : Γ ⊢[PRAAx] le (succ N) k) : Γ ⊢[PRAAx] gle k N ≐ zero := by
   have e : Γ ⊢[PRAAx] k ≐ succ (monus k (succ N)) + N := by
-    have a := natEq (eq_add_of_le h)
-    apply deriveNat; ipra_simps
-    linear_combination a
+    ipra_lc natEq (eq_add_of_le h)
   have m : Γ ⊢[PRAAx] monus k N ≐ succ (monus k (succ N)) :=
     (congrMonus e (.eqRefl _)).eqTrans (add_monus _ _)
   exact (congrMonus (.eqRefl _) m).eqTrans ((succ_monus_succ _ _).eqTrans (zero_monus _))
@@ -236,9 +235,7 @@ theorem stir_succ_succ {N K : PTm n} (h : Γ ⊢[PRAAx] le K N) :
       nth (row N) (monus N K) :=
     congrNth (snd_pair _ _) (congrMonus (fst_pair _ _) (pred_succ _))
   have n₂ := n₁.eqTrans (congrAdd (congrMul (.eqRefl _) (congrMul a₁ b₁)) (congrMul (sg_succ K) d₁))
-  have g₂ := natEq (gle_of_le h)
   refine (congrMul g₁ n₂).eqTrans ?_
-  apply deriveNat; ipra_simps
-  linear_combination -(𝔞(nth (row N) (monus N K))) * g₂
+  ipra_lc -(𝔞(nth (row N) (monus N K))) * natEq (gle_of_le h)
 
 end LeanProofs.IPRA.Combinatorics.Stirling

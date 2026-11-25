@@ -2,6 +2,7 @@ import IPRADerivations.Combinatorics.StirlingBinomial
 import IPRADerivations.Combinatorics.Bell
 import IPRADerivations.Core.Fubini
 import IPRADerivations.Core.SumSplit
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Bell numbers as sums of Stirling numbers
@@ -54,8 +55,7 @@ theorem inst3_a (k j N : PTm n) : inst3 a3 k j N = gb N j * stir j k := by simp 
 
 theorem T_ext {j N : PTm n} (h : Γ ⊢[PRAAx] le j N) : Γ ⊢[PRAAx] ap2 (sumF tB) (succ N) j ≐ T j := by
   have eD : Γ ⊢[PRAAx] succ N ≐ succ j + monus N j := by
-    have e := natEq (eq_add_of_le h)
-    apply deriveNat; ipra_simps; linear_combination e
+    ipra_lc natEq (eq_add_of_le h)
   refine (congrAp2 (sumF tB) eD (.eqRefl _)).eqTrans ((sum_split tB (succ j) (monus N j) j).eqTrans ?_)
   refine (congrAdd (.eqRefl _) ?_).eqTrans (add_zero _)
   refine (sum_congr_bounded (offB tB) zB (pairT (succ j) j) (pairT (succ j) j) _ (.allI (.impI ?_))).eqTrans (zsum _ _)

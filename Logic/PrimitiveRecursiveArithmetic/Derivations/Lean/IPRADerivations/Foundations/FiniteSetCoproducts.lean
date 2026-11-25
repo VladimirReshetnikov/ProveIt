@@ -1,6 +1,6 @@
 import IPRADerivations.Foundations.FiniteSetCategory
 import IPRADerivations.Foundations.FiniteGluing
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Binary coproducts in the table category of finite sets (`ipra_categorical_methods`, Section 4)

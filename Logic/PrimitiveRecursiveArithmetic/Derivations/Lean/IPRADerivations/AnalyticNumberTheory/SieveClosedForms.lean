@@ -50,13 +50,13 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 theorem c_alg (c1 c2 sd gd se ge Ud Ve g X : PTm n) :
     Γ ⊢[PRAAx] (c1 * (c2 * (sd * (gd * (se * (ge * one)))))) * ((Ud * Ve) * (g * X)) ≐
       ((c1 * c2) * X) * (sd * (gd * Ud) * ((se * ge) * Ve) * g) := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- `ind · ((U V) (q (d e))) = (χ q) · ((d ((sd gd) U)) (e ((se ge) V)))`. -/
 theorem e_alg (c1 c2 sd gd se ge Ud Ve q d e : PTm n) :
     Γ ⊢[PRAAx] (c1 * (c2 * (sd * (gd * (se * (ge * one)))))) * ((Ud * Ve) * (q * (d * e))) ≐
       ((c1 * c2) * q) * ((d * ((sd * gd) * Ud)) * (e * ((se * ge) * Ve))) := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-! ## The weights with their indicators -/
 

@@ -1,6 +1,6 @@
 import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # An approximate Brouwer fixed point on the interval, with a primitive recursive witness

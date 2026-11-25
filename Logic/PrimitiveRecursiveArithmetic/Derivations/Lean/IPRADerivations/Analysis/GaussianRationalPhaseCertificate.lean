@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianRationalHalfAngle
 import IPRADerivations.Foundations.RealizerComposition
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Finite rational transfer to the direction certificate
@@ -243,10 +244,7 @@ theorem direction_dot_represents (c v g h E V : PTm n)
   have scaled := RationalRepresentations.represents_multiply (Γ := Γ) _ _ _ _ _ _
     (fraction_represents two one (le_refl one)) (Prf.andE₁ product)
   apply GaussianRationalHorner.scalar_congr (.eqRefl _) (hAB := one_mul _) (h := scaled)
-  apply ZT.derive
-  simp only [dot,ZT.toZ_mul,ZT.toZ_add,ZT.toZ_ofNat,GaussianRootAlgebra.re_mul,
-    GaussianRationalReciprocal.re_conjugate,GaussianRationalReciprocal.im_conjugate]
-  ring
+  ipra_lc [dot, GaussianRootAlgebra.re_mul, GaussianRationalReciprocal.re_conjugate, GaussianRationalReciprocal.im_conjugate]
 
 theorem coefficient_represents (v p q : PTm n) (hq : Γ ⊢[PRAAx] le one q)
     (hpq : Γ ⊢[PRAAx] le p q) (hUnit : Γ ⊢[PRAAx] GaussianRationalHalfAngle.unit v) : Γ ⊢[PRAAx]
@@ -259,11 +257,7 @@ theorem coefficient_represents (v p q : PTm n) (hq : Γ ⊢[PRAAx] le one q)
     (GaussianRationalMetric.squared_tolerance_represents (Γ := Γ) p q hq)
   have combined := RationalRepresentations.represents_add (Γ := Γ) _ _ _ _ _ _ sumRep negative
   apply GaussianRationalHorner.scalar_congr (.eqRefl _) (hAB := by ipra_ring) (h := combined)
-  apply ZT.derive
-  have eq := natEq (coefficient_identity p q hpq)
-  simp only [ZT.toZ_mul,ZT.toZ_add,ZT.toZ_neg,ZT.toZ_ofNat]
-  ipra_simps
-  linear_combination eq
+  ipra_lc natEq (coefficient_identity p q hpq)
 
 theorem square_represents (c A B : PTm n) (hc : Γ ⊢[PRAAx] RationalArithmetic.represents c (ZT.ofNat A) B) : Γ ⊢[PRAAx]
     RationalArithmetic.represents (square c) (ZT.ofNat (A*A)) (B*B) := by
@@ -362,13 +356,9 @@ theorem direction_phase_certificate (c v a S p q : PTm n)
 theorem coefficient_at_least_one (v p q : PTm n) (hq : Γ ⊢[PRAAx] le one q)
     (hpq : Γ ⊢[PRAAx] le p q) (hUnit : Γ ⊢[PRAAx] GaussianRationalHalfAngle.unit v) : Γ ⊢[PRAAx]
     RationalArgmin.rationalLE (fraction one one) (directionCoefficient v p q) := by
-  have gap := natEq (eq_add_of_le (sq_le_sq hpq))
-  have coeff := natEq (coefficient_identity p q hpq)
   have positive : Γ ⊢[PRAAx] le (q*q) (coefficientNumerator p q) := by
     refine le_of_eq_add (d := monus (q*q) (p*p)) ?_
-    apply deriveNat
-    ipra_simps
-    linear_combination gap-coeff
+    ipra_lc natEq (eq_add_of_le (sq_le_sq hpq))-natEq (coefficient_identity p q hpq)
   apply GaussianRationalMetric.comparison_of_cleared _ _ _ _ _ _ (le_refl one)
     (positive_product q q hq hq) (fraction_represents one one (le_refl one))
     (coefficient_represents v p q hq hpq hUnit)

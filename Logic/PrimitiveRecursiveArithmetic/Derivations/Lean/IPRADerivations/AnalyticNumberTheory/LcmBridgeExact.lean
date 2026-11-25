@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.LcmBridgeLoss
 import IPRADerivations.AnalyticNumberTheory.SigmaProduct
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The exact finite identity of the lcm bridge, pointwise
@@ -118,18 +119,12 @@ theorem exact {i P : PTm n} (hi : Γ ⊢[PRAAx] prime i) (hiP : Γ ⊢[PRAAx] le
   have hp2 := prime_two hi
   have vp := val_pos_low hi hiP
   have expos := pw_pos' (p_pos hp2) (succ (val i (lcmu P)))
-  have cf := natEq (cof_eq (m := lcmu P) hp2)
-  have e1 := natEq ((congrAp2 (Γ := Γ) powF vp (.eqRefl i)).eqTrans (pw_succ i (pred (val i (lcmu P)))))
-  have e2 := natEq (pw_succ (Γ := Γ) i (val i (lcmu P)))
   -- `L² = q^{v+1} · (q^{v−1} c²)`
   have hL : Γ ⊢[PRAAx] LD P ≐ ex i P * (pw i (pred (val i (lcmu P))) *
       (quo (lcmu P) (pw i (val i (lcmu P))) * quo (lcmu P) (pw i (val i (lcmu P))))) + zero := by
-    apply deriveNat; ipra_simps
-    linear_combination (𝔞 (lcmu P) + 𝔞 (pw i (val i (lcmu P))) * 𝔞 (quo (lcmu P) (pw i (val i (lcmu P))))) * cf
-      + (𝔞 (quo (lcmu P) (pw i (val i (lcmu P)))) * 𝔞 (quo (lcmu P) (pw i (val i (lcmu P)))) *
-          𝔞 (pw i (val i (lcmu P)))) * e1
-      - (𝔞 (quo (lcmu P) (pw i (val i (lcmu P)))) * 𝔞 (quo (lcmu P) (pw i (val i (lcmu P)))) *
-          𝔞 (pw i (pred (val i (lcmu P))))) * e2
+    ipra_lc (𝔞 (lcmu P) + 𝔞 (pw i (val i (lcmu P))) * 𝔞 (quo (lcmu P) (pw i (val i (lcmu P))))) * natEq (cof_eq (m := lcmu P) hp2) +
+      (𝔞 (quo (lcmu P) (pw i (val i (lcmu P)))) * 𝔞 (quo (lcmu P) (pw i (val i (lcmu P)))) * 𝔞 (pw i (val i (lcmu P)))) * natEq ((congrAp2 (Γ := Γ) powF vp (.eqRefl i)).eqTrans (pw_succ i (pred (val i (lcmu P))))) -
+      (𝔞 (quo (lcmu P) (pw i (val i (lcmu P)))) * 𝔞 (quo (lcmu P) (pw i (val i (lcmu P)))) * 𝔞 (pw i (pred (val i (lcmu P))))) * natEq (pw_succ (Γ := Γ) i (val i (lcmu P)))
   have q := Totient.quo_eq expos hL (LcmUpto.lt_zero_of_pos expos)
   exact (congrMul (.eqRefl _) q).eqTrans ((hL.eqTrans (add_zero _)).eqSymm)
 
@@ -169,10 +164,7 @@ theorem factor_id (i P : PTm n) :
   have expos := pw_pos' (p_pos (prime_two hi2)) (succ (val i (lcmu P)))
   have qle : C2 ⊢[PRAAx] le (quo (LD P) (ex i P)) (LD P) :=
     le_congr (one_mul _) hx (le_mul_mono (FactorVector.one_le_pos expos) (le_refl (quo (LD P) (ex i P))))
-  have e1 := natEq (eq_add_of_le qle)
-  have e2 := natEq (eq_add_of_le (FactorVector.one_le_pos expos))
-  have e3 := natEq hx
-  apply deriveNat; ipra_simps
-  linear_combination (-(𝔞 (ex i P))) * e1 + (𝔞 (lcmu P) * 𝔞 (lcmu P)) * e2 - e3
+  ipra_lc (-(𝔞 (ex i P))) * natEq (eq_add_of_le qle) +
+    (𝔞 (lcmu P) * 𝔞 (lcmu P)) * natEq (eq_add_of_le (FactorVector.one_le_pos expos)) - natEq hx
 
 end LeanProofs.IPRA.AnalyticNumberTheory.LcmBridgeExact

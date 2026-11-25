@@ -1,7 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.MinkowskiWellFormed
 import IPRADerivations.DiophantineNumberTheory.MinkowskiRationalBoxes
 import IPRADerivations.Core.CongruenceTactic
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The original guarded Inside scheme at canonical half-cell centers

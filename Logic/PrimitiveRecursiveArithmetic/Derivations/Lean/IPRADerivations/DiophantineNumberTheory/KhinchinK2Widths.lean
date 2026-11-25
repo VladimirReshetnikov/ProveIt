@@ -5,7 +5,8 @@ import IPRADerivations.Foundations.AuxiliaryEnvelope
 import IPRADerivations.Core.SumPalindrome
 import IPRADerivations.Core.SumSplit
 import IPRADerivations.AnalyticNumberTheory.Valuation
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The block hypotheses from `ψ` and the divergence modulus (`hurwitz_khinchin_ipra`, (K2))
@@ -60,8 +61,7 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `1 ≤ t` gives `t = succ (pred t)`. -/
-theorem pos_of_one {t : PTm n} (h : Γ ⊢[PRAAx] le one t) : Γ ⊢[PRAAx] t ≐ succ (pred t) :=
-  pos_of_eq ((eq_add_of_le h).eqTrans (succ_add _ _))
+alias pos_of_one := Common.pos_of_one_le
 
 theorem one_le_pw (K : PTm n) : Γ ⊢[PRAAx] le one (pw two K) := by
   have e := natEq (DiophantineNumberTheory.FLTMultiples.pw_pos (Γ := Γ) one K)

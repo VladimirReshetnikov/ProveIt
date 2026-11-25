@@ -92,12 +92,12 @@ theorem N_succ (K s : PTm n) :
 
 theorem P_succ (K s : PTm n) : Γ ⊢[PRAAx] Pv (succ K) s ≐ Pv K s * s * s := by
   have ex : Γ ⊢[PRAAx] succ (two * succ K) ≐ succ (succ (succ (two * K))) := by
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   refine (congrAp2 powF ex (.eqRefl _)).eqTrans ?_
   exact (pw_succ s _).eqTrans (congrMul (pw_succ s _) (.eqRefl _))
 
 theorem P_zero (s : PTm n) : Γ ⊢[PRAAx] Pv zero s ≐ s := by
-  have ex : Γ ⊢[PRAAx] succ (two * zero) ≐ succ zero := by apply deriveNat; ipra_simps; ring
+  have ex : Γ ⊢[PRAAx] succ (two * zero) ≐ succ zero := by ipra_ring
   refine (congrAp2 powF ex (.eqRefl _)).eqTrans ?_
   exact (pw_succ s _).eqTrans ((congrMul (pw_zero s) (.eqRefl _)).eqTrans (one_mul _))
 
@@ -151,9 +151,9 @@ theorem p_step (m K : PTm n) (ih : Γ ⊢[PRAAx] PF m K) : Γ ⊢[PRAAx] PF m (s
 
 theorem p_two (m : PTm n) : Γ ⊢[PRAAx] PF m (succ (succ zero)) := by
   have l1 : Γ ⊢[PRAAx] Lv (succ zero) (sv m) ≐ one :=
-    (L_succ zero (sv m)).eqTrans ((congrMul (.eqRefl _) (L_zero (sv m))).eqTrans (by apply deriveNat; ipra_simps; ring))
+    (L_succ zero (sv m)).eqTrans ((congrMul (.eqRefl _) (L_zero (sv m))).eqTrans (by ipra_ring))
   have l2 : Γ ⊢[PRAAx] Lv (succ (succ zero)) (sv m) ≐ succ two :=
-    (L_succ (succ zero) (sv m)).eqTrans ((congrMul (.eqRefl _) l1).eqTrans (by apply deriveNat; ipra_simps; ring))
+    (L_succ (succ zero) (sv m)).eqTrans ((congrMul (.eqRefl _) l1).eqTrans (by ipra_ring))
   have n1 : Γ ⊢[PRAAx] Nv (succ zero) (sv m) ≐ two * ((sv m) * (sv m)) :=
     (N_succ zero (sv m)).eqTrans (by
       refine withEq (N_zero (Γ := Γ) (sv m)) fun e0 => withEq (L_zero (Γ := Γ) (sv m)) fun e1 => ?_
@@ -291,7 +291,7 @@ theorem t_step {m t j : PTm n} (hm : Γ ⊢[PRAAx] le one m) (ih : Γ ⊢[PRAAx]
       ((m + t) * (m + t) * (succ (m + t) * succ (m + t) * (Qt t (pairT m (succ (succ j))) * dd (m + t) (succ (succ j))))) := by
     ipra_le sl h1 + sl h2
   have c := mul_le_cancel (le_congr (congrMul hp (.eqRefl _)) (congrMul hp (.eqRefl _)) fin)
-  have eM : Γ ⊢[PRAAx] m + succ t ≐ succ (m + t) := by apply deriveNat; ipra_simps; ring
+  have eM : Γ ⊢[PRAAx] m + succ t ≐ succ (m + t) := by ipra_ring
   refine le_congr ?_ ?_ c
   · exact (congrAdd (congrMul (congrMul (.eqRefl _) (congrMul eM eM)).eqSymm eP'.eqSymm)
       (congrMul (.eqRefl _) eQ'.eqSymm))

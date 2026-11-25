@@ -150,7 +150,7 @@ theorem ind_cnt (W d e X P : PTm n) :
 theorem weights_alg (c1 c2 sd gd se ge Ud Ve q d e K : PTm n) :
     Γ ⊢[PRAAx] ((c1 * c2) * q) * ((d * ((sd * gd) * Ud)) * ((e * ((se * ge) * Ve)) * K)) ≐
       (c1 * (c2 * (sd * (gd * (se * (ge * one)))))) * ((Ud * Ve) * (q * (d * e) * K)) := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 section Expansion
 

@@ -68,7 +68,7 @@ theorem no_big {F K r p q P Q I : PTm n} (φ : Fm PTm n) (e1 : Γ ⊢[PRAAx] F �
 theorem quo_bound {p q P Q I : PTm n} (e2 : Γ ⊢[PRAAx] p ≐ two * P + one) (e3 : Γ ⊢[PRAAx] q ≐ two * Q + one)
     (hi : Γ ⊢[PRAAx] le I P) : Γ ⊢[PRAAx] le (quo (I * q) (succ (pred p))) Q := by
   have hp1 : Γ ⊢[PRAAx] p ≐ succ (pred p) :=
-    pos_of_eq_succ (c := two * P) (e2.eqTrans (by apply deriveNat; ipra_simps; ring))
+    pos_of_eq_succ (c := two * P) (e2.eqTrans (by ipra_ring))
   have dm := div_mod_at (Γ := Γ) (x := I * q) (y := succ (pred p)) (c := pred p) (.eqRefl _)
   have e1 : Γ ⊢[PRAAx] I * q ≐ p * quo (I * q) (succ (pred p)) + rem (I * q) (succ (pred p)) :=
     (Prf.andE₁ dm).eqTrans (congrAdd (congrMul hp1.eqSymm (.eqRefl _)) (.eqRefl _))
@@ -88,7 +88,7 @@ theorem off_diag {p q P i j : PTm n} (φ : Fm PTm n) (e2 : Γ ⊢[PRAAx] p ≐ t
     (hc : Γ ⊢[PRAAx] gcd p q ≐ one) (hi : Γ ⊢[PRAAx] lt i P)
     (h : Γ ⊢[PRAAx] p * succ j ≐ succ i * q) : Γ ⊢[PRAAx] φ := by
   have hp1 : Γ ⊢[PRAAx] p ≐ succ (pred p) :=
-    pos_of_eq_succ (c := two * P) (e2.eqTrans (by apply deriveNat; ipra_simps; ring))
+    pos_of_eq_succ (c := two * P) (e2.eqTrans (by ipra_ring))
   have d1 : Γ ⊢[PRAAx] dvd p (q * succ i) := dvd_of_eq' hp1 ((mul_comm _ _).eqTrans h.eqSymm)
   have d2 : Γ ⊢[PRAAx] dvd p (succ i) := gauss hp1 hc d1
   have l : Γ ⊢[PRAAx] le p (succ i) := dvd_le' hp1 d2 (congrSucc (pred_succ _).eqSymm)
@@ -157,7 +157,7 @@ theorem row_a1 {p q P Q i : PTm n} (e2 : Γ ⊢[PRAAx] p ≐ two * P + one) (e3 
     (hi : Γ ⊢[PRAAx] lt i P) :
     Γ ⊢[PRAAx] ap2 (sumF (rowB a1)) Q (pairT i (pairT p q)) ≐ quo (succ i * q) p := by
   have hp1 : Γ ⊢[PRAAx] p ≐ succ (pred p) :=
-    pos_of_eq_succ (c := two * P) (e2.eqTrans (by apply deriveNat; ipra_simps; ring))
+    pos_of_eq_succ (c := two * P) (e2.eqTrans (by ipra_ring))
   have hp1' : (Γ.map Fm.shift) ⊢[PRAAx] Syn.shift p ≐ succ (pred (Syn.shift p)) := by
     simpa [Fm.shift, Syn.shift] using hp1.shift
   refine (sum_congr_bounded (rowB a1) IB (pairT i (pairT p q)) (pairT (pred p) (succ i * q)) Q
@@ -177,7 +177,7 @@ theorem col_a2 {p q P Q j : PTm n} (e2 : Γ ⊢[PRAAx] p ≐ two * P + one) (e3 
     (hc : Γ ⊢[PRAAx] gcd p q ≐ one) (hj : Γ ⊢[PRAAx] lt j Q) :
     Γ ⊢[PRAAx] ap2 (sumF (colB a2)) P (pairT j (pairT p q)) ≐ quo (succ j * p) q := by
   have hq1 : Γ ⊢[PRAAx] q ≐ succ (pred q) :=
-    pos_of_eq_succ (c := two * Q) (e3.eqTrans (by apply deriveNat; ipra_simps; ring))
+    pos_of_eq_succ (c := two * Q) (e3.eqTrans (by ipra_ring))
   have hq1' : (Γ.map Fm.shift) ⊢[PRAAx] Syn.shift q ≐ succ (pred (Syn.shift q)) := by
     simpa [Fm.shift, Syn.shift] using hq1.shift
   have e2' : (Γ.map Fm.shift) ⊢[PRAAx] Syn.shift p ≐ two * Syn.shift P + one := by
@@ -202,7 +202,7 @@ abbrev fsB : PTm 3 := quo (succ (var 0) * var 2) (var 1)
 
 theorem inst3_fsB (i p a : PTm n) : inst3 fsB i p a = quo (succ i * a) p := by simp [inst3]
 
-theorem one_alg : Γ ⊢[PRAAx] (one : PTm n) * one ≐ one := by apply deriveNat; ipra_simps; ring
+theorem one_alg : Γ ⊢[PRAAx] (one : PTm n) * one ≐ one := by ipra_ring
 
 /-- The lattice count: `Σ_{i<P} ⌊(i+1) q/p⌋ + Σ_{j<Q} ⌊(j+1) p/q⌋ = P Q` for `p = 2P + 1`, `q = 2Q + 1`,
 `gcd(p, q) = 1`. -/

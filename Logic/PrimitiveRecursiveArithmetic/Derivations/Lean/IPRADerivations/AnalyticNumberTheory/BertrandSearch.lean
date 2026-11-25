@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.PrimorialLower
 import IPRADerivations.Foundations.BoundedReflection
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Bertrand's postulate: the bounded search and the valuation bounds
@@ -38,7 +39,7 @@ open LeanProofs.IPRA.PTm (monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 
-theorem mul_one0 (X : PTm k) : Γ ⊢[PRAAx] X * one ≐ X := by apply deriveNat; ipra_simps; ring
+alias mul_one0 := Common.mul_one_right
 
 /-! ## Bounding the individual prime powers in the central binomial coefficient -/
 

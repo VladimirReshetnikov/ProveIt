@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.Totient
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Goldbach's statement gives totient sums
@@ -35,8 +36,6 @@ theorem phi_prime {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) : Γ ⊢[PRAAx] phi p
 /-- `prop:goldbach-phi`: primes `p, q` with `p + q = 2m + 2` satisfy `φ(p) + φ(q) = 2m`. -/
 theorem goldbach_phi {p q m : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hq : Γ ⊢[PRAAx] prime q)
     (h : Γ ⊢[PRAAx] p + q ≐ succ (succ (two * m))) : Γ ⊢[PRAAx] phi p + phi q ≐ two * m := by
-  have a := natEq (phi_prime hp); have b := natEq (phi_prime hq); have c := natEq h
-  apply deriveNat; ipra_simps
-  linear_combination a + b + c
+  ipra_lc natEq (phi_prime hp) + natEq (phi_prime hq) + natEq h
 
 end LeanProofs.IPRA.AnalyticNumberTheory.GoldbachPhi

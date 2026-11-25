@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.WeightedSplit
 import IPRADerivations.AnalyticNumberTheory.AbsDiff
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The first weighted bound (`pnt_ipra_constructive_2026-11-14`, `sb:first-weighted-bound`)
@@ -129,16 +130,9 @@ theorem s1Q (m K L : PTm n) :
   simp only [shift_pairT, shift_fact']
   refine (hRB_at qB lamW _ _ _).eqTrans ?_
   rw [inst2_qB, inst2_lamW]
-  have f := natEq (FL_at (Γ := (lt (var 0) (Syn.shift (succ m)) :: Γ.map Fm.shift)) wt (var 0) (Syn.shift m)
-    (pairT (Syn.shift K) (fact (Syn.shift L))))
-  have sp := natEq (snd_pair (Γ := (lt (var 0) (Syn.shift (succ m)) :: Γ.map Fm.shift)) (Syn.shift K)
-    (fact (Syn.shift L)))
-  have sl := natEq (sg_lam (Γ := (lt (var 0) (Syn.shift (succ m)) :: Γ.map Fm.shift)) (var 0)
-    (pairT (Syn.shift K) (fact (Syn.shift L))))
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞 (sndT (pairT (Syn.shift K) (fact (Syn.shift L)))) * 𝔞 (quo (Syn.shift m) (var 0))) * sl +
-    𝔞 (Lam wt (var 0) (pairT (Syn.shift K) (fact (Syn.shift L)))) * 𝔞 (quo (Syn.shift m) (var 0)) * sp -
-    𝔞 (fact (Syn.shift L)) * f
+  ipra_lc (𝔞 (sndT (pairT (Syn.shift K) (fact (Syn.shift L)))) * 𝔞 (quo (Syn.shift m) (var 0))) * natEq (sg_lam (Γ := (lt (var 0) (Syn.shift (succ m)) :: Γ.map Fm.shift)) (var 0) (pairT (Syn.shift K) (fact (Syn.shift L)))) +
+    𝔞 (Lam wt (var 0) (pairT (Syn.shift K) (fact (Syn.shift L)))) * 𝔞 (quo (Syn.shift m) (var 0)) * natEq (snd_pair (Γ := (lt (var 0) (Syn.shift (succ m)) :: Γ.map Fm.shift)) (Syn.shift K) (fact (Syn.shift L))) -
+    𝔞 (fact (Syn.shift L)) * natEq (FL_at (Γ := (lt (var 0) (Syn.shift (succ m)) :: Γ.map Fm.shift)) wt (var 0) (Syn.shift m) (pairT (Syn.shift K) (fact (Syn.shift L))))
 
 /-! ## The error equation at every inner point -/
 
@@ -157,9 +151,7 @@ theorem eQe : Γ ⊢[PRAAx] inst2 qB m (pairT K (fact L)) * U m K (fact L) +
       ap2 (sumF (hRB qB lamW)) (succ m) (pairT m (pairT K (fact L))) ≐
     fact L * (m * U m K (fact L)) + fact L * Lq m K L := by
   rw [inst2_qB]
-  have a := natEq (snd_pair (Γ := Γ) K (fact L)); have b := natEq (s1Q (Γ := Γ) m K L)
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 m * 𝔞 (U m K (fact L)) * a + b
+  ipra_lc 𝔞 m * 𝔞 (U m K (fact L)) * natEq (snd_pair (Γ := Γ) K (fact L)) + natEq (s1Q (Γ := Γ) m K L)
 
 /-- `|E_ψ(m) − E_{F·id}(m)| ≤ 4096 F² m` for `1 ≤ m ≤ x`. -/
 theorem e_absd :

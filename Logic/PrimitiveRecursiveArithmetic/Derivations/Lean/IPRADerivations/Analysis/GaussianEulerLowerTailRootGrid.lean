@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianGammaCompactCutoffSplit
 import IPRADerivations.AnalyticNumberTheory.LocalFactor
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The power-transformed grid for the original lower cutoff interval
@@ -70,12 +71,8 @@ theorem time_monotone (i j N p q A : PTm n) (h : Γ ⊢[PRAAx] le i j) :
 
 theorem time_width (N p q A : PTm n) : Γ ⊢[PRAAx]
     monus (timeNumerator N N p q A) (timeNumerator zero N p q A) ≐ lowerWidth p q A*pw N A := by
-  have e := natEq (eq_add_of_le (time_monotone (Γ := Γ) zero N N p q A (zero_le N)))
-  have first := natEq (time_first (Γ := Γ) N p q A)
-  have last := natEq (time_last (Γ := Γ) N p q A)
-  apply deriveNat
-  ipra_simps
-  linear_combination last-e-first
+  ipra_lc natEq (time_last (Γ := Γ) N p q A)-natEq (eq_add_of_le (time_monotone (Γ := Γ) zero N N p q A (zero_le N)))-
+    natEq (time_first (Γ := Γ) N p q A)
 
 theorem actual_lower_root_grid_endpoints_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 5
     ((timeNumerator zero (var 0) (var 1) (var 2) (var 3) ≐ pw (var 0) (var 3)) ⋏

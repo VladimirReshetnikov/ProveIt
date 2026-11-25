@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.ErrorBudgets
 import IPRADerivations.DiophantineNumberTheory.RungeProduct
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Signed telescoping with an error budget

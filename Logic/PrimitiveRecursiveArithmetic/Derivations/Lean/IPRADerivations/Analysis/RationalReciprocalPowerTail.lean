@@ -2,6 +2,7 @@ import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Analysis.PowerSums
 import IPRADerivations.Analysis.RationalNonnegativePowers
 import IPRADerivations.Analysis.GaussianRationalSyntheticBounds
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Sharp finite reciprocal-power tails
@@ -98,10 +99,7 @@ theorem one_step_successors (q k : PTm n) (hk : Γ ⊢[PRAAx] le one k) : Γ ⊢
       (add (fraction one (pw W (succ p))) (fraction one (p*pw W p)))
       (ZT.ofNat (p*pw W p+pw W (succ p))) (pw W (succ p)*(p*pw W p)) := by
     apply GaussianRationalHorner.scalar_congr (.eqRefl _) (hAB := .eqRefl _) (h := sumrep)
-    apply ZT.derive
-    simp only [ZT.toZ_add,ZT.toZ_mul,ZT.toZ_ofNat]
-    ipra_simps
-    ring
+    ipra_lc
   have native := native_antiderivative (Γ := Γ) k q
   have step := natEq (pw_succ (Γ := Γ) W p)
   have cmp : Γ ⊢[PRAAx]
@@ -126,7 +124,6 @@ theorem one_step (m k : PTm n) (hm : Γ ⊢[PRAAx] le two m) (hk : Γ ⊢[PRAAx]
     (RationalAlgebra.add_congr (reciprocal_congr em.eqSymm (.eqRefl _)) (potential_congr em.eqSymm (.eqRefl _)))
     (potential_congr em.eqSymm (.eqRefl _)) (one_step_successors (monus m two) k hk)
 
-
 theorem term_at (m N i : PTm n) : Γ ⊢[PRAAx]
     RationalFiniteSum.term body i (data m N) ≐ reciprocalPower m (succ (N+i)) := by
   simp only [RationalFiniteSum.term,body,inst2,subst_reciprocalPower,subst_fstT,subst_sndT,
@@ -136,9 +133,7 @@ theorem term_at (m N i : PTm n) : Γ ⊢[PRAAx]
 theorem zero_fraction : Γ ⊢[PRAAx]
     fraction zero one ≐ RationalIntegerNormalization.integerCode (ZT.natLit 0 : ZT n) := by
   apply RationalIntegerNormalization.normalize_integer _ _ _ (le_refl one)
-  apply ZT.derive
-  ipra_simps
-  ring
+  ipra_ring
 
 theorem add_zero_right (c : PTm n) (hc : Γ ⊢[PRAAx] RationalNormalForm.wellFormed c) : Γ ⊢[PRAAx]
     add c (fraction zero one) ≐ c := by
@@ -147,10 +142,7 @@ theorem add_zero_right (c : PTm n) (hc : Γ ⊢[PRAAx] RationalNormalForm.wellFo
     (RationalRepresentations.represents_add _ _ _ _ _ _ (RationalRepresentations.represents_self c)
       (fraction_represents zero one (le_refl one)))
     (RationalRepresentations.represents_self c) (RationalAlgebra.positive_product hD (le_refl one)) hD
-  apply ZT.derive
-  simp only [ZT.toZ_add,ZT.toZ_mul,ZT.toZ_ofNat]
-  ipra_simps
-  ring
+  ipra_lc
 
 theorem tail_zero (m N : PTm n) : Γ ⊢[PRAAx] tail m N zero ≐ fraction zero one :=
   (RationalFiniteSum.sum_zero body (data m N)).eqTrans zero_fraction.eqSymm
@@ -239,7 +231,6 @@ theorem sharp_tail (m N r : PTm n) (hm : Γ ⊢[PRAAx] le two m) (hN : Γ ⊢[PR
   exact RationalArgmin.transitive
     (RationalArgmin.rationalLE_congr (add_zero_right _ (tail_canonical m N r)) (.eqRefl _) added)
     (finite_conservation m N r hm hN)
-
 
 /-- Fixed arity, actual scalar output: exponent, start and length are all
 runtime numerical inputs. -/

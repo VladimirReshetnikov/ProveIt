@@ -3,6 +3,7 @@ import IPRADerivations.Analysis.RationalCubeMidpoint
 import IPRADerivations.Foundations.FiniteObservations.MetricKernel
 import IPRADerivations.Foundations.DyadicGain
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The two secants and dyadic clock of the local convexity modulus
@@ -56,25 +57,15 @@ theorem margin_positive (D P : PTm n) (hD : Γ ⊢[PRAAx] le one D) (hP : Γ ⊢
 theorem right_width (D Q X Y : PTm n) (hXY : Γ ⊢[PRAAx] le X Y) (hYQ : Γ ⊢[PRAAx] le Y Q) :
     Γ ⊢[PRAAx] rightWidth D Q X ≐ displacement X Y+rightRemainder D Q Y := by
   have hY : Γ ⊢[PRAAx] le Y (Q+D) := by ipra_le sl hYQ + 𝔟 D
-  have e₁ := natEq (eq_add_of_le (le_trans hXY hY))
-  have e₂ := natEq (eq_add_of_le hXY)
-  have e₃ := natEq (eq_add_of_le hY)
   unfold rightWidth displacement rightRemainder
-  apply deriveNat
-  ipra_simps
-  linear_combination -2*e₁ + 2*e₂ + 2*e₃
+  ipra_lc -2*natEq (eq_add_of_le (le_trans hXY hY)) + 2*natEq (eq_add_of_le hXY) + 2*natEq (eq_add_of_le hY)
 
 theorem left_width (P X Y : PTm n) (hPX : Γ ⊢[PRAAx] le P X) (hXY : Γ ⊢[PRAAx] le X Y) :
     Γ ⊢[PRAAx] leftWidth P Y ≐ displacement X Y+leftRemainder P X := by
   have hP : Γ ⊢[PRAAx] le P (two*X) := by ipra_le sl hPX + 𝔟 X
   have hY : Γ ⊢[PRAAx] le P (two*Y) := by ipra_le sl hPX + sl hXY + 𝔟 Y
-  have e₁ := natEq (eq_add_of_le hY)
-  have e₂ := natEq (eq_add_of_le hXY)
-  have e₃ := natEq (eq_add_of_le hP)
   unfold leftWidth displacement leftRemainder
-  apply deriveNat
-  ipra_simps
-  linear_combination -e₁ + 2*e₂ + e₃
+  ipra_lc -natEq (eq_add_of_le hY) + 2*natEq (eq_add_of_le hXY) + natEq (eq_add_of_le hP)
 
 theorem right_margin (D P Q X : PTm n) (hXQ : Γ ⊢[PRAAx] le X Q) :
     Γ ⊢[PRAAx] le (margin D P) (rightWidth D Q X) := by
@@ -94,26 +85,17 @@ theorem left_margin (D P Y : PTm n) (hPY : Γ ⊢[PRAAx] le P Y) :
 theorem right_barycenter (D Q X Y : PTm n) (hXY : Γ ⊢[PRAAx] le X Y) (hYQ : Γ ⊢[PRAAx] le Y Q) :
     Γ ⊢[PRAAx] rightWidth D Q X*Y ≐ rightRemainder D Q Y*X+displacement X Y*(Q+D) := by
   have hY : Γ ⊢[PRAAx] le Y (Q+D) := by ipra_le sl hYQ + 𝔟 D
-  have e₁ := natEq (eq_add_of_le (le_trans hXY hY))
-  have e₂ := natEq (eq_add_of_le hXY)
-  have e₃ := natEq (eq_add_of_le hY)
   unfold rightWidth rightRemainder displacement
-  apply deriveNat
-  ipra_simps
-  linear_combination -2*𝔟 Y*e₁ + 2*(𝔟 Q+𝔟 D)*e₂ + 2*𝔟 X*e₃
+  ipra_lc -2*𝔟 Y*natEq (eq_add_of_le (le_trans hXY hY)) + 2*(𝔟 Q+𝔟 D)*natEq (eq_add_of_le hXY) +
+    2*𝔟 X*natEq (eq_add_of_le hY)
 
 /-- The original left secant expresses `X/D` using `P/(2D)` and `Y/D`. -/
 theorem left_barycenter (P X Y : PTm n) (hPX : Γ ⊢[PRAAx] le P X) (hXY : Γ ⊢[PRAAx] le X Y) :
     Γ ⊢[PRAAx] leftWidth P Y*(two*X) ≐ leftRemainder P X*(two*Y)+displacement X Y*P := by
   have hP : Γ ⊢[PRAAx] le P (two*X) := by ipra_le sl hPX + 𝔟 X
   have hY : Γ ⊢[PRAAx] le P (two*Y) := by ipra_le sl hPX + sl hXY + 𝔟 Y
-  have e₁ := natEq (eq_add_of_le hY)
-  have e₂ := natEq (eq_add_of_le hXY)
-  have e₃ := natEq (eq_add_of_le hP)
   unfold leftWidth leftRemainder displacement
-  apply deriveNat
-  ipra_simps
-  linear_combination -2*𝔟 X*e₁ + 2*𝔟 P*e₂ + 2*𝔟 Y*e₃
+  ipra_lc -2*𝔟 X*natEq (eq_add_of_le hY) + 2*𝔟 P*natEq (eq_add_of_le hXY) + 2*𝔟 Y*natEq (eq_add_of_le hP)
 
 /-- The finite comparison allows a full secant-width times the sample error. -/
 theorem secant_with_error (w t u δ U V B M E : PTm n) (hW : Γ ⊢[PRAAx] w ≐ t+u)

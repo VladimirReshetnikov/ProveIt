@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.HarmonicMertensLower
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The logarithmic sum for the harmonic logarithm (`pnt_ipra_constructive_2026-11-14`, `sb:log-sum`)
@@ -50,20 +51,18 @@ theorem fact_quo {N L : PTm n} (h : Γ ⊢[PRAAx] le (succ N) L) :
 /-- `λ_K(N+1) − λ_K(N) ≥ 1/(N+1)`: `S(KN) + ⌊F/(N+1)⌋ ≤ S(K(N+1))` for `F = L!`, `K(N+1) ≤ L`. -/
 theorem inc_lower {K N L : PTm n} (hK : Γ ⊢[PRAAx] K ≐ succ (pred K)) (hL : Γ ⊢[PRAAx] le (K * succ N) L) :
     Γ ⊢[PRAAx] le (S (K * N) (fact L) + quo (fact L) (succ N)) (S (K * succ N) (fact L)) := by
-  have wK := natEq hK
   have hX : Γ ⊢[PRAAx] K * succ N ≐ succ (pred (K * succ N)) := by
     refine pos_of_lt_zero (le_of_eq_add (d := K * N + pred K) ?_)
-    apply deriveNat; ipra_simps; linear_combination wK
+    ipra_lc natEq hK
   have dv := dvd_congr_left hX.eqSymm (dvd_fact (le_congr hX (.eqRefl _) hL))
-  have eF := natEq (eq_of_dvd' hX dv)
   have hF : Γ ⊢[PRAAx] fact L ≐ (K * N + K) * quo (fact L) (K * succ N) := by
-    apply deriveNat; ipra_simps; linear_combination eF
+    ipra_lc natEq (eq_of_dvd' hX dv)
   have ll := log_lower (K * N) K hF
   have hNL : Γ ⊢[PRAAx] le (succ N) L := by
     refine le_trans (le_of_eq_add (d := pred K * succ N) ?_) hL
-    apply deriveNat; ipra_simps; linear_combination (𝔞 N + 1) * wK
+    ipra_lc (𝔞 N + 1) * natEq hK
   have eq := natEq (fact_quo hNL)
-  have q : Γ ⊢[PRAAx] K * succ N ≐ K * N + K := by apply deriveNat; ipra_simps; ring
+  have q : Γ ⊢[PRAAx] K * succ N ≐ K * N + K := by ipra_ring
   have eS := natEq (congrAp2 (Γ := Γ) (sumF hB) q (.eqRefl (fact L)))
   refine mul_le_cancel (d' := pred (K * succ N)) ?_
   have c : Γ ⊢[PRAAx] le (K * succ N * (S (K * N) (fact L) + quo (fact L) (succ N)))
@@ -108,9 +107,8 @@ theorem i_step {k K L N0 : PTm n} (h : Γ ⊢[PRAAx] Hl (succ k) K L N0) (ih : �
   have dl := delta_le (Γ := Γ) k (fact L) hKp
   have inc := le_scale k (inc_lower hKp hKL)
   have hNL : Γ ⊢[PRAAx] le (succ k) L := by
-    have wK := natEq hKp
     refine le_trans (le_of_eq_add (d := pred K * succ k) ?_) hKL
-    apply deriveNat; ipra_simps; linear_combination (𝔞 k + 1) * wK
+    ipra_lc (𝔞 k + 1) * natEq hKp
   have eF := natEq (fact_quo hNL)
   have sS : Γ ⊢[PRAAx] S (succ k) (fact L) ≐ S k (fact L) + quo (fact L) (succ k) := by
     have s := sum_succ' (Γ := Γ) hB k (fact L)

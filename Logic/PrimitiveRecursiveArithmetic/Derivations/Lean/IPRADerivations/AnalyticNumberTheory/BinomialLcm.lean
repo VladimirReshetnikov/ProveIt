@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.LcmUpto
 import IPRADerivations.Combinatorics.CentralBinomial
 import IPRADerivations.AnalyticNumberTheory.Smooth
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The central binomial coefficient divides `lcm(1, …, 2n)`
@@ -107,7 +108,7 @@ theorem quo_two {q k : PTm n} (hq : Γ ⊢[PRAAx] q ≐ succ (pred q)) :
   refine .orE (lt_or_le (two * rem k q) q) ?_ ?_
   · have dv := natEq (GcdFiber.div_eq (j := k) (hq.wk : (lt (two * rem k q) q :: Γ) ⊢[PRAAx] _))
     refine .orI₁ (Totient.quo_eq hq.wk (r := two * rem k q) ?_ Prf.hyp0)
-    apply deriveNat; ipra_simps; linear_combination 2 * dv
+    ipra_lc 2 * dv
   · let C : List (Fm PTm n) := le q (two * rem k q) :: Γ
     have dv := natEq (GcdFiber.div_eq (j := k) (hq.wk : C ⊢[PRAAx] _))
     have e1 := natEq ((eq_add_of_le rl.wk : C ⊢[PRAAx] q ≐ succ (rem k q) + monus q (succ (rem k q))))
@@ -116,7 +117,7 @@ theorem quo_two {q k : PTm n} (hq : Γ ⊢[PRAAx] q ≐ succ (pred q)) :
       le_of_eq_add (d := succ (monus q (succ (rem k q)) + monus q (succ (rem k q))))
         (by apply deriveNat; ipra_simps; linear_combination 2 * e1 + e2)
     refine .orI₂ (Totient.quo_eq hq.wk (r := monus (two * rem k q) q) ?_ hr)
-    apply deriveNat; ipra_simps; linear_combination 2 * dv + e2
+    ipra_lc 2 * dv + e2
 
 /-! ## Legendre's formula for `C(2k, k)` -/
 
@@ -136,11 +137,11 @@ theorem binom_val {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (k : PTm n) :
   have f2 := natEq (legendre_fact (Γ := Γ) hp (two * k))
   have f1 := natEq (legendre_fact (Γ := Γ) hp k)
   have s1 := natEq (sum_succ' (Γ := Γ) qB' (two * k) (pairT p k))
-  have z1 := natEq ((qB'_at (Γ := Γ) (two * k) p k).eqTrans (qz hp2 (le_of_eq_add (d := k) (by apply deriveNat; ipra_simps; ring))))
+  have z1 := natEq ((qB'_at (Γ := Γ) (two * k) p k).eqTrans (qz hp2 (le_of_eq_add (d := k) (by ipra_ring))))
   have s2 := natEq (sum_ext (Γ := Γ) qB' (B := k) (N := succ (two * k)) (x := pairT p k) (fun Δ a hs hl => by
     rw [shift_pairT]
     exact (qB'_at _ _ _).eqTrans (qz ((shift_le_two hp2).weaken hs) (le_of_lt hl)))
-    ((succ_monus_succ _ _).eqTrans (le_of_eq_add (d := k) (by apply deriveNat; ipra_simps; ring))))
+    ((succ_monus_succ _ _).eqTrans (le_of_eq_add (d := k) (by ipra_ring))))
   have s3 := natEq (sum_succ' (Γ := Γ) qB' k (pairT p k))
   have z3 := natEq ((qB'_at (Γ := Γ) k p k).eqTrans (qz hp2 (le_refl k)))
   apply deriveNat; ipra_simps
@@ -189,7 +190,7 @@ theorem term_le {p k j : PTm n} (hp2 : Γ ⊢[PRAAx] le two p) (hI2 : Γ ⊢[PRA
   · refine le_congr (.eqRefl _) (congrAdd (.eqRefl _) (sg_lt Prf.hyp0)).eqSymm ?_
     exact .orE (quo_two qpos.wk)
       (le_congr Prf.hyp0.eqSymm (.eqRefl _) (le_of_eq_add (d := one) (.eqRefl _)))
-      (le_congr Prf.hyp0.eqSymm (.eqRefl _) (le_of_eq_add (d := zero) (by apply deriveNat; ipra_simps; ring)))
+      (le_congr Prf.hyp0.eqSymm (.eqRefl _) (le_of_eq_add (d := zero) (by ipra_ring)))
   · have big : (le (val p (lcmu (two * k))) j :: Γ) ⊢[PRAAx] lt (two * k) (pw p (succ j)) :=
       le_trans hI2.wk (PowerCleared.pw_le_exp (p_pos hp2).wk ((succ_monus_succ _ _).eqTrans Prf.hyp0))
     exact le_congr (quo_small qpos.wk big).eqSymm (.eqRefl _) (zero_le _)
@@ -239,12 +240,11 @@ theorem binom_val_le {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (k : PTm n) :
     have e2 : Syn.shift (two : PTm n) = two := by simp [Syn.shift]
     rw [e2]; exact .eqRefl _
   have cL := count_lt (Γ := Γ) (e_le hp2 I1)
-  have bv := natEq (binom_val hp k)
   have u := natEq cH; have v := natEq cG; have t := natEq cT; have l := natEq cL
   refine le_of_add_le_add_right (c := two * ap2 (sumF qB') (two * k) (pairT p k)) ?_
   refine le_congr ?_ ?_ sl
-  · apply deriveNat; ipra_simps; linear_combination u - bv
-  · apply deriveNat; ipra_simps; linear_combination v + t + l
+  · ipra_lc u - natEq (binom_val hp k)
+  · ipra_lc v + t + l
 
 /-- `thm:binomial-lcm`, right divisibility: `C(2k, k) ∣ lcm(1, …, 2k)`. -/
 theorem central_dvd_lcm (k : PTm n) : Γ ⊢[PRAAx] dvd (cb k) (lcmu (two * k)) := by
@@ -333,7 +333,7 @@ theorem val_PE {q : PTm n} (hq : Γ ⊢[PRAAx] prime q) (E : PTm 2) (M x : PTm n
             isP (Syn.shift q) * inst2 E (Syn.shift q) (Syn.shift x) :=
           congrMul (congrIsP h) (congrInst2 E h (.eqRefl _))
         refine (congrAdd (congrMul (.eqRefl _) s0) (congrMul hB eb)).eqTrans (.eqTrans ?_ (congrMul (.eqRefl _) s1).eqSymm)
-        apply deriveNat; ipra_simps; ring
+        ipra_ring
       · let C : List (Fm PTm (n + 1)) := neg (var 0 ≐ Syn.shift q) :: D
         have ne : C ⊢[PRAAx] neg (var 0 ≐ Syn.shift q) := Prf.hyp0
         have ss : C ⊢[PRAAx] sg (monus (var 0) (Syn.shift q)) ≐ sg (monus (succ (var 0)) (Syn.shift q)) := by
@@ -464,13 +464,12 @@ theorem binom_val_ge {q k : PTm n} (hq : Γ ⊢[PRAAx] prime q) (hqk : Γ ⊢[PR
   have cD : C ⊢[PRAAx] ap2 (sumF (dB (one : PTm 2))) (two * k) (pairT (pred (val q (lcmu (two * k)))) zero) ≐ one := by
     refine (sum_delta (one : PTm 2) (le_congr epos (.eqRefl _) eL)).eqTrans ?_
     rw [Combinatorics.LegendreFact.inst2_one2]; exact .eqRefl _
-  have bv := natEq (binom_val (Γ := C) hq.wk k)
   have u := natEq cH; have v := natEq cG; have t := natEq cT; have d := natEq cD
   have v1 : C ⊢[PRAAx] le one (val q (cb k)) := by
     refine le_of_add_le_add_right (c := two * ap2 (sumF qB') (two * k) (pairT q k)) ?_
     refine le_congr ?_ ?_ sl
-    · apply deriveNat; ipra_simps; linear_combination v + t + d
-    · apply deriveNat; ipra_simps; linear_combination u - bv
+    · ipra_lc v + t + d
+    · ipra_lc u - natEq (binom_val (Γ := C) hq.wk k)
   exact le_congr (sg_lt hk).eqSymm (.eqRefl _) v1
 
 /-- `thm:binomial-lcm`, left divisibility: `∏_{n < p^a ≤ 2n} p ∣ C(2n, n)`. -/

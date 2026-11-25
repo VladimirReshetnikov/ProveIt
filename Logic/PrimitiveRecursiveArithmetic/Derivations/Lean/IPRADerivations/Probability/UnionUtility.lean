@@ -1,5 +1,6 @@
 import IPRADerivations.Probability.ExpectationCorollaries
 import IPRADerivations.Core.Fubini
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The finite union bound and expected-utility maximization
@@ -35,8 +36,7 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 /-! ## The union bound -/
 
-theorem congrSg' {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) : Γ ⊢[PRAAx] sg a ≐ sg b :=
-  congrMonus (.eqRefl _) (congrMonus (.eqRefl _) h)
+alias congrSg' := Common.congrSg
 
 theorem shift_inst2' (g : PTm 2) (a b : PTm n) : Syn.shift (inst2 g a b) = inst2 g (Syn.shift a) (Syn.shift b) := by
   simp only [inst2, Syn.shift, Syn.subst_subst]
@@ -46,7 +46,7 @@ theorem sg_le_self (s : PTm n) : Γ ⊢[PRAAx] le (sg s) s := by
   refine .orE (zero_or_succ s) ?_ ?_
   · exact le_congr ((congrSg' Prf.hyp0).eqTrans sg_zero).eqSymm (.eqRefl _) (zero_le _)
   · exact le_congr ((congrSg' Prf.hyp0).eqTrans (sg_succ _)).eqSymm Prf.hyp0.eqSymm
-      (le_of_eq_add (d := pred s) (by apply deriveNat; ipra_simps; ring))
+      (le_of_eq_add (d := pred s) (by ipra_ring))
 
 section Union
 

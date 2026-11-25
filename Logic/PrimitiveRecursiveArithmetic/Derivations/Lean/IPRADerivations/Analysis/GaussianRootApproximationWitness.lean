@@ -2,6 +2,7 @@ import IPRADerivations.Analysis.GaussianRootSupport
 import IPRADerivations.Analysis.GaussianRootFiniteEvaluation
 import IPRADerivations.Analysis.GaussianRootAdequacySchedule
 import IPRADerivations.Analysis.GaussianRationalHornerLipschitz
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual finite root-to-support witnesses
@@ -162,11 +163,7 @@ theorem output_certificate (step a : PR 3) (point : PR 2) (N U x k : PTm n)
     (congrSnd pairEq).eqTrans (snd_pair _ _)
   have found := selected_certificate step a point N U x k hRD hCN hN hU hPoints hZero
   have listEq : Γ ⊢[PRAAx] roots step a N (fstT run) x ≐ rootList step a N U x k := by
-    simpa only [rootList,GaussianRootRadius.subst_roots,Syn.subst_var,Matrix.cons_val_zero,
-      Matrix.cons_val_one,Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using
-      Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (roots step a (var 0) (var 1) (var 2) : PTm 3)
-        (σ := ![N,fstT run,x]) (σ' := ![N,stageIndex N U k,x])
-        (fun j => by fin_cases j; exact .eqRefl _; exact tEq; exact .eqRefl _)
+    ipra_congr (roots step a (var 0) (var 1) (var 2) : PTm 3) with [.eqRefl N, tEq, .eqRefl x] using [rootList]
   have lenEq : Γ ⊢[PRAAx] length (roots step a N (fstT run) x) ≐ length (rootList step a N U x k) :=
     congrFst listEq
   exact .andI (le_congr (.eqRefl _) tEq.eqSymm (GaussianRootAdequacySchedule.stage_ge_index _ _))

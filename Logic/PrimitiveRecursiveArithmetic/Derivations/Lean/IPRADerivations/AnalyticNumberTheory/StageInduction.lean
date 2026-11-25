@@ -241,7 +241,7 @@ theorem stages {p X K L : PTm n}
   have t18 : (Γ.map Fm.shift) ⊢[PRAAx] le (num 4 * Syn.shift K + two) (fact (Syn.shift L)) := by
     simpa [Fm.shift, Syn.shift] using hF4.shift
   have e30 : Γ ⊢[PRAAx] Aj zero (Dq p) ≐ num 4 * Dq p :=
-    (congrMonus (.eqRefl _) (by apply deriveNat; ipra_simps; ring)).eqTrans (monus_zero _)
+    (congrMonus (.eqRefl _) (by ipra_ring)).eqTrans (monus_zero _)
   have hD : Syn.shift (Dq p) = Dq (Syn.shift p) := by simp [Syn.shift, PTm.subst_num]
   have hJ : Syn.shift (Jst p) = Jst (Syn.shift p) := by simp [Syn.shift, PTm.subst_num]
   have all : Γ ⊢[PRAAx] .all (lawS (Syn.shift X) (Syn.shift (Dq p)) (Syn.shift K) (Syn.shift L)

@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.GaussianScalarIdentityDeterminant
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual diagonal row scaling and its numerical scalar determinant
@@ -55,8 +56,7 @@ theorem weight_lower (d t r : PTm n) (hr : Γ ⊢[PRAAx] le t r) : Γ ⊢[PRAAx]
   sel_zero (Foundations.BoundedFormulas.sg_of_zero hr)
 theorem weight_congr {d e t u r s : PTm n} (hd : Γ ⊢[PRAAx] d ≐ e)
     (ht : Γ ⊢[PRAAx] t ≐ u) (hr : Γ ⊢[PRAAx] r ≐ s) : Γ ⊢[PRAAx] weight d t r ≐ weight e u s := by
-  simpa using Prf.eqCongr (Γ := Γ) (weight (var 0) (var 1) (var 2) : PTm 3)
-    (σ := ![d,t,r]) (σ' := ![e,u,s]) (fun i => by fin_cases i; exact hd; exact ht; exact hr)
+  ipra_congr (weight (var 0) (var 1) (var 2) : PTm 3) with [hd, ht, hr]
 theorem diagonal_lookup (d t m r j : PTm n) (hr : Γ ⊢[PRAAx] lt r m) (hj : Γ ⊢[PRAAx] lt j m) : Γ ⊢[PRAAx]
     cell (diagonal d t m) r j ≐ qmul (delta r j) (weight d t r) := by
   have e : Γ ⊢[PRAAx] cell (diagonal d t m) r j ≐ qmul (delta r j) (weight (fstT (diagonalData d t)) (sndT (diagonalData d t)) r) := by

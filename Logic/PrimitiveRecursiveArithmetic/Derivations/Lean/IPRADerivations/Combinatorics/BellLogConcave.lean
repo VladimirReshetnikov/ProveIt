@@ -3,7 +3,7 @@ import IPRADerivations.Combinatorics.BellBounds
 import IPRADerivations.Combinatorics.BellTriangle
 import IPRADerivations.Combinatorics.CatalanBallot
 import IPRADerivations.Probability.Independence
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Normalized log-concavity of the Bell numbers

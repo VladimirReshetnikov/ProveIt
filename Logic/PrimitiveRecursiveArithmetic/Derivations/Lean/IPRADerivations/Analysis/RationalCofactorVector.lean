@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.RationalCofactorMinorBounds
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The actual bounded signed cofactor vector
@@ -111,10 +112,8 @@ theorem vector_length (P d : PTm n) : Γ ⊢[PRAAx] length (vector P d) ≐ d :=
 theorem vector_lookup (P d j : PTm n) (hj : Γ ⊢[PRAAx] lt j d) :
     Γ ⊢[PRAAx] entry (vector P d) j ≐ coefficientCode P d j := by
   refine (sequence_decode coefficientBody (x := pairT P d) hj).eqTrans ?_
-  simpa [coefficientBody,inst2] using
-    Prf.eqCongr (coefficientCode (var 0) (var 1) (var 2) : PTm 3)
-      (σ := ![fstT (pairT P d),sndT (pairT P d),j]) (σ' := ![P,d,j])
-      (fun i => by fin_cases i; exact fst_pair _ _; exact snd_pair _ _; exact .eqRefl _)
+  ipra_congr (coefficientCode (var 0) (var 1) (var 2) : PTm 3) with
+    [fst_pair _ _, snd_pair _ _, .eqRefl j] using [coefficientBody, inst2]
 
 theorem vector_coordinate (P d j : PTm n) (hj : Γ ⊢[PRAAx] lt j d) :
     Γ ⊢[PRAAx] ZT.eq (coordinate (vector P d) j) (coefficient P d j) :=

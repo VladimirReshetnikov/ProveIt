@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.StepCondition
 import IPRADerivations.AnalyticNumberTheory.ZetaFiniteContract
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The dyadic exponents of one contraction step (`pnt_ipra_constructive_2026-11-14`, `con:one-step`)
@@ -96,6 +97,6 @@ theorem params_spec {x s0 P : PTm n} (hs0 : 螕 鈯PRAAx] le one s0) (hP : 螕 鈯
   路 ipra_le sl r1 with e1
   路 ipra_le 饾敒 (rem (monus (monus (ell x) (muP x)) s0) P) with f2 + e2 - f3
   路 ipra_le sl r2 with f2 + e2 - f3
-  路 apply deriveNat; ipra_simps; linear_combination -f1 - f3
+  路 ipra_lc -f1 - f3
 
 end LeanProofs.IPRA.AnalyticNumberTheory.StepParams

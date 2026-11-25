@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianTranslationCoefficientBound
 import IPRADerivations.Analysis.RationalNonnegativePowerOrder
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Clearing actual residual budgets in the travel estimate
@@ -26,8 +27,7 @@ open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
-theorem power_square (A j : PTm n) : Γ ⊢[PRAAx] pw A (two*j) ≐ pw A j*pw A j :=
-  (congrAp2 powF (by ipra_ring) (.eqRefl A)).eqTrans (pw_add A j j)
+alias power_square := Common.pw_double
 
 /-- The point is the actual residual, not a supplied residual value or
 representation. Its independently decoded denominator is always positive. -/

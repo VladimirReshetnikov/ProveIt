@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.ProjectiveNormalize
 import IPRADerivations.Probability.Independence
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Uniqueness of Bézout-primitive representatives in every dimension
@@ -105,11 +106,7 @@ theorem scale_at (C C' V W : PTm 2) {j N x : PTm k}
     (hp : Γ ⊢[PRAAx] propJ V W j N x) :
     Γ ⊢[PRAAx] inst2 W j x ≐ inst2 V j x * monus (ap2 (sumF (C * W)) N x) (ap2 (sumF (C' * W)) N x) := by
   refine mul_of_add ?_
-  have c1 := natEq (cross_sum C V W hp)
-  have c2 := natEq (cross_sum C' V W hp)
-  have e := natEq hv
-  apply deriveNat; ipra_simps
-  linear_combination c1 - c2 + 𝔞 (inst2 W j x) * e
+  ipra_lc natEq (cross_sum C V W hp) - natEq (cross_sum C' V W hp) + 𝔞 (inst2 W j x) * natEq hv
 
 /-- `t s = 1` gives `t = 1`. -/
 theorem one_of_mul {t s : PTm k} (h : Γ ⊢[PRAAx] t * s ≐ one) : Γ ⊢[PRAAx] t ≐ one := by
@@ -146,8 +143,7 @@ theorem shift_sum_eq {f g : PTm 2} {N x : PTm k}
 theorem propJ_symm {V W : PTm 2} {j N x : PTm k} (h : Γ ⊢[PRAAx] propJ V W j N x) :
     Γ ⊢[PRAAx] propJ W V j N x := by
   refine .allI (.impI ?_)
-  have e := natEq (Prf.impE h.allOpen.wk Prf.hyp0)
-  apply deriveNat; ipra_simps; linear_combination -e
+  ipra_lc -natEq (Prf.impE h.allOpen.wk Prf.hyp0)
 
 /-- `∑ C_i W_i ∸ ∑ C'_i W_i`. -/
 abbrev tT (C C' W : PTm 2) (N x : PTm k) : PTm k := monus (ap2 (sumF (C * W)) N x) (ap2 (sumF (C' * W)) N x)
@@ -188,8 +184,7 @@ theorem vector_unique (C C' D D' V W : PTm 2) {N x : PTm k}
   have x1 := natEq scaled; have e := natEq hv
   have ts : Γ ⊢[PRAAx] tT C C' W N x * tT D D' V N x ≐ one := by
     refine (mul_cancel (D := succ (ap2 (sumF (C' * V)) N x)) (congrSucc (pred_succ _).eqSymm) ?_).eqSymm
-    apply deriveNat; ipra_simps
-    linear_combination x1 - (1 - 𝔞 (tT C C' W N x) * 𝔞 (tT D D' V N x)) * e
+    ipra_lc x1 - (1 - 𝔞 (tT C C' W N x) * 𝔞 (tT D D' V N x)) * e
   have t1 := one_of_mul ts
   have t1s : Γ.map Fm.shift ⊢[PRAAx] tT C C' W (Syn.shift N) (Syn.shift x) ≐ one := by
     have h0 := t1.shift
@@ -198,6 +193,6 @@ theorem vector_unique (C C' D D' V W : PTm 2) {N x : PTm k}
     exact h0
   refine .allI (.impI ?_)
   exact (Prf.impE sW.allOpen.wk Prf.hyp0).eqTrans ((congrMul (.eqRefl _) t1s.wk).eqTrans
-    (by apply deriveNat; ipra_simps; ring))
+    (by ipra_ring))
 
 end LeanProofs.IPRA.DiophantineNumberTheory.ProjectiveVectorUnique

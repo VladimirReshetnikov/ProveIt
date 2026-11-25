@@ -1,7 +1,8 @@
 import IPRADerivations.AnalyticNumberTheory.SigmaPrimePower
 import IPRADerivations.AnalyticNumberTheory.PhiLower
 import IPRADerivations.AnalyticNumberTheory.PowerCleared
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Euclid's even perfect numbers
@@ -42,7 +43,7 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 theorem two_pos : Γ ⊢[PRAAx] (two : PTm n) ≐ succ (pred two) := congrSucc (pred_succ _).eqSymm
 
-theorem mul_one_r (X : PTm n) : Γ ⊢[PRAAx] X * one ≐ X := by ipra_ring
+alias mul_one_r := Common.mul_one_right
 
 /-- `σ(2^a) + 1 = 2^{a+1}`. -/
 theorem sig_two_pow (a : PTm n) : Γ ⊢[PRAAx] sig (pw two a) + one ≐ pw two (succ a) := by

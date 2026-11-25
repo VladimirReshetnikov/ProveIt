@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.PhiDivides
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Prime-power parts and a prime indicator
@@ -37,10 +38,8 @@ theorem lt_pw_step {p m : PTm n} (hp : Γ ⊢[PRAAx] le two p) (h : Γ ⊢[PRAAx
     Γ ⊢[PRAAx] lt (succ m) (pw p (succ m)) := by
   refine le_congr (.eqRefl _) (pw_succ _ _).eqSymm (le_of_eq_add (d := m + (monus (pw p m) (succ m) +
     monus (pw p m) (succ m)) + monus p two * pw p m) ?_)
-  have h₁ := natEq (eq_add_of_le h); have h₂ := natEq (eq_add_of_le hp)
-  apply deriveNat; ipra_simps
-  linear_combination (Groth.ι (Q.mk _ p) - Groth.ι (Q.mk _ (monus p two))) * h₁ + (Groth.ι (Q.mk _ m) + 1 +
-    Groth.ι (Q.mk _ (monus (pw p m) (succ m)))) * h₂
+  ipra_lc (Groth.ι (Q.mk _ p) - Groth.ι (Q.mk _ (monus p two))) * natEq (eq_add_of_le h) +
+    (Groth.ι (Q.mk _ m) + 1 + Groth.ι (Q.mk _ (monus (pw p m) (succ m)))) * natEq (eq_add_of_le hp)
 
 /-- Variables: `0 = m`, `1 = p`. -/
 private abbrev ltPwF : Fm PTm 2 := le two (var 1) ⟶ lt (var 0) (pw (var 1) (var 0))
@@ -136,12 +135,9 @@ theorem cof_not_dvd : Γ ⊢[PRAAx] neg (dvd p (quo m (pw p (val p m)))) := by
   have hp1 : Γ ⊢[PRAAx] p ≐ succ (pred p) := AnalyticNumberTheory.Euler.N_pos hp
   refine .impI (.impE (val_not_dvd hp.wk hm.wk) ?_)
   refine dvd_of_eq' (pw_pos' hp1.wk _) (w := quo (quo m (pw p (val p m))) p) ?_
-  have e₁ := natEq ((cof_eq (m := m) hp).wk (ψ := dvd p (quo m (pw p (val p m)))))
-  have e₂ := natEq (eq_of_dvd' hp1.wk (Prf.hyp0 : (dvd p (quo m (pw p (val p m))) :: Γ) ⊢[PRAAx] _))
-  have e₃ := natEq ((pw_succ (Γ := Γ) p (val p m)).wk (ψ := dvd p (quo m (pw p (val p m)))))
-  apply deriveNat; ipra_simps
-  linear_combination e₁ + Groth.ι (Q.mk _ (pw p (val p m))) * e₂ -
-    Groth.ι (Q.mk _ (quo (quo m (pw p (val p m))) p)) * e₃
+  ipra_lc natEq ((cof_eq (m := m) hp).wk (ψ := dvd p (quo m (pw p (val p m))))) +
+    Groth.ι (Q.mk _ (pw p (val p m))) * natEq (eq_of_dvd' hp1.wk (Prf.hyp0 : (dvd p (quo m (pw p (val p m))) :: Γ) ⊢[PRAAx] _)) -
+    Groth.ι (Q.mk _ (quo (quo m (pw p (val p m))) p)) * natEq ((pw_succ (Γ := Γ) p (val p m)).wk (ψ := dvd p (quo m (pw p (val p m)))))
 
 end Val
 
@@ -162,7 +158,7 @@ theorem prime_congr {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) (ha : Γ ⊢[PRAAx
   exact dvd_congr hs.wk.wk.wk.eqSymm Prf.hyp0
 
 theorem two_le_lpf (z : PTm n) : Γ ⊢[PRAAx] le two (lpf z) :=
-  le_of_eq_add (d := μz z) (by apply deriveNat; ipra_simps; ring)
+  le_of_eq_add (d := μz z) (by ipra_ring)
 
 /-- A prime is its own least prime factor. -/
 theorem lpf_of_prime {q : PTm n} (hp : Γ ⊢[PRAAx] prime q) : Γ ⊢[PRAAx] lpf q ≐ q := by

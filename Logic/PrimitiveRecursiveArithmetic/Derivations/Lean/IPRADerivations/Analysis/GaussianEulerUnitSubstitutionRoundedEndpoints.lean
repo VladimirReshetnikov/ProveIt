@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianEulerUnitSubstitutionLatticeGeometry
 import IPRADerivations.Analysis.GaussianEulerUnitSubstitutionEndpoints
 import IPRADerivations.Analysis.GaussianRationalReconstruction
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Exhaustion by the actual rounded rational unit panels
@@ -99,11 +100,7 @@ theorem original_left_readback (p N t A R : PTm n) (hN : Γ ⊢[PRAAx] le one N)
   let T := top t A R
   have e := exact_right_endpoint (Γ := Γ) t A R
   have numEq : Γ ⊢[PRAAx] one*N+width t A R*LeanProofs.IPRA.PTm.monus N zero ≐ (T*E)*N := by
-    have em := natEq (monus_zero (Γ := Γ) N)
-    have ee := natEq e
-    apply deriveNat
-    ipra_simps
-    linear_combination 𝔞 N*ee+𝔞 (width t A R)*em
+    ipra_lc 𝔞 N*natEq e+𝔞 (width t A R)*natEq (monus_zero (Γ := Γ) N)
   have e₁ := observation_numerator_congr _ _ (E*N) p numEq
   have e₂ := observation_rescale (T*E) E N p (GaussianGammaIntegralCutoffs.eta_den_positive t A R) hN
   have e₃ : Γ ⊢[PRAAx] observation (T*E) E p ≐ observation (T*E) (one*E) p :=
@@ -150,7 +147,6 @@ theorem original_explicit_endpoints (s k N t A R M : PTm n) (hs : Γ ⊢[PRAAx] 
     (radius_triangle _ _ _ _ _ _ _ (left_displacement k N one (width t A R) E T M hs) leftEnd))
     (radius_congr (.eqRefl _) (.eqRefl _) (by unfold numerator; ipra_ring) (by unfold denominator; ipra_ring)
       (radius_triangle _ _ _ _ _ _ _ (right_displacement k N one (width t A R) E T M hs) rightEnd))
-
 
 def dyadicSource (s k N t A R M : PTm n) : Fm PTm n :=
   source k N t A R M ⋏ (le one A ⋏

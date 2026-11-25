@@ -1,5 +1,6 @@
 import IPRADerivations.Probability.Variance
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The first-crossing step of Kolmogorov's maximal inequality
@@ -60,9 +61,7 @@ theorem inst2_monus (a b : PTm 2) (i x : PTm n) :
 /-- `|a − b|² + (a + b)² = 2a² + 2b²`. -/
 theorem cleared_square (a b : PTm n) :
     Γ ⊢[PRAAx] ad a b * ad a b + (a + b) * (a + b) ≐ (a * a + a * a) + (b * b + b * b) := by
-  have e := natEq (ad_sq (Γ := Γ) a b)
-  apply deriveNat; ipra_simps
-  linear_combination e
+  ipra_lc natEq (ad_sq (Γ := Γ) a b)
 
 variable (w v P N P' N' a : PTm 2)
 
@@ -103,8 +102,7 @@ theorem future_bound (K x : PTm n) :
       refine le_of_eq_add (d := inst2 v (var 0) (Syn.shift x) *
         (ad (inst2 P' (var 0) (Syn.shift x)) (inst2 N' (var 0) (Syn.shift x)) *
           ad (inst2 P' (var 0) (Syn.shift x)) (inst2 N' (var 0) (Syn.shift x)))) ?_
-      apply deriveNat; ipra_simps
-      linear_combination (-𝔟 (inst2 v (var 0) (Syn.shift x))) * e)))
+      ipra_lc (-𝔟 (inst2 v (var 0) (Syn.shift x))) * e)))
   exact le_congr (.eqRefl _)
     ((exp_add v (P' * P' + P' * P') (N' * N' + N' * N') K x).eqTrans
       (congrAdd (exp_add v (P' * P') (P' * P') K x) (exp_add v (N' * N') (N' * N') K x))) s
@@ -123,10 +121,7 @@ theorem crossing_step (M K x : PTm n)
     ((pmB w v * (spB P P' * spB P P') + pmB w v * (spB P P' * spB P P')) +
       (pmB w v * (spB N N' * spB N N') + pmB w v * (spB N N' * spB N N')))
     (fun {m} {Δ} i j x => by
-      simp only [inst3_add', inst3_mul', inst3_pmB, inst3_spB, inst3_monus, inst2_add']
-      have e := natEq (cleared_square (Γ := Δ) (inst2 P i x + inst2 P' j x) (inst2 N i x + inst2 N' j x))
-      apply deriveNat; ipra_simps
-      linear_combination (𝔟 (inst2 w i x) * 𝔟 (inst2 v j x)) * e) M K x)
+      ipra_lc [inst3_add', inst3_mul', inst3_pmB, inst3_spB, inst3_monus, inst2_add'] (𝔟 (inst2 w i x) * 𝔟 (inst2 v j x)) * natEq (cleared_square (Γ := Δ) (inst2 P i x + inst2 P' j x) (inst2 N i x + inst2 N' j x))) M K x)
   have d₁ := natEq (dsum_add (Γ := Γ) (Zf w v P N P' N')
     (pmB w v * (spB (P + N) (P' + N') * spB (P + N) (P' + N'))) M K x)
   have d₂ := natEq (dsum_add (Γ := Γ)

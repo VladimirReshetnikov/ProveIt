@@ -2,7 +2,7 @@ import IPRADerivations.DiophantineNumberTheory.RungeProduct
 import IPRADerivations.Core.IntCancel
 import IPRADerivations.AnalyticNumberTheory.PhiLower
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Newton, Halley and logarithmic Newton steps for the Lambert function

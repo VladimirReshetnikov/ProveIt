@@ -75,7 +75,7 @@ theorem r_ge_five {q r : PTm n} (hr : Γ ⊢[PRAAx] prime r) (hq3 : Γ ⊢[PRAAx
   have l2 : C ⊢[PRAAx] lt two r := le_congr (.eqRefl _) e4.eqSymm (by ipra_le 1)
   have nd := Prf.impE (Prf.impE hall (le_refl _)) l2
   have h2 : C ⊢[PRAAx] two ≐ succ (pred two) := congrSucc (pred_succ _).eqSymm
-  have dv : C ⊢[PRAAx] dvd two r := rem_zero_of_eq h2 (w := two) (e4.eqTrans (by apply deriveNat; ipra_simps; ring))
+  have dv : C ⊢[PRAAx] dvd two r := rem_zero_of_eq h2 (w := two) (e4.eqTrans (by ipra_ring))
   exact .botE _ (Prf.impE nd dv)
 
 /-- `4pqr ≤ 15(p−1)(q−1)(r−1)` for `p ≥ 2`, `q ≥ 3`, `r ≥ 5`. -/

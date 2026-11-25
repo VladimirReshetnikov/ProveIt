@@ -49,7 +49,7 @@ abbrev rgh (Z m : PTm n) : PTm n := eqb (ap2 (sumF rB) Z m) zero
 /-- `[d ≥ 2] = 1` for `d ≥ 2`. -/
 theorem two_le_sg {d : PTm n} (h2 : Γ ⊢[PRAAx] le two d) : Γ ⊢[PRAAx] sg (monus d one) ≐ one := by
   have e : Γ ⊢[PRAAx] d ≐ succ (succ (monus d two)) :=
-    (eq_add_of_le h2).eqTrans (by apply deriveNat; ipra_simps; ring)
+    (eq_add_of_le h2).eqTrans (by ipra_ring)
   have m1 : Γ ⊢[PRAAx] monus d one ≐ succ (monus d two) :=
     (congrMonus e (.eqRefl _)).eqTrans ((succ_monus_succ _ _).eqTrans (monus_zero _))
   exact (congrSg m1).eqTrans (sg_succ _)

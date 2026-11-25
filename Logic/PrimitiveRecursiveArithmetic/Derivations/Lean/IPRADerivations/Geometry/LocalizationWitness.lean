@@ -1,6 +1,6 @@
 import IPRADerivations.Core.Tactic
 import IPRADerivations.Core.Powers
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Localization witnesses and the power-cover constructor

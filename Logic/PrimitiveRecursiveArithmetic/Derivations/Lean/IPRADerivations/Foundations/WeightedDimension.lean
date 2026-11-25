@@ -3,7 +3,7 @@ import IPRADerivations.Foundations.FiniteSetExponential
 import IPRADerivations.Foundations.BoundedFormulas
 import IPRADerivations.Foundations.EigenvalueGrid
 import IPRADerivations.Core.Fubini
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The eventual dimension formula (`ipra_coherent_methods_2026-11-15`, `prop:weighted-dimension`)

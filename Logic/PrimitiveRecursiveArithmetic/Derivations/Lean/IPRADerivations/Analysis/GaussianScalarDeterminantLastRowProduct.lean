@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianScalarDeterminant
 import IPRADerivations.Analysis.GaussianRationalProductDeletion
 import IPRADerivations.Foundations.RuntimePermutationInsertion
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The actual Leibniz product on either side of a deleted column
@@ -41,10 +42,7 @@ def minorTable (A m p : PTm n) : PTm n := table minorBody m m (pairT A p)
 
 theorem cell_congr {A B i j k l : PTm n} (hA : Γ ⊢[PRAAx] A ≐ B)
     (hi : Γ ⊢[PRAAx] i ≐ j) (hk : Γ ⊢[PRAAx] k ≐ l) : Γ ⊢[PRAAx] cell A i k ≐ cell B j l := by
-  simpa only [GaussianPolynomialDeterminantTerms.subst_cell,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (cell (var 0) (var 1) (var 2) : PTm 3) (σ := ![A,i,k]) (σ' := ![B,j,l])
-      (fun x => by fin_cases x; exact hA; exact hi; exact hk)
+  ipra_congr (cell (var 0) (var 1) (var 2) : PTm 3) with [hA, hi, hk]
 
 theorem minor_body_at (A p i j : PTm n) : Γ ⊢[PRAAx] inst3 minorBody i j (pairT A p) ≐ cell A i (slot p j) := by
   have e := LeanProofs.IPRA.Foundations.RuntimePermutationInsertion.slot_congr (snd_pair (Γ := Γ) A p) (.eqRefl j)

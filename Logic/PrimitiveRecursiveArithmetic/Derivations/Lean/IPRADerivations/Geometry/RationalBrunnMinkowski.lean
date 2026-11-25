@@ -2,7 +2,7 @@ import IPRADerivations.Core.Gcd
 import IPRADerivations.Core.Order
 import IPRADerivations.Core.SumOrder
 import IPRADerivations.Core.Tactic
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The recursion step of the rational Brunn–Minkowski theorem

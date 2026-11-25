@@ -1,6 +1,7 @@
 import IPRADerivations.Core.Search
 import IPRADerivations.Core.MultiSums
 import IPRADerivations.Foundations.GapDecision
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Exact label recovery from a separation gap
@@ -51,12 +52,9 @@ theorem pass_unique {i j y e : PTm n} (hi : Γ ⊢[PRAAx] le (inst2 δ i y) e)
     (hsep : Γ ⊢[PRAAx] neg (i ≐ j) ⟶ lt (two * e) (inst3 D i j y)) : Γ ⊢[PRAAx] i ≐ j := by
   refine .orE (eq_or_ne i j) Prf.hyp0 ?_
   have s := Prf.impE hsep.wk Prf.hyp0
-  have w₁ := natEq (eq_add_of_le hi)
-  have w₂ := natEq (eq_add_of_le hj)
   have b : Γ ⊢[PRAAx] le (inst2 δ i y + inst2 δ j y) (two * e) := by
     refine le_of_eq_add (d := monus e (inst2 δ i y) + monus e (inst2 δ j y)) ?_
-    apply deriveNat; ipra_simps
-    linear_combination w₁ + w₂
+    ipra_lc natEq (eq_add_of_le hi) + natEq (eq_add_of_le hj)
   exact le_lt_absurd _ (le_trans htri.wk b.wk) s
 
 /-- The pass test `δ(i, snd z) ∸ fst z`, zero exactly when label `i` is within `e = fst z`. -/

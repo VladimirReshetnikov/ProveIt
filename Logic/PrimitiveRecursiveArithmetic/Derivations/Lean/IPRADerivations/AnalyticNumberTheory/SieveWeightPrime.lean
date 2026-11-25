@@ -3,6 +3,7 @@ import IPRADerivations.AnalyticNumberTheory.MobiusBounds
 import IPRADerivations.AnalyticNumberTheory.Radical
 import IPRADerivations.AnalyticNumberTheory.Multiplicative
 import IPRADerivations.AnalyticNumberTheory.DivisorSplit
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The vector of the explicit sieve weights at `k p` for a prime `p`
@@ -82,23 +83,17 @@ theorem val_zero' {p a : PTm n} (hp2 : Γ ⊢[PRAAx] le two p) (ha : Γ ⊢[PRAA
 /-- `p ≤ k p` for `k ≥ 1`. -/
 theorem p_le_mul {k : PTm n} (p : PTm n) (hk : Γ ⊢[PRAAx] k ≐ succ (pred k)) : Γ ⊢[PRAAx] le p (k * p) := by
   refine le_of_eq_add (d := pred k * p) ?_
-  have e := natEq hk
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 p * e
+  ipra_lc 𝔞 p * natEq hk
 
 /-- `k ≤ k p` for `p ≥ 1`. -/
 theorem k_le_mul {p : PTm n} (k : PTm n) (hp : Γ ⊢[PRAAx] p ≐ succ (pred p)) : Γ ⊢[PRAAx] le k (k * p) := by
   refine le_of_eq_add (d := k * pred p) ?_
-  have e := natEq hp
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 k * e
+  ipra_lc 𝔞 k * natEq hp
 
 /-! ## The case `p ∣ k` -/
 
 theorem yz {g s m w : PTm n} (h : Γ ⊢[PRAAx] m ≐ zero) : Γ ⊢[PRAAx] g * ((s * m) * w) ≐ zero := by
-  have a := natEq h
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 g * 𝔞 s * 𝔞 w * a
+  ipra_lc 𝔞 g * 𝔞 s * 𝔞 w * natEq h
 
 /-- `Y^±_{kp} = 0` when `p ∣ k`. -/
 theorem Y_kill {p k : PTm n} (P : PTm n) (hp : Γ ⊢[PRAAx] prime p) (hk : Γ ⊢[PRAAx] k ≐ succ (pred k))
@@ -115,15 +110,11 @@ theorem Y_kill {p k : PTm n} (P : PTm n) (hp : Γ ⊢[PRAAx] prime p) (hk : Γ �
 /-- `(p − 1) · (z!/φ(kp)) = z!/φ(k)` from the exact divisions and `φ(kp) = φ(k)(p − 1)`. -/
 theorem w_alg {B φk φkp pm wk wkp : PTm n} (b1 : Γ ⊢[PRAAx] B ≐ φkp * wkp) (b2 : Γ ⊢[PRAAx] B ≐ φk * wk)
     (eφ : Γ ⊢[PRAAx] φkp ≐ φk * pm) : Γ ⊢[PRAAx] φk * (pm * wkp) ≐ φk * wk := by
-  have x1 := natEq b1; have x2 := natEq b2; have x3 := natEq eφ
-  apply deriveNat; ipra_simps
-  linear_combination x2 - x1 - 𝔞 wkp * x3
+  ipra_lc natEq b2 - natEq b1 - 𝔞 wkp * natEq eφ
 
 theorem mid_alg {pm m w1 w2 : PTm n} (hw : Γ ⊢[PRAAx] pm * w1 ≐ w2) :
     Γ ⊢[PRAAx] pm * (one * ((one * m) * w1)) ≐ one * ((one * m) * w2) := by
-  have a := natEq hw
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 m * a
+  ipra_lc 𝔞 m * natEq hw
 
 /-- The step for one part: `(p − 1) · [gcd(kp, q) = 1] [kp ≥ 1] m₁ z!/φ(kp) ≤ [gcd(k, q) = 1] [k ≥ 1] m₂ z!/φ(k)`
 when `m₁ = m₂`. -/

@@ -49,7 +49,7 @@ abbrev D (x : ZT n) : PTm n := monus x.pos x.neg + monus x.neg x.pos
 
 theorem zt_dich (x : ZT n) : Γ ⊢[PRAAx] nz x ⋎ (D x ≐ zero) := by
   refine .orE (zero_or_succ (D x)) (.orI₂ Prf.hyp0) (.orI₁ ?_)
-  exact le_of_eq_add (d := pred (D x)) (Prf.hyp0.eqTrans (by apply deriveNat; ipra_simps; ring))
+  exact le_of_eq_add (d := pred (D x)) (Prf.hyp0.eqTrans (by ipra_ring))
 
 theorem eq0_of_D {x : ZT n} (h : Γ ⊢[PRAAx] D x ≐ zero) : Γ ⊢[PRAAx] ZT.eq x (ZT.natLit 0) := by
   have e := le_antisymm (add_eq_zero_left h) (add_eq_zero_right h)
@@ -92,11 +92,11 @@ abbrev sel (u : Vec 3 n) : PTm n := sg (D (u 0) + D (u 1) + D (u 2))
 theorem sel_one {u : Vec 3 n} (h : Γ ⊢[PRAAx] nzV u) : Γ ⊢[PRAAx] sel u ≐ one := by
   have hl : Γ ⊢[PRAAx] le one (D (u 0) + D (u 1) + D (u 2)) := by
     refine .orE h ?_ (.orE Prf.hyp0 ?_ ?_)
-    · exact le_trans Prf.hyp0 (le_of_eq_add (d := D (u 1) + D (u 2)) (by apply deriveNat; ipra_simps; ring))
-    · exact le_trans Prf.hyp0 (le_of_eq_add (d := D (u 0) + D (u 2)) (by apply deriveNat; ipra_simps; ring))
-    · exact le_trans Prf.hyp0 (le_of_eq_add (d := D (u 0) + D (u 1)) (by apply deriveNat; ipra_simps; ring))
+    · exact le_trans Prf.hyp0 (le_of_eq_add (d := D (u 1) + D (u 2)) (by ipra_ring))
+    · exact le_trans Prf.hyp0 (le_of_eq_add (d := D (u 0) + D (u 2)) (by ipra_ring))
+    · exact le_trans Prf.hyp0 (le_of_eq_add (d := D (u 0) + D (u 1)) (by ipra_ring))
   have e := eq_add_of_le hl
-  exact (congrSg (e.eqTrans (by apply deriveNat; ipra_simps; ring))).eqTrans (sg_succ _)
+  exact (congrSg (e.eqTrans (by ipra_ring))).eqTrans (sg_succ _)
 
 theorem sel_zero {u : Vec 3 n} (h₀ : Γ ⊢[PRAAx] D (u 0) ≐ zero) (h₁ : Γ ⊢[PRAAx] D (u 1) ≐ zero)
     (h₂ : Γ ⊢[PRAAx] D (u 2) ≐ zero) : Γ ⊢[PRAAx] sel u ≐ zero := by
@@ -124,7 +124,6 @@ theorem toZ_sel_zero {s : PTm n} (h : Γ ⊢[PRAAx] s ≐ zero) :
   have b := natEq ((congrMonus (.eqRefl one) h).eqTrans (monus_zero one))
   simp only [ZT.toZ_ofNat]; ipra_simps
   exact ⟨by linear_combination a, by linear_combination b⟩
-
 
 /-! ## Incidence gives determinant zero -/
 
@@ -194,7 +193,6 @@ theorem triple_zero {u v w : Vec 3 n} (ht : Γ ⊢[PRAAx] ZT.eq (Vec.triple u v 
   rw [Vec.toZ_triple, ZT.toZ_natLit] at e
   simpa using e
 
-
 /-- All components of `u` vanish. -/
 abbrev allZero (u : Vec 3 n) : Fm PTm n := (D (u 0) ≐ zero) ⋏ ((D (u 1) ≐ zero) ⋏ (D (u 2) ≐ zero))
 
@@ -258,7 +256,6 @@ theorem axis_spec {u v w : Vec 3 n} (hu : Γ ⊢[PRAAx] nzV u) (ht : Γ ⊢[PRAA
   refine .orE (vec_dich (Vec.cross u w)) (branch₂ Prf.hyp1 Prf.hyp0 ht.wk.wk) ?_
   exact .orE (vec_dich (tV u)) (branch₃ Prf.hyp1.wk Prf.hyp1 Prf.hyp0)
     (branch₄ hu.wk.wk.wk Prf.hyp1.wk Prf.hyp1 Prf.hyp0)
-
 
 /-! ## Internal Desargues -/
 

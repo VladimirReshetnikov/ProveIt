@@ -1,6 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.Siegel
 import IPRADerivations.DiophantineNumberTheory.SuperellipticFamily
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The integral points of `y² = x^{2m} + x + 1`, completed

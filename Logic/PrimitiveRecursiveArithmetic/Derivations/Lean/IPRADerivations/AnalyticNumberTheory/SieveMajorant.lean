@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.SieveRough
 import IPRADerivations.AnalyticNumberTheory.SieveExpansion
 import IPRADerivations.Analysis.PowerSums
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The quadratic majorant, summed over the progression
@@ -59,17 +60,15 @@ theorem amgm (x y : PTm n) : Γ ⊢[PRAAx] le (two * (x * y)) (x * x + y * y) :=
   refine .orE (le_total x y) ?_ ?_
   · have e := natEq (eq_add_of_le (Prf.hyp0 : (le x y :: Γ) ⊢[PRAAx] le x y))
     refine le_of_eq_add (d := monus y x * monus y x) ?_
-    apply deriveNat; ipra_simps
-    linear_combination (𝔞 y - 𝔞 x + 𝔞 (monus y x)) * e
+    ipra_lc (𝔞 y - 𝔞 x + 𝔞 (monus y x)) * e
   · have e := natEq (eq_add_of_le (Prf.hyp0 : (le y x :: Γ) ⊢[PRAAx] le y x))
     refine le_of_eq_add (d := monus x y * monus x y) ?_
-    apply deriveNat; ipra_simps
-    linear_combination (𝔞 x - 𝔞 y + 𝔞 (monus x y)) * e
+    ipra_lc (𝔞 x - 𝔞 y + 𝔞 (monus x y)) * e
 
 theorem maj_ring (c a b : PTm n) :
     Γ ⊢[PRAAx] (a * a + b * b) * (c * one) + ((c * b) * a + (c * a) * b) ≐
       ((c * a) * a + (c * b) * b) + (two * (a * b)) * (c * one) := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- The case `ρ = 1`, `T⁺ = a`, `T⁻ = b`: both sides agree. -/
 theorem maj_eq {c ρ a b TP TN : PTm n} (hρ : Γ ⊢[PRAAx] ρ ≐ one) (hP : Γ ⊢[PRAAx] TP ≐ a)

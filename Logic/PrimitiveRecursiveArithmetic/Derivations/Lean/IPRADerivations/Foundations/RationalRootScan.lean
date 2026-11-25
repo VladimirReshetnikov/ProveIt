@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.RationalRootConstant
 import IPRADerivations.Foundations.EigenvalueGrid
 import IPRADerivations.Foundations.FilteredEnumeration
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The bounded rational-root scan (`ipra_presentations_to_witnesses`, `lem:norm-rational-roots`)
@@ -101,24 +102,19 @@ theorem zero_root_den {q' u v : PTm k} (hB : Γ ⊢[PRAAx] Bez q' zero u v) :
   · have e := natEq (Prf.hyp0 (Γ := Γ) (φ := u * succ q' ≐ v * zero + one))
     have h1 : ((u * succ q' ≐ v * zero + one) :: Γ) ⊢[PRAAx] dvd (succ q') one := by
       refine dvd_of_eq (w := u) ?_
-      apply deriveNat; ipra_simps
-      linear_combination -e
+      ipra_lc -e
     have h2 := Foundations.RationalRootConstant.dvd_le h1 (pos_of_eq_succ (.eqRefl _))
     exact (monus_zero q').eqSymm.eqTrans ((succ_monus_succ q' zero).eqSymm.eqTrans h2)
   · have e := natEq (Prf.hyp0 (Γ := Γ) (φ := u * succ q' + one ≐ v * zero))
     refine succ_ne_zero' _ (a := u * succ q') ?_
-    apply deriveNat; ipra_simps
-    linear_combination e
+    ipra_lc e
 
 /-- The homogeneous sum of degree `0` is its constant coefficient. -/
 theorem const_eval (a : PTm 2) (p q x : PTm k) :
     Γ ⊢[PRAAx] P a (succ zero) p q zero x ≐ inst2 a zero x := by
-  have s := natEq (sum_succ' (Γ := Γ) (tB a) zero (pairT p (pairT q (pairT zero x))))
-  have z := natEq (sum_zero (Γ := Γ) (tB a) (pairT p (pairT q (pairT zero x))))
-  have t := natEq (top_at (Γ := Γ) a p q zero x)
-  have w := natEq (pw_zero (Γ := Γ) p)
-  apply deriveNat; ipra_simps
-  linear_combination s + z + t + 𝔞 (inst2 a zero x) * w
+  ipra_lc natEq (sum_succ' (Γ := Γ) (tB a) zero (pairT p (pairT q (pairT zero x)))) +
+    natEq (sum_zero (Γ := Γ) (tB a) (pairT p (pairT q (pairT zero x)))) + natEq (top_at (Γ := Γ) a p q zero x) +
+    𝔞 (inst2 a zero x) * natEq (pw_zero (Γ := Γ) p)
 
 /-- "For `d = 0`, this contradicts `c_0 ≠ 0`": the cleared equation of degree `0` says
 `a_0 = b_0`. -/
@@ -147,14 +143,11 @@ theorem reduced_unique {p p₂ q' q₂' u v u₂ v₂ : PTm k} (hB : Γ ⊢[PRAA
 /-- Pairs with both entries at most `B` have codes below `⟨B, B⟩ + 1`. -/
 theorem pair_lt_box {p q B : PTm k} (hp : Γ ⊢[PRAAx] le p B) (hq : Γ ⊢[PRAAx] le q B) :
     Γ ⊢[PRAAx] lt (pairT p q) (succ (pairT B B)) := by
-  have ea := natEq (eq_add_of_le hp)
-  have eb := natEq (eq_add_of_le hq)
   refine le_of_eq_add (d := (monus B p + monus B q) *
       (p + q + p + q + monus B p + monus B q) + monus B p) ?_
   unfold pairT
-  apply deriveNat
-  ipra_simps
-  linear_combination (2 * 𝔞 B + 𝔞 p + 𝔞 q + 𝔞 (monus B p) + 𝔞 (monus B q)) * (ea + eb) + ea
+  ipra_lc (2 * 𝔞 B + 𝔞 p + 𝔞 q + 𝔞 (monus B p) + 𝔞 (monus B q)) * (natEq (eq_add_of_le hp) + natEq (eq_add_of_le hq)) +
+    natEq (eq_add_of_le hp)
 
 /-- The number of codes scanned for the bound `B`. -/
 abbrev box (B : PTm k) : PTm k := succ (pairT B B)

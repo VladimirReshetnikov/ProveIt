@@ -1,5 +1,6 @@
 import IPRADerivations.Algebra.QuadraticRationalClearing
 import IPRADerivations.Analysis.RationalAlgebra
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Actual rational pair arithmetic at a positive integer radicand
@@ -78,10 +79,7 @@ theorem scalar_add_same (q r D : PTm n) (a b : ZT n) (hD : Γ ⊢[PRAAx] le one 
     (hr : Γ ⊢[PRAAx] LeanProofs.IPRA.Analysis.RationalArithmetic.represents r b D) : Γ ⊢[PRAAx]
     LeanProofs.IPRA.Analysis.RationalArithmetic.represents (LeanProofs.IPRA.Analysis.RationalArithmetic.add q r) (a+b) D := by
   apply LeanProofs.IPRA.Analysis.RationalNormalForm.positive_integer_cancel D _ _ hD
-  apply ZT.derive
-  have e := ZT.toZ_eq (LeanProofs.IPRA.Analysis.RationalRepresentations.represents_add q r a b D D hq hr)
-  simp only [ZT.toZ_mul,ZT.toZ_add,ZT.toZ_ofNat,Q.mk_mul,map_mul] at e ⊢
-  linear_combination e
+  ipra_lc ZT.toZ_eq (LeanProofs.IPRA.Analysis.RationalRepresentations.represents_add q r a b D D hq hr)
 theorem scalar_represents (d : PTm n) : Γ ⊢[PRAAx]
     LeanProofs.IPRA.Analysis.RationalArithmetic.represents (scalar d) (ZT.ofNat d) one :=
   LeanProofs.IPRA.Analysis.RationalIntegerNormalization.normalize_preserves_value _ _ (le_refl one)

@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianGammaEulerHeadLower
 import IPRADerivations.Analysis.GaussianGammaC7Name
 import IPRADerivations.Analysis.GaussianExponentialReference
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Exact zeros of the original reciprocal Gamma program at the poles
@@ -43,9 +44,7 @@ theorem head_at_pole_index (z B k : PTm n) (hB : Γ ⊢[PRAAx] le one B)
   refine .orE (zero_or_succ k) ?_ ?_
   · have e : (k ≐ zero) :: Γ ⊢[PRAAx] k ≐ zero := Prf.hyp0
     have ht : (k ≐ zero) :: Γ ⊢[PRAAx] translated z B k ≐ translated z B zero := by
-      simpa [translated] using Prf.eqCongr (Γ := (k ≐ zero) :: Γ) (Ax := PRAAx)
-        (translated (var 0) (var 1) (var 2) : PTm 3) (σ := ![z,B,k]) (σ' := ![z,B,zero])
-        (fun i => by fin_cases i; exact .eqRefl _; exact .eqRefl _; exact e)
+      ipra_congr (translated (var 0) (var 1) (var 2) : PTm 3) with [.eqRefl z, .eqRefl B, e] using [translated]
     have hz := GaussianRootAlgebra.equal_trans (GaussianRootAlgebra.equal_symm (translated_zero z B))
       (GaussianRootAlgebra.equal_trans (GaussianRootAlgebra.equal_symm (GaussianRootAlgebra.equal_of_code ht)) h.wk)
     have ez : (k ≐ zero) :: Γ ⊢[PRAAx] ofGaussian z B ≐ qzero :=
@@ -53,29 +52,21 @@ theorem head_at_pole_index (z B k : PTm n) (hB : Γ ⊢[PRAAx] le one B)
         hB.wk (represents_congr (.eqRefl _) hz (.eqRefl _) (ofGaussian_represents _ _ hB.wk))
         (GaussianRationalHorner.zero_represents B)
     have headcong : (k ≐ zero) :: Γ ⊢[PRAAx] head z B k ≐ head z B zero := by
-      simpa using Prf.eqCongr (Γ := (k ≐ zero) :: Γ) (Ax := PRAAx)
-        (head (var 0) (var 1) (var 2) : PTm 3) (σ := ![z,B,k]) (σ' := ![z,B,zero])
-        (fun i => by fin_cases i; exact .eqRefl _; exact .eqRefl _; exact e)
+      ipra_congr (head (var 0) (var 1) (var 2) : PTm 3) with [.eqRefl z, .eqRefl B, e]
     exact headcong.eqTrans ((head_zero z B hB.wk).eqTrans ez)
   · have e : (k ≐ succ (pred k)) :: Γ ⊢[PRAAx] k ≐ succ (pred k) := Prf.hyp0
     have ht : (k ≐ succ (pred k)) :: Γ ⊢[PRAAx] translated z B k ≐ translated z B (succ (pred k)) := by
-      simpa using Prf.eqCongr (Γ := (k ≐ succ (pred k)) :: Γ) (Ax := PRAAx)
-        (translated (var 0) (var 1) (var 2) : PTm 3) (σ := ![z,B,k]) (σ' := ![z,B,succ (pred k)])
-        (fun i => by fin_cases i; exact .eqRefl _; exact .eqRefl _; exact e)
+      ipra_congr (translated (var 0) (var 1) (var 2) : PTm 3) with [.eqRefl z, .eqRefl B, e]
     have hz := GaussianRootAlgebra.equal_trans (GaussianRootAlgebra.equal_symm (GaussianRootAlgebra.equal_of_code ht)) h.wk
     have headcong : (k ≐ succ (pred k)) :: Γ ⊢[PRAAx] head z B k ≐ head z B (succ (pred k)) := by
-      simpa using Prf.eqCongr (Γ := (k ≐ succ (pred k)) :: Γ) (Ax := PRAAx)
-        (head (var 0) (var 1) (var 2) : PTm 3) (σ := ![z,B,k]) (σ' := ![z,B,succ (pred k)])
-        (fun i => by fin_cases i; exact .eqRefl _; exact .eqRefl _; exact e)
+      ipra_congr (head (var 0) (var 1) (var 2) : PTm 3) with [.eqRefl z, .eqRefl B, e]
     exact headcong.eqTrans ((head_succ z B (pred k)).eqTrans
       ((qmul_congr (.eqRefl _) (factor_zero_at_pole z B (pred k) hB.wk hz)).eqTrans (qmul_zero_right _)))
 
 theorem head_zero_at_pole (z B k N : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hk : Γ ⊢[PRAAx] le k N)
     (h : Γ ⊢[PRAAx] equal (translated z B k) zeroCode) : Γ ⊢[PRAAx] head z B N ≐ qzero := by
   have hc : Γ ⊢[PRAAx] head z B N ≐ head z B (k+monus N k) := by
-    simpa using Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (head (var 0) (var 1) (var 2) : PTm 3)
-      (σ := ![z,B,N]) (σ' := ![z,B,k+monus N k])
-      (fun i => by fin_cases i; exact .eqRefl _; exact .eqRefl _; exact eq_add_of_le hk)
+    ipra_congr (head (var 0) (var 1) (var 2) : PTm 3) with [.eqRefl z, .eqRefl B, eq_add_of_le hk]
   exact hc.eqTrans ((head_split z B k (monus N k)).eqTrans
     ((qmul_congr (head_at_pole_index z B k hB h) (.eqRefl _)).eqTrans (qmul_zero_left _)))
 

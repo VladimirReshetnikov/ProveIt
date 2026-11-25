@@ -1,6 +1,8 @@
 import IPRADerivations.AnalyticNumberTheory.Harmonic
 import IPRADerivations.AnalyticNumberTheory.PhiLower
 import IPRADerivations.Combinatorics.Fibonacci
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The elementary finite lemmas of the Basel packet
@@ -51,16 +53,16 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 theorem par_sum (k : PTm n) : Γ ⊢[PRAAx] par k + monus one (par k) ≐ one :=
   .orE (par_cases k)
     ((congrAdd Prf.hyp0 ((congrMonus (.eqRefl _) Prf.hyp0).eqTrans (monus_zero _))).eqTrans
-      (by apply deriveNat; ipra_simps; ring))
+      (by ipra_ring))
     ((congrAdd Prf.hyp0 ((congrMonus (.eqRefl _) Prf.hyp0).eqTrans (monus_self _))).eqTrans
-      (by apply deriveNat; ipra_simps; ring))
+      (by ipra_ring))
 
 theorem par_prod (k : PTm n) : Γ ⊢[PRAAx] par k * monus one (par k) ≐ zero :=
   .orE (par_cases k)
     ((congrMul Prf.hyp0 ((congrMonus (.eqRefl _) Prf.hyp0).eqTrans (monus_zero _))).eqTrans
-      (by apply deriveNat; ipra_simps; ring))
+      (by ipra_ring))
     ((congrMul Prf.hyp0 ((congrMonus (.eqRefl _) Prf.hyp0).eqTrans (monus_self _))).eqTrans
-      (by apply deriveNat; ipra_simps; ring))
+      (by ipra_ring))
 
 /-- `1 ∸ par (k + 1) = par k`. -/
 theorem compl_succ (k : PTm n) : Γ ⊢[PRAAx] monus one (par (succ k)) ≐ par k :=
@@ -95,16 +97,12 @@ theorem Od_succ (k x : PTm n) : Γ ⊢[PRAAx] Od w (succ k) x ≐ Od w k x + par
   exact h
 
 theorem Ev_one (x : PTm n) : Γ ⊢[PRAAx] Ev w (succ zero) x ≐ inst2 w zero x := by
-  have a := natEq (Ev_succ (Γ := Γ) w zero x); have b := natEq (sum_zero (Γ := Γ) (eB w) x)
-  have c := natEq ((congrMonus (.eqRefl one) (par_zero (Γ := Γ))).eqTrans (monus_zero _))
-  apply deriveNat; ipra_simps
-  linear_combination a + b + 𝔞 (inst2 w zero x) * c
+  ipra_lc natEq (Ev_succ (Γ := Γ) w zero x) + natEq (sum_zero (Γ := Γ) (eB w) x) +
+    𝔞 (inst2 w zero x) * natEq ((congrMonus (.eqRefl one) (par_zero (Γ := Γ))).eqTrans (monus_zero _))
 
 theorem Od_one (x : PTm n) : Γ ⊢[PRAAx] Od w (succ zero) x ≐ zero := by
-  have a := natEq (Od_succ (Γ := Γ) w zero x); have b := natEq (sum_zero (Γ := Γ) (oB w) x)
-  have c := natEq (par_zero (Γ := Γ) (n := n))
-  apply deriveNat; ipra_simps
-  linear_combination a + b + 𝔞 (inst2 w zero x) * c
+  ipra_lc natEq (Od_succ (Γ := Γ) w zero x) + natEq (sum_zero (Γ := Γ) (oB w) x) +
+    𝔞 (inst2 w zero x) * natEq (par_zero (Γ := Γ) (n := n))
 
 /-! ### Decreasing weights -/
 
@@ -116,28 +114,22 @@ abbrev DecInv (k x : PTm n) : Fm PTm n :=
 
 theorem dec_base (x : PTm n) : Γ ⊢[PRAAx] DecInv w zero x := by
   have a := natEq (Ev_one (Γ := Γ) w x); have b := natEq (Od_one (Γ := Γ) w x)
-  have c := natEq ((congrMonus (.eqRefl one) (par_zero (Γ := Γ))).eqTrans (monus_zero _))
   have d := natEq (par_zero (Γ := Γ) (n := n))
   refine .andI (le_of_eq_add (d := zero) ?_) (le_of_eq_add (d := zero) ?_)
-  · apply deriveNat; ipra_simps
-    linear_combination a - b - 𝔞 (inst2 w zero x) * c
-  · apply deriveNat; ipra_simps
-    linear_combination b - a - 𝔞 (inst2 w zero x) * d
+  · ipra_lc a - b - 𝔞 (inst2 w zero x) * natEq ((congrMonus (.eqRefl one) (par_zero (Γ := Γ))).eqTrans (monus_zero _))
+  · ipra_lc b - a - 𝔞 (inst2 w zero x) * d
 
 theorem dec_step {k x : PTm n} (ih : Γ ⊢[PRAAx] DecInv w k x)
     (hm : Γ ⊢[PRAAx] le (inst2 w (succ k) x) (inst2 w k x)) : Γ ⊢[PRAAx] DecInv w (succ k) x := by
   have i1 := natEq (eq_add_of_le (Prf.andE₁ ih)); have i2 := natEq (eq_add_of_le (Prf.andE₂ ih))
-  have m := natEq (eq_add_of_le hm)
   have sE := natEq (Ev_succ (Γ := Γ) w (succ k) x); have sO := natEq (Od_succ (Γ := Γ) w (succ k) x)
   have p1 := natEq (par_succ (Γ := Γ) k); have q1 := natEq (compl_succ (Γ := Γ) k)
   refine .andI (le_of_eq_add (d := monus one (par k) * monus (inst2 w k x) (inst2 w (succ k) x) +
     monus (Ev w (succ k) x) (Od w (succ k) x + monus one (par k) * inst2 w k x)) ?_)
     (le_of_eq_add (d := par k * monus (inst2 w k x) (inst2 w (succ k) x) +
     monus (Od w (succ k) x + inst2 w zero x) (Ev w (succ k) x + par k * inst2 w k x)) ?_)
-  · apply deriveNat; ipra_simps
-    linear_combination sE - sO + i1 + 𝔞 (monus one (par k)) * m - 𝔞 (inst2 w (succ k) x) * p1
-  · apply deriveNat; ipra_simps
-    linear_combination sO - sE + i2 + 𝔞 (par k) * m - 𝔞 (inst2 w (succ k) x) * q1
+  · ipra_lc sE - sO + i1 + 𝔞 (monus one (par k)) * natEq (eq_add_of_le hm) - 𝔞 (inst2 w (succ k) x) * p1
+  · ipra_lc sO - sE + i2 + 𝔞 (par k) * natEq (eq_add_of_le hm) - 𝔞 (inst2 w (succ k) x) * q1
 
 /-- `w_{i+1} ≤ w_i` for `i + 1 < N`. -/
 abbrev Dec (N x : PTm n) : Fm PTm n :=
@@ -189,14 +181,11 @@ abbrev IncInv (k x : PTm n) : Fm PTm n :=
 
 theorem inc_base (x : PTm n) : Γ ⊢[PRAAx] IncInv w zero x := by
   have a := natEq (Ev_one (Γ := Γ) w x); have b := natEq (Od_one (Γ := Γ) w x)
-  have c := natEq ((congrMonus (.eqRefl one) (par_zero (Γ := Γ))).eqTrans (monus_zero _))
   have d := natEq (par_zero (Γ := Γ) (n := n))
   refine .andI (le_of_eq_add (d := inst2 w zero x) ?_) (le_of_eq_add (d := zero) ?_)
-  · apply deriveNat; ipra_simps
-    linear_combination (𝔞 (Ev w (succ zero) x) - 𝔞 (Od w (succ zero) x)) * c +
+  · ipra_lc (𝔞 (Ev w (succ zero) x) - 𝔞 (Od w (succ zero) x)) * natEq ((congrMonus (.eqRefl one) (par_zero (Γ := Γ))).eqTrans (monus_zero _)) +
       (𝔞 (Od w (succ zero) x) - 𝔞 (Ev w (succ zero) x)) * d + a - b
-  · apply deriveNat; ipra_simps
-    linear_combination (𝔞 (Od w (succ zero) x) - 𝔞 (Ev w (succ zero) x)) * c +
+  · ipra_lc (𝔞 (Od w (succ zero) x) - 𝔞 (Ev w (succ zero) x)) * natEq ((congrMonus (.eqRefl one) (par_zero (Γ := Γ))).eqTrans (monus_zero _)) +
       (𝔞 (Ev w (succ zero) x) - 𝔞 (Od w (succ zero) x)) * d - a + b
 
 theorem inc_step {k x : PTm n} (ih : Γ ⊢[PRAAx] IncInv w k x)
@@ -251,24 +240,16 @@ theorem alt_increasing {m x : PTm n} (h : Γ ⊢[PRAAx] Inc w (succ m) x) :
     have j2 := natEq (eq_add_of_le ((Prf.andE₂ j).wk (ψ := par m ≐ zero)))
     refine .andI (le_of_eq_add (d := monus (Ys w m x + inst2 w m x) (Xs w m x)) ?_)
       (le_of_eq_add (d := monus (Xs w m x) (Ys w m x) + inst2 w m x) ?_)
-    · apply deriveNat; ipra_simps
-      linear_combination j2 - (𝔞 (Od w (succ m) x) - 𝔞 (Ev w (succ m) x)) * c +
-        (𝔞 (Od w (succ m) x) - 𝔞 (Ev w (succ m) x)) * hp
-    · apply deriveNat; ipra_simps
-      linear_combination j1 - (𝔞 (Ev w (succ m) x) - 𝔞 (Od w (succ m) x)) * c +
-        (𝔞 (Ev w (succ m) x) - 𝔞 (Od w (succ m) x)) * hp
+    · ipra_lc j2 - (𝔞 (Od w (succ m) x) - 𝔞 (Ev w (succ m) x)) * c + (𝔞 (Od w (succ m) x) - 𝔞 (Ev w (succ m) x)) * hp
+    · ipra_lc j1 - (𝔞 (Ev w (succ m) x) - 𝔞 (Od w (succ m) x)) * c + (𝔞 (Ev w (succ m) x) - 𝔞 (Od w (succ m) x)) * hp
   · have hp := natEq (Prf.hyp0 : ((par m ≐ one) :: Γ) ⊢[PRAAx] _)
     have c := natEq ((congrMonus (.eqRefl one) (Prf.hyp0 : ((par m ≐ one) :: Γ) ⊢[PRAAx] _)).eqTrans (monus_self _))
     have j1 := natEq (eq_add_of_le ((Prf.andE₁ j).wk (ψ := par m ≐ one)))
     have j2 := natEq (eq_add_of_le ((Prf.andE₂ j).wk (ψ := par m ≐ one)))
     refine .andI (le_of_eq_add (d := monus (Xs w m x) (Ys w m x) + inst2 w m x) ?_)
       (le_of_eq_add (d := monus (Ys w m x + inst2 w m x) (Xs w m x)) ?_)
-    · apply deriveNat; ipra_simps
-      linear_combination j1 - (𝔞 (Od w (succ m) x) - 𝔞 (Ev w (succ m) x)) * hp +
-        (𝔞 (Od w (succ m) x) - 𝔞 (Ev w (succ m) x)) * c
-    · apply deriveNat; ipra_simps
-      linear_combination j2 - (𝔞 (Ev w (succ m) x) - 𝔞 (Od w (succ m) x)) * hp +
-        (𝔞 (Ev w (succ m) x) - 𝔞 (Od w (succ m) x)) * c
+    · ipra_lc j1 - (𝔞 (Od w (succ m) x) - 𝔞 (Ev w (succ m) x)) * hp + (𝔞 (Od w (succ m) x) - 𝔞 (Ev w (succ m) x)) * c
+    · ipra_lc j2 - (𝔞 (Ev w (succ m) x) - 𝔞 (Od w (succ m) x)) * hp + (𝔞 (Ev w (succ m) x) - 𝔞 (Od w (succ m) x)) * c
 
 end Alternating
 
@@ -282,7 +263,7 @@ theorem inst2_t (i F : PTm n) : inst2 tB i F = quo F (succ (two * i)) := by simp
 /-- `T(N, F) = ∑_{j<N} ⌊F/(2j+1)⌋`, i.e. `F H_N` when every `2j + 1 < 2N` divides `F`. -/
 abbrev T (N F : PTm n) : PTm n := ap2 (sumF tB) N F
 
-theorem odd_pos (a : PTm n) : Γ ⊢[PRAAx] succ a ≐ succ (pred (succ a)) := congrSucc (pred_succ _).eqSymm
+alias odd_pos := Common.succ_pos
 
 theorem block_step {P d F : PTm n}
     (ih : Γ ⊢[PRAAx] le (T (P + d) F) (T P F + d * quo F (succ (two * P)))) :
@@ -292,10 +273,10 @@ theorem block_step {P d F : PTm n}
     rw [inst2_t]
     exact .eqRefl _
   have hle : Γ ⊢[PRAAx] le (succ (two * P)) (succ (two * (P + d))) :=
-    le_of_eq_add (d := two * d) (by apply deriveNat; ipra_simps; ring)
+    le_of_eq_add (d := two * d) (by ipra_ring)
   have hq := quo_anti (F := F) (odd_pos _) hle
   refine le_congr e.eqSymm ?_ (add_le_add ih hq)
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- Variables: `0 = d`, `1 = F`, `2 = P`. -/
 private abbrev blockF : Fm PTm 3 :=
@@ -307,7 +288,7 @@ private theorem block₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] blockF := by
       Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero,
       ConciseIPRA.PTm.subst_succ]
     refine le_congr (congrAp2 (sumF tB) (add_zero _) (.eqRefl _)).eqSymm ?_ (le_refl _)
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   · simp only [subst_le, Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul,
       Syn.subst_var, Syn.repl_zero, repl_one, repl_two, ConciseIPRA.PTm.subst_zero,
       ConciseIPRA.PTm.subst_succ]
@@ -324,21 +305,19 @@ theorem T_one (F : PTm n) : Γ ⊢[PRAAx] T (pw two zero) F ≐ F := by
   refine (congrAp2 (sumF tB) (pw_zero _) (.eqRefl _)).eqTrans ((sum_succ' tB zero F).eqTrans ?_)
   rw [inst2_t]
   refine (congrAdd (sum_zero _ _) (quo_eq (q := F) (r := zero) (odd_pos _) ?_ ?_)).eqTrans (zero_add _)
-  · apply deriveNat; ipra_simps; ring
-  · exact le_of_eq_add (d := two * zero) (by apply deriveNat; ipra_simps; ring)
+  · ipra_ring
+  · exact le_of_eq_add (d := two * zero) (by ipra_ring)
 
 theorem dyadic_step {j F : PTm n} (ih : Γ ⊢[PRAAx] le (two * T (pw two j) F) ((two + j) * F)) :
     Γ ⊢[PRAAx] le (two * T (pw two (succ j)) F) ((two + succ j) * F) := by
   have bl := block_up (Γ := Γ) (pw two j) (pw two j) F
   have eS : Γ ⊢[PRAAx] T (pw two (succ j)) F ≐ T (pw two j + pw two j) F :=
-    congrAp2 (sumF tB) ((pw_succ _ _).eqTrans (by apply deriveNat; ipra_simps; ring)) (.eqRefl _)
-  have dv := natEq (div_eq (j := F) (odd_pos (Γ := Γ) (two * pw two j)))
+    congrAp2 (sumF tB) ((pw_succ _ _).eqTrans (by ipra_ring)) (.eqRefl _)
   have e₁ := natEq (eq_add_of_le ih); have e₂ := natEq (eq_add_of_le bl); have e₃ := natEq eS
   refine le_of_eq_add (d := monus ((two + j) * F) (two * T (pw two j) F) +
     two * monus (T (pw two j) F + pw two j * quo F (succ (two * pw two j))) (T (pw two j + pw two j) F) +
     quo F (succ (two * pw two j)) + rem F (succ (two * pw two j))) ?_
-  apply deriveNat; ipra_simps
-  linear_combination e₁ + 2 * e₂ - 2 * e₃ + dv
+  ipra_lc e₁ + 2 * e₂ - 2 * e₃ + natEq (div_eq (j := F) (odd_pos (Γ := Γ) (two * pw two j)))
 
 /-- Variables: `0 = j`, `1 = F`. -/
 private abbrev dyadicF : Fm PTm 2 := le (two * T (pw two (var 0)) (var 1)) ((two + var 0) * var 1)
@@ -348,7 +327,7 @@ private theorem dyadic₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] dyadicF := by
   · simp only [subst_le, Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul,
       Syn.subst_var, Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
     refine le_congr (congrMul (.eqRefl _) (T_one _)).eqSymm ?_ (le_refl _)
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   · simp only [subst_le, Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul,
       Syn.subst_var, Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
     exact dyadic_step Prf.hyp0
@@ -375,18 +354,14 @@ private theorem growth₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] growthF := by
   refine ind _ (le_QF _ _) ?_ ?_
   · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_num,
       Syn.subst_var, Syn.inst_zero, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have e := natEq (pw_zero (Γ := []) (two : PTm 0))
     refine le_of_eq_add (d := num 52) ?_
-    apply deriveNat; ipra_simps
-    linear_combination 128 * e
+    ipra_lc 128 * natEq (pw_zero (Γ := []) (two : PTm 0))
   · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_num,
       Syn.subst_var, Syn.repl_zero, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have e₁ := natEq (eq_add_of_le (Prf.hyp0 : [growthF] ⊢[PRAAx] growthF))
-    have e₂ := natEq (pw_succ (Γ := [growthF]) (two : PTm 1) (var 0))
     refine le_of_eq_add (d := num 16 * var 0 + num 60 + two * monus (num 128 * pw two (var 0))
       (num 16 * var 0 + num 76)) ?_
-    apply deriveNat; ipra_simps
-    linear_combination 128 * e₂ + 2 * e₁
+    ipra_lc 128 * natEq (pw_succ (Γ := [growthF]) (two : PTm 1) (var 0)) +
+      2 * natEq (eq_add_of_le (Prf.hyp0 : [growthF] ⊢[PRAAx] growthF))
 
 /-- `eq:growth`: `16k + 76 ≤ 128 · 2^k`. -/
 theorem growth (k : PTm n) : Γ ⊢[PRAAx] le (num 16 * k + num 76) (num 128 * pw two k) := by

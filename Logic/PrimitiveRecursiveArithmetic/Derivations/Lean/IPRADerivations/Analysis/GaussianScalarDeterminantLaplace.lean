@@ -2,6 +2,7 @@ import IPRADerivations.Analysis.GaussianScalarDeterminantLastRowGrouping
 import IPRADerivations.Analysis.GaussianScalarDeterminantLastRowProduct
 import IPRADerivations.Analysis.GaussianScalarColumnSelection
 import IPRADerivations.Foundations.RuntimePermutationInsertionParity
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The last-row cofactor factors of the actual determinant
@@ -63,7 +64,7 @@ def allSigns (m : PTm n) : Fm PTm n := .all (lt (var 0) (succ (Syn.shift m)) ⟶
     (allSigns m).subst σ = allSigns (Syn.subst σ m) := by simp [allSigns,Syn.subst_shift,Syn.shift_subst]
 
 theorem sign_bit_congr {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) : Γ ⊢[PRAAx] signBit a ≐ signBit b := by
-  simpa [signBit,sel,one] using Prf.eqCongr (signBit (var 0) : PTm 1) (σ := ![a]) (σ' := ![b]) (fun j => by fin_cases j; exact h)
+  ipra_congr (signBit (var 0) : PTm 1) with [h] using [signBit, sel, one]
 
 theorem sign_bit_even (b : PTm n) (h : Γ ⊢[PRAAx] b ≐ zero) : Γ ⊢[PRAAx] signBit b ≐ qone := sel_zero h
 theorem sign_bit_odd (b : PTm n) (h : Γ ⊢[PRAAx] b ≐ one) : Γ ⊢[PRAAx] signBit b ≐ qnegative qone := sel_one h
@@ -134,11 +135,8 @@ theorem sign_block_at (m p : PTm n) (h : Γ ⊢[PRAAx] allSigns m) (hp : Γ ⊢[
   exact .impE rule hp
 
 theorem expansion_body_at (A m p : PTm n) : Γ ⊢[PRAAx] inst2 expansionBody p (pairT A m) ≐ summand A m p := by
-  simpa only [expansionBody,inst2,subst_summand,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-    Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (summand (var 0) (var 1) (var 2) : PTm 3)
-      (σ := ![fstT (pairT A m),sndT (pairT A m),p]) (σ' := ![A,m,p])
-      (fun j => by fin_cases j; exact fst_pair _ _; exact snd_pair _ _; exact .eqRefl _)
+  ipra_congr (summand (var 0) (var 1) (var 2) : PTm 3) with
+    [fst_pair _ _, snd_pair _ _, .eqRefl p] using [expansionBody, inst2]
 
 theorem block_expansion (A m p : PTm n) (hp : Γ ⊢[PRAAx] lt p (succ m)) (h : Γ ⊢[PRAAx] signTerms m p) :
     Γ ⊢[PRAAx] inst2 (blockBody (reorderedBody signedBody)) p (pairT (count m) (pairT m (pairT A (succ m)))) ≐ summand A m p := by

@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianDominantScoreWeights
 import IPRADerivations.Analysis.GaussianRationalProductWitness
 import IPRADerivations.Analysis.GaussianRationalReciprocal
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Actual off-dominant Gaussian terms at every point in the selected disk
@@ -67,8 +68,7 @@ def weightedNorm (q d : PTm n) : PTm n :=
 @[simp] theorem subst_weightedNorm {m : ℕ} (σ : Fin n → PTm m) (q d : PTm n) :
     Syn.subst σ (weightedNorm q d) = weightedNorm (Syn.subst σ q) (Syn.subst σ d) := by simp [weightedNorm]
 
-theorem power_double (A i : PTm n) : Γ ⊢[PRAAx] pw A (two*i) ≐ pw A i*pw A i :=
-  (congrAp2 powF (by ipra_ring) (.eqRefl A)).eqTrans (pw_add A i i)
+alias power_double := Common.pw_double
 
 theorem squared_power_tolerance (A B i : PTm n) : Γ ⊢[PRAAx]
     GaussianRationalMetric.squaredTolerance (pw A i) (pw B i) ≐ RationalNonnegativePowers.power A B (two*i) :=

@@ -3,6 +3,7 @@ import IPRADerivations.Core.SumSplit
 import IPRADerivations.Probability.Variance
 import IPRADerivations.Probability.MedianCounts
 import IPRADerivations.Combinatorics.FiniteBijection
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Legendre's formula `v_p(m!) = ∑_{j≥1} ⌊m/p^j⌋`
@@ -48,9 +49,7 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Indicators of divisibility -/
 
-theorem eqb_bit (a b : PTm n) : Γ ⊢[PRAAx] (eqb a b ≐ zero) ⋎ (eqb a b ≐ one) :=
-  .orE (lt_or_le a b) (.orI₁ (eqb_zero_of_lt Prf.hyp0))
-    (.orE (lt_or_eq_of_le Prf.hyp0) (.orI₁ (eqb_zero_of_gt Prf.hyp0)) (.orI₂ (eqb_of_eq Prf.hyp0.eqSymm)))
+alias eqb_bit := Common.eqb_zero_or_one
 
 theorem succ_ne_zero' {x : PTm n} {φ : Fm PTm n} (h : Γ ⊢[PRAAx] succ x ≐ zero) : Γ ⊢[PRAAx] φ :=
   lt_zero_absurd φ ((monus_zero _).eqTrans h)

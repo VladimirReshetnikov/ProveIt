@@ -2,6 +2,8 @@ import IPRADerivations.DiophantineNumberTheory.Coprime
 import IPRADerivations.AnalyticNumberTheory.SquareReciprocal
 import IPRADerivations.AnalyticNumberTheory.SumReindex
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Separation of reduced fractions (`hurwitz_khinchin_ipra`, (K3), (K9))
@@ -37,28 +39,22 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `N A = N B`, `N ≥ 1` give `A = B`. -/
-theorem cancel_eq {N A B : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) (h : Γ ⊢[PRAAx] N * A ≐ N * B) :
-    Γ ⊢[PRAAx] A ≐ B :=
-  le_antisymm (cancel_le hN (le_congr (.eqRefl _) h (le_refl _)))
-    (cancel_le hN (le_congr (.eqRefl _) h.eqSymm (le_refl _)))
+alias cancel_eq := Common.mul_cancel_eq
 
 /-- Equal reduced fractions are equal pairs. -/
 theorem frac_unique {p q p' q' : PTm n} (hq : Γ ⊢[PRAAx] q ≐ succ (pred q)) (hq' : Γ ⊢[PRAAx] q' ≐ succ (pred q'))
     (g1 : Γ ⊢[PRAAx] gcd p q ≐ one) (g2 : Γ ⊢[PRAAx] gcd p' q' ≐ one) (e : Γ ⊢[PRAAx] p * q' ≐ p' * q) :
     Γ ⊢[PRAAx] (q ≐ q') ⋏ (p ≐ p') := by
-  have ee := natEq e
   have d1 : Γ ⊢[PRAAx] dvd q q' := by
     refine gauss hq (gcd_comm_one hq g1) (dvd_of_eq' (w := p') hq ?_)
-    apply deriveNat; ipra_simps; linear_combination ee
+    ipra_lc natEq e
   have d2 : Γ ⊢[PRAAx] dvd q' q := by
     refine gauss hq' (gcd_comm_one hq' g2) (dvd_of_eq' (w := p) hq' ?_)
-    apply deriveNat; ipra_simps; linear_combination -ee
+    ipra_lc -natEq e
   have hqq : Γ ⊢[PRAAx] q ≐ q' := le_antisymm (dvd_le' hq d1 hq') (dvd_le' hq' d2 hq)
   refine .andI hqq ?_
   refine cancel_eq hq' ?_
-  have e2 := natEq hqq
-  apply deriveNat; ipra_simps
-  linear_combination ee + 𝔞 p' * e2
+  ipra_lc natEq e + 𝔞 p' * natEq hqq
 
 /-- The separation: `p/q < p'/q'`, `1 ≤ q, q' ≤ Q` give `⌊Q²p/q⌋ < ⌊Q²p'/q'⌋`. -/
 theorem floor_sep {p q p' q' Q : PTm n} (hq : Γ ⊢[PRAAx] q ≐ succ (pred q)) (hq' : Γ ⊢[PRAAx] q' ≐ succ (pred q'))

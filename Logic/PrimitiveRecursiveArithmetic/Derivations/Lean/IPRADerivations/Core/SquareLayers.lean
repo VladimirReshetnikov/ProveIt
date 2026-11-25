@@ -1,4 +1,5 @@
 import IPRADerivations.Core.Fubini
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Square sums by L-shaped layers
@@ -47,7 +48,6 @@ abbrev Sq (a : PTm 3) (M x : PTm n) : PTm n := ap2 (sumF (oB a)) M (pairT M x)
 theorem square_step (a : PTm 3) (M x : PTm n) :
     Γ ⊢[PRAAx] Sq a (succ M) x ≐ Sq a M x + inst2 (LB a) M x := by
   rw [inst2_LB]
-  have s₁ := natEq (sum_succ' (Γ := Γ) (oB a) M (pairT (succ M) x))
   -- rows below `M` gain one column
   have s₂ : Γ ⊢[PRAAx] ap2 (sumF (oB a)) M (pairT (succ M) x) ≐
       ap2 (sumF (addBody (oB a) (colB a))) M (pairT M x) := by
@@ -59,7 +59,6 @@ theorem square_step (a : PTm 3) (M x : PTm n) :
     exact congrAdd (congrAp2 (sumF (rowB a)) (fst_pair _ _) (congrPairT (.eqRefl _) (snd_pair _ _))).eqSymm
       (congrInst3 a (fst_pair _ _) (.eqRefl _) (snd_pair _ _) |>.eqTrans
         (congrInst3 a (.eqRefl _) (fst_pair _ _) (snd_pair _ _)).eqSymm)
-  have s₃ := natEq (sum_add (Γ := Γ) (oB a) (colB a) M (pairT M x))
   -- the new row `i = M`
   have s₄ : Γ ⊢[PRAAx] inst2 (oB a) M (pairT (succ M) x) ≐
       ap2 (sumF (rowB a)) M (pairT M x) + inst3 a M M x := by
@@ -68,9 +67,8 @@ theorem square_step (a : PTm 3) (M x : PTm n) :
       ((sum_succ' _ _ _).eqTrans (congrAdd (.eqRefl _) ?_))
     rw [inst2_rowB]
     exact congrInst3 a (fst_pair _ _) (.eqRefl _) (snd_pair _ _)
-  have e₂ := natEq s₂; have e₄ := natEq s₄
-  apply deriveNat; ipra_simps
-  linear_combination s₁ + e₂ + s₃ + e₄
+  ipra_lc natEq (sum_succ' (Γ := Γ) (oB a) M (pairT (succ M) x)) + natEq s₂ +
+    natEq (sum_add (Γ := Γ) (oB a) (colB a) M (pairT M x)) + natEq s₄
 
 /-- Variables: `0 = M`, `1 = x`. -/
 private abbrev layersF (a : PTm 3) : Fm PTm 2 :=

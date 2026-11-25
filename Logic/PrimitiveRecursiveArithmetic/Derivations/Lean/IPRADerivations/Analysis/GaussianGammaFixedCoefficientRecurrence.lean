@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianGammaFiniteCoefficientRecurrence
 import IPRADerivations.Analysis.GaussianGammaRecurrenceWeights
 import IPRADerivations.Analysis.GaussianGammaAllDegreeCoefficientStability
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The exact recurrence on the original fixed Gamma coefficient samples
@@ -47,10 +48,7 @@ def weightedSum (q R e : PTm n) : PTm n := GaussianRationalFiniteSum.sum body e 
 
 theorem term_congr {q p R S e f j k : PTm n} (hq : Γ ⊢[PRAAx] q ≐ p) (hR : Γ ⊢[PRAAx] R ≐ S)
     (he : Γ ⊢[PRAAx] e ≐ f) (hj : Γ ⊢[PRAAx] j ≐ k) : Γ ⊢[PRAAx] term q R e j ≐ term p S f k := by
-  simpa only [subst_term,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_three,
-    Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (term (var 0) (var 1) (var 2) (var 3) : PTm 4)
-      (σ := ![q,R,e,j]) (σ' := ![p,S,f,k]) (fun i => by fin_cases i; exact hq; exact hR; exact he; exact hj)
+  ipra_congr (term (var 0) (var 1) (var 2) (var 3) : PTm 4) with [hq, hR, he, hj]
 
 theorem term_at (q R e j : PTm n) : Γ ⊢[PRAAx] inst2 body j (sumData q R e) ≐ term q R e j := by
   have tail := snd_pair (Γ := Γ) q (pairT R e)

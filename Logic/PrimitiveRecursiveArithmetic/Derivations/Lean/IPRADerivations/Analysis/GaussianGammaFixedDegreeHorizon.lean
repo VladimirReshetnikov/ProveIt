@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.GaussianGammaFiniteDegreeRearrangement
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual fixed-degree Gamma tails over cofinal factor horizons
@@ -106,11 +107,8 @@ theorem observation_congr {p p' z z' R R' B B' N N' L L' : PTm n}
     observation p z R B N L ≐ observation p' z' R' B' N' L' := by
   have e5 : (![p,z,R,B,N,L] : Fin 6 → PTm n) 5 = L := rfl
   have e5' : (![p',z',R',B',N',L'] : Fin 6 → PTm n) 5 = L' := rfl
-  simpa only [subst_observation,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.cons_val_three,Matrix.cons_val_four,e5,e5',Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (observation (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6)
-      (σ := ![p,z,R,B,N,L]) (σ' := ![p',z',R',B',N',L'])
-      (fun i => by fin_cases i; exact hp; exact hz; exact hR; exact hB; exact hN; exact hL)
+  ipra_congr (observation (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) with
+    [hp, hz, hR, hB, hN, hL] using [e5, e5']
 theorem later_precision_distance (s t z R B N L : PTm n) (h : Γ ⊢[PRAAx] source z R B N)
     (hst : Γ ⊢[PRAAx] le s t) : Γ ⊢[PRAAx]
     distanceBounded (observation t z R B N L) (observation s z R B N L) one (unit s) :=

@@ -3,6 +3,8 @@ import IPRADerivations.AnalyticNumberTheory.Totient
 import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.DiophantineNumberTheory.QuarticStep
 import IPRADerivations.DiophantineNumberTheory.FLTMultiples
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Euler's theorem
@@ -46,7 +48,7 @@ include hN
 
 theorem N_pos : Γ ⊢[PRAAx] N ≐ succ (pred N) :=
   AnalyticNumberTheory.Primes.eq_succ_pred (y := succ (monus N two))
-    ((eq_add_of_le hN).eqTrans (by apply deriveNat; ipra_simps; ring))
+    ((eq_add_of_le hN).eqTrans (by ipra_ring))
 
 /-- `gcd(0, N) ≠ 1`, and `gcd(N, 0) ≠ 1`. -/
 theorem not_one_zero (φ : Fm PTm n) (h : Γ ⊢[PRAAx] gcd zero N ≐ one ⋎ (gcd N zero ≐ one)) :
@@ -110,13 +112,13 @@ theorem cop_of_mul {a i : PTm n} (h : Γ ⊢[PRAAx] gcd (a * i) N ≐ one) : Γ 
 theorem rem_rem (y : PTm n) : Γ ⊢[PRAAx] rem (rem y N) N ≐ rem y N :=
   rem_eq_of_eq (N_pos hN) (k₁ := quo y N) (k₂ := zero) (by
     refine withEq (rem_decomp hN y) fun e => ?_
-    apply deriveNat; ipra_simps; linear_combination -e)
+    ipra_lc -e)
 
 /-- `rem j N = j` for `j < N`. -/
 theorem rem_small {j : PTm n} (hj : Γ ⊢[PRAAx] lt j N) : Γ ⊢[PRAAx] rem j N ≐ j := by
   have hp := N_pos hN
   exact (congrAp2 remF (.eqRefl _) hp).eqTrans (Prf.andE₂ (div_mod_unique (q := zero)
-    ((by apply deriveNat; ipra_simps; ring) : Γ ⊢[PRAAx] j ≐ succ (pred N) * zero + j)
+    ((by ipra_ring) : Γ ⊢[PRAAx] j ≐ succ (pred N) * zero + j)
     (lt_congr (.eqRefl _) hp hj)))
 
 theorem rem_lt (y : PTm n) : Γ ⊢[PRAAx] lt (rem y N) N := by
@@ -185,7 +187,6 @@ theorem hv_of_ncop {y N : PTm n} (h : Γ ⊢[PRAAx] neg (gcd y N ≐ one)) : Γ 
 theorem rem_mul_rem {N : PTm n} (hN : Γ ⊢[PRAAx] le two N) (c y : PTm n) : Γ ⊢[PRAAx] rem (c * rem y N) N ≐ rem (c * y) N :=
   (congrAp2 remF (mul_comm _ _) (.eqRefl _)).eqTrans ((rem_mul_congr c (N_pos hN) (rem_rem hN y)).eqTrans
     (congrAp2 remF (mul_comm _ _) (.eqRefl _)))
-
 
 section Perm
 
@@ -301,10 +302,7 @@ theorem prod_pw (e : PTm 2) (N x : PTm n) :
 
 /-! ## Euler's theorem -/
 
-theorem congrEqb {a a' b b' : PTm n} (h₁ : Γ ⊢[PRAAx] a ≐ a') (h₂ : Γ ⊢[PRAAx] b ≐ b') :
-    Γ ⊢[PRAAx] eqb a b ≐ eqb a' b' := by
-  unfold eqb
-  exact congrMonus (.eqRefl _) (congrAdd (congrMonus h₁ h₂) (congrMonus h₂ h₁))
+alias congrEqb := Common.congrEqb
 
 theorem congrHv {y y' N : PTm n} (h : Γ ⊢[PRAAx] y ≐ y') : Γ ⊢[PRAAx] hv y N ≐ hv y' N := by
   have e := congrEqb (congrGcd h (.eqRefl N)) (.eqRefl one)
@@ -488,7 +486,7 @@ theorem euler_at {a N : PTm n} (ha : Γ ⊢[PRAAx] gcd a N ≐ one) (hN : Γ ⊢
       (congrAp2 remF (.eqRefl _) e.eqSymm)))
   · have h2 : ((pred N ≐ succ (pred (pred N))) :: Γ) ⊢[PRAAx] le two N :=
       le_of_eq_add (d := pred (pred N)) (hN.wk.eqTrans ((congrSucc Prf.hyp0).eqTrans
-        (by apply deriveNat; ipra_simps; ring)))
+        (by ipra_ring)))
     have hg := ha.wk (ψ := pred N ≐ succ (pred (pred N)))
     refine .orE (bezout_at a N) ?_ ?_
     · refine euler_core (b := b₁) h2.wk hg.wk ?_

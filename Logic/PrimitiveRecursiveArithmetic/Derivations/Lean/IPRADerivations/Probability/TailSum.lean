@@ -1,4 +1,5 @@
 import IPRADerivations.Probability.Independence
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Tail sums, inclusion–exclusion and total expectation
@@ -159,9 +160,7 @@ theorem inst2_orB (A B : PTm 2) (i x : PTm n) :
 
 theorem or_pt {a b : PTm n} (h : Γ ⊢[PRAAx] le a one) :
     Γ ⊢[PRAAx] (a + monus one a * b) + a * b ≐ a + b := by
-  have e := natEq (eq_add_of_le h)
-  apply deriveNat; ipra_simps
-  linear_combination (-(Groth.ι (IPRA.Q.mk Γ b))) * e
+  ipra_lc (-(Groth.ι (IPRA.Q.mk Γ b))) * natEq (eq_add_of_le h)
 
 /-- `thm:indicator`: `Ew(A ∨ B) + Ew(A B) = Ew(A) + Ew(B)` for an indicator `A ≤ 1`. -/
 theorem incl_excl (w A B : PTm 2) (N x : PTm n)

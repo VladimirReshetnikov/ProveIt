@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianRationalFiniteProduct
 import IPRADerivations.Analysis.GaussianRationalReciprocal
 import IPRADerivations.Analysis.GaussianFiniteLogarithmCompositionName
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The finite polynomial head in the Euler and Gamma products
@@ -54,11 +55,9 @@ def head (z B N : PTm n) : PTm n := qmul (ofGaussian z B) (product z B N)
 
 theorem factor_at (i z B : PTm n) :
     Γ ⊢[PRAAx] inst2 factorBody i (data z B) ≐ factor i z B := by
-  simpa only [factorBody,inst2,subst_factor,Syn.subst_var,subst_fstT,subst_sndT,
-    Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (factor (var 0) (var 1) (var 2) : PTm 3)
-      (σ := ![i,fstT (data z B),sndT (data z B)]) (σ' := ![i,z,B])
-      (fun j => by fin_cases j; exact .eqRefl _; exact fst_pair _ _; exact snd_pair _ _)
+  ipra_congr (factor (var 0) (var 1) (var 2) : PTm 3) with
+    [.eqRefl i, (show _ ⊢[PRAAx] fstT (data z B) ≐ z from fst_pair _ _),
+      (show _ ⊢[PRAAx] sndT (data z B) ≐ B from snd_pair _ _)] using [factorBody, inst2]
 
 theorem product_step (z B N : PTm n) :
     Γ ⊢[PRAAx] product z B (succ N) ≐ qmul (product z B N) (factor N z B) :=

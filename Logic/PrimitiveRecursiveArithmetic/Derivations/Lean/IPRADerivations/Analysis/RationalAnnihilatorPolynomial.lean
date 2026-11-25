@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianAnnihilatorPolynomial
 import IPRADerivations.Analysis.RationalPolynomialConstantInjectionGaussianEmbedding
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Original rational weighted annihilator polynomial
@@ -52,11 +53,8 @@ private theorem coefficient_congr {a a' m m' e e' L L' i i' j j' : PTm n}
     (ha : Γ ⊢[PRAAx] a ≐ a') (hm : Γ ⊢[PRAAx] m ≐ m') (he : Γ ⊢[PRAAx] e ≐ e')
     (hL : Γ ⊢[PRAAx] L ≐ L') (hi : Γ ⊢[PRAAx] i ≐ i') (hj : Γ ⊢[PRAAx] j ≐ j') :
     Γ ⊢[PRAAx] coefficient a m e L i j ≐ coefficient a' m' e' L' i' j' := by
-  simpa only [subst_coefficient,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.cons_val_three,Matrix.cons_val_four,GaussianAnnihilatorPolynomial.val_five,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (coefficient (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6)
-      (σ := ![a,m,e,L,i,j]) (σ' := ![a',m',e',L',i',j'])
-      (fun k => by fin_cases k; exact ha; exact hm; exact he; exact hL; exact hi; exact hj)
+  ipra_congr (coefficient (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) with
+    [ha, hm, he, hL, hi, hj] using [GaussianAnnihilatorPolynomial.val_five]
 
 theorem polynomial_length (a m e L : PTm n) : Γ ⊢[PRAAx] length (polynomial a m e L) ≐ m :=
   table_length body m (succ L) (data a m e L)

@@ -1,5 +1,6 @@
 import IPRADerivations.Core.LinearAlgebra
 import IPRADerivations.Geometry.HypercubeSplit
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Ceva, Menelaus and Carnot's conic theorem in barycentric coordinates
@@ -46,9 +47,8 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 abbrev nz (δ : ZT n) : Fm PTm n := le one (monus δ.pos δ.neg + monus δ.neg δ.pos)
 
 theorem nat_cancel {k l : PTm n} (hk : Γ ⊢[PRAAx] le one k) (h : Γ ⊢[PRAAx] k * l ≐ zero) : Γ ⊢[PRAAx] l ≐ zero := by
-  have e := natEq (eq_add_of_le hk)
   have hk' : Γ ⊢[PRAAx] k ≐ succ (pred k) := pos_of_eq_succ (c := monus k one) (by
-    apply deriveNat; ipra_simps; linear_combination e)
+    ipra_lc natEq (eq_add_of_le hk))
   have hle : Γ ⊢[PRAAx] le l zero := le_congr (.eqRefl _) ((mul_comm _ _).eqTrans h) (le_mul_pos l hk')
   exact (monus_zero l).eqSymm.eqTrans hle
 
@@ -65,8 +65,7 @@ theorem zt_cancel₁ {δ X Y : ZT n} (hδ : Γ ⊢[PRAAx] nz δ) (h : Γ ⊢[PRA
   have e := ZT.toZ_eq h; rw [ZT.toZ_mul, ZT.toZ_mul] at e; simp only [ZT.toZ] at e
   have f := natEq (eq_add_of_le h₁); have g := natEq (eq_add_of_le h₂)
   have l0 := nat_cancel (nz_of_le hδ h₁) (l := monus (Y.pos + X.neg) (X.pos + Y.neg)) (by
-    apply deriveNat; ipra_simps
-    linear_combination e - (𝔞 δ.neg - 𝔞 δ.pos) * g - 𝔞 (monus (Y.pos + X.neg) (X.pos + Y.neg)) * f)
+    ipra_lc e - (𝔞 δ.neg - 𝔞 δ.pos) * g - 𝔞 (monus (Y.pos + X.neg) (X.pos + Y.neg)) * f)
   exact ((eq_add_of_le h₂).eqTrans ((congrAdd (.eqRefl _) l0).eqTrans (add_zero _))).eqSymm
 
 theorem zt_cancel₂ {δ X Y : ZT n} (hδ : Γ ⊢[PRAAx] nz δ) (h : Γ ⊢[PRAAx] ZT.eq (δ * X) (δ * Y))
@@ -74,8 +73,7 @@ theorem zt_cancel₂ {δ X Y : ZT n} (hδ : Γ ⊢[PRAAx] nz δ) (h : Γ ⊢[PRA
   have e := ZT.toZ_eq h; rw [ZT.toZ_mul, ZT.toZ_mul] at e; simp only [ZT.toZ] at e
   have f := natEq (eq_add_of_le h₁); have g := natEq (eq_add_of_le h₂)
   have l0 := nat_cancel (nz_of_le hδ h₁) (l := monus (X.pos + Y.neg) (Y.pos + X.neg)) (by
-    apply deriveNat; ipra_simps
-    linear_combination -e - (𝔞 δ.neg - 𝔞 δ.pos) * g - 𝔞 (monus (X.pos + Y.neg) (Y.pos + X.neg)) * f)
+    ipra_lc -e - (𝔞 δ.neg - 𝔞 δ.pos) * g - 𝔞 (monus (X.pos + Y.neg) (Y.pos + X.neg)) * f)
   exact (eq_add_of_le h₂).eqTrans ((congrAdd (.eqRefl _) l0).eqTrans (add_zero _))
 
 theorem zt_cancel₃ {δ X Y : ZT n} (hδ : Γ ⊢[PRAAx] nz δ) (h : Γ ⊢[PRAAx] ZT.eq (δ * X) (δ * Y))
@@ -83,8 +81,7 @@ theorem zt_cancel₃ {δ X Y : ZT n} (hδ : Γ ⊢[PRAAx] nz δ) (h : Γ ⊢[PRA
   have e := ZT.toZ_eq h; rw [ZT.toZ_mul, ZT.toZ_mul] at e; simp only [ZT.toZ] at e
   have f := natEq (eq_add_of_le h₁); have g := natEq (eq_add_of_le h₂)
   have l0 := nat_cancel (nz_of_ge hδ h₁) (l := monus (Y.pos + X.neg) (X.pos + Y.neg)) (by
-    apply deriveNat; ipra_simps
-    linear_combination -e - (𝔞 δ.pos - 𝔞 δ.neg) * g - 𝔞 (monus (Y.pos + X.neg) (X.pos + Y.neg)) * f)
+    ipra_lc -e - (𝔞 δ.pos - 𝔞 δ.neg) * g - 𝔞 (monus (Y.pos + X.neg) (X.pos + Y.neg)) * f)
   exact ((eq_add_of_le h₂).eqTrans ((congrAdd (.eqRefl _) l0).eqTrans (add_zero _))).eqSymm
 
 theorem zt_cancel₄ {δ X Y : ZT n} (hδ : Γ ⊢[PRAAx] nz δ) (h : Γ ⊢[PRAAx] ZT.eq (δ * X) (δ * Y))
@@ -92,8 +89,7 @@ theorem zt_cancel₄ {δ X Y : ZT n} (hδ : Γ ⊢[PRAAx] nz δ) (h : Γ ⊢[PRA
   have e := ZT.toZ_eq h; rw [ZT.toZ_mul, ZT.toZ_mul] at e; simp only [ZT.toZ] at e
   have f := natEq (eq_add_of_le h₁); have g := natEq (eq_add_of_le h₂)
   have l0 := nat_cancel (nz_of_ge hδ h₁) (l := monus (X.pos + Y.neg) (Y.pos + X.neg)) (by
-    apply deriveNat; ipra_simps
-    linear_combination e - (𝔞 δ.pos - 𝔞 δ.neg) * g - 𝔞 (monus (X.pos + Y.neg) (Y.pos + X.neg)) * f)
+    ipra_lc e - (𝔞 δ.pos - 𝔞 δ.neg) * g - 𝔞 (monus (X.pos + Y.neg) (Y.pos + X.neg)) * f)
   exact (eq_add_of_le h₂).eqTrans ((congrAdd (.eqRefl _) l0).eqTrans (add_zero _))
 
 /-- `δ X = δ Y` with `δ ≠ 0` gives `X = Y`. -/

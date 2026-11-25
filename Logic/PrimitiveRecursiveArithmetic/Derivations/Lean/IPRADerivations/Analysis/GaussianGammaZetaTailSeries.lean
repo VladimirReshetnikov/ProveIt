@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.GaussianGammaZetaDegreeName
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Original C16 as an actual cofinal zeta-coefficient series name
@@ -82,11 +83,7 @@ theorem observation_congr {p p' z z' R R' B B' N N' : PTm n}
     (hp : Γ ⊢[PRAAx] p ≐ p') (hz : Γ ⊢[PRAAx] z ≐ z') (hR : Γ ⊢[PRAAx] R ≐ R')
     (hB : Γ ⊢[PRAAx] B ≐ B') (hN : Γ ⊢[PRAAx] N ≐ N') : Γ ⊢[PRAAx]
     observation p z R B N ≐ observation p' z' R' B' N' := by
-  simpa only [subst_observation,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.cons_val_three,Matrix.cons_val_four,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (observation (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5)
-      (σ := ![p,z,R,B,N]) (σ' := ![p',z',R',B',N'])
-      (fun i => by fin_cases i; exact hp; exact hz; exact hR; exact hB; exact hN)
+  ipra_congr (observation (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) with [hp, hz, hR, hB, hN]
 theorem sample_at (p z R B N : PTm n) : Γ ⊢[PRAAx] sample p z R B N ≐ observation p z R B N := by
   have raw := toPR_eq (Γ := Γ) (observation (var 0) (fstT (var 1)) (fstT (sndT (var 1)))
     (fstT (sndT (sndT (var 1)))) (sndT (sndT (sndT (var 1)))) : PTm 2) ![p,data z R B N]

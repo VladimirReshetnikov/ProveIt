@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.RationalFiniteSum
 import IPRADerivations.Analysis.RationalRepresentations
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Actual numerical budgets for rational approximate factorization
@@ -327,10 +328,7 @@ theorem epsilon_product (N A p q : PTm n) (hN : Γ ⊢[PRAAx] le one N)
   apply RationalFiniteSum.canonical_equal _ _ _ _ _ _ (RationalArithmetic.multiply_guard _ _)
     (RationalNormalForm.normalize_well_formed _ _ hq) left (eta_represents p q hq)
     (le_congr (one_mul one) (.eqRefl _) (le_mul_mono (epsilon_denominator_positive N A q hN hq) (le_refl one))) hq
-  apply ZT.derive
-  simp only [ZT.toZ_mul,ZT.toZ_ofNat]
-  ipra_simps
-  ring
+  ipra_lc
 
 /-- Positive raw rational data force the actual output signed numerator to
 have a positive natural positive part. Only D>0 is canceled. -/
@@ -343,9 +341,7 @@ theorem positive_numerator (c p D : PTm n) (hp : Γ ⊢[PRAAx] le one p)
   simp only [ZT.toZ] at value
   have scaled : Γ ⊢[PRAAx] le (D*(numeratorOf c).neg) (D*(numeratorOf c).pos) := by
     refine le_of_eq_add (d := p*denominatorOf c) ?_
-    apply deriveNat
-    ipra_simps
-    linear_combination -value
+    ipra_lc -value
   have nonnegative := RationalValueBounds.positive_cancel hD scaled
   have gap := natEq (eq_add_of_le nonnegative)
   have difference : Γ ⊢[PRAAx] p*denominatorOf c ≐ D*RationalIntegerNormalization.positivePart (numeratorOf c) := by

@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianEulerUnitKernelCompactRate
 import IPRADerivations.Analysis.GaussianCompactRiemannName
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The original rational unit kernel on a native affine compact
@@ -58,11 +59,9 @@ theorem evaluator_at (p t z B : PTm n) : Γ ⊢[PRAAx]
     simpa [evaluatorF,ap3] using toPR_eq (Γ := Γ) (evaluatorTerm (var 0) (var 1) (var 2) : PTm 3) ![p,t,fixedData z B]
   have fields : Γ ⊢[PRAAx] GaussianEulerUnitSubstitutionKernel.data (fstT (fixedData z B)) (sndT (fixedData z B)) (fstT t) (sndT t) ≐
       GaussianEulerUnitSubstitutionKernel.data z B (fstT t) (sndT t) := by
-    simpa only [GaussianEulerUnitSubstitutionKernel.subst_data,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-      Matrix.cons_val_two,Matrix.cons_val_three,Matrix.head_cons,Matrix.tail_cons] using
-      Prf.eqCongr (GaussianEulerUnitSubstitutionKernel.data (var 0) (var 1) (var 2) (var 3) : PTm 4)
-        (σ := ![fstT (fixedData z B),sndT (fixedData z B),fstT t,sndT t]) (σ' := ![z,B,fstT t,sndT t])
-        (fun i => by fin_cases i; exact fst_pair _ _; exact snd_pair _ _; exact .eqRefl _; exact .eqRefl _)
+    ipra_congr (GaussianEulerUnitSubstitutionKernel.data (var 0) (var 1) (var 2) (var 3) : PTm 4) with
+      [(show _ ⊢[PRAAx] fstT (fixedData z B) ≐ z from fst_pair _ _),
+        (show _ ⊢[PRAAx] sndT (fixedData z B) ≐ B from snd_pair _ _), .eqRefl (fstT t), .eqRefl (sndT t)]
   exact term.eqTrans (congrAp2 GaussianEulerUnitSubstitutionKernel.nameF (.eqRefl _) fields)
 
 theorem sample_at (p z B a b : PTm n) : Γ ⊢[PRAAx]
@@ -70,11 +69,8 @@ theorem sample_at (p z B a b : PTm n) : Γ ⊢[PRAAx]
       (GaussianEulerUnitSubstitutionKernel.data z B a b) := by
   have fields : Γ ⊢[PRAAx] GaussianEulerUnitSubstitutionKernel.data z B (fstT (pairT a b)) (sndT (pairT a b)) ≐
       GaussianEulerUnitSubstitutionKernel.data z B a b := by
-    simpa only [GaussianEulerUnitSubstitutionKernel.subst_data,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-      Matrix.cons_val_two,Matrix.cons_val_three,Matrix.head_cons,Matrix.tail_cons] using
-      Prf.eqCongr (GaussianEulerUnitSubstitutionKernel.data (var 0) (var 1) (var 2) (var 3) : PTm 4)
-        (σ := ![z,B,fstT (pairT a b),sndT (pairT a b)]) (σ' := ![z,B,a,b])
-        (fun i => by fin_cases i; exact .eqRefl _; exact .eqRefl _; exact fst_pair _ _; exact snd_pair _ _)
+    ipra_congr (GaussianEulerUnitSubstitutionKernel.data (var 0) (var 1) (var 2) (var 3) : PTm 4) with
+      [.eqRefl z, .eqRefl B, fst_pair _ _, snd_pair _ _]
   exact (evaluator_at p (pairT a b) z B).eqTrans (congrAp2 GaussianEulerUnitSubstitutionKernel.nameF (.eqRefl _) fields)
 
 theorem wrapped_at (p t z B : PTm n) : Γ ⊢[PRAAx]

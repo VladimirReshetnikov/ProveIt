@@ -4,6 +4,7 @@ import IPRADerivations.AnalyticNumberTheory.FactorVector
 import IPRADerivations.AnalyticNumberTheory.FactorialLambda
 import IPRADerivations.Foundations.StrongInduction
 import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The weight bound of the Selberg sieve
@@ -84,8 +85,7 @@ theorem unit_r {m s : PTm n} (h : Γ ⊢[PRAAx] m * s ≐ zero) (hs : Γ ⊢[PRA
   ipra_lc natEq h - 𝔞 m * natEq hs
 
 /-- `[q ≥ 1] = 1` for `q ≥ 1`. -/
-theorem sg_q {q : PTm n} (hq : Γ ⊢[PRAAx] le one q) : Γ ⊢[PRAAx] sg q ≐ one :=
-  (congrSg (AnalyticNumberTheory.CoprimeModulus.pos_of_one_le hq)).eqTrans (sg_succ _)
+alias sg_q := Common.sg_of_one_le
 
 /-! ## `W_D` as one sum, and the case `D = 1` -/
 

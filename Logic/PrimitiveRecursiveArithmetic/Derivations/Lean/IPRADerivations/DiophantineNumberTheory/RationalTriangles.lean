@@ -1,5 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.FermatQuarticPoints
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Rational right triangles with square area

@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.SieveCount
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Counting a progression inside the common multiples of `d` and `e`
@@ -59,9 +60,7 @@ theorem d_split {d e : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) :
 
 /-- `gcd(d, e) · lc(d, e) = d e`. -/
 theorem gl_eq {d e : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) : Γ ⊢[PRAAx] gcd d e * lc d e ≐ d * e := by
-  have e₂ := natEq (e_split (e := e) hd)
-  apply deriveNat; ipra_simps
-  linear_combination -𝔞 d * e₂
+  ipra_lc -𝔞 d * natEq (e_split (e := e) hd)
 
 theorem lc_pos {d e : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) (he : Γ ⊢[PRAAx] e ≐ succ (pred e)) :
     Γ ⊢[PRAAx] lc d e ≐ succ (pred (lc d e)) :=
@@ -73,10 +72,7 @@ theorem d_dvd_lc {d e : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) : Γ ⊢
 theorem e_dvd_lc {d e : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) (he : Γ ⊢[PRAAx] e ≐ succ (pred e)) :
     Γ ⊢[PRAAx] dvd e (lc d e) := by
   refine dvd_of_eq' he (w := quo d (gcd d e)) ?_
-  have e₁ := natEq (d_split (e := e) hd)
-  have e₂ := natEq (e_split (e := e) hd)
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 (quo e (gcd d e)) * e₁ - 𝔞 (quo d (gcd d e)) * e₂
+  ipra_lc 𝔞 (quo e (gcd d e)) * natEq (d_split (e := e) hd) - 𝔞 (quo d (gcd d e)) * natEq (e_split (e := e) hd)
 
 /-- `[d ∣ x] [e ∣ x] = [lc(d, e) ∣ x]`. -/
 theorem dvd_pair {d e : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) (he : Γ ⊢[PRAAx] e ≐ succ (pred e))
@@ -123,20 +119,14 @@ theorem pair_pt {d e q a : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) (he :
 
 /-- `g (q L C) = q D C` and `g (X + q L) = g X + q D` for `g L = D`. -/
 theorem scale_l {g L D q C : PTm n} (h : Γ ⊢[PRAAx] g * L ≐ D) : Γ ⊢[PRAAx] g * (q * L * C) ≐ q * D * C := by
-  have e := natEq h
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 q * 𝔞 C * e
+  ipra_lc 𝔞 q * 𝔞 C * natEq h
 
 theorem scale_r {g L D q X : PTm n} (h : Γ ⊢[PRAAx] g * L ≐ D) : Γ ⊢[PRAAx] g * (X + q * L) ≐ g * X + q * D := by
-  have e := natEq h
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 q * e
+  ipra_lc 𝔞 q * natEq h
 
 theorem scale_r' {g L D q C : PTm n} (h : Γ ⊢[PRAAx] g * L ≐ D) :
     Γ ⊢[PRAAx] g * (q * L * C + q * L) ≐ q * D * C + q * D := by
-  have e := natEq h
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞 q * 𝔞 C + 𝔞 q) * e
+  ipra_lc (𝔞 q * 𝔞 C + 𝔞 q) * natEq h
 
 /-- `q d e · K(X) ≤ gcd(d, e) · X + q d e`. -/
 theorem pair_le {d e q a : PTm n} (X : PTm n) (hd : Γ ⊢[PRAAx] d ≐ succ (pred d))

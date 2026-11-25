@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.RealizerComposition
 import IPRADerivations.Foundations.RealizerProduct
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # A typed acyclic program frontend for bounded finite-query realizers
@@ -110,20 +111,14 @@ theorem bit_cases (test : PR 2) (q p : PTm n) :
 theorem pick_zero {b : PTm n} (a c : PTm n) (hb : Γ ⊢[PRAAx] b ≐ zero) :
     Γ ⊢[PRAAx] pick b a c ≐ a := by
   have b := natEq hb
-  have complement := natEq ((congrMonus (Γ := Γ) (.eqRefl one) hb).eqTrans (monus_zero one))
   unfold pick
-  apply deriveNat
-  ipra_simps
-  linear_combination 𝔞(a) * complement + 𝔞(c) * b
+  ipra_lc 𝔞(a) * natEq ((congrMonus (Γ := Γ) (.eqRefl one) hb).eqTrans (monus_zero one)) + 𝔞(c) * b
 
 theorem pick_one {b : PTm n} (a c : PTm n) (hb : Γ ⊢[PRAAx] b ≐ one) :
     Γ ⊢[PRAAx] pick b a c ≐ c := by
   have b := natEq hb
-  have complement := natEq ((congrMonus (Γ := Γ) (.eqRefl one) hb).eqTrans (monus_self one))
   unfold pick
-  apply deriveNat
-  ipra_simps
-  linear_combination 𝔞(a) * complement + 𝔞(c) * b
+  ipra_lc 𝔞(a) * natEq ((congrMonus (Γ := Γ) (.eqRefl one) hb).eqTrans (monus_self one)) + 𝔞(c) * b
 
 def Code.branchDemandTerm (test : PR 2) (L R : Code) (q p : PTm n) : PTm n :=
   pick (bit test q p) (ap2 L.demand q p) (ap2 R.demand q p)

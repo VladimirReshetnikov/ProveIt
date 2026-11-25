@@ -2,6 +2,7 @@ import IPRADerivations.Analysis.GaussianRationalReciprocal
 import IPRADerivations.Analysis.GaussianRationalSyntheticDivision
 import IPRADerivations.Analysis.ComplexLogarithmCauchy
 import IPRADerivations.Analysis.LogarithmExponentialCoefficients
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual fractions of the original Gaussian integer powers
@@ -36,10 +37,7 @@ local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
 
 theorem fraction_congr {a b A B : PTm n} (ha : Γ ⊢[PRAAx] a ≐ b)
     (hA : Γ ⊢[PRAAx] A ≐ B) : Γ ⊢[PRAAx] ofGaussian a A ≐ ofGaussian b B := by
-  simpa only [GaussianRationalHorner.subst_ofGaussian,Syn.subst_var,
-    Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (ofGaussian (var 0) (var 1) : PTm 2)
-      (σ := ![a,A]) (σ' := ![b,B]) (fun i => by fin_cases i; exact ha; exact hA)
+  ipra_congr (ofGaussian (var 0) (var 1) : PTm 2) with [ha, hA]
 
 theorem fraction_multiply (a b A B : PTm n) (hA : Γ ⊢[PRAAx] le one A)
     (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx]

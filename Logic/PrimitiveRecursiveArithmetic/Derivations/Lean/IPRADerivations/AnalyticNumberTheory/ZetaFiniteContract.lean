@@ -2,6 +2,7 @@ import IPRADerivations.DiophantineNumberTheory.KhinchinBlockScales
 import IPRADerivations.Probability.FiniteCauchySchwarz
 import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.DiophantineNumberTheory.FLTMultiples
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The elementary estimates of the zeta finite contract (`zeta_functional_equation_ipra`)
@@ -77,7 +78,7 @@ theorem theta_term (m : PTm n) :
   have h1 := sq_le_pow (Γ := Γ) m
   have e1 := natEq (pw_succ (Γ := Γ) (two : PTm n) m)
   -- `2^{3n} = 2^n 2^n 2^n`
-  have h3 : Γ ⊢[PRAAx] num 3 * succ m ≐ (succ m + succ m) + succ m := by apply deriveNat; ipra_simps; ring
+  have h3 : Γ ⊢[PRAAx] num 3 * succ m ≐ (succ m + succ m) + succ m := by ipra_ring
   have e3 := natEq ((congrPw2 h3).eqTrans ((pw_add (Γ := Γ) two (succ m + succ m) (succ m)).eqTrans
     (congrMul (pw_add (Γ := Γ) two (succ m) (succ m)) (.eqRefl _))))
   -- `2^{3n} ≤ 2^{3n²}`
@@ -112,20 +113,17 @@ theorem geo8 (J x : PTm n) : Γ ⊢[PRAAx] num 7 * ap2 (sumF g8B) J x + one ≐ 
     · rw [subst_geo8Inv]
       simp only [Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
       have a := natEq (sum_zero (Γ := Γ) g8B x)
-      have b := natEq (pw_zero (Γ := Γ) (num 8 : PTm n))
       show Γ ⊢[PRAAx] num 7 * ap2 (sumF g8B) zero x + one ≐ pw (num 8) zero
-      apply deriveNat; ipra_simps
-      linear_combination 7 * a - b
+      ipra_lc 7 * a - natEq (pw_zero (Γ := Γ) (num 8 : PTm n))
     · rw [subst_geo8Inv]
       simp only [Syn.subst_var, Syn.repl_zero, subst_repl_shift]
       let Δ : List (Fm PTm (n + 1)) := geo8Inv (var 0) (Syn.shift x) :: Γ.map Fm.shift
-      have e0 := natEq (Prf.hyp0 : Δ ⊢[PRAAx] num 7 * ap2 (sumF g8B) (var 0) (Syn.shift x) + one ≐ pw (num 8) (var 0))
       have e1 := natEq (sum_succ' (Γ := Δ) g8B (var 0) (Syn.shift x))
-      have e2 := natEq (pw_succ (Γ := Δ) (num 8 : PTm (n + 1)) (var 0))
       rw [show inst2 g8B (var 0 : PTm (n + 1)) (Syn.shift x) = pw (num 8) (var 0) by simp [inst2]] at e1
       show Δ ⊢[PRAAx] num 7 * ap2 (sumF g8B) (succ (var 0)) (Syn.shift x) + one ≐ pw (num 8) (succ (var 0))
-      apply deriveNat; ipra_simps
-      linear_combination 8 * e0 + 7 * e1 - e2 - 7 * e0
+      ipra_lc 8 * natEq (Prf.hyp0 : Δ ⊢[PRAAx] num 7 * ap2 (sumF g8B) (var 0) (Syn.shift x) + one ≐ pw (num 8) (var 0)) +
+        7 * e1 - natEq (pw_succ (Γ := Δ) (num 8 : PTm (n + 1)) (var 0)) -
+        7 * natEq (Prf.hyp0 : Δ ⊢[PRAAx] num 7 * ap2 (sumF g8B) (var 0) (Syn.shift x) + one ≐ pw (num 8) (var 0))
   have a := Prf.allE J hall
   rw [subst_geo8Inv] at a
   simp only [Syn.subst_inst_shift] at a

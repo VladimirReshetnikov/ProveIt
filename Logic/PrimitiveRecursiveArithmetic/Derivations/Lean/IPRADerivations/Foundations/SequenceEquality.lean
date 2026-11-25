@@ -1,4 +1,6 @@
 import IPRADerivations.Foundations.MasterCertificate
+import IPRADerivations.Core.CongruenceTactic
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Literal equality of sequences constructed by the checked stack program
@@ -24,11 +26,7 @@ open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
-private theorem pair_congr {a a' b b' : PTm n} (ha : Γ ⊢[PRAAx] a ≐ a') (hb : Γ ⊢[PRAAx] b ≐ b') :
-    Γ ⊢[PRAAx] pairT a b ≐ pairT a' b' := by
-  have h := Prf.eqCongr (pairT (var 0) (var 1) : PTm 2) (σ := ![a,b]) (σ' := ![a',b'])
-    (fun i => by fin_cases i; exact ha; exact hb)
-  simpa using h
+private alias pair_congr := Common.congrPairT
 
 def agree (A B : PTm 2) (N x y : PTm n) : Fm PTm n :=
   .all (lt (var 0) (Syn.shift N) ⟶ (inst2 A (var 0) (Syn.shift x) ≐ inst2 B (var 0) (Syn.shift y)))

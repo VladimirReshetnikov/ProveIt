@@ -1,6 +1,7 @@
 import IPRADerivations.Probability.MedianCounts
 import IPRADerivations.Probability.MedianSymmetry
 import IPRADerivations.Geometry.HypercubeSplit
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Strong induction, and the linear cost of median-of-medians selection
@@ -70,8 +71,7 @@ theorem lt_of_ceil₅ {a m : PTm n} (ha : Γ ⊢[PRAAx] le (num 10 * a) (two * m
   have e₁ := natEq (eq_add_of_le ha); have e₂ := natEq (eq_add_of_le hm)
   refine le_cancel_pos ten_pos (le_of_eq_add (d := num 1214 + num 8 * monus m (num 154) +
     monus (two * m + num 8) (num 10 * a)) ?_)
-  apply deriveNat; ipra_simps
-  linear_combination e₁ + 8 * e₂
+  ipra_lc e₁ + 8 * e₂
 
 /-- `b < m` from `10b ≤ 7m + 69` and `m ≥ 154`. -/
 theorem lt_of_ceil₇ {b m : PTm n} (hb : Γ ⊢[PRAAx] le (num 10 * b) (num 7 * m + num 69))
@@ -79,8 +79,7 @@ theorem lt_of_ceil₇ {b m : PTm n} (hb : Γ ⊢[PRAAx] le (num 10 * b) (num 7 *
   have e₁ := natEq (eq_add_of_le hb); have e₂ := natEq (eq_add_of_le hm)
   refine le_cancel_pos ten_pos (le_of_eq_add (d := num 383 + num 3 * monus m (num 154) +
     monus (num 7 * m + num 69) (num 10 * b)) ?_)
-  apply deriveNat; ipra_simps
-  linear_combination e₁ + 3 * e₂
+  ipra_lc e₁ + 3 * e₂
 
 /-- `20c·a + 20c·b + c m ≤ 20c·m` under the two ceiling bounds and `m ≥ 154`. -/
 theorem cost_arith {a b c m : PTm n} (ha : Γ ⊢[PRAAx] le (num 10 * a) (two * m + num 8))
@@ -89,8 +88,7 @@ theorem cost_arith {a b c m : PTm n} (ha : Γ ⊢[PRAAx] le (num 10 * a) (two * 
   have e₁ := natEq (eq_add_of_le ha); have e₂ := natEq (eq_add_of_le hb); have e₃ := natEq (eq_add_of_le hm)
   refine le_cancel_pos ten_pos (le_of_eq_add (d := num 10 * c * monus m (num 154) +
     num 20 * c * monus (two * m + num 8) (num 10 * a) + num 20 * c * monus (num 7 * m + num 69) (num 10 * b)) ?_)
-  apply deriveNat; ipra_simps
-  linear_combination 20 * 𝔞 c * e₁ + 20 * 𝔞 c * e₂ + 10 * 𝔞 c * e₃
+  ipra_lc 20 * 𝔞 c * e₁ + 20 * 𝔞 c * e₂ + 10 * 𝔞 c * e₃
 
 /-! ## The linear bound -/
 

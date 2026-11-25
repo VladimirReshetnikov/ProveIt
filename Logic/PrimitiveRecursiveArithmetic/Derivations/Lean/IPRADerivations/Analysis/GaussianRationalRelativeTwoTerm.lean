@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianRationalThreeTermBudget
 import IPRADerivations.Analysis.GaussianRationalPowerAlgebra
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Two actual rational Gaussian terms with a common relative norm bound
@@ -84,11 +85,7 @@ theorem norm_of_representations (q r a b D : PTm n) (hD : Γ ⊢[PRAAx] le one D
   apply RationalFiniteSum.canonical_equal _ _ _ _ _ _ (GaussianRationalMetric.qnormSq_canonical _)
     (GaussianRationalMetric.qnormSq_canonical _) (GaussianRationalMetric.qnormSq_represents _ _ _ hD hq)
     (GaussianRationalMetric.qnormSq_represents _ _ _ hD hr) hDD hDD
-  apply ZT.derive
-  have e := natEq hNorm
-  simp only [ZT.toZ_mul,ZT.toZ_ofNat]
-  ipra_simps
-  linear_combination 𝔞(D)*𝔞(D)*e
+  ipra_lc 𝔞(D)*𝔞(D)*natEq hNorm
 
 theorem norm_negative (q : PTm n) : Γ ⊢[PRAAx] qnormSq (qnegative q) ≐ qnormSq q :=
   norm_of_representations _ _ _ _ (rawDen q) (raw_den_positive q)

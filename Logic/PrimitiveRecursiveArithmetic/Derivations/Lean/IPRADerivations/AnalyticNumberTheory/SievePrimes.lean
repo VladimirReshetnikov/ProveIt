@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.SieveMajorant
 import IPRADerivations.AnalyticNumberTheory.FactorVector
 import IPRADerivations.AnalyticNumberTheory.SumPhi
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # From the sifted count to the count of primes in the progression
@@ -85,10 +86,7 @@ abbrev lowB : PTm 2 := sg (monus (var 1) (var 0))
 
 theorem inst2_lowB (m Z : PTm n) : inst2 lowB m Z = sg (monus Z m) := by simp [inst2]
 
-theorem sg_le_one (t : PTm n) : Γ ⊢[PRAAx] le (sg t) one := by
-  refine .orE (zero_or_succ t) ?_ ?_
-  · exact le_congr ((congrSg Prf.hyp0).eqTrans sg_zero).eqSymm (.eqRefl _) (zero_le _)
-  · exact le_congr (sg_pos Prf.hyp0).eqSymm (.eqRefl _) (le_refl _)
+alias sg_le_one := Common.sg_le_one
 
 /-- `Σ_{m<N} [m < Z] ≤ N`. -/
 theorem low_le (N Z : PTm n) : Γ ⊢[PRAAx] le (ap2 (sumF lowB) N Z) N := by
@@ -121,12 +119,9 @@ theorem count_below (X Z : PTm n) : Γ ⊢[PRAAx] le (ap2 (sumF lowB) X Z) Z := 
 
 /-! ## The pointwise bound -/
 
-theorem eqb_le1 (a b : PTm n) : Γ ⊢[PRAAx] le (eqb a b) one := by
-  refine .orE (eq_or_ne a b) ?_ ?_
-  · exact le_congr (eqb_of_eq Prf.hyp0).eqSymm (.eqRefl _) (le_refl _)
-  · exact le_congr (eqb_of_ne Prf.hyp0).eqSymm (.eqRefl _) (zero_le _)
+alias eqb_le1 := Common.eqb_le_one
 
-theorem mul_one1 (c : PTm n) : Γ ⊢[PRAAx] c * one ≐ c := by apply deriveNat; ipra_simps; ring
+alias mul_one1 := Common.mul_one_right
 
 /-- `c · [m prime] ≤ c · ρ(m) + [m < Z]` for `c ≤ 1`. -/
 theorem prime_pt {m Z c : PTm n} (hc : Γ ⊢[PRAAx] le c one) :

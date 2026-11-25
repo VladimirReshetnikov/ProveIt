@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianRationalTranslationStages
 import IPRADerivations.Analysis.GaussianRationalTranslationAlgebra
 import IPRADerivations.Analysis.GaussianBalancedRadiusSyntax
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual rational polynomial translation by repeated synthetic division
@@ -57,11 +58,7 @@ theorem evaluate_congr {C D y z : PTm n} (hC : Γ ⊢[PRAAx] C ≐ D) (hy : Γ �
 
 theorem stage_index_congr (C N z : PTm n) {i j : PTm n} (h : Γ ⊢[PRAAx] i ≐ j) :
     Γ ⊢[PRAAx] stage C N z i ≐ stage C N z j := by
-  simpa only [subst_stage,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-    Matrix.cons_val_two,Matrix.cons_val_three,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (stage (var 0) (var 1) (var 2) (var 3) : PTm 4)
-      (σ := ![C,N,z,i]) (σ' := ![C,N,z,j])
-      (fun k => by fin_cases k; exact .eqRefl _; exact .eqRefl _; exact .eqRefl _; exact h)
+  ipra_congr (stage (var 0) (var 1) (var 2) (var 3) : PTm 4) with [.eqRefl C, .eqRefl N, .eqRefl z, h]
 
 theorem coefficient_value_at (C N z h : PTm n) : Γ ⊢[PRAAx]
     inst2 coefficientBody h (data C N z) ≐ coefficientValue C N z h := by
@@ -70,14 +67,8 @@ theorem coefficient_value_at (C N z h : PTm n) : Γ ⊢[PRAAx]
     (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
   have hz : Γ ⊢[PRAAx] sndT (sndT (data C N z)) ≐ z :=
     (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)
-  simpa only [coefficientBody,inst2,subst_coefficientValue,subst_fstT,subst_sndT,
-    Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.cons_val_three,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ)
-      (coefficientValue (var 0) (var 1) (var 2) (var 3) : PTm 4)
-      (σ := ![fstT (data C N z),fstT (sndT (data C N z)),sndT (sndT (data C N z)),h])
-      (σ' := ![C,N,z,h])
-      (fun k => by fin_cases k; exact hC; exact hN; exact hz; exact .eqRefl _)
+  ipra_congr (coefficientValue (var 0) (var 1) (var 2) (var 3) : PTm 4) with
+    [hC, hN, hz, .eqRefl h] using [coefficientBody, inst2]
 
 theorem translated_length (C N z : PTm n) : Γ ⊢[PRAAx] length (translated C N z) ≐ succ N :=
   sequence_length _ _ _

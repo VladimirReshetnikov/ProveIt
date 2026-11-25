@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.SieveWeightRows
 import IPRADerivations.AnalyticNumberTheory.SieveWeightValues
 import IPRADerivations.Foundations.SignedSums
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The quadratic form at the explicit sieve weights
@@ -62,11 +63,11 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 /-! ## Algebra over opaque terms -/
 
 theorem dist_a (SH g a b : PTm n) : Γ ⊢[PRAAx] SH * (g * (a + b)) ≐ SH * (g * a) + SH * (g * b) := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem dist_b (H Sg a b F : PTm n) :
     Γ ⊢[PRAAx] H * (Sg * (a + b)) * F ≐ H * (Sg * a) * F + H * (Sg * b) * F := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- The summand identity: `φ (α⁺ − α⁻)² = B (y⁺ + y⁻)`, cleared of signs. -/
 theorem form_alg {t1 t2 t3 t4 yp yn φ B : PTm n} (e1 : Γ ⊢[PRAAx] t1 ≐ yp + t2) (e3 : Γ ⊢[PRAAx] t3 ≐ yn + t4)
@@ -74,18 +75,15 @@ theorem form_alg {t1 t2 t3 t4 yp yn φ B : PTm n} (e1 : Γ ⊢[PRAAx] t1 ≐ yp 
     (hn : Γ ⊢[PRAAx] φ * (yn * yn) ≐ B * yn) :
     Γ ⊢[PRAAx] (t1 + t4) * (φ * t1 + φ * t4) + (t3 + t2) * (φ * t3 + φ * t2) ≐
       ((t1 + t4) * (φ * t3 + φ * t2) + (t3 + t2) * (φ * t1 + φ * t4)) + B * (yp + yn) := by
-  have a1 := natEq e1; have a3 := natEq e3; have ad := natEq hd; have ap := natEq hp; have an := natEq hn
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 φ * (𝔞 t1 + 𝔞 t4 - 𝔞 t3 - 𝔞 t2 + 𝔞 yp - 𝔞 yn) * (a1 - a3) + ap + an - 2 * 𝔞 φ * ad
+  ipra_lc 𝔞 φ * (𝔞 t1 + 𝔞 t4 - 𝔞 t3 - 𝔞 t2 + 𝔞 yp - 𝔞 yn) * (natEq e1 - natEq e3) + natEq hp + natEq hn -
+    2 * 𝔞 φ * natEq hd
 
 /-- The summand identity at `r = 0`: every term vanishes. -/
 theorem form_zero {t1 t2 t3 t4 yp yn φ B : PTm n} (hφ : Γ ⊢[PRAAx] φ ≐ zero) (hyp : Γ ⊢[PRAAx] yp ≐ zero)
     (hyn : Γ ⊢[PRAAx] yn ≐ zero) :
     Γ ⊢[PRAAx] (t1 + t4) * (φ * t1 + φ * t4) + (t3 + t2) * (φ * t3 + φ * t2) ≐
       ((t1 + t4) * (φ * t3 + φ * t2) + (t3 + t2) * (φ * t1 + φ * t4)) + B * (yp + yn) := by
-  have aφ := natEq hφ; have ap := natEq hyp; have an := natEq hyn
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞 t1 + 𝔞 t4 - 𝔞 t3 - 𝔞 t2) * (𝔞 t1 + 𝔞 t4 - 𝔞 t3 - 𝔞 t2) * aφ - 𝔞 B * ap - 𝔞 B * an
+  ipra_lc (𝔞 t1 + 𝔞 t4 - 𝔞 t3 - 𝔞 t2) * (𝔞 t1 + 𝔞 t4 - 𝔞 t3 - 𝔞 t2) * natEq hφ - 𝔞 B * natEq hyp - 𝔞 B * natEq hyn
 
 /-! ## A sum identity for five bodies -/
 

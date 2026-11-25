@@ -1,5 +1,6 @@
 import IPRADerivations.Algebra.QuadraticTowerCoefficients
 import IPRADerivations.Algebra.QuadraticRationalRepresentationInvariance
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Original rational arithmetic on numerical tower coefficient arrays
@@ -45,14 +46,10 @@ def equalValues (h A B : PTm n) : Fm PTm n := .all (lt (var 0) (width (Syn.shift
 theorem added_congr {h h' A A' B B' : PTm n} (hh : Γ ⊢[PRAAx] h ≐ h')
     (hA : Γ ⊢[PRAAx] A ≐ A') (hB : Γ ⊢[PRAAx] B ≐ B') : Γ ⊢[PRAAx]
     added h A B ≐ added h' A' B' := by
-  simpa only [subst_added,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.head_cons,Matrix.tail_cons] using Prf.eqCongr (added (var 0) (var 1) (var 2) : PTm 3)
-      (σ := ![h,A,B]) (σ' := ![h',A',B']) (fun i => by fin_cases i; exact hh; exact hA; exact hB)
+  ipra_congr (added (var 0) (var 1) (var 2) : PTm 3) with [hh, hA, hB]
 theorem negated_congr {h h' A A' : PTm n} (hh : Γ ⊢[PRAAx] h ≐ h')
     (hA : Γ ⊢[PRAAx] A ≐ A') : Γ ⊢[PRAAx] negated h A ≐ negated h' A' := by
-  simpa only [subst_negated,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.head_cons] using
-    Prf.eqCongr (negated (var 0) (var 1) : PTm 2) (σ := ![h,A]) (σ' := ![h',A'])
-      (fun i => by fin_cases i; exact hh; exact hA)
+  ipra_congr (negated (var 0) (var 1) : PTm 2) with [hh, hA]
 
 theorem add_body_at (A B i : PTm n) : Γ ⊢[PRAAx] inst2 addBody i (pairT A B) ≐
     RationalArithmetic.add (entry A i) (entry B i) := by

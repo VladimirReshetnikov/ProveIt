@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.RationalRootConstant
 import IPRADerivations.Core.ProdLemmas
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # A rational eigenvalue lies on a finite grid (`ipra_presentations_to_witnesses`, `cor:eigenvalue-grid`)
@@ -69,19 +70,16 @@ theorem grid_num_le {q' Δ' La Z u v : PTm k} (hB : Γ ⊢[PRAAx] Bez q' La u v)
     linear_combination e₁ + 𝔞 La * e₂
   refine .orE (zero_or_succ (quo (succ Δ') (succ q'))) ?_ ?_
   · -- `t = 0` would make `Δ` zero
-    have z := natEq (Prf.hyp0 (Γ := Γ) (φ := quo (succ Δ') (succ q') ≐ zero))
     have e₂ := natEq (hd.wk (ψ := quo (succ Δ') (succ q') ≐ zero))
     have c0 : ((quo (succ Δ') (succ q') ≐ zero) :: Γ) ⊢[PRAAx] succ Δ' ≐ zero := by
-      apply deriveNat; ipra_simps
-      linear_combination e₂ + (𝔞 q' + 1) * z
+      ipra_lc e₂ + (𝔞 q' + 1) * natEq (Prf.hyp0 (Γ := Γ) (φ := quo (succ Δ') (succ q') ≐ zero))
     exact succ_ne_zero' _ c0
   · have s := natEq (Prf.hyp0 (Γ := Γ)
       (φ := quo (succ Δ') (succ q') ≐ succ (pred (quo (succ Δ') (succ q')))))
     have e := natEq (hz.wk
       (ψ := quo (succ Δ') (succ q') ≐ succ (pred (quo (succ Δ') (succ q')))))
     refine le_of_eq_add (d := pred (quo (succ Δ') (succ q')) * La) ?_
-    apply deriveNat; ipra_simps
-    linear_combination e + 𝔞 La * s
+    ipra_lc e + 𝔞 La * s
 
 /-- `cor:eigenvalue-grid`, the reduced form: `q ∣ Δ`, `q ≤ Δ` and `|a| ≤ R`. -/
 theorem grid {q' Δ' La Z R u v : PTm k} (hB : Γ ⊢[PRAAx] Bez q' La u v)

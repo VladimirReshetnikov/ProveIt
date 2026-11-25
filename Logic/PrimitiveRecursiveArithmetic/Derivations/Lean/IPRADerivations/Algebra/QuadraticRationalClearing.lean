@@ -1,5 +1,6 @@
 import IPRADerivations.Algebra.QuadraticPositiveScaling
 import IPRADerivations.Analysis.RationalRepresentations
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Actual rational-coefficient clearing for one quadratic stage
@@ -70,11 +71,7 @@ theorem scalar_representations_cross (q A B : PTm n) (a b : ZT n)
     (hb : Γ ⊢[PRAAx] LeanProofs.IPRA.Analysis.RationalArithmetic.represents q b B) : Γ ⊢[PRAAx]
     ZT.eq (a*ZT.ofNat B) (b*ZT.ofNat A) := by
   apply LeanProofs.IPRA.Analysis.RationalNormalForm.positive_integer_cancel (denominatorOf q) _ _ (LeanProofs.IPRA.Analysis.RationalArgmin.denominator_positive q)
-  apply ZT.derive
-  have ea := ZT.toZ_eq ha
-  have eb := ZT.toZ_eq hb
-  simp only [ZT.toZ_mul,ZT.toZ_ofNat] at ea eb ⊢
-  linear_combination 𝔞(B)*ea-𝔞(A)*eb
+  ipra_lc 𝔞(B)*ZT.toZ_eq ha-𝔞(A)*ZT.toZ_eq hb
 theorem representations_cross (x A D B E : PTm n)
     (ha : Γ ⊢[PRAAx] represents x A D) (hb : Γ ⊢[PRAAx] represents x B E) : Γ ⊢[PRAAx]
     equal (scale E A) (scale D B) := by

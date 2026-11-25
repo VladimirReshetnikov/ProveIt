@@ -1,6 +1,8 @@
 import IPRADerivations.DiophantineNumberTheory.PairProduct
 import IPRADerivations.DiophantineNumberTheory.ResidueFacts
 import IPRADerivations.AnalyticNumberTheory.LcmBridgeExact
+import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Wilson's product
@@ -56,23 +58,19 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The two fixed points -/
 
-theorem one_one : Γ ⊢[PRAAx] (one : PTm n) * one ≐ one := by apply deriveNat; ipra_simps; ring
+theorem one_one : Γ ⊢[PRAAx] (one : PTm n) * one ≐ one := by ipra_ring
 
 /-- `T(1) = 1` for `a = 1`. -/
 theorem T_one {p : PTm n} (hq : Γ ⊢[PRAAx] le two p) : Γ ⊢[PRAAx] res one p one ≐ one :=
   (res_unique hq (gcd_one_left p) hq (congrAp2 remF one_one (.eqRefl _))).eqSymm
 
 /-- `p − 1 < p` for `p ≥ 1`. -/
-theorem pred_lt {p : PTm n} (hp1 : Γ ⊢[PRAAx] p ≐ succ (pred p)) : Γ ⊢[PRAAx] lt (pred p) p :=
-  le_congr (.eqRefl _) hp1.eqSymm (le_refl _)
+alias pred_lt := Common.pred_lt
 
 /-- `p − 1 ≥ 1` for `p ≥ 2`. -/
 theorem pred_pos {p : PTm n} (hq : Γ ⊢[PRAAx] le two p) : Γ ⊢[PRAAx] pred p ≐ succ (pred (pred p)) := by
-  have x := natEq (eq_add_of_le hq)
-  have y := natEq (p_pos hq)
   refine pos_of_eq_succ (c := monus p two) ?_
-  apply deriveNat; ipra_simps
-  linear_combination x - y
+  ipra_lc natEq (eq_add_of_le hq) - natEq (p_pos hq)
 
 /-- `T(p − 1) = p − 1` for `a = 1`, for a prime `p`. -/
 theorem T_neg {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) : Γ ⊢[PRAAx] res (pred p) p one ≐ pred p := by
@@ -85,21 +83,15 @@ theorem T_neg {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) : Γ ⊢[PRAAx] res (pred
 
 theorem v10 {e0 e1 : PTm n} (h0 : Γ ⊢[PRAAx] e0 ≐ one) (h1 : Γ ⊢[PRAAx] e1 ≐ zero) :
     Γ ⊢[PRAAx] (one : PTm n) ≐ e0 + e1 := by
-  have a := natEq h0; have b := natEq h1
-  apply deriveNat; ipra_simps
-  linear_combination -a - b
+  ipra_lc -natEq h0 - natEq h1
 
 theorem v01 {e0 e1 : PTm n} (h0 : Γ ⊢[PRAAx] e0 ≐ zero) (h1 : Γ ⊢[PRAAx] e1 ≐ one) :
     Γ ⊢[PRAAx] (one : PTm n) ≐ e0 + e1 := by
-  have a := natEq h0; have b := natEq h1
-  apply deriveNat; ipra_simps
-  linear_combination -a - b
+  ipra_lc -natEq h0 - natEq h1
 
 theorem v00 {e0 e1 : PTm n} (h0 : Γ ⊢[PRAAx] e0 ≐ zero) (h1 : Γ ⊢[PRAAx] e1 ≐ zero) :
     Γ ⊢[PRAAx] (zero : PTm n) ≐ e0 + e1 := by
-  have a := natEq h0; have b := natEq h1
-  apply deriveNat; ipra_simps
-  linear_combination -a - b
+  ipra_lc -natEq h0 - natEq h1
 
 /-- `[σ(i) = i] = [i = 0] + [i = M − 1]` for `i < M = p − 1`, `a = 1` and a prime `p ≥ 3`. -/
 theorem fixed_pt {p i : PTm n} (hp : Γ ⊢[PRAAx] prime p)
@@ -181,9 +173,7 @@ theorem delta_id (D : PTm 2) {M c y : PTm n} (hc : Γ ⊢[PRAAx] lt c M)
 
 theorem one_mul_succ {M : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) :
     Γ ⊢[PRAAx] succ zero * succ (pred M) ≐ M := by
-  have a := natEq hM
-  apply deriveNat; ipra_simps
-  linear_combination -a
+  ipra_lc -natEq hM
 
 /-- `∏_{i<p−1} (i + 1)^{[σ(i) = i]} = p − 1` for `a = 1` and a prime `p ≥ 3`. -/
 theorem fixed_prod {p : PTm n} (hp : Γ ⊢[PRAAx] prime p)

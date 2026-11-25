@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.BlockFloor
 import IPRADerivations.AnalyticNumberTheory.PNTStageStep
 import IPRADerivations.Foundations.ProductSumDomination
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Truncating the excess sum of the Chebyshev block identity (`pnt_ipra_constructive_2026-11-14`, `con:signed`)
@@ -95,7 +96,7 @@ theorem e_trunc (b : PTm 2) {x D z : PTm n} (hD : Γ ⊢[PRAAx] le one D) :
     have e : Syn.shift (succ (quo x D)) = succ (quo (Syn.shift x) (Syn.shift D)) := by simp [Syn.shift]
     rw [e] at h0 ⊢; exact h0
   have q := quo_le_of_gt hD'.wk.wk hv
-  exact (eB_at _ _ _ _ _).eqTrans (congrMul (.eqRefl _) q |>.eqTrans (by apply deriveNat; ipra_simps; ring))
+  exact (eB_at _ _ _ _ _).eqTrans (congrMul (.eqRefl _) q |>.eqTrans (by ipra_ring))
 
 /-- `[n ≥ 1] D b(n)` over `0 = n`, `1 = (x, (D, z))`. -/
 abbrev dB (b : PTm 2) : PTm 2 := fstT (sndT (var 1)) * (sg (var 0) * Syn.subst ![var 0, sndT (var 1)] b)
@@ -114,11 +115,11 @@ theorem dB_at (b : PTm 2) (k X D z : PTm n) :
 
 theorem split_alg {s c q d D : PTm n} (h : Γ ⊢[PRAAx] q ≐ D + d) :
     Γ ⊢[PRAAx] (s * c) * q ≐ (s * c) * d + D * (s * c) := by
-  have a := natEq h; apply deriveNat; ipra_simps; linear_combination 𝔞 s * 𝔞 c * a
+  ipra_lc 𝔞 s * 𝔞 c * natEq h
 
 theorem split_zero {s c q d D : PTm n} (h : Γ ⊢[PRAAx] s ≐ zero) :
     Γ ⊢[PRAAx] (s * c) * q ≐ (s * c) * d + D * (s * c) := by
-  have a := natEq h; apply deriveNat; ipra_simps; linear_combination (𝔞 c * 𝔞 q - 𝔞 c * 𝔞 d - 𝔞 D * 𝔞 c) * a
+  ipra_lc (𝔞 c * 𝔞 q - 𝔞 c * 𝔞 d - 𝔞 D * 𝔞 c) * natEq h
 
 /-- `Σ_{n≤P} b(n)⌊x/n⌋ = Σ_{n≤P} b(n)(⌊x/n⌋ ∸ D) + Σ_{n≤P} D b(n)`, `P = ⌊x/D⌋`. -/
 theorem e_split (b : PTm 2) (x D z : PTm n) :
@@ -168,6 +169,6 @@ theorem d_f (N x D K L : PTm n) :
       linear_combination 𝔞 (Syn.shift D) * 𝔞 (inst2 fB (succ (var 0)) (pairT (Syn.shift D)
         (pairT (Syn.shift K) (fact (Syn.shift L))))) * s + 𝔞 (Syn.shift D) * f)))
   refine (congrAdd z0 c).eqTrans ?_
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 end LeanProofs.IPRA.AnalyticNumberTheory.BlockTrunc

@@ -1,5 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.Valuation
 import IPRADerivations.Core.ProdLemmas
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Legendre's formula in digit form
@@ -52,9 +54,7 @@ theorem dmu {K z q r : PTm n} (hK : Γ ⊢[PRAAx] K ≐ succ (pred K)) (hz : Γ 
   exact .andI ((congrAp2 quoF (.eqRefl _) hK).eqTrans (Prf.andE₁ u))
     ((congrAp2 remF (.eqRefl _) hK).eqTrans (Prf.andE₂ u))
 
-theorem pos_mul' {a b : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) (hb : Γ ⊢[PRAAx] b ≐ succ (pred b)) :
-    Γ ⊢[PRAAx] a * b ≐ succ (pred (a * b)) :=
-  pos_of_eq_succ (c := pred a * succ (pred b) + pred b) ((congrMul ha hb).eqTrans (by apply deriveNat; ipra_simps; ring))
+alias pos_mul' := Common.pos_mul
 
 /-- `⌊⌊m/a⌋/b⌋ = ⌊m/(ab)⌋` for `a, b ≥ 1`. -/
 theorem quo_quo {a b : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) (hb : Γ ⊢[PRAAx] b ≐ succ (pred b)) (m : PTm n) :
@@ -67,16 +67,14 @@ theorem quo_quo {a b : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) (hb : Γ 
   have f₁ := natEq (eq_add_of_le hr₁); have f₂ := natEq (eq_add_of_le hr₂)
   have lt₁ : Γ ⊢[PRAAx] lt (a * rem (quo m a) b + rem m a) (a * b) := by
     refine le_of_eq_add (d := monus a (succ (rem m a)) + a * monus b (succ (rem (quo m a) b))) ?_
-    apply deriveNat; ipra_simps
-    linear_combination f₁ + 𝔞 a * f₂
+    ipra_lc f₁ + 𝔞 a * f₂
   refine (Prf.andE₁ (dmu (pos_mul' ha hb) ?_ lt₁)).eqSymm
-  apply deriveNat; ipra_simps
-  linear_combination e₁ + 𝔞 a * e₂
+  ipra_lc e₁ + 𝔞 a * e₂
 
 /-- `⌊z/K⌋ = 0` for `z < K`. -/
 theorem quo_small {K z : PTm n} (hK : Γ ⊢[PRAAx] K ≐ succ (pred K)) (h : Γ ⊢[PRAAx] lt z K) :
     Γ ⊢[PRAAx] quo z K ≐ zero :=
-  Prf.andE₁ (dmu hK (by apply deriveNat; ipra_simps; ring) h)
+  Prf.andE₁ (dmu hK (by ipra_ring) h)
 
 /-! ## Digits -/
 
@@ -118,12 +116,8 @@ theorem tele_step {p m K : PTm n} (hp : Γ ⊢[PRAAx] p ≐ succ (pred p))
       quo m (pw p (succ K)) ≐ m := by
   have s₁ := (sum_succ' (Γ := Γ) dB K (pairT p m)).eqTrans (congrAdd (.eqRefl _) (dB_at K p m))
   have s₂ := (sum_succ' (Γ := Γ) qB' K (pairT p m)).eqTrans (congrAdd (.eqRefl _) (qB'_at K p m))
-  have st := natEq (digit_step hp m K)
-  have pp := natEq (eq_add_of_le (le_of_eq_add (d := pred p) (show Γ ⊢[PRAAx] p ≐ one + pred p from
-    hp.eqTrans (by apply deriveNat; ipra_simps; ring))))
-  have a := natEq s₁; have b := natEq s₂; have i := natEq ih
-  apply deriveNat; ipra_simps
-  linear_combination a + 𝔞 (monus p one) * b + i - st - (𝔞 (quo m (pw p (succ K)))) * pp
+  ipra_lc natEq s₁ + 𝔞 (monus p one) * natEq s₂ + natEq ih - natEq (digit_step hp m K) -
+    (𝔞 (quo m (pw p (succ K)))) * natEq (eq_add_of_le (le_of_eq_add (d := pred p) (show Γ ⊢[PRAAx] p ≐ one + pred p from hp.eqTrans (by ipra_ring))))
 
 /-- Variables: `0 = K`, `1 = p`, `2 = m`. -/
 private abbrev teleF : Fm PTm 3 :=
@@ -137,13 +131,9 @@ private theorem tele₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] teleF := by
       PTm.subst_pred, Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero,
       ConciseIPRA.PTm.subst_succ]
     refine .impI ?_
-    have z₁ := natEq (sum_zero (Γ := [(var 0 : PTm 2) ≐ succ (pred (var 0))]) dB (pairT (var 0) (var 1)))
-    have z₂ := natEq (sum_zero (Γ := [(var 0 : PTm 2) ≐ succ (pred (var 0))]) qB' (pairT (var 0) (var 1)))
-    have q0 := natEq ((congrAp2 quoF (.eqRefl (var 1 : PTm 2)) (pw_zero (Γ := [(var 0 : PTm 2) ≐ succ (pred (var 0))]) (var 0))).eqTrans
-      (Prf.andE₁ (dmu (Γ := [(var 0 : PTm 2) ≐ succ (pred (var 0))]) (K := one) (q := var 1) (r := zero)
-        (pos_of_eq_succ (c := zero) (.eqRefl _)) (by apply deriveNat; ipra_simps; ring) (le_refl one))))
-    apply deriveNat; ipra_simps
-    linear_combination z₁ + 𝔞 (monus (var 0 : PTm 2) one) * z₂ + q0
+    ipra_lc natEq (sum_zero (Γ := [(var 0 : PTm 2) ≐ succ (pred (var 0))]) dB (pairT (var 0) (var 1))) +
+      𝔞 (monus (var 0 : PTm 2) one) * natEq (sum_zero (Γ := [(var 0 : PTm 2) ≐ succ (pred (var 0))]) qB' (pairT (var 0) (var 1))) +
+      natEq ((congrAp2 quoF (.eqRefl (var 1 : PTm 2)) (pw_zero (Γ := [(var 0 : PTm 2) ≐ succ (pred (var 0))]) (var 0))).eqTrans (Prf.andE₁ (dmu (Γ := [(var 0 : PTm 2) ≐ succ (pred (var 0))]) (K := one) (q := var 1) (r := zero) (pos_of_eq_succ (c := zero) (.eqRefl _)) (by ipra_ring) (le_refl one))))
   · simp only [Fm.subst_imp, Fm.subst_eq, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, PTm.subst_monus,
       PTm.subst_pred, Syn.subst_var, Syn.repl_zero, repl_one, repl_two, ConciseIPRA.PTm.subst_zero,
       ConciseIPRA.PTm.subst_succ]

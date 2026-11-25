@@ -1,6 +1,8 @@
 import IPRADerivations.DiophantineNumberTheory.KhinchinMoment
 import IPRADerivations.DiophantineNumberTheory.FractionCount
 import IPRADerivations.AnalyticNumberTheory.SumReindex
+import IPRADerivations.Core.CongruenceTactic
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The per-pair and geometric estimates of the Khinchin block (`hurwitz_khinchin_ipra`, (K9)–(K11))
@@ -69,8 +71,7 @@ theorem inst2_q2B (k K0 : PTm n) : inst2 q2B k K0 = pw two (K0 + k) * pw two (K0
   simp [inst2]
 
 theorem congrPw2 {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) : Γ ⊢[PRAAx] pw two a ≐ pw two b := by
-  have e := Prf.eqCongr (Γ := Γ) (pw two (var 0) : PTm 1) (σ := ![a]) (σ' := ![b]) (fun j => by fin_cases j; exact h)
-  simpa using e
+  ipra_congr (pw two (var 0) : PTm 1) with [h]
 
 /-- The invariant of `geo2`. -/
 def g2Inv (J K0 : PTm n) : Fm PTm n :=
@@ -90,9 +91,7 @@ theorem geo2 (J K0 : PTm n) :
       show Γ ⊢[PRAAx] num 3 * ap2 (sumF q2B) zero K0 + pw two K0 * pw two K0 ≐ pw two (K0 + zero) * pw two (K0 + zero)
       have a := natEq (sum_zero (Γ := Γ) q2B K0)
       have hz : Γ ⊢[PRAAx] pw two (K0 + zero) ≐ pw two K0 := congrPw2 (add_zero _)
-      have b := natEq hz
-      apply deriveNat; ipra_simps
-      linear_combination 3 * a - (𝔞 (pw two (K0 + zero)) + 𝔞 (pw two K0)) * b
+      ipra_lc 3 * a - (𝔞 (pw two (K0 + zero)) + 𝔞 (pw two K0)) * natEq hz
     · rw [subst_g2Inv]
       simp only [Syn.subst_var, Syn.repl_zero, subst_repl_shift]
       let Δ : List (Fm PTm (n + 1)) := g2Inv (var 0) (Syn.shift K0) :: Γ.map Fm.shift
@@ -101,13 +100,11 @@ theorem geo2 (J K0 : PTm n) :
       have e1 := natEq (sum_succ' (Γ := Δ) q2B (var 0) (Syn.shift K0))
       rw [inst2_q2B] at e1
       have hs : Δ ⊢[PRAAx] Syn.shift K0 + succ (var 0) ≐ succ (Syn.shift K0 + var 0) := by
-        apply deriveNat; ipra_simps; ring
-      have e2 := natEq ((congrPw2 hs).eqTrans (pw_succ (Γ := Δ) two (Syn.shift K0 + var 0)))
+        ipra_ring
       show Δ ⊢[PRAAx] num 3 * ap2 (sumF q2B) (succ (var 0)) (Syn.shift K0) + pw two (Syn.shift K0) * pw two (Syn.shift K0) ≐
         pw two (Syn.shift K0 + succ (var 0)) * pw two (Syn.shift K0 + succ (var 0))
-      apply deriveNat; ipra_simps
-      linear_combination e0 + 3 * e1 - (𝔞 (pw two (Syn.shift K0 + succ (var 0))) +
-        2 * 𝔞 (pw two (Syn.shift K0 + var 0))) * e2
+      ipra_lc e0 + 3 * e1 -
+        (𝔞 (pw two (Syn.shift K0 + succ (var 0))) + 2 * 𝔞 (pw two (Syn.shift K0 + var 0))) * natEq ((congrPw2 hs).eqTrans (pw_succ (Γ := Δ) two (Syn.shift K0 + var 0)))
   have a := Prf.allE J hall
   rw [subst_g2Inv] at a
   simp only [Syn.subst_inst_shift] at a

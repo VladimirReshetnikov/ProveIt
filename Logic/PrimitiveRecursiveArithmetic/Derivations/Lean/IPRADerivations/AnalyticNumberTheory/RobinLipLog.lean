@@ -1,5 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.RobinLipArg
 import IPRADerivations.AnalyticNumberTheory.RobinLogInterval
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Two-sided Lipschitz bounds for the lower names of `LogI` (`robin_ipra_research_2026-11-19`)
@@ -44,7 +46,7 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
-theorem mul1 (x : PTm n) : Γ ⊢[PRAAx] x * one ≐ x := by apply deriveNat; ipra_simps; ring
+alias mul1 := Common.mul_one_right
 
 /-! ## The four combinations (abstract cleared fractions) -/
 
@@ -191,8 +193,7 @@ theorem lo_lip_up {a b a' b' D : PTm n} (hb : Γ ⊢[PRAAx] le one b) (hab : Γ 
     have e2' := natEq e2
     have eD' := natEq (hD.wk : C ⊢[PRAAx] _)
     have hDy : C ⊢[PRAAx] a' * Bt a b ≐ a * Bt a' b' + D * pw two (eb a b) := by
-      apply deriveNat; ipra_simps
-      linear_combination 𝔞 (pw two (eb a b)) * eD' - 𝔞 a * 𝔞 b' * e2'
+      ipra_lc 𝔞 (pw two (eb a b)) * eD' - 𝔞 a * 𝔞 b' * e2'
     have p := arg_up (Γ := C) hBb.wk hBb'.wk (a_eq hb.wk hab.wk) (.eqRefl _) (a_eq hb'.wk hab'.wk) (.eqRefl _) hDy K
     exact same_up (pw_pos' two_pos' _) e1 e2 p
 
@@ -232,8 +233,7 @@ theorem lo_lip_low {a b a' b' D : PTm n} (hb : Γ ⊢[PRAAx] le one b) (hab : Γ
     have e2' := natEq e2
     have eD' := natEq (hD.wk : C ⊢[PRAAx] _)
     have hDy : C ⊢[PRAAx] a' * Bt a b ≐ a * Bt a' b' + D * pw two (eb a b) := by
-      apply deriveNat; ipra_simps
-      linear_combination 𝔞 (pw two (eb a b)) * eD' - 𝔞 a * 𝔞 b' * e2'
+      ipra_lc 𝔞 (pw two (eb a b)) * eD' - 𝔞 a * 𝔞 b' * e2'
     have h2y : C ⊢[PRAAx] le a (two * (b * pw two (eb a b))) := le_double (Prf.andE₂ s).wk
     have q := arg_low (Γ := C) hBb.wk hBb'.wk (a_eq hb.wk hab.wk) (.eqRefl _) (a_eq hb'.wk hab'.wk) (.eqRefl _) hDy h2y K
     exact same_low (pw_pos' two_pos' _) e1 e2 q

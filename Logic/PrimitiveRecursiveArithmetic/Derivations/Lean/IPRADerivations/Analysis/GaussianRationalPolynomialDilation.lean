@@ -2,6 +2,7 @@ import IPRADerivations.Analysis.GaussianRationalLowCoefficientConvolution
 import IPRADerivations.Analysis.GaussianRationalPowerExpansion
 import IPRADerivations.Analysis.GaussianRationalGridCoefficientEquality
 import IPRADerivations.Analysis.GaussianRationalConvolutionNorm
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Actual variable dilation and its finite coefficient norm
@@ -126,7 +127,6 @@ theorem dilation_evaluation (C N t z : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ s
   exact (GaussianRationalPowerExpansion.power_expansion _ _ _ (dilated_length C N t)).eqTrans
     (evalSame.eqTrans (GaussianRationalPowerExpansion.power_expansion C N (qmul t z) hC).eqSymm)
 
-
 theorem dilated_product_value (P Q N M t z : PTm n) (hP : Γ ⊢[PRAAx] length P ≐ succ N)
     (hQ : Γ ⊢[PRAAx] length Q ≐ succ M) : Γ ⊢[PRAAx]
     evaluate (dilated (product P Q N M) (N+M) t) z ≐
@@ -178,7 +178,6 @@ theorem weighted_product_bound (P Q N M t : PTm n) (hP : Γ ⊢[PRAAx] length P 
     (GaussianPolynomialNormBuffers.norm_entries _ _ _ (dilated_length _ _ _) (product_length _ _ _ _)
       (product_entries P Q N M t hP hQ)).eqSymm (.eqRefl _)
     (GaussianRationalConvolutionNorm.product_norm _ _ N M (dilated_length _ _ _) (dilated_length _ _ _))
-
 
 theorem multiply_sum_right (a b c : PTm n) : Γ ⊢[PRAAx]
     qmul (qadd a b) c ≐ qadd (qmul a c) (qmul b c) :=
@@ -247,7 +246,6 @@ theorem weighted_scaled_bound (C N t a : PTm n) (hC : Γ ⊢[PRAAx] length C ≐
       (scaled_entries C N t a hC)).eqSymm (.eqRefl _)
     (GaussianPolynomialNormBuffers.norm_scaled _ _)
 
-
 theorem pad_length (C N k : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ succ N) : Γ ⊢[PRAAx]
     length (GaussianRationalPolynomialBuffers.leftPad C k) ≐ succ (k+N) :=
   (GaussianRationalPolynomialBuffers.pad_length C k).eqTrans ((congrAdd (.eqRefl _) hC).eqTrans (by ipra_ring))
@@ -264,13 +262,8 @@ theorem padded_coefficient (C N t k i : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ 
   · let Δ := le k i :: Γ
     have idx : Δ ⊢[PRAAx] i ≐ k+monus i k := eq_add_of_le Prf.hyp0
     have range : Δ ⊢[PRAAx] le (monus i k) N := by
-      have old := natEq idx
-      have top := natEq (eq_add_of_le (Γ := Δ) hi.wk)
       apply le_of_eq_add (d := monus (k+N) i)
-      apply deriveNat
-      simp only [Q.mk_add,map_add] at old top
-      ipra_simps
-      linear_combination top+old
+      ipra_lc natEq (eq_add_of_le (Γ := Δ) hi.wk)+natEq idx
     have expIdx : Δ ⊢[PRAAx] monus (k+N) i ≐ monus N (monus i k) :=
       (congrMonus (add_comm k N) (idx.eqTrans (add_comm _ _))).eqTrans (monus_add_add N (monus i k) k)
     have rawRange : Δ ⊢[PRAAx] lt i (k+length C) :=
@@ -311,7 +304,6 @@ theorem weighted_padding (C N t k : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ succ
   (GaussianPolynomialNormBuffers.norm_entries _ _ _ (dilated_length _ _ _)
     (pad_length _ N k (dilated_length C N t)) (padded_entries C N t k hC)).eqTrans
       (GaussianPolynomialNormBuffers.norm_padding _ k)
-
 
 theorem weighted_norm_nonnegative (C N t : PTm n) : Γ ⊢[PRAAx]
     RationalArgmin.rationalLE (GaussianRationalSyntheticBounds.natCode zero) (weightedNorm C N t) :=

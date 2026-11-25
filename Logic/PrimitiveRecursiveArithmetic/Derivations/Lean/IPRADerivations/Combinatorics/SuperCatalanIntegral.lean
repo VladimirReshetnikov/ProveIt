@@ -3,7 +3,7 @@ import IPRADerivations.Combinatorics.BellTouchardPower
 import IPRADerivations.AnalyticNumberTheory.Primes
 import IPRADerivations.DiophantineNumberTheory.Coprime
 import IPRADerivations.Foundations.BoundedReflection
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The super-Catalan numbers are integers (`catalan_numbers_ipra_2026-11-16`, (7.14))

@@ -3,6 +3,8 @@ import IPRADerivations.Foundations.QuantitativeIdentities
 import IPRADerivations.Foundations.TraceInvariant
 import IPRADerivations.Core.IntOrder
 import IPRADerivations.Core.IntCancel
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Actual dyadic bisection for a fixed-degree rational polynomial
@@ -257,11 +259,7 @@ theorem zle_add {u v u' v' : ZT n} (h : Γ ⊢[PRAAx] zle u v)
   simp only [slack, ZT.toZ_add, Q.mk_add, map_add]
   linear_combination H + H'
 
-private theorem cancel_positive {c a b : PTm n} (hc : Γ ⊢[PRAAx] le one c)
-    (h : Γ ⊢[PRAAx] le (c * a) (c * b)) : Γ ⊢[PRAAx] le a b := by
-  have ce : Γ ⊢[PRAAx] c ≐ succ (monus c one) :=
-    (eq_add_of_le hc).eqTrans (by ipra_ring)
-  exact mul_le_cancel (le_congr (congrMul ce (.eqRefl _)) (congrMul ce (.eqRefl _)) h)
+private alias cancel_positive := Common.mul_cancel_le
 
 theorem zle_scale_cancel {c : PTm n} {u v : ZT n}
     (hc : Γ ⊢[PRAAx] le one c)
@@ -315,17 +313,9 @@ theorem unique_of_factor (x y fx fy Q : ZT n)
     (hQ : Γ ⊢[PRAAx] zle (ZT.ofNat one) Q) :
     Γ ⊢[PRAAx] ZT.eq y x := by
   have product : Γ ⊢[PRAAx] ZT.eq (Q * (y - x)) (ZT.natLit 0) := by
-    apply ZT.derive
-    have F := ZT.toZ_eq hFactor
-    have X := ZT.toZ_eq hx
-    have Y := ZT.toZ_eq hy
-    simp only [ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_natLit] at F X Y ⊢
-    linear_combination -F + Y - X
+    ipra_lc -ZT.toZ_eq hFactor + ZT.toZ_eq hy - ZT.toZ_eq hx
   have difference := positive_factor_cancel hQ product
-  apply ZT.derive
-  have H := ZT.toZ_eq difference
-  simp only [ZT.toZ_sub, ZT.toZ_natLit] at H
-  linear_combination H
+  ipra_lc ZT.toZ_eq difference
 
 /-- Division-free numerator of `(u^k-v^k)/(u-v)`, including the zero power. -/
 def powerFactor : ℕ → ZT n → ZT n → ZT n

@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.ChebyshevBounds
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The rough Chebyshev lower bound for the primorial, integer form
@@ -94,22 +95,16 @@ theorem val_small {q m : PTm n} (hq : Γ ⊢[PRAAx] prime q) :
   refine .orE (lt_or_le q (succ m)) ?_ ?_
   · -- `q ≤ m`: the first bracket is the whole exponent
     let C1 : List (Fm PTm n) := lt q (succ m) :: C
-    have s1 := natEq (sg_lt (Prf.hyp0 : C1 ⊢[PRAAx] lt q (succ m)))
-    have ip1 := natEq (ip.wk.wk : C1 ⊢[PRAAx] _)
     refine le_of_eq_add (d := isP q * one * sg (monus (succ (m * m)) q)) ?_
-    apply deriveNat; ipra_simps
-    linear_combination (𝔞 (val q (lcmu (m * m))) * 𝔞 (sg (monus (succ m) q))) * ip1 +
-      𝔞 (val q (lcmu (m * m))) * s1
+    ipra_lc (𝔞 (val q (lcmu (m * m))) * 𝔞 (sg (monus (succ m) q))) * natEq (ip.wk.wk : C1 ⊢[PRAAx] _) +
+      𝔞 (val q (lcmu (m * m))) * natEq (sg_lt (Prf.hyp0 : C1 ⊢[PRAAx] lt q (succ m)))
   · -- `m < q`: the exponent is at most `1`
     let C2 : List (Fm PTm n) := le (succ m) q :: C
     have hm : C2 ⊢[PRAAx] le (succ m) q := Prf.hyp0
     have one_rhs : C2 ⊢[PRAAx] le one (isP q * val q (lcmu (m * m)) * sg (monus (succ m) q) +
         isP q * one * sg (monus (succ (m * m)) q)) := by
-      have ip2 := natEq (ip.wk.wk : C2 ⊢[PRAAx] _)
-      have s22 := natEq (s2.wk : C2 ⊢[PRAAx] _)
       refine le_of_eq_add (d := isP q * val q (lcmu (m * m)) * sg (monus (succ m) q)) ?_
-      apply deriveNat; ipra_simps
-      linear_combination 𝔞 (sg (monus (succ (m * m)) q)) * ip2 + s22
+      ipra_lc 𝔞 (sg (monus (succ (m * m)) q)) * natEq (ip.wk.wk : C2 ⊢[PRAAx] _) + natEq (s2.wk : C2 ⊢[PRAAx] _)
     refine .orE (lt_or_le one (val q (lcmu (m * m)))) ?_ (le_trans Prf.hyp0 one_rhs.wk)
     -- `2 ≤ v`: `(m + 1)² ≤ q² ≤ q^v ≤ m²`, absurd
     let C3 : List (Fm PTm n) := lt one (val q (lcmu (m * m))) :: C2
@@ -119,7 +114,7 @@ theorem val_small {q m : PTm n} (hq : Γ ⊢[PRAAx] prime q) :
       le_congr ((pw_succ q one).eqTrans (congrMul (pw_one q) (.eqRefl _))) (.eqRefl _) p1
     have p3 := le_trans (le_mul_mono hm.wk hm.wk) p2
     have p4 : C3 ⊢[PRAAx] le (succ (m * m)) (succ m * succ m) :=
-      le_of_eq_add (d := two * m) (by apply deriveNat; ipra_simps; ring)
+      le_of_eq_add (d := two * m) (by ipra_ring)
     exact not_succ_le_self _ _ (le_trans p4 p3)
 
 /-- `lcm(1, …, m²) ∣ ∏_{i ≤ m} i^{[i prime] v_i(lcm(1, …, m²))} · ∏_{p ≤ m²} p`. -/
@@ -210,12 +205,9 @@ theorem two_pow_lcm (P : PTm n) : Γ ⊢[PRAAx] le (pw two (pred P)) (succ P * l
     refine .orE (zero_or_succ P) ?_ ?_
     · exact le_congr ((congrPred Prf.hyp0).eqTrans pred_zero).eqSymm (.eqRefl _) (zero_le _)
     · let C : List (Fm PTm n) := (P ≐ succ (pred P)) :: Γ
-      have e1 := natEq (Prf.hyp0 : C ⊢[PRAAx] P ≐ succ (pred P))
-      have e2 := natEq (dvP.wk : C ⊢[PRAAx] _)
-      have e3 := natEq (eq_add_of_le (rl.wk : C ⊢[PRAAx] _))
       refine le_of_eq_add (d := monus one (rem P two)) ?_
-      apply deriveNat; ipra_simps
-      linear_combination e1 - e2 + e3
+      ipra_lc natEq (Prf.hyp0 : C ⊢[PRAAx] P ≐ succ (pred P)) - natEq (dvP.wk : C ⊢[PRAAx] _) +
+        natEq (eq_add_of_le (rl.wk : C ⊢[PRAAx] _))
   have a1 := PowerCleared.pw_le_exp two_pos' hp
   have a2 := Combinatorics.CentralBinomial.central_lower (Γ := Γ) (quo P two)
   have cpos := BinomialThree.pos_of_one_le (Combinatorics.CentralBinomial.central_pos (Γ := Γ) (quo P two))

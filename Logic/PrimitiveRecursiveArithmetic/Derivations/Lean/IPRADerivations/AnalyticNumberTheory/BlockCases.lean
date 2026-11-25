@@ -111,12 +111,12 @@ theorem block_mono {x D₁ D₂ E₁ E₂ A Ds K L : PTm n} (h1 : Γ ⊢[PRAAx] 
     have t : ((tw (var 0) (Syn.shift E₁) (Syn.shift E₂) ≐ one) :: le (var 0) (Syn.shift E₂) ::
         lt (Syn.shift E₁) (var 0) :: lt (var 0) (Syn.shift (succ x)) :: Γ.map Fm.shift) ⊢[PRAAx]
         tw (var 0) (Syn.shift D₁) (Syn.shift D₂) ≐ one :=
-      (congrMul ((congrSg hd).eqTrans (sg_succ _)) o).eqTrans (by apply deriveNat; ipra_simps; ring)
+      (congrMul ((congrSg hd).eqTrans (sg_succ _)) o).eqTrans (by ipra_ring)
     exact le_congr (congrMul Prf.hyp0 (.eqRefl _)).eqSymm (congrMul t (.eqRefl _)).eqSymm (le_refl _)
 where
   zero_mul_l' {Δ : List (Fm PTm (n + 1))} {a : PTm (n + 1)} (h : Δ ⊢[PRAAx] a ≐ zero) (b : PTm (n + 1)) :
       Δ ⊢[PRAAx] a * b ≐ zero :=
-    (congrMul h (.eqRefl _)).eqTrans (by apply deriveNat; ipra_simps; ring)
+    (congrMul h (.eqRefl _)).eqTrans (by ipra_ring)
 
 section Halves
 

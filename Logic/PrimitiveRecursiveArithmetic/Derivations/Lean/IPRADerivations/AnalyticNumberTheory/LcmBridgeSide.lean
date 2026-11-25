@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.LcmBridgeTheta
 import IPRADerivations.AnalyticNumberTheory.StepParams
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # `ϑ(m²) ≥ m²/4` for every `m ≥ 16` on the logarithm names
@@ -45,18 +46,13 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 /-! ## `5w + 32 ≤ 32 · 2^w` -/
 
 theorem l32_base : Γ ⊢[PRAAx] le (num 5 * (zero : PTm n) + num 32) (num 32 * pw two zero) := by
-  have e := natEq (pw_zero (Γ := Γ) (two : PTm n))
   refine le_of_eq_add (d := zero) ?_
-  apply deriveNat; ipra_simps
-  linear_combination 32 * e
+  ipra_lc 32 * natEq (pw_zero (Γ := Γ) (two : PTm n))
 
 theorem l32_step {r : PTm n} (ih : Γ ⊢[PRAAx] le (num 5 * r + num 32) (num 32 * pw two r)) :
     Γ ⊢[PRAAx] le (num 5 * succ r + num 32) (num 32 * pw two (succ r)) := by
-  have e := natEq (pw_succ (Γ := Γ) two r)
-  have s := natEq (eq_add_of_le ih)
   refine le_of_eq_add (d := two * monus (num 32 * pw two r) (num 5 * r + num 32) + num 5 * r + num 27) ?_
-  apply deriveNat; ipra_simps
-  linear_combination 32 * e + 2 * s
+  ipra_lc 32 * natEq (pw_succ (Γ := Γ) two r) + 2 * natEq (eq_add_of_le ih)
 
 private abbrev l32F : Fm PTm 1 := le (num 5 * var 0 + num 32) (num 32 * pw two (var 0))
 
@@ -77,55 +73,40 @@ theorem l32 (w : PTm n) : Γ ⊢[PRAAx] le (num 5 * w + num 32) (num 32 * pw two
 /-- `2^{w+5} = 32 · 2^w`, by five steps. -/
 theorem pw5 (w : PTm n) :
     Γ ⊢[PRAAx] pw two (succ (succ (succ (succ (succ w))))) ≐ num 32 * pw two w := by
-  have e1 := natEq (pw_succ (Γ := Γ) two (succ (succ (succ (succ w)))))
-  have e2 := natEq (pw_succ (Γ := Γ) two (succ (succ (succ w))))
-  have e3 := natEq (pw_succ (Γ := Γ) two (succ (succ w)))
-  have e4 := natEq (pw_succ (Γ := Γ) two (succ w))
-  have e5 := natEq (pw_succ (Γ := Γ) two w)
-  apply deriveNat; ipra_simps
-  linear_combination e1 + 2 * e2 + 4 * e3 + 8 * e4 + 16 * e5
+  ipra_lc natEq (pw_succ (Γ := Γ) two (succ (succ (succ (succ w))))) +
+    2 * natEq (pw_succ (Γ := Γ) two (succ (succ (succ w)))) + 4 * natEq (pw_succ (Γ := Γ) two (succ (succ w))) +
+    8 * natEq (pw_succ (Γ := Γ) two (succ w)) + 16 * natEq (pw_succ (Γ := Γ) two w)
 
 /-- `2^{w+4} = 16 · 2^w`. -/
 theorem pw4 (w : PTm n) : Γ ⊢[PRAAx] pw two (succ (succ (succ (succ w)))) ≐ num 16 * pw two w := by
-  have e1 := natEq (pw_succ (Γ := Γ) two (succ (succ (succ w))))
-  have e2 := natEq (pw_succ (Γ := Γ) two (succ (succ w)))
-  have e3 := natEq (pw_succ (Γ := Γ) two (succ w))
-  have e4 := natEq (pw_succ (Γ := Γ) two w)
-  apply deriveNat; ipra_simps
-  linear_combination e1 + 2 * e2 + 4 * e3 + 8 * e4
+  ipra_lc natEq (pw_succ (Γ := Γ) two (succ (succ (succ w)))) + 2 * natEq (pw_succ (Γ := Γ) two (succ (succ w))) +
+    4 * natEq (pw_succ (Γ := Γ) two (succ w)) + 8 * natEq (pw_succ (Γ := Γ) two w)
 
 /-! ## The side condition at `t = λ(m)` -/
 
 /-- Case `t ≤ 4`. -/
 theorem case4 {m t : PTm n} (hm : Γ ⊢[PRAAx] le (num 16) m) (ht : Γ ⊢[PRAAx] lt t (num 5)) :
     Γ ⊢[PRAAx] le (num 448 * succ m * t + num 448) (num 143 * (m * m)) := by
-  have E1 := natEq (eq_add_of_le hm)
-  have E2 := natEq (eq_add_of_le ht)
   refine le_of_eq_add (d := num 5696 + num 2784 * monus m (num 16) +
     num 143 * (monus m (num 16) * monus m (num 16)) + num 448 * succ m * monus (num 5) (succ t)) ?_
-  apply deriveNat; ipra_simps
-  linear_combination (143 * 𝔞 m + 143 * 𝔞 (monus m (num 16)) + 496) * E1 + 448 * (𝔞 m + 1) * E2
+  ipra_lc (143 * 𝔞 m + 143 * 𝔞 (monus m (num 16)) + 496) * natEq (eq_add_of_le hm) +
+    448 * (𝔞 m + 1) * natEq (eq_add_of_le ht)
 
 /-- Case `t ≤ 5` with `m ≥ 17`. -/
 theorem case5 {m t : PTm n} (hm : Γ ⊢[PRAAx] le (num 17) m) (ht : Γ ⊢[PRAAx] lt t (num 6)) :
     Γ ⊢[PRAAx] le (num 448 * succ m * t + num 448) (num 143 * (m * m)) := by
-  have E1 := natEq (eq_add_of_le hm)
-  have E2 := natEq (eq_add_of_le ht)
   refine le_of_eq_add (d := num 559 + num 2622 * monus m (num 17) +
     num 143 * (monus m (num 17) * monus m (num 17)) + num 448 * succ m * monus (num 6) (succ t)) ?_
-  apply deriveNat; ipra_simps
-  linear_combination (143 * 𝔞 m + 143 * 𝔞 (monus m (num 17)) + 191) * E1 + 448 * (𝔞 m + 1) * E2
+  ipra_lc (143 * 𝔞 m + 143 * 𝔞 (monus m (num 17)) + 191) * natEq (eq_add_of_le hm) +
+    448 * (𝔞 m + 1) * natEq (eq_add_of_le ht)
 
 /-- Case `5t + 3 ≤ m`, `m ≥ 16`. -/
 theorem case6 {m t : PTm n} (hm : Γ ⊢[PRAAx] le (num 16) m) (ht : Γ ⊢[PRAAx] le (num 5 * t + num 3) m) :
     Γ ⊢[PRAAx] le (num 448 * succ m * t + num 448) (num 143 * (m * m)) := by
-  have E1 := natEq (eq_add_of_le hm)
-  have E2 := natEq (eq_add_of_le ht)
   have c5 : Γ ⊢[PRAAx] (num 5 : PTm n) ≐ succ (pred (num 5)) := pos_of_one_le (by ipra_le 4)
   refine le_cancel_pos c5 (le_of_eq_add (d := num 267 * (m * m) + num 896 * (num 15 + monus m (num 16)) +
     num 448 * succ m * monus m (num 5 * t + num 3)) ?_)
-  apply deriveNat; ipra_simps
-  linear_combination 896 * E1 + 448 * (𝔞 m + 1) * E2
+  ipra_lc 896 * natEq (eq_add_of_le hm) + 448 * (𝔞 m + 1) * natEq (eq_add_of_le ht)
 
 /-- `side_cond`: `m ≤ 2^{λ(m)}` and `448(m+1)λ(m) + 448 ≤ 143m²` for every `m ≥ 16`. -/
 theorem side_cond {m : PTm n} (hm : Γ ⊢[PRAAx] le (num 16) m) :
@@ -141,19 +122,16 @@ theorem side_cond {m : PTm n} (hm : Γ ⊢[PRAAx] le (num 16) m) :
   have ew : C ⊢[PRAAx] pred (clog m) ≐ succ (succ (succ (succ (monus (clog m) (num 5))))) := by
     have e := eq_add_of_le h5
     have e' : C ⊢[PRAAx] num 5 + monus (clog m) (num 5) ≐ succ (succ (succ (succ (succ (monus (clog m) (num 5)))))) := by
-      apply deriveNat; ipra_simps; ring
+      ipra_ring
     exact (congrPred (e.eqTrans e')).eqTrans (pred_succ _)
   refine .orE (lt_or_le (clog m) (num 6)) ?_ ?_
   · -- `t = 5`: `m ≥ 17`
     let C1 : List (Fm PTm n) := lt (clog m) (num 6) :: C
     have b1 := le_congr (congrSucc ((congrAp2 powF ew.wk (.eqRefl two)).eqTrans (pw4 _))) (.eqRefl _) (bnd.wk.wk : C1 ⊢[PRAAx] _)
-    have p := natEq (pw_pos' (Γ := C1) two_pos (monus (clog m) (num 5)))
-    have s := natEq (eq_add_of_le b1)
     have h17 : C1 ⊢[PRAAx] le (num 17) m := by
       refine le_of_eq_add (d := num 16 * pred (pw two (monus (clog m) (num 5))) +
         monus m (succ (num 16 * pw two (monus (clog m) (num 5))))) ?_
-      apply deriveNat; ipra_simps
-      linear_combination s + 16 * p
+      ipra_lc natEq (eq_add_of_le b1) + 16 * natEq (pw_pos' (Γ := C1) two_pos (monus (clog m) (num 5)))
     exact case5 h17 Prf.hyp0
   · -- `t ≥ 6`: `5t + 3 ≤ m`
     let C2 : List (Fm PTm n) := le (num 6) (clog m) :: C
@@ -162,18 +140,14 @@ theorem side_cond {m : PTm n} (hm : Γ ⊢[PRAAx] le (num 16) m) :
       have e := eq_add_of_le h6
       have e' : C2 ⊢[PRAAx] num 6 + monus (clog m) (num 6) ≐
           succ (succ (succ (succ (succ (succ (monus (clog m) (num 6))))))) := by
-        apply deriveNat; ipra_simps; ring
+        ipra_ring
       exact (congrPred (e.eqTrans e')).eqTrans (pred_succ _)
     have b2 := le_congr (congrSucc ((congrAp2 powF ev (.eqRefl two)).eqTrans (pw5 _))) (.eqRefl _) (bnd.wk.wk : C2 ⊢[PRAAx] _)
     have l := l32 (Γ := C2) (monus (clog m) (num 6))
-    have s1 := natEq (eq_add_of_le b2)
-    have s2 := natEq (eq_add_of_le l)
-    have e6 := natEq (eq_add_of_le h6)
     have h8 : C2 ⊢[PRAAx] le (num 5 * clog m + num 3) m := by
       refine le_of_eq_add (d := monus (num 32 * pw two (monus (clog m) (num 6))) (num 5 * monus (clog m) (num 6) + num 32) +
         monus m (succ (num 32 * pw two (monus (clog m) (num 6))))) ?_
-      apply deriveNat; ipra_simps
-      linear_combination s1 + s2 - 5 * e6
+      ipra_lc natEq (eq_add_of_le b2) + natEq (eq_add_of_le l) - 5 * natEq (eq_add_of_le h6)
     exact case6 hm.wk.wk h8
 
 /-- `lcm_bridge.tex`, rough Chebyshev lemma: `ϑ(m²) ≥ m²/4` for every `m ≥ 16`, on the names:

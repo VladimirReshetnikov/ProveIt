@@ -176,7 +176,7 @@ theorem col_t {i s k x : PTm n} (hd : Γ ⊢[PRAAx] lt (inst2 d i x) s) :
       congrMul (congrEqb' (fst_pair _ _) (.eqRefl _))
         ((congrInst2 (gB q) (.eqRefl _) (snd_pair _ _)).eqTrans (gB_at q _ _ _))
     refine r1.eqTrans (.eqTrans ?_ (congrMul (.eqRefl _) r2).eqSymm)
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   · exact congrMul (.eqRefl _) ((sum_delta (gB q) hd).eqTrans (gB_at q _ _ _))
 
 /-- `thm:tower`, regrouping: if `d(i) < s` for all `i`, then
@@ -190,7 +190,7 @@ theorem regroup {N s k x : PTm n} (hr : Γ ⊢[PRAAx] Permutation.rangeAll d s x
     hr.allOpen.wk
   refine (col_t w X d q hd).eqTrans (.eqTrans ?_ (sB_at w X (qd d q) _ _ _).eqSymm)
   rw [inst2_qd]
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 end Tower
 

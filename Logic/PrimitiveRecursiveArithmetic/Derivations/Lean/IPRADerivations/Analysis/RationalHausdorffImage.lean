@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.RationalHausdorff
 import IPRADerivations.Foundations.FiniteHausdorffOperations
 import IPRADerivations.Foundations.BoundedSyntax
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Finite Lipschitz images on original rational coordinates
@@ -135,10 +136,7 @@ theorem reverse_law (f : PR 2) (S T d e A B x : PTm n) (h : Γ ⊢[PRAAx] finite
   simpa only [Δ, List.map_cons, Fm.shift, subst_lt, subst_length, subst_source, source,
     Syn.shift, Syn.subst_var, Fin.succ_zero_eq_one] using out
 
-private theorem positive_cancel {c a b : PTm n} (hc : Γ ⊢[PRAAx] le one c)
-    (h : Γ ⊢[PRAAx] le (c*a) (c*b)) : Γ ⊢[PRAAx] le a b := by
-  have e : Γ ⊢[PRAAx] c ≐ succ (monus c one) := (eq_add_of_le hc).eqTrans (by ipra_ring)
-  exact mul_le_cancel (le_congr (congrMul e (.eqRefl _)) (congrMul e (.eqRefl _)) h)
+private alias positive_cancel := Common.mul_cancel_le
 
 /-- The pair inequality transports an arbitrary original radius at the same
 actual finite pair. Only the computed positive source scale is cancelled. -/

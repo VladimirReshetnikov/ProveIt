@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.PellGcd
 import IPRADerivations.Core.Pigeonhole
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Pell powers return to `(1, 0)` modulo `h`
@@ -90,8 +91,7 @@ theorem digit_lt {a b h : PTm n} (ha : Γ ⊢[PRAAx] lt a h) (hb : Γ ⊢[PRAAx]
     Γ ⊢[PRAAx] lt (a + h * b) (h * h) := by
   have h₁ := natEq (eq_add_of_le ha); have h₂ := natEq (eq_add_of_le hb)
   refine le_of_eq_add (d := monus h (succ a) + h * monus h (succ b)) ?_
-  apply deriveNat; ipra_simps
-  linear_combination Groth.ι (Q.mk _ h) * h₂ + h₁
+  ipra_lc Groth.ι (Q.mk _ h) * h₂ + h₁
 
 /-- Two-digit uniqueness: `a + h b = a' + h b'` with `a, a' < h`. -/
 theorem digit_eq {a b a' b' h : PTm n} (hh : Γ ⊢[PRAAx] h ≐ succ (pred h)) (ha : Γ ⊢[PRAAx] lt a h)
@@ -101,9 +101,7 @@ theorem digit_eq {a b a' b' h : PTm n} (hh : Γ ⊢[PRAAx] h ≐ succ (pred h)) 
   have r₂ := rem_eq' hh (z := a' + h * b') (q := b') (r := a') (add_comm _ _) ha'
   have ea := r₁.eqSymm.eqTrans ((congrAp2 remF e (.eqRefl _)).eqTrans r₂)
   refine .andI ea (mul_cancel hh ?_)
-  have h₁ := natEq e; have h₂ := natEq ea
-  apply deriveNat; ipra_simps
-  linear_combination h₁ - h₂
+  ipra_lc natEq e - natEq ea
 
 /-! ## The theorem -/
 
@@ -139,13 +137,6 @@ theorem pell_modular_at :
       tRet h u v D + Pigeonhole.phpI sigB (h * h) (code h u v D) :=
     (eq_add_of_le (le_of_lt hlt)).eqTrans (add_comm _ _)
   have ad := add_formula (Γ := Γ) (u := u) (v := v) (D := D) (tRet h u v D) (Pigeonhole.phpI sigB (h * h) (code h u v D))
-  have addX := natEq ((congrPX u v D hJ).eqTrans (Prf.andE₁ ad))
-  have addY := natEq ((congrPY u v D hJ).eqTrans (Prf.andE₂ ad))
-  have nrm := natEq (pell_norm hU (Pigeonhole.phpI sigB (h * h) (code h u v D)))
-  have dXI := natEq (div_eq (j := PX u v D (Pigeonhole.phpI sigB (h * h) (code h u v D))) hh)
-  have dXJ := natEq (div_eq (j := PX u v D (Pigeonhole.phpJ sigB (h * h) (code h u v D))) hh)
-  have dYI := natEq (div_eq (j := PY u v D (Pigeonhole.phpI sigB (h * h) (code h u v D))) hh)
-  have dYJ := natEq (div_eq (j := PY u v D (Pigeonhole.phpJ sigB (h * h) (code h u v D))) hh)
   have erx := natEq (Prf.andE₁ dg); have ery := natEq (Prf.andE₂ dg)
   refine .andI ?_ (.andI ?_ (.andI ?_ ?_))
   · -- `t ≥ 1`.
@@ -165,15 +156,13 @@ theorem pell_modular_at :
         quo (PX u v D (Pigeonhole.phpJ sigB (h * h) (code h u v D))) h +
         D * (PY u v D (Pigeonhole.phpI sigB (h * h) (code h u v D)) *
           quo (PY u v D (Pigeonhole.phpI sigB (h * h) (code h u v D))) h)) ?_
-    apply deriveNat; ipra_simps
-    linear_combination
-      -Groth.ι (Q.mk _ (PX u v D (Pigeonhole.phpI sigB (h * h) (code h u v D)))) * dXI +
-      Groth.ι (Q.mk _ (PX u v D (Pigeonhole.phpI sigB (h * h) (code h u v D)))) * dXJ -
-      Groth.ι (Q.mk _ D) * Groth.ι (Q.mk _ (PY u v D (Pigeonhole.phpI sigB (h * h) (code h u v D)))) * dYJ +
-      Groth.ι (Q.mk _ D) * Groth.ι (Q.mk _ (PY u v D (Pigeonhole.phpI sigB (h * h) (code h u v D)))) * dYI +
-      (1 - Groth.ι (Q.mk _ (PX u v D (tRet h u v D)))) * nrm -
-      Groth.ι (Q.mk _ (PX u v D (Pigeonhole.phpI sigB (h * h) (code h u v D)))) * addX +
-      Groth.ι (Q.mk _ D) * Groth.ι (Q.mk _ (PY u v D (Pigeonhole.phpI sigB (h * h) (code h u v D)))) * addY -
+    ipra_lc -Groth.ι (Q.mk _ (PX u v D (Pigeonhole.phpI sigB (h * h) (code h u v D)))) * natEq (div_eq (j := PX u v D (Pigeonhole.phpI sigB (h * h) (code h u v D))) hh) +
+      Groth.ι (Q.mk _ (PX u v D (Pigeonhole.phpI sigB (h * h) (code h u v D)))) * natEq (div_eq (j := PX u v D (Pigeonhole.phpJ sigB (h * h) (code h u v D))) hh) -
+      Groth.ι (Q.mk _ D) * Groth.ι (Q.mk _ (PY u v D (Pigeonhole.phpI sigB (h * h) (code h u v D)))) * natEq (div_eq (j := PY u v D (Pigeonhole.phpJ sigB (h * h) (code h u v D))) hh) +
+      Groth.ι (Q.mk _ D) * Groth.ι (Q.mk _ (PY u v D (Pigeonhole.phpI sigB (h * h) (code h u v D)))) * natEq (div_eq (j := PY u v D (Pigeonhole.phpI sigB (h * h) (code h u v D))) hh) +
+      (1 - Groth.ι (Q.mk _ (PX u v D (tRet h u v D)))) * natEq (pell_norm hU (Pigeonhole.phpI sigB (h * h) (code h u v D))) -
+      Groth.ι (Q.mk _ (PX u v D (Pigeonhole.phpI sigB (h * h) (code h u v D)))) * natEq ((congrPX u v D hJ).eqTrans (Prf.andE₁ ad)) +
+      Groth.ι (Q.mk _ D) * Groth.ι (Q.mk _ (PY u v D (Pigeonhole.phpI sigB (h * h) (code h u v D)))) * natEq ((congrPY u v D hJ).eqTrans (Prf.andE₂ ad)) -
       Groth.ι (Q.mk _ (PX u v D (Pigeonhole.phpI sigB (h * h) (code h u v D)))) * erx +
       Groth.ι (Q.mk _ D) * Groth.ι (Q.mk _ (PY u v D (Pigeonhole.phpI sigB (h * h) (code h u v D)))) * ery
   · refine rem_eq_of_eq hh
@@ -185,17 +174,15 @@ theorem pell_modular_at :
         quo (PY u v D (Pigeonhole.phpJ sigB (h * h) (code h u v D))) h +
         PY u v D (Pigeonhole.phpI sigB (h * h) (code h u v D)) *
           quo (PX u v D (Pigeonhole.phpI sigB (h * h) (code h u v D))) h) ?_
-    apply deriveNat; ipra_simps
-    linear_combination
-      Groth.ι (Q.mk _ (PY u v D (Pigeonhole.phpI sigB (h * h) (code h u v D)))) * addX -
-      Groth.ι (Q.mk _ (PX u v D (Pigeonhole.phpI sigB (h * h) (code h u v D)))) * addY -
-      Groth.ι (Q.mk _ (PY u v D (tRet h u v D))) * nrm -
+    ipra_lc Groth.ι (Q.mk _ (PY u v D (Pigeonhole.phpI sigB (h * h) (code h u v D)))) * natEq ((congrPX u v D hJ).eqTrans (Prf.andE₁ ad)) -
+      Groth.ι (Q.mk _ (PX u v D (Pigeonhole.phpI sigB (h * h) (code h u v D)))) * natEq ((congrPY u v D hJ).eqTrans (Prf.andE₂ ad)) -
+      Groth.ι (Q.mk _ (PY u v D (tRet h u v D))) * natEq (pell_norm hU (Pigeonhole.phpI sigB (h * h) (code h u v D))) -
       Groth.ι (Q.mk _ (PX u v D (Pigeonhole.phpI sigB (h * h) (code h u v D)))) * ery +
       Groth.ι (Q.mk _ (PY u v D (Pigeonhole.phpI sigB (h * h) (code h u v D)))) * erx -
-      Groth.ι (Q.mk _ (PX u v D (Pigeonhole.phpI sigB (h * h) (code h u v D)))) * dYI -
-      Groth.ι (Q.mk _ (PY u v D (Pigeonhole.phpI sigB (h * h) (code h u v D)))) * dXJ +
-      Groth.ι (Q.mk _ (PX u v D (Pigeonhole.phpI sigB (h * h) (code h u v D)))) * dYJ +
-      Groth.ι (Q.mk _ (PY u v D (Pigeonhole.phpI sigB (h * h) (code h u v D)))) * dXI
+      Groth.ι (Q.mk _ (PX u v D (Pigeonhole.phpI sigB (h * h) (code h u v D)))) * natEq (div_eq (j := PY u v D (Pigeonhole.phpI sigB (h * h) (code h u v D))) hh) -
+      Groth.ι (Q.mk _ (PY u v D (Pigeonhole.phpI sigB (h * h) (code h u v D)))) * natEq (div_eq (j := PX u v D (Pigeonhole.phpJ sigB (h * h) (code h u v D))) hh) +
+      Groth.ι (Q.mk _ (PX u v D (Pigeonhole.phpI sigB (h * h) (code h u v D)))) * natEq (div_eq (j := PY u v D (Pigeonhole.phpJ sigB (h * h) (code h u v D))) hh) +
+      Groth.ι (Q.mk _ (PY u v D (Pigeonhole.phpI sigB (h * h) (code h u v D)))) * natEq (div_eq (j := PX u v D (Pigeonhole.phpI sigB (h * h) (code h u v D))) hh)
 
 end Main
 

@@ -3,6 +3,7 @@ import IPRADerivations.Topology.StaggeredGrids
 import IPRADerivations.Topology.LeadingBits
 import IPRADerivations.Foundations.BoundedCases
 import IPRADerivations.Foundations.GridSumsPoints
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The occupancy colouring of the dimension obstruction in every dimension (`dimension_invariance_ipra`)
@@ -175,8 +176,7 @@ theorem le_one_monus (t : PTm n) {Γ : List (Fm PTm n)} : Γ ⊢[PRAAx] le (monu
 theorem sg_one_of_pos {c : PTm n} {Γ : List (Fm PTm n)} (h : Γ ⊢[PRAAx] le one c) :
     Γ ⊢[PRAAx] Signum.sg c ≐ one := by
   have e : Γ ⊢[PRAAx] c ≐ succ (monus c one) := by
-    have e₁ := natEq (eq_add_of_le h)
-    apply deriveNat; ipra_simps; linear_combination e₁
+    ipra_lc natEq (eq_add_of_le h)
   exact (congrMonus (.eqRefl _) (congrMonus (.eqRefl _) e)).eqTrans (Signum.sg_succ _)
 
 /-! ## The occupancy scan, the bits and the colour -/

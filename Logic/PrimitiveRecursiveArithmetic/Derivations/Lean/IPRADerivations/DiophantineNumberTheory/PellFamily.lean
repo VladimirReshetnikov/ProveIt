@@ -1,6 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.PellAll
 import IPRADerivations.AnalyticNumberTheory.FactorVector
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # An explicit Pell family: `D = t² − 1`

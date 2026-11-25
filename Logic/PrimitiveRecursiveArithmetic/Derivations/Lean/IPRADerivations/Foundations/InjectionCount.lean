@@ -236,7 +236,7 @@ theorem col_step {M N y x : PTm n} (hK : Γ ⊢[PRAAx] coll c g N x ≐ zero) (i
           (congrSg (congrInst2 c fs ss)).eqSymm)
           (congrEqb' (congrInst2 g (.eqRefl _) ss) (congrInst2 g fs ss)).eqSymm)
         refine .eqTrans ?_ (congrMul (congrMul (.eqRefl _) hc'.eqSymm) (congrEqb' (.eqRefl _) hgy'.eqSymm))
-        apply deriveNat; ipra_simps; ring
+        ipra_ring
       have e1 := natEq hz; have e2 := natEq hc; have e3 := natEq he
       ipra_le 0 with e1 + 𝔞 (eqb (inst2 g M x) y) * e2 + e3
 

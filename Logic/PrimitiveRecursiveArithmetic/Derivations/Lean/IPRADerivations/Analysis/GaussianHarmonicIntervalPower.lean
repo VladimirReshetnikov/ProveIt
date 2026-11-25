@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.RationalHarmonicIntervalProduct
 import IPRADerivations.Analysis.GaussianRationalNaturalScale
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual finite harmonic logarithms of numerical rational powers
@@ -44,9 +45,7 @@ def law (a b Q j : PTm n) : Fm PTm n := distanceBounded (value a b Q j) (scaled 
 theorem interval_index_congr {a b Q c d : PTm n} (ha : Γ ⊢[PRAAx] a ≐ c) (hb : Γ ⊢[PRAAx] b ≐ d) : Γ ⊢[PRAAx]
     embed (interval a b Q) ≐ embed (interval c d Q) := by
   have e : Γ ⊢[PRAAx] interval a b Q ≐ interval c d Q := by
-    simpa [RationalHarmonicInterval.subst_interval] using
-      Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (interval (var 0) (var 1) (var 2) : PTm 3)
-        (σ := ![a,b,Q]) (σ' := ![c,d,Q]) (fun i => by fin_cases i; exact ha; exact hb; exact .eqRefl _)
+    ipra_congr (interval (var 0) (var 1) (var 2) : PTm 3) with [ha, hb, .eqRefl Q]
   exact RationalGaussianRealPart.embed_congr e
 
 theorem interval_self_zero (a Q : PTm n) : Γ ⊢[PRAAx] embed (interval a a Q) ≐ qzero := by

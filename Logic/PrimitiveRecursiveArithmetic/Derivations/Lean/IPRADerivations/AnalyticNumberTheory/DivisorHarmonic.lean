@@ -5,6 +5,7 @@ import IPRADerivations.Core.SumLemmas
 import IPRADerivations.Core.SumOrder
 import IPRADerivations.Core.SumReflect
 import IPRADerivations.Analysis.Products
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The divisor sum against the harmonic sum (`pnt_ipra_constructive_2026-11-14`, `sb:divisor-approx`)
@@ -49,17 +50,14 @@ theorem floor_pt (k y : PTm n) {L : PTm n} (hk : Γ ⊢[PRAAx] le (succ k) L) :
     Γ ⊢[PRAAx] le (fact L * quo y (succ k)) (y * quo (fact L) (succ k)) ⋏
       le (y * quo (fact L) (succ k)) (fact L * quo y (succ k) + fact L) := by
   have dm := div_mod (Γ := Γ) y k
-  have wy := natEq (Prf.andE₁ dm)
-  have wr := natEq (eq_add_of_le (Prf.andE₂ dm))
-  have wF := natEq (eq_of_dvd' (congrSucc (pred_succ _).eqSymm) (dvd_fact hk))
   refine .andI ?_ ?_
   · refine le_of_eq_add (d := rem y (succ k) * quo (fact L) (succ k)) ?_
-    apply deriveNat; ipra_simps
-    linear_combination 𝔞 (quo (fact L) (succ k)) * wy - 𝔞 (quo y (succ k)) * wF
+    ipra_lc 𝔞 (quo (fact L) (succ k)) * natEq (Prf.andE₁ dm) -
+      𝔞 (quo y (succ k)) * natEq (eq_of_dvd' (congrSucc (pred_succ _).eqSymm) (dvd_fact hk))
   · refine le_of_eq_add (d := succ (monus (succ k) (succ (rem y (succ k)))) * quo (fact L) (succ k)) ?_
-    apply deriveNat; ipra_simps
-    linear_combination (𝔞 (quo y (succ k)) + 1) * wF - 𝔞 (quo (fact L) (succ k)) * wy +
-      𝔞 (quo (fact L) (succ k)) * wr
+    ipra_lc (𝔞 (quo y (succ k)) + 1) * natEq (eq_of_dvd' (congrSucc (pred_succ _).eqSymm) (dvd_fact hk)) -
+      𝔞 (quo (fact L) (succ k)) * natEq (Prf.andE₁ dm) +
+      𝔞 (quo (fact L) (succ k)) * natEq (eq_add_of_le (Prf.andE₂ dm))
 
 /-! ## The bodies, with parameter `z = (F, y)` -/
 
@@ -91,7 +89,7 @@ theorem sumC (m F y : PTm n) : Γ ⊢[PRAAx] ap2 (sumF Cb) m (pairT F y) ≐ F *
   refine (sum_scale Cb (one : PTm 2) m F F (pairT F y) (.allI (.impI ?_))).eqTrans
     (congrMul (.eqRefl _) (sum_ones m F))
   rw [inst2_Cb, inst2_one, shift_pairT]
-  exact (fst_pair _ _).eqTrans (by apply deriveNat; ipra_simps; ring)
+  exact (fst_pair _ _).eqTrans (by ipra_ring)
 
 /-- `F S(m, y) ≤ y S(m, F) ≤ F S(m, y) + mF` for `F = L!`, `m ≤ L`. -/
 theorem floor_sum {m y L : PTm n} (hmL : Γ ⊢[PRAAx] le m L) :

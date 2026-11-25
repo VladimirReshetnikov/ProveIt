@@ -1,6 +1,8 @@
 import IPRADerivations.Combinatorics.CatalanConvolution
 import IPRADerivations.Combinatorics.LinearFactorTable
 import IPRADerivations.Foundations.BoundedReflection
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The iterated Catalan convolution
@@ -61,14 +63,9 @@ theorem shift_succ (a : PTm n) : Syn.shift (succ a) = succ (Syn.shift a) := by s
 
 theorem shift_zero : Syn.shift (zero : PTm n) = zero := by simp [Syn.shift]
 
-theorem monus_le_left (h j : PTm n) : Γ ⊢[PRAAx] le (monus h j) h := by
-  refine .orE (le_total j h) ?_ ?_
-  · have e := natEq (eq_add_of_le (Prf.hyp0 (Γ := Γ) (φ := le j h)))
-    exact le_of_eq_add (d := j) (by apply deriveNat; ipra_simps; linear_combination e)
-  · exact le_congr (Prf.hyp0 (Γ := Γ) (φ := le h j)).eqSymm (.eqRefl _) (zero_le h)
+alias monus_le_left := Common.monus_le_self
 
-theorem lt_succ_of_le {a b : PTm n} (h : Γ ⊢[PRAAx] le a b) : Γ ⊢[PRAAx] lt a (succ b) :=
-  (succ_monus_succ a b).eqTrans h
+alias lt_succ_of_le := Common.lt_succ_of_le
 
 /-! ## The bit of an equation under a bounded universal -/
 
@@ -326,7 +323,7 @@ theorem col_zero_step {k : PTm n} (ih : Γ ⊢[PRAAx] T k zero ≐ one) :
       zero + one * one :=
     congrAdd (sum_zero tB _) ((t_at zero k zero).eqTrans
       (congrMul cat_zero ((congrT (.eqRefl _) (monus_zero zero)).eqTrans ih)))
-  exact (s₁.eqTrans (s₂.eqTrans s₃)).eqTrans (by apply deriveNat; ipra_simps; ring)
+  exact (s₁.eqTrans (s₂.eqTrans s₃)).eqTrans (by ipra_ring)
 
 /-- The induction formula of `T_col_zero`; variable `0 = k`. -/
 abbrev czF : Fm PTm (n + 1) := T (var 0) zero ≐ one
@@ -355,7 +352,7 @@ theorem T_one (m : PTm n) : Γ ⊢[PRAAx] T (succ zero) m ≐ cat m := by
   have l : Γ ⊢[PRAAx] inst2 tB m (pairT zero m) ≐ cat m * one :=
     (t_at m zero m).eqTrans (congrMul (.eqRefl _)
       ((T_zero _).eqTrans ((congrMonus (.eqRefl _) (monus_self m)).eqTrans (monus_zero one))))
-  exact (s₁.eqTrans (s₂.eqTrans (congrAdd z l))).eqTrans (by apply deriveNat; ipra_simps; ring)
+  exact (s₁.eqTrans (s₂.eqTrans (congrAdd z l))).eqTrans (by ipra_ring)
 
 /-! ## The three-term recurrence -/
 
@@ -412,21 +409,15 @@ theorem rec_step_pt {k m M : PTm n} (hQ : Γ ⊢[PRAAx] allB (eqB rL rR) M k ≐
             T (succ (succ (Syn.shift k))) (monus (Syn.shift m) (var 0)) :=
       (congrT (.eqRefl _) sm).eqTrans (ih.eqTrans
         (congrAdd (congrT (.eqRefl _) sm.eqSymm) (.eqRefl _)))
-    have e := natEq abc
     refine (t_at _ _ _).eqTrans (.eqTrans ?_
       (congrAdd (congrMul (.eqRefl _) (t_at _ _ _)) (t_at _ _ _)).eqSymm)
-    apply deriveNat; ipra_simps
-    linear_combination (𝔞 (cat (var 0))) * e
+    ipra_lc (𝔞 (cat (var 0))) * natEq abc
   have top : ∀ j : PTm n, Γ ⊢[PRAAx] inst2 tB (succ m) (pairT j (succ m)) ≐ cat (succ m) * one :=
     fun j => (t_at (succ m) j (succ m)).eqTrans (congrMul (.eqRefl _)
       ((congrT (.eqRefl _) (monus_self (succ m))).eqTrans (T_col_zero j)))
-  have e₁ := natEq ((T_succ (Γ := Γ) (succ k) (succ m)).eqTrans
-    ((sum_succ' tB (succ m) _).eqTrans (congrAdd lin (top (succ k)))))
-  have e₂ := natEq ((T_succ (Γ := Γ) k (succ m)).eqTrans
-    ((sum_succ' tB (succ m) _).eqTrans (congrAdd (.eqRefl _) (top k))))
-  have e₃ := natEq (T_succ (Γ := Γ) (succ (succ k)) m)
-  apply deriveNat; ipra_simps
-  linear_combination e₁ - e₂ - e₃
+  ipra_lc natEq ((T_succ (Γ := Γ) (succ k) (succ m)).eqTrans ((sum_succ' tB (succ m) _).eqTrans (congrAdd lin (top (succ k))))) -
+    natEq ((T_succ (Γ := Γ) k (succ m)).eqTrans ((sum_succ' tB (succ m) _).eqTrans (congrAdd (.eqRefl _) (top k)))) -
+    natEq (T_succ (Γ := Γ) (succ (succ k)) m)
 
 theorem rec_step {k M : PTm n} (hQ : Γ ⊢[PRAAx] allB (eqB rL rR) M k ≐ one) :
     Γ ⊢[PRAAx] allB (eqB rL rR) M (succ k) ≐ one := by

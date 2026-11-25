@@ -3,6 +3,7 @@ import IPRADerivations.Core.Powers
 import IPRADerivations.Core.SumOrder
 import IPRADerivations.AnalyticNumberTheory.PhiLower
 import IPRADerivations.AnalyticNumberTheory.Order
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The finite toolkit of the constructive fundamental theorem of algebra
@@ -73,18 +74,12 @@ theorem gd_succ (x y i : PTm n) : Γ ⊢[PRAAx] gd x y (succ i) ≐ x * gd x y i
 
 theorem pd_base (x y : PTm n) :
     Γ ⊢[PRAAx] pw x zero + y * gd x y zero ≐ pw y zero + x * gd x y zero := by
-  have e₁ := natEq (pw_zero (Γ := Γ) x); have e₂ := natEq (pw_zero (Γ := Γ) y)
-  have e₃ := natEq (gd_zero (Γ := Γ) x y)
-  apply deriveNat; ipra_simps
-  linear_combination e₁ - e₂ + (𝔞(y) - 𝔞(x)) * e₃
+  ipra_lc natEq (pw_zero (Γ := Γ) x) - natEq (pw_zero (Γ := Γ) y) + (𝔞(y) - 𝔞(x)) * natEq (gd_zero (Γ := Γ) x y)
 
 theorem pd_step {x y i : PTm n} (ih : Γ ⊢[PRAAx] pw x i + y * gd x y i ≐ pw y i + x * gd x y i) :
     Γ ⊢[PRAAx] pw x (succ i) + y * gd x y (succ i) ≐ pw y (succ i) + x * gd x y (succ i) := by
-  have e := natEq ih
-  have sX := natEq (pw_succ (Γ := Γ) x i); have sY := natEq (pw_succ (Γ := Γ) y i)
-  have sG := natEq (gd_succ (Γ := Γ) x y i)
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞(x) * e + sX - sY + (𝔞(y) - 𝔞(x)) * sG
+  ipra_lc 𝔞(x) * natEq ih + natEq (pw_succ (Γ := Γ) x i) - natEq (pw_succ (Γ := Γ) y i) +
+    (𝔞(y) - 𝔞(x)) * natEq (gd_succ (Γ := Γ) x y i)
 
 /-- Variables: `0 = i` (induction), `1 = x`, `2 = y`. -/
 private abbrev pdF : Fm PTm 3 :=
@@ -109,28 +104,22 @@ theorem power_diff (x y i : PTm n) :
 /-- The finite geometric sum: `x^i + G = 1 + x G` with `G = ∑_{r<i} x^r`. -/
 theorem geom_sum (x i : PTm n) :
     Γ ⊢[PRAAx] pw x i + gd x one i ≐ one + x * gd x one i := by
-  have e := natEq (power_diff (Γ := Γ) x one i); have eo := natEq (pw_one_base (Γ := Γ) i)
-  apply deriveNat; ipra_simps
-  linear_combination e + eo
+  ipra_lc natEq (power_diff (Γ := Γ) x one i) + natEq (pw_one_base (Γ := Γ) i)
 
 /-! ## The Lipschitz bound -/
 
 theorem gd_le_base (x y R : PTm n) :
     Γ ⊢[PRAAx] le (gd x y (succ zero)) (succ zero * pw R zero) := by
   refine le_of_eq_add (d := zero) ?_
-  have g₁ := natEq (gd_succ (Γ := Γ) x y zero); have g₀ := natEq (gd_zero (Γ := Γ) x y)
-  have y₀ := natEq (pw_zero (Γ := Γ) y); have r₀ := natEq (pw_zero (Γ := Γ) R)
-  apply deriveNat; ipra_simps
-  linear_combination r₀ - g₁ - 𝔞(x) * g₀ - y₀
+  ipra_lc natEq (pw_zero (Γ := Γ) R) - natEq (gd_succ (Γ := Γ) x y zero) - 𝔞(x) * natEq (gd_zero (Γ := Γ) x y) -
+    natEq (pw_zero (Γ := Γ) y)
 
 theorem gd_le_step {x y R i : PTm n} (hx : Γ ⊢[PRAAx] le x R) (hy : Γ ⊢[PRAAx] le y R)
     (ih : Γ ⊢[PRAAx] le (gd x y (succ i)) (succ i * pw R i)) :
     Γ ⊢[PRAAx] le (gd x y (succ (succ i))) (succ (succ i) * pw R (succ i)) := by
   have m := add_le_add₂ (le_mul_mono hx ih) (pw_le_pw (succ i) hy)
   refine le_congr (gd_succ x y (succ i)).eqSymm ?_ m
-  have s := natEq (pw_succ (Γ := Γ) R i)
-  apply deriveNat; ipra_simps
-  linear_combination -(𝔞(i) + 1) * s
+  ipra_lc -(𝔞(i) + 1) * natEq (pw_succ (Γ := Γ) R i)
 
 /-- Variables: `0 = i` (induction), `1 = x`, `2 = y`, `3 = R`. -/
 private abbrev glF : Fm PTm 4 :=
@@ -162,7 +151,7 @@ theorem bern_lin_step {x m : PTm n} (ih : Γ ⊢[PRAAx] le (one + m * x) (pw (su
     Γ ⊢[PRAAx] le (one + succ m * x) (pw (succ x) (succ m)) := by
   refine le_trans (le_of_eq_add (d := m * x * x) ?_)
     (le_congr (.eqRefl _) (pw_succ _ _).eqSymm (mul_le_mul_right (succ x) ih))
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- Variables: `0 = m` (induction), `1 = x`. -/
 private abbrev blF : Fm PTm 2 := le (one + var 0 * var 1) (pw (succ (var 1)) (var 0))
@@ -172,9 +161,7 @@ private theorem bl₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] blF := by
   · simp only [subst_le, Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
       Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
     refine le_of_eq_add (d := zero) ?_
-    have e := natEq (pw_zero (Γ := []) (succ (var 0 : PTm 1)))
-    apply deriveNat; ipra_simps
-    linear_combination e
+    ipra_lc natEq (pw_zero (Γ := []) (succ (var 0 : PTm 1)))
   · simp only [subst_le, Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
       Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
     exact bern_lin_step Prf.hyp0
@@ -194,28 +181,19 @@ variable {s t A D : ZT n}
 theorem half_angle_norm (hs : Γ ⊢[PRAAx] ZT.eq (ZT.natLit 2 * (s * s)) (D * (D + A)))
     (ht : Γ ⊢[PRAAx] ZT.eq (ZT.natLit 2 * (t * t)) (D * (D - A))) :
     Γ ⊢[PRAAx] ZT.eq (ZT.natLit 2 * (s * s + t * t)) (ZT.natLit 2 * (D * D)) := by
-  have e₁ := ZT.toZ_eq hs; have e₂ := ZT.toZ_eq ht
-  apply ZT.derive
-  ipra_simps
-  linear_combination e₁ + e₂
+  ipra_lc ZT.toZ_eq hs + ZT.toZ_eq ht
 
 /-- `2 (s² − t²) = 2 D A`: the real part of the square is the given cosine. -/
 theorem half_angle_re (hs : Γ ⊢[PRAAx] ZT.eq (ZT.natLit 2 * (s * s)) (D * (D + A)))
     (ht : Γ ⊢[PRAAx] ZT.eq (ZT.natLit 2 * (t * t)) (D * (D - A))) :
     Γ ⊢[PRAAx] ZT.eq (ZT.natLit 2 * (s * s - t * t)) (ZT.natLit 2 * (D * A)) := by
-  have e₁ := ZT.toZ_eq hs; have e₂ := ZT.toZ_eq ht
-  apply ZT.derive
-  ipra_simps
-  linear_combination e₁ - e₂
+  ipra_lc ZT.toZ_eq hs - ZT.toZ_eq ht
 
 /-- `(2 s t)² = D² (D² − A²)`: the imaginary part of the square is the sine, up to sign. -/
 theorem half_angle_im (hs : Γ ⊢[PRAAx] ZT.eq (ZT.natLit 2 * (s * s)) (D * (D + A)))
     (ht : Γ ⊢[PRAAx] ZT.eq (ZT.natLit 2 * (t * t)) (D * (D - A))) :
     Γ ⊢[PRAAx] ZT.eq (ZT.sq (ZT.natLit 2 * s * t)) (D * D * (D * D - A * A)) := by
-  have e₁ := ZT.toZ_eq hs; have e₂ := ZT.toZ_eq ht
-  apply ZT.derive
-  ipra_simps
-  linear_combination 2 * 𝔷(t) * 𝔷(t) * e₁ + 𝔷(D) * (𝔷(D) + 𝔷(A)) * e₂
+  ipra_lc 2 * 𝔷(t) * 𝔷(t) * ZT.toZ_eq hs + 𝔷(D) * (𝔷(D) + 𝔷(A)) * ZT.toZ_eq ht
 
 end HalfAngle
 

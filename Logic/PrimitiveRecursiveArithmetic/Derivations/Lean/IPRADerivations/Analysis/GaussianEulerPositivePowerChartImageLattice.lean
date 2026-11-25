@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianEulerPositivePowerChartCorrectedPanel
 import IPRADerivations.Analysis.GaussianEulerUnitSubstitutionFloorCuts
 import IPRADerivations.DiophantineNumberTheory.KhinchinConvergence
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Exact common lattice for finite rational image nodes
@@ -65,8 +66,7 @@ theorem mesh_positive (D : PTm 2) (N x J : PTm n) (hJ : Γ ⊢[PRAAx] le one J) 
     Γ ⊢[PRAAx] le one (meshDenominator D N x J) :=
   positive_product _ _ hJ (AnalyticNumberTheory.BlockCross.one_le_fact _)
 
-private theorem lt_succ_of_le {a b : PTm n} (h : Γ ⊢[PRAAx] le a b) : Γ ⊢[PRAAx] lt a (succ b) :=
-  (succ_monus_succ _ _).eqTrans h
+private alias lt_succ_of_le := Common.lt_succ_of_le
 
 theorem original_multiplier (D : PTm 2) (i N x J : PTm n)
     (hs : Γ ⊢[PRAAx] positiveDenominators D (succ N) x) (hi : Γ ⊢[PRAAx] le i N) :

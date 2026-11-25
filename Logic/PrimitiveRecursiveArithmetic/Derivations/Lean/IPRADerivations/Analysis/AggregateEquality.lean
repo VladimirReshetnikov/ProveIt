@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.RationalHausdorffTriangle
 import IPRADerivations.Analysis.GapRemoval
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Equality of regular rational aggregate names
@@ -39,10 +40,7 @@ theorem unit_positive (k : PTm n) : Γ ⊢[PRAAx] le one (unit k) :=
   le_congr (.eqRefl _) (DiophantineNumberTheory.FLTMultiples.pw_pos one k).eqSymm
     ((succ_monus_succ zero _).eqTrans (zero_le _))
 
-private theorem positive_cancel {c a b : PTm n} (hc : Γ ⊢[PRAAx] le one c)
-    (h : Γ ⊢[PRAAx] le (c*a) (c*b)) : Γ ⊢[PRAAx] le a b := by
-  have e : Γ ⊢[PRAAx] c ≐ succ (monus c one) := (eq_add_of_le hc).eqTrans (by ipra_ring)
-  exact mul_le_cancel (le_congr (congrMul e (.eqRefl _)) (congrMul e (.eqRefl _)) h)
+private alias positive_cancel := Common.mul_cancel_le
 
 theorem close_radius_congr (S T d : PTm n) {A A' B B' : PTm n}
     (hA : Γ ⊢[PRAAx] A ≐ A') (hB : Γ ⊢[PRAAx] B ≐ B')

@@ -1,6 +1,8 @@
 import IPRADerivations.Analysis.ComplexLogarithmCauchy
 import IPRADerivations.Analysis.ReciprocalSquareTail
 import IPRADerivations.Probability.TowerCommonDen
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Actual finite canonical Gamma factors and their rational tails
@@ -67,10 +69,7 @@ def factorRadius (R N L : PTm n) : PTm n :=
   simp only [factorRadius, PTm.subst_add, PTm.subst_mul, LogarithmRemainder.subst_denominator,
     LogarithmRemainder.subst_numerator, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
 
-private theorem cancel_positive {c a b : PTm n} (hc : Γ ⊢[PRAAx] le one c)
-    (h : Γ ⊢[PRAAx] le (c*a) (c*b)) : Γ ⊢[PRAAx] le a b := by
-  have ce : Γ ⊢[PRAAx] c ≐ succ (monus c one) := (eq_add_of_le hc).eqTrans (by ipra_ring)
-  exact mul_le_cancel (le_congr (congrMul ce (.eqRefl _)) (congrMul ce (.eqRefl _)) h)
+private alias cancel_positive := Common.mul_cancel_le
 
 theorem factorDenominator_positive (N L : PTm n) (hN : Γ ⊢[PRAAx] le one N) :
     Γ ⊢[PRAAx] le one (factorDenominator N L) := by
@@ -294,7 +293,6 @@ theorem sum_succ (z B N r L D : PTm n) :
     Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.cons_val_three,
     Matrix.cons_val_four, Matrix.head_cons, Matrix.tail_cons] using h
 
-
 /-- The actual complex sum is dominated by the actual scalar sum, by QF induction. -/
 theorem sum_domination (z R B N r L D : PTm n) (hz : Γ ⊢[PRAAx] bounded z R) :
     Γ ⊢[PRAAx] bounded (finiteSum z B N r L D)
@@ -339,7 +337,6 @@ theorem sum_domination (z R B N r L D : PTm n) (hz : Γ ⊢[PRAAx] bounded z R) 
     ReciprocalSquareTail.subst_tailSum, subst_radiusData, Syn.subst_var,
     Syn.inst_zero, Syn.subst_inst_shift] using Prf.allE r all
 
-
 /-- Finite (C6) for the computed scaled sum, with no supplied pointwise majorant. -/
 theorem finite_sum_bound (z R B N r L D : PTm n) (hz : Γ ⊢[PRAAx] bounded z R)
     (hB : Γ ⊢[PRAAx] le one B) (hN : Γ ⊢[PRAAx] le one N)
@@ -379,10 +376,7 @@ theorem tailDenominatorBody_at (B N L i : PTm n) :
       · exact (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))
   simpa only [subst_factorDenominator, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one] using h
 
-private theorem positive_successor {d : PTm n} (hd : Γ ⊢[PRAAx] le one d) :
-    Γ ⊢[PRAAx] d ≐ succ (pred d) := by
-  refine .orE (zero_or_succ d) ?_ Prf.hyp0
-  exact lt_zero_absurd _ (le_congr (.eqRefl _) Prf.hyp0 hd.wk)
+private alias positive_successor := Common.pos_of_one_le
 
 theorem tail_denominator_body_positive (B N L i : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
     Γ ⊢[PRAAx] inst2 tailDenominatorBody i (denominatorData B N L) ≐
@@ -399,7 +393,6 @@ theorem tailDenominator_positive (B N r L : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     simpa only [Syn.shift, subst_denominatorData] using
       tail_denominator_body_positive (Syn.shift B) (Syn.shift N) (Syn.shift L) (var 0) b.wk
   exact le_congr (.eqRefl _) eq.eqSymm (zero_lt_succ _)
-
 
 /-- Every actual quotient multiplier in the finite query clears its denominator exactly. -/
 theorem tail_quotient_clears (B N r L i : PTm n) (hB : Γ ⊢[PRAAx] le one B)
@@ -478,11 +471,7 @@ theorem summand_clears_re (z B N r L i : PTm n) (hB : Γ ⊢[PRAAx] le one B)
       (ZT.ofNat (factorDenominator (B*succ (N+i)) L) *
         re (summand z B (succ (N+i)) L (tailDenominator B N r L)))
       (ZT.ofNat (tailDenominator B N r L)*re (factorNumerator z (B*succ (N+i)) L)) := by
-  have clear := natEq (tail_quotient_clears B N r L i hB hi)
-  apply ZT.derive
-  simp only [summand, scale, eval_re_code, ZT.toZ_mul, ZT.toZ_ofNat,
-    Q.mk_mul, map_mul] at clear ⊢
-  linear_combination ZT.toZ Γ (re (factorNumerator z (B*succ (N+i)) L))*clear
+  ipra_lc [summand, scale, eval_re_code] ZT.toZ Γ (re (factorNumerator z (B*succ (N+i)) L))*natEq (tail_quotient_clears B N r L i hB hi)
 
 theorem summand_clears_im (z B N r L i : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (hi : Γ ⊢[PRAAx] lt i r) :
@@ -490,11 +479,7 @@ theorem summand_clears_im (z B N r L i : PTm n) (hB : Γ ⊢[PRAAx] le one B)
       (ZT.ofNat (factorDenominator (B*succ (N+i)) L) *
         im (summand z B (succ (N+i)) L (tailDenominator B N r L)))
       (ZT.ofNat (tailDenominator B N r L)*im (factorNumerator z (B*succ (N+i)) L)) := by
-  have clear := natEq (tail_quotient_clears B N r L i hB hi)
-  apply ZT.derive
-  simp only [summand, scale, eval_im_code, ZT.toZ_mul, ZT.toZ_ofNat,
-    Q.mk_mul, map_mul] at clear ⊢
-  linear_combination ZT.toZ Γ (im (factorNumerator z (B*succ (N+i)) L))*clear
+  ipra_lc [summand, scale, eval_im_code] ZT.toZ Γ (im (factorNumerator z (B*succ (N+i)) L))*natEq (tail_quotient_clears B N r L i hB hi)
 
 /-- Variables are Gaussian numerator, divisor, numerator radius, and Taylor cutoff. -/
 def factorFormula : Fm PTm 4 :=

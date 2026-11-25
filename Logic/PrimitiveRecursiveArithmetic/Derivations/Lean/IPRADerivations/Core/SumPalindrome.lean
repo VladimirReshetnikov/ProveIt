@@ -1,6 +1,7 @@
 import IPRADerivations.Core.SumSplit
 import IPRADerivations.Core.SumReflect
 import IPRADerivations.Core.Parity
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Palindromic sums
@@ -39,11 +40,8 @@ theorem pal_pt (t : PTm 2) {N x v : PTm n} (hv : Γ ⊢[PRAAx] lt v (half N))
     (hsym : Γ ⊢[PRAAx] lt (monus (half N) (succ v)) N ⟶
       (inst2 t (monus N (succ (monus (half N) (succ v)))) x ≐ inst2 t (monus (half N) (succ v)) x)) :
     Γ ⊢[PRAAx] inst2 t (half N + par N + v) x ≐ inst2 t (monus (half N) (succ v)) x := by
-  have eh := natEq (eq_add_of_le hv)
-  have eN := natEq (half_par (Γ := Γ) N)
   have e : Γ ⊢[PRAAx] N ≐ (half N + par N + v) + succ (monus (half N) (succ v)) := by
-    apply deriveNat; ipra_simps
-    linear_combination eN + eh
+    ipra_lc natEq (half_par (Γ := Γ) N) + natEq (eq_add_of_le hv)
   have mN : Γ ⊢[PRAAx] monus N (succ (monus (half N) (succ v))) ≐ half N + par N + v :=
     (congrMonus e (.eqRefl _)).eqTrans (add_monus _ _)
   have lj : Γ ⊢[PRAAx] lt (monus (half N) (succ v)) N :=
@@ -73,8 +71,6 @@ theorem sum_palindrome (t : PTm 2) (N x : PTm n)
     have a := natEq (half_par (Γ := Γ) N)
     apply deriveNat; ipra_simps
     linear_combination a
-  have sp := natEq ((congrAp2 (sumF t) eN (.eqRefl x)).eqTrans (sum_split t (half N + par N) (half N) x))
-  have hp := natEq (sum_half_par (Γ := Γ) t N x)
   have up : Γ ⊢[PRAAx] ap2 (sumF (offB t)) (half N) (pairT (half N + par N) x) ≐
       ap2 (sumF (rflBody t)) (half N) (pairT (half N) x) := by
     refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
@@ -96,8 +92,7 @@ theorem sum_palindrome (t : PTm 2) (N x : PTm n)
     refine (congrInst2 t (congrAdd (fst_pair _ _) (.eqRefl _)) (snd_pair _ _)).eqTrans
       ((pal_pt t Prf.hyp0 hsym).eqTrans ?_)
     exact congrInst2 t (congrMonus (fst_pair _ _) (.eqRefl _)).eqSymm (snd_pair _ _).eqSymm
-  have u := natEq up; have r := natEq (sum_reflect (Γ := Γ) t (half N) x)
-  apply deriveNat; ipra_simps
-  linear_combination sp + hp + u - r
+  ipra_lc natEq ((congrAp2 (sumF t) eN (.eqRefl x)).eqTrans (sum_split t (half N + par N) (half N) x)) +
+    natEq (sum_half_par (Γ := Γ) t N x) + natEq up - natEq (sum_reflect (Γ := Γ) t (half N) x)
 
 end LeanProofs.IPRA

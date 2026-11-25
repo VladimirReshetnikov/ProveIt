@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Pochhammer
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The rising-factorial form of a hypergeometric term, and the Lambert polynomials

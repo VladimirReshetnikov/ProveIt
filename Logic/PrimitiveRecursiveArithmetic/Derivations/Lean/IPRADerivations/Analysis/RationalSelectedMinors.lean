@@ -4,6 +4,8 @@ import IPRADerivations.Analysis.RationalScalarDeterminantGaussianEmbedding
 import IPRADerivations.Analysis.GaussianScalarDiagonalDeterminant
 import IPRADerivations.Analysis.GaussianScalarDeterminantMultiplication
 import IPRADerivations.Analysis.GaussianRationalPowerNonzero
+import IPRADerivations.Core.CongruenceTactic
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Actual rational minors and their denominator-cleared counterparts
@@ -109,8 +111,7 @@ def normalized (P d R C : PTm n) : PTm n := presentIntegers
   simp [normalized,presentIntegers]
 
 theorem from_integer_congr {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) : Γ ⊢[PRAAx] fromInteger a ≐ fromInteger b := by
-  simpa only [subst_fromInteger,Syn.subst_var,Matrix.cons_val_zero] using
-    Prf.eqCongr (fromInteger (var 0) : PTm 1) (σ := ![a]) (σ' := ![b]) (fun i => by fin_cases i; exact h)
+  ipra_congr (fromInteger (var 0) : PTm 1) with [h]
 
 theorem normalized_lookup (P d R C i j : PTm n) (hi : Γ ⊢[PRAAx] lt i (count (length P) R))
     (hj : Γ ⊢[PRAAx] lt j (count d C)) : Γ ⊢[PRAAx]
@@ -142,9 +143,7 @@ theorem normalized_cell_scale (P d R C i j : PTm n) (hi : Γ ⊢[PRAAx] lt i (co
       (RationalNormalForm.normalize_well_formed a one (le_refl one)) scaled
       (RationalIntegerNormalization.normalize_preserves_value a one (le_refl one))
       (GaussianRationalHorner.positive_product _ _ (le_refl one) hD) (le_refl one)
-    apply ZT.derive
-    simp only [ZT.toZ_mul,ZT.toZ_ofNat,Q.mk_mul,map_mul,Q.mk_one,map_one]
-    ring
+    ipra_lc
   exact (embed_congr ((normalized_lookup P d R C i j hi hj).eqTrans value.eqSymm)).eqTrans
     ((embed_multiply _ _).eqTrans (GaussianRationalSyntheticDivision.qmul_congr (.eqRefl _)
       (embed_congr (selected_lookup P (length P) d R C i j hi hj)).eqSymm))

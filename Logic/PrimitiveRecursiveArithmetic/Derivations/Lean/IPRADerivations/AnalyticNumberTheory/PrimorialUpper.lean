@@ -1,6 +1,8 @@
 import IPRADerivations.AnalyticNumberTheory.BertrandCentral
 import IPRADerivations.AnalyticNumberTheory.PrimorialLower
 import IPRADerivations.Foundations.StrongInduction
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Bertrand's postulate: the product of the primes up to `r` is at most `4^r`
@@ -83,10 +85,9 @@ theorem pri_zero : Γ ⊢[PRAAx] pri (zero : PTm n) ≐ one := by
   rw [fac_at] at e
   exact e.eqTrans ((congrMul (prod_zero _ _) (f_zero isP_zero)).eqTrans (one_mul _))
 
-theorem one_le_succ (i : PTm n) : Γ ⊢[PRAAx] le one (succ i) :=
-  le_of_eq_add (d := i) (by apply deriveNat; ipra_simps; ring)
+alias one_le_succ := Common.one_le_succ
 
-theorem mul_one1 (X : PTm n) : Γ ⊢[PRAAx] X * one ≐ X := by apply deriveNat; ipra_simps; ring
+alias mul_one1 := Common.mul_one_right
 
 /-- The factor at `i + 1` is at most `i + 1`. -/
 theorem fac_le (i : PTm n) : Γ ⊢[PRAAx] le (pw (succ i) (isP (succ i) * one)) (succ i) := by
@@ -110,10 +111,7 @@ theorem val_pri {q : PTm n} (hq : Γ ⊢[PRAAx] prime q) (r : PTm n) :
   exact e.eqTrans ((congrMul ((congrMul (isP_of_prime hq) (.eqRefl _)).eqTrans (one_mul _)) (.eqRefl _)).eqTrans
     (one_mul _))
 
-theorem sg_le1 (t : PTm n) : Γ ⊢[PRAAx] le (sg t) one := by
-  refine .orE (zero_or_succ t) ?_ ?_
-  · exact le_congr ((congrSg Prf.hyp0).eqTrans sg_zero).eqSymm (.eqRefl _) (zero_le _)
-  · exact le_congr ((congrSg Prf.hyp0).eqTrans (sg_succ _)).eqSymm (.eqRefl _) (le_refl _)
+alias sg_le1 := Common.sg_le_one
 
 /-- A prime `q > 2` does not divide `2`. -/
 theorem val_two_zero {q : PTm n} (hq : Γ ⊢[PRAAx] prime q) (h : Γ ⊢[PRAAx] lt two q) :
@@ -142,7 +140,7 @@ theorem val_odd_pos {q j : PTm n} (hq : Γ ⊢[PRAAx] prime q) (h1 : Γ ⊢[PRAA
         le_congr qpos.wk.eqSymm (congrPw qpos.wk.eqSymm Prf.hyp0.eqSymm) (le_self_pw (pred q) _)
       exact lt_of_lt_of_le h1.wk ge
   have v1 : Γ ⊢[PRAAx] le one (val q (cb (succ (succ j)))) := le_congr (sg_lt big) (.eqRefl _) g
-  have l2 : Γ ⊢[PRAAx] le two (succ (succ j)) := le_of_eq_add (d := j) (by apply deriveNat; ipra_simps; ring)
+  have l2 : Γ ⊢[PRAAx] le two (succ (succ j)) := le_of_eq_add (d := j) (by ipra_ring)
   have vm := (val_congr q (cb_succ_odd (Γ := Γ) (succ j))).eqTrans (val_mul hq two_pos' (odd_binom_pos (succ j)))
   have vz := val_two_zero hq (lt_of_le_of_lt l2 h1)
   exact le_congr (.eqRefl _) (vm.eqTrans ((congrAdd vz (.eqRefl _)).eqTrans (zero_add _))) v1
@@ -168,10 +166,10 @@ theorem val_step {q : PTm n} (hq : Γ ⊢[PRAAx] prime q) (j : PTm n) :
 /-! ## The divisibility and the step of the induction -/
 
 theorem lt_succ_add_l (a b : PTm n) : Γ ⊢[PRAAx] lt a (succ (a + b)) :=
-  le_of_eq_add (d := b) (by apply deriveNat; ipra_simps; ring)
+  le_of_eq_add (d := b) (by ipra_ring)
 
 theorem lt_succ_add_r (a b : PTm n) : Γ ⊢[PRAAx] lt b (succ (a + b)) :=
-  le_of_eq_add (d := a) (by apply deriveNat; ipra_simps; ring)
+  le_of_eq_add (d := a) (by ipra_ring)
 
 /-- `∏_{p ≤ 2k+2} p ∣ ∏_{p ≤ k+1} p · C(2k + 1, k)` for `k = j + 1`. -/
 theorem pri_dvd (j : PTm n) : Γ ⊢[PRAAx]
@@ -212,7 +210,7 @@ theorem pri_two_le : Γ ⊢[PRAAx] le (pri (two : PTm n)) two :=
 
 theorem pri_le_two : Γ ⊢[PRAAx] le (pri (two : PTm n)) (pw two (two * two)) := by
   have h : Γ ⊢[PRAAx] le (one : PTm n) (two * two) :=
-    le_of_eq_add (d := succ two) (by apply deriveNat; ipra_simps; ring)
+    le_of_eq_add (d := succ two) (by ipra_ring)
   exact le_trans pri_two_le (le_congr (pw_one two) (.eqRefl _) (pw_le_exp two_pos' h))
 
 theorem small {N c : PTm n} (e : Γ ⊢[PRAAx] N ≐ c) (h : Γ ⊢[PRAAx] le (pri c) (pw two (two * c))) :
@@ -262,11 +260,11 @@ theorem step_odd {N x : PTm n} (hS : Γ ⊢[PRAAx] ap2 (sumF violB) N x ≐ zero
   have em := two_eq m2
   have emn := natEq em
   have e2m : Γ ⊢[PRAAx] succ N ≐ two * half (succ N) := by
-    apply deriveNat; ipra_simps; linear_combination hp + pzn
+    ipra_lc hp + pzn
   have hN : Γ ⊢[PRAAx] le (pri N) (pri (two * half (succ N))) :=
     le_congr (.eqRefl _) (congrPri e2m) (pri_mono_succ N)
   have E : Γ ⊢[PRAAx] two * half (succ N) + two * succ (monus (half (succ N)) two) ≐ two * N := by
-    apply deriveNat; ipra_simps; linear_combination -2 * hp - 2 * pzn - 2 * emn
+    ipra_lc -2 * hp - 2 * pzn - 2 * emn
   have hE := le_congr (.eqRefl _) E (le_refl _)
   have mN : Γ ⊢[PRAAx] lt (half (succ N)) N := by
     ipra_le 𝔞 (monus (half (succ N)) two) with hp + pzn + emn
@@ -288,7 +286,7 @@ theorem step_even {N x : PTm n} (hS : Γ ⊢[PRAAx] ap2 (sumF violB) N x ≐ zer
   have em := two_eq m2
   have emn := natEq em
   have e2m : Γ ⊢[PRAAx] N ≐ two * half (succ N) := by
-    apply deriveNat; ipra_simps; linear_combination hp + pon
+    ipra_lc hp + pon
   have hN : Γ ⊢[PRAAx] le (pri N) (pri (two * half (succ N))) :=
     le_congr (.eqRefl _) (congrPri e2m) (le_refl (pri N))
   have hE : Γ ⊢[PRAAx] le (two * half (succ N) + two * succ (monus (half (succ N)) two)) (two * N) := by

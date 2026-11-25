@@ -49,7 +49,7 @@ theorem inner_sum (a m N y : PTm n) :
   rw [inst2_v0]
   refine Prf.eqTrans ?_ (congrMul (fst_pair _ _).eqSymm
     (congrMul (congrEqb' (congrAp2 remF (snd_pair _ _).eqSymm (.eqRefl _)) (.eqRefl _)) (.eqRefl _)))
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- `σ(mN) = σ(m) σ(N)` for coprime `m, N ≥ 1`. -/
 theorem sigma_mul {m N : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (hN : Γ ⊢[PRAAx] N ≐ succ (pred N))
@@ -74,7 +74,7 @@ theorem sigma_mul {m N : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (hN : �
     rw [e]
     refine Prf.eqTrans ?_ (congrMul (fst_pair _ _).eqSymm
       (congrMul (congrEqb' (congrAp2 remF (snd_pair _ _).eqSymm (.eqRefl _)) (.eqRefl _)) (.eqRefl _)))
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   have f := divisor_factor (var 0) hm hN hc zero
   refine l.eqTrans (f.eqTrans (r.eqTrans ((sum_const_mul sB (succ m) (sig N) m).eqTrans ?_)))
   exact mul_comm _ _

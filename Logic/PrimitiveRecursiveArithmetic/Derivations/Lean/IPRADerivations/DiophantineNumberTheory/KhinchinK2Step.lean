@@ -2,7 +2,7 @@ import IPRADerivations.DiophantineNumberTheory.KhinchinK2Widths
 import IPRADerivations.DiophantineNumberTheory.KhinchinK2RoundZ
 import IPRADerivations.Foundations.FiniteSetExponential
 import IPRADerivations.Foundations.BlockPartitionSum
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # One complete (K2) round from `ψ` and `D` (`hurwitz_khinchin_ipra`)

@@ -1,6 +1,7 @@
 import IPRADerivations.Geometry.Distinct.AnalyticConicRationalAffine
 import IPRADerivations.Foundations.GapDecision
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Actual rational inverse of an affine conic substitution
@@ -130,8 +131,7 @@ private theorem coordinate_rescaling (k : ℕ) (p q L : PTm n) (hp : Γ ⊢[PRAA
   ipra_simps
   ring
 
-private theorem pair_congr {a b c d : PTm n} (ha : Γ ⊢[PRAAx] a ≐ b) (hc : Γ ⊢[PRAAx] c ≐ d) : Γ ⊢[PRAAx] pairT a c ≐ pairT b d :=
-  congrAdd (congrMul (congrAdd ha hc) (congrAdd ha hc)) ha
+private alias pair_congr := Common.congrPairT
 
 theorem canonical_roundtrips (m p : PTm n) (hm : Γ ⊢[PRAAx] source m) (hp : Γ ⊢[PRAAx] valid p) : Γ ⊢[PRAAx]
     (canonicalPoint (image (inverse m) (image m p)) ≐ canonicalPoint p) ⋏

@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.HarmonicUpper
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The telescoping bound for `Σ 1/d²` (Khinchin (K6))
@@ -47,21 +48,16 @@ theorem cancel_le {Γ : List (Fm PTm n)} {N A B : PTm n} (hN : Γ ⊢[PRAAx] N �
     (h : Γ ⊢[PRAAx] le (N * A) (N * B)) : Γ ⊢[PRAAx] le A B := by
   refine .orE (lt_or_le B A) ?_ Prf.hyp0
   let Δ : List (Fm PTm n) := lt B A :: Γ
-  have e1 := natEq (eq_add_of_le (Γ := Δ) Prf.hyp0)
-  have e2 := natEq (eq_add_of_le (Γ := Δ) h.wk)
-  have e3 := natEq (Γ := Δ) hN.wk
   refine .botE _ (succ_ne_zero (a := pred N + N * monus A (succ B) + monus (N * B) (N * A)) ?_)
-  apply deriveNat; ipra_simps
-  linear_combination -e2 - 𝔞 N * e1 - e3
+  ipra_lc -natEq (eq_add_of_le (Γ := Δ) h.wk) - 𝔞 N * natEq (eq_add_of_le (Γ := Δ) Prf.hyp0) - natEq (Γ := Δ) hN.wk
 
 /-- `(N+1)² ⌊F/(N+1)²⌋ ≤ F`. -/
 theorem sq_quo_le {Γ : List (Fm PTm n)} (N F : PTm n) :
     Γ ⊢[PRAAx] le (succ N * succ N * quo F (succ N * succ N)) F := by
-  have hK : Γ ⊢[PRAAx] succ N * succ N ≐ succ (N + N * succ N) := by apply deriveNat; ipra_simps; ring
+  have hK : Γ ⊢[PRAAx] succ N * succ N ≐ succ (N + N * succ N) := by ipra_ring
   have d := div_mod_at (Γ := Γ) (x := F) hK
-  have e := natEq (Prf.andE₁ d)
   refine le_of_eq_add (d := rem F (succ N * succ N)) ?_
-  apply deriveNat; ipra_simps; linear_combination e
+  ipra_lc natEq (Prf.andE₁ d)
 
 /-- The invariant at `N = M + 2`: `4N T(N) + 4F ≤ 7NF`. -/
 def sqInv (M F : PTm n) : Fm PTm n :=
@@ -82,13 +78,9 @@ theorem sq_step {Γ : List (Fm PTm n)} {N F Tn Tn1 q : PTm n} (ts : Γ ⊢[PRAAx
     (ih : Γ ⊢[PRAAx] le (num 4 * N * Tn + num 4 * F) (num 7 * N * F))
     (hq : Γ ⊢[PRAAx] le (succ N * succ N * q) F) :
     Γ ⊢[PRAAx] le (N * (num 4 * succ N * Tn1 + num 4 * F)) (N * (num 7 * succ N * F)) := by
-  have e1 := natEq ts
-  have ei := natEq (eq_add_of_le ih)
-  have eq := natEq (eq_add_of_le hq)
   refine le_of_eq_add (d := succ N * monus (num 7 * N * F) (num 4 * N * Tn + num 4 * F) +
     num 4 * monus F (succ N * succ N * q) + num 4 * succ N * q) ?_
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞 N + 1) * ei + 4 * eq - 4 * 𝔞 N * (𝔞 N + 1) * e1
+  ipra_lc (𝔞 N + 1) * natEq (eq_add_of_le ih) + 4 * natEq (eq_add_of_le hq) - 4 * 𝔞 N * (𝔞 N + 1) * natEq ts
 
 /-- `4N T(N, F) + 4F ≤ 7NF` for `N = M + 2`. -/
 theorem square_bound {Γ : List (Fm PTm n)} (M F : PTm n) : Γ ⊢[PRAAx] sqInv M F := by
@@ -99,15 +91,13 @@ theorem square_bound {Γ : List (Fm PTm n)} (M F : PTm n) : Γ ⊢[PRAAx] sqInv 
       simp only [Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
       have t1 := T_succ (Γ := Γ) (succ zero) F
       have t0 := T_succ (Γ := Γ) zero F
-      have tz := natEq (sum_zero (Γ := Γ) sqB F)
       have q1 : Γ ⊢[PRAAx] quo F (succ zero * succ zero) ≐ F :=
         (congrAp2 quoF (.eqRefl _) (one_mul _)).eqTrans
           (quo_eq (congrSucc (pred_succ _).eqSymm) (by ipra_ring) ((succ_monus_succ _ _).eqTrans (zero_monus _)))
-      have hq := natEq (eq_add_of_le (sq_quo_le (Γ := Γ) (succ zero) F))
       have e1 := natEq t1; have e0 := natEq t0; have eq1 := natEq q1
       refine le_of_eq_add (d := two * monus F (succ (succ zero) * succ (succ zero) * quo F (succ (succ zero) * succ (succ zero)))) ?_
-      apply deriveNat; ipra_simps
-      linear_combination 2 * hq - 8 * e1 - 8 * e0 - 8 * tz - 8 * eq1
+      ipra_lc 2 * natEq (eq_add_of_le (sq_quo_le (Γ := Γ) (succ zero) F)) - 8 * e1 - 8 * e0 -
+        8 * natEq (sum_zero (Γ := Γ) sqB F) - 8 * eq1
     · rw [subst_sqInv]
       simp only [Syn.subst_var, Syn.repl_zero, subst_repl_shift]
       let Δ := sqInv (var 0) (Syn.shift F) :: Γ.map Fm.shift

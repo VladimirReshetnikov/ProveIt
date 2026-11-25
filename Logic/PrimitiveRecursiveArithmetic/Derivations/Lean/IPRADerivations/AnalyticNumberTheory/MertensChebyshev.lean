@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.MertensTotient
 import IPRADerivations.AnalyticNumberTheory.FactorialLambda
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The Chebyshev identity for the Mertens function
@@ -57,7 +58,7 @@ abbrev LwB : PTm 2 := ap2 (sumF (ellB w)) (succ (var 0)) (pairT (var 0) (var 1))
 
 theorem inst2_LwB (k y : PTm n) : inst2 (LwB w) k y = Lw w k y := by simp [inst2, subst_ap2]
 
-theorem mul_one_r (X : PTm n) : Γ ⊢[PRAAx] X * one ≐ X := by ipra_ring
+alias mul_one_r := Common.mul_one_right
 
 /-- `(Λ_w * 𝟏)(k) = L_w(k)` for `k ≥ 1`. -/
 theorem conv_lam {k : PTm n} (hk : Γ ⊢[PRAAx] k ≐ succ (pred k)) (y : PTm n) :

@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.BlockInstance
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The one-step contraction, raw form (`pnt_ipra_constructive_2026-11-14`, Lemma `con:one-step`)
@@ -66,7 +67,7 @@ theorem deficit_growth {M x K L Ds A Y E0 E1 : PTm n} (hK : Γ ⊢[PRAAx] le one
   have hd := head_deficit hK hL hY hMx hst
   have t := le_scale Ds (tail_bound hK hP hKx hMx)
   have ex : Γ ⊢[PRAAx] succ x ≐ succ (succ M) + monus x (succ M) := by
-    have a := natEq (eq_add_of_le hMx); apply deriveNat; ipra_simps; linear_combination a
+    ipra_lc natEq (eq_add_of_le hMx)
   have sp := natEq ((congrAp2 (sumF wbB) ex (.eqRefl _)).eqTrans
     (sum_split (Γ := Γ) wbB (succ (succ M)) (monus x (succ M)) (pairT x (pairT K (fact L)))))
   have e1 := natEq (hg_split (Γ := Γ) (x := x) (A := A) (Ds := Ds) (K := K) (L := L) (zero_le E0) (le_trans hE hE1))

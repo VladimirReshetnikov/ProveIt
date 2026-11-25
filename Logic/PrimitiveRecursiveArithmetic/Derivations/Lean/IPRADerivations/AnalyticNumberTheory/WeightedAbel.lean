@@ -118,7 +118,7 @@ theorem aw_split (N K L : PTm n) :
   sum_add2 (Γ := Γ) lwB (cvF lamW lamW) (GxB wt) (K := succ N) (x := pairT K (fact L))
     (x' := pairT K (fact L)) (z := pairT K (fact L)) (.allI (.impI (by
       rw [inst2_GxB, ChebyshevAbel.inst2_lwB, inst2_cvF]
-      apply deriveNat; ipra_simps; ring)))
+      ipra_ring)))
 
 /-! ## `2F Σ u_k` against `2F Σ L_w(k)` -/
 
@@ -338,7 +338,7 @@ theorem split :
   sum_add2 (Γ := Γ) ndB nuB nabsB (K := succ x) (x := pairT x (pairT K (fact L))) (x' := pairT x (pairT K (fact L)))
     (z := pairT x (pairT K (fact L))) (.allI (.impI (by
       rw [inst2_nabs, inst2_nd, inst2_nu]
-      apply deriveNat; ipra_simps; ring)))
+      ipra_ring)))
 
 include hx in
 /-- `Σ a₁(n) g_n ≤ Σ 2F u_n g_n + 2206 F² · 5x(u_x + F)`. -/
@@ -382,7 +382,7 @@ theorem weighted_sum :
     (hRB (adB psiB qB) a1) (K := succ x) (x := pairT x (pairT K (fact L))) (x' := pairT x (pairT K (fact L)))
     (z := pairT x (pairT K (fact L))) (.allI (.impI (by
       rw [inst2_hRB, inst2_hRB, inst2_hRB, inst2_add]
-      apply deriveNat; ipra_simps; ring))))
+      ipra_ring))))
   have pd := parts_diff hx hK hx4 hL hP
   ipra_le sl fw + sl pd with sp1
 

@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.RationalMinorAugmentation
 import IPRADerivations.Foundations.RuntimePermutationDeletion
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Original selected labels in the augmented minor
@@ -60,9 +61,7 @@ theorem original_slot (N M c r : PTm n) (hr : Γ ⊢[PRAAx] lt r (count N M)) (h
         ((index_congr N (insert N M c) position).eqTrans retained.andE₂)
     · apply Prf.botE
       have e : (c ≐ i) :: le c i :: Γ ⊢[PRAAx] bit M c ≐ bit M i := by
-        simpa only [RationalSubtupleSpan.subst_bit,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using
-          Prf.eqCongr (bit (var 0) (var 1) : PTm 2) (σ := ![M,c]) (σ' := ![M,i])
-          (fun j => by fin_cases j; exact .eqRefl _; exact Prf.hyp0)
+        ipra_congr (bit (var 0) (var 1) : PTm 2) with [.eqRefl M, Prf.hyp0]
       exact .impE present.wk.wk (e.eqSymm.eqTrans hc.wk.wk)
 
 theorem original_row_slot (P d i r : PTm n) (hr : Γ ⊢[PRAAx] lt r (rank P d))
@@ -77,18 +76,15 @@ theorem original_column_slot (P d r : PTm n) (h : Γ ⊢[PRAAx] lt (rank P d) d)
       index d (extendedColumn P d) (slot (free P d) r) ≐ index d (bestColumn P d) r := by
   have original := original_slot d (bestColumn P d) (free P d) r hr (free_column_spec P d h).andE₂
   have position : Γ ⊢[PRAAx] slot (count (free P d) (bestColumn P d)) r ≐ slot (free P d) r := by
-    simpa [slot,one] using Prf.eqCongr (slot (var 0) (var 1) : PTm 2)
-      (σ := ![count (free P d) (bestColumn P d),r]) (σ' := ![free P d,r])
-      (fun j => by fin_cases j; exact free_prefix_count P d h; exact .eqRefl _)
+    ipra_congr (slot (var 0) (var 1) : PTm 2) with [free_prefix_count P d h, .eqRefl r] using [slot, one]
   exact .andI (lt_congr position (.eqRefl _) original.andE₁)
     ((index_congr d (extendedColumn P d) position.eqSymm).eqTrans original.andE₂)
 
 private theorem cleared_entry_congr (Q : PTm n) {i i' j j' : PTm n}
     (hi : Γ ⊢[PRAAx] i ≐ i') (hj : Γ ⊢[PRAAx] j ≐ j') : Γ ⊢[PRAAx]
     normalize (coordinate (entry Q i) j) one ≐ normalize (coordinate (entry Q i') j') one := by
-  simpa [RationalSupMetric.coordinate,one,ZT.subst] using
-    Prf.eqCongr (normalize (coordinate (entry (var 0) (var 1)) (var 2)) one : PTm 3)
-      (σ := ![Q,i,j]) (σ' := ![Q,i',j']) (fun k => by fin_cases k; exact .eqRefl _; exact hi; exact hj)
+  ipra_congr (normalize (coordinate (entry (var 0) (var 1)) (var 2)) one : PTm 3) with
+    [.eqRefl Q, hi, hj] using [RationalSupMetric.coordinate, one, ZT.subst]
 
 theorem retained_cell (P d i r s : PTm n) (h : Γ ⊢[PRAAx] lt (rank P d) d)
     (hr : Γ ⊢[PRAAx] lt r (rank P d)) (hs : Γ ⊢[PRAAx] lt s (columnSize d (bestColumn P d)))

@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.PolynomialRootName
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Quantitative uniqueness from an actual polynomial factor guard
@@ -33,11 +34,7 @@ open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
-private theorem cancel_positive {c a b : PTm n} (hc : Γ ⊢[PRAAx] le one c)
-    (h : Γ ⊢[PRAAx] le (c * a) (c * b)) : Γ ⊢[PRAAx] le a b := by
-  have ce : Γ ⊢[PRAAx] c ≐ succ (monus c one) :=
-    (eq_add_of_le hc).eqTrans (by ipra_ring)
-  exact mul_le_cancel (le_congr (congrMul ce (.eqRefl _)) (congrMul ce (.eqRefl _)) h)
+private alias cancel_positive := Common.mul_cancel_le
 
 /-- Actual denominator-cleared residual at one rational sample. -/
 def residual (degree : ℕ) (code C T : PTm n) (a : ZT n) (da : PTm n) : Fm PTm n :=

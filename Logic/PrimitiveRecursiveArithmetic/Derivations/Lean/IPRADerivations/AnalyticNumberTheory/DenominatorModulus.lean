@@ -4,6 +4,7 @@ import IPRADerivations.AnalyticNumberTheory.EulerProduct
 import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.Probability.ProductReplacement
 import IPRADerivations.Foundations.BoundedReflection
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The comparison `S ≤ G` for the product of the primes coprime to `q`
@@ -125,7 +126,7 @@ theorem Cz_one (L z : PTm n) : Γ ⊢[PRAAx] Cz one L z ≐ zero := by
 
 /-! ## The induction over the primes -/
 
-theorem mul_one_r (X : PTm n) : Γ ⊢[PRAAx] X * one ≐ X := by ipra_ring
+alias mul_one_r := Common.mul_one_right
 
 theorem out_step {y q L z : PTm n} (ih : Γ ⊢[PRAAx] Cz (Aq y q) L z ≐ zero) :
     Γ ⊢[PRAAx] Cz (Aq (succ y) q) L z ≐ zero := by

@@ -1,6 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.GcdUnique
 import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.Combinatorics.LegendreDigits
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Modular certificates of no rational point
@@ -77,10 +78,10 @@ theorem rem_add_congr {M x y x' y' : PTm k} (hM : Γ ⊢[PRAAx] M ≐ succ (pred
   have dx' := natEq (Prf.andE₁ (dm hM x')); have dy' := natEq (Prf.andE₁ (dm hM y'))
   have a : Γ ⊢[PRAAx] rem (x + x') M ≐ rem (rem x M + rem x' M) M := by
     refine (congrAp2 remF ?_ (.eqRefl _)).eqTrans (rem_add_mul hM (quo x M + quo x' M) _)
-    apply deriveNat; ipra_simps; linear_combination dx + dx'
+    ipra_lc dx + dx'
   have b : Γ ⊢[PRAAx] rem (y + y') M ≐ rem (rem y M + rem y' M) M := by
     refine (congrAp2 remF ?_ (.eqRefl _)).eqTrans (rem_add_mul hM (quo y M + quo y' M) _)
-    apply deriveNat; ipra_simps; linear_combination dy + dy'
+    ipra_lc dy + dy'
   exact a.eqTrans ((congrAp2 remF (congrAdd h1 h2) (.eqRefl _)).eqTrans b.eqSymm)
 
 theorem rem_mul_congr2 {M x y x' y' : PTm k} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M))

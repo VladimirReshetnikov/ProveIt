@@ -1,7 +1,8 @@
 import IPRADerivations.AnalyticNumberTheory.OrderOfPower
 import IPRADerivations.AnalyticNumberTheory.LocalFactor
 import IPRADerivations.DiophantineNumberTheory.ModularCertificate
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The order of a product with coprime orders
@@ -43,7 +44,7 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `x · 1 = x`. -/
-theorem mul_one' (x : PTm n) : Γ ⊢[PRAAx] x * one ≐ x := (mul_comm _ _).eqTrans (one_mul _)
+alias mul_one' := Common.mul_one_right
 
 /-- `xy ≡ 1` and `y ≡ 1` give `x ≡ 1`. -/
 theorem rem_cancel {x y M : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M))

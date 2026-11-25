@@ -1,7 +1,7 @@
 import IPRADerivations.Foundations.EigenvalueBound
 import IPRADerivations.Foundations.RationalRootConstant
 import IPRADerivations.Core.ProdLemmas
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Integrality of a rational eigenvalue in every dimension (`ipra_presentations_to_witnesses`, `lem:integer-eigenvalue`)

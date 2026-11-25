@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianReconstructionRoots
 import IPRADerivations.Analysis.GaussianBivariatePowerExpansion
 import IPRADerivations.Analysis.GaussianRationalMatrixFiniteSums
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual Newton coefficient lists and forward products
@@ -141,10 +142,7 @@ def powerSum (R j z K : PTm n) : PTm n := GaussianRationalFiniteSum.sum powerBod
     Syn.subst σ (powerSum R j z K) = powerSum (Syn.subst σ R) (Syn.subst σ j) (Syn.subst σ z) (Syn.subst σ K) := by simp [powerSum]
 theorem term_congr {R S j d z y k i : PTm n} (hR : Γ ⊢[PRAAx] R ≐ S) (hj : Γ ⊢[PRAAx] j ≐ d)
     (hz : Γ ⊢[PRAAx] z ≐ y) (hk : Γ ⊢[PRAAx] k ≐ i) : Γ ⊢[PRAAx] term R j z k ≐ term S d y i := by
-  simpa only [subst_term,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.cons_val_three,Matrix.head_cons,Matrix.tail_cons] using Prf.eqCongr (Γ := Γ)
-      (term (var 0) (var 1) (var 2) (var 3) : PTm 4) (σ := ![R,j,z,k]) (σ' := ![S,d,y,i])
-      (fun a => by fin_cases a; exact hR; exact hj; exact hz; exact hk)
+  ipra_congr (term (var 0) (var 1) (var 2) (var 3) : PTm 4) with [hR, hj, hz, hk]
 theorem power_body_at (R j z k : PTm n) : Γ ⊢[PRAAx] inst2 powerBody k (powerData R j z) ≐ term R j z k := by
   simp only [powerBody,inst2,subst_term,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
   exact term_congr (fst_pair _ _) ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))

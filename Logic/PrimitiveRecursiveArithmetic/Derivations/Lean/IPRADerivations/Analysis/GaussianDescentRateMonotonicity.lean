@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.GaussianDescentClock
 import IPRADerivations.Analysis.GaussianFactorBudget
 import IPRADerivations.Analysis.RationalNonnegativePowers
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The actual rational descent rate is monotone in the numerical degree

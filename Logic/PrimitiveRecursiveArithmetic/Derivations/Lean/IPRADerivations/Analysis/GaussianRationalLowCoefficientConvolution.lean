@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianRationalPolynomialProduct
 import IPRADerivations.Analysis.GaussianRationalMatrixFiniteSums
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Low-exponent coefficients of the actual polynomial product
@@ -109,12 +110,8 @@ theorem reflected_at (P Q N M e i : PTm n) : Γ ⊢[PRAAx]
 
 theorem index_decompose (N M e : PTm n) (he : Γ ⊢[PRAAx] le e M) : Γ ⊢[PRAAx]
     monus (N+M) e ≐ N+monus M e := by
-  have hm := natEq (eq_add_of_le he)
   have he' : Γ ⊢[PRAAx] le e (N+M) := le_trans he (le_congr (.eqRefl _) (add_comm _ _) (le_add_right M N))
-  have hr := natEq (eq_add_of_le he')
-  apply deriveNat
-  ipra_simps
-  linear_combination hm-hr
+  ipra_lc natEq (eq_add_of_le he)-natEq (eq_add_of_le he')
 
 theorem reversed_inside (N M e i : PTm n) (he : Γ ⊢[PRAAx] le e M) : Γ ⊢[PRAAx]
     le (monus N i) (monus (N+M) e) :=
@@ -123,28 +120,17 @@ theorem reversed_inside (N M e i : PTm n) (he : Γ ⊢[PRAAx] le e M) : Γ ⊢[P
 theorem difference_low (N M e i : PTm n) (hN : Γ ⊢[PRAAx] le e N)
     (hM : Γ ⊢[PRAAx] le e M) (hi : Γ ⊢[PRAAx] le i e) : Γ ⊢[PRAAx]
     monus (monus (N+M) e) (monus N i) ≐ monus M (monus e i) := by
-  have a := natEq (eq_add_of_le (le_trans hi hN))
-  have b := natEq (eq_add_of_le hi)
-  have c := natEq (eq_add_of_le (le_trans (monus_le_left e i) hM))
   have e' : Γ ⊢[PRAAx] le e (N+M) := le_trans hM (le_congr (.eqRefl _) (add_comm _ _) (le_add_right M N))
-  have d := natEq (eq_add_of_le e')
-  have f := natEq (eq_add_of_le (reversed_inside N M e i hM))
-  apply deriveNat
-  ipra_simps
-  linear_combination a+c-b-d-f
+  ipra_lc natEq (eq_add_of_le (le_trans hi hN))+natEq (eq_add_of_le (le_trans (monus_le_left e i) hM))-
+    natEq (eq_add_of_le hi)-natEq (eq_add_of_le e')-natEq (eq_add_of_le (reversed_inside N M e i hM))
 
 theorem difference_high (N M e i : PTm n) (hM : Γ ⊢[PRAAx] le e M)
     (hi : Γ ⊢[PRAAx] le i N) (hei : Γ ⊢[PRAAx] lt e i) : Γ ⊢[PRAAx]
     lt M (monus (monus (N+M) e) (monus N i)) := by
-  have a := natEq (eq_add_of_le hi)
-  have b := natEq (eq_add_of_le hei)
   have e' : Γ ⊢[PRAAx] le e (N+M) := le_trans hM (le_congr (.eqRefl _) (add_comm _ _) (le_add_right M N))
-  have c := natEq (eq_add_of_le e')
   have d := natEq (eq_add_of_le (reversed_inside N M e i hM))
   apply le_of_eq_add (d := monus i (succ e))
-  apply deriveNat
-  ipra_simps
-  linear_combination a+b-c-d
+  ipra_lc natEq (eq_add_of_le hi)+natEq (eq_add_of_le hei)-natEq (eq_add_of_le e')-d
 
 theorem contribution_low (P Q N M e i : PTm n) (hN : Γ ⊢[PRAAx] le e N)
     (hM : Γ ⊢[PRAAx] le e M) (hi : Γ ⊢[PRAAx] le i e) : Γ ⊢[PRAAx]
@@ -213,10 +199,7 @@ theorem prefix_cauchy (P Q N M e : PTm n) (hN : Γ ⊢[PRAAx] le e N)
 
 theorem cutoff_sum (N e : PTm n) (he : Γ ⊢[PRAAx] le e N) : Γ ⊢[PRAAx]
     succ e+monus N e ≐ succ N := by
-  have hp := natEq (eq_add_of_le he)
-  apply deriveNat
-  ipra_simps
-  linear_combination -hp
+  ipra_lc -natEq (eq_add_of_le he)
 
 theorem reflected_tail_zero (P Q N M e : PTm n) (hN : Γ ⊢[PRAAx] le e N)
     (hM : Γ ⊢[PRAAx] le e M) : Γ ⊢[PRAAx]

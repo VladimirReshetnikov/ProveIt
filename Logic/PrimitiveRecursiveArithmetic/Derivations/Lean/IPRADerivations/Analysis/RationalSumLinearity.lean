@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.RationalFiniteSum
 import IPRADerivations.DiophantineNumberTheory.MinkowskiCenters
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Actual rational finite sums commute with scalar multiplication
@@ -120,13 +121,7 @@ theorem sum_homogeneous (A : PTm 2) (N c x : PTm n) : Γ ⊢[PRAAx]
     (denominator_positive (scaledBody A) N (pairT c x)) (RationalArithmetic.product_denominator_positive c (sum A N x))
   apply DiophantineNumberTheory.MinkowskiCenters.integer_cancel (denominator A N x) _ _
     (denominator_positive A N x)
-  apply ZT.derive
-  have ih := ZT.toZ_eq (raw_scale (Γ := Γ) A N c x)
-  have va := ZT.toZ_eq (sum_value (Γ := Γ) A N x)
-  simp only [rawScale,RationalArithmetic.productDenominator,ZT.toZ_mul,ZT.toZ_ofNat] at ih va ⊢
-  ipra_simps
-  linear_combination 𝔞(denominatorOf (sum A N x))*ih+
-    ZT.toZ Γ (numeratorOf c)*𝔞(denominator (scaledBody A) N (pairT c x))*va
+  ipra_lc [rawScale, RationalArithmetic.productDenominator] 𝔞(denominatorOf (sum A N x))*ZT.toZ_eq (raw_scale (Γ := Γ) A N c x)+ ZT.toZ Γ (numeratorOf c)*𝔞(denominator (scaledBody A) N (pairT c x))*ZT.toZ_eq (sum_value (Γ := Γ) A N x)
 
 def scaledSumF (A : PTm 2) : PR 3 := PTm.toPR (scaledSum A (var 0) (var 1) (var 2))
 

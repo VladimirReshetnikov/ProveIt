@@ -1,5 +1,6 @@
 import IPRADerivations.Core.Powers
 import IPRADerivations.AnalyticNumberTheory.PhiLower
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Rational closure: eliminating a vanishing dyadic error
@@ -35,7 +36,7 @@ theorem pow_step {m : PTm n} (ih : Γ ⊢[PRAAx] le (succ m) (pw two m)) :
     Γ ⊢[PRAAx] le (succ (succ m)) (pw two (succ m)) := by
   refine le_trans (le_of_eq_add (d := m) ?_)
     (le_congr (.eqRefl _) (pw_succ _ _).eqSymm (le_mul_mono ih (le_refl two)))
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- Variables: `0 = m`. -/
 private abbrev powF' : Fm PTm 1 := le (succ (var 0)) (pw two (var 0))
@@ -57,11 +58,9 @@ theorem succ_le_two_pow (m : PTm n) : Γ ⊢[PRAAx] le (succ m) (pw two m) := by
 /-- `v < u` contradicts `2^C u ≤ 2^C v + C`. -/
 theorem closure_aux {u v C : PTm n} (φ : Fm PTm n) (hlt : Γ ⊢[PRAAx] lt v u)
     (hi : Γ ⊢[PRAAx] le (pw two C * u) (pw two C * v + C)) : Γ ⊢[PRAAx] φ := by
-  have e := natEq (eq_add_of_le hlt)
   have e₁ : Γ ⊢[PRAAx] pw two C * u ≐
       (pw two C + pw two C * monus u (succ v)) + pw two C * v := by
-    apply deriveNat; ipra_simps
-    linear_combination 𝔞(pw two C) * e
+    ipra_lc 𝔞(pw two C) * natEq (eq_add_of_le hlt)
   have hP : Γ ⊢[PRAAx] le (pw two C + pw two C * monus u (succ v)) C :=
     le_of_add_le_add_right (le_congr e₁ (add_comm _ _) hi)
   exact not_succ_le_self C φ (le_trans (succ_le_two_pow C) (le_trans (le_add_right _ _) hP))

@@ -2,6 +2,7 @@ import IPRADerivations.Algebra.QuadraticTowerArrayCodec
 import IPRADerivations.Algebra.QuadraticTowerCoefficientArithmetic
 import IPRADerivations.Foundations.DemandRecursion
 import IPRADerivations.Foundations.RuntimeWordAppend
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The actual changed-budget five-call multiplication table
@@ -118,14 +119,10 @@ theorem table_succ (h B D : PTm n) : Γ ⊢[PRAAx]
     Matrix.head_cons,Matrix.tail_cons] using DemandRecursion.demand_succ (Γ := Γ) demandF baseSchema stepSchema h B D
 theorem table_congr {h h' B B' D D' : PTm n} (hh : Γ ⊢[PRAAx] h ≐ h')
     (hb : Γ ⊢[PRAAx] B ≐ B') (hd : Γ ⊢[PRAAx] D ≐ D') : Γ ⊢[PRAAx] table h B D ≐ table h' B' D' := by
-  simpa only [subst_table,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.head_cons,Matrix.tail_cons] using Prf.eqCongr (table (var 0) (var 1) (var 2) : PTm 3)
-      (σ := ![h,B,D]) (σ' := ![h',B',D']) (fun i => by fin_cases i; exact hh; exact hb; exact hd)
+  ipra_congr (table (var 0) (var 1) (var 2) : PTm 3) with [hh, hb, hd]
 theorem rows_congr {h h' B B' : PTm n} (hh : Γ ⊢[PRAAx] h ≐ h') (hb : Γ ⊢[PRAAx] B ≐ B') :
     Γ ⊢[PRAAx] rows h B ≐ rows h' B' := by
-  simpa only [subst_rows,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using
-    Prf.eqCongr (rows (var 0) (var 1) : PTm 2) (σ := ![h,B]) (σ' := ![h',B'])
-      (fun i => by fin_cases i; exact hh; exact hb)
+  ipra_congr (rows (var 0) (var 1) : PTm 2) with [hh, hb]
 theorem table_length (h B D : PTm n) : Γ ⊢[PRAAx] length (table h B D) ≐ rows h B := by
   refine .orE (zero_or_succ h) ?_ ?_
   · exact (congrFst ((table_congr Prf.hyp0 (.eqRefl B) (.eqRefl D)).eqTrans (table_zero B D))).eqTrans
@@ -137,24 +134,16 @@ theorem row_value_congr {h h' B B' T T' D D' i i' : PTm n}
     (hh : Γ ⊢[PRAAx] h ≐ h') (hb : Γ ⊢[PRAAx] B ≐ B') (ht : Γ ⊢[PRAAx] T ≐ T')
     (hd : Γ ⊢[PRAAx] D ≐ D') (hi : Γ ⊢[PRAAx] i ≐ i') :
     Γ ⊢[PRAAx] rowValue h B T D i ≐ rowValue h' B' T' D' i' := by
-  simpa [subst_rowValue] using
-    Prf.eqCongr (rowValue (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5)
-      (σ := ![h,B,T,D,i]) (σ' := ![h',B',T',D',i'])
-      (fun j => by fin_cases j; exact hh; exact hb; exact ht; exact hd; exact hi)
+  ipra_congr (rowValue (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) with [hh, hb, ht, hd, hi]
 theorem recipe_congr {h h' B B' T T' D D' A A' C C' : PTm n}
     (hh : Γ ⊢[PRAAx] h ≐ h') (hb : Γ ⊢[PRAAx] B ≐ B') (ht : Γ ⊢[PRAAx] T ≐ T')
     (hd : Γ ⊢[PRAAx] D ≐ D') (ha : Γ ⊢[PRAAx] A ≐ A') (hc : Γ ⊢[PRAAx] C ≐ C') :
     Γ ⊢[PRAAx] recipe h B T D A C ≐ recipe h' B' T' D' A' C' := by
-  simpa [subst_recipe] using
-    Prf.eqCongr (recipe (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6)
-      (σ := ![h,B,T,D,A,C]) (σ' := ![h',B',T',D',A',C'])
-      (fun j => by fin_cases j; exact hh; exact hb; exact ht; exact hd; exact ha; exact hc)
+  ipra_congr (recipe (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) with [hh, hb, ht, hd, ha, hc]
 theorem decoded_congr {W W' S S' w w' : PTm n} (hW : Γ ⊢[PRAAx] W ≐ W')
     (hS : Γ ⊢[PRAAx] S ≐ S') (hw : Γ ⊢[PRAAx] w ≐ w') :
     Γ ⊢[PRAAx] QuadraticTowerArrayCodec.decoded W S w ≐ QuadraticTowerArrayCodec.decoded W' S' w' := by
-  simpa [QuadraticTowerArrayCodec.subst_decoded] using
-    Prf.eqCongr (QuadraticTowerArrayCodec.decoded (var 0) (var 1) (var 2) : PTm 3)
-      (σ := ![W,S,w]) (σ' := ![W',S',w']) (fun j => by fin_cases j; exact hW; exact hS; exact hw)
+  ipra_congr (QuadraticTowerArrayCodec.decoded (var 0) (var 1) (var 2) : PTm 3) with [hW, hS, hw]
 
 theorem row_body_at (h B T D i : PTm n) : Γ ⊢[PRAAx] inst2 rowBody i (rowData h B T D) ≐ rowValue h B T D i := by
   simp only [rowBody,inst2,subst_rowValue,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
@@ -218,8 +207,7 @@ theorem query_zero (B D A C : PTm n)
   have row : Γ ⊢[PRAAx] baseRow B (address zero B A C) ≐ singleton (RationalArithmetic.multiply
       (QuadraticTowerArrayCodec.digit (codeCap B) (QuadraticTowerArrayCodec.code zero A B) zero)
       (QuadraticTowerArrayCodec.digit (codeCap B) (QuadraticTowerArrayCodec.code zero C B) zero)) := by
-    simpa only [baseRow,QuadraticTowerCoefficients.subst_singleton,Syn.subst_var,Matrix.cons_val_zero] using
-      Prf.eqCongr (singleton (var 0) : PTm 1) (σ := ![_]) (σ' := ![_]) (fun i => by fin_cases i; exact scalar)
+    ipra_congr (singleton (var 0) : PTm 1) with [scalar] using [baseRow]
   exact (entry_congr (table_zero B D) (.eqRefl _)).eqTrans
     ((base_lookup B _ (address_bound _ _ _ _ ha hc)).eqTrans row)
 

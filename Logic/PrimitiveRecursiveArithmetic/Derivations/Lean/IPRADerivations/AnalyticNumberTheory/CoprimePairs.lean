@@ -3,6 +3,7 @@ import IPRADerivations.AnalyticNumberTheory.Totatives
 import IPRADerivations.AnalyticNumberTheory.EulerProduct
 import IPRADerivations.AnalyticNumberTheory.Mobius
 import IPRADerivations.DiophantineNumberTheory.QuarticStep
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Counting coprime pairs
@@ -57,11 +58,11 @@ theorem cop_symm (i j : PTm n) :
   refine .orE (zero_or_succ i) ?_ ?_
   · have s : ((i ≐ zero) :: Γ) ⊢[PRAAx] sg i ≐ zero := (congrSg Prf.hyp0).eqTrans sg_zero
     exact (zero_mul_l (zero_mul_l s _) _).eqTrans
-      ((congrMul ((congrMul (.eqRefl _) s).eqTrans (by apply deriveNat; ipra_simps; ring)) (.eqRefl _)).eqTrans
+      ((congrMul ((congrMul (.eqRefl _) s).eqTrans (by ipra_ring)) (.eqRefl _)).eqTrans
         (zero_mul_l (.eqRefl _) _)).eqSymm
   · refine .orE (zero_or_succ j) ?_ ?_
     · have s : ((j ≐ zero) :: (i ≐ succ (pred i)) :: Γ) ⊢[PRAAx] sg j ≐ zero := (congrSg Prf.hyp0).eqTrans sg_zero
-      exact ((congrMul ((congrMul (.eqRefl _) s).eqTrans (by apply deriveNat; ipra_simps; ring)) (.eqRefl _)).eqTrans
+      exact ((congrMul ((congrMul (.eqRefl _) s).eqTrans (by ipra_ring)) (.eqRefl _)).eqTrans
         (zero_mul_l (.eqRefl _) _)).eqTrans (zero_mul_l (zero_mul_l s _) _).eqSymm
     · let C : List (Fm PTm n) := (j ≐ succ (pred j)) :: (i ≐ succ (pred i)) :: Γ
       have hj : C ⊢[PRAAx] j ≐ succ (pred j) := Prf.hyp0
@@ -105,11 +106,10 @@ theorem col_phi {b x : PTm n} (hb : Γ ⊢[PRAAx] b ≐ succ (pred b)) :
     have f₁ := fst_pair (Γ := lt (var 0) (Syn.shift (pred b)) :: Γ.map Fm.shift) (Syn.shift b) (Syn.shift x)
     refine (congrMul (congrMul ((sg_succ _).eqTrans (.eqRefl _)) ((congrSg f₁).eqTrans sb'))
       (congrEqb' (congrGcd (.eqRefl _) f₁) (.eqRefl _))).eqTrans ?_
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   have a := natEq c₁; have b' := natEq c₂; have z := natEq z₀; have s := natEq sh
   rw [t₀] at b'
-  apply deriveNat; ipra_simps
-  linear_combination a - b' + z + s
+  ipra_lc a - b' + z + s
 
 /-- `[gcd(b, b) = 1] = [b = 1]`, in the form needed: zero for `b ≥ 2`, one for `b = 1`. -/
 theorem gcd_self_two {b : PTm n} (hb : Γ ⊢[PRAAx] le two b) : Γ ⊢[PRAAx] eqb (gcd b b) one ≐ zero := by
@@ -185,7 +185,6 @@ theorem layer (b x : PTm n) :
 `C_N = ∑_{a, b ≤ N} [a, b ≥ 1][gcd(a, b) = 1]`. -/
 theorem coprime_pairs {N : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) :
     Γ ⊢[PRAAx] Sq gB3 (succ N) zero + one ≐ two * ap2 (sumF PhiB) (succ N) zero := by
-  have sl := natEq (square_layers (Γ := Γ) gB3 (succ N) zero)
   have lay : Γ ⊢[PRAAx] ap2 (sumF (addBody (LB gB3) (eqb (var 0) one))) (succ N) zero ≐
       ap2 (sumF (two * PhiB)) (succ N) zero := by
     refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
@@ -194,7 +193,6 @@ theorem coprime_pairs {N : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) :
     have t₂ : inst2 (two * PhiB) (var 0 : PTm (n + 1)) (Syn.shift zero) = two * phi (var 0) := by simp [inst2]
     rw [inst2_addBody, t₁, t₂]
     exact layer _ _
-  have sa := natEq (sum_add (Γ := Γ) (LB gB3) (eqb (var 0) one) (succ N) zero)
   have sc : Γ ⊢[PRAAx] ap2 (sumF (two * PhiB)) (succ N) zero ≐ two * ap2 (sumF PhiB) (succ N) zero := by
     refine sum_scale _ _ _ _ _ _ (.allI (.impI ?_))
     have t₂ : inst2 (two * PhiB) (var 0 : PTm (n + 1)) (Syn.shift zero) = two * phi (var 0) := by simp [inst2]
@@ -213,11 +211,10 @@ theorem coprime_pairs {N : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) :
       have h1 : Syn.shift (one : PTm n) = one := by simp [Syn.shift]
       rw [o, h1]
       exact (eqb_comm' _ _).eqTrans ((congrEqb' (fst_pair _ _).eqSymm (.eqRefl _)).eqTrans
-        (by apply deriveNat; ipra_simps; ring))
+        (by ipra_ring))
     · exact (succ_monus_succ _ _).eqTrans (LeanProofs.IPRA.DiophantineNumberTheory.Coprime.one_le_of_pos hN)
     · simp [inst2]; exact .eqRefl _
-  have e₁ := natEq lay; have e₂ := natEq sc; have e₃ := natEq dl
-  apply deriveNat; ipra_simps
-  linear_combination sl + e₁ - sa + e₂ - e₃
+  ipra_lc natEq (square_layers (Γ := Γ) gB3 (succ N) zero) + natEq lay -
+    natEq (sum_add (Γ := Γ) (LB gB3) (eqb (var 0) one) (succ N) zero) + natEq sc - natEq dl
 
 end LeanProofs.IPRA.AnalyticNumberTheory.CoprimePairs

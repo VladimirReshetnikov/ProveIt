@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.RationalNormalForm
 import IPRADerivations.DiophantineNumberTheory.MinkowskiCenterVectors
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Canonical vector guards in Minkowski's arbitrary-formula scheme
@@ -86,10 +87,7 @@ theorem midpoint_scalar_guard (c d : PTm n) : Γ ⊢[PRAAx] wellFormed (midpoint
   normalize_well_formed _ _ (midpoint_denominator_positive c d)
 theorem integer_scalar_guard (a : ZT n) : Γ ⊢[PRAAx] wellFormed (integerCode a) := by
   have h : Γ ⊢[PRAAx] ZT.eq a (ZT.ofNat one*a) := by
-    apply ZT.derive
-    simp only [ZT.toZ_mul,ZT.toZ_ofNat]
-    ipra_simps
-    ring
+    ipra_lc
   exact scalar_guard_congr (normalize_integer a a one (le_refl _) h)
     (normalize_well_formed a one (le_refl _))
 

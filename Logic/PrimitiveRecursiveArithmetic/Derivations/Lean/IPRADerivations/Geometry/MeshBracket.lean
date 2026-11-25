@@ -1,7 +1,7 @@
 import IPRADerivations.Core.Pairing
 import IPRADerivations.AnalyticNumberTheory.GcdFiber
 import IPRADerivations.AnalyticNumberTheory.Multiplicative
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The exact mesh bracket for rational square roots

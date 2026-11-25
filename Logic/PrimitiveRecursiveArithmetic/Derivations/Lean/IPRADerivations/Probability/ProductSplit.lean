@@ -1,5 +1,6 @@
 import IPRADerivations.Probability.ProductPower
 import IPRADerivations.Foundations.MixedRadix
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Splitting the iterated product law into a past and a future block
@@ -41,7 +42,6 @@ local notation "𝔟" t:max => Groth.ι (IPRA.Q.mk _ t)
 theorem dg_high {M i j k l : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) (hj : Γ ⊢[PRAAx] lt j (pw M k)) :
     Γ ⊢[PRAAx] dg M (k + l) (i * pw M k + j) ≐ dg M l i := by
   have hl := pw_pos' hM l
-  have di := natEq (div_eq' (t := i) hl)
   have hs : Γ ⊢[PRAAx] le (succ (rem i (pw M l))) (pw M l) := rem_lt'' hl i
   have hj' : Γ ⊢[PRAAx] le (succ j) (pw M k) := hj
   have pa := natEq (pw_add (Γ := Γ) M k l)
@@ -50,8 +50,7 @@ theorem dg_high {M i j k l : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) (hj
     ipra_le sl hs * 𝔟 (pw M k) + sl hj' using rw [pa]; ring
   have q1 := Prf.andE₁ (qr_block (i := quo i (pw M l)) (j := rem i (pw M l) * pw M k + j) (pw_pos' hM (k + l)) hb)
   have eq : Γ ⊢[PRAAx] i * pw M k + j ≐ quo i (pw M l) * pw M (k + l) + (rem i (pw M l) * pw M k + j) := by
-    apply deriveNat; ipra_simps
-    linear_combination 𝔟 (pw M k) * di - 𝔟 (quo i (pw M l)) * pa
+    ipra_lc 𝔟 (pw M k) * natEq (div_eq' (t := i) hl) - 𝔟 (quo i (pw M l)) * pa
   exact congrAp2 remF ((congrAp2 quoF eq (.eqRefl _)).eqTrans q1) (.eqRefl _)
 
 /-- The offset digits of `i M^k + j` are the digits of `i`. -/

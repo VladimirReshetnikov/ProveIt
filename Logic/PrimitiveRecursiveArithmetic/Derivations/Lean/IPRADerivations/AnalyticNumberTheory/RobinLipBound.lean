@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.RobinLipSum
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Elementary bounds and powers for the lower names of `LogI` (`robin_ipra_research_2026-11-19`, `lcm_bridge.tex`)
@@ -93,11 +94,8 @@ theorem lo_le_pred {a b : PTm n} (hb : Γ ⊢[PRAAx] le one b) (hab : Γ ⊢[PRA
 /-! ## `lo(4) ≤ 3/2` -/
 
 theorem pw_two_two : Γ ⊢[PRAAx] pw two (two : PTm n) ≐ num 4 := by
-  have e1 := natEq (pw_succ (Γ := Γ) (two : PTm n) one)
-  have e2 := natEq (pw_succ (Γ := Γ) (two : PTm n) zero)
-  have e3 := natEq (pw_zero (Γ := Γ) (two : PTm n))
-  apply deriveNat; ipra_simps
-  linear_combination e1 + 2 * e2 + 4 * e3
+  ipra_lc natEq (pw_succ (Γ := Γ) (two : PTm n) one) + 2 * natEq (pw_succ (Γ := Γ) (two : PTm n) zero) +
+    4 * natEq (pw_zero (Γ := Γ) (two : PTm n))
 
 theorem pw_two_three : Γ ⊢[PRAAx] pw two (succ (two : PTm n)) ≐ num 8 :=
   (pw_succ _ _).eqTrans ((congrMul pw_two_two (.eqRefl _)).eqTrans (by ipra_ring))
@@ -108,11 +106,8 @@ theorem lo_four (K : PTm n) : Γ ⊢[PRAAx] le (two * loN (num 4) one K) (succ t
   have p3 := natEq (pw_two_three (Γ := Γ))
   have e0 : Γ ⊢[PRAAx] eb (num 4) one ≐ two :=
     eb_eq (le_refl one) h4 (by ipra_le 0 with -p2) (by ipra_le 3 with p3)
-  have ePe := natEq (congrAp2 powF e0 (.eqRefl (two : PTm n)))
-  have ea := natEq (a_eq (Γ := Γ) (le_refl one) h4)
   have hdt : Γ ⊢[PRAAx] dt (num 4) one ≐ zero := by
-    apply deriveNat; ipra_simps
-    linear_combination -ea - ePe - p2
+    ipra_lc -natEq (a_eq (Γ := Γ) (le_refl one) h4) - natEq (congrAp2 powF e0 (.eqRefl (two : PTm n))) - p2
   have hN : Γ ⊢[PRAAx] Nz K (dt (num 4) one) (st (num 4) one) ≐ zero :=
     (congrAp2 _ (.eqRefl _) (congrPairT hdt (.eqRefl _))).eqTrans (Nz_p0 K _)
   have h3 := S_le (Γ := Γ) (p := one) c3_pos c8_pos c3_sq K

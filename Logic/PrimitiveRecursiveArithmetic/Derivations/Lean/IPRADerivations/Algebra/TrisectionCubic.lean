@@ -1,6 +1,6 @@
 import IPRADerivations.Algebra.CubeRootTwo
 import IPRADerivations.Core.Descent
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # `X³ − 3X − 1` has no rational root (`three_impossibilities_ipra`)

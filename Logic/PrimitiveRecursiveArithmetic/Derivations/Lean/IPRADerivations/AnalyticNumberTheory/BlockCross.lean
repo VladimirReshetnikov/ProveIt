@@ -50,7 +50,7 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 /-- `1 ≤ ⌊x/d⌋` for `1 ≤ d ≤ x`. -/
 theorem one_le_quo {x d : PTm n} (hd : Γ ⊢[PRAAx] le one d) (hdx : Γ ⊢[PRAAx] le d x) :
     Γ ⊢[PRAAx] le one (quo x d) :=
-  le_quo_of_mul_le (pos_of_one_le hd) (le_congr (by apply deriveNat; ipra_simps; ring) (.eqRefl _) hdx)
+  le_quo_of_mul_le (pos_of_one_le hd) (le_congr (by ipra_ring) (.eqRefl _) hdx)
 
 theorem one_le_fact (L : PTm n) : Γ ⊢[PRAAx] le one (fact L) := by
   have f := natEq (Primes.fact_pos (Γ := Γ) L)
@@ -76,7 +76,7 @@ theorem case_C_core (h1 : Γ ⊢[PRAAx] le one D₁) (hdu : Γ ⊢[PRAAx] le D�
   have hdu1 : Γ ⊢[PRAAx] le one du := le_trans h1 hdu
   have hdv1 : Γ ⊢[PRAAx] le one dv := le_trans hdu1 (le_of_lt hlt)
   have hdvp : Γ ⊢[PRAAx] dv ≐ succ (pred dv) := pos_of_one_le hdv1
-  have edv : Γ ⊢[PRAAx] dv ≐ pred dv + one := hdvp.eqTrans (by apply deriveNat; ipra_simps; ring)
+  have edv : Γ ⊢[PRAAx] dv ≐ pred dv + one := hdvp.eqTrans (by ipra_ring)
   have hb : Γ ⊢[PRAAx] le du (pred dv) := by
     have e := natEq hdvp; ipra_le sl hlt with e
   have hbdv : Γ ⊢[PRAAx] le (pred dv) dv := by

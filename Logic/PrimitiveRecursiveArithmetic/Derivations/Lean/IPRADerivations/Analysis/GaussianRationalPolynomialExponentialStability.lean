@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.GaussianRationalPolynomialPowerSupport
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual finite exponential coefficients stabilize at their exponent
@@ -40,10 +41,7 @@ def coefficient (C N K j e : PTm n) : PTm n := exponentCoefficient (stage C N K 
 theorem exponent_congr {C D N M e f : PTm n} (hC : Γ ⊢[PRAAx] C ≐ D)
     (hN : Γ ⊢[PRAAx] N ≐ M) (he : Γ ⊢[PRAAx] e ≐ f) : Γ ⊢[PRAAx]
     exponentCoefficient C N e ≐ exponentCoefficient D M f := by
-  simpa only [GaussianRationalLowCoefficientConvolution.subst_exponentCoefficient,Syn.subst_var,
-    Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (exponentCoefficient (var 0) (var 1) (var 2) : PTm 3)
-      (σ := ![C,N,e]) (σ' := ![D,M,f]) (fun i => by fin_cases i; exact hC; exact hN; exact he)
+  ipra_congr (exponentCoefficient (var 0) (var 1) (var 2) : PTm 3) with [hC, hN, he]
 theorem coefficient_index_congr (C N K e : PTm n) {j l : PTm n} (hj : Γ ⊢[PRAAx] j ≐ l) : Γ ⊢[PRAAx]
     coefficient C N K j e ≐ coefficient C N K l e :=
   exponent_congr (stage_congr (.eqRefl C) (.eqRefl N) (.eqRefl K) hj) (congrMul hj (.eqRefl N)) (.eqRefl e)

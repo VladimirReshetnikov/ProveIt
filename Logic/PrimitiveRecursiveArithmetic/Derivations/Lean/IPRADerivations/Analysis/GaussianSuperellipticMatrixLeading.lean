@@ -1,6 +1,8 @@
 import IPRADerivations.Analysis.GaussianSuperellipticMatrixCoefficients
 import IPRADerivations.Analysis.GaussianRationalPaddedProductDegree
 import IPRADerivations.Analysis.GaussianRationalFiniteProduct
+import IPRADerivations.Core.CongruenceTactic
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Computed first indices and leading values of the original cells
@@ -123,12 +125,10 @@ theorem normalized_recoded (C N : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ succ N
 
 theorem first_congr {C D N M : PTm n} (hC : Γ ⊢[PRAAx] C ≐ D) (hN : Γ ⊢[PRAAx] N ≐ M) : Γ ⊢[PRAAx]
     first C N ≐ first D M := by
-  simpa using Prf.eqCongr (Γ := Γ) (first (var 0) (var 1) : PTm 2)
-    (σ := ![C,N]) (σ' := ![D,M]) (fun i => by fin_cases i; exact hC; exact hN)
+  ipra_congr (first (var 0) (var 1) : PTm 2) with [hC, hN]
 theorem flag_congr {C D N M : PTm n} (hC : Γ ⊢[PRAAx] C ≐ D) (hN : Γ ⊢[PRAAx] N ≐ M) : Γ ⊢[PRAAx]
     flag C N ≐ flag D M := by
-  simpa using Prf.eqCongr (Γ := Γ) (flag (var 0) (var 1) : PTm 2)
-    (σ := ![C,N]) (σ' := ![D,M]) (fun i => by fin_cases i; exact hC; exact hN)
+  ipra_congr (flag (var 0) (var 1) : PTm 2) with [hC, hN]
 theorem leading_congr {C D N M : PTm n} (hC : Γ ⊢[PRAAx] C ≐ D) (hN : Γ ⊢[PRAAx] N ≐ M) : Γ ⊢[PRAAx]
     leading C N ≐ leading D M :=
   recode_congr (entry_congr hC (first_congr hC hN))
@@ -223,15 +223,11 @@ theorem local_degree (f G m a c r j : PTm n) (h : Γ ⊢[PRAAx] input f G m a c 
     (hf : Γ ⊢[PRAAx] nonzeroCoefficients f c) (hA : Γ ⊢[PRAAx] nonzeroCoefficients (selectedRow G m r j) a) : Γ ⊢[PRAAx]
     degree (localPolynomial f G m a c r j) (localBound a c r j) ≐
       degree (selectedRow G m r j) a+wrap m (inverseIndex m j r) j*degree f c := by
-  have ea := natEq (degree_balance _ _ (flag_one_of_nonzero _ _ hA))
-  have ef := natEq (degree_balance _ _ (flag_one_of_nonzero _ _ hf))
-  have ec := natEq (degree_balance _ _ (flag_one_of_nonzero _ _ (local_nonzero _ _ _ _ _ _ _ h hf hA)))
-  have firstE := natEq (local_first _ _ _ _ _ _ _ h hf hA)
-  have boundE := natEq (GaussianSuperellipticMatrixCoefficients.local_bound_wrap m a c r j
-    (.andE₁ (.andE₂ h)) (.andE₂ (.andE₂ h)))
-  apply deriveNat
-  ipra_simps
-  linear_combination ec-firstE+boundE-ea-𝔞(wrap m (inverseIndex m j r) j)*ef
+  ipra_lc natEq (degree_balance _ _ (flag_one_of_nonzero _ _ (local_nonzero _ _ _ _ _ _ _ h hf hA)))-
+    natEq (local_first _ _ _ _ _ _ _ h hf hA)+
+    natEq (GaussianSuperellipticMatrixCoefficients.local_bound_wrap m a c r j (.andE₁ (.andE₂ h)) (.andE₂ (.andE₂ h)))-
+    natEq (degree_balance _ _ (flag_one_of_nonzero _ _ hA))-
+    𝔞(wrap m (inverseIndex m j r) j)*natEq (degree_balance _ _ (flag_one_of_nonzero _ _ hf))
 theorem local_leading (f G m a c r j : PTm n) (h : Γ ⊢[PRAAx] input f G m a c r j)
     (hf : Γ ⊢[PRAAx] nonzeroCoefficients f c) (hA : Γ ⊢[PRAAx] nonzeroCoefficients (selectedRow G m r j) a) : Γ ⊢[PRAAx]
     leading (localPolynomial f G m a c r j) (localBound a c r j) ≐
@@ -323,16 +319,11 @@ theorem cell_degree (f G m a c r j : PTm n) (h : Γ ⊢[PRAAx] input f G m a c r
     (hf : Γ ⊢[PRAAx] nonzeroCoefficients f c) (hA : Γ ⊢[PRAAx] nonzeroCoefficients (selectedRow G m r j) a) : Γ ⊢[PRAAx]
     degree (entryPolynomial f G m a c r j) (width m a c) ≐
       degree (selectedRow G m r j) a+wrap m (inverseIndex m j r) j*degree f c := by
-  have ea := natEq (degree_balance _ _ (flag_one_of_nonzero _ _ hA))
-  have ef := natEq (degree_balance _ _ (flag_one_of_nonzero _ _ hf))
-  have ec := natEq (degree_balance _ _ (flag_one_of_nonzero _ _ (cell_nonzero _ _ _ _ _ _ _ h hf hA)))
-  have firstE := natEq (cell_first _ _ _ _ _ _ _ h hf hA)
-  have boundE := natEq (GaussianSuperellipticMatrixCoefficients.local_bound_wrap m a c r j
-    (.andE₁ (.andE₂ h)) (.andE₂ (.andE₂ h)))
-  have paddingE := natEq (padding_balance _ _ _ _ _ _ _ h)
-  apply deriveNat
-  ipra_simps
-  linear_combination ec-firstE+boundE-paddingE-ea-𝔞(wrap m (inverseIndex m j r) j)*ef
+  ipra_lc natEq (degree_balance _ _ (flag_one_of_nonzero _ _ (cell_nonzero _ _ _ _ _ _ _ h hf hA)))-
+    natEq (cell_first _ _ _ _ _ _ _ h hf hA)+
+    natEq (GaussianSuperellipticMatrixCoefficients.local_bound_wrap m a c r j (.andE₁ (.andE₂ h)) (.andE₂ (.andE₂ h)))-
+    natEq (padding_balance _ _ _ _ _ _ _ h)-natEq (degree_balance _ _ (flag_one_of_nonzero _ _ hA))-
+    𝔞(wrap m (inverseIndex m j r) j)*natEq (degree_balance _ _ (flag_one_of_nonzero _ _ hf))
 theorem cell_leading (f G m a c r j : PTm n) (h : Γ ⊢[PRAAx] input f G m a c r j)
     (hf : Γ ⊢[PRAAx] nonzeroCoefficients f c) (hA : Γ ⊢[PRAAx] nonzeroCoefficients (selectedRow G m r j) a) : Γ ⊢[PRAAx]
     leading (entryPolynomial f G m a c r j) (width m a c) ≐
@@ -346,12 +337,8 @@ theorem weighted_cell_balance (f G m a c r j : PTm n) (h : Γ ⊢[PRAAx] input f
     (hf : Γ ⊢[PRAAx] nonzeroCoefficients f c) (hA : Γ ⊢[PRAAx] nonzeroCoefficients (selectedRow G m r j) a) : Γ ⊢[PRAAx]
     m*degree (entryPolynomial f G m a c r j) (width m a c)+degree f c*r ≐
       (m*degree (selectedRow G m r j) a+degree f c*inverseIndex m j r)+degree f c*j := by
-  have e := natEq (cell_degree _ _ _ _ _ _ _ h hf hA)
-  have idx := natEq (GaussianSuperellipticMatrixEntries.index_equation m r j
-    (.andE₁ (.andE₂ h)) (.andE₂ (.andE₂ h)))
-  apply deriveNat
-  ipra_simps
-  linear_combination 𝔞(m)*e-𝔞(degree f c)*idx
+  ipra_lc 𝔞(m)*natEq (cell_degree _ _ _ _ _ _ _ h hf hA)-
+    𝔞(degree f c)*natEq (GaussianSuperellipticMatrixEntries.index_equation m r j (.andE₁ (.andE₂ h)) (.andE₂ (.andE₂ h)))
 
 def sourceInput (f G m a c r j : PTm n) : Fm PTm n := input f G m a c r j ⋏ nonzeroCoefficients f c
 def expectedFirst (f G m a c r j : PTm n) : PTm n :=

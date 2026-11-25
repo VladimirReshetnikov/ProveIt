@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.PhiTwo
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The sharp lower bound `φ(n)² ≥ n` for `n ∉ {2, 6}`
@@ -45,13 +46,11 @@ theorem sq_pred_ge2 {p : PTm n} (h : Γ ⊢[PRAAx] le four p) :
   have e := natEq (eq_add_of_le h)
   have e' : Γ ⊢[PRAAx] monus p one ≐ succ (succ (succ (monus p four))) :=
     (congrMonus (eq_add_of_le h) (.eqRefl _)).eqTrans (by
-      refine (congrMonus (by apply deriveNat; ipra_simps; ring :
+      refine (congrMonus (by ipra_ring :
         Γ ⊢[PRAAx] four + monus p four ≐ succ (succ (succ (monus p four))) + one) (.eqRefl _)).eqTrans ?_
       exact add_monus _ _)
   refine le_of_eq_add (d := monus p four * monus p four + succ (succ (succ (succ zero))) * monus p four + one) ?_
-  have e₂ := natEq e'
-  apply deriveNat; ipra_simps
-  linear_combination (Groth.ι (Q.mk _ (monus p one)) + Groth.ι (Q.mk _ (monus p four)) + 3) * e₂ - 2 * e
+  ipra_lc (Groth.ι (Q.mk _ (monus p one)) + Groth.ι (Q.mk _ (monus p four)) + 3) * natEq e' - 2 * e
 
 theorem ppow_sq2_big {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (h4 : Γ ⊢[PRAAx] le four p) (k : PTm n) :
     Γ ⊢[PRAAx] le (two * pw p (succ k)) (phi (pw p (succ k)) * phi (pw p (succ k))) := by
@@ -61,8 +60,8 @@ theorem ppow_sq2_big {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (h4 : Γ ⊢[PRAAx
   have e := phi_ppow hp k
   refine le_congr ?_ (.eqTrans ?_ (congrMul e e).eqSymm) l
   · refine .eqTrans ?_ (congrMul (.eqRefl _) (pw_succ _ _)).eqSymm
-    apply deriveNat; ipra_simps; ring
-  · apply deriveNat; ipra_simps; ring
+    ipra_ring
+  · ipra_ring
 
 theorem ppow_sq2_three {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hp3 : Γ ⊢[PRAAx] p ≐ three) (j : PTm n) :
     Γ ⊢[PRAAx] le (two * pw p (succ (succ j))) (phi (pw p (succ (succ j))) * phi (pw p (succ (succ j)))) := by
@@ -75,16 +74,11 @@ theorem ppow_sq2_three {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hp3 : Γ ⊢[PR
   have h3Q := le_congr hp3 (.eqRefl _) hpQ
   have e₁ := natEq (phi_ppow hp (succ j))
   have e₂ := natEq (pw_succ (Γ := Γ) p (succ j))
-  have e₃ := natEq hp3
-  have e₄ := natEq ((congrMonus hp3 (.eqRefl one)).eqTrans ((succ_monus_succ _ _).eqTrans (monus_zero _)))
-  have e₅ := natEq (eq_add_of_le h3Q)
   refine le_of_eq_add (d := pw p (succ j) * (six + four * monus (pw p (succ j)) three)) ?_
-  apply deriveNat; ipra_simps
-  linear_combination (Groth.ι (Q.mk _ (phi (pw p (succ (succ j))))) +
-      Groth.ι (Q.mk _ (pw p (succ j))) * Groth.ι (Q.mk _ (monus p one))) * e₁ +
-    Groth.ι (Q.mk _ (pw p (succ j))) * Groth.ι (Q.mk _ (pw p (succ j))) *
-      (Groth.ι (Q.mk _ (monus p one)) + 2) * e₄ -
-    2 * e₂ - 2 * Groth.ι (Q.mk _ (pw p (succ j))) * e₃ + 4 * Groth.ι (Q.mk _ (pw p (succ j))) * e₅
+  ipra_lc (Groth.ι (Q.mk _ (phi (pw p (succ (succ j))))) + Groth.ι (Q.mk _ (pw p (succ j))) * Groth.ι (Q.mk _ (monus p one))) * e₁ +
+    Groth.ι (Q.mk _ (pw p (succ j))) * Groth.ι (Q.mk _ (pw p (succ j))) * (Groth.ι (Q.mk _ (monus p one)) + 2) * natEq ((congrMonus hp3 (.eqRefl one)).eqTrans ((succ_monus_succ _ _).eqTrans (monus_zero _))) -
+    2 * e₂ - 2 * Groth.ι (Q.mk _ (pw p (succ j))) * natEq hp3 +
+    4 * Groth.ι (Q.mk _ (pw p (succ j))) * natEq (eq_add_of_le h3Q)
 
 /-- `φ(p^{k+1})² ≥ 2 p^{k+1}` for an odd prime power `p^{k+1} ≠ 3`. -/
 theorem ppow_sq2 {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (h3 : Γ ⊢[PRAAx] le three p) (k : PTm n)
@@ -118,7 +112,7 @@ theorem o2_read {M x : PTm n} (hodd : Γ ⊢[PRAAx] rem M two ≐ one) (h1 : Γ 
   rw [inst2_o2] at h
   refine PhiDivides.sg_zero_inv (.eqTrans ?_ h)
   refine .eqTrans ?_ (congrMul (congrMul (congrMul hodd (not_one h1)) (not_one h3)) (.eqRefl _)).eqSymm
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- `lpf(n) ≤ 3` when `3 ∣ n`. -/
 theorem lpf_le_three {N : PTm n} (hN : Γ ⊢[PRAAx] lt one N) (h : Γ ⊢[PRAAx] dvd three N) :
@@ -183,9 +177,9 @@ theorem d2_found {N p x : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) (hp : 
     have l := le_mul_mono hsq.wk ih
     refine le_congr ?_ ?_ l
     · refine .eqTrans ?_ (congrMul (.eqRefl _) hNe.wk).eqSymm
-      apply deriveNat; ipra_simps; ring
+      ipra_ring
     · refine .eqTrans ?_ (congrMul hmul.wk hmul.wk).eqSymm
-      apply deriveNat; ipra_simps; ring
+      ipra_ring
 
 theorem d2_main {N x : PTm n} (hodd : Γ ⊢[PRAAx] rem N two ≐ one) (h1 : Γ ⊢[PRAAx] neg (N ≐ one))
     (h3 : Γ ⊢[PRAAx] neg (N ≐ three)) (hV : Γ ⊢[PRAAx] ap2 (sumF o2B) N x ≐ zero) :
@@ -204,11 +198,11 @@ theorem zero4 (A B C D : PTm n) (h : Γ ⊢[PRAAx] A ≐ zero ⋎ (B ≐ zero �
     Γ ⊢[PRAAx] A * B * C * D ≐ zero := by
   refine .orE h ?_ (.orE Prf.hyp0 ?_ ?_)
   · exact (congrMul (congrMul (congrMul Prf.hyp0 (.eqRefl _)) (.eqRefl _)) (.eqRefl _)).eqTrans
-      (by apply deriveNat; ipra_simps; ring)
+      (by ipra_ring)
   · exact (congrMul (congrMul (congrMul (.eqRefl _) Prf.hyp0) (.eqRefl _)) (.eqRefl _)).eqTrans
-      (by apply deriveNat; ipra_simps; ring)
+      (by ipra_ring)
   · exact (congrMul (congrMul (.eqRefl _) Prf.hyp0) (.eqRefl _)).eqTrans
-      (by apply deriveNat; ipra_simps; ring)
+      (by ipra_ring)
 
 theorem d2_step {N x : PTm n} (hV : Γ ⊢[PRAAx] ap2 (sumF o2B) N x ≐ zero) : Γ ⊢[PRAAx] inst2 o2B N x ≐ zero := by
   rw [inst2_o2]
@@ -273,10 +267,10 @@ theorem phi_sq_even {N : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) (h2 : �
       hφ.wk.eqTrans ((congrMul hk (.eqRefl _)).eqTrans (one_mul _))
     have m1 : ((pred (val two N) ≐ zero) :: Γ) ⊢[PRAAx] neg (quo N (pw two (val two N)) ≐ one) :=
       .impI (.impE h2.wk.wk (eN.wk.eqTrans ((congrMul (.eqRefl _) Prf.hyp0).eqTrans
-        (by apply deriveNat; ipra_simps; ring))))
+        (by ipra_ring))))
     have m3 : ((pred (val two N) ≐ zero) :: Γ) ⊢[PRAAx] neg (quo N (pw two (val two N)) ≐ three) :=
       .impI (.impE h6.wk.wk (eN.wk.eqTrans ((congrMul (.eqRefl _) Prf.hyp0).eqTrans
-        (by apply deriveNat; ipra_simps; ring))))
+        (by ipra_ring))))
     exact le_congr eN.eqSymm (congrMul eφ eφ).eqSymm (phi_sq_odd2 hmo.wk m1 m3)
   · -- `a ≥ 2`: `φ(n)² = Q² φ(m)² ≥ 2Q m = n` with `Q = 2^{a−1} ≥ 2`.
     have hQ := pw_pos' (two_pos' (Γ := (pred (val two N) ≐ succ (pred (pred (val two N)))) :: Γ)) (pred (pred (val two N)))
@@ -287,14 +281,10 @@ theorem phi_sq_even {N : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) (h2 : �
         le two (pw two (pred (val two N))) :=
       le_congr (one_mul _) e₃.eqSymm (le_mul_mono (one_le_of_pos hQ) (le_refl two))
     have l := le_mul_mono (le_mul_mono (le_refl (pw two (pred (val two N)))) lQ) hsqo.wk
-    have n₁ := natEq (hNe.wk : ((pred (val two N) ≐ succ (pred (pred (val two N)))) :: Γ) ⊢[PRAAx] _)
-    have n₂ := natEq (pw_succ (Γ := (pred (val two N) ≐ succ (pred (pred (val two N)))) :: Γ) two (pred (val two N)))
-    have n₃ := natEq (hφ.wk : ((pred (val two N) ≐ succ (pred (pred (val two N)))) :: Γ) ⊢[PRAAx] _)
     refine le_congr ?_ ?_ l
-    · apply deriveNat; ipra_simps; linear_combination -n₁ - Groth.ι (Q.mk _ (quo N (pw two (val two N)))) * n₂
-    · apply deriveNat; ipra_simps
-      linear_combination -(Groth.ι (Q.mk _ (phi N)) + Groth.ι (Q.mk _ (pw two (pred (val two N)))) *
-        Groth.ι (Q.mk _ (phi (quo N (pw two (val two N)))))) * n₃
+    · ipra_lc -natEq (hNe.wk : ((pred (val two N) ≐ succ (pred (pred (val two N)))) :: Γ) ⊢[PRAAx] _) -
+        Groth.ι (Q.mk _ (quo N (pw two (val two N)))) * natEq (pw_succ (Γ := (pred (val two N) ≐ succ (pred (pred (val two N)))) :: Γ) two (pred (val two N)))
+    · ipra_lc -(Groth.ι (Q.mk _ (phi N)) + Groth.ι (Q.mk _ (pw two (pred (val two N)))) * Groth.ι (Q.mk _ (phi (quo N (pw two (val two N)))))) * natEq (hφ.wk : ((pred (val two N) ≐ succ (pred (pred (val two N)))) :: Γ) ⊢[PRAAx] _)
 
 /-- `thm:phi-lower` (second part) at an arbitrary `n`: `φ(n)² ≥ n` for `n ∉ {2, 6}`. -/
 theorem phi_sq_at {N : PTm n} (h2 : Γ ⊢[PRAAx] neg (N ≐ two)) (h6 : Γ ⊢[PRAAx] neg (N ≐ six)) :

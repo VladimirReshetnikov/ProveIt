@@ -1,5 +1,7 @@
 import IPRADerivations.Analysis.GaussianBetaKernelExponential
 import IPRADerivations.Analysis.GaussianHarmonicIntegerExponential
+import IPRADerivations.Core.CongruenceTactic
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Full-interval beta kernel positivity and dyadic refinement
@@ -46,9 +48,7 @@ def refinementLaw (a b N j : PTm n) : Fm PTm n := rationalLE (value a b N) (valu
 
 theorem value_congr {a a' b b' N N' : PTm n} (ha : Γ ⊢[PRAAx] a ≐ a') (hb : Γ ⊢[PRAAx] b ≐ b') (hN : Γ ⊢[PRAAx] N ≐ N') : Γ ⊢[PRAAx]
     value a b N ≐ value a' b' N' := by
-  simpa only [subst_value,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (value (var 0) (var 1) (var 2) : PTm 3) (σ := ![a,b,N]) (σ' := ![a',b',N'])
-      (fun i => by fin_cases i; exact ha; exact hb; exact hN)
+  ipra_congr (value (var 0) (var 1) (var 2) : PTm 3) with [ha, hb, hN]
 
 theorem base_fraction (a b N : PTm n) (h : Γ ⊢[PRAAx] source a b N) : Γ ⊢[PRAAx]
     base a b N ≐ GaussianPositiveRationalLogarithm.fraction (monus (b*N) a) (b*N) := by
@@ -90,15 +90,11 @@ theorem kernel_nonnegative (a b N : PTm n) (h : Γ ⊢[PRAAx] source a b N) : Γ
 theorem doubling_square (a D : PTm n) (h : Γ ⊢[PRAAx] le a D) : Γ ⊢[PRAAx]
     le (monus D a*(num 4*D)) (pw (monus (two*D) a) two) := by
   have hd : Γ ⊢[PRAAx] le a (two*D) := le_trans h (le_of_eq_add (d := D) (by ipra_ring))
-  have e := natEq (eq_add_of_le h)
-  have f := natEq (eq_add_of_le hd)
   have square : Γ ⊢[PRAAx] pw (monus (two*D) a) two ≐ monus (two*D) a*monus (two*D) a :=
     (pw_succ _ one).eqTrans (congrMul (pw_one _) (.eqRefl _))
   apply le_congr (.eqRefl _) square.eqSymm
   apply le_of_eq_add (d := a*a)
-  apply deriveNat
-  ipra_simps
-  linear_combination -(𝔞(monus (two*D) a)+2*𝔞 D-𝔞 a)*f+4*𝔞 D*e
+  ipra_lc -(𝔞(monus (two*D) a)+2*𝔞 D-𝔞 a)*natEq (eq_add_of_le hd)+4*𝔞 D*natEq (eq_add_of_le h)
 
 theorem doubling_denominator (D N : PTm n) : Γ ⊢[PRAAx]
     pw (two*D) (two*N) ≐ pw (num 4*D) N*pw D N := by

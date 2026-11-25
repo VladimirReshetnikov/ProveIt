@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.RobinLogName
 import IPRADerivations.Analysis.RationalGaussianEmbedding
 import IPRADerivations.Analysis.GaussianRationalFiniteSum
 import IPRADerivations.Analysis.RationalCubeMidpoint
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Literal odd terms of the Robin logarithm
@@ -64,9 +65,7 @@ theorem denominator_step (a b K : PTm n) : Γ ⊢[PRAAx]
 
 theorem returned_term (a b K : PTm n) :
     Γ ⊢[PRAAx] inst2 body K (pairT a b) ≐ term a b K := by
-  simpa [body,inst2] using Prf.eqCongr (Γ := Γ) (term (var 0) (var 1) (var 2) : PTm 3)
-    (σ := ![fstT (pairT a b),sndT (pairT a b),K]) (σ' := ![a,b,K])
-    (fun i => by fin_cases i; exact fst_pair _ _; exact snd_pair _ _; exact .eqRefl _)
+  ipra_congr (term (var 0) (var 1) (var 2) : PTm 3) with [fst_pair _ _, snd_pair _ _, .eqRefl K] using [body, inst2]
 
 theorem returned_sum_step (a b K : PTm n) : Γ ⊢[PRAAx]
     oddSum a b (succ K) ≐ qadd (oddSum a b K) (term a b K) :=

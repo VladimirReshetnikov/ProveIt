@@ -2,6 +2,7 @@ import IPRADerivations.Algebra.QuadraticExtension
 import IPRADerivations.Core.IntCertificates
 import IPRADerivations.Foundations.GuardedTotalization
 import IPRADerivations.AnalyticNumberTheory.Totatives
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual positive quadratic sign certificates over coded integers
@@ -258,9 +259,7 @@ theorem absolute_product_aligned (d x : PTm n) : Γ ⊢[PRAAx]
 
 theorem multiply_code_congr {d e x y z w : PTm n} (hd : Γ ⊢[PRAAx] d ≐ e)
     (hx : Γ ⊢[PRAAx] x ≐ y) (hz : Γ ⊢[PRAAx] z ≐ w) : Γ ⊢[PRAAx] multiply d x z ≐ multiply e y w := by
-  simpa only [subst_multiply,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (multiply (var 0) (var 1) (var 2) : PTm 3) (σ := ![d,x,z]) (σ' := ![e,y,w])
-      (fun i => by fin_cases i; exact hd; exact hx; exact hz)
+  ipra_congr (multiply (var 0) (var 1) (var 2) : PTm 3) with [hd, hx, hz]
 theorem aligned_code_congr {x y : PTm n} (h : Γ ⊢[PRAAx] x ≐ y) (hx : Γ ⊢[PRAAx] aligned x) : Γ ⊢[PRAAx] aligned y := by
   simpa only [subst_aligned,Syn.subst_var,Matrix.cons_val_zero] using
     Prf.eqSubst (aligned (var 0) : Fm PTm 1) ![x] ![y] (fun i => by fin_cases i; exact h)

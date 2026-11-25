@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianGammaRecurrenceSourceObservations
 import IPRADerivations.Analysis.GaussianGammaRecurrenceCoefficientBounds
 import IPRADerivations.Analysis.GaussianRationalRiemannRefinement
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The original recurrence sum against canonical coefficient observations
@@ -80,10 +81,7 @@ theorem original_term_error (t p e j : PTm n) (hj : Γ ⊢[PRAAx] le j e) : Γ �
 
 theorem canonical_term_congr {p q e f j k : PTm n} (hp : Γ ⊢[PRAAx] p ≐ q)
     (he : Γ ⊢[PRAAx] e ≐ f) (hj : Γ ⊢[PRAAx] j ≐ k) : Γ ⊢[PRAAx] canonicalTerm p e j ≐ canonicalTerm q f k := by
-  simpa only [subst_canonicalTerm,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (canonicalTerm (var 0) (var 1) (var 2) : PTm 3)
-      (σ := ![p,e,j]) (σ' := ![q,f,k]) (fun i => by fin_cases i; exact hp; exact he; exact hj)
+  ipra_congr (canonicalTerm (var 0) (var 1) (var 2) : PTm 3) with [hp, he, hj]
 
 theorem canonical_term_at (p e j : PTm n) : Γ ⊢[PRAAx] inst2 body j (data p e) ≐ canonicalTerm p e j := by
   simp only [body,inst2,subst_canonicalTerm,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]

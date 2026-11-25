@@ -1,6 +1,8 @@
 import IPRADerivations.Analysis.GaussianRationalDirectionConstruction
 import IPRADerivations.Analysis.GaussianDominantAlpha
 import IPRADerivations.Analysis.GaussianRationalRelativeNormAlgebra
+import IPRADerivations.Core.CongruenceTactic
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Actual Gaussian algebra for the dominant constant/coefficient pair
@@ -53,9 +55,7 @@ def dominantTerm (bk A B w k : PTm n) : PTm n := qmul bk (power (delta A B w) k)
 
 theorem radius_congr {A B C D : PTm n} (hA : Γ ⊢[PRAAx] A ≐ C) (hB : Γ ⊢[PRAAx] B ≐ D) :
     Γ ⊢[PRAAx] radiusPoint A B ≐ radiusPoint C D := by
-  simpa only [subst_radiusPoint,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (radiusPoint (var 0) (var 1) : PTm 2)
-      (σ := ![A,B]) (σ' := ![C,D]) (fun i => by fin_cases i; exact hA; exact hB)
+  ipra_congr (radiusPoint (var 0) (var 1) : PTm 2) with [hA, hB]
 
 theorem radius_represents (A B : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx]
     represents (radiusPoint A B) (radiusNumerator A) B := GaussianRationalHorner.ofGaussian_represents _ _ hB
@@ -137,11 +137,7 @@ theorem scalar_representation_cross (q : PTm n) (a b : ZT n) (A B : PTm n)
     ZT.eq (a*ZT.ofNat B) (b*ZT.ofNat A) := by
   apply RationalNormalForm.positive_integer_cancel (RationalSupMetric.denominatorOf q) _ _
     (RationalArgmin.denominator_positive q)
-  apply ZT.derive
-  have ea := ZT.toZ_eq ha
-  have eb := ZT.toZ_eq hb
-  simp only [RationalArithmetic.represents,ZT.toZ_mul,ZT.toZ_ofNat] at ea eb ⊢
-  linear_combination 𝔞(B)*ea-𝔞(A)*eb
+  ipra_lc [RationalArithmetic.represents] 𝔞(B)*ZT.toZ_eq ha-𝔞(A)*ZT.toZ_eq hb
 
 theorem represents_cross (q a b A B : PTm n) (ha : Γ ⊢[PRAAx] represents q a A)
     (hb : Γ ⊢[PRAAx] represents q b B) : Γ ⊢[PRAAx]

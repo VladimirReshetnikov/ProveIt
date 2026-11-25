@@ -1,5 +1,7 @@
 import IPRADerivations.Analysis.GaussianBalancedRadiusSyntax
 import IPRADerivations.Analysis.RationalNonnegativePowers
+import IPRADerivations.Core.CongruenceTactic
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Genuine zero-radius branch of the balanced radius certificate
@@ -38,11 +40,7 @@ def term (C N A B i : PTm n) : PTm n := RationalArithmetic.multiply
 theorem term_congr (C N i : PTm n) {A A' B B' : PTm n}
     (hA : Γ ⊢[PRAAx] A ≐ A') (hB : Γ ⊢[PRAAx] B ≐ B') : Γ ⊢[PRAAx]
     term C N A B i ≐ term C N A' B' i := by
-  simpa only [subst_term,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.cons_val_three,Matrix.cons_val_four,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (term (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5)
-      (σ := ![C,N,A,B,i]) (σ' := ![C,N,A',B',i])
-      (fun j => by fin_cases j; exact .eqRefl _; exact .eqRefl _; exact hA; exact hB; exact .eqRefl _)
+  ipra_congr (term (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) with [.eqRefl C, .eqRefl N, hA, hB, .eqRefl i]
 
 theorem term_denominator_positive (C N B i : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx]
     le one (denominator C N i*pw B (two*i)) :=
@@ -133,10 +131,7 @@ theorem fraction_zero (B : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx]
     (RationalNormalForm.normalize_well_formed _ _ hB)
     (RationalNormalForm.normalize_well_formed _ _ (le_refl one))
     (fraction_represents zero B hB) (fraction_represents zero one (le_refl one)) hB (le_refl one)
-  apply ZT.derive
-  simp only [ZT.toZ_mul,ZT.toZ_ofNat]
-  ipra_simps
-  ring
+  ipra_lc
 
 theorem zero_fraction_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 1
     (le one (var 0) ⟶ fraction zero (var 0) ≐ fraction zero one) :=

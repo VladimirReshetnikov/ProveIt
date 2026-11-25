@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.GaussianEulerLogarithmicMultiplier
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Constructive compact quadrature for every numerical logarithmic order
@@ -61,40 +62,26 @@ theorem evaluator_at (p t x : PTm n) : Γ ⊢[PRAAx] ap3 evaluatorF p t x ≐ ev
 theorem sample_at (p j R E T z B a b : PTm n) : Γ ⊢[PRAAx]
     ap3 evaluatorF p (pairT a b) (fixedData j R E T z B) ≐ sample p j R E T z B a b := by
   refine (evaluator_at p (pairT a b) (fixedData j R E T z B)).eqTrans ?_
-  simpa [evaluatorTerm,fixedData] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (sample (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) (var 7) (var 8) : PTm 9)
-      (σ := ![p,fstT (fstT (fixedData j R E T z B)),fstT (sndT (fstT (fixedData j R E T z B))),sndT (sndT (fstT (fixedData j R E T z B))),
-        fstT (sndT (fixedData j R E T z B)),fstT (sndT (sndT (fixedData j R E T z B))),sndT (sndT (sndT (fixedData j R E T z B))),fstT (pairT a b),sndT (pairT a b)])
-      (σ' := ![p,j,R,E,T,z,B,a,b]) (fun i => by
-        fin_cases i
-        exact .eqRefl _
-        exact (congrFst (fst_pair _ _)).eqTrans (fst_pair _ _)
-        exact (congrFst (congrSnd (fst_pair _ _))).eqTrans ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
-        exact (congrSnd (congrSnd (fst_pair _ _))).eqTrans ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))
-        exact (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
-        exact (congrFst (congrSnd (snd_pair _ _))).eqTrans ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
-        exact (congrSnd (congrSnd (snd_pair _ _))).eqTrans ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))
-        exact fst_pair _ _
-        exact snd_pair _ _)
+  ipra_congr (sample (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) (var 7) (var 8) : PTm 9) with
+    [.eqRefl p, (congrFst (fst_pair _ _)).eqTrans (fst_pair _ _),
+      (congrFst (congrSnd (fst_pair _ _))).eqTrans ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)),
+      (congrSnd (congrSnd (fst_pair _ _))).eqTrans ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)),
+      (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _),
+      (congrFst (congrSnd (snd_pair _ _))).eqTrans ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)),
+      (congrSnd (congrSnd (snd_pair _ _))).eqTrans ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)), fst_pair _ _,
+      snd_pair _ _] using [evaluatorTerm, fixedData]
 
 theorem raw_evaluator_at (p t j R E T z B : PTm n) : Γ ⊢[PRAAx]
     ap3 evaluatorF p t (fixedData j R E T z B) ≐ sample p j R E T z B (fstT t) (sndT t) := by
   refine (evaluator_at p t (fixedData j R E T z B)).eqTrans ?_
-  simpa [evaluatorTerm,fixedData] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (sample (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) (var 7) (var 8) : PTm 9)
-      (σ := ![p,fstT (fstT (fixedData j R E T z B)),fstT (sndT (fstT (fixedData j R E T z B))),sndT (sndT (fstT (fixedData j R E T z B))),
-        fstT (sndT (fixedData j R E T z B)),fstT (sndT (sndT (fixedData j R E T z B))),sndT (sndT (sndT (fixedData j R E T z B))),fstT t,sndT t])
-      (σ' := ![p,j,R,E,T,z,B,fstT t,sndT t]) (fun i => by
-        fin_cases i
-        exact .eqRefl _
-        exact (congrFst (fst_pair _ _)).eqTrans (fst_pair _ _)
-        exact (congrFst (congrSnd (fst_pair _ _))).eqTrans ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
-        exact (congrSnd (congrSnd (fst_pair _ _))).eqTrans ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))
-        exact (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
-        exact (congrFst (congrSnd (snd_pair _ _))).eqTrans ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
-        exact (congrSnd (congrSnd (snd_pair _ _))).eqTrans ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))
-        exact .eqRefl _
-        exact .eqRefl _)
+  ipra_congr (sample (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) (var 7) (var 8) : PTm 9) with
+    [.eqRefl p, (congrFst (fst_pair _ _)).eqTrans (fst_pair _ _),
+      (congrFst (congrSnd (fst_pair _ _))).eqTrans ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)),
+      (congrSnd (congrSnd (fst_pair _ _))).eqTrans ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)),
+      (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _),
+      (congrFst (congrSnd (snd_pair _ _))).eqTrans ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)),
+      (congrSnd (congrSnd (snd_pair _ _))).eqTrans ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)),
+      .eqRefl (fstT t), .eqRefl (sndT t)] using [evaluatorTerm, fixedData]
 
 /-- The computed query pays both independent observation errors without
 changing the genuine compact Lipschitz factor. -/

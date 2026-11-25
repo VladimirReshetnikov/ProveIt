@@ -1,4 +1,6 @@
 import IPRADerivations.Analysis.RationalHausdorff
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Triangle inequality for the actual independently scaled rational outputs
@@ -42,10 +44,7 @@ private theorem abs_scale (c : PTm n) (u : ZT n) : Γ ⊢[PRAAx] zabs (ZT.ofNat 
     ring
   exact (zabs_congr equal).eqTrans (Probability.MedianWeighted.ad_mul c u.pos u.neg)
 
-private theorem positive_cancel {c a b : PTm n} (hc : Γ ⊢[PRAAx] le one c)
-    (h : Γ ⊢[PRAAx] le (c * a) (c * b)) : Γ ⊢[PRAAx] le a b := by
-  have e : Γ ⊢[PRAAx] c ≐ succ (monus c one) := (eq_add_of_le hc).eqTrans (by ipra_ring)
-  exact mul_le_cancel (le_congr (congrMul e (.eqRefl _)) (congrMul e (.eqRefl _)) h)
+private alias positive_cancel := Common.mul_cancel_le
 
 /-- The middle denominator clears the exact rational cross triangle. -/
 theorem cross_triangle_identity (x y z k : PTm n) :
@@ -53,9 +52,7 @@ theorem cross_triangle_identity (x y z k : PTm n) :
       (ZT.ofNat (rationalDenominator y k) * crossNumerator x z k)
       (ZT.ofNat (rationalDenominator z k) * crossNumerator x y k +
         ZT.ofNat (rationalDenominator x k) * crossNumerator y z k) := by
-  apply ZT.derive
-  simp only [crossNumerator, ZT.toZ_mul, ZT.toZ_add, ZT.toZ_sub, ZT.toZ_ofNat]
-  ring
+  ipra_lc [crossNumerator]
 
 theorem cross_triangle (x y z k : PTm n) :
     Γ ⊢[PRAAx] le (rationalDenominator y k * zabs (crossNumerator x z k))

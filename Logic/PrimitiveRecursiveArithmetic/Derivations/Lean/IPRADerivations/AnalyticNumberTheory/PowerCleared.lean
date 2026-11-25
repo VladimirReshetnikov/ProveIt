@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.LocalFactor
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The power-cleared Euler product estimate
@@ -49,11 +50,9 @@ theorem pw_lt_pw {a b : PTm n} (k : PTm n) (h : Γ ⊢[PRAAx] lt b a) :
     Γ ⊢[PRAAx] lt (pw b (succ k)) (pw a (succ k)) := by
   refine le_trans ?_ (pw_le_pw (succ k) h)
   refine le_of_eq_add (d := monus (pw (succ b) k) (pw b k) * b + pred (pw (succ b) k)) ?_
-  have c₁ := natEq (pw_succ (Γ := Γ) (succ b) k); have c₂ := natEq (pw_succ (Γ := Γ) b k)
-  have c₃ := natEq (eq_add_of_le (pw_le_pw (Γ := Γ) k (le_succ_self b)))
-  have c₄ := natEq (pw_pos (Γ := Γ) b k)
-  apply deriveNat; ipra_simps
-  linear_combination c₁ - c₂ + Groth.ι (IPRA.Q.mk Γ b) * c₃ + c₄
+  ipra_lc natEq (pw_succ (Γ := Γ) (succ b) k) - natEq (pw_succ (Γ := Γ) b k) +
+    Groth.ι (IPRA.Q.mk Γ b) * natEq (eq_add_of_le (pw_le_pw (Γ := Γ) k (le_succ_self b))) +
+    natEq (pw_pos (Γ := Γ) b k)
 
 /-- `a^{k+1} ≤ b^{k+1} → a ≤ b`. -/
 theorem pw_le_cancel {a b k : PTm n} (h : Γ ⊢[PRAAx] le (pw a (succ k)) (pw b (succ k))) :
@@ -64,10 +63,8 @@ theorem pw_le_cancel {a b k : PTm n} (h : Γ ⊢[PRAAx] le (pw a (succ k)) (pw b
 theorem pw_le_exp {c e₁ e₂ : PTm n} (hc : Γ ⊢[PRAAx] c ≐ succ (pred c)) (h : Γ ⊢[PRAAx] le e₁ e₂) :
     Γ ⊢[PRAAx] le (pw c e₁) (pw c e₂) := by
   refine le_of_eq_add (d := pw c e₁ * pred (pw c (monus e₂ e₁))) ?_
-  have c₁ := natEq ((congrPw (.eqRefl c) (eq_add_of_le h)).eqTrans (pw_add c e₁ (monus e₂ e₁)))
-  have c₂ := natEq (pw_pos' hc (monus e₂ e₁))
-  apply deriveNat; ipra_simps
-  linear_combination c₁ + Groth.ι (IPRA.Q.mk Γ (pw c e₁)) * c₂
+  ipra_lc natEq ((congrPw (.eqRefl c) (eq_add_of_le h)).eqTrans (pw_add c e₁ (monus e₂ e₁))) +
+    Groth.ι (IPRA.Q.mk Γ (pw c e₁)) * natEq (pw_pos' hc (monus e₂ e₁))
 
 /-! ## Products and sums over primes -/
 
@@ -198,11 +195,8 @@ theorem pc_step {N M : PTm n}
   have eL : Γ ⊢[PRAAx] pw (A N) M * pw (pBt N) M ≐ pw (A (succ N)) M :=
     (pw_mul_base _ _ _).eqSymm.eqTrans (congrPw eA.eqSymm (.eqRefl _))
   refine le_congr eL ?_ m
-  have c₁ := natEq ((congrPw (Γ := Γ) (.eqRefl (two * two)) (E_succ N M)).eqTrans (pw_add _ _ _))
-  have c₂ := natEq ((congrPw (Γ := Γ) (Dn_succ N) (.eqRefl M)).eqTrans (pw_mul_base _ _ _))
-  apply deriveNat; ipra_simps
-  linear_combination -Groth.ι (IPRA.Q.mk Γ (pw (Dn (succ N)) M)) * c₁ -
-    Groth.ι (IPRA.Q.mk Γ (pw (two * two) (E N M))) * Groth.ι (IPRA.Q.mk Γ (pw (two * two) (isP N * quo M N))) * c₂
+  ipra_lc -Groth.ι (IPRA.Q.mk Γ (pw (Dn (succ N)) M)) * natEq ((congrPw (Γ := Γ) (.eqRefl (two * two)) (E_succ N M)).eqTrans (pw_add _ _ _)) -
+    Groth.ι (IPRA.Q.mk Γ (pw (two * two) (E N M))) * Groth.ι (IPRA.Q.mk Γ (pw (two * two) (isP N * quo M N))) * natEq ((congrPw (Γ := Γ) (Dn_succ N) (.eqRefl M)).eqTrans (pw_mul_base _ _ _))
 
 /-- Variables: `0 = N`, `1 = M`. -/
 private abbrev pcF : Fm PTm 2 :=

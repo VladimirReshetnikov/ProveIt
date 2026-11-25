@@ -1,6 +1,6 @@
 import IPRADerivations.Probability.Lotus
 import IPRADerivations.Core.SumLemmas
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Pappus's theorems for finite grids and polygonal chains (`pappus_centroid_ipra_2026-11-15`, `thm:grid-pappus`, `thm:polygon-pappus`)

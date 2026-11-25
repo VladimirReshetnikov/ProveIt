@@ -1,4 +1,6 @@
 import IPRADerivations.Foundations.ChineseRemainder
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Coprimality
@@ -56,12 +58,9 @@ theorem gcd_dvd' {a b : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) :
 theorem dvd_trans' {d e z : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) (he : Γ ⊢[PRAAx] e ≐ succ (pred e))
     (h₁ : Γ ⊢[PRAAx] dvd d e) (h₂ : Γ ⊢[PRAAx] dvd e z) : Γ ⊢[PRAAx] dvd d z := by
   refine dvd_of_eq' hd (w := quo e d * quo z e) ?_
-  have e₁ := natEq (eq_of_dvd' hd h₁); have e₂ := natEq (eq_of_dvd' he h₂)
-  apply deriveNat; ipra_simps
-  linear_combination e₂ + Groth.ι (IPRA.Q.mk Γ (quo z e)) * e₁
+  ipra_lc natEq (eq_of_dvd' he h₂) + Groth.ι (IPRA.Q.mk Γ (quo z e)) * natEq (eq_of_dvd' hd h₁)
 
-theorem one_le_of_pos {e : PTm n} (he : Γ ⊢[PRAAx] e ≐ succ (pred e)) : Γ ⊢[PRAAx] le one e :=
-  le_of_eq_add (d := pred e) (he.eqTrans (by apply deriveNat; ipra_simps; ring))
+alias one_le_of_pos := Common.one_le_of_pos
 
 theorem eq_one_of_dvd_one {e : PTm n} (he : Γ ⊢[PRAAx] e ≐ succ (pred e)) (h : Γ ⊢[PRAAx] dvd e one) :
     Γ ⊢[PRAAx] e ≐ one :=
@@ -118,11 +117,7 @@ theorem eq_one_of_coprime_dvd {d y : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred
 /-! ## Squares and quotients by the gcd -/
 
 /-- `x² ≤ y² → x ≤ y`. -/
-theorem le_of_sq_le {x y : PTm n} (h : Γ ⊢[PRAAx] le (x * x) (y * y)) : Γ ⊢[PRAAx] le x y := by
-  refine .orE (lt_or_le y x) ?_ Prf.hyp0
-  have h₁ : (lt y x :: Γ) ⊢[PRAAx] lt (y * y) (succ y * succ y) :=
-    le_of_eq_add (d := y + y) (by apply deriveNat; ipra_simps; ring)
-  exact le_lt_absurd _ h.wk (le_trans h₁ (sq_le_sq Prf.hyp0))
+alias le_of_sq_le := Common.le_of_sq_le
 
 /-- `x² = y² → x = y`. -/
 theorem sq_inj {x y : PTm n} (h : Γ ⊢[PRAAx] x * x ≐ y * y) : Γ ⊢[PRAAx] x ≐ y :=
@@ -144,9 +139,7 @@ theorem pos_of_eq_mul {x e q : PTm n} (hx : Γ ⊢[PRAAx] x ≐ succ (pred x)) (
 
 theorem square_alg₁ {a a₁ u e t : PTm n} (eA : Γ ⊢[PRAAx] a ≐ u * a₁) (e₁ : Γ ⊢[PRAAx] a₁ ≐ e * t) :
     Γ ⊢[PRAAx] a ≐ (u * e) * t := by
-  have h₁ := natEq eA; have h₂ := natEq e₁
-  apply deriveNat; ipra_simps
-  linear_combination h₁ + Groth.ι (IPRA.Q.mk Γ u) * h₂
+  ipra_lc natEq eA + Groth.ι (IPRA.Q.mk Γ u) * natEq e₁
 
 /-- `gcd(a / g, c / g) = 1` for `g = gcd(a, c)`, `a ≥ 1`. -/
 theorem coprime_quotients {a c : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) :
@@ -172,10 +165,8 @@ theorem coprime_quotients {a c : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a))
 
 theorem square_alg₂ {a b c a₁ c₁ u : PTm n} (h : Γ ⊢[PRAAx] a * b ≐ c * c) (eA : Γ ⊢[PRAAx] a ≐ u * a₁)
     (eC : Γ ⊢[PRAAx] c ≐ u * c₁) : Γ ⊢[PRAAx] u * (a₁ * b) ≐ u * (u * (c₁ * c₁)) := by
-  have h₁ := natEq h; have h₂ := natEq eA; have h₃ := natEq eC
-  apply deriveNat; ipra_simps
-  linear_combination h₁ - Groth.ι (IPRA.Q.mk Γ b) * h₂ +
-    (Groth.ι (IPRA.Q.mk Γ c) + Groth.ι (IPRA.Q.mk Γ u) * Groth.ι (IPRA.Q.mk Γ c₁)) * h₃
+  ipra_lc natEq h - Groth.ι (IPRA.Q.mk Γ b) * natEq eA +
+    (Groth.ι (IPRA.Q.mk Γ c) + Groth.ι (IPRA.Q.mk Γ u) * Groth.ι (IPRA.Q.mk Γ c₁)) * natEq eC
 
 /-- `a b = c²`, `gcd(a, b) = 1`, `a ≥ 1` give `a = gcd(a, c)²`. -/
 theorem square_of_coprime {a b c : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a))
@@ -213,12 +204,9 @@ theorem dvd_of_sq_dvd_sq {d z : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) 
   -- `z₁² = d₁² w` after cancelling `g²`.
   have e₁ : Γ ⊢[PRAAx] (gcd d z * gcd d z) * (quo z (gcd d z) * quo z (gcd d z) * one) ≐
       (gcd d z * gcd d z) * (quo d (gcd d z) * quo d (gcd d z) * quo (z * z) (d * d)) := by
-    have h₁ := natEq ew; have h₂ := natEq eD; have h₃ := natEq eZ
-    apply deriveNat; ipra_simps
-    linear_combination h₁ -
-      (Groth.ι (IPRA.Q.mk Γ z) + Groth.ι (IPRA.Q.mk Γ (gcd d z)) * Groth.ι (IPRA.Q.mk Γ (quo z (gcd d z)))) * h₃ +
-      (Groth.ι (IPRA.Q.mk Γ d) + Groth.ι (IPRA.Q.mk Γ (gcd d z)) * Groth.ι (IPRA.Q.mk Γ (quo d (gcd d z)))) *
-        Groth.ι (IPRA.Q.mk Γ (quo (z * z) (d * d))) * h₂
+    ipra_lc natEq ew -
+      (Groth.ι (IPRA.Q.mk Γ z) + Groth.ι (IPRA.Q.mk Γ (gcd d z)) * Groth.ι (IPRA.Q.mk Γ (quo z (gcd d z)))) * natEq eZ +
+      (Groth.ι (IPRA.Q.mk Γ d) + Groth.ι (IPRA.Q.mk Γ (gcd d z)) * Groth.ι (IPRA.Q.mk Γ (quo d (gcd d z)))) * Groth.ι (IPRA.Q.mk Γ (quo (z * z) (d * d))) * natEq eD
   have e₂ := mul_cancel (pos_mul he he) e₁
   have hzz := pos_mul hz₁ hz₁
   have hdd := pos_mul hd₁ hd₁

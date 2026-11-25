@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.RobinThreePos
 import IPRADerivations.AnalyticNumberTheory.PrimorialLower
 import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.Geometry.HypercubeSplit
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # `ϑ(m²) ≥ m²/4` on the logarithm names (`lcm_bridge.tex`, rough Chebyshev lemma)
@@ -50,12 +51,9 @@ theorem two_pos : Γ ⊢[PRAAx] (two : PTm n) ≐ succ (pred two) := congrSucc (
 /-- `lo(q, 2) ≥ (56/81) e(q)`. -/
 theorem lo2_ge (a b : PTm n) : Γ ⊢[PRAAx] le (num 56 * eb a b * loD a b k2) (num 81 * loN a b k2) := by
   have h := lo_k2 (Γ := Γ) a b
-  have e1 := natEq (Prf.andE₁ h)
-  have e2 := natEq (Prf.andE₂ h)
   refine le_of_eq_add (d := num 59049 * (num 6 * dt a b * (st a b * st a b * (st a b * st a b)) +
     two * (dt a b * dt a b * dt a b) * (st a b * st a b))) ?_
-  apply deriveNat; ipra_simps
-  linear_combination 81 * e1 - 56 * 𝔞 (eb a b) * e2
+  ipra_lc 81 * natEq (Prf.andE₁ h) - 56 * 𝔞 (eb a b) * natEq (Prf.andE₂ h)
 
 /-- `lo(q, K) ≥ (56/81) e(q)` for `K ≥ 2` and `1 ≤ b ≤ a`. -/
 theorem lo_ge {a b K : PTm n} (hb : Γ ⊢[PRAAx] le one b) (hab : Γ ⊢[PRAAx] le b a) (hK : Γ ⊢[PRAAx] le k2 K) :
@@ -65,10 +63,10 @@ theorem lo_ge {a b K : PTm n} (hb : Γ ⊢[PRAAx] le one b) (hab : Γ ⊢[PRAAx]
   have m1 := le_mul_mono c0 (le_refl (loD a b K))
   have m2 := le_mul_mono (le_refl (num 81 : PTm n)) nk
   have m3 : Γ ⊢[PRAAx] le (num 56 * eb a b * loD a b k2 * loD a b K) (num 81 * (loN a b K * loD a b k2)) :=
-    le_trans m1 (le_congr (by apply deriveNat; ipra_simps; ring) (.eqRefl _) m2)
+    le_trans m1 (le_congr (by ipra_ring) (.eqRefl _) m2)
   refine le_cancel_pos (loD_pos hb hab k2) (le_congr ?_ ?_ m3)
-  · apply deriveNat; ipra_simps; ring
-  · apply deriveNat; ipra_simps; ring
+  · ipra_ring
+  · ipra_ring
 
 /-- `b 2^E ≤ a → E ≤ e(a/b)`. -/
 theorem eb_ge {a b E : PTm n} (hb : Γ ⊢[PRAAx] le one b) (hab : Γ ⊢[PRAAx] le b a)
@@ -99,25 +97,21 @@ theorem theta_lower {m t K : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (ht
       le_of_eq_add (d := pred (m * m)) (by apply deriveNat; ipra_simps; linear_combination eP)
     have b : Γ ⊢[PRAAx] le (two * (m * m)) (two * (pw two t * pw two t)) := le_mul_mono (le_refl two) (le_mul_mono ht ht)
     have c : Γ ⊢[PRAAx] two * (pw two t * pw two t) ≐ pw two (succ (t + t)) := by
-      have e1 := natEq (pw_succ (Γ := Γ) two (t + t))
-      have e2 := natEq (pw_add (Γ := Γ) two t t)
-      apply deriveNat; ipra_simps; linear_combination -e1 - 2 * e2
+      ipra_lc -natEq (pw_succ (Γ := Γ) two (t + t)) - 2 * natEq (pw_add (Γ := Γ) two t t)
     exact le_trans a (le_congr (.eqRefl _) c b)
   -- `(P + 1) P^m ≤ 2^F`, `F = 2t + 1 + 2tm`
   have q3 : Γ ⊢[PRAAx] le (succ (m * m) * pw (m * m) m) (pw two (succ (t + t) + (t + t) * m)) :=
     le_congr (.eqRefl _) (pw_add two (succ (t + t)) ((t + t) * m)).eqSymm (le_mul_mono q2 q1)
   have q4 : Γ ⊢[PRAAx] le (pw two (pred (m * m))) (pw two (succ (t + t) + (t + t) * m) * prim (m * m)) :=
     le_trans (primorial_lower hm)
-      (le_congr (by apply deriveNat; ipra_simps; ring) (.eqRefl _) (le_mul_mono q3 (le_refl (prim (m * m)))))
+      (le_congr (by ipra_ring) (.eqRefl _) (le_mul_mono q3 (le_refl (prim (m * m)))))
   -- `F ≤ P − 1`
   have c143 : Γ ⊢[PRAAx] (num 143 : PTm n) ≐ succ (pred (num 143)) := pos_of_one_le (by ipra_le 142)
   have eP := natEq hP
-  have hs := natEq (eq_add_of_le hq)
   have hF : Γ ⊢[PRAAx] le (succ (t + t) + (t + t) * m) (pred (m * m)) := by
     refine le_cancel_pos c143 (le_of_eq_add (d := num 162 * (succ m * t) + num 162 +
       monus (num 143 * (m * m)) (num 448 * succ m * t + num 448)) ?_)
-    apply deriveNat; ipra_simps
-    linear_combination hs - 143 * eP
+    ipra_lc natEq (eq_add_of_le hq) - 143 * eP
   -- `2^E ≤ ∏ p` for `E = P − 1 − F`
   have eE := eq_add_of_le hF
   have q5 : Γ ⊢[PRAAx] le (pw two (succ (t + t) + (t + t) * m) * pw two (monus (pred (m * m)) (succ (t + t) + (t + t) * m)))
@@ -127,19 +121,17 @@ theorem theta_lower {m t K : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (ht
   have hab : Γ ⊢[PRAAx] le one (prim (m * m)) := FactorVector.one_le_pos (prim_pos _)
   have q7 := eb_ge (le_refl one) hab (le_congr (one_mul _).eqSymm (.eqRefl _) q6)
   -- `81 P ≤ 224 E ≤ 224 e`
-  have eEn := natEq eE
   have hPE0 : Γ ⊢[PRAAx] le (num 81 * (m * m)) (num 224 * monus (pred (m * m)) (succ (t + t) + (t + t) * m)) := by
     refine le_of_eq_add (d := monus (num 143 * (m * m)) (num 448 * succ m * t + num 448)) ?_
-    apply deriveNat; ipra_simps
-    linear_combination hs - 224 * eP - 224 * eEn
+    ipra_lc natEq (eq_add_of_le hq) - 224 * eP - 224 * natEq eE
   have hPE := le_trans hPE0 (le_mul_mono (le_refl (num 224 : PTm n)) q7)
   -- `81 P loD ≤ 224 e loD ≤ 4 · 81 loN`
   have lg := lo_ge (le_refl one) hab hK
   have r1 := le_mul_mono hPE (le_refl (loD (prim (m * m)) one K))
   have r2 := le_mul_mono (le_refl (num 4 : PTm n)) lg
   have r3 : Γ ⊢[PRAAx] le (num 81 * (m * m) * loD (prim (m * m)) one K) (num 4 * (num 81 * loN (prim (m * m)) one K)) :=
-    le_trans r1 (le_congr (by apply deriveNat; ipra_simps; ring) (.eqRefl _) r2)
+    le_trans r1 (le_congr (by ipra_ring) (.eqRefl _) r2)
   have c81 : Γ ⊢[PRAAx] (num 81 : PTm n) ≐ succ (pred (num 81)) := pos_of_one_le (by ipra_le 80)
-  exact le_cancel_pos c81 (le_congr (by apply deriveNat; ipra_simps; ring) (by apply deriveNat; ipra_simps; ring) r3)
+  exact le_cancel_pos c81 (le_congr (by ipra_ring) (by ipra_ring) r3)
 
 end LeanProofs.IPRA.AnalyticNumberTheory.LcmBridgeTheta

@@ -1,5 +1,6 @@
 import IPRADerivations.Core.EuclidLemma
 import IPRADerivations.Combinatorics.BinomialIdentities
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The two-modulus Chinese remainder theorem
@@ -47,7 +48,7 @@ theorem rem_eq_of_eq' {M' x y k₁ k₂ : PTm n} (h : Γ ⊢[PRAAx] x + succ M' 
   have u₂ := div_mod_unique (z := x + succ M' * k₁) (q := quo y (succ M') + k₂)
     (by
       refine withEq (Prf.andE₁ dy) fun e => withEq h fun e' => ?_
-      apply deriveNat; ipra_simps; linear_combination e' + e)
+      ipra_lc e' + e)
     (Prf.andE₂ dy)
   exact (Prf.andE₂ u₁).eqSymm.eqTrans (Prf.andE₂ u₂)
 
@@ -67,7 +68,7 @@ theorem dvd_of_rem_eq {M' x z : PTm n} (h : Γ ⊢[PRAAx] rem x (succ M') ≐ re
   have e : Γ ⊢[PRAAx] z + succ M' * quo x (succ M') ≐ succ M' * quo (x + z) (succ M') := by
     refine add_right_cancel (c := rem x (succ M')) ?_
     refine withEq (Prf.andE₁ dx) fun e₁ => withEq (Prf.andE₁ dxz) fun e₂ => withEq h fun e₃ => ?_
-    apply deriveNat; ipra_simps; linear_combination e₂ - e₁ - e₃
+    ipra_lc e₂ - e₁ - e₃
   exact dvd_sub (dvd_of_eq e) (dvd_of_eq (.eqRefl _))
 
 /-! ## The algebra -/
@@ -79,16 +80,10 @@ theorem crt_alg {A B D a' b' c P W Qc r s α β ρ ρ' : PTm n}
     (er : Γ ⊢[PRAAx] r ≐ D * α + ρ) (es : Γ ⊢[PRAAx] s ≐ D * β + ρ') (eρ : Γ ⊢[PRAAx] ρ ≐ ρ') :
     Γ ⊢[PRAAx] (r + A * (P * (β + α * c))) + B * (W * (β + α * c)) ≐
       s + B * (α + Qc * (β + α * c)) := by
-  have h₁ := natEq eA; have h₂ := natEq eB; have h₃ := natEq key; have h₄ := natEq hb
-  have h₅ := natEq er; have h₆ := natEq es; have h₇ := natEq eρ
-  apply deriveNat; ipra_simps
-  linear_combination
-    (Groth.ι (IPRA.Q.mk Γ P) * (Groth.ι (IPRA.Q.mk Γ β) + Groth.ι (IPRA.Q.mk Γ α) * Groth.ι (IPRA.Q.mk Γ c))) * h₁ +
-    (Groth.ι (IPRA.Q.mk Γ W) * (Groth.ι (IPRA.Q.mk Γ β) + Groth.ι (IPRA.Q.mk Γ α) * Groth.ι (IPRA.Q.mk Γ c)) -
-      Groth.ι (IPRA.Q.mk Γ α) -
-      Groth.ι (IPRA.Q.mk Γ Qc) * (Groth.ι (IPRA.Q.mk Γ β) + Groth.ι (IPRA.Q.mk Γ α) * Groth.ι (IPRA.Q.mk Γ c))) * h₂ +
-    (Groth.ι (IPRA.Q.mk Γ D) * (Groth.ι (IPRA.Q.mk Γ β) + Groth.ι (IPRA.Q.mk Γ α) * Groth.ι (IPRA.Q.mk Γ c))) * h₃ +
-    h₅ - h₆ + h₇ - Groth.ι (IPRA.Q.mk Γ D) * Groth.ι (IPRA.Q.mk Γ α) * h₄
+  ipra_lc (Groth.ι (IPRA.Q.mk Γ P) * (Groth.ι (IPRA.Q.mk Γ β) + Groth.ι (IPRA.Q.mk Γ α) * Groth.ι (IPRA.Q.mk Γ c))) * natEq eA +
+    (Groth.ι (IPRA.Q.mk Γ W) * (Groth.ι (IPRA.Q.mk Γ β) + Groth.ι (IPRA.Q.mk Γ α) * Groth.ι (IPRA.Q.mk Γ c)) - Groth.ι (IPRA.Q.mk Γ α) - Groth.ι (IPRA.Q.mk Γ Qc) * (Groth.ι (IPRA.Q.mk Γ β) + Groth.ι (IPRA.Q.mk Γ α) * Groth.ι (IPRA.Q.mk Γ c))) * natEq eB +
+    (Groth.ι (IPRA.Q.mk Γ D) * (Groth.ι (IPRA.Q.mk Γ β) + Groth.ι (IPRA.Q.mk Γ α) * Groth.ι (IPRA.Q.mk Γ c))) * natEq key +
+    natEq er - natEq es + natEq eρ - Groth.ι (IPRA.Q.mk Γ D) * Groth.ι (IPRA.Q.mk Γ α) * natEq hb
 
 /-- Bézout's first case, divided by the gcd. -/
 theorem bezout_reduced₁ {g A B D a' b' U V : PTm n} (hD : Γ ⊢[PRAAx] D ≐ succ (pred D))
@@ -96,9 +91,7 @@ theorem bezout_reduced₁ {g A B D a' b' U V : PTm n} (hD : Γ ⊢[PRAAx] D ≐ 
     (eA : Γ ⊢[PRAAx] A ≐ D * a') (eB : Γ ⊢[PRAAx] B ≐ D * b') :
     Γ ⊢[PRAAx] U * a' + b' * zero ≐ one + V * b' := by
   refine Combinatorics.BinomialIdentities.mul_cancel hD ?_
-  have h₁ := natEq h; have h₂ := natEq hg; have h₃ := natEq eA; have h₄ := natEq eB
-  apply deriveNat; ipra_simps
-  linear_combination -h₁ + h₂ + Groth.ι (IPRA.Q.mk Γ V) * h₄ - Groth.ι (IPRA.Q.mk Γ U) * h₃
+  ipra_lc -natEq h + natEq hg + Groth.ι (IPRA.Q.mk Γ V) * natEq eB - Groth.ι (IPRA.Q.mk Γ U) * natEq eA
 
 /-- Bézout's second case, divided by the gcd and multiplied by `b' - 1`. -/
 theorem bezout_reduced₂ {g A B D a' b' c U V : PTm n} (hD : Γ ⊢[PRAAx] D ≐ succ (pred D))
@@ -119,31 +112,24 @@ theorem unique_alg₁ {A A₁ B B₁ D a' b' z k w : PTm n}
     (eA : Γ ⊢[PRAAx] A ≐ D * a') (eB : Γ ⊢[PRAAx] B ≐ D * b') (hA : Γ ⊢[PRAAx] A ≐ A₁)
     (hB : Γ ⊢[PRAAx] B ≐ B₁) (ez : Γ ⊢[PRAAx] z ≐ A₁ * k) (ez' : Γ ⊢[PRAAx] z ≐ B₁ * w) :
     Γ ⊢[PRAAx] D * (a' * k) ≐ D * (b' * w) := by
-  have h₁ := natEq eA; have h₂ := natEq eB; have h₃ := natEq hA; have h₄ := natEq hB
-  have h₅ := natEq ez; have h₆ := natEq ez'
-  apply deriveNat; ipra_simps
-  linear_combination h₆ - h₅ + Groth.ι (IPRA.Q.mk Γ k) * h₃ - Groth.ι (IPRA.Q.mk Γ w) * h₄ -
-    Groth.ι (IPRA.Q.mk Γ k) * h₁ + Groth.ι (IPRA.Q.mk Γ w) * h₂
+  ipra_lc natEq ez' - natEq ez + Groth.ι (IPRA.Q.mk Γ k) * natEq hA - Groth.ι (IPRA.Q.mk Γ w) * natEq hB -
+    Groth.ι (IPRA.Q.mk Γ k) * natEq eA + Groth.ι (IPRA.Q.mk Γ w) * natEq eB
 
 /-- The Bézout relation times `k`, with `a' k = b' w`. -/
 theorem unique_alg₂ {a' b' b₁ P W Qc k w : PTm n}
     (key : Γ ⊢[PRAAx] P * a' + b' * W ≐ one + Qc * b') (hk : Γ ⊢[PRAAx] a' * k ≐ b' * w)
     (hb : Γ ⊢[PRAAx] b' ≐ b₁) :
     Γ ⊢[PRAAx] k + b₁ * (Qc * k) ≐ b₁ * (P * w + W * k) := by
-  have h₁ := natEq key; have h₂ := natEq hk; have h₃ := natEq hb
-  apply deriveNat; ipra_simps
-  linear_combination -Groth.ι (IPRA.Q.mk Γ k) * h₁ + Groth.ι (IPRA.Q.mk Γ P) * h₂ -
-    (Groth.ι (IPRA.Q.mk Γ Qc) * Groth.ι (IPRA.Q.mk Γ k) - Groth.ι (IPRA.Q.mk Γ W) * Groth.ι (IPRA.Q.mk Γ k) -
-      Groth.ι (IPRA.Q.mk Γ P) * Groth.ι (IPRA.Q.mk Γ w)) * h₃
+  ipra_lc -Groth.ι (IPRA.Q.mk Γ k) * natEq key + Groth.ι (IPRA.Q.mk Γ P) * natEq hk -
+    (Groth.ι (IPRA.Q.mk Γ Qc) * Groth.ι (IPRA.Q.mk Γ k) - Groth.ι (IPRA.Q.mk Γ W) * Groth.ι (IPRA.Q.mk Γ k) - Groth.ι (IPRA.Q.mk Γ P) * Groth.ι (IPRA.Q.mk Γ w)) * natEq hb
 
 /-- `z = A₁ k`, `k = b₁ m` give `z = (A b') m`. -/
 theorem unique_alg₃ {A A₁ b' b₁ z k m : PTm n} (hA : Γ ⊢[PRAAx] A ≐ A₁) (hb : Γ ⊢[PRAAx] b' ≐ b₁)
     (ez : Γ ⊢[PRAAx] z ≐ A₁ * k) (ek : Γ ⊢[PRAAx] k ≐ b₁ * m) :
     Γ ⊢[PRAAx] z ≐ (A * b') * m := by
-  have h₁ := natEq hA; have h₂ := natEq hb; have h₃ := natEq ez; have h₄ := natEq ek
-  apply deriveNat; ipra_simps
-  linear_combination h₃ + Groth.ι (IPRA.Q.mk Γ A₁) * h₄ - Groth.ι (IPRA.Q.mk Γ m) * Groth.ι (IPRA.Q.mk Γ b') * h₁ -
-    Groth.ι (IPRA.Q.mk Γ m) * Groth.ι (IPRA.Q.mk Γ A₁) * h₂
+  ipra_lc natEq ez + Groth.ι (IPRA.Q.mk Γ A₁) * natEq ek -
+    Groth.ι (IPRA.Q.mk Γ m) * Groth.ι (IPRA.Q.mk Γ b') * natEq hA -
+    Groth.ι (IPRA.Q.mk Γ m) * Groth.ι (IPRA.Q.mk Γ A₁) * natEq hb
 
 /-! ## The cores -/
 
@@ -161,7 +147,7 @@ theorem exists_core {A B G' a' b' c P W Qc r s : PTm n}
   have dr := div_mod (Γ := Γ) r G'
   have ds := div_mod (Γ := Γ) s G'
   refine .andI (rem_eq_of_eq hA (k₁ := zero) (k₂ := P * (quo s (succ G') + quo r (succ G') * c))
-    (by apply deriveNat; ipra_simps; ring)) ?_
+    (by ipra_ring)) ?_
   exact rem_eq_of_eq hB (crt_alg eA eB key hb (Prf.andE₁ dr) (Prf.andE₁ ds) hc)
 
 /-- Uniqueness for `x ≤ y`, given a reduced Bézout relation. -/
@@ -189,7 +175,7 @@ theorem unique_core {A B D a' b' P W Qc x y : PTm n}
   have hL := pos_mul hA hb
   refine (rem_eq_of_eq hL (k₁ := zero) (k₂ := quo (quo (monus y x) (succ (pred A))) (succ (pred b'))) ?_).eqSymm
   refine withEq ey fun e₁ => withEq hz fun e₂ => ?_
-  apply deriveNat; ipra_simps; linear_combination e₁ + e₂
+  ipra_lc e₁ + e₂
 
 /-! ## The theorems at arbitrary terms -/
 

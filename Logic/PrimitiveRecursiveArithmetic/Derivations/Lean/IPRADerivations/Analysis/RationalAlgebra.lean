@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.RationalRepresentations
 import IPRADerivations.Analysis.RationalFiniteSum
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Canonical rational algebra and affine order
@@ -47,18 +48,12 @@ theorem negative_congr {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) :
 theorem add_commutative (a b : PTm n) : Γ ⊢[PRAAx] add a b ≐ add b a := by
   apply RationalFiniteSum.canonical_equal _ _ _ _ _ _ (add_guard a b) (add_guard b a)
     (add_value a b) (add_value b a) (product_denominator_positive a b) (product_denominator_positive b a)
-  apply ZT.derive
-  simp only [addNumerator,productDenominator,ZT.toZ_add,ZT.toZ_mul,ZT.toZ_ofNat]
-  ipra_simps
-  ring
+  ipra_lc [addNumerator, productDenominator]
 
 theorem multiply_commutative (a b : PTm n) : Γ ⊢[PRAAx] multiply a b ≐ multiply b a := by
   apply RationalFiniteSum.canonical_equal _ _ _ _ _ _ (multiply_guard a b) (multiply_guard b a)
     (multiply_value a b) (multiply_value b a) (product_denominator_positive a b) (product_denominator_positive b a)
-  apply ZT.derive
-  simp only [productDenominator,ZT.toZ_mul,ZT.toZ_ofNat]
-  ipra_simps
-  ring
+  ipra_lc [productDenominator]
 
 theorem add_associative (a b c : PTm n) : Γ ⊢[PRAAx] add (add a b) c ≐ add a (add b c) := by
   have hl := represents_add (Γ := Γ) (add a b) c _ _ _ _ (add_value a b) (represents_self c)
@@ -66,10 +61,7 @@ theorem add_associative (a b c : PTm n) : Γ ⊢[PRAAx] add (add a b) c ≐ add 
   apply RationalFiniteSum.canonical_equal _ _ _ _ _ _ (add_guard _ _) (add_guard _ _) hl hr
     (positive_product (product_denominator_positive a b) (denominator_positive c))
     (positive_product (denominator_positive a) (product_denominator_positive b c))
-  apply ZT.derive
-  simp only [addNumerator,productDenominator,ZT.toZ_add,ZT.toZ_mul,ZT.toZ_ofNat]
-  ipra_simps
-  ring
+  ipra_lc [addNumerator, productDenominator]
 
 theorem multiply_associative (a b c : PTm n) : Γ ⊢[PRAAx]
     multiply (multiply a b) c ≐ multiply a (multiply b c) := by
@@ -78,10 +70,7 @@ theorem multiply_associative (a b c : PTm n) : Γ ⊢[PRAAx]
   apply RationalFiniteSum.canonical_equal _ _ _ _ _ _ (multiply_guard _ _) (multiply_guard _ _) hl hr
     (positive_product (product_denominator_positive a b) (denominator_positive c))
     (positive_product (denominator_positive a) (product_denominator_positive b c))
-  apply ZT.derive
-  simp only [productDenominator,ZT.toZ_mul,ZT.toZ_ofNat]
-  ipra_simps
-  ring
+  ipra_lc [productDenominator]
 
 theorem multiply_add (a b c : PTm n) : Γ ⊢[PRAAx]
     multiply a (add b c) ≐ add (multiply a b) (multiply a c) := by
@@ -91,10 +80,7 @@ theorem multiply_add (a b c : PTm n) : Γ ⊢[PRAAx]
   apply RationalFiniteSum.canonical_equal _ _ _ _ _ _ (multiply_guard _ _) (add_guard _ _) hl hr
     (positive_product (denominator_positive a) (product_denominator_positive b c))
     (positive_product (product_denominator_positive a b) (product_denominator_positive a c))
-  apply ZT.derive
-  simp only [productDenominator,addNumerator,ZT.toZ_mul,ZT.toZ_add,ZT.toZ_ofNat]
-  ipra_simps
-  ring
+  ipra_lc [productDenominator, addNumerator]
 
 theorem multiply_negative (a b : PTm n) : Γ ⊢[PRAAx]
     multiply a (negative b) ≐ negative (multiply a b) := by
@@ -102,18 +88,13 @@ theorem multiply_negative (a b : PTm n) : Γ ⊢[PRAAx]
   have hr := represents_negative (Γ := Γ) (multiply a b) _ _ (multiply_value a b)
   apply RationalFiniteSum.canonical_equal _ _ _ _ _ _ (multiply_guard _ _) (negative_guard _) hl hr
     (product_denominator_positive a b) (product_denominator_positive a b)
-  apply ZT.derive
-  simp only [productDenominator,ZT.toZ_mul,ZT.toZ_neg,ZT.toZ_ofNat]
-  ipra_simps
-  ring
+  ipra_lc [productDenominator]
 
 theorem negative_involution (a : PTm n) : Γ ⊢[PRAAx] negative (negative a) ≐ recode a := by
   have hl := represents_negative (Γ := Γ) (negative a) _ _ (negative_value a)
   apply RationalFiniteSum.canonical_equal _ _ _ _ _ _ (negative_guard _) (recode_guard _) hl
     (recode_value a) (denominator_positive a) (denominator_positive a)
-  apply ZT.derive
-  simp only [ZT.toZ_mul,ZT.toZ_neg,ZT.toZ_ofNat]
-  ring
+  ipra_lc
 
 def half : PTm n := RationalIntegerNormalization.normalize (ZT.natLit 1) two
 def minusOne : PTm n := RationalIntegerNormalization.normalize (-(ZT.natLit 1)) one
@@ -133,10 +114,7 @@ theorem negative_minus_multiply (a : PTm n) : Γ ⊢[PRAAx] negative a ≐ multi
   have hr := represents_multiply (Γ := Γ) minusOne a _ _ _ _ minus_one_value (represents_self a)
   apply RationalFiniteSum.canonical_equal _ _ _ _ _ _ (negative_guard _) (multiply_guard _ _)
     (negative_value a) hr (denominator_positive a) (positive_product (le_refl one) (denominator_positive a))
-  apply ZT.derive
-  simp only [ZT.toZ_mul,ZT.toZ_neg,ZT.toZ_ofNat,ZT.toZ_natLit]
-  ipra_simps
-  ring
+  ipra_lc
 
 theorem midpoint_value (a b : PTm n) : Γ ⊢[PRAAx]
     represents (midpoint a b) (addNumerator a b) (two*productDenominator a b) := by
@@ -157,10 +135,7 @@ theorem midpoint_half_add (a b : PTm n) : Γ ⊢[PRAAx] midpoint a b ≐ multipl
     (multiply_guard _ _) (midpoint_value a b) hr
     (positive_product two_positive (product_denominator_positive a b))
     (positive_product two_positive (product_denominator_positive a b))
-  apply ZT.derive
-  simp only [ZT.toZ_mul,ZT.toZ_ofNat,ZT.toZ_natLit]
-  ipra_simps
-  ring
+  ipra_lc
 
 theorem multiply_midpoint (c a b : PTm n) : Γ ⊢[PRAAx]
     multiply c (midpoint a b) ≐ midpoint (multiply c a) (multiply c b) :=
@@ -176,10 +151,7 @@ theorem midpoint_self (a : PTm n) : Γ ⊢[PRAAx] midpoint a a ≐ recode a := b
     (RationalNormalForm.normalize_well_formed _ _ (midpoint_denominator_positive a a)) (recode_guard a)
     (midpoint_value a a) (recode_value a)
     (positive_product two_positive (product_denominator_positive a a)) (denominator_positive a)
-  apply ZT.derive
-  simp only [addNumerator,productDenominator,ZT.toZ_add,ZT.toZ_mul,ZT.toZ_ofNat]
-  ipra_simps
-  ring
+  ipra_lc [addNumerator, productDenominator]
 
 theorem negative_antitone (a b : PTm n) (h : Γ ⊢[PRAAx] rationalLE a b) :
     Γ ⊢[PRAAx] rationalLE (negative b) (negative a) := by

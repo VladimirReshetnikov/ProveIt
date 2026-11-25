@@ -1,5 +1,6 @@
 import IPRADerivations.Core.ParityArith
 import IPRADerivations.Core.SumSplit
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Crossing parity of a polygonal chain
@@ -60,9 +61,7 @@ theorem tele_base (h : PTm 2) (x : PTm n) :
     Γ ⊢[PRAAx] par (ap2 (sumF (stB h)) zero x + inst2 h zero x + inst2 h zero x) ≐ zero := by
   have e : Γ ⊢[PRAAx] ap2 (sumF (stB h)) zero x + inst2 h zero x + inst2 h zero x ≐
       two * inst2 h zero x := by
-    have z := natEq (sum_zero (Γ := Γ) (stB h) x)
-    apply deriveNat; ipra_simps
-    linear_combination z
+    ipra_lc natEq (sum_zero (Γ := Γ) (stB h) x)
   exact (congrAp1 parF e).eqTrans (par_double _)
 
 theorem tele_step (h : PTm 2) {N x : PTm n}
@@ -72,9 +71,7 @@ theorem tele_step (h : PTm 2) {N x : PTm n}
   rw [inst2_st] at s
   have e : Γ ⊢[PRAAx] ap2 (sumF (stB h)) (succ N) x + inst2 h zero x + inst2 h (succ N) x ≐
       (ap2 (sumF (stB h)) N x + inst2 h zero x + inst2 h N x) + two * inst2 h (succ N) x := by
-    have a := natEq s
-    apply deriveNat; ipra_simps
-    linear_combination a
+    ipra_lc natEq s
   exact (congrAp1 parF e).eqTrans ((par_add_two _ _).eqTrans ih)
 
 /-- Variables: `0 = N` (induction), `1 = x`. -/
@@ -100,7 +97,7 @@ theorem straddle_parity (h : PTm 2) (N x : PTm n) :
 theorem open_chain_parity (h : PTm 2) (N x : PTm n) :
     Γ ⊢[PRAAx] par (ap2 (sumF (stB h)) N x) ≐ par (inst2 h zero x + inst2 h N x) := by
   refine par_eq_of_add_even ((congrAp1 parF ?_).eqTrans (straddle_parity h N x))
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- A closed chain has an even number of straddles. -/
 theorem closed_chain_even (h : PTm 2) {N x : PTm n} (hc : Γ ⊢[PRAAx] inst2 h N x ≐ inst2 h zero x) :
@@ -113,7 +110,7 @@ theorem closed_chain_even (h : PTm 2) {N x : PTm n} (hc : Γ ⊢[PRAAx] inst2 h 
 /-- `(a + b) + (b + c) + (c + a)` is even. -/
 theorem triangle_xor (a b c : PTm n) : Γ ⊢[PRAAx] par ((a + b) + (b + c) + (c + a)) ≐ zero := by
   have e : Γ ⊢[PRAAx] (a + b) + (b + c) + (c + a) ≐ two * (a + b + c) := by
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   exact (congrAp1 parF e).eqTrans (par_double _)
 
 /-- `(a ⊕ b) ⊕ (b ⊕ c) ⊕ (c ⊕ a) = 0`, with `x ⊕ y = par (x + y)`. -/

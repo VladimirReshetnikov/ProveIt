@@ -4,6 +4,7 @@ import IPRADerivations.Core.SumPalindrome
 import IPRADerivations.AnalyticNumberTheory.Valuation
 import IPRADerivations.Core.ProdLemmas
 import IPRADerivations.Core.IntOrder
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Geometric domination of the other terms
@@ -53,20 +54,15 @@ theorem geom4_step {K x : PTm n}
     Γ ⊢[PRAAx] (two + one) * ap2 (sumF p4B) (succ K) x + one ≐ pw four (succ K) := by
   have s := sum_succ' (Γ := Γ) p4B K x
   rw [inst2_p4] at s
-  have a := natEq s; have i := natEq ih; have p := natEq (pw_succ (Γ := Γ) four K)
-  apply deriveNat; ipra_simps
-  linear_combination 3 * a + 4 * i - p - 3 * i
+  ipra_lc 3 * natEq s + 4 * natEq ih - natEq (pw_succ (Γ := Γ) four K) - 3 * natEq ih
 
 /-- Variables: `0 = K` (induction), `1 = x`. -/
 private abbrev g4F : Fm PTm 2 := (two + one) * ap2 (sumF p4B) (var 0) (var 1) + one ≐ pw four (var 0)
 
 private theorem g4₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] g4F := by
   refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have z := natEq (sum_zero (Γ := []) p4B (var 0 : PTm 1))
-    have p := natEq (pw_zero (Γ := []) (four : PTm 1))
-    apply deriveNat; ipra_simps; linear_combination 3 * z - p
+  · ipra_lc [Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] 3 * natEq (sum_zero (Γ := []) p4B (var 0 : PTm 1)) -
+      natEq (pw_zero (Γ := []) (four : PTm 1))
   · simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.repl_zero, repl_one,
       ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
     exact geom4_step Prf.hyp0
@@ -79,14 +75,13 @@ theorem geom4 (K x : PTm n) : Γ ⊢[PRAAx] (two + one) * ap2 (sumF p4B) K x + o
 /-! ## Domination below -/
 
 theorem four_pos : Γ ⊢[PRAAx] (four : PTm n) ≐ succ (pred four) :=
-  pos_of_eq_succ (c := succ (succ (succ zero))) (by apply deriveNat; ipra_simps; ring)
+  pos_of_eq_succ (c := succ (succ (succ zero))) (by ipra_ring)
 
 theorem dom_pt {i K V t : PTm n} (hi : Γ ⊢[PRAAx] lt i K) (hh : Γ ⊢[PRAAx] le (pw four (monus K i) * t) V) :
     Γ ⊢[PRAAx] le (pw four K * t) (V * pw four i) := by
   have eK : Γ ⊢[PRAAx] K ≐ monus K i + i := (eq_add_of_le (le_of_lt hi)).eqTrans (add_comm _ _)
   have e : Γ ⊢[PRAAx] pw four K * t ≐ (pw four (monus K i) * t) * pw four i := by
-    have a := natEq ((congrAp2 powF eK (.eqRefl four)).eqTrans (pw_add (Γ := Γ) four (monus K i) i))
-    apply deriveNat; ipra_simps; linear_combination 𝔞(t) * a
+    ipra_lc 𝔞(t) * natEq ((congrAp2 powF eK (.eqRefl four)).eqTrans (pw_add (Γ := Γ) four (monus K i) i))
   exact le_congr e.eqSymm (.eqRefl _) (mul_le_mul_right (pw four i) hh)
 
 /-- If `4^{K−i} T_i ≤ V` for `i < K`, then `3 ∑_{i<K} T_i ≤ V`. -/
@@ -105,9 +100,8 @@ theorem geo_dom (T : PTm 2) (K V x : PTm n)
     exact dom_pt Prf.hyp0 hh
   have L := le_congr (sum_const_mul T K (pw four K) x) (sum_const_mul p4B K V x) P
   have L₂ := mul_le_mul_right (two + one) L
-  have g := natEq (geom4 (Γ := Γ) K x)
   have e : Γ ⊢[PRAAx] V * ap2 (sumF p4B) K x * (two + one) + V ≐ pw four K * V := by
-    apply deriveNat; ipra_simps; linear_combination 𝔞(V) * g
+    ipra_lc 𝔞(V) * natEq (geom4 (Γ := Γ) K x)
   have L₃ := le_trans L₂ (le_congr (.eqRefl _) e (le_add_right _ _))
   have pp := pw_pos' (four_pos (Γ := Γ)) K
   refine mul_le_cancel (d' := pred (pw four K)) (le_congr ?_ ?_ L₃)
@@ -124,9 +118,8 @@ theorem monus_pred {v K : PTm n} (hv : Γ ⊢[PRAAx] lt v K) : Γ ⊢[PRAAx] mon
   exact (congrMonus a (.eqRefl _)).eqTrans (add_monus _ _)
 
 theorem lt_rfl {v K : PTm n} (hv : Γ ⊢[PRAAx] lt v K) : Γ ⊢[PRAAx] lt (monus K (succ v)) K := by
-  have e := natEq (eq_add_of_le hv)
   refine le_of_eq_add (d := v) ?_
-  apply deriveNat; ipra_simps; linear_combination e
+  ipra_lc natEq (eq_add_of_le hv)
 
 /-- If `4^{j+1} T_j ≤ V` for `j < K`, then `3 ∑_{j<K} T_j ≤ V`. -/
 theorem geo_dom_up (T : PTm 2) (K V x : PTm n)
@@ -154,7 +147,7 @@ theorem other_terms (L U : PTm 2) (k m V x : PTm n)
     (hup : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift m) ⟶
       le (pw four (succ (var 0)) * inst2 U (var 0) (Syn.shift x)) (Syn.shift V))) :
     Γ ⊢[PRAAx] le ((two + one) * (ap2 (sumF L) k x + ap2 (sumF U) m x)) (V + V) :=
-  le_congr (by apply deriveNat; ipra_simps; ring) (.eqRefl _)
+  le_congr (by ipra_ring) (.eqRefl _)
     (add_le_add₂ (geo_dom L k V x hlo) (geo_dom_up U m V x hup))
 
 /-! ## The decrease -/
@@ -177,14 +170,13 @@ theorem decrease (hVA : Γ ⊢[PRAAx] le V A)
     Γ ⊢[PRAAx] zle (ZT.sq (x₁ + x₂) + ZT.sq (y₁ + y₂))
       (ZT.ofNat (monus (twelve * A) (three * V) * monus (twelve * A) (three * V))) := by
   have t := triangle h₁ h₂
-  have e := natEq (eq_add_of_le hVA)
   have m₁ : Γ ⊢[PRAAx] monus (twelve * A) (eleven * V) ≐ V + twelve * monus A V := by
     have a : Γ ⊢[PRAAx] twelve * A ≐ (V + twelve * monus A V) + eleven * V := by
-      apply deriveNat; ipra_simps; linear_combination 12 * e
+      ipra_lc 12 * natEq (eq_add_of_le hVA)
     exact (congrMonus a (.eqRefl _)).eqTrans (add_monus _ _)
   have m₃ : Γ ⊢[PRAAx] monus (twelve * A) (three * V) ≐ num 9 * V + twelve * monus A V := by
     have a : Γ ⊢[PRAAx] twelve * A ≐ (num 9 * V + twelve * monus A V) + three * V := by
-      apply deriveNat; ipra_simps; linear_combination 12 * e
+      ipra_lc 12 * natEq (eq_add_of_le hVA)
     exact (congrMonus a (.eqRefl _)).eqTrans (add_monus _ _)
   have ab : Γ ⊢[PRAAx] monus (twelve * A) (eleven * V) + eight * V ≐ monus (twelve * A) (three * V) := by
     have a := natEq m₁; have b := natEq m₃
@@ -197,10 +189,9 @@ theorem decrease (hVA : Γ ⊢[PRAAx] le V A)
 `A − V/4 ≤ (1 − 1/(4D)) A`. -/
 theorem decrease_factor (hVA : Γ ⊢[PRAAx] le V A) (hD : Γ ⊢[PRAAx] le A (Dd * V)) :
     Γ ⊢[PRAAx] le (Dd * monus (twelve * A) (three * V)) (three * A * monus (num 4 * Dd) one + zero) := by
-  have e := natEq (eq_add_of_le hVA)
   have m : Γ ⊢[PRAAx] monus (twelve * A) (three * V) ≐ num 9 * V + twelve * monus A V := by
     have a : Γ ⊢[PRAAx] twelve * A ≐ (num 9 * V + twelve * monus A V) + three * V := by
-      apply deriveNat; ipra_simps; linear_combination 12 * e
+      ipra_lc 12 * natEq (eq_add_of_le hVA)
     exact (congrMonus a (.eqRefl _)).eqTrans (add_monus _ _)
   -- `D ≥ 1` since `A ≤ D V` and, if `D = 0`, then `A = 0 = V` and both sides vanish.
   refine .orE (zero_or_succ Dd) ?_ ?_
@@ -211,7 +202,7 @@ theorem decrease_factor (hVA : Γ ⊢[PRAAx] le V A) (hD : Γ ⊢[PRAAx] le A (D
     have m4 : ((Dd ≐ succ (pred Dd)) :: Γ) ⊢[PRAAx] monus (num 4 * Dd) one ≐ num 3 * Dd + pred Dd := by
       have a := natEq s
       have b : ((Dd ≐ succ (pred Dd)) :: Γ) ⊢[PRAAx] num 4 * Dd ≐ (num 3 * Dd + pred Dd) + one := by
-        apply deriveNat; ipra_simps; linear_combination 4 * a - 3 * a
+        ipra_lc 4 * a - 3 * a
       exact (congrMonus b (.eqRefl _)).eqTrans (add_monus _ _)
     have e₂ := natEq (eq_add_of_le (hD.wk (ψ := Dd ≐ succ (pred Dd))))
     have e₁ := natEq (eq_add_of_le (hVA.wk (ψ := Dd ≐ succ (pred Dd))))

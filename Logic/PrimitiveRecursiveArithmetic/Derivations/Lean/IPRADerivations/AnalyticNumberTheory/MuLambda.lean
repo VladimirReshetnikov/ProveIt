@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.MangoldtMobius
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The Möbius–Mangoldt convolution
@@ -66,7 +67,7 @@ theorem lambda_mobius_neg' {k : PTm n} (hk : Γ ⊢[PRAAx] k ≐ succ (pred k)) 
   refine .orE (lt_or_le one k) (lambda_mobius_neg w Prf.hyp0) ?_
   let C : List (Fm PTm n) := le k one :: Γ
   have k1 : C ⊢[PRAAx] k ≐ one :=
-    le_antisymm Prf.hyp0 (le_of_eq_add (d := pred k) (hk.wk.eqTrans (by apply deriveNat; ipra_simps; ring)))
+    le_antisymm Prf.hyp0 (le_of_eq_add (d := pred k) (hk.wk.eqTrans (by ipra_ring)))
   have lz : C ⊢[PRAAx] Lam w k zero ≐ zero :=
     (congrAp2 (sumF (lamB w)) (congrSucc k1) (congrPairT k1 (.eqRefl _))).eqTrans (lam_one w _)
   have pz : C ⊢[PRAAx] ap2 (sumF (RLP w)) (succ k) k ≐ zero := by
@@ -137,9 +138,9 @@ theorem rl_pt {e k N : PTm n} (he : Γ ⊢[PRAAx] le (succ e) (succ k)) (hkN : �
     have mP : C ⊢[PRAAx] muP (succ N) e ≐ muP (succ k) e := (Prf.andE₁ m1).eqTrans (Prf.andE₁ m2).eqSymm
     have mN : C ⊢[PRAAx] muN (succ N) e ≐ muN (succ k) e := (Prf.andE₂ m1).eqTrans (Prf.andE₂ m2).eqSymm
     exact .andI (a.wk.eqTrans ((congrMul (.eqRefl _) (congrMul mP (.eqRefl _))).eqTrans
-        (by apply deriveNat; ipra_simps; ring)))
+        (by ipra_ring)))
       (b.wk.eqTrans ((congrMul (.eqRefl _) (congrMul mN (.eqRefl _))).eqTrans
-        (by apply deriveNat; ipra_simps; ring)))
+        (by ipra_ring)))
 
 theorem iv_rl {k N : PTm n} (hkN : Γ ⊢[PRAAx] le (succ k) (succ N)) :
     Γ ⊢[PRAAx] (ap2 (sumF (ivB (fP w))) (succ k) (pairT k N) ≐ ap2 (sumF (RLP w)) (succ k) k) ⋏
@@ -242,11 +243,11 @@ theorem row_diff {N : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) (d : PTm n
         have ww := natEq eN; have wp := natEq hd
         have hkN : C ⊢[PRAAx] le (succ (quo N d)) (succ N) := by
           refine (succ_monus_succ _ _).eqTrans (le_of_eq_add (d := pred d * quo N d) ?_)
-          apply deriveNat; ipra_simps; linear_combination ww + 𝔞 (quo N d) * wp
-        exact (congrMul (.eqRefl _) (key_inner w hk hkN)).eqTrans (by apply deriveNat; ipra_simps; ring)
+          ipra_lc ww + 𝔞 (quo N d) * wp
+        exact (congrMul (.eqRefl _) (key_inner w hk hkN)).eqTrans (by ipra_ring)
       · let C : List (Fm PTm n) := neg (rem N d ≐ zero) :: (d ≐ succ (pred d)) :: Γ
         have zz : C ⊢[PRAAx] sg d * eqb (rem N d) zero ≐ zero :=
-          (congrMul (.eqRefl _) (eqb_of_ne Prf.hyp0)).eqTrans (by apply deriveNat; ipra_simps; ring)
+          (congrMul (.eqRefl _) (eqb_of_ne Prf.hyp0)).eqTrans (by ipra_ring)
         have z : ∀ {Y : PTm n}, C ⊢[PRAAx] ((sg d * eqb (rem N d) zero) * X) * Y ≐ zero :=
           fun {Y} => zero_mul_l (zero_mul_l zz _) _
         exact z.eqTrans ((congrAdd z z).eqTrans (add_zero _)).eqSymm
@@ -274,9 +275,7 @@ theorem mu_lambda_conv {N : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) :
     refine sum_add2 _ _ _ (.allI (.impI ?_))
     rw [shift_pairT, hs]
     exact Prf.andE₂ (row_diff w hN'.wk _)
-  have s1 := natEq sP; have s2 := natEq sN; have i1 := natEq I₁; have i2 := natEq I₂
-  apply deriveNat; ipra_simps
-  linear_combination -s1 + s2 + i1 - i2
+  ipra_lc -natEq sP + natEq sN + natEq I₁ - natEq I₂
 
 /-- `μ^±_{N+1}(a) Λ_w(b)`, over `0 = a`, `1 = b`, `2 = N`. -/
 abbrev mlamP : PTm 3 := muP (succ (var 2)) (var 0) * ap2 (sumF (lamB w)) (succ (var 1)) (pairT (var 1) zero)
@@ -293,16 +292,13 @@ theorem mu_lambda {N : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) :
   have cP : Γ ⊢[PRAAx] ap2 (sumF (DivisorSwap.SB (mlamP w))) (succ N) N ≐ ap2 (sumF (QAP w)) (succ N) N := by
     refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
     rw [DivisorSwap.inst2_SB, inst3_mlamP, inst2_QAP]
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   have cN : Γ ⊢[PRAAx] ap2 (sumF (DivisorSwap.SB (mlamN w))) (succ N) N ≐ ap2 (sumF (QAN w)) (succ N) N := by
     refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
     rw [DivisorSwap.inst2_SB, inst3_mlamN, inst2_QAN]
-    apply deriveNat; ipra_simps; ring
-  have sP := natEq (DivisorSwap.div_swap (mlamP w) hN)
-  have sN := natEq (DivisorSwap.div_swap (mlamN w) hN)
-  have a := natEq cP; have b := natEq cN; have c := natEq (mu_lambda_conv w hN)
-  apply deriveNat; ipra_simps
-  linear_combination -sP + a + c - b + sN
+    ipra_ring
+  ipra_lc -natEq (DivisorSwap.div_swap (mlamP w) hN) + natEq cP + natEq (mu_lambda_conv w hN) - natEq cN +
+    natEq (DivisorSwap.div_swap (mlamN w) hN)
 
 end MuLambda
 

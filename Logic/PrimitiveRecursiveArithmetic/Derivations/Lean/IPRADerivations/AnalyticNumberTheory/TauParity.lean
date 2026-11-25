@@ -1,7 +1,7 @@
 import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.AnalyticNumberTheory.DivisorHyperbola
 import IPRADerivations.AnalyticNumberTheory.MertensTotient
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The parity of the divisor function

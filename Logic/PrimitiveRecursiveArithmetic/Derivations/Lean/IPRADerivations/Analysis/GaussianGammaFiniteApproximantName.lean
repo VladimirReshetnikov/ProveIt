@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianGammaCutoffName
 import IPRADerivations.Analysis.GammaMeshRobinLogBridge
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual names of the folded finite Gamma approximants
@@ -50,12 +51,8 @@ theorem log_sample_at (p N : PTm n) : Γ ⊢[PRAAx]
     ap2 logF p N ≐ RationalGaussianEmbedding.embed (GammaMeshRobinLogBridge.harmonicLog N
       (GammaEulerConstantName.mesh p)) := by
   refine (RationalGaussianNameEmbedding.sample_at GammaMeshRobinLogBridge.meshLogF p N).eqTrans ?_
-  simpa only [RationalGaussianEmbedding.subst_embed, GammaMeshRobinLogBridge.meshLogSample,
-    Syn.subst_var, Matrix.cons_val_zero] using
-    Prf.eqCongr (RationalGaussianEmbedding.embed (var 0) : PTm 1)
-      (σ := ![GammaMeshRobinLogBridge.meshLogSample p N])
-      (σ' := ![GammaMeshRobinLogBridge.harmonicLog N (GammaEulerConstantName.mesh p)])
-      (fun i => by fin_cases i; exact GammaMeshRobinLogBridge.mesh_log_at (Γ := Γ) p N)
+  ipra_congr (RationalGaussianEmbedding.embed (var 0) : PTm 1) with
+    [GammaMeshRobinLogBridge.mesh_log_at (Γ := Γ) p N] using [GammaMeshRobinLogBridge.meshLogSample]
 
 theorem log_regular (N : PTm n) (hN : Γ ⊢[PRAAx] le one N) : Γ ⊢[PRAAx] pointCN logF N :=
   RationalGaussianNameEmbedding.name_regular _ _ (GammaMeshRobinLogBridge.mesh_name_regular _ hN)

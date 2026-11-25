@@ -86,7 +86,7 @@ theorem cb_at (d e r y : PTm n) :
   rw [show inst3 (cb u v) d e (pairT r y) = inst2 (Ab u) d (pairT r y) * inst2 (Bb v) e (pairT r y) from
     inst3_pmB (Ab u) (Bb v) d e (pairT r y)]
   refine (congrMul (Ab_at u d r y) (Bb_at v e r y)).eqTrans ?_
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- The product body with the sums over `e` and `r` outermost: over `(e, r, ⟨d, y⟩)`. -/
 def a1 : PTm 3 := Syn.subst ![fstT (var 2), var 0, pairT (var 1) (sndT (var 2))] (cb u v)
@@ -143,7 +143,7 @@ theorem Lpt {d e y Z : PTm n} (hd : Γ ⊢[PRAAx] lt d (succ Z)) :
   · have h0 : ((d ≐ zero) :: Γ) ⊢[PRAAx] d ≐ zero := Prf.hyp0
     have kz : ((d ≐ zero) :: Γ) ⊢[PRAAx] sg d * inst2 u d y * inst2 v e y ≐ zero :=
       (congrMul (congrMul ((congrSg h0).eqTrans sg_zero) (.eqRefl _)) (.eqRefl _)).eqTrans
-        (by apply deriveNat; ipra_simps; ring)
+        (by ipra_ring)
     exact ((congrMul kz (.eqRefl _)).eqTrans (zero_mul _)).eqTrans
       ((congrMul kz (.eqRefl _)).eqTrans (zero_mul _)).eqSymm
   · have hpos : ((d ≐ succ (pred d)) :: Γ) ⊢[PRAAx] d ≐ succ (pred d) := Prf.hyp0

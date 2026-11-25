@@ -38,7 +38,7 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 /-- `C (E U) = U (C E)`. -/
 theorem rot (C E U : PTm n) : Γ ⊢[PRAAx] C * (E * U) ≐ U * (C * E) := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 section Exchange
 

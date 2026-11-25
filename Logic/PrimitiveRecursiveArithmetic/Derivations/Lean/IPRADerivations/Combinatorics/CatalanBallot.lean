@@ -1,4 +1,5 @@
 import IPRADerivations.Combinatorics.CatalanHalving
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The ballot factor in the square sum
@@ -47,14 +48,10 @@ theorem binom_ratio {j N : PTm n} (h : Γ ⊢[PRAAx] lt j N) :
     have e : Γ ⊢[PRAAx] N ≐ succ (monus N (succ j)) + j := by apply deriveNat; ipra_simps; linear_combination a
     exact (congrMonus e (.eqRefl _)).eqTrans (add_monus _ _)
   refine mul_cancel (D := fact j * fact (monus N (succ j))) (pos_mul' (fact_pos _) (fact_pos _)) ?_
-  have b₀ := natEq (binom_eq (le_of_lt h)); have b₁ := natEq (binom_eq h)
-  have f₀ := natEq ((congrAp2 factF r (.eqRefl zero)).eqTrans (fact_succ (Γ := Γ) (monus N (succ j)) zero))
-  have f₁ := natEq (fact_succ (Γ := Γ) j zero)
-  have rr := natEq r
-  apply deriveNat; ipra_simps
-  linear_combination -b₀ + b₁ - 𝔞(fact j) * 𝔞(binom N j) * f₀ +
-    𝔞(fact (monus N (succ j))) * 𝔞(binom N (succ j)) * f₁ +
-    𝔞(fact j) * 𝔞(fact (monus N (succ j))) * 𝔞(binom N j) * rr
+  ipra_lc -natEq (binom_eq (le_of_lt h)) + natEq (binom_eq h) -
+    𝔞(fact j) * 𝔞(binom N j) * natEq ((congrAp2 factF r (.eqRefl zero)).eqTrans (fact_succ (Γ := Γ) (monus N (succ j)) zero)) +
+    𝔞(fact (monus N (succ j))) * 𝔞(binom N (succ j)) * natEq (fact_succ (Γ := Γ) j zero) +
+    𝔞(fact j) * 𝔞(fact (monus N (succ j))) * 𝔞(binom N j) * natEq r
 
 /-! ## The ballot numbers -/
 
@@ -65,8 +62,7 @@ variable {j N : PTm n}
 /-- With `2(j + 1) ≤ n`: `n + 1 = (E + 1) + (j + 1) + (j + 1)`, `E = n ∸ 2(j + 1)`. -/
 theorem split_N (h : Γ ⊢[PRAAx] le (succ j + succ j) N) :
     Γ ⊢[PRAAx] succ N ≐ succ (monus N (succ j + succ j)) + succ j + succ j := by
-  have a := natEq (eq_add_of_le h)
-  apply deriveNat; ipra_simps; linear_combination a
+  ipra_lc natEq (eq_add_of_le h)
 
 theorem A_eq (h : Γ ⊢[PRAAx] le (succ j + succ j) N) :
     Γ ⊢[PRAAx] monus (succ N) (succ j) ≐ succ (monus N (succ j + succ j)) + succ j :=
@@ -83,17 +79,14 @@ theorem lt_jN (h : Γ ⊢[PRAAx] le (succ j + succ j) N) : Γ ⊢[PRAAx] lt j N 
 theorem gb_ratio (h : Γ ⊢[PRAAx] le (succ j + succ j) N) :
     Γ ⊢[PRAAx] monus N j * gb N j ≐ succ j * gb N (succ j) := by
   have hl := lt_jN h
-  have g₀ := natEq (gle_of_le (le_of_lt hl)); have g₁ := natEq (gle_of_le hl)
-  have r := natEq (binom_ratio hl)
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞(monus N j) * 𝔞(binom N j) * g₀ - (𝔞(j) + 1) * 𝔞(binom N (succ j)) * g₁ + r
+  ipra_lc 𝔞(monus N j) * 𝔞(binom N j) * natEq (gle_of_le (le_of_lt hl)) -
+    (𝔞(j) + 1) * 𝔞(binom N (succ j)) * natEq (gle_of_le hl) + natEq (binom_ratio hl)
 
 /-- `C(n, j) ≤ C(n, j + 1)` for `2(j + 1) ≤ n`. -/
 theorem ballot_le (h : Γ ⊢[PRAAx] le (succ j + succ j) N) : Γ ⊢[PRAAx] le (gb N j) (gb N (succ j)) := by
   have hA : Γ ⊢[PRAAx] monus N j ≐ succ (monus N (succ j + succ j)) + succ j := by
-    have a := natEq (eq_add_of_le h)
     have e : Γ ⊢[PRAAx] N ≐ (succ (monus N (succ j + succ j)) + succ j) + j := by
-      apply deriveNat; ipra_simps; linear_combination a
+      ipra_lc natEq (eq_add_of_le h)
     exact (congrMonus e (.eqRefl _)).eqTrans (add_monus _ _)
   refine mul_le_cancel (d' := j) ?_
   refine le_congr (.eqRefl _) (gb_ratio h) (le_of_eq_add (d := succ (monus N (succ j + succ j)) * gb N j) ?_)

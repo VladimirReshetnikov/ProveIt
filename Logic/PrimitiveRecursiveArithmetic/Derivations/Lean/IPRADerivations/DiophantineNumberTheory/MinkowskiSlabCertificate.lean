@@ -1,6 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.MinkowskiSlabLinearity
 import IPRADerivations.DiophantineNumberTheory.MinkowskiCertificate
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # A numerical rational slab certificate for the actual Minkowski extractor

@@ -1,6 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.MobiusBounds
 import IPRADerivations.Probability.Independence
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Divisor inversion for the energy statistic (`thm:energy`, recovery direction)

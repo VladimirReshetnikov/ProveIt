@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.DyadicComplexLogarithm
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # A canonical local power-series logarithm name
@@ -72,12 +73,9 @@ theorem constant_comparison (c D A B : PTm n) (hD : Γ ⊢[PRAAx] le one D) :
 theorem constant_dyadic_comparison (c D A k : PTm n) (hD : Γ ⊢[PRAAx] le one D) :
     Γ ⊢[PRAAx] bounded (roundedDifference c c D D A (pw two k)) (num 4 * pw two k) := by
   have h12 : Γ ⊢[PRAAx] le one two := le_of_eq_add (d := one) (by ipra_ring)
-  have p := natEq (eq_add_of_le (power_positive two k h12))
   refine bounded_mono (constant_comparison c D A (pw two k) hD) ?_
   refine le_of_eq_add (d := two * monus (pw two k) one) ?_
-  apply deriveNat
-  ipra_simps
-  linear_combination 2 * p
+  ipra_lc 2 * natEq (eq_add_of_le (power_positive two k h12))
 
 /-! ## The exact first two Taylor terms and finite rational samples -/
 
@@ -105,19 +103,12 @@ theorem finite_positive (N L : PTm n) (hN : Γ ⊢[PRAAx] le one N) :
 theorem base_re (z N : PTm n) :
     Γ ⊢[PRAAx] ZT.eq (re (baseNumerator z N))
       (ZT.ofNat (two * N) * re z - (ZT.sq (re z) - ZT.sq (im z))) := by
-  apply ZT.derive
-  simp only [baseNumerator, add, scale, mul, ComplexLogarithmRemainder.neg,
-    eval_re_code, ZT.toZ_add, ZT.toZ_neg, ZT.toZ_mul, ZT.toZ_sub, ZT.toZ_sq, ZT.toZ_ofNat]
-  ring
+  ipra_lc [baseNumerator, add, scale, mul, ComplexLogarithmRemainder.neg, eval_re_code]
 
 theorem base_im (z N : PTm n) :
     Γ ⊢[PRAAx] ZT.eq (im (baseNumerator z N))
       (ZT.ofNat (two * N) * im z - ZT.ofNat two * re z * im z) := by
-  apply ZT.derive
-  simp only [baseNumerator, add, scale, mul, ComplexLogarithmRemainder.neg,
-    eval_im_code, ZT.toZ_add, ZT.toZ_neg, ZT.toZ_mul, ZT.toZ_sub, ZT.toZ_ofNat,
-    Q.mk_succ, Q.mk_zero, map_add, map_one, map_zero]
-  ring
+  ipra_lc [baseNumerator, add, scale, mul, ComplexLogarithmRemainder.neg, eval_im_code]
 
 /-- Exact rational addition `H/(CD) = B/C + G/D`, cleared in each Gaussian coordinate. -/
 theorem finite_rational_connection_re (z N L : PTm n) :
@@ -125,20 +116,14 @@ theorem finite_rational_connection_re (z N L : PTm n) :
       (ZT.ofNat (baseDenominator N * denominator N L) * re (finiteNumerator z N L))
       (ZT.ofNat (finiteDenominator N L * denominator N L) * re (baseNumerator z N) +
         ZT.ofNat (finiteDenominator N L * baseDenominator N) * re (series z N L)) := by
-  apply ZT.derive
-  simp only [finiteNumerator, finiteDenominator, add, scale, eval_re_code,
-    ZT.toZ_add, ZT.toZ_mul, ZT.toZ_ofNat, Q.mk_mul, map_mul]
-  ring
+  ipra_lc [finiteNumerator, finiteDenominator, add, scale, eval_re_code]
 
 theorem finite_rational_connection_im (z N L : PTm n) :
     Γ ⊢[PRAAx] ZT.eq
       (ZT.ofNat (baseDenominator N * denominator N L) * im (finiteNumerator z N L))
       (ZT.ofNat (finiteDenominator N L * denominator N L) * im (baseNumerator z N) +
         ZT.ofNat (finiteDenominator N L * baseDenominator N) * im (series z N L)) := by
-  apply ZT.derive
-  simp only [finiteNumerator, finiteDenominator, add, scale, eval_im_code,
-    ZT.toZ_add, ZT.toZ_mul, ZT.toZ_ofNat, Q.mk_mul, map_mul]
-  ring
+  ipra_lc [finiteNumerator, finiteDenominator, add, scale, eval_im_code]
 
 /-! ## The full local power-series observation symbol -/
 

@@ -1,4 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.Pythagoras
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The descent step for `x⁴ + y⁴ = z²`
@@ -70,9 +71,7 @@ theorem coprime_sq {a b : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) (hb : 
 
 theorem le_sq {x : PTm n} (hx : Γ ⊢[PRAAx] x ≐ succ (pred x)) : Γ ⊢[PRAAx] le x (x * x) := by
   refine le_of_eq_add (d := x * pred x) ?_
-  have e := natEq hx
-  apply deriveNat; ipra_simps
-  linear_combination Groth.ι (IPRA.Q.mk Γ x) * e
+  ipra_lc Groth.ι (IPRA.Q.mk Γ x) * natEq hx
 
 theorem odd_sq {x a : PTm n} (h : Γ ⊢[PRAAx] x ≐ two * a + one) :
     Γ ⊢[PRAAx] x * x ≐ two * (two * (a * a) + two * a) + one := by
@@ -82,10 +81,8 @@ theorem odd_sq {x a : PTm n} (h : Γ ⊢[PRAAx] x ≐ two * a + one) :
 theorem odd_sum_alg {p q c a b : PTm n} (hp : Γ ⊢[PRAAx] p ≐ two * a + one) (hq : Γ ⊢[PRAAx] q ≐ two * b + one)
     (h : Γ ⊢[PRAAx] p * p + q * q ≐ c * c) :
     Γ ⊢[PRAAx] c * c ≐ two * (two * (a * a + a + b * b + b) + one) := by
-  have h₁ := natEq hp; have h₂ := natEq hq; have h₃ := natEq h
-  apply deriveNat; ipra_simps
-  linear_combination -h₃ + (Groth.ι (IPRA.Q.mk Γ p) + 2 * Groth.ι (IPRA.Q.mk Γ a) + 1) * h₁ +
-    (Groth.ι (IPRA.Q.mk Γ q) + 2 * Groth.ι (IPRA.Q.mk Γ b) + 1) * h₂
+  ipra_lc -natEq h + (Groth.ι (IPRA.Q.mk Γ p) + 2 * Groth.ι (IPRA.Q.mk Γ a) + 1) * natEq hp +
+    (Groth.ι (IPRA.Q.mk Γ q) + 2 * Groth.ι (IPRA.Q.mk Γ b) + 1) * natEq hq
 
 /-- An odd square plus an odd square is not a square. -/
 theorem odd_sq_sum {p q c a b : PTm n} (φ : Fm PTm n) (hp : Γ ⊢[PRAAx] p ≐ two * a + one)
@@ -112,10 +109,8 @@ theorem not_both_even {x y x' y' : PTm n} (φ : Fm PTm n) (hg : Γ ⊢[PRAAx] gc
 
 theorem alg_final {u R S α β : PTm n} (f₃ : Γ ⊢[PRAAx] u * u ≐ R * R + S * S) (eR : Γ ⊢[PRAAx] R ≐ α * α)
     (eS : Γ ⊢[PRAAx] S ≐ β * β) : Γ ⊢[PRAAx] q4 α + q4 β ≐ u * u := by
-  have h₁ := natEq f₃; have h₂ := natEq eR; have h₃ := natEq eS
-  apply deriveNat; ipra_simps
-  linear_combination -h₁ - (Groth.ι (IPRA.Q.mk Γ R) + Groth.ι (IPRA.Q.mk Γ α) * Groth.ι (IPRA.Q.mk Γ α)) * h₂ -
-    (Groth.ι (IPRA.Q.mk Γ S) + Groth.ι (IPRA.Q.mk Γ β) * Groth.ι (IPRA.Q.mk Γ β)) * h₃
+  ipra_lc -natEq f₃ - (Groth.ι (IPRA.Q.mk Γ R) + Groth.ι (IPRA.Q.mk Γ α) * Groth.ι (IPRA.Q.mk Γ α)) * natEq eR -
+    (Groth.ι (IPRA.Q.mk Γ S) + Groth.ι (IPRA.Q.mk Γ β) * Groth.ι (IPRA.Q.mk Γ β)) * natEq eS
 
 /-- The new solution `(α, β, u)` with `u ≤ M < z`. -/
 theorem step_D {z M N' u v R S : PTm n} {φ : Fm PTm n} (k : Cont Γ z φ)
@@ -191,9 +186,7 @@ theorem step_B {x z M N y' : PTm n} {φ : Fm PTm n} (k : Cont Γ z φ)
   have sq : ((N ≐ two * half N) :: Γ) ⊢[PRAAx] N * N ≐ (two * half N) * (two * half N) := congrMul hNe hNe
   have eY : ((N ≐ two * half N) :: Γ) ⊢[PRAAx] M * half N ≐ y' * y' := by
     refine mul_cancel two_pos.wk ?_
-    have h₁ := natEq (e₂.wk (ψ := N ≐ two * half N)); have h₂ := natEq hNe
-    apply deriveNat; ipra_simps
-    linear_combination -h₁ - Groth.ι (IPRA.Q.mk _ M) * h₂
+    ipra_lc -natEq (e₂.wk (ψ := N ≐ two * half N)) - Groth.ι (IPRA.Q.mk _ M) * natEq hNe
   exact step_C (k.wk _) hx.wk hM.wk hN' ((congrAdd (.eqRefl _) sq).eqSymm.eqTrans e₁.wk) eY
     (e₃.wk.eqTrans (congrAdd (.eqRefl _) sq)) ((congrGcd (.eqRefl _) hNe).eqSymm.eqTrans e₄.wk)
 

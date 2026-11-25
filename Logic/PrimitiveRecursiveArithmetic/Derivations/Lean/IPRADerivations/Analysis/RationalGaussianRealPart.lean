@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.RationalGaussianEmbedding
 import IPRADerivations.Analysis.GaussianRationalFiniteSum
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Real parts and original rational finite sums
@@ -53,12 +54,7 @@ theorem real_product (a b : PTm n) : Γ ⊢[PRAAx]
     (RationalArithmetic.multiply_guard _ _) (Prf.andE₁ hv) (RationalArithmetic.multiply_value _ _)
     (GaussianRationalHorner.positive_product _ _ (raw_den_positive a) (RationalArgmin.denominator_positive b))
     (RationalArithmetic.product_denominator_positive _ _)
-  apply ZT.derive
-  simp only [re_mul,native,rawGaussian,rawDen,RationalArithmetic.productDenominator,
-    ComplexLogarithmRemainder.eval_re_code,ComplexLogarithmRemainder.eval_im_code,
-    ZT.toZ_mul,ZT.toZ_ofNat]
-  ipra_simps
-  ring
+  ipra_lc [re_mul, native, rawGaussian, rawDen, RationalArithmetic.productDenominator, ComplexLogarithmRemainder.eval_re_code, ComplexLogarithmRemainder.eval_im_code]
 
 theorem real_values (a b : PTm n) (h : Γ ⊢[PRAAx] GaussianRationalValueEquality.valueEqual a b) :
     Γ ⊢[PRAAx] RationalArgmin.rationalEq (fstT a) (fstT b) := by

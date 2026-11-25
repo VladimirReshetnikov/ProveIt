@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianPositiveRationalLogarithm
 import IPRADerivations.Analysis.GaussianPositiveExponentialMajorant
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual positive-time complex powers and Euler integrand observations
@@ -139,12 +140,11 @@ theorem evaluator_at (p t x : PTm n) : Γ ⊢[PRAAx] ap3 evaluatorF p t x ≐ ev
   simpa [evaluatorF,ap3] using toPR_eq (Γ := Γ) (evaluatorTerm (var 0) (var 1) (var 2) : PTm 3) ![p,t,x]
 theorem sample_at (p z B a b : PTm n) : Γ ⊢[PRAAx] sample p z B a b ≐ ap2 nameF p (data z B a b) := by
   refine (evaluator_at p (timeData a b) (fixedData z B)).eqTrans ?_
-  simpa only [evaluatorTerm,subst_data,subst_ap2,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-    Matrix.cons_val_two,Matrix.cons_val_three,Matrix.cons_val_four,Matrix.cons_val_succ,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (ap2 nameF (var 0) (data (var 1) (var 2) (var 3) (var 4)) : PTm 5)
-      (σ := ![p,fstT (fixedData z B),sndT (fixedData z B),fstT (timeData a b),sndT (timeData a b)])
-      (σ' := ![p,z,B,a,b])
-      (fun i => by fin_cases i; exact .eqRefl _; exact fst_pair _ _; exact snd_pair _ _; exact fst_pair _ _; exact snd_pair _ _)
+  ipra_congr (ap2 nameF (var 0) (data (var 1) (var 2) (var 3) (var 4)) : PTm 5) with
+    [.eqRefl p, (show _ ⊢[PRAAx] fstT (fixedData z B) ≐ z from fst_pair _ _),
+      (show _ ⊢[PRAAx] sndT (fixedData z B) ≐ B from snd_pair _ _),
+      (show _ ⊢[PRAAx] fstT (timeData a b) ≐ a from fst_pair _ _),
+      (show _ ⊢[PRAAx] sndT (timeData a b) ≐ b from snd_pair _ _)] using [evaluatorTerm]
 
 theorem sample_canonical (p z B a b : PTm n) : Γ ⊢[PRAAx] GaussianRationalHorner.canonical (sample p z B a b) :=
   GaussianRationalHorner.canonical_congr (sample_at p z B a b) (GaussianRadiusExponentialName.sample_canonical _ _ _ _)

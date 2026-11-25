@@ -1,4 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.PellModular
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Dirichlet's approximation theorem, sharp rational form
@@ -36,13 +38,11 @@ theorem quo_le {x b N : PTm n} (hb : Γ ⊢[PRAAx] b ≐ succ (pred b)) (hx : Γ
     Γ ⊢[PRAAx] le (quo (x * succ N) b) N := by
   refine .orE (lt_or_le N (quo (x * succ N) b)) ?_ Prf.hyp0
   refine .botE _ ?_
-  have d := natEq ((div_eq (j := x * succ N) hb).wk (ψ := lt N (quo (x * succ N) b)))
-  have q := natEq (eq_add_of_le (Prf.hyp0 : (lt N (quo (x * succ N) b) :: Γ) ⊢[PRAAx] _))
-  have w := natEq ((eq_add_of_le hx).wk (ψ := lt N (quo (x * succ N) b)))
   refine succ_ne_zero' _ (a := monus b (succ x) * succ N + b * monus (quo (x * succ N) b) (succ N) +
     rem (x * succ N) b + N) ?_
-  apply deriveNat; ipra_simps
-  linear_combination -d - Groth.ι (Q.mk _ b) * q - (Groth.ι (Q.mk _ N) + 1) * w
+  ipra_lc -natEq ((div_eq (j := x * succ N) hb).wk (ψ := lt N (quo (x * succ N) b))) -
+    Groth.ι (Q.mk _ b) * natEq (eq_add_of_le (Prf.hyp0 : (lt N (quo (x * succ N) b) :: Γ) ⊢[PRAAx] _)) -
+    (Groth.ι (Q.mk _ N) + 1) * natEq ((eq_add_of_le hx).wk (ψ := lt N (quo (x * succ N) b)))
 
 /-- Decoding `x = ⟨a, ⟨b, N⟩⟩`. -/
 abbrev code (a b N : PTm n) : PTm n := pairT a (pairT b N)
@@ -73,14 +73,14 @@ theorem box_at_top (a b N : PTm n) : Γ ⊢[PRAAx] box (succ N) a b N ≐ N := b
   have e := eqb_of_eq (Γ := Γ) (.eqRefl (succ N))
   refine (congrAdd (congrMul e (.eqRefl _)) (congrMul ((congrMonus (.eqRefl _) e).eqTrans
     ((succ_monus_succ _ _).eqTrans (monus_zero _))) (.eqRefl _))).eqTrans ?_
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem box_below {k a b N : PTm n} (h : Γ ⊢[PRAAx] neg (k ≐ succ N)) :
     Γ ⊢[PRAAx] box k a b N ≐ quo (rem (k * a) b * succ N) b := by
   have e := eqb_of_ne h
   refine (congrAdd (congrMul e (.eqRefl _)) (congrMul ((congrMonus (.eqRefl _) e).eqTrans (monus_zero _))
     (.eqRefl _))).eqTrans ?_
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem congrBoxK {k k' a b N : PTm n} (h : Γ ⊢[PRAAx] k ≐ k') : Γ ⊢[PRAAx] box k a b N ≐ box k' a b N := by
   have e := AnalyticNumberTheory.Euler.congrEqb h (.eqRefl (succ N))
@@ -120,15 +120,13 @@ theorem quo_mono {X Y b : PTm n} (hb : Γ ⊢[PRAAx] b ≐ succ (pred b)) (h : �
     Γ ⊢[PRAAx] le (quo X b) (quo Y b) := by
   refine .orE (lt_or_le (quo Y b) (quo X b)) ?_ Prf.hyp0
   refine .botE _ ?_
-  have q := natEq (eq_add_of_le (Prf.hyp0 : (lt (quo Y b) (quo X b) :: Γ) ⊢[PRAAx] _))
-  have dx := natEq ((div_eq (j := X) hb).wk (ψ := lt (quo Y b) (quo X b)))
-  have dy := natEq ((div_eq (j := Y) hb).wk (ψ := lt (quo Y b) (quo X b)))
-  have r := natEq ((eq_add_of_le (rem_lt' hb Y)).wk (ψ := lt (quo Y b) (quo X b)))
-  have d := natEq ((eq_add_of_le h).wk (ψ := lt (quo Y b) (quo X b)))
   refine succ_ne_zero' _ (a := monus b (succ (rem Y b)) + b * monus (quo X b) (succ (quo Y b)) + rem X b +
     monus Y X) ?_
-  apply deriveNat; ipra_simps
-  linear_combination -d + dy - dx - Groth.ι (Q.mk _ b) * q - r
+  ipra_lc -natEq ((eq_add_of_le h).wk (ψ := lt (quo Y b) (quo X b))) +
+    natEq ((div_eq (j := Y) hb).wk (ψ := lt (quo Y b) (quo X b))) -
+    natEq ((div_eq (j := X) hb).wk (ψ := lt (quo Y b) (quo X b))) -
+    Groth.ι (Q.mk _ b) * natEq (eq_add_of_le (Prf.hyp0 : (lt (quo Y b) (quo X b) :: Γ) ⊢[PRAAx] _)) -
+    natEq ((eq_add_of_le (rem_lt' hb Y)).wk (ψ := lt (quo Y b) (quo X b)))
 
 theorem congrDist {X X' Y Y' : PTm n} (h₁ : Γ ⊢[PRAAx] X ≐ X') (h₂ : Γ ⊢[PRAAx] Y ≐ Y') :
     Γ ⊢[PRAAx] dist X Y ≐ dist X' Y' :=
@@ -146,37 +144,28 @@ theorem caseA {a b N I : PTm n} (hb : Γ ⊢[PRAAx] b ≐ succ (pred b)) (hN : �
       (congrAp2 remF ((congrMul Prf.hyp0 (.eqRefl _)).eqTrans (zero_mul _)) (.eqRefl _)).eqTrans (rem_zero _)
     have q0 : ((I ≐ zero) :: Γ) ⊢[PRAAx] quo (rem (I * a) b * succ N) b ≐ zero :=
       (congrAp2 quoF ((congrMul x0 (.eqRefl _)).eqTrans (zero_mul _)) (.eqRefl _)).eqTrans
-        (quo_eq hb.wk (q := zero) (r := zero) (by apply deriveNat; ipra_simps; ring) (zero_lt' hb.wk))
+        (quo_eq hb.wk (q := zero) (r := zero) (by ipra_ring) (zero_lt' hb.wk))
     exact succ_ne_zero' _ (hN.wk.eqSymm.eqTrans (hbox.wk.eqSymm.eqTrans q0))
   have hIN : Γ ⊢[PRAAx] le I N := (succ_monus_succ _ _).eqSymm.eqTrans hI
   have hx := rem_lt' hb (I * a)
-  have e₀ := natEq (div_eq (j := I * a) hb)
-  have e₃ := natEq (eq_add_of_le (le_of_lt hx))
   have hd : Γ ⊢[PRAAx] dist (I * a) (succ (quo (I * a) b) * b) ≐ monus b (rem (I * a) b) := by
     refine dist_l ?_
-    apply deriveNat; ipra_simps
-    linear_combination -e₀ + e₃
+    ipra_lc -natEq (div_eq (j := I * a) hb) + natEq (eq_add_of_le (le_of_lt hx))
   have hbd : Γ ⊢[PRAAx] le (succ N * monus b (rem (I * a) b)) b := by
     refine le_of_eq_add (d := rem (rem (I * a) b * succ N) b) ?_
-    have e₁ := natEq (div_eq (j := rem (I * a) b * succ N) hb)
-    have e₂ := natEq hbox
-    apply deriveNat; ipra_simps
-    linear_combination e₁ + Groth.ι (Q.mk _ b) * e₂ + (Groth.ι (Q.mk _ N) + 1) * e₃
+    ipra_lc natEq (div_eq (j := rem (I * a) b * succ N) hb) + Groth.ι (Q.mk _ b) * natEq hbox +
+      (Groth.ι (Q.mk _ N) + 1) * natEq (eq_add_of_le (le_of_lt hx))
   exact .andI hI1 (.andI hIN (le_congr (congrMul (.eqRefl _) hd.eqSymm) (.eqRefl _) hbd))
 
 theorem ident {t a x p b y I J Qi Qj : PTm n} (eJ : Γ ⊢[PRAAx] J ≐ I + t) (eQ : Γ ⊢[PRAAx] Qj ≐ Qi + p)
     (dI : Γ ⊢[PRAAx] I * a ≐ b * Qi + x) (dJ : Γ ⊢[PRAAx] J * a ≐ b * Qj + y) : Γ ⊢[PRAAx] t * a + x ≐ p * b + y := by
-  have h₁ := natEq eJ; have h₂ := natEq eQ; have h₃ := natEq dI; have h₄ := natEq dJ
-  apply deriveNat; ipra_simps
-  linear_combination -Groth.ι (Q.mk _ a) * h₁ + h₄ - h₃ + Groth.ι (Q.mk _ b) * h₂
+  ipra_lc -Groth.ι (Q.mk _ a) * natEq eJ + natEq dJ - natEq dI + Groth.ι (Q.mk _ b) * natEq eQ
 
 theorem gap_bound {X Y d b N c₁ c₂ r₁ r₂ s : PTm n} (ed : Γ ⊢[PRAAx] X ≐ Y + d)
     (d₁ : Γ ⊢[PRAAx] X * succ N ≐ b * c₁ + r₁) (d₂ : Γ ⊢[PRAAx] Y * succ N ≐ b * c₂ + r₂)
     (hc : Γ ⊢[PRAAx] c₁ ≐ c₂) (eB : Γ ⊢[PRAAx] b ≐ succ r₁ + s) :
     Γ ⊢[PRAAx] b ≐ succ N * d + (r₂ + succ s) := by
-  have h₁ := natEq ed; have h₂ := natEq d₁; have h₃ := natEq d₂; have h₄ := natEq hc; have h₅ := natEq eB
-  apply deriveNat; ipra_simps
-  linear_combination h₅ - h₂ + h₃ - Groth.ι (Q.mk _ b) * h₄ + (Groth.ι (Q.mk _ N) + 1) * h₁
+  ipra_lc natEq eB - natEq d₁ + natEq d₂ - Groth.ι (Q.mk _ b) * natEq hc + (Groth.ι (Q.mk _ N) + 1) * natEq ed
 
 /-- Collision of two real points `i < j ≤ N`: `q = j − i`, `p = ⌊ja/b⌋ − ⌊ia/b⌋`. -/
 theorem caseB {a b N I J : PTm n} (hb : Γ ⊢[PRAAx] b ≐ succ (pred b)) (hIJ : Γ ⊢[PRAAx] lt I J)
@@ -221,18 +210,17 @@ theorem caseB {a b N I J : PTm n} (hb : Γ ⊢[PRAAx] b ≐ succ (pred b)) (hIJ 
 
 /-! ## Assembly -/
 
-theorem ne_of_lt' {x y : PTm n} (h : Γ ⊢[PRAAx] lt x y) : Γ ⊢[PRAAx] neg (x ≐ y) :=
-  .impI (lt_irrefl _ _ (lt_congr Prf.hyp0 (.eqRefl _) h.wk))
+alias ne_of_lt' := Common.ne_of_lt
 
 theorem sel_one {c X Y : PTm n} (h : Γ ⊢[PRAAx] c ≐ one) : Γ ⊢[PRAAx] c * X + monus one c * Y ≐ X := by
   refine (congrAdd (congrMul h (.eqRefl _)) (congrMul ((congrMonus (.eqRefl _) h).eqTrans
     ((succ_monus_succ _ _).eqTrans (monus_zero _))) (.eqRefl _))).eqTrans ?_
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem sel_zero {c X Y : PTm n} (h : Γ ⊢[PRAAx] c ≐ zero) : Γ ⊢[PRAAx] c * X + monus one c * Y ≐ Y := by
   refine (congrAdd (congrMul h (.eqRefl _)) (congrMul ((congrMonus (.eqRefl _) h).eqTrans
     (monus_zero _)) (.eqRefl _))).eqTrans ?_
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- The approximation property `1 ≤ q ≤ N`, `(N+1)·|qa − pb| ≤ b`. -/
 abbrev dirF (q p a b N : PTm n) : Fm PTm n :=

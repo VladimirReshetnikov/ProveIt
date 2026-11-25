@@ -1,6 +1,6 @@
 import IPRADerivations.Combinatorics.Stirling
 import IPRADerivations.Core.Search
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # No universal PR evaluator, and bounded choice of witnesses

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.BetaIntegers
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The associativity identity of the Beta function at positive integers

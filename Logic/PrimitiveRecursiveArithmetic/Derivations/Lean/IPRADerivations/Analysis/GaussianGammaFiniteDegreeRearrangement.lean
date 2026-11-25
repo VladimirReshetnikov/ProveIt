@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianGammaCanonicalTailFiniteSplit
 import IPRADerivations.Analysis.GaussianRationalFubini
 import IPRADerivations.Analysis.GaussianGammaCanonicalExponent
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Uniform finite degree rearrangement of the original canonical Gamma tail
@@ -78,11 +79,7 @@ theorem degree_term_congr {z z' B B' N N' i i' j j' : PTm n}
     (hz : Γ ⊢[PRAAx] z ≐ z') (hB : Γ ⊢[PRAAx] B ≐ B') (hN : Γ ⊢[PRAAx] N ≐ N')
     (hi : Γ ⊢[PRAAx] i ≐ i') (hj : Γ ⊢[PRAAx] j ≐ j') : Γ ⊢[PRAAx]
     degreeTerm z B N i j ≐ degreeTerm z' B' N' i' j' := by
-  simpa only [subst_degreeTerm,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.cons_val_three,Matrix.cons_val_four,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (degreeTerm (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5)
-      (σ := ![z,B,N,i,j]) (σ' := ![z',B',N',i',j'])
-      (fun k => by fin_cases k; exact hz; exact hB; exact hN; exact hi; exact hj)
+  ipra_congr (degreeTerm (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) with [hz, hB, hN, hi, hj]
 
 theorem matrix_entry (i j z B N : PTm n) : Γ ⊢[PRAAx]
     inst3 matrix i j (matrixData z B N) ≐ degreeTerm z B N i j := by

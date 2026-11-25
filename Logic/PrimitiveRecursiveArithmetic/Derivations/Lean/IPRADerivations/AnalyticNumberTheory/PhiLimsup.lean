@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.PhiUpper
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Finite witnesses for `limsup φ(n)/n = 1`
@@ -56,11 +57,9 @@ theorem limsup_at {K : PTm n} (hK : Γ ⊢[PRAAx] K ≐ succ (pred K)) :
   refine .andI hlt (.andI hp (le_of_eq_add (d := succ (monus (EP K) (succ K))) ?_))
   have hm : Γ ⊢[PRAAx] monus K one ≐ pred K :=
     (congrMonus hK (.eqRefl _)).eqTrans ((succ_monus_succ _ _).eqTrans (monus_zero _))
-  have h₁ := natEq hφ; have h₂ := natEq e; have h₃ := natEq hK; have h₄ := natEq hm
-  apply deriveNat; ipra_simps
-  linear_combination Groth.ι (IPRA.Q.mk Γ K) * h₁ - Groth.ι (IPRA.Q.mk Γ (pred K)) * h₂ +
-    (Groth.ι (IPRA.Q.mk Γ K) + Groth.ι (IPRA.Q.mk Γ (monus (EP K) (succ K))) + 1) * h₃ -
-    (Groth.ι (IPRA.Q.mk Γ (μz (succ (succ (pred (fact K)))))) + 2) * h₄
+  ipra_lc Groth.ι (IPRA.Q.mk Γ K) * natEq hφ - Groth.ι (IPRA.Q.mk Γ (pred K)) * natEq e +
+    (Groth.ι (IPRA.Q.mk Γ K) + Groth.ι (IPRA.Q.mk Γ (monus (EP K) (succ K))) + 1) * natEq hK -
+    (Groth.ι (IPRA.Q.mk Γ (μz (succ (succ (pred (fact K)))))) + 2) * natEq hm
 
 /-- `thm:limsup-phi`: variable `0 = K − 1`. -/
 abbrev limsupFormula : Fm PTm 1 :=

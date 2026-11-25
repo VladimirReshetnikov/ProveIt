@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.RationalSquareRootBounds
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The dyadic square-root bracket used in polygonal isoperimetry

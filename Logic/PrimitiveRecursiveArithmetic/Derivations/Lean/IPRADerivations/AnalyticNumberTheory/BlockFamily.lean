@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.HeadDeficit
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Weighted block sums along a chain of blocks (`pnt_ipra_constructive_2026-11-14`, `con:one-step`)
@@ -62,7 +63,7 @@ theorem bv_add {d D₁ D₂ D₃ : PTm n} (h12 : Γ ⊢[PRAAx] le D₁ D₂) (h2
 
 theorem split_alg {s a b c u g : PTm n} (h : Γ ⊢[PRAAx] a ≐ b + c) :
     Γ ⊢[PRAAx] (s * (a * u)) * g ≐ (s * (b * u)) * g + (s * (c * u)) * g := by
-  have e := natEq h; apply deriveNat; ipra_simps; linear_combination 𝔞 s * 𝔞 u * 𝔞 g * e
+  ipra_lc 𝔞 s * 𝔞 u * 𝔞 g * natEq h
 
 abbrev Lay (x D₁ D₂ A Ds K L : PTm n) : PTm n := pairT x (BlockSums.Y D₁ D₂ (pairT A Ds) (pairT K (fact L)))
 

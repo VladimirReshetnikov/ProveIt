@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.HurwitzProduct
 import IPRADerivations.Foundations.BoundedFormulas
 import IPRADerivations.AnalyticNumberTheory.Valuation
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Uniqueness for triangular recurrences (`ipra_coherent_methods_2026-11-15`, `thm:hurwitz-ode`)
@@ -175,11 +176,7 @@ section Linear
 variable (A y y' : PTm 2)
 
 /-- `h ∸ j ≤ h`. -/
-theorem monus_le' (h j : PTm k) : Γ ⊢[PRAAx] le (monus h j) h := by
-  refine .orE (le_total j h) ?_ ?_
-  · have e := natEq (eq_add_of_le (Prf.hyp0 (Γ := Γ) (φ := le j h)))
-    exact le_of_eq_add (d := j) (by apply deriveNat; ipra_simps; linear_combination e)
-  · exact le_congr (Prf.hyp0 (Γ := Γ) (φ := le h j)).eqSymm (.eqRefl _) (zero_le h)
+alias monus_le' := Common.monus_le_self
 
 /-- The summands of `(A ⋆ y)_n` and `(A ⋆ y')_n` agree when `y`, `y'` agree up to `n`. -/
 theorem lin_pt {j n x : PTm k} (h : Γ ⊢[PRAAx] agree y y' (succ n) x) :

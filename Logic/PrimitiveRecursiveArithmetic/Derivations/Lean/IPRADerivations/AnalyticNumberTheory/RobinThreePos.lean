@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.RobinThree
 import IPRADerivations.AnalyticNumberTheory.RobinLogInterval
 import IPRADerivations.AnalyticNumberTheory.RobinGammaInterval
 import IPRADerivations.AnalyticNumberTheory.RobinExpName
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # `thm:three` as `Pos` certificates (`robin_ipra_research_2026-11-19`, §"Composing the double logarithm", `eq:pos`)
@@ -192,9 +193,7 @@ theorem ev47 : Γ ⊢[PRAAx] Ev (num 5) (num 4) (num 7) ≐ num 3571304 ⋏ Ed (
 
 /-! ## Generic arithmetic steps (over opaque terms) -/
 
-theorem one_le_of_pos {x : PTm n} (h : Γ ⊢[PRAAx] x ≐ succ (pred x)) : Γ ⊢[PRAAx] le one x := by
-  have e := natEq h
-  ipra_le 𝔞 (pred x) with e
+alias one_le_of_pos := Common.one_le_of_pos
 
 theorem swap_r {a b c : PTm n} (h : Γ ⊢[PRAAx] le a (b * c)) : Γ ⊢[PRAAx] le a (c * b) := by ipra_le sl h
 

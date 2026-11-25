@@ -2,6 +2,7 @@ import IPRADerivations.Analysis.GaussianEulerLowerLogarithmPower
 import IPRADerivations.Analysis.GaussianEulerLowerTransformedIntegrand
 import IPRADerivations.Analysis.GaussianEulerLogarithmicCompactName
 import IPRADerivations.Analysis.GaussianDescentClockArithmetic
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Original logarithmic Euler rows at transformed lower times
@@ -72,11 +73,8 @@ theorem exponent_identity (A : PTm n) (hA : Γ ⊢[PRAAx] le one A) : Γ ⊢[PRA
 private theorem integrand_time_congr (p z B a b c d : PTm n)
     (ha : Γ ⊢[PRAAx] a ≐ c) (hb : Γ ⊢[PRAAx] b ≐ d) : Γ ⊢[PRAAx]
     GaussianEulerIntegrandName.sample p z B a b ≐ GaussianEulerIntegrandName.sample p z B c d := by
-  simpa only [GaussianEulerIntegrandName.subst_sample,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-    Matrix.cons_val_two,Matrix.cons_val_three,Matrix.cons_val_four,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (GaussianEulerIntegrandName.sample (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5)
-      (σ := ![p,z,B,a,b]) (σ' := ![p,z,B,c,d])
-      (fun i => by fin_cases i; exact .eqRefl _; exact .eqRefl _; exact .eqRefl _; exact ha; exact hb)
+  ipra_congr (GaussianEulerIntegrandName.sample (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) with
+    [.eqRefl p, .eqRefl z, .eqRefl B, ha, hb]
 
 theorem original_double_time_integrand (p z R B A a b : PTm n)
     (h : Γ ⊢[PRAAx] GaussianEulerLowerPowerOrder.source z R B A a b) : Γ ⊢[PRAAx]

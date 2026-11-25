@@ -152,7 +152,7 @@ theorem step_a {a b m N y : PTm n} (ha : Γ ⊢[PRAAx] lt a (succ m)) (hb : Γ �
   have dl := sum_delta (Γ := Γ) g (x := y) hab
   have cm := sum_const_mul (Γ := Γ) (dB g) (succ (m * N)) (eqb (rem m a) zero * eqb (rem N b) zero) (pairT (a * b) y)
   refine Prf.eqTrans ?_ (Prf.eqTrans cm.eqSymm ?_)
-  · refine (by apply deriveNat; ipra_simps; ring :
+  · refine (by ipra_ring :
       Γ ⊢[PRAAx] eqb (rem m a) zero * (eqb (rem N b) zero * inst2 g (a * b) y) ≐
         eqb (rem m a) zero * eqb (rem N b) zero * inst2 g (a * b) y).eqTrans ?_
     exact congrMul (.eqRefl _) dl.eqSymm
@@ -179,7 +179,7 @@ theorem step_a {a b m N y : PTm n} (ha : Γ ⊢[PRAAx] lt a (succ m)) (hb : Γ �
         eqb (rem (Syn.shift m) (Syn.shift a)) zero * eqb (rem (Syn.shift N) (Syn.shift b)) zero := by simp [Syn.shift]
     have s2 : Syn.shift (a * b) = Syn.shift a * Syn.shift b := by simp [Syn.shift]
     rw [s1, s2]
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
 
 /-! ## Shifting the hypotheses under a binder -/
 
@@ -245,7 +245,6 @@ theorem step_b {a m N y : PTm n} (ha : Γ ⊢[PRAAx] lt a (succ m)) :
 /-! ## Step D: one column `d` -/
 
 theorem inst2_v1 {k : ℕ} (i z : PTm k) : inst2 (var 1 : PTm 2) i z = z := by simp [inst2]
-
 
 /-- The column sum `Σ_{a<m+1} Σ_{b<N+1} c(a, b, d)` collapses once `c(a, b, d) = [b = B₀][a = A₀] L`. -/
 theorem col_collapse {d m N y A0 B0 L : PTm n} (hA : Γ ⊢[PRAAx] lt A0 (succ m)) (hB : Γ ⊢[PRAAx] lt B0 (succ N))
@@ -323,7 +322,7 @@ theorem col_none {d m N y : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) (hm 
     have z : Δ ⊢[PRAAx] cval g (var 1) (var 0) (Syn.shift (Syn.shift d)) (Syn.shift (Syn.shift m))
         (Syn.shift (Syn.shift N)) (Syn.shift (Syn.shift y)) ≐ zero :=
       (congrMul (cn.eqTrans ((congrMul h02 (.eqRefl _)).eqTrans (zero_mul _))) (.eqRefl _)).eqTrans (zero_mul _)
-    exact z.eqTrans (by apply deriveNat; ipra_simps; ring)
+    exact z.eqTrans (by ipra_ring)
   · exact ((lB_at g _ _ _ _).eqTrans ((congrMul h0 (.eqRefl _)).eqTrans (zero_mul _))).eqSymm
 
 /-- A column `d ≥ 1` with `d ∣ mN` is `g(d)`. -/
@@ -356,7 +355,7 @@ theorem col_some {d m N y : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) (hm 
   have hc2 := (gcd_sh (gcd_sh hc)).weaken s
   have cn := cnt_pt hd2 hm2 hN2 hc2 (var 1) (var 0)
   refine (congrMul (cn.eqTrans (congrMul (.eqRefl _) (congrMul (eqb_comm' _ _) (eqb_comm' _ _)))) (.eqRefl _)).eqTrans ?_
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- The column `d = 0` vanishes. -/
 theorem col_zero {d m N y : PTm n} (hz : Γ ⊢[PRAAx] d ≐ zero) (hm : Γ ⊢[PRAAx] m ≐ succ (pred m))
@@ -382,7 +381,7 @@ theorem col_zero {d m N y : PTm n} (hz : Γ ⊢[PRAAx] d ≐ zero) (hm : Γ ⊢[
         have fab : (P :: Δ) ⊢[PRAAx] var 1 * var 0 ≐ Syn.shift (Syn.shift d) := eq_of_eqb (Prf.andE₂ (Prf.andE₂ hp))
         have pab := pos_mul (pos_of_dvd hm2.wk fa) (pos_of_dvd hN2.wk fb)
         exact succ_ne_zero' _ (pab.eqSymm.eqTrans (fab.eqTrans hz2.wk))
-    exact z.eqTrans (by apply deriveNat; ipra_simps; ring)
+    exact z.eqTrans (by ipra_ring)
   · refine ((lB_at g _ _ _ _).eqTrans ?_).eqSymm
     have pmN := pos_mul hm hN
     have r : Γ ⊢[PRAAx] rem (m * N) d ≐ m * N := (congrAp2 remF (.eqRefl _) hz).eqTrans (rem_by_zero _)

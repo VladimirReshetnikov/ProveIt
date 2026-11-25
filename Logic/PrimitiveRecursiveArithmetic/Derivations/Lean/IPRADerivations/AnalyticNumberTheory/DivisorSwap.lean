@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.MobiusInversion
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The divisor involution `d ↦ N/d`
@@ -38,7 +39,7 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 theorem quo_lt' {d N : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) : Γ ⊢[PRAAx] lt (quo N d) (succ N) := by
   have dv := natEq (GcdFiber.div_eq (j := N) hd); have wp := natEq hd
   refine (succ_monus_succ _ _).eqTrans (le_of_eq_add (d := pred d * quo N d + rem N d) ?_)
-  apply deriveNat; ipra_simps; linear_combination dv + 𝔞 (quo N d) * wp
+  ipra_lc dv + 𝔞 (quo N d) * wp
 
 /-- `[d ≥ 1][d ∣ N][N/d = e]`. -/
 abbrev zt (d e N : PTm n) : PTm n := (sg d * eqb (rem N d) zero) * eqb (quo N d) e
@@ -47,9 +48,7 @@ abbrev zt (d e N : PTm n) : PTm n := (sg d * eqb (rem N d) zero) * eqb (quo N d)
 theorem zt_half {d e N : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) :
     Γ ⊢[PRAAx] zt d e N ≐ (sg d * sg e) * eqb N (d * e) := by
   refine .orE (zero_or_succ d) ?_ ?_
-  · have a := natEq ((congrSg Prf.hyp0).eqTrans sg_zero : ((d ≐ zero) :: Γ) ⊢[PRAAx] sg d ≐ zero)
-    apply deriveNat; ipra_simps
-    linear_combination (𝔞 (eqb (rem N d) zero) * 𝔞 (eqb (quo N d) e) - 𝔞 (sg e) * 𝔞 (eqb N (d * e))) * a
+  · ipra_lc (𝔞 (eqb (rem N d) zero) * 𝔞 (eqb (quo N d) e) - 𝔞 (sg e) * 𝔞 (eqb N (d * e))) * natEq ((congrSg Prf.hyp0).eqTrans sg_zero : ((d ≐ zero) :: Γ) ⊢[PRAAx] sg d ≐ zero)
   · refine .orE (eq_or_ne (rem N d) zero) ?_ ?_
     · let C : List (Fm PTm n) := (rem N d ≐ zero) :: (d ≐ succ (pred d)) :: Γ
       have hd : C ⊢[PRAAx] d ≐ succ (pred d) := Prf.hyp1
@@ -141,7 +140,7 @@ theorem row_sw (d N : PTm n) :
       rw [inst2_rowB]
       exact congrInst3 G (fst_pair _ _) (.eqRefl _) (snd_pair _ _)
     refine .eqTrans ?_ (congrMul (.eqRefl _) (congrMul (congrEqb' (fst_pair _ _) (.eqRefl _)) r1)).eqSymm
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   refine sc.eqTrans ?_
   refine .orE (zero_or_succ d) ?_ ?_
   · have s0 : ((d ≐ zero) :: Γ) ⊢[PRAAx] sg d ≐ zero := (congrSg Prf.hyp0).eqTrans sg_zero
@@ -175,7 +174,7 @@ theorem col_sw {N : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) (e : PTm n) 
       rw [inst2_colB]
       exact congrInst3 G (.eqRefl _) (fst_pair _ _) (snd_pair _ _)
     refine .eqTrans ?_ (congrMul (.eqRefl _) (congrMul (congrEqb' (fst_pair _ _) (.eqRefl _)) r1)).eqSymm
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   refine sc.eqTrans ?_
   refine .orE (zero_or_succ e) ?_ ?_
   · have s0 : ((e ≐ zero) :: Γ) ⊢[PRAAx] sg e ≐ zero := (congrSg Prf.hyp0).eqTrans sg_zero

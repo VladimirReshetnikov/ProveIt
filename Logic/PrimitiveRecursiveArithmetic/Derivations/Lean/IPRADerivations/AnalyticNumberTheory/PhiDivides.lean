@@ -72,9 +72,9 @@ theorem viol_zero (A : PTm n) : Γ ⊢[PRAAx] rem (phi (A * zero)) (phi A) ≐ z
 
 theorem viol_one : Γ ⊢[PRAAx] rem (phi (A * one)) (phi A) ≐ zero := by
   have hφ := phi_pos hA
-  have e : Γ ⊢[PRAAx] A * one ≐ A := by apply deriveNat; ipra_simps; ring
+  have e : Γ ⊢[PRAAx] A * one ≐ A := by ipra_ring
   refine (congrAp2 remF (congrAp2 (sumF totBody) e e) (.eqRefl _)).eqTrans ?_
-  exact rem_eq' hφ (q := one) (by apply deriveNat; ipra_simps; ring) (zero_lt' hφ)
+  exact rem_eq' hφ (q := one) (by ipra_ring) (zero_lt' hφ)
 
 /-- The step for `c ≥ 2`: peel `q = lpf(c)` off `c`. -/
 theorem viol_ge2 (z' : PTm n) (hV : Γ ⊢[PRAAx] ap2 (sumF violB) (succ (succ z')) A ≐ zero) :

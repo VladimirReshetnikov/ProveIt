@@ -2,6 +2,7 @@ import IPRADerivations.Analysis.GaussianRootSchedule
 import IPRADerivations.Analysis.GaussianEuclideanDistanceName
 import IPRADerivations.Analysis.GaussianRationalSlackRemoval
 import IPRADerivations.Analysis.GaussianReconstructionRoots
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual fast Gaussian names and finite envelope transfer
@@ -305,10 +306,7 @@ def radiusCut (f : PR 2) (L x A B : PTm n) : Fm PTm n := .all
 theorem value_congr (f : PR 2) {L L' x x' k k' : PTm n}
     (hL : Γ ⊢[PRAAx] L ≐ L') (hx : Γ ⊢[PRAAx] x ≐ x') (hk : Γ ⊢[PRAAx] k ≐ k') : Γ ⊢[PRAAx]
     value f L x k ≐ value f L' x' k' := by
-  simpa only [subst_value,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.head_cons,Matrix.tail_cons] using Prf.eqCongr (Ax := PRAAx) (Γ := Γ)
-      (value f (var 0) (var 1) (var 2) : PTm 3) (σ := ![L,x,k]) (σ' := ![L',x',k'])
-      (fun i => by fin_cases i; exact hL; exact hx; exact hk)
+  ipra_congr (value f (var 0) (var 1) (var 2) : PTm 3) with [hL, hx, hk]
 
 theorem name_at (f : PR 2) (L x k : PTm n) : Γ ⊢[PRAAx]
     ap2 (nameF f) k (nameData L x) ≐ value f L x k := by

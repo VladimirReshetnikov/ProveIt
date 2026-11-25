@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianRationalEliminationLoop
 import IPRADerivations.Analysis.GaussianRationalRowSpanPivotTransfer
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Backward transport of coefficients through rectangular elimination
@@ -54,11 +55,7 @@ def rewind (A R N c u t : PTm n) : PTm n := ap2 rewindF t (data A R N c u)
 theorem backward_congr {A A' R R' N N' p p' u u' : PTm n} (hA : Γ ⊢[PRAAx] A ≐ A')
     (hR : Γ ⊢[PRAAx] R ≐ R') (hN : Γ ⊢[PRAAx] N ≐ N') (hp : Γ ⊢[PRAAx] p ≐ p')
     (hu : Γ ⊢[PRAAx] u ≐ u') : Γ ⊢[PRAAx] backward A R N p u ≐ backward A' R' N' p' u' := by
-  simpa only [subst_backward,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.cons_val_three,Matrix.cons_val_four,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (backward (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5)
-      (σ := ![A,R,N,p,u]) (σ' := ![A',R',N',p',u'])
-      (fun i => by fin_cases i; exact hA; exact hR; exact hN; exact hp; exact hu)
+  ipra_congr (backward (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) with [hA, hR, hN, hp, hu]
 
 theorem rewind_zero (A R N c u : PTm n) : Γ ⊢[PRAAx] rewind A R N c u zero ≐ u := by
   have e := rec2_zero (Γ := Γ) baseBody stepBody (data A R N c u)

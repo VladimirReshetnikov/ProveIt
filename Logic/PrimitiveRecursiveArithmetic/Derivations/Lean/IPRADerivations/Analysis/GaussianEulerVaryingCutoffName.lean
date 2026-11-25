@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.GaussianEulerCutoffCauchyComparison
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual varying-cutoff Euler name, conditional only on the lower tail
@@ -65,11 +66,8 @@ theorem name_at (p z R B A : PTm n) : Γ ⊢[PRAAx] ap2 nameF p (data z R B A) �
   have prog : Γ ⊢[PRAAx] ap2 nameF p (data z R B A) ≐ reader p (data z R B A) := by
     simpa [nameF,ap2] using toPR_eq (Γ := Γ) (reader (var 0) (var 1) : PTm 2) ![p,data z R B A]
   refine prog.eqTrans ?_
-  simpa only [reader,subst_sample,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_three,
-      Matrix.cons_val_four,Matrix.cons_val_succ,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (sample (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5)
-      (σ := ![p,fstT (data z R B A),fstT (sndT (data z R B A)),fstT (sndT (sndT (data z R B A))),sndT (sndT (sndT (data z R B A)))])
-      (σ' := ![p,z,R,B,A]) (fun i => by fin_cases i; exact .eqRefl _; exact data_z _ _ _ _; exact data_R _ _ _ _; exact data_B _ _ _ _; exact data_A _ _ _ _)
+  ipra_congr (sample (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) with
+    [.eqRefl p, data_z _ _ _ _, data_R _ _ _ _, data_B _ _ _ _, data_A _ _ _ _] using [reader]
 
 theorem sample_canonical (p z R B A : PTm n) : Γ ⊢[PRAAx] GaussianRationalHorner.canonical (sample p z R B A) :=
   GaussianEulerCutoffCauchyComparison.observation_canonical _ _ _ _ _ _

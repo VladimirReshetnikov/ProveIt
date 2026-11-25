@@ -1,4 +1,5 @@
 import IPRADerivations.Core.Gcd
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Bézout's identity in iPRA
@@ -160,8 +161,7 @@ theorem active_eq {Δ : List (Fm PTm 3)} {x y r q s s' t t' c d : PTm 3}
     (hd : Δ ⊢[PRAAx] x ≐ y * q + r) :
     Δ ⊢[PRAAx] r + (t + q * t') * c ≐ (s + q * s') * d := by
   refine withEq h₁ fun e₁ => withEq h₂ fun e₂ => withEq hd fun e₃ => ?_
-  apply deriveNat; ipra_simps
-  linear_combination e₁ - e₃ - Groth.ι (Q.mk Δ q) * e₂
+  ipra_lc e₁ - e₃ - Groth.ι (Q.mk Δ q) * e₂
 
 theorem invariant_open : ([] : List (Fm PTm 3)) ⊢[PRAAx] inv := by
   refine ind _ ⟨⟨trivial, trivial, trivial⟩, trivial, trivial, trivial⟩ ?_ ?_
@@ -244,6 +244,5 @@ theorem bezout : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 2 bezoutFormula := by
     Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons,
     Matrix.tail_cons, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at h
   exact .orE h (.orI₁ (Prf.andE₁ (Prf.andE₂ Prf.hyp0))) (.orI₂ (Prf.andE₁ (Prf.andE₂ Prf.hyp0)))
-
 
 end LeanProofs.IPRA

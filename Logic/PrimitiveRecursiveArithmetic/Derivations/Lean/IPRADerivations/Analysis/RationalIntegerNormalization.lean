@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.LogisticName
 import IPRADerivations.Analysis.RationalSupMetric
 import IPRADerivations.AnalyticNumberTheory.Order
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Gcd reduction and literal integer outputs of rational normalization
@@ -53,8 +54,7 @@ theorem negativePart_congr {a b : ZT n} (h : Γ ⊢[PRAAx] ZT.eq a b) :
     apply ZT.derive
     simpa only [ZT.toZ_neg] using congrArg Neg.neg (ZT.toZ_eq h))
 
-theorem positive_form {D : PTm n} (hD : Γ ⊢[PRAAx] le one D) :
-    Γ ⊢[PRAAx] D ≐ succ (pred D) := Foundations.FiniteHausdorff.positive_length hD
+alias positive_form := Common.pos_of_one_le
 
 def divisor (a : ZT n) (D : PTm n) : PTm n := gcd (zabs a) D
 def reducedNumerator (a : ZT n) (D : PTm n) : ZT n :=

@@ -1,5 +1,6 @@
 import IPRADerivations.Core.IntOrder
 import IPRADerivations.Core.Gcd
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Quantitative uniqueness from strong convexity
@@ -81,11 +82,7 @@ theorem rational_squared_bound (lower midpoint left right : ZT n)
     Γ ⊢[PRAAx] le (D * m * a * a) (M * b * b * eta) :=
   penalty_bound lower midpoint left right _ _ _ hLower hLeft hRight hConvex
 
-private theorem cancel_positive {c a b : PTm n} (hc : Γ ⊢[PRAAx] le one c)
-    (h : Γ ⊢[PRAAx] le (c * a) (c * b)) : Γ ⊢[PRAAx] le a b := by
-  have ce : Γ ⊢[PRAAx] c ≐ succ (monus c one) :=
-    (eq_add_of_le hc).eqTrans (by ipra_ring)
-  exact mul_le_cancel (le_congr (congrMul ce (.eqRefl _)) (congrMul ce (.eqRefl _)) h)
+private alias cancel_positive := Common.mul_cancel_le
 
 /-- The explicit error schedule turns the squared bound into a rational
 distance estimate. The target radius `s/t` may be zero. -/

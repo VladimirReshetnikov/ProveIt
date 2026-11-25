@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.ConvolutionAssoc
 import IPRADerivations.AnalyticNumberTheory.SummatoryPhi
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The summatory function of a Dirichlet convolution (`pnt_ipra_constructive_2026-11-14`, towards `sb:symmetry`)
@@ -74,11 +75,7 @@ theorem row_step (d x y : PTm n) :
   refine (RB_at a b _ _ _).eqTrans (.eqTrans ?_ (congrAdd (RB_at a b _ _ _) (cv_at _ _ _ _ _)).eqSymm)
   refine .orE (zero_or_succ d) ?_ ?_
   · have s0 : ((d ≐ zero) :: Γ) ⊢[PRAAx] sg d ≐ zero := (congrSg Prf.hyp0).eqTrans sg_zero
-    have w := natEq s0
-    apply deriveNat; ipra_simps
-    linear_combination (𝔞 (inst2 a d y) * 𝔞 (Bs b (quo (succ x) d) y) -
-      𝔞 (inst2 a d y) * 𝔞 (Bs b (quo x d) y) -
-      𝔞 (eqb (rem (succ x) d) zero) * 𝔞 (inst2 a d y) * 𝔞 (inst2 b (quo (succ x) d) y)) * w
+    ipra_lc (𝔞 (inst2 a d y) * 𝔞 (Bs b (quo (succ x) d) y) - 𝔞 (inst2 a d y) * 𝔞 (Bs b (quo x d) y) - 𝔞 (eqb (rem (succ x) d) zero) * 𝔞 (inst2 a d y) * 𝔞 (inst2 b (quo (succ x) d) y)) * natEq s0
   · let C : List (Fm PTm n) := (d ≐ succ (pred d)) :: Γ
     have hd : C ⊢[PRAAx] d ≐ succ (pred d) := Prf.hyp0
     have q := LeanProofs.IPRA.AnalyticNumberTheory.SummatoryPhi.quo_succ (N := x) hd
@@ -86,7 +83,7 @@ theorem row_step (d x y : PTm n) :
     · let D : List (Fm PTm n) := (rem (succ x) d ≐ zero) :: C
       have e1 : D ⊢[PRAAx] eqb (rem (succ x) d) zero ≐ one := eqb_of_eq Prf.hyp0
       have qs : D ⊢[PRAAx] quo (succ x) d ≐ succ (quo x d) :=
-        q.wk.eqTrans ((congrAdd (.eqRefl _) e1).eqTrans (by apply deriveNat; ipra_simps; ring))
+        q.wk.eqTrans ((congrAdd (.eqRefl _) e1).eqTrans (by ipra_ring))
       have bs : D ⊢[PRAAx] Bs b (quo (succ x) d) y ≐ Bs b (quo x d) y + inst2 b (succ (quo x d)) y := by
         refine (congrAp2 _ qs (.eqRefl _)).eqTrans ?_
         have s := sum_succ' (Γ := D) (bS b) (quo x d) y
@@ -130,9 +127,7 @@ theorem cs_step (x y : PTm n)
   have z : Γ ⊢[PRAAx] inst2 (RB a b) (succ x) (pairT x y) ≐ zero :=
     (RB_at a b _ _ _).eqTrans ((congrMul (.eqRefl _) ((congrAp2 _ (quo_lt_self x) (.eqRefl _)).eqTrans
       (sum_zero _ _))).eqTrans (mul_zero _))
-  have e1 := natEq ih; have e2 := natEq l; have e3 := natEq s; have e4 := natEq r; have e5 := natEq z
-  apply deriveNat; ipra_simps
-  linear_combination e2 + e1 - e3 - e4 - e5
+  ipra_lc natEq l + natEq ih - natEq s - natEq r - natEq z
 
 private theorem cs₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] csF a b := by
   refine ind _ trivial ?_ ?_
@@ -149,10 +144,7 @@ private theorem cs₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] csF a b := by
     have r0 := sum_zero (Γ := ([] : List (Fm PTm 1))) (RB a b) (pairT zero (var 0))
     have rz : ([] : List (Fm PTm 1)) ⊢[PRAAx] inst2 (RB a b) zero (pairT zero (var 0)) ≐ zero :=
       (RB_at a b _ _ _).eqTrans (zero_mul_l (zero_mul_l sg_zero _) _)
-    have e1 := natEq l; have e2 := natEq l0; have e3 := natEq c; have e4 := natEq c0; have e5 := natEq cz
-    have e6 := natEq r; have e7 := natEq r0; have e8 := natEq rz
-    apply deriveNat; ipra_simps
-    linear_combination e1 + e2 + e3 + e4 + e5 - e6 - e7 - e8
+    ipra_lc natEq l + natEq l0 + natEq c + natEq c0 + natEq cz - natEq r - natEq r0 - natEq rz
   · simp only [Fm.subst_eq, subst_ap2, subst_pairT, Syn.subst_var, Syn.repl_zero, repl_one,
       ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
     exact cs_step a b _ _ Prf.hyp0

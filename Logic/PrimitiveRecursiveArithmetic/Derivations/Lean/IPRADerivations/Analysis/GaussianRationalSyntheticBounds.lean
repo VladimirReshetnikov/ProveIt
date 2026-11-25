@@ -2,6 +2,8 @@ import IPRADerivations.Analysis.GaussianRationalSyntheticDivision
 import IPRADerivations.Analysis.GaussianRationalL1Algebra
 import IPRADerivations.Analysis.GaussianFactorBudget
 import IPRADerivations.Analysis.RationalAlgebra
+import IPRADerivations.Core.CongruenceTactic
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Bounds for actual Gaussian-rational synthetic division
@@ -66,10 +68,7 @@ theorem natCode_add (a b : PTm n) : Γ ⊢[PRAAx] add (natCode a) (natCode b) �
   apply RationalFiniteSum.canonical_equal _ _ _ _ _ _ (RationalArithmetic.add_guard _ _)
     (RationalNormalForm.normalize_well_formed _ _ (le_refl one)) h (natCode_represents (a+b))
     (RationalAlgebra.positive_product (le_refl one) (le_refl one)) (le_refl one)
-  apply ZT.derive
-  simp only [ZT.toZ_mul,ZT.toZ_add,ZT.toZ_ofNat]
-  ipra_simps
-  ring
+  ipra_lc
 
 theorem natCode_multiply (a b : PTm n) : Γ ⊢[PRAAx] multiply (natCode a) (natCode b) ≐ natCode (a*b) := by
   have h := RationalRepresentations.represents_multiply (Γ := Γ) (natCode a) (natCode b) _ _ _ _
@@ -77,10 +76,7 @@ theorem natCode_multiply (a b : PTm n) : Γ ⊢[PRAAx] multiply (natCode a) (nat
   apply RationalFiniteSum.canonical_equal _ _ _ _ _ _ (RationalArithmetic.multiply_guard _ _)
     (RationalNormalForm.normalize_well_formed _ _ (le_refl one)) h (natCode_represents (a*b))
     (RationalAlgebra.positive_product (le_refl one) (le_refl one)) (le_refl one)
-  apply ZT.derive
-  simp only [ZT.toZ_mul,ZT.toZ_ofNat]
-  ipra_simps
-  ring
+  ipra_lc
 
 /-- Rational addition is monotone in both independently denominated inputs.
 The two actual input comparison gaps give the exact cross-numerator gap. -/
@@ -102,9 +98,7 @@ theorem add_monotone (a b c d : PTm n) (hab : Γ ⊢[PRAAx] rationalLE a b)
     𝔞(denominatorOf a)*𝔞(denominatorOf b)*second
 
 theorem qL1_congr {q r : PTm n} (h : Γ ⊢[PRAAx] q ≐ r) : Γ ⊢[PRAAx] qL1 q ≐ qL1 r := by
-  simpa only [GaussianRationalL1.subst_qL1,Syn.subst_var,Matrix.cons_val_zero] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (qL1 (var 0) : PTm 1)
-      (σ := ![q]) (σ' := ![r]) (fun i => by fin_cases i; exact h)
+  ipra_congr (qL1 (var 0) : PTm 1) with [h]
 
 theorem qL1_qone : Γ ⊢[PRAAx] qL1 (qone : PTm n) ≐ natCode one := by
   have rep := GaussianRationalL1.qL1_represents (Γ := Γ) qone ComplexLogarithmRemainder.oneCode one (le_refl _)
@@ -173,9 +167,7 @@ theorem quotient_step (C z N A Z k : PTm n) (hk : Γ ⊢[PRAAx] lt (succ k) N)
     (natCode_order _ _ coarse)
 
 theorem natCode_congr {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) : Γ ⊢[PRAAx] natCode a ≐ natCode b := by
-  simpa only [subst_natCode,Syn.subst_var,Matrix.cons_val_zero] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (natCode (var 0) : PTm 1)
-      (σ := ![a]) (σ' := ![b]) (fun i => by fin_cases i; exact h)
+  ipra_congr (natCode (var 0) : PTm 1) with [h]
 
 /-- Induction on the actual quotient indices uses only original coefficient
 bounds, the original root bound and literal monicity of the input. -/

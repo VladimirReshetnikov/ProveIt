@@ -2,6 +2,7 @@ import IPRADerivations.Core.Order
 import IPRADerivations.Core.Tactic
 import IPRADerivations.Core.Pairing
 import IPRADerivations.Core.Parity
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The denominator lemma of the sharp Hurwitz theorem (`hurwitz_khinchin_ipra`)
@@ -53,28 +54,24 @@ def goodPair (u v : PTm n) : Fm PTm n := lt (num 5 * (u * u) * (v * v)) ((u * u 
 /-- `h = v² − uv − u² = 1 + e > 0` gives `S₀² > 5`. -/
 theorem good_of_gap {u v e : PTm n} (h : Γ ⊢[PRAAx] v * v ≐ u * v + u * u + succ e) : Γ ⊢[PRAAx] goodPair u v := by
   refine le_of_eq_add (d := e + two * u * v * succ e + e * succ e) ?_
-  have eE := natEq h
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞 v * 𝔞 v + 𝔞 u * 𝔞 v - 𝔞 u * 𝔞 u + 1 + 𝔞 e) * eE
+  ipra_lc (𝔞 v * 𝔞 v + 𝔞 u * 𝔞 v - 𝔞 u * 𝔞 u + 1 + 𝔞 e) * natEq h
 
 /-- `u X = u Y + 1` forces `u = 1`. -/
 theorem unit_of_mul {u X Y : PTm n} (h : Γ ⊢[PRAAx] u * X ≐ u * Y + one) : Γ ⊢[PRAAx] u ≐ one := by
   refine .orE (lt_or_le Y X) ?_ ?_
   · -- `X = Y + 1 + g`, so `u + u g = 1`
     let Δ : List (Fm PTm n) := lt Y X :: Γ
-    have eX := natEq (eq_add_of_le (Γ := Δ) Prf.hyp0)
     have eh := natEq (Γ := Δ) h.wk
     have hsum : Δ ⊢[PRAAx] u + u * monus X (succ Y) ≐ one := by
-      apply deriveNat; ipra_simps; linear_combination eh - 𝔞 u * eX
+      ipra_lc eh - 𝔞 u * natEq (eq_add_of_le (Γ := Δ) Prf.hyp0)
     refine .orE (zero_or_succ u) ?_ ?_
     · refine .botE _ (succ_ne_zero (a := zero) ?_)
       have e0 := natEq (Prf.hyp0 (Γ := Δ) (φ := u ≐ zero))
       have es := natEq hsum.wk (Γ := (u ≐ zero) :: Δ)
       apply deriveNat; ipra_simps; linear_combination -es + (1 + 𝔞 (monus X (succ Y))) * e0
     · have es := natEq hsum.wk (Γ := (u ≐ succ (pred u)) :: Δ)
-      have e1 := natEq (Prf.hyp0 (Γ := Δ) (φ := u ≐ succ (pred u)))
       have hz : ((u ≐ succ (pred u)) :: Δ) ⊢[PRAAx] pred u + u * monus X (succ Y) ≐ zero := by
-        apply deriveNat; ipra_simps; linear_combination es - e1
+        ipra_lc es - natEq (Prf.hyp0 (Γ := Δ) (φ := u ≐ succ (pred u)))
       exact Prf.hyp0.eqTrans (congrSucc (add_eq_zero_left hz))
   · -- `Y = X + g`, so `0 = u g + 1`
     refine .botE _ (succ_ne_zero (a := u * monus Y X) ?_)
@@ -121,10 +118,7 @@ theorem denominator_core {u v w r t : PTm n} (hw : Γ ⊢[PRAAx] le (u + v) w)
       let f : PTm n := monus w (u + v)
       let e' : PTm n := monus (u * v + u * u) (succ (v * v))
       refine .orI₂ (good_of_gap (u := v) (v := w) (e := e' + f * (f + two * u + v)) ?_)
-      have ew := natEq (eq_add_of_le (Γ := Δ') hw.wk.wk)
-      have eh := natEq (eq_add_of_le (Γ := Δ') Prf.hyp0)
-      apply deriveNat; ipra_simps
-      linear_combination (𝔞 w + 𝔞 u + 𝔞 f) * ew + eh
+      ipra_lc (𝔞 w + 𝔞 u + 𝔞 f) * natEq (eq_add_of_le (Γ := Δ') hw.wk.wk) + natEq (eq_add_of_le (Γ := Δ') Prf.hyp0)
     · -- `h = 0` is impossible
       let Δ' : List (Fm PTm n) := le (u * v + u * u) (v * v) :: Δ
       have heq : Δ' ⊢[PRAAx] v * v ≐ u * v + u * u := le_antisymm Prf.hyp1 Prf.hyp0
@@ -142,10 +136,7 @@ theorem denominator_core {u v w r t : PTm n} (hw : Γ ⊢[PRAAx] le (u + v) w)
           apply deriveNat; ipra_simps
           linear_combination -(𝔞 r * 𝔞 r) * eq' + (1 - 𝔞 t * 𝔞 u - 𝔞 r * 𝔞 v) * hd
       refine no_golden_unit (v := v) ?_
-      have e1 := natEq heq
-      have e2 := natEq hu
-      apply deriveNat; ipra_simps
-      linear_combination e1 + (𝔞 v + 𝔞 u + 1) * e2
+      ipra_lc natEq heq + (𝔞 v + 𝔞 u + 1) * natEq hu
 
 /-- Variables `0 = u`, `1 = v`, `2 = w`, `3 = r`, `4 = t`. -/
 def denominatorFormula : Fm PTm 5 :=

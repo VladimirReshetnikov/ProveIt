@@ -1,4 +1,6 @@
 import IPRADerivations.Analysis.GaussianRationalLinearProduct
+import IPRADerivations.Core.CongruenceTactic
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Exact weighted backward budgets for rational approximate factorization
@@ -50,9 +52,7 @@ theorem frac_represents (a F : PTm n) (hF : Γ ⊢[PRAAx] le one F) : Γ ⊢[PRA
 
 theorem frac_congr {a a' F F' : PTm n} (ha : Γ ⊢[PRAAx] a ≐ a') (hF : Γ ⊢[PRAAx] F ≐ F') : Γ ⊢[PRAAx]
     frac a F ≐ frac a' F' := by
-  simpa only [subst_frac,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (frac (var 0) (var 1) : PTm 2)
-      (σ := ![a,F]) (σ' := ![a',F']) (fun i => by fin_cases i; exact ha; exact hF)
+  ipra_congr (frac (var 0) (var 1) : PTm 2) with [ha, hF]
 
 theorem frac_add (a b F : PTm n) (hF : Γ ⊢[PRAAx] le one F) : Γ ⊢[PRAAx]
     add (frac a F) (frac b F) ≐ frac (a+b) F := by
@@ -61,10 +61,7 @@ theorem frac_add (a b F : PTm n) (hF : Γ ⊢[PRAAx] le one F) : Γ ⊢[PRAAx]
   apply RationalFiniteSum.canonical_equal _ _ _ _ _ _ (RationalArithmetic.add_guard _ _)
     (RationalNormalForm.normalize_well_formed _ _ hF) sum (frac_represents (a+b) F hF)
     (RationalAlgebra.positive_product hF hF) hF
-  apply ZT.derive
-  simp only [ZT.toZ_mul,ZT.toZ_add,ZT.toZ_ofNat]
-  ipra_simps
-  ring
+  ipra_lc
 
 theorem nat_scale_frac (k a F : PTm n) (hF : Γ ⊢[PRAAx] le one F) : Γ ⊢[PRAAx]
     multiply (natCode k) (frac a F) ≐ frac (k*a) F := by
@@ -73,10 +70,7 @@ theorem nat_scale_frac (k a F : PTm n) (hF : Γ ⊢[PRAAx] le one F) : Γ ⊢[PR
   apply RationalFiniteSum.canonical_equal _ _ _ _ _ _ (RationalArithmetic.multiply_guard _ _)
     (RationalNormalForm.normalize_well_formed _ _ hF) product (frac_represents (k*a) F hF)
     (RationalAlgebra.positive_product (le_refl one) hF) hF
-  apply ZT.derive
-  simp only [ZT.toZ_mul,ZT.toZ_ofNat]
-  ipra_simps
-  ring
+  ipra_lc
 
 theorem frac_order (a b F : PTm n) (hF : Γ ⊢[PRAAx] le one F) (hab : Γ ⊢[PRAAx] le a b) : Γ ⊢[PRAAx]
     rationalLE (frac a F) (frac b F) :=
@@ -166,10 +160,7 @@ theorem frac_zero (F : PTm n) (hF : Γ ⊢[PRAAx] le one F) : Γ ⊢[PRAAx] frac
   apply RationalFiniteSum.canonical_equal _ _ _ _ _ _
     (RationalNormalForm.normalize_well_formed _ _ hF) (RationalNormalForm.normalize_well_formed _ _ (le_refl one))
     (frac_represents _ _ hF) (natCode_represents zero) hF (le_refl one)
-  apply ZT.derive
-  simp only [ZT.toZ_mul,ZT.toZ_ofNat]
-  ipra_simps
-  ring
+  ipra_lc
 
 theorem cap_end (N A p F : PTm n) (hF : Γ ⊢[PRAAx] le one F) : Γ ⊢[PRAAx]
     cap N A p F N ≐ natCode zero :=

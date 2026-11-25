@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.GaussianRationalMetric
 import IPRADerivations.AnalyticNumberTheory.Multiplicative
 import IPRADerivations.Foundations.GapDecision
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Actual nearest signed coordinate on a protected rational mesh

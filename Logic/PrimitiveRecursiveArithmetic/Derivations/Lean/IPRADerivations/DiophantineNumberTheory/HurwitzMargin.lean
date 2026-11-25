@@ -1,4 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.HurwitzDenominator
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The margin certificate of the sharp Hurwitz theorem (`hurwitz_khinchin_ipra`)
@@ -62,10 +63,7 @@ theorem min_weight {u v a b W : PTm n} (hW : Γ ⊢[PRAAx] u * v * (a + b) ≐ W
     (h : Γ ⊢[PRAAx] le (u * u * a) (v * v * b)) :
     Γ ⊢[PRAAx] le (u * u * a * (u * u + v * v)) (u * v * W) := by
   refine le_of_eq_add (d := u * u * monus (v * v * b) (u * u * a)) ?_
-  have eg := natEq (eq_add_of_le h)
-  have eW := natEq hW
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 u * 𝔞 u * eg - 𝔞 u * 𝔞 v * eW
+  ipra_lc 𝔞 u * 𝔞 u * natEq (eq_add_of_le h) - 𝔞 u * 𝔞 v * natEq hW
 
 /-- The margin: `100 S² X ≤ (100 uv S + D) W` with `S² = 5u²v² + D`, `D, W ≥ 1` gives `5X² < W²`. -/
 theorem margin_core {u v D X W : PTm n}
@@ -110,8 +108,7 @@ theorem margin_core {u v D X W : PTm n}
 theorem le_mul_mono {Γ : List (Fm PTm n)} {a b : PTm n} (c : PTm n) (h : Γ ⊢[PRAAx] le a b) :
     Γ ⊢[PRAAx] le (c * a) (c * b) := by
   refine le_of_eq_add (d := c * monus b a) ?_
-  have e := natEq (eq_add_of_le h)
-  apply deriveNat; ipra_simps; linear_combination 𝔞 c * e
+  ipra_lc 𝔞 c * natEq (eq_add_of_le h)
 
 theorem sq_le_sq {Γ : List (Fm PTm n)} {a b : PTm n} (h : Γ ⊢[PRAAx] le a b) : Γ ⊢[PRAAx] le (a * a) (b * b) := by
   refine le_of_eq_add (d := two * a * monus b a + monus b a * monus b a) ?_
@@ -123,9 +120,7 @@ theorem sq_le_sq {Γ : List (Fm PTm n)} {a b : PTm n} (h : Γ ⊢[PRAAx] le a b)
 theorem add_le_add' {Γ : List (Fm PTm n)} {a b c d : PTm n} (h₁ : Γ ⊢[PRAAx] le a b) (h₂ : Γ ⊢[PRAAx] le c d) :
     Γ ⊢[PRAAx] le (a + c) (b + d) := by
   refine le_of_eq_add (d := monus b a + monus d c) ?_
-  have e₁ := natEq (eq_add_of_le h₁)
-  have e₂ := natEq (eq_add_of_le h₂)
-  apply deriveNat; ipra_simps; linear_combination e₁ + e₂
+  ipra_lc natEq (eq_add_of_le h₁) + natEq (eq_add_of_le h₂)
 
 /-- The certificate for the selected fraction `r/u` (with error numerator `a`). -/
 theorem cert_one {u v a b E W Q D : PTm n} (hW : Γ ⊢[PRAAx] u * v * (a + b) ≐ W) (hW1 : Γ ⊢[PRAAx] le one W)
@@ -158,7 +153,7 @@ theorem cert_core {u v a b E W Q : PTm n} (hgood : Γ ⊢[PRAAx] goodPair u v)
     have e := natEq (eq_add_of_le hgood)
     have e' := natEq hD
     refine le_of_eq_add (d := monus ((u * u + v * v) * (u * u + v * v)) (succ (num 5 * (u * u) * (v * v)))) ?_
-    apply deriveNat; simp only [D] at *; ipra_simps; linear_combination e - e'
+    ipra_lc [D] e - e'
   refine .andI (.impI ?_) (.impI ?_)
   · exact cert_one hW.wk hW1.wk hD.wk hD1.wk hQu.wk hE.wk Prf.hyp0
   · have hW' : Γ ⊢[PRAAx] v * u * (b + a) ≐ W := (by ipra_ring : Γ ⊢[PRAAx] v * u * (b + a) ≐ u * v * (a + b)).eqTrans hW

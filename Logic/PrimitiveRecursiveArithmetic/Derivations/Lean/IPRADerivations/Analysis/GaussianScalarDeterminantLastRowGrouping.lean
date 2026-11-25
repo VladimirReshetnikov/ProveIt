@@ -2,6 +2,7 @@ import IPRADerivations.Analysis.GaussianScalarDeterminant
 import IPRADerivations.Analysis.GaussianRationalPermutationSum
 import IPRADerivations.Analysis.GaussianRationalBlockSums
 import IPRADerivations.Foundations.RuntimePermutationPacking
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Grouping the actual determinant terms by the last row
@@ -44,8 +45,7 @@ theorem pack_body_at (m x i : PTm n) : Γ ⊢[PRAAx] inst2 packBody i (pairT m x
   simpa [packBody,inst2] using congrAp2 packingF (.eqRefl i) (fst_pair (Γ := Γ) m x)
 
 theorem unpack_body_at (m x i : PTm n) : Γ ⊢[PRAAx] inst2 unpackBody i (pairT m x) ≐ unpackRank m i := by
-  simpa [unpackBody,inst2] using Prf.eqCongr (unpackRank (var 0) (var 1) : PTm 2)
-    (σ := ![fstT (pairT m x),i]) (σ' := ![m,i]) (fun j => by fin_cases j; exact fst_pair _ _; exact .eqRefl _)
+  ipra_congr (unpackRank (var 0) (var 1) : PTm 2) with [fst_pair _ _, .eqRefl i] using [unpackBody, inst2]
 
 theorem original_body_at (t : PTm 2) (m x i : PTm n) : Γ ⊢[PRAAx] inst2 (originalBody t) i (pairT m x) ≐ inst2 t i x := by
   change Γ ⊢[PRAAx] Syn.subst ![i,pairT m x] (inst2 t (var 0) (sndT (var 1))) ≐ inst2 t i x
@@ -112,10 +112,7 @@ theorem sum_grouped (t : PTm 2) (m x : PTm n) : Γ ⊢[PRAAx] sum t (count (succ
 
 private theorem inserted_word_congr (m : PTm n) {p q d e : PTm n}
     (hp : Γ ⊢[PRAAx] p ≐ q) (hd : Γ ⊢[PRAAx] d ≐ e) : Γ ⊢[PRAAx] insertedWord m p d ≐ insertedWord m q e := by
-  simpa only [LeanProofs.IPRA.Foundations.RuntimePermutationInsertion.subst_insertedWord,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-    Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (insertedWord (var 0) (var 1) (var 2) : PTm 3) (σ := ![m,p,d]) (σ' := ![m,q,e])
-      (fun j => by fin_cases j; exact .eqRefl _; exact hp; exact hd)
+  ipra_congr (insertedWord (var 0) (var 1) (var 2) : PTm 3) with [.eqRefl m, hp, hd]
 
 theorem grouped_word (m p r : PTm n) (hp : Γ ⊢[PRAAx] lt p (succ m)) (hr : Γ ⊢[PRAAx] lt r (count m)) : Γ ⊢[PRAAx]
     entry (words (succ m)) (unpackRank m (count m*p+r)) ≐ insertedWord m p (entry (words m) r) := by
@@ -136,10 +133,8 @@ theorem determinant_grouped (A m : PTm n) : Γ ⊢[PRAAx] scalarDet A (succ m) �
 
 private theorem signed_word_congr (A m : PTm n) {u v : PTm n} (h : Γ ⊢[PRAAx] u ≐ v) : Γ ⊢[PRAAx]
     qmul (signPoint m u) (rawProduct A m u) ≐ qmul (signPoint m v) (rawProduct A m v) := by
-  simpa only [GaussianRationalHorner.subst_qmul,GaussianPolynomialDeterminantTerms.subst_signPoint,GaussianScalarDeterminant.subst_rawProduct,
-    Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (qmul (signPoint (var 0) (var 1)) (rawProduct (var 2) (var 0) (var 1)) : PTm 3)
-      (σ := ![m,u,A]) (σ' := ![m,v,A]) (fun j => by fin_cases j; exact .eqRefl _; exact h; exact .eqRefl _)
+  ipra_congr (qmul (signPoint (var 0) (var 1)) (rawProduct (var 2) (var 0) (var 1)) : PTm 3) with
+    [.eqRefl m, h, .eqRefl A]
 
 theorem signed_grouped_term (A m p r : PTm n) (hp : Γ ⊢[PRAAx] lt p (succ m)) (hr : Γ ⊢[PRAAx] lt r (count m)) :
     Γ ⊢[PRAAx] inst2 (reorderedBody signedBody) (count m*p+r) (pairT m (pairT A (succ m))) ≐

@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianBetaRowMonomialReference
 import IPRADerivations.Analysis.GaussianRationalQuadratureDifference
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Original beta/Euler upper grids transferred to the literal monomial grid
@@ -66,15 +67,8 @@ theorem scalar_body_at (i p v q M a C E R N : PTm n) : Γ ⊢[PRAAx]
   have in6 : ![field0 x,fstT (field5 x),fstT (sndT (field5 x)),fstT (sndT (sndT (field5 x))),field2 x*field1 x+field3 x*i,field4 x*field1 x,sndT (sndT (sndT (field5 x)))] (6 : Fin 7) = sndT (sndT (sndT (field5 x))) := rfl
   have out5 : ![p,v,q,R,a*M+C*i,E*M,N] (5 : Fin 7) = E*M := rfl
   have out6 : ![p,v,q,R,a*M+C*i,E*M,N] (6 : Fin 7) = N := rfl
-  simpa only [scalarBody,inst2,x,GaussianBetaRowMonomialReference.subst_scalarMajorant,
-    GaussianCompactRiemannName.subst_field0,GaussianCompactRiemannName.subst_field1,GaussianCompactRiemannName.subst_field2,
-    GaussianCompactRiemannName.subst_field3,GaussianCompactRiemannName.subst_field4,GaussianCompactRiemannName.subst_field5,
-    subst_fstT,subst_sndT,PTm.subst_add,PTm.subst_mul,in5,in6,out5,out6,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-    Matrix.cons_val_two,Matrix.cons_val_three,Matrix.cons_val_four,Matrix.cons_val_succ,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (scalarMajorant (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) : PTm 7)
-      (σ := ![field0 x,fstT (field5 x),fstT (sndT (field5 x)),fstT (sndT (sndT (field5 x))),field2 x*field1 x+field3 x*i,field4 x*field1 x,sndT (sndT (sndT (field5 x)))])
-      (σ' := ![p,v,q,R,a*M+C*i,E*M,N])
-      (fun j => by fin_cases j; exact field0_at p M a C E _; exact e0; exact e1; exact e2; exact atTime; exact atDen; exact e3)
+  ipra_congr (scalarMajorant (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) : PTm 7) with
+    [field0_at p M a C E _, e0, e1, e2, atTime, atDen, e3] using [scalarBody, inst2, x, in5, in6, out5, out6]
 
 def scaledEval (r t x : PTm n) : PTm n := scaledMonomial r (fstT x) (fstT t) (sndT t) (sndT x)
 def scaledF : PR 3 := PTm.toPR (scaledEval (var 0) (var 1) (var 2))
@@ -86,11 +80,8 @@ theorem scaled_at (r t d N : PTm n) : Γ ⊢[PRAAx]
   have raw : Γ ⊢[PRAAx] ap3 scaledF r t (pairT d N) ≐ scaledEval r t (pairT d N) := by
     simpa [scaledF,ap3] using toPR_eq (Γ := Γ) (scaledEval (var 0) (var 1) (var 2) : PTm 3) ![r,t,pairT d N]
   have read : Γ ⊢[PRAAx] scaledEval r t (pairT d N) ≐ scaledMonomial r d (fstT t) (sndT t) N := by
-    simpa only [scaledEval,GaussianBetaRowMonomialReference.subst_scaledMonomial,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-      Matrix.cons_val_two,Matrix.cons_val_three,Matrix.cons_val_four,Matrix.cons_val_succ,Matrix.head_cons,Matrix.tail_cons] using
-      Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (scaledMonomial (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5)
-        (σ := ![r,fstT (pairT d N),fstT t,sndT t,sndT (pairT d N)]) (σ' := ![r,d,fstT t,sndT t,N])
-        (fun i => by fin_cases i; exact .eqRefl _; exact fst_pair d N; exact .eqRefl _; exact .eqRefl _; exact snd_pair d N)
+    ipra_congr (scaledMonomial (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) with
+      [.eqRefl r, fst_pair d N, .eqRefl (fstT t), .eqRefl (sndT t), snd_pair d N] using [scaledEval]
   have eta : Γ ⊢[PRAAx] ap3 GaussianMonomialDecayQuadrature.evaluatorF r t d ≐ GaussianMonomialDecayMajorant.sample r d (fstT t) (sndT t) :=
     by simpa [GaussianMonomialDecayQuadrature.evaluatorF,ap3,GaussianMonomialDecayQuadrature.evaluator] using
       toPR_eq (Γ := Γ) (GaussianMonomialDecayQuadrature.evaluator (var 0) (var 1) (var 2) : PTm 3) ![r,t,d]

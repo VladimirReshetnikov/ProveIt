@@ -2,6 +2,7 @@ import IPRADerivations.Analysis.GaussianPolynomialMonicNorm
 import IPRADerivations.Analysis.GaussianRationalPolynomialDegree
 import IPRADerivations.Foundations.WeightedMonomials
 import IPRADerivations.Probability.UnionUtility
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual tagged weighted-degree maximum of the original coefficient rows
@@ -223,10 +224,7 @@ theorem positive_count_of_flag_one (G m a d : PTm n) (h : Γ ⊢[PRAAx] flag G m
     le one m := by
   refine .orE (zero_or_succ m) ?_ ?_
   · have e : (m ≐ zero) :: Γ ⊢[PRAAx] flag G m a d ≐ flag G zero a d := by
-      simpa only [subst_flag,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-        Matrix.cons_val_three,Matrix.head_cons,Matrix.tail_cons] using Prf.eqCongr (Ax := PRAAx) (Γ := (m ≐ zero) :: Γ)
-          (flag (var 0) (var 1) (var 2) (var 3) : PTm 4) (σ := ![G,m,a,d]) (σ' := ![G,zero,a,d])
-          (fun i => by fin_cases i; exact .eqRefl _; exact Prf.hyp0; exact .eqRefl _; exact .eqRefl _)
+      ipra_congr (flag (var 0) (var 1) (var 2) (var 3) : PTm 4) with [.eqRefl G, Prf.hyp0, .eqRefl a, .eqRefl d]
     exact .botE _ (succ_ne_zero (h.wk.eqSymm.eqTrans (e.eqTrans (zero_count_flag _ _ _))))
   · exact le_congr (.eqRefl _) Prf.hyp0.eqSymm (le_of_eq_add (d := pred m) (by ipra_ring))
 theorem nonzero_of_flag_one (G m a d : PTm n) (h : Γ ⊢[PRAAx] flag G m a d ≐ one) : Γ ⊢[PRAAx]

@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.SymmetrySum
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Summed Möbius inversion for any body (`pnt_ipra_constructive_2026-11-14`, towards `sb:symmetry-bound`)
@@ -94,7 +95,7 @@ theorem inner_p {k N y : PTm n} (hk : Γ ⊢[PRAAx] k ≐ succ (pred k)) (hkN : 
   rw [show inst2 (one : PTm 2) (quo (Syn.shift k) (var 0)) (Syn.shift y) = one by simp [inst2]]
   refine (congrMul (congrMul (.eqRefl _) (congrEqb' (congrAp2 remF (fst_pair _ _) (.eqRefl _)) (.eqRefl _)))
     (congrInst2 g (.eqRefl _) (snd_pair _ _))).eqTrans ?_
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- A row of the inversion: `[d ∣ N] μ^±_{N+1}(d) Σ_{e ∣ N/d} g(e) = [d ∣ N] μ^±_{N+1}(d) (g * 𝟏)(N/d)`. -/
 theorem row_mob_p {d Z : PTm n} (hN : Γ ⊢[PRAAx] fstT Z ≐ succ (pred (fstT Z))) :
@@ -153,11 +154,11 @@ theorem row_mob_p {d Z : PTm n} (hN : Γ ⊢[PRAAx] fstT Z ≐ succ (pred (fstT 
         have ww := natEq eN; have wp := natEq hd
         have hkN : C ⊢[PRAAx] le (succ (quo (fstT Z) d)) (succ (fstT Z)) := by
           refine (succ_monus_succ _ _).eqTrans (le_of_eq_add (d := pred d * quo (fstT Z) d) ?_)
-          apply deriveNat; ipra_simps; linear_combination ww + 𝔞 (quo (fstT Z) d) * wp
+          ipra_lc ww + 𝔞 (quo (fstT Z) d) * wp
         exact congrMul (.eqRefl _) (inner_p g hk hkN)
       · have z : (neg (rem (fstT Z) d ≐ zero) :: (d ≐ succ (pred d)) :: Γ) ⊢[PRAAx]
             sg d * eqb (rem (fstT Z) d) zero ≐ zero :=
-          (congrMul (.eqRefl _) (eqb_of_ne Prf.hyp0)).eqTrans (by apply deriveNat; ipra_simps; ring)
+          (congrMul (.eqRefl _) (eqb_of_ne Prf.hyp0)).eqTrans (by ipra_ring)
         exact (zero_mul_l (zero_mul_l z _) _).eqTrans (zero_mul_l (zero_mul_l z _) _).eqSymm
   exact .andI (cR.eqTrans (scP.eqTrans (key _))) (cR'.eqTrans (scN.eqTrans (key _)))
 
@@ -180,18 +181,14 @@ theorem mob_p {Z : PTm n} (hN : Γ ⊢[PRAAx] fstT Z ≐ succ (pred (fstT Z))) :
     refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
     rw [shift_pairT, hs]
     exact Prf.andE₂ (row_mob_p g hN'.wk)
-  have a := natEq inv; have b := natEq cP; have c := natEq cN
-  apply deriveNat; ipra_simps
-  linear_combination -b + a + c
+  ipra_lc -natEq cP + natEq inv + natEq cN
 
 /-! ## The rows as convolutions, and the summed inversion -/
 
 /-- The row algebra over opaque terms: `((S E') M') L' = (S E)(M L)` from `L' = L`, `M' = M`, `E' = E`. -/
 theorem row_alg1 {S E E' M' Md L L' : PTm n} (eL : Γ ⊢[PRAAx] L' ≐ L) (eM : Γ ⊢[PRAAx] M' ≐ Md)
     (eE : Γ ⊢[PRAAx] E' ≐ E) : Γ ⊢[PRAAx] ((S * E') * M') * L' ≐ (S * E) * (Md * L) := by
-  have a := natEq eL; have b := natEq eM; have c := natEq eE
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 S * 𝔞 E' * 𝔞 M' * a + 𝔞 S * 𝔞 E' * 𝔞 L * b + 𝔞 S * 𝔞 Md * 𝔞 L * c
+  ipra_lc 𝔞 S * 𝔞 E' * 𝔞 M' * natEq eL + 𝔞 S * 𝔞 E' * 𝔞 L * natEq eM + 𝔞 S * 𝔞 Md * 𝔞 L * natEq eE
 
 /-- Both sides vanish when `S = 0`. -/
 theorem row_zero1 {S E E' M' Md L L' : PTm n} (hS : Γ ⊢[PRAAx] S ≐ zero) :
@@ -259,10 +256,7 @@ theorem pt_n (N y : PTm n) :
     have rc := row_conv (Γ := C) g N y
     have gx := congrInst2 (Γ := C) g (fst_pair N y) (snd_pair N y)
     have s1 : C ⊢[PRAAx] sg N ≐ one := (congrSg Prf.hyp0).eqTrans (sg_succ _)
-    have e1 := natEq sm; have e2 := natEq (Prf.andE₁ rc); have e3 := natEq (Prf.andE₂ rc)
-    have e4 := natEq gx; have e5 := natEq s1
-    apply deriveNat; ipra_simps
-    linear_combination -e2 + e1 + e3 + e4 - 𝔞 (inst2 g N y) * e5
+    ipra_lc -natEq (Prf.andE₁ rc) + natEq sm + natEq (Prf.andE₂ rc) + natEq gx - 𝔞 (inst2 g N y) * natEq s1
 
 /-- Summed Möbius inversion: `Σ_{1≤d≤x} μ⁺(d) B(⌊x/d⌋) = Σ_{1≤n≤x} g(n, y) + Σ_{1≤d≤x} μ⁻(d) B(⌊x/d⌋)`,
 `B(m) = Σ_{1≤k≤m} (g * 𝟏)(k, y)`. -/
@@ -273,8 +267,7 @@ theorem mobius_summatory (x y : PTm n) :
   have cN := conv_summatory (Γ := Γ) aNB (bF g) x y
   have s := sum_add2 (Γ := Γ) (gS g) (cvF aNB (bF g)) (cvF aPB (bF g)) (K := succ x) (x := y) (x' := y) (z := y)
     (.allI (.impI (pt_n g _ _)))
-  have e1 := natEq cP; have e2 := natEq cN; have e3 := natEq s
-  apply deriveNat; ipra_simps; linear_combination -e1 + e3 + e2
+  ipra_lc -natEq cP + natEq s + natEq cN
 
 end Summatory
 

@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.Valuation
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # `2^r ∣ φ(n)` for `r` distinct odd prime divisors
@@ -78,11 +79,10 @@ theorem peel_eq {q : PTm n} (hqp : Γ ⊢[PRAAx] q ≐ p) (hI : Γ ⊢[PRAAx] is
     eqb_of_ne (.impI (succ_ne_zero' _ (hrm.wk.eqSymm.eqTrans
       ((congrAp2 remF (.eqRefl _) hqp.wk).eqSymm.eqTrans Prf.hyp0))))
   have hE := eqb_of_eq hqp
-  have h₁ := natEq hI; have h₂ := natEq hDn; have h₃ := natEq hO; have h₄ := natEq hDm; have h₅ := natEq hE
-  apply deriveNat; ipra_simps
-  linear_combination Groth.ι (Q.mk _ (eqb (rem (pw p a * m) q) zero)) * Groth.ι (Q.mk _ (rem q two)) * h₁ +
-    Groth.ι (Q.mk _ (rem q two)) * h₂ + h₃ -
-    Groth.ι (Q.mk _ (sg (monus q one))) * Groth.ι (Q.mk _ (eqb (lpf q) q)) * Groth.ι (Q.mk _ (rem q two)) * h₄ - h₅
+  ipra_lc Groth.ι (Q.mk _ (eqb (rem (pw p a * m) q) zero)) * Groth.ι (Q.mk _ (rem q two)) * natEq hI +
+    Groth.ι (Q.mk _ (rem q two)) * natEq hDn + natEq hO -
+    Groth.ι (Q.mk _ (sg (monus q one))) * Groth.ι (Q.mk _ (eqb (lpf q) q)) * Groth.ι (Q.mk _ (rem q two)) * natEq hDm -
+    natEq hE
 
 omit hodd hrm in
 theorem peel_ne {q : PTm n} (hq : Γ ⊢[PRAAx] prime q) (hne : Γ ⊢[PRAAx] neg (q ≐ p)) :
@@ -105,10 +105,8 @@ theorem peel_point (q : PTm n) :
     have hE : ((isP q ≐ zero) :: Γ) ⊢[PRAAx] eqb q p ≐ zero := by
       refine eqb_of_ne (.impI (succ_ne_zero' _ (a := zero) ?_))
       exact (isP_of_prime hp.wk.wk).eqSymm.eqTrans ((isP_congr Prf.hyp0).eqSymm.eqTrans hI.wk)
-    have h₁ := natEq hI; have h₂ := natEq hE
-    apply deriveNat; ipra_simps
-    linear_combination (Groth.ι (Q.mk _ (eqb (rem (pw p a * m) q) zero)) * Groth.ι (Q.mk _ (rem q two)) -
-      Groth.ι (Q.mk _ (eqb (rem m q) zero)) * Groth.ι (Q.mk _ (rem q two))) * h₁ - h₂
+    ipra_lc (Groth.ι (Q.mk _ (eqb (rem (pw p a * m) q) zero)) * Groth.ι (Q.mk _ (rem q two)) - Groth.ι (Q.mk _ (eqb (rem m q) zero)) * Groth.ι (Q.mk _ (rem q two))) * natEq hI -
+      natEq hE
   · have hI : ((isP q ≐ one) :: Γ) ⊢[PRAAx] isP q ≐ one := Prf.hyp0
     refine .orE (eq_or_ne q p) ?_ ?_
     · exact peel_eq hp.wk.wk hodd.wk.wk ha.wk.wk hrm.wk.wk Prf.hyp0 hI.wk
@@ -122,13 +120,13 @@ theorem odd_far {m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (k : PTm n)
     Γ ⊢[PRAAx] inst2 oddB (succ m + k) m ≐ zero := by
   rw [inst2_odd]
   have hQ : Γ ⊢[PRAAx] succ m + k ≐ succ (pred (succ m + k)) :=
-    eq_succ_pred (y := m + k) (by apply deriveNat; ipra_simps; ring)
-  have hr := rem_eq' hQ (z := m) (q := zero) (r := m) (by apply deriveNat; ipra_simps; ring)
+    eq_succ_pred (y := m + k) (by ipra_ring)
+  have hr := rem_eq' hQ (z := m) (q := zero) (r := m) (by ipra_ring)
     (le_of_eq_add (d := k) (by apply deriveNat; ipra_simps))
   have he : Γ ⊢[PRAAx] eqb (rem m (succ m + k)) zero ≐ zero :=
     (congrEqb hr (.eqRefl _)).eqTrans (eqb_of_ne (.impI (succ_ne_zero' _ (hm.wk.eqSymm.eqTrans Prf.hyp0))))
   refine (congrMul (congrMul (.eqRefl _) he) (.eqRefl _)).eqTrans ?_
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem sum_extend {m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (k : PTm n) :
     Γ ⊢[PRAAx] ap2 (sumF oddB) (succ m + k) m ≐ ap2 (sumF oddB) (succ m) m := by
@@ -194,8 +192,7 @@ theorem r_peel : Γ ⊢[PRAAx] oddR (pw p a * m) ≐ oddR m + one := by
     rw [shift_pair]
     exact (at_pair F3 _ _ _).eqTrans (by rw [inst3_F3]; exact .eqRefl _)
   have e : Γ ⊢[PRAAx] succ (pw p a * m) ≐ succ m + pred (pw p a) * m := by
-    have h₁ := natEq hP
-    apply deriveNat; ipra_simps; linear_combination Groth.ι (Q.mk _ m) * h₁
+    ipra_lc Groth.ι (Q.mk _ m) * natEq hP
   have s₄ := (congrAp2 (sumF oddB) e (.eqRefl m)).eqTrans (sum_extend hm _)
   have hlt : Γ ⊢[PRAAx] lt p (succ (pw p a * m)) :=
     (succ_monus_succ _ _).eqTrans (dvd_le' (prime_eq_succ_pred hp) (p_dvd_n (m := m) hp ha) hn)
@@ -212,12 +209,8 @@ theorem two_pos'' : Γ ⊢[PRAAx] (two : PTm n) ≐ succ (pred two) := congrSucc
 theorem phi_ppow_even {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hodd : Γ ⊢[PRAAx] rem p two ≐ one) (k : PTm n) :
     Γ ⊢[PRAAx] dvd two (phi (pw p (succ k))) := by
   refine dvd_of_eq' two_pos'' (w := pw p k * quo p two) ?_
-  have e₁ := natEq (totient_prime_power_at (k := k) hp)
-  have e₂ := natEq (pw_succ (Γ := Γ) p k)
-  have e₃ := natEq (div_eq (Γ := Γ) (j := p) two_pos'')
-  have e₄ := natEq hodd
-  apply deriveNat; ipra_simps
-  linear_combination e₁ + e₂ + Groth.ι (Q.mk _ (pw p k)) * e₃ + Groth.ι (Q.mk _ (pw p k)) * e₄
+  ipra_lc natEq (totient_prime_power_at (k := k) hp) + natEq (pw_succ (Γ := Γ) p k) +
+    Groth.ι (Q.mk _ (pw p k)) * natEq (div_eq (Γ := Γ) (j := p) two_pos'') + Groth.ι (Q.mk _ (pw p k)) * natEq hodd
 
 /-! ## Finding an odd prime divisor -/
 
@@ -328,13 +321,13 @@ theorem ev_found {N p x : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) (hp : 
   have eP := eq_of_dvd' two_pos'' heven
   have em := eq_of_dvd' (pw_pos' two_pos'' _) dm
   have ep : Γ ⊢[PRAAx] pw two (oddR (quo N (pw p (val p N))) + one) ≐ pw two (oddR (quo N (pw p (val p N)))) * two :=
-    (congrAp2 powF (by apply deriveNat; ipra_simps; ring) (.eqRefl two)).eqTrans (pw_succ _ _)
+    (congrAp2 powF (by ipra_ring) (.eqRefl two)).eqTrans (pw_succ _ _)
   have hd : Γ ⊢[PRAAx] dvd (pw two (oddR (quo N (pw p (val p N))) + one))
       (phi (pw p (val p N)) * phi (quo N (pw p (val p N)))) := by
     refine dvd_of_eq' (pw_pos' two_pos'' _) (w := quo (phi (pw p (val p N))) two *
       quo (phi (quo N (pw p (val p N)))) (pw two (oddR (quo N (pw p (val p N)))))) ?_
     refine (congrMul eP em).eqTrans (.eqTrans ?_ (congrMul ep.eqSymm (.eqRefl _)))
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   have hφ := (congrAp2 (sumF totBody) hNe hNe).eqTrans hmul
   have hR := (congrAp2 (sumF oddB) (congrSucc hNe) hNe).eqTrans hr
   exact dvd_congr_left (congrAp2 powF hR.eqSymm (.eqRefl _)) (dvd_congr hφ.eqSymm hd)

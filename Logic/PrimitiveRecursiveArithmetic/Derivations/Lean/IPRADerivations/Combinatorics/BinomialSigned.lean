@@ -1,7 +1,7 @@
 import IPRADerivations.Combinatorics.BinomialTheorem
 import IPRADerivations.Analysis.TerminatingSeries
 import IPRADerivations.Probability.Independence
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The signed binomial theorem and the binomial specialization

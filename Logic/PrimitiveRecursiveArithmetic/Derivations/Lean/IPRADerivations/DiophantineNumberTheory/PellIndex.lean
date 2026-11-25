@@ -1,6 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.PellAll
 import IPRADerivations.Core.SumOrder
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The index of a Pell solution

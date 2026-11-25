@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianFiniteExponentialWeightedNorm
 import IPRADerivations.Analysis.ExponentialTail
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The actual Gaussian finite exponential and its scalar tail
@@ -57,9 +58,7 @@ theorem body_at (q N i : PTm n) : Γ ⊢[PRAAx]
   rw [e]
   have hN : Γ ⊢[PRAAx] fstT (data q N)+i ≐ N+i := congrAdd (fst_pair N q) (.eqRefl i)
   have inv : Γ ⊢[PRAAx] inverseFactorial (fstT (data q N)+i) ≐ inverseFactorial (N+i) := by
-    simpa only [GaussianRationalPolynomialExponential.subst_inverseFactorial,Syn.subst_var,
-      Matrix.cons_val_zero] using Prf.eqCongr (inverseFactorial (var 0) : PTm 1)
-        (σ := ![fstT (data q N)+i]) (σ' := ![N+i]) (fun j => by fin_cases j; exact hN)
+    ipra_congr (inverseFactorial (var 0) : PTm 1) with [hN]
   exact qmul_congr inv (congrAp2 GaussianRationalReciprocal.powerF hN (snd_pair N q))
 
 theorem tail_zero (q N : PTm n) : Γ ⊢[PRAAx] tail q N zero ≐ qzero :=

@@ -3,6 +3,7 @@ import IPRADerivations.Analysis.GaussianNameRingLaws
 import IPRADerivations.Analysis.GaussianRadiusExponentialName
 import IPRADerivations.Analysis.RationalClosure
 import IPRADerivations.Analysis.GaussianExponentialReference
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual capped natural multiples of Gaussian names
@@ -55,9 +56,7 @@ def sample (f : PR 2) (p E i x : PTm n) : PTm n := ap2 (nameF f) p (data E i x)
 
 theorem value_congr (f : PR 2) {p E i x q D j y : PTm n} (hp : Γ ⊢[PRAAx] p ≐ q) (hE : Γ ⊢[PRAAx] E ≐ D)
     (hi : Γ ⊢[PRAAx] i ≐ j) (hx : Γ ⊢[PRAAx] x ≐ y) : Γ ⊢[PRAAx] value f p E i x ≐ value f q D j y := by
-  simpa only [subst_value,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_three,
-    Matrix.head_cons,Matrix.tail_cons] using Prf.eqCongr (value f (var 0) (var 1) (var 2) (var 3) : PTm 4)
-      (σ := ![p,E,i,x]) (σ' := ![q,D,j,y]) (fun k => by fin_cases k; exact hp; exact hE; exact hi; exact hx)
+  ipra_congr (value f (var 0) (var 1) (var 2) (var 3) : PTm 4) with [hp, hE, hi, hx]
 theorem sample_at (f : PR 2) (p E i x : PTm n) : Γ ⊢[PRAAx] sample f p E i x ≐ value f p E i x := by
   have raw : Γ ⊢[PRAAx] sample f p E i x ≐ value f p (fstT (data E i x)) (fstT (sndT (data E i x))) (sndT (sndT (data E i x))) := by
     simpa only [sample,nameF,ap2,subst_value,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.head_cons] using

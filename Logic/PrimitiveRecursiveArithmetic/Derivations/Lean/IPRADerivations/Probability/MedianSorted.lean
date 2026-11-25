@@ -1,6 +1,6 @@
 import IPRADerivations.Probability.MedianCounts
 import IPRADerivations.Combinatorics.LegendreFact
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The middle-interval theorem for sorted data, and the odd and even median formulas

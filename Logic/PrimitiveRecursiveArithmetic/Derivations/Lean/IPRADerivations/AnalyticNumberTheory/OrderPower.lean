@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.Order
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # A Zsigmondy-type divisibility
@@ -40,16 +41,15 @@ theorem le_pw_succ (k : PTm n) : Γ ⊢[PRAAx] le A (pw A (succ k)) := by
   have hp := N_pos hA
   exact le_congr hp.eqSymm (congrPw hp.eqSymm (.eqRefl _)) (le_self_pw (pred A) k)
 
-
 /-- `Aᵐ = (Aᵐ − 1) + 1`. -/
 theorem pw_eq_succ : Γ ⊢[PRAAx] pw A m ≐ succ (monus (pw A m) one) := by
   have l := le_trans (le_of_lt hA) (le_congr (.eqRefl _) (congrPw (.eqRefl _) hm.eqSymm) (le_pw_succ hA (pred m)))
-  exact (eq_add_of_le l).eqTrans (by apply deriveNat; ipra_simps; ring)
+  exact (eq_add_of_le l).eqTrans (by ipra_ring)
 
 theorem N_ge_one : Γ ⊢[PRAAx] monus (pw A m) one ≐ succ (pred (monus (pw A m) one)) := by
   have l := le_congr (.eqRefl _) (congrPw (.eqRefl _) hm.eqSymm) (le_trans hA (le_pw_succ hA (pred m)))
   have w' : Γ ⊢[PRAAx] pw A m ≐ succ (succ (monus (pw A m) two)) :=
-    (eq_add_of_le l).eqTrans (by apply deriveNat; ipra_simps; ring)
+    (eq_add_of_le l).eqTrans (by ipra_ring)
   exact AnalyticNumberTheory.Primes.eq_succ_pred
     ((congrMonus w' (.eqRefl one)).eqTrans ((succ_monus_succ _ _).eqTrans (monus_zero _)))
 
@@ -61,7 +61,7 @@ theorem gcd_A_N : Γ ⊢[PRAAx] gcd A (monus (pw A m) one) ≐ one := by
   have e₁ : Γ ⊢[PRAAx] pw A (pred m) * A ≐ pw A m := (pw_succ _ _).eqSymm.eqTrans (congrPw (.eqRefl _) hm.eqSymm)
   have dpw := dvd_congr e₁ (dvd_congr (mul_comm _ _) (dvd_mul' hd (pw A (pred m)) (Prf.andE₁ hdd)))
   have e₂ : Γ ⊢[PRAAx] pw A m ≐ one + monus (pw A m) one :=
-    (pw_eq_succ hA hm).eqTrans (by apply deriveNat; ipra_simps; ring)
+    (pw_eq_succ hA hm).eqTrans (by ipra_ring)
   exact eq_one_of_dvd_one hd (dvd_sub' hd (dvd_congr e₂ dpw) (Prf.andE₂ hdd))
 
 /-- `Aᵐ ≡ 1 (mod Aᵐ − 1)`. -/
@@ -78,7 +78,7 @@ theorem rem_one_small {N : PTm n} (hN : Γ ⊢[PRAAx] le two N) : Γ ⊢[PRAAx] 
 omit hA hm in
 theorem rem_self_eq {N : PTm n} (hN : Γ ⊢[PRAAx] le two N) : Γ ⊢[PRAAx] rem N N ≐ zero := by
   refine (rem_eq_of_eq (N_pos hN) (k₁ := zero) (k₂ := one) ?_).eqTrans (rem_small hN ?_)
-  · apply deriveNat; ipra_simps; ring
+  · ipra_ring
   · exact le_trans (le_succ_self _) hN
 
 /-- The order of `A` modulo `Aᵐ − 1` is `m`. -/
@@ -108,7 +108,7 @@ theorem ord_eq : Γ ⊢[PRAAx] ord A (monus (pw A m) one) ≐ m := by
       (monus m (succ (ord A (monus (pw A m) one)))))
     have hm' : (lt (ord A (monus (pw A m) one)) m :: Γ) ⊢[PRAAx] pw A m ≐
         pw A (ord A (monus (pw A m) one)) * pw A (succ (monus m (succ (ord A (monus (pw A m) one))))) :=
-      (congrPw (.eqRefl _) (w.eqTrans (by apply deriveNat; ipra_simps; ring))).eqTrans (pw_add _ _ _)
+      (congrPw (.eqRefl _) (w.eqTrans (by ipra_ring))).eqTrans (pw_add _ _ _)
     have hA2 := eq_add_of_le (hA.wk (ψ := lt (ord A (monus (pw A m) one)) m))
     have ltm : (lt (ord A (monus (pw A m) one)) m :: Γ) ⊢[PRAAx]
         le (pw A (ord A (monus (pw A m) one))) (monus (pw A m) one) := by
@@ -116,9 +116,7 @@ theorem ord_eq : Γ ⊢[PRAAx] ord A (monus (pw A m) one) ≐ m := by
       refine le_of_eq_add (d := pred (pw A (ord A (monus (pw A m) one))) +
         (monus A two + monus (pw A (succ (monus m (succ (ord A (monus (pw A m) one)))))) A) *
           pw A (ord A (monus (pw A m) one))) ?_
-      have h₁ := natEq hm'; have h₂ := natEq w₂; have h₃ := natEq hA2; have h₄ := natEq hop
-      apply deriveNat; ipra_simps
-      linear_combination h₁ + Groth.ι (Q.mk _ (pw A (ord A (monus (pw A m) one)))) * (h₂ + h₃) + h₄
+      ipra_lc natEq hm' + Groth.ι (Q.mk _ (pw A (ord A (monus (pw A m) one)))) * (natEq w₂ + natEq hA2) + natEq hop
     refine .orE (lt_or_eq_of_le ltm) ?_ ?_
     · have hlt : (lt (pw A (ord A (monus (pw A m) one))) (monus (pw A m) one) ::
           lt (ord A (monus (pw A m) one)) m :: Γ) ⊢[PRAAx]
@@ -145,7 +143,7 @@ abbrev zsigmondyFormula : Fm PTm 2 :=
   dvd (succ (var 1)) (phi (monus (pw (succ (succ (var 0))) (succ (var 1))) one))
 
 theorem zsigmondy : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 2 zsigmondyFormula :=
-  closeUniv 2 (zsigmondy_at (le_of_eq_add (d := var 0) (by apply deriveNat; ipra_simps; ring))
+  closeUniv 2 (zsigmondy_at (le_of_eq_add (d := var 0) (by ipra_ring))
     (congrSucc (pred_succ _).eqSymm))
 
 end LeanProofs.IPRA.AnalyticNumberTheory.OrderPower

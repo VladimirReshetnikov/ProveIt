@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.SigmaPrimePower
 import IPRADerivations.AnalyticNumberTheory.Radical
 import IPRADerivations.AnalyticNumberTheory.ValuationMul
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The divisor sum as a product over primes (`robin_ipra_research_2026-11-19`)
@@ -95,7 +96,7 @@ theorem val_off {q : PTm n} (hq : Γ ⊢[PRAAx] prime q) (hne : Γ ⊢[PRAAx] ne
   have nd : Γ ⊢[PRAAx] neg (dvd q (pw p a * quo m (pw q (val q m)))) :=
     .impI (.impE ndc.wk (gauss hq1.wk gqP.wk Prf.hyp0))
   have eN : Γ ⊢[PRAAx] pw p a * m ≐ pw q (val q m) * (pw p a * quo m (pw q (val q m))) :=
-    (congrMul (.eqRefl _) em).eqTrans (by apply deriveNat; ipra_simps; ring)
+    (congrMul (.eqRefl _) em).eqTrans (by ipra_ring)
   exact val_unique hq2 (pos_mul (pw_pos' (prime_eq_succ_pred hp) a) hm) eN nd
 
 include hp ha hrm hm in
@@ -162,8 +163,7 @@ theorem g_peel : Γ ⊢[PRAAx] PP G (pw p a * m) ≐ PP G m * monus (pw p (succ 
       (congrAp2 powF (.eqRefl _) (congrInst2 G (.eqRefl _) (snd_pair _ _)).eqSymm)
   have s₃ := prod2_mul (Γ := Γ) f1 f2 (succ (pw p a * m)) p (pairT m (pw p a * m))
   have e : Γ ⊢[PRAAx] succ (pw p a * m) ≐ succ m + pred (pw p a) * m := by
-    have h₁ := natEq hP
-    apply deriveNat; ipra_simps; linear_combination Groth.ι (Q.mk _ m) * h₁
+    ipra_lc Groth.ι (Q.mk _ m) * natEq hP
   have s₄ : Γ ⊢[PRAAx] ap3 (prod2F f1) (succ (pw p a * m)) p (pairT m (pw p a * m)) ≐ PP G m := by
     refine (prod2_congr_bounded f1 (Syn.subst ![var 0, var 2] (EulerProduct.pB G)) p (pairT m (pw p a * m)) p m _
       (.allI (.impI ?_))).eqTrans ?_
@@ -221,17 +221,9 @@ theorem sp_found {N p x : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) (hp : 
     (congrMonus ((sigma_pow hp (val p N)).eqSymm.eqTrans ((add_succ _ _).eqTrans (congrSucc (add_zero _))))
       (.eqRefl _)).eqTrans (monus_succ_one _)
   have s5 : Γ ⊢[PRAAx] monus p one ≐ pred p := (congrMonus hp1 (.eqRefl _)).eqTrans (monus_succ_one _)
-  have e1 := natEq s1
-  have e2 := natEq s2
-  have e3 := natEq s3
-  have e4 := natEq s4
-  have e5 := natEq s5
-  have e6 := natEq ih
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 (PP F₂ N) * e1 +
-    𝔞 (sig (pw p (val p N))) * 𝔞 (sig (quo N (pw p (val p N)))) * e2 +
-    𝔞 (sig (pw p (val p N))) * 𝔞 (sig (quo N (pw p (val p N)))) * 𝔞 (PP F₂ (quo N (pw p (val p N)))) * e5 +
-    𝔞 (sig (pw p (val p N))) * 𝔞 (pred p) * e6 - 𝔞 (PP G (quo N (pw p (val p N)))) * e4 - e3
+  ipra_lc 𝔞 (PP F₂ N) * natEq s1 + 𝔞 (sig (pw p (val p N))) * 𝔞 (sig (quo N (pw p (val p N)))) * natEq s2 +
+    𝔞 (sig (pw p (val p N))) * 𝔞 (sig (quo N (pw p (val p N)))) * 𝔞 (PP F₂ (quo N (pw p (val p N)))) * natEq s5 +
+    𝔞 (sig (pw p (val p N))) * 𝔞 (pred p) * natEq ih - 𝔞 (PP G (quo N (pw p (val p N)))) * natEq s4 - natEq s3
 
 /-- The violation vanishes at every `N`, given it below `N`. -/
 theorem sp_step {N x : PTm n} (hV : Γ ⊢[PRAAx] ap2 (sumF vB) N x ≐ zero) :

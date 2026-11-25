@@ -1,6 +1,7 @@
 import IPRADerivations.Combinatorics.FibonacciGcd
 import IPRADerivations.Core.Powers
 import IPRADerivations.DiophantineNumberTheory.Hurwitz
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Lucas-number identities
@@ -55,45 +56,31 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 /-! ## Initial values and linear relations -/
 
 theorem luc_zero : Γ ⊢[PRAAx] luc (zero : PTm n) ≐ two := by
-  have l := natEq (luc_eq (Γ := Γ) (zero : PTm n))
-  have z₁ := natEq (fibS_zero (Γ := Γ)); have z₂ := natEq (fib_zero (Γ := Γ))
-  apply deriveNat; ipra_simps
-  linear_combination l - z₂ + 2 * z₁
+  ipra_lc natEq (luc_eq (Γ := Γ) (zero : PTm n)) - natEq (fib_zero (Γ := Γ)) + 2 * natEq (fibS_zero (Γ := Γ))
 
 theorem luc_one : Γ ⊢[PRAAx] luc (succ (zero : PTm n)) ≐ one := by
-  have l := natEq (luc_succ (Γ := Γ) (zero : PTm n))
-  have s₁ := natEq (fibS_succ (Γ := Γ) (zero : PTm n))
-  have z₁ := natEq (fibS_zero (Γ := Γ)); have z₂ := natEq (fib_zero (Γ := Γ))
-  apply deriveNat; ipra_simps
-  linear_combination l + s₁ + z₁ + 2 * z₂
+  ipra_lc natEq (luc_succ (Γ := Γ) (zero : PTm n)) + natEq (fibS_succ (Γ := Γ) (zero : PTm n)) +
+    natEq (fibS_zero (Γ := Γ)) + 2 * natEq (fib_zero (Γ := Γ))
 
 /-- `L_{k+2} + L_k = 5 F_{k+1}`. -/
 theorem luc_five (k : PTm n) : Γ ⊢[PRAAx] luc (succ (succ k)) + luc k ≐ (two * two + one) * fibS k := by
-  have l₂ := natEq (luc_eq (Γ := Γ) (succ (succ k))); have l₀ := natEq (luc_eq (Γ := Γ) k)
-  have t₂ := natEq (fib_succ (Γ := Γ) (succ k)); have s₂ := natEq (fibS_succ (Γ := Γ) (succ k))
-  have s₁ := natEq (fibS_succ (Γ := Γ) k); have s₃ := natEq (fib_succ (Γ := Γ) k)
-  apply deriveNat; ipra_simps
-  linear_combination l₂ + l₀ - t₂ + 2 * s₂ + s₁ + 2 * s₃
+  ipra_lc natEq (luc_eq (Γ := Γ) (succ (succ k))) + natEq (luc_eq (Γ := Γ) k) - natEq (fib_succ (Γ := Γ) (succ k)) +
+    2 * natEq (fibS_succ (Γ := Γ) (succ k)) + natEq (fibS_succ (Γ := Γ) k) + 2 * natEq (fib_succ (Γ := Γ) k)
 
 /-! ## Determinants and doubling -/
 
 /-- `L_k F_{k+1} + 2[k odd] = L_{k+1} F_k + 2[k even]`, i.e. `L_k F_{k+1} − L_{k+1} F_k = 2(−1)^k`. -/
 theorem luc_fib_det (k : PTm n) :
     Γ ⊢[PRAAx] luc k * fibS k + two * par k ≐ luc (succ k) * fib k + two * monus one (par k) := by
-  have c := natEq (cassini (Γ := Γ) k); have l := natEq (luc_eq (Γ := Γ) k)
-  have ls := natEq (luc_succ (Γ := Γ) k); have s₁ := natEq (fibS_succ (Γ := Γ) k)
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞(fibS k) * l - 𝔞(fib k) * ls + 𝔞(fib k) * s₁ - 2 * c
+  ipra_lc 𝔞(fibS k) * natEq (luc_eq (Γ := Γ) k) - 𝔞(fib k) * natEq (luc_succ (Γ := Γ) k) +
+    𝔞(fib k) * natEq (fibS_succ (Γ := Γ) k) - 2 * natEq (cassini (Γ := Γ) k)
 
 /-- `L_{2k} + 2[k even] = L_k² + 2[k odd]`, i.e. `L_{2k} = L_k² − 2(−1)^k`. -/
 theorem luc_double (k : PTm n) :
     Γ ⊢[PRAAx] luc (k + k) + two * monus one (par k) ≐ luc k * luc k + two * par k := by
-  have l₂ := natEq (luc_eq (Γ := Γ) (k + k)); have d := natEq (fib_double (Γ := Γ) k)
-  have fd := natEq (fibS_double (Γ := Γ) k); have l := natEq (luc_eq (Γ := Γ) k)
-  have c := natEq (cassini (Γ := Γ) k); have s₁ := natEq (fibS_succ (Γ := Γ) k)
-  apply deriveNat; ipra_simps
-  linear_combination l₂ - d + 2 * fd -
-    (𝔞(fibS k) + 𝔞(monus (fibS k) (fib k)) + 2 * 𝔞(fibS k) - 𝔞(fib k)) * l - 2 * 𝔞(fib k) * s₁ + 2 * c
+  ipra_lc natEq (luc_eq (Γ := Γ) (k + k)) - natEq (fib_double (Γ := Γ) k) + 2 * natEq (fibS_double (Γ := Γ) k) -
+    (𝔞(fibS k) + 𝔞(monus (fibS k) (fib k)) + 2 * 𝔞(fibS k) - 𝔞(fib k)) * natEq (luc_eq (Γ := Γ) k) -
+    2 * 𝔞(fib k) * natEq (fibS_succ (Γ := Γ) k) + 2 * natEq (cassini (Γ := Γ) k)
 
 /-! ## Multiplication laws -/
 
@@ -112,10 +99,8 @@ theorem docagne_succ (k d : PTm n) :
 `F_m L_k = F_{m+k} + (−1)^k F_{m−k}` for `m = k + d`. -/
 theorem fib_luc_mul (k d : PTm n) :
     Γ ⊢[PRAAx] fib (k + d) * luc k + par k * fib d ≐ fib ((k + d) + k) + monus one (par k) * fib d := by
-  have as := natEq (fib_add_sym (Γ := Γ) (k + d) k); have doc := natEq (docagne (Γ := Γ) k d)
-  have l := natEq (luc_eq (Γ := Γ) k)
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞(fib (k + d)) * l + doc - as
+  ipra_lc 𝔞(fib (k + d)) * natEq (luc_eq (Γ := Γ) k) + natEq (docagne (Γ := Γ) k d) -
+    natEq (fib_add_sym (Γ := Γ) (k + d) k)
 
 /-- `L_{k+d} L_k + [k odd] L_d = L_{2k+d} + [k even] L_d`, i.e.
 `L_m L_k = L_{m+k} + (−1)^k L_{m−k}` for `m = k + d`. -/
@@ -141,20 +126,17 @@ theorem sum_lsq_base :
     Γ ⊢[PRAAx] ap2 (sumF lsqB) (succ zero) (zero : PTm n) ≐ luc zero * luc (succ zero) + two := by
   have e := sum_succ' (Γ := Γ) lsqB (zero : PTm n) zero
   rw [inst2_lsq] at e
-  have a := natEq e; have z := natEq (sum_zero (Γ := Γ) lsqB (zero : PTm n))
-  have a₀ := natEq (luc_zero (Γ := Γ)); have a₁ := natEq (luc_one (Γ := Γ))
-  apply deriveNat; ipra_simps
-  linear_combination a + z + (𝔞(fibS zero) + 𝔞(monus (fibS zero) (fib zero)) + 1) * a₀ -
-    (𝔞(fibS zero) + 𝔞(monus (fibS zero) (fib zero))) * a₁
+  ipra_lc natEq e + natEq (sum_zero (Γ := Γ) lsqB (zero : PTm n)) +
+    (𝔞(fibS zero) + 𝔞(monus (fibS zero) (fib zero)) + 1) * natEq (luc_zero (Γ := Γ)) -
+    (𝔞(fibS zero) + 𝔞(monus (fibS zero) (fib zero))) * natEq (luc_one (Γ := Γ))
 
 theorem sum_lsq_step {N : PTm n}
     (ih : Γ ⊢[PRAAx] ap2 (sumF lsqB) (succ N) zero ≐ luc N * luc (succ N) + two) :
     Γ ⊢[PRAAx] ap2 (sumF lsqB) (succ (succ N)) zero ≐ luc (succ N) * luc (succ (succ N)) + two := by
   have e := sum_succ' (Γ := Γ) lsqB (succ N) zero
   rw [inst2_lsq] at e
-  have a := natEq e; have b := natEq ih; have r := natEq (luc_rec (Γ := Γ) N)
-  apply deriveNat; ipra_simps
-  linear_combination a + b - (𝔞(fibS (succ N)) + 𝔞(monus (fibS (succ N)) (fib (succ N)))) * r
+  ipra_lc natEq e + natEq ih -
+    (𝔞(fibS (succ N)) + 𝔞(monus (fibS (succ N)) (fib (succ N)))) * natEq (luc_rec (Γ := Γ) N)
 
 private abbrev sumLsqF : Fm PTm 1 :=
   ap2 (sumF lsqB) (succ (var 0)) zero ≐ luc (var 0) * luc (succ (var 0)) + two
@@ -179,7 +161,7 @@ theorem sum_luc_sq (N : PTm n) :
 theorem fibS_pow_step {k : PTm n} (ih : Γ ⊢[PRAAx] le (fibS k) (pw two k)) :
     Γ ⊢[PRAAx] le (fibS (succ k)) (pw two (succ k)) := by
   have e : Γ ⊢[PRAAx] pw two k + pw two k ≐ pw two (succ k) :=
-    ((pw_succ two k).eqTrans (by apply deriveNat; ipra_simps; ring)).eqSymm
+    ((pw_succ two k).eqTrans (by ipra_ring)).eqSymm
   exact le_congr (fibS_succ k).eqSymm e (add_le_add ih (le_trans (fib_le k) ih))
 
 private abbrev fpowF : Fm PTm 1 := le (fibS (var 0)) (pw two (var 0))
@@ -204,8 +186,8 @@ theorem fib_le_pow (k : PTm n) : Γ ⊢[PRAAx] le (fib k) (pw two k) := le_trans
 /-- `L_k ≤ 2^{k+1}`. -/
 theorem luc_le_pow (k : PTm n) : Γ ⊢[PRAAx] le (luc k) (pw two (succ k)) := by
   have e : Γ ⊢[PRAAx] pw two k + pw two k ≐ pw two (succ k) :=
-    ((pw_succ two k).eqTrans (by apply deriveNat; ipra_simps; ring)).eqSymm
-  have d : Γ ⊢[PRAAx] fibS k + fibS k ≐ two * fibS k := by apply deriveNat; ipra_simps; ring
+    ((pw_succ two k).eqTrans (by ipra_ring)).eqSymm
+  have d : Γ ⊢[PRAAx] fibS k + fibS k ≐ two * fibS k := by ipra_ring
   exact le_trans (le_of_eq_add (luc_eq k).eqSymm)
     (le_congr d e (add_le_add (fibS_le_pow k) (fibS_le_pow k)))
 
@@ -214,17 +196,14 @@ theorem luc_le_pow (k : PTm n) : Γ ⊢[PRAAx] le (luc k) (pw two (succ k)) := b
 /-- `F_{3k} + [k even] F_k = F_k L_k² + [k odd] F_k`, i.e. `F_{3k} = F_k (L_k² − (−1)^k)`. -/
 theorem fib_triple (k : PTm n) :
     Γ ⊢[PRAAx] fib ((k + k) + k) + monus one (par k) * fib k ≐ fib k * (luc k * luc k) + par k * fib k := by
-  have m := natEq (fib_luc_mul (Γ := Γ) k k); have d := natEq (fib_double_luc (Γ := Γ) k)
-  apply deriveNat; ipra_simps
-  linear_combination -m + (𝔞(fibS k) + 𝔞(monus (fibS k) (fib k))) * d
+  ipra_lc -natEq (fib_luc_mul (Γ := Γ) k k) +
+    (𝔞(fibS k) + 𝔞(monus (fibS k) (fib k))) * natEq (fib_double_luc (Γ := Γ) k)
 
 /-- `L_{3k} + 3[k even] L_k = L_k³ + 3[k odd] L_k`, i.e. `L_{3k} = L_k³ − 3(−1)^k L_k`. -/
 theorem luc_triple (k : PTm n) :
     Γ ⊢[PRAAx] luc ((k + k) + k) + (two + one) * (monus one (par k) * luc k) ≐
       luc k * luc k * luc k + (two + one) * (par k * luc k) := by
-  have m := natEq (luc_mul (Γ := Γ) k k); have d := natEq (luc_double (Γ := Γ) k)
-  apply deriveNat; ipra_simps
-  linear_combination -m + (𝔞(fibS k) + 𝔞(monus (fibS k) (fib k))) * d
+  ipra_lc -natEq (luc_mul (Γ := Γ) k k) + (𝔞(fibS k) + 𝔞(monus (fibS k) (fib k))) * natEq (luc_double (Γ := Γ) k)
 
 /-- `L_{k+d} F_{k+1} + [k odd] L_d = L_{k+d+1} F_k + [k even] L_d`, i.e.
 `L_m F_{k+1} − L_{m+1} F_k = (−1)^k L_{m−k}` for `m = k + d`. -/
@@ -255,14 +234,11 @@ theorem alt_base :
   rw [inst2_evf] at e₁
   have e₂ := sum_succ' (Γ := Γ) odfB (zero : PTm n) zero
   rw [inst2_odf] at e₂
-  have a := natEq e₁; have b := natEq e₂
-  have zE := natEq (sum_zero (Γ := Γ) evfB (zero : PTm n)); have zO := natEq (sum_zero (Γ := Γ) odfB (zero : PTm n))
-  have q := natEq (par_zero (Γ := Γ))
-  have pu := natEq ((congrMonus (.eqRefl one) (par_zero (Γ := Γ))).eqTrans (monus_zero _))
-  have z₁ := natEq (fibS_zero (Γ := Γ)); have z₂ := natEq (fib_zero (Γ := Γ))
-  apply deriveNat; ipra_simps
-  linear_combination a + zE - b - zO + 𝔞(monus one (par zero)) * z₁ + pu + 𝔞(par zero) * z₂ -
-    𝔞(fibS zero) * q - 𝔞(monus one (par zero)) * z₂
+  ipra_lc natEq e₁ + natEq (sum_zero (Γ := Γ) evfB (zero : PTm n)) - natEq e₂ -
+    natEq (sum_zero (Γ := Γ) odfB (zero : PTm n)) + 𝔞(monus one (par zero)) * natEq (fibS_zero (Γ := Γ)) +
+    natEq ((congrMonus (.eqRefl one) (par_zero (Γ := Γ))).eqTrans (monus_zero _)) +
+    𝔞(par zero) * natEq (fib_zero (Γ := Γ)) - 𝔞(fibS zero) * natEq (par_zero (Γ := Γ)) -
+    𝔞(monus one (par zero)) * natEq (fib_zero (Γ := Γ))
 
 theorem alt_step {N : PTm n}
     (ih : Γ ⊢[PRAAx] ap2 (sumF evfB) (succ N) zero + par N * fib N ≐
@@ -273,13 +249,9 @@ theorem alt_step {N : PTm n}
   rw [inst2_evf] at e₁
   have e₂ := sum_succ' (Γ := Γ) odfB (succ N) zero
   rw [inst2_odf] at e₂
-  have a := natEq e₁; have b := natEq e₂; have i := natEq ih
-  have s₁ := natEq (fibS_succ (Γ := Γ) N); have s₃ := natEq (fib_succ (Γ := Γ) N)
-  have p₁ := natEq (par_succ (Γ := Γ) N)
-  have p₂ := natEq ((congrMonus (.eqRefl one) (par_succ (Γ := Γ) N)).eqTrans (compl_compl N))
-  apply deriveNat; ipra_simps
-  linear_combination a - b + i + (𝔞(monus one (par (succ N))) - 𝔞(par (succ N))) * (s₁ - s₃) +
-    𝔞(fib N) * (p₂ - p₁)
+  ipra_lc natEq e₁ - natEq e₂ + natEq ih +
+    (𝔞(monus one (par (succ N))) - 𝔞(par (succ N))) * (natEq (fibS_succ (Γ := Γ) N) - natEq (fib_succ (Γ := Γ) N)) +
+    𝔞(fib N) * (natEq ((congrMonus (.eqRefl one) (par_succ (Γ := Γ) N)).eqTrans (compl_compl N)) - natEq (par_succ (Γ := Γ) N))
 
 private abbrev altF : Fm PTm 1 :=
   ap2 (sumF evfB) (succ (var 0)) zero + par (var 0) * fib (var 0) ≐
@@ -319,12 +291,10 @@ theorem par_step {T T' : PTm n} (eT : Γ ⊢[PRAAx] T' ≐ succ (succ (succ T)))
   have c₂ := natEq (fibS_succ (Γ := Γ) (succ T)); have d₂ := natEq (fib_succ (Γ := Γ) (succ T))
   have c₃ := natEq (fibS_succ (Γ := Γ) T); have c₄ := natEq (fib_succ (Γ := Γ) T)
   have e : Γ ⊢[PRAAx] fib T' ≐ two * (half (fibS T) + half (fibS T) + one + half (fib T)) := by
-    apply deriveNat; ipra_simps
-    linear_combination c₀ + c₁ + c₂ + c₃ + c₄ + 2 * b + a
+    ipra_lc c₀ + c₁ + c₂ + c₃ + c₄ + 2 * b + a
   have e' : Γ ⊢[PRAAx] fibS T' ≐
       two * (half (fibS T) + half (fibS T) + half (fibS T) + half (fib T) + half (fib T) + one) + one := by
-    apply deriveNat; ipra_simps
-    linear_combination d₀ + d₁ + d₂ + c₂ + 2 * c₃ + c₄ + 3 * b + 2 * a
+    ipra_lc d₀ + d₁ + d₂ + c₂ + 2 * c₃ + c₄ + 3 * b + 2 * a
   exact .andI ((congrAp1 parF e).eqTrans (par_double _)) ((congrAp1 parF e').eqTrans (par_double_succ _))
 
 private abbrev parF3 : Fm PTm 1 :=
@@ -335,14 +305,14 @@ private theorem par₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] parF3 := by
   · simp only [Fm.subst_and, Fm.subst_eq, PTm.subst_add, subst_ap1, subst_fibS, subst_fib, Syn.subst_var,
       Syn.inst_zero, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
     have z : ([] : List (Fm PTm 0)) ⊢[PRAAx] (zero : PTm 0) + zero + zero ≐ zero := by
-      apply deriveNat; ipra_simps; ring
+      ipra_ring
     exact .andI ((congrAp1 parF ((congrFib z).eqTrans fib_zero)).eqTrans par_zero)
       ((congrAp1 parF ((congrFibS z).eqTrans fibS_zero)).eqTrans
         ((par_succ zero).eqTrans ((congrMonus (.eqRefl _) par_zero).eqTrans (monus_zero _))))
   · simp only [Fm.subst_and, Fm.subst_eq, PTm.subst_add, subst_ap1, subst_fibS, subst_fib, Syn.subst_var,
       Syn.repl_zero, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
     refine par_step ?_ (Prf.andE₁ Prf.hyp0) (Prf.andE₂ Prf.hyp0)
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
 
 /-- `F_{3k}` is even and `F_{3k+1}` is odd. -/
 theorem fib_parity (k : PTm n) :
@@ -361,8 +331,7 @@ theorem fib_parity_two (k : PTm n) : Γ ⊢[PRAAx] par (fib (succ (succ (k + k +
   have c₁ := natEq (fib_succ (Γ := Γ) (succ (k + k + k))); have c₃ := natEq (fibS_succ (Γ := Γ) (k + k + k))
   have e : Γ ⊢[PRAAx] fib (succ (succ (k + k + k))) ≐
       two * (half (fibS (k + k + k)) + half (fib (k + k + k))) + one := by
-    apply deriveNat; ipra_simps
-    linear_combination c₁ + c₃ + b + a
+    ipra_lc c₁ + c₃ + b + a
   exact (congrAp1 parF e).eqTrans (par_double_succ _)
 
 end LeanProofs.IPRA.Combinatorics.LucasIdentities

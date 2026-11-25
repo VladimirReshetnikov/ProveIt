@@ -7,7 +7,8 @@ import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.Combinatorics.Stirling
 import IPRADerivations.Core.SumSplit
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The floor recurrence determines the Mertens function
@@ -173,7 +174,7 @@ theorem lt_of_two {t a u : PTm n} (h1 : Γ ⊢[PRAAx] le (a * u) t) (ha : Γ ⊢
 theorem two_add_pos (k : PTm n) : Γ ⊢[PRAAx] two + k ≐ succ (pred (two + k)) :=
   AnalyticNumberTheory.Primes.eq_succ_pred (y := succ k) (by ipra_ring)
 
-theorem mul_one_r (a : PTm n) : Γ ⊢[PRAAx] a * one ≐ a := by ipra_ring
+alias mul_one_r := Common.mul_one_right
 
 theorem bits0 {s b V : PTm n} (hs : Γ ⊢[PRAAx] s ≐ one) (hb : Γ ⊢[PRAAx] b ≐ one)
     (h : Γ ⊢[PRAAx] s * (b * V) ≐ zero) : Γ ⊢[PRAAx] V ≐ zero := by
@@ -184,8 +185,7 @@ theorem scale_eq {s A B C D : PTm n} (h : Γ ⊢[PRAAx] A + B ≐ C + D) :
   ipra_lc 𝔞 s * natEq h
 
 /-- `[u ≥ 1] = 1` for `u ≥ 1`. -/
-theorem sg_of_one_le {u : PTm n} (h : Γ ⊢[PRAAx] le one u) : Γ ⊢[PRAAx] sg u ≐ one :=
-  (congrMonus (.eqRefl _) h).eqTrans (monus_zero one)
+alias sg_of_one_le := Common.sg_of_one_le
 
 /-- The tables agree at `u = ⌊t/(2 + k)⌋` when they agree below `t` (`k < t − 1`, `t ≤ X`). -/
 theorem agree_quo (gP gN : PTm 2) {X y t k : PTm n}

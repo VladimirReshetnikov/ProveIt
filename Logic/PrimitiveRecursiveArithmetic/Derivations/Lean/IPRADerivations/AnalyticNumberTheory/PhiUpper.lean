@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.PhiLowerSharp
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The composite upper bound `φ(n) ≤ n − ⌈√n⌉`
@@ -44,16 +45,14 @@ theorem le_succ_succ {a b : PTm n} (h : Γ ⊢[PRAAx] le a b) : Γ ⊢[PRAAx] le
 theorem lpf_min {N d : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) (hd : Γ ⊢[PRAAx] le two d)
     (hdN : Γ ⊢[PRAAx] dvd d N) : Γ ⊢[PRAAx] le (lpf N) d := by
   have hdd : Γ ⊢[PRAAx] d ≐ succ (succ (monus d two)) :=
-    (eq_add_of_le hd).eqTrans (by apply deriveNat; ipra_simps; ring)
+    (eq_add_of_le hd).eqTrans (by ipra_ring)
   have hdp : Γ ⊢[PRAAx] d ≐ succ (pred d) := eq_succ_pred hdd
   have hf : Γ ⊢[PRAAx] inst2 lpfBody (monus d two) N ≐ zero := by
     rw [inst2_lpf]; exact (congrAp2 remF (.eqRefl _) hdd.eqSymm).eqTrans hdN
   have hle := dvd_le' hdp hdN hN
   have hlt : Γ ⊢[PRAAx] lt (monus d two) N := by
     refine le_of_eq_add (d := succ (monus N d)) ?_
-    have e₁ := natEq (eq_add_of_le hle); have e₂ := natEq hdd
-    apply deriveNat; ipra_simps
-    linear_combination e₁ + e₂
+    ipra_lc natEq (eq_add_of_le hle) + natEq hdd
   have s := Search.search_found (f := lpfBody) hf hlt
   exact le_congr (.eqRefl _) hdd.eqSymm (le_succ_succ (Prf.andE₂ (Prf.andE₂ s)))
 
@@ -87,7 +86,7 @@ variable {N d : PTm n} (hN : Γ ⊢[PRAAx] le two N) (hd : Γ ⊢[PRAAx] le two 
 include hN hd hdN hdv
 
 theorem lpf_facts : Γ ⊢[PRAAx] prime (lpf N) ⋏ dvd (lpf N) N := by
-  have hNe : Γ ⊢[PRAAx] N ≐ succ (succ (monus N two)) := (eq_add_of_le hN).eqTrans (by apply deriveNat; ipra_simps; ring)
+  have hNe : Γ ⊢[PRAAx] N ≐ succ (succ (monus N two)) := (eq_add_of_le hN).eqTrans (by ipra_ring)
   have hL := lpf_congr hNe
   refine .andI (prime_congr hL.eqSymm (lpf_prime _)) ?_
   exact dvd_congr hNe.eqSymm (dvd_congr_left hL.eqSymm (Prf.andE₁ (lpf_dvd _)))
@@ -141,7 +140,7 @@ theorem quo_sq : Γ ⊢[PRAAx] le N (quo N (lpf N) * quo N (lpf N)) := by
     exact not_succ_le_self d _ (le_trans hdN.wk (le_congr eN.eqSymm (.eqRefl _) lmin.wk))
   -- `p ≤ q`: `lpf(q)` divides `n`.
   have hqq : Γ ⊢[PRAAx] quo N (lpf N) ≐ succ (succ (monus (quo N (lpf N)) two)) :=
-    (eq_add_of_le hq2).eqTrans (by apply deriveNat; ipra_simps; ring)
+    (eq_add_of_le hq2).eqTrans (by ipra_ring)
   have hLq := lpf_congr hqq
   have dq := Prf.andE₁ (lpf_dvd (Γ := Γ) (monus (quo N (lpf N)) two))
   have lq := Prf.andE₂ (lpf_dvd (Γ := Γ) (monus (quo N (lpf N)) two))
@@ -176,18 +175,14 @@ theorem phi_upper_at {N d : PTm n} (hN : Γ ⊢[PRAAx] le two N) (hd : Γ ⊢[PR
   have hqN : Γ ⊢[PRAAx] lt (quo N (lpf N)) (succ N) := by
     have hNe := eq_of_dvd' hp1 (Prf.andE₂ lf)
     refine (succ_monus_succ _ _).eqTrans (le_of_eq_add (d := pred (lpf N) * quo N (lpf N)) ?_)
-    have e₁ := natEq hNe; have e₂ := natEq hp1
-    apply deriveNat; ipra_simps
-    linear_combination e₁ + Groth.ι (Q.mk _ (quo N (lpf N))) * e₂
+    ipra_lc natEq hNe + Groth.ι (Q.mk _ (quo N (lpf N))) * natEq hp1
   have hf : Γ ⊢[PRAAx] inst2 sqB (quo N (lpf N)) N ≐ zero := by
     rw [inst2_sq]; exact quo_sq hN hd hdN hdv
   have hr := Prf.andE₂ (Prf.andE₂ (Search.search_found (f := sqB) hf hqN))
   have hb := phi_add_quo hN hd hdN hdv
   refine le_trans ?_ hb
   refine le_of_eq_add (d := monus (quo N (lpf N)) (sqrtUp N)) ?_
-  have e := natEq (eq_add_of_le hr)
-  apply deriveNat; ipra_simps
-  linear_combination e
+  ipra_lc natEq (eq_add_of_le hr)
 
 /-- `thm:phi-upper-composite`: variables `0 = n`, `1 = d`. -/
 abbrev phiUpperFormula : Fm PTm 2 :=

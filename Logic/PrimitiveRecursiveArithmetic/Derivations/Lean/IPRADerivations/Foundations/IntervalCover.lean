@@ -1,6 +1,7 @@
 import IPRADerivations.Core.Fubini
 import IPRADerivations.Core.SumOrder
 import IPRADerivations.Core.Signum
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Finite unions of grid intervals and their exact length
@@ -54,8 +55,7 @@ theorem monus_mono_succ (T lo : PTm n) : Γ ⊢[PRAAx] le (monus T lo) (monus (s
   · have hT := eq_add_of_le (Γ := le lo T :: Γ) Prf.hyp0
     have e : (le lo T :: Γ) ⊢[PRAAx] monus (succ T) lo ≐ succ (monus T lo) := by
       refine (congrMonus (?_ : _ ⊢[PRAAx] succ T ≐ lo + succ (monus T lo)) (.eqRefl _)).eqTrans (add_monus' _ _)
-      have a := natEq hT
-      apply deriveNat; ipra_simps; linear_combination a
+      ipra_lc natEq hT
     exact le_congr (.eqRefl _) e.eqSymm (le_succ_self _)
 
 theorem le_of_le_succ_add {S a : PTm n} (h : Γ ⊢[PRAAx] le S a) : Γ ⊢[PRAAx] le (S + one) (succ a) :=
@@ -78,8 +78,7 @@ theorem count_step {S T lo hi : PTm n} (h1 : Γ ⊢[PRAAx] le S (monus T lo)) (h
     have e := eq_add_of_le (Γ := lt T lo :: Γ) Prf.hyp0
     have hm : (lt T lo :: Γ) ⊢[PRAAx] monus lo T ≐ succ (monus lo (succ T)) := by
       refine (congrMonus (?_ : _ ⊢[PRAAx] lo ≐ T + succ (monus lo (succ T))) (.eqRefl _)).eqTrans (add_monus' _ _)
-      have a := natEq e
-      apply deriveNat; ipra_simps; linear_combination a
+      ipra_lc natEq e
     have h0 : (lt T lo :: Γ) ⊢[PRAAx] monus one (monus lo T) ≐ zero :=
       (congrMonus (.eqRefl _) hm).eqTrans ((succ_monus_succ _ _).eqTrans (zero_monus _))
     exact (congrMul h0 (.eqRefl _)).eqTrans (zero_mul _)
@@ -90,17 +89,15 @@ theorem count_step {S T lo hi : PTm n} (h1 : Γ ⊢[PRAAx] le S (monus T lo)) (h
       let Δ' : List (Fm PTm n) := lt T hi :: Δ
       let α : PTm n := monus T lo
       let β : PTm n := monus hi (succ T)
-      have hT := natEq (eq_add_of_le (Γ := Δ') Prf.hyp1)
-      have hH := natEq (eq_add_of_le (Γ := Δ') Prf.hyp0)
       have e1 : Δ' ⊢[PRAAx] monus (succ T) lo ≐ succ α := by
         refine (congrMonus (?_ : _ ⊢[PRAAx] succ T ≐ lo + succ α) (.eqRefl _)).eqTrans (add_monus' _ _)
-        apply deriveNat; ipra_simps; linear_combination hT
+        ipra_lc natEq (eq_add_of_le (Γ := Δ') Prf.hyp1)
       have e2 : Δ' ⊢[PRAAx] monus hi lo ≐ succ (α + β) := by
         refine (congrMonus (?_ : _ ⊢[PRAAx] hi ≐ lo + succ (α + β)) (.eqRefl _)).eqTrans (add_monus' _ _)
-        apply deriveNat; ipra_simps; linear_combination hH + hT
+        ipra_lc natEq (eq_add_of_le (Γ := Δ') Prf.hyp0) + natEq (eq_add_of_le (Γ := Δ') Prf.hyp1)
       have e3 : Δ' ⊢[PRAAx] monus hi T ≐ succ β := by
         refine (congrMonus (?_ : _ ⊢[PRAAx] hi ≐ T + succ β) (.eqRefl _)).eqTrans (add_monus' _ _)
-        apply deriveNat; ipra_simps; linear_combination hH
+        ipra_lc natEq (eq_add_of_le (Γ := Δ') Prf.hyp0)
       have hc : Δ' ⊢[PRAAx] cnt lo hi T ≐ one :=
         (congrMul hc1.wk ((congrMonus (.eqRefl _) (congrMonus (.eqRefl _) e3)).eqTrans (sg_succ _))).eqTrans (one_mul _)
       have hS : Δ' ⊢[PRAAx] le (S + one) (succ α) := le_of_le_succ_add h1.wk.wk

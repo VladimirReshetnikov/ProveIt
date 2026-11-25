@@ -1,6 +1,6 @@
 import IPRADerivations.Combinatorics.LucasIdentities
 import IPRADerivations.Core.SumLemmas
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The alternating sum of Fibonacci numbers

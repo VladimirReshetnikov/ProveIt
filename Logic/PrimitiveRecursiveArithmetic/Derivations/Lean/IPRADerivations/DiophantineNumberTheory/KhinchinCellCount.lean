@@ -48,7 +48,7 @@ theorem count_local (u : PTm 2) {N L r P p : PTm n}
   have e := natEq (hsl.eqTrans (congrAp2 (sumF (offB u)) em (.eqRefl _)))
   have pos : Γ ⊢[PRAAx] two * succ p ≐ succ (pred (two * succ p)) :=
     LeanProofs.IPRA.AnalyticNumberTheory.LogRefinement.pos_of_eq
-      (show Γ ⊢[PRAAx] two * succ p ≐ succ (succ p + p) by apply deriveNat; ipra_simps; ring)
+      (show Γ ⊢[PRAAx] two * succ p ≐ succ (succ p + p) by ipra_ring)
   refine cancel pos ?_
   ipra_le sl hcov with 32768 * (𝔞 p + 1) * e
 

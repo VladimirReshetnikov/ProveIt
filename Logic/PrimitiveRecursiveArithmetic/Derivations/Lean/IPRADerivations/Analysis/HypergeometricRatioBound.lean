@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.HypergeometricThreshold
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The ratio bound for hypergeometric terms with `r = s + 1`
@@ -131,10 +132,7 @@ theorem shift_upper (as : List (PTm n)) {A k : PTm n} (hAk : Γ ⊢[PRAAx] le A 
     exact h
 
 /-- `k ≥ 1` as positivity. -/
-theorem pos_of_one_le' {k : PTm n} (hk : Γ ⊢[PRAAx] le one k) : Γ ⊢[PRAAx] k ≐ succ (pred k) := by
-  have e : Γ ⊢[PRAAx] k ≐ succ (monus k one) :=
-    (eq_add_of_le hk).eqTrans (by ipra_ring)
-  exact e.eqTrans (congrSucc ((pred_succ _).eqSymm.eqTrans (congrPred e.eqSymm)))
+alias pos_of_one_le' := Common.pos_of_one_le
 
 /-- `thm:hyp-conv` (b) with an explicit threshold: for `|as| ≤ |bs| + 1`, parameters `a_i ≤ A ≤ k`, `k ≥ 1` and
 `2 p (k + (2^{|as|} − 1) A) ≤ (p + q) k`, the ratio bound `2 T_{k+1} ≤ ((p + q)/q) T_k` holds at `k`. -/

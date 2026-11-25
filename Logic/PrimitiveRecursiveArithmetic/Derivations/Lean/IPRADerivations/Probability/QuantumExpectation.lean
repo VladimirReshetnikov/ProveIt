@@ -2,6 +2,7 @@ import IPRADerivations.Core.CertificateTactics
 import IPRADerivations.Core.Gcd
 import IPRADerivations.Core.Parity
 import Mathlib.Algebra.BigOperators.Fin
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Quantum expectation values: realness and the variance identity
@@ -57,9 +58,7 @@ theorem toZ_zsum : {d : ℕ} → (f : Fin d → ZT n) → ZT.toZ Γ (zsum f) = �
   | _ + 1, f => by rw [zsum, ZT.toZ_add, toZ_zsum, Fin.sum_univ_succ]
 
 /-- `2 p = 2 q` gives `p = q`. -/
-theorem two_cancel {p q : PTm n} (h : Γ ⊢[PRAAx] two * p ≐ two * q) : Γ ⊢[PRAAx] p ≐ q :=
-  le_antisymm (mul_le_cancel (le_congr (.eqRefl _) h (le_refl _)))
-    (mul_le_cancel (le_congr (.eqRefl _) h.eqSymm (le_refl _)))
+alias two_cancel := Common.two_mul_cancel
 
 /-! ## The ring identities -/
 

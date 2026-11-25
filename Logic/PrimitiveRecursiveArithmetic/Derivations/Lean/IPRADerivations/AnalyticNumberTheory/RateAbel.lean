@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.PowerDivisorUniform
 import IPRADerivations.DiophantineNumberTheory.Dirichlet
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Dyadic shell weights and the recovery of growth from bounded weighted sums
@@ -91,9 +92,7 @@ theorem uu_succ {r x : PTm n} (hr : Γ ⊢[PRAAx] le one r) (hx : Γ ⊢[PRAAx] 
   have e := eq_add_of_le (jj_mono hr hx)
   refine Prf.eqTrans ?_ (pw_add two _ _)
   refine congrPw (.eqRefl _) ?_
-  have f := natEq e
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞 r + 1) * f
+  ipra_lc (𝔞 r + 1) * natEq e
 
 theorem rho_pos (r x : PTm n) : Γ ⊢[PRAAx] le one (rho r x) := one_le_pw' (by ipra_le 1) _
 
@@ -108,7 +107,7 @@ theorem uu_pow {r N : PTm n} (hr : Γ ⊢[PRAAx] le one r) (hN : Γ ⊢[PRAAx] l
   have p1 := le_trans (pw_le_exp two_pos hle) (Prf.andE₁ (lg_bracket hN))
   have p2 := pw_le_pw (succ r) p1
   have e2 : Γ ⊢[PRAAx] pw (uu r N) (two * r) ≐ pw (pw two (two * r * jj r N)) (succ r) :=
-    (pw_mul _ _ _).eqTrans ((congrPw (.eqRefl _) (by apply deriveNat; ipra_simps; ring)).eqTrans (pw_mul _ _ _).eqSymm)
+    (pw_mul _ _ _).eqTrans ((congrPw (.eqRefl _) (by ipra_ring)).eqTrans (pw_mul _ _ _).eqSymm)
   exact le_congr e2.eqSymm (.eqRefl _) p2
 
 /-! ## The cleared weighted sums -/
@@ -183,11 +182,11 @@ theorem diff_step {r y K N : PTm n} (hr : Γ ⊢[PRAAx] le one r) (hN : Γ ⊢[P
   have wN := natEq (W_succ (Γ := Γ) aN r y N)
   have hρ : Γ ⊢[PRAAx] rho r N ≐ succ (pred (rho r N)) := pos_of_one_le (rho_pos r N)
   have qq : ∀ (W : PTm n), Γ ⊢[PRAAx] rho r N * W ≐ pred (rho r N) * W + W := fun W =>
-    (congrMul hρ (.eqRefl W)).eqTrans (by apply deriveNat; ipra_simps; ring)
+    (congrMul hρ (.eqRefl W)).eqTrans (by ipra_ring)
   have q1 := natEq (qq (Wv aP r y N))
   have q2 := natEq (qq (Wv aN r y N))
   have q3 := natEq ((congrMul (.eqRefl (pw two K)) ((uu_succ hr hN).eqTrans
-    (congrMul hρ (.eqRefl _)))).eqTrans (by apply deriveNat; ipra_simps; ring) :
+    (congrMul hρ (.eqRefl _)))).eqTrans (by ipra_ring) :
     Γ ⊢[PRAAx] pw two K * uu r (succ N) ≐ pw two K * (pred (rho r N) * uu r N) + pw two K * uu r N)
   have l1 := le_absd_l (Γ := Γ) (Mv aP y N + Wv aN r y N) (Mv aN y N + Wv aP r y N)
   have l2 := le_absd_r (Γ := Γ) (Mv aP y N + Wv aN r y N) (Mv aN y N + Wv aP r y N)
@@ -284,7 +283,7 @@ theorem recover {r y K : PTm n} (hr : Γ ⊢[PRAAx] le one r) (hW : Γ ⊢[PRAAx
     have l3 := le_absd_l (Γ := C) (Wv aP r y N) (Wv aN r y N)
     have l4 := le_absd_r (Γ := C) (Wv aP r y N) (Wv aN r y N)
     have e2 := natEq ((congrMul (pw_succ (Γ := C) two K) (.eqRefl (uu r N))).eqTrans
-      (by apply deriveNat; ipra_simps; ring) :
+      (by ipra_ring) :
       C ⊢[PRAAx] pw two (succ K) * uu r N ≐ pw two K * uu r N + pw two K * uu r N)
     have hM : C ⊢[PRAAx] le (absd (Mv aP y N) (Mv aN y N)) (pw two (succ K) * uu r N) := by
       refine absd_le ?_ ?_
@@ -294,7 +293,7 @@ theorem recover {r y K : PTm n} (hr : Γ ⊢[PRAAx] le one r) (hW : Γ ⊢[PRAAx
     have e3 : C ⊢[PRAAx] pw (pw two (succ K) * uu r N) (two * r) ≐
         pw two (two * r * succ K) * pw (uu r N) (two * r) :=
       (pw_mul_base _ _ _).eqTrans (congrMul ((pw_mul _ _ _).eqTrans (congrPw (.eqRefl _)
-        (by apply deriveNat; ipra_simps; ring))) (.eqRefl _))
+        (by ipra_ring))) (.eqRefl _))
     have p2 := le_mul_mono (le_refl (pw two (two * r * succ K))) (uu_pow hr.wk hN)
     exact le_trans p1 (le_congr e3.eqSymm (.eqRefl _) p2)
   · let C : List (Fm PTm n) := le N zero :: Γ

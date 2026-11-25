@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianRationalSumSegments
 import IPRADerivations.Analysis.GaussianRationalNaturalScale
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual finite Gaussian-rational sums
@@ -97,9 +98,7 @@ theorem sum_congr_bounded (t u : PTm 2) (m x y : PTm n)
 
 theorem sum_index_congr (t : PTm 2) {m l x y : PTm n}
     (hm : Γ ⊢[PRAAx] m ≐ l) (hx : Γ ⊢[PRAAx] x ≐ y) : Γ ⊢[PRAAx] sum t m x ≐ sum t l y := by
-  simpa only [subst_sum,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (sum t (var 0) (var 1) : PTm 2)
-      (σ := ![m,x]) (σ' := ![l,y]) (fun i => by fin_cases i; exact hm; exact hx)
+  ipra_congr (sum t (var 0) (var 1) : PTm 2) with [hm, hx]
 
 def shiftLaw (t : PTm 2) (m x : PTm n) : Fm PTm n :=
   sum t (succ m) x ≐ qadd (inst2 t zero x) (sum (shiftBody t) m x)

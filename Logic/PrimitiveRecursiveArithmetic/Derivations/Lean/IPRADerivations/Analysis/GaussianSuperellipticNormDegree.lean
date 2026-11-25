@@ -2,6 +2,7 @@ import IPRADerivations.Analysis.GaussianNormFiniteZeroBound
 import IPRADerivations.Analysis.GaussianPolynomialDeterminantDegreeDominance
 import IPRADerivations.Analysis.GaussianSuperellipticCyclicLeading
 import IPRADerivations.Analysis.GaussianSuperellipticWordTerms
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Exact degree of the original superelliptic norm
@@ -126,8 +127,7 @@ theorem original_strict_dominance (f G m a c : PTm n) (h : Γ ⊢[PRAAx] input f
 
 private theorem sign_congr (m : PTm n) {u v : PTm n} (h : Γ ⊢[PRAAx] u ≐ v) :
     Γ ⊢[PRAAx] signPoint m u ≐ signPoint m v := by
-  simpa using Prf.eqCongr (Γ := Γ) (signPoint (var 0) (var 1) : PTm 2) (σ := ![m,u]) (σ' := ![m,v])
-    (fun i => by fin_cases i; exact .eqRefl _; exact h)
+  ipra_congr (signPoint (var 0) (var 1) : PTm 2) with [.eqRefl m, h]
 
 theorem original_norm_degree (f G m a c : PTm n) (h : Γ ⊢[PRAAx] input f G m a c) :
     Γ ⊢[PRAAx] certificate f G m a c := by

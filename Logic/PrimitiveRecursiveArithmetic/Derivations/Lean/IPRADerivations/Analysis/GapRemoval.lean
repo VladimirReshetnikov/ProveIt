@@ -40,7 +40,7 @@ theorem gap_contra {U V C k : PTm n} (hk : Γ ⊢[PRAAx] lt C (pw two k)) (hVU :
   have l₁ : Γ ⊢[PRAAx] le (succ (V * pw two k + C)) (V * pw two k + pw two k) :=
     le_congr (add_succ _ _) (.eqRefl _) (add_le_add₂ (le_refl (V * pw two k)) hk')
   have l₂ : Γ ⊢[PRAAx] le (V * pw two k + pw two k) (U * pw two k) :=
-    le_congr (show Γ ⊢[PRAAx] succ V * pw two k ≐ V * pw two k + pw two k by apply deriveNat; ipra_simps; ring)
+    le_congr (show Γ ⊢[PRAAx] succ V * pw two k ≐ V * pw two k + pw two k by ipra_ring)
       (.eqRefl _) (le_mul_mono hVU' (le_refl (pw two k)))
   have c : Γ ⊢[PRAAx] lt (V * pw two k + C) (V * pw two k + C) := le_trans (le_trans l₁ l₂) h
   exact lt_irrefl _ _ c

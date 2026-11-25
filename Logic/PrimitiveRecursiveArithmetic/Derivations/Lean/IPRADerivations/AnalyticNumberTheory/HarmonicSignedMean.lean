@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.HarmonicMertensLower
 import IPRADerivations.DiophantineNumberTheory.HurwitzLoop
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The signed logarithmic mean for the harmonic logarithm (`pnt_ipra_constructive_2026-11-14`, `con:signed`)
@@ -45,10 +46,9 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 theorem nq_le {N M F : PTm n} (hM : Γ ⊢[PRAAx] le one M) (hNM : Γ ⊢[PRAAx] le N M) :
     Γ ⊢[PRAAx] le (N * quo F M) F := by
   have qm := DiophantineNumberTheory.HurwitzLoop.quo_mul_le (x := F) (pos_of_lt_zero hM)
-  have w := natEq (eq_add_of_le hNM)
   have l : Γ ⊢[PRAAx] le (N * quo F M) (quo F M * M) := by
     refine le_of_eq_add (d := quo F M * monus M N) ?_
-    apply deriveNat; ipra_simps; linear_combination 𝔞 (quo F M) * w
+    ipra_lc 𝔞 (quo F M) * natEq (eq_add_of_le hNM)
   exact le_trans l qm
 
 /-- `sb:signed-integral`, upper half: `Q(N) = A_1(N) − ψ(N)/N − λ_M(N) ≤ 5`. -/

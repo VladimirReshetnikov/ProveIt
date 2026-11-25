@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianRationalRowSpanPivotForward
 import IPRADerivations.Analysis.GaussianRationalRowSpanRewind
 import IPRADerivations.Analysis.GaussianSuperellipticSubspaceFromSpan
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual forward coefficients through rectangular elimination
@@ -54,11 +55,7 @@ def weights (A R N u c : PTm n) : PTm n := ap2 weightsF c (data A R N u)
 theorem advance_congr {A A' R R' N N' c c' u u' : PTm n} (hA : Γ ⊢[PRAAx] A ≐ A')
     (hR : Γ ⊢[PRAAx] R ≐ R') (hN : Γ ⊢[PRAAx] N ≐ N') (hc : Γ ⊢[PRAAx] c ≐ c')
     (hu : Γ ⊢[PRAAx] u ≐ u') : Γ ⊢[PRAAx] advance A R N c u ≐ advance A' R' N' c' u' := by
-  simpa only [subst_advance,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.cons_val_three,Matrix.cons_val_four,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (advance (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5)
-      (σ := ![A,R,N,c,u]) (σ' := ![A',R',N',c',u'])
-      (fun j => by fin_cases j; exact hA; exact hR; exact hN; exact hc; exact hu)
+  ipra_congr (advance (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) with [hA, hR, hN, hc, hu]
 
 theorem weights_zero (A R N u : PTm n) : Γ ⊢[PRAAx] weights A R N u zero ≐ u := by
   have e := rec2_zero (Γ := Γ) baseBody stepBody (data A R N u)

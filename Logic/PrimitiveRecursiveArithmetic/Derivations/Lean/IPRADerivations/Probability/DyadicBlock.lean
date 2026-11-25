@@ -1,4 +1,5 @@
 import IPRADerivations.Probability.KolmogorovBlock
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Kolmogorov's inequality for one dyadic block, in the law of the whole sample
@@ -81,9 +82,7 @@ theorem inst2_pcB (t N H M x : PTm n) :
 /-- Abstract algebra: `R = T`, `H = C₂ C`, `C₂ = A A`, `Pc = T C` give `R H = (A A) Pc`. -/
 theorem sum_alg {R Hh T C A C2 Pc : PTm n} (f1 : Γ ⊢[PRAAx] R ≐ T) (f2 : Γ ⊢[PRAAx] Hh ≐ C2 * C)
     (f3 : Γ ⊢[PRAAx] C2 ≐ A * A) (f4 : Γ ⊢[PRAAx] Pc ≐ T * C) : Γ ⊢[PRAAx] R * Hh ≐ (A * A) * Pc := by
-  have g1 := natEq f1; have g2 := natEq f2; have g3 := natEq f3; have g4 := natEq f4
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 Hh * g1 + 𝔞 T * g2 + 𝔞 T * 𝔞 C * g3 - 𝔞 A * 𝔞 A * g4
+  ipra_lc 𝔞 Hh * natEq f1 + 𝔞 T * natEq f2 + 𝔞 T * 𝔞 C * natEq f3 - 𝔞 A * 𝔞 A * natEq f4
 
 /-- The summand of `block_kolmogorov` is `a² · pcB`. -/
 theorem summand_eq {M : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) (t N m x : PTm n) :
@@ -100,11 +99,9 @@ theorem summand_eq {M : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) (t N m x
 theorem cross_alg {L1 A P P' Tm TN TH N S W Q : PTm n} (bk : Γ ⊢[PRAAx] le (L1 + Tm * (N * (S * S) * TN)) (Tm * (N * (W * Q) * TN)))
     (hL : Γ ⊢[PRAAx] L1 ≐ (A * A) * P') (hP : Γ ⊢[PRAAx] P' ≐ P) (hT : Γ ⊢[PRAAx] Tm * TN ≐ TH) :
     Γ ⊢[PRAAx] le (A * A * P + TH * (N * (S * S))) (TH * (N * (W * Q))) := by
-  have e0 := natEq (eq_add_of_le bk)
   have e1 := natEq hL; have e2 := natEq hP; have e3 := natEq hT
   refine le_of_eq_add (d := monus (Tm * (N * (W * Q) * TN)) (L1 + Tm * (N * (S * S) * TN))) ?_
-  apply deriveNat; ipra_simps
-  linear_combination e0 + e1 + 𝔞 A * 𝔞 A * e2 - (𝔞 N * 𝔞 W * 𝔞 Q - 𝔞 N * 𝔞 S * 𝔞 S) * e3
+  ipra_lc natEq (eq_add_of_le bk) + e1 + 𝔞 A * 𝔞 A * e2 - (𝔞 N * 𝔞 W * 𝔞 Q - 𝔞 N * 𝔞 S * 𝔞 S) * e3
 
 /-- Kolmogorov's inequality for the crossings within the first `N ≤ H` coordinates, in the `H`-fold law:
 `a² Pc(N, H) + T_H N S² ≤ T_H N W Q`. -/

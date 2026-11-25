@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.GaussianDominantScalarOrder
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Exact natural weights for residual decrease
@@ -94,13 +95,9 @@ theorem gain_budget (D P Q : PTm n) (hLower : Γ ⊢[PRAAx] lowerBound D P Q) : 
 theorem contraction_budget (D P Q : PTm n) (hD : Γ ⊢[PRAAx] le one D)
     (hPQ : Γ ⊢[PRAAx] le P Q) (hLower : Γ ⊢[PRAAx] lowerBound D P Q) : Γ ⊢[PRAAx]
     le (rateDen D*sumWeight P Q) (rateNum D*scale Q) := by
-  have total := natEq (total_gain_identity P Q hPQ)
-  have rate := natEq (rate_identity D hD)
-  have gb := natEq (eq_add_of_le (gain_budget D P Q hLower))
   refine le_of_eq_add (d := monus (rateDen D*gain P) (scale Q)) ?_
-  apply deriveNat
-  ipra_simps
-  linear_combination 𝔞(rateDen D)*total-𝔞(scale Q)*rate+gb
+  ipra_lc 𝔞(rateDen D)*natEq (total_gain_identity P Q hPQ)-𝔞(scale Q)*natEq (rate_identity D hD)+
+    natEq (eq_add_of_le (gain_budget D P Q hLower))
 
 theorem weights_correct (D P Q : PTm n) (h : Γ ⊢[PRAAx] input D P Q) : Γ ⊢[PRAAx]
     le one P ⋏ (le one (scale Q) ⋏ le (rateDen D*sumWeight P Q) (rateNum D*scale Q)) :=

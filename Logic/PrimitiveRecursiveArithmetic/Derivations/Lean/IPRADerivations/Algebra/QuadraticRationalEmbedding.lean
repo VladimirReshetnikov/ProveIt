@@ -1,4 +1,5 @@
 import IPRADerivations.Algebra.QuadraticRationalCongruence
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Original rational scalars and the actual positive quadratic root
@@ -52,10 +53,7 @@ theorem zero_scalar_represents (D : PTm n) : Γ ⊢[PRAAx]
     LeanProofs.IPRA.Analysis.RationalArithmetic.represents zeroScalar (ZT.ofNat zero) D := by
   change Γ ⊢[PRAAx] LeanProofs.IPRA.Analysis.RationalArithmetic.represents
     (QuadraticRationalPairArithmetic.scalar zero) (ZT.ofNat zero) D
-  apply ZT.derive
-  have e := ZT.toZ_eq (QuadraticRationalPairArithmetic.scalar_represents (Γ := Γ) zero)
-  simp only [ZT.toZ_mul,ZT.toZ_ofNat,Q.mk_zero,Q.mk_one,map_zero,map_one] at e ⊢
-  linear_combination 𝔞(D)*e
+  ipra_lc 𝔞(D)*ZT.toZ_eq (QuadraticRationalPairArithmetic.scalar_represents (Γ := Γ) zero)
 theorem embedding_represents (q D : PTm n) (a : ZT n)
     (hq : Γ ⊢[PRAAx] LeanProofs.IPRA.Analysis.RationalArithmetic.represents q a D) : Γ ⊢[PRAAx]
     represents (embed q) (integer a) D := by
@@ -88,10 +86,7 @@ theorem embedding_difference_sign (d q r : PTm n) (hd : Γ ⊢[PRAAx] le one d) 
       (QuadraticConeOrder.sign_congr _ _ _ hd (scalar_cross q r))
 theorem rational_eq_of_cross_zero (q r : PTm n) (h : Γ ⊢[PRAAx] ZT.eq (crossNumerator q r) (ZT.ofNat zero)) : Γ ⊢[PRAAx] rationalEq q r := by
   apply LeanProofs.IPRA.Analysis.RationalArithmetic.value_equality
-  apply ZT.derive
-  have e := ZT.toZ_eq h
-  simp only [crossNumerator,ZT.toZ_sub,ZT.toZ_ofNat,Q.mk_zero,map_zero] at e
-  linear_combination e
+  ipra_lc [crossNumerator] ZT.toZ_eq h
 theorem cross_zero_of_rational_eq (q r : PTm n) (h : Γ ⊢[PRAAx] rationalEq q r) : Γ ⊢[PRAAx]
     ZT.eq (crossNumerator q r) (ZT.ofNat zero) := by
   apply ZT.derive

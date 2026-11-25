@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.Radical
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The general multiplication formula
@@ -130,7 +131,7 @@ theorem prod2_X3 (F : PTm 2) (B a b : PTm n) :
 theorem prod_to_pp (F : PTm 2) {x B : PTm n} (hx : Γ ⊢[PRAAx] x ≐ succ (pred x)) (h : Γ ⊢[PRAAx] le x B) :
     Γ ⊢[PRAAx] ap2 (prodF (pB F)) (succ B) x ≐ PP F x := by
   have e : Γ ⊢[PRAAx] succ B ≐ succ x + monus B x :=
-    (congrSucc (eq_add_of_le h)).eqTrans (by apply deriveNat; ipra_simps; ring)
+    (congrSucc (eq_add_of_le h)).eqTrans (by ipra_ring)
   exact (congrAp2 (prodF (pB F)) e (.eqRefl _)).eqTrans (prod_extend F hx _)
 
 section PP
@@ -174,19 +175,12 @@ theorem pp_split (F : PTm 2) (hF : ∀ {k : ℕ} (q x y : PTm k), inst2 F q x = 
 theorem general_mul_at : Γ ⊢[PRAAx] phi (m * N) * phi (gcd m N) ≐ phi m * phi N * gcd m N := by
   have hK := pos_mul (rad_pos (Γ := Γ) m) (rad_pos (Γ := Γ) N)
   refine mul_cancel hK ?_
-  have E₁ := natEq (euler_product_at (Γ := Γ) (m * N))
-  have E₂ := natEq (euler_product_at (Γ := Γ) (gcd m N))
-  have E₃ := natEq (euler_product_at (Γ := Γ) m)
-  have E₄ := natEq (euler_product_at (Γ := Γ) N)
-  have S₁ := natEq (pp_split hm hN F₁ hF₁)
-  have S₂ := natEq (pp_split hm hN F₂ hF₂)
-  apply deriveNat; ipra_simps
-  linear_combination -Groth.ι (Q.mk _ (phi (m * N))) * Groth.ι (Q.mk _ (phi (gcd m N))) * S₁ +
-    Groth.ι (Q.mk _ (phi (gcd m N))) * Groth.ι (Q.mk _ (PP F₁ (gcd m N))) * E₁ +
-    Groth.ι (Q.mk _ m) * Groth.ι (Q.mk _ N) * Groth.ι (Q.mk _ (PP F₂ (m * N))) * E₂ +
-    Groth.ι (Q.mk _ m) * Groth.ι (Q.mk _ N) * Groth.ι (Q.mk _ (gcd m N)) * S₂ -
-    Groth.ι (Q.mk _ (gcd m N)) * Groth.ι (Q.mk _ (phi N)) * Groth.ι (Q.mk _ (PP F₁ N)) * E₃ -
-    Groth.ι (Q.mk _ (gcd m N)) * Groth.ι (Q.mk _ m) * Groth.ι (Q.mk _ (PP F₂ m)) * E₄
+  ipra_lc -Groth.ι (Q.mk _ (phi (m * N))) * Groth.ι (Q.mk _ (phi (gcd m N))) * natEq (pp_split hm hN F₁ hF₁) +
+    Groth.ι (Q.mk _ (phi (gcd m N))) * Groth.ι (Q.mk _ (PP F₁ (gcd m N))) * natEq (euler_product_at (Γ := Γ) (m * N)) +
+    Groth.ι (Q.mk _ m) * Groth.ι (Q.mk _ N) * Groth.ι (Q.mk _ (PP F₂ (m * N))) * natEq (euler_product_at (Γ := Γ) (gcd m N)) +
+    Groth.ι (Q.mk _ m) * Groth.ι (Q.mk _ N) * Groth.ι (Q.mk _ (gcd m N)) * natEq (pp_split hm hN F₂ hF₂) -
+    Groth.ι (Q.mk _ (gcd m N)) * Groth.ι (Q.mk _ (phi N)) * Groth.ι (Q.mk _ (PP F₁ N)) * natEq (euler_product_at (Γ := Γ) m) -
+    Groth.ι (Q.mk _ (gcd m N)) * Groth.ι (Q.mk _ m) * Groth.ι (Q.mk _ (PP F₂ m)) * natEq (euler_product_at (Γ := Γ) N)
 
 end PP
 

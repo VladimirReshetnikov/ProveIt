@@ -2,6 +2,8 @@ import IPRADerivations.AnalyticNumberTheory.PowerBudget
 import IPRADerivations.AnalyticNumberTheory.StepParams
 import IPRADerivations.AnalyticNumberTheory.AbsDiff
 import IPRADerivations.AnalyticNumberTheory.PhiLower
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The witness transfer along perfect powers (`riemann_ipra_prime_criteria_2026-11-20`, `thm:powerdivisor`)
@@ -201,14 +203,12 @@ theorem term_pow {i N r c : PTm n} {u m : PTm n}
   have e3 : Γ ⊢[PRAAx] pw (pw (succ i) two * m) (succ (two * r)) ≐ pw (pw (succ i) two) (succ (two * r)) * pw m (succ (two * r)) := pw_mul_base _ _ _
   have x3 : Γ ⊢[PRAAx] le (c * pw (pw (succ i) two * m) (succ (two * r))) (c * pw N (succ (two * r))) :=
     le_mul_mono (le_refl c) (pw_le_pw (succ (two * r)) harg)
-  have f3 := natEq e3
   have r3 : Γ ⊢[PRAAx] pw (pw (succ i) two) (succ (two * r)) * (c * pw m (succ (two * r))) ≐ c * pw (pw (succ i) two * m) (succ (two * r)) := by
-    apply deriveNat; ipra_simps; linear_combination -(𝔞 c) * f3
+    ipra_lc -(𝔞 c) * natEq e3
   exact le_congr e1.eqSymm (.eqRefl _) (le_trans x2 (le_congr r3.eqSymm (.eqRefl _) x3))
 
 /-- `x² = x x`. -/
-theorem pw_two_sq (x : PTm n) : Γ ⊢[PRAAx] pw x two ≐ x * x :=
-  (pw_succ x one).eqTrans (congrMul (pw_one x) (.eqRefl x))
+alias pw_two_sq := Common.pw_two
 
 /-- `a^h a^h = a^{h+h}`. -/
 theorem pw_dbl (a h : PTm n) : Γ ⊢[PRAAx] pw a h * pw a h ≐ pw a (h + h) := (pw_add a h h).eqSymm
@@ -267,7 +267,7 @@ theorem transfer {N y r c : PTm n} (hr : Γ ⊢[PRAAx] le one r)
   -- raise to `4r`
   have p1 : Θ ⊢[PRAAx] le (pw (absd (ap2 (sumF tP) N y) (ap2 (sumF tN) N y)) (k4 r)) (pw (succ (succ (ell (succ N))) * (mx (wB tP tN) N y)) (k4 r)) := pw_le_pw _ hA
   have e1 : Θ ⊢[PRAAx] pw (succ (succ (ell (succ N))) * (mx (wB tP tN) N y)) (k4 r) ≐ pw ((ell (succ N)) + two) (k4 r) * pw (mx (wB tP tN) N y) (k4 r) :=
-    (congrPw (congrMul (by apply deriveNat; ipra_simps; ring) (.eqRefl (mx (wB tP tN) N y))) (.eqRefl _)).eqTrans (pw_mul_base _ _ _)
+    (congrPw (congrMul (by ipra_ring) (.eqRefl (mx (wB tP tN) N y))) (.eqRefl _)).eqTrans (pw_mul_base _ _ _)
   have la := log_absorb (Γ := Θ) hk.wk (ell (succ N))
   have la' : Θ ⊢[PRAAx] le (pw ((ell (succ N)) + two) (k4 r)) (pw (r8 r) (k4 r) * N) :=
     le_trans la (le_mul_mono (le_refl _) b1)
@@ -275,20 +275,17 @@ theorem transfer {N y r c : PTm n} (hr : Γ ⊢[PRAAx] le one r)
     le_trans p1 (le_congr e1.eqSymm (.eqRefl _) (le_mul_mono la' hX))
   -- compare with `(succ c * pw (r8 r) (two * r) * pw N (succ r))²`
   have q1 : Θ ⊢[PRAAx] pw (pw (absd (ap2 (sumF tP) N y) (ap2 (sumF tN) N y)) (two * r)) two ≐ pw (absd (ap2 (sumF tP) N y) (ap2 (sumF tN) N y)) (k4 r) :=
-    (pw_two_sq _).eqTrans ((pw_dbl (absd (ap2 (sumF tP) N y) (ap2 (sumF tN) N y)) (two * r)).eqTrans (congrPw (.eqRefl (absd (ap2 (sumF tP) N y) (ap2 (sumF tN) N y))) (by apply deriveNat; ipra_simps; ring)))
+    (pw_two_sq _).eqTrans ((pw_dbl (absd (ap2 (sumF tP) N y) (ap2 (sumF tN) N y)) (two * r)).eqTrans (congrPw (.eqRefl (absd (ap2 (sumF tP) N y) (ap2 (sumF tN) N y))) (by ipra_ring)))
   have q2 : Θ ⊢[PRAAx] pw (r8 r) (two * r) * pw (r8 r) (two * r) ≐ pw (r8 r) (k4 r) :=
-    (pw_dbl _ _).eqTrans (congrPw (.eqRefl _) (by apply deriveNat; ipra_simps; ring))
+    (pw_dbl _ _).eqTrans (congrPw (.eqRefl _) (by ipra_ring))
   have q3 : Θ ⊢[PRAAx] pw N (succ r) * pw N (succ r) ≐ pw N (succ (two * r)) * N :=
-    (pw_dbl _ _).eqTrans ((congrPw (.eqRefl N) (by apply deriveNat; ipra_simps; ring)).eqTrans (pw_succ N (succ (two * r))))
+    (pw_dbl _ _).eqTrans ((congrPw (.eqRefl N) (by ipra_ring)).eqTrans (pw_succ N (succ (two * r))))
   have q4 : Θ ⊢[PRAAx] pw (succ c * pw (r8 r) (two * r) * pw N (succ r)) two ≐ (succ c * pw (r8 r) (two * r) * pw N (succ r)) * (succ c * pw (r8 r) (two * r) * pw N (succ r)) := pw_two_sq (succ c * pw (r8 r) (two * r) * pw N (succ r))
   have f1 := natEq q1
-  have f2 := natEq q2
-  have f3 := natEq q3
   have f4 := natEq q4
   have gYY : Θ ⊢[PRAAx] (succ c * pw (r8 r) (two * r) * pw N (succ r)) * (succ c * pw (r8 r) (two * r) * pw N (succ r)) ≐ (succ c * succ c) * pw (r8 r) (k4 r) * (pw N (succ (two * r)) * N) := by
-    apply deriveNat; ipra_simps
-    linear_combination ((𝔞 c + 1) * (𝔞 c + 1) * 𝔞 (pw N (succ r)) * 𝔞 (pw N (succ r))) * f2 +
-      ((𝔞 c + 1) * (𝔞 c + 1) * 𝔞 (pw (r8 r) (k4 r))) * f3
+    ipra_lc ((𝔞 c + 1) * (𝔞 c + 1) * 𝔞 (pw N (succ r)) * 𝔞 (pw N (succ r))) * natEq q2 +
+      ((𝔞 c + 1) * (𝔞 c + 1) * 𝔞 (pw (r8 r) (k4 r))) * natEq q3
   have g := natEq gYY
   have sq : Θ ⊢[PRAAx] le (pw (pw (absd (ap2 (sumF tP) N y) (ap2 (sumF tN) N y)) (two * r)) two) (pw (succ c * pw (r8 r) (two * r) * pw N (succ r)) two) := by
     ipra_le sl p2 + 𝔞 (c * c * pw (r8 r) (k4 r) * pw N (succ (two * r)) * N) + 𝔞 (c * pw (r8 r) (k4 r) * pw N (succ (two * r)) * N) +

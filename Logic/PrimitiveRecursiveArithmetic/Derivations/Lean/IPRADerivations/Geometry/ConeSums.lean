@@ -1,6 +1,6 @@
 import IPRADerivations.Core.Sums
 import IPRADerivations.Core.Order
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The sums of squares behind the volume of the cone

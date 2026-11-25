@@ -1,4 +1,5 @@
 import IPRADerivations.Probability.MedianCounts
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Median of three and Tukey's ninther
@@ -88,17 +89,17 @@ theorem leb_mono_l {a m M : PTm n} (h : Γ ⊢[PRAAx] le M m) : Γ ⊢[PRAAx] le
 theorem two12 {x y z : PTm n} (hx : Γ ⊢[PRAAx] x ≐ one) (hy : Γ ⊢[PRAAx] y ≐ one) : Γ ⊢[PRAAx] le two (x + y + z) := by
   have a := natEq hx; have b := natEq hy
   refine le_of_eq_add (d := z) ?_
-  apply deriveNat; ipra_simps; linear_combination a + b
+  ipra_lc a + b
 
 theorem two13 {x y z : PTm n} (hx : Γ ⊢[PRAAx] x ≐ one) (hz : Γ ⊢[PRAAx] z ≐ one) : Γ ⊢[PRAAx] le two (x + y + z) := by
   have a := natEq hx; have b := natEq hz
   refine le_of_eq_add (d := y) ?_
-  apply deriveNat; ipra_simps; linear_combination a + b
+  ipra_lc a + b
 
 theorem two23 {x y z : PTm n} (hy : Γ ⊢[PRAAx] y ≐ one) (hz : Γ ⊢[PRAAx] z ≐ one) : Γ ⊢[PRAAx] le two (x + y + z) := by
   have a := natEq hy; have b := natEq hz
   refine le_of_eq_add (d := x) ?_
-  apply deriveNat; ipra_simps; linear_combination a + b
+  ipra_lc a + b
 
 /-- `m` has at least two of `a, b, c` below it and at least two above it. -/
 abbrev isMed3 (m a b c : PTm n) : Fm PTm n :=
@@ -182,11 +183,9 @@ theorem combine {T₁ T₂ T₃ l₁ l₂ l₃ : PTm n} (h₁ : Γ ⊢[PRAAx] le
     (h₃ : Γ ⊢[PRAAx] le (two * l₃) T₃) (h : Γ ⊢[PRAAx] le two (l₁ + l₂ + l₃)) :
     Γ ⊢[PRAAx] le (two * two) (T₁ + T₂ + T₃) := by
   have e₁ := natEq (eq_add_of_le h₁); have e₂ := natEq (eq_add_of_le h₂); have e₃ := natEq (eq_add_of_le h₃)
-  have e := natEq (eq_add_of_le h)
   refine le_of_eq_add (d := monus T₁ (two * l₁) + monus T₂ (two * l₂) + monus T₃ (two * l₃) +
     two * monus (l₁ + l₂ + l₃) two) ?_
-  apply deriveNat; ipra_simps
-  linear_combination e₁ + e₂ + e₃ + 2 * e
+  ipra_lc e₁ + e₂ + e₃ + 2 * natEq (eq_add_of_le h)
 
 /-- The ninther of nine inputs. -/
 abbrev ninther (x₀ x₁ x₂ x₃ x₄ x₅ x₆ x₇ x₈ : PTm n) : PTm n :=

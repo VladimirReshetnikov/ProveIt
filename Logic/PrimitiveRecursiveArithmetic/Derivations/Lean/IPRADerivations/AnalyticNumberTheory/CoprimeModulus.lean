@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.Order
 import IPRADerivations.DiophantineNumberTheory.Coprime
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Coprimality to a modulus `q ≥ 1`
@@ -31,9 +32,7 @@ open LeanProofs.IPRA.PTm (num monus pred)
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 /-- `q ≥ 1` in the form `q = (q − 1) + 1`. -/
-theorem pos_of_one_le {q : PTm n} (h : Γ ⊢[PRAAx] le one q) : Γ ⊢[PRAAx] q ≐ succ (pred q) :=
-  AnalyticNumberTheory.Primes.eq_succ_pred (y := monus q one)
-    ((eq_add_of_le h).eqTrans (by apply deriveNat; ipra_simps; ring))
+alias pos_of_one_le := Common.pos_of_one_le
 
 /-- `q ≥ 1` and `q ≠ 1` give `q ≥ 2`. -/
 theorem two_le_of_ne {q : PTm n} (hq : Γ ⊢[PRAAx] le one q) (hne : Γ ⊢[PRAAx] neg (q ≐ one)) :

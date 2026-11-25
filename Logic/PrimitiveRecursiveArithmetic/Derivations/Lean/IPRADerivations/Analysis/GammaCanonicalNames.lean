@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GammaCanonicalFactors
 import IPRADerivations.Analysis.DyadicComplexLogarithm
 import IPRADerivations.Analysis.RationalClosure
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # A joint finite-query name for the canonical Gamma logarithmic tail
@@ -395,10 +396,8 @@ def degreeGap (p k R : PTm n) : PTm n := k + gap p k R
 theorem precision_add (p k : PTm n) : Γ ⊢[PRAAx] precision (p+k) ≐ precision p+k := by unfold precision; ipra_ring
 
 theorem count_add (p k R : PTm n) : Γ ⊢[PRAAx] count (p+k) R ≐ count p R * pw two k := by
-  have power := natEq ((congrAp2 powF (precision_add (Γ := Γ) p k) (.eqRefl two)).eqTrans (pw_add two (precision p) k))
   unfold count
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞(R)*𝔞(R)+1) * power
+  ipra_lc (𝔞(R)*𝔞(R)+1) * natEq ((congrAp2 powF (precision_add (Γ := Γ) p k) (.eqRefl two)).eqTrans (pw_add two (precision p) k))
 
 theorem count_order (p k R : PTm n) : Γ ⊢[PRAAx] le (count p R) (count (p+k) R) :=
   le_congr (by ipra_ring) (count_add p k R).eqSymm (le_mul_mono (le_refl _) (power_positive k))
@@ -406,11 +405,8 @@ theorem count_order (p k R : PTm n) : Γ ⊢[PRAAx] le (count p R) (count (p+k) 
 theorem count_gap (p k R : PTm n) : Γ ⊢[PRAAx] count (p+k) R ≐ count p R + gap p k R := eq_add_of_le (count_order p k R)
 
 theorem degree_gap (p k R : PTm n) : Γ ⊢[PRAAx] degree (p+k) R ≐ degree p R + degreeGap p k R := by
-  have c := natEq (count_gap (Γ := Γ) p k R)
-  have pr := natEq (precision_add (Γ := Γ) p k)
   unfold degree degreeGap
-  apply deriveNat; ipra_simps
-  linear_combination pr + c
+  ipra_lc natEq (precision_add (Γ := Γ) p k) + natEq (count_gap (Γ := Γ) p k R)
 
 theorem degree_budget (p R : PTm n) : Γ ⊢[PRAAx] le (pw two (precision p) * count p R) (pw two (degree p R)) := by
   have countBound : Γ ⊢[PRAAx] le (count p R) (pw two (count p R)) :=
@@ -502,10 +498,8 @@ theorem samples_cauchy (p k z R B N : PTm n) (hz : Γ ⊢[PRAAx] bounded z (R*B)
   have budget : Γ ⊢[PRAAx] le
       (DyadicComplexLogarithm.unit p * (two*sampleDenominator p R B N*sampleDenominator (p+k) R B N))
       (pw two (precision p) * (sampleDenominator p R B N*sampleDenominator (p+k) R B N)) := by
-    have e := natEq (unit_budget (Γ := Γ) p)
     refine le_of_eq_add (d := zero) ?_
-    apply deriveNat; ipra_simps
-    linear_combination -(𝔞(sampleDenominator p R B N)*𝔞(sampleDenominator (p+k) R B N))*e
+    ipra_lc -(𝔞(sampleDenominator p R B N)*𝔞(sampleDenominator (p+k) R B N))*natEq (unit_budget (Γ := Γ) p)
   exact bounded_budget _ _ _ _ _ (power_positive (precision p)) (samples_joint_bound p k z R B N hz hB hN hR) budget
 
 #print axioms samples_joint_bound
@@ -565,11 +559,9 @@ regular-name error budget. No adjacent-rounding premise is assumed. -/
 theorem regular_dyadic_bound (p k z R B N : PTm n) (hz : Γ ⊢[PRAAx] bounded z (R*B))
     (hB : Γ ⊢[PRAAx] le one B) (hN : Γ ⊢[PRAAx] le one N) (hR : Γ ⊢[PRAAx] le (two*R) N) :
     Γ ⊢[PRAAx] bounded (discrepancy p k z R B N) (num 5 * pw two k) := by
-  have positive := natEq (eq_add_of_le (power_positive (Γ := Γ) k))
   refine bounded_mono (regular_bound p k z R B N hz hB hN hR) ?_
   refine le_of_eq_add (d := two * monus (pw two k) one) ?_
-  apply deriveNat; ipra_simps
-  linear_combination 2 * positive
+  ipra_lc 2 * natEq (eq_add_of_le (power_positive (Γ := Γ) k))
 
 theorem observation_precision_congr {p q : PTm n} (z R B N : PTm n) (h : Γ ⊢[PRAAx] p ≐ q) :
     Γ ⊢[PRAAx] observation p z R B N ≐ observation q z R B N :=

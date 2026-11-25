@@ -1,5 +1,6 @@
 import IPRADerivations.Core.Pigeonhole
 import IPRADerivations.Foundations.MasterCertificate
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Bounded color collision with only a finite prefix range contract
@@ -49,10 +50,7 @@ theorem prefixRange_at (f : PR 2) {H x : PTm n} (h : Γ ⊢[PRAAx] prefixRange f
       Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using Prf.allE i h
   exact Prf.impE contract hi
 
-private theorem positive_successor {H : PTm n} (hH : Γ ⊢[PRAAx] le one H) :
-    Γ ⊢[PRAAx] H ≐ succ (pred H) := by
-  refine .orE (zero_or_succ H) ?_ Prf.hyp0
-  exact lt_zero_absurd _ (le_congr (.eqRefl _) Prf.hyp0 hH.wk)
+private alias positive_successor := Common.pos_of_one_le
 
 /-- The actual globally bounded color body; its data are `(H,x)`. -/
 def totalBody (f : PR 2) : PTm 2 := rem (ap2 f (var 0) (sndT (var 1))) (fstT (var 1))

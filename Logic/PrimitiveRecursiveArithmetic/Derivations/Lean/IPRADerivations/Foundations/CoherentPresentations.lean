@@ -1,5 +1,5 @@
 import IPRADerivations.Probability.ProductPower
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Finite uniqueness supplies coherence (`ipra_coherent_methods_2026-11-15`, `thm:coherence`)

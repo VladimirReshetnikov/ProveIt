@@ -1,6 +1,6 @@
 import IPRADerivations.Foundations.AbelianCodes
 import IPRADerivations.AnalyticNumberTheory.Totatives
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Finite generation from a computable reducing step

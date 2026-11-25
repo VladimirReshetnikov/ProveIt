@@ -2,6 +2,7 @@ import IPRADerivations.Foundations.ProductSumDomination
 import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.Combinatorics.BellLeastPeriod
 import IPRADerivations.Combinatorics.CatalanPowers
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # A finite coefficient inequality: log-concavity from a convolution recurrence
@@ -148,18 +149,13 @@ structure Hyp : Prop where
 theorem id2_zero (y : PTm n) :
     Γ ⊢[PRAAx] inst2 X zero y * (succ zero * inst2 A zero y) ≐
       ap2 (sumF (idB X A)) (succ zero) (pairT zero y) := by
-  have s := natEq ((sum_succ' (Γ := Γ) (idB X A) zero (pairT zero y)).eqTrans
-    (congrAdd (sum_zero _ _) ((id_at X A zero zero y).eqTrans
-      (congrMul (.eqRefl _) (congrInst2 A (monus_zero zero) (.eqRefl _))))))
-  apply deriveNat; ipra_simps
-  linear_combination -s
+  ipra_lc -natEq ((sum_succ' (Γ := Γ) (idB X A) zero (pairT zero y)).eqTrans (congrAdd (sum_zero _ _) ((id_at X A zero zero y).eqTrans (congrMul (.eqRefl _) (congrInst2 A (monus_zero zero) (.eqRefl _))))))
 
 variable {X A Nb}
 
 theorem id2_succ (hyp : Hyp X A Nb) {r y : PTm n} (h : Γ ⊢[PRAAx] lt r (bd Nb y)) :
     Γ ⊢[PRAAx] inst2 X zero y * (succ (succ r) * inst2 A (succ r) y) ≐
       ap2 (sumF (idB X A)) (succ (succ r)) (pairT (succ r) y) := by
-  have s₁ := natEq (sum_shift (Γ := Γ) (idB X A) (succ r) (pairT (succ r) y))
   have f₀ := natEq ((id_at (Γ := Γ) X A zero (succ r) y).eqTrans
     (congrMul (.eqRefl _) (congrInst2 A (monus_zero (succ r)) (.eqRefl _))))
   have tail : Γ ⊢[PRAAx] ap2 (sumF (shiftBody (idB X A))) (succ r) (pairT (succ r) y) ≐
@@ -169,10 +165,8 @@ theorem id2_succ (hyp : Hyp X A Nb) {r y : PTm n} (h : Γ ⊢[PRAAx] lt r (bd Nb
     simp only [shift_pair, shift_succ]
     exact (id_at X A _ _ _).eqTrans ((congrMul (.eqRefl _)
       (congrInst2 A (succ_monus_succ _ _) (.eqRefl _))).eqTrans (rec_at X A _ _ _).eqSymm)
-  have t := natEq tail
-  have r₁ := natEq (hyp.recur (Γ := Γ) r y h)
-  apply deriveNat; ipra_simps
-  linear_combination r₁ - s₁ - f₀ - t
+  ipra_lc natEq (hyp.recur (Γ := Γ) r y h) - natEq (sum_shift (Γ := Γ) (idB X A) (succ r) (pairT (succ r) y)) - f₀ -
+    natEq tail
 
 theorem id2_congr {r r' y : PTm n} (e : Γ ⊢[PRAAx] r ≐ r')
     (h : Γ ⊢[PRAAx] inst2 X zero y * (succ r' * inst2 A r' y) ≐
@@ -241,7 +235,7 @@ theorem delta_lt {μ δ N : PTm n} (hδ : Γ ⊢[PRAAx] lt (succ (μ + δ)) N) :
     Γ ⊢[PRAAx] lt δ (monus N (succ μ)) := by
   have e := natEq (eq_add_of_le hδ)
   have e' : Γ ⊢[PRAAx] N ≐ (succ δ + monus N (succ (succ (μ + δ)))) + succ μ := by
-    apply deriveNat; ipra_simps; linear_combination e
+    ipra_lc e
   exact le_of_eq_add (d := monus N (succ (succ (μ + δ))))
     ((congrMonus e' (.eqRefl _)).eqTrans (add_monus _ _))
 
@@ -278,11 +272,10 @@ theorem spread_step_aux {M c D t δ y : PTm n} (hQ : Γ ⊢[PRAAx] allB (oB A Nb
     (h1 : Γ ⊢[PRAAx] le (c + succ t) M) (eD : Γ ⊢[PRAAx] D ≐ (c + succ t + succ t) + δ) :
     Γ ⊢[PRAAx] le (inst2 A c y * inst2 A D y)
       (inst2 A (c + succ t) y * inst2 A (monus D (succ t)) y) := by
-  have e := natEq eD
   have d1 : Γ ⊢[PRAAx] D ≐ succ (succ ((c + t) + δ)) + t := by
-    apply deriveNat; ipra_simps; linear_combination e
+    ipra_lc natEq eD
   have d2 : Γ ⊢[PRAAx] D ≐ succ ((c + t) + δ) + succ t := by
-    apply deriveNat; ipra_simps; linear_combination e
+    ipra_lc natEq eD
   have i1 : Γ ⊢[PRAAx] monus D t ≐ succ (succ ((c + t) + δ)) :=
     (congrMonus d1 (.eqRefl _)).eqTrans (add_monus _ _)
   have i2 : Γ ⊢[PRAAx] monus D (succ t) ≐ succ ((c + t) + δ) :=
@@ -345,11 +338,11 @@ theorem spread {M c D y : PTm n} (hQ : Γ ⊢[PRAAx] allB (oB A Nb) M y ≐ one)
         have a1 : (le (Syn.shift c + succ (var 0) + succ (var 0)) (Syn.shift D) ::
             le (Syn.shift c + succ (var 0)) (Syn.shift M) :: spF A M c D y :: Γ.map Fm.shift)
             ⊢[PRAAx] le (Syn.shift c + var 0) (Syn.shift M) :=
-          le_trans (le_of_eq_add (d := one) (by apply deriveNat; ipra_simps; ring)) g1
+          le_trans (le_of_eq_add (d := one) (by ipra_ring)) g1
         have a2 : (le (Syn.shift c + succ (var 0) + succ (var 0)) (Syn.shift D) ::
             le (Syn.shift c + succ (var 0)) (Syn.shift M) :: spF A M c D y :: Γ.map Fm.shift)
             ⊢[PRAAx] le (Syn.shift c + var 0 + var 0) (Syn.shift D) :=
-          le_trans (le_of_eq_add (d := two) (by apply deriveNat; ipra_simps; ring)) g2
+          le_trans (le_of_eq_add (d := two) (by ipra_ring)) g2
         have ih := Prf.impE (Prf.impE gF a1) a2
         exact spread_step_aux hQ'.wk.wk.wk hD'.wk.wk.wk ih g1 (eq_add_of_le g2)
       simpa [subst_repl_shift, Syn.repl_zero, subst_inst2] using st
@@ -370,15 +363,15 @@ theorem core_le {j k M D y : PTm n} (hQ : Γ ⊢[PRAAx] allB (oB A Nb) M y ≐ o
   have iMj : Γ ⊢[PRAAx] monus M j ≐ monus M k + succ (monus k (succ j)) := by
     refine (congrMonus (b := j + (monus M k + succ (monus k (succ j)))) ?_ (.eqRefl _)).eqTrans
       (add_monus' _ _)
-    apply deriveNat; ipra_simps; linear_combination eM + ek
+    ipra_lc eM + ek
   have imk : Γ ⊢[PRAAx] monus (succ (M + D)) k ≐ monus M k + succ D := by
     refine (congrMonus (b := k + (monus M k + succ D)) ?_ (.eqRefl _)).eqTrans (add_monus' _ _)
-    apply deriveNat; ipra_simps; linear_combination eM
+    ipra_lc eM
   have imj : Γ ⊢[PRAAx] monus (succ (M + D)) j ≐
       (monus M k + succ (monus k (succ j))) + succ D := by
     refine (congrMonus (b := j + ((monus M k + succ (monus k (succ j))) + succ D)) ?_
       (.eqRefl _)).eqTrans (add_monus' _ _)
-    apply deriveNat; ipra_simps; linear_combination eM + ek
+    ipra_lc eM + ek
   have hD : Γ ⊢[PRAAx] le (monus (succ (M + D)) j) (bd Nb y) := le_trans (monus_le_left _ _) hm
   have hcM : Γ ⊢[PRAAx] le (monus M k + succ (monus k (succ j))) M :=
     le_of_eq_add (d := j) (by apply deriveNat; ipra_simps; linear_combination eM + ek)
@@ -391,14 +384,14 @@ theorem core_le {j k M D y : PTm n} (hQ : Γ ⊢[PRAAx] allB (oB A Nb) M y ≐ o
           (monus (succ (M + D)) j) := by
       refine le_congr (.eqRefl _) imj.wk.eqSymm (le_of_eq_add
         (d := monus (succ D) (succ (monus k (succ j)))) ?_)
-      apply deriveNat; ipra_simps; linear_combination w
+      ipra_lc w
     have sp := spread hQ.wk hD.wk (succ (monus k (succ j))) hcM.wk h2
     have i4 : (le (succ (monus k (succ j))) (succ D) :: Γ) ⊢[PRAAx]
         monus (monus (succ (M + D)) j) (succ (monus k (succ j))) ≐ monus (succ (M + D)) k := by
       refine (congrMonus (b := (monus M k + succ D) + succ (monus k (succ j))) ?_
         (.eqRefl _)).eqTrans ((add_monus _ _).eqTrans imk.wk.eqSymm)
       refine imj.wk.eqTrans ?_
-      apply deriveNat; ipra_simps; ring
+      ipra_ring
     exact le_congr (.eqRefl _) (congrMul (congrInst2 A iMj.wk.eqSymm (.eqRefl _))
       (congrInst2 A i4 (.eqRefl _))) sp
   · -- `E ≤ A`: move `E − C = D + 1` units
@@ -411,7 +404,7 @@ theorem core_le {j k M D y : PTm n} (hQ : Γ ⊢[PRAAx] allB (oB A Nb) M y ≐ o
         le (monus M k + succ D + succ D) (monus (succ (M + D)) j) := by
       refine le_congr (.eqRefl _) imj.wk.eqSymm (le_of_eq_add
         (d := monus (succ (monus k (succ j))) (succ D)) ?_)
-      apply deriveNat; ipra_simps; linear_combination w
+      ipra_lc w
     have sp := spread hQ.wk hD.wk (succ D) h1 h2
     have i4 : (le (succ D) (succ (monus k (succ j))) :: Γ) ⊢[PRAAx]
         monus (monus (succ (M + D)) j) (succ D) ≐ monus M j :=
@@ -523,12 +516,9 @@ theorem pair_alg {xj xj1 xk xk1 aj ak bj bk : PTm n} (hu : Γ ⊢[PRAAx] le (xj 
     (hw : Γ ⊢[PRAAx] le (ak * bj) (aj * bk)) :
     Γ ⊢[PRAAx] le (xj * aj * (xk1 * bk) + xk * ak * (xj1 * bj))
       (xj1 * aj * (xk * bk) + xk1 * ak * (xj * bj)) := by
-  have eu := natEq (eq_add_of_le hu)
-  have ew := natEq (eq_add_of_le hw)
   refine le_of_eq_add (d := monus (xj1 * xk) (xj * xk1) * monus (aj * bk) (ak * bj)) ?_
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞 aj * 𝔞 bk - 𝔞 ak * 𝔞 bj) * eu +
-    𝔞 (monus (xj1 * xk) (xj * xk1)) * ew
+  ipra_lc (𝔞 aj * 𝔞 bk - 𝔞 ak * 𝔞 bj) * natEq (eq_add_of_le hu) +
+    𝔞 (monus (xj1 * xk) (xj * xk1)) * natEq (eq_add_of_le hw)
 
 variable {X A}
 
@@ -557,16 +547,11 @@ theorem diag_le (j M m y : PTm n) :
     Γ ⊢[PRAAx] le
       (inst2 (rB X A) j (pairT M (pairT m y)) * inst2 (sB X A) j (pairT M (pairT m y)))
       (inst2 (pB X A) j (pairT M (pairT m y)) * inst2 (qB X A) j (pairT M (pairT m y))) := by
-  have e₁ := natEq (r_at (Γ := Γ) X A j M m y)
-  have e₂ := natEq (s_at (Γ := Γ) X A j M m y)
-  have e₃ := natEq (p_at (Γ := Γ) X A j M m y)
-  have e₄ := natEq (q_at (Γ := Γ) X A j M m y)
   refine le_of_eq_add (d := zero) ?_
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 (inst2 (qB X A) j (pairT M (pairT m y))) * e₃ +
-    (𝔞 (inst2 X (succ j) y) * (𝔞 (gle j M) * 𝔞 (inst2 A (monus M j) y))) * e₄ -
-    𝔞 (inst2 (sB X A) j (pairT M (pairT m y))) * e₁ -
-    (𝔞 (inst2 X j y) * (𝔞 (gle j M) * 𝔞 (inst2 A (monus M j) y))) * e₂
+  ipra_lc 𝔞 (inst2 (qB X A) j (pairT M (pairT m y))) * natEq (p_at (Γ := Γ) X A j M m y) +
+    (𝔞 (inst2 X (succ j) y) * (𝔞 (gle j M) * 𝔞 (inst2 A (monus M j) y))) * natEq (q_at (Γ := Γ) X A j M m y) -
+    𝔞 (inst2 (sB X A) j (pairT M (pairT m y))) * natEq (r_at (Γ := Γ) X A j M m y) -
+    (𝔞 (inst2 X j y) * (𝔞 (gle j M) * 𝔞 (inst2 A (monus M j) y))) * natEq (s_at (Γ := Γ) X A j M m y)
 
 /-! ## The four sums -/
 
@@ -758,7 +743,7 @@ theorem lc_main (hyp : Hyp X A Nb) {M D y : PTm n}
     Γ ⊢[PRAAx] le (inst2 A M y * inst2 A (succ (succ (M + D))) y)
       (inst2 A (succ M) y * inst2 A (succ (M + D)) y) := by
   have hMm : Γ ⊢[PRAAx] le M (succ (M + D)) :=
-    le_of_eq_add (d := succ D) (by apply deriveNat; ipra_simps; ring)
+    le_of_eq_add (d := succ D) (by ipra_ring)
   have hMN : Γ ⊢[PRAAx] lt M (bd Nb y) := lt_of_le_of_lt hMm hm
   have d := dom_all hyp hQ hm
   have eP := natEq (sum_P hyp hMm hMN)

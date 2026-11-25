@@ -2,6 +2,7 @@ import IPRADerivations.Analysis.GaussianScalarSincTaylor
 import IPRADerivations.Analysis.GaussianFiniteExponentialWeightedNorm
 import IPRADerivations.Analysis.GaussianGammaRecurrenceWeightName
 import IPRADerivations.Analysis.GaussianRationalPowerDifference
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Finite sinc bounds on the unit disk
@@ -70,8 +71,7 @@ private theorem reserve_step (k : PTm n) :
   ipra_simps
   linear_combination 𝔞(multiplier k)*a-b+w+m
 
-private theorem square_power (x : PTm n) : Γ ⊢[PRAAx] pw x two ≐ x*x :=
-  (pw_succ x one).eqTrans (congrMul (pw_one x) (.eqRefl _))
+private alias square_power := Common.pw_two
 
 private theorem even_power_bound (z A B k : PTm n)
     (hB : Γ ⊢[PRAAx] le one B) (hAB : Γ ⊢[PRAAx] le A B) (hz : Γ ⊢[PRAAx] bounded z A B) :

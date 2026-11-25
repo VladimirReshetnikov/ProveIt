@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.PsiTheta
 import IPRADerivations.AnalyticNumberTheory.LogRefinement
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Changing the mesh and the denominator of the harmonic logarithm (`pnt_ipra_constructive_2026-11-14`)
@@ -47,13 +48,9 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 /-- `M₀! ⌊L!/(m+1)⌋ = L! ⌊M₀!/(m+1)⌋` for `m + 1 ≤ M₀ ≤ L`. -/
 theorem quo_scale {m M0 L : PTm n} (h1 : Γ ⊢[PRAAx] le (succ m) M0) (h2 : Γ ⊢[PRAAx] le M0 L) :
     Γ ⊢[PRAAx] fact M0 * quo (fact L) (succ m) ≐ fact L * quo (fact M0) (succ m) := by
-  have zA := natEq (dvd_fact (le_trans h1 h2))
-  have zB := natEq (dvd_fact h1)
-  have eA := natEq (Prf.andE₁ (div_mod_at (Γ := Γ) (x := fact L) (y := succ m) (c := m) (.eqRefl _)))
-  have eB := natEq (Prf.andE₁ (div_mod_at (Γ := Γ) (x := fact M0) (y := succ m) (c := m) (.eqRefl _)))
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 (quo (fact L) (succ m)) * eB - 𝔞 (quo (fact M0) (succ m)) * eA +
-    𝔞 (quo (fact L) (succ m)) * zB - 𝔞 (quo (fact M0) (succ m)) * zA
+  ipra_lc 𝔞 (quo (fact L) (succ m)) * natEq (Prf.andE₁ (div_mod_at (Γ := Γ) (x := fact M0) (y := succ m) (c := m) (.eqRefl _))) -
+    𝔞 (quo (fact M0) (succ m)) * natEq (Prf.andE₁ (div_mod_at (Γ := Γ) (x := fact L) (y := succ m) (c := m) (.eqRefl _))) +
+    𝔞 (quo (fact L) (succ m)) * natEq (dvd_fact h1) - 𝔞 (quo (fact M0) (succ m)) * natEq (dvd_fact (le_trans h1 h2))
 
 /-- `M₀! S(m, L!) = L! S(m, M₀!)` for `m ≤ M₀ ≤ L`. -/
 theorem S_denom {m M0 L : PTm n} (hm : Γ ⊢[PRAAx] le m M0) (h2 : Γ ⊢[PRAAx] le M0 L) :
@@ -127,11 +124,11 @@ theorem mesh_change {N : PTm n} (hN : Γ ⊢[PRAAx] le one N) (hK : Γ ⊢[PRAAx
       le (S (K * N) (fact L) + S N (fact L)) (S (N * N) (fact L) + S K (fact L) + quo (fact L) N) := by
   have p1 := mesh_pair hN hN hK hL
   have hL2 : Γ ⊢[PRAAx] le (N * (K * N)) L :=
-    le_congr (by apply deriveNat; ipra_simps; ring) (.eqRefl _) hL
+    le_congr (by ipra_ring) (.eqRefl _) hL
   have p2 := mesh_pair hK hN hN hL2
-  have g := natEq (congrAp2 (sumF hB) (show Γ ⊢[PRAAx] K * (N * N) ≐ N * (K * N) by apply deriveNat; ipra_simps; ring)
+  have g := natEq (congrAp2 (sumF hB) (show Γ ⊢[PRAAx] K * (N * N) ≐ N * (K * N) by ipra_ring)
     (.eqRefl (fact L)))
-  have k := natEq (congrAp2 (sumF hB) (show Γ ⊢[PRAAx] N * K ≐ K * N by apply deriveNat; ipra_simps; ring)
+  have k := natEq (congrAp2 (sumF hB) (show Γ ⊢[PRAAx] N * K ≐ K * N by ipra_ring)
     (.eqRefl (fact L)))
   refine .andI ?_ ?_
   · ipra_le sl (Prf.andE₁ p1) + sl (Prf.andE₂ p2) with g + k

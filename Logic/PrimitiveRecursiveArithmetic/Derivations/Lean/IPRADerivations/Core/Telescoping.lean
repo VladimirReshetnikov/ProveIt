@@ -1,6 +1,6 @@
 import IPRADerivations.Core.SumLemmas
 import IPRADerivations.Core.Tactic
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Telescoping sums

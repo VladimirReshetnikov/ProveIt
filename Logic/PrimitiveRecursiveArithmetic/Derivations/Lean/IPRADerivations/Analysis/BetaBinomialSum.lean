@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.ChuVandermonde
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The binomial sum for the Beta function at integers

@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.FiniteHausdorff
 import IPRADerivations.Foundations.GapDecision
 import IPRADerivations.Probability.TowerCommonDen
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Coded rational vectors: the actual sup metric and common scale
@@ -335,13 +336,9 @@ def cofactor (P d j i : PTm n) : PTm n :=
 theorem cofactor_clears (P d j i : PTm n)
     (hj : Γ ⊢[PRAAx] lt j (length P)) (hi : Γ ⊢[PRAAx] lt i d) :
     Γ ⊢[PRAAx] rationalDenominator (entry P j) i * cofactor P d j i ≐ commonDenominator P d := by
-  have inner := natEq (inner_quotient_clears (entry P j) d i hi)
-  have outer := natEq (outer_quotient_clears P d j hj)
   unfold cofactor
-  apply deriveNat
-  ipra_simps
-  linear_combination -outer +
-    -(Groth.ι (Q.mk Γ (quo (commonDenominator P d) (rowDenominator (entry P j) d)))) * inner
+  ipra_lc -natEq (outer_quotient_clears P d j hj) +
+    -(Groth.ι (Q.mk Γ (quo (commonDenominator P d) (rowDenominator (entry P j) d)))) * natEq (inner_quotient_clears (entry P j) d i hi)
 
 #print axioms rationalCode_denominator
 #print axioms commonDenominator_one_le
@@ -458,12 +455,8 @@ theorem normalized_difference (P d j k i : PTm n)
       (ZT.ofNat (commonDenominator P d) *
         (rationalNumerator (entry P j) i * ZT.ofNat (rationalDenominator (entry P k) i) -
           rationalNumerator (entry P k) i * ZT.ofNat (rationalDenominator (entry P j) i))) := by
-  have a := ZT.toZ_eq (normalized_coordinate P d j i hj hi)
-  have b := ZT.toZ_eq (normalized_coordinate P d k i hk hi)
-  apply ZT.derive
-  simp only [coordinateDifference, ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_ofNat, Q.mk_mul, map_mul] at a b ⊢
-  linear_combination (Groth.ι (Q.mk Γ (rationalDenominator (entry P k) i))) * a -
-    (Groth.ι (Q.mk Γ (rationalDenominator (entry P j) i))) * b
+  ipra_lc [coordinateDifference] (Groth.ι (Q.mk Γ (rationalDenominator (entry P k) i))) * ZT.toZ_eq (normalized_coordinate P d j i hj hi) -
+    (Groth.ι (Q.mk Γ (rationalDenominator (entry P j) i))) * ZT.toZ_eq (normalized_coordinate P d k i hk hi)
 
 def metricData (P d : PTm n) : PTm n := pairT d (commonDenominator P d)
 

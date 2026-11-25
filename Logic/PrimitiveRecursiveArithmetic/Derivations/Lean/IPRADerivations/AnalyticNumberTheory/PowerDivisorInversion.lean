@@ -188,7 +188,7 @@ theorem col_pt (m N h y : PTm n) :
     congrMul g1 (congrMul (congrMul (.eqRefl _) (congrEqb' (congrAp2 remF ((congrFst g2).eqTrans f1) (.eqRefl _))
       (.eqRefl _))) (congrInst2 w (.eqRefl _) ((congrSnd g2).eqTrans f2)))
   refine lhs.eqTrans (Prf.eqTrans ?_ rhs.eqSymm)
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- `R_w(N) = Σ_{m<N+1} sg(m) G(m) · Σ_{d<N+1} sg(d)[d ∣ m] w(d)`. -/
 theorem rs_columns {h : PTm n} (hh : Γ ⊢[PRAAx] le one h) (N y : PTm n) :

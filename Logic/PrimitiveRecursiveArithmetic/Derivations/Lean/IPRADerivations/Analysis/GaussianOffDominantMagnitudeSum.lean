@@ -4,7 +4,7 @@ import IPRADerivations.Foundations.FiniteFiberGrouping
 import IPRADerivations.Analysis.GaussianTranslatedDominantPlateau
 import IPRADerivations.Analysis.GaussianTranslatedNonconstant
 import IPRADerivations.Core.CongruenceTactic
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Finite lower cuts for the sum of individual off-dominant magnitudes

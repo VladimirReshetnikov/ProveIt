@@ -1,6 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.Coprime
 import IPRADerivations.AnalyticNumberTheory.CrtBijection
 import IPRADerivations.Foundations.AuxiliaryEnvelope
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Weights of reduced monomials and the cover count (`ipra_coherent_methods_2026-11-15`, `thm:weighted-norm-degree`, `cor:weighted-cover`)
@@ -78,11 +79,7 @@ theorem weight_core {m d i i' j j' : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred
     (rem_small hm hlt).eqSymm.eqTrans (gauss hm hg (weight_dvd hm hle h))
   refine .andI (ej.eqTrans ((congrAdd (.eqRefl j) he).eqTrans (add_zero j))).eqSymm
     (mul_cancel hm ?_)
-  have a := natEq h
-  have e₁ := natEq ej
-  have e₂ := natEq he
-  apply deriveNat; ipra_simps
-  linear_combination a + 𝔞 d * e₁ + 𝔞 d * e₂
+  ipra_lc natEq h + 𝔞 d * natEq ej + 𝔞 d * natEq he
 
 /-- `thm:weighted-norm-degree`, uniqueness of weights: reduced monomials `X^i Y^j`, `j < m`,
 of equal weight `m i + d j` are equal, when `gcd(m, d) = 1`. -/

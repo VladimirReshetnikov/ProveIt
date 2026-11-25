@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.GaussianEulerUnitKernelCompactName
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The original rational unit kernel on a uniform rational lattice
@@ -41,17 +42,12 @@ def lattice (p K z B a M : PTm n) : PTm n := qmul (fraction one M) (sum body K (
 
 theorem row_at (i p z B a M : PTm n) : Γ ⊢[PRAAx] inst2 body i (data p z B a M) ≐ row i p z B a M := by
   let d := data p z B a M
-  have fields := Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (row (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6)
-    (σ := ![i,field0 d,field2 d,field3 d,field1 d,field4 d]) (σ' := ![i,p,z,B,a,M])
-    (fun j => by
-      fin_cases j
-      exact .eqRefl _
-      exact GaussianCompactRiemannName.field0_at _ _ _ _ _ _
-      exact GaussianCompactRiemannName.field2_at _ _ _ _ _ _
-      exact GaussianCompactRiemannName.field3_at _ _ _ _ _ _
-      exact GaussianCompactRiemannName.field1_at _ _ _ _ _ _
-      exact GaussianCompactRiemannName.field4_at _ _ _ _ _ _)
-  simpa [body,inst2,d] using fields
+  ipra_congr (row (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) with
+    [.eqRefl i, (show _ ⊢[PRAAx] field0 d ≐ p from GaussianCompactRiemannName.field0_at _ _ _ _ _ _),
+      (show _ ⊢[PRAAx] field2 d ≐ z from GaussianCompactRiemannName.field2_at _ _ _ _ _ _),
+      (show _ ⊢[PRAAx] field3 d ≐ B from GaussianCompactRiemannName.field3_at _ _ _ _ _ _),
+      (show _ ⊢[PRAAx] field1 d ≐ a from GaussianCompactRiemannName.field1_at _ _ _ _ _ _),
+      (show _ ⊢[PRAAx] field4 d ≐ M from GaussianCompactRiemannName.field4_at _ _ _ _ _ _)] using [body, inst2, d]
 
 def sumF : PR 6 := PTm.toPR (lattice (var 0) (var 1) (var 2) (var 3) (var 4) (var 5))
 def run (p K z B a M : PTm n) : PTm n := PTm.app sumF ![p,K,z,B,a,M]

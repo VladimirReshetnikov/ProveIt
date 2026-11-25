@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.AbsDiff
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Finite summation by parts with signed increments (`pnt_ipra_constructive_2026-11-14`, `sb:finite-abel`)
@@ -77,16 +78,12 @@ theorem parts_step {N y : PTm n} (ih : Γ ⊢[PRAAx]
         ap2 (sumF a) (succ N) y * inst2 g (succ N) y + ap2 (sumF (dnB a g)) (succ N) y) :
     Γ ⊢[PRAAx] ap2 (sumF (agB a g)) (succ (succ N)) y + ap2 (sumF (upB a g)) (succ (succ N)) y ≐
       ap2 (sumF a) (succ (succ N)) y * inst2 g (succ (succ N)) y + ap2 (sumF (dnB a g)) (succ (succ N)) y := by
-  have e0 := natEq ih
   have s1 := sum_succ' (Γ := Γ) (agB a g) (succ N) y; rw [inst2_agB] at s1
   have s2 := sum_succ' (Γ := Γ) (upB a g) (succ N) y; rw [inst2_upB] at s2
   have s3 := sum_succ' (Γ := Γ) (dnB a g) (succ N) y; rw [inst2_dnB] at s3
-  have s4 := natEq (sum_succ' (Γ := Γ) a (succ N) y)
-  have m := natEq (max_eq (Γ := Γ) (inst2 g (succ N) y) (inst2 g (succ (succ N)) y))
-  have f1 := natEq s1; have f2 := natEq s2; have f3 := natEq s3
-  apply deriveNat; ipra_simps
-  linear_combination f1 + f2 - f3 + e0 - 𝔞 (inst2 g (succ N) y) * s4 +
-    𝔞 (ap2 (sumF a) (succ (succ N)) y) * m
+  ipra_lc natEq s1 + natEq s2 - natEq s3 + natEq ih -
+    𝔞 (inst2 g (succ N) y) * natEq (sum_succ' (Γ := Γ) a (succ N) y) +
+    𝔞 (ap2 (sumF a) (succ (succ N)) y) * natEq (max_eq (Γ := Γ) (inst2 g (succ N) y) (inst2 g (succ (succ N)) y))
 
 theorem parts_zero (y : PTm n) :
     Γ ⊢[PRAAx] ap2 (sumF (agB a g)) (succ zero) y + ap2 (sumF (upB a g)) (succ zero) y ≐
@@ -95,13 +92,10 @@ theorem parts_zero (y : PTm n) :
   have s2 := sum_succ' (Γ := Γ) (upB a g) zero y; rw [inst2_upB] at s2
   have s3 := sum_succ' (Γ := Γ) (dnB a g) zero y; rw [inst2_dnB] at s3
   have s4 := sum_succ' (Γ := Γ) a zero y
-  have z1 := natEq (sum_zero (Γ := Γ) (agB a g) y); have z2 := natEq (sum_zero (Γ := Γ) (upB a g) y)
-  have z3 := natEq (sum_zero (Γ := Γ) (dnB a g) y); have z4 := natEq (sum_zero (Γ := Γ) a y)
-  have m := natEq (max_eq (Γ := Γ) (inst2 g zero y) (inst2 g (succ zero) y))
-  have f1 := natEq s1; have f2 := natEq s2; have f3 := natEq s3; have f4 := natEq s4
-  apply deriveNat; ipra_simps
-  linear_combination f1 + f2 - f3 + z1 + z2 - z3 - 𝔞 (inst2 g zero y) * (f4 + z4) +
-    𝔞 (ap2 (sumF a) (succ zero) y) * m
+  ipra_lc natEq s1 + natEq s2 - natEq s3 + natEq (sum_zero (Γ := Γ) (agB a g) y) +
+    natEq (sum_zero (Γ := Γ) (upB a g) y) - natEq (sum_zero (Γ := Γ) (dnB a g) y) -
+    𝔞 (inst2 g zero y) * (natEq s4 + natEq (sum_zero (Γ := Γ) a y)) +
+    𝔞 (ap2 (sumF a) (succ zero) y) * natEq (max_eq (Γ := Γ) (inst2 g zero y) (inst2 g (succ zero) y))
 
 private theorem parts₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] partsF a g := by
   refine ind _ trivial ?_ ?_

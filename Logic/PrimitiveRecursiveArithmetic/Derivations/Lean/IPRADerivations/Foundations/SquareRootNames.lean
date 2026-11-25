@@ -1,7 +1,7 @@
 import IPRADerivations.Core.Search
 import IPRADerivations.Core.Powers
 import IPRADerivations.Foundations.Adjunction
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Square roots without zero testing (`ipra_evidence_framework`, worked example)

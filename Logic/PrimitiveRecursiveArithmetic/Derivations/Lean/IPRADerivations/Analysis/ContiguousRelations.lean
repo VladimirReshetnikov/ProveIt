@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Pochhammer
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The contiguous relations of the Gauss series, coefficientwise

@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.GaussianPolynomialDeterminantTerms
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # A runtime polynomial determinant by actual numeric permutation words
@@ -84,19 +85,16 @@ theorem summand_congr {M M' m m' L L' t t' : PTm n}
     (hM : Γ ⊢[PRAAx] M ≐ M') (hm : Γ ⊢[PRAAx] m ≐ m')
     (hL : Γ ⊢[PRAAx] L ≐ L') (ht : Γ ⊢[PRAAx] t ≐ t') : Γ ⊢[PRAAx]
     summand M m L t ≐ summand M' m' L' t' := by
-  simpa using Prf.eqCongr (Γ := Γ) (summand (var 0) (var 1) (var 2) (var 3) : PTm 4)
-    (σ := ![M,m,L,t]) (σ' := ![M',m',L',t']) (fun i => by fin_cases i; exact hM; exact hm; exact hL; exact ht)
+  ipra_congr (summand (var 0) (var 1) (var 2) (var 3) : PTm 4) with [hM, hm, hL, ht]
 theorem added_congr {P P' Q Q' b b' : PTm n}
     (hP : Γ ⊢[PRAAx] P ≐ P') (hQ : Γ ⊢[PRAAx] Q ≐ Q') (hb : Γ ⊢[PRAAx] b ≐ b') : Γ ⊢[PRAAx]
     added P Q b ≐ added P' Q' b' := by
-  simpa using Prf.eqCongr (Γ := Γ) (added (var 0) (var 1) (var 2) : PTm 3)
-    (σ := ![P,Q,b]) (σ' := ![P',Q',b']) (fun i => by fin_cases i; exact hP; exact hQ; exact hb)
+  ipra_congr (added (var 0) (var 1) (var 2) : PTm 3) with [hP, hQ, hb]
 theorem partial_congr {M M' m m' L L' t t' : PTm n}
     (hM : Γ ⊢[PRAAx] M ≐ M') (hm : Γ ⊢[PRAAx] m ≐ m')
     (hL : Γ ⊢[PRAAx] L ≐ L') (ht : Γ ⊢[PRAAx] t ≐ t') : Γ ⊢[PRAAx]
     partialDeterminant M m L t ≐ partialDeterminant M' m' L' t' := by
-  simpa using Prf.eqCongr (Γ := Γ) (partialDeterminant (var 0) (var 1) (var 2) (var 3) : PTm 4)
-    (σ := ![M,m,L,t]) (σ' := ![M',m',L',t']) (fun i => by fin_cases i; exact hM; exact hm; exact hL; exact ht)
+  ipra_congr (partialDeterminant (var 0) (var 1) (var 2) (var 3) : PTm 4) with [hM, hm, hL, ht]
 theorem prefix_zero (M m L : PTm n) : Γ ⊢[PRAAx] partialDeterminant M m L zero ≐ zeros (width m L) := by
   have e := rec2_zero (Γ := Γ) initial stepBody (data M m L)
   simp only [initial,GaussianRationalPolynomialBuffers.subst_zeros,subst_width,subst_fstT,subst_sndT,

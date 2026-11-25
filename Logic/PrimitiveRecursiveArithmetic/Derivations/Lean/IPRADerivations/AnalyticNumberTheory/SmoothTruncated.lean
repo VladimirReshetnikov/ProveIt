@@ -46,7 +46,7 @@ theorem trunc_step {p a L F : PTm n} (hp : Γ ⊢[PRAAx] prime p) (N : PTm n) :
     le_congr (.eqRefl _) ((sR hp N).eqTrans (reindex_eq gB N (prime_eq_succ_pred hp))) (leB hp N)
   refine le_trans (le_mul_mono (le_refl p) h1)
     (le_congr ?_ (.eqRefl _) (add_le_add (le_refl (p * Sm a L F N)) h2))
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- At `N = t + 1`: `p · Sm(ap; t + 1) ≤ p · Sm(a; t + 1) + Sm(ap; ⌊t/p⌋ + 1)`. -/
 theorem trunc_step_succ {p a L F : PTm n} (hp : Γ ⊢[PRAAx] prime p) (t : PTm n) :

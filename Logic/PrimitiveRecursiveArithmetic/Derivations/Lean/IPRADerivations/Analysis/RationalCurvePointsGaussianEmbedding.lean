@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.RationalBivariateGaussianEmbedding
 import IPRADerivations.Analysis.GaussianRationalCurveFibers
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Transport of finite rational curve points
@@ -139,10 +140,7 @@ theorem function_at (G m L i : PTm n) (h : Γ ⊢[PRAAx] functionZeros G m L) (h
 
 private theorem monic_values_congr (F m : PTm n) {x y : PTm n} (h : Γ ⊢[PRAAx] x ≐ y) :
     Γ ⊢[PRAAx] monicValues F m x ≐ monicValues F m y := by
-  simpa only [GaussianPolynomialMonicCompanion.subst_monicValues,Syn.subst_var,Matrix.cons_val_zero,
-    Matrix.cons_val_one,Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (monicValues (var 0) (var 1) (var 2) : PTm 3) (σ := ![F,m,x]) (σ' := ![F,m,y])
-      (fun i => by fin_cases i; exact .eqRefl F; exact .eqRefl m; exact h)
+  ipra_congr (monicValues (var 0) (var 1) (var 2) : PTm 3) with [.eqRefl F, .eqRefl m, h]
 
 theorem mapped_curve_at (F m c L i : PTm n) (hF : Γ ⊢[PRAAx] rowShape F m c)
     (h : Γ ⊢[PRAAx] curveZeros F m L) (hi : Γ ⊢[PRAAx] lt i (length (points L))) :

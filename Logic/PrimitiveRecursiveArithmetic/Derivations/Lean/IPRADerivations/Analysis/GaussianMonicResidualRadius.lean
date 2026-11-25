@@ -2,6 +2,7 @@ import IPRADerivations.Analysis.GaussianRationalReciprocal
 import IPRADerivations.Analysis.GaussianRadiusBudget
 import IPRADerivations.Analysis.GaussianRationalSyntheticBounds
 import IPRADerivations.Analysis.GaussianReciprocalHorner
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Radius of an actual monic polynomial with small residual
@@ -53,11 +54,7 @@ theorem bounded_of_l1 (q A : PTm n)
   apply (GaussianRationalMetric.bounded_iff _ _ _ _ _ (raw_den_positive q) (le_refl _) (raw_represents q)).iffMpr
   exact le_congr (by ipra_ring) (by ipra_ring) euclidean
 
-theorem monus_le_left (N k : PTm n) : Γ ⊢[PRAAx] le (monus N k) N := by
-  refine .orE (lt_or_le N k) ?_ ?_
-  · exact le_congr (le_of_lt Prf.hyp0 : (lt N k :: Γ) ⊢[PRAAx] monus N k ≐ zero).eqSymm
-      (.eqRefl _) (zero_le _)
-  · exact le_of_eq_add (d := k) ((eq_add_of_le Prf.hyp0).eqTrans (add_comm _ _))
+alias monus_le_left := Common.monus_le_self
 
 theorem coefficient_euclidean (C N A i : PTm n)
     (hLen : Γ ⊢[PRAAx] length C ≐ succ N)

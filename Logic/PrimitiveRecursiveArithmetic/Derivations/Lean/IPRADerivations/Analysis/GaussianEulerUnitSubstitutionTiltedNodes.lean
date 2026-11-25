@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianEulerUnitSubstitutionImageGrid
 import IPRADerivations.Analysis.RationalCubeInfimumIntervals
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Exactly ordered rational approximations to the original unit chart
@@ -94,11 +95,7 @@ theorem tilt_error (a i A B : PTm n) (hb : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAA
 
 theorem reverse_successor (N i : PTm n) (hi : Γ ⊢[PRAAx] lt i N) : Γ ⊢[PRAAx]
     monus N i ≐ succ (monus N (succ i)) := by
-  have first := natEq (eq_add_of_le hi)
-  have second := natEq (eq_add_of_le (le_trans (le_succ_self i) hi))
-  apply deriveNat
-  ipra_simps
-  linear_combination first-second
+  ipra_lc natEq (eq_add_of_le hi)-natEq (eq_add_of_le (le_trans (le_succ_self i) hi))
 
 theorem original_reverse_upper (i p N a C E : PTm n) (hE : Γ ⊢[PRAAx] le one E)
     (hN : Γ ⊢[PRAAx] le one N) (hi : Γ ⊢[PRAAx] lt i N) : Γ ⊢[PRAAx]

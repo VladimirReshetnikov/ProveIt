@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianEulerUpperTailScalar
 import IPRADerivations.Analysis.GaussianEulerHalfDecayTailBound
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Original compact Euler quadrature at the upper cutoff
@@ -56,11 +57,8 @@ theorem scalar_body_at (i p N a C E R : PTm n) : Γ ⊢[PRAAx]
     (congrMul (field3_at p N a C E R) (Prf.eqRefl (Γ := Γ) i))
   have denom : Γ ⊢[PRAAx] field4 x*field1 x ≐ E*N :=
     congrMul (field4_at p N a C E R) (field1_at p N a C E R)
-  simpa [scalarBody,inst2,x] using
-    Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (scalarMajorant (var 0) (var 1) (var 2) (var 3) : PTm 4)
-      (σ := ![field0 x,field5 x,field2 x*field1 x+field3 x*i,field4 x*field1 x])
-      (σ' := ![p,R,a*N+C*i,E*N])
-      (fun k => by fin_cases k; exact field0_at p N a C E R; exact field5_at p N a C E R; exact hint; exact denom)
+  ipra_congr (scalarMajorant (var 0) (var 1) (var 2) (var 3) : PTm 4) with
+    [field0_at p N a C E R, field5_at p N a C E R, hint, denom] using [scalarBody, inst2, x]
 
 theorem scaled_at (p t M : PTm n) : Γ ⊢[PRAAx]
     ap3 scaledF p t M ≐ qmul (radiusPoint M one) (ap3 halfEvaluator p t zero) := by

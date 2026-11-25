@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianMonomialDecayMajorant
 import IPRADerivations.Analysis.GaussianEulerUpperTailLeftNorm
 import IPRADerivations.Analysis.GaussianEulerLowerTransformedIntegrand
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual monomial-decay quadrature with the exact factorial leading constant
@@ -48,11 +49,7 @@ theorem evaluator_at (p a b d : PTm n) : Γ ⊢[PRAAx]
     simpa [evaluatorF,ap3] using toPR_eq (Γ := Γ) (evaluator (var 0) (var 1) (var 2) : PTm 3) ![p,pairT a b,d]
   apply program.eqTrans
   change Γ ⊢[PRAAx] sample p d (fstT (pairT a b)) (sndT (pairT a b)) ≐ sample p d a b
-  simpa only [GaussianMonomialDecayMajorant.subst_sample,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-    Matrix.cons_val_two,Matrix.cons_val_three,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (sample (var 0) (var 1) (var 2) (var 3) : PTm 4)
-      (σ := ![p,d,fstT (pairT a b),sndT (pairT a b)]) (σ' := ![p,d,a,b])
-      (fun i => by fin_cases i; exact .eqRefl _; exact .eqRefl _; exact fst_pair a b; exact snd_pair a b)
+  ipra_congr (sample (var 0) (var 1) (var 2) (var 3) : PTm 4) with [.eqRefl p, .eqRefl d, fst_pair a b, snd_pair a b]
 
 theorem point_majorized (p d a b : PTm n) (hb : Γ ⊢[PRAAx] le one b) (hab : Γ ⊢[PRAAx] le b a) : Γ ⊢[PRAAx]
     majorized (sample p d a b) (scalarMajorant p d a b) := by

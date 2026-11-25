@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.LcmBridgeExact
 import IPRADerivations.AnalyticNumberTheory.RobinUpperEnd
 import IPRADerivations.Analysis.WeierstrassProduct
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The finite counterexample transfer of the lcm bridge, product form
@@ -138,13 +139,9 @@ abbrev Pc (P : PTm n) : PTm n := ap2 (prodF c2B) (succ (lcmu P)) P
 theorem w_alg {m D N Us C : PTm n} (hD : Γ ⊢[PRAAx] D ≐ succ (pred D))
     (W : Γ ⊢[PRAAx] le (pw D (succ N)) (pw D N * Us + D * C)) (hL : Γ ⊢[PRAAx] le (m * Us) (two * D)) :
     Γ ⊢[PRAAx] le (m * pw D N) (m * C + two * pw D N) := by
-  have eW := natEq (eq_add_of_le W)
-  have eL := natEq (eq_add_of_le hL)
-  have ep := natEq (pw_succ (Γ := Γ) D N)
   refine le_cancel_pos hD (le_of_eq_add (d := m * monus (pw D N * Us + D * C) (pw D (succ N)) +
     pw D N * monus (two * D) (m * Us)) ?_)
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 m * eW + 𝔞 (pw D N) * eL + 𝔞 m * ep
+  ipra_lc 𝔞 m * natEq (eq_add_of_le W) + 𝔞 (pw D N) * natEq (eq_add_of_le hL) + 𝔞 m * natEq (pw_succ (Γ := Γ) D N)
 
 theorem w_range {m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) :
     Γ ⊢[PRAAx] le (m * pw (LD (m * m)) (succ (lcmu (m * m))))
@@ -239,7 +236,7 @@ theorem phi_pos (N : PTm n) : Γ ⊢[PRAAx] PP F₂ N ≐ succ (pred (PP F₂ N)
     have h2 : C ⊢[PRAAx] le two (var 0) := prime_two (prime_of_isP Prf.hyp0)
     have e := eq_add_of_le h2
     have e1 : C ⊢[PRAAx] two + monus (var 0) two ≐ succ (succ (monus (var 0) two)) := by
-      apply deriveNat; ipra_simps; ring
+      ipra_ring
     have e' : C ⊢[PRAAx] monus (var 0) one ≐ succ (monus (var 0) two) :=
       (congrMonus (e.eqTrans e1) (.eqRefl one)).eqTrans (monus_succ_one _)
     exact pw_pos' (pos_of_eq_succ e') _
@@ -251,23 +248,15 @@ theorem key_alg {m Φ s L Up Ud Pi Gp : PTm n} (hL : Γ ⊢[PRAAx] L ≐ succ (p
     (SP : Γ ⊢[PRAAx] s * Φ ≐ Gp) (S1 : Γ ⊢[PRAAx] le (m * (L * Pi)) (m * Gp + two * (L * Pi)))
     (H : Γ ⊢[PRAAx] lt (m * Φ * Up + two * Pi * Ud) (m * Pi * Ud)) :
     Γ ⊢[PRAAx] lt (m * Φ * (L * Up)) (m * Φ * (s * Ud)) := by
-  have e1 := natEq SP
-  have e2 := natEq (eq_add_of_le S1)
-  have e3 := natEq (eq_add_of_le H)
-  have e4 := natEq hL
   refine le_of_eq_add (d := pred L + L * monus (m * Pi * Ud) (succ (m * Φ * Up + two * Pi * Ud)) +
     monus (m * Gp + two * (L * Pi)) (m * (L * Pi)) * Ud) ?_
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 m * 𝔞 Ud * e1 + 𝔞 Ud * e2 + 𝔞 L * e3 + e4
+  ipra_lc 𝔞 m * 𝔞 Ud * natEq SP + 𝔞 Ud * natEq (eq_add_of_le S1) + 𝔞 L * natEq (eq_add_of_le H) + natEq hL
 
 /-- Abstract algebra: `m X ≤ m C + 2X` and `C Y = X G` give `m Y ≤ m G + 2 Y`. -/
 theorem s1_alg {m X C Y Gp : PTm n} (hX : Γ ⊢[PRAAx] X ≐ succ (pred X)) (w : Γ ⊢[PRAAx] le (m * X) (m * C + two * X))
     (cy : Γ ⊢[PRAAx] C * Y ≐ X * Gp) : Γ ⊢[PRAAx] le (m * Y) (m * Gp + two * Y) := by
-  have e1 := natEq (eq_add_of_le w)
-  have e2 := natEq cy
   refine le_cancel_pos hX (le_of_eq_add (d := Y * monus (m * C + two * X) (m * X)) ?_)
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 Y * e1 - 𝔞 m * e2
+  ipra_lc 𝔞 Y * natEq (eq_add_of_le w) - 𝔞 m * natEq cy
 
 theorem lt_cancel {c a b : PTm n} (_hc : Γ ⊢[PRAAx] c ≐ succ (pred c)) (h : Γ ⊢[PRAAx] lt (c * a) (c * b)) :
     Γ ⊢[PRAAx] lt a b :=

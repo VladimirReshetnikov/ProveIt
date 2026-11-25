@@ -2,6 +2,7 @@ import IPRADerivations.DiophantineNumberTheory.KhinchinSeparated
 import IPRADerivations.Foundations.PackingPointwise
 import IPRADerivations.AnalyticNumberTheory.Primes
 import IPRADerivations.AnalyticNumberTheory.DivisorHyperbola
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The measure of one Khinchin scale (`hurwitz_khinchin_ipra`, (K8))
@@ -124,12 +125,10 @@ theorem sep_or {M Q Q' R G w α γ β a b : PTm n} (hM : Γ ⊢[PRAAx] M ≐ suc
     refine .impI ?_
     let Θ : List (Fm PTm n) := ((qE Q' M a ≐ qE Q' M b) ⋏ (rem a M ≐ rem b M)) :: Γ
     have hc : Θ ⊢[PRAAx] (qE Q' M a ≐ qE Q' M b) ⋏ (rem a M ≐ rem b M) := Prf.hyp0
-    have e1 := natEq (Prf.andE₁ hc)
-    have e2 := natEq (Prf.andE₂ hc)
-    have da := natEq ((Prf.andE₁ (div_mod_at (Γ := Γ) (x := a) hM)).wk : Θ ⊢[PRAAx] a ≐ M * quo a M + rem a M)
-    have db := natEq ((Prf.andE₁ (div_mod_at (Γ := Γ) (x := b) hM)).wk : Θ ⊢[PRAAx] b ≐ M * quo b M + rem b M)
     have eab : Θ ⊢[PRAAx] a ≐ b := by
-      apply deriveNat; ipra_simps; linear_combination da - db + 𝔞 M * e1 + e2
+      ipra_lc natEq ((Prf.andE₁ (div_mod_at (Γ := Γ) (x := a) hM)).wk : Θ ⊢[PRAAx] a ≐ M * quo a M + rem a M) -
+        natEq ((Prf.andE₁ (div_mod_at (Γ := Γ) (x := b) hM)).wk : Θ ⊢[PRAAx] b ≐ M * quo b M + rem b M) +
+        𝔞 M * natEq (Prf.andE₁ hc) + natEq (Prf.andE₂ hc)
     have e := natEq eab
     have hab' : Θ ⊢[PRAAx] lt a b := hab.wk
     have hz : Θ ⊢[PRAAx] le one zero := by ipra_le sl hab' with e

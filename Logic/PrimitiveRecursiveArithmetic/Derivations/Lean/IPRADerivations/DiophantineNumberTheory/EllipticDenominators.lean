@@ -1,5 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.SignedLine
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Square and cube denominators on an elliptic curve

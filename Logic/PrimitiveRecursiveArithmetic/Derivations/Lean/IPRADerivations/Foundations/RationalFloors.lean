@@ -1,4 +1,5 @@
 import IPRADerivations.Topology.DimensionUnits
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Floors of rationals with different denominators
@@ -56,16 +57,11 @@ theorem quo_far {A B r s Dn E cr cs : PTm n} (hr : Γ ⊢[PRAAx] r ≐ succ cr) 
   let Δ : List (Fm PTm n) := lt (quo A r) (quo B s + Dn) :: Γ
   have dA := div_mod_at (Γ := Δ) (x := A) hr.wk
   have dB := div_mod_at (Γ := Δ) (x := B) hs.wk
-  have e0 := natEq (Γ := Δ) h.wk
-  have e1 := natEq (Prf.andE₁ dA)
-  have e2 := natEq (Prf.andE₁ dB)
-  have e3 := natEq (eq_add_of_le (Prf.andE₂ dA))
-  have e4 := natEq (eq_add_of_le (Γ := Δ) Prf.hyp0)
-  have e5 := natEq (Γ := Δ) hs.wk
   refine .botE _ (succ_ne_zero (a := cs + monus r (succ (rem A r)) * s +
     monus (quo B s + Dn) (succ (quo A r)) * (r * s) + rem B s * r + E) ?_)
-  apply deriveNat; ipra_simps
-  linear_combination -e0 + 𝔞 s * e1 - 𝔞 r * e2 - 𝔞 s * e3 - (𝔞 r * 𝔞 s) * e4 - e5
+  ipra_lc -natEq (Γ := Δ) h.wk + 𝔞 s * natEq (Prf.andE₁ dA) - 𝔞 r * natEq (Prf.andE₁ dB) -
+    𝔞 s * natEq (eq_add_of_le (Prf.andE₂ dA)) - (𝔞 r * 𝔞 s) * natEq (eq_add_of_le (Γ := Δ) Prf.hyp0) -
+    natEq (Γ := Δ) hs.wk
 
 /-- `A/r < B/s + 1` gives `⌊A/r⌋ ≤ ⌊B/s⌋ + 1`. -/
 theorem quo_le_succ {A B r s cr cs : PTm n} (hr : Γ ⊢[PRAAx] r ≐ succ cr) (hs : Γ ⊢[PRAAx] s ≐ succ cs)
@@ -75,16 +71,11 @@ theorem quo_le_succ {A B r s cr cs : PTm n} (hr : Γ ⊢[PRAAx] r ≐ succ cr) (
   let Δ : List (Fm PTm n) := lt (succ (quo B s)) (quo A r) :: Γ
   have dA := div_mod_at (Γ := Δ) (x := A) hr.wk
   have dB := div_mod_at (Γ := Δ) (x := B) hs.wk
-  have e0 := natEq (eq_add_of_le (Γ := Δ) h.wk)
-  have e1 := natEq (Prf.andE₁ dA)
-  have e2 := natEq (Prf.andE₁ dB)
-  have e3 := natEq (eq_add_of_le (Prf.andE₂ dB))
-  have e4 := natEq (eq_add_of_le (Γ := Δ) Prf.hyp0)
   refine .botE _ (succ_ne_zero (a := r + monus s (succ (rem B s)) * r +
     monus (quo A r) (succ (succ (quo B s))) * (r * s) + rem A r * s +
     monus (B * r + r * s) (succ (A * s))) ?_)
-  apply deriveNat; ipra_simps
-  linear_combination -e0 + 𝔞 r * e2 - 𝔞 s * e1 - (𝔞 r * 𝔞 s) * e4 - 𝔞 r * e3
+  ipra_lc -natEq (eq_add_of_le (Γ := Δ) h.wk) + 𝔞 r * natEq (Prf.andE₁ dB) - 𝔞 s * natEq (Prf.andE₁ dA) -
+    (𝔞 r * 𝔞 s) * natEq (eq_add_of_le (Γ := Δ) Prf.hyp0) - 𝔞 r * natEq (eq_add_of_le (Prf.andE₂ dB))
 
 /-- `|A/r − B/s| < 1` gives `|⌊A/r⌋ − ⌊B/s⌋| ≤ 1`. -/
 theorem quo_near {A B r s cr cs : PTm n} (hr : Γ ⊢[PRAAx] r ≐ succ cr) (hs : Γ ⊢[PRAAx] s ≐ succ cs)
@@ -95,8 +86,7 @@ theorem quo_near {A B r s cr cs : PTm n} (hr : Γ ⊢[PRAAx] r ≐ succ cr) (hs 
 /-- `y + D ≤ x` gives `D ≤ |x − y|`. -/
 theorem le_dist_of_le_add {x y Dn : PTm n} (h : Γ ⊢[PRAAx] le (y + Dn) x) : Γ ⊢[PRAAx] le Dn (dist x y) := by
   have e : Γ ⊢[PRAAx] x ≐ y + (Dn + monus x (y + Dn)) := by
-    have a := natEq (eq_add_of_le h)
-    apply deriveNat; ipra_simps; linear_combination a
+    ipra_lc natEq (eq_add_of_le h)
   exact le_congr (.eqRefl _) (dist_of_add e).eqSymm (le_add_right _ _)
 
 /-! ## Rational values with a common offset -/
@@ -141,13 +131,13 @@ theorem crossY_swap (Pu Qu Ru Pv Qv Rv : PTm n) :
     crossY Pv Qv Rv Pu Qu Ru = crossX Pu Qu Ru Pv Qv Rv := rfl
 
 theorem denom_succ (h₁ R : PTm n) : Γ ⊢[PRAAx] denom h₁ R ≐ succ (h₁ + R * succ h₁) := by
-  apply deriveNat; simp only [denom]; ipra_simps; ring
+  ipra_lc [denom]
 
 /-- `Q ≤ S` gives `S h₁' R' = Q + (S h₁' R' ∸ Q)`. -/
 theorem offset_eq {S Q h₁ R : PTm n} (hQ : Γ ⊢[PRAAx] le Q S) :
     Γ ⊢[PRAAx] S * succ h₁ * succ R ≐ Q + monus (S * succ h₁ * succ R) Q := by
   refine eq_add_of_le (le_trans hQ (le_of_eq_add (d := S * (h₁ * R + h₁ + R)) ?_))
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 section Pair
 
@@ -163,20 +153,12 @@ private theorem rat_far_le (hQu : Γ ⊢[PRAAx] le Qu S) (hQv : Γ ⊢[PRAAx] le
   have hX := eq_add_of_le hle
   have hd := dist_of_add hX
   have hε := eq_add_of_le (le_congr (.eqRefl _) (congrMul (.eqRefl _) hd) h)
-  have kU := natEq (offset_eq (h₁ := h₁) (R := Ru) hQu)
-  have kV := natEq (offset_eq (h₁ := h₁) (R := Rv) hQv)
-  have eX := natEq hX
-  have eε := natEq hε
   refine le_dist_of_le_add (quo_far (denom_succ h₁ Ru) (denom_succ h₁ Rv)
     (E := Dn * succ h₁ * monus (succ h₂ * monus (crossX Pu Qu Ru Pv Qv Rv) (crossY Pu Qu Ru Pv Qv Rv))
       (succ h₁ * (succ Ru * succ Rv))) ?_)
-  apply deriveNat
-  simp only [numer, denom, crossX, crossY] at kU kV eX eε ⊢
-  ipra_simps
-  linear_combination
-    -(𝔞 Dn * (𝔞 h₁ + 1) * (𝔞 h₂ + 1) * (𝔞 Rv + 1)) * kU +
-      (𝔞 Dn * (𝔞 h₁ + 1) * (𝔞 h₂ + 1) * (𝔞 Ru + 1)) * kV +
-      (𝔞 Dn * (𝔞 h₁ + 1) * (𝔞 h₂ + 1)) * eX + (𝔞 Dn * (𝔞 h₁ + 1)) * eε
+  ipra_lc [numer, denom, crossX, crossY] -(𝔞 Dn * (𝔞 h₁ + 1) * (𝔞 h₂ + 1) * (𝔞 Rv + 1)) * natEq (offset_eq (h₁ := h₁) (R := Ru) hQu) +
+    (𝔞 Dn * (𝔞 h₁ + 1) * (𝔞 h₂ + 1) * (𝔞 Ru + 1)) * natEq (offset_eq (h₁ := h₁) (R := Rv) hQv) +
+    (𝔞 Dn * (𝔞 h₁ + 1) * (𝔞 h₂ + 1)) * natEq hX + (𝔞 Dn * (𝔞 h₁ + 1)) * natEq hε
 
 /-- `|value_u − value_v| ≥ h` gives floors at distance `≥ D`. -/
 theorem rat_far (hQu : Γ ⊢[PRAAx] le Qu S) (hQv : Γ ⊢[PRAAx] le Qv S)
@@ -203,29 +185,17 @@ private theorem rat_near_le (hQu : Γ ⊢[PRAAx] le Qu S) (hQv : Γ ⊢[PRAAx] l
   have hX := eq_add_of_le hle
   have hd := dist_of_add hX
   have hε := eq_add_of_le (lt_congr (congrMul (.eqRefl _) hd) (.eqRefl _) h)
-  have kU := natEq (offset_eq (h₁ := h₁) (R := Ru) hQu)
-  have kV := natEq (offset_eq (h₁ := h₁) (R := Rv) hQv)
-  have eX := natEq hX
-  have eε := natEq hε
   let δ := monus (crossX Pu Qu Ru Pv Qv Rv) (crossY Pu Qu Ru Pv Qv Rv)
   let ε := monus (succ h₁ * (succ Ru * succ Rv)) (succ (Dn * succ h₂ * δ))
   refine quo_near (denom_succ h₁ Ru) (denom_succ h₁ Rv) ?_ ?_
   · refine le_of_eq_add (d := h₁ + succ h₁ * ε) ?_
-    apply deriveNat
-    simp only [numer, denom, crossX, crossY, δ, ε] at kU kV eX eε ⊢
-    ipra_simps
-    linear_combination
-      (𝔞 Dn * (𝔞 h₁ + 1) * (𝔞 h₂ + 1) * (𝔞 Rv + 1)) * kU -
-        (𝔞 Dn * (𝔞 h₁ + 1) * (𝔞 h₂ + 1) * (𝔞 Ru + 1)) * kV -
-        (𝔞 Dn * (𝔞 h₁ + 1) * (𝔞 h₂ + 1)) * eX + (𝔞 h₁ + 1) * eε
+    ipra_lc [numer, denom, crossX, crossY, δ, ε] (𝔞 Dn * (𝔞 h₁ + 1) * (𝔞 h₂ + 1) * (𝔞 Rv + 1)) * natEq (offset_eq (h₁ := h₁) (R := Ru) hQu) -
+      (𝔞 Dn * (𝔞 h₁ + 1) * (𝔞 h₂ + 1) * (𝔞 Ru + 1)) * natEq (offset_eq (h₁ := h₁) (R := Rv) hQv) -
+      (𝔞 Dn * (𝔞 h₁ + 1) * (𝔞 h₂ + 1)) * natEq hX + (𝔞 h₁ + 1) * natEq hε
   · refine le_of_eq_add (d := Dn * succ h₁ * succ h₂ * δ + Dn * succ h₁ * succ h₂ * δ + h₁ + succ h₁ * ε) ?_
-    apply deriveNat
-    simp only [numer, denom, crossX, crossY, δ, ε] at kU kV eX eε ⊢
-    ipra_simps
-    linear_combination
-      -(𝔞 Dn * (𝔞 h₁ + 1) * (𝔞 h₂ + 1) * (𝔞 Rv + 1)) * kU +
-        (𝔞 Dn * (𝔞 h₁ + 1) * (𝔞 h₂ + 1) * (𝔞 Ru + 1)) * kV +
-        (𝔞 Dn * (𝔞 h₁ + 1) * (𝔞 h₂ + 1)) * eX + (𝔞 h₁ + 1) * eε
+    ipra_lc [numer, denom, crossX, crossY, δ, ε] -(𝔞 Dn * (𝔞 h₁ + 1) * (𝔞 h₂ + 1) * (𝔞 Rv + 1)) * natEq (offset_eq (h₁ := h₁) (R := Ru) hQu) +
+      (𝔞 Dn * (𝔞 h₁ + 1) * (𝔞 h₂ + 1) * (𝔞 Ru + 1)) * natEq (offset_eq (h₁ := h₁) (R := Rv) hQv) +
+      (𝔞 Dn * (𝔞 h₁ + 1) * (𝔞 h₂ + 1)) * natEq hX + (𝔞 h₁ + 1) * natEq hε
 
 /-- `D |value_u − value_v| < h` gives floors at distance `≤ 1`. -/
 theorem rat_near (hQu : Γ ⊢[PRAAx] le Qu S) (hQv : Γ ⊢[PRAAx] le Qv S)

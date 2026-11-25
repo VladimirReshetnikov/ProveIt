@@ -1,5 +1,5 @@
 import IPRADerivations.Combinatorics.BinomialSigned
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Alternating face counts of the simplex, the cube and the cross-polytope

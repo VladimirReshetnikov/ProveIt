@@ -1,4 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.Coprime
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Primitive Pythagorean triples
@@ -47,19 +48,15 @@ theorem two_pos : Γ ⊢[PRAAx] (two : PTm n) ≐ succ (pred two) := congrSucc (
 theorem alg_odd {A C H a k : PTm n} (hE : Γ ⊢[PRAAx] A * A + (two * H) * (two * H) ≐ C * C)
     (eA : Γ ⊢[PRAAx] A ≐ two * a + one) (eC : Γ ⊢[PRAAx] C ≐ two * k) :
     Γ ⊢[PRAAx] two * (two * (k * k)) ≐ two * (two * (a * a) + two * a + two * (H * H)) + one := by
-  have h₁ := natEq hE; have h₂ := natEq eA; have h₃ := natEq eC
-  apply deriveNat; ipra_simps
-  linear_combination -h₁ + (Groth.ι (IPRA.Q.mk Γ A) + 2 * Groth.ι (IPRA.Q.mk Γ a) + 1) * h₂ -
-    (Groth.ι (IPRA.Q.mk Γ C) + 2 * Groth.ι (IPRA.Q.mk Γ k)) * h₃
+  ipra_lc -natEq hE + (Groth.ι (IPRA.Q.mk Γ A) + 2 * Groth.ι (IPRA.Q.mk Γ a) + 1) * natEq eA -
+    (Groth.ι (IPRA.Q.mk Γ C) + 2 * Groth.ι (IPRA.Q.mk Γ k)) * natEq eC
 
 theorem alg_UV {A C H a c V : PTm n} (hE : Γ ⊢[PRAAx] A * A + (two * H) * (two * H) ≐ C * C)
     (eA : Γ ⊢[PRAAx] A ≐ two * a + one) (eC : Γ ⊢[PRAAx] C ≐ two * c + one) (ec : Γ ⊢[PRAAx] c ≐ a + V) :
     Γ ⊢[PRAAx] (two * two) * ((c + a + one) * V) ≐ (two * two) * (H * H) := by
-  have h₁ := natEq hE; have h₂ := natEq eA; have h₃ := natEq eC; have h₄ := natEq ec
-  apply deriveNat; ipra_simps
-  linear_combination -h₁ + (Groth.ι (IPRA.Q.mk Γ A) + 2 * Groth.ι (IPRA.Q.mk Γ a) + 1) * h₂ -
-    (Groth.ι (IPRA.Q.mk Γ C) + 2 * Groth.ι (IPRA.Q.mk Γ c) + 1) * h₃ -
-    4 * (Groth.ι (IPRA.Q.mk Γ c) + Groth.ι (IPRA.Q.mk Γ a) + 1) * h₄
+  ipra_lc -natEq hE + (Groth.ι (IPRA.Q.mk Γ A) + 2 * Groth.ι (IPRA.Q.mk Γ a) + 1) * natEq eA -
+    (Groth.ι (IPRA.Q.mk Γ C) + 2 * Groth.ι (IPRA.Q.mk Γ c) + 1) * natEq eC -
+    4 * (Groth.ι (IPRA.Q.mk Γ c) + Groth.ι (IPRA.Q.mk Γ a) + 1) * natEq ec
 
 /-! ## The parametrization -/
 
@@ -95,10 +92,10 @@ theorem pyth_at {A H C : PTm n} (hA : Γ ⊢[PRAAx] A ≐ succ (pred A)) (hH : �
       apply deriveNat; ipra_simps; linear_combination -e₁ + e₃
     exact le_lt_absurd _ (sq_le_sq hCA) hAC
   have ec : Γ ⊢[PRAAx] half C ≐ half A + pV A C :=
-    (eq_add_of_le hlt).eqTrans (by apply deriveNat; ipra_simps; ring)
+    (eq_add_of_le hlt).eqTrans (by ipra_ring)
   have hV : Γ ⊢[PRAAx] pV A C ≐ succ (pred (pV A C)) := congrSucc (pred_succ _).eqSymm
   have hU : Γ ⊢[PRAAx] pU A C ≐ succ (pred (pU A C)) :=
-    eq_succ_pred (y := half C + half A) (by apply deriveNat; ipra_simps; ring)
+    eq_succ_pred (y := half C + half A) (by ipra_ring)
   have eUV := mul_cancel (pos_mul two_pos two_pos) (alg_UV hE oddA oddC ec)
   have AUV : Γ ⊢[PRAAx] A + pV A C ≐ pU A C := by
     refine withEq oddA fun e₁ => withEq ec fun e₂ => ?_

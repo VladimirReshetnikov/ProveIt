@@ -1,6 +1,7 @@
 import IPRADerivations.Probability.ProductPower
 import IPRADerivations.Combinatorics.LegendreDigits
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Exponentials and products of finite sets (`ipra_categorical_methods`, Section 4)
@@ -87,14 +88,10 @@ private theorem code_lt_step (t : PTm 2) {N m p : PTm n} (hm : Γ ⊢[PRAAx] m �
     (ih : Γ ⊢[PRAAx] lt (code t N m p) (pw m N)) :
     Γ ⊢[PRAAx] lt (code t (succ N) m p) (pw m (succ N)) := by
   have he : Γ ⊢[PRAAx] lt (rem (inst2 t N p) m) m := rem_lt'' hm _
-  have e₁ := natEq (code_succ (Γ := Γ) t N m p)
-  have e₂ := natEq (pw_succ (Γ := Γ) m N)
-  have e₃ := natEq (eq_add_of_le ih)
-  have e₄ := natEq (eq_add_of_le he)
   refine le_of_eq_add (d := pw m N * monus m (succ (rem (inst2 t N p) m)) +
     monus (pw m N) (succ (code t N m p))) ?_
-  apply deriveNat; ipra_simps
-  linear_combination e₂ - e₁ + 𝔞 (pw m N) * e₄ + e₃
+  ipra_lc natEq (pw_succ (Γ := Γ) m N) - natEq (code_succ (Γ := Γ) t N m p) + 𝔞 (pw m N) * natEq (eq_add_of_le he) +
+    natEq (eq_add_of_le ih)
 
 /-- Variables: `0 = N`, `1 = m`, `2 = p`. -/
 private abbrev ltF (t : PTm 2) : Fm PTm 3 :=
@@ -175,7 +172,7 @@ theorem ev_curry (t : PTm 2) {N j m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pre
 /-- `r mod K = r` for `r < K`. -/
 theorem rem_of_lt {K r : PTm n} (hK : Γ ⊢[PRAAx] K ≐ succ (pred K)) (h : Γ ⊢[PRAAx] lt r K) :
     Γ ⊢[PRAAx] rem r K ≐ r :=
-  Prf.andE₂ (dmu hK (q := zero) (by apply deriveNat; ipra_simps; ring) h)
+  Prf.andE₂ (dmu hK (q := zero) (by ipra_ring) h)
 
 /-- The first inverse law for a table whose entry is already below `m`. -/
 theorem ev_curry_of_lt (t : PTm 2) {N j m p : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m))
@@ -204,13 +201,8 @@ theorem entry_dB {m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (j c : PTm
 private theorem recon_step {N m c : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m))
     (ih : Γ ⊢[PRAAx] code evT N m (pairT m c) + quo c (pw m N) * pw m N ≐ c) :
     Γ ⊢[PRAAx] code evT (succ N) m (pairT m c) + quo c (pw m (succ N)) * pw m (succ N) ≐ c := by
-  have e₁ := natEq (code_succ (Γ := Γ) evT N m (pairT m c))
-  have e₂ := natEq (pw_succ (Γ := Γ) m N)
-  have ed := natEq (entry_dB hm N c)
-  have st := natEq (digit_step hm c N)
-  have i := natEq ih
-  apply deriveNat; ipra_simps
-  linear_combination e₁ + 𝔞 (pw m N) * ed + 𝔞 (quo c (pw m (succ N))) * e₂ + i - 𝔞 (pw m N) * st
+  ipra_lc natEq (code_succ (Γ := Γ) evT N m (pairT m c)) + 𝔞 (pw m N) * natEq (entry_dB hm N c) +
+    𝔞 (quo c (pw m (succ N))) * natEq (pw_succ (Γ := Γ) m N) + natEq ih - 𝔞 (pw m N) * natEq (digit_step hm c N)
 
 /-- Variables: `0 = N`, `1 = m`, `2 = c`. -/
 private abbrev reconF : Fm PTm 3 :=
@@ -224,16 +216,9 @@ private theorem recon₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] reconF := by
       PTm.subst_pred, Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two,
       ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
     refine .impI ?_
-    have z := natEq (code_zero (Γ := [(var 0 : PTm 2) ≐ succ (pred (var 0))]) evT (var 0)
-      (pairT (var 0) (var 1)))
-    have p0 := natEq (pw_zero (Γ := [(var 0 : PTm 2) ≐ succ (pred (var 0))]) (var 0))
-    have q0 := natEq ((congrAp2 quoF (.eqRefl (var 1 : PTm 2))
-      (pw_zero (Γ := [(var 0 : PTm 2) ≐ succ (pred (var 0))]) (var 0))).eqTrans
-      (Prf.andE₁ (dmu (Γ := [(var 0 : PTm 2) ≐ succ (pred (var 0))]) (K := one) (q := var 1)
-        (r := zero) (pos_of_eq_succ (c := zero) (.eqRefl _)) (by apply deriveNat; ipra_simps; ring)
-        (le_refl one))))
-    apply deriveNat; ipra_simps
-    linear_combination z + 𝔞 (quo (var 1 : PTm 2) (pw (var 0) zero)) * p0 + q0
+    ipra_lc natEq (code_zero (Γ := [(var 0 : PTm 2) ≐ succ (pred (var 0))]) evT (var 0) (pairT (var 0) (var 1))) +
+      𝔞 (quo (var 1 : PTm 2) (pw (var 0) zero)) * natEq (pw_zero (Γ := [(var 0 : PTm 2) ≐ succ (pred (var 0))]) (var 0)) +
+      natEq ((congrAp2 quoF (.eqRefl (var 1 : PTm 2)) (pw_zero (Γ := [(var 0 : PTm 2) ≐ succ (pred (var 0))]) (var 0))).eqTrans (Prf.andE₁ (dmu (Γ := [(var 0 : PTm 2) ≐ succ (pred (var 0))]) (K := one) (q := var 1) (r := zero) (pos_of_eq_succ (c := zero) (.eqRefl _)) (by ipra_ring) (le_refl one))))
   · simp only [Fm.subst_imp, Fm.subst_eq, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul,
       PTm.subst_pred, Syn.subst_var, Syn.repl_zero, repl_one, repl_two,
       ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
@@ -249,10 +234,7 @@ theorem recon {m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (N c : PTm n)
 /-- The second inverse law: for `c < m^N`, the code of the evaluation table of `c` is `c`. -/
 theorem curry_ev {N m c : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m))
     (hc : Γ ⊢[PRAAx] lt c (pw m N)) : Γ ⊢[PRAAx] code evT N m (pairT m c) ≐ c := by
-  have r := natEq (recon hm N c)
-  have q := natEq (quo_small (pw_pos' hm N) hc)
-  apply deriveNat; ipra_simps
-  linear_combination r - 𝔞 (pw m N) * q
+  ipra_lc natEq (recon hm N c) - 𝔞 (pw m N) * natEq (quo_small (pw_pos' hm N) hc)
 
 /-- The first inverse law as a closed sentence, for every table term `t`. Variables: `0 = N`,
 `1 = j`, `2 = m`, `3 = p`. -/
@@ -273,11 +255,8 @@ theorem curry_ev_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3
 /-- `i m + j < n m` for `i < n` and `j < m`. -/
 theorem pair_lt {i j N m : PTm n} (hi : Γ ⊢[PRAAx] lt i N) (hj : Γ ⊢[PRAAx] lt j m) :
     Γ ⊢[PRAAx] lt (i * m + j) (N * m) := by
-  have e₁ := natEq (eq_add_of_le hi)
-  have e₂ := natEq (eq_add_of_le hj)
   refine le_of_eq_add (d := monus N (succ i) * m + monus m (succ j)) ?_
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 m * e₁ + e₂
+  ipra_lc 𝔞 m * natEq (eq_add_of_le hi) + natEq (eq_add_of_le hj)
 
 /-- The first projection of a pair. -/
 theorem pair_fst {i j m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (hj : Γ ⊢[PRAAx] lt j m) :
@@ -298,12 +277,8 @@ theorem snd_lt {m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (k : PTm n) 
 private theorem fst_aux {k N m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m))
     (hk : Γ ⊢[PRAAx] lt k (N * m)) (hq : Γ ⊢[PRAAx] le N (quo k m)) :
     Γ ⊢[PRAAx] le (succ k) k := by
-  have e₁ := natEq (eq_add_of_le hk)
-  have e₂ := natEq (eq_add_of_le hq)
-  have e₃ := natEq (div_eq' (t := k) hm)
   refine le_of_eq_add (d := monus (N * m) (succ k) + monus (quo k m) N * m + rem k m) ?_
-  apply deriveNat; ipra_simps
-  linear_combination e₁ + 𝔞 m * e₂ + e₃
+  ipra_lc natEq (eq_add_of_le hk) + 𝔞 m * natEq (eq_add_of_le hq) + natEq (div_eq' (t := k) hm)
 
 /-- The first projection of `k < n m` is below `n`. -/
 theorem fst_lt {k N m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m))

@@ -1,7 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.PellAll
 import IPRADerivations.AnalyticNumberTheory.PhiLower
 import IPRADerivations.Combinatorics.BinomialIdentities
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Negative units square to the fundamental unit

@@ -63,7 +63,7 @@ theorem err_tail (p B : PTm n) :
   have hE : Γ ⊢[PRAAx] le (clog (fact B) + (p + num 4)) (num 2 * Tp p B) := by
     ipra_le 𝔞 p + 𝔞 (clog (fact B)) + 4
   have a := pow_absorb hx hE
-  have e := natEq ((congrPw2 (show Γ ⊢[PRAAx] p + num 4 ≐ succ (p + num 3) by apply deriveNat; ipra_simps; ring)).eqTrans
+  have e := natEq ((congrPw2 (show Γ ⊢[PRAAx] p + num 4 ≐ succ (p + num 3) by ipra_ring)).eqTrans
     (pw_succ (Γ := Γ) two (p + num 3)))
   ipra_le sl a with 𝔞 (fact B) * e
 
@@ -81,7 +81,7 @@ theorem err_series (p B : PTm n) :
         (𝔞 p + 𝔞 B * 𝔞 (clog (Tp p B)) + 𝔞 (clog (Tp p B)) + 4)
   have a := pow_absorb hTB hE
   have e := natEq ((congrPw2 (show Γ ⊢[PRAAx] p + num 5 ≐ succ (succ (p + num 3)) by
-    apply deriveNat; ipra_simps; ring)).eqTrans
+    ipra_ring)).eqTrans
       ((pw_succ (Γ := Γ) two (succ (p + num 3))).eqTrans (congrMul (pw_succ (Γ := Γ) two (p + num 3)) (.eqRefl _))))
   ipra_le sl a with 𝔞 (pw (Tp p B) (succ B)) * e
 

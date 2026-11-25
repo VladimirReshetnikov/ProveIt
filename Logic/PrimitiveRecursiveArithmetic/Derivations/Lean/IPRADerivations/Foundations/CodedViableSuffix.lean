@@ -1,6 +1,6 @@
 import IPRADerivations.Foundations.CodedViableChain
 import IPRADerivations.Core.CongruenceTactic
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Coded viable suffixes at an arbitrary numerical level

@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.WeightedBound
 import IPRADerivations.AnalyticNumberTheory.AbelParts
 import IPRADerivations.AnalyticNumberTheory.SumReindex
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The variation of `|R(x/n)|` (`pnt_ipra_constructive_2026-11-14`, `sb:weighted-sum`)
@@ -62,7 +63,7 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 /-! ## Elementary facts -/
 
 theorem quo_self_succ (x : PTm n) : Γ ⊢[PRAAx] quo x (succ x) ≐ zero :=
-  Prf.andE₁ (div_mod_unique (q := zero) (r := x) (by apply deriveNat; ipra_simps; ring) (le_refl _))
+  Prf.andE₁ (div_mod_unique (q := zero) (r := x) (by ipra_ring) (le_refl _))
 
 theorem absd_absd (a b c d : PTm n) : Γ ⊢[PRAAx] le (absd (absd a b) (absd c d)) (absd a c + absd b d) := by
   have t1 := absd_triangle (Γ := Γ) a c b; have t2 := absd_triangle (Γ := Γ) c d b
@@ -121,7 +122,7 @@ theorem sg_sum (N z : PTm n) : Γ ⊢[PRAAx] ap2 (sumF sgB) (succ N) z ≐ N := 
   refine .eqTrans ?_ (SymmetryInstances.sum_sg_one N z)
   refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
   rw [inst2_sgB, MobiusSummatory.inst2_gS, Mobius.one_inst]
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-! ## Values at a point -/
 
@@ -195,8 +196,6 @@ theorem var_le (x K L : PTm n) :
 theorem dn_eq (x K L : PTm n) :
     Γ ⊢[PRAAx] ap2 (sumF ndhB) (succ x) (pairT x (pairT K (fact L))) ≐
       ap2 (sumF (agB sgB hB)) (succ x) (pairT x (pairT K (fact L))) := by
-  have ab := natEq (abel_parts (Γ := Γ) sgB hB x (pairT x (pairT K (fact L))))
-  have he := natEq (h_end (Γ := Γ) (x := x) (K := K) (L := L))
   have sg := natEq (sg_sum (Γ := Γ) x (pairT x (pairT K (fact L))))
   -- the upward part vanishes
   have up : Γ ⊢[PRAAx] le (ap2 (sumF (upB sgB hB)) (succ x) (pairT x (pairT K (fact L)))) (succ x * zero) :=
@@ -215,14 +214,13 @@ theorem dn_eq (x K L : PTm n) :
               have q := Q_dec (x := Syn.shift x) (L := Syn.shift L) hk
               ipra_le sl p + sl q)
         exact le_congr (zero_mul_l' hd _).eqSymm (.eqRefl _) (le_refl _))))
-  have upz := natEq (le_antisymm (le_congr (.eqRefl _) (mul_zero _) up) (zero_le _))
   have c := sum_congr_bounded (Γ := Γ) ndhB (dnB sgB hB) (pairT x (pairT K (fact L))) (pairT x (pairT K (fact L)))
     (succ x) (.allI (.impI (by
       rw [inst2_ndh, inst2_dnB]
       exact congrMul (sg_sum _ _).eqSymm (.eqRefl _))))
-  have cc := natEq c
-  apply deriveNat; ipra_simps
-  linear_combination cc - ab - 𝔞 (ap2 (sumF sgB) (succ x) (pairT x (pairT K (fact L)))) * he + upz
+  ipra_lc natEq c - natEq (abel_parts (Γ := Γ) sgB hB x (pairT x (pairT K (fact L)))) -
+    𝔞 (ap2 (sumF sgB) (succ x) (pairT x (pairT K (fact L)))) * natEq (h_end (Γ := Γ) (x := x) (K := K) (L := L)) +
+    natEq (le_antisymm (le_congr (.eqRefl _) (mul_zero _) up) (zero_le _))
 
 /-! ## `Σ h_n ≤ 5x S(x, F)` -/
 
@@ -290,7 +288,7 @@ theorem variation {x K L : PTm n} (hx : Γ ⊢[PRAAx] le one x) (hK : Γ ⊢[PRA
       (num 5 * x * (U x K (fact L) + fact L)) := by
   have hKx : Γ ⊢[PRAAx] le (K * x) L := le_trans (le_scale K (le_Q4 x)) hL
   have hxL : Γ ⊢[PRAAx] le x L := le_trans (le_of_eq_add (d := (pred K) * x) (by
-    have w := natEq (pos_of_lt_zero hK); apply deriveNat; ipra_simps; linear_combination 𝔞 x * w)) hKx
+    ipra_lc 𝔞 x * natEq (pos_of_lt_zero hK))) hKx
   have v := var_le (Γ := Γ) x K L
   have d := natEq (dn_eq (Γ := Γ) x K L)
   have h := h_le hK hP hxL

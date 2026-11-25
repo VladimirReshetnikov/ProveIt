@@ -3,6 +3,8 @@ import IPRADerivations.Combinatorics.BinomialTransform
 import IPRADerivations.Probability.Lotus
 import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.AnalyticNumberTheory.Valuation
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The generalized Touchard congruence (`bell_numbers_ipra`, `thm:touchard-power`)
@@ -58,19 +60,13 @@ theorem cong_add {p a a' b b' : PTm n} (hq : Γ ⊢[PRAAx] p ≐ succ (pred p))
     Γ ⊢[PRAAx] rem (a + b) p ≐ rem (a' + b') p := by
   refine Foundations.ChineseRemainder.rem_eq_of_eq hq
     (k₁ := quo a' p + quo b' p) (k₂ := quo a p + quo b p) ?_
-  have d₁ := natEq (divmod_p hq a); have d₂ := natEq (divmod_p hq a')
-  have d₃ := natEq (divmod_p hq b); have d₄ := natEq (divmod_p hq b')
-  have e₁ := natEq ha; have e₂ := natEq hb
-  apply deriveNat; ipra_simps
-  linear_combination d₁ - d₂ + d₃ - d₄ + e₁ + e₂
+  ipra_lc natEq (divmod_p hq a) - natEq (divmod_p hq a') + natEq (divmod_p hq b) - natEq (divmod_p hq b') + natEq ha +
+    natEq hb
 
 theorem cong_mul {p a a' : PTm n} (c : PTm n) (hq : Γ ⊢[PRAAx] p ≐ succ (pred p))
     (ha : Γ ⊢[PRAAx] rem a p ≐ rem a' p) : Γ ⊢[PRAAx] rem (c * a) p ≐ rem (c * a') p := by
   refine Foundations.ChineseRemainder.rem_eq_of_eq hq (k₁ := c * quo a' p) (k₂ := c * quo a p) ?_
-  have d₁ := natEq (divmod_p hq a); have d₂ := natEq (divmod_p hq a')
-  have e₁ := natEq ha
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 c * d₁ - 𝔞 c * d₂ + 𝔞 c * e₁
+  ipra_lc 𝔞 c * natEq (divmod_p hq a) - 𝔞 c * natEq (divmod_p hq a') + 𝔞 c * natEq ha
 
 theorem cong_of_eq {p a a' : PTm n} (h : Γ ⊢[PRAAx] a ≐ a') : Γ ⊢[PRAAx] rem a p ≐ rem a' p :=
   congrAp2 remF h (.eqRefl _)
@@ -144,13 +140,9 @@ theorem shift_pair (a b : PTm n) : Syn.shift (pairT a b) = pairT (Syn.shift a) (
 theorem shift_succ (a : PTm n) : Syn.shift (succ a) = succ (Syn.shift a) := by
   simp [Syn.shift]
 
-theorem le_of_lt_succ {i j : PTm n} (h : Γ ⊢[PRAAx] lt i (succ j)) : Γ ⊢[PRAAx] le i j :=
-  (succ_monus_succ i j).eqSymm.eqTrans h
+alias le_of_lt_succ := Common.le_of_lt_succ
 
-theorem succ_monus_of_le {t N : PTm n} (h : Γ ⊢[PRAAx] le t N) :
-    Γ ⊢[PRAAx] monus (succ N) t ≐ succ (monus N t) :=
-  (congrMonus ((congrSucc (eq_add_of_le h)).eqTrans (add_succ t _).eqSymm) (.eqRefl t)).eqTrans
-    (add_monus' _ t)
+alias succ_monus_of_le := Common.monus_succ_of_le
 
 /-- The first Pascal sum: one more factor `ρ`. -/
 theorem pt_scale {i j ρ c : PTm n} (h : Γ ⊢[PRAAx] lt i (succ j)) :
@@ -162,10 +154,7 @@ theorem pt_scale {i j ρ c : PTm n} (h : Γ ⊢[PRAAx] lt i (succ j)) :
       ρ * (binom j i * (pw ρ (monus j i) * bell (c + i))) :=
     congrMul (fst_pair _ _) ((congrInst2 _ (.eqRefl _) (snd_pair _ _)).eqTrans (bg_at _ _ _ _ _))
   refine (bg_at i j (succ j) ρ c).eqTrans (.eqTrans ?_ r.eqSymm)
-  have e := natEq ((congrPw (.eqRefl ρ) (succ_monus_of_le (le_of_lt_succ h))).eqTrans
-    (pw_succ ρ (monus j i)))
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 (binom j i) * 𝔞 (bell (c + i)) * e
+  ipra_lc 𝔞 (binom j i) * 𝔞 (bell (c + i)) * natEq ((congrPw (.eqRefl ρ) (succ_monus_of_le (le_of_lt_succ h))).eqTrans (pw_succ ρ (monus j i)))
 
 /-- The second Pascal sum: the base moves from `c` to `c + 1`. -/
 theorem pt_shift (i j ρ c : PTm n) :
@@ -174,7 +163,7 @@ theorem pt_shift (i j ρ c : PTm n) :
   refine (bgs_at i j (succ j) ρ c).eqTrans (.eqTrans ?_ (bg_at i j j ρ (succ c)).eqSymm)
   refine congrMul (.eqRefl _) (congrMul (congrPw (.eqRefl _) (succ_monus_succ _ _))
     (congrBell ?_))
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- `U (j+1) ρ c = ρ · U j ρ c + U j ρ (c+1)`. -/
 theorem pascal_U (j ρ c : PTm n) :
@@ -193,9 +182,7 @@ theorem pascal_U (j ρ c : PTm n) :
 
 /-! ## Small evaluations -/
 
-theorem pair_congr {a a' c c' : PTm n} (ha : Γ ⊢[PRAAx] a ≐ a') (hc : Γ ⊢[PRAAx] c ≐ c') :
-    Γ ⊢[PRAAx] pairT a c ≐ pairT a' c' :=
-  congrAdd (congrMul (congrAdd ha hc) (congrAdd ha hc)) ha
+alias pair_congr := Common.congrPairT
 
 /-- `U` respects equality of the base. -/
 theorem congrU {j ρ c c' : PTm n} (h : Γ ⊢[PRAAx] c ≐ c') : Γ ⊢[PRAAx] U j ρ c ≐ U j ρ c' :=
@@ -207,12 +194,9 @@ theorem U_zero (ρ c : PTm n) : Γ ⊢[PRAAx] U zero ρ c ≐ bell c := by
     (bg_at zero zero zero ρ c).eqTrans
       ((congrMul (binom_zero' zero) (congrMul
         ((congrPw (.eqRefl ρ) (monus_zero zero)).eqTrans (pw_zero ρ))
-        (congrBell (add_zero c)))).eqTrans (by apply deriveNat; ipra_simps; ring))
-  have a := natEq (sum_succ' (Γ := Γ) (bgB wB) zero (pairT zero (par zero ρ c)))
-  have b := natEq (sum_zero (Γ := Γ) (bgB wB) (pairT zero (par zero ρ c)))
-  have d := natEq t
-  apply deriveNat; ipra_simps
-  linear_combination a + b + d
+        (congrBell (add_zero c)))).eqTrans (by ipra_ring))
+  ipra_lc natEq (sum_succ' (Γ := Γ) (bgB wB) zero (pairT zero (par zero ρ c))) +
+    natEq (sum_zero (Γ := Γ) (bgB wB) (pairT zero (par zero ρ c))) + natEq t
 
 /-! ## The top level `j = p` -/
 
@@ -232,7 +216,7 @@ theorem top_split {p : PTm n} (hq : Γ ⊢[PRAAx] p ≐ succ (pred p)) (ρ c : P
   have t0 : Γ ⊢[PRAAx] inst2 (bgB wB) zero (pairT p (par p ρ c)) ≐ bell c * pw ρ p :=
     (bg_at zero p p ρ c).eqTrans
       ((congrMul (binom_zero' p) (congrMul (congrPw (.eqRefl ρ) (monus_zero p))
-        (congrBell (add_zero c)))).eqTrans (by apply deriveNat; ipra_simps; ring))
+        (congrBell (add_zero c)))).eqTrans (by ipra_ring))
   have tq : Γ ⊢[PRAAx] inst2 (bgB wB) (succ (pred p)) (pairT p (par p ρ c)) ≐ bell (c + p) := by
     refine (bg_at _ p p ρ c).eqTrans ?_
     have g1 : Γ ⊢[PRAAx] binom p (succ (pred p)) ≐ one :=
@@ -241,7 +225,7 @@ theorem top_split {p : PTm n} (hq : Γ ⊢[PRAAx] p ≐ succ (pred p)) (ρ c : P
       (congrPw (.eqRefl ρ) ((congrMonus (.eqRefl p) hq.eqSymm).eqTrans (monus_self p))).eqTrans
         (pw_zero _)
     refine (congrMul g1 (congrMul g2 (congrBell (congrAdd (.eqRefl c) hq.eqSymm)))).eqTrans ?_
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   have a := natEq s1; have b := natEq s2; have c' := natEq s3
   have d := natEq t0; have e := natEq tq
   apply deriveNat; ipra_simps
@@ -276,7 +260,7 @@ theorem top_cong {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (ρ c : PTm n) :
   refine (cong_of_eq (top_split hq ρ c)).eqTrans ?_
   refine (cong_add hq (cong_add hq (cong_mul (bell c) hq (fermat_at hp ρ)) m0) tc).eqTrans ?_
   refine cong_of_eq ?_
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-! ## Trading one shift by `q` for one factor `E + ρ` -/
 
@@ -333,19 +317,13 @@ theorem pt_cong {p ρ q c i j : PTm n} (hq : Γ ⊢[PRAAx] p ≐ succ (pred p))
   have l : Γ ⊢[PRAAx] inst2 (bgB wB) i (pairT j (par j ρ (c + q))) ≐
       binom j i * pw ρ (monus j i) * bell (c + i + q) := by
     refine (bg_at i j j ρ (c + q)).eqTrans ?_
-    have eb := natEq (congrBell (Γ := Γ) (a := c + q + i) (b := c + i + q)
-      (by apply deriveNat; ipra_simps; ring))
-    apply deriveNat; ipra_simps
-    linear_combination 𝔞 (binom j i) * 𝔞 (pw ρ (monus j i)) * eb
+    ipra_lc 𝔞 (binom j i) * 𝔞 (pw ρ (monus j i)) * natEq (congrBell (Γ := Γ) (a := c + q + i) (b := c + i + q) (by ipra_ring))
   have r : Γ ⊢[PRAAx] binom j i * pw ρ (monus j i) * (bell (succ (c + i)) + ρ * bell (c + i)) ≐
       inst2 (bgB wB) i (pairT j (par j ρ (succ c))) +
         ρ * inst2 (bgB wB) i (pairT j (par j ρ c)) := by
     refine .eqTrans ?_ (congrAdd (bg_at i j j ρ (succ c))
       (congrMul (.eqRefl ρ) (bg_at i j j ρ c))).eqSymm
-    have es := natEq (congrBell (Γ := Γ) (a := succ (c + i)) (b := succ c + i)
-      (by apply deriveNat; ipra_simps; ring))
-    apply deriveNat; ipra_simps
-    linear_combination 𝔞 (binom j i) * 𝔞 (pw ρ (monus j i)) * es
+    ipra_lc 𝔞 (binom j i) * 𝔞 (pw ρ (monus j i)) * natEq (congrBell (Γ := Γ) (a := succ (c + i)) (b := succ c + i) (by ipra_ring))
   exact (cong_of_eq l).eqTrans ((cong_mul _ hq h).eqTrans (cong_of_eq r))
 
 theorem shift_add (a b : PTm n) : Syn.shift (a + b) = Syn.shift a + Syn.shift b := by
@@ -366,9 +344,7 @@ theorem tele_step {p ρ q c j : PTm n} (hq : Γ ⊢[PRAAx] p ≐ succ (pred p))
   · simp only [shift_pair, shift_add]
     rw [shift_succ (a := c)]
     exact pt_cong hq'.wk (.impE H.allOpen.wk Prf.hyp0)
-  · have e := natEq (pascal_U (Γ := Γ) j ρ c)
-    apply deriveNat; ipra_simps
-    linear_combination -e
+  · ipra_lc -natEq (pascal_U (Γ := Γ) j ρ c)
 
 /-! ## The level bit -/
 
@@ -417,20 +393,14 @@ theorem level_at {m r T p : PTm n} (hQ : Γ ⊢[PRAAx] allB lvB (succ T) (lvP r 
 theorem monus_of_lt {a T : PTm n} (h : Γ ⊢[PRAAx] lt T a) :
     Γ ⊢[PRAAx] monus a T ≐ succ (monus a (succ T)) := by
   have w : Γ ⊢[PRAAx] a ≐ T + succ (monus a (succ T)) := by
-    have e := natEq (eq_add_of_le h)
-    apply deriveNat; ipra_simps
-    linear_combination e
+    ipra_lc natEq (eq_add_of_le h)
   exact (congrMonus w (.eqRefl T)).eqTrans (add_monus' _ T)
 
 theorem lv_ne_gt {m r T p : PTm n} (h : Γ ⊢[PRAAx] lt T (m + pw p r))
     (hz : Γ ⊢[PRAAx] inst2 lvB m (lvP r T p) ≐ zero) : Γ ⊢[PRAAx] Fm.bot := by
   refine succ_ne_zero' _ (a := monus (m + pw p r) (succ T) +
     eqb (rem (bell (m + pw p r)) p) (rem (bell (succ m) + r * bell m) p)) ?_
-  have e₁ := natEq (lv_at (Γ := Γ) m r T p)
-  have e₂ := natEq hz
-  have e₃ := natEq (monus_of_lt h)
-  apply deriveNat; ipra_simps
-  linear_combination e₂ - e₁ - e₃
+  ipra_lc natEq hz - natEq (lv_at (Γ := Γ) m r T p) - natEq (monus_of_lt h)
 
 theorem lv_ne_le {m r T p : PTm n}
     (h : Γ ⊢[PRAAx] rem (bell (m + pw p r)) p ≐ rem (bell (succ m) + r * bell m) p)
@@ -455,11 +425,7 @@ theorem tele_bound {m J j i q T : PTm n} (hq : Γ ⊢[PRAAx] q ≐ succ (pred q)
     (hm : Γ ⊢[PRAAx] le (m + J * q) T) :
     Γ ⊢[PRAAx] le (m + monus J (succ j) * q + i + q) T := by
   refine le_trans (le_of_eq_add (d := i * pred q + monus j i * q) ?_) hm
-  have eJ := natEq (eq_add_of_le hjJ)
-  have ej := natEq (eq_add_of_le (le_of_lt_succ hi))
-  have eq := natEq hq
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 q * eJ + 𝔞 q * ej + 𝔞 i * eq
+  ipra_lc 𝔞 q * natEq (eq_add_of_le hjJ) + 𝔞 q * natEq (eq_add_of_le (le_of_lt_succ hi)) + 𝔞 i * natEq hq
 
 theorem shift_mul (a b : PTm n) : Syn.shift (a * b) = Syn.shift a * Syn.shift b := by
   simp [Syn.shift]
@@ -477,9 +443,7 @@ theorem tele_link {p r T m J j : PTm n} (hq : Γ ⊢[PRAAx] p ≐ succ (pred p))
     Γ ⊢[PRAAx] rem (U j r (m + monus J j * pw p r)) p ≐
       rem (U (succ j) r (m + monus J (succ j) * pw p r)) p := by
   have e₀ : Γ ⊢[PRAAx] m + monus J j * pw p r ≐ m + monus J (succ j) * pw p r + pw p r := by
-    have e := natEq (monus_of_lt hjJ)
-    apply deriveNat; ipra_simps
-    linear_combination 𝔞 (pw p r) * e
+    ipra_lc 𝔞 (pw p r) * natEq (monus_of_lt hjJ)
   refine (cong_of_eq (congrU e₀)).eqTrans (tele_step hq (.allI (.impI ?_)))
   simp only [shift_add, shift_mul, shift_monus, shift_succ, shift_pw]
   have hQ' : (Γ.map Fm.shift) ⊢[PRAAx]
@@ -534,9 +498,7 @@ theorem tele {p r T m J : PTm n} (hq : Γ ⊢[PRAAx] p ≐ succ (pred p))
       rem (U J r (m + monus J J * pw p r)) p) := by
     simpa [Syn.subst_inst_shift, Syn.inst_zero] using h2
   refine (Prf.impE h3 (le_refl J)).eqTrans (cong_of_eq (congrU ?_))
-  have e := natEq (monus_self (Γ := Γ) J)
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 (pw p r) * e
+  ipra_lc 𝔞 (pw p r) * natEq (monus_self (Γ := Γ) J)
 
 /-! ## From level `r` to level `r + 1` -/
 
@@ -546,20 +508,16 @@ theorem power_step {p r T m : PTm n} (hp : Γ ⊢[PRAAx] prime p)
     Γ ⊢[PRAAx] rem (bell (m + pw p (succ r))) p ≐ rem (bell (succ m) + succ r * bell m) p := by
   have hq := prime_eq_succ_pred hp
   have e : Γ ⊢[PRAAx] m + pw p (succ r) ≐ m + p * pw p r := by
-    have a := natEq (pw_succ (Γ := Γ) p r)
-    apply deriveNat; ipra_simps
-    linear_combination a
+    ipra_lc natEq (pw_succ (Γ := Γ) p r)
   exact (cong_of_eq (congrBell e)).eqTrans
     ((tele hq hQ (le_congr e (.eqRefl T) hm)).eqTrans (top_cong hp r m))
 
 theorem level_zero (m T p : PTm n) : Γ ⊢[PRAAx] neg (inst2 lvB m (lvP zero T p) ≐ zero) := by
   refine lv_ne (.impI (cong_of_eq ?_))
   have e : (le (m + pw p zero) T :: Γ) ⊢[PRAAx] m + pw p zero ≐ succ m := by
-    have a := natEq (pw_zero (Γ := le (m + pw p zero) T :: Γ) p)
-    apply deriveNat; ipra_simps
-    linear_combination a
+    ipra_lc natEq (pw_zero (Γ := le (m + pw p zero) T :: Γ) p)
   refine (congrBell e).eqTrans ?_
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem level_succ {p r T : PTm n} (hp : Γ ⊢[PRAAx] prime p)
     (hQ : Γ ⊢[PRAAx] allB lvB (succ T) (lvP r T p) ≐ one) :

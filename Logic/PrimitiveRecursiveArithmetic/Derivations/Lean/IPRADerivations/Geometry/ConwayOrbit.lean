@@ -1,6 +1,6 @@
 import IPRADerivations.Core.Tactic
 import IPRADerivations.Core.Integers
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The two-orbit placement of the Conway criterion

@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianGammaCompactCutoffAlignment
 import IPRADerivations.Analysis.GaussianCompactZeroWidth
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual original compact Euler quadratures split at earlier cutoffs
@@ -87,8 +88,7 @@ theorem euler_data_congr (z R B a C E T a' C' E' T' : PTm n) (ha : Γ ⊢[PRAAx]
 
 theorem add_data_congr (x x' y y' : PTm n) (hx : Γ ⊢[PRAAx] x ≐ x') (hy : Γ ⊢[PRAAx] y ≐ y') : Γ ⊢[PRAAx]
     addData x y ≐ addData x' y' := by
-  simpa using Prf.eqCongr (addData (var 0) (var 1) : PTm 2) (σ := ![x,y]) (σ' := ![x',y'])
-    (fun i => by fin_cases i; exact hx; exact hy)
+  ipra_congr (addData (var 0) (var 1) : PTm 2) with [hx, hy]
 
 theorem point_data_congr (f : PR 2) (x y : PTm n) (he : Γ ⊢[PRAAx] x ≐ y) (h : Γ ⊢[PRAAx] pointCN f x) : Γ ⊢[PRAAx] pointCN f y := by
   simpa using Prf.eqSubst (pointCN f (var 0) : Fm PTm 1) ![x] ![y] (fun i => by fin_cases i; exact he) (by simpa using h)

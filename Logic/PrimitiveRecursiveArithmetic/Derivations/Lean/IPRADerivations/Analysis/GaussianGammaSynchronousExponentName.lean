@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianGammaExponentCoefficientPolynomial
 import IPRADerivations.Analysis.GaussianGammaZetaTailSeries
 import IPRADerivations.Analysis.GaussianNamedSmallPerturbationTransport
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # A regular exponent name with the original shared coefficient precision
@@ -127,10 +128,7 @@ theorem raw_bound (p z R B : PTm n) (h : Γ ⊢[PRAAx] source z R B) : Γ ⊢[PR
 theorem raw_value_congr {p z R B p' z' R' B' : PTm n} (hp : Γ ⊢[PRAAx] p ≐ p')
     (hz : Γ ⊢[PRAAx] z ≐ z') (hR : Γ ⊢[PRAAx] R ≐ R') (hB : Γ ⊢[PRAAx] B ≐ B') : Γ ⊢[PRAAx]
     rawValue p z R B ≐ rawValue p' z' R' B' := by
-  simpa only [subst_rawValue,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.cons_val_three,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (rawValue (var 0) (var 1) (var 2) (var 3) : PTm 4)
-      (σ := ![p,z,R,B]) (σ' := ![p',z',R',B']) (fun i => by fin_cases i; exact hp; exact hz; exact hR; exact hB)
+  ipra_congr (rawValue (var 0) (var 1) (var 2) (var 3) : PTm 4) with [hp, hz, hR, hB]
 
 theorem raw_at (p z R B : PTm n) : Γ ⊢[PRAAx] ap2 rawF p (rawData z R B) ≐ rawValue p z R B := by
   have raw := toPR_eq (Γ := Γ) (rawValue (var 0) (fstT (var 1)) (fstT (sndT (var 1))) (sndT (sndT (var 1))) : PTm 2) ![p,rawData z R B]

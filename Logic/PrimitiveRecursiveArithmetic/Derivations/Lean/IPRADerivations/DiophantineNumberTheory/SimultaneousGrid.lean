@@ -73,7 +73,7 @@ theorem grid_count {N' d' k B : PTm n}
   have hM1 : Γ ⊢[PRAAx] le one (MT N' d') := by
     ipra_le 16 * 𝔟 N' ^ 2 * 𝔟 d' + 16 * 𝔟 N' ^ 2 + 48 * 𝔟 N' * 𝔟 d' + 48 * 𝔟 N' + 32 * 𝔟 d' + 31
   have hH1 : Γ ⊢[PRAAx] le one (HT N' d') :=
-    le_of_eq_add (d := hT N' d') (by apply deriveNat; ipra_simps; ring)
+    le_of_eq_add (d := hT N' d') (by ipra_ring)
   have hm := one_le_pw_of d' hM1
   have hh := one_le_pw_of (succ d') hH1
   have hf2' : Γ ⊢[PRAAx] le (succ (MT N' d' * k)) (HT N' d' * B + HT N' d') := hf2

@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianGammaPoleZeros
 import IPRADerivations.Analysis.GaussianGammaShiftTrajectory
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Quantitative pole guards on the punctured unit disk
@@ -167,11 +168,7 @@ theorem original_local_pole_at (h B A S D j k : PTm n) (hm : Γ ⊢[PRAAx] local
     · let C := (j ≐ k) :: (le j k) :: Γ
       have e : C ⊢[PRAAx] j ≐ k := Prf.hyp0
       have he : C ⊢[PRAAx] translated (center h B j) B j ≐ translated (center h B j) B k := by
-        simpa only [GaussianGammaEulerHeadLower.subst_translated,Syn.subst_var,Matrix.cons_val_zero,
-          Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_succ,Matrix.head_cons,Matrix.tail_cons] using
-          Prf.eqCongr (Γ := C) (Ax := PRAAx) (translated (var 0) (var 1) (var 2) : PTm 3)
-            (σ := ![center h B j,B,j]) (σ' := ![center h B j,B,k])
-            (fun x => by fin_cases x; exact .eqRefl _; exact .eqRefl _; exact e)
+        ipra_congr (translated (var 0) (var 1) (var 2) : PTm 3) with [.eqRefl (center h B j), .eqRefl B, e]
       exact le_congr (.eqRefl _) (congrMul (.eqRefl _)
         ((normSq_equal (translation_at_center (Γ := C) h B j)).eqSymm.eqTrans
           (ComplexLogarithmRemainder.congr_normSq he))) hm.andE₂.andE₂.wk.wk

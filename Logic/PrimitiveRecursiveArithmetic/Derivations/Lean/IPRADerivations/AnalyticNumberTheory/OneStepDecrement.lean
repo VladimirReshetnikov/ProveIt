@@ -82,7 +82,7 @@ theorem u_pow (K F T : PTm n) : Γ ⊢[PRAAx] le (U (pw two T) K F) (T * F) := b
 /-- `u_{N 2^T} ≤ u_N + TF`. -/
 theorem u_shift {K N : PTm n} (F T : PTm n) (hN : Γ ⊢[PRAAx] le one N) :
     Γ ⊢[PRAAx] le (U (N * pw two T) K F) (U N K F + T * F) := by
-  have e : Γ ⊢[PRAAx] K * (N * pw two T) ≐ K * N * pw two T := by apply deriveNat; ipra_simps; ring
+  have e : Γ ⊢[PRAAx] K * (N * pw two T) ≐ K * N * pw two T := by ipra_ring
   have p := le_congr (congrAp2 (sumF hB) e (.eqRefl F)).eqSymm (.eqRefl _) (S_pow2 (K * N) F T)
   have hKN : Γ ⊢[PRAAx] le K (K * N) := by
     have q := le_scale K hN
@@ -138,8 +138,8 @@ theorem decrement_alg {r w ux uN u0 T s μ F x D A B Z N q : PTm n}
 
 /-- `u² absd(a, b) ≤ absd(a u u, b u u)`. -/
 theorem absd_sq {a b u : PTm n} : Γ ⊢[PRAAx] le (u * u * absd a b) (absd (a * u * u) (b * u * u)) := by
-  have ea : Γ ⊢[PRAAx] u * u * a ≐ a * u * u := by apply deriveNat; ipra_simps; ring
-  have eb : Γ ⊢[PRAAx] u * u * b ≐ b * u * u := by apply deriveNat; ipra_simps; ring
+  have ea : Γ ⊢[PRAAx] u * u * a ≐ a * u * u := by ipra_ring
+  have eb : Γ ⊢[PRAAx] u * u * b ≐ b * u * u := by ipra_ring
   exact le_congr (.eqRefl _) (congrAdd (congrMonus ea eb) (congrMonus eb ea)) (scale_absd (u * u) a b)
 
 /-! ## The block hypothesis from the stage bound -/

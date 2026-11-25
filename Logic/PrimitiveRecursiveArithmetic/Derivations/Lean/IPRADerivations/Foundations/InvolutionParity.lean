@@ -1,6 +1,6 @@
 import IPRADerivations.Foundations.EliminationDegree
 import IPRADerivations.Foundations.BoundedFormulas
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Counting under a fixed-point-free involution

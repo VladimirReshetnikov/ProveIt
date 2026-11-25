@@ -1,7 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.AperyNumbers
 import IPRADerivations.Analysis.Pochhammer
 import IPRADerivations.Foundations.ChineseRemainder
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # A prescribed coprime modulus

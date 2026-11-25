@@ -4,6 +4,7 @@ import IPRADerivations.Combinatorics.BinomialTheorem
 import IPRADerivations.Core.Fubini
 import IPRADerivations.Core.ProdLemmas
 import IPRADerivations.AnalyticNumberTheory.Mobius
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Products of powers with a constant base, and delta products
@@ -62,7 +63,7 @@ theorem inst2_pdB (F : PTm 2) (i z : PTm n) :
   have e : inst2 (pdB F) i z = pw (inst2 (sndB F) i z) (eqb (fstT z) i) := by simp [inst2]
   rw [e, inst2_sndB]
 
-theorem mul_one_e (t : PTm n) : Γ ⊢[PRAAx] t ≐ t * one := by apply deriveNat; ipra_simps; ring
+alias mul_one_e := Common.mul_one_right'
 
 /-- `f(i)^{[c = i]} = f(c)^{[c = i] · 1}`. -/
 theorem delta_pt (F : PTm 2) (i c x : PTm n) :

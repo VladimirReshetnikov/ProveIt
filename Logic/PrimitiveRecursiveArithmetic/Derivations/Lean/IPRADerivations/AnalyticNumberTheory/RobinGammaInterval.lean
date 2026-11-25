@@ -48,10 +48,10 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 abbrev k2 : PTm n := succ (succ zero)
 
 theorem L_one (x : PTm n) : Γ ⊢[PRAAx] Lv (succ zero) x ≐ one :=
-  (L_succ zero x).eqTrans ((congrMul (.eqRefl _) (L_zero x)).eqTrans (by apply deriveNat; ipra_simps; ring))
+  (L_succ zero x).eqTrans ((congrMul (.eqRefl _) (L_zero x)).eqTrans (by ipra_ring))
 
 theorem L_two (x : PTm n) : Γ ⊢[PRAAx] Lv k2 x ≐ succ two :=
-  (L_succ (succ zero) x).eqTrans ((congrMul (.eqRefl _) (L_one x)).eqTrans (by apply deriveNat; ipra_simps; ring))
+  (L_succ (succ zero) x).eqTrans ((congrMul (.eqRefl _) (L_one x)).eqTrans (by ipra_ring))
 
 theorem Nz_one (s : PTm n) : Γ ⊢[PRAAx] Nz (succ zero) one s ≐ two * (s * s) := by
   refine (Nz_succ zero one s).eqTrans ?_
@@ -116,7 +116,7 @@ theorem term_lower {m j u D : PTm n} (hm : Γ ⊢[PRAAx] le one m)
       (D * (two * sv m) * Ud k2 one (sv m) (Wv m))) :
     Γ ⊢[PRAAx] le (u * dU m (succ (succ j))) (D * nU m (succ (succ j))) := by
   have nest := Prf.andE₂ (Prf.andE₁ (log_name (Γ := Γ) (p := one) (sv_pos m) (Wv_pos hm) (s_sq m) k2 j))
-  have eK : Γ ⊢[PRAAx] k2 + j ≐ succ (succ j) := by apply deriveNat; ipra_simps; ring
+  have eK : Γ ⊢[PRAAx] k2 + j ≐ succ (succ j) := by ipra_ring
   have nest' := le_congr (congrMul (Un_congr _ _ _ eK) (.eqRefl _)) (congrMul (.eqRefl _) (Ud_congr _ _ _ eK)) nest
   have e := natEq (nU_eq (Γ := Γ) m (succ (succ j)))
   have c : Γ ⊢[PRAAx] le (Ud k2 one (sv m) (Wv m) * (u * dU m (succ (succ j))))

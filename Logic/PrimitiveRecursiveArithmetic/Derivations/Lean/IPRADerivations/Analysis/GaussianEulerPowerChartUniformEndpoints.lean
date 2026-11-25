@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianEulerPowerChartCofinalEndpoints
 import IPRADerivations.Analysis.GaussianEulerPowerChartExponentOrder
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Uniform physical endpoints for the original rational power chart
@@ -47,8 +48,7 @@ def referenceBounds (d h S C V : PTm n) : Fm PTm n :=
 private theorem one_le_two : Γ ⊢[PRAAx] le one two :=
   le_of_eq_add (d := one) (by ipra_ring)
 
-private theorem right_one (a : PTm n) : Γ ⊢[PRAAx] a*one ≐ a :=
-  (mul_comm a one).eqTrans (one_mul a)
+private alias right_one := Common.mul_one_right
 
 private theorem unit_parameters (H d h Q S : PTm n)
     (hH : Γ ⊢[PRAAx] le one H) (hd : Γ ⊢[PRAAx] le one d)

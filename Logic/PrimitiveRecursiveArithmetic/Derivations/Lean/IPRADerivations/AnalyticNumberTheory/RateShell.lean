@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.RateAbel
 import IPRADerivations.Geometry.HypercubeSplit
 import IPRADerivations.AnalyticNumberTheory.SummatoryPhi
 import IPRADerivations.AnalyticNumberTheory.TotientCorollaries
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Shell arithmetic for the weighted series (`riemann_ipra_equivalences_2026-11-20`, `thm:rate`, (1) ⇒ (2))
@@ -103,7 +104,7 @@ theorem m_bound {r c N X : PTm n} (hr : Γ ⊢[PRAAx] le one r) (hN : Γ ⊢[PRA
   have l2 := le_mul_mono (le_refl (pw two (quo (jj r N) two * k4 r) * c)) nb
   have eA : Γ ⊢[PRAAx] pw two (quo (jj r N) two * k4 r) * c * pw two (two * r * succ (jj r N) * succ (two * r)) ≐
       c * pw two (quo (jj r N) two * k4 r + two * r * succ (jj r N) * succ (two * r)) :=
-    (by apply deriveNat; ipra_simps; ring : Γ ⊢[PRAAx] _ ≐ c * (pw two (quo (jj r N) two * k4 r) *
+    (by ipra_ring : Γ ⊢[PRAAx] _ ≐ c * (pw two (quo (jj r N) two * k4 r) *
       pw two (two * r * succ (jj r N) * succ (two * r)))).eqTrans (congrMul (.eqRefl c) (pw_add two _ _).eqSymm)
   -- right side: `(c+1)^{4r} 2^{(r+1)(j+1)·4r}`
   have eR : Γ ⊢[PRAAx] pw (succ c * pw two (succ r + succ r * jj r N)) (k4 r) ≐
@@ -113,7 +114,7 @@ theorem m_bound {r c N X : PTm n} (hr : Γ ⊢[PRAAx] le one r) (hN : Γ ⊢[PRA
     le_trans (le_succ_self c) (le_congr (.eqRefl _) (congrPw (.eqRefl _) hk.eqSymm) (le_self_pw c (pred (k4 r))))
   -- the exponents: `4r⌊j/2⌋ + 2r(2r+1)(j+1) ≤ 4r(r+1)(j+1)`
   have dj := div_mod_at (Γ := Γ) (x := jj r N) (y := two) (c := one) (.eqRefl _)
-  have ej := natEq ((congrMul (.eqRefl r) (Prf.andE₁ dj)).eqTrans (by apply deriveNat; ipra_simps; ring) :
+  have ej := natEq ((congrMul (.eqRefl r) (Prf.andE₁ dj)).eqTrans (by ipra_ring) :
     Γ ⊢[PRAAx] r * jj r N ≐ two * (r * quo (jj r N) two) + r * rem (jj r N) two)
   have ex : Γ ⊢[PRAAx] le (quo (jj r N) two * k4 r + two * r * succ (jj r N) * succ (two * r))
       ((succ r + succ r * jj r N) * k4 r) := by
@@ -149,7 +150,7 @@ theorem half_succ {j : PTm n} :
     have f := natEq (Γ := C) e.wk
     have z := natEq (Γ := C) r1
     have hz : C ⊢[PRAAx] succ j ≐ two * succ (quo j two) + zero := by
-      apply deriveNat; ipra_simps; linear_combination f + z
+      ipra_lc f + z
     refine .orI₂ (.andI r1 (.andI ?_ ?_))
     · exact LeanProofs.IPRA.AnalyticNumberTheory.Totient.quo_eq two_pos hz (by ipra_le 1)
     · exact LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative.rem_eq' two_pos hz (by ipra_le 1)
@@ -172,7 +173,7 @@ theorem e_step (r y N : PTm n) :
   have wN := natEq (W_succ (Γ := Γ) aN r y N)
   have hρ : Γ ⊢[PRAAx] rho r N ≐ succ (pred (rho r N)) := pos_of_one_le (rho_pos r N)
   have qq : ∀ (X : PTm n), Γ ⊢[PRAAx] rho r N * X ≐ pred (rho r N) * X + X := fun X =>
-    (congrMul hρ (.eqRefl X)).eqTrans (by apply deriveNat; ipra_simps; ring)
+    (congrMul hρ (.eqRefl X)).eqTrans (by ipra_ring)
   have qP := natEq (qq (Mv aP y N))
   have qN := natEq (qq (Mv aN y N))
   have l1 := le_mul_mono (le_refl (rho r N))
@@ -206,7 +207,7 @@ theorem m_bound' {r c y N : PTm n} (hr : Γ ⊢[PRAAx] le one r) (hN : Γ ⊢[PR
   have b := m_bound hr hN hc
   have e : Γ ⊢[PRAAx] succ c * pw two (succ r + succ r * jj r N) ≐ two * (Ac r c * uu r N) :=
     (congrMul (.eqRefl _) ((pw_add two _ _).eqTrans (congrMul (pw_succ two r) (.eqRefl _)))).eqTrans
-      (by apply deriveNat; ipra_simps; ring)
+      (by ipra_ring)
   exact le_congr (.eqRefl _) e b
 
 /-- One step of the invariant, for `N ≥ 1`. -/
@@ -220,7 +221,7 @@ theorem inv_step {r c y N : PTm n} (hr : Γ ⊢[PRAAx] le one r) (hN : Γ ⊢[PR
   have js := jj_step hr hN
   have hρ : Γ ⊢[PRAAx] rho r N ≐ succ (pred (rho r N)) := pos_of_one_le (rho_pos r N)
   have g4p : Γ ⊢[PRAAx] rho r N * (Ac r c * uu r N) ≐ pred (rho r N) * (Ac r c * uu r N) + Ac r c * uu r N :=
-    (congrMul hρ (.eqRefl (Ac r c * uu r N))).eqTrans (by apply deriveNat; ipra_simps; ring)
+    (congrMul hρ (.eqRefl (Ac r c * uu r N))).eqTrans (by ipra_ring)
   refine .orE (lt_or_le (jj r N) (jj r (succ N))) ?_ ?_
   · -- a shell crossing: `j(N+1) = j(N) + 1`, `ρ_N = 2^{r+1}`, `u_{N+1} = ρ_N u_N`
     let C : List (Fm PTm n) := lt (jj r N) (jj r (succ N)) :: Γ
@@ -425,7 +426,7 @@ theorem w_bound {r c y : PTm n} (hr : Γ ⊢[PRAAx] le one r) (hc : Γ ⊢[PRAAx
     refine (congrMul ((pw_succ two _).eqTrans (congrMul ((pw_succ two _).eqTrans (congrMul ((pw_succ two _).eqTrans
       (congrMul ((pw_succ two _).eqTrans (congrMul (pw_add two c r) (.eqRefl _))) (.eqRefl _))) (.eqRefl _)))
       (.eqRefl _))) (.eqRefl _)).eqTrans ?_
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   have f := natEq eK
   refine absd_le ?_ ?_
   · ipra_le sl l2 + sl l3 + sl hE' + sl hM + sl cb' + sl cb' + sl cb' + sl cb' + sl cb' + sl cb' + sl cb' + sl cb' +

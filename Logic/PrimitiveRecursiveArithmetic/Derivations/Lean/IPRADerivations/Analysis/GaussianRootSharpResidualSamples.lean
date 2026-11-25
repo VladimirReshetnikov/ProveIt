@@ -4,6 +4,7 @@ import IPRADerivations.Analysis.GaussianEuclideanDistanceName
 import IPRADerivations.Analysis.GaussianRepresentedPointBounds
 import IPRADerivations.Analysis.GaussianFastValueCut
 import IPRADerivations.Analysis.GaussianPolynomialValueName
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Sharp M_Z residual estimates from actual finite root hits
@@ -247,10 +248,7 @@ def observationF (a : PR 3) (point : PR 2) : PR 2 := PTm.toPR (body a point)
 theorem observation_congr (a : PR 3) (point : PR 2) {N N' x x' s s' : PTm n}
     (hN : Γ ⊢[PRAAx] N ≐ N') (hx : Γ ⊢[PRAAx] x ≐ x') (hs : Γ ⊢[PRAAx] s ≐ s') : Γ ⊢[PRAAx]
     observation a point N x s ≐ observation a point N' x' s' := by
-  simpa only [subst_observation,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-    Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using Prf.eqCongr (Ax := PRAAx) (Γ := Γ)
-      (observation a point (var 0) (var 1) (var 2) : PTm 3) (σ := ![N,x,s]) (σ' := ![N',x',s'])
-      (fun i => by fin_cases i; exact hN; exact hx; exact hs)
+  ipra_congr (observation a point (var 0) (var 1) (var 2) : PTm 3) with [hN, hx, hs]
 
 theorem observation_at (a : PR 3) (point : PR 2) (N x s : PTm n) : Γ ⊢[PRAAx]
     ap2 (observationF a point) s (data N x) ≐ observation a point N x s := by

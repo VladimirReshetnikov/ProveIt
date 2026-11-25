@@ -1,5 +1,7 @@
 import IPRADerivations.Probability.ExpectationCorollaries
 import IPRADerivations.Core.SumOrder
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Conditional cells, Bernoulli, balance point and finite Fatou
@@ -33,10 +35,7 @@ open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
-theorem congrEqb' {a a' b b' : PTm n} (h₁ : Γ ⊢[PRAAx] a ≐ a') (h₂ : Γ ⊢[PRAAx] b ≐ b') :
-    Γ ⊢[PRAAx] eqb a b ≐ eqb a' b' := by
-  unfold eqb
-  exact congrMonus (.eqRefl _) (congrAdd (congrMonus h₁ h₂) (congrMonus h₂ h₁))
+alias congrEqb' := Common.congrEqb
 
 /-- `f(i, snd z)`. -/
 abbrev sb (f : PTm 2) : PTm 2 := Syn.subst ![var 0, sndT (var 1)] f
@@ -117,16 +116,12 @@ theorem bernoulli (w : PTm 2) (x : PTm n) :
     rw [inst2_mul', inst2_ind1]; exact (congrMul (.eqRefl _) e0).eqTrans (mul_zero _)
   have t1 : Γ ⊢[PRAAx] inst2 (w * eqb (var 0) one) one x ≐ inst2 w one x := by
     rw [inst2_mul', inst2_ind1]; exact (congrMul (.eqRefl _) e1).eqTrans (Expectation.mul_one' _)
-  have s1 := natEq (sum_succ' (Γ := Γ) (w * eqb (var 0) one) one x)
-  have s0 := natEq (sum_succ' (Γ := Γ) (w * eqb (var 0) one) zero x)
-  have z := natEq (sum_zero (Γ := Γ) (w * eqb (var 0) one) x)
   have a := natEq t0; have b := natEq t1
-  have u1 := natEq (sum_succ' (Γ := Γ) w one x)
-  have u0 := natEq (sum_succ' (Γ := Γ) w zero x)
-  have uz := natEq (sum_zero (Γ := Γ) w x)
   refine .andI ?_ ?_
-  · apply deriveNat; ipra_simps; linear_combination s1 + s0 + z + a + b
-  · apply deriveNat; ipra_simps; linear_combination u1 + u0 + uz
+  · ipra_lc natEq (sum_succ' (Γ := Γ) (w * eqb (var 0) one) one x) +
+      natEq (sum_succ' (Γ := Γ) (w * eqb (var 0) one) zero x) + natEq (sum_zero (Γ := Γ) (w * eqb (var 0) one) x) +
+      a + b
+  · ipra_lc natEq (sum_succ' (Γ := Γ) w one x) + natEq (sum_succ' (Γ := Γ) w zero x) + natEq (sum_zero (Γ := Γ) w x)
 
 /-- `thm:center-mass`: for `c = p/q`, the cleared torque `∑ m_i (q x_i) − ∑ m_i p` vanishes exactly when
 `q S = p M`. -/

@@ -3,6 +3,8 @@ import IPRADerivations.Analysis.GaussianFiniteLogarithmPolynomial
 import IPRADerivations.Analysis.GaussianIntegerFractionPowers
 import IPRADerivations.Analysis.GaussianDominantPairAlgebra
 import IPRADerivations.Analysis.GaussianCoefficientNormEntries
+import IPRADerivations.Core.CongruenceTactic
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The auxiliary-radius coefficient majorant of the original finite logarithm
@@ -85,7 +87,6 @@ theorem coefficient_power_bound (A B k e : PTm n) (hB : Γ ⊢[PRAAx] le one B) 
         (RationalNonnegativePowers.fraction_congr (one_mul _) (.eqRefl _)))
   exact RationalArgmin.rationalLE_congr (.eqRefl _) factor (GaussianRationalL1Algebra.qL1_multiply _ _)
 
-
 def point : PTm n := radiusPoint (num 5) (num 9)
 def buffer (d : PTm n) : PTm n := GaussianRationalPolynomialDilation.dilated (polynomial d) d point
 def majorant (e : PTm n) : PTm n := fraction (pw (num 5) (succ e)) (num 8*pw (num 9) e)
@@ -165,13 +166,8 @@ theorem prefix_step (d i : PTm n) (hi : Γ ⊢[PRAAx] le (succ (succ i)) d)
     (GaussianRationalPowerExpansion.remaining_succ d i).eqSymm.eqTrans
       (GaussianRationalPowerExpansion.remaining_before d (succ i) prev)
   have e2 : Γ ⊢[PRAAx] le two (monus d i) := by
-    have hd := natEq (eq_add_of_le hi)
-    have er := natEq (eq_add_of_le (le_trans (le_succ_self i) prev))
     apply le_of_eq_add (d := monus d (succ (succ i)))
-    apply deriveNat
-    simp only [Q.mk_add,map_add] at hd er
-    ipra_simps
-    linear_combination hd-er
+    ipra_lc natEq (eq_add_of_le hi)-natEq (eq_add_of_le (le_trans (le_succ_self i) prev))
   have hEntry := RationalArgmin.rationalLE_congr (GaussianCoefficientL1.qL1_congr (entry_at d i (le_trans (le_succ_self i) prev))).eqSymm
     (.eqRefl _) (high_coefficient_bound (monus d i) e2)
   have added := GaussianRationalSyntheticBounds.add_monotone _ _ _ _ old hEntry
@@ -180,12 +176,9 @@ theorem prefix_step (d i : PTm n) (hi : Γ ⊢[PRAAx] le (succ (succ i)) d)
       fraction (pw (num 5) (succ (monus d (succ i)))) (two*pw (num 9) (succ (monus d (succ i)))) :=
     RationalNonnegativePowers.fraction_congr hRem (congrMul (.eqRefl _) (congrAp2 powF rem (.eqRefl _)))
   have budgetEq : Γ ⊢[PRAAx] majorant (monus d i) ≐ majorant (succ (monus d (succ i))) := by
-    simpa only [subst_majorant,Syn.subst_var,Matrix.cons_val_zero] using
-      Prf.eqCongr (Γ := Γ) (majorant (var 0) : PTm 1) (σ := ![monus d i]) (σ' := ![succ (monus d (succ i))])
-        (fun j => by fin_cases j; exact rem)
+    ipra_congr (majorant (var 0) : PTm 1) with [rem]
   exact RationalArgmin.rationalLE_congr (GaussianCoefficientL1.prefix_succ _ _).eqSymm
     ((RationalAlgebra.add_congr budgetEq termEq).eqTrans (majorant_step (monus d (succ i)))) added
-
 
 theorem prefix_bound (d i : PTm n) (hi : Γ ⊢[PRAAx] le (succ i) d) : Γ ⊢[PRAAx]
     rationalLE (prefixNorm (buffer d) i) (majorant (monus d i)) := by
@@ -212,10 +205,7 @@ theorem high_prefix (d : PTm n) (hd : Γ ⊢[PRAAx] le one d) : Γ ⊢[PRAAx]
     (show Γ ⊢[PRAAx] succ (monus d one) ≐ one+monus d one by ipra_ring).eqTrans (eq_add_of_le hd).eqSymm
   have bound : Γ ⊢[PRAAx] le (succ (monus d one)) d := le_congr (.eqRefl _) shape (le_refl _)
   have normalized : Γ ⊢[PRAAx] majorant (monus d (monus d one)) ≐ majorant one := by
-    simpa only [subst_majorant,Syn.subst_var,Matrix.cons_val_zero] using
-      Prf.eqCongr (Γ := Γ) (majorant (var 0) : PTm 1)
-        (σ := ![monus d (monus d one)]) (σ' := ![one])
-        (fun j => by fin_cases j; exact GaussianRationalMonicReconstruction.complement d one hd)
+    ipra_congr (majorant (var 0) : PTm 1) with [GaussianRationalMonicReconstruction.complement d one hd]
   have majorantEq := normalized.eqTrans majorant_one
   exact RationalArgmin.rationalLE_congr (.eqRefl _) majorantEq (prefix_bound d _ bound)
 
@@ -241,10 +231,7 @@ theorem small_sum : Γ ⊢[PRAAx]
   apply RationalFiniteSum.canonical_equal _ _ _ _ _ _ (RationalArithmetic.add_guard _ _)
     (RationalNormalForm.normalize_well_formed _ _ h72) rep (fraction_represents _ _ h72)
     (GaussianRationalHorner.positive_product _ _ h72 nine_positive) h72
-  apply ZT.derive
-  simp only [ZT.toZ_mul,ZT.toZ_add,ZT.toZ_ofNat]
-  ipra_simps
-  ring
+  ipra_lc
 
 theorem through_linear (d : PTm n) (hd : Γ ⊢[PRAAx] le one d) : Γ ⊢[PRAAx]
     rationalLE (prefixNorm (buffer d) d) (fraction (num 65) (num 72)) := by
@@ -287,7 +274,6 @@ theorem logarithm_bound (d : PTm n) : Γ ⊢[PRAAx]
   · have h1 : ((d ≐ succ (PTm.pred d)) :: Γ) ⊢[PRAAx] le one d :=
       le_congr (.eqRefl _) Prf.hyp0.eqSymm (le_of_eq_add (d := PTm.pred d) (by ipra_ring))
     exact RationalArgmin.rationalLE_congr (constant_removed d).eqSymm (.eqRefl _) (through_linear d h1)
-
 
 /-! Actual PR1 output retains the original H_d, its real weighted buffer,
 the computed rational norm and the actual auxiliary-radius point. -/

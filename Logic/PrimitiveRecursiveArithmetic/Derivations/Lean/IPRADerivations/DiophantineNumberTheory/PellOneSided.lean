@@ -1,6 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.PellGcd
 import IPRADerivations.DiophantineNumberTheory.PellDescent
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # One-sided optimality of Pell approximants

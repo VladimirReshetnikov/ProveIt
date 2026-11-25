@@ -1,5 +1,5 @@
 import IPRADerivations.Probability.MedianSymmetry
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Rank perturbation and the median envelope, by counting

@@ -43,7 +43,7 @@ theorem wsum_mul {α : Type} (w f : α → PTm n) (c : PTm n) (L : List α) :
   induction L with
   | nil =>
     show Γ ⊢[PRAAx] zero ≐ c * zero
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   | cons r rs ih =>
     show Γ ⊢[PRAAx] w r * (c * f r) + wsum w (fun r => c * f r) rs ≐ c * (w r * f r + wsum w f rs)
     have e := natEq ih

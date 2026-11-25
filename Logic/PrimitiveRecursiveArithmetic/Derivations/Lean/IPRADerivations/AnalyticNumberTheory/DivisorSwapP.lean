@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.DivisorSwap
 import IPRADerivations.AnalyticNumberTheory.SelbergLeibniz
 import IPRADerivations.AnalyticNumberTheory.ConvolutionAssoc
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The divisor involution with a parameter, and commutativity of convolution (`pnt_ipra_constructive_2026-11-14`)
@@ -91,7 +92,7 @@ theorem row_sw (d Z : PTm n) :
       rw [inst2_rowB]
       exact congrInst3 G (fst_pair _ _) (.eqRefl _) (snd_pair _ _)
     refine .eqTrans ?_ (congrMul (.eqRefl _) (congrMul (congrEqb' (fst_pair _ _) (.eqRefl _)) r1)).eqSymm
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   refine sc.eqTrans ?_
   refine .orE (zero_or_succ d) ?_ ?_
   · have s0 : ((d ≐ zero) :: Γ) ⊢[PRAAx] sg d ≐ zero := (congrSg Prf.hyp0).eqTrans sg_zero
@@ -125,7 +126,7 @@ theorem col_sw {Z : PTm n} (hN : Γ ⊢[PRAAx] fstT Z ≐ succ (pred (fstT Z))) 
       rw [inst2_colB]
       exact congrInst3 G (.eqRefl _) (fst_pair _ _) (snd_pair _ _)
     refine .eqTrans ?_ (congrMul (.eqRefl _) (congrMul (congrEqb' (fst_pair _ _) (.eqRefl _)) r1)).eqSymm
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   refine sc.eqTrans ?_
   refine .orE (zero_or_succ e) ?_ ?_
   · have s0 : ((e ≐ zero) :: Γ) ⊢[PRAAx] sg e ≐ zero := (congrSg Prf.hyp0).eqTrans sg_zero
@@ -182,14 +183,12 @@ theorem conv_comm (f g : PTm 2) {m y : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pr
   have cT : Γ ⊢[PRAAx] ap2 (sumF (TB (fgB f g))) (succ (fstT (pairT m y))) (pairT m y) ≐ conv g f m y := by
     refine (congrAp2 _ rg (.eqRefl _)).eqTrans (sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_)))
     rw [inst2_TB, inst3_fgB, inst2_cvB]
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   exact cS.eqSymm.eqTrans ((div_swap_p (fgB f g) hN).eqTrans cT)
 
 /-- `τ(m) L_w(m, y) = 2 (L_w * 𝟏)(m, y)` for `m ≥ 1`. -/
 theorem tau_lw (w : PTm 2) {m y : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) :
     Γ ⊢[PRAAx] Lw w m y * conv one one m y ≐ two * conv (DwB w one) one m y := by
-  have t := natEq (tau_leibniz (Γ := Γ) w (y := y) hm)
-  have c := natEq (conv_comm (Γ := Γ) one (DwB w one) (y := y) hm)
-  apply deriveNat; ipra_simps; linear_combination t + c
+  ipra_lc natEq (tau_leibniz (Γ := Γ) w (y := y) hm) + natEq (conv_comm (Γ := Γ) one (DwB w one) (y := y) hm)
 
 end LeanProofs.IPRA.AnalyticNumberTheory.DivisorSwapP

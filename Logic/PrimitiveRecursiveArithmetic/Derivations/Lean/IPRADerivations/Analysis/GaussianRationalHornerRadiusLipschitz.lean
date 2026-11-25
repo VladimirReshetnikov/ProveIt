@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianRationalHornerRadiusPerturbation
 import IPRADerivations.Analysis.GaussianRationalHornerLipschitz
 import IPRADerivations.Analysis.GaussianRationalPowerEnvelope
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Exact rational-disk point perturbation for actual Horner evaluation
@@ -95,15 +96,9 @@ theorem geometric_affine (U V k : PTm n) : Γ ⊢[PRAAx]
 theorem weighted_affine_step (U V k : PTm n)
     (ih : Γ ⊢[PRAAx] weighted U V (succ k) ≐ U*weighted U V k+geometric U V (succ k)) : Γ ⊢[PRAAx]
     weighted U V (succ (succ k)) ≐ U*weighted U V (succ k)+geometric U V (succ (succ k)) := by
-  have w0 := natEq (weighted_succ (Γ := Γ) U V k)
-  have w1 := natEq (weighted_succ (Γ := Γ) U V (succ k))
-  have g1 := natEq (geometric_succ (Γ := Γ) U V (succ k))
-  have p := natEq (pw_succ (Γ := Γ) U k)
-  have h := natEq ih
-  apply deriveNat
-  ipra_simps
-  linear_combination w1-g1+Groth.ι (IPRA.Q.mk Γ V)*h-Groth.ι (IPRA.Q.mk Γ U)*w0+
-    (Groth.ι (IPRA.Q.mk Γ k)+1)*Groth.ι (IPRA.Q.mk Γ V)*p
+  ipra_lc natEq (weighted_succ (Γ := Γ) U V (succ k))-natEq (geometric_succ (Γ := Γ) U V (succ k))+
+    Groth.ι (IPRA.Q.mk Γ V)*natEq ih-
+    Groth.ι (IPRA.Q.mk Γ U)*natEq (weighted_succ (Γ := Γ) U V k)+ (Groth.ι (IPRA.Q.mk Γ k)+1)*Groth.ι (IPRA.Q.mk Γ V)*natEq (pw_succ (Γ := Γ) U k)
 
 /-- The independently computed literal weighted power sum satisfies the
 exact difference recurrence required by actual Horner evaluation. -/

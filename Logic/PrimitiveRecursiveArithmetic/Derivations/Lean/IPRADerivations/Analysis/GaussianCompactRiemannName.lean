@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianRationalRiemannRefinement
 import IPRADerivations.Analysis.GaussianNamedInverseRate
 import IPRADerivations.Analysis.GaussianFiniteLogarithmDyadicTail
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual compact-interval Gaussian quadrature
@@ -102,8 +103,7 @@ theorem grid_inside (i N a C E : PTm n) (ha : Γ ⊢[PRAAx] le one a) (hE : Γ �
 
 theorem fraction_congr (a a' b b' : PTm n) (ha : Γ ⊢[PRAAx] a ≐ a') (hb : Γ ⊢[PRAAx] b ≐ b') : Γ ⊢[PRAAx]
     ofGaussian (scale a oneCode) b ≐ ofGaussian (scale a' oneCode) b' := by
-  simpa using Prf.eqCongr (ofGaussian (scale (var 0) oneCode) (var 1) : PTm 2)
-    (σ := ![a,b]) (σ' := ![a',b']) (fun i => by fin_cases i; exact ha; exact hb)
+  ipra_congr (ofGaussian (scale (var 0) oneCode) (var 1) : PTm 2) with [ha, hb]
 
 theorem value_grid (i N a C E : PTm n) : Γ ⊢[PRAAx]
     value (grid i N a C E) ≐ ofGaussian (scale (a*N+C*i) oneCode) (E*N) :=
@@ -304,9 +304,8 @@ theorem quadrature_budget (C E L N U V K T : PTm n)
 
 theorem quadrature_index_congr (F : PR 3) (p N M a C E x : PTm n) (hN : Γ ⊢[PRAAx] N ≐ M) : Γ ⊢[PRAAx]
     quadrature F p N a C E x ≐ quadrature F p M a C E x := by
-  simpa using Prf.eqCongr (quadrature F (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6)
-    (σ := ![p,N,a,C,E,x]) (σ' := ![p,M,a,C,E,x])
-    (fun i => by fin_cases i; exact .eqRefl _; exact hN; exact .eqRefl _; exact .eqRefl _; exact .eqRefl _; exact .eqRefl _)
+  ipra_congr (quadrature F (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) with
+    [.eqRefl p, hN, .eqRefl a, .eqRefl C, .eqRefl E, .eqRefl x]
 
 theorem ordered_sample_distance (F : PR 3) (p q a C E L T x : PTm n)
     (ha : Γ ⊢[PRAAx] le one a) (hE : Γ ⊢[PRAAx] le one E) (hC : Γ ⊢[PRAAx] le C (E*T))
@@ -386,11 +385,13 @@ theorem name_at (F : PR 3) (p a C E L T x : PTm n) : Γ ⊢[PRAAx]
     simpa only [nameF,ap2,subst_sample,subst_field0,subst_field1,subst_field2,subst_field3,subst_field4,subst_field5,
       Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using old
   apply e.eqTrans
-  simpa using Prf.eqCongr (sample F (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) : PTm 7)
-    (σ := ![p,field0 (data a C E L T x),field1 (data a C E L T x),field2 (data a C E L T x),
-      field3 (data a C E L T x),field4 (data a C E L T x),field5 (data a C E L T x)]) (σ' := ![p,a,C,E,L,T,x])
-    (fun i => by fin_cases i; exact .eqRefl _; exact field0_at _ _ _ _ _ _; exact field1_at _ _ _ _ _ _;
-                 exact field2_at _ _ _ _ _ _; exact field3_at _ _ _ _ _ _; exact field4_at _ _ _ _ _ _; exact field5_at _ _ _ _ _ _)
+  ipra_congr (sample F (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) : PTm 7) with
+    [.eqRefl p, (show _ ⊢[PRAAx] field0 (data a C E L T x) ≐ a from field0_at _ _ _ _ _ _),
+      (show _ ⊢[PRAAx] field1 (data a C E L T x) ≐ C from field1_at _ _ _ _ _ _),
+      (show _ ⊢[PRAAx] field2 (data a C E L T x) ≐ E from field2_at _ _ _ _ _ _),
+      (show _ ⊢[PRAAx] field3 (data a C E L T x) ≐ L from field3_at _ _ _ _ _ _),
+      (show _ ⊢[PRAAx] field4 (data a C E L T x) ≐ T from field4_at _ _ _ _ _ _),
+      (show _ ⊢[PRAAx] field5 (data a C E L T x) ≐ x from field5_at _ _ _ _ _ _)]
 
 theorem sample_canonical (F : PR 3) (p a C E L T x : PTm n) : Γ ⊢[PRAAx]
     GaussianRationalHorner.canonical (sample F p a C E L T x) := GaussianRationalHorner.qmul_canonical _ _

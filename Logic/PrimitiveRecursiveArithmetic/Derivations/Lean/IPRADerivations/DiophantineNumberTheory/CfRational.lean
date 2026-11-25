@@ -6,7 +6,7 @@ import IPRADerivations.AnalyticNumberTheory.Multiplicative
 import IPRADerivations.Foundations.CrtCoprime
 import IPRADerivations.AnalyticNumberTheory.CoprimeModulus
 import IPRADerivations.AnalyticNumberTheory.Smooth
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Finite continued fractions of rationals

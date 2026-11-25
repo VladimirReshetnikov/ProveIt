@@ -1,5 +1,7 @@
 import IPRADerivations.Analysis.PolynomialRootName
 import IPRADerivations.Probability.Minkowski
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Exact rational logistic iteration of a finite regular name
@@ -51,10 +53,8 @@ theorem monus_scale (a b c : PTm n) :
   · exact (show (le a b :: Γ) ⊢[PRAAx] monus (c*a) (c*b) ≐ zero from
       le_mul_mono (le_refl c) Prf.hyp0).eqTrans
       ((congrMul (.eqRefl _) Prf.hyp0).eqTrans (mul_zero _)).eqSymm
-  · have h := natEq (eq_add_of_le (Prf.hyp0 : (le b a :: Γ) ⊢[PRAAx] le b a))
-    have hc := natEq (eq_add_of_le (le_mul_mono (le_refl c) (Prf.hyp0 : (le b a :: Γ) ⊢[PRAAx] le b a)))
-    apply deriveNat; ipra_simps
-    linear_combination -hc + 𝔞 c * h
+  · ipra_lc -natEq (eq_add_of_le (le_mul_mono (le_refl c) (Prf.hyp0 : (le b a :: Γ) ⊢[PRAAx] le b a))) +
+      𝔞 c * natEq (eq_add_of_le (Prf.hyp0 : (le b a :: Γ) ⊢[PRAAx] le b a))
 
 /-- The literal numerator of `min(1,max(0,(p-q)/D))`. -/
 def clip (p q D : PTm n) : PTm n := monus D (monus D (monus p q))
@@ -63,15 +63,10 @@ def clip (p q D : PTm n) : PTm n := monus D (monus D (monus p q))
     Syn.subst σ (clip p q D) = clip (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ D) := by
   simp only [clip, PTm.subst_monus]
 
-theorem monus_le_left (a b : PTm n) : Γ ⊢[PRAAx] le (monus a b) a := by
-  refine .orE (le_total a b) ?_ ?_
-  · exact le_congr Prf.hyp0.eqSymm (.eqRefl _) (zero_le a)
-  · have h := natEq (eq_add_of_le (Prf.hyp0 : (le b a :: Γ) ⊢[PRAAx] le b a))
-    exact le_of_eq_add (d := b) (by apply deriveNat; ipra_simps; linear_combination h)
+alias monus_le_left := Common.monus_le_self
 
 theorem clip_range (p q D : PTm n) : Γ ⊢[PRAAx] le (clip p q D) D :=
   monus_le_left _ _
-
 
 /-- Below zero the clipping program returns zero exactly. -/
 theorem clip_below {p q D : PTm n} (h : Γ ⊢[PRAAx] le p q) :
@@ -149,14 +144,10 @@ theorem advance_den (A B state : PTm n) : Γ ⊢[PRAAx]
 /-- The sharp elementary bound `4t(D-t)≤D²`. -/
 theorem quarter_bound {t D : PTm n} (h : Γ ⊢[PRAAx] le t D) :
     Γ ⊢[PRAAx] le (num 4*t*monus D t) (D*D) := by
-  have H := natEq (eq_add_of_le h)
   have square := zabs_sq (Γ := Γ) (ZT.ofNat D - ZT.ofNat (two*t))
   refine le_of_eq_add (d := zabs (ZT.ofNat D-ZT.ofNat (two*t))*
     zabs (ZT.ofNat D-ZT.ofNat (two*t))) ?_
-  apply deriveNat
-  simp only [ZT.toZ_sub, ZT.toZ_ofNat, Q.mk_mul, map_mul] at square
-  ipra_simps
-  linear_combination (4*𝔞 t)*H - square
+  ipra_lc (4*𝔞 t)*natEq (eq_add_of_le h) - square
 
 theorem advance_range {A B state : PTm n} (hA : Γ ⊢[PRAAx] le A (num 4*B))
     (hs : Γ ⊢[PRAAx] le (fstT state) (sndT state)) :
@@ -524,10 +515,7 @@ theorem growth_positive (N : PTm n) : Γ ⊢[PRAAx] le one (growth N) :=
 theorem power_shift (k N : PTm n) :
     Γ ⊢[PRAAx] pw two (k+(N+N)) ≐ pw two k*growth N := pw_add _ _ _
 
-private theorem cancel_positive {c a b : PTm n} (hc : Γ ⊢[PRAAx] le one c)
-    (h : Γ ⊢[PRAAx] le (c*a) (c*b)) : Γ ⊢[PRAAx] le a b := by
-  have ce : Γ ⊢[PRAAx] c ≐ succ (monus c one) := (eq_add_of_le hc).eqTrans (by ipra_ring)
-  exact mul_le_cancel (le_congr (congrMul ce (.eqRefl _)) (congrMul ce (.eqRefl _)) h)
+private alias cancel_positive := Common.mul_cancel_le
 
 /-- The exact precision shift cancels all amplification, without a limit argument. -/
 theorem absorb_growth (s t N k l : PTm n)

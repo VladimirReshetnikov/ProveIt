@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.RationalNonnegativePowers
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Actual rational square-root brackets from integer square root
@@ -158,10 +159,7 @@ theorem bracket_width (A B H : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hH : Γ ⊢
     (RationalRepresentations.represents_negative _ _ _ (lower_represents A B H hB hH))
   apply RationalFiniteSum.canonical_equal _ _ _ _ _ _ (RationalArithmetic.add_guard _ _)
     (RationalNormalForm.normalize_well_formed _ _ hp) value (fraction_represents _ _ hp) hp hp
-  apply ZT.derive
-  simp only [ZT.toZ_mul,ZT.toZ_add,ZT.toZ_neg,ZT.toZ_ofNat]
-  ipra_simps
-  ring
+  ipra_lc
 
 theorem square_gap_represents (A B H : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hH : Γ ⊢[PRAAx] le one H) : Γ ⊢[PRAAx]
     RationalArithmetic.represents (squareGap A B H) (ZT.ofNat (deficit A B H)) (denominator B H*denominator B H) := by
@@ -183,11 +181,7 @@ theorem square_gap_represents (A B H : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hH 
   have value := GaussianRationalHorner.scalar_add_same _ _ _ _ _ hp2 target
     (RationalRepresentations.represents_negative _ _ _ sq)
   apply GaussianRationalHorner.scalar_congr (.eqRefl _) (hAB := .eqRefl _) (h := value)
-  apply ZT.derive
-  have gap := natEq (deficit_identity (Γ := Γ) A B H)
-  simp only [ZT.toZ_add,ZT.toZ_neg,ZT.toZ_ofNat]
-  ipra_simps
-  linear_combination gap
+  ipra_lc natEq (deficit_identity (Γ := Γ) A B H)
 
 theorem square_gap_fraction (A B H : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hH : Γ ⊢[PRAAx] le one H) : Γ ⊢[PRAAx]
     squareGap A B H ≐ fraction (deficit A B H) (denominator B H*denominator B H) := by

@@ -2,6 +2,7 @@ import IPRADerivations.Analysis.GaussianEulerDecayAddition
 import IPRADerivations.Analysis.GaussianEulerDecayOrder
 import IPRADerivations.Analysis.GaussianNameRingLaws
 import IPRADerivations.Analysis.RationalConvexClockRescale
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The two actual half-decay factors in the Euler integrand
@@ -55,10 +56,7 @@ theorem doubled_decay_input (a b : PTm n) (hb : Γ ⊢[PRAAx] le one b) :
     (signed_time_embedding _ _ (positive_product _ _ hD hD)).eqSymm.eqTrans
       ((RationalGaussianRealPart.embed_congr (RationalAlgebra.negative_congr h)).eqTrans
         (signed_time_embedding a b hb))
-  simpa only [decayData,exponentialInputData,GaussianRadiusExponentialName.subst_data,
-    GaussianNameBounds.subst_U,Syn.subst_var,Matrix.cons_val_zero] using
-    Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (exponentialInputData constantF (var 0) : PTm 1)
-      (σ := ![decayPoint (a*D+a*D) (D*D)]) (σ' := ![decayPoint a b]) (fun i => by fin_cases i; exact e)
+  ipra_congr (exponentialInputData constantF (var 0) : PTm 1) with [e] using [decayData, exponentialInputData]
 
 private theorem cross_right_congr (F G : PR 2) (x y z : PTm n)
     (e : Γ ⊢[PRAAx] y ≐ z) (h : Γ ⊢[PRAAx] crossEquivalent F G x y) :

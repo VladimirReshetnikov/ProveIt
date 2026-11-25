@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.HarmonicHalfSquare
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The main term of the discrete contraction (`pnt_ipra_constructive_2026-11-14`, `con:one-step`)
@@ -44,7 +45,7 @@ theorem dl_ge {j K L : PTm n} (hK : Γ ⊢[PRAAx] le one K) (hL : Γ ⊢[PRAAx] 
     Γ ⊢[PRAAx] le (quo (fact L) (succ (succ j))) (Dl j K (fact L)) := by
   have il := inc_lower (N := succ j) (pos_of_lt_zero hK) hL
   have m : Γ ⊢[PRAAx] le (S (K * succ j) (fact L)) (S (K * succ (succ j)) (fact L)) :=
-    S_mono (fact L) (le_of_eq_add (d := K) (by apply deriveNat; ipra_simps; ring))
+    S_mono (fact L) (le_of_eq_add (d := K) (by ipra_ring))
   have e := natEq (eq_add_of_le m)
   ipra_le sl il with e
 
@@ -85,7 +86,7 @@ theorem mt_pt {j x K L : PTm n} (hK : Γ ⊢[PRAAx] le one K) (hL : Γ ⊢[PRAAx
   have hjL : Γ ⊢[PRAAx] le (succ (succ j)) L := by
     have h1 : Γ ⊢[PRAAx] le (succ (succ j)) (K * succ (succ j)) :=
       le_of_eq_add (d := pred K * succ (succ j)) (by
-        have w := natEq (pos_of_lt_zero hK); apply deriveNat; ipra_simps; linear_combination (𝔞 j + 2) * w)
+        ipra_lc (𝔞 j + 2) * natEq (pos_of_lt_zero hK))
     exact le_trans h1 hL
   have f := fq_le (x := x) hsj hjL
   have d := le_scale x (dl_ge hK hL)

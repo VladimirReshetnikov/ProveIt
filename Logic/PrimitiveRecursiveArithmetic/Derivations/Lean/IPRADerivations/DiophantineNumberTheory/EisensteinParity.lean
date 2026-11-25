@@ -2,6 +2,7 @@ import IPRADerivations.DiophantineNumberTheory.RectangleCount
 import IPRADerivations.AnalyticNumberTheory.GcdFiber
 import IPRADerivations.AnalyticNumberTheory.FactorialLambda
 import IPRADerivations.AnalyticNumberTheory.ConvolutionAssoc
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The parity conversion in Eisenstein's lemma
@@ -70,15 +71,11 @@ abbrev bV (i p a : PTm n) : PTm n := wV i p a + monus one (eV i p a) * rV i p a
 
 theorem p2_zero {E ne R M p : PTm n} (hE : Γ ⊢[PRAAx] E ≐ zero) (hn : Γ ⊢[PRAAx] ne ≐ one) :
     Γ ⊢[PRAAx] R + (E * M + E * M) ≐ (E * M + ne * R) + E * p := by
-  have a := natEq hE; have b := natEq hn
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞 M - 𝔞 p) * a - 𝔞 R * b
+  ipra_lc (𝔞 M - 𝔞 p) * natEq hE - 𝔞 R * natEq hn
 
 theorem p2_one {E ne R M p : PTm n} (hE : Γ ⊢[PRAAx] E ≐ one) (hn : Γ ⊢[PRAAx] ne ≐ zero)
     (x : Γ ⊢[PRAAx] p ≐ R + M) : Γ ⊢[PRAAx] R + (E * M + E * M) ≐ (E * M + ne * R) + E * p := by
-  have a := natEq hE; have b := natEq hn; have c := natEq x
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞 M - 𝔞 p) * a - 𝔞 R * b - c
+  ipra_lc (𝔞 M - 𝔞 p) * natEq hE - 𝔞 R * natEq hn - natEq x
 
 /-- `r + 2 e (p − r) = b + e p`: for `e = 0` it is `r = b`, for `e = 1` it is `r + b = p`. -/
 theorem p2 {p : PTm n} (i a : PTm n) (hp1 : Γ ⊢[PRAAx] p ≐ succ (pred p)) :
@@ -126,10 +123,7 @@ theorem total_alg {S N h a' B W p M R Bb a : PTm n} (m1 : Γ ⊢[PRAAx] M ≐ p 
     (m2 : Γ ⊢[PRAAx] M ≐ a * B) (s2 : Γ ⊢[PRAAx] R + (W + W) ≐ Bb + p * N) (hperm : Γ ⊢[PRAAx] Bb ≐ B)
     (ea : Γ ⊢[PRAAx] a ≐ two * a' + one) (ep : Γ ⊢[PRAAx] p ≐ two * h + one) :
     Γ ⊢[PRAAx] (S + N) + two * (h * (S + N)) ≐ zero + two * (a' * B + W) := by
-  have xm1 := natEq m1; have xm2 := natEq m2; have xs2 := natEq s2; have xperm := natEq hperm
-  have xa := natEq ea; have xp := natEq ep
-  apply deriveNat; ipra_simps
-  linear_combination -(𝔞 S + 𝔞 N) * xp - xm1 - xs2 + xm2 - xperm + 𝔞 B * xa
+  ipra_lc -(𝔞 S + 𝔞 N) * natEq ep - natEq m1 - natEq s2 + natEq m2 - natEq hperm + 𝔞 B * natEq ea
 
 /-- `Σ b_i = Σ i` gives `par S_p(a) = par N_p(a)` for odd `p` and odd `a`. -/
 theorem eisenstein_parity {p a : PTm n} (hp : Γ ⊢[PRAAx] par p ≐ one) (ha : Γ ⊢[PRAAx] par a ≐ one)
@@ -138,7 +132,7 @@ theorem eisenstein_parity {p a : PTm n} (hp : Γ ⊢[PRAAx] par p ≐ one) (ha :
   have ep := odd_of hp
   have ea := odd_of ha
   have hp1 : Γ ⊢[PRAAx] p ≐ succ (pred p) :=
-    pos_of_eq_succ (c := two * half p) (ep.eqTrans (by apply deriveNat; ipra_simps; ring))
+    pos_of_eq_succ (c := two * half p) (ep.eqTrans (by ipra_ring))
   have hp1' : (Γ.map Fm.shift) ⊢[PRAAx] Syn.shift p ≐ succ (pred (Syn.shift p)) := by
     simpa [Fm.shift, Syn.shift] using hp1.shift
   -- `Σ (i + 1) a = p Σ t_i + Σ r_i`

@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianRationalHornerPerturbation
 import IPRADerivations.Analysis.GaussianEuclideanResidualRadius
 import IPRADerivations.AnalyticNumberTheory.GoldbachGeometric
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Exact runtime Lipschitz bounds for original rational Horner evaluation
@@ -84,18 +85,12 @@ theorem weighted_body_at (U i : PTm n) : inst2 weightedBody i U = succ i*pw U i 
 theorem weighted_succ (U k : PTm n) : Γ ⊢[PRAAx] weighted U (succ k) ≐ weighted U k+succ k*pw U k := by
   simpa only [weighted,weighted_body_at] using sum_succ' (Γ := Γ) weightedBody k U
 
-
 theorem weighted_affine_step (U k : PTm n)
     (ih : Γ ⊢[PRAAx] weighted U (succ k) ≐ U*weighted U k+geometric U (succ k)) : Γ ⊢[PRAAx]
     weighted U (succ (succ k)) ≐ U*weighted U (succ k)+geometric U (succ (succ k)) := by
-  have w0 := natEq (weighted_succ (Γ := Γ) U k)
-  have w1 := natEq (weighted_succ (Γ := Γ) U (succ k))
-  have g1 := natEq (geometric_succ (Γ := Γ) U (succ k))
-  have p := natEq (pw_succ (Γ := Γ) U k)
-  have h := natEq ih
-  apply deriveNat
-  ipra_simps
-  linear_combination w1-g1+h-Groth.ι (IPRA.Q.mk Γ U)*w0+(Groth.ι (IPRA.Q.mk Γ k)+1)*p
+  ipra_lc natEq (weighted_succ (Γ := Γ) U (succ k))-natEq (geometric_succ (Γ := Γ) U (succ k))+natEq ih-
+    Groth.ι (IPRA.Q.mk Γ U)*natEq (weighted_succ (Γ := Γ) U k)+
+    (Groth.ι (IPRA.Q.mk Γ k)+1)*natEq (pw_succ (Γ := Γ) U k)
 
 /-- The independently computed weighted power sum satisfies precisely the
 Horner derivative recurrence; this identity is not an input. -/
@@ -163,7 +158,6 @@ theorem horner_query_difference_succ (C z w k : PTm n) : Γ ⊢[PRAAx]
       qadd (qmul (qsub (horner C z k) (horner C w k)) z) (qmul (horner C w k) (qsub z w)) :=
   (qsub_congr (GaussianRationalHorner.horner_succ _ _ _) (GaussianRationalHorner.horner_succ _ _ _)).eqTrans
     (affine_query_difference _ _ _ _ _)
-
 
 def sizeLaw (C w A U k : PTm n) : Fm PTm n := le k (length C) ⟶ bounded (horner C w k) (A*geometric U k) one
 @[simp] theorem subst_sizeLaw {m : ℕ} (σ : Fin n → PTm m) (C w A U k : PTm n) :
@@ -258,7 +252,6 @@ theorem difference_step (C z w N U A p q k : PTm n)
     rw [h]
     ring
   exact bound_congr (horner_query_difference_succ C z w (succ k)).eqSymm num (.eqRefl _) sum
-
 
 /-- Uniform QF induction on the actual Horner counter, with every size
 estimate obtained from the original coefficient condition. -/

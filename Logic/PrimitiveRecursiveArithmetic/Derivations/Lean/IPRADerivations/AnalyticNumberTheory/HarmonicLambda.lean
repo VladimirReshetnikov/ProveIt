@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.ChebyshevBounds
 import IPRADerivations.AnalyticNumberTheory.BinomialThree
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The harmonic Mangoldt sum, integer form
@@ -61,9 +62,8 @@ theorem pow_le_three_fact (N : PTm n) : Γ ⊢[PRAAx] le (pw N N) (pw (succ two)
       have s1 := mul_le_mul_right (succ (var 0)) b3
       have s2 := mul_le_mul_right (succ (var 0)) (le_mul_mono (le_refl (succ two)) ih)
       have eL : D ⊢[PRAAx] pw (succ (var 0)) (succ (var 0)) ≐ pw (succ (var 0)) (var 0) * succ (var 0) := pw_succ _ _
-      have eR := natEq ((congrMul (pw_succ (Γ := D) (succ two) (var 0)) (fact_succ (var 0) zero)))
       refine le_congr eL.eqSymm ?_ (le_trans s1 s2)
-      apply deriveNat; ipra_simps; linear_combination -eR
+      ipra_lc -natEq ((congrMul (pw_succ (Γ := D) (succ two) (var 0)) (fact_succ (var 0) zero)))
   have i := Prf.allE N hall
   simp only [subst_le, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, ConciseIPRA.PTm.subst_zero,
     ConciseIPRA.PTm.subst_succ] at i
@@ -177,7 +177,7 @@ theorem harmonic_sandwich (N y : PTm n) :
       (.allI (.impI ?_))).eqTrans (congrAdd (factorial_lambda w N y).eqSymm (.eqRefl _))
     rw [shift_pairT, inst2_LamB]
     refine (WB_at w _ _ _).eqTrans (.eqTrans ?_ (congrAdd (FL_at w _ _ _) (.eqRefl _)).eqSymm)
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   have L1 := Analysis.PowerSums.sum_le (Γ := Γ) (U1 w) (V1 w) (pairT N y) (succ N) (.allI (.impI (by
     rw [shift_pairT, hs]
     exact le_congr (U1_at w _ _ _).eqSymm (V1_at w _ _ _).eqSymm (pt1 w Prf.hyp0))))

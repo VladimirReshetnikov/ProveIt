@@ -1,5 +1,6 @@
 import IPRADerivations.Combinatorics.BinomialIdentities
 import IPRADerivations.Core.SumLemmas
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The binomial theorem
@@ -152,13 +153,8 @@ theorem binomial_open : ([] : List (Fm PTm 2)) ⊢[PRAAx] binomThmFormula := by
       (pw_zero (Γ := Γ₀) (sndT (pairT (var 0) (var 1))))
     have P1 := pw_succ (Γ := Γ₀) (var 1 : PTm 2) (var 0)
     have P2 := pw_succ (Γ := Γ₀) (succ (var 1) : PTm 2) (var 0)
-    have h₀ := natEq E0; have h₁ := natEq T0; have h₂ := natEq E1; have h₃ := natEq T1
-    have h₄ := natEq E2; have h₅ := natEq E3; have h₆ := natEq E4; have h₇ := natEq E5
-    have h₈ := natEq T5; have h₉ := natEq E6; have h₁₀ := natEq T6; have h₁₁ := natEq ih
-    have h₁₂ := natEq P1; have h₁₃ := natEq P2
-    apply deriveNat; ipra_simps
-    linear_combination h₀ + h₁ + h₂ + h₃ + h₄ + h₅ + h₆ + h₁₂ - h₉ - h₁₀ -
-      (V Γ₀ 1) * (h₇ + h₈) + (1 + V Γ₀ 1) * h₁₁ - h₁₃
+    ipra_lc natEq E0 + natEq T0 + natEq E1 + natEq T1 + natEq E2 + natEq E3 + natEq E4 + natEq P1 - natEq E6 -
+      natEq T6 - (V Γ₀ 1) * (natEq E5 + natEq T5) + (1 + V Γ₀ 1) * natEq ih - natEq P2
 
 theorem binomial : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 2 binomThmFormula := closeUniv 2 binomial_open
 

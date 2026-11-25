@@ -1,5 +1,6 @@
 import IPRADerivations.Core.MultiSums
 import IPRADerivations.Analysis.Products
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # A finite Taylor-logarithm remainder bound
@@ -82,13 +83,9 @@ theorem numerator_succ (R N L : PTm n) :
 theorem denominator_succ (N L : PTm n) :
     Γ ⊢[PRAAx] denominator N (succ L) ≐ (L + three) * N * denominator N L := by
   have e : Γ ⊢[PRAAx] succ L + two ≐ succ (L + two) := by ipra_ring
-  have f := natEq ((congrAp2 factF e (.eqRefl zero)).eqTrans (fact_succ (L + two) zero))
-  have p := natEq ((congrAp2 powF e (.eqRefl N)).eqTrans (pw_succ N (L + two)))
   unfold denominator
-  apply deriveNat
-  ipra_simps
-  linear_combination 𝔞(pw N (succ L + two)) * f +
-    𝔞(fact (L + two)) * (𝔞(L) + 3) * p
+  ipra_lc 𝔞(pw N (succ L + two)) * natEq ((congrAp2 factF e (.eqRefl zero)).eqTrans (fact_succ (L + two) zero)) +
+    𝔞(fact (L + two)) * (𝔞(L) + 3) * natEq ((congrAp2 powF e (.eqRefl N)).eqTrans (pw_succ N (L + two)))
 
 theorem denominator_zero (N : PTm n) :
     Γ ⊢[PRAAx] denominator N zero ≐ two * N * N := by
@@ -100,9 +97,7 @@ theorem denominator_zero (N : PTm n) :
   have p := natEq ((congrAp2 (Γ := Γ) powF (zero_add two) (.eqRefl N)).eqTrans
     ((pw_succ N one).eqTrans (congrMul (pw_one N) (.eqRefl _))))
   unfold denominator
-  apply deriveNat
-  ipra_simps
-  linear_combination 𝔞(pw N (zero + two)) * f + 2 * p
+  ipra_lc 𝔞(pw N (zero + two)) * f + 2 * p
 
 /-- The common denominator is positive whenever the input divisor is positive. -/
 theorem denominator_positive (N L : PTm n) (hN : Γ ⊢[PRAAx] le one N) :
@@ -114,9 +109,7 @@ theorem denominator_positive (N L : PTm n) (hN : Γ ⊢[PRAAx] le one N) :
       have d := natEq (denominator_zero (Γ := Γ) N)
       have h := natEq (eq_add_of_le hN)
       refine le_of_eq_add (d := N * N + monus N one * (N + one)) ?_
-      apply deriveNat
-      ipra_simps
-      linear_combination d + (𝔞(N) + 1) * h
+      ipra_lc d + (𝔞(N) + 1) * h
     · simp only [subst_le, subst_denominator, Syn.subst_var, Syn.repl_zero,
         subst_repl_shift, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
       have positive : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift N) := by
@@ -132,9 +125,7 @@ theorem denominator_positive (N L : PTm n) (hN : Γ ⊢[PRAAx] le one N) :
         (var 0 + two) * Syn.shift N * denominator (Syn.shift N) (var 0) +
         monus (Syn.shift N) one * denominator (Syn.shift N) (var 0) +
         monus (denominator (Syn.shift N) (var 0)) one) ?_
-      apply deriveNat
-      ipra_simps
-      linear_combination d + 𝔞(denominator (Syn.shift N) (var 0)) * h + i
+      ipra_lc d + 𝔞(denominator (Syn.shift N) (var 0)) * h + i
   simpa only [subst_le, subst_denominator, Syn.subst_var, Syn.inst_zero,
     Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
     using Prf.allE L all
@@ -171,7 +162,6 @@ def strong (R N L : PTm n) : Fm PTm n :=
   simp [strong, fact]
 
 theorem strong_zero (R N : PTm n) : Γ ⊢[PRAAx] strong R N zero := by
-  have a := natEq (numerator_zero (Γ := Γ) R N)
   have e : Γ ⊢[PRAAx] zero + three ≐ succ (succ (succ zero)) := by ipra_ring
   have p := natEq ((congrAp2 powF e (.eqRefl R)).eqTrans
     ((pw_succ R (succ (succ zero))).eqTrans
@@ -181,23 +171,16 @@ theorem strong_zero (R N : PTm n) : Γ ⊢[PRAAx] strong R N zero := by
     ((pw_succ N (succ zero)).eqTrans (congrMul (pw_one N) (.eqRefl _))))
   unfold strong denominator
   refine le_of_eq_add (d := zero) ?_
-  apply deriveNat
-  ipra_simps
-  linear_combination -3 * 𝔞(N) ^ 3 * a -
-    2 * 𝔞(fact (zero + two)) * 𝔞(N) ^ 2 * p +
+  ipra_lc -3 * 𝔞(N) ^ 3 * natEq (numerator_zero (Γ := Γ) R N) - 2 * 𝔞(fact (zero + two)) * 𝔞(N) ^ 2 * p +
     2 * 𝔞(R) ^ 3 * 𝔞(fact (zero + two)) * q
 
 /-- A polynomial induction step; the gap `N-2R` supplies the geometric estimate. -/
 theorem strong_step {R N L : PTm n} (h : Γ ⊢[PRAAx] le (two * R) N)
     (ih : Γ ⊢[PRAAx] strong R N L) : Γ ⊢[PRAAx] strong R N (succ L) := by
-  have i := natEq (eq_add_of_le ih)
   have h := natEq (eq_add_of_le h)
-  have a := natEq (numerator_succ (Γ := Γ) R N L)
   have d := natEq (denominator_succ (Γ := Γ) N L)
   have e₂ : Γ ⊢[PRAAx] succ L + two ≐ succ (L + two) := by ipra_ring
   have e₃ : Γ ⊢[PRAAx] succ L + three ≐ succ (L + three) := by ipra_ring
-  have f := natEq ((congrAp2 factF e₂ (.eqRefl zero)).eqTrans (fact_succ (L + two) zero))
-  have p := natEq ((congrAp2 powF e₃ (.eqRefl R)).eqTrans (pw_succ R (L + three)))
   unfold strong at *
   refine le_of_eq_add (d :=
     (L + three) * N * monus (two * R * R * R * denominator N L)
@@ -205,14 +188,11 @@ theorem strong_step {R N L : PTm n} (h : Γ ⊢[PRAAx] le (two * R) N)
         two * fact (L + two) * N * N * pw R (L + three)) +
     fact (L + two) * N * N * pw R (L + three) *
       ((L + three) * monus N (two * R) + L * N)) ?_
-  apply deriveNat
-  ipra_simps
-  linear_combination
-    (𝔞(L) + 3) * 𝔞(N) * i +
-    𝔞(fact (L + two)) * 𝔞(N) ^ 2 * 𝔞(pw R (L + three)) * (𝔞(L) + 3) * h +
-    2 * 𝔞(R) ^ 3 * d - 3 * 𝔞(N) ^ 3 * a -
-    2 * 𝔞(N) ^ 2 * 𝔞(pw R (succ L + three)) * f -
-    2 * 𝔞(N) ^ 2 * 𝔞(fact (L + two)) * (𝔞(L) + 3) * p
+  ipra_lc (𝔞(L) + 3) * 𝔞(N) * natEq (eq_add_of_le ih) +
+    𝔞(fact (L + two)) * 𝔞(N) ^ 2 * 𝔞(pw R (L + three)) * (𝔞(L) + 3) * h + 2 * 𝔞(R) ^ 3 * d -
+    3 * 𝔞(N) ^ 3 * natEq (numerator_succ (Γ := Γ) R N L) -
+    2 * 𝔞(N) ^ 2 * 𝔞(pw R (succ L + three)) * natEq ((congrAp2 factF e₂ (.eqRefl zero)).eqTrans (fact_succ (L + two) zero)) -
+    2 * 𝔞(N) ^ 2 * 𝔞(fact (L + two)) * (𝔞(L) + 3) * natEq ((congrAp2 powF e₃ (.eqRefl R)).eqTrans (pw_succ R (L + three)))
 
 /-- Every finite positive Taylor tail has the displayed explicit remainder. -/
 theorem finite_taylor_strong (R N L : PTm n) (h : Γ ⊢[PRAAx] le (two * R) N) :

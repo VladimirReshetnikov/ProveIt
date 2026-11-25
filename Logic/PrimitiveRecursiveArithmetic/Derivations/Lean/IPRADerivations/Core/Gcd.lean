@@ -1,5 +1,6 @@
 import IPRADerivations.Core.Division
 import IPRADerivations.Core.Signum
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Divisibility and the Euclidean algorithm in iPRA
@@ -84,8 +85,7 @@ theorem dvd_sub {d' x y : PTm n} (hxy : Γ ⊢[PRAAx] dvd (succ d') (x + y))
   refine dvd_of_eq (w := monus (quo (x + y) (succ d')) (quo y (succ d'))) ?_
   refine add_right_cancel (c := y) ?_
   refine withEq e₁ fun f₁ => withEq e₂ fun f₂ => withEq (eq_add_of_le hle) fun f₃ => ?_
-  apply deriveNat; ipra_simps
-  linear_combination f₁ - f₂ + (Groth.ι (Q.mk Γ d') + 1) * f₃
+  ipra_lc f₁ - f₂ + (Groth.ι (Q.mk Γ d') + 1) * f₃
 
 /-! ## The Euclidean algorithm -/
 

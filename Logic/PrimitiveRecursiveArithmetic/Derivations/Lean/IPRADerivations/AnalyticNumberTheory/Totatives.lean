@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.OrderPower
 import IPRADerivations.Analysis.PowerSums
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The totatives under `a ↦ n − a`
@@ -72,11 +73,9 @@ theorem pw_two_lt {a b : PTm n} (h : Γ ⊢[PRAAx] lt a b) : Γ ⊢[PRAAx] lt (p
   have q := eq_add_of_le (le_self_pw (Γ := Γ) one (monus b (succ a)))
   have p := DiophantineNumberTheory.FLTMultiples.pw_pos (Γ := Γ) one a
   have eb : Γ ⊢[PRAAx] pw two b ≐ pw two a * pw two (succ (monus b (succ a))) :=
-    (congrPw (.eqRefl _) (w.eqTrans (by apply deriveNat; ipra_simps; ring))).eqTrans (pw_add _ _ _)
+    (congrPw (.eqRefl _) (w.eqTrans (by ipra_ring))).eqTrans (pw_add _ _ _)
   refine le_of_eq_add (d := pred (pw two a) + monus (pw two (succ (monus b (succ a)))) two * pw two a) ?_
-  have h₁ := natEq eb; have h₂ := natEq q; have h₃ := natEq p
-  apply deriveNat; ipra_simps
-  linear_combination h₁ + Groth.ι (Q.mk Γ (pw two a)) * h₂ + h₃
+  ipra_lc natEq eb + Groth.ι (Q.mk Γ (pw two a)) * natEq q + natEq p
 
 theorem pw_two_inj {a b : PTm n} (h : Γ ⊢[PRAAx] pw two a ≐ pw two b) : Γ ⊢[PRAAx] a ≐ b := by
   refine le_antisymm ?_ ?_
@@ -104,7 +103,7 @@ theorem inst2_s (y N : PTm n) : inst2 sB y N = rem (monus N y) N := by simp [ins
 
 /-- `N = (N − (j+1)) + 1 + j` for `j < N`. -/
 theorem split_lt {j N : PTm n} (h : Γ ⊢[PRAAx] lt j N) : Γ ⊢[PRAAx] N ≐ succ (monus N (succ j)) + j :=
-  (eq_add_of_le h).eqTrans (by apply deriveNat; ipra_simps; ring)
+  (eq_add_of_le h).eqTrans (by ipra_ring)
 
 /-- `N − j = (N − (j+1)) + 1` for `j < N`. -/
 theorem monus_succ_of_lt {j N : PTm n} (h : Γ ⊢[PRAAx] lt j N) :
@@ -118,9 +117,7 @@ theorem monus_pos {j N : PTm n} (h : Γ ⊢[PRAAx] lt j N) : Γ ⊢[PRAAx] monus
 theorem monus_lt {j N : PTm n} (hj : Γ ⊢[PRAAx] j ≐ succ (pred j)) (h : Γ ⊢[PRAAx] lt j N) :
     Γ ⊢[PRAAx] lt (monus N j) N := by
   refine le_of_eq_add (d := pred j) ?_
-  have h₁ := natEq (split_lt h); have h₂ := natEq hj; have h₃ := natEq (monus_succ_of_lt h)
-  apply deriveNat; ipra_simps
-  linear_combination h₁ + h₂ - h₃
+  ipra_lc natEq (split_lt h) + natEq hj - natEq (monus_succ_of_lt h)
 
 /-- `gcd(N − j, N) = gcd(j, N)` for `1 ≤ j < N`. -/
 theorem gcd_reflect {j N : PTm n} (hj : Γ ⊢[PRAAx] j ≐ succ (pred j)) (h : Γ ⊢[PRAAx] lt j N) :
@@ -244,7 +241,7 @@ theorem sum_totatives_at : Γ ⊢[PRAAx] two * totSum N ≐ N * phi N := by
     exact pointwise (Euler.shift_le_two hN).wk Prf.hyp0
   have hm := sum_mul_param (Γ := Γ) (var 0) totBody N N
   have e := hadd.eqSymm.eqTrans (hpt.eqTrans hm)
-  have d : Γ ⊢[PRAAx] two * totSum N ≐ totSum N + totSum N := by apply deriveNat; ipra_simps; ring
+  have d : Γ ⊢[PRAAx] two * totSum N ≐ totSum N + totSum N := by ipra_ring
   exact d.eqTrans ((congrAdd (.eqRefl _) hp.eqSymm).eqTrans e)
 
 end Perm
@@ -255,7 +252,7 @@ abbrev sumTotativesFormula : Fm PTm 1 :=
   two * totSum (succ (succ (var 0))) ≐ succ (succ (var 0)) * phi (succ (succ (var 0)))
 
 theorem sum_totatives : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 1 sumTotativesFormula :=
-  closeUniv 1 (sum_totatives_at (le_of_eq_add (d := var 0) (by apply deriveNat; ipra_simps; ring)))
+  closeUniv 1 (sum_totatives_at (le_of_eq_add (d := var 0) (by ipra_ring)))
 
 /-! ## `φ(N)` is even for `N ≥ 3` -/
 
@@ -316,18 +313,16 @@ theorem e_fixed {a : PTm n} (ha : Γ ⊢[PRAAx] lt a N) (hfix : Γ ⊢[PRAAx] re
     have l := eq_add_of_le (dvd_le' hj' d (congrSucc (pred_succ _).eqSymm))
     have l₃ := eq_add_of_le (hN.wk.wk : ((gcd a N ≐ one) :: (a ≐ succ (pred a)) :: Γ) ⊢[PRAAx] _)
     refine succ_ne_zero (a := monus N (succ two) + monus one a + monus one a) ?_
-    have h₁ := natEq l; have h₂ := natEq l₃; have h₃ := natEq (w.wk : ((gcd a N ≐ one) :: (a ≐ succ (pred a)) :: Γ) ⊢[PRAAx] _)
-    apply deriveNat; ipra_simps
-    linear_combination -2 * h₁ - h₂ + h₃
+    ipra_lc -2 * natEq l - natEq l₃ + natEq (w.wk : ((gcd a N ≐ one) :: (a ≐ succ (pred a)) :: Γ) ⊢[PRAAx] _)
 
 omit hN in
 /-- `E = E [a < b] + E [b < a]` when `b = a` forces `E = 0`. -/
 theorem split3 {a b E : PTm n} (hfix : Γ ⊢[PRAAx] (b ≐ a) ⟶ (E ≐ zero)) :
     Γ ⊢[PRAAx] E ≐ E * sg (monus b a) + E * sg (monus a b) := by
   have r : ∀ {Δ : List (Fm PTm n)}, Δ ⊢[PRAAx] E ≐ E * one + E * zero := by
-    intro Δ; apply deriveNat; ipra_simps; ring
+    intro Δ; ipra_ring
   have r' : ∀ {Δ : List (Fm PTm n)}, Δ ⊢[PRAAx] E ≐ E * zero + E * one := by
-    intro Δ; apply deriveNat; ipra_simps; ring
+    intro Δ; ipra_ring
   refine .orE (lt_or_le a b) ?_ ?_
   · have h : (lt a b :: Γ) ⊢[PRAAx] lt a b := Prf.hyp0
     exact r.eqTrans (congrAdd (congrMul (.eqRefl _) (sg_lt h)) (congrMul (.eqRefl _) (sg_le (le_of_lt h)))).eqSymm
@@ -337,7 +332,7 @@ theorem split3 {a b E : PTm n} (hfix : Γ ⊢[PRAAx] (b ≐ a) ⟶ (E ≐ zero))
         (congrMul (.eqRefl _) (sg_lt h))).eqSymm
     · have hE : ((b ≐ a) :: le b a :: Γ) ⊢[PRAAx] E ≐ zero := .impE hfix.wk.wk Prf.hyp0
       refine hE.eqTrans (.eqTrans ?_ (congrAdd (congrMul hE (.eqRefl _)) (congrMul hE (.eqRefl _))).eqSymm)
-      apply deriveNat; ipra_simps; ring
+      ipra_ring
 
 /-- `e(a) = e(a)[a < σ(a)] + e(σ(a))[σ(a) < σ(σ(a))]` for `a < N`. -/
 theorem even_pointwise {a : PTm n} (ha : Γ ⊢[PRAAx] lt a N) :
@@ -361,7 +356,7 @@ theorem phi_even_at : Γ ⊢[PRAAx] phi N ≐ two * ap2 (sumF evB) N N := by
     rw [inst2_tot, inst2_addBody, Permutation.inst2_FS, inst2_ev, inst2_s, inst2_ev]
     exact even_pointwise (shift_le_three hN).wk Prf.hyp0
   have d : Γ ⊢[PRAAx] ap2 (sumF evB) N N + ap2 (sumF evB) N N ≐ two * ap2 (sumF evB) N N := by
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   exact hpt.eqTrans (hadd.eqTrans ((congrAdd (.eqRefl _) hp).eqTrans d))
 
 end Even
@@ -372,6 +367,6 @@ abbrev phiEvenFormula : Fm PTm 1 :=
   phi (succ (succ (succ (var 0)))) ≐ two * ap2 (sumF evB) (succ (succ (succ (var 0)))) (succ (succ (succ (var 0))))
 
 theorem phi_even : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 1 phiEvenFormula :=
-  closeUniv 1 (phi_even_at (le_of_eq_add (d := var 0) (by apply deriveNat; ipra_simps; ring)))
+  closeUniv 1 (phi_even_at (le_of_eq_add (d := var 0) (by ipra_ring)))
 
 end LeanProofs.IPRA.AnalyticNumberTheory.Totatives

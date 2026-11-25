@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.PhiPowTwo
 import IPRADerivations.DiophantineNumberTheory.Hurwitz
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The dyadic lower bound for harmonic numbers
@@ -44,18 +45,16 @@ theorem quo_anti {F d₁ d₂ : PTm n} (h₁ : Γ ⊢[PRAAx] d₁ ≐ succ (pred
     Γ ⊢[PRAAx] le (quo F d₂) (quo F d₁) := by
   have h₂ : Γ ⊢[PRAAx] d₂ ≐ succ (pred d₂) := by
     refine eq_succ_pred ((eq_add_of_le h).eqTrans ((congrAdd h₁ (.eqRefl _)).eqTrans ?_)) (y := pred d₁ + monus d₂ d₁)
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   refine .orE (lt_or_le (quo F d₁) (quo F d₂)) ?_ Prf.hyp0
   refine .botE _ ?_
-  have a₁ := natEq ((div_eq (j := F) h₁).wk (ψ := lt (quo F d₁) (quo F d₂)))
-  have a₂ := natEq ((div_eq (j := F) h₂).wk (ψ := lt (quo F d₁) (quo F d₂)))
-  have a₃ := natEq (eq_add_of_le (Prf.hyp0 : (lt (quo F d₁) (quo F d₂) :: Γ) ⊢[PRAAx] _))
-  have a₄ := natEq ((eq_add_of_le h).wk (ψ := lt (quo F d₁) (quo F d₂)))
-  have a₅ := natEq ((eq_add_of_le (rem_lt' h₁ F)).wk (ψ := lt (quo F d₁) (quo F d₂)))
   refine succ_ne_zero' _ (a := monus d₁ (succ (rem F d₁)) + d₁ * monus (quo F d₂) (succ (quo F d₁)) +
     monus d₂ d₁ * quo F d₂ + rem F d₂) ?_
-  apply deriveNat; ipra_simps
-  linear_combination a₁ - a₂ - a₅ - Groth.ι (IPRA.Q.mk _ (quo F d₂)) * a₄ - Groth.ι (IPRA.Q.mk _ d₁) * a₃
+  ipra_lc natEq ((div_eq (j := F) h₁).wk (ψ := lt (quo F d₁) (quo F d₂))) -
+    natEq ((div_eq (j := F) h₂).wk (ψ := lt (quo F d₁) (quo F d₂))) -
+    natEq ((eq_add_of_le (rem_lt' h₁ F)).wk (ψ := lt (quo F d₁) (quo F d₂))) -
+    Groth.ι (IPRA.Q.mk _ (quo F d₂)) * natEq ((eq_add_of_le h).wk (ψ := lt (quo F d₁) (quo F d₂))) -
+    Groth.ι (IPRA.Q.mk _ d₁) * natEq (eq_add_of_le (Prf.hyp0 : (lt (quo F d₁) (quo F d₂) :: Γ) ⊢[PRAAx] _))
 
 /-! ## The sums -/
 
@@ -81,12 +80,10 @@ theorem block_step {d F j : PTm n}
     exact .eqRefl _
   have hle : Γ ⊢[PRAAx] le (succ (pw two j + d)) (pw two (succ j)) := by
     refine le_of_eq_add (d := monus (pw two j) (succ d)) ?_
-    have e₁ := natEq (pw_succ (Γ := Γ) two j); have e₂ := natEq (eq_add_of_le h)
-    apply deriveNat; ipra_simps
-    linear_combination e₁ + e₂
+    ipra_lc natEq (pw_succ (Γ := Γ) two j) + natEq (eq_add_of_le h)
   have hq := quo_anti (F := F) (congrSucc (pred_succ _).eqSymm) hle
   refine le_congr ?_ e.eqSymm (add_le_add ihd hq)
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- Variables: `0 = d`, `1 = F`, `2 = j`. -/
 private abbrev blockF : Fm PTm 3 :=
@@ -99,7 +96,7 @@ private theorem block₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] blockF := by
       Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero,
       ConciseIPRA.PTm.subst_succ]
     refine .impI (le_congr ?_ (congrAp2 (sumF hB) (add_zero _) (.eqRefl _)).eqSymm (le_refl _))
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   · simp only [Fm.subst_imp, subst_le, Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul,
       Syn.subst_var, Syn.repl_zero, repl_one, repl_two, ConciseIPRA.PTm.subst_zero,
       ConciseIPRA.PTm.subst_succ]
@@ -118,7 +115,7 @@ theorem S_one (F : PTm n) : Γ ⊢[PRAAx] S (pw two zero) F ≐ F := by
   rw [inst2_h]
   refine (congrAdd (sum_zero _ _) (quo_eq (q := F) (r := zero) (congrSucc (pred_succ _).eqSymm) ?_ ?_)).eqTrans
     (zero_add _)
-  · apply deriveNat; ipra_simps; ring
+  · ipra_ring
   · exact le_refl _
 
 theorem dyadic_step {j F : PTm n}
@@ -131,14 +128,12 @@ theorem dyadic_step {j F : PTm n}
   have ihd := Prf.impE ih hdj
   have bl := block (Γ := Γ) (pw two j) F j (le_refl _)
   have eS : Γ ⊢[PRAAx] S (pw two (succ j)) F ≐ S (pw two j + pw two j) F :=
-    congrAp2 (sumF hB) ((pw_succ _ _).eqTrans (by apply deriveNat; ipra_simps; ring)) (.eqRefl _)
-  have ex := natEq (eq_of_dvd' hp' h)
+    congrAp2 (sumF hB) ((pw_succ _ _).eqTrans (by ipra_ring)) (.eqRefl _)
   have e₁ := natEq (eq_add_of_le ihd); have e₂ := natEq (eq_add_of_le bl); have e₃ := natEq eS
-  have e₄ := natEq (pw_succ (Γ := Γ) two j)
   refine le_of_eq_add (d := monus (two * S (pw two j) F) ((two + j) * F) +
     two * monus (S (pw two j + pw two j) F) (S (pw two j) F + pw two j * quo F (pw two (succ j)))) ?_
-  apply deriveNat; ipra_simps
-  linear_combination 2 * e₃ + e₁ + 2 * e₂ - ex - Groth.ι (IPRA.Q.mk _ (quo F (pw two (succ j)))) * e₄
+  ipra_lc 2 * e₃ + e₁ + 2 * e₂ - natEq (eq_of_dvd' hp' h) -
+    Groth.ι (IPRA.Q.mk _ (quo F (pw two (succ j)))) * natEq (pw_succ (Γ := Γ) two j)
 
 /-- Variables: `0 = j`, `1 = F`. -/
 private abbrev dyadicF : Fm PTm 2 :=
@@ -149,7 +144,7 @@ private theorem dyadic₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] dyadicF := by
   · simp only [Fm.subst_imp, subst_le, Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul,
       Syn.subst_var, Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
     refine .impI (le_congr ?_ (congrMul (.eqRefl _) (S_one _)).eqSymm (le_refl _))
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   · simp only [Fm.subst_imp, subst_le, Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul,
       Syn.subst_var, Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
     exact .impI (dyadic_step Prf.hyp1 Prf.hyp0)
@@ -177,8 +172,7 @@ theorem harmonic_dyadic (t : PTm n) :
   refine succ_ne_zero' _ (a := one + two * monus ((one + t) * fact (pw two (two * t)))
     (succ (S (pw two (two * t)) (fact (pw two (two * t))))) + monus (two * S (pw two (two * t))
       (fact (pw two (two * t)))) ((two + two * t) * fact (pw two (two * t)))) ?_
-  apply deriveNat; ipra_simps
-  linear_combination -e₁ - 2 * e₂
+  ipra_lc -e₁ - 2 * e₂
 
 /-- `lem:dyadic`, variable `0 = t`. -/
 abbrev dyadicFormula : Fm PTm 1 :=

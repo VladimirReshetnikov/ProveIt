@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.ChebyshevBlock
 import IPRADerivations.AnalyticNumberTheory.HarmonicSignedMean
 import IPRADerivations.AnalyticNumberTheory.WeightedBound
 import IPRADerivations.DiophantineNumberTheory.KhinchinBlock
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Floor comparisons for the signed block mean (`pnt_ipra_constructive_2026-11-14`, `con:signed`)
@@ -88,8 +89,7 @@ theorem lq_at (k x D z : PTm n) :
     Γ ⊢[PRAAx] inst2 (gB lB) k (pairT x (pairT D z)) ≐ (sg k * Lam wt k z) * quo x k :=
   (gB_at _ _ _ _).eqTrans (congrMul (congrMul (.eqRefl _) (lB_at _ _ _)) (.eqRefl _))
 
-theorem le_of_lt_succ {k P : PTm n} (h : Γ ⊢[PRAAx] lt k (succ P)) : Γ ⊢[PRAAx] le k P :=
-  (succ_monus_succ _ _).eqSymm.eqTrans h
+alias le_of_lt_succ := Common.le_of_lt_succ
 
 theorem lam_body_lo {k x P D z : PTm n} (hk : Γ ⊢[PRAAx] lt k (succ P)) :
     Γ ⊢[PRAAx] le (fact P * inst2 (gB lB) k (pairT x (pairT D z))) (x * inst2 (AB wt) k (pairT P z)) := by

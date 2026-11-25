@@ -4,7 +4,7 @@ import IPRADerivations.Foundations.ProductSumDomination
 import IPRADerivations.Combinatorics.CoefficientLogConcave
 import IPRADerivations.Probability.Variance
 import IPRADerivations.Foundations.FiniteAMGM
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Sums over a permuted range, and the total-degree audit of the elimination polynomial

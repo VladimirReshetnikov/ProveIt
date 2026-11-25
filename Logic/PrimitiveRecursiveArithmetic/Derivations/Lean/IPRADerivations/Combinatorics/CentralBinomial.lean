@@ -6,6 +6,8 @@ import IPRADerivations.Core.SumSplit
 import IPRADerivations.Combinatorics.CatalanValuation
 import IPRADerivations.Probability.MedianL1
 import IPRADerivations.Core.SumOrder
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The central binomial coefficient: unimodality and `4^n/(2n + 1) ≤ C(2n, n) ≤ 4^n`
@@ -44,55 +46,45 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
-theorem succ_pos' (a : PTm n) : Γ ⊢[PRAAx] succ a ≐ succ (pred (succ a)) := congrSucc (pred_succ a).eqSymm
+alias succ_pos' := Common.succ_pos
 
 /-- `(k + 1) C(m, k + 1) = (m − k) C(m, k)` for `k < m`. -/
 theorem ratio {k m : PTm n} (h : Γ ⊢[PRAAx] lt k m) :
     Γ ⊢[PRAAx] succ k * binom m (succ k) ≐ monus m k * binom m k := by
-  have a := natEq (absorption (le_of_lt h)); have p := natEq (pascal_at h)
-  have e := natEq (eq_add_of_le (le_of_lt h))
-  apply deriveNat; ipra_simps
-  linear_combination a - (𝔞 k + 1) * p + 𝔞 (binom m k) * e
+  ipra_lc natEq (absorption (le_of_lt h)) - (𝔞 k + 1) * natEq (pascal_at h) +
+    𝔞 (binom m k) * natEq (eq_add_of_le (le_of_lt h))
 
 /-- `C(2n, k) ≤ C(2n, k + 1)` for `k < n`. -/
 theorem rise {k N : PTm n} (h : Γ ⊢[PRAAx] lt k N) :
     Γ ⊢[PRAAx] le (binom (two * N) k) (binom (two * N) (succ k)) := by
   have hk : Γ ⊢[PRAAx] lt k (two * N) := le_trans h (le_of_eq_add (d := N) (by ipra_ring))
-  have r := natEq (ratio hk)
-  have e := natEq (eq_add_of_le h)
-  have e2 := natEq (eq_add_of_le (le_of_lt hk))
   refine le_cancel_pos (succ_pos' k) (le_of_eq_add (d := monus N (succ k) * binom (two * N) k +
     monus N (succ k) * binom (two * N) k + binom (two * N) k) ?_)
-  apply deriveNat; ipra_simps
-  linear_combination r - 𝔞 (binom (two * N) k) * e2 + 2 * 𝔞 (binom (two * N) k) * e
+  ipra_lc natEq (ratio hk) - 𝔞 (binom (two * N) k) * natEq (eq_add_of_le (le_of_lt hk)) +
+    2 * 𝔞 (binom (two * N) k) * natEq (eq_add_of_le h)
 
 /-- `C(2n, k + 1) ≤ C(2n, k)` for `n ≤ k < 2n`. -/
 theorem fall {k N : PTm n} (h₁ : Γ ⊢[PRAAx] le N k) (h₂ : Γ ⊢[PRAAx] lt k (two * N)) :
     Γ ⊢[PRAAx] le (binom (two * N) (succ k)) (binom (two * N) k) := by
-  have r := natEq (ratio h₂)
-  have e := natEq (eq_add_of_le h₁)
-  have e2 := natEq (eq_add_of_le (le_of_lt h₂))
   refine le_cancel_pos (succ_pos' k) (le_of_eq_add (d := (monus k N + monus k N + one) * binom (two * N) k) ?_)
-  apply deriveNat; ipra_simps
-  linear_combination -r + 𝔞 (binom (two * N) k) * e2 + 2 * 𝔞 (binom (two * N) k) * e
+  ipra_lc -natEq (ratio h₂) + 𝔞 (binom (two * N) k) * natEq (eq_add_of_le (le_of_lt h₂)) +
+    2 * 𝔞 (binom (two * N) k) * natEq (eq_add_of_le h₁)
 
 /-! ## Moving out from the centre -/
 
 /-- `C(2n, n) ≥ 1`. -/
 theorem central_pos (N : PTm n) : Γ ⊢[PRAAx] le one (binom (two * N) N) := by
   have c' := natEq (LeanProofs.IPRA.Combinatorics.Catalan.cat_spec (Γ := Γ) N)
-  have p := natEq (LeanProofs.IPRA.Combinatorics.CatalanValuation.cat_pos (Γ := Γ) N)
   refine le_of_eq_add (d := N * LeanProofs.IPRA.Combinatorics.Catalan.cat N + pred (LeanProofs.IPRA.Combinatorics.Catalan.cat N)) ?_
-  apply deriveNat; ipra_simps
-  linear_combination -c' + p
+  ipra_lc -c' + natEq (LeanProofs.IPRA.Combinatorics.CatalanValuation.cat_pos (Γ := Γ) N)
 
 theorem left_in {N j : PTm n} (h : Γ ⊢[PRAAx] le (succ j) N)
     (ih : Γ ⊢[PRAAx] le (binom (two * N) (monus N j)) (binom (two * N) N)) :
     Γ ⊢[PRAAx] le (binom (two * N) (monus N (succ j))) (binom (two * N) N) := by
   have e := eq_add_of_le h
   have m₁ : Γ ⊢[PRAAx] monus N j ≐ succ (monus N (succ j)) :=
-    (congrMonus (e.eqTrans (by apply deriveNat; ipra_simps; ring)) (.eqRefl j)).eqTrans (add_monus' _ _)
-  have hk : Γ ⊢[PRAAx] lt (monus N (succ j)) N := le_of_eq_add (d := j) (e.eqTrans (by apply deriveNat; ipra_simps; ring))
+    (congrMonus (e.eqTrans (by ipra_ring)) (.eqRefl j)).eqTrans (add_monus' _ _)
+  have hk : Γ ⊢[PRAAx] lt (monus N (succ j)) N := le_of_eq_add (d := j) (e.eqTrans (by ipra_ring))
   exact le_trans (rise hk) (le_congr (congrBinom (.eqRefl _) m₁) (.eqRefl _) ih)
 
 theorem left_out {N j : PTm n} (h : Γ ⊢[PRAAx] le N (succ j)) :
@@ -120,9 +112,8 @@ theorem central_left (N j : PTm n) : Γ ⊢[PRAAx] le (binom (two * N) (monus N 
 theorem right_step {N j : PTm n} (h : Γ ⊢[PRAAx] le (succ j) N)
     (ih : Γ ⊢[PRAAx] le (binom (two * N) (N + j)) (binom (two * N) N)) :
     Γ ⊢[PRAAx] le (binom (two * N) (N + succ j)) (binom (two * N) N) := by
-  have e := natEq (eq_add_of_le h)
   have hk : Γ ⊢[PRAAx] lt (N + j) (two * N) := le_of_eq_add (d := monus N (succ j)) (by
-    apply deriveNat; ipra_simps; linear_combination e)
+    ipra_lc natEq (eq_add_of_le h))
   exact le_trans (le_congr (congrBinom (.eqRefl _) (add_succ _ _)).eqSymm (.eqRefl _)
     (fall (le_of_eq_add (d := j) (.eqRefl _)) hk)) ih
 
@@ -146,9 +137,7 @@ theorem central_right {N j : PTm n} (h : Γ ⊢[PRAAx] le j N) :
   simp at i
   exact .impE i h
 
-theorem monus_monus' {v N : PTm n} (h : Γ ⊢[PRAAx] le v N) : Γ ⊢[PRAAx] monus N (monus N v) ≐ v :=
-  (congrMonus (eq_add_of_le h) ((congrMonus (eq_add_of_le h) (.eqRefl _)).eqTrans (add_monus' _ _))).eqTrans
-    (add_monus _ _)
+alias monus_monus' := Common.monus_monus_of_le
 
 theorem central_hi {N k : PTm n} (h₁ : Γ ⊢[PRAAx] le N k) (h : Γ ⊢[PRAAx] le k (two * N)) :
     Γ ⊢[PRAAx] le (binom (two * N) k) (binom (two * N) N) := by
@@ -156,7 +145,7 @@ theorem central_hi {N k : PTm n} (h₁ : Γ ⊢[PRAAx] le N k) (h : Γ ⊢[PRAAx
   have e' := natEq e; have h' := natEq (eq_add_of_le h)
   have hj : Γ ⊢[PRAAx] le (monus k N) N := by
     refine le_of_eq_add (d := monus (two * N) k) ?_
-    apply deriveNat; ipra_simps; linear_combination h' + e'
+    ipra_lc h' + e'
   exact le_congr (congrBinom (.eqRefl _) e.eqSymm) (.eqRefl _) (central_right hj)
 
 /-- `C(2n, k) ≤ C(2n, n)` for `k ≤ 2n`. -/
@@ -181,7 +170,7 @@ theorem shift_two_mul (a : PTm n) : Syn.shift (two * a) = two * Syn.shift a := b
 /-- `C(2n, n) ≤ 4^n`, with `4^n = 2^{2n}`. -/
 theorem central_upper (N : PTm n) : Γ ⊢[PRAAx] le (binom (two * N) N) (pw two (two * N)) := by
   have hn : Γ ⊢[PRAAx] lt N (succ (two * N)) :=
-    (succ_monus_succ _ _).eqTrans (le_of_eq_add (d := N) (by apply deriveNat; ipra_simps; ring))
+    (succ_monus_succ _ _).eqTrans (le_of_eq_add (d := N) (by ipra_ring))
   have ht := term_le_sum bBody (x := two * N) hn
   rw [inst2_b] at ht
   exact le_congr (.eqRefl _) (row_sum N) ht

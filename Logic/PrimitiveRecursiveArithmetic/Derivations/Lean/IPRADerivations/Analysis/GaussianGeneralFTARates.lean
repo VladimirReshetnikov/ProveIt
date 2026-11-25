@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianGeneralFTAConstants
 import IPRADerivations.Algebra.FTABounds
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Exact computed rates of the general coefficient-name FTA
@@ -132,13 +133,7 @@ theorem q_plus_drift (N : PTm n) : Γ ⊢[PRAAx]
   have a : Γ ⊢[PRAAx] qDen N ≐ qNum N+one := predecessor_form _ hq
   have b : Γ ⊢[PRAAx] QDen N ≐ QNum N+one := predecessor_form _ hQ
   have c : Γ ⊢[PRAAx] QDen N ≐ two*qDen N := .eqRefl _
-  have an := natEq a
-  have bn := natEq b
-  have cn := natEq c
-  apply ZT.derive
-  simp only [ZT.toZ_add,ZT.toZ_mul,ZT.toZ_ofNat]
-  ipra_simps
-  linear_combination -𝔞(QDen N)*𝔞(QDen N)*an+𝔞(qDen N)*𝔞(QDen N)*bn-𝔞(QDen N)*cn
+  ipra_lc -𝔞(QDen N)*𝔞(QDen N)*natEq a+𝔞(qDen N)*𝔞(QDen N)*natEq b-𝔞(QDen N)*natEq c
 
 def output (N : PTm n) : PTm n := pairT (q N) (pairT (GaussianGeneralFTAConstants.Q N) (rho N))
 def outputF : PR 1 := PTm.toPR (output (var 0))

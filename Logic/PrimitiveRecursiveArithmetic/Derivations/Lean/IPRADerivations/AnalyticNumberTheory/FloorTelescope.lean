@@ -66,7 +66,7 @@ theorem cube_sum (N x : PTm n) : Γ ⊢[PRAAx] ap2 (sumF cB) N x ≐ N * N * N :
 /-! ## Floor telescoping -/
 
 theorem sq_pos (N : PTm n) : Γ ⊢[PRAAx] succ N * succ N ≐ succ (pred (succ N * succ N)) :=
-  pos_of_lt_zero (le_of_eq_add (d := N * N + two * N) (by apply deriveNat; ipra_simps; ring))
+  pos_of_lt_zero (le_of_eq_add (d := N * N + two * N) (by ipra_ring))
 
 /-- `⌊x/(N+1)²⌋ + ⌊x/(N+1)⌋ ≤ ⌊x/N⌋` for `N ≥ 1`. -/
 theorem floor_step {N : PTm n} (x : PTm n) (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) :
@@ -99,7 +99,7 @@ private theorem tel₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] telF := by
     have e0 := natEq (sum_zero (Γ := ([] : List (Fm PTm 1))) qB (var 0))
     have q1 := natEq (quo_one' (Γ := ([] : List (Fm PTm 1))) (var 0))
     have q11 : ([] : List (Fm PTm 1)) ⊢[PRAAx] quo (var 0) (succ zero * succ zero) ≐ quo (var 0) (succ zero) :=
-      congrAp2 quoF (.eqRefl _) (by apply deriveNat; ipra_simps; ring)
+      congrAp2 quoF (.eqRefl _) (by ipra_ring)
     have e11 := natEq q11
     ipra_le 0 with e1 + e0 + e11 + 2 * q1
   · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.repl_zero, repl_one,

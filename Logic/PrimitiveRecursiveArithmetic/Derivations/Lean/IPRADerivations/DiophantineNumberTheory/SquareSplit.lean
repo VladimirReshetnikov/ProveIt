@@ -1,5 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.Coprime
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Coprime cancellation and square splitting

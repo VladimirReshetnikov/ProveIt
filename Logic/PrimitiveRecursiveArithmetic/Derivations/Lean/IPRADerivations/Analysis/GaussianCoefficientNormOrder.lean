@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.GaussianRationalLinearProduct
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Nonnegative coefficient norms and actual self-differences
@@ -38,23 +39,16 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 theorem prefixNorm_congr {C D N M : PTm n} (hC : Γ ⊢[PRAAx] C ≐ D)
     (hN : Γ ⊢[PRAAx] N ≐ M) : Γ ⊢[PRAAx] prefixNorm C N ≐ prefixNorm D M := by
-  simpa only [GaussianCoefficientL1.subst_prefixNorm,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (prefixNorm (var 0) (var 1) : PTm 2)
-      (σ := ![C,N]) (σ' := ![D,M]) (fun i => by fin_cases i; exact hC; exact hN)
+  ipra_congr (prefixNorm (var 0) (var 1) : PTm 2) with [hC, hN]
 
 theorem coefficientNorm_congr {C D : PTm n} (hC : Γ ⊢[PRAAx] C ≐ D) :
     Γ ⊢[PRAAx] coefficientNorm C ≐ coefficientNorm D := by
-  simpa only [GaussianCoefficientL1.subst_coefficientNorm,Syn.subst_var,Matrix.cons_val_zero] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (coefficientNorm (var 0) : PTm 1)
-      (σ := ![C]) (σ' := ![D]) (fun i => by fin_cases i; exact hC)
+  ipra_congr (coefficientNorm (var 0) : PTm 1) with [hC]
 
 theorem subCoefficients_congr {C C' D D' N N' : PTm n}
     (hC : Γ ⊢[PRAAx] C ≐ C') (hD : Γ ⊢[PRAAx] D ≐ D') (hN : Γ ⊢[PRAAx] N ≐ N') :
     Γ ⊢[PRAAx] subCoefficients C D N ≐ subCoefficients C' D' N' := by
-  simpa only [GaussianCoefficientL1.subst_subCoefficients,Syn.subst_var,Matrix.cons_val_zero,
-    Matrix.cons_val_one,Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using
-      Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (subCoefficients (var 0) (var 1) (var 2) : PTm 3)
-        (σ := ![C,D,N]) (σ' := ![C',D',N']) (fun i => by fin_cases i; exact hC; exact hD; exact hN)
+  ipra_congr (subCoefficients (var 0) (var 1) (var 2) : PTm 3) with [hC, hD, hN]
 
 theorem zero_lower_of_nonnegative (c : PTm n)
     (hc : Γ ⊢[PRAAx] le (numeratorOf c).neg (numeratorOf c).pos) :

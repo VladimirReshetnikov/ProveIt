@@ -108,7 +108,7 @@ theorem flatten {M x : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) (A : PTm 
           simpa [Fm.shift, Syn.shift] using hM.shift
         exact s0.wk
       have es : Δ ⊢[PRAAx] succ (var 0) * Syn.shift M ≐ var 0 * Syn.shift M + Syn.shift M := by
-        apply deriveNat; ipra_simps; ring
+        ipra_ring
       show Δ ⊢[PRAAx] ap2 (sumF (flB g)) (succ (var 0) * Syn.shift M) (pairT (Syn.shift M) (Syn.shift x)) ≐
         ap2 (sumF (oB g)) (succ (var 0)) (pairT (Syn.shift M) (Syn.shift x))
       refine (congrAp2 (sumF (flB g)) es (.eqRefl _)).eqTrans ((sum_split _ _ _ _).eqTrans ?_)

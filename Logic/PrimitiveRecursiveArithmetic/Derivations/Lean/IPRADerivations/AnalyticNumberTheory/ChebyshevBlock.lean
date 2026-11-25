@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.HyperbolaSwap
 import IPRADerivations.AnalyticNumberTheory.FactorialLambda
 import IPRADerivations.Probability.Variance
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The Chebyshev block identity (`pnt_ipra_constructive_2026-11-14`, `con:signed`)
@@ -43,7 +44,7 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 theorem dist_alg {s B M q : PTm n} (h : Γ ⊢[PRAAx] B + M ≐ q) : Γ ⊢[PRAAx] s * B + s * M ≐ s * q := by
-  have a := natEq h; apply deriveNat; ipra_simps; linear_combination 𝔞 s * a
+  ipra_lc 𝔞 s * natEq h
 
 /-- `[d ≤ D]` over `0 = d`, `1 = (D, z)`. -/
 abbrev iB : PTm 2 := monus one (monus (var 0) (fstT (var 1)))
@@ -57,7 +58,7 @@ theorem ind_one {k D z : PTm n} (h : Γ ⊢[PRAAx] le k D) : Γ ⊢[PRAAx] inst2
 theorem ind_zero {k D z : PTm n} (h : Γ ⊢[PRAAx] lt D k) : Γ ⊢[PRAAx] inst2 iB k (pairT D z) ≐ zero := by
   rw [inst2_iB]
   have e : Γ ⊢[PRAAx] k ≐ succ (monus k (succ D)) + D := by
-    have a := natEq (eq_add_of_le h); apply deriveNat; ipra_simps; linear_combination a
+    ipra_lc natEq (eq_add_of_le h)
   have m : Γ ⊢[PRAAx] monus k (fstT (pairT D z)) ≐ succ (monus k (succ D)) :=
     (congrMonus e (fst_pair _ _)).eqTrans (add_monus _ _)
   exact (congrMonus (.eqRefl one) m).eqTrans ((succ_monus_succ _ _).eqTrans (zero_monus _))
@@ -69,7 +70,7 @@ theorem bs_low {m D z : PTm n} (h : Γ ⊢[PRAAx] le m D) : Γ ⊢[PRAAx] Bs iB 
     rw [inst2_bS, shift_pairT, show Syn.shift (one : PTm n) = one by simp [Syn.shift]]
     have hv : (lt (var 0) (Syn.shift m) :: Γ.map Fm.shift) ⊢[PRAAx] lt (var 0) (Syn.shift m) := Prf.hyp0
     exact ind_one (le_trans hv h'.wk))))
-  exact s.eqTrans (by apply deriveNat; ipra_simps; ring)
+  exact s.eqTrans (by ipra_ring)
 
 /-- `Σ_{k<m} [k + 1 ≤ D] = D` for `D ≤ m`. -/
 theorem bs_high {m D z : PTm n} (h : Γ ⊢[PRAAx] le D m) : Γ ⊢[PRAAx] Bs iB m (pairT D z) ≐ D := by
@@ -85,7 +86,7 @@ theorem bs_high {m D z : PTm n} (h : Γ ⊢[PRAAx] le D m) : Γ ⊢[PRAAx] Bs iB
     rw [shift_pairT]
     exact ind_zero ((succ_monus_succ _ _).eqTrans (le_add_right _ _)))))
   refine (congrAp2 (sumF (bS iB)) e (.eqRefl _)).eqTrans (sp.eqTrans ?_)
-  exact (congrAdd lo hi).eqTrans (by apply deriveNat; ipra_simps; ring)
+  exact (congrAdd lo hi).eqTrans (by ipra_ring)
 
 /-- `min(q, D) + (q ∸ D) = q`. -/
 theorem min_add (q D z : PTm n) : Γ ⊢[PRAAx] Bs iB q (pairT D z) + monus q D ≐ q := by

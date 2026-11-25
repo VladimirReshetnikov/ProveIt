@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.GaussianEulerDecayMesh
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The actual compact decay quadrature and its endpoints
@@ -41,9 +42,8 @@ theorem evaluator_at (p a b x : PTm n) : Γ ⊢[PRAAx]
   have read : Γ ⊢[PRAAx] ap3 evaluatorF p (pairT a b) x ≐ evaluator p (pairT a b) := by
     simpa [evaluatorF,ap3] using toPR_eq (Γ := Γ) (evaluator (var 0) (var 1) : PTm 3) ![p,pairT a b,x]
   refine read.eqTrans ?_
-  simpa [evaluator] using Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (observation (var 0) (var 1) (var 2) : PTm 3)
-    (σ := ![fstT (pairT a b),sndT (pairT a b),p]) (σ' := ![a,b,p])
-    (fun i => by fin_cases i; exact fst_pair _ _; exact snd_pair _ _; exact .eqRefl _)
+  ipra_congr (observation (var 0) (var 1) (var 2) : PTm 3) with
+    [fst_pair _ _, snd_pair _ _, .eqRefl p] using [evaluator]
 
 theorem cell_at (i p N a C E x : PTm n) : Γ ⊢[PRAAx]
     inst2 (sampleBody evaluatorF) i (sampleData p N a C E x) ≐ observation (a*N+C*i) (E*N) p :=

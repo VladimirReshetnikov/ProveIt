@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianRationalFiberVandermonde
 import IPRADerivations.Analysis.GaussianReconstructionRoots
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual numerical Lagrange cardinal polynomials
@@ -52,8 +53,7 @@ def deleted (R s : PTm n) : PTm n := sequence deleteBody (pred (length R)) (data
 
 theorem skip_congr {s s' i i' : PTm n} (hs : Γ ⊢[PRAAx] s ≐ s') (hi : Γ ⊢[PRAAx] i ≐ i') : Γ ⊢[PRAAx]
     skip s i ≐ skip s' i' := by
-  simpa using Prf.eqCongr (Γ := Γ) (skip (var 0) (var 1) : PTm 2)
-    (σ := ![s,i]) (σ' := ![s',i']) (fun j => by fin_cases j; exact hs; exact hi)
+  ipra_congr (skip (var 0) (var 1) : PTm 2) with [hs, hi]
 theorem skip_before (s i : PTm n) (hi : Γ ⊢[PRAAx] lt i s) : Γ ⊢[PRAAx] skip s i ≐ i :=
   RationalArithmetic.select_one _ _ _ (AnalyticNumberTheory.Totatives.sg_lt hi)
 theorem skip_after (s i : PTm n) (hi : Γ ⊢[PRAAx] le s i) : Γ ⊢[PRAAx] skip s i ≐ succ i :=
@@ -271,8 +271,7 @@ def dot (R r s : PTm n) : PTm n := coefficientEvaluation R s (entry R r)
 theorem inverse_coefficient_congr {R S k j s t : PTm n} (hR : Γ ⊢[PRAAx] R ≐ S)
     (hk : Γ ⊢[PRAAx] k ≐ j) (hs : Γ ⊢[PRAAx] s ≐ t) : Γ ⊢[PRAAx]
     inverseCoefficient R k s ≐ inverseCoefficient S j t := by
-  simpa using Prf.eqCongr (Γ := Γ) (inverseCoefficient (var 0) (var 1) (var 2) : PTm 3)
-    (σ := ![R,k,s]) (σ' := ![S,j,t]) (fun i => by fin_cases i; exact hR; exact hk; exact hs)
+  ipra_congr (inverseCoefficient (var 0) (var 1) (var 2) : PTm 3) with [hR, hk, hs]
 theorem evaluation_body_at (R s z k : PTm n) : Γ ⊢[PRAAx]
     inst2 evaluationBody k (evaluationData R s z) ≐ coefficientTerm R s z k := by
   simp only [evaluationBody,inst2,subst_coefficientTerm,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
@@ -368,9 +367,7 @@ theorem program_at (R s : PTm n) : Γ ⊢[PRAAx] run R s ≐ output R s := by
   simpa [run,outputF,ap2] using toPR_eq (Γ := Γ) (output (var 0) (var 1) : PTm 2) ![R,s]
 theorem fields_congr {q q' : PTm n} (h : Γ ⊢[PRAAx] q ≐ q') (i : Fin 5) : Γ ⊢[PRAAx]
     GaussianRationalFiberVandermonde.fields q i ≐ GaussianRationalFiberVandermonde.fields q' i := by
-  simpa only [GaussianRationalFiberVandermonde.subst_fields,Syn.subst_var,Matrix.cons_val_zero] using
-    Prf.eqCongr (Γ := Γ) (GaussianRationalFiberVandermonde.fields (var 0) i : PTm 1)
-      (σ := ![q]) (σ' := ![q']) (fun j => by fin_cases j; exact h)
+  ipra_congr (GaussianRationalFiberVandermonde.fields (var 0) i : PTm 1) with [h]
 theorem returned_field (R s : PTm n) (i : Fin 5) : Γ ⊢[PRAAx]
     GaussianRationalFiberVandermonde.fields (fstT (run R s)) i ≐
       ![deleted R s,productPolynomial R s,denominator R s,reciprocal (denominator R s),cardinal R s] i :=

@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.PhiUpper
 import IPRADerivations.AnalyticNumberTheory.FactorVector
 import IPRADerivations.AnalyticNumberTheory.Mobius
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The least factor of a composite number, and trial division up to the square root
@@ -47,23 +48,20 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 theorem zero_cof {m l c : PTm n} (e : Γ ⊢[PRAAx] m ≐ l * c) (hc : Γ ⊢[PRAAx] c ≐ zero) :
     Γ ⊢[PRAAx] m ≐ zero := by
-  have a := natEq e; have b := natEq hc
-  apply deriveNat; ipra_simps; linear_combination a + 𝔞 l * b
+  ipra_lc natEq e + 𝔞 l * natEq hc
 
 theorem one_cof {m l c p : PTm n} (e : Γ ⊢[PRAAx] m ≐ l * c) (hc : Γ ⊢[PRAAx] c ≐ succ p)
     (hp : Γ ⊢[PRAAx] p ≐ zero) : Γ ⊢[PRAAx] l ≐ m := by
-  have a := natEq e; have b := natEq hc; have d := natEq hp
-  apply deriveNat; ipra_simps; linear_combination -a - 𝔞 l * b - 𝔞 l * d
+  ipra_lc -natEq e - 𝔞 l * natEq hc - 𝔞 l * natEq hp
 
 theorem two_le_ss {c p q : PTm n} (hc : Γ ⊢[PRAAx] c ≐ succ p) (hp : Γ ⊢[PRAAx] p ≐ succ q) :
     Γ ⊢[PRAAx] le two c := by
   have a := natEq hc; have b := natEq hp
   refine le_of_eq_add (d := q) ?_
-  apply deriveNat; ipra_simps; linear_combination a + b
+  ipra_lc a + b
 
 theorem comm_alg {m l c : PTm n} (e : Γ ⊢[PRAAx] m ≐ l * c) : Γ ⊢[PRAAx] m ≐ c * l := by
-  have a := natEq e
-  apply deriveNat; ipra_simps; linear_combination a
+  ipra_lc natEq e
 
 section Composite
 

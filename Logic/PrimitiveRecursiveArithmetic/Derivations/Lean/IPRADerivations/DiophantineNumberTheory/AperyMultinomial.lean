@@ -77,11 +77,11 @@ theorem multinomial_term (m : PTm k) :
   have x3 := natEq (exp_split (Γ := Γ) 42 21 21 rfl (num 3) m)
   have x7a := natEq (exp_split (Γ := Γ) 42 21 21 rfl (num 7) m)
   have x7b := natEq (exp_split (Γ := Γ) 21 14 7 rfl (num 7) m)
-  have h2 : Γ ⊢[PRAAx] (succ one : PTm k) ≐ num 2 := by apply deriveNat; ipra_simps; ring
-  have h3 : Γ ⊢[PRAAx] (succ two : PTm k) ≐ num 3 := by apply deriveNat; ipra_simps; ring
-  have h7 : Γ ⊢[PRAAx] (succ (num 6) : PTm k) ≐ num 7 := by apply deriveNat; ipra_simps; ring
+  have h2 : Γ ⊢[PRAAx] (succ one : PTm k) ≐ num 2 := by ipra_ring
+  have h3 : Γ ⊢[PRAAx] (succ two : PTm k) ≐ num 3 := by ipra_ring
+  have h7 : Γ ⊢[PRAAx] (succ (num 6) : PTm k) ≐ num 7 := by ipra_ring
   have b1' := le_congr (.eqRefl _) (congrPw h2 (.eqRefl _)) b1
-  have b2' := le_congr (congrMul (.eqRefl _) (congrPw ((by apply deriveNat; ipra_simps; ring :
+  have b2' := le_congr (congrMul (.eqRefl _) (congrPw ((by ipra_ring :
     Γ ⊢[PRAAx] (two : PTm k) ≐ num 2)) (.eqRefl _))) (congrPw h3 (.eqRefl _)) b2
   have b3' := le_congr (.eqRefl _) (congrPw h7 (.eqRefl _)) b3
   ipra_le 𝔞 (pw (num 3) (num 21 * m)) * 𝔞 (pw (num 7) (num 21 * m)) * 𝔞 (pw (num 7) (num 14 * m)) * (sl b1' * 𝔞 (pw (num 3) (num 21 * m)) * 𝔞 (pw (num 7) (num 7 * m)) + 𝔞 (binom (num 42 * m) (num 21 * m)) * sl b2' * 𝔞 (pw (num 7) (num 7 * m)) + 𝔞 (binom (num 42 * m) (num 21 * m)) * 𝔞 (binom (num 21 * m) (num 14 * m)) * 𝔞 (pw (num 2) (num 14 * m)) * sl b3') using

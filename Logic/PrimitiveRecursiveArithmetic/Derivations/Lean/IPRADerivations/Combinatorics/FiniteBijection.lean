@@ -2,6 +2,7 @@ import IPRADerivations.Core.Fubini
 import IPRADerivations.Probability.Lotus
 import IPRADerivations.AnalyticNumberTheory.Fermat
 import IPRADerivations.Probability.MedianCounts
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The finite bijection principle
@@ -52,9 +53,7 @@ theorem shift_pairT' (a b : PTm n) : Syn.shift (pairT a b) = pairT (Syn.shift a)
 
 /-! ## Bits -/
 
-theorem sg_bit (x : PTm n) : Γ ⊢[PRAAx] (sg x ≐ zero) ⋎ (sg x ≐ one) :=
-  .orE (zero_or_succ x) (.orI₁ ((congrSg Prf.hyp0).eqTrans sg_zero))
-    (.orI₂ ((congrSg Prf.hyp0).eqTrans (sg_succ _)))
+alias sg_bit := Common.sg_zero_or_one
 
 theorem absurd_zero_one {φ : Fm PTm n} (h : Γ ⊢[PRAAx] zero ≐ one) : Γ ⊢[PRAAx] φ :=
   lt_irrefl zero φ (lt_congr (.eqRefl _) h.eqSymm (le_refl one))

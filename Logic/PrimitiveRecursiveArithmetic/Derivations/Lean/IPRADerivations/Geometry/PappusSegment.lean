@@ -1,6 +1,6 @@
 import IPRADerivations.Core.SumLemmas
 import IPRADerivations.Core.Pairing
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The midpoint moment of a segment

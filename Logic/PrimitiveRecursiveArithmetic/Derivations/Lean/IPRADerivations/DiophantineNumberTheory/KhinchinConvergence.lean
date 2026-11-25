@@ -3,7 +3,7 @@ import IPRADerivations.Foundations.AuxiliaryEnvelope
 import IPRADerivations.Probability.Independence
 import IPRADerivations.AnalyticNumberTheory.Totient
 import IPRADerivations.DiophantineNumberTheory.HurwitzMargin
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The convergent half of the finite Khinchin theorem (`hurwitz_khinchin_ipra`, (K1))

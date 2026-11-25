@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianRationalPolynomialExponentialStability
 import IPRADerivations.Analysis.GaussianRationalPolynomialProductDegree
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual finite coefficient sums of the literal polynomial exponential
@@ -51,11 +52,7 @@ def coefficientSum (C N K e j : PTm n) : PTm n := sum termBody (succ j) (data C 
 theorem term_congr {C C' N N' K K' e e' k k' : PTm n} (hC : Γ ⊢[PRAAx] C ≐ C')
     (hN : Γ ⊢[PRAAx] N ≐ N') (hK : Γ ⊢[PRAAx] K ≐ K') (he : Γ ⊢[PRAAx] e ≐ e')
     (hk : Γ ⊢[PRAAx] k ≐ k') : Γ ⊢[PRAAx] term C N K e k ≐ term C' N' K' e' k' := by
-  simpa only [subst_term,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.cons_val_three,Matrix.cons_val_four,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (term (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5)
-      (σ := ![C,N,K,e,k]) (σ' := ![C',N',K',e',k'])
-      (fun i => by fin_cases i; exact hC; exact hN; exact hK; exact he; exact hk)
+  ipra_congr (term (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) with [hC, hN, hK, he, hk]
 theorem term_at (C N K e k : PTm n) : Γ ⊢[PRAAx]
     inst2 termBody k (data C N K e) ≐ term C N K e k := by
   simp only [termBody,inst2,subst_term,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]

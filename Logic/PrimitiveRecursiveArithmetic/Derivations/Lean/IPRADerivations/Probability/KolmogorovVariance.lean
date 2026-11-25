@@ -1,5 +1,6 @@
 import IPRADerivations.Probability.KolmogorovIidGlue
 import IPRADerivations.Combinatorics.BinomialIdentities
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Kolmogorov's maximal inequality with the variance of the sum
@@ -124,16 +125,12 @@ theorem dn_moment {M x : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M))
     Γ ⊢[PRAAx] Ew (TB w) (kB (DB w X)) (pw M r) (pairT r (pairT M x)) +
         r * (ap2 (sumF (w * X)) M x * ap2 (sumF (w * X)) M x) * Tt w r M x ≐
       r * (ap2 (sumF w) M x * ap2 (sumF (w * (X * X))) M x) * Tt w r M x := by
-  have ib := natEq (square_sums (Γ := Γ) w X M x r)
   have sm := sample_moments (Γ := Γ) (x := x) w X hM r
-  have s₁ := natEq (Prf.andE₁ sm)
-  have s₂ := natEq (Prf.andE₂ sm)
   have hT : Γ ⊢[PRAAx] Tt w r M x ≐ succ (pred (Tt w r M x)) :=
     (total_pow w hM r).eqTrans ((pw_pos' hW r).eqTrans (congrSucc (congrPred (total_pow w hM r).eqSymm)))
   refine mul_cancel hT ?_
-  apply deriveNat; ipra_simps
-  linear_combination 𝔟 (Tt w r M x) * ib + s₂ +
-    (𝔟 (ap2 (sumF w) M x) * 𝔟 (At w X r M x) - 𝔟 r * 𝔟 (ap2 (sumF (w * X)) M x) * 𝔟 (Tt w r M x)) * s₁
+  ipra_lc 𝔟 (Tt w r M x) * natEq (square_sums (Γ := Γ) w X M x r) + natEq (Prf.andE₂ sm) +
+    (𝔟 (ap2 (sumF w) M x) * 𝔟 (At w X r M x) - 𝔟 r * 𝔟 (ap2 (sumF (w * X)) M x) * 𝔟 (Tt w r M x)) * natEq (Prf.andE₁ sm)
 
 end Moments
 

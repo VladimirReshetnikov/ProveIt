@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.PowerGap
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Core.Powers
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # A uniform superelliptic family: `y^m = x^{mr} + x + 1`
@@ -64,21 +65,16 @@ theorem one_pw (e : PTm k) : Γ ⊢[PRAAx] pw one e ≐ one := by
 
 /-- `0^{e+1} = 0`. -/
 theorem zero_pw (e : PTm k) : Γ ⊢[PRAAx] pw zero (succ e) ≐ zero := by
-  have p := natEq (pw_succ (Γ := Γ) zero e)
-  apply deriveNat; ipra_simps
-  linear_combination p
+  ipra_lc natEq (pw_succ (Γ := Γ) zero e)
 
 /-- `s^{e+1} = 1` gives `s = 1`. -/
 theorem s_eq_one {s e : PTm k} (h : Γ ⊢[PRAAx] pw s (succ e) ≐ one) : Γ ⊢[PRAAx] s ≐ one := by
   refine .orE (zero_or_succ s) ?_ ?_
   · have hs : ((s ≐ zero) :: Γ) ⊢[PRAAx] s ≐ zero := Prf.hyp0
     have h1 : ((s ≐ zero) :: Γ) ⊢[PRAAx] pw s (succ e) ≐ one := h.wk
-    have p := natEq (pw_succ (Γ := (s ≐ zero) :: Γ) s e)
     have e1 := natEq h1
-    have z := natEq hs
     have c : ((s ≐ zero) :: Γ) ⊢[PRAAx] succ zero ≐ zero := by
-      apply deriveNat; ipra_simps
-      linear_combination -e1 + p + 𝔞 (pw s e) * z
+      ipra_lc -e1 + natEq (pw_succ (Γ := (s ≐ zero) :: Γ) s e) + 𝔞 (pw s e) * natEq hs
     exact succ_ne_zero' _ c
   · refine .orE (zero_or_succ (pred s)) ?_ ?_
     · have hs : ((pred s ≐ zero) :: (s ≐ succ (pred s)) :: Γ) ⊢[PRAAx] s ≐ succ (pred s) := Prf.hyp1
@@ -111,12 +107,10 @@ theorem pos_branch
     have h1 : Δ ⊢[PRAAx] pw s (succ (succ (succ j))) ≐
         pw (pw t (succ r)) (succ (succ (succ j))) + t + one := h.wk
     have e := natEq h1
-    have a2 := natEq (pw_succ (Γ := Δ) (pw t (succ r)) (succ (succ j)))
-    have a1 := natEq (pw_succ (Γ := Δ) t r)
     have z := natEq ht
     have hsm : Δ ⊢[PRAAx] pw s (succ (succ (succ j))) ≐ one := by
-      apply deriveNat; ipra_simps
-      linear_combination e + a2 + 𝔞 (pw (pw t (succ r)) (succ (succ j))) * a1 +
+      ipra_lc e + natEq (pw_succ (Γ := Δ) (pw t (succ r)) (succ (succ j))) +
+        𝔞 (pw (pw t (succ r)) (succ (succ j))) * natEq (pw_succ (Γ := Δ) t r) +
         (1 + 𝔞 (pw (pw t (succ r)) (succ (succ j))) * 𝔞 (pw t r)) * z
     exact .andI ht (s_eq_one hsm)
   · let Δ : List (Fm PTm k) := (t ≐ succ (pred t)) :: Γ
@@ -177,10 +171,8 @@ theorem neg_branch
         pw (pw (succ t) (succ r)) (succ (succ (succ j))) + one := h.wk
     have e := natEq h1
     have z := natEq ht
-    have m1 := natEq eTm
     have hsm : Δ ⊢[PRAAx] pw s (succ (succ (succ j))) ≐ one := by
-      apply deriveNat; ipra_simps
-      linear_combination e - z + m1
+      ipra_lc e - z + natEq eTm
     exact .andI ht (s_eq_one hsm)
   · let Δ : List (Fm PTm k) := (t ≐ succ (pred t)) :: Γ
     have ht : Δ ⊢[PRAAx] t ≐ succ (pred t) := Prf.hyp0
@@ -258,18 +250,13 @@ theorem neg_y_neg_x (φ : Fm PTm k)
 /-- The point `(0, 1)`: `1^m = (0^r)^m + 0 + 1`. -/
 theorem point_zero : Γ ⊢[PRAAx] pw one (succ (succ (succ j))) ≐
     pw (pw zero (succ r)) (succ (succ (succ j))) + zero + one := by
-  have a := natEq (one_pw (Γ := Γ) (succ (succ (succ j))))
-  have b := natEq (congrPwBase (Γ := Γ) (succ (succ (succ j))) (zero_pw r))
-  have c := natEq (zero_pw (Γ := Γ) (succ (succ j)))
-  apply deriveNat; ipra_simps
-  linear_combination a - b - c
+  ipra_lc natEq (one_pw (Γ := Γ) (succ (succ (succ j)))) -
+    natEq (congrPwBase (Γ := Γ) (succ (succ (succ j))) (zero_pw r)) - natEq (zero_pw (Γ := Γ) (succ (succ j)))
 
 /-- The points `(−1, ±1)`: with `x = −(0 + 1)`, `1^m + 1 = (1^r)^m + 1`. -/
 theorem point_neg_one : Γ ⊢[PRAAx] pw one (succ (succ (succ j))) + succ zero ≐
     pw (pw (succ zero) (succ r)) (succ (succ (succ j))) + one := by
-  have b := natEq (congrPwBase (Γ := Γ) (succ (succ (succ j))) (one_pw (succ r)))
-  apply deriveNat; ipra_simps
-  linear_combination -b
+  ipra_lc -natEq (congrPwBase (Γ := Γ) (succ (succ (succ j))) (one_pw (succ r)))
 
 end Family
 

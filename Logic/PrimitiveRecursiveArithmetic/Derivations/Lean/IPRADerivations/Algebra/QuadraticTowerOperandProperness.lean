@@ -1,4 +1,5 @@
 import IPRADerivations.Algebra.QuadraticTowerArrayNormalization
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Original rational-value operands of the actual tower table
@@ -35,10 +36,7 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 theorem packed_congr {A C W V S T : PTm n}
     (hA : Γ ⊢[PRAAx] A ≐ C) (hW : Γ ⊢[PRAAx] W ≐ V) (hS : Γ ⊢[PRAAx] S ≐ T) : Γ ⊢[PRAAx]
     QuadraticTowerArrayCodec.packed A W S ≐ QuadraticTowerArrayCodec.packed C V T := by
-  simpa [QuadraticTowerArrayCodec.subst_packed] using
-    Prf.eqCongr (QuadraticTowerArrayCodec.packed (var 0) (var 1) (var 2) : PTm 3)
-      (σ := ![A,W,S]) (σ' := ![C,V,T])
-      (fun i => by fin_cases i; exact hA; exact hW; exact hS)
+  ipra_congr (QuadraticTowerArrayCodec.packed (var 0) (var 1) (var 2) : PTm 3) with [hA, hW, hS]
 
 theorem code_proper (h A C B : PTm n) (hV : Γ ⊢[PRAAx] equalValues h A C) :
     Γ ⊢[PRAAx] code h A B ≐ code h C B :=
@@ -107,9 +105,7 @@ theorem ground_digit (A B : PTm n) (hA : Γ ⊢[PRAAx] arrayHeight zero A B) : �
 
 theorem singleton_congr {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) : Γ ⊢[PRAAx]
     singleton a ≐ singleton b := by
-  simpa [QuadraticTowerCoefficients.subst_singleton] using
-    Prf.eqCongr (singleton (var 0) : PTm 1) (σ := ![a]) (σ' := ![b])
-      (fun i => by fin_cases i; exact h)
+  ipra_congr (singleton (var 0) : PTm 1) with [h]
 
 theorem query_zero_original (B D A C : PTm n)
     (hA : Γ ⊢[PRAAx] arrayHeight zero A B) (hC : Γ ⊢[PRAAx] arrayHeight zero C B) : Γ ⊢[PRAAx]

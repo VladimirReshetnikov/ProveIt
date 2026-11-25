@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.SieveWeightForm
 import IPRADerivations.AnalyticNumberTheory.PowerResidue
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The explicit sieve weights at `d = 1`
@@ -62,7 +63,7 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 theorem one_pos : Γ ⊢[PRAAx] (one : PTm n) ≐ succ (pred one) := congrSucc (pred_succ _).eqSymm
 
 theorem quo_one (N : PTm n) : Γ ⊢[PRAAx] quo N one ≐ N :=
-  quo_eq (q := N) (r := zero) one_pos (by apply deriveNat; ipra_simps; ring) (le_refl _)
+  quo_eq (q := N) (r := zero) one_pos (by ipra_ring) (le_refl _)
 
 /-- `μ⁺(1) = 1`. -/
 theorem muP_one : Γ ⊢[PRAAx] muP (succ one) (one : PTm n) ≐ one := by
@@ -71,27 +72,23 @@ theorem muP_one : Γ ⊢[PRAAx] muP (succ one) (one : PTm n) ≐ one := by
   have o0 : Γ ⊢[PRAAx] rem (Mobius.om (succ one) (one : PTm n)) two ≐ zero :=
     (congrAp2 remF om_two_one (.eqRefl _)).eqTrans (rem_zero _)
   exact (congrMul s0 ((congrEqb' o0 (.eqRefl _)).eqTrans (eqb_of_eq (.eqRefl _)))).eqTrans
-    (by apply deriveNat; ipra_simps; ring)
+    (by ipra_ring)
 
 theorem one3 (u : PTm n) : Γ ⊢[PRAAx] one * ((one * one) * u) ≐ u := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem one_alg (a Y : PTm n) : Γ ⊢[PRAAx] ((one * one) * (one * a)) * Y ≐ a * Y := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- `m (s (g ((s m) w))) = g ((s m) w)` for idempotent `m`, `s`. -/
 theorem keep_alg {m s g w : PTm n} (hm : Γ ⊢[PRAAx] m * m ≐ m) (hs : Γ ⊢[PRAAx] s * s ≐ s) :
     Γ ⊢[PRAAx] m * (s * (g * ((s * m) * w))) ≐ g * ((s * m) * w) := by
-  have a := natEq hm; have b := natEq hs
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 g * 𝔞 w * 𝔞 s * 𝔞 s * a + 𝔞 g * 𝔞 w * 𝔞 m * b
+  ipra_lc 𝔞 g * 𝔞 w * 𝔞 s * 𝔞 s * natEq hm + 𝔞 g * 𝔞 w * 𝔞 m * natEq hs
 
 /-- `m (s (g ((s m') w))) = 0` when `m m' = 0`. -/
 theorem kill_alg {m m' s g w : PTm n} (h : Γ ⊢[PRAAx] m * m' ≐ zero) :
     Γ ⊢[PRAAx] m * (s * (g * ((s * m') * w))) ≐ zero := by
-  have a := natEq h
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 s * 𝔞 s * 𝔞 g * 𝔞 w * a
+  ipra_lc 𝔞 s * 𝔞 s * 𝔞 g * 𝔞 w * natEq h
 
 /-! ## The summand at `d = 1` -/
 

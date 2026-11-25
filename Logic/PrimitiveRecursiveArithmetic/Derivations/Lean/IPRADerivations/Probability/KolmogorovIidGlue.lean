@@ -154,7 +154,7 @@ theorem A1_val {M i j k m n' x : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M))
   have ew := wP_at (Γ := Γ) w X (Cv a) j k m M x
   have ea := (aP_at (Γ := Γ) (Cv a) j k m M x).eqTrans (Cv_at a k j M x)
   refine (congrMul eI (congrMul eP eC)).eqTrans (.eqTrans ?_ (congrMul (.eqRefl _) (congrMul ew (congrMul ea ea))).eqSymm)
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- The summand of the right side at `t = i M^k + j`, against the cleared square of `crossing_step`. -/
 theorem A2_val {M i j k m n' x : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) (hn : Γ ⊢[PRAAx] n' ≐ k + m)
@@ -188,7 +188,7 @@ theorem A2_val {M i j k m n' x : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M))
   have ew := wP_at (Γ := Γ) w X (Cv a) j k m M x
   have ev := vF_at (Γ := Γ) w i k m M x
   refine (congrMul eI (congrMul eP eD)).eqTrans (.eqTrans ?_ (congrMul (congrMul ew ev) (congrMul U U)).eqSymm)
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- The block `i` of the left side: `∑_{j<M^k} I_k P_n a² (i M^k + j) = P_m(i) · ∑_j P_k I_k a²`. -/
 theorem inner_L {M k m n' x : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) (hn : Γ ⊢[PRAAx] n' ≐ k + m) (i : PTm n) :

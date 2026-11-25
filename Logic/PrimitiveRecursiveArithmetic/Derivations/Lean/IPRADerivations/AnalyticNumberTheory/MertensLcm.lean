@@ -3,7 +3,8 @@ import IPRADerivations.AnalyticNumberTheory.MertensChebyshev
 import IPRADerivations.AnalyticNumberTheory.LcmUpto
 import IPRADerivations.Foundations.MixedRadix
 import IPRADerivations.Combinatorics.Binomial
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The product form of the Chebyshev identity for the Mertens function
@@ -67,7 +68,7 @@ theorem inst2_pm (b : PTm 2) (i N : PTm n) :
 /-- `∏_{i < K} (i + 1)^{B_b(⌊N/(i+1)⌋)}`; at `K = N`, `b = μ^±` it is `∏_{a=1}^{N} a^{M^±(⌊N/a⌋)}`. -/
 abbrev Pp (b : PTm 2) (K N : PTm n) : PTm n := ap2 (prodF (pmB b)) K N
 
-theorem succ_pos (i : PTm n) : Γ ⊢[PRAAx] succ i ≐ succ (pred (succ i)) := congrSucc (pred_succ _).eqSymm
+alias succ_pos := Common.succ_pos
 
 theorem Pp_pos (b : PTm 2) (K N : PTm n) : Γ ⊢[PRAAx] Pp b K N ≐ succ (pred (Pp b K N)) := by
   refine prod_pos_bounded (pmB b) N K (.allI (.impI ?_))

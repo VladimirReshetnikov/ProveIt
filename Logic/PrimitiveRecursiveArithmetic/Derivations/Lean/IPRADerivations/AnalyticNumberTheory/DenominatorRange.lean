@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.DenominatorPrimeStep
 import IPRADerivations.AnalyticNumberTheory.LcmBridgeTransfer
 import IPRADerivations.Foundations.CrossingSearch
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The comparison `S_a ≤ G_a` on a whole range, one prime at a time
@@ -118,8 +119,7 @@ theorem leI_one {t z : PTm n} (h : Γ ⊢[PRAAx] le t z) : Γ ⊢[PRAAx] monus o
   (congrMonus (.eqRefl _) h).eqTrans (monus_zero one)
 
 theorem lt_alg {t z d : PTm n} (e : Γ ⊢[PRAAx] t ≐ succ z + d) : Γ ⊢[PRAAx] t ≐ z + succ d := by
-  have x := natEq e
-  apply deriveNat; ipra_simps; linear_combination x
+  ipra_lc natEq e
 
 theorem leI_zero {t z : PTm n} (h : Γ ⊢[PRAAx] lt z t) : Γ ⊢[PRAAx] monus one (monus t z) ≐ zero := by
   have m : Γ ⊢[PRAAx] monus t z ≐ succ (monus t (succ z)) := monus_of_eq (lt_alg (eq_add_of_le h))
@@ -143,8 +143,7 @@ theorem S_zero (a L F : PTm n) : Γ ⊢[PRAAx] Sm a L F (succ zero) ≐ zero :=
 
 theorem one_mul_zero {b X : PTm n} (hb : Γ ⊢[PRAAx] b ≐ one) (h : Γ ⊢[PRAAx] b * X ≐ zero) :
     Γ ⊢[PRAAx] X ≐ zero := by
-  have x := natEq hb; have y := natEq h
-  apply deriveNat; ipra_simps; linear_combination y - 𝔞 X * x
+  ipra_lc natEq h - 𝔞 X * natEq hb
 
 /-! ## The step of the range induction -/
 
@@ -211,8 +210,7 @@ theorem range_all {p a L z : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hc : Γ ⊢[PR
   exact .impE (.impE (.impE i (isP_of_prime hp)) hc) hA
 
 theorem one_mul_l {b X : PTm n} (hb : Γ ⊢[PRAAx] b ≐ one) : Γ ⊢[PRAAx] X ≐ b * X := by
-  have x := natEq hb
-  apply deriveNat; ipra_simps; linear_combination -𝔞 X * x
+  ipra_lc -𝔞 X * natEq hb
 
 /-- **The range step**: `C_z(a) = 0` gives `C_z(a p) = 0`, for a prime `p` with `gcd(p, a) = 1`. -/
 theorem range_step {p a L z : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hc : Γ ⊢[PRAAx] gcd p a ≐ one)

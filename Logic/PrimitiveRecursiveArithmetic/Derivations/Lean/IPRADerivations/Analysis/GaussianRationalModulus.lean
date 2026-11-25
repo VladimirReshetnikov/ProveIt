@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianEuclideanDistanceName
 import IPRADerivations.Analysis.GaussianRationalRelativeTwoTerm
 import IPRADerivations.Analysis.GaussianRationalMonicReduction
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Actual nonnegative modulus samples of original Gaussian rational points
@@ -113,10 +114,7 @@ theorem interval_width (q s : PTm n) : Γ ⊢[PRAAx]
     (RationalRepresentations.represents_negative _ _ _ (lower_represents q s))
   apply RationalFiniteSum.canonical_equal _ _ _ _ _ _ (RationalArithmetic.add_guard _ _)
     (RationalNormalForm.normalize_well_formed _ _ hp) rep (fraction_represents _ _ hp) hp hp
-  apply ZT.derive
-  simp only [ZT.toZ_mul,ZT.toZ_add,ZT.toZ_neg,ZT.toZ_ofNat]
-  ipra_simps
-  ring
+  ipra_lc
 
 theorem interval_width_bound (q s : PTm n) : Γ ⊢[PRAAx]
     rationalLE (add (upper q s) (negative (lower q s))) (fraction one (unit s)) :=

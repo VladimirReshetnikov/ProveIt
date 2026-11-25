@@ -1,5 +1,6 @@
 import IPRADerivations.Probability.MedianWeighted
 import IPRADerivations.Probability.Lotus
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The CDF characterization and the symmetry centre of a finite law
@@ -45,20 +46,15 @@ theorem refl_monus₁ {a b c : PTm n} (h : Γ ⊢[PRAAx] a + b ≐ two * c) (hac
     Γ ⊢[PRAAx] monus c b ≐ monus a c := by
   have hh := natEq h; have f1 := natEq hac; have f2 := natEq (eq_add_of_le hac)
   have hcb : Γ ⊢[PRAAx] le c b := le_of_eq_add (d := monus c a) (by
-    apply deriveNat; ipra_simps; linear_combination hh + f2)
-  have g1 := natEq hcb
-  apply deriveNat; ipra_simps
-  linear_combination g1 - f1
+    ipra_lc hh + f2)
+  ipra_lc natEq hcb - f1
 
 theorem refl_monus₂ {a b c : PTm n} (h : Γ ⊢[PRAAx] a + b ≐ two * c) (hca : Γ ⊢[PRAAx] le c a) :
     Γ ⊢[PRAAx] monus c b ≐ monus a c := by
   have hh := natEq h; have f1 := natEq hca; have f2 := natEq (eq_add_of_le hca)
   have hbc : Γ ⊢[PRAAx] c ≐ b + monus a c := by
-    apply deriveNat; ipra_simps; linear_combination f2 - hh
-  have e := natEq hbc
-  have g2 := natEq (eq_add_of_le (le_of_eq_add hbc))
-  apply deriveNat; ipra_simps
-  linear_combination e - g2
+    ipra_lc f2 - hh
+  ipra_lc natEq hbc - natEq (eq_add_of_le (le_of_eq_add hbc))
 
 /-- `a + b = 2c` gives `c ∸ b = a ∸ c`. -/
 theorem refl_monus {a b c : PTm n} (h : Γ ⊢[PRAAx] a + b ≐ two * c) : Γ ⊢[PRAAx] monus c b ≐ monus a c :=
@@ -74,21 +70,15 @@ variable (w X : PTm 2)
 theorem cdf_of_med {N t p : PTm n} (hm : Γ ⊢[PRAAx] isMedW w X N t p) :
     Γ ⊢[PRAAx] le (two * WB w X N t p) (Wt w N p) ⋏ le (Wt w N p) (two * (WB w X N t p + WE w X N t p)) := by
   refine .andI (Prf.andE₁ hm) ?_
-  have part := natEq (w_partition (Γ := Γ) w X N t p)
-  have hs := natEq (eq_add_of_le (Prf.andE₂ hm))
   refine le_of_eq_add (d := monus (Wt w N p) (two * WA w X N t p)) ?_
-  apply deriveNat; ipra_simps
-  linear_combination 2 * part + hs
+  ipra_lc 2 * natEq (w_partition (Γ := Γ) w X N t p) + natEq (eq_add_of_le (Prf.andE₂ hm))
 
 /-- `thm:cdf`, backward: `2B(t) ≤ W ≤ 2(B(t) + E(t))` makes `t` a weighted median. -/
 theorem med_of_cdf {N t p : PTm n} (h₁ : Γ ⊢[PRAAx] le (two * WB w X N t p) (Wt w N p))
     (h₂ : Γ ⊢[PRAAx] le (Wt w N p) (two * (WB w X N t p + WE w X N t p))) : Γ ⊢[PRAAx] isMedW w X N t p := by
   refine .andI h₁ ?_
-  have part := natEq (w_partition (Γ := Γ) w X N t p)
-  have hk := natEq (eq_add_of_le h₂)
   refine le_of_eq_add (d := monus (two * (WB w X N t p + WE w X N t p)) (Wt w N p)) ?_
-  apply deriveNat; ipra_simps
-  linear_combination -2 * part + hk
+  ipra_lc -2 * natEq (w_partition (Γ := Γ) w X N t p) + natEq (eq_add_of_le h₂)
 
 /-! ## Symmetric laws -/
 
@@ -131,11 +121,9 @@ theorem sym_median {τ : PTm 2} {N c p : PTm n} (hr : Γ ⊢[PRAAx] Permutation.
     (hinv : Γ ⊢[PRAAx] Permutation.invAll S τ N (pairT c p)) (hret : Γ ⊢[PRAAx] Permutation.retAll S τ N (pairT c p))
     (hsym : Γ ⊢[PRAAx] symAll X S N c p) (hw : Γ ⊢[PRAAx] wtAll w S N c p) :
     Γ ⊢[PRAAx] isMedW w X N c p := by
-  have BA := natEq (sym_counts w X S hr hinv hret hsym hw)
-  have part := natEq (w_partition (Γ := Γ) w X N c p)
   refine .andI (le_of_eq_add (d := WE w X N c p) ?_) (le_of_eq_add (d := WE w X N c p) ?_)
-  · apply deriveNat; ipra_simps; linear_combination -part - BA
-  · apply deriveNat; ipra_simps; linear_combination -part + BA
+  · ipra_lc -natEq (w_partition (Γ := Γ) w X N c p) - natEq (sym_counts w X S hr hinv hret hsym hw)
+  · ipra_lc -natEq (w_partition (Γ := Γ) w X N c p) + natEq (sym_counts w X S hr hinv hret hsym hw)
 
 theorem g_pt (i c p : PTm n) :
     Γ ⊢[PRAAx] inst2 (wL w * wL X) i (pairT c p) ≐ inst2 w i p * inst2 X i p := by
@@ -150,12 +138,9 @@ theorem mean_pt {i c p : PTm n}
     Γ ⊢[PRAAx] inst2 (addBody (Permutation.FS (wL w * wL X) S) (wL w * wL X)) i (pairT c p) ≐
       inst2 (cmB w) i (pairT (two * c) p) := by
   rw [inst2_addBody, Permutation.inst2_FS, inst2_cmB]
-  have a := natEq (g_pt (Γ := Γ) w X (inst2 S i (pairT c p)) c p)
-  have b := natEq (g_pt (Γ := Γ) w X i c p)
-  have k := natEq (congrMul (fst_pair (Γ := Γ) (two * c) p) (congrInst2 w (.eqRefl i) (snd_pair (two * c) p)))
-  have s := natEq hs; have v := natEq hw
-  apply deriveNat; ipra_simps
-  linear_combination a + b - k + 𝔞 (inst2 w i p) * s + 𝔞 (inst2 X (inst2 S i (pairT c p)) p) * v
+  ipra_lc natEq (g_pt (Γ := Γ) w X (inst2 S i (pairT c p)) c p) + natEq (g_pt (Γ := Γ) w X i c p) -
+    natEq (congrMul (fst_pair (Γ := Γ) (two * c) p) (congrInst2 w (.eqRefl i) (snd_pair (two * c) p))) +
+    𝔞 (inst2 w i p) * natEq hs + 𝔞 (inst2 X (inst2 S i (pairT c p)) p) * natEq hw
 
 /-- `thm:symmetry`: the mean of a symmetric finite law is its centre, `∑ w_j a_j = c W`. -/
 theorem sym_mean {τ : PTm 2} {N c p : PTm n} (hr : Γ ⊢[PRAAx] Permutation.rangeAll S N (pairT c p))
@@ -176,11 +161,10 @@ theorem sym_mean {τ : PTm 2} {N c p : PTm n} (hr : Γ ⊢[PRAAx] Permutation.ra
     have e3 : Syn.shift (pairT (two * c) p) = pairT (two * Syn.shift c) (Syn.shift p) := by simp [Syn.shift]
     rw [e3]
     exact mean_pt w X S h1 h2
-  have tot := natEq ((sum_add _ _ _ _).eqSymm.eqTrans (eC.eqTrans (sum_const_mul (Γ := Γ) w N (two * c) p)))
   have s1 := natEq eS; have s2 := natEq eP
   have e2 : Γ ⊢[PRAAx] two * Ew w X N p ≐ two * (c * Wt w N p) := by
-    apply deriveNat; ipra_simps
-    linear_combination tot + 2 * s1 - s2
+    ipra_lc natEq ((sum_add _ _ _ _).eqSymm.eqTrans (eC.eqTrans (sum_const_mul (Γ := Γ) w N (two * c) p))) + 2 * s1 -
+      s2
   exact le_antisymm (le_cancel_pos two_pos (le_congr (.eqRefl _) e2 (le_refl _)))
     (le_cancel_pos two_pos (le_congr (.eqRefl _) e2.eqSymm (le_refl _)))
 

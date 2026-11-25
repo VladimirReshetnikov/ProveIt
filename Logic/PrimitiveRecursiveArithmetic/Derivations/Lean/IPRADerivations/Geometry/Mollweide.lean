@@ -1,5 +1,5 @@
 import IPRADerivations.Geometry.CevaMenelaus
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Mollweide's formulas, the law of tangents and the inradius

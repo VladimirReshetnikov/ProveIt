@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianRationalLinearProduct
 import IPRADerivations.Analysis.GaussianReciprocalHorner
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The actual product polynomial reconstructed from a runtime root list
@@ -53,10 +54,7 @@ def suffix (S N j : PTm n) : PTm n := reconstruct S N (remaining N j)
 theorem linear_congr {C C' z z' N N' : PTm n}
     (hC : Γ ⊢[PRAAx] C ≐ C') (hz : Γ ⊢[PRAAx] z ≐ z') (hN : Γ ⊢[PRAAx] N ≐ N') :
     Γ ⊢[PRAAx] linear C z N ≐ linear C' z' N' := by
-  simpa only [subst_linear,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-    Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using
-      Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (linear (var 0) (var 1) (var 2) : PTm 3)
-        (σ := ![C,z,N]) (σ' := ![C',z',N']) (fun i => by fin_cases i; exact hC; exact hz; exact hN)
+  ipra_congr (linear (var 0) (var 1) (var 2) : PTm 3) with [hC, hz, hN]
 
 theorem reconstruct_index_congr (S N : PTm n) {k k' : PTm n} (h : Γ ⊢[PRAAx] k ≐ k') :
     Γ ⊢[PRAAx] reconstruct S N k ≐ reconstruct S N k' := congrAp2 reconstructF h (.eqRefl _)

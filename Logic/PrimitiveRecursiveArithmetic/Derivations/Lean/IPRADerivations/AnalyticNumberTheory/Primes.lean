@@ -121,7 +121,7 @@ def prime (p : PTm n) : Fm PTm n :=
 theorem lpf_prime (z' : PTm n) : Γ ⊢[PRAAx] prime (lpf (succ (succ z'))) := by
   unfold prime
   refine .andI (le_of_eq_add (d := μz (succ (succ z'))) ?_) (.allI ?_)
-  · apply deriveNat; ipra_simps; ring
+  · ipra_ring
   simp only [Syn.shift, subst_ap2, ConciseIPRA.PTm.subst_succ]
   -- In the shifted context: e = var 0, and z' is shifted to z''.
   refine .impI (.impI (.impI ?_))
@@ -132,7 +132,7 @@ theorem lpf_prime (z' : PTm n) : Γ ⊢[PRAAx] prime (lpf (succ (succ z'))) := b
   have he : (dvd (var 0) (lpf (succ (succ z''))) :: lt (var 0) (lpf (succ (succ z''))) ::
       le two (var 0) :: Γ.map Fm.shift) ⊢[PRAAx] var 0 ≐ succ (succ (monus (var 0) two)) := by
     refine (eq_add_of_le hyp2).eqTrans ?_
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   have hde := (congrAp2 remF (.eqRefl _) he.eqSymm).eqTrans
     (Prf.hyp0 : (dvd (var 0) (lpf (succ (succ z''))) :: lt (var 0) (lpf (succ (succ z''))) ::
       le two (var 0) :: Γ.map Fm.shift) ⊢[PRAAx] dvd (var 0) (lpf (succ (succ z''))))

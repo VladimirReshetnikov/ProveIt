@@ -3,6 +3,7 @@ import IPRADerivations.Analysis.GaussianEulerUnitPanelGeometry
 import IPRADerivations.Analysis.GaussianCompactRiemannLower
 import IPRADerivations.Analysis.RationalUpperAddition
 import IPRADerivations.Analysis.GaussianEulerIntegralGammaIdentification
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The one-eighteenth lower bound on the original Euler integral
@@ -58,10 +59,7 @@ private theorem zero_fraction (C D : PTm n) (hD : Γ ⊢[PRAAx] le one D) :
     (RationalNormalForm.normalize_well_formed _ _ (le_refl one))
     (fraction_represents (C*zero) D hD) (GaussianRationalSyntheticBounds.natCode_represents zero)
     hD (le_refl one)
-  apply ZT.derive
-  simp only [ZT.toZ_mul,ZT.toZ_ofNat]
-  ipra_simps
-  ring
+  ipra_lc
 
 private theorem fraction_cancel (E A B : PTm n) (hE : Γ ⊢[PRAAx] le one E)
     (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx] fraction (E*A) (E*B) ≐ fraction A B := by
@@ -70,9 +68,7 @@ private theorem fraction_cancel (E A B : PTm n) (hE : Γ ⊢[PRAAx] le one E)
     (RationalNormalForm.normalize_well_formed _ _ den)
     (RationalNormalForm.normalize_well_formed _ _ hB) (fraction_represents _ _ den)
     (fraction_represents _ _ hB) den hB
-  apply ZT.derive
-  simp only [ZT.toZ_mul,ZT.toZ_ofNat,Q.mk_mul,map_mul]
-  ring
+  ipra_lc
 
 private theorem scalar_entry (p N a C E z B i : PTm n) : Γ ⊢[PRAAx]
     RationalFiniteSum.term (realBody (sampleBody evaluatorF)) i (sampleData p N a C E (fixedData z B)) ≐

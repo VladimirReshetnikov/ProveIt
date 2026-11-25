@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.BackwardDemand
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Predetermined demand recursion (`ipra_resources_and_elimination_2026-11-15`, `lem:horizon`, `thm:demand`)
@@ -46,9 +47,7 @@ open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
-theorem pair_congr {a a' c c' : PTm n} (ha : Γ ⊢[PRAAx] a ≐ a') (hc : Γ ⊢[PRAAx] c ≐ c') :
-    Γ ⊢[PRAAx] pairT a c ≐ pairT a' c' :=
-  congrAdd (congrMul (congrAdd ha hc) (congrAdd ha hc)) ha
+alias pair_congr := Common.congrPairT
 
 variable (D : PR 3)
 
@@ -86,10 +85,7 @@ theorem back_coherent (N K j x : PTm n) :
   simpa using i
 
 /-- `(N + 1) ∸ t = (N ∸ t) + 1` for `t ≤ N`. -/
-theorem succ_monus_of_le {t N : PTm n} (h : Γ ⊢[PRAAx] le t N) :
-    Γ ⊢[PRAAx] monus (succ N) t ≐ succ (monus N t) :=
-  (congrMonus ((congrSucc (eq_add_of_le h)).eqTrans (add_succ t _).eqSymm) (.eqRefl t)).eqTrans
-    (add_monus' _ t)
+alias succ_monus_of_le := Common.monus_succ_of_le
 
 /-- `H(t; N + 1, K) = H(t; N, D(N, K))` for `t ≤ N`. -/
 theorem horizon_coherent {t N : PTm n} (h : Γ ⊢[PRAAx] le t N) (K x : PTm n) :

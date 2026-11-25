@@ -2,7 +2,8 @@ import IPRADerivations.Probability.NormalMoments
 import IPRADerivations.Probability.BinomialLaw
 import IPRADerivations.Foundations.HurwitzProduct
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The coefficient array of the Hermite polynomials and of the raw normal moments
@@ -65,8 +66,7 @@ theorem hc_zero (m : PTm n) : Γ ⊢[PRAAx] hc m zero ≐ one := by
   ipra_lc 𝔟(df (zero : PTm n)) * natEq ((congrBinom (.eqRefl m) (mul_zero (Γ := Γ) (two : PTm n))).eqTrans (binom_zero' m)) +
     natEq (df_zero (Γ := Γ))
 
-theorem two_succ (j : PTm n) : Γ ⊢[PRAAx] two * succ j ≐ succ (succ (two * j)) := by
-  ipra_ring
+alias two_succ := Common.two_mul_succ
 
 /-- `eq:raw-rec` and `eq:hermite-def`, coefficientwise:
 `c(m + 2, j + 1) = c(m + 1, j + 1) + (m + 1) c(m, j)` for `2j + 1 ≤ m`. -/

@@ -1,6 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.KhinchinBadSum
 import IPRADerivations.AnalyticNumberTheory.HarmonicUpper
 import IPRADerivations.AnalyticNumberTheory.SquareReciprocal
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The bad-pair estimate of (K3) (`hurwitz_khinchin_ipra`)
@@ -84,15 +85,13 @@ theorem sum_lin_le (f g h : PTm 2) (a b c x N : PTm n)
       have h₂ : Δ ⊢[PRAAx] le (Syn.shift a * inst2 f (var 0) (Syn.shift x))
           (Syn.shift b * inst2 g (var 0) (Syn.shift x) + Syn.shift c * inst2 h (var 0) (Syn.shift x)) :=
         Prf.impE hf.wk.wk Prf.hyp0
-      have e₁ := natEq (eq_add_of_le h₁)
-      have e₂ := natEq (eq_add_of_le h₂)
       refine le_congr (congrMul (.eqRefl _) (sum_succ' f (var 0) _)).eqSymm
         (congrAdd (congrMul (.eqRefl _) (sum_succ' g (var 0) _)) (congrMul (.eqRefl _) (sum_succ' h (var 0) _))).eqSymm ?_
       refine le_of_eq_add (d := monus (Syn.shift b * ap2 (sumF g) (var 0) (Syn.shift x) +
           Syn.shift c * ap2 (sumF h) (var 0) (Syn.shift x)) (Syn.shift a * ap2 (sumF f) (var 0) (Syn.shift x)) +
         monus (Syn.shift b * inst2 g (var 0) (Syn.shift x) + Syn.shift c * inst2 h (var 0) (Syn.shift x))
           (Syn.shift a * inst2 f (var 0) (Syn.shift x))) ?_
-      apply deriveNat; ipra_simps; linear_combination e₁ + e₂
+      ipra_lc natEq (eq_add_of_le h₁) + natEq (eq_add_of_le h₂)
   have h2 := Prf.allE N hall
   simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_mul, PTm.subst_add, Syn.subst_var, Syn.inst_zero,
     Syn.subst_inst_shift] at h2
@@ -160,10 +159,7 @@ theorem k5_gate_aux {g A X α γ D β m : PTm n}
     (e : Γ ⊢[PRAAx] γ * (X * succ X) + two * β * X ≐ two * β * A + α * (X * succ X) + m)
     (eγ : Γ ⊢[PRAAx] γ ≐ α + D) :
     Γ ⊢[PRAAx] D * (g * (X * X)) + (D + two * β) * (g * X) ≐ two * β * (g * A) + g * m := by
-  have e1 := natEq e
-  have e2 := natEq eγ
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 g * e1 - 𝔞 g * (𝔞 X * 𝔞 X + 𝔞 X) * e2
+  ipra_lc 𝔞 g * natEq e - 𝔞 g * (𝔞 X * 𝔞 X + 𝔞 X) * natEq eγ
 
 /-- `2β [2≤d] A(⌊Q/d⌋) ≤ D [2≤d] ⌊Q/d⌋² + (D + 2β) [2≤d] ⌊Q/d⌋` for `Q ≤ M`. -/
 theorem per_d {α γ b0 Q M : PTm n} (d : PTm n) (hαγ : Γ ⊢[PRAAx] le α γ) (hγ : Γ ⊢[PRAAx] le γ (succ b0))
@@ -188,7 +184,7 @@ theorem per_d {α γ b0 Q M : PTm n} (d : PTm n) (hαγ : Γ ⊢[PRAAx] le α γ
     have hX1 : Δ ⊢[PRAAx] le (quo (fstT (pairT Q (pairT M (pairT α (pairT γ (succ b0)))))) d)
         (d * quo (fstT (pairT Q (pairT M (pairT α (pairT γ (succ b0)))))) d) :=
       le_of_eq_add (d := pred d * quo (fstT (pairT Q (pairT M (pairT α (pairT γ (succ b0)))))) d)
-        ((congrMul hd (.eqRefl _)).eqTrans (by apply deriveNat; ipra_simps; ring))
+        ((congrMul hd (.eqRefl _)).eqTrans (by ipra_ring))
     have hX2 : Δ ⊢[PRAAx] le (d * quo (fstT (pairT Q (pairT M (pairT α (pairT γ (succ b0)))))) d)
         (fstT (pairT Q (pairT M (pairT α (pairT γ (succ b0)))))) :=
       le_of_eq_add (Prf.andE₁ dm)
@@ -229,13 +225,13 @@ theorem sq_point (j Q z : PTm n) (hz : Γ ⊢[PRAAx] fstT z ≐ Q) :
     (congrMul (.eqRefl _) (.eqRefl _))) (.eqRefl _) ?_
   refine le_congr (one_mul _).eqSymm (.eqRefl _) ?_
   have hk : Γ ⊢[PRAAx] succ (succ j) * succ (succ j) ≐ succ (pred (succ (succ j) * succ (succ j))) :=
-    pos_of_eq (e := succ (succ j) * succ j + succ j) (by apply deriveNat; ipra_simps; ring)
+    pos_of_eq (e := succ (succ j) * succ j + succ j) (by ipra_ring)
   refine le_quo_of_mul_le hk ?_
   have dm := div_mod_at (Γ := Γ) (x := fstT z) (y := succ (succ j)) (c := succ j) (.eqRefl _)
   have hdX : Γ ⊢[PRAAx] le (succ (succ j) * quo (fstT z) (succ (succ j))) Q :=
     le_congr (.eqRefl _) hz (le_of_eq_add (Prf.andE₁ dm))
   refine le_congr ?_ (.eqRefl _) (sq_le_sq hdX)
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- `Σ_{d ≤ Q} [2 ≤ d] ⌊Q/d⌋² + Q² ≤ T(Q, Q²) = Σ_{i < Q} ⌊Q²/(i+1)²⌋` for `Q = Q₁ + 1`. -/
 theorem sq_part {Q Q₁ z : PTm n} (hz : Γ ⊢[PRAAx] fstT z ≐ Q) (hQ : Γ ⊢[PRAAx] Q ≐ succ Q₁) :
@@ -267,12 +263,9 @@ theorem sq_part {Q Q₁ z : PTm n} (hz : Γ ⊢[PRAAx] fstT z ≐ Q) (hQ : Γ �
 theorem sq_aux {Q P T : PTm n} (h1 : Γ ⊢[PRAAx] le (P + Q * Q) T)
     (h2 : Γ ⊢[PRAAx] le (num 4 * Q * T + num 4 * (Q * Q)) (num 7 * Q * (Q * Q))) :
     Γ ⊢[PRAAx] le (Q * (num 4 * P + num 4 * Q)) (Q * (num 3 * (Q * Q))) := by
-  have e1 := natEq (eq_add_of_le h1)
-  have e2 := natEq (eq_add_of_le h2)
   refine le_of_eq_add (d := num 4 * Q * monus T (P + Q * Q) +
     monus (num 7 * Q * (Q * Q)) (num 4 * Q * T + num 4 * (Q * Q))) ?_
-  apply deriveNat; ipra_simps
-  linear_combination e2 + 4 * 𝔞 Q * e1
+  ipra_lc natEq (eq_add_of_le h2) + 4 * 𝔞 Q * natEq (eq_add_of_le h1)
 
 /-- The final linear combination, with atoms. -/
 theorem final_aux {Bad SLB SP1 SP2 B C D K Q : PTm n} (h1 : Γ ⊢[PRAAx] le Bad SLB)
@@ -280,14 +273,10 @@ theorem final_aux {Bad SLB SP1 SP2 B C D K Q : PTm n} (h1 : Γ ⊢[PRAAx] le Bad
     (h3 : Γ ⊢[PRAAx] le (num 4 * SP2 + num 4 * Q) (num 3 * (Q * Q)))
     (h4 : Γ ⊢[PRAAx] le SP1 (K * Q)) :
     Γ ⊢[PRAAx] le (num 8 * B * Bad + num 4 * D * Q) (num 3 * D * (Q * Q) + num 4 * C * (K * Q)) := by
-  have e1 := natEq (eq_add_of_le h1)
-  have e2 := natEq (eq_add_of_le h2)
-  have e3 := natEq (eq_add_of_le h3)
-  have e4 := natEq (eq_add_of_le h4)
   refine le_of_eq_add (d := num 8 * B * monus SLB Bad + num 4 * monus (D * SP2 + C * SP1) (two * B * SLB) +
     D * monus (num 3 * (Q * Q)) (num 4 * SP2 + num 4 * Q) + num 4 * C * monus (K * Q) SP1) ?_
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 D * e3 + 4 * 𝔞 C * e4 + 4 * e2 + 8 * 𝔞 B * e1
+  ipra_lc 𝔞 D * natEq (eq_add_of_le h3) + 4 * 𝔞 C * natEq (eq_add_of_le h4) + 4 * natEq (eq_add_of_le h2) +
+    8 * 𝔞 B * natEq (eq_add_of_le h1)
 
 /-- The bad pairs of (K3): `8β B(Q) + 4DQ ≤ 3DQ² + 4(D + 2β)(k + 1)Q` for `Q = 2^k = Q₁ + 2 ≤ M`,
 `α ≤ γ ≤ β = b₀ + 1` and `D = γ − α`. -/

@@ -93,7 +93,7 @@ theorem nn_congr {m m' : PTm n} (e : Γ ⊢[PRAAx] m ≐ m') (K : PTm n) : Γ �
 abbrev CF (t K K' : PTm n) : Fm PTm n := le (An t K * Qt t (pairT one K')) (Pt t (pairT one K') * Ad t K)
 
 theorem cf_step (t K K' : PTm n) (ih : Γ ⊢[PRAAx] CF t K K') : Γ ⊢[PRAAx] CF (succ t) K K' := by
-  have e : Γ ⊢[PRAAx] one + t ≐ succ t := by apply deriveNat; ipra_simps; ring
+  have e : Γ ⊢[PRAAx] one + t ≐ succ t := by ipra_ring
   have hm : Γ ⊢[PRAAx] le one (succ t) := by ipra_le 𝔞 t
   have tc := term_cmp hm K K'
   have eQ : Γ ⊢[PRAAx] Qt (succ t) (pairT one K') ≐ Qt t (pairT one K') * dd (succ t) K' :=

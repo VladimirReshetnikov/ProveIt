@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianGammaEulerHeadNewton
 import IPRADerivations.Analysis.GaussianRationalParityPower
 import IPRADerivations.Analysis.GaussianGammaHarmonicPowerPoints
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The original head Newton sum in the source harmonic-power form
@@ -52,17 +53,11 @@ def powerSum (N s : PTm n) : PTm n := sum powerBody (succ s) (data N s)
 theorem term_congr {a b N M s t j k : PTm n} (ha : Γ ⊢[PRAAx] a ≐ b)
     (hN : Γ ⊢[PRAAx] N ≐ M) (hs : Γ ⊢[PRAAx] s ≐ t) (hj : Γ ⊢[PRAAx] j ≐ k) :
     Γ ⊢[PRAAx] term a N s j ≐ term b M t k := by
-  simpa only [GaussianGammaEulerHeadGeometricStep.subst_term,Syn.subst_var,
-    Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_three,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (term (var 0) (var 1) (var 2) (var 3) : PTm 4)
-      (σ := ![a,N,s,j]) (σ' := ![b,M,t,k]) (fun i => by fin_cases i; exact ha; exact hN; exact hs; exact hj)
+  ipra_congr (term (var 0) (var 1) (var 2) (var 3) : PTm 4) with [ha, hN, hs, hj]
 
 theorem power_term_congr {N M s t j k : PTm n} (hN : Γ ⊢[PRAAx] N ≐ M)
     (hs : Γ ⊢[PRAAx] s ≐ t) (hj : Γ ⊢[PRAAx] j ≐ k) : Γ ⊢[PRAAx] powerTerm N s j ≐ powerTerm M t k := by
-  simpa only [subst_powerTerm,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (powerTerm (var 0) (var 1) (var 2) : PTm 3)
-      (σ := ![N,s,j]) (σ' := ![M,t,k]) (fun i => by fin_cases i; exact hN; exact hs; exact hj)
+  ipra_congr (powerTerm (var 0) (var 1) (var 2) : PTm 3) with [hN, hs, hj]
 
 theorem matrix_at (N s k j : PTm n) : Γ ⊢[PRAAx] inst3 matrix k j (data N s) ≐ term (reciprocalPoint k) N s j := by
   simp only [matrix,inst3,GaussianGammaEulerHeadGeometricStep.subst_term,

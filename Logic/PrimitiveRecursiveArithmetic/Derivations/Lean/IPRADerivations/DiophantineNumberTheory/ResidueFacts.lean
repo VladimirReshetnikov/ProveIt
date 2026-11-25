@@ -9,6 +9,8 @@ import IPRADerivations.DiophantineNumberTheory.ModularCertificate
 import IPRADerivations.DiophantineNumberTheory.Coprime
 import IPRADerivations.Combinatorics.BinomialTheorem
 import IPRADerivations.Core.ParityArith
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Three facts about residues modulo a prime
@@ -60,17 +62,14 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 theorem sq_alg {p q1 m : PTm n} (x1 : Γ ⊢[PRAAx] p ≐ succ q1) (x2 : Γ ⊢[PRAAx] p ≐ two + m) :
     Γ ⊢[PRAAx] q1 * q1 ≐ p * m + one := by
-  have a := natEq x1; have b := natEq x2
-  apply deriveNat; ipra_simps
-  linear_combination (1 - 𝔞 p - 𝔞 q1) * a + 𝔞 p * b
+  ipra_lc (1 - 𝔞 p - 𝔞 q1) * natEq x1 + 𝔞 p * natEq x2
 
 /-- `(p − 1)² ≡ 1 (mod p)` for `p ≥ 2`. -/
 theorem neg_sq {p : PTm n} (hq : Γ ⊢[PRAAx] le two p) : Γ ⊢[PRAAx] rem (pred p * pred p) p ≐ rem one p := by
   have hp1 := p_pos hq
   exact (congrAp2 remF (sq_alg hp1 (eq_add_of_le hq)) (.eqRefl _)).eqTrans (rem_add_mul hp1 _ _)
 
-theorem pw_two (x : PTm n) : Γ ⊢[PRAAx] pw x two ≐ x * x :=
-  (pw_succ x one).eqTrans (congrMul (pw_one x) (.eqRefl _))
+alias pw_two := Common.pw_two
 
 /-- `x^{2m} = (x²)^m`. -/
 theorem pw_two_mul (x m : PTm n) : Γ ⊢[PRAAx] pw x (two * m) ≐ pw (x * x) m :=
@@ -110,14 +109,10 @@ theorem neg_pow {p : PTm n} (hq : Γ ⊢[PRAAx] le two p) (k : PTm n) :
 /-! ## The square roots of `1` -/
 
 theorem diff_sq {x u : PTm n} (hx : Γ ⊢[PRAAx] x ≐ succ u) : Γ ⊢[PRAAx] x * x ≐ u * succ x + one := by
-  have a := natEq hx
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞 x + 1) * a
+  ipra_lc (𝔞 x + 1) * natEq hx
 
 theorem cancel_one {m p Q : PTm n} (h : Γ ⊢[PRAAx] m + one ≐ p * Q + one) : Γ ⊢[PRAAx] m ≐ p * Q := by
-  have a := natEq h
-  apply deriveNat; ipra_simps
-  linear_combination a
+  ipra_lc natEq h
 
 /-- For a prime `p` and `1 ≤ x < p`: `x² ≡ 1 (mod p)` gives `x = 1` or `x = p − 1`. -/
 theorem sq_one {p x : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hx1 : Γ ⊢[PRAAx] x ≐ succ (pred x))

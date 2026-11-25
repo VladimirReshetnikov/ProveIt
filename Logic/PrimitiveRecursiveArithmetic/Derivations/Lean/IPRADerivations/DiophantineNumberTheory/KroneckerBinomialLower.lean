@@ -1,6 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.KroneckerBinomialTail
 import IPRADerivations.Probability.BinomialLaw
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # `C(r, k) ≥ (r/k)^k` and the full binomial kernel estimate

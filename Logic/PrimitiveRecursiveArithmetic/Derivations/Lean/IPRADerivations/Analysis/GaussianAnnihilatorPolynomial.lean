@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianWeightedMonomialBasis
 import IPRADerivations.Analysis.GaussianPolynomialWeightedDegree
 import IPRADerivations.Analysis.GaussianRationalMonicReconstruction
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual descending polynomial from finite annihilator coefficients
@@ -81,7 +82,7 @@ theorem row_congr {a a' m m' d d' L L' i i' : PTm n}
       (σ := ![a,m,d,L,i]) (σ' := ![a',m',d',L',i'])
       (fun q => by fin_cases q <;> simp only [Matrix.cons_val_zero',Matrix.cons_val_succ']; exact ha; exact hm; exact hd; exact hL; exact hi)
 theorem field_congr (i : Fin 4) {p q : PTm n} (h : Γ ⊢[PRAAx] p ≐ q) : Γ ⊢[PRAAx] fields p i ≐ fields q i := by
-  simpa using Prf.eqCongr (Γ := Γ) (fields (var 0) i : PTm 1) (σ := ![p]) (σ' := ![q]) (fun k => by fin_cases k; exact h)
+  ipra_congr (fields (var 0) i : PTm 1) with [h]
 theorem fields_at (a m d L : PTm n) (i : Fin 4) : Γ ⊢[PRAAx] fields (data a m d L) i ≐ ![a,m,d,L] i := by
   have e0 := snd_pair (Γ := Γ) a (GaussianWeightedMonomialBasis.data m d L)
   have e1 := (congrSnd e0).eqTrans (snd_pair m (pairT d L))

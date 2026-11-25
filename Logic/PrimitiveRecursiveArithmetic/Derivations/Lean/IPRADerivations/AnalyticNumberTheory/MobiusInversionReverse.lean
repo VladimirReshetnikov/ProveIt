@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.MobiusFloor
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The reverse direction of Möbius inversion
@@ -67,10 +68,10 @@ theorem conv_congr2 (a b b' : PTm 2)
   exact congrMul (.eqRefl _) (congrMul (.eqRefl _) (h _ _))
 
 theorem dist_r (D A G H : PTm n) : Γ ⊢[PRAAx] D * (A * (G + H)) ≐ D * (A * G) + D * (A * H) := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem dist_l (D A B G : PTm n) : Γ ⊢[PRAAx] D * ((A + B) * G) ≐ D * (A * G) + D * (B * G) := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- `a * (g + h) = a * g + a * h`. -/
 theorem conv_add_r (a g h : PTm 2) (N y : PTm n) :
@@ -95,7 +96,7 @@ theorem unit_term (F : PTm 2) (d N y : PTm n) : Γ ⊢[PRAAx] inst2 (cvB epsB F)
   exact h
 
 theorem ones_alg (X : PTm n) : Γ ⊢[PRAAx] ((one : PTm n) * one) * (one * X) ≐ X := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- `(ε * F)(N) = F(N)` for `N ≥ 1`. -/
 theorem conv_unit (F : PTm 2) {N : PTm n} (hN : Γ ⊢[PRAAx] le one N) (y : PTm n) :
@@ -151,14 +152,13 @@ theorem conv_PN (M y : PTm n) : Γ ⊢[PRAAx] (conv aPB one M y ≐ ap2 (sumF PB
 
 theorem comb {A E B X Y Z : PTm n} (a : Γ ⊢[PRAAx] A ≐ X) (e : Γ ⊢[PRAAx] E ≐ Y) (b : Γ ⊢[PRAAx] B ≐ Z)
     (k : Γ ⊢[PRAAx] X ≐ Y + Z) : Γ ⊢[PRAAx] A ≐ E + B := by
-  have a1 := natEq a; have e1 := natEq e; have b1 := natEq b; have k1 := natEq k
-  apply deriveNat; ipra_simps; linear_combination a1 - e1 - b1 + k1
+  ipra_lc natEq a - natEq e - natEq b + natEq k
 
 theorem two_le_of {i p q : PTm n} (a : Γ ⊢[PRAAx] i ≐ succ p) (b : Γ ⊢[PRAAx] p ≐ succ q) :
     Γ ⊢[PRAAx] le two i := by
   have a1 := natEq a; have b1 := natEq b
   refine le_of_eq_add (d := q) ?_
-  apply deriveNat; ipra_simps; linear_combination a1 + b1
+  ipra_lc a1 + b1
 
 /-- `(μ⁺ * 𝟏)(i) = ε(i) + (μ⁻ * 𝟏)(i)` at every `i`. -/
 theorem unit_pt (i y : PTm n) : Γ ⊢[PRAAx] conv aPB one i y ≐ eqb i one + conv aNB one i y := by
@@ -205,8 +205,7 @@ theorem mobius_reverse (F : PTm 2) {N : PTm n} (hN : Γ ⊢[PRAAx] le one N) (y 
 
 theorem cancel_alg {L G R X : PTm n} (e1 : Γ ⊢[PRAAx] L ≐ G + R) (e2 : Γ ⊢[PRAAx] L ≐ X + R) :
     Γ ⊢[PRAAx] G ≐ X := by
-  have a := natEq e1; have b := natEq e2
-  apply deriveNat; ipra_simps; linear_combination b - a
+  ipra_lc natEq e2 - natEq e1
 
 /-- **Two-sided inversion**, the reverse direction: if `(μ⁺ * F)(k) = f(k) + (μ⁻ * F)(k)` at every `k`, then
 `(𝟏 * f)(N) = F(N)` for `N ≥ 1`. -/

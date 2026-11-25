@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianNameRingLaws
 import IPRADerivations.Analysis.GaussianGeneralCoefficientNames
 import IPRADerivations.Analysis.GaussianDominantScalarOrder
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # An actual reciprocal name from a finite fractional apartness certificate
@@ -196,9 +197,7 @@ def nameData (h x : PTm n) : PTm n := GaussianFastValueCut.nameData (modulus h) 
     Syn.subst σ (nameData h x) = nameData (Syn.subst σ h) (Syn.subst σ x) := by simp [nameData]
 
 theorem reciprocal_congr {q q' : PTm n} (h : Γ ⊢[PRAAx] q ≐ q') : Γ ⊢[PRAAx] reciprocal q ≐ reciprocal q' := by
-  simpa only [GaussianRationalReciprocal.subst_reciprocal,Syn.subst_var,Matrix.cons_val_zero] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (reciprocal (var 0) : PTm 1)
-      (σ := ![q]) (σ' := ![q']) (fun i => by fin_cases i; exact h)
+  ipra_congr (reciprocal (var 0) : PTm 1) with [h]
 
 theorem raw_at (f : PR 2) (h x s : PTm n) : Γ ⊢[PRAAx]
     ap2 (rawF f) s (rawData h x) ≐ raw f h x s := by

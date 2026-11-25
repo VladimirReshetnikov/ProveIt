@@ -3,6 +3,7 @@ import IPRADerivations.Analysis.RationalMinorMaskDeletion
 import IPRADerivations.Analysis.RationalIntegerMinorDeterminants
 import IPRADerivations.AnalyticNumberTheory.PowerCleared
 import IPRADerivations.DiophantineNumberTheory.IntegerRootBound
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The actual square minors for the cofactor vector
@@ -73,10 +74,8 @@ theorem cofactor_size (P d j : PTm n) (h : Γ ⊢[PRAAx] lt (rank P d) d) (hj : 
 
 theorem free_minor_value (P d : PTm n) : Γ ⊢[PRAAx] minorValue P d (free P d) ≐
     determinant (normalized P d (bestRow P d) (bestColumn P d)) (rank P d) := by
-  simpa [minorValue] using
-      Prf.eqCongr (determinant (normalized (var 0) (var 1) (var 2) (var 3)) (var 4) : PTm 5)
-        (σ := ![P,d,bestRow P d,columnMask P d (free P d),rank P d]) (σ' := ![P,d,bestRow P d,bestColumn P d,rank P d])
-        (fun i => by fin_cases i; exact .eqRefl _; exact .eqRefl _; exact .eqRefl _; exact free_mask _ _ _ (.eqRefl _); exact .eqRefl _)
+  ipra_congr (determinant (normalized (var 0) (var 1) (var 2) (var 3)) (var 4) : PTm 5) with
+    [.eqRefl P, .eqRefl d, .eqRefl (bestRow P d), free_mask _ _ _ (.eqRefl _), .eqRefl (rank P d)] using [minorValue]
 
 theorem free_minor_nonzero (P d : PTm n) : Γ ⊢[PRAAx] neg (minorValue P d (free P d) ≐ scalarZero) := by
   refine .impI (.impE (best_cleared_nonzero P d).wk ?_)

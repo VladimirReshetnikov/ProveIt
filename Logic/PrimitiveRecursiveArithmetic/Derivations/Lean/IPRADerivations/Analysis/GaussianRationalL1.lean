@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianL1
 import IPRADerivations.Analysis.GaussianRationalMetric
 import IPRADerivations.Analysis.RationalAlgebra
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Actual rational coefficient L1 norm and initial residual bound
@@ -79,12 +80,7 @@ theorem scalar_abs_represents (c : PTm n) (a : ZT n) (E : PTm n)
       (ZT.ofNat (zabs (numeratorOf c))) (denominatorOf c) :=
     normalize_preserves_value _ _ (denominator_positive c)
   apply RationalNormalForm.positive_integer_cancel (denominatorOf c) _ _ (denominator_positive c)
-  apply ZT.derive
-  have e := ZT.toZ_eq value
-  have aa := natEq ab'
-  simp only [RationalArithmetic.represents,ZT.toZ_mul,ZT.toZ_ofNat] at e ⊢
-  ipra_simps
-  linear_combination 𝔞(denominatorOf (scalarAbs c))*aa+𝔞(E)*e
+  ipra_lc [RationalArithmetic.represents] 𝔞(denominatorOf (scalarAbs c))*natEq ab'+𝔞(E)*ZT.toZ_eq value
 
 theorem qL1_represents (q a E : PTm n) (hE : Γ ⊢[PRAAx] le one E)
     (hq : Γ ⊢[PRAAx] GaussianRationalHorner.represents q a E) :

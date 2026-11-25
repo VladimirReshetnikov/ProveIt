@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.PolynomialBisection
 import IPRADerivations.Analysis.RationalClosure
 import IPRADerivations.Analysis.RationalSummableTails
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # A regular rational name from the actual polynomial bisection
@@ -402,14 +403,9 @@ theorem powerFactor_identity (k : ℕ) (u v : ZT n) :
     Γ ⊢[PRAAx] ZT.eq ((u - v) * powerFactor k u v) (zpow u k - zpow v k) := by
   induction k with
   | zero =>
-    apply ZT.derive
-    simp only [powerFactor, zpow, ZT.toZ_mul, ZT.toZ_sub, ZT.toZ_natLit]
-    ring
+    ipra_lc [powerFactor, zpow]
   | succ k ih =>
-    apply ZT.derive
-    have H := ZT.toZ_eq ih
-    simp only [powerFactor, zpow, ZT.toZ_add, ZT.toZ_mul, ZT.toZ_sub] at H ⊢
-    linear_combination ZT.toZ Γ v * H
+    ipra_lc [powerFactor, zpow] ZT.toZ Γ v * ZT.toZ_eq ih
 
 /-- The actual power divided difference has the computed coefficient bound. -/
 theorem powerFactor_bound (k : ℕ) (u v : ZT n) (B : PTm n)
@@ -450,17 +446,10 @@ theorem sameDenFactor_identity (k : ℕ) (code : PTm n) (L R : ZT n) (D : PTm n)
       ((R - L) * sameDenFactor k code L R D) := by
   induction k with
   | zero =>
-    apply ZT.derive
-    simp only [evaluate, sameDenFactor, ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_natLit]
-    ring
+    ipra_lc [evaluate, sameDenFactor]
   | succ k ih =>
-    apply ZT.derive
-    have previous := ZT.toZ_eq ih
-    have powers := ZT.toZ_eq (powerFactor_identity (Γ := Γ) (k + 1) R L)
-    simp only [evaluate, sameDenFactor, ZT.toZ_sub, ZT.toZ_add, ZT.toZ_mul,
-      ZT.toZ_ofNat] at previous powers ⊢
-    linear_combination Groth.ι (Q.mk Γ D) * previous -
-      ZT.toZ Γ (coefficient code (k + 1)) * powers
+    ipra_lc [evaluate, sameDenFactor] Groth.ι (Q.mk Γ D) * ZT.toZ_eq ih -
+      ZT.toZ Γ (coefficient code (k + 1)) * ZT.toZ_eq (powerFactor_identity (Γ := Γ) (k + 1) R L)
 
 /-- The computed Lipschitz numerator from the actual signed coefficients. -/
 def coefficientBound : ℕ → PTm n → PTm n → PTm n

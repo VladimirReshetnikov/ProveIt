@@ -1,5 +1,6 @@
 import IPRADerivations.Core.SumLemmas
 import IPRADerivations.Core.Tactic
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Arithmetic of parities
@@ -58,30 +59,25 @@ theorem par_add_even (X : PTm n) {T : PTm n} (hT : Γ ⊢[PRAAx] par T ≐ zero)
 /-- The parity of a sum is the exclusive or of the parities. -/
 theorem par_add (x y : PTm n) : Γ ⊢[PRAAx] par (x + y) ≐ par (par x + par y) := by
   have e : Γ ⊢[PRAAx] x + y ≐ (par x + par y) + two * (half x + half y) := by
-    have ex := natEq (half_par (Γ := Γ) x); have ey := natEq (half_par (Γ := Γ) y)
-    apply deriveNat; ipra_simps
-    linear_combination ex + ey
+    ipra_lc natEq (half_par (Γ := Γ) x) + natEq (half_par (Γ := Γ) y)
   exact (congrAp1 parF e).eqTrans (par_add_two _ _)
 
 theorem par_par_add₃ (A B C : PTm n) :
     Γ ⊢[PRAAx] par (par A + par B + par C) ≐ par (A + B + C) := by
   have e : Γ ⊢[PRAAx] A + B + C ≐ (par A + par B + par C) + two * (half A + half B + half C) := by
-    have ea := natEq (half_par (Γ := Γ) A); have eb := natEq (half_par (Γ := Γ) B)
-    have ec := natEq (half_par (Γ := Γ) C)
-    apply deriveNat; ipra_simps
-    linear_combination ea + eb + ec
+    ipra_lc natEq (half_par (Γ := Γ) A) + natEq (half_par (Γ := Γ) B) + natEq (half_par (Γ := Γ) C)
   exact ((congrAp1 parF e).eqTrans (par_add_two _ _)).eqSymm
 
 /-- Two copies cancel. -/
 theorem par_self_add (x : PTm n) : Γ ⊢[PRAAx] par (x + x) ≐ zero := by
-  have e : Γ ⊢[PRAAx] x + x ≐ two * x := by apply deriveNat; ipra_simps; ring
+  have e : Γ ⊢[PRAAx] x + x ≐ two * x := by ipra_ring
   exact (congrAp1 parF e).eqTrans (par_double _)
 
 /-- `par (A + B) = 0` gives `par A = par B`. -/
 theorem par_eq_of_add_even {A B : PTm n} (h : Γ ⊢[PRAAx] par (A + B) ≐ zero) :
     Γ ⊢[PRAAx] par A ≐ par B := by
   -- `par A = par (A + (B + B)) = par ((A + B) + B) = par B`.
-  have e : Γ ⊢[PRAAx] B + (A + B) ≐ A + two * B := by apply deriveNat; ipra_simps; ring
+  have e : Γ ⊢[PRAAx] B + (A + B) ≐ A + two * B := by ipra_ring
   exact (par_add_two A B).eqSymm.eqTrans ((congrAp1 parF e).eqSymm.eqTrans (par_add_even B h))
 
 /-- Finite replacement: quantities that differ modulo two by an even amount have equal

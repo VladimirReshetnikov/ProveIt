@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianPolynomialMonicCompanion
 import IPRADerivations.Analysis.GaussianRationalMonicReduction
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual repeated synthetic stripping at a fixed original width
@@ -53,10 +54,7 @@ def block (Q D x r : PTm n) : PTm n := ap2 blockF r (data Q D x)
 theorem strip_congr {Q Q' D D' x x' : PTm n} (hQ : Γ ⊢[PRAAx] Q ≐ Q')
     (hD : Γ ⊢[PRAAx] D ≐ D') (hx : Γ ⊢[PRAAx] x ≐ x') : Γ ⊢[PRAAx]
     stripStep Q D x ≐ stripStep Q' D' x' := by
-  simpa only [subst_stripStep,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (stripStep (var 0) (var 1) (var 2) : PTm 3)
-      (σ := ![Q,D,x]) (σ' := ![Q',D',x']) (fun i => by fin_cases i; exact hQ; exact hD; exact hx)
+  ipra_congr (stripStep (var 0) (var 1) (var 2) : PTm 3) with [hQ, hD, hx]
 theorem block_congr {Q Q' D D' x x' r r' : PTm n} (hQ : Γ ⊢[PRAAx] Q ≐ Q')
     (hD : Γ ⊢[PRAAx] D ≐ D') (hx : Γ ⊢[PRAAx] x ≐ x') (hr : Γ ⊢[PRAAx] r ≐ r') : Γ ⊢[PRAAx]
     block Q D x r ≐ block Q' D' x' r' := congrAp2 blockF hr (congrPairT hQ (congrPairT hD hx))

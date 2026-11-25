@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianEulerQuadraticKernelTimeRate
 import IPRADerivations.Analysis.GaussianEulerCompactAdditivity
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The genuine unfactored quadratic Euler kernel on a compact interval
@@ -66,18 +67,17 @@ theorem evaluator_at (p t z B c d : PTm n) : Γ ⊢[PRAAx]
   have hc := (congrFst right).eqTrans (fst_pair c d)
   have hd := (congrSnd right).eqTrans (snd_pair c d)
   have dw : Γ ⊢[PRAAx] doubled (fstT (fstT (fixedData z B c d))) (sndT (fstT (fixedData z B c d))) ≐ doubled z B := by
-    simpa only [subst_doubled,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using
-      Prf.eqCongr (doubled (var 0) (var 1) : PTm 2) (σ := ![fstT (fstT (fixedData z B c d)),sndT (fstT (fixedData z B c d))])
-        (σ' := ![z,B]) (fun i => by fin_cases i; exact hz; exact hB)
+    ipra_congr (doubled (var 0) (var 1) : PTm 2) with
+      [(show _ ⊢[PRAAx] fstT (fstT (fixedData z B c d)) ≐ z from hz),
+        (show _ ⊢[PRAAx] sndT (fstT (fixedData z B c d)) ≐ B from hB)]
   have fields : Γ ⊢[PRAAx] kernelData (doubled (fstT (fstT (fixedData z B c d))) (sndT (fstT (fixedData z B c d))))
       (sndT (fstT (fixedData z B c d))) (fstT t) (sndT t) (fstT (sndT (fixedData z B c d))) (sndT (sndT (fixedData z B c d))) ≐
       kernelData (doubled z B) B (fstT t) (sndT t) c d := by
-    simpa only [subst_kernelData,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-      Matrix.cons_val_three,Matrix.cons_val_four,val_five,Matrix.cons_val_succ,Matrix.head_cons,Matrix.tail_cons] using
-      Prf.eqCongr (kernelData (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6)
-        (σ := ![doubled (fstT (fstT (fixedData z B c d))) (sndT (fstT (fixedData z B c d))),sndT (fstT (fixedData z B c d)),
-          fstT t,sndT t,fstT (sndT (fixedData z B c d)),sndT (sndT (fixedData z B c d))])
-        (σ' := ![doubled z B,B,fstT t,sndT t,c,d]) (fun i => by fin_cases i; exact dw; exact hB; exact .eqRefl _; exact .eqRefl _; exact hc; exact hd)
+    ipra_congr (kernelData (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) with
+      [(show _ ⊢[PRAAx] doubled (fstT (fstT (fixedData z B c d))) (sndT (fstT (fixedData z B c d))) ≐ doubled z B from dw),
+        (show _ ⊢[PRAAx] sndT (fstT (fixedData z B c d)) ≐ B from hB), .eqRefl (fstT t), .eqRefl (sndT t),
+        (show _ ⊢[PRAAx] fstT (sndT (fixedData z B c d)) ≐ c from hc),
+        (show _ ⊢[PRAAx] sndT (sndT (fixedData z B c d)) ≐ d from hd)] using [val_five]
   exact term.eqTrans (congrAp2 kernelF (.eqRefl _) fields)
 
 theorem wrapped_at (p t z B c d : PTm n) : Γ ⊢[PRAAx]

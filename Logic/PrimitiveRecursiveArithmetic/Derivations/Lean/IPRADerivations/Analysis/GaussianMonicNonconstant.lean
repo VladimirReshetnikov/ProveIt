@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianBalancedRadius
 import IPRADerivations.Analysis.GaussianRationalSyntheticDivision
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual nonconstancy of a positive-degree monic Gaussian polynomial
@@ -30,10 +31,7 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 theorem raw_norm_congr {q r : PTm n} (h : Γ ⊢[PRAAx] q ≐ r) : Γ ⊢[PRAAx]
     normSq (rawGaussian q) ≐ normSq (rawGaussian r) := by
-  simpa only [ComplexLogarithmRemainder.subst_normSq,GaussianRationalL1.subst_rawGaussian,
-    Syn.subst_var,Matrix.cons_val_zero] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (normSq (rawGaussian (var 0)) : PTm 1)
-      (σ := ![q]) (σ' := ![r]) (fun i => by fin_cases i; exact h)
+  ipra_congr (normSq (rawGaussian (var 0)) : PTm 1) with [h]
 
 /-- Positivity is derived from the actual Gaussian-one value and the
 actual decoded denominator, rather than a host computation of its code. -/

@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianBalancedRadiusHeight
 import IPRADerivations.Analysis.GaussianBalancedRadiusArithmetic
 import IPRADerivations.Foundations.BoundedSyntax
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual bounded balanced-radius search
@@ -90,11 +91,7 @@ theorem atom_congr {C C' N N' E E' j j' h h' : PTm n}
     (hc : Γ ⊢[PRAAx] C ≐ C') (hn : Γ ⊢[PRAAx] N ≐ N') (he : Γ ⊢[PRAAx] E ≐ E')
     (hj : Γ ⊢[PRAAx] j ≐ j') (hh : Γ ⊢[PRAAx] h ≐ h') : Γ ⊢[PRAAx]
     atom C N E j h ≐ atom C' N' E' j' h' := by
-  simpa only [subst_atom,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.cons_val_three,Matrix.cons_val_four,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (atom (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5)
-      (σ := ![C,N,E,j,h]) (σ' := ![C',N',E',j',h'])
-      (fun i => by fin_cases i; exact hc; exact hn; exact he; exact hj; exact hh)
+  ipra_congr (atom (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) with [hc, hn, he, hj, hh]
 
 theorem atom_body_at (C N E j h : PTm n) : Γ ⊢[PRAAx]
     inst2 atomBody h (atomData C N E j) ≐ atom C N E j h := by
@@ -154,10 +151,7 @@ theorem check_reflection (C N E j : PTm n) : Γ ⊢[PRAAx] Fm.iff (check C N E j
 theorem check_congr {C C' N N' E E' j j' : PTm n}
     (hc : Γ ⊢[PRAAx] C ≐ C') (hn : Γ ⊢[PRAAx] N ≐ N') (he : Γ ⊢[PRAAx] E ≐ E')
     (hj : Γ ⊢[PRAAx] j ≐ j') : Γ ⊢[PRAAx] check C N E j ≐ check C' N' E' j' := by
-  simpa only [subst_check,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.cons_val_three,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (check (var 0) (var 1) (var 2) (var 3) : PTm 4)
-      (σ := ![C,N,E,j]) (σ' := ![C',N',E',j']) (fun i => by fin_cases i; exact hc; exact hn; exact he; exact hj)
+  ipra_congr (check (var 0) (var 1) (var 2) (var 3) : PTm 4) with [hc, hn, he, hj]
 
 theorem atom_failed (C N E j h : PTm n) (hz : Γ ⊢[PRAAx] atom C N E j h ≐ zero) : Γ ⊢[PRAAx]
     lt (cap C N E (succ h)) (score C N E j (succ h)) := by

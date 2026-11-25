@@ -1,6 +1,6 @@
 import IPRADerivations.Geometry.TriangularNorm
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The obstruction alternative and the `√2` gap

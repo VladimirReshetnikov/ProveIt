@@ -1,6 +1,8 @@
 import IPRADerivations.Core.SumOrder
 import IPRADerivations.Probability.Variance
 import IPRADerivations.AnalyticNumberTheory.EulerDomination
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Balance medians by counting
@@ -48,11 +50,11 @@ theorem trichotomy_bits (x t : PTm n) :
     Γ ⊢[PRAAx] sg (monus t x) + eqb x t + sg (monus x t) ≐ one := by
   refine .orE (lt_or_le x t) ?_ (.orE (lt_or_eq_of_le Prf.hyp0) ?_ ?_)
   · exact (congrAdd (congrAdd (sg_lt Prf.hyp0) (eqb_zero_of_lt Prf.hyp0)) (sg_le (le_of_lt Prf.hyp0))).eqTrans
-      (by apply deriveNat; ipra_simps; ring)
+      (by ipra_ring)
   · exact (congrAdd (congrAdd (sg_le (le_of_lt Prf.hyp0)) (eqb_zero_of_gt Prf.hyp0)) (sg_lt Prf.hyp0)).eqTrans
-      (by apply deriveNat; ipra_simps; ring)
+      (by ipra_ring)
   · exact (congrAdd (congrAdd (sg_le (le_congr (.eqRefl _) Prf.hyp0 (le_refl t))) (eqb_of_eq Prf.hyp0.eqSymm))
-      (sg_le (le_congr Prf.hyp0 (.eqRefl _) (le_refl t)))).eqTrans (by apply deriveNat; ipra_simps; ring)
+      (sg_le (le_congr Prf.hyp0 (.eqRefl _) (le_refl t)))).eqTrans (by ipra_ring)
 
 /-- `[x < t] ≤ [x < t′]` for `t ≤ t′`. -/
 theorem below_bit_mono {x t t' : PTm n} (h : Γ ⊢[PRAAx] le t t') :
@@ -98,8 +100,7 @@ theorem inst2_above (i z : PTm n) : inst2 (aboveB X) i z = sg (monus (inst2 X i 
     ConciseIPRA.PTm.subst_zero, Syn.subst_var]
   simp
 
-theorem congrSg {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) : Γ ⊢[PRAAx] sg a ≐ sg b :=
-  congrMonus (.eqRefl _) (congrMonus (.eqRefl _) h)
+alias congrSg := Common.congrSg
 
 theorem below_pt (i t p : PTm n) :
     Γ ⊢[PRAAx] inst2 (belowB X) i (pairT t p) ≐ sg (monus t (inst2 X i p)) := by
@@ -148,9 +149,7 @@ theorem partition (N t p : PTm n) : Γ ⊢[PRAAx] Bc X N t p + Ec X N t p + Ac X
 /-- `B(t) + A(t) ≤ N`. -/
 theorem counts_le (N t p : PTm n) : Γ ⊢[PRAAx] le (Bc X N t p + Ac X N t p) N := by
   refine le_of_eq_add (d := Ec X N t p) ?_
-  have e := natEq (partition (Γ := Γ) X N t p)
-  apply deriveNat; ipra_simps
-  linear_combination -e
+  ipra_lc -natEq (partition (Γ := Γ) X N t p)
 
 /-- `B(t) ≤ B(t′)` for `t ≤ t′`. -/
 theorem below_mono {t t' : PTm n} (h : Γ ⊢[PRAAx] le t t') (N p : PTm n) :

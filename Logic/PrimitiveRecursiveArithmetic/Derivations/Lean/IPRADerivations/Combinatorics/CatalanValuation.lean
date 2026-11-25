@@ -1,5 +1,6 @@
 import IPRADerivations.Combinatorics.LegendreFact
 import IPRADerivations.Combinatorics.Catalan
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The prime valuation of a Catalan number
@@ -41,11 +42,8 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `(2n)! = n! · ((n + 1)! · Cat_n)`. -/
 theorem fact_cat (k : PTm n) : Γ ⊢[PRAAx] fct (two * k) ≐ fct k * (fct (succ k) * cat k) := by
-  have a := natEq (cb_fact (Γ := Γ) k); have b := natEq (cat_spec (Γ := Γ) k)
-  have c := natEq (fact_succ (Γ := Γ) k zero)
-  apply deriveNat; ipra_simps
-  simp only [LeanProofs.IPRA.Analysis.Products.fact, LeanProofs.IPRA.Probability.SortingBound.fct] at a b c ⊢
-  linear_combination a - 𝔞 (fct k) * 𝔞 (fct k) * b - 𝔞 (fct k) * 𝔞 (cat k) * c
+  ipra_lc [LeanProofs.IPRA.Analysis.Products.fact, LeanProofs.IPRA.Probability.SortingBound.fct] natEq (cb_fact (Γ := Γ) k) -
+    𝔞 (fct k) * 𝔞 (fct k) * natEq (cat_spec (Γ := Γ) k) - 𝔞 (fct k) * 𝔞 (cat k) * natEq (fact_succ (Γ := Γ) k zero)
 
 /-- `Cat_n ≥ 1`. -/
 theorem cat_pos (k : PTm n) : Γ ⊢[PRAAx] cat k ≐ succ (pred (cat k)) := by
@@ -63,13 +61,8 @@ theorem catalan_valuation {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (k : PTm n) :
   have h2 : Γ ⊢[PRAAx] le two p := Prf.andE₁ hp
   have fk := pos_of_one_le (fact_pos (Γ := Γ) k)
   have fs := pos_of_one_le (fact_pos (Γ := Γ) (succ k))
-  have e₁ := natEq ((val_congr p (fact_cat (Γ := Γ) k)).eqTrans (val_mul hp fk (pos_mul' fs (cat_pos k))))
-  have e₂ := natEq (val_mul hp fs (cat_pos (Γ := Γ) k))
-  have e₃ := natEq (val_fact_succ hp k)
-  have d₂ := natEq (legendre_digits h2 (two * k)); have d₁ := natEq (legendre_digits h2 k)
-  have f₂ := natEq (legendre_fact hp (two * k)); have f₁ := natEq (legendre_fact hp k)
-  apply deriveNat; ipra_simps
-  linear_combination d₂ - 2 * d₁ + 𝔞 (monus p one) * f₂ - 2 * 𝔞 (monus p one) * f₁ -
-    𝔞 (monus p one) * (e₁ + e₂ + e₃)
+  ipra_lc natEq (legendre_digits h2 (two * k)) - 2 * natEq (legendre_digits h2 k) +
+    𝔞 (monus p one) * natEq (legendre_fact hp (two * k)) - 2 * 𝔞 (monus p one) * natEq (legendre_fact hp k) -
+    𝔞 (monus p one) * (natEq ((val_congr p (fact_cat (Γ := Γ) k)).eqTrans (val_mul hp fk (pos_mul' fs (cat_pos k)))) + natEq (val_mul hp fs (cat_pos (Γ := Γ) k)) + natEq (val_fact_succ hp k))
 
 end LeanProofs.IPRA.Combinatorics.CatalanValuation

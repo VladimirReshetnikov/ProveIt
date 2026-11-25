@@ -1,5 +1,6 @@
 import IPRADerivations.Combinatorics.Catalan
 import IPRADerivations.Core.Gcd
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Growth of the Catalan numbers (`catalan_numbers_ipra_2026-11-16`, Section 5)
@@ -40,47 +41,36 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `Cat_1 = 1`. -/
 theorem cat_one : Γ ⊢[PRAAx] cat (succ (zero : PTm n)) ≐ one := by
-  have r := natEq (cat_rec (Γ := Γ) zero)
-  have z := natEq (cat_zero (Γ := Γ))
   refine mul_cancel (D := two) (succ_pos one) ?_
-  apply deriveNat; ipra_simps
-  linear_combination r + 2 * z
+  ipra_lc natEq (cat_rec (Γ := Γ) zero) + 2 * natEq (cat_zero (Γ := Γ))
 
 /-- `Cat_{n+1} ≥ 2 Cat_n` for `n = j + 1 ≥ 1`. -/
 theorem cat_double (j : PTm n) :
     Γ ⊢[PRAAx] le (two * cat (succ j)) (cat (succ (succ j))) := by
-  have r := natEq (cat_rec (Γ := Γ) (succ j))
   refine mul_le_cancel (d' := succ (succ j))
     (le_of_eq_add (d := two * j * cat (succ j)) ?_)
-  apply deriveNat; ipra_simps
-  linear_combination r
+  ipra_lc natEq (cat_rec (Γ := Γ) (succ j))
 
 /-- `8 ≤ Cat_4`. -/
 theorem cat_four :
     Γ ⊢[PRAAx] le (two * (two * two)) (cat (succ (succ (succ (succ (zero : PTm n)))))) := by
-  have e₁ := natEq (eq_add_of_le (cat_double (Γ := Γ) zero))
-  have e₂ := natEq (eq_add_of_le (cat_double (Γ := Γ) (succ zero)))
-  have e₃ := natEq (eq_add_of_le (cat_double (Γ := Γ) (succ (succ zero))))
-  have c₁ := natEq (cat_one (Γ := Γ))
   refine le_of_eq_add (d :=
     two * two * monus (cat (succ (succ zero))) (two * cat (succ zero)) +
       two * monus (cat (succ (succ (succ zero)))) (two * cat (succ (succ zero))) +
       monus (cat (succ (succ (succ (succ zero))))) (two * cat (succ (succ (succ zero))))) ?_
-  apply deriveNat; ipra_simps
-  linear_combination e₃ + 2 * e₂ + 4 * e₁ + 8 * c₁
+  ipra_lc natEq (eq_add_of_le (cat_double (Γ := Γ) (succ (succ zero)))) +
+    2 * natEq (eq_add_of_le (cat_double (Γ := Γ) (succ zero))) + 4 * natEq (eq_add_of_le (cat_double (Γ := Γ) zero)) +
+    8 * natEq (cat_one (Γ := Γ))
 
 theorem ge_step {m : PTm n}
     (ih : Γ ⊢[PRAAx] le (two * succ (succ (succ (succ m)))) (cat (succ (succ (succ (succ m)))))) :
     Γ ⊢[PRAAx] le (two * succ (succ (succ (succ (succ m)))))
       (cat (succ (succ (succ (succ (succ m)))))) := by
-  have e₁ := natEq (eq_add_of_le ih)
-  have e₂ := natEq (eq_add_of_le (cat_double (Γ := Γ) (succ (succ (succ m)))))
   refine le_of_eq_add (d := two * m + two * (two + one) +
     two * monus (cat (succ (succ (succ (succ m))))) (two * succ (succ (succ (succ m)))) +
     monus (cat (succ (succ (succ (succ (succ m))))))
       (two * cat (succ (succ (succ (succ m)))))) ?_
-  apply deriveNat; ipra_simps
-  linear_combination e₂ + 2 * e₁
+  ipra_lc natEq (eq_add_of_le (cat_double (Γ := Γ) (succ (succ (succ m))))) + 2 * natEq (eq_add_of_le ih)
 
 /-- Variable: `0 = m`. -/
 private abbrev geF : Fm PTm 1 :=
@@ -90,7 +80,7 @@ private theorem ge₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] geF := by
   refine ind _ trivial ?_ ?_
   · simp only [subst_le, PTm.subst_mul, PTm.subst_monus, subst_ap2, Syn.subst_var,
       Syn.inst_zero, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact le_congr (by apply deriveNat; ipra_simps; ring) (.eqRefl _) cat_four
+    exact le_congr (by ipra_ring) (.eqRefl _) cat_four
   · simp only [subst_le, PTm.subst_mul, PTm.subst_monus, subst_ap2, Syn.subst_var,
       Syn.repl_zero, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
     exact ge_step Prf.hyp0

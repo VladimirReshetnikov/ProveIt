@@ -1,5 +1,5 @@
 import IPRADerivations.Combinatorics.BellPeriodNp
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The order-`m` recurrence of the Bell numbers modulo `m` (`bell_numbers_ipra`, `thm:all-moduli-period`)

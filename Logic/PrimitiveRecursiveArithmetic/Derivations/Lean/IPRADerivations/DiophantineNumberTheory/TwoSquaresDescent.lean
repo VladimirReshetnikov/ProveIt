@@ -1,5 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.FourSquaresDescent
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The two-square descent

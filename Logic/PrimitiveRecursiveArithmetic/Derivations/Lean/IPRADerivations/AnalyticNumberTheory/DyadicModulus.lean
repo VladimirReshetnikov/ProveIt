@@ -2,7 +2,7 @@ import IPRADerivations.Algebra.PowerDifference
 import IPRADerivations.AnalyticNumberTheory.PowerCleared
 import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.Core.ProdLemmas
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Dyadic arithmetic of the analytic moduli

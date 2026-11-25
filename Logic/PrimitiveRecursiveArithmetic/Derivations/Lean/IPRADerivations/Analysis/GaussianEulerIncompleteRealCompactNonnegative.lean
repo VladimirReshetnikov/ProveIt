@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianEulerRealIntegrandNonnegative
 import IPRADerivations.Analysis.GaussianCompactRiemannLower
 import IPRADerivations.Analysis.GaussianEulerCompactAdditivity
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Nonnegativity of the actual real Euler compact observations
@@ -54,10 +55,7 @@ private theorem zero_fraction (C D : PTm n) (hD : Γ ⊢[PRAAx] le one D) : Γ �
     (RationalNormalForm.normalize_well_formed _ _ (le_refl one))
     (fraction_represents (C*zero) D hD) (GaussianRationalSyntheticBounds.natCode_represents zero)
     hD (le_refl one)
-  apply ZT.derive
-  simp only [ZT.toZ_mul,ZT.toZ_ofNat]
-  ipra_simps
-  ring
+  ipra_lc
 
 private theorem scalar_entry (p N a C E z B i : PTm n) : Γ ⊢[PRAAx]
     RationalFiniteSum.term (realBody (sampleBody evaluatorF)) i (sampleData p N a C E (fixedData z B)) ≐

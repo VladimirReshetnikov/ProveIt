@@ -1,6 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.HurwitzLoop
 import IPRADerivations.Core.Fubini
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Precision independence of the continued-fraction prefix (`hurwitz_khinchin_ipra`)
@@ -57,9 +58,7 @@ theorem quo_of_between {A Dn q : PTm n} (hD : Γ ⊢[PRAAx] Dn ≐ succ (pred Dn
     (Prf.andE₁ (div_mod_unique hz (lt_congr (.eqRefl _) hD hr)))
 
 /-- `Dn ≐ succ (pred Dn)` gives `1 ≤ Dn`. -/
-theorem one_le_of_succ {d : PTm n} (h : Γ ⊢[PRAAx] d ≐ succ (pred d)) : Γ ⊢[PRAAx] le one d := by
-  have e := natEq h
-  ipra_le 𝔞 (pred d) with e
+alias one_le_of_succ := Common.one_le_of_pos
 
 /-- Digit agreement in region 1 from the name-level certificates of `digit_from_name`. -/
 theorem dig_agree₁ {s Y W Z V σn σd E C : PTm n} (hR : Γ ⊢[PRAAx] R1 s Y W) (hR' : Γ ⊢[PRAAx] R1 s Z V)

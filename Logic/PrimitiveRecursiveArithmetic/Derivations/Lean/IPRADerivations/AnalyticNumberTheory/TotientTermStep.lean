@@ -3,6 +3,7 @@ import IPRADerivations.AnalyticNumberTheory.GoldbachPhi
 import IPRADerivations.AnalyticNumberTheory.Multiplicative
 import IPRADerivations.Combinatorics.BinomialIdentities
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The prime step for the terms `[d ∣ a] z!/φ(d)`
@@ -69,18 +70,15 @@ theorem gt_dvd {a F d : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) (h : Γ 
 
 theorem all0 {X Y e : PTm n} (hX : Γ ⊢[PRAAx] X ≐ zero) (hY : Γ ⊢[PRAAx] Y ≐ zero) :
     Γ ⊢[PRAAx] X ≐ Y + e * X := by
-  have a := natEq hX; have b := natEq hY
-  apply deriveNat; ipra_simps; linear_combination a - b - 𝔞 e * a
+  ipra_lc natEq hX - natEq hY - 𝔞 e * natEq hX
 
 theorem nd_alg {X Y e : PTm n} (he : Γ ⊢[PRAAx] e ≐ zero) (h : Γ ⊢[PRAAx] X ≐ Y) :
     Γ ⊢[PRAAx] X ≐ Y + e * X := by
-  have a := natEq he; have b := natEq h
-  apply deriveNat; ipra_simps; linear_combination b - 𝔞 X * a
+  ipra_lc natEq h - 𝔞 X * natEq he
 
 theorem yd_alg {X Y e : PTm n} (he : Γ ⊢[PRAAx] e ≐ one) (hY : Γ ⊢[PRAAx] Y ≐ zero) :
     Γ ⊢[PRAAx] X ≐ Y + e * X := by
-  have a := natEq he; have b := natEq hY
-  apply deriveNat; ipra_simps; linear_combination -b - 𝔞 X * a
+  ipra_lc -natEq hY - 𝔞 X * natEq he
 
 theorem comm_mul_alg (a p : PTm n) : Γ ⊢[PRAAx] a * p ≐ p * a := mul_comm a p
 
@@ -116,21 +114,17 @@ theorem split_pt {p a F : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hpa : Γ ⊢[PRAA
 
 theorem phi_p_alg {p ph : PTm n} (h1 : Γ ⊢[PRAAx] ph + one ≐ p) (h2 : Γ ⊢[PRAAx] p ≐ succ (pred p)) :
     Γ ⊢[PRAAx] ph ≐ pred p := by
-  have a := natEq h1; have b := natEq h2
-  apply deriveNat; ipra_simps; linear_combination a + b
+  ipra_lc natEq h1 + natEq h2
 
 theorem fact_alg {Fz ppk pp phk php Q : PTm n} (e1 : Γ ⊢[PRAAx] Fz ≐ ppk * Q) (e2 : Γ ⊢[PRAAx] ppk ≐ php * phk)
     (e3 : Γ ⊢[PRAAx] php ≐ pp) : Γ ⊢[PRAAx] Fz ≐ phk * (pp * Q) + zero := by
-  have a := natEq e1; have b := natEq e2; have c := natEq e3
-  apply deriveNat; ipra_simps; linear_combination a + 𝔞 Q * b + 𝔞 Q * 𝔞 phk * c
+  ipra_lc natEq e1 + 𝔞 Q * natEq e2 + 𝔞 Q * 𝔞 phk * natEq e3
 
 theorem ap_alg {a k w p : PTm n} (e : Γ ⊢[PRAAx] a ≐ k * w) : Γ ⊢[PRAAx] a * p ≐ (p * k) * w := by
-  have x := natEq e
-  apply deriveNat; ipra_simps; linear_combination 𝔞 p * x
+  ipra_lc 𝔞 p * natEq e
 
 theorem cancel_alg {a k w p : PTm n} (e : Γ ⊢[PRAAx] a * p ≐ (p * k) * w) : Γ ⊢[PRAAx] p * a ≐ p * (k * w) := by
-  have x := natEq e
-  apply deriveNat; ipra_simps; linear_combination x
+  ipra_lc natEq e
 
 theorem zero_scale {c X Y : PTm n} (hX : Γ ⊢[PRAAx] X ≐ zero) (hY : Γ ⊢[PRAAx] Y ≐ zero) :
     Γ ⊢[PRAAx] c * X ≐ Y :=

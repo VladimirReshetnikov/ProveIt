@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.MangoldtMobius
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The weighted Vaughan identity
@@ -46,10 +47,7 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 /-! ## Splitting by an indicator -/
 
-theorem monus_le_self' (a b : PTm n) : Γ ⊢[PRAAx] le (monus a b) a := by
-  refine .orE (le_total b a) ?_ ?_
-  · exact le_of_eq_add (d := b) ((eq_add_of_le Prf.hyp0).eqTrans (add_comm _ _))
-  · exact le_congr (Prf.hyp0 : (le a b :: Γ) ⊢[PRAAx] monus a b ≐ zero).eqSymm (.eqRefl _) (zero_le a)
+alias monus_le_self' := Common.monus_le_self
 
 /-- `[t = 0] + [t > 0] = 1` for the indicators `1 ∸ t` and `1 ∸ (1 ∸ t)`. -/
 theorem ind_split (t : PTm n) : Γ ⊢[PRAAx] monus one t + monus one (monus one t) ≐ one :=

@@ -1,6 +1,6 @@
 import IPRADerivations.Probability.Variance
 import IPRADerivations.Geometry.HypercubeSplit
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Triangle isoperimetry, with exact polynomial cores

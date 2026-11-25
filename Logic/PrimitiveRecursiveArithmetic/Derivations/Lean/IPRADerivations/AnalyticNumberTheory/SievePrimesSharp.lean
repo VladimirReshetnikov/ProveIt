@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.SievePrimeInequality
 import IPRADerivations.Core.SumSplit
 import IPRADerivations.Core.SumOrder
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # At most `Z − 1` primes below `Z`
@@ -57,8 +58,7 @@ abbrev lowP : PTm 2 := sg (var 0) * sg (monus (var 1) (var 0))
 
 theorem inst2_lowP (m Z : PTm n) : inst2 lowP m Z = sg m * sg (monus Z m) := by simp [inst2]
 
-theorem zero_le_of {L R : PTm n} (h : Γ ⊢[PRAAx] L ≐ zero) : Γ ⊢[PRAAx] le L R :=
-  le_congr h.eqSymm (.eqRefl _) (zero_le _)
+alias zero_le_of := Common.le_of_eq_zero
 
 /-- `[1 ≤ i + 1 < Z] ≤ [i < Z − 1]`. -/
 theorem lowP_succ (i Z : PTm n) :

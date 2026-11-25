@@ -1,4 +1,5 @@
 import IPRADerivations.Algebra.QuadraticTowerMultiplicationTable
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Exact scalar growth calculus for the actual changed-budget table
@@ -100,12 +101,7 @@ theorem path_power (h : PTm n) : Γ ⊢[PRAAx] pw two (succ h) ≐ succ (path h)
 theorem path_zero : Γ ⊢[PRAAx] path (zero : PTm n) ≐ one :=
   (congrPred (pw_one two)).eqTrans (pred_succ one)
 theorem path_succ (h : PTm n) : Γ ⊢[PRAAx] path (succ h) ≐ two*path h+one := by
-  have a := natEq (path_power (Γ := Γ) h)
-  have b := natEq (path_power (Γ := Γ) (succ h))
-  have e := natEq (pw_succ (Γ := Γ) two (succ h))
-  apply deriveNat
-  ipra_simps
-  linear_combination a*2-b+e
+  ipra_lc natEq (path_power (Γ := Γ) h)*2-natEq (path_power (Γ := Γ) (succ h))+natEq (pw_succ (Γ := Γ) two (succ h))
 theorem path_increasing (h : PTm n) : Γ ⊢[PRAAx] le (path h) (path (succ h)) :=
   le_congr (.eqRefl _) (path_succ h).eqSymm
     (le_of_eq_add (d := path h+one) (by ipra_ring))

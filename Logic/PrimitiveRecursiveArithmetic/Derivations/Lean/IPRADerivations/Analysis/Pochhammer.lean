@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.Products
 import IPRADerivations.Combinatorics.BinomialIdentities
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Rising factorials and the Gauss coefficients
@@ -55,11 +56,8 @@ theorem poch_succ (x m : PTm n) : Γ ⊢[PRAAx] poch x (succ m) ≐ poch x m * (
 
 theorem split_step {x m k : PTm n} (ih : Γ ⊢[PRAAx] poch x (m + k) ≐ poch x m * poch (x + m) k) :
     Γ ⊢[PRAAx] poch x (m + succ k) ≐ poch x m * poch (x + m) (succ k) := by
-  have c := natEq ((congrAp2 (prodF (var 1 + var 0)) (add_succ m k) (.eqRefl x)).eqTrans
-    (poch_succ (Γ := Γ) x (m + k)))
-  have s := natEq (poch_succ (Γ := Γ) (x + m) k); have i := natEq ih
-  apply deriveNat; ipra_simps
-  linear_combination c - 𝔞(poch x m) * s + (𝔞(x) + 𝔞(m) + 𝔞(k)) * i
+  ipra_lc natEq ((congrAp2 (prodF (var 1 + var 0)) (add_succ m k) (.eqRefl x)).eqTrans (poch_succ (Γ := Γ) x (m + k))) -
+    𝔞(poch x m) * natEq (poch_succ (Γ := Γ) (x + m) k) + (𝔞(x) + 𝔞(m) + 𝔞(k)) * natEq ih
 
 /-- Variables: `0 = k`, `1 = m`, `2 = x`. -/
 private abbrev splitF : Fm PTm 3 :=
@@ -83,16 +81,12 @@ theorem poch_split (x m k : PTm n) : Γ ⊢[PRAAx] poch x (m + k) ≐ poch x m *
 /-! ## Shifting the base -/
 
 theorem shift_base (x : PTm n) : Γ ⊢[PRAAx] x * poch (succ x) zero ≐ (x + zero) * poch x zero := by
-  have zq := natEq (poch_zero (Γ := Γ) (succ x)); have zp := natEq (poch_zero (Γ := Γ) x)
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞(x) * zq - 𝔞(x) * zp
+  ipra_lc 𝔞(x) * natEq (poch_zero (Γ := Γ) (succ x)) - 𝔞(x) * natEq (poch_zero (Γ := Γ) x)
 
 theorem shift_step {x m : PTm n} (ih : Γ ⊢[PRAAx] x * poch (succ x) m ≐ (x + m) * poch x m) :
     Γ ⊢[PRAAx] x * poch (succ x) (succ m) ≐ (x + succ m) * poch x (succ m) := by
-  have sq := natEq (poch_succ (Γ := Γ) (succ x) m); have sp := natEq (poch_succ (Γ := Γ) x m)
-  have i := natEq ih
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞(x) * sq - (𝔞(x) + 𝔞(m) + 1) * sp + (𝔞(x) + 𝔞(m) + 1) * i
+  ipra_lc 𝔞(x) * natEq (poch_succ (Γ := Γ) (succ x) m) - (𝔞(x) + 𝔞(m) + 1) * natEq (poch_succ (Γ := Γ) x m) +
+    (𝔞(x) + 𝔞(m) + 1) * natEq ih
 
 /-- Variables: `0 = m`, `1 = x`. -/
 private abbrev shiftF : Fm PTm 2 :=
@@ -119,18 +113,14 @@ theorem poch_shift' (x m : PTm n) : Γ ⊢[PRAAx] poch x (succ m) ≐ x * poch (
 /-! ## Factorials and binomial coefficients -/
 
 theorem fact_base (x : PTm n) : Γ ⊢[PRAAx] poch (succ x) zero * fact x ≐ fact (x + zero) := by
-  have zq := natEq (poch_zero (Γ := Γ) (succ x))
-  have c := natEq (congrAp2 (Γ := Γ) factF (add_zero x) (.eqRefl zero))
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞(fact x) * zq - c
+  ipra_lc 𝔞(fact x) * natEq (poch_zero (Γ := Γ) (succ x)) -
+    natEq (congrAp2 (Γ := Γ) factF (add_zero x) (.eqRefl zero))
 
 theorem fact_step {x m : PTm n} (ih : Γ ⊢[PRAAx] poch (succ x) m * fact x ≐ fact (x + m)) :
     Γ ⊢[PRAAx] poch (succ x) (succ m) * fact x ≐ fact (x + succ m) := by
-  have sq := natEq (poch_succ (Γ := Γ) (succ x) m)
-  have c := natEq ((congrAp2 (Γ := Γ) factF (add_succ x m) (.eqRefl zero)).eqTrans (fact_succ (x + m) zero))
-  have i := natEq ih
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞(fact x) * sq - c + (𝔞(x) + 𝔞(m) + 1) * i
+  ipra_lc 𝔞(fact x) * natEq (poch_succ (Γ := Γ) (succ x) m) -
+    natEq ((congrAp2 (Γ := Γ) factF (add_succ x m) (.eqRefl zero)).eqTrans (fact_succ (x + m) zero)) +
+    (𝔞(x) + 𝔞(m) + 1) * natEq ih
 
 /-- Variables: `0 = m`, `1 = x`. -/
 private abbrev factF' : Fm PTm 2 := poch (succ (var 1)) (var 0) * fact (var 1) ≐ fact (var 1 + var 0)
@@ -151,10 +141,8 @@ theorem poch_fact (x m : PTm n) : Γ ⊢[PRAAx] poch (succ x) m * fact x ≐ fac
 
 /-- `(1)_m = m!`. -/
 theorem poch_one (m : PTm n) : Γ ⊢[PRAAx] poch one m ≐ fact m := by
-  have e := natEq (poch_fact (Γ := Γ) zero m); have z := natEq (fact_zero (Γ := Γ) (zero : PTm n))
-  have c := natEq (congrAp2 (Γ := Γ) factF (zero_add m) (.eqRefl zero))
-  apply deriveNat; ipra_simps
-  linear_combination e - 𝔞(poch one m) * z + c
+  ipra_lc natEq (poch_fact (Γ := Γ) zero m) - 𝔞(poch one m) * natEq (fact_zero (Γ := Γ) (zero : PTm n)) +
+    natEq (congrAp2 (Γ := Γ) factF (zero_add m) (.eqRefl zero))
 
 /-- `(x + 1)_m = m! C(x + m, m)`. -/
 theorem poch_binom (x m : PTm n) : Γ ⊢[PRAAx] poch (succ x) m ≐ fact m * binom (x + m) m := by
@@ -162,10 +150,8 @@ theorem poch_binom (x m : PTm n) : Γ ⊢[PRAAx] poch (succ x) m ≐ fact m * bi
     congrAp2 factF ((congrMonus (add_comm x m) (.eqRefl _)).eqTrans (add_monus' _ _)) (.eqRefl _)
   have e := natEq ((binom_eq (Γ := Γ) (le_add_left m x)).eqTrans
     (congrMul (congrMul (.eqRefl _) g) (.eqRefl _)))
-  have pf := natEq (poch_fact (Γ := Γ) x m)
   refine mul_cancel (D := fact x) (fact_pos x) ?_
-  apply deriveNat; ipra_simps
-  linear_combination pf + e
+  ipra_lc natEq (poch_fact (Γ := Γ) x m) + e
 
 /-! ## The Gauss coefficients -/
 
@@ -174,25 +160,15 @@ theorem poch_binom (x m : PTm n) : Γ ⊢[PRAAx] poch (succ x) m ≐ fact m * bi
 theorem gauss_ratio (a b c k : PTm n) :
     Γ ⊢[PRAAx] (succ k * (c + k)) * ((poch a (succ k) * poch b (succ k)) * (poch c k * fact k)) ≐
       ((a + k) * (b + k)) * ((poch a k * poch b k) * (poch c (succ k) * fact (succ k))) := by
-  have sa := natEq (poch_succ (Γ := Γ) a k); have sb := natEq (poch_succ (Γ := Γ) b k)
-  have sc := natEq (poch_succ (Γ := Γ) c k); have sf := natEq (fact_succ (Γ := Γ) k zero)
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞(k) + 1) * (𝔞(c) + 𝔞(k)) * 𝔞(poch c k) * 𝔞(fact k) *
-      (𝔞(poch b (succ k)) * sa + 𝔞(poch a k) * (𝔞(a) + 𝔞(k)) * sb) -
-    (𝔞(a) + 𝔞(k)) * (𝔞(b) + 𝔞(k)) * 𝔞(poch a k) * 𝔞(poch b k) *
-      (𝔞(fact (succ k)) * sc + 𝔞(poch c k) * (𝔞(c) + 𝔞(k)) * sf)
+  ipra_lc (𝔞(k) + 1) * (𝔞(c) + 𝔞(k)) * 𝔞(poch c k) * 𝔞(fact k) * (𝔞(poch b (succ k)) * natEq (poch_succ (Γ := Γ) a k) + 𝔞(poch a k) * (𝔞(a) + 𝔞(k)) * natEq (poch_succ (Γ := Γ) b k)) -
+    (𝔞(a) + 𝔞(k)) * (𝔞(b) + 𝔞(k)) * 𝔞(poch a k) * 𝔞(poch b k) * (𝔞(fact (succ k)) * natEq (poch_succ (Γ := Γ) c k) + 𝔞(poch c k) * (𝔞(c) + 𝔞(k)) * natEq (fact_succ (Γ := Γ) k zero))
 
 /-- `thm:derivatives`, coefficientwise: `(k + 1) A_{k+1}(a, b; c) = (a b / c) A_k(a + 1, b + 1; c + 1)`,
 cross-multiplied. -/
 theorem gauss_derivative (a b c k : PTm n) :
     Γ ⊢[PRAAx] succ k * (poch a (succ k) * poch b (succ k)) * (c * (poch (succ c) k * fact k)) ≐
       (a * b) * (poch (succ a) k * poch (succ b) k) * (poch c (succ k) * fact (succ k)) := by
-  have ha := natEq (poch_shift' (Γ := Γ) a k); have hb := natEq (poch_shift' (Γ := Γ) b k)
-  have hc := natEq (poch_shift' (Γ := Γ) c k); have sf := natEq (fact_succ (Γ := Γ) k zero)
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞(k) + 1) * 𝔞(c) * 𝔞(poch (succ c) k) * 𝔞(fact k) *
-      (𝔞(poch b (succ k)) * ha + 𝔞(a) * 𝔞(poch (succ a) k) * hb) -
-    𝔞(a) * 𝔞(b) * 𝔞(poch (succ a) k) * 𝔞(poch (succ b) k) *
-      (𝔞(fact (succ k)) * hc + 𝔞(c) * 𝔞(poch (succ c) k) * sf)
+  ipra_lc (𝔞(k) + 1) * 𝔞(c) * 𝔞(poch (succ c) k) * 𝔞(fact k) * (𝔞(poch b (succ k)) * natEq (poch_shift' (Γ := Γ) a k) + 𝔞(a) * 𝔞(poch (succ a) k) * natEq (poch_shift' (Γ := Γ) b k)) -
+    𝔞(a) * 𝔞(b) * 𝔞(poch (succ a) k) * 𝔞(poch (succ b) k) * (𝔞(fact (succ k)) * natEq (poch_shift' (Γ := Γ) c k) + 𝔞(c) * 𝔞(poch (succ c) k) * natEq (fact_succ (Γ := Γ) k zero))
 
 end LeanProofs.IPRA.Analysis.Pochhammer

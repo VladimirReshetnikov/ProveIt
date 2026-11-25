@@ -132,7 +132,7 @@ abbrev wallisFormula : Fm PTm 1 :=
 theorem fact_two_succ {Γ : List (Fm PTm n)} (m : PTm n) :
     Γ ⊢[PRAAx] fact (two * succ m) ≐ fact (two * m) * succ (two * m) * succ (succ (two * m)) := by
   have e : Γ ⊢[PRAAx] two * succ m ≐ succ (succ (two * m)) := by
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   refine (congrAp2 factF e (.eqRefl _)).eqTrans ((fact_succ _ _).eqTrans ?_)
   exact congrMul (fact_succ _ _) (.eqRefl _)
 

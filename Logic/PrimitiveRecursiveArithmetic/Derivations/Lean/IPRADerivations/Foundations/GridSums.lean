@@ -2,6 +2,7 @@ import IPRADerivations.Core.SumLemmas
 import IPRADerivations.Core.Pairing
 import IPRADerivations.Core.Fubini
 import IPRADerivations.Core.Tactic
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Sums over a cubical grid in any fixed dimension
@@ -245,12 +246,10 @@ theorem gs_telescope (F : PTm 1) (e k : ℕ) {m : ℕ} (Δ : List (Fm PTm m)) (x
       (pairT (var 0) (Syn.shift x)) (by omega)
     rw [Nat.zero_add] at h₂
     exact h₂.eqSymm.eqTrans (congr1 _ (upd_zero_pair _ _))
-  have e₁ := natEq hs
   have e₂ := natEq (sum_shift (Γ := Δ) (gsBody (gs (e + 1) k F)) (fstT (tl e x)) x)
   have e₃ := natEq (sum_succ' (Γ := Δ) (gsBody (gs (e + 1) k F)) (fstT (tl e x)) x)
   rw [inst2_gsBody] at e₂ e₃
-  apply deriveNat; ipra_simps
-  linear_combination e₁ - e₂ + e₃
+  ipra_lc natEq hs - e₂ + e₃
 
 /-! ## Setting one entry -/
 

@@ -116,7 +116,7 @@ private theorem par_double₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] pdF := by
       ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
     -- 2 (k + 1) = S (S (2k)).
     have e : [pdF] ⊢[PRAAx] two * succ (var 0) ≐ succ (succ (two * var 0)) := by
-      apply deriveNat; ipra_simps; ring
+      ipra_ring
     refine (congrAp1 parF e).eqTrans ((par_succ _).eqTrans ?_)
     refine (congrMonus (.eqRefl _) ((par_succ _).eqTrans
       ((congrMonus (.eqRefl _) Prf.hyp0).eqTrans monus_one_zero))).eqTrans monus_one_one

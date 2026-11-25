@@ -1,6 +1,7 @@
 import IPRADerivations.Probability.Expectation
 import IPRADerivations.Core.Fubini
 import IPRADerivations.Core.Permutation
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The finite law of the unconscious statistician
@@ -51,9 +52,7 @@ theorem cm_step (f : PTm 2) {N K x : PTm n}
   rw [inst2_cmB] at e₁
   have t : Γ ⊢[PRAAx] fstT (pairT K x) * inst2 f N (sndT (pairT K x)) ≐ K * inst2 f N x :=
     congrMul (fst_pair _ _) (congrInst2 f (.eqRefl _) (snd_pair _ _))
-  have a := natEq (e₁.eqTrans (congrAdd ih t)); have b := natEq (sum_succ' (Γ := Γ) f N x)
-  apply deriveNat; ipra_simps
-  linear_combination a - Groth.ι (IPRA.Q.mk Γ K) * b
+  ipra_lc natEq (e₁.eqTrans (congrAdd ih t)) - Groth.ι (IPRA.Q.mk Γ K) * natEq (sum_succ' (Γ := Γ) f N x)
 
 /-- Variables: `0 = N`, `1 = K`, `2 = x`. -/
 private abbrev cmF (f : PTm 2) : Fm PTm 3 :=
@@ -164,7 +163,7 @@ theorem col_point (i j x : PTm n) :
       (congrEqb (congrInst2 σ (.eqRefl _) ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)))
         ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))))
   refine .eqTrans ?_ e.eqSymm
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- The column sum: `∑_{i<M} a(i, j, x) = g(j) v_j`. -/
 theorem col_eval (j M x : PTm n) :

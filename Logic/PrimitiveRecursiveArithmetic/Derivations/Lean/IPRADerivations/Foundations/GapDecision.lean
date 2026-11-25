@@ -1,5 +1,6 @@
 import IPRADerivations.Core.IntOrder
 import IPRADerivations.Probability.MedianWeighted
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Exactness from a gap
@@ -70,10 +71,8 @@ variable {z q : ZT n} {δ : PTm n}
 theorem gap_zero (hz : Γ ⊢[PRAAx] ZT.eq z (ZT.natLit 0)) (hq : Γ ⊢[PRAAx] lt (num 3 * zabs (q - z)) δ) :
     Γ ⊢[PRAAx] lt (two * zabs q) δ := by
   have z0 := ZT.toZ_eq hz
-  have e := natEq (zabs_congr (Γ := Γ) (u := q) (v := q - z) (by rw [ZT.toZ_sub, z0]; simp))
   refine le_trans (le_of_eq_add (d := zabs (q - z)) ?_) hq
-  apply deriveNat; ipra_simps
-  linear_combination -2 * e
+  ipra_lc -2 * natEq (zabs_congr (Γ := Γ) (u := q) (v := q - z) (by rw [ZT.toZ_sub, z0]; simp))
 
 /-- The branch `|z| ≥ δ`: `3 |q − z| < δ` gives `δ < 2 |q|`. -/
 theorem gap_far (hz : Γ ⊢[PRAAx] le δ (zabs z)) (hq : Γ ⊢[PRAAx] lt (num 3 * zabs (q - z)) δ) :
@@ -81,16 +80,14 @@ theorem gap_far (hz : Γ ⊢[PRAAx] le δ (zabs z)) (hq : Γ ⊢[PRAAx] lt (num 
   have t : Γ ⊢[PRAAx] le (zabs z) (zabs q + zabs (-(q - z))) :=
     zabs_tri (by simp only [ZT.toZ_neg, ZT.toZ_sub]; ring)
   refine .orE (lt_or_le δ (two * zabs q)) Prf.hyp0 ?_
-  have w₁ := natEq (eq_add_of_le (hz.wk (ψ := le (two * zabs q) δ)))
-  have w₂ := natEq (eq_add_of_le (t.wk (ψ := le (two * zabs q) δ)))
-  have s := natEq ((zabs_neg (Γ := le (two * zabs q) δ :: Γ) (q - z)))
-  have w₃ := natEq (eq_add_of_le (hq.wk (ψ := le (two * zabs q) δ)))
-  have w₄ := natEq (eq_add_of_le (Prf.hyp0 : (le (two * zabs q) δ :: Γ) ⊢[PRAAx] _))
   refine succ_ne_zero' _ (a := δ + num 6 * monus (zabs z) δ +
     num 6 * monus (zabs q + zabs (-(q - z))) (zabs z) + num 3 * monus δ (two * zabs q) +
     two * monus δ (succ (num 3 * zabs (q - z))) + one) ?_
-  apply deriveNat; ipra_simps
-  linear_combination -6 * w₁ - 6 * w₂ + 6 * s - 3 * w₄ - 2 * w₃
+  ipra_lc -6 * natEq (eq_add_of_le (hz.wk (ψ := le (two * zabs q) δ))) -
+    6 * natEq (eq_add_of_le (t.wk (ψ := le (two * zabs q) δ))) +
+    6 * natEq ((zabs_neg (Γ := le (two * zabs q) δ :: Γ) (q - z))) -
+    3 * natEq (eq_add_of_le (Prf.hyp0 : (le (two * zabs q) δ :: Γ) ⊢[PRAAx] _)) -
+    2 * natEq (eq_add_of_le (hq.wk (ψ := le (two * zabs q) δ)))
 
 /-- `thm:gap`: under `z = 0 ∨ |z| ≥ δ` and `3 |q − z| < δ`, `z = 0` holds exactly when `2 |q| < δ`. -/
 theorem gap_decide (hz : Γ ⊢[PRAAx] ZT.eq z (ZT.natLit 0) ⋎ le δ (zabs z))
@@ -101,6 +98,6 @@ theorem gap_decide (hz : Γ ⊢[PRAAx] ZT.eq z (ZT.natLit 0) ⋎ le δ (zabs z))
   have f := gap_far (Prf.hyp0 : (le δ (zabs z) :: lt (two * zabs q) δ :: Γ) ⊢[PRAAx] _) hq.wk.wk
   have g : (le δ (zabs z) :: lt (two * zabs q) δ :: Γ) ⊢[PRAAx] lt (two * zabs q) δ := Prf.hyp0.wk
   refine not_succ_le_self δ _ (le_trans f (le_trans (le_of_eq_add (d := one) ?_) g))
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 end LeanProofs.IPRA.Foundations.GapDecision

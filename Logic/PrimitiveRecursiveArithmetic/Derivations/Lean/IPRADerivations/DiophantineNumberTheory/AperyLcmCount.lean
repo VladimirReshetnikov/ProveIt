@@ -1,6 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.AperyLcmTerms
 import IPRADerivations.DiophantineNumberTheory.AperyLcmVal
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The per-prime count of the Apéry divisibility step

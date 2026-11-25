@@ -1,5 +1,7 @@
 import IPRADerivations.Analysis.ReciprocalSquareTail
 import IPRADerivations.Core.Powers
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # A checked cutoff for the Barnes canonical-factor tail
@@ -72,13 +74,9 @@ theorem ceil_lower (s : PTm n) : Γ ⊢[PRAAx] le s (three * ceilThird s) := by
   have r := Prf.andE₂ (div_mod (Γ := Γ) (s + two) two)
   have hr : Γ ⊢[PRAAx] le (rem (s + two) (succ two)) two :=
     (succ_monus_succ _ _).eqSymm.eqTrans r
-  have de := natEq d
-  have re := natEq (eq_add_of_le hr)
   refine le_of_eq_add (d := monus two (rem (s + two) (succ two))) ?_
   unfold ceilThird
-  apply deriveNat
-  ipra_simps
-  linear_combination -de + re
+  ipra_lc -natEq d + natEq (eq_add_of_le hr)
 
 /-- The ceiling rounds upward by at most two numerator units. -/
 theorem ceil_upper (s : PTm n) : Γ ⊢[PRAAx] le (three * ceilThird s) (s + two) :=
@@ -88,14 +86,11 @@ theorem ceil_upper (s : PTm n) : Γ ⊢[PRAAx] le (three * ceilThird s) (s + two
 theorem ceil_least {s q : PTm n} (h : Γ ⊢[PRAAx] le s (three * q)) :
     Γ ⊢[PRAAx] le (ceilThird s) q := by
   refine .orE (lt_or_le q (ceilThird s)) ?_ Prf.hyp0
-  have i := natEq (eq_add_of_le (Prf.hyp0 : (lt q (ceilThird s) :: Γ) ⊢[PRAAx] _))
-  have u := natEq (eq_add_of_le ((ceil_upper (Γ := Γ) s).wk (ψ := lt q (ceilThird s))))
-  have l := natEq (eq_add_of_le (h.wk (ψ := lt q (ceilThird s))))
   refine succ_ne_zero' _ (a := monus (three * q) s +
     three * monus (ceilThird s) (succ q) + monus (s + two) (three * ceilThird s)) ?_
-  apply deriveNat
-  ipra_simps
-  linear_combination -u - 3 * i - l
+  ipra_lc -natEq (eq_add_of_le ((ceil_upper (Γ := Γ) s).wk (ψ := lt q (ceilThird s)))) -
+    3 * natEq (eq_add_of_le (Prf.hyp0 : (lt q (ceilThird s) :: Γ) ⊢[PRAAx] _)) -
+    natEq (eq_add_of_le (h.wk (ψ := lt q (ceilThird s))))
 
 theorem ceil_zero : Γ ⊢[PRAAx] ceilThird (zero : PTm n) ≐ zero := by
   have h : Γ ⊢[PRAAx] quo two (succ two) ≐ zero :=
@@ -142,11 +137,8 @@ theorem cutoff_least {R p N : PTm n} (radius : Γ ⊢[PRAAx] le (two * R) N)
 theorem scale_budget (R p : PTm n) :
     Γ ⊢[PRAAx] scale R p ≐ two * budget p * R * R * R := by
   have ee : Γ ⊢[PRAAx] p + num 6 ≐ succ (p + num 5) := by ipra_ring
-  have pe := natEq ((congrAp2 (Γ := Γ) powF ee (.eqRefl two)).eqTrans (pw_succ two (p + num 5)))
   unfold scale budget
-  apply deriveNat
-  ipra_simps
-  linear_combination 𝔞(R) ^ 3 * pe
+  ipra_lc 𝔞(R) ^ 3 * natEq ((congrAp2 (Γ := Γ) powF ee (.eqRefl two)).eqTrans (pw_succ two (p + num 5)))
 
 theorem scale_zero (p : PTm n) : Γ ⊢[PRAAx] scale zero p ≐ zero := by
   unfold scale
@@ -165,11 +157,7 @@ theorem cutoff_positive {R : PTm n} (p : PTm n) (hR : Γ ⊢[PRAAx] le one R) :
   have h2 : Γ ⊢[PRAAx] le R (two * R) := le_of_eq_add (d := R) (by ipra_ring)
   exact le_trans (le_trans hR h2) (Prf.andE₁ (cutoff_guards R p))
 
-private theorem cancel_positive {c a b : PTm n} (hc : Γ ⊢[PRAAx] le one c)
-    (h : Γ ⊢[PRAAx] le (c * a) (c * b)) : Γ ⊢[PRAAx] le a b := by
-  have ce : Γ ⊢[PRAAx] c ≐ succ (monus c one) :=
-    (eq_add_of_le hc).eqTrans (by ipra_ring)
-  exact mul_le_cancel (le_congr (congrMul ce (.eqRefl _)) (congrMul ce (.eqRefl _)) h)
+private alias cancel_positive := Common.mul_cancel_le
 
 private theorem zero_point {k E : PTm n}
     (h : Γ ⊢[PRAAx] le (three * succ k * succ k * E) zero) :
@@ -217,10 +205,7 @@ private theorem positive_budget (e : PR 2) (R p r D x : PTm n)
   have whole : Γ ⊢[PRAAx] le (two * (R * (R * (R * (budget p * S)))))
       (two * (R * (R * (R * D)))) := by
     refine le_congr ?_ (by ipra_ring) (le_trans multiplied tail)
-    have s := natEq (scale_budget (Γ := Γ) R p)
-    apply deriveNat
-    ipra_simps
-    linear_combination 𝔞(S) * s
+    ipra_lc 𝔞(S) * natEq (scale_budget (Γ := Γ) R p)
   exact cancel_positive hR (cancel_positive hR (cancel_positive hR (mul_le_cancel whole)))
 
 /-- The corrected cutoff supplies the stated `2^(-p-5)` tail budget,
@@ -230,10 +215,7 @@ theorem tail_budget (e : PR 2) (R p r D x : PTm n)
     Γ ⊢[PRAAx] le (budget p * tailSum e (cutoff R p) r x) D := by
   refine .orE (zero_or_succ R) ?_ ?_
   · have cz : ((R ≐ zero) :: Γ) ⊢[PRAAx] two * R * R * R * D ≐ zero := by
-      have h := natEq (Prf.hyp0 : ((R ≐ zero) :: Γ) ⊢[PRAAx] _)
-      apply deriveNat
-      ipra_simps
-      linear_combination 2 * 𝔞(R) ^ 2 * 𝔞(D) * h
+      ipra_lc 2 * 𝔞(R) ^ 2 * 𝔞(D) * natEq (Prf.hyp0 : ((R ≐ zero) :: Γ) ⊢[PRAAx] _)
     have z := zero_majorant e (cutoff R p) r _ x hm.wk cz
     exact le_congr ((congrMul (.eqRefl _) z).eqTrans (mul_zero _)).eqSymm (.eqRefl _) (zero_le D)
   · have positive : ((R ≐ succ (PTm.pred R)) :: Γ) ⊢[PRAAx] le one R := by

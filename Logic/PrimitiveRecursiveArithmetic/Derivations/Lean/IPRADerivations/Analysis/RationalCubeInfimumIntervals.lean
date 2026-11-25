@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.RationalCubeMinimum
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The original intervals around actual cube minima
@@ -63,22 +64,14 @@ theorem lower_represents (A : PR 3) (mu : PR 2) (d k x : PTm n) : Γ ⊢[PRAAx]
   have r := RationalRepresentations.represents_add (Γ := Γ) (minimum A mu d k x)
     (RationalArithmetic.negative (fraction one (succ k))) _ _ _ _ (RationalRepresentations.represents_self _)
     (RationalRepresentations.represents_negative _ _ _ (RationalCubeGrid.fraction_represents one (succ k)))
-  have e := ZT.toZ_eq r
-  apply ZT.derive
-  simp only [lower,lowerNumerator,lowerDenominator,ZT.toZ_mul,ZT.toZ_add,ZT.toZ_neg,ZT.toZ_sub,ZT.toZ_ofNat] at e ⊢
-  ipra_simps
-  linear_combination e
+  ipra_lc [lower, lowerNumerator, lowerDenominator] ZT.toZ_eq r
 
 theorem upper_represents (A : PR 3) (mu : PR 2) (d k x : PTm n) : Γ ⊢[PRAAx]
     represents (upper A mu d k x) (upperNumerator A mu d k x) (upperDenominator A mu d k x) := by
   have r := RationalRepresentations.represents_add (Γ := Γ) (minimum A mu d k x)
     (fraction one (RationalCubeMinimum.precision k)) _ _ _ _ (RationalRepresentations.represents_self _)
     (RationalCubeGrid.fraction_represents one (RationalCubeMinimum.precision k))
-  have e := ZT.toZ_eq r
-  apply ZT.derive
-  simp only [upper,upperNumerator,upperDenominator,ZT.toZ_mul,ZT.toZ_add,ZT.toZ_ofNat] at e ⊢
-  ipra_simps
-  linear_combination e
+  ipra_lc [upper, upperNumerator, upperDenominator] ZT.toZ_eq r
 
 /-- The exact source cross inequalities, obtained at a finite computed query. -/
 theorem cross_order (A : PR 3) (mu : PR 2) (d x i j : PTm n) (hc : Γ ⊢[PRAAx] coherence A d x)
@@ -202,10 +195,7 @@ theorem original_width (A : PR 3) (mu : PR 2) (d k x : PTm n) : Γ ⊢[PRAAx]
   have cross : Γ ⊢[PRAAx] ZT.eq
       ((numeratorOf a*ZT.ofNat T+ZT.ofNat D)*ZT.ofNat (D*H)-
         (numeratorOf a*ZT.ofNat H-ZT.ofNat D)*ZT.ofNat (D*T)) (ZT.ofNat (D*D*(H+T))) := by
-    apply ZT.derive
-    simp only [ZT.toZ_mul,ZT.toZ_add,ZT.toZ_sub,ZT.toZ_ofNat]
-    ipra_simps
-    ring
+    ipra_lc
   apply RationalCubeGrid.radius_of_representations _ _ _ _ _ _ _ _ (upper_positive A mu d k x) (lower_positive A mu d k x)
     (upper_represents A mu d k x) (lower_represents A mu d k x)
   change Γ ⊢[PRAAx] le (((two*two)*scale k)*Foundations.GapDecision.zabs

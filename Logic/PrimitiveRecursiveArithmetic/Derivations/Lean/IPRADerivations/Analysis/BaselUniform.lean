@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.BaselCore
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The uniform finite Basel estimate
@@ -67,10 +68,8 @@ theorem uniform {M m L : PTm n} (hm : Γ ⊢[PRAAx] le (succ M) m) (hL : Γ ⊢[
       num 8 * monus (succ M * (O (succ M) L + two * two * (Ap (succ M) L * Am (succ M) L)) +
         two * (fact L * H (succ M) L))
         (succ M * (two * (Ap (succ M) L * Ap (succ M) L + Am (succ M) L * Am (succ M) L)))) ?_)
-  · apply deriveNat; ipra_simps
-    linear_combination 2 * c2 + 8 * k2
-  · apply deriveNat; ipra_simps
-    linear_combination 2 * c1 + 8 * k1
+  · ipra_lc 2 * c2 + 8 * k2
+  · ipra_lc 2 * c1 + 8 * k1
 
 /-- `eq:dyadic`, cleared by `F = L!`: for `N = 2^r ≤ m`, `2N + 1 ≤ L`, `m ≤ L`,
 `N Y⁺ ≤ N Y⁻ + (8r + 20) F²` and conversely, i.e. `|6 S_m − 16 A_{2^r}²| ≤ (8r + 20)/2^r`. -/
@@ -92,7 +91,6 @@ theorem dyadic {r m L : PTm n} (hm : Γ ⊢[PRAAx] le (pw two r) m) (hL : Γ ⊢
         num 4 * (fact (Syn.shift L) * fact (Syn.shift L)))) e (by simpa using u)
   simp at u'
   have u1 := natEq (eq_add_of_le (Prf.andE₁ u')); have u2 := natEq (eq_add_of_le (Prf.andE₂ u'))
-  have hh := natEq (eq_add_of_le (harmonic_up (Γ := Γ) r (fact L)))
   refine .andI (le_of_eq_add (d := monus (pw two r * Ym (pw two r) L +
         num 16 * (fact L * H (pw two r) L) + num 4 * (fact L * fact L))
         (pw two r * Yp (pw two r) m L) +
@@ -101,10 +99,8 @@ theorem dyadic {r m L : PTm n} (hm : Γ ⊢[PRAAx] le (pw two r) m) (hL : Γ ⊢
         num 16 * (fact L * H (pw two r) L) + num 4 * (fact L * fact L))
         (pw two r * Ym (pw two r) L) +
       num 8 * (fact L * monus ((two + r) * fact L) (two * T (pw two r) (fact L)))) ?_)
-  · apply deriveNat; ipra_simps
-    linear_combination u1 + 8 * 𝔞 (fact L) * hh
-  · apply deriveNat; ipra_simps
-    linear_combination u2 + 8 * 𝔞 (fact L) * hh
+  · ipra_lc u1 + 8 * 𝔞 (fact L) * natEq (eq_add_of_le (harmonic_up (Γ := Γ) r (fact L)))
+  · ipra_lc u2 + 8 * 𝔞 (fact L) * natEq (eq_add_of_le (harmonic_up (Γ := Γ) r (fact L)))
 
 /-! ## The precision witness (`thm:main`) -/
 
@@ -113,34 +109,25 @@ abbrev cut (k : PTm n) : PTm n := pw two (two * k + num 7)
 
 theorem pw_seven : Γ ⊢[PRAAx] pw (two : PTm n) (num 7) ≐ num 128 := by
   show Γ ⊢[PRAAx] pw two (succ (succ (succ (succ (succ (succ (succ zero))))))) ≐ num 128
-  have e7 := natEq (pw_succ (Γ := Γ) (two : PTm n) (succ (succ (succ (succ (succ (succ zero)))))))
-  have e6 := natEq (pw_succ (Γ := Γ) (two : PTm n) (succ (succ (succ (succ (succ zero))))))
-  have e5 := natEq (pw_succ (Γ := Γ) (two : PTm n) (succ (succ (succ (succ zero)))))
-  have e4 := natEq (pw_succ (Γ := Γ) (two : PTm n) (succ (succ (succ zero))))
-  have e3 := natEq (pw_succ (Γ := Γ) (two : PTm n) (succ (succ zero)))
-  have e2 := natEq (pw_succ (Γ := Γ) (two : PTm n) (succ zero))
-  have e1 := natEq (pw_succ (Γ := Γ) (two : PTm n) zero)
-  have e0 := natEq (pw_zero (Γ := Γ) (two : PTm n))
-  apply deriveNat; ipra_simps
-  linear_combination e7 + 2 * e6 + 4 * e5 + 8 * e4 + 16 * e3 + 32 * e2 + 64 * e1 + 128 * e0
+  ipra_lc natEq (pw_succ (Γ := Γ) (two : PTm n) (succ (succ (succ (succ (succ (succ zero))))))) +
+    2 * natEq (pw_succ (Γ := Γ) (two : PTm n) (succ (succ (succ (succ (succ zero)))))) +
+    4 * natEq (pw_succ (Γ := Γ) (two : PTm n) (succ (succ (succ (succ zero))))) +
+    8 * natEq (pw_succ (Γ := Γ) (two : PTm n) (succ (succ (succ zero)))) +
+    16 * natEq (pw_succ (Γ := Γ) (two : PTm n) (succ (succ zero))) +
+    32 * natEq (pw_succ (Γ := Γ) (two : PTm n) (succ zero)) + 64 * natEq (pw_succ (Γ := Γ) (two : PTm n) zero) +
+    128 * natEq (pw_zero (Γ := Γ) (two : PTm n))
 
 /-- `cut(k) = 128 (2^k)²`. -/
 theorem cut_eq (k : PTm n) : Γ ⊢[PRAAx] cut k ≐ num 128 * (pw two k * pw two k) := by
-  have a := natEq (pw_add (Γ := Γ) two (two * k) (num 7))
-  have b := natEq ((congrAp2 powF (by apply deriveNat; ipra_simps; ring : Γ ⊢[PRAAx] two * k ≐ k + k)
-    (.eqRefl two)).eqTrans (pw_add (Γ := Γ) two k k))
-  have c := natEq (pw_seven (Γ := Γ))
-  apply deriveNat; ipra_simps
-  linear_combination a + 𝔞 (pw two (num 7)) * b + 𝔞 (pw two k) * 𝔞 (pw two k) * c
+  ipra_lc natEq (pw_add (Γ := Γ) two (two * k) (num 7)) +
+    𝔞 (pw two (num 7)) * natEq ((congrAp2 powF (by ipra_ring : Γ ⊢[PRAAx] two * k ≐ k + k) (.eqRefl two)).eqTrans (pw_add (Γ := Γ) two k k)) +
+    𝔞 (pw two k) * 𝔞 (pw two k) * natEq (pw_seven (Γ := Γ))
 
 /-- `2^k (8r + 20) ≤ 2^r` for `r = 2k + 7`, from `eq:growth`. -/
 theorem growth_cut (k : PTm n) :
     Γ ⊢[PRAAx] le (pw two k * (num 8 * (two * k + num 7) + num 20)) (cut k) := by
-  have g := natEq (eq_add_of_le (growth (Γ := Γ) k))
-  have c := natEq (cut_eq (Γ := Γ) k)
   refine le_of_eq_add (d := pw two k * monus (num 128 * pw two k) (num 16 * k + num 76)) ?_
-  apply deriveNat; ipra_simps
-  linear_combination c + 𝔞 (pw two k) * g
+  ipra_lc natEq (cut_eq (Γ := Γ) k) + 𝔞 (pw two k) * natEq (eq_add_of_le (growth (Γ := Γ) k))
 
 /-- `thm:main` (`eq:main`), cleared by `F = L!`: for `n ≥ cut(k)`, `2 cut(k) + 1 ≤ L`, `n ≤ L`, with
 `P_k = 4 A_{cut(k)}` (so `16 A² = P_k²`), `2^k Y⁺ ≤ 2^k Y⁻ + F²` and `2^k Y⁻ ≤ 2^k Y⁺ + F²`, i.e.
@@ -151,7 +138,6 @@ theorem main {k m L : PTm n} (hm : Γ ⊢[PRAAx] le (cut k) m) (hL : Γ ⊢[PRAA
       le (pw two k * Ym (cut k) L) (pw two k * Yp (cut k) m L + fact L * fact L) := by
   have d := dyadic (r := two * k + num 7) hm hL hmL
   have d1 := natEq (eq_add_of_le (Prf.andE₁ d)); have d2 := natEq (eq_add_of_le (Prf.andE₂ d))
-  have g := natEq (eq_add_of_le (growth_cut (Γ := Γ) k))
   have hp := LeanProofs.IPRA.AnalyticNumberTheory.Harmonic.pw2_pos (Γ := Γ) (two * k + num 7)
   refine .andI (mul_le_cancel (d' := pred (cut k)) (le_congr (congrMul hp (.eqRefl _)) (congrMul hp (.eqRefl _))
       (le_of_eq_add (d := pw two k * monus (cut k * Ym (cut k) L + (num 8 * (two * k + num 7) + num 20) *
@@ -161,9 +147,7 @@ theorem main {k m L : PTm n} (hm : Γ ⊢[PRAAx] le (cut k) m) (hL : Γ ⊢[PRAA
       (le_of_eq_add (d := pw two k * monus (cut k * Yp (cut k) m L + (num 8 * (two * k + num 7) + num 20) *
           (fact L * fact L)) (cut k * Ym (cut k) L) +
         monus (cut k) (pw two k * (num 8 * (two * k + num 7) + num 20)) * (fact L * fact L)) ?_)))
-  · apply deriveNat; ipra_simps
-    linear_combination 𝔞 (pw two k) * d1 + 𝔞 (fact L) * 𝔞 (fact L) * g
-  · apply deriveNat; ipra_simps
-    linear_combination 𝔞 (pw two k) * d2 + 𝔞 (fact L) * 𝔞 (fact L) * g
+  · ipra_lc 𝔞 (pw two k) * d1 + 𝔞 (fact L) * 𝔞 (fact L) * natEq (eq_add_of_le (growth_cut (Γ := Γ) k))
+  · ipra_lc 𝔞 (pw two k) * d2 + 𝔞 (fact L) * 𝔞 (fact L) * natEq (eq_add_of_le (growth_cut (Γ := Γ) k))
 
 end LeanProofs.IPRA.Analysis.BaselUniform

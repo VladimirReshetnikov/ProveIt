@@ -1,5 +1,7 @@
 import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.Foundations.FiniteSetExponential
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Coherent points from bounded surjective liftings (`ipra_categorical_methods`, `thm:tower`)
@@ -62,10 +64,7 @@ theorem ex_mono {A B : Fm PTm (k + 1)} (h : Γ ⊢[PRAAx] Fm.ex A)
   exact .exI (var 0) (by simpa only [Fm.shift, Fm.subst_ex, Fm.subst_up_succ_inst,
     List.map_cons] using hAB)
 
-private theorem eqb_congr' {a a' b b' : PTm k} (h₁ : Γ ⊢[PRAAx] a ≐ a')
-    (h₂ : Γ ⊢[PRAAx] b ≐ b') : Γ ⊢[PRAAx] eqb a b ≐ eqb a' b' := by
-  unfold eqb
-  exact congrMonus (.eqRefl _) (congrAdd (congrMonus h₁ h₂) (congrMonus h₂ h₁))
+private alias eqb_congr' := Common.congrEqb
 
 /-! ## Towers -/
 
@@ -271,11 +270,8 @@ theorem two_pos : Γ ⊢[PRAAx] (two : PTm k) ≐ succ (pred two) :=
 /-- `a < 2^n` gives `a < 2^{n+1}`. -/
 theorem lt_pw_succ {a n : PTm k} (h : Γ ⊢[PRAAx] lt a (pw two n)) :
     Γ ⊢[PRAAx] lt a (pw two (succ n)) := by
-  have e₁ := natEq (eq_add_of_le h)
-  have e₂ := natEq (pw_succ (Γ := Γ) two n)
   refine le_of_eq_add (d := pw two n + monus (pw two n) (succ a)) ?_
-  apply deriveNat; ipra_simps
-  linear_combination e₂ + e₁
+  ipra_lc natEq (pw_succ (Γ := Γ) two n) + natEq (eq_add_of_le h)
 
 /-- The lifting contract of the binary tree: a word of length `n` is its own lift. -/
 theorem binary_lifting : binary.Lifting := by

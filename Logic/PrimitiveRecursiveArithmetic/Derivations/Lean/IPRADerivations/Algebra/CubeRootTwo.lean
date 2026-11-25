@@ -1,5 +1,6 @@
 import IPRADerivations.Core.BoundedSums
 import IPRADerivations.Core.Signum
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # `X³ − 2` has no rational root (`three_impossibilities_ipra`)
@@ -53,7 +54,7 @@ theorem double_cancel {x y : PTm n} (h : Γ ⊢[PRAAx] two * x ≐ two * y) : Γ
     -- 2v = 2u + 2d, so 2d = 0 and d = 0.
     have e : Δ ⊢[PRAAx] two * u + zero ≐ two * u + (monus v u + monus v u) := by
       refine withEq h fun e₁ => withEq w fun e₂ => ?_
-      apply deriveNat; ipra_simps; linear_combination e₁ + 2 * e₂
+      ipra_lc e₁ + 2 * e₂
     have hd := add_eq_zero_left (add_left_cancel e).eqSymm
     exact ((add_zero u).eqSymm.eqTrans (congrAdd (.eqRefl u) hd).eqSymm).eqTrans w.eqSymm
   refine .orE (le_total x y) (key h.wk Prf.hyp0) ?_
@@ -73,7 +74,7 @@ theorem cube_bound {a b : PTm n} (h : Γ ⊢[PRAAx] cube a ≐ two * cube b) :
   have hc := cube_le_cube (Prf.hyp0 : (lt (two * b) a :: Γ) ⊢[PRAAx] le (succ (two * b)) a)
   refine not_succ_le_self (two * cube b) _ (le_trans (le_of_eq_add
     (d := num 6 * cube b + num 12 * (b * b) + num 6 * b) ?_) (le_congr (.eqRefl _) h.wk hc))
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem lt_succ_of_le {i M : PTm n} (h : Γ ⊢[PRAAx] le i M) : Γ ⊢[PRAAx] lt i (succ M) :=
   (succ_monus_succ i M).eqTrans h
@@ -165,7 +166,7 @@ theorem bad_zero : Λ ⊢[PRAAx] inst2 badBody (var 0) (var 1) ≐ zero := by
       (cube (var 0) ≐ two * cube (var 1)) :: Λ) ⊢[PRAAx] lt (half (var 1)) (var 1) := by
     refine le_of_eq_add (d := pred (half (var 1))) ?_
     refine withEq Prf.hyp0 fun e₁ => withEq Prf.hyp1 fun e₂ => ?_
-    apply deriveNat; ipra_simps; linear_combination e₂ + e₁
+    ipra_lc e₂ + e₁
   have hinner := sum_zero_elim outerBody hT.wk.wk.wk hg
   rw [inst2_outer] at hinner
   have hbad := sum_zero_elim badBody hinner (lt_succ_of_le (cube_bound hhg.wk))

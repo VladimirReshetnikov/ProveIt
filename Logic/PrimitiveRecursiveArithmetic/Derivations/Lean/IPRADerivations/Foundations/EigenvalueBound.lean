@@ -2,6 +2,7 @@ import IPRADerivations.Core.Gcd
 import IPRADerivations.Core.SumOrder
 import IPRADerivations.Core.SumReflect
 import IPRADerivations.Core.Pairing
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The eigenvalue bound in every dimension (`ipra_presentations_to_witnesses`, `lem:integer-eigenvalue`)
@@ -61,12 +62,10 @@ theorem le_add_ad (x y : PTm k) : Γ ⊢[PRAAx] le x (y + ad x y) := by
   refine .orE (lt_or_le x y) ?_ ?_
   · have e := natEq (eq_add_of_le (le_of_lt (Prf.hyp0 (Γ := Γ) (φ := lt x y))))
     refine le_of_eq_add (d := monus y x + monus x y + monus y x) ?_
-    apply deriveNat; ipra_simps
-    linear_combination e
+    ipra_lc e
   · have e := natEq (eq_add_of_le (Prf.hyp0 (Γ := Γ) (φ := le y x)))
     refine le_of_eq_add (d := monus y x) ?_
-    apply deriveNat; ipra_simps
-    linear_combination -e
+    ipra_lc -e
 
 /-- `|x - y| ≤ z` from `x ≤ y + z` and `y ≤ x + z`. -/
 theorem ad_le_of {x y z : PTm k} (h₁ : Γ ⊢[PRAAx] le x (y + z))
@@ -74,28 +73,24 @@ theorem ad_le_of {x y z : PTm k} (h₁ : Γ ⊢[PRAAx] le x (y + z))
   refine .orE (lt_or_le x y) ?_ ?_
   · -- `x ≤ y`: `|x - y| = y ∸ x`
     have hle : (lt x y :: Γ) ⊢[PRAAx] le x y := le_of_lt Prf.hyp0
-    have s₂ := natEq (eq_add_of_le (h₂.wk (ψ := lt x y)))
     have e := natEq (eq_add_of_le hle)
     have z₀ := natEq hle
     refine le_of_eq_add (d := monus (x + z) y) ?_
-    apply deriveNat; ipra_simps
-    linear_combination s₂ + e - z₀
+    ipra_lc natEq (eq_add_of_le (h₂.wk (ψ := lt x y))) + e - z₀
   · -- `y ≤ x`: `|x - y| = x ∸ y`
     have hle : (le y x :: Γ) ⊢[PRAAx] le y x := Prf.hyp0
-    have s₁ := natEq (eq_add_of_le (h₁.wk (ψ := le y x)))
     have e := natEq (eq_add_of_le hle)
     have z₀ := natEq hle
     refine le_of_eq_add (d := monus (y + z) x) ?_
-    apply deriveNat; ipra_simps
-    linear_combination s₁ + e - z₀
+    ipra_lc natEq (eq_add_of_le (h₁.wk (ψ := le y x))) + e - z₀
 
 /-- `|(a + c) - (b + d)| ≤ |a - b| + |c - d|`. -/
 theorem ad_triangle (a b c d : PTm k) :
     Γ ⊢[PRAAx] le (ad (a + c) (b + d)) (ad a b + ad c d) := by
   refine ad_le_of ?_ ?_
-  · exact le_congr (.eqRefl _) (by apply deriveNat; ipra_simps; ring)
+  · exact le_congr (.eqRefl _) (by ipra_ring)
       (add_le_add₂ (le_add_ad a b) (le_add_ad c d))
-  · exact le_congr (.eqRefl _) (by apply deriveNat; ipra_simps; ring)
+  · exact le_congr (.eqRefl _) (by ipra_ring)
       (add_le_add₂ (le_add_ad b a) (le_add_ad d c))
 
 /-! ## The triangle inequality for a signed finite sum -/
@@ -132,14 +127,12 @@ private theorem tri₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] triF p n := by
   refine ind _ trivial ?_ ?_
   · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_monus, Syn.subst_var,
       Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have e₀ := natEq (sum_zero (Γ := ([] : List (Fm PTm 1))) (adB p n) (var 0))
     have e₁ := natEq ((congrMonus (sum_zero (Γ := ([] : List (Fm PTm 1))) p (var 0))
       (sum_zero n (var 0))).eqTrans (le_refl zero))
     have e₂ := natEq ((congrMonus (sum_zero (Γ := ([] : List (Fm PTm 1))) n (var 0))
       (sum_zero p (var 0))).eqTrans (le_refl zero))
     refine le_of_eq_add (d := zero) ?_
-    apply deriveNat; ipra_simps
-    linear_combination e₀ - e₁ - e₂
+    ipra_lc natEq (sum_zero (Γ := ([] : List (Fm PTm 1))) (adB p n) (var 0)) - e₁ - e₂
   · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_monus, Syn.subst_var,
       Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
     exact tri_step p n Prf.hyp0
@@ -183,22 +176,15 @@ private abbrev scaleF : Fm PTm 3 :=
 
 private theorem scale₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] scaleF α := by
   refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, subst_pairT, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
-      Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have e₁ := natEq (sum_zero (Γ := ([] : List (Fm PTm 2))) (mB α) (pairT (var 0) (var 1)))
-    have e₂ := natEq (sum_zero (Γ := ([] : List (Fm PTm 2))) α (var 1))
-    apply deriveNat; ipra_simps
-    linear_combination e₁ - 𝔞 (var 0 : PTm 2) * e₂
+  · ipra_lc [Fm.subst_eq, subst_ap2, subst_pairT, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] natEq (sum_zero (Γ := ([] : List (Fm PTm 2))) (mB α) (pairT (var 0) (var 1))) -
+      𝔞 (var 0 : PTm 2) * natEq (sum_zero (Γ := ([] : List (Fm PTm 2))) α (var 1))
   · simp only [Fm.subst_eq, subst_ap2, subst_pairT, PTm.subst_mul, Syn.subst_var, Syn.repl_zero,
       repl_one, repl_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
     have ih : [scaleF α] ⊢[PRAAx] ap2 (sumF (mB α)) (var 0) (pairT (var 1) (var 2)) ≐
         var 1 * ap2 (sumF α) (var 0) (var 2) := Prf.hyp0
-    have i₀ := natEq ih
-    have s₁ := natEq (sum_succ' (Γ := [scaleF α]) (mB α) (var 0) (pairT (var 1) (var 2)))
-    have s₂ := natEq (sum_succ' (Γ := [scaleF α]) α (var 0) (var 2))
-    have m := natEq (mB_at (Γ := [scaleF α]) α (var 0) (var 1) (var 2))
-    apply deriveNat; ipra_simps
-    linear_combination s₁ + i₀ + m - 𝔞 (var 1 : PTm 3) * s₂
+    ipra_lc natEq (sum_succ' (Γ := [scaleF α]) (mB α) (var 0) (pairT (var 1) (var 2))) + natEq ih +
+      natEq (mB_at (Γ := [scaleF α]) α (var 0) (var 1) (var 2)) -
+      𝔞 (var 1 : PTm 3) * natEq (sum_succ' (Γ := [scaleF α]) α (var 0) (var 2))
 
 /-- `∑_{i<D} W α_i = W ∑_{i<D} α_i`. -/
 theorem sum_scale (D W x : PTm k) :
@@ -207,10 +193,8 @@ theorem sum_scale (D W x : PTm k) :
   simpa using i
 
 theorem mul_le_right {a b c : PTm k} (h : Γ ⊢[PRAAx] le a b) : Γ ⊢[PRAAx] le (a * c) (b * c) := by
-  have e := natEq (eq_add_of_le h)
   refine le_of_eq_add (d := monus b a * c) ?_
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 c * e
+  ipra_lc 𝔞 c * natEq (eq_add_of_le h)
 
 /-- `∑_{i<D} ω_i α_i ≤ W ∑_{i<D} α_i` when `ω_i ≤ W` for `i < D`. -/
 theorem major {D W x : PTm k}

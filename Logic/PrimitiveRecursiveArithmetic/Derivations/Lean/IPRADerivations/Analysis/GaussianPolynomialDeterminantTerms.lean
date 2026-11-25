@@ -3,6 +3,7 @@ import IPRADerivations.Foundations.GuardedTotalization
 import IPRADerivations.Analysis.GaussianRationalPolynomialProduct
 import IPRADerivations.Analysis.GaussianRationalMonicReduction
 import IPRADerivations.Analysis.GaussianRationalCoefficientScaling
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual polynomial products for numeric determinant words
@@ -102,8 +103,7 @@ theorem factor_congr {M M' m m' w w' j j' : PTm n}
     (hM : Γ ⊢[PRAAx] M ≐ M') (hm : Γ ⊢[PRAAx] m ≐ m')
     (hw : Γ ⊢[PRAAx] w ≐ w') (hj : Γ ⊢[PRAAx] j ≐ j') : Γ ⊢[PRAAx]
     factor M m w j ≐ factor M' m' w' j' := by
-  simpa using Prf.eqCongr (Γ := Γ) (factor (var 0) (var 1) (var 2) (var 3) : PTm 4)
-    (σ := ![M,m,w,j]) (σ' := ![M',m',w',j']) (fun i => by fin_cases i; exact hM; exact hm; exact hw; exact hj)
+  ipra_congr (factor (var 0) (var 1) (var 2) (var 3) : PTm 4) with [hM, hm, hw, hj]
 theorem factor_body_at (M m L w j : PTm n) : Γ ⊢[PRAAx]
     inst2 factorBody j (data M m L w) ≐ factor M m w j := by
   simp only [factorBody,inst2,subst_factor,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
@@ -119,14 +119,12 @@ theorem product_congr {P P' Q Q' N N' L L' : PTm n}
     (hP : Γ ⊢[PRAAx] P ≐ P') (hQ : Γ ⊢[PRAAx] Q ≐ Q')
     (hN : Γ ⊢[PRAAx] N ≐ N') (hL : Γ ⊢[PRAAx] L ≐ L') : Γ ⊢[PRAAx]
     GaussianRationalPolynomialProduct.product P Q N L ≐ GaussianRationalPolynomialProduct.product P' Q' N' L' := by
-  simpa using Prf.eqCongr (Γ := Γ) (GaussianRationalPolynomialProduct.product (var 0) (var 1) (var 2) (var 3) : PTm 4)
-    (σ := ![P,Q,N,L]) (σ' := ![P',Q',N',L']) (fun i => by fin_cases i; exact hP; exact hQ; exact hN; exact hL)
+  ipra_congr (GaussianRationalPolynomialProduct.product (var 0) (var 1) (var 2) (var 3) : PTm 4) with [hP, hQ, hN, hL]
 theorem stage_congr {M M' m m' L L' w w' j j' : PTm n}
     (hM : Γ ⊢[PRAAx] M ≐ M') (hm : Γ ⊢[PRAAx] m ≐ m') (hL : Γ ⊢[PRAAx] L ≐ L')
     (hw : Γ ⊢[PRAAx] w ≐ w') (hj : Γ ⊢[PRAAx] j ≐ j') : Γ ⊢[PRAAx]
     stage M m L w j ≐ stage M' m' L' w' j' := by
-  simpa using Prf.eqCongr (Γ := Γ) (stage (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5)
-    (σ := ![M,m,L,w,j]) (σ' := ![M',m',L',w',j']) (fun i => by fin_cases i; exact hM; exact hm; exact hL; exact hw; exact hj)
+  ipra_congr (stage (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) with [hM, hm, hL, hw, hj]
 theorem stage_zero (M m L w : PTm n) : Γ ⊢[PRAAx] stage M m L w zero ≐ singleton qone := by
   simpa only [stage,stageF,GaussianRationalMonicReduction.subst_singleton,GaussianRationalSyntheticDivision.subst_qone] using
     rec2_zero (Γ := Γ) (singleton qone : PTm 1) stepBody (data M m L w)

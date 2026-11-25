@@ -2,6 +2,7 @@ import IPRADerivations.Analysis.GaussianRationalReconstruction
 import IPRADerivations.Analysis.GaussianProductStability
 import IPRADerivations.Analysis.RationalProductWitness
 import IPRADerivations.Analysis.GaussianRationalCover
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual original-point witnesses from the rational product program
@@ -87,17 +88,11 @@ def denominatorProduct (T N z k : PTm n) : PTm n := ap2 (prodF denominatorBody) 
       (Syn.subst σ z) (Syn.subst σ k) := by simp only [denominatorProduct,subst_ap2,subst_data]
 
 theorem normNumerator_congr {q r : PTm n} (h : Γ ⊢[PRAAx] q ≐ r) : Γ ⊢[PRAAx] normNumerator q ≐ normNumerator r := by
-  simpa only [subst_normNumerator,Syn.subst_var,Matrix.cons_val_zero] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (normNumerator (var 0) : PTm 1) (σ := ![q]) (σ' := ![r])
-      (fun i => by fin_cases i; exact h)
+  ipra_congr (normNumerator (var 0) : PTm 1) with [h]
 theorem normDenominator_congr {q r : PTm n} (h : Γ ⊢[PRAAx] q ≐ r) : Γ ⊢[PRAAx] normDenominator q ≐ normDenominator r := by
-  simpa only [subst_normDenominator,Syn.subst_var,Matrix.cons_val_zero] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (normDenominator (var 0) : PTm 1) (σ := ![q]) (σ' := ![r])
-      (fun i => by fin_cases i; exact h)
+  ipra_congr (normDenominator (var 0) : PTm 1) with [h]
 theorem qnormSq_congr {q r : PTm n} (h : Γ ⊢[PRAAx] q ≐ r) : Γ ⊢[PRAAx] qnormSq q ≐ qnormSq r := by
-  simpa only [GaussianRationalMetric.subst_qnormSq,Syn.subst_var,Matrix.cons_val_zero] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (qnormSq (var 0) : PTm 1) (σ := ![q]) (σ' := ![r])
-      (fun i => by fin_cases i; exact h)
+  ipra_congr (qnormSq (var 0) : PTm 1) with [h]
 
 theorem factor_at (T N z i : PTm n) : Γ ⊢[PRAAx] inst2 factorBody i (data T N z) ≐ factor T N z i := by
   simp only [factorBody,inst2,GaussianRationalMetric.subst_qsub,subst_sndT,subst_fstT,

@@ -3,7 +3,7 @@ import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.Combinatorics.CoefficientLogConcave
 import IPRADerivations.Probability.Variance
 import IPRADerivations.Core.Parity
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The sign count of Cauchy's rigidity argument

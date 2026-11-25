@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianMatrixNames
 import IPRADerivations.Analysis.GaussianCharacteristicPrecisionShift
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Regular names for the actual characteristic coefficients
@@ -49,8 +50,7 @@ theorem coefficient_congr (a : PR 4) {N N' k k' s s' x x' : PTm n}
     (hN : Γ ⊢[PRAAx] N ≐ N') (hk : Γ ⊢[PRAAx] k ≐ k')
     (hs : Γ ⊢[PRAAx] s ≐ s') (hx : Γ ⊢[PRAAx] x ≐ x') :
     Γ ⊢[PRAAx] coefficient a N k s x ≐ coefficient a N' k' s' x' := by
-  simpa using Prf.eqCongr (Γ := Γ) (coefficient a (var 0) (var 1) (var 2) (var 3) : PTm 4)
-    (σ := ![N,k,s,x]) (σ' := ![N',k',s',x']) (fun i => by fin_cases i; exact hN; exact hk; exact hs; exact hx)
+  ipra_congr (coefficient a (var 0) (var 1) (var 2) (var 3) : PTm 4) with [hN, hk, hs, hx]
 
 theorem coefficient_at (a : PR 4) (N k s x : PTm n) : Γ ⊢[PRAAx]
     ap3 (coefficientF a) k s (pairT N x) ≐ coefficient a N k s x := by

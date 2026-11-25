@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.IntervalCover
 import IPRADerivations.Foundations.AuxiliaryEnvelope
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Localization of an interval cover (`hurwitz_khinchin_ipra`, (K2))
@@ -35,8 +36,7 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
-theorem congrSg' {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) : Γ ⊢[PRAAx] sg a ≐ sg b :=
-  congrMonus (.eqRefl _) (congrMonus (.eqRefl _) h)
+alias congrSg' := Common.congrSg
 
 /-- `c < lo` gives `[lo ≤ c][c < hi] = 0`. -/
 theorem cnt_below {lo hi c : PTm n} (h : Γ ⊢[PRAAx] lt c lo) : Γ ⊢[PRAAx] cnt lo hi c ≐ zero := by

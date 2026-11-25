@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.SumReindex
 import IPRADerivations.AnalyticNumberTheory.Totient
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The floor inequality of the super-Catalan numbers (`catalan_numbers_ipra_2026-11-16`, (7.15))
@@ -39,8 +40,7 @@ variable {k : ℕ} {Γ : List (Fm PTm k)}
 
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
-theorem succ_pos₁ (a' : PTm k) : Γ ⊢[PRAAx] succ a' ≐ succ (pred (succ a')) :=
-  congrSucc (pred_succ a').eqSymm
+alias succ_pos₁ := Common.succ_pos
 
 /-- `2 ⌊m/a⌋ ≤ ⌊2m/a⌋`. -/
 theorem two_quo_le (m a' : PTm k) :

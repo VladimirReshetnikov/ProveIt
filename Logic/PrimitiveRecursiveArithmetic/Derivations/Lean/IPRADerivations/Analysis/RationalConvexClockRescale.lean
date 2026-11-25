@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.RationalConvexEndpointBudget
 import IPRADerivations.Analysis.RationalNonnegativePowers
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The two-endpoint clock is independent of a common denominator
@@ -62,9 +63,7 @@ theorem margin_rescale (D P r : PTm n) : Γ ⊢[PRAAx] margin (D*r) (P*r) ≐ ma
 
 theorem ceiling_congr {a b c d : PTm n} (ha : Γ ⊢[PRAAx] a ≐ c) (hb : Γ ⊢[PRAAx] b ≐ d) :
     Γ ⊢[PRAAx] ceiling a b ≐ ceiling c d := by
-  simpa only [subst_ceiling,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (ceiling (var 0) (var 1) : PTm 2) (σ := ![a,b]) (σ' := ![c,d])
-      (fun i => by fin_cases i; exact ha; exact hb)
+  ipra_congr (ceiling (var 0) (var 1) : PTm 2) with [ha, hb]
 
 theorem ceiling_rescale (a b r : PTm n) (hb : Γ ⊢[PRAAx] le one b) (hr : Γ ⊢[PRAAx] le one r) :
     Γ ⊢[PRAAx] ceiling (a*r) (b*r) ≐ ceiling a b := by
@@ -83,9 +82,7 @@ theorem budget_rescale (D P m r : PTm n) (hD : Γ ⊢[PRAAx] le one D) (hP : Γ 
 
 theorem coarse_congr {a b c d : PTm n} (ha : Γ ⊢[PRAAx] a ≐ c) (hb : Γ ⊢[PRAAx] b ≐ d) :
     Γ ⊢[PRAAx] coarseBudget a b ≐ coarseBudget c d := by
-  simpa only [RationalConvexEndpointBudget.subst_coarseBudget,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (coarseBudget (var 0) (var 1) : PTm 2) (σ := ![a,b]) (σ' := ![c,d])
-      (fun i => by fin_cases i; exact ha; exact hb)
+  ipra_congr (coarseBudget (var 0) (var 1) : PTm 2) with [ha, hb]
 
 theorem endpoint_budget_rescale (A : PR 3) (D P Q r x : PTm n)
     (hD : Γ ⊢[PRAAx] le one D) (hr : Γ ⊢[PRAAx] le one r) :

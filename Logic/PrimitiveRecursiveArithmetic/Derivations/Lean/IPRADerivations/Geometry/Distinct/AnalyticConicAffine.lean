@@ -1,7 +1,7 @@
 import IPRADerivations.Core.MultiSums
 import IPRADerivations.Core.Pairing
 import IPRADerivations.Geometry.Distinct.AnalyticGeometryPolynomialCertificates
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Actual coded affine pullback of a binary conic

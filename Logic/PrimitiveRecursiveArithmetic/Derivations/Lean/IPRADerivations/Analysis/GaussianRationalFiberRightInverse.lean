@@ -2,6 +2,7 @@ import IPRADerivations.Analysis.GaussianRationalLagrangeCardinals
 import IPRADerivations.Analysis.GaussianRationalFubini
 import IPRADerivations.Analysis.GaussianRationalMatrixFiniteSums
 import IPRADerivations.Analysis.GaussianInverseBinomialRows
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual full right inverse of the completed numerical fiber power table
@@ -225,8 +226,7 @@ def zColumnBody : PTm 2 := cell (Z (fstT (var 1)) (fstT (sndT (var 1)))) (var 0)
     Syn.subst σ (shiftPowerTerm R r t i) = shiftPowerTerm (Syn.subst σ R) (Syn.subst σ r) (Syn.subst σ t) (Syn.subst σ i) := by simp [shiftPowerTerm]
 theorem NC_congr {R S r r' j j' : PTm n} (hR : Γ ⊢[PRAAx] R ≐ S) (hr : Γ ⊢[PRAAx] r ≐ r') (hj : Γ ⊢[PRAAx] j ≐ j') : Γ ⊢[PRAAx]
     NC R r j ≐ NC S r' j' := by
-  simpa using Prf.eqCongr (Γ := Γ) (NC (var 0) (var 1) (var 2) : PTm 3)
-    (σ := ![R,r,j]) (σ' := ![S,r',j']) (fun i => by fin_cases i; exact hR; exact hr; exact hj)
+  ipra_congr (NC (var 0) (var 1) (var 2) : PTm 3) with [hR, hr, hj]
 theorem power_body_at (R j i : PTm n) : Γ ⊢[PRAAx] inst2 powerBody i (powerData R j) ≐ power (entry R i) j := by
   simp only [powerBody,inst2,GaussianRationalReciprocal.subst_power,subst_entry,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
   exact congrAp2 GaussianRationalReciprocal.powerF (snd_pair _ _) (entry_congr (fst_pair _ _) (.eqRefl _))
@@ -245,9 +245,9 @@ theorem z_column_body_at (R m j k : PTm n) : Γ ⊢[PRAAx] inst2 zColumnBody k (
   have e := snd_pair (Γ := Γ) R (pairT m j)
   apply entry_congr
   · apply entry_congr
-    · simpa using Prf.eqCongr (Γ := Γ) (Z (var 0) (var 1) : PTm 2)
-        (σ := ![fstT (data R m j),fstT (sndT (data R m j))]) (σ' := ![R,m])
-        (fun i => by fin_cases i; exact fst_pair _ _; exact (congrFst e).eqTrans (fst_pair _ _))
+    · ipra_congr (Z (var 0) (var 1) : PTm 2) with
+        [(show _ ⊢[PRAAx] fstT (data R m j) ≐ R from fst_pair _ _),
+          (show _ ⊢[PRAAx] fstT (sndT (data R m j)) ≐ m from (congrFst e).eqTrans (fst_pair _ _))]
     · exact .eqRefl _
   · exact (congrSnd e).eqTrans (snd_pair _ _)
 

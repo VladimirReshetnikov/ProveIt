@@ -2,7 +2,8 @@ import IPRADerivations.Probability.DyadicBlock
 import IPRADerivations.Probability.DyadicUnion
 import IPRADerivations.Geometry.HypercubeSplit
 import IPRADerivations.AnalyticNumberTheory.Valuation
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The dyadic eventual-uniform bound (dyadic strong law), the block parameters
@@ -110,10 +111,7 @@ theorem tt_lift (w0 : PTm 2) (H M r e x : PTm n) :
 /-- `min(2^{r+1}, H)`. -/
 abbrev Nm (r H : PTm n) : PTm n := monus (pw two (succ r)) (monus (pw two (succ r)) H)
 
-theorem monus_le_self (a b : PTm n) : Γ ⊢[PRAAx] le (monus a b) a := by
-  refine .orE (le_total b a) ?_ ?_
-  · exact le_of_eq_add (d := b) ((eq_add_of_le Prf.hyp0).eqTrans (add_comm _ _))
-  · exact le_congr (Prf.hyp0 : (le a b :: Γ) ⊢[PRAAx] monus a b ≐ zero).eqSymm (.eqRefl _) (zero_le a)
+alias monus_le_self := Common.monus_le_self
 
 theorem Nm_le_pw (r H : PTm n) : Γ ⊢[PRAAx] le (Nm r H) (pw two (succ r)) := monus_le_self _ _
 

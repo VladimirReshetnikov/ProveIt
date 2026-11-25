@@ -3,7 +3,8 @@ import IPRADerivations.Foundations.ChineseRemainder
 import IPRADerivations.Combinatorics.LegendreDigits
 import IPRADerivations.Combinatorics.BinomialIdentities
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Two pairs of equal norm give a Pell solution
@@ -71,12 +72,7 @@ theorem le_of_mul {a N x : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) (e : 
   have x1 := natEq e; have x2 := natEq ha
   ipra_le 𝔞 (pred a) * 𝔞 x with x1 + 𝔞 x * x2
 
-theorem monus_le' (u v : PTm n) : Γ ⊢[PRAAx] le (monus u v) u := by
-  refine .orE (lt_or_le u v) ?_ ?_
-  · have h : (lt u v :: Γ) ⊢[PRAAx] monus u v ≐ zero := le_trans (le_succ_self _) Prf.hyp0
-    exact le_congr h.eqSymm (.eqRefl _) (zero_le u)
-  · have e := natEq (eq_add_of_le (Prf.hyp0 : (le v u :: Γ) ⊢[PRAAx] le v u))
-    ipra_le 𝔞 v with e
+alias monus_le' := Common.monus_le_self
 
 /-- `q_i < q_j` and `a ≥ 1` contradict `a (q_j² − q_i²) = (u + w)(u − w)` with `u = w`. -/
 theorem q_absurd {a qi qj W : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) (hlt : Γ ⊢[PRAAx] lt qi qj)

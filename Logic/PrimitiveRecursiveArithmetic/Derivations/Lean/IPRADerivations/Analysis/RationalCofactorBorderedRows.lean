@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.RationalMinorOrderTransport
 import IPRADerivations.Analysis.GaussianScalarDeterminantLastRowTransport
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual bordered rows at the selected maximum minor
@@ -73,9 +74,7 @@ theorem cleared_cell_congr (P d : PTm n) {r s j k : PTm n} (hr : Γ ⊢[PRAAx] r
 theorem cleared_cell_canonical (P d r j : PTm n) : Γ ⊢[PRAAx] GaussianRationalHorner.canonical (clearedCell P d r j) := embed_canonical _
 theorem value_congr {P Q d e i k r s j l : PTm n} (hP : Γ ⊢[PRAAx] P ≐ Q) (hd : Γ ⊢[PRAAx] d ≐ e)
     (hi : Γ ⊢[PRAAx] i ≐ k) (hr : Γ ⊢[PRAAx] r ≐ s) (hj : Γ ⊢[PRAAx] j ≐ l) : Γ ⊢[PRAAx] value P d i r j ≐ value Q e k s l := by
-  simpa only [subst_value,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_three,Matrix.cons_val_four,
-    Matrix.head_cons,Matrix.tail_cons] using Prf.eqCongr (Γ := Γ) (value (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5)
-      (σ := ![P,d,i,r,j]) (σ' := ![Q,e,k,s,l]) (fun t => by fin_cases t; exact hP; exact hd; exact hi; exact hr; exact hj)
+  ipra_congr (value (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) with [hP, hd, hi, hr, hj]
 theorem body_at (P d i r j : PTm n) : Γ ⊢[PRAAx] Syn.subst ![r,j,data P d i] body ≐ value P d i r j := by
   simp only [body,subst_value,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two]
   exact value_congr (fst_pair _ _) ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))

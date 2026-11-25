@@ -1,6 +1,8 @@
 import IPRADerivations.Combinatorics.StirlingInclusion
 import IPRADerivations.Combinatorics.FallingFactorial
 import IPRADerivations.Probability.Independence
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The finite Dobinski formula
@@ -47,8 +49,7 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
-theorem monus_of_eq {x y d : PTm n} (h : Γ ⊢[PRAAx] x ≐ y + d) : Γ ⊢[PRAAx] monus x y ≐ d :=
-  (congrMonus h (.eqRefl _)).eqTrans ((congrMonus (add_comm _ _) (.eqRefl _)).eqTrans (add_monus _ _))
+alias monus_of_eq := Common.monus_of_eq
 
 /-- `(n)_{n−k} C(k, i) = C(n, i) (n − i)_{n−k}` for `k ≤ n` (guarded binomials, any `i`). -/
 theorem ff_gb {N k i : PTm n} (hk : Γ ⊢[PRAAx] le k N) :
@@ -87,9 +88,8 @@ theorem ff_gb {N k i : PTm n} (hk : Γ ⊢[PRAAx] le k N) :
     have b1 := natEq (binom_eq hik); have b2 := natEq (binom_eq hiN)
     have x1 := natEq f1; have x2 := natEq f2; have y1 := natEq g1; have y2 := natEq g2
     refine mul_cancel (D := bden k i) (Binomial.bden_pos _ _) ?_
-    apply deriveNat; ipra_simps
-    linear_combination 𝔞(ff N (monus N k)) * 𝔞(binom k i) * 𝔞(fact i) * 𝔞(fact (monus k i)) * y1 -
-      𝔞(ff N (monus N k)) * b1 + x1 + b2 - 𝔞(binom N i) * 𝔞(fact i) * x2 -
+    ipra_lc 𝔞(ff N (monus N k)) * 𝔞(binom k i) * 𝔞(fact i) * 𝔞(fact (monus k i)) * y1 - 𝔞(ff N (monus N k)) * b1 +
+      x1 + b2 - 𝔞(binom N i) * 𝔞(fact i) * x2 -
       𝔞(binom N i) * 𝔞(fact i) * 𝔞(fact (monus k i)) * 𝔞(ff (monus N i) (monus N k)) * y2
 
 /-! ## The double sum -/
@@ -116,17 +116,13 @@ theorem pt_e {N K i : PTm n} (hk : Γ ⊢[PRAAx] le K N) :
     Γ ⊢[PRAAx] inst3 aP K i N ≐ ff N (monus N K) * inst2 StirlingInclusion.eB i (pairT N K) := by
   rw [aP_eq]
   refine .eqTrans ?_ (congrMul (.eqRefl _) (eB_at _ _ _)).eqSymm
-  have a := natEq (ff_gb (i := i) hk)
-  apply deriveNat; ipra_simps
-  linear_combination -(𝔞(ev (monus K i)) * 𝔞(pw i N)) * a
+  ipra_lc -(𝔞(ev (monus K i)) * 𝔞(pw i N)) * natEq (ff_gb (i := i) hk)
 
 theorem pt_o {N K i : PTm n} (hk : Γ ⊢[PRAAx] le K N) :
     Γ ⊢[PRAAx] inst3 aM K i N ≐ ff N (monus N K) * inst2 StirlingInclusion.oB i (pairT N K) := by
   rw [aM_eq]
   refine .eqTrans ?_ (congrMul (.eqRefl _) (StirlingInclusion.oB_at _ _ _)).eqSymm
-  have a := natEq (ff_gb (i := i) hk)
-  apply deriveNat; ipra_simps
-  linear_combination -(𝔞(od (monus K i)) * 𝔞(pw i N)) * a
+  ipra_lc -(𝔞(od (monus K i)) * 𝔞(pw i N)) * natEq (ff_gb (i := i) hk)
 
 /-- Above `k` the double-sum terms vanish. -/
 theorem tail_zero (a : PTm 3) (ha : ∀ {m : ℕ} {Δ : List (Fm PTm m)} {K i N : PTm m}, (Δ ⊢[PRAAx] le K N) →
@@ -207,7 +203,7 @@ theorem ff_below {N i k : PTm n} (hi : Γ ⊢[PRAAx] le i N) (hk : Γ ⊢[PRAAx]
   exact ff_zero_above (le_of_eq_add (d := monus i (succ k)) m)
 
 theorem reindex_split {i N : PTm n} (hi : Γ ⊢[PRAAx] le i N) : Γ ⊢[PRAAx] succ N ≐ i + succ (monus N i) := by
-  have e := natEq (eq_add_of_le hi); apply deriveNat; ipra_simps; linear_combination e
+  ipra_lc natEq (eq_add_of_le hi)
 
 theorem reindex_e {i N : PTm n} (hi : Γ ⊢[PRAAx] le i N) :
     Γ ⊢[PRAAx] ap2 (sumF rPB) (succ N) (pairT i N) ≐ dP (monus N i) := by
@@ -245,7 +241,6 @@ theorem reindex_o {i N : PTm n} (hi : Γ ⊢[PRAAx] le i N) :
       (congrMonus (add_comm _ _) (.eqRefl _)).eqTrans (add_monus _ _)
     exact congrMul (congrOd m1) (congrFF (.eqRefl _) (monus_monus_add _ _ _).eqSymm)
 
-
 /-! ## Column sums and the formula -/
 
 theorem colsum_e {i N : PTm n} (hi : Γ ⊢[PRAAx] le i N) :
@@ -257,7 +252,7 @@ theorem colsum_e {i N : PTm n} (hi : Γ ⊢[PRAAx] le i N) :
   refine (col_at aP _ _ _).eqTrans ?_
   rw [aP_eq]
   refine .eqTrans ?_ (congrMul (.eqRefl _) (rPB_at _ _ _)).eqSymm
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem colsum_o {i N : PTm n} (hi : Γ ⊢[PRAAx] le i N) :
     Γ ⊢[PRAAx] ap2 (sumF (colB aM)) (succ N) (pairT i N) ≐ (gb N i * pw i N) * dM (monus N i) := by
@@ -268,7 +263,7 @@ theorem colsum_o {i N : PTm n} (hi : Γ ⊢[PRAAx] le i N) :
   refine (col_at aM _ _ _).eqTrans ?_
   rw [aM_eq]
   refine .eqTrans ?_ (congrMul (.eqRefl _) (rMB_at _ _ _)).eqSymm
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- `C(n, i) iⁿ d⁺(n − i)`, over `0 = i`, `1 = n`. -/
 abbrev RPB : PTm 2 := (gb (var 1) (var 0) * pw (var 0) (var 1)) *
@@ -287,8 +282,7 @@ abbrev mkB : PTm 2 := ff (var 1) (monus (var 1) (var 0)) *
   ap2 (sumF StirlingInclusion.oB) (succ (var 0)) (pairT (var 1) (var 0))
 abbrev hkB : PTm 2 := fact (var 1) * stir (var 1) (var 0)
 
-theorem le_of_lt_succ' {k N : PTm n} (h : Γ ⊢[PRAAx] lt k (succ N)) : Γ ⊢[PRAAx] le k N :=
-  (succ_monus_succ _ _).eqSymm.eqTrans h
+alias le_of_lt_succ' := Common.le_of_lt_succ
 
 theorem shift_succ' (a : PTm n) : Syn.shift (succ a) = succ (Syn.shift a) := by simp [Syn.shift]
 
@@ -343,11 +337,8 @@ theorem split_P (N : PTm n) :
     simp [inst2]
   have e3 : inst2 hkB (var 0) (Syn.shift N) = fact (Syn.shift N) * stir (Syn.shift N) (var 0) := by simp [inst2]
   rw [e1, e2, e3]
-  have s := natEq (stirling_ie (Γ := lt (var 0) (Syn.shift (succ N)) :: Γ.map Fm.shift) (Syn.shift N) (var 0))
-  have f := natEq (ff_fact_k hk)
-  apply deriveNat; ipra_simps
-  linear_combination -(𝔞(ff (Syn.shift N) (monus (Syn.shift N) (var 0)))) * s +
-    𝔞(gle (var 0) (Syn.shift N)) * 𝔞(Bell.nth (Stirling.row (Syn.shift N)) (monus (Syn.shift N) (var 0))) * f
+  ipra_lc -(𝔞(ff (Syn.shift N) (monus (Syn.shift N) (var 0)))) * natEq (stirling_ie (Γ := lt (var 0) (Syn.shift (succ N)) :: Γ.map Fm.shift) (Syn.shift N) (var 0)) +
+    𝔞(gle (var 0) (Syn.shift N)) * 𝔞(Bell.nth (Stirling.row (Syn.shift N)) (monus (Syn.shift N) (var 0))) * natEq (ff_fact_k hk)
 
 theorem sumH (N : PTm n) : Γ ⊢[PRAAx] ap2 (sumF hkB) (succ N) N ≐ fact N * Bell.bell N := by
   refine (sum_scale hkB BellStirling.tB (succ N) (fact N) N N (.allI (.impI ?_))).eqTrans
@@ -361,9 +352,6 @@ theorem sumH (N : PTm n) : Γ ⊢[PRAAx] ap2 (sumF hkB) (succ N) N ≐ fact N * 
 `n! B_n + ∑_{i ≤ n} C(n, i) iⁿ d⁻(n − i) = ∑_{i ≤ n} C(n, i) iⁿ d⁺(n − i)`, i.e.
 `n! B_n = ∑_{i ≤ n} C(n, i) iⁿ (n − i)! ∑_{j ≤ n−i} (−1)^j / j!`. -/
 theorem finite_dobinski (N : PTm n) : Γ ⊢[PRAAx] fact N * Bell.bell N + Rm N ≐ Rp N := by
-  have a := natEq (sumP (Γ := Γ) N); have b := natEq (sumM (Γ := Γ) N)
-  have c := natEq (split_P (Γ := Γ) N); have d := natEq (sumH (Γ := Γ) N)
-  apply deriveNat; ipra_simps
-  linear_combination a - b - c - d
+  ipra_lc natEq (sumP (Γ := Γ) N) - natEq (sumM (Γ := Γ) N) - natEq (split_P (Γ := Γ) N) - natEq (sumH (Γ := Γ) N)
 
 end LeanProofs.IPRA.Combinatorics.BellDobinski

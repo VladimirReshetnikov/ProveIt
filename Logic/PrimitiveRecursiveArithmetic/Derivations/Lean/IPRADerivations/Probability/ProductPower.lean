@@ -3,6 +3,7 @@ import IPRADerivations.Probability.Expectation
 import IPRADerivations.Probability.Independence
 import IPRADerivations.Probability.ProductReplacement
 import IPRADerivations.Combinatorics.BinomialIdentities
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The iterated product law and the sample variance
@@ -66,7 +67,7 @@ theorem dg_low {M a u j r : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) (hj 
   have er : Γ ⊢[PRAAx] r ≐ succ j + monus r (succ j) := eq_add_of_le hj
   -- `M^r = M^j · (M^e · M)` with `e = r − (j + 1)`
   have pr : Γ ⊢[PRAAx] pw M r ≐ pw M j * (pw M (monus r (succ j)) * M) := by
-    refine (Combinatorics.BinomialTheorem.congrPw (.eqRefl _) (er.eqTrans (by apply deriveNat; ipra_simps; ring :
+    refine (Combinatorics.BinomialTheorem.congrPw (.eqRefl _) (er.eqTrans (by ipra_ring :
       Γ ⊢[PRAAx] succ j + monus r (succ j) ≐ j + succ (monus r (succ j))))).eqTrans ?_
     exact (pw_add _ _ _).eqTrans (congrMul (.eqRefl _) (pw_succ _ _))
   have du := natEq (div_eq' (t := u) hMj)
@@ -75,7 +76,7 @@ theorem dg_low {M a u j r : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) (hj 
   have q1 := Prf.andE₁ (qr_block (i := a * (pw M (monus r (succ j)) * M) + quo u (pw M j)) (j := rem u (pw M j)) hMj
     (rem_lt'' hMj u))
   have e1 : Γ ⊢[PRAAx] quo (a * pw M r + u) (pw M j) ≐ (a * pw M (monus r (succ j))) * M + quo u (pw M j) := by
-    refine .eqTrans ?_ (q1.eqTrans (by apply deriveNat; ipra_simps; ring))
+    refine .eqTrans ?_ (q1.eqTrans (by ipra_ring))
     exact congrAp2 quoF (by apply deriveNat; ipra_simps; linear_combination 𝔞 a * p + du) (.eqRefl _)
   exact (congrAp2 remF e1 (.eqRefl _)).eqTrans (rem_shift hM)
 
@@ -85,7 +86,7 @@ theorem dg_top {M a u r : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) (ha : 
   have q := Prf.andE₁ (qr_block (i := a) (j := u) (pw_pos' hM r) hu)
   have r0 := Prf.andE₂ (qr_block (i := zero) (j := a) hM ha)
   exact (congrAp2 remF q (.eqRefl _)).eqTrans
-    ((congrAp2 remF (by apply deriveNat; ipra_simps; ring : Γ ⊢[PRAAx] a ≐ zero * M + a) (.eqRefl _)).eqTrans r0)
+    ((congrAp2 remF (by ipra_ring : Γ ⊢[PRAAx] a ≐ zero * M + a) (.eqRefl _)).eqTrans r0)
 
 /-! ## The product weight and the sample sum -/
 
@@ -330,7 +331,7 @@ theorem block_A {a r M x : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) (ha :
   have u0 := SB_at (Γ := C) X (var 0) (Syn.shift r) (Syn.shift M) (Syn.shift x)
   refine (congrMul p1 s1).eqTrans (.eqTrans ?_ (congrAdd (congrMul (.eqRefl _) t0)
     (congrAdd (congrMul (.eqRefl _) (congrMul t0 u0)) (congrMul (.eqRefl _) (congrMul t0 (congrMul u0 u0))))).eqSymm)
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- One block of the second moment: `∑_u P_{r+1} S_{r+1}² = (w_a X_a²) T_r + 2 w_a X_a A_r + w_a B_r`. -/
 theorem block_B {a r M x : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) (ha : Γ ⊢[PRAAx] lt a M) :
@@ -355,7 +356,7 @@ theorem block_B {a r M x : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) (ha :
   have u0 := SB_at (Γ := C) X (var 0) (Syn.shift r) (Syn.shift M) (Syn.shift x)
   refine (congrMul p1 (congrMul s1 s1)).eqTrans (.eqTrans ?_ (congrAdd (congrMul (.eqRefl _) t0)
     (congrAdd (congrMul (.eqRefl _) (congrMul t0 u0)) (congrMul (.eqRefl _) (congrMul t0 (congrMul u0 u0))))).eqSymm)
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem shift_Tt (r M x : PTm n) : Syn.shift (Tt w r M x) = Tt w (Syn.shift r) (Syn.shift M) (Syn.shift x) := by
   simp [Syn.shift]
@@ -375,7 +376,7 @@ theorem A_succ {r M x : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) :
   have hs : Syn.shift (succ r) = succ (Syn.shift r) := by simp [Syn.shift]
   rw [hp, hs, Expectation.inst2_mul']
   refine (block_A w X hM'.wk Prf.hyp0).eqTrans ?_
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- `B_{r+1} = T_r Q + 2 A_r S + B_r W`. -/
 theorem B_succ {r M x : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) :
@@ -388,7 +389,7 @@ theorem B_succ {r M x : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) :
   have hs : Syn.shift (succ r) = succ (Syn.shift r) := by simp [Syn.shift]
   rw [hp, hs, Expectation.inst2_mul', Expectation.inst2_mul', Expectation.inst2_mul']
   refine (block_B w X hM'.wk Prf.hyp0).eqTrans ?_
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 end Moments
 
@@ -455,19 +456,15 @@ theorem sample_moments {M x : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) (r
     · simp only [invF, Tt, At, Bt, Fm.subst_and, Fm.subst_eq, PTm.subst_add, PTm.subst_mul, subst_ap2, subst_pairT,
         Syn.subst_var, Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
       let D : List (Fm PTm (n + 1)) := invF w X M x :: Γ.map Fm.shift
-      have i2 := natEq (Prf.andE₁ (Prf.hyp0 : D ⊢[PRAAx] invF w X M x))
-      have i3 := natEq (Prf.andE₂ (Prf.hyp0 : D ⊢[PRAAx] invF w X M x))
       have tS := total_succ (Γ := D) w (r := var 0) (x := Syn.shift x) hM'.wk
       have aS := A_succ (Γ := D) w X (r := var 0) (x := Syn.shift x) hM'.wk
       have bS := B_succ (Γ := D) w X (r := var 0) (x := Syn.shift x) hM'.wk
       refine .andI ?_ ?_
       · refine (congrMul (.eqRefl _) aS).eqTrans (.eqTrans ?_ (congrMul (.eqRefl _) tS).eqSymm)
-        apply deriveNat; ipra_simps
-        linear_combination 𝔞 (ap2 (sumF w) (Syn.shift M) (Syn.shift x)) * i2
+        ipra_lc 𝔞 (ap2 (sumF w) (Syn.shift M) (Syn.shift x)) * natEq (Prf.andE₁ (Prf.hyp0 : D ⊢[PRAAx] invF w X M x))
       · refine (congrAdd (congrMul (.eqRefl _) (congrMul tS bS)) (congrMul (.eqRefl _) (congrMul tS tS))).eqTrans
           (.eqTrans ?_ (congrAdd (congrMul (.eqRefl _) (congrMul aS aS)) (congrMul (.eqRefl _) (congrMul tS tS))).eqSymm)
-        apply deriveNat; ipra_simps
-        linear_combination 𝔞 (ap2 (sumF w) (Syn.shift M) (Syn.shift x)) * 𝔞 (ap2 (sumF w) (Syn.shift M) (Syn.shift x)) * i3
+        ipra_lc 𝔞 (ap2 (sumF w) (Syn.shift M) (Syn.shift x)) * 𝔞 (ap2 (sumF w) (Syn.shift M) (Syn.shift x)) * natEq (Prf.andE₂ (Prf.hyp0 : D ⊢[PRAAx] invF w X M x))
   have h := Prf.allE r hall
   simp only [invF, Tt, At, Bt, Fm.subst_and, Fm.subst_eq, PTm.subst_add, PTm.subst_mul, subst_ap2, subst_pairT,
     Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero] at h
@@ -510,8 +507,7 @@ theorem residual {M x : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M))
   have tpos : Γ ⊢[PRAAx] Tt w r M x ≐ succ (pred (Tt w r M x)) :=
     (total_pow w (x := x) hM r).eqTrans ((pw_pos' hW r).eqTrans (congrSucc (congrPred (total_pow w (x := x) hM r).eqSymm)))
   refine Combinatorics.BinomialIdentities.mul_cancel tpos ?_
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 r * 𝔞 (Tt w r M x) * 𝔞 (ap2 (sumF w) M x) * j2 - i3 -
+  ipra_lc 𝔞 r * 𝔞 (Tt w r M x) * 𝔞 (ap2 (sumF w) M x) * j2 - i3 -
     (𝔞 (ap2 (sumF w) M x) * 𝔞 (At w X r M x) + 𝔞 r * 𝔞 (ap2 (sumF (w * X)) M x) * 𝔞 (Tt w r M x)) * i2
 
 end Sample

@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.GapDecision
 import IPRADerivations.Core.Gcd
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Rational coherence from finite adjacent-error sums
@@ -60,10 +61,7 @@ def difference (p q d : PR 2) (N M x : PTm n) : ZT n :=
       difference p q d (Syn.subst σ N) (Syn.subst σ M) (Syn.subst σ x) := by
   simp [difference]
 
-private theorem pair_congr {a a' b b' : PTm n}
-    (ha : Γ ⊢[PRAAx] a ≐ a') (hb : Γ ⊢[PRAAx] b ≐ b') :
-    Γ ⊢[PRAAx] pairT a b ≐ pairT a' b' :=
-  congrAdd (congrMul (congrAdd ha hb) (congrAdd ha hb)) ha
+private alias pair_congr := Common.congrPairT
 
 /-- Step variables are offset, old `(E,D)` code, and packed `(N,x)`. -/
 def accumulatorStep (e f : PR 2) : PTm 3 :=
@@ -195,11 +193,7 @@ theorem cross_triangle (a b c : ZT n) (da db dc : PTm n) :
   exact le_congr (abs_scale db _) (congrAdd (abs_scale dc _) (abs_scale da _))
     (zabs_tri identity)
 
-private theorem cancel_positive {c a b : PTm n} (hc : Γ ⊢[PRAAx] le one c)
-    (h : Γ ⊢[PRAAx] le (c * a) (c * b)) : Γ ⊢[PRAAx] le a b := by
-  have ce : Γ ⊢[PRAAx] c ≐ succ (monus c one) :=
-    (eq_add_of_le hc).eqTrans (by ipra_ring)
-  exact mul_le_cancel (le_congr (congrMul ce (.eqRefl _)) (congrMul ce (.eqRefl _)) h)
+private alias cancel_positive := Common.mul_cancel_le
 
 /-- Adding one error majorant preserves the exact rational discrepancy bound. -/
 theorem rational_step (a b c : ZT n) (da db dc E D e f : PTm n)

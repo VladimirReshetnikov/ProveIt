@@ -1,6 +1,8 @@
 import IPRADerivations.Combinatorics.BinomialIdentities
 import IPRADerivations.Analysis.PowerSums
 import IPRADerivations.Core.Powers
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Catalan numbers
@@ -42,7 +44,7 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
-theorem succ_pos (a : PTm n) : Γ ⊢[PRAAx] succ a ≐ succ (pred (succ a)) := congrSucc (pred_succ a).eqSymm
+alias succ_pos := Common.succ_pos
 
 /-! ## The central binomial coefficient -/
 
@@ -51,7 +53,7 @@ abbrev cb (k : PTm n) : PTm n := binom (two * k) k
 
 /-- `(2n)! = n! n! C(2n, n)`. -/
 theorem cb_fact (k : PTm n) : Γ ⊢[PRAAx] fact (two * k) ≐ (fact k * fact k) * cb k := by
-  have hN : Γ ⊢[PRAAx] two * k ≐ k + k := by apply deriveNat; ipra_simps; ring
+  have hN : Γ ⊢[PRAAx] two * k ≐ k + k := by ipra_ring
   have g : Γ ⊢[PRAAx] fact (monus (two * k) k) ≐ fact k :=
     congrAp2 factF ((congrMonus hN (.eqRefl _)).eqTrans (add_monus' _ _)) (.eqRefl _)
   exact (binom_eq (le_of_eq_add (d := k) hN)).eqTrans (congrMul (congrMul (.eqRefl _) g) (.eqRefl _))
@@ -62,11 +64,9 @@ theorem cb_zero : Γ ⊢[PRAAx] cb (zero : PTm n) ≐ one := binom_zero' _
 theorem cb_rec (k : PTm n) : Γ ⊢[PRAAx] succ k * cb (succ k) ≐ (two * succ (two * k)) * cb k := by
   refine mul_cancel (D := fact k * fact k * succ k)
     (pos_mul (pos_mul (fact_pos k) (fact_pos k)) (succ_pos k)) ?_
-  have f₁ := natEq (cb_fact (Γ := Γ) (succ k)); have f₀ := natEq (cb_fact (Γ := Γ) k)
-  have f₂ := natEq (fact_two_succ (Γ := Γ) k); have f₃ := natEq (fact_succ (Γ := Γ) k zero)
-  apply deriveNat; ipra_simps
-  linear_combination f₂ - f₁ + (2 * 𝔞(k) + 1) * (2 * 𝔞(k) + 2) * f₀ -
-    (𝔞(fact (succ k)) + 𝔞(fact k) * (𝔞(k) + 1)) * 𝔞(cb (succ k)) * f₃
+  ipra_lc natEq (fact_two_succ (Γ := Γ) k) - natEq (cb_fact (Γ := Γ) (succ k)) +
+    (2 * 𝔞(k) + 1) * (2 * 𝔞(k) + 2) * natEq (cb_fact (Γ := Γ) k) -
+    (𝔞(fact (succ k)) + 𝔞(fact k) * (𝔞(k) + 1)) * 𝔞(cb (succ k)) * natEq (fact_succ (Γ := Γ) k zero)
 
 /-! ## The Catalan numbers -/
 
@@ -75,8 +75,8 @@ abbrev cat (k : PTm n) : PTm n := quo (cb k) (succ k)
 
 theorem cat_spec_zero : Γ ⊢[PRAAx] succ (zero : PTm n) * cat zero ≐ cb zero := by
   have q : Γ ⊢[PRAAx] cat (zero : PTm n) ≐ one :=
-    quo_of_eq (succ_pos _) (cb_zero.eqTrans (by apply deriveNat; ipra_simps; ring))
-  exact (congrMul (.eqRefl _) q).eqTrans ((by apply deriveNat; ipra_simps; ring : Γ ⊢[PRAAx] succ zero * one ≐ one).eqTrans
+    quo_of_eq (succ_pos _) (cb_zero.eqTrans (by ipra_ring))
+  exact (congrMul (.eqRefl _) q).eqTrans ((by ipra_ring : Γ ⊢[PRAAx] succ zero * one ≐ one).eqTrans
     cb_zero.eqSymm)
 
 /-- `(m + 2) (C(2m + 2, m + 1) ∸ C(2m + 2, m + 2)) = C(2m + 2, m + 1)`. -/
@@ -87,10 +87,8 @@ theorem cat_diff (m : PTm n) :
     simpa using h
   have hC : Γ ⊢[PRAAx] le (binom (two * succ m) (succ (succ m))) (cb (succ m)) := by
     refine mul_le_cancel (d' := succ m) (le_congr hr (.eqRefl _) (le_of_eq_add (d := cb (succ m)) ?_))
-    apply deriveNat; ipra_simps; ring
-  have f₁ := natEq hr; have f₂ := natEq (eq_add_of_le hC)
-  apply deriveNat; ipra_simps
-  linear_combination f₁ - (𝔞(m) + 2) * f₂
+    ipra_ring
+  ipra_lc natEq hr - (𝔞(m) + 2) * natEq (eq_add_of_le hC)
 
 theorem cat_spec_succ (m : PTm n) : Γ ⊢[PRAAx] succ (succ m) * cat (succ m) ≐ cb (succ m) :=
   (congrMul (.eqRefl _) (quo_of_eq (succ_pos _) (cat_diff m).eqSymm)).eqTrans (cat_diff m)
@@ -113,20 +111,18 @@ theorem cat_spec (k : PTm n) : Γ ⊢[PRAAx] succ k * cat k ≐ cb k := by
   simpa using h
 
 theorem cat_zero : Γ ⊢[PRAAx] cat (zero : PTm n) ≐ one :=
-  quo_of_eq (succ_pos _) (cb_zero.eqTrans (by apply deriveNat; ipra_simps; ring))
+  quo_of_eq (succ_pos _) (cb_zero.eqTrans (by ipra_ring))
 
 /-- `thm:ratio-recurrence`: `(n + 2) Cat_{n+1} = 2 (2n + 1) Cat_n`. -/
 theorem cat_rec (k : PTm n) :
     Γ ⊢[PRAAx] succ (succ k) * cat (succ k) ≐ (two * succ (two * k)) * cat k := by
   refine mul_cancel (D := succ k) (succ_pos k) ?_
-  have s₁ := natEq (cat_spec (Γ := Γ) (succ k)); have s₀ := natEq (cat_spec (Γ := Γ) k)
-  have r := natEq (cb_rec (Γ := Γ) k)
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞(k) + 1) * s₁ + r - 2 * (2 * 𝔞(k) + 1) * s₀
+  ipra_lc (𝔞(k) + 1) * natEq (cat_spec (Γ := Γ) (succ k)) + natEq (cb_rec (Γ := Γ) k) -
+    2 * (2 * 𝔞(k) + 1) * natEq (cat_spec (Γ := Γ) k)
 
 /-- `(2n + 1) Cat_n = C(2n + 1, n)`. -/
 theorem cat_odd_binom (k : PTm n) : Γ ⊢[PRAAx] succ (two * k) * cat k ≐ binom (succ (two * k)) k := by
-  have hN : Γ ⊢[PRAAx] succ (two * k) ≐ k + succ k := by apply deriveNat; ipra_simps; ring
+  have hN : Γ ⊢[PRAAx] succ (two * k) ≐ k + succ k := by ipra_ring
   have g : Γ ⊢[PRAAx] fact (monus (succ (two * k)) k) ≐ fact (succ k) :=
     congrAp2 factF ((congrMonus hN (.eqRefl _)).eqTrans (add_monus' _ _)) (.eqRefl _)
   have e := natEq ((binom_eq (Γ := Γ) (le_of_eq_add (d := succ k) hN)).eqTrans
@@ -135,16 +131,13 @@ theorem cat_odd_binom (k : PTm n) : Γ ⊢[PRAAx] succ (two * k) * cat k ≐ bin
   have f₀ := natEq (cb_fact (Γ := Γ) k); have s₀ := natEq (cat_spec (Γ := Γ) k)
   refine mul_cancel (D := fact k * fact k * succ k)
     (pos_mul (pos_mul (fact_pos k) (fact_pos k)) (succ_pos k)) ?_
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞(fact k) * 𝔞(fact k) * (2 * 𝔞(k) + 1) * s₀ - (2 * 𝔞(k) + 1) * f₀ - gg + e +
+  ipra_lc 𝔞(fact k) * 𝔞(fact k) * (2 * 𝔞(k) + 1) * s₀ - (2 * 𝔞(k) + 1) * f₀ - gg + e +
     𝔞(fact k) * 𝔞(binom (succ (two * k)) k) * f₃
 
 /-- `2 Cat_n + C(2n + 2, n + 1) = 4 C(2n, n)`. -/
 theorem cat_telescope (k : PTm n) : Γ ⊢[PRAAx] two * cat k + cb (succ k) ≐ (two * two) * cb k := by
   refine mul_cancel (D := succ k) (succ_pos k) ?_
-  have s₀ := natEq (cat_spec (Γ := Γ) k); have r := natEq (cb_rec (Γ := Γ) k)
-  apply deriveNat; ipra_simps
-  linear_combination 2 * s₀ + r
+  ipra_lc 2 * natEq (cat_spec (Γ := Γ) k) + natEq (cb_rec (Γ := Γ) k)
 
 /-! ## The partial sum of `Cat_n / 4^n` -/
 
@@ -164,9 +157,7 @@ theorem cp_shift_pt {j M : PTm n} (h : Γ ⊢[PRAAx] lt j M) :
     Γ ⊢[PRAAx] inst2 cpB j (succ M) ≐ inst2 (mulParam (two * two) cpB) j M := by
   have ec : Syn.subst ![M] (two * two : PTm 1) = two * two := by simp
   rw [inst2_mulParam, ec, inst2_cp, inst2_cp]
-  have p := natEq (pw_shift (le_of_lt h))
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞(cat j) * p
+  ipra_lc 𝔞(cat j) * natEq (pw_shift (le_of_lt h))
 
 /-- `∑_{j<M} Cat_j 4^{M+1−j} = 4 ∑_{j<M} Cat_j 4^{M−j}`. -/
 theorem psum_shift (M : PTm n) :
@@ -185,14 +176,11 @@ theorem psum_step {M : PTm n}
   have e₁ := sum_succ' (Γ := Γ) cpB M (succ M)
   rw [inst2_cp] at e₁
   have p₁ : Γ ⊢[PRAAx] pw (two * two) (monus (succ M) M) ≐ two * two := by
-    have e : Γ ⊢[PRAAx] succ M ≐ M + succ zero := by apply deriveNat; ipra_simps; ring
+    have e : Γ ⊢[PRAAx] succ M ≐ M + succ zero := by ipra_ring
     refine (congrAp2 powF ((congrMonus e (.eqRefl _)).eqTrans (add_monus' _ _)) (.eqRefl _)).eqTrans
       ((pw_succ _ _).eqTrans ((congrMul (pw_zero _) (.eqRefl _)).eqTrans (one_mul _)))
-  have a := natEq e₁; have sh := natEq (psum_shift (Γ := Γ) M); have p := natEq p₁
-  have t := natEq (cat_telescope (Γ := Γ) M); have w := natEq (pw_succ (Γ := Γ) (two * two) M)
-  have i := natEq ih
-  apply deriveNat; ipra_simps
-  linear_combination a + sh + 𝔞(cat M) * p - 2 * w + 2 * t + 4 * i
+  ipra_lc natEq e₁ + natEq (psum_shift (Γ := Γ) M) + 𝔞(cat M) * natEq p₁ -
+    2 * natEq (pw_succ (Γ := Γ) (two * two) M) + 2 * natEq (cat_telescope (Γ := Γ) M) + 4 * natEq ih
 
 /-- Variables: `0 = M`. -/
 private abbrev psumF : Fm PTm 1 :=
@@ -200,13 +188,9 @@ private abbrev psumF : Fm PTm 1 :=
 
 private theorem psum₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] psumF := by
   refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, PTm.subst_add, PTm.subst_mul, PTm.subst_monus, subst_ap2, Syn.subst_var,
-      Syn.inst_zero, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have z := natEq (sum_zero (Γ := ([] : List (Fm PTm 0))) cpB zero)
-    have c := natEq (cb_zero (Γ := ([] : List (Fm PTm 0))))
-    have p := natEq (pw_zero (Γ := ([] : List (Fm PTm 0))) (two * two))
-    apply deriveNat; ipra_simps
-    linear_combination z + 2 * c - 2 * p
+  · ipra_lc [Fm.subst_eq, PTm.subst_add, PTm.subst_mul, PTm.subst_monus, subst_ap2, Syn.subst_var, Syn.inst_zero, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] natEq (sum_zero (Γ := ([] : List (Fm PTm 0))) cpB zero) +
+      2 * natEq (cb_zero (Γ := ([] : List (Fm PTm 0)))) -
+      2 * natEq (pw_zero (Γ := ([] : List (Fm PTm 0))) (two * two))
   · simp only [Fm.subst_eq, PTm.subst_add, PTm.subst_mul, PTm.subst_monus, subst_ap2, Syn.subst_var,
       Syn.repl_zero, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
     exact psum_step Prf.hyp0

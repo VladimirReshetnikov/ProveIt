@@ -1,4 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.Smooth
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The Euler product dominates the harmonic sum
@@ -75,11 +77,9 @@ theorem term_pos {a L F m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (hd 
   (congrMul ((congrSg hm).eqTrans (sg_succ _)) ((congrMul (eqb_of_eq hd) (.eqRefl _)).eqTrans (one_mul _))).eqTrans
     (one_mul _)
 
-theorem le_zero_of {X Y : PTm n} (h : Γ ⊢[PRAAx] X ≐ zero) : Γ ⊢[PRAAx] le X Y :=
-  le_congr h.eqSymm (.eqRefl _) (zero_monus _)
+alias le_zero_of := Common.le_of_eq_zero
 
-theorem sg_le_one (x : PTm n) : Γ ⊢[PRAAx] le (sg x) one :=
-  .orE (zo_sg x) (le_zero_of Prf.hyp0) (le_congr Prf.hyp0.eqSymm (.eqRefl _) (le_refl _))
+alias sg_le_one := Common.sg_le_one
 
 theorem term_le_quo (a L F m : PTm n) : Γ ⊢[PRAAx] le (term a L F m) (quo F m) :=
   le_congr (.eqRefl _) ((congrMul (.eqRefl _) (one_mul _)).eqTrans (one_mul _))
@@ -135,9 +135,7 @@ theorem ptB_dvd {p a L F m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ p * quo m p) (mpos
   have hkX := dvd_trans' kpos mpos hkm hdX
   refine le_congr (congrMul (.eqRefl _) (term_pos mpos hdX)).eqSymm (term_pos kpos hkX).eqSymm ?_
   refine le_quo_of_mul_le kpos (le_of_eq_add (d := rem F m) ?_)
-  have e₁ := natEq (div_eq (j := F) mpos); have e₂ := natEq hm
-  apply deriveNat; ipra_simps
-  linear_combination e₁ + Groth.ι (IPRA.Q.mk Γ (quo F m)) * e₂
+  ipra_lc natEq (div_eq (j := F) mpos) + Groth.ι (IPRA.Q.mk Γ (quo F m)) * natEq hm
 
 theorem ptB_pos {p a L F m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ p * quo m p) (mpos : Γ ⊢[PRAAx] m ≐ succ (pred m)) :
     Γ ⊢[PRAAx] le (p * term (a * p) L F m) (term (a * p) L F (quo m p)) :=
@@ -193,16 +191,15 @@ theorem eq_zero_of_le_zero {x : PTm n} (h : Γ ⊢[PRAAx] le x zero) : Γ ⊢[PR
   (monus_zero x).eqSymm.eqTrans h
 
 theorem quo_one (F : PTm n) : Γ ⊢[PRAAx] quo F one ≐ F :=
-  quo_eq (congrSucc (pred_succ _).eqSymm) (q := F) (r := zero) (by apply deriveNat; ipra_simps; ring) (le_refl _)
+  quo_eq (congrSucc (pred_succ _).eqSymm) (q := F) (r := zero) (by ipra_ring) (le_refl _)
 
-theorem two_add (x : PTm n) : Γ ⊢[PRAAx] two + x ≐ succ (succ x) := by apply deriveNat; ipra_simps; ring
+theorem two_add (x : PTm n) : Γ ⊢[PRAAx] two + x ≐ succ (succ x) := by ipra_ring
 
-theorem pos_of_two_le {m : PTm n} (hm : Γ ⊢[PRAAx] le two m) : Γ ⊢[PRAAx] m ≐ succ (pred m) :=
-  eq_succ_pred ((eq_add_of_le hm).eqTrans (two_add _))
+alias pos_of_two_le := Common.pos_of_two_le
 
 theorem term_one_big {L F m : PTm n} (hm : Γ ⊢[PRAAx] le two m) : Γ ⊢[PRAAx] term one L F m ≐ zero := by
   have r : Γ ⊢[PRAAx] rem (pw one L) m ≐ one := (congrAp2 remF (pw_one_base L) (.eqRefl _)).eqTrans
-    (rem_eq' (pos_of_two_le hm) (q := zero) (r := one) (by apply deriveNat; ipra_simps; ring) hm)
+    (rem_eq' (pos_of_two_le hm) (q := zero) (r := one) (by ipra_ring) hm)
   exact term_ndvd ((congrEqb r (.eqRefl _)).eqTrans (eqb_of_ne (.impI (succ_ne_zero' _ (a := zero) Prf.hyp0))))
 
 theorem sgm_succ (N F : PTm n) : Γ ⊢[PRAAx] sg (monus (succ N) one) * F ≐ sg N * F :=
@@ -388,13 +385,13 @@ theorem prime_step : Γ ⊢[PRAAx] le (p * Sm (a * p) L F N) (p * Sm a L F N + S
   have h2 : Γ ⊢[PRAAx] le (p * ap2 (sumF bT) N (zz p a L F)) (Sm (a * p) L F N) :=
     le_trans (leB hp N) (le_congr (sR hp N).eqSymm (.eqRefl _) (reindex_le gB N (prime_eq_succ_pred hp)))
   refine le_trans (le_mul_mono (le_refl p) h1) (le_congr ?_ (.eqRefl _) (add_le_add (le_refl (p * Sm a L F N)) h2))
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 end PrimeStep
 
 /-! ## The step at an arbitrary index and the main induction -/
 
-theorem mul_one' (X : PTm n) : Γ ⊢[PRAAx] X * one ≐ X := by apply deriveNat; ipra_simps; ring
+alias mul_one' := Common.mul_one_right
 
 theorem gen_step_prime {y a L F N : PTm n} (hI : Γ ⊢[PRAAx] isP y ≐ one) :
     Γ ⊢[PRAAx] le (dBt y * Sm (a * pBt y) L F N) (pBt y * Sm a L F N) := by
@@ -402,9 +399,7 @@ theorem gen_step_prime {y a L F N : PTm n} (hI : Γ ⊢[PRAAx] isP y ≐ one) :
   have ps := prime_step (a := a) (L := L) (F := F) hp N
   have c : Γ ⊢[PRAAx] le (pred y * Sm (a * y) L F N) (y * Sm a L F N) := by
     refine le_of_eq_add (d := monus (y * Sm a L F N + Sm (a * y) L F N) (y * Sm (a * y) L F N)) ?_
-    have e₁ := natEq (eq_add_of_le ps); have e₂ := natEq (prime_eq_succ_pred hp)
-    apply deriveNat; ipra_simps
-    linear_combination e₁ + Groth.ι (IPRA.Q.mk Γ (Sm (a * y) L F N)) * e₂
+    ipra_lc natEq (eq_add_of_le ps) + Groth.ι (IPRA.Q.mk Γ (Sm (a * y) L F N)) * natEq (prime_eq_succ_pred hp)
   exact le_congr (congrMul (dBt_one hI) (Sm_congr (congrMul (.eqRefl _) (pBt_one hI)))).eqSymm
     (congrMul (pBt_one hI) (.eqRefl _)).eqSymm c
 
@@ -422,11 +417,11 @@ theorem main_step {y L F N : PTm n} (ih : Γ ⊢[PRAAx] le (Sm (A y) L F N * Dn 
   have m₁ := le_mul_mono gs (le_refl (Dn y))
   have m₂ := le_mul_mono (le_refl (pBt y)) ih
   have eL : Γ ⊢[PRAAx] Sm (A (succ y)) L F N * Dn (succ y) ≐ dBt y * Sm (A y * pBt y) L F N * Dn y :=
-    (congrMul (Sm_congr (A_succ y)) (Dn_succ y)).eqTrans (by apply deriveNat; ipra_simps; ring)
+    (congrMul (Sm_congr (A_succ y)) (Dn_succ y)).eqTrans (by ipra_ring)
   have eM : Γ ⊢[PRAAx] pBt y * Sm (A y) L F N * Dn y ≐ pBt y * (Sm (A y) L F N * Dn y) := by
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   have eR : Γ ⊢[PRAAx] pBt y * (F * A y) ≐ F * A (succ y) :=
-    (by apply deriveNat; ipra_simps; ring : Γ ⊢[PRAAx] pBt y * (F * A y) ≐ F * (A y * pBt y)).eqTrans
+    (by ipra_ring : Γ ⊢[PRAAx] pBt y * (F * A y) ≐ F * (A y * pBt y)).eqTrans
       (congrMul (.eqRefl _) (A_succ y).eqSymm)
   exact le_congr eL.eqSymm eR (le_trans (le_congr (.eqRefl _) eM m₁) m₂)
 
@@ -512,7 +507,7 @@ theorem harmonic_upper {m k : PTm n} (F : PTm n) (h : Γ ⊢[PRAAx] le (NumP m) 
   have hD := Dn_pos (Γ := Γ) (succ m)
   have c : Γ ⊢[PRAAx] le (DenE m * Harmonic.S m F) (DenE m * (pw (two * two) k * F)) := by
     refine le_congr (mul_comm _ _) ?_ (le_trans ed sb)
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   exact mul_le_cancel (le_congr (congrMul hD (.eqRefl _)) (congrMul hD (.eqRefl _)) c)
 
 /-- The witness `Wit(k) = 2^{2·4^k}`. -/
@@ -527,9 +522,7 @@ theorem prime_reciprocal_at (k : PTm n) : Γ ⊢[PRAAx] lt (k * ProdP (Wit k)) (
   have c := le_trans hd hu
   refine not_succ_le_self (pw (two * two) k * fact (Wit k) + pred (fact (Wit k))) _ ?_
   refine le_trans (le_congr ?_ (.eqRefl _) c) (le_of_eq_add (d := pred (fact (Wit k))) (.eqRefl _))
-  have e := natEq hF
-  apply deriveNat; ipra_simps
-  linear_combination e
+  ipra_lc natEq hF
 
 /-- `thm:main`, variable `0 = k`. -/
 abbrev primeReciprocalFormula : Fm PTm 1 := lt (var 0 * ProdP (Wit (var 0))) (NumP (Wit (var 0)))

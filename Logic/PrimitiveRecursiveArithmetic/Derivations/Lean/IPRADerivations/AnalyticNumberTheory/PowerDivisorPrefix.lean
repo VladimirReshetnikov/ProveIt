@@ -133,7 +133,7 @@ theorem step_pt {N q y : PTm n} (hq : Γ ⊢[PRAAx] q ≐ succ (pred q)) :
   · let C : List (Fm PTm n) := (eqb (rem (succ N) q) zero ≐ one) :: Γ
     have e1 : C ⊢[PRAAx] eqb (rem (succ N) q) zero ≐ one := Prf.hyp0
     have qq : C ⊢[PRAAx] quo (succ N) q ≐ succ (quo N q) :=
-      qs.wk.eqTrans ((congrAdd (.eqRefl _) e1).eqTrans (by apply deriveNat; ipra_simps; ring))
+      qs.wk.eqTrans ((congrAdd (.eqRefl _) e1).eqTrans (by ipra_ring))
     have ss : C ⊢[PRAAx] Apre a (succ (quo N q)) y ≐ Apre a (quo N q) y + inst2 (shiftBody a) (quo N q) y :=
       sum_succ _ _ _
     rw [inst2_shiftBody] at ss

@@ -82,7 +82,7 @@ theorem even_not_prime {q y : PTm n} (hq : Γ ⊢[PRAAx] prime q) (e : Γ ⊢[PR
     (hy : Γ ⊢[PRAAx] le two y) : Γ ⊢[PRAAx] Fm.bot := by
   have hq2 := prime_two hq
   have hz : Γ ⊢[PRAAx] q ≐ two * y + zero := e.eqTrans (add_zero _).eqSymm
-  have hr : Γ ⊢[PRAAx] lt (zero : PTm n) two := le_of_eq_add (d := one) (by apply deriveNat; ipra_simps; ring)
+  have hr : Γ ⊢[PRAAx] lt (zero : PTm n) two := le_of_eq_add (d := one) (by ipra_ring)
   have d2 : Γ ⊢[PRAAx] dvd two q := Prf.andE₂ (dmu two_pos' hz hr)
   have l := le_congr (lpf_of_prime hq) (.eqRefl _) (lpf_min (p_pos hq2) (le_refl two) d2)
   have en := natEq e

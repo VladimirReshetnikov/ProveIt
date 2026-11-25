@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.GaussianRationalGridRounding
 import IPRADerivations.Analysis.GaussianRationalDirectionNormalizer
 import IPRADerivations.Foundations.MasterCertificate
 import IPRADerivations.Core.CongruenceTactic
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Actual signed square grids and nearest Gaussian points

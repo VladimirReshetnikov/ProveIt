@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.ChebyshevUpper
 import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Two corollaries of the Chebyshev bounds
@@ -43,7 +44,7 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The product of the primes of `(n, 2n]` -/
 
-theorem mul_one_r (X : PTm n) : Γ ⊢[PRAAx] X * one ≐ X := by ipra_ring
+alias mul_one_r := Common.mul_one_right
 
 theorem dbl_le (j m : PTm n) (e : Γ ⊢[PRAAx] m ≐ succ (succ j)) : Γ ⊢[PRAAx] le (two * succ j) (two * m) := by
   refine le_of_eq_add (d := two) ?_

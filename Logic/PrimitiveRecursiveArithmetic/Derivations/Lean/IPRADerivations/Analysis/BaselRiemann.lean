@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.BaselQuadrature
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The independent Riemann-sum code of the Basel constant

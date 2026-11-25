@@ -1,5 +1,6 @@
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.DiophantineNumberTheory.SimultaneousGrid
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The finite inequalities of the convex cover for unit space curves
@@ -39,13 +40,7 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔟" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- Order reflection of squares: `x² ≤ y² → x ≤ y`. -/
-theorem sqrt_le {x y : PTm n} (h : Γ ⊢[PRAAx] le (x * x) (y * y)) : Γ ⊢[PRAAx] le x y := by
-  refine .orE (lt_or_le y x) ?_ Prf.hyp0
-  have hl : (lt y x :: Γ) ⊢[PRAAx] le (succ y) x := Prf.hyp0
-  have hs : (lt y x :: Γ) ⊢[PRAAx] lt (y * y) (x * x) := by
-    show _ ⊢[PRAAx] le (succ (y * y)) (x * x)
-    ipra_le 2 * 𝔟 y + 2 * (𝔟 y + 1) * sl hl + sl hl ^ 2
-  exact le_lt_absurd _ h.wk hs
+alias sqrt_le := Common.le_of_sq_le
 
 /-- `s ≤ 5h/4` from `s² + 9h² ≤ N²` and `4N ≤ 13h`. -/
 theorem four_s_le {s h N : PTm n} (hN : Γ ⊢[PRAAx] le (s * s + num 9 * (h * h)) (N * N))

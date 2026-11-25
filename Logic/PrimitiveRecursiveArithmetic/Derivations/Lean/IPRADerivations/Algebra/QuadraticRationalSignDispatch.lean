@@ -1,5 +1,6 @@
 import IPRADerivations.Algebra.QuadraticIntegerSignDispatch
 import IPRADerivations.Algebra.QuadraticTowerSignCoherence
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The source native dispatch on original rational coefficients
@@ -110,10 +111,7 @@ theorem norm_tag (d x : PTm n) (hd : Γ ⊢[PRAAx] QuadraticRationalNonnegativeR
 theorem native_norm (d x : PTm n) : Γ ⊢[PRAAx]
     ZT.eq (QuadraticSignCertificates.norm (integerRadicand d) (nativeData d x))
       (ZT.ofNat (denominatorOf d)*normNumerator d x) := by
-  apply ZT.derive
-  simp only [QuadraticSignCertificates.norm,nativeData,QuadraticRationalRadicand.stretch_first,
-    QuadraticRationalRadicand.stretch_second,normNumerator,ZT.toZ_sub,ZT.toZ_mul,ZT.toZ_ofNat,integerRadicand,Q.mk_mul,map_mul]
-  ring
+  ipra_lc [QuadraticSignCertificates.norm, nativeData, QuadraticRationalRadicand.stretch_first, QuadraticRationalRadicand.stretch_second, normNumerator, integerRadicand]
 theorem native_norm_tag (d x : PTm n) (hd : Γ ⊢[PRAAx] QuadraticRationalNonnegativeRadicand.nonnegative d) : Γ ⊢[PRAAx]
     tag (QuadraticSignCertificates.norm (integerRadicand d) (nativeData d x)) ≐ scalarTag (norm d x) :=
   (QuadraticIntegerSignDispatch.tag_value_congr _ _ (native_norm d x)).eqTrans
@@ -134,9 +132,7 @@ theorem native_second_tag (d x : PTm n) : Γ ⊢[PRAAx]
 theorem native_radicand_tag (d : PTm n) (hd : Γ ⊢[PRAAx] QuadraticRationalNonnegativeRadicand.nonnegative d) : Γ ⊢[PRAAx]
     tag (ZT.ofNat (integerRadicand d)) ≐ scalarTag d := by
   have value : Γ ⊢[PRAAx] ZT.eq (ZT.ofNat (integerRadicand d)) (ZT.ofNat (denominatorOf d)*ZT.ofNat (positiveNumerator d)) := by
-    apply ZT.derive
-    simp only [integerRadicand,ZT.toZ_ofNat,ZT.toZ_mul,Q.mk_mul,map_mul]
-    ring
+    ipra_lc [integerRadicand]
   exact (QuadraticIntegerSignDispatch.tag_value_congr _ _ value).eqTrans
     ((tag_positive_scale _ _ (RationalArgmin.denominator_positive d)).eqTrans
       (tag_of_representation _ _ _ (RationalArgmin.denominator_positive d) (radicand_representation d hd)).eqSymm)

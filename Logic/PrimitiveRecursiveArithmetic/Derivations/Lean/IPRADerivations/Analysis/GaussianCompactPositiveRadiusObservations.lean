@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianCompactPositiveRadiusDominance
 import IPRADerivations.Analysis.GaussianEulerVerticalShiftedRadius
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Independent observations from actual compact row dominance
@@ -90,10 +91,7 @@ theorem radius_value (F G : PR 3) (p q a C E L T x y : PTm n)
     (unit_positive q) (companion_lower F G q a C E L T x y h)
   have add := RationalRepresentations.represents_add _ _ _ _ _ _ base (fraction_represents one (unit p) (unit_positive p))
   apply scalar_congr (.eqRefl _) _ (.eqRefl _) add
-  apply ZT.derive
-  simp only [radiusNumerator,ZT.toZ_add,ZT.toZ_mul,ZT.toZ_ofNat]
-  ipra_simps
-  ring
+  ipra_lc [radiusNumerator]
 
 private theorem companion_coordinate (F G : PR 3) (q t a C E L T x y : PTm n)
     (h : Γ ⊢[PRAAx] source F G a C E L T x y) : Γ ⊢[PRAAx]

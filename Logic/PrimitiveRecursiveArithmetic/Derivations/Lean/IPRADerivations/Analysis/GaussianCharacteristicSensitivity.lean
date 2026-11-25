@@ -3,6 +3,8 @@ import IPRADerivations.Analysis.GaussianPolynomialDeterminantStageError
 import IPRADerivations.Analysis.GaussianPolynomialDeterminantError
 import IPRADerivations.Analysis.GaussianCoefficientNormEntries
 import IPRADerivations.AnalyticNumberTheory.LocalFactor
+import IPRADerivations.Core.CongruenceTactic
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Exact sensitivity of the original characteristic coefficients
@@ -54,10 +56,7 @@ theorem integer_times_radius (K P Q : PTm n) (hQ : Γ ⊢[PRAAx] le one Q) : Γ 
     (RationalNormalForm.normalize_well_formed _ _ hQ) left
     (RationalIntegerNormalization.normalize_preserves_value _ _ hQ)
     (RationalAlgebra.positive_product (le_refl one) hQ) hQ
-  apply ZT.derive
-  simp only [ZT.toZ_mul, ZT.toZ_ofNat]
-  ipra_simps
-  ring
+  ipra_lc
 
 theorem sensitivity_identity (N B P : PTm n) : Γ ⊢[PRAAx]
     (factorial N*budget (two*(B+one)) one N)*(two*P) ≐ sensitivity N B*P := by
@@ -131,11 +130,7 @@ theorem coefficient_norm_error (A C N B P Q : PTm n) (ha : Γ ⊢[PRAAx] entryBo
     refine (RationalAlgebra.multiply_associative _ _ _).eqSymm.eqTrans ?_
     refine (RationalAlgebra.multiply_congr (natCode_multiply _ _) (.eqRefl _)).eqTrans ?_
     refine (integer_times_radius _ _ _ hq).eqTrans ?_
-    simpa only [RationalIntegerNormalization.subst_normalize, ZT.subst_ofNat, Syn.subst_var,
-      Matrix.cons_val_zero, Matrix.cons_val_one] using
-        Prf.eqCongr (Γ := Γ) (normalize (ZT.ofNat (var 0)) (var 1) : PTm 2)
-          (σ := ![(factorial N*budget (two*(B+one)) one N)*(two*P),Q])
-          (σ' := ![sensitivity N B*P,Q]) (fun t => by fin_cases t; exact sensitivity_identity N B P; exact .eqRefl Q)
+    ipra_congr (normalize (ZT.ofNat (var 0)) (var 1) : PTm 2) with [sensitivity_identity N B P, .eqRefl Q]
   exact rationalLE_congr (coefficientNorm_congr (subCoefficients_congr (.eqRefl _) (.eqRefl _) width)) rhs estimate
 
 theorem coefficient_error (A C N B P Q i : PTm n) (h : Γ ⊢[PRAAx] input A C N B P Q)

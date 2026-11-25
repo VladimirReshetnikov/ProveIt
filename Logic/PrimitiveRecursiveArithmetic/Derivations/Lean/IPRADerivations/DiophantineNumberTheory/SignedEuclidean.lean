@@ -1,5 +1,6 @@
 import IPRADerivations.Core.IntCancel
 import IPRADerivations.AnalyticNumberTheory.Totatives
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Actual Euclidean division of signed integer pairs
@@ -118,12 +119,7 @@ theorem euclidean (a : ZT n) (m : PTm n) (hm : Γ ⊢[PRAAx] le one m) :
 theorem same_remainder_difference (a b : ZT n) (m : PTm n) (hm : Γ ⊢[PRAAx] le one m)
     (hr : Γ ⊢[PRAAx] remainder a m ≐ remainder b m) :
     Γ ⊢[PRAAx] ZT.eq (a - b) (ZT.ofNat m * (quotient a m - quotient b m)) := by
-  apply ZT.derive
-  have ea := ZT.toZ_eq (.andE₁ (euclidean a m hm))
-  have eb := ZT.toZ_eq (.andE₁ (euclidean b m hm))
-  have same := natEq hr
-  simp only [ZT.toZ_add, ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_ofNat] at ea eb ⊢
-  linear_combination ea - eb + same
+  ipra_lc ZT.toZ_eq (.andE₁ (euclidean a m hm)) - ZT.toZ_eq (.andE₁ (euclidean b m hm)) + natEq hr
 
 /-- Under an equal-residue collision, zero quotient difference identifies
 decoded integers, without identifying their possibly different pair codes. -/
@@ -131,11 +127,7 @@ theorem equal_of_quotient_difference_zero (a b : ZT n) (m : PTm n) (hm : Γ ⊢[
     (hr : Γ ⊢[PRAAx] remainder a m ≐ remainder b m)
     (hq : Γ ⊢[PRAAx] ZT.eq (quotient a m - quotient b m) (ZT.natLit 0)) :
     Γ ⊢[PRAAx] ZT.eq a b := by
-  apply ZT.derive
-  have e := ZT.toZ_eq (same_remainder_difference a b m hm hr)
-  have z := ZT.toZ_eq hq
-  simp only [ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_ofNat, ZT.toZ_natLit] at e z ⊢
-  linear_combination e + (Groth.ι (Q.mk Γ m)) * z
+  ipra_lc ZT.toZ_eq (same_remainder_difference a b m hm hr) + (Groth.ι (Q.mk Γ m)) * ZT.toZ_eq hq
 
 theorem quotient_difference_nonzero (a b : ZT n) (m : PTm n) (hm : Γ ⊢[PRAAx] le one m)
     (hr : Γ ⊢[PRAAx] remainder a m ≐ remainder b m) (hne : Γ ⊢[PRAAx] neg (ZT.eq a b)) :
@@ -227,22 +219,13 @@ theorem computed_collision (a b m : PTm n) (hm : Γ ⊢[PRAAx] le one m)
     (hr : Γ ⊢[PRAAx] computedRemainder a m ≐ computedRemainder b m) :
     Γ ⊢[PRAAx] ZT.eq (decode a - decode b)
       (ZT.ofNat m * (computedQuotient a m - computedQuotient b m)) := by
-  apply ZT.derive
-  have ea := ZT.toZ_eq (.andE₁ (program_correct a m hm))
-  have eb := ZT.toZ_eq (.andE₁ (program_correct b m hm))
-  have same := natEq hr
-  simp only [ZT.toZ_add, ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_ofNat] at ea eb ⊢
-  linear_combination ea - eb + same
+  ipra_lc ZT.toZ_eq (.andE₁ (program_correct a m hm)) - ZT.toZ_eq (.andE₁ (program_correct b m hm)) + natEq hr
 
 theorem computed_zero_difference (a b m : PTm n) (hm : Γ ⊢[PRAAx] le one m)
     (hr : Γ ⊢[PRAAx] computedRemainder a m ≐ computedRemainder b m)
     (hq : Γ ⊢[PRAAx] ZT.eq (computedQuotient a m - computedQuotient b m) (ZT.natLit 0)) :
     Γ ⊢[PRAAx] ZT.eq (decode a) (decode b) := by
-  apply ZT.derive
-  have e := ZT.toZ_eq (computed_collision a b m hm hr)
-  have z := ZT.toZ_eq hq
-  simp only [ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_ofNat, ZT.toZ_natLit] at e z ⊢
-  linear_combination e + (Groth.ι (Q.mk Γ m)) * z
+  ipra_lc ZT.toZ_eq (computed_collision a b m hm hr) + (Groth.ι (Q.mk Γ m)) * ZT.toZ_eq hq
 
 theorem computed_nonzero_difference (a b m : PTm n) (hm : Γ ⊢[PRAAx] le one m)
     (hr : Γ ⊢[PRAAx] computedRemainder a m ≐ computedRemainder b m)

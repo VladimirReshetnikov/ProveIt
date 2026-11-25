@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.MixedRadix
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # First-crossing indicators
@@ -43,8 +44,7 @@ theorem ge_of_le {c d : PTm n} (h : Γ ⊢[PRAAx] le c d) : Γ ⊢[PRAAx] ge c d
 theorem ge_of_lt {c d : PTm n} (h : Γ ⊢[PRAAx] lt d c) : Γ ⊢[PRAAx] ge c d ≐ zero := by
   have e := eq_add_of_le h
   have e' : Γ ⊢[PRAAx] c ≐ succ (monus c (succ d)) + d := by
-    have e₀ := natEq e
-    apply deriveNat; ipra_simps; linear_combination e₀
+    ipra_lc natEq e
   have m : Γ ⊢[PRAAx] monus c d ≐ succ (monus c (succ d)) :=
     (congrMonus e' (.eqRefl d)).eqTrans (add_monus _ _)
   have h₁ : Γ ⊢[PRAAx] le one (succ (monus c (succ d))) := by ipra_le 𝔟 (monus c (succ d))

@@ -70,7 +70,7 @@ theorem ind_one {j r : PTm n} (h : Γ ⊢[PRAAx] le j r) : Γ ⊢[PRAAx] ind j r
 theorem ind_zero {j r : PTm n} (h : Γ ⊢[PRAAx] lt r j) : Γ ⊢[PRAAx] ind j r ≐ zero := by
   have e := eq_add_of_le h
   have q : Γ ⊢[PRAAx] succ r + monus j (succ r) ≐ succ (monus j (succ r)) + r := by
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   have m : Γ ⊢[PRAAx] monus j r ≐ succ (monus j (succ r)) :=
     (congrMonus (e.eqTrans q) (.eqRefl r)).eqTrans (add_monus _ r)
   exact (congrMonus (.eqRefl _) m).eqTrans ((succ_monus_succ _ _).eqTrans (zero_monus _))
@@ -85,11 +85,11 @@ theorem cnt_one {q d : PTm n} (h : Γ ⊢[PRAAx] lt d q) : Γ ⊢[PRAAx] cnt zer
   have m : Γ ⊢[PRAAx] le one (monus q d) := by
     refine le_of_eq_add (d := monus q (succ d)) ?_
     have q' : Γ ⊢[PRAAx] succ d + monus q (succ d) ≐ (one + monus q (succ d)) + d := by
-      apply deriveNat; ipra_simps; ring
+      ipra_ring
     exact (congrMonus (e.eqTrans q') (.eqRefl d)).eqTrans (add_monus _ d)
   have a : Γ ⊢[PRAAx] monus one (monus zero d) ≐ one :=
     (congrMonus (.eqRefl _) (zero_monus d)).eqTrans (monus_zero _)
-  exact (congrMul a (sg_one m)).eqTrans (by apply deriveNat; ipra_simps; ring)
+  exact (congrMul a (sg_one m)).eqTrans (by ipra_ring)
 
 /-- `J ≤ ⌊√⌊√z⌋⌋ → J⁴ ≤ z`. -/
 theorem qr_pow {J z : PTm n} (h : Γ ⊢[PRAAx] le J (qr z)) : Γ ⊢[PRAAx] le ((J * J) * (J * J)) z :=
@@ -105,7 +105,7 @@ theorem isqrt_le_self (w : PTm n) : Γ ⊢[PRAAx] le (isqrt w) w := by
 theorem Q4_pos (i : PTm n) : Γ ⊢[PRAAx] Q4 i ≐ succ (pred (Q4 i)) :=
   pos_of_lt_zero (le_of_eq_add
     (d := i * (i * (i * i)) + two * two * (i * (i * i)) + (two * two + two) * (i * i) + two * two * i)
-    (by apply deriveNat; ipra_simps; ring))
+    (by ipra_ring))
 
 /-- `[J ≤ qr(⌊x/(d+1)⌋)] ≤ [d < ⌊x/J⁴⌋]` for `J = i + 1`. -/
 theorem ind_cnt (i d x : PTm n) :
@@ -150,7 +150,7 @@ theorem row_bound (d x : PTm n) :
     have hj : (lt (var 0) (succ (qr (quo (Syn.shift x) (succ (Syn.shift d))))) :: Γ.map Fm.shift) ⊢[PRAAx]
         le (var 0) (qr (quo (Syn.shift x) (succ (Syn.shift d)))) :=
       (succ_monus_succ _ _).eqSymm.eqTrans Prf.hyp0
-    exact le_congr (by apply deriveNat; ipra_simps; ring) ((a3_at _ _ _).eqTrans
+    exact le_congr (by ipra_ring) ((a3_at _ _ _).eqTrans
       (congrMul (ind_one hj) (.eqRefl _))).eqSymm (le_refl (one * cT (var 0)))
   have hRx : Γ ⊢[PRAAx] le (succ (qr (quo x (succ d)))) (succ x) := (succ_monus_succ _ _).eqTrans hr
   have sp := sum_split (Γ := Γ) (rowB a3) (succ (qr (quo x (succ d))))
@@ -161,7 +161,7 @@ theorem row_bound (d x : PTm n) :
 /-! ## The columns -/
 
 theorem cT_succ_le (i : PTm n) : Γ ⊢[PRAAx] le (cT (succ i)) (succ (two * two + two) * (succ i * succ i)) :=
-  le_of_eq_add (d := two * two * (i * i) + succ (two * two) * i) (by apply deriveNat; ipra_simps; ring)
+  le_of_eq_add (d := two * two * (i * i) + succ (two * two) * i) (by ipra_ring)
 
 theorem inst2_icB' (d z : PTm n) : inst2 icB d z = cnt (fstT z) (sndT z) d := by simp [inst2]
 
@@ -210,7 +210,7 @@ theorem col_tail (I X : PTm n) :
   have qm := quo_mul_le (Γ := Γ) (x := X) (Q4_pos I)
   have qq : Γ ⊢[PRAAx] le (succ I * succ I * quo X (Q4 I)) (quo X (succ I * succ I)) := by
     refine le_quo_of_mul_le (FloorTelescope.sq_pos I) ?_
-    exact le_congr (by apply deriveNat; ipra_simps; ring) (.eqRefl _) qm
+    exact le_congr (by ipra_ring) (.eqRefl _) qm
   ipra_le sl s + sl c1 + 7 * sl qq with (3 * 𝔞 I * 𝔞 I + 9 * 𝔞 I + 7) * eic
 
 /-- The column `j = 0`: `Σ_{d<X} a(d, 0, X) ≤ X`. -/
@@ -220,11 +220,11 @@ theorem col_zero (X : PTm n) : Γ ⊢[PRAAx] le (ap2 (sumF (colB a3)) X (pairT z
     have e := fst_pair (Γ := lt (var 0) (Syn.shift X) :: Γ.map Fm.shift) zero (Syn.shift X)
     have i1 := ind_le_one (Γ := lt (var 0) (Syn.shift X) :: Γ.map Fm.shift) (fstT (pairT zero (Syn.shift X)))
       (qr (quo (sndT (pairT zero (Syn.shift X))) (succ (var 0))))
-    have ec := natEq ((congrCT e).eqTrans (by apply deriveNat; ipra_simps; ring :
+    have ec := natEq ((congrCT e).eqTrans (by ipra_ring :
       (lt (var 0) (Syn.shift X) :: Γ.map Fm.shift) ⊢[PRAAx] cT zero ≐ one))
     ipra_le sl i1 with 𝔞 (ind (fstT (pairT zero (Syn.shift X)))
       (qr (quo (sndT (pairT zero (Syn.shift X))) (succ (var 0))))) * ec)))
-  exact le_congr (.eqRefl _) (by apply deriveNat; ipra_simps; ring) s
+  exact le_congr (.eqRefl _) (by ipra_ring) s
 
 /-! ## The sum -/
 
@@ -250,7 +250,7 @@ theorem fourth_root_sum (x : PTm n) :
     rw [inst2_WB, shift_pairT, shift_succ'']
     exact le_congr (.eqRefl _) (oB_at a3 _ _ _).eqSymm (row_bound _ _))))
   have e2 := natEq (fubini (Γ := Γ) a3 x (succ x) x)
-  have e3 := natEq (congrAp2 (Γ := Γ) (sumF (pB a3)) (by apply deriveNat; ipra_simps; ring : Γ ⊢[PRAAx] succ x ≐ one + x)
+  have e3 := natEq (congrAp2 (Γ := Γ) (sumF (pB a3)) (by ipra_ring : Γ ⊢[PRAAx] succ x ≐ one + x)
     (.eqRefl (pairT x x)))
   have e4 := natEq (sum_split (Γ := Γ) (pB a3) one x (pairT x x))
   have e5 := natEq (sum_succ' (Γ := Γ) (pB a3) zero (pairT x x))
@@ -266,7 +266,7 @@ theorem fourth_root_sum (x : PTm n) :
             (sndT (sndT (pairT one (pairT (Syn.shift x) (Syn.shift x)))))) ≐
         ap2 (sumF (colB a3)) (Syn.shift x) (pairT (succ (var 0)) (Syn.shift x)) :=
       congrAp2 (sumF (colB a3)) ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
-        (congrPairT ((congrAdd (fst_pair _ _) (.eqRefl _)).eqTrans (by apply deriveNat; ipra_simps; ring))
+        (congrPairT ((congrAdd (fst_pair _ _) (.eqRefl _)).eqTrans (by ipra_ring))
           ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)))
     exact le_congr E.eqSymm (.eqRefl _) (col_tail _ _))))
   have e8 := natEq (sum_scale (Γ := Γ) TB qB x (succ (two * two + two)) x x (.allI (.impI (by

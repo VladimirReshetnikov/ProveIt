@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.FiniteSetCategory
 import IPRADerivations.Foundations.FiniteQuotient
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Coequalizers of finite sets by sequential merging (`ipra_categorical_methods`, Section 4)
@@ -59,11 +60,7 @@ variable {k : ℕ} {Γ : List (Fm PTm k)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- Congruence of the equality bit. -/
-theorem eqb_congr' {a a' b b' : PTm k} (h₁ : Γ ⊢[PRAAx] a ≐ a') (h₂ : Γ ⊢[PRAAx] b ≐ b') :
-    Γ ⊢[PRAAx] eqb a b ≐ eqb a' b' := by
-  have h := Prf.eqCongr (Γ := Γ) (eqb (var 0) (var 1) : PTm 2) (σ := ![a, b]) (σ' := ![a', b'])
-    (fun j => by fin_cases j <;> assumption)
-  simpa using h
+alias eqb_congr' := Common.congrEqb
 
 theorem shift_succ' (a : PTm k) : Syn.shift (succ a) = succ (Syn.shift a) := by
   simp [Syn.shift]

@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.SieveWeightFacts
 import IPRADerivations.AnalyticNumberTheory.SieveClosedForms
 import IPRADerivations.AnalyticNumberTheory.SymmetrySum
 import IPRADerivations.Foundations.BoundedReflection
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The explicit vector `y` of the sieve weights
@@ -59,9 +60,7 @@ theorem eqb_idem (a b : PTm n) : Γ ⊢[PRAAx] eqb a b * eqb a b ≐ eqb a b := 
 
 theorem prod_idem {x y : PTm n} (hx : Γ ⊢[PRAAx] x * x ≐ x) (hy : Γ ⊢[PRAAx] y * y ≐ y) :
     Γ ⊢[PRAAx] (x * y) * (x * y) ≐ x * y := by
-  have a := natEq hx; have b := natEq hy
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 y * 𝔞 y * a + 𝔞 x * b
+  ipra_lc 𝔞 y * 𝔞 y * natEq hx + 𝔞 x * natEq hy
 
 theorem muP_idem (N x : PTm n) : Γ ⊢[PRAAx] muP N x * muP N x ≐ muP N x :=
   prod_idem (eqb_idem _ _) (eqb_idem _ _)
@@ -79,9 +78,7 @@ theorem eqb_zero_one (t : PTm n) : Γ ⊢[PRAAx] eqb t zero * eqb t one ≐ zero
   · exact zero_mul_l (eqb_of_ne Prf.hyp0) _
 
 theorem disj_alg {s e0 e1 : PTm n} (h : Γ ⊢[PRAAx] e0 * e1 ≐ zero) : Γ ⊢[PRAAx] (s * e0) * (s * e1) ≐ zero := by
-  have a := natEq h
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 s * 𝔞 s * a
+  ipra_lc 𝔞 s * 𝔞 s * natEq h
 
 /-- `μ⁺ μ⁻ = 0`. -/
 theorem mu_disj (N x : PTm n) : Γ ⊢[PRAAx] muP N x * muN N x ≐ zero :=
@@ -133,9 +130,7 @@ theorem YN_at (r P : PTm n) : inst2 YN r P =
 
 theorem y_disj_alg {g s mP mN w : PTm n} (h : Γ ⊢[PRAAx] mP * mN ≐ zero) :
     Γ ⊢[PRAAx] (g * ((s * mP) * w)) * (g * ((s * mN) * w)) ≐ zero := by
-  have a := natEq h
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 g * 𝔞 g * 𝔞 s * 𝔞 s * 𝔞 w * 𝔞 w * a
+  ipra_lc 𝔞 g * 𝔞 g * 𝔞 s * 𝔞 s * 𝔞 w * 𝔞 w * natEq h
 
 /-- `Y⁺_r Y⁻_r = 0`. -/
 theorem Y_disj (r P : PTm n) : Γ ⊢[PRAAx] inst2 YP r P * inst2 YN r P ≐ zero := by
@@ -146,16 +141,12 @@ theorem Y_disj (r P : PTm n) : Γ ⊢[PRAAx] inst2 YP r P * inst2 YN r P ≐ zer
 theorem phi_alg {φ g s m w B : PTm n} (hg : Γ ⊢[PRAAx] g * g ≐ g) (hs : Γ ⊢[PRAAx] s * s ≐ s)
     (hm : Γ ⊢[PRAAx] m * m ≐ m) (hB : Γ ⊢[PRAAx] B ≐ φ * w) :
     Γ ⊢[PRAAx] φ * ((g * ((s * m) * w)) * (g * ((s * m) * w))) ≐ B * (g * ((s * m) * w)) := by
-  have eg := natEq hg; have es := natEq hs; have em := natEq hm; have eB := natEq hB
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 φ * 𝔞 w * 𝔞 w * (𝔞 s * 𝔞 s * 𝔞 m * 𝔞 m * eg + 𝔞 g * 𝔞 m * 𝔞 m * es + 𝔞 g * 𝔞 s * em) -
-    𝔞 g * 𝔞 s * 𝔞 m * 𝔞 w * eB
+  ipra_lc 𝔞 φ * 𝔞 w * 𝔞 w * (𝔞 s * 𝔞 s * 𝔞 m * 𝔞 m * natEq hg + 𝔞 g * 𝔞 m * 𝔞 m * natEq hs + 𝔞 g * 𝔞 s * natEq hm) -
+    𝔞 g * 𝔞 s * 𝔞 m * 𝔞 w * natEq hB
 
 theorem zero_alg {φ g s m w B : PTm n} (hs : Γ ⊢[PRAAx] s ≐ zero) :
     Γ ⊢[PRAAx] φ * ((g * ((s * m) * w)) * (g * ((s * m) * w))) ≐ B * (g * ((s * m) * w)) := by
-  have es := natEq hs
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞 φ * (𝔞 g * ((𝔞 s + 0) * 𝔞 m * 𝔞 w)) * 𝔞 g * 𝔞 m * 𝔞 w - 𝔞 B * 𝔞 g * 𝔞 m * 𝔞 w) * es
+  ipra_lc (𝔞 φ * (𝔞 g * ((𝔞 s + 0) * 𝔞 m * 𝔞 w)) * 𝔞 g * 𝔞 m * 𝔞 w - 𝔞 B * 𝔞 g * 𝔞 m * 𝔞 w) * natEq hs
 
 /-- `φ(r) (Y⁺_r)² = z! · Y⁺_r` for `r ≤ z`. -/
 theorem phi_YP {r P : PTm n} (hrz : Γ ⊢[PRAAx] le r (sndT (sndT P))) :

@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.Totatives
 import IPRADerivations.Combinatorics.BinomialIdentities
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Gcd fibers
@@ -41,9 +42,7 @@ theorem div_eq {j p : PTm n} (hp : Γ ⊢[PRAAx] p ≐ succ (pred p)) : Γ ⊢[P
 theorem quo_exact {K d : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) (h : Γ ⊢[PRAAx] rem K d ≐ zero) :
     Γ ⊢[PRAAx] quo (K + pred d) d ≐ quo K d := by
   refine quo_eq hd (r := pred d) ?_ (pred_lt hd)
-  have e₁ := natEq (div_eq (j := K) hd); have e₂ := natEq h
-  apply deriveNat; ipra_simps
-  linear_combination e₁ + e₂
+  ipra_lc natEq (div_eq (j := K) hd) + natEq h
 
 theorem quo_mul_ceil {d : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) (m : PTm n) :
     Γ ⊢[PRAAx] quo (d * m + pred d) d ≐ m :=
@@ -73,14 +72,14 @@ theorem reindex_step {g : PTm 2} {K d x : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ 
     refine (congrAdd ih.wk (congrMul e₁ (congrInst2 g hq.eqSymm (.eqRefl x)))).eqTrans ?_
     refine .eqTrans ?_ (congrAp2 (sumF g) (congrAdd (.eqRefl _) e₁.eqSymm) (.eqRefl x))
     have es : ((rem K d ≐ zero) :: Γ) ⊢[PRAAx] quo (K + pred d) d + succ zero ≐ succ (quo (K + pred d) d) := by
-      apply deriveNat; ipra_simps; ring
+      ipra_ring
     refine .eqTrans ?_ (congrAp2 (sumF g) es.eqSymm (.eqRefl x))
     exact (congrAdd (.eqRefl _) (one_mul _)).eqTrans (sum_succ' g _ x).eqSymm
   · have e₀ := eqb_of_ne (Prf.hyp0 : (neg (rem K d ≐ zero) :: Γ) ⊢[PRAAx] neg (rem K d ≐ zero))
     refine (congrAdd ih.wk (congrMul e₀ (.eqRefl _))).eqTrans ?_
     refine .eqTrans ?_ (congrAp2 (sumF g) (congrAdd (.eqRefl _) e₀.eqSymm) (.eqRefl x))
     refine .eqTrans ?_ (congrAp2 (sumF g) (add_zero _).eqSymm (.eqRefl x))
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
 
 /-- Variables: `0 = K`, `1 = d`, `2 = x`. -/
 private abbrev reF (g : PTm 2) : Fm PTm 3 :=
@@ -92,7 +91,7 @@ private theorem reindex₀ (g : PTm 2) : ([] : List (Fm PTm 3)) ⊢[PRAAx] reF g
   · simp only [Fm.subst_imp, Fm.subst_eq, subst_ap2, subst_ap3, PTm.subst_add, PTm.subst_pred, Syn.subst_var,
       Syn.inst_zero, Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
     refine .impI ((sum2_zero _ _ _).eqTrans ((congrAp2 (sumF g)
-      (quo_eq Prf.hyp0 (z := zero + pred (var 0)) (q := zero) (r := pred (var 0)) (by apply deriveNat; ipra_simps; ring) (pred_lt Prf.hyp0))
+      (quo_eq Prf.hyp0 (z := zero + pred (var 0)) (q := zero) (r := pred (var 0)) (by ipra_ring) (pred_lt Prf.hyp0))
       (.eqRefl _)).eqTrans (sum_zero _ _)).eqSymm)
   · simp only [Fm.subst_imp, Fm.subst_eq, subst_ap2, subst_ap3, PTm.subst_add, PTm.subst_pred, Syn.subst_var,
       Syn.repl_zero, repl_one, repl_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
@@ -116,16 +115,12 @@ theorem eqb_iff {A B C D : PTm n} (h₁ : Γ ⊢[PRAAx] (A ≐ B) ⟶ (C ≐ D))
 theorem dvd_mul_both {d h a : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) (hh : Γ ⊢[PRAAx] h ≐ succ (pred h))
     (H : Γ ⊢[PRAAx] dvd h a) : Γ ⊢[PRAAx] dvd (d * h) (d * a) := by
   refine dvd_of_eq' (pos_mul hd hh) (w := quo a h) ?_
-  have e := natEq (eq_of_dvd' hh H)
-  apply deriveNat; ipra_simps
-  linear_combination Groth.ι (Q.mk _ d) * e
+  ipra_lc Groth.ι (Q.mk _ d) * natEq (eq_of_dvd' hh H)
 
 theorem dvd_cancel {d h a : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) (hh : Γ ⊢[PRAAx] h ≐ succ (pred h))
     (H : Γ ⊢[PRAAx] dvd (d * h) (d * a)) : Γ ⊢[PRAAx] dvd h a := by
   refine dvd_of_eq' hh (w := quo (d * a) (d * h)) (mul_cancel hd ?_)
-  have e := natEq (eq_of_dvd' (pos_mul hd hh) H)
-  apply deriveNat; ipra_simps
-  linear_combination e
+  ipra_lc natEq (eq_of_dvd' (pos_mul hd hh) H)
 
 section Point
 
@@ -141,7 +136,7 @@ theorem fiber_fwd {k a : PTm n} (hk : Γ ⊢[PRAAx] k ≐ d * a) (H : Γ ⊢[PRA
   have d₂ := dvd_mul_both hd hh (Prf.andE₂ hdv)
   have dg := dvd_congr H (gcd_greatest' (pos_mul hd hh) d₁ d₂)
   have dg' : Γ ⊢[PRAAx] dvd (d * gcd a m) (d * one) :=
-    dvd_congr (by apply deriveNat; ipra_simps; ring) dg
+    dvd_congr (by ipra_ring) dg
   exact eq_one_of_dvd_one hh (dvd_cancel hd hh dg')
 
 /-- `gcd(a, m) = 1 → gcd(da, dm) = d`. -/
@@ -160,7 +155,7 @@ theorem fiber_bwd {k a : PTm n} (hk : Γ ⊢[PRAAx] k ≐ d * a) (H : Γ ⊢[PRA
   have dhk := dvd_congr hk (dvd_congr_left eG (Prf.andE₁ hGd))
   have dhm := dvd_congr_left eG (Prf.andE₂ hGd)
   have h₁ := eq_one_of_dvd_one hh (dvd_congr H (gcd_greatest' hh (dvd_cancel hd hh dhk) (dvd_cancel hd hh dhm)))
-  exact eG.eqTrans ((congrMul (.eqRefl _) h₁).eqTrans (by apply deriveNat; ipra_simps; ring))
+  exact eG.eqTrans ((congrMul (.eqRefl _) h₁).eqTrans (by ipra_ring))
 
 /-- `[gcd(k, dm) = d] = [d ∣ k] · [gcd(k/d, m) = 1]`. -/
 theorem fiber_point (k : PTm n) :

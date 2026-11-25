@@ -1,4 +1,5 @@
 import IPRADerivations.Geometry.EuclideanSpace
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Turán's bound for every number of parts
@@ -186,21 +187,13 @@ theorem nb_symm {A : Fin k → Fin k → ZT n} (hs : ∀ v w, Γ ⊢[PRAAx] ZT.e
 
 theorem nb_bit {A : Fin k → Fin k → ZT n} (hb : ∀ v w, Γ ⊢[PRAAx] ZT.eq (A v w * A v w) (A v w))
     (u v w : Fin k) : Γ ⊢[PRAAx] ZT.eq (nb A u v w * nb A u v w) (nb A u v w) := by
-  have e1 := ZT.toZ_eq (hb v w)
-  have e2 := ZT.toZ_eq (hb u v)
-  have e3 := ZT.toZ_eq (hb u w)
-  apply ZT.derive
-  simp only [nb, ZT.toZ_mul] at e1 e2 e3 ⊢
-  linear_combination (ZT.toZ Γ (A u v) * ZT.toZ Γ (A u v) * (ZT.toZ Γ (A u w) * ZT.toZ Γ (A u w))) * e1 +
-    (ZT.toZ Γ (A v w) * (ZT.toZ Γ (A u w) * ZT.toZ Γ (A u w))) * e2 +
-    (ZT.toZ Γ (A v w) * ZT.toZ Γ (A u v)) * e3
+  ipra_lc [nb] (ZT.toZ Γ (A u v) * ZT.toZ Γ (A u v) * (ZT.toZ Γ (A u w) * ZT.toZ Γ (A u w))) * ZT.toZ_eq (hb v w) +
+    (ZT.toZ Γ (A v w) * (ZT.toZ Γ (A u w) * ZT.toZ Γ (A u w))) * ZT.toZ_eq (hb u v) +
+    (ZT.toZ Γ (A v w) * ZT.toZ Γ (A u v)) * ZT.toZ_eq (hb u w)
 
 theorem nb_support {A : Fin k → Fin k → ZT n} (hb : ∀ v w, Γ ⊢[PRAAx] ZT.eq (A v w * A v w) (A v w))
     (u v w : Fin k) : Γ ⊢[PRAAx] ZT.eq (nb A u v w * A u v) (nb A u v w) := by
-  have e2 := ZT.toZ_eq (hb u v)
-  apply ZT.derive
-  simp only [nb, ZT.toZ_mul] at e2 ⊢
-  linear_combination (ZT.toZ Γ (A v w) * ZT.toZ Γ (A u w)) * e2
+  ipra_lc [nb] (ZT.toZ Γ (A v w) * ZT.toZ Γ (A u w)) * ZT.toZ_eq (hb u v)
 
 /-! ## Turán's bound -/
 
@@ -259,10 +252,7 @@ theorem turan : ∀ (ρ : ℕ) (A : Fin k → Fin k → ZT n) (x : Fin k → ZT 
         ZT.toZ_sumFin]
       linear_combination L
     have hbn : Γ ⊢[PRAAx] zle (ZT.natLit 0) (ZT.natLit (ρ + 1) * ZT.sq (ZT.sumFin x)) := by
-      refine zle_of_comb (((ρ + 1 : ℕ) : Groth (Q Γ)) * ZT.toZ Γ (ZT.sumFin x) ^ 2) ?_
-        (nn_mul (nn_natCast _) (nn_zsq _))
-      simp only [ZT.toZ_mul, ZT.toZ_sq, ZT.toZ_natLit, ZT.toZ_sumFin, Nat.cast_zero]
-      ring
+      ipra_zle (((ρ + 1 : ℕ) : Groth (Q Γ)) * ZT.toZ Γ (ZT.sumFin x) ^ 2)
     exact zle_of_mul_self (ρ + 2) hbn hcl
 
 /-- Turán's bound on all `k` vertices: `(ρ + 1) E ≤ ρ k²` for a graph without a clique on `ρ + 2`

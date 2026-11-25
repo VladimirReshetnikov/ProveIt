@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.MeshChange
 import IPRADerivations.Analysis.RationalCubeInfimumIntervals
 import IPRADerivations.Analysis.GaussianRationalSyntheticBounds
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Exact Euler-constant mesh approximants
@@ -106,11 +107,7 @@ theorem synchronous_cleared (N M K L : PTm n) (hN : Γ ⊢[PRAAx] le one N)
   have low : Γ ⊢[PRAAx] le (S M (fact L)+S (K*N) (fact L)) (S N (fact L)+S (K*M) (fact L)) := by
     ipra_le sl lr.andE₁ using linear_combination eM+eKN-eKM-eN
   have ep : Γ ⊢[PRAAx] pred N+monus M N ≐ pred M := by
-    have a := natEq pN
-    have b := natEq pM
-    have c := natEq (eq_add_of_le hNM)
-    apply deriveNat; ipra_simps
-    linear_combination -a+b-c
+    ipra_lc -natEq pN+natEq pM-natEq (eq_add_of_le hNM)
   have ePred := natEq (congrAp2 (sumF hB) ep (.eqRefl (fact L)))
   have esN := natEq ((congrAp2 (sumF hB) pN (.eqRefl (fact L))).eqTrans
     ((S_succ (pred N) (fact L)).eqTrans (congrAdd (.eqRefl _) (congrAp2 quoF (.eqRefl _) pN.eqSymm))))

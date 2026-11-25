@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianGammaCanonicalTailFiniteSplit
 import IPRADerivations.Analysis.GammaLocalFactorName
 import IPRADerivations.Analysis.GaussianNameArithmetic
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Metric transport for the original canonical Gamma tail observations
@@ -31,10 +32,7 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 theorem ofGaussian_congr {a b D E : PTm n} (ha : Γ ⊢[PRAAx] a ≐ b)
     (hD : Γ ⊢[PRAAx] D ≐ E) : Γ ⊢[PRAAx] ofGaussian a D ≐ ofGaussian b E := by
-  simpa only [GaussianRationalHorner.subst_ofGaussian,Syn.subst_var,
-    Matrix.cons_val_zero,Matrix.cons_val_one] using
-    Prf.eqCongr (ofGaussian (var 0) (var 1) : PTm 2) (σ := ![a,D]) (σ' := ![b,E])
-      (fun i => by fin_cases i; exact ha; exact hD)
+  ipra_congr (ofGaussian (var 0) (var 1) : PTm 2) with [ha, hD]
 
 /-- The original native cross difference, with both original denominators. -/
 theorem distance_of_cross (a b D E A B : PTm n)
@@ -81,12 +79,7 @@ theorem tail_rounding_distance (p z R B N : PTm n) (hB : Γ ⊢[PRAAx] le one B)
 theorem value_cutoffs_congr (z B N : PTm n) {r s L K : PTm n}
     (hr : Γ ⊢[PRAAx] r ≐ s) (hL : Γ ⊢[PRAAx] L ≐ K) :
     Γ ⊢[PRAAx] value z B N r L ≐ value z B N s K := by
-  simpa only [GaussianGammaCanonicalTailFiniteSplit.subst_value,Syn.subst_var,
-    Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_three,
-    Matrix.cons_val_four,Matrix.cons_val_succ,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (value (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5)
-      (σ := ![z,B,N,r,L]) (σ' := ![z,B,N,s,K])
-      (fun i => by fin_cases i; exact .eqRefl _; exact .eqRefl _; exact .eqRefl _; exact hr; exact hL)
+  ipra_congr (value (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) with [.eqRefl z, .eqRefl B, .eqRefl N, hr, hL]
 
 /-- Increasing the original index count by one at the SAME Taylor cutoff.
 Both numerical budgets are derived from the actual original schedule. -/

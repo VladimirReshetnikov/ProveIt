@@ -52,7 +52,7 @@ theorem block_sum (g : PTm 2) (m N x : PTm n) :
       let D : List (Fm PTm (n + 1)) := (ap2 (sumF g) (var 0 * Syn.shift N) (Syn.shift x) ≐
         ap2 (sumF (blkB g)) (var 0) (pairT (Syn.shift N) (Syn.shift x))) :: Γ.map Fm.shift
       have c : D ⊢[PRAAx] succ (var 0) * Syn.shift N ≐ var 0 * Syn.shift N + Syn.shift N := by
-        apply deriveNat; ipra_simps; ring
+        ipra_ring
       refine (congrAp2 (sumF g) c (.eqRefl _)).eqTrans ((sum_split g _ _ _).eqTrans ?_)
       refine .eqTrans ?_ (sum_succ' (blkB g) (var 0) (pairT (Syn.shift N) (Syn.shift x))).eqSymm
       exact congrAdd Prf.hyp0 (blk_at g _ _ _).eqSymm

@@ -7,6 +7,7 @@ import IPRADerivations.AnalyticNumberTheory.LocalFactor
 import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.Topology.CollisionScales
 import IPRADerivations.AnalyticNumberTheory.BlockChain
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The harmonic budget and the logarithm absorption (`riemann_ipra_prime_criteria_2026-11-20`, `thm:powerdivisor`)
@@ -56,7 +57,7 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
-theorem mul_one' (x : PTm n) : Γ ⊢[PRAAx] x * one ≐ x := by apply deriveNat; ipra_simps; ring
+alias mul_one' := Common.mul_one_right
 
 /-! ## The dyadic budget -/
 
@@ -129,7 +130,7 @@ theorem dyadic_budget {z X : PTm n} (hv : Γ ⊢[PRAAx] Budget v z X) (e : PTm n
         exact a.wk
       have hP : Δ ⊢[PRAAx] (pw two (var 0)) ≐ succ (pred (pw two (var 0))) := pos_of_one_le (one_le_pw' (by ipra_le 1) _)
       have hsplit : Δ ⊢[PRAAx] pw two (succ (var 0)) ≐ (pw two (var 0)) + (pw two (var 0)) :=
-        (pw_succ two (var 0)).eqTrans (by apply deriveNat; ipra_simps; ring)
+        (pw_succ two (var 0)).eqTrans (by ipra_ring)
       have sp : Δ ⊢[PRAAx] ap2 (sumF v) (pw two (succ (var 0))) (Syn.shift z) ≐
           ap2 (sumF v) (pw two (var 0)) (Syn.shift z) + ap2 (sumF (offB v)) (pw two (var 0)) (pairT (pw two (var 0)) (Syn.shift z)) :=
         (congrAp2 (sumF v) hsplit (.eqRefl _)).eqTrans (sum_split v (pw two (var 0)) (pw two (var 0)) (Syn.shift z))

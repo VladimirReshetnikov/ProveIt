@@ -3,6 +3,8 @@ import IPRADerivations.Combinatorics.BinomialIdentities
 import IPRADerivations.Probability.Independence
 import IPRADerivations.Core.Integers
 import IPRADerivations.AnalyticNumberTheory.Mobius
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Actual Bell coefficients for the local logarithmic exponential
@@ -183,12 +185,7 @@ theorem neg_at (j N L : PTm n) : Γ ⊢[PRAAx] inst2 negBody j (pairT N L) ≐ t
   rw [h]
   exact termM_congr (.eqRefl _) (fst_pair _ _) (snd_pair _ _)
 
-theorem monus_succ_le {j N : PTm n} (h : Γ ⊢[PRAAx] le j N) :
-    Γ ⊢[PRAAx] monus (succ N) j ≐ succ (monus N j) := by
-  have e := natEq (eq_add_of_le h)
-  have a : Γ ⊢[PRAAx] succ N ≐ succ (monus N j)+j := by
-    apply deriveNat; ipra_simps; linear_combination e
-  exact (congrMonus a (.eqRefl _)).eqTrans (add_monus _ _)
+alias monus_succ_le := Common.monus_succ_of_le
 
 /-- The actual binomial coefficient identity used in multiplying the
 factorial-cleared derivative by `1+w`. -/
@@ -483,22 +480,13 @@ theorem kernel_parity (k : PTm n) : Γ ⊢[PRAAx] kernelParity k := by
         Prf.andE₁ (AnalyticNumberTheory.Mobius.par_succ _)
       have op : Δ ⊢[PRAAx] oddBit (succ (var 0)) ≐ evenBit (var 0) :=
         Prf.andE₂ (AnalyticNumberTheory.Mobius.par_succ _)
-      have p := natEq (kernel_pos_succ (Γ := Δ) (var 0))
-      have q := natEq (kernel_neg_succ (Γ := Δ) (var 0))
-      have ihp := natEq (Prf.andE₁ (Prf.hyp0 : Δ ⊢[PRAAx] kernelParity (var 0)))
-      have ihm := natEq (Prf.andE₂ (Prf.hyp0 : Δ ⊢[PRAAx] kernelParity (var 0)))
-      have parityp := natEq ep
-      have paritym := natEq op
-      have fstep := natEq (fact_succ (Γ := Δ) (var 0) zero)
       refine .andI ?_ ?_
-      · apply deriveNat
-        ipra_simps
-        linear_combination p+(𝔞(var 0)+1)*ihm-(𝔞(var 0)+1)*𝔞(fact (var 0))*parityp
-          -𝔞(evenBit (succ (var 0)))*fstep
-      · apply deriveNat
-        ipra_simps
-        linear_combination q+(𝔞(var 0)+1)*ihp-(𝔞(var 0)+1)*𝔞(fact (var 0))*paritym
-          -𝔞(oddBit (succ (var 0)))*fstep
+      · ipra_lc natEq (kernel_pos_succ (Γ := Δ) (var 0))+
+          (𝔞(var 0)+1)*natEq (Prf.andE₂ (Prf.hyp0 : Δ ⊢[PRAAx] kernelParity (var 0)))-
+          (𝔞(var 0)+1)*𝔞(fact (var 0))*natEq ep -𝔞(evenBit (succ (var 0)))*natEq (fact_succ (Γ := Δ) (var 0) zero)
+      · ipra_lc natEq (kernel_neg_succ (Γ := Δ) (var 0))+
+          (𝔞(var 0)+1)*natEq (Prf.andE₁ (Prf.hyp0 : Δ ⊢[PRAAx] kernelParity (var 0)))-
+          (𝔞(var 0)+1)*𝔞(fact (var 0))*natEq op -𝔞(oddBit (succ (var 0)))*natEq (fact_succ (Γ := Δ) (var 0) zero)
   simpa only [subst_kernelParity,Syn.subst_var,Syn.inst_zero] using Prf.allE k all
 
 /-- The actual source coefficient at degree `k+1`: `(-1)^k/(k+1)`.
@@ -606,20 +594,12 @@ theorem rational_coefficient_recurrence_closed :
 
 theorem rational_initial_zero : Γ ⊢[PRAAx]
     ZT.eq (coefficient (zero : PTm n)) (ZT.ofNat (fact zero)) := by
-  have e := ZT.toZ_eq (coefficient_zero (Γ := Γ) (n := n))
-  have f := natEq (fact_zero (Γ := Γ) (zero : PTm n))
-  apply ZT.derive
-  ipra_simps
-  linear_combination e-f
+  ipra_lc ZT.toZ_eq (coefficient_zero (Γ := Γ) (n := n))-natEq (fact_zero (Γ := Γ) (zero : PTm n))
 
 theorem rational_initial_one : Γ ⊢[PRAAx]
     ZT.eq (coefficient (one : PTm n)) (ZT.ofNat (fact one)) := by
-  have e := ZT.toZ_eq (coefficient_one (Γ := Γ) (n := n))
-  have fstep := natEq (fact_succ (Γ := Γ) (zero : PTm n) zero)
-  have f0 := natEq (fact_zero (Γ := Γ) (zero : PTm n))
-  apply ZT.derive
-  ipra_simps
-  linear_combination e-fstep-f0
+  ipra_lc ZT.toZ_eq (coefficient_one (Γ := Γ) (n := n))-natEq (fact_succ (Γ := Γ) (zero : PTm n) zero)-
+    natEq (fact_zero (Γ := Γ) (zero : PTm n))
 
 /-- These are the cleared rational equalities `f_0=f_1=1`; the actual
 numerator and denominator fields are linked by the program certificate. -/

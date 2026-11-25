@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.MasterCertificate
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Realizing fixed bounded strategies
@@ -77,15 +78,9 @@ private theorem check_congr (P : Pattern) {c c' x x' : PTm n}
   simpa only [inst2, subst_check, Syn.subst_var,
     Matrix.cons_val_zero, Matrix.cons_val_one] using h
 
-private theorem pair_congr {a a' b b' : PTm n}
-    (ha : Γ ⊢[PRAAx] a ≐ a') (hb : Γ ⊢[PRAAx] b ≐ b') :
-    Γ ⊢[PRAAx] pairT a b ≐ pairT a' b' :=
-  congrAdd (congrMul (congrAdd ha hb) (congrAdd ha hb)) ha
+private alias pair_congr := Common.congrPairT
 
-private theorem eqb_congr {a a' b b' : PTm n}
-    (ha : Γ ⊢[PRAAx] a ≐ a') (hb : Γ ⊢[PRAAx] b ≐ b') :
-    Γ ⊢[PRAAx] eqb a b ≐ eqb a' b' :=
-  congrMonus (.eqRefl _) (congrAdd (congrMonus ha hb) (congrMonus hb ha))
+private alias eqb_congr := Common.congrEqb
 
 private theorem entry_congr {c c' i i' : PTm n}
     (hc : Γ ⊢[PRAAx] c ≐ c') (hi : Γ ⊢[PRAAx] i ≐ i') :

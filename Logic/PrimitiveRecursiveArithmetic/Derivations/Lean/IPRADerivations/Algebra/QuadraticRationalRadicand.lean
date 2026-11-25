@@ -1,4 +1,5 @@
 import IPRADerivations.Algebra.QuadraticRationalCongruence
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Changing a positive rational radicand to an integer radicand
@@ -97,10 +98,7 @@ theorem divide_represents (x q D : PTm n) (a : ZT n) (hq : Γ ⊢[PRAAx] le one 
 theorem rescale_represents (q x A D : PTm n) (hq : Γ ⊢[PRAAx] le one q)
     (h : Γ ⊢[PRAAx] represents x A D) : Γ ⊢[PRAAx] represents (rescale q x) (stretch q A) (D*q) := by
   refine .andI (scalar_code_congr _ _ (fst_pair _ _) ?_) (scalar_code_congr _ _ (snd_pair _ _) ?_)
-  · apply ZT.derive
-    have hA := ZT.toZ_eq (.andE₁ h)
-    simp only [ZT.toZ_mul,ZT.toZ_ofNat,stretch_first,Q.mk_mul,map_mul] at hA ⊢
-    linear_combination 𝔞(q)*hA
+  · ipra_lc [stretch_first] 𝔞(q)*ZT.toZ_eq (.andE₁ h)
   · exact scalar_value_congr _ _ _ _ (stretch_second q A).symm (divide_represents _ _ _ _ hq (.andE₂ h))
 
 theorem equal_from_representations (x y A B : PTm n) (a b : ZT n)
@@ -109,13 +107,8 @@ theorem equal_from_representations (x y A B : PTm n) (a b : ZT n)
     (hCross : Γ ⊢[PRAAx] ZT.eq (a*ZT.ofNat B) (b*ZT.ofNat A)) : Γ ⊢[PRAAx] rationalEq x y := by
   apply RationalArithmetic.value_equality
   apply RationalNormalForm.positive_integer_cancel (A*B) _ _ (positive_product hA hB)
-  apply ZT.derive
-  have h1 := ZT.toZ_eq hx
-  have h2 := ZT.toZ_eq hy
-  have h3 := ZT.toZ_eq hCross
-  simp only [ZT.toZ_mul,ZT.toZ_ofNat,Q.mk_mul,map_mul] at h1 h2 h3 ⊢
-  linear_combination -(𝔞(B)*𝔞(denominatorOf y))*h1+𝔞(A)*𝔞(denominatorOf x)*h2+
-    𝔞(denominatorOf x)*𝔞(denominatorOf y)*h3
+  ipra_lc -(𝔞(B)*𝔞(denominatorOf y))*ZT.toZ_eq hx+
+    𝔞(A)*𝔞(denominatorOf x)*ZT.toZ_eq hy+ 𝔞(denominatorOf x)*𝔞(denominatorOf y)*ZT.toZ_eq hCross
 
 theorem equal_pairs_from_representations (x y A B D E : PTm n) (hD : Γ ⊢[PRAAx] le one D) (hE : Γ ⊢[PRAAx] le one E)
     (hx : Γ ⊢[PRAAx] represents x A D) (hy : Γ ⊢[PRAAx] represents y B E)
@@ -155,10 +148,7 @@ theorem rescale_negative (q x : PTm n) (hq : Γ ⊢[PRAAx] le one q) : Γ ⊢[PR
 
 theorem scale_representation (x D q : PTm n) (a : ZT n) (h : Γ ⊢[PRAAx] RationalArithmetic.represents x a D) :
     Γ ⊢[PRAAx] RationalArithmetic.represents x (ZT.ofNat q*a) (q*D) := by
-  apply ZT.derive
-  have he := ZT.toZ_eq h
-  simp only [ZT.toZ_mul,ZT.toZ_ofNat,Q.mk_mul,map_mul] at he ⊢
-  linear_combination 𝔞(q)*he
+  ipra_lc 𝔞(q)*ZT.toZ_eq h
 
 def productNumerator (p q A B : PTm n) : PTm n := encode
   (ZT.ofNat q*(first A*first B)+ZT.ofNat p*(second A*second B))

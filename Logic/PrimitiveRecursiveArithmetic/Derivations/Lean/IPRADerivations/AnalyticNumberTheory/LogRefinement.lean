@@ -104,7 +104,7 @@ theorem inst2_blk (i K c F : PTm n) :
 
 /-- `S(K(c + 1)) = S(Kc) + blk(c)`. -/
 theorem S_block (K c F : PTm n) : Γ ⊢[PRAAx] S (K * succ c) F ≐ S (K * c) F + blk K c F := by
-  have eK : Γ ⊢[PRAAx] K * succ c ≐ K * c + K := by apply deriveNat; ipra_simps; ring
+  have eK : Γ ⊢[PRAAx] K * succ c ≐ K * c + K := by ipra_ring
   exact (congrAp2 (sumF hB) eK (.eqRefl _)).eqTrans (sum_split hB (K * c) K F)
 
 /-- A term of the block is at most `⌊F/(Kc + 1)⌋`. -/
@@ -140,11 +140,11 @@ theorem block_lower {K c F u : PTm n} (hK : Γ ⊢[PRAAx] K ≐ succ (pred K)) (
     Γ ⊢[PRAAx] le (quo F (succ c)) (blk K c F) := by
   have hd : Γ ⊢[PRAAx] K * succ c ≐ succ (pred (K * succ c)) := by
     refine pos_of_eq (e := pred K * succ c + c) ((congrMul hK (.eqRefl _)).eqTrans ?_)
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   have hu : Γ ⊢[PRAAx] quo F (K * succ c) ≐ u := quo_mul hd hF
   have hq : Γ ⊢[PRAAx] quo F (succ c) ≐ K * u := by
     refine quo_mul (congrSucc (pred_succ _).eqSymm) (hF.eqTrans ?_)
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   refine le_congr hq.eqSymm (.eqRefl _) (const_le_sum (offB hB) (.allI (.impI ?_)))
   rw [show Syn.shift (pairT (K * c) F) = pairT (Syn.shift K * Syn.shift c) (Syn.shift F) by simp [Syn.shift]]
   refine blk_point_lower Prf.hyp0 ?_
@@ -168,14 +168,14 @@ theorem up_base (c₁ K F : PTm n) : Γ ⊢[PRAAx] upInv zero c₁ K F :=
     (congrAdd (.eqRefl _) (congrAp2 (sumF hB) (add_zero _).eqSymm (.eqRefl _))) (le_refl _)
 
 theorem up_step {t c₁ K F : PTm n} (ih : Γ ⊢[PRAAx] upInv t c₁ K F) : Γ ⊢[PRAAx] upInv (succ t) c₁ K F := by
-  have eK : Γ ⊢[PRAAx] K * (succ c₁ + succ t) ≐ K * succ (succ c₁ + t) := by apply deriveNat; ipra_simps; ring
+  have eK : Γ ⊢[PRAAx] K * (succ c₁ + succ t) ≐ K * succ (succ c₁ + t) := by ipra_ring
   have eA := natEq ((congrAp2 (sumF hB) eK (.eqRefl _)).eqTrans (S_block K (succ c₁ + t) F))
   have eB := natEq ((congrAp2 (sumF hB) (add_succ c₁ t) (.eqRefl F)).eqTrans
     ((sum_succ' hB (c₁ + t) F).eqTrans (by rw [inst2_h]; exact .eqRefl _)) : Γ ⊢[PRAAx] _ ≐ _)
   have hc : Γ ⊢[PRAAx] succ c₁ + t ≐ succ (pred (succ c₁ + t)) :=
-    pos_of_eq (e := c₁ + t) (by apply deriveNat; ipra_simps; ring)
+    pos_of_eq (e := c₁ + t) (by ipra_ring)
   have hb : Γ ⊢[PRAAx] le (blk K (succ c₁ + t) F) (quo F (succ (c₁ + t))) :=
-    le_congr (.eqRefl _) (congrAp2 quoF (.eqRefl _) (by apply deriveNat; ipra_simps; ring)) (block_upper hc)
+    le_congr (.eqRefl _) (congrAp2 quoF (.eqRefl _) (by ipra_ring)) (block_upper hc)
   have ih' : Γ ⊢[PRAAx] le (S (K * (succ c₁ + t)) F + S c₁ F) (S (K * succ c₁) F + S (c₁ + t) F) := ih
   show Γ ⊢[PRAAx] le (S (K * (succ c₁ + succ t)) F + S c₁ F) (S (K * succ c₁) F + S (c₁ + succ t) F)
   ipra_le sl ih' + sl hb with eB - eA
@@ -222,7 +222,7 @@ theorem lo_step {t T c₀ K L : PTm n} (hK : Γ ⊢[PRAAx] K ≐ succ (pred K)) 
   -- `K(c₀ + t + 1)` divides `L!`
   have hd : Δ ⊢[PRAAx] K * succ (c₀ + t) ≐ succ (pred (K * succ (c₀ + t))) := by
     refine pos_of_eq (e := pred K * succ (c₀ + t) + (c₀ + t)) ((congrMul hK.wk (.eqRefl _)).eqTrans ?_)
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   have hdL : Δ ⊢[PRAAx] le (succ (pred (K * succ (c₀ + t)))) L := by
     have hL' : Δ ⊢[PRAAx] le (K * (c₀ + T)) L := hL.wk
     have e := natEq hd
@@ -235,7 +235,7 @@ theorem lo_step {t T c₀ K L : PTm n} (hK : Γ ⊢[PRAAx] K ≐ succ (pred K)) 
   have hb := block_lower hK.wk hF
   have eA := natEq ((congrAp2 (sumF hB) (add_succ c₀ t) (.eqRefl (fact L))).eqTrans
     ((sum_succ' hB (c₀ + t) (fact L)).eqTrans (by rw [inst2_h]; exact .eqRefl _)) : Δ ⊢[PRAAx] _ ≐ _)
-  have eK : Δ ⊢[PRAAx] K * (c₀ + succ t) ≐ K * succ (c₀ + t) := by apply deriveNat; ipra_simps; ring
+  have eK : Δ ⊢[PRAAx] K * (c₀ + succ t) ≐ K * succ (c₀ + t) := by ipra_ring
   have eB := natEq ((congrAp2 (sumF hB) eK (.eqRefl _)).eqTrans (S_block K (c₀ + t) (fact L)))
   show Δ ⊢[PRAAx] le (S (c₀ + succ t) (fact L) + S (K * c₀) (fact L)) (S (K * (c₀ + succ t)) (fact L) + S c₀ (fact L))
   ipra_le sl ih' + sl hb with eB - eA

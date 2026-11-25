@@ -1,5 +1,6 @@
 import IPRADerivations.Algebra.PowerDifference
 import IPRADerivations.Analysis.GaussianRationalHornerLipschitz
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Exact finite envelopes for rationally enlarged Gaussian disks
@@ -60,10 +61,7 @@ theorem geometric_bound (x y R r : PTm n)
 /-- Exact finite difference when the natural bases differ by one. -/
 theorem adjacent_power (y r : PTm n) : Γ ⊢[PRAAx]
     pw (y+one) r ≐ pw y r+gd (y+one) y r := by
-  have e := natEq (power_diff (Γ := Γ) (y+one) y r)
-  apply deriveNat
-  ipra_simps
-  linear_combination e
+  ipra_lc natEq (power_diff (Γ := Γ) (y+one) y r)
 
 /-- Actual natural numerator envelope, valid also at exponent zero and Z=0. -/
 theorem power_envelope (Z H r : PTm n) (hH : Γ ⊢[PRAAx] le one H) : Γ ⊢[PRAAx]

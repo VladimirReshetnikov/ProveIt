@@ -1,7 +1,7 @@
 import IPRADerivations.Probability.GeometricTail
 import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.Probability.MedianWeighted
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The contraction count of barycentric subdivision

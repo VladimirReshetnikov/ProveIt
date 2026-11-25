@@ -4,6 +4,7 @@ import IPRADerivations.AnalyticNumberTheory.LocalFactor
 import IPRADerivations.AnalyticNumberTheory.Valuation
 import IPRADerivations.Core.Gcd
 import IPRADerivations.AnalyticNumberTheory.PowerCleared
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The weighted arithmetic–geometric mean inequality for two values
@@ -73,7 +74,7 @@ theorem step_ge (hc : Γ ⊢[PRAAx] le X (𝔫 * v)) :
       (𝔫 * (pw 𝔫 𝔫 * pw (X + v) (succ 𝔫))) := by
   have eh := natEq (eq_add_of_le hc)
   have eA : Γ ⊢[PRAAx] 𝔄 + monus (𝔫 * v) X ≐ 𝔞𝔞 := by
-    apply deriveNat; ipra_simps; linear_combination -eh
+    ipra_lc -eh
   have pil := le_congr (.eqRefl _) (congrAp2 powF (.eqRefl _) eA)
     (power_inc_lower (Γ := Γ) 𝔄 (monus (𝔫 * v) X) 𝔫)
   have e1 := natEq (pw_a (Γ := Γ) n₀ X v)
@@ -91,7 +92,7 @@ theorem step_le (hc : Γ ⊢[PRAAx] le (𝔫 * v) X) :
   have eh := natEq (eq_add_of_le hc)
   have haA : Γ ⊢[PRAAx] le 𝔞𝔞 𝔄 := by
     refine le_of_eq_add (d := monus X (𝔫 * v)) ?_
-    apply deriveNat; ipra_simps; linear_combination eh
+    ipra_lc eh
   have hg := gd_le (Γ := Γ) 𝔫 (le_refl 𝔄) haA
   have pd := natEq (power_diff (Γ := Γ) 𝔄 𝔞𝔞 (succ 𝔫))
   have e1 := natEq (pw_a (Γ := Γ) n₀ X v)
@@ -121,7 +122,7 @@ abbrev GInv (b a₀ u v : PTm n) : Fm PTm n :=
 
 theorem g_base (a₀ u v : PTm n) : Γ ⊢[PRAAx] GInv zero a₀ u v := by
   have c0 : Γ ⊢[PRAAx] a₀ + zero ≐ a₀ := add_zero a₀
-  have cX : Γ ⊢[PRAAx] succ a₀ * u + zero * v ≐ succ a₀ * u := by apply deriveNat; ipra_simps; ring
+  have cX : Γ ⊢[PRAAx] succ a₀ * u + zero * v ≐ succ a₀ * u := by ipra_ring
   have eL := natEq (congrAp2 powF (congrSucc c0) (congrSucc c0) :
     Γ ⊢[PRAAx] pw (succ (a₀ + zero)) (succ (a₀ + zero)) ≐ pw (succ a₀) (succ a₀))
   have eR := natEq ((congrAp2 powF (congrSucc c0) cX).eqTrans (pw_mul_base (succ a₀) u (succ a₀)) :
@@ -131,9 +132,9 @@ theorem g_base (a₀ u v : PTm n) : Γ ⊢[PRAAx] GInv zero a₀ u v := by
 
 theorem g_step {b a₀ u v : PTm n} (ih : Γ ⊢[PRAAx] GInv b a₀ u v) : Γ ⊢[PRAAx] GInv (succ b) a₀ u v := by
   have os := one_step (Γ := Γ) (n₀ := a₀ + b) (X := succ a₀ * u + b * v) (v := v)
-  have c1 : Γ ⊢[PRAAx] a₀ + succ b ≐ succ (a₀ + b) := by apply deriveNat; ipra_simps; ring
+  have c1 : Γ ⊢[PRAAx] a₀ + succ b ≐ succ (a₀ + b) := by ipra_ring
   have cX : Γ ⊢[PRAAx] succ a₀ * u + succ b * v ≐ succ a₀ * u + b * v + v := by
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   have eL := natEq (congrAp2 powF (congrSucc c1) (congrSucc c1) :
     Γ ⊢[PRAAx] pw (succ (a₀ + succ b)) (succ (a₀ + succ b)) ≐
       pw (succ (succ (a₀ + b))) (succ (succ (a₀ + b))))

@@ -1,4 +1,5 @@
 import IPRADerivations.Core.ParityArith
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Two staggered grids of cells (`dimension_invariance_ipra`, `lem:cells` for two grids)
@@ -48,9 +49,7 @@ abbrev near (a b : PTm n) : Fm PTm n := le a (succ b) ⋏ le b (succ a)
 private theorem gap_aux {a b ha hb pa pb c : PTm n} (ea : Γ ⊢[PRAAx] a ≐ two * ha + pa)
     (eb : Γ ⊢[PRAAx] b ≐ two * hb + pb) (eh : Γ ⊢[PRAAx] ha ≐ hb) (ep : Γ ⊢[PRAAx] pb ≐ c) :
     Γ ⊢[PRAAx] a + c ≐ b + pa := by
-  have e₁ := natEq ea; have e₂ := natEq eb; have e₃ := natEq eh; have e₄ := natEq ep
-  apply deriveNat; ipra_simps
-  linear_combination e₁ - e₂ + 2 * e₃ - e₄
+  ipra_lc natEq ea - natEq eb + 2 * natEq eh - natEq ep
 
 /-- `a + 2 ≤ b` gives `⌊a / 2⌋ ≠ ⌊b / 2⌋`. -/
 theorem half_ne_of_gap {a b : PTm n} (h : Γ ⊢[PRAAx] le (succ (succ a)) b) :
@@ -71,8 +70,7 @@ private theorem le_succ2_of {a b m : PTm n} (hb : Γ ⊢[PRAAx] b ≐ a + m) (hm
     Γ ⊢[PRAAx] le (succ (succ a)) b := by
   have e₁ := natEq hb; have e₂ := natEq (eq_add_of_le hm)
   refine le_of_eq_add (d := monus m two) ?_
-  apply deriveNat; ipra_simps
-  linear_combination e₁ + e₂
+  ipra_lc e₁ + e₂
 
 /-- `|a − b| ≥ 2` gives `a + 2 ≤ b` or `b + 2 ≤ a`. -/
 theorem gap_of_dist {a b : PTm n} (h : Γ ⊢[PRAAx] le two (dist a b)) :

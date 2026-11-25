@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.SumPhi
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Multiplicativity of the totient
@@ -68,13 +69,13 @@ abbrev blockR (K m N : PTm n) : PTm n :=
 theorem block_zero {m N : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) :
     Γ ⊢[PRAAx] ap3 (sum2F hB) zero m N ≐ blockR zero m N := by
   have q₀ : Γ ⊢[PRAAx] quo zero m ≐ zero :=
-    quo_eq hm (q := zero) (r := zero) (by apply deriveNat; ipra_simps; ring) (zero_lt' hm)
+    quo_eq hm (q := zero) (r := zero) (by ipra_ring) (zero_lt' hm)
   have r₀ : Γ ⊢[PRAAx] rem zero m ≐ zero := rem_zero _
   have s₁ := (congrAp2 (sumF totBody) q₀ (.eqRefl N)).eqTrans (sum_zero (Γ := Γ) _ N)
   have s₂ := (congrAp2 (sumF totBody) r₀ (.eqRefl m)).eqTrans (sum_zero (Γ := Γ) _ m)
   refine (sum2_zero _ _ _).eqTrans ?_
   refine .eqTrans ?_ (congrAdd (congrMul (.eqRefl _) s₁) (congrMul (.eqRefl _) s₂)).eqSymm
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem block_step {K m N : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m))
     (ih : Γ ⊢[PRAAx] ap3 (sum2F hB) K m N ≐ blockR K m N) :
@@ -105,7 +106,7 @@ theorem block_step {K m N : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m))
         (congrMul (congrEqb (congrGcd rq (.eqRefl _)) (.eqRefl _))
           ((congrAp2 (sumF totBody) rr (.eqRefl _)).eqTrans hSm.wk))
     refine hT.wk.eqTrans (.eqTrans ?_ e₁.eqSymm)
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   · -- `K mod m + 1 = m`: the next block starts.
     have heq : ((succ (rem K m) ≐ m) :: Γ) ⊢[PRAAx] succ (rem K m) ≐ m := Prf.hyp0
     have hz : ((succ (rem K m) ≐ m) :: Γ) ⊢[PRAAx] succ K ≐ m * succ (quo K m) + zero :=
@@ -157,7 +158,7 @@ theorem block_sum {m N : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) :
   refine (block_at hm).eqTrans ?_
   refine (congrAdd (congrMul (.eqRefl _) (congrAp2 (sumF totBody) rq (.eqRefl _)))
     (congrMul (.eqRefl _) ((congrAp2 (sumF totBody) rr (.eqRefl _)).eqTrans (sum_zero _ _)))).eqTrans ?_
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-! ## Bridging two-parameter sums to paired sums -/
 
@@ -191,10 +192,7 @@ theorem all_one (c : PTm 2) {N x j : PTm n} (hs : Γ ⊢[PRAAx] ap2 (sumF c) N x
     have h := eq_add_of_le (.impE hge.allOpen.wk Prf.hyp0)
     exact (add_comm _ _).eqTrans h.eqSymm
   have hD : Γ ⊢[PRAAx] ap2 (sumF (monus c one)) N x ≐ zero := by
-    have h₁ := natEq ((sum_add (monus c one) one N x).eqSymm.eqTrans (hpt.eqTrans hs))
-    have h₂ := natEq (sum_ones (Γ := Γ) N x)
-    apply deriveNat; ipra_simps
-    linear_combination h₁ - h₂
+    ipra_lc natEq ((sum_add (monus c one) one N x).eqSymm.eqTrans (hpt.eqTrans hs)) - natEq (sum_ones (Γ := Γ) N x)
   have hz := sum_zero_elim (monus c one) hD hj
   rw [eD] at hz
   have hg := Prf.allE j hge
@@ -245,11 +243,8 @@ theorem sig_eq (k : PTm n) : Γ ⊢[PRAAx] inst2 crtS k (pairT m N) ≐ rem k m 
   (at_pair sig3 k m N).eqTrans (by rw [inst3_sig]; exact .eqRefl _)
 
 theorem sig_lt (k : PTm n) : Γ ⊢[PRAAx] lt (rem k m + m * rem k N) (m * N) := by
-  have h₁ := natEq (eq_add_of_le (rem_lt' hm k))
-  have h₂ := natEq (eq_add_of_le (rem_lt' hN k))
   refine le_of_eq_add (d := monus m (succ (rem k m)) + m * monus N (succ (rem k N))) ?_
-  apply deriveNat; ipra_simps
-  linear_combination Groth.ι (Q.mk _ m) * h₂ + h₁
+  ipra_lc Groth.ι (Q.mk _ m) * natEq (eq_add_of_le (rem_lt' hN k)) + natEq (eq_add_of_le (rem_lt' hm k))
 
 omit hN in
 theorem cop_left {k : PTm n} (h : Γ ⊢[PRAAx] gcd k (m * N) ≐ one) : Γ ⊢[PRAAx] gcd k m ≐ one := by
@@ -305,21 +300,17 @@ theorem point1 (k : PTm n) :
 
 theorem rem_rem_mul (x : PTm n) :
     Γ ⊢[PRAAx] rem (rem x (m * N)) m ≐ rem x m ⋏ rem (rem x (m * N)) N ≐ rem x N := by
-  have hx := natEq (div_eq (j := x) (pos_mul hm hN))
   refine .andI (rem_eq_of_eq hm (k₁ := N * quo x (m * N)) (k₂ := zero) ?_)
     (rem_eq_of_eq hN (k₁ := m * quo x (m * N)) (k₂ := zero) ?_)
-  · apply deriveNat; ipra_simps; linear_combination -hx
-  · apply deriveNat; ipra_simps; linear_combination -hx
+  · ipra_lc -natEq (div_eq (j := x) (pos_mul hm hN))
+  · ipra_lc -natEq (div_eq (j := x) (pos_mul hm hN))
 
 omit hN in
 theorem quo_lt {j : PTm n} (hj : Γ ⊢[PRAAx] lt j (m * N)) : Γ ⊢[PRAAx] lt (quo j m) N := by
   refine .orE (lt_or_le (quo j m) N) Prf.hyp0 ?_
-  have h₁ := natEq (eq_add_of_le (Prf.hyp0 : (le N (quo j m) :: Γ) ⊢[PRAAx] le N (quo j m)))
-  have h₂ := natEq ((div_eq (j := j) hm).wk (ψ := le N (quo j m)))
-  have h₃ := natEq ((eq_add_of_le hj).wk (ψ := le N (quo j m)))
   refine succ_ne_zero' _ (a := m * monus (quo j m) N + rem j m + monus (m * N) (succ j)) ?_
-  apply deriveNat; ipra_simps
-  linear_combination -Groth.ι (Q.mk _ m) * h₁ - h₂ - h₃
+  ipra_lc -Groth.ι (Q.mk _ m) * natEq (eq_add_of_le (Prf.hyp0 : (le N (quo j m) :: Γ) ⊢[PRAAx] le N (quo j m))) -
+    natEq ((div_eq (j := j) hm).wk (ψ := le N (quo j m))) - natEq ((eq_add_of_le hj).wk (ψ := le N (quo j m)))
 
 /-- Every `j < mn` has a preimage, given a simultaneous solution `x`. -/
 theorem ge_witness {j x r s : PTm n} (hj : Γ ⊢[PRAAx] lt j (m * N)) (hr : Γ ⊢[PRAAx] r ≐ rem j m)
@@ -329,10 +320,10 @@ theorem ge_witness {j x r s : PTm n} (hj : Γ ⊢[PRAAx] lt j (m * N)) (hr : Γ 
   have rr := rem_rem_mul hm hN x
   have hr' : Γ ⊢[PRAAx] rem r m ≐ rem j m :=
     (congrAp2 remF hr (.eqRefl _)).eqTrans
-      (rem_eq' hm (q := zero) (by apply deriveNat; ipra_simps; ring) (rem_lt' hm j))
+      (rem_eq' hm (q := zero) (by ipra_ring) (rem_lt' hm j))
   have hs' : Γ ⊢[PRAAx] rem s N ≐ quo j m :=
     (congrAp2 remF hs (.eqRefl _)).eqTrans
-      (rem_eq' hN (q := zero) (by apply deriveNat; ipra_simps; ring) (quo_lt hm hj))
+      (rem_eq' hN (q := zero) (by ipra_ring) (quo_lt hm hj))
   have rkm := (Prf.andE₁ rr).eqTrans ((Prf.andE₁ hx).eqTrans hr')
   have rkn := (Prf.andE₂ rr).eqTrans ((Prf.andE₂ hx).eqTrans hs')
   have hσ : Γ ⊢[PRAAx] inst2 crtS (rem x (m * N)) (pairT m N) ≐ j :=
@@ -414,7 +405,7 @@ theorem phi_mul_at : Γ ⊢[PRAAx] phi (m * N) ≐ phi m * phi N := by
     refine .allI (.impI ?_)
     rw [inst3_cB]
     have c := count_one (j := var 0) (shift_pos hm).wk (shift_pos hN).wk (shift_cop hc).wk Prf.hyp0
-    exact (congrMul (at_pair hB _ _ _) c).eqTrans (by apply deriveNat; ipra_simps; ring)
+    exact (congrMul (at_pair hB _ _ _) c).eqTrans (by ipra_ring)
   exact s₁.eqTrans (s₂.eqTrans (s₃.eqTrans (block_sum hm)))
 
 end Fibers

@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.BaselFinite
 import IPRADerivations.Analysis.BaselDiagonal
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Square sums of the Basel packet
@@ -83,13 +84,9 @@ theorem fact_eq {a L : PTm n} (h : Γ ⊢[PRAAx] le (succ a) L) :
 theorem pt {a L : PTm n} (h : Γ ⊢[PRAAx] le (succ (succ a)) L) :
     Γ ⊢[PRAAx] fact L * qf (succ a) L ≐ qq (succ (succ a)) L + fact L * qf (succ (succ a)) L +
       succ a * (monus (qf (succ a) L) (qf (succ (succ a)) L) * monus (qf (succ a) L) (qf (succ (succ a)) L)) := by
-  have e1 := natEq (fact_eq (le_trans (le_succ_self _) h))
-  have e2 := natEq (fact_eq h)
-  have e3 := natEq (eq_add_of_le (quo_anti (Γ := Γ) (F := fact L) (odd_pos a) (le_succ_self (succ a))))
-  apply deriveNat; ipra_simps
-  linear_combination -(𝔞 (qf (succ (succ a)) L) - 𝔞 (monus (qf (succ a) L) (qf (succ (succ a)) L))) * e1 +
-    𝔞 (qf (succ (succ a)) L) * e2 -
-    ((𝔞 a + 1) * (𝔞 (qf (succ (succ a)) L) - 𝔞 (monus (qf (succ a) L) (qf (succ (succ a)) L))) - 𝔞 (fact L)) * e3
+  ipra_lc -(𝔞 (qf (succ (succ a)) L) - 𝔞 (monus (qf (succ a) L) (qf (succ (succ a)) L))) * natEq (fact_eq (le_trans (le_succ_self _) h)) +
+    𝔞 (qf (succ (succ a)) L) * natEq (fact_eq h) -
+    ((𝔞 a + 1) * (𝔞 (qf (succ (succ a)) L) - 𝔞 (monus (qf (succ a) L) (qf (succ (succ a)) L))) - 𝔞 (fact L)) * natEq (eq_add_of_le (quo_anti (Γ := Γ) (F := fact L) (odd_pos a) (le_succ_self (succ a))))
 
 /-! ## Runs of terms bounded below -/
 
@@ -104,7 +101,7 @@ theorem run_step {d M K L : PTm n}
   have eS : Γ ⊢[PRAAx] S (M + succ d) L ≐ S (M + d) L + qq (succ (M + d)) L :=
     (congrAp2 (sumF sB) e (.eqRefl _)).eqTrans (S_succ _ _)
   refine le_congr ?_ eS.eqSymm (add_le_add ihd (le_mul_mono hq hq))
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- Variables: `0 = d`, `1 = M`, `2 = K`, `3 = L`. -/
 private abbrev runF : Fm PTm 4 :=
@@ -116,7 +113,7 @@ private theorem run₀ : ([] : List (Fm PTm 4)) ⊢[PRAAx] runF := by
       Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two, inst_three, ConciseIPRA.PTm.subst_zero,
       ConciseIPRA.PTm.subst_succ]
     refine .impI (le_congr ?_ (congrAp2 (sumF sB) (add_zero _) (.eqRefl _)).eqSymm (le_refl _))
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   · simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul,
       Syn.subst_var, Syn.repl_zero, repl_one, repl_two, repl_three, ConciseIPRA.PTm.subst_zero,
       ConciseIPRA.PTm.subst_succ]
@@ -145,16 +142,13 @@ theorem tail_step {N₀ d L : PTm n}
       (S (succ N₀) L + fact L * qf (succ N₀) L) := by
   have e : Γ ⊢[PRAAx] succ (N₀ + succ d) ≐ succ (succ (N₀ + d)) := congrSucc (add_succ _ _)
   have h' : Γ ⊢[PRAAx] le (succ (succ (N₀ + d))) L := le_congr e (.eqRefl _) h
-  have ihd := natEq (eq_add_of_le (Prf.impE ih (le_trans (le_succ_self _) h')))
-  have p := natEq (pt h')
-  have eS := natEq ((congrAp2 (sumF sB) e (.eqRefl _)).eqTrans (S_succ (Γ := Γ) _ L))
-  have eq := natEq (congrAp2 quoF (.eqRefl (fact L)) e)
   refine le_of_eq_add (d := monus (S (succ N₀) L + fact L * qf (succ N₀) L)
       (S (succ (N₀ + d)) L + fact L * qf (succ (N₀ + d)) L) +
     succ (N₀ + d) * (monus (qf (succ (N₀ + d)) L) (qf (succ (succ (N₀ + d))) L) *
       monus (qf (succ (N₀ + d)) L) (qf (succ (succ (N₀ + d))) L))) ?_
-  apply deriveNat; ipra_simps
-  linear_combination ihd - eS + p - 𝔞 (fact L) * eq
+  ipra_lc natEq (eq_add_of_le (Prf.impE ih (le_trans (le_succ_self _) h'))) -
+    natEq ((congrAp2 (sumF sB) e (.eqRefl _)).eqTrans (S_succ (Γ := Γ) _ L)) + natEq (pt h') -
+    𝔞 (fact L) * natEq (congrAp2 quoF (.eqRefl (fact L)) e)
 
 /-- Variables: `0 = d`, `1 = N₀`, `2 = L`. -/
 private abbrev tailF : Fm PTm 3 :=
@@ -184,8 +178,7 @@ theorem tail {N₀ m L : PTm n} (hm : Γ ⊢[PRAAx] le (succ N₀) m) (hL : Γ �
   have i := inst (Γ := Γ) tail₀ (![monus m (succ N₀), N₀, L] : Fin 3 → PTm n)
   simp at i
   have e : Γ ⊢[PRAAx] succ (N₀ + monus m (succ N₀)) ≐ m := by
-    have w := natEq (eq_add_of_le hm)
-    apply deriveNat; ipra_simps; linear_combination -w
+    ipra_lc -natEq (eq_add_of_le hm)
   have r := Prf.impE i (le_congr e.eqSymm (.eqRefl _) hL)
   exact le_congr (congrAdd (congrAp2 (sumF sB) e (.eqRefl _)) (congrMul (.eqRefl _) (congrAp2 quoF (.eqRefl _) e)))
     (.eqRefl _) r
@@ -195,44 +188,38 @@ theorem tail {N₀ m L : PTm n} (hm : Γ ⊢[PRAAx] le (succ N₀) m) (hL : Γ �
 /-- `q_N = 2 q_{2N}` for `2N ≤ L` (`N = N₀ + 1`). -/
 theorem q_double {N₀ L : PTm n} (h : Γ ⊢[PRAAx] le (two * succ N₀) L) :
     Γ ⊢[PRAAx] qf (succ N₀) L ≐ two * qf (two * succ N₀) L := by
-  have e : Γ ⊢[PRAAx] two * succ N₀ ≐ succ (succ (two * N₀)) := by apply deriveNat; ipra_simps; ring
+  have e : Γ ⊢[PRAAx] two * succ N₀ ≐ succ (succ (two * N₀)) := by ipra_ring
   have h₂ : Γ ⊢[PRAAx] le (succ (succ (two * N₀))) L := le_congr e (.eqRefl _) h
   have h₁ : Γ ⊢[PRAAx] le (succ N₀) L :=
-    le_trans (le_of_eq_add (d := succ N₀) (by apply deriveNat; ipra_simps; ring)) h
+    le_trans (le_of_eq_add (d := succ N₀) (by ipra_ring)) h
   have a := natEq (fact_eq h₁); have b := natEq (fact_eq h₂)
-  have c := natEq (congrAp2 quoF (.eqRefl (fact L)) e)
   refine mul_cancel (D := succ N₀) (congrSucc (pred_succ _).eqSymm) ?_
-  apply deriveNat; ipra_simps
-  linear_combination -a + b - (2 * 𝔞 N₀ + 2) * c
+  ipra_lc -a + b - (2 * 𝔞 N₀ + 2) * natEq (congrAp2 quoF (.eqRefl (fact L)) e)
 
 /-- `eq:annulus`, upper half: `2N S(2N) ≤ 2N S(N) + F²` for `2N ≤ L`, i.e. `S_{2N} − S_N ≤ 1/(2N)`. -/
 theorem annulus_up {N₀ L : PTm n} (h : Γ ⊢[PRAAx] le (two * succ N₀) L) :
     Γ ⊢[PRAAx] le (two * succ N₀ * S (two * succ N₀) L) (two * succ N₀ * S (succ N₀) L + fact L * fact L) := by
-  have hm : Γ ⊢[PRAAx] le (succ N₀) (two * succ N₀) := le_of_eq_add (d := succ N₀) (by apply deriveNat; ipra_simps; ring)
-  have t := natEq (eq_add_of_le (Prf.andE₂ (tail hm h)))
-  have qd := natEq (q_double h)
-  have e : Γ ⊢[PRAAx] two * succ N₀ ≐ succ (succ (two * N₀)) := by apply deriveNat; ipra_simps; ring
+  have hm : Γ ⊢[PRAAx] le (succ N₀) (two * succ N₀) := le_of_eq_add (d := succ N₀) (by ipra_ring)
+  have e : Γ ⊢[PRAAx] two * succ N₀ ≐ succ (succ (two * N₀)) := by ipra_ring
   have f := natEq ((fact_eq (le_congr e (.eqRefl _) h)).eqTrans
     (congrMul e.eqSymm (congrAp2 quoF (.eqRefl (fact L)) e.eqSymm)))
   refine le_of_eq_add (d := two * succ N₀ * monus (S (succ N₀) L + fact L * qf (succ N₀) L)
     (S (two * succ N₀) L + fact L * qf (two * succ N₀) L)) ?_
-  apply deriveNat; ipra_simps
-  linear_combination (2 * 𝔞 N₀ + 2) * t - (2 * 𝔞 N₀ + 2) * 𝔞 (fact L) * qd + 𝔞 (fact L) * f
+  ipra_lc (2 * 𝔞 N₀ + 2) * natEq (eq_add_of_le (Prf.andE₂ (tail hm h))) -
+    (2 * 𝔞 N₀ + 2) * 𝔞 (fact L) * natEq (q_double h) + 𝔞 (fact L) * f
 
 /-- `eq:annulus`, lower half: `4N S(N) + F² ≤ 4N S(2N)` for `2N ≤ L`, i.e. `1/(4N) ≤ S_{2N} − S_N`. -/
 theorem annulus_low {N₀ L : PTm n} (h : Γ ⊢[PRAAx] le (two * succ N₀) L) :
     Γ ⊢[PRAAx] le (two * two * succ N₀ * S (succ N₀) L + fact L * fact L) (two * two * succ N₀ * S (two * succ N₀) L) := by
-  have e₀ : Γ ⊢[PRAAx] succ N₀ + succ N₀ ≐ two * succ N₀ := by apply deriveNat; ipra_simps; ring
+  have e₀ : Γ ⊢[PRAAx] succ N₀ + succ N₀ ≐ two * succ N₀ := by ipra_ring
   have r := run (Γ := Γ) (L := L) (M := succ N₀) (d := succ N₀) (K := two * succ N₀) (le_congr e₀.eqSymm (.eqRefl _) (le_refl _))
-  have w := natEq (eq_add_of_le r)
-  have c := natEq (congrAp2 (sumF sB) e₀ (.eqRefl L) (Γ := Γ))
-  have e : Γ ⊢[PRAAx] two * succ N₀ ≐ succ (succ (two * N₀)) := by apply deriveNat; ipra_simps; ring
+  have e : Γ ⊢[PRAAx] two * succ N₀ ≐ succ (succ (two * N₀)) := by ipra_ring
   have f := natEq ((fact_eq (le_congr e (.eqRefl _) h)).eqTrans
     (congrMul e.eqSymm (congrAp2 quoF (.eqRefl (fact L)) e.eqSymm)))
   refine le_of_eq_add (d := two * two * succ N₀ * monus (S (succ N₀ + succ N₀) L)
     (S (succ N₀) L + succ N₀ * qq (two * succ N₀) L)) ?_
-  apply deriveNat; ipra_simps
-  linear_combination (4 * 𝔞 N₀ + 4) * w - (4 * 𝔞 N₀ + 4) * c -
+  ipra_lc (4 * 𝔞 N₀ + 4) * natEq (eq_add_of_le r) -
+    (4 * 𝔞 N₀ + 4) * natEq (congrAp2 (sumF sB) e₀ (.eqRefl L) (Γ := Γ)) -
     (𝔞 (fact L) + (2 * 𝔞 N₀ + 2) * 𝔞 (qf (two * succ N₀) L)) * f
 
 /-! ## Odd and even denominators -/
@@ -241,25 +228,18 @@ theorem oe_step {N L : PTm n}
     (ih : Γ ⊢[PRAAx] le (two * N) L ⟶ two * two * O N L + S N L ≐ two * two * S (two * N) L)
     (h : Γ ⊢[PRAAx] le (two * succ N) L) :
     Γ ⊢[PRAAx] two * two * O (succ N) L + S (succ N) L ≐ two * two * S (two * succ N) L := by
-  have h₀ : Γ ⊢[PRAAx] le (two * N) L := le_trans (le_of_eq_add (d := two) (by apply deriveNat; ipra_simps; ring)) h
-  have i := natEq (Prf.impE ih h₀)
-  have e : Γ ⊢[PRAAx] two * succ N ≐ succ (succ (two * N)) := by apply deriveNat; ipra_simps; ring
-  have eO := natEq (O_succ (Γ := Γ) N L); have eSs := natEq (S_succ (Γ := Γ) N L)
-  have eS2 := natEq (congrAp2 (sumF sB) e (.eqRefl L))
-  have eS3 := natEq (S_succ (Γ := Γ) (succ (two * N)) L); have eS4 := natEq (S_succ (Γ := Γ) (two * N) L)
-  have qd := natEq (q_double h)
-  have c := natEq (congrAp2 quoF (.eqRefl (fact L)) e)
-  apply deriveNat; ipra_simps
-  linear_combination 4 * eO + eSs - 4 * eS2 - 4 * eS3 - 4 * eS4 + i +
-    (𝔞 (qf (succ N) L) + 2 * 𝔞 (qf (two * succ N) L)) * qd +
-    4 * (𝔞 (qf (two * succ N) L) + 𝔞 (qf (succ (succ (two * N))) L)) * c
+  have h₀ : Γ ⊢[PRAAx] le (two * N) L := le_trans (le_of_eq_add (d := two) (by ipra_ring)) h
+  have e : Γ ⊢[PRAAx] two * succ N ≐ succ (succ (two * N)) := by ipra_ring
+  ipra_lc 4 * natEq (O_succ (Γ := Γ) N L) + natEq (S_succ (Γ := Γ) N L) -
+    4 * natEq (congrAp2 (sumF sB) e (.eqRefl L)) - 4 * natEq (S_succ (Γ := Γ) (succ (two * N)) L) -
+    4 * natEq (S_succ (Γ := Γ) (two * N) L) + natEq (Prf.impE ih h₀) +
+    (𝔞 (qf (succ N) L) + 2 * 𝔞 (qf (two * succ N) L)) * natEq (q_double h) +
+    4 * (𝔞 (qf (two * succ N) L) + 𝔞 (qf (succ (succ (two * N))) L)) * natEq (congrAp2 quoF (.eqRefl (fact L)) e)
 
 theorem oe_zero (L : PTm n) : Γ ⊢[PRAAx] two * two * O zero L + S zero L ≐ two * two * S (two * zero) L := by
-  have a := natEq (sum_zero (Γ := Γ) oB L); have b := natEq (sum_zero (Γ := Γ) sB L)
-  have c := natEq (congrAp2 (sumF sB) (by apply deriveNat; ipra_simps; ring : Γ ⊢[PRAAx] two * zero ≐ (zero : PTm n))
-    (.eqRefl L))
-  apply deriveNat; ipra_simps
-  linear_combination 4 * a + b - 4 * c - 4 * b
+  ipra_lc 4 * natEq (sum_zero (Γ := Γ) oB L) + natEq (sum_zero (Γ := Γ) sB L) -
+    4 * natEq (congrAp2 (sumF sB) (by ipra_ring : Γ ⊢[PRAAx] two * zero ≐ (zero : PTm n)) (.eqRefl L)) -
+    4 * natEq (sum_zero (Γ := Γ) sB L)
 
 /-- Variables: `0 = N`, `1 = L`. -/
 private abbrev oeF : Fm PTm 2 :=
@@ -291,20 +271,16 @@ theorem compare {N₀ m L : PTm n} (hm : Γ ⊢[PRAAx] le (succ N₀) m) (h2 : �
     Γ ⊢[PRAAx] le (succ N₀ * (two * two * O (succ N₀) L)) (succ N₀ * (num 3 * S m L) + two * (fact L * fact L)) ⋏
       le (succ N₀ * (num 3 * S m L)) (succ N₀ * (two * two * O (succ N₀) L) + two * (fact L * fact L)) := by
   have h1 : Γ ⊢[PRAAx] le (succ N₀) L :=
-    le_trans (le_of_eq_add (d := succ N₀) (by apply deriveNat; ipra_simps; ring)) h2
-  have oe := natEq (odd_even h2)
+    le_trans (le_of_eq_add (d := succ N₀) (by ipra_ring)) h2
   have up := natEq (eq_add_of_le (annulus_up h2)); have low := natEq (eq_add_of_le (annulus_low h2))
   have t := tail hm hL
   have mono := natEq (eq_add_of_le (Prf.andE₁ t)); have tl := natEq (eq_add_of_le (Prf.andE₂ t))
-  have fN := natEq (fact_eq h1)
   refine .andI (le_of_eq_add (d := num 3 * succ N₀ * monus (S m L) (S (succ N₀) L) +
     two * monus (two * succ N₀ * S (succ N₀) L + fact L * fact L) (two * succ N₀ * S (two * succ N₀) L)) ?_)
     (le_of_eq_add (d := monus (two * two * succ N₀ * S (two * succ N₀) L)
       (two * two * succ N₀ * S (succ N₀) L + fact L * fact L) + num 3 * succ N₀ * (fact L * qf m L) +
       num 3 * succ N₀ * monus (S (succ N₀) L + fact L * qf (succ N₀) L) (S m L + fact L * qf m L)) ?_)
-  · apply deriveNat; ipra_simps
-    linear_combination 3 * (𝔞 N₀ + 1) * mono - (𝔞 N₀ + 1) * oe + 2 * up
-  · apply deriveNat; ipra_simps
-    linear_combination (𝔞 N₀ + 1) * oe + low + 3 * (𝔞 N₀ + 1) * tl + 3 * 𝔞 (fact L) * fN
+  · ipra_lc 3 * (𝔞 N₀ + 1) * mono - (𝔞 N₀ + 1) * natEq (odd_even h2) + 2 * up
+  · ipra_lc (𝔞 N₀ + 1) * natEq (odd_even h2) + low + 3 * (𝔞 N₀ + 1) * tl + 3 * 𝔞 (fact L) * natEq (fact_eq h1)
 
 end LeanProofs.IPRA.Analysis.BaselSquares

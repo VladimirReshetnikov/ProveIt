@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.ConicLower
 import IPRADerivations.DiophantineNumberTheory.Coprime
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Cancellation of common factors in the conic parametrization
@@ -40,7 +41,7 @@ theorem dvd_of_coprime_pair {g r a b : PTm n} (hg : Γ ⊢[PRAAx] g ≐ succ (pr
     have e := natEq (Prf.hyp0 : ((gcd a b + Y * b ≐ X * a) :: Γ) ⊢[PRAAx] gcd a b + Y * b ≐ X * a)
     have u := natEq (hab.wk : ((gcd a b + Y * b ≐ X * a) :: Γ) ⊢[PRAAx] _)
     have eq : ((gcd a b + Y * b ≐ X * a) :: Γ) ⊢[PRAAx] r + r * b * Y ≐ r * a * X := by
-      apply deriveNat; ipra_simps; linear_combination 𝔞 r * e - 𝔞 r * u
+      ipra_lc 𝔞 r * e - 𝔞 r * u
     have d1 := dvd_congr eq.eqSymm (dvd_mul' hg.wk X h1.wk)
     exact dvd_sub' hg.wk d1 (dvd_mul' hg.wk Y h2.wk)
   · let X := Bezout.cur one zero (succ b) a b
@@ -48,7 +49,7 @@ theorem dvd_of_coprime_pair {g r a b : PTm n} (hg : Γ ⊢[PRAAx] g ≐ succ (pr
     have e := natEq (Prf.hyp0 : ((gcd a b + X * a ≐ Y * b) :: Γ) ⊢[PRAAx] gcd a b + X * a ≐ Y * b)
     have u := natEq (hab.wk : ((gcd a b + X * a ≐ Y * b) :: Γ) ⊢[PRAAx] _)
     have eq : ((gcd a b + X * a ≐ Y * b) :: Γ) ⊢[PRAAx] r + r * a * X ≐ r * b * Y := by
-      apply deriveNat; ipra_simps; linear_combination 𝔞 r * e - 𝔞 r * u
+      ipra_lc 𝔞 r * e - 𝔞 r * u
     have d1 := dvd_congr eq.eqSymm (dvd_mul' hg.wk Y h2.wk)
     exact dvd_sub' hg.wk d1 (dvd_mul' hg.wk X h1.wk)
 

@@ -1,4 +1,6 @@
 import IPRADerivations.Algebra.QuadraticRationalRadicand
+import IPRADerivations.Core.CongruenceTactic
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Square scaling of the actual positive quadratic sign
@@ -123,8 +125,7 @@ theorem square_radicand_sign (D k x : PTm n) (hD : Γ ⊢[PRAAx] le one D)
 
 theorem sign_radicand_congr (D E x : PTm n) (h : Γ ⊢[PRAAx] D ≐ E) : Γ ⊢[PRAAx]
     sign D x ≐ sign E x := by
-  simpa using Prf.eqCongr (Γ := Γ) (sign (var 0) (var 1) : PTm 2)
-    (σ := ![D,x]) (σ' := ![E,x]) (fun i => by fin_cases i; exact h; exact .eqRefl x)
+  ipra_congr (sign (var 0) (var 1) : PTm 2) with [h, .eqRefl x]
 
 theorem common_square_sign (D E k l x y : PTm n) (hD : Γ ⊢[PRAAx] le one D)
     (hE : Γ ⊢[PRAAx] le one E) (hk : Γ ⊢[PRAAx] le one k) (hl : Γ ⊢[PRAAx] le one l)
@@ -187,10 +188,7 @@ theorem common_integer_radicand (d e : PTm n)
   have cross := ZT.toZ_eq (numerator_cross d e h)
   simp only [ZT.toZ_mul,ZT.toZ_ofNat] at cross
   rw [QuadraticRationalRadicand.numerator_value d hd,QuadraticRationalRadicand.numerator_value e he] at cross
-  apply deriveNat
-  simp only [squareRadicand,QuadraticRationalRadicand.integerRadicand,Q.mk_mul,map_mul]
-  linear_combination 𝔞(LeanProofs.IPRA.Analysis.RationalSupMetric.denominatorOf d)*
-    𝔞(LeanProofs.IPRA.Analysis.RationalSupMetric.denominatorOf e)*cross
+  ipra_lc [squareRadicand, QuadraticRationalRadicand.integerRadicand] 𝔞(LeanProofs.IPRA.Analysis.RationalSupMetric.denominatorOf d)* 𝔞(LeanProofs.IPRA.Analysis.RationalSupMetric.denominatorOf e)*cross
 
 theorem native_rational_radicand_sign (d e A : PTm n)
     (hd : Γ ⊢[PRAAx] QuadraticRationalRadicand.isPositive d)

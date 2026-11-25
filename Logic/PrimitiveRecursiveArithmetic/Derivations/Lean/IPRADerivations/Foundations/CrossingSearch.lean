@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Core.Fubini
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # A bounded first crossing (`pnt_ipra_constructive_2026-11-14`, `con:deficit`)
@@ -52,9 +53,7 @@ theorem wit_le_of (f : PTm 2) {N k x : PTm n} (hk : Γ ⊢[PRAAx] neg (inst2 f k
 /-- `a = b + c` gives `a ∸ b = c`. -/
 theorem monus_of_eq {a b c : PTm n} (h : Γ ⊢[PRAAx] a ≐ b + c) : Γ ⊢[PRAAx] monus a b ≐ c := by
   have hle : Γ ⊢[PRAAx] le b a := le_of_eq_add h
-  have e1 := natEq (eq_add_of_le hle)
-  have e2 := natEq h
-  apply deriveNat; ipra_simps; linear_combination e2 - e1
+  ipra_lc natEq h - natEq (eq_add_of_le hle)
 
 /-! ## The shifted and reflected bodies -/
 

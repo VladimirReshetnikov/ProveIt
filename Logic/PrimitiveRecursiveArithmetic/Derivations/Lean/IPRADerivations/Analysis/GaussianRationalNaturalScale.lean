@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianRationalCoefficientScaling
 import IPRADerivations.Analysis.GaussianTranslatedNonconstant
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual natural scaling of arbitrary Gaussian-rational codes
@@ -123,9 +124,7 @@ theorem natScale_multiply (t u q : PTm n) : Γ ⊢[PRAAx]
 
 theorem natScale_congr {t u q r : PTm n} (ht : Γ ⊢[PRAAx] t ≐ u) (hq : Γ ⊢[PRAAx] q ≐ r) :
     Γ ⊢[PRAAx] natScale t q ≐ natScale u r := by
-  simpa only [subst_natScale,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (natScale (var 0) (var 1) : PTm 2)
-      (σ := ![t,q]) (σ' := ![u,r]) (fun i => by fin_cases i; exact ht; exact hq)
+  ipra_congr (natScale (var 0) (var 1) : PTm 2) with [ht, hq]
 
 def scaleF : PR 2 := PTm.toPR (natScale (var 0) (var 1))
 theorem program_at (t q : PTm n) : Γ ⊢[PRAAx] ap2 scaleF t q ≐ natScale t q := by

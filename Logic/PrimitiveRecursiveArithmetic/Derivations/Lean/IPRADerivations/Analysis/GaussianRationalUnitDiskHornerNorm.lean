@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianFiniteExponentialWeightedNorm
 import IPRADerivations.Analysis.GaussianRationalVariableHornerBudget
 import IPRADerivations.Analysis.GaussianCoefficientNameBounds
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Actual Euclidean unit-disk Horner prefixes from the original finite norm
@@ -44,10 +45,7 @@ theorem representation_zero (C : PTm n) : Γ ⊢[PRAAx]
     represents (prefixNorm C zero) (ZT.ofNat (size C one zero)) (denominator C) := by
   have code : Γ ⊢[PRAAx] fraction zero (denominator C) ≐ RationalIntegerNormalization.integerCode (ZT.natLit 0) := by
     apply RationalIntegerNormalization.normalize_integer _ _ _ (denominator_positive C)
-    apply ZT.derive
-    simp only [ZT.toZ_ofNat,ZT.toZ_mul,ZT.toZ_natLit]
-    ipra_simps
-    ring
+    ipra_lc
   have hz := scalar_congr code (.eqRefl _) (.eqRefl _)
     (fraction_represents zero (denominator C) (denominator_positive (Γ := Γ) C))
   refine scalar_congr (GaussianCoefficientL1.prefix_zero C).eqSymm ?_ (.eqRefl _) hz
@@ -132,7 +130,6 @@ theorem unit_prefix_bound (C z k A B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
   exact GaussianCoefficientNameBounds.bounded_radius_mono _ _ _ _ _ (denominator_positive C) hB prefixBound
     (GaussianRationalVariableHornerBudget.size_prefix C one z k hz hk)
 
-
 def sourceBuffer (d K : PTm n) : PTm n := GaussianRationalPolynomialDilation.dilated
   (GaussianFiniteLogarithmPolynomial.composition d K) (K*d) GaussianFiniteLogarithmWeightedNorm.point
 def query (w : PTm n) : PTm n := qmul (GaussianDominantPairAlgebra.radiusPoint (num 9) (num 5)) w
@@ -164,7 +161,6 @@ theorem source_prefix_bound (d K w k : PTm n) (hw : Γ ⊢[PRAAx] bounded w one 
   unit_prefix_bound (sourceBuffer d K) (query w) k (num 11) one (le_refl _)
     (GaussianFiniteExponentialWeightedNorm.composition_bound_eleven d K) (query_unit w hw)
     (le_congr (.eqRefl _) (source_length d K).eqSymm hk)
-
 
 /-! Actual source PR4 data retains original composition, its weighted
 buffer/query/prefix and the genuine existing size/common-denominator pair. -/

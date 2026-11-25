@@ -1,4 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.FLTMultiples
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Mixed exponents from Fermat's quartic theorem
@@ -39,14 +40,10 @@ theorem quartic_at (x' y' z : PTm n) : Γ ⊢[PRAAx] neg (q4 (succ x') + q4 (suc
     (fermat_quartic : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3 quarticFormula)))) (![x', y', z] : Fin 3 → PTm n)
   simpa using h
 
-theorem pw_two' (a : PTm n) : Γ ⊢[PRAAx] pw a two ≐ a * a := by
-  refine withEq (pw_succ (Γ := Γ) a (succ zero)) fun h₁ => withEq (pw_succ (Γ := Γ) a zero) fun h₂ =>
-    withEq (pw_zero (Γ := Γ) a) fun h₃ => ?_
-  apply deriveNat; ipra_simps; rw [h₁, h₂, h₃]; ring
+alias pw_two' := Common.pw_two
 
 /-- `Z^{2k} = (Z^k)²`. -/
-theorem pw_double (Z k : PTm n) : Γ ⊢[PRAAx] pw Z (two * k) ≐ pw Z k * pw Z k :=
-  (congrPw (.eqRefl _) (mul_comm _ _)).eqTrans ((pw_mul Z k two).eqSymm.eqTrans (pw_two' _))
+alias pw_double := Common.pw_double
 
 /-- `cor:mixed`, second part: `X^{4i} + Y^{4j} ≠ Z^{2k}`. -/
 theorem mixed_quartic (x' y' Z i j k : PTm n) :

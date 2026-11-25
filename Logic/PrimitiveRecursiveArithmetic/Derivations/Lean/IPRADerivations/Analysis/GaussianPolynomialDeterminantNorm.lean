@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianPolynomialDeterminant
 import IPRADerivations.Analysis.GaussianPolynomialNormBuffers
 import IPRADerivations.Foundations.RuntimePermutationFactorialBound
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Norm bounds for the actual runtime polynomial determinant
@@ -66,10 +67,7 @@ theorem natural_scale_zero (K : PTm n) : Γ ⊢[PRAAx] multiply (natCode zero) K
   apply RationalFiniteSum.canonical_equal _ _ _ _ _ _ (RationalArithmetic.multiply_guard _ _)
     (RationalNormalForm.normalize_well_formed _ _ (le_refl one)) rep (natCode_represents zero)
     (RationalAlgebra.positive_product (le_refl one) (RationalArgmin.denominator_positive K)) (le_refl one)
-  apply ZT.derive
-  simp only [ZT.toZ_mul,ZT.toZ_ofNat]
-  ipra_simps
-  ring
+  ipra_lc
 
 theorem natural_scale_succ (t K : PTm n) : Γ ⊢[PRAAx]
     add (multiply (natCode t) K) K ≐ multiply (natCode (succ t)) K := by
@@ -84,10 +82,7 @@ theorem natural_scale_succ (t K : PTm n) : Γ ⊢[PRAAx]
     (RationalArithmetic.multiply_guard _ _) left right
     (RationalAlgebra.positive_product (RationalAlgebra.positive_product (le_refl one) hd) hd)
     (RationalAlgebra.positive_product (le_refl one) hd)
-  apply ZT.derive
-  simp only [ZT.toZ_mul,ZT.toZ_add,ZT.toZ_ofNat]
-  ipra_simps
-  ring
+  ipra_lc
 
 theorem prefix_norm_bound (M m L K t : PTm n) (h : Γ ⊢[PRAAx] summandBounds M m L K)
     (ht : Γ ⊢[PRAAx] le t (count m)) : Γ ⊢[PRAAx]

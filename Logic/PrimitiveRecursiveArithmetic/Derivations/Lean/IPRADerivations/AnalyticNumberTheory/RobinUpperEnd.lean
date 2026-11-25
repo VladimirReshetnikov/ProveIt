@@ -220,7 +220,7 @@ theorem e_le_three {p q : PTm n} (hq : Γ ⊢[PRAAx] q ≐ succ (pred q)) (hpq :
   have P1 := natEq (pw_one (Γ := Γ) p)
   have Q1 := natEq (pw_one (Γ := Γ) q)
   have F1 := natEq ((F_succ (Γ := Γ) zero).eqTrans ((congrMul (.eqRefl _) F_zero).eqTrans
-    (by apply deriveNat; ipra_simps; ring : Γ ⊢[PRAAx] succ zero * one ≐ one)))
+    (by ipra_ring : Γ ⊢[PRAAx] succ zero * one ≐ one)))
   have c : Γ ⊢[PRAAx] le (q * Ev K p q) (q * (num 3 * Ed K q)) := by
     ipra_le sl h + 2 * 𝔞 (Ed K q) * sl hpq with
       -(𝔞 q * 𝔞 (Fv K) * 𝔞 (pw q K)) * E0 - 2 * 𝔞 (Fv K) * 𝔞 (pw q K) * P1 +

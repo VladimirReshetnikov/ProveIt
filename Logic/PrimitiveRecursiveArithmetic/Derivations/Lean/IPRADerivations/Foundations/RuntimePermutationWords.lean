@@ -2,6 +2,7 @@ import IPRADerivations.Foundations.MixedRadixExpansion
 import IPRADerivations.Foundations.FilteredEnumerationCode
 import IPRADerivations.Foundations.BoundedSyntaxInduction
 import IPRADerivations.Core.Parity
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Numeric permutation words for the runtime determinant
@@ -403,10 +404,8 @@ theorem inversion_row_at (m w i : PTm n) : Γ ⊢[PRAAx]
     inst2 inversionRow i (data m w) ≐ rowPrefix m w i m := by
   simp only [inversionRow,inst2,subst_rowPrefix,subst_sndT,subst_fstT,Syn.subst_var,
     Matrix.cons_val_zero,Matrix.cons_val_one,data]
-  simpa using
-    Prf.eqCongr (Γ := Γ) (rowPrefix (var 0) (var 1) (var 2) (var 3) : PTm 4)
-    (σ := ![sndT (pairT w m),fstT (pairT w m),i,sndT (pairT w m)]) (σ' := ![m,w,i,m])
-    (fun k => by fin_cases k; exact snd_pair _ _; exact fst_pair _ _; exact .eqRefl _; exact snd_pair _ _)
+  ipra_congr (rowPrefix (var 0) (var 1) (var 2) (var 3) : PTm 4) with
+    [snd_pair _ _, fst_pair _ _, .eqRefl i, snd_pair _ _]
 theorem row_zero (m w i : PTm n) : Γ ⊢[PRAAx] rowPrefix m w i zero ≐ zero := sum_zero _ _
 theorem row_succ (m w i t : PTm n) : Γ ⊢[PRAAx]
     rowPrefix m w i (succ t) ≐ rowPrefix m w i t+inversionBit m w i t :=

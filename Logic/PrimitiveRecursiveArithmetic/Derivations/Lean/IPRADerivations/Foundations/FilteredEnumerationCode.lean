@@ -1,5 +1,7 @@
 import IPRADerivations.Foundations.BoundedEnumeration
 import IPRADerivations.Foundations.CodedViableChain
+import IPRADerivations.Core.CongruenceTactic
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Actual stored increasing lists for bounded decidable subsets
@@ -60,8 +62,7 @@ def boundProgramF (K : PTm 2) : PR 2 := PTm.toPR (codeBound K (var 0) (var 1))
 theorem sel_congr (K : PTm 2) {r r' P P' p p' : PTm n}
     (hr : Γ ⊢[PRAAx] r ≐ r') (hP : Γ ⊢[PRAAx] P ≐ P') (hp : Γ ⊢[PRAAx] p ≐ p') : Γ ⊢[PRAAx]
     sel K r P p ≐ sel K r' P' p' := by
-  simpa using Prf.eqCongr (sel K (var 0) (var 1) (var 2) : PTm 3)
-    (σ := ![r,P,p]) (σ' := ![r',P',p']) (fun j => by fin_cases j; exact hr; exact hP; exact hp)
+  ipra_congr (sel K (var 0) (var 1) (var 2) : PTm 3) with [hr, hP, hp]
 
 theorem values_at (K : PTm 2) (r P p : PTm n) : Γ ⊢[PRAAx]
     inst2 (values K) r (data P p) ≐ sel K r P p := by
@@ -104,10 +105,7 @@ theorem increasing (K : PTm 2) (P p r s : PTm n)
   lt_congr (list_lookup K P p r (lt_of_lt_of_le hrs (le_of_lt hs))).eqSymm
     (list_lookup K P p s hs).eqSymm (selected_increasing K P p r s hrs hs)
 
-theorem sg_le_one (z : PTm n) : Γ ⊢[PRAAx] le (Signum.sg z) one :=
-  .orE (BoundedReflection.sg_cases z)
-    (le_congr Prf.hyp0.eqSymm (.eqRefl _) (zero_le one))
-    (le_congr Prf.hyp0.eqSymm (.eqRefl _) (le_refl one))
+alias sg_le_one := Common.sg_le_one
 
 theorem count_le (K : PTm 2) (P p : PTm n) : Γ ⊢[PRAAx] le (count K P p) P := by
   have all : Γ ⊢[PRAAx] .all (le (count K (var 0) (Syn.shift p)) (var 0)) := by

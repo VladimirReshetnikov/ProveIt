@@ -1,7 +1,8 @@
 import IPRADerivations.Core.SumLemmas
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Probability.Variance
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The cylinder algebra: union, intersection and additivity as bounded sums
@@ -36,14 +37,7 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 local notation "𝔟" t:max => Groth.ι (IPRA.Q.mk _ t)
 
-theorem monus_le_self (B A : PTm n) : Γ ⊢[PRAAx] le (monus B A) B := by
-  refine .orE (le_total B A) ?_ ?_
-  · have h0 : (le B A :: Γ) ⊢[PRAAx] monus B A ≐ zero := Prf.hyp0
-    have e := natEq h0
-    ipra_le 𝔟 B with e
-  · have h : (le A B :: Γ) ⊢[PRAAx] le A B := Prf.hyp0
-    have e := natEq (eq_add_of_le h)
-    ipra_le 𝔟 A with e
+alias monus_le_self := Common.monus_le_self
 
 /-- The row identity `(A ∨ B) + (A ∧ B) = A + B`. -/
 theorem point_law (A B : PTm n) : Γ ⊢[PRAAx] A + monus B A + monus B (monus B A) ≐ A + B := by

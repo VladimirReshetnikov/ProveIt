@@ -1,4 +1,6 @@
 import IPRADerivations.Analysis.GaussianRationalPolynomialBuffers
+import IPRADerivations.Core.CongruenceTactic
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Runtime coefficient convolution for exact rational polynomials
@@ -70,11 +72,7 @@ theorem contribution_congr {P P' Q Q' M M' k k' i i' : PTm n}
     (hP : Γ ⊢[PRAAx] P ≐ P') (hQ : Γ ⊢[PRAAx] Q ≐ Q') (hM : Γ ⊢[PRAAx] M ≐ M')
     (hk : Γ ⊢[PRAAx] k ≐ k') (hi : Γ ⊢[PRAAx] i ≐ i') : Γ ⊢[PRAAx]
     contribution P Q M k i ≐ contribution P' Q' M' k' i' := by
-  simpa only [subst_contribution,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-    Matrix.cons_val_two,Matrix.cons_val_three,Matrix.cons_val_four,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (contribution (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5)
-      (σ := ![P,Q,M,k,i]) (σ' := ![P',Q',M',k',i'])
-      (fun j => by fin_cases j; exact hP; exact hQ; exact hM; exact hk; exact hi)
+  ipra_congr (contribution (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) with [hP, hQ, hM, hk, hi]
 
 theorem contribution_body_at (P Q M k i : PTm n) : Γ ⊢[PRAAx]
     inst2 contributionBody i (data P Q M k) ≐ contribution P Q M k i := by
@@ -165,13 +163,8 @@ theorem product_canonical (P Q N M : PTm n) : Γ ⊢[PRAAx] canonicalCoefficient
 theorem tail_index (M t k i : PTm n) (hk : Γ ⊢[PRAAx] le (M+t) k)
     (hi : Γ ⊢[PRAAx] lt i t) : Γ ⊢[PRAAx] le (succ M) (monus k i) := by
   have ik := le_trans (le_of_lt hi) (le_trans (le_add_left t M) hk)
-  have a := natEq (eq_add_of_le hk)
-  have b := natEq (eq_add_of_le hi)
-  have c := natEq (eq_add_of_le ik)
   apply le_of_eq_add (d := monus t (succ i)+monus k (M+t))
-  apply deriveNat
-  ipra_simps
-  linear_combination a+b-c
+  ipra_lc natEq (eq_add_of_le hk)+natEq (eq_add_of_le hi)-natEq (eq_add_of_le ik)
 
 theorem contribution_after (P Q M t k i : PTm n) (hk : Γ ⊢[PRAAx] le (M+t) k)
     (hi : Γ ⊢[PRAAx] lt i t) : Γ ⊢[PRAAx] contribution P Q M k i ≐ qzero :=

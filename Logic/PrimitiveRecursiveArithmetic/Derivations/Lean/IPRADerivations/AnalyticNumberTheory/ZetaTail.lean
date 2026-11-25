@@ -4,7 +4,8 @@ import IPRADerivations.AnalyticNumberTheory.PhiDivides
 import IPRADerivations.AnalyticNumberTheory.GcdFiber
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.AnalyticNumberTheory.Mobius
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The rational tail estimate for `∑ 1/n^s`, every `s ≥ 2`
@@ -92,7 +93,7 @@ theorem key (m u : PTm n) :
 
 /-! ## The pointwise telescoping inequality -/
 
-theorem succ_pos' (m : PTm n) : Γ ⊢[PRAAx] succ m ≐ succ (pred (succ m)) := congrSucc (pred_succ _).eqSymm
+alias succ_pos' := Common.succ_pos
 
 theorem core_mul {m u F Q : PTm n}
     (h1 : Γ ⊢[PRAAx] le (pw (succ m) (succ (succ u)) * Q) F) :
@@ -146,11 +147,9 @@ theorem exact_at {F u M i : PTm n} (h : Γ ⊢[PRAAx] Ex F u M ≐ zero) (hi : �
     Γ ⊢[PRAAx] rem F (pw (succ i) (succ u)) ≐ zero :=
   sg_zero_inv ((v_at i F u).eqSymm.eqTrans (sum_zero_elim vB h hi))
 
-theorem left_zero {a b : PTm n} (h : Γ ⊢[PRAAx] a + b ≐ zero) : Γ ⊢[PRAAx] a ≐ zero :=
-  (monus_zero a).eqSymm.eqTrans (le_congr (.eqRefl _) h (le_add_right a b))
+alias left_zero := Common.add_eq_zero_left
 
-theorem right_zero {a b : PTm n} (h : Γ ⊢[PRAAx] a + b ≐ zero) : Γ ⊢[PRAAx] b ≐ zero :=
-  (monus_zero b).eqSymm.eqTrans (le_congr (.eqRefl _) h (le_add_left b a))
+alias right_zero := Common.add_eq_zero_right
 
 /-! ## Telescoping -/
 

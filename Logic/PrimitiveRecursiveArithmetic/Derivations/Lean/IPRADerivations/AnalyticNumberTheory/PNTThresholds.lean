@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.ZetaPrecision
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The integer thresholds and the closed modulus of the PNT contraction (`pnt_ipra_constructive_2026-11-14`)
@@ -110,7 +111,7 @@ theorem T_closed (j p : PTm n) : Γ ⊢[PRAAx] le (succ (Tt j p)) (num 3 * pw (F
 /-- `16 m ≤ 2^m` (`D ≤ 2^{D/16}`). -/
 theorem sixteen_m (p : PTm n) : Γ ⊢[PRAAx] le (num 16 * mq p) (pw two (mq p)) := by
   have s := sq_le_pow (Γ := Γ) (kq p)
-  have e1 := natEq (congrPw2 (Γ := Γ) (show Γ ⊢[PRAAx] mq p ≐ kq p + kq p by apply deriveNat; ipra_simps; ring))
+  have e1 := natEq (congrPw2 (Γ := Γ) (show Γ ⊢[PRAAx] mq p ≐ kq p + kq p by ipra_ring))
   have e2 := natEq (pw_add (Γ := Γ) two (kq p) (kq p))
   ipra_le sl s + 32768 * (𝔞 p + 1) ^ 3 *
       (32768 * 𝔞 p ^ 3 + 98304 * 𝔞 p ^ 2 + 98304 * 𝔞 p + 32738) + 1 with e1 + e2
@@ -121,7 +122,7 @@ theorem F_le (p : PTm n) : Γ ⊢[PRAAx] le (Fq p) (pw two (num 2 * mq p)) := by
   have b : Γ ⊢[PRAAx] le (num 1048576) (num 16 * mq p) := by
     ipra_le 1048576 * (𝔞 p ^ 3 + 3 * 𝔞 p ^ 2 + 3 * 𝔞 p)
   have e1 := natEq (congrPw2 (Γ := Γ) (show Γ ⊢[PRAAx] num 2 * mq p ≐ mq p + mq p by
-    apply deriveNat; ipra_simps; ring))
+    ipra_ring))
   have e2 := natEq (pw_add (Γ := Γ) two (mq p) (mq p))
   ipra_le sl a * 𝔞 (pw two (mq p)) + 1048576 * (𝔞 p + 1) ^ 3 * sl a + 1048576 * (𝔞 p + 1) ^ 3 * sl b with
     e1 + e2
@@ -143,7 +144,7 @@ theorem T_double {j : PTm n} (p : PTm n) (hj : Γ ⊢[PRAAx] le j (num 4 * Dq p)
     have l := le_pow_self (Γ := Γ) (num 8 * mq p * Dq p)
     ipra_le sl x3 + sl l
   have e3 := natEq (congrPw2 (Γ := Γ) (show Γ ⊢[PRAAx] Dq p * Dq p ≐
-      num 8 * mq p * Dq p + num 8 * mq p * Dq p by apply deriveNat; ipra_simps; ring))
+      num 8 * mq p * Dq p + num 8 * mq p * Dq p by ipra_ring))
   have e4 := natEq (pw_add (Γ := Γ) two (num 8 * mq p * Dq p) (num 8 * mq p * Dq p))
   ipra_le sl c + 3 * sl f1 + 3 * sl f3 + 𝔞 (pw two (num 8 * mq p * Dq p)) * sl g1 with e3 + e4 - 3 * f2
 
@@ -170,9 +171,7 @@ theorem J_le (p : PTm n) : Γ ⊢[PRAAx] le (Jq p) (num 4 * Dq p) :=
 /-- `a_J = 4 − J/D = 1/q`, cleared: `q (4D − J) = D`. -/
 theorem levels_end (p : PTm n) : Γ ⊢[PRAAx] succ p * monus (num 4 * Dq p) (Jq p) ≐ Dq p := by
   have hle := J_le (Γ := Γ) p
-  have e1 := natEq (eq_add_of_le hle)
-  have e2 := natEq (J_spec (Γ := Γ) p)
-  apply deriveNat; ipra_simps; linear_combination (𝔞 p + 1) * (e2 - e1)
+  ipra_lc (𝔞 p + 1) * (natEq (J_spec (Γ := Γ) p) - natEq (eq_add_of_le hle))
 
 /-- The modulus at the final level: `P_J ≤ N_ψ(q) = 2^{2^{D²+1}}`. -/
 theorem modulus_J (p : PTm n) :

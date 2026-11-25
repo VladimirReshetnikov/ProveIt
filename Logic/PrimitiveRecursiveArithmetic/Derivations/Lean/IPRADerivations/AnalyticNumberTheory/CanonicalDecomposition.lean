@@ -5,7 +5,8 @@ import IPRADerivations.Probability.Variance
 import IPRADerivations.Core.Fubini
 import IPRADerivations.Combinatorics.CatalanConvolution
 import IPRADerivations.Analysis.RationalClosure
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The canonical root decomposition
@@ -85,9 +86,7 @@ theorem ad_zero {a b : PTm n} (h : Γ ⊢[PRAAx] ad a b ≐ zero) : Γ ⊢[PRAAx
 theorem ad_of_eq {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) : Γ ⊢[PRAAx] ad a b ≐ zero :=
   (congrAdd (le_congr (.eqRefl a) h (le_refl a)) (le_congr h (.eqRefl a) (le_refl a))).eqTrans (add_zero _)
 
-theorem two_le_pos {N : PTm n} (h : Γ ⊢[PRAAx] le two N) : Γ ⊢[PRAAx] N ≐ succ (pred N) := by
-  refine eq_succ_pred (y := one + monus N two) ?_
-  ipra_lc natEq (eq_add_of_le h)
+alias two_le_pos := Common.pos_of_two_le
 
 /-- `x^k = M ≥ 2` forces `x ≥ 2`. -/
 theorem two_le_base {x k M : PTm n} (h : Γ ⊢[PRAAx] pw x k ≐ M) (hM : Γ ⊢[PRAAx] le two M) :

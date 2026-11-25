@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.SignedVector
 import IPRADerivations.Combinatorics.FiniteBijection
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Signed digits in base `2B + 1`
@@ -31,8 +32,7 @@ variable {k : ℕ} {Γ : List (Fm PTm k)}
 
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
-theorem congrSg {a b : PTm k} (h : Γ ⊢[PRAAx] a ≐ b) : Γ ⊢[PRAAx] sg a ≐ sg b :=
-  congrMonus (.eqRefl _) (congrMonus (.eqRefl _) h)
+alias congrSg := Common.congrSg
 
 /-- The sign bit `[d > B]` of a digit. -/
 abbrev sgnOf (B d : PTm k) : PTm k := sg (monus d B)

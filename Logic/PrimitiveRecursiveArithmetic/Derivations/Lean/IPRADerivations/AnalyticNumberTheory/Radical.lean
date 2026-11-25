@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.EulerProduct
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The radical identity
@@ -116,7 +117,7 @@ theorem pp_zero (F : PTm 2) : Γ ⊢[PRAAx] PP F (zero : PTm n) ≐ one := by
   have t₀ : Γ ⊢[PRAAx] inst2 (pB F) zero zero ≐ one := by
     rw [inst2_pB, inst2_e]
     exact (congrAp2 powF ((congrMul isP_zero (.eqRefl _)).eqTrans (zero_mul _)) (.eqRefl _)).eqTrans (pw_zero _)
-  exact (congrMul (.eqRefl _) t₀).eqTrans (by apply deriveNat; ipra_simps; ring)
+  exact (congrMul (.eqRefl _) t₀).eqTrans (by ipra_ring)
 
 /-- The common peel: `rad(n) = rad(m) p` and `∏_{F₂}(n) = ∏_{F₂}(m)(p − 1)` for `n = p^a m`. -/
 theorem rad_peel {N p : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) (hp : Γ ⊢[PRAAx] prime p)
@@ -147,17 +148,12 @@ theorem rd_found {N p x : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) (hp : 
   have h₀ := sum_zero_elim rdB hV (cof_lt hN hp hpN)
   rw [inst2_rd] at h₀
   have ih := PhiDivides.sg_zero_inv h₀
-  have em := natEq (eq_of_dvd' (rad_pos _) ih)
-  have hNe := natEq (cof_eq (m := N) (two_le_of_prime hN hp hpN))
-  have ps := natEq ((congrAp2 powF (val_pos hN hp hpN) (.eqRefl p)).eqTrans (pw_succ p (pred (val p N))))
-  have hrp := natEq (rad_peel hN hp hpN)
   refine dvd_of_eq' (rad_pos N) (w := pw p (pred (val p N)) *
     quo (quo N (pw p (val p N))) (rad (quo N (pw p (val p N))))) ?_
-  apply deriveNat; ipra_simps
-  linear_combination hNe + Groth.ι (Q.mk _ (quo N (pw p (val p N)))) * ps +
-    Groth.ι (Q.mk _ (pw p (pred (val p N)))) * Groth.ι (Q.mk _ p) * em -
-    Groth.ι (Q.mk _ (pw p (pred (val p N)))) *
-      Groth.ι (Q.mk _ (quo (quo N (pw p (val p N))) (rad (quo N (pw p (val p N)))))) * hrp
+  ipra_lc natEq (cof_eq (m := N) (two_le_of_prime hN hp hpN)) +
+    Groth.ι (Q.mk _ (quo N (pw p (val p N)))) * natEq ((congrAp2 powF (val_pos hN hp hpN) (.eqRefl p)).eqTrans (pw_succ p (pred (val p N)))) +
+    Groth.ι (Q.mk _ (pw p (pred (val p N)))) * Groth.ι (Q.mk _ p) * natEq (eq_of_dvd' (rad_pos _) ih) -
+    Groth.ι (Q.mk _ (pw p (pred (val p N)))) * Groth.ι (Q.mk _ (quo (quo N (pw p (val p N))) (rad (quo N (pw p (val p N)))))) * natEq (rad_peel hN hp hpN)
 
 theorem rd_step {N x : PTm n} (hV : Γ ⊢[PRAAx] ap2 (sumF rdB) N x ≐ zero) : Γ ⊢[PRAAx] dvd (rad N) N := by
   refine .orE (zero_or_succ N) ((congrAp2 remF Prf.hyp0 (.eqRefl _)).eqTrans (rem_zero _)) ?_
@@ -202,10 +198,7 @@ theorem phi_prime {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) : Γ ⊢[PRAAx] phi p
   have t := totient_prime_power_at (k := zero) hp
   have e₁ : Γ ⊢[PRAAx] pw p (succ zero) ≐ p := pw_one _
   have t' := (congrAdd (congrAp2 (sumF totBody) e₁ e₁) (pw_zero _)).eqSymm.eqTrans (t.eqTrans e₁)
-  have q := natEq (eq_add_of_le (le_trans (le_succ_self one) hp2))
-  have r := natEq t'
-  apply deriveNat; ipra_simps
-  linear_combination r + q
+  ipra_lc natEq t' + natEq (eq_add_of_le (le_trans (le_succ_self one) hp2))
 
 theorem pr_found {N p x : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) (hp : Γ ⊢[PRAAx] prime p)
     (hpN : Γ ⊢[PRAAx] dvd p N) (hV : Γ ⊢[PRAAx] ap2 (sumF prB) N x ≐ zero) :

@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianGammaEulerInverseConvergence
 import IPRADerivations.Core.Gcd
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # A cofinal sampler of the original Euler Gamma reciprocals
@@ -123,11 +124,8 @@ theorem observation_congr {p p' z z' R R' B B' a a' d d' : PTm n}
     observation p z R B a d ≐ observation p' z' R' B' a' d' := by
   have e5 : (![p,z,R,B,a,d] : Fin 6 → PTm n) 5 = d := rfl
   have e5' : (![p',z',R',B',a',d'] : Fin 6 → PTm n) 5 = d' := rfl
-  simpa only [subst_observation,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.cons_val_three,Matrix.cons_val_four,e5,e5',Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (observation (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6)
-      (σ := ![p,z,R,B,a,d]) (σ' := ![p',z',R',B',a',d'])
-      (fun i => by fin_cases i; exact hp; exact hz; exact hR; exact hB; exact ha; exact hd)
+  ipra_congr (observation (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) with
+    [hp, hz, hR, hB, ha, hd] using [e5, e5']
 
 theorem sample_at (p z R B a d : PTm n) : Γ ⊢[PRAAx] sample p z R B a d ≐ observation p z R B a d := by
   have raw := toPR_eq (Γ := Γ) (observation (var 0) (fstT (var 1)) (fstT (sndT (var 1)))

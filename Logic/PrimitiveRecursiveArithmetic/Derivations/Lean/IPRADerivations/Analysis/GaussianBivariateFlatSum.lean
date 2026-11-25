@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianBivariatePowerExpansion
 import IPRADerivations.Analysis.GaussianRationalBlockSums
 import IPRADerivations.Analysis.GaussianWeightedMonomialBasis
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The original bivariate power sum on one numerical interval
@@ -54,9 +55,7 @@ private theorem flat_congr {G G' m m' a a' x x' y y' h h' : PTm n}
     (hG : Γ ⊢[PRAAx] G ≐ G') (hm : Γ ⊢[PRAAx] m ≐ m') (ha : Γ ⊢[PRAAx] a ≐ a')
     (hx : Γ ⊢[PRAAx] x ≐ x') (hy : Γ ⊢[PRAAx] y ≐ y') (hh : Γ ⊢[PRAAx] h ≐ h') :
     Γ ⊢[PRAAx] flatTerm G m a x y h ≐ flatTerm G' m' a' x' y' h' := by
-  simpa using Prf.eqCongr (Γ := Γ) (flatTerm (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6)
-    (σ := ![G,m,a,x,y,h]) (σ' := ![G',m',a',x',y',h'])
-    (fun i => by fin_cases i; exact hG; exact hm; exact ha; exact hx; exact hy; exact hh)
+  ipra_congr (flatTerm (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) with [hG, hm, ha, hx, hy, hh]
 
 theorem flat_body_at (G m a x y h : PTm n) : Γ ⊢[PRAAx] inst2 flatBody h (data G m a x y) ≐ flatTerm G m a x y h := by
   have tail := snd_pair (Γ := Γ) G (pairT m (pairT a (pairT x y)))

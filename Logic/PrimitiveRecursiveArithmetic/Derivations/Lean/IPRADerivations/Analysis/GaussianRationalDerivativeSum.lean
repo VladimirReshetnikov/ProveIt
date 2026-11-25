@@ -3,6 +3,8 @@ import IPRADerivations.Analysis.GaussianRationalL1Algebra
 import IPRADerivations.Analysis.RationalNonnegativePowers
 import IPRADerivations.Analysis.BarnesCutoff
 import IPRADerivations.Analysis.GaussianDescentClockArithmetic
+import IPRADerivations.Core.CongruenceTactic
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The original rational derivative sum and its exact ceiling mesh
@@ -65,9 +67,7 @@ def mesh (C N U p q : PTm n) : PTm n := GaussianDescentClockArithmetic.ceiling (
 
 theorem term_congr {C D N K U V i j : PTm n} (hC : Γ ⊢[PRAAx] C ≐ D) (hN : Γ ⊢[PRAAx] N ≐ K)
     (hU : Γ ⊢[PRAAx] U ≐ V) (hi : Γ ⊢[PRAAx] i ≐ j) : Γ ⊢[PRAAx] term C N U i ≐ term D K V j := by
-  simpa only [subst_term,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_three,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (term (var 0) (var 1) (var 2) (var 3) : PTm 4)
-      (σ := ![C,N,U,i]) (σ' := ![D,K,V,j]) (fun k => by fin_cases k; exact hC; exact hN; exact hU; exact hi)
+  ipra_congr (term (var 0) (var 1) (var 2) (var 3) : PTm 4) with [hC, hN, hU, hi]
 theorem body_at (C N U i : PTm n) : Γ ⊢[PRAAx] inst2 body i (data C N U) ≐ term C N U i := by
   simp only [body,inst2,subst_term,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
   exact term_congr (fst_pair _ _) ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
@@ -101,10 +101,7 @@ theorem prefix_zero_represents (C N U : PTm n) : Γ ⊢[PRAAx]
     represents (partialSum C N U zero) (ZT.ofNat (prefixSum C N U zero)) (denominator C) := by
   have zeroCode : Γ ⊢[PRAAx] fraction zero (denominator C) ≐ RationalIntegerNormalization.integerCode (ZT.natLit 0) := by
     apply RationalIntegerNormalization.normalize_integer _ _ _ (denominator_positive C)
-    apply ZT.derive
-    simp only [ZT.toZ_ofNat,ZT.toZ_mul,ZT.toZ_natLit]
-    ipra_simps
-    ring
+    ipra_lc
   have hz := scalar_congr zeroCode (.eqRefl _) (.eqRefl _) (fraction_represents zero (denominator C) (denominator_positive (Γ := Γ) C))
   refine scalar_congr (partial_zero C N U).eqSymm ?_ (.eqRefl _) hz
   apply ZT.derive
@@ -157,7 +154,6 @@ theorem L_derivative_bound (C N U : PTm n) (hLen : Γ ⊢[PRAAx] length C ≐ su
   exact fraction_order _ _ _ _ (denominator_positive C) (denominator_positive C)
     (le_congr (mul_comm _ _) (.eqRefl _) (mul_le_mul_right _ (total_le_numerator C N U)))
 
-
 theorem L_when_small (C N U : PTm n) (h : Γ ⊢[PRAAx] le (total C N U) (denominator C)) : Γ ⊢[PRAAx]
     L C N U ≐ fraction one one := by
   have value : Γ ⊢[PRAAx] numerator C N U ≐ denominator C := BarnesCutoff.maximum_of_left h
@@ -168,10 +164,7 @@ theorem L_when_small (C N U : PTm n) (h : Γ ⊢[PRAAx] le (total C N U) (denomi
     (RationalNormalForm.normalize_well_formed _ _ (le_refl one))
     (fraction_represents _ _ (denominator_positive C)) (fraction_represents _ _ (le_refl one))
     (denominator_positive C) (le_refl one)
-  apply ZT.derive
-  simp only [ZT.toZ_mul,ZT.toZ_ofNat]
-  ipra_simps
-  ring
+  ipra_lc
 
 theorem L_when_large (C N U : PTm n) (hLen : Γ ⊢[PRAAx] length C ≐ succ N)
     (h : Γ ⊢[PRAAx] le (denominator C) (total C N U)) : Γ ⊢[PRAAx]
@@ -226,7 +219,6 @@ theorem mesh_evaluation_bound (C N U z w p q : PTm n)
     (GaussianRationalHorner.positive_product _ _ (denominator_positive C) hm)
     (GaussianRationalHorner.positive_product _ _ GaussianDescentClockArithmetic.four_positive hq)
     (mesh_variation_budget C N U p q hp) simplified
-
 
 def output (C N U p q : PTm n) : PTm n := pairT (L C N U)
   (pairT (derivativeSum C N U) (pairT (mesh C N U p q) (pairT (numerator C N U) (denominator C))))

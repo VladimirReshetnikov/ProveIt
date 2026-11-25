@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.ConvolutionAssoc
 import IPRADerivations.AnalyticNumberTheory.MangoldtMobius
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Selberg's exact symmetry identity `μ * L² = Λ * Λ + 𝒟Λ` (`pnt_ipra_constructive_2026-11-14`)
@@ -96,7 +97,7 @@ theorem inner_sq {k N : PTm n} (hk : Γ ⊢[PRAAx] k ≐ succ (pred k)) (hkN : �
   refine (congrMul (congrMul (.eqRefl _) (congrEqb' (congrAp2 remF (fst_pair _ _) (.eqRefl _)) (.eqRefl _)))
     (.eqRefl _)).eqTrans ?_
   rw [show Syn.shift (zero : PTm n) = zero by simp [Syn.shift]]
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- A row of the inversion for `G`: `[d ∣ N] μ^±(d) Σ_{e ∣ N/d} G(e) = [d ∣ N] μ^±(d) L_w(N/d)²`. -/
 theorem row_sq_mob {d N : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) :
@@ -149,10 +150,10 @@ theorem row_sq_mob {d N : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) :
         have ww := natEq eN; have wp := natEq hd
         have hkN : C ⊢[PRAAx] le (succ (quo N d)) (succ N) := by
           refine (succ_monus_succ _ _).eqTrans (le_of_eq_add (d := pred d * quo N d) ?_)
-          apply deriveNat; ipra_simps; linear_combination ww + 𝔞 (quo N d) * wp
+          ipra_lc ww + 𝔞 (quo N d) * wp
         exact congrMul (.eqRefl _) (inner_sq w hk hkN)
       · have z : (neg (rem N d ≐ zero) :: (d ≐ succ (pred d)) :: Γ) ⊢[PRAAx] sg d * eqb (rem N d) zero ≐ zero :=
-          (congrMul (.eqRefl _) (eqb_of_ne Prf.hyp0)).eqTrans (by apply deriveNat; ipra_simps; ring)
+          (congrMul (.eqRefl _) (eqb_of_ne Prf.hyp0)).eqTrans (by ipra_ring)
         exact (zero_mul_l (zero_mul_l z _) _).eqTrans (zero_mul_l (zero_mul_l z _) _).eqSymm
   exact .andI (cR.eqTrans (scP.eqTrans (key _))) (cR'.eqTrans (scN.eqTrans (key _)))
 
@@ -173,9 +174,7 @@ theorem selberg_mobius {N : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) :
     refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
     rw [shift_pairT, hs]
     exact Prf.andE₂ (row_sq_mob w hN'.wk)
-  have a := natEq inv; have b := natEq cP; have c := natEq cN
-  apply deriveNat; ipra_simps
-  linear_combination -b + a + c
+  ipra_lc -natEq cP + natEq inv + natEq cN
 
 end Selberg
 

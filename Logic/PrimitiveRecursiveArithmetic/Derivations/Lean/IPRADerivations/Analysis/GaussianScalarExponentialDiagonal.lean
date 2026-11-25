@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianRationalExponentialProductCoefficients
 import IPRADerivations.Analysis.GaussianRationalCoefficientRecursion
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The diagonal Cauchy sums of the original scalar exponential
@@ -149,9 +150,7 @@ theorem diagonal_weighted (u v e : PTm n) : Γ ⊢[PRAAx]
 
 theorem coefficient_congr {q r e f : PTm n} (hq : Γ ⊢[PRAAx] q ≐ r) (he : Γ ⊢[PRAAx] e ≐ f) :
     Γ ⊢[PRAAx] coefficient q e ≐ coefficient r f := by
-  simpa only [subst_coefficient,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using
-    Prf.eqCongr (coefficient (var 0) (var 1) : PTm 2) (σ := ![q,e]) (σ' := ![r,f])
-      (fun i => by fin_cases i; exact hq; exact he)
+  ipra_congr (coefficient (var 0) (var 1) : PTm 2) with [hq, he]
 
 theorem left_zero (u v e : PTm n) : Γ ⊢[PRAAx] leftTerm u v e zero ≐ qzero :=
   (qmul_congr (natScale_zero _) (.eqRefl _)).eqTrans (GaussianRationalSyntheticDivision.qmul_zero_left _)
@@ -260,11 +259,8 @@ def triangularSum (u v K : PTm n) : PTm n :=
   simp [triangularSum]
 
 theorem triangular_body_at (u v e : PTm n) : Γ ⊢[PRAAx] inst2 triangularBody e (pairT u v) ≐ diagonal u v e := by
-  simpa only [triangularBody,inst2,subst_diagonal,subst_fstT,subst_sndT,Syn.subst_var,
-    Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (diagonal (var 0) (var 1) (var 2) : PTm 3)
-      (σ := ![fstT (pairT u v),sndT (pairT u v),e]) (σ' := ![u,v,e])
-      (fun j => by fin_cases j; exact fst_pair _ _; exact snd_pair _ _; exact .eqRefl _)
+  ipra_congr (diagonal (var 0) (var 1) (var 2) : PTm 3) with
+    [fst_pair _ _, snd_pair _ _, .eqRefl e] using [triangularBody, inst2]
 
 theorem triangular_exponential (u v K : PTm n) : Γ ⊢[PRAAx]
     triangularSum u v K ≐ scalarSum (qadd u v) K := by

@@ -4,6 +4,8 @@ import IPRADerivations.AnalyticNumberTheory.PrimorialUpper
 import IPRADerivations.AnalyticNumberTheory.FourthRootSum
 import IPRADerivations.AnalyticNumberTheory.MobiusFloor
 import IPRADerivations.Analysis.PowerSums
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Quotient blocks
@@ -59,7 +61,7 @@ theorem mul_le_of_le_quo {d t F : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)
 theorem comm_le {a q N : PTm n} (h : Γ ⊢[PRAAx] le (a * q) N) : Γ ⊢[PRAAx] le (q * a) N :=
   le_congr (mul_comm a q) (.eqRefl _) h
 
-theorem succ_pos (q : PTm n) : Γ ⊢[PRAAx] succ q ≐ succ (pred (succ q)) := congrSucc (pred_succ q).eqSymm
+alias succ_pos := Common.succ_pos
 
 /-- **The block of the quotient `q`**: `⌊N/a⌋ = q` gives `⌊N/(q + 1)⌋ < a ≤ ⌊N/q⌋`. -/
 theorem block_of_quo {a q N : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) (hq : Γ ⊢[PRAAx] q ≐ succ (pred q))
@@ -97,8 +99,7 @@ theorem inst2_chB (i N : PTm n) :
 abbrev Dc (x N : PTm n) : PTm n := ap2 (sumF chB) x N
 
 theorem bit_alg {A B p : PTm n} (e : Γ ⊢[PRAAx] A ≐ B + succ p) : Γ ⊢[PRAAx] A ≐ (one + B) + p := by
-  have x := natEq e
-  apply deriveNat; ipra_simps; linear_combination x
+  ipra_lc natEq e
 
 /-- `[A ≠ B] + B ≤ A` for `B ≤ A`. -/
 theorem bit_le {A B : PTm n} (h : Γ ⊢[PRAAx] le B A) : Γ ⊢[PRAAx] le (sg (monus A B) + B) A := by
@@ -154,7 +155,7 @@ theorem tele (k s N : PTm n) :
   exact i
 
 theorem sq_succ (s : PTm n) : Γ ⊢[PRAAx] (s + one) * (s + one) ≐ succ s * succ s := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- The first `s` indices contribute at most `s` changes. -/
 theorem Dc_le (s N : PTm n) : Γ ⊢[PRAAx] le (Dc s N) s := by

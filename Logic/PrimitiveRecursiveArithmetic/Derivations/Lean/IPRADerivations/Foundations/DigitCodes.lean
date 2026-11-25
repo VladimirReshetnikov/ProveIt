@@ -1,6 +1,6 @@
 import IPRADerivations.Topology.KuhnSimplices
 import IPRADerivations.Core.Gcd
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Digit codes for packed lists

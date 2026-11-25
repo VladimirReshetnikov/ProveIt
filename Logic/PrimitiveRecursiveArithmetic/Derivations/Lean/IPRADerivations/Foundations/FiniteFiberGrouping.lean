@@ -1,5 +1,7 @@
 import IPRADerivations.Foundations.FilteredEnumerationCode
 import IPRADerivations.Core.Fubini
+import IPRADerivations.Core.CongruenceTactic
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Actual first-occurrence grouping of finite input positions
@@ -84,14 +86,11 @@ theorem key_congr (f : PR 2) {L L' p p' i i' : PTm n}
 theorem firstValue_congr (f : PR 2) {L L' p p' v v' : PTm n}
     (hL : Γ ⊢[PRAAx] L ≐ L') (hp : Γ ⊢[PRAAx] p ≐ p') (hv : Γ ⊢[PRAAx] v ≐ v') :
     Γ ⊢[PRAAx] firstValue f L p v ≐ firstValue f L' p' v' := by
-  simpa using Prf.eqCongr (firstValue f (var 0) (var 1) (var 2) : PTm 3)
-    (σ := ![L,p,v]) (σ' := ![L',p',v']) (fun j => by fin_cases j; exact hL; exact hp; exact hv)
+  ipra_congr (firstValue f (var 0) (var 1) (var 2) : PTm 3) with [hL, hp, hv]
 theorem first_congr (f : PR 2) {L L' p p' i i' : PTm n}
     (hL : Γ ⊢[PRAAx] L ≐ L') (hp : Γ ⊢[PRAAx] p ≐ p') (hi : Γ ⊢[PRAAx] i ≐ i') :
     Γ ⊢[PRAAx] first f L p i ≐ first f L' p' i' := firstValue_congr f hL hp (key_congr f hL hp hi)
-theorem eqb_congr {a a' b b' : PTm n} (ha : Γ ⊢[PRAAx] a ≐ a') (hb : Γ ⊢[PRAAx] b ≐ b') :
-    Γ ⊢[PRAAx] eqb a b ≐ eqb a' b' :=
-  congrMonus (.eqRefl _) (congrAdd (congrMonus ha hb) (congrMonus hb ha))
+alias eqb_congr := Common.congrEqb
 theorem match_at (f : PR 2) (L p v i : PTm n) : Γ ⊢[PRAAx]
     inst2 (matchBody f) i (matchData L p v) ≐ eqb (key f L p i) v := by
   simpa [matchBody,inst2,matchData] using eqb_congr
@@ -161,8 +160,7 @@ theorem representative_rank (f : PR 2) (L p g : PTm n) (hg : Γ ⊢[PRAAx] lt g 
 theorem representative_congr (f : PR 2) {L L' p p' g g' : PTm n}
     (hL : Γ ⊢[PRAAx] L ≐ L') (hp : Γ ⊢[PRAAx] p ≐ p') (hg : Γ ⊢[PRAAx] g ≐ g') :
     Γ ⊢[PRAAx] representative f L p g ≐ representative f L' p' g' := by
-  simpa using Prf.eqCongr (representative f (var 0) (var 1) (var 2) : PTm 3)
-    (σ := ![L,p,g]) (σ' := ![L',p',g']) (fun j => by fin_cases j; exact hL; exact hp; exact hg)
+  ipra_congr (representative f (var 0) (var 1) (var 2) : PTm 3) with [hL, hp, hg]
 theorem unique_group (f : PR 2) (L p g h : PTm n)
     (hg : Γ ⊢[PRAAx] lt g (groupCount f L p)) (hh : Γ ⊢[PRAAx] lt h (groupCount f L p))
     (hk : Γ ⊢[PRAAx] key f L p (representative f L p g) ≐ key f L p (representative f L p h)) :
@@ -244,8 +242,7 @@ theorem incidence_congr (f : PR 2) {L L' p p' g g' i i' : PTm n}
     (hL : Γ ⊢[PRAAx] L ≐ L') (hp : Γ ⊢[PRAAx] p ≐ p')
     (hg : Γ ⊢[PRAAx] g ≐ g') (hi : Γ ⊢[PRAAx] i ≐ i') : Γ ⊢[PRAAx]
     incidence f L p g i ≐ incidence f L' p' g' i' := by
-  simpa using Prf.eqCongr (incidence f (var 0) (var 1) (var 2) (var 3) : PTm 4)
-    (σ := ![L,p,g,i]) (σ' := ![L',p',g',i']) (fun j => by fin_cases j; exact hL; exact hp; exact hg; exact hi)
+  ipra_congr (incidence f (var 0) (var 1) (var 2) (var 3) : PTm 4) with [hL, hp, hg, hi]
 theorem incidence_at (f : PR 2) (L p g i : PTm n) : Γ ⊢[PRAAx]
     inst3 (incidenceBody f) g i (data L p) ≐ incidence f L p g i := by
   simpa [incidenceBody,inst3,data] using incidence_congr f (fst_pair L p) (snd_pair L p) (.eqRefl g) (.eqRefl i)
@@ -311,8 +308,7 @@ theorem column_unit (f : PR 2) (L p i : PTm n) (hi : Γ ⊢[PRAAx] lt i (length 
 theorem fiberCount_congr (f : PR 2) {L L' p p' g g' : PTm n}
     (hL : Γ ⊢[PRAAx] L ≐ L') (hp : Γ ⊢[PRAAx] p ≐ p') (hg : Γ ⊢[PRAAx] g ≐ g') :
     Γ ⊢[PRAAx] fiberCount f L p g ≐ fiberCount f L' p' g' := by
-  simpa using Prf.eqCongr (fiberCount f (var 0) (var 1) (var 2) : PTm 3)
-    (σ := ![L,p,g]) (σ' := ![L',p',g']) (fun j => by fin_cases j; exact hL; exact hp; exact hg)
+  ipra_congr (fiberCount f (var 0) (var 1) (var 2) : PTm 3) with [hL, hp, hg]
 theorem size_at (f : PR 2) (L p g : PTm n) : Γ ⊢[PRAAx]
     inst2 (sizeBody f) g (data L p) ≐ fiberCount f L p g := by
   simpa [sizeBody,inst2,data] using fiberCount_congr f (fst_pair L p) (snd_pair L p) (.eqRefl g)
@@ -393,8 +389,7 @@ def run (f : PR 2) (L p : PTm n) : PTm n := ap2 (outputF f) L p
 theorem fiber_congr (f : PR 2) {L L' p p' g g' : PTm n}
     (hL : Γ ⊢[PRAAx] L ≐ L') (hp : Γ ⊢[PRAAx] p ≐ p') (hg : Γ ⊢[PRAAx] g ≐ g') :
     Γ ⊢[PRAAx] fiber f L p g ≐ fiber f L' p' g' := by
-  simpa using Prf.eqCongr (fiber f (var 0) (var 1) (var 2) : PTm 3)
-    (σ := ![L,p,g]) (σ' := ![L',p',g']) (fun j => by fin_cases j; exact hL; exact hp; exact hg)
+  ipra_congr (fiber f (var 0) (var 1) (var 2) : PTm 3) with [hL, hp, hg]
 theorem fiber_body_at (f : PR 2) (L p g : PTm n) : Γ ⊢[PRAAx]
     inst2 (fiberBody f) g (data L p) ≐ fiber f L p g := by
   simpa [fiberBody,inst2,data] using fiber_congr f (fst_pair L p) (snd_pair L p) (.eqRefl g)

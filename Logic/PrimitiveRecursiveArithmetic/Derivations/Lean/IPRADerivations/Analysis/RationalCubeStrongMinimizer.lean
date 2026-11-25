@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.RationalCubeStrongConvexity
 import IPRADerivations.Analysis.RationalCubeMinimizerUniqueness
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The source's literal strongly convex minimizer a_(2k+c)

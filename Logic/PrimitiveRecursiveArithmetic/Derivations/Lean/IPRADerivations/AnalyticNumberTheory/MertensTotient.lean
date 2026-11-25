@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.MobiusFloor
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Weighted floor sums of the Mertens function and the summatory totient
@@ -90,8 +91,7 @@ theorem sg_self (a : PTm n) : Γ ⊢[PRAAx] sg a * a ≐ a := by
     exact (congrMul (sg_pos hp) (.eqRefl _)).eqTrans (one_mul _)
 
 theorem term_alg {S E P : PTm n} (h : Γ ⊢[PRAAx] S * P ≐ P) : Γ ⊢[PRAAx] (S * E) * (P * one) ≐ E * P := by
-  have e := natEq h
-  apply deriveNat; ipra_simps; linear_combination 𝔞 E * e
+  ipra_lc 𝔞 E * natEq h
 
 /-- `(φ * 𝟏)(k) = k` for `k ≥ 1`. -/
 theorem conv_phi {k : PTm n} (hk : Γ ⊢[PRAAx] k ≐ succ (pred k)) (y : PTm n) :

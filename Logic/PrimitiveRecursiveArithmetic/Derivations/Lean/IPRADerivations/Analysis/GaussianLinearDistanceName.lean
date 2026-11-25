@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianEuclideanDistanceUpperCut
 import IPRADerivations.Analysis.GaussianRootSchedule
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual nonnegative affine Euclidean distance names
@@ -200,11 +201,8 @@ theorem sample_congr (point : PR 2) {T T' x x' M M' A A' B B' k k' : PTm n}
     sample point T x M A B k ≐ sample point T' x' M' A' B' k' := by
   have e5 : (![T,x,M,A,B,k] : Fin 6 → PTm n) 5 = k := rfl
   have e5' : (![T',x',M',A',B',k'] : Fin 6 → PTm n) 5 = k' := rfl
-  simpa only [subst_sample,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.cons_val_three,Matrix.cons_val_four,e5,e5',Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (sample point (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6)
-      (σ := ![T,x,M,A,B,k]) (σ' := ![T',x',M',A',B',k'])
-      (fun i => by fin_cases i; exact hT; exact hx; exact hM; exact hA; exact hB; exact hk)
+  ipra_congr (sample point (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) with
+    [hT, hx, hM, hA, hB, hk] using [e5, e5']
 
 theorem name_at (point : PR 2) (T x M A B k : PTm n) : Γ ⊢[PRAAx]
     ap2 (nameF point) k (nameData T x M A B) ≐ sample point T x M A B k := by

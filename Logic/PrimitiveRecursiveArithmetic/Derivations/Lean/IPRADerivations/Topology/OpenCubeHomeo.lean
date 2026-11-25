@@ -1,5 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.AbsDiff
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The open cube is homeomorphic to Euclidean space

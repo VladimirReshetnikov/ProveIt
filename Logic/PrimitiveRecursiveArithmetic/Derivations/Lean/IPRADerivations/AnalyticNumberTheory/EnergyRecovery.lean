@@ -2,7 +2,8 @@ import IPRADerivations.AnalyticNumberTheory.EnergyJordan
 import IPRADerivations.AnalyticNumberTheory.EnergyMobius
 import IPRADerivations.Analysis.WeightedCauchySchwarz
 import IPRADerivations.AnalyticNumberTheory.AbsDiff
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Recovery of `M` from the energy: `(N!)² M(N)² ≤ 8 Q_N` (`thm:energy`)
@@ -95,10 +96,7 @@ theorem inst2_cB (d X : PTm n) : inst2 cB d X =
 
 /-! ## `|μ(d)| ≤ 1` -/
 
-theorem eqb_le_one (a b : PTm n) : Γ ⊢[PRAAx] le (eqb a b) one := by
-  refine .orE (eq_or_ne a b) ?_ ?_
-  · exact le_congr (eqb_of_eq Prf.hyp0).eqSymm (.eqRefl _) (le_refl _)
-  · exact le_congr (eqb_of_ne Prf.hyp0).eqSymm (.eqRefl _) (zero_monus _)
+alias eqb_le_one := Common.eqb_le_one
 
 theorem eqb01_le (r : PTm n) : Γ ⊢[PRAAx] le (eqb r zero + eqb r one) one := by
   refine .orE (eq_or_ne r zero) ?_ ?_

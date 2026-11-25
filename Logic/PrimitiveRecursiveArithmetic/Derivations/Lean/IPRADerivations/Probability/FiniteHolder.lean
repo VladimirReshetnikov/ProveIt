@@ -4,7 +4,7 @@ import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.Core.ProdLemmas
 import IPRADerivations.DiophantineNumberTheory.SuperellipticFamily
 import IPRADerivations.Geometry.HypercubeSplit
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Finite Hölder and Lyapunov inequalities with rational exponents

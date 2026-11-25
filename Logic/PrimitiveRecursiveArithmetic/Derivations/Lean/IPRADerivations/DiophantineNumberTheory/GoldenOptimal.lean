@@ -4,7 +4,7 @@ import IPRADerivations.Topology.CollisionScales
 import IPRADerivations.DiophantineNumberTheory.FLTMultiples
 import IPRADerivations.AnalyticNumberTheory.SquareReciprocal
 import IPRADerivations.AnalyticNumberTheory.Totient
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Optimality of `1/√5` for the golden ratio (`hurwitz_khinchin_ipra`)

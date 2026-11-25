@@ -3,6 +3,7 @@ import IPRADerivations.Analysis.GaussianGammaEulerApproximationName
 import IPRADerivations.Analysis.GaussianRobinMeshExponential
 import IPRADerivations.Analysis.GaussianGammaRepeatedShift
 import IPRADerivations.Analysis.GaussianGammaRadiusOverlap
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Positive encoding rescaling of the original Gamma reciprocal
@@ -46,10 +47,7 @@ theorem fraction_rescale (z B E : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hE : Γ 
 
 theorem fraction_denominator_congr (z B C : PTm n) (e : Γ ⊢[PRAAx] B ≐ C) : Γ ⊢[PRAAx]
     ofGaussian z B ≐ ofGaussian z C := by
-  simpa only [GaussianRationalHorner.subst_ofGaussian,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-    Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (ofGaussian (var 0) (var 1) : PTm 2) (σ := ![z,B]) (σ' := ![z,C])
-      (fun k => by fin_cases k; exact .eqRefl _; exact e)
+  ipra_congr (ofGaussian (var 0) (var 1) : PTm 2) with [.eqRefl z, e]
 
 theorem factor_rescale (z B E i : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hE : Γ ⊢[PRAAx] le one E) : Γ ⊢[PRAAx]
     factor i (scale E z) (E*B) ≐ factor i z B :=
@@ -90,9 +88,7 @@ theorem q_parameters_at (z B N : PTm n) : Γ ⊢[PRAAx]
 
 theorem bound_data_congr (f : PR 2) {x y : PTm n} (e : Γ ⊢[PRAAx] x ≐ y) : Γ ⊢[PRAAx]
     GaussianNameBounds.U f x ≐ GaussianNameBounds.U f y := by
-  simpa only [GaussianNameBounds.subst_U,Syn.subst_var,Matrix.cons_val_zero,Matrix.head_cons] using
-    Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (GaussianNameBounds.U f (var 0) : PTm 1) (σ := ![x]) (σ' := ![y])
-      (fun k => by fin_cases k; exact e)
+  ipra_congr (GaussianNameBounds.U f (var 0) : PTm 1) with [e]
 
 theorem multiply_data_congr (f g : PR 2) {x y u v : PTm n} (ex : Γ ⊢[PRAAx] x ≐ u) (ey : Γ ⊢[PRAAx] y ≐ v) : Γ ⊢[PRAAx]
     GaussianNameArithmetic.multiplyData f g x y ≐ GaussianNameArithmetic.multiplyData f g u v :=

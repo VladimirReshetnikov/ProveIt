@@ -3,6 +3,7 @@ import IPRADerivations.Core.Parity
 import IPRADerivations.Core.SumLemmas
 import IPRADerivations.Core.BoundedSums
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The finite sums of the Khinchin second moment (`hurwitz_khinchin_ipra`, (K10))
@@ -59,15 +60,15 @@ def sqInv (N x : PTm n) : Fm PTm n :=
 theorem sq_step {N x : PTm n} (ih : Γ ⊢[PRAAx] sqInv t N x) : Γ ⊢[PRAAx] sqInv t (succ N) x := by
   have e0 := natEq (ih : Γ ⊢[PRAAx] ap2 (sumF t) N x * ap2 (sumF t) N x ≐
     ap2 (sumF (t2B t)) N x + two * ap2 (sumF (crB t)) N x)
-  have e1 := natEq (sum_succ' (Γ := Γ) t N x)
   have e2 := natEq (sum_succ' (Γ := Γ) (t2B t) N x)
   have e3 := natEq (sum_succ' (Γ := Γ) (crB t) N x)
   rw [inst2_t2B] at e2
   rw [inst2_crB] at e3
   show Γ ⊢[PRAAx] ap2 (sumF t) (succ N) x * ap2 (sumF t) (succ N) x ≐
     ap2 (sumF (t2B t)) (succ N) x + two * ap2 (sumF (crB t)) (succ N) x
-  apply deriveNat; ipra_simps
-  linear_combination e0 + (𝔞 (ap2 (sumF t) (succ N) x) + 𝔞 (ap2 (sumF t) N x) + 𝔞 (inst2 t N x)) * e1 - e2 - 2 * e3
+  ipra_lc e0 +
+    (𝔞 (ap2 (sumF t) (succ N) x) + 𝔞 (ap2 (sumF t) N x) + 𝔞 (inst2 t N x)) * natEq (sum_succ' (Γ := Γ) t N x) - e2 -
+    2 * e3
 
 /-- `(Σ_{ℓ<N} t_ℓ)² = Σ_{ℓ<N} t_ℓ² + 2 Σ_{ℓ<N} t_ℓ (Σ_{k<ℓ} t_k)`. -/
 theorem sq_sum (N x : PTm n) :
@@ -77,11 +78,9 @@ theorem sq_sum (N x : PTm n) :
     · rw [subst_sqInv]
       simp only [Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
       have a := natEq (sum_zero (Γ := Γ) t x)
-      have b := natEq (sum_zero (Γ := Γ) (t2B t) x)
-      have c := natEq (sum_zero (Γ := Γ) (crB t) x)
       show Γ ⊢[PRAAx] ap2 (sumF t) zero x * ap2 (sumF t) zero x ≐ ap2 (sumF (t2B t)) zero x + two * ap2 (sumF (crB t)) zero x
-      apply deriveNat; ipra_simps
-      linear_combination (𝔞 (ap2 (sumF t) zero x)) * a - b - 2 * c
+      ipra_lc (𝔞 (ap2 (sumF t) zero x)) * a - natEq (sum_zero (Γ := Γ) (t2B t) x) -
+        2 * natEq (sum_zero (Γ := Γ) (crB t) x)
     · rw [subst_sqInv]
       simp only [Syn.subst_var, Syn.repl_zero, subst_repl_shift]
       exact sq_step t Prf.hyp0
@@ -117,20 +116,17 @@ theorem geo (J x : PTm n) : Γ ⊢[PRAAx] num 3 * ap2 (sumF g4B) J x + one ≐ p
     · rw [subst_geoInv]
       simp only [Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
       have a := natEq (sum_zero (Γ := Γ) g4B x)
-      have b := natEq (pw_zero (Γ := Γ) (num 4 : PTm n))
       show Γ ⊢[PRAAx] num 3 * ap2 (sumF g4B) zero x + one ≐ pw (num 4) zero
-      apply deriveNat; ipra_simps
-      linear_combination 3 * a - b
+      ipra_lc 3 * a - natEq (pw_zero (Γ := Γ) (num 4 : PTm n))
     · rw [subst_geoInv]
       simp only [Syn.subst_var, Syn.repl_zero, subst_repl_shift]
       let Δ : List (Fm PTm (n + 1)) := geoInv (var 0) (Syn.shift x) :: Γ.map Fm.shift
-      have e0 := natEq (Prf.hyp0 : Δ ⊢[PRAAx] num 3 * ap2 (sumF g4B) (var 0) (Syn.shift x) + one ≐ pw (num 4) (var 0))
       have e1 := natEq (sum_succ' (Γ := Δ) g4B (var 0) (Syn.shift x))
-      have e2 := natEq (pw_succ (Γ := Δ) (num 4 : PTm (n + 1)) (var 0))
       rw [show inst2 g4B (var 0 : PTm (n + 1)) (Syn.shift x) = pw (num 4) (var 0) by simp [inst2]] at e1
       show Δ ⊢[PRAAx] num 3 * ap2 (sumF g4B) (succ (var 0)) (Syn.shift x) + one ≐ pw (num 4) (succ (var 0))
-      apply deriveNat; ipra_simps
-      linear_combination 4 * e0 + 3 * e1 - e2 - 3 * e0
+      ipra_lc 4 * natEq (Prf.hyp0 : Δ ⊢[PRAAx] num 3 * ap2 (sumF g4B) (var 0) (Syn.shift x) + one ≐ pw (num 4) (var 0)) +
+        3 * e1 - natEq (pw_succ (Γ := Δ) (num 4 : PTm (n + 1)) (var 0)) -
+        3 * natEq (Prf.hyp0 : Δ ⊢[PRAAx] num 3 * ap2 (sumF g4B) (var 0) (Syn.shift x) + one ≐ pw (num 4) (var 0))
   have a := Prf.allE J hall
   rw [subst_geoInv] at a
   simp only [Syn.subst_inst_shift] at a

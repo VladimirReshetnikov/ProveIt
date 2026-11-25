@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.GcdList
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Normalizing a vector by its gcd
@@ -48,12 +49,9 @@ theorem quo_le_of {x g q : PTm k} (hg : Γ ⊢[PRAAx] g ≐ succ (pred g)) (h : 
   ipra_le 𝔞 (pred g) * 𝔞 q using linear_combination e + 𝔞 q * eg
 
 theorem gcd_zero_zero : Γ ⊢[PRAAx] gcd (zero : PTm k) zero ≐ zero := by
-  have e1 := natEq (ex_succ (Γ := Γ) zero ![(zero : PTm k), zero])
-  have e2 := natEq (ey_zero (Γ := Γ) (zero : PTm k) zero)
-  have e3 := natEq (ex_zero (Γ := Γ) (zero : PTm k) zero)
-  apply deriveNat; ipra_simps
-  linear_combination e1 + 𝔞 (sg (ey zero ![(zero : PTm k), zero])) * e2 +
-    𝔞 (monus one (sg (ey zero ![(zero : PTm k), zero]))) * e3
+  ipra_lc natEq (ex_succ (Γ := Γ) zero ![(zero : PTm k), zero]) +
+    𝔞 (sg (ey zero ![(zero : PTm k), zero])) * natEq (ey_zero (Γ := Γ) (zero : PTm k) zero) +
+    𝔞 (monus one (sg (ey zero ![(zero : PTm k), zero]))) * natEq (ex_zero (Γ := Γ) (zero : PTm k) zero)
 
 /-- The gcd of a zero vector is `0`. -/
 theorem gv_all_zero (f : PTm 2) {N x : PTm k}
@@ -107,11 +105,8 @@ theorem point_dvd (f : PTm 2) {i N x : PTm k} (hG : Γ ⊢[PRAAx] gv f N x ≐ s
     (hi : Γ ⊢[PRAAx] lt i N) :
     Γ ⊢[PRAAx] dvd (succ (pred (gv f N x * gv (qBody f) N (pairT N x)))) (inst2 f i x) := by
   have hGH := pos_mul hG hH
-  have e1 := natEq (f_eq f hG hi)
-  have e2 := natEq (eq_of_dvd' hH (gv_dvd (qBody f) (x := pairT N x) hi))
   refine dvd_congr_left hGH (dvd_of_eq' hGH (w := quo (inst2 (qBody f) i (pairT N x)) (gv (qBody f) N (pairT N x))) ?_)
-  apply deriveNat; ipra_simps
-  linear_combination e1 + 𝔞 (gv f N x) * e2
+  ipra_lc natEq (f_eq f hG hi) + 𝔞 (gv f N x) * natEq (eq_of_dvd' hH (gv_dvd (qBody f) (x := pairT N x) hi))
 
 /-- `lem:normalize`: dividing by the gcd gives a primitive vector, `gcd(q_0, …, q_{N−1}) = 1`. -/
 theorem gv_quotients (f : PTm 2) {N x : PTm k} (hG : Γ ⊢[PRAAx] gv f N x ≐ succ (pred (gv f N x))) :

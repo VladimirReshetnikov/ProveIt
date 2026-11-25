@@ -4,6 +4,8 @@ import IPRADerivations.Analysis.GaussianPolynomialWeightedDegree
 import IPRADerivations.Foundations.AuxiliaryEnvelope
 import IPRADerivations.Core.Fubini
 import IPRADerivations.Core.Search
+import IPRADerivations.Core.CongruenceTactic
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Actual weighted degree budgets along numerical permutation words
@@ -25,7 +27,6 @@ open Syn
 open scoped Fm
 open ConciseIPRA.PTm (zero succ app)
 open LeanProofs.IPRA.PTm (pred)
-
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -95,9 +96,8 @@ theorem fields_at (G m a d w : PTm n) (i : Fin 5) : Γ ⊢[PRAAx]
       GaussianPolynomialWeightedDegree.fields (fstT (data G m a d w)) k ≐ ![G,m,a,d] k := by
     have e : Γ ⊢[PRAAx] GaussianPolynomialWeightedDegree.fields (fstT (data G m a d w)) k ≐
         GaussianPolynomialWeightedDegree.fields (GaussianPolynomialWeightedDegree.data G m a d) k := by
-      simpa using Prf.eqCongr (Γ := Γ) (GaussianPolynomialWeightedDegree.fields (var 0) k : PTm 1)
-        (σ := ![fstT (data G m a d w)]) (σ' := ![GaussianPolynomialWeightedDegree.data G m a d])
-        (fun i => by fin_cases i; exact fst_pair _ _)
+      ipra_congr (GaussianPolynomialWeightedDegree.fields (var 0) k : PTm 1) with
+        [(show _ ⊢[PRAAx] fstT (data G m a d w) ≐ GaussianPolynomialWeightedDegree.data G m a d from fst_pair _ _)]
     exact e.eqTrans (GaussianPolynomialWeightedDegree.fields_at _ _ _ _ k)
   fin_cases i
   · exact old 0
@@ -165,11 +165,8 @@ theorem index_bound (m w j : PTm n) (hj : Γ ⊢[PRAAx] lt j m) : Γ ⊢[PRAAx] 
   .andE₁ (Foundations.RuntimeCyclicPermutation.inverse_correct _ _ _ hj (Foundations.RuntimePermutationWords.digit_bound _ _ _ hj))
 theorem point_balance (G m a d w j : PTm n) (hj : Γ ⊢[PRAAx] lt j m) : Γ ⊢[PRAAx]
     m*candidate G m a d w j+d*Foundations.RuntimePermutationWords.digit m w j ≐ rowWeight G m a d w j+d*j := by
-  have e := natEq (GaussianSuperellipticMatrixEntries.index_equation m (Foundations.RuntimePermutationWords.digit m w j) j (Foundations.RuntimePermutationWords.digit_bound _ _ _ hj) hj)
   unfold candidate rowWeight GaussianPolynomialWeightedDegree.weight wrapAt rowIndex
-  apply deriveNat
-  ipra_simps
-  linear_combination -(Groth.ι (IPRA.Q.mk _ d))*e
+  ipra_lc -(Groth.ι (IPRA.Q.mk _ d))*natEq (GaussianSuperellipticMatrixEntries.index_equation m (Foundations.RuntimePermutationWords.digit m w j) j (Foundations.RuntimePermutationWords.digit_bound _ _ _ hj) hj)
 
 theorem prefix_balance (G m a d w j : PTm n) (hj : Γ ⊢[PRAAx] le j m) : Γ ⊢[PRAAx]
     m*candidatePrefix G m a d w j+digitPrefix G m a d w j ≐
@@ -208,19 +205,11 @@ theorem prefix_balance (G m a d w j : PTm n) (hj : Γ ⊢[PRAAx] le j m) : Γ �
       have sd := digit_succ (Γ := Δ) (Syn.shift G) (Syn.shift m) (Syn.shift a) (Syn.shift d) (Syn.shift w) (var 0)
       have sw := weight_succ (Γ := Δ) (Syn.shift G) (Syn.shift m) (Syn.shift a) (Syn.shift d) (Syn.shift w) (var 0)
       have sp := position_succ (Γ := Δ) (Syn.shift G) (Syn.shift m) (Syn.shift a) (Syn.shift d) (Syn.shift w) (var 0)
-      have hn := natEq h
-      have en := natEq e
-      have cn := natEq sc
-      have dn := natEq sd
-      have wn := natEq sw
-      have pn := natEq sp
       change Δ ⊢[PRAAx] Syn.shift m*candidatePrefix (Syn.shift G) (Syn.shift m) (Syn.shift a) (Syn.shift d) (Syn.shift w) (succ (var 0))+
         digitPrefix (Syn.shift G) (Syn.shift m) (Syn.shift a) (Syn.shift d) (Syn.shift w) (succ (var 0)) ≐
         weightPrefix (Syn.shift G) (Syn.shift m) (Syn.shift a) (Syn.shift d) (Syn.shift w) (succ (var 0))+
         positionPrefix (Syn.shift G) (Syn.shift m) (Syn.shift a) (Syn.shift d) (Syn.shift w) (succ (var 0))
-      apply deriveNat
-      ipra_simps
-      linear_combination hn+en+(Groth.ι (IPRA.Q.mk _ (Syn.shift m)))*cn+dn-wn-pn
+      ipra_lc natEq h+natEq e+(Groth.ι (IPRA.Q.mk _ (Syn.shift m)))*natEq sc+natEq sd-natEq sw-natEq sp
   have endp := all.allE j
   simp only [Fm.subst_imp,Fm.subst_eq,subst_le,PTm.subst_add,PTm.subst_mul,
     subst_candidatePrefix,subst_digitPrefix,subst_weightPrefix,subst_positionPrefix,
@@ -356,10 +345,8 @@ theorem no_bad_rotation (G m a d w : PTm n)
       (rowIndex (Syn.shift m) (Syn.shift w) (var 0)) (var 0) ≐
     Foundations.RuntimeCyclicPermutation.rotation (Syn.shift m)
       (GaussianPolynomialWeightedDegree.index (Syn.shift G) (Syn.shift m) (Syn.shift a) (Syn.shift d)) (var 0) := by
-    simpa using Prf.eqCongr (Γ := Δ) (Foundations.RuntimeCyclicPermutation.rotation (var 0) (var 1) (var 2) : PTm 3)
-      (σ := ![Syn.shift m,rowIndex (Syn.shift m) (Syn.shift w) (var 0),var 0])
-      (σ' := ![Syn.shift m,GaussianPolynomialWeightedDegree.index (Syn.shift G) (Syn.shift m) (Syn.shift a) (Syn.shift d),var 0])
-      (fun i => by fin_cases i; exact .eqRefl _; exact e; exact .eqRefl _)
+    ipra_congr (Foundations.RuntimeCyclicPermutation.rotation (var 0) (var 1) (var 2) : PTm 3) with
+      [.eqRefl (Syn.shift m), e, .eqRefl (var 0)]
   simpa only [Δ,Syn.shift,GaussianPolynomialWeightedDegree.subst_index] using inv.eqSymm.eqTrans r
 
 theorem first_bad_found (G m a d w : PTm n)
@@ -491,21 +478,14 @@ theorem rotation_index (m k j : PTm n) (hk : Γ ⊢[PRAAx] lt k m) (hj : Γ ⊢[
     (GaussianSuperellipticMatrixEntries.rotation_comm m k j)
   have e : Γ ⊢[PRAAx] rowIndex m (Foundations.RuntimeCyclicPermutation.rotationCode m k) j ≐
       Foundations.RuntimeCyclicPermutation.inverseIndex m j (Foundations.RuntimeCyclicPermutation.rotation m j k) := by
-    simpa only [rowIndex,Foundations.RuntimeCyclicPermutation.subst_inverseIndex,Syn.subst_var,
-      Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using
-      Prf.eqCongr (Γ := Γ) (Foundations.RuntimeCyclicPermutation.inverseIndex (var 0) (var 1) (var 2) : PTm 3)
-        (σ := ![m,j,Foundations.RuntimePermutationWords.digit m (Foundations.RuntimeCyclicPermutation.rotationCode m k) j])
-        (σ' := ![m,j,Foundations.RuntimeCyclicPermutation.rotation m j k])
-        (fun i => by fin_cases i; exact .eqRefl _; exact .eqRefl _; exact digit)
+    ipra_congr (Foundations.RuntimeCyclicPermutation.inverseIndex (var 0) (var 1) (var 2) : PTm 3) with
+      [.eqRefl m, .eqRefl j, digit] using [rowIndex]
   exact e.eqTrans (Foundations.RuntimeCyclicPermutation.inverse_rotation m j k hj hk)
 
 theorem rotation_wrap_at (m k j : PTm n) (hk : Γ ⊢[PRAAx] lt k m) (hj : Γ ⊢[PRAAx] lt j m) : Γ ⊢[PRAAx]
     wrapAt m (Foundations.RuntimeCyclicPermutation.rotationCode m k) j ≐ Foundations.RuntimeCyclicPermutation.wrap m k j := by
-  simpa only [wrapAt,Foundations.RuntimeCyclicPermutation.subst_wrap,Syn.subst_var,
-    Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (Foundations.RuntimeCyclicPermutation.wrap (var 0) (var 1) (var 2) : PTm 3)
-      (σ := ![m,rowIndex m (Foundations.RuntimeCyclicPermutation.rotationCode m k) j,j]) (σ' := ![m,k,j])
-      (fun i => by fin_cases i; exact .eqRefl _; exact rotation_index m k j hk hj; exact .eqRefl _)
+  ipra_congr (Foundations.RuntimeCyclicPermutation.wrap (var 0) (var 1) (var 2) : PTm 3) with
+    [.eqRefl m, rotation_index m k j hk hj, .eqRefl j] using [wrapAt]
 
 theorem wrap_zero (m w : PTm n) : Γ ⊢[PRAAx] wrapPrefix m w zero ≐ zero := prefix_zero _ _ _ _ _ _
 theorem wrap_succ (m w j : PTm n) : Γ ⊢[PRAAx]
@@ -537,12 +517,8 @@ theorem rotation_wrap_total (m k : PTm n) (hk : Γ ⊢[PRAAx] lt k m) : Γ ⊢[P
 
 theorem rotation_weight_at (G m a d k j : PTm n) (hk : Γ ⊢[PRAAx] lt k m) (hj : Γ ⊢[PRAAx] lt j m) : Γ ⊢[PRAAx]
     rowWeight G m a d (Foundations.RuntimeCyclicPermutation.rotationCode m k) j ≐ GaussianPolynomialWeightedDegree.weight G m a d k := by
-  simpa only [rowWeight,GaussianPolynomialWeightedDegree.subst_weight,Syn.subst_var,
-    Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_three,Matrix.cons_val_four,
-    Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (GaussianPolynomialWeightedDegree.weight (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5)
-      (σ := ![G,m,a,d,rowIndex m (Foundations.RuntimeCyclicPermutation.rotationCode m k) j]) (σ' := ![G,m,a,d,k])
-      (fun i => by fin_cases i; exact .eqRefl _; exact .eqRefl _; exact .eqRefl _; exact .eqRefl _; exact rotation_index m k j hk hj)
+  ipra_congr (GaussianPolynomialWeightedDegree.weight (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) with
+    [.eqRefl G, .eqRefl m, .eqRefl a, .eqRefl d, rotation_index m k j hk hj] using [rowWeight]
 
 theorem rotation_candidate_weight (G m a d k : PTm n) (hk : Γ ⊢[PRAAx] lt k m) : Γ ⊢[PRAAx]
     candidatePrefix G m a d (Foundations.RuntimeCyclicPermutation.rotationCode m k) m ≐
@@ -572,7 +548,6 @@ theorem rotation_candidate (G m a d : PTm n)
     (.andE₁ (GaussianPolynomialWeightedDegree.index_attains G m a d (.andE₁ hInput)))).eqTrans
     (GaussianPolynomialWeightedDegree.maximum_eq_weight G m a d (.andE₁ hInput) (.andE₂ (.andE₂ hInput))).eqSymm
 
-
 theorem rotation_row_flags (G m a d : PTm n)
     (hInput : Γ ⊢[PRAAx] GaussianPolynomialWeightedDegree.input G m a) : Γ ⊢[PRAAx]
     rowFlags G m a (Foundations.RuntimeCyclicPermutation.rotationCode m (GaussianPolynomialWeightedDegree.index G m a d)) := by
@@ -594,15 +569,8 @@ theorem rotation_row_flags (G m a d : PTm n)
         (GaussianPolynomialWeightedDegree.index (Syn.shift G) (Syn.shift m) (Syn.shift a) (Syn.shift d))) (var 0)) ≐
       GaussianPolynomialWeightedDegree.rowFlag (Syn.shift G) (Syn.shift m) (Syn.shift a)
         (GaussianPolynomialWeightedDegree.index (Syn.shift G) (Syn.shift m) (Syn.shift a) (Syn.shift d)) := by
-    simpa only [GaussianPolynomialWeightedDegree.subst_rowFlag,Syn.subst_var,Matrix.cons_val_zero,
-      Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_three,Matrix.head_cons,Matrix.tail_cons] using
-      Prf.eqCongr (Γ := Δ) (GaussianPolynomialWeightedDegree.rowFlag (var 0) (var 1) (var 2) (var 3) : PTm 4)
-        (σ := ![Syn.shift G,Syn.shift m,Syn.shift a,rowIndex (Syn.shift m)
-          (Foundations.RuntimeCyclicPermutation.rotationCode (Syn.shift m)
-            (GaussianPolynomialWeightedDegree.index (Syn.shift G) (Syn.shift m) (Syn.shift a) (Syn.shift d))) (var 0)])
-        (σ' := ![Syn.shift G,Syn.shift m,Syn.shift a,
-          GaussianPolynomialWeightedDegree.index (Syn.shift G) (Syn.shift m) (Syn.shift a) (Syn.shift d)])
-        (fun i => by fin_cases i; exact .eqRefl _; exact .eqRefl _; exact .eqRefl _; exact e)
+    ipra_congr (GaussianPolynomialWeightedDegree.rowFlag (var 0) (var 1) (var 2) (var 3) : PTm 4) with
+      [.eqRefl (Syn.shift G), .eqRefl (Syn.shift m), .eqRefl (Syn.shift a), e]
   simpa only [Δ,Syn.shift,Foundations.RuntimeCyclicPermutation.subst_rotationCode,
     GaussianPolynomialWeightedDegree.subst_index] using fl.eqTrans fs.wk
 

@@ -1,5 +1,5 @@
 import IPRADerivations.Combinatorics.CatalanBallot
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Ballot, two-fold and Fuss–Catalan identities (`catalan_numbers_ipra_2026-11-16`, Section 7)

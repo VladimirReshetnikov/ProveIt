@@ -1,5 +1,5 @@
 import IPRADerivations.Combinatorics.LucasIdentities
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Catalan's Fibonacci identity

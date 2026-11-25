@@ -1,5 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.PellNegDescent
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Uniform descent for the generalized Pell equation `x² − Dy² = N`

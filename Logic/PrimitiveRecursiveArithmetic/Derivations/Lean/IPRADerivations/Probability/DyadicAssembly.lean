@@ -1,5 +1,5 @@
 import IPRADerivations.Probability.DyadicSLLN
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The union over the dyadic blocks

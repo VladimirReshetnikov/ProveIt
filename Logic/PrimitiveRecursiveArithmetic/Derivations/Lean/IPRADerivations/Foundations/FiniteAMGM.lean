@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.WeightedAMGM
 import IPRADerivations.Combinatorics.BinomialTheorem
 import IPRADerivations.AnalyticNumberTheory.PhiLower
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The finite arithmetic–geometric mean inequality

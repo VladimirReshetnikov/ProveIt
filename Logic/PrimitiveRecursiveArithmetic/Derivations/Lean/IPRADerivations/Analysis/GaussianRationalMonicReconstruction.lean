@@ -1,5 +1,8 @@
 import IPRADerivations.Analysis.GaussianRationalMonicReduction
 import IPRADerivations.Analysis.GaussianRationalPolynomialProduct
+import IPRADerivations.Core.CongruenceTactic
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Coefficient reconstruction for the actual monic reduction
@@ -46,10 +49,7 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 theorem le_or_lt (a b : PTm n) : Γ ⊢[PRAAx] le a b ⋎ lt b a :=
   .orE (lt_or_le b a) (.orI₂ Prf.hyp0) (.orI₁ Prf.hyp0)
-theorem monus_le_left (a b : PTm n) : Γ ⊢[PRAAx] le (monus a b) a := by
-  refine .orE (lt_or_le a b) ?_ ?_
-  · exact le_congr (le_of_lt Prf.hyp0 : (lt a b :: Γ) ⊢[PRAAx] monus a b ≐ zero).eqSymm (.eqRefl _) (zero_le _)
-  · exact le_of_eq_add (d := b) ((eq_add_of_le Prf.hyp0).eqTrans (add_comm _ _))
+alias monus_le_left := Common.monus_le_self
 
 theorem zero_add_zero : Γ ⊢[PRAAx] qadd qzero qzero ≐ qzero := qzero_add qzero qzero_canonical
 
@@ -162,8 +162,7 @@ theorem spike_congr {a a' q q' i i' : PTm n} (ha : Γ ⊢[PRAAx] a ≐ a')
     (hq : Γ ⊢[PRAAx] q ≐ q') (hi : Γ ⊢[PRAAx] i ≐ i') : Γ ⊢[PRAAx]
     spike a q i ≐ spike a' q' i' := select_congr (AnalyticNumberTheory.Euler.congrEqb hi ha) (.eqRefl _) hq
 
-theorem different_of_lt {a b : PTm n} (h : Γ ⊢[PRAAx] lt a b) : Γ ⊢[PRAAx] neg (a ≐ b) :=
-  .impI (lt_irrefl _ _ (lt_congr Prf.hyp0 (.eqRefl _) h.wk))
+alias different_of_lt := Common.ne_of_lt
 theorem different_of_gt {a b : PTm n} (h : Γ ⊢[PRAAx] lt b a) : Γ ⊢[PRAAx] neg (a ≐ b) :=
   .impI (lt_irrefl _ _ (lt_congr (.eqRefl _) Prf.hyp0 h.wk))
 theorem spike_hit (a q i : PTm n) (h : Γ ⊢[PRAAx] i ≐ a) : Γ ⊢[PRAAx] spike a q i ≐ q :=
@@ -214,9 +213,7 @@ theorem spike_sum (a q t : PTm n) (hq : Γ ⊢[PRAAx] canonical q) : Γ ⊢[PRAA
 
 theorem leftPad_congr {C C' a a' : PTm n} (hC : Γ ⊢[PRAAx] C ≐ C') (ha : Γ ⊢[PRAAx] a ≐ a') : Γ ⊢[PRAAx]
     leftPad C a ≐ leftPad C' a' := by
-  simpa only [GaussianRationalPolynomialBuffers.subst_leftPad,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (leftPad (var 0) (var 1) : PTm 2)
-      (σ := ![C,a]) (σ' := ![C',a']) (fun i => by fin_cases i; exact hC; exact ha)
+  ipra_congr (leftPad (var 0) (var 1) : PTm 2) with [hC, ha]
 theorem constant_code (c a : PTm n) : Γ ⊢[PRAAx] constant c (succ a) ≐ leftPad (singleton c) a :=
   leftPad_congr (.eqRefl _) (pred_succ a)
 theorem constant_padded (c a j : PTm n) : Γ ⊢[PRAAx]
@@ -405,12 +402,8 @@ theorem shifted_empty (C a k : PTm n) : Γ ⊢[PRAAx] shifted C zero a k ≐ qze
 
 theorem subtract_bound (a L k : PTm n) (ha : Γ ⊢[PRAAx] le a k) (hk : Γ ⊢[PRAAx] lt k (a+L)) : Γ ⊢[PRAAx]
     lt (monus k a) L := by
-  have ea := natEq (eq_add_of_le ha)
-  have ek := natEq (eq_add_of_le hk)
   apply le_of_eq_add (d := monus (a+L) (succ k))
-  apply deriveNat
-  ipra_simps
-  linear_combination ek+ea
+  ipra_lc natEq (eq_add_of_le hk)+natEq (eq_add_of_le ha)
 
 theorem shifted_pad_entry (C L a k : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ L)
     (hk : Γ ⊢[PRAAx] lt k (a+L)) : Γ ⊢[PRAAx]
@@ -445,9 +438,7 @@ theorem shifted_constant (c b a k : PTm n) : Γ ⊢[PRAAx]
 
 theorem constant_congr {c c' L L' : PTm n} (hc : Γ ⊢[PRAAx] c ≐ c') (hL : Γ ⊢[PRAAx] L ≐ L') : Γ ⊢[PRAAx]
     constant c L ≐ constant c' L' := by
-  simpa only [GaussianRationalMonicReduction.subst_constant,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (constant (var 0) (var 1) : PTm 2)
-      (σ := ![c,L]) (σ' := ![c',L']) (fun i => by fin_cases i; exact hc; exact hL)
+  ipra_congr (constant (var 0) (var 1) : PTm 2) with [hc, hL]
 
 theorem shifted_constant_positive (c D a k : PTm n) (hD : Γ ⊢[PRAAx] le one D) : Γ ⊢[PRAAx]
     shifted (constant c D) D a k ≐ spike (a+pred D) c k :=

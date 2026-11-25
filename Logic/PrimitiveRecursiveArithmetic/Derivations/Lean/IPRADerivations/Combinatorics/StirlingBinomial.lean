@@ -1,6 +1,7 @@
 import IPRADerivations.Combinatorics.StirlingPowers
 import IPRADerivations.Combinatorics.Vandermonde
 import IPRADerivations.Probability.Independence
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The binomial recurrence of the Stirling numbers
@@ -99,10 +100,10 @@ theorem pascal_pt (j N K : PTm n) :
   rw [inst2_shiftBody, inst2_addBody, inst2_shiftBody]
   refine (u_at _ _ _).eqTrans (.eqTrans ?_ (congrAdd (u_at _ _ _) (s_at _ _ _)).eqSymm)
   refine (congrMul (gb_pascal N j) (.eqRefl _)).eqTrans ?_
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem ringA (g A B c : PTm n) : Γ ⊢[PRAAx] g * (c * A + B) ≐ c * (g * A) + one * (g * B) := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem split_pt (j N K : PTm n) :
     Γ ⊢[PRAAx] inst2 sB j (pairT N K) ≐ inst2 (addBody wB lB) j (pairT N K) := by
@@ -168,12 +169,9 @@ theorem sb_step {N K : PTm n} (h₁ : Γ ⊢[PRAAx] stir (succ N) (succ K) ≐ U
 
 theorem sb_base (K : PTm n) : Γ ⊢[PRAAx] stir (succ zero) (succ K) ≐ U zero K := by
   refine (stir_rec zero K).eqTrans ?_
-  have s := natEq (sum_succ' (Γ := Γ) uB zero (pairT zero K))
-  have z := natEq (sum_zero (Γ := Γ) uB (pairT zero K))
-  have t := natEq ((u_at (Γ := Γ) zero zero K).eqTrans ((congrMul (gb_zero _) (.eqRefl _)).eqTrans (one_mul _)))
-  have a := natEq (stir_zero_succ (Γ := Γ) K)
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞(K) + 1) * a - s - z - t
+  ipra_lc (𝔞(K) + 1) * natEq (stir_zero_succ (Γ := Γ) K) - natEq (sum_succ' (Γ := Γ) uB zero (pairT zero K)) -
+    natEq (sum_zero (Γ := Γ) uB (pairT zero K)) -
+    natEq ((u_at (Γ := Γ) zero zero K).eqTrans ((congrMul (gb_zero _) (.eqRefl _)).eqTrans (one_mul _)))
 
 /-! ## The induction on `n` -/
 

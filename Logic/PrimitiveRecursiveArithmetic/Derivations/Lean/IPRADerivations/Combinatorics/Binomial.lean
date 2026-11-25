@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.Primes
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Binomial coefficients in iPRA
@@ -32,9 +33,7 @@ variable {m : ℕ} {Γ : List (Fm PTm m)}
 
 /-! ## Division by positive terms -/
 
-theorem pos_mul {a b : PTm m} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) (hb : Γ ⊢[PRAAx] b ≐ succ (pred b)) :
-    Γ ⊢[PRAAx] a * b ≐ succ (pred (a * b)) :=
-  eq_succ_pred ((congrMul ha hb).eqTrans ((mul_succ _ _).eqTrans (add_succ _ _)))
+alias pos_mul := Common.pos_mul
 
 theorem rem_zero_of_eq {x D w : PTm m} (hD : Γ ⊢[PRAAx] D ≐ succ (pred D)) (h : Γ ⊢[PRAAx] x ≐ D * w) :
     Γ ⊢[PRAAx] rem x D ≐ zero :=

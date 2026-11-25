@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianEulerLogarithmicLowerFiniteBudget
 import IPRADerivations.Analysis.GaussianEulerNamedLowerTail
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The original named logarithmic lower compact tail
@@ -54,9 +55,8 @@ def denominator (s p A R : PTm n) : PTm n := unit (height p (panelDegree A) R)*u
 private theorem quadrature_congr (F : PR 3) (s N a C E N' a' C' E' x : PTm n)
     (hN : Γ ⊢[PRAAx] N ≐ N') (ha : Γ ⊢[PRAAx] a ≐ a') (hC : Γ ⊢[PRAAx] C ≐ C') (hE : Γ ⊢[PRAAx] E ≐ E') : Γ ⊢[PRAAx]
     quadrature F s N a C E x ≐ quadrature F s N' a' C' E' x := by
-  simpa using Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (quadrature F (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6)
-    (σ := ![s,N,a,C,E,x]) (σ' := ![s,N',a',C',E',x])
-    (fun i => by fin_cases i; exact .eqRefl _; exact hN; exact ha; exact hC; exact hE; exact .eqRefl _)
+  ipra_congr (quadrature F (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) with
+    [.eqRefl s, hN, ha, hC, hE, .eqRefl x]
 
 theorem compact_input (j z R B p q A : PTm n) (h : Γ ⊢[PRAAx] source z R B A) (hpq : Γ ⊢[PRAAx] le p q) : Γ ⊢[PRAAx]
     GaussianCompactRiemannName.input evaluatorF one (lowerWidth p q (panelDegree A)) (intervalDen q A R)
@@ -129,9 +129,7 @@ theorem strict_bound (s j z R B p q A : PTm n) (h : Γ ⊢[PRAAx] source z R B A
 theorem equal_bound (s j z R B p q A : PTm n) (hpq : Γ ⊢[PRAAx] p ≐ q) : Γ ⊢[PRAAx]
     bounded (point s j z R B p q A) (numerator s j p A R) (denominator s p A R) := by
   have widths : Γ ⊢[PRAAx] lowerWidth p q (panelDegree A) ≐ lowerWidth p p (panelDegree A) := by
-    simpa using Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (lowerWidth (var 0) (var 1) (var 2) : PTm 3)
-      (σ := ![p,q,panelDegree A]) (σ' := ![p,p,panelDegree A])
-      (fun i => by fin_cases i; exact .eqRefl _; exact hpq.eqSymm; exact .eqRefl _)
+    ipra_congr (lowerWidth (var 0) (var 1) (var 2) : PTm 3) with [.eqRefl p, hpq.eqSymm, .eqRefl (panelDegree A)]
   have width := widths.eqTrans (GaussianGammaCompactCutoffGeometry.same_lower p (panelDegree A))
   have actual : Γ ⊢[PRAAx] point s j z R B p q A ≐ qzero := by
     have read := GaussianCompactRiemannName.name_at (Γ := Γ) evaluatorF s one (lowerWidth p q (panelDegree A)) (intervalDen q A R)

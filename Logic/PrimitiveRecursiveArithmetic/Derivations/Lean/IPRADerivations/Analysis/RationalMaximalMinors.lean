@@ -3,6 +3,7 @@ import IPRADerivations.Probability.UnionUtility
 import IPRADerivations.AnalyticNumberTheory.Multiplicative
 import IPRADerivations.DiophantineNumberTheory.FLTMultiples
 import IPRADerivations.Foundations.RuntimeWordAppend
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # A maximum nonzero minor selected by an actual bounded scan
@@ -147,13 +148,11 @@ theorem address_decode (d R C : PTm n) (hc : Γ ⊢[PRAAx] lt C (maskLimit d)) :
 
 theorem score_congr (P d : PTm n) {R R' C C' : PTm n} (hR : Γ ⊢[PRAAx] R ≐ R') (hC : Γ ⊢[PRAAx] C ≐ C') :
     Γ ⊢[PRAAx] score P d R C ≐ score P d R' C' := by
-  simpa using Prf.eqCongr (score (var 0) (var 1) (var 2) (var 3) : PTm 4)
-    (σ := ![P,d,R,C]) (σ' := ![P,d,R',C']) (fun i => by fin_cases i; exact .eqRefl _; exact .eqRefl _; exact hR; exact hC)
+  ipra_congr (score (var 0) (var 1) (var 2) (var 3) : PTm 4) with [.eqRefl P, .eqRefl d, hR, hC]
 
 theorem candidate_score_at (P d z : PTm n) : Γ ⊢[PRAAx] inst2 scoreBody z (pairT P d) ≐ candidateScore P d z := by
-  simpa [scoreBody,inst2] using Prf.eqCongr (candidateScore (var 0) (var 1) (var 2) : PTm 3)
-    (σ := ![fstT (pairT P d),sndT (pairT P d),z]) (σ' := ![P,d,z])
-    (fun i => by fin_cases i; exact fst_pair _ _; exact snd_pair _ _; exact .eqRefl _)
+  ipra_congr (candidateScore (var 0) (var 1) (var 2) : PTm 3) with
+    [fst_pair _ _, snd_pair _ _, .eqRefl z] using [scoreBody, inst2]
 
 theorem candidate_address_score (P d R C : PTm n) (hc : Γ ⊢[PRAAx] lt C (maskLimit d)) :
     Γ ⊢[PRAAx] candidateScore P d (address d R C) ≐ score P d R C := by

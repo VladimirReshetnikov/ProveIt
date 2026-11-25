@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.LogRefinement
 import IPRADerivations.Core.Gcd
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The finite stage implication preserves the table (`pnt_ipra_constructive_2026-11-14`)
@@ -39,14 +40,10 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `1 ≤ c` gives `c = (c − 1) + 1`. -/
-theorem pos_of_one_le {c : PTm n} (h : Γ ⊢[PRAAx] le one c) : Γ ⊢[PRAAx] c ≐ succ (pred c) :=
-  pos_of_eq ((eq_add_of_le h).eqTrans (succ_add _ _))
+alias pos_of_one_le := Common.pos_of_one_le
 
 /-- Cancel a factor `c ≥ 1`. -/
-theorem cancel_pos {c a b : PTm n} (hc : Γ ⊢[PRAAx] le one c) (h : Γ ⊢[PRAAx] le (c * a) (c * b)) :
-    Γ ⊢[PRAAx] le a b := by
-  have pos := pos_of_one_le hc
-  exact mul_le_cancel (le_congr (congrMul pos (.eqRefl _)) (congrMul pos (.eqRefl _)) h)
+alias cancel_pos := Common.mul_cancel_le
 
 /-- The next upper check: `ψ(n) ≤ (1 + a_j − 3δ)n` and `U − L ≤ n/M ≤ δn` give `U_ψ(n) ≤ (1 + a_j − δ)n`. -/
 theorem upper_preserve {D M A3 nn W Ln Pn Un : PTm n} (hD1 : Γ ⊢[PRAAx] le one D) (hDM : Γ ⊢[PRAAx] le D M)

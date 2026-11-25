@@ -55,7 +55,7 @@ theorem pw_pos (a m : PTm n) : Γ ⊢[PRAAx] pw (succ a) m ≐ succ (pred (pw (s
 /-- `a⁴ = q4 a`. -/
 theorem pw_four (a : PTm n) : Γ ⊢[PRAAx] pw a (two * two) ≐ q4 a := by
   have e : Γ ⊢[PRAAx] (two * two : PTm n) ≐ succ (succ (succ (succ zero))) := by
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   refine (congrPw (.eqRefl _) e).eqTrans ?_
   refine withEq (pw_succ (Γ := Γ) a (succ (succ (succ zero)))) fun h₁ =>
     withEq (pw_succ (Γ := Γ) a (succ (succ zero))) fun h₂ =>

@@ -45,10 +45,10 @@ open LeanProofs.IPRA.PTm (num monus pred)
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 theorem distrib (I W A B : PTm n) : Γ ⊢[PRAAx] I * (W * (A + B)) ≐ I * (W * A) + I * (W * B) := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem ooq (q : PTm n) : Γ ⊢[PRAAx] (one * one) * q ≐ q := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 section Bilinear
 

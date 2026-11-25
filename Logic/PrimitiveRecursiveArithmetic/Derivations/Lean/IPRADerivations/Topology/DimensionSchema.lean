@@ -1,7 +1,7 @@
 import IPRADerivations.Topology.DimensionRational
 import IPRADerivations.Topology.CollisionScales
 import IPRADerivations.DiophantineNumberTheory.FLTMultiples
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The arithmetic dimension schema (`dimension_invariance_ipra`, `thm:schema`)

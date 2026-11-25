@@ -3,6 +3,7 @@ import IPRADerivations.AnalyticNumberTheory.ConvolutionAssoc
 import IPRADerivations.AnalyticNumberTheory.Mobius
 import IPRADerivations.DiophantineNumberTheory.Coprime
 import IPRADerivations.Core.Permutation
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The involution `x ↦ a x⁻¹` on the units modulo a prime
@@ -76,7 +77,7 @@ theorem unit_of_lt {p x : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hx1 : Γ ⊢[PRAA
     .impI (succ_ne_zero' _ (hx1.wk.eqSymm.eqTrans ((rem_small hxp.wk).eqSymm.eqTrans Prf.hyp0)))
   exact gcd_comm_one hx1 (gcd_prime hp nd)
 
-theorem mul_one_r (a : PTm n) : Γ ⊢[PRAAx] a * one ≐ a := by apply deriveNat; ipra_simps; ring
+alias mul_one_r := Common.mul_one_right
 
 /-- `T(x) ≥ 1` for a unit `x`, when `gcd(p, a) = 1`. -/
 theorem T_pos {p a x : PTm n} (hq : Γ ⊢[PRAAx] le two p) (hc : Γ ⊢[PRAAx] gcd p a ≐ one)

@@ -3,6 +3,8 @@ import IPRADerivations.Analysis.RationalValueBounds
 import IPRADerivations.Analysis.RationalPointDistance
 import IPRADerivations.Analysis.RationalHausdorffConcat
 import IPRADerivations.Foundations.RuntimeWordAppend
+import IPRADerivations.Core.CongruenceTactic
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Actual dyadic cube grids in numerical dimension
@@ -69,10 +71,7 @@ theorem count_zero (t : PTm k) : Γ ⊢[PRAAx] count zero t ≐ one := pw_zero _
 theorem reflected_balance (d i : PTm k) (hi : Γ ⊢[PRAAx] lt i d) : Γ ⊢[PRAAx] succ i+reflected d i ≐ d := (eq_add_of_le hi).eqSymm
 theorem reflected_bound (d i : PTm k) (hi : Γ ⊢[PRAAx] lt i d) : Γ ⊢[PRAAx] lt (reflected d i) d := by
   apply le_of_eq_add (d := i)
-  have e := natEq (reflected_balance d i hi)
-  apply deriveNat
-  ipra_simps
-  linear_combination -e
+  ipra_lc -natEq (reflected_balance d i hi)
 
 theorem reflected_twice (d i : PTm k) (hi : Γ ⊢[PRAAx] lt i d) : Γ ⊢[PRAAx] reflected d (reflected d i) ≐ i := by
   have e : Γ ⊢[PRAAx] d ≐ succ (reflected d i)+i := (reflected_balance d i hi).eqSymm.eqTrans (by ipra_ring)
@@ -87,20 +86,15 @@ theorem coordinate_body_at (d t w i : PTm k) : Γ ⊢[PRAAx]
   have e := point_data_at (Γ := Γ) d t w
   simp only [coordinateBody,inst2,subst_fraction,Foundations.RuntimePermutationWords.subst_digit,subst_radix,
     subst_reflected,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
-  simpa only [subst_fraction,Foundations.RuntimePermutationWords.subst_digit,subst_radix,subst_reflected,
-    Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_three,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (fraction (digit (radix (var 1)) (var 2) (reflected (var 0) (var 3))) (var 1) : PTm 4)
-    (σ := ![fstT (pointData d t w),fstT (sndT (pointData d t w)),sndT (sndT (pointData d t w)),i])
-    (σ' := ![d,t,w,i]) (fun j => by fin_cases j; exact .andE₁ e; exact .andE₁ (.andE₂ e); exact .andE₂ (.andE₂ e); exact .eqRefl _)
+  ipra_congr (fraction (digit (radix (var 1)) (var 2) (reflected (var 0) (var 3))) (var 1) : PTm 4) with
+    [.andE₁ e, .andE₁ (.andE₂ e), .andE₂ (.andE₂ e), .eqRefl i]
 theorem point_length (d t w : PTm k) : Γ ⊢[PRAAx] length (point d t w) ≐ d := sequence_length _ _ _
 theorem point_lookup (d t w i : PTm k) (hi : Γ ⊢[PRAAx] lt i d) : Γ ⊢[PRAAx]
     entry (point d t w) i ≐ fraction (digit (radix t) w (reflected d i)) t :=
   (sequence_decode coordinateBody hi).eqTrans (coordinate_body_at _ _ _ _)
 theorem grid_body_at (d t w : PTm k) : Γ ⊢[PRAAx] inst2 gridBody w (pairT d t) ≐ point d t w := by
   simp only [gridBody,inst2,subst_point,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
-  simpa only [subst_point,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (point (var 0) (var 1) (var 2) : PTm 3) (σ := ![fstT (pairT d t),sndT (pairT d t),w])
-    (σ' := ![d,t,w]) (fun j => by fin_cases j; exact fst_pair _ _; exact snd_pair _ _; exact .eqRefl _)
+  ipra_congr (point (var 0) (var 1) (var 2) : PTm 3) with [fst_pair _ _, snd_pair _ _, .eqRefl w]
 theorem grid_length (d t : PTm k) : Γ ⊢[PRAAx] length (grid d t) ≐ count d t := sequence_length _ _ _
 theorem grid_lookup (d t w : PTm k) (hw : Γ ⊢[PRAAx] lt w (count d t)) : Γ ⊢[PRAAx] entry (grid d t) w ≐ point d t w :=
   (sequence_decode gridBody hw).eqTrans (grid_body_at _ _ _)
@@ -126,13 +120,8 @@ theorem cube_at (x d i : PTm k) (h : Γ ⊢[PRAAx] cube x d) (hi : Γ ⊢[PRAAx]
   have rule : Γ ⊢[PRAAx] lt i d ⟶ interval (entry x i) := by simpa [cube] using (Prf.andE₂ h).allE i
   exact .impE rule hi
 theorem positive_part_bound (q : PTm k) (h : Γ ⊢[PRAAx] interval q) : Γ ⊢[PRAAx] le (positivePart (numeratorOf q)) (denominatorOf q) := by
-  have e := natEq (eq_add_of_le (.andE₁ h))
-  have u := natEq (eq_add_of_le (.andE₂ h))
   apply le_of_eq_add (d := monus ((numeratorOf q).neg+denominatorOf q) (numeratorOf q).pos)
-  apply deriveNat
-  ipra_simps
-  simp only [positivePart]
-  linear_combination u+e
+  ipra_lc [positivePart] natEq (eq_add_of_le (.andE₂ h))+natEq (eq_add_of_le (.andE₁ h))
 
 theorem rounded_digit_bound (q t : PTm k) (h : Γ ⊢[PRAAx] interval q) : Γ ⊢[PRAAx] le (roundedDigit q t) (scale t) := by
   let D := denominatorOf q
@@ -191,11 +180,8 @@ theorem rounded_body_at (x d t i : PTm k) : Γ ⊢[PRAAx] inst2 roundedBody i (p
   have e := point_data_at (Γ := Γ) d x t
   simp only [roundedBody,inst2,subst_roundedDigit,subst_reflected,subst_entry,subst_fstT,subst_sndT,
     Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
-  simpa only [pointData,subst_roundedDigit,subst_reflected,subst_entry,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-    Matrix.cons_val_two,Matrix.cons_val_three,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (roundedDigit (entry (var 1) (reflected (var 0) (var 3))) (var 2) : PTm 4)
-      (σ := ![fstT (pointData d x t),fstT (sndT (pointData d x t)),sndT (sndT (pointData d x t)),i]) (σ' := ![d,x,t,i])
-      (fun j => by fin_cases j; exact .andE₁ e; exact .andE₁ (.andE₂ e); exact .andE₂ (.andE₂ e); exact .eqRefl _)
+  ipra_congr (roundedDigit (entry (var 1) (reflected (var 0) (var 3))) (var 2) : PTm 4) with
+    [.andE₁ e, .andE₁ (.andE₂ e), .andE₂ (.andE₂ e), .eqRefl i] using [pointData]
 theorem rounded_digits_length (x d t : PTm k) : Γ ⊢[PRAAx] length (roundedDigits x d t) ≐ d := sequence_length _ _ _
 theorem rounded_digits_lookup (x d t i : PTm k) (hi : Γ ⊢[PRAAx] lt i d) : Γ ⊢[PRAAx]
     entry (roundedDigits x d t) i ≐ roundedDigit (entry x (reflected d i)) t :=
@@ -215,8 +201,7 @@ theorem round_index_bound (x d t : PTm k) (h : Γ ⊢[PRAAx] cube x d) : Γ ⊢[
   encode_bound _ _ _ (rounded_digits_below x d t h)
 theorem rounded_digit_congr {q q' t t' : PTm k} (hq : Γ ⊢[PRAAx] q ≐ q') (ht : Γ ⊢[PRAAx] t ≐ t') :
     Γ ⊢[PRAAx] roundedDigit q t ≐ roundedDigit q' t' := by
-  simpa only [subst_roundedDigit,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using
-    Prf.eqCongr (roundedDigit (var 0) (var 1) : PTm 2) (σ := ![q,t]) (σ' := ![q',t']) (fun i => by fin_cases i; exact hq; exact ht)
+  ipra_congr (roundedDigit (var 0) (var 1) : PTm 2) with [hq, ht]
 theorem round_index_digit (x d t i : PTm k) (h : Γ ⊢[PRAAx] cube x d) (hi : Γ ⊢[PRAAx] lt i d) : Γ ⊢[PRAAx]
     digit (radix t) (roundIndex x d t) (reflected d i) ≐ roundedDigit (entry x i) t :=
   (encode_digit (roundedDigits x d t) d (radix t) (reflected d i) (rounded_digits_below x d t h) (reflected_bound d i hi)).eqTrans
@@ -278,12 +263,7 @@ theorem radius_of_representations (q r : PTm k) (a b : ZT k) (A B P Q : PTm k)
     Γ ⊢[PRAAx] RationalValueBounds.radius q r P Q := by
   have e : Γ ⊢[PRAAx] ZT.eq (ZT.ofNat (A*B)*RationalValueBounds.cross q r)
       (ZT.ofNat (denominatorOf q*denominatorOf r)*(a*ZT.ofNat B-b*ZT.ofNat A)) := by
-    have eq := ZT.toZ_eq hq
-    have er := ZT.toZ_eq hr
-    apply ZT.derive
-    simp only [RationalValueBounds.cross,ZT.toZ_mul,ZT.toZ_sub,ZT.toZ_ofNat] at eq er ⊢
-    ipra_simps
-    linear_combination -𝔞(B)*𝔞(denominatorOf r)*eq+𝔞(A)*𝔞(denominatorOf q)*er
+    ipra_lc [RationalValueBounds.cross] -𝔞(B)*𝔞(denominatorOf r)*ZT.toZ_eq hq+𝔞(A)*𝔞(denominatorOf q)*ZT.toZ_eq hr
   have abs : Γ ⊢[PRAAx] (A*B)*zabs (RationalValueBounds.cross q r) ≐
       (denominatorOf q*denominatorOf r)*zabs (a*ZT.ofNat B-b*ZT.ofNat A) :=
     (abs_scale _ _).eqSymm.eqTrans ((zabs_congr (ZT.toZ_eq e)).eqTrans (abs_scale _ _))
@@ -309,11 +289,7 @@ theorem rounded_scalar_radius (q t : PTm k) (h : Γ ⊢[PRAAx] interval q) : Γ 
   have div := divide_spec (Γ := Γ) D (scale t*P) (RationalArgmin.denominator_positive q)
   have cross : Γ ⊢[PRAAx] ZT.eq (ZT.ofNat P*ZT.ofNat (scale t)-ZT.ofNat (roundedDigit q t)*ZT.ofNat D) (ZT.ofNat R) := by
     change Γ ⊢[PRAAx] ZT.eq (ZT.ofNat P*ZT.ofNat (scale t)-ZT.ofNat (quo (scale t*P) D)*ZT.ofNat D) (ZT.ofNat R)
-    have e := natEq (.andE₁ div)
-    apply ZT.derive
-    simp only [ZT.toZ_mul,ZT.toZ_sub,ZT.toZ_ofNat]
-    ipra_simps
-    linear_combination e
+    ipra_lc natEq (.andE₁ div)
   have abs : Γ ⊢[PRAAx] zabs (ZT.ofNat P*ZT.ofNat (scale t)-ZT.ofNat (roundedDigit q t)*ZT.ofNat D) ≐ R :=
     (zabs_congr (ZT.toZ_eq cross)).eqTrans ((congrAdd (monus_zero R) (zero_monus R)).eqTrans (add_zero R))
   apply radius_of_representations q _ _ _ D (scale t) one (scale t) (RationalArgmin.denominator_positive q) (scale_positive t)
@@ -323,8 +299,7 @@ theorem rounded_scalar_radius (q t : PTm k) (h : Γ ⊢[PRAAx] interval q) : Γ 
 
 theorem fraction_congr {j j' t t' : PTm k} (hj : Γ ⊢[PRAAx] j ≐ j') (ht : Γ ⊢[PRAAx] t ≐ t') :
     Γ ⊢[PRAAx] fraction j t ≐ fraction j' t' := by
-  simpa only [subst_fraction,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using
-    Prf.eqCongr (fraction (var 0) (var 1) : PTm 2) (σ := ![j,t]) (σ' := ![j',t']) (fun i => by fin_cases i; exact hj; exact ht)
+  ipra_congr (fraction (var 0) (var 1) : PTm 2) with [hj, ht]
 theorem rounded_point_lookup (x d t i : PTm k) (h : Γ ⊢[PRAAx] cube x d) (hi : Γ ⊢[PRAAx] lt i d) : Γ ⊢[PRAAx]
     entry (point d t (roundIndex x d t)) i ≐ fraction (roundedDigit (entry x i) t) t :=
   (point_lookup _ _ _ _ hi).eqTrans (fraction_congr (round_index_digit _ _ _ _ h hi) (.eqRefl _))

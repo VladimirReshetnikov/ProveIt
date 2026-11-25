@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.RationalMaximalMinors
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The actual least free column of a proper maximum minor
@@ -48,8 +49,7 @@ theorem bit_cases (i C : PTm n) : Γ ⊢[PRAAx] (bit C i ≐ zero) ⋎ (bit C i 
   refine .orE (lt_or_eq_of_le ((succ_monus_succ _ _).eqSymm.eqTrans h)) ?_ (.orI₂ Prf.hyp0)
   exact .orI₁ (le_antisymm ((succ_monus_succ _ _).eqSymm.eqTrans Prf.hyp0) (zero_le _))
 
-private theorem signum_congr {a b : PTm n} (e : Γ ⊢[PRAAx] a ≐ b) : Γ ⊢[PRAAx] Signum.sg a ≐ Signum.sg b :=
-  congrMonus (.eqRefl one) (congrMonus (.eqRefl one) e)
+private alias signum_congr := Common.congrSg
 
 theorem complementary_indicator (i C : PTm n) : Γ ⊢[PRAAx]
     Signum.sg (inst2 bitBody i C) + Signum.sg (inst2 complementBody i C) ≐ one := by

@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.AnalyticNumberTheory.GoldbachGeometric
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Core.Gcd
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The numerical part of the multinomial bound
@@ -134,6 +135,6 @@ theorem multibound_of_term {M m : PTm k}
 where
   num_lt' (a b : ℕ) : Γ ⊢[PRAAx] le (one : PTm k) (num (b + 1)) := by
     refine le_of_eq_add (d := num b) ?_
-    apply deriveNat; ipra_simps; push_cast; ring
+    ipra_lc
 
 end LeanProofs.IPRA.DiophantineNumberTheory.AperyMultibound

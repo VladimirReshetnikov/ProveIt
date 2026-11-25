@@ -1,5 +1,6 @@
 import IPRADerivations.Combinatorics.Fibonacci
 import IPRADerivations.AnalyticNumberTheory.PhiUpper
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Divisibility of Fibonacci numbers and d'Ocagne's identity
@@ -37,9 +38,7 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 theorem fibS_pos_step {k : PTm n} (ih : Γ ⊢[PRAAx] fibS k ≐ succ (pred (fibS k))) :
     Γ ⊢[PRAAx] fibS (succ k) ≐ succ (pred (fibS (succ k))) := by
   refine eq_succ_pred (y := pred (fibS k) + fib k) ((fibS_succ k).eqTrans ?_)
-  have e := natEq ih
-  apply deriveNat; ipra_simps
-  linear_combination e
+  ipra_lc natEq ih
 
 private abbrev posF : Fm PTm 1 := fibS (var 0) ≐ succ (pred (fibS (var 0)))
 
@@ -73,10 +72,7 @@ theorem cop_even (h0 : Γ ⊢[PRAAx] par k ≐ zero) : Γ ⊢[PRAAx] gcd (fib k)
   have dSS := dvd_mul' hg (fibS k) (Prf.andE₂ d)
   have dFF := dvd_congr (mul_comm _ _) (dvd_mul' hg (fibS (succ k)) (Prf.andE₁ d))
   have e : Γ ⊢[PRAAx] fibS k * fibS k ≐ one + fibS (succ k) * fib k := by
-    have c := natEq (cassini (Γ := Γ) k); have p := natEq h0
-    have u := natEq ((congrMonus (.eqRefl one) h0).eqTrans (monus_zero _))
-    apply deriveNat; ipra_simps
-    linear_combination -c + u - p
+    ipra_lc -natEq (cassini (Γ := Γ) k) + natEq ((congrMonus (.eqRefl one) h0).eqTrans (monus_zero _)) - natEq h0
   exact eq_one_of_dvd_one hg (dvd_sub' hg (dvd_congr e dSS) dFF)
 
 theorem cop_odd (h1 : Γ ⊢[PRAAx] par k ≐ one) : Γ ⊢[PRAAx] gcd (fib k) (fibS k) ≐ one := by
@@ -85,10 +81,8 @@ theorem cop_odd (h1 : Γ ⊢[PRAAx] par k ≐ one) : Γ ⊢[PRAAx] gcd (fib k) (
   have dSS := dvd_mul' hg (fibS k) (Prf.andE₂ d)
   have dFF := dvd_congr (mul_comm _ _) (dvd_mul' hg (fibS (succ k)) (Prf.andE₁ d))
   have e : Γ ⊢[PRAAx] fibS (succ k) * fib k ≐ one + fibS k * fibS k := by
-    have c := natEq (cassini (Γ := Γ) k); have p := natEq h1
-    have u := natEq ((congrMonus (.eqRefl one) h1).eqTrans ((succ_monus_succ _ _).eqTrans (monus_zero _)))
-    apply deriveNat; ipra_simps
-    linear_combination c - u + p
+    ipra_lc natEq (cassini (Γ := Γ) k) -
+      natEq ((congrMonus (.eqRefl one) h1).eqTrans ((succ_monus_succ _ _).eqTrans (monus_zero _))) + natEq h1
   exact eq_one_of_dvd_one hg (dvd_sub' hg (dvd_congr e dFF) dSS)
 
 /-- `gcd(F_k, F_{k+1}) = 1`. -/
@@ -101,14 +95,12 @@ end Cop
 
 theorem dvd_step {q G : PTm n} (hG : Γ ⊢[PRAAx] fib G ≐ succ (pred (fib G)))
     (ih : Γ ⊢[PRAAx] dvd (fib G) (fib (q * G))) : Γ ⊢[PRAAx] dvd (fib G) (fib (succ q * G)) := by
-  have e0 : Γ ⊢[PRAAx] succ q * G ≐ q * G + G := by apply deriveNat; ipra_simps; ring
+  have e0 : Γ ⊢[PRAAx] succ q * G ≐ q * G + G := by ipra_ring
   refine dvd_congr (congrFib e0).eqSymm (dvd_of_eq' hG
     (w := quo (fib (q * G)) (fib G) * monus (fibS G) (fib G) + fibS (q * G)) ?_)
-  have a := natEq (fib_add_sym (Γ := Γ) (q * G) G); have b := natEq (eq_of_dvd' hG ih)
-  have c := natEq (eq_add_of_le (fib_le (Γ := Γ) G))
-  apply deriveNat; ipra_simps
-  linear_combination a + (Groth.ι (IPRA.Q.mk Γ (fibS G)) - Groth.ι (IPRA.Q.mk Γ (fib G))) * b +
-    Groth.ι (IPRA.Q.mk Γ (fib G)) * Groth.ι (IPRA.Q.mk Γ (quo (fib (q * G)) (fib G))) * c
+  ipra_lc natEq (fib_add_sym (Γ := Γ) (q * G) G) +
+    (Groth.ι (IPRA.Q.mk Γ (fibS G)) - Groth.ι (IPRA.Q.mk Γ (fib G))) * natEq (eq_of_dvd' hG ih) +
+    Groth.ι (IPRA.Q.mk Γ (fib G)) * Groth.ι (IPRA.Q.mk Γ (quo (fib (q * G)) (fib G))) * natEq (eq_add_of_le (fib_le (Γ := Γ) G))
 
 /-- Variables: `0 = q`, `1 = g − 1`. -/
 private abbrev dvdF : Fm PTm 2 := dvd (fib (succ (var 1))) (fib (var 0 * succ (var 1)))
@@ -179,17 +171,12 @@ theorem doc_step {k d : PTm n}
     (ih : Γ ⊢[PRAAx] fib (k + d) * fibS k + par k * fib d ≐ fibS (k + d) * fib k + monus one (par k) * fib d) :
     Γ ⊢[PRAAx] fib (succ k + d) * fibS (succ k) + par (succ k) * fib d ≐
       fibS (succ k + d) * fib (succ k) + monus one (par (succ k)) * fib d := by
-  have c₁ := natEq ((congrFib (Γ := Γ) (succ_add k d)).eqTrans (fib_succ (k + d)))
-  have c₂ := natEq ((congrFibS (Γ := Γ) (succ_add k d)).eqTrans (fibS_succ (k + d)))
-  have s₁ := natEq (fibS_succ (Γ := Γ) k); have s₃ := natEq (fib_succ (Γ := Γ) k)
-  have p₁ := natEq (par_succ (Γ := Γ) k)
-  have p₂ := natEq ((congrMonus (.eqRefl one) (par_succ (Γ := Γ) k)).eqTrans (compl_compl k))
-  have h := natEq ih
-  apply deriveNat; ipra_simps
-  linear_combination -h + Groth.ι (IPRA.Q.mk Γ (fibS (k + d))) * s₁ + Groth.ι (IPRA.Q.mk Γ (fibS (succ k))) * c₁ +
-    Groth.ι (IPRA.Q.mk Γ (fib d)) * p₁ -
-    (Groth.ι (IPRA.Q.mk Γ (fibS (k + d))) + Groth.ι (IPRA.Q.mk Γ (fib (k + d)))) * s₃ -
-    Groth.ι (IPRA.Q.mk Γ (fib (succ k))) * c₂ - Groth.ι (IPRA.Q.mk Γ (fib d)) * p₂
+  ipra_lc -natEq ih + Groth.ι (IPRA.Q.mk Γ (fibS (k + d))) * natEq (fibS_succ (Γ := Γ) k) +
+    Groth.ι (IPRA.Q.mk Γ (fibS (succ k))) * natEq ((congrFib (Γ := Γ) (succ_add k d)).eqTrans (fib_succ (k + d))) +
+    Groth.ι (IPRA.Q.mk Γ (fib d)) * natEq (par_succ (Γ := Γ) k) -
+    (Groth.ι (IPRA.Q.mk Γ (fibS (k + d))) + Groth.ι (IPRA.Q.mk Γ (fib (k + d)))) * natEq (fib_succ (Γ := Γ) k) -
+    Groth.ι (IPRA.Q.mk Γ (fib (succ k))) * natEq ((congrFibS (Γ := Γ) (succ_add k d)).eqTrans (fibS_succ (k + d))) -
+    Groth.ι (IPRA.Q.mk Γ (fib d)) * natEq ((congrMonus (.eqRefl one) (par_succ (Γ := Γ) k)).eqTrans (compl_compl k))
 
 /-- Variables: `0 = n`, `1 = d`. -/
 private abbrev docF : Fm PTm 2 :=
@@ -198,15 +185,11 @@ private abbrev docF : Fm PTm 2 :=
 
 private theorem doc₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] docF := by
   refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, PTm.subst_add, PTm.subst_mul, PTm.subst_monus, subst_fibS, subst_fib, subst_ap1,
-      Syn.subst_var, Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have z₁ := natEq (fibS_zero (Γ := ([] : List (Fm PTm 1)))); have z₂ := natEq (fib_zero (Γ := ([] : List (Fm PTm 1))))
-    have p₀ := natEq (par_zero (Γ := ([] : List (Fm PTm 1))))
-    have pu := natEq ((congrMonus (.eqRefl one) (par_zero (Γ := ([] : List (Fm PTm 1))))).eqTrans (monus_zero _))
-    have c := natEq (congrFib (Γ := ([] : List (Fm PTm 1))) (zero_add (var 0)))
-    apply deriveNat; ipra_simps
-    linear_combination Groth.ι (IPRA.Q.mk _ (fib (zero + var 0))) * z₁ + c + Groth.ι (IPRA.Q.mk _ (fib (var 0))) * p₀ -
-      Groth.ι (IPRA.Q.mk _ (fibS (zero + var 0))) * z₂ - Groth.ι (IPRA.Q.mk _ (fib (var 0))) * pu
+  · ipra_lc [Fm.subst_eq, PTm.subst_add, PTm.subst_mul, PTm.subst_monus, subst_fibS, subst_fib, subst_ap1, Syn.subst_var, Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] Groth.ι (IPRA.Q.mk _ (fib (zero + var 0))) * natEq (fibS_zero (Γ := ([] : List (Fm PTm 1)))) +
+      natEq (congrFib (Γ := ([] : List (Fm PTm 1))) (zero_add (var 0))) +
+      Groth.ι (IPRA.Q.mk _ (fib (var 0))) * natEq (par_zero (Γ := ([] : List (Fm PTm 1)))) -
+      Groth.ι (IPRA.Q.mk _ (fibS (zero + var 0))) * natEq (fib_zero (Γ := ([] : List (Fm PTm 1)))) -
+      Groth.ι (IPRA.Q.mk _ (fib (var 0))) * natEq ((congrMonus (.eqRefl one) (par_zero (Γ := ([] : List (Fm PTm 1))))).eqTrans (monus_zero _))
   · simp only [Fm.subst_eq, PTm.subst_add, PTm.subst_mul, PTm.subst_monus, subst_fibS, subst_fib, subst_ap1,
       Syn.subst_var, Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
     exact doc_step Prf.hyp0

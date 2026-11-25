@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.SumPhi
 import IPRADerivations.Topology.CrossingParity
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The two-dimensional cubical Sperner parity lemma (`dimension_invariance_ipra`, `thm:sperner`)
@@ -89,8 +90,7 @@ private theorem sum2_add₀ (f g : PTm 3) : ([] : List (Fm PTm 3)) ⊢[PRAAx] ad
     refine withEq (sum2_zero (Γ := []) (f + g) (var 0 : PTm 2) (var 1)) fun e₀ =>
       withEq (sum2_zero (Γ := []) f (var 0 : PTm 2) (var 1)) fun e₁ =>
       withEq (sum2_zero (Γ := []) g (var 0 : PTm 2) (var 1)) fun e₂ => ?_
-    apply deriveNat; ipra_simps
-    linear_combination e₀ - e₁ - e₂
+    ipra_lc e₀ - e₁ - e₂
   · simp only [Fm.subst_eq, PTm.subst_add, subst_ap3, Syn.subst_var, Syn.repl_zero, repl_one,
       repl_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
     have s₀ := sum2_succ (Γ := [addF f g]) (f + g) (var 0) (var 1) (var 2)
@@ -98,8 +98,7 @@ private theorem sum2_add₀ (f g : PTm 3) : ([] : List (Fm PTm 3)) ⊢[PRAAx] ad
     refine withEq Prf.hyp0 fun e₁ => withEq s₀ fun e₀ =>
       withEq (sum2_succ f (var 0) (var 1) (var 2)) fun e₂ =>
       withEq (sum2_succ g (var 0) (var 1) (var 2)) fun e₃ => ?_
-    apply deriveNat; ipra_simps
-    linear_combination e₀ - e₂ - e₃ + e₁
+    ipra_lc e₀ - e₂ - e₃ + e₁
 
 /-- `∑ (f + g) = ∑ f + ∑ g`. -/
 theorem sum2_add (f g : PTm 3) (N p q : PTm n) :
@@ -142,9 +141,7 @@ private theorem tele₀ (h : PTm 3) : ([] : List (Fm PTm 3)) ⊢[PRAAx] teleF h 
         ap3 (sum2F (h + sh0 h)) zero (var 0) (var 1) +
           (inst3 h zero (var 0) (var 1) + inst3 h zero (var 0) (var 1)) ≐
         two * inst3 h zero (var 0) (var 1) := by
-      have z := natEq (sum2_zero (Γ := ([] : List (Fm PTm 2))) (h + sh0 h) (var 0) (var 1))
-      apply deriveNat; ipra_simps
-      linear_combination z
+      ipra_lc natEq (sum2_zero (Γ := ([] : List (Fm PTm 2))) (h + sh0 h) (var 0) (var 1))
     exact (congrAp1 parF e).eqTrans (par_double _)
   · simp only [Fm.subst_eq, subst_ap1, subst_ap3, PTm.subst_add, subst_inst3, Syn.subst_var,
       Syn.repl_zero, repl_one, repl_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
@@ -156,9 +153,7 @@ private theorem tele₀ (h : PTm 3) : ([] : List (Fm PTm 3)) ⊢[PRAAx] teleF h 
         (ap3 (sum2F (h + sh0 h)) (var 0) (var 1) (var 2) +
           (inst3 h zero (var 1) (var 2) + inst3 h (var 0) (var 1) (var 2))) +
           two * inst3 h (succ (var 0)) (var 1) (var 2) := by
-      have a := natEq s
-      apply deriveNat; ipra_simps
-      linear_combination a
+      ipra_lc natEq s
     exact (congrAp1 parF e).eqTrans ((par_add_two _ _).eqTrans Prf.hyp0)
 
 /-- Telescoping modulo two: `par (∑_{i<N} (h(i) + h(i + 1)) + (h(0) + h(N))) = 0`. -/
@@ -247,12 +242,8 @@ theorem triangle_doors {x0 x1 x2 y0 y1 y2 z0 z1 z2 : PTm n}
     (hz : Γ ⊢[PRAAx] z0 + z1 + z2 ≐ one) :
     Γ ⊢[PRAAx] drT x0 x1 y0 y1 + drT y0 y1 z0 z1 + drT x0 x1 z0 z1 ≐
       permT x0 x1 x2 y0 y1 y2 z0 z1 z2 + two * twoT x0 x1 y0 y1 z0 z1 := by
-  have ex := natEq hx; have ey := natEq hy; have ez := natEq hz
-  apply deriveNat
-  simp only [drT, permT, twoT]
-  ipra_simps
-  linear_combination (-(𝔞 x0 * 𝔞 y1 + 𝔞 x1 * 𝔞 y0)) * ez + (-(𝔞 y0 * 𝔞 z1 + 𝔞 y1 * 𝔞 z0)) * ex +
-    (-(𝔞 x0 * 𝔞 z1 + 𝔞 x1 * 𝔞 z0)) * ey
+  ipra_lc [drT, permT, twoT] (-(𝔞 x0 * 𝔞 y1 + 𝔞 x1 * 𝔞 y0)) * natEq hz + (-(𝔞 y0 * 𝔞 z1 + 𝔞 y1 * 𝔞 z0)) * natEq hx +
+    (-(𝔞 x0 * 𝔞 z1 + 𝔞 x1 * 𝔞 z0)) * natEq hy
 
 /-- A grid cell with corners `P`, `Q` (right of `P`), `S` (above `P`) and `R` (opposite `P`):
 the full triangles `PQR`, `PSR` and the doors on the four sides have an even total. -/
@@ -261,18 +252,13 @@ theorem cell_even {p0 p1 p2 q0 q1 q2 r0 r1 r2 s0 s1 s2 : PTm n}
     (hr : Γ ⊢[PRAAx] r0 + r1 + r2 ≐ one) (hs : Γ ⊢[PRAAx] s0 + s1 + s2 ≐ one) :
     Γ ⊢[PRAAx] par ((permT p0 p1 p2 q0 q1 q2 r0 r1 r2 + permT p0 p1 p2 s0 s1 s2 r0 r1 r2) +
       ((drT p0 p1 q0 q1 + drT s0 s1 r0 r1) + (drT p0 p1 s0 s1 + drT q0 q1 r0 r1))) ≐ zero := by
-  have t₁ := natEq (triangle_doors hp hq hr)
-  have t₂ := natEq (triangle_doors hp hs hr)
   have e : Γ ⊢[PRAAx]
       ((permT p0 p1 p2 q0 q1 q2 r0 r1 r2 + permT p0 p1 p2 s0 s1 s2 r0 r1 r2) +
         ((drT p0 p1 q0 q1 + drT s0 s1 r0 r1) + (drT p0 p1 s0 s1 + drT q0 q1 r0 r1))) +
         two * (twoT p0 p1 q0 q1 r0 r1 + twoT p0 p1 s0 s1 r0 r1) ≐
       two * (((drT p0 p1 q0 q1 + drT s0 s1 r0 r1) + (drT p0 p1 s0 s1 + drT q0 q1 r0 r1)) +
         drT p0 p1 r0 r1) := by
-    apply deriveNat
-    simp only [drT, permT, twoT] at t₁ t₂ ⊢
-    ipra_simps
-    linear_combination (-1) * t₁ + (-1) * t₂
+    ipra_lc [drT, permT, twoT] (-1) * natEq (triangle_doors hp hq hr) + (-1) * natEq (triangle_doors hp hs hr)
   exact (par_add_two _ _).eqSymm.eqTrans ((congrAp1 parF e).eqTrans (par_double _))
 
 /-! ## The labelling -/
@@ -325,20 +311,12 @@ def full (X₁ Y₁ X₂ Y₂ X₃ Y₃ P : PTm n) : PTm n :=
 /-- An edge whose ends both lack the class `1` is not a door. -/
 theorem dr_zero_of_b1 {X₁ Y₁ X₂ Y₂ P : PTm n} (h₁ : Γ ⊢[PRAAx] b1 f X₁ Y₁ P ≐ zero)
     (h₂ : Γ ⊢[PRAAx] b1 f X₂ Y₂ P ≐ zero) : Γ ⊢[PRAAx] dr f X₁ Y₁ X₂ Y₂ P ≐ zero := by
-  have a := natEq h₁; have b := natEq h₂
-  apply deriveNat
-  simp only [dr, drT]
-  ipra_simps
-  linear_combination (𝔞 (b0 f X₁ Y₁ P)) * b + (𝔞 (b0 f X₂ Y₂ P)) * a
+  ipra_lc [dr, drT] (𝔞 (b0 f X₁ Y₁ P)) * natEq h₂ + (𝔞 (b0 f X₂ Y₂ P)) * natEq h₁
 
 /-- An edge whose ends both lack the class `0` is not a door. -/
 theorem dr_zero_of_b0 {X₁ Y₁ X₂ Y₂ P : PTm n} (h₁ : Γ ⊢[PRAAx] b0 f X₁ Y₁ P ≐ zero)
     (h₂ : Γ ⊢[PRAAx] b0 f X₂ Y₂ P ≐ zero) : Γ ⊢[PRAAx] dr f X₁ Y₁ X₂ Y₂ P ≐ zero := by
-  have a := natEq h₁; have b := natEq h₂
-  apply deriveNat
-  simp only [dr, drT]
-  ipra_simps
-  linear_combination (𝔞 (b1 f X₂ Y₂ P)) * a + (𝔞 (b1 f X₁ Y₁ P)) * b
+  ipra_lc [dr, drT] (𝔞 (b1 f X₂ Y₂ P)) * natEq h₁ + (𝔞 (b1 f X₁ Y₁ P)) * natEq h₂
 
 /-- On an edge whose ends carry the classes `0`, `1` only, the door indicator is the sum of the
 `1`-bits of the ends modulo two. -/
@@ -347,11 +325,7 @@ theorem edge_of_two_classes {X₁ Y₁ X₂ Y₂ P : PTm n}
     (h₂ : Γ ⊢[PRAAx] b0 f X₂ Y₂ P + b1 f X₂ Y₂ P ≐ one) :
     Γ ⊢[PRAAx] dr f X₁ Y₁ X₂ Y₂ P + two * (b1 f X₁ Y₁ P * b1 f X₂ Y₂ P) ≐
       b1 f X₁ Y₁ P + b1 f X₂ Y₂ P := by
-  have a := natEq h₁; have b := natEq h₂
-  apply deriveNat
-  simp only [dr, drT]
-  ipra_simps
-  linear_combination (𝔞 (b1 f X₂ Y₂ P)) * a + (𝔞 (b1 f X₁ Y₁ P)) * b
+  ipra_lc [dr, drT] (𝔞 (b1 f X₂ Y₂ P)) * natEq h₁ + (𝔞 (b1 f X₁ Y₁ P)) * natEq h₂
 
 /-! ## The cells of a row
 
@@ -400,10 +374,6 @@ theorem row_even (N a p : PTm n) :
         (ap3 (sum2F (dvB f)) N a p + ap3 (sum2F (dvB f)) N (succ a) p))) ≐ zero := by
   have hev : Γ ⊢[PRAAx] par (ap3 (sum2F (cellB f + ((dhB f + sh0 (dhB f)) + (dvB f + sh1 (dvB f)))))
       N a p) ≐ zero := sum2_even (evB f) (fun i p q => evB_even f i p q) N a p
-  have s₁ := natEq (sum2_add (Γ := Γ) (cellB f) ((dhB f + sh0 (dhB f)) + (dvB f + sh1 (dvB f))) N a p)
-  have s₂ := natEq (sum2_add (Γ := Γ) (dhB f + sh0 (dhB f)) (dvB f + sh1 (dvB f)) N a p)
-  have s₃ := natEq (sum2_add (Γ := Γ) (dvB f) (sh1 (dvB f)) N a p)
-  have s₄ := natEq (sum2_sh1 (Γ := Γ) (dvB f) N a p)
   have st := straddle2 (Γ := Γ) (dhB f) N a p
   simp only [inst3_dhB] at st
   have e : Γ ⊢[PRAAx]
@@ -414,8 +384,9 @@ theorem row_even (N a p : PTm n) :
       ap3 (sum2F (cellB f + ((dhB f + sh0 (dhB f)) + (dvB f + sh1 (dvB f))))) N a p +
         (ap3 (sum2F (dhB f + sh0 (dhB f))) N a p +
           (dr f a zero (succ a) zero p + dr f a N (succ a) N p)) := by
-    apply deriveNat; ipra_simps
-    linear_combination (-1) * s₁ + (-1) * s₂ + (-1) * s₃ + (-1) * s₄
+    ipra_lc (-1) * natEq (sum2_add (Γ := Γ) (cellB f) ((dhB f + sh0 (dhB f)) + (dvB f + sh1 (dvB f))) N a p) +
+      (-1) * natEq (sum2_add (Γ := Γ) (dhB f + sh0 (dhB f)) (dvB f + sh1 (dvB f)) N a p) +
+      (-1) * natEq (sum2_add (Γ := Γ) (dvB f) (sh1 (dvB f)) N a p) + (-1) * natEq (sum2_sh1 (Γ := Γ) (dvB f) N a p)
   exact (par_add_two _ _).eqSymm.eqTrans
     ((congrAp1 parF e).eqTrans ((par_add_even _ st).eqTrans hev))
 
@@ -484,9 +455,6 @@ theorem boundary_doors (N p : PTm n) :
       ((bottom f N p + top f N p) + (left f N p + right f N p))) ≐ zero := by
   have hev : Γ ⊢[PRAAx] par (ap3 (sum2F (RB f + ((h0B f + hNB f) + (WB f + sh0 (WB f))))) N N p) ≐
       zero := sum2_even (outB f) (fun i p q => outB_even f i p q) N N p
-  have s₁ := natEq (sum2_add (Γ := Γ) (RB f) ((h0B f + hNB f) + (WB f + sh0 (WB f))) N N p)
-  have s₂ := natEq (sum2_add (Γ := Γ) (h0B f + hNB f) (WB f + sh0 (WB f)) N N p)
-  have s₃ := natEq (sum2_add (Γ := Γ) (h0B f) (hNB f) N N p)
   have st := straddle2 (Γ := Γ) (WB f) N N p
   simp only [inst3_WB] at st
   have e : Γ ⊢[PRAAx]
@@ -497,8 +465,9 @@ theorem boundary_doors (N p : PTm n) :
       ap3 (sum2F (RB f + ((h0B f + hNB f) + (WB f + sh0 (WB f))))) N N p +
         (ap3 (sum2F (WB f + sh0 (WB f))) N N p +
           (ap3 (sum2F (dvB f)) N zero p + ap3 (sum2F (dvB f)) N N p)) := by
-    apply deriveNat; ipra_simps
-    linear_combination (-1) * s₁ + (-1) * s₂ + (-1) * s₃
+    ipra_lc (-1) * natEq (sum2_add (Γ := Γ) (RB f) ((h0B f + hNB f) + (WB f + sh0 (WB f))) N N p) +
+      (-1) * natEq (sum2_add (Γ := Γ) (h0B f + hNB f) (WB f + sh0 (WB f)) N N p) +
+      (-1) * natEq (sum2_add (Γ := Γ) (h0B f) (hNB f) N N p)
   exact (par_add_two _ _).eqSymm.eqTrans
     ((congrAp1 parF e).eqTrans ((par_add_even _ st).eqTrans hev))
 
@@ -658,8 +627,7 @@ theorem sperner_open {N p : PTm n} (hl : Γ ⊢[PRAAx] ballZ (leftB f) N N p)
   have tz := natEq (top_zero hT); have lz := natEq (left_zero hl); have rz := natEq (right_zero hr)
   have e : Γ ⊢[PRAAx] fullCount f N p +
       ((bottom f N p + top f N p) + (left f N p + right f N p)) ≐ fullCount f N p + bottom f N p := by
-    apply deriveNat; ipra_simps
-    linear_combination tz + lz + rz
+    ipra_lc tz + lz + rz
   exact (par_eq_of_add_even ((congrAp1 parF e).eqSymm.eqTrans bd)).eqTrans (bottom_odd f hl hr hb)
 
 /-- Variables: `0 = N`, `1 = p`. -/

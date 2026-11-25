@@ -3,7 +3,7 @@ import IPRADerivations.Combinatorics.LegendreFact
 import IPRADerivations.Combinatorics.LegendreDigits
 import IPRADerivations.Combinatorics.BinomialIdentities
 import IPRADerivations.Foundations.CrossingSearch
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Kummer's formula in digit-sum form

@@ -1,6 +1,6 @@
 import IPRADerivations.Foundations.NumeralPrimes
 import IPRADerivations.Combinatorics.LegendreDigits
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The three-square obstruction

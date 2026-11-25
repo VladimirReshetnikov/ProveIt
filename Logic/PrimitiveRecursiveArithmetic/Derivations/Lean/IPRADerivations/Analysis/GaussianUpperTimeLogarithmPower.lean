@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.GaussianUpperTimeLogarithmBound
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual integer logarithmic powers above time one
@@ -56,16 +57,10 @@ theorem raw_at (p j a b : PTm n) : Γ ⊢[PRAAx] ap2 rawF p (inputData j a b) �
   have first : Γ ⊢[PRAAx] ap2 rawF p (inputData j a b) ≐ rawTerm p (inputData j a b) :=
     by simpa [rawF,ap2] using toPR_eq (Γ := Γ) (rawTerm (var 0) (var 1) : PTm 2) ![p,inputData j a b]
   apply first.eqTrans
-  simpa only [rawTerm,subst_rawPower,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.cons_val_three,Matrix.cons_val_succ,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (rawPower (var 0) (var 1) (var 2) (var 3) : PTm 4)
-      (σ := ![p,fstT (inputData j a b),fstT (sndT (inputData j a b)),sndT (sndT (inputData j a b))]) (σ' := ![p,j,a,b])
-      (fun i => by
-        fin_cases i
-        exact .eqRefl _
-        exact fst_pair _ _
-        exact (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
-        exact (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))
+  ipra_congr (rawPower (var 0) (var 1) (var 2) (var 3) : PTm 4) with
+    [.eqRefl p, (show _ ⊢[PRAAx] fstT (inputData j a b) ≐ j from fst_pair _ _),
+      (show _ ⊢[PRAAx] fstT (sndT (inputData j a b)) ≐ a from (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)),
+      (show _ ⊢[PRAAx] sndT (sndT (inputData j a b)) ≐ b from (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))] using [rawTerm]
 
 theorem original_uniform_bound (p a b : PTm n) (hs : Γ ⊢[PRAAx] source a b) (hba : Γ ⊢[PRAAx] le b a) : Γ ⊢[PRAAx]
     bounded (sample p a b) (a+one) one :=

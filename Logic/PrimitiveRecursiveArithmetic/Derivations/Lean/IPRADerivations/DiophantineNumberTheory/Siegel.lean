@@ -1,5 +1,5 @@
 import IPRADerivations.Core.Powers
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Integral points by squeezing between squares (`siegel_ipra`, `ipra_framework`)

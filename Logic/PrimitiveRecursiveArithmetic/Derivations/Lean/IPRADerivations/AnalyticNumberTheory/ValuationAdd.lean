@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.WeightedMangoldt
 import IPRADerivations.AnalyticNumberTheory.ValuationMul
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The valuation of a sum
@@ -67,13 +68,11 @@ theorem val_add_ge {p a b t : PTm n} (hp : Γ ⊢[PRAAx] le two p)
 
 theorem split_alg {Ps A Pr Pw p : PTm n} (e1 : Γ ⊢[PRAAx] Ps ≐ A * Pw) (e2 : Γ ⊢[PRAAx] A ≐ Pr * p) :
     Γ ⊢[PRAAx] Ps ≐ Pr * (p * Pw) := by
-  have a := natEq e1; have b := natEq e2
-  apply deriveNat; ipra_simps; linear_combination a + 𝔞 Pw * b
+  ipra_lc natEq e1 + 𝔞 Pw * natEq e2
 
 theorem sum_alg {a b Pr Ps u v Pw p : PTm n} (ea : Γ ⊢[PRAAx] a ≐ Pr * u) (eb : Γ ⊢[PRAAx] b ≐ Ps * v)
     (ep : Γ ⊢[PRAAx] Ps ≐ Pr * (p * Pw)) : Γ ⊢[PRAAx] a + b ≐ Pr * (u + p * (Pw * v)) := by
-  have x := natEq ea; have y := natEq eb; have z := natEq ep
-  apply deriveNat; ipra_simps; linear_combination x + y + 𝔞 v * z
+  ipra_lc natEq ea + natEq eb + 𝔞 v * natEq ep
 
 theorem pos_add {a b : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) :
     Γ ⊢[PRAAx] a + b ≐ succ (pred (a + b)) := by

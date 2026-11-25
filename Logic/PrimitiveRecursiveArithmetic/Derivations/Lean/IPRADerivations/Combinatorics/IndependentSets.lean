@@ -1,5 +1,6 @@
 import IPRADerivations.Combinatorics.FibonacciSeries
 import IPRADerivations.Combinatorics.BellPascalInversion
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Independent sets of a path and tilings by squares and dominoes
@@ -57,13 +58,11 @@ theorem inst2_sub (d a b : PTm 2) (i z : PTm n) :
 
 theorem half_double (c : PTm n) : Γ ⊢[PRAAx] half (two * c) ≐ c := by
   refine mul_cancel two_pos ?_
-  have a := natEq (half_par (Γ := Γ) (two * c)); have b := natEq (par_double (Γ := Γ) c)
-  apply deriveNat; ipra_simps; linear_combination -a - b
+  ipra_lc -natEq (half_par (Γ := Γ) (two * c)) - natEq (par_double (Γ := Γ) c)
 
 theorem half_double_succ (c : PTm n) : Γ ⊢[PRAAx] half (two * c + one) ≐ c := by
   refine mul_cancel two_pos ?_
-  have a := natEq (half_par (Γ := Γ) (two * c + one)); have b := natEq (par_double_succ (Γ := Γ) c)
-  apply deriveNat; ipra_simps; linear_combination -a - b
+  ipra_lc -natEq (half_par (Γ := Γ) (two * c + one)) - natEq (par_double_succ (Γ := Γ) c)
 
 /-! ## The scan -/
 
@@ -230,9 +229,8 @@ theorem C_one : Γ ⊢[PRAAx] C (succ (zero : PTm n)) ≐ two := by
   refine (congrAp2 (sumF okB) e (.eqRefl _)).eqTrans ((sum_pairs _ _ _).eqTrans ?_)
   refine (sum_succ' _ _ _).eqTrans ((congrAdd (sum_zero _ _) ?_).eqTrans (zero_add _))
   rw [inst2_pair, inst2_ok, inst2_ok]
-  have a := natEq ((ok_even (Γ := Γ) zero zero).eqTrans (ok_zero _))
-  have b := natEq ((ok_odd (Γ := Γ) zero zero).eqTrans ((congrMul ev_zero (ok_zero _)).eqTrans (one_mul _)))
-  apply deriveNat; ipra_simps; linear_combination a + b
+  ipra_lc natEq ((ok_even (Γ := Γ) zero zero).eqTrans (ok_zero _)) +
+    natEq ((ok_odd (Γ := Γ) zero zero).eqTrans ((congrMul ev_zero (ok_zero _)).eqTrans (one_mul _)))
 
 /-! ## `C(N) = F_{N+2}` -/
 
@@ -242,11 +240,10 @@ private abbrev indF : Fm PTm 1 := pairT (C (var 0)) (C (succ (var 0))) ≐ pairT
 theorem ind_base : Γ ⊢[PRAAx] pairT (C (zero : PTm n)) (C (succ zero)) ≐ pairT (fibS (succ zero)) (fibS (succ (succ zero))) := by
   have a := natEq (fibS_succ (Γ := Γ) (zero : PTm n)); have b := natEq (fibS_succ (Γ := Γ) (succ (zero : PTm n)))
   have c := natEq (fibS_zero (Γ := Γ) (n := n)); have d := natEq (fib_zero (Γ := Γ) (n := n))
-  have e := natEq (fib_succ (Γ := Γ) (zero : PTm n))
   have f := natEq (C_zero (Γ := Γ) (n := n)); have g := natEq (C_one (Γ := Γ) (n := n))
   refine congrPair ?_ ?_
-  · apply deriveNat; ipra_simps; linear_combination f - a - c - d
-  · apply deriveNat; ipra_simps; linear_combination g - b - a - c - d - e - c
+  · ipra_lc f - a - c - d
+  · ipra_lc g - b - a - c - d - natEq (fib_succ (Γ := Γ) (zero : PTm n)) - c
 
 theorem ind_step {N : PTm n} (ih : Γ ⊢[PRAAx] pairT (C N) (C (succ N)) ≐ pairT (fibS (succ N)) (fibS (succ (succ N)))) :
     Γ ⊢[PRAAx] pairT (C (succ N)) (C (succ (succ N))) ≐ pairT (fibS (succ (succ N))) (fibS (succ (succ (succ N)))) := by
@@ -388,7 +385,7 @@ theorem H_sum (M : PTm n) :
       have w := natEq (eq_add_of_le hl); have p := natEq (pw_two_succ (Γ := (lt (var 0) (pw two (succ (Syn.shift M))) ::
         Γ.map Fm.shift)) (succ (Syn.shift M)))
       refine le_of_eq_add (d := two * monus (pw two (succ (Syn.shift M))) (succ (var 0))) ?_
-      apply deriveNat; ipra_simps; linear_combination p + 2 * w
+      ipra_lc p + 2 * w
     refine (congrMul (congrMul (.eqRefl _) (ok_ext hl)) ((congrMonus (.eqRefl _) g).eqTrans (monus_zero _))).eqTrans ?_
     exact (mul_comm _ _).eqTrans (one_mul _)
   · refine (sum_congr_bounded (offB hB) LeanProofs.IPRA.Combinatorics.Vandermonde.zB (pairT (pw two (succ M)) (succ (succ M)))
@@ -406,7 +403,7 @@ theorem H_sum (M : PTm n) :
       refine LeanProofs.IPRA.Combinatorics.Stirling.gle_of_le ?_
       have p := natEq (pw_two_succ (Γ := Γ.map Fm.shift) (succ (Syn.shift M)))
       refine le_of_eq_add (d := two * var 0 + one) ?_
-      apply deriveNat; ipra_simps; linear_combination -p
+      ipra_lc -p
     exact (congrMul (.eqRefl _) ((congrMonus (.eqRefl _) g.wk).eqTrans (monus_self _))).eqTrans (mul_zero _)
 
 /-- The independent sets of the `n`-cycle number `L_n`, for `n ≥ 3`. -/
@@ -418,12 +415,8 @@ theorem cycle_count (M : PTm n) : Γ ⊢[PRAAx] D (succ (succ (succ M))) ≐ luc
     have e₂ : Syn.shift (succ (succ M)) = succ (succ (Syn.shift M)) := by simp [Syn.shift]
     rw [e₁, e₂]
     exact cy_pair _ _
-  have cc := natEq hd
-  have i₁ := natEq (independent_sets (Γ := Γ) (succ (succ M))); have i₂ := natEq (independent_sets (Γ := Γ) M)
-  have le := natEq (luc_eq (Γ := Γ) (succ (succ (succ M))))
-  have a := natEq (fib_succ (Γ := Γ) (succ (succ M))); have b := natEq (fibS_succ (Γ := Γ) (succ (succ M)))
-  have c := natEq (fib_succ (Γ := Γ) (succ M))
-  apply deriveNat; ipra_simps
-  linear_combination cc + i₁ + i₂ - le + a - b - c
+  ipra_lc natEq hd + natEq (independent_sets (Γ := Γ) (succ (succ M))) + natEq (independent_sets (Γ := Γ) M) -
+    natEq (luc_eq (Γ := Γ) (succ (succ (succ M)))) + natEq (fib_succ (Γ := Γ) (succ (succ M))) -
+    natEq (fibS_succ (Γ := Γ) (succ (succ M))) - natEq (fib_succ (Γ := Γ) (succ M))
 
 end LeanProofs.IPRA.Combinatorics.IndependentSets

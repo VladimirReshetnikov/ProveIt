@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianRationalRadiusExponentialLipschitz
 import IPRADerivations.Analysis.GaussianUnitDiskExponentialName
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual exponentiation of regular names on every fixed integer disk
@@ -73,8 +74,7 @@ theorem index_add (R p k : PTm n) : Γ ⊢[PRAAx] index R (p+k) ≐ index R p+k 
         ((congrAdd (GaussianRationalExponentialTail.last_successor R (p+num 4)).eqSymm (.eqRefl k)).eqTrans (by unfold index; ipra_ring)))
   exact (pred_succ _).eqSymm.eqTrans ((congrPred eq).eqTrans (pred_succ _))
 theorem index_congr (R : PTm n) {s t : PTm n} (h : Γ ⊢[PRAAx] s ≐ t) : Γ ⊢[PRAAx] index R s ≐ index R t := by
-  simpa only [subst_index,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (index (var 0) (var 1) : PTm 2) (σ := ![R,s]) (σ' := ![R,t]) (fun i => by fin_cases i; exact .eqRefl _; exact h)
+  ipra_congr (index (var 0) (var 1) : PTm 2) with [.eqRefl R, h]
 theorem index_later (R s t : PTm n) (h : Γ ⊢[PRAAx] le s t) : Γ ⊢[PRAAx] index R t ≐ index R s+monus t s :=
   (index_congr R (eq_add_of_le h)).eqTrans (index_add R s (monus t s))
 theorem index_monotone (R s t : PTm n) (h : Γ ⊢[PRAAx] le s t) : Γ ⊢[PRAAx] le (index R s) (index R t) :=
@@ -170,10 +170,9 @@ theorem sample_at (f : PR 2) (R p x : PTm n) : Γ ⊢[PRAAx] sample f R p x ≐ 
   have prog : Γ ⊢[PRAAx] sample f R p x ≐ nameTerm f p (data R x) := by
     simpa [sample,nameF,ap2] using toPR_eq (Γ := Γ) (nameTerm f (var 0) (var 1) : PTm 2) ![p,data R x]
   refine prog.eqTrans ?_
-  simpa only [nameTerm,subst_value,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_succ,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (value f (var 0) (var 1) (var 2) : PTm 3)
-      (σ := ![fstT (data R x),p,sndT (data R x)]) (σ' := ![R,p,x])
-      (fun i => by fin_cases i; exact fst_pair _ _; exact .eqRefl _; exact snd_pair _ _)
+  ipra_congr (value f (var 0) (var 1) (var 2) : PTm 3) with
+    [(show _ ⊢[PRAAx] fstT (data R x) ≐ R from fst_pair _ _), .eqRefl p,
+      (show _ ⊢[PRAAx] sndT (data R x) ≐ x from snd_pair _ _)] using [nameTerm]
 theorem sample_canonical (f : PR 2) (R p x : PTm n) : Γ ⊢[PRAAx] GaussianRationalHorner.canonical (sample f R p x) :=
   GaussianRationalHorner.canonical_congr (sample_at f R p x) (GaussianRationalFiniteSum.sum_canonical _ _ _)
 theorem sample_regularity (f : PR 2) (R x s t : PTm n) (h : Γ ⊢[PRAAx] input f R x) : Γ ⊢[PRAAx]

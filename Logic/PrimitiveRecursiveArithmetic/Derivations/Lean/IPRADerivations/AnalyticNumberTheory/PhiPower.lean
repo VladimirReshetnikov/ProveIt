@@ -40,14 +40,14 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 theorem per_step {N M : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N))
     (ih : Γ ⊢[PRAAx] ap2 (sumF totBody) (N * M) N ≐ M * phi N) :
     Γ ⊢[PRAAx] ap2 (sumF totBody) (N * succ M) N ≐ succ M * phi N := by
-  have e : Γ ⊢[PRAAx] N * succ M ≐ N + N * M := by apply deriveNat; ipra_simps; ring
+  have e : Γ ⊢[PRAAx] N * succ M ≐ N + N * M := by ipra_ring
   have s₄ : Γ ⊢[PRAAx] ap2 (sumF (shiftBy totBody)) (N * M) N ≐ ap2 (sumF totBody) (N * M) N := by
     refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
     rw [inst2_shiftBy, inst2_tot, inst2_tot]
     exact congrEqb (gcd_period (shift_pos hN).wk _) (.eqRefl _)
   refine (congrAp2 (sumF totBody) e (.eqRefl _)).eqTrans ((sum_split totBody (N * M) N).eqTrans ?_)
   refine (congrAdd (.eqRefl _) (s₄.eqTrans ih)).eqTrans ?_
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- Variables: `0 = M`, `1 = n`. -/
 private abbrev perF : Fm PTm 2 :=

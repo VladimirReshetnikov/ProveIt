@@ -2,6 +2,8 @@ import IPRADerivations.Analysis.GaussianScalarDeterminant
 import IPRADerivations.Analysis.GaussianPolynomialColumnAlternation
 import IPRADerivations.Analysis.GaussianDeterminantSignTransport
 import IPRADerivations.Foundations.RuntimeWordSorting
+import IPRADerivations.Core.CongruenceTactic
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Actual scalar column selection by numerical words
@@ -65,12 +67,10 @@ theorem cell_congr {A B r s i j : PTm n} (hA : Γ ⊢[PRAAx] A ≐ B)
   Foundations.SequenceComposition.entry_congr (Foundations.SequenceComposition.entry_congr hA hr) hi
 theorem columns_congr {A B m d w v : PTm n} (hA : Γ ⊢[PRAAx] A ≐ B)
     (hm : Γ ⊢[PRAAx] m ≐ d) (hw : Γ ⊢[PRAAx] w ≐ v) : Γ ⊢[PRAAx] columns A m w ≐ columns B d v := by
-  simpa using Prf.eqCongr (Γ := Γ) (columns (var 0) (var 1) (var 2) : PTm 3)
-    (σ := ![A,m,w]) (σ' := ![B,d,v]) (fun i => by fin_cases i; exact hA; exact hm; exact hw)
+  ipra_congr (columns (var 0) (var 1) (var 2) : PTm 3) with [hA, hm, hw]
 theorem selected_det_congr {A B m d w v : PTm n} (hA : Γ ⊢[PRAAx] A ≐ B)
     (hm : Γ ⊢[PRAAx] m ≐ d) (hw : Γ ⊢[PRAAx] w ≐ v) : Γ ⊢[PRAAx] selectedDet A m w ≐ selectedDet B d v := by
-  simpa using Prf.eqCongr (Γ := Γ) (selectedDet (var 0) (var 1) (var 2) : PTm 3)
-    (σ := ![A,m,w]) (σ' := ![B,d,v]) (fun i => by fin_cases i; exact hA; exact hm; exact hw)
+  ipra_congr (selectedDet (var 0) (var 1) (var 2) : PTm 3) with [hA, hm, hw]
 theorem signed_selection_congr {A B m d w v : PTm n} (hA : Γ ⊢[PRAAx] A ≐ B)
     (hm : Γ ⊢[PRAAx] m ≐ d) (hw : Γ ⊢[PRAAx] w ≐ v) : Γ ⊢[PRAAx] signedSelection A m w ≐ signedSelection B d v :=
   qmul_congr (GaussianDeterminantSignTransport.sign_congr hm hw) (selected_det_congr hA hm hw)
@@ -122,12 +122,7 @@ theorem sign_unscale (m w z : PTm n) (hz : Γ ⊢[PRAAx] canonical z) : Γ ⊢[P
 /-- Genuine characteristic-two exclusion via native positive integer cancellation. -/
 theorem native_coordinate_zero (u : ZT n) (h : Γ ⊢[PRAAx] ZT.eq u (-u)) : Γ ⊢[PRAAx] ZT.eq u (ZT.natLit 0) := by
   apply RationalNormalForm.positive_integer_cancel two _ _ (zero_lt_succ one)
-  apply ZT.derive
-  have e := ZT.toZ_eq h
-  simp only [ZT.toZ_neg] at e
-  simp only [ZT.toZ_mul,ZT.toZ_ofNat,ZT.toZ_natLit]
-  ipra_simps
-  linear_combination e
+  ipra_lc ZT.toZ_eq h
 
 theorem native_no_two_torsion (q : PTm n) (hq : Γ ⊢[PRAAx] canonical q)
     (h : Γ ⊢[PRAAx] q ≐ qnegative q) : Γ ⊢[PRAAx] q ≐ qzero := by
@@ -149,7 +144,6 @@ theorem native_no_two_torsion (q : PTm n) (hq : Γ ⊢[PRAAx] canonical q)
     · simpa only [ZT.toZ_natLit,GaussianRootAlgebra.im_zero,Nat.cast_zero] using ZT.toZ_eq (native_coordinate_zero _ hi)
   exact canonical_unique _ _ _ _ hq qzero_canonical (raw_den_positive q)
     (represents_congr (.eqRefl _) eq (.eqRefl _) (raw_represents q)) (GaussianRationalHorner.zero_represents _)
-
 
 /-- Only the original numeric adjacent guard is needed for the actual
 column-position composition; no permutation or word-horizon premise. -/
@@ -190,7 +184,6 @@ theorem selection_swap (A m w j : PTm n) (hj : Γ ⊢[PRAAx] lt (succ j) m) : Γ
     (GaussianScalarDeterminant.constant_shape _ _) (GaussianPolynomialColumnAlternation.CS_shape _ _ _ _ (GaussianScalarDeterminant.constant_shape _ _))
     (selection_swap_values _ _ _ _ hj)).eqTrans
       (GaussianPolynomialColumnAlternation.column_evaluation_neg _ _ _ _ _ (GaussianScalarDeterminant.constant_shape _ _) hj)
-
 
 def adjacentColumnsEqual (A m j : PTm n) : Fm PTm n := .all
   (lt (var 0) (Syn.shift m) ⟶ GaussianRationalValueEquality.valueEqual
@@ -324,7 +317,6 @@ theorem identity_prefix_zero (m t : PTm n) : Γ ⊢[PRAAx]
 theorem sign_identity (m : PTm n) : Γ ⊢[PRAAx] signPoint m (Foundations.RuntimeWordSorting.identityCode m) ≐ qone :=
   sign_even _ _ ((congrAp1 parF (identity_prefix_zero _ _)).eqTrans par_zero)
 
-
 theorem columns_identity_values (A m : PTm n) : Γ ⊢[PRAAx]
     GaussianScalarDeterminant.scalarCellsEqual (columns A m (Foundations.RuntimeWordSorting.identityCode m)) A m := by
   refine .allI (.impI (.allI (.impI ?_)))
@@ -404,7 +396,6 @@ theorem selection_normal_form (A m w : PTm n) (hw : Γ ⊢[PRAAx] lt w (Foundati
 
 theorem empty_selection (A w : PTm n) : Γ ⊢[PRAAx] selectedDet A zero w ≐ qone :=
   GaussianPolynomialDeterminant.empty_evaluation _ _ _
-
 
 /-- Seven actual fields retain the original scalar determinant and the
 SAME sorting payload; no witness is extracted from a correctness proof. -/

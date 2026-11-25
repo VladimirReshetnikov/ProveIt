@@ -2,7 +2,7 @@ import IPRADerivations.Combinatorics.LegendreDigits
 import IPRADerivations.DiophantineNumberTheory.ModularCertificate
 import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.AnalyticNumberTheory.ValuationMul
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The alternating digit rule modulo `b + 1`

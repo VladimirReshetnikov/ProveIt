@@ -1,5 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.Fermat
 import IPRADerivations.DiophantineNumberTheory.Coprime
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Euler's totient at prime powers
@@ -114,8 +116,7 @@ theorem quo_eq {z q r M : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) (hz : 
   (congrAp2 quoF (.eqRefl _) hM).eqTrans (Prf.andE₁ (div_mod_unique
     (hz.eqTrans (congrAdd (congrMul hM (.eqRefl _)) (.eqRefl _))) (lt_congr (.eqRefl _) hM hr)))
 
-theorem pred_lt {M : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) : Γ ⊢[PRAAx] lt (pred M) M :=
-  le_congr (.eqRefl _) hM.eqSymm (le_refl _)
+alias pred_lt := Common.pred_lt
 
 /-- `⌈(j+1)/p⌉ = ⌈j/p⌉ + [p ∣ j]`. -/
 theorem quo_step {j p : PTm n} (hp : Γ ⊢[PRAAx] p ≐ succ (pred p)) :
@@ -137,7 +138,7 @@ theorem quo_step {j p : PTm n} (hp : Γ ⊢[PRAAx] p ≐ succ (pred p)) :
       have h₃ := natEq (hp.wk (ψ := rem j p ≐ zero))
       apply deriveNat; ipra_simps
       linear_combination h₁ + h₂ - h₃)
-      (le_congr (.eqRefl _) hp.wk.eqSymm (le_of_eq_add (d := pred p) (by apply deriveNat; ipra_simps; ring)))
+      (le_congr (.eqRefl _) hp.wk.eqSymm (le_of_eq_add (d := pred p) (by ipra_ring)))
     exact q₂.eqTrans (congrAdd q₁.eqSymm (eqb_of_eq Prf.hyp0).eqSymm)
   · -- `p ∤ j`: both quotients are `quo j p + 1`.
     have hne : ((rem j p ≐ succ (pred (rem j p))) :: Γ) ⊢[PRAAx] neg (rem j p ≐ zero) :=
@@ -168,7 +169,7 @@ private theorem count₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] countF := by
   · simp only [Fm.subst_imp, Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_pred, Syn.subst_var,
       Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
     refine .impI ((sum_zero _ _).eqTrans (quo_eq (q := zero) (r := pred (var 0)) Prf.hyp0 ?_ (pred_lt Prf.hyp0)).eqSymm)
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   · simp only [Fm.subst_imp, Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_pred, Syn.subst_var,
       Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
     refine .impI ?_
@@ -207,11 +208,8 @@ theorem totient_prime_power_at {p k : PTm n} (hp : Γ ⊢[PRAAx] prime p) :
         ap2 (sumF mulBody) (var 0) (Syn.shift p) ≐ var 0) :: Γ.map Fm.shift) mulBody (var 0) (Syn.shift p)
       rw [inst2_tot] at e₁
       rw [inst2_mul] at e₂
-      have h₁ := natEq e₁; have h₂ := natEq e₂; have h₃ := natEq ind
-      have h₄ := natEq (Prf.hyp0 : ((ap2 (sumF totBody) (var 0) (pw (Syn.shift p) (succ (Syn.shift k))) +
-        ap2 (sumF mulBody) (var 0) (Syn.shift p) ≐ var 0) :: Γ.map Fm.shift) ⊢[PRAAx] _)
-      apply deriveNat; ipra_simps
-      linear_combination h₁ + h₂ + h₃ + h₄
+      ipra_lc natEq e₁ + natEq e₂ + natEq ind +
+        natEq (Prf.hyp0 : ((ap2 (sumF totBody) (var 0) (pw (Syn.shift p) (succ (Syn.shift k))) + ap2 (sumF mulBody) (var 0) (Syn.shift p) ≐ var 0) :: Γ.map Fm.shift) ⊢[PRAAx] _)
   have h := Prf.allE (pw p (succ k)) hall
   simp only [Fm.subst_eq, PTm.subst_add, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
     ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at h

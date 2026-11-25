@@ -1,6 +1,7 @@
 import IPRADerivations.Core.SumOrder
 import IPRADerivations.Core.ProdLemmas
 import IPRADerivations.AnalyticNumberTheory.PhiLower
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Replacing the factors of a product one at a time
@@ -90,20 +91,15 @@ theorem prod_succ' (f : PTm 2) (N x : PTm n) :
 
 theorem id_base (a g : PTm 2) (x : PTm n) :
     Γ ⊢[PRAAx] ap2 (prodF a) zero x + Hm a g zero x ≐ ap2 (prodF g) zero x + Hp a g zero x := by
-  have e₁ := natEq (prod_zero (Γ := Γ) a x); have e₂ := natEq (prod_zero (Γ := Γ) g x)
-  have e₃ := natEq (Hm_zero (Γ := Γ) a g x); have e₄ := natEq (Hp_zero (Γ := Γ) a g x)
-  apply deriveNat; ipra_simps
-  linear_combination e₁ - e₂ + e₃ - e₄
+  ipra_lc natEq (prod_zero (Γ := Γ) a x) - natEq (prod_zero (Γ := Γ) g x) + natEq (Hm_zero (Γ := Γ) a g x) -
+    natEq (Hp_zero (Γ := Γ) a g x)
 
 theorem id_step (a g : PTm 2) {N x : PTm n}
     (ih : Γ ⊢[PRAAx] ap2 (prodF a) N x + Hm a g N x ≐ ap2 (prodF g) N x + Hp a g N x) :
     Γ ⊢[PRAAx] ap2 (prodF a) (succ N) x + Hm a g (succ N) x ≐
       ap2 (prodF g) (succ N) x + Hp a g (succ N) x := by
-  have i := natEq ih
-  have sA := natEq (prod_succ' (Γ := Γ) a N x); have sG := natEq (prod_succ' (Γ := Γ) g N x)
-  have sM := natEq (Hm_succ (Γ := Γ) a g N x); have sP := natEq (Hp_succ (Γ := Γ) a g N x)
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞(inst2 g N x) * i + sA + sM - sG - sP
+  ipra_lc 𝔞(inst2 g N x) * natEq ih + natEq (prod_succ' (Γ := Γ) a N x) + natEq (Hm_succ (Γ := Γ) a g N x) -
+    natEq (prod_succ' (Γ := Γ) g N x) - natEq (Hp_succ (Γ := Γ) a g N x)
 
 /-- Variables: `0 = N` (induction), `1 = x`. -/
 private abbrev idF (a g : PTm 2) : Fm PTm 2 :=
@@ -135,7 +131,7 @@ theorem repl_step {A G E a g e R Rp : PTm n} (hG : Γ ⊢[PRAAx] le G Rp)
   have s2 := add_le_add₂ (le_mul_mono (le_refl (R * G)) h₁) (le_mul_mono (le_refl (Rp * E)) h₂)
   have s3 := add_le_add₂ (le_refl (R * (G * g) + (Rp * E) * R)) (le_mul_mono (le_refl (R * e)) hG)
   refine le_trans (le_congr ?_ ?_ s1) (le_trans s2 (le_congr ?_ ?_ s3))
-  all_goals (apply deriveNat; ipra_simps; ring)
+  all_goals (ipra_ring)
 
 /-- The induction formula; variable `0 = i`. -/
 abbrev replF (a g e : PTm 2) (R N x : PTm n) : Fm PTm (n + 1) :=

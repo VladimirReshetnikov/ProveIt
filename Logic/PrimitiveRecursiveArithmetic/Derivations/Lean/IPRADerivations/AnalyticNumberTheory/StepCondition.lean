@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.OneStepDecrement
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The integer step condition from the block count (`pnt_ipra_constructive_2026-11-14`, `con:one-step`)
@@ -35,9 +36,7 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
-theorem mul_le2 {a b c d : PTm n} (h1 : Γ ⊢[PRAAx] le a b) (h2 : Γ ⊢[PRAAx] le c d) :
-    Γ ⊢[PRAAx] le (a * c) (b * d) :=
-  le_trans (mul_le_mul_right c h1) (le_scale b h2)
+alias mul_le2 := Common.mul_le_mul
 
 /-- The linear coefficient: `3A² + 1152DP(P + σ₀ + 1) + 768D²P(σ₀ + P) + 1845312D²P`. -/
 abbrev DecLin (D A P s0 : PTm n) : PTm n :=

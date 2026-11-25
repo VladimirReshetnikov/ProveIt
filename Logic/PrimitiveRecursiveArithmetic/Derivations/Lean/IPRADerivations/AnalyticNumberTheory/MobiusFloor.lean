@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.MobiusSummatory
 import IPRADerivations.AnalyticNumberTheory.SumPhi
 import IPRADerivations.AnalyticNumberTheory.HyperbolaSwap
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The Möbius floor identity `∑_{d ≤ x} μ(d) ⌊x/d⌋ = [x ≥ 1]`
@@ -147,7 +148,7 @@ theorem inst2_GPB (a x : PTm n) : inst2 GPB a x = sg a * MP (quo x a) := by simp
 
 theorem inst2_GNB (a x : PTm n) : inst2 GNB a x = sg a * MN (quo x a) := by simp [inst2]
 
-theorem mul_one1 (X : PTm n) : Γ ⊢[PRAAx] X * one ≐ X := by apply deriveNat; ipra_simps; ring
+alias mul_one1 := Common.mul_one_right
 
 theorem colP (a x : PTm n) : Γ ⊢[PRAAx] inst2 (RB (one : PTm 2) aPB) a (pairT x zero) ≐ inst2 GPB a x := by
   have h := RB_at (Γ := Γ) (one : PTm 2) aPB a x zero

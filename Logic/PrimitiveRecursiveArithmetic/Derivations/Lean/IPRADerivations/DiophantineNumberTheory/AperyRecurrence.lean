@@ -3,6 +3,7 @@ import IPRADerivations.Combinatorics.CatalanBallot
 import IPRADerivations.Probability.BinomialLaw
 import IPRADerivations.Core.SumSplit
 import IPRADerivations.Core.ProdLemmas
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The Apéry recurrence
@@ -64,10 +65,8 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 theorem gr (M k : PTm n) : Γ ⊢[PRAAx] succ k * gb M (succ k) ≐ monus M k * gb M k := by
   refine .orE (lt_or_le k M) ?_ ?_
   · have hl : (lt k M :: Γ) ⊢[PRAAx] lt k M := Prf.hyp0
-    have g₀ := natEq (gle_of_le (le_of_lt hl)); have g₁ := natEq (gle_of_le hl)
-    have r := natEq (binom_ratio hl)
-    apply deriveNat; ipra_simps
-    linear_combination (𝔞 k + 1) * 𝔞(binom M (succ k)) * g₁ - 𝔞(monus M k) * 𝔞(binom M k) * g₀ - r
+    ipra_lc (𝔞 k + 1) * 𝔞(binom M (succ k)) * natEq (gle_of_le hl) -
+      𝔞(monus M k) * 𝔞(binom M k) * natEq (gle_of_le (le_of_lt hl)) - natEq (binom_ratio hl)
   · have hl : (le M k :: Γ) ⊢[PRAAx] le M k := Prf.hyp0
     have z₁ : (le M k :: Γ) ⊢[PRAAx] gb M (succ k) ≐ zero := gb_above ((succ_monus_succ _ _).eqTrans hl)
     exact ((congrMul (.eqRefl _) z₁).eqTrans (mul_zero _)).eqTrans
@@ -83,10 +82,8 @@ theorem ga (M k : PTm n) : Γ ⊢[PRAAx] succ k * gb (succ M) (succ k) ≐ succ 
       ((congrMul (.eqRefl _) z₀).eqTrans (mul_zero _)).eqSymm
   · have hl : (le k M :: Γ) ⊢[PRAAx] le k M := Prf.hyp0
     have hs : (le k M :: Γ) ⊢[PRAAx] le (succ k) (succ M) := (succ_monus_succ _ _).eqTrans hl
-    have g₁ := natEq (gle_of_le hs); have g₀ := natEq (gle_of_le hl)
-    have r := natEq (absorption hl)
-    apply deriveNat; ipra_simps
-    linear_combination (𝔞 k + 1) * 𝔞(binom (succ M) (succ k)) * g₁ - (𝔞 M + 1) * 𝔞(binom M k) * g₀ + r
+    ipra_lc (𝔞 k + 1) * 𝔞(binom (succ M) (succ k)) * natEq (gle_of_le hs) -
+      (𝔞 M + 1) * 𝔞(binom M k) * natEq (gle_of_le hl) + natEq (absorption hl)
 
 /-- `(M + 1 − k) C(M + 1, k) = (M + 1) C(M, k)` for every `k`. -/
 theorem gl (M k : PTm n) : Γ ⊢[PRAAx] monus (succ M) k * gb (succ M) k ≐ succ M * gb M k :=
@@ -122,16 +119,12 @@ theorem bb_above {N k : PTm n} (h : Γ ⊢[PRAAx] le (succ N) k) : Γ ⊢[PRAAx]
 theorem auxA {g₁ gX gY gN gZ gW K N1 S1 S2 : PTm n} (E : Γ ⊢[PRAAx] gX ≐ gY)
     (G1 : Γ ⊢[PRAAx] K * g₁ ≐ N1 * gN) (G2 : Γ ⊢[PRAAx] K * gY ≐ S2 * gZ)
     (G3 : Γ ⊢[PRAAx] N1 * gZ ≐ S1 * gW) : Γ ⊢[PRAAx] (g₁ * gX) * (K * K) ≐ (gN * gW) * (S1 * S2) := by
-  have e := natEq E; have a := natEq G1; have b := natEq G2; have c := natEq G3
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 K ^ 2 * 𝔞 g₁ * e + 𝔞 K * 𝔞 gY * a + 𝔞 N1 * 𝔞 gN * b + 𝔞 gN * 𝔞 S2 * c
+  ipra_lc 𝔞 K ^ 2 * 𝔞 g₁ * natEq E + 𝔞 K * 𝔞 gY * natEq G1 + 𝔞 N1 * 𝔞 gN * natEq G2 + 𝔞 gN * 𝔞 S2 * natEq G3
 
 theorem auxB {gA gX gY gN gW K U S : PTm n} (E : Γ ⊢[PRAAx] gX ≐ gY)
     (R : Γ ⊢[PRAAx] K * gA ≐ U * gN) (G : Γ ⊢[PRAAx] K * gY ≐ S * gW) :
     Γ ⊢[PRAAx] (gA * gX) * (K * K) ≐ (gN * gW) * (S * U) := by
-  have e := natEq E; have a := natEq R; have b := natEq G
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 K ^ 2 * 𝔞 gA * e + 𝔞 K * 𝔞 gY * a + 𝔞 U * 𝔞 gN * b
+  ipra_lc 𝔞 K ^ 2 * 𝔞 gA * natEq E + 𝔞 K * 𝔞 gY * natEq R + 𝔞 U * 𝔞 gN * natEq G
 
 theorem auxC {gA gX gY gM gW gS gV gZ K V U Sm S : PTm n} (E : Γ ⊢[PRAAx] gX ≐ gY)
     (R : Γ ⊢[PRAAx] K * gA ≐ V * gM) (G : Γ ⊢[PRAAx] K * gY ≐ S * gW)
@@ -212,18 +205,13 @@ theorem pt_zero {N k u v d c0 cp cm : PTm n}
 theorem uv (m k : PTm n) :
     Γ ⊢[PRAAx] monus m k * monus (succ m) k + monus (succ m) k ≐ monus (succ m) k * monus (succ m) k := by
   refine .orE (lt_or_le m k) ?_ ?_
-  · have hz := natEq (Prf.hyp0 (Ax := PRAAx) (Γ := Γ) (φ := lt m k))
-    apply deriveNat; ipra_simps
-    linear_combination (𝔞(monus m k) + 1 - 𝔞(monus (succ m) k)) * hz
+  · ipra_lc (𝔞(monus m k) + 1 - 𝔞(monus (succ m) k)) * natEq (Prf.hyp0 (Ax := PRAAx) (Γ := Γ) (φ := lt m k))
   · have hl : (le k m :: Γ) ⊢[PRAAx] le k m := Prf.hyp0
     have e : (le k m :: Γ) ⊢[PRAAx] monus (succ m) k ≐ succ (monus m k) := by
-      have a := natEq (eq_add_of_le hl)
       have e₀ : (le k m :: Γ) ⊢[PRAAx] succ m ≐ succ (monus m k) + k := by
-        apply deriveNat; ipra_simps; linear_combination a
+        ipra_lc natEq (eq_add_of_le hl)
       exact (congrMonus e₀ (.eqRefl _)).eqTrans (add_monus _ _)
-    have f := natEq e
-    apply deriveNat; ipra_simps
-    linear_combination (-𝔞(monus (succ m) k)) * f
+    ipra_lc (-𝔞(monus (succ m) k)) * natEq e
 
 /-- The certificate identity for `n = m + 1` and every `k`. -/
 theorem pt (m k : PTm n) :
@@ -255,12 +243,9 @@ abbrev phiR {n : ℕ} (m K : PTm n) : PTm n :=
   Pn (succ m) * Ssum K (succ m) + sig (succ m) K * bb (succ m) K + tau (succ m) * bb (succ m) zero
 
 theorem phi_base (m : PTm n) : Γ ⊢[PRAAx] phiL m zero ≐ phiR m zero := by
-  have z₁ := natEq (sum_zero (Γ := Γ) (shiftBody bbB) (succ (succ m)))
-  have z₂ := natEq (sum_zero (Γ := Γ) (shiftBody bbB) m)
-  have z₃ := natEq (sum_zero (Γ := Γ) (shiftBody bbB) (succ m))
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞 m + 2) ^ 3 * z₁ + (𝔞 m + 1) ^ 3 * z₂ -
-    (2 * (𝔞 m + 1) + 1) * (17 * (𝔞 m + 1) ^ 2 + 17 * (𝔞 m + 1) + 5) * z₃
+  ipra_lc (𝔞 m + 2) ^ 3 * natEq (sum_zero (Γ := Γ) (shiftBody bbB) (succ (succ m))) +
+    (𝔞 m + 1) ^ 3 * natEq (sum_zero (Γ := Γ) (shiftBody bbB) m) -
+    (2 * (𝔞 m + 1) + 1) * (17 * (𝔞 m + 1) ^ 2 + 17 * (𝔞 m + 1) + 5) * natEq (sum_zero (Γ := Γ) (shiftBody bbB) (succ m))
 
 theorem phi_step {m K : PTm n} (ih : Γ ⊢[PRAAx] phiL m K ≐ phiR m K) :
     Γ ⊢[PRAAx] phiL m (succ K) ≐ phiR m (succ K) := by
@@ -268,11 +253,8 @@ theorem phi_step {m K : PTm n} (ih : Γ ⊢[PRAAx] phiL m K ≐ phiR m K) :
   have s₂ := sum_succ' (Γ := Γ) (shiftBody bbB) K m
   have s₃ := sum_succ' (Γ := Γ) (shiftBody bbB) K (succ m)
   rw [inst2_shiftBody, inst2_bb] at s₁ s₂ s₃
-  have p := natEq (pt (Γ := Γ) m K)
-  have i := natEq ih; have a := natEq s₁; have b := natEq s₂; have c := natEq s₃
-  apply deriveNat; ipra_simps
-  linear_combination i + (𝔞 m + 2) ^ 3 * a + (𝔞 m + 1) ^ 3 * b -
-    (2 * (𝔞 m + 1) + 1) * (17 * (𝔞 m + 1) ^ 2 + 17 * (𝔞 m + 1) + 5) * c + p
+  ipra_lc natEq ih + (𝔞 m + 2) ^ 3 * natEq s₁ + (𝔞 m + 1) ^ 3 * natEq s₂ -
+    (2 * (𝔞 m + 1) + 1) * (17 * (𝔞 m + 1) ^ 2 + 17 * (𝔞 m + 1) + 5) * natEq s₃ + natEq (pt (Γ := Γ) m K)
 
 /-- Variables: `0 = K`, `1 = m`. -/
 private abbrev phiF : Fm PTm 2 := phiL (var 1) (var 0) ≐ phiR (var 1) (var 0)
@@ -308,8 +290,7 @@ theorem apery_bb (N : PTm n) : Γ ⊢[PRAAx] apery N ≐ ap2 (sumF bbB) (succ N)
 theorem bb_ext {j N : PTm n} (h : Γ ⊢[PRAAx] le j N) :
     Γ ⊢[PRAAx] ap2 (sumF bbB) (succ N) j ≐ ap2 (sumF bbB) (succ j) j := by
   have eD : Γ ⊢[PRAAx] succ N ≐ succ j + monus N j := by
-    have e := natEq (eq_add_of_le h)
-    apply deriveNat; ipra_simps; linear_combination e
+    ipra_lc natEq (eq_add_of_le h)
   refine (congrAp2 (sumF bbB) eD (.eqRefl _)).eqTrans ((sum_split bbB (succ j) (monus N j) j).eqTrans ?_)
   refine (congrAdd (.eqRefl _) ?_).eqTrans (add_zero _)
   refine (sum_congr_bounded (offB bbB) zB (pairT (succ j) j) (pairT (succ j) j) _ (.allI (.impI ?_))).eqTrans
@@ -330,19 +311,12 @@ theorem apery_split {N K : PTm n} (h : Γ ⊢[PRAAx] le N K) :
 theorem apery_rec (m : PTm n) :
     Γ ⊢[PRAAx] cube (succ (succ m)) * apery (succ (succ m)) + cube (succ m) * apery m ≐
       Pn (succ m) * apery (succ m) := by
-  have h := natEq (phi (Γ := Γ) m (succ (succ m)))
-  have A₁ := natEq (apery_split (Γ := Γ) (le_refl (succ (succ m))))
-  have A₂ := natEq (apery_split (Γ := Γ) (le_trans (le_succ_self m) (le_succ_self (succ m))))
-  have A₃ := natEq (apery_split (Γ := Γ) (le_succ_self (succ m)))
-  have o₁ := natEq (bb_zero (Γ := Γ) (succ (succ m)))
-  have o₂ := natEq (bb_zero (Γ := Γ) m)
-  have o₃ := natEq (bb_zero (Γ := Γ) (succ m))
-  have z := natEq (bb_above (Γ := Γ) (le_refl (succ (succ m))))
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞 m + 2) ^ 3 * A₁ + (𝔞 m + 1) ^ 3 * A₂ -
-    (2 * (𝔞 m + 1) + 1) * (17 * (𝔞 m + 1) ^ 2 + 17 * (𝔞 m + 1) + 5) * A₃ + (𝔞 m + 2) ^ 3 * o₁ +
-    (𝔞 m + 1) ^ 3 * o₂ +
-    (4 * (2 * (𝔞 m + 1) + 1) ^ 3 - (2 * (𝔞 m + 1) + 1) * (17 * (𝔞 m + 1) ^ 2 + 17 * (𝔞 m + 1) + 5)) * o₃ + h +
-    (4 * (2 * (𝔞 m + 1) + 1) * ((𝔞 m + 2) * (2 * (𝔞 m + 2) + 1)) - 4 * (2 * (𝔞 m + 1) + 1) ^ 3) * z
+  ipra_lc (𝔞 m + 2) ^ 3 * natEq (apery_split (Γ := Γ) (le_refl (succ (succ m)))) +
+    (𝔞 m + 1) ^ 3 * natEq (apery_split (Γ := Γ) (le_trans (le_succ_self m) (le_succ_self (succ m)))) -
+    (2 * (𝔞 m + 1) + 1) * (17 * (𝔞 m + 1) ^ 2 + 17 * (𝔞 m + 1) + 5) * natEq (apery_split (Γ := Γ) (le_succ_self (succ m))) +
+    (𝔞 m + 2) ^ 3 * natEq (bb_zero (Γ := Γ) (succ (succ m))) + (𝔞 m + 1) ^ 3 * natEq (bb_zero (Γ := Γ) m) +
+    (4 * (2 * (𝔞 m + 1) + 1) ^ 3 - (2 * (𝔞 m + 1) + 1) * (17 * (𝔞 m + 1) ^ 2 + 17 * (𝔞 m + 1) + 5)) * natEq (bb_zero (Γ := Γ) (succ m)) +
+    natEq (phi (Γ := Γ) m (succ (succ m))) +
+    (4 * (2 * (𝔞 m + 1) + 1) * ((𝔞 m + 2) * (2 * (𝔞 m + 2) + 1)) - 4 * (2 * (𝔞 m + 1) + 1) ^ 3) * natEq (bb_above (Γ := Γ) (le_refl (succ (succ m))))
 
 end LeanProofs.IPRA.DiophantineNumberTheory.AperyRecurrence

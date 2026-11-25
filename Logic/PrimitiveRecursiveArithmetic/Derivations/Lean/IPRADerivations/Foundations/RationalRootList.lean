@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.RationalRootScan
 import IPRADerivations.AnalyticNumberTheory.Valuation
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The rational-root list with its substitution test as a term (`ipra_presentations_to_witnesses`, `lem:norm-rational-roots`)
@@ -52,9 +53,7 @@ open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 
-theorem pair_congr {s s' t t' : PTm k} (hs : Γ ⊢[PRAAx] s ≐ s') (ht : Γ ⊢[PRAAx] t ≐ t') :
-    Γ ⊢[PRAAx] pairT s t ≐ pairT s' t' :=
-  congrAdd (congrMul (congrAdd hs ht) (congrAdd hs ht)) hs
+alias pair_congr := Common.congrPairT
 
 /-- The cleared polynomial of the coefficient list `c` at the pair coded by variable `0`, with
 variable `1 = ⟨d, x⟩`. -/

@@ -1,6 +1,6 @@
 import IPRADerivations.Geometry.PlatonicSurface.Intrinsic
 import IPRADerivations.Core.Tactic
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The icosahedral strip minimum

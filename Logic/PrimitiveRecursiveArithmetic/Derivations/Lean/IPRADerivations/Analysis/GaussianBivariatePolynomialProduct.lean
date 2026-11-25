@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianPolynomialConstantInjection
 import IPRADerivations.Core.CongruenceTactic
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Actual multiplication of rectangular bivariate coefficient lists
@@ -96,8 +97,7 @@ theorem product_congr {A A' B B' a a' b b' : PTm n} (hA : Γ ⊢[PRAAx] A ≐ A'
   (GaussianRationalPolynomialProduct.program_at A B a b).eqSymm.eqTrans
     ((congrApp GaussianRationalPolynomialProduct.productF (ts := ![A,B,a,b]) (us := ![A',B',a',b'])
       (fun i => by fin_cases i; exact hA; exact hB; exact ha; exact hb)).eqTrans (GaussianRationalPolynomialProduct.program_at A' B' a' b'))
-theorem sg_congr {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) : Γ ⊢[PRAAx] Signum.sg a ≐ Signum.sg b :=
-  congrMonus (.eqRefl _) (congrMonus (.eqRefl _) h)
+alias sg_congr := Common.congrSg
 theorem padded_row_congr {B B' q q' b b' i i' : PTm n} (hB : Γ ⊢[PRAAx] B ≐ B') (hq : Γ ⊢[PRAAx] q ≐ q')
     (hb : Γ ⊢[PRAAx] b ≐ b') (hi : Γ ⊢[PRAAx] i ≐ i') : Γ ⊢[PRAAx] paddedRow B q b i ≐ paddedRow B' q' b' i' :=
   sel_congr (sg_congr (congrMonus (congrSucc hq) hi)) (entry_congr hB hi)

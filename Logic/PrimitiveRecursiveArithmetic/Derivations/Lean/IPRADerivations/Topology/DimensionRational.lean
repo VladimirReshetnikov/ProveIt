@@ -1,5 +1,6 @@
 import IPRADerivations.Topology.DimensionObstruction
 import IPRADerivations.Foundations.RationalFloors
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The finite dimension obstruction for rational tables (`dimension_invariance_ipra`, `thm:finite`)
@@ -78,8 +79,7 @@ theorem eq_zero_of_sg {Γ : List (Fm PTm n)} {x : PTm n} (h : Γ ⊢[PRAAx] Sign
 theorem far_bit (d' : ℕ) {Γ : List (Fm PTm n)} {z : PTm n} (h : Γ ⊢[PRAAx] le (num (d' + 1)) z) :
     Γ ⊢[PRAAx] monus one (monus z (num d')) ≐ zero := by
   have e : Γ ⊢[PRAAx] z ≐ num d' + succ (monus z (num (d' + 1))) := by
-    have a := natEq (eq_add_of_le h)
-    apply deriveNat; ipra_simps; push_cast at a ⊢; linear_combination a
+    ipra_lc natEq (eq_add_of_le h)
   exact (congrMonus (.eqRefl _) ((congrMonus e (.eqRefl _)).eqTrans (add_monus' _ _))).eqTrans
     ((succ_monus_succ _ _).eqTrans (zero_monus _))
 

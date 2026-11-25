@@ -2,6 +2,7 @@ import IPRADerivations.Core.SumOrder
 import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.Foundations.MasterCertificate
 import IPRADerivations.Foundations.SequenceComposition
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Counting actual nonzero pivot tags and selecting a free column
@@ -193,10 +194,7 @@ theorem free_congr {H K N M : PTm n} (hH : Γ ⊢[PRAAx] H ≐ K) (hN : Γ ⊢[P
 theorem free_zero (H : PTm n) : Γ ⊢[PRAAx] free H zero ≐ zero := Search.mu_zero H
 theorem full_zero_count (H N : PTm n) (h : Γ ⊢[PRAAx] count H N ≐ N) :
     Γ ⊢[PRAAx] zeroCount H N ≐ zero := by
-  have e := natEq ((congrAdd h (.eqRefl _)).eqSymm.eqTrans (count_partition H N))
-  apply deriveNat
-  ipra_simps
-  linear_combination e
+  ipra_lc natEq ((congrAdd h (.eqRefl _)).eqSymm.eqTrans (count_partition H N))
 
 def output (H N : PTm n) : PTm n := pairT (count H N)
   (pairT (free H N) (pairT (entry H (free H N)) (zeroCount H N)))

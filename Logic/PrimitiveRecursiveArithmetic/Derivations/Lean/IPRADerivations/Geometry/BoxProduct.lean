@@ -2,7 +2,7 @@ import IPRADerivations.Foundations.FiniteAMGM
 import IPRADerivations.Combinatorics.CoefficientLogConcave
 import IPRADerivations.Probability.Variance
 import IPRADerivations.Core.ProdLemmas
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The box inequality of the rational Brunn–Minkowski theorem

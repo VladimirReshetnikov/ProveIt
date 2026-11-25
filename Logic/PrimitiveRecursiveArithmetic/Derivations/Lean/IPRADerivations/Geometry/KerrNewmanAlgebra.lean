@@ -1,5 +1,5 @@
 import IPRADerivations.Core.Tactic
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The radial algebra of the Kerr–Newman family

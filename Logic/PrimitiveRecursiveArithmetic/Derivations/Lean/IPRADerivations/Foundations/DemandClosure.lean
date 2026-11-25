@@ -1,5 +1,7 @@
 import IPRADerivations.Foundations.MasterCertificate
 import IPRADerivations.Core.SumOrder
+import IPRADerivations.Core.CongruenceTactic
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Finite capped coordinate demands
@@ -192,8 +194,7 @@ theorem rank_gap {r a b : PTm n} (h : Γ ⊢[PRAAx] ordered r a b) :
     ((sum_add leftBody gapBody r (pairT a b)).eqTrans
       (congrAdd (left_sum r a b) (.eqRefl _))))
 
-private theorem one_le_succ (a : PTm n) : Γ ⊢[PRAAx] le one (succ a) :=
-  le_of_eq_add ((succ_eq_add_one a).eqTrans (add_comm _ _))
+private alias one_le_succ := Common.one_le_succ
 
 /-- A strict increase in one coordinate gives a positive total increment. -/
 theorem gap_positive {r a b i : PTm n} (hi : Γ ⊢[PRAAx] lt i r)
@@ -380,9 +381,7 @@ theorem zeros_le (r a : PTm n) : Γ ⊢[PRAAx] ordered r (zeros r) a := by
 
 private theorem zeros_congr {r r' : PTm n} (hr : Γ ⊢[PRAAx] r ≐ r') :
     Γ ⊢[PRAAx] zeros r ≐ zeros r' := by
-  have h := Prf.eqCongr (zeros (var 0) : PTm 1) (σ := ![r]) (σ' := ![r'])
-    (fun j => by fin_cases j; exact hr)
-  simpa only [subst_zeros, Syn.subst_var, Matrix.cons_val_zero] using h
+  ipra_congr (zeros (var 0) : PTm 1) with [hr]
 
 /-- One increasing demand update. The operator has arguments `(vector, data)`. -/
 def next (F : PTm 2) (r a x : PTm n) : PTm n := join r a (inst2 F a x)

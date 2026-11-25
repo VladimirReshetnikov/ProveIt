@@ -2,7 +2,7 @@ import IPRADerivations.Probability.ProductPower
 import IPRADerivations.Probability.ExpectationCorollaries
 import IPRADerivations.AnalyticNumberTheory.Valuation
 import IPRADerivations.DiophantineNumberTheory.SquareArea
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The weak law and Monte Carlo frequencies

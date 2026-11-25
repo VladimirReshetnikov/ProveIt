@@ -1,5 +1,7 @@
 import IPRADerivations.Analysis.GaussianGammaInverseConjugation
 import IPRADerivations.Analysis.RationalGaussianRealPart
+import IPRADerivations.Core.CongruenceTactic
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Actual rational real values of the original Gamma names
@@ -45,13 +47,7 @@ theorem projection_represents (q a E : PTm n) (h : Γ ⊢[PRAAx] represents q a 
 theorem real_difference_norm_le (a b : PTm n) : Γ ⊢[PRAAx]
     le (normSq (GaussianRootAlgebra.sub (native (re a)) (native (re b)))) (normSq (GaussianRootAlgebra.sub a b)) := by
   refine le_of_eq_add (d := normSq (ComplexLogarithmRemainder.code (ZT.ofNat zero) (im (GaussianRootAlgebra.sub a b)))) ?_
-  apply deriveNat
-  ipra_simps
-  simp only [ComplexLogarithmRemainder.normSq_eval]
-  simp only [GaussianRootAlgebra.re_sub,GaussianRootAlgebra.im_sub,native,
-    ComplexLogarithmRemainder.eval_re_code,ComplexLogarithmRemainder.eval_im_code,ZT.toZ_ofNat]
-  ipra_simps
-  ring
+  ipra_lc [GaussianRootAlgebra.re_sub, GaussianRootAlgebra.im_sub, native, ComplexLogarithmRemainder.eval_re_code, ComplexLogarithmRemainder.eval_im_code, ComplexLogarithmRemainder.normSq_eval]
 
 theorem projection_distance_same_rep (q r a b E A B : PTm n)
     (hE : Γ ⊢[PRAAx] le one E) (hB : Γ ⊢[PRAAx] le one B)
@@ -73,14 +69,7 @@ theorem projection_distance (q r A B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
 theorem conjugate_difference_norm (a : PTm n) : Γ ⊢[PRAAx]
     normSq (GaussianRootAlgebra.sub a (conjugate a)) ≐
       (two*two)*normSq (GaussianRootAlgebra.sub a (native (re a))) := by
-  apply deriveNat
-  ipra_simps
-  simp only [ComplexLogarithmRemainder.normSq_eval]
-  simp only [GaussianRootAlgebra.re_sub,GaussianRootAlgebra.im_sub,native,
-    ComplexLogarithmRemainder.eval_re_code,ComplexLogarithmRemainder.eval_im_code,ZT.toZ_ofNat,
-    GaussianRationalReciprocal.re_conjugate,GaussianRationalReciprocal.im_conjugate]
-  ipra_simps
-  ring
+  ipra_lc [GaussianRootAlgebra.re_sub, GaussianRootAlgebra.im_sub, native, ComplexLogarithmRemainder.eval_re_code, ComplexLogarithmRemainder.eval_im_code, GaussianRationalReciprocal.re_conjugate, GaussianRationalReciprocal.im_conjugate, ComplexLogarithmRemainder.normSq_eval]
 
 theorem projection_gap (q A B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (h : Γ ⊢[PRAAx] distanceBounded q (point q) A B) : Γ ⊢[PRAAx] distanceBounded q (projection q) A B := by
@@ -143,7 +132,6 @@ theorem real_regular (f : PR 2) (x : PTm n) (h : Γ ⊢[PRAAx] pointCN f x) : Γ
 theorem axis_regular (f : PR 2) (x : PTm n) (h : Γ ⊢[PRAAx] pointCN f x) : Γ ⊢[PRAAx] pointCN (axisF f) x :=
   RationalGaussianNameEmbedding.name_regular _ _ (real_regular f x h)
 
-
 theorem axis_sample_axis (f : PR 2) (p x : PTm n) : Γ ⊢[PRAAx]
     RationalGaussianEmbedding.axis (ap2 (axisF f) p x) :=
   RationalGaussianEmbedding.axis_congr (axis_sample_at f p x).eqSymm (RationalGaussianEmbedding.embed_axis _)
@@ -192,16 +180,12 @@ theorem cross_right_data {f g : PR 2} {x y y' : PTm n} (e : Γ ⊢[PRAAx] y ≐ 
 
 theorem c7_data_congr {z a : PTm n} (R B : PTm n) (e : Γ ⊢[PRAAx] z ≐ a) : Γ ⊢[PRAAx]
     GaussianGammaC7Name.data z R B ≐ GaussianGammaC7Name.data a R B := by
-  simpa only [GaussianGammaC7Name.subst_data,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (GaussianGammaC7Name.data (var 0) (var 1) (var 2) : PTm 3)
-      (σ := ![z,R,B]) (σ' := ![a,R,B]) (fun i => by fin_cases i; exact e; exact .eqRefl _; exact .eqRefl _)
+  ipra_congr (GaussianGammaC7Name.data (var 0) (var 1) (var 2) : PTm 3) with [e, .eqRefl R, .eqRefl B]
 
 theorem gamma_data_congr {z a : PTm n} (R B d : PTm n) (e : Γ ⊢[PRAAx] z ≐ a) : Γ ⊢[PRAAx]
     GaussianGammaReciprocalInverse.gammaData z R B d ≐ GaussianGammaReciprocalInverse.gammaData a R B d := by
-  simpa only [GaussianGammaInverseConjugation.subst_original_gamma_data,Syn.subst_var,
-    Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_three,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (GaussianGammaReciprocalInverse.gammaData (var 0) (var 1) (var 2) (var 3) : PTm 4)
-      (σ := ![z,R,B,d]) (σ' := ![a,R,B,d]) (fun i => by fin_cases i; exact e; exact .eqRefl _; exact .eqRefl _; exact .eqRefl _)
+  ipra_congr (GaussianGammaReciprocalInverse.gammaData (var 0) (var 1) (var 2) (var 3) : PTm 4) with
+    [e, .eqRefl R, .eqRefl B, .eqRefl d]
 
 theorem original_reciprocal_real (z R B : PTm n) (h : Γ ⊢[PRAAx] GaussianGammaCanonicalExponent.source z R B)
     (hr : Γ ⊢[PRAAx] conjugate z ≐ z) : Γ ⊢[PRAAx]
@@ -230,7 +214,6 @@ theorem original_real_rational_gamma (q R a d : PTm n)
       (GaussianGammaReciprocalInverse.gammaData (native (RationalSupMetric.numeratorOf q)) R (RationalSupMetric.denominatorOf q) d)
       (GaussianGammaReciprocalInverse.gammaData (native (RationalSupMetric.numeratorOf q)) R (RationalSupMetric.denominatorOf q) d) :=
   original_gamma_real _ _ _ _ _ h (native_real_fixed _)
-
 
 /-- The same PR2 returns original, rational projection and embedded
 real-axis observations, without changing the original query precision. -/

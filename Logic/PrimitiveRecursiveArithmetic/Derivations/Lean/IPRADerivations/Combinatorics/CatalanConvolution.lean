@@ -1,6 +1,8 @@
 import IPRADerivations.Combinatorics.Catalan
 import IPRADerivations.Core.SumReflect
 import IPRADerivations.Probability.Independence
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The Segner convolution of the Catalan numbers
@@ -43,9 +45,7 @@ theorem congrCat {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) : Γ ⊢[PRAAx] cat a
   simpa using e
 
 /-- `m ∸ (m ∸ i) = i` for `i ≤ m`. -/
-theorem monus_monus {i m : PTm n} (h : Γ ⊢[PRAAx] le i m) : Γ ⊢[PRAAx] monus m (monus m i) ≐ i :=
-  (congrMonus (eq_add_of_le h) (zero_add _).eqSymm).eqTrans
-    ((monus_add_add i zero (monus m i)).eqTrans (monus_zero i))
+alias monus_monus := Common.monus_monus_of_le
 
 /-! ## Bodies; variables `0 = i`, `1 = m` -/
 
@@ -86,9 +86,7 @@ theorem refl_pt {i m : PTm n} (h : Γ ⊢[PRAAx] le i m) :
 theorem sym_pt {i m : PTm n} (h : Γ ⊢[PRAAx] le i m) :
     Γ ⊢[PRAAx] inst2 (addBody wB rB) i m ≐ m * inst2 convB i m := by
   rw [inst2_addBody, inst2_w, inst2_r, inst2_conv]
-  have e := natEq (eq_add_of_le h)
-  apply deriveNat; ipra_simps
-  linear_combination -(𝔞(cat i) * 𝔞(cat (monus m i))) * e
+  ipra_lc -(𝔞(cat i) * 𝔞(cat (monus m i))) * natEq (eq_add_of_le h)
 
 /-- `2 ∑_{i ≤ m} i c_i c_{m−i} = m ∑_{i ≤ m} c_i c_{m−i}`. -/
 theorem conv_symm (m : PTm n) :
@@ -111,9 +109,7 @@ theorem conv_symm (m : PTm n) :
 
 theorem u_pt (i m : PTm n) : Γ ⊢[PRAAx] inst2 uB i m ≐ inst2 (addBody fourW twoC) i m := by
   rw [inst2_addBody, inst2_fourW, inst2_twoC, inst2_u, inst2_w, inst2_conv]
-  have rc := natEq (cat_rec (Γ := Γ) i)
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞(cat (monus m i)) * rc
+  ipra_lc 𝔞(cat (monus m i)) * natEq (cat_rec (Γ := Γ) i)
 
 /-- `∑_{i ≤ m} (i + 2) c_{i+1} c_{m−i} = 4 T(m) + 2 S(m)`. -/
 theorem u_eq (m : PTm n) :
@@ -144,12 +140,12 @@ theorem shift_pt (j m : PTm n) : Γ ⊢[PRAAx] inst2 (shiftBody vB) j (succ m) �
 
 theorem v_pt (j x : PTm n) : Γ ⊢[PRAAx] inst2 vB j x ≐ inst2 (addBody wB convB) j x := by
   rw [inst2_addBody, inst2_v, inst2_w, inst2_conv]
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem v_zero (m : PTm n) : Γ ⊢[PRAAx] inst2 vB zero (succ m) ≐ cat (succ m) := by
   rw [inst2_v]
   refine (congrMul (.eqRefl _) (congrMul cat_zero (congrCat (monus_zero _)))).eqTrans ?_
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- `T(m + 1) + S(m + 1) = c_{m+1} + ∑_{i ≤ m} (i + 2) c_{i+1} c_{m−i}`. -/
 theorem shift_eq (m : PTm n) :
@@ -158,43 +154,31 @@ theorem shift_eq (m : PTm n) :
   have c₁ : Γ ⊢[PRAAx] ap2 (sumF vB) (succ (succ m)) (succ m) ≐
       ap2 (sumF (addBody wB convB)) (succ (succ m)) (succ m) :=
     sum_congr_bounded _ _ _ _ _ (.allI (.impI (v_pt _ _)))
-  have a := natEq (sum_add (Γ := Γ) wB convB (succ (succ m)) (succ m))
-  have sh := natEq (sum_shift (Γ := Γ) vB (succ m) (succ m))
   have c₂ : Γ ⊢[PRAAx] ap2 (sumF (shiftBody vB)) (succ m) (succ m) ≐ ap2 (sumF uB) (succ m) m := by
     refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
     simp only [Syn.shift, ConciseIPRA.PTm.subst_succ]
     exact shift_pt _ _
-  have p := natEq (v_zero (Γ := Γ) m)
-  have e₁ := natEq c₁; have e₂ := natEq c₂
-  apply deriveNat; ipra_simps
-  linear_combination -a - e₁ + sh + p + e₂
+  ipra_lc -natEq (sum_add (Γ := Γ) wB convB (succ (succ m)) (succ m)) - natEq c₁ +
+    natEq (sum_shift (Γ := Γ) vB (succ m) (succ m)) + natEq (v_zero (Γ := Γ) m) + natEq c₂
 
 /-! ## The convolution -/
 
 theorem cat_one : Γ ⊢[PRAAx] cat (succ (zero : PTm n)) ≐ one := by
   refine mul_cancel (D := two) (succ_pos _) ?_
-  have rc := natEq (cat_rec (Γ := Γ) (zero : PTm n)); have z := natEq (cat_zero (Γ := Γ) (n := n))
-  apply deriveNat; ipra_simps
-  linear_combination rc + 2 * z
+  ipra_lc natEq (cat_rec (Γ := Γ) (zero : PTm n)) + 2 * natEq (cat_zero (Γ := Γ) (n := n))
 
 theorem segner_base : Γ ⊢[PRAAx] ap2 (sumF convB) (succ zero) (zero : PTm n) ≐ cat (succ zero) := by
   have e₁ := sum_succ' (Γ := Γ) convB zero (zero : PTm n)
   rw [inst2_conv] at e₁
   have hx : Γ ⊢[PRAAx] cat (zero : PTm n) * cat (monus zero zero) ≐ one :=
     (congrMul cat_zero ((congrCat (monus_zero zero)).eqTrans cat_zero)).eqTrans (one_mul one)
-  have a₁ := natEq e₁; have a₂ := natEq (sum_zero (Γ := Γ) convB (zero : PTm n))
-  have ax := natEq hx; have c₁ := natEq (cat_one (Γ := Γ) (n := n))
-  apply deriveNat; ipra_simps
-  linear_combination a₁ + a₂ + ax - c₁
+  ipra_lc natEq e₁ + natEq (sum_zero (Γ := Γ) convB (zero : PTm n)) + natEq hx - natEq (cat_one (Γ := Γ) (n := n))
 
 theorem segner_step {m : PTm n} (ih : Γ ⊢[PRAAx] ap2 (sumF convB) (succ m) m ≐ cat (succ m)) :
     Γ ⊢[PRAAx] ap2 (sumF convB) (succ (succ m)) (succ m) ≐ cat (succ (succ m)) := by
   refine mul_cancel (D := succ (succ (succ m))) (succ_pos _) ?_
-  have l₁ := natEq (conv_symm (Γ := Γ) (succ m)); have l₀ := natEq (conv_symm (Γ := Γ) m)
-  have l₂ := natEq (u_eq (Γ := Γ) m); have l₃ := natEq (shift_eq (Γ := Γ) m)
-  have i := natEq ih; have rc := natEq (cat_rec (Γ := Γ) (succ m))
-  apply deriveNat; ipra_simps
-  linear_combination -l₁ + 2 * l₃ + 2 * l₂ + 4 * l₀ + (4 * 𝔞(m) + 4) * i - rc
+  ipra_lc -natEq (conv_symm (Γ := Γ) (succ m)) + 2 * natEq (shift_eq (Γ := Γ) m) + 2 * natEq (u_eq (Γ := Γ) m) +
+    4 * natEq (conv_symm (Γ := Γ) m) + (4 * 𝔞(m) + 4) * natEq ih - natEq (cat_rec (Γ := Γ) (succ m))
 
 /-- Variable: `0 = m`. -/
 private abbrev segF : Fm PTm 1 := ap2 (sumF convB) (succ (var 0)) (var 0) ≐ cat (succ (var 0))

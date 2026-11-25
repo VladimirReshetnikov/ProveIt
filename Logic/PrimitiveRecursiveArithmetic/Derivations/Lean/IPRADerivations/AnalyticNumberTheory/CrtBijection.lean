@@ -37,11 +37,11 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 theorem rem_small {a M : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) (ha : Γ ⊢[PRAAx] lt a M) :
     Γ ⊢[PRAAx] rem a M ≐ a :=
-  rem_eq' hM (q := zero) (by apply deriveNat; ipra_simps; ring) ha
+  rem_eq' hM (q := zero) (by ipra_ring) ha
 
 theorem quo_one (N : PTm n) : Γ ⊢[PRAAx] quo N one ≐ N := by
   have h1 : Γ ⊢[PRAAx] (one : PTm n) ≐ succ (pred one) := (congrSucc (pred_succ _)).eqSymm
-  exact quo_eq h1 (q := N) (r := zero) (by apply deriveNat; ipra_simps; ring) (zero_lt' h1)
+  exact quo_eq h1 (q := N) (r := zero) (by ipra_ring) (zero_lt' h1)
 
 section CRT
 

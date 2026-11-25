@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.GramCertificate
 import IPRADerivations.Foundations.ErrorBudget
 import IPRADerivations.Core.Gcd
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The rational Gram certificate
@@ -74,7 +75,7 @@ theorem zle_cancel {k : PTm n} (hk : Γ ⊢[PRAAx] k ≐ succ (pred k)) {u v : Z
   have h0 : Γ ⊢[PRAAx] le ((k * u.pos + zero * u.neg) + (k * v.neg + zero * v.pos))
       ((k * v.pos + zero * v.neg) + (k * u.neg + zero * u.pos)) := h
   have h' : Γ ⊢[PRAAx] le (k * (u.pos + v.neg)) (k * (v.pos + u.neg)) :=
-    le_congr (by apply deriveNat; ipra_simps; ring) (by apply deriveNat; ipra_simps; ring) h0
+    le_congr (by ipra_ring) (by ipra_ring) h0
   exact mul_le_cancel (le_congr (congrMul hk (.eqRefl _)) (congrMul hk (.eqRefl _)) h')
 
 /-- `|z|² ≤ k²` gives `2 Re(ū z v) ≤ k (|u|² + |v|²)` for every natural `k`. -/
@@ -277,9 +278,7 @@ theorem gram_bound (k : Fin ρ → Fin ρ → PTm n) (L : PTm n)
   obtain ⟨s, hs⟩ := nn_mul (nn_term (Γ := Γ) L) nnPa
   rw [eqAll, ht, hs] at hw
   have hnat : Γ ⊢[PRAAx] num 2 * (t * s) ≐ num 2 * (t * t) + w := by
-    apply deriveNat
-    simp only [Q.mk_add, Q.mk_mul, Q.mk_num, map_add, map_mul, map_natCast, Nat.cast_ofNat, map_ofNat]
-    linear_combination hw
+    ipra_lc [map_ofNat] hw
   have h3 : Γ ⊢[PRAAx] le (t * t) (t * s) := le_of_two_mul (le_of_eq_add (d := w) hnat)
   have hts : Γ ⊢[PRAAx] le t s := by
     refine .orE (zero_or_succ t) ?_ ?_

@@ -21,7 +21,6 @@ Theorem `thm:twist`, in coefficient form: for a completely multiplicative `f`,
 product `F = f`, so the weighted logarithmic derivative of `F` has coefficients `f(n) Λ_w(n)`.
 -/
 
-
 set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PrimePowerMangoldt
@@ -52,7 +51,7 @@ theorem val_pw_prime {q p : PTm n} (hq : Γ ⊢[PRAAx] prime q) (hp : Γ ⊢[PRA
     have e : C ⊢[PRAAx] p ≐ q := Prf.hyp0
     refine (congrVal e.eqSymm (.eqRefl _)).eqTrans ((val_pw j hp2.wk).eqTrans ?_)
     refine .eqTrans ?_ (congrMul (.eqRefl _) (eqb_of_eq e)).eqSymm
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   · let C : List (Fm PTm n) := neg (p ≐ q) :: Γ
     have z : C ⊢[PRAAx] val q (pw p j) ≐ zero := by
       refine ValuationMul.val_unique hq2.wk (Valuation.pw_pos' ppos.wk j)
@@ -66,7 +65,7 @@ theorem val_pw_prime {q p : PTm n} (hq : Γ ⊢[PRAAx] prime q) (hp : Γ ⊢[PRA
       have nq : D ⊢[PRAAx] neg (q ≐ p) := .impI (Prf.impE (Prf.hyp1 : D ⊢[PRAAx] neg (p ≐ q)).wk Prf.hyp0.eqSymm)
       have vqp : D ⊢[PRAAx] val q p ≐ zero := (val_pp hq.wk.wk hp.wk.wk).eqTrans (eqb_of_ne nq)
       have s : D ⊢[PRAAx] succ (val q (quo p q)) ≐ zero :=
-        (show D ⊢[PRAAx] succ (val q (quo p q)) ≐ one + val q (quo p q) by apply deriveNat; ipra_simps; ring).eqTrans
+        (show D ⊢[PRAAx] succ (val q (quo p q)) ≐ one + val q (quo p q) by ipra_ring).eqTrans
           ((congrAdd vqq.eqSymm (.eqRefl _)).eqTrans (vm.eqSymm.eqTrans ((ValuationMul.val_congr q eN).eqSymm.eqTrans vqp)))
       exact succ_ne_zero' _ s
     exact z.eqTrans ((congrMul (.eqRefl _) (eqb_of_ne Prf.hyp0)).eqTrans (mul_zero _)).eqSymm
@@ -79,11 +78,11 @@ theorem ppI_pw {q p a : PTm n} (hq : Γ ⊢[PRAAx] prime q) (hp : Γ ⊢[PRAAx] 
   · let C : List (Fm PTm n) := (p ≐ q) :: Γ
     have e : C ⊢[PRAAx] p ≐ q := Prf.hyp0
     have v' : C ⊢[PRAAx] val q (pw p a) ≐ a :=
-      v.wk.eqTrans ((congrMul (.eqRefl _) (eqb_of_eq e)).eqTrans (by apply deriveNat; ipra_simps; ring))
+      v.wk.eqTrans ((congrMul (.eqRefl _) (eqb_of_eq e)).eqTrans (by ipra_ring))
     have s1 : C ⊢[PRAAx] sg (val q (pw p a)) ≐ one := (congrSg (v'.eqTrans ha.wk)).eqTrans (sg_succ _)
     have e1 : C ⊢[PRAAx] eqb (pw q (val q (pw p a))) (pw p a) ≐ one :=
       eqb_of_eq (Combinatorics.BinomialTheorem.congrPw e.eqSymm v')
-    exact (congrMul s1 e1).eqTrans ((by apply deriveNat; ipra_simps; ring : C ⊢[PRAAx] one * one ≐ one).eqTrans
+    exact (congrMul s1 e1).eqTrans ((by ipra_ring : C ⊢[PRAAx] one * one ≐ one).eqTrans
       (eqb_of_eq e).eqSymm)
   · let C : List (Fm PTm n) := neg (p ≐ q) :: Γ
     have v' : C ⊢[PRAAx] val q (pw p a) ≐ zero :=
@@ -94,7 +93,7 @@ theorem ppI_pw {q p a : PTm n} (hq : Γ ⊢[PRAAx] prime q) (hp : Γ ⊢[PRAAx] 
 theorem p_lt_pw {p a : PTm n} (hp : Γ ⊢[PRAAx] prime p) (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) :
     Γ ⊢[PRAAx] lt p (succ (pw p a)) := by
   have hp2 := prime_two hp; have ppos := ValuationMul.p_pos hp2
-  have l1 : Γ ⊢[PRAAx] le one a := le_of_eq_add (d := pred a) (ha.eqTrans (by apply deriveNat; ipra_simps; ring))
+  have l1 : Γ ⊢[PRAAx] le one a := le_of_eq_add (d := pred a) (ha.eqTrans (by ipra_ring))
   have d : Γ ⊢[PRAAx] dvd p (pw p a) := dvd_congr_left (pw_one p) (WeightedMangoldt.pw_dvd_pw hp2 l1)
   exact (succ_monus_succ _ _).eqTrans (dvd_le' ppos d (Valuation.pw_pos' ppos a))
 
@@ -123,7 +122,7 @@ theorem lam_pw {p a : PTm n} (hp : Γ ⊢[PRAAx] prime p) (ha : Γ ⊢[PRAAx] a 
   · exact (zero_mul_l (zero_mul_l Prf.hyp0 _) _).eqTrans
       ((congrMul (.eqRefl _) (zero_mul_l Prf.hyp0 _)).eqTrans (mul_zero _)).eqSymm
   · refine (congrMul (congrMul (.eqRefl _) (ppI_pw (Valuation.prime_of_isP Prf.hyp0) hp'.wk.wk ha'.wk.wk)) (.eqRefl _)).eqTrans ?_
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
 
 /-- `Λ_w(p^a) = w(p)` for a prime `p` and `a ≥ 1`. -/
 theorem lam_pw' {p a : PTm n} (hp : Γ ⊢[PRAAx] prime p) (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) (y : PTm n) :
@@ -145,7 +144,7 @@ theorem lw_pw {p a : PTm n} (hp : Γ ⊢[PRAAx] prime p) (ha : Γ ⊢[PRAAx] a �
   · exact (zero_mul_l (zero_mul_l Prf.hyp0 _) _).eqTrans
       ((congrMul (.eqRefl _) ((congrMul (.eqRefl _) (zero_mul_l Prf.hyp0 _)).eqTrans (mul_zero _))).eqTrans (mul_zero _)).eqSymm
   · refine (congrMul (congrMul (.eqRefl _) (val_pw_prime (Valuation.prime_of_isP Prf.hyp0) hp'.wk.wk _)) (.eqRefl _)).eqTrans ?_
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
 
 /-- `thm:log-zeta-coeff`: `L_w(p^a) = a Λ_w(p^a)` for a prime `p` and `a ≥ 1`, i.e.
 `(D_w H)(p^a) = Λ_w(p^a)` for `H(p^a) = 1/a`. -/
@@ -194,11 +193,11 @@ theorem twist {m y : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m))
           (fun x hx => List.mem_cons_of_mem _ (List.mem_cons_of_mem _ (List.mem_cons_of_mem _ hx)))
         have fm := (congrInst2 f eN (.eqRefl _)).eqTrans mf
         refine .eqTrans ?_ (congrMul fm.eqSymm (.eqRefl _))
-        apply deriveNat; ipra_simps; ring
+        ipra_ring
       · let C : List (Fm PTm (n + 1)) :=
           neg (rem (Syn.shift m) (var 0) ≐ zero) :: (var 0 ≐ succ (pred (var 0))) :: Δ0
         have zz : C ⊢[PRAAx] sg (var 0) * eqb (rem (Syn.shift m) (var 0)) zero ≐ zero :=
-          (congrMul (.eqRefl _) (eqb_of_ne Prf.hyp0)).eqTrans (by apply deriveNat; ipra_simps; ring)
+          (congrMul (.eqRefl _) (eqb_of_ne Prf.hyp0)).eqTrans (by ipra_ring)
         exact (zero_mul_l zz _).eqTrans ((congrMul (.eqRefl _) (zero_mul_l zz _)).eqTrans (mul_zero _)).eqSymm
   exact (sc.eqTrans (congrMul (.eqRefl _) (lambda_divsum w hm))).eqTrans (mul_comm _ _)
 

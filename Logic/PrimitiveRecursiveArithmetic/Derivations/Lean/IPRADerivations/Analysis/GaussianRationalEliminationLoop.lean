@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianRationalPivotSearch
 import IPRADerivations.Foundations.BoundedSyntaxInduction
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual column-ordered rectangular elimination and tag history
@@ -54,11 +55,7 @@ def history (A R N c : PTm n) : PTm n := sndT (state A R N c)
 theorem advance_congr {E E' H H' R R' N N' c c' : PTm n} (hE : Γ ⊢[PRAAx] E ≐ E')
     (hH : Γ ⊢[PRAAx] H ≐ H') (hR : Γ ⊢[PRAAx] R ≐ R') (hN : Γ ⊢[PRAAx] N ≐ N') (hc : Γ ⊢[PRAAx] c ≐ c') : Γ ⊢[PRAAx]
     advance E H R N c ≐ advance E' H' R' N' c' := by
-  simpa only [subst_advance,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.cons_val_three,Matrix.cons_val_four,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (advance (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5)
-      (σ := ![E,H,R,N,c]) (σ' := ![E',H',R',N',c'])
-      (fun i => by fin_cases i; exact hE; exact hH; exact hR; exact hN; exact hc)
+  ipra_congr (advance (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) with [hE, hH, hR, hN, hc]
 theorem state_zero (A R N : PTm n) : Γ ⊢[PRAAx] state A R N zero ≐ pairT A empty := by
   have e := rec2_zero (Γ := Γ) baseBody stepBody (data A R N)
   simp only [baseBody,subst_pairT,subst_fstT,Foundations.SequenceComposition.subst_empty,Syn.subst_var,Syn.inst_zero] at e

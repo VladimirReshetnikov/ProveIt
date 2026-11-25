@@ -1,5 +1,6 @@
 import IPRADerivations.Combinatorics.BellPeriodNp
 import IPRADerivations.Foundations.BoundedReflection
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The least period of the Bell numbers modulo a prime divides `N_p` (`bell_numbers_ipra`, `thm:prime-period`)
@@ -123,7 +124,7 @@ theorem big_case {t p N : PTm n} (hp : Γ ⊢[PRAAx] prime p)
     apply deriveNat; ipra_simps
     linear_combination a
   have e₂ : Γ ⊢[PRAAx] succ (t + monus N p) ≐ t + succ (monus N p) := by
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   refine (cong_of_eq (congrBell e₁)).eqTrans (t1.eqTrans ?_)
   refine (cong_add hq ((cong_of_eq (congrBell e₂)).eqTrans c1) c0).eqTrans ?_
   exact t0.eqSymm.eqTrans (cong_of_eq (congrBell eN.eqSymm))
@@ -169,7 +170,7 @@ theorem period_mul {t p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hT : Γ ⊢[PRAAx
   have hall : Γ ⊢[PRAAx] Fm.all (mulF t p N) := by
     refine PRA.qfInd _ trivial ?_ ?_
     · have b : Γ ⊢[PRAAx] rem (bell (zero * t + N)) p ≐ rem (bell N) p :=
-        cong_of_eq (congrBell (by apply deriveNat; ipra_simps; ring))
+        cong_of_eq (congrBell (by ipra_ring))
       simpa using b
     · have hT' : (Γ.map Fm.shift) ⊢[PRAAx] Test (Syn.shift t) (Syn.shift p) ≐ one := by
         simpa [Fm.shift, Syn.shift] using hT.shift
@@ -178,7 +179,7 @@ theorem period_mul {t p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hT : Γ ⊢[PRAAx
             rem (bell (Syn.shift N)) (Syn.shift p) :=
         (cong_of_eq (congrBell (a := succ (var 0) * Syn.shift t + Syn.shift N)
           (b := Syn.shift t + (var 0 * Syn.shift t + Syn.shift N))
-          (by apply deriveNat; ipra_simps; ring))).eqTrans
+          (by ipra_ring))).eqTrans
           ((period_of_test (prime_shift hp).wk hT'.wk _).eqTrans Prf.hyp0)
       simpa [subst_repl_shift, Syn.repl_zero] using st
   have h2 := Prf.allE q hall
@@ -243,9 +244,7 @@ theorem s_point {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (i : PTm n) :
   have dm := Prf.andE₁ (div_mod (Γ := Γ) (Np p) (wT p))
   have pm := period_mul hp (t0_test hp) (quo (Np p) (T0 p)) (rem (Np p) (T0 p) + i)
   have e : Γ ⊢[PRAAx] quo (Np p) (T0 p) * T0 p + (rem (Np p) (T0 p) + i) ≐ i + Np p := by
-    have a := natEq dm
-    apply deriveNat; ipra_simps
-    linear_combination -a
+    ipra_lc -natEq dm
   exact pm.eqSymm.eqTrans ((cong_of_eq (congrBell e)).eqTrans (bell_period_Np hp i))
 
 theorem shift_s (p : PTm n) : Syn.shift (pairT (rem (Np p) (T0 p)) p) =

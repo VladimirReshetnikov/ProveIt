@@ -1,5 +1,7 @@
 import IPRADerivations.Analysis.GaussianGammaZetaDegreeName
 import IPRADerivations.Analysis.GaussianBivariatePowerExpansion
+import IPRADerivations.Core.CongruenceTactic
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Actual stored coefficients for the original Gamma zeta-tail polynomial
@@ -51,13 +53,9 @@ def polynomial (q N L : PTm n) : PTm n := sequence rowBody (succ (degree L)) (po
 theorem coefficient_congr {q N e q' N' e' : PTm n}
     (hq : Γ ⊢[PRAAx] q ≐ q') (hN : Γ ⊢[PRAAx] N ≐ N') (he : Γ ⊢[PRAAx] e ≐ e') : Γ ⊢[PRAAx]
     coefficient q N e ≐ coefficient q' N' e' := by
-  simpa only [subst_coefficient,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-    Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (coefficient (var 0) (var 1) (var 2) : PTm 3)
-      (σ := ![q,N,e]) (σ' := ![q',N',e']) (fun i => by fin_cases i; exact hq; exact hN; exact he)
+  ipra_congr (coefficient (var 0) (var 1) (var 2) : PTm 3) with [hq, hN, he]
 
-theorem signum_congr {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) : Γ ⊢[PRAAx] Signum.sg a ≐ Signum.sg b :=
-  congrMonus (.eqRefl _) (congrMonus (.eqRefl _) h)
+alias signum_congr := Common.congrSg
 theorem coefficient_zero (q N : PTm n) : Γ ⊢[PRAAx] coefficient q N zero ≐ qzero :=
   RationalArithmetic.select_zero _ _ _ ((signum_congr pred_zero).eqTrans Signum.sg_zero)
 theorem coefficient_one (q N : PTm n) : Γ ⊢[PRAAx] coefficient q N one ≐ qzero :=
@@ -110,11 +108,7 @@ theorem summand_congr {q z B N e q' z' B' N' e' : PTm n}
     (hq : Γ ⊢[PRAAx] q ≐ q') (hz : Γ ⊢[PRAAx] z ≐ z') (hB : Γ ⊢[PRAAx] B ≐ B')
     (hN : Γ ⊢[PRAAx] N ≐ N') (he : Γ ⊢[PRAAx] e ≐ e') : Γ ⊢[PRAAx]
     summand q z B N e ≐ summand q' z' B' N' e' := by
-  simpa only [subst_summand,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.cons_val_three,Matrix.cons_val_four,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (summand (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5)
-      (σ := ![q,z,B,N,e]) (σ' := ![q',z',B',N',e'])
-      (fun i => by fin_cases i; exact hq; exact hz; exact hB; exact hN; exact he)
+  ipra_congr (summand (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) with [hq, hz, hB, hN, he]
 theorem all_term_at (q z B N e : PTm n) : Γ ⊢[PRAAx]
     inst2 allTerm e (coefficientData q z B N) ≐ summand q z B N e := by
   simp only [allTerm,inst2,subst_summand,subst_fstT,subst_sndT,Syn.subst_var,

@@ -1,6 +1,6 @@
 import IPRADerivations.Core.Tactic
 import IPRADerivations.Core.Gcd
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Arithmetic of pentagonal tilings

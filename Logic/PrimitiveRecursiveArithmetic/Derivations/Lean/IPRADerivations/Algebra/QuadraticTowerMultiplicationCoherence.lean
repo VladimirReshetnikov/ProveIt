@@ -1,5 +1,6 @@
 import IPRADerivations.Algebra.QuadraticTowerOperandProperness
 import IPRADerivations.Algebra.QuadraticTowerMultiplicationHeight
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Common original operands in independently budgeted tower tables
@@ -138,10 +139,7 @@ theorem lookup_congr {h h' B B' T T' A A' E E' : PTm n}
     (hh : Γ ⊢[PRAAx] h ≐ h') (hb : Γ ⊢[PRAAx] B ≐ B') (ht : Γ ⊢[PRAAx] T ≐ T')
     (ha : Γ ⊢[PRAAx] A ≐ A') (he : Γ ⊢[PRAAx] E ≐ E') : Γ ⊢[PRAAx]
     lookup h B T A E ≐ lookup h' B' T' A' E' := by
-  simpa [QuadraticTowerMultiplicationTable.subst_lookup] using
-    Prf.eqCongr (lookup (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5)
-      (σ := ![h,B,T,A,E]) (σ' := ![h',B',T',A',E'])
-      (fun i => by fin_cases i; exact hh; exact hb; exact ht; exact ha; exact he)
+  ipra_congr (lookup (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) with [hh, hb, ht, ha, he]
 
 theorem recipe_coherent (h B C D T U b A E : PTm n)
     (hL : Γ ⊢[PRAAx] localLaw h (budget h B D) (budget h C D) D T U)

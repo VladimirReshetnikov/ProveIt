@@ -1,6 +1,6 @@
 import IPRADerivations.Geometry.TetraShadow
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The exact certificates for the largest sections of the small Platonic solids

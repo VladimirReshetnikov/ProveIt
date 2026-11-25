@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.PhiLimsup
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Prime powers whose totient is a power of two
@@ -58,9 +59,7 @@ theorem phi_ppow_two {p k m : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hodd : Γ ⊢
     have hd : ((k ≐ succ (pred k)) :: Γ) ⊢[PRAAx] dvd p (pw two m) := by
       refine dvd_of_eq' hpos.wk (w := pw p (pred k) * monus p one) ?_
       have e₀ : ((k ≐ succ (pred k)) :: Γ) ⊢[PRAAx] pw two m ≐ pw p k * monus p one := h.wk.eqSymm.eqTrans hφ.wk
-      have e₁ := natEq e₀; have e₂ := natEq hk
-      apply deriveNat; ipra_simps
-      linear_combination e₁ + Groth.ι (IPRA.Q.mk _ (monus p one)) * e₂
+      ipra_lc natEq e₀ + Groth.ι (IPRA.Q.mk _ (monus p one)) * natEq hk
     have hc := coprime_pow hpos (gcd_two_of_odd hpos hodd) m
     have h1 := eq_one_of_coprime_dvd hpos.wk hc.wk hd
     exact not_succ_le_self one _ (le_congr (.eqRefl _) h1 hp2.wk)

@@ -3,6 +3,7 @@ import IPRADerivations.AnalyticNumberTheory.FactorVector
 import IPRADerivations.AnalyticNumberTheory.Euler
 import IPRADerivations.Foundations.CrossingSearch
 import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The half-factorial is a root of `−1`
@@ -77,7 +78,7 @@ theorem one_alg {W1 w p q : PTm n} (hW : Γ ⊢[PRAAx] W1 ≐ succ w) (e : Γ �
     Γ ⊢[PRAAx] W1 ≐ p * q + one := by
   ipra_lc natEq hW + natEq e
 
-theorem mul_one_r (X : PTm n) : Γ ⊢[PRAAx] X * one ≐ X := by ipra_ring
+alias mul_one_r := Common.mul_one_right
 
 /-! ## The induction -/
 

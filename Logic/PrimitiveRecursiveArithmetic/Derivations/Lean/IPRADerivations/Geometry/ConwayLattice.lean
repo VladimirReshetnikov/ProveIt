@@ -1,6 +1,6 @@
 import IPRADerivations.Geometry.ConwayAlgebra
 import IPRADerivations.Core.IntCancel
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The period lattice of the Conway criterion

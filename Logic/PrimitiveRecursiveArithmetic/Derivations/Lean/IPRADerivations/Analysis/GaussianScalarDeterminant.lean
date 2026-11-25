@@ -2,6 +2,7 @@ import IPRADerivations.Analysis.GaussianRationalAdjacentProduct
 import IPRADerivations.Analysis.GaussianPolynomialDeterminant
 import IPRADerivations.Analysis.GaussianRationalMatrixFiniteSums
 import IPRADerivations.Analysis.GaussianRationalValueEquality
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Scalar observations of the SAME actual runtime polynomial determinant
@@ -130,10 +131,7 @@ def scalarSum (A m : PTm n) : PTm n := GaussianRationalFiniteSum.sum signedBody
 
 theorem signed_body_at (A m t : PTm n) : Γ ⊢[PRAAx] inst2 signedBody t (pairT A m) ≐ signedTerm A m t := by
   simp only [signedBody,inst2,subst_signedTerm,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
-  simpa only [subst_signedTerm,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (signedTerm (var 0) (var 1) (var 2) : PTm 3)
-      (σ := ![fstT (pairT A m),sndT (pairT A m),t]) (σ' := ![A,m,t])
-      (fun i => by fin_cases i; exact fst_pair _ _; exact snd_pair _ _; exact .eqRefl _)
+  ipra_congr (signedTerm (var 0) (var 1) (var 2) : PTm 3) with [fst_pair _ _, snd_pair _ _, .eqRefl t]
 
 theorem scalar_leibniz (A m : PTm n) : Γ ⊢[PRAAx] scalarDet A m ≐ scalarSum A m := by
   have terms : Γ ⊢[PRAAx] GaussianRationalFiniteSum.termsEqual GaussianPolynomialDeterminant.valueBody signedBody

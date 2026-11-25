@@ -1,5 +1,5 @@
 import IPRADerivations.Probability.MedianTransport
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The finite Jensen inequality for medians

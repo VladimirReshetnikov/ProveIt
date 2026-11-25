@@ -1,7 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.RobinGammaWidth
 import IPRADerivations.AnalyticNumberTheory.RobinExpWidth
 import IPRADerivations.AnalyticNumberTheory.LcmBridgeDPsi
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The numerical side of `(n + 12)2^{−r} ≤ 2^{−k}` (`robin_ipra_research_2026-11-19`, §"Composing the double logarithm")

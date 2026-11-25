@@ -83,7 +83,7 @@ theorem low_ge {p s W : PTm n} (hs : Γ ⊢[PRAAx] s ≐ succ (pred s)) (hWp : �
     (hW : Γ ⊢[PRAAx] s * s ≐ W + p * p) (j : PTm n) :
     Γ ⊢[PRAAx] le (two * p * Dz (succ j) p s) (Nz (succ j) p s * s) := by
   have nst := Prf.andE₁ (Prf.andE₁ (log_name (Γ := Γ) hs hWp hW (succ zero) j))
-  have eK : Γ ⊢[PRAAx] succ zero + j ≐ succ j := by apply deriveNat; ipra_simps; ring
+  have eK : Γ ⊢[PRAAx] succ zero + j ≐ succ j := by ipra_ring
   have nst' := le_congr (congrMul (.eqRefl _) (Dz_congr _ _ eK)) (congrMul (Nz_congr _ _ eK) (.eqRefl _)) nst
   -- `S_1 = 2p s² / (L_1 s³)`
   have n1 := natEq ((Nz_succ (Γ := Γ) zero p s))

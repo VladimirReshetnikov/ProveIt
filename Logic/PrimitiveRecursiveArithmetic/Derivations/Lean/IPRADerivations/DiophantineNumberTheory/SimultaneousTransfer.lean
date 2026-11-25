@@ -1,5 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.DirichletReal
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Transfer of the simultaneous approximation to the named inputs

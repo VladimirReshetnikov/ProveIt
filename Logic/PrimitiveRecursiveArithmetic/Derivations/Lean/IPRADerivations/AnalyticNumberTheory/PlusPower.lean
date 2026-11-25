@@ -3,6 +3,7 @@ import IPRADerivations.AnalyticNumberTheory.PhiDivides
 import IPRADerivations.AnalyticNumberTheory.PowerCleared
 import IPRADerivations.AnalyticNumberTheory.LocalFactor
 import IPRADerivations.AnalyticNumberTheory.CrtBijection
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The `aⁿ + bⁿ` totient congruence
@@ -69,7 +70,7 @@ theorem cancel {C w x y : PTm n} (hC : Γ ⊢[PRAAx] C ≐ succ (pred C)) (hw : 
     (congrPw (.eqRefl _) hp).eqTrans ((pw_succ _ _).eqTrans (mul_comm _ _))
   have side : ∀ z : PTm n, Γ ⊢[PRAAx] rem z C ≐ rem (z * w * pw w (pred (phi C))) C := fun z =>
     (congrAp2 remF (one_mul z).eqSymm (.eqRefl _)).eqTrans ((rem_mul_congr z hC e).eqSymm.eqTrans
-      (congrAp2 remF ((congrMul pw' (.eqRefl _)).eqTrans (by apply deriveNat; ipra_simps; ring)) (.eqRefl _)))
+      (congrAp2 remF ((congrMul pw' (.eqRefl _)).eqTrans (by ipra_ring)) (.eqRefl _)))
   exact (side x).eqTrans ((rem_mul_congr _ hC h).eqTrans (side y).eqSymm)
 
 /-- `gcd(C, B) = 1 → gcd(C, Bᵏ) = 1`. -/
@@ -130,13 +131,12 @@ end Exponents
 theorem two_n_mem {A B N : PTm n} (hC : Γ ⊢[PRAAx] pw A N + pw B N ≐ succ (pred (pw A N + pw B N))) :
     Γ ⊢[PRAAx] mem A B (pw A N + pw B N) (two * N) := by
   have ea : Γ ⊢[PRAAx] pw A (two * N) ≐ pw A N * pw A N :=
-    (congrPw (.eqRefl _) (by apply deriveNat; ipra_simps; ring)).eqTrans (pw_add _ _ _)
+    (congrPw (.eqRefl _) (by ipra_ring)).eqTrans (pw_add _ _ _)
   have eb : Γ ⊢[PRAAx] pw B (two * N) ≐ pw B N * pw B N :=
-    (congrPw (.eqRefl _) (by apply deriveNat; ipra_simps; ring)).eqTrans (pw_add _ _ _)
+    (congrPw (.eqRefl _) (by ipra_ring)).eqTrans (pw_add _ _ _)
   have x := natEq ea; have y := natEq eb
   refine rem_eq_of_eq hC (k₁ := pw B N) (k₂ := pw A N) ?_
-  apply deriveNat; ipra_simps
-  linear_combination x - y
+  ipra_lc x - y
 
 /-- No `1 ≤ k ≤ n` lies in `E` when `A ≠ B`. -/
 theorem small_not_mem {A B N k : PTm n} (φ : Fm PTm n) (hA : Γ ⊢[PRAAx] A ≐ succ (pred A))
@@ -148,11 +148,11 @@ theorem small_not_mem {A B N k : PTm n} (φ : Fm PTm n) (hA : Γ ⊢[PRAAx] A �
   have la : Γ ⊢[PRAAx] lt (pw A k) (pw A N + pw B N) := by
     have m := natEq (eq_add_of_le (pw_le_exp hA hkn))
     refine le_of_eq_add (d := monus (pw A N) (pw A k) + pred (pw B N)) ?_
-    apply deriveNat; ipra_simps; linear_combination m + pB
+    ipra_lc m + pB
   have lb : Γ ⊢[PRAAx] lt (pw B k) (pw A N + pw B N) := by
     have m := natEq (eq_add_of_le (pw_le_exp hB hkn))
     refine le_of_eq_add (d := monus (pw B N) (pw B k) + pred (pw A N)) ?_
-    apply deriveNat; ipra_simps; linear_combination m + pA
+    ipra_lc m + pA
   have e : Γ ⊢[PRAAx] pw A k ≐ pw B k := (rem_small hC la).eqSymm.eqTrans (h.eqTrans (rem_small hC lb))
   have e' : Γ ⊢[PRAAx] pw A (succ (pred k)) ≐ pw B (succ (pred k)) :=
     (congrPw (.eqRefl _) hk.eqSymm).eqTrans (e.eqTrans (congrPw (.eqRefl _) hk))

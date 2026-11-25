@@ -35,7 +35,7 @@ theorem pos_of_eq_succ {a c : PTm n} (h : Γ ⊢[PRAAx] a ≐ succ c) : Γ ⊢[P
 theorem pos_mul' {a b : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) (hb : Γ ⊢[PRAAx] b ≐ succ (pred b)) :
     Γ ⊢[PRAAx] a * b ≐ succ (pred (a * b)) :=
   pos_of_eq_succ (c := pred a * pred b + pred a + pred b)
-    ((congrMul ha hb).eqTrans (by apply deriveNat; ipra_simps; ring))
+    ((congrMul ha hb).eqTrans (by ipra_ring))
 
 /-! ## Congruence -/
 

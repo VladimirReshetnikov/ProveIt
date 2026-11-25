@@ -116,7 +116,7 @@ theorem sieve_row {p x : PTm n} (hq : Γ ⊢[PRAAx] xq x ≐ succ (pred (xq x)))
     have hterm : Δ ⊢[PRAAx] inst3 aB p (gcd p (xq x)) x ≐ inJT p (xq x) (xα x) (xγ x) (xβ x) := by
       rw [inst3_aB]
       refine (congrMul (congrMul (congrMul h2 (eqb_of_eq (Prf.andE₂ hd))) (eqb_of_eq (Prf.andE₁ hd))) (.eqRefl _)).eqTrans ?_
-      apply deriveNat; ipra_simps; ring
+      ipra_ring
     have hlt : Δ ⊢[PRAAx] lt (gcd p (xq x)) (succ (xq x)) := (succ_monus_succ _ _).eqTrans hgq
     exact le_congr ((hrow _).wk.eqTrans (hterm.eqTrans hL.eqSymm)) (.eqRefl _) (term_le_sum (rowB aB) hlt)
   · have h0 : ((eqb (gcd p (xq x)) one ≐ one) :: Γ) ⊢[PRAAx]
@@ -198,7 +198,7 @@ theorem col_bound (M d x : PTm n) :
       (congrMul (.eqRefl _) (fB_at _ _ _).eqSymm)
     rw [show Syn.shift K = monus one (monus two (Syn.shift d)) * eqb (rem (xq (Syn.shift x)) (Syn.shift d)) zero by
       simp [K, Syn.shift, subst_ap2]]
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   -- the right side is `K · #{p' < M : p'/(q/d) ∈ J*}`
   have eR : Γ ⊢[PRAAx] inst2 eB d (pairT M x) ≐ K * ap2 (sumF cntB) M (xdiv x d) := by
     rw [inst2_eB]

@@ -1,7 +1,7 @@
 import IPRADerivations.Core.SumOrder
 import IPRADerivations.Core.SumReflect
 import IPRADerivations.Core.Pairing
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Summing a pointwise linear relation (`ipra_coherent_methods_2026-11-15`, `prop:weighted-dimension`)

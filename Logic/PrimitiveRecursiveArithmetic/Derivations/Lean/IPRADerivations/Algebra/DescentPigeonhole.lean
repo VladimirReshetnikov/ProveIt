@@ -1,6 +1,8 @@
 import IPRADerivations.Algebra.PowerDifference
 import IPRADerivations.Core.SumOrder
 import IPRADerivations.Foundations.BoundedReflection
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The pigeonhole step of the rational descent
@@ -68,8 +70,7 @@ abbrev Mono (N x : PTm n) : Fm PTm (n + 1) :=
     (le (inst2 k (succ (two * var 0)) (Syn.shift x)) (inst2 k (two * var 0) (Syn.shift x)) ⋏
       le (inst2 k (succ (succ (two * var 0))) (Syn.shift x)) (inst2 k (succ (two * var 0)) (Syn.shift x)))
 
-theorem two_succ (m : PTm n) : Γ ⊢[PRAAx] two * succ m ≐ succ (succ (two * m)) := by
-  apply deriveNat; ipra_simps; ring
+alias two_succ := Common.two_mul_succ
 
 theorem drops_step {m x : PTm n}
     (ih : Γ ⊢[PRAAx] le (inst2 k (two * m) x + m) (inst2 k (two * zero) x + ap2 (sumF (eB k)) m x))
@@ -140,8 +141,6 @@ end Pigeonhole
 /-- `3 ∑_{i<m} 4^i + 1 = 4^m`. -/
 theorem geom_third (m : PTm n) :
     Γ ⊢[PRAAx] (two + one) * gd (two * two) one m + one ≐ pw (two * two) m := by
-  have e := natEq (geom_sum (Γ := Γ) (two * two) m)
-  apply deriveNat; ipra_simps
-  linear_combination -e
+  ipra_lc -natEq (geom_sum (Γ := Γ) (two * two) m)
 
 end LeanProofs.IPRA.Algebra.DescentPigeonhole

@@ -1,4 +1,7 @@
 import IPRADerivations.Analysis.RationalSupMetric
+import IPRADerivations.Core.CongruenceTactic
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Actual least minimization of independently denominated signed rationals
@@ -72,10 +75,7 @@ theorem of_zle (a b : PTm n)
       (numeratorOf b * ZT.ofNat (denominatorOf a))) : Γ ⊢[PRAAx] rationalLE a b :=
   le_congr (scaled_left a b).eqSymm (scaled_left b a).eqSymm h
 
-private theorem positive_cancel {c a b : PTm n} (hc : Γ ⊢[PRAAx] le one c)
-    (h : Γ ⊢[PRAAx] le (c*a) (c*b)) : Γ ⊢[PRAAx] le a b := by
-  have eq : Γ ⊢[PRAAx] c ≐ succ (monus c one) := (eq_add_of_le hc).eqTrans (by ipra_ring)
-  exact mul_le_cancel (le_congr (congrMul eq (.eqRefl _)) (congrMul eq (.eqRefl _)) h)
+private alias positive_cancel := Common.mul_cancel_le
 
 /-- Rational transitivity cancels only the proved positive middle denominator. -/
 theorem transitive {a b c : PTm n} (hab : Γ ⊢[PRAAx] rationalLE a b)
@@ -86,15 +86,12 @@ theorem transitive {a b c : PTm n} (hab : Γ ⊢[PRAAx] rationalLE a b)
     refine le_of_eq_add (d := denominatorOf c*monus (left b a) (left a b)+
       denominatorOf a*monus (left c b) (left b c)) ?_
     unfold left at ea eb ⊢
-    apply deriveNat; ipra_simps
-    linear_combination 𝔞(denominatorOf c)*ea+𝔞(denominatorOf a)*eb
+    ipra_lc 𝔞(denominatorOf c)*ea+𝔞(denominatorOf a)*eb
   exact positive_cancel (denominator_positive b) scaled
 
 theorem left_congr {a a' b b' : PTm n} (ha : Γ ⊢[PRAAx] a ≐ a') (hb : Γ ⊢[PRAAx] b ≐ b') :
     Γ ⊢[PRAAx] left a b ≐ left a' b' := by
-  have h := Prf.eqCongr (left (var 0) (var 1) : PTm 2) (σ := ![a,b]) (σ' := ![a',b'])
-    (fun i => by fin_cases i; exact ha; exact hb)
-  simpa only [subst_left, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one] using h
+  ipra_congr (left (var 0) (var 1) : PTm 2) with [ha, hb]
 
 theorem rationalLE_congr {a a' b b' : PTm n} (ha : Γ ⊢[PRAAx] a ≐ a')
     (hb : Γ ⊢[PRAAx] b ≐ b') (h : Γ ⊢[PRAAx] rationalLE a b) :

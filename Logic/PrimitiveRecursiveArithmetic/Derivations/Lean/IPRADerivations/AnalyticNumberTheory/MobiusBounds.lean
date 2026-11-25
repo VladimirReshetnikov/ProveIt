@@ -69,13 +69,13 @@ theorem om_tail {q d : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) (h : Γ �
     Γ ⊢[PRAAx] inst2 omB q d ≐ zero := by
   rw [inst2_om]
   exact (congrMul (.eqRefl _) ((congrSg (val_big hd h)).eqTrans sg_zero)).eqTrans
-    (by apply deriveNat; ipra_simps; ring)
+    (by ipra_ring)
 
 theorem sq_tail {q d : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) (h : Γ ⊢[PRAAx] lt d q) :
     Γ ⊢[PRAAx] inst2 sqB q d ≐ zero := by
   rw [inst2_sq]
   exact (congrMul (.eqRefl _) ((congrSg ((congrMonus (val_big hd h) (.eqRefl _)).eqTrans (zero_monus _))).eqTrans
-    sg_zero)).eqTrans (by apply deriveNat; ipra_simps; ring)
+    sg_zero)).eqTrans (by ipra_ring)
 
 theorem shift_pos {d : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) :
     (Γ.map Fm.shift) ⊢[PRAAx] Syn.shift d ≐ succ (pred (Syn.shift d)) := by
@@ -126,11 +126,11 @@ theorem G_tail {d N k : PTm n} (hk : Γ ⊢[PRAAx] k ≐ succ (pred k)) (h : Γ 
   have w := natEq (eq_add_of_le h)
   have hd : Γ ⊢[PRAAx] d ≐ succ (pred d) :=
     eq_succ_pred (y := k + monus d (succ k)) (by apply deriveNat; ipra_simps; linear_combination w)
-  have r : Γ ⊢[PRAAx] rem k d ≐ k := rem_eq' hd (q := zero) (by apply deriveNat; ipra_simps; ring) h
+  have r : Γ ⊢[PRAAx] rem k d ≐ k := rem_eq' hd (q := zero) (by ipra_ring) h
   have z : Γ ⊢[PRAAx] eqb (rem k d) zero ≐ zero :=
     (congrEqb' r (.eqRefl _)).eqTrans (eqb_of_ne (.impI (succ_ne_zero' _ (hk.wk.eqSymm.eqTrans Prf.hyp0))))
   have zz : ∀ {X : PTm n}, Γ ⊢[PRAAx] (sg d * eqb (rem k d) zero) * X ≐ zero := fun {X} =>
-    zero_mul_l ((congrMul (.eqRefl _) z).eqTrans (by apply deriveNat; ipra_simps; ring)) X
+    zero_mul_l ((congrMul (.eqRefl _) z).eqTrans (by ipra_ring)) X
   have g := G_at (Γ := Γ) d N k
   exact .andI ((Prf.andE₁ g).eqTrans zz) ((Prf.andE₂ g).eqTrans zz)
 

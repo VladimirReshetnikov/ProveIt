@@ -5,6 +5,7 @@ import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.AnalyticNumberTheory.PowerCleared
 import IPRADerivations.AnalyticNumberTheory.Order
 import IPRADerivations.Core.ProdLemmas
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Finite geometric expansions for the Goldbach–Euler theorem
@@ -61,8 +62,7 @@ private theorem geom₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] geomF := by
   · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, PTm.subst_mul, PTm.subst_add, PTm.subst_monus,
       Syn.subst_var, Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
     refine .impI ((pw_zero _).eqTrans ?_)
-    have z := natEq (sum_zero (Γ := [le one (var 0 : PTm 1)]) gB (var 0))
-    apply deriveNat; ipra_simps; linear_combination -𝔞 (monus (var 0) one) * z
+    ipra_lc -𝔞 (monus (var 0) one) * natEq (sum_zero (Γ := [le one (var 0 : PTm 1)]) gB (var 0))
   · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, PTm.subst_mul, PTm.subst_add, PTm.subst_monus,
       Syn.subst_var, Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
     exact .impI (geom_step Prf.hyp0 (.impE Prf.hyp1 Prf.hyp0))
@@ -89,7 +89,7 @@ theorem geom_den {r : PTm n} (hr : Γ ⊢[PRAAx] le two r) (s I : PTm n) :
 theorem geom_den_tail {r s : PTm n} (hr : Γ ⊢[PRAAx] le two r) (hs : Γ ⊢[PRAAx] le two s) (I : PTm n) :
     Γ ⊢[PRAAx] le (pw two (two * I)) (pw (pw r s) I) := by
   have rpos : Γ ⊢[PRAAx] r ≐ succ (pred r) := pos_of_eq_succ (c := succ (monus r two))
-    ((eq_add_of_le hr).eqTrans (by apply deriveNat; ipra_simps; ring))
+    ((eq_add_of_le hr).eqTrans (by ipra_ring))
   have h4 : Γ ⊢[PRAAx] le (pw two two) (pw r s) :=
     le_trans (pw_le_pw two hr) (pw_le_exp rpos hs)
   exact le_congr (pw_mul two two I) (.eqRefl _) (pw_le_pw I h4)

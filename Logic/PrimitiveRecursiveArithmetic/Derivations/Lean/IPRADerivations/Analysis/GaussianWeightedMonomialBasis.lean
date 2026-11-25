@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.FilteredEnumerationCode
 import IPRADerivations.Foundations.RuntimeWordAppend
 import IPRADerivations.Analysis.GaussianRationalPowerAlgebra
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual weighted monomial lists and evaluation vectors
@@ -74,8 +75,7 @@ def position (m d L i j : PTm n) : PTm n := Foundations.FilteredEnumeration.rank
 theorem keep_congr {m m' d d' L L' r r' : PTm n} (hm : Γ ⊢[PRAAx] m ≐ m')
     (hd : Γ ⊢[PRAAx] d ≐ d') (hL : Γ ⊢[PRAAx] L ≐ L') (hr : Γ ⊢[PRAAx] r ≐ r') : Γ ⊢[PRAAx]
     keep m d L r ≐ keep m' d' L' r' := by
-  simpa using Prf.eqCongr (Γ := Γ) (keep (var 0) (var 1) (var 2) (var 3) : PTm 4)
-    (σ := ![m,d,L,r]) (σ' := ![m',d',L',r']) (fun k => by fin_cases k; exact hm; exact hd; exact hL; exact hr)
+  ipra_congr (keep (var 0) (var 1) (var 2) (var 3) : PTm 4) with [hm, hd, hL, hr]
 theorem keep_body_at (m d L r : PTm n) : Γ ⊢[PRAAx] inst2 keepBody r (data m d L) ≐ keep m d L r := by
   simp only [keepBody,inst2,subst_keep,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
   exact keep_congr (fst_pair _ _) ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
@@ -157,8 +157,7 @@ def basis (m d L : PTm n) : PTm n := sequence basisBody (count m d L) (data m d 
 theorem basis_pair_congr {m m' d d' L L' r r' : PTm n} (hm : Γ ⊢[PRAAx] m ≐ m')
     (hd : Γ ⊢[PRAAx] d ≐ d') (hL : Γ ⊢[PRAAx] L ≐ L') (hr : Γ ⊢[PRAAx] r ≐ r') : Γ ⊢[PRAAx]
     basisPair m d L r ≐ basisPair m' d' L' r' := by
-  simpa using Prf.eqCongr (Γ := Γ) (basisPair (var 0) (var 1) (var 2) (var 3) : PTm 4)
-    (σ := ![m,d,L,r]) (σ' := ![m',d',L',r']) (fun k => by fin_cases k; exact hm; exact hd; exact hL; exact hr)
+  ipra_congr (basisPair (var 0) (var 1) (var 2) (var 3) : PTm 4) with [hm, hd, hL, hr]
 theorem basis_body_at (m d L r : PTm n) : Γ ⊢[PRAAx] inst2 basisBody r (data m d L) ≐ basisPair m d L r := by
   simp only [basisBody,inst2,subst_basisPair,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
   exact basis_pair_congr (fst_pair _ _) ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
@@ -285,9 +284,7 @@ theorem value_congr {m m' d d' L L' x x' y y' r r' : PTm n} (hm : Γ ⊢[PRAAx] 
     (hd : Γ ⊢[PRAAx] d ≐ d') (hL : Γ ⊢[PRAAx] L ≐ L') (hx : Γ ⊢[PRAAx] x ≐ x')
     (hy : Γ ⊢[PRAAx] y ≐ y') (hr : Γ ⊢[PRAAx] r ≐ r') : Γ ⊢[PRAAx]
     valueAt m d L x y r ≐ valueAt m' d' L' x' y' r' := by
-  simpa using Prf.eqCongr (Γ := Γ) (valueAt (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6)
-    (σ := ![m,d,L,x,y,r]) (σ' := ![m',d',L',x',y',r'])
-    (fun k => by fin_cases k; exact hm; exact hd; exact hL; exact hx; exact hy; exact hr)
+  ipra_congr (valueAt (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) with [hm, hd, hL, hx, hy, hr]
 theorem evaluation_body_at (m d L x y r : PTm n) : Γ ⊢[PRAAx]
     inst2 evaluationBody r (evaluationData m d L x y) ≐ valueAt m d L x y r := by
   have head := fst_pair (Γ := Γ) (data m d L) (pairT x y)

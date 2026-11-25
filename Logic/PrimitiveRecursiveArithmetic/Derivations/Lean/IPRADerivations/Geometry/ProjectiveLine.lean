@@ -2,7 +2,7 @@ import IPRADerivations.Core.SumReflect
 import IPRADerivations.Core.SumSplit
 import IPRADerivations.Core.Powers
 import IPRADerivations.Core.Tactic
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Global sections of `O(d)` on the projective line

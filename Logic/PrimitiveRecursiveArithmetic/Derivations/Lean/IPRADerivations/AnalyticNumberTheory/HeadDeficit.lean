@@ -162,7 +162,7 @@ theorem hd_eq (hMx : Γ ⊢[PRAAx] le (succ M) x) :
       rw [e] at h0 ⊢; exact h0
     have z := bv_above hM'.wk.wk hv
     exact (hg_at _ _ _ _ _ _ _ _).eqTrans ((congrMul (congrMul (.eqRefl _) (congrMul z (.eqRefl _))) (.eqRefl _)).eqTrans
-      (by apply deriveNat; ipra_simps; ring))
+      (by ipra_ring))
   · have s1 := sum_shift (Γ := Γ) hgB (succ M) (HP M x A Ds K L)
     have s2 := sum_shift (Γ := Γ) (shiftBody hgB) M (HP M x A Ds K L)
     rw [inst2_shiftBody] at s2
@@ -170,10 +170,10 @@ theorem hd_eq (hMx : Γ ⊢[PRAAx] le (succ M) x) :
       (hg_at _ _ _ _ _ _ _ _).eqTrans (zero_mul_l (zero_mul_l sg_zero _) _)
     have z1 : Γ ⊢[PRAAx] inst2 hgB (succ zero) (HP M x A Ds K L) ≐ zero := by
       refine (hg_at _ _ _ _ _ _ _ _).eqTrans (zero_mul_l ?_ _)
-      have k1 : Γ ⊢[PRAAx] K * succ zero ≐ K := by apply deriveNat; ipra_simps; ring
+      have k1 : Γ ⊢[PRAAx] K * succ zero ≐ K := by ipra_ring
       have u1 : Γ ⊢[PRAAx] U (succ zero) K (fact L) ≐ zero :=
         (congrMonus (congrAp2 (sumF hB) k1 (.eqRefl (fact L))) (.eqRefl _)).eqTrans (le_refl _)
-      exact (congrMul (.eqRefl _) (congrMul (.eqRefl _) u1)).eqTrans (by apply deriveNat; ipra_simps; ring)
+      exact (congrMul (.eqRefl _) (congrMul (.eqRefl _) u1)).eqTrans (by ipra_ring)
     exact s1.eqTrans ((congrAdd z0 (s2.eqTrans ((congrAdd z1 (.eqRefl _)).eqTrans (zero_add _)))).eqTrans (zero_add _))
 
 end Head
@@ -199,7 +199,7 @@ theorem hd_pt {j : PTm n} (hjM : Γ ⊢[PRAAx] lt j M)
       U (succ (succ j)) K (fact L) *
         dg A Ds (Psi wt (quo x (succ (succ j))) (pairT K (fact L))) (fact L * quo x (succ (succ j))) :=
     (hg_at _ _ _ _ _ _ _ _).eqTrans ((congrMul (congrMul (sg_succ _) (congrMul (bv_in hb1 hb2) (.eqRefl _)))
-      (.eqRefl _)).eqTrans (by apply deriveNat; ipra_simps; ring))
+      (.eqRefl _)).eqTrans (by ipra_ring))
   have h := natEq hv
   have eg := natEq (eq_add_of_le hs)
   ipra_le 0 with 2 * 𝔞 A * 𝔞 (fact L) * m - 𝔞 Ds * b - 2 * 𝔞 (fact L) * h +

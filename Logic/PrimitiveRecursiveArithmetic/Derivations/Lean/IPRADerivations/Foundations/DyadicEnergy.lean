@@ -1,6 +1,6 @@
 import IPRADerivations.Probability.Variance
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Dyadic energy identities

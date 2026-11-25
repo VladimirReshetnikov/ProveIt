@@ -1,6 +1,6 @@
 import IPRADerivations.Probability.DyadicAssembly
 import IPRADerivations.AnalyticNumberTheory.RobinLogInterval
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The bad event is covered by the dyadic blocks

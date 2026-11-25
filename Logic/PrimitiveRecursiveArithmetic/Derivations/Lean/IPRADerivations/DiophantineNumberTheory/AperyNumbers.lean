@@ -1,6 +1,7 @@
 import IPRADerivations.Combinatorics.Catalan
 import IPRADerivations.AnalyticNumberTheory.LocalFactor
 import IPRADerivations.Core.ProdLemmas
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The Apéry numbers: first values and growth
@@ -50,7 +51,7 @@ theorem congrBinom {a a' k : PTm n} (h : Γ ⊢[PRAAx] a ≐ a') : Γ ⊢[PRAAx]
 theorem cb_double (m : PTm n) : Γ ⊢[PRAAx] le (two * cb m) (cb (succ m)) := by
   refine mul_le_cancel (d' := m) (le_congr (.eqRefl _) (cb_rec m).eqSymm
     (le_of_eq_add (d := (two * m) * cb m) ?_))
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem cb_pow_step {m : PTm n} (ih : Γ ⊢[PRAAx] le (pw two m) (cb m)) :
     Γ ⊢[PRAAx] le (pw two (succ m)) (cb (succ m)) :=
@@ -90,7 +91,7 @@ abbrev apery (m : PTm n) : PTm n := ap2 (sumF apB) (succ m) m
 /-- The last term: `C(m, m)² C(2m, m)² = C(2m, m)²`. -/
 theorem last_term (m : PTm n) : Γ ⊢[PRAAx] inst2 apB m m ≐ cb m * cb m := by
   rw [inst2_ap]
-  have hN : Γ ⊢[PRAAx] m + m ≐ two * m := by apply deriveNat; ipra_simps; ring
+  have hN : Γ ⊢[PRAAx] m + m ≐ two * m := by ipra_ring
   exact (congrMul (congrMul (binom_self' m) (binom_self' m)) (congrMul (congrBinom hN) (congrBinom hN))).eqTrans
     ((congrMul (one_mul _) (.eqRefl _)).eqTrans (one_mul _))
 
@@ -109,7 +110,7 @@ theorem four_step {m : PTm n} (ih : Γ ⊢[PRAAx] le (succ m) (pw (two * two) m)
     Γ ⊢[PRAAx] le (succ (succ m)) (pw (two * two) (succ m)) := by
   refine le_trans (le_of_eq_add (d := (two + one) * m + two) ?_)
     (le_congr (.eqRefl _) (pw_succ _ _).eqSymm (le_mul_mono ih (le_refl (two * two))))
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- Variables: `0 = m`. -/
 private abbrev fourF : Fm PTm 1 := le (succ (var 0)) (pw (two * two) (var 0))
@@ -148,9 +149,7 @@ theorem apery_zero : Γ ⊢[PRAAx] apery (zero : PTm n) ≐ one := by
   exact (sum_succ' apB zero zero).eqTrans ((congrAdd (sum_zero apB zero) t).eqTrans (zero_add _))
 
 theorem cb_one : Γ ⊢[PRAAx] cb (one : PTm n) ≐ two := by
-  have r := natEq (cb_rec (Γ := Γ) (zero : PTm n)); have z := natEq (cb_zero (Γ := Γ))
-  apply deriveNat; ipra_simps
-  linear_combination r + 2 * z
+  ipra_lc natEq (cb_rec (Γ := Γ) (zero : PTm n)) + 2 * natEq (cb_zero (Γ := Γ))
 
 /-- `a_1 = 5`. -/
 theorem apery_one : Γ ⊢[PRAAx] apery (one : PTm n) ≐ two * two + one := by
@@ -162,6 +161,6 @@ theorem apery_one : Γ ⊢[PRAAx] apery (one : PTm n) ≐ two * two + one := by
   have e : Γ ⊢[PRAAx] apery (one : PTm n) ≐ (zero + one) + two * two :=
     (sum_succ' apB one one).eqTrans (congrAdd ((sum_succ' apB zero one).eqTrans
       (congrAdd (sum_zero apB one) t₀)) t₁)
-  exact e.eqTrans (by apply deriveNat; ipra_simps; ring)
+  exact e.eqTrans (by ipra_ring)
 
 end LeanProofs.IPRA.DiophantineNumberTheory.AperyNumbers

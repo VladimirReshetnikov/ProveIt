@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.Pochhammer
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The Beta function at positive integers
@@ -55,7 +56,7 @@ def rbeta (m k : PTm n) : PTm n := succ (m + k) * binom (m + k) m
 /-- `cor:binomial-beta`: `1 / B(m + 1, k + 1) = (m + k + 1) C(m + k, m)`. -/
 theorem rbeta_binom (m k : PTm n) : Γ ⊢[PRAAx] rbeta m k ≐ succ (m + k) * binom (m + k) m := .eqRefl _
 
-theorem succ_pos (a : PTm n) : Γ ⊢[PRAAx] succ a ≐ succ (pred (succ a)) := congrSucc (pred_succ a).eqSymm
+alias succ_pos := Common.succ_pos
 
 /-- `R(m, k) m! k! = (m + k + 1)!`, i.e. `B(m + 1, k + 1) = m! k! / (m + k + 1)!`. -/
 theorem rbeta_fact (m k : PTm n) : Γ ⊢[PRAAx] rbeta m k * (fact m * fact k) ≐ fact (succ (m + k)) := by

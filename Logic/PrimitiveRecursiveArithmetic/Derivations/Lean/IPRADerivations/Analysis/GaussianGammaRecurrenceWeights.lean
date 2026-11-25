@@ -1,4 +1,6 @@
 import IPRADerivations.Analysis.GaussianGammaCombinedEulerKernelPolynomial
+import IPRADerivations.Core.CongruenceTactic
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Literal original Gamma recurrence weights independent of the horizon
@@ -38,16 +40,12 @@ def weight (q N m : PTm n) : PTm n := RationalArithmetic.select (Signum.sg m) qo
 
 theorem weight_congr {q p N M m k : PTm n} (hq : Γ ⊢[PRAAx] q ≐ p)
     (hN : Γ ⊢[PRAAx] N ≐ M) (hm : Γ ⊢[PRAAx] m ≐ k) : Γ ⊢[PRAAx] weight q N m ≐ weight p M k := by
-  simpa only [subst_weight,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (weight (var 0) (var 1) (var 2) : PTm 3)
-      (σ := ![q,N,m]) (σ' := ![p,M,k]) (fun i => by fin_cases i; exact hq; exact hN; exact hm)
+  ipra_congr (weight (var 0) (var 1) (var 2) : PTm 3) with [hq, hN, hm]
 
 theorem weight_zero (q N : PTm n) : Γ ⊢[PRAAx] weight q N zero ≐ qone :=
   RationalArithmetic.select_zero _ _ _ Signum.sg_zero
 
-theorem sg_congr {m k : PTm n} (h : Γ ⊢[PRAAx] m ≐ k) : Γ ⊢[PRAAx] Signum.sg m ≐ Signum.sg k :=
-  congrMonus (.eqRefl _) (congrMonus (.eqRefl _) h)
+alias sg_congr := Common.congrSg
 
 theorem weight_one (q N : PTm n) : Γ ⊢[PRAAx]
     weight q N one ≐ embed (GammaEulerConstantName.gammaSample q zero) :=

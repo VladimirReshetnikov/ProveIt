@@ -3,6 +3,8 @@ import IPRADerivations.AnalyticNumberTheory.PhiUpper
 import IPRADerivations.AnalyticNumberTheory.EulerDomination
 import IPRADerivations.Probability.ProductReplacement
 import IPRADerivations.Combinatorics.LegendreFact
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Finite factor vectors
@@ -51,7 +53,7 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 /-! ## Small tools -/
 
 theorem two_eq {z : PTm n} (h : Γ ⊢[PRAAx] le two z) : Γ ⊢[PRAAx] z ≐ succ (succ (monus z two)) :=
-  (eq_add_of_le h).eqTrans (by apply deriveNat; ipra_simps; ring)
+  (eq_add_of_le h).eqTrans (by ipra_ring)
 
 theorem lpf_dvd' {z : PTm n} (h : Γ ⊢[PRAAx] le two z) : Γ ⊢[PRAAx] dvd (lpf z) z := by
   have e := two_eq h
@@ -128,7 +130,6 @@ theorem nd_step {q N m : PTm n} (hq : Γ ⊢[PRAAx] prime q) (hlt : Γ ⊢[PRAAx
   refine .orE d (.impE ih.wk.wk Prf.hyp0) ?_
   exact .orE (isP_01 N) (nd_case_zero hq.wk.wk.wk Prf.hyp0 Prf.hyp1)
     (nd_case_one hq.wk.wk.wk Prf.hyp0 hlt.wk.wk.wk pd.wk.wk.wk Prf.hyp1)
-
 
 /-! ## The invariant -/
 
@@ -210,7 +211,6 @@ theorem inv_zero (m : PTm n) : Γ ⊢[PRAAx] Inv zero m := by
   have e : Γ ⊢[PRAAx] R zero m ≐ one := prod_zero _ _
   refine .andI ((congrAp2 remF (.eqRefl _) e).eqTrans (Euler.rem_one _)) (.orI₂ (zero_le _))
 
-
 /-! ## Substitution -/
 
 theorem subst_lpf {m : ℕ} (σ : Fin n → PTm m) (z : PTm n) : Syn.subst σ (lpf z) = lpf (Syn.subst σ z) := by
@@ -225,7 +225,6 @@ theorem subst_val {m : ℕ} (σ : Fin n → PTm m) (p x : PTm n) :
 
 theorem subst_R {m : ℕ} (σ : Fin n → PTm m) (N x : PTm n) : Syn.subst σ (R N x) = R (Syn.subst σ N) (Syn.subst σ x) := by
   simp [R]
-
 
 theorem subst_dvd {m : ℕ} (σ : Fin n → PTm m) (d x : PTm n) :
     (dvd d x).subst σ = dvd (Syn.subst σ d) (Syn.subst σ x) := by simp [dvd]
@@ -305,11 +304,9 @@ theorem inv_all {N m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) : Γ ⊢[
     ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at i
   exact .impE i hm
 
-
 /-! ## Reconstruction and injectivity -/
 
-theorem one_le_pos {c : PTm n} (cp : Γ ⊢[PRAAx] c ≐ succ (pred c)) : Γ ⊢[PRAAx] le one c :=
-  le_of_eq_add (d := pred c) (cp.eqTrans (by apply deriveNat; ipra_simps; ring))
+alias one_le_pos := Common.one_le_of_pos
 
 theorem cof_one {N m c : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (h : Γ ⊢[PRAAx] lt m N)
     (cp : Γ ⊢[PRAAx] c ≐ succ (pred c)) (cle : Γ ⊢[PRAAx] le c m) (hg : Γ ⊢[PRAAx] good N c) :
@@ -367,9 +364,7 @@ theorem divergence : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 1 divergenceFormula 
 /-- The rational form: for `b ≥ 1`, `∑_{p≤n} 1/p > a/b` at `n = Wit(a)`, as `a · ProdP_n < b · NumP_n`. -/
 theorem divergence_rational {a b : PTm n} (hb : Γ ⊢[PRAAx] le one b) :
     Γ ⊢[PRAAx] lt (a * ProdP (Wit a)) (b * NumP (Wit a)) := by
-  have e := natEq (eq_add_of_le hb)
   refine le_trans (prime_reciprocal_at a) (le_of_eq_add (d := monus b one * NumP (Wit a)) ?_)
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 (NumP (Wit a)) * e
+  ipra_lc 𝔞 (NumP (Wit a)) * natEq (eq_add_of_le hb)
 
 end LeanProofs.IPRA.AnalyticNumberTheory.FactorVector

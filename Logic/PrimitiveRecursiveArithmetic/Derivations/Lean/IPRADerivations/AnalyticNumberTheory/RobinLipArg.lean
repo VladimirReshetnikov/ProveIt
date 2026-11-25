@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.RobinLipName
 import IPRADerivations.AnalyticNumberTheory.RobinLogInterval
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Lipschitz bounds for the reduced logarithm names (`robin_ipra_research_2026-11-19`, §"Explicit interval arithmetic")
@@ -49,12 +50,9 @@ theorem Nz_p0 (K s : PTm n) : Γ ⊢[PRAAx] Nz K zero s ≐ zero := by
     · simp only [Fm.subst_eq, subst_ap2, subst_pairT, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero,
         Syn.subst_var, Syn.repl_zero, subst_repl_shift]
       let Δ : List (Fm PTm (n + 1)) := (Nz (var 0) zero (Syn.shift s) ≐ zero) :: Γ.map Fm.shift
-      have e1 := natEq (Nz_succ (Γ := Δ) (var 0) zero (Syn.shift s))
-      have e2 := natEq (Prf.hyp0 : Δ ⊢[PRAAx] Nz (var 0) zero (Syn.shift s) ≐ zero)
-      have e3 := natEq (pw_succ (Γ := Δ) (zero : PTm (n + 1)) (two * var 0))
-      apply deriveNat; ipra_simps
-      linear_combination e1 + (2 * 𝔞 (var 0 : PTm (n + 1)) + 1) * (𝔞 (Syn.shift s)) ^ 2 * e2 +
-        2 * 𝔞 (Lv (var 0 : PTm (n + 1)) zero) * (𝔞 (Syn.shift s)) ^ 2 * e3
+      ipra_lc natEq (Nz_succ (Γ := Δ) (var 0) zero (Syn.shift s)) +
+        (2 * 𝔞 (var 0 : PTm (n + 1)) + 1) * (𝔞 (Syn.shift s)) ^ 2 * natEq (Prf.hyp0 : Δ ⊢[PRAAx] Nz (var 0) zero (Syn.shift s) ≐ zero) +
+        2 * 𝔞 (Lv (var 0 : PTm (n + 1)) zero) * (𝔞 (Syn.shift s)) ^ 2 * natEq (pw_succ (Γ := Δ) (zero : PTm (n + 1)) (two * var 0))
   have r := Prf.allE K hall
   simpa [Syn.subst_inst_shift] using r
 
@@ -77,11 +75,9 @@ theorem arg_up {a B d s a' B' d' s' Dy : PTm n} (hB : Γ ⊢[PRAAx] le one B) (h
   have es' := natEq hs'
   have eD := natEq hD
   have hW' : Γ ⊢[PRAAx] s' * s' ≐ two * two * B' * a' + d' * d' := by
-    apply deriveNat; ipra_simps
-    linear_combination (-2 * 𝔞 B' + 𝔞 d' + 𝔞 s') * ea' + (2 * 𝔞 B' + 𝔞 d' + 𝔞 s') * es'
+    ipra_lc (-2 * 𝔞 B' + 𝔞 d' + 𝔞 s') * ea' + (2 * 𝔞 B' + 𝔞 d' + 𝔞 s') * es'
   have hd : Γ ⊢[PRAAx] d' * s ≐ d * s' + two * Dy := by
-    apply deriveNat; ipra_simps
-    linear_combination (2 * 𝔞 B' + 𝔞 d') * ea + 𝔞 d' * es + (-2 * 𝔞 B - 𝔞 d) * ea' - 𝔞 d * es' + 2 * eD
+    ipra_lc (2 * 𝔞 B' + 𝔞 d') * ea + 𝔞 d' * es + (-2 * 𝔞 B - 𝔞 d) * ea' - 𝔞 d * es' + 2 * eD
   have LU := lip_up hW' hd K
   have hsa : Γ ⊢[PRAAx] le (s' * a) (s * a') := by
     ipra_le 𝔞 Dy with (𝔞 B' + 𝔞 a' - 𝔞 s') * ea + 𝔞 a' * es + (-𝔞 B - 𝔞 d) * es' + eD
@@ -111,11 +107,9 @@ theorem arg_low {a B d s a' B' d' s' Dy : PTm n} (hB : Γ ⊢[PRAAx] le one B) (
   have es' := natEq hs'
   have eD := natEq hD
   have hW : Γ ⊢[PRAAx] s * s ≐ two * two * B * a + d * d := by
-    apply deriveNat; ipra_simps
-    linear_combination (-2 * 𝔞 B + 𝔞 d + 𝔞 s) * ea + (2 * 𝔞 B + 𝔞 d + 𝔞 s) * es
+    ipra_lc (-2 * 𝔞 B + 𝔞 d + 𝔞 s) * ea + (2 * 𝔞 B + 𝔞 d + 𝔞 s) * es
   have hd : Γ ⊢[PRAAx] d' * s ≐ d * s' + two * Dy := by
-    apply deriveNat; ipra_simps
-    linear_combination (2 * 𝔞 B' + 𝔞 d') * ea + 𝔞 d' * es + (-2 * 𝔞 B - 𝔞 d) * ea' - 𝔞 d * es' + 2 * eD
+    ipra_lc (2 * 𝔞 B' + 𝔞 d') * ea + 𝔞 d' * es + (-2 * 𝔞 B - 𝔞 d) * ea' - 𝔞 d * es' + 2 * eD
   have LL := lip_low hW hd K
   have hsa : Γ ⊢[PRAAx] le (s' * a) (s * a') := by
     ipra_le 𝔞 Dy with (𝔞 B' + 𝔞 a' - 𝔞 s') * ea + 𝔞 a' * es + (-𝔞 B - 𝔞 d) * es' + eD

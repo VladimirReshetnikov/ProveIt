@@ -81,13 +81,13 @@ theorem phi_two : Γ ⊢[PRAAx] phi (two : PTm n) ≐ one := by
   have e₁ : Γ ⊢[PRAAx] eqb (gcd one two) one ≐ one :=
     eqb_of_eq (eq_one_of_dvd_one g (Prf.andE₁ (gcd_dvd' (b := two) (congrSucc (pred_succ zero).eqSymm))))
   refine s₂.eqTrans ((congrAdd (s₁.eqTrans ((congrAdd (sum_zero _ _) e₀))) e₁).eqTrans ?_)
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- `gcd(n + i, n) = gcd(i, n)`. -/
 theorem gcd_period {N : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) (i : PTm n) :
     Γ ⊢[PRAAx] gcd (N + i) N ≐ gcd i N := by
   have r : Γ ⊢[PRAAx] rem (N + i) N ≐ rem i N :=
-    rem_eq_of_eq hN (k₁ := zero) (k₂ := one) (by apply deriveNat; ipra_simps; ring)
+    rem_eq_of_eq hN (k₁ := zero) (k₂ := one) (by ipra_ring)
   exact (gcd_rem hN (N + i)).eqSymm.eqTrans ((congrGcd r (.eqRefl _)).eqTrans (gcd_rem hN i))
 
 /-! ## Odd `n` -/
@@ -110,7 +110,7 @@ theorem odd_cop (t : PTm n) : Γ ⊢[PRAAx] gcd two (two * t + one) ≐ one := b
 /-- `φ(2n) = φ(n)` for `n = 2t + 1`. -/
 theorem phi_double_odd_at (t : PTm n) : Γ ⊢[PRAAx] phi (two * (two * t + one)) ≐ phi (two * t + one) := by
   have hn : Γ ⊢[PRAAx] two * t + one ≐ succ (pred (two * t + one)) :=
-    AnalyticNumberTheory.Primes.eq_succ_pred (y := two * t) (by apply deriveNat; ipra_simps; ring)
+    AnalyticNumberTheory.Primes.eq_succ_pred (y := two * t) (by ipra_ring)
   refine (phi_mul_at two_pos' hn (odd_cop t)).eqTrans ((congrMul phi_two (.eqRefl _)).eqTrans (one_mul _))
 
 /-! ## Even `n` -/
@@ -140,14 +140,14 @@ theorem phi_double_even_at {N : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) 
     rw [e]
     exact even_point (shift_pos hN).wk h2'.wk _
   have s₂ : Γ ⊢[PRAAx] ap2 (sumF totBody) (two * N) N ≐ ap2 (sumF totBody) (N + N) N :=
-    congrAp2 (sumF totBody) (by apply deriveNat; ipra_simps; ring) (.eqRefl _)
+    congrAp2 (sumF totBody) (by ipra_ring) (.eqRefl _)
   have s₃ := sum_split (Γ := Γ) totBody N N
   have s₄ : Γ ⊢[PRAAx] ap2 (sumF (shiftBy totBody)) N N ≐ phi N := by
     refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
     rw [inst2_shiftBy, inst2_tot, inst2_tot]
     exact congrEqb (gcd_period (shift_pos hN).wk _) (.eqRefl _)
   refine s₁.eqTrans (s₂.eqTrans (s₃.eqTrans ((congrAdd (.eqRefl _) s₄).eqTrans ?_)))
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-! ## Closed statements -/
 

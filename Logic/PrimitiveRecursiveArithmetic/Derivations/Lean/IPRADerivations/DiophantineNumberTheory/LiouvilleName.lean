@@ -9,7 +9,7 @@ import IPRADerivations.AnalyticNumberTheory.PlusPower
 import IPRADerivations.AnalyticNumberTheory.Multiplicative
 import IPRADerivations.DiophantineNumberTheory.ModularCertificate
 import IPRADerivations.DiophantineNumberTheory.QuarticStep
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The rational name of Liouville's number

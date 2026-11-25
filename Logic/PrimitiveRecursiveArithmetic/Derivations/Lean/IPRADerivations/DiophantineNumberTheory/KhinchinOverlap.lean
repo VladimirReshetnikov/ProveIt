@@ -141,7 +141,7 @@ theorem mt_c2 (j W : PTm n) :
     Γ ⊢[PRAAx] inst2 (mtB (loB AK) (hiB AK actK)) j W ≐ fstT (sndT (sndT W)) * inst2 c2 j W := by
   rw [inst2_mtB, inst2_loB, inst2_hiB, inst2_c2]
   refine (congrMul (.eqRefl _) (add_monus' _ _)).eqTrans ?_
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem c2_bit (j W : PTm n) : Γ ⊢[PRAAx] sg (inst2 c2 j W) ≐ inst2 c2 j W := by
   rw [inst2_c2]; exact bit4 _ _ _ _

@@ -3,6 +3,7 @@ import IPRADerivations.Core.Division
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Probability.Independence
 import IPRADerivations.AnalyticNumberTheory.Primes
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Mixed-radix codes
@@ -183,9 +184,8 @@ theorem shift_le' {a b : PTm n} (h : Γ ⊢[PRAAx] le a b) :
 
 /-- `a < b` gives `b = succ (pred b)`. -/
 theorem pos_of_lt {a b : PTm n} (h : Γ ⊢[PRAAx] lt a b) : Γ ⊢[PRAAx] b ≐ succ (pred b) := by
-  have e := natEq (eq_add_of_le h)
   refine eq_succ_pred (y := a + monus b (succ a)) ?_
-  apply deriveNat; ipra_simps; linear_combination e
+  ipra_lc natEq (eq_add_of_le h)
 
 section decode
 
@@ -218,21 +218,16 @@ theorem suffix_step
     Γ ⊢[PRAAx] (Tl r d i (succ t) x ≐ inst2 d i x + inst2 r i x * Tl r d (succ i) t x) ⋏
       (Cd r d (succ i + t) x ≐ Pl r i x * Tl r d i (succ t) x + Cd r d i x) := by
   have hlt := code_lt r d x i (digits_prefix hb)
-  have ci : Γ ⊢[PRAAx] i + succ t ≐ succ i + t := by apply deriveNat; ipra_simps; ring
-  have cC := natEq (congrAp2 (sumF (dP r d)) ci (.eqRefl x))
-  have s1 := natEq (code_split (Γ := Γ) r d i (succ t) x)
-  have s2 := natEq (code_split (Γ := Γ) r d (succ i) t x)
+  have ci : Γ ⊢[PRAAx] i + succ t ≐ succ i + t := by ipra_ring
   have eC' := sum_succ' (Γ := Γ) (dP r d) i x
   rw [inst2_dP] at eC'
   have eC := natEq eC'
-  have eP := natEq (prod_succ' (Γ := Γ) r i x)
   have hE : Γ ⊢[PRAAx] Pl r i x * Tl r d i (succ t) x + Cd r d i x ≐
       Pl r i x * (inst2 d i x + inst2 r i x * Tl r d (succ i) t x) + Cd r d i x := by
-    apply deriveNat; ipra_simps
-    linear_combination -s1 + cC + s2 + eC + 𝔟 (Tl r d (succ i) t x) * eP
+    ipra_lc -natEq (code_split (Γ := Γ) r d i (succ t) x) + natEq (congrAp2 (sumF (dP r d)) ci (.eqRefl x)) +
+      natEq (code_split (Γ := Γ) r d (succ i) t x) + eC + 𝔟 (Tl r d (succ i) t x) * natEq (prod_succ' (Γ := Γ) r i x)
   have hC : Γ ⊢[PRAAx] Cd r d (succ i + t) x ≐ Pl r i x * Tl r d i (succ t) x + Cd r d i x := by
-    apply deriveNat; ipra_simps
-    linear_combination s1 - cC
+    ipra_lc natEq (code_split (Γ := Γ) r d i (succ t) x) - natEq (congrAp2 (sumF (dP r d)) ci (.eqRefl x))
   exact .andI (Prf.andE₁ (euclid_unique hE hlt hlt)) hC
 
 /-- "Mixed-radix decoding": if `d_j < r_j` for `j < i + 1 + t`, the digit at `i` of the code of length

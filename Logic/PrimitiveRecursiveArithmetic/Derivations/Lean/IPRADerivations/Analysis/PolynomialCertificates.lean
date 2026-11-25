@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.FeedbackInexact
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Monomial difference bounds, the a posteriori estimate and parameter stability

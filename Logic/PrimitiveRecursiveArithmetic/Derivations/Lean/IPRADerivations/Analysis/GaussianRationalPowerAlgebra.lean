@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianRationalSumAlgebra
 import IPRADerivations.Analysis.GaussianRationalProductWitness
 import IPRADerivations.Analysis.RationalNonnegativePowers
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Actual rational Gaussian power algebra at internal exponents
@@ -133,11 +134,7 @@ theorem norm_one : Γ ⊢[PRAAx] qnormSq (qone : PTm n) ≐ fraction one one := 
     (GaussianRationalMetric.qnormSq_represents _ _ _ (le_refl one)
       (GaussianRationalHorner.ofGaussian_represents _ _ (le_refl one)))
     (fraction_represents one one (le_refl one)) (positive_product _ _ (le_refl one) (le_refl one)) (le_refl one)
-  apply ZT.derive
-  have e := natEq (ComplexLogarithmRemainder.normSq_one (Γ := Γ))
-  simp only [ZT.toZ_mul,ZT.toZ_ofNat]
-  ipra_simps
-  linear_combination e
+  ipra_lc natEq (ComplexLogarithmRemainder.normSq_one (Γ := Γ))
 
 def unitLaw (q j : PTm n) : Fm PTm n := qnormSq (power q j) ≐ fraction one one
 @[simp] theorem subst_unitLaw {m : ℕ} (σ : Fin n → PTm m) (q j : PTm n) :

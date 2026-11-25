@@ -3,7 +3,7 @@ import IPRADerivations.AnalyticNumberTheory.PhiLower
 import IPRADerivations.Core.SumOrder
 import IPRADerivations.Core.SumLemmas
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Many coprime pairs in a square

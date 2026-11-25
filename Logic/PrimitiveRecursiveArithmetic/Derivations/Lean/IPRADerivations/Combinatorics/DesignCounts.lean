@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.GramBound
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Incidence counts of a block design and Fisher's quadratic form
@@ -167,21 +168,14 @@ theorem replication_count (M : Fin (v + 1) → Fin b → ZT n) (r k lam : ZT n) 
 theorem steiner_replication {r : ZT n}
     (h : Γ ⊢[PRAAx] ZT.eq (r * ZT.natLit 3) (r + ZT.natLit v * ZT.natLit 1)) :
     Γ ⊢[PRAAx] ZT.eq (ZT.natLit 2 * r) (ZT.natLit v) := by
-  have e := ZT.toZ_eq h
-  apply ZT.derive
-  simp only [ZT.toZ_add, ZT.toZ_mul, ZT.toZ_natLit, Nat.cast_ofNat, Nat.cast_one] at e ⊢
-  linear_combination e
+  ipra_lc ZT.toZ_eq h
 
 /-- Steiner triples on `v + 1` points: `6b = (v + 1) v`. -/
 theorem steiner_blocks {r : ZT n}
     (h1 : Γ ⊢[PRAAx] ZT.eq (ZT.natLit (v + 1) * r) (ZT.natLit b * ZT.natLit 3))
     (h2 : Γ ⊢[PRAAx] ZT.eq (ZT.natLit 2 * r) (ZT.natLit v)) :
     Γ ⊢[PRAAx] ZT.eq (ZT.natLit 6 * ZT.natLit b) (ZT.natLit (v + 1) * ZT.natLit v) := by
-  have e1 := ZT.toZ_eq h1
-  have e2 := ZT.toZ_eq h2
-  apply ZT.derive
-  simp only [ZT.toZ_mul, ZT.toZ_natLit, Nat.cast_ofNat, Nat.cast_add, Nat.cast_one] at e1 e2 ⊢
-  linear_combination (-2 : Groth (Q Γ)) * e1 + ((v : Groth (Q Γ)) + 1) * e2
+  ipra_lc [Nat.cast_add] (-2 : Groth (Q Γ)) * ZT.toZ_eq h1 + ((v : Groth (Q Γ)) + 1) * ZT.toZ_eq h2
 
 /-- Fisher's quadratic form: `∑_B (∑_i M_{iB} z_i)² = (r − λ) ∑ z_i² + λ (∑ z_i)²`. -/
 theorem fisher_form (M : Fin v → Fin b → ZT n) (z : Fin v → ZT n) (r lam : ZT n)
@@ -229,10 +223,7 @@ theorem fisher_kernel (M : Fin v → Fin b → ZT n) (z : Fin v → ZT n) (r lam
       · exact nn_zero
       · exact nn_zsq _
   have h2 : Γ ⊢[PRAAx] zle (ZT.sq (z i) + ZT.sq (z i)) (ZT.ofNat (zero * zero)) := by
-    refine zle_of_comb (2 * zsl hsq) ?_ (nn_mul (nn_ofNat 2) (nn_zsl _))
-    simp only [zsl_def, ZT.toZ_add, ZT.toZ_sq, ZT.toZ_ofNat, ZT.toZ_natLit, Nat.cast_zero, Q.mk_mul,
-      Q.mk_zero, map_mul, map_zero]
-    ring
+    ipra_zle (2 * zsl hsq)
   have h0 := (sq_sum_zero (.eqRefl zero) h2).1
   apply ZT.derive
   rw [h0, ZT.toZ_natLit, Nat.cast_zero]

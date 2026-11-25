@@ -3,6 +3,7 @@ import IPRADerivations.Analysis.GaussianRationalFiniteProduct
 import IPRADerivations.Analysis.GaussianRationalNaturalScale
 import IPRADerivations.Analysis.GaussianRationalMatrixFiniteSums
 import IPRADerivations.Analysis.GaussianGammaRepeatedShift
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Exact finite factors at a negative integer
@@ -106,9 +107,7 @@ private theorem naturalPoint_mul (a b : PTm n) : Γ ⊢[PRAAx]
 
 private theorem naturalPoint_congr {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) :
     Γ ⊢[PRAAx] naturalPoint a ≐ naturalPoint b := by
-  simpa only [GaussianRationalNaturalScale.subst_naturalPoint,Syn.subst_var,Matrix.cons_val_zero] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (naturalPoint (var 0) : PTm 1) (σ := ![a]) (σ' := ![b])
-      (fun j => by fin_cases j; exact h)
+  ipra_congr (naturalPoint (var 0) : PTm 1) with [h]
 
 theorem signedFactorial_zero : Γ ⊢[PRAAx] signedFactorial (zero : PTm n) ≐ qone := by
   have factEq := naturalPoint_congr (fact_zero (Γ := Γ) zero)
@@ -130,21 +129,13 @@ theorem signedFactorial_succ (j : PTm n) : Γ ⊢[PRAAx]
 
 private theorem difference_at (h B j : PTm n) : Γ ⊢[PRAAx]
     inst2 differenceBody j (pairT h B) ≐ difference h B (succ j) := by
-  simpa only [differenceBody,inst2,subst_difference,subst_fstT,subst_sndT,Syn.subst_var,
-    ConciseIPRA.PTm.subst_succ,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.cons_val_succ,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (difference (var 0) (var 1) (succ (var 2)) : PTm 3)
-      (σ := ![fstT (pairT h B),sndT (pairT h B),j]) (σ' := ![h,B,j])
-      (fun i => by fin_cases i; exact fst_pair _ _; exact snd_pair _ _; exact .eqRefl _)
+  ipra_congr (difference (var 0) (var 1) (succ (var 2)) : PTm 3) with
+    [fst_pair _ _, snd_pair _ _, .eqRefl j] using [differenceBody, inst2]
 
 theorem factor_at (h B j : PTm n) : Γ ⊢[PRAAx]
     inst2 factorBody j (pairT h B) ≐ factor h B (succ j) := by
-  simpa only [factorBody,inst2,subst_factor,subst_fstT,subst_sndT,Syn.subst_var,
-    ConciseIPRA.PTm.subst_succ,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.cons_val_succ,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (factor (var 0) (var 1) (succ (var 2)) : PTm 3)
-      (σ := ![fstT (pairT h B),sndT (pairT h B),j]) (σ' := ![h,B,j])
-      (fun i => by fin_cases i; exact fst_pair _ _; exact snd_pair _ _; exact .eqRefl _)
+  ipra_congr (factor (var 0) (var 1) (succ (var 2)) : PTm 3) with
+    [fst_pair _ _, snd_pair _ _, .eqRefl j] using [factorBody, inst2]
 
 theorem difference_succ (h B j : PTm n) : Γ ⊢[PRAAx]
     differenceProduct h B (succ j) ≐ qmul (differenceProduct h B j) (difference h B (succ j)) :=

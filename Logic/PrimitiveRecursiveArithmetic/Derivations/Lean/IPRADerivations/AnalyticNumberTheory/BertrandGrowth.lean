@@ -5,7 +5,7 @@ import IPRADerivations.AnalyticNumberTheory.ChebyshevBounds
 import IPRADerivations.DiophantineNumberTheory.AperyMultibound
 import IPRADerivations.DiophantineNumberTheory.ResidueFacts
 import IPRADerivations.Foundations.NumeralPrimes
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Bertrand's postulate: the integer inequality

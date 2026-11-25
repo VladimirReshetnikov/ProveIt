@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.RationalNonnegativePowerOrder
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Exact rational power budget for a shrinking step
@@ -29,8 +30,7 @@ open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
-theorem natural_square (a : PTm n) : Γ ⊢[PRAAx] pw a two ≐ a*a :=
-  (pw_succ a one).eqTrans (congrMul (RationalNonnegativePowers.natural_power_one a) (.eqRefl _))
+alias natural_square := Common.pw_two
 
 /-- This is exactly the local cleared comparison with C=EWM and D=FL. -/
 def combinedBudget (a b u v C D q s j i : PTm n) : Fm PTm n :=

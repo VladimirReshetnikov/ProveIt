@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianEulerUpperTailNameBudget
 import IPRADerivations.Analysis.GaussianGammaCompactCutoffSplit
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Exact original named Euler upper-tail bound
@@ -119,8 +120,8 @@ theorem cofinal_bound (s z R B k j A : PTm n) (h : Γ ⊢[PRAAx] source z R B k 
     bounded (point s z R B k j A) (cofinalNumerator s k j A R) (cofinalDenominator s k A R) := by
   refine .orE (lt_or_eq_of_le h.andE₂.andE₂) (cofinal_bound_strict s z R B k j A h.wk Prf.hyp0) ?_
   have widthEq : (k ≐ j) :: Γ ⊢[PRAAx] upperWidth k j A R ≐ upperWidth k k A R := by
-    simpa using Prf.eqCongr (upperWidth (var 0) (var 1) (var 2) (var 3) : PTm 4)
-      (σ := ![k,j,A,R]) (σ' := ![k,k,A,R]) (fun i => by fin_cases i; exact .eqRefl _; exact Prf.hyp0.eqSymm; exact .eqRefl _; exact .eqRefl _)
+    ipra_congr (upperWidth (var 0) (var 1) (var 2) (var 3) : PTm 4) with
+      [.eqRefl k, Prf.hyp0.eqSymm, .eqRefl A, .eqRefl R]
   exact cofinal_bound_zero s z R B k j A (widthEq.eqTrans (GaussianGammaCompactCutoffGeometry.same_upper k A R))
 
 theorem point_canonical (p z R B k j A : PTm n) : Γ ⊢[PRAAx] GaussianRationalHorner.canonical (point p z R B k j A) :=

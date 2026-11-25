@@ -1,5 +1,6 @@
 import IPRADerivations.Combinatorics.BellStirling
 import IPRADerivations.Combinatorics.CatalanNarayana
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # A Pascal inversion for the Bell numbers
@@ -111,11 +112,9 @@ theorem F_split (N R : PTm n) :
 theorem fpas (j N R : PTm n) :
     Γ ⊢[PRAAx] inst2 (shiftBody fB) j (pairT (succ N) R) ≐ inst2 (addBody (shiftBody fB) fB') j (pairT N R) := by
   rw [inst2_shiftBody, inst2_addBody, inst2_shiftBody]
-  have a := natEq (fpt (Γ := Γ) (succ j) (succ N) R); have b := natEq (fpt (Γ := Γ) (succ j) N R)
-  have c := natEq (fpt' (Γ := Γ) j N R); have p := natEq (gb_pascal (Γ := Γ) N j)
-  have e := natEq (congrBell (Γ := Γ) (by ipra_ring : Γ ⊢[PRAAx] succ R + j ≐ R + succ j))
-  apply deriveNat; ipra_simps
-  linear_combination a - b - c + 𝔞(bell (R + succ j)) * p - 𝔞(gle j N) * 𝔞(binom N j) * e
+  ipra_lc natEq (fpt (Γ := Γ) (succ j) (succ N) R) - natEq (fpt (Γ := Γ) (succ j) N R) - natEq (fpt' (Γ := Γ) j N R) +
+    𝔞(bell (R + succ j)) * natEq (gb_pascal (Γ := Γ) N j) -
+    𝔞(gle j N) * 𝔞(binom N j) * natEq (congrBell (Γ := Γ) (by ipra_ring : Γ ⊢[PRAAx] succ R + j ≐ R + succ j))
 
 /-- `F(n + 1, r) = F(n, r) + F(n, r + 1)`. -/
 theorem F_pascal (N R : PTm n) : Γ ⊢[PRAAx] F (succ N) R ≐ F N R + F N (succ R) := by
@@ -181,38 +180,20 @@ theorem inst2_km (i x : PTm n) : inst2 kmB i x =
 theorem gpas_p (j N R : PTm n) :
     Γ ⊢[PRAAx] inst2 (shiftBody gpB) j (pairT N (succ R)) ≐ inst2 (addBody hpB kpB) j (pairT N R) := by
   rw [inst2_shiftBody, inst2_addBody, inst2_hp, inst2_kp]
-  have a := natEq ((gppt (Γ := Γ) (succ j) N (succ R)).eqTrans
-    (congrMul (congrMul (congrEv (succ_monus_succ R j)) (.eqRefl (gb (succ R) (succ j))))
-      (.eqRefl (bell (succ (N + succ j))))))
-  have p := natEq (gb_pascal (Γ := Γ) R j)
-  have b := natEq (congrMul (congrMul (congrEv (congrMonus (snd_pair (Γ := Γ) N R) (.eqRefl j)))
-    (congrGb (snd_pair (Γ := Γ) N R) (.eqRefl (succ j)))) (congrBell (congrSucc (congrAdd (fst_pair (Γ := Γ) N R)
-      (.eqRefl (succ j))))))
-  have c := natEq (congrMul (congrMul (congrEv (congrMonus (snd_pair (Γ := Γ) N R) (.eqRefl j)))
-    (congrGb (snd_pair (Γ := Γ) N R) (.eqRefl j))) (congrBell (congrSucc (congrAdd (congrSucc (fst_pair (Γ := Γ) N R))
-      (.eqRefl j)))))
-  have e := natEq (congrBell (Γ := Γ) (by ipra_ring : Γ ⊢[PRAAx] succ (succ N + j) ≐ succ (N + succ j)))
-  apply deriveNat; ipra_simps
-  linear_combination a - b - c + 𝔞(ev (monus R j)) * 𝔞(bell (succ (N + succ j))) * p -
-    𝔞(ev (monus R j)) * 𝔞(gle j R) * 𝔞(binom R j) * e
+  ipra_lc natEq ((gppt (Γ := Γ) (succ j) N (succ R)).eqTrans (congrMul (congrMul (congrEv (succ_monus_succ R j)) (.eqRefl (gb (succ R) (succ j)))) (.eqRefl (bell (succ (N + succ j)))))) -
+    natEq (congrMul (congrMul (congrEv (congrMonus (snd_pair (Γ := Γ) N R) (.eqRefl j))) (congrGb (snd_pair (Γ := Γ) N R) (.eqRefl (succ j)))) (congrBell (congrSucc (congrAdd (fst_pair (Γ := Γ) N R) (.eqRefl (succ j)))))) -
+    natEq (congrMul (congrMul (congrEv (congrMonus (snd_pair (Γ := Γ) N R) (.eqRefl j))) (congrGb (snd_pair (Γ := Γ) N R) (.eqRefl j))) (congrBell (congrSucc (congrAdd (congrSucc (fst_pair (Γ := Γ) N R)) (.eqRefl j))))) +
+    𝔞(ev (monus R j)) * 𝔞(bell (succ (N + succ j))) * natEq (gb_pascal (Γ := Γ) R j) -
+    𝔞(ev (monus R j)) * 𝔞(gle j R) * 𝔞(binom R j) * natEq (congrBell (Γ := Γ) (by ipra_ring : Γ ⊢[PRAAx] succ (succ N + j) ≐ succ (N + succ j)))
 
 theorem gpas_m (j N R : PTm n) :
     Γ ⊢[PRAAx] inst2 (shiftBody gmB) j (pairT N (succ R)) ≐ inst2 (addBody hmB kmB) j (pairT N R) := by
   rw [inst2_shiftBody, inst2_addBody, inst2_hm, inst2_km]
-  have a := natEq ((gmpt (Γ := Γ) (succ j) N (succ R)).eqTrans
-    (congrMul (congrMul (congrOd (succ_monus_succ R j)) (.eqRefl (gb (succ R) (succ j))))
-      (.eqRefl (bell (succ (N + succ j))))))
-  have p := natEq (gb_pascal (Γ := Γ) R j)
-  have b := natEq (congrMul (congrMul (congrOd (congrMonus (snd_pair (Γ := Γ) N R) (.eqRefl j)))
-    (congrGb (snd_pair (Γ := Γ) N R) (.eqRefl (succ j)))) (congrBell (congrSucc (congrAdd (fst_pair (Γ := Γ) N R)
-      (.eqRefl (succ j))))))
-  have c := natEq (congrMul (congrMul (congrOd (congrMonus (snd_pair (Γ := Γ) N R) (.eqRefl j)))
-    (congrGb (snd_pair (Γ := Γ) N R) (.eqRefl j))) (congrBell (congrSucc (congrAdd (congrSucc (fst_pair (Γ := Γ) N R))
-      (.eqRefl j)))))
-  have e := natEq (congrBell (Γ := Γ) (by ipra_ring : Γ ⊢[PRAAx] succ (succ N + j) ≐ succ (N + succ j)))
-  apply deriveNat; ipra_simps
-  linear_combination a - b - c + 𝔞(od (monus R j)) * 𝔞(bell (succ (N + succ j))) * p -
-    𝔞(od (monus R j)) * 𝔞(gle j R) * 𝔞(binom R j) * e
+  ipra_lc natEq ((gmpt (Γ := Γ) (succ j) N (succ R)).eqTrans (congrMul (congrMul (congrOd (succ_monus_succ R j)) (.eqRefl (gb (succ R) (succ j)))) (.eqRefl (bell (succ (N + succ j)))))) -
+    natEq (congrMul (congrMul (congrOd (congrMonus (snd_pair (Γ := Γ) N R) (.eqRefl j))) (congrGb (snd_pair (Γ := Γ) N R) (.eqRefl (succ j)))) (congrBell (congrSucc (congrAdd (fst_pair (Γ := Γ) N R) (.eqRefl (succ j)))))) -
+    natEq (congrMul (congrMul (congrOd (congrMonus (snd_pair (Γ := Γ) N R) (.eqRefl j))) (congrGb (snd_pair (Γ := Γ) N R) (.eqRefl j))) (congrBell (congrSucc (congrAdd (congrSucc (fst_pair (Γ := Γ) N R)) (.eqRefl j))))) +
+    𝔞(od (monus R j)) * 𝔞(bell (succ (N + succ j))) * natEq (gb_pascal (Γ := Γ) R j) -
+    𝔞(od (monus R j)) * 𝔞(gle j R) * 𝔞(binom R j) * natEq (congrBell (Γ := Γ) (by ipra_ring : Γ ⊢[PRAAx] succ (succ N + j) ≐ succ (N + succ j)))
 
 /-- `ev(r − i) C(r, i + 1) = od(r − i − 1) C(r, i + 1)`, for every `i`. -/
 theorem hp_pt (j N R : PTm n) :
@@ -224,9 +205,8 @@ theorem hp_pt (j N R : PTm n) :
   refine congrMul (c₁.eqTrans ?_) (congrBell (congrSucc (congrAdd (fst_pair N R) (.eqRefl (succ j)))))
   · refine .orE (lt_or_le j R) ?_ ?_
     · have hl : (lt j R :: Γ) ⊢[PRAAx] lt j R := Prf.hyp0
-      have a := natEq (eq_add_of_le hl)
       have e₀ : (lt j R :: Γ) ⊢[PRAAx] R ≐ succ (monus R (succ j)) + j := by
-        apply deriveNat; ipra_simps; linear_combination a
+        ipra_lc natEq (eq_add_of_le hl)
       have e : (lt j R :: Γ) ⊢[PRAAx] monus R j ≐ succ (monus R (succ j)) :=
         (congrMonus e₀ (.eqRefl _)).eqTrans (add_monus _ _)
       exact congrMul ((congrEv e).eqTrans (ev_succ _)) (.eqRefl _)
@@ -243,9 +223,8 @@ theorem hm_pt (j N R : PTm n) :
   refine congrMul (c₁.eqTrans ?_) (congrBell (congrSucc (congrAdd (fst_pair N R) (.eqRefl (succ j)))))
   · refine .orE (lt_or_le j R) ?_ ?_
     · have hl : (lt j R :: Γ) ⊢[PRAAx] lt j R := Prf.hyp0
-      have a := natEq (eq_add_of_le hl)
       have e₀ : (lt j R :: Γ) ⊢[PRAAx] R ≐ succ (monus R (succ j)) + j := by
-        apply deriveNat; ipra_simps; linear_combination a
+        ipra_lc natEq (eq_add_of_le hl)
       have e : (lt j R :: Γ) ⊢[PRAAx] monus R j ≐ succ (monus R (succ j)) :=
         (congrMonus e₀ (.eqRefl _)).eqTrans (add_monus _ _)
       exact congrMul ((congrOd e).eqTrans (od_succ _)) (.eqRefl _)
@@ -362,11 +341,8 @@ theorem claim_zero (N : PTm n) : Γ ⊢[PRAAx] F N zero + Gm N zero ≐ Gp N zer
 theorem claim_step {N R : PTm n} (h₀ : Γ ⊢[PRAAx] F N R + Gm N R ≐ Gp N R)
     (h₁ : Γ ⊢[PRAAx] F (succ N) R + Gm (succ N) R ≐ Gp (succ N) R) :
     Γ ⊢[PRAAx] F N (succ R) + Gm N (succ R) ≐ Gp N (succ R) := by
-  have c0 := natEq h₀; have c1 := natEq h₁
-  have fp := natEq (F_pascal (Γ := Γ) N R); have gp := natEq (Gp_pascal (Γ := Γ) N R)
-  have gm := natEq (Gm_pascal (Γ := Γ) N R)
-  apply deriveNat; ipra_simps
-  linear_combination gm - gp - fp + c1 - c0
+  ipra_lc natEq (Gm_pascal (Γ := Γ) N R) - natEq (Gp_pascal (Γ := Γ) N R) - natEq (F_pascal (Γ := Γ) N R) + natEq h₁ -
+    natEq h₀
 
 /-- `1 ∸ [F(n, r) + G⁻(n, r) = G⁺(n, r)]`, over `0 = n`, `1 = r`. -/
 abbrev vB : PTm 2 := monus one (eqb (F (var 0) (var 1) + Gm (var 0) (var 1)) (Gp (var 0) (var 1)))

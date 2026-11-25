@@ -4,6 +4,7 @@ import IPRADerivations.AnalyticNumberTheory.FactorVector
 import IPRADerivations.AnalyticNumberTheory.Mobius
 import IPRADerivations.AnalyticNumberTheory.ValuationMul
 import IPRADerivations.AnalyticNumberTheory.Totatives
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Four squares: one step of the descent
@@ -63,13 +64,11 @@ abbrev uv (x m : PTm k) : PTm k := quo x m + sgn x m
 
 theorem av0 {S M1 r mr : PTm k} (s0 : Γ ⊢[PRAAx] S ≐ zero) (m1 : Γ ⊢[PRAAx] M1 ≐ one) :
     Γ ⊢[PRAAx] M1 * r + S * mr ≐ r := by
-  have a := natEq s0; have b := natEq m1
-  apply deriveNat; ipra_simps; linear_combination 𝔞 r * b + 𝔞 mr * a
+  ipra_lc 𝔞 r * natEq m1 + 𝔞 mr * natEq s0
 
 theorem av1 {S M1 r mr : PTm k} (s1 : Γ ⊢[PRAAx] S ≐ one) (m0 : Γ ⊢[PRAAx] M1 ≐ zero) :
     Γ ⊢[PRAAx] M1 * r + S * mr ≐ mr := by
-  have a := natEq s1; have b := natEq m0
-  apply deriveNat; ipra_simps; linear_combination 𝔞 r * b + 𝔞 mr * a
+  ipra_lc 𝔞 r * natEq m0 + 𝔞 mr * natEq s1
 
 theorem res_low {x m : PTm k} (h : Γ ⊢[PRAAx] le (rem x m) (half m)) :
     Γ ⊢[PRAAx] (sgn x m ≐ zero) ⋏ (av x m ≐ rem x m) := by
@@ -83,14 +82,12 @@ theorem res_high {x m : PTm k} (h : Γ ⊢[PRAAx] lt (half m) (rem x m)) :
 
 theorem r1_low {x m q r S a : PTm k} (dx : Γ ⊢[PRAAx] x ≐ m * q + r) (s0 : Γ ⊢[PRAAx] S ≐ zero)
     (ea : Γ ⊢[PRAAx] a ≐ r) : Γ ⊢[PRAAx] x + two * (S * a) ≐ a + m * (q + S) := by
-  have d := natEq dx; have s := natEq s0; have e := natEq ea
-  apply deriveNat; ipra_simps; linear_combination d - e + (2 * 𝔞 a - 𝔞 m) * s
+  ipra_lc natEq dx - natEq ea + (2 * 𝔞 a - 𝔞 m) * natEq s0
 
 theorem r1_high {x m q r S a mr : PTm k} (dx : Γ ⊢[PRAAx] x ≐ m * q + r) (s1 : Γ ⊢[PRAAx] S ≐ one)
     (ea : Γ ⊢[PRAAx] a ≐ mr) (em : Γ ⊢[PRAAx] m ≐ r + mr) :
     Γ ⊢[PRAAx] x + two * (S * a) ≐ a + m * (q + S) := by
-  have d := natEq dx; have s := natEq s1; have e := natEq ea; have f := natEq em
-  apply deriveNat; ipra_simps; linear_combination d + e - f + (2 * 𝔞 a - 𝔞 m) * s
+  ipra_lc natEq dx + natEq ea - natEq em + (2 * 𝔞 a - 𝔞 m) * natEq s1
 
 /-- `x + 2 s a = a + m U`. -/
 theorem res_eq {m : PTm k} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (x : PTm k) :
@@ -103,12 +100,10 @@ theorem res_eq {m : PTm k} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (x : PTm k) 
     exact r1_low (Prf.andE₁ d).wk (Prf.andE₁ hl) (Prf.andE₂ hl)
 
 theorem idem0 {S : PTm k} (s0 : Γ ⊢[PRAAx] S ≐ zero) : Γ ⊢[PRAAx] S * S ≐ S := by
-  have a := natEq s0
-  apply deriveNat; ipra_simps; linear_combination (𝔞 S - 1) * a
+  ipra_lc (𝔞 S - 1) * natEq s0
 
 theorem idem1 {S : PTm k} (s1 : Γ ⊢[PRAAx] S ≐ one) : Γ ⊢[PRAAx] S * S ≐ S := by
-  have a := natEq s1
-  apply deriveNat; ipra_simps; linear_combination 𝔞 S * a
+  ipra_lc 𝔞 S * natEq s1
 
 /-- `s² = s`. -/
 theorem sgn_idem (x m : PTm k) : Γ ⊢[PRAAx] sgn x m * sgn x m ≐ sgn x m := by
@@ -185,44 +180,33 @@ theorem presum (he : ∀ i, Γ ⊢[PRAAx] resEq x A s U m i) (ht : ∀ i, Γ ⊢
     (n1 : Γ ⊢[PRAAx] N4 (x 0) (x 1) (x 2) (x 3) ≐ m * p) :
     Γ ⊢[PRAAx] N4 (A 0) (A 1) (A 2) (A 3) + m * (two * dotUA A U + m * N4 (U 0) (U 1) (U 2) (U 3)) ≐
       m * (p + (two * two) * dotUSA A s U) := by
-  have e0 := natEq (he 0); have e1 := natEq (he 1); have e2 := natEq (he 2); have e3 := natEq (he 3)
-  have t0 := natEq (ht 0); have t1 := natEq (ht 1); have t2 := natEq (ht 2); have t3 := natEq (ht 3)
-  have a := natEq n1
-  apply deriveNat; ipra_simps
-  linear_combination a -
-    (𝔞 (x 0) + 𝔞 (A 0) * (1 - 2 * 𝔞 (s 0)) + 𝔞 m * 𝔞 (U 0)) * e0 -
-    (𝔞 (x 1) + 𝔞 (A 1) * (1 - 2 * 𝔞 (s 1)) + 𝔞 m * 𝔞 (U 1)) * e1 -
-    (𝔞 (x 2) + 𝔞 (A 2) * (1 - 2 * 𝔞 (s 2)) + 𝔞 m * 𝔞 (U 2)) * e2 -
-    (𝔞 (x 3) + 𝔞 (A 3) * (1 - 2 * 𝔞 (s 3)) + 𝔞 m * 𝔞 (U 3)) * e3 -
-    4 * (𝔞 (A 0) * 𝔞 (A 0) * t0 + 𝔞 (A 1) * 𝔞 (A 1) * t1 + 𝔞 (A 2) * 𝔞 (A 2) * t2 + 𝔞 (A 3) * 𝔞 (A 3) * t3)
+  ipra_lc natEq n1 - (𝔞 (x 0) + 𝔞 (A 0) * (1 - 2 * 𝔞 (s 0)) + 𝔞 m * 𝔞 (U 0)) * natEq (he 0) -
+    (𝔞 (x 1) + 𝔞 (A 1) * (1 - 2 * 𝔞 (s 1)) + 𝔞 m * 𝔞 (U 1)) * natEq (he 1) -
+    (𝔞 (x 2) + 𝔞 (A 2) * (1 - 2 * 𝔞 (s 2)) + 𝔞 m * 𝔞 (U 2)) * natEq (he 2) -
+    (𝔞 (x 3) + 𝔞 (A 3) * (1 - 2 * 𝔞 (s 3)) + 𝔞 m * 𝔞 (U 3)) * natEq (he 3) -
+    4 * (𝔞 (A 0) * 𝔞 (A 0) * natEq (ht 0) + 𝔞 (A 1) * 𝔞 (A 1) * natEq (ht 1) + 𝔞 (A 2) * 𝔞 (A 2) * natEq (ht 2) + 𝔞 (A 3) * 𝔞 (A 3) * natEq (ht 3))
 
 /-- With every `a_i = 0`: `m p = m (m N(U))`. -/
 theorem zero_norm (hx : ∀ i, Γ ⊢[PRAAx] x i ≐ m * U i)
     (n1 : Γ ⊢[PRAAx] N4 (x 0) (x 1) (x 2) (x 3) ≐ m * p) :
     Γ ⊢[PRAAx] m * p ≐ m * (m * N4 (U 0) (U 1) (U 2) (U 3)) := by
-  have e0 := natEq (hx 0); have e1 := natEq (hx 1); have e2 := natEq (hx 2); have e3 := natEq (hx 3)
-  have a := natEq n1
-  apply deriveNat; ipra_simps
-  linear_combination -a + (𝔞 (x 0) + 𝔞 m * 𝔞 (U 0)) * e0 + (𝔞 (x 1) + 𝔞 m * 𝔞 (U 1)) * e1 +
-    (𝔞 (x 2) + 𝔞 m * 𝔞 (U 2)) * e2 + (𝔞 (x 3) + 𝔞 m * 𝔞 (U 3)) * e3
+  ipra_lc -natEq n1 + (𝔞 (x 0) + 𝔞 m * 𝔞 (U 0)) * natEq (hx 0) + (𝔞 (x 1) + 𝔞 m * 𝔞 (U 1)) * natEq (hx 1) +
+    (𝔞 (x 2) + 𝔞 m * 𝔞 (U 2)) * natEq (hx 2) + (𝔞 (x 3) + 𝔞 m * 𝔞 (U 3)) * natEq (hx 3)
 
 /-- With every `x_i ≡ h (mod m)` and `m = 2h`: `m p = m (m K)`. -/
 theorem tie_norm (hx : ∀ i, Γ ⊢[PRAAx] x i ≐ m * q i + h) (em : Γ ⊢[PRAAx] m ≐ two * h)
     (n1 : Γ ⊢[PRAAx] N4 (x 0) (x 1) (x 2) (x 3) ≐ m * p) :
     Γ ⊢[PRAAx] m * p ≐ m * (m * (N4 (q 0) (q 1) (q 2) (q 3) + (q 0 + q 1 + (q 2 + q 3)) + one)) := by
-  have e0 := natEq (hx 0); have e1 := natEq (hx 1); have e2 := natEq (hx 2); have e3 := natEq (hx 3)
-  have a := natEq n1; have f := natEq em
-  apply deriveNat; ipra_simps
-  linear_combination -a + (𝔞 (x 0) + 𝔞 m * 𝔞 (q 0) + 𝔞 h) * e0 + (𝔞 (x 1) + 𝔞 m * 𝔞 (q 1) + 𝔞 h) * e1 +
-    (𝔞 (x 2) + 𝔞 m * 𝔞 (q 2) + 𝔞 h) * e2 + (𝔞 (x 3) + 𝔞 m * 𝔞 (q 3) + 𝔞 h) * e3 -
-    (𝔞 m * (𝔞 (q 0) + 𝔞 (q 1) + (𝔞 (q 2) + 𝔞 (q 3))) + 2 * 𝔞 h + 𝔞 m) * f
+  ipra_lc -natEq n1 + (𝔞 (x 0) + 𝔞 m * 𝔞 (q 0) + 𝔞 h) * natEq (hx 0) +
+    (𝔞 (x 1) + 𝔞 m * 𝔞 (q 1) + 𝔞 h) * natEq (hx 1) + (𝔞 (x 2) + 𝔞 m * 𝔞 (q 2) + 𝔞 h) * natEq (hx 2) +
+    (𝔞 (x 3) + 𝔞 m * 𝔞 (q 3) + 𝔞 h) * natEq (hx 3) -
+    (𝔞 m * (𝔞 (q 0) + 𝔞 (q 1) + (𝔞 (q 2) + 𝔞 (q 3))) + 2 * 𝔞 h + 𝔞 m) * natEq em
 
 end Step
 
 theorem x_of_zero {x S a m U : PTm k} (e : Γ ⊢[PRAAx] x + two * (S * a) ≐ a + m * U)
     (a0 : Γ ⊢[PRAAx] a ≐ zero) : Γ ⊢[PRAAx] x ≐ m * U := by
-  have d := natEq e; have z := natEq a0
-  apply deriveNat; ipra_simps; linear_combination d - (2 * 𝔞 S - 1) * z
+  ipra_lc natEq e - (2 * 𝔞 S - 1) * natEq a0
 
 theorem zero_of_le_zero {a : PTm k} (h : Γ ⊢[PRAAx] le a zero) : Γ ⊢[PRAAx] a ≐ zero :=
   (monus_zero a).eqSymm.eqTrans h
@@ -281,9 +265,7 @@ theorem mq_pos {p : PTm k} (hp : Γ ⊢[PRAAx] prime p) (hm2 : Γ ⊢[PRAAx] le 
   have n2 := norm_eq hm n1
   refine .orE (zero_or_succ (mq x m)) ?_ (one_le_pos Prf.hyp0)
   have z : ((mq x m ≐ zero) :: Γ) ⊢[PRAAx] N4 (Af x m 0) (Af x m 1) (Af x m 2) (Af x m 3) ≐ zero := by
-    have a := natEq (n2.wk (ψ := mq x m ≐ zero))
-    have b := natEq (Prf.hyp0 (Γ := Γ) (φ := mq x m ≐ zero))
-    apply deriveNat; ipra_simps; linear_combination a + 𝔞 m * b
+    ipra_lc natEq (n2.wk (ψ := mq x m ≐ zero)) + 𝔞 m * natEq (Prf.hyp0 (Γ := Γ) (φ := mq x m ≐ zero))
   have a0 : ∀ i : Fin 4, ((mq x m ≐ zero) :: Γ) ⊢[PRAAx] Af x m i ≐ zero := fun i => by
     fin_cases i
     · exact zero_of_le_zero (le_N4_1 z)

@@ -1,5 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.CfValue
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The nested fraction with a rational tail

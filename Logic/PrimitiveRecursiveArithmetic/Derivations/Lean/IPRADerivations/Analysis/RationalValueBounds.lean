@@ -1,4 +1,7 @@
 import IPRADerivations.Analysis.AggregateChain
+import IPRADerivations.Core.CongruenceTactic
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Independent-denominator scalar rational error budgets
@@ -62,10 +65,7 @@ def radius (a b A B : PTm n) : Fm PTm n :=
 theorem denominator_positive (a : PTm n) : Γ ⊢[PRAAx] le one (denominatorOf a) := by
   exact (succ_monus_succ zero _).eqTrans (zero_le _)
 
-theorem positive_cancel {c a b : PTm n} (hc : Γ ⊢[PRAAx] le one c)
-    (h : Γ ⊢[PRAAx] le (c*a) (c*b)) : Γ ⊢[PRAAx] le a b := by
-  have e : Γ ⊢[PRAAx] c ≐ succ (monus c one) := (eq_add_of_le hc).eqTrans (by ipra_ring)
-  exact mul_le_cancel (le_congr (congrMul e (.eqRefl _)) (congrMul e (.eqRefl _)) h)
+alias positive_cancel := Common.mul_cancel_le
 
 theorem cross_absolute (a b : PTm n) :
     Γ ⊢[PRAAx] zabs (cross a b) ≐ ad (crossLeft a b) (crossLeft b a) := by
@@ -124,17 +124,13 @@ theorem radius_congr {a a' b b' A A' B B' : PTm n}
 theorem upper_triangle (a b c A B C D : PTm n)
     (hab : Γ ⊢[PRAAx] upper a b A B) (hbc : Γ ⊢[PRAAx] upper b c C D) :
     Γ ⊢[PRAAx] upper a c (A*D+C*B) (B*D) := by
-  have H := natEq (eq_add_of_le hab)
-  have K := natEq (eq_add_of_le hbc)
   apply positive_cancel (denominator_positive b)
   apply le_of_eq_add (d := D*denominatorOf c*monus
       (B*crossLeft b a+A*denominatorOf a*denominatorOf b) (B*crossLeft a b) +
     B*denominatorOf a*monus
       (D*crossLeft c b+C*denominatorOf b*denominatorOf c) (D*crossLeft b c))
-  apply deriveNat
-  simp only [crossLeft, Q.mk_add, Q.mk_mul, map_add, map_mul] at H K ⊢
-  linear_combination (Groth.ι (Q.mk Γ D)*Groth.ι (Q.mk Γ (denominatorOf c)))*H +
-    (Groth.ι (Q.mk Γ B)*Groth.ι (Q.mk Γ (denominatorOf a)))*K
+  ipra_lc [crossLeft] (Groth.ι (Q.mk Γ D)*Groth.ι (Q.mk Γ (denominatorOf c)))*natEq (eq_add_of_le hab) +
+    (Groth.ι (Q.mk Γ B)*Groth.ι (Q.mk Γ (denominatorOf a)))*natEq (eq_add_of_le hbc)
 
 theorem upper_of_order (a b A B : PTm n)
     (h : Γ ⊢[PRAAx] le (crossLeft a b) (crossLeft b a)) :
@@ -212,10 +208,7 @@ theorem negate_denominator (a : PTm n) : Γ ⊢[PRAAx] denominatorOf (negate a) 
   congrSucc (snd_pair _ _)
 
 theorem negate_congr {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) : Γ ⊢[PRAAx] negate a ≐ negate b := by
-  have e := Prf.eqCongr (negate (var 0) : PTm 1) (σ := ![a]) (σ' := ![b]) (fun i => by
-    fin_cases i
-    exact h)
-  simpa only [subst_negate, Syn.subst_var, Matrix.cons_val_zero] using e
+  ipra_congr (negate (var 0) : PTm 1) with [h]
 
 theorem crossLeft_negate (a b : PTm n) :
     Γ ⊢[PRAAx] crossLeft (negate b) (negate a) ≐ crossLeft a b :=

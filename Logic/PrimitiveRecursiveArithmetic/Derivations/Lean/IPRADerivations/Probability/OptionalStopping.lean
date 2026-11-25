@@ -1,7 +1,7 @@
 import IPRADerivations.Probability.Expectation
 import IPRADerivations.Probability.FirstCrossing
 import IPRADerivations.Core.Fubini
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The bounded optional stopping theorem

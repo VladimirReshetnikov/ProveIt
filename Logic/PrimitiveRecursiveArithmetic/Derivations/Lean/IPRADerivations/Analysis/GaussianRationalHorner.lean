@@ -2,6 +2,7 @@ import IPRADerivations.Analysis.GaussianRationalRootProduct
 import IPRADerivations.Analysis.RationalRepresentations
 import IPRADerivations.Analysis.GaussianPolynomialPerturbation
 import IPRADerivations.Analysis.GaussianRationalNormalization
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Canonical Gaussian-rational Horner evaluation
@@ -92,22 +93,14 @@ theorem scalar_congr {c d : PTm n} {a b : ZT n} {A B : PTm n}
 theorem scalar_rescale (c : PTm n) (a : ZT n) (A t : PTm n)
     (h : Γ ⊢[PRAAx] RationalArithmetic.represents c a A) :
     Γ ⊢[PRAAx] RationalArithmetic.represents c (a*ZT.ofNat t) (A*t) := by
-  apply ZT.derive
-  have e := ZT.toZ_eq h
-  simp only [RationalArithmetic.represents,ZT.toZ_mul,ZT.toZ_ofNat] at e ⊢
-  ipra_simps
-  linear_combination 𝔞(t)*e
+  ipra_lc [RationalArithmetic.represents] 𝔞(t)*ZT.toZ_eq h
 
 theorem scalar_cancel (c : PTm n) (a : ZT n) (A t : PTm n)
     (ht : Γ ⊢[PRAAx] le one t)
     (h : Γ ⊢[PRAAx] RationalArithmetic.represents c (a*ZT.ofNat t) (A*t)) :
     Γ ⊢[PRAAx] RationalArithmetic.represents c a A := by
   apply RationalNormalForm.positive_integer_cancel t _ _ ht
-  apply ZT.derive
-  have e := ZT.toZ_eq h
-  simp only [RationalArithmetic.represents,ZT.toZ_mul,ZT.toZ_ofNat] at e ⊢
-  ipra_simps
-  linear_combination e
+  ipra_lc [RationalArithmetic.represents] ZT.toZ_eq h
 
 theorem scalar_add_same (c d : PTm n) (a b : ZT n) (A : PTm n)
     (hA : Γ ⊢[PRAAx] le one A)
@@ -117,9 +110,7 @@ theorem scalar_add_same (c d : PTm n) (a b : ZT n) (A : PTm n)
   apply scalar_cancel _ _ _ A hA
   have h := represents_add c d a b A A hc hd
   refine scalar_congr (.eqRefl _) ?_ (.eqRefl _) h
-  apply ZT.derive
-  simp only [ZT.toZ_add,ZT.toZ_mul]
-  ring
+  ipra_lc
 
 theorem represents_congr {q r a b A B : PTm n}
     (hqr : Γ ⊢[PRAAx] q ≐ r) (hab : Γ ⊢[PRAAx] equal a b) (hAB : Γ ⊢[PRAAx] A ≐ B)
@@ -183,7 +174,7 @@ theorem qmul_represents (q r a b A B : PTm n)
       (scalar_add_same _ _ _ _ _ (positive_product A B hA hB) rr ii))
     (scalar_congr (snd_pair _ _).eqSymm ?_ (.eqRefl _)
       (scalar_add_same _ _ _ _ _ (positive_product A B hA hB) ri ir))
-  · apply ZT.derive; simp only [ZT.toZ_add,ZT.toZ_neg,ZT.toZ_mul,re_mul]; ring
+  · ipra_lc [re_mul]
   · apply ZT.derive; simp only [ZT.toZ_add,ZT.toZ_mul,im_mul]
 
 def hornerStep : PTm 4 := qadd (qmul (var 1) (var 3)) (entry (var 2) (var 0))
@@ -224,11 +215,7 @@ theorem scalar_same_value (c d : PTm n) (a : ZT n) (A : PTm n)
     Γ ⊢[PRAAx] ZT.eq (numeratorOf c*ZT.ofNat (denominatorOf d))
       (numeratorOf d*ZT.ofNat (denominatorOf c)) := by
   apply RationalNormalForm.positive_integer_cancel A _ _ hA
-  apply ZT.derive
-  have ec := ZT.toZ_eq hc
-  have ed := ZT.toZ_eq hd
-  simp only [RationalArithmetic.represents,ZT.toZ_mul,ZT.toZ_ofNat] at ec ed ⊢
-  linear_combination -𝔞(denominatorOf d)*ec+𝔞(denominatorOf c)*ed
+  ipra_lc [RationalArithmetic.represents] -𝔞(denominatorOf d)*ZT.toZ_eq hc+𝔞(denominatorOf c)*ZT.toZ_eq hd
 
 theorem canonical_unique (q r a A : PTm n)
     (hq : Γ ⊢[PRAAx] canonical q) (hr : Γ ⊢[PRAAx] canonical r)

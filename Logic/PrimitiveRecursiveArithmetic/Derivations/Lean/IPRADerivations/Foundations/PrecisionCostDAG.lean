@@ -6,7 +6,7 @@ import IPRADerivations.Foundations.BoundedEnumeration
 import IPRADerivations.Core.SumLemmas
 import IPRADerivations.Foundations.RealizerComposition
 import IPRADerivations.Core.CongruenceTactic
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Actual rational budgets on finite topologically ordered dependency graphs

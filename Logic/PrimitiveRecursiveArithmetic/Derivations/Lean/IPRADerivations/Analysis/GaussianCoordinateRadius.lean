@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianRationalValueEquality
 import IPRADerivations.Analysis.RationalValueBounds
 import IPRADerivations.Analysis.GaussianRationalDirectionNormalizer
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Coordinate bounds from the original Gaussian distance
@@ -57,10 +58,7 @@ theorem scalar_bound (a b E A B : PTm n) (u v : ZT n)
   apply positive_cancel hE
   have left : Γ ⊢[PRAAx] E*(B*zabs (cross a b)) ≐
       (B*zabs (u-v))*(denominatorOf a*denominatorOf b) := by
-    have e := natEq (scaled_cross a b E u v ha hb)
-    apply deriveNat
-    ipra_simps
-    linear_combination 𝔞(B)*e
+    ipra_lc 𝔞(B)*natEq (scaled_cross a b E u v ha hb)
   exact le_congr left.eqSymm (by ipra_ring)
     (mul_le_mul_right (denominatorOf a*denominatorOf b) h)
 

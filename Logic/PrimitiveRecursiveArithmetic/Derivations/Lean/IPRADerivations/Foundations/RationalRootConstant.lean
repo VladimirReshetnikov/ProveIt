@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.RationalRootDegree
 import IPRADerivations.Core.SumReflect
 import IPRADerivations.Core.SumLemmas
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Rational roots: the constant coefficient (`ipra_presentations_to_witnesses`, `lem:norm-rational-roots`)
@@ -54,9 +55,7 @@ theorem monus_monus' {j n : PTm k} (h : Γ ⊢[PRAAx] le j n) :
   have e₁ := natEq (eq_add_of_le h)
   have hd : Γ ⊢[PRAAx] le (monus n j) n :=
     le_of_eq_add (d := j) (by apply deriveNat; ipra_simps; linear_combination e₁)
-  have e₂ := natEq (eq_add_of_le hd)
-  apply deriveNat; ipra_simps
-  linear_combination e₁ - e₂
+  ipra_lc e₁ - natEq (eq_add_of_le hd)
 
 variable (a : PTm 2)
 
@@ -85,13 +84,9 @@ theorem rev_pt {i p q d x : PTm k} (hi : Γ ⊢[PRAAx] lt i (succ d)) :
         inst2 (tB a) (monus d i) (pairT p (pairT q (pairT d x))) :=
     congrInst2 (tB a)
       ((congrMonus (fst_pair _ _) (.eqRefl _)).eqTrans (succ_monus_succ d i)) (snd_pair _ _)
-  have e₁ := natEq (l₀.eqTrans (tB_at a (monus d i) p q d x))
-  have e₂ := natEq (tB_at (Γ := Γ) (revC a) i q p d (pairT d x))
-  have e₃ := natEq (revC_at (Γ := Γ) a i d x)
-  have e₄ := natEq (congrPw (.eqRefl q) (monus_monus' hle))
-  apply deriveNat; ipra_simps
-  linear_combination e₁ - e₂ + 𝔞 (pw p (monus d i)) * 𝔞 (inst2 a (monus d i) x) * e₄ -
-    𝔞 (pw p (monus d i)) * 𝔞 (pw q i) * e₃
+  ipra_lc natEq (l₀.eqTrans (tB_at a (monus d i) p q d x)) - natEq (tB_at (Γ := Γ) (revC a) i q p d (pairT d x)) +
+    𝔞 (pw p (monus d i)) * 𝔞 (inst2 a (monus d i) x) * natEq (congrPw (.eqRefl q) (monus_monus' hle)) -
+    𝔞 (pw p (monus d i)) * 𝔞 (pw q i) * natEq (revC_at (Γ := Γ) a i d x)
 
 /-- Reading the homogeneous polynomial from the other end. -/
 theorem reversal (p q d x : PTm k) :
@@ -128,18 +123,15 @@ theorem dvd_le {m' C : PTm k} (h : Γ ⊢[PRAAx] dvd (succ m') C)
   have e := eq_of_dvd h
   refine .orE (zero_or_succ (quo C (succ m'))) ?_ ?_
   · -- a zero cofactor would make `C` zero
-    have z := natEq (Prf.hyp0 (Γ := Γ) (φ := quo C (succ m') ≐ zero))
     have e' := natEq (e.wk (ψ := quo C (succ m') ≐ zero))
     have c0 : ((quo C (succ m') ≐ zero) :: Γ) ⊢[PRAAx] C ≐ zero := by
-      apply deriveNat; ipra_simps
-      linear_combination e' + (𝔞 m' + 1) * z
+      ipra_lc e' + (𝔞 m' + 1) * natEq (Prf.hyp0 (Γ := Γ) (φ := quo C (succ m') ≐ zero))
     exact succ_ne_zero' _ (hC.wk.eqSymm.eqTrans c0)
   · have s := natEq (Prf.hyp0 (Γ := Γ)
       (φ := quo C (succ m') ≐ succ (pred (quo C (succ m')))))
     have e' := natEq (e.wk (ψ := quo C (succ m') ≐ succ (pred (quo C (succ m')))))
     refine le_of_eq_add (d := succ m' * pred (quo C (succ m'))) ?_
-    apply deriveNat; ipra_simps
-    linear_combination e' + (𝔞 m' + 1) * s
+    ipra_lc e' + (𝔞 m' + 1) * s
 
 /-- The numerator of a root is bounded by the absolute value of a nonzero constant
 coefficient: `p ≤ |c_0|`. -/

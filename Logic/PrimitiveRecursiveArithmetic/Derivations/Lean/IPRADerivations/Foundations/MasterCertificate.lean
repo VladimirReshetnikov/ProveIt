@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.BoundedFormulas
 import IPRADerivations.Core.ClockedDescent
 import IPRADerivations.AnalyticNumberTheory.Totatives
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Finite master certificates
@@ -209,10 +210,7 @@ private theorem fmAt_congr (A : BF) {u v : PTm n} (h : Γ ⊢[PRAAx] u ≐ v)
     (fun i => by fin_cases i; exact h) source
   simpa only [fmAt_subst, Syn.subst_var, Matrix.cons_val_zero] using target
 
-private theorem pair_congr {a a' b b' : PTm n}
-    (ha : Γ ⊢[PRAAx] a ≐ a') (hb : Γ ⊢[PRAAx] b ≐ b') :
-    Γ ⊢[PRAAx] pairT a b ≐ pairT a' b' :=
-  congrAdd (congrMul (congrAdd ha hb) (congrAdd ha hb)) ha
+private alias pair_congr := Common.congrPairT
 
 /-- `thm:master`: bounded pointwise totality validates the explicit PR master code. -/
 theorem master_valid (b : PTm 1) (A : BF) (N x : PTm n)

@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.RationalReciprocalPowerTail
 import IPRADerivations.Analysis.RationalCubeInfimumName
 import IPRADerivations.Analysis.RationalClosure
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual cofinal reciprocal-power names
@@ -36,10 +37,7 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 theorem tail_congr {m N r a B s : PTm n} (hm : Γ ⊢[PRAAx] m ≐ a)
     (hN : Γ ⊢[PRAAx] N ≐ B) (hr : Γ ⊢[PRAAx] r ≐ s) : Γ ⊢[PRAAx] tail m N r ≐ tail a B s := by
-  simpa only [RationalReciprocalPowerTail.subst_tail,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-    Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (tail (var 0) (var 1) (var 2) : PTm 3) (σ := ![m,N,r]) (σ' := ![a,B,s])
-      (fun i => by fin_cases i; exact hm; exact hN; exact hr)
+  ipra_congr (tail (var 0) (var 1) (var 2) : PTm 3) with [hm, hN, hr]
 
 theorem split_zero (m N r : PTm n) : Γ ⊢[PRAAx]
     tail m N (r+zero) ≐ add (tail m N r) (tail m (N+r) zero) :=
@@ -181,10 +179,7 @@ def reconstructedSample (p m N : PTm n) : PTm n := ap2 reconstructionF p (tailDa
 theorem observation_congr {p m N q a B : PTm n} (hp : Γ ⊢[PRAAx] p ≐ q)
     (hm : Γ ⊢[PRAAx] m ≐ a) (hN : Γ ⊢[PRAAx] N ≐ B) :
     Γ ⊢[PRAAx] observation p m N ≐ observation q a B := by
-  simpa only [subst_observation,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (observation (var 0) (var 1) (var 2) : PTm 3) (σ := ![p,m,N]) (σ' := ![q,a,B])
-      (fun i => by fin_cases i; exact hp; exact hm; exact hN)
+  ipra_congr (observation (var 0) (var 1) (var 2) : PTm 3) with [hp, hm, hN]
 
 theorem zeta_sample_at (p m : PTm n) : Γ ⊢[PRAAx] zetaSample p m ≐ observation p m zero := by
   simpa only [zetaSample,zetaF,ap2,subst_observation,Syn.subst_var,ConciseIPRA.PTm.subst_zero,

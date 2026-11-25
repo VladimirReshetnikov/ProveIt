@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianGammaFiniteInputContinuity
 import IPRADerivations.Analysis.GaussianGammaEncodingRescaling
 import IPRADerivations.Analysis.GaussianNamedRateTransport
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Original finite Q_N continuity at independently encoded inputs
@@ -31,11 +32,7 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 theorem q_data_denominator_congr (z B C N : PTm n) (h : Γ ⊢[PRAAx] B ≐ C) : Γ ⊢[PRAAx]
     qData z B N ≐ qData z C N := by
-  simpa only [GaussianGammaFiniteInputContinuity.subst_finite_data,Syn.subst_var,
-    Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (qData (var 0) (var 1) (var 2) : PTm 3)
-      (σ := ![z,B,N]) (σ' := ![z,C,N])
-      (fun i => by fin_cases i; exact .eqRefl _; exact h; exact .eqRefl _)
+  ipra_congr (qData (var 0) (var 1) (var 2) : PTm 3) with [.eqRefl z, h, .eqRefl N]
 
 theorem original_mixed_independent_rate (z w R B C A D N : PTm n)
     (hN : Γ ⊢[PRAAx] le one N) (hB : Γ ⊢[PRAAx] le one B)

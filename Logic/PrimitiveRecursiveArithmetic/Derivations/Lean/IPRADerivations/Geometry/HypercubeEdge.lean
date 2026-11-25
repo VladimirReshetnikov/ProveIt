@@ -2,7 +2,8 @@ import IPRADerivations.Geometry.HypercubeSplit
 import IPRADerivations.Combinatorics.IndependentSets
 import IPRADerivations.DiophantineNumberTheory.FLTMultiples
 import IPRADerivations.Combinatorics.BinomialTwo
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The hypercube edge inequality
@@ -223,8 +224,7 @@ theorem c_at (w m r x : PTm n) :
 /-- `c = #{w < 2^d : 2w, 2w + 1 ∈ S}`. -/
 abbrev Cc {n : ℕ} (d m r x : PTm n) : PTm n := ap2 (sumF (cB χ)) (pw two d) (Y m r x)
 
-theorem nb_of_zero {b : PTm n} (h : Γ ⊢[PRAAx] b ≐ zero) : Γ ⊢[PRAAx] monus one b ≐ one :=
-  (congrMonus (.eqRefl _) h).eqTrans (monus_zero _)
+alias nb_of_zero := Common.monus_one_of_zero
 
 theorem nb_of_one {b : PTm n} (h : Γ ⊢[PRAAx] b ≐ one) : Γ ⊢[PRAAx] monus one b ≐ zero :=
   (congrMonus (.eqRefl _) h).eqTrans (monus_self _)
@@ -289,10 +289,7 @@ section Ineq
 
 variable (χ : PTm 2)
 
-theorem sg_le_one (z : PTm n) : Γ ⊢[PRAAx] le (sg z) one := by
-  refine .orE (zo_sg z) ?_ ?_
-  · exact le_congr Prf.hyp0.eqSymm (.eqRefl _) (zero_le _)
-  · exact le_congr Prf.hyp0.eqSymm (.eqRefl _) (le_refl _)
+alias sg_le_one := Common.sg_le_one
 
 theorem c_le_left (d m r x : PTm n) : Γ ⊢[PRAAx] le (Cc χ d m r x) (K χ d (two * m) r x) := by
   refine sum_le_params _ _ _ _ _ (.allI (.impI ?_))

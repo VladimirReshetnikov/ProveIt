@@ -1,7 +1,7 @@
 import IPRADerivations.Combinatorics.CatalanPowers
 import IPRADerivations.Combinatorics.CatalanExtensions
 import IPRADerivations.Foundations.ShiftedInduction
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The `k`-fold Catalan convolution

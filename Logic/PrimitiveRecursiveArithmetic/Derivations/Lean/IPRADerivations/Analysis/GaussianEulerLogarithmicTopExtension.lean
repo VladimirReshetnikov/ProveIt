@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianEulerLogarithmicCutoffSplit
 import IPRADerivations.Analysis.GaussianEulerLogarithmicUpperCutoffBudget
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Compare original logarithmic intervals with the same lower endpoint
@@ -59,11 +60,7 @@ private theorem combined_width (E L T : PTm n) (hE : Γ ⊢[PRAAx] le one E) (hL
   have mid := le_trans (le_of_eq_add (d := one) (by ipra_ring : Γ ⊢[PRAAx] two ≐ one+one)) (positive_top L hL)
   have go := (congrMul (.eqRefl E) (eq_add_of_le hT)).eqTrans
     (by unfold tailWidth; ipra_ring : Γ ⊢[PRAAx] E*(two*L+monus T (two*L)) ≐ E*(two*L)+tailWidth E L T)
-  have both := natEq (go.eqTrans (congrAdd (right_endpoint E (two*L) hE mid).eqSymm (.eqRefl _)))
-  have larger := natEq (right_endpoint E T hE (le_trans mid hT))
-  apply deriveNat
-  ipra_simps
-  linear_combination -(both+larger)
+  ipra_lc -(natEq (go.eqTrans (congrAdd (right_endpoint E (two*L) hE mid).eqSymm (.eqRefl _)))+natEq (right_endpoint E T hE (le_trans mid hT)))
 
 private theorem shifted_short_source (z R B E L T : PTm n) (h : Γ ⊢[PRAAx] GaussianEulerUpperPowerCoefficients.source z R B)
     (hE : Γ ⊢[PRAAx] le one E) (hL : Γ ⊢[PRAAx] le one L) (hT : Γ ⊢[PRAAx] le (two*L) T) : Γ ⊢[PRAAx]

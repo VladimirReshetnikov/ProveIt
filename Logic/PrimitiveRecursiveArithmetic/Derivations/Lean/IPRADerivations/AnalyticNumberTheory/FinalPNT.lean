@@ -1,5 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.PiModulus
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The arithmetic prime number theorem in iPRA (`pnt_ipra_constructive_2026-11-14`, Theorem `thm:main`)

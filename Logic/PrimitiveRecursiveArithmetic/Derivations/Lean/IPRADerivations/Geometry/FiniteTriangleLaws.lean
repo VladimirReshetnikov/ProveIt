@@ -1,5 +1,5 @@
 import IPRADerivations.Core.PolynomialInequalities
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The finite radical Heron and finite trigonometric laws (`triangle_formulas_ipra`, `thm:finite-heron`, `thm:finite-trig`)

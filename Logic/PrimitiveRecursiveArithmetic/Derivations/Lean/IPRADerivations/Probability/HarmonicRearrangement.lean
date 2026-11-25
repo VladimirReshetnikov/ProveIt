@@ -1,6 +1,6 @@
 import IPRADerivations.Probability.Independence
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Finite harmonic identities behind the rearranged alternating series

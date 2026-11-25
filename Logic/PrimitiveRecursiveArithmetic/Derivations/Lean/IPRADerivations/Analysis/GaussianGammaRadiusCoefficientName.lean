@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianGammaHigherCoefficientName
 import IPRADerivations.Analysis.GaussianNameConjugation
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Original coefficient names at an admissible common radius
@@ -54,10 +55,7 @@ def sample (p R e : PTm n) : PTm n := ap2 nameF p (data R e)
 
 theorem raw_congr {p R e p' R' e' : PTm n} (hp : Γ ⊢[PRAAx] p ≐ p') (hR : Γ ⊢[PRAAx] R ≐ R')
     (he : Γ ⊢[PRAAx] e ≐ e') : Γ ⊢[PRAAx] rawValue p R e ≐ rawValue p' R' e' := by
-  simpa only [subst_rawValue,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (rawValue (var 0) (var 1) (var 2) : PTm 3)
-      (σ := ![p,R,e]) (σ' := ![p',R',e']) (fun i => by fin_cases i; exact hp; exact hR; exact he)
+  ipra_congr (rawValue (var 0) (var 1) (var 2) : PTm 3) with [hp, hR, he]
 theorem raw_at (p R e : PTm n) : Γ ⊢[PRAAx] ap2 rawF p (rawData R e) ≐ rawValue p R e := by
   have actual : Γ ⊢[PRAAx] ap2 rawF p (rawData R e) ≐ rawValue p (fstT (rawData R e)) (sndT (rawData R e)) := by
     simpa only [rawF,ap2,subst_rawValue,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using

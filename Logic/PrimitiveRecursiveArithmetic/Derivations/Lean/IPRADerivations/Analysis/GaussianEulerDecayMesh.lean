@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianEulerDecayIncrement
 import IPRADerivations.Analysis.GaussianCompactRiemannName
 import IPRADerivations.Analysis.GaussianGammaEncodingRescaling
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Finite telescoping for the original Euler decay
@@ -61,18 +62,12 @@ theorem read_grid (a b p i : PTm n) : Γ ⊢[PRAAx]
   have front : Γ ⊢[PRAAx] fstT x+i ≐ a+i := congrAdd (fst_pair a v) (.eqRefl i)
   have middle : Γ ⊢[PRAAx] fstT (sndT x) ≐ b := (congrFst (snd_pair a v)).eqTrans (fst_pair b p)
   have last : Γ ⊢[PRAAx] sndT (sndT x) ≐ p := (congrSnd (snd_pair a v)).eqTrans (snd_pair b p)
-  simpa [sample,x] using Prf.eqCongr (Γ := Γ) (Ax := PRAAx)
-    (observation (var 0) (var 1) (var 2) : PTm 3)
-    (σ := ![fstT x+i,fstT (sndT x),sndT (sndT x)]) (σ' := ![a+i,b,p])
-    (fun k => by fin_cases k; exact front; exact middle; exact last)
+  ipra_congr (observation (var 0) (var 1) (var 2) : PTm 3) with [front, middle, last] using [sample, x]
 
 private theorem obs_point_congr (a b c d p : PTm n) (h : Γ ⊢[PRAAx] decayPoint a b ≐ decayPoint c d) :
     Γ ⊢[PRAAx] observation a b p ≐ observation c d p := by
-  simpa [observation,decayData,GaussianGammaFiniteApproximantName.exponentialInputData] using
-    Prf.eqCongr (Γ := Γ) (Ax := PRAAx)
-      (ap2 decayF (var 0) (GaussianRadiusExponentialName.data (GaussianNameBounds.U constantF (var 1)) (var 1)) : PTm 2)
-      (σ := ![p,decayPoint a b]) (σ' := ![p,decayPoint c d])
-      (fun k => by fin_cases k; exact .eqRefl p; exact h)
+  ipra_congr (ap2 decayF (var 0) (GaussianRadiusExponentialName.data (GaussianNameBounds.U constantF (var 1)) (var 1)) : PTm 2) with
+    [.eqRefl p, h] using [observation, decayData, GaussianGammaFiniteApproximantName.exponentialInputData]
 
 theorem observation_numerator_congr (a c b p : PTm n) (e : Γ ⊢[PRAAx] a ≐ c) :
     Γ ⊢[PRAAx] observation a b p ≐ observation c b p :=

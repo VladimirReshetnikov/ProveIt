@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.RationalSubspaceCoverSearch
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Padding a supplied rational span cover
@@ -130,10 +131,7 @@ theorem padded_coverage (T D M N : PTm n) (hm : Γ ⊢[PRAAx] le (length D) M)
 
 private theorem cover_bit_congr (T N : PTm n) {M K : PTm n} (he : Γ ⊢[PRAAx] M ≐ K) :
     Γ ⊢[PRAAx] coverBit T M N ≐ coverBit T K N := by
-  simpa only [RationalSubspaceCoverSearch.subst_coverBit,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-    Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (coverBit (var 0) (var 1) (var 2) : PTm 3) (σ := ![T,M,N]) (σ' := ![T,K,N])
-      (fun i => by fin_cases i; exact .eqRefl _; exact he; exact .eqRefl _)
+  ipra_congr (coverBit (var 0) (var 1) (var 2) : PTm 3) with [.eqRefl T, he, .eqRefl N]
 
 theorem supplied_at_most_cover_bit (T D M N : PTm n) (hN : Γ ⊢[PRAAx] le one N)
     (hm : Γ ⊢[PRAAx] le (length D) M) (hf : Γ ⊢[PRAAx] family D N) (hc : Γ ⊢[PRAAx] covered T D N) :

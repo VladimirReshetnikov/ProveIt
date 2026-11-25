@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.SymmetryInstances
 import IPRADerivations.AnalyticNumberTheory.DivisorSwapP
 import IPRADerivations.Probability.Independence
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Möbius inversion over multiples (the sieve inversion)
@@ -66,9 +67,7 @@ theorem inst2_hS (d s : PTm n) : inst2 hS d s = eqb (rem d s) zero := by simp [i
 
 theorem dl_alg {S R R' E F : PTm n} (h1 : Γ ⊢[PRAAx] F ≐ E) (h2 : Γ ⊢[PRAAx] R' ≐ R) :
     Γ ⊢[PRAAx] (S * R) * (E * one) ≐ F * (S * R') := by
-  have f1 := natEq h1; have f2 := natEq h2
-  apply deriveNat; ipra_simps
-  linear_combination -𝔞 S * 𝔞 R * f1 - 𝔞 F * 𝔞 S * f2
+  ipra_lc -𝔞 S * 𝔞 R * natEq h1 - 𝔞 F * 𝔞 S * natEq h2
 
 /-- The summand of `(δ_s * 𝟏)(k)` at `e` is the summand `[s = e] [e ≥ 1][e ∣ k]` of a delta sum. -/
 theorem dl_pt (e k s : PTm n) :
@@ -129,7 +128,7 @@ theorem cong_pt (a : PTm 2) {d r s : PTm n} (hr : Γ ⊢[PRAAx] r ≐ succ (pred
       have hq := pos_of_eq_mul hr.wk.wk eN
       exact congrMul (.eqRefl _) (congrMul (.eqRefl _) (ind_conv hq hs.wk.wk).eqSymm)
     · have z : (neg (rem r d ≐ zero) :: (d ≐ succ (pred d)) :: Γ) ⊢[PRAAx] sg d * eqb (rem r d) zero ≐ zero :=
-        (congrMul (.eqRefl _) (eqb_of_ne Prf.hyp0)).eqTrans (by apply deriveNat; ipra_simps; ring)
+        (congrMul (.eqRefl _) (eqb_of_ne Prf.hyp0)).eqTrans (by ipra_ring)
       exact (zero_mul_l z _).eqTrans (zero_mul_l z _).eqSymm
 
 /-- `Σ_{d ∣ r} [s ∣ d] μ⁺(r/d) = [r = s] + Σ_{d ∣ r} [s ∣ d] μ⁻(r/d)` for `r, s ≥ 1`. -/
@@ -207,10 +206,7 @@ theorem colK (a : PTm 2) (r Z s p : PTm n) :
 theorem col_alg {P N K K' SP SN CP CN E F : PTm n} (kP : Γ ⊢[PRAAx] P ≐ K * SP) (kN : Γ ⊢[PRAAx] N ≐ K * SN)
     (cP : Γ ⊢[PRAAx] SP ≐ CP) (cN : Γ ⊢[PRAAx] SN ≐ CN) (cf : Γ ⊢[PRAAx] CP ≐ E + CN)
     (eF : Γ ⊢[PRAAx] F ≐ E) (eK : Γ ⊢[PRAAx] K' ≐ K) : Γ ⊢[PRAAx] P ≐ F * K' + N := by
-  have a := natEq kP; have b := natEq kN; have c := natEq cP; have d := natEq cN
-  have e := natEq cf; have f := natEq eF; have g := natEq eK
-  apply deriveNat; ipra_simps
-  linear_combination a - b + 𝔞 K * c - 𝔞 K * d + 𝔞 K * e - 𝔞 K' * f - 𝔞 E * g
+  ipra_lc natEq kP - natEq kN + 𝔞 K * natEq cP - 𝔞 K * natEq cN + 𝔞 K * natEq cf - 𝔞 K' * natEq eF - 𝔞 E * natEq eK
 
 /-- The column `r ≤ Z` of the `μ⁺` sum is `[r = s][r ≥ 1] y_r` plus the column of the `μ⁻` sum. -/
 theorem col_eq {r Z s p : PTm n} (hrZ : Γ ⊢[PRAAx] lt r (succ Z)) (hs : Γ ⊢[PRAAx] s ≐ succ (pred s)) :

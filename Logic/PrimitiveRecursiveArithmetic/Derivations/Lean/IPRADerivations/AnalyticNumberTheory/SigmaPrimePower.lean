@@ -113,7 +113,7 @@ theorem dvd_scale {p Q : PTm n} (hp : Γ ⊢[PRAAx] p ≐ succ (pred p)) (hQ : �
     have hpk := pos_of_dvd hpQ hd
     have e := eq_of_dvd' hpk hd
     have c : C ⊢[PRAAx] p * Q ≐ p * (k * quo (p * Q) (p * k)) :=
-      e.eqTrans (by apply deriveNat; ipra_simps; ring)
+      e.eqTrans (by ipra_ring)
     have hk : C ⊢[PRAAx] k ≐ succ (pred k) := by
       refine .orE (zero_or_succ k) ?_ Prf.hyp0
       have z : ((k ≐ zero) :: C) ⊢[PRAAx] p * k ≐ zero := (congrMul (.eqRefl _) Prf.hyp0).eqTrans (mul_zero _)
@@ -126,7 +126,7 @@ theorem dvd_scale {p Q : PTm n} (hp : Γ ⊢[PRAAx] p ≐ succ (pred p)) (hQ : �
     have pk := pos_of_dvd hQ.wk hk
     have e := eq_of_dvd' pk hk
     refine eqb_of_eq (dvd_of_eq' (pos_mul hp.wk pk) (w := quo Q k) ?_)
-    exact (congrMul (.eqRefl _) e).eqTrans (by apply deriveNat; ipra_simps; ring)
+    exact (congrMul (.eqRefl _) e).eqTrans (by ipra_ring)
 
 /-- The split of one divisor term: `[d ∣ pQ] d = [p ∣ d] h(d/p) + (1 − [p ∣ d]) [d ∣ pQ] d`. -/
 theorem split_pt {p Q : PTm n} (hp : Γ ⊢[PRAAx] p ≐ succ (pred p)) (d : PTm n) :
@@ -183,9 +183,9 @@ theorem rest_pt {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (a d : PTm n) :
           ((mul_comm _ _).eqTrans (pw_succ p a).eqSymm)).eqTrans g3
       have d1 : C' ⊢[PRAAx] d ≐ one := eq_one_of_coprime_dvd pd g4 hd
       have l : C' ⊢[PRAAx] monus one (eqb (rem d p) zero) * (eqb (rem (p * pw p a) d) zero * d) ≐ one :=
-        (congrMul m1.wk (congrMul Prf.hyp0 d1)).eqTrans (by apply deriveNat; ipra_simps; ring)
+        (congrMul m1.wk (congrMul Prf.hyp0 d1)).eqTrans (by ipra_ring)
       have r : C' ⊢[PRAAx] eqb one d * one ≐ one :=
-        (congrMul (eqb_of_eq d1.eqSymm) (.eqRefl _)).eqTrans (by apply deriveNat; ipra_simps; ring)
+        (congrMul (eqb_of_eq d1.eqSymm) (.eqRefl _)).eqTrans (by ipra_ring)
       exact l.eqTrans r.eqSymm
   · -- `p ∣ d`: the term vanishes and `d ≠ 1`
     let C : List (Fm PTm n) := (eqb (rem d p) zero ≐ one) :: Γ
@@ -235,7 +235,7 @@ theorem sigma_step {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (a : PTm n) :
     refine (congrMul (dvd_scale hp1'.wk hQ'.wk (var 0)) (.eqRefl _)).eqTrans ?_
     refine Prf.eqTrans ?_ (congrMul (fst_pair _ _).eqSymm
       (congrMul (congrEqb' (congrAp2 remF (snd_pair _ _).eqSymm (.eqRefl _)) (.eqRefl _)) (.eqRefl _)))
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   -- the rest: only `d = 1`
   have p2 : Γ ⊢[PRAAx] ap2 (sumF nB) (succ (p * pw p a)) (pairT p (p * pw p a)) ≐ one := by
     have h1 : Γ ⊢[PRAAx] lt one (succ (p * pw p a)) := by

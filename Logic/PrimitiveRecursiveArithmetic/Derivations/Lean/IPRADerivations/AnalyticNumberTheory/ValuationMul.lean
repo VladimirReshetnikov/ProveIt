@@ -3,6 +3,7 @@ import IPRADerivations.Core.EuclidLemma
 import IPRADerivations.Combinatorics.BinomialIdentities
 import IPRADerivations.Combinatorics.LegendreDigits
 import IPRADerivations.AnalyticNumberTheory.BinomialThree
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Uniqueness and additivity of the `p`-adic valuation
@@ -39,9 +40,7 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
-theorem p_pos {p : PTm n} (hp : Γ ⊢[PRAAx] le two p) : Γ ⊢[PRAAx] p ≐ succ (pred p) := by
-  have e := natEq (eq_add_of_le hp)
-  exact pos_of_eq_succ (c := succ (monus p two)) (by apply deriveNat; ipra_simps; linear_combination e)
+alias p_pos := Common.pos_of_two_le
 
 /-! ## Uniqueness -/
 

@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianEulerPowerInputProperness
 import IPRADerivations.Analysis.GaussianGammaWeierstrassApproximant
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Original normalized Euler integrands at equal positive rational times
@@ -56,11 +57,8 @@ theorem decay_point_proper (a b c d : PTm n) (hb : Γ ⊢[PRAAx] le one b)
 theorem decay_data_proper (a b c d : PTm n) (hb : Γ ⊢[PRAAx] le one b)
     (hd : Γ ⊢[PRAAx] le one d) (he : Γ ⊢[PRAAx] a*d ≐ b*c) : Γ ⊢[PRAAx]
     decayData a b ≐ decayData c d := by
-  simpa only [decayData,GaussianGammaFiniteApproximantName.exponentialInputData,GaussianRadiusExponentialName.subst_data,
-    GaussianNameBounds.subst_U,Syn.subst_var,Matrix.cons_val_zero] using
-    Prf.eqCongr (Γ := Γ) (GaussianGammaFiniteApproximantName.exponentialInputData constantF (var 0) : PTm 1)
-      (σ := ![decayPoint a b]) (σ' := ![decayPoint c d])
-      (fun i => by fin_cases i; exact decay_point_proper a b c d hb hd he)
+  ipra_congr (GaussianGammaFiniteApproximantName.exponentialInputData constantF (var 0) : PTm 1) with
+    [decay_point_proper a b c d hb hd he] using [decayData, GaussianGammaFiniteApproximantName.exponentialInputData]
 
 theorem decay_observation_equal (p a b c d : PTm n) (hb : Γ ⊢[PRAAx] le one b)
     (hd : Γ ⊢[PRAAx] le one d) (he : Γ ⊢[PRAAx] a*d ≐ b*c) : Γ ⊢[PRAAx]

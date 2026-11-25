@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.GaussianEulerDecayQuadraturePrecision
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Exact compact decay antiderivative
@@ -50,10 +51,8 @@ theorem endpoint_at (p a C E : PTm n) : Γ ⊢[PRAAx]
   have cc : Γ ⊢[PRAAx] fstT (sndT x) ≐ C := (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
   have ee : Γ ⊢[PRAAx] sndT (sndT x) ≐ E := (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)
   refine pg.eqTrans ?_
-  simpa [endpointSample,endpointDifference] using Prf.eqCongr (Γ := Γ) (Ax := PRAAx)
-    (endpointDifference (var 0) (var 1) (var 2) (var 3) : PTm 4)
-    (σ := ![fstT x,fstT (sndT x),sndT (sndT x),p+one]) (σ' := ![a,C,E,p+one])
-    (fun i => by fin_cases i; exact aa; exact cc; exact ee; exact .eqRefl _)
+  ipra_congr (endpointDifference (var 0) (var 1) (var 2) (var 3) : PTm 4) with
+    [aa, cc, ee, .eqRefl (p+one)] using [endpointSample, endpointDifference]
 
 private theorem precision_boost (p : PTm n) : Γ ⊢[PRAAx] le (num 6*unit p) (unit (p+num 6)) := by
   have h : Γ ⊢[PRAAx] le (num 6 : PTm n) (unit (num 6)) :=

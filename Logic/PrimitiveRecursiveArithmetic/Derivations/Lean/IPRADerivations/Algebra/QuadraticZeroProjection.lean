@@ -1,4 +1,5 @@
 import IPRADerivations.Algebra.QuadraticIntegerEmbedding
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The actual zero-radicand projection branch
@@ -80,10 +81,7 @@ theorem positive_iff (x : PTm n) : Γ ⊢[PRAAx] Fm.iff (positive x) (zle (ZT.of
   .andI (.impI (positive_reflect x Prf.hyp0)) (.impI (positive_of_projection x Prf.hyp0))
 
 theorem equivalent_reflect (x y : PTm n) (h : Γ ⊢[PRAAx] equivalent x y) : Γ ⊢[PRAAx] ZT.eq (first x) (first y) := by
-  have hz := ZT.toZ_eq (zero_reflect _ h)
-  apply ZT.derive
-  simp only [difference,add_first,negative_first,ZT.toZ_ofNat,Q.mk_zero,map_zero] at hz
-  linear_combination hz
+  ipra_lc [difference, add_first, negative_first] ZT.toZ_eq (zero_reflect _ h)
 theorem equivalent_of_projection (x y : PTm n) (h : Γ ⊢[PRAAx] ZT.eq (first x) (first y)) : Γ ⊢[PRAAx] equivalent x y := by
   apply zero_of_projection
   apply ZT.derive
@@ -191,10 +189,7 @@ theorem root_isZero : Γ ⊢[PRAAx] isZero (root : PTm n) := by
   simp only [root,QuadraticSignCertificates.naturalPair,QuadraticSignCertificates.first_value,ZT.toZ_ofNat]
 theorem root_square : Γ ⊢[PRAAx] equivalent (multiply zero root root) (natural (zero : PTm n)) := by
   apply equivalent_of_projection
-  apply ZT.derive
-  simp only [multiply_first,root,natural,QuadraticSignCertificates.naturalPair,
-    QuadraticSignCertificates.first_value,QuadraticSignCertificates.second_value,ZT.toZ_ofNat,Q.mk_zero,map_zero]
-  ring
+  ipra_lc [multiply_first, root, natural, QuadraticSignCertificates.naturalPair, QuadraticSignCertificates.first_value, QuadraticSignCertificates.second_value]
 theorem unique_zero_root (x : PTm n) (h : Γ ⊢[PRAAx] equivalent (multiply zero x x) (natural zero)) : Γ ⊢[PRAAx] equivalent x root := by
   have hz : Γ ⊢[PRAAx] isZero (multiply zero x x) := by
     apply zero_of_projection

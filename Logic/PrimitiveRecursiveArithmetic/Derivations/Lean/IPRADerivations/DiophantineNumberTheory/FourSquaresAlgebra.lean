@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.ThueGrid
 import IPRADerivations.Combinatorics.BinomialIdentities
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Four squares: Euler's identity and the algebra of one descent step
@@ -49,15 +50,11 @@ abbrev N4 (a b c d : PTm k) : PTm k := a * a + b * b + (c * c + d * d)
 
 theorem ad_alg {m1 m2 P Q : PTm k} (z : Γ ⊢[PRAAx] m1 ≐ zero) (e : Γ ⊢[PRAAx] Q ≐ P + m2) :
     Γ ⊢[PRAAx] (m1 + m2) * (m1 + m2) + two * (P * Q) ≐ P * P + Q * Q := by
-  have a := natEq z; have b := natEq e
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞 m1 + 𝔞 m2 + 𝔞 Q - 𝔞 P) * (a - b)
+  ipra_lc (𝔞 m1 + 𝔞 m2 + 𝔞 Q - 𝔞 P) * (natEq z - natEq e)
 
 theorem ad_alg' {m1 m2 P Q : PTm k} (z : Γ ⊢[PRAAx] m2 ≐ zero) (e : Γ ⊢[PRAAx] P ≐ Q + m1) :
     Γ ⊢[PRAAx] (m1 + m2) * (m1 + m2) + two * (P * Q) ≐ P * P + Q * Q := by
-  have a := natEq z; have b := natEq e
-  apply deriveNat; ipra_simps
-  linear_combination (𝔞 m1 + 𝔞 m2 + 𝔞 P - 𝔞 Q) * (a - b)
+  ipra_lc (𝔞 m1 + 𝔞 m2 + 𝔞 P - 𝔞 Q) * (natEq z - natEq e)
 
 /-- `|P − Q|² + 2PQ = P² + Q²`. -/
 theorem ad_sq (P Q : PTm k) : Γ ⊢[PRAAx] ad P Q * ad P Q + two * (P * Q) ≐ P * P + Q * Q := by
@@ -74,11 +71,8 @@ theorem euler4 (a b c d e f g h : PTm k) : Γ ⊢[PRAAx]
     N4 (a * e + b * f + (c * g + d * h)) (ad (b * e + d * g) (a * f + c * h))
       (ad (b * h + c * e) (a * g + d * f)) (ad (c * f + d * e) (a * h + b * g)) ≐
     N4 a b c d * N4 e f g h := by
-  have s2 := natEq (ad_sq (Γ := Γ) (b * e + d * g) (a * f + c * h))
-  have s3 := natEq (ad_sq (Γ := Γ) (b * h + c * e) (a * g + d * f))
-  have s4 := natEq (ad_sq (Γ := Γ) (c * f + d * e) (a * h + b * g))
-  apply deriveNat; ipra_simps
-  linear_combination s2 + s3 + s4
+  ipra_lc natEq (ad_sq (Γ := Γ) (b * e + d * g) (a * f + c * h)) +
+    natEq (ad_sq (Γ := Γ) (b * h + c * e) (a * g + d * f)) + natEq (ad_sq (Γ := Γ) (c * f + d * e) (a * h + b * g))
 
 /-! ## Entries are bounded by the norm -/
 
@@ -125,16 +119,11 @@ theorem prestar (he : ∀ i, Γ ⊢[PRAAx] resEq x A s U m i) (ht : ∀ i, Γ �
     (n2 : Γ ⊢[PRAAx] N4 (A 0) (A 1) (A 2) (A 3) ≐ m * mp) :
     Γ ⊢[PRAAx] m * (mp + two * dotUA A U + m * N4 (U 0) (U 1) (U 2) (U 3)) ≐
       m * (p + (two * two) * dotUSA A s U) := by
-  have e0 := natEq (he 0); have e1 := natEq (he 1); have e2 := natEq (he 2); have e3 := natEq (he 3)
-  have t0 := natEq (ht 0); have t1 := natEq (ht 1); have t2 := natEq (ht 2); have t3 := natEq (ht 3)
-  have a := natEq n1; have b := natEq n2
-  apply deriveNat; ipra_simps
-  linear_combination a - b -
-    (𝔞 (x 0) + 𝔞 (A 0) * (1 - 2 * 𝔞 (s 0)) + 𝔞 m * 𝔞 (U 0)) * e0 -
-    (𝔞 (x 1) + 𝔞 (A 1) * (1 - 2 * 𝔞 (s 1)) + 𝔞 m * 𝔞 (U 1)) * e1 -
-    (𝔞 (x 2) + 𝔞 (A 2) * (1 - 2 * 𝔞 (s 2)) + 𝔞 m * 𝔞 (U 2)) * e2 -
-    (𝔞 (x 3) + 𝔞 (A 3) * (1 - 2 * 𝔞 (s 3)) + 𝔞 m * 𝔞 (U 3)) * e3 -
-    4 * (𝔞 (A 0) * 𝔞 (A 0) * t0 + 𝔞 (A 1) * 𝔞 (A 1) * t1 + 𝔞 (A 2) * 𝔞 (A 2) * t2 + 𝔞 (A 3) * 𝔞 (A 3) * t3)
+  ipra_lc natEq n1 - natEq n2 - (𝔞 (x 0) + 𝔞 (A 0) * (1 - 2 * 𝔞 (s 0)) + 𝔞 m * 𝔞 (U 0)) * natEq (he 0) -
+    (𝔞 (x 1) + 𝔞 (A 1) * (1 - 2 * 𝔞 (s 1)) + 𝔞 m * 𝔞 (U 1)) * natEq (he 1) -
+    (𝔞 (x 2) + 𝔞 (A 2) * (1 - 2 * 𝔞 (s 2)) + 𝔞 m * 𝔞 (U 2)) * natEq (he 2) -
+    (𝔞 (x 3) + 𝔞 (A 3) * (1 - 2 * 𝔞 (s 3)) + 𝔞 m * 𝔞 (U 3)) * natEq (he 3) -
+    4 * (𝔞 (A 0) * 𝔞 (A 0) * natEq (ht 0) + 𝔞 (A 1) * 𝔞 (A 1) * natEq (ht 1) + 𝔞 (A 2) * 𝔞 (A 2) * natEq (ht 2) + 𝔞 (A 3) * 𝔞 (A 3) * natEq (ht 3))
 
 /-- `m' + 2 ⟨U, a⟩ + m N(U) = p + 4 ∑ U_i s_i a_i`. -/
 theorem star (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (he : ∀ i, Γ ⊢[PRAAx] resEq x A s U m i)
@@ -166,23 +155,12 @@ theorem descent_alg (ht : ∀ i, Γ ⊢[PRAAx] s i * s i ≐ s i)
     (hs : Γ ⊢[PRAAx] mp + two * dotUA A U + m * N4 (U 0) (U 1) (U 2) (U 3) ≐
       p + (two * two) * dotUSA A s U) :
     Γ ⊢[PRAAx] N4 (w1 A s U mp) (w2 A s U) (w3 A s U) (w4 A s U) ≐ mp * p := by
-  have q1 := natEq (ad_sq (Γ := Γ) (mp + dotUA A U) (two * dotUSA A s U))
-  have q2 := natEq (ad_sq (Γ := Γ)
-    (A 0 * U 1 + two * (A 1 * U 0 * s 1) + (A 2 * U 3 + two * (A 3 * U 2 * s 3)))
-    (two * (A 0 * U 1 * s 0) + A 1 * U 0 + (two * (A 2 * U 3 * s 2) + A 3 * U 2)))
-  have q3 := natEq (ad_sq (Γ := Γ)
-    (A 0 * U 2 + two * (A 1 * U 3 * s 1) + (two * (A 2 * U 0 * s 2) + A 3 * U 1))
-    (two * (A 0 * U 2 * s 0) + A 1 * U 3 + (A 2 * U 0 + two * (A 3 * U 1 * s 3))))
-  have q4 := natEq (ad_sq (Γ := Γ)
-    (A 0 * U 3 + A 1 * U 2 + (two * (A 2 * U 1 * s 2) + two * (A 3 * U 0 * s 3)))
-    (two * (A 0 * U 3 * s 0) + two * (A 1 * U 2 * s 1) + (A 2 * U 1 + A 3 * U 0)))
-  have t0 := natEq (ht 0); have t1 := natEq (ht 1); have t2 := natEq (ht 2); have t3 := natEq (ht 3)
-  have b := natEq n2; have c := natEq hs
-  apply deriveNat; ipra_simps
-  linear_combination q1 + q2 + q3 + q4 + 𝔞 mp * c +
-    (𝔞 (U 0) * 𝔞 (U 0) + 𝔞 (U 1) * 𝔞 (U 1) + (𝔞 (U 2) * 𝔞 (U 2) + 𝔞 (U 3) * 𝔞 (U 3))) *
-      (b + 4 * (𝔞 (A 0) * 𝔞 (A 0) * t0 + 𝔞 (A 1) * 𝔞 (A 1) * t1 + 𝔞 (A 2) * 𝔞 (A 2) * t2 +
-        𝔞 (A 3) * 𝔞 (A 3) * t3))
+  ipra_lc natEq (ad_sq (Γ := Γ) (mp + dotUA A U) (two * dotUSA A s U)) +
+    natEq (ad_sq (Γ := Γ) (A 0 * U 1 + two * (A 1 * U 0 * s 1) + (A 2 * U 3 + two * (A 3 * U 2 * s 3))) (two * (A 0 * U 1 * s 0) + A 1 * U 0 + (two * (A 2 * U 3 * s 2) + A 3 * U 2))) +
+    natEq (ad_sq (Γ := Γ) (A 0 * U 2 + two * (A 1 * U 3 * s 1) + (two * (A 2 * U 0 * s 2) + A 3 * U 1)) (two * (A 0 * U 2 * s 0) + A 1 * U 3 + (A 2 * U 0 + two * (A 3 * U 1 * s 3)))) +
+    natEq (ad_sq (Γ := Γ) (A 0 * U 3 + A 1 * U 2 + (two * (A 2 * U 1 * s 2) + two * (A 3 * U 0 * s 3))) (two * (A 0 * U 3 * s 0) + two * (A 1 * U 2 * s 1) + (A 2 * U 1 + A 3 * U 0))) +
+    𝔞 mp * natEq hs +
+    (𝔞 (U 0) * 𝔞 (U 0) + 𝔞 (U 1) * 𝔞 (U 1) + (𝔞 (U 2) * 𝔞 (U 2) + 𝔞 (U 3) * 𝔞 (U 3))) * (natEq n2 + 4 * (𝔞 (A 0) * 𝔞 (A 0) * natEq (ht 0) + 𝔞 (A 1) * 𝔞 (A 1) * natEq (ht 1) + 𝔞 (A 2) * 𝔞 (A 2) * natEq (ht 2) + 𝔞 (A 3) * 𝔞 (A 3) * natEq (ht 3)))
 
 end Descent
 

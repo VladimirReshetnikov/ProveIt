@@ -1,5 +1,6 @@
 import IPRADerivations.Core.SumLemmas
 import IPRADerivations.AnalyticNumberTheory.PowerCleared
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The dyadic union bound
@@ -37,26 +38,19 @@ abbrev UF (P : PTm 2) (c K B J x : PTm n) : Fm PTm n :=
   le (c * pw two K * pw two J * ap2 (sumF P) J x + B) (pw two J * B)
 
 theorem union_base (P : PTm 2) (c K B x : PTm n) : Γ ⊢[PRAAx] UF P c K B zero x := by
-  have e1 := natEq (sum_zero (Γ := Γ) P x)
-  have e2 := natEq (pw_zero (Γ := Γ) (two : PTm n))
   refine le_of_eq_add (d := zero) ?_
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 B * e2 - 𝔞 c * 𝔞 (pw two K) * 𝔞 (pw two zero) * e1
+  ipra_lc 𝔞 B * natEq (pw_zero (Γ := Γ) (two : PTm n)) -
+    𝔞 c * 𝔞 (pw two K) * 𝔞 (pw two zero) * natEq (sum_zero (Γ := Γ) P x)
 
 theorem union_step {P : PTm 2} {c K B J x : PTm n}
     (hJ : Γ ⊢[PRAAx] le (two * c * pw two (K + J) * inst2 P J x) B) (ih : Γ ⊢[PRAAx] UF P c K B J x) :
     Γ ⊢[PRAAx] UF P c K B (succ J) x := by
-  have s := natEq (sum_succ' (Γ := Γ) P J x)
-  have p := natEq (pw_succ (Γ := Γ) two J)
-  have pa := natEq (pw_add (Γ := Γ) two K J)
-  have e1 := natEq (eq_add_of_le ih)
-  have e2 := natEq (eq_add_of_le hJ)
   refine le_of_eq_add (d := two * monus (pw two J * B) (c * pw two K * pw two J * ap2 (sumF P) J x + B) +
     monus B (two * c * pw two (K + J) * inst2 P J x)) ?_
-  apply deriveNat; ipra_simps
-  linear_combination 2 * e1 + e2 + (𝔞 B - 𝔞 c * 𝔞 (pw two K) * 𝔞 (ap2 (sumF P) J x)
-      - 𝔞 c * 𝔞 (pw two K) * 𝔞 (inst2 P J x)) * p
-    - 𝔞 c * 𝔞 (pw two (succ J)) * 𝔞 (pw two K) * s + 2 * 𝔞 c * 𝔞 (inst2 P J x) * pa
+  ipra_lc 2 * natEq (eq_add_of_le ih) + natEq (eq_add_of_le hJ) +
+    (𝔞 B - 𝔞 c * 𝔞 (pw two K) * 𝔞 (ap2 (sumF P) J x) - 𝔞 c * 𝔞 (pw two K) * 𝔞 (inst2 P J x)) * natEq (pw_succ (Γ := Γ) two J) -
+    𝔞 c * 𝔞 (pw two (succ J)) * 𝔞 (pw two K) * natEq (sum_succ' (Γ := Γ) P J x) +
+    2 * 𝔞 c * 𝔞 (inst2 P J x) * natEq (pw_add (Γ := Γ) two K J)
 
 /-- The dyadic union bound: `2 c 2^{K+j} P_j ≤ B` for `j < J` gives `c 2^K 2^J Σ_{j<J} P_j + B ≤ 2^J B`. -/
 theorem dyadic_union {P : PTm 2} {c K B x J : PTm n}

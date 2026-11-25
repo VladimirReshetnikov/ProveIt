@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.HypergeometricRatio
 import IPRADerivations.AnalyticNumberTheory.PhiLower
 import IPRADerivations.Core.Gcd
 import IPRADerivations.Core.Parity
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # An explicit ratio threshold for hypergeometric terms

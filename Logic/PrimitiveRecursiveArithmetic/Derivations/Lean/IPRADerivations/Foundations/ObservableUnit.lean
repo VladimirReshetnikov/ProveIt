@@ -1,7 +1,7 @@
 import IPRADerivations.Foundations.EigenvalueBound
 import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.Core.Fubini
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The unit identity gives a nonzero coordinate (`ipra_presentations_to_witnesses`, `thm:finite-observable-image`)

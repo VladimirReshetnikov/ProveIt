@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.GaussianRationalPolynomialDegree
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # A genuine numerical grid detects the zero polynomial
@@ -55,10 +56,7 @@ theorem point_difference_zero_reflect (i j : PTm n) (h : Γ ⊢[PRAAx] qsub (gri
     (represents_congr h (GaussianRootAlgebra.equal_refl _) (.eqRefl _) rep)
     (GaussianRationalHorner.zero_represents _)
   have real := GaussianRootAlgebra.equal_re eq
-  simp only [nativePoint,GaussianRootAlgebra.re_sub,GaussianRootAlgebra.re_zero,
-    ComplexLogarithmRemainder.eval_re_code,ZT.toZ_ofNat] at real
-  apply deriveNat
-  linear_combination real
+  ipra_lc [nativePoint, GaussianRootAlgebra.re_sub, GaussianRootAlgebra.re_zero, ComplexLogarithmRemainder.eval_re_code] real
 
 theorem grid_pair_nonzero (N i j : PTm n) (hi : Γ ⊢[PRAAx] lt i (succ N))
     (hj : Γ ⊢[PRAAx] lt j (succ N)) (hij : Γ ⊢[PRAAx] lt i j) : Γ ⊢[PRAAx]

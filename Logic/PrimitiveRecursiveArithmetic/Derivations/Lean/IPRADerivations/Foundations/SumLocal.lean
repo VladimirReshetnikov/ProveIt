@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.AuxiliaryEnvelope
 import IPRADerivations.Core.SumSplit
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Support localization of finite sums (`hurwitz_khinchin_ipra`, the (K11) count inside a gap)
@@ -80,7 +81,6 @@ theorem sum_local (f : PTm 2) {L H N x : PTm n} (hLH : Γ ⊢[PRAAx] le L H) (hH
       have c := natEq e1s
       apply deriveNat; ipra_simps; linear_combination a + b - c
     exact (congrInst2 f ei ((congrSnd es).eqTrans (snd_pair _ _))).eqTrans p
-  have a1 := natEq s1; have a2 := natEq s2; have a3 := natEq z1; have a4 := natEq z2
-  apply deriveNat; ipra_simps; linear_combination a1 + a2 + a3 + a4
+  ipra_lc natEq s1 + natEq s2 + natEq z1 + natEq z2
 
 end LeanProofs.IPRA.Foundations.SumLocal

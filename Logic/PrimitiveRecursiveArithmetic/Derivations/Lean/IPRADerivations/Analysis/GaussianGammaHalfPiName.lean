@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.GaussianGammaHalfWallisRate
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # A regular name from the original arctangent quadrature
@@ -39,8 +40,7 @@ def nameF : PR 2 := PTm.toPR (observation (var 0) : PTm 2)
 
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
-private theorem succ_le_succ {a b : PTm n} (h : Γ ⊢[PRAAx] le a b) :
-    Γ ⊢[PRAAx] le (succ a) (succ b) := by ipra_le sl h
+private alias succ_le_succ := Common.succ_le_succ
 
 theorem unit_mono (p q : PTm n) (h : Γ ⊢[PRAAx] le p q) : Γ ⊢[PRAAx] le (unit p) (unit q) :=
   GaussianFactorBudget.power_monotone_length two p q (zero_lt_succ one) h

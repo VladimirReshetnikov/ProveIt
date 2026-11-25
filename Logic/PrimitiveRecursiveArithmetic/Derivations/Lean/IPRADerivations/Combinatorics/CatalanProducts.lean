@@ -1,6 +1,6 @@
 import IPRADerivations.Combinatorics.Catalan
 import IPRADerivations.Combinatorics.BellTriangle
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Product form, the form `C(2n, n − 1) / n` and the central binomial bound (`catalan_numbers_ipra_2026-11-16`)

@@ -4,6 +4,7 @@ import IPRADerivations.Analysis.GaussianRationalBlockFactorTransfer
 import IPRADerivations.Analysis.GaussianRationalFixedWidthStrip
 import IPRADerivations.Analysis.GaussianRationalPaddedProductDegree
 import IPRADerivations.Foundations.BoundedSyntaxInduction
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Accumulating multiplicities of the actual monic norm
@@ -78,9 +79,7 @@ private theorem update_congr {Q Q' D D' L L' p p' g g' : PTm n}
     (hQ : Γ ⊢[PRAAx] Q ≐ Q') (hD : Γ ⊢[PRAAx] D ≐ D') (hL : Γ ⊢[PRAAx] L ≐ L')
     (hp : Γ ⊢[PRAAx] p ≐ p') (hg : Γ ⊢[PRAAx] g ≐ g') :
     Γ ⊢[PRAAx] quotientUpdate Q D L p g ≐ quotientUpdate Q' D' L' p' g' := by
-  simpa using Prf.eqCongr (Γ := Γ) (quotientUpdate (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5)
-    (σ := ![Q,D,L,p,g]) (σ' := ![Q',D',L',p',g'])
-    (fun i => by fin_cases i; exact hQ; exact hD; exact hL; exact hp; exact hg)
+  ipra_congr (quotientUpdate (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) with [hQ, hD, hL, hp, hg]
 
 theorem quotient_zero (P D L p : PTm n) : Γ ⊢[PRAAx] groupQuotient P D L p zero ≐ P := by
   have initial := rec2_zero (Γ := Γ) quotientInitial quotientStep (quotientData P D L p)

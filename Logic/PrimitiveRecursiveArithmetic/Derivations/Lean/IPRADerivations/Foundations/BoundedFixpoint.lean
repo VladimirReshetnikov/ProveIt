@@ -1,6 +1,6 @@
 import IPRADerivations.Foundations.BoundedDescent
 import IPRADerivations.Foundations.BoundedFormulas
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Fixed points of an ascending bounded operator (`ipra_categorical_methods`, Section 4)

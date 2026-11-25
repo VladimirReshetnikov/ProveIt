@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianRationalFiberVandermonde
 import IPRADerivations.Analysis.GaussianRationalReconstruction
 import IPRADerivations.Analysis.GaussianRationalPowerAlgebra
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual uniform row quotients and repeated-root polynomials
@@ -73,9 +74,7 @@ theorem quotient_cell_congr {A A' B B' t t' x x' r r' j j' : PTm n}
     (hA : Γ ⊢[PRAAx] A ≐ A') (hB : Γ ⊢[PRAAx] B ≐ B') (ht : Γ ⊢[PRAAx] t ≐ t')
     (hx : Γ ⊢[PRAAx] x ≐ x') (hr : Γ ⊢[PRAAx] r ≐ r') (hj : Γ ⊢[PRAAx] j ≐ j') : Γ ⊢[PRAAx]
     quotientCell A B t x r j ≐ quotientCell A' B' t' x' r' j' := by
-  simpa using Prf.eqCongr (Γ := Γ) (quotientCell (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6)
-    (σ := ![A,B,t,x,r,j]) (σ' := ![A',B',t',x',r',j'])
-    (fun i => by fin_cases i; exact hA; exact hB; exact ht; exact hx; exact hr; exact hj)
+  ipra_congr (quotientCell (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) with [hA, hB, ht, hx, hr, hj]
 theorem fields_at (A B t x : PTm n) (i : Fin 4) : Γ ⊢[PRAAx] fields (data A B t x) i ≐ ![A,B,t,x] i := by
   fin_cases i
   · exact fst_pair _ _

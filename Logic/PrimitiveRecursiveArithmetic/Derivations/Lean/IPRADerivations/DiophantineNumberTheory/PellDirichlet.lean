@@ -1,6 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.PellCFStep
 import IPRADerivations.Core.Pigeonhole
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The finite Dirichlet construction for `√D`

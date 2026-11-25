@@ -1,6 +1,7 @@
 import IPRADerivations.Core.SumLemmas
 import IPRADerivations.Core.Pairing
 import IPRADerivations.Core.Tactic
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Splitting a finite sum at a cut point
@@ -36,10 +37,7 @@ theorem inst2_offB (g : PTm 2) (i y : PTm n) :
 
 theorem split_base (g : PTm 2) (M x : PTm n) :
     Γ ⊢[PRAAx] ap2 (sumF g) (M + zero) x ≐ ap2 (sumF g) M x + ap2 (sumF (offB g)) zero (pairT M x) := by
-  have c := natEq (congrAp2 (sumF g) (add_zero (Γ := Γ) M) (.eqRefl x))
-  have z := natEq (sum_zero (Γ := Γ) (offB g) (pairT M x))
-  apply deriveNat; ipra_simps
-  linear_combination c - z
+  ipra_lc natEq (congrAp2 (sumF g) (add_zero (Γ := Γ) M) (.eqRefl x)) - natEq (sum_zero (Γ := Γ) (offB g) (pairT M x))
 
 theorem split_step (g : PTm 2) {M K x : PTm n}
     (ih : Γ ⊢[PRAAx] ap2 (sumF g) (M + K) x ≐ ap2 (sumF g) M x + ap2 (sumF (offB g)) K (pairT M x)) :

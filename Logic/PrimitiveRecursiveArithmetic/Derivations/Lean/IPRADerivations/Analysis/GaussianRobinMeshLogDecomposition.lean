@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianRobinLowerDecomposition
 import IPRADerivations.Analysis.GaussianGammaFiniteApproximantName
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Decomposition of the original mesh logarithm name
@@ -90,13 +91,8 @@ theorem clock_exact (p N : PTm n) (h : Γ ⊢[PRAAx] le one N) :
 private theorem stored_congr (a b : PTm n) {K L : PTm n} (h : Γ ⊢[PRAAx] K ≐ L) :
     Γ ⊢[PRAAx] stored K a b ≐ stored L a b := by
   open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogName (Nz Dz Nz_congr Dz_congr) in
-  simpa only [stored,
-    RationalGaussianEmbedding.subst_embed,RationalCubeMidpoint.subst_fraction,
-    Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ)
-      (RationalGaussianEmbedding.embed (RationalCubeMidpoint.fraction (var 0) (var 1)) : PTm 2)
-      (σ := ![Nz K a b,Dz K a b]) (σ' := ![Nz L a b,Dz L a b])
-      (fun i => by fin_cases i; exact Nz_congr a b h; exact Dz_congr a b h)
+  ipra_congr (RationalGaussianEmbedding.embed (RationalCubeMidpoint.fraction (var 0) (var 1)) : PTm 2) with
+    [Nz_congr a b h, Dz_congr a b h] using [stored]
 
 theorem original_lower_at (p N : PTm n) (h : Γ ⊢[PRAAx] le one N) :
     Γ ⊢[PRAAx] lower N one (GammaMeshRobinLogBridge.robinClock N p) ≐ raw (index p N) N := by
@@ -153,9 +149,7 @@ theorem mesh_lower_error (p N : PTm n) (h : Γ ⊢[PRAAx] le one N) :
     RationalGaussianNameEmbedding.distance_from_radius m r _ _ uq
       (GammaMeshRobinLogBridge.cross_compatibility N p p h)
   have e : Γ ⊢[PRAAx] RationalGaussianEmbedding.embed r ≐ RationalGaussianEmbedding.embed y := by
-    simpa only [RationalGaussianEmbedding.subst_embed,Syn.subst_var,Matrix.cons_val_zero] using
-      Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (RationalGaussianEmbedding.embed (var 0) : PTm 1)
-        (σ := ![r]) (σ' := ![y]) (fun i => by fin_cases i; exact GammaMeshRobinLogBridge.robin_log_at p N)
+    ipra_congr (RationalGaussianEmbedding.embed (var 0) : PTm 1) with [GammaMeshRobinLogBridge.robin_log_at p N]
   exact distance_congr (RationalGaussianNameEmbedding.sample_at GammaMeshRobinLogBridge.meshLogF p N).eqSymm
     e (.eqRefl _) (.eqRefl _)
     (distance_radius_mono _ _ _ _ _ _ uq up (le_congr (by ipra_ring) (.eqRefl _) (le_refl _)) error)

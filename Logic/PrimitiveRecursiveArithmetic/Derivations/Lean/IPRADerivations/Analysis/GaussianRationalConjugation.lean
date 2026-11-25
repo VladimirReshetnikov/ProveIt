@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianRationalPhaseCertificate
 import IPRADerivations.Analysis.GaussianRationalPolynomialExponential
 import IPRADerivations.Analysis.RationalGaussianEmbedding
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual normalized Gaussian-rational conjugation
@@ -33,7 +34,7 @@ def point (q : PTm n) : PTm n := qadd qzero (GaussianRationalPhaseCertificate.co
     Syn.subst σ (point q) = point (Syn.subst σ q) := by simp [point]
 theorem point_canonical (q : PTm n) : Γ ⊢[PRAAx] canonical (point q) := GaussianRationalHorner.qadd_canonical _ _
 theorem point_congr {q r : PTm n} (e : Γ ⊢[PRAAx] q ≐ r) : Γ ⊢[PRAAx] point q ≐ point r := by
-  simpa using Prf.eqCongr (point (var 0) : PTm 1) (σ := ![q]) (σ' := ![r]) (fun i => by fin_cases i; exact e)
+  ipra_congr (point (var 0) : PTm 1) with [e]
 
 theorem point_represents (q g E : PTm n) (hE : Γ ⊢[PRAAx] le one E)
     (hq : Γ ⊢[PRAAx] represents q g E) : Γ ⊢[PRAAx] represents (point q) (conjugate g) E := by

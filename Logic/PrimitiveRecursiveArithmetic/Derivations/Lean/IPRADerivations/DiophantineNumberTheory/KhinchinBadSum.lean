@@ -186,7 +186,7 @@ theorem quo_add_aux {Q d u r e : PTm n} (h1 : Γ ⊢[PRAAx] Q ≐ d * u + r) (h2
     Γ ⊢[PRAAx] succ Q + e ≐ d * succ u + r := by
   refine (congrAdd (congrSucc (h1.eqTrans (congrAdd (congrMul h2 (.eqRefl _)) (.eqRefl _)))) (.eqRefl _)).eqTrans ?_
   refine .eqTrans ?_ (congrAdd (congrMul h2.eqSymm (.eqRefl _)) (.eqRefl _))
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- `#{q < Q + 1 : d ∣ q} = ⌊Q/d⌋ + 1` for `d ≥ 1`. -/
 theorem multiples_upto {Q d : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) :
@@ -215,7 +215,7 @@ theorem col_eq (d Q y : PTm n) :
       (congrEqb' (congrAp2 remF (.eqRefl _) (fst_pair _ _)) (.eqRefl _))
       (congrAp2 (sumF cntB) (congrFst (snd_pair _ _))
         (congrPairT (congrAp2 quoF (.eqRefl _) (fst_pair _ _)) (congrSnd (snd_pair _ _)))))).eqSymm
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   refine .orE (zero_or_succ d) ?_ ?_
   · -- `d = 0`: the gate is closed on both sides
     let Δ : List (Fm PTm n) := (d ≐ zero) :: Γ

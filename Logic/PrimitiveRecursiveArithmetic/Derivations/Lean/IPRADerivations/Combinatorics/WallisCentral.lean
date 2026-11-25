@@ -1,5 +1,5 @@
 import IPRADerivations.Combinatorics.CatalanGrowth
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The Wallis bounds for the central binomial coefficient

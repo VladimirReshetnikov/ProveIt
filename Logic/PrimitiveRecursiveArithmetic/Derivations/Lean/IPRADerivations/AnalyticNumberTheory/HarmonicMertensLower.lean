@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.HarmonicMertens
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Mertens' lower bound for the harmonic logarithm (`pnt_ipra_constructive_2026-11-14`)
@@ -70,19 +71,16 @@ theorem k_step {m M L i : PTm n} (hm : Γ ⊢[PRAAx] le one m) (hM : Γ ⊢[PRAA
     have hx'p := pos_of_lt_zero (tr_pos (Γ := Δ) hm.wk (succ i))
     have hpp : Δ ⊢[PRAAx] lpf (trT i m) ≐ succ (pred (lpf (trT i m))) := lpf_pos _
     have hMp := pos_of_lt_zero (Γ := Δ) hM.wk
-    have w1 := natEq (eq_add_of_le (Γ := Δ) hxm.wk)
-    have w2 := natEq ex
-    have wp := natEq hpp
     have hL' : Δ ⊢[PRAAx] le (M * (lpf (trT i m) * trT (succ i) m)) L := by
       refine le_trans (le_of_eq_add (d := M * monus m (trT i m)) ?_) hL.wk
-      apply deriveNat; ipra_simps; linear_combination 𝔞 M * w1 - 𝔞 M * w2
+      ipra_lc 𝔞 M * natEq (eq_add_of_le (Γ := Δ) hxm.wk) - 𝔞 M * natEq ex
     have sub := subadd hMp hpp hx'p hL'
     have q1 : Δ ⊢[PRAAx] M * (lpf (trT i m) * trT (succ i) m) ≐ M * trT i m := by
-      apply deriveNat; ipra_simps; linear_combination 𝔞 M * w2
+      ipra_lc 𝔞 M * natEq ex
     have e1 := natEq (congrAp2 (Γ := Δ) (sumF hB) q1 (.eqRefl (fact L)))
     have hmono : Δ ⊢[PRAAx] le M (M * lpf (trT i m)) := by
       refine le_of_eq_add (d := M * pred (lpf (trT i m))) ?_
-      apply deriveNat; ipra_simps; linear_combination 𝔞 M * wp
+      ipra_lc 𝔞 M * natEq hpp
     have dec := natEq (eq_add_of_le (S_mono (fact L) hmono))
     have sp : Δ ⊢[PRAAx] Lw wt (trT i m) (pairT M (fact L)) ≐
         monus (S (M * lpf (trT i m)) (fact L)) (S M (fact L)) + Lw wt (trT (succ i) m) (pairT M (fact L)) :=
@@ -122,7 +120,7 @@ theorem lw_lower {m M L : PTm n} (hm : Γ ⊢[PRAAx] le one m) (hM : Γ ⊢[PRAA
   simp at i
   have I : Γ ⊢[PRAAx] K m M L m := Prf.impE i (.andI hm (.andI hM hL))
   have te := trace_end (pos_of_lt_zero hm)
-  have q : Γ ⊢[PRAAx] M * trT m m ≐ M := (congrMul (.eqRefl M) te).eqTrans (by apply deriveNat; ipra_simps; ring)
+  have q : Γ ⊢[PRAAx] M * trT m m ≐ M := (congrMul (.eqRefl M) te).eqTrans (by ipra_ring)
   have eS := natEq (congrAp2 (Γ := Γ) (sumF hB) q (.eqRefl (fact L)))
   have eL := natEq ((congrLw (w := wt) (pairT M (fact L)) te).eqTrans (MuLambda.lw_one (w := wt) _))
   ipra_le sl I with eS - eL
@@ -133,7 +131,7 @@ theorem lw_lower {m M L : PTm n} (hm : Γ ⊢[PRAAx] le one m) (hM : Γ ⊢[PRAA
 theorem delta_le {M : PTm n} (nn F : PTm n) (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) :
     Γ ⊢[PRAAx] le (nn * S (M * succ nn) F) (nn * S (M * nn) F + F) := by
   have lu := log_upper (Γ := Γ) (M * nn) M F
-  have q : Γ ⊢[PRAAx] M * succ nn ≐ M * nn + M := by apply deriveNat; ipra_simps; ring
+  have q : Γ ⊢[PRAAx] M * succ nn ≐ M * nn + M := by ipra_ring
   have e := natEq (congrAp2 (Γ := Γ) (sumF hB) q (.eqRefl F))
   have mono := S_mono (Γ := Γ) F (le_of_eq_add q : Γ ⊢[PRAAx] le (M * nn) (M * succ nn))
   refine mul_le_cancel (d' := pred M) ?_

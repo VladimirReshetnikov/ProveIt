@@ -1,5 +1,7 @@
 import IPRADerivations.Foundations.MasterCertificate
 import IPRADerivations.Core.MultiSums
+import IPRADerivations.Core.CongruenceTactic
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Actual sequence append and runtime demand flattening
@@ -71,10 +73,8 @@ theorem append_length (a b : PTm n) :
 
 theorem append_value_at (a b i : PTm n) :
     Γ ⊢[PRAAx] inst2 appendBody i (pairT a b) ≐ appendValue a b i := by
-  have h := Prf.eqCongr (Γ := Γ) (appendValue (var 0) (var 1) (var 2) : PTm 3)
-    (σ := ![fstT (pairT a b), sndT (pairT a b), i]) (σ' := ![a, b, i])
-    (fun k => by fin_cases k; exact fst_pair _ _; exact snd_pair _ _; exact .eqRefl _)
-  simpa [inst2, appendBody] using h
+  ipra_congr (appendValue (var 0) (var 1) (var 2) : PTm 3) with
+    [fst_pair _ _, snd_pair _ _, .eqRefl i] using [inst2, appendBody]
 
 theorem append_lookup {a b i : PTm n} (hi : Γ ⊢[PRAAx] lt i (length a + length b)) :
     Γ ⊢[PRAAx] entry (append a b) i ≐ appendValue a b i :=
@@ -82,24 +82,18 @@ theorem append_lookup {a b i : PTm n} (hi : Γ ⊢[PRAAx] lt i (length a + lengt
 
 theorem append_left {a b i : PTm n} (hi : Γ ⊢[PRAAx] lt i (length a)) :
     Γ ⊢[PRAAx] entry (append a b) i ≐ entry a i := by
-  have h := natEq (sg_lt hi)
-  have c := natEq ((congrMonus (Γ := Γ) (.eqRefl one) (sg_lt hi)).eqTrans (monus_self one))
   refine (append_lookup (lt_of_lt_of_le hi (le_add_right _ _))).eqTrans ?_
   unfold appendValue
-  apply deriveNat
-  ipra_simps
-  linear_combination 𝔞(entry a i) * h + 𝔞(entry b (monus i (length a))) * c
+  ipra_lc 𝔞(entry a i) * natEq (sg_lt hi) +
+    𝔞(entry b (monus i (length a))) * natEq ((congrMonus (Γ := Γ) (.eqRefl one) (sg_lt hi)).eqTrans (monus_self one))
 
 theorem append_right_at {a b i : PTm n} (ha : Γ ⊢[PRAAx] le (length a) i)
     (hi : Γ ⊢[PRAAx] lt i (length a + length b)) :
     Γ ⊢[PRAAx] entry (append a b) i ≐ entry b (monus i (length a)) := by
-  have h := natEq (sg_le ha)
-  have c := natEq ((congrMonus (Γ := Γ) (.eqRefl one) (sg_le ha)).eqTrans (monus_zero one))
   refine (append_lookup hi).eqTrans ?_
   unfold appendValue
-  apply deriveNat
-  ipra_simps
-  linear_combination 𝔞(entry a i) * h + 𝔞(entry b (monus i (length a))) * c
+  ipra_lc 𝔞(entry a i) * natEq (sg_le ha) +
+    𝔞(entry b (monus i (length a))) * natEq ((congrMonus (Γ := Γ) (.eqRefl one) (sg_le ha)).eqTrans (monus_zero one))
 
 theorem add_lt_left (a : PTm n) {i b : PTm n} (hi : Γ ⊢[PRAAx] lt i b) :
     Γ ⊢[PRAAx] lt (a + i) (a + b) :=
@@ -298,12 +292,8 @@ theorem flatMap_empty (inner : PR 2) (x : PTm n) :
 
 theorem offset_lt {a b i : PTm n} (ha : Γ ⊢[PRAAx] le a i)
     (hi : Γ ⊢[PRAAx] lt i (a + b)) : Γ ⊢[PRAAx] lt (monus i a) b := by
-  have ae := natEq (eq_add_of_le ha)
-  have ie := natEq (eq_add_of_le hi)
   refine le_of_eq_add (d := monus (a + b) (succ i)) ?_
-  apply deriveNat
-  ipra_simps
-  linear_combination ae + ie
+  ipra_lc natEq (eq_add_of_le ha) + natEq (eq_add_of_le hi)
 
 theorem append_assoc_length (a b c : PTm n) :
     Γ ⊢[PRAAx] length (append (append a b) c) ≐ length (append a (append b c)) :=

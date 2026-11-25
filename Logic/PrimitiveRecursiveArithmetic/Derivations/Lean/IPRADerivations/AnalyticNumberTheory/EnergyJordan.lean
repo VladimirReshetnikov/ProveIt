@@ -2,7 +2,8 @@ import IPRADerivations.Core.BlockSum
 import IPRADerivations.Probability.Independence
 import IPRADerivations.AnalyticNumberTheory.SquareReciprocal
 import IPRADerivations.AnalyticNumberTheory.SumPhi
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The Jordan count `J₂(d) ≥ d²/4` (`thm:energy`, recovery direction)
@@ -61,7 +62,7 @@ theorem inst3_good (u v d : PTm n) : inst3 goodB u v d = eqb (gcd (gcd d u) v) o
 
 /-! ## The pointwise union bound -/
 
-theorem pos_succ (e : PTm n) : Γ ⊢[PRAAx] succ e ≐ succ (pred (succ e)) := congrSucc (pred_succ _).eqSymm
+alias pos_succ := Common.succ_pos
 
 /-- `1 ≤ [gcd(d,u,v) = 1] + Σ_{j<d} f(j)` whenever `f(j) = 1` for every `j < d` with `j + 2 ∣ d, u, v`. -/
 theorem one_le_good {d u v z : PTm n} (f : PTm 2) (hd : Γ ⊢[PRAAx] d ≐ succ (pred d))

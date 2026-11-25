@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianRationalMonicCompanion
 import IPRADerivations.Analysis.GaussianRationalSyntheticCoefficientValues
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual runtime division by a monic rational polynomial
@@ -92,8 +93,7 @@ theorem constant_evaluation (a L z : PTm n) : Γ ⊢[PRAAx] evaluate (constant a
   (pad_evaluation _ _ _).eqTrans (singleton_evaluation a z)
 
 theorem zeros_congr {L L' : PTm n} (h : Γ ⊢[PRAAx] L ≐ L') : Γ ⊢[PRAAx] zeros L ≐ zeros L' := by
-  simpa only [GaussianRationalPolynomialBuffers.subst_zeros,Syn.subst_var,Matrix.cons_val_zero] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (zeros (var 0) : PTm 1) (σ := ![L]) (σ' := ![L']) (fun i => by fin_cases i; exact h)
+  ipra_congr (zeros (var 0) : PTm 1) with [h]
 theorem update_at (P S D r c : PTm n) : Γ ⊢[PRAAx] PTm.app updateF ![P,S,D,r,c] ≐ update P S D r c := by
   simpa only [updateF,subst_update,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
     Matrix.cons_val_three,Matrix.cons_val_four,Matrix.head_cons,Matrix.tail_cons] using

@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianGammaShiftTrajectory
 import IPRADerivations.Analysis.GaussianRobinMeshExponential
 import IPRADerivations.Analysis.GaussianApproximateInverseDistance
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Repeated shift of the original entire reciprocal Gamma name
@@ -63,11 +64,8 @@ def resultData (z R B E : PTm n) : PTm n := GaussianNameArithmetic.multiplyData 
 
 theorem linear_at (z B i : PTm n) : Γ ⊢[PRAAx]
     inst2 linearBody i (GaussianGammaShiftTrajectory.data z B) ≐ linear z B i := by
-  simpa only [linearBody,inst2,GaussianGammaShiftTrajectory.data,GaussianGammaEulerHeadShift.subst_linear,subst_fstT,subst_sndT,Syn.subst_var,
-    Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (linear (var 0) (var 1) (var 2) : PTm 3)
-      (σ := ![fstT (pairT z B),sndT (pairT z B),i]) (σ' := ![z,B,i])
-      (fun j => by fin_cases j; exact fst_pair _ _; exact snd_pair _ _; exact .eqRefl _)
+  ipra_congr (linear (var 0) (var 1) (var 2) : PTm 3) with
+    [fst_pair _ _, snd_pair _ _, .eqRefl i] using [linearBody, inst2, GaussianGammaShiftTrajectory.data]
 
 theorem prefix_zero (z B : PTm n) : Γ ⊢[PRAAx] risingProduct z B zero ≐ qone := product_zero _ _
 theorem prefix_succ (z B i : PTm n) : Γ ⊢[PRAAx]
@@ -128,11 +126,7 @@ theorem stage_regular (z R B i : PTm n) (h : Γ ⊢[PRAAx] source z R B) : Γ �
 theorem C7_data_congr {z w R S B C : PTm n} (hz : Γ ⊢[PRAAx] z ≐ w)
     (hR : Γ ⊢[PRAAx] R ≐ S) (hB : Γ ⊢[PRAAx] B ≐ C) : Γ ⊢[PRAAx]
     GaussianGammaC7Name.data z R B ≐ GaussianGammaC7Name.data w S C := by
-  simpa only [GaussianGammaC7Name.subst_data,Syn.subst_var,
-    Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (GaussianGammaC7Name.data (var 0) (var 1) (var 2) : PTm 3)
-      (σ := ![z,R,B]) (σ' := ![w,S,C])
-      (fun j => by fin_cases j; exact hz; exact hR; exact hB)
+  ipra_congr (GaussianGammaC7Name.data (var 0) (var 1) (var 2) : PTm 3) with [hz, hR, hB]
 
 theorem stage_zero (p z R B : PTm n) : Γ ⊢[PRAAx] stage p z R B zero ≐ GaussianGammaC7Name.sample p z R B :=
   congrAp2 GaussianGammaC7Name.nameF (.eqRefl _) (C7_data_congr (point_zero z B) (add_zero R) (.eqRefl _))

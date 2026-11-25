@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.FiniteFiberGrouping
 import IPRADerivations.Core.SumOrder
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual first-cover assignment and the finite covering count
@@ -93,10 +94,7 @@ theorem fields_at (P M p : PTm n) (j : Fin 3) : Γ ⊢[PRAAx] fields (data P M p
 theorem label_congr (f : PTm 3) {P P' M M' p p' i i' : PTm n} (hP : Γ ⊢[PRAAx] P ≐ P')
     (hM : Γ ⊢[PRAAx] M ≐ M') (hp : Γ ⊢[PRAAx] p ≐ p') (hi : Γ ⊢[PRAAx] i ≐ i') :
     Γ ⊢[PRAAx] label f P M p i ≐ label f P' M' p' i' := by
-  simpa only [subst_label,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.cons_val_three,Matrix.head_cons,Matrix.tail_cons] using Prf.eqCongr (Γ := Γ)
-      (label f (var 0) (var 1) (var 2) (var 3) : PTm 4) (σ := ![P,M,p,i]) (σ' := ![P',M',p',i'])
-        (fun j => by fin_cases j; exact hP; exact hM; exact hp; exact hi)
+  ipra_congr (label f (var 0) (var 1) (var 2) (var 3) : PTm 4) with [hP, hM, hp, hi]
 theorem test_body_at (f : PTm 3) (g v p : PTm n) : Γ ⊢[PRAAx]
     inst2 (testBody f) g (pairT v p) ≐ inst3 f g v p := by
   simp only [testBody,subst_inst3,inst2,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
@@ -182,11 +180,8 @@ theorem coverage (f : PTm 3) (P M p i : PTm n) (h : Γ ⊢[PRAAx] cover f P M p)
 theorem size_at (f : PTm 3) (P M p g : PTm n) : Γ ⊢[PRAAx]
     inst2 (sizeBody f) g (data P M p) ≐ groupSize f P M p g := by
   simp only [sizeBody,inst2,subst_groupSize,subst_fields,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
-  simpa only [subst_groupSize,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.cons_val_three,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (groupSize f (var 0) (var 1) (var 2) (var 3) : PTm 4)
-      (σ := ![fields (data P M p) 0,fields (data P M p) 1,fields (data P M p) 2,g]) (σ' := ![P,M,p,g])
-      (fun j => by fin_cases j; exact fields_at _ _ _ 0; exact fields_at _ _ _ 1; exact fields_at _ _ _ 2; exact .eqRefl _)
+  ipra_congr (groupSize f (var 0) (var 1) (var 2) (var 3) : PTm 4) with
+    [fields_at _ _ _ 0, fields_at _ _ _ 1, fields_at _ _ _ 2, .eqRefl g]
 
 theorem incidence_at (f : PTm 3) (P M p g i : PTm n) : Γ ⊢[PRAAx]
     inst3 (incidenceBody f) g i (data P M p) ≐ incidence f P M p g i := by
@@ -355,11 +350,8 @@ theorem sizes_length (f : PTm 3) (P M p : PTm n) : Γ ⊢[PRAAx] length (sizes f
 theorem group_list_body_at (f : PTm 3) (P M p g : PTm n) : Γ ⊢[PRAAx]
     inst2 (groupListBody f) g (data P M p) ≐ group f P M p g := by
   simp only [groupListBody,inst2,subst_group,subst_fields,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
-  simpa only [subst_group,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.cons_val_three,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (group f (var 0) (var 1) (var 2) (var 3) : PTm 4)
-      (σ := ![fields (data P M p) 0,fields (data P M p) 1,fields (data P M p) 2,g]) (σ' := ![P,M,p,g])
-      (fun j => by fin_cases j; exact fields_at _ _ _ 0; exact fields_at _ _ _ 1; exact fields_at _ _ _ 2; exact .eqRefl _)
+  ipra_congr (group f (var 0) (var 1) (var 2) (var 3) : PTm 4) with
+    [fields_at _ _ _ 0, fields_at _ _ _ 1, fields_at _ _ _ 2, .eqRefl g]
 theorem groups_lookup (f : PTm 3) (P M p g : PTm n) (hg : Γ ⊢[PRAAx] lt g M) : Γ ⊢[PRAAx]
     entry (groups f P M p) g ≐ group f P M p g :=
   (sequence_decode (groupListBody f) (x := data P M p) hg).eqTrans (group_list_body_at f P M p g)

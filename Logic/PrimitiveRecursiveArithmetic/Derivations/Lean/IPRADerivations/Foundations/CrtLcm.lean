@@ -2,6 +2,8 @@ import IPRADerivations.Foundations.CrtCoprime
 import IPRADerivations.AnalyticNumberTheory.LcmUpto
 import IPRADerivations.AnalyticNumberTheory.BinomialLcm
 import IPRADerivations.AnalyticNumberTheory.ValuationAdd
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Least common multiples of finite families
@@ -48,7 +50,7 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
-theorem mul_one_r (X : PTm n) : Γ ⊢[PRAAx] X * one ≐ X := by apply deriveNat; ipra_simps; ring
+alias mul_one_r := Common.mul_one_right
 
 /-! ## Two moduli -/
 
@@ -56,10 +58,7 @@ theorem lcm_crt {A B : PTm n} (hA : Γ ⊢[PRAAx] A ≐ succ (pred A)) (hB : Γ 
     Γ ⊢[PRAAx] lcm A B ≐ A * quo B (gcd A B) := by
   have hg := gcd_pos (B := B) hA
   have hd := gcd_dvd' (b := B) hA
-  have e1 := natEq (eq_of_dvd' hg (Prf.andE₁ hd))
-  have e2 := natEq (lcm_eq hA hB)
-  apply deriveNat; ipra_simps
-  linear_combination e2 - 𝔞 (quo B (gcd A B)) * e1
+  ipra_lc natEq (lcm_eq hA hB) - 𝔞 (quo B (gcd A B)) * natEq (eq_of_dvd' hg (Prf.andE₁ hd))
 
 theorem lcm_cong {A B x z : PTm n} (hA : Γ ⊢[PRAAx] A ≐ succ (pred A)) (hB : Γ ⊢[PRAAx] B ≐ succ (pred B))
     (h1 : Γ ⊢[PRAAx] rem x A ≐ rem z A) (h2 : Γ ⊢[PRAAx] rem x B ≐ rem z B) :
@@ -80,11 +79,8 @@ theorem dvd_lcm_right {A B : PTm n} (hA : Γ ⊢[PRAAx] A ≐ succ (pred A)) (hB
     Γ ⊢[PRAAx] dvd B (lcm A B) := by
   have hg := gcd_pos (B := B) hA
   have hd := gcd_dvd' (b := B) hA
-  have e1 := natEq (eq_of_dvd' hg (Prf.andE₂ hd))
-  have e2 := natEq (lcm_eq hA hB)
   refine dvd_of_eq' hB (w := quo A (gcd A B)) ?_
-  apply deriveNat; ipra_simps
-  linear_combination e2 - 𝔞 (quo A (gcd A B)) * e1
+  ipra_lc natEq (lcm_eq hA hB) - 𝔞 (quo A (gcd A B)) * natEq (eq_of_dvd' hg (Prf.andE₂ hd))
 
 /-- `d ∣ e` gives `lcm(d, c) ∣ lcm(e, c)`. -/
 theorem lcm_mono {d e c : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) (he : Γ ⊢[PRAAx] e ≐ succ (pred e))

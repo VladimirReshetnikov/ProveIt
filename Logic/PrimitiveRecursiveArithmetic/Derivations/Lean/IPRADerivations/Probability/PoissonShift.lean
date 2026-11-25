@@ -1,6 +1,7 @@
 import IPRADerivations.Combinatorics.BellDobinski
 import IPRADerivations.Foundations.ContractProducts
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The finite shift identity of the Poisson mean
@@ -58,11 +59,7 @@ theorem shift_base (α β x : PTm n) :
     Γ ⊢[PRAAx] β * ap2 (sumF (kB t)) (succ zero) x ≐ α * ap2 (sumF t) zero x := by
   have s := sum_succ' (Γ := Γ) (kB t) zero x
   rw [inst2_kB] at s
-  have es := natEq s
-  have z₁ := natEq (sum_zero (Γ := Γ) (kB t) x)
-  have z₂ := natEq (sum_zero (Γ := Γ) t x)
-  apply deriveNat; ipra_simps
-  linear_combination 𝔟 β * es + 𝔟 β * z₁ - 𝔟 α * z₂
+  ipra_lc 𝔟 β * natEq s + 𝔟 β * natEq (sum_zero (Γ := Γ) (kB t) x) - 𝔟 α * natEq (sum_zero (Γ := Γ) t x)
 
 theorem shift_step {α β K x : PTm n}
     (hr : Γ ⊢[PRAAx] succ K * (β * inst2 t (succ K) x) ≐ α * inst2 t K x)
@@ -70,12 +67,7 @@ theorem shift_step {α β K x : PTm n}
     Γ ⊢[PRAAx] β * ap2 (sumF (kB t)) (succ (succ K)) x ≐ α * ap2 (sumF t) (succ K) x := by
   have s₁ := sum_succ' (Γ := Γ) (kB t) (succ K) x
   rw [inst2_kB] at s₁
-  have e₁ := natEq s₁
-  have e₂ := natEq (sum_succ' (Γ := Γ) t K x)
-  have r := natEq hr
-  have i := natEq ih
-  apply deriveNat; ipra_simps
-  linear_combination 𝔟 β * e₁ + i + r - 𝔟 α * e₂
+  ipra_lc 𝔟 β * natEq s₁ + natEq ih + natEq hr - 𝔟 α * natEq (sum_succ' (Γ := Γ) t K x)
 
 theorem shift_guard {α β K N x : PTm n}
     (hK : Γ ⊢[PRAAx] le (succ K) N)
@@ -133,32 +125,22 @@ end Abstract
 theorem ff_ratio {k M : PTm n} (h : Γ ⊢[PRAAx] lt k M) :
     Γ ⊢[PRAAx] succ k * ff M (monus M (succ k)) ≐ ff M (monus M k) := by
   have h' : Γ ⊢[PRAAx] le (succ k) M := h
-  have a₁ := natEq (ff_fact_k h')
-  have a₀ := natEq (ff_fact_k (le_of_lt h))
-  have f := natEq (fact_succ (Γ := Γ) k zero)
   refine mul_cancel (fact_pos k) ?_
-  apply deriveNat; ipra_simps
-  linear_combination a₁ - a₀ - 𝔟(ff M (monus M (succ k))) * f
+  ipra_lc natEq (ff_fact_k h') - natEq (ff_fact_k (le_of_lt h)) -
+    𝔟(ff M (monus M (succ k))) * natEq (fact_succ (Γ := Γ) k zero)
 
 theorem monus_pred {k M : PTm n} (h : Γ ⊢[PRAAx] lt k M) :
     Γ ⊢[PRAAx] monus M k ≐ succ (monus M (succ k)) := by
   have h' : Γ ⊢[PRAAx] le (succ k) M := h
-  have k₁ := natEq (eq_add_of_le h')
-  have k₀ := natEq (eq_add_of_le (le_of_lt h))
-  apply deriveNat; ipra_simps
-  linear_combination k₁ - k₀
+  ipra_lc natEq (eq_add_of_le h') - natEq (eq_add_of_le (le_of_lt h))
 
 /-- The ratio recurrence of `t(k) = a^k b^{M−k} M!/k!`: `(k + 1) b t(k + 1) = a t(k)` for `k < M`. -/
 theorem po_ratio {k M a b : PTm n} (h : Γ ⊢[PRAAx] lt k M) :
     Γ ⊢[PRAAx] succ k * (b * (pw a (succ k) * pw b (monus M (succ k)) * ff M (monus M (succ k)))) ≐
       a * (pw a k * pw b (monus M k) * ff M (monus M k)) := by
-  have pa := natEq (pw_succ (Γ := Γ) a k)
-  have pb := natEq ((congrAp2 powF (monus_pred h) (.eqRefl b)).eqTrans (pw_succ (Γ := Γ) b (monus M (succ k))))
-  have fr := natEq (ff_ratio h)
-  apply deriveNat; ipra_simps
-  linear_combination (𝔟 k + 1) * 𝔟 b * 𝔟(pw b (monus M (succ k))) * 𝔟(ff M (monus M (succ k))) * pa -
-    𝔟 a * 𝔟(pw a k) * 𝔟(ff M (monus M k)) * pb +
-    𝔟 a * 𝔟(pw a k) * 𝔟(pw b (monus M (succ k))) * 𝔟 b * fr
+  ipra_lc (𝔟 k + 1) * 𝔟 b * 𝔟(pw b (monus M (succ k))) * 𝔟(ff M (monus M (succ k))) * natEq (pw_succ (Γ := Γ) a k) -
+    𝔟 a * 𝔟(pw a k) * 𝔟(ff M (monus M k)) * natEq ((congrAp2 powF (monus_pred h) (.eqRefl b)).eqTrans (pw_succ (Γ := Γ) b (monus M (succ k)))) +
+    𝔟 a * 𝔟(pw a k) * 𝔟(pw b (monus M (succ k))) * 𝔟 b * natEq (ff_ratio h)
 
 /-- The Poisson weights `a^k b^{M−k} M!/k!` on the scale `M! b^M`; variables `0 = k`,
 `1 = x = ⟨M, ⟨a, b⟩⟩`. -/

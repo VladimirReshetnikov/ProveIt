@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianGammaPoleFiniteFactors
 import IPRADerivations.Analysis.GaussianMeshLogSign
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Exact inverse of the original pole factor product
@@ -89,9 +90,7 @@ theorem step_inverse (h B A S D : PTm n)
 
 private theorem reciprocal_congr {u v : PTm n} (e : Γ ⊢[PRAAx] u ≐ v) :
     Γ ⊢[PRAAx] reciprocal u ≐ reciprocal v := by
-  simpa only [GaussianRationalReciprocal.subst_reciprocal,Syn.subst_var,Matrix.cons_val_zero] using
-    Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (reciprocal (var 0) : PTm 1) (σ := ![u]) (σ' := ![v])
-      (fun i => by fin_cases i; exact e)
+  ipra_congr (reciprocal (var 0) : PTm 1) with [e]
 
 theorem inverseFactorProduct_succ (h B j : PTm n) : Γ ⊢[PRAAx] inverseFactorProduct h B (succ j) ≐
     qmul (inverseFactorProduct h B j) (reciprocal (factor h B (succ j))) := by

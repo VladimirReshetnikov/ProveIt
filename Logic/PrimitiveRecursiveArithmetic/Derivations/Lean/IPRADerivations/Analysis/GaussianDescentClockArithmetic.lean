@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianProductStability
 import IPRADerivations.Analysis.RationalClosure
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Exact finite arithmetic of the rational-descent clock
@@ -117,12 +118,9 @@ theorem ceiling_lower (s t : PTm n) (ht : Γ ⊢[PRAAx] le one t) : Γ ⊢[PRAAx
   have d := div_mod_at (x := s+pred t) (positive_form ht)
   have r : Γ ⊢[PRAAx] le (rem (s+pred t) t) (pred t) :=
     (succ_monus_succ _ _).eqSymm.eqTrans (lt_congr (.eqRefl _) (positive_form ht) (Prf.andE₂ d))
-  have de := natEq (Prf.andE₁ d)
-  have re := natEq (eq_add_of_le r)
   refine le_of_eq_add (d := monus (pred t) (rem (s+pred t) t)) ?_
   unfold ceiling
-  apply deriveNat; ipra_simps
-  linear_combination -de+re
+  ipra_lc -natEq (Prf.andE₁ d)+natEq (eq_add_of_le r)
 
 theorem ceiling_upper (s t : PTm n) (ht : Γ ⊢[PRAAx] le one t) :
     Γ ⊢[PRAAx] le (t*ceiling s t) (s+pred t) :=
@@ -131,13 +129,10 @@ theorem ceiling_upper (s t : PTm n) (ht : Γ ⊢[PRAAx] le one t) :
 theorem ceiling_least (s t k : PTm n) (ht : Γ ⊢[PRAAx] le one t) (h : Γ ⊢[PRAAx] le s (t*k)) :
     Γ ⊢[PRAAx] le (ceiling s t) k := by
   refine .orE (lt_or_le k (ceiling s t)) ?_ Prf.hyp0
-  have i := natEq (eq_add_of_le (Prf.hyp0 (Ax := PRAAx) (Γ := Γ) (φ := lt k (ceiling s t))))
-  have u := natEq (eq_add_of_le ((ceiling_upper (Γ := Γ) s t ht).wk (ψ := lt k (ceiling s t))))
-  have l := natEq (eq_add_of_le (h.wk (ψ := lt k (ceiling s t))))
-  have p := natEq (positive_form (ht.wk (ψ := lt k (ceiling s t))))
   refine succ_ne_zero' _ (a := monus (t*k) s+t*monus (ceiling s t) (succ k)+monus (s+pred t) (t*ceiling s t)) ?_
-  apply deriveNat; ipra_simps
-  linear_combination -u-Groth.ι (Q.mk (lt k (ceiling s t) :: Γ) t)*i-l-p
+  ipra_lc -natEq (eq_add_of_le ((ceiling_upper (Γ := Γ) s t ht).wk (ψ := lt k (ceiling s t))))-
+    Groth.ι (Q.mk (lt k (ceiling s t) :: Γ) t)*natEq (eq_add_of_le (Prf.hyp0 (Ax := PRAAx) (Γ := Γ) (φ := lt k (ceiling s t))))-
+    natEq (eq_add_of_le (h.wk (ψ := lt k (ceiling s t))))-natEq (positive_form (ht.wk (ψ := lt k (ceiling s t))))
 
 theorem geometric_budget (a b e f : PTm n) (hb : Γ ⊢[PRAAx] le one b) (he : Γ ⊢[PRAAx] le one e) : Γ ⊢[PRAAx]
     le (a*f) (b*e*pw two (blocks a b e f)) :=

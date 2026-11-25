@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.GaussianGeneralPolynomialEvaluation
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual value names of general coefficient and point names
@@ -173,13 +174,8 @@ theorem value_observation (a : PR 3) (point : PR 2) (N U x y k : PTm n) : Γ ⊢
     value a point N U x y k ≐ GaussianFastValueCut.recode
       (GaussianGeneralPolynomialEvaluation.observation a point N x y (exponent a N U x k)) := by
   have h := GaussianGeneralPolynomialEvaluation.observation_at (Γ := Γ) a point N x y (exponent a N U x k)
-  simpa only [value,exponent,GaussianFastValueCut.value,GaussianFastValueCut.subst_recode,
-    Syn.subst_var,Matrix.cons_val_zero] using
-      Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (GaussianFastValueCut.recode (var 0) : PTm 1)
-        (σ := ![ap2 (GaussianGeneralPolynomialEvaluation.observationF a point)
-          (exponent a N U x k) (GaussianGeneralPolynomialEvaluation.observationData N x y)])
-        (σ' := ![GaussianGeneralPolynomialEvaluation.observation a point N x y (exponent a N U x k)])
-        (fun i => by fin_cases i; exact h)
+  ipra_congr (GaussianFastValueCut.recode (var 0) : PTm 1) with
+    [h] using [value, exponent, GaussianFastValueCut.value]
 
 theorem name_observation (a : PR 3) (point : PR 2) (N U x y k : PTm n) : Γ ⊢[PRAAx]
     ap2 (nameF a point) k (nameData a N U x y) ≐ GaussianFastValueCut.recode

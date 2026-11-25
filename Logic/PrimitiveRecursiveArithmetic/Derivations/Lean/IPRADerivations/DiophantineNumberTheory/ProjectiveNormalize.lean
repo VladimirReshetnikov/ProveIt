@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.Coprime
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Primitive representatives on the projective line
@@ -93,12 +94,9 @@ theorem norm_class {a b c d : PTm k} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) (h
   have pA : Γ ⊢[PRAAx] nA a b ≐ succ (pred (nA a b)) := pos_of_eq_mul ha (Prf.andE₁ n1)
   have pC : Γ ⊢[PRAAx] nA c d ≐ succ (pred (nA c d)) := pos_of_eq_mul hc (Prf.andE₁ n2)
   have hgh := pos_mul hg hh
-  have e := natEq h
   have prop : Γ ⊢[PRAAx] nA a b * nB c d ≐ nB a b * nA c d := by
     refine mul_cancel hgh ?_
-    apply deriveNat; ipra_simps
-    linear_combination e - 𝔞 a * eD - 𝔞 (gcd c d) * 𝔞 (nB c d) * eA + 𝔞 b * eC +
-      𝔞 (gcd c d) * 𝔞 (nA c d) * eB
+    ipra_lc natEq h - 𝔞 a * eD - 𝔞 (gcd c d) * 𝔞 (nB c d) * eA + 𝔞 b * eC + 𝔞 (gcd c d) * 𝔞 (nA c d) * eB
   exact norm_unique pA pC (Prf.andE₂ (Prf.andE₂ n1)) (Prf.andE₂ (Prf.andE₂ n2)) prop
 
 end LeanProofs.IPRA.DiophantineNumberTheory.ProjectiveNormalize

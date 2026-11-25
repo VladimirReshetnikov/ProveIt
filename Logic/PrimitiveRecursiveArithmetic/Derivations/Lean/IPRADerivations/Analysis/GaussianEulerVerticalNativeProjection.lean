@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianGammaRealValues
 import IPRADerivations.Analysis.GaussianEulerLowerPowerCoefficients
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Original native real arguments for the vertical Euler comparison
@@ -41,12 +42,7 @@ theorem imaginary_zero (z : PTm n) : Γ ⊢[PRAAx] ZT.eq (im (argument z)) (ZT.o
 
 theorem norm_contraction (z : PTm n) : Γ ⊢[PRAAx] le (normSq (argument z)) (normSq z) := by
   apply le_of_eq_add (d := normSq (ComplexLogarithmRemainder.code (ZT.ofNat zero) (im z)))
-  apply deriveNat
-  ipra_simps
-  simp only [ComplexLogarithmRemainder.normSq_eval,argument,native,
-    ComplexLogarithmRemainder.eval_re_code,ComplexLogarithmRemainder.eval_im_code,ZT.toZ_ofNat]
-  ipra_simps
-  ring
+  ipra_lc [ComplexLogarithmRemainder.normSq_eval, argument, native, ComplexLogarithmRemainder.eval_re_code, ComplexLogarithmRemainder.eval_im_code]
 
 theorem upper_source (z R B : PTm n) (h : Γ ⊢[PRAAx] GaussianEulerUpperPowerCoefficients.source z R B) : Γ ⊢[PRAAx]
     GaussianEulerUpperPowerCoefficients.source (argument z) R B :=

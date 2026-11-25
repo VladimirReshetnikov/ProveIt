@@ -1,4 +1,5 @@
 import IPRADerivations.Combinatorics.LucasIdentities
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The generating functions of the Fibonacci and Lucas numbers
@@ -55,44 +56,30 @@ abbrev lucF {n : ℕ} (N x : PTm n) : Fm PTm n :=
 theorem fib_base (x : PTm n) : Γ ⊢[PRAAx] fibF zero x := by
   have s := sum_succ' (Γ := Γ) fxB zero x
   rw [inst2_fx] at s
-  have a := natEq s; have b := natEq (sum_zero (Γ := Γ) fxB x); have c := natEq (fib_zero (Γ := Γ) (n := n))
-  have d := natEq ((fib_succ (Γ := Γ) (zero : PTm n)).eqTrans fibS_zero)
-  have e := natEq (pw_one (Γ := Γ) x)
-  apply deriveNat; ipra_simps
-  linear_combination (1 - 𝔞 x - 𝔞 x * 𝔞 x) * (a + b) +
-    ((1 - 𝔞 x - 𝔞 x * 𝔞 x) * 𝔞 (pw x zero) + 𝔞 (pw x (succ (succ zero)))) * c + 𝔞 (pw x (succ zero)) * d + e
+  ipra_lc (1 - 𝔞 x - 𝔞 x * 𝔞 x) * (natEq s + natEq (sum_zero (Γ := Γ) fxB x)) +
+    ((1 - 𝔞 x - 𝔞 x * 𝔞 x) * 𝔞 (pw x zero) + 𝔞 (pw x (succ (succ zero)))) * natEq (fib_zero (Γ := Γ) (n := n)) +
+    𝔞 (pw x (succ zero)) * natEq ((fib_succ (Γ := Γ) (zero : PTm n)).eqTrans fibS_zero) + natEq (pw_one (Γ := Γ) x)
 
 theorem fib_step {N x : PTm n} (ih : Γ ⊢[PRAAx] fibF N x) : Γ ⊢[PRAAx] fibF (succ N) x := by
   have s := sum_succ' (Γ := Γ) fxB (succ N) x
   rw [inst2_fx] at s
-  have i := natEq ih; have a := natEq s
-  have f₁ := natEq (fib_succ (Γ := Γ) (succ N)); have f₂ := natEq (fibS_succ (Γ := Γ) N)
-  have f₃ := natEq (fib_succ (Γ := Γ) N)
-  have p₁ := natEq (pw_succ (Γ := Γ) x (succ (succ N))); have p₂ := natEq (pw_succ (Γ := Γ) x (succ N))
-  apply deriveNat; ipra_simps
-  linear_combination (1 - 𝔞 x - 𝔞 x * 𝔞 x) * a + i + 𝔞 (pw x (succ (succ N))) * (f₁ + f₂ - f₃) +
-    𝔞 (fib (succ N)) * (p₁ + p₂ + 𝔞 x * p₂)
+  ipra_lc (1 - 𝔞 x - 𝔞 x * 𝔞 x) * natEq s + natEq ih +
+    𝔞 (pw x (succ (succ N))) * (natEq (fib_succ (Γ := Γ) (succ N)) + natEq (fibS_succ (Γ := Γ) N) - natEq (fib_succ (Γ := Γ) N)) +
+    𝔞 (fib (succ N)) * (natEq (pw_succ (Γ := Γ) x (succ (succ N))) + natEq (pw_succ (Γ := Γ) x (succ N)) + 𝔞 x * natEq (pw_succ (Γ := Γ) x (succ N)))
 
 theorem luc_base (x : PTm n) : Γ ⊢[PRAAx] lucF zero x := by
   have s := sum_succ' (Γ := Γ) lxB zero x
   rw [inst2_lx] at s
-  have a := natEq s; have b := natEq (sum_zero (Γ := Γ) lxB x)
-  have l₀ := natEq (luc_zero (Γ := Γ) (n := n)); have l₁ := natEq (luc_one (Γ := Γ) (n := n))
-  have z := natEq (pw_zero (Γ := Γ) x); have e := natEq (pw_one (Γ := Γ) x)
-  have q := natEq (pw_succ (Γ := Γ) x (succ zero))
-  apply deriveNat; ipra_simps
-  linear_combination (1 - 𝔞 x - 𝔞 x * 𝔞 x) * (a + b + 𝔞 (pw x zero) * l₀ + 2 * z) + 𝔞 (pw x (succ zero)) * l₁ + e +
-    𝔞 (pw x (succ (succ zero))) * l₀ + 2 * q + 2 * 𝔞 x * e
+  ipra_lc (1 - 𝔞 x - 𝔞 x * 𝔞 x) * (natEq s + natEq (sum_zero (Γ := Γ) lxB x) + 𝔞 (pw x zero) * natEq (luc_zero (Γ := Γ) (n := n)) + 2 * natEq (pw_zero (Γ := Γ) x)) +
+    𝔞 (pw x (succ zero)) * natEq (luc_one (Γ := Γ) (n := n)) + natEq (pw_one (Γ := Γ) x) +
+    𝔞 (pw x (succ (succ zero))) * natEq (luc_zero (Γ := Γ) (n := n)) + 2 * natEq (pw_succ (Γ := Γ) x (succ zero)) +
+    2 * 𝔞 x * natEq (pw_one (Γ := Γ) x)
 
 theorem luc_step {N x : PTm n} (ih : Γ ⊢[PRAAx] lucF N x) : Γ ⊢[PRAAx] lucF (succ N) x := by
   have s := sum_succ' (Γ := Γ) lxB (succ N) x
   rw [inst2_lx] at s
-  have i := natEq ih; have a := natEq s
-  have r := natEq (luc_rec (Γ := Γ) N)
-  have p₁ := natEq (pw_succ (Γ := Γ) x (succ (succ N))); have p₂ := natEq (pw_succ (Γ := Γ) x (succ N))
-  apply deriveNat; ipra_simps
-  linear_combination (1 - 𝔞 x - 𝔞 x * 𝔞 x) * a + i + 𝔞 (pw x (succ (succ N))) * r +
-    (𝔞 (fibS (succ N)) + 𝔞 (monus (fibS (succ N)) (fib (succ N)))) * (p₁ + p₂ + 𝔞 x * p₂)
+  ipra_lc (1 - 𝔞 x - 𝔞 x * 𝔞 x) * natEq s + natEq ih + 𝔞 (pw x (succ (succ N))) * natEq (luc_rec (Γ := Γ) N) +
+    (𝔞 (fibS (succ N)) + 𝔞 (monus (fibS (succ N)) (fib (succ N)))) * (natEq (pw_succ (Γ := Γ) x (succ (succ N))) + natEq (pw_succ (Γ := Γ) x (succ N)) + 𝔞 x * natEq (pw_succ (Γ := Γ) x (succ N)))
 
 /-- Variables: `0 = N`, `1 = x`. -/
 private abbrev fibSF : Fm PTm 2 := fibF (var 0) (var 1)

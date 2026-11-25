@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianFiberDeterminantNonzero
 import IPRADerivations.Analysis.GaussianPolynomialScalarLeftDeterminant
 import IPRADerivations.Analysis.GaussianPolynomialRowFactorDeterminant
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual local fiber divisibility of the original norm polynomial
@@ -180,8 +181,7 @@ theorem coefficients_left_congr {C C' D N : PTm n} (hc : Γ ⊢[PRAAx] C ≐ C')
           Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using h)
 theorem pad_congr {C D t u : PTm n} (hc : Γ ⊢[PRAAx] C ≐ D) (ht : Γ ⊢[PRAAx] t ≐ u) : Γ ⊢[PRAAx]
     leftPad C t ≐ leftPad D u := by
-  simpa using Prf.eqCongr (Γ := Γ) (leftPad (var 0) (var 1) : PTm 2)
-    (σ := ![C,t]) (σ' := ![D,u]) (fun i => by fin_cases i; exact hc; exact ht)
+  ipra_congr (leftPad (var 0) (var 1) : PTm 2) with [hc, ht]
 
 /-! Original source aliases use the existing returned norm matrix and
 the original grouping. No second ordinate-list producer is introduced. -/

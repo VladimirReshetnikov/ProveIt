@@ -1,5 +1,5 @@
 import IPRADerivations.Combinatorics.BellWindowPeriod
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The backward recurrence for Bell windows modulo `m` (`bell_numbers_ipra`, `thm:all-moduli-period`)

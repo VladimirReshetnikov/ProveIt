@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.GaussianBetaKernelDampedDoubling
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Actual finite dyadic telescope of the beta relative error
@@ -97,12 +98,9 @@ theorem telescope_step (D A W P Q PN QN P0 Q0 : PTm n)
         (Q*(D*(two*W)*P0*QN+A*(two*monus W one+one)*PN*Q0)) := by
     ipra_le (𝔞 Q0)*sl step+(𝔞 (two*QN))*sl ih+(𝔞 (two*A*monus W one*Q0))*sl mono
   have cancelled := RationalValueBounds.positive_cancel hQ budget
-  have first := natEq (eq_add_of_le hW)
   have h2 : Γ ⊢[PRAAx] le one (two*W) := le_trans hW (le_of_eq_add (d := W) (by ipra_ring))
-  have second := natEq (eq_add_of_le h2)
   have gap : Γ ⊢[PRAAx] two*monus W one+one ≐ monus (two*W) one := by
-    apply deriveNat; ipra_simps
-    linear_combination -2*first+second
+    ipra_lc -2*natEq (eq_add_of_le hW)+natEq (eq_add_of_le h2)
   exact le_congr (.eqRefl _) (congrAdd (.eqRefl _) (congrMul (congrMul (congrMul (.eqRefl A) gap) (.eqRefl PN)) (.eqRefl Q0))) cancelled
 
 def refinementLaw (a b N j : PTm n) : Fm PTm n := relation (b*b*N) (a*a) (unit j)

@@ -1,4 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.PhiEvenPow
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The Euler product for `φ`
@@ -89,7 +91,7 @@ end Peel
 
 /-! ## Prime-indexed products -/
 
-theorem mul_one' (x : PTm n) : Γ ⊢[PRAAx] x * one ≐ x := by apply deriveNat; ipra_simps; ring
+alias mul_one' := Common.mul_one_right
 
 /-- `F(q)^{e(q, n)}`, over `0 = q`, `1 = n`. -/
 abbrev pB (F : PTm 2) : PTm 2 := pw F eB
@@ -104,8 +106,8 @@ theorem e_far {m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (k : PTm n) :
     Γ ⊢[PRAAx] inst2 eB (succ m + k) m ≐ zero := by
   rw [inst2_e]
   have hQ : Γ ⊢[PRAAx] succ m + k ≐ succ (pred (succ m + k)) :=
-    eq_succ_pred (y := m + k) (by apply deriveNat; ipra_simps; ring)
-  have hr := rem_eq' hQ (z := m) (q := zero) (r := m) (by apply deriveNat; ipra_simps; ring)
+    eq_succ_pred (y := m + k) (by ipra_ring)
+  have hr := rem_eq' hQ (z := m) (q := zero) (r := m) (by ipra_ring)
     (le_of_eq_add (d := k) (by apply deriveNat; ipra_simps))
   have he : Γ ⊢[PRAAx] eqb (rem m (succ m + k)) zero ≐ zero :=
     (congrEqb hr (.eqRefl _)).eqTrans (eqb_of_ne (.impI (succ_ne_zero' _ (hm.wk.eqSymm.eqTrans Prf.hyp0))))
@@ -161,8 +163,7 @@ theorem pp_peel (F : PTm 2) (hF : ∀ {k : ℕ} (q x y : PTm k), inst2 F q x = i
       (congrAdd (.eqRefl _) (eqb_comm' _ _))) (.eqRefl _)).eqTrans (pw_add _ _ _)
   have s₃ := prod2_mul (Γ := Γ) (Syn.subst ![var 0, var 2] (pB F)) (deltaBody F) (succ (pw p a * m)) p m
   have e : Γ ⊢[PRAAx] succ (pw p a * m) ≐ succ m + pred (pw p a) * m := by
-    have h₁ := natEq hP
-    apply deriveNat; ipra_simps; linear_combination Groth.ι (Q.mk _ m) * h₁
+    ipra_lc Groth.ι (Q.mk _ m) * natEq hP
   have s₄ := (Permutation.prod2_eq_prod (Γ := Γ) (pB F) (succ (pw p a * m)) p m).eqTrans
     ((congrAp2 (prodF (pB F)) e (.eqRefl m)).eqTrans (prod_extend F hm _))
   have hlt : Γ ⊢[PRAAx] lt p (succ (pw p a * m)) :=
@@ -201,7 +202,7 @@ theorem pp_one (F : PTm 2) : Γ ⊢[PRAAx] PP F (one : PTm n) ≐ one := by
     rw [inst2_pB, inst2_e]
     exact (congrAp2 powF ((congrMul isP_one (.eqRefl _)).eqTrans (zero_mul _)) (.eqRefl _)).eqTrans (pw_zero _)
   refine (congrMul (congrMul (.eqRefl _) t₀) t₁).eqTrans ?_
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 theorem phi_one : Γ ⊢[PRAAx] phi (one : PTm n) ≐ one := by
   have h1 : Γ ⊢[PRAAx] (one : PTm n) ≐ succ (pred one) := congrSucc (pred_succ _).eqSymm
@@ -281,19 +282,14 @@ theorem eu_found {N p x : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) (hp : 
   have hφ := (congrAp2 (sumF totBody) hNe hNe).eqTrans hmul
   have k₁ := (congrAp2 (prodF (pB F₁)) (congrSucc hNe) hNe).eqTrans h₁
   have k₂ := (congrAp2 (prodF (pB F₂)) (congrSucc hNe) hNe).eqTrans h₂
-  have n₁ := natEq hφ; have n₂ := natEq k₁; have n₃ := natEq k₂; have n₄ := natEq ih
-  have n₅ := natEq t'; have n₆ := natEq ps; have n₇ := natEq pq; have n₈ := natEq hNe
-  apply deriveNat; ipra_simps
-  linear_combination Groth.ι (Q.mk _ (PP F₁ N)) * n₁ +
-    Groth.ι (Q.mk _ (phi (pw p (val p N)))) * Groth.ι (Q.mk _ (phi (quo N (pw p (val p N))))) * n₂ +
-    Groth.ι (Q.mk _ (phi (pw p (val p N)))) * Groth.ι (Q.mk _ p) * n₄ +
-    Groth.ι (Q.mk _ (quo N (pw p (val p N)))) * Groth.ι (Q.mk _ (PP F₂ (quo N (pw p (val p N))))) *
-      Groth.ι (Q.mk _ p) * n₅ -
-    Groth.ι (Q.mk _ N) * n₃ -
-    Groth.ι (Q.mk _ (PP F₂ (quo N (pw p (val p N))))) * Groth.ι (Q.mk _ (monus p one)) * n₈ +
-    Groth.ι (Q.mk _ (quo N (pw p (val p N)))) * Groth.ι (Q.mk _ (PP F₂ (quo N (pw p (val p N))))) * n₆ +
-    Groth.ι (Q.mk _ (quo N (pw p (val p N)))) * Groth.ι (Q.mk _ (PP F₂ (quo N (pw p (val p N))))) *
-      Groth.ι (Q.mk _ (pw p (val p N))) * n₇
+  ipra_lc Groth.ι (Q.mk _ (PP F₁ N)) * natEq hφ +
+    Groth.ι (Q.mk _ (phi (pw p (val p N)))) * Groth.ι (Q.mk _ (phi (quo N (pw p (val p N))))) * natEq k₁ +
+    Groth.ι (Q.mk _ (phi (pw p (val p N)))) * Groth.ι (Q.mk _ p) * natEq ih +
+    Groth.ι (Q.mk _ (quo N (pw p (val p N)))) * Groth.ι (Q.mk _ (PP F₂ (quo N (pw p (val p N))))) * Groth.ι (Q.mk _ p) * natEq t' -
+    Groth.ι (Q.mk _ N) * natEq k₂ -
+    Groth.ι (Q.mk _ (PP F₂ (quo N (pw p (val p N))))) * Groth.ι (Q.mk _ (monus p one)) * natEq hNe +
+    Groth.ι (Q.mk _ (quo N (pw p (val p N)))) * Groth.ι (Q.mk _ (PP F₂ (quo N (pw p (val p N))))) * natEq ps +
+    Groth.ι (Q.mk _ (quo N (pw p (val p N)))) * Groth.ι (Q.mk _ (PP F₂ (quo N (pw p (val p N))))) * Groth.ι (Q.mk _ (pw p (val p N))) * natEq pq
 
 theorem eu_step {N x : PTm n} (hV : Γ ⊢[PRAAx] ap2 (sumF euB) N x ≐ zero) : Γ ⊢[PRAAx] LHS N ≐ RHS N := by
   refine .orE (zero_or_succ N) ?_ ?_

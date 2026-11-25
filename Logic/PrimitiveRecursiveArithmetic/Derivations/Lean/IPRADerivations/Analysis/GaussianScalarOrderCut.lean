@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianFastValueCut
 import IPRADerivations.Analysis.GaussianRationalSyntheticBounds
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Scalar radius cuts and actual two-name Gaussian order
@@ -99,10 +100,7 @@ theorem slackScalar_represents (r R S k j : PTm n)
     (unitCode_represents k) (unitCode_represents j)
   have outer := RationalRepresentations.represents_add (Γ := Γ) r (add (unitCode k) (unitCode j)) _ _ _ _ hr inner
   apply scalar_congr (.eqRefl _) (hAB := by ipra_ring) (h := outer)
-  apply ZT.derive
-  simp only [ZT.toZ_add,ZT.toZ_mul,ZT.toZ_ofNat]
-  ipra_simps
-  ring
+  ipra_lc
 
 theorem slack_denominator_positive (S k j : PTm n) (hS : Γ ⊢[PRAAx] le one S) : Γ ⊢[PRAAx]
     le one (S*unit k*unit j) := positive_product _ _ (positive_product _ _ hS (unit_positive k)) (unit_positive j)

@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianRationalHornerLipschitz
 import IPRADerivations.Analysis.GaussianRationalNormalization
 import IPRADerivations.Analysis.GaussianRationalPowerDifference
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual coefficient-dependent Horner size and variation budgets
@@ -49,8 +50,7 @@ def variation (C U k : PTm n) : PTm n := sndT (state C U k)
 
 theorem denominator_positive (C : PTm n) : Γ ⊢[PRAAx] le one (denominator C) := GaussianRationalNormalization.denominator_positive C
 theorem coefficient_congr {C D i j : PTm n} (hC : Γ ⊢[PRAAx] C ≐ D) (hi : Γ ⊢[PRAAx] i ≐ j) : Γ ⊢[PRAAx] coefficient C i ≐ coefficient D j := by
-  simpa only [subst_coefficient,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using
-    Prf.eqCongr (Γ := Γ) (coefficient (var 0) (var 1) : PTm 2) (σ := ![C,i]) (σ' := ![D,j]) (fun k => by fin_cases k; exact hC; exact hi)
+  ipra_congr (coefficient (var 0) (var 1) : PTm 2) with [hC, hi]
 
 theorem state_zero (C U : PTm n) : Γ ⊢[PRAAx] state C U zero ≐ pairT zero zero := by
   simpa [state,stateF] using rec2_zero (Γ := Γ) (pairT zero zero : PTm 1) stepBody (data C U)

@@ -1,5 +1,6 @@
 import IPRADerivations.Core.MultiSums
 import IPRADerivations.Core.Gcd
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Finite reciprocal-square tails with denominators cleared
@@ -47,11 +48,7 @@ theorem tailSum_succ (e : PR 2) (N r x : PTm n) :
     Γ ⊢[PRAAx] tailSum e N (succ r) x ≐ tailSum e N r x + ap2 e (succ (N + r)) x := by
   simpa [tailSum, errorBody, inst3] using sum2_succ (Γ := Γ) (errorBody e) r N x
 
-private theorem cancel_positive {c a b : PTm n} (hc : Γ ⊢[PRAAx] le one c)
-    (h : Γ ⊢[PRAAx] le (c * a) (c * b)) : Γ ⊢[PRAAx] le a b := by
-  have ce : Γ ⊢[PRAAx] c ≐ succ (monus c one) :=
-    (eq_add_of_le hc).eqTrans (by ipra_ring)
-  exact mul_le_cancel (le_congr (congrMul ce (.eqRefl _)) (congrMul ce (.eqRefl _)) h)
+private alias cancel_positive := Common.mul_cancel_le
 
 /-- The polynomial induction step in the reciprocal-square comparison. -/
 theorem sharp_step {A N r C S E : PTm n} (hN : Γ ⊢[PRAAx] le one N)

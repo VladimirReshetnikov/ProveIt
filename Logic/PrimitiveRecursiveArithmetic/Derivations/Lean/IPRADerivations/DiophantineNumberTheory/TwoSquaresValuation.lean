@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.TwoSquaresObstruction
 import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The valuation of a sum of two squares at a prime `q ≡ 3 (mod 4)`
@@ -48,8 +49,7 @@ theorem decomp_alg {n x y u w Pt P2 : PTm k} (en : Γ ⊢[PRAAx] x * x + y * y �
 
 theorem dbl (t : PTm k) : Γ ⊢[PRAAx] two * t ≐ t + t := by ipra_ring
 
-theorem pw_dbl (q t : PTm k) : Γ ⊢[PRAAx] pw q (two * t) ≐ pw q t * pw q t :=
-  (congrAp2 powF (dbl t) (.eqRefl q)).eqTrans (pw_add q t t)
+alias pw_dbl := Common.pw_double
 
 section Prime
 

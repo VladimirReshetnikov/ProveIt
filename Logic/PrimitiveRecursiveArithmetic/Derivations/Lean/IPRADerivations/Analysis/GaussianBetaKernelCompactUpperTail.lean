@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianBetaKernelUpperTail
 import IPRADerivations.Analysis.GaussianEulerCompactUpperTail
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Finite upper-tail quadrature for the literal beta kernel
@@ -48,11 +49,8 @@ theorem scalar_body_at (i p M a C E R : PTm n) : Γ ⊢[PRAAx]
   have num := congrAdd (congrMul (field2_at p M a C E R) (field1_at p M a C E R))
     (congrMul (field3_at p M a C E R) (Prf.eqRefl (Γ := Γ) i))
   have den := congrMul (field4_at (Γ := Γ) p M a C E R) (field1_at p M a C E R)
-  simpa [scalarBody,inst2,x] using Prf.eqCongr (Γ := Γ) (Ax := PRAAx)
-    (scalarMajorant (var 0) (var 1) (var 2) (var 3) : PTm 4)
-    (σ := ![field0 x,field5 x,field2 x*field1 x+field3 x*i,field4 x*field1 x])
-    (σ' := ![p,R,a*M+C*i,E*M])
-    (fun k => by fin_cases k; exact field0_at p M a C E R; exact field5_at p M a C E R; exact num; exact den)
+  ipra_congr (scalarMajorant (var 0) (var 1) (var 2) (var 3) : PTm 4) with
+    [field0_at p M a C E R, field5_at p M a C E R, num, den] using [scalarBody, inst2, x]
 
 theorem majorized_row (i p M a C E z R B N : PTm n) (hM : Γ ⊢[PRAAx] le one M)
     (hE : Γ ⊢[PRAAx] le one E) (hea : Γ ⊢[PRAAx] le E a) (h : Γ ⊢[PRAAx] source z R B)

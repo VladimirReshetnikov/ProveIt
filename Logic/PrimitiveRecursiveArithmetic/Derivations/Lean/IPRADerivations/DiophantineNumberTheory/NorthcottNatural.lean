@@ -1,6 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.DigitCode
 import IPRADerivations.DiophantineNumberTheory.GcdUnique
 import IPRADerivations.Foundations.FilteredEnumeration
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Bounded-height enumeration for natural coordinates
@@ -70,12 +71,7 @@ theorem gv_congr (f g : PTm 2) {N x y : PTm k}
     ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at h2
   exact Prf.impE h2 (le_refl N)
 
-theorem congrEqb {a a' b b' : PTm k} (h₁ : Γ ⊢[PRAAx] a ≐ a') (h₂ : Γ ⊢[PRAAx] b ≐ b') :
-    Γ ⊢[PRAAx] eqb a b ≐ eqb a' b' := by
-  have h := Prf.eqCongr (Γ := Γ) (eqb (var 0) (var 1) : PTm 2) (σ := ![a, b]) (σ' := ![a', b'])
-    (fun j => by fin_cases j <;> assumption)
-  simp only [subst_eqb, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] at h
-  exact h
+alias congrEqb := Common.congrEqb
 
 /-- The filter: the digit vector of `e` (variable `0`) has gcd `1`, over `1 = ⟨b, N⟩`. -/
 abbrev kB : PTm 2 := eqb (gv digB (sndT (var 1)) (pairT (fstT (var 1)) (var 0))) one

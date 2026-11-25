@@ -3,7 +3,7 @@ import IPRADerivations.Foundations.RationalRootConstant
 import IPRADerivations.Foundations.EigenvalueBound
 import IPRADerivations.DiophantineNumberTheory.FLTMultiples
 import IPRADerivations.Combinatorics.BinomialIdentities
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Rational roots: removing the factor `T^e` (`ipra_presentations_to_witnesses`, `lem:norm-rational-roots`; `ipra_resources_and_elimination_2026-11-15`, `lem:elim-rational-roots`)

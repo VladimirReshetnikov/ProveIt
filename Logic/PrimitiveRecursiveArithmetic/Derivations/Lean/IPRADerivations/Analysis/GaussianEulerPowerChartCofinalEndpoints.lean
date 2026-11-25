@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianEulerPowerChartRationalPowers
 import IPRADerivations.AnalyticNumberTheory.Order
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Explicit cofinal endpoints for the original rational power chart
@@ -64,8 +65,7 @@ private theorem bounded_below_by_base (b m : PTm n)
 private theorem one_le_two : Γ ⊢[PRAAx] le one two :=
   le_of_eq_add (d := one) (by ipra_ring)
 
-private theorem right_one (a : PTm n) : Γ ⊢[PRAAx] a*one ≐ a :=
-  (mul_comm a one).eqTrans (one_mul a)
+private alias right_one := Common.mul_one_right
 
 private theorem powered_bounds (a V m : PTm n)
     (ha : Γ ⊢[PRAAx] le one a) (hV : Γ ⊢[PRAAx] le two V) (hm : Γ ⊢[PRAAx] le one m) :

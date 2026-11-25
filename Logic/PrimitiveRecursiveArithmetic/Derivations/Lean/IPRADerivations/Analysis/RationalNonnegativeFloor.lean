@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.RationalConvexSecants
 import IPRADerivations.Analysis.RationalCubeInfimumIntervals
 import IPRADerivations.Analysis.GaussianEuclideanDistanceName
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Exact numerical floor cuts for original nonnegative rational codes
@@ -67,13 +68,8 @@ theorem index_monotone (q r M : PTm n) (hq : Γ ⊢[PRAAx] nonnegative q)
   have less : Δ ⊢[PRAAx] lt (index r M) (index q M) := Prf.hyp0
   have impossible : Δ ⊢[PRAAx] le (D*E) (D*rem (M*V) E) := by
     apply le_of_eq_add (d := M*monus (V*D) (E*U)+D*E*monus (index q M) (succ (index r M))+E*rem (M*U) D)
-    have eq := natEq (Γ := Δ) (eq_add_of_le clear.wk)
-    have order := natEq (eq_add_of_le less)
-    have left := natEq (Γ := Δ) decompQ.wk
-    have right := natEq (Γ := Δ) decompR.wk
-    apply deriveNat
-    ipra_simps
-    linear_combination 𝔞 M*eq+𝔞 D*𝔞 E*order+𝔞 E*left-𝔞 D*right
+    ipra_lc 𝔞 M*natEq (Γ := Δ) (eq_add_of_le clear.wk)+𝔞 D*𝔞 E*natEq (eq_add_of_le less)+
+      𝔞 E*natEq (Γ := Δ) decompQ.wk-𝔞 D*natEq (Γ := Δ) decompR.wk
   exact le_lt_absurd _ (RationalValueBounds.positive_cancel (denominator_positive (Γ := Δ) q) impossible)
     (original_division (Γ := Δ) r M).andE₂
 

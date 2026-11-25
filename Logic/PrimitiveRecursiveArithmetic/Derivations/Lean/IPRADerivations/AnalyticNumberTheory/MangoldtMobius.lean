@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.FactorialLambda
 import IPRADerivations.AnalyticNumberTheory.DivisorSwap
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Möbius forms of the weighted von Mangoldt function
@@ -118,10 +119,10 @@ theorem row_lam_mob {d N : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) :
         have ww := natEq eN; have wp := natEq hd
         have hkN : C ⊢[PRAAx] le (succ (quo N d)) (succ N) := by
           refine (succ_monus_succ _ _).eqTrans (le_of_eq_add (d := pred d * quo N d) ?_)
-          apply deriveNat; ipra_simps; linear_combination ww + 𝔞 (quo N d) * wp
+          ipra_lc ww + 𝔞 (quo N d) * wp
         exact congrMul (.eqRefl _) (inner_lam w hk hkN)
       · have z : (neg (rem N d ≐ zero) :: (d ≐ succ (pred d)) :: Γ) ⊢[PRAAx] sg d * eqb (rem N d) zero ≐ zero :=
-          (congrMul (.eqRefl _) (eqb_of_ne Prf.hyp0)).eqTrans (by apply deriveNat; ipra_simps; ring)
+          (congrMul (.eqRefl _) (eqb_of_ne Prf.hyp0)).eqTrans (by ipra_ring)
         exact (zero_mul_l (zero_mul_l z _) _).eqTrans (zero_mul_l (zero_mul_l z _) _).eqSymm
   exact .andI (cR.eqTrans (scP.eqTrans (key _))) (cR'.eqTrans (scN.eqTrans (key _)))
 
@@ -140,9 +141,7 @@ theorem lambda_mobius {N : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) :
     refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
     rw [shift_pairT, hs]
     exact Prf.andE₂ (row_lam_mob w hN'.wk)
-  have a := natEq inv; have b := natEq cP; have c := natEq cN
-  apply deriveNat; ipra_simps
-  linear_combination -b + a + c
+  ipra_lc -natEq cP + natEq inv + natEq cN
 
 /-- For `d ∣ N`: `L_w(N/d) + L_w(d) = L_w(N)`, so `[d ∣ N] μ(d) (L_w(N/d) + L_w(d)) = [d ∣ N] μ(d) L_w(N)`. -/
 theorem split_pt {d N : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) :
@@ -171,7 +170,7 @@ theorem split_pt {d N : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) :
           𝔞 (eqb (rem (om (succ N) d) two) one)) * e
     · let C : List (Fm PTm n) := neg (rem N d ≐ zero) :: (d ≐ succ (pred d)) :: Γ
       have zz : C ⊢[PRAAx] sg d * eqb (rem N d) zero ≐ zero :=
-        (congrMul (.eqRefl _) (eqb_of_ne Prf.hyp0)).eqTrans (by apply deriveNat; ipra_simps; ring)
+        (congrMul (.eqRefl _) (eqb_of_ne Prf.hyp0)).eqTrans (by ipra_ring)
       have z : ∀ {X Y : PTm n}, C ⊢[PRAAx] ((sg d * eqb (rem N d) zero) * X) * Y ≐ zero :=
         fun {X Y} => zero_mul_l (zero_mul_l zz _) _
       have z' : ∀ {X : PTm n}, C ⊢[PRAAx] Lw w N zero * ((sg d * eqb (rem N d) zero) * X) ≐ zero :=
@@ -217,16 +216,13 @@ theorem lambda_mobius_mid {N : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) :
   have cP : Γ ⊢[PRAAx] ap2 (sumF (DivisorSwap.SB (mlP w))) (succ N) N ≐ ap2 (sumF (QLP w)) (succ N) N := by
     refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
     rw [DivisorSwap.inst2_SB, inst3_mlP, inst2_QLP]
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   have cN : Γ ⊢[PRAAx] ap2 (sumF (DivisorSwap.SB (mlN w))) (succ N) N ≐ ap2 (sumF (QLN w)) (succ N) N := by
     refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
     rw [DivisorSwap.inst2_SB, inst3_mlN, inst2_QLN]
-    apply deriveNat; ipra_simps; ring
-  have sP := natEq (DivisorSwap.div_swap (mlP w) hN)
-  have sN := natEq (DivisorSwap.div_swap (mlN w) hN)
-  have a := natEq cP; have b := natEq cN; have lm := natEq (lambda_mobius w hN)
-  apply deriveNat; ipra_simps
-  linear_combination -sP + a + lm - b + sN
+    ipra_ring
+  ipra_lc -natEq (DivisorSwap.div_swap (mlP w) hN) + natEq cP + natEq (lambda_mobius w hN) - natEq cN +
+    natEq (DivisorSwap.div_swap (mlN w) hN)
 
 end Forms
 

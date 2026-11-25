@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.GaussianPolynomialConstantInjection
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual arbitrary-high-Y remainder fold for a monic plane equation
@@ -63,8 +64,7 @@ theorem zero_rows_lookup (m a r : PTm n) (hr : Γ ⊢[PRAAx] lt r m) : Γ ⊢[PR
     entry (zeroRows m a) r ≐ zeros (succ a) := by simpa only [zeroRows,inst2,Syn.subst_var,Matrix.cons_val_one,Matrix.cons_val_zero] using sequence_decode (Γ := Γ) (var 1 : PTm 2) (x := zeros (succ a)) hr
 theorem zero_rows_congr {m m' a a' : PTm n} (hm : Γ ⊢[PRAAx] m ≐ m') (ha : Γ ⊢[PRAAx] a ≐ a') : Γ ⊢[PRAAx]
     zeroRows m a ≐ zeroRows m' a' := by
-  simpa using Prf.eqCongr (Γ := Γ) (zeroRows (var 0) (var 1) : PTm 2) (σ := ![m,a]) (σ' := ![m',a'])
-    (fun i => by fin_cases i; exact hm; exact ha)
+  ipra_congr (zeroRows (var 0) (var 1) : PTm 2) with [hm, ha]
 theorem advance_program (F H m a c j R : PTm n) : Γ ⊢[PRAAx] app advanceF ![F,H,m,a,c,j,R] ≐ advance F H m a c j R := by
   simpa [advanceF] using toPR_eq (Γ := Γ) (advance (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) : PTm 7) ![F,H,m,a,c,j,R]
 theorem advance_congr {F F' H H' m m' a a' c c' j j' R R' : PTm n}

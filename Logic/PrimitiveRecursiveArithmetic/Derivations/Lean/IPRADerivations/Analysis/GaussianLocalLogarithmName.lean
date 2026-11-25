@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianUnitDiskExponentialName
 import IPRADerivations.Analysis.GaussianFiniteLogarithmCompositionName
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The ORIGINAL local logarithm observations as a Gaussian unit-disk name
@@ -138,9 +139,7 @@ theorem ordered_unit_distance (p k z R N : PTm n) (h : Γ ⊢[PRAAx] source z R 
 
 theorem value_congr_precision {p q : PTm n} (z R N : PTm n) (h : Γ ⊢[PRAAx] p ≐ q) : Γ ⊢[PRAAx]
     value p z R N ≐ value q z R N := by
-  simpa only [subst_value,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_three,Matrix.cons_val_succ,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (value (var 0) (var 1) (var 2) (var 3) : PTm 4)
-      (σ := ![p,z,R,N]) (σ' := ![q,z,R,N]) (fun i => by fin_cases i; exact h; exact .eqRefl _; exact .eqRefl _; exact .eqRefl _)
+  ipra_congr (value (var 0) (var 1) (var 2) (var 3) : PTm 4) with [h, .eqRefl z, .eqRefl R, .eqRefl N]
 
 theorem later_distance (s t z R N : PTm n) (h : Γ ⊢[PRAAx] source z R N) (hst : Γ ⊢[PRAAx] le s t) : Γ ⊢[PRAAx]
     distanceBounded (value t z R N) (value s z R N) one (GaussianCoefficientNameBounds.unit s) :=

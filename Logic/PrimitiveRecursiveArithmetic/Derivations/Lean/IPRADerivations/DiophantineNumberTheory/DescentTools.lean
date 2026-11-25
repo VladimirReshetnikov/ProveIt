@@ -1,7 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.QuarticStep
 import IPRADerivations.Core.EuclidLemma
 import IPRADerivations.AnalyticNumberTheory.PhiLower
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The gcd tools and the primitive Pythagorean parametrization

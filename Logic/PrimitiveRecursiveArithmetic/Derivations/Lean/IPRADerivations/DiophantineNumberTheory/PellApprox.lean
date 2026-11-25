@@ -3,6 +3,7 @@ import IPRADerivations.DiophantineNumberTheory.IrrationalSqrt
 import IPRADerivations.AnalyticNumberTheory.SquareReciprocal
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.AnalyticNumberTheory.Smooth
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Bounded norm with a prescribed lower denominator
@@ -57,7 +58,7 @@ theorem Q_pos (D Y : PTm n) : Γ ⊢[PRAAx] Qv D Y ≐ succ (pred (Qv D Y)) :=
   AnalyticNumberTheory.Primes.eq_succ_pred (y := num 3 + num 4 * (D + Y + D * Y))
     (by ipra_ring)
 
-theorem one_pos (x : PTm n) : Γ ⊢[PRAAx] le one (succ x) := (succ_monus_succ _ _).eqTrans (zero_le x)
+alias one_pos := Common.one_le_succ
 
 /-! ## The two squared comparisons -/
 

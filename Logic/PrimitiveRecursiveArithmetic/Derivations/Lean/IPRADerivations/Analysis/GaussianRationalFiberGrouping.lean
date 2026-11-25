@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.FiniteFiberGrouping
 import IPRADerivations.Analysis.GaussianRationalValueEquality
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Grouping original point positions by their exact Gaussian-rational x value
@@ -49,8 +50,7 @@ def run (L p : PTm n) : PTm n := ap2 outputF L p
 @[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (L p : PTm n) :
     Syn.subst σ (run L p) = run (Syn.subst σ L) (Syn.subst σ p) := by simp [run]
 theorem recode_congr {q r : PTm n} (h : Γ ⊢[PRAAx] q ≐ r) : Γ ⊢[PRAAx] recode q ≐ recode r := by
-  simpa only [subst_recode,Syn.subst_var,Matrix.cons_val_zero] using
-    Prf.eqCongr (recode (var 0) : PTm 1) (σ := ![q]) (σ' := ![r]) (fun i => by fin_cases i; exact h)
+  ipra_congr (recode (var 0) : PTm 1) with [h]
 theorem reader_at (point p : PTm n) : Γ ⊢[PRAAx] ap2 xKeyF point p ≐ recode (fstT point) := by
   simpa [xKeyF,ap2] using toPR_eq (Γ := Γ) (recode (fstT (var 0)) : PTm 2) ![point,p]
 theorem pair_reader_at (x y p : PTm n) : Γ ⊢[PRAAx] ap2 xKeyF (pairT x y) p ≐ recode x :=

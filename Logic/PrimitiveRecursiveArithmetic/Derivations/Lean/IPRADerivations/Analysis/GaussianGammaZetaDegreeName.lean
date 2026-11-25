@@ -4,6 +4,7 @@ import IPRADerivations.Analysis.RationalReciprocalPowerName
 import IPRADerivations.Analysis.RationalGaussianNameEmbedding
 import IPRADerivations.Analysis.GaussianGammaCofinalDegreeTail
 import IPRADerivations.Analysis.GaussianNamedRateTransport
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The original zeta-tail coefficients in a genuine finite-degree Gamma name
@@ -77,11 +78,7 @@ theorem coefficient_part_congr {q z B N j q' z' B' N' j' : PTm n}
     (hq : Γ ⊢[PRAAx] q ≐ q') (hz : Γ ⊢[PRAAx] z ≐ z') (hB : Γ ⊢[PRAAx] B ≐ B')
     (hN : Γ ⊢[PRAAx] N ≐ N') (hj : Γ ⊢[PRAAx] j ≐ j') : Γ ⊢[PRAAx]
     coefficientPart q z B N j ≐ coefficientPart q' z' B' N' j' := by
-  simpa only [subst_coefficientPart,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.cons_val_three,Matrix.cons_val_four,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (coefficientPart (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5)
-      (σ := ![q,z,B,N,j]) (σ' := ![q',z',B',N',j'])
-      (fun i => by fin_cases i; exact hq; exact hz; exact hB; exact hN; exact hj)
+  ipra_congr (coefficientPart (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) with [hq, hz, hB, hN, hj]
 theorem coefficient_term_at (q z B N j : PTm n) : Γ ⊢[PRAAx]
     inst2 coefficientBody j (coefficientData q z B N) ≐ coefficientPart q z B N j := by
   simp only [coefficientBody,inst2,subst_coefficientPart,subst_fstT,subst_sndT,Syn.subst_var,
@@ -168,11 +165,8 @@ theorem observation_congr {p p' z z' R R' B B' N N' L L' : PTm n}
     observation p z R B N L ≐ observation p' z' R' B' N' L' := by
   have e5 : (![p,z,R,B,N,L] : Fin 6 → PTm n) 5 = L := rfl
   have e5' : (![p',z',R',B',N',L'] : Fin 6 → PTm n) 5 = L' := rfl
-  simpa only [subst_observation,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.cons_val_three,Matrix.cons_val_four,e5,e5',Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (observation (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6)
-      (σ := ![p,z,R,B,N,L]) (σ' := ![p',z',R',B',N',L'])
-      (fun i => by fin_cases i; exact hp; exact hz; exact hR; exact hB; exact hN; exact hL)
+  ipra_congr (observation (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) with
+    [hp, hz, hR, hB, hN, hL] using [e5, e5']
 theorem sample_at (p z R B N L : PTm n) : Γ ⊢[PRAAx] sample p z R B N L ≐ observation p z R B N L := by
   have raw := toPR_eq (Γ := Γ) (observation (var 0) (fstT (var 1)) (fstT (sndT (var 1)))
     (fstT (sndT (sndT (var 1)))) (fstT (sndT (sndT (sndT (var 1))))) (sndT (sndT (sndT (sndT (var 1))))) : PTm 2)

@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianRelativeNormTriangle
 import IPRADerivations.Analysis.GaussianReciprocalHorner
 import IPRADerivations.Analysis.GaussianRationalNormalization
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual Horner-at-one sums at one computed common denominator
@@ -55,9 +56,7 @@ theorem integer_sum_zero (G : PTm n) : Γ ⊢[PRAAx] integerSum G zero ≐ zeroC
 
 theorem add_code_congr {a a' b b' : PTm n} (ha : Γ ⊢[PRAAx] a ≐ a') (hb : Γ ⊢[PRAAx] b ≐ b') :
     Γ ⊢[PRAAx] add a b ≐ add a' b' := by
-  simpa only [ComplexLogarithmRemainder.subst_add,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (add (var 0) (var 1) : PTm 2)
-      (σ := ![a,b]) (σ' := ![a',b']) (fun i => by fin_cases i; exact ha; exact hb)
+  ipra_congr (add (var 0) (var 1) : PTm 2) with [ha, hb]
 
 theorem integer_sum_succ (G m : PTm n) : Γ ⊢[PRAAx]
     integerSum G (succ m) ≐ add (integerSum G m) (entry G m) :=
@@ -189,9 +188,7 @@ def addedSum (G H m : PTm n) : PTm n := gaussianSum addedEntryF m (pairT G H)
 
 theorem scale_code_congr {B B' a a' : PTm n} (hB : Γ ⊢[PRAAx] B ≐ B') (ha : Γ ⊢[PRAAx] a ≐ a') :
     Γ ⊢[PRAAx] scale B a ≐ scale B' a' := by
-  simpa only [ComplexLogarithmRemainder.subst_scale,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (scale (var 0) (var 1) : PTm 2)
-      (σ := ![B,a]) (σ' := ![B',a']) (fun i => by fin_cases i; exact hB; exact ha)
+  ipra_congr (scale (var 0) (var 1) : PTm 2) with [hB, ha]
 
 theorem scaled_entry_at (B G i : PTm n) : Γ ⊢[PRAAx]
     ap2 scaledEntryF i (pairT B G) ≐ scale B (entry G i) := by

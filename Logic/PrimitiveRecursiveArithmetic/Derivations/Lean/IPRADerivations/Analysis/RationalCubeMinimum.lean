@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.RationalCubeGrid
 import IPRADerivations.Analysis.GapRemoval
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual sampled minima on the numerical dyadic cube grid
@@ -89,11 +90,8 @@ theorem score_body_at (A : PR 3) (mu : PR 2) (d k x i : PTm n) : Γ ⊢[PRAAx]
     inst2 (scoreBody A mu) i (data d k x) ≐ score A mu d k x i := by
   have e := data_fields (Γ := Γ) d k x
   simp only [scoreBody,inst2,subst_score,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
-  simpa only [subst_score,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.cons_val_three,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (score A mu (var 0) (var 1) (var 2) (var 3) : PTm 4)
-      (σ := ![fstT (data d k x),fstT (sndT (data d k x)),sndT (sndT (data d k x)),i]) (σ' := ![d,k,x,i])
-      (fun j => by fin_cases j; exact .andE₁ e; exact .andE₁ (.andE₂ e); exact .andE₂ (.andE₂ e); exact .eqRefl _)
+  ipra_congr (score A mu (var 0) (var 1) (var 2) (var 3) : PTm 4) with
+    [.andE₁ e, .andE₁ (.andE₂ e), .andE₂ (.andE₂ e), .eqRefl i]
 theorem score_program_at (A : PR 3) (mu : PR 2) (d k x i : PTm n) : Γ ⊢[PRAAx]
     ap2 (scoreF A mu) i (data d k x) ≐ score A mu d k x i :=
   (toPR_eq (scoreBody A mu) ![i,data d k x]).eqTrans (score_body_at A mu d k x i)

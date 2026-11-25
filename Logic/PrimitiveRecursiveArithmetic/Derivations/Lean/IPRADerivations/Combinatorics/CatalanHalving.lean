@@ -1,6 +1,8 @@
 import IPRADerivations.Combinatorics.CatalanSquares
 import IPRADerivations.Core.SumPalindrome
 import IPRADerivations.Combinatorics.CatalanConvolution
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The square sum, halved
@@ -94,11 +96,7 @@ theorem t_full (N : PTm n) : Γ ⊢[PRAAx] ap2 (sumF tB) (succ (succ N)) N ≐ t
 
 /-! ## The symmetry -/
 
-theorem monus_succ_le {k N : PTm n} (h : Γ ⊢[PRAAx] le k N) : Γ ⊢[PRAAx] monus (succ N) k ≐ succ (monus N k) := by
-  have e := natEq (eq_add_of_le h)
-  have a : Γ ⊢[PRAAx] succ N ≐ succ (monus N k) + k := by
-    apply deriveNat; ipra_simps; linear_combination e
-  exact (congrMonus a (.eqRefl _)).eqTrans (add_monus _ _)
+alias monus_succ_le := Common.monus_succ_of_le
 
 /-- `C(N, N + 1 − k) = C(N, k − 1)` for `k ≤ N + 1`. -/
 theorem gb_K {k N : PTm n} (hk : Γ ⊢[PRAAx] le k (succ N)) : Γ ⊢[PRAAx] gb N (monus (succ N) k) ≐ pv N k := by
@@ -149,16 +147,15 @@ theorem t_middle (N : PTm n) :
       have hp := natEq (half_par (Γ := (half (succ (succ N)) ≐ zero) :: (par (succ (succ N)) ≐ one) :: Γ) (succ (succ N)))
       have pp := natEq (p.wk (ψ := half (succ (succ N)) ≐ zero))
       have bad : ((half (succ (succ N)) ≐ zero) :: (par (succ (succ N)) ≐ one) :: Γ) ⊢[PRAAx] succ N ≐ zero := by
-        apply deriveNat; ipra_simps; linear_combination hp + pp + 2 * z
+        ipra_lc hp + pp + 2 * z
       exact succ_ne_zero' _ bad
     · have hp := natEq (half_par (Γ := (half (succ (succ N)) ≐ succ (pred (half (succ (succ N))))) ::
         (par (succ (succ N)) ≐ one) :: Γ) (succ (succ N)))
       have pp := natEq (p.wk (ψ := half (succ (succ N)) ≐ succ (pred (half (succ (succ N))))))
       set h := half (succ (succ N))
       have eh : ((h ≐ succ (pred h)) :: (par (succ (succ N)) ≐ one) :: Γ) ⊢[PRAAx] h ≐ succ (pred h) := Prf.hyp0
-      have ehn := natEq eh
       have eN : ((h ≐ succ (pred h)) :: (par (succ (succ N)) ≐ one) :: Γ) ⊢[PRAAx] N ≐ pred h + succ (pred h) := by
-        apply deriveNat; ipra_simps; linear_combination hp + pp + 2 * ehn
+        ipra_lc hp + pp + 2 * natEq eh
       have l : ((h ≐ succ (pred h)) :: (par (succ (succ N)) ≐ one) :: Γ) ⊢[PRAAx] le (pred h) N :=
         le_of_eq_add eN
       have m : ((h ≐ succ (pred h)) :: (par (succ (succ N)) ≐ one) :: Γ) ⊢[PRAAx] monus N (pred h) ≐ h :=
@@ -182,12 +179,8 @@ theorem square_sum_half (N : PTm n) : Γ ⊢[PRAAx] ap2 (sumF tB) (half (succ (s
     have e : Syn.shift (succ (succ N)) = succ (succ (Syn.shift N)) := by simp [Syn.shift]
     rw [e]
     exact t_sym Prf.hyp0
-  have P := natEq (sum_palindrome tB (succ (succ N)) N hs)
-  have F := natEq (t_full (Γ := Γ) N)
-  have M := natEq (t_middle (Γ := Γ) N)
   refine mul_cancel (D := two) (succ_pos _) ?_
-  apply deriveNat; ipra_simps
-  linear_combination -P + F - M
+  ipra_lc -natEq (sum_palindrome tB (succ (succ N)) N hs) + natEq (t_full (Γ := Γ) N) - natEq (t_middle (Γ := Γ) N)
 
 /-- `⌊(n+2)/2⌋ = ⌊n/2⌋ + 1`. -/
 theorem half_succ_succ (N : PTm n) : Γ ⊢[PRAAx] half (succ (succ N)) ≐ succ (half N) := by

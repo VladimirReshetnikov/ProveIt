@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.BinomialLcm
 import IPRADerivations.AnalyticNumberTheory.MobiusBounds
 import IPRADerivations.AnalyticNumberTheory.PowerCleared
 import IPRADerivations.DiophantineNumberTheory.ResidueFacts
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Bertrand's postulate: the primes of the middle third do not occur
@@ -69,7 +70,7 @@ theorem val_middle {q k : PTm n} (hq : Γ ⊢[PRAAx] prime q) (h1 : Γ ⊢[PRAAx
   have qpos := p_pos hq2
   have e1 := natEq (eq_add_of_le h1)
   have hM : Γ ⊢[PRAAx] le one (two * k) := by ipra_le 2 * sl h1 + 2 * sl hq2 + 3
-  have hkk : Γ ⊢[PRAAx] le k (two * k) := le_of_eq_add (d := k) (by apply deriveNat; ipra_simps; ring)
+  have hkk : Γ ⊢[PRAAx] le k (two * k) := le_of_eq_add (d := k) (by ipra_ring)
   have S1 := sum_first hq2 hM (lt_of_le_of_lt hkk h3)
   have S2 := sum_first hq2 hM h3
   have r1 : Γ ⊢[PRAAx] lt (monus k q) q := by ipra_le sl h2 + sl h1 with e1
@@ -77,11 +78,8 @@ theorem val_middle {q k : PTm n} (hq : Γ ⊢[PRAAx] prime q) (h1 : Γ ⊢[PRAAx
   have Q1 := Prf.andE₁ (dmu qpos z1 r1)
   have r2 : Γ ⊢[PRAAx] lt (two * monus k q) q := by ipra_le sl h2 with 2 * e1
   have z2 : Γ ⊢[PRAAx] two * k ≐ q * two + two * monus k q := by
-    apply deriveNat; ipra_simps; linear_combination 2 * e1
+    ipra_lc 2 * e1
   have Q2 := Prf.andE₁ (dmu qpos z2 r2)
-  have bv := natEq (binom_val hq k)
-  have s1 := natEq (S1.eqTrans Q1); have s2 := natEq (S2.eqTrans Q2)
-  apply deriveNat; ipra_simps
-  linear_combination bv - 2 * s1 + s2
+  ipra_lc natEq (binom_val hq k) - 2 * natEq (S1.eqTrans Q1) + natEq (S2.eqTrans Q2)
 
 end LeanProofs.IPRA.AnalyticNumberTheory.BertrandMiddle

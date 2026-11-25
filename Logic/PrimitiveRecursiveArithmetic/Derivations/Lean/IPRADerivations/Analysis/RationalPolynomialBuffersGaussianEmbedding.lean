@@ -1,6 +1,8 @@
 import IPRADerivations.Analysis.RationalPolynomialGaussianEmbedding
 import IPRADerivations.Analysis.GaussianRationalPolynomialBuffers
 import IPRADerivations.Analysis.GaussianRationalCoefficientScaling
+import IPRADerivations.Core.CongruenceTactic
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Original rational coefficient buffers and literal Gaussian transport
@@ -88,10 +90,7 @@ theorem pad_coefficient_after (C t i : PTm n) (hi : Γ ⊢[PRAAx] le t i) : Γ �
   RationalArithmetic.select_zero _ _ _ (AnalyticNumberTheory.Totatives.sg_le hi)
 theorem pad_coefficient_congr {C D t u i j : PTm n} (hC : Γ ⊢[PRAAx] C ≐ D)
     (ht : Γ ⊢[PRAAx] t ≐ u) (hi : Γ ⊢[PRAAx] i ≐ j) : Γ ⊢[PRAAx] padCoefficient C t i ≐ padCoefficient D u j := by
-  simpa only [subst_padCoefficient,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (padCoefficient (var 0) (var 1) (var 2) : PTm 3) (σ := ![C,t,i]) (σ' := ![D,u,j])
-      (fun k => by fin_cases k; exact hC; exact ht; exact hi)
+  ipra_congr (padCoefficient (var 0) (var 1) (var 2) : PTm 3) with [hC, ht, hi]
 theorem pad_body_at (C t i : PTm n) : Γ ⊢[PRAAx] inst2 padBody i (padData C t) ≐ padCoefficient C t i := by
   simp only [padBody,inst2,subst_padCoefficient,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
   exact pad_coefficient_congr (fst_pair _ _) (snd_pair _ _) (.eqRefl _)
@@ -125,12 +124,8 @@ theorem scaled_embedding (C s i : PTm n) (hi : Γ ⊢[PRAAx] lt i (length C)) : 
 
 theorem pad_tail_range (C t i : PTm n) (ht : Γ ⊢[PRAAx] le t i)
     (hi : Γ ⊢[PRAAx] lt i (t+length C)) : Γ ⊢[PRAAx] lt (monus i t) (length C) := by
-  have tEq := natEq (eq_add_of_le ht)
-  have iEq := natEq (eq_add_of_le hi)
   apply le_of_eq_add (d := monus (t+length C) (succ i))
-  apply deriveNat
-  ipra_simps
-  linear_combination iEq+tEq
+  ipra_lc natEq (eq_add_of_le hi)+natEq (eq_add_of_le ht)
 theorem pad_embedding (C t i : PTm n) (hi : Γ ⊢[PRAAx] lt i (t+length C)) : Γ ⊢[PRAAx]
     embed (entry (leftPad C t) i) ≐ entry (GaussianRationalPolynomialBuffers.leftPad (coefficients C (length C)) t) i := by
   have gRange := lt_congr (.eqRefl _) (congrAdd (.eqRefl t) (coefficients_length C (length C))).eqSymm hi

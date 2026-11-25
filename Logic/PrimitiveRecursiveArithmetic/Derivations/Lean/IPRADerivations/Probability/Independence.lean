@@ -158,7 +158,7 @@ theorem ind_product (M N x : PTm n) :
   refine (dsum_congr (pmB w v * pmB X Y) (pmB (w * X) (v * Y)) (fun i j x => ?_) M N x).eqTrans
     (sum_mul_sum (w * X) (v * Y) M N x)
   rw [inst3_mul', inst3_pmB, inst3_pmB, inst3_pmB, inst2_mul', inst2_mul']
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- The covariance vanishes on the product law:
 `T · ∑∑ w v X Y = (∑∑ w v X) · (∑∑ w v Y)`, with `T = ∑∑ w v`. -/
@@ -167,7 +167,7 @@ theorem ind_cov_zero (M N x : PTm n) :
       dsum (pmB (w * X) v) M N x * dsum (pmB w (v * Y)) M N x := by
   have r : Γ ⊢[PRAAx] (Wt w M x * Wt v N x) * (Ew w X M x * Ew v Y N x) ≐
       (Ew w X M x * Wt v N x) * (Wt w M x * Ew v Y N x) := by
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   exact (congrMul (product_total w v M N x) (ind_product w X v Y M N x)).eqTrans
     (r.eqTrans (congrMul (sum_mul_sum (w * X) v M N x) (sum_mul_sum w (v * Y) M N x)).eqSymm)
 
@@ -186,7 +186,7 @@ theorem ind_sum_first (M N x : PTm n) :
   refine (dsum_congr (pmB w v * spB X Y) (pmB (w * X) v + pmB w (v * Y)) (fun i j x => ?_) M N x).eqTrans
     ((dsum_add _ _ M N x).eqTrans (congrAdd (sum_mul_sum (w * X) v M N x) (sum_mul_sum w (v * Y) M N x)))
   rw [inst3_mul', inst3_add', inst3_pmB, inst3_pmB, inst3_pmB, inst3_spB, inst2_mul', inst2_mul']
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- The second moment of `Z = X + Y` on the product law:
 `Q_Z = Ew(X²) · V + 2 Ew(X) Ev(Y) + W · Ev(Y²)`. -/
@@ -204,7 +204,7 @@ theorem ind_sum_second (M N x : PTm n) :
       (sum_mul_sum w (v * (Y * Y)) M N x)))
   rw [inst3_mul', inst3_mul', inst3_add', inst3_add', inst3_add', inst3_pmB, inst3_pmB, inst3_pmB, inst3_pmB,
     inst3_spB, inst2_mul', inst2_mul', inst2_mul', inst2_mul', inst2_mul', inst2_mul']
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- `cor:ind-var-sum`: for `Z = X + Y` on the product law, with `T = ∑∑ w v`,
 `T Q_Z − S_Z² = V² (W Q_X − S_X²) + W² (V Q_Y − S_Y²)`, i.e. `Var(X + Y) = Var(X) + Var(Y)`.
@@ -225,7 +225,7 @@ theorem ind_var_sum (M N x : PTm n) :
       (Ew w X M x * Wt v N x + Wt w M x * Ew v Y N x) * (Ew w X M x * Wt v N x + Wt w M x * Ew v Y N x) +
         Wt v N x * Wt v N x * (Wt w M x * Ew w (X * X) M x) +
         Wt w M x * Wt w M x * (Wt v N x * Ew v (Y * Y) N x) := by
-    apply deriveNat; ipra_simps; ring
+    ipra_ring
   exact (congrAdd (congrAdd (congrMul hT hQ) (.eqRefl _)) (.eqRefl _)).eqTrans
     (r.eqTrans (congrAdd (congrAdd (congrMul hS hS) (.eqRefl _)) (.eqRefl _)).eqSymm)
 

@@ -2,6 +2,7 @@ import IPRADerivations.Analysis.GaussianRationalDeflationError
 import IPRADerivations.Analysis.GaussianRationalReconstruction
 import IPRADerivations.Analysis.GaussianFactorBounds
 import IPRADerivations.Analysis.GaussianCoefficientNormOrder
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual local errors in finite rational approximate factorization
@@ -75,10 +76,7 @@ theorem error_congr (step : PR 3) {C C' N N' p p' q q' i j : PTm n}
     (hC : Γ ⊢[PRAAx] C ≐ C') (hN : Γ ⊢[PRAAx] N ≐ N')
     (hp : Γ ⊢[PRAAx] p ≐ p') (hq : Γ ⊢[PRAAx] q ≐ q') (hi : Γ ⊢[PRAAx] i ≐ j) : Γ ⊢[PRAAx]
     error step C N p q i ≐ error step C' N' p' q' j := by
-  simpa only [subst_error,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-    Matrix.cons_val_two,Matrix.cons_val_three,Matrix.cons_val_four,Matrix.head_cons,Matrix.tail_cons] using
-      Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (error step (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5)
-        (σ := ![C,N,p,q,i]) (σ' := ![C',N',p',q',j]) (fun k => by fin_cases k; exact hC; exact hN; exact hp; exact hq; exact hi)
+  ipra_congr (error step (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) with [hC, hN, hp, hq, hi]
 
 theorem error_index_congr (step : PR 3) (C N p q : PTm n) {i j : PTm n}
     (hi : Γ ⊢[PRAAx] i ≐ j) : Γ ⊢[PRAAx] error step C N p q i ≐ error step C N p q j :=

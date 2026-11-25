@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.MobiusSummatory
 import IPRADerivations.AnalyticNumberTheory.TauAbelIdentity
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The three comparison inversions (`pnt_ipra_constructive_2026-11-14`, `sb:comparison-convolution`)
@@ -66,11 +67,9 @@ theorem shift_one'' : Syn.shift (one : PTm n) = one := by simp [Syn.shift]
 
 /-- `B_𝟏(m) = Σ_{k≤m} τ(k) = D(m)`. -/
 theorem tau_bs (m y : PTm n) : Γ ⊢[PRAAx] Bs (cvF one one) m y ≐ S m m := by
-  have t := natEq (tau_sum (Γ := Γ) m y)
   have s := bs_shift (Γ := Γ) (cvF one one) m y
   rw [inst2_cvF] at s
-  have e := natEq s; have z := natEq (conv_zero (Γ := Γ) one one y)
-  apply deriveNat; ipra_simps; linear_combination -e + t - z
+  ipra_lc -natEq s + natEq (tau_sum (Γ := Γ) m y) - natEq (conv_zero (Γ := Γ) one one y)
 
 /-! ## `g = ε` -/
 
@@ -93,19 +92,17 @@ theorem eps_pt (d a b : PTm n) :
     congrEqb' (congrAp2 remF (snd_pair _ _) (.eqRefl _)) (.eqRefl _)
   have e3 : Γ ⊢[PRAAx] eqb (rem (fstT (pairT a b)) d) zero ≐ eqb (rem a d) zero :=
     congrEqb' (congrAp2 remF (fst_pair _ _) (.eqRefl _)) (.eqRefl _)
-  have f1 := natEq e1; have f2 := natEq e2; have f3 := natEq e3
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 (sg d) * 𝔞 (eqb d one) * f3 - 𝔞 (sg d) * 𝔞 (eqb d one) * f2 -
-    𝔞 (sg d) * 𝔞 (eqb (rem (sndT (pairT one a)) d) zero) * f1
+  ipra_lc 𝔞 (sg d) * 𝔞 (eqb d one) * natEq e3 - 𝔞 (sg d) * 𝔞 (eqb d one) * natEq e2 -
+    𝔞 (sg d) * 𝔞 (eqb (rem (sndT (pairT one a)) d) zero) * natEq e1
 
 /-- `x mod 1 = 0`. -/
 theorem rem_one (x : PTm n) : Γ ⊢[PRAAx] rem x one ≐ zero :=
-  rem_eq' (congrSucc (pred_succ _).eqSymm) (q := x) (by apply deriveNat; ipra_simps; ring)
+  rem_eq' (congrSucc (pred_succ _).eqSymm) (q := x) (by ipra_ring)
     (le_refl _)
 
 /-- `(ε * 𝟏)(j + 1) = 1`. -/
 theorem conv_eps (j y : PTm n) : Γ ⊢[PRAAx] conv epsB one (succ j) y ≐ one := by
-  have h1 : Γ ⊢[PRAAx] lt one (succ (succ j)) := le_of_eq_add (d := j) (by apply deriveNat; ipra_simps; ring)
+  have h1 : Γ ⊢[PRAAx] lt one (succ (succ j)) := le_of_eq_add (d := j) (by ipra_ring)
   have sd := sum_delta (Γ := Γ) dvdB (x := succ j) h1
   rw [inst2_dvdB] at sd
   have cg : Γ ⊢[PRAAx] conv epsB one (succ j) y ≐ ap2 (sumF (dB dvdB)) (succ (succ j)) (pairT one (succ j)) := by
@@ -136,11 +133,8 @@ theorem tw_bs (m y : PTm n) :
   have s := sum_add2 (Γ := Γ) (bS (cvF (DwB wt one) one)) (bS (cvF (DwB wt one) one)) twB
     (K := m) (x := y) (x' := y) (z := y) (.allI (.impI (by
       rw [inst2_twB, inst2_bS, inst2_cvF]
-      have t := natEq (tau_lw (Γ := (lt (var 0) (Syn.shift m) :: Γ.map Fm.shift)) wt (y := Syn.shift y)
-        (m := succ (var 0)) (congrSucc (pred_succ _).eqSymm))
-      apply deriveNat; ipra_simps; linear_combination t)))
-  have e := natEq s
-  apply deriveNat; ipra_simps; linear_combination e
+      ipra_lc natEq (tau_lw (Γ := (lt (var 0) (Syn.shift m) :: Γ.map Fm.shift)) wt (y := Syn.shift y) (m := succ (var 0)) (congrSucc (pred_succ _).eqSymm)))))
+  ipra_lc natEq s
 
 /-! ## The inverted sums for `g = 𝟏` and `g = ε` -/
 
@@ -152,8 +146,7 @@ theorem sum_sg_one (x y : PTm n) : Γ ⊢[PRAAx] ap2 (sumF (gS one)) (succ x) y 
     refine (sum_congr_bounded _ one _ y _ (.allI (.impI ?_))).eqTrans (sum_ones _ y)
     rw [inst2_bS, inst2_gS, one_inst, one_inst]
     exact (congrMul (sg_succ _) (.eqRefl _)).eqTrans (one_mul _)
-  have e := natEq s; have f := natEq t; have z := natEq (sg_zero (Γ := Γ))
-  apply deriveNat; ipra_simps; linear_combination e + f + z
+  ipra_lc natEq s + natEq t + natEq (sg_zero (Γ := Γ))
 
 /-- `[n ≥ 1]`, the delta body for `ε`. -/
 abbrev sgB : PTm 2 := sg (var 0)
@@ -168,8 +161,6 @@ theorem sum_sg_eps {x : PTm n} (y : PTm n) (hx : Γ ⊢[PRAAx] le one x) :
   rw [inst2_sgB] at sd
   refine (sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))).eqTrans (sd.eqTrans (sg_succ _))
   rw [inst2_gS, inst2_eps, inst2_dB, inst2_sgB, shift_pairT, shift_one'']
-  have e1 := natEq ((congrEqb' (fst_pair (Γ := (lt (var 0) (Syn.shift (succ x)) :: Γ.map Fm.shift)) one
-    (Syn.shift y)) (.eqRefl (var 0))).eqTrans (eqb_comm' _ _))
-  apply deriveNat; ipra_simps; linear_combination -𝔞 (sg (var 0)) * e1
+  ipra_lc -𝔞 (sg (var 0)) * natEq ((congrEqb' (fst_pair (Γ := (lt (var 0) (Syn.shift (succ x)) :: Γ.map Fm.shift)) one (Syn.shift y)) (.eqRefl (var 0))).eqTrans (eqb_comm' _ _))
 
 end LeanProofs.IPRA.AnalyticNumberTheory.SymmetryInstances

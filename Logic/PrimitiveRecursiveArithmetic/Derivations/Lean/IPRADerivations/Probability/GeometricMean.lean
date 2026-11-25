@@ -1,6 +1,6 @@
 import IPRADerivations.Core.Powers
 import IPRADerivations.Core.Pairing
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The finite identity behind the mean of the geometric distribution

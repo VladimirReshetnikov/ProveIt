@@ -1,5 +1,5 @@
 import IPRADerivations.Combinatorics.CatalanTouchard
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The alternating binomial transform of `C(k, ⌊k/2⌋)`

@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.GaussianGeneralPolynomialSamples
 import IPRADerivations.Analysis.GaussianRationalPowerDifference
 import IPRADerivations.Analysis.RationalArithmetic
 import IPRADerivations.AnalyticNumberTheory.Totatives
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Actual leading-zero degree padding of general coefficient names

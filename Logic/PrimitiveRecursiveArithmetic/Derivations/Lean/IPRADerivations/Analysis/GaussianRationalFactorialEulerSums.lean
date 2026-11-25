@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianRationalPolynomialPowerEuler
 import IPRADerivations.Analysis.GaussianRationalPolynomialExponentialCoefficients
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual factorial-weighted Euler sums
@@ -131,11 +132,7 @@ def shiftedSum (C N K e j : PTm n) : PTm n := sum shiftedBody j (data C N K e)
 theorem shifted_term_congr {C C' N N' K K' e e' r r' : PTm n} (hC : Γ ⊢[PRAAx] C ≐ C')
     (hN : Γ ⊢[PRAAx] N ≐ N') (hK : Γ ⊢[PRAAx] K ≐ K') (he : Γ ⊢[PRAAx] e ≐ e')
     (hr : Γ ⊢[PRAAx] r ≐ r') : Γ ⊢[PRAAx] shiftedTerm C N K e r ≐ shiftedTerm C' N' K' e' r' := by
-  simpa only [subst_shiftedTerm,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.cons_val_three,Matrix.cons_val_four,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (shiftedTerm (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5)
-      (σ := ![C,N,K,e,r]) (σ' := ![C',N',K',e',r'])
-      (fun i => by fin_cases i; exact hC; exact hN; exact hK; exact he; exact hr)
+  ipra_congr (shiftedTerm (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) with [hC, hN, hK, he, hr]
 theorem shifted_body_at (C N K e r : PTm n) : Γ ⊢[PRAAx]
     inst2 shiftedBody r (data C N K e) ≐ shiftedTerm C N K e r := by
   simp only [shiftedBody,inst2,subst_shiftedTerm,subst_fstT,subst_sndT,subst_getE,Syn.subst_var,

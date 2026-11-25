@@ -1,5 +1,6 @@
 import IPRADerivations.Probability.MedianCounts
 import IPRADerivations.Geometry.HypercubeSplit
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Weighted medians: the `L¹` theorem and the mean–median bound
@@ -61,12 +62,11 @@ theorem up_below {X M : PTm n} (d : PTm n) {β ε α : PTm n} (h : Γ ⊢[PRAAx]
     Γ ⊢[PRAAx] le (ad X M + d * (β + ε)) (ad X (M + d) + d * α) := by
   have h1 := natEq h; have h2 := natEq (eq_add_of_le h)
   have hle : Γ ⊢[PRAAx] le X (M + d) := le_of_eq_add (d := monus M X + d) (by
-    apply deriveNat; ipra_simps; linear_combination h2)
+    ipra_lc h2)
   have h3 := natEq hle; have h4 := natEq (eq_add_of_le hle)
   have s := natEq hs; have a := natEq ha
   refine le_of_eq_add (d := zero) ?_
-  apply deriveNat; ipra_simps
-  linear_combination h3 - h4 + h2 - h1 + 𝔞 d * a - 𝔞 d * s
+  ipra_lc h3 - h4 + h2 - h1 + 𝔞 d * a - 𝔞 d * s
 
 theorem up_above₁ {X M : PTm n} (d : PTm n) {β ε α : PTm n} (h : Γ ⊢[PRAAx] le M X)
     (hb : Γ ⊢[PRAAx] β ≐ zero) (he : Γ ⊢[PRAAx] ε ≐ zero) (ha : Γ ⊢[PRAAx] α ≐ one)
@@ -76,8 +76,7 @@ theorem up_above₁ {X M : PTm n} (d : PTm n) {β ε α : PTm n} (h : Γ ⊢[PRA
   have b := natEq hb; have e := natEq he; have a := natEq ha
   have h3 := natEq hle; have h4 := natEq (eq_add_of_le hle)
   refine le_of_eq_add (d := monus (M + d) X + monus (M + d) X) ?_
-  apply deriveNat; ipra_simps
-  linear_combination h3 + h4 + h2 - h1 + 𝔞 d * a - 𝔞 d * b - 𝔞 d * e
+  ipra_lc h3 + h4 + h2 - h1 + 𝔞 d * a - 𝔞 d * b - 𝔞 d * e
 
 theorem up_above₂ {X M : PTm n} (d : PTm n) {β ε α : PTm n} (h : Γ ⊢[PRAAx] le M X)
     (hb : Γ ⊢[PRAAx] β ≐ zero) (he : Γ ⊢[PRAAx] ε ≐ zero) (ha : Γ ⊢[PRAAx] α ≐ one)
@@ -87,8 +86,7 @@ theorem up_above₂ {X M : PTm n} (d : PTm n) {β ε α : PTm n} (h : Γ ⊢[PRA
   have b := natEq hb; have e := natEq he; have a := natEq ha
   have h3 := natEq hge; have h4 := natEq (eq_add_of_le hge)
   refine le_of_eq_add (d := zero) ?_
-  apply deriveNat; ipra_simps
-  linear_combination -h4 + h2 + h3 - h1 + 𝔞 d * a - 𝔞 d * b - 𝔞 d * e
+  ipra_lc -h4 + h2 + h3 - h1 + 𝔞 d * a - 𝔞 d * b - 𝔞 d * e
 
 /-- For `M ≤ X` with indicators `β = ε = 0`, `α = 1`:
 `|X − M| + d (β + ε) ≤ |X − (M + d)| + d α`. -/
@@ -103,12 +101,11 @@ theorem down_above {X t : PTm n} (d : PTm n) {β ε α : PTm n} (h : Γ ⊢[PRAA
     Γ ⊢[PRAAx] le (ad X (t + d) + d * (α + ε)) (ad X t + d * β) := by
   have h1 := natEq h; have h2 := natEq (eq_add_of_le h)
   have hle : Γ ⊢[PRAAx] le t X := le_of_eq_add (d := d + monus X (t + d)) (by
-    apply deriveNat; ipra_simps; linear_combination h2)
+    ipra_lc h2)
   have h3 := natEq hle; have h4 := natEq (eq_add_of_le hle)
   have s := natEq hs; have b := natEq hb
   refine le_of_eq_add (d := zero) ?_
-  apply deriveNat; ipra_simps
-  linear_combination -h4 + h2 + h3 - h1 + 𝔞 d * b - 𝔞 d * s
+  ipra_lc -h4 + h2 + h3 - h1 + 𝔞 d * b - 𝔞 d * s
 
 theorem down_below₁ {X t : PTm n} (d : PTm n) {β ε α : PTm n} (h : Γ ⊢[PRAAx] le X (t + d))
     (ha : Γ ⊢[PRAAx] α ≐ zero) (he : Γ ⊢[PRAAx] ε ≐ zero) (hb : Γ ⊢[PRAAx] β ≐ one)
@@ -118,8 +115,7 @@ theorem down_below₁ {X t : PTm n} (d : PTm n) {β ε α : PTm n} (h : Γ ⊢[P
   have a := natEq ha; have e := natEq he; have b := natEq hb
   have h3 := natEq hle; have h4 := natEq (eq_add_of_le hle)
   refine le_of_eq_add (d := monus X t + monus X t) ?_
-  apply deriveNat; ipra_simps
-  linear_combination h4 + h2 + h3 - h1 + 𝔞 d * b - 𝔞 d * a - 𝔞 d * e
+  ipra_lc h4 + h2 + h3 - h1 + 𝔞 d * b - 𝔞 d * a - 𝔞 d * e
 
 theorem down_below₂ {X t : PTm n} (d : PTm n) {β ε α : PTm n} (h : Γ ⊢[PRAAx] le X (t + d))
     (ha : Γ ⊢[PRAAx] α ≐ zero) (he : Γ ⊢[PRAAx] ε ≐ zero) (hb : Γ ⊢[PRAAx] β ≐ one)
@@ -129,8 +125,7 @@ theorem down_below₂ {X t : PTm n} (d : PTm n) {β ε α : PTm n} (h : Γ ⊢[P
   have a := natEq ha; have e := natEq he; have b := natEq hb
   have h3 := natEq hge; have h4 := natEq (eq_add_of_le hge)
   refine le_of_eq_add (d := zero) ?_
-  apply deriveNat; ipra_simps
-  linear_combination -h4 + h2 + h3 - h1 + 𝔞 d * b - 𝔞 d * a - 𝔞 d * e
+  ipra_lc -h4 + h2 + h3 - h1 + 𝔞 d * b - 𝔞 d * a - 𝔞 d * e
 
 /-- For `X ≤ t + d` with indicators `α = ε = 0`, `β = 1`:
 `|X − (t + d)| + d (α + ε) ≤ |X − t| + d β`. -/
@@ -183,14 +178,12 @@ theorem ptc_down (x m c : PTm n) {t : PTm n} (ht : Γ ⊢[PRAAx] le t (c * m)) :
 theorem le_add_ad₁ {a b : PTm n} (h : Γ ⊢[PRAAx] le a b) : Γ ⊢[PRAAx] le a (b + ad a b) := by
   have f1 := natEq h; have f2 := natEq (eq_add_of_le h)
   refine le_of_eq_add (d := monus b a + monus b a) ?_
-  apply deriveNat; ipra_simps
-  linear_combination f2 + f1
+  ipra_lc f2 + f1
 
 theorem le_add_ad₂ {a b : PTm n} (h : Γ ⊢[PRAAx] le b a) : Γ ⊢[PRAAx] le a (b + ad a b) := by
   have f1 := natEq h; have f2 := natEq (eq_add_of_le h)
   refine le_of_eq_add (d := zero) ?_
-  apply deriveNat; ipra_simps
-  linear_combination f1 - f2
+  ipra_lc f1 - f2
 
 theorem le_add_ad (a b : PTm n) : Γ ⊢[PRAAx] le a (b + ad a b) :=
   .orE (le_total a b) (le_add_ad₁ Prf.hyp0) (le_add_ad₂ Prf.hyp0)
@@ -199,15 +192,13 @@ theorem ad_le_of₁ {a b c : PTm n} (h : Γ ⊢[PRAAx] le a b) (h2 : Γ ⊢[PRAA
     Γ ⊢[PRAAx] le (ad a b) c := by
   have f1 := natEq h; have f2 := natEq (eq_add_of_le h); have f3 := natEq (eq_add_of_le h2)
   refine le_of_eq_add (d := monus (a + c) b) ?_
-  apply deriveNat; ipra_simps
-  linear_combination f3 + f2 - f1
+  ipra_lc f3 + f2 - f1
 
 theorem ad_le_of₂ {a b c : PTm n} (h : Γ ⊢[PRAAx] le b a) (h1 : Γ ⊢[PRAAx] le a (b + c)) :
     Γ ⊢[PRAAx] le (ad a b) c := by
   have f1 := natEq h; have f2 := natEq (eq_add_of_le h); have f3 := natEq (eq_add_of_le h1)
   refine le_of_eq_add (d := monus (b + c) a) ?_
-  apply deriveNat; ipra_simps
-  linear_combination f3 + f2 - f1
+  ipra_lc f3 + f2 - f1
 
 theorem ad_le_of {a b c : PTm n} (h1 : Γ ⊢[PRAAx] le a (b + c)) (h2 : Γ ⊢[PRAAx] le b (a + c)) :
     Γ ⊢[PRAAx] le (ad a b) c :=
@@ -222,10 +213,7 @@ theorem ad_add_le (u u' v v' : PTm n) : Γ ⊢[PRAAx] le (ad (u + u') (v + v')) 
 theorem ad_mul_of_le (c : PTm n) {a b : PTm n} (h : Γ ⊢[PRAAx] le a b) :
     Γ ⊢[PRAAx] ad (c * a) (c * b) ≐ c * ad a b := by
   have hc := le_mul_mono (le_refl c) h
-  have f1 := natEq h; have f2 := natEq (eq_add_of_le h)
-  have f3 := natEq hc; have f4 := natEq (eq_add_of_le hc)
-  apply deriveNat; ipra_simps
-  linear_combination f3 - f4 + 𝔞 c * f2 - 𝔞 c * f1
+  ipra_lc natEq hc - natEq (eq_add_of_le hc) + 𝔞 c * natEq (eq_add_of_le h) - 𝔞 c * natEq h
 
 /-- `|c a − c b| = c |a − b|`. -/
 theorem ad_mul (c a b : PTm n) : Γ ⊢[PRAAx] ad (c * a) (c * b) ≐ c * ad a b := by
@@ -271,12 +259,8 @@ theorem w_tri_pt (i t p : PTm n) :
     Γ ⊢[PRAAx] inst2 (addBody (addBody (wL w * belowB X) (wL w * equalB X)) (wL w * aboveB X)) i (pairT t p) ≐
       inst2 w i p := by
   rw [inst2_addBody, inst2_addBody]
-  have tr := natEq (tri_pt (Γ := Γ) X i t p)
-  have b := natEq (wc_pt (Γ := Γ) w (belowB X) i t p)
-  have q := natEq (wc_pt (Γ := Γ) w (equalB X) i t p)
-  have a := natEq (wc_pt (Γ := Γ) w (aboveB X) i t p)
-  apply deriveNat; ipra_simps
-  linear_combination b + q + a + 𝔞 (inst2 w i p) * tr
+  ipra_lc natEq (wc_pt (Γ := Γ) w (belowB X) i t p) + natEq (wc_pt (Γ := Γ) w (equalB X) i t p) +
+    natEq (wc_pt (Γ := Γ) w (aboveB X) i t p) + 𝔞 (inst2 w i p) * natEq (tri_pt (Γ := Γ) X i t p)
 
 /-- `B(t) + E(t) + A(t) = W`. -/
 theorem w_partition (N t p : PTm n) : Γ ⊢[PRAAx] WB w X N t p + WE w X N t p + WA w X N t p ≐ Wt w N p := by
@@ -327,14 +311,12 @@ theorem congrDw (N c p : PTm n) {T T' : PTm n} (h : Γ ⊢[PRAAx] T ≐ T') : Γ
 theorem upW_base (m d c p : PTm n) :
     Γ ⊢[PRAAx] le (Dw w X zero c (c * m) p + d * (WB w X zero m p + WE w X zero m p))
       (Dw w X zero c (c * m + d) p + d * WA w X zero m p) := by
-  have z1 := natEq (sum_zero (Γ := Γ) (wY w * Yb X) (pairT c (pairT (c * m) p)))
-  have z2 := natEq (sum_zero (Γ := Γ) (wY w * Yb X) (pairT c (pairT (c * m + d) p)))
-  have zB := natEq (sum_zero (Γ := Γ) (wL w * belowB X) (pairT m p))
-  have zE := natEq (sum_zero (Γ := Γ) (wL w * equalB X) (pairT m p))
-  have zA := natEq (sum_zero (Γ := Γ) (wL w * aboveB X) (pairT m p))
   refine le_of_eq_add (d := zero) ?_
-  apply deriveNat; ipra_simps
-  linear_combination z2 + 𝔞 d * zA - z1 - 𝔞 d * zB - 𝔞 d * zE
+  ipra_lc natEq (sum_zero (Γ := Γ) (wY w * Yb X) (pairT c (pairT (c * m + d) p))) +
+    𝔞 d * natEq (sum_zero (Γ := Γ) (wL w * aboveB X) (pairT m p)) -
+    natEq (sum_zero (Γ := Γ) (wY w * Yb X) (pairT c (pairT (c * m) p))) -
+    𝔞 d * natEq (sum_zero (Γ := Γ) (wL w * belowB X) (pairT m p)) -
+    𝔞 d * natEq (sum_zero (Γ := Γ) (wL w * equalB X) (pairT m p))
 
 theorem upW_step {N m d c p : PTm n}
     (ih : Γ ⊢[PRAAx] le (Dw w X N c (c * m) p + d * (WB w X N m p + WE w X N m p))
@@ -343,17 +325,13 @@ theorem upW_step {N m d c p : PTm n}
       (Dw w X (succ N) c (c * m + d) p + d * WA w X (succ N) m p) := by
   have sD := natEq (sum_succ' (Γ := Γ) (wY w * Yb X) N (pairT c (pairT (c * m) p)))
   have sD' := natEq (sum_succ' (Γ := Γ) (wY w * Yb X) N (pairT c (pairT (c * m + d) p)))
-  have sB := natEq (sum_succ' (Γ := Γ) (wL w * belowB X) N (pairT m p))
-  have sE := natEq (sum_succ' (Γ := Γ) (wL w * equalB X) N (pairT m p))
-  have sA := natEq (sum_succ' (Γ := Γ) (wL w * aboveB X) N (pairT m p))
   have dv := natEq (dw_pt (Γ := Γ) w X N c (c * m) p); have dv' := natEq (dw_pt (Γ := Γ) w X N c (c * m + d) p)
   have bp := natEq (wb_pt (Γ := Γ) w X N m p); have ep := natEq (we_pt (Γ := Γ) w X N m p)
-  have ap := natEq (wa_pt (Γ := Γ) w X N m p)
   refine le_congr ?_ ?_ (add_le_add₂ ih (le_mul_mono (le_refl (inst2 w N p)) (ptc_up (inst2 X N p) m c d)))
-  · apply deriveNat; ipra_simps
-    linear_combination -sD - 𝔞 d * sB - 𝔞 d * sE - dv - 𝔞 d * bp - 𝔞 d * ep
-  · apply deriveNat; ipra_simps
-    linear_combination -sD' - 𝔞 d * sA - dv' - 𝔞 d * ap
+  · ipra_lc -sD - 𝔞 d * natEq (sum_succ' (Γ := Γ) (wL w * belowB X) N (pairT m p)) -
+      𝔞 d * natEq (sum_succ' (Γ := Γ) (wL w * equalB X) N (pairT m p)) - dv - 𝔞 d * bp - 𝔞 d * ep
+  · ipra_lc -sD' - 𝔞 d * natEq (sum_succ' (Γ := Γ) (wL w * aboveB X) N (pairT m p)) - dv' -
+      𝔞 d * natEq (wa_pt (Γ := Γ) w X N m p)
 
 /-- Variables: `0 = N`, `1 = m`, `2 = d`, `3 = c`, `4 = p`. -/
 private abbrev upWF : Fm PTm 5 :=
@@ -384,14 +362,12 @@ theorem dev_upW (N m d c p : PTm n) :
 theorem downW_base (m t c p : PTm n) :
     Γ ⊢[PRAAx] le (Dw w X zero c (c * m) p + monus (c * m) t * (WA w X zero m p + WE w X zero m p))
       (Dw w X zero c t p + monus (c * m) t * WB w X zero m p) := by
-  have z1 := natEq (sum_zero (Γ := Γ) (wY w * Yb X) (pairT c (pairT (c * m) p)))
-  have z2 := natEq (sum_zero (Γ := Γ) (wY w * Yb X) (pairT c (pairT t p)))
-  have zB := natEq (sum_zero (Γ := Γ) (wL w * belowB X) (pairT m p))
-  have zE := natEq (sum_zero (Γ := Γ) (wL w * equalB X) (pairT m p))
-  have zA := natEq (sum_zero (Γ := Γ) (wL w * aboveB X) (pairT m p))
   refine le_of_eq_add (d := zero) ?_
-  apply deriveNat; ipra_simps
-  linear_combination z2 + 𝔞 (monus (c * m) t) * zB - z1 - 𝔞 (monus (c * m) t) * zA - 𝔞 (monus (c * m) t) * zE
+  ipra_lc natEq (sum_zero (Γ := Γ) (wY w * Yb X) (pairT c (pairT t p))) +
+    𝔞 (monus (c * m) t) * natEq (sum_zero (Γ := Γ) (wL w * belowB X) (pairT m p)) -
+    natEq (sum_zero (Γ := Γ) (wY w * Yb X) (pairT c (pairT (c * m) p))) -
+    𝔞 (monus (c * m) t) * natEq (sum_zero (Γ := Γ) (wL w * aboveB X) (pairT m p)) -
+    𝔞 (monus (c * m) t) * natEq (sum_zero (Γ := Γ) (wL w * equalB X) (pairT m p))
 
 theorem downW_step {N m t c p : PTm n} (ht : Γ ⊢[PRAAx] le t (c * m))
     (ih : Γ ⊢[PRAAx] le (Dw w X N c (c * m) p + monus (c * m) t * (WA w X N m p + WE w X N m p))
@@ -400,18 +376,14 @@ theorem downW_step {N m t c p : PTm n} (ht : Γ ⊢[PRAAx] le t (c * m))
       (Dw w X (succ N) c t p + monus (c * m) t * WB w X (succ N) m p) := by
   have sD := natEq (sum_succ' (Γ := Γ) (wY w * Yb X) N (pairT c (pairT (c * m) p)))
   have sD' := natEq (sum_succ' (Γ := Γ) (wY w * Yb X) N (pairT c (pairT t p)))
-  have sB := natEq (sum_succ' (Γ := Γ) (wL w * belowB X) N (pairT m p))
-  have sE := natEq (sum_succ' (Γ := Γ) (wL w * equalB X) N (pairT m p))
-  have sA := natEq (sum_succ' (Γ := Γ) (wL w * aboveB X) N (pairT m p))
   have dv := natEq (dw_pt (Γ := Γ) w X N c (c * m) p); have dv' := natEq (dw_pt (Γ := Γ) w X N c t p)
   have bp := natEq (wb_pt (Γ := Γ) w X N m p); have ep := natEq (we_pt (Γ := Γ) w X N m p)
-  have ap := natEq (wa_pt (Γ := Γ) w X N m p)
   refine le_congr ?_ ?_ (add_le_add₂ ih (le_mul_mono (le_refl (inst2 w N p)) (ptc_down (inst2 X N p) m c ht)))
-  · apply deriveNat; ipra_simps
-    linear_combination -sD - 𝔞 (monus (c * m) t) * sA - 𝔞 (monus (c * m) t) * sE - dv -
-      𝔞 (monus (c * m) t) * ap - 𝔞 (monus (c * m) t) * ep
-  · apply deriveNat; ipra_simps
-    linear_combination -sD' - 𝔞 (monus (c * m) t) * sB - dv' - 𝔞 (monus (c * m) t) * bp
+  · ipra_lc -sD - 𝔞 (monus (c * m) t) * natEq (sum_succ' (Γ := Γ) (wL w * aboveB X) N (pairT m p)) -
+      𝔞 (monus (c * m) t) * natEq (sum_succ' (Γ := Γ) (wL w * equalB X) N (pairT m p)) - dv -
+      𝔞 (monus (c * m) t) * natEq (wa_pt (Γ := Γ) w X N m p) - 𝔞 (monus (c * m) t) * ep
+  · ipra_lc -sD' - 𝔞 (monus (c * m) t) * natEq (sum_succ' (Γ := Γ) (wL w * belowB X) N (pairT m p)) - dv' -
+      𝔞 (monus (c * m) t) * bp
 
 /-- Variables: `0 = N`, `1 = m`, `2 = t`, `3 = c`, `4 = p`. -/
 private abbrev downWF : Fm PTm 5 :=
@@ -449,27 +421,20 @@ abbrev isMedW (N m p : PTm n) : Fm PTm n := le (two * WB w X N m p) (Wt w N p) �
 theorem l1W_up {N m c t p : PTm n} (hm : Γ ⊢[PRAAx] le (two * WA w X N m p) (Wt w N p))
     (h : Γ ⊢[PRAAx] le (c * m) t) : Γ ⊢[PRAAx] le (Dw w X N c (c * m) p) (Dw w X N c t p) := by
   have ineq := dev_upW (Γ := Γ) w X N m (monus t (c * m)) c p
-  have e := natEq (eq_add_of_le ineq)
-  have Dc := natEq (congrDw (Γ := Γ) w X N c p (eq_add_of_le h).eqSymm)
-  have part := natEq (w_partition (Γ := Γ) w X N m p)
-  have hs := natEq (eq_add_of_le hm)
   refine le_of_eq_add (d := monus t (c * m) * monus (Wt w N p) (two * WA w X N m p) +
     monus (Dw w X N c (c * m + monus t (c * m)) p + monus t (c * m) * WA w X N m p)
       (Dw w X N c (c * m) p + monus t (c * m) * (WB w X N m p + WE w X N m p))) ?_
-  apply deriveNat; ipra_simps
-  linear_combination e - Dc + 𝔞 (monus t (c * m)) * part + 𝔞 (monus t (c * m)) * hs
+  ipra_lc natEq (eq_add_of_le ineq) - natEq (congrDw (Γ := Γ) w X N c p (eq_add_of_le h).eqSymm) +
+    𝔞 (monus t (c * m)) * natEq (w_partition (Γ := Γ) w X N m p) + 𝔞 (monus t (c * m)) * natEq (eq_add_of_le hm)
 
 theorem l1W_down {N m c t p : PTm n} (hm : Γ ⊢[PRAAx] le (two * WB w X N m p) (Wt w N p))
     (h : Γ ⊢[PRAAx] le t (c * m)) : Γ ⊢[PRAAx] le (Dw w X N c (c * m) p) (Dw w X N c t p) := by
   have ineq := dev_downW (Γ := Γ) w X N m c p h
-  have e := natEq (eq_add_of_le ineq)
-  have part := natEq (w_partition (Γ := Γ) w X N m p)
-  have hs := natEq (eq_add_of_le hm)
   refine le_of_eq_add (d := monus (c * m) t * monus (Wt w N p) (two * WB w X N m p) +
     monus (Dw w X N c t p + monus (c * m) t * WB w X N m p)
       (Dw w X N c (c * m) p + monus (c * m) t * (WA w X N m p + WE w X N m p))) ?_
-  apply deriveNat; ipra_simps
-  linear_combination e + 𝔞 (monus (c * m) t) * part + 𝔞 (monus (c * m) t) * hs
+  ipra_lc natEq (eq_add_of_le ineq) + 𝔞 (monus (c * m) t) * natEq (w_partition (Γ := Γ) w X N m p) +
+    𝔞 (monus (c * m) t) * natEq (eq_add_of_le hm)
 
 /-- `thm:weighted-l1`, scaled: a weighted median `m` has `∑ w_i |c x_i − c m| ≤ ∑ w_i |c x_i − t|`
 for every `c` and `t`. -/
@@ -495,9 +460,9 @@ theorem tri_step {N c T p : PTm n}
   rw [inst2_mul'] at sS
   have sS' := natEq sS; have sW := natEq (sum_succ' (Γ := Γ) w N p)
   have c1 : Γ ⊢[PRAAx] c * Ew w X (succ N) p ≐ c * Ew w X N p + inst2 w N p * (c * inst2 X N p) := by
-    apply deriveNat; ipra_simps; linear_combination 𝔞 c * sS'
+    ipra_lc 𝔞 c * sS'
   have c2 : Γ ⊢[PRAAx] T * Wt w (succ N) p ≐ T * Wt w N p + inst2 w N p * T := by
-    apply deriveNat; ipra_simps; linear_combination 𝔞 T * sW
+    ipra_lc 𝔞 T * sW
   have hA := congrAdd (congrMonus c1 c2) (congrMonus c2 c1)
   have DE : Γ ⊢[PRAAx] Dw w X (succ N) c T p ≐ Dw w X N c T p + inst2 w N p * ad (c * inst2 X N p) T :=
     (sum_succ' _ _ _).eqTrans (congrAdd (.eqRefl _) (dw_pt w X N c T p))
@@ -549,14 +514,11 @@ theorem mean_median {N m p : PTm n} (hm : Γ ⊢[PRAAx] isMedW w X N m p)
       (Vr w X N p * Wt w N p) :=
     le_congr (.eqRefl _) (congrMul (.eqRefl _) (wt_wY w N _ _ p)) cs
   have c := le_trans (le_mul_mono e1 e1) cs'
-  have k := natEq (eq_add_of_le c)
-  have V := natEq (variance_identity (Γ := Γ) w X N p)
   have big : Γ ⊢[PRAAx] le (Wt w N p * (Wt w N p * (ad (Ew w X N p) (Wt w N p * m) * ad (Ew w X N p) (Wt w N p * m) +
       Ew w X N p * Ew w X N p))) (Wt w N p * (Wt w N p * (Wt w N p * Ew w (X * X) N p))) := by
     refine le_of_eq_add (d := monus (Vr w X N p * Wt w N p)
       (Wt w N p * ad (Ew w X N p) (Wt w N p * m) * (Wt w N p * ad (Ew w X N p) (Wt w N p * m)))) ?_
-    apply deriveNat; ipra_simps
-    linear_combination k - 𝔞 (Wt w N p) * V
+    ipra_lc natEq (eq_add_of_le c) - 𝔞 (Wt w N p) * natEq (variance_identity (Γ := Γ) w X N p)
   exact le_cancel_pos hW (le_cancel_pos hW big)
 
 end Weighted

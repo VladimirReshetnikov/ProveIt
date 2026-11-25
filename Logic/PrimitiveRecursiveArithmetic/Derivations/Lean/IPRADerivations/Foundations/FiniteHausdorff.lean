@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.ApproximateWitness
 import IPRADerivations.Foundations.FiniteQueryDemand
 import IPRADerivations.Foundations.SequenceComposition
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Actual finite nearest-neighbor and Hausdorff scans
@@ -80,10 +81,7 @@ theorem score_at (d : PR 3) (z T p i : PTm n) :
       · exact .eqRefl _)
   simpa [score, inst2, pointData] using h
 
-theorem positive_length {L : PTm n} (h : Γ ⊢[PRAAx] le one L) :
-    Γ ⊢[PRAAx] L ≐ succ (pred L) := by
-  refine .orE (zero_or_succ L) ?_ Prf.hyp0
-  exact lt_zero_absurd _ (lt_congr (.eqRefl zero) Prf.hyp0 h.wk)
+alias positive_length := Common.pos_of_one_le
 
 theorem index_le_pred {i L : PTm n} (hi : Γ ⊢[PRAAx] lt i L) :
     Γ ⊢[PRAAx] le i (pred L) := by
@@ -334,10 +332,7 @@ theorem finite_hausdorff_checker (d : PR 3) (S T r p : PTm n)
     (.iffI (.impI (bound_of_close d Prf.hyp0))
       (.impI (close_of_bound d hS.wk hT.wk Prf.hyp0)))
 
-theorem sum_mono {a b c e : PTm n} (h : Γ ⊢[PRAAx] le a b)
-    (j : Γ ⊢[PRAAx] le c e) : Γ ⊢[PRAAx] le (a + c) (b + e) :=
-  le_trans (add_le_add_right c h)
-    (le_congr (add_comm c b) (add_comm e b) (add_le_add_right b j))
+alias sum_mono := Common.add_le_add
 
 def triangleLaw (d : PR 3) (p : PTm n) : Fm PTm n :=
   .all (.all (.all (le (distance d (var 2) (var 0) (Syn.shift (Syn.shift (Syn.shift p))))

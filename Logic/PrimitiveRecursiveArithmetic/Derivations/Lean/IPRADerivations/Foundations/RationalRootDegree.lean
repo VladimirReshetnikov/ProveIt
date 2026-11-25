@@ -2,6 +2,7 @@ import IPRADerivations.Core.Gcd
 import IPRADerivations.Core.Pairing
 import IPRADerivations.Core.BoundedSums
 import IPRADerivations.Combinatorics.BinomialTheorem
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Rational roots in every degree (`ipra_presentations_to_witnesses`, `lem:norm-rational-roots`)
@@ -73,9 +74,8 @@ theorem euclid_pos {m' r u v c : PTm k} (hB : Γ ⊢[PRAAx] u * succ m' ≐ v * 
 
 theorem euclid_neg {m' r u v c : PTm k} (hB : Γ ⊢[PRAAx] u * succ m' + one ≐ v * r)
     (h : Γ ⊢[PRAAx] dvd (succ m') (c * r)) : Γ ⊢[PRAAx] dvd (succ m') c := by
-  have b := natEq hB
   have e : Γ ⊢[PRAAx] c * r * v ≐ c + succ m' * (u * c) := by
-    apply deriveNat; ipra_simps; linear_combination (-𝔞 c) * b
+    ipra_lc (-𝔞 c) * natEq hB
   exact dvd_sub (dvd_congr e (dvd_mul v h)) (dvd_of_eq (w := u * c) (.eqRefl _))
 
 /-- Euclid's lemma: `m ∣ c r` with `m`, `r` coprime gives `m ∣ c`. -/
@@ -105,7 +105,7 @@ theorem pow_step {m' r u v c d e : PTm k} (hB : Γ ⊢[PRAAx] Bez m' r u v)
       (pw_succ r (monus d (succ e))))
     have e₂ : ((monus d e ≐ succ (pred (monus d e))) :: Γ) ⊢[PRAAx]
         c * pw r (monus d e) ≐ c * pw r (monus d (succ e)) * r := by
-      apply deriveNat; ipra_simps; linear_combination 𝔞 c * p
+      ipra_lc 𝔞 c * p
     exact euclid hB.wk (dvd_congr e₂ ih.wk)
 
 /-- Variables: `0 = e`, `1 = m'`, `2 = r`, `3 = u`, `4 = v`, `5 = c`, `6 = d`. -/
@@ -133,8 +133,7 @@ theorem pow_cancel {m' r u v c d : PTm k} (hB : Γ ⊢[PRAAx] Bez m' r u v)
   simp at i
   have r₁ := Prf.impE (Prf.impE i hB) h
   have e : Γ ⊢[PRAAx] c * pw r (monus d d) ≐ c := by
-    have p := natEq ((congrPw (.eqRefl r) (le_refl (Γ := Γ) d)).eqTrans (pw_zero r))
-    apply deriveNat; ipra_simps; linear_combination 𝔞 c * p
+    ipra_lc 𝔞 c * natEq ((congrPw (.eqRefl r) (le_refl (Γ := Γ) d)).eqTrans (pw_zero r))
   exact dvd_congr e r₁
 
 /-! ## The homogeneous polynomial -/
@@ -181,10 +180,8 @@ abbrev P (N p q d x : PTm k) : PTm k := ap2 (sumF (tB a)) N (pairT p (pairT q (p
 /-- The top term: `a(d, x) p^d q^0 = a(d, x) p^d`. -/
 theorem top_at (p q d x : PTm k) :
     Γ ⊢[PRAAx] inst2 (tB a) d (pairT p (pairT q (pairT d x))) ≐ inst2 a d x * pw p d := by
-  have t := natEq (tB_at (Γ := Γ) a d p q d x)
-  have z := natEq ((congrPw (.eqRefl q) (le_refl (Γ := Γ) d)).eqTrans (pw_zero q))
-  apply deriveNat; ipra_simps
-  linear_combination t + 𝔞 (inst2 a d x) * 𝔞 (pw p d) * z
+  ipra_lc natEq (tB_at (Γ := Γ) a d p q d x) +
+    𝔞 (inst2 a d x) * 𝔞 (pw p d) * natEq ((congrPw (.eqRefl q) (le_refl (Γ := Γ) d)).eqTrans (pw_zero q))
 
 theorem low_step {N p q' d x : PTm k} (hN : Γ ⊢[PRAAx] lt N d)
     (ih : Γ ⊢[PRAAx] dvd (succ q') (P a N p (succ q') d x)) :
@@ -195,12 +192,10 @@ theorem low_step {N p q' d x : PTm k} (hN : Γ ⊢[PRAAx] lt N d)
     exact le_lt_absurd _ (Prf.hyp0 (Γ := Γ) (φ := monus d N ≐ zero)) hN.wk
   have pk := natEq ((congrPw (.eqRefl (succ q')) (monus_peel hpos)).eqTrans
     (pw_succ (succ q') (monus d (succ N))))
-  have t := natEq (tB_at (Γ := Γ) a N p (succ q') d x)
   have hterm : Γ ⊢[PRAAx] dvd (succ q')
       (inst2 (tB a) N (pairT p (pairT (succ q') (pairT d x)))) :=
     dvd_of_eq (w := inst2 a N x * pw p N * pw (succ q') (monus d (succ N))) (by
-      apply deriveNat; ipra_simps
-      linear_combination t + 𝔞 (inst2 a N x) * 𝔞 (pw p N) * pk)
+      ipra_lc natEq (tB_at (Γ := Γ) a N p (succ q') d x) + 𝔞 (inst2 a N x) * 𝔞 (pw p N) * pk)
   exact dvd_congr (sum_succ' (tB a) N _).eqSymm (dvd_add ih hterm)
 
 /-- Variables: `0 = N`, `1 = p`, `2 = q'`, `3 = d`, `4 = x`. -/
@@ -234,11 +229,8 @@ theorem diff_dvd {m' r u v S T A B d : PTm k} (hB : Γ ⊢[PRAAx] Bez m' r u v)
     (hS : Γ ⊢[PRAAx] dvd (succ m') S) (hT : Γ ⊢[PRAAx] dvd (succ m') T)
     (hAB : Γ ⊢[PRAAx] le A B) (hE : Γ ⊢[PRAAx] S + A * pw r d ≐ T + B * pw r d) :
     Γ ⊢[PRAAx] dvd (succ m') (monus B A) := by
-  have e := natEq (eq_add_of_le hAB)
-  have h := natEq hE
   have c₁ : Γ ⊢[PRAAx] S + A * pw r d ≐ (monus B A * pw r d + T) + A * pw r d := by
-    apply deriveNat; ipra_simps
-    linear_combination h + 𝔞 (pw r d) * e
+    ipra_lc natEq hE + 𝔞 (pw r d) * natEq (eq_add_of_le hAB)
   exact pow_cancel hB (dvd_sub (dvd_congr (add_right_cancel c₁) hS) hT)
 
 variable (b : PTm 2)
@@ -266,15 +258,13 @@ theorem leading_dvd {p q' u v d x : PTm k} (hB : Γ ⊢[PRAAx] Bez q' p u v)
     have d₂ := diff_dvd hB.wk hSb.wk hSa.wk hle hE'.wk.eqSymm
     have z := natEq hle
     refine dvd_congr ?_ d₂
-    apply deriveNat; ipra_simps
-    linear_combination -z
+    ipra_lc -z
   · -- `a_d ≤ b_d`
     have hle : (le (inst2 a d x) (inst2 b d x) :: Γ) ⊢[PRAAx] le (inst2 a d x) (inst2 b d x) :=
       Prf.hyp0
     have d₁ := diff_dvd hB.wk hSa.wk hSb.wk hle hE'.wk
     have z := natEq hle
     refine dvd_congr ?_ d₁
-    apply deriveNat; ipra_simps
-    linear_combination -z
+    ipra_lc -z
 
 end LeanProofs.IPRA.Foundations.RationalRootDegree

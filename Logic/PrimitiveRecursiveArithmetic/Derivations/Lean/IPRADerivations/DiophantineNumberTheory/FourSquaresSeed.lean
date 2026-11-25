@@ -1,6 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.ThueGrid
 import IPRADerivations.AnalyticNumberTheory.ConvolutionAssoc
 import IPRADerivations.AnalyticNumberTheory.Totatives
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Four squares: a small multiple of an odd prime of the form `a² + b² + 1`
@@ -52,8 +53,7 @@ theorem not_dvd_small {p x : PTm k} (hx1 : Γ ⊢[PRAAx] x ≐ succ (pred x)) (h
   succ_ne_zero' _ (hx1.eqSymm.eqTrans ((rem_small hxp).eqSymm.eqTrans h))
 
 theorem diff_alg {i j d : PTm k} (e : Γ ⊢[PRAAx] j ≐ i + d) : Γ ⊢[PRAAx] j * j ≐ i * i + d * (j + i) := by
-  have a := natEq e
-  apply deriveNat; ipra_simps; linear_combination (𝔞 j + 𝔞 i) * a
+  ipra_lc (𝔞 j + 𝔞 i) * natEq e
 
 /-- For a prime `p = 2h + 1`: `i < j ≤ h` and `i² ≡ j² (mod p)` are contradictory. -/
 theorem sq_inj {p i j : PTm k} (hp : Γ ⊢[PRAAx] prime p) (ep : Γ ⊢[PRAAx] p ≐ two * half p + one)
@@ -75,8 +75,7 @@ theorem sq_inj {p i j : PTm k} (hp : Γ ⊢[PRAAx] prime p) (ep : Γ ⊢[PRAAx] 
 
 theorem neg_alg {p A B : PTm k} (hp1 : Γ ⊢[PRAAx] p ≐ succ (pred p)) :
     Γ ⊢[PRAAx] pred p * A + (A + B) ≐ p * A + B := by
-  have a := natEq hp1
-  apply deriveNat; ipra_simps; linear_combination (-𝔞 A) * a
+  ipra_lc (-𝔞 A) * natEq hp1
 
 /-- `(p − 1) A ≡ (p − 1) B (mod p)` gives `A ≡ B`. -/
 theorem neg_cancel {p A B : PTm k} (hp1 : Γ ⊢[PRAAx] p ≐ succ (pred p))
@@ -110,13 +109,11 @@ theorem seed_at (i p : PTm k) : inst2 seedB i p =
 
 theorem lab0 {S M1 a b : PTm k} (s0 : Γ ⊢[PRAAx] S ≐ zero) (m1 : Γ ⊢[PRAAx] M1 ≐ one) :
     Γ ⊢[PRAAx] M1 * a + S * b ≐ a := by
-  have x := natEq s0; have y := natEq m1
-  apply deriveNat; ipra_simps; linear_combination 𝔞 a * y + 𝔞 b * x
+  ipra_lc 𝔞 a * natEq m1 + 𝔞 b * natEq s0
 
 theorem lab1 {S M1 a b : PTm k} (s1 : Γ ⊢[PRAAx] S ≐ one) (m0 : Γ ⊢[PRAAx] M1 ≐ zero) :
     Γ ⊢[PRAAx] M1 * a + S * b ≐ b := by
-  have x := natEq s1; have y := natEq m0
-  apply deriveNat; ipra_simps; linear_combination 𝔞 a * y + 𝔞 b * x
+  ipra_lc 𝔞 a * natEq m0 + 𝔞 b * natEq s1
 
 /-- An index of the first list: the label is `i² mod p`. -/
 theorem seed_low {i p : PTm k} (h : Γ ⊢[PRAAx] le i (half p)) :
@@ -152,8 +149,7 @@ abbrev sb (p : PTm k) : PTm k := jv (sJ p) p
 
 theorem cross_alg {p B : PTm k} (hp1 : Γ ⊢[PRAAx] p ≐ succ (pred p)) :
     Γ ⊢[PRAAx] pred p * B + B ≐ p * B + zero := by
-  have a := natEq hp1
-  apply deriveNat; ipra_simps; linear_combination (-𝔞 B) * a
+  ipra_lc (-𝔞 B) * natEq hp1
 
 /-- "Small positive multiple of a prime": for an odd prime `p = 2h + 1`, the terms `a = sa p`, `b = sb p`
 satisfy `p ∣ a² + b² + 1` and `a, b ≤ h`. -/

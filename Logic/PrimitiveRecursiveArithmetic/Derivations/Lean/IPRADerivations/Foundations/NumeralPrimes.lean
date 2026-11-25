@@ -1,6 +1,8 @@
 import IPRADerivations.AnalyticNumberTheory.ValuationMul
 import IPRADerivations.Foundations.BoundedDecision
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Primality of numerals by trial division
@@ -65,9 +67,7 @@ theorem num_pos {a : ℕ} (h : 1 ≤ a) : Γ ⊢[PRAAx] (num a : PTm n) ≐ succ
   obtain ⟨c, rfl⟩ : ∃ c, a = c + 1 := ⟨a - 1, by omega⟩
   exact congrSucc (pred_succ _).eqSymm
 
-theorem one_le_of_pos {c : PTm n} (h : Γ ⊢[PRAAx] c ≐ succ (pred c)) : Γ ⊢[PRAAx] le one c := by
-  have e := natEq h
-  exact le_of_eq_add (d := pred c) (by apply deriveNat; ipra_simps; linear_combination e)
+alias one_le_of_pos := Common.one_le_of_pos
 
 /-! ## Remainders of numerals -/
 
@@ -129,7 +129,7 @@ theorem no_divisor {e : PTm n} (p r : ℕ) (hr : p < (r + 1) * (r + 1))
       exact lt_zero_absurd _ bad
     have cpos := p_pos hc2
     have hz : (lt (quo (num p) e) e :: Γ) ⊢[PRAAx] num p ≐ quo (num p) e * e + zero := by
-      apply deriveNat; ipra_simps; linear_combination den
+      ipra_lc den
     have dc : (lt (quo (num p) e) e :: Γ) ⊢[PRAAx] dvd (quo (num p) e) (num p) :=
       Prf.andE₂ (dmu cpos hz (one_le_of_pos cpos))
     have csq : (lt (quo (num p) e) e :: Γ) ⊢[PRAAx] le (quo (num p) e * quo (num p) e) (num p) := by

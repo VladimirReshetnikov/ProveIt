@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.RationalNamedLocalModulus
 import IPRADerivations.Analysis.RationalConvexClockRescale
 import IPRADerivations.DiophantineNumberTheory.MinkowskiRationalScaling
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Original rational arguments for the two-endpoint modulus
@@ -156,10 +157,7 @@ theorem original_endpoint_queries (a b : PTm n) (ha : Γ ⊢[PRAAx] nonnegative 
       (fraction_represents _ _ hd)
       (RationalRepresentations.represents_add _ _ _ _ _ _ rb (natCode_represents one)) hd
       (RationalAlgebra.positive_product hd (le_refl one))
-    apply ZT.derive
-    simp only [ZT.toZ_mul,ZT.toZ_add,ZT.toZ_ofNat]
-    ipra_simps
-    ring
+    ipra_lc
   exact .andI left right
 
 theorem original_clock_at_enlarged_scale (F : PR 3) (a b u v k x : PTm n)
@@ -180,10 +178,7 @@ theorem displacement_of_upper (u v U V D k : PTm n) (hD : Γ ⊢[PRAAx] le one D
   have rp : Γ ⊢[PRAAx] represents (RationalArithmetic.add u E) (ZT.ofNat (U*K+D)) (D*K) := by
     refine scalar_congr (.eqRefl _) ?_ (.eqRefl _) (RationalRepresentations.represents_add _ _ _ _ _ _
       hu (fraction_represents one K hp))
-    apply ZT.derive
-    simp only [ZT.toZ_mul,ZT.toZ_add,ZT.toZ_ofNat]
-    ipra_simps
-    ring
+    ipra_lc
   have clear : Γ ⊢[PRAAx] le (D*(K*V)) (D*(U*K+D)) :=
     le_congr (by ipra_ring) (by ipra_ring) (comparison_to_cleared _ _ _ _ _ _ hv rp hc)
   have hh := RationalValueBounds.positive_cancel hD clear

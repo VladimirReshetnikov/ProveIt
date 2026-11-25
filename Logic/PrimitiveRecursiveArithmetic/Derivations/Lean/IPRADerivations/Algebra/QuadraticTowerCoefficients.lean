@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.SequenceComposition
 import IPRADerivations.Foundations.BoundedSyntaxInduction
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Actual coefficient arrays at numerical quadratic-tower depth
@@ -85,10 +86,7 @@ theorem coefficients_succ (h K x : PTm n) (hx : Γ ⊢[PRAAx] lt x K) : Γ ⊢[P
   refine (entry_congr (table_succ h K) (.eqRefl x)).eqTrans ?_
   simpa [nextBody,inst2,coefficients] using sequence_decode (Γ := Γ) nextBody (x := table h K) hx
 
-theorem monus_bound (a b : PTm n) : Γ ⊢[PRAAx] le (monus a b) a := by
-  refine .orE (lt_or_le a b) ?_ ?_
-  · exact le_congr (le_of_lt Prf.hyp0 : (lt a b :: Γ) ⊢[PRAAx] monus a b ≐ zero).eqSymm (.eqRefl _) (zero_le _)
-  · exact le_of_eq_add (d := b) ((eq_add_of_le Prf.hyp0).eqTrans (add_comm _ _))
+alias monus_bound := Common.monus_le_self
 theorem first_bound (x : PTm n) : Γ ⊢[PRAAx] le (fstT x) x := monus_bound _ _
 theorem square_root_bound (x : PTm n) : Γ ⊢[PRAAx] le (isqrt x) x := by
   refine .orE (zero_or_succ (isqrt x)) ?_ ?_

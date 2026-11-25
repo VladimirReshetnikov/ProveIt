@@ -3,7 +3,7 @@ import IPRADerivations.AnalyticNumberTheory.PowerCleared
 import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.Combinatorics.BinomialIdentities
 import IPRADerivations.Core.EuclidLemma
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Injectivity of canonical powering

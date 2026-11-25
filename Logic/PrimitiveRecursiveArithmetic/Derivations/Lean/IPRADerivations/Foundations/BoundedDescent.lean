@@ -1,6 +1,6 @@
 import IPRADerivations.Foundations.IterationFusion
 import IPRADerivations.Foundations.BoundedReflection
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Bounded descent with a rank (`ipra_coherent_methods_2026-11-15`, `thm:rank`)

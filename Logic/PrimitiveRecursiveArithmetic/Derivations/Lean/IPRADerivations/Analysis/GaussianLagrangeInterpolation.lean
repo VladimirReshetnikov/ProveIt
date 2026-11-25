@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianRationalFiberRightInverse
 import IPRADerivations.Analysis.GaussianRationalGridCoefficientEquality
 import IPRADerivations.Analysis.GaussianBivariatePowerExpansion
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual finite Lagrange recovery on the numerical natural grid
@@ -61,13 +62,11 @@ def matrixBody : PTm 3 := matrixCell (fstT (var 2)) (fstT (sndT (var 2))) (sndT 
 theorem cell_congr {C D N M e f s t : PTm n} (hC : Γ ⊢[PRAAx] C ≐ D)
     (hN : Γ ⊢[PRAAx] N ≐ M) (he : Γ ⊢[PRAAx] e ≐ f) (hs : Γ ⊢[PRAAx] s ≐ t) : Γ ⊢[PRAAx]
     cell C N e s ≐ cell D M f t := by
-  simpa using Prf.eqCongr (Γ := Γ) (cell (var 0) (var 1) (var 2) (var 3) : PTm 4)
-    (σ := ![C,N,e,s]) (σ' := ![D,M,f,t]) (fun i => by fin_cases i; exact hC; exact hN; exact he; exact hs)
+  ipra_congr (cell (var 0) (var 1) (var 2) (var 3) : PTm 4) with [hC, hN, he, hs]
 theorem coefficient_congr {C D N M e f : PTm n} (hC : Γ ⊢[PRAAx] C ≐ D)
     (hN : Γ ⊢[PRAAx] N ≐ M) (he : Γ ⊢[PRAAx] e ≐ f) : Γ ⊢[PRAAx]
     coefficient C N e ≐ coefficient D M f := by
-  simpa using Prf.eqCongr (Γ := Γ) (coefficient (var 0) (var 1) (var 2) : PTm 3)
-    (σ := ![C,N,e]) (σ' := ![D,M,f]) (fun i => by fin_cases i; exact hC; exact hN; exact he)
+  ipra_congr (coefficient (var 0) (var 1) (var 2) : PTm 3) with [hC, hN, he]
 theorem cell_body_at (C N e s : PTm n) : Γ ⊢[PRAAx] inst2 cellBody s (data C N e) ≐ cell C N e s := by
   simp only [cellBody,inst2,subst_cell,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
   exact cell_congr (fst_pair _ _) ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))

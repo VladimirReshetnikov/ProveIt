@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.RationalNestedIntervals
 import IPRADerivations.Analysis.RationalMultiplicativeConvexity
 import IPRADerivations.Analysis.RationalNonnegativePowerOrder
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Cofinal midpoint order reflects the actual powered endpoints
@@ -279,9 +280,7 @@ theorem returned_product_upper (L U : PR 3) (X Y Z a b offset k x : PTm n) : Γ 
     ((congrFst (congrSnd (snd_pair _ _))).eqTrans ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))))
 theorem midpoint_congr {A B C D : PTm n} (hA : Γ ⊢[PRAAx] A ≐ C) (hB : Γ ⊢[PRAAx] B ≐ D) :
     Γ ⊢[PRAAx] midpoint A B ≐ midpoint C D := by
-  have h := Prf.eqCongr (midpoint (var 0) (var 1) : PTm 2) (σ := ![A,B]) (σ' := ![C,D])
-    (fun i => by fin_cases i; exact hA; exact hB)
-  simpa using h
+  ipra_congr (midpoint (var 0) (var 1) : PTm 2) with [hA, hB]
 theorem returned_power_center (L U : PR 3) (X Y Z a b offset k x : PTm n) : Γ ⊢[PRAAx]
     midpoint (fstT (run L U X Y Z a b offset k x)) (fstT (sndT (run L U X Y Z a b offset k x))) ≐
       powerCenter L U Z (a+b) offset k x :=

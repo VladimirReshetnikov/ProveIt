@@ -1,5 +1,6 @@
 import IPRADerivations.Algebra.QuadraticTowerGrowth
 import IPRADerivations.Foundations.BoundedSyntaxInduction
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Bounded height verification for the actual five-call table
@@ -383,8 +384,7 @@ theorem base_row_at_words (B u v : PTm n)
       QuadraticTowerArrayCodec.digit (codeCap B) w zero ≐ QuadraticTowerArrayCodec.digit (codeCap B) w' zero :=
     congrAp2 remF (congrAp2 quoF hw (.eqRefl _)) (.eqRefl _)
   have scalar := RationalAlgebra.multiply_congr (dig _ _ (Prf.andE₁ parts)) (dig _ _ (Prf.andE₂ parts))
-  simpa [QuadraticTowerMultiplicationTable.baseRow] using
-    Prf.eqCongr (singleton (var 0) : PTm 1) (σ := ![_]) (σ' := ![_]) (fun i => by fin_cases i; exact scalar)
+  ipra_congr (singleton (var 0) : PTm 1) with [scalar] using [QuadraticTowerMultiplicationTable.baseRow]
 
 theorem base_height_at (B _D b u v : PTm n)
     (hu : Γ ⊢[PRAAx] lt u (QuadraticTowerArrayCodec.horizon zero B))

@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.RationalRowSpanGaussianEmbedding
 import IPRADerivations.Analysis.GaussianScalarDeterminant
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Original rational runtime determinants and their Gaussian embedding
@@ -128,11 +129,7 @@ theorem signed_body_at (A m t : PTm n) : Γ ⊢[PRAAx]
     RationalFiniteSum.term signedBody t (pairT A m) ≐ signedTerm A m t := by
   simp only [RationalFiniteSum.term,signedBody,inst2,subst_signedTerm,subst_fstT,subst_sndT,
     Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
-  simpa only [subst_signedTerm,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (signedTerm (var 0) (var 1) (var 2) : PTm 3)
-      (σ := ![fstT (pairT A m),sndT (pairT A m),t]) (σ' := ![A,m,t])
-      (fun i => by fin_cases i; exact fst_pair _ _; exact snd_pair _ _; exact .eqRefl _)
+  ipra_congr (signedTerm (var 0) (var 1) (var 2) : PTm 3) with [fst_pair _ _, snd_pair _ _, .eqRefl t]
 
 theorem determinant_embedding (A m : PTm n) : Γ ⊢[PRAAx]
     embed (determinant A m) ≐ GaussianScalarDeterminant.scalarDet (matrix A m m) m := by

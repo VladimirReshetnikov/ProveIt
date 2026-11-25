@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.RationalConvexSecants
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The source local modulus from two precision-zero samples
@@ -66,7 +67,6 @@ theorem below_absolute (q : PTm n) : Γ ⊢[PRAAx] rationalLE q (absolute q) := 
   ipra_simps
   linear_combination 𝔞 D*e
 
-
 theorem observed_nonnegative (a b : PTm n) : Γ ⊢[PRAAx] nonnegative (observedBound a b) :=
   RationalArgmin.transitive (absolute_nonnegative a) (maximum_bounds (absolute a) (absolute b)).andE₁
 
@@ -111,10 +111,7 @@ theorem move_integer_unit (J V : PTm n) (hV : Γ ⊢[PRAAx] le one V) : Γ ⊢[P
   have h := RationalAlgebra.positive_product (le_refl one) hV
   apply RationalFiniteSum.canonical_equal _ _ _ _ _ _ (RationalArithmetic.add_guard _ _)
     (RationalArithmetic.add_guard _ _) jl jr h h
-  apply ZT.derive
-  simp only [ZT.toZ_mul,ZT.toZ_add,ZT.toZ_ofNat]
-  ipra_simps
-  ring
+  ipra_lc
 
 /-- The supplied upper regularity instance at (p,0) produces the original coarse bound plus (2^{-p}). -/
 theorem endpoint_sample_bound (a b q s p : PTm n) (h₀ : Γ ⊢[PRAAx] rationalLE q (natCode (coarseCeiling a b)))
@@ -133,7 +130,6 @@ theorem actual_two_endpoint_sample_bounds (A : PR 3) (D P Q p x : PTm n)
   let b := sample A (rightPoint D Q) zero x
   have h := original_observation_bound (Γ := Γ) a b
   exact .andI (endpoint_sample_bound a b a _ p h.andE₁ ha) (endpoint_sample_bound a b b _ p h.andE₂ hb)
-
 
 def output (A : PR 3) (D P Q k x : PTm n) : PTm n :=
   pairT (leftPoint D P) (pairT (rightPoint D Q) (pairT (M A D P Q x) (localModulus A D P Q k x)))

@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianDescentClockArithmetic
 import IPRADerivations.Analysis.GaussianRationalMetric
 import IPRADerivations.Analysis.GaussianRationalL1
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The actual finite rational-descent iterate and its residual clock
@@ -180,14 +181,10 @@ theorem combine_step (M m L R x y c d : PTm n) (hc : Γ ⊢[PRAAx] le one c)
 
 theorem residual_numerator_congr (C : PTm n) {z w : PTm n} (h : Γ ⊢[PRAAx] z ≐ w) :
     Γ ⊢[PRAAx] residualNumerator C z ≐ residualNumerator C w := by
-  have q := Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (residualNumerator (var 0) (var 1) : PTm 2)
-    (σ := ![C,z]) (σ' := ![C,w]) (fun i => by fin_cases i; exact .eqRefl _; exact h)
-  simpa only [subst_residualNumerator,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using q
+  ipra_congr (residualNumerator (var 0) (var 1) : PTm 2) with [.eqRefl C, h]
 theorem residual_denominator_congr (C : PTm n) {z w : PTm n} (h : Γ ⊢[PRAAx] z ≐ w) :
     Γ ⊢[PRAAx] residualDenominator C z ≐ residualDenominator C w := by
-  have q := Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (residualDenominator (var 0) (var 1) : PTm 2)
-    (σ := ![C,z]) (σ' := ![C,w]) (fun i => by fin_cases i; exact .eqRefl _; exact h)
-  simpa only [subst_residualDenominator,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using q
+  ipra_congr (residualDenominator (var 0) (var 1) : PTm 2) with [.eqRefl C, h]
 
 def decay (step : PR 3) (d C a b k : PTm n) : Fm PTm n :=
   le ((pw (rateDenominator d) k*pw (rateDenominator d) k)*(b*b)*residualNumerator C (iterate step d C k))

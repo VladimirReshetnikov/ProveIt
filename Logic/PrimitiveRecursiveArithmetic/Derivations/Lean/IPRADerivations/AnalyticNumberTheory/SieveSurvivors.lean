@@ -5,6 +5,7 @@ import IPRADerivations.AnalyticNumberTheory.SieveCriterion
 import IPRADerivations.AnalyticNumberTheory.ValuationAdd
 import IPRADerivations.AnalyticNumberTheory.FourthRootSum
 import IPRADerivations.Foundations.CrossingSearch
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The survivors of the sieve, and Legendre's formula for `π`
@@ -67,8 +68,7 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 /-! ## The prime divisors of the primorial -/
 
 theorem sz_alg {z q d : PTm n} (e : Γ ⊢[PRAAx] z ≐ q + d) : Γ ⊢[PRAAx] succ z ≐ q + succ d := by
-  have x := natEq e
-  apply deriveNat; ipra_simps; linear_combination x
+  ipra_lc natEq e
 
 /-- A prime `q ≤ z` divides `P(z)`. -/
 theorem dvd_pri {q z : PTm n} (hq : Γ ⊢[PRAAx] prime q) (h : Γ ⊢[PRAAx] le q z) : Γ ⊢[PRAAx] dvd q (pri z) := by
@@ -281,7 +281,7 @@ theorem sieve_pi {x z : PTm n} (hx : Γ ⊢[PRAAx] le one x) (hzx : Γ ⊢[PRAAx
     ((survivors hB).eqTrans (congrAdd (sg_pos (pos_of_one_le hx)) (.eqRefl _)))
 
 theorem sq_succ (s : PTm n) : Γ ⊢[PRAAx] (s + one) * (s + one) ≐ succ s * succ s := by
-  apply deriveNat; ipra_simps; ring
+  ipra_ring
 
 /-- **`an:sievepi`**: for `x ≥ 1` and `z = ⌊√x⌋`, `S(x, z) + π(z) = 1 + π(x)`. -/
 theorem sieve_pi_sqrt {x : PTm n} (hx : Γ ⊢[PRAAx] le one x) :
@@ -290,8 +290,7 @@ theorem sieve_pi_sqrt {x : PTm n} (hx : Γ ⊢[PRAAx] le one x) :
 
 theorem comb {A S Bn Pz R : PTm n} (h1 : Γ ⊢[PRAAx] A ≐ S + Bn) (h2 : Γ ⊢[PRAAx] S + Pz ≐ R) :
     Γ ⊢[PRAAx] A + Pz ≐ R + Bn := by
-  have a := natEq h1; have b := natEq h2
-  apply deriveNat; ipra_simps; linear_combination a + b
+  ipra_lc natEq h1 + natEq h2
 
 /-- **Legendre's formula for `π`**: at `z = ⌊√x⌋`, `x ≥ 1`,
 `∑_{d ≤ x} [d ∣ P(z)] μ⁺(d) ⌊x/d⌋ + π(z) = 1 + π(x) + ∑_{d ≤ x} [d ∣ P(z)] μ⁻(d) ⌊x/d⌋`. -/

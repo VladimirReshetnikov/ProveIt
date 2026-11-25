@@ -1,5 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.Coprime
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The norm of `ℤ[√−5]`: zero, units, and the absence of norms `2` and `3`

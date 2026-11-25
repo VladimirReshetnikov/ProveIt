@@ -2,6 +2,8 @@ import IPRADerivations.Analysis.GaussianEulerBetaPolynomialPrimitive
 import IPRADerivations.Analysis.GaussianPolynomialExponentialCapStability
 import IPRADerivations.Analysis.GaussianPolynomialRightLinearRows
 import IPRADerivations.Analysis.GaussianGammaFiniteValueProperness
+import IPRADerivations.Core.CongruenceTactic
+import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Pascal relations for the unchanged stored Beta primitive coefficients
@@ -86,7 +88,7 @@ theorem kernel_constant_step (N : PTm n) : Γ ⊢[PRAAx] entry (kernel (succ N))
 
 theorem reader_congr {N M e f : PTm n} (hN : Γ ⊢[PRAAx] N ≐ M) (he : Γ ⊢[PRAAx] e ≐ f) : Γ ⊢[PRAAx] reader N e ≐ reader M f := by
   have buffer : Γ ⊢[PRAAx] kernel N ≐ kernel M := by
-    simpa using Prf.eqCongr (kernel (var 0) : PTm 1) (σ := ![N]) (σ' := ![M]) (fun i => by fin_cases i; exact hN)
+    ipra_congr (kernel (var 0) : PTm 1) with [hN]
   exact GaussianRationalPolynomialExponentialStability.exponent_congr buffer hN he
 
 theorem reader_constant_step (N : PTm n) : Γ ⊢[PRAAx] reader (succ N) zero ≐ reader N zero :=
@@ -95,11 +97,7 @@ theorem reader_constant_step (N : PTm n) : Γ ⊢[PRAAx] reader (succ N) zero �
       ((entry_congr (.eqRefl _) (monus_zero _)).eqSymm.eqTrans (exponent_inside _ _ _ (zero_le _)).eqSymm)))
 
 theorem index_before (N e : PTm n) (he : Γ ⊢[PRAAx] lt e N) : Γ ⊢[PRAAx] monus N e ≐ succ (monus N (succ e)) := by
-  have a := natEq (eq_add_of_le he)
-  have b := natEq (eq_add_of_le (le_trans (le_succ_self e) he))
-  apply deriveNat
-  ipra_simps
-  linear_combination a-b
+  ipra_lc natEq (eq_add_of_le he)-natEq (eq_add_of_le (le_trans (le_succ_self e) he))
 
 theorem reader_interior_step (N e : PTm n) (he : Γ ⊢[PRAAx] lt e N) : Γ ⊢[PRAAx]
     reader (succ N) (succ e) ≐ qsub (reader N (succ e)) (reader N e) := by
@@ -137,8 +135,7 @@ theorem kernel_reader_Pascal (N e : PTm n) : Γ ⊢[PRAAx] reader (succ N) (succ
         ((reader_leading_step N).eqTrans (qsub_congr (reader_congr (.eqRefl _) (congrSucc Prf.hyp0)) (reader_congr (.eqRefl _) Prf.hyp0)))
 
 theorem linear_index_congr (z B e f : PTm n) (he : Γ ⊢[PRAAx] e ≐ f) : Γ ⊢[PRAAx] linear z B e ≐ linear z B f := by
-  simpa using Prf.eqCongr (linear (var 0) (var 1) (var 2) : PTm 3) (σ := ![z,B,e]) (σ' := ![z,B,f])
-    (fun i => by fin_cases i; exact .eqRefl _; exact .eqRefl _; exact he)
+  ipra_congr (linear (var 0) (var 1) (var 2) : PTm 3) with [.eqRefl z, .eqRefl B, he]
 
 theorem primitive_reader_value (z B N e : PTm n) : Γ ⊢[PRAAx] primitiveReader z B N e ≐ qmul (reader N e) (reciprocal (linear z B e)) := by
   refine .orE (lt_or_le N e) ?_ ?_

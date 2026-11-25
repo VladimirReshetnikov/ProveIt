@@ -1,6 +1,6 @@
 import IPRADerivations.Geometry.PowerCover
 import IPRADerivations.Geometry.PowerCover3
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Principal-cover gluing

@@ -95,20 +95,20 @@ theorem qb_at (k K F : PTm n) :
 /-- `L_w(k+1) ≤ u_{k+1}`. -/
 theorem lw_le_u {k K L : PTm n} (hK : Γ ⊢[PRAAx] le one K) (hkL : Γ ⊢[PRAAx] le (K * succ k) L) :
     Γ ⊢[PRAAx] le (Lw wt (succ k) (pairT K (fact L))) (U (succ k) K (fact L)) := by
-  have h1 : Γ ⊢[PRAAx] le one (succ k) := le_of_eq_add (d := k) (by apply deriveNat; ipra_simps; ring)
+  have h1 : Γ ⊢[PRAAx] le one (succ k) := le_of_eq_add (d := k) (by ipra_ring)
   have h := harmonic_lw h1 hK hkL
   have m1 : Γ ⊢[PRAAx] le (S K (fact L)) (S (K * succ k) (fact L)) :=
-    S_mono (fact L) (le_of_eq_add (d := K * k) (by apply deriveNat; ipra_simps; ring))
+    S_mono (fact L) (le_of_eq_add (d := K * k) (by ipra_ring))
   have Eu := natEq (eq_add_of_le m1)
   ipra_le sl h with Eu
 
 /-- `u_{k+1} ≤ L_w(k+1) + (k+1) ⌊F/K⌋`. -/
 theorem u_le_lw {k K L : PTm n} (hK : Γ ⊢[PRAAx] le one K) (hkL : Γ ⊢[PRAAx] le (K * succ k) L) :
     Γ ⊢[PRAAx] le (U (succ k) K (fact L)) (Lw wt (succ k) (pairT K (fact L)) + succ k * quo (fact L) K) := by
-  have h1 : Γ ⊢[PRAAx] le one (succ k) := le_of_eq_add (d := k) (by apply deriveNat; ipra_simps; ring)
+  have h1 : Γ ⊢[PRAAx] le one (succ k) := le_of_eq_add (d := k) (by ipra_ring)
   have h := lw_lower h1 hK hkL
   have m1 : Γ ⊢[PRAAx] le (S K (fact L)) (S (K * succ k) (fact L)) :=
-    S_mono (fact L) (le_of_eq_add (d := K * k) (by apply deriveNat; ipra_simps; ring))
+    S_mono (fact L) (le_of_eq_add (d := K * k) (by ipra_ring))
   have Eu := natEq (eq_add_of_le m1)
   ipra_le sl h with -Eu
 
@@ -131,7 +131,7 @@ theorem pt_hi {k K L m : PTm n} (hK : Γ ⊢[PRAAx] le one K) (hkm : Γ ⊢[PRAA
   have hul : Γ ⊢[PRAAx] le (U (succ k) K (fact L)) (Lw wt (succ k) (pairT K (fact L)) + m * quo (fact L) K) := by
     ipra_le sl hul0 + sl hq
   have m1 : Γ ⊢[PRAAx] le (S K (fact L)) (S (K * succ k) (fact L)) :=
-    S_mono (fact L) (le_of_eq_add (d := K * k) (by apply deriveNat; ipra_simps; ring))
+    S_mono (fact L) (le_of_eq_add (d := K * k) (by ipra_ring))
   have m2 : Γ ⊢[PRAAx] le (S (K * succ k) (fact L)) (S (K * m) (fact L)) := S_mono (fact L) (le_scale K hkm)
   have m3 : Γ ⊢[PRAAx] le (S K (fact L)) (S (K * m) (fact L)) := le_trans m1 m2
   have Eu := natEq (eq_add_of_le m1)

@@ -3,7 +3,7 @@ import IPRADerivations.Core.ProdLemmas
 import IPRADerivations.Core.ParityArith
 import IPRADerivations.Combinatorics.BinomialIdentities
 import IPRADerivations.Analysis.RationalClosure
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The triangular norm and its 2-adic descent

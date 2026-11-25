@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.RuntimePermutationInsertion
 import IPRADerivations.Foundations.BoundedSyntaxBackwardInduction
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Exact inversion counts for the actual maximum-label insertion
@@ -113,7 +114,6 @@ theorem appended_inversions (m d : PTm n) : Γ ⊢[PRAAx] inversions (succ m) (i
   exact (RuntimePermutationWords.inversion_prefix_succ _ _ _).eqTrans
     ((congrAdd sumBridge (appended_last_row m d)).eqTrans (add_zero _))
 
-
 theorem inserted_here (m p d : PTm n) (hp : Γ ⊢[PRAAx] lt p (succ m)) : Γ ⊢[PRAAx]
     digit (succ m) (insertedWord m p d) p ≐ m :=
   (inserted_digit m p d p hp hp).eqTrans (recovered_at m p d p (.eqRefl _))
@@ -193,7 +193,6 @@ theorem moving_inversions (m p d : PTm n) (hp : Γ ⊢[PRAAx] lt p m) : Γ ⊢[P
   exact ((congrAdd count oldOne).eqSymm.eqTrans
     (balance.eqTrans ((congrAdd (.eqRefl _) newZero).eqTrans (add_zero _)))).eqSymm
 
-
 def countBalance (m p d : PTm n) : Fm PTm n := inversions (succ m) (insertedWord m p d)+p ≐ inversions m d+m
 def countSyntax (m p d : PTm n) : BFm n := .eq (inversions (succ m) (insertedWord m p d)+p) (inversions m d+m)
 @[simp] theorem subst_countBalance {j : ℕ} (σ : Fin n → PTm j) (m p d : PTm n) :
@@ -202,11 +201,7 @@ theorem count_formula (m p d : PTm n) : BoundedSyntax.formula (countSyntax m p d
 
 theorem balance_backward (m p d : PTm n) (hp : Γ ⊢[PRAAx] lt p m) (hn : Γ ⊢[PRAAx] countBalance m (succ p) d) :
     Γ ⊢[PRAAx] countBalance m p d := by
-  have e := natEq (moving_inversions m p d hp)
-  have f := natEq hn
-  apply deriveNat
-  ipra_simps
-  linear_combination e+f
+  ipra_lc natEq (moving_inversions m p d hp)+natEq hn
 
 /-- The only new induction is the existing Boolean-compiled bounded
 backward induction, with its terminal and local premises discharged here. -/
@@ -226,11 +221,7 @@ digits: all decoded smaller labels are strictly below the inserted maximum. -/
 theorem inserted_inversions (m p d : PTm n) (hp : Γ ⊢[PRAAx] lt p (succ m)) : Γ ⊢[PRAAx]
     inversions (succ m) (insertedWord m p d) ≐ inversions m d+monus m p := by
   have pm : Γ ⊢[PRAAx] le p m := (succ_monus_succ p m).eqSymm.eqTrans hp
-  have a := natEq (all_count_balances m p d pm)
-  have b := natEq (eq_add_of_le pm)
-  apply deriveNat
-  ipra_simps
-  linear_combination a+b
+  ipra_lc natEq (all_count_balances m p d pm)+natEq (eq_add_of_le pm)
 
 theorem inserted_parity (m p d : PTm n) (hp : Γ ⊢[PRAAx] lt p (succ m)) : Γ ⊢[PRAAx]
     parity (succ m) (insertedWord m p d) ≐ par (inversions m d+monus m p) := congrAp1 parF (inserted_inversions m p d hp)
@@ -242,11 +233,8 @@ theorem inserted_parity_add (m p d : PTm n) (hp : Γ ⊢[PRAAx] lt p (succ m)) :
 theorem inserted_parity_plus (m p d : PTm n) (hp : Γ ⊢[PRAAx] lt p (succ m)) : Γ ⊢[PRAAx]
     parity (succ m) (insertedWord m p d) ≐ par (inversions m d+(m+p)) := by
   have pm : Γ ⊢[PRAAx] le p m := (succ_monus_succ p m).eqSymm.eqTrans hp
-  have e := natEq (eq_add_of_le pm)
   have exponent : Γ ⊢[PRAAx] inversions m d+(m+p) ≐ (inversions m d+monus m p)+two*p := by
-    apply deriveNat
-    ipra_simps
-    linear_combination e
+    ipra_lc natEq (eq_add_of_le pm)
   exact (inserted_parity m p d hp).eqTrans ((congrAp1 parF exponent).eqTrans (par_add_two _ _)).eqSymm
 
 theorem inserted_parity_plus_add (m p d : PTm n) (hp : Γ ⊢[PRAAx] lt p (succ m)) : Γ ⊢[PRAAx]

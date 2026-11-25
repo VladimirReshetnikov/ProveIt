@@ -1,7 +1,7 @@
 import IPRADerivations.Combinatorics.BinomialTwo
 import IPRADerivations.Combinatorics.CatalanPowers
 import IPRADerivations.Core.SumSplit
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Bézout witnesses for two coprime powers

@@ -2,6 +2,7 @@ import IPRADerivations.Analysis.RationalCofactorMinorBounds
 import IPRADerivations.Analysis.RationalMinorOrderTransport
 import IPRADerivations.Analysis.RationalMinorMaskReconstruction
 import IPRADerivations.Foundations.RuntimePermutationInsertion
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Ordered columns of the actual cofactor minors
@@ -42,10 +43,7 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 theorem insert_congr (N : PTm n) {R S j k : PTm n} (h : Γ ⊢[PRAAx] R ≐ S) (hj : Γ ⊢[PRAAx] j ≐ k) :
     Γ ⊢[PRAAx] insert N R j ≐ insert N S k := by
-  simpa only [RationalMinorMaskExtension.subst_insert,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-    Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (insert (var 0) (var 1) (var 2) : PTm 3) (σ := ![N,R,j]) (σ' := ![N,S,k])
-      (fun k => by fin_cases k; exact .eqRefl _; exact h; exact hj)
+  ipra_congr (insert (var 0) (var 1) (var 2) : PTm 3) with [.eqRefl N, h, hj]
 
 theorem cofactor_omits (P d j : PTm n) (h : Γ ⊢[PRAAx] lt (rank P d) d) (hj : Γ ⊢[PRAAx] lt j d) :
     Γ ⊢[PRAAx] bit (columnMask P d j) j ≐ zero := by
@@ -67,10 +65,7 @@ theorem omitted_prefix (P d j : PTm n) (hj : Γ ⊢[PRAAx] lt j d) (hs : Γ ⊢[
 
 theorem index_congr (d : PTm n) {R S j k : PTm n} (h : Γ ⊢[PRAAx] R ≐ S) (hj : Γ ⊢[PRAAx] j ≐ k) :
     Γ ⊢[PRAAx] index d R j ≐ index d S k := by
-  simpa only [RationalSelectedMinors.subst_index,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-    Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (index (var 0) (var 1) (var 2) : PTm 3) (σ := ![d,R,j]) (σ' := ![d,S,k])
-      (fun k => by fin_cases k; exact .eqRefl _; exact h; exact hj)
+  ipra_congr (index (var 0) (var 1) (var 2) : PTm 3) with [.eqRefl d, h, hj]
 
 theorem cofactor_slot (P d j r : PTm n) (h : Γ ⊢[PRAAx] lt (rank P d) d) (hj : Γ ⊢[PRAAx] lt j d)
     (hs : Γ ⊢[PRAAx] bit (extendedColumn P d) j ≐ one) (hr : Γ ⊢[PRAAx] lt r (count d (columnMask P d j))) :
@@ -85,9 +80,8 @@ theorem cofactor_slot (P d j r : PTm n) (h : Γ ⊢[PRAAx] lt (rank P d) d) (hj 
 
 private theorem cleared_entry_congr (A i : PTm n) {j k : PTm n} (h : Γ ⊢[PRAAx] j ≐ k) :
     Γ ⊢[PRAAx] normalize (coordinate (entry A i) j) one ≐ normalize (coordinate (entry A i) k) one := by
-  simpa [RationalSupMetric.coordinate,one,ZT.subst] using
-    Prf.eqCongr (normalize (coordinate (entry (var 0) (var 1)) (var 2)) one : PTm 3)
-      (σ := ![A,i,j]) (σ' := ![A,i,k]) (fun x => by fin_cases x; exact .eqRefl _; exact .eqRefl _; exact h)
+  ipra_congr (normalize (coordinate (entry (var 0) (var 1)) (var 2)) one : PTm 3) with
+    [.eqRefl A, .eqRefl i, h] using [RationalSupMetric.coordinate, one, ZT.subst]
 
 theorem cofactor_cell (P d j i r : PTm n) (h : Γ ⊢[PRAAx] lt (rank P d) d) (hj : Γ ⊢[PRAAx] lt j d)
     (hs : Γ ⊢[PRAAx] bit (extendedColumn P d) j ≐ one) (hi : Γ ⊢[PRAAx] lt i (rank P d))

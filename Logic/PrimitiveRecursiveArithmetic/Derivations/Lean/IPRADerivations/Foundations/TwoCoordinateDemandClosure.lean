@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.DemandClosure
 import IPRADerivations.Foundations.ChainViability
 import IPRADerivations.Foundations.SequenceComposition
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # A concrete cyclic two-coordinate demand closure
@@ -109,8 +110,7 @@ theorem operator_at (B C v : PTm n) : Γ ⊢[PRAAx] inst2 operator v (pairT B C)
   exact update_congr (fst_pair _ _) (snd_pair _ _) (.eqRefl _)
 theorem update_bounded (B C v : PTm n) : Γ ⊢[PRAAx] ordered two (update B C v) (vector B C) :=
   ordered_vector (clip_le _ _) (clip_le _ _)
-theorem succ_mono {a b : PTm n} (h : Γ ⊢[PRAAx] le a b) : Γ ⊢[PRAAx] le (succ a) (succ b) :=
-  le_congr (succ_eq_add_one _).eqSymm (succ_eq_add_one _).eqSymm (add_le_add_right one h)
+alias succ_mono := Common.succ_le_succ
 theorem update_mono (B C v w : PTm n) (h : Γ ⊢[PRAAx] ordered two v w) :
     Γ ⊢[PRAAx] ordered two (update B C v) (update B C w) :=
   ordered_vector (clip_mono _ _ _ (succ_mono (ordered_at h (le_refl two))))

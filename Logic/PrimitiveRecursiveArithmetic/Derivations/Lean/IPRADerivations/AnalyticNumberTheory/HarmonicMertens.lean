@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.HarmonicChebyshev
 import IPRADerivations.AnalyticNumberTheory.HarmonicLambda
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Subadditivity of the harmonic logarithm and Mertens' upper bound (`pnt_ipra_constructive_2026-11-14`)
@@ -45,9 +46,8 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `a ≤ b → c a ≤ c b`. -/
 theorem le_scale (c : PTm n) {a b : PTm n} (h : Γ ⊢[PRAAx] le a b) : Γ ⊢[PRAAx] le (c * a) (c * b) := by
-  have w := natEq (eq_add_of_le h)
   refine le_of_eq_add (d := c * monus b a) ?_
-  apply deriveNat; ipra_simps; linear_combination 𝔞 c * w
+  ipra_lc 𝔞 c * natEq (eq_add_of_le h)
 
 /-- Subadditivity with error: `λ_M(ab) ≤ λ_M(a) + λ_M(b) + 1/M`, i.e.
 `S(Mab) + S(M) ≤ S(Ma) + S(Mb) + ⌊F/M⌋` at the mesh `F = L!`, `Mab ≤ L`. -/
@@ -57,13 +57,13 @@ theorem subadd {M a b L : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) (ha : 
       (S (M * a) (fact L) + S (M * b) (fact L) + quo (fact L) M) := by
   have wM := natEq hM; have wb := natEq hb
   have q1 : Γ ⊢[PRAAx] M * (a * b) ≐ a * (succ (pred M) + M * pred b) := by
-    apply deriveNat; ipra_simps; linear_combination 𝔞 a * wM + 𝔞 a * 𝔞 M * wb
+    ipra_lc 𝔞 a * wM + 𝔞 a * 𝔞 M * wb
   have hL' : Γ ⊢[PRAAx] le (a * (succ (pred M) + M * pred b)) L := le_congr q1 (.eqRefl _) hL
   have r := Prf.andE₂ (log_refine (c₁ := pred M) (T := M * pred b) ha hL')
   have q3 : Γ ⊢[PRAAx] M * a ≐ a * succ (pred M) := by
-    apply deriveNat; ipra_simps; linear_combination 𝔞 a * wM
+    ipra_lc 𝔞 a * wM
   have q4 : Γ ⊢[PRAAx] M * b ≐ succ (pred M + M * pred b) := by
-    apply deriveNat; ipra_simps; linear_combination wM + 𝔞 M * wb
+    ipra_lc wM + 𝔞 M * wb
   have fab := natEq (congrAp2 (Γ := Γ) (sumF hB) q1 (.eqRefl (fact L)))
   have fa := natEq (congrAp2 (Γ := Γ) (sumF hB) q3 (.eqRefl (fact L)))
   have sM : Γ ⊢[PRAAx] S M (fact L) ≐ S (pred M) (fact L) + quo (fact L) (succ (pred M)) := by
@@ -94,8 +94,7 @@ abbrev Hp (k a M L K : PTm n) : Fm PTm n :=
 
 theorem p_zero (a M L : PTm n) : Γ ⊢[PRAAx] P zero a M L := by
   have q : Γ ⊢[PRAAx] M * pw a zero ≐ M := by
-    have z := natEq (pw_zero (Γ := Γ) a)
-    apply deriveNat; ipra_simps; linear_combination 𝔞 M * z
+    ipra_lc 𝔞 M * natEq (pw_zero (Γ := Γ) a)
   have e0 := natEq (congrAp2 (Γ := Γ) (sumF hB) q (.eqRefl (fact L)))
   ipra_le 0 with e0
 
@@ -105,10 +104,9 @@ theorem p_step {k a M L K : PTm n} (h : Γ ⊢[PRAAx] Hp (succ k) a M L K) (ih :
   have ha := pos_of_lt_zero (Prf.andE₁ (Prf.andE₂ h))
   have hK := Prf.andE₁ (Prf.andE₂ (Prf.andE₂ h))
   have hk := Prf.andE₂ (Prf.andE₂ (Prf.andE₂ h))
-  have ps := natEq (pw_succ (Γ := Γ) a k)
   have mono := le_scale M (pw_le_exp ha hk)
   have q : Γ ⊢[PRAAx] M * pw a (succ k) ≐ M * (pw a k * a) := by
-    apply deriveNat; ipra_simps; linear_combination 𝔞 M * ps
+    ipra_lc 𝔞 M * natEq (pw_succ (Γ := Γ) a k)
   have hL : Γ ⊢[PRAAx] le (M * (pw a k * a)) L := le_trans (le_congr q (.eqRefl _) mono) hK
   have sub := subadd hM (pw_pos' ha k) ha hL
   have e := natEq (congrAp2 (Γ := Γ) (sumF hB) q (.eqRefl (fact L)))

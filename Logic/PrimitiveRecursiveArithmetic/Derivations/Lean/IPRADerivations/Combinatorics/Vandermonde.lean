@@ -1,6 +1,7 @@
 import IPRADerivations.Combinatorics.Stirling
 import IPRADerivations.Combinatorics.BinomialIdentities
 import IPRADerivations.Core.Fubini
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Vandermonde's identity
@@ -63,14 +64,9 @@ theorem gb_above {m k : PTm n} (h : Γ ⊢[PRAAx] le (succ m) k) : Γ ⊢[PRAAx]
 theorem gb_pascal (m k : PTm n) : Γ ⊢[PRAAx] gb (succ m) (succ k) ≐ gb m (succ k) + gb m k := by
   refine .orE (lt_or_le k m) ?_ ?_
   · have hk : (lt k m :: Γ) ⊢[PRAAx] le (succ k) m := Prf.hyp0
-    have g₁ := natEq (gle_of_le (le_trans hk (le_succ_self m)) :
-      (lt k m :: Γ) ⊢[PRAAx] gle (succ k) (succ m) ≐ one)
-    have g₂ := natEq (gle_of_le hk)
-    have g₃ := natEq (gle_of_le (le_trans (le_succ_self k) hk))
-    have p := natEq (pascal_at (Prf.hyp0 (Ax := PRAAx) (Γ := Γ) (φ := lt k m)))
-    apply deriveNat; ipra_simps
-    linear_combination 𝔞(binom (succ m) (succ k)) * g₁ - 𝔞(binom m (succ k)) * g₂ -
-      𝔞(binom m k) * g₃ + p
+    ipra_lc 𝔞(binom (succ m) (succ k)) * natEq (gle_of_le (le_trans hk (le_succ_self m)) : (lt k m :: Γ) ⊢[PRAAx] gle (succ k) (succ m) ≐ one) -
+      𝔞(binom m (succ k)) * natEq (gle_of_le hk) - 𝔞(binom m k) * natEq (gle_of_le (le_trans (le_succ_self k) hk)) +
+      natEq (pascal_at (Prf.hyp0 (Ax := PRAAx) (Γ := Γ) (φ := lt k m)))
   · refine .orE (lt_or_eq_of_le Prf.hyp0) ?_ ?_
     · have h : (lt m k :: le m k :: Γ) ⊢[PRAAx] le (succ m) k := Prf.hyp0
       have z₁ := gb_above ((succ_monus_succ _ _).eqTrans h : (lt m k :: le m k :: Γ) ⊢[PRAAx]
@@ -144,9 +140,7 @@ theorem pas_pt (k m nn r : PTm n) :
     Γ ⊢[PRAAx] inst2 sB k (pairT (pairT (succ m) nn) r) ≐ inst2 (addBody sB vsB) k (pairT (pairT m nn) r) := by
   rw [inst2_addBody]
   refine (s_at _ _ _ _).eqTrans (.eqTrans ?_ (congrAdd (s_at _ _ _ _) (vs_at _ _ _ _)).eqSymm)
-  have p := natEq (gb_pascal (Γ := Γ) m k)
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞(gle (monus r k) nn) * 𝔞(binom nn (monus r k)) * p
+  ipra_lc 𝔞(gle (monus r k) nn) * 𝔞(binom nn (monus r k)) * natEq (gb_pascal (Γ := Γ) m k)
 
 /-- `V(m + 1, n, r + 1) = C(m + n + 1, r + 1)` from the identity at `(m, r + 1)` and `(m, r)`. -/
 theorem vs_step {m nn r : PTm n} (h₁ : Γ ⊢[PRAAx] VS m nn (succ r) ≐ gb (m + nn) (succ r))
@@ -168,13 +162,10 @@ theorem vs_step {m nn r : PTm n} (h₁ : Γ ⊢[PRAAx] VS m nn (succ r) ≐ gb (
   linear_combination A + B + C - D + e₁ + e₀ - P - Q
 
 theorem vs_r0 (m nn : PTm n) : Γ ⊢[PRAAx] VS m nn zero ≐ gb (m + nn) zero := by
-  have s := natEq (sum_succ' (Γ := Γ) vsB zero (pairT (pairT m nn) zero))
-  have z := natEq (sum_zero (Γ := Γ) vsB (pairT (pairT m nn) zero))
-  have t := natEq ((vs_at (Γ := Γ) zero m nn zero).eqTrans
-    ((congrMul (gb_zero m) ((congrGb (.eqRefl nn) (monus_zero zero)).eqTrans (gb_zero nn))).eqTrans (one_mul one)))
-  have g := natEq (gb_zero (Γ := Γ) (m + nn))
-  apply deriveNat; ipra_simps
-  linear_combination s + z + t - g
+  ipra_lc natEq (sum_succ' (Γ := Γ) vsB zero (pairT (pairT m nn) zero)) +
+    natEq (sum_zero (Γ := Γ) vsB (pairT (pairT m nn) zero)) +
+    natEq ((vs_at (Γ := Γ) zero m nn zero).eqTrans ((congrMul (gb_zero m) ((congrGb (.eqRefl nn) (monus_zero zero)).eqTrans (gb_zero nn))).eqTrans (one_mul one))) -
+    natEq (gb_zero (Γ := Γ) (m + nn))
 
 /-! ## The base `m = 0` -/
 

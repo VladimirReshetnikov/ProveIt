@@ -1,4 +1,5 @@
 import IPRADerivations.Probability.MedianCounts
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # Finite Bernoulli bounds and the finite product bound of the FTA iteration
@@ -40,8 +41,7 @@ theorem binom_step {y m : PTm n}
   have c := natEq (pw_succ (Γ := Γ) (succ y) (succ m))
   refine le_trans (le_of_eq_add (d := succ m * pw y m) ?_)
     (le_congr (.eqRefl _) (pw_succ _ _).eqSymm (le_mul_mono ih (le_refl (succ y))))
-  apply deriveNat; ipra_simps
-  linear_combination -a - (𝔞 m + 1) * b
+  ipra_lc -a - (𝔞 m + 1) * b
 
 /-- Variables: `0 = m`, `1 = y`. -/
 private abbrev binomF : Fm PTm 2 :=
@@ -51,13 +51,11 @@ private theorem binom₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] binomF := by
   refine ind _ (le_QF _ _) ?_ ?_
   · simp only [subst_le, PTm.subst_add, PTm.subst_mul, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
       ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have a := natEq (pw_succ (Γ := ([] : List (Fm PTm 1))) (var 0) zero)
-    have b := natEq (pw_zero (Γ := ([] : List (Fm PTm 1))) (var 0))
-    have c := natEq (pw_succ (Γ := ([] : List (Fm PTm 1))) (succ (var 0)) zero)
     have d := natEq (pw_zero (Γ := ([] : List (Fm PTm 1))) (succ (var 0)))
     refine le_of_eq_add (d := zero) ?_
-    apply deriveNat; ipra_simps
-    linear_combination c - a + (𝔞 (var 0 : PTm 1) + 1) * d - (𝔞 (var 0 : PTm 1) + 1) * b
+    ipra_lc natEq (pw_succ (Γ := ([] : List (Fm PTm 1))) (succ (var 0)) zero) -
+      natEq (pw_succ (Γ := ([] : List (Fm PTm 1))) (var 0) zero) + (𝔞 (var 0 : PTm 1) + 1) * d -
+      (𝔞 (var 0 : PTm 1) + 1) * natEq (pw_zero (Γ := ([] : List (Fm PTm 1))) (var 0))
   · simp only [subst_le, PTm.subst_add, PTm.subst_mul, subst_ap2, Syn.subst_var, Syn.repl_zero, repl_one,
       ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
     exact binom_step Prf.hyp0
@@ -71,22 +69,19 @@ theorem binom_lower (y m : PTm n) :
 /-- `eq:block`: `2 y^K ≤ K^K` for `K = y + 1`, i.e. `ρ^K ≤ 1/2`. -/
 theorem block_half (y : PTm n) : Γ ⊢[PRAAx] le (two * pw y (succ y)) (pw (succ y) (succ y)) := by
   have b := binom_lower (Γ := Γ) y y
-  have a := natEq (pw_succ (Γ := Γ) y y)
   refine le_trans (le_of_eq_add (d := pw y y) ?_) b
-  apply deriveNat; ipra_simps
-  linear_combination -a
+  ipra_lc -natEq (pw_succ (Γ := Γ) y y)
 
 theorem bern_le {y m : PTm n} (h : Γ ⊢[PRAAx] le (succ m) (succ y))
     (ih : Γ ⊢[PRAAx] le (pw (succ y) m * monus (succ y) m) (succ y * pw y m)) :
     Γ ⊢[PRAAx] le (pw (succ y) (succ m) * monus (succ y) (succ m)) (succ y * pw y (succ m)) := by
   have e := eq_add_of_le h
-  have k := natEq e
   have m₁ : Γ ⊢[PRAAx] monus (succ y) m ≐ succ (monus (succ y) (succ m)) :=
-    (congrMonus (e.eqTrans (by apply deriveNat; ipra_simps; ring)) (.eqRefl m)).eqTrans (add_monus' _ _)
+    (congrMonus (e.eqTrans (by ipra_ring)) (.eqRefl m)).eqTrans (add_monus' _ _)
   -- K t ≤ y (t + 1)
   have kt : Γ ⊢[PRAAx] le (succ y * monus (succ y) (succ m)) (y * succ (monus (succ y) (succ m))) := by
     refine le_of_eq_add (d := m) ?_
-    apply deriveNat; ipra_simps; linear_combination k
+    ipra_lc natEq e
   have step₁ := le_mul_mono (le_refl (pw (succ y) m)) kt
   have step₂ := le_mul_mono (le_refl y) (le_congr (congrMul (.eqRefl _) m₁) (.eqRefl _) ih)
   refine le_congr ?_ ?_ (le_trans step₁ (le_congr ?_ (.eqRefl _) step₂))
@@ -94,7 +89,7 @@ theorem bern_le {y m : PTm n} (h : Γ ⊢[PRAAx] le (succ m) (succ y))
     apply deriveNat; ipra_simps; linear_combination -𝔞 (monus (succ y) (succ m)) * p
   · have p := natEq (pw_succ (Γ := Γ) y m)
     apply deriveNat; ipra_simps; linear_combination -(𝔞 y + 1) * p
-  · apply deriveNat; ipra_simps; ring
+  · ipra_ring
 
 theorem bern_step {y m : PTm n}
     (ih : Γ ⊢[PRAAx] le (pw (succ y) m * monus (succ y) m) (succ y * pw y m)) :
@@ -128,13 +123,11 @@ theorem bernoulli_down (y m : PTm n) :
 theorem prod_pt_le {D α s : PTm n} (h : Γ ⊢[PRAAx] le (s + α) D) :
     Γ ⊢[PRAAx] le ((D + α) * monus D (s + α)) (D * monus D s) := by
   have e := eq_add_of_le h
-  have k := natEq e
   have m₁ : Γ ⊢[PRAAx] monus D s ≐ α + monus D (s + α) :=
-    (congrMonus (e.eqTrans (by apply deriveNat; ipra_simps; ring)) (.eqRefl s)).eqTrans (add_monus' _ _)
+    (congrMonus (e.eqTrans (by ipra_ring)) (.eqRefl s)).eqTrans (add_monus' _ _)
   have m₁' := natEq m₁
   refine le_of_eq_add (d := α * (s + α)) ?_
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞 D * m₁' + 𝔞 α * k
+  ipra_lc 𝔞 D * m₁' + 𝔞 α * natEq e
 
 /-- `(D + α)(D ∸ (s + α)) ≤ D (D ∸ s)`. -/
 theorem prod_pt (D α s : PTm n) : Γ ⊢[PRAAx] le ((D + α) * monus D (s + α)) (D * monus D s) := by
@@ -180,7 +173,7 @@ theorem prod_bound_step {m D x : PTm n}
     linear_combination -𝔞 (monus D (Sm a m D x + inst2 a m x)) * p - 𝔞 (Pm a (succ m) D x) * q
   · have p := natEq (pw_succ (Γ := Γ) D m)
     apply deriveNat; ipra_simps; linear_combination -𝔞 D * p
-  · apply deriveNat; ipra_simps; ring
+  · ipra_ring
 
 /-- Variables: `0 = m`, `1 = D`, `2 = x`. -/
 private abbrev prodBF : Fm PTm 3 :=

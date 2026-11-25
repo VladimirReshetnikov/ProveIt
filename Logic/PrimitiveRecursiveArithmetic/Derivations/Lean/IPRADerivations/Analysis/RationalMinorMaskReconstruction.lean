@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.RationalMinorMaskDeletion
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Exact reconstruction of a bounded minor mask after deletion
@@ -73,9 +74,7 @@ theorem binary_extensional (N M K : PTm n) (hm : Γ ⊢[PRAAx] lt M (pw two N)) 
   exact (decoded_word N M hm).eqSymm.eqTrans (rebuilt.eqTrans (decoded_word N K hk))
 
 theorem bit_congr {M K i j : PTm n} (h : Γ ⊢[PRAAx] M ≐ K) (hi : Γ ⊢[PRAAx] i ≐ j) : Γ ⊢[PRAAx] bit M i ≐ bit K j := by
-  simpa only [RationalSubtupleSpan.subst_bit,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using
-    Prf.eqCongr (bit (var 0) (var 1) : PTm 2) (σ := ![M,i]) (σ' := ![K,j])
-      (fun k => by fin_cases k; exact h; exact hi)
+  ipra_congr (bit (var 0) (var 1) : PTm 2) with [h, hi]
 
 theorem restored_bit (N M c i : PTm n) (hc : Γ ⊢[PRAAx] lt c N) (hi : Γ ⊢[PRAAx] lt i N)
     (hs : Γ ⊢[PRAAx] bit M c ≐ one) : Γ ⊢[PRAAx] bit (insert N (erase N M c) c) i ≐ bit M i := by

@@ -2,6 +2,7 @@ import IPRADerivations.Analysis.GaussianBetaPrimitiveGridUnscale
 import IPRADerivations.Analysis.GaussianBetaPrimitiveLowerEndpointRefinement
 import IPRADerivations.Analysis.GaussianBetaUpperGridEndpoint
 import IPRADerivations.Analysis.GaussianBetaFiniteEndpointTelescope
+import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The original full finite beta quadrature and the finite Euler reciprocal
@@ -72,12 +73,8 @@ private theorem endpoint_numerator_congr (p z B b N u v : PTm n) (h : Γ ⊢[PRA
     Γ ⊢[PRAAx] endpoint p z B u b N ≐ endpoint p z B v b N := by
   have lastIn : ![p,z,B,u,b,N] (5 : Fin 6) = N := rfl
   have lastOut : ![p,z,B,v,b,N] (5 : Fin 6) = N := rfl
-  simpa only [GaussianBetaPrimitiveGridTelescope.subst_endpoint, Syn.subst_var,
-    Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_three,Matrix.cons_val_four,
-    Matrix.cons_val_succ,Matrix.head_cons,Matrix.tail_cons,lastIn,lastOut] using
-      Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (endpoint (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6)
-        (σ := ![p,z,B,u,b,N]) (σ' := ![p,z,B,v,b,N])
-        (fun i => by fin_cases i; exact .eqRefl _; exact .eqRefl _; exact .eqRefl _; exact h; exact .eqRefl _; exact .eqRefl _)
+  ipra_congr (endpoint (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) with
+    [.eqRefl p, .eqRefl z, .eqRefl B, h, .eqRefl b, .eqRefl N] using [lastIn, lastOut]
 
 theorem cutoff_lower_endpoint_code (k p z R B A N M : PTm n) :
     Γ ⊢[PRAAx] scaledEndpoint zero p z B one (supportWidth (etaDen k A R) N) (etaDen k A R) M N ≐

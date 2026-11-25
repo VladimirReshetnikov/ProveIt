@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.GaussianRationalMetric
 import IPRADerivations.Analysis.GaussianProductStability
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # An actual common-scale radius for original Gaussian rational lists
@@ -127,12 +128,9 @@ theorem bound_of_representation (q g S T u v : PTm n) (hv : Γ ⊢[PRAAx] le one
     (hbound : Γ ⊢[PRAAx] bounded q u v) : Γ ⊢[PRAAx]
     le (normSq g) (rawRadius S T u v*rawRadius S T u v) := by
   have bound := bounded_to_cleared q g (scaleDenominator S T u v) u v (scale_positive S T u v) hv hq hbound
-  have value := natEq (radius_clears (Γ := Γ) S T u v hv)
   have same : Γ ⊢[PRAAx] (u*u)*(scaleDenominator S T u v*scaleDenominator S T u v) ≐
       (v*v)*(rawRadius S T u v*rawRadius S T u v) := by
-    apply deriveNat
-    ipra_simps
-    linear_combination -(𝔞(v)*𝔞(rawRadius S T u v)+𝔞(u)*𝔞(scaleDenominator S T u v))*value
+    ipra_lc -(𝔞(v)*𝔞(rawRadius S T u v)+𝔞(u)*𝔞(scaleDenominator S T u v))*natEq (radius_clears (Γ := Γ) S T u v hv)
   exact RationalValueBounds.positive_cancel
     (le_congr (one_mul one) (.eqRefl _) (le_mul_mono hv hv))
     (le_congr (.eqRefl _) same bound)
@@ -175,13 +173,10 @@ theorem budget_transport (N S T u v A B p q : PTm n) (hv : Γ ⊢[PRAAx] le one 
     (h : Γ ⊢[PRAAx] sourceBudget N u v A B p q) : Γ ⊢[PRAAx] scaledBudget N S T u v A B p q := by
   apply RationalValueBounds.positive_cancel (c := pw v (PTm.pred N))
     (GaussianRationalRootProduct.common_denominator_positive v (PTm.pred N) hv)
-  have pow := natEq (radius_power (Γ := Γ) S T u v (PTm.pred N) hv)
   have lhs : Γ ⊢[PRAAx]
       pw v (PTm.pred N)*(pw q N*N*pw (rawRadius S T u v) (PTm.pred N)*A) ≐
         (pw q N*N*pw u (PTm.pred N)*A)*pw (scaleDenominator S T u v) (PTm.pred N) := by
-    apply deriveNat
-    ipra_simps
-    linear_combination 𝔞(pw q N)*𝔞(N)*𝔞(A)*pow
+    ipra_lc 𝔞(pw q N)*𝔞(N)*𝔞(A)*natEq (radius_power (Γ := Γ) S T u v (PTm.pred N) hv)
   exact le_congr lhs.eqSymm (by ipra_ring)
     (mul_le_mul_right (pw (scaleDenominator S T u v) (PTm.pred N)) h)
 

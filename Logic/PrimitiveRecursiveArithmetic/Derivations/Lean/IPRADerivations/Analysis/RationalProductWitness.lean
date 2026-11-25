@@ -1,5 +1,6 @@
 import IPRADerivations.Core.ProdLemmas
 import IPRADerivations.Core.Search
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # An actual small rational factor from a finite product bound
@@ -58,11 +59,8 @@ theorem scaled_product_congr (P : PTm 2) {N M B x : PTm n} (h : Γ ⊢[PRAAx] N 
 
 theorem strict_mul_left {a b c : PTm n} (hc : Γ ⊢[PRAAx] le one c) (hab : Γ ⊢[PRAAx] lt a b) :
     Γ ⊢[PRAAx] lt (c*a) (c*b) := by
-  have e := natEq (eq_add_of_le hc)
-  have f := natEq (eq_add_of_le hab)
   refine le_of_eq_add (d := c*monus b (succ a)+monus c one) ?_
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞(c)*f+e
+  ipra_lc 𝔞(c)*natEq (eq_add_of_le hab)+natEq (eq_add_of_le hc)
 
 def allLarge (P Q : PTm 2) (N A B x : PTm n) : Fm PTm n :=
   .all (lt (var 0) (Syn.shift N) ⟶

@@ -4,7 +4,7 @@ import IPRADerivations.Analysis.BohrMollerupUniqueness
 import IPRADerivations.Combinatorics.BinomialTheorem
 import IPRADerivations.Combinatorics.BellTriangle
 import IPRADerivations.Probability.Independence
-import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.LinearCombination
 
 /-!
 # The exponential sums against `(1 + 1/m)^m`, summed
