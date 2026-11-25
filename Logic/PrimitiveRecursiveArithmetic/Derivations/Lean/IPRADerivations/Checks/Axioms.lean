@@ -18892,6 +18892,103 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyRefinement.rational_endpoint_estimate
 #print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyRefinement.actual_rational_partial_arctangent_endpoint_closed
 
+/-! ### GaussianArctangentPartialQuadrature -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialQuadrature.subst_increment
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialQuadrature.rowBody
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialQuadrature.alignedBody
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialQuadrature.row_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialQuadrature.aligned_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialQuadrature.aligned_scale
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialQuadrature.aligned_sum
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialQuadrature.prefix_as_sum
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialQuadrature.cell_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialQuadrature.clearing
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialQuadrature.observation
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialQuadrature.subst_clearing
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialQuadrature.subst_observation
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialQuadrature.observation_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialQuadrature.observation_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialQuadrature.refinement_cells
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialQuadrature.finite_refinement
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialQuadrature.finite_comparison
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialQuadrature.mesh
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialQuadrature.sample
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialQuadrature.data
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialQuadrature.nameTerm
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialQuadrature.nameF
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialQuadrature.subst_mesh
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialQuadrature.subst_sample
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialQuadrature.subst_data
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialQuadrature.subst_nameTerm
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialQuadrature.four_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialQuadrature.mesh_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialQuadrature.sample_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialQuadrature.sample_regularity
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialQuadrature.name_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialQuadrature.actual_partial_arctangent_sample_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialQuadrature.actual_partial_arctangent_refinement_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialQuadrature.actual_partial_arctangent_regular_closed
+
+/-! ### GaussianArctangentPartialRepresentation -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialRepresentation.cleared_equal_of_fractions
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialRepresentation.common_observation
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialRepresentation.representation_sample_distance
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialRepresentation.representation_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialRepresentation.equal_fraction_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialRepresentation.actual_partial_arctangent_fraction_independent_closed
+
+/-! ### GaussianArctangentPartialUnitEndpoint -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialUnitEndpoint.unit_endpoint_distance
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialUnitEndpoint.unit_endpoint_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialUnitEndpoint.actual_original_partial_arctangent_agrees_with_pi_endpoint_closed
+
+/-! ### GaussianArctangentPartialExponential -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialExponential.exponentialF
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialExponential.exponentialData
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialExponential.argument_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialExponential.exponential_input
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialExponential.exponential_distance
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialExponential.exponential_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialExponential.actual_rational_arctangent_Cayley_exponential_closed
+
+/-! ### GaussianArctangentCayleyTrig -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyTrig.sineCode
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyTrig.cosineCode
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyTrig.sinePoint
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyTrig.cosinePoint
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyTrig.cosineMultiplier
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyTrig.subst_sinePoint
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyTrig.subst_cosinePoint
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyTrig.subst_cosineMultiplier
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyTrig.conjugate_inverse
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyTrig.sine_readback
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyTrig.cosine_readback
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyTrig.linearCode
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyTrig.linearPoint
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyTrig.conjugateLinearPoint
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyTrig.quotient_readback
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyTrig.actual_Cayley_quotient_readback_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyTrig.actual_Cayley_trigonometric_readback_closed
+
+/-! ### GaussianArctangentPartialTrig -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialTrig.cosineSumF
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialTrig.cosineSumData
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialTrig.cosineF
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialTrig.cosineData
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialTrig.subst_cosineSumData
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialTrig.subst_cosineData
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialTrig.cosine_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialTrig.cosine_constant
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialTrig.conjugate_exponential_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialTrig.sine_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialTrig.cosine_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialTrig.quotientProductF
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialTrig.quotientProductData
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialTrig.quotient_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialTrig.actual_rational_arctangent_Cayley_quotient_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialTrig.actual_rational_arctangent_sine_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentPartialTrig.actual_rational_arctangent_cosine_closed
+
 /-! ### GaussianGammaHalfSquareLimit -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaHalfSquareLimit.gammaHalf
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaHalfSquareLimit.gammaSquareF
