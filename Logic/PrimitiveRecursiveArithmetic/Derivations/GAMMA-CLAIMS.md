@@ -1810,6 +1810,14 @@ margin of the sum licenses original reciprocal cancellation,
 which selects the desired square root.
 [GaussianNamedSquareBranch](Lean/IPRADerivations/Analysis/GaussianNamedSquareBranch.lean), [GaussianRightHalfPlaneExponentialMargin](Lean/IPRADerivations/Analysis/GaussianRightHalfPlaneExponentialMargin.lean), [GaussianRightHalfPlaneExponentialSmall](Lean/IPRADerivations/Analysis/GaussianRightHalfPlaneExponentialSmall.lean).
 
+The reciprocal phase chart follows by interchanging the numerator
+magnitudes and applying the exact quarter turn to the conjugate
+exponential. Conjugation then implements the negative imaginary
+sign. The exponential of the full logarithm recovers the same
+signed fraction program used in the original finite Euler heads
+at every admitted encoded Gaussian rational.
+[GaussianRightHalfPlaneExponentialCharts](Lean/IPRADerivations/Analysis/GaussianRightHalfPlaneExponentialCharts.lean), [GaussianRightHalfPlaneLogarithmExponential](Lean/IPRADerivations/Analysis/GaussianRightHalfPlaneLogarithmExponential.lean).
+
 A common precision computed from the number of terms gives a regular
 sum of the actual shifted logarithms. This yields the finite Euler head
 `log(N!) + z log(N) − Σ Log(z+k)` on the rational right half-plane.
