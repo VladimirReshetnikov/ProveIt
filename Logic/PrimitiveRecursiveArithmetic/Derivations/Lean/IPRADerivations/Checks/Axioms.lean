@@ -19021,6 +19021,28 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianArctangentGridSearch.actual_arctangent_grid_crossing_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianArctangentGridSearch.actual_arctangent_grid_crossing_residual_closed
 
+/-! ### GaussianArctangentNamedSlope -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedSlope.gapNumerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedSlope.gap
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedSlope.twiceGap
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedSlope.ordinate
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedSlope.common_grid_order
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedSlope.slopeBound
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedSlope.named_slope_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedSlope.actual_partial_arctangent_named_slope_closed
+
+/-! ### GaussianArctangentRationalTarget -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentRationalTarget.target
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentRationalTarget.chosen
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentRationalTarget.targetPoint
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentRationalTarget.target_exact
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentRationalTarget.target_admitted
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentRationalTarget.brackets
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentRationalTarget.rational_target_brackets
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentRationalTarget.rational_target_distance
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentRationalTarget.actual_rational_arctangent_target_brackets_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentRationalTarget.actual_rational_arctangent_target_distance_closed
+
 /-! ### GaussianGammaHalfSquareLimit -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaHalfSquareLimit.gammaHalf
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaHalfSquareLimit.gammaSquareF
