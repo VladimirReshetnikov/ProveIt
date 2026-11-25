@@ -2430,3 +2430,10 @@ comparison to the original damping multiplied by the mean of the
 two imaginary exponentials. Exact signed rational rescaling binds
 their frequency charts at the actual grid tags.
 [GaussianRationalQuadratureMean](Lean/IPRADerivations/Analysis/GaussianRationalQuadratureMean.lean), [GaussianBinetOscillatoryRectangleTranspose](Lean/IPRADerivations/Analysis/GaussianBinetOscillatoryRectangleTranspose.lean), [GaussianBinetOscillatoryMatrixCell](Lean/IPRADerivations/Analysis/GaussianBinetOscillatoryMatrixCell.lean), [GaussianBinetImaginaryExponentialScale](Lean/IPRADerivations/Analysis/GaussianBinetImaginaryExponentialScale.lean).
+
+At every original arctangent observation, the leading term is
+`t/z` with norm error at most `(t/Re(z))³`. The original rational
+rows retain their exact values, so this bound has no sampling
+allowance. For positive rational time the divided arctangent
+differs from `1/z` by at most `t²/Re(z)³`.
+[GaussianBinetArctangentLinearApproximation](Lean/IPRADerivations/Analysis/GaussianBinetArctangentLinearApproximation.lean).
