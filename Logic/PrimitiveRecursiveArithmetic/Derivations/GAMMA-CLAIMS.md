@@ -2711,3 +2711,6 @@ The original real Stirling remainder is cross-equivalent to the actual improper 
 
 Each original finite damped panel on a rational grid compares to its actual improper Euler row with a certified scaled endpoint allowance and a common mesh and observation clock.
 [GaussianGammaZetaMellinDampedExhaustion](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinDampedExhaustion.lean)
+
+The named expression x log x − x plus the original Stirling constant admits a uniform rate to its rational counterpart at every actual late input observation. The coefficient is independent of the frozen numerator and denominator.
+[GaussianRaabeNamedRightSide](Lean/IPRADerivations/Analysis/GaussianRaabeNamedRightSide.lean)
