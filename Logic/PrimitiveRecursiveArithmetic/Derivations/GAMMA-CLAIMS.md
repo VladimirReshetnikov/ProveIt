@@ -2507,3 +2507,6 @@ quotient have a separate quantitative comparison.
 
 A single frozen Pi clock supplies every literal reciprocal row. The truncated kernel and the actual exponential-weighted prefix compare with the cofinal kernel and the original first Binet Laplace integrand, with quantitative cutoff and clock budgets.
 [GaussianBinetKernelFrozenPrefix](Lean/IPRADerivations/Analysis/GaussianBinetKernelFrozenPrefix.lean)
+
+Exact compact rescaling and additivity compare the original intervals whose lower endpoints are dyadic. The omitted strip has norm at most its width divided by four times the real part. The resulting regular name integrates the original product from zero to each positive integer horizon.
+[GaussianBinetBoseCompactAlignment](Lean/IPRADerivations/Analysis/GaussianBinetBoseCompactAlignment.lean), [GaussianBinetBoseOriginExhaustion](Lean/IPRADerivations/Analysis/GaussianBinetBoseOriginExhaustion.lean), [GaussianBinetBoseOriginName](Lean/IPRADerivations/Analysis/GaussianBinetBoseOriginName.lean)
