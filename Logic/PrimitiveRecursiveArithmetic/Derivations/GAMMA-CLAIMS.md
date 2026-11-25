@@ -2606,3 +2606,6 @@ The literal same-clock logarithm samples give a quadratic primitive estimate on 
 
 At a rooted time t=(a/b)^A, the actual Mellin observation for the parameter s is bounded by (b/a)^(A−1)+3·2^-p on the admitted chart for s−1. The exact time factor cancels the reciprocal norm bound.
 [GaussianGammaZetaMellinOriginBound](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinOriginBound.lean)
+
+The actual compact quadrature inherits the pointwise rational floor with its physical width. On [1,2] the late samples have real part at least 1/(104·3^(2X)), with explicit dyadic admission.
+[GaussianBinetLaplaceCompactRealFloor](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceCompactRealFloor.lean)
