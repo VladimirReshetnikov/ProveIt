@@ -141,43 +141,60 @@ private theorem scale_observation {a b C Q p : PTm n} (hQ : Γ ⊢[PRAAx] le one
   distance_radius_mono _ _ _ _ _ _ (unit_positive p) (positive_product _ _ hQ (unit_positive p))
     (le_of_eq_add (d := zero) (by ipra_ring)) h
 
-theorem quotient_sample (p j X D R S H Q : PTm n)
-    (h : Γ ⊢[PRAAx] realSource X zero D zero R)
-    (h' : Γ ⊢[PRAAx] realSource (X*Q+H*D) zero (D*Q) zero S)
-    (hH : Γ ⊢[PRAAx] le one H) (hQ : Γ ⊢[PRAAx] le one Q) (hh : Γ ⊢[PRAAx] le H Q) :
-    Γ ⊢[PRAAx] distanceBounded (ap2 quotientF p (quotientData j X D R S H Q)) (ap2 targetF p (targetData j X D R))
-      (diagonalNumerator (linearBudget j D H) Q (samplerBudget j X D R S H Q) p) (diagonalDenominator Q p) := by
-  let y := ap2 nameF p (data j (X*Q+H*D) (D*Q) S)
-  let x := ap2 nameF p (data j X D R)
-  let z := ap2 nameF p (data (succ j) X D R)
+/-- Transfer a sampled Taylor estimate to the original named quotient.
+The target may be any original moment observation, including the
+successor read in a fixed base chart. -/
+theorem sample_of_taylor (p a b c H Q C L : PTm n)
+    (hInput : Γ ⊢[PRAAx] GaussianNamedDifferenceQuotient.input nameF nameF a b (radiusNumerator H) Q)
+    (hz : Γ ⊢[PRAAx] pointCN nameF c) (hc : Γ ⊢[PRAAx] GaussianRationalHorner.canonical (ap2 nameF p c))
+    (hH : Γ ⊢[PRAAx] le one H) (hQ : Γ ⊢[PRAAx] le one Q)
+    (taylor : Γ ⊢[PRAAx] distanceBounded (ap2 nameF p a)
+      (qsub (ap2 nameF p b) (qmul (radiusPoint H Q) (ap2 nameF p c)))
+      (num 3*(H*H)*C*unit p+L*(Q*Q)) ((Q*Q)*unit p)) :
+    Γ ⊢[PRAAx] distanceBounded
+      (ap2 quotientF p (GaussianNamedDifferenceQuotient.data nameF nameF a b (radiusNumerator H) Q))
+      (ap2 targetF p (negativeData c))
+      (diagonalNumerator (num 3*H*C) Q
+        (GaussianNamedDifferenceQuotient.cost nameF nameF a b (radiusNumerator H) Q + L*Q + num 3) p)
+      (diagonalDenominator Q p) := by
+  let y := ap2 nameF p a
+  let x := ap2 nameF p b
+  let z := ap2 nameF p c
   let v := inverse (radiusNumerator H) Q
   have hp := unit_positive (Γ := Γ) p
   have den := positive_product _ _ hQ hp
   have den₂ := positive_product _ _ (positive_product _ _ hQ hQ) hp
-  have taylor := GaussianBinetLaplaceMomentImproperTaylor.observation_taylor p j X D R S H Q h h' hQ hh
-  have translated : Γ ⊢[PRAAx] distanceBounded (qsub y x) (qsub (linearSample p j X D R H Q) x)
-      (leading j D H*unit p+num 10*(Q*Q)) ((Q*Q)*unit p) :=
+  have translated : Γ ⊢[PRAAx] distanceBounded (qsub y x) (qsub (qsub x (qmul (radiusPoint H Q) z)) x)
+      (num 3*(H*H)*C*unit p+L*(Q*Q)) ((Q*Q)*unit p) :=
     distance_congr (.eqRefl _) (.eqRefl _) (add_zero _) (.eqRefl _)
       (GaussianNamedDifference.difference_distance _ _ x x _ zero _ den₂ taylor
         (GaussianRationalPowerDifference.distance_refl_zero x _ den₂))
   have bounded_inv : Γ ⊢[PRAAx] bounded v Q H :=
     bound_congr (inverse_radius H Q hH hQ).eqSymm (.eqRefl _) (.eqRefl _) (radius_bounded Q H hH)
   have scaled := bound_congr
-    (GaussianRationalRoundedPower.multiplication_difference v (qsub y x) (qsub (linearSample p j X D R H Q) x)).eqSymm
+    (GaussianRationalRoundedPower.multiplication_difference v (qsub y x) (qsub (qsub x (qmul (radiusPoint H Q) z)) x)).eqSymm
     (.eqRefl _) (.eqRefl _) (GaussianRationalReciprocal.bounded_product _ _ Q H _ _ hH den₂ bounded_inv translated)
   have raw := distance_congr (.eqRefl _)
-    (linear_quotient x z H Q (sample_canonical p (succ j) X D R) hH hQ) (.eqRefl _) (.eqRefl _) scaled
+    (linear_quotient x z H Q hc hH hQ) (.eqRefl _) (.eqRefl _) scaled
   have ideal : Γ ⊢[PRAAx] distanceBounded (qmul v (qsub y x)) (qsub qzero z)
-      (linearBudget j D H*unit p+(num 10*Q)*Q) (Q*unit p) := by
+      (num 3*H*C*unit p+(L*Q)*Q) (Q*unit p) := by
     apply distance_radius_mono _ _ _ _ _ _ (positive_product _ _ hH den₂) den ?_ raw
-    unfold leading linearBudget
-    ipra_le 10*𝔞(Q)*𝔞(Q)*𝔞(Q)*𝔞(Q)*𝔞(unit p)*sl hH
-  have observed := scale_observation hQ (GaussianNamedDifferenceQuotient.sample_error nameF nameF p _ _ _ _
-    (cofinal_inputs j X D R S H Q h h' hH hQ))
-  have reflected := GaussianNameRingLaws.negative_sample_error nameF (data (succ j) X D R) p (regular _ _ _ _ h)
+    ipra_le 𝔞(L)*𝔞(Q)*𝔞(Q)*𝔞(Q)*𝔞(Q)*𝔞(unit p)*sl hH
+  have observed := scale_observation hQ (GaussianNamedDifferenceQuotient.sample_error nameF nameF p a b _ _ hInput)
+  have reflected := GaussianNameRingLaws.negative_sample_error nameF c p hz
   have reflected' := scale_observation hQ (distance_symmetric _ _ _ _ hp reflected)
-  exact distance_congr (.eqRefl _) (.eqRefl _) (by unfold diagonalNumerator samplerBudget GaussianNameRingLaws.three; ipra_ring)
+  exact distance_congr (.eqRefl _) (.eqRefl _) (by unfold diagonalNumerator GaussianNameRingLaws.three; ipra_ring)
     (.eqRefl _) (distance_triangle_same _ _ _ _ _ _ den (distance_triangle_same _ _ _ _ _ _ den observed ideal) reflected')
+
+theorem quotient_sample (p j X D R S H Q : PTm n)
+    (h : Γ ⊢[PRAAx] realSource X zero D zero R)
+    (h' : Γ ⊢[PRAAx] realSource (X*Q+H*D) zero (D*Q) zero S)
+    (hH : Γ ⊢[PRAAx] le one H) (hQ : Γ ⊢[PRAAx] le one Q) (hh : Γ ⊢[PRAAx] le H Q) :
+    Γ ⊢[PRAAx] distanceBounded (ap2 quotientF p (quotientData j X D R S H Q)) (ap2 targetF p (targetData j X D R))
+      (diagonalNumerator (linearBudget j D H) Q (samplerBudget j X D R S H Q) p) (diagonalDenominator Q p) := by
+  exact sample_of_taylor p _ _ _ H Q (higherBound j D) (num 10) (cofinal_inputs j X D R S H Q h h' hH hQ)
+    (regular (succ j) X D R h) (sample_canonical p (succ j) X D R) hH hQ
+    (GaussianBinetLaplaceMomentImproperTaylor.observation_taylor p j X D R S H Q h h' hQ hh)
 
 theorem forward_rate (j X D R S H Q : PTm n)
     (h : Γ ⊢[PRAAx] realSource X zero D zero R)

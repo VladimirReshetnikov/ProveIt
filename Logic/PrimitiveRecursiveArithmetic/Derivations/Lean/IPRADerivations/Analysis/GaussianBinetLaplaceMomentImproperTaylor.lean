@@ -59,27 +59,29 @@ private theorem dyadic_scale (a b C E p : PTm n) (hE : Γ ⊢[PRAAx] le one E)
   exact distance_radius_mono _ _ _ _ _ _ hP (positive_product _ _ hE hP)
     (le_of_eq_add (d := zero) (by ipra_ring)) h
 
-private theorem higher_grid_bound (p q M K j X D R T : PTm n)
+private theorem higher_grid_bound (p q M K j X D R T C : PTm n)
     (h : Γ ⊢[PRAAx] realSource X zero D zero R) (hK : Γ ⊢[PRAAx] le one K)
     (hM : Γ ⊢[PRAAx] M ≐ K*mesh p (gain (succ (succ j)) R T) T)
-    (hq : Γ ⊢[PRAAx] le (precision p T) q) (hT : Γ ⊢[PRAAx] le (cutoff p (succ (succ j)) D) T) :
-    Γ ⊢[PRAAx] bounded (prefixGrid q M (succ (succ j)) X D R T) (higherBound j D) one := by
-  let V := momentBound (succ (succ j)) D
+    (hq : Γ ⊢[PRAAx] le (precision p T) q) (hT : Γ ⊢[PRAAx] le (cutoff p (succ (succ j)) D) T)
+    (b : Γ ⊢[PRAAx] bounded (ap2 nameF p (data (succ (succ j)) X D R)) C one) :
+    Γ ⊢[PRAAx] bounded (prefixGrid q M (succ (succ j)) X D R T) (C+num 3) one := by
   have hp := unit_positive (Γ := Γ) p
   have d := cofinal_refinement_error p q M K (succ (succ j)) X D R T h hK hM hq hT
-  have b := GaussianBinetLaplaceMomentImproperBound.observation_bound p (succ (succ j)) X D R h
-  have raw := norm_from_distance _ _ (num 3) (unit p) V one hp (le_refl one)
+  have raw := norm_from_distance _ _ (num 3) (unit p) C one hp (le_refl one)
     (distance_symmetric _ _ _ _ hp d) b
   exact bounded_radius_mono _ _ _ _ _ (positive_product _ _ hp (le_refl one)) (le_refl one)
-    (by unfold higherBound; ipra_le 3*sl hp) raw
+    (by ipra_le 3*sl hp) raw
 
-theorem observation_taylor (p j X D R S H Q : PTm n)
+/-- A cap at the actual higher-moment observation controls the same aligned
+Taylor grid, so the coefficient can depend on a fixed positive margin. -/
+theorem observation_taylor_with_cap (p j X D R S H Q C : PTm n)
     (h : Γ ⊢[PRAAx] realSource X zero D zero R)
     (h' : Γ ⊢[PRAAx] realSource (X*Q+H*D) zero (D*Q) zero S)
-    (hQ : Γ ⊢[PRAAx] le one Q) (hH : Γ ⊢[PRAAx] le H Q) :
+    (hQ : Γ ⊢[PRAAx] le one Q) (hH : Γ ⊢[PRAAx] le H Q)
+    (hCap : Γ ⊢[PRAAx] bounded (ap2 nameF p (data (succ (succ j)) X D R)) C one) :
     Γ ⊢[PRAAx] distanceBounded (ap2 nameF p (data j (X*Q+H*D) (D*Q) S))
       (linearSample p j X D R H Q)
-      (leading j D H*unit p+num 10*(Q*Q)) ((Q*Q)*unit p) := by
+      (num 3*(H*H)*(C+num 3)*unit p+num 10*(Q*Q)) ((Q*Q)*unit p) := by
   let a := X*Q+H*D
   let b := D*Q
   let k := succ j
@@ -116,21 +118,21 @@ theorem observation_taylor (p j X D R S H Q : PTm n)
     (positive_product _ _ (positive_product _ _ m₀ m₂) m₃) (by dsimp only [M]; ipra_ring) hq later
   have successor := cofinal_refinement_error p q M (N₀*N₁*N₃) k X D R T h
     (positive_product _ _ (positive_product _ _ m₀ m₁) m₃) (by dsimp only [M]; ipra_ring) hq next
-  have cap := higher_grid_bound p q M (N₀*N₁*N₂) j X D R T h
-    (positive_product _ _ (positive_product _ _ m₀ m₁) m₂) (by dsimp only [M]; ipra_ring) hq final
+  have cap := higher_grid_bound p q M (N₀*N₁*N₂) j X D R T C h
+    (positive_product _ _ (positive_product _ _ m₀ m₁) m₂) (by dsimp only [M]; ipra_ring) hq final hCap
   have finite := GaussianBinetLaplaceMomentTaylorGrid.aligned_taylor_bound q M j X D R S T H Q zero T one
-    (higherBound j D) one (prefix_source X D R T h) (prefix_source a b S T h') hM hQ hH (le_refl one) cap
+    (C+num 3) one (prefix_source X D R T h) (prefix_source a b S T h') hM hQ hH (le_refl one) cap
   have hpq : Γ ⊢[PRAAx] le p (precision p T) := le_trans (le_add_right p T) (le_add_right _ _)
   have pad : Γ ⊢[PRAAx] le ((T*errorCost j T)*unit p) (unit q) :=
     le_trans (le_mul_mono (le_refl (T*errorCost j T)) (GaussianExponentialReference.unit_monotone hpq))
       (GaussianFastValueCut.query_budget _ _)
   have scaledFinite : Γ ⊢[PRAAx] distanceBounded (prefixGrid q M j a b S T)
       (qsub (prefixGrid q M j X D R T) (qmul (radiusPoint H Q) (prefixGrid q M k X D R T)))
-      (leading j D H*unit p+E) (E*unit p) := by
+      (num 3*(H*H)*(C+num 3)*unit p+E) (E*unit p) := by
     have den : Γ ⊢[PRAAx] le one ((one*unit q)*((Q*Q)*one)) :=
       positive_product _ _ (positive_product _ _ (le_refl one) (unit_positive q)) (positive_product _ _ hE (le_refl one))
     apply distance_radius_mono _ _ _ _ _ _ den V ?_ finite
-    dsimp only [leading, E]
+    dsimp only [E]
     ipra_le 𝔞(Q)*𝔞(Q)*𝔞(Q)*𝔞(Q)*sl pad
   have step : Γ ⊢[PRAAx] bounded (radiusPoint H Q) one one :=
     bounded_radius_mono _ H Q one one hQ (le_refl one) (le_congr (by ipra_ring) (by ipra_ring) hH) (radius_bounded H Q hQ)
@@ -141,6 +143,16 @@ theorem observation_taylor (p j X D R S H Q : PTm n)
   have after := dyadic_scale _ _ _ E p hE (distance_symmetric _ _ _ _ hp near)
   exact distance_congr (.eqRefl _) (.eqRefl _) (by dsimp only [E]; ipra_ring) (.eqRefl _)
     (distance_triangle_same _ _ _ _ _ _ V (distance_triangle_same _ _ _ _ _ _ V before scaledFinite) after)
+
+theorem observation_taylor (p j X D R S H Q : PTm n)
+    (h : Γ ⊢[PRAAx] realSource X zero D zero R)
+    (h' : Γ ⊢[PRAAx] realSource (X*Q+H*D) zero (D*Q) zero S)
+    (hQ : Γ ⊢[PRAAx] le one Q) (hH : Γ ⊢[PRAAx] le H Q) :
+    Γ ⊢[PRAAx] distanceBounded (ap2 nameF p (data j (X*Q+H*D) (D*Q) S))
+      (linearSample p j X D R H Q)
+      (leading j D H*unit p+num 10*(Q*Q)) ((Q*Q)*unit p) :=
+  observation_taylor_with_cap p j X D R S H Q (momentBound (succ (succ j)) D) h h' hQ hH
+    (GaussianBinetLaplaceMomentImproperBound.observation_bound p (succ (succ j)) X D R h)
 
 theorem actual_improper_Binet_moment_right_Taylor_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 8
     (let p := var 0
