@@ -28773,6 +28773,15 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianRaabeOriginSchedule.clock_budget
 #print axioms LeanProofs.IPRA.Analysis.GaussianRaabeOriginSchedule.log_budget
 #print axioms LeanProofs.IPRA.Analysis.GaussianRaabeOriginSchedule.actual_dyadic_Raabe_cutoff_and_logarithm_budgets_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianRaabeOriginComparison.value
+#print axioms LeanProofs.IPRA.Analysis.GaussianRaabeOriginComparison.subst_value
+#print axioms LeanProofs.IPRA.Analysis.GaussianRaabeOriginComparison.observation_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianRaabeUnitIntegral.nameF
+#print axioms LeanProofs.IPRA.Analysis.GaussianRaabeUnitIntegral.sample_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianRaabeUnitIntegral.independent_observations
+#print axioms LeanProofs.IPRA.Analysis.GaussianRaabeUnitIntegral.equivalent
+#print axioms LeanProofs.IPRA.Analysis.GaussianRaabeUnitIntegral.regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianRaabeUnitIntegral.actual_unit_log_Gamma_integral_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianRaabeDyadicPrimitive.log_sample_bound
 #print axioms LeanProofs.IPRA.Analysis.GaussianRaabeDyadicPrimitive.cost
 #print axioms LeanProofs.IPRA.Analysis.GaussianRaabeDyadicPrimitive.primitive_bound
