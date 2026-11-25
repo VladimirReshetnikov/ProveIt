@@ -34994,6 +34994,8 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinIntegrand.regular
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinIntegrand.sample_at
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinIntegrand.actual_gamma_zeta_mellin_integrand_regular_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinOriginBound.origin_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinOriginBound.actual_gamma_zeta_mellin_origin_bound_closed
 
 /-! ### GaussianNamedEulerIntegrand -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedEulerIntegrand.coefficientF

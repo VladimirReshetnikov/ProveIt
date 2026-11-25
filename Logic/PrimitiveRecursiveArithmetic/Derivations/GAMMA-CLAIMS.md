@@ -2603,3 +2603,6 @@ The original real decay and cofinal Binet kernel give a positive rational floor 
 
 The literal same-clock logarithm samples give a quadratic primitive estimate on each positive rational cell. Telescoping compares the original compact logarithm quadrature to the actual endpoint difference with separate mesh and observation errors.
 [GaussianRaabeLogPrimitiveCell](Lean/IPRADerivations/Analysis/GaussianRaabeLogPrimitiveCell.lean), [GaussianRaabeLogPrimitiveGrid](Lean/IPRADerivations/Analysis/GaussianRaabeLogPrimitiveGrid.lean)
+
+At a rooted time t=(a/b)^A, the actual Mellin observation for the parameter s is bounded by (b/a)^(A−1)+3·2^-p on the admitted chart for s−1. The exact time factor cancels the reciprocal norm bound.
+[GaussianGammaZetaMellinOriginBound](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinOriginBound.lean)
