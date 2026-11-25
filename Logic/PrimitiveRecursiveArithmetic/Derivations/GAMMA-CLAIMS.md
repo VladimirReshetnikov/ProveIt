@@ -2209,6 +2209,13 @@ proves the cleared partial fractions
 rational inputs. This uses the actual cofinal reciprocal row name.
 [GaussianSineProductImaginaryCothExpansion](Lean/IPRADerivations/Analysis/GaussianSineProductImaginaryCothExpansion.lean).
 
+At a nonnegative rational time `t`, the cofinal kernel `k(t)` satisfies
+`(t/2) cosh(t/2) = sinh(t/2) (1+t² k(t))` with the original exponential
+names. Freezing π once at a shared observation binds the literal kernel
+rows to the partial-fraction samples. The uniform bounds remove the
+freeze and identify the hyperbolic factors at their original time.
+[GaussianBinetKernelImaginaryRatioRows](Lean/IPRADerivations/Analysis/GaussianBinetKernelImaginaryRatioRows.lean), [GaussianBinetKernelImaginaryRatioPrefix](Lean/IPRADerivations/Analysis/GaussianBinetKernelImaginaryRatioPrefix.lean), [GaussianBinetKernelImaginaryRatioCofinal](Lean/IPRADerivations/Analysis/GaussianBinetKernelImaginaryRatioCofinal.lean), [GaussianBinetKernelFrozenHyperbolic](Lean/IPRADerivations/Analysis/GaussianBinetKernelFrozenHyperbolic.lean), [GaussianNamedUniformRateClosure](Lean/IPRADerivations/Analysis/GaussianNamedUniformRateClosure.lean), [GaussianBinetKernelRationalTimeCleared](Lean/IPRADerivations/Analysis/GaussianBinetKernelRationalTimeCleared.lean).
+
 The Binet kernel series uses the original named π in each positive row
 `2/(t²+4π²n²)`. On `0 ≤ t ≤ T` the actual finite and cofinal samples
 are bounded below by `2/(T²+100)` at positive cutoffs. The row majorant
