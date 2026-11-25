@@ -29723,6 +29723,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerDecayCompactLower.reciprocal_samples_lower
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerDecayCompactLower.original_decay_lower
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerDecayCompactLower.actual_original_compact_decay_lower_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceRealFloor.floorDenominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceRealFloor.floor
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceRealFloor.subst_floorDenominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceRealFloor.subst_floor
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceRealFloor.floor_denominator_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceRealFloor.cofinal_kernel_floor
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceRealFloor.sample_floor
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceRealFloor.actual_positive_real_Binet_integrand_floor_closed
 
 /-! ### GaussianEulerDecayCompactUpper -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerDecayCompactUpper.upperPoint

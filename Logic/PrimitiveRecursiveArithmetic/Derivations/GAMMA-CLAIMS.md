@@ -2597,3 +2597,6 @@ The actual compact quadratures on adjacent unit intervals differ by the original
 
 A checked regular point evaluator uses the original positive-time Euler power and the reciprocal of the unscaled exponential minus one. The reciprocal has norm at most the inverse time at every observation. The improper integral identity remains open.
 [GaussianGammaZetaMellinIntegrand](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinIntegrand.lean)
+
+The original real decay and cofinal Binet kernel give a positive rational floor on every bounded time interval, with an explicit observation allowance. This supplies the positive-interval estimate for the Stirling remainder moments.
+[GaussianBinetLaplaceRealFloor](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceRealFloor.lean)
