@@ -2496,3 +2496,11 @@ left quadrature defines a regular name. Every actual sample has
 norm at most `CD/(4EX)` for real part `X/D`, including intervals
 whose lower endpoint tends to zero.
 [GaussianBinetBoseReciprocalTimeRate](Lean/IPRADerivations/Analysis/GaussianBinetBoseReciprocalTimeRate.lean), [GaussianBinetArctangentTimeRate](Lean/IPRADerivations/Analysis/GaussianBinetArctangentTimeRate.lean), [GaussianBinetBoseCompact](Lean/IPRADerivations/Analysis/GaussianBinetBoseCompact.lean), [GaussianBinetBoseCompactBound](Lean/IPRADerivations/Analysis/GaussianBinetBoseCompactBound.lean)
+
+At each positive frozen Pi frequency, the exact shifted exponential
+panels compare to the standard real damping times the original
+regularized sine quotient. Summing on the shared mesh gives the
+actual Binet kernel row, up to explicit mesh, horizon and clock
+errors. Independent radii and clocks for the same positive sine
+quotient have a separate quantitative comparison.
+[GaussianBinetSineDampedTransform](Lean/IPRADerivations/Analysis/GaussianBinetSineDampedTransform.lean), [GaussianBinetSineFrozenPiTerm](Lean/IPRADerivations/Analysis/GaussianBinetSineFrozenPiTerm.lean), [GaussianBinetSineDampedAxis](Lean/IPRADerivations/Analysis/GaussianBinetSineDampedAxis.lean), [GaussianBinetSineDampedPanels](Lean/IPRADerivations/Analysis/GaussianBinetSineDampedPanels.lean), [GaussianBinetSineRealDampedPanels](Lean/IPRADerivations/Analysis/GaussianBinetSineRealDampedPanels.lean), [GaussianBinetSineDampedQuadrature](Lean/IPRADerivations/Analysis/GaussianBinetSineDampedQuadrature.lean), [GaussianBinetSineQuotientClock](Lean/IPRADerivations/Analysis/GaussianBinetSineQuotientClock.lean)
