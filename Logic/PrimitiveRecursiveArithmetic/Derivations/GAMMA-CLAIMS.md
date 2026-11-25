@@ -1803,6 +1803,13 @@ nonnegative real part at every observation. Both reciprocal and
 conjugate charts have explicit exponential transfer.
 [GaussianRightHalfPlaneArgumentExponential](Lean/IPRADerivations/Analysis/GaussianRightHalfPlaneArgumentExponential.lean), [GaussianRightHalfPlaneArgumentCosine](Lean/IPRADerivations/Analysis/GaussianRightHalfPlaneArgumentCosine.lean), [GaussianRightHalfPlaneArgumentExponentialBranches](Lean/IPRADerivations/Analysis/GaussianRightHalfPlaneArgumentExponentialBranches.lean).
 
+In the direct phase chart, the positive radial representative times
+the original phase exponential recovers the exact encoded fraction.
+Their product squared is the square of the input. The finite real
+margin of the sum licenses original reciprocal cancellation,
+which selects the desired square root.
+[GaussianNamedSquareBranch](Lean/IPRADerivations/Analysis/GaussianNamedSquareBranch.lean), [GaussianRightHalfPlaneExponentialMargin](Lean/IPRADerivations/Analysis/GaussianRightHalfPlaneExponentialMargin.lean), [GaussianRightHalfPlaneExponentialSmall](Lean/IPRADerivations/Analysis/GaussianRightHalfPlaneExponentialSmall.lean).
+
 A common precision computed from the number of terms gives a regular
 sum of the actual shifted logarithms. This yields the finite Euler head
 `log(N!) + z log(N) − Σ Log(z+k)` on the rational right half-plane.
