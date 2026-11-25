@@ -2516,3 +2516,6 @@ The original exponential-minus-one observation retains a cubic Taylor lower boun
 
 The time margin E·t≥1 permits a common cutoff N≥E²·2^p. Each original arctangent-weighted cell of that literal prefix compares with its frozen Pi counterpart, with a common error 5KT/2^p over t≤T when D≤KX.
 [GaussianBinetBoseLiteralUniform](Lean/IPRADerivations/Analysis/GaussianBinetBoseLiteralUniform.lean), [GaussianBinetBoseLiteralFrozen](Lean/IPRADerivations/Analysis/GaussianBinetBoseLiteralFrozen.lean)
+
+The actual finite frozen-Pi prefixes of lengths C+r and C are compared at the same supplied time mesh and observation clock. The explicit certified mesh and clock floors give the uniform tail 11K/C.
+[GaussianBinetSecondDecaySharedTail](Lean/IPRADerivations/Analysis/GaussianBinetSecondDecaySharedTail.lean)

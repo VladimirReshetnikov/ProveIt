@@ -27739,6 +27739,15 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetSecondDecayPiBridge.uniform_rate
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetSecondDecayPiBridge.diagonal_error
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetSecondDecayPiBridge.angular_row_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetSecondDecaySharedTail.clockFloor
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetSecondDecaySharedTail.subst_clockFloor
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetSecondDecaySharedTail.shared_row_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetSecondDecaySharedTail.data
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetSecondDecaySharedTail.subst_data
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetSecondDecaySharedTail.row_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetSecondDecaySharedTail.tail_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetSecondDecaySharedTail.prefix_split
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetSecondDecaySharedTail.tail_gap
 #print axioms LeanProofs.IPRA.Analysis.GaussianRationalInverseGeometric.body
 #print axioms LeanProofs.IPRA.Analysis.GaussianRationalInverseGeometric.value
 #print axioms LeanProofs.IPRA.Analysis.GaussianRationalInverseGeometric.subst_value
