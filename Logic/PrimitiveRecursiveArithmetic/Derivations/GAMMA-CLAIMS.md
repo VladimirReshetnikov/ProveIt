@@ -2672,3 +2672,6 @@ An explicit cofinal cutoff gives a regular name of the weighted original Laplace
 
 The actual weighted rows have nonnegative real limits, and the common quadrature preserves the real order.
 [GaussianBinetLaplaceMomentNonnegative](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentNonnegative.lean)
+
+The original weighted Mellin strip compares to a finite sum of the actual positive-scaling damped Euler quadratures for the scales 1 through N, with a scheduled geometric and dyadic error.
+[GaussianGammaZetaMellinDampedPoint](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinDampedPoint.lean), [GaussianGammaZetaMellinDampedStrip](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinDampedStrip.lean)
