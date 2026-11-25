@@ -2780,3 +2780,6 @@ Iterating the exact fixed-presentation recurrence gives the actual shifted logar
 
 For every internal moment order, the original forward and backward difference quotients converge to the negative successor moment at the same fixed rational base. The theorem gives explicit error budgets and independent observation clocks for positive rational steps bounded by 1/(2D) at a base X/D.
 [GaussianBinetLaplaceMomentBackwardWindow](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentBackwardWindow.lean), [GaussianBinetLaplaceMomentBackwardQuotient](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentBackwardQuotient.lean)
+
+At the concrete argument two, the original exponential Dirichlet row equals the literal rational reciprocal square. The proof doubles the original logarithm and identifies its exponential with the product of the two original reciprocal-base exponentials.
+[GaussianGammaZetaDirichletSquareRow](Lean/IPRADerivations/Analysis/GaussianGammaZetaDirichletSquareRow.lean)
