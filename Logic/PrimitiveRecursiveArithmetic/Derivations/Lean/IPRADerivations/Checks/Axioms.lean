@@ -28755,6 +28755,16 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianRaabeOriginLogStrip.denominator
 #print axioms LeanProofs.IPRA.Analysis.GaussianRaabeOriginLogStrip.quadrature_error
 #print axioms LeanProofs.IPRA.Analysis.GaussianRaabeOriginLogStrip.actual_dyadic_truncated_logarithm_grid_near_neg_one_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianRaabeOriginSchedule.cutoff
+#print axioms LeanProofs.IPRA.Analysis.GaussianRaabeOriginSchedule.mesh
+#print axioms LeanProofs.IPRA.Analysis.GaussianRaabeOriginSchedule.fullMesh
+#print axioms LeanProofs.IPRA.Analysis.GaussianRaabeOriginSchedule.clock
+#print axioms LeanProofs.IPRA.Analysis.GaussianRaabeOriginSchedule.cutoff_budget
+#print axioms LeanProofs.IPRA.Analysis.GaussianRaabeOriginSchedule.cutoff_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianRaabeOriginSchedule.mesh_floors
+#print axioms LeanProofs.IPRA.Analysis.GaussianRaabeOriginSchedule.clock_budget
+#print axioms LeanProofs.IPRA.Analysis.GaussianRaabeOriginSchedule.log_budget
+#print axioms LeanProofs.IPRA.Analysis.GaussianRaabeOriginSchedule.actual_dyadic_Raabe_cutoff_and_logarithm_budgets_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianRaabeDyadicPrimitive.log_sample_bound
 #print axioms LeanProofs.IPRA.Analysis.GaussianRaabeDyadicPrimitive.cost
 #print axioms LeanProofs.IPRA.Analysis.GaussianRaabeDyadicPrimitive.primitive_bound

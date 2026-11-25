@@ -2681,3 +2681,6 @@ The arbitrary-width recurrence binds the original positive-strip observations ex
 
 On the aligned trimmed grid, the actual logarithm quadrature approximates minus one with separate mesh, observation, and dyadic-endpoint errors.
 [GaussianRaabeOriginLogStrip](Lean/IPRADerivations/Analysis/GaussianRaabeOriginLogStrip.lean)
+
+Certifies a common finite cutoff, aligned meshes and observation clock, with separate bounds for both omitted endpoint contributions and the original truncated logarithm quadrature.
+[GaussianRaabeOriginSchedule](Lean/IPRADerivations/Analysis/GaussianRaabeOriginSchedule.lean)
