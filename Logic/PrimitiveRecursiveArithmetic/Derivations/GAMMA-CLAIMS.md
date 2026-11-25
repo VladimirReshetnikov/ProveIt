@@ -2669,3 +2669,6 @@ The exact moment names on ordered positive windows have the original inverse-squ
 
 An explicit cofinal cutoff gives a regular name of the weighted original Laplace integrand. Its independent comparison to every original compact prefix retains the inverse-horizon tail bound.
 [GaussianBinetLaplaceMomentImproper](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentImproper.lean)
+
+The actual weighted rows have nonnegative real limits, and the common quadrature preserves the real order.
+[GaussianBinetLaplaceMomentNonnegative](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentNonnegative.lean)

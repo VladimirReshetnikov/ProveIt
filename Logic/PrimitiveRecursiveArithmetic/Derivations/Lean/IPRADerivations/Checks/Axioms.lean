@@ -29919,6 +29919,9 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentPrefixes.prefix_regular
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentPrefixes.ordered_rate
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentPrefixes.actual_weighted_Binet_ordered_prefix_rate_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentNonnegative.observation_nonnegative
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentNonnegative.panel_nonnegative
+#print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentNonnegative.actual_weighted_Binet_panel_nonnegative_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentImproper.cutoff
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentImproper.data
 #print axioms LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentImproper.sample
