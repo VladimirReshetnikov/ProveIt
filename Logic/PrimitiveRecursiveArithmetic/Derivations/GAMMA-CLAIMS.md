@@ -2148,6 +2148,14 @@ quadratic log-Gamma and logarithm contributions and normalization
 allowances for the original remainder samples.
 [GaussianBinetStirlingVerticalAlgebra](Lean/IPRADerivations/Analysis/GaussianBinetStirlingVerticalAlgebra.lean), [GaussianBinetLogGammaVerticalStep](Lean/IPRADerivations/Analysis/GaussianBinetLogGammaVerticalStep.lean), [GaussianBinetStirlingVerticalStep](Lean/IPRADerivations/Analysis/GaussianBinetStirlingVerticalStep.lean).
 
+The literal vertical increments telescope over an internal subdivision.
+Positive rescaling identifies the subdivided endpoints with the original
+remainder names. If `z = (A ± Bi)/D`, the vertical difference from `R(A/D)`
+has leading norm bound `3B/(2A)`. The sharp positive-real anchor gives the
+full leading bound `(D+18B)/(12A)` for `R(z)`, with an explicit error at
+independent observation clocks.
+[GaussianBinetStirlingRescale](Lean/IPRADerivations/Analysis/GaussianBinetStirlingRescale.lean), [GaussianBinetStirlingVerticalRate](Lean/IPRADerivations/Analysis/GaussianBinetStirlingVerticalRate.lean), [GaussianBinetStirlingVerticalGrid](Lean/IPRADerivations/Analysis/GaussianBinetStirlingVerticalGrid.lean), [GaussianBinetStirlingVerticalBound](Lean/IPRADerivations/Analysis/GaussianBinetStirlingVerticalBound.lean).
+
 For the imaginary-axis sine product used in the Binet kernel
 identification, the actual finite factor derivative terms give the
 literal derivative of the encoded product at any internal cutoff. The
