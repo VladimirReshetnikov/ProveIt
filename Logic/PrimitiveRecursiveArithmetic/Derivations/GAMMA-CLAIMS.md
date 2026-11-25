@@ -2543,3 +2543,6 @@ The literal transposed prefix compares with the frozen-Pi matrix at a separately
 
 The original removable column and an explicit sine quotient bound control the discarded low-frequency prefix. Every remaining frequency has an explicit positive margin, so the fixed-horizon sine transform uses a tail bound independent of raw denominator size.
 [GaussianBinetFixedHorizonPositiveMargin](Lean/IPRADerivations/Analysis/GaussianBinetFixedHorizonPositiveMargin.lean), [GaussianBinetSineQuotientMajorant](Lean/IPRADerivations/Analysis/GaussianBinetSineQuotientMajorant.lean), [GaussianBinetSineStripCut](Lean/IPRADerivations/Analysis/GaussianBinetSineStripCut.lean), [GaussianBinetOscillatorySineSmallStrip](Lean/IPRADerivations/Analysis/GaussianBinetOscillatorySineSmallStrip.lean)
+
+The literal first Binet Laplace strip and the shared-Pi finite kernel prefix use exactly the same physical tags and left weights. Their explicit cutoff bound is 14 times the physical width divided by 2^p.
+[GaussianBinetKernelFrozenStrip](Lean/IPRADerivations/Analysis/GaussianBinetKernelFrozenStrip.lean)
