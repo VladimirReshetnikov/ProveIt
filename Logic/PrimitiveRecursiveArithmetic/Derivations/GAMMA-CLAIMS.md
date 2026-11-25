@@ -2437,3 +2437,10 @@ rows retain their exact values, so this bound has no sampling
 allowance. For positive rational time the divided arctangent
 differs from `1/z` by at most `t²/Re(z)³`.
 [GaussianBinetArctangentLinearApproximation](Lean/IPRADerivations/Analysis/GaussianBinetArctangentLinearApproximation.lean).
+
+Read the positive exponential sample selected by the actual Bose
+reciprocal. The exact inverse of that exponential sample has norm
+at most `1/(1+4t)`. For `t=A/B>0` its literal geometric prefix of
+length `N` differs from the original reciprocal observation by
+at most `B²/[4A(B+4NA)]`, independently of the observation clock.
+[GaussianBinetBoseGeometricRatio](Lean/IPRADerivations/Analysis/GaussianBinetBoseGeometricRatio.lean), [GaussianRationalGeometricPowerTail](Lean/IPRADerivations/Analysis/GaussianRationalGeometricPowerTail.lean), [GaussianBinetBoseSeries](Lean/IPRADerivations/Analysis/GaussianBinetBoseSeries.lean).
