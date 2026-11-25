@@ -2636,3 +2636,6 @@ An explicit modulus combines the original Laplace time estimate with the exact p
 
 The centered left grid has exact mean −1/(2N). Averaging the checked elementary Stirling samples gives the literal endpoint primitive with the explicit inverse-argument error, dyadic error, and a mesh-bias coefficient independent of the mesh.
 [GaussianRaabeCenteredMesh](Lean/IPRADerivations/Analysis/GaussianRaabeCenteredMesh.lean), [GaussianRaabeAffineMean](Lean/IPRADerivations/Analysis/GaussianRaabeAffineMean.lean), [GaussianRaabeStirlingMesh](Lean/IPRADerivations/Analysis/GaussianRaabeStirlingMesh.lean)
+
+The exact rational weight commutes with the original horizon comparison. Weighted compact integrals agree whenever both charts cover the same physical panel, including the independently sampled row comparison.
+[GaussianBinetLaplaceMomentHorizon](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentHorizon.lean)
