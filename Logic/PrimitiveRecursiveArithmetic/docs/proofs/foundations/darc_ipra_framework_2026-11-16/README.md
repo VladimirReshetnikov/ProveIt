@@ -11,6 +11,10 @@ Prf PRAAx Γ φ
 The repository audit is pinned to `VladimirReshetnikov/ProveIt` commit
 `2ef31aa3e313d792df6b63bb28babfe48e1f982e` (2026-11-16).
 
+The [repo-wide iPRA unification plan](../../../../UNIFICATION-PLAN.md)
+describes the shared proof interface and how research packages enter the
+main derivation library.
+
 ## Main contribution
 
 DARC unifies four forms of backward analysis in one finite product lattice:
