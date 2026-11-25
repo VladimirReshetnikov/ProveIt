@@ -2142,6 +2142,13 @@ with independent observation clocks. The product and reciprocal row
 names are invariant under exact rational rescaling.
 [GaussianSineProductImaginaryLogDerivativeTail](Lean/IPRADerivations/Analysis/GaussianSineProductImaginaryLogDerivativeTail.lean), [GaussianSineProductImaginaryFirstOrderBound](Lean/IPRADerivations/Analysis/GaussianSineProductImaginaryFirstOrderBound.lean), [GaussianSineProductImaginaryCofinalDerivative](Lean/IPRADerivations/Analysis/GaussianSineProductImaginaryCofinalDerivative.lean), [GaussianSineProductImaginaryScaling](Lean/IPRADerivations/Analysis/GaussianSineProductImaginaryScaling.lean).
 
+The original named exponential has a first-order remainder at any
+regular small input and an independent quadratic rate for shifts.
+Signed rational multiples of the original π name preserve exact
+additive increments. Multiplication by the literal imaginary unit
+agrees with the actual rotation name used by the sine connection.
+[GaussianNamedExponentialLinearRate](Lean/IPRADerivations/Analysis/GaussianNamedExponentialLinearRate.lean), [GaussianNamedExponentialShiftDerivative](Lean/IPRADerivations/Analysis/GaussianNamedExponentialShiftDerivative.lean), [GaussianPiRationalScale](Lean/IPRADerivations/Analysis/GaussianPiRationalScale.lean), [GaussianNamedImaginaryProduct](Lean/IPRADerivations/Analysis/GaussianNamedImaginaryProduct.lean).
+
 The Binet kernel series uses the original named π in each positive row
 `2/(t²+4π²n²)`. On `0 ≤ t ≤ T` the actual finite and cofinal samples
 are bounded below by `2/(T²+100)` at positive cutoffs. The row majorant
