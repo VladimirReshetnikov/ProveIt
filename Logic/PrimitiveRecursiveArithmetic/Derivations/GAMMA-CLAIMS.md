@@ -1873,6 +1873,13 @@ right-half-plane certificate. The cutoffs here start at `8R`, and
 the source's sharper `2R` threshold remains open.
 [GaussianLogGammaEulerResidualInterval](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerResidualInterval.lean), [GaussianLogGammaEulerHeadGap](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerHeadGap.lean), [GaussianLogGammaEulerCofinal](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerCofinal.lean).
 
+Exponentiating the negative of either finite Euler logarithm head
+gives the original reciprocal Euler head at independently chosen
+precisions. The proof identifies each shifted signed rational factor,
+uses the original integer logarithm in the weighted exponent, and
+folds the exponential product at every internal finite length.
+[GaussianLogGammaEulerExponentialHead](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerExponentialHead.lean), [GaussianLogGammaEulerExponentialFold](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerExponentialFold.lean).
+
 ## Source artifacts and representation boundaries
 
 The delivered [Lean companion](../docs/proofs/analysis/gamma_ipra/lean/README.md)
