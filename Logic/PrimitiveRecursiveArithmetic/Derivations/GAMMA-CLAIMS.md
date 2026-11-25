@@ -2738,3 +2738,6 @@ The original quadratures on a shared physical grid satisfy the right Taylor comp
 
 Every certified positive rational panel has an explicit sampled modulus at independent time encodings and observation clocks. The actual ordinary affine quadrature is a regular name, proved in iPRA.
 [GaussianGammaZetaMellinReciprocalRate](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinReciprocalRate.lean), [GaussianGammaZetaMellinCompact](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinCompact.lean)
+
+The actual compact name on nested powered positive cutoffs obeys an origin bound independent of the inner endpoint. The proof groups the original affine quadrature into powered cells and controls the drift to each right tag.
+[GaussianEulerLowerTailRootedMajorant](Lean/IPRADerivations/Analysis/GaussianEulerLowerTailRootedMajorant.lean), [GaussianGammaZetaMellinLowerRooted](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinLowerRooted.lean)
