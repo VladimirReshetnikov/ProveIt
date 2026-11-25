@@ -62842,6 +62842,18 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderLogTruncation.diagonal_error
 #print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderLogTruncation.original_logarithmic_truncation
 #print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderLogTruncation.actual_all_order_logarithmic_truncation_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderTruncationPower.literal_coefficient_quoted
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderTruncationPower.query_pow
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderTruncationPower.correction_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderTruncationHorner.even_term
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderTruncationHorner.odd_term
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderTruncationHorner.even_prefix
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderTruncationHorner.truncation_even_horner
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderTruncationHorner.truncation_odd_horner
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderTruncationHorner.hornerErrorData
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderTruncationHorner.even_horner_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderTruncationHorner.odd_horner_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderTruncationHorner.actual_original_logarithmic_horner_truncations_closed
 
 /-! ### GaussianStirlingAllOrderBoxProductGap -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBoxProductGap.sampleAt
