@@ -2657,3 +2657,6 @@ The original weighted compact observations have a physical width bound. In the u
 
 The original reciprocal exponential and exact weight yield an inverse-square bound with the explicit factorial coefficient and uniform dyadic allowance.
 [GaussianBinetLaplaceMomentDecay](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentDecay.lean)
+
+The common affine-grid inverse-square estimate bounds the original weighted quadrature uniformly in the total width and the chosen covering horizon.
+[GaussianBinetLaplaceMomentTail](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentTail.lean)
