@@ -60,7 +60,7 @@ private theorem constant_mul_error (f : PR 2) (c x r p C : PTm n)
 def aBudget (a b G L : PTm n) : PTm n :=
   three+((num 6+(G+scaleBudget logXF (offset a b) (logXData a b) L))+LeanProofs.ConciseIPRA.PTm.zero)
 
-private theorem a_error (p a b g l G L : PTm n) (ha : Γ ⊢[PRAAx] source a b)
+theorem a_error (p a b g l G L : PTm n) (ha : Γ ⊢[PRAAx] source a b)
     (hg : Γ ⊢[PRAAx] distanceBounded (ap2 logGammaF p (logGammaData a b)) g G (unit p))
     (hl : Γ ⊢[PRAAx] distanceBounded (ap2 logXF p (logXData a b)) l L (unit p)) :
     Γ ⊢[PRAAx] distanceBounded (ap2 nameF p (nameData a b)) (rawA a b g l) (aBudget a b G L) (unit p) := by

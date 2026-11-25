@@ -30638,6 +30638,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedRealOrderTransport.original_finite_real_upper_slack_removal_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedRealOrderTransport.original_named_real_order_transport_closed
 
+/-! ### GaussianNamedRealOrderEnvelope -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedRealOrderEnvelope.envelope
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedRealOrderEnvelope.subst_envelope
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedRealOrderEnvelope.envelope_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedRealOrderEnvelope.independent_slack
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedRealOrderEnvelope.order_from_envelope
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedRealOrderEnvelope.actual_real_order_from_uniform_envelope_closed
+
 /-! ### GaussianSignedRealExponentialOrder -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianSignedRealExponentialOrder.gap
 #print axioms LeanProofs.IPRA.Analysis.GaussianSignedRealExponentialOrder.delta
@@ -60161,8 +60169,206 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianStirlingRecurrence.recurrenceBudget
 #print axioms LeanProofs.IPRA.Analysis.GaussianStirlingRecurrence.subst_differenceInput
 #print axioms LeanProofs.IPRA.Analysis.GaussianStirlingRecurrence.recurrence_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingRecurrence.a_error
 #print axioms LeanProofs.IPRA.Analysis.GaussianStirlingRecurrence.recurrence
 #print axioms LeanProofs.IPRA.Analysis.GaussianStirlingRecurrence.actual_positive_rational_Stirling_recurrence_closed
+
+/-! ### GaussianStirlingNativeDuplication -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingNativeDuplication.scale_argument
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingNativeDuplication.gamma_rescale
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingNativeDuplication.gauss_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingNativeDuplication.row_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingNativeDuplication.halfNumerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingNativeDuplication.halfDenominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingNativeDuplication.half_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingNativeDuplication.half_encoding
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingNativeDuplication.double_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingNativeDuplication.doubled_gamma
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingNativeDuplication.leftF
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingNativeDuplication.leftData
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingNativeDuplication.rightF
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingNativeDuplication.rightData
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingNativeDuplication.native_duplication
+
+/-! ### GaussianStirlingLogDuplication -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingLogDuplication.powerExponentF
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingLogDuplication.powerExponentData
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingLogDuplication.leftF
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingLogDuplication.leftData
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingLogDuplication.rightInnerF
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingLogDuplication.rightInnerData
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingLogDuplication.rightF
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingLogDuplication.rightData
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingLogDuplication.exponential_sum
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingLogDuplication.exponential_gamma
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingLogDuplication.exponential_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingLogDuplication.power_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingLogDuplication.power_axis
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingLogDuplication.logarithmic_duplication
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingLogDuplication.actual_positive_rational_log_Gamma_duplication_closed
+
+/-! ### GaussianStirlingDuplicationLogs -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingDuplicationLogs.split_product
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingDuplicationLogs.halfRatioData
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingDuplicationLogs.logTwoData
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingDuplicationLogs.half_log
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingDuplicationLogs.double_log
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingDuplicationLogs.interval_reverse
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingDuplicationLogs.harmonic_inverse
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingDuplicationLogs.rational_inverse
+
+/-! ### GaussianStirlingDuplicationAlgebra -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingDuplicationAlgebra.rawHalfGamma
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingDuplicationAlgebra.rawResidual
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingDuplicationAlgebra.rawConstant
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingDuplicationAlgebra.duplication_value
+
+/-! ### GaussianStirlingTelescope -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescope.shifted
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescope.stepData
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescope.stepLaw
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescope.localRows
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescope.subst_shifted
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescope.subst_stepData
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescope.subst_stepLaw
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescope.subst_localRows
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescope.shifted_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescope.rows_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescope.rows_from_recurrence
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescope.sampleData
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescope.rowSample
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescope.rowBody
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescope.subst_sampleData
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescope.subst_rowSample
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescope.row_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescope.aBody
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescope.dBody
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescope.rawSum
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescope.endpoint
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescope.subst_rawSum
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescope.subst_endpoint
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescope.a_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescope.d_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescope.backward
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescope.backward_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescope.backward_sum
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescope.endpoint_sum
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescope.errorNumerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescope.errorDenominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescope.subst_errorNumerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescope.subst_errorDenominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescope.error_denominator_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescope.local_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescope.error_rows
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescope.independent_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescope.diagonal_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescope.actual_Stirling_finite_telescope_closed
+
+/-! ### GaussianStirlingTelescopeName -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescopeName.rawData
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescopeName.rawBody
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescopeName.rawF
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescopeName.nameF
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescopeName.data
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescopeName.endpointData
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescopeName.subst_rawData
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescopeName.subst_data
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescopeName.subst_endpointData
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescopeName.raw_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescopeName.raw_distance
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescopeName.raw_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescopeName.name_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescopeName.name_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescopeName.endpoint_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescopeName.rows
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescopeName.endpoint_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescopeName.named_diagonal_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescopeName.telescope_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescopeName.actual_Stirling_named_telescope_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTelescopeName.actual_Stirling_telescope_rate_closed
+
+/-! ### GaussianStirlingFiniteTelescopeBounds -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingFiniteTelescopeBounds.upper_step
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingFiniteTelescopeBounds.upper_zero
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingFiniteTelescopeBounds.localBounds
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingFiniteTelescopeBounds.rows
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingFiniteTelescopeBounds.sumBounds
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingFiniteTelescopeBounds.subst_localBounds
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingFiniteTelescopeBounds.subst_rows
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingFiniteTelescopeBounds.subst_sumBounds
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingFiniteTelescopeBounds.row_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingFiniteTelescopeBounds.sum_bounds
+
+/-! ### GaussianStirlingNamedTelescopeBounds -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingNamedTelescopeBounds.allRows
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingNamedTelescopeBounds.endpointBounds
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingNamedTelescopeBounds.subst_allRows
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingNamedTelescopeBounds.subst_endpointBounds
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingNamedTelescopeBounds.rows_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingNamedTelescopeBounds.name_bounds_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingNamedTelescopeBounds.named_telescope_bounds
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingNamedTelescopeBounds.actual_Stirling_endpoint_bounds_from_observations_closed
+
+/-! ### GaussianStirlingIntegerTail -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingIntegerTail.integerTailLaw
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingIntegerTail.integerTailContract
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingIntegerTail.subst_integerTailLaw
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingIntegerTail.subst_integerTailContract
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingIntegerTail.tail_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingIntegerTail.contract_of_law
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingIntegerTail.point
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingIntegerTail.after
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingIntegerTail.tailDen
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingIntegerTail.subst_point
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingIntegerTail.subst_after
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingIntegerTail.subst_tailDen
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingIntegerTail.integer_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingIntegerTail.after_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingIntegerTail.den_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingIntegerTail.after_congr
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingIntegerTail.point_congr
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingIntegerTail.point_distance
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingIntegerTail.common_distance
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingIntegerTail.mixedNumerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingIntegerTail.mixedDenominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingIntegerTail.mixed_den_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingIntegerTail.anchored_left
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingIntegerTail.anchored_right
+
+/-! ### GaussianStirlingIntegerLimit -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingIntegerLimit.clock
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingIntegerLimit.index
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingIntegerLimit.sample
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingIntegerLimit.nameF
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingIntegerLimit.subst_clock
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingIntegerLimit.subst_index
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingIntegerLimit.subst_sample
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingIntegerLimit.name_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingIntegerLimit.index_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingIntegerLimit.index_value
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingIntegerLimit.index_budget
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingIntegerLimit.index_dominates_unit
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingIntegerLimit.cofinal_index
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingIntegerLimit.name_real
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingIntegerLimit.later_integer_distance
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingIntegerLimit.sample_distance
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingIntegerLimit.name_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingIntegerLimit.tailNumerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingIntegerLimit.tailDenominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingIntegerLimit.subst_tailNumerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingIntegerLimit.subst_tailDenominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingIntegerLimit.tail_den_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingIntegerLimit.sample_tail
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingIntegerLimit.tail_endpoint
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingIntegerLimit.actual_Stirling_integer_limit_name_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingIntegerLimit.actual_Stirling_integer_limit_tail_closed
+
+/-! ### GaussianStirlingOriginalIntegerLimit -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingOriginalIntegerLimit.integer_tail_contract
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingOriginalIntegerLimit.limit_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingOriginalIntegerLimit.actual_tail
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingOriginalIntegerLimit.actual_Stirling_integer_limit_regular_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingOriginalIntegerLimit.actual_Stirling_integer_limit_exact_tail_closed
 
 /-! ### GaussianStirlingNames -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianStirlingNames.logXF
@@ -60252,6 +60458,65 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianStirlingOddSeries.partial_succ
 #print axioms LeanProofs.IPRA.Analysis.GaussianStirlingOddSeries.partial_canonical
 
+/-! ### GaussianStirlingOddGrid -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingOddGrid.parameter
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingOddGrid.gap
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingOddGrid.numerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingOddGrid.denominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingOddGrid.subst_parameter
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingOddGrid.subst_numerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingOddGrid.subst_denominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingOddGrid.parameter_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingOddGrid.square_split
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingOddGrid.denominator_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingOddGrid.grid_step
+
+/-! ### GaussianStirlingOddGridTelescope -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingOddGridTelescope.prefixBounds
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingOddGridTelescope.subst_prefixBounds
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingOddGridTelescope.grid_telescope
+
+/-! ### GaussianStirlingOddLogBrackets -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingOddLogBrackets.logLower
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingOddLogBrackets.logUpper
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingOddLogBrackets.subst_logLower
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingOddLogBrackets.subst_logUpper
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingOddLogBrackets.gap_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingOddLogBrackets.upper_denominator_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingOddLogBrackets.original_log_brackets
+
+/-! ### GaussianStirlingOddCoefficients -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingOddCoefficients.fraction_equal
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingOddCoefficients.fraction_product
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingOddCoefficients.fraction_add_same
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingOddCoefficients.fraction_embed
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingOddCoefficients.coefficient_denominator_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingOddCoefficients.base_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingOddCoefficients.first_term
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingOddCoefficients.scaled_odd_fraction
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingOddCoefficients.scaled_term
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingOddCoefficients.additive_constant_zero
+
+/-! ### GaussianStirlingOddReadback -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingOddReadback.affine
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingOddReadback.subst_affine
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingOddReadback.affine_congr
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingOddReadback.lower_readback
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingOddReadback.upper_readback
+
+/-! ### GaussianStirlingDifferenceBrackets -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingDifferenceBrackets.observation_brackets
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingDifferenceBrackets.actual_Stirling_difference_odd_brackets_closed
+
+/-! ### GaussianStirlingDifferenceBounds -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingDifferenceBounds.first_sample_lower
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingDifferenceBounds.sharp_sample_upper
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingDifferenceBounds.robbins_sample_lower
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingDifferenceBounds.weak_local_bounds
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingDifferenceBounds.all_rows
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingDifferenceBounds.endpoint_bounds
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingDifferenceBounds.actual_positive_rational_Stirling_endpoint_order_closed
+
 /-! ### GaussianStirlingFiniteSeries -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianStirlingFiniteSeries.denominator
 #print axioms LeanProofs.IPRA.Analysis.GaussianStirlingFiniteSeries.folded
@@ -60263,6 +60528,24 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianStirlingFiniteSeries.term_at_factorial
 #print axioms LeanProofs.IPRA.Analysis.GaussianStirlingFiniteSeries.partial_equals_fold
 #print axioms LeanProofs.IPRA.Analysis.GaussianStirlingFiniteSeries.actual_finite_Stirling_partial_equals_fold_closed
+
+/-! ### GaussianStirlingFiniteBounds -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingFiniteBounds.fraction_order
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingFiniteBounds.first_term_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingFiniteBounds.geometricTail
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingFiniteBounds.subst_geometricTail
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingFiniteBounds.sharp_upper
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingFiniteBounds.actual_finite_rational_Stirling_sharp_upper_closed
+
+/-! ### GaussianStirlingTailComparison -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTailComparison.sharpUpperValue
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTailComparison.subst_sharpUpperValue
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTailComparison.tail_value
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTailComparison.tail_le_geometric
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTailComparison.point_order_refl
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTailComparison.point_add_order
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTailComparison.point_add_upper_same
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingTailComparison.sharp_partial_order
 
 /-! ### GaussianNamedFiniteProductMap -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedFiniteProductMap.applyMap
