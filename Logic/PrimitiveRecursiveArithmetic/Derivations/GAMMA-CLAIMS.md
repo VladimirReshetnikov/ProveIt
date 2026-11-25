@@ -2101,6 +2101,13 @@ canonical logarithm observations satisfy the quadratic estimate with
 the actual rational width times the left reciprocal as linear term.
 [GaussianBinetReciprocalRows](Lean/IPRADerivations/Analysis/GaussianBinetReciprocalRows.lean), [GaussianBinetReciprocalMean](Lean/IPRADerivations/Analysis/GaussianBinetReciprocalMean.lean), [GaussianBinetLogHorizontalStep](Lean/IPRADerivations/Analysis/GaussianBinetLogHorizontalStep.lean).
 
+For the imaginary-axis sine product used in the Binet kernel
+identification, the actual finite factor derivative terms give the
+literal derivative of the encoded product at any internal cutoff. The
+exact first-order expansion uses a primitive recursive second-order
+remainder and retains the original sine product at both inputs.
+[GaussianSineProductImaginaryLogDerivative](Lean/IPRADerivations/Analysis/GaussianSineProductImaginaryLogDerivative.lean), [GaussianSineProductImaginaryFirstOrder](Lean/IPRADerivations/Analysis/GaussianSineProductImaginaryFirstOrder.lean).
+
 ## Source artifacts and representation boundaries
 
 The delivered [Lean companion](../docs/proofs/analysis/gamma_ipra/lean/README.md)
