@@ -2482,3 +2482,9 @@ antiderivative gives the quotient by the imaginary frequency. At
 zero the regularized quotient has its exact removable value. A
 single primitive-recursive row inherits uniform norm and mesh bounds.
 [GaussianBinetCosinePrimitive](Lean/IPRADerivations/Analysis/GaussianBinetCosinePrimitive.lean), [GaussianBinetOscillatoryColumns](Lean/IPRADerivations/Analysis/GaussianBinetOscillatoryColumns.lean), [GaussianBinetOscillatorySineQuotient](Lean/IPRADerivations/Analysis/GaussianBinetOscillatorySineQuotient.lean), [GaussianBinetOscillatoryZeroColumn](Lean/IPRADerivations/Analysis/GaussianBinetOscillatoryZeroColumn.lean), [GaussianBinetOscillatorySineRows](Lean/IPRADerivations/Analysis/GaussianBinetOscillatorySineRows.lean)
+
+Summing the regularized sine columns with the original time weight
+gives a finite damped sine integral. It approximates both the original
+finite arctangent quadrature and the original arctangent observations,
+with explicit mesh, horizon and clock errors.
+[GaussianBinetOscillatorySineRectangle](Lean/IPRADerivations/Analysis/GaussianBinetOscillatorySineRectangle.lean), [GaussianBinetArctangentSineGridComparison](Lean/IPRADerivations/Analysis/GaussianBinetArctangentSineGridComparison.lean)
