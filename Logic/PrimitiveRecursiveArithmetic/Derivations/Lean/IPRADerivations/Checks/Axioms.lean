@@ -18028,6 +18028,63 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalHeadConvexity.weighted_head_comparison
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalHeadConvexity.actual_Euler_rational_head_weighted_comparison_closed
 
+/-! ### GaussianGammaEulerRationalLog -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalLog.powerF
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalLog.powerData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalLog.headLogData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalLog.nameF
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalLog.data
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalLog.expData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalLog.subst_powerData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalLog.subst_headLogData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalLog.subst_data
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalLog.subst_expData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalLog.head_log_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalLog.power_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalLog.name_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalLog.power_real
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalLog.name_real
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalLog.head_inverse_code
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalLog.exponential_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalLog.original_euler_inverse_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalLog.actual_positive_rational_euler_logarithm_closed
+
+/-! ### GaussianGammaEulerRationalLogHead -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalLogHead.scaled_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalLogHead.logarithm_power
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalLogHead.weighted_head_log_order
+
+/-! ### GaussianGammaEulerRationalLogPower -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalLogPower.positivePowerF
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalLogPower.positivePowerData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalLogPower.positive_power_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalLogPower.positive_power_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalLogPower.scaled_power_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalLogPower.weighted_power_balance
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalLogPower.actual_weighted_Euler_log_power_balance_closed
+
+/-! ### GaussianGammaEulerRationalLogOrder -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalLogOrder.order_refl
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalLogOrder.add_order_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalLogOrder.add_order
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalLogOrder.add_interleave
+
+/-! ### GaussianGammaEulerRationalLogConvexity -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalLogConvexity.centerData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalLogConvexity.weightedData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalLogConvexity.centerPowerData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalLogConvexity.centerHeadData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalLogConvexity.weightedHeadData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalLogConvexity.subst_centerData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalLogConvexity.subst_weightedData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalLogConvexity.center_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalLogConvexity.center_denominator_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalLogConvexity.scaled_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalLogConvexity.scaled_log_split
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalLogConvexity.weighted_convexity_of_head_order
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalLogConvexity.weighted_convexity
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalLogConvexity.actual_finite_Euler_log_weighted_convexity_closed
+
 /-! ### GaussianGammaEulerHeadContinuity -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerHeadContinuity.input
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerHeadContinuity.gain
@@ -25537,6 +25594,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianHarmonicLogarithmName.original_ordered_logarithm_compact_input_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianHarmonicLogarithmName.original_ordered_logarithm_exponential_fraction_closed
 
+/-! ### GaussianPositiveRationalLogarithmOrder -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianPositiveRationalLogarithmOrder.interval_order
+#print axioms LeanProofs.IPRA.Analysis.GaussianPositiveRationalLogarithmOrder.observation_order
+#print axioms LeanProofs.IPRA.Analysis.GaussianPositiveRationalLogarithmOrder.logarithm_order
+#print axioms LeanProofs.IPRA.Analysis.GaussianPositiveRationalLogarithmOrder.actual_positive_rational_logarithm_order_closed
+
 /-! ### GaussianEulerUnitLogarithmicMargin -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitLogarithmicMargin.source
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitLogarithmicMargin.mesh
@@ -27459,6 +27522,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedPositiveLogarithm.original_frozen_rate
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedPositiveLogarithm.actual_named_positive_logarithm_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedPositiveLogarithm.actual_named_positive_logarithm_frozen_closed
+
+/-! ### GaussianNamedPositiveLogarithmRate -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedPositiveLogarithmRate.log_rate_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedPositiveLogarithmRate.log_rate
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedPositiveLogarithmRate.actual_named_positive_logarithm_rate_closed
 
 /-! ### GaussianNamedPositiveReciprocal -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedPositiveReciprocal.clock
@@ -60235,6 +60303,10 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianStirlingLogDuplication.logarithmic_duplication
 #print axioms LeanProofs.IPRA.Analysis.GaussianStirlingLogDuplication.actual_positive_rational_log_Gamma_duplication_closed
 
+/-! ### GaussianStirlingGammaLogRescale -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingGammaLogRescale.log_gamma_rescale
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingGammaLogRescale.actual_positive_rational_log_Gamma_rescale_closed
+
 /-! ### GaussianStirlingDuplicationLogs -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianStirlingDuplicationLogs.split_product
 #print axioms LeanProofs.IPRA.Analysis.GaussianStirlingDuplicationLogs.halfRatioData
@@ -60790,6 +60862,48 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianStirlingRobbins.integer_limit_bounds
 #print axioms LeanProofs.IPRA.Analysis.GaussianStirlingRobbins.integer_bounds
 #print axioms LeanProofs.IPRA.Analysis.GaussianStirlingRobbins.actual_integer_Robbins_bounds_closed
+
+/-! ### GaussianStirlingGlobalBoundsShiftArguments -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingGlobalBoundsShiftArguments.fractionNumerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingGlobalBoundsShiftArguments.integerAnchor
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingGlobalBoundsShiftArguments.shiftedNumerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingGlobalBoundsShiftArguments.positiveFraction
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingGlobalBoundsShiftArguments.ratioData
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingGlobalBoundsShiftArguments.deltaF
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingGlobalBoundsShiftArguments.deltaData
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingGlobalBoundsShiftArguments.slopeF
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingGlobalBoundsShiftArguments.slopeData
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingGlobalBoundsShiftArguments.subst_fractionNumerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingGlobalBoundsShiftArguments.subst_integerAnchor
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingGlobalBoundsShiftArguments.subst_shiftedNumerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingGlobalBoundsShiftArguments.subst_ratioData
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingGlobalBoundsShiftArguments.subst_deltaData
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingGlobalBoundsShiftArguments.subst_slopeData
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingGlobalBoundsShiftArguments.fractional_guard
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingGlobalBoundsShiftArguments.anchor_later
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingGlobalBoundsShiftArguments.anchor_pred_later
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingGlobalBoundsShiftArguments.argument_readback
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingGlobalBoundsShiftArguments.shifted_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingGlobalBoundsShiftArguments.log_ratio_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingGlobalBoundsShiftArguments.delta_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingGlobalBoundsShiftArguments.slope_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingGlobalBoundsShiftArguments.shifted_log
+
+/-! ### GaussianStirlingGlobalBoundsShiftCorrection -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingGlobalBoundsShiftCorrection.productF
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingGlobalBoundsShiftCorrection.productData
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingGlobalBoundsShiftCorrection.correctionF
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingGlobalBoundsShiftCorrection.correctionData
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingGlobalBoundsShiftCorrection.budget
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingGlobalBoundsShiftCorrection.subst_productData
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingGlobalBoundsShiftCorrection.subst_correctionData
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingGlobalBoundsShiftCorrection.subst_budget
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingGlobalBoundsShiftCorrection.product_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingGlobalBoundsShiftCorrection.correction_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingGlobalBoundsShiftCorrection.point_at_double_scale
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingGlobalBoundsShiftCorrection.offset_represents
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingGlobalBoundsShiftCorrection.sample_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianStirlingGlobalBoundsShiftCorrection.uniform_sample_bound
 
 /-! ### GaussianStirlingMultiplicativeAlgebra -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianStirlingMultiplicativeAlgebra.remainderF
