@@ -18687,6 +18687,135 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianArctangentExponentialPeriod.translationRadius
 #print axioms LeanProofs.IPRA.Analysis.GaussianArctangentExponentialPeriod.full_turn_translation
 
+/-! ### GaussianArctangentCayleyTelescope -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyTelescope.error
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyTelescope.denominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyTelescope.denominator_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyTelescope.row_endpoint
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyTelescope.partial_distance
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyTelescope.endpoint_distance
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyTelescope.actual_arctangent_Cayley_telescope_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentCayleyTelescope.actual_arctangent_partial_Cayley_telescope_closed
+
+/-! ### GaussianArctangentOriginalExponential -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentOriginalExponential.finite_endpoint
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentOriginalExponential.original_finite_estimate
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentOriginalExponential.quarter_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentOriginalExponential.half_turn_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentOriginalExponential.full_turn_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentOriginalExponential.full_turn_translation
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentOriginalExponential.actual_original_arctangent_quarter_exponential_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentOriginalExponential.actual_original_arctangent_half_turn_exponential_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentOriginalExponential.actual_original_arctangent_period_exponential_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentOriginalExponential.actual_original_arctangent_exponential_translation_closed
+
+/-! ### GaussianNamedSineFromExponential -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedSineFromExponential.multiplier
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedSineFromExponential.differenceF
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedSineFromExponential.differenceData
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedSineFromExponential.sineF
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedSineFromExponential.sineData
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedSineFromExponential.subst_multiplier
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedSineFromExponential.subst_differenceData
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedSineFromExponential.subst_sineData
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedSineFromExponential.sine_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedSineFromExponential.sine_canonical
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedSineFromExponential.sine_exponential_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedSineFromExponential.sine_constant
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedSineFromExponential.negative_exponential_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedSineFromExponential.negative_exponential_constant
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedSineFromExponential.sine_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedSineFromExponential.sine_proper
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedSineFromExponential.sine_zero_of_exponential_one
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedSineFromExponential.sine_one_of_exponential_i
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedSineFromExponential.integerAngleF
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedSineFromExponential.integerAngleData
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedSineFromExponential.integerAngleRadius
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedSineFromExponential.integer_exponential_one
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedSineFromExponential.sine_zero_at_natural_cycles
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedSineFromExponential.sine_zero_at_negative_cycles
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedSineFromExponential.actual_named_sine_regular_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedSineFromExponential.actual_named_sine_canonical_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedSineFromExponential.actual_named_sine_at_natural_cycles_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedSineFromExponential.actual_named_sine_quarter_value_closed
+
+/-! ### GaussianArctangentNamedSine -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedSine.quarter_sine
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedSine.cycle_sine
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedSine.sine_full_turn_translation
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedSine.original_quarter_sine
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedSine.original_cycle_sine
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedSine.original_negative_cycle_sine
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedSine.original_sine_full_turn_translation
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedSine.actual_original_quarter_turn_sine_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedSine.actual_original_full_turn_natural_cycle_sine_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedSine.actual_original_full_turn_negative_cycle_sine_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedSine.actual_original_full_turn_sine_period_closed
+
+/-! ### GaussianArctangentNamedPhase -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedPhase.angleF
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedPhase.angleData
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedPhase.quarterPoint
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedPhase.subst_angleData
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedPhase.subst_quarterPoint
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedPhase.angle_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedPhase.natural_angle_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedPhase.quarter_angle_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedPhase.actual_original_natural_phase_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianArctangentNamedPhase.actual_original_quarter_phase_closed
+
+/-! ### GaussianNamedGammaFactorial -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaFactorial.positive_integer_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaFactorial.named_factorial_sample
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaFactorial.named_factorial
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaFactorial.actual_original_named_Gamma_positive_integer_factorial_closed
+
+/-! ### GaussianNamedGammaSineModulation -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSineModulation.exponentF
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSineModulation.exponentData
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSineModulation.factorF
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSineModulation.factorData
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSineModulation.valueF
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSineModulation.valueData
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSineModulation.exponent_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSineModulation.factor_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSineModulation.value_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSineModulation.factor_proper
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSineModulation.product_constant_one
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSineModulation.factor_at_zero
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSineModulation.factor_at_one
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSineModulation.value_at_zero
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSineModulation.recurrence_of_sine_period
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSineModulation.factorial_of_sine_zero
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSineModulation.coefficient_zero_of_value_agreement
+
+/-! ### GaussianNamedGammaFactorialInterpolation -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaFactorialInterpolation.angleRadius
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaFactorialInterpolation.sinePoint
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaFactorialInterpolation.interpolationF
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaFactorialInterpolation.interpolationData
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaFactorialInterpolation.angle_input
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaFactorialInterpolation.sine_point_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaFactorialInterpolation.original_interpolation_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaFactorialInterpolation.successor_angle_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaFactorialInterpolation.successor_sine_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaFactorialInterpolation.recurrence
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaFactorialInterpolation.original_interpolation_recurrence
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaFactorialInterpolation.natural_sine_zero
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaFactorialInterpolation.original_interpolation_factorial
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaFactorialInterpolation.actual_original_Gamma_sine_interpolation_factorial_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaFactorialInterpolation.quarter_sine_one
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaFactorialInterpolation.quarter_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaFactorialInterpolation.quarter_real
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaFactorialInterpolation.quarterAgreement
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaFactorialInterpolation.quarter_agreement_forces_zero
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaFactorialInterpolation.original_quarter_distinct
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaFactorialInterpolation.original_rational_quarter_distinct
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaFactorialInterpolation.actual_original_rational_sine_interpolation_quarter_distinct_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaFactorialInterpolation.actual_original_Gamma_sine_interpolation_regular_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaFactorialInterpolation.actual_original_Gamma_sine_interpolation_recurrence_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaFactorialInterpolation.actual_original_Gamma_sine_interpolation_quarter_distinct_closed
+
 /-! ### GaussianGammaHalfSquareLimit -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaHalfSquareLimit.gammaHalf
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaHalfSquareLimit.gammaSquareF
