@@ -2134,6 +2134,13 @@ positive rational `t`, the regular cofinal name equals
 size `N` gives `1/(2N)` and its cofinal value is zero.
 [GaussianBinetWeightedExponentialAlgebra](Lean/IPRADerivations/Analysis/GaussianBinetWeightedExponentialAlgebra.lean), [GaussianBinetWeightedExponentialGrid](Lean/IPRADerivations/Analysis/GaussianBinetWeightedExponentialGrid.lean), [GaussianBinetWeightedExponentialZero](Lean/IPRADerivations/Analysis/GaussianBinetWeightedExponentialZero.lean), [GaussianBinetWeightedExponential](Lean/IPRADerivations/Analysis/GaussianBinetWeightedExponential.lean).
 
+On a bounded interval `0 ≤ t ≤ T`, the weighted exponential unit
+quadrature has a time-uniform cell bound and a uniform comparison to
+both finite left and midpoint grids. The left-grid error is at most
+`g(T)/M + (g(T)+8)/2^p`, where `g(T)=2·3^T·T+3`. The exact one-cell
+value gives a uniform bound on every original cofinal observation.
+[GaussianBinetWeightedExponentialRowRate](Lean/IPRADerivations/Analysis/GaussianBinetWeightedExponentialRowRate.lean), [GaussianBinetWeightedExponentialUniform](Lean/IPRADerivations/Analysis/GaussianBinetWeightedExponentialUniform.lean), [GaussianBinetWeightedExponentialBound](Lean/IPRADerivations/Analysis/GaussianBinetWeightedExponentialBound.lean), [GaussianBinetWeightedExponentialMidpoint](Lean/IPRADerivations/Analysis/GaussianBinetWeightedExponentialMidpoint.lean).
+
 A literal signed vertical step has the checked quadratic logarithm
 estimate. The normalized first-order Stirling expression
 `ψ(z)−Log(z)+1/(2z)` has absolute bound `3/(2 Re(z))` at independent
