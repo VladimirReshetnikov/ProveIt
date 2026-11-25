@@ -2531,3 +2531,6 @@ The original compact product compares with the literal exponential prefix on any
 
 The actual arctangent-weighted quadrature expands to a finite matrix and transposes with the original time weight. Each cell retains the exact signed exponential and its original time-tag-dependent observation clock.
 [GaussianBinetBosePrefixTranspose](Lean/IPRADerivations/Analysis/GaussianBinetBosePrefixTranspose.lean)
+
+The normalized factor of two preserves the original improper name with twice the compact-cutoff error. A comparison with the first Binet integral suffices for the second identity. The positive weighted cells agree exactly with the original sine transform cells, and the zero-frequency cell has its removable value.
+[GaussianBinetSecondFormulaReduction](Lean/IPRADerivations/Analysis/GaussianBinetSecondFormulaReduction.lean), [GaussianBinetSecondRowCell](Lean/IPRADerivations/Analysis/GaussianBinetSecondRowCell.lean)
