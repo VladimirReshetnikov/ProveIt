@@ -3131,3 +3131,6 @@ The actual quotient by an apart regular named Gaussian step agrees to an explici
 
 The original base and late apart step have exact common-denominator native encodings and a matched exact sum. The actual named addition clock is retained, and rational step bounds give native smallness certificates.
 [GaussianNamedIncrementChart](Lean/IPRADerivations/Analysis/GaussianNamedIncrementChart.lean)
+
+An explicit mixed-denominator disk modulus gives a genuine named sampler for the original C7 evaluator. The named output is regular and proper, and its comparison to the frozen rational evaluation preserves independent clocks, including at poles.
+[GaussianGammaC7Named](Lean/IPRADerivations/Analysis/GaussianGammaC7Named.lean), [GaussianGammaC7NamedFrozen](Lean/IPRADerivations/Analysis/GaussianGammaC7NamedFrozen.lean)
