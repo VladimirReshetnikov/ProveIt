@@ -2810,3 +2810,6 @@ On canonical real input observations with a certified positive margin, the origi
 
 The compiled fixed presentation evaluates its actual rational program on the incoming real name’s late samples. The literal rational squeeze and native continuity give a regular real lift, identify the original named log-Gamma, and recover the original named Gamma by exponentiating that lift.
 [GaussianBohrMollerupNamedFrozen](Lean/IPRADerivations/Analysis/GaussianBohrMollerupNamedFrozen.lean), [GaussianBohrMollerupNamedLift](Lean/IPRADerivations/Analysis/GaussianBohrMollerupNamedLift.lean), [GaussianBohrMollerupNamedGamma](Lean/IPRADerivations/Analysis/GaussianBohrMollerupNamedGamma.lean)
+
+The literal finite summation program propagates a bounded family of row comparisons at independently chosen observation clocks. Only the spatial error grows with the internal summation length.
+[GaussianNamedFiniteSumFamilyRate](Lean/IPRADerivations/Analysis/GaussianNamedFiniteSumFamilyRate.lean)

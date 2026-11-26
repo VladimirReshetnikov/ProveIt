@@ -25944,6 +25944,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedFiniteSumFamilyCongruence.original_cross_distance
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedFiniteSumFamilyCongruence.family_sum_cross
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedFiniteSumFamilyCongruence.actual_named_finite_family_sum_cross_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedFiniteSumFamilyRate.rows
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedFiniteSumFamilyRate.subst_rows
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedFiniteSumFamilyRate.row_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedFiniteSumFamilyRate.finite_rate
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedFiniteSumFamilyRate.original_observations
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedFiniteSumFamilyRate.original_rate
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedFiniteSumFamilyRate.actual_original_finite_sum_family_rate_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedFiniteSumFamilyAdd.mixedBody
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedFiniteSumFamilyAdd.inst2_mixedBody
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedFiniteSumFamilyAdd.mixed_regular
