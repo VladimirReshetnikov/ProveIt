@@ -48,6 +48,47 @@ variable {n : ℕ}
 abbrev X (m : PTm n) (ps : Fin 3 → PTm n) : PTm n := sim₁ one zero pellX pellY m ps
 abbrev Y (m : PTm n) (ps : Fin 3 → PTm n) : PTm n := sim₂ one zero pellX pellY m ps
 
+variable {Γ : List (Fm PTm n)}
+
+theorem X_succ (m : PTm n) (ps : Fin 3 → PTm n) :
+    Γ ⊢[PRAAx] X (succ m) ps ≐ ps 0 * X m ps + ps 2 * (ps 1 * Y m ps) := by
+  simpa only [PTm.subst_add, PTm.subst_mul, Syn.subst_var, Fin.cases_zero, finCases_one,
+    finCases_two, finCases_three, finCases_four, finCases_five] using
+    sim₁_succ (Γ := Γ) one zero pellX pellY ps m
+
+theorem Y_succ (m : PTm n) (ps : Fin 3 → PTm n) :
+    Γ ⊢[PRAAx] Y (succ m) ps ≐ ps 1 * X m ps + ps 0 * Y m ps := by
+  simpa only [PTm.subst_add, PTm.subst_mul, Syn.subst_var, Fin.cases_zero, finCases_one,
+    finCases_two, finCases_three, finCases_four, finCases_five] using
+    sim₂_succ (Γ := Γ) one zero pellX pellY ps m
+
+theorem X_zero (ps : Fin 3 → PTm n) : Γ ⊢[PRAAx] X zero ps ≐ one := by
+  simpa using sim₁_zero (Γ := Γ) one zero pellX pellY ps
+
+theorem Y_zero (ps : Fin 3 → PTm n) : Γ ⊢[PRAAx] Y zero ps ≐ zero := by
+  simpa using sim₂_zero (Γ := Γ) one zero pellX pellY ps
+
+theorem congrX (ps : Fin 3 → PTm n) {m m' : PTm n} (h : Γ ⊢[PRAAx] m ≐ m') : Γ ⊢[PRAAx] X m ps ≐ X m' ps := by
+  simpa using Prf.eqCongr1 (Γ := Γ) (X (var 0) (fun i => Syn.shift (ps i))) h
+
+theorem congrY (ps : Fin 3 → PTm n) {m m' : PTm n} (h : Γ ⊢[PRAAx] m ≐ m') : Γ ⊢[PRAAx] Y m ps ≐ Y m' ps := by
+  simpa using Prf.eqCongr1 (Γ := Γ) (Y (var 0) (fun i => Syn.shift (ps i))) h
+
+/-- One multiplication by a norm-one unit preserves the norm-one equation. -/
+theorem norm_step (m : PTm n) (ps : Fin 3 → PTm n)
+    (hU : Γ ⊢[PRAAx] ps 0 * ps 0 ≐ ps 2 * (ps 1 * ps 1) + one)
+    (hm : Γ ⊢[PRAAx] X m ps * X m ps ≐ ps 2 * (Y m ps * Y m ps) + one) :
+    Γ ⊢[PRAAx] X (succ m) ps * X (succ m) ps ≐ ps 2 * (Y (succ m) ps * Y (succ m) ps) + one := by
+  have xs := natEq (X_succ (Γ := Γ) m ps)
+  have ys := natEq (Y_succ (Γ := Γ) m ps)
+  have unit := natEq hU
+  have power := natEq hm
+  apply deriveNat
+  ipra_simps
+  rw [xs, ys]
+  linear_combination (Groth.ι (Q.mk Γ (X m ps)) ^ 2 - Groth.ι (Q.mk Γ (ps 2)) * Groth.ι (Q.mk Γ (Y m ps)) ^ 2) *
+    unit + power
+
 /-- Formula variables: `0 = m`, `1 = u`, `2 = v`, `3 = D`. -/
 abbrev ps₄ : Fin 3 → PTm 4 := fun i => var i.succ
 
@@ -61,24 +102,23 @@ theorem pell_powers : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 4 pellPowersFormula
   refine closeUniv 4 (ind _ ⟨trivial, trivial⟩ ?_ ?_)
   · rec_subst
     refine .impI ?_
-    refine withEq (sim₁_zero one zero pellX pellY (fun i : Fin 3 => var i)) fun e₁ => ?_
-    refine withEq (sim₂_zero one zero pellX pellY (fun i : Fin 3 => var i)) fun e₂ => ?_
+    refine withEq (X_zero (fun i : Fin 3 => var i)) fun e₁ => ?_
+    refine withEq (Y_zero (fun i : Fin 3 => var i)) fun e₂ => ?_
     apply deriveNat
-    simp only [ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] at e₁ e₂
     ipra_simps
     rw [e₁, e₂]; ring
   · rec_subst
-    refine .impI (deriveNat ?_)
-    have hU := natEq (Γ := [hypU, pellPowersFormula]) Prf.hyp0
-    have hm := natEq (Γ := [hypU, pellPowersFormula]) (.impE Prf.hyp1 Prf.hyp0)
-    have e₁ := natEq (sim₁_succ (Γ := [hypU, pellPowersFormula]) one zero pellX pellY ps₄ (var 0))
-    have e₂ := natEq (sim₂_succ (Γ := [hypU, pellPowersFormula]) one zero pellX pellY ps₄ (var 0))
-    simp only [PTm.subst_add, PTm.subst_mul, Syn.subst_var, Fin.cases_zero, finCases_one,
-      finCases_two, finCases_three, finCases_four, finCases_five, ps₄, Fin.succ_zero_eq_one,
-      Fin.succ_one_eq_two, fin_succ_two] at e₁ e₂
-    ipra_simps
-    rw [e₁, e₂]
-    linear_combination (V _ 1 * V _ 1 - V _ 3 * V _ 2 * V _ 2) * hm + hU
+    exact .impI (norm_step (var 0) ps₄ Prf.hyp0 (Prf.impE Prf.hyp1 Prf.hyp0))
+
+/-- Instantiate the norm-one theorem at literal coded parameters and any internal power index. -/
+theorem pell_powers_at (m : PTm n) (ps : Fin 3 → PTm n)
+    (hU : Γ ⊢[PRAAx] ps 0 * ps 0 ≐ ps 2 * (ps 1 * ps 1) + one) :
+    Γ ⊢[PRAAx] X m ps * X m ps ≐ ps 2 * (Y m ps * Y m ps) + one := by
+  have law := inst (Γ := Γ) (Prf.allOpen (Prf.allOpen (Prf.allOpen (Prf.allOpen pell_powers)))) (Fin.cases m ps)
+  simp only [pellPowersFormula, hypU, Fm.subst_imp, Fm.subst_eq, PTm.subst_mul, PTm.subst_add,
+    subst_sim₁, subst_sim₂, Syn.subst_var, ps₄, Fin.cases_zero, Fin.cases_succ,
+    finCases_one, finCases_two, finCases_three, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] at law
+  exact .impE law hU
 
 /-- If `u² = D v² + 1` then `x_{m+2} + x_m = 2u x_{m+1}`. -/
 abbrev pellRecurrenceFormula : Fm PTm 4 :=
@@ -87,12 +127,10 @@ abbrev pellRecurrenceFormula : Fm PTm 4 :=
 theorem pell_recurrence : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 4 pellRecurrenceFormula := by
   refine closeUniv 4 (.impI (deriveNat ?_))
   have hU := natEq (Γ := [hypU]) Prf.hyp0
-  have e₁ := natEq (sim₁_succ (Γ := [hypU]) one zero pellX pellY ps₄ (succ (var 0)))
-  have e₂ := natEq (sim₂_succ (Γ := [hypU]) one zero pellX pellY ps₄ (var 0))
-  have e₃ := natEq (sim₁_succ (Γ := [hypU]) one zero pellX pellY ps₄ (var 0))
-  simp only [PTm.subst_add, PTm.subst_mul, Syn.subst_var, Fin.cases_zero, finCases_one,
-    finCases_two, finCases_three, finCases_four, finCases_five, ps₄, Fin.succ_zero_eq_one,
-    Fin.succ_one_eq_two, fin_succ_two] at e₁ e₂ e₃
+  have e₁ := natEq (X_succ (Γ := [hypU]) (succ (var 0)) ps₄)
+  have e₂ := natEq (Y_succ (Γ := [hypU]) (var 0) ps₄)
+  have e₃ := natEq (X_succ (Γ := [hypU]) (var 0) ps₄)
+  simp only [ps₄, Fin.succ_zero_eq_one, Fin.succ_one_eq_two, fin_succ_two] at e₁ e₂ e₃
   ipra_simps
   linear_combination e₁ + (V _ 3 * V _ 2) * e₂ - V _ 1 * e₃ -
     Groth.ι (Q.mk [hypU] (X (var 0) ps₄)) * hU

@@ -23,7 +23,6 @@ set_option linter.unusedSimpArgs false
 namespace LeanProofs.IPRA.DiophantineNumberTheory.PellGcd
 
 open_ipra
-open LeanProofs.IPRA.DiophantineNumberTheory.Recurrences (pellX pellY)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -45,35 +44,23 @@ def PY (m : PTm n) : PTm n := Recurrences.Y m ![u, v, D]
   simp only [PY, subst_sim₂]
   congr 1; funext i; fin_cases i <;> rfl
 
-theorem congrPX {m m' : PTm n} (h : Γ ⊢[PRAAx] m ≐ m') : Γ ⊢[PRAAx] PX u v D m ≐ PX u v D m' := by
-  unfold PX Recurrences.X sim₁
-  exact congrFst (congrApp _ fun i => by
-    refine Fin.cases ?_ (fun j => ?_) i
-    · exact h
-    · exact .eqRefl _)
+theorem congrPX {m m' : PTm n} (h : Γ ⊢[PRAAx] m ≐ m') : Γ ⊢[PRAAx] PX u v D m ≐ PX u v D m' :=
+  Recurrences.congrX ![u, v, D] h
 
-theorem congrPY {m m' : PTm n} (h : Γ ⊢[PRAAx] m ≐ m') : Γ ⊢[PRAAx] PY u v D m ≐ PY u v D m' := by
-  unfold PY Recurrences.Y sim₂
-  exact congrSnd (congrApp _ fun i => by
-    refine Fin.cases ?_ (fun j => ?_) i
-    · exact h
-    · exact .eqRefl _)
+theorem congrPY {m m' : PTm n} (h : Γ ⊢[PRAAx] m ≐ m') : Γ ⊢[PRAAx] PY u v D m ≐ PY u v D m' :=
+  Recurrences.congrY ![u, v, D] h
 
-theorem X_zero : Γ ⊢[PRAAx] PX u v D zero ≐ one := by
-  have h := sim₁_zero (Γ := Γ) one zero pellX pellY ![u, v, D]
-  unfold PX; simpa using h
+theorem X_zero : Γ ⊢[PRAAx] PX u v D zero ≐ one :=
+  Recurrences.X_zero ![u, v, D]
 
-theorem Y_zero : Γ ⊢[PRAAx] PY u v D zero ≐ zero := by
-  have h := sim₂_zero (Γ := Γ) one zero pellX pellY ![u, v, D]
-  unfold PY; simpa using h
+theorem Y_zero : Γ ⊢[PRAAx] PY u v D zero ≐ zero :=
+  Recurrences.Y_zero ![u, v, D]
 
-theorem X_succ (m : PTm n) : Γ ⊢[PRAAx] PX u v D (succ m) ≐ u * PX u v D m + D * (v * PY u v D m) := by
-  have h := sim₁_succ (Γ := Γ) one zero pellX pellY ![u, v, D] m
-  unfold PX PY; simpa using h
+theorem X_succ (m : PTm n) : Γ ⊢[PRAAx] PX u v D (succ m) ≐ u * PX u v D m + D * (v * PY u v D m) :=
+  Recurrences.X_succ m ![u, v, D]
 
-theorem Y_succ (m : PTm n) : Γ ⊢[PRAAx] PY u v D (succ m) ≐ v * PX u v D m + u * PY u v D m := by
-  have h := sim₂_succ (Γ := Γ) one zero pellX pellY ![u, v, D] m
-  unfold PX PY; simpa using h
+theorem Y_succ (m : PTm n) : Γ ⊢[PRAAx] PY u v D (succ m) ≐ v * PX u v D m + u * PY u v D m :=
+  Recurrences.Y_succ m ![u, v, D]
 
 end Seq
 
@@ -136,33 +123,12 @@ include hU
 
 abbrev normF (u v D k : PTm n) : Fm PTm n := PX u v D k * PX u v D k ≐ D * (PY u v D k * PY u v D k) + one
 
-theorem norm_step {k : PTm n} (ih : Γ ⊢[PRAAx] normF u v D k) : Γ ⊢[PRAAx] normF u v D (succ k) := by
-  have h₁ := natEq hU; have h₂ := natEq ih
-  have xs := natEq (X_succ (Γ := Γ) u v D k); have ys := natEq (Y_succ (Γ := Γ) u v D k)
-  apply deriveNat; ipra_simps; rw [xs, ys]
-  linear_combination (Groth.ι (Q.mk _ (PX u v D k)) * Groth.ι (Q.mk _ (PX u v D k)) -
-    Groth.ι (Q.mk _ D) * Groth.ι (Q.mk _ (PY u v D k)) * Groth.ι (Q.mk _ (PY u v D k))) * h₁ + h₂
+theorem norm_step {k : PTm n} (ih : Γ ⊢[PRAAx] normF u v D k) : Γ ⊢[PRAAx] normF u v D (succ k) :=
+  Recurrences.norm_step k ![u, v, D] hU ih
 
 /-- `X_k² = D Y_k² + 1`. -/
-theorem pell_norm (k : PTm n) : Γ ⊢[PRAAx] normF u v D k := by
-  have hU' : Γ.map Fm.shift ⊢[PRAAx] Syn.shift u * Syn.shift u ≐ Syn.shift D * (Syn.shift v * Syn.shift v) + one := by
-    have h := hU.shift
-    simp only [Fm.shift, Fm.subst_eq, PTm.subst_add, PTm.subst_mul, ConciseIPRA.PTm.subst_succ,
-      ConciseIPRA.PTm.subst_zero] at h
-    exact h
-  have hall : Γ ⊢[PRAAx] Fm.all (normF (Syn.shift u) (Syn.shift v) (Syn.shift D) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq, subst_PX, subst_PY, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-        Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
-      have x0 := natEq (X_zero (Γ := Γ) u v D); have y0 := natEq (Y_zero (Γ := Γ) u v D)
-      apply deriveNat; ipra_simps; rw [x0, y0]; ring
-    · simp only [Fm.subst_eq, subst_PX, subst_PY, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-        Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
-      exact norm_step hU'.wk Prf.hyp0
-  have h := Prf.allE k hall
-  simp only [Fm.subst_eq, subst_PX, subst_PY, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-    Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] at h
-  exact h
+theorem pell_norm (k : PTm n) : Γ ⊢[PRAAx] normF u v D k :=
+  Recurrences.pell_powers_at k ![u, v, D] hU
 
 theorem X_pos (k : PTm n) : Γ ⊢[PRAAx] PX u v D k ≐ succ (pred (PX u v D k)) := by
   refine .orE (zero_or_succ (PX u v D k)) ?_ Prf.hyp0

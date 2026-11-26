@@ -36,7 +36,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
 open LeanProofs.IPRA.DiophantineNumberTheory.PellDescent (rr tt)
 open LeanProofs.IPRA.DiophantineNumberTheory.PellGenDescent (gen_descent_pos gen_descent_neg)
 open LeanProofs.IPRA.DiophantineNumberTheory.PellAll (alg_x alg_y)
-open LeanProofs.IPRA.DiophantineNumberTheory.Recurrences (pellX pellY)
 open LeanProofs.IPRA.Algebra.CubeRootTwo (sg sg_zero sg_succ)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.DiophantineNumberTheory.SquareArea (le_add_mono)
@@ -109,28 +108,22 @@ theorem T_succ (k : PTm n) : Γ ⊢[PRAAx] T (succ k) ps ≐
 theorem C_succ (k : PTm n) : Γ ⊢[PRAAx] C (succ k) ps ≐ C k ps + G k ps :=
   (congrSnd (W_succ ps k)).eqTrans (snd_pair _ _)
 
-theorem X_succ (m : PTm n) : Γ ⊢[PRAAx] Xp (succ m) (p3 ps) ≐ ps 0 * Xp m (p3 ps) + ps 2 * (ps 1 * Yp m (p3 ps)) := by
-  have h := sim₁_succ (Γ := Γ) one zero pellX pellY (p3 ps) m
-  simp only [PTm.subst_add, PTm.subst_mul, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero,
-    Syn.subst_var, Fin.cases_zero, finCases_one, finCases_two, finCases_three, finCases_four, finCases_five] at h
-  exact h
+theorem X_succ (m : PTm n) : Γ ⊢[PRAAx] Xp (succ m) (p3 ps) ≐ ps 0 * Xp m (p3 ps) + ps 2 * (ps 1 * Yp m (p3 ps)) :=
+  Recurrences.X_succ m (p3 ps)
 
-theorem Y_succ (m : PTm n) : Γ ⊢[PRAAx] Yp (succ m) (p3 ps) ≐ ps 1 * Xp m (p3 ps) + ps 0 * Yp m (p3 ps) := by
-  have h := sim₂_succ (Γ := Γ) one zero pellX pellY (p3 ps) m
-  simp only [PTm.subst_add, PTm.subst_mul, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero,
-    Syn.subst_var, Fin.cases_zero, finCases_one, finCases_two, finCases_three, finCases_four, finCases_five] at h
-  exact h
+theorem Y_succ (m : PTm n) : Γ ⊢[PRAAx] Yp (succ m) (p3 ps) ≐ ps 1 * Xp m (p3 ps) + ps 0 * Yp m (p3 ps) :=
+  Recurrences.Y_succ m (p3 ps)
 
-theorem X_zero : Γ ⊢[PRAAx] Xp zero (p3 ps) ≐ one := by simpa using sim₁_zero (Γ := Γ) one zero pellX pellY (p3 ps)
-theorem Y_zero : Γ ⊢[PRAAx] Yp zero (p3 ps) ≐ zero := by simpa using sim₂_zero (Γ := Γ) one zero pellX pellY (p3 ps)
+theorem X_zero : Γ ⊢[PRAAx] Xp zero (p3 ps) ≐ one :=
+  Recurrences.X_zero (p3 ps)
+theorem Y_zero : Γ ⊢[PRAAx] Yp zero (p3 ps) ≐ zero :=
+  Recurrences.Y_zero (p3 ps)
 
-theorem congrX {m m' : PTm n} (h : Γ ⊢[PRAAx] m ≐ m') : Γ ⊢[PRAAx] Xp m (p3 ps) ≐ Xp m' (p3 ps) := by
-  have e := Prf.eqCongr1 (Γ := Γ) (Xp (var 0) (fun i => Syn.shift (p3 ps i))) h
-  simpa using e
+theorem congrX {m m' : PTm n} (h : Γ ⊢[PRAAx] m ≐ m') : Γ ⊢[PRAAx] Xp m (p3 ps) ≐ Xp m' (p3 ps) :=
+  Recurrences.congrX (p3 ps) h
 
-theorem congrY {m m' : PTm n} (h : Γ ⊢[PRAAx] m ≐ m') : Γ ⊢[PRAAx] Yp m (p3 ps) ≐ Yp m' (p3 ps) := by
-  have e := Prf.eqCongr1 (Γ := Γ) (Yp (var 0) (fun i => Syn.shift (p3 ps i))) h
-  simpa using e
+theorem congrY {m m' : PTm n} (h : Γ ⊢[PRAAx] m ≐ m') : Γ ⊢[PRAAx] Yp m (p3 ps) ≐ Yp m' (p3 ps) :=
+  Recurrences.congrY (p3 ps) h
 
 /-- The guard: `[t > A K] = 0` means `t ≤ A K`; otherwise `A K < t`. -/
 theorem guard_cases (k : PTm n) :
@@ -329,40 +322,16 @@ theorem seed_pos {A B D K r t : PTm n} (hA : Γ ⊢[PRAAx] A * A ≐ one + D * (
     (c : PTm n) :
     Γ ⊢[PRAAx] (Xp c ![A, B, D] * r + D * (Yp c ![A, B, D] * t)) * (Xp c ![A, B, D] * r + D * (Yp c ![A, B, D] * t)) ≐
       D * ((Yp c ![A, B, D] * r + Xp c ![A, B, D] * t) * (Yp c ![A, B, D] * r + Xp c ![A, B, D] * t)) + K := by
-  have pw := inst (Γ := Γ) (Prf.allOpen (Prf.allOpen (Prf.allOpen (Prf.allOpen Recurrences.pell_powers))))
-    (![c, A, B, D] : Fin 4 → PTm n)
-  simp only [Recurrences.pellPowersFormula, Recurrences.hypU, Fm.subst_imp, Fm.subst_eq, PTm.subst_mul,
-    PTm.subst_add, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
-    Matrix.cons_val_three, Matrix.head_cons, Matrix.tail_cons, ConciseIPRA.PTm.subst_succ,
-    ConciseIPRA.PTm.subst_zero] at pw
-  have eX : Syn.subst ![c, A, B, D] (Recurrences.X (var 0) Recurrences.ps₄) = Xp c ![A, B, D] := by
-    simp only [Recurrences.X, sim₁, subst_fstT, ConciseIPRA.PTm.subst_app]
-    congr 2; funext i; refine Fin.cases rfl (fun j => ?_) i; fin_cases j <;> rfl
-  have eY : Syn.subst ![c, A, B, D] (Recurrences.Y (var 0) Recurrences.ps₄) = Yp c ![A, B, D] := by
-    simp only [Recurrences.Y, sim₂, subst_sndT, ConciseIPRA.PTm.subst_app]
-    congr 2; funext i; refine Fin.cases rfl (fun j => ?_) i; fin_cases j <;> rfl
-  rw [eX, eY] at pw
-  ipra_lc (𝔞 r * 𝔞 r - 𝔞 D * 𝔞 t * 𝔞 t) * natEq (Prf.impE pw ((hA.eqTrans (add_comm _ _)))) + natEq hs
+  have pw := Recurrences.pell_powers_at c ![A, B, D] (hA.eqTrans (add_comm _ _))
+  ipra_lc (𝔞 r * 𝔞 r - 𝔞 D * 𝔞 t * 𝔞 t) * natEq pw + natEq hs
 
 /-- `thm:general` (N < 0), converse: every seed of norm `N` times a power of `u` is a solution. -/
 theorem seed_neg {A B D K r t : PTm n} (hA : Γ ⊢[PRAAx] A * A ≐ one + D * (B * B)) (hs : Γ ⊢[PRAAx] r * r + K ≐ D * (t * t))
     (c : PTm n) :
     Γ ⊢[PRAAx] (Xp c ![A, B, D] * r + D * (Yp c ![A, B, D] * t)) * (Xp c ![A, B, D] * r + D * (Yp c ![A, B, D] * t)) + K ≐
       D * ((Yp c ![A, B, D] * r + Xp c ![A, B, D] * t) * (Yp c ![A, B, D] * r + Xp c ![A, B, D] * t)) := by
-  have pw := inst (Γ := Γ) (Prf.allOpen (Prf.allOpen (Prf.allOpen (Prf.allOpen Recurrences.pell_powers))))
-    (![c, A, B, D] : Fin 4 → PTm n)
-  simp only [Recurrences.pellPowersFormula, Recurrences.hypU, Fm.subst_imp, Fm.subst_eq, PTm.subst_mul,
-    PTm.subst_add, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
-    Matrix.cons_val_three, Matrix.head_cons, Matrix.tail_cons, ConciseIPRA.PTm.subst_succ,
-    ConciseIPRA.PTm.subst_zero] at pw
-  have eX : Syn.subst ![c, A, B, D] (Recurrences.X (var 0) Recurrences.ps₄) = Xp c ![A, B, D] := by
-    simp only [Recurrences.X, sim₁, subst_fstT, ConciseIPRA.PTm.subst_app]
-    congr 2; funext i; refine Fin.cases rfl (fun j => ?_) i; fin_cases j <;> rfl
-  have eY : Syn.subst ![c, A, B, D] (Recurrences.Y (var 0) Recurrences.ps₄) = Yp c ![A, B, D] := by
-    simp only [Recurrences.Y, sim₂, subst_sndT, ConciseIPRA.PTm.subst_app]
-    congr 2; funext i; refine Fin.cases rfl (fun j => ?_) i; fin_cases j <;> rfl
-  rw [eX, eY] at pw
-  ipra_lc (𝔞 r * 𝔞 r - 𝔞 D * 𝔞 t * 𝔞 t) * natEq (Prf.impE pw ((hA.eqTrans (add_comm _ _)))) + natEq hs
+  have pw := Recurrences.pell_powers_at c ![A, B, D] (hA.eqTrans (add_comm _ _))
+  ipra_lc (𝔞 r * 𝔞 r - 𝔞 D * 𝔞 t * 𝔞 t) * natEq pw + natEq hs
 
 end Signed
 

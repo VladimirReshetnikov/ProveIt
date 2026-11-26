@@ -24,7 +24,6 @@ set_option linter.unusedSimpArgs false
 namespace LeanProofs.IPRA.DiophantineNumberTheory.PellIndex
 
 open_ipra
-open LeanProofs.IPRA.DiophantineNumberTheory.Recurrences (pellX pellY)
 open LeanProofs.IPRA.DiophantineNumberTheory.PellAll (pell_all_at minimal C p3 Xp Yp)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -32,31 +31,21 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 theorem X_succ (m : PTm n) (ps : Fin 3 → PTm n) :
-    Γ ⊢[PRAAx] Xp (succ m) ps ≐ ps 0 * Xp m ps + ps 2 * (ps 1 * Yp m ps) := by
-  have h := sim₁_succ (Γ := Γ) one zero pellX pellY ps m
-  simp only [PTm.subst_add, PTm.subst_mul, Syn.subst_var, Fin.cases_zero, finCases_one,
-    finCases_two, finCases_three, finCases_four, finCases_five, Fin.succ_zero_eq_one,
-    Fin.succ_one_eq_two, fin_succ_two] at h
-  exact h
+    Γ ⊢[PRAAx] Xp (succ m) ps ≐ ps 0 * Xp m ps + ps 2 * (ps 1 * Yp m ps) :=
+  Recurrences.X_succ m ps
 
 theorem Y_succ (m : PTm n) (ps : Fin 3 → PTm n) :
-    Γ ⊢[PRAAx] Yp (succ m) ps ≐ ps 1 * Xp m ps + ps 0 * Yp m ps := by
-  have h := sim₂_succ (Γ := Γ) one zero pellX pellY ps m
-  simp only [PTm.subst_add, PTm.subst_mul, Syn.subst_var, Fin.cases_zero, finCases_one,
-    finCases_two, finCases_three, finCases_four, finCases_five, Fin.succ_zero_eq_one,
-    Fin.succ_one_eq_two, fin_succ_two] at h
-  exact h
+    Γ ⊢[PRAAx] Yp (succ m) ps ≐ ps 1 * Xp m ps + ps 0 * Yp m ps :=
+  Recurrences.Y_succ m ps
 
-theorem X_zero (ps : Fin 3 → PTm n) : Γ ⊢[PRAAx] Xp zero ps ≐ one := by
-  simpa using sim₁_zero (Γ := Γ) one zero pellX pellY ps
+theorem X_zero (ps : Fin 3 → PTm n) : Γ ⊢[PRAAx] Xp zero ps ≐ one :=
+  Recurrences.X_zero ps
 
-theorem Y_zero (ps : Fin 3 → PTm n) : Γ ⊢[PRAAx] Yp zero ps ≐ zero := by
-  simpa using sim₂_zero (Γ := Γ) one zero pellX pellY ps
+theorem Y_zero (ps : Fin 3 → PTm n) : Γ ⊢[PRAAx] Yp zero ps ≐ zero :=
+  Recurrences.Y_zero ps
 
-theorem congrYp {m m' : PTm n} (ps : Fin 3 → PTm n) (h : Γ ⊢[PRAAx] m ≐ m') : Γ ⊢[PRAAx] Yp m ps ≐ Yp m' ps := by
-  have e := Prf.eqSubst1 (Fm.eq (Yp (var 0) (fun i => Syn.shift (ps i))) (Syn.shift (Yp m ps))) h
-    (by simpa [Syn.subst_inst_shift] using Prf.eqRefl (Γ := Γ) (Yp m ps))
-  simpa [Syn.subst_inst_shift] using e.eqSymm
+theorem congrYp {m m' : PTm n} (ps : Fin 3 → PTm n) (h : Γ ⊢[PRAAx] m ≐ m') : Γ ⊢[PRAAx] Yp m ps ≐ Yp m' ps :=
+  Recurrences.congrY ps h
 
 section Mono
 
