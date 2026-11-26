@@ -28,6 +28,7 @@ open LeanProofs.IPRA.Analysis.GaussianRationalReciprocal (power reciprocal normN
 open LeanProofs.IPRA.Analysis.GaussianRationalReconstruction (reconstruct factors factors_succ factors_zero reconstruction_evaluation)
 open LeanProofs.IPRA.Analysis.GaussianRationalCoefficientScaling (scaled scaled_length scaled_lookup scaled_entry_canonical evaluation_linearity)
 open LeanProofs.IPRA.Analysis.GaussianRationalMonicReduction (evaluate_congr)
+export GaussianPolynomialDeterminantTerms (scaled_canonical)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -195,13 +196,6 @@ theorem inverse_valid (R s : PTm n) (h : Γ ⊢[PRAAx] GaussianRationalFiniteRoo
     qmul (denominator R s) (reciprocal (denominator R s)) ≐ qone := reciprocal_identity _ (denominator_norm_positive _ _ h hs)
 
 
-theorem scaled_canonical (C a : PTm n) : Γ ⊢[PRAAx] canonicalCoefficients (scaled C a) := by
-  refine .allI (.impI ?_)
-  have e : lt (var 0) (length (Syn.shift (scaled C a))) :: Γ.map Fm.shift ⊢[PRAAx]
-      canonical (entry (scaled (Syn.shift C) (Syn.shift a)) (var 0)) :=
-    scaled_entry_canonical (Syn.shift C) (Syn.shift a) (var 0)
-      (lt_congr (.eqRefl _) (scaled_length (Syn.shift C) (Syn.shift a)) (by simpa only [Syn.shift,GaussianRationalCoefficientScaling.subst_scaled] using (Prf.hyp0 (Ax := PRAAx) (Γ := Γ.map Fm.shift))))
-  simpa only [Syn.shift,GaussianRationalCoefficientScaling.subst_scaled] using e
 theorem cardinal_length (R s : PTm n) (hs : Γ ⊢[PRAAx] lt s (length R)) : Γ ⊢[PRAAx]
     length (cardinal R s) ≐ length R := (scaled_length _ _).eqTrans (product_length _ _ hs)
 theorem cardinal_canonical (R s : PTm n) : Γ ⊢[PRAAx] canonicalCoefficients (cardinal R s) := scaled_canonical _ _

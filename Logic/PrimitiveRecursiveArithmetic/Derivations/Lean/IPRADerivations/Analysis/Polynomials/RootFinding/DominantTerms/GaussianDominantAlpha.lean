@@ -229,14 +229,7 @@ theorem alpha_represents (b0 bk A B k H : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
     RationalArithmetic.represents (alpha b0 bk A B k H) (ZT.ofNat (P b0 bk A k H)) (Q b0 bk B k H) :=
   fraction_represents _ _ (denominator_positive b0 bk B k H hB)
 
-theorem natural_multiple_represents (W c u D : PTm n)
-    (hc : Γ ⊢[PRAAx] RationalArithmetic.represents c (ZT.ofNat u) D) : Γ ⊢[PRAAx]
-    RationalArithmetic.represents (RationalArithmetic.multiply (fraction W one) c) (ZT.ofNat (W*u)) D := by
-  apply GaussianRationalHorner.scalar_congr (.eqRefl _) (hAB := one_mul _)
-    (h := RationalRepresentations.represents_multiply _ _ _ _ _ _ (fraction_represents W one (le_refl one)) hc)
-  apply ZT.derive
-  simp only [ZT.toZ_mul,ZT.toZ_ofNat]
-  ipra_simps
+alias natural_multiple_represents := GaussianRationalDirectionNormalizer.multiple_represents
 
 /-- The true relative bound follows directly from the actual normalizer
 bracket. Neither radial comparison is an input to this stronger estimate. -/

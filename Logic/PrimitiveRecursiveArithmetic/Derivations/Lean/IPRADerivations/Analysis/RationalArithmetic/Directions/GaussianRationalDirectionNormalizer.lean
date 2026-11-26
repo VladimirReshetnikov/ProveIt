@@ -345,7 +345,7 @@ theorem normalizer_integer_upper (c H : PTm n) (hc : Γ ⊢[PRAAx] le one (norm 
     le_congr (.eqRefl _) (by ipra_ring) (mul_le_mul_right (norm c*factor c H*factor c H) (sq_le_sq linear))
   exact RationalValueBounds.positive_cancel (positive_product H H hH hH) (le_trans first second)
 
-private theorem multiple_represents (W q A B : PTm n) (hq : Γ ⊢[PRAAx] RationalArithmetic.represents q (ZT.ofNat A) B) : Γ ⊢[PRAAx]
+theorem multiple_represents (W q A B : PTm n) (hq : Γ ⊢[PRAAx] RationalArithmetic.represents q (ZT.ofNat A) B) : Γ ⊢[PRAAx]
     RationalArithmetic.represents (RationalArithmetic.multiply (fraction W one) q) (ZT.ofNat (W*A)) B := by
   apply GaussianRationalHorner.scalar_congr (.eqRefl _) (hAB := one_mul _)
     (h := RationalRepresentations.represents_multiply _ _ _ _ _ _ (fraction_represents W one (le_refl one)) hq)
