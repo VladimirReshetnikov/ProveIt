@@ -3032,3 +3032,6 @@ In iPRA the actual Barnes prefactor shifts by the exponential of the literal nam
 
 The primitive-recursive sampler uses the verified rational deflated evaluator at its certified input demand, with constructive Cauchy regularity and properness. On the certified half-unit disk about a Barnes zero it retains a uniform apartness bound.
 [GaussianBarnesCanonicalDeflatedNamed](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDeflatedNamed.lean)
+
+The normalized sampler reads the genuine translated integer power of a late original input sample. The certified half-unit disk supplies a unit bound and a finite comparison to the power at a shared late clock.
+[GaussianBarnesCanonicalNamedTranslatedPower](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalNamedTranslatedPower.lean)
