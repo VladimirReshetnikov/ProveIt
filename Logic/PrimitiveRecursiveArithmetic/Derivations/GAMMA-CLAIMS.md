@@ -2909,3 +2909,6 @@ The same encoded Gaussian rational in two positive-denominator presentations giv
 
 At zero input every sample of the literal finite canonical product is exactly one. The original cofinal sampler represents one for every admitted radius and positive denominator, proving $G(1)=1$.
 [GaussianBarnesCanonicalNormalization](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalNormalization.lean)
+
+A bounded search across actual factor bases identifies an exact zero in the finite product or builds a quantitative late observation certificate of apartness.
+[GaussianBarnesCanonicalHeadApartness](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHeadApartness.lean)
