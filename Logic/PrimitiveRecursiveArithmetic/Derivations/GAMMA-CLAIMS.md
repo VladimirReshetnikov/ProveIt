@@ -3365,3 +3365,6 @@ Bind the original positive rational Log((N+1)/N) to its actual Mercator observat
 
 Real exponential injectivity gives L(x+1) = L(x) + Log Gamma(x) for every positive rational x using the original cofinal Euler log Gamma, and L(1) = 0 in every positive rational presentation of one.
 [GaussianBarnesCanonicalPositiveLogarithmRecurrence](Lean/IPRADerivations/Analysis/Barnes/FunctionalEquations/GaussianBarnesCanonicalPositiveLogarithmRecurrence.lean)
+
+The actual logarithm of a certified positive candidate converts its original Gamma value recurrence to the same cofinal Euler Log Gamma shift as the canonical Barnes logarithm. Their difference is real and invariant at the unit step. A fixed coded rational chart with certified recurrence at its translated inputs gives equivalence of the actual quotient at every internally indexed integer translate.
+[GaussianBarnesVignerasLogQuotient](Lean/IPRADerivations/Analysis/Barnes/Logarithms/GaussianBarnesVignerasLogQuotient.lean), [GaussianBarnesVignerasIntegerPeriod](Lean/IPRADerivations/Analysis/Barnes/Logarithms/GaussianBarnesVignerasIntegerPeriod.lean)
