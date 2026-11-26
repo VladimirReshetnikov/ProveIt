@@ -2867,3 +2867,6 @@ The original named logarithmic quotient and its normalized exponential are regul
 
 The signed exponent is unchanged by translating the base and both shifted arguments on a common denominator. The original logarithmic quotient has a linear independent observation rate for this translation on the certified local positive window.
 [GaussianGammaDigammaTwoShiftLogGammaTranslation](Lean/IPRADerivations/Analysis/GaussianGammaDigammaTwoShiftLogGammaTranslation.lean), [GaussianGammaDigammaTwoShiftQuotientTranslation](Lean/IPRADerivations/Analysis/GaussianGammaDigammaTwoShiftQuotientTranslation.lean)
+
+The actual rounded cubic rows split at a fixed head boundary. The corrected Barnes endpoint and a proved row precision budget give a regular primitive-recursive Gaussian name on each rational disk, including the empty tail at radius zero.
+[GaussianBarnesCanonicalLogRoundedTail](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalLogRoundedTail.lean), [GaussianBarnesCanonicalLogSchedule](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalLogSchedule.lean), [GaussianBarnesCanonicalLogCofinal](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalLogCofinal.lean)
