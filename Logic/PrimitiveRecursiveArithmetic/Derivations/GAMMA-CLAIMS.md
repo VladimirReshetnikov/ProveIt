@@ -2825,3 +2825,6 @@ The literal [1,2] panel supplies the explicit lower bound 2/(104·3^(2S)) at eve
 
 Both actual difference quotients converge to the negative successor moment on a common fixed positive margin. The leading constants depend on the internal order and the physical margin and work for every denominator encoding of the base.
 [GaussianBinetLaplaceMomentForwardMargin](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentForwardMargin.lean), [GaussianBinetLaplaceMomentTwoSidedMargin](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentTwoSidedMargin.lean)
+
+Uniform Gamma and Dirichlet sample bounds and the independent factor rates yield a concrete primitive-recursive input demand for the original normalized product on the certified rational half-plane.
+[GaussianGammaZetaDirichletUniformBound](Lean/IPRADerivations/Analysis/GaussianGammaZetaDirichletUniformBound.lean), [GaussianGammaZetaDirichletProductParameterRate](Lean/IPRADerivations/Analysis/GaussianGammaZetaDirichletProductParameterRate.lean)
