@@ -2900,3 +2900,6 @@ The actual finite cubic logarithmic sum exponentiates to the actual literal fini
 
 At any common cutoff, independent certified disk radii give the same represented finite product. The comparison passes through the original row and prefactor samplers and permits zero factors.
 [GaussianBarnesCanonicalFiniteRadius](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalFiniteRadius.lean)
+
+The original finite prefactor and factors at each admitted cutoff compare at independent clocks with the regular canonical Barnes sampler. A verified primitive-recursive cutoff at each admitted rational input gives leading error at most $2^{-p}$ for every later truncation.
+[GaussianBarnesCanonicalProduct](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalProduct.lean)
