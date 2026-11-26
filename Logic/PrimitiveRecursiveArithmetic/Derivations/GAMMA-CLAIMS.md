@@ -3419,3 +3419,6 @@ The three original Gaussian fine-derivative comparisons, the actual third-jet co
 
 Three certified derivative bounds and the actual third-derivative lower cut on a single refinement window imply the endpoint estimate, when the original quotient samples satisfy the wrap comparisons.
 [GaussianDiscretePeriodicUniformCertificate](Lean/IPRADerivations/Analysis/FiniteOperations/PeriodicGrids/GaussianDiscretePeriodicUniformCertificate.lean)
+
+Certified mixed-precision meshes force the actual Barnes candidate to equal f(1) times the original Barnes function at every positive rational chart. Separately, the original candidate recurrence proves all four actual translated fine-grid wrap distances, with independent analytic and observation clocks.
+[GaussianBarnesVignerasMesh](Lean/IPRADerivations/Analysis/Barnes/Vigneras/GaussianBarnesVignerasMesh.lean), [GaussianBarnesVignerasMeshConstancy](Lean/IPRADerivations/Analysis/Barnes/Vigneras/GaussianBarnesVignerasMeshConstancy.lean), [GaussianBarnesVignerasCertifiedMesh](Lean/IPRADerivations/Analysis/Barnes/Vigneras/GaussianBarnesVignerasCertifiedMesh.lean), [GaussianBarnesVignerasRefinementWrap](Lean/IPRADerivations/Analysis/Barnes/Vigneras/GaussianBarnesVignerasRefinementWrap.lean)
