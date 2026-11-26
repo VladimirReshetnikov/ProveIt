@@ -113,6 +113,40 @@ theorem distance_triangle_same (z y w A C B : PTm n)
     (le_congr (.eqRefl _) (by ipra_ring) (le_refl _))
     (GaussianReconstructionRoots.distance_triangle _ _ _ _ _ _ _ hB hB hzy hyw)
 
+/-- Combine the two end observations with a comparison at a shared auxiliary
+precision. The two end comparisons contribute two auxiliary units in total. -/
+theorem distance_through_auxiliary {x y z w : PTm n} (p q r A B C : PTm n)
+    (hB : Γ ⊢[PRAAx] le one B)
+    (left : Γ ⊢[PRAAx] distanceBounded x y (unit p+unit r) (unit p*unit r))
+    (middle : Γ ⊢[PRAAx] distanceBounded y z (A*unit r+C*B) (B*unit r))
+    (right : Γ ⊢[PRAAx] distanceBounded z w (unit r+unit q) (unit r*unit q)) :
+    Γ ⊢[PRAAx] distanceBounded x w
+      ((A*unit p*unit q+B*(unit p+unit q))*unit r+(C+two)*(B*unit p*unit q))
+      ((B*unit p*unit q)*unit r) := by
+  have hp := unit_positive (Γ := Γ) p
+  have hq := unit_positive (Γ := Γ) q
+  have hr := unit_positive (Γ := Γ) r
+  have dp := positive_product _ _ hp hr
+  have dm := positive_product _ _ hB hr
+  have dq := positive_product _ _ hr hq
+  have first := GaussianReconstructionRoots.distance_triangle _ _ _ _ _ _ _ dp dm left middle
+  have both := positive_product _ _ dp dm
+  have joined := GaussianReconstructionRoots.distance_triangle _ _ _ _ _ _ _ both dq first right
+  exact distance_radius_mono _ _ _ _ _ _ (positive_product _ _ both dq)
+    (positive_product _ _ (positive_product _ _ (positive_product _ _ hB hp) hq) hr)
+    (le_of_eq_add (d := zero) (by ipra_ring)) joined
+
+/-- The middle comparison is entirely paid at the auxiliary precision. -/
+theorem distance_through_diagonal {x y z w : PTm n} (p q r K : PTm n)
+    (left : Γ ⊢[PRAAx] distanceBounded x y (unit p+unit r) (unit p*unit r))
+    (middle : Γ ⊢[PRAAx] distanceBounded y z K (unit r))
+    (right : Γ ⊢[PRAAx] distanceBounded z w (unit r+unit q) (unit r*unit q)) :
+    Γ ⊢[PRAAx] distanceBounded x w
+      ((unit p+unit q)*unit r+(K+two)*(unit p*unit q)) ((unit p*unit q)*unit r) :=
+  distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (by ipra_ring)
+    (distance_through_auxiliary p q r zero one K (le_refl one) left
+      (distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (one_mul _).eqSymm middle) right)
+
 theorem original_distance_symmetry_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 4
     (le one (var 3) ⟶ Fm.iff
       (distanceBounded (var 0) (var 1) (var 2) (var 3))

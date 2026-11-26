@@ -17,7 +17,7 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent point_at)
 open GaussianRationalMetric (distanceBounded qsub)
-open GaussianRationalDistanceOrder (distance_radius_mono)
+open GaussianRationalDistanceOrder (distance_through_diagonal)
 open GaussianRationalSlackRemoval (precision slack_removal_at)
 open GaussianRationalHorner (positive_product)
 
@@ -37,25 +37,10 @@ theorem cross_at (f g : PR 2) (x y K p q : PTm n)
   let B := unit p*unit q
   let C := K+two
   let t := precision Z A B C
-  let P := unit p
-  let Q := unit q
-  let T := unit t
-  have hP : Γ ⊢[PRAAx] le one P := unit_positive p
-  have hQ : Γ ⊢[PRAAx] le one Q := unit_positive q
-  have hT : Γ ⊢[PRAAx] le one T := unit_positive t
-  have hB : Γ ⊢[PRAAx] le one B := positive_product _ _ hP hQ
-  have hPT := positive_product P T hP hT
-  have hTQ := positive_product T Q hT hQ
-  have hmid : Γ ⊢[PRAAx] distanceBounded (ap2 f t x) (ap2 g t y) K T := by
+  have hmid : Γ ⊢[PRAAx] distanceBounded (ap2 f t x) (ap2 g t y) K (unit t) := by
     simpa [diagonalRate] using hd.allE t
-  have step := GaussianReconstructionRoots.distance_triangle _ _ _ _ _ _ _ hPT hT (point_at f x p t hf) hmid
-  have hStep := positive_product (P*T) T hPT hT
-  have joined := GaussianReconstructionRoots.distance_triangle _ _ _ _ _ _ _ hStep hTQ step (point_at g y t q hg)
-  apply slack_removal_at Z A B C hB
-  change Γ ⊢[PRAAx] distanceBounded (ap2 f p x) (ap2 g q y) (A*T+C*B) (B*T)
-  exact distance_radius_mono _ _ _ _ _ _
-    (positive_product _ _ hStep hTQ) (positive_product _ _ hB hT)
-    (le_of_eq_add (d := zero) (by dsimp only [A,B,C,P,Q,T]; ipra_ring)) joined
+  exact slack_removal_at Z A B C (positive_product _ _ (unit_positive p) (unit_positive q))
+    (distance_through_diagonal p q t K (point_at f x p t hf) hmid (point_at g y t q hg))
 
 theorem cross_of_diagonal_rate (f g : PR 2) (x y K : PTm n)
     (hf : Γ ⊢[PRAAx] pointCN f x) (hg : Γ ⊢[PRAAx] pointCN g y)

@@ -23,7 +23,7 @@ open GaussianBetaKernelGridComparison (row)
 open GaussianEulerIntegrandName (powerF powerData decayF decayData productF productData nameF data)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded qsub)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_through_auxiliary)
 open GaussianCoefficientNameBounds (unit unit_positive)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -66,18 +66,15 @@ theorem auxiliary_product_error (r z R B A a b N : PTm n) (h : Γ ⊢[PRAAx] sou
 theorem cofinal_slack (p v r z R B A a b N : PTm n) (h : Γ ⊢[PRAAx] source z R B A a b N) : Γ ⊢[PRAAx]
     GaussianRationalSlackRemoval.slack (qsub (row p z B a b N) (ap2 nameF v (data z B a b)))
       (errorNumerator p v N) (errorDenominator p v N) (cost a b) r := by
-  have dp := positive_product (Γ := Γ) _ _ (unit_positive p) (unit_positive r)
-  have ds := positive_product (Γ := Γ) _ _ h.andE₂.andE₂.andE₁ (unit_positive r)
-  have dt := positive_product (Γ := Γ) _ _ (unit_positive r) (unit_positive v)
   have first := row_regularity p r z R B A a b N h
-  have second := auxiliary_product_error r z R B A a b N h
+  have second : Γ ⊢[PRAAx] distanceBounded (row r z B a b N) (ap2 productF r (productData z B a b))
+      (one*unit r+(b+a*a+one)*N) (N*unit r) :=
+    distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _) (auxiliary_product_error r z R B A a b N h)
   have third := GaussianNameEquivalence.cross_at productF nameF (productData z B a b) (data z B a b) r v
     (GaussianEulerIntegrandName.original_power_times_decay z B a b (old_source z R B A a b N h))
-  have joined := GaussianReconstructionRoots.distance_triangle _ _ _ _ _ _ _ (positive_product _ _ dp ds) dt
-    (GaussianReconstructionRoots.distance_triangle _ _ _ _ _ _ _ dp ds first second) third
-  apply distance_radius_mono _ _ _ _ _ _ (positive_product _ _ (positive_product _ _ dp ds) dt)
-    (positive_product _ _ (positive_product _ _ (positive_product _ _ h.andE₂.andE₂.andE₁ (unit_positive p)) (unit_positive v)) (unit_positive r)) _ joined
-  exact le_of_eq_add (d := zero) (by dsimp only [errorNumerator,errorDenominator,cost,unit]; ipra_ring)
+  have joined := distance_through_auxiliary p v r one N (b+a*a+one) h.andE₂.andE₂.andE₁ first second third
+  exact distance_congr (.eqRefl _) (.eqRefl _) (by dsimp only [errorNumerator,errorDenominator,cost,unit]; ipra_ring) (.eqRefl _)
+    joined
 
 /-- At every original low time, the exact leading beta/Euler row error
 is 1/N, retaining both requested ordinary observation errors. -/
@@ -86,9 +83,7 @@ theorem original_low_row_error (p v z R B A a b N : PTm n) (h : Γ ⊢[PRAAx] so
       (unit p*unit v+N*(unit p+unit v)) (N*unit p*unit v) := by
   have hd := positive_product (Γ := Γ) _ _ (positive_product _ _ h.andE₂.andE₂.andE₁ (unit_positive p)) (unit_positive v)
   have raw := GaussianRationalSlackRemoval.slack_removal_at _ _ _ (cost a b) hd
-    (cofinal_slack p v (GaussianRationalSlackRemoval.precision
-      (qsub (row p z B a b N) (ap2 nameF v (data z B a b)))
-      (errorNumerator p v N) (errorDenominator p v N) (cost a b)) z R B A a b N h)
+    (cofinal_slack p v _ z R B A a b N h)
   exact distance_congr (.eqRefl _) (GaussianEulerIntegrandName.sample_at v z B a b).eqSymm (.eqRefl _) (.eqRefl _) raw
 
 theorem original_low_time_beta_row_unit_degree_error_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 9

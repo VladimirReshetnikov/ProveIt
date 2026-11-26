@@ -123,34 +123,6 @@ private theorem weighted (s q j z R B A e f d h L Q S E T a W : PTm n)
     (distance_radius_mono _ _ _ _ _ _ (unit_positive _) (unit_positive _)
       (le_congr (.eqRefl _) (by ipra_ring) rScaled) scaled) third
 
-private theorem compose (s p q a b c d : PTm n)
-    (h₁ : Γ ⊢[PRAAx] distanceBounded a b (unit p+unit (s+num 3)) (unit p*unit (s+num 3)))
-    (h₂ : Γ ⊢[PRAAx] distanceBounded b c (unit (s+num 3)+unit (s+num 3)) (unit (s+num 3)*unit (s+num 3)))
-    (h₃ : Γ ⊢[PRAAx] distanceBounded c d (unit (s+num 3)+unit q) (unit (s+num 3)*unit q)) :
-    Γ ⊢[PRAAx] distanceBounded a d (rateNumerator one (unit s) p q) (rateDenominator (unit s) p q) := by
-  let P := unit p
-  let Q := unit q
-  let W := unit (s+num 3)
-  let X := unit s
-  have hp : Γ ⊢[PRAAx] le one P := unit_positive p
-  have hq : Γ ⊢[PRAAx] le one Q := unit_positive q
-  have hw : Γ ⊢[PRAAx] le one W := unit_positive _
-  have pw := positive_product P W hp hw
-  have ww := positive_product W W hw hw
-  have wq := positive_product W Q hw hq
-  have step := GaussianReconstructionRoots.distance_triangle _ _ _ _ _ _ _ pw ww h₁ h₂
-  have both := positive_product (P*W) (W*W) pw ww
-  have joined := GaussianReconstructionRoots.distance_triangle _ _ _ _ _ _ _ both wq step h₃
-  have fixed : Γ ⊢[PRAAx] le (num 4) (unit (num 3)) :=
-    le_congr (by ipra_ring) (.eqRefl _) (RationalClosure.succ_le_two_pow (num 3))
-  have budget : Γ ⊢[PRAAx] le (num 4*X) W :=
-    le_congr (.eqRefl _) ((mul_comm _ _).eqTrans (pw_add two s (num 3)).eqSymm) (mul_le_mul_right X fixed)
-  apply distance_radius_mono _ _ _ _ _ _ (positive_product _ _ both wq)
-    (GaussianNamedInverseRate.denominator_positive (unit s) p q (unit_positive s)) _ joined
-  unfold rateNumerator rateDenominator
-  change Γ ⊢[PRAAx] le _ ((one*P*Q+X*(P+Q))*((P*W*(W*W))*(W*Q)))
-  ipra_le 𝔞(P*P*Q*Q*W*W*W)*sl budget
-
 theorem observations_from_image_source (s j p q z R B A e f d h L Q S E T a W : PTm n)
     (hs : Γ ⊢[PRAAx] source z R B A e f d h L Q S E T a W)
     (hj : Γ ⊢[PRAAx] le (cutoff (panelStage s L+two) z R B A e f d h L Q) j)
@@ -194,7 +166,7 @@ theorem observations_from_image_source (s j p q z R B A e f d h L Q S E T a W : 
     hs.andE₁.andE₂.andE₁ hs.andE₁.andE₂.andE₂.andE₂.andE₂.andE₂.andE₁
   have eq : Γ ⊢[PRAAx] crossEquivalent resultF formulaF y w :=
     GaussianBoundedConstantProductName.ordinary_product_identity referenceF L (fraction f e) _ (.andI base inv)
-  exact compose s p q _ _ _ _ first middle (cross_at resultF formulaF y w u q eq)
+  exact GaussianEulerPowerScalingUniformObservation.combine_three s p q _ _ _ _ first middle (cross_at resultF formulaF y w u q eq)
 
 theorem original_enclosing_observations (s j p q z R B A e f d h L Q S U E T a W : PTm n)
     (hs : Γ ⊢[PRAAx] source z R B A e f d h L Q S E T a W)

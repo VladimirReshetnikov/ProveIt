@@ -33,7 +33,7 @@ open GaussianFastValueCut (exponent query_budget)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalHorner (qmul positive_product canonical)
 open GaussianRationalMetric (distanceBounded)
-open GaussianRationalDistanceOrder (distance_radius_mono distance_symmetric)
+open GaussianRationalDistanceOrder (distance_radius_mono distance_symmetric distance_through_diagonal)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianExponentialReference (unit_monotone)
 
@@ -172,7 +172,7 @@ private theorem weighted_observations (s q z R B A e f d h L Q S U M : PTm n)
     (distance_radius_mono _ _ _ _ _ _ (unit_positive _) (unit_positive _) (le_congr (.eqRefl _) (by ipra_ring) rSecond) scaled)
     third
 
-private theorem combine_three (s p q a b c d : PTm n)
+theorem combine_three (s p q a b c d : PTm n)
     (h₁ : Γ ⊢[PRAAx] distanceBounded a b (unit p+unit (s+num 3)) (unit p*unit (s+num 3)))
     (h₂ : Γ ⊢[PRAAx] distanceBounded b c (unit (s+num 3)+unit (s+num 3)) (unit (s+num 3)*unit (s+num 3)))
     (h₃ : Γ ⊢[PRAAx] distanceBounded c d (unit (s+num 3)+unit q) (unit (s+num 3)*unit q)) :
@@ -181,24 +181,20 @@ private theorem combine_three (s p q a b c d : PTm n)
   let Q := unit q
   let W := unit (s+num 3)
   let X := unit s
-  have hp : Γ ⊢[PRAAx] le one P := unit_positive p
-  have hq : Γ ⊢[PRAAx] le one Q := unit_positive q
   have hw : Γ ⊢[PRAAx] le one W := unit_positive _
-  have pw := positive_product P W hp hw
-  have ww := positive_product W W hw hw
-  have wq := positive_product W Q hw hq
-  have step := GaussianReconstructionRoots.distance_triangle _ _ _ _ _ _ _ pw ww h₁ h₂
-  have both := positive_product (P*W) (W*W) pw ww
-  have joined := GaussianReconstructionRoots.distance_triangle _ _ _ _ _ _ _ both wq step h₃
+  have middle : Γ ⊢[PRAAx] distanceBounded b c two W :=
+    distance_radius_mono _ _ _ _ _ _ (positive_product _ _ hw hw) hw
+      (le_of_eq_add (d := zero) (by ipra_ring)) h₂
+  have joined := distance_through_diagonal p q (s+num 3) two h₁ middle h₃
   have fixed : Γ ⊢[PRAAx] le (num 4) (unit (num 3)) :=
     le_congr (by ipra_ring) (.eqRefl _) (RationalClosure.succ_le_two_pow (num 3))
   have budget : Γ ⊢[PRAAx] le (num 4*X) W :=
     le_congr (.eqRefl _) ((mul_comm _ _).eqTrans (pw_add two s (num 3)).eqSymm) (mul_le_mul_right X fixed)
-  apply distance_radius_mono _ _ _ _ _ _ (positive_product _ _ both wq)
+  apply distance_radius_mono _ _ _ _ _ _
+    (positive_product _ _ (positive_product _ _ (unit_positive p) (unit_positive q)) hw)
     (GaussianNamedInverseRate.denominator_positive (unit s) p q (unit_positive s)) _ joined
-  unfold rateNumerator rateDenominator
-  change Γ ⊢[PRAAx] le _ ((one*P*Q+X*(P+Q))*((P*W*(W*W))*(W*Q)))
-  ipra_le 𝔞(P*P*Q*Q*W*W*W)*sl budget
+  change Γ ⊢[PRAAx] le (((P+Q)*W+(two+two)*(P*Q))*(X*P*Q)) ((one*P*Q+X*(P+Q))*(P*Q*W))
+  ipra_le (𝔞(P)*𝔞(Q))^2*sl budget
 
 theorem original_uniform_panel_observations (s p q z R B A e f d h L Q S U M : PTm n)
     (hs : Γ ⊢[PRAAx] source z R B A e f d h L Q S U M) : Γ ⊢[PRAAx]

@@ -107,18 +107,9 @@ theorem diagonal_slack (f g : PR 2) (x y s t m : PTm n)
     (hEq : Γ ⊢[PRAAx] diagonalEquivalent f g x y) : Γ ⊢[PRAAx]
     GaussianRationalSlackRemoval.slack (qsub (ap2 f s x) (ap2 g t y))
       (unit s+unit t) (unit s*unit t) (two*two) m := by
-  have sm := positive_product (Γ := Γ) _ _ (unit_positive s) (unit_positive m)
-  have mt := positive_product (Γ := Γ) _ _ (unit_positive m) (unit_positive t)
-  have first := GaussianReconstructionRoots.distance_triangle _ _ _ _ _ _ _ sm (unit_positive m)
-    (point_at f x s m hF) (diagonal_at f g x y m hEq)
-  have combined := GaussianReconstructionRoots.distance_triangle _ _ _ _ _ _ _
-    (positive_product _ _ sm (unit_positive m)) mt first (point_at g y m t hG)
-  change Γ ⊢[PRAAx] distanceBounded (ap2 f s x) (ap2 g t y)
-    ((unit s+unit t)*unit m+(two*two)*(unit s*unit t)) ((unit s*unit t)*unit m)
-  exact distance_radius_mono _ _ _ _ _ _
-    (positive_product _ _ (positive_product _ _ sm (unit_positive m)) mt)
-    (positive_product _ _ (positive_product _ _ (unit_positive s) (unit_positive t)) (unit_positive m))
-    (le_of_eq_add (d := zero) (by ipra_ring)) combined
+  exact distance_congr (.eqRefl _) (.eqRefl _) (by unfold unit; ipra_ring) (.eqRefl _)
+    (GaussianRationalDistanceOrder.distance_through_diagonal s t m two
+      (point_at f x s m hF) (diagonal_at f g x y m hEq) (point_at g y m t hG))
 
 /-- A finite integer-gap query removes the auxiliary precision; no limit
 or induction on the two universal name predicates is needed. -/

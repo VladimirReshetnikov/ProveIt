@@ -26,7 +26,7 @@ open GaussianBetaKernelDecayDampedError (referenceBudget referenceDenominator)
 open GaussianEulerIntegrandName (powerF powerData decayF decayData productF productData nameF data)
 open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalMetric (bounded distanceBounded qsub)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_through_auxiliary)
 open GaussianCoefficientNameBounds (unit unit_positive)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -138,19 +138,13 @@ theorem auxiliary_product_error (r q z R B a b N : PTm n) (h : Γ ⊢[PRAAx] sou
 theorem cofinal_slack (p v q r z R B a b N : PTm n) (h : Γ ⊢[PRAAx] source z R B a b N) : Γ ⊢[PRAAx]
     GaussianRationalSlackRemoval.slack (qsub (row p z B a b N) (ap2 nameF v (data z B a b)))
       (errorNumerator p v q R a b N) (errorDenominator p v q R a b N) (cost q R a b) r := by
-  have dp := positive_product (Γ := Γ) _ _ (unit_positive p) (unit_positive r)
-  have ds := positive_product (Γ := Γ) _ _ (leading_denominator_positive q z R B a b N h) (unit_positive r)
-  have dt := positive_product (Γ := Γ) _ _ (unit_positive r) (unit_positive v)
-  have first := row_regularity p r z R B a b N h
-  have second := auxiliary_product_error r q z R B a b N h
+  have hD := leading_denominator_positive q z R B a b N h
   have third := GaussianNameEquivalence.cross_at productF nameF (productData z B a b) (data z B a b) r v
     (GaussianEulerIntegrandName.original_power_times_decay z B a b (GaussianEulerUpperPowerCompatibility.old_source z R B a b h.andE₁))
-  have joined := GaussianReconstructionRoots.distance_triangle _ _ _ _ _ _ _ (positive_product _ _ dp ds) dt
-    (GaussianReconstructionRoots.distance_triangle _ _ _ _ _ _ _ dp ds first second) third
-  apply distance_radius_mono _ _ _ _ _ _ (positive_product _ _ (positive_product _ _ dp ds) dt)
-    (positive_product _ _ (positive_product _ _ (positive_product _ _ (leading_denominator_positive q z R B a b N h)
-      (unit_positive p)) (unit_positive v)) (unit_positive r)) _ joined
-  exact le_of_eq_add (d := zero) (by dsimp only [errorNumerator,errorDenominator,cost,unit]; ipra_ring)
+  exact distance_congr (.eqRefl _) (.eqRefl _) (by dsimp only [errorNumerator,errorDenominator,cost,unit]; ipra_ring) (.eqRefl _)
+    (distance_through_auxiliary p v r (leadingNumerator q R a b) (leadingDenominator q R a b N)
+      (pw a R+a*a*referenceBudget q a b+one) hD
+      (row_regularity p r z R B a b N h) (auxiliary_product_error r q z R B a b N h) third)
 
 theorem original_high_row_damped_error (p v q z R B a b N : PTm n) (h : Γ ⊢[PRAAx] source z R B a b N) : Γ ⊢[PRAAx]
     distanceBounded (row p z B a b N) (ap2 nameF v (data z B a b))
@@ -158,9 +152,7 @@ theorem original_high_row_damped_error (p v q z R B a b N : PTm n) (h : Γ ⊢[P
   have hd := positive_product (Γ := Γ) _ _
     (positive_product _ _ (leading_denominator_positive q z R B a b N h) (unit_positive p)) (unit_positive v)
   exact GaussianRationalSlackRemoval.slack_removal_at _ _ _ (cost q R a b) hd
-    (cofinal_slack p v q (GaussianRationalSlackRemoval.precision
-      (qsub (row p z B a b N) (ap2 nameF v (data z B a b)))
-      (errorNumerator p v q R a b N) (errorDenominator p v q R a b N) (cost q R a b)) z R B a b N h)
+    (cofinal_slack p v q _ z R B a b N h)
 
 theorem power_add_two (a R : PTm n) : Γ ⊢[PRAAx] pw a (R+two) ≐ pw a R*a*a :=
   (pw_add a R two).eqTrans ((congrMul (.eqRefl _)
