@@ -140,6 +140,19 @@ theorem distance_triangle_same (z y w A C B : PTm n)
     (le_congr (.eqRefl _) (by ipra_ring) (le_refl _))
     (GaussianReconstructionRoots.distance_triangle _ _ _ _ _ _ _ hB hB hzy hyw)
 
+/-- Compare two observations through approximating model values at a common observation denominator. -/
+theorem distance_from_model_comparison {x y u v : PTm n} (A D U L M : PTm n)
+    (hD : Γ ⊢[PRAAx] le one D) (hU : Γ ⊢[PRAAx] le one U)
+    (left : Γ ⊢[PRAAx] distanceBounded x u L U) (middle : Γ ⊢[PRAAx] distanceBounded u v A D)
+    (right : Γ ⊢[PRAAx] distanceBounded y v M U) :
+    Γ ⊢[PRAAx] distanceBounded x y (A*U+(L+M)*D) (D*U) := by
+  have hUD := positive_product U D hU hD
+  have first := GaussianReconstructionRoots.distance_triangle x u v L U A D hU hD left middle
+  have joined := GaussianReconstructionRoots.distance_triangle x v y (L*D+A*U) (U*D) M U hUD hU first
+    (distance_symmetric y v M U hU right)
+  exact distance_radius_mono _ _ _ _ _ _ (positive_product _ _ hUD hU) (positive_product _ _ hD hU)
+    (le_of_eq_add (d := zero) (by ipra_ring)) joined
+
 /-- Combine the two end observations with a comparison at a shared auxiliary
 precision. The two end comparisons contribute two auxiliary units in total. -/
 theorem distance_through_auxiliary {x y z w : PTm n} (p q r A B C : PTm n)

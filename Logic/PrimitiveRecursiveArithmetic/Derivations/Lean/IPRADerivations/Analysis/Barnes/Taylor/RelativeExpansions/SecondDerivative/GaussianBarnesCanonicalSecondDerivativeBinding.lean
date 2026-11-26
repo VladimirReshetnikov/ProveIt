@@ -32,7 +32,7 @@ open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianNameArithmetic (multiplyF multiplyData multiply_fast)
 open GaussianNamedInverseRate (independentRate)
 open GaussianNamedLipschitzRate (diagonalEnvelope diagonalNumerator diagonalDenominator)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_from_model_comparison distance_symmetric distance_triangle_same)
 open GaussianRationalHorner (ofGaussian ofGaussian_represents qmul positive_product)
 open GaussianRationalMetric (bounded bounded_of_cleared distanceBounded qsub)
 open GaussianRationalSyntheticDivision (qmul_congr)
@@ -131,19 +131,6 @@ private theorem linear_observation (p z h R B r H : PTm n) (hz : Γ ⊢[PRAAx] s
   exact distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
     (distance_triangle_same _ _ _ _ _ _ (unit_positive p) left right)
 
-private theorem bridge (a b c d A D L M U : PTm n) (hD : Γ ⊢[PRAAx] le one D) (hU : Γ ⊢[PRAAx] le one U)
-    (h₁ : Γ ⊢[PRAAx] distanceBounded a b L U) (h₂ : Γ ⊢[PRAAx] distanceBounded b c A D)
-    (h₃ : Γ ⊢[PRAAx] distanceBounded d c M U) : Γ ⊢[PRAAx]
-    distanceBounded a d (A*U+(L+M)*D) (D*U) := by
-  let V := D*U
-  have hV := positive_product _ _ hD hU
-  have left := distance_radius_mono a b L U (L*D) V hU hV (le_of_eq_add (d := zero) (by dsimp only [V]; ipra_ring)) h₁
-  have middle := distance_radius_mono b c A D (A*U) V hD hV (le_of_eq_add (d := zero) (by dsimp only [V]; ipra_ring)) h₂
-  have right := distance_radius_mono c d M U (M*D) V hU hV (le_of_eq_add (d := zero) (by dsimp only [V]; ipra_ring))
-    (distance_symmetric _ _ _ _ hU h₃)
-  exact distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
-    (distance_triangle_same _ _ _ _ _ _ hV (distance_triangle_same _ _ _ _ _ _ hV left middle) right)
-
 theorem observation (p z h R B H : PTm n) (hs : Γ ⊢[PRAAx] input z h R B H) : Γ ⊢[PRAAx]
     distanceBounded (ap2 incrementF p (incrementData z h R B)) (ap2 linearF p (linearData z h R B))
       (diagonalNumerator (errorNumerator H) (denominator R B) (observationCost R H) p)
@@ -158,7 +145,7 @@ theorem observation (p z h R B H : PTm n) (hs : Γ ⊢[PRAAx] input z h R B H) :
   have first := difference_observation p z h R B r hz hw (le_add_right _ _)
   have middle := GaussianBarnesCanonicalSecondDerivativeInterval.quadratic_bound z h R B N H r source
   have last := linear_observation p z h R B r H hz hh (le_add_left _ _)
-  exact bridge _ _ _ _ (errorNumerator H) (denominator R B) (num 8) (two*(H+secondCap R)+H) (unit p)
+  exact distance_from_model_comparison (errorNumerator H) (denominator R B) (unit p) (num 8) (two*(H+secondCap R)+H)
     (denominator_positive R B hz.andE₁) (unit_positive p) first middle last
 
 theorem rate (z h R B H : PTm n) (hs : Γ ⊢[PRAAx] input z h R B H) :

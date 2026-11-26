@@ -29,7 +29,7 @@ open GaussianGammaCanonicalExponent (constant_at constantF constant_regular)
 open GaussianNameArithmetic (multiplyF multiplyData multiply_fast multiplyModulus sum_difference)
 open GaussianNamedInverseRate (independentRate)
 open GaussianNamedLipschitzRate (diagonalNumerator diagonalDenominator diagonalEnvelope)
-open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_radius_mono distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_from_model_comparison distance_symmetric distance_triangle_same)
 open GaussianRationalHorner (ofGaussian ofGaussian_represents positive_product qadd qmul)
 open GaussianRationalMetric (bounded bounded_of_cleared distanceBounded qsub qsub_canonical)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr qsub_congr qzero_add)
@@ -160,19 +160,6 @@ theorem linear_observation (p A C B R H K r : PTm n) (h : Γ ⊢[PRAAx] margin A
   exact distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
     (distance_triangle_same _ _ _ _ _ _ (unit_positive p) first second)
 
-private theorem bridge (a b c d A D U K M : PTm n) (hD : Γ ⊢[PRAAx] le one D) (hU : Γ ⊢[PRAAx] le one U)
-    (h₁ : Γ ⊢[PRAAx] distanceBounded a b K U) (h₂ : Γ ⊢[PRAAx] distanceBounded b c A D)
-    (h₃ : Γ ⊢[PRAAx] distanceBounded d c M U) :
-    Γ ⊢[PRAAx] distanceBounded a d (A*U+(K+M)*D) (D*U) := by
-  let V := D*U
-  have hV := positive_product _ _ hD hU
-  have left := distance_radius_mono a b K U (K*D) V hU hV (le_of_eq_add (d := zero) (by dsimp only [V]; ipra_ring)) h₁
-  have middle := distance_radius_mono b c A D (A*U) V hD hV (le_of_eq_add (d := zero) (by dsimp only [V]; ipra_ring)) h₂
-  have right := distance_radius_mono c d M U (M*D) V hU hV (le_of_eq_add (d := zero) (by dsimp only [V]; ipra_ring))
-    (distance_symmetric _ _ _ _ hU h₃)
-  exact distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
-    (distance_triangle_same _ _ _ _ _ _ hV (distance_triangle_same _ _ _ _ _ _ hV left middle) right)
-
 theorem observation (p A C B R H K : PTm n) (h : Γ ⊢[PRAAx] source A C B R H K) :
     Γ ⊢[PRAAx] distanceBounded (ap2 incrementF p (incrementData A C B R)) (ap2 linearF p (linearData A C B))
       (diagonalNumerator (numerator H K) (B*B) (observationCost A C B H) p) (diagonalDenominator (B*B) p) := by
@@ -180,7 +167,7 @@ theorem observation (p A C B R H K : PTm n) (h : Γ ⊢[PRAAx] source A C B R H 
   have first := difference_observation p A C B R r h.andE₂.andE₁ h.andE₂.andE₂ (le_add_right _ _)
   have middle := finite_error A C B R H K r h.andE₁
   have last := linear_observation p A C B R H K r h.andE₁ (le_add_left _ _)
-  exact bridge _ _ _ _ (numerator H K) (B*B) (unit p) (num 20) _
+  exact distance_from_model_comparison (numerator H K) (B*B) (unit p) (num 20) _
     (positive_product _ _ h.andE₁.andE₁ h.andE₁.andE₁) (unit_positive p) first middle last
 
 theorem rate (A C B R H K : PTm n) (h : Γ ⊢[PRAAx] source A C B R H K) :
