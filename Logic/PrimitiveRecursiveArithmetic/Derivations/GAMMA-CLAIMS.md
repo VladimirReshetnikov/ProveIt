@@ -3380,3 +3380,6 @@ The original Barnes cofinal cubic sampler has an explicit small bound at the far
 
 The cyclic signed-grid estimate uses the actual far-translated candidate derivative and canonical cubic samples. Given four certified Taylor observations at each residue, the checked precision schedule can be chosen independently of the mesh size and yields projected quotient distance at most 2⁻ᵖ. Deriving those Taylor comparisons from the coded C³ data is separate.
 [GaussianBarnesVignerasCyclicDerivative](Lean/IPRADerivations/Analysis/Barnes/Logarithms/GaussianBarnesVignerasCyclicDerivative.lean)
+
+An exact lower bound on the original kept powers discharges the relative head chart. Given positive endpoint margins, a common disk and a nonzero step satisfying the explicit dyadic bound, the literal full Barnes logarithm difference quotient agrees with the checked original first derivative to radius 2⁻ᵖ.
+[GaussianBarnesCanonicalPositiveRelativeLogarithmChart](Lean/IPRADerivations/Analysis/Barnes/Logarithms/GaussianBarnesCanonicalPositiveRelativeLogarithmChart.lean), [GaussianBarnesCanonicalPositiveLogarithmDyadicDerivative](Lean/IPRADerivations/Analysis/Barnes/Logarithms/GaussianBarnesCanonicalPositiveLogarithmDyadicDerivative.lean)
