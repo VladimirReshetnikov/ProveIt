@@ -3410,3 +3410,6 @@ The signed cyclic range, literal wrap errors, and exact cubic scale yield the pr
 
 A dyadic tolerance is selected before the fine refinement. A later signed lattice absorbs the rounding costs and gives distance at most 2⁻ᵖ from the explicit derivative, floor, and wrap certificate.
 [GaussianDiscretePeriodicDerivativeSchedule](Lean/IPRADerivations/Analysis/FiniteOperations/PeriodicGrids/GaussianDiscretePeriodicDerivativeSchedule.lean)
+
+At every encoded integer N≥2, the original Barnes logarithm at N+1 differs from the retained Stirling and Glaisher expression by at most 3/N² plus independent dyadic observation allowances. The regrouped leading coefficients are exact. A corresponding bound on positive rational translates remains required for the duplication constant.
+[GaussianBarnesCanonicalIntegerStirlingGamma](Lean/IPRADerivations/Analysis/Barnes/FunctionalEquations/IntegerValues/GaussianBarnesCanonicalIntegerStirlingGamma.lean), [GaussianBarnesCanonicalIntegerAsymptotic](Lean/IPRADerivations/Analysis/Barnes/FunctionalEquations/IntegerValues/GaussianBarnesCanonicalIntegerAsymptotic.lean), [GaussianBarnesCanonicalIntegerLeadingCoefficients](Lean/IPRADerivations/Analysis/Barnes/FunctionalEquations/IntegerValues/GaussianBarnesCanonicalIntegerLeadingCoefficients.lean)
