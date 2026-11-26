@@ -18,17 +18,15 @@ set_option autoImplicit false
 namespace LeanProofs.IPRA.Analysis.GaussianBetaLowRowError
 
 open_ipra
-open GaussianEulerCompactProductComparison (clock clock_later original_product)
+open GaussianEulerCompactProductComparison (clock)
 open GaussianBetaKernelGridComparison (row)
-open GaussianBetaKernelExponential (kernel)
 open GaussianEulerIntegrandName (powerF powerData decayF decayData productF productData nameF data)
-open GaussianRationalHorner (qmul positive_product)
+open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianCoefficientNameBounds (unit unit_positive)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
 
 def source (z R B A a b N : PTm n) : Fm PTm n :=
   GaussianEulerLowerPowerOrder.source z R B A a b ⋏ GaussianBetaKernelLogarithm.source a b N
@@ -42,60 +40,28 @@ theorem old_source (z R B A a b N : PTm n) (h : Γ ⊢[PRAAx] source z R B A a b
 
 theorem row_regularity (p r z R B A a b N : PTm n) (h : Γ ⊢[PRAAx] source z R B A a b N) : Γ ⊢[PRAAx]
     distanceBounded (row p z B a b N) (row r z B a b N) (unit p+unit r) (unit p*unit r) := by
-  let kp := clock p z B a b
-  let kr := clock r z B a b
-  let x := ap2 powerF kp (powerData z B a b)
-  let y := ap2 powerF kr (powerData z B a b)
-  let w := kernel a b N
-  have hp := GaussianExponentialReference.unit_monotone (Γ := Γ) (clock_later p z B a b)
-  have hr := GaussianExponentialReference.unit_monotone (Γ := Γ) (clock_later r z B a b)
-  have old := GaussianNameEquivalence.point_at powerF (powerData z B a b) kp kr
-    (GaussianEulerIntegrandName.power_regular z B a b (old_source z R B A a b N h))
-  have compare : Γ ⊢[PRAAx] le ((unit kp+unit kr)*(unit p*unit r)) ((unit p+unit r)*(unit kp*unit kr)) := by
-    ipra_le (𝔞 (unit p*unit kp))*sl hr+(𝔞 (unit r*unit kr))*sl hp
-  have powerError := distance_radius_mono _ _ _ _ _ _ (positive_product _ _ (unit_positive kp) (unit_positive kr))
-    (positive_product _ _ (unit_positive p) (unit_positive r)) compare old
-  have factor := GaussianBetaKernelUnitBound.kernel_bound a b N (GaussianBetaKernelDecayDampedError.full_source a b N h.andE₂)
-  have product := GaussianRationalReciprocal.bounded_product w (qsub x y) one one (unit p+unit r) (unit p*unit r)
-    (le_refl one) (positive_product _ _ (unit_positive p) (unit_positive r)) factor powerError
-  have exactDifference : Γ ⊢[PRAAx] qsub (qmul x w) (qmul y w) ≐ qmul w (qsub x y) :=
-    (GaussianRationalSyntheticDivision.qsub_congr (GaussianRationalPowerAlgebra.qmul_commutative x w)
-      (GaussianRationalPowerAlgebra.qmul_commutative y w)).eqTrans (GaussianRationalRoundedPower.multiplication_difference w x y)
-  exact GaussianRationalReciprocal.bound_congr exactDifference.eqSymm (one_mul _) (one_mul _) product
+  exact GaussianBetaUpperRowDampedError.row_regularity_of_source p r z B a b N
+    (old_source z R B A a b N h) h.andE₂
 
 theorem auxiliary_product_error (r z R B A a b N : PTm n) (h : Γ ⊢[PRAAx] source z R B A a b N) : Γ ⊢[PRAAx]
     distanceBounded (row r z B a b N) (ap2 productF r (productData z B a b))
       (unit r+(b+a*a+one)*N) (N*unit r) := by
   let k := clock r z B a b
-  let U := unit k
   let P := unit r
   let V := b*b*N
-  let x := ap2 powerF k (powerData z B a b)
-  let y := ap2 decayF k (decayData a b)
-  let w := kernel a b N
   have ha := h.andE₁.andE₂.andE₁.andE₁
   have hv : Γ ⊢[PRAAx] le one V := positive_product _ _ (positive_product _ _ h.andE₂.andE₁ h.andE₂.andE₁) h.andE₂.andE₂.andE₁
-  have hU := unit_positive (Γ := Γ) k
   have hP := unit_positive (Γ := Γ) r
-  have power := GaussianEulerLowTimePowerBound.original_power_bound k z R B A a b h.andE₁
-  have kernelError := GaussianBetaKernelUnitError.original_kernel_error k a b N h.andE₂
-  have raw := GaussianRationalReciprocal.bounded_product x (qsub w y) (b*U+a) (a*U) (a*a*U+V) (V*U)
-    (positive_product _ _ ha hU) (positive_product _ _ hv hU) power kernelError
-  have exactError := GaussianRationalReciprocal.bound_congr (GaussianRationalRoundedPower.multiplication_difference x w y).eqSymm
-    (.eqRefl _) (.eqRefl _) raw
-  have first := GaussianBetaUpperRowDampedError.product_budget b a (a*a) V U P ha hv hU
-    (GaussianExponentialReference.unit_monotone (clock_later r z B a b))
-  have scaled := distance_radius_mono _ _ _ _ _ _
-    (positive_product _ _ (positive_product _ _ ha hU) (positive_product _ _ hv hU))
-    (positive_product _ _ (positive_product _ _ ha hv) hP) first exactError
+  have scaled := GaussianBetaUpperRowDampedError.row_product_error_of_bounds r z B a b N b a (a*a) V ha hv
+    (GaussianEulerLowTimePowerBound.original_power_bound k z R B A a b h.andE₁)
+    (GaussianBetaKernelUnitError.original_kernel_error k a b N h.andE₂)
   have second : Γ ⊢[PRAAx] le ((b*(a*a)*P+(b+a*a+one)*(a*V))*(N*P))
       ((P+(b+a*a+one)*N)*((a*V)*P)) :=
     le_congr (by dsimp only [V]; ipra_ring) (by dsimp only [V]; ipra_ring)
       (add_le_add_right ((b+a*a+one)*a*V*N*P)
         (mul_le_mul_right (a*b*N*P*P) h.andE₁.andE₂.andE₂))
-  have final := distance_radius_mono _ _ _ _ _ _ (positive_product _ _ (positive_product _ _ ha hv) hP)
+  exact distance_radius_mono _ _ _ _ _ _ (positive_product _ _ (positive_product _ _ ha hv) hP)
     (positive_product _ _ h.andE₂.andE₂.andE₁ hP) second scaled
-  exact distance_congr (.eqRefl _) (original_product r z B a b).eqSymm (.eqRefl _) (.eqRefl _) final
 
 theorem cofinal_slack (p v r z R B A a b N : PTm n) (h : Γ ⊢[PRAAx] source z R B A a b N) : Γ ⊢[PRAAx]
     GaussianRationalSlackRemoval.slack (qsub (row p z B a b N) (ap2 nameF v (data z B a b)))
