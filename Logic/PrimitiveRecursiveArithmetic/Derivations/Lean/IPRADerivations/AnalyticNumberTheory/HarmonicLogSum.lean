@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.HarmonicMertensLower
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # The logarithmic sum for the harmonic logarithm (`pnt_ipra_constructive_2026-11-14`, `sb:log-sum`)
@@ -122,15 +123,9 @@ theorem i_step {k K L N0 : PTm n} (h : Γ ⊢[PRAAx] Hl (succ k) K L N0) (ih : �
 private abbrev sumF' : Fm PTm 4 := Hl (var 0) (var 1) (var 2) (var 3) ⟶ I2 (var 0) (var 1) (var 2)
 
 private theorem sum₀ : ([] : List (Fm PTm 4)) ⊢[PRAAx] sumF' := by
-  refine ind _ ⟨⟨le_QF _ _, le_QF _ _, le_QF _ _⟩, le_QF _ _, le_QF _ _⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_and, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, subst_pairT,
-      Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two, inst_three,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (i_zero _ _)
-  · simp only [Fm.subst_imp, Fm.subst_and, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, subst_pairT,
-      Syn.subst_var, Syn.repl_zero, repl_one, repl_two, repl_three,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine .impI ?_
+  ipra_ind (⟨⟨le_QF _ _, le_QF _ _, le_QF _ _⟩, le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2, subst_pairT]
+  · exact .impI (i_zero _ _)
+  · refine .impI ?_
     have h := (Prf.hyp0 : (Hl (succ (var 0)) (var 1) (var 2) (var 3) :: [sumF']) ⊢[PRAAx]
       Hl (succ (var 0)) (var 1) (var 2) (var 3))
     have h' : (Hl (succ (var 0)) (var 1) (var 2) (var 3) :: [sumF']) ⊢[PRAAx] Hl (var 0) (var 1) (var 2) (var 3) :=

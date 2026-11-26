@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.Fermat
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # RSA correctness and Fermat's theorem for units
@@ -37,13 +38,9 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 private abbrev pwMulF : Fm PTm 3 := pw (pw (var 1) (var 2)) (var 0) ≐ pw (var 1) (var 2 * var 0)
 
 private theorem pw_mul₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] pwMulF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      inst_two, ConciseIPRA.PTm.subst_zero]
-    exact (pw_zero _).eqTrans ((congrPw (.eqRefl _) (mul_zero _)).eqTrans (pw_zero _)).eqSymm
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.repl_zero, repl_one,
-      repl_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine (pw_succ _ _).eqTrans ((congrMul Prf.hyp0 (.eqRefl _)).eqTrans ?_)
+  ipra_ind [subst_ap2]
+  · exact (pw_zero _).eqTrans ((congrPw (.eqRefl _) (mul_zero _)).eqTrans (pw_zero _)).eqSymm
+  · refine (pw_succ _ _).eqTrans ((congrMul Prf.hyp0 (.eqRefl _)).eqTrans ?_)
     refine (pw_add _ _ _).eqSymm.eqTrans (congrPw (.eqRefl _) ?_)
     ipra_ring
 

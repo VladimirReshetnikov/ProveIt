@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.ZetaPrecision
 import IPRADerivations.Core.Gcd
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # The theta majorant sums to at most one (`zeta_functional_equation_ipra`)
@@ -40,8 +41,7 @@ def stepS : PTm 3 := var 1 * pw two (num 6 * var 0 + num 3) + num 4 * (succ (var
 /-- `S_k = Σ_{n<k} 4(n+1)² 2^{3k² − 3(n+1)²}`. -/
 def Sk (k : PTm n) : PTm n := ap2 (rec2 zero stepS) k zero
 
-@[simp] theorem subst_Sk {m : ℕ} (σ : Fin n → PTm m) (k : PTm n) : Syn.subst σ (Sk k) = Sk (Syn.subst σ k) := by
-  simp [Sk]
+ipra_subst Sk
 
 theorem S_zero : Γ ⊢[PRAAx] Sk (zero : PTm n) ≐ zero := by
   unfold Sk; simpa using rec2_zero (Γ := Γ) (zero : PTm 1) stepS (zero : PTm n)
@@ -54,9 +54,7 @@ theorem S_succ (k : PTm n) :
 def thInv (k : PTm n) : Fm PTm n :=
   le (pw two k * Sk k + pw two (num 3 * (k * k))) (pw two (num 3 * (k * k)) * pw two k)
 
-@[simp] theorem subst_thInv {m : ℕ} (σ : Fin n → PTm m) (k : PTm n) :
-    (thInv k).subst σ = thInv (Syn.subst σ k) := by
-  simp [thInv, subst_ap2]
+ipra_subst thInv [subst_ap2]
 
 /-- `Σ_{n=1}^{k} 4n² 2^{−3n²} ≤ 1 − 2^{−k}`, cleared over `2^{3k²}`. -/
 theorem theta_sum (k : PTm n) :

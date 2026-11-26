@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.StageAdvance
 import IPRADerivations.AnalyticNumberTheory.PNTThresholds
 import IPRADerivations.Foundations.BoundedSyntaxInduction
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # The finite induction over stages (`pnt_ipra_constructive_2026-11-14`, §"The induction predicate is a bounded
@@ -60,8 +61,7 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 /-- `A_j = 4D − 3j`. -/
 def Aj (j D : PTm n) : PTm n := monus (num 4 * D) (num 3 * j)
 
-@[simp] theorem subst_Aj {k : ℕ} (σ : Fin n → PTm k) (j D : PTm n) :
-    Syn.subst σ (Aj j D) = Aj (Syn.subst σ j) (Syn.subst σ D) := by simp [Aj]
+ipra_subst Aj
 
 /-- `A_min = 2^{20} q²`. -/
 abbrev Amin (p : PTm n) : PTm n := num 1048576 * (succ p * succ p)
@@ -112,8 +112,7 @@ def stepS : PTm 3 := sN (var 2) (Aj (var 0) (var 2)) (var 1)
 /-- `s_j`: `s_0 = D + 1600`, `s_{j+1} = sN(D, A_j, s_j)`. -/
 def sT (j D : PTm n) : PTm n := ap2 (rec2 (var 0 + num 1600) stepS) j D
 
-@[simp] theorem subst_sT {k : ℕ} (σ : Fin n → PTm k) (j D : PTm n) :
-    Syn.subst σ (sT j D) = sT (Syn.subst σ j) (Syn.subst σ D) := by simp [sT]
+ipra_subst sT
 
 theorem s_zero (D : PTm n) : Γ ⊢[PRAAx] sT zero D ≐ D + num 1600 := by
   have h := rec2_zero (Γ := Γ) (var 0 + num 1600) stepS D
@@ -170,10 +169,7 @@ def lawSyn (X D K L J j : PTm n) : BFm n := .imp (.le j J) (stageSyntax X (pw tw
 
 theorem law_formula (X D K L J j : PTm n) : formula (lawSyn X D K L J j) = lawS X D K L J j := rfl
 
-@[simp] theorem subst_lawS {k : ℕ} (σ : Fin n → PTm k) (X D K L J j : PTm n) :
-    (lawS X D K L J j).subst σ = lawS (Syn.subst σ X) (Syn.subst σ D) (Syn.subst σ K) (Syn.subst σ L)
-      (Syn.subst σ J) (Syn.subst σ j) := by
-  simp [lawS, Stage, LeanProofs.IPRA.Foundations.BoundedFormulas.subst_up_shift', Fm.subst_all, Fm.subst_imp]
+ipra_subst lawS [Stage, LeanProofs.IPRA.Foundations.BoundedFormulas.subst_up_shift', Fm.subst_all, Fm.subst_imp]
 
 /-! ## Monotonicity in the level and the base stage -/
 

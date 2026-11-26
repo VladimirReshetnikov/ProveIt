@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.GcdFiber
 import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # The divisor-sum identity `∑_{d ∣ n} φ(d) = n`
@@ -44,13 +45,9 @@ private abbrev p2F (e : PTm 3) : Fm PTm 3 :=
   ap3 (prod2F (pw two e)) (var 0) (var 1) (var 2) ≐ pw two (ap3 (sum2F e) (var 0) (var 1) (var 2))
 
 private theorem prod2_pw_two₀ (e : PTm 3) : ([] : List (Fm PTm 3)) ⊢[PRAAx] p2F e := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, subst_ap3, Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two,
-      ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
-    exact (prod2_zero _ _ _).eqTrans ((pw_zero _).eqSymm.eqTrans (congrAp2 powF (sum2_zero _ _ _).eqSymm (.eqRefl _)))
-  · simp only [Fm.subst_eq, subst_ap2, subst_ap3, Syn.subst_var, Syn.repl_zero, repl_one, repl_two,
-      ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
-    refine (prod2_succ _ (var 0) _ _).eqTrans ?_
+  ipra_ind [subst_ap2, subst_ap3]
+  · exact (prod2_zero _ _ _).eqTrans ((pw_zero _).eqSymm.eqTrans (congrAp2 powF (sum2_zero _ _ _).eqSymm (.eqRefl _)))
+  · refine (prod2_succ _ (var 0) _ _).eqTrans ?_
     have ee : inst3 (pw two e) (var 0 : PTm 3) (var 1) (var 2) = pw two (inst3 e (var 0) (var 1) (var 2)) := by
       simp [inst3]
     rw [ee]
@@ -67,11 +64,9 @@ private abbrev sumEqF (F : PTm 2) : Fm PTm 3 :=
   ap3 (sum2F (Syn.subst ![var 0, var 2] F)) (var 0) (var 1) (var 2) ≐ ap2 (sumF F) (var 0) (var 2)
 
 private theorem sum2_eq_sum₀ (F : PTm 2) : ([] : List (Fm PTm 3)) ⊢[PRAAx] sumEqF F := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, subst_ap3, Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two]
-    exact (sum2_zero _ _ _).eqTrans (sum_zero _ _).eqSymm
-  · simp only [Fm.subst_eq, subst_ap2, subst_ap3, Syn.subst_var, Syn.repl_zero, repl_one, repl_two]
-    refine (sum2_succ _ _ _ _).eqTrans (.eqTrans ?_ (sum_succ' _ _ _).eqSymm)
+  ipra_ind [subst_ap2, subst_ap3]
+  · exact (sum2_zero _ _ _).eqTrans (sum_zero _ _).eqSymm
+  · refine (sum2_succ _ _ _ _).eqTrans (.eqTrans ?_ (sum_succ' _ _ _).eqSymm)
     have e : inst3 (Syn.subst ![var 0, var 2] F) (var 0 : PTm 3) (var 1) (var 2) = Syn.subst ![var 0, var 2] F := by
       simp only [inst3, Syn.subst_subst]
       congr 1; funext k; fin_cases k <;> rfl
@@ -87,13 +82,9 @@ theorem sum2_eq_sum (F : PTm 2) (N p x : PTm n) :
 private abbrev zF : Fm PTm 3 := ap3 (sum2F zero) (var 0) (var 1) (var 2) ≐ zero
 
 private theorem sum2_zero_body₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] zF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap3, Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two,
-      ConciseIPRA.PTm.subst_zero]
-    exact sum2_zero _ _ _
-  · simp only [Fm.subst_eq, subst_ap3, Syn.subst_var, Syn.repl_zero, repl_one, repl_two,
-      ConciseIPRA.PTm.subst_zero]
-    refine (sum2_succ _ _ _ _).eqTrans ((congrAdd Prf.hyp0 ?_).eqTrans (add_zero _))
+  ipra_ind [subst_ap3]
+  · exact sum2_zero _ _ _
+  · refine (sum2_succ _ _ _ _).eqTrans ((congrAdd Prf.hyp0 ?_).eqTrans (add_zero _))
     have e : inst3 (zero : PTm 3) (var 0 : PTm 3) (var 1) (var 2) = zero := by simp [inst3]
     rw [e]; exact .eqRefl _
 
@@ -111,12 +102,9 @@ theorem sum2_zero_of_bounded (f : PTm 3) {N p q : PTm n}
 private abbrev onesF : Fm PTm 2 := ap2 (sumF one) (var 0) (var 1) ≐ var 0
 
 private theorem sum_ones₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] onesF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero]
-    exact sum_zero _ _
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    refine (sum_succ' _ _ _).eqTrans ?_
+  ipra_ind [subst_ap2]
+  · exact sum_zero _ _
+  · refine (sum_succ' _ _ _).eqTrans ?_
     have e : inst2 (one : PTm 2) (var 0 : PTm 2) (var 1) = one := by simp [inst2]
     rw [e]
     exact (congrAdd Prf.hyp0 (.eqRefl _)).eqTrans (by ipra_ring)

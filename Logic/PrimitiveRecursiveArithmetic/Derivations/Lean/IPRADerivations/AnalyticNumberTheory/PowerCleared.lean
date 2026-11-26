@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.LocalFactor
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # The power-cleared Euler product estimate
@@ -132,13 +133,9 @@ theorem A_pos_step {N : PTm n} (ih : Γ ⊢[PRAAx] A N ≐ succ (pred (A N))) :
 private abbrev posF : Fm PTm 1 := A (var 0) ≐ succ (pred (A (var 0)))
 
 private theorem A_pos₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] posF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_pred, Syn.subst_var, Syn.inst_zero,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact eq_succ_pred (prod_zero _ _)
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_pred, Syn.subst_var, Syn.repl_zero,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact A_pos_step Prf.hyp0
+  ipra_ind [subst_ap2]
+  · exact eq_succ_pred (prod_zero _ _)
+  · exact A_pos_step Prf.hyp0
 
 theorem A_pos (N : PTm n) : Γ ⊢[PRAAx] A N ≐ succ (pred (A N)) := by
   have h := inst (Γ := Γ) A_pos₀ (![N] : Fin 1 → PTm n)
@@ -204,10 +201,8 @@ private abbrev pcF : Fm PTm 2 :=
     le (pw (A (var 0)) (var 1)) (pw (two * two) (E (var 0) (var 1)) * pw (Dn (var 0)) (var 1))
 
 private theorem pc₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] pcF := by
-  refine ind _ ⟨trivial, le_QF _ _⟩ ?_ ?_
-  · simp only [Fm.subst_imp, subst_le, Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul,
-      Syn.subst_var, Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine .impI ?_
+  ipra_ind (⟨trivial, le_QF _ _⟩) [subst_le, subst_ap2]
+  · refine .impI ?_
     have e₁ : ([dvd (A zero) (var 0)] : List (Fm PTm 1)) ⊢[PRAAx] pw (A zero) (var 0) ≐ one :=
       (congrPw (prod_zero _ _) (.eqRefl _)).eqTrans (pw_one_base _)
     have e₂ : ([dvd (A zero) (var 0)] : List (Fm PTm 1)) ⊢[PRAAx]
@@ -215,9 +210,7 @@ private theorem pc₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] pcF := by
       (congrMul ((congrPw (.eqRefl _) (sum_zero _ _)).eqTrans (pw_zero _))
         ((congrPw (prod_zero _ _) (.eqRefl _)).eqTrans (pw_one_base _))).eqTrans (one_mul _)
     exact le_congr e₁.eqSymm e₂.eqSymm (le_refl _)
-  · simp only [Fm.subst_imp, subst_le, Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul,
-      Syn.subst_var, Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (pc_step Prf.hyp1 Prf.hyp0)
+  · exact .impI (pc_step Prf.hyp1 Prf.hyp0)
 
 theorem pc {N M : PTm n} (h : Γ ⊢[PRAAx] dvd (A N) M) :
     Γ ⊢[PRAAx] le (pw (A N) M) (pw (two * two) (E N M) * pw (Dn N) M) := by

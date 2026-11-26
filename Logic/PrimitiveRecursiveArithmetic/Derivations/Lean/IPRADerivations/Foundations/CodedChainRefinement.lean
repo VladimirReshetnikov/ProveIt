@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.ViableChainSelection
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # Bounded object-evidence refinement of numerical chain codes
@@ -62,21 +63,11 @@ def edgeEvidence (I : Instance) (T : PTm 4) (p : PTm n) : Fm PTm n := .all
 def evidence (I : Instance) (G : PTm 3) (T : PTm 4) (p : PTm n) : Fm PTm n :=
   localEvidence I G p ⋏ edgeEvidence I T p
 
-@[simp] theorem subst_localComparison {m : ℕ} (σ : Fin n → PTm m) (I : Instance) (G : PTm 3)
-    (i a p : PTm n) : (localComparison I G i a p).subst σ =
-      localComparison I G (Syn.subst σ i) (Syn.subst σ a) (Syn.subst σ p) := by simp [localComparison,sg]
-@[simp] theorem subst_edgeComparison {m : ℕ} (σ : Fin n → PTm m) (I : Instance) (T : PTm 4)
-    (i a b p : PTm n) : (edgeComparison I T i a b p).subst σ =
-      edgeComparison I T (Syn.subst σ i) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ p) := by
-  simp [edgeComparison,sg]
-@[simp] theorem subst_localEvidence {m : ℕ} (σ : Fin n → PTm m) (I : Instance) (G : PTm 3) (p : PTm n) :
-    (localEvidence I G p).subst σ = localEvidence I G (Syn.subst σ p) := by
-  simp [localEvidence,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_edgeEvidence {m : ℕ} (σ : Fin n → PTm m) (I : Instance) (T : PTm 4) (p : PTm n) :
-    (edgeEvidence I T p).subst σ = edgeEvidence I T (Syn.subst σ p) := by
-  simp [edgeEvidence,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_evidence {m : ℕ} (σ : Fin n → PTm m) (I : Instance) (G : PTm 3) (T : PTm 4) (p : PTm n) :
-    (evidence I G T p).subst σ = evidence I G T (Syn.subst σ p) := by simp [evidence]
+ipra_subst localComparison [sg]
+ipra_subst edgeComparison [sg]
+ipra_subst localEvidence [Syn.subst_shift, Syn.shift_subst]
+ipra_subst edgeEvidence [Syn.subst_shift, Syn.shift_subst]
+ipra_subst evidence
 
 /-- The only Boolean normalization used in refinement is derived from raw
 nonzeroness. No bit/value property of G or T is supplied. -/
@@ -235,9 +226,7 @@ def conjoined (I : Instance) (G : PTm 4) (T : PTm 5) (r : PTm 1) : Instance :=
 @[simp] theorem subst_localFold {m : ℕ} (σ : Fin n → PTm m) (G : PTm 4) (r : PTm 1) (i a p : PTm n) :
     Syn.subst σ (localFold G r i a p) = localFold G r (Syn.subst σ i) (Syn.subst σ a) (Syn.subst σ p) := by
   simp [localFold]
-@[simp] theorem subst_edgeFold {m : ℕ} (σ : Fin n → PTm m) (T : PTm 5) (r : PTm 1) (i a b p : PTm n) :
-    Syn.subst σ (edgeFold T r i a b p) = edgeFold T r (Syn.subst σ i) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ p) := by
-  simp [edgeFold]
+ipra_subst edgeFold
 
 theorem local_requirement_congr (G : PTm 4) {j j' i i' a a' p p' : PTm n}
     (hj : Γ ⊢[PRAAx] j ≐ j') (hi : Γ ⊢[PRAAx] i ≐ i')

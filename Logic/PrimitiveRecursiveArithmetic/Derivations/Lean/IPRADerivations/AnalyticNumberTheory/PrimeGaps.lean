@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.PrimeRank
 import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # Arbitrarily long runs of composite numbers
@@ -78,13 +79,9 @@ abbrev runF : Fm PTm 2 :=
   le (succ (var 0)) (var 1) ⟶ (pc (fact (var 1) + succ (var 0)) ≐ pc (fact (var 1) + one))
 
 theorem run_open : ([] : List (Fm PTm 2)) ⊢[PRAAx] runF := by
-  refine ind _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, PTm.subst_add, Syn.subst_var, Syn.inst_zero,
-      Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (.eqRefl _)
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, PTm.subst_add, Syn.subst_var, Syn.repl_zero,
-      repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine .impI ?_
+  ipra_ind (⟨le_QF _ _, trivial⟩) [subst_le, subst_ap2]
+  · exact .impI (.eqRefl _)
+  · refine .impI ?_
     have h : (le (succ (succ (var 0))) (var 1) :: [runF]) ⊢[PRAAx] le (succ (succ (var 0))) (var 1) := Prf.hyp0
     have h' : (le (succ (succ (var 0))) (var 1) :: [runF]) ⊢[PRAAx] le (succ (var 0)) (var 1) :=
       le_trans (le_succ_self _) h

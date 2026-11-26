@@ -6,6 +6,7 @@ import IPRADerivations.AnalyticNumberTheory.PowerCleared
 import IPRADerivations.AnalyticNumberTheory.Order
 import IPRADerivations.Core.ProdLemmas
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # Finite geometric expansions for the Goldbach–Euler theorem
@@ -58,14 +59,10 @@ private abbrev geomF : Fm PTm 2 :=
   le one (var 1) ⟶ pw (var 1) (var 0) ≐ monus (var 1) one * ap2 (sumF gB) (var 0) (var 1) + one
 
 private theorem geom₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] geomF := by
-  refine ind _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, PTm.subst_mul, PTm.subst_add, PTm.subst_monus,
-      Syn.subst_var, Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine .impI ((pw_zero _).eqTrans ?_)
+  ipra_ind (⟨le_QF _ _, trivial⟩) [subst_le, subst_ap2]
+  · refine .impI ((pw_zero _).eqTrans ?_)
     ipra_lc -𝔞 (monus (var 0) one) * natEq (sum_zero (Γ := [le one (var 0 : PTm 1)]) gB (var 0))
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, PTm.subst_mul, PTm.subst_add, PTm.subst_monus,
-      Syn.subst_var, Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (geom_step Prf.hyp0 (.impE Prf.hyp1 Prf.hyp0))
+  · exact .impI (geom_step Prf.hyp0 (.impE Prf.hyp1 Prf.hyp0))
 
 /-- `x^I = (x − 1) ∑_{i<I} x^i + 1` for `x ≥ 1`. -/
 theorem geom_sum {x : PTm n} (hx : Γ ⊢[PRAAx] le one x) (I : PTm n) :

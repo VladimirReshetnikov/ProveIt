@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.PhiPowTwo
 import IPRADerivations.DiophantineNumberTheory.Hurwitz
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # The dyadic lower bound for harmonic numbers
@@ -91,16 +92,10 @@ private abbrev blockF : Fm PTm 3 :=
     le (S (pw two (var 2)) (var 1) + var 0 * quo (var 1) (pw two (succ (var 2)))) (S (pw two (var 2) + var 0) (var 1))
 
 private theorem block₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] blockF := by
-  refine ind _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-  · simp only [Fm.subst_imp, subst_le, Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul,
-      Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    refine .impI (le_congr ?_ (congrAp2 (sumF hB) (add_zero _) (.eqRefl _)).eqSymm (le_refl _))
+  ipra_ind (⟨le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2]
+  · refine .impI (le_congr ?_ (congrAp2 (sumF hB) (add_zero _) (.eqRefl _)).eqSymm (le_refl _))
     ipra_ring
-  · simp only [Fm.subst_imp, subst_le, Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul,
-      Syn.subst_var, Syn.repl_zero, repl_one, repl_two, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact .impI (block_step Prf.hyp1 Prf.hyp0)
+  · exact .impI (block_step Prf.hyp1 Prf.hyp0)
 
 theorem block (d F j : PTm n) (h : Γ ⊢[PRAAx] le d (pw two j)) :
     Γ ⊢[PRAAx] le (S (pw two j) F + d * quo F (pw two (succ j))) (S (pw two j + d) F) := by
@@ -140,14 +135,10 @@ private abbrev dyadicF : Fm PTm 2 :=
   dvd (pw two (var 0)) (var 1) ⟶ le ((two + var 0) * var 1) (two * S (pw two (var 0)) (var 1))
 
 private theorem dyadic₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] dyadicF := by
-  refine ind _ ⟨trivial, le_QF _ _⟩ ?_ ?_
-  · simp only [Fm.subst_imp, subst_le, Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul,
-      Syn.subst_var, Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine .impI (le_congr ?_ (congrMul (.eqRefl _) (S_one _)).eqSymm (le_refl _))
+  ipra_ind (⟨trivial, le_QF _ _⟩) [subst_le, subst_ap2]
+  · refine .impI (le_congr ?_ (congrMul (.eqRefl _) (S_one _)).eqSymm (le_refl _))
     ipra_ring
-  · simp only [Fm.subst_imp, subst_le, Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul,
-      Syn.subst_var, Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (dyadic_step Prf.hyp1 Prf.hyp0)
+  · exact .impI (dyadic_step Prf.hyp1 Prf.hyp0)
 
 theorem dyadic {j F : PTm n} (h : Γ ⊢[PRAAx] dvd (pw two j) F) :
     Γ ⊢[PRAAx] le ((two + j) * F) (two * S (pw two j) F) := by

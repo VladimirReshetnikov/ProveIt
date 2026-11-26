@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.IterationFusion
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # Fixed points of filtered contractions
@@ -61,13 +62,9 @@ variable {T c : PTm 1} {ν : PTm 2}
 private def sizeF (T c : PTm 1) : Fm PTm 2 := app1 c (iter T (var 0) (var 1)) ≐ app1 c (var 1)
 
 private theorem size₀ (H : Filtered T c ν) : ([] : List (Fm PTm 2)) ⊢[PRAAx] sizeF T c := by
-  refine ind _ trivial ?_ ?_
-  · simp only [sizeF, Fm.subst_eq, subst_app1, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact congrApp1 c (iter_zero T _)
-  · simp only [sizeF, Fm.subst_eq, subst_app1, subst_ap2, Syn.subst_var, Syn.repl_zero, repl_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have ih : [sizeF T c] ⊢[PRAAx] app1 c (iter T (var 0) (var 1)) ≐ app1 c (var 1) := Prf.hyp0
+  ipra_ind [sizeF, subst_app1, subst_ap2]
+  · exact congrApp1 c (iter_zero T _)
+  · have ih : [sizeF T c] ⊢[PRAAx] app1 c (iter T (var 0) (var 1)) ≐ app1 c (var 1) := Prf.hyp0
     exact (congrApp1 c (iter_succ T _ _)).eqTrans ((H.size _).eqTrans ih)
 
 /-- `c(T^t s₀) = c(s₀)`. -/
@@ -83,13 +80,9 @@ private def agrF (T c : PTm 1) (ν : PTm 2) : Fm PTm 2 :=
     le (var 0) (inst2 ν (iter T (var 0) (var 1)) (iter T (succ (var 0)) (var 1)))
 
 private theorem agr₀ (H : Filtered T c ν) : ([] : List (Fm PTm 2)) ⊢[PRAAx] agrF T c ν := by
-  refine ind _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-  · simp only [agrF, Fm.subst_imp, subst_le, subst_app1, subst_ap2, subst_inst2, Syn.subst_var,
-      Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (zero_le _)
-  · simp only [agrF, Fm.subst_imp, subst_le, subst_app1, subst_ap2, subst_inst2, Syn.subst_var,
-      Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have ih : [agrF T c ν] ⊢[PRAAx] le (var 0) (succ (app1 c (var 1))) ⟶
+  ipra_ind (⟨le_QF _ _, le_QF _ _⟩) [agrF, subst_le, subst_app1, subst_ap2, subst_inst2]
+  · exact .impI (zero_le _)
+  · have ih : [agrF T c ν] ⊢[PRAAx] le (var 0) (succ (app1 c (var 1))) ⟶
         le (var 0) (inst2 ν (iter T (var 0) (var 1)) (iter T (succ (var 0)) (var 1))) := Prf.hyp0
     refine .impI ?_
     have hk : (le (succ (var 0)) (succ (app1 c (var 1))) :: [agrF T c ν]) ⊢[PRAAx]
@@ -126,13 +119,9 @@ private def uniF (T c : PTm 1) (ν : PTm 2) : Fm PTm 3 :=
     le (var 0) (inst2 ν (var 1) (var 2))
 
 private theorem uni₀ (H : Filtered T c ν) : ([] : List (Fm PTm 3)) ⊢[PRAAx] uniF T c ν := by
-  refine ind _ ⟨trivial, trivial, le_QF _ _, le_QF _ _⟩ ?_ ?_
-  · simp only [uniF, Fm.subst_imp, Fm.subst_eq, subst_le, subst_app1, subst_inst2, Syn.subst_var,
-      Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (.impI (.impI (zero_le _)))
-  · simp only [uniF, Fm.subst_imp, Fm.subst_eq, subst_le, subst_app1, subst_inst2, Syn.subst_var,
-      Syn.repl_zero, repl_one, repl_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine .impI (.impI (.impI ?_))
+  ipra_ind (⟨trivial, trivial, le_QF _ _, le_QF _ _⟩) [uniF, subst_le, subst_app1, subst_inst2]
+  · exact .impI (.impI (.impI (zero_le _)))
+  · refine .impI (.impI (.impI ?_))
     let Δ : List (Fm PTm 3) := [le (succ (var 0)) (succ (app1 c (var 1))), var 2 ≐ app1 T (var 2),
       var 1 ≐ app1 T (var 1), uniF T c ν]
     have hk : Δ ⊢[PRAAx] le (succ (var 0)) (succ (app1 c (var 1))) := .hyp (by simp [Δ])

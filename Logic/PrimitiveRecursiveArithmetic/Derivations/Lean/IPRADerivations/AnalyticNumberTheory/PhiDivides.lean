@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.PhiPower
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # Divisibility monotonicity of the totient
@@ -132,13 +133,9 @@ end Viol
 private abbrev violF : Fm PTm 2 := (var 1 ≐ succ (pred (var 1))) ⟶ ap2 (sumF violB) (var 0) (var 1) ≐ zero
 
 private theorem viol₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] violF := by
-  refine ind _ ⟨trivial, trivial⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_ap2, PTm.subst_pred, Syn.subst_var, Syn.inst_zero,
-      Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (sum_zero _ _)
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_ap2, PTm.subst_pred, Syn.subst_var, Syn.repl_zero,
-      repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine .impI ((sum_succ' _ _ _).eqTrans ?_)
+  ipra_ind (⟨trivial, trivial⟩) [subst_ap2]
+  · exact .impI (sum_zero _ _)
+  · refine .impI ((sum_succ' _ _ _).eqTrans ?_)
     exact (congrAdd (.impE Prf.hyp1 Prf.hyp0) (viol_step Prf.hyp0 (.impE Prf.hyp1 Prf.hyp0))).eqTrans (add_zero _)
 
 /-- `φ(a) ∣ φ(a c)` for `a ≥ 1`. -/

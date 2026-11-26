@@ -3,6 +3,7 @@ import IPRADerivations.DiophantineNumberTheory.FractionCount
 import IPRADerivations.AnalyticNumberTheory.SumReindex
 import IPRADerivations.Core.CongruenceTactic
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # The per-pair and geometric estimates of the Khinchin block (`hurwitz_khinchin_ipra`, (K9)–(K11))
@@ -77,9 +78,7 @@ theorem congrPw2 {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) : Γ ⊢[PRAAx] pw tw
 def g2Inv (J K0 : PTm n) : Fm PTm n :=
   num 3 * ap2 (sumF q2B) J K0 + pw two K0 * pw two K0 ≐ pw two (K0 + J) * pw two (K0 + J)
 
-@[simp] theorem subst_g2Inv {k : ℕ} (σ : Fin n → PTm k) (J K0 : PTm n) :
-    (g2Inv J K0).subst σ = g2Inv (Syn.subst σ J) (Syn.subst σ K0) := by
-  simp [g2Inv, subst_ap2]
+ipra_subst g2Inv [subst_ap2]
 
 /-- `3 Σ_{k<J} Q_k² + Q_0² = Q_J²` for `Q_k = 2^{K₀+k}`. -/
 theorem geo2 (J K0 : PTm n) :

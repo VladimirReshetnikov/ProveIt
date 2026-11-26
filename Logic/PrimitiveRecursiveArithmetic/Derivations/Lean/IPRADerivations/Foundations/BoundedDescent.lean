@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.IterationFusion
 import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # Bounded descent with a rank (`ipra_coherent_methods_2026-11-15`, `thm:rank`)
@@ -96,17 +97,11 @@ private def invF (T r D V : PTm 1) : Fm PTm 2 :=
         le (app1 r (iter T (var 0) (var 1)) + var 0) (app1 r (var 1))))
 
 private theorem inv₀ (H : Descent T r D V) : ([] : List (Fm PTm 2)) ⊢[PRAAx] invF T r D V := by
-  refine ind _ ⟨trivial, trivial, trivial, trivial⟩ ?_ ?_
-  · simp only [invF, Fm.subst_imp, Fm.subst_and, Fm.subst_or, Fm.subst_eq, subst_le, subst_app1,
-      subst_ap2, PTm.subst_add, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine .impI (.andI ((congrApp1 V (iter_zero T _)).eqTrans Prf.hyp0) (.orI₂ ?_))
+  ipra_ind (⟨trivial, trivial, trivial, trivial⟩) [invF, subst_le, subst_app1, subst_ap2]
+  · refine .impI (.andI ((congrApp1 V (iter_zero T _)).eqTrans Prf.hyp0) (.orI₂ ?_))
     exact le_congr ((congrAdd (congrApp1 r (iter_zero T _)) (.eqRefl _)).eqTrans
       (add_zero _)).eqSymm (.eqRefl _) (le_refl _)
-  · simp only [invF, Fm.subst_imp, Fm.subst_and, Fm.subst_or, Fm.subst_eq, subst_le, subst_app1,
-      subst_ap2, PTm.subst_add, Syn.subst_var, Syn.repl_zero, repl_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have ih : [invF T r D V] ⊢[PRAAx] (app1 V (var 1) ≐ one) ⟶
+  · have ih : [invF T r D V] ⊢[PRAAx] (app1 V (var 1) ≐ one) ⟶
         ((app1 V (iter T (var 0) (var 1)) ≐ one) ⋏
           ((app1 D (iter T (var 0) (var 1)) ≐ one) ⋎
             le (app1 r (iter T (var 0) (var 1)) + var 0) (app1 r (var 1)))) := Prf.hyp0

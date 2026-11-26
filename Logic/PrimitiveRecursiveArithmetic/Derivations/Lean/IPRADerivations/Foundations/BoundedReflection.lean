@@ -1,5 +1,7 @@
 import IPRADerivations.Core.Search
 import IPRADerivations.Core.MultiSums
+import IPRADerivations.Core.InductionTactic
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Bounded reflection: finite Boolean aggregators and bounded choice
@@ -47,20 +49,11 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 theorem one_ne_zero (φ : Fm PTm n) (h : Γ ⊢[PRAAx] (one : PTm n) ≐ zero) : Γ ⊢[PRAAx] φ :=
   .botE _ (succ_ne_zero (a := zero) h)
 
-theorem sg_cases (a : PTm n) : Γ ⊢[PRAAx] (sg a ≐ zero) ⋎ (sg a ≐ one) := by
-  refine .orE (zero_or_succ a) ?_ ?_
-  · exact .orI₁ ((congrMonus (.eqRefl _) (congrMonus (.eqRefl _) Prf.hyp0)).eqTrans sg_zero)
-  · exact .orI₂ ((congrMonus (.eqRefl _) (congrMonus (.eqRefl _) Prf.hyp0)).eqTrans (sg_succ _))
+alias sg_cases := Common.sg_zero_or_one
 
-theorem eqb_cases (a b : PTm n) : Γ ⊢[PRAAx] (eqb a b ≐ zero) ⋎ (eqb a b ≐ one) := by
-  refine .orE (lt_or_le a b) (.orI₁ (eqb_zero_of_lt Prf.hyp0)) ?_
-  refine .orE (lt_or_eq_of_le Prf.hyp0) (.orI₁ (eqb_zero_of_gt Prf.hyp0)) ?_
-  exact .orI₂ (eqb_of_eq Prf.hyp0.eqSymm)
+alias eqb_cases := Common.eqb_zero_or_one
 
-theorem eq_of_eqb {a b : PTm n} (h : Γ ⊢[PRAAx] eqb a b ≐ one) : Γ ⊢[PRAAx] a ≐ b := by
-  refine .orE (lt_or_le a b) (one_ne_zero _ (h.wk.eqSymm.eqTrans (eqb_zero_of_lt Prf.hyp0))) ?_
-  refine .orE (lt_or_eq_of_le Prf.hyp0) (one_ne_zero _ (h.wk.wk.eqSymm.eqTrans (eqb_zero_of_gt Prf.hyp0))) ?_
-  exact Prf.hyp0.eqSymm
+alias eq_of_eqb := Common.eq_of_eqb
 
 /-- `a ≠ 0` gives `1 ∸ a = 0`. -/
 theorem compl_of_ne {a : PTm n} (h : Γ ⊢[PRAAx] neg (a ≐ zero)) : Γ ⊢[PRAAx] monus one a ≐ zero := by
@@ -134,13 +127,9 @@ theorem all_step {N x : PTm n} (ih : Γ ⊢[PRAAx] allB f N x ≐ eqb (mu f N x)
 private abbrev aesF : Fm PTm 2 := allB f (var 0) (var 1) ≐ eqb (mu f (var 0) (var 1)) (var 0)
 
 private theorem aes₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] aesF f := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, subst_eqb, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact (allB_zero f _).eqTrans (eqb_of_eq (mu_zero _)).eqSymm
-  · simp only [Fm.subst_eq, subst_ap2, subst_eqb, Syn.subst_var, Syn.repl_zero, repl_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact all_step f Prf.hyp0
+  ipra_ind [subst_ap2, subst_eqb]
+  · exact (allB_zero f _).eqTrans (eqb_of_eq (mu_zero _)).eqSymm
+  · exact all_step f Prf.hyp0
 
 /-- `∏_{i<N} sg f(i, x) = [μ(N) = N]`: the product bit is the success bit of the search. -/
 theorem all_eq_search (N x : PTm n) : Γ ⊢[PRAAx] allB f N x ≐ eqb (mu f N x) N := by

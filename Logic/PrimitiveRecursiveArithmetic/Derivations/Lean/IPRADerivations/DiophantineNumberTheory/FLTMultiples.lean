@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.FermatQuartic
 import IPRADerivations.AnalyticNumberTheory.RSA
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # Fermat's Last Theorem for exponents divisible by 4
@@ -38,13 +39,9 @@ private abbrev pwPosF : Fm PTm 2 :=
   pw (succ (var 1)) (var 0) ≐ succ (pred (pw (succ (var 1)) (var 0)))
 
 private theorem pw_pos₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] pwPosF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_pred, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact eq_succ_pred (pw_zero _)
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_pred, Syn.subst_var, Syn.repl_zero, repl_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact (pw_succ _ _).eqTrans (pos_mul Prf.hyp0 (congrSucc (pred_succ _).eqSymm)) |>.eqTrans
+  ipra_ind [subst_ap2]
+  · exact eq_succ_pred (pw_zero _)
+  · exact (pw_succ _ _).eqTrans (pos_mul Prf.hyp0 (congrSucc (pred_succ _).eqSymm)) |>.eqTrans
       (congrSucc (congrPred (pw_succ _ _).eqSymm))
 
 /-- `(a + 1)ᵐ ≥ 1`. -/

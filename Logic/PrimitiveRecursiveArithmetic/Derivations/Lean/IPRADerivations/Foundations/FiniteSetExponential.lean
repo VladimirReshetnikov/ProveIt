@@ -2,6 +2,7 @@ import IPRADerivations.Probability.ProductPower
 import IPRADerivations.Combinatorics.LegendreDigits
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # Exponentials and products of finite sets (`ipra_categorical_methods`, Section 4)
@@ -99,15 +100,9 @@ private abbrev ltF (t : PTm 2) : Fm PTm 3 :=
     lt (ap2 (sumF (cB t)) (var 0) (pairT (var 1) (var 2))) (pw (var 1) (var 0))
 
 private theorem code_lt₀ (t : PTm 2) : ([] : List (Fm PTm 3)) ⊢[PRAAx] ltF t := by
-  refine ind _ ⟨trivial, trivial⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_lt, subst_ap2, subst_pairT, PTm.subst_pred,
-      Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact .impI (lt_congr (code_zero t _ _).eqSymm (pw_zero _).eqSymm (le_refl one))
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_lt, subst_ap2, subst_pairT, PTm.subst_pred,
-      Syn.subst_var, Syn.repl_zero, repl_one, repl_two, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact .impI (code_lt_step t Prf.hyp0 (.impE Prf.hyp1 Prf.hyp0))
+  ipra_ind (⟨trivial, trivial⟩) [subst_lt, subst_ap2, subst_pairT]
+  · exact .impI (lt_congr (code_zero t _ _).eqSymm (pw_zero _).eqSymm (le_refl one))
+  · exact .impI (code_lt_step t Prf.hyp0 (.impE Prf.hyp1 Prf.hyp0))
 
 /-- The code of a table of length `N` into `[m]` is an element of `[m^N]`. -/
 theorem code_lt (t : PTm 2) {m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (N p : PTm n) :
@@ -151,15 +146,9 @@ private abbrev evF (t : PTm 2) : Fm PTm 4 :=
       rem (inst2 t (var 1) (var 3)) (var 2))
 
 private theorem ev₀ (t : PTm 2) : ([] : List (Fm PTm 4)) ⊢[PRAAx] evF t := by
-  refine ind _ ⟨trivial, trivial, trivial⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_lt, subst_ap2, subst_pairT, subst_inst2,
-      PTm.subst_pred, Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two, inst_three,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (.impI (lt_zero_absurd _ Prf.hyp0))
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_lt, subst_ap2, subst_pairT, subst_inst2,
-      PTm.subst_pred, Syn.subst_var, Syn.repl_zero, repl_one, repl_two, repl_three,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (.impI (ev_step t Prf.hyp1 Prf.hyp0 (.impE hyp2 Prf.hyp1)))
+  ipra_ind (⟨trivial, trivial, trivial⟩) [subst_lt, subst_ap2, subst_pairT, subst_inst2]
+  · exact .impI (.impI (lt_zero_absurd _ Prf.hyp0))
+  · exact .impI (.impI (ev_step t Prf.hyp1 Prf.hyp0 (.impE hyp2 Prf.hyp1)))
 
 /-- The first inverse law: the `j`-th digit of the code of a table is its `j`-th entry. -/
 theorem ev_curry (t : PTm 2) {N j m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m))
@@ -211,18 +200,12 @@ private abbrev reconF : Fm PTm 3 :=
       quo (var 2) (pw (var 1) (var 0)) * pw (var 1) (var 0) ≐ var 2)
 
 private theorem recon₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] reconF := by
-  refine ind _ ⟨trivial, trivial⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul,
-      PTm.subst_pred, Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine .impI ?_
+  ipra_ind (⟨trivial, trivial⟩) [subst_ap2, subst_pairT]
+  · refine .impI ?_
     ipra_lc natEq (code_zero (Γ := [(var 0 : PTm 2) ≐ succ (pred (var 0))]) evT (var 0) (pairT (var 0) (var 1))) +
       𝔞 (quo (var 1 : PTm 2) (pw (var 0) zero)) * natEq (pw_zero (Γ := [(var 0 : PTm 2) ≐ succ (pred (var 0))]) (var 0)) +
       natEq ((congrAp2 quoF (.eqRefl (var 1 : PTm 2)) (pw_zero (Γ := [(var 0 : PTm 2) ≐ succ (pred (var 0))]) (var 0))).eqTrans (Prf.andE₁ (dmu (Γ := [(var 0 : PTm 2) ≐ succ (pred (var 0))]) (K := one) (q := var 1) (r := zero) (pos_of_eq_succ (c := zero) (.eqRefl _)) (by ipra_ring) (le_refl one))))
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul,
-      PTm.subst_pred, Syn.subst_var, Syn.repl_zero, repl_one, repl_two,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (recon_step Prf.hyp0 (.impE Prf.hyp1 Prf.hyp0))
+  · exact .impI (recon_step Prf.hyp0 (.impE Prf.hyp1 Prf.hyp0))
 
 /-- Reconstruction from digits: `∑_{j<N} ev(c, j) m^j + ⌊c / m^N⌋ m^N = c`. -/
 theorem recon {m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (N c : PTm n) :

@@ -4,6 +4,7 @@ import IPRADerivations.AnalyticNumberTheory.PrimorialUpper
 import IPRADerivations.AnalyticNumberTheory.TotientCorollaries
 import IPRADerivations.Core.CertificateTactics
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # The right endpoint of the denominator bound: `H_q(z) ≤ G_q(z)`
@@ -102,16 +103,12 @@ abbrev copF : Fm PTm 2 :=
   (var 1 ≐ succ (pred (var 1))) ⟶ (gcd (var 1) (ap2 (prodF (PE totBody)) (succ (var 0)) (var 1)) ≐ one)
 
 theorem cop_open : ([] : List (Fm PTm 2)) ⊢[PRAAx] copF := by
-  refine ind _ ⟨trivial, trivial⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_ex2, subst_ap2, PTm.subst_pred, Syn.subst_var, Syn.inst_zero,
-      Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine .impI ?_
+  ipra_ind (⟨trivial, trivial⟩) [subst_ex2, subst_ap2]
+  · refine .impI ?_
     have hq : [(var 0 : PTm 1) ≐ succ (pred (var 0))] ⊢[PRAAx] (var 0 : PTm 1) ≐ succ (pred (var 0)) := Prf.hyp0
     exact (congrGcd (.eqRefl _) (Aq_zero (var 0))).eqTrans
       (eq_one_of_dvd_one (gcd_pos hq) (Prf.andE₂ (gcd_dvd' (b := one) hq)))
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_ex2, subst_ap2, PTm.subst_pred, Syn.subst_var, Syn.repl_zero,
-      repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (cop_step Prf.hyp0 (.impE Prf.hyp1 Prf.hyp0))
+  · exact .impI (cop_step Prf.hyp0 (.impE Prf.hyp1 Prf.hyp0))
 
 /-- `gcd(q, A_q(y)) = 1` for `q ≥ 1`. -/
 theorem cop_q {q : PTm n} (hq : Γ ⊢[PRAAx] q ≐ succ (pred q)) (y : PTm n) :

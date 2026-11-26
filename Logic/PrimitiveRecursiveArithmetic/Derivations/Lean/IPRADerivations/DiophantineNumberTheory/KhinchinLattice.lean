@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.LatticeCount
 import IPRADerivations.Core.SumOrder
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # Lattice points under a line (`hurwitz_khinchin_ipra`, (K5))
@@ -64,9 +65,7 @@ def latInv (X M α γ β : PTm n) : Fm PTm n :=
     (le (two * β * latticeA X M α γ β + α * (X * succ X)) (γ * (X * succ X) + two * β * X) ⋏
       le (γ * (X * succ X)) (two * β * latticeA X M α γ β + α * (X * succ X) + two * β * X))
 
-@[simp] theorem subst_latInv {k : ℕ} (σ : Fin n → PTm k) (X M α γ β : PTm n) :
-    (latInv X M α γ β).subst σ = latInv (Syn.subst σ X) (Syn.subst σ M) (Syn.subst σ α) (Syn.subst σ γ) (Syn.subst σ β) := by
-  simp [latInv, subst_ap2]
+ipra_subst latInv [subst_ap2]
 
 theorem latticeA_succ (X M α γ β : PTm n) :
     Γ ⊢[PRAAx] latticeA (succ X) M α γ β ≐ latticeA X M α γ β + Foundations.LatticeCount.dS M (succ X * α) (succ X * γ) β := by

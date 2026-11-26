@@ -2,6 +2,7 @@ import IPRADerivations.Foundations.ApproximateWitness
 import IPRADerivations.Foundations.FiniteQueryDemand
 import IPRADerivations.Foundations.SequenceComposition
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # Actual finite nearest-neighbor and Hausdorff scans
@@ -339,9 +340,7 @@ def triangleLaw (d : PR 3) (p : PTm n) : Fm PTm n :=
     (distance d (var 2) (var 1) (Syn.shift (Syn.shift (Syn.shift p))) +
       distance d (var 1) (var 0) (Syn.shift (Syn.shift (Syn.shift p)))))))
 
-@[simp] theorem subst_triangleLaw {m : ℕ} (σ : Fin n → PTm m) (d : PR 3) (p : PTm n) :
-    (triangleLaw d p).subst σ = triangleLaw d (Syn.subst σ p) := by
-  simp [triangleLaw, Syn.up, Syn.subst_shift, ← Syn.shift_subst]
+ipra_subst triangleLaw [Syn.up, Syn.subst_shift, ← Syn.shift_subst]
 
 theorem triangle_at (d : PR 3) {p : PTm n} (h : Γ ⊢[PRAAx] triangleLaw d p) (x y z : PTm n) :
     Γ ⊢[PRAAx] le (distance d x z p) (distance d x y p + distance d y z p) := by

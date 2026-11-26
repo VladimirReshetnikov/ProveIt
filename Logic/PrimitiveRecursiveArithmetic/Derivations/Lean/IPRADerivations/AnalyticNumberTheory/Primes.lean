@@ -1,6 +1,7 @@
 import IPRADerivations.Core.Gcd
 import IPRADerivations.Core.Search
 import IPRADerivations.Analysis.Products
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # Least prime factors and Euclid's theorem
@@ -49,13 +50,9 @@ theorem not_dvd_one {p' : PTm n} (φ : Fm PTm n) (h : Γ ⊢[PRAAx] dvd (succ (s
 abbrev dvdFactF : Fm PTm 2 := le (succ (var 1)) (var 0) ⟶ dvd (succ (var 1)) (fact (var 0))
 
 theorem dvd_fact_open : ([] : List (Fm PTm 2)) ⊢[PRAAx] dvdFactF := by
-  refine ind _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, Syn.subst_var, Syn.inst_zero,
-      Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (lt_zero_absurd _ Prf.hyp0)
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, Syn.subst_var, Syn.repl_zero,
-      repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine .impI ?_
+  ipra_ind (⟨le_QF _ _, trivial⟩) [subst_le, subst_ap2]
+  · exact .impI (lt_zero_absurd _ Prf.hyp0)
+  · refine .impI ?_
     have hf := fact_succ (Γ := (le (succ (var 1)) (succ (var 0)) :: [dvdFactF])) (var 0) zero
     refine .orE (lt_or_eq_of_le ((succ_monus_succ _ _).eqSymm.eqTrans Prf.hyp0)) ?_ ?_
     · -- d < m + 1 with d ≤ m: d ∣ m! ∣ (m + 1)!.
@@ -77,13 +74,9 @@ theorem eq_succ_pred {x y : PTm n} (h : Γ ⊢[PRAAx] x ≐ succ y) : Γ ⊢[PRA
 abbrev factPosF : Fm PTm 1 := fact (var 0) ≐ succ (pred (fact (var 0)))
 
 theorem fact_pos_open : ([] : List (Fm PTm 1)) ⊢[PRAAx] factPosF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_pred, Syn.subst_var, Syn.inst_zero,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact eq_succ_pred (fact_zero _)
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_pred, Syn.subst_var, Syn.repl_zero,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine eq_succ_pred (y := succ (pred (fact (var 0))) * var 0 + pred (fact (var 0))) ?_
+  ipra_ind [subst_ap2]
+  · exact eq_succ_pred (fact_zero _)
+  · refine eq_succ_pred (y := succ (pred (fact (var 0))) * var 0 + pred (fact (var 0))) ?_
     refine (fact_succ _ _).eqTrans ((congrMul Prf.hyp0 (.eqRefl _)).eqTrans ?_)
     exact (mul_succ _ _).eqTrans (add_succ _ _)
 

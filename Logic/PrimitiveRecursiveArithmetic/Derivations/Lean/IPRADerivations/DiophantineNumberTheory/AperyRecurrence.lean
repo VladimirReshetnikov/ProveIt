@@ -4,6 +4,7 @@ import IPRADerivations.Probability.BinomialLaw
 import IPRADerivations.Core.SumSplit
 import IPRADerivations.Core.ProdLemmas
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # The Apéry recurrence
@@ -260,13 +261,9 @@ theorem phi_step {m K : PTm n} (ih : Γ ⊢[PRAAx] phiL m K ≐ phiR m K) :
 private abbrev phiF : Fm PTm 2 := phiL (var 1) (var 0) ≐ phiR (var 1) (var 0)
 
 private theorem phi₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] phiF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_monus, PTm.subst_num,
-      Syn.subst_var, Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact phi_base _
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_monus, PTm.subst_num,
-      Syn.subst_var, Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact phi_step Prf.hyp0
+  ipra_ind [subst_ap2]
+  · exact phi_base _
+  · exact phi_step Prf.hyp0
 
 theorem phi (m K : PTm n) : Γ ⊢[PRAAx] phiL m K ≐ phiR m K := by
   have h := inst (Γ := Γ) phi₀ (![K, m] : Fin 2 → PTm n)

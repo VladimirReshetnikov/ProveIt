@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.BackwardDemand
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # Predetermined demand recursion (`ipra_resources_and_elimination_2026-11-15`, `lem:horizon`, `thm:demand`)
@@ -65,16 +66,11 @@ private abbrev c1F : Fm PTm 4 :=
     backward D (var 1) (ap3 D (var 1) (var 2) (var 3)) (var 0) (var 3)
 
 private theorem c1₀ : ([] : List (Fm PTm 4)) ⊢[PRAAx] c1F D := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_backward, subst_ap3, Syn.subst_var, Syn.inst_zero,
-      Syn.inst_one, inst_two, inst_three, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    refine (backward_succ D _ _ zero _).eqTrans (.eqTrans ?_ (backward_zero D _ _ _).eqSymm)
+  ipra_ind [subst_backward, subst_ap3]
+  · refine (backward_succ D _ _ zero _).eqTrans (.eqTrans ?_ (backward_zero D _ _ _).eqSymm)
     exact congrAp3 D ((succ_monus_succ _ zero).eqTrans (monus_zero _)) (backward_zero D _ _ _)
       (.eqRefl _)
-  · simp only [Fm.subst_eq, subst_backward, subst_ap3, Syn.subst_var, Syn.repl_zero, repl_one,
-      repl_two, repl_three, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine (backward_succ D _ _ (succ (var 0)) _).eqTrans
+  · refine (backward_succ D _ _ (succ (var 0)) _).eqTrans
       (.eqTrans ?_ (backward_succ D _ _ (var 0) _).eqSymm)
     exact congrAp3 D (succ_monus_succ _ _) Prf.hyp0 (.eqRefl _)
 
@@ -171,16 +167,10 @@ private abbrev vcF : Fm PTm 4 :=
       V D b F (var 1) (ap3 D (var 1) (var 2) (var 3)) (var 0) (var 3))
 
 private theorem vc₀ : ([] : List (Fm PTm 4)) ⊢[PRAAx] vcF D b F := by
-  refine ind _ ⟨trivial, trivial⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_V, subst_ap3, Syn.subst_var,
-      Syn.inst_zero, Syn.inst_one, inst_two, inst_three, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    refine .impI ((V_zero D b F _ _ _).eqTrans (.eqTrans ?_ (V_zero D b F _ _ _).eqSymm))
+  ipra_ind (⟨trivial, trivial⟩) [subst_le, subst_V, subst_ap3]
+  · refine .impI ((V_zero D b F _ _ _).eqTrans (.eqTrans ?_ (V_zero D b F _ _ _).eqSymm))
     exact congrInst2 b (horizon_coherent D Prf.hyp0 _ _) (.eqRefl _)
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_V, subst_ap3, Syn.subst_var,
-      Syn.repl_zero, repl_one, repl_two, repl_three, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    refine .impI ((V_succ D b F _ _ _ _).eqTrans (.eqTrans ?_ (V_succ D b F _ _ _ _).eqSymm))
+  · refine .impI ((V_succ D b F _ _ _ _).eqTrans (.eqTrans ?_ (V_succ D b F _ _ _ _).eqSymm))
     exact congrAppF F (.eqRefl _) (horizon_coherent D Prf.hyp0 _ _)
       (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)) (.eqRefl _)
 

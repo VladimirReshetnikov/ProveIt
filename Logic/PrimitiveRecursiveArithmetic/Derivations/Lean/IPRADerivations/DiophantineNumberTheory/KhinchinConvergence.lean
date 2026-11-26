@@ -4,6 +4,7 @@ import IPRADerivations.Probability.Independence
 import IPRADerivations.AnalyticNumberTheory.Totient
 import IPRADerivations.DiophantineNumberTheory.HurwitzMargin
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # The convergent half of the finite Khinchin theorem (`hurwitz_khinchin_ipra`, (K1))
@@ -61,15 +62,11 @@ private abbrev dvdF : Fm PTm 2 :=
   le one (var 1) ⟶ (le (var 1) (var 0) ⟶ (fact (var 0) ≐ var 1 * quo (fact (var 0)) (var 1)))
 
 private theorem fact_dvd₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] dvdF := by
-  refine ind _ ⟨le_QF _ _, le_QF _ _, trivial⟩ ?_ ?_
-  · simp only [dvdF, Fm.subst_imp, subst_le, Fm.subst_eq, subst_ap2, PTm.subst_mul, Syn.subst_var,
-      Syn.inst_zero, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine .impI (.impI (.botE _ ?_))
+  ipra_ind (⟨le_QF _ _, le_QF _ _, trivial⟩) [dvdF, subst_le, subst_ap2]
+  · refine .impI (.impI (.botE _ ?_))
     -- `1 ≤ q ≤ 0`
     exact not_succ_le_self zero _ (le_trans Prf.hyp1 Prf.hyp0)
-  · simp only [dvdF, Fm.subst_imp, subst_le, Fm.subst_eq, subst_ap2, PTm.subst_mul, Syn.subst_var,
-      Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine .impI (.impI ?_)
+  · refine .impI (.impI ?_)
     let Δ : List (Fm PTm 2) := le (var 1) (succ (var 0)) :: le one (var 1) :: [dvdF]
     have hq : Δ ⊢[PRAAx] var 1 ≐ succ (pred (var 1)) := by
       refine .orE (zero_or_succ (var 1)) ?_ Prf.hyp0

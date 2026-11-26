@@ -2,6 +2,7 @@ import IPRADerivations.Core.Powers
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.DiophantineNumberTheory.FLTMultiples
 import IPRADerivations.Foundations.ChainViability
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # The finite arithmetic of the Khinchin divergence construction (`hurwitz_khinchin_ipra`, (K2))
@@ -92,9 +93,7 @@ theorem inst2_MB (A : PTm 2) (k z : PTm n) : inst2 (MB A) k z = mn (inst2 A k (s
 def minInv (A : PTm 2) (N D x : PTm n) : Fm PTm n :=
   le (mn (ap2 (sumF A) N x) D) (ap2 (sumF (MB A)) N (pairT D x))
 
-@[simp] theorem subst_minInv {k : ℕ} (σ : Fin n → PTm k) (A : PTm 2) (N D x : PTm n) :
-    (minInv A N D x).subst σ = minInv A (Syn.subst σ N) (Syn.subst σ D) (Syn.subst σ x) := by
-  simp [minInv, subst_ap2]
+ipra_subst minInv [subst_ap2]
 
 theorem min_step (A : PTm 2) {N D x : PTm n} (ih : Γ ⊢[PRAAx] minInv A N D x) :
     Γ ⊢[PRAAx] minInv A (succ N) D x := by
@@ -134,9 +133,7 @@ theorem min_sum (A : PTm 2) (N D x : PTm n) :
 /-- `(x+1)^{k+1} ≥ x^{k+1} + (k+1) x^k`. -/
 def bernInv (k x : PTm n) : Fm PTm n := le (pw x (succ k) + succ k * pw x k) (pw (succ x) (succ k))
 
-@[simp] theorem subst_bernInv {m : ℕ} (σ : Fin n → PTm m) (k x : PTm n) :
-    (bernInv k x).subst σ = bernInv (Syn.subst σ k) (Syn.subst σ x) := by
-  simp [bernInv, subst_ap2]
+ipra_subst bernInv [subst_ap2]
 
 theorem bern_base (x : PTm n) : Γ ⊢[PRAAx] bernInv zero x := by
   have e1 := natEq (pw_succ (Γ := Γ) x zero)
@@ -193,9 +190,7 @@ theorem half_bound (x : PTm n) : Γ ⊢[PRAAx] lt (two * pw x (succ x)) (pw (suc
 /-- `2X ≤ Y` gives `2^j X^j ≤ Y^j`. -/
 def ampInv (j X Y : PTm n) : Fm PTm n := le (pw two j * pw X j) (pw Y j)
 
-@[simp] theorem subst_ampInv {m : ℕ} (σ : Fin n → PTm m) (j X Y : PTm n) :
-    (ampInv j X Y).subst σ = ampInv (Syn.subst σ j) (Syn.subst σ X) (Syn.subst σ Y) := by
-  simp [ampInv, subst_ap2]
+ipra_subst ampInv [subst_ap2]
 
 theorem pow_amp {X Y : PTm n} (h : Γ ⊢[PRAAx] le (two * X) Y) (j : PTm n) :
     Γ ⊢[PRAAx] le (pw two j * pw X j) (pw Y j) := by

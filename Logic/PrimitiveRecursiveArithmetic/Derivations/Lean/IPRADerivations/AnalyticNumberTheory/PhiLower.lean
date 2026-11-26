@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.TotientCorollaries
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # The elementary lower bound `2 φ(n)² ≥ n`
@@ -172,12 +173,9 @@ theorem ob_step {N x : PTm n} (hV : Γ ⊢[PRAAx] ap2 (sumF obB) N x ≐ zero) :
 private abbrev obF : Fm PTm 2 := ap2 (sumF obB) (var 0) (var 1) ≐ zero
 
 private theorem ob₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] obF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero]
-    exact sum_zero _ _
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact (sum_succ' _ _ _).eqTrans ((congrAdd Prf.hyp0 (ob_step Prf.hyp0)).eqTrans (add_zero _))
+  ipra_ind [subst_ap2]
+  · exact sum_zero _ _
+  · exact (sum_succ' _ _ _).eqTrans ((congrAdd Prf.hyp0 (ob_step Prf.hyp0)).eqTrans (add_zero _))
 
 /-- `φ(n)² ≥ n` for odd `n`. -/
 theorem phi_sq_odd {N : PTm n} (hodd : Γ ⊢[PRAAx] rem N two ≐ one) : Γ ⊢[PRAAx] le N (phi N * phi N) := by

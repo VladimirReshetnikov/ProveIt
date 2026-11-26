@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.FiniteCoverAssignment
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # Variable group budgets for the actual first-cover assignment
@@ -32,14 +33,9 @@ def groupBudgets (f : PTm 3) (P K p B m : PTm n) : Fm PTm n :=
     le (length (group f (Syn.shift P) (Syn.shift K) (Syn.shift p) (var 0)))
       (Syn.shift m * entry (Syn.shift B) (var 0)))
 
-@[simp] theorem subst_budgetSum {k : ℕ} (σ : Fin n → PTm k) (K B : PTm n) :
-    Syn.subst σ (budgetSum K B) = budgetSum (Syn.subst σ K) (Syn.subst σ B) := by simp [budgetSum]
-@[simp] theorem subst_scaledSum {k : ℕ} (σ : Fin n → PTm k) (K B m : PTm n) :
-    Syn.subst σ (scaledSum K B m) = scaledSum (Syn.subst σ K) (Syn.subst σ B) (Syn.subst σ m) := by simp [scaledSum]
-@[simp] theorem subst_groupBudgets {k : ℕ} (σ : Fin n → PTm k) (f : PTm 3) (P K p B m : PTm n) :
-    (groupBudgets f P K p B m).subst σ = groupBudgets f (Syn.subst σ P) (Syn.subst σ K)
-      (Syn.subst σ p) (Syn.subst σ B) (Syn.subst σ m) := by
-  simp [groupBudgets,Syn.subst_shift,Syn.shift_subst]
+ipra_subst budgetSum
+ipra_subst scaledSum
+ipra_subst groupBudgets [Syn.subst_shift, Syn.shift_subst]
 
 theorem entry_body_at (B i : PTm n) : inst2 body i B = entry B i := by simp [body,inst2]
 theorem scaled_body_at (B m i : PTm n) : Γ ⊢[PRAAx] inst2 scaledBody i (pairT m B) ≐ m * entry B i := by

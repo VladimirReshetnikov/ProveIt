@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.WeightedMangoldt
 import IPRADerivations.AnalyticNumberTheory.SummatoryPhi
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # The factorial identity for the weighted von Mangoldt function
@@ -195,13 +196,9 @@ theorem fl_base (y : PTm n) :
   exact l1.eqTrans r0.eqSymm
 
 private theorem fl₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] flF w := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, subst_pairT, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact fl_base w _
-  · simp only [Fm.subst_eq, subst_ap2, subst_pairT, Syn.subst_var, Syn.repl_zero, repl_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine (congrLw w _ (fact_succ _ _)).eqTrans ?_
+  ipra_ind [subst_ap2, subst_pairT]
+  · exact fl_base w _
+  · refine (congrLw w _ (fact_succ _ _)).eqTrans ?_
     refine (lw_mul w (fact_pos _) (congrSucc (pred_succ _).eqSymm)).eqTrans ?_
     exact (congrAdd Prf.hyp0 (.eqRefl _)).eqTrans (fl_step w _ _).eqSymm
 

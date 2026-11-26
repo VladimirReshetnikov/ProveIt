@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.TauLogAbel
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # Floor telescoping and the cube identity (`pnt_ipra_constructive_2026-11-14`, towards `sb:symmetry`)
@@ -46,14 +47,10 @@ theorem inst2_cB (j x : PTm n) : inst2 cB j x = succ (succ two * (j * j + j)) :=
 private abbrev cubeF : Fm PTm 2 := ap2 (sumF cB) (var 0) (var 1) ≐ var 0 * var 0 * var 0
 
 private theorem cube₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] cubeF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have e := natEq (sum_zero (Γ := ([] : List (Fm PTm 1))) cB (var 0))
+  ipra_ind [subst_ap2]
+  · have e := natEq (sum_zero (Γ := ([] : List (Fm PTm 1))) cB (var 0))
     apply deriveNat; ipra_simps; linear_combination e
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.repl_zero, repl_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have ih := natEq (Prf.hyp0 : [cubeF] ⊢[PRAAx] cubeF)
+  · have ih := natEq (Prf.hyp0 : [cubeF] ⊢[PRAAx] cubeF)
     have s := sum_succ' (Γ := [cubeF]) cB (var 0) (var 1)
     rw [inst2_cB] at s
     have e := natEq s
@@ -90,10 +87,8 @@ private abbrev telF : Fm PTm 2 :=
   le (ap2 (sumF qB) (succ (var 0)) (var 1) + quo (var 1) (succ (var 0))) (two * var 1)
 
 private theorem tel₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] telF := by
-  refine ind _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have s := sum_succ' (Γ := ([] : List (Fm PTm 1))) qB zero (var 0)
+  ipra_ind (le_QF _ _) [subst_le, subst_ap2]
+  · have s := sum_succ' (Γ := ([] : List (Fm PTm 1))) qB zero (var 0)
     rw [inst2_qB] at s
     have e1 := natEq s
     have e0 := natEq (sum_zero (Γ := ([] : List (Fm PTm 1))) qB (var 0))
@@ -102,9 +97,7 @@ private theorem tel₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] telF := by
       congrAp2 quoF (.eqRefl _) (by ipra_ring)
     have e11 := natEq q11
     ipra_le 0 with e1 + e0 + e11 + 2 * q1
-  · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.repl_zero, repl_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have ih : [telF] ⊢[PRAAx] telF := Prf.hyp0
+  · have ih : [telF] ⊢[PRAAx] telF := Prf.hyp0
     have s := sum_succ' (Γ := [telF]) qB (succ (var 0)) (var 1)
     rw [inst2_qB] at s
     have e := natEq s

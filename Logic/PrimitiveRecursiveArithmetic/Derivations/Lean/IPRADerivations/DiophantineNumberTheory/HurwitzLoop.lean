@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.HurwitzExtraction
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # The extraction loop of the continued-fraction prefix (`hurwitz_khinchin_ipra`)
@@ -62,9 +63,7 @@ abbrev stepB : PTm 3 := nxt (var 1) (fstT (sndT (var 2))) (sndT (sndT (var 2)))
 /-- The state after `n` steps from `s₀`. -/
 def state (k s0 Y W : PTm n) : PTm n := ap2 (rec2 (fstT (var 0)) stepB) k (pairT s0 (pairT Y W))
 
-@[simp] theorem subst_state {m : ℕ} (σ : Fin n → PTm m) (k s0 Y W : PTm n) :
-    Syn.subst σ (state k s0 Y W) = state (Syn.subst σ k) (Syn.subst σ s0) (Syn.subst σ Y) (Syn.subst σ W) := by
-  simp [state]
+ipra_subst state
 
 theorem congrNxt {s s' Y Y' W W' : PTm n} (hs : Γ ⊢[PRAAx] s ≐ s') (hY : Γ ⊢[PRAAx] Y ≐ Y')
     (hW : Γ ⊢[PRAAx] W ≐ W') : Γ ⊢[PRAAx] nxt s Y W ≐ nxt s' Y' W' := by
@@ -99,9 +98,7 @@ abbrev detM (s : PTm n) : Fm PTm n := sP s * sQ' s ≐ sP' s * sQ s + one
 /-- The loop invariant: a sign region and a unit determinant. -/
 def Inv (s Y W : PTm n) : Fm PTm n := (R1 s Y W ⋎ R2 s Y W) ⋏ (detP s ⋎ detM s)
 
-@[simp] theorem subst_Inv {k : ℕ} (σ : Fin n → PTm k) (s Y W : PTm n) :
-    (Inv s Y W).subst σ = Inv (Syn.subst σ s) (Syn.subst σ Y) (Syn.subst σ W) := by
-  simp [Inv]
+ipra_subst Inv
 
 theorem inv_QF (s Y W : PTm n) : (Inv s Y W).QF := by
   simp [Inv, Fm.QF, le_QF]

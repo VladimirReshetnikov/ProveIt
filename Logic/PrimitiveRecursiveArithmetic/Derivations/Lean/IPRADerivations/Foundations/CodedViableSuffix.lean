@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.CodedViableChain
 import IPRADerivations.Core.CongruenceTactic
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # Coded viable suffixes at an arbitrary numerical level
@@ -59,8 +60,7 @@ def hasSuffix (I : Instance) (i a p : PTm n) : Fm PTm n := .ex
   (lt (var 0) (codeBound I (Syn.shift i) (Syn.shift p)) ⋏
     (admissibleSuffix I (var 0) (Syn.shift i) (Syn.shift p) ⋏ entry (var 0) zero ≐ Syn.shift a))
 
-@[simp] theorem subst_remaining {m : ℕ} (σ : Fin n → PTm m) (I : Instance) (i p : PTm n) :
-    Syn.subst σ (remaining I i p) = remaining I (Syn.subst σ i) (Syn.subst σ p) := by simp [remaining]
+ipra_subst remaining
 @[simp] theorem subst_suffixChain {m : ℕ} (σ : Fin n → PTm m) (I : Instance) (t i a p : PTm n) :
     Syn.subst σ (suffixChain I t i a p) = suffixChain I (Syn.subst σ t) (Syn.subst σ i)
       (Syn.subst σ a) (Syn.subst σ p) := by
@@ -68,27 +68,18 @@ def hasSuffix (I : Instance) (i a p : PTm n) : Fm PTm n := .ex
   congr 1; funext j; fin_cases j <;> rfl
 @[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (i a p : PTm n) :
     Syn.subst σ (data i a p) = data (Syn.subst σ i) (Syn.subst σ a) (Syn.subst σ p) := by simp [data]
-@[simp] theorem subst_suffixCode {m : ℕ} (σ : Fin n → PTm m) (I : Instance) (i a p : PTm n) :
-    Syn.subst σ (suffixCode I i a p) = suffixCode I (Syn.subst σ i) (Syn.subst σ a) (Syn.subst σ p) := by simp [suffixCode]
-@[simp] theorem subst_viableSuffixStart {m : ℕ} (σ : Fin n → PTm m) (I : Instance) (i a p : PTm n) :
-    (viableSuffixStart I i a p).subst σ = viableSuffixStart I (Syn.subst σ i) (Syn.subst σ a) (Syn.subst σ p) := by simp [viableSuffixStart]
-@[simp] theorem subst_localSuffix {m : ℕ} (σ : Fin n → PTm m) (I : Instance) (S i p : PTm n) :
-    (localSuffix I S i p).subst σ = localSuffix I (Syn.subst σ S) (Syn.subst σ i) (Syn.subst σ p) := by
-  simp [localSuffix,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_edgeSuffix {m : ℕ} (σ : Fin n → PTm m) (I : Instance) (S i p : PTm n) :
-    (edgeSuffix I S i p).subst σ = edgeSuffix I (Syn.subst σ S) (Syn.subst σ i) (Syn.subst σ p) := by
-  simp [edgeSuffix,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_admissibleSuffix {m : ℕ} (σ : Fin n → PTm m) (I : Instance) (S i p : PTm n) :
-    (admissibleSuffix I S i p).subst σ = admissibleSuffix I (Syn.subst σ S) (Syn.subst σ i) (Syn.subst σ p) := by simp [admissibleSuffix]
+ipra_subst suffixCode
+ipra_subst viableSuffixStart
+ipra_subst localSuffix [Syn.subst_shift, Syn.shift_subst]
+ipra_subst edgeSuffix [Syn.subst_shift, Syn.shift_subst]
+ipra_subst admissibleSuffix
 @[simp] theorem subst_boundStack {m : ℕ} (σ : Fin n → PTm m) (I : Instance) (r i p : PTm n) :
     Syn.subst σ (boundStack I r i p) = boundStack I (Syn.subst σ r) (Syn.subst σ i) (Syn.subst σ p) := by
   simp only [boundStack,ConciseIPRA.PTm.subst_app]
   congr 1; funext j; fin_cases j <;> rfl
 @[simp] theorem subst_codeBound {m : ℕ} (σ : Fin n → PTm m) (I : Instance) (i p : PTm n) :
     Syn.subst σ (codeBound I i p) = codeBound I (Syn.subst σ i) (Syn.subst σ p) := by simp [codeBound]
-@[simp] theorem subst_hasSuffix {m : ℕ} (σ : Fin n → PTm m) (I : Instance) (i a p : PTm n) :
-    (hasSuffix I i a p).subst σ = hasSuffix I (Syn.subst σ i) (Syn.subst σ a) (Syn.subst σ p) := by
-  simp [hasSuffix,Syn.subst_shift,Syn.shift_subst]
+ipra_subst hasSuffix [Syn.subst_shift, Syn.shift_subst]
 
 theorem suffix_zero (I : Instance) (i a p : PTm n) : Γ ⊢[PRAAx] suffixChain I zero i a p ≐ a := by
   have h := rec_zero (Γ := Γ) (var 1 : PTm 3) (suffixStep I) ![i,a,p]
@@ -177,9 +168,7 @@ theorem suffix_step (I : Instance) {t i a p : PTm n}
 def invariant (I : Instance) (i a p t : PTm n) : Fm PTm n :=
   le t (remaining I i p) ⟶ (lt (suffixChain I t i a p) (I.bd (i+t) p) ⋏
     I.V (monus (I.h p) (i+t)) (suffixChain I t i a p) p ≐ one)
-@[simp] theorem subst_invariant {m : ℕ} (σ : Fin n → PTm m) (I : Instance) (i a p t : PTm n) :
-    (invariant I i a p t).subst σ = invariant I (Syn.subst σ i) (Syn.subst σ a) (Syn.subst σ p) (Syn.subst σ t) := by
-  simp [invariant]
+ipra_subst invariant
 
 theorem suffix_invariant (I : Instance) (i a p t : PTm n)
     (hi : Γ ⊢[PRAAx] le i (I.h p)) (h : Γ ⊢[PRAAx] viableSuffixStart I i a p)
@@ -303,9 +292,7 @@ theorem coded_viable_step (I : Instance) (S i p j : PTm n)
 
 def reverseLaw (I : Instance) (S i p j : PTm n) : Fm PTm n :=
   le j (remaining I i p) ⟶ I.V j (entry S (monus (remaining I i p) j)) p ≐ one
-@[simp] theorem subst_reverseLaw {m : ℕ} (σ : Fin n → PTm m) (I : Instance) (S i p j : PTm n) :
-    (reverseLaw I S i p j).subst σ = reverseLaw I (Syn.subst σ S) (Syn.subst σ i) (Syn.subst σ p) (Syn.subst σ j) := by
-  simp [reverseLaw]
+ipra_subst reverseLaw
 
 theorem coded_viable (I : Instance) (S i p j : PTm n)
     (hi : Γ ⊢[PRAAx] le i (I.h p)) (h : Γ ⊢[PRAAx] admissibleSuffix I S i p)
@@ -353,9 +340,7 @@ theorem boundStack_succ (I : Instance) (r i p : PTm n) : Γ ⊢[PRAAx]
 
 def sizeLaw (I : Instance) (i a p r : PTm n) : Fm PTm n :=
   le r (succ (remaining I i p)) ⟶ le (stack (suffixBody I) r (data i a p)) (boundStack I r i p)
-@[simp] theorem subst_sizeLaw {m : ℕ} (σ : Fin n → PTm m) (I : Instance) (i a p r : PTm n) :
-    (sizeLaw I i a p r).subst σ = sizeLaw I (Syn.subst σ i) (Syn.subst σ a) (Syn.subst σ p) (Syn.subst σ r) := by
-  simp [sizeLaw,stack]
+ipra_subst sizeLaw [stack]
 
 theorem stack_bound_step (I : Instance) (i a p r : PTm n)
     (hi : Γ ⊢[PRAAx] le i (I.h p)) (h : Γ ⊢[PRAAx] viableSuffixStart I i a p)

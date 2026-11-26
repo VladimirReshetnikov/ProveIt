@@ -2,6 +2,7 @@ import IPRADerivations.Analysis.RationalArgmin
 import IPRADerivations.Analysis.RationalSupMetric
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # Exact signed rational endpoint clearing for Minkowski boxes
@@ -44,9 +45,7 @@ def scaledGap (a b c d : PTm n) : PTm n := monus (scaledLeft b a d c) (scaledLef
   simp only [rationalLT, subst_lt, subst_left]
 @[simp] theorem subst_scaled {l : ℕ} (σ : Fin n → PTm l) (a c : PTm n) :
     (scaled a c).subst σ = scaled (Syn.subst σ a) (Syn.subst σ c) := by simp [scaled, ZT.subst, numeratorOf]
-@[simp] theorem subst_scaledLeft {l : ℕ} (σ : Fin n → PTm l) (a b c d : PTm n) :
-    Syn.subst σ (scaledLeft a b c d) = scaledLeft (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ d) := by
-  simp [scaledLeft, scaled, numeratorOf]
+ipra_subst scaledLeft [scaled, numeratorOf]
 @[simp] theorem subst_gap {l : ℕ} (σ : Fin n → PTm l) (a b : PTm n) :
     Syn.subst σ (gap a b) = gap (Syn.subst σ a) (Syn.subst σ b) := by
   simp only [gap, PTm.subst_monus, subst_left]

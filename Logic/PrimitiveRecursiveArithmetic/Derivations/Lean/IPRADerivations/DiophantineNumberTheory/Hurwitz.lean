@@ -1,4 +1,5 @@
 import IPRADerivations.Core.Pairing
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # Growth of continued-fraction denominators (`hurwitz_khinchin_ipra`)
@@ -42,10 +43,8 @@ abbrev invariant : Fm PTm 1 :=
   le (var 0) (q a' (var 0)) ⋏ (le (succ (var 0)) (q a' (var 0) + q' a' (var 0)) ⋏ le one (q a' (var 0)))
 
 theorem invariant_open : ([] : List (Fm PTm 1)) ⊢[PRAAx] invariant (a' := a') := by
-  refine ind _ ⟨le_QF _ _, le_QF _ _, le_QF _ _⟩ ?_ ?_
-  · simp only [Fm.subst_and, subst_le, PTm.subst_add, subst_sim₁, subst_sim₂, Syn.subst_var,
-      Syn.inst_zero, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have e₁ := sim₁_zero (Γ := ([] : List (Fm PTm 0))) one zero (qStep a') (var 1)
+  ipra_ind (⟨le_QF _ _, le_QF _ _, le_QF _ _⟩) [subst_le, subst_sim₁, subst_sim₂]
+  · have e₁ := sim₁_zero (Γ := ([] : List (Fm PTm 0))) one zero (qStep a') (var 1)
       (fun _ : Fin 1 => (zero : PTm 0))
     have e₂ := sim₂_zero (Γ := ([] : List (Fm PTm 0))) one zero (qStep a') (var 1)
       (fun _ : Fin 1 => (zero : PTm 0))
@@ -53,9 +52,7 @@ theorem invariant_open : ([] : List (Fm PTm 1)) ⊢[PRAAx] invariant (a' := a') 
     refine .andI (zero_le _) (.andI ?_ ?_)
     · exact le_congr (.eqRefl _) ((add_zero _).eqSymm.eqTrans (congrAdd e₁ e₂).eqSymm) (le_refl _)
     · exact le_congr (.eqRefl _) e₁.eqSymm (le_refl _)
-  · simp only [Fm.subst_and, subst_le, PTm.subst_add, subst_sim₁, subst_sim₂, Syn.subst_var,
-      Syn.repl_zero, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have h₁ : [invariant (a' := a')] ⊢[PRAAx] le (var 0) (q a' (var 0)) := .andE₁ Prf.hyp0
+  · have h₁ : [invariant (a' := a')] ⊢[PRAAx] le (var 0) (q a' (var 0)) := .andE₁ Prf.hyp0
     have h₂ : [invariant (a' := a')] ⊢[PRAAx] le (succ (var 0)) (q a' (var 0) + q' a' (var 0)) :=
       .andE₁ (.andE₂ Prf.hyp0)
     have h₃ : [invariant (a' := a')] ⊢[PRAAx] le one (q a' (var 0)) := .andE₂ (.andE₂ Prf.hyp0)

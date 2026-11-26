@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.Fermat
 import IPRADerivations.DiophantineNumberTheory.Coprime
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # Euler's totient at prime powers
@@ -165,14 +166,10 @@ private abbrev countF : Fm PTm 2 :=
   (var 1 ≐ succ (pred (var 1))) ⟶ ap2 (sumF mulBody) (var 0) (var 1) ≐ quo (var 0 + pred (var 1)) (var 1)
 
 private theorem count₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] countF := by
-  refine ind _ ⟨trivial, trivial⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_pred, Syn.subst_var,
-      Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine .impI ((sum_zero _ _).eqTrans (quo_eq (q := zero) (r := pred (var 0)) Prf.hyp0 ?_ (pred_lt Prf.hyp0)).eqSymm)
+  ipra_ind (⟨trivial, trivial⟩) [subst_ap2]
+  · refine .impI ((sum_zero _ _).eqTrans (quo_eq (q := zero) (r := pred (var 0)) Prf.hyp0 ?_ (pred_lt Prf.hyp0)).eqSymm)
     ipra_ring
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_pred, Syn.subst_var,
-      Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine .impI ?_
+  · refine .impI ?_
     refine (sum_succ' _ (var 0) (var 1)).eqTrans ?_
     rw [inst2_mul]
     exact (congrAdd (.impE Prf.hyp1 Prf.hyp0) (.eqRefl _)).eqTrans (quo_step Prf.hyp0).eqSymm

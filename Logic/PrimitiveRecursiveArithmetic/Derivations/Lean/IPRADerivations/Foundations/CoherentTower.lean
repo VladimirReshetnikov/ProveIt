@@ -2,6 +2,7 @@ import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.Foundations.FiniteSetExponential
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # Coherent points from bounded surjective liftings (`ipra_categorical_methods`, `thm:tower`)
@@ -217,13 +218,9 @@ private def towerF (W : Tower) : Fm PTm 2 :=
   W.mem zero (var 1) ⟶ W.mem (var 0) (W.pt (var 0) (var 1))
 
 private theorem tower₀ (L : W.Lifting) : ([] : List (Fm PTm 2)) ⊢[PRAAx] towerF W := by
-  refine ind _ ⟨⟨trivial, trivial, trivial⟩, trivial, trivial, trivial⟩ ?_ ?_
-  · simp only [towerF, Fm.subst_imp, subst_mem, subst_pt, Syn.subst_var, Syn.inst_zero,
-      Syn.inst_one, ConciseIPRA.PTm.subst_zero]
-    exact .impI (mem_congr W (pt_zero W _).eqSymm Prf.hyp0)
-  · simp only [towerF, Fm.subst_imp, subst_mem, subst_pt, Syn.subst_var, Syn.repl_zero, repl_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have ih : [towerF W] ⊢[PRAAx] W.mem zero (var 1) ⟶ W.mem (var 0) (W.pt (var 0) (var 1)) :=
+  ipra_ind (⟨⟨trivial, trivial, trivial⟩, trivial, trivial, trivial⟩) [towerF, subst_mem, subst_pt]
+  · exact .impI (mem_congr W (pt_zero W _).eqSymm Prf.hyp0)
+  · have ih : [towerF W] ⊢[PRAAx] W.mem zero (var 1) ⟶ W.mem (var 0) (W.pt (var 0) (var 1)) :=
       Prf.hyp0
     exact .impI (.andE₁ (pt_step L (.impE ih.wk Prf.hyp0)))
 

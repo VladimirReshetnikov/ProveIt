@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.Smooth
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # The Euler product dominates the harmonic sum
@@ -253,13 +254,9 @@ private abbrev baseF : Fm PTm 3 :=
   le (Sm one (var 1) (var 2) (var 0)) (sg (monus (var 0) one) * var 2)
 
 private theorem base₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] baseF := by
-  refine ind _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, Fm.subst_eq, subst_ap2, subst_pairT, PTm.subst_mul, PTm.subst_monus, Syn.subst_var,
-      Syn.inst_zero, Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact le_zero_of (sum_zero _ _)
-  · simp only [subst_le, Fm.subst_eq, subst_ap2, subst_pairT, PTm.subst_mul, PTm.subst_monus, Syn.subst_var,
-      Syn.repl_zero, repl_one, repl_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact base_step Prf.hyp0
+  ipra_ind (le_QF _ _) [subst_le, subst_ap2, subst_pairT]
+  · exact le_zero_of (sum_zero _ _)
+  · exact base_step Prf.hyp0
 
 /-- `Sm(1) ≤ F`: only `m = 1` is `1`-smooth. -/
 theorem base_le (L F N : PTm n) : Γ ⊢[PRAAx] le (Sm one L F N) F := by
@@ -430,16 +427,12 @@ private abbrev mainF : Fm PTm 4 :=
   le (Sm (A (var 0)) (var 1) (var 2) (var 3) * Dn (var 0)) (var 2 * A (var 0))
 
 private theorem main₀ : ([] : List (Fm PTm 4)) ⊢[PRAAx] mainF := by
-  refine ind _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, Fm.subst_eq, subst_ap2, subst_pairT, PTm.subst_mul, Syn.subst_var,
-      Syn.inst_zero, Syn.inst_one, inst_two, inst_three, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have eA : ([] : List (Fm PTm 3)) ⊢[PRAAx] A (zero : PTm 3) ≐ one := prod_zero _ _
+  ipra_ind (le_QF _ _) [subst_le, subst_ap2, subst_pairT]
+  · have eA : ([] : List (Fm PTm 3)) ⊢[PRAAx] A (zero : PTm 3) ≐ one := prod_zero _ _
     have eD : ([] : List (Fm PTm 3)) ⊢[PRAAx] Dn (zero : PTm 3) ≐ one := prod_zero _ _
     exact le_congr (congrMul (Sm_congr eA) eD).eqSymm (congrMul (.eqRefl _) eA).eqSymm
       (le_mul_mono (base_le _ _ _) (le_refl _))
-  · simp only [subst_le, Fm.subst_eq, subst_ap2, subst_pairT, PTm.subst_mul, Syn.subst_var,
-      Syn.repl_zero, repl_one, repl_two, repl_three, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact main_step Prf.hyp0
+  · exact main_step Prf.hyp0
 
 /-- `Sm(A(y)) · D(y) ≤ F · A(y)`. -/
 theorem main (y L F N : PTm n) : Γ ⊢[PRAAx] le (Sm (A y) L F N * Dn y) (F * A y) := by
@@ -484,13 +477,9 @@ theorem Dn_pos_step {N : PTm n} (ih : Γ ⊢[PRAAx] Dn N ≐ succ (pred (Dn N)))
 private abbrev dposF : Fm PTm 1 := Dn (var 0) ≐ succ (pred (Dn (var 0)))
 
 private theorem Dn_pos₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] dposF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_pred, Syn.subst_var, Syn.inst_zero,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact eq_succ_pred (prod_zero _ _)
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_pred, Syn.subst_var, Syn.repl_zero,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact Dn_pos_step Prf.hyp0
+  ipra_ind [subst_ap2]
+  · exact eq_succ_pred (prod_zero _ _)
+  · exact Dn_pos_step Prf.hyp0
 
 theorem Dn_pos (N : PTm n) : Γ ⊢[PRAAx] Dn N ≐ succ (pred (Dn N)) := by
   have h := inst (Γ := Γ) Dn_pos₀ (![N] : Fin 1 → PTm n)

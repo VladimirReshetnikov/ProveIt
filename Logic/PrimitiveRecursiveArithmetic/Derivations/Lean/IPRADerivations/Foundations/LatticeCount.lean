@@ -2,6 +2,7 @@ import IPRADerivations.Foundations.IntervalCover
 import IPRADerivations.Core.Gcd
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # Counting integers in intervals
@@ -73,9 +74,7 @@ theorem monus_succ_split (T lo : PTm n) :
 def exactInv (T lo hi : PTm n) : Fm PTm n :=
   (le T hi ⟶ (icS T lo hi ≐ monus T lo)) ⋏ (le hi T ⟶ (icS T lo hi ≐ monus hi lo))
 
-@[simp] theorem subst_exactInv {k : ℕ} (σ : Fin n → PTm k) (T lo hi : PTm n) :
-    (exactInv T lo hi).subst σ = exactInv (Syn.subst σ T) (Syn.subst σ lo) (Syn.subst σ hi) := by
-  simp [exactInv, subst_ap2]
+ipra_subst exactInv [subst_ap2]
 
 theorem exact_step {T lo hi : PTm n} (ih : Γ ⊢[PRAAx] exactInv T lo hi) :
     Γ ⊢[PRAAx] exactInv (succ T) lo hi := by

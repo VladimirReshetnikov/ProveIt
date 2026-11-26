@@ -1,6 +1,7 @@
 import IPRADerivations.Core.IntCancel
 import IPRADerivations.AnalyticNumberTheory.Totatives
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # Actual Euclidean division of signed integer pairs
@@ -39,10 +40,8 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 def borrow (p r : PTm n) : PTm n := sg (monus r p)
 def residue (p r m : PTm n) : PTm n := monus (p + borrow p r * m) r
 
-@[simp] theorem subst_borrow {k : ℕ} (σ : Fin n → PTm k) (p r : PTm n) :
-    Syn.subst σ (borrow p r) = borrow (Syn.subst σ p) (Syn.subst σ r) := by simp [borrow, sg]
-@[simp] theorem subst_residue {k : ℕ} (σ : Fin n → PTm k) (p r m : PTm n) :
-    Syn.subst σ (residue p r m) = residue (Syn.subst σ p) (Syn.subst σ r) (Syn.subst σ m) := by simp [residue]
+ipra_subst borrow [sg]
+ipra_subst residue
 
 /-- Both branches are checked, including equal remainders and zero residues. -/
 theorem residue_data (p r m : PTm n) (hp : Γ ⊢[PRAAx] lt p m) (hr : Γ ⊢[PRAAx] lt r m) :
@@ -76,12 +75,8 @@ def quotient (a : ZT n) (m : PTm n) : ZT n :=
 
 def remainder (a : ZT n) (m : PTm n) : PTm n := residue (rem a.pos m) (rem a.neg m) m
 
-@[simp] theorem subst_quotient {k : ℕ} (σ : Fin n → PTm k) (a : ZT n) (m : PTm n) :
-    (quotient a m).subst σ = quotient (a.subst σ) (Syn.subst σ m) := by
-  simp [quotient, ZT.subst]
-@[simp] theorem subst_remainder {k : ℕ} (σ : Fin n → PTm k) (a : ZT n) (m : PTm n) :
-    Syn.subst σ (remainder a m) = remainder (a.subst σ) (Syn.subst σ m) := by
-  simp [remainder, ZT.subst]
+ipra_subst quotient [ZT.subst]
+ipra_subst remainder [ZT.subst]
 
 theorem positive_form (m : PTm n) (hm : Γ ⊢[PRAAx] le one m) :
     Γ ⊢[PRAAx] m ≐ succ (pred m) := by
@@ -158,12 +153,9 @@ def decode (code : PTm n) : ZT n := ⟨fstT code, sndT code⟩
 def pack (a : ZT n) : PTm n := pairT a.pos a.neg
 def result (a : ZT n) (m : PTm n) : PTm n := pairT (pack (quotient a m)) (remainder a m)
 
-@[simp] theorem subst_decode {k : ℕ} (σ : Fin n → PTm k) (code : PTm n) :
-    (decode code).subst σ = decode (Syn.subst σ code) := by simp [decode, ZT.subst]
-@[simp] theorem subst_pack {k : ℕ} (σ : Fin n → PTm k) (a : ZT n) :
-    Syn.subst σ (pack a) = pack (a.subst σ) := by simp [pack, ZT.subst]
-@[simp] theorem subst_result {k : ℕ} (σ : Fin n → PTm k) (a : ZT n) (m : PTm n) :
-    Syn.subst σ (result a m) = result (a.subst σ) (Syn.subst σ m) := by simp [result]
+ipra_subst decode [ZT.subst]
+ipra_subst pack [ZT.subst]
+ipra_subst result
 
 /-- The first argument is an arbitrary pair-coded integer; the second is
 the modulus. The output is the pair `(signedQuotientCode,naturalResidue)`. -/
@@ -172,12 +164,8 @@ def divmodF : PR 2 := PTm.toPR (result (decode (var 0)) (var 1))
 def computedQuotient (code m : PTm n) : ZT n := decode (fstT (ap2 divmodF code m))
 def computedRemainder (code m : PTm n) : PTm n := sndT (ap2 divmodF code m)
 
-@[simp] theorem subst_computedQuotient {k : ℕ} (σ : Fin n → PTm k) (code m : PTm n) :
-    (computedQuotient code m).subst σ = computedQuotient (Syn.subst σ code) (Syn.subst σ m) := by
-  simp [computedQuotient]
-@[simp] theorem subst_computedRemainder {k : ℕ} (σ : Fin n → PTm k) (code m : PTm n) :
-    Syn.subst σ (computedRemainder code m) = computedRemainder (Syn.subst σ code) (Syn.subst σ m) := by
-  simp [computedRemainder]
+ipra_subst computedQuotient
+ipra_subst computedRemainder
 
 theorem program_at (code m : PTm n) :
     Γ ⊢[PRAAx] ap2 divmodF code m ≐ result (decode code) m := by

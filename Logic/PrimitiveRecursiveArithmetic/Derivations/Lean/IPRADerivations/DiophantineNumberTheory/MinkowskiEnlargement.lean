@@ -3,6 +3,7 @@ import IPRADerivations.Foundations.FiniteQueryDemand
 import IPRADerivations.Foundations.GapDecision
 import IPRADerivations.Foundations.SequenceComposition
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # Integer-facet enlargement preserves the integer lattice points
@@ -124,8 +125,7 @@ def absolute (dimension facets point i : PTm n) : PTm n := zabs (dot dimension (
 
 @[simp] theorem subst_row {m : ℕ} (σ : Fin n → PTm m) (facets i : PTm n) :
     Syn.subst σ (row facets i) = row (Syn.subst σ facets) (Syn.subst σ i) := by simp [row]
-@[simp] theorem subst_bound {m : ℕ} (σ : Fin n → PTm m) (facets i : PTm n) :
-    Syn.subst σ (bound facets i) = bound (Syn.subst σ facets) (Syn.subst σ i) := by simp [bound]
+ipra_subst bound
 @[simp] theorem subst_absolute {m : ℕ} (σ : Fin n → PTm m) (dimension facets point i : PTm n) :
     Syn.subst σ (absolute dimension facets point i) =
       absolute (Syn.subst σ dimension) (Syn.subst σ facets) (Syn.subst σ point) (Syn.subst σ i) := by
@@ -139,10 +139,8 @@ def lambdaNumerator (facets : PTm n) : PTm n := succ (succ (maximumBound facets)
 
 @[simp] theorem subst_maximumBound {m : ℕ} (σ : Fin n → PTm m) (facets : PTm n) :
     Syn.subst σ (maximumBound facets) = maximumBound (Syn.subst σ facets) := by simp [maximumBound]
-@[simp] theorem subst_lambdaDenominator {m : ℕ} (σ : Fin n → PTm m) (facets : PTm n) :
-    Syn.subst σ (lambdaDenominator facets) = lambdaDenominator (Syn.subst σ facets) := by simp [lambdaDenominator]
-@[simp] theorem subst_lambdaNumerator {m : ℕ} (σ : Fin n → PTm m) (facets : PTm n) :
-    Syn.subst σ (lambdaNumerator facets) = lambdaNumerator (Syn.subst σ facets) := by simp [lambdaNumerator]
+ipra_subst lambdaDenominator
+ipra_subst lambdaNumerator
 
 theorem bound_le_maximum {facets i : PTm n} (hi : Γ ⊢[PRAAx] lt i (length facets)) :
     Γ ⊢[PRAAx] le (bound facets i) (maximumBound facets) := by
@@ -174,13 +172,8 @@ def enlargedMember (dimension facets point : PTm n) : Fm PTm n :=
     le (lambdaDenominator (Syn.shift facets) * absolute (Syn.shift dimension) (Syn.shift facets) (Syn.shift point) (var 0))
       (lambdaNumerator (Syn.shift facets) * bound (Syn.shift facets) (var 0)))
 
-@[simp] theorem subst_member {m : ℕ} (σ : Fin n → PTm m) (dimension facets point : PTm n) :
-    (member dimension facets point).subst σ = member (Syn.subst σ dimension) (Syn.subst σ facets) (Syn.subst σ point) := by
-  simp [member, Syn.up, Syn.subst_shift, ← Syn.shift_subst]
-@[simp] theorem subst_enlargedMember {m : ℕ} (σ : Fin n → PTm m) (dimension facets point : PTm n) :
-    (enlargedMember dimension facets point).subst σ =
-      enlargedMember (Syn.subst σ dimension) (Syn.subst σ facets) (Syn.subst σ point) := by
-  simp [enlargedMember, Syn.up, Syn.subst_shift, ← Syn.shift_subst]
+ipra_subst member [Syn.up, Syn.subst_shift, ← Syn.shift_subst]
+ipra_subst enlargedMember [Syn.up, Syn.subst_shift, ← Syn.shift_subst]
 
 theorem member_at {dimension facets point i : PTm n} (h : Γ ⊢[PRAAx] member dimension facets point)
     (hi : Γ ⊢[PRAAx] lt i (length facets)) :

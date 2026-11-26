@@ -5,6 +5,7 @@ import IPRADerivations.AnalyticNumberTheory.PhiDivides
 import IPRADerivations.Foundations.StrongInduction
 import IPRADerivations.DiophantineNumberTheory.QuarticStep
 import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # The left endpoint of the denominator bound: `H_q(z) ≤ S_{A_q(z)}(z)`
@@ -88,14 +89,10 @@ abbrev monoF : Fm PTm 3 :=
   dvd (ap2 (prodF (PE totBody)) (succ (var 1)) (var 2)) (ap2 (prodF (PE totBody)) (succ (var 1 + var 0)) (var 2))
 
 theorem mono_open : ([] : List (Fm PTm 3)) ⊢[PRAAx] monoF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact dvd_congr (congrAp2 (prodF (PE totBody)) (congrSucc (add_zero (var 0)).eqSymm) (.eqRefl _))
+  ipra_ind [subst_ap2]
+  · exact dvd_congr (congrAp2 (prodF (PE totBody)) (congrSucc (add_zero (var 0)).eqSymm) (.eqRefl _))
       (dvd_self' (Aq_pos (var 0) (var 1)))
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, Syn.subst_var, Syn.repl_zero, repl_one, repl_two,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact Aq_dvd_step (Prf.hyp0 (Γ := []) (φ := monoF))
+  · exact Aq_dvd_step (Prf.hyp0 (Γ := []) (φ := monoF))
 
 /-- `A_q(y) ∣ A_q(y')` for `y ≤ y'`. -/
 theorem Aq_dvd_mono {y y' : PTm n} (q : PTm n) (h : Γ ⊢[PRAAx] le y y') :

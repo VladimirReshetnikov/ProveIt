@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.SymmetryBound
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # Hyperbola sums of monotone functions (`pnt_ipra_constructive_2026-11-14`, towards `sb:weighted-sum`)
@@ -55,13 +56,9 @@ def Mono : Prop := ∀ {m : ℕ} {Δ : List (Fm PTm m)} (k y : PTm m), Δ ⊢[PR
 private abbrev teleF : Fm PTm 2 := Bs (dH h) (var 0) (var 1) + inst2 h zero (var 1) ≐ inst2 h (var 0) (var 1)
 
 private theorem tele₀ (hm : Mono h) : ([] : List (Fm PTm 2)) ⊢[PRAAx] teleF h := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, PTm.subst_add, subst_ap2, subst_inst2, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact (congrAdd (sum_zero _ _) (.eqRefl _)).eqTrans (zero_add _)
-  · simp only [Fm.subst_eq, PTm.subst_add, subst_ap2, subst_inst2, Syn.subst_var, Syn.repl_zero, repl_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have s := sum_succ' (Γ := [teleF h]) (bS (dH h)) (var 0) (var 1)
+  ipra_ind [subst_ap2, subst_inst2]
+  · exact (congrAdd (sum_zero _ _) (.eqRefl _)).eqTrans (zero_add _)
+  · have s := sum_succ' (Γ := [teleF h]) (bS (dH h)) (var 0) (var 1)
     rw [inst2_bS, inst2_dH] at s
     have p := natEq (congrInst2 (Γ := [teleF h]) h (pred_succ (var 0)) (.eqRefl (var 1)))
     have mo := natEq (eq_add_of_le (hm (Δ := [teleF h]) (var 0) (var 1)))

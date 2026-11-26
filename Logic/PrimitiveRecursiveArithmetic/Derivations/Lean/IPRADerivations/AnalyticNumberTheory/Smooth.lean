@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.SumReindex
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # Every `m ≤ N` divides a power of the primorial
@@ -67,13 +68,9 @@ theorem A_dvd_step {M d : PTm n} (ih : Γ ⊢[PRAAx] dvd (A M) (A (M + d))) :
 private abbrev monoF : Fm PTm 2 := dvd (A (var 1)) (A (var 1 + var 0))
 
 private theorem mono₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] monoF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact dvd_congr (congrAp2 (prodF pB) (add_zero _) (.eqRefl _)).eqSymm (dvd_self' (A_pos _))
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, Syn.subst_var, Syn.repl_zero, repl_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact A_dvd_step Prf.hyp0
+  ipra_ind [subst_ap2]
+  · exact dvd_congr (congrAp2 (prodF pB) (add_zero _) (.eqRefl _)).eqSymm (dvd_self' (A_pos _))
+  · exact A_dvd_step Prf.hyp0
 
 /-- `M ≤ N → A(M) ∣ A(N)`. -/
 theorem A_dvd_mono {M N : PTm n} (h : Γ ⊢[PRAAx] le M N) : Γ ⊢[PRAAx] dvd (A M) (A N) := by
@@ -175,13 +172,9 @@ theorem sm_step {K : PTm n} (ih : Γ ⊢[PRAAx] ap2 (sumF vB) K zero ≐ zero) :
 private abbrev smF : Fm PTm 1 := ap2 (sumF vB) (var 0) zero ≐ zero
 
 private theorem sm₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] smF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact sum_zero _ _
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    refine (sum_succ' _ _ _).eqTrans ((congrAdd Prf.hyp0 ?_).eqTrans (add_zero _))
+  ipra_ind [subst_ap2]
+  · exact sum_zero _ _
+  · refine (sum_succ' _ _ _).eqTrans ((congrAdd Prf.hyp0 ?_).eqTrans (add_zero _))
     rw [inst2_v]
     exact sm_step Prf.hyp0
 

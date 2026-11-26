@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.ChainViability
 import IPRADerivations.Foundations.SequenceComposition
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # Actual coded finite viable chains
@@ -65,25 +66,14 @@ def hasChain (I : Instance) (a p : PTm n) : Fm PTm n := .ex
   (lt (var 0) (codeBound I (Syn.shift p)) ⋏
     (admissibleCode I (var 0) (Syn.shift p) ⋏ entry (var 0) zero ≐ Syn.shift a))
 
-@[simp] theorem subst_viableStart {m : ℕ} (σ : Fin n → PTm m) (I : Instance) (a p : PTm n) :
-    (viableStart I a p).subst σ = viableStart I (Syn.subst σ a) (Syn.subst σ p) := by simp [viableStart]
-@[simp] theorem subst_localCode {m : ℕ} (σ : Fin n → PTm m) (I : Instance) (S p : PTm n) :
-    (localCode I S p).subst σ = localCode I (Syn.subst σ S) (Syn.subst σ p) := by
-  simp [localCode,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_edgeCode {m : ℕ} (σ : Fin n → PTm m) (I : Instance) (S p : PTm n) :
-    (edgeCode I S p).subst σ = edgeCode I (Syn.subst σ S) (Syn.subst σ p) := by
-  simp [edgeCode,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_admissibleCode {m : ℕ} (σ : Fin n → PTm m) (I : Instance) (S p : PTm n) :
-    (admissibleCode I S p).subst σ = admissibleCode I (Syn.subst σ S) (Syn.subst σ p) := by simp [admissibleCode]
-@[simp] theorem subst_chainCode {m : ℕ} (σ : Fin n → PTm m) (I : Instance) (s : PTm 1) (p : PTm n) :
-    Syn.subst σ (chainCode I s p) = chainCode I s (Syn.subst σ p) := by simp [chainCode]
-@[simp] theorem subst_boundStack {m : ℕ} (σ : Fin n → PTm m) (I : Instance) (r p : PTm n) :
-    Syn.subst σ (boundStack I r p) = boundStack I (Syn.subst σ r) (Syn.subst σ p) := by simp [boundStack]
-@[simp] theorem subst_codeBound {m : ℕ} (σ : Fin n → PTm m) (I : Instance) (p : PTm n) :
-    Syn.subst σ (codeBound I p) = codeBound I (Syn.subst σ p) := by simp [codeBound]
-@[simp] theorem subst_hasChain {m : ℕ} (σ : Fin n → PTm m) (I : Instance) (a p : PTm n) :
-    (hasChain I a p).subst σ = hasChain I (Syn.subst σ a) (Syn.subst σ p) := by
-  simp [hasChain,Syn.subst_shift,Syn.shift_subst]
+ipra_subst viableStart
+ipra_subst localCode [Syn.subst_shift, Syn.shift_subst]
+ipra_subst edgeCode [Syn.subst_shift, Syn.shift_subst]
+ipra_subst admissibleCode
+ipra_subst chainCode
+ipra_subst boundStack
+ipra_subst codeBound
+ipra_subst hasChain [Syn.subst_shift, Syn.shift_subst]
 
 theorem g_values (I : Instance) (i a b p : PTm n) (hab : Γ ⊢[PRAAx] a ≐ b) :
     Γ ⊢[PRAAx] I.g i a p ≐ I.g i b p :=
@@ -166,9 +156,7 @@ theorem coded_viable_step (I : Instance) (S p j : PTm n)
 
 def remainingLaw (I : Instance) (S p j : PTm n) : Fm PTm n :=
   le j (I.h p) ⟶ I.V j (entry S (monus (I.h p) j)) p ≐ one
-@[simp] theorem subst_remainingLaw {m : ℕ} (σ : Fin n → PTm m) (I : Instance) (S p j : PTm n) :
-    (remainingLaw I S p j).subst σ = remainingLaw I (Syn.subst σ S) (Syn.subst σ p) (Syn.subst σ j) := by
-  simp [remainingLaw]
+ipra_subst remainingLaw
 
 theorem coded_viable (I : Instance) (S p j : PTm n) (h : Γ ⊢[PRAAx] admissibleCode I S p)
     (hj : Γ ⊢[PRAAx] le j (I.h p)) : Γ ⊢[PRAAx]
@@ -205,8 +193,7 @@ theorem boundStack_succ (I : Instance) (r p : PTm n) : Γ ⊢[PRAAx]
 
 def sizeLaw (I : Instance) (s : PTm 1) (p r : PTm n) : Fm PTm n :=
   le r (succ (I.h p)) ⟶ le (stack (chainBody I s) r p) (boundStack I r p)
-@[simp] theorem subst_sizeLaw {m : ℕ} (σ : Fin n → PTm m) (I : Instance) (s : PTm 1) (p r : PTm n) :
-    (sizeLaw I s p r).subst σ = sizeLaw I s (Syn.subst σ p) (Syn.subst σ r) := by simp [sizeLaw,stack]
+ipra_subst sizeLaw [stack]
 
 theorem stack_bound_step (I : Instance) (s : PTm 1) (p r : PTm n)
     (h : Γ ⊢[PRAAx] viableStart I (start s p) p) (hr : Γ ⊢[PRAAx] le r (I.h p))

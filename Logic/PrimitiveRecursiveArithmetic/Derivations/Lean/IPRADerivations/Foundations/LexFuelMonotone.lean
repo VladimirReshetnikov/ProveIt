@@ -2,6 +2,8 @@ import IPRADerivations.Core.Order
 import IPRADerivations.Core.Pairing
 import IPRADerivations.Core.BoundedSums
 import IPRADerivations.Core.Tactic
+import IPRADerivations.Core.InductionTactic
+import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Monotonicity of the lexicographic fuel bounds (`ipra_resources_and_elimination_2026-11-15`, Section 4)
@@ -88,21 +90,16 @@ structure Step (f : PTm 2) : Prop where
     Γ ⊢[PRAAx] le (succ u) (inst2 f x u)
 
 /-- `u ≤ w` gives `u + 1 ≤ w + 1`. -/
-theorem succ_le {u w : PTm k} (h : Γ ⊢[PRAAx] le u w) : Γ ⊢[PRAAx] le (succ u) (succ w) :=
-  (succ_monus_succ u w).eqTrans h
+alias succ_le := Common.succ_le_succ
 
 /-- Variables: `0 = n`, `1 = x`, `2 = u`, `3 = w`. -/
 private abbrev m1F : Fm PTm 4 :=
   le (var 2) (var 3) ⟶ le (itP f (var 0) (var 1) (var 2)) (itP f (var 0) (var 1) (var 3))
 
 private theorem m1₀ (hf : Step f) : ([] : List (Fm PTm 4)) ⊢[PRAAx] m1F f := by
-  refine ind _ ⟨trivial, trivial⟩ ?_ ?_
-  · simp only [Fm.subst_imp, subst_le, subst_ap2, subst_pairT, Syn.subst_var, Syn.inst_zero,
-      Syn.inst_one, inst_two, inst_three, ConciseIPRA.PTm.subst_zero]
-    exact .impI (le_congr (itP_zero f _ _).eqSymm (itP_zero f _ _).eqSymm Prf.hyp0)
-  · simp only [Fm.subst_imp, subst_le, subst_ap2, subst_pairT, Syn.subst_var, Syn.repl_zero,
-      repl_one, repl_two, repl_three, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (le_congr (itP_succ f _ _ _).eqSymm (itP_succ f _ _ _).eqSymm
+  ipra_ind (⟨trivial, trivial⟩) [subst_le, subst_ap2, subst_pairT]
+  · exact .impI (le_congr (itP_zero f _ _).eqSymm (itP_zero f _ _).eqSymm Prf.hyp0)
+  · exact .impI (le_congr (itP_succ f _ _ _).eqSymm (itP_succ f _ _ _).eqSymm
       (hf.mono (.impE Prf.hyp1 Prf.hyp0)))
 
 /-- Iterating a nondecreasing function preserves inequalities between starting points. -/
@@ -116,13 +113,9 @@ theorem mono_start (hf : Step f) {x u w : PTm k} (h : Γ ⊢[PRAAx] le u w) (n :
 private abbrev m2F : Fm PTm 3 := le (var 2 + var 0) (itP f (var 0) (var 1) (var 2))
 
 private theorem m2₀ (hf : Step f) : ([] : List (Fm PTm 3)) ⊢[PRAAx] m2F f := by
-  refine ind _ trivial ?_ ?_
-  · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_add, Syn.subst_var, Syn.inst_zero,
-      Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero]
-    exact le_congr (add_zero _).eqSymm (itP_zero f _ _).eqSymm (le_refl _)
-  · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_add, Syn.subst_var, Syn.repl_zero,
-      repl_one, repl_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact le_congr (add_succ _ _).eqSymm (itP_succ f _ _ _).eqSymm
+  ipra_ind [subst_le, subst_ap2, subst_pairT]
+  · exact le_congr (add_zero _).eqSymm (itP_zero f _ _).eqSymm (le_refl _)
+  · exact le_congr (add_succ _ _).eqSymm (itP_succ f _ _ _).eqSymm
       (le_trans (succ_le Prf.hyp0) (hf.grow _ _))
 
 /-- `n` iterations of a function with `f(u) ≥ u + 1` add at least `n`. -/
@@ -135,14 +128,10 @@ private abbrev m3F : Fm PTm 4 :=
   le (itP f (var 1) (var 2) (var 3)) (itP f (var 1 + var 0) (var 2) (var 3))
 
 private theorem m3₀ (hf : Step f) : ([] : List (Fm PTm 4)) ⊢[PRAAx] m3F f := by
-  refine ind _ trivial ?_ ?_
-  · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_add, Syn.subst_var, Syn.inst_zero,
-      Syn.inst_one, inst_two, inst_three, ConciseIPRA.PTm.subst_zero]
-    exact le_congr (.eqRefl _)
+  ipra_ind [subst_le, subst_ap2, subst_pairT]
+  · exact le_congr (.eqRefl _)
       (congrAp2 (rec2 (sndT (var 0)) (itStep f)) (add_zero _).eqSymm (.eqRefl _)) (le_refl _)
-  · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_add, Syn.subst_var, Syn.repl_zero,
-      repl_one, repl_two, repl_three, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine le_congr (.eqRefl _)
+  · refine le_congr (.eqRefl _)
       ((congrAp2 (rec2 (sndT (var 0)) (itStep f)) (add_succ _ _) (.eqRefl _)).eqTrans
         (itP_succ f _ _ _)).eqSymm ?_
     exact le_trans Prf.hyp0 (le_trans (le_succ_self _) (hf.grow _ _))

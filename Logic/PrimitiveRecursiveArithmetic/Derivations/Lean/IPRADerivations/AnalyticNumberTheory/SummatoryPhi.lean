@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.CoprimePairs
 import IPRADerivations.AnalyticNumberTheory.MobiusInversion
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # The summatory floor-square identity
@@ -306,13 +307,9 @@ private theorem sp_base : Γ ⊢[PRAAx] ap2 (sumF DPB) (succ zero) (zero : PTm n
   linear_combination a - b + z₁ - z₂ + t₁ - t₂ + s0 - 2 * c' - 2 * z₃ - 2 * p0
 
 private theorem sp₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] spF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, PTm.subst_add, PTm.subst_mul, subst_ap2, Syn.subst_var, Syn.inst_zero,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ, PTm.subst_monus]
-    exact sp_base
-  · simp only [Fm.subst_eq, PTm.subst_add, PTm.subst_mul, subst_ap2, Syn.subst_var, Syn.repl_zero,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ, PTm.subst_monus]
-    exact sp_step Prf.hyp0
+  ipra_ind [subst_ap2]
+  · exact sp_base
+  · exact sp_step Prf.hyp0
 
 /-- `thm:summatory-phi`: `2 ∑_{n ≤ N} φ(n) − 1 = ∑_{d ≤ N} μ(d) ⌊N/d⌋²` for `N ≥ 1`, as
 `∑_d μ⁺(d) ⌊N/d⌋² + 1 = ∑_d μ⁻(d) ⌊N/d⌋² + 2 ∑_{n ≤ N} φ(n)`; and both sides count the coprime

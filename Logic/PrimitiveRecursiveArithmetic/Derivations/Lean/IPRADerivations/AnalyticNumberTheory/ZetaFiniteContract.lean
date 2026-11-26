@@ -3,6 +3,7 @@ import IPRADerivations.Probability.FiniteCauchySchwarz
 import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.DiophantineNumberTheory.FLTMultiples
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # The elementary estimates of the zeta finite contract (`zeta_functional_equation_ipra`)
@@ -44,9 +45,7 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 /-- The invariant of `sq_le_pow`. -/
 def sqInv (m : PTm n) : Fm PTm n := le (succ m * succ m) (pw two m * pw two m)
 
-@[simp] theorem subst_sqInv {k : ℕ} (σ : Fin n → PTm k) (m : PTm n) :
-    (sqInv m).subst σ = sqInv (Syn.subst σ m) := by
-  simp [sqInv]
+ipra_subst sqInv
 
 /-- `(m + 1)² ≤ 2^m 2^m`. -/
 theorem sq_le_pow (m : PTm n) : Γ ⊢[PRAAx] le (succ m * succ m) (pw two m * pw two m) := by
@@ -102,9 +101,7 @@ abbrev g8B : PTm 2 := pw (num 8) (var 0)
 
 def geo8Inv (J x : PTm n) : Fm PTm n := num 7 * ap2 (sumF g8B) J x + one ≐ pw (num 8) J
 
-@[simp] theorem subst_geo8Inv {k : ℕ} (σ : Fin n → PTm k) (J x : PTm n) :
-    (geo8Inv J x).subst σ = geo8Inv (Syn.subst σ J) (Syn.subst σ x) := by
-  simp [geo8Inv, subst_ap2]
+ipra_subst geo8Inv [subst_ap2]
 
 /-- `7 Σ_{j<J} 8^j + 1 = 8^J`. -/
 theorem geo8 (J x : PTm n) : Γ ⊢[PRAAx] num 7 * ap2 (sumF g8B) J x + one ≐ pw (num 8) J := by
@@ -180,8 +177,7 @@ theorem inst2_fitB (j x : PTm n) : inst2 fitB j x = monus one (monus x (pw two j
 
 def ltPowInv (x : PTm n) : Fm PTm n := le x (pw two x)
 
-@[simp] theorem subst_ltPowInv {k : ℕ} (σ : Fin n → PTm k) (x : PTm n) :
-    (ltPowInv x).subst σ = ltPowInv (Syn.subst σ x) := by simp [ltPowInv]
+ipra_subst ltPowInv
 
 /-- `x ≤ 2^x`. -/
 theorem le_pow_self (x : PTm n) : Γ ⊢[PRAAx] le x (pw two x) := by

@@ -4,6 +4,7 @@ import IPRADerivations.Core.Bezout
 import IPRADerivations.AnalyticNumberTheory.Fermat
 import IPRADerivations.Algebra.CubeRootTwo
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # All solutions of Pell's equation
@@ -141,9 +142,7 @@ abbrev minimal (D B : PTm n) : Fm PTm n :=
   Fm.all (Fm.all ((var 1 * var 1 ≐ one + Syn.shift (Syn.shift D) * (var 0 * var 0)) ⟶
     (var 0 ≐ succ (pred (var 0))) ⟶ le (Syn.shift (Syn.shift B)) (var 0)))
 
-@[simp] theorem subst_minimal {m : ℕ} (σ : Fin n → PTm m) (D B : PTm n) :
-    (minimal D B).subst σ = minimal (Syn.subst σ D) (Syn.subst σ B) := by
-  simp [minimal, subst_up_shift', Syn.up]
+ipra_subst minimal [subst_up_shift', Syn.up]
 
 theorem minimal_at {D B : PTm n} (h : Γ ⊢[PRAAx] minimal D B) (x y : PTm n) :
     Γ ⊢[PRAAx] (x * x ≐ one + D * (y * y)) ⟶ (y ≐ succ (pred y)) ⟶ le B y := by

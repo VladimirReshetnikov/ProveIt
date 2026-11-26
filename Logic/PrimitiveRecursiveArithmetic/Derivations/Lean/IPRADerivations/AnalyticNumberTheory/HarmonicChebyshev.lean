@@ -5,6 +5,7 @@ import IPRADerivations.AnalyticNumberTheory.PrimePowerMangoldt
 import IPRADerivations.AnalyticNumberTheory.ChebyshevBounds
 import IPRADerivations.AnalyticNumberTheory.MuLambda
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # Chebyshev's bound for the harmonic logarithm (`pnt_ipra_constructive_2026-11-14`, `con:global`)
@@ -107,13 +108,9 @@ theorem lw_prime {p : PTm n} (M F : PTm n) (hp : Γ ⊢[PRAAx] prime p) :
 private abbrev posF : Fm PTm 2 := le one (var 1) ⟶ le one (trT (var 0) (var 1))
 
 private theorem pos₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] posF := by
-  refine ind _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-  · simp only [Fm.subst_imp, subst_le, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (le_congr (.eqRefl _) (tr_zero _).eqSymm Prf.hyp0)
-  · simp only [Fm.subst_imp, subst_le, subst_ap2, Syn.subst_var, Syn.repl_zero, repl_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (le_congr (.eqRefl _) (tr_succ _ _).eqSymm (step_pos _))
+  ipra_ind (⟨le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2]
+  · exact .impI (le_congr (.eqRefl _) (tr_zero _).eqSymm Prf.hyp0)
+  · exact .impI (le_congr (.eqRefl _) (tr_succ _ _).eqSymm (step_pos _))
 
 theorem tr_pos {m : PTm n} (hm : Γ ⊢[PRAAx] le one m) (i : PTm n) : Γ ⊢[PRAAx] le one (trT i m) := by
   have h := inst (Γ := Γ) pos₀ (![i, m] : Fin 2 → PTm n)
@@ -124,13 +121,9 @@ theorem tr_pos {m : PTm n} (hm : Γ ⊢[PRAAx] le one m) (i : PTm n) : Γ ⊢[PR
 private abbrev boundF : Fm PTm 2 := le one (var 1) ⟶ le (trT (var 0) (var 1)) (var 1)
 
 private theorem bound₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] boundF := by
-  refine ind _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-  · simp only [Fm.subst_imp, subst_le, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (le_congr (tr_zero _).eqSymm (.eqRefl _) (le_refl _))
-  · simp only [Fm.subst_imp, subst_le, subst_ap2, Syn.subst_var, Syn.repl_zero, repl_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine .impI ?_
+  ipra_ind (⟨le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2]
+  · exact .impI (le_congr (tr_zero _).eqSymm (.eqRefl _) (le_refl _))
+  · refine .impI ?_
     have ih : (le one (var 1) :: [boundF]) ⊢[PRAAx] le (trT (var 0) (var 1)) (var 1) := Prf.impE Prf.hyp1 Prf.hyp0
     refine .orE (lt_or_le one (trT (var 0) (var 1))) ?_ ?_
     · exact le_trans (le_trans (le_succ_self _) (trace_lt Prf.hyp0)) ih.wk
@@ -200,15 +193,9 @@ abbrev Hy (m M L : PTm n) : Fm PTm n := le one m ⋏ (le one M ⋏ le (M * m) L)
 private abbrev mainF : Fm PTm 4 := Hy (var 1) (var 2) (var 3) ⟶ J (var 1) (var 2) (var 3) (var 0)
 
 private theorem main₀ : ([] : List (Fm PTm 4)) ⊢[PRAAx] mainF := by
-  refine ind _ ⟨⟨le_QF _ _, le_QF _ _, le_QF _ _⟩, le_QF _ _⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_and, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, subst_pairT,
-      Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two, inst_three,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (j_zero _ _ _)
-  · simp only [Fm.subst_imp, Fm.subst_and, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, subst_pairT,
-      Syn.subst_var, Syn.repl_zero, repl_one, repl_two, repl_three,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine .impI ?_
+  ipra_ind (⟨⟨le_QF _ _, le_QF _ _, le_QF _ _⟩, le_QF _ _⟩) [subst_le, subst_ap2, subst_pairT]
+  · exact .impI (j_zero _ _ _)
+  · refine .impI ?_
     have h := (Prf.hyp0 : (Hy (var 1) (var 2) (var 3) :: [mainF]) ⊢[PRAAx] Hy (var 1) (var 2) (var 3))
     exact j_step (Prf.andE₁ h) (Prf.andE₁ (Prf.andE₂ h)) (Prf.andE₂ (Prf.andE₂ h)) (Prf.impE Prf.hyp1 Prf.hyp0)
 

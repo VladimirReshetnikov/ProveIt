@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.ChebyshevAbel
 import IPRADerivations.AnalyticNumberTheory.FloorTelescope
 import IPRADerivations.AnalyticNumberTheory.SumReindex
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # `Σ log k / k = (log x)²/2 + O(1)` exactly (`pnt_ipra_constructive_2026-11-14`, `con:one-step`)
@@ -111,13 +112,9 @@ theorem hs_step {M K F : PTm n} (ih : Γ ⊢[PRAAx]
   exact congrAdd (.eqRefl _) (s2.eqTrans (congrAdd (.eqRefl _) t2)).eqSymm
 
 private theorem hs₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] hsF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, PTm.subst_monus, Syn.subst_var,
-      Syn.inst_zero, Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact hs_zero _ _
-  · simp only [Fm.subst_eq, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, PTm.subst_monus, Syn.subst_var,
-      Syn.repl_zero, repl_one, repl_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact hs_step Prf.hyp0
+  ipra_ind [subst_ap2, subst_pairT]
+  · exact hs_zero _ _
+  · exact hs_step Prf.hyp0
 
 /-- `2 Σ_{2≤k≤M+1} u_k Δ_k = u_{M+1}² + Σ_{2≤k≤M+1} Δ_k²`. -/
 theorem half_square (M K F : PTm n) :

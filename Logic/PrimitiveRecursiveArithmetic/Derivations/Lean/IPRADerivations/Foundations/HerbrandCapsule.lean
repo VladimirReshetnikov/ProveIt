@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.RealizerLeastSearch
 import IPRADerivations.Foundations.FiniteQueryDemand
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # Actual finite Herbrand capsules
@@ -60,10 +61,8 @@ def codeBound (f : PTm 2) (N x : PTm n) : PTm n :=
     MasterCertificate.subst_entry,Syn.subst_var,Syn.up_zero,Syn.subst_shift,Syn.shift_subst,Syn.up_succ,BoundedFormulas.subst_up_shift']
 @[simp] theorem subst_candidates {m : ℕ} (σ : Fin n → PTm m) (f : PTm 2) (N x : PTm n) :
     Syn.subst σ (candidates f N x) = candidates f (Syn.subst σ N) (Syn.subst σ x) := by simp [candidates]
-@[simp] theorem subst_valueCap {m : ℕ} (σ : Fin n → PTm m) (f : PTm 2) (N x : PTm n) :
-    Syn.subst σ (valueCap f N x) = valueCap f (Syn.subst σ N) (Syn.subst σ x) := by simp [valueCap]
-@[simp] theorem subst_codeBound {m : ℕ} (σ : Fin n → PTm m) (f : PTm 2) (N x : PTm n) :
-    Syn.subst σ (codeBound f N x) = codeBound f (Syn.subst σ N) (Syn.subst σ x) := by simp [codeBound]
+ipra_subst valueCap
+ipra_subst codeBound
 
 theorem member_congr (A : Fm PTm 2) {q q' w w' : PTm n}
     (hq : Γ ⊢[PRAAx] q ≐ q') (hw : Γ ⊢[PRAAx] w ≐ w') (h : Γ ⊢[PRAAx] memberAt A q w) :
@@ -147,8 +146,7 @@ theorem generated_member (A : BFm 2) (f : PTm 2) (N x q i : PTm n)
 def mappedBody (U : PR 2) : PTm 2 := ap2 U (entry (fstT (var 1)) (var 0)) (sndT (var 1))
 def mapped (U : PR 2) (W q : PTm n) : PTm n := sequence (mappedBody U) (length W) (pairT W q)
 def mapF (U : PR 2) : PR 2 := PTm.toPR (mapped U (var 0) (var 1))
-@[simp] theorem subst_mapped {m : ℕ} (σ : Fin n → PTm m) (U : PR 2) (W q : PTm n) :
-    Syn.subst σ (mapped U W q) = mapped U (Syn.subst σ W) (Syn.subst σ q) := by simp [mapped]
+ipra_subst mapped
 theorem map_body_at (U : PR 2) (W q i : PTm n) : Γ ⊢[PRAAx]
     inst2 (mappedBody U) i (pairT W q) ≐ ap2 U (entry W i) q := by
   simpa [mappedBody,inst2] using congrAp2 U (entry_congr (fst_pair W q) (.eqRefl i)) (snd_pair W q)
@@ -202,8 +200,7 @@ theorem verified_invariant (A : BFm 2) (B : Fm PTm 1)
 def enumeration (B : PTm n) : PTm n := candidates (var 0) B zero
 def possible (A : Fm PTm 2) (B q : PTm n) : Fm PTm n :=
   .ex (lt (var 0) (Syn.shift B) ⋏ memberAt A (Syn.shift q) (var 0))
-@[simp] theorem subst_enumeration {m : ℕ} (σ : Fin n → PTm m) (B : PTm n) :
-    Syn.subst σ (enumeration B) = enumeration (Syn.subst σ B) := by simp [enumeration]
+ipra_subst enumeration
 @[simp] theorem subst_possible {m : ℕ} (σ : Fin n → PTm m) (A : Fm PTm 2) (B q : PTm n) :
     (possible A B q).subst σ = possible A (Syn.subst σ B) (Syn.subst σ q) := by
   simp only [possible,Fm.subst_ex,Fm.subst_and,subst_lt,subst_memberAt,Syn.subst_var,Syn.up_zero,
@@ -248,13 +245,9 @@ def leastIndex (A : BFm 2) (W q : PTm n) : PTm n :=
 def chosen (A : BFm 2) (W q : PTm n) : PTm n := entry W (leastIndex A W q)
 @[simp] theorem subst_memberBit {m : ℕ} (σ : Fin n → PTm m) (A : BFm 2) (W q i : PTm n) :
     Syn.subst σ (memberBit A W q i) = memberBit A (Syn.subst σ W) (Syn.subst σ q) (Syn.subst σ i) := by simp [memberBit]
-@[simp] theorem subst_searchData {m : ℕ} (σ : Fin n → PTm m) (W q : PTm n) :
-    Syn.subst σ (searchData W q) = searchData (Syn.subst σ W) (Syn.subst σ q) := by simp [searchData]
-@[simp] theorem subst_leastIndex {m : ℕ} (σ : Fin n → PTm m) (A : BFm 2) (W q : PTm n) :
-    Syn.subst σ (leastIndex A W q) = leastIndex A (Syn.subst σ W) (Syn.subst σ q) := by
-  simp [leastIndex,BooleanizationCorollaries.first,Search.mu]
-@[simp] theorem subst_chosen {m : ℕ} (σ : Fin n → PTm m) (A : BFm 2) (W q : PTm n) :
-    Syn.subst σ (chosen A W q) = chosen A (Syn.subst σ W) (Syn.subst σ q) := by simp [chosen]
+ipra_subst searchData
+ipra_subst leastIndex [BooleanizationCorollaries.first, Search.mu]
+ipra_subst chosen
 theorem member_bit_reflection (A : BFm 2) (W q i : PTm n) : Γ ⊢[PRAAx]
     Fm.iff (memberBit A W q i ≐ one) (memberAt (BoundedSyntax.formula A) q (entry W i)) := by
   have e := BoundedSyntax.program_correct A ![q,entry W i] (Γ := Γ)
@@ -347,12 +340,9 @@ def runCapsule (f : PTm 2) (A : BFm 2) (N x q : PTm n) : PTm n := ap3 (capsuleF 
 def selection (A : BFm 2) (W q : PTm n) : PTm n := pairT (leastIndex A W q) (chosen A W q)
 def selectionF (A : BFm 2) : PR 2 := PTm.toPR (selection A (var 0) (var 1))
 def runSelection (A : BFm 2) (W q : PTm n) : PTm n := ap2 (selectionF A) W q
-@[simp] theorem subst_check {m : ℕ} (σ : Fin n → PTm m) (A : BFm 2) (W q : PTm n) :
-    Syn.subst σ (check A W q) = check A (Syn.subst σ W) (Syn.subst σ q) := by simp [check]
-@[simp] theorem subst_capsule {m : ℕ} (σ : Fin n → PTm m) (f : PTm 2) (A : BFm 2) (N x q : PTm n) :
-    Syn.subst σ (capsule f A N x q) = capsule f A (Syn.subst σ N) (Syn.subst σ x) (Syn.subst σ q) := by simp [capsule]
-@[simp] theorem subst_selection {m : ℕ} (σ : Fin n → PTm m) (A : BFm 2) (W q : PTm n) :
-    Syn.subst σ (selection A W q) = selection A (Syn.subst σ W) (Syn.subst σ q) := by simp [selection]
+ipra_subst check
+ipra_subst capsule
+ipra_subst selection
 theorem capsule_program (f : PTm 2) (A : BFm 2) (N x q : PTm n) : Γ ⊢[PRAAx]
     runCapsule f A N x q ≐ capsule f A N x q := by
   simpa [runCapsule,capsuleF,ap3] using toPR_eq (Γ := Γ) (capsule f A (var 0) (var 1) (var 2)) ![N,x,q]

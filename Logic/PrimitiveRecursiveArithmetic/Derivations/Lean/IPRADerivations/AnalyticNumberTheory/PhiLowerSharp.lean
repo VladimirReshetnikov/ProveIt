@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.PhiTwo
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # The sharp lower bound `φ(n)² ≥ n` for `n ∉ {2, 6}`
@@ -218,12 +219,9 @@ theorem d2_step {N x : PTm n} (hV : Γ ⊢[PRAAx] ap2 (sumF o2B) N x ≐ zero) :
 private abbrev o2F : Fm PTm 2 := ap2 (sumF o2B) (var 0) (var 1) ≐ zero
 
 private theorem o2₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] o2F := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero]
-    exact sum_zero _ _
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact (sum_succ' _ _ _).eqTrans ((congrAdd Prf.hyp0 (d2_step Prf.hyp0)).eqTrans (add_zero _))
+  ipra_ind [subst_ap2]
+  · exact sum_zero _ _
+  · exact (sum_succ' _ _ _).eqTrans ((congrAdd Prf.hyp0 (d2_step Prf.hyp0)).eqTrans (add_zero _))
 
 /-- `φ(m)² ≥ 2m` for odd `m ∉ {1, 3}`. -/
 theorem phi_sq_odd2 {M : PTm n} (hodd : Γ ⊢[PRAAx] rem M two ≐ one) (h1 : Γ ⊢[PRAAx] neg (M ≐ one))

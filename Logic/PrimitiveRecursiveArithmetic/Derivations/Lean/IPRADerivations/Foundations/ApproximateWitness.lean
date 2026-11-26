@@ -1,5 +1,6 @@
 import IPRADerivations.Probability.FiniteLaws
 import IPRADerivations.Core.SearchParameters
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # Finite argmin and approximate witnesses
@@ -73,16 +74,11 @@ private abbrev attainingFormula (score : PTm 2) : Fm PTm 2 :=
 
 private theorem attaining_open (score : PTm 2) :
     ([] : List (Fm PTm 2)) ⊢[PRAAx] attainingFormula score := by
-  refine ind _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-  · simp only [attainingFormula, Fm.subst_and, Fm.subst_eq, subst_le, subst_ap2,
-      subst_inst2, Syn.subst_var, Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero]
-    have a := attaining_zero (Γ := ([] : List (Fm PTm 1))) score (var 0)
+  ipra_ind (⟨le_QF _ _, trivial⟩) [attainingFormula, subst_le, subst_ap2, subst_inst2]
+  · have a := attaining_zero (Γ := ([] : List (Fm PTm 1))) score (var 0)
     exact .andI (le_congr a.eqSymm (.eqRefl _) (le_refl _))
       ((congrInst2 score a (.eqRefl _)).eqTrans (mn_zero score _).eqSymm)
-  · simp only [attainingFormula, Fm.subst_and, Fm.subst_eq, subst_le, subst_ap2,
-      subst_inst2, Syn.subst_var, Syn.repl_zero, repl_one,
-      ConciseIPRA.PTm.subst_succ]
-    let Δ : List (Fm PTm 2) := [attainingFormula score]
+  · let Δ : List (Fm PTm 2) := [attainingFormula score]
     have hBound : Δ ⊢[PRAAx] le (attaining score (var 0) (var 1)) (var 0) :=
       Prf.andE₁ Prf.hyp0
     have hValue : Δ ⊢[PRAAx] inst2 score (attaining score (var 0) (var 1)) (var 1) ≐

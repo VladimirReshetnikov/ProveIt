@@ -3,6 +3,7 @@ import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.AnalyticNumberTheory.LocalFactor
 import IPRADerivations.AnalyticNumberTheory.Valuation
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # The discrete Gronwall estimate with a rational growth bound
@@ -110,13 +111,9 @@ theorem bern_step {k A : PTm n} (ih : Γ ⊢[PRAAx] le (pw k A * (k + A)) (k * p
 private abbrev bernF : Fm PTm 2 := le (pw (var 1) (var 0) * (var 1 + var 0)) (var 1 * pw (succ (var 1)) (var 0))
 
 private theorem bern₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] bernF := by
-  refine ind _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact bern_base _
-  · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.repl_zero, repl_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact bern_step Prf.hyp0
+  ipra_ind (le_QF _ _) [subst_le, subst_ap2]
+  · exact bern_base _
+  · exact bern_step Prf.hyp0
 
 /-- `1 + A/k ≤ (1 + 1/k)^A`, cleared: `k^A (k + A) ≤ k (k+1)^A`. -/
 theorem bern (k A : PTm n) : Γ ⊢[PRAAx] le (pw k A * (k + A)) (k * pw (succ k) A) := by
@@ -143,13 +140,9 @@ theorem quad_step {j k : PTm n} (hj : Γ ⊢[PRAAx] le (succ j) k) (ih : Γ ⊢[
 private abbrev quadF : Fm PTm 2 := le (var 0) (var 1) ⟶ QInv (var 0) (var 1)
 
 private theorem quad₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] quadF := by
-  refine ind _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-  · simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
-      Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (quad_base _)
-  · simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.repl_zero,
-      repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (quad_step Prf.hyp0 (Prf.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)))
+  ipra_ind (⟨le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2]
+  · exact .impI (quad_base _)
+  · exact .impI (quad_step Prf.hyp0 (Prf.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)))
 
 /-- `(1 + 1/k)^j ≤ 1 + j/k + (j/k)²` for `j ≤ k`. -/
 theorem growth_quad {j k : PTm n} (hj : Γ ⊢[PRAAx] le j k) : Γ ⊢[PRAAx] QInv j k := by

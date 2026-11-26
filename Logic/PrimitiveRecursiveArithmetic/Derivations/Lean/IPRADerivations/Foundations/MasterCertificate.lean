@@ -2,6 +2,7 @@ import IPRADerivations.Foundations.BoundedFormulas
 import IPRADerivations.Core.ClockedDescent
 import IPRADerivations.AnalyticNumberTheory.Totatives
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # Finite master certificates
@@ -51,14 +52,10 @@ private abbrev dropPushFormula : Fm PTm 3 :=
   drop (succ (var 0)) (pairT (var 1) (var 2)) ≐ drop (var 0) (var 2)
 
 private theorem drop_push_open : ([] : List (Fm PTm 3)) ⊢[PRAAx] dropPushFormula := by
-  refine ind _ trivial ?_ ?_
-  · simp only [dropPushFormula, Fm.subst_eq, subst_drop, subst_pairT, Syn.subst_var,
-      Syn.inst_zero, Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact (drop_succ zero _).eqTrans ((congrSnd (drop_zero _)).eqTrans
+  ipra_ind [dropPushFormula, subst_drop, subst_pairT]
+  · exact (drop_succ zero _).eqTrans ((congrSnd (drop_zero _)).eqTrans
       ((snd_pair _ _).eqTrans (drop_zero _).eqSymm))
-  · simp only [dropPushFormula, Fm.subst_eq, subst_drop, subst_pairT, Syn.subst_var,
-      Syn.repl_zero, repl_one, repl_two, ConciseIPRA.PTm.subst_succ]
-    exact (drop_succ _ _).eqTrans ((congrSnd Prf.hyp0).eqTrans (drop_succ _ _).eqSymm)
+  · exact (drop_succ _ _).eqTrans ((congrSnd Prf.hyp0).eqTrans (drop_succ _ _).eqSymm)
 
 theorem drop_push (k head tail : PTm n) :
     Γ ⊢[PRAAx] drop (succ k) (pairT head tail) ≐ drop k tail := by
@@ -121,15 +118,9 @@ private abbrev lookupFormula (values : PTm 2) : Fm PTm 3 :=
   lt (var 1) (var 0) ⟶ rawEntry values (var 0) (var 1) (var 2) ≐ inst2 values (var 1) (var 2)
 
 private theorem lookup_open (values : PTm 2) : ([] : List (Fm PTm 3)) ⊢[PRAAx] lookupFormula values := by
-  refine ind _ ⟨lt_QF _ _, trivial⟩ ?_ ?_
-  · simp only [lookupFormula, rawEntry, Fm.subst_imp, Fm.subst_eq, subst_lt, subst_fstT,
-      subst_drop, subst_ap2, subst_inst2, PTm.subst_monus, Syn.subst_var, Syn.inst_zero,
-      Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (lt_zero_absurd _ Prf.hyp0)
-  · simp only [lookupFormula, rawEntry, Fm.subst_imp, Fm.subst_eq, subst_lt, subst_fstT,
-      subst_drop, subst_ap2, subst_inst2, PTm.subst_monus, Syn.subst_var, Syn.repl_zero,
-      repl_one, repl_two, ConciseIPRA.PTm.subst_succ]
-    refine .impI ?_
+  ipra_ind (⟨lt_QF _ _, trivial⟩) [lookupFormula, rawEntry, subst_lt, subst_fstT, subst_drop, subst_ap2, subst_inst2]
+  · exact .impI (lt_zero_absurd _ Prf.hyp0)
+  · refine .impI ?_
     let Δ : List (Fm PTm 3) := lt (var 1) (succ (var 0)) :: [lookupFormula values]
     have hIndex : Δ ⊢[PRAAx] lt (var 1) (succ (var 0)) := Prf.hyp0
     refine .orE (lt_succ_cases hIndex) ?_ ?_

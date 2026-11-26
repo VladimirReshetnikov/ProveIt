@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.Harmonic
 import IPRADerivations.Core.SumOrder
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # The dyadic upper bound for harmonic numbers
@@ -42,9 +43,7 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 /-- `S(M + d) ≤ S(M) + d ⌊F/(M+1)⌋`. -/
 def blockInv (d F M : PTm n) : Fm PTm n := le (S (M + d) F) (S M F + d * quo F (succ M))
 
-@[simp] theorem subst_blockInv {k : ℕ} (σ : Fin n → PTm k) (d F M : PTm n) :
-    (blockInv d F M).subst σ = blockInv (Syn.subst σ d) (Syn.subst σ F) (Syn.subst σ M) := by
-  simp [blockInv, subst_ap2]
+ipra_subst blockInv [subst_ap2]
 
 theorem block_up {Γ : List (Fm PTm n)} (d F M : PTm n) : Γ ⊢[PRAAx] blockInv d F M := by
   have hall : Γ ⊢[PRAAx] Fm.all (blockInv (var 0) (Syn.shift F) (Syn.shift M)) := by
@@ -75,9 +74,7 @@ theorem block_up {Γ : List (Fm PTm n)} (d F M : PTm n) : Γ ⊢[PRAAx] blockInv
 
 def dyInv (k F : PTm n) : Fm PTm n := le (S (pw two k) F) (succ k * F)
 
-@[simp] theorem subst_dyInv {m : ℕ} (σ : Fin n → PTm m) (k F : PTm n) :
-    (dyInv k F).subst σ = dyInv (Syn.subst σ k) (Syn.subst σ F) := by
-  simp [dyInv, subst_ap2]
+ipra_subst dyInv [subst_ap2]
 
 /-- `2^k ⌊F/(2^k + 1)⌋ ≤ F`. -/
 theorem block_le {Γ : List (Fm PTm n)} (K F : PTm n) : Γ ⊢[PRAAx] le (K * quo F (succ K)) F := by

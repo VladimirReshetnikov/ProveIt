@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.Totatives
 import IPRADerivations.Combinatorics.BinomialIdentities
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # Gcd fibers
@@ -87,15 +88,11 @@ private abbrev reF (g : PTm 2) : Fm PTm 3 :=
     ap3 (sum2F (rB g)) (var 0) (var 1) (var 2) ≐ ap2 (sumF g) (quo (var 0 + pred (var 1)) (var 1)) (var 2)
 
 private theorem reindex₀ (g : PTm 2) : ([] : List (Fm PTm 3)) ⊢[PRAAx] reF g := by
-  refine ind _ ⟨trivial, trivial⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_ap2, subst_ap3, PTm.subst_add, PTm.subst_pred, Syn.subst_var,
-      Syn.inst_zero, Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine .impI ((sum2_zero _ _ _).eqTrans ((congrAp2 (sumF g)
+  ipra_ind (⟨trivial, trivial⟩) [subst_ap2, subst_ap3]
+  · refine .impI ((sum2_zero _ _ _).eqTrans ((congrAp2 (sumF g)
       (quo_eq Prf.hyp0 (z := zero + pred (var 0)) (q := zero) (r := pred (var 0)) (by ipra_ring) (pred_lt Prf.hyp0))
       (.eqRefl _)).eqTrans (sum_zero _ _)).eqSymm)
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_ap2, subst_ap3, PTm.subst_add, PTm.subst_pred, Syn.subst_var,
-      Syn.repl_zero, repl_one, repl_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (reindex_step Prf.hyp0 (.impE Prf.hyp1 Prf.hyp0))
+  · exact .impI (reindex_step Prf.hyp0 (.impE Prf.hyp1 Prf.hyp0))
 
 /-- `∑_{k<K} [d ∣ k] g(k/d, x) = ∑_{a<⌈K/d⌉} g(a, x)` for `d ≥ 1`. -/
 theorem reindex (g : PTm 2) {K d x : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) :

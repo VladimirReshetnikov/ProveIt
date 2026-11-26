@@ -1,6 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.CfReal
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # The value identity `[a_0; a_1, …, a_m] = p_m/q_m`
@@ -45,9 +46,7 @@ alias congrSg' := Common.congrSg
 def Pre (w1 c w : PTm n) : Fm PTm n :=
   ((sP w1 ≐ c * sP w + sQ w) ⋏ (sQ w1 ≐ sP w)) ⋏ ((sP' w1 ≐ c * sP' w + sQ' w) ⋏ (sQ' w1 ≐ sP' w))
 
-@[simp] theorem subst_Pre {m : ℕ} (σ : Fin n → PTm m) (w1 c w : PTm n) :
-    (Pre w1 c w).subst σ = Pre (Syn.subst σ w1) (Syn.subst σ c) (Syn.subst σ w) := by
-  simp [Pre]
+ipra_subst Pre
 
 theorem pre_QF (w1 c w : PTm n) : (Pre w1 c w).QF := by
   simp [Pre, Fm.QF]

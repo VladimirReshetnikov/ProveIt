@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.FactorVector
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # The least-factor trace
@@ -115,13 +116,9 @@ theorem step_bound {x i N : PTm n} (h : Γ ⊢[PRAAx] le (succ i) N) (ih : Γ �
 private abbrev bndF : Fm PTm 2 := le (var 0) (var 1) ⟶ le (trT (var 0) (var 1) + var 0) (succ (var 1))
 
 private theorem bnd₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] bndF := by
-  refine ind _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-  · simp only [Fm.subst_imp, subst_le, PTm.subst_add, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (le_congr ((tr_zero _).eqSymm.eqTrans (add_zero _).eqSymm) (.eqRefl _) (le_succ_self _))
-  · simp only [Fm.subst_imp, subst_le, PTm.subst_add, subst_ap2, Syn.subst_var, Syn.repl_zero, repl_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine .impI ?_
+  ipra_ind (⟨le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2]
+  · exact .impI (le_congr ((tr_zero _).eqSymm.eqTrans (add_zero _).eqSymm) (.eqRefl _) (le_succ_self _))
+  · refine .impI ?_
     have hi : (le (succ (var 0)) (var 1) :: [bndF]) ⊢[PRAAx] le (var 0 : PTm 2) (var 1) :=
       le_trans (le_succ_self _) Prf.hyp0
     have ih := Prf.impE Prf.hyp1 hi

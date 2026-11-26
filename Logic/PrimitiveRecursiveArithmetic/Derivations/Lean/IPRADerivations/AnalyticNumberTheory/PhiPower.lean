@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.PhiDouble
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # `φ(n M) = M φ(n)` when `M ∣ nᵗ`, and the power identity
@@ -54,14 +55,10 @@ private abbrev perF : Fm PTm 2 :=
   (var 1 ≐ succ (pred (var 1))) ⟶ ap2 (sumF totBody) (var 1 * var 0) (var 1) ≐ var 0 * phi (var 1)
 
 private theorem per₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] perF := by
-  refine ind _ ⟨trivial, trivial⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_ap2, PTm.subst_mul, PTm.subst_pred, Syn.subst_var,
-      Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine .impI ((congrAp2 (sumF totBody) (mul_zero _) (.eqRefl _)).eqTrans ((sum_zero _ _).eqTrans ?_))
+  ipra_ind (⟨trivial, trivial⟩) [subst_ap2]
+  · refine .impI ((congrAp2 (sumF totBody) (mul_zero _) (.eqRefl _)).eqTrans ((sum_zero _ _).eqTrans ?_))
     exact (zero_mul _).eqSymm
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_ap2, PTm.subst_mul, PTm.subst_pred, Syn.subst_var,
-      Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (per_step Prf.hyp0 (.impE Prf.hyp1 Prf.hyp0))
+  · exact .impI (per_step Prf.hyp0 (.impE Prf.hyp1 Prf.hyp0))
 
 /-- `∑_{k<nM} [gcd(k, n) = 1] = M φ(n)`. -/
 theorem per_sum {N : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) (M : PTm n) :

@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.ViableChain
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # An admissible chain makes its start viable (`ipra_evidence_framework`)
@@ -95,11 +96,8 @@ private def viaF (I : Instance) (c : PTm 2) : Fm PTm 2 :=
     (I.V (var 0) (inst2 c (monus (I.h (var 1)) (var 0)) (var 1)) (var 1) ≐ one)
 
 private theorem via₀ (A : Admissible I c) : ([] : List (Fm PTm 2)) ⊢[PRAAx] viaF I c := by
-  refine ind _ ⟨trivial, trivial⟩ ?_ ?_
-  · simp only [viaF, Fm.subst_imp, Fm.subst_eq, subst_le, subst_V, subst_inst2,
-      Instance.subst_h, PTm.subst_monus, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine .impI ?_
+  ipra_ind (⟨trivial, trivial⟩) [viaF, subst_le, subst_V, subst_inst2, Instance.subst_h]
+  · refine .impI ?_
     -- the last level: `c(h ∸ 0) = c(h)` and `V(0, a) = sg G(h, a)`
     have cz : [le zero (I.h (var 0 : PTm 1))] ⊢[PRAAx]
         inst2 c (monus (I.h (var 0)) zero) (var 0) ≐ inst2 c (I.h (var 0)) (var 0) :=
@@ -109,10 +107,7 @@ private theorem via₀ (A : Admissible I c) : ([] : List (Fm PTm 2)) ⊢[PRAAx] 
           sg (I.g (I.h (var 0)) (inst2 c (I.h (var 0)) (var 0)) (var 0)) :=
       V_zero I (A.bound (le_refl _))
     exact (V_congr I (.eqRefl _) cz).eqTrans (v0.eqTrans (sg_of_ne (A.local_ok (le_refl _))))
-  · simp only [viaF, Fm.subst_imp, Fm.subst_eq, subst_le, subst_V, subst_inst2,
-      Instance.subst_h, PTm.subst_monus, Syn.subst_var, Syn.repl_zero, repl_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have ih : [viaF I c] ⊢[PRAAx] le (var 0) (I.h (var 1)) ⟶
+  · have ih : [viaF I c] ⊢[PRAAx] le (var 0) (I.h (var 1)) ⟶
         (I.V (var 0) (inst2 c (monus (I.h (var 1)) (var 0)) (var 1)) (var 1) ≐ one) := Prf.hyp0
     refine .impI ?_
     exact viable_step A Prf.hyp0 (.impE ih.wk (le_trans (le_succ_self _) Prf.hyp0))

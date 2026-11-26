@@ -5,6 +5,7 @@ import IPRADerivations.DiophantineNumberTheory.FLTMultiples
 import IPRADerivations.AnalyticNumberTheory.SquareReciprocal
 import IPRADerivations.AnalyticNumberTheory.Totient
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # Optimality of `1/√5` for the golden ratio (`hurwitz_khinchin_ipra`)
@@ -118,9 +119,7 @@ theorem both_even {P Q : PTm n} (h : Γ ⊢[PRAAx] P * P ≐ P * Q + Q * Q) :
 def nInv (j p q : PTm n) : Fm PTm n :=
   (p * p ≐ p * q + q * q) ⟶ ((p ≐ pw two j * quo p (pw two j)) ⋏ (q ≐ pw two j * quo q (pw two j)))
 
-@[simp] theorem subst_nInv {k : ℕ} (σ : Fin n → PTm k) (j p q : PTm n) :
-    (nInv j p q).subst σ = nInv (Syn.subst σ j) (Syn.subst σ p) (Syn.subst σ q) := by
-  simp [nInv, subst_ap2]
+ipra_subst nInv [subst_ap2]
 
 theorem nInv_QF (j p q : PTm n) : (nInv j p q).QF := by
   unfold nInv; exact ⟨trivial, trivial, trivial⟩

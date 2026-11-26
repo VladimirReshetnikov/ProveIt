@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.KhinchinK2Step
 import IPRADerivations.DiophantineNumberTheory.KhinchinRounds
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # The divergent Khinchin theorem (K2), end to end (`hurwitz_khinchin_ipra`)
@@ -80,10 +81,7 @@ def nextS (Ψ Dm : PTm 2) (p c N C x : PTm n) : PTm n :=
   pairT (pred (rr Dm p N C x * succ p))
     (code (tB (wbK Ψ)) (rr Dm p N C x * succ p) two (pairT c (xr Dm p N C x)))
 
-@[simp] theorem subst_nextS {m : ℕ} (σ : Fin n → PTm m) (Ψ Dm : PTm 2) (p c N C x : PTm n) :
-    Syn.subst σ (nextS Ψ Dm p c N C x) =
-      nextS Ψ Dm (Syn.subst σ p) (Syn.subst σ c) (Syn.subst σ N) (Syn.subst σ C) (Syn.subst σ x) := by
-  simp [nextS, xr, LeanProofs.IPRA.DiophantineNumberTheory.KhinchinRoundWrapper.px, subst_ap2]
+ipra_subst nextS [xr, LeanProofs.IPRA.DiophantineNumberTheory.KhinchinRoundWrapper.px, subst_ap2]
 
 /-- The round step as a body over `0 = j`, `1 = S_j`, `2 = P = ⟨N, ⟨C, x⟩⟩`. -/
 def stepB (Ψ Dm : PTm 2) : PTm 3 :=
@@ -105,18 +103,13 @@ def gridK (Ψ Dm : PTm 2) (j P : PTm n) : PTm n := succ (fstT (Sk Ψ Dm j P))
 def invF (Ψ Dm : PTm 2) (j P : PTm n) : Fm PTm n :=
   le (pw (succ (num 16383)) j * resK Ψ Dm j P) (pw (num 16383) j * gridK Ψ Dm j P)
 
-@[simp] theorem subst_Sk {m : ℕ} (σ : Fin n → PTm m) (Ψ Dm : PTm 2) (j P : PTm n) :
-    Syn.subst σ (Sk Ψ Dm j P) = Sk Ψ Dm (Syn.subst σ j) (Syn.subst σ P) := by simp [Sk, subst_ap2]
+ipra_subst Sk [subst_ap2]
 
-@[simp] theorem subst_resK {m : ℕ} (σ : Fin n → PTm m) (Ψ Dm : PTm 2) (j P : PTm n) :
-    Syn.subst σ (resK Ψ Dm j P) = resK Ψ Dm (Syn.subst σ j) (Syn.subst σ P) := by simp [resK, subst_ap2]
+ipra_subst resK [subst_ap2]
 
-@[simp] theorem subst_gridK {m : ℕ} (σ : Fin n → PTm m) (Ψ Dm : PTm 2) (j P : PTm n) :
-    Syn.subst σ (gridK Ψ Dm j P) = gridK Ψ Dm (Syn.subst σ j) (Syn.subst σ P) := by simp [gridK]
+ipra_subst gridK
 
-@[simp] theorem subst_invF {m : ℕ} (σ : Fin n → PTm m) (Ψ Dm : PTm 2) (j P : PTm n) :
-    (invF Ψ Dm j P).subst σ = invF Ψ Dm (Syn.subst σ j) (Syn.subst σ P) := by
-  simp [invF, subst_ap2]
+ipra_subst invF [subst_ap2]
 
 theorem S_zero (Ψ Dm : PTm 2) (P : PTm n) : Γ ⊢[PRAAx] Sk Ψ Dm zero P ≐ pairT zero one := by
   simpa [baseB, Sk] using rec2_zero (Γ := Γ) baseB (stepB Ψ Dm) P

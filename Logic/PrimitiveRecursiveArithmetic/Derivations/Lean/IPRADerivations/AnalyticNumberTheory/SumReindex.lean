@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.PowerCleared
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # Summing over multiples
@@ -44,13 +45,9 @@ private abbrev boundF (f : PTm 2) : Fm PTm 3 :=
   le (ap2 (sumF f) (var 1) (var 2)) (ap2 (sumF f) (var 1 + var 0) (var 2))
 
 private theorem bound₀ (f : PTm 2) : ([] : List (Fm PTm 3)) ⊢[PRAAx] boundF f := by
-  refine ind _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, Fm.subst_eq, subst_ap2, PTm.subst_add, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      inst_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact le_congr (.eqRefl _) (congrAp2 (sumF f) (add_zero _) (.eqRefl _)).eqSymm (le_refl _)
-  · simp only [subst_le, Fm.subst_eq, subst_ap2, PTm.subst_add, Syn.subst_var, Syn.repl_zero, repl_one,
-      repl_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact le_trans Prf.hyp0 (le_of_eq_add (d := inst2 f (var 1 + var 0) (var 2))
+  ipra_ind (le_QF _ _) [subst_le, subst_ap2]
+  · exact le_congr (.eqRefl _) (congrAp2 (sumF f) (add_zero _) (.eqRefl _)).eqSymm (le_refl _)
+  · exact le_trans Prf.hyp0 (le_of_eq_add (d := inst2 f (var 1 + var 0) (var 2))
       ((congrAp2 (sumF f) (add_succ _ _) (.eqRefl _)).eqTrans (sum_succ' f _ _)))
 
 /-- `a ≤ b → ∑_{i<a} f(i, x) ≤ ∑_{i<b} f(i, x)`. -/
@@ -128,13 +125,9 @@ private abbrev riF (h : PTm 2) : Fm PTm 3 :=
   ap2 (sumF (riB h)) (var 0) (pairT (succ (var 1)) (var 2)) ≐ ap2 (sumF h) (cM (var 0) (succ (var 1))) (var 2)
 
 private theorem reindex₀ (h : PTm 2) : ([] : List (Fm PTm 3)) ⊢[PRAAx] riF h := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, subst_pairT, Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact (sum_zero _ _).eqTrans ((congrAp2 (sumF h) (sum_zero _ _) (.eqRefl _)).eqTrans (sum_zero _ _)).eqSymm
-  · simp only [Fm.subst_eq, subst_ap2, subst_pairT, Syn.subst_var, Syn.repl_zero, repl_one, repl_two,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact reindex_step h (congrSucc (pred_succ _).eqSymm) Prf.hyp0
+  ipra_ind [subst_ap2, subst_pairT]
+  · exact (sum_zero _ _).eqTrans ((congrAp2 (sumF h) (sum_zero _ _) (.eqRefl _)).eqTrans (sum_zero _ _)).eqSymm
+  · exact reindex_step h (congrSucc (pred_succ _).eqSymm) Prf.hyp0
 
 /-- `∑_{m<N} [p ∣ m] h(m/p, x) = ∑_{k<c(N)} h(k, x)`. -/
 theorem reindex_eq (h : PTm 2) {p x : PTm n} (N : PTm n) (hp : Γ ⊢[PRAAx] p ≐ succ (pred p)) :

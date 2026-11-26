@@ -2,6 +2,7 @@ import IPRADerivations.Foundations.BoundedEnumeration
 import IPRADerivations.Foundations.CodedViableChain
 import IPRADerivations.Core.CongruenceTactic
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # Actual stored increasing lists for bounded decidable subsets
@@ -43,21 +44,13 @@ def codeBound (K : PTm 2) (P p : PTm n) : PTm n :=
   succ (pairT (count K P p) (boundStack P (count K P p)))
 def boundProgramF (K : PTm 2) : PR 2 := PTm.toPR (codeBound K (var 0) (var 1))
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (P p : PTm n) :
-    Syn.subst σ (data P p) = data (Syn.subst σ P) (Syn.subst σ p) := by simp [data]
-@[simp] theorem subst_count {m : ℕ} (σ : Fin n → PTm m) (K : PTm 2) (P p : PTm n) :
-    Syn.subst σ (count K P p) = count K (Syn.subst σ P) (Syn.subst σ p) := by simp [count,rank]
-@[simp] theorem subst_sel {m : ℕ} (σ : Fin n → PTm m) (K : PTm 2) (r P p : PTm n) :
-    Syn.subst σ (sel K r P p) = sel K (Syn.subst σ r) (Syn.subst σ P) (Syn.subst σ p) := by
-  simp [sel,BoundedReflection.wit]
-@[simp] theorem subst_list {m : ℕ} (σ : Fin n → PTm m) (K : PTm 2) (P p : PTm n) :
-    Syn.subst σ (list K P p) = list K (Syn.subst σ P) (Syn.subst σ p) := by simp [list]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (K : PTm 2) (P p : PTm n) :
-    Syn.subst σ (run K P p) = run K (Syn.subst σ P) (Syn.subst σ p) := by simp [run]
-@[simp] theorem subst_boundStack {m : ℕ} (σ : Fin n → PTm m) (P r : PTm n) :
-    Syn.subst σ (boundStack P r) = boundStack (Syn.subst σ P) (Syn.subst σ r) := by simp [boundStack]
-@[simp] theorem subst_codeBound {m : ℕ} (σ : Fin n → PTm m) (K : PTm 2) (P p : PTm n) :
-    Syn.subst σ (codeBound K P p) = codeBound K (Syn.subst σ P) (Syn.subst σ p) := by simp [codeBound]
+ipra_subst data
+ipra_subst count [rank]
+ipra_subst sel [BoundedReflection.wit]
+ipra_subst list
+ipra_subst run
+ipra_subst boundStack
+ipra_subst codeBound
 
 theorem sel_congr (K : PTm 2) {r r' P P' p p' : PTm n}
     (hr : Γ ⊢[PRAAx] r ≐ r') (hP : Γ ⊢[PRAAx] P ≐ P') (hp : Γ ⊢[PRAAx] p ≐ p') : Γ ⊢[PRAAx]
@@ -124,9 +117,7 @@ theorem bound_succ (P r : PTm n) : Γ ⊢[PRAAx] boundStack P (succ r) ≐ pairT
 
 def sizeLaw (K : PTm 2) (P p r : PTm n) : Fm PTm n :=
   le r (count K P p) ⟶ le (stack (values K) r (data P p)) (boundStack P r)
-@[simp] theorem subst_sizeLaw {m : ℕ} (σ : Fin n → PTm m) (K : PTm 2) (P p r : PTm n) :
-    (sizeLaw K P p r).subst σ = sizeLaw K (Syn.subst σ P) (Syn.subst σ p) (Syn.subst σ r) := by
-  simp [sizeLaw,stack]
+ipra_subst sizeLaw [stack]
 
 theorem stack_bound_step (K : PTm 2) (P p r : PTm n)
     (hr : Γ ⊢[PRAAx] lt r (count K P p))

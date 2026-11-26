@@ -3,6 +3,7 @@ import IPRADerivations.Core.Tactic
 import IPRADerivations.Core.Pairing
 import IPRADerivations.Core.Parity
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # The denominator lemma of the sharp Hurwitz theorem (`hurwitz_khinchin_ipra`)
@@ -47,9 +48,7 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 /-- `S² > 5` for `S = (u² + v²)/(uv)`, cleared: `5u²v² < (u² + v²)²`. -/
 def goodPair (u v : PTm n) : Fm PTm n := lt (num 5 * (u * u) * (v * v)) ((u * u + v * v) * (u * u + v * v))
 
-@[simp] theorem subst_goodPair {m : ℕ} (σ : Fin n → PTm m) (u v : PTm n) :
-    (goodPair u v).subst σ = goodPair (Syn.subst σ u) (Syn.subst σ v) := by
-  simp [goodPair]
+ipra_subst goodPair
 
 /-- `h = v² − uv − u² = 1 + e > 0` gives `S₀² > 5`. -/
 theorem good_of_gap {u v e : PTm n} (h : Γ ⊢[PRAAx] v * v ≐ u * v + u * u + succ e) : Γ ⊢[PRAAx] goodPair u v := by

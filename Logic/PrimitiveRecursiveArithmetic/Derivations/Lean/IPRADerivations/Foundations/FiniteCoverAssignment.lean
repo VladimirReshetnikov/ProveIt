@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.FiniteFiberGrouping
 import IPRADerivations.Core.SumOrder
 import IPRADerivations.Core.CongruenceTactic
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # Actual first-cover assignment and the finite covering count
@@ -56,35 +57,21 @@ def cover (f : PTm 3) (P M p : PTm n) : Fm PTm n := .all
 def groupBounds (f : PTm 3) (P M p L : PTm n) : Fm PTm n := .all
   (lt (var 0) (Syn.shift M) ⟶ le (groupSize f (Syn.shift P) (Syn.shift M) (Syn.shift p) (var 0)) (Syn.shift L))
 
-@[simp] theorem subst_assigned {k : ℕ} (σ : Fin n → PTm k) (f : PTm 3) (M v p : PTm n) :
-    Syn.subst σ (assigned f M v p) = assigned f (Syn.subst σ M) (Syn.subst σ v) (Syn.subst σ p) := by simp [assigned,wit,Search.mu]
-@[simp] theorem subst_label {k : ℕ} (σ : Fin n → PTm k) (f : PTm 3) (P M p i : PTm n) :
-    Syn.subst σ (label f P M p i) = label f (Syn.subst σ P) (Syn.subst σ M) (Syn.subst σ p) (Syn.subst σ i) := by simp [label]
-@[simp] theorem subst_data {k : ℕ} (σ : Fin n → PTm k) (P M p : PTm n) :
-    Syn.subst σ (data P M p) = data (Syn.subst σ P) (Syn.subst σ M) (Syn.subst σ p) := by simp [data]
+ipra_subst assigned [wit, Search.mu]
+ipra_subst label
+ipra_subst data
 @[simp] theorem subst_fields {k : ℕ} (σ : Fin n → PTm k) (q : PTm n) (i : Fin 3) :
     Syn.subst σ (fields q i) = fields (Syn.subst σ q) i := by fin_cases i <;> simp [fields]
 @[simp] theorem subst_groupData {k : ℕ} (σ : Fin n → PTm k) (P M p g : PTm n) :
     Syn.subst σ (groupData P M p g) = groupData (Syn.subst σ P) (Syn.subst σ M) (Syn.subst σ p) (Syn.subst σ g) := by simp [groupData]
-@[simp] theorem subst_groupSize {k : ℕ} (σ : Fin n → PTm k) (f : PTm 3) (P M p g : PTm n) :
-    Syn.subst σ (groupSize f P M p g) = groupSize f (Syn.subst σ P) (Syn.subst σ M) (Syn.subst σ p) (Syn.subst σ g) := by simp [groupSize]
-@[simp] theorem subst_indices {k : ℕ} (σ : Fin n → PTm k) (f : PTm 3) (P M p g : PTm n) :
-    Syn.subst σ (indices f P M p g) = indices f (Syn.subst σ P) (Syn.subst σ M) (Syn.subst σ p) (Syn.subst σ g) := by simp [indices]
-@[simp] theorem subst_group {k : ℕ} (σ : Fin n → PTm k) (f : PTm 3) (P M p g : PTm n) :
-    Syn.subst σ (group f P M p g) = group f (Syn.subst σ P) (Syn.subst σ M) (Syn.subst σ p) (Syn.subst σ g) := by simp [group]
-@[simp] theorem subst_total {k : ℕ} (σ : Fin n → PTm k) (f : PTm 3) (P M p : PTm n) :
-    Syn.subst σ (total f P M p) = total f (Syn.subst σ P) (Syn.subst σ M) (Syn.subst σ p) := by simp [total]
-@[simp] theorem subst_incidence {k : ℕ} (σ : Fin n → PTm k) (f : PTm 3) (P M p g i : PTm n) :
-    Syn.subst σ (incidence f P M p g i) = incidence f (Syn.subst σ P) (Syn.subst σ M) (Syn.subst σ p) (Syn.subst σ g) (Syn.subst σ i) := by simp [incidence,Signum.sg]
-@[simp] theorem subst_hasCover {k : ℕ} (σ : Fin n → PTm k) (f : PTm 3) (M v p : PTm n) :
-    (hasCover f M v p).subst σ = hasCover f (Syn.subst σ M) (Syn.subst σ v) (Syn.subst σ p) := by
-  simp [hasCover,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_cover {k : ℕ} (σ : Fin n → PTm k) (f : PTm 3) (P M p : PTm n) :
-    (cover f P M p).subst σ = cover f (Syn.subst σ P) (Syn.subst σ M) (Syn.subst σ p) := by
-  simp [cover,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_groupBounds {k : ℕ} (σ : Fin n → PTm k) (f : PTm 3) (P M p L : PTm n) :
-    (groupBounds f P M p L).subst σ = groupBounds f (Syn.subst σ P) (Syn.subst σ M) (Syn.subst σ p) (Syn.subst σ L) := by
-  simp [groupBounds,Syn.subst_shift,Syn.shift_subst]
+ipra_subst groupSize
+ipra_subst indices
+ipra_subst group
+ipra_subst total
+ipra_subst incidence [Signum.sg]
+ipra_subst hasCover [Syn.subst_shift, Syn.shift_subst]
+ipra_subst cover [Syn.subst_shift, Syn.shift_subst]
+ipra_subst groupBounds [Syn.subst_shift, Syn.shift_subst]
 
 theorem fields_at (P M p : PTm n) (j : Fin 3) : Γ ⊢[PRAAx] fields (data P M p) j ≐ ![P,M,p] j := by
   fin_cases j
@@ -159,9 +146,7 @@ theorem group_lookup (f : PTm 3) (P M p g r : PTm n) (hr : Γ ⊢[PRAAx] lt r (g
 
 def slot (f : PTm 3) (P M p g i : PTm n) : PTm n :=
   FilteredEnumeration.rank (groupBody f) i (groupData P M p g)
-@[simp] theorem subst_slot {k : ℕ} (σ : Fin n → PTm k) (f : PTm 3) (P M p g i : PTm n) :
-    Syn.subst σ (slot f P M p g i) = slot f (Syn.subst σ P) (Syn.subst σ M) (Syn.subst σ p) (Syn.subst σ g) (Syn.subst σ i) := by
-  simp [slot,FilteredEnumeration.rank]
+ipra_subst slot [FilteredEnumeration.rank]
 theorem group_complete (f : PTm 3) (P M p g i : PTm n) (hi : Γ ⊢[PRAAx] lt i (length P))
     (hg : Γ ⊢[PRAAx] label f P M p i ≐ g) : Γ ⊢[PRAAx]
     lt (slot f P M p g i) (groupSize f P M p g) ⋏
@@ -333,12 +318,9 @@ def output (f : PTm 3) (P M p : PTm n) : PTm n := pairT (groups f P M p) (pairT 
 def outputF (f : PTm 3) : PR 3 := PTm.toPR (output f (var 0) (var 1) (var 2))
 def run (f : PTm 3) (P M p : PTm n) : PTm n := app (outputF f) ![P,M,p]
 
-@[simp] theorem subst_groups {k : ℕ} (σ : Fin n → PTm k) (f : PTm 3) (P M p : PTm n) :
-    Syn.subst σ (groups f P M p) = groups f (Syn.subst σ P) (Syn.subst σ M) (Syn.subst σ p) := by simp [groups]
-@[simp] theorem subst_sizes {k : ℕ} (σ : Fin n → PTm k) (f : PTm 3) (P M p : PTm n) :
-    Syn.subst σ (sizes f P M p) = sizes f (Syn.subst σ P) (Syn.subst σ M) (Syn.subst σ p) := by simp [sizes]
-@[simp] theorem subst_output {k : ℕ} (σ : Fin n → PTm k) (f : PTm 3) (P M p : PTm n) :
-    Syn.subst σ (output f P M p) = output f (Syn.subst σ P) (Syn.subst σ M) (Syn.subst σ p) := by simp [output]
+ipra_subst groups
+ipra_subst sizes
+ipra_subst output
 @[simp] theorem subst_run {k : ℕ} (σ : Fin n → PTm k) (f : PTm 3) (P M p : PTm n) :
     Syn.subst σ (run f P M p) = run f (Syn.subst σ P) (Syn.subst σ M) (Syn.subst σ p) := by
   simp only [run,ConciseIPRA.PTm.subst_app]

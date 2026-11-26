@@ -3,6 +3,7 @@ import IPRADerivations.DiophantineNumberTheory.KhinchinK2RoundZ
 import IPRADerivations.Foundations.FiniteSetExponential
 import IPRADerivations.Foundations.BlockPartitionSum
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # One complete (K2) round from `ψ` and `D` (`hurwitz_khinchin_ipra`)
@@ -75,21 +76,12 @@ def rr (Dm : PTm 2) (p N C x : PTm n) : PTm n := fact (Rr Dm p N C x) * (Rr Dm p
 abbrev xr (Dm : PTm 2) (p N C x : PTm n) : PTm n :=
   px (rr Dm p N C x) (Br Dm p N x) (K0r p N) (pairT (pairT C x) (Qr Dm p N x)) (Rr Dm p N C x) (Gr Dm p N C x) p
 
-@[simp] theorem subst_K0r {m : ℕ} (σ : Fin n → PTm m) (p N : PTm n) :
-    Syn.subst σ (K0r p N) = K0r (Syn.subst σ p) (Syn.subst σ N) := by simp [K0r]
-@[simp] theorem subst_Br {m : ℕ} (σ : Fin n → PTm m) (Dm : PTm 2) (p N x : PTm n) :
-    Syn.subst σ (Br Dm p N x) = Br Dm (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ x) := by simp [Br]
-@[simp] theorem subst_Qr {m : ℕ} (σ : Fin n → PTm m) (Dm : PTm 2) (p N x : PTm n) :
-    Syn.subst σ (Qr Dm p N x) = Qr Dm (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ x) := by simp [Qr, subst_ap2]
-@[simp] theorem subst_Rr {m : ℕ} (σ : Fin n → PTm m) (Dm : PTm 2) (p N C x : PTm n) :
-    Syn.subst σ (Rr Dm p N C x) = Rr Dm (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ C) (Syn.subst σ x) := by
-  simp [Rr]
-@[simp] theorem subst_Gr {m : ℕ} (σ : Fin n → PTm m) (Dm : PTm 2) (p N C x : PTm n) :
-    Syn.subst σ (Gr Dm p N C x) = Gr Dm (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ C) (Syn.subst σ x) := by
-  simp [Gr]
-@[simp] theorem subst_rr {m : ℕ} (σ : Fin n → PTm m) (Dm : PTm 2) (p N C x : PTm n) :
-    Syn.subst σ (rr Dm p N C x) = rr Dm (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ C) (Syn.subst σ x) := by
-  simp [rr, subst_ap2]
+ipra_subst K0r
+ipra_subst Br
+ipra_subst Qr [subst_ap2]
+ipra_subst Rr
+ipra_subst Gr
+ipra_subst rr [subst_ap2]
 
 theorem hK_r (p N : PTm n) : Γ ⊢[PRAAx] le (num 512 * succ p) (K0r p N) := by
   show Γ ⊢[PRAAx] le (num 512 * succ p) (num 512 * succ p + N)

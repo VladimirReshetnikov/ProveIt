@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.SumPhi
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # Multiplicativity of the totient
@@ -131,15 +132,9 @@ private abbrev blockF : Fm PTm 3 :=
   (var 1 ≐ succ (pred (var 1))) ⟶ ap3 (sum2F hB) (var 0) (var 1) (var 2) ≐ blockR (var 0) (var 1) (var 2)
 
 private theorem block₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] blockF := by
-  refine ind _ ⟨trivial, trivial⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_ap2, subst_ap3, PTm.subst_add, PTm.subst_mul, PTm.subst_pred,
-      subst_eqb, subst_ex2, Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact .impI (block_zero Prf.hyp0)
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_ap2, subst_ap3, PTm.subst_add, PTm.subst_mul, PTm.subst_pred,
-      subst_eqb, subst_ex2, Syn.subst_var, Syn.repl_zero, repl_one, repl_two, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact .impI (block_step Prf.hyp0 (.impE Prf.hyp1 Prf.hyp0))
+  ipra_ind (⟨trivial, trivial⟩) [subst_ap2, subst_ap3, subst_eqb, subst_ex2]
+  · exact .impI (block_zero Prf.hyp0)
+  · exact .impI (block_step Prf.hyp0 (.impE Prf.hyp1 Prf.hyp0))
 
 theorem block_at {K m N : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) :
     Γ ⊢[PRAAx] ap3 (sum2F hB) K m N ≐ blockR K m N := by

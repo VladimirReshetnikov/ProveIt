@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.HarmonicMertens
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # Mertens' lower bound for the harmonic logarithm (`pnt_ipra_constructive_2026-11-14`)
@@ -100,15 +101,9 @@ theorem k_step {m M L i : PTm n} (hm : Γ ⊢[PRAAx] le one m) (hM : Γ ⊢[PRAA
 private abbrev lowF : Fm PTm 4 := Hy (var 1) (var 2) (var 3) ⟶ K (var 1) (var 2) (var 3) (var 0)
 
 private theorem low₀ : ([] : List (Fm PTm 4)) ⊢[PRAAx] lowF := by
-  refine ind _ ⟨⟨le_QF _ _, le_QF _ _, le_QF _ _⟩, le_QF _ _⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_and, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, subst_pairT,
-      Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two, inst_three,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (k_zero _ _ _)
-  · simp only [Fm.subst_imp, Fm.subst_and, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, subst_pairT,
-      Syn.subst_var, Syn.repl_zero, repl_one, repl_two, repl_three,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine .impI ?_
+  ipra_ind (⟨⟨le_QF _ _, le_QF _ _, le_QF _ _⟩, le_QF _ _⟩) [subst_le, subst_ap2, subst_pairT]
+  · exact .impI (k_zero _ _ _)
+  · refine .impI ?_
     have h := (Prf.hyp0 : (Hy (var 1) (var 2) (var 3) :: [lowF]) ⊢[PRAAx] Hy (var 1) (var 2) (var 3))
     exact k_step (Prf.andE₁ h) (Prf.andE₁ (Prf.andE₂ h)) (Prf.andE₂ (Prf.andE₂ h)) (Prf.impE Prf.hyp1 Prf.hyp0)
 
@@ -168,15 +163,9 @@ theorem t_step {k M L N : PTm n} (h : Γ ⊢[PRAAx] Hf (succ k) M L N) (ih : Γ 
 private abbrev factF' : Fm PTm 4 := Hf (var 0) (var 1) (var 2) (var 3) ⟶ T (var 0) (var 1) (var 2)
 
 private theorem fact₀ : ([] : List (Fm PTm 4)) ⊢[PRAAx] factF' := by
-  refine ind _ ⟨⟨le_QF _ _, le_QF _ _, le_QF _ _⟩, le_QF _ _⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_and, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, subst_pairT,
-      Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two, inst_three,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (t_zero _ _)
-  · simp only [Fm.subst_imp, Fm.subst_and, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, subst_pairT,
-      Syn.subst_var, Syn.repl_zero, repl_one, repl_two, repl_three,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine .impI ?_
+  ipra_ind (⟨⟨le_QF _ _, le_QF _ _, le_QF _ _⟩, le_QF _ _⟩) [subst_le, subst_ap2, subst_pairT]
+  · exact .impI (t_zero _ _)
+  · refine .impI ?_
     have h := (Prf.hyp0 : (Hf (succ (var 0)) (var 1) (var 2) (var 3) :: [factF']) ⊢[PRAAx]
       Hf (succ (var 0)) (var 1) (var 2) (var 3))
     have h' : (Hf (succ (var 0)) (var 1) (var 2) (var 3) :: [factF']) ⊢[PRAAx] Hf (var 0) (var 1) (var 2) (var 3) :=

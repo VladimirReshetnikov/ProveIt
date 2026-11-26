@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.FiniteGluing
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # Rank and select for a decidable finite subset (`ipra_categorical_methods`, finite limits)
@@ -77,14 +78,10 @@ private def monoF (K : PTm 2) : Fm PTm 3 :=
   le (rank K (var 1) (var 2)) (rank K (var 1 + var 0) (var 2))
 
 private theorem mono₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] monoF K := by
-  refine ind _ trivial ?_ ?_
-  · simp only [monoF, subst_le, subst_ap2, PTm.subst_add, Syn.subst_var, Syn.inst_zero,
-      Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact le_congr (.eqRefl _) (congrAp2 (sumF (sgB K)) (add_zero _).eqSymm (.eqRefl _))
+  ipra_ind [monoF, subst_le, subst_ap2]
+  · exact le_congr (.eqRefl _) (congrAp2 (sumF (sgB K)) (add_zero _).eqSymm (.eqRefl _))
       (le_refl _)
-  · simp only [monoF, subst_le, subst_ap2, PTm.subst_add, Syn.subst_var, Syn.repl_zero, repl_one,
-      repl_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have ih : [monoF K] ⊢[PRAAx] le (rank K (var 1) (var 2)) (rank K (var 1 + var 0) (var 2)) :=
+  · have ih : [monoF K] ⊢[PRAAx] le (rank K (var 1) (var 2)) (rank K (var 1 + var 0) (var 2)) :=
       Prf.hyp0
     have e : [monoF K] ⊢[PRAAx] rank K (var 1 + succ (var 0)) (var 2) ≐
         rank K (var 1 + var 0) (var 2) + sg (inst2 K (var 1 + var 0) (var 2)) :=
@@ -197,15 +194,9 @@ private def exF (K : PTm 2) : Fm PTm 3 :=
     (exB (tB K) (var 0) (pairT (var 1) (var 2)) ≐ one)
 
 private theorem ex₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] exF K := by
-  refine ind _ ⟨trivial, trivial⟩ ?_ ?_
-  · simp only [exF, Fm.subst_imp, Fm.subst_eq, subst_lt, subst_ap2, subst_pairT, PTm.subst_monus,
-      Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact .impI (lt_zero_absurd _ (lt_congr (.eqRefl _) (rank_zero K _) Prf.hyp0))
-  · simp only [exF, Fm.subst_imp, Fm.subst_eq, subst_lt, subst_ap2, subst_pairT, PTm.subst_monus,
-      Syn.subst_var, Syn.repl_zero, repl_one, repl_two, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    have ih : [exF K] ⊢[PRAAx] lt (var 1) (rank K (var 0) (var 2)) ⟶
+  ipra_ind (⟨trivial, trivial⟩) [exF, subst_lt, subst_ap2, subst_pairT]
+  · exact .impI (lt_zero_absurd _ (lt_congr (.eqRefl _) (rank_zero K _) Prf.hyp0))
+  · have ih : [exF K] ⊢[PRAAx] lt (var 1) (rank K (var 0) (var 2)) ⟶
         (exB (tB K) (var 0) (pairT (var 1) (var 2)) ≐ one) := Prf.hyp0
     exact .impI (ex_step K ih.wk Prf.hyp0)
 

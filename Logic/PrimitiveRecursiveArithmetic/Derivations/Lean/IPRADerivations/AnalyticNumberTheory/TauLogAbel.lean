@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.DivisorBound
 import IPRADerivations.AnalyticNumberTheory.HarmonicLogSquareSum
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # The divisor–logarithm sum by finite partial summation (`pnt_ipra_constructive_2026-11-14`, `sb:divisor-approx`)
@@ -244,15 +245,10 @@ private abbrev abelF : Fm PTm 5 :=
   Ht (var 0) (var 1) (var 2) (var 3) (var 4) ⟶ (IU (var 0) (var 1) (var 2) (var 3) ⋏ IL (var 0) (var 1) (var 2) (var 3))
 
 private theorem abel₀ : ([] : List (Fm PTm 5)) ⊢[PRAAx] abelF := by
-  refine ind _ ⟨⟨le_QF _ _, le_QF _ _, le_QF _ _, le_QF _ _, le_QF _ _⟩, le_QF _ _, le_QF _ _⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_and, subst_le, subst_ap2, subst_ap1, PTm.subst_add, PTm.subst_mul,
-      PTm.subst_monus, subst_pairT, Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two, inst_three, inst_four,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (i_zero Prf.hyp0)
-  · simp only [Fm.subst_imp, Fm.subst_and, subst_le, subst_ap2, subst_ap1, PTm.subst_add, PTm.subst_mul,
-      PTm.subst_monus, subst_pairT, Syn.subst_var, Syn.repl_zero, repl_one, repl_two, repl_three, repl_four,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine .impI ?_
+  ipra_ind (⟨⟨le_QF _ _, le_QF _ _, le_QF _ _, le_QF _ _, le_QF _ _⟩, le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2,
+      subst_ap1, subst_pairT]
+  · exact .impI (i_zero Prf.hyp0)
+  · refine .impI ?_
     have h := (Prf.hyp0 : (Ht (succ (var 0)) (var 1) (var 2) (var 3) (var 4) :: [abelF]) ⊢[PRAAx]
       Ht (succ (var 0)) (var 1) (var 2) (var 3) (var 4))
     have h' : (Ht (succ (var 0)) (var 1) (var 2) (var 3) (var 4) :: [abelF]) ⊢[PRAAx]

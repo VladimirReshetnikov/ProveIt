@@ -3,6 +3,7 @@ import IPRADerivations.AnalyticNumberTheory.DirichletLeibniz
 import IPRADerivations.AnalyticNumberTheory.Fermat
 import IPRADerivations.AnalyticNumberTheory.Totient
 import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # Original Dirichlet convolution weights on split divisors
@@ -42,9 +43,7 @@ def productLaw (f : PTm 2) (m N y : PTm n) : Fm PTm n :=
     inst2 f (var 1 * var 0) (Syn.shift (Syn.shift y)) ≐
       inst2 f (var 1) (Syn.shift (Syn.shift y)) * inst2 f (var 0) (Syn.shift (Syn.shift y))))
 
-@[simp] theorem subst_productLaw {k : ℕ} (σ : Fin n → PTm k) (f : PTm 2) (m N y : PTm n) :
-    (productLaw f m N y).subst σ = productLaw f (Syn.subst σ m) (Syn.subst σ N) (Syn.subst σ y) := by
-  simp [productLaw, subst_up_shift']
+ipra_subst productLaw [subst_up_shift']
 
 theorem product_law_shift {f : PTm 2} {m N y : PTm n} (h : Γ ⊢[PRAAx] productLaw f m N y) :
     Γ.map Fm.shift ⊢[PRAAx] productLaw f (Syn.shift m) (Syn.shift N) (Syn.shift y) := by

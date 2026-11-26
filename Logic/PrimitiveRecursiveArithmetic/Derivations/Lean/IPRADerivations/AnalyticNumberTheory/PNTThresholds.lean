@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.ZetaPrecision
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # The integer thresholds and the closed modulus of the PNT contraction (`pnt_ipra_constructive_2026-11-14`)
@@ -57,8 +58,7 @@ def stepT : PTm 3 :=
 /-- `T_j`. -/
 def Tt (j p : PTm n) : PTm n := ap2 (rec2 (num 2) stepT) j p
 
-@[simp] theorem subst_Tt {k : ℕ} (σ : Fin n → PTm k) (j p : PTm n) :
-    Syn.subst σ (Tt j p) = Tt (Syn.subst σ j) (Syn.subst σ p) := by simp [Tt]
+ipra_subst Tt
 
 theorem T_zero (p : PTm n) : Γ ⊢[PRAAx] Tt zero p ≐ num 2 := by
   unfold Tt; simpa using rec2_zero (Γ := Γ) (num 2) stepT p
@@ -78,9 +78,7 @@ theorem T_step (j p : PTm n) : Γ ⊢[PRAAx] le (succ (Tt (succ j) p)) (Fq p * s
 /-- The closed-form invariant `T_j + 1 ≤ 3 F^j`. -/
 def clInv (j p : PTm n) : Fm PTm n := le (succ (Tt j p)) (num 3 * pw (Fq p) j)
 
-@[simp] theorem subst_clInv {k : ℕ} (σ : Fin n → PTm k) (j p : PTm n) :
-    (clInv j p).subst σ = clInv (Syn.subst σ j) (Syn.subst σ p) := by
-  simp [clInv, subst_ap2]
+ipra_subst clInv [subst_ap2]
 
 /-- `T_j + 1 ≤ 3 F^j`. -/
 theorem T_closed (j p : PTm n) : Γ ⊢[PRAAx] le (succ (Tt j p)) (num 3 * pw (Fq p) j) := by

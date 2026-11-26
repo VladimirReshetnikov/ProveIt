@@ -2,6 +2,7 @@ import IPRADerivations.Foundations.LexChain
 import IPRADerivations.Foundations.IterationFusion
 import IPRADerivations.Foundations.IntersectionEnumeration
 import IPRADerivations.Probability.UnionUtility
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # Automatic fuel for fixed-dimensional descent (`ipra_resources_and_elimination_2026-11-15`, `thm:automatic-lex-fuel`)
@@ -91,13 +92,9 @@ private theorem inv₀ (hqf : I.QF)
     (hIs : ∀ {k : ℕ} {Γ : List (Fm PTm k)} {x u : PTm k},
       (Γ ⊢[PRAAx] rel I x u) → (Γ ⊢[PRAAx] rel I x (inst2 τ x u))) :
     ([] : List (Fm PTm 2)) ⊢[PRAAx] invF τ u0 I := by
-  refine ind _ (subst_QF' hqf _) ?_ ?_
-  · simp only [invF, subst_rel, subst_ap2, subst_pairT, subst_inst1, Syn.subst_var,
-      Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero]
-    exact rel_congr I (.eqRefl _) (traj_zero τ u0 _).eqSymm (hI0 _)
-  · simp only [invF, subst_rel, subst_ap2, subst_pairT, subst_inst1, Syn.subst_var,
-      Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have ih : [invF τ u0 I] ⊢[PRAAx] rel I (var 1) (traj τ u0 (var 0) (var 1)) := Prf.hyp0
+  ipra_ind (subst_QF' hqf _) [invF, subst_rel, subst_ap2, subst_pairT, subst_inst1]
+  · exact rel_congr I (.eqRefl _) (traj_zero τ u0 _).eqSymm (hI0 _)
+  · have ih : [invF τ u0 I] ⊢[PRAAx] rel I (var 1) (traj τ u0 (var 0) (var 1)) := Prf.hyp0
     exact rel_congr I (.eqRefl _) (traj_succ τ u0 _ _).eqSymm (hIs ih)
 
 /-- The invariant holds at every time. -/
@@ -122,15 +119,9 @@ private theorem fw₀
     (habs : ∀ {k : ℕ} {Γ : List (Fm PTm k)} {x u : PTm k},
       (Γ ⊢[PRAAx] inst2 a x u ≐ zero) → (Γ ⊢[PRAAx] inst2 a x (inst2 τ x u) ≐ zero)) :
     ([] : List (Fm PTm 3)) ⊢[PRAAx] fwF τ u0 a := by
-  refine ind _ ⟨trivial, trivial⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_inst2, subst_ap2, subst_pairT, subst_inst1,
-      PTm.subst_add, Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two,
-      ConciseIPRA.PTm.subst_zero]
-    exact .impI ((congrInst2 a (.eqRefl _) (traj_congr τ u0 (add_zero _) _)).eqTrans Prf.hyp0)
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_inst2, subst_ap2, subst_pairT, subst_inst1,
-      PTm.subst_add, Syn.subst_var, Syn.repl_zero, repl_one, repl_two,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI ((congrInst2 a (.eqRefl _)
+  ipra_ind (⟨trivial, trivial⟩) [subst_inst2, subst_ap2, subst_pairT, subst_inst1]
+  · exact .impI ((congrInst2 a (.eqRefl _) (traj_congr τ u0 (add_zero _) _)).eqTrans Prf.hyp0)
+  · exact .impI ((congrInst2 a (.eqRefl _)
       ((traj_congr τ u0 (add_succ _ _) _).eqTrans (traj_succ τ u0 _ _))).eqTrans
       (habs (.impE Prf.hyp1 Prf.hyp0)))
 
@@ -179,13 +170,9 @@ variable (V : PTm 2)
 private abbrev mmF : Fm PTm 3 := le (Mx V (var 1) (var 2)) (Mx V (var 1 + var 0) (var 2))
 
 private theorem mm₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] mmF V := by
-  refine ind _ trivial ?_ ?_
-  · simp only [subst_le, subst_ap2, PTm.subst_add, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      inst_two, ConciseIPRA.PTm.subst_zero]
-    exact le_congr (.eqRefl _) (congrAp2 (mxF V) (add_zero _).eqSymm (.eqRefl _)) (le_refl _)
-  · simp only [subst_le, subst_ap2, PTm.subst_add, Syn.subst_var, Syn.repl_zero, repl_one,
-      repl_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine le_trans Prf.hyp0 ?_
+  ipra_ind [subst_le, subst_ap2]
+  · exact le_congr (.eqRefl _) (congrAp2 (mxF V) (add_zero _).eqSymm (.eqRefl _)) (le_refl _)
+  · refine le_trans Prf.hyp0 ?_
     exact le_congr (.eqRefl _)
       ((congrAp2 (mxF V) (add_succ _ _) (.eqRefl _)).eqTrans (mx_succ V _ _)).eqSymm
       (le_add_right _ _)

@@ -1,6 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.HurwitzLoop
 import IPRADerivations.AnalyticNumberTheory.PhiLower
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # A primitive recursive continued-fraction real
@@ -63,9 +64,7 @@ def Lin4 (s C w : PTm n) : Fm PTm n :=
   ((sP s ≐ sP w * sP C + sQ w * sP' C) ⋏ (sQ s ≐ sP w * sQ C + sQ w * sQ' C)) ⋏
     ((sP' s ≐ sP' w * sP C + sQ' w * sP' C) ⋏ (sQ' s ≐ sP' w * sQ C + sQ' w * sQ' C))
 
-@[simp] theorem subst_Lin4 {m : ℕ} (σ : Fin n → PTm m) (s C w : PTm n) :
-    (Lin4 s C w).subst σ = Lin4 (Syn.subst σ s) (Syn.subst σ C) (Syn.subst σ w) := by
-  simp [Lin4]
+ipra_subst Lin4
 
 theorem lin4_QF (s C w : PTm n) : (Lin4 s C w).QF := by
   simp [Lin4, Fm.QF]
@@ -114,9 +113,7 @@ theorem lin_step {c s s' C w w' : PTm n} (hs : Γ ⊢[PRAAx] s' ≐ nx c s) (hw 
 def Det (s : PTm n) : Fm PTm n :=
   (sP' s * sQ s ≐ sP s * sQ' s + one) ⋎ (sP s * sQ' s ≐ sP' s * sQ s + one)
 
-@[simp] theorem subst_Det {m : ℕ} (σ : Fin n → PTm m) (s : PTm n) :
-    (Det s).subst σ = Det (Syn.subst σ s) := by
-  simp [Det]
+ipra_subst Det
 
 theorem det_QF (s : PTm n) : (Det s).QF := by
   simp [Det, Fm.QF]
@@ -150,9 +147,7 @@ theorem det_base {P Q P' Q' : PTm n} (p2 : Γ ⊢[PRAAx] Q ≐ one) (p3 : Γ ⊢
 /-- `v ≤ u` and `v + v' ≤ u + u'` for `w = ⟨u, v, u', v'⟩`. -/
 def Jf (w : PTm n) : Fm PTm n := le (sQ w) (sP w) ⋏ le (sQ w + sQ' w) (sP w + sP' w)
 
-@[simp] theorem subst_Jf {m : ℕ} (σ : Fin n → PTm m) (w : PTm n) :
-    (Jf w).subst σ = Jf (Syn.subst σ w) := by
-  simp [Jf]
+ipra_subst Jf
 
 theorem jf_QF (w : PTm n) : (Jf w).QF := by
   simp [Jf, Fm.QF, le_QF]

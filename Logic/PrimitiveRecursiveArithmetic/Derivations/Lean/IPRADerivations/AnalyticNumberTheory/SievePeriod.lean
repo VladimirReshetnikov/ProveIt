@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.SieveRecursion
 import IPRADerivations.AnalyticNumberTheory.Multiplicative
 import IPRADerivations.DiophantineNumberTheory.ModularCertificate
 import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # The period of the sieve count
@@ -127,13 +128,9 @@ abbrev perF : Fm PTm 2 :=
     (ap2 (sumF coB) (succ (var 0 + var 1)) (var 1) ≐ ap2 (sumF coB) (succ (var 0)) (var 1) + phi (var 1))
 
 theorem per_open : ([] : List (Fm PTm 2)) ⊢[PRAAx] perF := by
-  refine ind _ ⟨trivial, trivial⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_pred, Syn.subst_var,
-      Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (period_zero Prf.hyp0)
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_pred, Syn.subst_var,
-      Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (period_succ Prf.hyp0 (.impE Prf.hyp1 Prf.hyp0))
+  ipra_ind (⟨trivial, trivial⟩) [subst_ap2]
+  · exact .impI (period_zero Prf.hyp0)
+  · exact .impI (period_succ Prf.hyp0 (.impE Prf.hyp1 Prf.hyp0))
 
 /-- **The period of the sieve count**: `Φ(x + P; P) = Φ(x; P) + φ(P)` for `P ≥ 1`. -/
 theorem phi_period {P : PTm n} (hP : Γ ⊢[PRAAx] P ≐ succ (pred P)) (x : PTm n) :

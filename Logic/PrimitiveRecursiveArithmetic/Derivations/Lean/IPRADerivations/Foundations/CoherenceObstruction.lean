@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.BackwardViability
 import IPRADerivations.Foundations.BoundedReflection
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # Finite solvability without a coherent branch (`ipra_categorical_methods`, `thm:tree`)
@@ -187,15 +188,9 @@ private abbrev perF (o : PTm 2) : Fm PTm 3 :=
     (inst2 o (var 1 + var 0) (var 2) ≐ inst2 o (var 1) (var 2))
 
 private theorem per₀ (P : Persist o) : ([] : List (Fm PTm 3)) ⊢[PRAAx] perF o := by
-  refine ind _ ⟨trivial, trivial⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_inst2, PTm.subst_add, PTm.subst_pred,
-      Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact .impI (congrInst2 o (add_zero _) (.eqRefl _))
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_inst2, PTm.subst_add, PTm.subst_pred,
-      Syn.subst_var, Syn.repl_zero, repl_one, repl_two, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    refine .impI ?_
+  ipra_ind (⟨trivial, trivial⟩) [subst_inst2]
+  · exact .impI (congrInst2 o (add_zero _) (.eqRefl _))
+  · refine .impI ?_
     have hp : [inst2 o (var 1 : PTm 3) (var 2) ≐ succ (pred (inst2 o (var 1) (var 2))), perF o]
         ⊢[PRAAx] inst2 o (var 1 : PTm 3) (var 2) ≐ succ (pred (inst2 o (var 1) (var 2))) :=
       Prf.hyp0

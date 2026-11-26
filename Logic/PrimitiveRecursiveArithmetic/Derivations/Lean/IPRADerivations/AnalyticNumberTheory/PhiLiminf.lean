@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.EulerDomination
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # Finite witnesses for `liminf φ(n)/n = 0`
@@ -110,14 +111,10 @@ theorem phiA_step {N : PTm n} (ih : Γ ⊢[PRAAx] phi (A N) ≐ Dn N) : Γ ⊢[P
 private abbrev phiAF : Fm PTm 1 := phi (A (var 0)) ≐ Dn (var 0)
 
 private theorem phiA₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] phiAF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    have eA : ([] : List (Fm PTm 0)) ⊢[PRAAx] A (zero : PTm 0) ≐ one := prod_zero _ _
+  ipra_ind [subst_ap2]
+  · have eA : ([] : List (Fm PTm 0)) ⊢[PRAAx] A (zero : PTm 0) ≐ one := prod_zero _ _
     exact (congrPhi eA).eqTrans ((AnalyticNumberTheory.EulerProduct.phi_one).eqTrans (prod_zero _ _).eqSymm)
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact phiA_step Prf.hyp0
+  · exact phiA_step Prf.hyp0
 
 /-- `φ(A(N)) = D(N)`. -/
 theorem phi_A (N : PTm n) : Γ ⊢[PRAAx] phi (A N) ≐ Dn N := by

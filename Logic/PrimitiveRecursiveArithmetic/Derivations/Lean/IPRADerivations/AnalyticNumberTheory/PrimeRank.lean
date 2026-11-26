@@ -4,6 +4,7 @@ import IPRADerivations.Foundations.IterationFusion
 import IPRADerivations.Foundations.CrossingSearch
 import IPRADerivations.Core.CertificateTactics
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # Rank and inverse rank of the primes
@@ -163,13 +164,9 @@ theorem E_succ (k : PTm n) : Γ ⊢[PRAAx] E (succ k) ≐ EN (E k) := by
 abbrev rankF : Fm PTm 1 := le (var 0) (pc (E (var 0)))
 
 theorem rank_open : ([] : List (Fm PTm 1)) ⊢[PRAAx] rankF := by
-  refine ind _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, subst_ap2, Syn.subst_var, Syn.inst_zero, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact zero_monus _
-  · simp only [subst_le, subst_ap2, Syn.subst_var, Syn.repl_zero, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    have ih : [rankF] ⊢[PRAAx] le (var 0) (pc (E (var 0))) := Prf.hyp0
+  ipra_ind (le_QF _ _) [subst_le, subst_ap2]
+  · exact zero_monus _
+  · have ih : [rankF] ⊢[PRAAx] le (var 0) (pc (E (var 0))) := Prf.hyp0
     exact le_trans (succ_le_succ ih)
       (le_congr (.eqRefl _) (congrPc (E_succ (var 0)).eqSymm) (pc_euclid (E (var 0))))
 

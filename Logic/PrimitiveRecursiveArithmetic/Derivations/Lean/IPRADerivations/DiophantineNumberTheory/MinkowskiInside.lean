@@ -2,6 +2,7 @@ import IPRADerivations.DiophantineNumberTheory.MinkowskiWellFormed
 import IPRADerivations.DiophantineNumberTheory.MinkowskiRationalBoxes
 import IPRADerivations.Core.CongruenceTactic
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # The original guarded Inside scheme at canonical half-cell centers
@@ -48,14 +49,10 @@ def halfVector (N m a : PTm n) : PTm n := centerVector N (two*m) a
 def doubleBody : PTm 2 := double (entry (var 1) (var 0))
 def doubleVector (N C : PTm n) : PTm n := sequence doubleBody N C
 
-@[simp] theorem subst_halfCenter {k : ℕ} (σ : Fin n → PTm k) (a : ZT n) (m : PTm n) :
-    Syn.subst σ (halfCenter a m) = halfCenter (a.subst σ) (Syn.subst σ m) := by simp [halfCenter]
-@[simp] theorem subst_double {k : ℕ} (σ : Fin n → PTm k) (c : PTm n) :
-    Syn.subst σ (double c) = double (Syn.subst σ c) := by simp [double]
-@[simp] theorem subst_halfVector {k : ℕ} (σ : Fin n → PTm k) (N m a : PTm n) :
-    Syn.subst σ (halfVector N m a) = halfVector (Syn.subst σ N) (Syn.subst σ m) (Syn.subst σ a) := by simp [halfVector]
-@[simp] theorem subst_doubleVector {k : ℕ} (σ : Fin n → PTm k) (N C : PTm n) :
-    Syn.subst σ (doubleVector N C) = doubleVector (Syn.subst σ N) (Syn.subst σ C) := by simp [doubleVector]
+ipra_subst halfCenter
+ipra_subst double
+ipra_subst halfVector
+ipra_subst doubleVector
 
 theorem doubled_mesh_positive (m : PTm n) (hm : Γ ⊢[PRAAx] le one m) :
     Γ ⊢[PRAAx] le one (two*m) :=

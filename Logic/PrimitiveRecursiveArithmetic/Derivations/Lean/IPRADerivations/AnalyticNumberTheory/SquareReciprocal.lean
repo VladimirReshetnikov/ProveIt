@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.HarmonicUpper
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # The telescoping bound for `Σ 1/d²` (Khinchin (K6))
@@ -63,9 +64,7 @@ theorem sq_quo_le {Γ : List (Fm PTm n)} (N F : PTm n) :
 def sqInv (M F : PTm n) : Fm PTm n :=
   le (num 4 * succ (succ M) * T (succ (succ M)) F + num 4 * F) (num 7 * succ (succ M) * F)
 
-@[simp] theorem subst_sqInv {k : ℕ} (σ : Fin n → PTm k) (M F : PTm n) :
-    (sqInv M F).subst σ = sqInv (Syn.subst σ M) (Syn.subst σ F) := by
-  simp [sqInv, subst_ap2]
+ipra_subst sqInv [subst_ap2]
 
 theorem T_succ {Γ : List (Fm PTm n)} (N F : PTm n) :
     Γ ⊢[PRAAx] T (succ N) F ≐ T N F + quo F (succ N * succ N) := by

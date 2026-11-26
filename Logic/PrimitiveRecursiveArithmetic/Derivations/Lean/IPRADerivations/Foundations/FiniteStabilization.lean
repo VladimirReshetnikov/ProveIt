@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.IterationFusion
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # Finite stabilization of ranked iterations
@@ -90,13 +91,9 @@ private theorem stab₀
     (hstep : ∀ {k : ℕ} {Γ : List (Fm PTm k)} (s : PTm k),
       Γ ⊢[PRAAx] (app1 f s ≐ s) ⋎ lt (app1 ρ s) (app1 ρ (app1 f s))) :
     ([] : List (Fm PTm 2)) ⊢[PRAAx] Stab f ρ (var 0) (var 1) := by
-  refine ind _ ⟨trivial, le_QF _ _⟩ ?_ ?_
-  · simp only [Fm.subst_or, Fm.subst_eq, subst_le, subst_ap2, subst_app1, Syn.subst_var, Syn.inst_zero,
-      Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact advance hstep (zero_le _)
-  · simp only [Fm.subst_or, Fm.subst_eq, subst_le, subst_ap2, subst_app1, Syn.subst_var, Syn.repl_zero,
-      repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact stab_step hstep Prf.hyp0
+  ipra_ind (⟨trivial, le_QF _ _⟩) [subst_le, subst_ap2, subst_app1]
+  · exact advance hstep (zero_le _)
+  · exact stab_step hstep Prf.hyp0
 
 /-- For every `t`: `x^{t+1} = x^t`, or `t + 1 ≤ ρ(x^{t+1})`. -/
 theorem stab
@@ -141,13 +138,9 @@ private abbrev afterF (f : PTm 1) : Fm PTm 3 :=
     (iter f (var 1 + var 0) (var 2) ≐ iter f (var 1) (var 2))
 
 private theorem after₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] afterF f := by
-  refine ind _ ⟨trivial, trivial⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_ap2, PTm.subst_add, Syn.subst_var, Syn.inst_zero,
-      Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (congrAp2 (rec2 (var 0) (iterStep f)) (add_zero _) (.eqRefl _))
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_ap2, PTm.subst_add, Syn.subst_var, Syn.repl_zero,
-      repl_one, repl_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (after_step Prf.hyp0 (.impE Prf.hyp1 Prf.hyp0))
+  ipra_ind (⟨trivial, trivial⟩) [subst_ap2]
+  · exact .impI (congrAp2 (rec2 (var 0) (iterStep f)) (add_zero _) (.eqRefl _))
+  · exact .impI (after_step Prf.hyp0 (.impE Prf.hyp1 Prf.hyp0))
 
 /-- If `x^{H+1} = x^H`, then `x^{H+j} = x^H` for every `j`. -/
 theorem stable_after {H x : PTm k} (e : Γ ⊢[PRAAx] iter f (succ H) x ≐ iter f H x) (j : PTm k) :
@@ -187,13 +180,9 @@ private theorem inv₀ (hqf : R.QF)
     (hloc : ∀ {k : ℕ} {Γ : List (Fm PTm k)} {s y : PTm k},
       (Γ ⊢[PRAAx] rel R s y) → (Γ ⊢[PRAAx] rel R (app1 f s) y)) :
     ([] : List (Fm PTm 3)) ⊢[PRAAx] invF R f := by
-  refine ind _ ⟨subst_QF' hqf _, subst_QF' hqf _⟩ ?_ ?_
-  · simp only [invF, Fm.subst_imp, subst_rel, subst_ap2, Syn.subst_var, Syn.inst_zero,
-      Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero]
-    exact .impI (rel_congr R (iter_zero f _).eqSymm (.eqRefl _) Prf.hyp0)
-  · simp only [invF, Fm.subst_imp, subst_rel, subst_ap2, Syn.subst_var, Syn.repl_zero, repl_one,
-      repl_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have ih : [invF R f] ⊢[PRAAx]
+  ipra_ind (⟨subst_QF' hqf _, subst_QF' hqf _⟩) [invF, subst_rel, subst_ap2]
+  · exact .impI (rel_congr R (iter_zero f _).eqSymm (.eqRefl _) Prf.hyp0)
+  · have ih : [invF R f] ⊢[PRAAx]
         rel R (var 1) (var 2) ⟶ rel R (iter f (var 0) (var 1)) (var 2) :=
       Prf.hyp0
     exact .impI (rel_congr R (iter_succ f _ _).eqSymm (.eqRefl _) (hloc (.impE ih.wk Prf.hyp0)))

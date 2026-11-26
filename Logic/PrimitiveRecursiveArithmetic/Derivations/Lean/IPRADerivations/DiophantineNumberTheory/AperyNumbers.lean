@@ -2,6 +2,7 @@ import IPRADerivations.Combinatorics.Catalan
 import IPRADerivations.AnalyticNumberTheory.LocalFactor
 import IPRADerivations.Core.ProdLemmas
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # The Apéry numbers: first values and growth
@@ -62,13 +63,9 @@ theorem cb_pow_step {m : PTm n} (ih : Γ ⊢[PRAAx] le (pw two m) (cb m)) :
 private abbrev cbPowF : Fm PTm 1 := le (pw two (var 0)) (cb (var 0))
 
 private theorem cbPow₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] cbPowF := by
-  refine ind _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, subst_ap2, PTm.subst_mul, PTm.subst_monus, Syn.subst_var, Syn.inst_zero,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact le_congr (pw_zero two).eqSymm cb_zero.eqSymm (le_refl one)
-  · simp only [subst_le, subst_ap2, PTm.subst_mul, PTm.subst_monus, Syn.subst_var, Syn.repl_zero,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact cb_pow_step Prf.hyp0
+  ipra_ind (le_QF _ _) [subst_le, subst_ap2]
+  · exact le_congr (pw_zero two).eqSymm cb_zero.eqSymm (le_refl one)
+  · exact cb_pow_step Prf.hyp0
 
 /-- `2^m ≤ C(2m, m)`. -/
 theorem cb_ge_pow (m : PTm n) : Γ ⊢[PRAAx] le (pw two m) (cb m) := by
@@ -116,13 +113,9 @@ theorem four_step {m : PTm n} (ih : Γ ⊢[PRAAx] le (succ m) (pw (two * two) m)
 private abbrev fourF : Fm PTm 1 := le (succ (var 0)) (pw (two * two) (var 0))
 
 private theorem four₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] fourF := by
-  refine ind _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact le_congr (.eqRefl _) (pw_zero _).eqSymm (le_refl one)
-  · simp only [subst_le, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.repl_zero, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact four_step Prf.hyp0
+  ipra_ind (le_QF _ _) [subst_le, subst_ap2]
+  · exact le_congr (.eqRefl _) (pw_zero _).eqSymm (le_refl one)
+  · exact four_step Prf.hyp0
 
 /-- `m + 1 ≤ 4^m`. -/
 theorem four_pow_ge (m : PTm n) : Γ ⊢[PRAAx] le (succ m) (pw (two * two) m) := by

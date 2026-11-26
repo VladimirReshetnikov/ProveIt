@@ -2,6 +2,7 @@ import IPRADerivations.DiophantineNumberTheory.AperyNumbers
 import IPRADerivations.Analysis.Pochhammer
 import IPRADerivations.Foundations.ChineseRemainder
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # A prescribed coprime modulus
@@ -99,13 +100,9 @@ theorem pg_step {x m : PTm n} (ih : Γ ⊢[PRAAx] le (pw x m) (poch x m)) :
 private abbrev pgF : Fm PTm 2 := le (pw (var 1) (var 0)) (poch (var 1) (var 0))
 
 private theorem pg₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] pgF := by
-  refine ind _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact le_congr (pw_zero _).eqSymm (poch_zero _).eqSymm (le_refl one)
-  · simp only [subst_le, subst_ap2, Syn.subst_var, Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact pg_step Prf.hyp0
+  ipra_ind (le_QF _ _) [subst_le, subst_ap2]
+  · exact le_congr (pw_zero _).eqSymm (poch_zero _).eqSymm (le_refl one)
+  · exact pg_step Prf.hyp0
 
 /-- `x^m ≤ (x)_m`. -/
 theorem poch_ge_pow (x m : PTm n) : Γ ⊢[PRAAx] le (pw x m) (poch x m) := by

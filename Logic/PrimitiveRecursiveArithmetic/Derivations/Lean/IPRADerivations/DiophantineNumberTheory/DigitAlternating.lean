@@ -3,6 +3,7 @@ import IPRADerivations.DiophantineNumberTheory.ModularCertificate
 import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.AnalyticNumberTheory.ValuationMul
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # The alternating digit rule modulo `b + 1`
@@ -143,15 +144,9 @@ abbrev altF : Fm PTm 3 :=
         monus one (par (var 0)) * quo (var 2) (pw (var 1) (var 0)))
 
 theorem alt_open : ([] : List (Fm PTm 3)) ⊢[PRAAx] altF := by
-  refine ind _ ⟨trivial, trivial⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_ap2, subst_ap1, subst_pairT, PTm.subst_add, PTm.subst_mul,
-      PTm.subst_monus, PTm.subst_pred, Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (alt_base (var 0) (var 1))
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_ap2, subst_ap1, subst_pairT, PTm.subst_add, PTm.subst_mul,
-      PTm.subst_monus, PTm.subst_pred, Syn.subst_var, Syn.repl_zero, repl_one, repl_two,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (alt_step Prf.hyp0 (.impE Prf.hyp1 Prf.hyp0))
+  ipra_ind (⟨trivial, trivial⟩) [subst_ap2, subst_ap1, subst_pairT]
+  · exact .impI (alt_base (var 0) (var 1))
+  · exact .impI (alt_step Prf.hyp0 (.impE Prf.hyp1 Prf.hyp0))
 
 /-- The alternating telescope at every `K`. -/
 theorem alt_telescope {p : PTm n} (hp : Γ ⊢[PRAAx] p ≐ succ (pred p)) (K m : PTm n) :

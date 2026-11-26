@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.SymmetryPointwise
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # The symmetry bound (`pnt_ipra_constructive_2026-11-14`, `sb:symmetry-bound`)
@@ -244,15 +245,10 @@ private abbrev symF : Fm PTm 4 :=
   Hy (var 0) (var 1) (var 2) (var 3) ⟶ (IA (var 0) (var 1) (var 2) (var 3) ⋏ IB (var 0) (var 1) (var 2) (var 3))
 
 private theorem sym₀ : ([] : List (Fm PTm 4)) ⊢[PRAAx] symF := by
-  refine ind _ ⟨⟨le_QF _ _, le_QF _ _, le_QF _ _, le_QF _ _⟩, le_QF _ _, le_QF _ _⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_and, subst_le, subst_ap2, subst_ap1, PTm.subst_add, PTm.subst_mul,
-      PTm.subst_monus, subst_pairT, PTm.subst_num, Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two, inst_three,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (i_zero _ _ _)
-  · simp only [Fm.subst_imp, Fm.subst_and, subst_le, subst_ap2, subst_ap1, PTm.subst_add, PTm.subst_mul,
-      PTm.subst_monus, subst_pairT, PTm.subst_num, Syn.subst_var, Syn.repl_zero, repl_one, repl_two, repl_three,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine .impI ?_
+  ipra_ind (⟨⟨le_QF _ _, le_QF _ _, le_QF _ _, le_QF _ _⟩, le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2, subst_ap1,
+      subst_pairT]
+  · exact .impI (i_zero _ _ _)
+  · refine .impI ?_
     have h := (Prf.hyp0 : (Hy (succ (var 0)) (var 1) (var 2) (var 3) :: [symF]) ⊢[PRAAx]
       Hy (succ (var 0)) (var 1) (var 2) (var 3))
     have h' : (Hy (succ (var 0)) (var 1) (var 2) (var 3) :: [symF]) ⊢[PRAAx] Hy (var 0) (var 1) (var 2) (var 3) :=

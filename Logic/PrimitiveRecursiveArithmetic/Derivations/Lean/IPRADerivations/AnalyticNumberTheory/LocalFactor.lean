@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.Harmonic
 import IPRADerivations.DiophantineNumberTheory.FLTMultiples
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # The local Euler-factor bound `p^p ≤ 4 (p − 1)^p`
@@ -40,14 +41,10 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 private abbrev pwMulBaseF : Fm PTm 3 := pw (var 1 * var 2) (var 0) ≐ pw (var 1) (var 0) * pw (var 2) (var 0)
 
 private theorem pw_mul_base₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] pwMulBaseF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two,
-      ConciseIPRA.PTm.subst_zero]
-    refine (pw_zero _).eqTrans (.eqTrans ?_ (congrMul (pw_zero _) (pw_zero _)).eqSymm)
+  ipra_ind [subst_ap2]
+  · refine (pw_zero _).eqTrans (.eqTrans ?_ (congrMul (pw_zero _) (pw_zero _)).eqSymm)
     ipra_ring
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.repl_zero, repl_one, repl_two,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine withEq Prf.hyp0 fun e₀ => withEq (pw_succ (var 1 * var 2) (var 0)) fun e₁ =>
+  · refine withEq Prf.hyp0 fun e₀ => withEq (pw_succ (var 1 * var 2) (var 0)) fun e₁ =>
       withEq (pw_succ (var 1) (var 0)) fun e₂ => withEq (pw_succ (var 2) (var 0)) fun e₃ => ?_
     apply deriveNat; ipra_simps; rw [e₁, e₂, e₃, e₀]; ring
 
@@ -70,15 +67,11 @@ private abbrev bernF : Fm PTm 2 :=
   le (pw (var 1) (succ (var 0)) + succ (var 0) * pw (var 1) (var 0)) (pw (succ (var 1)) (succ (var 0)))
 
 private theorem bernoulli₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] bernF := by
-  refine ind _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
-      Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine le_congr ?_ (pw_one _).eqSymm (le_refl _)
+  ipra_ind (le_QF _ _) [subst_le, subst_ap2]
+  · refine le_congr ?_ (pw_one _).eqSymm (le_refl _)
     refine withEq (pw_one (Γ := []) (var 0 : PTm 1)) fun e₁ => withEq (pw_zero (Γ := []) (var 0 : PTm 1)) fun e₂ => ?_
     apply deriveNat; ipra_simps; rw [e₁, e₂]; ring
-  · simp only [subst_le, Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.repl_zero,
-      repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact bern_step Prf.hyp0
+  · exact bern_step Prf.hyp0
 
 /-- `X^{m+1} + (m+1) X^m ≤ (X + 1)^{m+1}`. -/
 theorem bernoulli (X m : PTm n) :
@@ -124,10 +117,8 @@ private abbrev localF : Fm PTm 1 :=
   le (pw (succ (succ (var 0))) (succ (succ (var 0)))) ((two * two) * pw (succ (var 0)) (succ (succ (var 0))))
 
 private theorem local₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] localF := by
-  refine ind _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, Fm.subst_eq, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine le_congr (.eqRefl _) ?_ (le_refl _)
+  ipra_ind (le_QF _ _) [subst_le, subst_ap2]
+  · refine le_congr (.eqRefl _) ?_ (le_refl _)
     refine withEq (pw_succ (Γ := []) (succ (succ zero) : PTm 0) (succ zero)) fun e₁ =>
       withEq (pw_succ (Γ := []) (succ (succ zero) : PTm 0) zero) fun e₂ =>
       withEq (pw_zero (Γ := []) (succ (succ zero) : PTm 0)) fun e₃ =>
@@ -135,9 +126,7 @@ private theorem local₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] localF := by
       withEq (pw_succ (Γ := []) (succ zero : PTm 0) zero) fun e₅ =>
       withEq (pw_zero (Γ := []) (succ zero : PTm 0)) fun e₆ => ?_
     apply deriveNat; ipra_simps; rw [e₁, e₂, e₃, e₄, e₅, e₆]; ring
-  · simp only [subst_le, Fm.subst_eq, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.repl_zero,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact local_step Prf.hyp0
+  · exact local_step Prf.hyp0
 
 /-- `lem:local-factor`: `p^p ≤ 4 (p − 1)^p` for `p = m + 2 ≥ 2`. -/
 theorem local_factor (m : PTm n) :

@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.SigmaPrimePower
 import IPRADerivations.AnalyticNumberTheory.Radical
 import IPRADerivations.AnalyticNumberTheory.ValuationMul
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # The divisor sum as a product over primes (`robin_ipra_research_2026-11-19`)
@@ -247,12 +248,9 @@ theorem sp_step {N x : PTm n} (hV : Γ ⊢[PRAAx] ap2 (sumF vB) N x ≐ zero) :
 private abbrev spF : Fm PTm 2 := ap2 (sumF vB) (var 0) (var 1) ≐ zero
 
 private theorem sp₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] spF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero]
-    exact sum_zero _ _
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    refine (sum_succ' _ _ _).eqTrans ((congrAdd Prf.hyp0 ?_).eqTrans (add_zero _))
+  ipra_ind [subst_ap2]
+  · exact sum_zero _ _
+  · refine (sum_succ' _ _ _).eqTrans ((congrAdd Prf.hyp0 ?_).eqTrans (add_zero _))
     rw [inst2_vB]
     exact sp_step Prf.hyp0
 

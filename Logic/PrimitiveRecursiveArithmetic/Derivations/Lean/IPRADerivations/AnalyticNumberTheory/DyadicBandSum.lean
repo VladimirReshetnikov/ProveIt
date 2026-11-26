@@ -2,6 +2,7 @@ import IPRADerivations.Core.PolynomialImplications
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Core.Parity
 import IPRADerivations.Core.Powers
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # Dyadic band sums and the 3–4–1 polynomial
@@ -117,13 +118,9 @@ theorem r_step {J : PTm n} (ih : Γ ⊢[PRAAx] Rs J + (succ (succ J) + succ (suc
   rw [es, ep]; linear_combination 2 * i
 
 private theorem geometric₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] (Gs (var 0) + two ≐ two * pw two (var 0)) := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact g_base
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.repl_zero,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact g_step Prf.hyp0
+  ipra_ind [subst_ap2]
+  · exact g_base
+  · exact g_step Prf.hyp0
 
 /-- `G_J + 2 = 2 · 2^J`: `∑_{j<J} 2^{-j} = 2 − 2^{1−J}`. -/
 theorem geometric (J : PTm n) : Γ ⊢[PRAAx] Gs J + two ≐ two * pw two J := by
@@ -132,13 +129,9 @@ theorem geometric (J : PTm n) : Γ ⊢[PRAAx] Gs J + two ≐ two * pw two J := b
 
 private theorem weighted₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx]
     (Rs (var 0) + (succ (succ (var 0)) + succ (succ (var 0))) ≐ (two + two) * pw two (var 0)) := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact r_base
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.repl_zero,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact r_step Prf.hyp0
+  ipra_ind [subst_ap2]
+  · exact r_base
+  · exact r_step Prf.hyp0
 
 /-- `R_J + 2 (J + 2) = 4 · 2^J`: `∑_{j<J} (j + 1) 2^{-j} = 4 − (J + 2) 2^{1−J}`. -/
 theorem weighted (J : PTm n) :

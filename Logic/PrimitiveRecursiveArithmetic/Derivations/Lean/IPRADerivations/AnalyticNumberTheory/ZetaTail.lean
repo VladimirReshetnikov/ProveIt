@@ -6,6 +6,7 @@ import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.AnalyticNumberTheory.Mobius
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # The rational tail estimate for `∑ 1/n^s`, every `s ≥ 2`
@@ -75,13 +76,9 @@ abbrev keyF : Fm PTm 2 :=
   le (pw (var 1) (succ (var 0)) * succ (succ (var 1))) (pw (succ (var 1)) (succ (succ (var 0))))
 
 theorem key_open : ([] : List (Fm PTm 2)) ⊢[PRAAx] keyF := by
-  refine ind _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, PTm.subst_mul, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact key_base _
-  · simp only [subst_le, PTm.subst_mul, subst_ap2, Syn.subst_var, Syn.repl_zero, repl_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact key_step Prf.hyp0
+  ipra_ind (le_QF _ _) [subst_le, subst_ap2]
+  · exact key_base _
+  · exact key_step Prf.hyp0
 
 /-- `m^t (m + 2) ≤ (m + 1)^{t+1}` for `t = u + 1 ≥ 1`. -/
 theorem key (m u : PTm n) :

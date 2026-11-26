@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.LexFuelMonotone
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # A potential for controlled lexicographic descent (`ipra_resources_and_elimination_2026-11-15`, `thm:controlled-lex`)
@@ -58,13 +59,9 @@ private abbrev shF : Fm PTm 3 :=
     inst2 f (var 1) (itP f (var 0) (var 1) (var 2))
 
 private theorem sh₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] shF f := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, subst_pairT, subst_inst2, Syn.subst_var, Syn.inst_zero,
-      Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero]
-    exact (itP_zero f _ _).eqTrans (congrInst2 f (.eqRefl _) (itP_zero f _ _).eqSymm)
-  · simp only [Fm.subst_eq, subst_ap2, subst_pairT, subst_inst2, Syn.subst_var, Syn.repl_zero,
-      repl_one, repl_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact (itP_succ f _ _ _).eqTrans ((congrInst2 f (.eqRefl _) Prf.hyp0).eqTrans
+  ipra_ind [subst_ap2, subst_pairT, subst_inst2]
+  · exact (itP_zero f _ _).eqTrans (congrInst2 f (.eqRefl _) (itP_zero f _ _).eqSymm)
+  · exact (itP_succ f _ _ _).eqTrans ((congrInst2 f (.eqRefl _) Prf.hyp0).eqTrans
       (congrInst2 f (.eqRefl _) (itP_succ f _ _ _).eqSymm))
 
 /-- `f^{[n]}(f(s)) = f(f^{[n]}(s))`. -/

@@ -1,4 +1,5 @@
 import IPRADerivations.Core.ClockedDescent
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # Fusion and simulation of iterations (`ipra_presentations_to_witnesses`)
@@ -94,13 +95,9 @@ private theorem fus₀
     (hloc : ∀ {k : ℕ} {Γ : List (Fm PTm k)} (x : PTm k),
       Γ ⊢[PRAAx] app1 h (app1 f x) ≐ app1 g (app1 h x)) :
     ([] : List (Fm PTm 2)) ⊢[PRAAx] fusF f g h := by
-  refine ind _ trivial ?_ ?_
-  · simp only [fusF, Fm.subst_eq, subst_app1, subst_ap2, Syn.subst_var, Syn.inst_zero,
-      Syn.inst_one, ConciseIPRA.PTm.subst_zero]
-    exact (congrApp1 h (iter_zero f _)).eqTrans (iter_zero g _).eqSymm
-  · simp only [fusF, Fm.subst_eq, subst_app1, subst_ap2, Syn.subst_var, Syn.repl_zero, repl_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have ih : [fusF f g h] ⊢[PRAAx]
+  ipra_ind [fusF, subst_app1, subst_ap2]
+  · exact (congrApp1 h (iter_zero f _)).eqTrans (iter_zero g _).eqSymm
+  · have ih : [fusF f g h] ⊢[PRAAx]
         app1 h (iter f (var 0) (var 1)) ≐ iter g (var 0) (app1 h (var 1)) := Prf.hyp0
     exact fusion_step hloc ih
 
@@ -151,13 +148,9 @@ private theorem sim₀ (hqf : R.QF)
     (hloc : ∀ {k : ℕ} {Γ : List (Fm PTm k)} {x y : PTm k},
       (Γ ⊢[PRAAx] rel R x y) → (Γ ⊢[PRAAx] rel R (app1 f x) (app1 g y))) :
     ([] : List (Fm PTm 3)) ⊢[PRAAx] simF R f g := by
-  refine ind _ ⟨subst_QF' hqf _, subst_QF' hqf _⟩ ?_ ?_
-  · simp only [simF, Fm.subst_imp, subst_rel, subst_ap2, Syn.subst_var, Syn.inst_zero,
-      Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero]
-    exact .impI (rel_congr R (iter_zero f _).eqSymm (iter_zero g _).eqSymm Prf.hyp0)
-  · simp only [simF, Fm.subst_imp, subst_rel, subst_ap2, Syn.subst_var, Syn.repl_zero, repl_one,
-      repl_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have ih : [simF R f g] ⊢[PRAAx]
+  ipra_ind (⟨subst_QF' hqf _, subst_QF' hqf _⟩) [simF, subst_rel, subst_ap2]
+  · exact .impI (rel_congr R (iter_zero f _).eqSymm (iter_zero g _).eqSymm Prf.hyp0)
+  · have ih : [simF R f g] ⊢[PRAAx]
         rel R (var 1) (var 2) ⟶ rel R (iter f (var 0) (var 1)) (iter g (var 0) (var 2)) :=
       Prf.hyp0
     exact .impI (rel_congr R (iter_succ f _ _).eqSymm (iter_succ g _ _).eqSymm

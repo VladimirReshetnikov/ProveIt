@@ -2,6 +2,7 @@ import IPRADerivations.DiophantineNumberTheory.MinkowskiCenters
 import IPRADerivations.DiophantineNumberTheory.SignedEuclidean
 import IPRADerivations.Foundations.SequenceEquality
 import IPRADerivations.Core.CongruenceTactic
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # Literal runtime-vector midpoint cancellation for Minkowski centers
@@ -49,16 +50,11 @@ def oppositeVector (N C : PTm n) : PTm n := sequence oppositeBody N C
 def midpointVector (N C D : PTm n) : PTm n := sequence midpointBody N (pairT C D)
 def integerVector (N z : PTm n) : PTm n := sequence integerBody N z
 
-@[simp] theorem subst_signedCoordinate {l : ℕ} (σ : Fin n → PTm l) (a k : PTm n) :
-    (signedCoordinate a k).subst σ = signedCoordinate (Syn.subst σ a) (Syn.subst σ k) := by simp [signedCoordinate]
-@[simp] theorem subst_centerVector {l : ℕ} (σ : Fin n → PTm l) (N m a : PTm n) :
-    Syn.subst σ (centerVector N m a) = centerVector (Syn.subst σ N) (Syn.subst σ m) (Syn.subst σ a) := by simp [centerVector]
-@[simp] theorem subst_oppositeVector {l : ℕ} (σ : Fin n → PTm l) (N C : PTm n) :
-    Syn.subst σ (oppositeVector N C) = oppositeVector (Syn.subst σ N) (Syn.subst σ C) := by simp [oppositeVector]
-@[simp] theorem subst_midpointVector {l : ℕ} (σ : Fin n → PTm l) (N C D : PTm n) :
-    Syn.subst σ (midpointVector N C D) = midpointVector (Syn.subst σ N) (Syn.subst σ C) (Syn.subst σ D) := by simp [midpointVector]
-@[simp] theorem subst_integerVector {l : ℕ} (σ : Fin n → PTm l) (N z : PTm n) :
-    Syn.subst σ (integerVector N z) = integerVector (Syn.subst σ N) (Syn.subst σ z) := by simp [integerVector]
+ipra_subst signedCoordinate
+ipra_subst centerVector
+ipra_subst oppositeVector
+ipra_subst midpointVector
+ipra_subst integerVector
 
 theorem center_congr {a a' m m' : PTm n} (ha : Γ ⊢[PRAAx] a ≐ a') (hm : Γ ⊢[PRAAx] m ≐ m') :
     Γ ⊢[PRAAx] center (decode a) m ≐ center (decode a') m' := by

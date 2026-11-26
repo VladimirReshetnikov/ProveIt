@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.Euler
 import IPRADerivations.Core.Search
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # The multiplicative order
@@ -89,13 +90,9 @@ theorem pw_rem_congr {x y N : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) (h
   exact h2
 
 private theorem pw_one₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] pw one (var 0) ≐ one := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero, ConciseIPRA.PTm.subst_succ,
-      ConciseIPRA.PTm.subst_zero]
-    exact pw_zero _
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, ConciseIPRA.PTm.subst_succ,
-      ConciseIPRA.PTm.subst_zero]
-    exact (pw_succ _ _).eqTrans ((congrMul Prf.hyp0 (.eqRefl _)).eqTrans (one_mul _))
+  ipra_ind [subst_ap2]
+  · exact pw_zero _
+  · exact (pw_succ _ _).eqTrans ((congrMul Prf.hyp0 (.eqRefl _)).eqTrans (one_mul _))
 
 theorem pw_one_base (q : PTm n) : Γ ⊢[PRAAx] pw one q ≐ one := by
   have h := inst (Γ := Γ) pw_one₀ (![q] : Fin 1 → PTm n)

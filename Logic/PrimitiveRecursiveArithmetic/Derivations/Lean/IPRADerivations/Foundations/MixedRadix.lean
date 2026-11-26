@@ -4,6 +4,7 @@ import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Probability.Independence
 import IPRADerivations.AnalyticNumberTheory.Primes
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # Mixed-radix codes
@@ -80,13 +81,9 @@ private abbrev psplitF (f : PTm 2) : Fm PTm 3 :=
     ap2 (prodF f) (var 1) (var 2) * ap2 (prodF (offB f)) (var 0) (pairT (var 1) (var 2))
 
 private theorem psplit₀ (f : PTm 2) : ([] : List (Fm PTm 3)) ⊢[PRAAx] psplitF f := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, PTm.subst_add, PTm.subst_mul, subst_ap2, subst_pairT, Syn.subst_var, Syn.inst_zero,
-      Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact psplit_base f _ _
-  · simp only [Fm.subst_eq, PTm.subst_add, PTm.subst_mul, subst_ap2, subst_pairT, Syn.subst_var, Syn.repl_zero,
-      repl_one, repl_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact psplit_step f Prf.hyp0
+  ipra_ind [subst_ap2, subst_pairT]
+  · exact psplit_base f _ _
+  · exact psplit_step f Prf.hyp0
 
 /-- `∏_{i<M+K} f(i, x) = ∏_{i<M} f(i, x) · ∏_{i<K} f(M + i, x)`. -/
 theorem prod_split (f : PTm 2) (M K x : PTm n) :

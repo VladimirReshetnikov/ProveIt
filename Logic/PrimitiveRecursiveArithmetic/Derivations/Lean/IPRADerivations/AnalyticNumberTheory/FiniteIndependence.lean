@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.SievePeriod
 import IPRADerivations.AnalyticNumberTheory.SumReindex
 import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # Exact finite independence of divisibility events
@@ -78,13 +79,9 @@ abbrev tpF : Fm PTm 2 :=
     (ap2 (sumF totBody) (var 0 + var 1) (var 1) ≐ ap2 (sumF totBody) (var 0) (var 1) + phi (var 1))
 
 theorem tp_open : ([] : List (Fm PTm 2)) ⊢[PRAAx] tpF := by
-  refine ind _ ⟨trivial, trivial⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_pred, Syn.subst_var,
-      Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (tp_zero _)
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_pred, Syn.subst_var,
-      Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (tp_succ Prf.hyp0 (.impE Prf.hyp1 Prf.hyp0))
+  ipra_ind (⟨trivial, trivial⟩) [subst_ap2]
+  · exact .impI (tp_zero _)
+  · exact .impI (tp_succ Prf.hyp0 (.impE Prf.hyp1 Prf.hyp0))
 
 /-- `T(N + b; b) = T(N; b) + φ(b)` for `b ≥ 1`. -/
 theorem tot_period {b : PTm n} (hb : Γ ⊢[PRAAx] b ≐ succ (pred b)) (x : PTm n) :
@@ -114,13 +111,9 @@ abbrev tbF : Fm PTm 2 :=
   (var 1 ≐ succ (pred (var 1))) ⟶ (ap2 (sumF totBody) (var 1 * var 0) (var 1) ≐ var 0 * phi (var 1))
 
 theorem tb_open : ([] : List (Fm PTm 2)) ⊢[PRAAx] tbF := by
-  refine ind _ ⟨trivial, trivial⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_ap2, PTm.subst_mul, PTm.subst_pred, Syn.subst_var,
-      Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (tb_zero _)
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_ap2, PTm.subst_mul, PTm.subst_pred, Syn.subst_var,
-      Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (tb_succ Prf.hyp0 (.impE Prf.hyp1 Prf.hyp0))
+  ipra_ind (⟨trivial, trivial⟩) [subst_ap2]
+  · exact .impI (tb_zero _)
+  · exact .impI (tb_succ Prf.hyp0 (.impE Prf.hyp1 Prf.hyp0))
 
 /-- `#{k < b c : gcd(k, b) = 1} = c φ(b)` for `b ≥ 1`. -/
 theorem tot_blocks {b : PTm n} (hb : Γ ⊢[PRAAx] b ≐ succ (pred b)) (c : PTm n) :

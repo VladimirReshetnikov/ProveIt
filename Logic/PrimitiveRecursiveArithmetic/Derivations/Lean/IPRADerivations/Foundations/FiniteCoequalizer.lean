@@ -2,6 +2,7 @@ import IPRADerivations.Foundations.FiniteSetCategory
 import IPRADerivations.Foundations.FiniteQuotient
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # Coequalizers of finite sets by sequential merging (`ipra_categorical_methods`, Section 4)
@@ -217,15 +218,9 @@ private abbrev mergeF : Fm PTm 3 :=
       lab f g (var 0) (var 2) (rem (inst1 g (var 1)) (var 2)))
 
 private theorem merge₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] mergeF f g := by
-  refine ind _ ⟨trivial, trivial, trivial⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_lt, subst_ap2, subst_inst1, PTm.subst_pred,
-      Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact .impI (.impI (lt_zero_absurd _ Prf.hyp0))
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_lt, subst_ap2, subst_inst1, PTm.subst_pred,
-      Syn.subst_var, Syn.repl_zero, repl_one, repl_two, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact .impI (.impI (merge_step f g Prf.hyp1 Prf.hyp0 (.impE hyp2 Prf.hyp1)))
+  ipra_ind (⟨trivial, trivial, trivial⟩) [subst_lt, subst_ap2, subst_inst1]
+  · exact .impI (.impI (lt_zero_absurd _ Prf.hyp0))
+  · exact .impI (.impI (merge_step f g Prf.hyp1 Prf.hyp0 (.impE hyp2 Prf.hyp1)))
 
 /-- After `i` steps the first `i` generating edges are merged. -/
 theorem merged {i j N : PTm k} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) (hj : Γ ⊢[PRAAx] lt j i) :
@@ -364,15 +359,9 @@ private abbrev invF : Fm PTm 3 :=
     Inv f g t (var 0) (var 2)
 
 private theorem inv₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] invF f g t := by
-  refine ind _ ⟨trivial, trivial, trivial, trivial⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, subst_pairT, PTm.subst_pred,
-      Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact .impI (.impI (.impI (inv_zero f g t hyp2)))
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, subst_pairT, PTm.subst_pred,
-      Syn.subst_var, Syn.repl_zero, repl_one, repl_two, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    refine .impI (.impI (.impI ?_))
+  ipra_ind (⟨trivial, trivial, trivial, trivial⟩) [subst_le, subst_ap2, subst_pairT]
+  · exact .impI (.impI (.impI (inv_zero f g t hyp2)))
+  · refine .impI (.impI (.impI ?_))
     have hN : [le (succ (var 0 : PTm 3)) (var 1), Coc f g t (var 1 : PTm 3) (var 2),
         (var 2 : PTm 3) ≐ succ (pred (var 2)), invF f g t] ⊢[PRAAx]
         (var 2 : PTm 3) ≐ succ (pred (var 2)) := hyp2

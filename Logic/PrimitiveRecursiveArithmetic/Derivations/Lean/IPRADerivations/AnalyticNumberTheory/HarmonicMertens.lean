@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.HarmonicChebyshev
 import IPRADerivations.AnalyticNumberTheory.HarmonicLambda
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # Subadditivity of the harmonic logarithm and Mertens' upper bound (`pnt_ipra_constructive_2026-11-14`)
@@ -117,15 +118,9 @@ private abbrev powF : Fm PTm 5 :=
   Hp (var 0) (var 1) (var 2) (var 3) (var 4) ⟶ P (var 0) (var 1) (var 2) (var 3)
 
 private theorem pow₀ : ([] : List (Fm PTm 5)) ⊢[PRAAx] powF := by
-  refine ind _ ⟨⟨le_QF _ _, le_QF _ _, le_QF _ _, le_QF _ _⟩, le_QF _ _⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_and, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-      Syn.inst_zero, Syn.inst_one, inst_two, inst_three, inst_four,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (p_zero _ _ _)
-  · simp only [Fm.subst_imp, Fm.subst_and, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-      Syn.repl_zero, repl_one, repl_two, repl_three, repl_four,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine .impI ?_
+  ipra_ind (⟨⟨le_QF _ _, le_QF _ _, le_QF _ _, le_QF _ _⟩, le_QF _ _⟩) [subst_le, subst_ap2]
+  · exact .impI (p_zero _ _ _)
+  · refine .impI ?_
     have h := (Prf.hyp0 : (Hp (succ (var 0)) (var 1) (var 2) (var 3) (var 4) :: [powF]) ⊢[PRAAx]
       Hp (succ (var 0)) (var 1) (var 2) (var 3) (var 4))
     have h' : (Hp (succ (var 0)) (var 1) (var 2) (var 3) (var 4) :: [powF]) ⊢[PRAAx]

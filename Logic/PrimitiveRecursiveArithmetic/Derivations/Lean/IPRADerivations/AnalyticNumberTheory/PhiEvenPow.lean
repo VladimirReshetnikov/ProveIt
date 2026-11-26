@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.Valuation
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # `2^r ∣ φ(n)` for `r` distinct odd prime divisors
@@ -350,12 +351,9 @@ theorem ev_step {N x : PTm n} (hV : Γ ⊢[PRAAx] ap2 (sumF evB) N x ≐ zero) :
 private abbrev evF : Fm PTm 2 := ap2 (sumF evB) (var 0) (var 1) ≐ zero
 
 private theorem ev₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] evF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero]
-    exact sum_zero _ _
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    refine (sum_succ' _ _ _).eqTrans ((congrAdd Prf.hyp0 ?_).eqTrans (add_zero _))
+  ipra_ind [subst_ap2]
+  · exact sum_zero _ _
+  · refine (sum_succ' _ _ _).eqTrans ((congrAdd Prf.hyp0 ?_).eqTrans (add_zero _))
     rw [inst2_ev]
     exact (congrMonus (.eqRefl _) (congrMonus (.eqRefl _) (ev_step Prf.hyp0))).eqTrans sg_zero
 

@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.EulerProduct
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # The radical identity
@@ -97,13 +98,9 @@ private abbrev radPosF : Fm PTm 2 :=
   ap2 (prodF (pB F₁)) (var 0) (var 1) ≐ succ (pred (ap2 (prodF (pB F₁)) (var 0) (var 1)))
 
 private theorem rad_pos₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] radPosF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_pred, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact eq_succ_pred (prod_zero _ _)
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_pred, Syn.subst_var, Syn.repl_zero, repl_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine (prod_succ _ _ _).eqTrans ?_
+  ipra_ind [subst_ap2]
+  · exact eq_succ_pred (prod_zero _ _)
+  · refine (prod_succ _ _ _).eqTrans ?_
     have t := pB_pos (Γ := [radPosF]) (var 0 : PTm 2) (var 1)
     exact eq_succ_pred ((pos_mul Prf.hyp0 t).eqTrans (.eqRefl _)) |>.eqTrans
       (congrSucc (congrPred (prod_succ _ _ _).eqSymm))
@@ -168,12 +165,9 @@ theorem rd_step {N x : PTm n} (hV : Γ ⊢[PRAAx] ap2 (sumF rdB) N x ≐ zero) :
 private abbrev rdF : Fm PTm 2 := ap2 (sumF rdB) (var 0) (var 1) ≐ zero
 
 private theorem rd₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] rdF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero]
-    exact sum_zero _ _
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    refine (sum_succ' _ _ _).eqTrans ((congrAdd Prf.hyp0 ?_).eqTrans (add_zero _))
+  ipra_ind [subst_ap2]
+  · exact sum_zero _ _
+  · refine (sum_succ' _ _ _).eqTrans ((congrAdd Prf.hyp0 ?_).eqTrans (add_zero _))
     rw [inst2_rd]
     exact (congrMonus (.eqRefl _) (congrMonus (.eqRefl _) (rd_step Prf.hyp0))).eqTrans sg_zero
 
@@ -237,12 +231,9 @@ theorem pr_step {N x : PTm n} (hV : Γ ⊢[PRAAx] ap2 (sumF prB) N x ≐ zero) :
 private abbrev prF : Fm PTm 2 := ap2 (sumF prB) (var 0) (var 1) ≐ zero
 
 private theorem pr₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] prF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero]
-    exact sum_zero _ _
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    refine (sum_succ' _ _ _).eqTrans ((congrAdd Prf.hyp0 ?_).eqTrans (add_zero _))
+  ipra_ind [subst_ap2]
+  · exact sum_zero _ _
+  · refine (sum_succ' _ _ _).eqTrans ((congrAdd Prf.hyp0 ?_).eqTrans (add_zero _))
     rw [inst2_pr]
     exact EulerProduct.viol_of_eq (pr_step Prf.hyp0)
 

@@ -5,6 +5,7 @@ import IPRADerivations.DiophantineNumberTheory.QuarticStep
 import IPRADerivations.DiophantineNumberTheory.FLTMultiples
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # Euler's theorem
@@ -257,15 +258,12 @@ private abbrev prodMul1F (f g : PTm 2) : Fm PTm 2 :=
   ap2 (prodF (f * g)) (var 0) (var 1) ≐ ap2 (prodF f) (var 0) (var 1) * ap2 (prodF g) (var 0) (var 1)
 
 private theorem prod_mul1₀ (f g : PTm 2) : ([] : List (Fm PTm 2)) ⊢[PRAAx] prodMul1F f g := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, PTm.subst_mul, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.inst_one]
-    refine (prod_zero _ _).eqTrans ?_
+  ipra_ind [subst_ap2]
+  · refine (prod_zero _ _).eqTrans ?_
     refine withEq (prod_zero (Γ := []) f (var 0 : PTm 1)) fun e₁ =>
       withEq (prod_zero (Γ := []) g (var 0 : PTm 1)) fun e₂ => ?_
     apply deriveNat; ipra_simps; rw [e₁, e₂]; ring
-  · simp only [Fm.subst_eq, PTm.subst_mul, subst_ap2, Syn.subst_var, Syn.repl_zero, repl_one,
-      ConciseIPRA.PTm.subst_succ]
-    refine (prod_succ _ (var 0) _).eqTrans ?_
+  · refine (prod_succ _ (var 0) _).eqTrans ?_
     have e : Syn.subst (![var 0, var 1] : Fin 2 → PTm 2) (f * g) = Syn.subst (![var 0, var 1] : Fin 2 → PTm 2) f * Syn.subst (![var 0, var 1] : Fin 2 → PTm 2) g := by
       simp
     rw [e]
@@ -283,12 +281,9 @@ private abbrev prodPwF (e : PTm 2) : Fm PTm 2 :=
   ap2 (prodF (pw (fstT (var 1)) e)) (var 0) (var 1) ≐ pw (fstT (var 1)) (ap2 (sumF e) (var 0) (var 1))
 
 private theorem prod_pw₀ (e : PTm 2) : ([] : List (Fm PTm 2)) ⊢[PRAAx] prodPwF e := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, subst_fstT, Syn.subst_var, Syn.inst_zero, Syn.inst_one]
-    exact (prod_zero _ _).eqTrans ((pw_zero _).eqSymm.eqTrans (congrAp2 powF (sum_zero _ _).eqSymm (.eqRefl _)))
-  · simp only [Fm.subst_eq, subst_ap2, subst_fstT, Syn.subst_var, Syn.repl_zero, repl_one,
-      ConciseIPRA.PTm.subst_succ]
-    refine (prod_succ _ (var 0) _).eqTrans ?_
+  ipra_ind [subst_ap2, subst_fstT]
+  · exact (prod_zero _ _).eqTrans ((pw_zero _).eqSymm.eqTrans (congrAp2 powF (sum_zero _ _).eqSymm (.eqRefl _)))
+  · refine (prod_succ _ (var 0) _).eqTrans ?_
     have ee : Syn.subst (![var 0, var 1] : Fin 2 → PTm 2) (pw (fstT (var 1)) e) = pw (fstT (var 1)) (Syn.subst (![var 0, var 1] : Fin 2 → PTm 2) e) := by
       simp
     rw [ee]

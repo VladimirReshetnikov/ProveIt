@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.PhiDivides
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # Prime-power parts and a prime indicator
@@ -45,13 +46,9 @@ theorem lt_pw_step {p m : PTm n} (hp : Γ ⊢[PRAAx] le two p) (h : Γ ⊢[PRAAx
 private abbrev ltPwF : Fm PTm 2 := le two (var 1) ⟶ lt (var 0) (pw (var 1) (var 0))
 
 private theorem lt_pw₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] ltPwF := by
-  refine ind _ ⟨le_QF _ _, lt_QF _ _⟩ ?_ ?_
-  · simp only [Fm.subst_imp, subst_le, subst_lt, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (lt_congr (.eqRefl _) (pw_zero _).eqSymm (zero_lt_succ _))
-  · simp only [Fm.subst_imp, subst_le, subst_lt, subst_ap2, Syn.subst_var, Syn.repl_zero, repl_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (lt_pw_step Prf.hyp0 (.impE Prf.hyp1 Prf.hyp0))
+  ipra_ind (⟨le_QF _ _, lt_QF _ _⟩) [subst_le, subst_lt, subst_ap2]
+  · exact .impI (lt_congr (.eqRefl _) (pw_zero _).eqSymm (zero_lt_succ _))
+  · exact .impI (lt_pw_step Prf.hyp0 (.impE Prf.hyp1 Prf.hyp0))
 
 theorem lt_pw {p : PTm n} (hp : Γ ⊢[PRAAx] le two p) (m : PTm n) : Γ ⊢[PRAAx] lt m (pw p m) := by
   have h := inst (Γ := Γ) lt_pw₀ (![m, p] : Fin 2 → PTm n)

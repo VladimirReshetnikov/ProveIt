@@ -4,6 +4,7 @@ import IPRADerivations.Core.SumLemmas
 import IPRADerivations.Core.BoundedSums
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # The finite sums of the Khinchin second moment (`hurwitz_khinchin_ipra`, (K10))
@@ -105,9 +106,7 @@ abbrev g4B : PTm 2 := pw (num 4) (var 0)
 /-- The invariant `3 Σ_{j<J} 4^j + 1 = 4^J`. -/
 def geoInv (J x : PTm n) : Fm PTm n := num 3 * ap2 (sumF g4B) J x + one ≐ pw (num 4) J
 
-@[simp] theorem subst_geoInv {k : ℕ} (σ : Fin n → PTm k) (J x : PTm n) :
-    (geoInv J x).subst σ = geoInv (Syn.subst σ J) (Syn.subst σ x) := by
-  simp [geoInv, subst_ap2]
+ipra_subst geoInv [subst_ap2]
 
 /-- `3 Σ_{j<J} 4^j + 1 = 4^J`. -/
 theorem geo (J x : PTm n) : Γ ⊢[PRAAx] num 3 * ap2 (sumF g4B) J x + one ≐ pw (num 4) J := by

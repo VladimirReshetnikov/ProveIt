@@ -6,6 +6,7 @@ import IPRADerivations.AnalyticNumberTheory.MobiusFloor
 import IPRADerivations.Analysis.PowerSums
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # Quotient blocks
@@ -136,13 +137,9 @@ theorem tele_congr {x x' s N : PTm n} (e : Γ ⊢[PRAAx] x ≐ x')
   le_congr (congrAdd (congrAp2 (sumF chB) e (.eqRefl _)) (congrAp2 quoF (.eqRefl _) (congrSucc e))) (.eqRefl _) h
 
 theorem tele_open : ([] : List (Fm PTm 3)) ⊢[PRAAx] teleF := by
-  refine ind _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, subst_ap2, PTm.subst_add, Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact tele_congr (add_zero (var 0)).eqSymm (le_refl _)
-  · simp only [subst_le, subst_ap2, PTm.subst_add, Syn.subst_var, Syn.repl_zero, repl_one, repl_two,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact tele_congr (add_succ (var 1) (var 0)).eqSymm
+  ipra_ind (le_QF _ _) [subst_le, subst_ap2]
+  · exact tele_congr (add_zero (var 0)).eqSymm (le_refl _)
+  · exact tele_congr (add_succ (var 1) (var 0)).eqSymm
       (le_trans (step_le (var 1 + var 0) (var 2)) (Prf.hyp0 (Γ := []) (φ := teleF)))
 
 /-- `D(s + k) + ⌊N/(s + k + 1)⌋ ≤ D(s) + ⌊N/(s + 1)⌋`. -/

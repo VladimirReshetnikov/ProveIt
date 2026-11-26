@@ -2,6 +2,7 @@ import IPRADerivations.Foundations.FilteredEnumerationCode
 import IPRADerivations.Core.Fubini
 import IPRADerivations.Core.CongruenceTactic
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # Actual first-occurrence grouping of finite input positions
@@ -51,34 +52,19 @@ def fiberCount (f : PR 2) (L p g : PTm n) : PTm n := memberCount f L p (key f L 
 def groupOf (f : PR 2) (L p i : PTm n) : PTm n :=
   FilteredEnumeration.rank (repBody f) (first f L p i) (data L p)
 
-@[simp] theorem subst_key {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (L p i : PTm n) :
-    Syn.subst σ (key f L p i) = key f (Syn.subst σ L) (Syn.subst σ p) (Syn.subst σ i) := by simp [key]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (L p : PTm n) :
-    Syn.subst σ (data L p) = data (Syn.subst σ L) (Syn.subst σ p) := by simp [data]
-@[simp] theorem subst_matchData {m : ℕ} (σ : Fin n → PTm m) (L p v : PTm n) :
-    Syn.subst σ (matchData L p v) = matchData (Syn.subst σ L) (Syn.subst σ p) (Syn.subst σ v) := by simp [matchData]
-@[simp] theorem subst_firstValue {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (L p v : PTm n) :
-    Syn.subst σ (firstValue f L p v) = firstValue f (Syn.subst σ L) (Syn.subst σ p) (Syn.subst σ v) := by
-  simp [firstValue,wit,mu]
-@[simp] theorem subst_first {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (L p i : PTm n) :
-    Syn.subst σ (first f L p i) = first f (Syn.subst σ L) (Syn.subst σ p) (Syn.subst σ i) := by simp [first]
-@[simp] theorem subst_groupCount {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (L p : PTm n) :
-    Syn.subst σ (groupCount f L p) = groupCount f (Syn.subst σ L) (Syn.subst σ p) := by simp [groupCount]
-@[simp] theorem subst_representatives {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (L p : PTm n) :
-    Syn.subst σ (representatives f L p) = representatives f (Syn.subst σ L) (Syn.subst σ p) := by simp [representatives]
-@[simp] theorem subst_representative {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (L p g : PTm n) :
-    Syn.subst σ (representative f L p g) = representative f (Syn.subst σ L) (Syn.subst σ p) (Syn.subst σ g) := by simp [representative]
-@[simp] theorem subst_members {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (L p v : PTm n) :
-    Syn.subst σ (members f L p v) = members f (Syn.subst σ L) (Syn.subst σ p) (Syn.subst σ v) := by simp [members]
-@[simp] theorem subst_memberCount {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (L p v : PTm n) :
-    Syn.subst σ (memberCount f L p v) = memberCount f (Syn.subst σ L) (Syn.subst σ p) (Syn.subst σ v) := by simp [memberCount]
-@[simp] theorem subst_fiber {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (L p g : PTm n) :
-    Syn.subst σ (fiber f L p g) = fiber f (Syn.subst σ L) (Syn.subst σ p) (Syn.subst σ g) := by simp [fiber]
-@[simp] theorem subst_fiberCount {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (L p g : PTm n) :
-    Syn.subst σ (fiberCount f L p g) = fiberCount f (Syn.subst σ L) (Syn.subst σ p) (Syn.subst σ g) := by simp [fiberCount]
-@[simp] theorem subst_groupOf {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (L p i : PTm n) :
-    Syn.subst σ (groupOf f L p i) = groupOf f (Syn.subst σ L) (Syn.subst σ p) (Syn.subst σ i) := by
-  simp [groupOf,FilteredEnumeration.rank]
+ipra_subst key
+ipra_subst data
+ipra_subst matchData
+ipra_subst firstValue [wit, mu]
+ipra_subst first
+ipra_subst groupCount
+ipra_subst representatives
+ipra_subst representative
+ipra_subst members
+ipra_subst memberCount
+ipra_subst fiber
+ipra_subst fiberCount
+ipra_subst groupOf [FilteredEnumeration.rank]
 
 theorem key_congr (f : PR 2) {L L' p p' i i' : PTm n}
     (hL : Γ ⊢[PRAAx] L ≐ L') (hp : Γ ⊢[PRAAx] p ≐ p') (hi : Γ ⊢[PRAAx] i ≐ i') :
@@ -215,9 +201,7 @@ theorem fiber_disjoint (f : PR 2) (L p g h r s : PTm n)
 
 def slotOf (f : PR 2) (L p i : PTm n) : PTm n :=
   FilteredEnumeration.rank (matchBody f) i (matchData L p (key f L p (representative f L p (groupOf f L p i))))
-@[simp] theorem subst_slotOf {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (L p i : PTm n) :
-    Syn.subst σ (slotOf f L p i) = slotOf f (Syn.subst σ L) (Syn.subst σ p) (Syn.subst σ i) := by
-  simp [slotOf,FilteredEnumeration.rank]
+ipra_subst slotOf [FilteredEnumeration.rank]
 theorem coverage (f : PR 2) (L p i : PTm n) (hi : Γ ⊢[PRAAx] lt i (length L)) : Γ ⊢[PRAAx]
     lt (groupOf f L p i) (groupCount f L p) ⋏
       (lt (slotOf f L p i) (fiberCount f L p (groupOf f L p i)) ⋏
@@ -232,11 +216,8 @@ def incidence (f : PR 2) (L p g i : PTm n) : PTm n :=
 def incidenceBody (f : PR 2) : PTm 3 := incidence f (fstT (var 2)) (sndT (var 2)) (var 0) (var 1)
 def sizeBody (f : PR 2) : PTm 2 := fiberCount f (fstT (var 1)) (sndT (var 1)) (var 0)
 def partitionTotal (f : PR 2) (L p : PTm n) : PTm n := ap2 (sumF (sizeBody f)) (groupCount f L p) (data L p)
-@[simp] theorem subst_incidence {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (L p g i : PTm n) :
-    Syn.subst σ (incidence f L p g i) = incidence f (Syn.subst σ L) (Syn.subst σ p) (Syn.subst σ g) (Syn.subst σ i) := by
-  simp [incidence,Signum.sg]
-@[simp] theorem subst_partitionTotal {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (L p : PTm n) :
-    Syn.subst σ (partitionTotal f L p) = partitionTotal f (Syn.subst σ L) (Syn.subst σ p) := by simp [partitionTotal]
+ipra_subst incidence [Signum.sg]
+ipra_subst partitionTotal
 
 theorem incidence_congr (f : PR 2) {L L' p p' g g' i i' : PTm n}
     (hL : Γ ⊢[PRAAx] L ≐ L') (hp : Γ ⊢[PRAAx] p ≐ p')
@@ -378,14 +359,10 @@ def output (f : PR 2) (L p : PTm n) : PTm n :=
   pairT (representatives f L p) (pairT (fiberLists f L p) (pairT (sizes f L p) (partitionTotal f L p)))
 def outputF (f : PR 2) : PR 2 := PTm.toPR (output f (var 0) (var 1))
 def run (f : PR 2) (L p : PTm n) : PTm n := ap2 (outputF f) L p
-@[simp] theorem subst_fiberLists {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (L p : PTm n) :
-    Syn.subst σ (fiberLists f L p) = fiberLists f (Syn.subst σ L) (Syn.subst σ p) := by simp [fiberLists]
-@[simp] theorem subst_sizes {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (L p : PTm n) :
-    Syn.subst σ (sizes f L p) = sizes f (Syn.subst σ L) (Syn.subst σ p) := by simp [sizes]
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (L p : PTm n) :
-    Syn.subst σ (output f L p) = output f (Syn.subst σ L) (Syn.subst σ p) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (L p : PTm n) :
-    Syn.subst σ (run f L p) = run f (Syn.subst σ L) (Syn.subst σ p) := by simp [run]
+ipra_subst fiberLists
+ipra_subst sizes
+ipra_subst output
+ipra_subst run
 theorem fiber_congr (f : PR 2) {L L' p p' g g' : PTm n}
     (hL : Γ ⊢[PRAAx] L ≐ L') (hp : Γ ⊢[PRAAx] p ≐ p') (hg : Γ ⊢[PRAAx] g ≐ g') :
     Γ ⊢[PRAAx] fiber f L p g ≐ fiber f L' p' g' := by

@@ -10,6 +10,7 @@ import IPRADerivations.AnalyticNumberTheory.Multiplicative
 import IPRADerivations.DiophantineNumberTheory.ModularCertificate
 import IPRADerivations.DiophantineNumberTheory.QuarticStep
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # The rational name of Liouville's number
@@ -175,13 +176,9 @@ theorem ninth_succ {k : PTm n} (ih : Γ ⊢[PRAAx] le (nine * Pn k + one) (qn k)
     exact ninth_step ih.wk hQ (P_succ k) (q_succ k)
 
 theorem ninth_open : ([] : List (Fm PTm 1)) ⊢[PRAAx] ninthF := by
-  refine ind _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, subst_ap1, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact ninth_zero
-  · simp only [subst_le, subst_ap1, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.repl_zero,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact ninth_succ Prf.hyp0
+  ipra_ind (le_QF _ _) [subst_le, subst_ap1, subst_ap2]
+  · exact ninth_zero
+  · exact ninth_succ Prf.hyp0
 
 /-- **`r_k < 1/9`**: `9 P_k + 1 ≤ q_k`. -/
 theorem below_ninth (k : PTm n) : Γ ⊢[PRAAx] le (nine * Pn k + one) (qn k) := by
@@ -226,13 +223,9 @@ abbrev tailF : Fm PTm 2 :=
       Pn (var 1) * (qn (succ (var 1 + var 0)) * qn (succ (var 1))))
 
 theorem tail_open : ([] : List (Fm PTm 2)) ⊢[PRAAx] tailF := by
-  refine ind _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, subst_ap1, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
-      Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact tail_congr (congrSucc (add_zero (var 0)).eqSymm) (tail_first (var 0))
-  · simp only [subst_le, subst_ap1, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.repl_zero,
-      repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact tail_congr (congrSucc (add_succ (var 1) (var 0)).eqSymm)
+  ipra_ind (le_QF _ _) [subst_le, subst_ap1, subst_ap2]
+  · exact tail_congr (congrSucc (add_zero (var 0)).eqSymm) (tail_first (var 0))
+  · exact tail_congr (congrSucc (add_succ (var 1) (var 0)).eqSymm)
       (tail_next (Prf.hyp0 (Γ := []) (φ := tailF)))
 
 theorem m_alg {m k t : PTm n} (e : Γ ⊢[PRAAx] m ≐ succ k + t) : Γ ⊢[PRAAx] succ (k + t) ≐ m := by

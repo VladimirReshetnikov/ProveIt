@@ -1,6 +1,7 @@
 import IPRADerivations.Combinatorics.BinomialTheorem
 import IPRADerivations.Foundations.ChineseRemainder
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # Fermat's little theorem
@@ -42,9 +43,7 @@ theorem subst_up_shift' {m : ℕ} (σ : Fin n → PTm m) (t : PTm n) :
     Syn.subst (Syn.up σ) (Syn.shift t) = Syn.shift (Syn.subst σ t) := by
   rw [Syn.subst_shift, Syn.shift_subst]; simp
 
-@[simp] theorem subst_prime {m : ℕ} (σ : Fin n → PTm m) (p : PTm n) :
-    (prime p).subst σ = prime (Syn.subst σ p) := by
-  simp [prime, subst_up_shift']
+ipra_subst prime [subst_up_shift']
 
 theorem prime_shift {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) :
     Γ.map Fm.shift ⊢[PRAAx] prime (Syn.shift p) := by

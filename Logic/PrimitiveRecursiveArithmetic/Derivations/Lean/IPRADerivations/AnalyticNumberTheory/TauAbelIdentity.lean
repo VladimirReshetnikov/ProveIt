@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.DivisorSwapP
 import IPRADerivations.AnalyticNumberTheory.TauLogAbel
 import IPRADerivations.AnalyticNumberTheory.ConvSummatory
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # The divisor count and the Abel identity for `T(y)` (`pnt_ipra_constructive_2026-11-14`, `sb:divisor-approx`)
@@ -130,13 +131,9 @@ theorem ab_step {N K F : PTm n} (ih : Γ ⊢[PRAAx] Ab N K F) : Γ ⊢[PRAAx] Ab
 private abbrev abF : Fm PTm 3 := Ab (var 0) (var 1) (var 2)
 
 private theorem ab₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] abF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, PTm.subst_monus,
-      Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact ab_zero _ _
-  · simp only [Fm.subst_eq, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, PTm.subst_monus,
-      Syn.subst_var, Syn.repl_zero, repl_one, repl_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact ab_step Prf.hyp0
+  ipra_ind [subst_ap2, subst_pairT]
+  · exact ab_zero _ _
+  · exact ab_step Prf.hyp0
 
 /-- The finite partial summation: `Σ_{n≤N} τ(n) u_n + A(N) = D(N) u_N`. -/
 theorem abel_tau (N K F : PTm n) : Γ ⊢[PRAAx] Ab N K F := by

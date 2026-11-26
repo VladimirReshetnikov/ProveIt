@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.Multiplicative
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # The doubling formula `φ(2n)`
@@ -48,14 +49,10 @@ private abbrev splitF (f : PTm 2) : Fm PTm 2 :=
   ap2 (sumF f) (var 1 + var 0) (var 1) ≐ ap2 (sumF f) (var 1) (var 1) + ap2 (sumF (shiftBy f)) (var 0) (var 1)
 
 private theorem sum_split₀ (f : PTm 2) : ([] : List (Fm PTm 2)) ⊢[PRAAx] splitF f := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      ConciseIPRA.PTm.subst_zero]
-    exact (congrAp2 (sumF f) (add_zero _) (.eqRefl _)).eqTrans
+  ipra_ind [subst_ap2]
+  · exact (congrAp2 (sumF f) (add_zero _) (.eqRefl _)).eqTrans
       ((add_zero _).eqSymm.eqTrans (congrAdd (.eqRefl _) (sum_zero _ _).eqSymm))
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, Syn.subst_var, Syn.repl_zero, repl_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine (congrAp2 (sumF f) (add_succ _ _) (.eqRefl _)).eqTrans ((sum_succ' _ _ _).eqTrans ?_)
+  · refine (congrAp2 (sumF f) (add_succ _ _) (.eqRefl _)).eqTrans ((sum_succ' _ _ _).eqTrans ?_)
     refine .eqTrans ?_ (congrAdd (.eqRefl _) (sum_succ' _ _ _)).eqSymm
     rw [inst2_shiftBy]
     refine withEq Prf.hyp0 fun e => ?_

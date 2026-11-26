@@ -1,6 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.ThreeSquares
 import IPRADerivations.DiophantineNumberTheory.FourSquares
 import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # The three-square obstruction for `4^a (8b + 7)`
@@ -227,13 +228,9 @@ theorem r3_step {a c : PTm k} (ih : Γ ⊢[PRAAx] R3 (pw (two * two) a * c) ≐ 
 private abbrev obsF : Fm PTm 2 := R3 (pw (two * two) (var 0) * (num 8 * var 1 + num 7)) ≐ zero
 
 private theorem obs₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] obsF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, PTm.subst_monus, PTm.subst_mul, PTm.subst_add, subst_ap2, Syn.subst_var,
-      Syn.inst_zero, Syn.inst_one, Syn.inst_succ, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ, subst_num]
-    exact r3_base _
-  · simp only [Fm.subst_eq, PTm.subst_monus, PTm.subst_mul, PTm.subst_add, subst_ap2, Syn.subst_var,
-      Syn.repl_zero, Syn.repl_succ, repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ, subst_num]
-    exact r3_step (Prf.hyp0 : [obsF] ⊢[PRAAx] _)
+  ipra_ind [subst_ap2, Syn.inst_succ, subst_num, Syn.repl_succ]
+  · exact r3_base _
+  · exact r3_step (Prf.hyp0 : [obsF] ⊢[PRAAx] _)
 
 /-- `R3 (4^a (8b + 7)) = 0`. -/
 theorem r3_zero (a b : PTm k) : Γ ⊢[PRAAx] R3 (pw (two * two) a * (num 8 * b + num 7)) ≐ zero := by

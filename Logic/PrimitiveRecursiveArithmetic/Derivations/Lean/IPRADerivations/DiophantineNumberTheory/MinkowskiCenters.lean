@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.RationalIntegerNormalization
 import IPRADerivations.Analysis.RationalArgmin
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # Literal normalized midpoint cancellation for Minkowski cell centers
@@ -37,20 +38,12 @@ def midpointNumerator (c d : PTm n) : ZT n :=
 def midpointDenominator (c d : PTm n) : PTm n := two*denominatorOf c*denominatorOf d
 def midpoint (c d : PTm n) : PTm n := normalize (midpointNumerator c d) (midpointDenominator c d)
 
-@[simp] theorem subst_centerNumerator {k : ℕ} (σ : Fin n → PTm k) (a : ZT n) :
-    (centerNumerator a).subst σ = centerNumerator (a.subst σ) := by simp [centerNumerator]
-@[simp] theorem subst_center {k : ℕ} (σ : Fin n → PTm k) (a : ZT n) (m : PTm n) :
-    Syn.subst σ (center a m) = center (a.subst σ) (Syn.subst σ m) := by simp [center]
-@[simp] theorem subst_opposite {k : ℕ} (σ : Fin n → PTm k) (c : PTm n) :
-    Syn.subst σ (opposite c) = opposite (Syn.subst σ c) := by simp [opposite]
-@[simp] theorem subst_midpointNumerator {k : ℕ} (σ : Fin n → PTm k) (c d : PTm n) :
-    (midpointNumerator c d).subst σ = midpointNumerator (Syn.subst σ c) (Syn.subst σ d) := by
-  simp [midpointNumerator]
-@[simp] theorem subst_midpointDenominator {k : ℕ} (σ : Fin n → PTm k) (c d : PTm n) :
-    Syn.subst σ (midpointDenominator c d) = midpointDenominator (Syn.subst σ c) (Syn.subst σ d) := by
-  simp [midpointDenominator]
-@[simp] theorem subst_midpoint {k : ℕ} (σ : Fin n → PTm k) (c d : PTm n) :
-    Syn.subst σ (midpoint c d) = midpoint (Syn.subst σ c) (Syn.subst σ d) := by simp [midpoint]
+ipra_subst centerNumerator
+ipra_subst center
+ipra_subst opposite
+ipra_subst midpointNumerator
+ipra_subst midpointDenominator
+ipra_subst midpoint
 
 theorem midpoint_denominator_positive (c d : PTm n) :
     Γ ⊢[PRAAx] le one (midpointDenominator c d) := by

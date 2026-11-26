@@ -6,6 +6,7 @@ import IPRADerivations.Foundations.AuxiliaryEnvelope
 import IPRADerivations.Probability.Independence
 import IPRADerivations.Core.SumSplit
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # Refinement of the rational logarithm intervals (`pnt_ipra_constructive_2026-11-14`)
@@ -159,9 +160,7 @@ theorem block_lower {K c F u : PTm n} (hK : Γ ⊢[PRAAx] K ≐ succ (pred K)) (
 def upInv (t c₁ K F : PTm n) : Fm PTm n :=
   le (S (K * (succ c₁ + t)) F + S c₁ F) (S (K * succ c₁) F + S (c₁ + t) F)
 
-@[simp] theorem subst_upInv {k : ℕ} (σ : Fin n → PTm k) (t c₁ K F : PTm n) :
-    (upInv t c₁ K F).subst σ = upInv (Syn.subst σ t) (Syn.subst σ c₁) (Syn.subst σ K) (Syn.subst σ F) := by
-  simp [upInv, subst_ap2]
+ipra_subst upInv [subst_ap2]
 
 theorem up_base (c₁ K F : PTm n) : Γ ⊢[PRAAx] upInv zero c₁ K F :=
   le_congr (congrAdd (congrAp2 (sumF hB) (congrMul (.eqRefl _) (add_zero _)).eqSymm (.eqRefl _)) (.eqRefl _))
@@ -199,10 +198,7 @@ theorem up_all (t c₁ K F : PTm n) : Γ ⊢[PRAAx] upInv t c₁ K F := by
 def loInv (t T c₀ K L : PTm n) : Fm PTm n :=
   le t T ⟶ le (S (c₀ + t) (fact L) + S (K * c₀) (fact L)) (S (K * (c₀ + t)) (fact L) + S c₀ (fact L))
 
-@[simp] theorem subst_loInv {k : ℕ} (σ : Fin n → PTm k) (t T c₀ K L : PTm n) :
-    (loInv t T c₀ K L).subst σ =
-      loInv (Syn.subst σ t) (Syn.subst σ T) (Syn.subst σ c₀) (Syn.subst σ K) (Syn.subst σ L) := by
-  simp [loInv, subst_ap2]
+ipra_subst loInv [subst_ap2]
 
 theorem loInv_QF (t T c₀ K L : PTm n) : (loInv t T c₀ K L).QF := by
   unfold loInv; exact ⟨le_QF _ _, le_QF _ _⟩

@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.OrderPower
 import IPRADerivations.Analysis.PowerSums
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # The totatives under `a ↦ n − a`
@@ -50,13 +51,9 @@ private abbrev prodPwTwoF (e : PTm 2) : Fm PTm 2 :=
   ap2 (prodF (pw two e)) (var 0) (var 1) ≐ pw two (ap2 (sumF e) (var 0) (var 1))
 
 private theorem prod_pw_two₀ (e : PTm 2) : ([] : List (Fm PTm 2)) ⊢[PRAAx] prodPwTwoF e := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
-    exact (prod_zero _ _).eqTrans ((pw_zero _).eqSymm.eqTrans (congrAp2 powF (sum_zero _ _).eqSymm (.eqRefl _)))
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, repl_one,
-      ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
-    refine (prod_succ _ (var 0) _).eqTrans ?_
+  ipra_ind [subst_ap2]
+  · exact (prod_zero _ _).eqTrans ((pw_zero _).eqSymm.eqTrans (congrAp2 powF (sum_zero _ _).eqSymm (.eqRefl _)))
+  · refine (prod_succ _ (var 0) _).eqTrans ?_
     have ee : Syn.subst (![var 0, var 1] : Fin 2 → PTm 2) (pw two e) =
         pw two (Syn.subst (![var 0, var 1] : Fin 2 → PTm 2) e) := by simp
     rw [ee]

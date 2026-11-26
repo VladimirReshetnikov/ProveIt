@@ -7,6 +7,7 @@ import IPRADerivations.Core.SumLemmas
 import IPRADerivations.Foundations.RealizerComposition
 import IPRADerivations.Core.CongruenceTactic
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # Actual rational budgets on finite topologically ordered dependency graphs
@@ -72,36 +73,22 @@ def node (G Eta v : PTm n) : PTm n := next G Eta v (row G Eta v)
 
 def appendF : PR 2 := PTm.toPR (append (var 0) (var 1))
 
-@[simp] theorem subst_fraction {m : ℕ} (σ : Fin n → PTm m) (p q : PTm n) :
-    Syn.subst σ (fraction p q) = fraction (Syn.subst σ p) (Syn.subst σ q) := by simp [fraction]
+ipra_subst fraction
 @[simp] theorem subst_zeroCode {m : ℕ} (σ : Fin n → PTm m) :
     Syn.subst σ (zeroCode : PTm n) = (zeroCode : PTm m) := by simp [zeroCode]
-@[simp] theorem subst_decodeFraction {m : ℕ} (σ : Fin n → PTm m) (c : PTm n) :
-    Syn.subst σ (decodeFraction c) = decodeFraction (Syn.subst σ c) := by simp [decodeFraction]
-@[simp] theorem subst_safeEntry {m : ℕ} (σ : Fin n → PTm m) (L i : PTm n) :
-    Syn.subst σ (safeEntry L i) = safeEntry (Syn.subst σ L) (Syn.subst σ i) := by simp [safeEntry]
-@[simp] theorem subst_graphRow {m : ℕ} (σ : Fin n → PTm m) (G v : PTm n) :
-    Syn.subst σ (graphRow G v) = graphRow (Syn.subst σ G) (Syn.subst σ v) := by simp [graphRow]
-@[simp] theorem subst_weightDatum {m : ℕ} (σ : Fin n → PTm m) (G v w : PTm n) :
-    Syn.subst σ (weightDatum G v w) = weightDatum (Syn.subst σ G) (Syn.subst σ v) (Syn.subst σ w) := by simp [weightDatum]
-@[simp] theorem subst_weight {m : ℕ} (σ : Fin n → PTm m) (G v w : PTm n) :
-    Syn.subst σ (weight G v w) = weight (Syn.subst σ G) (Syn.subst σ v) (Syn.subst σ w) := by simp [weight]
-@[simp] theorem subst_localError {m : ℕ} (σ : Fin n → PTm m) (Eta v : PTm n) :
-    Syn.subst σ (localError Eta v) = localError (Syn.subst σ Eta) (Syn.subst σ v) := by simp [localError]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (G Eta : PTm n) :
-    Syn.subst σ (data G Eta) = data (Syn.subst σ G) (Syn.subst σ Eta) := by simp [data]
-@[simp] theorem subst_productData {m : ℕ} (σ : Fin n → PTm m) (G v R : PTm n) :
-    Syn.subst σ (productData G v R) = productData (Syn.subst σ G) (Syn.subst σ v) (Syn.subst σ R) := by simp [productData]
-@[simp] theorem subst_incoming {m : ℕ} (σ : Fin n → PTm m) (G v R : PTm n) :
-    Syn.subst σ (incoming G v R) = incoming (Syn.subst σ G) (Syn.subst σ v) (Syn.subst σ R) := by simp [incoming]
-@[simp] theorem subst_next {m : ℕ} (σ : Fin n → PTm m) (G Eta v R : PTm n) :
-    Syn.subst σ (next G Eta v R) = next (Syn.subst σ G) (Syn.subst σ Eta) (Syn.subst σ v) (Syn.subst σ R) := by simp [next]
-@[simp] theorem subst_singleton {m : ℕ} (σ : Fin n → PTm m) (c : PTm n) :
-    Syn.subst σ (singleton c) = singleton (Syn.subst σ c) := by simp [singleton]
-@[simp] theorem subst_row {m : ℕ} (σ : Fin n → PTm m) (G Eta r : PTm n) :
-    Syn.subst σ (row G Eta r) = row (Syn.subst σ G) (Syn.subst σ Eta) (Syn.subst σ r) := by simp [row]
-@[simp] theorem subst_node {m : ℕ} (σ : Fin n → PTm m) (G Eta v : PTm n) :
-    Syn.subst σ (node G Eta v) = node (Syn.subst σ G) (Syn.subst σ Eta) (Syn.subst σ v) := by simp [node]
+ipra_subst decodeFraction
+ipra_subst safeEntry
+ipra_subst graphRow
+ipra_subst weightDatum
+ipra_subst weight
+ipra_subst localError
+ipra_subst data
+ipra_subst productData
+ipra_subst incoming
+ipra_subst next
+ipra_subst singleton
+ipra_subst row
+ipra_subst node
 
 theorem safeEntry_present (L i : PTm n) (hi : Γ ⊢[PRAAx] lt i (length L)) : Γ ⊢[PRAAx]
     safeEntry L i ≐ entry L i :=
@@ -188,9 +175,7 @@ theorem node_index_congr {v w : PTm n} (G Eta : PTm n) (h : Γ ⊢[PRAAx] v ≐ 
 
 def lookupLaw (G Eta w r : PTm n) : Fm PTm n :=
   lt w r ⟶ entry (row G Eta r) w ≐ node G Eta w
-@[simp] theorem subst_lookupLaw {m : ℕ} (σ : Fin n → PTm m) (G Eta w r : PTm n) :
-    (lookupLaw G Eta w r).subst σ = lookupLaw (Syn.subst σ G) (Syn.subst σ Eta) (Syn.subst σ w) (Syn.subst σ r) := by
-  simp [lookupLaw]
+ipra_subst lookupLaw
 
 /-- Actual earlier stored entries are stable throughout the whole recursion. -/
 theorem row_lookup (G Eta r w : PTm n) (hw : Γ ⊢[PRAAx] lt w r) : Γ ⊢[PRAAx]
@@ -317,12 +302,8 @@ def nonnegativeTerms (A : PTm 2) (N x : PTm n) : Fm PTm n :=
   .all (lt (var 0) (Syn.shift N) ⟶ rationalLE zeroCode (Analysis.RationalFiniteSum.term A (var 0) (Syn.shift x)))
 def sumNonnegativeLaw (A : PTm 2) (N x r : PTm n) : Fm PTm n :=
   le r N ⟶ rationalLE zeroCode (sum A r x)
-@[simp] theorem subst_nonnegativeTerms {m : ℕ} (σ : Fin n → PTm m) (A : PTm 2) (N x : PTm n) :
-    (nonnegativeTerms A N x).subst σ = nonnegativeTerms A (Syn.subst σ N) (Syn.subst σ x) := by
-  simp [nonnegativeTerms,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_sumNonnegativeLaw {m : ℕ} (σ : Fin n → PTm m) (A : PTm 2) (N x r : PTm n) :
-    (sumNonnegativeLaw A N x r).subst σ = sumNonnegativeLaw A (Syn.subst σ N) (Syn.subst σ x) (Syn.subst σ r) := by
-  simp [sumNonnegativeLaw]
+ipra_subst nonnegativeTerms [Syn.subst_shift, Syn.shift_subst]
+ipra_subst sumNonnegativeLaw
 
 theorem sum_nonnegative (A : PTm 2) (N x : PTm n) (h : Γ ⊢[PRAAx] nonnegativeTerms A N x) : Γ ⊢[PRAAx]
     rationalLE zeroCode (sum A N x) := by
@@ -358,9 +339,7 @@ def nonnegativeDefect : PTm 2 := monus
   (Analysis.RationalArgmin.left (entry (var 1) (var 0)) zeroCode)
 def nonnegativeBody : PTm 2 := BoundedEnumeration.vb nonnegativeDefect
 def rowsNonnegative (r R : PTm n) : Fm PTm n := BoundedReflection.allB nonnegativeBody r R ≐ one
-@[simp] theorem subst_rowsNonnegative {m : ℕ} (σ : Fin n → PTm m) (r R : PTm n) :
-    (rowsNonnegative r R).subst σ = rowsNonnegative (Syn.subst σ r) (Syn.subst σ R) := by
-  simp [rowsNonnegative,BoundedReflection.allB]
+ipra_subst rowsNonnegative [BoundedReflection.allB]
 theorem nonnegative_defect_at (i R : PTm n) :
     inst2 nonnegativeDefect i R = monus (Analysis.RationalArgmin.left zeroCode (entry R i))
       (Analysis.RationalArgmin.left (entry R i) zeroCode) := by simp [nonnegativeDefect,inst2]

@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.LcmBridgeTheta
 import IPRADerivations.AnalyticNumberTheory.StepParams
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # `ϑ(m²) ≥ m²/4` for every `m ≥ 16` on the logarithm names
@@ -57,13 +58,9 @@ theorem l32_step {r : PTm n} (ih : Γ ⊢[PRAAx] le (num 5 * r + num 32) (num 32
 private abbrev l32F : Fm PTm 1 := le (num 5 * var 0 + num 32) (num 32 * pw two (var 0))
 
 private theorem l32₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] l32F := by
-  refine ind _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_num, Syn.subst_var, Syn.inst_zero,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact l32_base
-  · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_num, Syn.subst_var, Syn.repl_zero,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact l32_step Prf.hyp0
+  ipra_ind (le_QF _ _) [subst_le, subst_ap2]
+  · exact l32_base
+  · exact l32_step Prf.hyp0
 
 theorem l32 (w : PTm n) : Γ ⊢[PRAAx] le (num 5 * w + num 32) (num 32 * pw two w) := by
   have h := inst (Γ := Γ) l32₀ (![w] : Fin 1 → PTm n)

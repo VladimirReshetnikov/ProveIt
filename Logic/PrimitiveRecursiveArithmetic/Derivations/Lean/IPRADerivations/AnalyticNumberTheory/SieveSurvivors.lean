@@ -6,6 +6,7 @@ import IPRADerivations.AnalyticNumberTheory.ValuationAdd
 import IPRADerivations.AnalyticNumberTheory.FourthRootSum
 import IPRADerivations.Foundations.CrossingSearch
 import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # The survivors of the sieve, and Legendre's formula for `π`
@@ -254,13 +255,9 @@ abbrev survF : Fm PTm 2 :=
     (ap2 (sumF coB) (succ (var 0)) (pri (var 1)) + pc (mn (var 0) (var 1)) ≐ sg (var 0) + pc (var 0))
 
 theorem surv_open : ([] : List (Fm PTm 2)) ⊢[PRAAx] survF := by
-  refine ind _ ⟨lt_QF _ _, trivial⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_lt, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_monus,
-      Syn.subst_var, Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI surv_zero
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_lt, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_monus,
-      Syn.subst_var, Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (surv_step Prf.hyp0 (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)))
+  ipra_ind (⟨lt_QF _ _, trivial⟩) [subst_lt, subst_ap2]
+  · exact .impI surv_zero
+  · exact .impI (surv_step Prf.hyp0 (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)))
 
 /-- For `x < (z + 1)²`: `S(x, z) + π(min(x, z)) = [x ≥ 1] + π(x)`. -/
 theorem survivors {x z : PTm n} (hB : Γ ⊢[PRAAx] lt x (succ z * succ z)) :

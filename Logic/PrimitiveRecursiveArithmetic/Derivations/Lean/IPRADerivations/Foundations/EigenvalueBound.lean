@@ -3,6 +3,7 @@ import IPRADerivations.Core.SumOrder
 import IPRADerivations.Core.SumReflect
 import IPRADerivations.Core.Pairing
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # The eigenvalue bound in every dimension (`ipra_presentations_to_witnesses`, `lem:integer-eigenvalue`)
@@ -124,18 +125,14 @@ private abbrev triF : Fm PTm 2 :=
     (ap2 (sumF (adB p n)) (var 0) (var 1))
 
 private theorem tri₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] triF p n := by
-  refine ind _ trivial ?_ ?_
-  · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_monus, Syn.subst_var,
-      Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have e₁ := natEq ((congrMonus (sum_zero (Γ := ([] : List (Fm PTm 1))) p (var 0))
+  ipra_ind [subst_le, subst_ap2]
+  · have e₁ := natEq ((congrMonus (sum_zero (Γ := ([] : List (Fm PTm 1))) p (var 0))
       (sum_zero n (var 0))).eqTrans (le_refl zero))
     have e₂ := natEq ((congrMonus (sum_zero (Γ := ([] : List (Fm PTm 1))) n (var 0))
       (sum_zero p (var 0))).eqTrans (le_refl zero))
     refine le_of_eq_add (d := zero) ?_
     ipra_lc natEq (sum_zero (Γ := ([] : List (Fm PTm 1))) (adB p n) (var 0)) - e₁ - e₂
-  · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_monus, Syn.subst_var,
-      Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact tri_step p n Prf.hyp0
+  · exact tri_step p n Prf.hyp0
 
 /-- `|∑_{i<D} p_i - ∑_{i<D} n_i| ≤ ∑_{i<D} |p_i - n_i|`. -/
 theorem sum_triangle (D x : PTm k) :

@@ -5,6 +5,7 @@ import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.Probability.ProductReplacement
 import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # The comparison `S ≤ G` for the product of the primes coprime to `q`
@@ -159,13 +160,9 @@ abbrev outF : Fm PTm 4 :=
     (pairT (ap2 (prodF (PE totBody)) (succ (var 0)) (var 1)) (pairT (var 2) (var 3))) ≐ zero
 
 theorem out_open : ([] : List (Fm PTm 4)) ⊢[PRAAx] outF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, subst_pairT, Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two,
-      inst_three, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact (Cz_congr (Aq_zero _)).eqTrans (Cz_one _ _)
-  · simp only [Fm.subst_eq, subst_ap2, subst_pairT, Syn.subst_var, Syn.repl_zero, repl_one, repl_two,
-      repl_three, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact out_step Prf.hyp0
+  ipra_ind [subst_ap2, subst_pairT]
+  · exact (Cz_congr (Aq_zero _)).eqTrans (Cz_one _ _)
+  · exact out_step Prf.hyp0
 
 /-- **No violation for `A_q(y)`**: `C_z(A_q(y)) = 0` for every `y`, `q`, `L`, `z`. -/
 theorem Cz_all (y q L z : PTm n) : Γ ⊢[PRAAx] Cz (Aq y q) L z ≐ zero := by

@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.FiniteSetExponential
 import IPRADerivations.Foundations.PresentedCategory
+import IPRADerivations.Core.InductionTactic
 
 /-!
 # The table category of nonempty finite sets (`ipra_categorical_methods`, Section 4)
@@ -267,13 +268,9 @@ theorem finSet_inverse_unique :
 /-! ## The terminal object `[1]` -/
 
 private theorem one_pw₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] pw (one : PTm 1) (var 0) ≐ one := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact pw_zero _
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact (pw_succ _ _).eqTrans ((congrMul Prf.hyp0 (.eqRefl _)).eqTrans (one_mul _))
+  ipra_ind [subst_ap2]
+  · exact pw_zero _
+  · exact (pw_succ _ _).eqTrans ((congrMul Prf.hyp0 (.eqRefl _)).eqTrans (one_mul _))
 
 /-- `1^x = 1`. -/
 theorem one_pw (x : PTm k) : Γ ⊢[PRAAx] pw one x ≐ one := by
