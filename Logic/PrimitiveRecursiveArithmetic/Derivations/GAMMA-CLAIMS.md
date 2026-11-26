@@ -3134,3 +3134,6 @@ The original base and late apart step have exact common-denominator native encod
 
 An explicit mixed-denominator disk modulus gives a genuine named sampler for the original C7 evaluator. The named output is regular and proper, and its comparison to the frozen rational evaluation preserves independent clocks, including at poles.
 [GaussianGammaC7Named](Lean/IPRADerivations/Analysis/GaussianGammaC7Named.lean), [GaussianGammaC7NamedFrozen](Lean/IPRADerivations/Analysis/GaussianGammaC7NamedFrozen.lean)
+
+The actual named base and shifted values both have an independent leading error of one dyadic unit at the requested precision in their comparison with the shared late rational chart. Changing the step denominator on this chart preserves the actual quotient datum exactly.
+[GaussianBarnesCanonicalNamedIncrementEndpoints](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalNamedIncrementEndpoints.lean)
