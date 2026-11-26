@@ -3098,3 +3098,6 @@ The original full Barnes value quotient converges to its explicit product-rule d
 
 At every admitted Gaussian rational point explicit denominator refinement permits a nonzero arbitrarily small native step. Full derivative fraction properness gives independent comparison to a fixed name at the original argument, including arbitrarily requested internal precision.
 [GaussianBarnesCanonicalHeadDerivativeFractionProperness](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHeadDerivativeFractionProperness.lean), [GaussianBarnesCanonicalDerivativeStep](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDerivativeStep.lean), [GaussianBarnesCanonicalValueDerivativeProperness](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalValueDerivativeProperness.lean)
+
+One refined nonzero rational step works simultaneously in two certified interior disks. Exact properness of the actual Barnes values and removal of dyadic slack identify the two original derivative names.
+[GaussianBarnesCanonicalDerivativeDiskIndependence](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDerivativeDiskIndependence.lean)
