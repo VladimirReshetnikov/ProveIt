@@ -2930,3 +2930,6 @@ The original cofinal sampler represents the same value under different disk radi
 
 Explicit disk and index bounds give an independent-clock Lipschitz rate for the actual factor observations, including separately encoded Gaussian rational inputs.
 [GaussianBarnesCanonicalFactorLipschitz](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalFactorLipschitz.lean)
+
+The original finite product at each common segment has an explicit independent-clock Lipschitz bound. The proof retains different rational encodings and each product normalization, including empty segments.
+[GaussianBarnesCanonicalHeadLipschitz](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHeadLipschitz.lean)
