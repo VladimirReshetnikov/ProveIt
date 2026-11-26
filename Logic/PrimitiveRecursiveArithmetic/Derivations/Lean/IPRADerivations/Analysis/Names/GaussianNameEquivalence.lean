@@ -41,6 +41,17 @@ ipra_subst diagonalEquivalent [Syn.subst_shift, Syn.shift_subst]
 
 ipra_subst crossEquivalent [Syn.subst_shift, Syn.shift_subst]
 
+/-- Preserve cross-equivalence in the context with one more variable. -/
+theorem shift_crossEquivalent {f g : PR 2} {x y : PTm n}
+    (h : Γ ⊢[PRAAx] crossEquivalent f g x y) :
+    Γ.map Fm.shift ⊢[PRAAx] crossEquivalent f g (Syn.shift x) (Syn.shift y) := by
+  simpa only [Fm.shift, subst_crossEquivalent, Syn.shift] using h.shift
+
+theorem cross_data_congr (f g : PR 2) (x x' y y' : PTm n) (hx : Γ ⊢[PRAAx] x ≐ x') (hy : Γ ⊢[PRAAx] y ≐ y')
+    (h : Γ ⊢[PRAAx] crossEquivalent f g x y) : Γ ⊢[PRAAx] crossEquivalent f g x' y' := by
+  simpa using Prf.eqSubst (crossEquivalent f g (var 0) (var 1) : Fm PTm 2) ![x,y] ![x',y']
+    (fun i => by fin_cases i; exact hx; exact hy) (by simpa using h)
+
 theorem diagonal_at (f g : PR 2) (x y m : PTm n)
     (h : Γ ⊢[PRAAx] diagonalEquivalent f g x y) : Γ ⊢[PRAAx]
     distanceBounded (ap2 f m x) (ap2 g m y) two (unit m) := by
@@ -101,10 +112,8 @@ theorem diagonal_cross_at (f g : PR 2) (x y s t : PTm n)
   apply GaussianRationalSlackRemoval.slack_removal _ _ _ (two*two)
     (positive_product _ _ (unit_positive s) (unit_positive t))
   refine .allI ?_
-  have hf : Γ.map Fm.shift ⊢[PRAAx] pointCN f (Syn.shift x) := by
-    simpa only [Fm.shift,GaussianEuclideanDistanceName.subst_pointCN,Syn.shift] using hF.shift
-  have hg : Γ.map Fm.shift ⊢[PRAAx] pointCN g (Syn.shift y) := by
-    simpa only [Fm.shift,GaussianEuclideanDistanceName.subst_pointCN,Syn.shift] using hG.shift
+  have hf := GaussianEuclideanDistanceName.shift_pointCN hF
+  have hg := GaussianEuclideanDistanceName.shift_pointCN hG
   have he : Γ.map Fm.shift ⊢[PRAAx] diagonalEquivalent f g (Syn.shift x) (Syn.shift y) := by
     simpa only [Fm.shift,subst_diagonalEquivalent,Syn.shift] using hEq.shift
   simpa only [Syn.shift,subst_ap2,GaussianRationalMetric.subst_qsub,subst_unit,PTm.subst_add,PTm.subst_mul,
@@ -115,10 +124,8 @@ theorem diagonal_to_cross (f g : PR 2) (x y : PTm n)
     (hF : Γ ⊢[PRAAx] pointCN f x) (hG : Γ ⊢[PRAAx] pointCN g y)
     (hEq : Γ ⊢[PRAAx] diagonalEquivalent f g x y) : Γ ⊢[PRAAx] crossEquivalent f g x y := by
   refine .allI (.allI ?_)
-  have hf : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] pointCN f (Syn.shift (Syn.shift x)) := by
-    simpa only [Fm.shift,GaussianEuclideanDistanceName.subst_pointCN,Syn.shift] using hF.shift.shift
-  have hg : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] pointCN g (Syn.shift (Syn.shift y)) := by
-    simpa only [Fm.shift,GaussianEuclideanDistanceName.subst_pointCN,Syn.shift] using hG.shift.shift
+  have hf := GaussianEuclideanDistanceName.shift_pointCN (GaussianEuclideanDistanceName.shift_pointCN hF)
+  have hg := GaussianEuclideanDistanceName.shift_pointCN (GaussianEuclideanDistanceName.shift_pointCN hG)
   have he : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx]
       diagonalEquivalent f g (Syn.shift (Syn.shift x)) (Syn.shift (Syn.shift y)) := by
     simpa only [Fm.shift,subst_diagonalEquivalent,Syn.shift] using hEq.shift.shift
@@ -127,8 +134,7 @@ theorem diagonal_to_cross (f g : PR 2) (x y : PTm n)
 theorem cross_to_diagonal (f g : PR 2) (x y : PTm n)
     (hEq : Γ ⊢[PRAAx] crossEquivalent f g x y) : Γ ⊢[PRAAx] diagonalEquivalent f g x y := by
   refine .allI ?_
-  have he : Γ.map Fm.shift ⊢[PRAAx] crossEquivalent f g (Syn.shift x) (Syn.shift y) := by
-    simpa only [Fm.shift,subst_crossEquivalent,Syn.shift] using hEq.shift
+  have he := shift_crossEquivalent hEq
   exact distance_radius_mono _ _ _ _ _ _
     (positive_product _ _ (unit_positive (var 0)) (unit_positive (var 0))) (unit_positive (var 0))
     (le_of_eq_add (d := zero) (by ipra_ring)) (cross_at f g _ _ (var 0) (var 0) he)
@@ -189,10 +195,8 @@ theorem cross_trans_at (f g h : PR 2) (x y z s t : PTm n)
   apply GaussianRationalSlackRemoval.slack_removal _ _ _ two
     (positive_product _ _ (unit_positive s) (unit_positive t))
   refine .allI ?_
-  have fg : Γ.map Fm.shift ⊢[PRAAx] crossEquivalent f g (Syn.shift x) (Syn.shift y) := by
-    simpa only [Fm.shift,subst_crossEquivalent,Syn.shift] using hFG.shift
-  have gh : Γ.map Fm.shift ⊢[PRAAx] crossEquivalent g h (Syn.shift y) (Syn.shift z) := by
-    simpa only [Fm.shift,subst_crossEquivalent,Syn.shift] using hGH.shift
+  have fg := shift_crossEquivalent hFG
+  have gh := shift_crossEquivalent hGH
   simpa only [Syn.shift,subst_ap2,GaussianRationalMetric.subst_qsub,subst_unit,PTm.subst_add,PTm.subst_mul,
     ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero] using
     cross_trans_slack f g h (Syn.shift x) (Syn.shift y) (Syn.shift z) (Syn.shift s) (Syn.shift t) (var 0) fg gh
@@ -236,8 +240,7 @@ theorem cross_zero_at (f g : PR 2) (x y k : PTm n)
     bounded (ap2 g k y) one (unit k) := by
   apply GaussianRationalSlackRemoval.slack_removal _ _ _ two (unit_positive k)
   refine .allI ?_
-  have he : Γ.map Fm.shift ⊢[PRAAx] crossEquivalent f g (Syn.shift x) (Syn.shift y) := by
-    simpa only [Fm.shift,subst_crossEquivalent,Syn.shift] using hEq.shift
+  have he := shift_crossEquivalent hEq
   have hz : Γ.map Fm.shift ⊢[PRAAx] programZero f (Syn.shift x) := by
     simpa only [Fm.shift,GaussianGeneralPolynomialValueName.subst_programZero,Syn.shift] using hZero.shift
   simpa only [Syn.shift,subst_ap2,subst_unit,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero] using
@@ -247,8 +250,7 @@ theorem cross_zero_transport (f g : PR 2) (x y : PTm n)
     (hEq : Γ ⊢[PRAAx] crossEquivalent f g x y) (hZero : Γ ⊢[PRAAx] programZero f x) : Γ ⊢[PRAAx]
     programZero g y := by
   refine .allI ?_
-  have he : Γ.map Fm.shift ⊢[PRAAx] crossEquivalent f g (Syn.shift x) (Syn.shift y) := by
-    simpa only [Fm.shift,subst_crossEquivalent,Syn.shift] using hEq.shift
+  have he := shift_crossEquivalent hEq
   have hz : Γ.map Fm.shift ⊢[PRAAx] programZero f (Syn.shift x) := by
     simpa only [Fm.shift,GaussianGeneralPolynomialValueName.subst_programZero,Syn.shift] using hZero.shift
   exact cross_zero_at f g _ _ (var 0) he hz

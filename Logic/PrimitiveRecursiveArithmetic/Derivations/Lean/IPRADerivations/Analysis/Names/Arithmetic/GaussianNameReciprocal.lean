@@ -59,8 +59,7 @@ theorem lift_at (f : PR 2) (i s x : PTm n) : Γ ⊢[PRAAx] ap3 (liftF f) i s x �
 theorem lift_regular (f : PR 2) (i x : PTm n) (hf : Γ ⊢[PRAAx] pointCN f x) : Γ ⊢[PRAAx]
     GaussianCoefficientNameBounds.regularCoefficient (liftF f) i x := by
   refine .allI (.allI ?_)
-  have h2 : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] pointCN f (Syn.shift (Syn.shift x)) := by
-    simpa only [Fm.shift,subst_pointCN,Syn.shift] using hf.shift.shift
+  have h2 := GaussianEuclideanDistanceName.shift_pointCN (GaussianEuclideanDistanceName.shift_pointCN hf)
   exact distance_congr (lift_at f (Syn.shift (Syn.shift i)) (var 1) (Syn.shift (Syn.shift x))).eqSymm
     (lift_at f (Syn.shift (Syn.shift i)) (var 0) (Syn.shift (Syn.shift x))).eqSymm (.eqRefl _) (.eqRefl _)
     (GaussianNameEquivalence.point_at f _ (var 1) (var 0) h2)
@@ -68,8 +67,7 @@ theorem lift_regular (f : PR 2) (i x : PTm n) (hf : Γ ⊢[PRAAx] pointCN f x) :
 theorem lift_CN (f : PR 2) (x : PTm n) (hf : Γ ⊢[PRAAx] pointCN f x) : Γ ⊢[PRAAx]
     GaussianGeneralCoefficientNames.generalCN (liftF f) zero x := by
   refine .allI (.impI ?_)
-  have h1 : (lt (var 0) (Syn.shift (succ zero))::Γ.map Fm.shift) ⊢[PRAAx] pointCN f (Syn.shift x) := by
-    simpa only [Fm.shift,subst_pointCN,Syn.shift] using hf.shift.wk
+  have h1 : (lt (var 0) (Syn.shift (succ zero))::Γ.map Fm.shift) ⊢[PRAAx] pointCN f (Syn.shift x) := (GaussianEuclideanDistanceName.shift_pointCN hf).wk
   exact lift_regular f (var 0) (Syn.shift x) h1
 
 /-- The finite original certificate supplies separation on the entire used tail. -/
@@ -224,8 +222,7 @@ theorem raw_regular (f : PR 2) (h x : PTm n)
     (hf : Γ ⊢[PRAAx] pointCN f x) (ha : Γ ⊢[PRAAx] apart f h x) : Γ ⊢[PRAAx]
     GaussianFastValueCut.regular (rawF f) (modulus h) (rawData h x) := by
   refine .allI (.allI ?_)
-  have hf2 : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] pointCN f (Syn.shift (Syn.shift x)) := by
-    simpa only [Fm.shift,subst_pointCN,Syn.shift] using hf.shift.shift
+  have hf2 := GaussianEuclideanDistanceName.shift_pointCN (GaussianEuclideanDistanceName.shift_pointCN hf)
   have ha2 : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] apart f (Syn.shift (Syn.shift h)) (Syn.shift (Syn.shift x)) := by
     simpa only [Fm.shift,subst_apart,Syn.shift] using ha.shift.shift
   simpa only [Syn.shift,subst_modulus,subst_rawData] using
@@ -303,8 +300,7 @@ theorem product_one (f : PR 2) (h x : PTm n)
   apply GaussianNameRingLaws.equivalent_of_envelope _ _ _ _ (productBudget f h x)
     (GaussianNameArithmetic.multiply_fast _ _ _ _ hf (name_fast f h x hf ha)) (GaussianNameRingLaws.one_fast x)
   refine .allI ?_
-  have hf1 : Γ.map Fm.shift ⊢[PRAAx] pointCN f (Syn.shift x) := by
-    simpa only [Fm.shift,subst_pointCN,Syn.shift] using hf.shift
+  have hf1 := GaussianEuclideanDistanceName.shift_pointCN hf
   have ha1 : Γ.map Fm.shift ⊢[PRAAx] apart f (Syn.shift h) (Syn.shift x) := by
     simpa only [Fm.shift,subst_apart,Syn.shift] using ha.shift
   simpa only [Syn.shift,GaussianNameArithmetic.subst_multiplyData,subst_nameData,subst_productBudget] using
@@ -369,10 +365,8 @@ theorem names_equivalent (f g : PR 2) (h h' x y : PTm n)
   apply GaussianValueNormalizerExtensionality.normalized_names_equivalent _ _ (modulus h) (modulus h')
     (rawData h x) (rawData h' y) (R h*R h'*two) (raw_regular f h x hf ha) (raw_regular g h' y hg hb)
   refine .allI ?_
-  have hf1 : Γ.map Fm.shift ⊢[PRAAx] pointCN f (Syn.shift x) := by
-    simpa only [Fm.shift,subst_pointCN,Syn.shift] using hf.shift
-  have hg1 : Γ.map Fm.shift ⊢[PRAAx] pointCN g (Syn.shift y) := by
-    simpa only [Fm.shift,subst_pointCN,Syn.shift] using hg.shift
+  have hf1 := GaussianEuclideanDistanceName.shift_pointCN hf
+  have hg1 := GaussianEuclideanDistanceName.shift_pointCN hg
   have ha1 : Γ.map Fm.shift ⊢[PRAAx] apart f (Syn.shift h) (Syn.shift x) := by
     simpa only [Fm.shift,subst_apart,Syn.shift] using ha.shift
   have hb1 : Γ.map Fm.shift ⊢[PRAAx] apart g (Syn.shift h') (Syn.shift y) := by

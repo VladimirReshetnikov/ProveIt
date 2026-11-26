@@ -58,6 +58,11 @@ ipra_subst fastScalar [Syn.subst_shift, Syn.shift_subst]
 ipra_subst hit [Fm.subst_ex, Fm.subst_and, subst_lt, subst_length, GaussianRationalMetric.subst_distanceBounded,
     subst_entry, Syn.subst_var, Syn.up_zero, Syn.up_succ, Syn.subst_shift, Syn.shift_subst]
 
+/-- Preserve regularity under the addition of a fresh variable to the context. -/
+theorem shift_pointCN {f : PR 2} {x : PTm n} (h : Γ ⊢[PRAAx] pointCN f x) :
+    Γ.map Fm.shift ⊢[PRAAx] pointCN f (Syn.shift x) := by
+  simpa only [Fm.shift, subst_pointCN, Syn.shift] using h.shift
+
 theorem fraction_represents (A B : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx]
     RationalArithmetic.represents (fraction A B) (ZT.ofNat A) B := normalize_preserves_value _ _ hB
 
@@ -208,8 +213,7 @@ theorem sample_nonnegative (point : PR 2) (T x m : PTm n) : Γ ⊢[PRAAx]
 theorem fast_scalar (point : PR 2) (T x : PTm n)
     (hCN : Γ ⊢[PRAAx] pointCN point x) (hT : Γ ⊢[PRAAx] le one (length T)) : Γ ⊢[PRAAx] fastScalar point T x := by
   refine .allI (.allI ?_)
-  have cn : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] pointCN point (Syn.shift (Syn.shift x)) := by
-    simpa only [Fm.shift,subst_pointCN,Syn.shift] using hCN.shift.shift
+  have cn := shift_pointCN (shift_pointCN hCN)
   have nonempty : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] le one (length (Syn.shift (Syn.shift T))) := by
     simpa only [Fm.shift,subst_le,subst_length,ConciseIPRA.PTm.subst_zero,ConciseIPRA.PTm.subst_succ,Syn.shift] using hT.shift.shift
   exact sample_radius point _ _ (var 1) (var 0) cn nonempty
@@ -259,8 +263,7 @@ theorem finite_hit_to_cut (point : PR 2) (T x s a b A B : PTm n)
     (hHit : Γ ⊢[PRAAx] hit (ap2 point s x) T a b)
     (hBudget : Γ ⊢[PRAAx] le ((a*unit s+b)*B) (A*(b*unit s))) : Γ ⊢[PRAAx] distanceLE point T x A B := by
   refine .allI ?_
-  have cn : Γ.map Fm.shift ⊢[PRAAx] pointCN point (Syn.shift x) := by
-    simpa only [Fm.shift,subst_pointCN,Syn.shift] using hCN.shift
+  have cn := shift_pointCN hCN
   have bpos : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift b) := by
     simpa only [Fm.shift,subst_le,ConciseIPRA.PTm.subst_zero,ConciseIPRA.PTm.subst_succ,Syn.shift] using hb.shift
   have Bpos : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift B) := by

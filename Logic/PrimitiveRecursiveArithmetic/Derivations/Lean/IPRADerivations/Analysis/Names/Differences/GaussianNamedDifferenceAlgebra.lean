@@ -74,10 +74,10 @@ theorem shuffle (f g h k : PR 2) (x y u v : PTm n)
   let Δ := Γ.map Fm.shift
   let sh (t : PTm n) := Syn.shift t
   let p : PTm (n+1) := var 0
-  have fs : Δ ⊢[PRAAx] pointCN f (sh x) := by simpa [Δ,sh,Fm.shift,Syn.shift] using hf.shift
-  have gs : Δ ⊢[PRAAx] pointCN g (sh y) := by simpa [Δ,sh,Fm.shift,Syn.shift] using hg.shift
-  have hs : Δ ⊢[PRAAx] pointCN h (sh u) := by simpa [Δ,sh,Fm.shift,Syn.shift] using hh.shift
-  have ks : Δ ⊢[PRAAx] pointCN k (sh v) := by simpa [Δ,sh,Fm.shift,Syn.shift] using hk.shift
+  have fs := GaussianEuclideanDistanceName.shift_pointCN hf
+  have gs := GaussianEuclideanDistanceName.shift_pointCN hg
+  have hs := GaussianEuclideanDistanceName.shift_pointCN hh
+  have ks := GaussianEuclideanDistanceName.shift_pointCN hk
   have e := through_identity _ _ _ _ _ _ _ (unit_positive p)
     (double_difference_at f g h k (sh x) (sh y) (sh u) (sh v) p fs gs hs ks)
     (double_difference_at f h g k (sh x) (sh u) (sh y) (sh v) p fs hs gs ks)
@@ -121,9 +121,9 @@ theorem distribute (f g h : PR 2) (x y z : PTm n)
   refine .allI ?_
   let Δ := Γ.map Fm.shift
   let sh (t : PTm n) := Syn.shift t
-  have fs : Δ ⊢[PRAAx] pointCN f (sh x) := by simpa [Δ,sh,Fm.shift,Syn.shift] using hf.shift
-  have gs : Δ ⊢[PRAAx] pointCN g (sh y) := by simpa [Δ,sh,Fm.shift,Syn.shift] using hg.shift
-  have hs : Δ ⊢[PRAAx] pointCN h (sh z) := by simpa [Δ,sh,Fm.shift,Syn.shift] using hh.shift
+  have fs := GaussianEuclideanDistanceName.shift_pointCN hf
+  have gs := GaussianEuclideanDistanceName.shift_pointCN hg
+  have hs := GaussianEuclideanDistanceName.shift_pointCN hh
   simpa only [Δ,sh,Syn.shift,scaleBudget,GaussianNamedDifference.subst_data,GaussianNameArithmetic.subst_multiplyData,
     GaussianNameArithmetic.subst_multiplyModulus,GaussianNameBounds.subst_U,PTm.subst_num,PTm.subst_add,PTm.subst_mul,
     one,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero] using

@@ -80,8 +80,8 @@ theorem independent_at (F G : PR 2) (x y A N C p q : PTm n)
     distanceBounded (ap2 F p x) (ap2 G q y) (rateNumerator A N p q) (rateDenominator N p q) := by
   apply GaussianRationalSlackRemoval.slack_removal _ _ _ (C+two) (denominator_positive N p q hN)
   have ns : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift N) := by simpa [Fm.shift,Syn.shift] using hN.shift
-  have fs : Γ.map Fm.shift ⊢[PRAAx] pointCN F (Syn.shift x) := by simpa [Fm.shift,Syn.shift] using hf.shift
-  have gs : Γ.map Fm.shift ⊢[PRAAx] pointCN G (Syn.shift y) := by simpa [Fm.shift,Syn.shift] using hg.shift
+  have fs := GaussianEuclideanDistanceName.shift_pointCN hf
+  have gs := GaussianEuclideanDistanceName.shift_pointCN hg
   have hs : Γ.map Fm.shift ⊢[PRAAx] diagonalEnvelope F G (Syn.shift x) (Syn.shift y) (Syn.shift A) (Syn.shift N) (Syn.shift C) := by
     simpa [Fm.shift,Syn.shift] using h.shift
   refine .allI ?_
@@ -94,8 +94,8 @@ theorem independent_rate (F G : PR 2) (x y A N C : PTm n)
     (hN : Γ ⊢[PRAAx] le one N) (hf : Γ ⊢[PRAAx] pointCN F x) (hg : Γ ⊢[PRAAx] pointCN G y)
     (h : Γ ⊢[PRAAx] diagonalEnvelope F G x y A N C) : Γ ⊢[PRAAx] independentRate F G x y A N := by
   have ns : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] le one (Syn.shift (Syn.shift N)) := by simpa [Fm.shift,Syn.shift] using hN.shift.shift
-  have fs : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] pointCN F (Syn.shift (Syn.shift x)) := by simpa [Fm.shift,Syn.shift] using hf.shift.shift
-  have gs : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] pointCN G (Syn.shift (Syn.shift y)) := by simpa [Fm.shift,Syn.shift] using hg.shift.shift
+  have fs := GaussianEuclideanDistanceName.shift_pointCN (GaussianEuclideanDistanceName.shift_pointCN hf)
+  have gs := GaussianEuclideanDistanceName.shift_pointCN (GaussianEuclideanDistanceName.shift_pointCN hg)
   have hs : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] diagonalEnvelope F G (Syn.shift (Syn.shift x)) (Syn.shift (Syn.shift y))
       (Syn.shift (Syn.shift A)) (Syn.shift (Syn.shift N)) (Syn.shift (Syn.shift C)) := by simpa [Fm.shift,Syn.shift] using h.shift.shift
   refine .allI (.allI ?_)

@@ -72,10 +72,8 @@ theorem transport (f f' g' g : PR 2) (x x' y' y : PTm n)
     (hf : Γ ⊢[PRAAx] crossEquivalent f f' x x') (hg : Γ ⊢[PRAAx] crossEquivalent g' g y' y)
     (hOrder : Γ ⊢[PRAAx] realOrder f' g' x' y') : Γ ⊢[PRAAx] realOrder f g x y := by
   refine .allI (.allI ?_)
-  have fs : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] crossEquivalent f f' (Syn.shift (Syn.shift x)) (Syn.shift (Syn.shift x')) :=
-    by simpa [Fm.shift,Syn.shift] using hf.shift.shift
-  have gs : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] crossEquivalent g' g (Syn.shift (Syn.shift y')) (Syn.shift (Syn.shift y)) :=
-    by simpa [Fm.shift,Syn.shift] using hg.shift.shift
+  have fs := GaussianNameEquivalence.shift_crossEquivalent (GaussianNameEquivalence.shift_crossEquivalent hf)
+  have gs := GaussianNameEquivalence.shift_crossEquivalent (GaussianNameEquivalence.shift_crossEquivalent hg)
   have os : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] realOrder f' g' (Syn.shift (Syn.shift x')) (Syn.shift (Syn.shift y')) :=
     by simpa [Fm.shift,Syn.shift] using hOrder.shift.shift
   simpa only [realOrder,Syn.shift] using transport_at f f' g' g (Syn.shift (Syn.shift x))

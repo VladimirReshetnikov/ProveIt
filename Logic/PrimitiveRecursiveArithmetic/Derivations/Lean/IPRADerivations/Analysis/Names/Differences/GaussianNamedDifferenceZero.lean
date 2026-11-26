@@ -36,9 +36,9 @@ theorem difference_zero (F G : PR 2) (x y z : PTm n)
   let s (v : PTm n) := Syn.shift v
   let Δ := Γ.map Fm.shift
   let p : PTm (n+1) := var 0
-  have hf : Δ ⊢[PRAAx] pointCN F (s x) := by simpa [s,Δ,Syn.shift,Fm.shift] using hF.shift
-  have hg : Δ ⊢[PRAAx] pointCN G (s y) := by simpa [s,Δ,Syn.shift,Fm.shift] using hG.shift
-  have he : Δ ⊢[PRAAx] crossEquivalent F G (s x) (s y) := by simpa [s,Δ,Syn.shift,Fm.shift] using h.shift
+  have hf := GaussianEuclideanDistanceName.shift_pointCN hF
+  have hg := GaussianEuclideanDistanceName.shift_pointCN hG
+  have he := GaussianNameEquivalence.shift_crossEquivalent h
   have hp := unit_positive (Γ := Δ) p
   have norm := (distance_zero_iff (qsub (ap2 F p (s x)) (ap2 G p (s y))) two (unit p) hp).iffMpr
     (same_clock F G (s x) (s y) p he)
@@ -58,10 +58,11 @@ theorem cross_of_zero (F G : PR 2) (x y z : PTm n)
   let s (v : PTm n) := Syn.shift v
   let Δ := Γ.map Fm.shift
   let p : PTm (n+1) := var 0
-  have hf : Δ ⊢[PRAAx] pointCN F (s x) := by simpa [s,Δ,Syn.shift,Fm.shift] using hF.shift
-  have hg : Δ ⊢[PRAAx] pointCN G (s y) := by simpa [s,Δ,Syn.shift,Fm.shift] using hG.shift
-  have he : Δ ⊢[PRAAx] crossEquivalent (nameF F G) zeroF (data (s x) (s y)) (s z) :=
-    by simpa [s,Δ,Syn.shift,Fm.shift] using h.shift
+  have hf := GaussianEuclideanDistanceName.shift_pointCN hF
+  have hg := GaussianEuclideanDistanceName.shift_pointCN hG
+  have he : Δ ⊢[PRAAx] crossEquivalent (nameF F G) zeroF (data (s x) (s y)) (s z) := by
+    simpa only [Δ,s,Syn.shift,GaussianNamedDifference.subst_data] using
+      GaussianNameEquivalence.shift_crossEquivalent h
   have hp := unit_positive (Γ := Δ) p
   have diff := distance_congr (.eqRefl _) (zero_at (Γ := Δ) p (s z)) (.eqRefl _) (.eqRefl _)
     (same_clock _ _ _ _ p he)

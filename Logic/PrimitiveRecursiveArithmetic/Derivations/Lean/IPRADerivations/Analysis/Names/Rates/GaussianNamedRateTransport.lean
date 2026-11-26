@@ -58,8 +58,8 @@ theorem observation_error (F G H K : PR 2) (x y u v D N p q : PTm n)
   refine .allI ?_
   have ns : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift N) := by simpa [Fm.shift,Syn.shift] using hN.shift
   have hs := shift_independent_rate h
-  have ls : Γ.map Fm.shift ⊢[PRAAx] crossEquivalent H F (Syn.shift u) (Syn.shift x) := by simpa [Fm.shift,Syn.shift] using hl.shift
-  have rs : Γ.map Fm.shift ⊢[PRAAx] crossEquivalent K G (Syn.shift v) (Syn.shift y) := by simpa [Fm.shift,Syn.shift] using hr.shift
+  have ls := GaussianNameEquivalence.shift_crossEquivalent hl
+  have rs := GaussianNameEquivalence.shift_crossEquivalent hr
   simpa only [GaussianRationalSlackRemoval.allSlack,GaussianRationalMetric.subst_qsub,subst_ap2,
     GaussianNamedInverseRate.subst_rateNumerator,GaussianNamedInverseRate.subst_rateDenominator,
     PTm.subst_mul,Syn.shift,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero] using
@@ -73,10 +73,8 @@ theorem transport (F G H K : PR 2) (x y u v D N : PTm n)
   refine .allI (.allI ?_)
   have ns : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] le one (Syn.shift (Syn.shift N)) := by simpa [Fm.shift,Syn.shift] using hN.shift.shift
   have hs := shift_independent_rate (shift_independent_rate h)
-  have ls : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] crossEquivalent H F (Syn.shift (Syn.shift u)) (Syn.shift (Syn.shift x)) := by
-    simpa [Fm.shift,Syn.shift] using hl.shift.shift
-  have rs : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] crossEquivalent K G (Syn.shift (Syn.shift v)) (Syn.shift (Syn.shift y)) := by
-    simpa [Fm.shift,Syn.shift] using hr.shift.shift
+  have ls := GaussianNameEquivalence.shift_crossEquivalent (GaussianNameEquivalence.shift_crossEquivalent hl)
+  have rs := GaussianNameEquivalence.shift_crossEquivalent (GaussianNameEquivalence.shift_crossEquivalent hr)
   simpa only [independentRate,Syn.shift] using observation_error F G H K
     (Syn.shift (Syn.shift x)) (Syn.shift (Syn.shift y)) (Syn.shift (Syn.shift u)) (Syn.shift (Syn.shift v))
     (Syn.shift (Syn.shift D)) (Syn.shift (Syn.shift N)) (var 1) (var 0) ns hs ls rs

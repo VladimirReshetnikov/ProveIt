@@ -151,8 +151,8 @@ theorem unique (F G : PR 2) (x y D C : PTm n) (hD : Γ ⊢[PRAAx] le one D)
     Γ ⊢[PRAAx] crossEquivalent F G x y := by
   let sh (t : PTm n) := Syn.shift (Syn.shift t)
   have hd : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] le one (sh D) := by simpa [Fm.shift,Syn.shift,sh,one] using hD.shift.shift
-  have hf : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] pointCN F (sh x) := by simpa [Fm.shift,Syn.shift,sh] using hF.shift.shift
-  have hg : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] pointCN G (sh y) := by simpa [Fm.shift,Syn.shift,sh] using hG.shift.shift
+  have hf := GaussianEuclideanDistanceName.shift_pointCN (GaussianEuclideanDistanceName.shift_pointCN hF)
+  have hg := GaussianEuclideanDistanceName.shift_pointCN (GaussianEuclideanDistanceName.shift_pointCN hG)
   have hr : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] family F G (sh x) (sh y) (sh D) (sh C) := by
     simpa [Fm.shift,Syn.shift,sh] using h.shift.shift
   exact .allI (.allI (observation F G (sh x) (sh y) (sh D) (sh C) (var 1) (var 0) hd hf hg hr))

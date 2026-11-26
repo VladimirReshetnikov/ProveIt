@@ -153,10 +153,8 @@ theorem add_regular (f g : PR 2) (x y : PTm n)
     (hf : Γ ⊢[PRAAx] pointCN f x) (hg : Γ ⊢[PRAAx] pointCN g y) : Γ ⊢[PRAAx]
     GaussianFastValueCut.regular (addRawF f g) two (data x y) := by
   refine .allI (.allI ?_)
-  have hf2 : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] pointCN f (Syn.shift (Syn.shift x)) := by
-    simpa only [Fm.shift,subst_pointCN,Syn.shift] using hf.shift.shift
-  have hg2 : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] pointCN g (Syn.shift (Syn.shift y)) := by
-    simpa only [Fm.shift,subst_pointCN,Syn.shift] using hg.shift.shift
+  have hf2 := GaussianEuclideanDistanceName.shift_pointCN (GaussianEuclideanDistanceName.shift_pointCN hf)
+  have hg2 := GaussianEuclideanDistanceName.shift_pointCN (GaussianEuclideanDistanceName.shift_pointCN hg)
   simpa only [Syn.shift,subst_data,two,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero] using
     add_regular_at f g (Syn.shift (Syn.shift x)) (Syn.shift (Syn.shift y)) (var 1) (var 0) hf2 hg2
 
@@ -164,10 +162,8 @@ theorem multiply_regular (f g : PR 2) (x y : PTm n)
     (hf : Γ ⊢[PRAAx] pointCN f x) (hg : Γ ⊢[PRAAx] pointCN g y) : Γ ⊢[PRAAx]
     GaussianFastValueCut.regular (multiplyRawF f g) (multiplyModulus f g x y) (data x y) := by
   refine .allI (.allI ?_)
-  have hf2 : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] pointCN f (Syn.shift (Syn.shift x)) := by
-    simpa only [Fm.shift,subst_pointCN,Syn.shift] using hf.shift.shift
-  have hg2 : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] pointCN g (Syn.shift (Syn.shift y)) := by
-    simpa only [Fm.shift,subst_pointCN,Syn.shift] using hg.shift.shift
+  have hf2 := GaussianEuclideanDistanceName.shift_pointCN (GaussianEuclideanDistanceName.shift_pointCN hf)
+  have hg2 := GaussianEuclideanDistanceName.shift_pointCN (GaussianEuclideanDistanceName.shift_pointCN hg)
   simpa only [Syn.shift,subst_data,subst_multiplyModulus] using
     multiply_regular_at f g (Syn.shift (Syn.shift x)) (Syn.shift (Syn.shift y)) (var 1) (var 0) hf2 hg2
 
@@ -234,10 +230,8 @@ theorem multiply_raw_diagonal (f f' g g' : PR 2) (x x' y y' : PTm n)
     GaussianValueNormalizerExtensionality.rawDiagonal (multiplyRawF f g) (multiplyRawF f' g')
       (data x y) (data x' y') (two*(GaussianNameBounds.U f' x'+GaussianNameBounds.U g y)) := by
   refine .allI ?_
-  have hfp1 : Γ.map Fm.shift ⊢[PRAAx] pointCN f' (Syn.shift x') := by
-    simpa only [Fm.shift,subst_pointCN,Syn.shift] using hfp.shift
-  have hg1 : Γ.map Fm.shift ⊢[PRAAx] pointCN g (Syn.shift y) := by
-    simpa only [Fm.shift,subst_pointCN,Syn.shift] using hg.shift
+  have hfp1 := GaussianEuclideanDistanceName.shift_pointCN hfp
+  have hg1 := GaussianEuclideanDistanceName.shift_pointCN hg
   have hfe1 : Γ.map Fm.shift ⊢[PRAAx] diagonalEquivalent f f' (Syn.shift x) (Syn.shift x') := by
     simpa only [Fm.shift,GaussianNameEquivalence.subst_diagonalEquivalent,Syn.shift] using hfe.shift
   have hge1 : Γ.map Fm.shift ⊢[PRAAx] diagonalEquivalent g g' (Syn.shift y) (Syn.shift y') := by

@@ -46,8 +46,7 @@ theorem conjugate_cross_at (f g : PR 2) (x y p q : PTm n) (h : Γ ⊢[PRAAx] cro
 theorem conjugate_cross (f g : PR 2) (x y : PTm n) (h : Γ ⊢[PRAAx] crossEquivalent f g x y) : Γ ⊢[PRAAx]
     crossEquivalent (nameF f) (nameF g) x y := by
   refine .allI (.allI ?_)
-  have hs : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] crossEquivalent f g (Syn.shift (Syn.shift x)) (Syn.shift (Syn.shift y)) := by
-    simpa [Fm.shift,Syn.shift] using h.shift.shift
+  have hs := GaussianNameEquivalence.shift_crossEquivalent (GaussianNameEquivalence.shift_crossEquivalent h)
   simpa only [crossEquivalent,Syn.shift,unit,GaussianEuclideanPointDistance.unit] using
     conjugate_cross_at f g (Syn.shift (Syn.shift x)) (Syn.shift (Syn.shift y)) (var 1) (var 0) hs
 

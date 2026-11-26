@@ -33,9 +33,8 @@ ipra_subst source
 ipra_subst middleData [etaDen, top, GaussianGammaIntegralCutoffs.height, GaussianGammaIntegralCutoffs.tailCoefficient]
 
 theorem cross_data_congr (f g : PR 2) (x x' y y' : PTm n) (hx : Γ ⊢[PRAAx] x ≐ x') (hy : Γ ⊢[PRAAx] y ≐ y')
-    (h : Γ ⊢[PRAAx] crossEquivalent f g x y) : Γ ⊢[PRAAx] crossEquivalent f g x' y' := by
-  simpa using Prf.eqSubst (crossEquivalent f g (var 0) (var 1) : Fm PTm 2) ![x,y] ![x',y']
-    (fun i => by fin_cases i; exact hx; exact hy) (by simpa using h)
+    (h : Γ ⊢[PRAAx] crossEquivalent f g x y) : Γ ⊢[PRAAx] crossEquivalent f g x' y' :=
+  GaussianNameEquivalence.cross_data_congr f g x x' y y' hx hy h
 
 theorem alignment_source (z R B p q A : PTm n) (h : Γ ⊢[PRAAx] source z R B p q) : Γ ⊢[PRAAx]
     GaussianEulerCompactAlignment.source z R B one (width p A R) (etaDen p A R) (top p A R) (top q A R) (ratio p q A) := by
