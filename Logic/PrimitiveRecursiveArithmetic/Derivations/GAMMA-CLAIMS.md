@@ -2861,3 +2861,6 @@ The checked shifts repair sample windows that meet the named boundary, including
 
 The actual cubic Mercator rows have the explicit rational Gaussian bound and rounded-observation rate. Summing the original finite rows gives the paper’s tail radius and the corrected Barnes cutoff.
 [GaussianBarnesCanonicalLogRow](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalLogRow.lean), [GaussianBarnesCanonicalLogTail](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalLogTail.lean), [GaussianBarnesCanonicalLogObservation](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalLogObservation.lean)
+
+The original named logarithmic quotient and its normalized exponential are regular and have explicit independent-clock rates against their actual common-chart rational equivalents. This supplies the cofinal comparison needed for exact named window bounds.
+[GaussianGammaDigammaTwoShiftNamedBinding](Lean/IPRADerivations/Analysis/GaussianGammaDigammaTwoShiftNamedBinding.lean), [GaussianGammaDigammaTwoShiftNamedExponential](Lean/IPRADerivations/Analysis/GaussianGammaDigammaTwoShiftNamedExponential.lean)
