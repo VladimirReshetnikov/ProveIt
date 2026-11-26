@@ -3254,3 +3254,6 @@ For each retained degree at least two, the original cofinal factorial names agre
 
 The original named order-e difference quotient, read at an arbitrary clock, agrees with the mixed next-order grid at a linear step rate plus its explicit observation allowance. The opposite polynomial grids can use different origins and still recover twice the same factorial leading coefficient. Exact recentering puts the sampled backward displacements on the original native Barnes chart.
 [GaussianBarnesCanonicalMixedTaylorGridGeometry](Lean/IPRADerivations/Analysis/Barnes/Taylor/Grids/GaussianBarnesCanonicalMixedTaylorGridGeometry.lean), [GaussianPolynomialForwardDifferenceGridOppositeCoefficient](Lean/IPRADerivations/Analysis/Polynomials/FiniteDifferences/GaussianPolynomialForwardDifferenceGridOppositeCoefficient.lean), [GaussianBarnesCanonicalTaylorNamedQuotient](Lean/IPRADerivations/Analysis/Barnes/Taylor/Grids/GaussianBarnesCanonicalTaylorNamedQuotient.lean)
+
+The original degree-zero factorial Taylor name equals the canonical Barnes value at independent clocks on every admitted disk. Exact readback of the head-power constant term proves radius independence also at centers on the boundary of a disk.
+[GaussianBarnesCanonicalTaylorDerivativeZero](Lean/IPRADerivations/Analysis/Barnes/Taylor/Coefficients/GaussianBarnesCanonicalTaylorDerivativeZero.lean)
