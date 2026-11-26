@@ -3101,3 +3101,6 @@ At every admitted Gaussian rational point explicit denominator refinement permit
 
 One refined nonzero rational step works simultaneously in two certified interior disks. Exact properness of the actual Barnes values and removal of dyadic slack identify the two original derivative names.
 [GaussianBarnesCanonicalDerivativeDiskIndependence](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDerivativeDiskIndependence.lean)
+
+The cofinal logarithmic slope has Lipschitz constant `4(R+R²)` on a certified disk. The actual tail exponential derivative then has an explicit primitive-recursive input modulus at independent precisions.
+[GaussianBarnesCanonicalDerivativeContinuity](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDerivativeContinuity.lean), [GaussianBarnesCanonicalTailExponentialDerivativeContinuity](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalTailExponentialDerivativeContinuity.lean)
