@@ -2891,3 +2891,6 @@ The ordinary named real-order hypotheses control a common late dyadic chart. The
 
 The original normalized quotient on regular real names with a certified positive margin obeys the exact logarithmic bracket with radius $4A(A+1)/x$ and the exact relative bracket with radius $8A(A+1)/x$. The latter assumes $4A(A+1)\le x$. The repaired charts include equality at the window boundaries.
 [GaussianGammaDigammaTwoShiftCapRepair](Lean/IPRADerivations/Analysis/GaussianGammaDigammaTwoShiftCapRepair.lean), [GaussianGammaDigammaTwoShiftChartProper](Lean/IPRADerivations/Analysis/GaussianGammaDigammaTwoShiftChartProper.lean), [GaussianGammaDigammaTwoShiftNamedRepairedChart](Lean/IPRADerivations/Analysis/GaussianGammaDigammaTwoShiftNamedRepairedChart.lean), [GaussianGammaDigammaTwoShiftNamedLogOrder](Lean/IPRADerivations/Analysis/GaussianGammaDigammaTwoShiftNamedLogOrder.lean), [GaussianGammaDigammaTwoShiftNamedRelativeOrder](Lean/IPRADerivations/Analysis/GaussianGammaDigammaTwoShiftNamedRelativeOrder.lean)
+
+A nonzero rational base gives an explicit lower bound on the original positive power times the actual exponential at every sufficiently late sample.
+[GaussianBarnesCanonicalFactorApartness](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalFactorApartness.lean)
