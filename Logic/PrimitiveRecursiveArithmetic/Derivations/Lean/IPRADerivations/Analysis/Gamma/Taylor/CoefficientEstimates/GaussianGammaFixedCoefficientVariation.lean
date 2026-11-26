@@ -33,7 +33,7 @@ open RationalSupMetric (numeratorOf denominatorOf)
 open RationalArgmin (rationalLE)
 open RationalArithmetic (multiply)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
-open LeanProofs.IPRA.Foundations.SequenceComposition (length)
+open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -109,14 +109,17 @@ theorem head_norm (R : PTm n) (hR : Γ ⊢[PRAAx] le one R) : Γ ⊢[PRAAx]
   exact RationalArgmin.rationalLE_congr unit (GaussianPositiveExponentialMajorant.natCode_congr code)
     (GaussianGammaEulerHeadPolynomial.original_head_coefficient_mass one (two*R))
 
-theorem row_error (p q R e i : PTm n) (hR : Γ ⊢[PRAAx] le one R) : Γ ⊢[PRAAx]
+/-- The row estimate uses only the degree and norm of the common head. -/
+theorem row_error_of_head (P D p q R e i : PTm n) (hR : Γ ⊢[PRAAx] le one R)
+    (hLength : Γ ⊢[PRAAx] length P ≐ succ D)
+    (hNorm : Γ ⊢[PRAAx] rationalLE (coefficientNorm P) (natCode (headBudget R))) : Γ ⊢[PRAAx]
     rationalLE (qL1 (qsub
-      (GaussianRationalLowCoefficientConvolution.term (GaussianGammaEulerHeadPolynomial.polynomial (two*R)) (exponential p R e)
-        (succ (two*R)) (e*degree e) e i)
-      (GaussianRationalLowCoefficientConvolution.term (GaussianGammaEulerHeadPolynomial.polynomial (two*R)) (exponential q R e)
-        (succ (two*R)) (e*degree e) e i)))
+      (GaussianRationalLowCoefficientConvolution.term P (exponential p R e)
+        D (e*degree e) e i)
+      (GaussianRationalLowCoefficientConvolution.term P (exponential q R e)
+        D (e*degree e) e i)))
       (fraction (rowFactor R e*radiusNumerator p q) (radiusDenominator p q)) := by
-  let j := LeanProofs.IPRA.PTm.monus (succ (two*R)) i
+  let j := LeanProofs.IPRA.PTm.monus D i
   let k := LeanProofs.IPRA.PTm.monus (e*degree e) (LeanProofs.IPRA.PTm.monus e i)
   have hDegree := GaussianGammaFiniteCoefficientStability.output_degree_bound (Γ := Γ) e e e (le_refl e)
   have hf := GaussianRationalMonicReconstruction.monus_le_left (Γ := Γ) e i
@@ -125,12 +128,12 @@ theorem row_error (p q R e i : PTm n) (hR : Γ ⊢[PRAAx] le one R) : Γ ⊢[PRA
     (exponent_inside (exponential q R e) (e*degree e) _ hi)
   have expBound := RationalArgmin.rationalLE_congr (qL1_congr codes) (.eqRefl _)
     (exponential_error_norm p q R e _ hR hf)
-  have hEntry : Γ ⊢[PRAAx] lt j (length (GaussianGammaEulerHeadPolynomial.polynomial (two*R))) :=
-    lt_congr (.eqRefl _) (GaussianGammaEulerHeadPolynomial.polynomial_length _).eqSymm
+  have hEntry : Γ ⊢[PRAAx] lt j (length P) :=
+    lt_congr (.eqRefl _) hLength.eqSymm
       ((succ_monus_succ _ _).eqTrans (GaussianRationalMonicReconstruction.monus_le_left _ _))
-  have headBound := RationalArgmin.transitive (GaussianCoefficientNormEntries.coefficient_entry_bound _ _ hEntry) (head_norm R hR)
+  have headBound := RationalArgmin.transitive (GaussianCoefficientNormEntries.coefficient_entry_bound _ _ hEntry) hNorm
   have product := RationalArgmin.transitive (GaussianRationalL1Algebra.qL1_multiply (Γ := Γ)
-    (entry (GaussianGammaEulerHeadPolynomial.polynomial (two*R)) j) (qsub (entry (exponential p R e) k) (entry (exponential q R e) k)))
+    (entry P j) (qsub (entry (exponential p R e) k) (entry (exponential q R e) k)))
       (GaussianFiniteExponentialWeightedNorm.multiply_bounds _ _ _ _ (GaussianRationalL1.qL1_nonnegative _)
         (GaussianRationalSyntheticBounds.natCode_nonnegative _) headBound expBound)
   have code : Γ ⊢[PRAAx] multiply (natCode (headBudget R))
@@ -141,37 +144,68 @@ theorem row_error (p q R e i : PTm n) (hR : Γ ⊢[PRAAx] le one R) : Γ ⊢[PRA
   exact RationalArgmin.rationalLE_congr
     (qL1_congr (GaussianPolynomialCoefficientDifferences.scalar_scaled_difference _ _ _)).eqSymm code product
 
-theorem cauchy_error (p q R e : PTm n) (hR : Γ ⊢[PRAAx] le one R) : Γ ⊢[PRAAx]
+theorem row_error (p q R e i : PTm n) (hR : Γ ⊢[PRAAx] le one R) : Γ ⊢[PRAAx]
     rationalLE (qL1 (qsub
-      (GaussianRationalLowCoefficientConvolution.cauchySum (GaussianGammaEulerHeadPolynomial.polynomial (two*R)) (exponential p R e)
-        (succ (two*R)) (e*degree e) e)
-      (GaussianRationalLowCoefficientConvolution.cauchySum (GaussianGammaEulerHeadPolynomial.polynomial (two*R)) (exponential q R e)
-        (succ (two*R)) (e*degree e) e)))
+      (GaussianRationalLowCoefficientConvolution.term (GaussianGammaEulerHeadPolynomial.polynomial (two*R)) (exponential p R e)
+        (succ (two*R)) (e*degree e) e i)
+      (GaussianRationalLowCoefficientConvolution.term (GaussianGammaEulerHeadPolynomial.polynomial (two*R)) (exponential q R e)
+        (succ (two*R)) (e*degree e) e i)))
+      (fraction (rowFactor R e*radiusNumerator p q) (radiusDenominator p q)) :=
+  row_error_of_head (GaussianGammaEulerHeadPolynomial.polynomial (two*R)) (succ (two*R)) p q R e i hR
+    (GaussianGammaEulerHeadPolynomial.polynomial_length _) (head_norm R hR)
+
+/-- Sum the same row estimate for any common head with the original norm bound. -/
+theorem cauchy_error_of_head (P D p q R e : PTm n) (hR : Γ ⊢[PRAAx] le one R)
+    (hLength : Γ ⊢[PRAAx] length P ≐ succ D)
+    (hNorm : Γ ⊢[PRAAx] rationalLE (coefficientNorm P) (natCode (headBudget R))) : Γ ⊢[PRAAx]
+    rationalLE (qL1 (qsub
+      (GaussianRationalLowCoefficientConvolution.cauchySum P (exponential p R e)
+        D (e*degree e) e)
+      (GaussianRationalLowCoefficientConvolution.cauchySum P (exponential q R e)
+        D (e*degree e) e)))
       (fraction (modulus R e*radiusNumerator p q) (radiusDenominator p q)) := by
   have hs : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift R) := by simpa [Fm.shift,Syn.shift] using hR.shift
+  have lengthShift : Γ.map Fm.shift ⊢[PRAAx] length (Syn.shift P) ≐ succ (Syn.shift D) := by
+    simpa only [Fm.shift,Fm.subst_eq,subst_length,PTm.subst_succ,Syn.shift] using hLength.shift
+  have normShift : Γ.map Fm.shift ⊢[PRAAx] rationalLE (coefficientNorm (Syn.shift P))
+      (natCode (headBudget (Syn.shift R))) := by
+    simpa only [Fm.shift,RationalArgmin.subst_rationalLE,GaussianCoefficientL1.subst_coefficientNorm,
+      GaussianRationalSyntheticBounds.subst_natCode,subst_headBudget,Syn.shift] using hNorm.shift
   have rows : Γ ⊢[PRAAx] GaussianFiniteSumL1Variation.termsError
       GaussianRationalLowCoefficientConvolution.termBody GaussianRationalLowCoefficientConvolution.termBody (succ e)
-      (GaussianRationalLowCoefficientConvolution.data (GaussianGammaEulerHeadPolynomial.polynomial (two*R)) (exponential p R e) (succ (two*R)) (e*degree e) e)
-      (GaussianRationalLowCoefficientConvolution.data (GaussianGammaEulerHeadPolynomial.polynomial (two*R)) (exponential q R e) (succ (two*R)) (e*degree e) e)
+      (GaussianRationalLowCoefficientConvolution.data P (exponential p R e) D (e*degree e) e)
+      (GaussianRationalLowCoefficientConvolution.data P (exponential q R e) D (e*degree e) e)
       (fraction (rowFactor R e*radiusNumerator p q) (radiusDenominator p q)) := by
     refine .allI (.impI ?_)
     let Δ := lt (var 0) (Syn.shift (succ e)) :: Γ.map Fm.shift
     have codes := qsub_congr (Γ := Δ)
-      (GaussianRationalLowCoefficientConvolution.term_at (GaussianGammaEulerHeadPolynomial.polynomial (two*Syn.shift R))
-        (exponential (Syn.shift p) (Syn.shift R) (Syn.shift e)) (succ (two*Syn.shift R)) (Syn.shift e*degree (Syn.shift e)) (Syn.shift e) (var 0))
-      (GaussianRationalLowCoefficientConvolution.term_at (GaussianGammaEulerHeadPolynomial.polynomial (two*Syn.shift R))
-        (exponential (Syn.shift q) (Syn.shift R) (Syn.shift e)) (succ (two*Syn.shift R)) (Syn.shift e*degree (Syn.shift e)) (Syn.shift e) (var 0))
+      (GaussianRationalLowCoefficientConvolution.term_at (Syn.shift P)
+        (exponential (Syn.shift p) (Syn.shift R) (Syn.shift e)) (Syn.shift D) (Syn.shift e*degree (Syn.shift e)) (Syn.shift e) (var 0))
+      (GaussianRationalLowCoefficientConvolution.term_at (Syn.shift P)
+        (exponential (Syn.shift q) (Syn.shift R) (Syn.shift e)) (Syn.shift D) (Syn.shift e*degree (Syn.shift e)) (Syn.shift e) (var 0))
     simpa only [Δ,GaussianFiniteSumL1Variation.termsError,Syn.shift,GaussianRationalLowCoefficientConvolution.subst_data,
-      GaussianGammaEulerHeadPolynomial.subst_polynomial,subst_exponential,PTm.subst_mul,PTm.subst_succ,PTm.subst_zero,
+      subst_exponential,PTm.subst_mul,PTm.subst_succ,PTm.subst_zero,
       GaussianGammaReciprocalDegreeCells.subst_degree,GaussianEuclideanDistanceName.subst_fraction,subst_rowFactor,
       GaussianGammaInputPrecisionNorm.subst_radiusNumerator,GaussianGammaInputPrecisionNorm.subst_radiusDenominator] using
-      RationalArgmin.rationalLE_congr (qL1_congr codes).eqSymm (.eqRefl _) (row_error (Syn.shift p) (Syn.shift q) (Syn.shift R) (Syn.shift e) (var 0) hs.wk)
+      RationalArgmin.rationalLE_congr (qL1_congr codes).eqSymm (.eqRefl _)
+        (row_error_of_head (Syn.shift P) (Syn.shift D) (Syn.shift p) (Syn.shift q)
+          (Syn.shift R) (Syn.shift e) (var 0) hs.wk lengthShift.wk normShift.wk)
   have sum := GaussianFiniteSumL1Variation.sum_error _ _ _ _ _ _ rows
   have code : Γ ⊢[PRAAx] multiply (natCode (succ e)) (fraction (rowFactor R e*radiusNumerator p q) (radiusDenominator p q)) ≐
       fraction (modulus R e*radiusNumerator p q) (radiusDenominator p q) :=
     (RationalNonnegativePowers.fraction_multiply _ _ _ _ (le_refl one) (denominator_positive p q)).eqTrans
       (RationalNonnegativePowers.fraction_congr (by unfold modulus; ipra_ring) (by ipra_ring))
   exact RationalArgmin.rationalLE_congr (.eqRefl _) code sum
+
+theorem cauchy_error (p q R e : PTm n) (hR : Γ ⊢[PRAAx] le one R) : Γ ⊢[PRAAx]
+    rationalLE (qL1 (qsub
+      (GaussianRationalLowCoefficientConvolution.cauchySum (GaussianGammaEulerHeadPolynomial.polynomial (two*R)) (exponential p R e)
+        (succ (two*R)) (e*degree e) e)
+      (GaussianRationalLowCoefficientConvolution.cauchySum (GaussianGammaEulerHeadPolynomial.polynomial (two*R)) (exponential q R e)
+        (succ (two*R)) (e*degree e) e)))
+      (fraction (modulus R e*radiusNumerator p q) (radiusDenominator p q)) :=
+  cauchy_error_of_head (GaussianGammaEulerHeadPolynomial.polynomial (two*R)) (succ (two*R)) p q R e hR
+    (GaussianGammaEulerHeadPolynomial.polynomial_length _) (head_norm R hR)
 
 theorem fixed_coefficient_distance (p q R e : PTm n) (hR : Γ ⊢[PRAAx] le one R)
     (he : Γ ⊢[PRAAx] le e (succ (two*R))) : Γ ⊢[PRAAx]

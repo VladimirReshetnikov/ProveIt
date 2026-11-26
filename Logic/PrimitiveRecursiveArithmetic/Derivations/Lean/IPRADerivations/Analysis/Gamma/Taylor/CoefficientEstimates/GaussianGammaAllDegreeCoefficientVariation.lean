@@ -18,22 +18,19 @@ namespace LeanProofs.IPRA.Analysis.GaussianGammaAllDegreeCoefficientVariation
 
 open_ipra
 open GaussianGammaAllDegreeCoefficientStability (paddedHead headDegree)
-open GaussianGammaFixedCoefficientVariation (exponential exponentialFactor rowFactor modulus headBudget exponential_error_norm subst_exponential subst_rowFactor)
+open GaussianGammaFixedCoefficientVariation (exponential rowFactor modulus headBudget row_error_of_head cauchy_error_of_head)
 open GaussianGammaFiniteCoefficientStability (fixedCoefficient)
 open GaussianGammaInputPrecisionNorm (radiusNumerator radiusDenominator denominator_positive)
 open GaussianGammaReciprocalDegreeCells (degree)
 open GaussianRationalMetric (qsub distanceBounded)
-open GaussianRationalDistanceOrder (distance_congr)
+open GaussianRationalDistanceOrder (distance_congr scaled_distance_at_earlier_precisions)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalL1 (qL1)
 open GaussianCoefficientL1 (coefficientNorm qL1_congr)
 open GaussianRationalSyntheticBounds (natCode)
 open GaussianRationalSyntheticDivision (qsub_congr)
-open GaussianRationalLowCoefficientConvolution (exponent_inside)
 open GaussianEuclideanDistanceName (fraction pointCN)
-open RationalArithmetic (multiply)
 open RationalArgmin (rationalLE)
-open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -52,31 +49,8 @@ theorem row_error (p q R e i : PTm n) (hR : Γ ⊢[PRAAx] le one R) : Γ ⊢[PRA
         (headDegree R e) (e*degree e) e i)
       (GaussianRationalLowCoefficientConvolution.term (paddedHead R e) (exponential q R e)
         (headDegree R e) (e*degree e) e i)))
-      (fraction (rowFactor R e*radiusNumerator p q) (radiusDenominator p q)) := by
-  let j := LeanProofs.IPRA.PTm.monus (headDegree R e) i
-  let k := LeanProofs.IPRA.PTm.monus (e*degree e) (LeanProofs.IPRA.PTm.monus e i)
-  have hDegree := GaussianGammaFiniteCoefficientStability.output_degree_bound (Γ := Γ) e e e (le_refl e)
-  have hf := GaussianRationalMonicReconstruction.monus_le_left (Γ := Γ) e i
-  have hi := le_trans hf hDegree
-  have codes := qsub_congr (Γ := Γ) (exponent_inside (exponential p R e) (e*degree e) _ hi)
-    (exponent_inside (exponential q R e) (e*degree e) _ hi)
-  have expBound := RationalArgmin.rationalLE_congr (qL1_congr codes) (.eqRefl _)
-    (exponential_error_norm p q R e _ hR hf)
-  have hEntry : Γ ⊢[PRAAx] lt j (length (paddedHead R e)) :=
-    lt_congr (.eqRefl _) (padded_head_length R e).eqSymm
-      ((succ_monus_succ _ _).eqTrans (GaussianRationalMonicReconstruction.monus_le_left _ _))
-  have headBound := RationalArgmin.transitive (GaussianCoefficientNormEntries.coefficient_entry_bound _ _ hEntry) (padded_head_norm R e hR)
-  have product := RationalArgmin.transitive (GaussianRationalL1Algebra.qL1_multiply (Γ := Γ)
-    (entry (paddedHead R e) j) (qsub (entry (exponential p R e) k) (entry (exponential q R e) k)))
-      (GaussianFiniteExponentialWeightedNorm.multiply_bounds _ _ _ _ (GaussianRationalL1.qL1_nonnegative _)
-        (GaussianRationalSyntheticBounds.natCode_nonnegative _) headBound expBound)
-  have code : Γ ⊢[PRAAx] multiply (natCode (headBudget R))
-      (fraction (exponentialFactor R e*radiusNumerator p q) (radiusDenominator p q)) ≐
-      fraction (rowFactor R e*radiusNumerator p q) (radiusDenominator p q) :=
-    (RationalNonnegativePowers.fraction_multiply _ _ _ _ (le_refl one) (denominator_positive p q)).eqTrans
-      (RationalNonnegativePowers.fraction_congr (by unfold rowFactor; ipra_ring) (by ipra_ring))
-  exact RationalArgmin.rationalLE_congr
-    (qL1_congr (GaussianPolynomialCoefficientDifferences.scalar_scaled_difference _ _ _)).eqSymm code product
+      (fraction (rowFactor R e*radiusNumerator p q) (radiusDenominator p q)) :=
+  row_error_of_head (paddedHead R e) (headDegree R e) p q R e i hR (padded_head_length R e) (padded_head_norm R e hR)
 
 theorem cauchy_error (p q R e : PTm n) (hR : Γ ⊢[PRAAx] le one R) : Γ ⊢[PRAAx]
     rationalLE (qL1 (qsub
@@ -84,31 +58,8 @@ theorem cauchy_error (p q R e : PTm n) (hR : Γ ⊢[PRAAx] le one R) : Γ ⊢[PR
         (headDegree R e) (e*degree e) e)
       (GaussianRationalLowCoefficientConvolution.cauchySum (paddedHead R e) (exponential q R e)
         (headDegree R e) (e*degree e) e)))
-      (fraction (modulus R e*radiusNumerator p q) (radiusDenominator p q)) := by
-  have hs : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift R) := by simpa [Fm.shift,Syn.shift] using hR.shift
-  have rows : Γ ⊢[PRAAx] GaussianFiniteSumL1Variation.termsError
-      GaussianRationalLowCoefficientConvolution.termBody GaussianRationalLowCoefficientConvolution.termBody (succ e)
-      (GaussianRationalLowCoefficientConvolution.data (paddedHead R e) (exponential p R e) (headDegree R e) (e*degree e) e)
-      (GaussianRationalLowCoefficientConvolution.data (paddedHead R e) (exponential q R e) (headDegree R e) (e*degree e) e)
-      (fraction (rowFactor R e*radiusNumerator p q) (radiusDenominator p q)) := by
-    refine .allI (.impI ?_)
-    let Δ := lt (var 0) (Syn.shift (succ e)) :: Γ.map Fm.shift
-    have codes := qsub_congr (Γ := Δ)
-      (GaussianRationalLowCoefficientConvolution.term_at (paddedHead (Syn.shift R) (Syn.shift e))
-        (exponential (Syn.shift p) (Syn.shift R) (Syn.shift e)) (headDegree (Syn.shift R) (Syn.shift e)) (Syn.shift e*degree (Syn.shift e)) (Syn.shift e) (var 0))
-      (GaussianRationalLowCoefficientConvolution.term_at (paddedHead (Syn.shift R) (Syn.shift e))
-        (exponential (Syn.shift q) (Syn.shift R) (Syn.shift e)) (headDegree (Syn.shift R) (Syn.shift e)) (Syn.shift e*degree (Syn.shift e)) (Syn.shift e) (var 0))
-    simpa only [Δ,GaussianFiniteSumL1Variation.termsError,Syn.shift,GaussianRationalLowCoefficientConvolution.subst_data,
-      GaussianGammaAllDegreeCoefficientStability.subst_paddedHead,GaussianGammaAllDegreeCoefficientStability.subst_headDegree,subst_exponential,PTm.subst_mul,PTm.subst_succ,PTm.subst_zero,
-      GaussianGammaReciprocalDegreeCells.subst_degree,GaussianEuclideanDistanceName.subst_fraction,subst_rowFactor,
-      GaussianGammaInputPrecisionNorm.subst_radiusNumerator,GaussianGammaInputPrecisionNorm.subst_radiusDenominator] using
-      RationalArgmin.rationalLE_congr (qL1_congr codes).eqSymm (.eqRefl _) (row_error (Syn.shift p) (Syn.shift q) (Syn.shift R) (Syn.shift e) (var 0) hs.wk)
-  have sum := GaussianFiniteSumL1Variation.sum_error _ _ _ _ _ _ rows
-  have code : Γ ⊢[PRAAx] multiply (natCode (succ e)) (fraction (rowFactor R e*radiusNumerator p q) (radiusDenominator p q)) ≐
-      fraction (modulus R e*radiusNumerator p q) (radiusDenominator p q) :=
-    (RationalNonnegativePowers.fraction_multiply _ _ _ _ (le_refl one) (denominator_positive p q)).eqTrans
-      (RationalNonnegativePowers.fraction_congr (by unfold modulus; ipra_ring) (by ipra_ring))
-  exact RationalArgmin.rationalLE_congr (.eqRefl _) code sum
+      (fraction (modulus R e*radiusNumerator p q) (radiusDenominator p q)) :=
+  cauchy_error_of_head (paddedHead R e) (headDegree R e) p q R e hR (padded_head_length R e) (padded_head_norm R e hR)
 
 theorem fixed_coefficient_distance (p q R e : PTm n) (hR : Γ ⊢[PRAAx] le one R) : Γ ⊢[PRAAx]
     distanceBounded (fixedCoefficient p R e) (fixedCoefficient q R e)
@@ -126,20 +77,9 @@ theorem fixed_coefficient_distance (p q R e : PTm n) (hR : Γ ⊢[PRAAx] le one 
 theorem later_distance (s t a b R e : PTm n) (ha : Γ ⊢[PRAAx] le s a) (hb : Γ ⊢[PRAAx] le t b)
     (hR : Γ ⊢[PRAAx] le one R) : Γ ⊢[PRAAx]
     distanceBounded (fixedCoefficient a R e) (fixedCoefficient b R e)
-      (modulus R e*radiusNumerator s t) (radiusDenominator s t) := by
-  have sa : Γ ⊢[PRAAx] le (unit s) (unit a) := GaussianFactorBudget.power_monotone_length two s a (le_succ_self one) ha
-  have tb : Γ ⊢[PRAAx] le (unit t) (unit b) := GaussianFactorBudget.power_monotone_length two t b (le_succ_self one) hb
-  have first := mul_le_mul_right (unit a*unit s) tb
-  have second := mul_le_mul_right (unit b*unit t) sa
-  have base : Γ ⊢[PRAAx] le ((unit a+unit b)*(unit s*unit t)) ((unit s+unit t)*(unit a*unit b)) :=
-    le_congr (by ipra_ring) (by ipra_ring) (add_le_add₂ first second)
-  have budget : Γ ⊢[PRAAx] le
-      ((modulus R e*radiusNumerator a b)*radiusDenominator s t)
-      ((modulus R e*radiusNumerator s t)*radiusDenominator a b) :=
-    le_congr (by unfold radiusNumerator radiusDenominator; ipra_ring)
-      (by unfold radiusNumerator radiusDenominator; ipra_ring) (mul_le_mul_right (modulus R e) base)
-  exact GaussianRationalDistanceOrder.distance_radius_mono _ _ _ _ _ _
-    (denominator_positive a b) (denominator_positive s t) budget (fixed_coefficient_distance a b R e hR)
+      (modulus R e*radiusNumerator s t) (radiusDenominator s t) :=
+  scaled_distance_at_earlier_precisions s t a b (modulus R e) ha hb
+    (fixed_coefficient_distance a b R e hR)
 
 theorem cofinal_regularity (p q R e : PTm n) (hR : Γ ⊢[PRAAx] le one R) : Γ ⊢[PRAAx]
     distanceBounded (GaussianGammaRadiusCoefficientName.rawValue p R e) (GaussianGammaRadiusCoefficientName.rawValue q R e)

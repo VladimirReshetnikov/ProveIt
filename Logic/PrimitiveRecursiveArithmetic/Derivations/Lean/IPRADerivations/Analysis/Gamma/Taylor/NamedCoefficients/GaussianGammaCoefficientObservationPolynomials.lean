@@ -17,9 +17,9 @@ namespace LeanProofs.IPRA.Analysis.GaussianGammaCoefficientObservationPolynomial
 open_ipra
 open GaussianRationalHorner (evaluate ofGaussian)
 open GaussianRationalMetric (distanceBounded)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
+open GaussianRationalDistanceOrder (distance_congr distance_at_earlier_precisions)
 open GaussianGammaCanonicalExponent (source)
-open GaussianCoefficientNameBounds (unit unit_positive)
+open GaussianCoefficientNameBounds (unit)
 open GaussianNameEquivalence (crossEquivalent cross_trans cross_symm)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
@@ -81,18 +81,7 @@ theorem original_value_overlap (p q R S e z B : PTm n)
   have old := distance_congr (Γ := Γ) (original_value_binding p R e z B hR.andE₂.andE₁).eqSymm
     (original_value_binding q S e z B hS.andE₂.andE₁).eqSymm (.eqRefl _) (.eqRefl _)
       (GaussianNameEquivalence.cross_at _ _ _ _ (stage p R e) (stage q S e) (cofinal_overlap z R S B hR hS))
-  have sa : Γ ⊢[PRAAx] le (unit p) (unit (stage p R e)) :=
-    GaussianFactorBudget.power_monotone_length two p (stage p R e) (le_succ_self one) (stage_later p R e)
-  have tb : Γ ⊢[PRAAx] le (unit q) (unit (stage q S e)) :=
-    GaussianFactorBudget.power_monotone_length two q (stage q S e) (le_succ_self one) (stage_later q S e)
-  have budget : Γ ⊢[PRAAx] le ((unit (stage p R e)+unit (stage q S e))*(unit p*unit q))
-      ((unit p+unit q)*(unit (stage p R e)*unit (stage q S e))) :=
-    le_congr (by ipra_ring) (by ipra_ring)
-      (add_le_add₂ (mul_le_mul_right (unit (stage p R e)*unit p) tb)
-        (mul_le_mul_right (unit (stage q S e)*unit q) sa))
-  exact distance_radius_mono _ _ _ _ _ _
-    (GaussianRationalHorner.positive_product _ _ (unit_positive _) (unit_positive _))
-    (GaussianRationalHorner.positive_product _ _ (unit_positive _) (unit_positive _)) budget old
+  exact distance_at_earlier_precisions p q _ _ (stage_later p R e) (stage_later q S e) old
 
 theorem actual_original_coefficient_sample_polynomial_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3
     (GaussianGammaRadiusCoefficientName.sample (var 0) (var 1) (var 2) ≐

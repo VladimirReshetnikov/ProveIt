@@ -26,7 +26,7 @@ open GaussianGammaCanonicalExponent (source tail_source)
 open GaussianGammaCanonicalExponentBound (numericalRadius)
 open GaussianGammaLinearCoefficient (coefficient)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
+open GaussianRationalDistanceOrder (distance_congr distance_at_earlier_precisions)
 open GaussianEuclideanDistanceName (pointCN)
 open RationalGaussianEmbedding (embed)
 
@@ -58,14 +58,7 @@ theorem gamma_later_distance (s t a b : PTm n) (ha : Γ ⊢[PRAAx] le s a) (hb :
       (unit s+unit t) (unit s*unit t) := by
   have old := distance_congr (Γ := Γ) (GaussianGammaCanonicalExponent.gamma_sample_at a) (GaussianGammaCanonicalExponent.gamma_sample_at b)
     (.eqRefl _) (.eqRefl _) (GaussianNameEquivalence.point_at GaussianGammaCanonicalExponent.gammaF zero a b GaussianGammaCanonicalExponent.gamma_regular)
-  have sa : Γ ⊢[PRAAx] le (unit s) (unit a) := GaussianFactorBudget.power_monotone_length two s a (le_succ_self one) ha
-  have tb : Γ ⊢[PRAAx] le (unit t) (unit b) := GaussianFactorBudget.power_monotone_length two t b (le_succ_self one) hb
-  have first := mul_le_mul_right (unit a*unit s) tb
-  have second := mul_le_mul_right (unit b*unit t) sa
-  have budget : Γ ⊢[PRAAx] le ((unit a+unit b)*(unit s*unit t)) ((unit s+unit t)*(unit a*unit b)) :=
-    le_congr (by ipra_ring) (by ipra_ring) (add_le_add₂ first second)
-  exact distance_radius_mono _ _ _ _ _ _ (GaussianRationalHorner.positive_product _ _ (unit_positive a) (unit_positive b))
-    (GaussianRationalHorner.positive_product _ _ (unit_positive s) (unit_positive t)) budget old
+  exact distance_at_earlier_precisions s t a b ha hb old
 
 theorem coefficient_distance (s t R N : PTm n) : Γ ⊢[PRAAx]
     distanceBounded (coefficient (gammaClock s R) N) (coefficient (gammaClock t R) N)

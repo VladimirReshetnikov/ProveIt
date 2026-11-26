@@ -18,11 +18,11 @@ namespace LeanProofs.IPRA.Analysis.GaussianGammaHigherCoefficientName
 
 open_ipra
 open GaussianGammaFixedCoefficientVariation (modulus fixed_coefficient_distance)
-open GaussianGammaInputPrecisionNorm (radiusNumerator radiusDenominator denominator_positive)
+open GaussianGammaInputPrecisionNorm (radiusNumerator radiusDenominator)
 open GaussianGammaFiniteCoefficientStability (cofinalObservation fixedCoefficient)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalHorner (canonical)
-open GaussianRationalDistanceOrder (distance_congr)
+open GaussianRationalDistanceOrder (distance_congr scaled_distance_at_earlier_precisions)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 
@@ -48,20 +48,9 @@ theorem raw_at (p e : PTm n) : Γ ⊢[PRAAx] ap2 rawF p e ≐ rawValue p e := by
 theorem later_distance (s t a b R e : PTm n) (ha : Γ ⊢[PRAAx] le s a) (hb : Γ ⊢[PRAAx] le t b)
     (hR : Γ ⊢[PRAAx] le one R) (he : Γ ⊢[PRAAx] le e (succ (two*R))) : Γ ⊢[PRAAx]
     distanceBounded (fixedCoefficient a R e) (fixedCoefficient b R e)
-      (modulus R e*radiusNumerator s t) (radiusDenominator s t) := by
-  have sa : Γ ⊢[PRAAx] le (unit s) (unit a) := GaussianFactorBudget.power_monotone_length two s a (le_succ_self one) ha
-  have tb : Γ ⊢[PRAAx] le (unit t) (unit b) := GaussianFactorBudget.power_monotone_length two t b (le_succ_self one) hb
-  have first := mul_le_mul_right (unit a*unit s) tb
-  have second := mul_le_mul_right (unit b*unit t) sa
-  have base : Γ ⊢[PRAAx] le ((unit a+unit b)*(unit s*unit t)) ((unit s+unit t)*(unit a*unit b)) :=
-    le_congr (by ipra_ring) (by ipra_ring) (add_le_add₂ first second)
-  have budget : Γ ⊢[PRAAx] le
-      ((modulus R e*radiusNumerator a b)*radiusDenominator s t)
-      ((modulus R e*radiusNumerator s t)*radiusDenominator a b) :=
-    le_congr (by unfold radiusNumerator radiusDenominator; ipra_ring)
-      (by unfold radiusNumerator radiusDenominator; ipra_ring) (mul_le_mul_right (modulus R e) base)
-  exact GaussianRationalDistanceOrder.distance_radius_mono _ _ _ _ _ _
-    (denominator_positive a b) (denominator_positive s t) budget (fixed_coefficient_distance a b R e hR he)
+      (modulus R e*radiusNumerator s t) (radiusDenominator s t) :=
+  scaled_distance_at_earlier_precisions s t a b (modulus R e) ha hb
+    (fixed_coefficient_distance a b R e hR he)
 
 theorem raw_regularity (p q e : PTm n) : Γ ⊢[PRAAx]
     distanceBounded (rawValue p e) (rawValue q e)

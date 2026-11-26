@@ -104,6 +104,33 @@ theorem distance_from_later_observations (z w p q : PTm n)
   · exact distance_radius_mono _ _ _ _ _ _ hq.wk hD.wk
       (le_of_eq_add (d := unit q*unit q) (by ipra_ring)) hqp
 
+private theorem earlier_precision_radius (s t a b : PTm n)
+    (ha : Γ ⊢[PRAAx] le s a) (hb : Γ ⊢[PRAAx] le t b) : Γ ⊢[PRAAx]
+    le ((unit a+unit b)*(unit s*unit t)) ((unit s+unit t)*(unit a*unit b)) := by
+  have sa : Γ ⊢[PRAAx] le (unit s) (unit a) :=
+    GaussianFactorBudget.power_monotone_length two s a (le_succ_self one) ha
+  have tb : Γ ⊢[PRAAx] le (unit t) (unit b) :=
+    GaussianFactorBudget.power_monotone_length two t b (le_succ_self one) hb
+  exact le_congr (by ipra_ring) (by ipra_ring)
+    (add_le_add₂ (mul_le_mul_right (unit a*unit s) tb) (mul_le_mul_right (unit b*unit t) sa))
+
+/-- The distance between two observations at later clocks also meets the
+budget at the two originally requested clocks. -/
+theorem distance_at_earlier_precisions {z w : PTm n} (s t a b : PTm n)
+    (ha : Γ ⊢[PRAAx] le s a) (hb : Γ ⊢[PRAAx] le t b)
+    (h : Γ ⊢[PRAAx] distanceBounded z w (unit a+unit b) (unit a*unit b)) :
+    Γ ⊢[PRAAx] distanceBounded z w (unit s+unit t) (unit s*unit t) :=
+  distance_radius_mono _ _ _ _ _ _ (positive_product _ _ (unit_positive a) (unit_positive b))
+    (positive_product _ _ (unit_positive s) (unit_positive t)) (earlier_precision_radius s t a b ha hb) h
+
+theorem scaled_distance_at_earlier_precisions {z w : PTm n} (s t a b K : PTm n)
+    (ha : Γ ⊢[PRAAx] le s a) (hb : Γ ⊢[PRAAx] le t b)
+    (h : Γ ⊢[PRAAx] distanceBounded z w (K*(unit a+unit b)) (unit a*unit b)) :
+    Γ ⊢[PRAAx] distanceBounded z w (K*(unit s+unit t)) (unit s*unit t) :=
+  distance_radius_mono _ _ _ _ _ _ (positive_product _ _ (unit_positive a) (unit_positive b))
+    (positive_product _ _ (unit_positive s) (unit_positive t))
+    (le_congr (by ipra_ring) (by ipra_ring) (mul_le_mul_right K (earlier_precision_radius s t a b ha hb))) h
+
 theorem distance_triangle_same (z y w A C B : PTm n)
     (hB : Γ ⊢[PRAAx] le one B)
     (hzy : Γ ⊢[PRAAx] distanceBounded z y A B)
