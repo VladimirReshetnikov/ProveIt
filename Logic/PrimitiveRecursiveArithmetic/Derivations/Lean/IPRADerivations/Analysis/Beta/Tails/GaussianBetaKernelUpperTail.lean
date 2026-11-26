@@ -258,50 +258,17 @@ ipra_subst referenceBudget
 
 theorem original_beta_cell_majorized (p z R B a b N : PTm n)
     (h : Γ ⊢[PRAAx] source z R B a b) (hN : Γ ⊢[PRAAx] le one N) (ht : Γ ⊢[PRAAx] le a (b*N)) : Γ ⊢[PRAAx]
-    GaussianRationalSumMajorant.majorized (row p z B a b N) (scalarMajorant p R a b) := by
-  let U := unit p
-  let A := top p p R a b
-  let D := bottom p p a b
-  have hu := unit_positive (Γ := Γ) p
-  have hd : Γ ⊢[PRAAx] le one D := positive_product _ _ (reference_bottom_positive p a b) hu
-  have old : Γ ⊢[PRAAx] RationalArithmetic.represents (GaussianEulerUpperTailScalar.scalarMajorant p R a b)
-      (ZT.ofNat (GaussianEulerUpperTailPointwise.majorantTop p p R a b)) D :=
-    RationalIntegerNormalization.normalize_preserves_value _ _ hd
-  have extra := RationalIntegerNormalization.normalize_preserves_value (Γ := Γ) (ZT.ofNat (num 3)) U hu
-  have both := RationalRepresentations.represents_add _ _ _ _ _ _ old extra
-  have rep : Γ ⊢[PRAAx] RationalArithmetic.represents (scalarMajorant p R a b) (ZT.ofNat (A*U)) (D*U) :=
-    GaussianRationalHorner.scalar_congr (.eqRefl _) (by
-      apply ZT.derive
-      simp only [ZT.toZ_add,ZT.toZ_mul,ZT.toZ_ofNat]
-      dsimp only [A,D,top,bottom,GaussianEulerUpperTailPointwise.majorantTop,
-        GaussianEulerUpperTailPointwise.majorantBottom]
-      ipra_simps
-      ring) (.eqRefl _) both
-  have den := positive_product _ _ hd hu
-  exact GaussianRationalSumMajorant.from_representation _ _ _ _ den
-    (GaussianRationalL1.nonnegative_of_representation _ _ _ den rep) rep
-    (bounded_radius_mono _ _ _ _ _ hd den (le_of_eq_add (d := zero) (by ipra_ring))
-      (original_beta_upper_tail_pointwise p p z R B a b N h hN ht))
+    GaussianRationalSumMajorant.majorized (row p z B a b N) (scalarMajorant p R a b) :=
+  GaussianEulerUpperTailScalar.corrected_majorant_of_bound p R a b (num 3) _
+    (bound_congr (.eqRefl _) (by unfold top GaussianEulerUpperTailPointwise.majorantTop; ipra_ring)
+      (.eqRefl _) (original_beta_upper_tail_pointwise p p z R B a b N h hN ht))
 
 theorem scalar_majorant_reference_error (p R a b : PTm n) (hb : Γ ⊢[PRAAx] le one b) : Γ ⊢[PRAAx]
     distanceBounded (embed (scalarMajorant p R a b))
       (qmul (GaussianDominantPairAlgebra.radiusPoint (majorant R) one) (GaussianEulerWeightedHalfDecay.halfSample p a b))
-      (referenceBudget R) (unit p) := by
-  let old := embed (GaussianEulerUpperTailScalar.scalarMajorant p R a b)
-  let extra := embed (fraction (num 3) (unit p))
-  have hu := unit_positive (Γ := Γ) p
-  have value : Γ ⊢[PRAAx] extra ≐ GaussianDominantPairAlgebra.radiusPoint (num 3) (unit p) :=
-    (GaussianEulerDecayOrder.fraction_embedding _ _ hu).eqTrans
-      (GaussianEulerDecayFactorBounds.fraction_is_radius_point _ _ hu)
-  have extraBound : Γ ⊢[PRAAx] bounded extra (num 3) (unit p) :=
-    bound_congr value.eqSymm (.eqRefl _) (.eqRefl _) (GaussianDominantPairAlgebra.radius_bounded _ _ hu)
-  have near : Γ ⊢[PRAAx] distanceBounded (embed (scalarMajorant p R a b)) old (num 3) (unit p) :=
-    bound_congr ((qsub_congr (RationalGaussianEmbedding.embed_add _ _) (.eqRefl old)).eqTrans
-      (GaussianRationalSyntheticDivision.qadd_sub_cancel old extra (RationalGaussianEmbedding.embed_canonical _))).eqSymm
-      (.eqRefl _) (.eqRefl _) extraBound
-  have far := GaussianEulerUpperTailScalar.scalar_majorant_scaled_reference_error p R a b hb
-  exact distance_congr (.eqRefl _) (.eqRefl _) (by unfold referenceBudget GaussianEulerUpperTailScalar.budget; ipra_ring) (.eqRefl _)
-    (GaussianRationalDistanceOrder.distance_triangle_same _ _ _ _ _ _ hu near far)
+      (referenceBudget R) (unit p) :=
+  distance_congr (.eqRefl _) (.eqRefl _) (by unfold referenceBudget GaussianEulerUpperTailScalar.budget; ipra_ring)
+    (.eqRefl _) (GaussianEulerUpperTailScalar.corrected_majorant_reference_error p R a b (num 3) hb)
 
 theorem original_beta_cell_scalar_majorant_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 7
     (source (var 1) (var 2) (var 3) (var 4) (var 5) ⟶

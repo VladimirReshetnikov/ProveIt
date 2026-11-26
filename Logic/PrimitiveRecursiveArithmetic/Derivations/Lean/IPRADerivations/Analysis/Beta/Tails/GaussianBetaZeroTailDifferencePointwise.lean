@@ -18,9 +18,8 @@ open GaussianEulerUpperPowerOrder (source)
 open GaussianEulerIntegrandName (sample)
 open GaussianBetaEulerTailDifferencePointwise (numerator denominator scalarMajorant)
 open GaussianRationalMetric (qsub distanceBounded)
-open GaussianRationalHorner (positive_product qzero)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric)
-open GaussianCoefficientNameBounds (unit unit_positive)
+open GaussianCoefficientNameBounds (unit)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -51,29 +50,20 @@ theorem original_pointwise (p q z R B a b N : PTm n) (h : Γ ⊢[PRAAx] source z
 
 theorem scalar_representation (p R a b : PTm n) : Γ ⊢[PRAAx]
     RationalArithmetic.represents (scalarMajorant p R a b) (ZT.ofNat (numerator p p R a b*unit p)) (denominator p p a b*unit p) := by
-  have hd := GaussianEulerUpperTailPointwise.majorant_bottom_positive (Γ := Γ) p p a b
-  have old : Γ ⊢[PRAAx] RationalArithmetic.represents (GaussianEulerUpperTailScalar.scalarMajorant p R a b)
-      (ZT.ofNat (GaussianEulerUpperTailPointwise.majorantTop p p R a b)) (denominator p p a b) :=
-    RationalIntegerNormalization.normalize_preserves_value _ _ hd
-  have extra := RationalIntegerNormalization.normalize_preserves_value (Γ := Γ) (ZT.ofNat (num 6)) (unit p) (unit_positive p)
-  have both := RationalRepresentations.represents_add _ _ _ _ _ _ old extra
-  refine GaussianRationalHorner.scalar_congr (.eqRefl _) ?_ (.eqRefl _) both
+  refine GaussianRationalHorner.scalar_congr (.eqRefl _) ?_ (.eqRefl _)
+    (GaussianEulerUpperTailScalar.corrected_majorant_representation p R a b (num 6))
   apply ZT.derive
-  simp only [ZT.toZ_add,ZT.toZ_mul,ZT.toZ_ofNat]
-  dsimp only [numerator,denominator,GaussianEulerUpperTailPointwise.majorantTop]
+  simp only [ZT.toZ_ofNat,numerator,GaussianEulerUpperTailPointwise.majorantTop]
   ipra_simps
   ring
 
 theorem original_cell_majorized (p z R B a b N : PTm n) (h : Γ ⊢[PRAAx] source z R B a b)
     (hN : Γ ⊢[PRAAx] le one N) : Γ ⊢[PRAAx]
-    GaussianRationalSumMajorant.majorized (difference p z B a b N) (scalarMajorant p R a b) := by
-  have hd := GaussianEulerUpperTailPointwise.majorant_bottom_positive (Γ := Γ) p p a b
-  have den := positive_product _ _ hd (unit_positive p)
-  have rep := scalar_representation (Γ := Γ) p R a b
-  exact GaussianRationalSumMajorant.from_representation _ _ _ _ den
-    (GaussianRationalL1.nonnegative_of_representation _ _ _ den rep) rep
-    (GaussianCoefficientNameBounds.bounded_radius_mono _ _ _ _ _ hd den (le_of_eq_add (d := zero) (by ipra_ring))
-      (original_pointwise p p z R B a b N h hN))
+    GaussianRationalSumMajorant.majorized (difference p z B a b N) (scalarMajorant p R a b) :=
+  GaussianEulerUpperTailScalar.corrected_majorant_of_bound p R a b (num 6) _
+    (GaussianRationalReciprocal.bound_congr (.eqRefl _)
+      (by unfold numerator GaussianEulerUpperTailPointwise.majorantTop; ipra_ring)
+      (.eqRefl _) (original_pointwise p p z R B a b N h hN))
 
 theorem original_zero_extended_beta_Euler_single_tail_majorant_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 7
     ((source (var 1) (var 2) (var 3) (var 4) (var 5) ⋏ le one (var 6)) ⟶

@@ -16,16 +16,16 @@ namespace LeanProofs.IPRA.Analysis.GaussianEulerUpperTailScalar
 
 open_ipra
 open GaussianEulerUpperPowerOrder (source)
-open GaussianEulerUpperTailPointwise (majorantTop majorantBottom majorant_bottom_positive)
+open GaussianEulerUpperTailPointwise (referenceBottom majorantTop majorantBottom majorant_bottom_positive)
 open GaussianEulerWeightedHalfDecay (majorant halfSample)
 open GaussianEulerHalfDecayReference (scalar numerator denominator denominator_positive scalar_representation decay_reference_error)
 open GaussianEuclideanDistanceName (fraction)
 open GaussianRationalSumMajorant (majorized from_representation)
 open GaussianRationalHorner (qadd qmul scalar_congr positive_product)
 open GaussianRationalDistanceOrder (distance_triangle_same distance_congr distance_radius_mono)
-open GaussianRationalMetric (distanceBounded)
+open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (bound_congr)
-open GaussianCoefficientNameBounds (unit unit_positive)
+open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianDominantPairAlgebra (radiusPoint radius_bounded)
 open RationalGaussianEmbedding (embed embed_add embed_multiply embed_canonical)
 
@@ -116,6 +116,47 @@ theorem scalar_majorant_scaled_reference_error (p R a b : PTm n) (hb : Γ ⊢[PR
       (radius_bounded M one (le_refl one)) decay
   exact distance_congr (.eqRefl _) (.eqRefl _) (by unfold budget; ipra_ring) (.eqRefl _)
     (distance_triangle_same _ _ _ _ _ _ hU near far)
+
+theorem corrected_majorant_representation (p R a b K : PTm n) : Γ ⊢[PRAAx]
+    RationalArithmetic.represents (RationalArithmetic.add (scalarMajorant p R a b) (fraction K (unit p)))
+      (ZT.ofNat ((majorantTop p p R a b+K*referenceBottom p a b)*unit p)) (majorantBottom p p a b*unit p) := by
+  let U := unit p
+  let D := majorantBottom p p a b
+  have hu : Γ ⊢[PRAAx] le one U := unit_positive p
+  have hd : Γ ⊢[PRAAx] le one D := majorant_bottom_positive p p a b
+  have old : Γ ⊢[PRAAx] RationalArithmetic.represents (scalarMajorant p R a b)
+      (ZT.ofNat (majorantTop p p R a b)) D :=
+    RationalIntegerNormalization.normalize_preserves_value _ _ hd
+  have extra := RationalIntegerNormalization.normalize_preserves_value (Γ := Γ) (ZT.ofNat K) U hu
+  refine scalar_congr (.eqRefl _) ?_ (.eqRefl _) (RationalRepresentations.represents_add _ _ _ _ _ _ old extra)
+  apply ZT.derive
+  simp only [ZT.toZ_add, ZT.toZ_mul, ZT.toZ_ofNat, majorantBottom]
+  ipra_simps
+  ring
+
+theorem corrected_majorant_of_bound (p R a b K w : PTm n)
+    (h : Γ ⊢[PRAAx] bounded w (majorantTop p p R a b+K*referenceBottom p a b) (majorantBottom p p a b)) :
+    Γ ⊢[PRAAx] majorized w (RationalArithmetic.add (scalarMajorant p R a b) (fraction K (unit p))) := by
+  have hd := majorant_bottom_positive (Γ := Γ) p p a b
+  have den := positive_product _ _ hd (unit_positive p)
+  have rep := corrected_majorant_representation (Γ := Γ) p R a b K
+  exact from_representation _ _ _ _ den (GaussianRationalL1.nonnegative_of_representation _ _ _ den rep) rep
+    (bounded_radius_mono _ _ _ _ _ hd den (le_of_eq_add (d := zero) (by ipra_ring)) h)
+
+theorem corrected_majorant_reference_error (p R a b K : PTm n) (hb : Γ ⊢[PRAAx] le one b) :
+    Γ ⊢[PRAAx] distanceBounded (embed (RationalArithmetic.add (scalarMajorant p R a b) (fraction K (unit p))))
+      (qmul (radiusPoint (majorant R) one) (halfSample p a b)) (K+budget R) (unit p) := by
+  let old := embed (scalarMajorant p R a b)
+  let extra := embed (fraction K (unit p))
+  have hu := unit_positive (Γ := Γ) p
+  have extraBound : Γ ⊢[PRAAx] bounded extra K (unit p) :=
+    bound_congr (fraction_embedding K (unit p) hu).eqSymm (.eqRefl _) (.eqRefl _) (radius_bounded _ _ hu)
+  have near : Γ ⊢[PRAAx] distanceBounded
+      (embed (RationalArithmetic.add (scalarMajorant p R a b) (fraction K (unit p)))) old K (unit p) :=
+    bound_congr ((GaussianRationalSyntheticDivision.qsub_congr (embed_add _ _) (.eqRefl old)).eqTrans
+      (GaussianRationalSyntheticDivision.qadd_sub_cancel old extra (embed_canonical _))).eqSymm
+      (.eqRefl _) (.eqRefl _) extraBound
+  exact distance_triangle_same _ _ _ _ _ _ hu near (scalar_majorant_scaled_reference_error p R a b hb)
 
 theorem actual_upper_tail_scalar_cell_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 4
     (le one (var 3) ⟶ distanceBounded (embed (scalarMajorant (var 0) (var 1) (var 2) (var 3)))
