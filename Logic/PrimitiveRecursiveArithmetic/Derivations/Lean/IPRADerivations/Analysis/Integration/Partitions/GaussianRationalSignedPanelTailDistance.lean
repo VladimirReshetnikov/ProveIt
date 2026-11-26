@@ -15,11 +15,9 @@ namespace LeanProofs.IPRA.Analysis.GaussianRationalSignedPanelTailDistance
 open LeanProofs.ConciseIPRA LeanProofs.IPRA
 open GaussianRationalHorner (qadd qzero positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
-open GaussianRationalSyntheticDivision (qadd_congr)
-open GaussianRationalSumAlgebra (qadd_associative)
-open GaussianReciprocalHorner (qadd_commutative)
 open GaussianPositiveRadiusFiniteSum (boundBy add_bound enlarge_radius)
 open GaussianRationalPanelTailDistance (threeSum original_tail_distance)
+open RationalGaussianRealPart (real_zero_represents)
 open RationalValueBounds (upper upper_congr upper_triangle upper_of_radius)
 open RationalRepresentedUpper (left right to_signed from_signed)
 open RationalArithmetic (add add_value addNumerator productDenominator)
@@ -30,12 +28,6 @@ open scoped Fm
 open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-private theorem real_zero : Γ ⊢[PRAAx]
-    RationalArithmetic.represents (fstT (qzero : PTm n)) (ZT.ofNat zero) one :=
-  GaussianRationalHorner.scalar_congr (.eqRefl _)
-    (ZT.derive (by rw [GaussianRootAlgebra.re_zero,ZT.toZ_ofNat]; ipra_simps)) (.eqRefl _)
-    (GaussianRationalHorner.zero_represents one).andE₁
 
 /-- Cancelling a shared actual real summand preserves a one-sided radius,
 including arbitrary raw encodings of the middle and tail values. -/
@@ -53,7 +45,8 @@ theorem real_add_cancel (middle tails A B : PTm n)
   have signed := to_signed (add a b) a (addNumerator a b) u (productDenominator a b) E A B
     (add_value a b) (RationalRepresentations.represents_self a) hs
   apply from_signed b (fstT qzero) v (ZT.ofNat zero) F one A B
-    (RationalArgmin.denominator_positive b) (le_refl one) (RationalRepresentations.represents_self b) real_zero
+    (RationalArgmin.denominator_positive b) (le_refl one) (RationalRepresentations.represents_self b)
+    (real_zero_represents one)
   apply PolynomialBisection.zle_scale_cancel (c := E*E)
     (positive_product _ _ (RationalArgmin.denominator_positive a) (RationalArgmin.denominator_positive a))
   apply zle_of_toZ (slack (left (addNumerator a b) E B) (right u (productDenominator a b) E A B))
@@ -65,8 +58,7 @@ theorem real_add_cancel (middle tails A B : PTm n)
 
 theorem three_rearrangement (left middle right : PTm n) : Γ ⊢[PRAAx]
     threeSum left middle right ≐ qadd middle (qadd left right) :=
-  (qadd_associative left middle right).eqSymm.eqTrans
-    ((qadd_congr (qadd_commutative left middle) (.eqRefl _)).eqTrans (qadd_associative middle left right))
+  GaussianRationalPanelTailDistance.three_rearrangement left middle right
 
 def tailNumerator (A B C D J K : PTm n) : PTm n := (A*D+C*B)*K+J*(B*D)
 def tailDenominator (B D K : PTm n) : PTm n := B*D*K
@@ -99,7 +91,8 @@ theorem original_signed_companion_split_distance (fO fM fL fR gO gM gL gR rL rR 
   have positive := positive_product _ _ (positive_product _ _ hB hD) hK
   have tails : Γ ⊢[PRAAx] bounded (qadd fL fR) (tailNumerator A B C D J K) (tailDenominator B D K) :=
     GaussianRationalReciprocal.bound_congr (.eqRefl _) (by ipra_ring) (by unfold tailDenominator; ipra_ring)
-      (enlarge_radius _ _ (fstT qzero) zero one _ _ (add_bound _ _ _ _ hl hr) (le_refl one) positive real_zero finalUpper)
+      (enlarge_radius _ _ (fstT qzero) zero one _ _ (add_bound _ _ _ _ hl hr) (le_refl one) positive
+        (real_zero_represents one) finalUpper)
   exact original_tail_distance _ _ _ _ _ _ _ _ hQ positive hf tails
 
 theorem actual_original_real_add_upper_cancellation_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 4

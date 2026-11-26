@@ -2,6 +2,7 @@ import IPRADerivations.Analysis.Stirling.Telescoping.GaussianStirlingTelescopeNa
 import IPRADerivations.Analysis.Stirling.Telescoping.GaussianStirlingRationalTelescopers
 import IPRADerivations.Analysis.Names.RationalGaussianNameEmbedding
 import IPRADerivations.Analysis.Gamma.HalfInteger.GaussianGammaHalfSqrtBrackets
+import IPRADerivations.Analysis.RationalArithmetic.RationalGaussianRealPart
 
 /-!
 # Integer Stirling tail distances from finite named order
@@ -34,7 +35,8 @@ open GaussianRationalReciprocal (bound_congr)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNamedPositiveExponentialOrder (realOrder real_order_at)
 open GaussianSignedNameExponentialOrder (realSamples real_sample_at)
-open RationalGaussianEmbedding (canonical_axis_roundtrip axis_zero scalarZero scalar_zero_represents)
+open RationalGaussianEmbedding (canonical_axis_roundtrip axis_zero)
+open RationalGaussianRealPart (real_zero_represents)
 open RationalValueBounds (upper upper_congr upper_triangle upper_mono radius_of_upper)
 open Syn
 open scoped Fm
@@ -102,12 +104,6 @@ theorem point_distance (p q i : PTm n) (hi : Γ ⊢[PRAAx] le one i) :
     Γ ⊢[PRAAx] distanceBounded (point p i) (point q i) (unit p+unit q) (unit p*unit q) :=
   point_at A (nameData i one) p q (name_regular i one (integer_source i hi))
 
-private theorem zero_represents : Γ ⊢[PRAAx] RationalArithmetic.represents (fstT (qzero : PTm n)) (ZT.ofNat zero) one := by
-  have eq : Γ ⊢[PRAAx] fstT (qzero : PTm n) ≐ scalarZero :=
-    (congrFst (RationalGaussianEmbedding.embed_zero (Γ := Γ))).eqSymm.eqTrans
-      (fst_pair _ _ |>.eqTrans RationalGaussianEmbedding.scalar_recode_zero)
-  exact GaussianRationalHorner.scalar_congr eq.eqSymm (.eqRefl _) (.eqRefl _) (scalar_zero_represents one)
-
 private theorem cap_to_zero (i N : PTm n) (hi : Γ ⊢[PRAAx] le one i) :
     Γ ⊢[PRAAx] upper (fstT (upperDifference i one N)) (fstT qzero) one (tailDen i) := by
   let D := tailDen i
@@ -119,7 +115,7 @@ private theorem cap_to_zero (i N : PTm n) (hi : Γ ⊢[PRAAx] le one i) :
     dsimp only [D,E,T,tailDen]
     ipra_le 𝔞 (num 12*i)*𝔞 i
   apply RationalRepresentedUpper.from_signed _ _ (ZT.ofNat T) (ZT.ofNat zero) E one one D e (le_refl one)
-    (GaussianGammaHalfSqrtBrackets.fraction_first_represents T E e) zero_represents
+    (GaussianGammaHalfSqrtBrackets.fraction_first_represents T E e) (real_zero_represents one)
   apply zle_of_toZ (monus E (D*T))
   have exactValue := natEq (eq_add_of_le clear)
   simp only [RationalRepresentedUpper.left,RationalRepresentedUpper.right,ZT.toZ_mul,ZT.toZ_add,ZT.toZ_ofNat]

@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitSubstitution.GaussianEulerUnitSubstitutionOrdinaryEndpoints
+import IPRADerivations.Analysis.RationalArithmetic.RationalGaussianRealPart
 import IPRADerivations.Analysis.RationalArithmetic.RationalNativeFractionDisplacement
 
 /-!
@@ -22,8 +23,9 @@ open GaussianEuclideanDistanceName (fraction fraction_represents)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalHorner (qzero ofGaussian_represents scalar_congr)
 open GaussianRationalSyntheticDivision (qone)
-open ComplexLogarithmRemainder (zeroCode oneCode)
-open GaussianRootAlgebra (re_zero re_one)
+open ComplexLogarithmRemainder (oneCode)
+open GaussianRootAlgebra (re_one)
+open RationalGaussianRealPart (real_zero_represents)
 open RationalNativeFractionDisplacement (native_upper)
 open RationalValueBounds (radius upper_of_radius radius_symmetric)
 open Syn
@@ -33,10 +35,6 @@ open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
-
-private theorem real_zero : Γ ⊢[PRAAx] RationalArithmetic.represents (fstT (qzero : PTm n)) (ZT.ofNat zero) one :=
-  scalar_congr (.eqRefl _) (ZT.derive (by rw [re_zero,ZT.toZ_ofNat]; ipra_simps)) (.eqRefl _)
-    (ofGaussian_represents zeroCode one (le_refl _)).andE₁
 
 private theorem real_one : Γ ⊢[PRAAx] RationalArithmetic.represents (fstT (qone : PTm n)) (ZT.ofNat one) one :=
   scalar_congr (.eqRefl _) (ZT.derive (by rw [re_one,ZT.toZ_ofNat]; ipra_simps; ring)) (.eqRefl _)
@@ -55,7 +53,7 @@ theorem contains_of_radii (x y M a C E U : PTm n)
   have hy : Γ ⊢[PRAAx] le y M := le_of_lt strict
   have hm : Γ ⊢[PRAAx] le one M := le_trans (zero_lt_succ y) strict
   have left := native_upper (fraction x M) (fstT qzero) x M zero one one U
-    (fraction_represents x M hm) real_zero (upper_of_radius _ _ _ _ hl)
+    (fraction_represents x M hm) (real_zero_represents one) (upper_of_radius _ _ _ _ hl)
   have right := native_upper (fstT qone) (fraction y M) one one y M one U
     real_one (fraction_represents y M hm) (upper_of_radius _ _ _ _ (radius_symmetric _ _ _ _ hu))
   have leftBudget : Γ ⊢[PRAAx] le (U*x) M := le_congr (by ipra_ring) (by ipra_ring) left

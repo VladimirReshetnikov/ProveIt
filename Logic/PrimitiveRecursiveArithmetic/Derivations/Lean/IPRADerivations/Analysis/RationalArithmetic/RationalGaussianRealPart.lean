@@ -41,6 +41,11 @@ theorem real_zero : Γ ⊢[PRAAx] fstT (qzero : PTm n) ≐ scalarZero :=
   ((congrFst RationalGaussianEmbedding.embed_zero).eqSymm.eqTrans (fst_pair _ _)).eqTrans
     RationalGaussianEmbedding.scalar_recode_zero
 
+theorem real_zero_represents (A : PTm n) :
+    Γ ⊢[PRAAx] RationalArithmetic.represents (fstT (qzero : PTm n)) (ZT.ofNat zero) A :=
+  GaussianRationalHorner.scalar_congr real_zero.eqSymm (.eqRefl _) (.eqRefl _)
+    (RationalGaussianEmbedding.scalar_zero_represents A)
+
 theorem real_add (a b : PTm n) : Γ ⊢[PRAAx]
     fstT (qadd a b) ≐ RationalArithmetic.add (fstT a) (fstT b) := fst_pair _ _
 

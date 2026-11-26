@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.FiniteOperations.GaussianPositiveRadiusFiniteSum
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalSumAlgebra
+import IPRADerivations.Analysis.RationalArithmetic.RationalGaussianRealPart
 import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianNamedPositiveExponentialOrder
 
 /-!
@@ -24,6 +25,7 @@ open GaussianRationalSumAlgebra (qadd_associative)
 open GaussianReciprocalHorner (qadd_commutative)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianPositiveRadiusFiniteSum (boundBy add_bound enlarge_radius)
+open RationalGaussianRealPart (real_zero_represents)
 open Syn
 open scoped Fm
 open ConciseIPRA.PTm (zero)
@@ -34,12 +36,15 @@ def threeSum (left middle right : PTm n) : PTm n := qadd left (qadd middle right
 @[simp] theorem subst_threeSum {m : ℕ} (σ : Fin n → PTm m) (left middle right : PTm n) :
     Syn.subst σ (threeSum left middle right) = threeSum (Syn.subst σ left) (Syn.subst σ middle) (Syn.subst σ right) := by simp [threeSum]
 
+theorem three_rearrangement (left middle right : PTm n) : Γ ⊢[PRAAx]
+    threeSum left middle right ≐ qadd middle (qadd left right) :=
+  (qadd_associative left middle right).eqSymm.eqTrans
+    ((qadd_congr (qadd_commutative left middle) (.eqRefl _)).eqTrans (qadd_associative middle left right))
+
 theorem middle_difference (left middle right : PTm n) : Γ ⊢[PRAAx]
-    qsub (threeSum left middle right) middle ≐ qadd left right := by
-  have rearranged : Γ ⊢[PRAAx] threeSum left middle right ≐ qadd middle (qadd left right) :=
-    (qadd_associative left middle right).eqSymm.eqTrans
-      ((qadd_congr (qadd_commutative left middle) (.eqRefl _)).eqTrans (qadd_associative middle left right))
-  exact (qsub_congr rearranged (.eqRefl _)).eqTrans (qadd_sub_cancel middle _ (qadd_canonical left right))
+    qsub (threeSum left middle right) middle ≐ qadd left right :=
+  (qsub_congr (three_rearrangement left middle right) (.eqRefl _)).eqTrans
+    (qadd_sub_cancel middle _ (qadd_canonical left right))
 
 theorem triangle (x y z P Q S T : PTm n) (hQ : Γ ⊢[PRAAx] le one Q) (hT : Γ ⊢[PRAAx] le one T)
     (hxy : Γ ⊢[PRAAx] distanceBounded x y P Q) (hyz : Γ ⊢[PRAAx] distanceBounded y z S T) : Γ ⊢[PRAAx]
@@ -57,12 +62,6 @@ theorem original_tail_distance (outer middle left right P Q S T : PTm n)
   triangle _ _ _ _ _ _ _ hQ hT h
     (GaussianRationalReciprocal.bound_congr (middle_difference left middle right).eqSymm (.eqRefl _) (.eqRefl _) tails)
 
-private theorem real_zero : Γ ⊢[PRAAx]
-    RationalArithmetic.represents (fstT (qzero : PTm n)) (ZT.ofNat zero) one :=
-  GaussianRationalHorner.scalar_congr (.eqRefl _)
-    (ZT.derive (by rw [GaussianRootAlgebra.re_zero,ZT.toZ_ofNat]; ipra_simps)) (.eqRefl _)
-    (GaussianRationalHorner.zero_represents one).andE₁
-
 /-- The domination relation carries its genuine positive real radius;
 an actual norm bound on that radius therefore bounds the original value. -/
 theorem dominated_bound (z r S T : PTm n) (hT : Γ ⊢[PRAAx] le one T)
@@ -71,7 +70,7 @@ theorem dominated_bound (z r S T : PTm n) (hT : Γ ⊢[PRAAx] le one T)
   have scalar := RationalValueBounds.upper_of_radius _ _ _ _
     (GaussianNamedPositiveExponentialOrder.scalar_coordinate_distance _ _ _ _ hT near)
   exact GaussianRationalReciprocal.bound_congr (.eqRefl _) (by ipra_ring) (by ipra_ring)
-    (enlarge_radius z r (fstT qzero) zero one S T h (le_refl one) hT real_zero scalar)
+    (enlarge_radius z r (fstT qzero) zero one S T h (le_refl one) hT (real_zero_represents one) scalar)
 
 /-- Direct signed scalar control is available when the caller already
 has the actual sum of its corrected real companion observations. -/
