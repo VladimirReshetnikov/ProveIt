@@ -21,16 +21,15 @@ open GaussianCompactRiemannName (sampleData field0 field1 field2 field3 field4)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianFastValueCut (exponent normalizer query_budget)
 open GaussianLogGammaEulerResidualDomain (source subst_source)
-open GaussianNamedInverseRate (independentRate rate_at denominator_positive)
-open GaussianNamedLipschitzRate (diagonalEnvelope diagonalNumerator diagonalDenominator)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric)
+open GaussianNamedInverseRate (independentRate rate_at diagonal_of_later_rate)
+open GaussianNamedLipschitzRate (diagonalEnvelope diagonalNumerator diagonalDenominator diagonal_of_regular_distance)
+open GaussianRationalDistanceOrder (distance_congr distance_symmetric)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "StripF" => GaussianBinetLaplaceStrip.nameF GaussianBinetLaplaceStrip.Kernel.cofinal
 local notation "twelve" => num 12
-local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
 
 def cutoff (p D : PTm n) : PTm n := exponent D (succ p)
 
@@ -127,26 +126,16 @@ private theorem prefix_diagonal (p X Y D sign R L : PTm n)
       (ap2 StripF p (prefixData X Y D sign R L))
       (diagonalNumerator D (twelve*X*unit L) two p) (diagonalDenominator (twelve*X*unit L) p) := by
   let C := cutoff p D
-  let U := unit p
-  let W := unit (succ p)
   let N := twelve*X*unit L
-  have hu := unit_positive (Γ := Γ) p
   have hN : Γ ⊢[PRAAx] le one N := prefix_denominator_positive X L h.andE₁.andE₁.andE₁
-  have hNU := positive_product _ _ hN hu
   refine (le_total L C).orE ?_ ?_
   · have raw := rate_at StripF StripF (prefixData X Y D sign R L) (prefixData X Y D sign R C) D N p (succ p)
       (ordered_rate X Y D sign R L C h.wk hL.wk Prf.hyp0)
-    have den := denominator_positive N p (succ p) hN
-    apply distance_congr (sample_at p X Y D sign R).eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _)
-    apply distance_radius_mono _ _ _ _ _ _ den.wk hNU.wk ?_ (distance_symmetric _ _ _ _ den.wk raw)
-    have grow : le L C :: Γ ⊢[PRAAx] le U W := GaussianExponentialReference.unit_monotone (le_succ_self p)
-    change (le L C :: Γ) ⊢[PRAAx] le ((D*U*W+N*(U+W))*(N*U)) ((D*U+two*N)*(N*U*W))
-    ipra_le 𝔞(N)*𝔞(N)*𝔞(U)*sl grow
-  · apply distance_radius_mono _ _ _ _ _ _ (positive_product _ _ hu.wk hu.wk) hNU.wk ?_
+    have aligned := diagonal_of_later_rate _ _ D N p (succ p) hN.wk (le_succ_self p) raw
+    exact distance_congr (sample_at p X Y D sign R).eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _)
+      (distance_symmetric _ _ _ _ (positive_product N (unit p) hN.wk (unit_positive p)) aligned)
+  · exact diagonal_of_regular_distance _ _ D N p hN.wk
       (late_observations p p X Y D sign R L h.wk Prf.hyp0)
-    refine le_of_eq_add (d := D*U*U*U) ?_
-    dsimp only [diagonalNumerator,diagonalDenominator,U,N]
-    ipra_ring
 
 /-- The cofinal improper name and any actual compact prefix differ by at
 most `D/(12 X 2^L)` plus the two independent observation allowances. -/
@@ -162,7 +151,7 @@ theorem prefix_rate (X Y D sign R L : PTm n)
   let Δ := Γ.map Fm.shift
   have hs : Δ ⊢[PRAAx] source (s X) (s Y) (s D) (s sign) (s R) :=
     by simpa only [Δ,s,Fm.shift,Syn.shift,subst_source] using h.shift
-  have hl : Δ ⊢[PRAAx] le one (s L) := by simpa [Δ,s,Fm.shift,Syn.shift,one] using hL.shift
+  have hl : Δ ⊢[PRAAx] le one (s L) := Order.shift_one_le hL
   simpa only [diagonalEnvelope,Syn.shift,s,subst_data,subst_prefixData,
     GaussianCoefficientNameBounds.subst_unit,PTm.subst_mul,PTm.subst_num,two,one,ConciseIPRA.PTm.subst_succ,
     ConciseIPRA.PTm.subst_zero] using prefix_diagonal (var 0) (s X) (s Y) (s D) (s sign) (s R) (s L) hs hl

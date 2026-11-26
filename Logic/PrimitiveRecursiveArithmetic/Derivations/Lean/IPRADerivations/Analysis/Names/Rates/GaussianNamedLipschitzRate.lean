@@ -42,6 +42,15 @@ theorem envelope_at (F G : PR 2) (x y A N C t : PTm n)
   simpa only [diagonalEnvelope,GaussianRationalMetric.subst_distanceBounded,subst_ap2,subst_diagonalNumerator,
     subst_diagonalDenominator,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using h.allE t
 
+/-- Add a leading radius to two equal-clock observation allowances. -/
+theorem diagonal_of_regular_distance (x y A N p : PTm n) (hN : Γ ⊢[PRAAx] le one N)
+    (h : Γ ⊢[PRAAx] distanceBounded x y (unit p+unit p) (unit p*unit p)) :
+    Γ ⊢[PRAAx] distanceBounded x y (diagonalNumerator A N two p) (diagonalDenominator N p) :=
+  distance_radius_mono _ _ _ _ _ _
+    (positive_product _ _ (unit_positive p) (unit_positive p))
+    (positive_product _ _ hN (unit_positive p))
+    (le_of_eq_add (d := A*unit p*unit p*unit p) (by unfold diagonalNumerator diagonalDenominator; ipra_ring)) h
+
 /-- Three original metric legs at one proved positive common denominator. -/
 theorem independent_slack (F G : PR 2) (x y A N C p q t : PTm n)
     (hN : Γ ⊢[PRAAx] le one N) (hf : Γ ⊢[PRAAx] pointCN F x) (hg : Γ ⊢[PRAAx] pointCN G y)

@@ -22,9 +22,9 @@ open GaussianCompactRiemannName
   (sampleData field0 field1 field2 field3 field4)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianFastValueCut (exponent normalizer query_budget)
-open GaussianNamedInverseRate (independentRate rate_at denominator_positive)
-open GaussianNamedLipschitzRate (diagonalEnvelope diagonalNumerator diagonalDenominator)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric)
+open GaussianNamedInverseRate (independentRate rate_at diagonal_of_later_rate)
+open GaussianNamedLipschitzRate (diagonalEnvelope diagonalNumerator diagonalDenominator diagonal_of_regular_distance)
+open GaussianRationalDistanceOrder (distance_congr distance_symmetric)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
@@ -32,7 +32,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "CompactF" => GaussianBinetBoseCompact.nameF
 local notation "panelDen" => GaussianBinetBoseOriginExhaustion.cutoff
-local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
 
 def source (X _Y D sign T : PTm n) : Fm PTm n :=
   GaussianRightHalfPlaneLogarithm.source X D sign ⋏ le one T
@@ -137,26 +136,16 @@ private theorem prefix_diagonal (p X Y D sign T L : PTm n)
       (ap2 CompactF p (cutData X Y D sign T L))
       (diagonalNumerator D (panelDen L*(num 4*X)) two p) (diagonalDenominator (panelDen L*(num 4*X)) p) := by
   let C := schedule p D
-  let U := unit p
-  let W := unit (succ p)
   let N := panelDen L*(num 4*X)
-  have hu := unit_positive (Γ := Γ) p
   have hN : Γ ⊢[PRAAx] le one N := cutoff_denominator_positive X L h.andE₁.andE₁.andE₁
-  have hNU := positive_product _ _ hN hu
   refine (le_total L C).orE ?_ ?_
   · have raw := rate_at CompactF CompactF (cutData X Y D sign T L) (cutData X Y D sign T C) D N p (succ p)
       (ordered_rate X Y D sign T L C h.andE₁.wk h.andE₂.wk Prf.hyp0)
-    have den := denominator_positive N p (succ p) hN
-    apply distance_congr (sample_at p X Y D sign T).eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _)
-    apply distance_radius_mono _ _ _ _ _ _ den.wk hNU.wk ?_ (distance_symmetric _ _ _ _ den.wk raw)
-    have grow : le L C :: Γ ⊢[PRAAx] le U W := GaussianExponentialReference.unit_monotone (le_succ_self p)
-    change (le L C :: Γ) ⊢[PRAAx] le ((D*U*W+N*(U+W))*(N*U)) ((D*U+two*N)*(N*U*W))
-    ipra_le 𝔞(N)*𝔞(N)*𝔞(U)*sl grow
-  · apply distance_radius_mono _ _ _ _ _ _ (positive_product _ _ hu.wk hu.wk) hNU.wk ?_
+    have aligned := diagonal_of_later_rate _ _ D N p (succ p) hN.wk (le_succ_self p) raw
+    exact distance_congr (sample_at p X Y D sign T).eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _)
+      (distance_symmetric _ _ _ _ (positive_product N (unit p) hN.wk (unit_positive p)) aligned)
+  · exact diagonal_of_regular_distance _ _ D N p hN.wk
       (late_observations p p X Y D sign T L h.wk Prf.hyp0)
-    refine le_of_eq_add (d := D*U*U*U) ?_
-    dsimp only [diagonalNumerator,diagonalDenominator,U,N]
-    ipra_ring
 
 /-- The fixed-horizon name and any positive compact dyadic panel differ by
 at most `D/(4 X 2^(L+1))` plus their independent observation allowances. -/

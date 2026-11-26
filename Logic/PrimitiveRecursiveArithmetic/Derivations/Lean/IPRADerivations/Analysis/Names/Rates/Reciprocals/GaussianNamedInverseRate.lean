@@ -71,11 +71,25 @@ theorem rate_at (F G : PR 2) (x y D N p q : PTm n) (h : Γ ⊢[PRAAx] independen
   simpa only [GaussianRationalMetric.subst_distanceBounded,subst_ap2,subst_rateNumerator,subst_rateDenominator,
     Syn.subst_var,Syn.inst_zero,Syn.inst_succ,Syn.subst_inst_shift] using pair.allE q
 
+/-- An independent rate with a later second clock fits the diagonal budget
+with two observation allowances at the first clock. -/
+theorem diagonal_of_later_rate (x y A N p r : PTm n)
+    (hN : Γ ⊢[PRAAx] le one N) (hpr : Γ ⊢[PRAAx] le p r)
+    (h : Γ ⊢[PRAAx] distanceBounded x y (rateNumerator A N p r) (rateDenominator N p r)) :
+    Γ ⊢[PRAAx] distanceBounded x y (A*unit p+two*N) (N*unit p) := by
+  let U := unit p
+  let W := unit r
+  have grow : Γ ⊢[PRAAx] le U W :=
+    GaussianFactorBudget.power_monotone_length two p r (le_succ_self one) hpr
+  apply distance_radius_mono _ _ _ _ _ _ (denominator_positive N p r hN)
+    (positive_product _ _ hN (unit_positive p)) ?_ h
+  change Γ ⊢[PRAAx] le ((A*U*W+N*(U+W))*(N*U)) ((A*U+two*N)*(N*U*W))
+  ipra_le (Groth.ι (Q.mk Γ N))^2*(Groth.ι (Q.mk Γ U))*sl grow
+
 theorem diagonal_rate (F G : PR 2) (x y D N t : PTm n) (hN : Γ ⊢[PRAAx] le one N)
     (h : Γ ⊢[PRAAx] independentRate F G x y D N) : Γ ⊢[PRAAx]
     distanceBounded (ap2 F t x) (ap2 G t y) (D*unit t+two*N) (N*unit t) :=
-  distance_radius_mono _ _ _ _ _ _ (denominator_positive N t t hN) (positive_product _ _ hN (unit_positive t))
-    (le_of_eq_add (d := zero) (by unfold rateNumerator rateDenominator; ipra_ring)) (rate_at F G x y D N t t h)
+  diagonal_of_later_rate _ _ D N t t hN (le_refl t) (rate_at F G x y D N t t h)
 
 theorem raw_inverse_residual (F G : PR 2) (x y t : PTm n) (hf : Γ ⊢[PRAAx] pointCN F x)
     (hg : Γ ⊢[PRAAx] pointCN G y) (he : Γ ⊢[PRAAx] inverseLaw F G x y) : Γ ⊢[PRAAx]

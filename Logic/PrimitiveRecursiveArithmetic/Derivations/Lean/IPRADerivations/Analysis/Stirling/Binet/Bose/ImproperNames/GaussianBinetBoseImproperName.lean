@@ -21,9 +21,9 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianCompactRiemannName
   (sampleData field0 field1 field2 field3 field4)
 open GaussianEuclideanDistanceName (pointCN)
-open GaussianNamedInverseRate (independentRate rate_at denominator_positive)
-open GaussianNamedLipschitzRate (diagonalEnvelope diagonalNumerator diagonalDenominator)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric)
+open GaussianNamedInverseRate (independentRate rate_at diagonal_of_later_rate)
+open GaussianNamedLipschitzRate (diagonalEnvelope diagonalNumerator diagonalDenominator diagonal_of_regular_distance)
+open GaussianRationalDistanceOrder (distance_congr distance_symmetric)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
@@ -31,7 +31,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "CompactF" => GaussianBinetBoseOriginName.nameF
 local notation "compactData" => GaussianBinetBoseOriginName.data
-local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
 
 def source (X _Y D sign K : PTm n) : Fm PTm n :=
   GaussianRightHalfPlaneLogarithm.source X D sign ⋏ le D (K*X)
@@ -127,26 +126,14 @@ private theorem prefix_diagonal (p X Y D sign K L : PTm n)
       (ap2 CompactF p (compactData X Y D sign L))
       (diagonalNumerator (two*K) L two p) (diagonalDenominator L p) := by
   let C := schedule p K
-  let U := unit p
-  let W := unit (succ p)
-  let N := L
-  have hu := unit_positive (Γ := Γ) p
-  have hN : Γ ⊢[PRAAx] le one N := hL
-  have hNU := positive_product _ _ hN hu
   refine (le_total L C).orE ?_ ?_
-  · have raw := rate_at CompactF CompactF (compactData X Y D sign L) (compactData X Y D sign C) (two*K) N p (succ p)
+  · have raw := rate_at CompactF CompactF (compactData X Y D sign L) (compactData X Y D sign C) (two*K) L p (succ p)
       (ordered_rate X Y D sign K L C h.andE₁.wk h.andE₂.wk hL.wk Prf.hyp0)
-    have den := denominator_positive N p (succ p) hN
-    apply distance_congr (sample_at p X Y D sign K).eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _)
-    apply distance_radius_mono _ _ _ _ _ _ den.wk hNU.wk ?_ (distance_symmetric _ _ _ _ den.wk raw)
-    have grow : le L C :: Γ ⊢[PRAAx] le U W := GaussianExponentialReference.unit_monotone (le_succ_self p)
-    change (le L C :: Γ) ⊢[PRAAx] le (((two*K)*U*W+N*(U+W))*(N*U)) (((two*K)*U+two*N)*(N*U*W))
-    ipra_le 𝔞(N)*𝔞(N)*𝔞(U)*sl grow
-  · apply distance_radius_mono _ _ _ _ _ _ (positive_product _ _ hu.wk hu.wk) hNU.wk ?_
+    have aligned := diagonal_of_later_rate _ _ (two*K) L p (succ p) hL.wk (le_succ_self p) raw
+    exact distance_congr (sample_at p X Y D sign K).eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _)
+      (distance_symmetric _ _ _ _ (positive_product L (unit p) hL.wk (unit_positive p)) aligned)
+  · exact diagonal_of_regular_distance _ _ (two*K) L p hL.wk
       (late_observations p p X Y D sign K L h.wk Prf.hyp0)
-    refine le_of_eq_add (d := (two*K)*U*U*U) ?_
-    dsimp only [diagonalNumerator,diagonalDenominator,U,N]
-    ipra_ring
 
 /-- The improper name and the actual name at any positive integer horizon
 `L` differ by at most `2 K/L` plus the observation allowances. -/
@@ -162,7 +149,7 @@ theorem prefix_rate (X Y D sign K L : PTm n)
   let Δ := Γ.map Fm.shift
   have hs : Δ ⊢[PRAAx] source (s X) (s Y) (s D) (s sign) (s K) :=
     by simpa only [Δ,s,Fm.shift,Syn.shift,subst_source] using h.shift
-  have hl : Δ ⊢[PRAAx] le one (s L) := by simpa [Δ,s,Fm.shift,Syn.shift,one] using hL.shift
+  have hl : Δ ⊢[PRAAx] le one (s L) := Order.shift_one_le hL
   simpa only [diagonalEnvelope,Syn.shift,s,subst_data,GaussianBinetBoseOriginName.subst_data,PTm.subst_mul,
     two,one,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero] using
     prefix_diagonal (var 0) (s X) (s Y) (s D) (s sign) (s K) (s L) hs hl

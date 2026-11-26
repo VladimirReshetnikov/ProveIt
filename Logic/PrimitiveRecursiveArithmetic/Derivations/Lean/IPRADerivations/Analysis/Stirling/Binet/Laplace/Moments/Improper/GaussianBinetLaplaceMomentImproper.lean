@@ -22,14 +22,13 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianCompactRiemannName (sampleData field0 field1 field2 field3)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianFastValueCut (exponent normalizer query_budget)
-open GaussianNamedInverseRate (independentRate denominator_positive rate_at)
-open GaussianNamedLipschitzRate (diagonalEnvelope diagonalNumerator diagonalDenominator)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric)
+open GaussianNamedInverseRate (independentRate rate_at diagonal_of_later_rate)
+open GaussianNamedLipschitzRate (diagonalEnvelope diagonalNumerator diagonalDenominator diagonal_of_regular_distance)
+open GaussianRationalDistanceOrder (distance_congr distance_symmetric)
 open GaussianRationalHorner (positive_product canonical)
 open GaussianRationalMetric (distanceBounded)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
 local notation "realSource" => GaussianLogGammaEulerResidualDomain.source
 local notation "StripF" => GaussianBinetLaplaceMomentFloor.nameF
 
@@ -112,25 +111,14 @@ private theorem prefix_diagonal (p j X D R L : PTm n)
     Γ ⊢[PRAAx] distanceBounded (ap2 nameF p (data j X D R)) (ap2 StripF p (prefixData j X D R L))
       (diagonalNumerator (tailNumerator j D) L two p) (diagonalDenominator L p) := by
   let C := cutoff p j D
-  let U := unit p
-  let W := unit (succ p)
-  let N := tailNumerator j D
-  have hu := unit_positive (Γ := Γ) p
-  have hLU := positive_product _ _ hL hu
   refine (le_total L C).orE ?_ ?_
-  · have raw := rate_at StripF StripF (prefixData j X D R L) (prefixData j X D R C) N L p (succ p)
+  · have raw := rate_at StripF StripF (prefixData j X D R L) (prefixData j X D R C) (tailNumerator j D) L p (succ p)
       (ordered_rate j X D R L C h.wk hL.wk Prf.hyp0)
-    have den := denominator_positive L p (succ p) hL
-    apply distance_congr (sample_at p j X D R).eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _)
-    apply distance_radius_mono _ _ _ _ _ _ den.wk hLU.wk ?_ (distance_symmetric _ _ _ _ den.wk raw)
-    have grow : le L C :: Γ ⊢[PRAAx] le U W := GaussianExponentialReference.unit_monotone (le_succ_self p)
-    change (le L C :: Γ) ⊢[PRAAx] le ((N*U*W+L*(U+W))*(L*U)) ((N*U+two*L)*(L*U*W))
-    ipra_le 𝔞(L)*𝔞(L)*𝔞(U)*sl grow
-  · apply distance_radius_mono _ _ _ _ _ _ (positive_product _ _ hu.wk hu.wk) hLU.wk ?_
+    have aligned := diagonal_of_later_rate _ _ (tailNumerator j D) L p (succ p) hL.wk (le_succ_self p) raw
+    exact distance_congr (sample_at p j X D R).eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _)
+      (distance_symmetric _ _ _ _ (positive_product L (unit p) hL.wk (unit_positive p)) aligned)
+  · exact diagonal_of_regular_distance _ _ (tailNumerator j D) L p hL.wk
       (late_observations p p j X D R L h.wk Prf.hyp0)
-    refine le_of_eq_add (d := N*U*U*U) ?_
-    dsimp only [diagonalNumerator,diagonalDenominator,U,N]
-    ipra_ring
 
 theorem prefix_rate (j X D R L : PTm n)
     (h : Γ ⊢[PRAAx] realSource X zero D zero R) (hL : Γ ⊢[PRAAx] le one L) :
@@ -143,7 +131,7 @@ theorem prefix_rate (j X D R L : PTm n)
   have hs : Δ ⊢[PRAAx] realSource (s X) zero (s D) zero (s R) :=
     by simpa only [Δ,s,Fm.shift,Syn.shift,GaussianLogGammaEulerResidualDomain.subst_source,
       ConciseIPRA.PTm.subst_zero] using h.shift
-  have hl : Δ ⊢[PRAAx] le one (s L) := by simpa [Δ,s,Fm.shift,Syn.shift,one] using hL.shift
+  have hl : Δ ⊢[PRAAx] le one (s L) := Order.shift_one_le hL
   simpa only [diagonalEnvelope,Syn.shift,s,subst_data,GaussianBinetLaplaceMomentPrefixes.subst_prefixData,
     GaussianBinetLaplaceMomentPrefixes.subst_tailNumerator,two,one,ConciseIPRA.PTm.subst_succ,
     ConciseIPRA.PTm.subst_zero] using prefix_diagonal (var 0) (s j) (s X) (s D) (s R) (s L) hs hl
