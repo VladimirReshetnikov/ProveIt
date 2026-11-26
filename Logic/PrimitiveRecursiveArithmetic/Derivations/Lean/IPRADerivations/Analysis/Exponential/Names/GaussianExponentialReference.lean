@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.Exponential.GaussianRadiusExponentialName
 import IPRADerivations.Analysis.Exponential.FiniteSeries.GaussianScalarExponentialProductTail
 import IPRADerivations.Analysis.Names.GaussianNameArithmetic
+import IPRADerivations.Analysis.Names.GaussianNameEquivalence
 
 /-!
 # Common finite references for actual Gaussian exponential names
@@ -51,17 +52,10 @@ theorem later_query (f : PR 2) (R x p j : PTm n) (h : Γ ⊢[PRAAx] input f R x)
     distanceBounded (scalarSum (ap2 f j x) (index R p)) (value f R p x) one (commonDenominator p) := by
   let i := inputPrecision R p
   let I := unit i
-  let J := unit j
   let C := commonDenominator p
   let d := factor R (index R p)
   have dist : Γ ⊢[PRAAx] distanceBounded (ap2 f j x) (ap2 f i x) two I :=
-    distance_radius_mono _ _ _ _ _ _ (positive_product _ _ (unit_positive j) (unit_positive i))
-      (unit_positive i)
-      (by
-        have hle := unit_monotone hj
-        change Γ ⊢[PRAAx] le ((J+I)*I) (two*(J*I))
-        ipra_le 𝔟 I*sl hle)
-      (GaussianNameEquivalence.point_at f x j i h.andE₁)
+    GaussianNameEquivalence.point_at_later f x i j h.andE₁ hj
   have raw := GaussianRationalRadiusExponentialLipschitz.scalar_sum_lipschitz
     (ap2 f j x) (ap2 f i x) R two I (index R p) (unit_positive i)
     (bounded_samples_at f R x j h.andE₂) (query_bound f R x p h) dist

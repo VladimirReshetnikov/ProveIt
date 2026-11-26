@@ -67,6 +67,16 @@ theorem distance_radius_mono (z w A B C D : PTm n)
     (h : Γ ⊢[PRAAx] distanceBounded z w A B) : Γ ⊢[PRAAx] distanceBounded z w C D :=
   GaussianCoefficientNameBounds.bounded_radius_mono _ _ _ _ _ hB hD hrad h
 
+/-- If both observation denominators are at least D, their two errors add to
+at most 2/D. The order of the two observations is arbitrary. -/
+theorem distance_two_errors (z w B C D : PTm n)
+    (hB : Γ ⊢[PRAAx] le one B) (hC : Γ ⊢[PRAAx] le one C) (hD : Γ ⊢[PRAAx] le one D)
+    (hDB : Γ ⊢[PRAAx] le D B) (hDC : Γ ⊢[PRAAx] le D C)
+    (h : Γ ⊢[PRAAx] distanceBounded z w (B+C) (B*C)) : Γ ⊢[PRAAx] distanceBounded z w two D := by
+  apply distance_radius_mono _ _ _ _ _ _ (positive_product _ _ hB hC) hD _ h
+  exact le_congr (by ipra_ring) (by ipra_ring)
+    (add_le_add₂ (mul_le_mul_right B hDC) (mul_le_mul_right C hDB))
+
 theorem distance_triangle_same (z y w A C B : PTm n)
     (hB : Γ ⊢[PRAAx] le one B)
     (hzy : Γ ⊢[PRAAx] distanceBounded z y A B)

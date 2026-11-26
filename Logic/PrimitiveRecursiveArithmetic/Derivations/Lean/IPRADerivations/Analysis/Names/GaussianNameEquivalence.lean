@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.Evaluation.GaussianGeneralPolynomialValueName
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalPowerDifference
+import IPRADerivations.Analysis.RationalArithmetic.Distances.GaussianRationalDistanceOrder
 
 /-!
 # Euclidean equivalence and zero transport for actual Gaussian names
@@ -24,7 +25,7 @@ open LeanProofs.IPRA.Analysis.GaussianGeneralPolynomialValueName (programZero pr
 open LeanProofs.IPRA.Analysis.GaussianCoefficientNameBounds (unit unit_positive subst_unit)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (positive_product)
 open LeanProofs.IPRA.Analysis.GaussianRationalDistanceOrder
-  (distance_congr distance_symmetric distance_radius_mono)
+  (distance_congr distance_symmetric distance_radius_mono distance_two_errors)
 open Syn
 open scoped Fm
 open ConciseIPRA.PTm (zero succ)
@@ -68,6 +69,15 @@ theorem cross_at (f g : PR 2) (x y s t : PTm n)
 theorem point_at (f : PR 2) (x s t : PTm n) (hF : Γ ⊢[PRAAx] pointCN f x) : Γ ⊢[PRAAx]
     distanceBounded (ap2 f s x) (ap2 f t x) (unit s+unit t) (unit s*unit t) := by
   simpa only [GaussianEuclideanPointDistance.unit,GaussianCoefficientNameBounds.unit] using point_cn_at f x s t hF
+
+/-- A later observation of a regular name differs from the earlier one
+by at most two units at the earlier precision. -/
+theorem point_at_later (f : PR 2) (x p r : PTm n)
+    (hF : Γ ⊢[PRAAx] pointCN f x) (hpr : Γ ⊢[PRAAx] le p r) : Γ ⊢[PRAAx]
+    distanceBounded (ap2 f r x) (ap2 f p x) two (unit p) :=
+  distance_two_errors _ _ _ _ _ (unit_positive r) (unit_positive p) (unit_positive p)
+    (GaussianFactorBudget.power_monotone_length two p r (le_succ_self one) hpr) (le_refl _)
+    (point_at f x r p hF)
 
 /-- The genuine three-leg comparison has exactly four dyadic errors at
 its auxiliary precision. The two requested observations remain fixed. -/

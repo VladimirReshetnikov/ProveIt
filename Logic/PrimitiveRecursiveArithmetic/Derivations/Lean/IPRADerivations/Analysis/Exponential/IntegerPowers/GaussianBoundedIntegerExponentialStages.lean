@@ -4,6 +4,7 @@ import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialRadiusIndep
 import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianPositiveExponentialMajorant
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedSmallPerturbationTransport
 import IPRADerivations.Analysis.Exponential.GaussianExponentialInverse
+import IPRADerivations.Analysis.Names.GaussianNameEquivalence
 import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalExponent
 
 /-!
@@ -36,7 +37,6 @@ open ConciseIPRA.PTm (zero succ)
 open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
 
 def input (f : PR 2) (R x c A : PTm n) : Fm PTm n := GaussianRadiusExponentialName.input f R x ⋏
   (crossEquivalent (GaussianRadiusExponentialName.nameF f) constantF (GaussianRadiusExponentialName.data R x) c ⋏ bounded c A one)
@@ -120,18 +120,14 @@ theorem successor_exponential (f : PR 2) (E i R x c A : PTm n) (h : Γ ⊢[PRAAx
 
 theorem one_error (f : PR 2) (p E R x c A : PTm n) (h : Γ ⊢[PRAAx] input f R x c A)
     (hE : Γ ⊢[PRAAx] le one E) : Γ ⊢[PRAAx] distanceBounded (point f p E one R x) c two (unit p) := by
-  have close := distance_congr (.eqRefl _) (GaussianGammaCanonicalExponent.constant_at p c) (.eqRefl _) (.eqRefl _)
-    (cross_at _ _ _ _ p p (one_exponential f E R x c A h hE))
-  exact distance_radius_mono _ _ _ _ _ _ (positive_product _ _ (unit_positive p) (unit_positive p)) (unit_positive p)
-    (le_of_eq_add (d := zero) (by ipra_ring)) close
+  have close := GaussianNameEquivalence.diagonal_at _ _ _ _ p
+    (GaussianNameEquivalence.cross_to_diagonal _ _ _ _ (one_exponential f E R x c A h hE))
+  exact distance_congr (.eqRefl _) (GaussianGammaCanonicalExponent.constant_at p c) (.eqRefl _) (.eqRefl _) close
 
 theorem later_point_error (f : PR 2) (p q E i R x c A : PTm n) (h : Γ ⊢[PRAAx] input f R x c A)
     (hi : Γ ⊢[PRAAx] le i E) (hpq : Γ ⊢[PRAAx] le p q) : Γ ⊢[PRAAx]
-    distanceBounded (point f q E i R x) (point f p E i R x) two (unit p) := by
-  have grow : Γ ⊢[PRAAx] le (unit p) (unit q) := GaussianFactorBudget.power_monotone_length two p q (le_succ_self one) hpq
-  apply distance_radius_mono _ _ _ _ _ _ (positive_product _ _ (unit_positive q) (unit_positive p)) (unit_positive p) _
-    (GaussianNameEquivalence.point_at (expF f) (expData E i R x) q p (point_regular f E i R x c A h hi))
-  ipra_le 𝔞(unit p)*sl grow
+    distanceBounded (point f q E i R x) (point f p E i R x) two (unit p) :=
+  GaussianNameEquivalence.point_at_later (expF f) (expData E i R x) p q (point_regular f E i R x c A h hi) hpq
 
 theorem product_same_precision (f : PR 2) (p E i R x c A : PTm n) (h : Γ ⊢[PRAAx] input f R x c A)
     (hi : Γ ⊢[PRAAx] le i E) (hE : Γ ⊢[PRAAx] le one E) : Γ ⊢[PRAAx]

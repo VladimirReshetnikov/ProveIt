@@ -4,6 +4,7 @@ import IPRADerivations.Analysis.Exponential.GaussianExponentialAddition
 import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialRadiusIndependence
 import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianPositiveExponentialMajorant
 import IPRADerivations.Analysis.Exponential.GaussianExponentialInverse
+import IPRADerivations.Analysis.Names.GaussianNameEquivalence
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedSmallPerturbationTransport
 
 /-!
@@ -130,18 +131,13 @@ theorem successor_exponential (E i : PTm n) (hi : Γ ⊢[PRAAx] le (succ i) E) :
 
 theorem one_error (p E : PTm n) (hE : Γ ⊢[PRAAx] le one E) : Γ ⊢[PRAAx]
     distanceBounded (point p E one) baseValue two (unit p) := by
-  have close := distance_congr (.eqRefl _) (GaussianGammaCanonicalExponent.constant_at p baseValue) (.eqRefl _) (.eqRefl _)
-    (cross_at _ _ _ _ p p (one_exponential E hE))
-  exact distance_radius_mono _ _ _ _ _ _ (positive_product _ _ (unit_positive p) (unit_positive p)) (unit_positive p)
-    (le_of_eq_add (d := zero) (by ipra_ring)) close
+  have close := GaussianNameEquivalence.diagonal_at _ _ _ _ p
+    (GaussianNameEquivalence.cross_to_diagonal _ _ _ _ (one_exponential E hE))
+  exact distance_congr (.eqRefl _) (GaussianGammaCanonicalExponent.constant_at p baseValue) (.eqRefl _) (.eqRefl _) close
 
 theorem later_point_error (p q E i : PTm n) (hi : Γ ⊢[PRAAx] le i E) (hpq : Γ ⊢[PRAAx] le p q) : Γ ⊢[PRAAx]
-    distanceBounded (point q E i) (point p E i) two (unit p) := by
-  have grow : Γ ⊢[PRAAx] le (unit p) (unit q) :=
-    GaussianFactorBudget.power_monotone_length two _ _ (le_succ_self one) hpq
-  apply distance_radius_mono _ _ _ _ _ _ (positive_product _ _ (unit_positive q) (unit_positive p)) (unit_positive p) _
-    (GaussianNameEquivalence.point_at expF (expData E i) q p (point_regular E i hi))
-  ipra_le 𝔞(unit p)*sl grow
+    distanceBounded (point q E i) (point p E i) two (unit p) :=
+  GaussianNameEquivalence.point_at_later expF (expData E i) p q (point_regular E i hi) hpq
 
 /-- The actual product name is compared to the two original observations
 at p; its own larger normalization query is retained and bounded. -/

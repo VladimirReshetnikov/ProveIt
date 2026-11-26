@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.Barnes.Vigneras.GaussianBarnesVignerasMesh
 import IPRADerivations.Analysis.Barnes.Vigneras.GaussianBarnesVignerasQuotientProperness
+import IPRADerivations.Analysis.RationalArithmetic.Distances.GaussianRationalDistanceOrder
 
 /-!
 # Read the periodic mesh estimate at fixed positive rational charts
@@ -20,7 +21,7 @@ open LeanProofs.ConciseIPRA LeanProofs.IPRA
 open GaussianBarnesVignerasCyclicDerivative (LowerJet)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNameEquivalence (crossEquivalent cross_at cross_symm)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_triangle_same distance_two_errors)
 open GaussianRationalMetric (distanceBounded)
 open ConciseIPRA.PTm (zero)
 open LeanProofs.IPRA.PTm (num)
@@ -61,14 +62,9 @@ def schedule (f g : PR 2) (t v s : PTm 2) (J : LowerJet) (a b x : PTm n) : Fm PT
 
 theorem mixed_close (f : PR 2) (x y p r : PTm n)
     (h : Γ ⊢[PRAAx] crossEquivalent f f x y) (hpr : Γ ⊢[PRAAx] le p r) :
-    Γ ⊢[PRAAx] distanceBounded (ap2 f p x) (ap2 f r y) two (unit p) := by
-  have hp := unit_positive (Γ := Γ) p
-  have hr := unit_positive (Γ := Γ) r
-  have monotone : Γ ⊢[PRAAx] le (unit p) (unit r) := GaussianBalancedRadiusArithmetic.unit_monotone p r hpr
-  have total := add_le_add₂ monotone (le_refl (unit r))
-  have radius : Γ ⊢[PRAAx] le ((unit p+unit r)*unit p) (two*(unit p*unit r)) :=
-    le_congr (.eqRefl _) (by ipra_ring) (mul_le_mul_right (unit p) total)
-  exact distance_radius_mono _ _ _ _ _ _ (GaussianRationalHorner.positive_product _ _ hp hr) hp radius
+    Γ ⊢[PRAAx] distanceBounded (ap2 f p x) (ap2 f r y) two (unit p) :=
+  distance_two_errors _ _ _ _ _ (unit_positive p) (unit_positive r) (unit_positive p) (le_refl _)
+    (GaussianBalancedRadiusArithmetic.unit_monotone p r hpr)
     (cross_at f f x y p r h)
 
 theorem fixed_distance (f g : PR 2) (t v : PTm 2) (J : LowerJet) (a b N i E p r y : PTm n)

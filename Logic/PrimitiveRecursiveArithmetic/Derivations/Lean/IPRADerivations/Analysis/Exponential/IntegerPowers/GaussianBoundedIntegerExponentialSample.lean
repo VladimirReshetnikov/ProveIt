@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.Exponential.IntegerPowers.GaussianBoundedIntegerExponential
+import IPRADerivations.Analysis.Names.GaussianNameEquivalence
 
 /-!
 # Integer-scaled exponential at a numerical base sample
@@ -19,7 +20,7 @@ open GaussianBoundedIntegerExponential (error error_zero error_growth)
 open GaussianBoundedIntegerExponentialStages (scaledF stageData radius expF expData point majorant
   powerBudget productF productData power_bound)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open GaussianNameEquivalence (crossEquivalent cross_at cross_trans point_at)
+open GaussianNameEquivalence (crossEquivalent cross_at cross_trans point_at_later)
 open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (power power_succ bound_congr)
@@ -71,10 +72,7 @@ private theorem later_point (f : PR 2) (p q E i R x : PTm n)
     (hpq : Γ ⊢[PRAAx] le p q) :
     Γ ⊢[PRAAx] distanceBounded (point f q E i R x) (point f p E i R x) two (unit p) := by
   have regular := GaussianRadiusExponentialName.name_regular _ _ _ (stage_input f E i R x h hi)
-  have grow := GaussianExponentialReference.unit_monotone hpq
-  apply distance_radius_mono _ _ _ _ _ _ (positive_product _ _ (unit_positive q) (unit_positive p)) (unit_positive p) _
-    (point_at _ _ q p regular)
-  ipra_le 𝔞(unit p)*sl grow
+  exact point_at_later _ _ p q regular hpq
 
 theorem successor_sample (f : PR 2) (p E i R x : PTm n)
     (h : Γ ⊢[PRAAx] GaussianRadiusExponentialName.input f R x) (hi : Γ ⊢[PRAAx] le (succ i) E) :
