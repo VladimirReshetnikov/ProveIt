@@ -17,7 +17,7 @@ set_option maxHeartbeats 1500000
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalNamedLog
 
 open_ipra
-open LeanProofs.IPRA.Foundations.FiniteQueryDemand (finiteMaximum finiteMaximum_at)
+open LeanProofs.IPRA.Foundations.FiniteQueryDemand (finiteMaximum finiteMaximum_succ_bound)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaNegativeIntervalNamedLogVariation (modulus rational_rate)
@@ -60,9 +60,7 @@ private theorem demand_at (s E N : PTm n) : Γ ⊢[PRAAx] inst2 demandBody s (pa
 
 theorem clock_demand (p E N s : PTm n) (hs : Γ ⊢[PRAAx] le s (succ p)) :
     Γ ⊢[PRAAx] le (succ (modulus s E N)) (clock p E N) := by
-  have hs' : Γ ⊢[PRAAx] lt s (succ (succ p)) := (succ_monus_succ _ _).eqTrans hs
-  have below := le_congr (demand_at s E N) (.eqRefl _) (finiteMaximum_at demandBody hs')
-  exact le_congr (succ_eq_add_one _).eqSymm (succ_eq_add_one _).eqSymm (add_le_add_right one below)
+  exact finiteMaximum_succ_bound demandBody hs (demand_at s E N)
 
 theorem name_at (f : PR 2) (p x E N : PTm n) : Γ ⊢[PRAAx]
     ap2 (nameF f) p (data x E N) ≐ sample f p x E N := by

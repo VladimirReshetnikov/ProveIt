@@ -17,7 +17,7 @@ set_option autoImplicit false
 namespace LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicImproper
 
 open_ipra
-open LeanProofs.IPRA.Foundations.FiniteQueryDemand (finiteMaximum finiteMaximum_at)
+open LeanProofs.IPRA.Foundations.FiniteQueryDemand (finiteMaximum finiteMaximum_succ_bound)
 open GaussianEulerLogarithmicContinuity (modulus subst_modulus)
 open GaussianNamedRightHalfPlane (source threshold radius numerator denominator actual_late_source)
 open GaussianNamedInverseRate (rateNumerator rateDenominator denominator_positive rate_at)
@@ -67,10 +67,7 @@ theorem clock_margin (f : PR 2) (p j x A : PTm n) :
 
 theorem clock_demand (f : PR 2) (p j x A s : PTm n) (h : Γ ⊢[PRAAx] le s (outputPrecision p)) :
     Γ ⊢[PRAAx] le (succ (modulus s j (radius f x) (two*A))) (clock f p j x A) := by
-  have hs : Γ ⊢[PRAAx] lt s (succ (outputPrecision p)) := (succ_monus_succ _ _).eqTrans h
-  have entry := le_congr (demand_at s j (radius f x) A) (.eqRefl _) (finiteMaximum_at demandBody hs)
-  exact le_trans (le_congr (succ_eq_add_one _).eqSymm (succ_eq_add_one _).eqSymm
-    (add_le_add_right one entry)) (le_add_left _ _)
+  exact le_trans (finiteMaximum_succ_bound demandBody h (demand_at s j (radius f x) A)) (le_add_left _ _)
 
 private theorem output_unit (p : PTm n) : Γ ⊢[PRAAx] unit (outputPrecision p) ≐ num 8*unit p := by
   have eq : Γ ⊢[PRAAx] outputPrecision p ≐ succ (succ (succ p)) := by unfold outputPrecision; ipra_ring

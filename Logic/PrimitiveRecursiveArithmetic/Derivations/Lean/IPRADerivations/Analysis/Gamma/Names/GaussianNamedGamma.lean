@@ -17,7 +17,7 @@ set_option autoImplicit false
 namespace LeanProofs.IPRA.Analysis.GaussianNamedGamma
 
 open_ipra
-open LeanProofs.IPRA.Foundations.FiniteQueryDemand (finiteMaximum finiteMaximum_at)
+open LeanProofs.IPRA.Foundations.FiniteQueryDemand (finiteMaximum finiteMaximum_succ_bound)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaHalfPlaneInputContinuity (modulus subst_modulus original_gamma_observations)
 open GaussianGammaReciprocalInverse (gammaF gammaData)
@@ -70,12 +70,7 @@ theorem clock_margin (f : PR 2) (p x A : PTm n) :
 
 theorem clock_demand (f : PR 2) (p x A s : PTm n) (hs : Γ ⊢[PRAAx] le s (succ p)) :
     Γ ⊢[PRAAx] le (succ (modulus s (radius f x) (two*A))) (clock f p x A) := by
-  have hs' : Γ ⊢[PRAAx] lt s (succ (succ p)) := (succ_monus_succ _ _).eqTrans hs
-  have maximum := le_congr (demand_at s (radius f x) A) (.eqRefl _)
-    (finiteMaximum_at demandBody hs')
-  have next := le_congr (succ_eq_add_one _).eqSymm (succ_eq_add_one _).eqSymm
-    (add_le_add_right one maximum)
-  exact le_trans next (le_add_left _ _)
+  exact le_trans (finiteMaximum_succ_bound demandBody hs (demand_at s (radius f x) A)) (le_add_left _ _)
 
 theorem input_observations (f : PR 2) (x r t m : PTm n) (h : Γ ⊢[PRAAx] pointCN f x)
     (hr : Γ ⊢[PRAAx] le (succ m) r) (ht : Γ ⊢[PRAAx] le (succ m) t) :

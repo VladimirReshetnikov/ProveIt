@@ -16,7 +16,7 @@ set_option autoImplicit false
 namespace LeanProofs.IPRA.Analysis.GaussianNamedFiniteEuler
 
 open_ipra
-open LeanProofs.IPRA.Foundations.FiniteQueryDemand (finiteMaximum finiteMaximum_at)
+open LeanProofs.IPRA.Foundations.FiniteQueryDemand (finiteMaximum finiteMaximum_succ_bound)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianBetaAllDegreeInverseContinuity (gain)
 open GaussianNamedRightHalfPlane (threshold radius numerator denominator actual_late_source)
@@ -85,10 +85,7 @@ theorem clock_margin (f : PR 2) (p x A N : PTm n) : Γ ⊢[PRAAx] le (threshold 
 
 theorem clock_demand (f : PR 2) (p x A N s : PTm n) (hs : Γ ⊢[PRAAx] le s (succ p)) : Γ ⊢[PRAAx]
     le (succ (modulus s (radius f x) (two*A) N)) (clock f p x A N) := by
-  have hs' : Γ ⊢[PRAAx] lt s (succ (succ p)) := (succ_monus_succ _ _).eqTrans hs
-  have maximum := le_congr (demand_at s (radius f x) A N) (.eqRefl _) (finiteMaximum_at demandBody hs')
-  have next := le_congr (succ_eq_add_one _).eqSymm (succ_eq_add_one _).eqSymm (add_le_add_right one maximum)
-  exact le_trans next (le_add_left _ _)
+  exact le_trans (finiteMaximum_succ_bound demandBody hs (demand_at s (radius f x) A N)) (le_add_left _ _)
 
 private theorem observations_of_le (f : PR 2) (p q x A N : PTm n)
     (h : Γ ⊢[PRAAx] source f x A N) (hpq : Γ ⊢[PRAAx] le p q) : Γ ⊢[PRAAx]

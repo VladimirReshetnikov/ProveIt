@@ -97,6 +97,14 @@ theorem finiteMaximum_at (body : PTm 2) {N i x : PTm n}
       Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using one
   exact Prf.impE guarded hi
 
+/-- A decoded query at or below the horizon has its successor bounded by
+the successor of the maximum fold. -/
+theorem finiteMaximum_succ_bound (body : PTm 2) {H i x value : PTm n}
+    (hi : Γ ⊢[PRAAx] le i H) (readback : Γ ⊢[PRAAx] inst2 body i x ≐ value) :
+    Γ ⊢[PRAAx] le (succ value) (succ (finiteMaximum body (succ H) x)) :=
+  Common.succ_le_succ
+    (le_congr readback (.eqRefl _) (finiteMaximum_at body ((succ_monus_succ _ _).eqTrans hi)))
+
 private theorem le_iff_lt_succ {i H : PTm n} :
     Γ ⊢[PRAAx] Fm.iff (le i H) (lt i (succ H)) :=
   .iffI (.impI ((succ_monus_succ _ _).eqTrans Prf.hyp0))

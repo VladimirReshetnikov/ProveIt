@@ -20,7 +20,7 @@ set_option maxHeartbeats 1000000
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalNamedDemand
 
 open_ipra
-open LeanProofs.IPRA.Foundations.FiniteQueryDemand (finiteMaximum finiteMaximum_at)
+open LeanProofs.IPRA.Foundations.FiniteQueryDemand (finiteMaximum finiteMaximum_succ_bound)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent cross_at cross_refl cross_symm)
@@ -103,10 +103,8 @@ theorem native_source (f : PR 2) (k x R : PTm n) (h : Γ ⊢[PRAAx] source f x R
 
 theorem clock_demand (modulus : Modulus) (p R s : PTm n) (hs : Γ ⊢[PRAAx] le s (succ p)) :
     Γ ⊢[PRAAx] le (succ (ap2 modulus.inputClockF R s)) (clock modulus p R) := by
-  have inside : Γ ⊢[PRAAx] lt s (succ (succ p)) := (succ_monus_succ _ _).eqTrans hs
-  have top : Γ ⊢[PRAAx] le (ap2 modulus.inputClockF R s) (finiteMaximum (demandBody modulus) (succ (succ p)) R) :=
-    by simpa [demandBody,inst2] using finiteMaximum_at (demandBody modulus) (x := R) inside
-  exact le_congr (succ_eq_add_one _).eqSymm (succ_eq_add_one _).eqSymm (add_le_add_right one top)
+  exact finiteMaximum_succ_bound (demandBody modulus) (x := R) hs
+    (by simp [demandBody,inst2] <;> exact .eqRefl _)
 
 theorem late_rate (modulus : Modulus) (f g : PR 2) (s k l x y R : PTm n)
     (hf : Γ ⊢[PRAAx] source f x R) (hg : Γ ⊢[PRAAx] source g y R)

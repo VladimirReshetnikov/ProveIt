@@ -18,7 +18,7 @@ set_option maxHeartbeats 1250000
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalDeflatedNamed
 
 open_ipra
-open LeanProofs.IPRA.Foundations.FiniteQueryDemand (finiteMaximum finiteMaximum_at)
+open LeanProofs.IPRA.Foundations.FiniteQueryDemand (finiteMaximum finiteMaximum_succ_bound)
 open GaussianBarnesCanonicalDeflatedValueContinuity (inputClock uniform_input)
 open GaussianBarnesCanonicalNamedDemand (native_source)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -108,13 +108,10 @@ theorem neighborhood_at (f : PR 2) (k x m : PTm n) (h : Γ ⊢[PRAAx] neighborho
 theorem clock_demand (p R m s : PTm n) (hs : Γ ⊢[PRAAx] le s (succ p)) :
     Γ ⊢[PRAAx] le (succ (inputClock R m s)) (clock p R m) := by
   let X := pairT R m
-  have inside : Γ ⊢[PRAAx] lt s (succ (succ p)) := (succ_monus_succ _ _).eqTrans hs
   have read : Γ ⊢[PRAAx] inst2 demandBody s X ≐ inputClock R m s := by
     ipra_congr (inputClock (var 0) (var 1) (var 2) : PTm 3) with
       [fst_pair R m, snd_pair R m, .eqRefl s] using [demandBody,inst2,X]
-  have raw := finiteMaximum_at demandBody (x := X) inside
-  have top := le_congr read (.eqRefl _) raw
-  exact le_congr (succ_eq_add_one _).eqSymm (succ_eq_add_one _).eqSymm (add_le_add_right one top)
+  exact finiteMaximum_succ_bound demandBody hs read
 
 theorem late_rate (f g : PR 2) (s k l x y R m : PTm n)
     (hf : Γ ⊢[PRAAx] source f x R m) (hg : Γ ⊢[PRAAx] source g y R m)

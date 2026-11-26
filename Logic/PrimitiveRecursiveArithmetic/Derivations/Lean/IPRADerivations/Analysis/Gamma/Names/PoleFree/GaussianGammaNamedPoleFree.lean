@@ -16,7 +16,7 @@ set_option maxHeartbeats 1500000
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNamedPoleFree
 
 open_ipra
-open LeanProofs.IPRA.Foundations.FiniteQueryDemand (finiteMaximum finiteMaximum_at)
+open LeanProofs.IPRA.Foundations.FiniteQueryDemand (finiteMaximum finiteMaximum_succ_bound)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaHalfPlaneInputContinuity (modulus subst_modulus)
@@ -64,9 +64,7 @@ private theorem demand_at (s R E : PTm n) : Γ ⊢[PRAAx] inst2 demandBody s (pa
 
 theorem clock_demand (p R E s : PTm n) (hs : Γ ⊢[PRAAx] le s (succ p)) :
     Γ ⊢[PRAAx] le (succ (modulus s R E)) (clock p R E) := by
-  have hs' : Γ ⊢[PRAAx] lt s (succ (succ p)) := (succ_monus_succ _ _).eqTrans hs
-  have below := le_congr (demand_at s R E) (.eqRefl _) (finiteMaximum_at demandBody hs')
-  exact le_congr (succ_eq_add_one _).eqSymm (succ_eq_add_one _).eqSymm (add_le_add_right one below)
+  exact finiteMaximum_succ_bound demandBody hs (demand_at s R E)
 
 theorem name_at (f : PR 2) (p x R E : PTm n) : Γ ⊢[PRAAx]
     ap2 (nameF f) p (data x R E) ≐ sample f p x R E := by

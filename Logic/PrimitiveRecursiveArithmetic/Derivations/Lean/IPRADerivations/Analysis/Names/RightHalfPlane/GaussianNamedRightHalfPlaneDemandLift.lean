@@ -17,7 +17,7 @@ set_option maxHeartbeats 1200000
 namespace LeanProofs.IPRA.Analysis.GaussianNamedRightHalfPlaneDemandLift
 
 open_ipra
-open LeanProofs.IPRA.Foundations.FiniteQueryDemand (finiteMaximum finiteMaximum_at)
+open LeanProofs.IPRA.Foundations.FiniteQueryDemand (finiteMaximum finiteMaximum_succ_bound)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNamedRightHalfPlane (threshold)
@@ -86,12 +86,7 @@ theorem clock_margin (map : RationalMap) (p M R : PTm n) : Γ ⊢[PRAAx] le (thr
 
 theorem clock_demand (map : RationalMap) (p M R s : PTm n) (h : Γ ⊢[PRAAx] le s (succ p)) :
     Γ ⊢[PRAAx] le (succ (ap3 map.demand s R (two*M))) (clock map p M R) := by
-  have hs : Γ ⊢[PRAAx] lt s (succ (succ p)) := (succ_monus_succ _ _).eqTrans h
-  have maximum := le_congr (demand_at map s R (two*M)) (.eqRefl _)
-    (finiteMaximum_at (demandBody map) hs)
-  have next := le_congr (succ_eq_add_one _).eqSymm (succ_eq_add_one _).eqSymm
-    (add_le_add_right one maximum)
-  exact le_trans next (le_add_left _ _)
+  exact le_trans (finiteMaximum_succ_bound (demandBody map) h (demand_at map s R (two*M))) (le_add_left _ _)
 
 theorem late_rate (map : RationalMap) (f g : PR 2) (s r t x y M R : PTm n)
     (hf : Γ ⊢[PRAAx] source f x M R) (hg : Γ ⊢[PRAAx] source g y M R)
