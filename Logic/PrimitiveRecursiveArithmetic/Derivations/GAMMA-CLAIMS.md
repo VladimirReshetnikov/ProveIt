@@ -3065,3 +3065,6 @@ The exponential of the actual combined logarithmic remainder approaches the exac
 
 The actual named prefactor exponent difference is exactly `S−1/2−(1+γ)*(z+1/2)`, with the original Stirling and Euler constants and their certified arithmetic.
 [GaussianBarnesCanonicalPrefactorShiftAlgebra](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalPrefactorShiftAlgebra.lean), [GaussianBarnesCanonicalPrefactorShiftBinding](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalPrefactorShiftBinding.lean)
+
+Equal Gaussian fractions on a fixed certified disk give identical cofinal logarithmic-derivative observations at a common precision. The original named Barnes quotient agrees with the native rational quotient under exact rational endpoint and step equivalences, including independently chosen endpoint disks.
+[GaussianBarnesCanonicalDerivativeFractionProperness](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDerivativeFractionProperness.lean), [GaussianBarnesCanonicalNamedQuotientBinding](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalNamedQuotientBinding.lean)
