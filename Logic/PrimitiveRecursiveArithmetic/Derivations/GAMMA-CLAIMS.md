@@ -3113,3 +3113,6 @@ Comparing the actual padded synthetic quotients and finite harmonic correction g
 
 A uniform Lipschitz bound and all-sample cap for the original kept-prefix derivative follow from the checked head and prefactor bounds and the actual named sum and product observation laws.
 [GaussianNamedBoundedSumObservation](Lean/IPRADerivations/Analysis/GaussianNamedBoundedSumObservation.lean), [GaussianBarnesCanonicalPrefixDerivativeContinuity](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalPrefixDerivativeContinuity.lean)
+
+Given a checked primitive-recursive disk modulus, the genuine lifted sampler evaluates the original rational derivative at a late original input observation. It has closed iPRA regularity, common-disk properness, and an explicit late-readback bound.
+[GaussianNamedDiskDemandLift](Lean/IPRADerivations/Analysis/GaussianNamedDiskDemandLift.lean), [GaussianNamedDiskDemandReadback](Lean/IPRADerivations/Analysis/GaussianNamedDiskDemandReadback.lean), [GaussianBarnesCanonicalNamedDerivative](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalNamedDerivative.lean)
