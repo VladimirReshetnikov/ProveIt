@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Barnes.CanonicalProducts.GaussianBarnesCanonical
 import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialReference
 import IPRADerivations.Analysis.Names.GaussianNameBounds
 import IPRADerivations.Foundations.FiniteQueryDemand
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateRadius
 
 /-!
 # Lift the original rational Barnes value to regular Gaussian names

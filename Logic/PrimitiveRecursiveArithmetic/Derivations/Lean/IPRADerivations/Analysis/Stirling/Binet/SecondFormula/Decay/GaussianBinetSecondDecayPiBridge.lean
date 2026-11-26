@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.Decay.GaussianBinetSecondDecayPointwise
 import IPRADerivations.Analysis.Stirling.Binet.Bose.CompactIntegrand.GaussianBinetBoseExponential
-import IPRADerivations.Analysis.Stirling.Binet.Kernel.GaussianBinetKernelImaginaryRatioCofinal
+import IPRADerivations.Analysis.Stirling.Binet.Kernel.HyperbolicForm.GaussianBinetKernelImaginaryRatioCofinal
 
 /-!
 # Freezing the signed pi exponent at a compact time budget

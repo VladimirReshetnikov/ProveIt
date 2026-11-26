@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Barnes.FunctionalEquations.UnitShift.GaussianBarnesCanonicalHarmonicRemainder
 import IPRADerivations.Analysis.Barnes.FunctionalEquations.UnitShift.GaussianBarnesCanonicalTerminalRemainder
 import IPRADerivations.Analysis.Stirling.Binet.StirlingBounds.GaussianBinetStirlingRealBound
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedSmallPerturbationTransport
+import IPRADerivations.Analysis.Names.Rates.Perturbations.GaussianNamedSmallPerturbationTransport
 
 /-!
 # Quantitative bound on the combined Barnes shift remainder

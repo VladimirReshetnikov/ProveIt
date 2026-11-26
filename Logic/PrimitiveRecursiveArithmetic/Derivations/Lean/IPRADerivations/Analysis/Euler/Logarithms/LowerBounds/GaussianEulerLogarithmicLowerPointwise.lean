@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.GaussianEulerLowerLogarithmPower
-import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.GaussianEulerLowerTransformedIntegrand
+import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.Powers.GaussianEulerLowerLogarithmPower
+import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.Integrands.GaussianEulerLowerTransformedIntegrand
 import IPRADerivations.Analysis.Euler.Logarithms.GaussianEulerLogarithmicCompactName
 import IPRADerivations.Analysis.Polynomials.RootFinding.Descent.GaussianDescentClockArithmetic
 

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.Taylor.GaussianBarnesCanonicalTaylorRecomposition
 import IPRADerivations.Analysis.Exponential.Polynomials.GaussianRationalPolynomialExponentialFixedRadius
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateRadius
 
 /-!
 # Recompose the original Barnes exponential with a weighted Taylor mass

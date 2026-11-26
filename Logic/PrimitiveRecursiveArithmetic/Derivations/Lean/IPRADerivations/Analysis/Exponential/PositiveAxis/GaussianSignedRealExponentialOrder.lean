@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianRealExponentialPositiveRepresentative
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRealOrderTransport
+import IPRADerivations.Analysis.Names.Rates.Order.GaussianNamedRealOrderTransport
 
 /-!
 # Order of the unchanged original exponential at signed real rationals

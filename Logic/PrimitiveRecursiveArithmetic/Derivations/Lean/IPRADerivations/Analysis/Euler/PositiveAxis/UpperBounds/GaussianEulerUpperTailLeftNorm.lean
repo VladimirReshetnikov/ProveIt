@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.HalfDecay.GaussianEulerHalfDecayLeftNorm
-import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactUpperTail
+import IPRADerivations.Analysis.Euler.CompactExhaustion.Tails.GaussianEulerCompactUpperTail
 
 /-!
 # Original Euler upper grids retain D_R times the left decay norm

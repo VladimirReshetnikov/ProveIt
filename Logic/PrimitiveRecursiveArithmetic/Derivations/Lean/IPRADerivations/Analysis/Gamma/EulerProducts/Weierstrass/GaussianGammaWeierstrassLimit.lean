@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaWeierstrassApproximant
 import IPRADerivations.Analysis.Gamma.EulerProducts.Weierstrass.GaussianGammaWeierstrassConvergence
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateTransport
 
 /-!
 # The original C11 Weierstrass limit

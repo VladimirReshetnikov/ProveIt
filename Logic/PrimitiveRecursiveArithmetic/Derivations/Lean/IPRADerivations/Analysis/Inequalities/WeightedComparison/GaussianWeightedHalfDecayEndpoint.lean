@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.HalfDecay.GaussianEulerHalfDecayTailBound
-import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactUpperTail
+import IPRADerivations.Analysis.Euler.CompactExhaustion.Tails.GaussianEulerCompactUpperTail
 
 /-!
 # Weighted half-decay quadratures retain one literal endpoint coefficient

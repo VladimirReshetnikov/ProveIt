@@ -1,6 +1,6 @@
-import IPRADerivations.Analysis.Beta.Endpoints.GaussianBetaAllDegreeMixedInverseContinuity
+import IPRADerivations.Analysis.Beta.Endpoints.AllDegrees.GaussianBetaAllDegreeMixedInverseContinuity
 import IPRADerivations.Analysis.Gamma.Names.GaussianNamedGamma
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateRadius
 
 /-!
 # Actual finite Euler reciprocal on a fixed regular complex name

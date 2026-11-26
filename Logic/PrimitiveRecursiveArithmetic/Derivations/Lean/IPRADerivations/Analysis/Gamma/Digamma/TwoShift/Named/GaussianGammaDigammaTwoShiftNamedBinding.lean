@@ -1,8 +1,8 @@
 import IPRADerivations.Analysis.Gamma.Digamma.TwoShift.Named.GaussianGammaDigammaTwoShiftNamedFreeze
 import IPRADerivations.Analysis.Gamma.Digamma.TwoShift.GaussianGammaDigammaTwoShiftBinding
 import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedAddRate
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedUniformRateClosure
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedFrozenScalarOrder
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedUniformRateClosure
+import IPRADerivations.Analysis.Names.Rates.Order.GaussianNamedFrozenScalarOrder
 import IPRADerivations.Analysis.Stirling.GammaLogarithm.GaussianStirlingNames
 
 /-!

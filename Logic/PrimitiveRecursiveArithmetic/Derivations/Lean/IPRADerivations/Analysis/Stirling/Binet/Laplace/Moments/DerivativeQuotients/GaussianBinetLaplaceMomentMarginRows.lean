@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.Moments.FiniteRows.GaussianBinetLaplaceMomentFrozenRows
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.Moments.Improper.GaussianBinetLaplaceMomentDecay
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRealOrderTransport
+import IPRADerivations.Analysis.Names.Rates.Order.GaussianNamedRealOrderTransport
 import IPRADerivations.Analysis.FiniteOperations.FiniteProducts.GaussianPositiveScalarProductBound
 import IPRADerivations.Analysis.Optimization.Convexity.RationalConvexEndpointBudget
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Convergence.GaussianLogGammaEulerResidualRadius

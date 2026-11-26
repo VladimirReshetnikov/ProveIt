@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.RootFinding.Adequacy.GaussianRootSamples
+import IPRADerivations.Analysis.Polynomials.RootFinding.Adequacy.Observations.GaussianRootSamples
 import IPRADerivations.Analysis.RationalArithmetic.Distances.GaussianRationalDistanceOrder
 import IPRADerivations.Analysis.Polynomials.Horner.GaussianRationalHornerPerturbation
 

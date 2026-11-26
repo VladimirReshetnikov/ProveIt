@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Gamma.Names.Input.GaussianGammaHalfPlaneInputCon
 import IPRADerivations.Analysis.Names.RightHalfPlane.GaussianNamedRightHalfPlane
 import IPRADerivations.Foundations.FiniteQueryDemand
 import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialReference
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateRadius
 
 /-!
 # A regular Gamma program on a fixed primitive-recursive complex name

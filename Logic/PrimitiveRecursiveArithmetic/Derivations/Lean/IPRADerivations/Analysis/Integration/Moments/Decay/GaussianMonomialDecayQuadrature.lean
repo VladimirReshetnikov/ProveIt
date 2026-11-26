@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Integration.Moments.Decay.GaussianMonomialDecayMajorant
 import IPRADerivations.Analysis.Euler.PositiveAxis.UpperBounds.GaussianEulerUpperTailLeftNorm
-import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.GaussianEulerLowerTransformedIntegrand
+import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.Integrands.GaussianEulerLowerTransformedIntegrand
 
 /-!
 # Actual monomial-decay quadrature with the exact factorial leading constant

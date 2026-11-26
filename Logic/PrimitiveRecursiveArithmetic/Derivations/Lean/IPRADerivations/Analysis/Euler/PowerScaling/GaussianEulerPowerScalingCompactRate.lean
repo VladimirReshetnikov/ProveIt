@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDampedNamedIntegrand
 import IPRADerivations.Analysis.Euler.ExponentialSubstitution.GaussianEulerExponentialNamedKernelRate
 import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDampedTimeRate
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateRadius
 
 /-!
 # Compact variation of the actual power-damped Euler integrand

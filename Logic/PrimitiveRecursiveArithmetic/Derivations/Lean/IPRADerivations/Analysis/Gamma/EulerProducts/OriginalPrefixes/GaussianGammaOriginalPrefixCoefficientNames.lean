@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.OriginalPrefixes.GaussianGammaOriginalPrefixCoefficientVariation
-import IPRADerivations.Analysis.Gamma.Taylor.GaussianGammaCoefficientRadiusIndependence
+import IPRADerivations.Analysis.Gamma.Taylor.NamedCoefficients.GaussianGammaCoefficientRadiusIndependence
 
 /-!
 # Original cofinal prefix coefficients are the canonical coefficient names

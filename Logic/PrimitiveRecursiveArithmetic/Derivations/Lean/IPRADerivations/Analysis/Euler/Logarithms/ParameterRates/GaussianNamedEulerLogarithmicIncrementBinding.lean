@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.Logarithms.Exhaustion.GaussianNamedEulerLogarithmicFrozenRate
 import IPRADerivations.Analysis.Gamma.Names.Derivatives.GaussianNamedGammaIncrementInput
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateComposition
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateComposition
 
 /-!
 # Common frozen base point for a named integral and its native increment

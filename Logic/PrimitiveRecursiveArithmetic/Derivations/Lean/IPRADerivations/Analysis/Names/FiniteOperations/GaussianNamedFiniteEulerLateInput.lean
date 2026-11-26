@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteEuler
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedLipschitzRate
+import IPRADerivations.Analysis.Names.Rates.Moduli.GaussianNamedLipschitzRate
 
 /-!
 # A common late rational input for the named finite Euler sampler

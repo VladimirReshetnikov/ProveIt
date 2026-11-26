@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Convexity.GaussianGammaNativeLogConvexityCore
 import IPRADerivations.Analysis.Gamma.EulerProducts.RationalLogarithm.GaussianGammaEulerRationalLogConvergence
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateRadius
 
 /-!
 # Weighted log convexity of the original positive rational Gamma names

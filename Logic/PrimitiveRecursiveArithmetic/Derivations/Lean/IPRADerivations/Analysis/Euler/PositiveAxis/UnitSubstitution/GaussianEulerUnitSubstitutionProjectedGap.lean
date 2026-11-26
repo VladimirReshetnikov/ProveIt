@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.PositiveAxis.UnitSubstitution.GaussianEulerUnitSubstitutionArbitraryPanels
+import IPRADerivations.Analysis.Euler.PositiveAxis.UnitSubstitution.Panels.GaussianEulerUnitSubstitutionArbitraryPanels
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitKernel.GaussianEulerUnitKernelNestedObservations
 
 /-!

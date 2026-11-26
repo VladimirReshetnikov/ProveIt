@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Barnes.CanonicalProducts.GaussianBarnesCanonicalValue
 import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalHeadSplit
 import IPRADerivations.Analysis.Barnes.Logarithms.FiniteRows.GaussianBarnesCanonicalFiniteLogProduct
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateTransport
 import IPRADerivations.Analysis.Gamma.Names.Input.GaussianGammaInputProperness
 import IPRADerivations.Analysis.Names.Order.GaussianFastValueCut
 

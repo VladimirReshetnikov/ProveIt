@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Names.Rates.RationalNamedLocalModulus
+import IPRADerivations.Analysis.Names.Rates.Moduli.RationalNamedLocalModulus
 import IPRADerivations.Analysis.Optimization.Convexity.RationalConvexClockRescale
 import IPRADerivations.DiophantineNumberTheory.MinkowskiRationalScaling
 

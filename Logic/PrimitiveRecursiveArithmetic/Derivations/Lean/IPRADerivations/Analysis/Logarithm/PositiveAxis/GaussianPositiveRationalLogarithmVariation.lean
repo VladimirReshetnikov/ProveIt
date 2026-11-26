@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Logarithm.PositiveAxis.GaussianPositiveRationalLogarithmProperness
 import IPRADerivations.Analysis.Series.Harmonic.RationalHarmonicIntervalVariation
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedLipschitzRate
+import IPRADerivations.Analysis.Names.Rates.Moduli.GaussianNamedLipschitzRate
 
 /-!
 # Original positive-rational logarithm variation

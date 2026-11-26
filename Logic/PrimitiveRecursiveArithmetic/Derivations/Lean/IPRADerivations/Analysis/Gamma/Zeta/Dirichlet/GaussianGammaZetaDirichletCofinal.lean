@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Zeta.Dirichlet.GaussianGammaZetaDirichletFiniteRate
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedLipschitzRate
+import IPRADerivations.Analysis.Names.Rates.Moduli.GaussianNamedLipschitzRate
 
 /-!
 # The original cofinal Dirichlet name on Re(s)>1

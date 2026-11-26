@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Barnes.CanonicalProducts.GaussianBarnesCanonicalPrefixConjugation
 import IPRADerivations.Analysis.Barnes.TailControl.GaussianBarnesCanonicalUniformCutoff
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateConjugation
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateComposition
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateConjugation
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateComposition
 
 /-!
 # Conjugation of the original cofinal Barnes value

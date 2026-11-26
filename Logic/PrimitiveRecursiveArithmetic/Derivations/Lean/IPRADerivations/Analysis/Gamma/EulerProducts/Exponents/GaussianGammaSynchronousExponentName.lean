@@ -1,6 +1,6 @@
-import IPRADerivations.Analysis.Gamma.Taylor.GaussianGammaExponentCoefficientPolynomial
+import IPRADerivations.Analysis.Gamma.Taylor.ExponentCoefficients.GaussianGammaExponentCoefficientPolynomial
 import IPRADerivations.Analysis.Gamma.Zeta.Coefficients.GaussianGammaZetaTailSeries
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedSmallPerturbationTransport
+import IPRADerivations.Analysis.Names.Rates.Perturbations.GaussianNamedSmallPerturbationTransport
 
 /-!
 # A regular exponent name with the original shared coefficient precision

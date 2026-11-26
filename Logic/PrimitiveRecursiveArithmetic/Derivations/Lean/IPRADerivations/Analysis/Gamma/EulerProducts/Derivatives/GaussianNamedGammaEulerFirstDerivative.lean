@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Euler.Logarithms.ParameterRates.GaussianNamedEulerLogarithmicNamedDerivative
 import IPRADerivations.Analysis.Euler.Logarithms.GaussianNamedEulerLogarithmicZeroIdentification
 import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedIncrementDifferenceQuotientProperness
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateTransport
 
 /-!
 # The first Euler derivative of the actual named Gamma evaluator

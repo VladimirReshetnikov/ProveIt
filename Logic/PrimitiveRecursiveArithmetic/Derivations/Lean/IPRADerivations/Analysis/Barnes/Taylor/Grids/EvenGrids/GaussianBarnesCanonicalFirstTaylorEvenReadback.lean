@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Taylor.Grids.EvenGrids.GaussianBarnesCanonicalCofinalTaylorEvenGridLimit
-import IPRADerivations.Analysis.Barnes.Taylor.Grids.GaussianBarnesCanonicalCofinalTaylorGridWindows
+import IPRADerivations.Analysis.Barnes.Taylor.Grids.Cofinal.GaussianBarnesCanonicalCofinalTaylorGridWindows
 
 /-!
 # Literal signed quotients in the first two-sided Barnes grid

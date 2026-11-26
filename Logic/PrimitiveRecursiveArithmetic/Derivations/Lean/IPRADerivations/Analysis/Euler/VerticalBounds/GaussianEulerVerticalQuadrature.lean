@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerVerticalPointwise
 import IPRADerivations.Analysis.Integration.Quadrature.GaussianPositiveRadiusQuadrature
-import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerImproperName
+import IPRADerivations.Analysis.Euler.CompactExhaustion.Names.GaussianEulerImproperName
 
 /-!
 # Vertical domination of the original Euler quadrature observations

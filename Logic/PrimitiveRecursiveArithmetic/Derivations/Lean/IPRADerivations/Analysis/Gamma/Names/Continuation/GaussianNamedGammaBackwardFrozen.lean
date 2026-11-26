@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.GaussianNamedGammaBackwardShift
 import IPRADerivations.Analysis.Gamma.Names.GaussianNamedGammaLateInput
 import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedMultiplyRate
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateRadius
 
 /-!
 # Rounds for the backward Gamma construction at exact native inputs

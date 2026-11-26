@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.GammaIncrements.GaussianStirlingGammaFractionalIncrementLogGap
-import IPRADerivations.Analysis.Beta.Endpoints.GaussianBetaUpperPowerCancellation
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedLipschitzRate
+import IPRADerivations.Analysis.Beta.Endpoints.Upper.GaussianBetaUpperPowerCancellation
+import IPRADerivations.Analysis.Names.Rates.Moduli.GaussianNamedLipschitzRate
 import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedDifferenceQuotientProperness
 
 /-!

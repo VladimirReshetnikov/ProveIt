@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Taylor.Grids.MixedGrids.GaussianBarnesCanonicalMixedTaylorGridGeometry
-import IPRADerivations.Analysis.Barnes.Taylor.Grids.GaussianBarnesCanonicalFiniteTaylorDiskGridLimit
+import IPRADerivations.Analysis.Barnes.Taylor.Grids.Finite.GaussianBarnesCanonicalFiniteTaylorDiskGridLimit
 
 /-!
 # A shared Taylor approximation for the two cofinal Barnes grids

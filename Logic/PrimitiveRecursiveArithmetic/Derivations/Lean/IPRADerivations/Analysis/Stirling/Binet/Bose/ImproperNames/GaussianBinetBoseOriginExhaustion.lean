@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.Bose.CompactIntegrand.GaussianBinetBoseCompactAlignment
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateRadius
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateTransport
 
 /-!
 # Dyadic exhaustion of the original Bose integral at the origin

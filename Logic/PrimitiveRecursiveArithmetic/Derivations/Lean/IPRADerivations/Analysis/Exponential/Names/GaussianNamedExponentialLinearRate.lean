@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Exponential.Estimates.GaussianExponentialLinearRemainder
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedLipschitzRate
+import IPRADerivations.Analysis.Names.Rates.Moduli.GaussianNamedLipschitzRate
 
 /-!
 # Quadratic linearization of the original exponential of a small name

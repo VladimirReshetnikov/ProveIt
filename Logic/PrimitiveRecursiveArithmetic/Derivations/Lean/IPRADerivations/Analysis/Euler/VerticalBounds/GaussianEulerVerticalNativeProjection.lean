@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Names.Symmetry.GaussianGammaRealValues
-import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.GaussianEulerLowerPowerCoefficients
+import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.Powers.GaussianEulerLowerPowerCoefficients
 
 /-!
 # Original native real arguments for the vertical Euler comparison

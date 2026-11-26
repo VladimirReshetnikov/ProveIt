@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.Binet.Kernel.GaussianBinetKernelTail
+import IPRADerivations.Analysis.Stirling.Binet.Kernel.Bounds.GaussianBinetKernelTail
 
 /-!
 # The cofinal Binet kernel name

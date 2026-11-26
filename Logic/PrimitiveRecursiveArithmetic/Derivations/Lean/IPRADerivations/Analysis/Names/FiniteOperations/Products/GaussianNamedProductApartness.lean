@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedSmallPerturbationTransport
+import IPRADerivations.Analysis.Names.Rates.Perturbations.GaussianNamedSmallPerturbationTransport
 import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.GaussianRationalLowerBounds
 
 /-!

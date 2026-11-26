@@ -3,9 +3,9 @@ import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialRadiusIndep
 import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameConjugation
 import IPRADerivations.Analysis.Exponential.Names.GaussianNamedExponentialLinearRate
 import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedDifferenceQuotientProperness
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedDifferenceRate
+import IPRADerivations.Analysis.Names.Rates.Perturbations.GaussianNamedDifferenceRate
 import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedMultiplyRate
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateTransport
 
 /-!
 # First-order exponential increment at a regular complex name

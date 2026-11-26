@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.HarmonicLogarithms.GaussianHarmonicIntervalLinearRemainder
-import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerExponentCompactBounds
+import IPRADerivations.Analysis.Euler.CompactExhaustion.ParameterBounds.GaussianEulerExponentCompactBounds
 
 /-!
 # First-order increments of the original positive rational logarithm

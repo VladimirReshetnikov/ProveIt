@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.Spans.GaussianRationalPivotSearch
+import IPRADerivations.Analysis.RationalArithmetic.Spans.Pivoting.GaussianRationalPivotSearch
 
 /-!
 # Preservation of a column with zero in the selected row

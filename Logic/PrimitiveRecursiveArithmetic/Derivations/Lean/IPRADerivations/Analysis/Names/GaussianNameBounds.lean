@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.FundamentalTheorem.GaussianGeneralFTAConstants
 import IPRADerivations.Analysis.Geometry.Distances.GaussianEuclideanDistanceName
-import IPRADerivations.Analysis.Polynomials.RootFinding.Adequacy.GaussianRootApproximationWitness
+import IPRADerivations.Analysis.Polynomials.RootFinding.Adequacy.Witnesses.GaussianRootApproximationWitness
 
 /-!
 # A computed uniform disk for every proper Gaussian name

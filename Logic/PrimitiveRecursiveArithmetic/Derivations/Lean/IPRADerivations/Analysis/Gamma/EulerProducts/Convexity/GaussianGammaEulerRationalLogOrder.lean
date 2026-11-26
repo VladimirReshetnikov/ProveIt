@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRealOrderTransport
+import IPRADerivations.Analysis.Names.Rates.Order.GaussianNamedRealOrderTransport
 import IPRADerivations.Analysis.Stirling.Telescoping.GaussianStirlingTailComparison
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.GaussianNamedGammaHalfShift
 

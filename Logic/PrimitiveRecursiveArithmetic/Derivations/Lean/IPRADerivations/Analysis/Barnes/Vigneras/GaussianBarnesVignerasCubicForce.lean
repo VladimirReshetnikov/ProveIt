@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Barnes.Logarithms.PositiveAxis.ThirdDerivative.GaussianBarnesCanonicalThirdLogarithmOrder
 import IPRADerivations.Analysis.FiniteOperations.PeriodicGrids.GaussianSignedObservationOrder
 import IPRADerivations.Analysis.FiniteOperations.PeriodicGrids.SignedCubicTaylorGrid
-import IPRADerivations.Analysis.Names.Rates.GaussianRationalModulus
+import IPRADerivations.Analysis.Names.Rates.Moduli.GaussianRationalModulus
 
 /-!
 # Cubic force of the actual far-axis Barnes discrepancy

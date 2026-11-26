@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.Taylor.Coefficients.FixedCoefficients.GaussianBarnesCanonicalFixedTaylorCoefficientName
 import IPRADerivations.Analysis.Barnes.Taylor.Coefficients.ProductCoefficients.GaussianBarnesCanonicalTaylorProductUniformGap
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedLipschitzRate
+import IPRADerivations.Analysis.Names.Rates.Moduli.GaussianNamedLipschitzRate
 
 /-!
 # Disk-uniform convergence of the original fixed-cutoff coefficient name

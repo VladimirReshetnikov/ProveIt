@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.Integration.Incomplete.GaussianEulerIncompleteSmallRationalEndpoint
 import IPRADerivations.Analysis.Gamma.Integrals.GaussianGammaCompactCutoffGeometry
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateTransport
 
 /-!
 # Original Euler tails at quadratically mapped cutoff endpoints

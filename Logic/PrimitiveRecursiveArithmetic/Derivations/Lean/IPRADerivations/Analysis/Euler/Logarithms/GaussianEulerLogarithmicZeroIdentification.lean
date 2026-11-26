@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.Logarithms.GaussianEulerLogarithmicOrderZero
 import IPRADerivations.Analysis.Euler.Logarithms.Exhaustion.GaussianEulerLogarithmicFixedCutoff
-import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerFixedCutoffApproximation
+import IPRADerivations.Analysis.Euler.CompactExhaustion.Cutoffs.GaussianEulerFixedCutoffApproximation
 import IPRADerivations.Analysis.Gamma.Integrals.GaussianEulerIntegralGammaIdentification
 import IPRADerivations.Analysis.Gamma.Names.Input.GaussianGammaHalfPlaneInputContinuity
 

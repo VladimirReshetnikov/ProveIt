@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Zeta.Mellin.Damped.GaussianGammaZetaMellinFiniteDampedModulus
 import IPRADerivations.Analysis.Gamma.Zeta.Mellin.Compact.GaussianGammaZetaMellinGeometricEnvelope
-import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.GaussianEulerLowerTailRootedMajorant
+import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.Tails.GaussianEulerLowerTailRootedMajorant
 import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerNamedLowerTail
 import IPRADerivations.Analysis.Integration.CompactGrids.Splits.GaussianCompactAlignedSplit
 

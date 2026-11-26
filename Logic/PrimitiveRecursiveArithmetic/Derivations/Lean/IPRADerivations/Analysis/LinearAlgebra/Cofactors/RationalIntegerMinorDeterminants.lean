@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.Spans.RationalSelectedMinors
+import IPRADerivations.Analysis.RationalArithmetic.Spans.Minors.RationalSelectedMinors
 import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianL1
 import IPRADerivations.Foundations.RuntimePermutationFactorialBound
 

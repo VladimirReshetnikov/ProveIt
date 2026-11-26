@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Gamma.NegativeAxis.Values.GaussianGammaNegativeI
 import IPRADerivations.Analysis.Gamma.NegativeAxis.Values.GaussianGammaNegativeIntervalNamedInverseFactor
 import IPRADerivations.Analysis.Gamma.NegativeAxis.Derivatives.GaussianGammaNegativeIntervalNamedInverseIncrementInput
 import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianNamedIncrementFrozenCoefficient
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedLipschitzRate
+import IPRADerivations.Analysis.Names.Rates.Moduli.GaussianNamedLipschitzRate
 
 /-!
 # The finite inverse shift derivative for arbitrary named increments

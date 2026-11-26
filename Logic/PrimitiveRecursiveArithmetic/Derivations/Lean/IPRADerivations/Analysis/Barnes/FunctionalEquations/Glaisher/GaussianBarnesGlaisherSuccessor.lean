@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.FunctionalEquations.Glaisher.GaussianBarnesGlaisherFinite
 import IPRADerivations.Analysis.Barnes.FunctionalEquations.Glaisher.GaussianBarnesGlaisherIncrement
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedDifferenceRate
+import IPRADerivations.Analysis.Names.Rates.Perturbations.GaussianNamedDifferenceRate
 import IPRADerivations.Analysis.Gamma.Ratios.GaussianGammaRationalWendelUniform
 
 /-!

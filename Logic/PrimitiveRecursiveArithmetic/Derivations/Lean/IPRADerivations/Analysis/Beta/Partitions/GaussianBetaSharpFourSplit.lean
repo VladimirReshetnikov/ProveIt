@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Integration.CompactGrids.Splits.GaussianCompactRiemannFourSplit
 import IPRADerivations.Analysis.Beta.Partitions.GaussianBetaSharpPartition
-import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactAdditivity
+import IPRADerivations.Analysis.Euler.CompactExhaustion.Grids.GaussianEulerCompactAdditivity
 import IPRADerivations.Analysis.Gamma.Integrals.GaussianGammaCompactQuadratureBoundary
 import IPRADerivations.Analysis.Gamma.Integrals.GaussianGammaEulerCompactQuadrature
 

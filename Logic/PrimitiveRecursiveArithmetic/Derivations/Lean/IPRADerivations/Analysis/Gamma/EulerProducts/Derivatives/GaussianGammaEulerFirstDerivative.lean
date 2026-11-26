@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Euler.Logarithms.ParameterRates.GaussianEulerLogarithmicDerivative
 import IPRADerivations.Analysis.Euler.Logarithms.GaussianEulerLogarithmicZeroIdentification
 import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedDifferenceQuotientProperness
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateTransport
 
 /-!
 # The original Gamma divided difference has the first Euler derivative

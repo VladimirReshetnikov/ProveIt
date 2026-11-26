@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayFactorBounds
 import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianPositiveExponentialMajorant
 import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianPositiveExponentialOrder
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRealOrderTransport
+import IPRADerivations.Analysis.Names.Rates.Order.GaussianNamedRealOrderTransport
 import IPRADerivations.Analysis.RationalArithmetic.Directions.GaussianRationalTravelScaling
 import IPRADerivations.Analysis.Beta.EulerProducts.GaussianEulerBetaProductPascal
 

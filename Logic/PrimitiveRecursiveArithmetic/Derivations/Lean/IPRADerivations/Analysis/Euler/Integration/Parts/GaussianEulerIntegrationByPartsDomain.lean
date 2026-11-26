@@ -1,8 +1,8 @@
 import IPRADerivations.Analysis.Gamma.Integrals.GaussianEulerIntegralGammaIdentification
 import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerVerticalNamedRadius
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.GaussianGammaEulerShiftLimit
-import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerLaterCutoffObservation
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedSmallPerturbationTransport
+import IPRADerivations.Analysis.Euler.CompactExhaustion.Cutoffs.GaussianEulerLaterCutoffObservation
+import IPRADerivations.Analysis.Names.Rates.Perturbations.GaussianNamedSmallPerturbationTransport
 
 /-!
 # Common cutoff domain for the two original Euler integrands

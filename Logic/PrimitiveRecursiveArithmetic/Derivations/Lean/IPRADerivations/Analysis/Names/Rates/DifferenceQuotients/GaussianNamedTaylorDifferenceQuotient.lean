@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedIncrementDifferenceQuotient
 import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedMultiplyRate
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedDifferenceRate
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
+import IPRADerivations.Analysis.Names.Rates.Perturbations.GaussianNamedDifferenceRate
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateTransport
 
 /-!
 # Divide a named Taylor estimate by an apart increment

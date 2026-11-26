@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Stirling.Binet.Bose.CompactIntegrand.GaussianBin
 import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactIntervalRescaling
 import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactMeshIndependence
 import IPRADerivations.Analysis.Integration.CompactGrids.Splits.GaussianCompactNamedAdditivity
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedSmallAddendRate
+import IPRADerivations.Analysis.Names.Rates.Perturbations.GaussianNamedSmallAddendRate
 
 /-!
 # Alignment and initial-strip bounds for the original Bose quadrature

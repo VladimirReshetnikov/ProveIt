@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.Integration.Parts.GaussianEulerIntegrationByPartsObservation
-import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactAdditivity
+import IPRADerivations.Analysis.Euler.CompactExhaustion.Grids.GaussianEulerCompactAdditivity
 
 /-!
 # The unchanged Euler quadrature versus its original power-decay rows

@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Barnes.TailControl.GaussianBarnesCanonicalUniformCutoff
 import IPRADerivations.Analysis.Barnes.Prefactors.GaussianBarnesCanonicalPrefactorLipschitz
 import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalHeadLipschitz
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateComposition
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateComposition
 
 /-!
 # Uniform continuity of the original Barnes evaluator on a disk

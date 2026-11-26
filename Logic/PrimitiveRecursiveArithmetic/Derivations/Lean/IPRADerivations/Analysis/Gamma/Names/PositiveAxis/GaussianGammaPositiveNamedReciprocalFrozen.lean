@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.Digamma.PositiveNames.GaussianNamedPositiveDigamma
 import IPRADerivations.Analysis.Gamma.Names.PositiveAxis.GaussianGammaPositiveNamedRationalFreeze
 import IPRADerivations.Analysis.Gamma.Digamma.GaussianGammaDigammaNative
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedDifferenceRate
+import IPRADerivations.Analysis.Names.Rates.Perturbations.GaussianNamedDifferenceRate
 import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedMultiplyRate
 
 /-!

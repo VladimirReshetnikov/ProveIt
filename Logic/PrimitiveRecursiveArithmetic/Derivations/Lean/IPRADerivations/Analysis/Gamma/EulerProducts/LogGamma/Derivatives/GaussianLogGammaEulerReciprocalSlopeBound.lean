@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Derivatives.GaussianLogGammaEulerReciprocalSlopeCofinal
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Derivatives.GaussianLogGammaEulerLinearSlope
 import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.GaussianRationalLowerBounds
-import IPRADerivations.Analysis.Beta.Endpoints.GaussianBetaUpperPowerCancellation
+import IPRADerivations.Analysis.Beta.Endpoints.Upper.GaussianBetaUpperPowerCancellation
 
 /-!
 # Uniform magnitude of the original cofinal Euler slope

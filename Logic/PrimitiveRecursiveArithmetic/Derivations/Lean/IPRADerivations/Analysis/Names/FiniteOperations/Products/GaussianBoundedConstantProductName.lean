@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedSmallPerturbationTransport
+import IPRADerivations.Analysis.Names.Rates.Perturbations.GaussianNamedSmallPerturbationTransport
 
 /-!
 # A constant-product name with a supplied uniform numerical clock

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.Spans.RationalAnnihilatorOnSpan
+import IPRADerivations.Analysis.RationalArithmetic.Spans.RankAndAnnihilators.RationalAnnihilatorOnSpan
 import IPRADerivations.Analysis.Polynomials.Annihilators.RationalAnnihilatorPolynomialWeight
 
 /-!

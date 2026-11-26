@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.Integration.Incomplete.GaussianEulerIncompleteName
-import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactAlignment
+import IPRADerivations.Analysis.Euler.CompactExhaustion.Grids.GaussianEulerCompactAlignment
 
 /-!
 # Original lower Euler pieces below a dyadic endpoint

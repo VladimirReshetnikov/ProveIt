@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Derivatives.Gaussia
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerCofinal
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Derivatives.GaussianLogGammaEulerReciprocalSlopeCofinal
 import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianBoundedConstantProductName
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedLipschitzRate
+import IPRADerivations.Analysis.Names.Rates.Moduli.GaussianNamedLipschitzRate
 
 /-!
 # Taylor estimate for the actual cofinal Euler names

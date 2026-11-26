@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Names.PoleFree.GaussianGammaNamedPoleFreeModulus
 import IPRADerivations.Foundations.FiniteQueryDemand
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateRadius
 
 /-!
 # Original Gamma on regular complex names with a uniform pole certificate

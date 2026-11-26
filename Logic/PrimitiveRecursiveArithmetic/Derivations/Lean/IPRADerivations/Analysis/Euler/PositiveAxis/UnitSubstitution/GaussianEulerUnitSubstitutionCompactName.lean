@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.PositiveAxis.UnitSubstitution.GaussianEulerUnitSubstitutionDensity
+import IPRADerivations.Analysis.Euler.PositiveAxis.UnitSubstitution.Densities.GaussianEulerUnitSubstitutionDensity
 import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactMeshIndependence
 
 /-!

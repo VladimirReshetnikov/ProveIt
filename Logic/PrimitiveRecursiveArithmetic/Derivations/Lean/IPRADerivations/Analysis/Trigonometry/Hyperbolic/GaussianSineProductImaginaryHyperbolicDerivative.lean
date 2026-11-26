@@ -1,6 +1,6 @@
-import IPRADerivations.Analysis.Names.Rates.GaussianBoundedConstantProductRate
+import IPRADerivations.Analysis.Names.Rates.Scaling.GaussianBoundedConstantProductRate
 import IPRADerivations.Analysis.Names.Differences.GaussianNamedDifferenceAlgebra
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateRadius
 import IPRADerivations.Analysis.Trigonometry.Pi.GaussianPiRationalScaleFactors
 import IPRADerivations.Analysis.Trigonometry.Hyperbolic.GaussianSineProductImaginaryExponentialShift
 

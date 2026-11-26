@@ -2,11 +2,11 @@ import IPRADerivations.Analysis.Euler.PositiveAxis.PositiveScaling.GaussianEuler
 import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDampedCompactName
 import IPRADerivations.Analysis.Euler.PositiveAxis.PositiveScaling.GaussianEulerPositiveScalingCutoffGeometry
 import IPRADerivations.Analysis.Euler.PositiveAxis.PositiveScaling.GaussianEulerPositiveScalingCancellation
-import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerFixedCutoffApproximation
+import IPRADerivations.Analysis.Euler.CompactExhaustion.Cutoffs.GaussianEulerFixedCutoffApproximation
 import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedMultiplyRate
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedDifferenceRate
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateComposition
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
+import IPRADerivations.Analysis.Names.Rates.Perturbations.GaussianNamedDifferenceRate
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateComposition
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateTransport
 
 /-!
 # Actual cofinal Euler quadrature with positive rational linear damping

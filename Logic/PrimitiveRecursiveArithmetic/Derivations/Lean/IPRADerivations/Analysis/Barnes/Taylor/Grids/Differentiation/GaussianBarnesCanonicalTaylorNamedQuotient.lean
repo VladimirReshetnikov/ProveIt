@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Barnes.Taylor.Grids.GaussianBarnesCanonicalCofinalTaylorGridIncrementRate
+import IPRADerivations.Analysis.Barnes.Taylor.Grids.Cofinal.GaussianBarnesCanonicalCofinalTaylorGridIncrementRate
 import IPRADerivations.Analysis.Names.Scaling.GaussianNamedNaturalScale
 
 /-!

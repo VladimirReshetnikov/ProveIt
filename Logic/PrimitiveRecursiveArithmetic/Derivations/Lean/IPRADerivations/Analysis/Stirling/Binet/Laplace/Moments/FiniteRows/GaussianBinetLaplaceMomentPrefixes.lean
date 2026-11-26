@@ -1,8 +1,8 @@
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.Moments.Improper.GaussianBinetLaplaceMomentHorizon
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.Moments.GaussianBinetLaplaceMomentAdditivity
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.Moments.Improper.GaussianBinetLaplaceMomentTail
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedSmallAddendRate
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
+import IPRADerivations.Analysis.Names.Rates.Perturbations.GaussianNamedSmallAddendRate
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateTransport
 
 /-!
 # Ordered compact prefixes of the actual weighted Binet moments

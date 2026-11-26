@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitTime.GaussianEulerUnitIntegrand
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitTime.GaussianEulerUnitEndpointDecay
-import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerImproperName
+import IPRADerivations.Analysis.Euler.CompactExhaustion.Names.GaussianEulerImproperName
 import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayCompactAntiderivative
 import IPRADerivations.Analysis.Exponential.IntegerPowers.GaussianRobinMeshExponential
 

@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Trigonometry.Hyperbolic.GaussianSineProductImagi
 import IPRADerivations.Analysis.Trigonometry.Hyperbolic.GaussianSineProductImaginaryHyperbolicProductRuleAlgebra
 import IPRADerivations.Analysis.Trigonometry.Pi.GaussianPiRationalScaleRepresentation
 import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedDifferenceQuotientProperness
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateTransport
 import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactModulus
 
 /-!

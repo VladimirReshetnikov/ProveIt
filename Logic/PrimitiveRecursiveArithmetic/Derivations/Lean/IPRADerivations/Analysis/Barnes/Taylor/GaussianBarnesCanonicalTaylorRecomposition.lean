@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Barnes.Taylor.CenteredCharts.GaussianBarnesCanonicalCenteredProductRate
 import IPRADerivations.Analysis.Exponential.Names.GaussianNamedExponentialRateFromConstant
 import IPRADerivations.Analysis.Exponential.Polynomials.GaussianRationalPolynomialExponentialRecomposition
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateComposition
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateComposition
 
 /-!
 # Transfer a stored exponent polynomial to the original Barnes value

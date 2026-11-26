@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Stirling.AllOrders.Truncation.GaussianStirlingAllOrderTruncationHorner
 import IPRADerivations.Analysis.Stirling.Expansions.GaussianStirlingExpansionConditionalError
 import IPRADerivations.Analysis.Stirling.Bounds.GaussianStirlingMultiplicativeBounds
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedLipschitzRate
+import IPRADerivations.Analysis.Names.Rates.Moduli.GaussianNamedLipschitzRate
 
 /-!
 # Transport named logarithmic truncation bounds to the original rate

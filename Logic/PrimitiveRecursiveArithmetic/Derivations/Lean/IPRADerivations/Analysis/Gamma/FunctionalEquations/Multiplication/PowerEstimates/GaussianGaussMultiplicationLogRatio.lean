@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.PowerEstimates.GaussianGaussMultiplicationLogarithm
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedLipschitzRate
+import IPRADerivations.Analysis.Names.Rates.Moduli.GaussianNamedLipschitzRate
 import IPRADerivations.Analysis.Series.Harmonic.RationalHarmonicIntervalProduct
 
 /-!

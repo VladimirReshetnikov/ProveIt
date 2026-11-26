@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.Names.GaussianBarnesCanonicalNamed
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateComposition
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateTransport
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateComposition
 
 /-!
 # Late rational readback and disk independence of the named Barnes value

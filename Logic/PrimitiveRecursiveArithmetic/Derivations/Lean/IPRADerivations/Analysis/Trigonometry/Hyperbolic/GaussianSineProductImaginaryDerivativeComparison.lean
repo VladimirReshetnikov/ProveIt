@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateComposition
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateComposition
 import IPRADerivations.Analysis.Names.Differences.GaussianNamedScaledDerivativeUniqueness
 import IPRADerivations.Analysis.Trigonometry.Hyperbolic.GaussianSineProductImaginaryHyperbolicDerivative
 

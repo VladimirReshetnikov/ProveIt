@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.Taylor.GaussianGammaDeflatedFiniteTaylor
+import IPRADerivations.Analysis.Gamma.Taylor.FinitePolynomials.GaussianGammaDeflatedFiniteTaylor
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.Taylor.GaussianGammaShiftedDeflatedIdentification
 
 /-!

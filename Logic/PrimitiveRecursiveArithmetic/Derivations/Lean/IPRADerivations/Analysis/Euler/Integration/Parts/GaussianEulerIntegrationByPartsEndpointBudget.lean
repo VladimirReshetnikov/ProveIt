@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.Integration.Parts.GaussianEulerIntegrationByPartsEndpointRescale
-import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.GaussianEulerLowerCofinalQuadrature
+import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.Tails.GaussianEulerLowerCofinalQuadrature
 
 /-!
 # Cofinal endpoint budget for the original affine grid

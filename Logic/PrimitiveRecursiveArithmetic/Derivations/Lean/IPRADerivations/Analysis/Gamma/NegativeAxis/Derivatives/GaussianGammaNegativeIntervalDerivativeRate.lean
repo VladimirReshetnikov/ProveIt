@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.NegativeAxis.Derivatives.GaussianGammaNegativeIntervalInverseStepQuotient
 import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedAddRate
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateRadius
 
 /-!
 # Original Gamma unit-step derivative on every negative interval

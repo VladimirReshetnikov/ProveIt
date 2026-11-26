@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentChordComparison
 import IPRADerivations.Analysis.Trigonometry.Arctangent.PartialSums.GaussianArctangentPartialTrig
 import IPRADerivations.Analysis.Trigonometry.Arctangent.PartialSums.GaussianArctangentPartialUnitEndpoint
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRealOrderTransport
+import IPRADerivations.Analysis.Names.Rates.Order.GaussianNamedRealOrderTransport
 
 /-!
 # Chord comparison on the original arctangent observations

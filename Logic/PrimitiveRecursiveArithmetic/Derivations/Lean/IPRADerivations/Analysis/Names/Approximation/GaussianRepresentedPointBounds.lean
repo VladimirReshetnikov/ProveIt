@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.RootFinding.Adequacy.GaussianRootApproximationWitness
+import IPRADerivations.Analysis.Polynomials.RootFinding.Adequacy.Witnesses.GaussianRootApproximationWitness
 
 /-!
 # The represented disk bound supplies the actual sample disk

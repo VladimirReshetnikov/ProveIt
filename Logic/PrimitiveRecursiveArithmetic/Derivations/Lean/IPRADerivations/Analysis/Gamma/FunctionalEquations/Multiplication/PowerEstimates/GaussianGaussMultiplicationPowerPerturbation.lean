@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialAddition
 import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialRadiusIndependence
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.PowerEstimates.GaussianGaussMultiplicationRelativeExponential
 import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedMultiplyRate
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateTransport
 
 /-!
 # Relative perturbation of the actual Gauss multiplication powers

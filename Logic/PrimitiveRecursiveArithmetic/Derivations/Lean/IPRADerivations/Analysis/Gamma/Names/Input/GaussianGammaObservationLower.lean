@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerReciprocalInverse
-import IPRADerivations.Analysis.Names.Rates.GaussianRationalLowerPerturbation
+import IPRADerivations.Analysis.Names.Rates.Order.GaussianRationalLowerPerturbation
 
 /-!
 # Quantitative separation for the original Gamma observations

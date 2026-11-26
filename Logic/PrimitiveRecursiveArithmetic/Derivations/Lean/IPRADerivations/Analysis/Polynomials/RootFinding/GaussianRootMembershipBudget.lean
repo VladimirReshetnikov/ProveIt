@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.RootFinding.Adequacy.GaussianRootApproximationWitness
+import IPRADerivations.Analysis.Polynomials.RootFinding.Adequacy.Witnesses.GaussianRootApproximationWitness
 
 /-!
 # Exact finite budgets for root membership and its converse

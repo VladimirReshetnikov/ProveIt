@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Series.ReciprocalSquares.GaussianReciprocalSquareInterval
 import IPRADerivations.Analysis.Names.Scaling.GaussianNamedNaturalScale
-import IPRADerivations.Analysis.Beta.Endpoints.GaussianBetaUpperEndpointInverse
+import IPRADerivations.Analysis.Beta.Endpoints.Upper.GaussianBetaUpperEndpointInverse
 import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRationalInverseQuadraticAlgebra
 
 /-!

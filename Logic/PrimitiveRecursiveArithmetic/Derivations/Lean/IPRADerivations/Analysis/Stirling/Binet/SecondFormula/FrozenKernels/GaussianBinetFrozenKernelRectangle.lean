@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.Binet.Kernel.GaussianBinetKernelFrequencyGrid
+import IPRADerivations.Analysis.Stirling.Binet.Kernel.FrequencyGrids.GaussianBinetKernelFrequencyGrid
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalFubini
 
 /-!

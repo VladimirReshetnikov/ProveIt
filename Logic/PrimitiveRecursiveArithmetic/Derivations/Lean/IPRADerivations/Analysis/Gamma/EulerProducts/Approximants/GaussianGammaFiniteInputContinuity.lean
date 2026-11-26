@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.GaussianGammaEulerContinuityReference
 import IPRADerivations.Analysis.Exponential.Estimates.GaussianRationalUniformExponentialLipschitz
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedLipschitzRate
+import IPRADerivations.Analysis.Names.Rates.Moduli.GaussianNamedLipschitzRate
 
 /-!
 # Uniform input continuity of the actual finite Euler Q_N sampler

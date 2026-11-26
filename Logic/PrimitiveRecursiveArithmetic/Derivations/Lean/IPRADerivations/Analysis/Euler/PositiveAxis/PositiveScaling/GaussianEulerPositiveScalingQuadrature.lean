@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.PositiveScaling.GaussianEulerPositiveScalingIntegrand
-import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactAdditivity
+import IPRADerivations.Analysis.Euler.CompactExhaustion.Grids.GaussianEulerCompactAdditivity
 
 /-!
 # The actual finite Euler quadrature under positive rational scaling

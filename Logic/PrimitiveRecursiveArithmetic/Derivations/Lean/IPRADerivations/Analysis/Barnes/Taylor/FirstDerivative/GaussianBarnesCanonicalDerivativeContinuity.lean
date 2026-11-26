@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.Cofinal.GaussianBarnesCanonicalDerivativeCofinal
 import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalFactorLipschitz
 import IPRADerivations.Analysis.Series.ReciprocalSquares.GaussianReciprocalSquareSumDistance
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedLipschitzRate
+import IPRADerivations.Analysis.Names.Rates.Moduli.GaussianNamedLipschitzRate
 import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedMultiplyRate
 
 /-!

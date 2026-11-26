@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.Coefficients.GaussianGammaFiniteCoefficientRecurrence
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.Coefficients.GaussianGammaRecurrenceWeights
-import IPRADerivations.Analysis.Gamma.Taylor.GaussianGammaAllDegreeCoefficientStability
+import IPRADerivations.Analysis.Gamma.Taylor.CoefficientEstimates.GaussianGammaAllDegreeCoefficientStability
 
 /-!
 # The exact recurrence on the original fixed Gamma coefficient samples

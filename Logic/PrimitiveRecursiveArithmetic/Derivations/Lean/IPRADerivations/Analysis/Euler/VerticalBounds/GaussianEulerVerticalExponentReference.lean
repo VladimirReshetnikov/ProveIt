@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerVerticalNativeProjection
 import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianBoundedConstantProductName
-import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.GaussianEulerRealIntegrandNonnegative
+import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.Integrands.GaussianEulerRealIntegrandNonnegative
 
 /-!
 # A shared-clock real projection of the original Euler exponent

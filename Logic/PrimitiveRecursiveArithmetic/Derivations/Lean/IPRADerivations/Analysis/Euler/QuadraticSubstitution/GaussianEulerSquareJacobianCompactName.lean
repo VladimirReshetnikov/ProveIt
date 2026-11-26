@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.QuadraticSubstitution.GaussianEulerSquareJacobianRate
-import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactAdditivity
+import IPRADerivations.Analysis.Euler.CompactExhaustion.Grids.GaussianEulerCompactAdditivity
 
 /-!
 # An actual compact name of the retimed quadratic Euler Jacobian

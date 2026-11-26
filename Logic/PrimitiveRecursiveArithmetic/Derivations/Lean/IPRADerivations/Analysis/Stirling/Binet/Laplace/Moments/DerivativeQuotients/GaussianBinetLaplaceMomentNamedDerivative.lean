@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.Moments.Named.GaussianBinetLaplaceMomentNamedShift
 import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedDifferenceQuotientRate
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateRadius
 
 /-!
 # Two-sided derivatives of the original named Binet moments

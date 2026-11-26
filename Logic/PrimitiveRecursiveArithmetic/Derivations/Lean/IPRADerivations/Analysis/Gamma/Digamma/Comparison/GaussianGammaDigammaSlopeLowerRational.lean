@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.Digamma.Comparison.GaussianGammaDigammaSlopeLower
 import IPRADerivations.Analysis.Gamma.Digamma.Series.GaussianGammaDigammaRescaling
 import IPRADerivations.Analysis.Gamma.Integrals.GaussianGammaCompactCutoffAlignment
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRealOrderTransport
+import IPRADerivations.Analysis.Names.Rates.Order.GaussianNamedRealOrderTransport
 
 /-!
 # Lower digamma slope for separately encoded positive rationals

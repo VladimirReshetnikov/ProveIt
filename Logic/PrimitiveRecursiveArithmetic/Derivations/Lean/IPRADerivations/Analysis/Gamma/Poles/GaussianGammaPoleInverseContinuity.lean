@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Poles.GaussianGammaPoleFactorContinuity
 import IPRADerivations.Analysis.Gamma.Poles.GaussianGammaPoleMultiplier
-import IPRADerivations.Analysis.Names.Rates.GaussianRationalLowerPerturbation
+import IPRADerivations.Analysis.Names.Rates.Order.GaussianRationalLowerPerturbation
 
 /-!
 # The original inverse pole factors on the half disk

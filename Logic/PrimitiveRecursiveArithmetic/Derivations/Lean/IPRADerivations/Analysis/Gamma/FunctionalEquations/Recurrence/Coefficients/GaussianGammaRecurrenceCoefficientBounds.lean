@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Gamma.Taylor.GaussianGammaUnitCoefficientMass
-import IPRADerivations.Analysis.Gamma.Taylor.GaussianGammaFiniteCoefficientStability
+import IPRADerivations.Analysis.Gamma.Taylor.DegreeTails.GaussianGammaUnitCoefficientMass
+import IPRADerivations.Analysis.Gamma.Taylor.CoefficientEstimates.GaussianGammaFiniteCoefficientStability
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.Coefficients.GaussianGammaRecurrenceWeightName
 import IPRADerivations.Foundations.FiniteQueryDemand
 

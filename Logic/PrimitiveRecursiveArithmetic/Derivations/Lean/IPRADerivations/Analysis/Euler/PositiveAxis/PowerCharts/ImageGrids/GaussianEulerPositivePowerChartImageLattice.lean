@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.ImageGrids.GaussianEulerPositivePowerChartCorrectedPanel
-import IPRADerivations.Analysis.Euler.PositiveAxis.UnitSubstitution.GaussianEulerUnitSubstitutionFloorCuts
+import IPRADerivations.Analysis.Euler.PositiveAxis.UnitSubstitution.Endpoints.GaussianEulerUnitSubstitutionFloorCuts
 import IPRADerivations.DiophantineNumberTheory.KhinchinConvergence
 
 /-!

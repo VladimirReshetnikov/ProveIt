@@ -2,8 +2,8 @@ import IPRADerivations.Analysis.Exponential.Names.GaussianNamedExponentialShiftD
 import IPRADerivations.Analysis.Trigonometry.Cyclic.GaussianCyclicExponentialSamples
 import IPRADerivations.Analysis.Polynomials.RootFinding.FundamentalTheorem.GaussianGeneralFTAConstants
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.ReciprocalGamma.GaussianGammaAdjacentCutoff
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateComposition
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateRadius
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateComposition
 
 /-!
 # Exponential increments with an independently certified linear term

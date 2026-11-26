@@ -1,8 +1,8 @@
 import IPRADerivations.Analysis.Gamma.Zeta.GaussianGammaZetaParameterRates
 import IPRADerivations.Analysis.Gamma.Zeta.Dirichlet.GaussianGammaZetaDirichletCofinal
 import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedFiniteSumFamilyRate
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateComposition
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateComposition
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateRadius
 
 /-!
 # Effective parameter continuity of the original Dirichlet sampler

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Names.Rates.GaussianModulusAggregateMap
+import IPRADerivations.Analysis.Names.Rates.Moduli.GaussianModulusAggregateMap
 import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianCoordinateRadius
 import IPRADerivations.Analysis.Geometry.Distances.GaussianEuclideanDistanceVariation
 

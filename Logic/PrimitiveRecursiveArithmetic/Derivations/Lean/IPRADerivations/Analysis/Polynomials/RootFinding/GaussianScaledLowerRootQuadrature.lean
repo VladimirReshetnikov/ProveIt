@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactLowerTail
+import IPRADerivations.Analysis.Euler.CompactExhaustion.Tails.GaussianEulerCompactLowerTail
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianScaledLowerBlockWeight
 
 /-!

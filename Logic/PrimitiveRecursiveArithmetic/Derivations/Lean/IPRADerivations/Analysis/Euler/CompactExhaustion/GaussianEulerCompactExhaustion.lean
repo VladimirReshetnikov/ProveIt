@@ -1,10 +1,10 @@
-import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactExhaustionUpperTail
+import IPRADerivations.Analysis.Euler.CompactExhaustion.Tails.GaussianEulerCompactExhaustionUpperTail
 import IPRADerivations.Analysis.Euler.Integration.Incomplete.GaussianEulerIncompleteIntervalRate
 import IPRADerivations.Analysis.Euler.Integration.Incomplete.GaussianEulerIncompleteSmallRationalEndpoint
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedDifferenceRate
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateComposition
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
+import IPRADerivations.Analysis.Names.Rates.Perturbations.GaussianNamedDifferenceRate
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateComposition
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateRadius
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateTransport
 
 /-!
 # Ordinary Euler quadrature on arbitrary enclosing rational panels

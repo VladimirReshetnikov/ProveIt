@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.FundamentalTheorem.GaussianGeneralFTARootName
-import IPRADerivations.Analysis.Polynomials.RootFinding.Adequacy.GaussianRootApproximationWitness
+import IPRADerivations.Analysis.Polynomials.RootFinding.Adequacy.Witnesses.GaussianRootApproximationWitness
 
 /-!
 # The constructed general FTA program is a fast Gaussian point name

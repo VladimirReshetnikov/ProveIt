@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.RationalArithmetic.Spans.RationalSubtupleSpan
-import IPRADerivations.Analysis.RationalArithmetic.Spans.RationalOriginalSpanMembership
+import IPRADerivations.Analysis.RationalArithmetic.Spans.RankAndAnnihilators.RationalSubtupleSpan
+import IPRADerivations.Analysis.RationalArithmetic.Spans.Membership.RationalOriginalSpanMembership
 
 /-!
 # Actual finite covers normalized to spans of subtuples

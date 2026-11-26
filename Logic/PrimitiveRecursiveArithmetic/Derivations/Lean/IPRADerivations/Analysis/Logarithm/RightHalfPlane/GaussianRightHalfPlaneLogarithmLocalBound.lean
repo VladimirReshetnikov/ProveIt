@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRightHalfPlaneArgumentLocalBound
 import IPRADerivations.Analysis.Logarithm.RightHalfPlane.GaussianRightHalfPlaneLogarithm
 import IPRADerivations.Analysis.Logarithm.PositiveAxis.GaussianPositiveRationalLogarithmVariation
-import IPRADerivations.Analysis.Beta.Endpoints.GaussianBetaUpperPowerCancellation
+import IPRADerivations.Analysis.Beta.Endpoints.Upper.GaussianBetaUpperPowerCancellation
 
 /-!
 # A uniform late-observation bound near one

@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Barnes.Deflation.GaussianBarnesCanonicalDeflatedValueContinuity
 import IPRADerivations.Analysis.Barnes.Deflation.GaussianBarnesCanonicalDeflatedValueUniformApartness
 import IPRADerivations.Analysis.Barnes.Names.GaussianBarnesCanonicalNamedDemand
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateRadius
 
 /-!
 # The original deflated Barnes coefficient on regular named inputs

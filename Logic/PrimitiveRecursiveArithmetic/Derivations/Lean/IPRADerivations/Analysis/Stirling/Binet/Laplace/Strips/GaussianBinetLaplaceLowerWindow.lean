@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.Strips.GaussianBinetLaplaceStrip
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianCompactScalarMajorant
 import IPRADerivations.Analysis.Integration.CompactGrids.Splits.GaussianCompactNamedAdditivity
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedSmallAddendRate
+import IPRADerivations.Analysis.Names.Rates.Perturbations.GaussianNamedSmallAddendRate
 
 /-!
 # Width bound for the original first Binet compact strip

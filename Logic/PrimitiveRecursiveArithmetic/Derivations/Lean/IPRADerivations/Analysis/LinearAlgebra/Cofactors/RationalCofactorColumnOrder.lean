@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.LinearAlgebra.Cofactors.RationalCofactorMinorBounds
-import IPRADerivations.Analysis.RationalArithmetic.Spans.RationalMinorOrderTransport
-import IPRADerivations.Analysis.RationalArithmetic.Spans.RationalMinorMaskReconstruction
+import IPRADerivations.Analysis.RationalArithmetic.Spans.Minors.RationalMinorOrderTransport
+import IPRADerivations.Analysis.RationalArithmetic.Spans.Minors.RationalMinorMaskReconstruction
 import IPRADerivations.Foundations.RuntimePermutationInsertion
 
 /-!

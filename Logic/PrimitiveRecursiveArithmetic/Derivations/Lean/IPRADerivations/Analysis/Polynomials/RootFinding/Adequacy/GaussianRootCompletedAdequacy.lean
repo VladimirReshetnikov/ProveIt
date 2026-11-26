@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.Adequacy.GaussianRootAdequacyTheorem
-import IPRADerivations.Analysis.Polynomials.RootFinding.Adequacy.GaussianRootDistanceZero
+import IPRADerivations.Analysis.Polynomials.RootFinding.Adequacy.Distances.GaussianRootDistanceZero
 
 /-!
 # Root adequacy and zero of the actual completed Euclidean distance

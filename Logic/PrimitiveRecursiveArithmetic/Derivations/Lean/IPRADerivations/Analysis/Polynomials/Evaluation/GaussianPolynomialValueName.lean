@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Polynomials.RootFinding.Adequacy.GaussianRootResidualFromHit
-import IPRADerivations.Analysis.Polynomials.RootFinding.Adequacy.GaussianRootApproximationWitness
+import IPRADerivations.Analysis.Polynomials.RootFinding.Adequacy.Membership.GaussianRootResidualFromHit
+import IPRADerivations.Analysis.Polynomials.RootFinding.Adequacy.Witnesses.GaussianRootApproximationWitness
 import IPRADerivations.Analysis.Geometry.Distances.GaussianEuclideanDistanceName
 import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.GaussianRationalSlackRemoval
 

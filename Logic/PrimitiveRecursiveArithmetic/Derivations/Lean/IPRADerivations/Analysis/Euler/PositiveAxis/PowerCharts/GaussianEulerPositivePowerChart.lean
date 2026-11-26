@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Names.Rates.GaussianBoundedConstantProductRate
-import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactPowerVariation
+import IPRADerivations.Analysis.Names.Rates.Scaling.GaussianBoundedConstantProductRate
+import IPRADerivations.Analysis.Euler.CompactExhaustion.ParameterBounds.GaussianEulerCompactPowerVariation
 import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayFactorBounds
 
 /-!

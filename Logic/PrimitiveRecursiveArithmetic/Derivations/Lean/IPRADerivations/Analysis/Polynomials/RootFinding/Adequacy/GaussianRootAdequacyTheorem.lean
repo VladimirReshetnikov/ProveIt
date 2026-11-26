@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Polynomials.RootFinding.Adequacy.GaussianRootSharpEvaluation
-import IPRADerivations.Analysis.Polynomials.RootFinding.Adequacy.GaussianRootSharpDistance
+import IPRADerivations.Analysis.Polynomials.RootFinding.Adequacy.Observations.GaussianRootSharpEvaluation
+import IPRADerivations.Analysis.Polynomials.RootFinding.Adequacy.Distances.GaussianRootSharpDistance
 
 /-!
 # The source root-adequacy proposition with both sharp estimates

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.LinearAlgebra.Cofactors.RationalCofactorDotProduct
 import IPRADerivations.Analysis.LinearAlgebra.Cofactors.RationalCofactorOriginalClearing
-import IPRADerivations.Analysis.RationalArithmetic.Spans.RationalOriginalAnnihilator
+import IPRADerivations.Analysis.RationalArithmetic.Spans.RankAndAnnihilators.RationalOriginalAnnihilator
 
 /-!
 # The bounded integer annihilator of the original rational rows

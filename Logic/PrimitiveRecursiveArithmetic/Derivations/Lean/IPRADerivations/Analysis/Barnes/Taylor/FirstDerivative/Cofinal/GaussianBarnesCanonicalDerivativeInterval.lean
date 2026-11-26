@@ -4,8 +4,8 @@ import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.Cofinal.GaussianBa
 import IPRADerivations.Analysis.Barnes.Logarithms.FiniteRows.GaussianBarnesCanonicalFiniteLogRows
 import IPRADerivations.Analysis.Integration.Quadrature.GaussianRationalQuadratureDifference
 import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedDifferenceQuotientProperness
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedLipschitzRate
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
+import IPRADerivations.Analysis.Names.Rates.Moduli.GaussianNamedLipschitzRate
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateTransport
 
 /-!
 # Summing the Barnes first-order increment estimates

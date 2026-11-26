@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Zeta.Mellin.GaussianGammaZetaMellinIdentity
 import IPRADerivations.Analysis.Gamma.Zeta.Dirichlet.GaussianGammaZetaDirichletProductParameterRate
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateTransport
 
 /-!
 # An effective parameter rate for the original improper Mellin sampler

@@ -1,9 +1,9 @@
 import IPRADerivations.Analysis.Gamma.Zeta.Mellin.Compact.GaussianGammaZetaMellinIntegrand
 import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedAddRate
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedDifferenceRate
+import IPRADerivations.Analysis.Names.Rates.Perturbations.GaussianNamedDifferenceRate
 import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedMultiplyRate
 import IPRADerivations.Analysis.Exponential.Estimates.GaussianRadiusExponentialLipschitzRate
-import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerExponentCompactBounds
+import IPRADerivations.Analysis.Euler.CompactExhaustion.ParameterBounds.GaussianEulerExponentCompactBounds
 
 /-!
 # Compact time modulus of the actual Mellin reciprocal

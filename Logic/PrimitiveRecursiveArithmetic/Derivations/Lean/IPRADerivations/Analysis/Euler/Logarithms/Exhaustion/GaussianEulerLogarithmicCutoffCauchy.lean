@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.Logarithms.Exhaustion.GaussianEulerLogarithmicCommonTails
 import IPRADerivations.Analysis.Euler.Logarithms.Exhaustion.GaussianEulerLogarithmicCutoffSplit
-import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCutoffCauchyComparison
+import IPRADerivations.Analysis.Euler.CompactExhaustion.Cutoffs.GaussianEulerCutoffCauchyComparison
 
 /-!
 # Cauchy estimates for the actual logarithmic Euler quadratures

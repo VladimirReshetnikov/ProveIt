@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Beta.Endpoints.GaussianBetaUpperRowDampedError
+import IPRADerivations.Analysis.Beta.Endpoints.Upper.GaussianBetaUpperRowDampedError
 import IPRADerivations.Analysis.Integration.Moments.Decay.GaussianMonomialDecayQuadrature
 
 /-!

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Expansions.GaussianStirlingExpansionExponentialError
 import IPRADerivations.Analysis.Stirling.Bounds.GaussianStirlingMultiplicative
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateTransport
 
 /-!
 # Error transport from a logarithmic Stirling truncation to the native quotient

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Taylor.Grids.Differentiation.GaussianBarnesCanonicalFiniteTaylorFirstPolynomial
-import IPRADerivations.Analysis.Barnes.Taylor.Grids.GaussianBarnesCanonicalFiniteTaylorDiskGridLimit
+import IPRADerivations.Analysis.Barnes.Taylor.Grids.Finite.GaussianBarnesCanonicalFiniteTaylorDiskGridLimit
 
 /-!
 # Linear error in the first quotient of the original fixed Barnes grid

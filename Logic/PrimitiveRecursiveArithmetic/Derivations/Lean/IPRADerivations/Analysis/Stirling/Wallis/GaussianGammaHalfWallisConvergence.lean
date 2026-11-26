@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.HalfInteger.GaussianGammaHalfPiName
 import IPRADerivations.Analysis.Gamma.HalfInteger.GaussianGammaHalfSqrtBrackets
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRealOrderTransport
+import IPRADerivations.Analysis.Names.Rates.Order.GaussianNamedRealOrderTransport
 
 /-!
 # One-sided convergence of the actual finite Wallis product

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Names.Aggregation.GaussianAggregateCoverTransport
 import IPRADerivations.Analysis.Polynomials.RootFinding.Characteristic.GaussianCharacteristicRootSupport
-import IPRADerivations.Analysis.Polynomials.RootFinding.Adequacy.GaussianRootSynchronizedHit
+import IPRADerivations.Analysis.Polynomials.RootFinding.Adequacy.Observations.GaussianRootSynchronizedHit
 
 /-!
 # The original characteristic root lists as a rational aggregate

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.Decay.GaussianBinetSecondDecayEnvelope
-import IPRADerivations.Analysis.Stirling.Binet.Kernel.GaussianBinetKernelTailMajorant
+import IPRADerivations.Analysis.Stirling.Binet.Kernel.Bounds.GaussianBinetKernelTailMajorant
 
 /-!
 # Inverse-square summation of second Binet row bounds

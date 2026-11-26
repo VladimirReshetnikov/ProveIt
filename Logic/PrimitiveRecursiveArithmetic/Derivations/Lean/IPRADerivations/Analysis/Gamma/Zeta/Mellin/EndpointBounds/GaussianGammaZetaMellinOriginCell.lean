@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Zeta.Mellin.EndpointBounds.GaussianGammaZetaMellinOriginBound
-import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.GaussianEulerLowerTailPowerPanel
+import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.Tails.GaussianEulerLowerTailPowerPanel
 
 /-!
 # Weighted right cells of the Gamma–zeta Mellin origin grid

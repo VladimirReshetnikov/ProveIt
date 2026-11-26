@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Names.Differences.GaussianNamedIncrementProductRule
 import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedMultiplyRate
 import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedAddRate
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateRadius
 
 /-!
 # Quantitative product rule for actual native divided differences

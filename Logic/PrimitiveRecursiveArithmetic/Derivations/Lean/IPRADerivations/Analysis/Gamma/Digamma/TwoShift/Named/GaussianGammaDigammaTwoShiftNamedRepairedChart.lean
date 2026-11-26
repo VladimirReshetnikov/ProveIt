@@ -3,7 +3,7 @@ import IPRADerivations.Analysis.Gamma.Digamma.TwoShift.Named.GaussianGammaDigamm
 import IPRADerivations.Analysis.Gamma.Digamma.TwoShift.Named.GaussianGammaDigammaTwoShiftChartProper
 import IPRADerivations.Analysis.Gamma.Digamma.TwoShift.Rational.GaussianGammaDigammaTwoShiftQuotientTranslation
 import IPRADerivations.Analysis.Gamma.Digamma.TwoShift.Named.GaussianGammaDigammaTwoShiftCapRepair
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateRadius
 
 /-!
 # A checked repaired chart at every precision of the original names

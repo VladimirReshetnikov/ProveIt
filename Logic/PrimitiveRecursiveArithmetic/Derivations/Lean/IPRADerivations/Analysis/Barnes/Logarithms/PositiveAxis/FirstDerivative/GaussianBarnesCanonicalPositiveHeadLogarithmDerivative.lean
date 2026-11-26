@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Barnes.Logarithms.PositiveAxis.FirstDerivative.GaussianBarnesCanonicalPositiveHeadLogarithmRowDerivative
 import IPRADerivations.Analysis.Barnes.Logarithms.PositiveAxis.FirstDerivative.GaussianBarnesCanonicalPositiveFirstLogarithmKept
 import IPRADerivations.Analysis.Integration.Quadrature.GaussianRationalQuadratureDifference
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedLipschitzRate
+import IPRADerivations.Analysis.Names.Rates.Moduli.GaussianNamedLipschitzRate
 
 /-!
 # Derivative of the actual finite kept positive Barnes logarithm

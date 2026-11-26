@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Derivatives.GaussianLogGammaEulerSlopeContinuity
 import IPRADerivations.Analysis.Gamma.Digamma.LogGammaDerivative.GaussianLogGammaEulerDigammaFractionsCofinal
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedLipschitzRate
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
+import IPRADerivations.Analysis.Names.Rates.Moduli.GaussianNamedLipschitzRate
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateTransport
 
 /-!
 # A fixed right-half-plane continuity modulus for the complex digamma

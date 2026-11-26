@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Convergence.GaussianLogGammaEulerResidualInterval
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Convergence.GaussianLogGammaEulerWeightedIntervalError
 import IPRADerivations.Analysis.Integration.Partitions.GaussianRationalPanelTailDistance
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedLipschitzRate
+import IPRADerivations.Analysis.Names.Rates.Moduli.GaussianNamedLipschitzRate
 
 /-!
 # Uniform tail of the original log-Gamma Euler heads

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.GaussianBinetLaplaceDecay
-import IPRADerivations.Analysis.Stirling.Binet.Kernel.GaussianBinetKernelUpper
-import IPRADerivations.Analysis.Stirling.Binet.Kernel.GaussianBinetKernelPositive
+import IPRADerivations.Analysis.Stirling.Binet.Kernel.BaselNormalization.GaussianBinetKernelUpper
+import IPRADerivations.Analysis.Stirling.Binet.Kernel.Bounds.GaussianBinetKernelPositive
 import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayOrder
 
 /-!

@@ -2,8 +2,8 @@ import IPRADerivations.Analysis.Stirling.Binet.Laplace.Moments.DerivativeQuotien
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.Moments.DerivativeQuotients.GaussianBinetLaplaceMomentBackwardQuotient
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.Moments.GaussianBinetLaplaceMomentVariation
 import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedDifferenceQuotientProperness
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateComposition
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateComposition
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateTransport
 import IPRADerivations.Analysis.Euler.PowerScaling.GaussianEulerPowerScalingCompactRate
 
 /-!

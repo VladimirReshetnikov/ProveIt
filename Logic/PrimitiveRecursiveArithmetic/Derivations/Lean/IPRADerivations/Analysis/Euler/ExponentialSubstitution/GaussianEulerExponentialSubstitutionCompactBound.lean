@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.ExponentialSubstitution.GaussianEulerExponentialSubstitutionIntegrand
-import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactAdditivity
+import IPRADerivations.Analysis.Euler.CompactExhaustion.Grids.GaussianEulerCompactAdditivity
 import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianPositiveExponentialMajorant
 
 /-!

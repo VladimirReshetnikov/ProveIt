@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Taylor.Coefficients.ProductCoefficients.GaussianBarnesCanonicalTaylorProductCoefficientCauchy
-import IPRADerivations.Analysis.Gamma.Taylor.GaussianGammaFixedCoefficientVariation
+import IPRADerivations.Analysis.Gamma.Taylor.CoefficientEstimates.GaussianGammaFixedCoefficientVariation
 import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialReference
 
 /-!

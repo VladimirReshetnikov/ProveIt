@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Zeta.Mellin.Damped.GaussianGammaZetaMellinDampedImproper
-import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.GaussianEulerLowerPowerRebasing
+import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.Powers.GaussianEulerLowerPowerRebasing
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedDiagonalRate
 
 /-!

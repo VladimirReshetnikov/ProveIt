@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.Cofinal.GaussianBarnesCanonicalDerivativeTailBinding
 import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNativeDerivativeQuotientRate
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateRadius
 
 /-! The actual divided difference of the original Barnes tail logarithm
 converges to its cofinal derivative series. The leading error is linear

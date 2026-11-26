@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Taylor.Grids.EvenGrids.GaussianBarnesCanonicalFiniteTaylorEvenGridUniformComparison
-import IPRADerivations.Analysis.Barnes.Taylor.Grids.GaussianBarnesCanonicalFiniteTaylorDiskGridLimit
+import IPRADerivations.Analysis.Barnes.Taylor.Grids.Finite.GaussianBarnesCanonicalFiniteTaylorDiskGridLimit
 
 /-!
 # The quadratic displacement term of the finite Barnes even grid

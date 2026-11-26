@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Beta.Primitives.GaussianBetaPrimitiveGridUnscale
 import IPRADerivations.Analysis.Beta.Primitives.GaussianBetaPrimitiveLowerEndpointRefinement
-import IPRADerivations.Analysis.Beta.Endpoints.GaussianBetaUpperGridEndpoint
+import IPRADerivations.Analysis.Beta.Endpoints.Upper.GaussianBetaUpperGridEndpoint
 import IPRADerivations.Analysis.Beta.Partitions.GaussianBetaFiniteEndpointTelescope
 
 /-!

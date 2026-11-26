@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Digamma.Comparison.GaussianGammaDigammaSeriesLipschitz
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRealOrderTransport
+import IPRADerivations.Analysis.Names.Rates.Order.GaussianNamedRealOrderTransport
 
 /-!
 # The original positive rational digamma name has a quantitative upper slope

@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.Digamma.LogGammaDerivative.GaussianLogGammaEulerDigammaFractions
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Derivatives.GaussianLogGammaEulerReciprocalSlopeCofinal
 import IPRADerivations.Analysis.Gamma.Digamma.Derivative.GaussianGammaDigammaEulerDerivative
-import IPRADerivations.Analysis.Beta.Endpoints.GaussianBetaUpperPowerCancellation
+import IPRADerivations.Analysis.Beta.Endpoints.Upper.GaussianBetaUpperPowerCancellation
 
 /-!
 # The cofinal complex Euler slope has the actual digamma partial fractions

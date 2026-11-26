@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Names.Apartness.GaussianNamedApartnessTightness
 import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedAddRate
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateRadius
 import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianSignedNameExponentialOrder
 
 /-!

@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Exponential.IntegerPowers.GaussianBoundedInteger
 import IPRADerivations.Analysis.Euler.HarmonicLogarithms.GaussianHarmonicLogarithmName
 import IPRADerivations.Analysis.Names.Scaling.GaussianNaturalScaleProductName
 import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayFactorBounds
-import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerExponentCompactBounds
+import IPRADerivations.Analysis.Euler.CompactExhaustion.ParameterBounds.GaussianEulerExponentCompactBounds
 import IPRADerivations.Analysis.Inequalities.NonnegativeArithmetic.RationalNonnegativePowers
 
 /-!

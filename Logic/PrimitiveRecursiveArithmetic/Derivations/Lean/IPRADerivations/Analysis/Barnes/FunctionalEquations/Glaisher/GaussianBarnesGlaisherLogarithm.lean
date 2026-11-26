@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Logarithm.RightHalfPlane.GaussianRightHalfPlaneLogarithmHalfDiskBound
 import IPRADerivations.Analysis.Logarithm.Local.GaussianLocalLogarithmTaylorRemainder
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateTransport
 
 /-!
 # The original logarithm in the Glaisher increment

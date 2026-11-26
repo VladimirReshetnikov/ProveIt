@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.BohrMollerup.GaussianBohrMollerupLiteralUniqueness
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerNamedPositiveAxis
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateTransport
 
 /-!
 # Bohr–Mollerup agreement at actual positive real observations

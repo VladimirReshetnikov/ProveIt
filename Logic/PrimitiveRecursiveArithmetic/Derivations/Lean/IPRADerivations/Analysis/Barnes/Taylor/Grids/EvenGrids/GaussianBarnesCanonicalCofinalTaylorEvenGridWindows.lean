@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Taylor.Grids.EvenGrids.GaussianBarnesCanonicalCofinalTaylorEvenGridLimit
-import IPRADerivations.Analysis.Barnes.Taylor.Grids.GaussianBarnesCanonicalCofinalTaylorGridReturn
+import IPRADerivations.Analysis.Barnes.Taylor.Grids.Cofinal.GaussianBarnesCanonicalCofinalTaylorGridReturn
 
 /-!
 # Adjacent two-sided windows of the original cofinal Barnes grid

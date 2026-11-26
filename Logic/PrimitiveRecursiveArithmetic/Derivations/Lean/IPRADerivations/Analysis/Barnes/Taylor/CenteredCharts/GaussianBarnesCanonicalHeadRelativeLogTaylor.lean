@@ -6,8 +6,8 @@ cubic errors on the certified zero-free chart.
 import IPRADerivations.Analysis.Barnes.Taylor.CenteredCharts.GaussianBarnesCanonicalHeadRelativeLogMargin
 import IPRADerivations.Analysis.Barnes.Taylor.CenteredCharts.GaussianBarnesCanonicalHeadPolynomialTaylor
 import IPRADerivations.Analysis.Logarithm.Local.GaussianLocalLogarithmQuadraticRate
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateComposition
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateComposition
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateRadius
 import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRationalSquareCancellation
 import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianPolynomialCoefficientDifferences
 

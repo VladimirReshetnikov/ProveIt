@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.Moments.GaussianEulerIntegerMomentUniform
 import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactClientIndependence
-import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactAdditivity
+import IPRADerivations.Analysis.Euler.CompactExhaustion.Grids.GaussianEulerCompactAdditivity
 
 /-!
 # Literal integer-moment rows on the unchanged affine Euler grid

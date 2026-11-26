@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.RationalLogarithm.GaussianGammaEulerRationalLogMargin
 import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianNamedPositiveLogarithmExponential
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateTransport
 
 /-!
 # Positive names for the finite Euler and original Gamma logarithms

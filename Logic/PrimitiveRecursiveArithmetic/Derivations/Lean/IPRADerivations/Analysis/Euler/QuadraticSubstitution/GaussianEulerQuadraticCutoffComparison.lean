@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Euler.QuadraticSubstitution.GaussianEulerQuadraticCutoffGeometry
 import IPRADerivations.Analysis.Euler.Integration.Incomplete.GaussianEulerIncompleteIntervalRate
 import IPRADerivations.Analysis.Euler.QuadraticSubstitution.GaussianEulerQuadraticImproperSchedule
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedDifferenceRate
+import IPRADerivations.Analysis.Names.Rates.Perturbations.GaussianNamedDifferenceRate
 
 /-!
 # Actual quadratic cutoff quadrature and the original Euler improper name

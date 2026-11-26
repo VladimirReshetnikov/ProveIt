@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.GaussianBinetLaplaceOrderedPrefixes
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateRadius
 
 /-!
 # The actual cofinal Binet Laplace name

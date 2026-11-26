@@ -3,7 +3,7 @@ import IPRADerivations.Analysis.Gamma.NegativeAxis.Logarithms.GaussianGammaNegat
 import IPRADerivations.Analysis.Gamma.NegativeAxis.Logarithms.GaussianGammaNegativeIntervalLogAbsoluteProperness
 import IPRADerivations.Analysis.Gamma.NegativeAxis.Derivatives.Products.GaussianGammaNegativeProductDerivativeInverseRate
 import IPRADerivations.Analysis.Logarithm.PositiveAxis.GaussianNamedPositiveLogarithmRate
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateRadius
 import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedAddRate
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitTime.GaussianEulerUnitCompactTimeBounds
 

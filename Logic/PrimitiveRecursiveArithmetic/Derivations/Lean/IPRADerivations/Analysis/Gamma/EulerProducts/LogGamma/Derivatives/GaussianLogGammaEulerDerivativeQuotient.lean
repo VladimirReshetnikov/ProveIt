@@ -1,8 +1,8 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Derivatives.GaussianLogGammaEulerTaylorUniform
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Derivatives.GaussianLogGammaEulerStepReciprocal
-import IPRADerivations.Analysis.Names.Rates.GaussianBoundedConstantRationalRate
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
+import IPRADerivations.Analysis.Names.Rates.Scaling.GaussianBoundedConstantRationalRate
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateTransport
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateRadius
 import IPRADerivations.Analysis.Gamma.Poles.GaussianGammaPoleDifferenceQuotient
 
 /-!

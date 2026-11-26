@@ -3,9 +3,9 @@ import IPRADerivations.Analysis.Euler.Logarithms.ParameterRates.GaussianNamedEul
 import IPRADerivations.Analysis.Gamma.Names.Derivatives.GaussianNamedGammaIncrementApproximation
 import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedIncrementDifferenceQuotient
 import IPRADerivations.Analysis.Names.Rates.Reciprocals.GaussianNamedReciprocalFrozenRate
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedDifferenceRate
+import IPRADerivations.Analysis.Names.Rates.Perturbations.GaussianNamedDifferenceRate
 import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedMultiplyRate
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateRadius
 
 /-!
 # Logarithmic Euler differentiation along certified nonzero named increments

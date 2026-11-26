@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Zeta.Mellin.Named.GaussianGammaZetaNamedHalfPlane
 import IPRADerivations.Analysis.Gamma.Zeta.GaussianGammaZetaNamedInput
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedUniformRateClosure
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedUniformRateClosure
 
 /-!
 # The original Mellin integral equals the product of the two named factors

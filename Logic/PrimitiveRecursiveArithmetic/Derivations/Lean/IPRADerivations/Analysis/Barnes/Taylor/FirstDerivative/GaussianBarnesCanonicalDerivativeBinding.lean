@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.GaussianBarnesCanonicalDerivativeAlgebra
 import IPRADerivations.Analysis.Barnes.Logarithms.FiniteRows.GaussianBarnesCanonicalLogFactor
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedConstantRateFromSlack
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedConstantRateFromSlack
 
 /-!
 # First-order comparison for the original named Barnes logarithm row

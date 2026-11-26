@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.Spans.RationalMinorOrderTransport
+import IPRADerivations.Analysis.RationalArithmetic.Spans.Minors.RationalMinorOrderTransport
 import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianScalarDeterminantLastRowTransport
 
 /-!

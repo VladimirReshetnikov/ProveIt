@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.PowerScaling.GaussianEulerPowerScalingFrozenRow
-import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerExponentCompactBounds
+import IPRADerivations.Analysis.Euler.CompactExhaustion.ParameterBounds.GaussianEulerExponentCompactBounds
 
 /-!
 # Power substitution on one original affine cell

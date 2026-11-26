@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.GaussianEulerRealIntegrandLowerEnvelope
+import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.Integrands.GaussianEulerRealIntegrandLowerEnvelope
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitTime.GaussianEulerUnitPanelGeometry
 import IPRADerivations.Analysis.Integration.CompactGrids.Comparisons.GaussianCompactRiemannLower
 import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.RationalUpperAddition

@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.GaussianGammaPertu
 import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.GaussianGammaFoldedApproximantBalance
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.ReciprocalGamma.GaussianGammaCutoffIndependence
 import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.GaussianGammaC9Bound
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedSmallPerturbationTransport
+import IPRADerivations.Analysis.Names.Rates.Perturbations.GaussianNamedSmallPerturbationTransport
 
 /-!
 # The quantitative C10 Euler convergence estimate

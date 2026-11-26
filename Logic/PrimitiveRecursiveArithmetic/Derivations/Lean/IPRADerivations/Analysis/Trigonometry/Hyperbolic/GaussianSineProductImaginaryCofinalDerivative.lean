@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Trigonometry.Hyperbolic.GaussianSineProductImaginaryFirstOrderBound
 import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalExponent
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedLipschitzRate
+import IPRADerivations.Analysis.Names.Rates.Moduli.GaussianNamedLipschitzRate
 import IPRADerivations.Analysis.Names.Differences.GaussianNamedDifference
 
 /-!

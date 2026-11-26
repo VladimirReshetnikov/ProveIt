@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerNormalizedHead
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Convergence.GaussianLogGammaEulerResidualDomain
-import IPRADerivations.Analysis.Beta.Endpoints.GaussianBetaUpperPowerCancellation
+import IPRADerivations.Analysis.Beta.Endpoints.Upper.GaussianBetaUpperPowerCancellation
 
 /-!
 # Match the canonical numerator exponent with the original Euler power

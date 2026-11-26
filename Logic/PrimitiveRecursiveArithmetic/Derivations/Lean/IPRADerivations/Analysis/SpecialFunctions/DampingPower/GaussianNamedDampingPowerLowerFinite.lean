@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactLowerTail
-import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.GaussianEulerLowerTailFiniteBudget
+import IPRADerivations.Analysis.Euler.CompactExhaustion.Tails.GaussianEulerCompactLowerTail
+import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.Tails.GaussianEulerLowerTailFiniteBudget
 
 /-!
 # Finite lower-tail transport for a compact evaluator

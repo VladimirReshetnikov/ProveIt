@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitTime.GaussianEulerUnitLogarithmicMargin
-import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.GaussianEulerLowerPowerRebasing
+import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.Powers.GaussianEulerLowerPowerRebasing
 import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialRadiusIndependence
 
 /-!

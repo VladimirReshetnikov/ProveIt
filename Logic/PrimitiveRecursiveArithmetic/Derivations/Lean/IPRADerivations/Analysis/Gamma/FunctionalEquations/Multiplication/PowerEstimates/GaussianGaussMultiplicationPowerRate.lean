@@ -1,6 +1,6 @@
-import IPRADerivations.Analysis.Names.Rates.GaussianBoundedConstantProductRate
+import IPRADerivations.Analysis.Names.Rates.Scaling.GaussianBoundedConstantProductRate
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.PowerEstimates.GaussianGaussMultiplicationLogRatio
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedDifferenceRate
+import IPRADerivations.Analysis.Names.Rates.Perturbations.GaussianNamedDifferenceRate
 import IPRADerivations.Analysis.Exponential.Estimates.GaussianRadiusExponentialLipschitzRate
 
 /-!

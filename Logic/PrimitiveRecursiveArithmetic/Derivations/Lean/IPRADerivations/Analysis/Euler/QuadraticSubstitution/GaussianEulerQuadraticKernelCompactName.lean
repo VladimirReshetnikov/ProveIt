@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.QuadraticSubstitution.GaussianEulerQuadraticKernelTimeRate
-import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactAdditivity
+import IPRADerivations.Analysis.Euler.CompactExhaustion.Grids.GaussianEulerCompactAdditivity
 
 /-!
 # The genuine unfactored quadratic Euler kernel on a compact interval

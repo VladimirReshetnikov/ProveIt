@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Poles.GaussianGammaPoleInverseContinuity
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateTransport
 
 /-!
 # The fixed terminal reciprocal near a Gamma pole

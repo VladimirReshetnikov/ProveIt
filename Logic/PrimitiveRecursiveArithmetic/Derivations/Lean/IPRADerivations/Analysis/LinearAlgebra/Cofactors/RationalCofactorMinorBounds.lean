@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.RationalArithmetic.Spans.RationalMinorAugmentation
-import IPRADerivations.Analysis.RationalArithmetic.Spans.RationalMinorMaskDeletion
+import IPRADerivations.Analysis.RationalArithmetic.Spans.Minors.RationalMinorAugmentation
+import IPRADerivations.Analysis.RationalArithmetic.Spans.Minors.RationalMinorMaskDeletion
 import IPRADerivations.Analysis.LinearAlgebra.Cofactors.RationalIntegerMinorDeterminants
 import IPRADerivations.AnalyticNumberTheory.PowerCleared
 import IPRADerivations.DiophantineNumberTheory.IntegerRootBound

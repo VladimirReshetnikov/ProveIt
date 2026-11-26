@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.Elimination.Superelliptic.RationalSuperellipticNormDegree
 import IPRADerivations.Analysis.Inequalities.WeightedComparison.RationalWeightedMonomialEvaluation
-import IPRADerivations.Analysis.RationalArithmetic.Spans.GaussianRationalOriginalSpanRank
+import IPRADerivations.Analysis.RationalArithmetic.Spans.RankAndAnnihilators.GaussianRationalOriginalSpanRank
 
 /-!
 # Original rational proper spans on the superelliptic curve

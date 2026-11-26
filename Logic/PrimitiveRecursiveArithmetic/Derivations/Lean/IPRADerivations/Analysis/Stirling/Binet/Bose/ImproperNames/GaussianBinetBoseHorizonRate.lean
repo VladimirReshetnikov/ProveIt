@@ -1,8 +1,8 @@
 import IPRADerivations.Analysis.Stirling.Binet.Bose.ImproperNames.GaussianBinetBoseOriginName
 import IPRADerivations.Analysis.Stirling.Binet.Bose.LiteralTails.GaussianBinetBoseFarQuadrature
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedSmallAddendRate
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
+import IPRADerivations.Analysis.Names.Rates.Perturbations.GaussianNamedSmallAddendRate
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateRadius
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateTransport
 
 /-!
 # Upper-horizon rate for the actual second Binet integral

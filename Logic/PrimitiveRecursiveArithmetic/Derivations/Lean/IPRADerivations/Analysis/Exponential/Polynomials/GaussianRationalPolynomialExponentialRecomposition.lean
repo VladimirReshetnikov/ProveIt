@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Exponential.Names.GaussianNamedConstantExponentialSmallTail
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedLipschitzRate
+import IPRADerivations.Analysis.Names.Rates.Moduli.GaussianNamedLipschitzRate
 import IPRADerivations.Analysis.Polynomials.Horner.GaussianRationalHornerPrefixTaylor
 import IPRADerivations.Analysis.Gamma.Names.Input.GaussianGammaInputStaticNorm
 import IPRADerivations.Analysis.Exponential.Polynomials.GaussianFiniteExponentialCoefficientMajorant

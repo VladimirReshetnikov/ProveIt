@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedDifferenceRate
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateComposition
+import IPRADerivations.Analysis.Names.Rates.Perturbations.GaussianNamedDifferenceRate
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateComposition
 import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialReference
 import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalExponent
 

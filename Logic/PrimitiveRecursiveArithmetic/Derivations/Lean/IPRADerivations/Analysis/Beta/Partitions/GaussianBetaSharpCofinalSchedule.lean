@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Beta.Partitions.GaussianBetaSharpFiniteBinding
 import IPRADerivations.Analysis.Beta.Partitions.GaussianBetaMiddleDyadicBudget
-import IPRADerivations.Analysis.Beta.Endpoints.GaussianBetaLowDyadicBudget
+import IPRADerivations.Analysis.Beta.Endpoints.Lower.GaussianBetaLowDyadicBudget
 import IPRADerivations.Analysis.Beta.Tails.GaussianBetaContiguousUpperTailBudget
 
 /-!

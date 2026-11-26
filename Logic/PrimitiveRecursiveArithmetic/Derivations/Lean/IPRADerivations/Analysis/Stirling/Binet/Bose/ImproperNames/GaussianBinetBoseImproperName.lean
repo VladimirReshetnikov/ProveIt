@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.Bose.ImproperNames.GaussianBinetBoseHorizonRate
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateComposition
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateComposition
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateRadius
 
 /-!
 # The actual improper second Binet integral

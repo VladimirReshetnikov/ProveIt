@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Raabe.GaussianRaabeStirlingRemainder
 import IPRADerivations.Analysis.Logarithm.PositiveAxis.GaussianCompactLogarithmBounds
-import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerExponentCompactBounds
+import IPRADerivations.Analysis.Euler.CompactExhaustion.ParameterBounds.GaussianEulerExponentCompactBounds
 
 /-!
 # Uniform bounds of the actual real log-Gamma samples on [1,2]

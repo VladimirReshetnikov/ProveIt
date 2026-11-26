@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.Names.GaussianBarnesCanonicalNamedDemand
 import IPRADerivations.Analysis.Gamma.Names.Input.GaussianGammaHalfPlaneInputContinuity
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateRadius
 
 /-!
 # The original entire reciprocal Gamma evaluator on regular Gaussian names

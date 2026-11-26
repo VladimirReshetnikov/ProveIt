@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Barnes.Taylor.RelativeExpansions.CorrectedMercator.GaussianBarnesCanonicalCorrectedMercatorInterval
 import IPRADerivations.Analysis.Barnes.Logarithms.CofinalTails.GaussianBarnesCanonicalLogCofinalRate
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateComposition
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateComposition
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateRadius
 
 /-!
 # Rational Taylor polynomials for the original cofinal Barnes logarithm

@@ -1,8 +1,8 @@
 import IPRADerivations.Analysis.Exponential.Estimates.GaussianRadiusExponentialLipschitzRate
 import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.GaussianGammaFiniteApproximantName
 import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialRadiusIndependence
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedDifferenceRate
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
+import IPRADerivations.Analysis.Names.Rates.Perturbations.GaussianNamedDifferenceRate
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateTransport
 import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianReconstructionRoots
 
 /-!

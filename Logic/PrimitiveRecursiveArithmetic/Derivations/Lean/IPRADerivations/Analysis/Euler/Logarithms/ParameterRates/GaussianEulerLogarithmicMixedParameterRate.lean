@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.Logarithms.GaussianEulerLogarithmicContinuity
 import IPRADerivations.Analysis.Euler.Logarithms.GaussianEulerLogarithmicImproperInputProperness
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateTransport
 
 /-!
 # Uniform variation for independent native representations and certificates

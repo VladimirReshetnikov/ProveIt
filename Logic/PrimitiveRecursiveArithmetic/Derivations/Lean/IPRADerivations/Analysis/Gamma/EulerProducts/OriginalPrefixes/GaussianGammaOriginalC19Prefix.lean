@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.Taylor.GaussianGammaCofinalCoefficientName
+import IPRADerivations.Analysis.Gamma.Taylor.NamedCoefficients.GaussianGammaCofinalCoefficientName
 import IPRADerivations.Analysis.Gamma.Names.PoleFree.GaussianGammaRadiusOverlap
 import IPRADerivations.Analysis.RationalArithmetic.Directions.GaussianRationalTravelScaling
 

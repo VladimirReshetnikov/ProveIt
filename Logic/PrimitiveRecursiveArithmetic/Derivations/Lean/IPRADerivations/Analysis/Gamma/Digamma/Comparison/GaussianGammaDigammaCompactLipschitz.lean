@@ -4,8 +4,8 @@ import IPRADerivations.Analysis.Gamma.Digamma.Comparison.GaussianGammaDigammaMon
 import IPRADerivations.Analysis.Gamma.Digamma.Series.GaussianGammaDigammaRescale
 import IPRADerivations.Analysis.Gamma.Digamma.Series.GaussianGammaDigammaRescaling
 import IPRADerivations.Analysis.Logarithm.PositiveAxis.GaussianPositiveRationalLogarithmVariation
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedLipschitzRate
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
+import IPRADerivations.Analysis.Names.Rates.Moduli.GaussianNamedLipschitzRate
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateTransport
 
 /-!
 # Uniform upper slope for independently encoded positive digamma inputs

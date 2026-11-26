@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Trigonometry.Arctangent.DivisionAngles.GaussianArctangentDivisionAngleGaps
 import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentAngleChord
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRealOrderTransport
+import IPRADerivations.Analysis.Names.Rates.Order.GaussianNamedRealOrderTransport
 
 /-!
 # A positive lower bound for every actual divided-angle sine

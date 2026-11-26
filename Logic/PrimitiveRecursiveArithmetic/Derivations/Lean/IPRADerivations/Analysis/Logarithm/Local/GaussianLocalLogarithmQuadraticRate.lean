@@ -3,7 +3,7 @@ Exact quadratic specialization of the original Mercator program, at a
 possibly sharper radius than its native input certificate.
 -/
 import IPRADerivations.Analysis.Logarithm.Local.GaussianLocalLogarithmTaylorRemainder
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateTransport
 import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaWeierstrassApproximant
 
 set_option autoImplicit false

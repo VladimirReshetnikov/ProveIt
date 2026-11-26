@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.SpecialFunctions.DampingPower.GaussianNamedDampingPowerLowerPointwise
 import IPRADerivations.Analysis.SpecialFunctions.DampingPower.GaussianNamedDampingPowerCompact
-import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.GaussianEulerLowerTailRowBound
+import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.Tails.GaussianEulerLowerTailRowBound
 
 /-!
 # Native lower cutoff source for named damping

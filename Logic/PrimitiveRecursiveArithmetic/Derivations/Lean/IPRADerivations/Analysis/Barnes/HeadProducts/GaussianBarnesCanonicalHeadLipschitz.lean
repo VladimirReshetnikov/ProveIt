@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalHead
 import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalFactorLipschitz
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedLipschitzRate
+import IPRADerivations.Analysis.Names.Rates.Moduli.GaussianNamedLipschitzRate
 
 /-!
 # Common-disk Lipschitz comparison of the original finite Barnes heads

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.QuadraticSubstitution.GaussianEulerQuadraticUpperEndpoint
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateComposition
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateComposition
 
 /-!
 # A cofinal observation budget for the quadratic Euler substitution

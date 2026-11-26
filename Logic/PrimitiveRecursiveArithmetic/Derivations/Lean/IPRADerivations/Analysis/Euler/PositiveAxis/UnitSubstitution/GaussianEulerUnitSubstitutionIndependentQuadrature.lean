@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.PositiveAxis.UnitSubstitution.GaussianEulerUnitSubstitutionLatticeComparison
+import IPRADerivations.Analysis.Euler.PositiveAxis.UnitSubstitution.Lattices.GaussianEulerUnitSubstitutionLatticeComparison
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitKernel.GaussianEulerUnitKernelLatticeComparison
 import IPRADerivations.Analysis.Integration.CompactGrids.Comparisons.GaussianCompactSafeGridComparison
 

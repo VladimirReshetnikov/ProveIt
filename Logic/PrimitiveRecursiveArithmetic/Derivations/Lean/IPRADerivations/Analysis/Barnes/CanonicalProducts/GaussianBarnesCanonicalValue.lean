@@ -1,8 +1,8 @@
 import IPRADerivations.Analysis.Barnes.Prefactors.GaussianBarnesCanonicalPrefactor
 import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalHead
 import IPRADerivations.Analysis.Barnes.TailControl.GaussianBarnesCanonicalTailExponential
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedDifferenceRate
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
+import IPRADerivations.Analysis.Names.Rates.Perturbations.GaussianNamedDifferenceRate
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateRadius
 
 /-!
 # The split original Barnes value on a rational Gaussian disk

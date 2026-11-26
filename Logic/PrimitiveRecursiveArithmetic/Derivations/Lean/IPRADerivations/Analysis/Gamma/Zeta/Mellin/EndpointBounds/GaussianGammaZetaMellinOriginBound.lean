@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Zeta.Mellin.Compact.GaussianGammaZetaMellinIntegrand
 import IPRADerivations.Analysis.Euler.Integration.Parts.GaussianEulerIntegrationByPartsParameterShift
-import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.GaussianEulerLowerTransformedPower
+import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.Powers.GaussianEulerLowerTransformedPower
 
 /-!
 # The Mellin integrand on the Euler lower-tail grid

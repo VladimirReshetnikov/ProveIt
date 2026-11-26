@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Beta.CompactKernels.GaussianBetaKernelGridComparison
-import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactAdditivity
+import IPRADerivations.Analysis.Euler.CompactExhaustion.Grids.GaussianEulerCompactAdditivity
 
 /-!
 # Arbitrarily refined original beta grids versus the original compact Euler name

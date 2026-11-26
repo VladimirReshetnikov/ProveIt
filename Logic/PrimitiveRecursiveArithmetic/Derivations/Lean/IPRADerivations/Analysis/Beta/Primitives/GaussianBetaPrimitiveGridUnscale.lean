@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Beta.Primitives.GaussianBetaPrimitiveCompactGridAccuracy
-import IPRADerivations.Analysis.Beta.Endpoints.GaussianBetaUpperEndpointInverse
+import IPRADerivations.Analysis.Beta.Endpoints.Upper.GaussianBetaUpperEndpointInverse
 import IPRADerivations.Analysis.Gamma.EulerProducts.Factorials.GaussianGammaFactorialValues
 
 /-!

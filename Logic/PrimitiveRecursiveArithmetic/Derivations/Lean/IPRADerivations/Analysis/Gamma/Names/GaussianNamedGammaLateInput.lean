@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Names.GaussianNamedGamma
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedLipschitzRate
+import IPRADerivations.Analysis.Names.Rates.Moduli.GaussianNamedLipschitzRate
 
 /-!
 # The original named Gamma at any sufficiently late rational input

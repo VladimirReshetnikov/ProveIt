@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.GaussianGammaEulerShift
 import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerConvergence
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateTransport
 import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalLinearProduct
 
 /-!

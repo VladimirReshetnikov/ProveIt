@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.SpecialFunctions.DampingPower.GaussianNamedDampingPowerDecayBound
-import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.GaussianEulerLowerTransformedPower
+import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.Powers.GaussianEulerLowerTransformedPower
 
 /-!
 # Lower-tail pointwise envelope for named damping

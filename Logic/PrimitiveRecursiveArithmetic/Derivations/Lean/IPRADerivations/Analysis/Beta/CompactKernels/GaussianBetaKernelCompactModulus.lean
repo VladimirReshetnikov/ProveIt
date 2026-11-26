@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Beta.CompactKernels.GaussianBetaKernelLipschitz
-import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactPowerVariation
+import IPRADerivations.Analysis.Euler.CompactExhaustion.ParameterBounds.GaussianEulerCompactPowerVariation
 import IPRADerivations.Analysis.Beta.CompactKernels.GaussianBetaKernelGridComparison
 
 /-!

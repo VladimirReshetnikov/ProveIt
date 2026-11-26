@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Beta.Tails.GaussianBetaKernelUpperTail
-import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactUpperTail
+import IPRADerivations.Analysis.Euler.CompactExhaustion.Tails.GaussianEulerCompactUpperTail
 
 /-!
 # Finite upper-tail quadrature for the literal beta kernel

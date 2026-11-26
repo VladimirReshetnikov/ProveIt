@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.Digamma.TwoShift.Named.GaussianGammaDigammaTwoShiftNamedSize
 import IPRADerivations.Analysis.Gamma.Digamma.TwoShift.Named.GaussianGammaDigammaTwoShiftNamedFreeze
 import IPRADerivations.Analysis.Names.Rates.Reciprocals.GaussianNamedPositiveReciprocalFrozen
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedUniformRateClosure
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedUniformRateClosure
 
 /-!
 # The original real named cap for the normalized Gamma ratio

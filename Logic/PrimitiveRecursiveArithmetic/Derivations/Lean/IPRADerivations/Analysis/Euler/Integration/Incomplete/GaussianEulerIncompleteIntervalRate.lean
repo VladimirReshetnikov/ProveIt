@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedSmallAddendRate
+import IPRADerivations.Analysis.Names.Rates.Perturbations.GaussianNamedSmallAddendRate
 import IPRADerivations.Analysis.Euler.Integration.Incomplete.GaussianEulerIncompleteInterval
 import IPRADerivations.Analysis.Euler.Integration.Incomplete.GaussianEulerIncompleteLargeEndpoint
 

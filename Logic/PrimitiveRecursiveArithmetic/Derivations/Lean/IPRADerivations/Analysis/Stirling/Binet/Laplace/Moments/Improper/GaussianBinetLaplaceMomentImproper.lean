@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.Moments.FiniteRows.GaussianBinetLaplaceMomentPrefixes
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedLipschitzRate
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
+import IPRADerivations.Analysis.Names.Rates.Moduli.GaussianNamedLipschitzRate
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateRadius
 
 /-!
 # The actual improper Binet name for every natural time moment

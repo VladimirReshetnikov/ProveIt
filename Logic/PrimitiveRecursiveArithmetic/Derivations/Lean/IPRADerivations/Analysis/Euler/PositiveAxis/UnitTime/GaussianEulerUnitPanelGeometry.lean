@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Beta.Partitions.GaussianBetaSharpFiniteBinding
 import IPRADerivations.Analysis.Integration.CompactGrids.Splits.GaussianCompactAlignedThreeSplit
-import IPRADerivations.Analysis.Names.Rates.GaussianCompactModulusAlignedTime
+import IPRADerivations.Analysis.Names.Rates.Moduli.GaussianCompactModulusAlignedTime
 
 /-!
 # The unit panel in the original Euler cutoff interval

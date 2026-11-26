@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.NegativeAxis.Values.GaussianGammaNegativeIntervalNamedApartness
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedApartnessTransport
+import IPRADerivations.Analysis.Names.Rates.Order.GaussianNamedApartnessTransport
 import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedDifferenceQuotientProperness
 
 /-!

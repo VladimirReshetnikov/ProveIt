@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.Integration.Incomplete.GaussianEulerIncompleteName
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedLipschitzRate
+import IPRADerivations.Analysis.Names.Rates.Moduli.GaussianNamedLipschitzRate
 
 /-!
 # The actual incomplete names at a fixed later cutoff

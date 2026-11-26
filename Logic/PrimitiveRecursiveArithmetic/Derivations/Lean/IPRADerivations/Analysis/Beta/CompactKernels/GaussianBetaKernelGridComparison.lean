@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Beta.CompactKernels.GaussianBetaKernelExponential
-import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactProductComparison
+import IPRADerivations.Analysis.Euler.CompactExhaustion.ParameterBounds.GaussianEulerCompactProductComparison
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianCompactScalarMajorant
-import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerImproperName
+import IPRADerivations.Analysis.Euler.CompactExhaustion.Names.GaussianEulerImproperName
 
 /-!
 # The original compact Euler grid with the finite beta kernel

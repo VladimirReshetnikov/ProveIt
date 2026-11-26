@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Euler.Logarithms.ParameterRates.GaussianNamedEulerLogarithmicParameterRate
 import IPRADerivations.Analysis.Euler.Logarithms.GaussianNamedEulerLogarithmicZeroIdentification
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedDifferenceRate
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
+import IPRADerivations.Analysis.Names.Rates.Perturbations.GaussianNamedDifferenceRate
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateRadius
 
 /-!
 # Equivalent terminal inputs give equivalent original Euler names

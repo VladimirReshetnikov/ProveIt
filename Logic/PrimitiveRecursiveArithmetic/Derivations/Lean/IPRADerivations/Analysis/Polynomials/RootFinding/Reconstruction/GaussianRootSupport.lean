@@ -1,6 +1,6 @@
-import IPRADerivations.Analysis.Polynomials.RootFinding.Adequacy.GaussianRootRadius
+import IPRADerivations.Analysis.Polynomials.RootFinding.Adequacy.Distances.GaussianRootRadius
 import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianRootCoefficientCoherence
-import IPRADerivations.Analysis.Polynomials.RootFinding.Adequacy.GaussianRootStability
+import IPRADerivations.Analysis.Polynomials.RootFinding.Adequacy.Distances.GaussianRootStability
 
 /-!
 # Collision-tolerant root-support names

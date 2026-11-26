@@ -1,6 +1,6 @@
-import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.GaussianEulerRealIntegrandNonnegative
+import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.Integrands.GaussianEulerRealIntegrandNonnegative
 import IPRADerivations.Analysis.Integration.CompactGrids.Comparisons.GaussianCompactRiemannLower
-import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactAdditivity
+import IPRADerivations.Analysis.Euler.CompactExhaustion.Grids.GaussianEulerCompactAdditivity
 
 /-!
 # Nonnegativity of the actual real Euler compact observations

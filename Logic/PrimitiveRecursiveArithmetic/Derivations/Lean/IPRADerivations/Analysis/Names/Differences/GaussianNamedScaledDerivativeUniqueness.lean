@@ -1,8 +1,8 @@
 import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentExponentialPeriod
-import IPRADerivations.Analysis.Names.Rates.GaussianBoundedConstantProductRate
+import IPRADerivations.Analysis.Names.Rates.Scaling.GaussianBoundedConstantProductRate
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.ReciprocalGamma.GaussianGammaAdjacentCutoff
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateRadius
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateTransport
 import IPRADerivations.Analysis.Trigonometry.Hyperbolic.GaussianSineProductImaginaryLogDerivativeTail
 
 /-!

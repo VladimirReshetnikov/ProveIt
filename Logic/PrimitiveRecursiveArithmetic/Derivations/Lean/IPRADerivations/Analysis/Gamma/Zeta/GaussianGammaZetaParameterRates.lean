@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactPowerParameterRate
+import IPRADerivations.Analysis.Euler.CompactExhaustion.ParameterBounds.GaussianEulerCompactPowerParameterRate
 import IPRADerivations.Analysis.Gamma.Zeta.Dirichlet.GaussianGammaZetaDirichletReciprocalRow
 import IPRADerivations.Analysis.Gamma.Zeta.Mellin.Compact.GaussianGammaZetaMellinReciprocalRate
 

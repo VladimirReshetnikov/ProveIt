@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Trigonometry.Arctangent.Extension.GaussianArctangentNamedExtension
 import IPRADerivations.Analysis.Trigonometry.Arctangent.Inverse.GaussianArctangentInverseForward
 import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentSlope
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRealOrderTransport
+import IPRADerivations.Analysis.Names.Rates.Order.GaussianNamedRealOrderTransport
 
 /-!
 # The range of the actual named arctangent extension

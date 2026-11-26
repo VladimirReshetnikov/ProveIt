@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Names.RightHalfPlane.GaussianNamedRightHalfPlaneLift
 import IPRADerivations.Foundations.FiniteQueryDemand
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateRadius
 
 /-!
 # Extend a uniformly continuous rational name to the right half-plane

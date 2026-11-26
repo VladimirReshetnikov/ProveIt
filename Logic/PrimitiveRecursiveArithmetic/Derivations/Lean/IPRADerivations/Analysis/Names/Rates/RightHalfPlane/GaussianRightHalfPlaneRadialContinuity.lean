@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Logarithm.RightHalfPlane.GaussianRightHalfPlaneRadialLogarithm
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.PowerEstimates.GaussianGaussMultiplicationLogarithm
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedLipschitzRate
+import IPRADerivations.Analysis.Names.Rates.Moduli.GaussianNamedLipschitzRate
 import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianCoordinateRadius
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Convergence.GaussianLogGammaEulerResidualRadius
 

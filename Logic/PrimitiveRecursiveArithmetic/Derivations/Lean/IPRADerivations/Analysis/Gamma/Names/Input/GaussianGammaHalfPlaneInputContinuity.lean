@@ -1,8 +1,8 @@
 import IPRADerivations.Analysis.Gamma.Names.Input.GaussianGammaEncodingRescaling
 import IPRADerivations.Analysis.Gamma.Names.Input.GaussianGammaInputContinuity
 import IPRADerivations.Analysis.Gamma.Names.Input.GaussianGammaRightHalfPlane
-import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.GaussianEulerLowerPowerCoefficients
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
+import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.Powers.GaussianEulerLowerPowerCoefficients
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateTransport
 
 /-!
 # The original Gamma observations at independently encoded inputs

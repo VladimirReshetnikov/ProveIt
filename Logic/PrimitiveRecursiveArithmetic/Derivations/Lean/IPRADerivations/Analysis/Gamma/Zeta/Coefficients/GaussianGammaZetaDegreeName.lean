@@ -1,9 +1,9 @@
-import IPRADerivations.Analysis.Gamma.Taylor.GaussianGammaFixedDegreeHorizon
-import IPRADerivations.Analysis.Gamma.Taylor.GaussianGammaReciprocalDegreeCells
+import IPRADerivations.Analysis.Gamma.Taylor.DegreeTails.GaussianGammaFixedDegreeHorizon
+import IPRADerivations.Analysis.Gamma.Taylor.DegreeTails.GaussianGammaReciprocalDegreeCells
 import IPRADerivations.Analysis.Names.Arithmetic.RationalReciprocalPowerName
 import IPRADerivations.Analysis.Names.Arithmetic.RationalGaussianNameEmbedding
-import IPRADerivations.Analysis.Gamma.Taylor.GaussianGammaCofinalDegreeTail
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
+import IPRADerivations.Analysis.Gamma.Taylor.DegreeTails.GaussianGammaCofinalDegreeTail
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateTransport
 
 /-!
 # The original zeta-tail coefficients in a genuine finite-degree Gamma name

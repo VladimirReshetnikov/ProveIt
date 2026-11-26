@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Exponential.Estimates.GaussianRationalUniformExponentialLipschitz
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedLipschitzRate
+import IPRADerivations.Analysis.Names.Rates.Moduli.GaussianNamedLipschitzRate
 import IPRADerivations.Analysis.Exponential.Names.GaussianRadiusExponentialName
 
 /-!

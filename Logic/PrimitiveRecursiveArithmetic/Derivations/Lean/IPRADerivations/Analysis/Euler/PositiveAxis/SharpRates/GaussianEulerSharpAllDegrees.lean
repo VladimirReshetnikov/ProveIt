@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Beta.Endpoints.GaussianBetaAllDegreeFiniteBinding
+import IPRADerivations.Analysis.Beta.Endpoints.AllDegrees.GaussianBetaAllDegreeFiniteBinding
 import IPRADerivations.Analysis.Euler.PositiveAxis.SharpRates.GaussianEulerSharpFiniteRate
 
 /-!

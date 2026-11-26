@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.Integration.Incomplete.GaussianEulerIncompleteFixedCutoff
-import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactAlignment
+import IPRADerivations.Analysis.Euler.CompactExhaustion.Grids.GaussianEulerCompactAlignment
 import IPRADerivations.Analysis.Euler.PositiveAxis.UpperBounds.GaussianEulerUpperTailCauchyBudget
 
 /-!

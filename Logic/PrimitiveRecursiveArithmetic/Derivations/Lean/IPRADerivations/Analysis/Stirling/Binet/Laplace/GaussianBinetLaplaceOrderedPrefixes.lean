@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.GaussianBinetLaplaceExhaustion
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateRadius
 
 /-!
 # The actual Binet prefix rate at two ordered exhaustion cutoffs

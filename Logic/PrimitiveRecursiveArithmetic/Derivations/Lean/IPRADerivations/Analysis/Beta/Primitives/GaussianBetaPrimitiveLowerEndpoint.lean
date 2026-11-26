@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Beta.Primitives.GaussianBetaPrimitiveLinearStep
-import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.GaussianEulerLowerTransformedPower
+import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.Powers.GaussianEulerLowerTransformedPower
 import IPRADerivations.Analysis.Gamma.Integrals.GaussianGammaIntegralCutoffs
 
 /-!

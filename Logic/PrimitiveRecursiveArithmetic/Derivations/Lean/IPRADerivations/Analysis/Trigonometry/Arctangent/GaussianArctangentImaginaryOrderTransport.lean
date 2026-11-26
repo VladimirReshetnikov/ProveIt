@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Trigonometry.Arctangent.Inverse.GaussianArctangentInverseForward
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRealOrderTransport
+import IPRADerivations.Analysis.Names.Rates.Order.GaussianNamedRealOrderTransport
 
 /-!
 # Imaginary-coordinate order under equivalent names

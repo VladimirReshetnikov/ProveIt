@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerApproximationName
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.ReciprocalGamma.GaussianGammaReciprocalInverse
 import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerReciprocalInverse
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateTransport
 
 /-!
 # The literal Gamma C15 rate

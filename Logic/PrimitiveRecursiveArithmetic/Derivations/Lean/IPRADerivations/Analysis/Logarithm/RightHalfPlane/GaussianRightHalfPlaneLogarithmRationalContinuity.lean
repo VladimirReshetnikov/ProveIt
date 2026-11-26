@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Logarithm.RightHalfPlane.GaussianRightHalfPlaneLogarithmIncrement
 import IPRADerivations.Analysis.Logarithm.RightHalfPlane.GaussianRightHalfPlaneLogarithmIncrementMargin
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedLipschitzRate
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
+import IPRADerivations.Analysis.Names.Rates.Moduli.GaussianNamedLipschitzRate
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateRadius
 
 /-!
 # Local continuity of the actual rational right-half-plane logarithm

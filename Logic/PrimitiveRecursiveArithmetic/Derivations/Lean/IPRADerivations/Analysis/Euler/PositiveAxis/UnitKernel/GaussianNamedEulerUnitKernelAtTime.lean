@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitTime.GaussianNamedEulerUnitOuterLogRate
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitKernel.GaussianNamedEulerUnitKernelFrozenRate
-import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactPowerMajorant
+import IPRADerivations.Analysis.Euler.CompactExhaustion.ParameterBounds.GaussianEulerCompactPowerMajorant
 
 /-!
 # The genuine named unit kernel at a known rational logarithmic time

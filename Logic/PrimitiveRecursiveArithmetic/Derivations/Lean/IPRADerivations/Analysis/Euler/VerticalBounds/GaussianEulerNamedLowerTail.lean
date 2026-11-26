@@ -1,7 +1,7 @@
-import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactLowerTail
-import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.GaussianEulerLowerTailFiniteBudget
-import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.GaussianEulerLowerCofinalQuadrature
-import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCutoffCauchyComparison
+import IPRADerivations.Analysis.Euler.CompactExhaustion.Tails.GaussianEulerCompactLowerTail
+import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.Tails.GaussianEulerLowerTailFiniteBudget
+import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.Tails.GaussianEulerLowerCofinalQuadrature
+import IPRADerivations.Analysis.Euler.CompactExhaustion.Cutoffs.GaussianEulerCutoffCauchyComparison
 
 /-!
 # The actual lower-cutoff Euler name and its sharp tail bound

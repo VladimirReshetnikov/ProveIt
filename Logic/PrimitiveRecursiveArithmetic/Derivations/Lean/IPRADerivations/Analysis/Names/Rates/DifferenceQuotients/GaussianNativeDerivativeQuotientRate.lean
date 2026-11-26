@@ -1,9 +1,9 @@
 import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedDifferenceQuotient
-import IPRADerivations.Analysis.Names.Rates.GaussianRationalConstantProductRate
+import IPRADerivations.Analysis.Names.Rates.Scaling.GaussianRationalConstantProductRate
 import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianL1
 import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentExponentialPeriod
 import IPRADerivations.Analysis.Gamma.Digamma.TwoShift.Named.GaussianGammaDigammaTwoShiftNamedSize
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateTransport
 
 /-!
 # Normalizing the first-order comparison by a native Gaussian step

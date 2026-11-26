@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.CanonicalProducts.GaussianBarnesCanonicalProduct
 import IPRADerivations.Analysis.Barnes.CanonicalProducts.GaussianBarnesCanonicalFiniteProperness
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateComposition
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateComposition
 
 /-!
 # Independence of the rational chart for the Barnes canonical product

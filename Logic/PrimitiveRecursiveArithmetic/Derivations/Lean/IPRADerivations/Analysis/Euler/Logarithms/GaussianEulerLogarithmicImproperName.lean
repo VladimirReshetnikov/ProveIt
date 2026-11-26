@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.Logarithms.Exhaustion.GaussianEulerLogarithmicCutoffCauchy
-import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerVaryingCutoffName
+import IPRADerivations.Analysis.Euler.CompactExhaustion.Cutoffs.GaussianEulerVaryingCutoffName
 
 /-!
 # The original logarithmic integrals as regular varying-cutoff names

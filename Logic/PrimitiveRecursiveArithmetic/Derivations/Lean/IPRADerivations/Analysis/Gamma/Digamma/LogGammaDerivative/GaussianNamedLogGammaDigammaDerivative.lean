@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Names.Derivatives.GaussianNamedLogGammaTaylorEstimate
 import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedTaylorDifferenceQuotient
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateRadius
 
 /-!
 # The actual named log-Gamma quotient with a certified apartness witness

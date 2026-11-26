@@ -9,7 +9,7 @@ import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.Cofinal.GaussianBa
 import IPRADerivations.Analysis.Barnes.Taylor.RelativeExpansions.SecondDerivative.GaussianBarnesCanonicalSecondDerivativeCofinal
 import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.FiniteFactors.GaussianBarnesCanonicalHeadPolynomialDerivative
 import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianBoundedConstantProductName
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedLipschitzRate
+import IPRADerivations.Analysis.Names.Rates.Moduli.GaussianNamedLipschitzRate
 
 set_option autoImplicit false
 set_option maxHeartbeats 550000

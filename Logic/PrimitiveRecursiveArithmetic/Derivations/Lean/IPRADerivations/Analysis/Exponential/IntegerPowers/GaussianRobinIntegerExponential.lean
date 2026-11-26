@@ -5,7 +5,7 @@ import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialRadiusIndep
 import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianPositiveExponentialMajorant
 import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialInverse
 import IPRADerivations.Analysis.Names.GaussianNameEquivalence
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedSmallPerturbationTransport
+import IPRADerivations.Analysis.Names.Rates.Perturbations.GaussianNamedSmallPerturbationTransport
 
 /-!
 # Integer multiples of the original Robin odd logarithm of two

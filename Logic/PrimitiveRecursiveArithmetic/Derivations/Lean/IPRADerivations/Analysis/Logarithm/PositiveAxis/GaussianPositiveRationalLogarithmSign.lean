@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Logarithm.PositiveAxis.GaussianPositiveRationalLogarithmProperness
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRealOrderTransport
+import IPRADerivations.Analysis.Names.Rates.Order.GaussianNamedRealOrderTransport
 import IPRADerivations.AnalyticNumberTheory.HarmonicChebyshev
 
 /-!

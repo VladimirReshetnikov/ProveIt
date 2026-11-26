@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Barnes.Taylor.RelativeExpansions.GaussianBarnesCanonicalRelativeStep
 import IPRADerivations.Analysis.Logarithm.Local.GaussianLocalLogarithmTaylorRemainder
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateTransport
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateRadius
 import IPRADerivations.AnalyticNumberTheory.LocalFactor
 
 /-!

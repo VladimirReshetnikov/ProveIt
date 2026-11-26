@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Euler.Logarithms.ParameterRates.GaussianEulerLogarithmicTaylorGrid
 import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactMeshIndependence
 import IPRADerivations.Analysis.Euler.Logarithms.GaussianEulerLogarithmicIntervalName
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedAffineRemainderRate
+import IPRADerivations.Analysis.Names.Rates.Perturbations.GaussianNamedAffineRemainderRate
 
 /-!
 # Taylor error for the original logarithmic compact integral names

@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Gamma.Digamma.PositiveNames.GaussianGammaPositiv
 import IPRADerivations.Analysis.Gamma.Digamma.Derivative.GaussianGammaDigammaRecurrence
 import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedAddRate
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedDiagonalRate
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateRadius
 
 /-!
 # Positive named digamma recurrence

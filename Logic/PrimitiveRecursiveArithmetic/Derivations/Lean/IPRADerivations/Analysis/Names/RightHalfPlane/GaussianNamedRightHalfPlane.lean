@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.RationalArithmetic.Representations.RationalUpperRepresentation
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRealOrderTransport
+import IPRADerivations.Analysis.Names.Rates.Order.GaussianNamedRealOrderTransport
 import IPRADerivations.Analysis.Names.GaussianNameBounds
-import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.GaussianEulerLowerPowerCoefficients
+import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.Powers.GaussianEulerLowerPowerCoefficients
 
 /-!
 # Native rational inputs sampled from a named right-half-plane input

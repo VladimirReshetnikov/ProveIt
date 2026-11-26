@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Trigonometry.SineProducts.GaussianSineProductName
-import IPRADerivations.Analysis.Names.Rates.GaussianRationalLowerPerturbation
+import IPRADerivations.Analysis.Names.Rates.Order.GaussianRationalLowerPerturbation
 
 /-!
 # Exact lower bound for the finite sine-product head

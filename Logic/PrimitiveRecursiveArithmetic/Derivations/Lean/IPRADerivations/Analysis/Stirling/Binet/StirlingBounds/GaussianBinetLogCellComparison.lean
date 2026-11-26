@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.StirlingBounds.GaussianBinetLogCellGrid
 import IPRADerivations.Analysis.Logarithm.RightHalfPlane.GaussianRightHalfPlaneLogarithmRescale
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedLipschitzRate
+import IPRADerivations.Analysis.Names.Rates.Moduli.GaussianNamedLipschitzRate
 import IPRADerivations.Analysis.Integration.Partitions.GaussianRationalPanelTailDistance
 
 /-!

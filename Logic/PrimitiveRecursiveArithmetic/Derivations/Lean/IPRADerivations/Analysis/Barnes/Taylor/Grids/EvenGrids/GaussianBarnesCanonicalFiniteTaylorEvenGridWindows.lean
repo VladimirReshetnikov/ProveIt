@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Taylor.Grids.MixedGrids.GaussianBarnesCanonicalFiniteTaylorMixedGridPolynomial
-import IPRADerivations.Analysis.Barnes.Taylor.Grids.GaussianBarnesCanonicalCofinalTaylorGridReturn
+import IPRADerivations.Analysis.Barnes.Taylor.Grids.Cofinal.GaussianBarnesCanonicalCofinalTaylorGridReturn
 import IPRADerivations.Analysis.Barnes.CanonicalProducts.GaussianBarnesCanonicalFiniteProperness
 
 /-!

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.Logarithms.ParameterRates.GaussianEulerLogarithmicParameterTaylor
-import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.GaussianEulerLowerPowerCoefficients
+import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.Powers.GaussianEulerLowerPowerCoefficients
 
 /-!
 # Actual finite native parameter paths inside the right half-plane

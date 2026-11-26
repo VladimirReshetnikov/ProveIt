@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Zeta.Dirichlet.Square.GaussianGammaZetaDirichletSquareFinite
 import IPRADerivations.Analysis.Gamma.Zeta.Dirichlet.GaussianGammaZetaDirichletCofinal
-import IPRADerivations.Analysis.Stirling.Binet.Kernel.GaussianBinetBaselName
+import IPRADerivations.Analysis.Stirling.Binet.Kernel.BaselNormalization.GaussianBinetBaselName
 
 /-!
 # The original cofinal Dirichlet name at two

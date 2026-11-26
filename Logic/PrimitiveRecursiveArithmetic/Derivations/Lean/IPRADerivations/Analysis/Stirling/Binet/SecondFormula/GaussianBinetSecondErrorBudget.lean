@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.SineKernels.GaussianBinetSineKernelFrequency
-import IPRADerivations.Analysis.Stirling.Binet.Kernel.GaussianBinetKernelFrequencyRadius
+import IPRADerivations.Analysis.Stirling.Binet.Kernel.FrequencyGrids.GaussianBinetKernelFrequencyRadius
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.GaussianBinetLaplaceFrequencySuffix
 
 /-!

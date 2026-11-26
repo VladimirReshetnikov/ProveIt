@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.Taylor.Coefficients.ProductCoefficients.GaussianBarnesCanonicalTaylorProductCoefficientName
 import IPRADerivations.Analysis.Names.Scaling.GaussianNamedNaturalScale
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedUniformRateClosure
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedUniformRateClosure
 
 /-!
 # Factorially scaled Barnes Taylor coefficients with the original scalar

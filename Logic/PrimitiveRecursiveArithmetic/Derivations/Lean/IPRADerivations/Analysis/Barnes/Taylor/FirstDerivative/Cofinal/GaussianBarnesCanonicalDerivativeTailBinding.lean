@@ -1,8 +1,8 @@
 import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.Cofinal.GaussianBarnesCanonicalDerivativeInterval
 import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.Cofinal.GaussianBarnesCanonicalDerivativeCofinalRate
-import IPRADerivations.Analysis.Names.Rates.GaussianBoundedConstantProductRate
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedDifferenceRate
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateComposition
+import IPRADerivations.Analysis.Names.Rates.Scaling.GaussianBoundedConstantProductRate
+import IPRADerivations.Analysis.Names.Rates.Perturbations.GaussianNamedDifferenceRate
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateComposition
 import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameConjugation
 
 /-!

@@ -2,8 +2,8 @@ import IPRADerivations.Analysis.Beta.EulerProducts.GaussianBetaFiniteEulerAtCuto
 import IPRADerivations.Analysis.Beta.EulerProducts.GaussianBetaFiniteGammaComparison
 import IPRADerivations.Analysis.Beta.Partitions.GaussianBetaFixedCutoffSplit
 import IPRADerivations.Analysis.Beta.Partitions.GaussianBetaRefinedFixedCompactBudget
-import IPRADerivations.Analysis.Beta.Endpoints.GaussianBetaUpperTailDyadic
-import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerLaterCutoffObservation
+import IPRADerivations.Analysis.Beta.Endpoints.Upper.GaussianBetaUpperTailDyadic
+import IPRADerivations.Analysis.Euler.CompactExhaustion.Cutoffs.GaussianEulerLaterCutoffObservation
 import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerInverseApproximationName
 
 /-!

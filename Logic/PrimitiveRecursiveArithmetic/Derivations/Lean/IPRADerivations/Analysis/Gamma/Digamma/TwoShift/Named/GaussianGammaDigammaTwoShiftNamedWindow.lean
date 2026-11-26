@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedFrozenScalarOrder
+import IPRADerivations.Analysis.Names.Rates.Order.GaussianNamedFrozenScalarOrder
 import IPRADerivations.Analysis.Gamma.Digamma.TwoShift.Rational.GaussianGammaDigammaTwoShiftWindowBuffer
 import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedAddRate
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.GaussianNamedGammaHalfShift

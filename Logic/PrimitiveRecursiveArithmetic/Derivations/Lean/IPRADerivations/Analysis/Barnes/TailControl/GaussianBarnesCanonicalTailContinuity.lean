@@ -1,8 +1,8 @@
 import IPRADerivations.Analysis.Barnes.Logarithms.FiniteRows.GaussianBarnesCanonicalFiniteLogProduct
 import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalHeadLipschitz
 import IPRADerivations.Analysis.Barnes.TailControl.GaussianBarnesCanonicalTailExponential
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
-import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateComposition
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateTransport
+import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateComposition
 import IPRADerivations.Analysis.Trigonometry.Cyclic.GaussianCyclicExponentialSamples
 
 /-!

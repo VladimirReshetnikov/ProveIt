@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.Products.GaussianPolynomialLowJetProduct
 import IPRADerivations.Analysis.Polynomials.Products.GaussianPolynomialLinearFactorCoefficients
-import IPRADerivations.Analysis.Gamma.Taylor.GaussianGammaExponentCoefficientStability
+import IPRADerivations.Analysis.Gamma.Taylor.ExponentCoefficients.GaussianGammaExponentCoefficientStability
 
 /-!
 # Original actual powers agree across Gamma coefficient horizons
