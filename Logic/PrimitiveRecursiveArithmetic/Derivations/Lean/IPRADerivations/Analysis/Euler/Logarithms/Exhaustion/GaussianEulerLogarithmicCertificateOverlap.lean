@@ -17,6 +17,7 @@ namespace LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicCertificateOverlap
 
 open_ipra
 open GaussianEulerLogarithmicCertificateGeometry
+open LeanProofs.IPRA.Common (lt_succ_of_le)
 open GaussianGammaIntegralCutoffs (height etaDen top tailCoefficient)
 open GaussianEulerLogarithmicCommonCutoff (cutoff cutoff_later)
 open GaussianEulerLogarithmicImproperName (nameF data name_regular)
@@ -63,8 +64,32 @@ private theorem extension_diagonal (t j z R S B E L T : PTm n)
     (by unfold GaussianEulerLogarithmicTopExtension.numerator GaussianEulerLogarithmicTopExtension.denominator
         ipra_le (𝔞(unit t)*𝔞(unit t))*sl budget) larger
 
-private theorem strictly_below_succ (a b : PTm n) (h : Γ ⊢[PRAAx] le a b) : Γ ⊢[PRAAx] lt a (succ b) :=
-  le_congr (succ_eq_add_one a).eqSymm (succ_eq_add_one b).eqSymm (add_le_add_right one h)
+/-- One certified improper observation reaches the common top through its original cutoff. -/
+theorem observation_at_common_top (t r j z R S B A k E T : PTm n)
+    (h : Γ ⊢[PRAAx] GaussianEulerLowerPowerCoefficients.source z R B A)
+    (hWide : Γ ⊢[PRAAx] GaussianEulerUpperPowerCoefficients.source z S B)
+    (later : Γ ⊢[PRAAx] le t r) (hk : Γ ⊢[PRAAx] le (cutoff r j A) k)
+    (etaEq : Γ ⊢[PRAAx] etaDen k (two*A) (R+j) ≐ E)
+    (hTop : Γ ⊢[PRAAx] lt (top k (two*A) (R+j)) T)
+    (pay : Γ ⊢[PRAAx] le (tailCoefficient (S+j)*unit t) (unit r)) : Γ ⊢[PRAAx]
+    distanceBounded (ap2 nameF t (data j z R B A)) (ap2 compactF t (interval j z S B E T)) (num 11) (unit t) := by
+  let L := height k (two*A) (R+j)
+  have hL := GaussianGammaIntegralCutoffs.height_positive (Γ := Γ) k (two*A) (R+j)
+  have hE := le_congr (.eqRefl one) etaEq (GaussianGammaIntegralCutoffs.eta_den_positive k (two*A) (R+j))
+  have heightLater : Γ ⊢[PRAAx] le k L :=
+    le_of_eq_add (d := two*A+tailCoefficient (R+j)+num 10) (by dsimp only [L,height]; ipra_ring)
+  have heightBudget := GaussianExponentialReference.unit_monotone (le_trans (cutoff_later r j A) (le_trans hk heightLater))
+  have extension := extension_diagonal t j z R S B E L T
+    (.andI h.andE₂.andE₁ (.andI hWide (.andI hE (.andI hL (le_of_lt hTop))))) hTop (le_trans pay heightBudget)
+  have aligned := GaussianEulerLogarithmicCutoffSplit.interval_data_congr j z R B one _ _ _ one _ _ _ (.eqRefl one)
+    (congrMonus (congrMul etaEq (.eqRefl (two*L))) (.eqRefl one)) etaEq (.eqRefl (two*L))
+  have near : Γ ⊢[PRAAx] distanceBounded (ap2 compactF t (interval j z S B E T))
+      (ap2 compactF t (full j z R B A k)) (num 7) (unit t) :=
+    distance_congr (.eqRefl _) (congrAp2 compactF (.eqRefl t) aligned.eqSymm) (.eqRefl _) (.eqRefl _) extension
+  have hU := unit_positive (Γ := Γ) t
+  exact distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
+    (distance_triangle_same _ _ _ _ _ _ hU (fixed_diagonal t r j z R B A k h later hk)
+      (distance_symmetric _ _ _ _ hU near))
 
 theorem original_diagonal (t j z R S B A V : PTm n) (h : Γ ⊢[PRAAx] source z R S B A V) : Γ ⊢[PRAAx]
     distanceBounded (ap2 nameF t (data j z R B A)) (ap2 nameF t (data j z S B V)) (num 22) (unit t) := by
@@ -72,49 +97,23 @@ theorem original_diagonal (t j z R S B A V : PTm n) (h : Γ ⊢[PRAAx] source z 
   let r := GaussianFastValueCut.exponent M t
   let k := leftIndex r r j R A S V
   let l := rightIndex r r j R A S V
-  let L := height k (two*A) (R+j)
-  let J := height l (two*V) (S+j)
   let E := etaDen k (two*A) (R+j)
-  let F := etaDen l (two*V) (S+j)
   let T := succ (commonTop r r j R A S V)
-  let left := ap2 compactF t (full j z R B A k)
-  let right := ap2 compactF t (full j z S B V l)
-  let middle := ap2 compactF t (interval j z R B E T)
   have hA := h.andE₁.andE₁
   have hV := h.andE₂.andE₁
   have lr : Γ ⊢[PRAAx] le t r := le_add_right _ _
   have lp : Γ ⊢[PRAAx] le (cutoff r j A) k := left_index_late r r j R A S V hV
   have rp : Γ ⊢[PRAAx] le (cutoff r j V) l := right_index_late r r j R A S V hA
-  have hl : Γ ⊢[PRAAx] le r L := le_trans (cutoff_later r j A)
-    (le_trans (le_add_left _ _) (le_congr (.eqRefl _) (left_height r r j R A S V hV).eqSymm (left_height_budget r r j R A S V hV)))
-  have hr : Γ ⊢[PRAAx] le r J := le_trans (cutoff_later r j V)
-    (le_trans (le_add_left _ _) (le_congr (.eqRefl _) (right_height r r j R A S V hA).eqSymm (right_height_budget r r j R A S V hA)))
-  have topL : Γ ⊢[PRAAx] lt (two*L) T := strictly_below_succ _ _ (left_top_bound r r j R A S V hV)
-  have topR : Γ ⊢[PRAAx] lt (two*J) T := strictly_below_succ _ _ (right_top_bound r r j R A S V hA)
-  have hE : Γ ⊢[PRAAx] le one E := GaussianGammaIntegralCutoffs.eta_den_positive k (two*A) (R+j)
-  have hL : Γ ⊢[PRAAx] le one L := GaussianGammaIntegralCutoffs.height_positive k (two*A) (R+j)
-  have hJ : Γ ⊢[PRAAx] le one J := GaussianGammaIntegralCutoffs.height_positive l (two*V) (S+j)
-  have er : Γ ⊢[PRAAx] E ≐ F := same_eta r r j R A S V hA hV
-  have rightData : Γ ⊢[PRAAx] full j z S B V l ≐ interval j z S B E (two*J) :=
-    GaussianEulerLogarithmicCutoffSplit.interval_data_congr j z S B one _ _ _ one _ _ _ (.eqRefl one)
-      (congrMonus (congrMul er.eqSymm (.eqRefl (two*J))) (.eqRefl one)) er.eqSymm (.eqRefl (two*J))
+  have topL := lt_succ_of_le (left_top_bound r r j R A S V hV)
+  have topR := lt_succ_of_le (right_top_bound r r j R A S V hA)
   have pay := GaussianFastValueCut.query_budget (Γ := Γ) M t
-  have first := fixed_diagonal t r j z R B A k h.andE₁ lr lp
-  have second : Γ ⊢[PRAAx] distanceBounded middle left (num 7) (unit t) :=
-    extension_diagonal t j z R R B E L T
-      (.andI h.andE₁.andE₂.andE₁ (.andI h.andE₁.andE₂.andE₁ (.andI hE (.andI hL (le_of_lt topL)))))
-      topL (le_trans pay (GaussianExponentialReference.unit_monotone hl))
-  have third : Γ ⊢[PRAAx] distanceBounded middle right (num 7) (unit t) :=
-    distance_congr (.eqRefl _) (congrAp2 compactF (.eqRefl t) rightData.eqSymm) (.eqRefl _) (.eqRefl _)
-      (extension_diagonal t j z S R B E J T
-        (.andI h.andE₂.andE₂.andE₁ (.andI h.andE₁.andE₂.andE₁ (.andI hE (.andI hJ (le_of_lt topR)))))
-        topR (le_trans pay (GaussianExponentialReference.unit_monotone hr)))
-  have last := fixed_diagonal t r j z S B V l h.andE₂ lr rp
+  have first := observation_at_common_top t r j z R R B A k E T h.andE₁ h.andE₁.andE₂.andE₁
+    lr lp (.eqRefl E) topL pay
+  have last := observation_at_common_top t r j z S R B V l E T h.andE₂ h.andE₁.andE₂.andE₁
+    lr rp (same_eta r r j R A S V hA hV).eqSymm topR pay
   have hU := unit_positive (Γ := Γ) t
   exact distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
-    (distance_triangle_same _ _ _ _ _ _ hU first (distance_triangle_same _ _ _ _ _ _ hU
-      (distance_symmetric _ _ _ _ hU second) (distance_triangle_same _ _ _ _ _ _ hU third
-        (distance_symmetric _ _ _ _ hU last))))
+    (distance_triangle_same _ _ _ _ _ _ hU first (distance_symmetric _ _ _ _ hU last))
 
 theorem original_certificate_overlap (j z R S B A V : PTm n) (h : Γ ⊢[PRAAx] source z R S B A V) :
     Γ ⊢[PRAAx] crossEquivalent nameF nameF (data j z R B A) (data j z S B V) := by
