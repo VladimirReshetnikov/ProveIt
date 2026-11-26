@@ -52,10 +52,7 @@ private theorem binom₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] binomF := by
   · exact binom_step Prf.hyp0
 
 /-- `y^(m+1) + (m+1) y^m ≤ (y+1)^(m+1)`. -/
-theorem binom_lower (y m : PTm n) :
-    Γ ⊢[PRAAx] le (pw y (succ m) + succ m * pw y m) (pw (succ y) (succ m)) := by
-  have h := inst (Γ := Γ) binom₀ (![m, y] : Fin 2 → PTm n)
-  simpa using h
+alias binom_lower := LeanProofs.IPRA.Analysis.PowerSums.lower
 
 /-- `eq:block`: `2 y^K ≤ K^K` for `K = y + 1`, i.e. `ρ^K ≤ 1/2`. -/
 theorem block_half (y : PTm n) : Γ ⊢[PRAAx] le (two * pw y (succ y)) (pw (succ y) (succ y)) := by

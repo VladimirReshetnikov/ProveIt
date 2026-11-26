@@ -31,7 +31,7 @@ open Syn
 open scoped Fm BigOperators
 open ConciseIPRA.PTm (app zero succ)
 open LeanProofs.IPRA.PTm (num monus pred)
-open LeanProofs.IPRA.Topology.StaggeredCells (near near_cases dist)
+open LeanProofs.IPRA.Topology.StaggeredCells (near near_cases dist two_step_absurd)
 open LeanProofs.IPRA.Foundations.TermSums
 
 set_option autoImplicit false
@@ -91,10 +91,6 @@ theorem two_boundaries (d' g g' : ℕ) (hgg : g < g') (hg' : g' < d' + 1) (x : P
         (eqb_num_ne (a := δ + 1) (b := d' + 1) (by omega))
     exact (congrQuo (hs _ _)).eqTrans ((quo_succ _ _).eqTrans
       ((congrAdd (.eqRefl _) hr').eqTrans (add_zero _)))
-
-private theorem two_step_absurd {a c : PTm n} (φ : Fm PTm n) (h₁ : Γ ⊢[PRAAx] c ≐ succ (succ a))
-    (h₂ : Γ ⊢[PRAAx] le c (succ a)) : Γ ⊢[PRAAx] φ :=
-  not_succ_le_self (succ a) φ (le_congr h₁ (.eqRefl _) h₂)
 
 section Grids
 

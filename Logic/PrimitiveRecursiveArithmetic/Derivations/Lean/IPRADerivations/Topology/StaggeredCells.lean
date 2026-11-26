@@ -132,7 +132,7 @@ theorem half_succ_even {x : PTm n} (h : Γ ⊢[PRAAx] par x ≐ zero) :
 theorem par_succ_odd {x : PTm n} (h : Γ ⊢[PRAAx] par x ≐ one) : Γ ⊢[PRAAx] par (succ x) ≐ zero :=
   (par_succ x).eqTrans ((congrMonus (.eqRefl _) h).eqTrans (monus_self _))
 
-private theorem two_step_absurd {a c : PTm n} (φ : Fm PTm n) (h₁ : Γ ⊢[PRAAx] c ≐ succ (succ a))
+theorem two_step_absurd {a c : PTm n} (φ : Fm PTm n) (h₁ : Γ ⊢[PRAAx] c ≐ succ (succ a))
     (h₂ : Γ ⊢[PRAAx] le c (succ a)) : Γ ⊢[PRAAx] φ :=
   not_succ_le_self (succ a) φ (le_congr h₁ (.eqRefl _) h₂)
 

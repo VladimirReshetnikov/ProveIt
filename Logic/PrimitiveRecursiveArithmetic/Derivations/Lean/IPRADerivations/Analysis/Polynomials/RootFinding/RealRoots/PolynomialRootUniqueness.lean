@@ -26,6 +26,7 @@ open LeanProofs.IPRA.Analysis.RationalSummableTails (cross cross_triangle)
 open LeanProofs.IPRA.Analysis.RationalClosure (succ_le_two_pow)
 open LeanProofs.IPRA.Foundations.GapDecision (zabs zabs_congr zabs_tri zabs_neg subst_zabs)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
+open PolynomialRootName (denominator_congr left_value_congr)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -427,14 +428,6 @@ theorem names_unique (d : ℕ) (A B μ ν : PR 2) :
 #print axioms uniformGuard_at
 #print axioms name_agreement_at
 #print axioms names_unique
-
-private theorem left_value_congr {s t : PTm n} (h : Γ ⊢[PRAAx] s ≐ t) :
-    ZT.toZ Γ (left s) = ZT.toZ Γ (left t) := by
-  simp only [left, unpack, ZT.toZ]
-  rw [natEq (congrFst (congrFst h)), natEq (congrSnd (congrFst h))]
-
-private theorem denominator_congr {s t : PTm n} (h : Γ ⊢[PRAAx] s ≐ t) :
-    Γ ⊢[PRAAx] denominator s ≐ denominator t := congrSnd (congrSnd h)
 
 theorem difference_congr {s s' t t' : PTm n}
     (hs : Γ ⊢[PRAAx] s ≐ s') (ht : Γ ⊢[PRAAx] t ≐ t') :

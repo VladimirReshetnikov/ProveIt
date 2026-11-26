@@ -114,10 +114,10 @@ theorem reverse_edge (a b : PTm n) : Γ ⊢[PRAAx] par (a + b) ≐ par (b + a) :
   congrAp1 parF (add_comm a b)
 
 /-- Two copies of an edge cancel. -/
-theorem double_edge (c : PTm n) : Γ ⊢[PRAAx] par (c + c) ≐ zero := par_self_add c
+alias double_edge := LeanProofs.IPRA.par_self_add
 
 /-- The parity of a concatenation is the xor of the parities. -/
-theorem concat_parity (P Q : PTm n) : Γ ⊢[PRAAx] par (P + Q) ≐ par (par P + par Q) := par_add P Q
+alias concat_parity := LeanProofs.IPRA.par_add
 
 /-- `lem:replacement`: if the crossing counts `P₁`, `P₂` of two chains differ modulo two by the
 contributions `t(j, y)`, `j < M`, of triangles that each have even parity, then

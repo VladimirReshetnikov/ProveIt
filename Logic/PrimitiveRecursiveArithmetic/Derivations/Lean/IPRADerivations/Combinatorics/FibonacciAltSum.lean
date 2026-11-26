@@ -33,14 +33,7 @@ abbrev evkB : PTm 2 := monus one (par (var 0)) * fib (var 0)
 /-- `[k odd] F_k`. -/
 abbrev odkB : PTm 2 := par (var 0) * fib (var 0)
 
-theorem one_monus_one_monus_par (x : PTm n) : Γ ⊢[PRAAx] monus one (monus one (par x)) ≐ par x := by
-  refine .orE (par_cases x) ?_ ?_
-  · have h : ((par x ≐ zero) :: Γ) ⊢[PRAAx] par x ≐ zero := Prf.hyp0
-    exact ((congrMonus (.eqRefl one) ((congrMonus (.eqRefl one) h).eqTrans (monus_zero one))).eqTrans
-      (monus_self one)).eqTrans h.eqSymm
-  · have h : ((par x ≐ one) :: Γ) ⊢[PRAAx] par x ≐ one := Prf.hyp0
-    exact ((congrMonus (.eqRefl one) ((congrMonus (.eqRefl one) h).eqTrans (monus_self one))).eqTrans
-      (monus_zero one)).eqTrans h.eqSymm
+alias one_monus_one_monus_par := Fibonacci.compl_compl
 
 /-- The shifted odd body is the even body of the `F_{j+1}` sum. -/
 theorem shift_odd_at {m : ℕ} {Δ : List (Fm PTm m)} (i x : PTm m) :
