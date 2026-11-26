@@ -3002,3 +3002,6 @@ A finite exact telescope bounds the difference of two literal Gaussian rational 
 
 The difference of the original Barnes exponent corrections at consecutive arguments sums exactly to the literal harmonic expression, including at empty cutoff.
 [GaussianBarnesCanonicalCorrectionShift](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalCorrectionShift.lean)
+
+The actual two named cubic logarithm observations differ from their literal linear term by the summable quadratic bound. The original rationals and both observation clocks are retained.
+[GaussianNamedConstantRateFromSlack](Lean/IPRADerivations/Analysis/GaussianNamedConstantRateFromSlack.lean), [GaussianBarnesCanonicalDerivativeBinding](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDerivativeBinding.lean)
