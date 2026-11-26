@@ -100,22 +100,23 @@ private theorem decay_to_reciprocal (p X D R T A B : PTm n)
   exact distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
     (distance_triangle_same e v d two two U hU ev (distance_symmetric _ _ _ _ hU dv))
 
-private theorem floor_product (p X D T A B : PTm n)
-    (hD : Γ ⊢[PRAAx] le one D) (hB : Γ ⊢[PRAAx] le one B) (hT : Γ ⊢[PRAAx] le A (T*B)) :
-    Γ ⊢[PRAAx] rationalLE (floor X T)
+private theorem floor_product (p X D T A B S : PTm n)
+    (hD : Γ ⊢[PRAAx] le one D) (hB : Γ ⊢[PRAAx] le one B) (hT : Γ ⊢[PRAAx] le A (T*B))
+    (hCap : Γ ⊢[PRAAx] le X (S*D)) :
+    Γ ⊢[PRAAx] rationalLE (floor S T)
       (fstT (qmul (ap2 invF p (invData (X*A) (D*B) zero)) (ap2 K p (inputData A B)))) := by
   let d := ap2 invF p (invData (X*A) (D*B) zero)
   let k := ap2 K p (inputData A B)
-  let W := pw (num 3) (X*T)
+  let W := pw (num 3) (S*T)
   let v := expFloor one W
   let u := fstT (kernelFloor two (lowerDenominator T zero))
-  have hW := GaussianPolynomialPerturbation.power_positive (Γ := Γ) (num 3) (X*T) (by ipra_le 2)
+  have hW := GaussianPolynomialPerturbation.power_positive (Γ := Γ) (num 3) (S*T) (by ipra_le 2)
   have hvRep := GaussianEuclideanDistanceName.fraction_represents one W hW
   have hv := GaussianRationalL1.nonnegative_of_representation v one W hW hvRep
   have huRep := GaussianGammaHalfSqrtBrackets.fraction_first_represents two (lowerDenominator T zero)
     (GaussianBinetKernelRows.lower_denominator_positive (Γ := Γ) T zero)
-  have hDen := floor_denominator_positive (Γ := Γ) X T
-  have mulFloor : Γ ⊢[PRAAx] RationalArithmetic.multiply v u ≐ floor X T := by
+  have hDen := floor_denominator_positive (Γ := Γ) S T
+  have mulFloor : Γ ⊢[PRAAx] RationalArithmetic.multiply v u ≐ floor S T := by
     apply RationalFiniteSum.canonical_equal _ _ _ _ _ _
       (RationalArithmetic.multiply_guard v u)
       (RationalNormalForm.normalize_well_formed _ _ hDen)
@@ -125,9 +126,9 @@ private theorem floor_product (p X D T A B : PTm n)
     simp only [ZT.toZ_mul,ZT.toZ_ofNat,floorDenominator,W,Q.mk_mul,map_mul]
     ipra_simps
     ring
-  have arg : Γ ⊢[PRAAx] le (X*A) ((X*T)*(D*B)) := by
-    ipra_le 𝔞(X)*sl hT+𝔞(X*T*B)*sl hD
-  have hd := GaussianEulerDecayCompactLower.reciprocal_samples_lower (X*A) (D*B) (X*T) p
+  have arg : Γ ⊢[PRAAx] le (X*A) ((S*T)*(D*B)) :=
+    le_congr (.eqRefl _) (by ipra_ring) (le_mul_mono hCap hT)
+  have hd := GaussianEulerDecayCompactLower.reciprocal_samples_lower (X*A) (D*B) (S*T) p
     (positive_product _ _ hD hB) arg
   have hk := cofinal_kernel_floor p A B T hB hT
   have h₁ := RationalArithmetic.multiply_monotone v u (fstT k) hv hk.andE₂
@@ -136,10 +137,11 @@ private theorem floor_product (p X D T A B : PTm n)
     (rationalLE_congr (RationalAlgebra.multiply_commutative _ _) (RationalAlgebra.multiply_commutative _ _) h₂)
   exact rationalLE_congr mulFloor (GaussianPositiveExponentialProduct.real_product d k hk.andE₁.andE₁).eqSymm h₃
 
-/-- The lower bound applies at every actual clock and all rational times in ([0,T]). -/
-theorem sample_floor (p X D R T A B : PTm n)
-    (h : Γ ⊢[PRAAx] input X zero D zero R T A B) :
-    Γ ⊢[PRAAx] upper (floor X T)
+/-- The floor depends on a common cap for the input value, independently
+of its rational denominator. It holds at every actual observation clock. -/
+theorem sample_floor_with_cap (p X D R T A B S : PTm n)
+    (h : Γ ⊢[PRAAx] input X zero D zero R T A B) (hCap : Γ ⊢[PRAAx] le X (S*D)) :
+    Γ ⊢[PRAAx] upper (floor S T)
       (fstT (ap2 cofinalF p (cofinalData X zero D zero R T A B))) (num 8) (unit p) := by
   let r := complexClock p X zero D zero R T A B
   let x := expData X zero D zero R T A B
@@ -163,7 +165,17 @@ theorem sample_floor (p X D R T A B : PTm n)
   have row := RationalValueBounds.upper_of_radius _ _ _ _
     (GaussianNamedPositiveExponentialOrder.scalar_coordinate_distance _ _ _ _ hp rad)
   exact RationalValueBounds.upper_order_left _ _ _ _ _
-    (floor_product r X D T A B h.andE₁.andE₁.andE₂ h.andE₂.andE₁ h.andE₂.andE₂) row
+    (floor_product r X D T A B S h.andE₁.andE₁.andE₂ h.andE₂.andE₁ h.andE₂.andE₂ hCap) row
+
+theorem numerator_cap (X D : PTm n) (hD : Γ ⊢[PRAAx] le one D) : Γ ⊢[PRAAx] le X (X*D) :=
+  le_congr (by ipra_ring) (.eqRefl _) (le_mul_mono (le_refl X) hD)
+
+/-- The original numerator provides a cap when no separate one is supplied. -/
+theorem sample_floor (p X D R T A B : PTm n)
+    (h : Γ ⊢[PRAAx] input X zero D zero R T A B) :
+    Γ ⊢[PRAAx] upper (floor X T)
+      (fstT (ap2 cofinalF p (cofinalData X zero D zero R T A B))) (num 8) (unit p) :=
+  sample_floor_with_cap p X D R T A B X h (numerator_cap X D h.andE₁.andE₁.andE₂)
 
 theorem actual_positive_real_Binet_integrand_floor_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 7
     (input (var 1) zero (var 2) zero (var 3) (var 4) (var 5) (var 6) ⟶

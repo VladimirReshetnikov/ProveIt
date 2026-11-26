@@ -21,10 +21,10 @@ namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentPositive
 open LeanProofs.ConciseIPRA LeanProofs.IPRA
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianBinetLaplaceMomentCompact (data regular)
-open GaussianBinetLaplaceMomentFloor (unitPanelData unit_panel_floor)
+open GaussianBinetLaplaceMomentFloor (unitPanelData unit_panel_floor_with_cap)
 open GaussianBinetLaplaceMomentHorizon (coherence)
 open GaussianBinetLaplaceMomentPrefixes (prefixData)
-open GaussianBinetLaplaceRealFloor (floor floorDenominator floor_denominator_positive)
+open GaussianBinetLaplaceRealFloor (floor floorDenominator floor_denominator_positive numerator_cap)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianDominantPairAlgebra (radiusPoint)
 open GaussianEuclideanDistanceName (fraction fraction_represents)
@@ -86,9 +86,10 @@ theorem panel_order (j X D R T A C E : PTm n)
     upper_congr eq.eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _)
       (GaussianBinetLaplaceMomentNonnegative.panel_nonnegative (var 0) (s j) (s X) (s D) (s R) (s T) (s A) (s C) (s E) hs)
 
-theorem unit_panel_order (j X D R : PTm n) (h : Γ ⊢[PRAAx] realSource X zero D zero R) :
-    Γ ⊢[PRAAx] realOrder constantF F (marginPoint X) (unitPanelData j X D R) := by
-  apply order_from_envelope constantF F (marginPoint X) (unitPanelData j X D R) (num 8)
+theorem unit_panel_order_with_cap (j X D R S : PTm n) (h : Γ ⊢[PRAAx] realSource X zero D zero R)
+    (hCap : Γ ⊢[PRAAx] le X (S*D)) :
+    Γ ⊢[PRAAx] realOrder constantF F (marginPoint S) (unitPanelData j X D R) := by
+  apply order_from_envelope constantF F (marginPoint S) (unitPanelData j X D R) (num 8)
     (constant_regular _) (GaussianBinetLaplaceMomentCompact.unit_panel_regular j X D R h)
   refine .allI ?_
   let s (v : PTm n) := Syn.shift v
@@ -96,10 +97,16 @@ theorem unit_panel_order (j X D R : PTm n) (h : Γ ⊢[PRAAx] realSource X zero 
   have hs : Δ ⊢[PRAAx] realSource (s X) zero (s D) zero (s R) :=
     by simpa only [Δ,s,Fm.shift,Syn.shift,GaussianLogGammaEulerResidualDomain.subst_source,
       ConciseIPRA.PTm.subst_zero] using h.shift
-  have eq := (congrFst (constant_at (Γ := Δ) (var 0) (marginPoint (s X)))).eqTrans (margin_scalar (s X))
+  have cap : Δ ⊢[PRAAx] le (s X) (s S*s D) := by
+    simpa only [Δ,s,Fm.shift,Syn.shift,subst_le,PTm.subst_mul] using hCap.shift
+  have eq := (congrFst (constant_at (Γ := Δ) (var 0) (marginPoint (s S)))).eqTrans (margin_scalar (s S))
   simpa only [envelope,Δ,s,Syn.shift,subst_marginPoint,GaussianBinetLaplaceMomentFloor.subst_unitPanelData,
     LeanProofs.IPRA.PTm.subst_num] using
-    upper_congr eq.eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _) (unit_panel_floor (var 0) (s j) (s X) (s D) (s R) hs)
+    upper_congr eq.eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _) (unit_panel_floor_with_cap (var 0) (s j) (s X) (s D) (s R) (s S) hs cap)
+
+theorem unit_panel_order (j X D R : PTm n) (h : Γ ⊢[PRAAx] realSource X zero D zero R) :
+    Γ ⊢[PRAAx] realOrder constantF F (marginPoint X) (unitPanelData j X D R) :=
+  unit_panel_order_with_cap j X D R X h (numerator_cap X D h.andE₁.andE₂)
 
 private theorem split_order (j X D R T A C₁ C₂ a b c : PTm n)
     (h : Γ ⊢[PRAAx] stripSource X zero D zero R T A (C₁+C₂) one)
@@ -118,12 +125,12 @@ private theorem panel_source (X D R L A C : PTm n) (h : Γ ⊢[PRAAx] realSource
     (hc : Γ ⊢[PRAAx] le (A+C) L) : Γ ⊢[PRAAx] stripSource X zero D zero R L A C one :=
   .andI h (.andI (le_refl one) (le_congr (.eqRefl _) (one_mul _).eqSymm hc))
 
-theorem prefix_order (j X D R L : PTm n) (h : Γ ⊢[PRAAx] realSource X zero D zero R)
-    (hL : Γ ⊢[PRAAx] le (num 3) L) :
-    Γ ⊢[PRAAx] realOrder constantF F (marginPoint X) (prefixData j X D R L) := by
+theorem prefix_order_with_cap (j X D R L S : PTm n) (h : Γ ⊢[PRAAx] realSource X zero D zero R)
+    (hL : Γ ⊢[PRAAx] le (num 3) L) (hCap : Γ ⊢[PRAAx] le X (S*D)) :
+    Γ ⊢[PRAAx] realOrder constantF F (marginPoint S) (prefixData j X D R L) := by
   let P : PTm n := one+one
   let C := one+monus L (num 3)
-  let c := marginPoint X
+  let c := marginPoint S
   have ez : Γ ⊢[PRAAx] L ≐ P+C :=
     (eq_add_of_le hL).eqTrans (by dsimp only [P,C]; ipra_ring)
   have hP : Γ ⊢[PRAAx] le (zero+P) L :=
@@ -131,7 +138,7 @@ theorem prefix_order (j X D R L : PTm n) (h : Γ ⊢[PRAAx] realSource X zero D 
   have hC : Γ ⊢[PRAAx] le one C := le_add_right _ _
   have left := panel_order j X D R L zero one one
     (panel_source X D R L zero one h (le_trans (by ipra_le 2) hL))
-  have unit := unit_panel_order j X D R h
+  have unit := unit_panel_order_with_cap j X D R S h hCap
   have unitSrc := panel_source X D R two one one h (le_of_eq_add (d := zero) (by ipra_ring))
   have rect := panel_source X D R L one one h (le_congr (zero_add P) (.eqRefl _) hP)
   have toL := coherence j X D R two R L one one one unitSrc rect
@@ -145,7 +152,7 @@ theorem prefix_order (j X D R L : PTm n) (h : Γ ⊢[PRAAx] realSource X zero D 
   have mid := transport constantF constantF F F c c (unitPanelData j X D R) y'
     (cross_refl _ _ (constant_regular c))
     (cross_data_congr _ _ _ _ y y' (.eqRefl _) yEq toL) unit
-  have zc : Γ ⊢[PRAAx] qadd qzero c ≐ c := qzero_add c (margin_canonical X)
+  have zc : Γ ⊢[PRAAx] qadd qzero c ≐ c := qzero_add c (margin_canonical S)
   have first := split_order j X D R L zero one one qzero c c
     (panel_source X D R L zero P h hP) (le_refl one) (le_refl one) left mid zc
   have extWidth : Γ ⊢[PRAAx] le ((zero+P)+C) L :=
@@ -166,6 +173,11 @@ theorem prefix_order (j X D R L : PTm n) (h : Γ ⊢[PRAAx] realSource X zero D 
       (cross_refl _ _ (regular j X D R L zero (P+C) one
         (panel_source X D R L zero (P+C) h (le_congr (add_assoc _ _ _) (.eqRefl _) extWidth))))) full
 
+theorem prefix_order (j X D R L : PTm n) (h : Γ ⊢[PRAAx] realSource X zero D zero R)
+    (hL : Γ ⊢[PRAAx] le (num 3) L) :
+    Γ ⊢[PRAAx] realOrder constantF F (marginPoint X) (prefixData j X D R L) :=
+  prefix_order_with_cap j X D R L X h hL (numerator_cap X D h.andE₁.andE₂)
+
 private theorem cutoff_contains_panel (p j D : PTm n) :
     Γ ⊢[PRAAx] le (num 3) (GaussianBinetLaplaceMomentImproper.cutoff p j D) := by
   let C := GaussianBinetLaplaceMomentPrefixes.tailNumerator j D
@@ -175,9 +187,10 @@ private theorem cutoff_contains_panel (p j D : PTm n) :
   exact le_trans (le_congr (by ipra_ring) (.eqRefl _) (le_mul_mono c (unit_positive (succ p))))
     (GaussianBinetLaplaceMomentImproper.cutoff_budget p j D)
 
-theorem improper_order (j X D R : PTm n) (h : Γ ⊢[PRAAx] realSource X zero D zero R) :
-    Γ ⊢[PRAAx] realOrder constantF J (marginPoint X) (JData j X D R) := by
-  apply order_from_envelope constantF J (marginPoint X) (JData j X D R) two
+theorem improper_order_with_cap (j X D R S : PTm n) (h : Γ ⊢[PRAAx] realSource X zero D zero R)
+    (hCap : Γ ⊢[PRAAx] le X (S*D)) :
+    Γ ⊢[PRAAx] realOrder constantF J (marginPoint S) (JData j X D R) := by
+  apply order_from_envelope constantF J (marginPoint S) (JData j X D R) two
     (constant_regular _) (GaussianBinetLaplaceMomentImproper.regular j X D R h)
   refine .allI ?_
   let s (v : PTm n) := Syn.shift v
@@ -186,11 +199,13 @@ theorem improper_order (j X D R : PTm n) (h : Γ ⊢[PRAAx] realSource X zero D 
   let U := unit p
   let V := unit (succ p)
   let L := GaussianBinetLaplaceMomentImproper.cutoff p (s j) (s D)
-  let m := marginPoint (s X)
+  let m := marginPoint (s S)
   have hs : Δ ⊢[PRAAx] realSource (s X) zero (s D) zero (s R) :=
     by simpa only [Δ,s,Fm.shift,Syn.shift,GaussianLogGammaEulerResidualDomain.subst_source,
       ConciseIPRA.PTm.subst_zero] using h.shift
-  have positive := prefix_order (s j) (s X) (s D) (s R) L hs (cutoff_contains_panel p (s j) (s D))
+  have cap : Δ ⊢[PRAAx] le (s X) (s S*s D) := by
+    simpa only [Δ,s,Fm.shift,Syn.shift,subst_le,PTm.subst_mul] using hCap.shift
+  have positive := prefix_order_with_cap (s j) (s X) (s D) (s R) L (s S) hs (cutoff_contains_panel p (s j) (s D)) cap
   have raw := real_order_at constantF F m (prefixData (s j) (s X) (s D) (s R) L) (succ p) (succ p) positive
   have c := (constant_at (Γ := Δ) (succ p) m).eqTrans (constant_at p m).eqSymm
   have read := GaussianBinetLaplaceMomentImproper.sample_at (Γ := Δ) p (s j) (s X) (s D) (s R)
@@ -202,6 +217,19 @@ theorem improper_order (j X D R : PTm n) (h : Γ ⊢[PRAAx] realSource X zero D 
     two,one,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero] using
     upper_mono _ _ _ _ _ _ (positive_product _ _ hv hv)
       (upper_congr (congrFst c) (congrFst read).eqSymm (.eqRefl _) (.eqRefl _) raw) budget
+
+theorem improper_order (j X D R : PTm n) (h : Γ ⊢[PRAAx] realSource X zero D zero R) :
+    Γ ⊢[PRAAx] realOrder constantF J (marginPoint X) (JData j X D R) :=
+  improper_order_with_cap j X D R X h (numerator_cap X D h.andE₁.andE₂)
+
+theorem actual_improper_Binet_moments_uniform_positive_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 5
+    (let j := var 0
+     let X := var 1
+     let D := var 2
+     let R := var 3
+     let S := var 4
+     realSource X zero D zero R ⟶ le X (S*D) ⟶ realOrder constantF J (marginPoint S) (JData j X D R)) :=
+  closeUniv 5 (.impI (.impI (improper_order_with_cap _ _ _ _ _ Prf.hyp1 Prf.hyp0)))
 
 theorem actual_improper_Binet_moments_positive_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 4
     (realSource (var 1) zero (var 2) zero (var 3) ⟶ realOrder constantF J (marginPoint (var 1))
