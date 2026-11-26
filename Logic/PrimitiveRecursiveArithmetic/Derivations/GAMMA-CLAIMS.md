@@ -2960,3 +2960,6 @@ Throughout the certified half-unit neighborhood, each retained factor has a lowe
 
 The three admitted Mercator names satisfy the exact addition and difference identity when their rational bases multiply. This supplies an exact name identity for the Barnes derivative comparison.
 [GaussianLocalLogarithmMultiplicativeIncrement](Lean/IPRADerivations/Analysis/GaussianLocalLogarithmMultiplicativeIncrement.lean)
+
+The original factor at the conjugate rational input is the conjugate of the original factor at the input. The proof covers all admissible positive indices and permits a zero factor.
+[GaussianBarnesCanonicalFactorConjugation](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalFactorConjugation.lean)
