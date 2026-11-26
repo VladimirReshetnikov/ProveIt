@@ -2831,3 +2831,6 @@ Uniform Gamma and Dirichlet sample bounds and the independent factor rates yield
 
 The signed native numerator, denominator, and certified wider radius give a common rational chart. The three actual rational providers share one input demand for Gamma, the cofinal Dirichlet series, and their original normalized product.
 [GaussianGammaZetaNamedChart](Lean/IPRADerivations/Analysis/GaussianGammaZetaNamedChart.lean)
+
+For a regular name with real part bounded below by one plus an explicit margin, the original subtraction sampler supplies the certified s−1 chart. Shifting back identifies the original input at independent clocks.
+[GaussianGammaZetaNamedInput](Lean/IPRADerivations/Analysis/GaussianGammaZetaNamedInput.lean)
