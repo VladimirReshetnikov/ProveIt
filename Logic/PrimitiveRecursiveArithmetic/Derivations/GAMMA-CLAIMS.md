@@ -3125,3 +3125,6 @@ For $F(z)=G(1+z)$, the actual entire reciprocal Gamma name gives the cleared rec
 
 A single dyadic upper bound on the native step pays the original quotient margin and desired output precision, independently of the nonzero certificate.
 [GaussianBarnesCanonicalDerivativeIncrementPrecision](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDerivativeIncrementPrecision.lean)
+
+The actual quotient by an apart regular named Gaussian step agrees to an explicit independent rate with the native quotient at a decoded late step. The error keeps the individual endpoint approximation rates and the actual reciprocal clock.
+[GaussianNamedIncrementQuotientFrozenRate](Lean/IPRADerivations/Analysis/GaussianNamedIncrementQuotientFrozenRate.lean)
