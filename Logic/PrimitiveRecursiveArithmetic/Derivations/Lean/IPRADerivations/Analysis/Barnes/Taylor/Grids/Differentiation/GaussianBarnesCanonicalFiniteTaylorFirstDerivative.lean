@@ -118,7 +118,7 @@ theorem wide_sources (z h R B : PTm n) (hz : Γ ⊢[PRAAx] source z R B)
   have wide : Γ ⊢[PRAAx] le (R*B+B) ((R+one)*B) := le_of_eq_add (d := zero) (by ipra_ring)
   exact .andI (.andI hz.andE₁ (bounded_mono hz.andE₂ (le_trans (le_add_right _ _) wide)))
     (.andI hz.andE₁ (bounded_mono (bounded_add hz.andE₂ (normSq_le_norm1_square h)) (le_trans
-      (le_congr (add_comm _ _) (add_comm _ _) (add_le_add_right (R*B) hH)) wide)))
+      (add_le_add_left (R*B) hH) wide)))
 
 private theorem budget_base (B : PTm n) : Γ ⊢[PRAAx] le B (unit (baseClock B)) :=
   le_congr ((congrMul (.eqRefl B) (pw_zero two)).eqTrans (Common.mul_one_right B)) (.eqRefl _)

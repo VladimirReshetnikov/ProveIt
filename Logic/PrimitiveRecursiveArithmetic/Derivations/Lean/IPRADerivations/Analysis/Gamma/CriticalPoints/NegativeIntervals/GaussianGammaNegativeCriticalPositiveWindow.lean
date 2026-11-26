@@ -124,7 +124,7 @@ theorem window (a b : PTm n) (hb : Γ ⊢[PRAAx] le one b) (ha : Γ ⊢[PRAAx] l
     h₂ (cross_refl _ _ (constant_regular _)) two_upper
   have l := GaussianGammaDigammaMonotone.monotone b (b+a) b (.andI hb hb) s (le_add_right _ _)
   have r := GaussianGammaDigammaMonotone.monotone (b+a) (b+b) b s (.andI (le_trans hb (le_add_right _ _)) hb)
-    (le_congr (add_comm _ _) (add_comm _ _) (add_le_add_right b ha))
+    (add_le_add_left b ha)
   exact .andI (order_trans _ _ _ _ _ _ lo l) (order_trans _ _ _ _ _ _ r hi)
 
 theorem original_shifted_positive_digamma_window_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 2

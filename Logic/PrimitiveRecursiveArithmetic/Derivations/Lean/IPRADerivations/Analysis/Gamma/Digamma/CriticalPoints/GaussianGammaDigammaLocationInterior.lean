@@ -103,7 +103,7 @@ private theorem grid_upper (p i j : PTm n) (h : Γ ⊢[PRAAx] le i j) : Γ ⊢[P
   let t := clock p
   have hN := grid_positive (Γ := Γ) p
   have ordered : Γ ⊢[PRAAx] le (N+i) (N+j) :=
-    le_congr (add_comm _ _) (add_comm _ _) (add_le_add_right N h)
+    add_le_add_left N h
   have direct := GaussianGammaDigammaLipschitz.unit_upper_at t t (N+i) (N+j) N hN (le_add_right _ _) ordered
   have e := natEq (((congrMonus (add_comm N j) (add_comm N i)).eqTrans (monus_add_add j i N)) :
     Γ ⊢[PRAAx] monus (N+j) (N+i) ≐ monus j i)

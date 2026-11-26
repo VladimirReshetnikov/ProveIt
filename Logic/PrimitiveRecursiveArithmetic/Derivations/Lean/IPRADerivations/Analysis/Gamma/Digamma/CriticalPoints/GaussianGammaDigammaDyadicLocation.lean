@@ -148,7 +148,7 @@ theorem directed_location_gap (p q : PTm n) : Γ ⊢[PRAAx]
   · have h : le v u :: Γ ⊢[PRAAx] le (grid q*higher p) (grid p*lower q) :=
       le_congr (mul_comm _ _) (mul_comm _ _) Prf.hyp0
     have sum : le v u :: Γ ⊢[PRAAx] le (v+monus u v) (v+num 16*s) :=
-      le_congr (add_comm _ _) (add_comm _ _) (add_le_add_right v (excess p q h))
+      add_le_add_left v (excess p q h)
     exact le_trans (le_congr (eq_add_of_le Prf.hyp0).eqSymm (.eqRefl _) sum) cap.wk
 
 private theorem observation_bound (p q : PTm n) : Γ ⊢[PRAAx]

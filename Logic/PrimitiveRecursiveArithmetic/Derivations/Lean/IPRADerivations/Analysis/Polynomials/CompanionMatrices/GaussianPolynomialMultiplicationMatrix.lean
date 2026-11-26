@@ -282,7 +282,7 @@ theorem slot_complement (m r : PTm n) (hr : Γ ⊢[PRAAx] lt r m) : Γ ⊢[PRAAx
 theorem stage_bound (m a c j : PTm n) (hm : Γ ⊢[PRAAx] le one m) (hj : Γ ⊢[PRAAx] lt j m) : Γ ⊢[PRAAx]
     le (bound a c j) (width m a c) := by
   have h := AnalyticNumberTheory.PhiLower.le_mul_mono (index_le_pred m j hm hj) (le_refl c)
-  exact le_congr (add_comm _ _) (add_comm _ _) (add_le_add_right a h)
+  exact add_le_add_left a h
 
 theorem matrix_entry_length (F G m a c r j : PTm n) (hm : Γ ⊢[PRAAx] le one m)
     (hG : Γ ⊢[PRAAx] rowShape G m a) (hr : Γ ⊢[PRAAx] lt r m) (hj : Γ ⊢[PRAAx] lt j m) : Γ ⊢[PRAAx]

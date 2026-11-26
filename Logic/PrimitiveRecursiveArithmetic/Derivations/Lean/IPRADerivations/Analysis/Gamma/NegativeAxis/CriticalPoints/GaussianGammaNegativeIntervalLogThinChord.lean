@@ -115,7 +115,7 @@ private theorem scale_one_cross (x : PTm n) (hx : Γ ⊢[PRAAx] pointCN G x) :
 private theorem translated_gap (a d b : PTm n) (had : Γ ⊢[PRAAx] le a d) :
     Γ ⊢[PRAAx] monus (b+d) (b+a) ≐ monus d a := by
   have h : Γ ⊢[PRAAx] le (b+a) (b+d) :=
-    le_congr (add_comm _ _) (add_comm _ _) (add_le_add_right b had)
+    add_le_add_left b had
   have e := natEq (eq_add_of_le h)
   have p := natEq (eq_add_of_le had)
   apply deriveNat

@@ -175,6 +175,10 @@ theorem add_le_add_right {a b : PTm n} (c : PTm n) (h : Γ ⊢[PRAAx] le a b) :
   refine le_of_eq_add (d := monus b a) ?_
   exact (congrAdd (eq_add_of_le h) (.eqRefl c)).eqTrans (add_right_comm _ _ _)
 
+theorem add_le_add_left {a b : PTm n} (c : PTm n) (h : Γ ⊢[PRAAx] le a b) :
+    Γ ⊢[PRAAx] le (c + a) (c + b) :=
+  le_congr (add_comm _ _) (add_comm _ _) (add_le_add_right c h)
+
 theorem mul_le_mul_right {a b : PTm n} (c : PTm n) (h : Γ ⊢[PRAAx] le a b) :
     Γ ⊢[PRAAx] le (a * c) (b * c) :=
   le_of_eq_add (d := monus b a * c) ((congrMul (eq_add_of_le h) (.eqRefl c)).eqTrans (add_mul _ _ _))

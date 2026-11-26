@@ -151,7 +151,7 @@ theorem power_width (q r M e P Q : PTm n) (hM : Γ ⊢[PRAAx] le one M)
     (RationalNonnegativePowers.denominator_positive E e hE)
     (RationalMultiplicativeConvexity.power_representation q u E e hq hE rq)
     (RationalMultiplicativeConvexity.power_representation r v E e hr hE rr)
-    (le_trans finite (le_congr (add_comm _ _) (add_comm _ _) (add_le_add_right (Q*pw v e) budgetP)))
+    (le_trans finite (add_le_add_left (Q*pw v e) budgetP))
 
 theorem power_bound (q M e : PTm n) (hq : Γ ⊢[PRAAx] nonnegative q)
     (hb : Γ ⊢[PRAAx] rationalLE q (natCode M)) : Γ ⊢[PRAAx]

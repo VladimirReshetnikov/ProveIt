@@ -144,7 +144,7 @@ theorem strong_convexity_of_inverse (a b c N r s : PTm n)
   have bound : Γ ⊢[PRAAx] le (b+c) (two*b) := le_congr (add_comm _ _) (by ipra_ring)
     (add_le_add_right b (le_of_lt hc.andE₂))
   have ordered : Γ ⊢[PRAAx] le (b+a) (b+c) :=
-    le_congr (add_comm _ _) (add_comm _ _) (add_le_add_right b hac)
+    add_le_add_left b hac
   have base := GaussianGammaNativeStrongLogConvexity.strong_convexity (b+a) (b+c) b (two*b) r s
     hA.andE₁ ordered hA.andE₂ bound
   have both := add_order (addF C G) (addF G G) V (addF V V) (addData q cpos)

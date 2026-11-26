@@ -88,8 +88,8 @@ private theorem symmetric_native_bounds (x y K : PTm n) (h : Γ ⊢[PRAAx] le (a
     Γ ⊢[PRAAx] le x (y+K) ⋏ le y (x+K) := by
   have backwards : Γ ⊢[PRAAx] le (ad y x) K :=
     le_congr (by unfold ad; ipra_ring) (.eqRefl _) h
-  exact .andI (le_trans (le_add_ad x y) (le_congr (add_comm _ _) (add_comm _ _) (add_le_add_right y h)))
-    (le_trans (le_add_ad y x) (le_congr (add_comm _ _) (add_comm _ _) (add_le_add_right x backwards)))
+  exact .andI (le_trans (le_add_ad x y) (add_le_add_left y h))
+    (le_trans (le_add_ad y x) (add_le_add_left x backwards))
 
 theorem native_endpoint_source (a C E b D H : PTm n) :
     Γ ⊢[PRAAx] endpointSource (H*a) (H*C) (E*b) (E*D) (endpointDisplacement a C E b D H) := by

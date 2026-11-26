@@ -43,7 +43,7 @@ theorem scaled_index_bound (R m r j : PTm n) (hr : Γ ⊢[PRAAx] le r m)
     exact le_congr (.eqRefl _) (by unfold scaledRadius; ipra_ring)
       (le_add_right (m*(two*(R+one))+m) m)
   have first := add_le_add_right r (le_mul_mono (le_refl m) hj)
-  have next := le_congr (add_comm _ _) (add_comm _ _) (add_le_add_right (m*(two*(R+one))) hr)
+  have next := add_le_add_left (m*(two*(R+one))) hr
   exact le_trans first (le_trans next cap)
 
 theorem shifted_pole_at (z R B m r a d j : PTm n)
