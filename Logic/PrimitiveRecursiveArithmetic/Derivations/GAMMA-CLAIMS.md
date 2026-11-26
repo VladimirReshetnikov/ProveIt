@@ -2846,3 +2846,6 @@ A shared late signed input sample compares the Gamma chart provider with the rep
 
 Both original samplers are evaluated on actual late signed samples with the same certified input demand. Closed iPRA name equality extends their rational identity to every regular input name on the certified half-plane.
 [GaussianGammaZetaMellinParameterRate](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinParameterRate.lean), [GaussianGammaZetaNamedHalfPlane](Lean/IPRADerivations/Analysis/GaussianGammaZetaNamedHalfPlane.lean)
+
+An explicit shared late clock encodes three original positive real names on one rational denominator. The three original logarithm evaluators have independent observation rates against their actual common-chart values.
+[GaussianGammaDigammaTwoShiftNamedFreeze](Lean/IPRADerivations/Analysis/GaussianGammaDigammaTwoShiftNamedFreeze.lean)
