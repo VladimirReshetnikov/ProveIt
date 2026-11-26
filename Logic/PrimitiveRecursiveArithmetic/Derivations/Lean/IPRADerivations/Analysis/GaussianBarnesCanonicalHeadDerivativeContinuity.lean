@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianBarnesCanonicalHeadDerivative
 import IPRADerivations.Analysis.GaussianBarnesCanonicalHeadCorrectionContinuity
 import IPRADerivations.Analysis.GaussianRationalSyntheticSlopeLipschitz
+import IPRADerivations.Analysis.GaussianNamedBoundedSumObservation
 
 /-!
 # Uniform disk continuity of the original finite Barnes head derivative
@@ -28,7 +29,7 @@ open GaussianEulerNamedPowerScalingPowerFrozen (constant_bound multiply_same_den
 open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianNameArithmetic (addF addData multiplyF multiplyData)
 open GaussianNamedInverseRate (independentRate)
-open GaussianNamedMultiplyRate (sampleBound sample_bound_at)
+open GaussianNamedMultiplyRate (sampleBound)
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianRationalHorner (ofGaussian positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
@@ -175,26 +176,6 @@ theorem independent_rate (z w R B C N A Q : PTm n) (hz : Γ ⊢[PRAAx] source z 
   exact GaussianNamedDifferenceRate.rate_parameters_congr derivativeF derivativeF (derivativeData z B N)
     (derivativeData w C N) _ _ _ _ paid (.eqRefl _) core
 
-private theorem sum_bound_at (F₁ F₂ : PR 2) (x y M P p : PTm n)
-    (hx : Γ ⊢[PRAAx] sampleBound F₁ x M) (hy : Γ ⊢[PRAAx] sampleBound F₂ y P) :
-    Γ ⊢[PRAAx] bounded (ap2 (addF F₁ F₂) p (addData x y)) (M+P) one := by
-  let q := GaussianFastValueCut.exponent two p
-  have raw := (GaussianNameArithmetic.add_at (Γ := Γ) F₁ F₂ x y p).eqTrans
-    (GaussianExponentialReference.recode_fixed _ (GaussianRationalHorner.qadd_canonical _ _))
-  exact GaussianRationalReciprocal.bound_congr raw.eqSymm (.eqRefl _) (.eqRefl _)
-    (GaussianRationalPowerDifference.bounded_sum_same _ _ _ _ _ (le_refl one)
-      (sample_bound_at F₁ x M q hx) (sample_bound_at F₂ y P q hy))
-
-private theorem sum_samples (F₁ F₂ : PR 2) (x y M P : PTm n)
-    (hx : Γ ⊢[PRAAx] sampleBound F₁ x M) (hy : Γ ⊢[PRAAx] sampleBound F₂ y P) :
-    Γ ⊢[PRAAx] sampleBound (addF F₁ F₂) (addData x y) (M+P) := by
-  refine .allI ?_
-  let sh (t : PTm n) := Syn.shift t
-  have hx' : Γ.map Fm.shift ⊢[PRAAx] sampleBound F₁ (sh x) (sh M) := by simpa [Fm.shift,Syn.shift,sh] using hx.shift
-  have hy' : Γ.map Fm.shift ⊢[PRAAx] sampleBound F₂ (sh y) (sh P) := by simpa [Fm.shift,Syn.shift,sh] using hy.shift
-  simpa only [sampleBound,GaussianNameArithmetic.subst_addData,Syn.shift,sh,PTm.subst_add] using
-    sum_bound_at F₁ F₂ (sh x) (sh y) (sh M) (sh P) (var 0) hx' hy'
-
 theorem samples_bound (z R B N : PTm n) (hz : Γ ⊢[PRAAx] source z R B) :
     Γ ⊢[PRAAx] sampleBound derivativeF (derivativeData z B N) (cap R N) := by
   let d := expDerivativeData z B N
@@ -207,7 +188,7 @@ theorem samples_bound (z R B N : PTm n) (hz : Γ ⊢[PRAAx] source z R B) :
   have hx := GaussianBarnesCanonicalHeadCorrectionExponentialDerivative.exponential_samples z B N R hz.andE₁ hz.andE₂
   have left := GaussianNamedBoundedProductObservation.sample_bounds D F d p _ _ hd hp
   have right := GaussianNamedBoundedProductObservation.sample_bounds E F x a _ _ hx ha
-  exact sum_samples (multiplyF D F) (multiplyF E F) _ _ _ _ left right
+  exact GaussianNamedBoundedSumObservation.sample_bounds (multiplyF D F) (multiplyF E F) _ _ _ _ left right
 
 theorem actual_Barnes_kept_head_derivative_uniform_lipschitz_closed :
     ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 8
