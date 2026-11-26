@@ -28,7 +28,6 @@ open GaussianGammaC9Bound (exponentialMajorant)
 open GaussianRationalMetric (bounded)
 open GaussianRationalReciprocal (qone reciprocal bounded_product bound_congr)
 open GaussianRationalHorner (qmul positive_product)
-open GaussianRationalDistanceOrder (distance_congr)
 open GaussianExponentialSmallPerturbation (smallSamples)
 open GaussianBoundedInverseApartness (ones_equivalent)
 
@@ -92,7 +91,6 @@ theorem constant_product_sample (p x y : PTm n) :
 theorem constant_inverse (x y ref : PTm n) (h : Γ ⊢[PRAAx] qmul x y ≐ qone) :
     Γ ⊢[PRAAx] crossEquivalent (multiplyF constantF constantF) oneF
       (multiplyData constantF constantF x y) ref := by
-  refine .allI (.allI ?_)
   let C := (Γ.map Fm.shift).map Fm.shift
   let x' := Syn.shift (Syn.shift x)
   let y' := Syn.shift (Syn.shift y)
@@ -103,9 +101,9 @@ theorem constant_inverse (x y ref : PTm n) (h : Γ ⊢[PRAAx] qmul x y ≐ qone)
     (constant_product_sample (var 1) x' y').eqTrans
       ((GaussianNameArithmetic.recode_congr hs).eqTrans
         (GaussianExponentialReference.recode_fixed _ GaussianRationalSyntheticDivision.qone_canonical))
-  have href := cross_at (Γ := C) _ _ _ _ (var 1) (var 0) (cross_refl oneF r (one_fast r))
-  have res := distance_congr (e.eqTrans (one_at (var 1) r).eqSymm).eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _) href
-  simpa only [crossEquivalent,Syn.shift,GaussianNameArithmetic.subst_multiplyData,C,x',y',r] using res
+  apply GaussianNameEquivalence.transport_by_sample_eq (cross_refl oneF ref (one_fast ref))
+  · simpa [C, x', y', r, Syn.shift] using e.eqTrans (one_at (var 1) r).eqSymm
+  · exact .eqRefl _
 
 def source (z R B a d : PTm n) : Fm PTm n :=
   GaussianGammaCanonicalExponent.source z R B ⋏ (le one a ⋏

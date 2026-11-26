@@ -57,12 +57,6 @@ private theorem exact_data_cross (F : PR 2) (x y : PTm n)
   refine .allI ?_
   simpa only [GaussianNameConjugation.pointwiseEqual,Syn.shift] using congrAp2 F (.eqRefl (var 0)) es
 
-private theorem cross_data_congr (F H : PR 2) (x y x' y' : PTm n)
-    (hx : Γ ⊢[PRAAx] x ≐ x') (hy : Γ ⊢[PRAAx] y ≐ y') (h : Γ ⊢[PRAAx] crossEquivalent F H x y) :
-    Γ ⊢[PRAAx] crossEquivalent F H x' y' := by
-  simpa using Prf.eqSubst (crossEquivalent F H (var 0) (var 1) : Fm PTm 2) ![x,y] ![x',y']
-    (fun i => by fin_cases i; exact hx; exact hy) (by simpa using h)
-
 def addedData (z R B a C1 C2 E G : PTm n) : PTm n :=
   addData (data z R B a C1 E G) (data z R B (a+C1) C2 E G)
 ipra_subst addedData
@@ -118,7 +112,7 @@ theorem original_additivity (z R B a C1 C2 E G : PTm n) (h : Γ ⊢[PRAAx] sourc
       exact subpanel_source z R B a (C1+C2) a (zero+C2) E G h.wk (le_refl a)
         (le_of_eq_add (d := C1) (by ipra_ring))
     have law := zero_left z R B a C2 E G hs
-    exact cross_data_congr _ _ _ _ _ _
+    exact GaussianNameEquivalence.cross_data_congr _ _ _ _ _ _
       (data_congr z R B a (zero+C2) a (C1+C2) E G (.eqRefl _) (congrAdd Prf.hyp0.eqSymm (.eqRefl _)))
       (addedData_congr z R B a zero C2 C1 C2 E G Prf.hyp0.eqSymm (.eqRefl _)) law
   · refine .orE (zero_or_succ C2) ?_ ?_
@@ -126,7 +120,7 @@ theorem original_additivity (z R B a C1 C2 E G : PTm n) (h : Γ ⊢[PRAAx] sourc
         subpanel_source z R B a (C1+C2) a (C1+zero) E G h.wk.wk (le_refl a)
           (le_of_eq_add (d := C2) (by ipra_ring))
       have law := zero_right z R B a C1 E G hs
-      exact cross_data_congr _ _ _ _ _ _
+      exact GaussianNameEquivalence.cross_data_congr _ _ _ _ _ _
         (data_congr z R B a (C1+zero) a (C1+C2) E G (.eqRefl _) (congrAdd (.eqRefl _) Prf.hyp0.eqSymm))
         (addedData_congr z R B a C1 zero C1 C2 E G (.eqRefl _) Prf.hyp0.eqSymm) law
     · have h1 : (C2 ≐ ConciseIPRA.PTm.succ (pred C2)) :: (C1 ≐ ConciseIPRA.PTm.succ (pred C1)) :: Γ ⊢[PRAAx] le one C1 :=

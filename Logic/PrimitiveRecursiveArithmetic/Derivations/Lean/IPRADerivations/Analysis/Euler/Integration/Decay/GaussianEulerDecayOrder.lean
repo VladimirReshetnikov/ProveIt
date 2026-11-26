@@ -92,19 +92,9 @@ theorem original_decay_order (a b c d : PTm n) (hb : Γ ⊢[PRAAx] le one b) (hd
       (var 1) (var 0) bs ds hs
 
 theorem original_decay_nonnegative_representative (a b : PTm n) (hb : Γ ⊢[PRAAx] le one b) :
-    Γ ⊢[PRAAx] crossEquivalent positiveF decayF (positiveData (signedTime a b)) (decayData a b) := by
-  have bs : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] le one (Syn.shift (Syn.shift b)) := by
-    simpa [Fm.shift,Syn.shift] using hb.shift.shift
-  let s := signedTime (Syn.shift (Syn.shift a)) (Syn.shift (Syn.shift b))
-  have e : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] crossEquivalent positiveF decayF (positiveData s) (originalData s) :=
-    GaussianRealExponentialPositiveRepresentative.original_signed_real_exponential s
-  refine .allI (.allI ?_)
-  have result := GaussianRationalDistanceOrder.distance_congr (.eqRefl _)
-    (congrAp2 decayF (.eqRefl (var 0)) (decay_data_eq _ _ bs)) (.eqRefl _) (.eqRefl _)
-    (cross_at positiveF decayF (positiveData s) (originalData s) (var 1) (var 0) e)
-  simpa only [crossEquivalent,Syn.shift,decayData,subst_exponentialInput,GaussianEulerIntegrandName.subst_decayPoint,
-    GaussianRealExponentialPositiveRepresentative.subst_positiveData,signedTime,RationalArithmetic.subst_negative,
-    GaussianEuclideanDistanceName.subst_fraction,s] using result
+    Γ ⊢[PRAAx] crossEquivalent positiveF decayF (positiveData (signedTime a b)) (decayData a b) :=
+  GaussianNameEquivalence.cross_data_congr _ _ _ _ _ _ (.eqRefl _) (decay_data_eq a b hb)
+    (GaussianRealExponentialPositiveRepresentative.original_signed_real_exponential (signedTime a b))
 
 theorem original_positive_time_decay_order_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 4
     ((le one (var 1) ⋏ le one (var 3)) ⟶ le (var 0*var 3) (var 2*var 1) ⟶

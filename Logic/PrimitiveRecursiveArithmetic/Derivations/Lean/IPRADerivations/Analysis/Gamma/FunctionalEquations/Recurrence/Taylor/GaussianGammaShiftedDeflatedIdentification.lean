@@ -20,7 +20,6 @@ open GaussianGammaShiftedDeflatedName (nameF nameData)
 open GaussianNameEquivalence (crossEquivalent cross_at cross_symm cross_trans)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianRationalMetric (distanceBounded)
-open GaussianRationalDistanceOrder (distance_congr)
 open GaussianCoefficientNameBounds (unit)
 open ComplexLogarithmRemainder (normSq)
 open GaussianRationalSyntheticDivision (qone)
@@ -35,19 +34,14 @@ theorem zero_name_at (p z R B d : PTm n) (hB : Γ ⊢[PRAAx] le one B)
 theorem original_zero_cross (z R B d : PTm n) (h : Γ ⊢[PRAAx] source z R B)
     (hz : Γ ⊢[PRAAx] normSq z ≐ zero) : Γ ⊢[PRAAx]
     crossEquivalent GaussianGammaC7Name.nameF nameF (GaussianGammaRepeatedShift.stageData z R B one) (nameData z R B d) := by
-  have hs : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] source (Syn.shift (Syn.shift z)) (Syn.shift (Syn.shift R)) (Syn.shift (Syn.shift B)) :=
-    by simpa [Fm.shift,Syn.shift] using h.shift.shift
-  have zs : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] normSq (Syn.shift (Syn.shift z)) ≐ zero :=
-    by simpa [Fm.shift,Syn.shift] using hz.shift.shift
-  refine .allI (.allI ?_)
-  have actual := cross_at _ _ _ _ (var 1) (var 0)
-    (GaussianGammaShiftedDeflatedZero.original_shifted_one _ _ _ hs zs)
-  have same := (constant_at (var 0) (qone : PTm (n+2))).eqTrans
-    (zero_name_at (var 0) (Syn.shift (Syn.shift z)) (Syn.shift (Syn.shift R))
-      (Syn.shift (Syn.shift B)) (Syn.shift (Syn.shift d)) hs.andE₂.andE₁ zs).eqSymm
-  simpa only [crossEquivalent,GaussianEuclideanPointDistance.unit,unit,GaussianGammaRepeatedShift.subst_stageData,
-    GaussianGammaShiftedDeflatedName.subst_nameData,Syn.shift,one,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero] using
-      distance_congr (.eqRefl _) same (.eqRefl _) (.eqRefl _) actual
+  let s (w : PTm n) := Syn.shift (Syn.shift w)
+  have hb := Order.shift_one_le (Order.shift_one_le h.andE₂.andE₁)
+  have zs : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] normSq (s z) ≐ zero :=
+    by simpa [Fm.shift, Syn.shift, s] using hz.shift.shift
+  apply GaussianNameEquivalence.transport_by_sample_eq (GaussianGammaShiftedDeflatedZero.original_shifted_one z R B h hz)
+  · exact .eqRefl _
+  · simpa [s, Syn.shift] using
+      (zero_name_at (var 0) (s z) (s R) (s B) (s d) hb zs).eqTrans (constant_at (var 0) _).eqSymm
 
 /-- Original disk source only; the actual program contains no zero branch. -/
 theorem original_cross (z R B d : PTm n) (h : Γ ⊢[PRAAx] source z R B) : Γ ⊢[PRAAx]

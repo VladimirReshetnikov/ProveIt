@@ -24,7 +24,7 @@ open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianLogGammaEulerHead (sumData rowBody rowData row_at subst_rowData sum_rows sum_regular shifted_source)
 open GaussianNameArithmetic (addF addData add_fast add_equivalent subst_addData)
-open GaussianNameEquivalence (crossEquivalent cross_refl cross_trans cross_to_diagonal subst_crossEquivalent)
+open GaussianNameEquivalence (crossEquivalent cross_refl cross_trans cross_to_diagonal)
 open GaussianNameRingLaws (add_commutative)
 open GaussianNamedFiniteProductFamilyAppend (regular_prefix)
 open GaussianNamedFiniteProductFamilyCongruence (equalRows)
@@ -54,14 +54,6 @@ private theorem log_input_congr (A C B D neg : PTm n) (h : Γ ⊢[PRAAx] A ≐ C
         · exact .eqRefl _
         · exact .eqRefl _
         · exact .eqRefl _)
-
-private theorem cross_data_congr (f g : PR 2) (x x' y y' : PTm n) (hx : Γ ⊢[PRAAx] x ≐ x')
-    (hy : Γ ⊢[PRAAx] y ≐ y') (h : Γ ⊢[PRAAx] crossEquivalent f g x y) :
-    Γ ⊢[PRAAx] crossEquivalent f g x' y' := by
-  simpa only [subst_crossEquivalent, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one] using
-    Prf.eqSubst (crossEquivalent f g (var 0) (var 1) : Fm PTm 2) ![x, y] ![x', y']
-      (fun i => by fin_cases i; exact hx; exact hy)
-      (by simpa only [subst_crossEquivalent, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one] using h)
 
 private theorem add_data_congr (x x' y y' : PTm n) (hx : Γ ⊢[PRAAx] x ≐ x') (hy : Γ ⊢[PRAAx] y ≐ y') :
     Γ ⊢[PRAAx] addData x y ≐ addData x' y' := by
@@ -106,7 +98,7 @@ theorem tail_cross (A B D neg N : PTm n) (h : Γ ⊢[PRAAx] source A D neg) :
     simpa only [x, z, inst2_shiftBody] using row_at (succ i) (s A) (s B) (s D) (s neg)
   have right : Δ ⊢[PRAAx] y ≐ z := shifted_row (s A) (s B) (s D) (s neg) i
   simpa only [Δ, x, y, i, s, Syn.shift, subst_rowData, PTm.subst_add] using
-    cross_data_congr G G z x z y left.eqSymm right.eqSymm (cross_refl G z reg)
+    GaussianNameEquivalence.cross_data_congr G G z x z y left.eqSymm right.eqSymm (cross_refl G z reg)
 
 theorem first_log (A B D neg N : PTm n) (h : Γ ⊢[PRAAx] source A D neg) :
     Γ ⊢[PRAAx] crossEquivalent EulerSum (addF EulerSum G) (sumData A B D neg N)
@@ -124,7 +116,7 @@ theorem first_log (A B D neg N : PTm n) (h : Γ ⊢[PRAAx] source A D neg) :
   have e : Γ ⊢[PRAAx] inst2 rowBody zero x ≐ z :=
     (row_at zero A B D neg).eqTrans (log_input_congr (A + zero * D) A B D neg (by ipra_ring))
   have split : Γ ⊢[PRAAx] crossEquivalent EulerSum (addF G t) (sumData A B D neg N) (addData z s) :=
-    cross_data_congr EulerSum (addF G t) (sumData A B D neg N) (sumData A B D neg N)
+    GaussianNameEquivalence.cross_data_congr EulerSum (addF G t) (sumData A B D neg N) (sumData A B D neg N)
       (addData (inst2 rowBody zero x) s) (addData z s) (.eqRefl _)
       (add_data_congr (inst2 rowBody zero x) z s s e (.eqRefl s)) (first_cross G rowBody N x rows)
   have same := add_equivalent G G t EulerSum z z s p hZ hZ hT hP
@@ -142,7 +134,7 @@ theorem last_log (A B D neg N : PTm n) (h : Γ ⊢[PRAAx] source A D neg) :
   let z := P (A + succ N * D) B D neg
   let s := sumData (A + D) B D neg N
   have rows := sum_rows (A + D) B D neg N (shifted_input A D neg h)
-  exact cross_data_congr EulerSum (addF EulerSum G) s s (addData p (inst2 rowBody N x)) (addData p z) (.eqRefl s)
+  exact GaussianNameEquivalence.cross_data_congr EulerSum (addF EulerSum G) s s (addData p (inst2 rowBody N x)) (addData p z) (.eqRefl s)
     (add_data_congr p p (inst2 rowBody N x) z (.eqRefl p) (shifted_row A B D neg N))
     (append_cross G rowBody N x rows)
 

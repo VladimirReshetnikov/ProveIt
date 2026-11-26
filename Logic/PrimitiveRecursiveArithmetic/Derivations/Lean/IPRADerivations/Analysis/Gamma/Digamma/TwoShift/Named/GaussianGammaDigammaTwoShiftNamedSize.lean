@@ -28,7 +28,6 @@ open GaussianNamedInverseRate (independentRate)
 open GaussianNamedPositiveExponentialOrder (realOrder)
 open GaussianNamedRightHalfPlane (radius)
 open GaussianPositiveRationalLogarithm (fraction)
-open GaussianRationalDistanceOrder (distance_congr)
 open GaussianRationalHorner (qmul qmul_canonical positive_product)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr)
 open RationalValueBounds (upper_congr)
@@ -74,16 +73,14 @@ private theorem constant_product_sample (p a c : PTm n) : Γ ⊢[PRAAx]
 
 theorem constant_product (a c v : PTm n) (h : Γ ⊢[PRAAx] qmul a c ≐ v) : Γ ⊢[PRAAx]
     crossEquivalent (multiplyF constantF constantF) constantF (multiplyData constantF constantF a c) v := by
-  refine .allI (.allI ?_)
   let sh (x : PTm n) := Syn.shift (Syn.shift x)
   let Δ := (Γ.map Fm.shift).map Fm.shift
-  let p : PTm (n+2) := var 1
-  let q : PTm (n+2) := var 0
-  have hs : Δ ⊢[PRAAx] qmul (sh a) (sh c) ≐ sh v := by simpa [Fm.shift,Syn.shift,Δ,sh] using h.shift.shift
-  have e := (constant_product_sample (Γ := Δ) p (sh a) (sh c)).eqTrans (hs.eqTrans (constant_at p (sh v)).eqSymm)
-  have self := GaussianNameEquivalence.cross_at (Γ := Δ) constantF constantF (sh v) (sh v) p q (cross_refl _ _ (constant_regular _))
-  simpa only [crossEquivalent,GaussianNameArithmetic.subst_multiplyData,Syn.shift,Δ,sh,p,q] using
-    distance_congr e.eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _) self
+  have hs : Δ ⊢[PRAAx] qmul (sh a) (sh c) ≐ sh v :=
+    by simpa [Fm.shift, Syn.shift, Δ, sh] using h.shift.shift
+  apply GaussianNameEquivalence.transport_by_sample_eq (cross_refl constantF v (constant_regular v))
+  · simpa [Δ, sh, Syn.shift] using
+      (constant_product_sample (var 1) (sh a) (sh c)).eqTrans (hs.eqTrans (constant_at (var 1) (sh v)).eqSymm)
+  · exact .eqRefl _
 
 theorem plus_rate (j : PR 2) (w L b D : PTm n)
     (hj : Γ ⊢[PRAAx] pointCN j w) (hb : Γ ⊢[PRAAx] le one b) (hD : Γ ⊢[PRAAx] le one D)

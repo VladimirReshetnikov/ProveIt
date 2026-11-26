@@ -63,20 +63,10 @@ theorem evaluator_coherence (K : Kernel) (t X Y D sign R T S U N : PTm n)
     Γ ⊢[PRAAx] crossEquivalent (evaluatorName (evaluatorF K)) (evaluatorName (evaluatorF K))
       (nameData t (fixedData X Y D sign R T N)) (nameData t (fixedData X Y D sign S U N)) := by
   let s (z : PTm n) := Syn.shift (Syn.shift z)
-  let Δ := (Γ.map Fm.shift).map Fm.shift
-  have hs : Δ ⊢[PRAAx] input (s X) (s Y) (s D) (s sign) (s R) (s T) (tagNumerator (s t)) (sndT (s t)) :=
-    by simpa only [Δ,Fm.shift,Syn.shift,s,subst_input,GaussianBinetLaplaceStrip.subst_tagNumerator,subst_sndT] using h.shift.shift
-  have hs' : Δ ⊢[PRAAx] input (s X) (s Y) (s D) (s sign) (s S) (s U) (tagNumerator (s t)) (sndT (s t)) :=
-    by simpa only [Δ,Fm.shift,Syn.shift,s,subst_input,GaussianBinetLaplaceStrip.subst_tagNumerator,subst_sndT] using h'.shift.shift
-  have he := integrand_coherence K (s X) (s Y) (s D) (s sign) (s R) (s T) (s S) (s U) (s N)
-    (tagNumerator (s t)) (sndT (s t)) hs hs'
-  refine .allI (.allI ?_)
-  simpa only [crossEquivalent,GaussianCompactRiemannName.subst_nameData,GaussianCompactRiemannName.subst_sampleData,
-    subst_pairT,Syn.shift,s,Δ] using
-    GaussianRationalDistanceOrder.distance_congr
-      (wrapped_at (Γ := Δ) K (var 1) (s t) (s X) (s Y) (s D) (s sign) (s R) (s T) (s N)).eqSymm
-      (wrapped_at K (var 0) (s t) (s X) (s Y) (s D) (s sign) (s S) (s U) (s N)).eqSymm (.eqRefl _) (.eqRefl _)
-      (GaussianNameEquivalence.cross_at _ _ _ _ (var 1) (var 0) he)
+  have he := integrand_coherence K X Y D sign R T S U N (tagNumerator t) (sndT t) h h'
+  apply GaussianNameEquivalence.transport_by_sample_eq he
+  · simpa [s, Syn.shift] using wrapped_at K (var 1) (s t) (s X) (s Y) (s D) (s sign) (s R) (s T) (s N)
+  · simpa [s, Syn.shift] using wrapped_at K (var 0) (s t) (s X) (s Y) (s D) (s sign) (s S) (s U) (s N)
 
 private theorem panel_agreement_at (K : Kernel) (t X Y D sign R T S U N A C E : PTm n)
     (h : Γ ⊢[PRAAx] source X Y D sign R T A C E) (h' : Γ ⊢[PRAAx] source X Y D sign S U A C E)

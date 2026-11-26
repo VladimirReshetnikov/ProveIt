@@ -19,7 +19,6 @@ open GaussianNameEquivalence (crossEquivalent cross_at cross_refl)
 open GaussianNamedFiniteProduct (sample sample_zero sample_succ)
 open GaussianNamedFiniteProductFamily (rowF row_at productData radius regularRows)
 open GaussianNamedFiniteProductName (nameF name_at clock)
-open GaussianRationalDistanceOrder (distance_congr)
 open GaussianRationalFiniteProduct (qprod product_zero product_succ)
 open GaussianRationalSyntheticDivision (qmul_congr)
 
@@ -53,16 +52,12 @@ theorem name_equals_fold (t : PTm 2) (p N x : PTm n) :
 
 theorem constant_product_cross (t : PTm 2) (N x : PTm n) : Γ ⊢[PRAAx]
     crossEquivalent (nameF (rowF constantF t)) constantF (productData constantF t N x) (qprod t N x) := by
-  refine .allI (.allI ?_)
   let sh (a : PTm n) := Syn.shift (Syn.shift a)
-  let Δ := (Γ.map Fm.shift).map Fm.shift
-  let s : PTm (n+2) := var 1
-  let p : PTm (n+2) := var 0
-  let a := qprod t (sh N) (sh x)
-  have h := cross_at (Γ := Δ) constantF constantF a a s p (cross_refl _ _ (constant_regular a))
-  have e := (name_equals_fold (Γ := Δ) t s (sh N) (sh x)).eqTrans (constant_at s a).eqSymm
-  simpa [Syn.shift, sh, Δ, s, p, a, productData, one] using
-    distance_congr e.eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _) h
+  let a := qprod t N x
+  apply GaussianNameEquivalence.transport_by_sample_eq (cross_refl constantF a (constant_regular a))
+  · simpa [Syn.shift, sh, a, productData, one] using
+      (name_equals_fold t (var 1) (sh N) (sh x)).eqTrans (constant_at (var 1) (qprod t (sh N) (sh x))).eqSymm
+  · exact .eqRefl _
 
 theorem actual_constant_family_product_closed (t : PTm 2) : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 2
     (crossEquivalent (nameF (rowF constantF t)) constantF

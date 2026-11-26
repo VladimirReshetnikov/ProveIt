@@ -175,17 +175,9 @@ theorem returned_sum_data (z R B N : PTm n) : Γ ⊢[PRAAx] sndT (run z R B N) �
 
 theorem returned_equivalence (z R B N : PTm n) (h : Γ ⊢[PRAAx] source z R B N) :
     Γ ⊢[PRAAx] crossEquivalent GaussianGammaCanonicalTailName.pointF shiftF
-      (fstT (run z R B N)) (sndT (run z R B N)) := by
-  refine .allI (.allI ?_)
-  have hs : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] source
-      (Syn.shift (Syn.shift z)) (Syn.shift (Syn.shift R)) (Syn.shift (Syn.shift B)) (Syn.shift (Syn.shift N)) := by
-    simpa [Fm.shift,Syn.shift] using h.shift.shift
-  have bound := GaussianNameEquivalence.cross_at GaussianGammaCanonicalTailName.pointF shiftF _ _ (var 1) (var 0)
-    (tail_shift_equivalent _ _ _ _ hs)
-  simpa only [crossEquivalent,Syn.shift,subst_fstT,subst_sndT,subst_run] using
-    distance_congr (congrAp2 GaussianGammaCanonicalTailName.pointF (.eqRefl _)
-      (returned_tail_data _ _ _ _).eqSymm)
-      (congrAp2 shiftF (.eqRefl _) (returned_sum_data _ _ _ _).eqSymm) (.eqRefl _) (.eqRefl _) bound
+      (fstT (run z R B N)) (sndT (run z R B N)) :=
+  GaussianNameEquivalence.cross_data_congr _ _ _ _ _ _
+    (returned_tail_data z R B N).eqSymm (returned_sum_data z R B N).eqSymm (tail_shift_equivalent z R B N h)
 
 theorem actual_original_local_name_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 4
     (localPoint (var 0) (var 1) (var 2) (var 3) ≐ ofGaussian

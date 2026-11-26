@@ -70,6 +70,17 @@ theorem cross_at (f g : PR 2) (x y s t : PTm n)
   simpa only [GaussianRationalMetric.subst_distanceBounded,subst_ap2,subst_unit,PTm.subst_add,PTm.subst_mul,
     Syn.subst_var,Syn.inst_zero,Syn.inst_succ,Syn.subst_inst_shift] using pair.allE t
 
+/-- Preserve cross-equivalence when both observations have exact readbacks at their original precisions. -/
+theorem transport_by_sample_eq {F G P Q : PR 2} {x y u v : PTm n}
+    (h : Γ ⊢[PRAAx] crossEquivalent F G x y)
+    (hl : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx]
+      ap2 P (var 1) (Syn.shift (Syn.shift u)) ≐ ap2 F (var 1) (Syn.shift (Syn.shift x)))
+    (hr : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx]
+      ap2 Q (var 0) (Syn.shift (Syn.shift v)) ≐ ap2 G (var 0) (Syn.shift (Syn.shift y))) :
+    Γ ⊢[PRAAx] crossEquivalent P Q u v :=
+  .allI (.allI (distance_congr hl.eqSymm hr.eqSymm (.eqRefl _) (.eqRefl _)
+    (cross_at F G _ _ (var 1) (var 0) (shift_crossEquivalent (shift_crossEquivalent h)))))
+
 theorem point_at (f : PR 2) (x s t : PTm n) (hF : Γ ⊢[PRAAx] pointCN f x) : Γ ⊢[PRAAx]
     distanceBounded (ap2 f s x) (ap2 f t x) (unit s+unit t) (unit s*unit t) := by
   simpa only [GaussianEuclideanPointDistance.unit,GaussianCoefficientNameBounds.unit] using point_cn_at f x s t hF

@@ -28,7 +28,6 @@ open GaussianNameEquivalence (crossEquivalent cross_at cross_refl cross_symm cro
 open GaussianNamedConstantFamilyProduct (constant_rows_regular constant_product_cross)
 open GaussianNamedFiniteProductFamily (rowF productData family_product_regular)
 open GaussianNamedFiniteProductName (nameF)
-open GaussianRationalDistanceOrder (distance_congr)
 open GaussianRationalHorner (qmul qmul_canonical)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -56,20 +55,16 @@ private theorem constant_binary_sample (p x y : PTm n) : Γ ⊢[PRAAx]
 private theorem constant_binary_cross (x y u v : PTm n) (h : Γ ⊢[PRAAx] qmul x y ≐ qmul u v) :
     Γ ⊢[PRAAx] crossEquivalent (multiplyF constantF constantF) (multiplyF constantF constantF)
       (multiplyData constantF constantF x y) (multiplyData constantF constantF u v) := by
-  refine .allI (.allI ?_)
   let Δ := (Γ.map Fm.shift).map Fm.shift
   let sh (w : PTm n) := Syn.shift (Syn.shift w)
-  let F := multiplyF constantF constantF
-  let right := multiplyData constantF constantF (sh u) (sh v)
-  have hs : Δ ⊢[PRAAx] qmul (sh x) (sh y) ≐ qmul (sh u) (sh v) := by
-    simpa [Δ,sh,Fm.shift,Syn.shift] using h.shift.shift
-  have e := (constant_binary_sample (var 1) (sh x) (sh y)).eqTrans
-    (hs.eqTrans (constant_binary_sample (var 1) (sh u) (sh v)).eqSymm)
-  have hr : Δ ⊢[PRAAx] pointCN F right :=
-    multiply_fast constantF constantF (sh u) (sh v) (constant_regular _) (constant_regular _)
-  have step := distance_congr e.eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _)
-    (cross_at F F right right (var 1) (var 0) (cross_refl F right hr))
-  simpa only [crossEquivalent,Δ,sh,F,right,GaussianNameArithmetic.subst_multiplyData,Syn.shift] using step
+  have hs : Δ ⊢[PRAAx] qmul (sh x) (sh y) ≐ qmul (sh u) (sh v) :=
+    by simpa [Δ, sh, Fm.shift, Syn.shift] using h.shift.shift
+  have regular := multiply_fast (Γ := Γ) constantF constantF u v (constant_regular _) (constant_regular _)
+  apply GaussianNameEquivalence.transport_by_sample_eq (cross_refl _ _ regular)
+  · simpa [Δ, sh, Syn.shift] using
+      (constant_binary_sample (var 1) (sh x) (sh y)).eqTrans
+        (hs.eqTrans (constant_binary_sample (var 1) (sh u) (sh v)).eqSymm)
+  · exact .eqRefl _
 
 theorem named_head_grouping (z R B m a d N : PTm n) (h : Γ ⊢[PRAAx] source z R B m a d) :
     Γ ⊢[PRAAx] crossEquivalent (multiplyF shiftedNameF constantF) (multiplyF constantF referenceNameF)

@@ -126,16 +126,9 @@ theorem returned_second (z R B N D : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run z R 
 theorem returned_budget (z R B N D : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run z R B N D)) ≐ two*D :=
   (returned_tail _ _ _ _ _).sndE
 theorem returned_equivalence (z R B N D : PTm n) (h : Γ ⊢[PRAAx] source z R B N) : Γ ⊢[PRAAx]
-    crossEquivalent nameF nameF (fstT (run z R B N D)) (fstT (sndT (run z R B N D))) := by
-  refine .allI (.allI ?_)
-  have hs : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] source
-      (Syn.shift (Syn.shift z)) (Syn.shift (Syn.shift R)) (Syn.shift (Syn.shift B)) (Syn.shift (Syn.shift N)) := by
-    simpa [Fm.shift,Syn.shift] using h.shift.shift
-  have bound := GaussianNameEquivalence.cross_at nameF nameF _ _ (var 1) (var 0)
-    (offset_equivalence _ _ _ _ (Syn.shift (Syn.shift D)) hs)
-  simpa only [crossEquivalent,Syn.shift,subst_run,subst_fstT,subst_sndT] using
-    distance_congr (congrAp2 nameF (.eqRefl _) (returned_first _ _ _ _ _).eqSymm)
-      (congrAp2 nameF (.eqRefl _) (returned_second _ _ _ _ _).eqSymm) (.eqRefl _) (.eqRefl _) bound
+    crossEquivalent nameF nameF (fstT (run z R B N D)) (fstT (sndT (run z R B N D))) :=
+  GaussianNameEquivalence.cross_data_congr _ _ _ _ _ _
+    (returned_first z R B N D).eqSymm (returned_second z R B N D).eqSymm (offset_equivalence z R B N D h)
 
 theorem original_fixed_precision_cutoff_distance_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 6
     (source (var 1) (var 2) (var 3) (var 4) ⟶ prefixLaw (var 0) (var 1) (var 2) (var 3) (var 4) (var 5)) :=
