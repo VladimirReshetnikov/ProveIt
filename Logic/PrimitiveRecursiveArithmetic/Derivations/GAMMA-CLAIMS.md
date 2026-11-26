@@ -3173,3 +3173,6 @@ The literal finite base-power product equals its displacement polynomial, includ
 
 Scaling each higher logarithmic coefficient sum by the encoded factorial gives the literal derivative-row sum. The normalized cofinal name is regular and each actual sample equals that derivative sum at its own explicit finite cutoff.
 [GaussianBarnesCanonicalHigherDerivative](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHigherDerivative.lean)
+
+The original corrected log-row increment and the literal finite retained interval compare to their actual Mercator-based Taylor polynomials at every internally encoded degree at least two. The interval error retains the exact inverse-square telescoping factor for all lengths.
+[GaussianBarnesCanonicalCorrectedMercator](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalCorrectedMercator.lean), [GaussianBarnesCanonicalCorrectedMercatorInterval](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalCorrectedMercatorInterval.lean)
