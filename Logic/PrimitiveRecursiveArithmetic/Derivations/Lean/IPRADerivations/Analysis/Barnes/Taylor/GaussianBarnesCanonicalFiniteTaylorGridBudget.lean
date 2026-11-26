@@ -57,6 +57,33 @@ def numerator (q z R B H M : PTm n) : PTm n :=
 
 def denominator (q B M : PTm n) : PTm n := pw B (succ (previous M))*unit q
 
+def clockGainWithCaps (R F : PTm n) : PTm n := headCap R*(F*capGain two)
+
+def analyticGainWithCaps (R M P F : PTm n) : PTm n :=
+  let e := previous M
+  let j := succ e
+  let L := massCap R
+  let E := pw (num 3) L
+  clockGainWithCaps R F*(two*pw (two*e) j)+
+    F*(headCap R*(two*pw L j+E)+P*E)*pw (num 4*e) j
+
+def numeratorWithCaps (q R B H M P F : PTm n) : PTm n :=
+  analyticGainWithCaps R M P F*pw H (succ (previous M))*unit q+clockGainWithCaps R F*pw B (succ (previous M))
+
+@[simp] theorem subst_clockGainWithCaps {l : ℕ} (σ : Fin n → PTm l) (R F : PTm n) :
+    Syn.subst σ (clockGainWithCaps R F) = clockGainWithCaps (Syn.subst σ R) (Syn.subst σ F) := by
+  simp [clockGainWithCaps,capGain,GaussianRadiusExponentialLipschitzRate.factor,
+    GaussianNamedExponentialRateFromConstant.cap,one,two]
+
+@[simp] theorem subst_analyticGainWithCaps {l : ℕ} (σ : Fin n → PTm l) (R M P F : PTm n) :
+    Syn.subst σ (analyticGainWithCaps R M P F) = analyticGainWithCaps (Syn.subst σ R) (Syn.subst σ M)
+      (Syn.subst σ P) (Syn.subst σ F) := by
+  simp [analyticGainWithCaps,one,two]
+
+@[simp] theorem subst_numeratorWithCaps {l : ℕ} (σ : Fin n → PTm l) (q R B H M P F : PTm n) :
+    Syn.subst σ (numeratorWithCaps q R B H M P F) = numeratorWithCaps (Syn.subst σ q) (Syn.subst σ R)
+      (Syn.subst σ B) (Syn.subst σ H) (Syn.subst σ M) (Syn.subst σ P) (Syn.subst σ F) := by simp [numeratorWithCaps]
+
 @[simp] theorem subst_clockGain {l : ℕ} (σ : Fin n → PTm l) (z R B : PTm n) :
     Syn.subst σ (clockGain z R B) = clockGain (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) := by
   simp [clockGain,capGain,GaussianRadiusExponentialLipschitzRate.factor,GaussianNamedExponentialRateFromConstant.cap,one,two]
@@ -91,17 +118,15 @@ private theorem analytic_denominator_room (R B M : PTm n) : Γ ⊢[PRAAx]
 
 /-- The cross-multiplied comparison uses only the exact bound formulas.
 In particular, it does not depend on a small-step or nonzero-step premise. -/
-theorem radius_comparison (q z R B H M : PTm n) : Γ ⊢[PRAAx]
-    le (GaussianBarnesCanonicalFiniteWeightedTaylorValue.numerator q z R B (previous M*H) M*denominator q B M)
-      (numerator q z R B H M*GaussianBarnesCanonicalFiniteWeightedTaylorValue.denominator q R B M) := by
+theorem radius_comparison_with_caps (q R B H M P F : PTm n) : Γ ⊢[PRAAx]
+    le (GaussianBarnesCanonicalFiniteWeightedTaylorValue.numerator_with_caps q R B (previous M*H) M P F*denominator q B M)
+      (numeratorWithCaps q R B H M P F*GaussianBarnesCanonicalFiniteWeightedTaylorValue.denominator q R B M) := by
   let e := previous M
   let j := succ e
   let u := unit q
   let b := pw B j
   let d := analyticDenominator e R B
   let K := headCap R
-  let F := centralCap z R B
-  let P := headMass z R B
   let c : PTm n := capGain two
   let L := massCap R
   let E := pw (num 3) L
@@ -119,6 +144,11 @@ theorem radius_comparison (q z R B H M : PTm n) : Γ ⊢[PRAAx]
   ipra_le (2*𝔞 K*𝔞 F*𝔞 c*𝔞 a*𝔞 t*𝔞 u*𝔞 u*𝔞 b)*sl room using
     rw [p₂,p₄]
     ring
+
+theorem radius_comparison (q z R B H M : PTm n) : Γ ⊢[PRAAx]
+    le (GaussianBarnesCanonicalFiniteWeightedTaylorValue.numerator q z R B (previous M*H) M*denominator q B M)
+      (numerator q z R B H M*GaussianBarnesCanonicalFiniteWeightedTaylorValue.denominator q R B M) :=
+  radius_comparison_with_caps q R B H M (headMass z R B) (centralCap z R B)
 
 theorem denominator_positive (q B M : PTm n) (hb : Γ ⊢[PRAAx] le one B) :
     Γ ⊢[PRAAx] le one (denominator q B M) :=

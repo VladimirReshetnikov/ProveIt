@@ -72,7 +72,21 @@ def observationClock (p z h R B r M : PTm n) : PTm n :=
   exponent (num 4*(amplification B M*gridCost q z h R B H r M+
     (one+observationCost q z R B H r M))) p
 
-private theorem row_weaken (V W L A B C D : PTm n)
+def stepCostWithGain (R M A : PTm n) : PTm n :=
+  previous M*stepDivisor R+num 4*(pw (num 4) (previous M)*A)
+
+def stepClockWithGain (p R M A : PTm n) : PTm n := exponent (stepCostWithGain R M A) p
+
+def polynomialClockWithGain (p z R B M C : PTm n) : PTm n :=
+  prefactorClock (coefficientClock p z R B M) z R B M+exponent (num 4*(amplification B M*C)) p
+
+def observationClockWithGain (p z h R B r M C : PTm n) : PTm n :=
+  let q := polynomialClockWithGain p z R B M C
+  let H := norm1 h
+  exponent (num 4*(amplification B M*gridCost q z h R B H r M+
+    (one+observationCost q z R B H r M))) p
+
+theorem row_weaken (V W L A B C D : PTm n)
     (hb : Γ ⊢[PRAAx] le one B) (hd : Γ ⊢[PRAAx] le one D)
     (hfit : Γ ⊢[PRAAx] le (A*D) (C*B)) (hr : Γ ⊢[PRAAx] rowBound V W L A B) :
     Γ ⊢[PRAAx] rowBound V W L C D := by
@@ -131,17 +145,25 @@ private theorem budget_sum (U V B Q T W a c d f g : PTm n)
     (𝔞(V)*𝔞(B)*𝔞(Q)*𝔞(W*V*T))*sl ht+
     (𝔞(V)*𝔞(V)*𝔞(T)*𝔞(B*Q*T))*sl hg
 
-theorem rate (p z h R B r M t u : PTm n) (hz : Γ ⊢[PRAAx] source z R B)
+theorem rate_with_gains (A₀ C₀ p z h R B r M t u : PTm n) (hz : Γ ⊢[PRAAx] source z R B)
     (hn : Γ ⊢[PRAAx] le one (normSq h))
-    (hh : Γ ⊢[PRAAx] le (norm1 h*unit (stepClock p z R B M)) B)
-    (ht : Γ ⊢[PRAAx] le (observationClock p z h R B r M) t) :
+    (hh : Γ ⊢[PRAAx] le (norm1 h*unit (stepClockWithGain p R M A₀)) B)
+    (ht : Γ ⊢[PRAAx] le (observationClockWithGain p z h R B r M C₀) t)
+    (hrows :
+      let q := polynomialClockWithGain p z R B M C₀
+      let H := norm1 h
+      let e := previous M
+      (Γ ⊢[PRAAx] le ((e*stepDivisor R)*H) B) →
+        (Γ ⊢[PRAAx] rowBound (literalGrid t z h R B r e) (polynomialGrid t q z h R B H r M e)
+          (succ e) (GaussianBarnesCanonicalFiniteTaylorNormalizedGridBudget.rowNumeratorWithGains
+            q t B H M (gridCost q z h R B H r M) A₀ C₀) (rowDenominator q t B M))) :
     Γ ⊢[PRAAx] distanceBounded (value t z h R B r M) (ap2 F u (fd z (R+one) B r M (previous M)))
       (unit p+unit u) (unit p*unit u) := by
   let S := R+one
   let e := previous M
   let H := norm1 h
   let k := coefficientClock p z R B M
-  let q := polynomialClock p z R B M
+  let q := polynomialClockWithGain p z R B M C₀
   let K := gridCost q z h R B H r M
   let C := observationCost q z R B H r M
   let P := scaledPolynomial t q z R B H r M e
@@ -151,7 +173,7 @@ theorem rate (p z h R B r M t u : PTm n) (hz : Γ ⊢[PRAAx] source z R B)
   let y := qmul (ap2 finiteNameF t (finiteData z S B r))
     (GaussianBarnesCanonicalFiniteTaylorGridLeading.coefficient q z R B H r M)
   let v := ap2 F u (fd z S B r M e)
-  let A := GaussianBarnesCanonicalFiniteTaylorNormalizedGridBudget.numerator q t z S B H M K
+  let A := GaussianBarnesCanonicalFiniteTaylorNormalizedGridBudget.normalizedNumeratorWithGains q t B H M K A₀ C₀
   let D := GaussianBarnesCanonicalFiniteTaylorNormalizedGridBudget.denominator q t B
   let J := GaussianBarnesCanonicalFiniteTaylorGridLeading.observationNumerator u t k q z R B H r M
   let E := rateDenominator (unit k) u t
@@ -159,33 +181,33 @@ theorem rate (p z h R B r M t u : PTm n) (hz : Γ ⊢[PRAAx] source z R B)
   have hH := GaussianNativeDerivativeQuotientRate.norm1_positive h hn
   have enlarged : Γ ⊢[PRAAx] source z S B :=
     .andI hb (bounded_mono hz.andE₂ (le_of_eq_add (d := B) (by dsimp only [S]; ipra_ring)))
-  have stepPayment : Γ ⊢[PRAAx] le (stepCost z R B M*unit p) (unit (stepClock p z R B M)) :=
+  have stepPayment : Γ ⊢[PRAAx] le (stepCostWithGain R M A₀*unit p) (unit (stepClockWithGain p R M A₀)) :=
     query_budget _ _
   have admission : Γ ⊢[PRAAx] le ((e*stepDivisor R)*H) B := by
-    have hcost : Γ ⊢[PRAAx] le (e*stepDivisor R) (stepCost z R B M*unit p) :=
+    have hcost : Γ ⊢[PRAAx] le (e*stepDivisor R) (stepCostWithGain R M A₀*unit p) :=
       le_trans (le_add_right _ _) (le_congr (one_mul _) (mul_comm _ _)
-        (mul_le_mul_right (stepCost z R B M) (unit_positive p)))
+        (mul_le_mul_right (stepCostWithGain R M A₀) (unit_positive p)))
     exact le_trans (le_congr (.eqRefl _) (mul_comm _ _) (mul_le_mul_right H (le_trans hcost stepPayment))) hh
-  have payAnalytic : Γ ⊢[PRAAx] le (num 4*unit p*(analyticCoefficient z S B M*H)) B := by
-    have lower : Γ ⊢[PRAAx] le (num 4*analyticCoefficient z S B M) (stepCost z R B M) :=
+  have payAnalytic : Γ ⊢[PRAAx] le (num 4*unit p*((pw (num 4) e*A₀)*H)) B := by
+    have lower : Γ ⊢[PRAAx] le (num 4*(pw (num 4) e*A₀)) (stepCostWithGain R M A₀) :=
       le_add_left _ _
     have buy := mul_le_mul_right H (le_trans (le_mul_mono lower (le_refl (unit p))) stepPayment)
     exact le_trans (le_congr (by ipra_ring) (mul_comm _ _) buy) hh
   have prefactorReady : Γ ⊢[PRAAx] le (prefactorClock k z R B M) q := le_add_right _ _
   have payTaylor : Γ ⊢[PRAAx] le (num 4*unit p*
-      (amplification B M*GaussianBarnesCanonicalFiniteTaylorGridBudget.clockGain z S B)) (unit q) :=
+      (amplification B M*C₀)) (unit q) :=
     le_trans (le_congr (by ipra_ring) (.eqRefl _) (query_budget
-      (num 4*(amplification B M*GaussianBarnesCanonicalFiniteTaylorGridBudget.clockGain z S B)) p))
+      (num 4*(amplification B M*C₀)) p))
       (unit_monotone (le_add_left _ _))
   have payClock : Γ ⊢[PRAAx] le (num 4*unit p*(amplification B M*K+(one+C))) (unit t) :=
     le_trans (le_congr (by ipra_ring) (.eqRefl _)
       (query_budget (num 4*(amplification B M*K+(one+C))) p)) (unit_monotone ht)
   have payCoefficient : Γ ⊢[PRAAx] le (num 4*unit p*readbackGain z S B e) (unit k) :=
     le_congr (by ipra_ring) (.eqRefl _) (query_budget (num 4*readbackGain z S B e) p)
-  have raw := GaussianBarnesCanonicalFiniteTaylorNormalizedGridBudget.coefficient_error
-    q t z S B H M K V P qzero w hb hH
+  have raw := GaussianBarnesCanonicalFiniteTaylorNormalizedGridBudget.coefficient_error_with_gains
+    q t B H M K A₀ C₀ V P qzero w hb hH
     (GaussianBarnesCanonicalFiniteTaylorGridObservations.scaled_polynomial_length t q z R B H r M e)
-    (native_lower h B hb) (normalized_rows t q z h R B H r M hz (normSq_le_norm1_square h) admission)
+    (native_lower h B hb) (hrows admission)
   have fromGrid : Γ ⊢[PRAAx] distanceBounded x y A D :=
     distance_congr (.eqRefl _) (scaled_leading (ap2 finiteNameF t (finiteData z S B r)) q z R B H r M)
       (.eqRefl _) (.eqRefl _) raw
@@ -200,9 +222,19 @@ theorem rate (p z h R B r M t u : PTm n) (hz : Γ ⊢[PRAAx] source z R B)
     distance_radius_mono _ _ _ _ _ _ he whole (le_of_eq_add (d := zero) (by ipra_ring)) fromCoefficient
   exact distance_radius_mono _ _ _ _ _ _ whole (positive_product _ _ (unit_positive p) (unit_positive u))
     (budget_sum (unit p) (unit u) B (unit q) (unit t) (unit k)
-      (analyticCoefficient z S B M*H) (amplification B M*GaussianBarnesCanonicalFiniteTaylorGridBudget.clockGain z S B)
+      ((pw (num 4) e*A₀)*H) (amplification B M*C₀)
       (amplification B M*K) C (readbackGain z S B e) payAnalytic payTaylor payClock payCoefficient)
     (distance_triangle_same _ _ _ _ _ _ whole first next)
+
+theorem rate (p z h R B r M t u : PTm n) (hz : Γ ⊢[PRAAx] source z R B)
+    (hn : Γ ⊢[PRAAx] le one (normSq h))
+    (hh : Γ ⊢[PRAAx] le (norm1 h*unit (stepClock p z R B M)) B)
+    (ht : Γ ⊢[PRAAx] le (observationClock p z h R B r M) t) :
+    Γ ⊢[PRAAx] distanceBounded (value t z h R B r M) (ap2 F u (fd z (R+one) B r M (previous M)))
+      (unit p+unit u) (unit p*unit u) :=
+  rate_with_gains (GaussianBarnesCanonicalFiniteTaylorGridBudget.analyticGain z (R+one) B M)
+    (GaussianBarnesCanonicalFiniteTaylorGridBudget.clockGain z (R+one) B) p z h R B r M t u hz hn hh ht
+    (normalized_rows t (polynomialClock p z R B M) z h R B (norm1 h) r M hz (normSq_le_norm1_square h))
 
 theorem actual_Barnes_finite_normalized_grid_small_step_limit_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 9
     (let p := var 0

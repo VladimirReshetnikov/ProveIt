@@ -55,6 +55,25 @@ def numerator (q s z R B H M K : PTm n) : PTm n :=
 
 def denominator (q s B : PTm n) : PTm n := B*unit q*unit s
 
+def rowNumeratorWithGains (q s B H M K A C : PTm n) : PTm n :=
+  (A*pw H (succ (previous M))*unit q+C*pw B (succ (previous M)))*unit s+GaussianBarnesCanonicalFiniteTaylorGridBudget.denominator q B M*K
+
+def normalizedNumeratorWithGains (q s B H M K A C : PTm n) : PTm n :=
+  (pw (num 4) (previous M)*A)*H*unit q*unit s+
+    amplification B M*C*B*unit s+amplification B M*K*B*unit q
+
+@[simp] theorem subst_rowNumeratorWithGains {l : ℕ} (σ : Fin n → PTm l) (q s B H M K A C : PTm n) :
+    Syn.subst σ (rowNumeratorWithGains q s B H M K A C) =
+      rowNumeratorWithGains (Syn.subst σ q) (Syn.subst σ s) (Syn.subst σ B) (Syn.subst σ H)
+        (Syn.subst σ M) (Syn.subst σ K) (Syn.subst σ A) (Syn.subst σ C) := by
+  simp [rowNumeratorWithGains,rowDenominator,zero]
+
+@[simp] theorem subst_normalizedNumeratorWithGains {l : ℕ} (σ : Fin n → PTm l) (q s B H M K A C : PTm n) :
+    Syn.subst σ (normalizedNumeratorWithGains q s B H M K A C) =
+      normalizedNumeratorWithGains (Syn.subst σ q) (Syn.subst σ s) (Syn.subst σ B) (Syn.subst σ H)
+        (Syn.subst σ M) (Syn.subst σ K) (Syn.subst σ A) (Syn.subst σ C) := by
+  simp [normalizedNumeratorWithGains,amplification]
+
 @[simp] theorem subst_rowNumerator {l : ℕ} (σ : Fin n → PTm l) (q s z R B H M K : PTm n) :
     Syn.subst σ (rowNumerator q s z R B H M K) = rowNumerator (Syn.subst σ q) (Syn.subst σ s)
       (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ H) (Syn.subst σ M) (Syn.subst σ K) := by
@@ -91,15 +110,13 @@ private theorem amplification_eq (B M : PTm n) : Γ ⊢[PRAAx]
   (AnalyticNumberTheory.LocalFactor.pw_mul_base (two*B) two (previous M)).eqSymm.eqTrans
     (congrAp2 powF (.eqRefl _) (by ipra_ring))
 
-theorem radius_comparison (q s z R B H M K : PTm n) (hH : Γ ⊢[PRAAx] le one H) :
+theorem radius_comparison_with_gains (q s B H M K A C : PTm n) (hH : Γ ⊢[PRAAx] le one H) :
     Γ ⊢[PRAAx] le
-      ((pw (two*B) (previous M)*(pw two (previous M)*rowNumerator q s z R B H M K))*denominator q s B)
-      (numerator q s z R B H M K*(pw H (previous M)*rowDenominator q s B M)) := by
+      ((pw (two*B) (previous M)*(pw two (previous M)*rowNumeratorWithGains q s B H M K A C))*denominator q s B)
+      (normalizedNumeratorWithGains q s B H M K A C*(pw H (previous M)*rowDenominator q s B M)) := by
   let e := previous M
   let u := unit q
   let v := unit s
-  let A := analyticGain z R B M
-  let C := clockGain z R B
   let bh := pw H e
   let bb := pw B e
   let g := pw (num 4 : PTm n) e
@@ -109,7 +126,7 @@ theorem radius_comparison (q s z R B H M K : PTm n) (hH : Γ ⊢[PRAAx] le one H
   have hbpow := natEq (pw_succ (Γ := Γ) B e)
   have hsplit : Γ ⊢[PRAAx] T ≐ g*bb := AnalyticNumberTheory.LocalFactor.pw_mul_base (num 4) B e
   have hs := natEq hsplit
-  let W := rowNumerator q s z R B H M K
+  let W := rowNumeratorWithGains q s B H M K A C
   let D := denominator q s B
   have rearrange : Γ ⊢[PRAAx] (pw (two*B) e*(pw two e*W))*D ≐ T*W*D :=
     (show Γ ⊢[PRAAx] (pw (two*B) e*(pw two e*W))*D ≐ (pw (two*B) e*pw two e)*W*D by ipra_ring).eqTrans
@@ -125,6 +142,27 @@ theorem radius_comparison (q s z R B H M K : PTm n) (hH : Γ ⊢[PRAAx] le one H
     dsimp only [bh,bb]
     ring
 
+theorem radius_comparison (q s z R B H M K : PTm n) (hH : Γ ⊢[PRAAx] le one H) :
+    Γ ⊢[PRAAx] le
+      ((pw (two*B) (previous M)*(pw two (previous M)*rowNumerator q s z R B H M K))*denominator q s B)
+      (numerator q s z R B H M K*(pw H (previous M)*rowDenominator q s B M)) :=
+  radius_comparison_with_gains q s B H M K (analyticGain z R B M) (clockGain z R B) hH
+
+theorem coefficient_error_with_gains (q s B H M K A G V C x h : PTm n)
+    (hb : Γ ⊢[PRAAx] le one B) (hH : Γ ⊢[PRAAx] le one H)
+    (hC : Γ ⊢[PRAAx] length C ≐ succ (previous M))
+    (hh : Γ ⊢[PRAAx] GaussianRationalLowerBounds.lower h H (two*B))
+    (hr : Γ ⊢[PRAAx] rowBound V (samples C (succ (previous M)) x h) (succ (previous M))
+      (rowNumeratorWithGains q s B H M K A G) (rowDenominator q s B M)) :
+    Γ ⊢[PRAAx] distanceBounded (normalized V (previous M) h) (natScale (fact (previous M)) (entry C zero))
+      (normalizedNumeratorWithGains q s B H M K A G) (denominator q s B) := by
+  have hd : Γ ⊢[PRAAx] le one (two*B) := positive_product _ _ (le_succ_self one) hb
+  have hrden := row_denominator_positive q s B M hb
+  have hnorm := GaussianPolynomialForwardDifferenceNormalization.fractional_coefficient_error V C (previous M) x h H (two*B)
+    (rowNumeratorWithGains q s B H M K A G) (rowDenominator q s B M) hC hH hd hh hrden hr
+  have old := positive_product _ _ (GaussianFactorBudget.power_positive H (previous M) hH) hrden
+  exact distance_radius_mono _ _ _ _ _ _ old (denominator_positive q s B hb) (radius_comparison_with_gains q s B H M K A G hH) hnorm
+
 theorem coefficient_error (q s z R B H M K V C x h : PTm n)
     (hb : Γ ⊢[PRAAx] le one B) (hH : Γ ⊢[PRAAx] le one H)
     (hC : Γ ⊢[PRAAx] length C ≐ succ (previous M))
@@ -132,13 +170,8 @@ theorem coefficient_error (q s z R B H M K V C x h : PTm n)
     (hr : Γ ⊢[PRAAx] rowBound V (samples C (succ (previous M)) x h) (succ (previous M))
       (rowNumerator q s z R B H M K) (rowDenominator q s B M)) :
     Γ ⊢[PRAAx] distanceBounded (normalized V (previous M) h) (natScale (fact (previous M)) (entry C zero))
-      (numerator q s z R B H M K) (denominator q s B) := by
-  have hd : Γ ⊢[PRAAx] le one (two*B) := positive_product _ _ (le_succ_self one) hb
-  have hrden := row_denominator_positive q s B M hb
-  have hnorm := GaussianPolynomialForwardDifferenceNormalization.fractional_coefficient_error V C (previous M) x h H (two*B)
-    (rowNumerator q s z R B H M K) (rowDenominator q s B M) hC hH hd hh hrden hr
-  have old := positive_product _ _ (GaussianFactorBudget.power_positive H (previous M) hH) hrden
-  exact distance_radius_mono _ _ _ _ _ _ old (denominator_positive q s B hb) (radius_comparison q s z R B H M K hH) hnorm
+      (numerator q s z R B H M K) (denominator q s B) :=
+  coefficient_error_with_gains q s B H M K (analyticGain z R B M) (clockGain z R B) V C x h hb hH hC hh hr
 
 theorem actual_Barnes_finite_normalized_Taylor_grid_radius_closed :
     ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 8

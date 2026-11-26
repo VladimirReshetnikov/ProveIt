@@ -35,7 +35,8 @@ open GaussianBarnesCanonicalTaylorProduct (headPolynomial headDegree)
 open GaussianBarnesCanonicalWeightedTaylorBall (headMass head_mass)
 open GaussianBarnesCanonicalWeightedTaylorBallSource (input stepDivisor)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open GaussianEuclideanDistanceName (pointCN)
+open GaussianDominantPairAlgebra (radiusPoint)
+open GaussianEuclideanDistanceName (fraction pointCN)
 open GaussianGammaAdjacentCutoff (multiply_cross)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianNameArithmetic (multiplyF multiplyData multiply_fast)
@@ -48,7 +49,9 @@ open GaussianNamedRateComposition (leadingDenominator)
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianRationalHorner (evaluate ofGaussian ofGaussian_canonical positive_product qmul)
 open GaussianRationalMetric (distanceBounded)
+open GaussianRationalPolynomialDilation (weightedNorm)
 open GaussianRationalSyntheticDivision (canonicalCoefficients)
+open RationalArgmin (rationalLE)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
 open ConciseIPRA.PTm (zero succ)
 open LeanProofs.IPRA.PTm (num)
@@ -72,16 +75,17 @@ def polynomial (p z R B H r M : PTm n) : PTm n :=
 def data (p z h R B H r M : PTm n) : PTm n :=
   multiplyData S C (finiteData z R B r) (evaluate (polynomial p z R B H r M) (ofGaussian h B))
 
-def numerator (p z R B H M : PTm n) : PTm n :=
+def numerator_with_caps (p R B H M P F : PTm n) : PTm n :=
   let D := scheduledDenominator p R B M
   let J := scheduledNumerator p R B H M
   let m := previous M
   let L := massCap R
-  let P := headMass z R B
-  let F := centralCap z R B
   let a := GaussianBarnesCanonicalTaylorRecomposition.error J D m L (num 4*H) B two
   let b := (P*pw (num 3) L)*pw (num 4*H) (succ m)
   headCap R*(F*a)+D*(F*b)
+
+def numerator (p z R B H M : PTm n) : PTm n :=
+  numerator_with_caps p R B H M (headMass z R B) (centralCap z R B)
 
 def denominator (p R B M : PTm n) : PTm n :=
   GaussianBarnesCanonicalTaylorRecomposition.denominator (scheduledDenominator p R B M) (previous M) B
@@ -153,17 +157,17 @@ private theorem recomposition_input (p z h R B H r M : PTm n) (hs : Γ ⊢[PRAAx
   exact .andI (buffer_length q z R B r M) (.andI (buffer_zero q z R B r M)
     (.andI hm (.andI hB (.andI hs.andE₂.andE₁ (.andI hs.andE₂.andE₂ (.andI mass hw))))))
 
-theorem rate (p z h R B H r M : PTm n) (hs : Γ ⊢[PRAAx] input z h R B H M) :
+theorem rate_with_caps (p z h R B H r M A F : PTm n) (hs : Γ ⊢[PRAAx] input z h R B H M)
+    (hHead : Γ ⊢[PRAAx] rationalLE (weightedNorm (headPolynomial z R B) (headDegree R) (radiusPoint one (num 4)))
+      (fraction A one)) (hcap : Γ ⊢[PRAAx] sampleBound S (finiteData z R B r) F) :
     Γ ⊢[PRAAx] independentRate V nameF (literal (add z h) R B (initial R+r)) (data p z h R B H r M)
-      (numerator p z R B H M) (denominator p R B M) := by
+      (numerator_with_caps p R B H M A F) (denominator p R B M) := by
   let m := previous M
   let w := ofGaussian h B
   let c := buffer (precision p R H) z R B r M
   let v := GaussianRationalPolynomialExponentialRecomposition.value c m m w
   let K := headCap R
-  let F := centralCap z R B
   let L := massCap R
-  let A := headMass z R B
   let D := scheduledDenominator p R B M
   let J := scheduledNumerator p R B H M
   let a := GaussianBarnesCanonicalTaylorRecomposition.error J D m L (num 4*H) B two
@@ -187,7 +191,6 @@ theorem rate (p z h R B H r M : PTm n) (hs : Γ ⊢[PRAAx] input z h R B H M) :
   have hy := GaussianBarnesCanonicalFiniteCenteredExponentialShift.increment_exp_regular z h R B r hz hw
   have hv := constant_regular (Γ := Γ) v
   have hu := constant_regular (Γ := Γ) u
-  have hcap := central_samples z R B r hz
   have expRate := GaussianBarnesCanonicalWeightedTaylorRecomposition.named_exponential_rate I
     (GaussianBarnesCanonicalFiniteExponentTaylor.data z h R B r) c m m h H B L J D two
     (GaussianBarnesCanonicalFiniteExponentTaylor.regular z h R B r hz hw) hc hD
@@ -206,7 +209,7 @@ theorem rate (p z h R B H r M : PTm n) (hs : Γ ⊢[PRAAx] input z h R B H M) :
   have rawTail := GaussianRationalPolynomialExponentialWeightedProductTruncation.fixed_radius_tail
     (headPolynomial z R B) c (headDegree R) m m w one (num 4) H B A L hp hc.andE₁ hc.andE₂.andE₂.andE₁
     (le_refl one) (zero_lt_succ _) hB fit (ofGaussian_canonical h B hB)
-    hc.andE₂.andE₂.andE₂.andE₂.andE₂.andE₂.andE₂ (head_mass z R B)
+    hc.andE₂.andE₂.andE₂.andE₂.andE₂.andE₂.andE₂ hHead
     hc.andE₂.andE₂.andE₂.andE₂.andE₂.andE₂.andE₁
   have tail : Γ ⊢[PRAAx] distanceBounded j (evaluate (polynomial p z R B H r M) w) b e :=
     distance_congr (.eqRefl _) (.eqRefl _) (.eqRefl _)
@@ -219,6 +222,12 @@ theorem rate (p z h R B H r M : PTm n) (hs : Γ ⊢[PRAAx] input z h R B H M) :
   exact GaussianNamedRateComposition.same_denominator V nameF nameF (literal (add z h) R B (initial R+r)) mid
     (data p z h R B H r M) _ d _ hd first
     (GaussianNamedRateRadius.weaken _ _ _ _ (F*b) e (D*(F*b)) d he hd adjust final)
+
+theorem rate (p z h R B H r M : PTm n) (hs : Γ ⊢[PRAAx] input z h R B H M) :
+    Γ ⊢[PRAAx] independentRate V nameF (literal (add z h) R B (initial R+r)) (data p z h R B H r M)
+      (numerator p z R B H M) (denominator p R B M) :=
+  rate_with_caps p z h R B H r M (headMass z R B) (centralCap z R B) hs
+    (head_mass z R B) (central_samples z R B r hs.andE₁.andE₁)
 
 theorem shared_rate (p z h R B H r M : PTm n) (hz : Γ ⊢[PRAAx] source z R B)
     (hh : Γ ⊢[PRAAx] ComplexLogarithmRemainder.bounded h H)

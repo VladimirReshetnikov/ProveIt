@@ -75,9 +75,11 @@ def cap (x P e : PTm n) : PTm n := ap2 (sumF capBody) (succ e) (pairT x P)
 def observationCap (p z h R B H r M e : PTm n) : PTm n :=
   cap (finiteData z (R+one) B r) (samples (polynomial p z R B H r M e) (succ e) qzero (ofGaussian h B)) e
 
+def numerator_from_rate (t s p z h R B H r M e A : PTm n) : PTm n :=
+  A*unit t*unit s+TaylorDenominator p (R+one) B M*(unit s+(one+observationCap p z h R B H r M e)*unit t)
+
 def numerator (t s p z h R B H r M e : PTm n) : PTm n :=
-  TaylorNumerator p z (R+one) B (e*H) M*unit t*unit s+
-    TaylorDenominator p (R+one) B M*(unit s+(one+observationCap p z h R B H r M e)*unit t)
+  numerator_from_rate t s p z h R B H r M e (TaylorNumerator p z (R+one) B (e*H) M)
 
 def denominator (t s p R B M : PTm n) : PTm n := rateDenominator (TaylorDenominator p (R+one) B M) t s
 
@@ -107,6 +109,7 @@ def denominator (t s p R B M : PTm n) : PTm n := rateDenominator (TaylorDenomina
     Syn.subst σ (TaylorNumerator p z R B H M) =
       TaylorNumerator (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ H) (Syn.subst σ M) := by
   simp [GaussianBarnesCanonicalFiniteWeightedTaylorValue.numerator,
+    GaussianBarnesCanonicalFiniteWeightedTaylorValue.numerator_with_caps,
     GaussianBarnesCanonicalFiniteExponentTaylor.scheduledNumerator,GaussianBarnesCanonicalFiniteExponentTaylor.scheduledDenominator,
     GaussianBarnesCanonicalCorrectedMercator.numerator,GaussianBarnesCanonicalCorrectedMercatorCofinal.analyticDenominator,
     GaussianBarnesCanonicalCorrectedMercator.scaleDenominator,GaussianBarnesCanonicalWeightedTaylorBall.headMass,
@@ -138,10 +141,16 @@ def denominator (t s p R B M : PTm n) : PTm n := rateDenominator (TaylorDenomina
       (Syn.subst σ z) (Syn.subst σ h) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ H)
       (Syn.subst σ r) (Syn.subst σ M) (Syn.subst σ e) := by simp [polynomialGrid]
 
+@[simp] theorem subst_numerator_from_rate {m : ℕ} (σ : Fin n → PTm m) (t s p z h R B H r M e A : PTm n) :
+    Syn.subst σ (numerator_from_rate t s p z h R B H r M e A) =
+      numerator_from_rate (Syn.subst σ t) (Syn.subst σ s) (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ h)
+        (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ H) (Syn.subst σ r) (Syn.subst σ M) (Syn.subst σ e) (Syn.subst σ A) :=
+  by simp [numerator_from_rate,observationCap,cap]
+
 @[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (t s p z h R B H r M e : PTm n) :
     Syn.subst σ (numerator t s p z h R B H r M e) = numerator (Syn.subst σ t) (Syn.subst σ s) (Syn.subst σ p)
       (Syn.subst σ z) (Syn.subst σ h) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ H)
-      (Syn.subst σ r) (Syn.subst σ M) (Syn.subst σ e) := by simp [numerator,observationCap,cap]
+      (Syn.subst σ r) (Syn.subst σ M) (Syn.subst σ e) := by simp [numerator]
 
 @[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (t s p R B M : PTm n) :
     Syn.subst σ (denominator t s p R B M) =
@@ -205,11 +214,12 @@ private theorem compose_row (u v w A D t s L K : PTm n) (hD : Γ ⊢[PRAAx] le o
   exact distance_radius_mono _ _ _ _ _ _ hE hE (mul_le_mul_right E fit)
     (distance_triangle_same _ _ _ _ _ _ hE h₁ next)
 
-theorem row_error (t s p z h R B H r M e j : PTm n) (hz : Γ ⊢[PRAAx] source z R B)
-    (hh : Γ ⊢[PRAAx] bounded h H) (hsmall : Γ ⊢[PRAAx] le ((e*stepDivisor R)*H) B)
-    (hj : Γ ⊢[PRAAx] lt j (succ e)) :
+theorem row_error_from_rate (t s p z h R B H r M e j A : PTm n) (hz : Γ ⊢[PRAAx] source z R B)
+    (hj : Γ ⊢[PRAAx] lt j (succ e))
+    (hrate : Γ ⊢[PRAAx] GaussianNamedInverseRate.independentRate V nameF (literal z h R B r j)
+      (gridData p z h R B H r M e j) A (TaylorDenominator p (R+one) B M)) :
     Γ ⊢[PRAAx] distanceBounded (entry (literalGrid t z h R B r e) j) (entry (polynomialGrid s p z h R B H r M e) j)
-      (numerator t s p z h R B H r M e) (denominator t s p R B M) := by
+      (numerator_from_rate t s p z h R B H r M e A) (denominator t s p R B M) := by
   let P := polynomial p z R B H r M e
   let x := finiteData z (R+one) B r
   let k := ofGaussian h B
@@ -219,7 +229,6 @@ theorem row_error (t s p z h R B H r M e j : PTm n) (hz : Γ ⊢[PRAAx] source z
   let u := ap2 S s x
   let L := multiplyModulus S C x v+one
   let K := observationCap p z h R B H r M e
-  let a := TaylorNumerator p z (R+one) B (e*H) M
   let d := TaylorDenominator p (R+one) B M
   let y := gridData p z h R B H r M e j
   let ℓ := literal z h R B r j
@@ -229,8 +238,8 @@ theorem row_error (t s p z h R B H r M e j : PTm n) (hz : Γ ⊢[PRAAx] source z
   have hz' : Γ ⊢[PRAAx] source z (R+one) B :=
     .andI hz.andE₁ (ComplexLogarithmRemainder.bounded_mono hz.andE₂ (le_of_eq_add (d := B) (by ipra_ring)))
   have read := GaussianBarnesCanonicalFiniteTaylorGrid.grid_sample p z h R B H r M e j hj'
-  have first : Γ ⊢[PRAAx] distanceBounded (ap2 V t ℓ) (ap2 nameF s y) (rateNumerator a d t s) (rateDenominator d t s) :=
-    rate_at _ _ _ _ _ _ t s (GaussianBarnesCanonicalFiniteTaylorGrid.rate p z h R B H r M e j hz hh hsmall hj')
+  have first : Γ ⊢[PRAAx] distanceBounded (ap2 V t ℓ) (ap2 nameF s y) (rateNumerator A d t s) (rateDenominator d t s) :=
+    rate_at _ _ _ _ _ _ t s hrate
   have product := GaussianNameRingLaws.multiply_sample_error S C x v s
     (finite_regular z (R+one) B r hz') (constant_regular v)
   have eval : Γ ⊢[PRAAx] qmul u (ap2 C s v) ≐ v' :=
@@ -239,7 +248,15 @@ theorem row_error (t s p z h R B H r M e j : PTm n) (hz : Γ ⊢[PRAAx] source z
   have second : Γ ⊢[PRAAx] distanceBounded (ap2 nameF s y) v' L (unit s) :=
     distance_congr (congrAp2 nameF (.eqRefl s) read).eqSymm eval (.eqRefl _) (.eqRefl _) product
   exact distance_congr (literal_at t z h R B r e j hj).eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _)
-    (compose_row _ _ _ a d t s L K hd (cost_le_cap x alphas e j hj) first second)
+    (compose_row _ _ _ A d t s L K hd (cost_le_cap x alphas e j hj) first second)
+
+theorem row_error (t s p z h R B H r M e j : PTm n) (hz : Γ ⊢[PRAAx] source z R B)
+    (hh : Γ ⊢[PRAAx] bounded h H) (hsmall : Γ ⊢[PRAAx] le ((e*stepDivisor R)*H) B)
+    (hj : Γ ⊢[PRAAx] lt j (succ e)) :
+    Γ ⊢[PRAAx] distanceBounded (entry (literalGrid t z h R B r e) j) (entry (polynomialGrid s p z h R B H r M e) j)
+      (numerator t s p z h R B H r M e) (denominator t s p R B M) :=
+  row_error_from_rate t s p z h R B H r M e j _ hz hj
+    (GaussianBarnesCanonicalFiniteTaylorGrid.rate p z h R B H r M e j hz hh hsmall (Common.le_of_lt_succ hj))
 
 theorem row_bound (t s p z h R B H r M e : PTm n) (hz : Γ ⊢[PRAAx] source z R B)
     (hh : Γ ⊢[PRAAx] bounded h H) (hsmall : Γ ⊢[PRAAx] le ((e*stepDivisor R)*H) B) :
