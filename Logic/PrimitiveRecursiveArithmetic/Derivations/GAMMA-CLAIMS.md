@@ -2972,3 +2972,6 @@ The genuine exponential factors at their actual multiplication clock satisfy a r
 
 An explicit lower modulus depends only on the disk radius and chosen negative integer. It applies to the exact local coefficient program at every sufficiently late observation across the whole admitted rational neighborhood.
 [GaussianBarnesCanonicalDeflatedValueUniformApartness](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDeflatedValueUniformApartness.lean)
+
+The shifted original translated powers telescope to the plain Gamma denominator product and one endpoint power. The exact finite identity admits zeros and supplies the polynomial part of the Barnes functional equation.
+[GaussianBarnesWeightedProductShift](Lean/IPRADerivations/Analysis/GaussianBarnesWeightedProductShift.lean), [GaussianBarnesCanonicalPolynomialShift](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalPolynomialShift.lean)
