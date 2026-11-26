@@ -2813,3 +2813,6 @@ The compiled fixed presentation evaluates its actual rational program on the inc
 
 The literal finite summation program propagates a bounded family of row comparisons at independently chosen observation clocks. Only the spatial error grows with the internal summation length.
 [GaussianNamedFiniteSumFamilyRate](Lean/IPRADerivations/Analysis/GaussianNamedFiniteSumFamilyRate.lean)
+
+On a fixed compact time panel the actual Euler log-power has a checked parameter rate. The same estimate controls each original Mellin integrand sample and the original Dirichlet row. A common, internally chosen truncation and the existing Dirichlet tail rates give a primitive-recursive input demand for every independent cofinal observation error.
+[GaussianEulerCompactPowerParameterRate](Lean/IPRADerivations/Analysis/GaussianEulerCompactPowerParameterRate.lean), [GaussianGammaZetaParameterRates](Lean/IPRADerivations/Analysis/GaussianGammaZetaParameterRates.lean), [GaussianGammaZetaDirichletParameterRate](Lean/IPRADerivations/Analysis/GaussianGammaZetaDirichletParameterRate.lean)
