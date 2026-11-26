@@ -2918,3 +2918,6 @@ Two original regular names with explicit apartness witnesses give apartness at t
 
 The exact exponential of the negated cofinal logarithm supplies a named inverse and quantitative apartness of the actual tail sampler.
 [GaussianBarnesCanonicalTailApartness](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalTailApartness.lean)
+
+For the original sampler $F(z)=G(1+z)$ on admitted Gaussian rational inputs, a bounded witness search gives exact pointwise zero exactly at the negative integers, and gives apartness at all other inputs. The ordinary Cauchy-name zero envelope implies the same witness. Analytic multiplicities remain open.
+[GaussianBarnesCanonicalValueZeros](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalValueZeros.lean)
