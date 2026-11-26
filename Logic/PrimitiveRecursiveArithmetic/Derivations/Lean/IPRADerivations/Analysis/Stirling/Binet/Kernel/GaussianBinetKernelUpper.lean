@@ -76,7 +76,7 @@ theorem finite_order (p N A B : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PR
     refine .allI (.impI ?_)
     let s (a : PTm n) := Syn.shift a
     let Δ := lt (var 0) (s N) :: Γ.map Fm.shift
-    have hs : Δ ⊢[PRAAx] le one (s B) := by simpa [Δ,s,Fm.shift,Syn.shift] using hB.shift.wk
+    have hs : Δ ⊢[PRAAx] le one (s B) := (Order.shift_one_le hB).wk
     simpa only [Δ,t,x,y,s,Syn.shift,subst_pairT,subst_inputData,ConciseIPRA.PTm.subst_zero] using
       rationalLE_congr (read (s p) (var 0) (s A) (s B)).eqSymm (read (s p) (var 0) zero (s B)).eqSymm
         (row_order (s p) (var 0) (s A) (s B) hs)

@@ -143,8 +143,8 @@ theorem quadrature_error (p M X Y D sign A B : PTm n) (hz : Γ ⊢[PRAAx] source
     let t := grid (var 0) (s M) (s B+zero) (s A) (s B)
     have zs : Δ ⊢[PRAAx] source (s X) (s D) (s sign) := by
       simpa [s,Δ,Fm.shift,Syn.shift,source,GaussianRightHalfPlaneArgument.source] using hz.shift.wk
-    have bs : Δ ⊢[PRAAx] le one (s B) := by simpa [s,Δ,Fm.shift,Syn.shift,one] using hB.shift.wk
-    have ms : Δ ⊢[PRAAx] le one (s M) := by simpa [s,Δ,Fm.shift,Syn.shift,one] using hM.shift.wk
+    have bs : Δ ⊢[PRAAx] le one (s B) := (Order.shift_one_le hB).wk
+    have ms : Δ ⊢[PRAAx] le one (s M) := (Order.shift_one_le hM).wk
     have hi : Δ ⊢[PRAAx] le (var 0) (s M) := le_of_lt Prf.hyp0
     have read := (sample_body_at (Γ := Δ) evaluatorF (var 0) (s p) (s M) (s B+zero) (s A) (s B)
       (fixedData (s X) (s Y) (s D) (s sign))).eqTrans (evaluator_at (s p) t (s X) (s Y) (s D) (s sign))

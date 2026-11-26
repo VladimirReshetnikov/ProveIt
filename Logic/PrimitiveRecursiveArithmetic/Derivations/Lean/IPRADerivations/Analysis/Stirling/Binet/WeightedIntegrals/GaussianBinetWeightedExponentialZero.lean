@@ -89,8 +89,8 @@ theorem finite_exact (p b N : PTm n) (hb : Γ ⊢[PRAAx] le one b) (hN : Γ ⊢[
     refine .allI (.impI ?_)
     let s (v : PTm n) := Syn.shift v
     let Δ := lt (var 0) (s N) :: Γ.map Fm.shift
-    have bn : Δ ⊢[PRAAx] le one (s b) := by simpa [Δ,s,Fm.shift,Syn.shift,one] using hb.shift.wk
-    have nn : Δ ⊢[PRAAx] le one (s N) := by simpa [Δ,s,Fm.shift,Syn.shift,one] using hN.shift.wk
+    have bn : Δ ⊢[PRAAx] le one (s b) := (Order.shift_one_le hb).wk
+    have nn : Δ ⊢[PRAAx] le one (s N) := (Order.shift_one_le hN).wk
     have vr := (GaussianBinetWeightedExponentialGrid.cell_at (Γ := Δ) (var 0) (s p) (s N) zero (s b)).eqTrans
       (row_at (s p) (s b) (var 0) (s N) bn nn)
     simpa only [termsEqual,Syn.shift,s,Δ,d,g,f,GaussianCompactRiemannName.subst_sampleData,

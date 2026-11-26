@@ -65,8 +65,8 @@ theorem imaginary_finite_error (p A B sign R T N : PTm n)
     refine .allI (.impI ?_)
     let s (v : PTm n) := Syn.shift v
     let Δ := le (var 0) (s N) :: Γ.map Fm.shift
-    have bs : Δ ⊢[PRAAx] le one (s B) := by simpa [Δ,s,Fm.shift,Syn.shift,one] using hB.shift.wk
-    have ns : Δ ⊢[PRAAx] le one (s N) := by simpa [Δ,s,Fm.shift,Syn.shift,one] using hN.shift.wk
+    have bs : Δ ⊢[PRAAx] le one (s B) := (Order.shift_one_le hB).wk
+    have ns : Δ ⊢[PRAAx] le one (s N) := (Order.shift_one_le hN).wk
     simpa only [nonpositiveRows,q,s,Δ,Syn.shift,subst_coefficient] using
       exponent_nonpositive (s A) (s B) (s sign) (s T*var 0) (s N) bs ns
   exact finite_error p q R T N (coefficient_bound A B sign R hB hs hA) hN hS rows

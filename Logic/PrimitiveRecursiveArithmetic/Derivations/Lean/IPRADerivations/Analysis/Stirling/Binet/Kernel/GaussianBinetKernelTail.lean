@@ -79,7 +79,7 @@ theorem interval_bound (p N r A B : PTm n) (hN : Γ ⊢[PRAAx] le one N) (hB : �
     refine .allI (.impI ?_)
     let s (v : PTm n) := Syn.shift v
     let Δ := lt (var 0) (s r) :: Γ.map Fm.shift
-    have hbs : Δ ⊢[PRAAx] le one (s B) := by simpa [Δ,s,Fm.shift,Syn.shift] using hB.shift.wk
+    have hbs : Δ ⊢[PRAAx] le one (s B) := (Order.shift_one_le hB).wk
     simpa only [Δ,x,s,Syn.shift,subst_intervalData,GaussianBinetKernelTailMajorant.subst_data] using
       interval_row_majorized (s p) (s N) (var 0) (s A) (s B) hbs
   have a : Γ ⊢[PRAAx] majorized S M := sum_majorized _ _ r _ _ rows

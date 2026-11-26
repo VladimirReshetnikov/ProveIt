@@ -158,7 +158,7 @@ private theorem mesh_local (p A B D neg k M : PTm n) (h : Γ ⊢[PRAAx] source A
   let Δ := lt (var 0) (s M) :: Γ.map Fm.shift
   have hs : Δ ⊢[PRAAx] source (s A) (s D) (s neg) :=
     by simpa [Δ,s,Fm.shift,Syn.shift,source,GaussianRightHalfPlaneArgument.source] using h.shift.wk
-  have hm : Δ ⊢[PRAAx] le one (s M) := by simpa [Δ,s,Fm.shift,Syn.shift] using hM.shift.wk
+  have hm : Δ ⊢[PRAAx] le one (s M) := (Order.shift_one_le hM).wk
   have hd : Δ ⊢[PRAAx] le (requiredMesh (s A) (s B) (s D) (s k)) (s M) := by simpa [Δ,s,Fm.shift,Syn.shift] using hmesh.shift.wk
   let x := sampleData (s p) (s A) (s B) (s D) (s neg) (s k) (s M)
   let y := reciprocalData (s A) (s B) (s D) (s neg) (s k) (s M)

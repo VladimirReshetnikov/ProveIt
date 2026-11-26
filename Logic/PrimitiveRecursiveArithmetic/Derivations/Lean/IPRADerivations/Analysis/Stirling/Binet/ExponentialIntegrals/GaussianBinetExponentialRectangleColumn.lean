@@ -104,8 +104,8 @@ theorem column_error (j p X Y D sign R T N M : PTm n)
     let Δ := lt (var 0) (s N) :: Γ.map Fm.shift
     have hs : Δ ⊢[PRAAx] source (s X) (s Y) (s D) (s sign) (s R) := by
       simpa [Δ,s,Fm.shift,Syn.shift] using hz.shift.wk
-    have hn : Δ ⊢[PRAAx] le one (s N) := by simpa [Δ,s,Fm.shift,Syn.shift,one] using hN.shift.wk
-    have hm : Δ ⊢[PRAAx] le one (s M) := by simpa [Δ,s,Fm.shift,Syn.shift,one] using hM.shift.wk
+    have hn : Δ ⊢[PRAAx] le one (s N) := (Order.shift_one_le hN).wk
+    have hm : Δ ⊢[PRAAx] le one (s M) := (Order.shift_one_le hM).wk
     have hj' : Δ ⊢[PRAAx] le (s j) (s M) := by simpa [Δ,s,Fm.shift,Syn.shift] using hj.shift.wk
     let zs := qnegative (argument (s X) (s Y) (s D) (s sign))
     let As := realNumerator (s X) (s D) (s M) (s j)

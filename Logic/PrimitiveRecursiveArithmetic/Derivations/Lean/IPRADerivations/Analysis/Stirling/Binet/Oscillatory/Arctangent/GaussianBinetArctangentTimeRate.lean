@@ -109,8 +109,8 @@ theorem average_bound (p M X Y D sign A B : PTm n) (hz : Γ ⊢[PRAAx] source X 
     let t := grid (var 0) (s M) (s B+zero) (s A) (s B)
     have zs : Δ ⊢[PRAAx] source (s X) (s D) (s sign) :=
       by simpa [Δ,s,Fm.shift,Syn.shift,source,GaussianRightHalfPlaneArgument.source] using hz.shift.wk
-    have ms : Δ ⊢[PRAAx] le one (s M) := by simpa [Δ,s,Fm.shift,Syn.shift,one] using hM.shift.wk
-    have bs : Δ ⊢[PRAAx] le one (s B) := by simpa [Δ,s,Fm.shift,Syn.shift,one] using hB.shift.wk
+    have ms : Δ ⊢[PRAAx] le one (s M) := (Order.shift_one_le hM).wk
+    have bs : Δ ⊢[PRAAx] le one (s B) := (Order.shift_one_le hB).wk
     have x := tag_denominator (var 0) (s M) (s A) (s B) ms bs
     have b := GaussianBinetArctangentResolventRate.uniform_bound (s X) (s Y) (s D) (s sign) (tagNumerator t) (sndT t) zs x
     have widened := GaussianCoefficientNameBounds.bounded_radius_mono _ _ _ (s D) one zs.andE₁.andE₁ (le_refl one)
@@ -145,10 +145,10 @@ theorem quadrature_rate (p q M X Y D sign A B C E T H Q : PTm n)
     let Δ := lt (var 0) (s M)::Γ.map Fm.shift
     have zs : Δ ⊢[PRAAx] source (s X) (s D) (s sign) :=
       by simpa [Δ,s,Fm.shift,Syn.shift,source,GaussianRightHalfPlaneArgument.source] using hz.shift.wk
-    have ms : Δ ⊢[PRAAx] le one (s M) := by simpa [Δ,s,Fm.shift,Syn.shift,one] using hM.shift.wk
-    have bs : Δ ⊢[PRAAx] le one (s B) := by simpa [Δ,s,Fm.shift,Syn.shift,one] using hB.shift.wk
-    have es : Δ ⊢[PRAAx] le one (s E) := by simpa [Δ,s,Fm.shift,Syn.shift,one] using hE.shift.wk
-    have ds : Δ ⊢[PRAAx] le one (s Q) := by simpa [Δ,s,Fm.shift,Syn.shift,one] using hQ.shift.wk
+    have ms : Δ ⊢[PRAAx] le one (s M) := (Order.shift_one_le hM).wk
+    have bs : Δ ⊢[PRAAx] le one (s B) := (Order.shift_one_le hB).wk
+    have es : Δ ⊢[PRAAx] le one (s E) := (Order.shift_one_le hE).wk
+    have ds : Δ ⊢[PRAAx] le one (s Q) := (Order.shift_one_le hQ).wk
     have near : Δ ⊢[PRAAx] distanceBounded (fraction (s A) (s B)) (fraction (s C) (s E)) (s H) (s Q) :=
       by simpa [Δ,s,Fm.shift,Syn.shift] using h.shift.wk
     simpa only [f,x,y,Δ,s,Syn.shift,subst_gridData,PTm.subst_mul] using

@@ -167,7 +167,7 @@ theorem finite_identity (A B D sign M : PTm n) (h : Γ ⊢[PRAAx] source A D sig
     let Δ := lt (var 0) (s M) :: Γ.map Fm.shift
     have hs : Δ ⊢[PRAAx] source (s A) (s D) (s sign) := by
       simpa [Δ,s,Fm.shift,Syn.shift,source,GaussianRightHalfPlaneArgument.source] using h.shift.wk
-    have hm : Δ ⊢[PRAAx] le one (s M) := by simpa [Δ,Fm.shift,Syn.shift,s,one] using hM.shift.wk
+    have hm : Δ ⊢[PRAAx] le one (s M) := (Order.shift_one_le hM).wk
     have right := (affine_at (Γ := Δ) (var 0) (coefficient (s A) (s B) (s D) (s sign))
       (reciprocalData (s A) (s B) (s D) (s sign) zero (s M))).eqTrans
         (qsub_congr (qmul_congr (.eqRefl _) (GaussianBinetReciprocalMean.tag_at (s A) (s B) (s D) (s sign) zero (s M) (var 0)))

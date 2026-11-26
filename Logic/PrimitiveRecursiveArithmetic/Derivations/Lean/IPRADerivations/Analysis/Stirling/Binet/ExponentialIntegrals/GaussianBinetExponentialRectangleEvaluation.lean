@@ -71,7 +71,7 @@ theorem finite_error (p X Y D sign R K L N M : PTm n)
     let Δ := lt (var 0) (s M) :: Γ.map Fm.shift
     have hs : Δ ⊢[PRAAx] source (s X) (s Y) (s D) (s sign) (s R) := by simpa [Δ,s,Fm.shift,Syn.shift] using hz.shift.wk
     have ms : Δ ⊢[PRAAx] le (s D) (s K*s X) := by simpa [Δ,s,Fm.shift,Syn.shift] using hm.shift.wk
-    have hm' : Δ ⊢[PRAAx] le one (s M) := by simpa [Δ,s,Fm.shift,Syn.shift,one] using hM.shift.wk
+    have hm' : Δ ⊢[PRAAx] le one (s M) := (Order.shift_one_le hM).wk
     have ls : Δ ⊢[PRAAx] le (s L) (s p) := by simpa [Δ,s,Fm.shift,Syn.shift] using hL.shift.wk
     have ns : Δ ⊢[PRAAx] le ((s R+one)*(s D*s L)) (s N) := by simpa [Δ,s,Fm.shift,Syn.shift,one] using hN.shift.wk
     have ps : Δ ⊢[PRAAx] le (unit (s p)) (s N) := by simpa [Δ,s,Fm.shift,Syn.shift] using hpN.shift.wk

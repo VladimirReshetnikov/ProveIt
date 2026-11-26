@@ -99,8 +99,8 @@ theorem midpoint_left_error (p M a b T : PTm n)
     refine .allI (.impI ?_)
     let s (v : PTm n) := Syn.shift v
     let Δ := lt (var 0) (s M)::Γ.map Fm.shift
-    have hm : Δ ⊢[PRAAx] le one (s M) := by simpa [s,Δ,Fm.shift,Syn.shift,one] using hM.shift.wk
-    have hB : Δ ⊢[PRAAx] le one (s b) := by simpa [s,Δ,Fm.shift,Syn.shift,one] using hb.shift.wk
+    have hm : Δ ⊢[PRAAx] le one (s M) := (Order.shift_one_le hM).wk
+    have hB : Δ ⊢[PRAAx] le one (s b) := (Order.shift_one_le hb).wk
     have hT : Δ ⊢[PRAAx] le (s a) (s T*s b) := by simpa [s,Δ,Fm.shift,Syn.shift] using ht.shift.wk
     have hi : Δ ⊢[PRAAx] lt (var 0) (s M) := Prf.hyp0
     have hm2 : Δ ⊢[PRAAx] le one (two*s M) := positive_product _ _ (le_succ_self one) hm

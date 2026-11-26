@@ -249,9 +249,9 @@ theorem finite_error (p N a b : PTm n) (ha : Γ ⊢[PRAAx] le one a) (hb : Γ �
     refine .allI (.impI ?_)
     let s (z : PTm n) := Syn.shift z
     let Δ := lt (var 0) (s N) :: Γ.map Fm.shift
-    have as' : Δ ⊢[PRAAx] le one (s a) := by simpa [Δ,s,Fm.shift,Syn.shift,one] using ha.shift.wk
-    have bs : Δ ⊢[PRAAx] le one (s b) := by simpa [Δ,s,Fm.shift,Syn.shift,one] using hb.shift.wk
-    have ns : Δ ⊢[PRAAx] le one (s N) := by simpa [Δ,s,Fm.shift,Syn.shift,one] using hN.shift.wk
+    have as' : Δ ⊢[PRAAx] le one (s a) := (Order.shift_one_le ha).wk
+    have bs : Δ ⊢[PRAAx] le one (s b) := (Order.shift_one_le hb).wk
+    have ns : Δ ⊢[PRAAx] le one (s N) := (Order.shift_one_le hN).wk
     have an : Δ ⊢[PRAAx] le (s a) (s N) := by simpa [Δ,s,Fm.shift,Syn.shift] using haN.shift.wk
     have next := qsub_congr (primitive_at (Γ := Δ) (succ (var 0)) (s p) (s a) (s b) (s N))
       (primitive_at (var 0) (s p) (s a) (s b) (s N))

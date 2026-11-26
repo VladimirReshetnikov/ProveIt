@@ -56,9 +56,9 @@ theorem refinement_error (p q R N a b T : PTm n)
     refine .allI (.impI ?_)
     let s (z : PTm n) := Syn.shift z
     let Δ := lt (var 0) (s R*s N)::Γ.map Fm.shift
-    have hsR : Δ ⊢[PRAAx] le one (s R) := by simpa [Δ,s,Fm.shift,Syn.shift,one] using hR.shift.wk
-    have hsN : Δ ⊢[PRAAx] le one (s N) := by simpa [Δ,s,Fm.shift,Syn.shift,one] using hN.shift.wk
-    have hsB : Δ ⊢[PRAAx] le one (s b) := by simpa [Δ,s,Fm.shift,Syn.shift,one] using hb.shift.wk
+    have hsR : Δ ⊢[PRAAx] le one (s R) := (Order.shift_one_le hR).wk
+    have hsN : Δ ⊢[PRAAx] le one (s N) := (Order.shift_one_le hN).wk
+    have hsB : Δ ⊢[PRAAx] le one (s b) := (Order.shift_one_le hb).wk
     have hsT : Δ ⊢[PRAAx] le (s a) (s T*s b) := by simpa [Δ,s,Fm.shift,Syn.shift] using hT.shift.wk
     have hi : Δ ⊢[PRAAx] lt (var 0) (s R*s N) := Prf.hyp0
     have near := tag_distance (var 0) (s R) (s N) hsR hsN

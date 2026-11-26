@@ -105,7 +105,7 @@ theorem finite_error (p q R T N : PTm n) (hb : Γ ⊢[PRAAx] bounded q R one)
     let s (v : PTm n) := Syn.shift v
     let Δ := lt (var 0) (s N) :: Γ.map Fm.shift
     have bs : Δ ⊢[PRAAx] bounded (s q) (s R) one := by simpa [Δ,s,Fm.shift,Syn.shift,one] using hb.shift.wk
-    have ns : Δ ⊢[PRAAx] le one (s N) := by simpa [Δ,s,Fm.shift,Syn.shift,one] using hN.shift.wk
+    have ns : Δ ⊢[PRAAx] le one (s N) := (Order.shift_one_le hN).wk
     have ss : Δ ⊢[PRAAx] le (s R*s T) (s N) := by simpa [Δ,s,Fm.shift,Syn.shift] using hS.shift.wk
     have rs : Δ ⊢[PRAAx] nonpositiveRows (s q) (s T) (s N) := by simpa [Δ,s,Fm.shift,Syn.shift] using hr.shift.wk
     have cs : Δ ⊢[PRAAx] nonpositive (exponent (s q) (s T) (s N)) := by
@@ -148,8 +148,8 @@ theorem original_finite_error (p X Y D sign R T N : PTm n)
     refine .allI (.impI ?_)
     let s (v : PTm n) := Syn.shift v
     let Δ := le (var 0) (s N) :: Γ.map Fm.shift
-    have ds : Δ ⊢[PRAAx] le one (s D) := by simpa [Δ,s,Fm.shift,Syn.shift,one] using hD.shift.wk
-    have ns : Δ ⊢[PRAAx] le one (s N) := by simpa [Δ,s,Fm.shift,Syn.shift,one] using hN.shift.wk
+    have ds : Δ ⊢[PRAAx] le one (s D) := (Order.shift_one_le hD).wk
+    have ns : Δ ⊢[PRAAx] le one (s N) := (Order.shift_one_le hN).wk
     simpa only [nonpositiveRows,nonpositive,q,s,Δ,Syn.shift,GaussianRationalMetric.subst_qnegative,
       GaussianLogGammaEulerRepresentation.subst_argument,exponent,GaussianBinetLaplaceExponential.exponent] using
       GaussianBinetLaplaceExponential.exponent_nonpositive (s X) (s Y) (s D) (s sign) (s T*var 0) (s N) ds ns
