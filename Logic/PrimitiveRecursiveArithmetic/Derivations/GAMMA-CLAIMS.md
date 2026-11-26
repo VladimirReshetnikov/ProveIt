@@ -2864,3 +2864,6 @@ The actual cubic Mercator rows have the explicit rational Gaussian bound and rou
 
 The original named logarithmic quotient and its normalized exponential are regular and have explicit independent-clock rates against their actual common-chart rational equivalents. This supplies the cofinal comparison needed for exact named window bounds.
 [GaussianGammaDigammaTwoShiftNamedBinding](Lean/IPRADerivations/Analysis/GaussianGammaDigammaTwoShiftNamedBinding.lean), [GaussianGammaDigammaTwoShiftNamedExponential](Lean/IPRADerivations/Analysis/GaussianGammaDigammaTwoShiftNamedExponential.lean)
+
+The signed exponent is unchanged by translating the base and both shifted arguments on a common denominator. The original logarithmic quotient has a linear independent observation rate for this translation on the certified local positive window.
+[GaussianGammaDigammaTwoShiftLogGammaTranslation](Lean/IPRADerivations/Analysis/GaussianGammaDigammaTwoShiftLogGammaTranslation.lean), [GaussianGammaDigammaTwoShiftQuotientTranslation](Lean/IPRADerivations/Analysis/GaussianGammaDigammaTwoShiftQuotientTranslation.lean)
