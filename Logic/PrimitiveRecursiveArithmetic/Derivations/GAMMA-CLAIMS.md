@@ -3146,3 +3146,6 @@ The original first-derivative row increments by the actual rational second deriv
 
 When a regular input name represents an exact Gaussian rational, the original named reciprocal Gamma value agrees with the original rational C7 evaluator at independent observation precisions. The proof applies at poles.
 [GaussianGammaC7NamedRationalBinding](Lean/IPRADerivations/Analysis/GaussianGammaC7NamedRationalBinding.lean)
+
+At every internal order r≥3 the rational coefficient through the original base reciprocal has the bound `2^r/(r*k^(r−1))`. Exact multiplication by r! gives the factorial-scaled row with its sharp bound. Both programs have inverse-square bounds for finite tails.
+[GaussianBarnesCanonicalHigherRows](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHigherRows.lean)
