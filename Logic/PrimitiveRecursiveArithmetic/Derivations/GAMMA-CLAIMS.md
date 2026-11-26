@@ -2951,3 +2951,6 @@ On each admitted half-unit neighborhood of a negative integer, the actual Barnes
 
 The exact sums of the literal first-derivative rows give a regular sampler with an explicit cofinal length and tail modulus. Analytic identification with difference quotients remains open.
 [GaussianBarnesCanonicalDerivativeCofinal](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDerivativeCofinal.lean)
+
+The original rational evaluator, applied to an explicit late original input observation, gives a regular Barnes name. On a common certified disk it respects equivalent input names and agrees with the original rational value on constant inputs. The disk can be computed from the input name.
+[GaussianBarnesCanonicalNamedDemand](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalNamedDemand.lean), [GaussianBarnesCanonicalNamed](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalNamed.lean)
