@@ -490,9 +490,10 @@ each placement's `OMITTED.tsv` instead of being copied. Adopted ideas are tracke
 L-functions are placed, as delivered and without a write, in the new project
 [`Analysis/GeneralizedRiemannHypothesis/`](../../Analysis/GeneralizedRiemannHypothesis/README.md),
 one directory per archive under `Research/`, and retired here. Of their 2,250 members,
-2,094 are placed and 156 are listed in
+1,795 are placed and 455 are listed in
 [`Research/OMITTED.tsv`](../../Analysis/GeneralizedRiemannHypothesis/Research/OMITTED.tsv):
-151 matched by `.gitignore`, 3 checksum manifests and 2 nested copies of sibling archives.
+151 matched by `.gitignore`, 3 checksum manifests, 2 nested copies of sibling archives
+and 299 files byte-identical to a file of an earlier packet of the set.
 Nothing was rerun or checked, and the mathematical claims have not been independently
 reviewed or formalized here.
 
