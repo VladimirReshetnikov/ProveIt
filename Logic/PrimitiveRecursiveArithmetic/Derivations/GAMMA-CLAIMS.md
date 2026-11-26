@@ -3188,3 +3188,6 @@ The corrected finite interval Mercator polynomial is exactly the sum of the orig
 
 The original cofinal logarithmic increment admits the literal corrected finite Taylor polynomial with a combined finite-prefix and summable Taylor error. Its primitive-recursive cutoff makes the finite-prefix contribution dyadic and retains the analytic remainder at every encoded degree at least two.
 [GaussianBarnesCanonicalCorrectedMercatorCofinal](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalCorrectedMercatorCofinal.lean)
+
+The original value equals the literal finite base-power product times the named exponential of the actual prefactor exponent, finite correction and cofinal log. On a shifted rational chart the kept product is its exact centered displacement polynomial. Both identities hold at zeros of the head.
+[GaussianBarnesCanonicalSingleExponential](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalSingleExponential.lean)
