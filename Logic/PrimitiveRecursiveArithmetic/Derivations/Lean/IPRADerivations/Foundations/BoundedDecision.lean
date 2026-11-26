@@ -2,6 +2,7 @@ import IPRADerivations.Core.Evaluation
 import IPRADerivations.Core.Order
 import IPRADerivations.Core.Pairing
 import IPRADerivations.Core.Signum
+import IPRADerivations.Core.Header
 
 /-!
 # Bounded decision of equations between terms
@@ -26,11 +27,7 @@ uniform in the context and in the terms `σ`.
 
 namespace LeanProofs.IPRA.Foundations.BoundedDecision
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 variable {n : ℕ}
 

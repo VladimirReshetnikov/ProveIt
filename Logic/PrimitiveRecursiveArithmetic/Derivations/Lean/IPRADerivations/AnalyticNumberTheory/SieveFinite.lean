@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.SieveWeightOne
 import IPRADerivations.AnalyticNumberTheory.SievePrimesSharp
 import IPRADerivations.Core.Gcd
+import IPRADerivations.Core.Header
 
 /-!
 # The finite sieve inequality from a bound on the sum of the weights
@@ -31,17 +32,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SieveFinite
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveExpansion (lB)
 open LeanProofs.IPRA.AnalyticNumberTheory.SievePrimes (piB)
 open LeanProofs.IPRA.AnalyticNumberTheory.SievePrimesSharp (prime_sieve_ineq_sharp)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightForm (UPw UNw form_value)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightOne (Asum lam_P lam_N ky_sum)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -2,6 +2,7 @@ import IPRADerivations.Foundations.RationalRootConstant
 import IPRADerivations.Foundations.EigenvalueGrid
 import IPRADerivations.Foundations.FilteredEnumeration
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # The bounded rational-root scan (`ipra_presentations_to_witnesses`, `lem:norm-rational-roots`)
@@ -45,15 +46,11 @@ factor `T^e`, and the evaluation of `K` as a primitive recursive program on coef
 
 namespace LeanProofs.IPRA.Foundations.RationalRootScan
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.RationalRootDegree (Bez euclid P tB top_at)
 open LeanProofs.IPRA.Foundations.RationalRootConstant (num_bound den_bound)
 open LeanProofs.IPRA.Foundations.BoundedReflection (sgB)
 open LeanProofs.IPRA.Foundations.FilteredEnumeration (rank sel sel_spec sel_rank rank_lt_size)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

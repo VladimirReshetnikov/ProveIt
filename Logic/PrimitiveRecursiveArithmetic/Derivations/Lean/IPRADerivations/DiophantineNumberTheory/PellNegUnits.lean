@@ -2,6 +2,7 @@ import IPRADerivations.DiophantineNumberTheory.PellAll
 import IPRADerivations.AnalyticNumberTheory.PhiLower
 import IPRADerivations.Combinatorics.BinomialIdentities
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Negative units square to the fundamental unit
@@ -25,17 +26,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.PellNegUnits
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
 open LeanProofs.IPRA.DiophantineNumberTheory.PellDescent (lt_of_sq_lt unit_descent rr tt)
 open LeanProofs.IPRA.DiophantineNumberTheory.PellAll (minimal minimal_at)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

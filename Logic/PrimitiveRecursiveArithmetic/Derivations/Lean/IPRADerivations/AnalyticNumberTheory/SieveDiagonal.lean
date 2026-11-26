@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.GcdPhiSum
 import IPRADerivations.Probability.Independence
+import IPRADerivations.Core.Header
 
 /-!
 # The diagonalization of the Selberg quadratic form
@@ -26,16 +27,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SieveDiagonal
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg sg_zero)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg congrEqb')
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi totBody)
 open LeanProofs.IPRA.AnalyticNumberTheory.GcdPhiSum (gB gB_at gcd_phi_sum)
 open LeanProofs.IPRA.Probability.Independence (row_pt col_pt sum_scale dsum sum_mul_sum pmB inst3_pmB)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -3,6 +3,7 @@ import IPRADerivations.Core.MultiSums
 import IPRADerivations.Core.CongruenceTactic
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.SubstCommand
+import IPRADerivations.Core.Header
 
 /-!
 # Actual sequence append and runtime demand flattening
@@ -21,14 +22,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.SequenceComposition
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.MasterCertificate (sequence entry sequence_length sequence_decode)
 open LeanProofs.IPRA.Signum (sg)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totatives (sg_lt sg_le)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

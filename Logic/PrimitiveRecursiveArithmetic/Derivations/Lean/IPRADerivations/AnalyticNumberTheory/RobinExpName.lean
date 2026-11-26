@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.RobinLogName
 import IPRADerivations.AnalyticNumberTheory.LocalFactor
+import IPRADerivations.Core.Header
 
 /-!
 # Nested exponential names (`robin_ipra_research_2026-11-19`, `eq:exptail`)
@@ -24,15 +25,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.RobinExpName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogName (frac_trans)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.AnalyticNumberTheory.SigmaPrimePower (pos_pw)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

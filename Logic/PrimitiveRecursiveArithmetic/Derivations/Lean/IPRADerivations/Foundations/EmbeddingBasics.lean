@@ -1,6 +1,7 @@
 import IPRADerivations.Combinatorics.Stirling
 import IPRADerivations.Core.Search
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # No universal PR evaluator, and bounded choice of witnesses
@@ -25,13 +26,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.EmbeddingBasics
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Stirling (build nth_build)
 open LeanProofs.IPRA.Combinatorics.Bell (nth monus_monus)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -3,6 +3,7 @@ import IPRADerivations.Foundations.ChainViability
 import IPRADerivations.Foundations.SequenceComposition
 import IPRADerivations.Core.CommonLemmas
 import IPRADerivations.Core.SubstCommand
+import IPRADerivations.Core.Header
 
 /-!
 # A concrete cyclic two-coordinate demand closure
@@ -19,14 +20,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.TwoCoordinateDemandClosure
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.DemandClosure
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

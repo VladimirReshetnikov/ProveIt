@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.Smooth
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.CommonLemmas
 import IPRADerivations.Core.InductionTactic
+import IPRADerivations.Core.Header
 
 /-!
 # The Euler product dominates the harmonic sum
@@ -27,7 +28,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.EulerDomination
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
@@ -50,10 +51,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared (A Dn pB dB pBt dBt A_suc
 open LeanProofs.IPRA.AnalyticNumberTheory.Smooth (smooth_all)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (fact_pos)
 open LeanProofs.IPRA.Analysis.Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

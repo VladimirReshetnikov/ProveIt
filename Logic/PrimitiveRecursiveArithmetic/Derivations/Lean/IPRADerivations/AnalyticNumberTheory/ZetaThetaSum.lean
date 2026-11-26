@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.ZetaPrecision
 import IPRADerivations.Core.Gcd
 import IPRADerivations.Core.SubstCommand
+import IPRADerivations.Core.Header
 
 /-!
 # The theta majorant sums to at most one (`zeta_functional_equation_ipra`)
@@ -21,13 +22,9 @@ The majorant partial sums `Σ_{n=1}^{k} 4n² 2^{−3n²}` are kept over their co
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.ZetaThetaSum
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.ZetaFiniteContract (theta_term)
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockGeo (congrPw2)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

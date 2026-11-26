@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.StepCondition
 import IPRADerivations.AnalyticNumberTheory.ZetaFiniteContract
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # The dyadic exponents of one contraction step (`pnt_ipra_constructive_2026-11-14`, `con:one-step`)
@@ -22,15 +23,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.StepParams
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.ZetaFiniteContract (clog clog_spec clog_least)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared (pw_le_exp)
 open LeanProofs.IPRA.AnalyticNumberTheory.BlockChain (one_le_pw')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

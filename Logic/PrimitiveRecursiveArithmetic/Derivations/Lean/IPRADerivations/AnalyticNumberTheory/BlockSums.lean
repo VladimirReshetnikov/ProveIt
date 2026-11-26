@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.BlockMean
 import IPRADerivations.AnalyticNumberTheory.PointDeficit
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Block sums over divisors (`pnt_ipra_constructive_2026-11-14`, `con:deficit`)
@@ -23,7 +24,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.BlockSums
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (wt)
 open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (Psi)
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedBound (psiB inst2_psiB psi_bs)
@@ -37,10 +38,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.BlockMean (T block_upper block_lower)
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (sum_add2)
 open LeanProofs.IPRA.Probability.Variance (sum_const_of)
 open LeanProofs.IPRA.Analysis.Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

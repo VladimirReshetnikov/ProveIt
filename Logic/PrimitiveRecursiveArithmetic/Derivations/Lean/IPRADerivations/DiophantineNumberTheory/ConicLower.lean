@@ -1,4 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.ConicHeight
+import IPRADerivations.Core.Header
 
 /-!
 # The lower height estimate of the conic parametrization
@@ -21,14 +22,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.ConicLower
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.ConicIdentities (Form)
 open LeanProofs.IPRA.DiophantineNumberTheory.ConicHeight (abs_neg)
 open LeanProofs.IPRA.Analysis.PolynomialRemainder (AbsLe abs_congr abs_add abs_mul)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

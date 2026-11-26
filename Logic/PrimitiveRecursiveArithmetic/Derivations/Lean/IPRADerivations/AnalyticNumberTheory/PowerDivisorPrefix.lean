@@ -3,6 +3,7 @@ import IPRADerivations.AnalyticNumberTheory.SummatoryPhi
 import IPRADerivations.AnalyticNumberTheory.FactorialLambda
 import IPRADerivations.Combinatorics.LegendreDigits
 import IPRADerivations.Foundations.BoundedReflection
+import IPRADerivations.Core.Header
 
 /-!
 # The prefix of a convolution along perfect powers (`riemann_ipra_prime_criteria_2026-11-20`, `thm:powerdivisor`)
@@ -28,7 +29,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorPrefix
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.SummatoryPhi (quo_succ)
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (sum_add2)
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (quo_small)
@@ -37,10 +38,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.BlockChain (one_le_pw')
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerBudget (mul_one')
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrEqb')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

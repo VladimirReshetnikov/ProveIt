@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.IterationFusion
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Core.InductionTactic
+import IPRADerivations.Core.Header
 
 /-!
 # Fixed points of filtered contractions
@@ -34,12 +35,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.FilteredFixedPoint
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.IterationFusion
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

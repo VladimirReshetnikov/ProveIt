@@ -2,6 +2,7 @@ import IPRADerivations.Foundations.IterationFusion
 import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.InductionTactic
+import IPRADerivations.Core.Header
 
 /-!
 # Bounded descent with a rank (`ipra_coherent_methods_2026-11-15`, `thm:rank`)
@@ -35,13 +36,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.BoundedDescent
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.IterationFusion
 open LeanProofs.IPRA.Foundations.BoundedReflection (eq_of_eqb one_ne_zero)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

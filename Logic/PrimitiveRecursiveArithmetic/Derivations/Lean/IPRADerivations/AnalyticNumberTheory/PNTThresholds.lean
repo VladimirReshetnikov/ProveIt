@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.ZetaPrecision
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.SubstCommand
+import IPRADerivations.Core.Header
 
 /-!
 # The integer thresholds and the closed modulus of the PNT contraction (`pnt_ipra_constructive_2026-11-14`)
@@ -22,14 +23,10 @@ No numeral power is evaluated: `16m ≤ 2^m` comes from `(k + 1)² ≤ 4^k` (`Ze
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PNTThresholds
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.ZetaFiniteContract (le_pow_self sq_le_pow)
 open LeanProofs.IPRA.AnalyticNumberTheory.ZetaErrorBudget (pw2_mono)
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockGeo (congrPw2)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

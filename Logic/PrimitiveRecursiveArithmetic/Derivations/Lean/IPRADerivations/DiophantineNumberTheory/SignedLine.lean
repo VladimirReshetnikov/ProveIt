@@ -1,6 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.ProjectiveNormalize
 import IPRADerivations.DiophantineNumberTheory.GcdNormalize
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Signed primitive representatives on the projective line
@@ -24,15 +25,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.SignedLine
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.ProjectiveNormalize (norm_unique)
 open LeanProofs.IPRA.DiophantineNumberTheory.GcdNormalize (gcd_zero_zero)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_one_of_dvd_one)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

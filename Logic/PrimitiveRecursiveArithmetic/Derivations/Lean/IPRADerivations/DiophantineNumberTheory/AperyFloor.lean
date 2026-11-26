@@ -1,6 +1,7 @@
 import IPRADerivations.Core.Division
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Core.Gcd
+import IPRADerivations.Core.Header
 
 /-!
 # The floor certificate of the lcm bound
@@ -22,11 +23,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.AperyFloor
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

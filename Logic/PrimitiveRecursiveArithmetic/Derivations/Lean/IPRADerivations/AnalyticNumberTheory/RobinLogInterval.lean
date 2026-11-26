@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.RobinLogName
 import IPRADerivations.AnalyticNumberTheory.Valuation
 import IPRADerivations.AnalyticNumberTheory.ChebyshevAbel
 import IPRADerivations.Core.Search
+import IPRADerivations.Core.Header
 
 /-!
 # The logarithm interval `LogI(q, k)` with binary range reduction (`robin_ipra_research_2026-11-19`, §"Explicit interval arithmetic")
@@ -33,7 +34,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.RobinLogInterval
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogName
   (Nz Dz Un Ud Lz NF log_name low_up low_mono frac_trans Dz_pos Ud_pos Nz_congr Dz_congr Un_congr Ud_congr)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
@@ -41,10 +42,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevAbel (pw_exp_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBounds (two_pos')
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (lt_pw pw_pos')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

@@ -4,6 +4,7 @@ import IPRADerivations.AnalyticNumberTheory.MertensTotient
 import IPRADerivations.AnalyticNumberTheory.FactorialLambda
 import IPRADerivations.AnalyticNumberTheory.DivisorFactor
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Legendre's sieve formula
@@ -38,7 +39,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.LegendreSieve
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg zero_mul_l)
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds (sum_ext shift_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusInversion (eqb_rem_big)
@@ -57,10 +58,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.DivisorFactor (shift_gcd)
 open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (gcd_dvd' dvd_le')
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

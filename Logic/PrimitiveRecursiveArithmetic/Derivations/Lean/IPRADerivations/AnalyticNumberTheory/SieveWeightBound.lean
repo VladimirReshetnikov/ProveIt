@@ -5,6 +5,7 @@ import IPRADerivations.AnalyticNumberTheory.FactorialLambda
 import IPRADerivations.Foundations.StrongInduction
 import IPRADerivations.Core.CertificateTactics
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # The weight bound of the Selberg sieve
@@ -42,7 +43,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime lpf)
 open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
@@ -58,10 +59,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightOne (Asum)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightAbs (wS inst2_wS mul_le_one weights_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightStep (habs hv Ab_h prime_step zero_le_of)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_of_dvd')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

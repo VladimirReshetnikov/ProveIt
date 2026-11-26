@@ -3,6 +3,7 @@ import IPRADerivations.DiophantineNumberTheory.SignedEuclidean
 import IPRADerivations.Foundations.SequenceEquality
 import IPRADerivations.Core.CongruenceTactic
 import IPRADerivations.Core.SubstCommand
+import IPRADerivations.Core.Header
 
 /-!
 # Literal runtime-vector midpoint cancellation for Minkowski centers
@@ -25,7 +26,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiCenterVectors
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiCenters
   (center opposite midpoint midpoint_code_integer)
 open LeanProofs.IPRA.DiophantineNumberTheory.SignedEuclidean (decode)
@@ -33,9 +34,6 @@ open LeanProofs.IPRA.Analysis.RationalIntegerNormalization (integerCode)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_decode sequence_length)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
 open LeanProofs.IPRA.Foundations.SequenceEquality (agree sequence_equal)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -2,6 +2,7 @@ import IPRADerivations.Foundations.AuxiliaryEnvelope
 import IPRADerivations.Core.SumSplit
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.DiophantineNumberTheory.KhinchinBlockGeo
+import IPRADerivations.Core.Header
 
 /-!
 # The dyadic majorant of the divergence modulus (`hurwitz_khinchin_ipra`)
@@ -22,13 +23,9 @@ The dyadic term `2^{K+k} Ψ(2^{K+k})` is the closed body `dyB Ψ` over `⟨K, x�
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinDyadic
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.AuxiliaryEnvelope (sum_le_const)
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockGeo (congrPw2)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

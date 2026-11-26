@@ -1,6 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.SignedVector
 import IPRADerivations.Combinatorics.FiniteBijection
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # Signed digits in base `2B + 1`
@@ -19,14 +20,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.SignedDigit
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totatives (sg_lt sg_le)
 open LeanProofs.IPRA.Combinatorics.FiniteBijection (sg_bit)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.Adjunction
+import IPRADerivations.Core.Header
 
 /-!
 # Every displayed adjunction induces a monad
@@ -20,11 +21,9 @@ Each is an iPRA derivation at arbitrary object terms and hypotheses.
 
 namespace LeanProofs.IPRA.Foundations.AdjunctionMonad
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.PresentedCategory
 open LeanProofs.IPRA.Foundations.Adjunction
-open Syn
-open scoped Fm
 
 variable {C D : Pres} (LC : C.Laws) (LD : D.Laws) {A : Adj} (FL : A.L.Laws C D)
   (FR : A.R.Laws D C) (AL : A.Laws C D) {n : ℕ} {Γ : List (Fm PTm n)}

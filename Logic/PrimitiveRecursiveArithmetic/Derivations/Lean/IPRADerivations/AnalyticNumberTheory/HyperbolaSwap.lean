@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.ConvSummatory
 import IPRADerivations.AnalyticNumberTheory.DivisorSwapP
 import IPRADerivations.AnalyticNumberTheory.SymmetryInstances
+import IPRADerivations.Core.Header
 
 /-!
 # The hyperbola swap of two summatory functions (`pnt_ipra_constructive_2026-11-14`, `con:signed`)
@@ -23,16 +24,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.HyperbolaSwap
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.DirichletLeibniz (cvB conv)
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (cvF inst2_cvF)
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvSummatory (RB conv_summatory)
 open LeanProofs.IPRA.AnalyticNumberTheory.DivisorSwapP (conv_comm)
 open LeanProofs.IPRA.AnalyticNumberTheory.SymmetryInstances (conv_zero)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

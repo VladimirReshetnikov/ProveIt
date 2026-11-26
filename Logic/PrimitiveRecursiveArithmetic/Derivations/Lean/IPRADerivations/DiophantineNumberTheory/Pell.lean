@@ -1,4 +1,5 @@
 import IPRADerivations.Core.LinearAlgebra
+import IPRADerivations.Core.Header
 
 /-!
 # Pell equations (`pell_ipra_2026-11-15`, `diophantine_ipra_2026-11-15`)
@@ -13,10 +14,7 @@ import IPRADerivations.Core.LinearAlgebra
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.Pell
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
+open_ipra
 
 section Brahmagupta
 

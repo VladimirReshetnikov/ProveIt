@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.MinkowskiBoxChecker
 import IPRADerivations.DiophantineNumberTheory.MinkowskiInside
+import IPRADerivations.Core.Header
 
 /-!
 # Minkowski's rational box-certificate theorem, with arbitrary membership
@@ -21,7 +22,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiCertificate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
 open LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiRationalBoxes
@@ -35,9 +36,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiWellFormed
 open LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiInside
   (insideGuarded enumerated_center_membership)
 open LeanProofs.IPRA.DiophantineNumberTheory.SignedEuclidean (decode)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -1,6 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.HurwitzExtraction
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.SubstCommand
+import IPRADerivations.Core.Header
 
 /-!
 # The extraction loop of the continued-fraction prefix (`hurwitz_khinchin_ipra`)
@@ -23,13 +24,9 @@ irrationality modulus — then `Inv` holds at every state `n ≤ N`, by one quan
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.HurwitzLoop
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.HurwitzExtraction (adist adist_of_le det_step det_step' region_flip
   region_flip')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

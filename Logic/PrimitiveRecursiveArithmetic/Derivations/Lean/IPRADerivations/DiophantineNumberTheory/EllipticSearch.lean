@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.ConicNonzero
 import IPRADerivations.DiophantineNumberTheory.DirichletReal
+import IPRADerivations.Core.Header
 
 /-!
 # The bounded search for rational points of small height on an elliptic curve
@@ -22,17 +23,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.EllipticSearch
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
   (coprime_dvd_left coprime_mul eq_one_of_coprime_dvd dvd_add' dvd_sub' dvd_mul' le_of_sq_le)
 open LeanProofs.IPRA.DiophantineNumberTheory.ConicNonzero (zt_dec zt_sq_zero)
 open LeanProofs.IPRA.DiophantineNumberTheory.ZTCancel (zt_no_zero_div)
 open LeanProofs.IPRA.DiophantineNumberTheory.DirichletReal (abs_nat)
 open LeanProofs.IPRA.Analysis.PolynomialRemainder (AbsLe abs_add abs_mul abs_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

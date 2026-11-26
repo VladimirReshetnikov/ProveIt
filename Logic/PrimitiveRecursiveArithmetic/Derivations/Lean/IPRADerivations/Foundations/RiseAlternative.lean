@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.LeastBoundedWitness
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.Header
 
 /-!
 # The finite rise alternative
@@ -24,12 +25,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.RiseAlternative
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.LeastBoundedWitness (ExW NoW decision)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)} (r : PTm 2)
 

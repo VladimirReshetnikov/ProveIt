@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.RobinLipLog
 import IPRADerivations.AnalyticNumberTheory.RobinLogWidth
+import IPRADerivations.Core.Header
 
 /-!
 # The width of a composed logarithm interval (`robin_ipra_research_2026-11-19`, §"Composing the double logarithm")
@@ -18,13 +19,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.RobinLipWidth
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLipLog (lo_lip_up)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogInterval (Kp loN loD hiN hiD loD_pos)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

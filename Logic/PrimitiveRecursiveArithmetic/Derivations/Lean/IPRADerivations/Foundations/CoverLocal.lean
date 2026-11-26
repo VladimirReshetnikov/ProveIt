@@ -2,6 +2,7 @@ import IPRADerivations.Foundations.IntervalCover
 import IPRADerivations.Foundations.AuxiliaryEnvelope
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # Localization of an interval cover (`hurwitz_khinchin_ipra`, (K2))
@@ -21,14 +22,10 @@ gap can contribute to the gap's newly covered count in `KhinchinGridRound`.
 
 namespace LeanProofs.IPRA.Foundations.CoverLocal
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg sg_zero)
 open LeanProofs.IPRA.Foundations.IntervalCover (cnt indB inst3_indB covB)
 open LeanProofs.IPRA.Foundations.AuxiliaryEnvelope (sum_le_const)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

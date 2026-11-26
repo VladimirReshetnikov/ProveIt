@@ -1,6 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.TwoSquaresObstruction
 import IPRADerivations.Core.CertificateTactics
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # The valuation of a sum of two squares at a prime `q ≡ 3 (mod 4)`
@@ -24,16 +25,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.TwoSquaresValuation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val cof_eq cof_not_dvd)
 open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (val_unique val_mul val_congr)
 open LeanProofs.IPRA.DiophantineNumberTheory.TwoSquaresObstruction (two_obstruction)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

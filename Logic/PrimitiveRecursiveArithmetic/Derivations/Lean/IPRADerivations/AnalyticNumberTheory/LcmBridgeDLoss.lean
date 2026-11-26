@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.LcmBridgeDPsi
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # The loss `D(m²) ≤ 8/m` and the `ϑ`-form of the lcm-bridge transfer (`robin_ipra_research_2026-11-19`)
@@ -29,7 +30,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.LcmBridgeDLoss
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLipName (Rv)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLipSum (one_le_mul one_le_of_pos' lo_val lo_sub_up)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLipBound (lo_le_pred lo_four)
@@ -48,10 +49,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
 open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBounds (two_pos')
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.Signum (sg)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

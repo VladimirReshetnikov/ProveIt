@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.RungeProduct
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.Header
 
 /-!
 # Legendre's theorem in finite form
@@ -26,12 +27,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.PellLegendre
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.RungeProduct (za D_congr D_neg D_add_le D_mul)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -1,4 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.ConicNonzero
+import IPRADerivations.Core.Header
 
 /-!
 # The inverse of the conic parametrization
@@ -22,12 +23,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.ConicInverse
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.ConicIdentities (Form)
 open LeanProofs.IPRA.DiophantineNumberTheory.ZTCancel (zt_no_zero_div)
 open LeanProofs.IPRA.DiophantineNumberTheory.ConicNonzero (no_common_zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

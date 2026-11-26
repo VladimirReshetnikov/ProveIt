@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.FiniteHausdorffOperations
+import IPRADerivations.Core.Header
 
 /-!
 # Weighted Hausdorff image bounds from finite-pair laws
@@ -20,7 +21,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.FiniteHausdorffImage
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.FiniteHausdorff
 open LeanProofs.IPRA.Foundations.FiniteHausdorffOperations
   (mapList map_length map_lookup subst_mapList)
@@ -31,9 +32,6 @@ open LeanProofs.IPRA.Foundations.DemandClosure
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

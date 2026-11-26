@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.BlockDispatch
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # The finite block deficit (`pnt_ipra_constructive_2026-11-14`, Lemma `con:deficit`)
@@ -22,7 +23,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.BlockDeficitMain
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
 open LeanProofs.IPRA.AnalyticNumberTheory.BlockTests (four hiB loB)
@@ -34,10 +35,6 @@ open LeanProofs.IPRA.Foundations.BoundedReflection (exB wit ex_cases ex_elim)
 open LeanProofs.IPRA.Foundations.CrossingSearch (uT vT crossing between_not_high between_not_low u_ge ne_transport)
 open LeanProofs.IPRA.AnalyticNumberTheory.AbsDiff (absd)
 open LeanProofs.IPRA.Analysis.Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

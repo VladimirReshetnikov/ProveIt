@@ -1,6 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.MinkowskiSlabLinearity
 import IPRADerivations.DiophantineNumberTheory.MinkowskiCertificate
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # A numerical rational slab certificate for the actual Minkowski extractor
@@ -21,7 +22,7 @@ set_option maxRecDepth 8192
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiSlabCertificate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis
 open LeanProofs.IPRA.Analysis.RationalSupMetric (numeratorOf denominatorOf)
 open LeanProofs.IPRA.Analysis.RationalArithmetic (multiply represents multiply_guard multiply_value)
@@ -38,9 +39,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiCenterVectors
   (holdsAt oppositeVector midpointVector subst_holdsAt)
 open LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiWellFormed
   (vectorGuard symmetricGuarded midpointGuarded)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

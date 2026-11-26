@@ -2,6 +2,7 @@ import IPRADerivations.Foundations.SquareRootRelationalCandidates
 import IPRADerivations.Foundations.ViableChainSelection
 import IPRADerivations.Core.CongruenceTactic
 import IPRADerivations.Core.SubstCommand
+import IPRADerivations.Core.Header
 
 /-!
 # Actual certified finite relational square-root paths
@@ -24,15 +25,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.SquareRootRelationalCertificate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open LeanProofs.IPRA.PTm (monus)
+open_ipra
 open LeanProofs.IPRA.Foundations.BackwardViability
 open LeanProofs.IPRA.Foundations.BackwardViability.Instance
 open LeanProofs.IPRA.Foundations.MasterCertificate (sequence entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

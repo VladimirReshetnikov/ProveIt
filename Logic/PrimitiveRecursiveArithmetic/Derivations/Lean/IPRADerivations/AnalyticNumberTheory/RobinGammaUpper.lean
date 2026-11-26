@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.RobinGammaInterval
+import IPRADerivations.Core.Header
 
 /-!
 # The Euler-constant enclosure and its consistency (`robin_ipra_research_2026-11-19`, `lem:gamma`)
@@ -25,7 +26,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.RobinGammaUpper
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinGamma
   (Lf Lv Pv sv Wv Nv nn dd n_eq Pt Qt Pf dB nB P_succ' P_zero' Q_succ dB_at nB_at gamma_tail)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogName
@@ -34,10 +35,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.RobinGammaInterval
   (nU dU Xm nU_eq s_sq sv_pos Wv_pos An Ad An_zero An_succ Ad_zero Ad_succ)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

@@ -4,6 +4,7 @@ import IPRADerivations.AnalyticNumberTheory.SumReindex
 import IPRADerivations.Core.CongruenceTactic
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.SubstCommand
+import IPRADerivations.Core.Header
 
 /-!
 # The per-pair and geometric estimates of the Khinchin block (`hurwitz_khinchin_ipra`, (K9)–(K11))
@@ -21,12 +22,8 @@ intervals of `E_k(J)` … We used only `2Σ_{k<ℓ} t_k t_ℓ ≤ S²` and the f
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockGeo
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.SumReindex (le_quo_of_mul_le)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

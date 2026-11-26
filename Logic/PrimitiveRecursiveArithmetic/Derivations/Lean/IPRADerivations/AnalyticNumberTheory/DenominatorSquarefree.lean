@@ -5,6 +5,7 @@ import IPRADerivations.AnalyticNumberTheory.TotientCorollaries
 import IPRADerivations.Core.CertificateTactics
 import IPRADerivations.Core.CommonLemmas
 import IPRADerivations.Core.InductionTactic
+import IPRADerivations.Core.Header
 
 /-!
 # The right endpoint of the denominator bound: `H_q(z) ≤ G_q(z)`
@@ -29,7 +30,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.DenominatorSquarefree
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi totBody inst2_tot)
@@ -60,10 +61,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.QuarticStep (congrGcd)
 open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos)
 open LeanProofs.IPRA.Foundations.BoundedReflection (eqb_cases eq_of_eqb)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

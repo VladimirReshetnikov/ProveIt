@@ -1,6 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.PellAll
 import IPRADerivations.Core.SumOrder
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # The index of a Pell solution
@@ -22,13 +23,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.PellIndex
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.Recurrences (pellX pellY)
 open LeanProofs.IPRA.DiophantineNumberTheory.PellAll (pell_all_at minimal C p3 Xp Yp)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

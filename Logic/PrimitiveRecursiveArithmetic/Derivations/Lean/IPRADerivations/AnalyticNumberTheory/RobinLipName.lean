@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.RobinLogDiff
+import IPRADerivations.Core.Header
 
 /-!
 # Lipschitz bounds for the artanh truncations (`robin_ipra_research_2026-11-19`, §"Explicit interval arithmetic")
@@ -28,13 +29,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.RobinLipName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinGamma (Lv L_zero L_succ Pv P_succ P_zero)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogName (Nz Nz_zero Nz_succ Dz Lz)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

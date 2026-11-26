@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.BoundedFormulas
+import IPRADerivations.Core.Header
 
 /-!
 # Booleanization, least bounded search and the least-success invariant
@@ -23,12 +24,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.BooleanizationCorollaries
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.BoundedFormulas
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {m : ℕ} {Δ : List (Fm PTm m)}
 

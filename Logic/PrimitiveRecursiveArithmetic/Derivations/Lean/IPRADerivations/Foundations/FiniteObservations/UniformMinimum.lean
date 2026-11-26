@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.FiniteObservations.MetricKernel
+import IPRADerivations.Core.Header
 
 /-! Imported from the packet `foundations/finite_observations_ipra_2026-11-20`, `lean/UniformMinimum.lean`: the namespace is placed under `LeanProofs.IPRA.Foundations` and the `#print axioms` lines are dropped (the library audits axioms in `Checks/Axioms.lean`). -/
 
@@ -7,11 +8,8 @@ numerical score programs f and g, the sentence quantifies over both last
 indices, the two data parameters, and the allowed error. A match is opened
 locally by existential elimination. No selector for the covering map is used. -/
 namespace LeanProofs.IPRA.Foundations.FiniteObservations.UniformMinimum
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open LeanProofs.ConciseIPRA.PTm (zero succ)
+open_ipra
 open LeanProofs.IPRA.Foundations.FiniteObservations.MetricKernel (meet meet_left meet_right meet_le_left meet_le_right)
-open Syn
-open scoped Fm
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 /-- One scan step carries the smaller of the previous value and the new score. -/

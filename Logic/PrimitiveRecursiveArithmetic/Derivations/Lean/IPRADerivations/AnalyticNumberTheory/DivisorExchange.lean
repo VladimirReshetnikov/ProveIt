@@ -1,6 +1,7 @@
 import IPRADerivations.Probability.Independence
 import IPRADerivations.AnalyticNumberTheory.Mobius
 import IPRADerivations.Core.Reindex
+import IPRADerivations.Core.Header
 
 /-!
 # Exchanging a weighted sum with a sum over divisors
@@ -27,13 +28,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.DivisorExchange
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrEqb')
 open LeanProofs.IPRA.Probability.Independence (row_pt col_pt sum_scale shift_inst2)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

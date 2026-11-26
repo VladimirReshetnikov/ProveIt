@@ -6,6 +6,7 @@ import IPRADerivations.Core.SumSplit
 import IPRADerivations.Core.MultiSums
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # The Dirichlet hyperbola identity (`pnt_ipra_constructive_2026-11-14`)
@@ -27,17 +28,13 @@ in the square `a < m` (`col_split`).
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.DivisorHyperbola
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB inst2_h quo_anti)
 open LeanProofs.IPRA.AnalyticNumberTheory.SumPhi (sum_ones)
 open LeanProofs.IPRA.Foundations.LatticeCount (icB icS exact_count)
 open LeanProofs.IPRA.Foundations.IntervalCover (cnt)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.MasterCertificate
 import IPRADerivations.Foundations.BoundedFormulas
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # Backward schedules for nonmonotone finite observations
@@ -23,13 +24,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.BackwardDemand
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.BoundedFormulas
 open LeanProofs.IPRA.AnalyticNumberTheory.Totatives (split_lt monus_succ_of_lt)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

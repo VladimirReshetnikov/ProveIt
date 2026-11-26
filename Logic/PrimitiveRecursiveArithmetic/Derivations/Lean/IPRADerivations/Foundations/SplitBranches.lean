@@ -4,6 +4,7 @@ import IPRADerivations.Core.Gcd
 import IPRADerivations.Core.SumLemmas
 import IPRADerivations.DiophantineNumberTheory.FLTMultiples
 import IPRADerivations.Foundations.FrontierSoundness
+import IPRADerivations.Core.Header
 
 /-!
 # Polynomial estimates for separated branches
@@ -36,13 +37,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.SplitBranches
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.FrontierSoundness (rdB inst2_rdB)
 open LeanProofs.IPRA.DiophantineNumberTheory.FLTMultiples (pw_pos)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -1,6 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.GaussLemma
 import IPRADerivations.DiophantineNumberTheory.AperyMultibound
 import IPRADerivations.DiophantineNumberTheory.FourSquares
+import IPRADerivations.Core.Header
 
 /-!
 # Multiplicativity of the quadratic residue symbol, and four rational squares
@@ -29,7 +30,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.ResidueCharacter
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two congrEqb')
 open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
@@ -45,10 +46,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.GaussLemma (rb euler_nr euler_res p
 open LeanProofs.IPRA.DiophantineNumberTheory.FourSquaresAlgebra (N4)
 open LeanProofs.IPRA.DiophantineNumberTheory.FourSquares (Wf four_squares witness_le)
 open LeanProofs.IPRA.Foundations.BoundedReflection (ex_cases eqb_cases eq_of_eqb one_ne_zero)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

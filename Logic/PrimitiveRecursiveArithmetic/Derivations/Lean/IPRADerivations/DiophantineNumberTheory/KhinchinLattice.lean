@@ -2,6 +2,7 @@ import IPRADerivations.Foundations.LatticeCount
 import IPRADerivations.Core.SumOrder
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.SubstCommand
+import IPRADerivations.Core.Header
 
 /-!
 # Lattice points under a line (`hurwitz_khinchin_ipra`, (K5))
@@ -23,12 +24,8 @@ that is `λX(X+1)/2 − X ≤ A(X) ≤ λX(X+1)/2 + X`, which gives both bounds 
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinLattice
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.LatticeCount
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

@@ -3,6 +3,7 @@ import IPRADerivations.AnalyticNumberTheory.LcmBridgeExact
 import IPRADerivations.AnalyticNumberTheory.LocalFactor
 import IPRADerivations.AnalyticNumberTheory.SumPhi
 import IPRADerivations.Combinatorics.BinomialTheorem
+import IPRADerivations.Core.Header
 
 /-!
 # Pairing along an involution
@@ -33,7 +34,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.InvolutionPairing
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg sg_zero)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg one_inst inst2_mulB)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totatives (sum_perm sg_lt sg_le)
@@ -41,10 +42,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.LcmBridgeExact (prod_mul)
 open LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor (pw_mul_base)
 open LeanProofs.IPRA.AnalyticNumberTheory.SumPhi (sum_ones)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

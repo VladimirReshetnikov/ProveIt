@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.PhiLowerSharp
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # The composite upper bound `φ(n) ≤ n − ⌈√n⌉`
@@ -20,7 +21,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PhiUpper
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi totBody inst2_tot mulBody inst2_mul count_multiples)
@@ -29,10 +30,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (lpf_congr prime_congr two_l
 open LeanProofs.IPRA.AnalyticNumberTheory.GcdFiber (quo_exact)
 open LeanProofs.IPRA.AnalyticNumberTheory.TotientCorollaries (eqb_le_one)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -1,4 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.SignedDigit
+import IPRADerivations.Core.Header
 
 /-!
 # Bounded-height enumeration with signed coordinates
@@ -25,7 +26,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.SignedNorthcott
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.SignedDigit (sgnOf magOf congrSg enc_dec enc_lt)
 open LeanProofs.IPRA.DiophantineNumberTheory.GcdList (gv gv_zero gv_succ)
 open LeanProofs.IPRA.DiophantineNumberTheory.GcdNormalize (congrGcd)
@@ -35,10 +36,6 @@ open LeanProofs.IPRA.Foundations.FilteredEnumeration (rank sel sel_spec sel_rank
 open LeanProofs.IPRA.Foundations.BoundedReflection (allB all_intro all_reflect all_cases)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (eq_of_eqb_ne)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

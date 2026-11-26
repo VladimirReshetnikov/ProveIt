@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.VectorRank
 import IPRADerivations.Foundations.FiniteStabilization
+import IPRADerivations.Core.Header
 
 /-!
 # Finite stabilization for vector-valued states
@@ -32,13 +33,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.VectorStabilization
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.IterationFusion (app1 subst_app1 iter iter_succ)
 open LeanProofs.IPRA.Foundations.FiniteStabilization (Stab stab stable_at)
 open LeanProofs.IPRA.Foundations.VectorRank (rank_dichotomy)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
 
 /-- The new coordinates: `cF(i, s) = cmp(i, f(s))`. -/
 def cF (f : PTm 1) (cmp : PTm 2) : PTm 2 := Syn.subst ![var 0, app1 f (var 1)] cmp

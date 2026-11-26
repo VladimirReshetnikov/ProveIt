@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.SigmaPrimePower
 import IPRADerivations.AnalyticNumberTheory.LocalFactor
 import IPRADerivations.AnalyticNumberTheory.Order
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # The divisor functions `τ` and `σ_r`
@@ -29,7 +30,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SigmaR
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.SigmaMult (sB sig inst2_sB)
 open LeanProofs.IPRA.AnalyticNumberTheory.SigmaPrimePower (dvd_scale rest_pt pos_pw sh_pw sh_P)
 open LeanProofs.IPRA.AnalyticNumberTheory.DivisorFactor (Xp lB_at riB_at rB_at divisor_factor inst2_v1)
@@ -49,10 +50,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (sum_add2)
 open LeanProofs.IPRA.AnalyticNumberTheory.Euler (rem_one)
 open LeanProofs.IPRA.AnalyticNumberTheory.SumPhi (shift_mul')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

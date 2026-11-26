@@ -2,6 +2,7 @@ import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Core.Fubini
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # A bounded first crossing (`pnt_ipra_constructive_2026-11-14`, `con:deficit`)
@@ -25,12 +26,8 @@ number occurs: only least witnesses of bounded searches (`BoundedReflection.ex_e
 
 namespace LeanProofs.IPRA.Foundations.CrossingSearch
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.BoundedReflection (exB wit ex_intro ex_elim ex_least)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

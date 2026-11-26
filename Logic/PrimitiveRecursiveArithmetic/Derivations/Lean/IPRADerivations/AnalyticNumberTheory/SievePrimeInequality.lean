@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.SieveInequality
 import IPRADerivations.AnalyticNumberTheory.SievePrimes
+import IPRADerivations.Core.Header
 
 /-!
 # The sieve inequality for the primes of a progression, for arbitrary signed weights
@@ -29,7 +30,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SievePrimeInequality
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveExpansion (lB)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveClosedForms (gU sgV)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveMajorant (S0 amgm)
@@ -37,10 +38,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.SieveInequality (sieve_ineq)
 open LeanProofs.IPRA.AnalyticNumberTheory.SievePrimes (piB primes_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveDiagonal (Lb)
 open LeanProofs.IPRA.Probability.Independence (dsum)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

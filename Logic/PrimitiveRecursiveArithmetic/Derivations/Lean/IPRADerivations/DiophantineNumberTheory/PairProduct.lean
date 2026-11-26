@@ -8,6 +8,7 @@ import IPRADerivations.AnalyticNumberTheory.DivisorSplit
 import IPRADerivations.Core.ParityArith
 import IPRADerivations.Core.CertificateTactics
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # The pair product modulo a prime
@@ -36,7 +37,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.PairProduct
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
@@ -50,10 +51,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.ModularCertificate (rem_mul_congr2 
 open LeanProofs.IPRA.DiophantineNumberTheory.UnitInvolution (sB s_at unit_perm pair_mul fixed_sq succ_lt_of)
 open LeanProofs.IPRA.Foundations.InvolutionPairing (LB EB inst2_LB inst2_EB inst2_pw pair_count pair_prod)
 open LeanProofs.IPRA.Foundations.BoundedReflection (exB ex_none one_ne_zero)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

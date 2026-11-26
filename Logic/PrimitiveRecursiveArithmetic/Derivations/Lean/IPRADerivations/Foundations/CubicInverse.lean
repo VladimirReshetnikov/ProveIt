@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.Names.Rates.ErrorBudgets
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.Header
 
 /-!
 # Quantitative uniqueness for the cubic inverse
@@ -26,13 +27,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.CubicInverse
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.Variance (ad)
 open LeanProofs.IPRA.Analysis.ErrorBudgets (ad_tri)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

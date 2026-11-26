@@ -3,6 +3,7 @@ import IPRADerivations.AnalyticNumberTheory.LocalFactor
 import IPRADerivations.Core.ProdLemmas
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.InductionTactic
+import IPRADerivations.Core.Header
 
 /-!
 # The Apéry numbers: first values and growth
@@ -28,17 +29,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.AperyNumbers
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.Combinatorics.Binomial (binom)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (binom_zero' binom_self')
 open LeanProofs.IPRA.Combinatorics.Catalan (cb cb_zero cb_rec)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor (pw_mul_base)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

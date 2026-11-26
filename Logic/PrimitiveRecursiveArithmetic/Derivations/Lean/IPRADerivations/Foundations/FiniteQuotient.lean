@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.FiniteCoverSkeleton
+import IPRADerivations.Core.Header
 
 /-!
 # Quotients of finite sets by least representatives (`ipra_categorical_methods`, Section 4)
@@ -39,13 +40,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.FiniteQuotient
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.BoundedReflection (eqb_cases eq_of_eqb one_ne_zero)
 open LeanProofs.IPRA.Foundations.FiniteCoverSkeleton
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

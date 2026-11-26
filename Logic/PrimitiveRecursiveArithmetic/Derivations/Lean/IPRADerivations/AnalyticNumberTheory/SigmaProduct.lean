@@ -3,6 +3,7 @@ import IPRADerivations.AnalyticNumberTheory.Radical
 import IPRADerivations.AnalyticNumberTheory.ValuationMul
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.InductionTactic
+import IPRADerivations.Core.Header
 
 /-!
 # The divisor sum as a product over primes (`robin_ipra_research_2026-11-19`)
@@ -27,7 +28,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SigmaProduct
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.SigmaMult (sig sigma_mul)
 open LeanProofs.IPRA.AnalyticNumberTheory.SigmaPrimePower (sigma_pow sig_congr sig_one)
 open LeanProofs.IPRA.AnalyticNumberTheory.EulerProduct (PP inst2_pB eB inst2_e peelE prod_extend F₂ inst3_sub2
@@ -47,10 +48,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (gcd_comm_one gauss dvd_le'
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

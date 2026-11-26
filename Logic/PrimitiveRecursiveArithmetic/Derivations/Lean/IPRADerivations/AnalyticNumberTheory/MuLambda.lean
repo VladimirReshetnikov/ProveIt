@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.MangoldtMobius
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.AnalyticNumberTheory.DivisorCases
 import IPRADerivations.Core.Reindex
+import IPRADerivations.Core.Header
 
 /-!
 # The Möbius–Mangoldt convolution
@@ -24,7 +25,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.MuLambda
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds (sum_ext shift_pos mu_bound)
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusInversion (aP aN inst3_aP inst3_aN mobius_inversion eqb_rem_big)
@@ -34,10 +35,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.MangoldtMobius
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_of_dvd' pos_of_eq_mul)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

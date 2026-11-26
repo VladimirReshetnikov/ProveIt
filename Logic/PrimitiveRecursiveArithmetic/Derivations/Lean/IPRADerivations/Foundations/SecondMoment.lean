@@ -5,6 +5,7 @@ import IPRADerivations.AnalyticNumberTheory.Mobius
 import IPRADerivations.Combinatorics.FiniteBijection
 import IPRADerivations.DiophantineNumberTheory.KhinchinMoment
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # The second-moment method on a finite grid
@@ -27,16 +28,12 @@ For a family of cell sets `b(c, k, x)`, `k < B`, on the cells `c < T`, with `F(c
 
 namespace LeanProofs.IPRA.Foundations.SecondMoment
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg)
 open LeanProofs.IPRA.Probability.FiniteCauchySchwarz (wvB wv2B inst2_wvB inst2_wv2B cauchy_schwarz)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
 open LeanProofs.IPRA.Combinatorics.FiniteBijection (shift_inst2')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

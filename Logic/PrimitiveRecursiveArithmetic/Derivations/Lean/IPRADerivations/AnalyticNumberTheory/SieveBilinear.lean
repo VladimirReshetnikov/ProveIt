@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.SieveExpansion
+import IPRADerivations.Core.Header
 
 /-!
 # The bilinear sieve estimate for natural weights
@@ -27,7 +28,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SieveBilinear
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrEqb')
 open LeanProofs.IPRA.AnalyticNumberTheory.SievePairCount (lc)
 open LeanProofs.IPRA.AnalyticNumberTheory.SievePairSum (subst_ind subst_gcd' subst_cnt wB Am Bm Cm Dm inst3_Am inst3_Bm
@@ -37,10 +38,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.DivisorExchange (LW)
 open LeanProofs.IPRA.DiophantineNumberTheory.QuarticStep (congrGcd)
 open LeanProofs.IPRA.Foundations.DoubleSumScale (at1)
 open LeanProofs.IPRA.Probability.Independence (dsum dsum_congr dsum_add inst3_add')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

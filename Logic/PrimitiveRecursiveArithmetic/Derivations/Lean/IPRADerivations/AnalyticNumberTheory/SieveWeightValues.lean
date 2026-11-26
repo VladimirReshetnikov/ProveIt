@@ -3,6 +3,7 @@ import IPRADerivations.AnalyticNumberTheory.SieveClosedForms
 import IPRADerivations.AnalyticNumberTheory.SymmetrySum
 import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.Header
 
 /-!
 # The explicit vector `y` of the sieve weights
@@ -31,7 +32,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightValues
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg sg_zero)
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (muP muN congrSg zero_mul_l)
@@ -42,10 +43,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.SieveClosedForms (gU inst2_gU)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightFacts (phi_quo)
 open LeanProofs.IPRA.Foundations.BoundedReflection (eqb_cases)
 open LeanProofs.IPRA.Probability.Expectation (inst2_mul')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.BoundedEnumeration
+import IPRADerivations.Core.Header
 
 /-!
 # Complete search through an enumeration
@@ -27,12 +28,9 @@ indices (`sel_strict`), not in the values.
 
 namespace LeanProofs.IPRA.Foundations.EnumerationSearch
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.FilteredEnumeration (rank sel)
 open LeanProofs.IPRA.Foundations.BoundedEnumeration (vb hL inst2_hL listed entry)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)} {g E : PTm 2} {N x : PTm n}
 

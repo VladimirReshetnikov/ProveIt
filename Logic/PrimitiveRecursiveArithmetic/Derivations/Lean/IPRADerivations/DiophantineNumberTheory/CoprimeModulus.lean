@@ -3,6 +3,7 @@ import IPRADerivations.Analysis.RationalArithmetic.Powers.Pochhammer
 import IPRADerivations.Foundations.ChineseRemainder
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.InductionTactic
+import IPRADerivations.Core.Header
 
 /-!
 # A prescribed coprime modulus
@@ -25,7 +26,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.CoprimeModulus
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.Analysis.Pochhammer (poch poch_zero poch_succ poch_fact)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
@@ -35,10 +36,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor (pw_mul_base)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (fact_pos)
 open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

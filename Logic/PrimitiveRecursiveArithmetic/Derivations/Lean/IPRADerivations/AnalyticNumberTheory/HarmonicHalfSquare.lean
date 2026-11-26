@@ -3,6 +3,7 @@ import IPRADerivations.AnalyticNumberTheory.FloorTelescope
 import IPRADerivations.AnalyticNumberTheory.SumReindex
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.InductionTactic
+import IPRADerivations.Core.Header
 
 /-!
 # `Σ log k / k = (log x)²/2 + O(1)` exactly (`pnt_ipra_constructive_2026-11-14`, `con:one-step`)
@@ -24,7 +25,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.HarmonicHalfSquare
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (S_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
@@ -34,10 +35,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.ComparisonEnvelope (le_mul2)
 open LeanProofs.IPRA.AnalyticNumberTheory.FloorTelescope (qB inst2_qB floor_square_sum)
 open LeanProofs.IPRA.AnalyticNumberTheory.SumReindex (le_quo_of_mul_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.DivisorHarmonic (shift_fact')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.StrongConvexity
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.Header
 
 /-! Imported from the packet `foundations/ipra_general_framework_2026-11-19`, `lean/QuantitativeElimination/MidpointCancellation.lean`: the namespace is placed under `LeanProofs.IPRA.Foundations` and the `#print axioms` lines are dropped (the library audits axioms in `Checks/Axioms.lean`). -/
 
@@ -22,11 +23,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.MidpointCancellation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

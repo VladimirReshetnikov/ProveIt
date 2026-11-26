@@ -3,6 +3,7 @@ import IPRADerivations.Core.ClockedDescent
 import IPRADerivations.AnalyticNumberTheory.Totatives
 import IPRADerivations.Core.CommonLemmas
 import IPRADerivations.Core.InductionTactic
+import IPRADerivations.Core.Header
 
 /-!
 # Finite master certificates
@@ -24,13 +25,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.MasterCertificate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.BoundedFormulas
 open LeanProofs.IPRA.AnalyticNumberTheory.Totatives (monus_succ_of_lt)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

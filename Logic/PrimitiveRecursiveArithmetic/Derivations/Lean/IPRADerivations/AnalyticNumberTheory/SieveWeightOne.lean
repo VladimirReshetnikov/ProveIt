@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.SieveWeightForm
 import IPRADerivations.AnalyticNumberTheory.PowerResidue
 import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.Header
 
 /-!
 # The explicit sieve weights at `d = 1`
@@ -32,7 +33,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightOne
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg sg_zero)
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (muP muN om_two_one sq_two_one congrSg zero_mul_l congrEqb')
@@ -49,10 +50,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightRows (sg_idem uB inst2_uB)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightValues (YP YN YP_at YN_at muP_idem muN_idem mu_disj)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightForm (UPw UNw kyB inst2_kyB)
 open LeanProofs.IPRA.Probability.Independence (row_pt sum_scale)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

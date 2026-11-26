@@ -3,6 +3,7 @@ import IPRADerivations.Probability.FiniteLaws
 import IPRADerivations.Foundations.ApproximateWitness
 import IPRADerivations.Foundations.ModulusNormalization
 import IPRADerivations.Foundations.FrontierSoundness
+import IPRADerivations.Core.Header
 
 /-!
 # Running intersections of rational intervals
@@ -35,16 +36,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.RunningIntersection
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.UnionUtility (Mx Ag mx_upper ag_attains)
 open LeanProofs.IPRA.Probability.FiniteLaws (Mn mn_le)
 open LeanProofs.IPRA.Foundations.ApproximateWitness (argmin argmin_spec)
 open LeanProofs.IPRA.Foundations.ModulusNormalization (mx_mono)
 open LeanProofs.IPRA.Foundations.FrontierSoundness (up_shift le_of_lt_succ' lt_succ_of_le')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)} (L U : PTm 2)
 

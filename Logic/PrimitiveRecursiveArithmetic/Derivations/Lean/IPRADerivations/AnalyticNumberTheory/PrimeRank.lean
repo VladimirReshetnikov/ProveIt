@@ -5,6 +5,7 @@ import IPRADerivations.Foundations.CrossingSearch
 import IPRADerivations.Core.CertificateTactics
 import IPRADerivations.Core.CommonLemmas
 import IPRADerivations.Core.InductionTactic
+import IPRADerivations.Core.Header
 
 /-!
 # Rank and inverse rank of the primes
@@ -31,7 +32,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PrimeRank
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime lpf fact_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (isP isP_01 prime_of_isP isP_of_prime prime_congr)
@@ -44,10 +45,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_le')
 open LeanProofs.IPRA.Foundations.BoundedReflection (exB wit ex_intro ex_elim ex_least)
 open LeanProofs.IPRA.Foundations.CrossingSearch (wit_le_of)
 open LeanProofs.IPRA.Foundations.IterationFusion (iter iter_zero iter_succ app1)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

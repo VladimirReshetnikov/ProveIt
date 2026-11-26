@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.PowerAbstractInversion
 import IPRADerivations.AnalyticNumberTheory.PowerResidueRows
+import IPRADerivations.Core.Header
 
 /-!
 # Möbius inversion for progression rows (`riemann_ipra_prime_criteria_2026-11-20`, `thm:powerdivisor`)
@@ -27,7 +28,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PowerResidueInversion
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerAbstractInversion
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerResidueRows
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerResidue (res res_lt res_cop res_comp res_unique gcd_one_left)
@@ -49,10 +50,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.DivisorSwap (quo_lt')
 open LeanProofs.IPRA.AnalyticNumberTheory.LogRefinement (quo_mul)
 open LeanProofs.IPRA.AnalyticNumberTheory.Order (pw_one_base)
 open LeanProofs.IPRA.Combinatorics.Binomial (eq_of_rem_zero)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.WindowStability
 import IPRADerivations.Foundations.LeastBoundedWitness
+import IPRADerivations.Core.Header
 
 /-!
 # Bounded cardinality gives an empty window
@@ -27,13 +28,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.EmptyWindow
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.LeastBoundedWitness (ExW NoW decision)
 open LeanProofs.IPRA.Foundations.WindowStability (sum_lower)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

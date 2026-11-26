@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.SymmetryBound
+import IPRADerivations.Core.Header
 
 /-!
 # The natural distance `|a − b|` (`pnt_ipra_constructive_2026-11-14`, towards `sb:weighted-sum`)
@@ -19,13 +20,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.AbsDiff
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (sum_add2)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

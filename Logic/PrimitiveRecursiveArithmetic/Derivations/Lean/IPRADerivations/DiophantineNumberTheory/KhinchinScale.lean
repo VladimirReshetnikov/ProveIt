@@ -3,6 +3,7 @@ import IPRADerivations.Foundations.PackingPointwise
 import IPRADerivations.AnalyticNumberTheory.Primes
 import IPRADerivations.AnalyticNumberTheory.DivisorHyperbola
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # The measure of one Khinchin scale (`hurwitz_khinchin_ipra`, (K8))
@@ -29,7 +30,7 @@ of 7-variable core terms, decoded by one `Prf.eqCongr` (`conv`).
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinScale
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 open LeanProofs.IPRA.Combinatorics.FiniteBijection (sg_bit)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg)
@@ -40,10 +41,6 @@ open LeanProofs.IPRA.Foundations.IntervalCover (measure)
 open LeanProofs.IPRA.Foundations.IntervalPacking (loB hiB acB absurd_one_zero')
 open LeanProofs.IPRA.Foundations.PackingPointwise (packing_pt)
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinSeparated (actv sep_pair)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

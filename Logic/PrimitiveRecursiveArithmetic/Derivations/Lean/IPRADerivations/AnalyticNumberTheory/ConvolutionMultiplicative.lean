@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.ConvolutionDivisorWeights
 import IPRADerivations.AnalyticNumberTheory.ConvolutionAssoc
 import IPRADerivations.AnalyticNumberTheory.RSA
+import IPRADerivations.Core.Header
 
 /-!
 # Dirichlet convolution preserves multiplicativity
@@ -22,7 +23,7 @@ natural arguments and their common parameter.
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionMultiplicative
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionDivisorWeights
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (cvF inst2_cvF)
 open LeanProofs.IPRA.AnalyticNumberTheory.DirichletLeibniz (cvB conv cv_at)
@@ -35,10 +36,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (coprime_dvd_left gcd_comm_one one_le_of_pos)
 open LeanProofs.IPRA.Probability.Independence (sum_scale shift_inst2)
 open LeanProofs.IPRA.Signum (sg sg_zero)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

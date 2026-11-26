@@ -2,6 +2,7 @@ import IPRADerivations.Foundations.DiscreteGronwall
 import IPRADerivations.Probability.Variance
 import IPRADerivations.Core.Parity
 import IPRADerivations.Core.Gcd
+import IPRADerivations.Core.Header
 
 /-!
 # The refinement estimate for Euler polygons and its Cauchy consequence
@@ -28,14 +29,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.OdeRefinement
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.DiscreteGronwall (gronwall_three)
 open LeanProofs.IPRA.Probability.Variance (sum_const_of)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

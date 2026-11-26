@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.FourSquares
 import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.Header
 
 /-!
 # Primes in the classes `1` and `3` modulo `4`, with bounds
@@ -23,7 +24,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PrimesModFour
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime lpf dvd_fact fact_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (isP isP_01 prime_of_isP isP_of_prime)
@@ -48,10 +49,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.FourSquaresDescent (dvd_of_eq_mul)
 open LeanProofs.IPRA.DiophantineNumberTheory.FourSquares (cofactor_pos)
 open LeanProofs.IPRA.Foundations.BoundedReflection (exB wit ex_cases ex_intro ex_elim eqb_cases eq_of_eqb
   one_ne_zero)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

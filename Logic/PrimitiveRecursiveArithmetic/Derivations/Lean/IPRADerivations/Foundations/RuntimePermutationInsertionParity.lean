@@ -2,6 +2,7 @@ import IPRADerivations.Foundations.RuntimePermutationInsertion
 import IPRADerivations.Foundations.BoundedSyntaxBackwardInduction
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.SubstCommand
+import IPRADerivations.Core.Header
 
 /-!
 # Exact inversion counts for the actual maximum-label insertion
@@ -15,16 +16,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Foundations.RuntimePermutationInsertionParity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RuntimePermutationWords (digit inversionBit inversions parity rowPrefix inversionPrefix horizon)
 open RuntimePermutationInsertion (insertedWord inserted_digit recovered_skip recovered_at recovered_off compressed)
 open RuntimePermutationDeletion (slot slot_before slot_after slot_bound recovered)
 open RuntimeAdjacentPermutationSwap (digit_congr different_of_lt different_symm inversion_congr)
-open Syn
 open BoundedSyntax
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)

@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.PolynomialRemainder
 import Mathlib.Algebra.BigOperators.Fin
+import IPRADerivations.Core.Header
 
 /-!
 # Exact polynomial difference and Taylor identities
@@ -27,12 +28,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.FilteredTaylor
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.PolynomialRemainder
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k d : ℕ} {Γ : List (Fm PTm k)}
 

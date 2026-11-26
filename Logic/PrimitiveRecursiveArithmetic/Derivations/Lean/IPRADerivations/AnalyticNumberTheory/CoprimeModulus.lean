@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.Order
 import IPRADerivations.DiophantineNumberTheory.Coprime
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # Coprimality to a modulus `q ≥ 1`
@@ -20,14 +21,10 @@ Infrastructure for `analytic-number-theory/prime_distribution_ipra`, `paper/sect
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.CoprimeModulus
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Order (gcd_pos_right)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (gcd_greatest' eq_one_of_dvd_one dvd_mul' gcd_comm_one
   coprime_mul)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

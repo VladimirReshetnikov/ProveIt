@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.HarmonicMertensLower
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.InductionTactic
+import IPRADerivations.Core.Header
 
 /-!
 # The logarithmic sum for the harmonic logarithm (`pnt_ipra_constructive_2026-11-14`, `sb:log-sum`)
@@ -24,7 +25,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSum
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB inst2_h)
 open LeanProofs.IPRA.AnalyticNumberTheory.LogElementary (log_lower)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
@@ -33,10 +34,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.Primes (dvd_fact)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_of_dvd')
 open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (pos_of_lt_zero)
 open LeanProofs.IPRA.Analysis.Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

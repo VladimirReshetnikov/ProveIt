@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.FilteredEnumeration
 import IPRADerivations.Foundations.FiniteSetExponential
+import IPRADerivations.Core.Header
 
 /-!
 # Pullbacks of finite sets (`ipra_categorical_methods`, finite limits)
@@ -29,15 +30,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.FinitePullback
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.FilteredEnumeration
 open LeanProofs.IPRA.Foundations.FiniteSetExponential
   (pair_lt pair_fst pair_snd pair_eta fst_lt snd_lt)
 open LeanProofs.IPRA.Foundations.BoundedReflection (sgB)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

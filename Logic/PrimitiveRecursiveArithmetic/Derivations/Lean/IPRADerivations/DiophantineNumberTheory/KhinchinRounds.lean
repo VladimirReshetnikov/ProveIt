@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.KhinchinAmplify
 import IPRADerivations.Core.Gcd
+import IPRADerivations.Core.Header
 
 /-!
 # The rounds of the (K2) amplification (`hurwitz_khinchin_ipra`)
@@ -20,12 +21,8 @@ round variable `0` and `b = c + 1` (the packet's `c = 16383`), cleared of denomi
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinRounds
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinAmplify (half_bound pow_amp)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

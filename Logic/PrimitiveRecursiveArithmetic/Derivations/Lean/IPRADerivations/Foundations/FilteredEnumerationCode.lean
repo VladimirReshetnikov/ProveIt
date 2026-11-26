@@ -3,6 +3,7 @@ import IPRADerivations.Foundations.CodedViableChain
 import IPRADerivations.Core.CongruenceTactic
 import IPRADerivations.Core.CommonLemmas
 import IPRADerivations.Core.SubstCommand
+import IPRADerivations.Core.Header
 
 /-!
 # Actual stored increasing lists for bounded decidable subsets
@@ -21,13 +22,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.FilteredEnumerationCode
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.FilteredEnumeration (rank sel sel_spec sel_rank rank_lt_size rank_mono)
 open LeanProofs.IPRA.Foundations.MasterCertificate (sequence entry stack stack_zero stack_succ)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

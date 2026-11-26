@@ -4,6 +4,7 @@ import IPRADerivations.Combinatorics.BinomialIdentities
 import IPRADerivations.Combinatorics.LegendreDigits
 import IPRADerivations.AnalyticNumberTheory.BinomialThree
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # Uniqueness and additivity of the `p`-adic valuation
@@ -23,7 +24,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val val_dvd val_not_dvd cof_eq cof_not_dvd pw_pos' pw_val_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_of_eq' eq_of_dvd')
@@ -31,10 +32,6 @@ open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (pos_mul')
 open LeanProofs.IPRA.Probability.SortingBound (fct fact_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.BinomialThree (pos_of_one_le)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

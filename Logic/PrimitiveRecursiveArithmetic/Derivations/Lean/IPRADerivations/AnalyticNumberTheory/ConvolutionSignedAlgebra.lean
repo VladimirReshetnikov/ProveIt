@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.ConvolutionSigned
 import IPRADerivations.AnalyticNumberTheory.MobiusInversionReverse
+import IPRADerivations.Core.Header
 
 /-!
 # Finite Dirichlet convolution on integer-valued bodies
@@ -12,7 +13,7 @@ representation of an iterated convolution reads back the original
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionSignedAlgebra
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionSigned
   (weight convolution productLaw convolution_product convolution_at_one)
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (cvF inst2_cvF conv_assoc)
@@ -25,10 +26,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.MobiusInversionReverse (conv_add_l con
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.SymmetryInstances (epsB)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (coprime_dvd_left gcd_comm_one one_le_of_pos)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

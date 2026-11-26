@@ -3,6 +3,7 @@ import IPRADerivations.Probability.Variance
 import IPRADerivations.Core.SumReflect
 import IPRADerivations.Combinatorics.Bell
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # The Hurwitz product and its derivation (`ipra_coherent_methods_2026-11-15`, (6), (7))
@@ -48,15 +49,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.HurwitzProduct
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Binomial
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (binom_zero')
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrBinom)
 open LeanProofs.IPRA.Combinatorics.BinomialTransform (bgB inst2_bg inst2_bgs pascal_sum)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

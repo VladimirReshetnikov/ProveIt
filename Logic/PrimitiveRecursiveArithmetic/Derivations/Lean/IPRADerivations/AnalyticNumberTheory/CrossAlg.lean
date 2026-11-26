@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.PNTStageStep
+import IPRADerivations.Core.Header
 
 /-!
 # The arithmetic of the crossing case (`pnt_ipra_constructive_2026-11-14`, `con:deficit`)
@@ -21,12 +22,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.CrossAlg
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (cancel_pos)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

@@ -8,6 +8,7 @@ import IPRADerivations.Analysis.Geometry.GaussianEuclideanDistanceName
 import IPRADerivations.Probability.Variance
 import IPRADerivations.Core.CongruenceTactic
 import IPRADerivations.Core.SubstCommand
+import IPRADerivations.Core.Header
 
 /-!
 # Actual finite rational square-root candidates
@@ -29,16 +30,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.SquareRootRelationalCandidates
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open LeanProofs.IPRA.PTm (pred monus)
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Analysis.RationalIntegerNormalization (positive_form)
 open LeanProofs.IPRA.Analysis.GaussianDescentClockArithmetic (ceiling ceiling_lower)
 open LeanProofs.IPRA.Foundations.MasterCertificate (sequence entry stack)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)

@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.DivisorBound
 import IPRADerivations.AnalyticNumberTheory.HarmonicLogSquareSum
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.InductionTactic
+import IPRADerivations.Core.Header
 
 /-!
 # The divisor–logarithm sum by finite partial summation (`pnt_ipra_constructive_2026-11-14`, `sb:divisor-approx`)
@@ -31,7 +32,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.TauLogAbel
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB inst2_h)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (S_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
@@ -42,10 +43,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.DivisorBound (eta_bounds divisor_upper
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (quo_eq)
 open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (pos_of_lt_zero)
 open LeanProofs.IPRA.Analysis.Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

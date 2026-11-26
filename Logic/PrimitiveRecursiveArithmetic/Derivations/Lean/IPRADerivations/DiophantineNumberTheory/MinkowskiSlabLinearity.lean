@@ -3,6 +3,7 @@ import IPRADerivations.DiophantineNumberTheory.MinkowskiWellFormed
 import IPRADerivations.Analysis.RationalArithmetic.RationalAlgebra
 import IPRADerivations.Analysis.RationalArithmetic.RationalSumLinearity
 import IPRADerivations.Analysis.RationalArithmetic.RationalSumAdditivity
+import IPRADerivations.Core.Header
 
 /-!
 # Actual slab bodies are symmetric and midpoint closed
@@ -23,7 +24,7 @@ set_option maxRecDepth 8192
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiSlabLinearity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
 open LeanProofs.IPRA.Analysis.RationalArithmetic (multiply negative recode recode_equal)
@@ -38,9 +39,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiCenters (midpoint)
 open LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiSlabInterval
   (dot productBody product_at rowMember facetsMember subst_dot subst_rowMember subst_facetsMember)
 open LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiWellFormed (vectorGuard)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

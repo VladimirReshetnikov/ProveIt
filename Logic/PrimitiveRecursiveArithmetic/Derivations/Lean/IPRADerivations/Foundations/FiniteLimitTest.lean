@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.FiniteLimits
 import IPRADerivations.AnalyticNumberTheory.Valuation
+import IPRADerivations.Core.Header
 
 /-!
 # The retention test of a finite limit as a term (`ipra_categorical_methods`, "Finite limits, including equalizers and pullbacks")
@@ -31,16 +32,12 @@ property. Not derived: finite colimits of a general diagram.
 
 namespace LeanProofs.IPRA.Foundations.FiniteLimitTest
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.MixedRadixGrid (prodT code dig)
 open LeanProofs.IPRA.Foundations.FilteredEnumeration (rank sel)
 open LeanProofs.IPRA.Foundations.FiniteLimits (proj proj_compat factor_lt factor_proj)
 open LeanProofs.IPRA.Foundations.BoundedReflection (one_ne_zero)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (eq_of_eqb_ne)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

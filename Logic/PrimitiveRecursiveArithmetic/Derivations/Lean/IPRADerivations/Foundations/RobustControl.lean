@@ -1,5 +1,6 @@
 import IPRADerivations.Probability.UnionUtility
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.Header
 
 /-!
 # Robust control: overlapping branches and robust pivots
@@ -27,12 +28,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.RobustControl
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.UnionUtility (Ag argmax)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

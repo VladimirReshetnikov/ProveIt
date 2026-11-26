@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.SignedLine
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Square and cube denominators on an elliptic curve
@@ -24,7 +25,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.EllipticDenominators
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_of_dvd' dvd_of_eq' dvd_sub' dvd_add' dvd_mul' gcd_dvd'
   gcd_greatest' eq_one_of_dvd_one gcd_comm_one coprime_mul dvd_of_sq_dvd_sq dvd_self' pos_of_eq_mul)
 open LeanProofs.IPRA.DiophantineNumberTheory.ProjectiveNormalize (norm_unique)
@@ -33,10 +34,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.GcdNormalize (congrGcd)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

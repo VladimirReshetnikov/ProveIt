@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.PsiModulus
 import IPRADerivations.AnalyticNumberTheory.PrimePowerMangoldt
 import IPRADerivations.AnalyticNumberTheory.SumPhi
+import IPRADerivations.Core.Header
 
 /-!
 # Primes against prime powers (`pnt_ipra_constructive_2026-11-14`, §"From the Chebyshev estimate to prime counting")
@@ -21,7 +22,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PiTheta
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (wt inst2_wt S_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
@@ -35,10 +36,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.SumPhi (sum_ones)
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlock (sum_le_lin sum_le_lin1)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 open LeanProofs.IPRA.Analysis.Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.FiniteCoverAssignment
 import IPRADerivations.Core.SubstCommand
+import IPRADerivations.Core.Header
 
 /-!
 # Variable group budgets for the actual first-cover assignment
@@ -13,13 +14,10 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Foundations.FiniteCoverGroupBudgets
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open FiniteCoverAssignment (cover group groupSize group_length data sizeBody size_at total cardinal_partition)
 open MasterCertificate (entry)
 open SequenceComposition (length)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.RealizerGraph
 import IPRADerivations.Foundations.FiberCompiler
 import IPRADerivations.Core.SubstCommand
+import IPRADerivations.Core.Header
 
 /-!
 # A bounded runtime fold with actual finite-query metadata
@@ -21,14 +22,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.RealizerLoop
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.RealizerComposition
 open LeanProofs.IPRA.Foundations.MasterCertificate (sequence entry sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
 open LeanProofs.IPRA.ClockedDescent (subst_QF')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.DirichletLeibniz
+import IPRADerivations.Core.Header
 
 /-!
 # The Leibniz step of Selberg's symmetry formula (`pnt_ipra_constructive_2026-11-14`)
@@ -24,14 +25,10 @@ derived here.
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SelbergLeibniz
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt
 open LeanProofs.IPRA.AnalyticNumberTheory.DirichletLeibniz (cvB conv DwB inst2_cvB inst2_DwB cv_at dirichlet_leibniz)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrEqb')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

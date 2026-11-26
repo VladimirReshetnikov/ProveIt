@@ -9,6 +9,7 @@ import IPRADerivations.DiophantineNumberTheory.Coprime
 import IPRADerivations.AnalyticNumberTheory.MobiusInversion
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # The Chinese remainder theorem for a finite system of coprime moduli
@@ -41,17 +42,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.CrtCoprime
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.ChineseRemainder (crt_exists_at rem_eq_of_eq)
 open LeanProofs.IPRA.Probability.TowerCommonDen (dvd_prod_term)
 open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_lt')
 open LeanProofs.IPRA.AnalyticNumberTheory.EulerProduct (eq_of_viol viol_of_eq)
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (dm)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_of_eq' eq_of_dvd' gcd_comm_one)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.PowerAbstractInversion
 import IPRADerivations.AnalyticNumberTheory.MobiusBounds
 import IPRADerivations.AnalyticNumberTheory.EulerProduct
+import IPRADerivations.Core.Header
 
 /-!
 # Möbius inversion along perfect powers (`riemann_ipra_prime_criteria_2026-11-20`, `thm:powerdivisor`)
@@ -22,7 +23,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorInversion
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorPrefix
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorRow
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds (GP GN G_at cancel_gen congrMu)
@@ -34,10 +35,6 @@ open LeanProofs.IPRA.Probability.Lotus (cmB inst2_cmB sum_const_mul)
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (sum_add2)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.ViableChainSelection
 import IPRADerivations.Core.SubstCommand
+import IPRADerivations.Core.Header
 
 /-!
 # Bounded object-evidence refinement of numerical chain codes
@@ -23,7 +24,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.CodedChainRefinement
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg)
 open LeanProofs.IPRA.Foundations.BackwardViability
 open LeanProofs.IPRA.Foundations.BackwardViability.Instance
@@ -31,9 +32,6 @@ open LeanProofs.IPRA.Foundations.ViableChain (start)
 open LeanProofs.IPRA.Foundations.CodedViableChain (admissibleCode viableStart codeBound)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

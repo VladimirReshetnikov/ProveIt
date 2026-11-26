@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.BlockDeficit
 import IPRADerivations.Foundations.CrossingSearch
+import IPRADerivations.Core.Header
 
 /-!
 # The sample tests of the block deficit (`pnt_ipra_constructive_2026-11-14`, `con:deficit`)
@@ -23,17 +24,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.BlockTests
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (wt)
 open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (Psi)
 open LeanProofs.IPRA.AnalyticNumberTheory.AbsDiff (absd)
 open LeanProofs.IPRA.AnalyticNumberTheory.BlockSums (pzB fzB pz_at fz_at)
 open LeanProofs.IPRA.AnalyticNumberTheory.BlockDeficit (AwB DwB aw_at dw_at)
 open LeanProofs.IPRA.Foundations.BoundedReflection (ne_of_compl zero_of_compl_ne)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

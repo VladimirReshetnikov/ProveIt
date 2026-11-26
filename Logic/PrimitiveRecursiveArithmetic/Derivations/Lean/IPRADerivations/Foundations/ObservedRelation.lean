@@ -1,4 +1,5 @@
 import IPRADerivations.Core.Basic
+import IPRADerivations.Core.Header
 
 /-!
 # Existence and uniqueness of an observed relation
@@ -24,9 +25,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.ObservedRelation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
+open_ipra
 
 variable {n : ℕ}
 

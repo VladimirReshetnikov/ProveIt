@@ -6,6 +6,7 @@ import IPRADerivations.AnalyticNumberTheory.ChebyshevBounds
 import IPRADerivations.AnalyticNumberTheory.MuLambda
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.InductionTactic
+import IPRADerivations.Core.Header
 
 /-!
 # Chebyshev's bound for the harmonic logarithm (`pnt_ipra_constructive_2026-11-14`, `con:global`)
@@ -30,7 +31,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
 open LeanProofs.IPRA.AnalyticNumberTheory.LogRefinement (log_refine)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogPow2 (S_pow2)
@@ -42,10 +43,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (congrLw lw_mul)
 open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (lcmu lcmu_pos Psi psi_lcm pos_of_lt_zero lt_zero_of_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBounds (lcmu_upper)
 open LeanProofs.IPRA.Analysis.Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

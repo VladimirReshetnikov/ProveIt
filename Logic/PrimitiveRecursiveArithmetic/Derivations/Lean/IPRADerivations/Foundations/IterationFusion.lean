@@ -1,5 +1,6 @@
 import IPRADerivations.Core.ClockedDescent
 import IPRADerivations.Core.InductionTactic
+import IPRADerivations.Core.Header
 
 /-!
 # Fusion and simulation of iterations (`ipra_presentations_to_witnesses`)
@@ -32,11 +33,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.IterationFusion
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.ClockedDescent (subst_QF')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

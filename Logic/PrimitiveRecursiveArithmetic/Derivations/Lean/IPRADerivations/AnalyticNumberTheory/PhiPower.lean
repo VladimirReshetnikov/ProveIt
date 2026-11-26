@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.PhiDouble
 import IPRADerivations.Core.InductionTactic
+import IPRADerivations.Core.Header
 
 /-!
 # `φ(n M) = M φ(n)` when `M ∣ nᵗ`, and the power identity
@@ -20,7 +21,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PhiPower
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi totBody inst2_tot coprime_pow)
 open LeanProofs.IPRA.AnalyticNumberTheory.Order (gcd_pos_right)
@@ -29,10 +30,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.GcdFiber (eqb_iff shift_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.SumPhi (shift_eq' shift_mul' shift_rem')
 open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (cop_left)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiDouble (shiftBy inst2_shiftBy sum_split gcd_period)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

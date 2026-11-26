@@ -8,6 +8,7 @@ import IPRADerivations.Probability.Independence
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Foundations.StrongInduction
 import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.Header
 
 /-!
 # The denominator bound `G_q(z) ≥ (φ(q)/q) H_z` and the second sieve inequality
@@ -42,7 +43,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.DenominatorBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime lpf)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi totBody)
@@ -74,10 +75,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.Hurwitz (add_le_add)
 open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos)
 open LeanProofs.IPRA.Foundations.BoundedReflection (eqb_cases eq_of_eqb)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

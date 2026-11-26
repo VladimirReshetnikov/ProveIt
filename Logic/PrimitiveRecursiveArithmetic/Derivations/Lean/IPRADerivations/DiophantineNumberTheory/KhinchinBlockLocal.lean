@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.KhinchinBlockScales
 import IPRADerivations.DiophantineNumberTheory.KhinchinMargin
+import IPRADerivations.Core.Header
 
 /-!
 # A scale of the (K11) block covers only cells of its gap (`hurwitz_khinchin_ipra`)
@@ -17,7 +18,7 @@ on the actual scale family of `KhinchinScale`/`KhinchinBlockScales`: at a scale 
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockLocal
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg)
 open LeanProofs.IPRA.Combinatorics.FiniteBijection (sg_bit)
 open LeanProofs.IPRA.Foundations.IntervalCover (covB)
@@ -30,10 +31,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockScales (Xt bB b_at Kk 
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.Foundations.AuxiliaryEnvelope (sum_le_const)
 open LeanProofs.IPRA.Signum (sg_zero)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

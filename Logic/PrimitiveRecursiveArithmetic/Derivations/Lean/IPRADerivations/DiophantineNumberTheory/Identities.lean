@@ -1,4 +1,5 @@
 import IPRADerivations.Core.LinearAlgebra
+import IPRADerivations.Core.Header
 
 /-!
 # Algebraic identities behind Diophantine descents
@@ -15,9 +16,7 @@ import IPRADerivations.Core.LinearAlgebra
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.Identities
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
+open_ipra
 
 /-- `u⁴`, `u⁵` as products. -/
 def pow4 {m : ℕ} (u : ZT m) : ZT m := ZT.sq (ZT.sq u)

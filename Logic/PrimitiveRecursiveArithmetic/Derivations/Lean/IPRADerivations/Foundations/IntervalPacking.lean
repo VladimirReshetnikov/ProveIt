@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.IntervalAdditive
+import IPRADerivations.Core.Header
 
 /-!
 # Packings of separated equal intervals
@@ -21,7 +22,7 @@ in two members forces both to be active and within `w` of each other.
 
 namespace LeanProofs.IPRA.Foundations.IntervalPacking
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 open LeanProofs.IPRA.Combinatorics.FiniteBijection (sg_bit)
 open LeanProofs.IPRA.Foundations.IntervalCover (cnt measure lenB)
@@ -30,10 +31,6 @@ open LeanProofs.IPRA.Foundations.IntervalAdditive (prB inst2_prB rwB inst2_rwB a
 open LeanProofs.IPRA.Foundations.InjectionCount (term_zero)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

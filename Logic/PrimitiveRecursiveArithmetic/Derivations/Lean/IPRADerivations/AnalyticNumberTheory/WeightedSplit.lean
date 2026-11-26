@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.WeightedReorder
 import IPRADerivations.AnalyticNumberTheory.FactorialError
+import IPRADerivations.Core.Header
 
 /-!
 # The weighted identity for one monotone function (`pnt_ipra_constructive_2026-11-14`, `sb:weighted-sum`)
@@ -23,7 +24,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.WeightedSplit
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (S_mono wt superadd)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale subadd)
@@ -41,10 +42,6 @@ open LeanProofs.IPRA.Probability.Lotus (cmB sum_const_mul)
 open LeanProofs.IPRA.Probability.Independence (cm_pt)
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.Signum (sg sg_zero)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

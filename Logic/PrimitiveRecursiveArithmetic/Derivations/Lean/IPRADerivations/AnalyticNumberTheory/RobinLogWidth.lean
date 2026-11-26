@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.RobinThreePos
+import IPRADerivations.Core.Header
 
 /-!
 # The width of `LogI(q, k)` (`robin_ipra_research_2026-11-19`, §"A logarithm enclosure from a finite geometric identity")
@@ -18,7 +19,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.RobinLogWidth
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinGamma (Pv)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogName (Nz Dz Un Ud Lz uniform_tail Dz_pos Ud_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogInterval
@@ -29,10 +30,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (lt_pw pw_pos')
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinThreePos (one_le_of_pos)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

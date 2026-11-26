@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.LcmUpto
 import IPRADerivations.Combinatorics.CentralBinomial
 import IPRADerivations.AnalyticNumberTheory.Smooth
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # The central binomial coefficient divides `lcm(1, …, 2n)`
@@ -29,7 +30,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.BinomialLcm
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val isP isP_01 prime_of_isP isP_of_prime pw_pos' lt_pw)
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorVector (R fB f_zero f_one f_pos R_pos R_succ reconstruct subst_dvd)
@@ -44,10 +45,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.Totatives (sg_lt sg_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds (sum_ext)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

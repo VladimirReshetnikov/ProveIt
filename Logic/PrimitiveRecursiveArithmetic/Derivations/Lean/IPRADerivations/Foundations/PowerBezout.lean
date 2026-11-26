@@ -2,6 +2,7 @@ import IPRADerivations.Combinatorics.BinomialTwo
 import IPRADerivations.Combinatorics.CatalanPowers
 import IPRADerivations.Core.SumSplit
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Bézout witnesses for two coprime powers
@@ -35,17 +36,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.PowerBezout
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Vandermonde (gb congrGb)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 open LeanProofs.IPRA.Combinatorics.BinomialTwo (bt bt_at binomial_two)
 open LeanProofs.IPRA.Combinatorics.CatalanPowers (shift_pair shift_succ shift_zero)
 open LeanProofs.IPRA.Combinatorics.BellTouchardPower (le_of_lt_succ)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

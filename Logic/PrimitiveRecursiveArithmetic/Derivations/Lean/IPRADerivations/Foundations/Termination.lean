@@ -1,4 +1,5 @@
 import IPRADerivations.Algebra.CubeRootTwo
+import IPRADerivations.Core.Header
 
 /-!
 # Termination of measure-decreasing runs (`ipra_unified_finitary_framework_2026-11-15`)
@@ -21,12 +22,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.Termination
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Algebra.CubeRootTwo (sg sg_zero sg_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable (done step m : PR 1) {n : ℕ} {Γ : List (Fm PTm n)}
 

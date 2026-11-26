@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.BoundedSyntaxInduction
+import IPRADerivations.Core.Header
 
 /-!
 # Backward induction for the actual arity-indexed bounded syntax
@@ -15,12 +16,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.BoundedSyntaxBackwardInduction
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.BoundedSyntax
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

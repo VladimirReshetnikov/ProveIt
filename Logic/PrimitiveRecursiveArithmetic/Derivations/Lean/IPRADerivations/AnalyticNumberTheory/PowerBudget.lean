@@ -9,6 +9,7 @@ import IPRADerivations.Topology.CollisionScales
 import IPRADerivations.AnalyticNumberTheory.BlockChain
 import IPRADerivations.Core.CommonLemmas
 import IPRADerivations.Core.Reindex
+import IPRADerivations.Core.Header
 
 /-!
 # The harmonic budget and the logarithm absorption (`riemann_ipra_prime_criteria_2026-11-20`, `thm:powerdivisor`)
@@ -34,7 +35,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PowerBudget
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.Lotus (cmB inst2_cmB sum_const_mul)
 open LeanProofs.IPRA.Foundations.AuxiliaryEnvelope (sum_le_const)
 open LeanProofs.IPRA.Foundations.IntervalPacking (sg_one_of_lt)
@@ -47,10 +48,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 open LeanProofs.IPRA.Signum (sg sg_zero)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

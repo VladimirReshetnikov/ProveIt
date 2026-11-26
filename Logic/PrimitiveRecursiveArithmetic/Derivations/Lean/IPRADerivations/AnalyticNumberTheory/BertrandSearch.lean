@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.PrimorialLower
 import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # Bertrand's postulate: the bounded search and the valuation bounds
@@ -26,16 +27,12 @@ primorial bound, the growth inequality and the finite base certificate of the pa
 set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.BertrandSearch
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val isP isP_01 prime_of_isP isP_of_prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (lcmu)
 open LeanProofs.IPRA.Combinatorics.Catalan (cb)
 open LeanProofs.IPRA.Foundations.BoundedReflection (exB wit ex_cases ex_elim ex_least ex_none)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

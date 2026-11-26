@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.SumPhi
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.InductionTactic
+import IPRADerivations.Core.Header
 
 /-!
 # Multiplicativity of the totient
@@ -22,7 +23,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
 open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos rem_eq_of_eq crt_exists_at)
@@ -32,10 +33,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.Order (gcd_pos_right)
 open LeanProofs.IPRA.AnalyticNumberTheory.Euler (congrEqb)
 open LeanProofs.IPRA.AnalyticNumberTheory.GcdFiber (div_eq eqb_iff shift_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.SumPhi
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

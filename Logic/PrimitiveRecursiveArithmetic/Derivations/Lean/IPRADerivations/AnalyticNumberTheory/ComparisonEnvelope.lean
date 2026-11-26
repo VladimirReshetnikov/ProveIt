@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.SelbergComparison
 import IPRADerivations.AnalyticNumberTheory.FourthRootSum
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # The fourth-root envelope of the comparison error (`pnt_ipra_constructive_2026-11-14`, towards `sb:symmetry`)
@@ -25,7 +26,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.ComparisonEnvelope
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
 open LeanProofs.IPRA.AnalyticNumberTheory.LogElementary (log_upper)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (S_mono)
@@ -38,10 +39,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.FourthRootSum (qr Q4 Q4_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.DivisorHyperbola (quo_le_self)
 open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (pos_of_lt_zero)
 open LeanProofs.IPRA.Analysis.Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

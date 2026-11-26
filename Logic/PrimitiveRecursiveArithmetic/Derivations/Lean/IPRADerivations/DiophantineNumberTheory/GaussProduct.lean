@@ -5,6 +5,7 @@ import IPRADerivations.Combinatorics.BinomialTheorem
 import IPRADerivations.Foundations.SignedSums
 import IPRADerivations.Core.CertificateTactics
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # Gauss's product
@@ -46,7 +47,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.GaussProduct
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg sg_zero)
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime fact_pos)
@@ -64,10 +65,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.FoldedResidues (fold fold_small fol
 open LeanProofs.IPRA.DiophantineNumberTheory.FoldedPermutation (bF congrBF sB tB perm_data b_eq_succ_s)
 open LeanProofs.IPRA.DiophantineNumberTheory.EisensteinParity (rV eV bV rB eB bB mB idB inst2_rB inst2_eB inst2_bB
   inst2_mB inst2_idB)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

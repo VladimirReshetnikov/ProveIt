@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.IterationFusion
+import IPRADerivations.Core.Header
 
 /-!
 # Proof-producing composition of local operations
@@ -27,10 +28,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.OperationComposition
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.IterationFusion (app1)
-open Syn
-open scoped Fm
 
 /-- `V(d, z)` at given terms. -/
 def at2 {m : ℕ} (V : Fm PTm 2) (a b : PTm m) : Fm PTm m := V.subst ![a, b]

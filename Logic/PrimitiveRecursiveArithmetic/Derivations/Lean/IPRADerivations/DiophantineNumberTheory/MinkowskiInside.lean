@@ -3,6 +3,7 @@ import IPRADerivations.DiophantineNumberTheory.MinkowskiRationalBoxes
 import IPRADerivations.Core.CongruenceTactic
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.SubstCommand
+import IPRADerivations.Core.Header
 
 /-!
 # The original guarded Inside scheme at canonical half-cell centers
@@ -19,7 +20,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiInside
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.RationalIntegerNormalization (normalize normalize_preserves_value)
 open LeanProofs.IPRA.Analysis.RationalNormalForm (wellFormed normalize_well_formed well_formed_unique denominator_positive)
 open LeanProofs.IPRA.Analysis.RationalSupMetric (numeratorOf denominatorOf)
@@ -35,10 +36,6 @@ open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_deco
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
 open LeanProofs.IPRA.Foundations.SequenceEquality (sequence_equal)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)

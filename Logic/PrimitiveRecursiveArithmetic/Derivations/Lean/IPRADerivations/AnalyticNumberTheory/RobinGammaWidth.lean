@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.RobinGammaUpper
 import IPRADerivations.AnalyticNumberTheory.RobinLogWidth
+import IPRADerivations.Core.Header
 
 /-!
 # The width of the Euler-constant enclosure (`robin_ipra_research_2026-11-19`, `lem:gamma`)
@@ -20,7 +21,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.RobinGammaWidth
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinGamma
   (Lf Lv Pv sv Wv Nv nn dd n_eq Pt Qt Pf dB nB P_succ' P_zero' Q_succ dB_at nB_at)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogName (Nz Dz Un Ud Lz L_eq N_bridge)
@@ -28,10 +29,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.RobinGammaInterval
   (nU dU Xm nU_eq s_sq An Ad An_zero An_succ Ad_zero Ad_succ)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinGammaUpper (gloN gloD ghiN ghiD dd_congr nn_congr)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogInterval (c3)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

@@ -2,6 +2,7 @@ import IPRADerivations.Foundations.FiniteFiberGrouping
 import IPRADerivations.Core.SumOrder
 import IPRADerivations.Core.CongruenceTactic
 import IPRADerivations.Core.SubstCommand
+import IPRADerivations.Core.Header
 
 /-!
 # Actual first-cover assignment and the finite covering count
@@ -19,13 +20,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.FiniteCoverAssignment
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open MasterCertificate (entry sequence sequence_length sequence_decode subst_entry)
 open SequenceComposition (length subst_length entry_congr)
 open BoundedReflection (wit ex_intro ex_elim ex_least)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

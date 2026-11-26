@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.PresentedCategory
+import IPRADerivations.Core.Header
 
 /-!
 # Presentation-wise Yoneda (`ipra_categorical_methods`, Subsection "Yoneda as a first-order calculation")
@@ -40,11 +41,8 @@ derived.
 
 namespace LeanProofs.IPRA.Foundations.Yoneda
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.PresentedCategory
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
 
 /-- A contravariant presented family with a parameter. -/
 structure Fam where

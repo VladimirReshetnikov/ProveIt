@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.FiniteSetExponential
 import IPRADerivations.Foundations.FiniteGluing
+import IPRADerivations.Core.Header
 
 /-!
 # Backward viability (`ipra_evidence_framework`, "PR backward viability")
@@ -42,7 +43,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.BackwardViability
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg)
 open LeanProofs.IPRA.Probability.ProductPower (dg)
 open LeanProofs.IPRA.Foundations.FiniteSetExponential (code ev_curry rem_of_lt dg_lt)
@@ -50,10 +51,6 @@ open LeanProofs.IPRA.Foundations.BoundedReflection
   (exB wit ex_intro ex_elim ex_cases sg_cases one_ne_zero)
 open LeanProofs.IPRA.Foundations.BoundedFormulas (sg_of_zero)
 open LeanProofs.IPRA.Foundations.FiniteGluing (one_of_ne sg_of_ne)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

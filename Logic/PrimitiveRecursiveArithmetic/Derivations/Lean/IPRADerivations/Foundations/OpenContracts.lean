@@ -1,4 +1,5 @@
 import IPRADerivations.Core.Basic
+import IPRADerivations.Core.Header
 
 /-!
 # The open contract calculus
@@ -40,9 +41,7 @@ weakening and substitution of the deduction kernel.
 
 namespace LeanProofs.IPRA.Foundations.OpenContracts
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
+open_ipra
 
 variable {n : ℕ}
 

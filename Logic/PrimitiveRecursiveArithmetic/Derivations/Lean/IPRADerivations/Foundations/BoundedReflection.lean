@@ -2,6 +2,7 @@ import IPRADerivations.Core.Search
 import IPRADerivations.Core.MultiSums
 import IPRADerivations.Core.InductionTactic
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # Bounded reflection: finite Boolean aggregators and bounded choice
@@ -34,13 +35,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.BoundedReflection
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 open LeanProofs.IPRA.Search (mu mu_zero mu_succ search_spec search_minimal search_found)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

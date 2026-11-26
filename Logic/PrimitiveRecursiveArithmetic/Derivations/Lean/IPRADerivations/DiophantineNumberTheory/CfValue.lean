@@ -2,6 +2,7 @@ import IPRADerivations.DiophantineNumberTheory.CfReal
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.CommonLemmas
 import IPRADerivations.Core.SubstCommand
+import IPRADerivations.Core.Header
 
 /-!
 # The value identity `[a_0; a_1, …, a_m] = p_m/q_m`
@@ -24,15 +25,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.CfValue
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.HurwitzLoop (sP sQ sP' sQ' st proj_st)
 open LeanProofs.IPRA.DiophantineNumberTheory.CfReal (nx proj_nx co cv uv cv_zero cv_succ uv_zero uv_succ lin Lin4
   subst_cv subst_uv)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -7,6 +7,7 @@ import IPRADerivations.Analysis.RationalArithmetic.PowerSums
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.CommonLemmas
 import IPRADerivations.Core.InductionTactic
+import IPRADerivations.Core.Header
 
 /-!
 # Quotient blocks
@@ -30,7 +31,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.QuotientBlocks
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.PowerSums (sum_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (quo_anti)
 open LeanProofs.IPRA.AnalyticNumberTheory.GcdFiber (div_eq)
@@ -42,10 +43,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.FourthRootSum (isqrt_le_self)
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusFloor (inst2_oneB)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

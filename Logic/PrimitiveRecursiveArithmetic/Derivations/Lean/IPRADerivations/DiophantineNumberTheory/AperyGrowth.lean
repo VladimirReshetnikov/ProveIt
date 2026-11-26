@@ -2,6 +2,7 @@ import IPRADerivations.DiophantineNumberTheory.AperyRecurrence
 import IPRADerivations.Core.SumOrder
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # Growth of the Apéry numbers
@@ -26,15 +27,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.AperyGrowth
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Vandermonde (gb congrGb)
 open LeanProofs.IPRA.DiophantineNumberTheory.AperyNumbers (apery apery_pos)
 open LeanProofs.IPRA.DiophantineNumberTheory.AperyRecurrence (gl cf bb bbB inst2_bb apery_bb apery_rec cube Pn)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

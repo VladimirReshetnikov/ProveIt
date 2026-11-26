@@ -1,6 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.KhinchinScaleCount
 import IPRADerivations.Foundations.IntervalOverlap
 import IPRADerivations.Foundations.SeparatedCount
+import IPRADerivations.Core.Header
 
 /-!
 # The overlap of two Khinchin scales (`hurwitz_khinchin_ipra`, (K9))
@@ -27,7 +28,7 @@ With `T = Q_ℓ² s`, `w = 2r T` this is `|E_k ∩ E_ℓ| ≤ 2r_ℓ ((2r_k + 2r
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinOverlap
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 open LeanProofs.IPRA.Combinatorics.FiniteBijection (sg_bit shift_inst2')
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg)
@@ -41,10 +42,6 @@ open LeanProofs.IPRA.Foundations.IntervalOverlap (mtB inst2_mtB locB inst2_locB 
 open LeanProofs.IPRA.Foundations.SeparatedCount (sep_count)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinScale (tup AK actK qE AE actE A_at act_at sep_or)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

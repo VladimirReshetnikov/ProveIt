@@ -3,6 +3,7 @@ import IPRADerivations.Core.Fubini
 import IPRADerivations.Core.CongruenceTactic
 import IPRADerivations.Core.CommonLemmas
 import IPRADerivations.Core.SubstCommand
+import IPRADerivations.Core.Header
 
 /-!
 # Actual first-occurrence grouping of finite input positions
@@ -19,14 +20,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.FiniteFiberGrouping
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
 open LeanProofs.IPRA.Foundations.BoundedReflection (wit ex_intro ex_elim ex_least eqb_cases eq_of_eqb one_ne_zero)
 open LeanProofs.IPRA.Search (mu)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

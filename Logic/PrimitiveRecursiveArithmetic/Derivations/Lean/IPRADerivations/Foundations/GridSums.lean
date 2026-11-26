@@ -3,6 +3,7 @@ import IPRADerivations.Core.Pairing
 import IPRADerivations.Core.Fubini
 import IPRADerivations.Core.Tactic
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Sums over a cubical grid in any fixed dimension
@@ -36,11 +37,7 @@ hypotheses.
 
 namespace LeanProofs.IPRA.Foundations.GridSums
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 variable {n : ℕ}
 

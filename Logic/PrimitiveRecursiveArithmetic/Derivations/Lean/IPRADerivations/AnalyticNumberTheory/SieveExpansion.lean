@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.SievePairSum
 import IPRADerivations.AnalyticNumberTheory.SieveSquare
 import IPRADerivations.Foundations.DoubleSumScale
+import IPRADerivations.Core.Header
 
 /-!
 # The expanded square over a progression as a double sum of pair counts
@@ -34,7 +35,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SieveExpansion
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg sg_zero)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg zero_mul_l congrEqb')
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (sg_pos)
@@ -46,10 +47,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.DivisorExchange (mdB LW RW)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveSquare (SqR SqR_at inR_pt K_pt square_exchange)
 open LeanProofs.IPRA.Foundations.DoubleSumScale (at1 dsum_scale)
 open LeanProofs.IPRA.Probability.Independence (row_pt sum_scale dsum dsum_rows shift_inst2)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

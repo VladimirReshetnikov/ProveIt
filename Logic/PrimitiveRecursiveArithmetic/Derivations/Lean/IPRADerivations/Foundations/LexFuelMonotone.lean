@@ -4,6 +4,7 @@ import IPRADerivations.Core.BoundedSums
 import IPRADerivations.Core.Tactic
 import IPRADerivations.Core.InductionTactic
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # Monotonicity of the lexicographic fuel bounds (`ipra_resources_and_elimination_2026-11-15`, Section 4)
@@ -43,11 +44,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.LexFuelMonotone
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

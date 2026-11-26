@@ -1,4 +1,5 @@
 import IPRADerivations.Core.Basic
+import IPRADerivations.Core.Header
 
 /-!
 # The structural rules of the certificate calculi
@@ -30,10 +31,7 @@ formalized here.
 
 namespace LeanProofs.IPRA.Foundations.StructuralRules
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
+open_ipra
 
 variable {n : ℕ} {Γ Δ : List (Fm PTm n)}
 

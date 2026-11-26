@@ -4,6 +4,7 @@ import IPRADerivations.AnalyticNumberTheory.Mobius
 import IPRADerivations.DiophantineNumberTheory.Coprime
 import IPRADerivations.Core.Permutation
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # The involution `x ↦ a x⁻¹` on the units modulo a prime
@@ -33,7 +34,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.UnitInvolution
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two)
@@ -41,10 +42,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (rem_small)
 open LeanProofs.IPRA.AnalyticNumberTheory.Euler (shift_cop)
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerResidue (inv res res_spec res_unique res_lt res_cop)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (gauss gcd_comm_one eq_one_of_dvd_one)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -1,6 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.SquareArea
 import IPRADerivations.DiophantineNumberTheory.FermatQuartic
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # The rational points of the Fermat quartic
@@ -26,15 +27,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.FermatQuarticPoints
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.QuarticStep (q4)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (sq_inj dvd_self' one_le_of_pos)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiDouble (two_pos')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

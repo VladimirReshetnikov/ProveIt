@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.ViableChain
 import IPRADerivations.Core.CommonLemmas
 import IPRADerivations.Core.InductionTactic
+import IPRADerivations.Core.Header
 
 /-!
 # An admissible chain makes its start viable (`ipra_evidence_framework`)
@@ -30,16 +31,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.ChainViability
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg)
 open LeanProofs.IPRA.Foundations.BackwardViability
 open LeanProofs.IPRA.Foundations.BackwardViability.Instance
 open LeanProofs.IPRA.Foundations.ViableChain
 open LeanProofs.IPRA.Foundations.FiniteGluing (sg_of_ne)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

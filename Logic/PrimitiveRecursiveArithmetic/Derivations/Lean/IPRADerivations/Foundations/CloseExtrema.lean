@@ -1,5 +1,6 @@
 import IPRADerivations.Probability.EventAlgebraMetric
 import IPRADerivations.Probability.Minkowski
+import IPRADerivations.Core.Header
 
 /-!
 # Closeness of finite observations through maxima, minima and complements
@@ -18,14 +19,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.CloseExtrema
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.Minkowski (monus_le_of_le_add)
 open LeanProofs.IPRA.Analysis.Observation.PrefixObject (larger larger_le le_larger_left le_larger_right)
 open LeanProofs.IPRA.Foundations.FiniteObservations.MetricKernel (meet meet_left meet_right meet_le_left meet_le_right)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

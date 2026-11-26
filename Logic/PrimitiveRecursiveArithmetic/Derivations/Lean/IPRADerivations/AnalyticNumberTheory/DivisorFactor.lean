@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.DivisorSplit
 import IPRADerivations.AnalyticNumberTheory.PowerDivisorInversion
 import IPRADerivations.Core.Reindex
+import IPRADerivations.Core.Header
 
 /-!
 # Divisor sums over a coprime product (`robin_ipra_research_2026-11-19`, multiplicativity of `σ`)
@@ -19,7 +20,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.DivisorFactor
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.DivisorSplit
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_le' one_le_of_pos)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
@@ -30,10 +31,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrEqb')
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.EulerProduct (eqb_comm')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

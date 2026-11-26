@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.BooleanizationCorollaries
+import IPRADerivations.Core.Header
 
 /-!
 # Arity-indexed bounded syntax and its checked Boolean compiler
@@ -21,11 +22,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.BoundedSyntax
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
-open LeanProofs.IPRA.PTm (monus)
+open_ipra
 
 /-- Bounded formulas with their actual free-variable arity. -/
 inductive BFm : ℕ → Type

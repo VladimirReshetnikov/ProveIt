@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.CrtLcm
+import IPRADerivations.Core.Header
 
 /-!
 # The Chinese remainder theorem for a finite system
@@ -28,7 +29,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.CrtGeneral
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.TotientCorollaries (lcm)
 open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (lcm_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds (shift_pos)
@@ -41,10 +42,6 @@ open LeanProofs.IPRA.Foundations.CrtLcm (Lc Lc_zero Lc_succ Lc_pos m_dvd_Lc Lc_c
   dvd_lcm_left dvd_lcm_right lcm_dvd_of)
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (dmu)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (gcd_dvd' dvd_of_eq' dvd_trans')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.Yoneda
+import IPRADerivations.Core.Header
 
 /-! Imported from the packet `foundations/category_theory_ipra_2026-11-20`, `lean/CategoryIPRA/LocalYoneda.lean`: the namespace is placed under `LeanProofs.IPRA` and the `#print axioms` lines are dropped (the library audits axioms in `Checks/Axioms.lean`). -/
 
@@ -19,11 +20,9 @@ conclusions are still actual `Prf PRAAx` derivations.
 
 namespace LeanProofs.IPRA.Foundations.Category.LocalYoneda
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.PresentedCategory
 open LeanProofs.IPRA.Foundations.Yoneda
-open Syn
-open scoped Fm
 
 /-- Laws of one specified transformation `h_A → F_p` under the fixed
 object-language hypotheses Γ. They need not hold at other p or A. -/

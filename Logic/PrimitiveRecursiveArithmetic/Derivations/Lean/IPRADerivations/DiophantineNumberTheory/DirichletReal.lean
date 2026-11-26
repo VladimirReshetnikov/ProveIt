@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.Polynomials.PolynomialRemainder
 import IPRADerivations.DiophantineNumberTheory.Dirichlet
 import IPRADerivations.AnalyticNumberTheory.PhiLower
+import IPRADerivations.Core.Header
 
 /-!
 # Dirichlet approximation for a named real
@@ -25,13 +26,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.DirichletReal
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.PolynomialRemainder (AbsLe abs_of abs_add abs_mul abs_congr)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

@@ -2,6 +2,7 @@ import IPRADerivations.DiophantineNumberTheory.DigitCode
 import IPRADerivations.DiophantineNumberTheory.GcdUnique
 import IPRADerivations.Foundations.FilteredEnumeration
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # Bounded-height enumeration for natural coordinates
@@ -29,17 +30,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.NorthcottNatural
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.GcdList (gv gv_zero gv_succ)
 open LeanProofs.IPRA.DiophantineNumberTheory.GcdNormalize (congrGcd qBody q_le gv_quotients)
 open LeanProofs.IPRA.DiophantineNumberTheory.DigitCode (code entriesLt entry_lt code_lt code_digit)
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (dB_at dm)
 open LeanProofs.IPRA.Foundations.FilteredEnumeration (rank sel sel_spec sel_rank rank_lt_size)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (eq_of_eqb_ne pw_pos')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

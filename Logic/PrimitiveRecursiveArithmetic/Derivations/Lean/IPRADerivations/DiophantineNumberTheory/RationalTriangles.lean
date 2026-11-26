@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.FermatQuarticPoints
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Rational right triangles with square area
@@ -27,14 +28,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.RationalTriangles
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.FermatQuarticPoints (no_square_area fourth_difference)
 open LeanProofs.IPRA.DiophantineNumberTheory.QuarticStep (q4)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

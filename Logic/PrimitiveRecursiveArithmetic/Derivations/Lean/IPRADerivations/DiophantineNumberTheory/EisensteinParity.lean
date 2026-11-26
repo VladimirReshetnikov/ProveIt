@@ -3,6 +3,7 @@ import IPRADerivations.AnalyticNumberTheory.GcdFiber
 import IPRADerivations.AnalyticNumberTheory.FactorialLambda
 import IPRADerivations.AnalyticNumberTheory.ConvolutionAssoc
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # The parity conversion in Eisenstein's lemma
@@ -36,7 +37,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.EisensteinParity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg sg_zero)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg)
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (sg_pos)
@@ -47,10 +48,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (sum_add2)
 open LeanProofs.IPRA.DiophantineNumberTheory.QuadraticReciprocityGoal (floorSum)
 open LeanProofs.IPRA.DiophantineNumberTheory.RectangleCount (fsB inst3_fsB)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

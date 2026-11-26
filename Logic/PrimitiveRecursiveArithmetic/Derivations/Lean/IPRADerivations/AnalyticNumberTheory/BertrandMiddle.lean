@@ -3,6 +3,7 @@ import IPRADerivations.AnalyticNumberTheory.MobiusBounds
 import IPRADerivations.AnalyticNumberTheory.PowerCleared
 import IPRADerivations.DiophantineNumberTheory.ResidueFacts
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Bertrand's postulate: the primes of the middle third do not occur
@@ -21,7 +22,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.BertrandMiddle
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val pw_pos')
 open LeanProofs.IPRA.AnalyticNumberTheory.BinomialLcm (binom_val)
@@ -33,10 +34,6 @@ open LeanProofs.IPRA.Combinatorics.LegendreDigits (qB' qB'_at quo_small dmu)
 open LeanProofs.IPRA.Combinatorics.LegendreFact (shift_le_two)
 open LeanProofs.IPRA.Combinatorics.Catalan (cb)
 open LeanProofs.IPRA.DiophantineNumberTheory.ResidueFacts (pw_two)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

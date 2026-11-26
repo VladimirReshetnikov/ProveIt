@@ -1,6 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.LinearDiophantine
 import IPRADerivations.DiophantineNumberTheory.ModularCertificate
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Linear congruences: solvability
@@ -24,16 +25,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.LinearCongruence
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (dm)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (gcd_dvd' dvd_mul' dvd_add' dvd_sub')
 open LeanProofs.IPRA.DiophantineNumberTheory.ModularCertificate (rem_add_mul)
 open LeanProofs.IPRA.DiophantineNumberTheory.LinearDiophantine (linear_solution)
 open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

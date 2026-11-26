@@ -1,4 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.QuadraticReciprocity
+import IPRADerivations.Core.Header
 
 /-!
 # The first supplementary law and the square-root witnesses
@@ -26,7 +27,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.QuadraticSupplements
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two)
@@ -42,10 +43,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.ResidueFacts (neg_pow)
 open LeanProofs.IPRA.DiophantineNumberTheory.GaussLemma (rb euler_nr euler_res pred_ne_one)
 open LeanProofs.IPRA.DiophantineNumberTheory.QuadraticReciprocity (sign_eq)
 open LeanProofs.IPRA.Foundations.BoundedReflection (exB wit ex_cases ex_elim ex_none eqb_cases eq_of_eqb one_ne_zero)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

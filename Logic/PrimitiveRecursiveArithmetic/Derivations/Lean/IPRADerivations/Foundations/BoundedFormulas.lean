@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.BoundedReflection
+import IPRADerivations.Core.Header
 
 /-!
 # A compiler from bounded formulas to bits
@@ -32,13 +33,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.BoundedFormulas
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 open LeanProofs.IPRA.Foundations.BoundedReflection
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 /-! ## Syntax and the two interpretations -/
 

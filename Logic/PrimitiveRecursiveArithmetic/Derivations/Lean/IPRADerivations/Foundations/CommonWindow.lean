@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.WindowStability
 import IPRADerivations.Foundations.ApproximateWitness
+import IPRADerivations.Core.Header
 
 /-!
 # A common window from additive finite budgets: the two counting steps
@@ -28,15 +29,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.CommonWindow
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.FiniteLaws (Mn mn_le)
 open LeanProofs.IPRA.Foundations.FrontierSoundness (shift_succ' le_of_lt_succ')
 open LeanProofs.IPRA.Foundations.WindowStability (sum_lower)
 open LeanProofs.IPRA.Foundations.ApproximateWitness (argmin argmin_spec)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

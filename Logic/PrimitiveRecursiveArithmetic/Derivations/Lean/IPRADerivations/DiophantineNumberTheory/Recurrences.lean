@@ -1,4 +1,5 @@
 import IPRADerivations.Core.Pairing
+import IPRADerivations.Core.Header
 
 /-!
 # Two-term recurrences (`diophantine_ipra_2026-11-15`, `pell_ipra_2026-11-15`, `hurwitz_khinchin_ipra`)
@@ -23,10 +24,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.Recurrences
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
+open_ipra
 
 /-- Substitution normal forms for the formulas of this file. -/
 macro "rec_subst" : tactic =>

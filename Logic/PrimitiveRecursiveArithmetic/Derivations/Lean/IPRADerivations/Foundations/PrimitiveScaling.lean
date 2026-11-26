@@ -1,6 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.Coprime
 import IPRADerivations.Core.ProdLemmas
 import IPRADerivations.Core.InductionTactic
+import IPRADerivations.Core.Header
 
 /-!
 # Primitive scaling: the gcd of a list (`ipra_presentations_to_witnesses`, `lem:primitive-scaling`)
@@ -35,14 +36,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.PrimitiveScaling
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
   (gcd_dvd' gcd_greatest' dvd_trans' dvd_self' dvd_le' one_le_of_pos)
 open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

@@ -4,6 +4,7 @@ import IPRADerivations.AnalyticNumberTheory.BinomialLcm
 import IPRADerivations.AnalyticNumberTheory.ValuationAdd
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # Least common multiples of finite families
@@ -28,7 +29,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.CrtLcm
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val isP prime_of_isP)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two)
@@ -41,10 +42,6 @@ open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos crt_unique_at)
 open LeanProofs.IPRA.Foundations.CrtCoprime (mS mS_at m_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorVector (subst_dvd)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_of_dvd' gcd_dvd' dvd_of_eq' dvd_trans')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

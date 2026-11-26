@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.SymmetryInstances
 import IPRADerivations.AnalyticNumberTheory.DivisorSwapP
 import IPRADerivations.Probability.Independence
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Möbius inversion over multiples (the sieve inversion)
@@ -29,7 +30,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SieveInversion
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg sg_zero)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg zero_mul_l congrEqb' one_inst)
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds (sum_ext shift_pos)
@@ -44,10 +45,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.EulerProduct (eqb_comm')
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (sum_add2)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_of_dvd' pos_of_eq_mul)
 open LeanProofs.IPRA.Probability.Independence (col_pt sum_scale dsum)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

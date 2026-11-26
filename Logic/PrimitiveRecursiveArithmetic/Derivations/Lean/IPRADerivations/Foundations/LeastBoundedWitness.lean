@@ -1,6 +1,7 @@
 import IPRADerivations.Core.Search
 import IPRADerivations.Core.Signum
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Least bounded witnesses, the found bit and the bounded decision
@@ -64,13 +65,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.LeastBoundedWitness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Search (mu search_spec search_minimal search_found)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)} {f : PTm 2}
 

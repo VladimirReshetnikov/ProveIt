@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.PrimitiveScaling
+import IPRADerivations.Core.Header
 
 /-!
 # Integrality of an eigenvalue from a primitive eigenvector (`ipra_presentations_to_witnesses`, `lem:integer-eigenvalue`)
@@ -24,13 +25,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.EigenvaluePrimitive
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (gauss eq_one_of_dvd_one)
 open LeanProofs.IPRA.Foundations.PrimitiveScaling
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

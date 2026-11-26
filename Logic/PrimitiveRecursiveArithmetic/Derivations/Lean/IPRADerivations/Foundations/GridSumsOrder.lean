@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.GridSumsContext
 import IPRADerivations.Core.SumOrder
 import IPRADerivations.Probability.Variance
+import IPRADerivations.Core.Header
 
 /-!
 # Grid sums: inequalities, the cells of the grid, and constant summands
@@ -25,11 +26,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.GridSumsOrder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 open LeanProofs.IPRA.Foundations.GridSums
 open LeanProofs.IPRA.Foundations.GridSumsContext
 open LeanProofs.IPRA.Foundations.TermSums (lsum fsum)

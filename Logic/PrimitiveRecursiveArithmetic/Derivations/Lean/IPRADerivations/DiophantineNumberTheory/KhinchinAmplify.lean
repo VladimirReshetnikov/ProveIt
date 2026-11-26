@@ -3,6 +3,7 @@ import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.DiophantineNumberTheory.FLTMultiples
 import IPRADerivations.Foundations.ChainViability
 import IPRADerivations.Core.SubstCommand
+import IPRADerivations.Core.Header
 
 /-!
 # The finite arithmetic of the Khinchin divergence construction (`hurwitz_khinchin_ipra`, (K2))
@@ -25,13 +26,9 @@ not derived here.
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinAmplify
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.FLTMultiples (pw_pos)
 open LeanProofs.IPRA.Foundations.ChainViability (monus_le)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

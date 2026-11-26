@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.FractionCount
 import IPRADerivations.AnalyticNumberTheory.SquareReciprocal
+import IPRADerivations.Core.Header
 
 /-!
 # The arithmetic of the Khinchin block (`hurwitz_khinchin_ipra`, (K10)–(K11))
@@ -28,13 +29,9 @@ cancellations (by `βD(ΣU)²`, then by `3`).
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockArith
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.SquareReciprocal (cancel_le)
 open LeanProofs.IPRA.DiophantineNumberTheory.FractionCount (pos_of_le_one)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

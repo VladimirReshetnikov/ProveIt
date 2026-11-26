@@ -3,6 +3,7 @@ import IPRADerivations.AnalyticNumberTheory.PNTStageStep
 import IPRADerivations.Foundations.ProductSumDomination
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.Reindex
+import IPRADerivations.Core.Header
 
 /-!
 # Truncating the excess sum of the Chebyshev block identity (`pnt_ipra_constructive_2026-11-14`, `con:signed`)
@@ -23,7 +24,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.BlockTrunc
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (wt)
 open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (Psi LamB inst2_LamB)
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt (Lam)
@@ -41,10 +42,6 @@ open LeanProofs.IPRA.Probability.Variance (sum_const_of)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

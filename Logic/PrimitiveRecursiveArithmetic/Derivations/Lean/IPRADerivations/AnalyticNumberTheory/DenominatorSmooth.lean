@@ -6,6 +6,7 @@ import IPRADerivations.Foundations.StrongInduction
 import IPRADerivations.DiophantineNumberTheory.QuarticStep
 import IPRADerivations.Core.CertificateTactics
 import IPRADerivations.Core.InductionTactic
+import IPRADerivations.Core.Header
 
 /-!
 # The left endpoint of the denominator bound: `H_q(z) ≤ S_{A_q(z)}(z)`
@@ -32,7 +33,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.DenominatorSmooth
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.Analysis.PowerSums (sum_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime lpf eq_succ_pred)
@@ -54,10 +55,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_mul' dvd_trans' dvd_of
 open LeanProofs.IPRA.Foundations.BoundedReflection (eqb_cases eq_of_eqb)
 open LeanProofs.IPRA.Foundations.CrossingSearch (monus_of_eq)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

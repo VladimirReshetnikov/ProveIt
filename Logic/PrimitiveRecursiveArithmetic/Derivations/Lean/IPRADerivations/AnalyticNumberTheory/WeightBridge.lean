@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.SymmetrySum
 import IPRADerivations.AnalyticNumberTheory.ComparisonEnvelope
+import IPRADerivations.Core.Header
 
 /-!
 # From the additive logarithm to the harmonic logarithm (`pnt_ipra_constructive_2026-11-14`, towards `sb:symmetry-bound`)
@@ -23,7 +24,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.WeightBridge
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (S_mono wt harmonic_lw)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
@@ -37,10 +38,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt (Lw)
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (sum_add2)
 open LeanProofs.IPRA.Foundations.AuxiliaryEnvelope (sum_le_const)
 open LeanProofs.IPRA.Analysis.Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.GuardedTrace
+import IPRADerivations.Core.Header
 
 /-!
 # Finite replay
@@ -26,12 +27,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.FiniteReplay
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.TraceReflection (Run subst_Run run_zero run_succ)
 open LeanProofs.IPRA.Foundations.GuardedTrace (guarded_loop_all)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)} {init : PTm 1} {step₁ step₂ : PTm 3}
 

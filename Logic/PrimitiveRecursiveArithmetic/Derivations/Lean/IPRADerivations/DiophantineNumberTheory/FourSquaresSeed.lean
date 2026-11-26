@@ -2,6 +2,7 @@ import IPRADerivations.DiophantineNumberTheory.ThueGrid
 import IPRADerivations.AnalyticNumberTheory.ConvolutionAssoc
 import IPRADerivations.AnalyticNumberTheory.Totatives
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Four squares: a small multiple of an odd prime of the form `a² + b² + 1`
@@ -26,7 +27,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.FourSquaresSeed
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two)
 open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
@@ -37,10 +38,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.ModularCertificate (rem_add_mul rem
 open LeanProofs.IPRA.DiophantineNumberTheory.ThueGrid (rem_cancel)
 open LeanProofs.IPRA.Pigeonhole (phpI phpJ pigeonhole)
 open LeanProofs.IPRA.Signum (sg)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

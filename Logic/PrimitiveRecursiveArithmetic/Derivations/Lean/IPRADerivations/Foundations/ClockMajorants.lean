@@ -3,6 +3,7 @@ import IPRADerivations.DiophantineNumberTheory.SimultaneousGrid
 import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Analysis.RationalArithmetic.RationalClosure
+import IPRADerivations.Core.Header
 
 /-!
 # Majorants of composed polynomial clocks
@@ -25,15 +26,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.ClockMajorants
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.AperyMultibound (mul_pw)
 open LeanProofs.IPRA.DiophantineNumberTheory.SimultaneousGrid (one_le_pw_of)
 open LeanProofs.IPRA.AnalyticNumberTheory.RSA (pw_mul)
 open LeanProofs.IPRA.Analysis.RationalClosure (succ_le_two_pow)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

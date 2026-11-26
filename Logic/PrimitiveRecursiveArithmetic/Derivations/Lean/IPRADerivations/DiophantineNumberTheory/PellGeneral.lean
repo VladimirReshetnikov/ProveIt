@@ -2,6 +2,7 @@ import IPRADerivations.DiophantineNumberTheory.PellAll
 import IPRADerivations.DiophantineNumberTheory.PellGenDescent
 import IPRADerivations.DiophantineNumberTheory.PellCFStep
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Finite seeds and uniform decision for `x² − D y² = N`
@@ -29,7 +30,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.PellGeneral
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
 open LeanProofs.IPRA.DiophantineNumberTheory.PellDescent (rr tt)
@@ -39,10 +40,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.Recurrences (pellX pellY)
 open LeanProofs.IPRA.Algebra.CubeRootTwo (sg sg_zero sg_succ)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.DiophantineNumberTheory.SquareArea (le_add_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

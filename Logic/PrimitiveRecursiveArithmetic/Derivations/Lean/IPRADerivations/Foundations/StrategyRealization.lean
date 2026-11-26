@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.MasterCertificate
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # Realizing fixed bounded strategies
@@ -20,14 +21,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.StrategyRealization
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.BoundedFormulas
 open LeanProofs.IPRA.Foundations.BoundedReflection
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

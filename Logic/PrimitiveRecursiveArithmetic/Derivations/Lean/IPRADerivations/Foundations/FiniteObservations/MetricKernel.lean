@@ -1,15 +1,12 @@
 import IPRADerivations.Core.Order
+import IPRADerivations.Core.Header
 
 /-! Imported from the packet `foundations/finite_observations_ipra_2026-11-20`, `lean/MetricKernel.lean`: the namespace is placed under `LeanProofs.IPRA.Foundations` and the `#print axioms` lines are dropped (the library audits axioms in `Checks/Axioms.lean`). -/
 
 /- Actual derivations in the object theory. Row shapes are fixed by the proof
 generator. All entries and the error may be arbitrary open object terms. -/
 namespace LeanProofs.IPRA.Foundations.FiniteObservations.MetricKernel
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (monus)
-open LeanProofs.ConciseIPRA.PTm (zero)
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

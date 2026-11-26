@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.RationalRootConstant
 import IPRADerivations.Core.ProdLemmas
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # A rational eigenvalue lies on a finite grid (`ipra_presentations_to_witnesses`, `cor:eigenvalue-grid`)
@@ -29,13 +30,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.EigenvalueGrid
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.RationalRootDegree (Bez euclid)
 open LeanProofs.IPRA.Foundations.RationalRootConstant (dvd_le)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.FiniteCoverSkeleton
+import IPRADerivations.Core.Header
 
 /-!
 # Removing duplicates from a finite list (`ipra_presentations_to_witnesses`, `prop:reconstruction`)
@@ -30,11 +31,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.Deduplication
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.FiniteCoverSkeleton
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

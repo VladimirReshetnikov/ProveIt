@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.FactorialLambda
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.Reindex
+import IPRADerivations.Core.Header
 
 /-!
 # The Leibniz rule for the weighted derivation of Dirichlet convolution
@@ -21,7 +22,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.DirichletLeibniz
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds (shift_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt
@@ -29,10 +30,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (congrLw lw_mul)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_of_dvd' pos_of_eq_mul)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

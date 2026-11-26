@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.RateCauchy
+import IPRADerivations.Core.Header
 
 /-!
 # The Cauchy-modulus form of `thm:rate` (`riemann_ipra_equivalences_2026-11-20`, `thm:rate` (1) ⇔ (3))
@@ -19,7 +20,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.RateCauchyIff
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.RateAbel
 open LeanProofs.IPRA.AnalyticNumberTheory.RateShell
 open LeanProofs.IPRA.AnalyticNumberTheory.RateIff
@@ -28,10 +29,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorGrowth
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerTransfer (k4)
 open LeanProofs.IPRA.AnalyticNumberTheory.AbsDiff (absd)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

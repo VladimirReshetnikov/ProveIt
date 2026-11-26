@@ -3,6 +3,7 @@ import IPRADerivations.AnalyticNumberTheory.PrimorialLower
 import IPRADerivations.Foundations.StrongInduction
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # Bertrand's postulate: the product of the primes up to `r` is at most `4^r`
@@ -32,7 +33,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PrimorialUpper
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val isP isP_01 prime_of_isP isP_of_prime pw_pos')
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorVector (f_zero f_one f_pos one_le_pos two_eq)
@@ -53,10 +54,6 @@ open LeanProofs.IPRA.Combinatorics.Binomial (binom pos_mul)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 open LeanProofs.IPRA.Probability.ProductReplacement (prod_succ')
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.OrderPower
 import IPRADerivations.Analysis.RationalArithmetic.PowerSums
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.InductionTactic
+import IPRADerivations.Core.Header
 
 /-!
 # The totatives under `a ↦ n − a`
@@ -25,7 +26,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.Totatives
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Algebra.CubeRootTwo (sg sg_zero sg_succ)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
@@ -37,10 +38,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.Euler (N_pos not_one_zero cop_comm cop
   congrEqb)
 open LeanProofs.IPRA.AnalyticNumberTheory.OrderPower (rem_self_eq)
 open LeanProofs.IPRA.Analysis.PowerSums (mulParam inst2_mulParam sum_mul_param)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

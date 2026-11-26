@@ -3,6 +3,7 @@ import IPRADerivations.AnalyticNumberTheory.PhiLower
 import IPRADerivations.AnalyticNumberTheory.PowerCleared
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # Euclid's even perfect numbers
@@ -25,17 +26,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PerfectNumbers
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.SigmaMult (sig sigma_mul)
 open LeanProofs.IPRA.AnalyticNumberTheory.SigmaPrimePower (sig_congr pos_pw sig_one sigma_step sigma_pow)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two)
 open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (gcd_comm_one dvd_le')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

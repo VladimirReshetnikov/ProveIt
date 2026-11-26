@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.Euler
 import IPRADerivations.Core.Search
 import IPRADerivations.Core.InductionTactic
+import IPRADerivations.Core.Header
 
 /-!
 # The multiplicative order
@@ -21,7 +22,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.Order
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Algebra.CubeRootTwo (sg sg_zero sg_succ)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
@@ -30,10 +31,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
 open LeanProofs.IPRA.AnalyticNumberTheory.RSA (rem_mul_congr pw_mul)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi totBody inst2_tot pred_lt)
 open LeanProofs.IPRA.AnalyticNumberTheory.Euler (congrEqb rem_small rem_lt N_pos rem_one euler_at)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

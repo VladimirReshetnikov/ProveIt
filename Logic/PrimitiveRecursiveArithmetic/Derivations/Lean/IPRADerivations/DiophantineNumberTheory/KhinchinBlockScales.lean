@@ -2,6 +2,7 @@ import IPRADerivations.DiophantineNumberTheory.KhinchinOverlap
 import IPRADerivations.DiophantineNumberTheory.KhinchinBlockGeo
 import IPRADerivations.Foundations.SecondMoment
 import IPRADerivations.DiophantineNumberTheory.FLTMultiples
+import IPRADerivations.Core.Header
 
 /-!
 # The scales of a Khinchin block as one family (`hurwitz_khinchin_ipra`, (K10)–(K11))
@@ -26,7 +27,7 @@ The block is the family of scales `k < B` with `Q_k = 2^{K₀+k}`, `Q'_k = ⌊Q_
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockScales
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 open LeanProofs.IPRA.Combinatorics.FiniteBijection (sg_bit shift_inst2')
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg)
@@ -36,10 +37,6 @@ open LeanProofs.IPRA.Foundations.IntervalPacking (loB hiB)
 open LeanProofs.IPRA.Foundations.IntervalOverlap (inter ovB inst2_ovB)
 open LeanProofs.IPRA.Foundations.SecondMoment (ppB inst3_ppB qB inst2_qB)
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinScale (tup AK actK)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

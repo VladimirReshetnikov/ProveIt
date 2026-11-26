@@ -3,6 +3,7 @@ import IPRADerivations.Combinatorics.LegendreDigits
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.InductionTactic
+import IPRADerivations.Core.Header
 
 /-!
 # Exponentials and products of finite sets (`ipra_categorical_methods`, Section 4)
@@ -42,16 +43,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.FiniteSetExponential
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.BlockSum (qr_block)
 open LeanProofs.IPRA.Probability.ProductPower (dg dg_low dg_top rem_lt'' div_eq')
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (dmu digit_step quo_small)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

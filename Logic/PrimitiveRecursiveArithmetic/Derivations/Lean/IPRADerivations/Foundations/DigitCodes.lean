@@ -1,6 +1,7 @@
 import IPRADerivations.Topology.KuhnSimplices
 import IPRADerivations.Core.Gcd
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Digit codes for packed lists
@@ -20,13 +21,9 @@ number `Σ_q x_q P^q` and decoded by its base-`P` digits, so a least-witness sea
 
 namespace LeanProofs.IPRA.Foundations.DigitCodes
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.GridSums
 open LeanProofs.IPRA.Topology.KuhnSimplices
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

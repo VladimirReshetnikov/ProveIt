@@ -2,6 +2,7 @@ import IPRADerivations.DiophantineNumberTheory.HurwitzMargin
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Foundations.IntervalPacking
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Bounded-precision extraction of a continued-fraction digit (`hurwitz_khinchin_ipra`)
@@ -24,12 +25,8 @@ in the wrong case `6 L_n dd' ≤ L_n dd'` would follow, against `L_n dd' ≥ 1`.
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.HurwitzExtraction
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.IntervalPacking (absurd_one_zero')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

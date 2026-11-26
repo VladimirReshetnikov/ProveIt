@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.FiniteSetProducts
 import IPRADerivations.Core.Fubini
+import IPRADerivations.Core.Header
 
 /-!
 # The exponential `[m]^[n] = [m^n]` as a universal object (`ipra_categorical_methods`, Section 4)
@@ -31,7 +32,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.FiniteSetClosed
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.ProductPower (dg)
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (pos_mul')
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
@@ -40,10 +41,6 @@ open LeanProofs.IPRA.Foundations.FiniteSetExponential
 open LeanProofs.IPRA.Foundations.FiniteSetCategory
 open LeanProofs.IPRA.Foundations.FiniteSetProducts
 open LeanProofs.IPRA.Foundations.PresentedCategory
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

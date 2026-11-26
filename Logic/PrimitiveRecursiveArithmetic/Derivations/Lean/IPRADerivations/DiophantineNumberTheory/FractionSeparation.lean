@@ -4,6 +4,7 @@ import IPRADerivations.AnalyticNumberTheory.SumReindex
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # Separation of reduced fractions (`hurwitz_khinchin_ipra`, (K3), (K9))
@@ -23,14 +24,10 @@ over a denominator at most `Q²`."
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.FractionSeparation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_of_eq' gauss gcd_comm_one dvd_le')
 open LeanProofs.IPRA.AnalyticNumberTheory.SquareReciprocal (cancel_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.SumReindex (le_quo_of_mul_le)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

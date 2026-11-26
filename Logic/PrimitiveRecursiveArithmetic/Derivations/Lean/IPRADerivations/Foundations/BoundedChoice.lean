@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.LeastBoundedWitness
 import IPRADerivations.Core.Descent
+import IPRADerivations.Core.Header
 
 /-!
 # The bounded choice schema
@@ -22,12 +23,9 @@ The bound is essential: the witness is found by a search below `B(x)`. This is `
 
 namespace LeanProofs.IPRA.Foundations.BoundedChoice
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Search (mu)
 open LeanProofs.IPRA.Foundations.LeastBoundedWitness (ExW lt_of_exists)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)} {f : PTm 2} {B : PTm 1}
 

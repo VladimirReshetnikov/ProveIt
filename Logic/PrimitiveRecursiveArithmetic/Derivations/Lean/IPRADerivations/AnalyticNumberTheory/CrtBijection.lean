@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.Multiplicative
+import IPRADerivations.Core.Header
 
 /-!
 # The constructive Chinese remainder bijection
@@ -20,7 +21,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.CrtBijection
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
 open LeanProofs.IPRA.Foundations.ChineseRemainder (crt_exists_at crt_unique_at)
@@ -28,10 +29,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.Totient (quo_eq)
 open LeanProofs.IPRA.AnalyticNumberTheory.GcdFiber (shift_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_lt' rem_eq' zero_lt' rem_rem_mul cop_left cop_right
   cop_both gcd_rem shift_lt)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

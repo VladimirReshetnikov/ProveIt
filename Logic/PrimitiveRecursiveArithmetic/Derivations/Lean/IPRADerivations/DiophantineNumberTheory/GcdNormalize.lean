@@ -1,6 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.GcdList
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Normalizing a vector by its gcd
@@ -21,15 +22,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.GcdNormalize
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.GcdList (gv gv_zero gv_succ gv_dvd gv_greatest gv_eq_zero)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_of_dvd' dvd_of_eq' dvd_le')
 open LeanProofs.IPRA.Signum (sg)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

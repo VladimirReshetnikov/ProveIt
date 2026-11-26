@@ -3,6 +3,7 @@ import IPRADerivations.DiophantineNumberTheory.ResidueFacts
 import IPRADerivations.AnalyticNumberTheory.LcmBridgeExact
 import IPRADerivations.Core.CertificateTactics
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # Wilson's product
@@ -31,7 +32,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.WilsonProduct
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
@@ -47,10 +48,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.UnitInvolution (sB s_at unit_of_lt 
 open LeanProofs.IPRA.DiophantineNumberTheory.ResidueFacts (neg_sq sq_one)
 open LeanProofs.IPRA.DiophantineNumberTheory.PairProduct (idB inst2_idB pair_congr)
 open LeanProofs.IPRA.Foundations.InvolutionPairing (EB inst2_EB inst2_pw)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

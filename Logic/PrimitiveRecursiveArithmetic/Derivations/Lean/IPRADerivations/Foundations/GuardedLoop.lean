@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.TraceReflection
+import IPRADerivations.Core.Header
 
 /-!
 # The guarded loop rule
@@ -20,13 +21,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.GuardedLoop
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.ClockedDescent (Pat subst_Pat)
 open LeanProofs.IPRA.Foundations.TraceReflection
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {init : PTm 1} {step : PTm 3} {N : PTm 1} {Inv : Fm PTm 3} {G : Fm PTm 1} {A : Fm PTm 2}
 

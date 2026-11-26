@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.SievePairBound
 import IPRADerivations.Probability.SymmetrizedMoments
+import IPRADerivations.Core.Header
 
 /-!
 # Summing the pair count bounds over all pairs of weight indices
@@ -28,17 +29,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SievePairSum
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveCount (cnt)
 open LeanProofs.IPRA.AnalyticNumberTheory.SievePairCount (lc)
 open LeanProofs.IPRA.AnalyticNumberTheory.SievePairBound (pw_upper pw_lower)
 open LeanProofs.IPRA.DiophantineNumberTheory.QuarticStep (congrGcd)
 open LeanProofs.IPRA.Probability.Independence (dsum)
 open LeanProofs.IPRA.Probability.SymmetrizedMoments (dsum_le)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

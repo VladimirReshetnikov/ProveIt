@@ -4,6 +4,7 @@ import IPRADerivations.AnalyticNumberTheory.AbsDiff
 import IPRADerivations.AnalyticNumberTheory.PhiLower
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # The witness transfer along perfect powers (`riemann_ipra_prime_criteria_2026-11-20`, `thm:powerdivisor`)
@@ -28,7 +29,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PowerTransfer
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerBudget (BudgetBelow budget_below log_absorb mul_one')
 open LeanProofs.IPRA.AnalyticNumberTheory.StepParams (ell clog_bracket)
 open LeanProofs.IPRA.AnalyticNumberTheory.AbsDiff (absd adB inst2_adB absd_sum)
@@ -39,10 +40,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared (pw_le_exp pw_le_cancel)
 open LeanProofs.IPRA.AnalyticNumberTheory.BlockChain (one_le_pw')
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

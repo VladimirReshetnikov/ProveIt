@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.ConicLower
 import IPRADerivations.DiophantineNumberTheory.SimultaneousGrid
+import IPRADerivations.Core.Header
 
 /-!
 # The lower inequality of the conic height theorem, with signs
@@ -23,14 +24,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.ConicHeightLower
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.PolynomialRemainder (AbsLe abs_hi abs_lo abs_add abs_mul)
 open LeanProofs.IPRA.DiophantineNumberTheory.ConicHeight (abs_neg)
 open LeanProofs.IPRA.DiophantineNumberTheory.SimultaneousGrid (cancel_pos)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

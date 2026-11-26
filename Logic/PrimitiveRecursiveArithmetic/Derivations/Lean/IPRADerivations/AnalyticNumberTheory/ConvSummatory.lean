@@ -3,6 +3,7 @@ import IPRADerivations.AnalyticNumberTheory.SummatoryPhi
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.InductionTactic
 import IPRADerivations.Core.Reindex
+import IPRADerivations.Core.Header
 
 /-!
 # The summatory function of a Dirichlet convolution (`pnt_ipra_constructive_2026-11-14`, towards `sb:symmetry`)
@@ -22,17 +23,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.ConvSummatory
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.DirichletLeibniz (cvB conv cv_at)
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (cvF inst2_cvF)
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (sum_add2)
 open LeanProofs.IPRA.AnalyticNumberTheory.SummatoryPhi (quo_lt_self)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg zero_mul_l)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

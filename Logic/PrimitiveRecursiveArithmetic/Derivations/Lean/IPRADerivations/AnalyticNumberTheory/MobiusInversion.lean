@@ -5,6 +5,7 @@ import IPRADerivations.Probability.Independence
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.AnalyticNumberTheory.DivisorCases
 import IPRADerivations.Core.Reindex
+import IPRADerivations.Core.Header
 
 /-!
 # Möbius inversion and the Möbius formula for `φ`
@@ -30,7 +31,7 @@ with a parameter).
 
 set_option linter.unusedSimpArgs false
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds
 open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_eq' zero_lt')
@@ -39,10 +40,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_of_dvd' dvd_of_eq' pos_
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
-open Syn
-open scoped Fm
-open LeanProofs.ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

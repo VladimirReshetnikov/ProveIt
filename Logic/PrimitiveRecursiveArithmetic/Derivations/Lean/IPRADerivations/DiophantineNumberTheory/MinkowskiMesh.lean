@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.MinkowskiPigeonhole
 import IPRADerivations.DiophantineNumberTheory.MinkowskiResidues
+import IPRADerivations.Core.Header
 
 /-!
 # Actual pure finite signed-mesh extraction
@@ -27,7 +28,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiMesh
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.MasterCertificate
   (entry sequence sequence_length sequence_decode subst_entry subst_sequence)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
@@ -35,9 +36,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.SignedEuclidean
   (decode pack computedQuotient computedRemainder)
 open LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiResidues (color colorF digit)
 open LeanProofs.IPRA.AnalyticNumberTheory.Fermat (subst_up_shift')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

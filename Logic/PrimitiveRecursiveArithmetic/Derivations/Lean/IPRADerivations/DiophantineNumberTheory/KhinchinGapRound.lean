@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.KhinchinBlock
 import IPRADerivations.DiophantineNumberTheory.KhinchinRounds
+import IPRADerivations.Core.Header
 
 /-!
 # One round of the (K2) amplification over the gap list (`hurwitz_khinchin_ipra`)
@@ -23,12 +24,8 @@ The construction of the gap list itself (endpoint sort, complement) is not deriv
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinGapRound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlock (sum_le_lin1)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

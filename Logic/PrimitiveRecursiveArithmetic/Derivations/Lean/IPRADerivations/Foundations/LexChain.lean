@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.LexPotential
 import IPRADerivations.Core.SumLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # The controlled lexicographic chain bound (`ipra_resources_and_elimination_2026-11-15`, `thm:controlled-lex`)
@@ -36,13 +37,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.LexChain
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.LexFuelMonotone (itStep itP F)
 open LeanProofs.IPRA.Foundations.LexPotential (G lexgt G_lower G_upper G_descent)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

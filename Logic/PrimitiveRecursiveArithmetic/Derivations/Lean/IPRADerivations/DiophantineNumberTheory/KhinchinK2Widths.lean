@@ -7,6 +7,7 @@ import IPRADerivations.Core.SumSplit
 import IPRADerivations.AnalyticNumberTheory.Valuation
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # The block hypotheses from `ψ` and the divergence modulus (`hurwitz_khinchin_ipra`, (K2))
@@ -35,7 +36,7 @@ The function is `ψ(q) = Ψ(q, x)/C` with a natural-valued numerator body `Ψ` (
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinK2Widths
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg)
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (dvd_fact)
@@ -49,10 +50,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinTailMass (S_ge_one)
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinDyadic (dyB inst2_dyB)
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinAmplify (mn MB inst2_MB mn_le_bound)
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinCellParams (αc γc b0c cell_hag cell_hg cell_hD cell_gap)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

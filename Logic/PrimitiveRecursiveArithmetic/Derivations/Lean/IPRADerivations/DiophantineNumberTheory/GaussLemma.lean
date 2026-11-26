@@ -3,6 +3,7 @@ import IPRADerivations.DiophantineNumberTheory.WilsonProduct
 import IPRADerivations.DiophantineNumberTheory.ResidueFacts
 import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # Euler's criterion and Gauss's lemma
@@ -31,7 +32,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.GaussLemma
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two)
@@ -46,10 +47,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.PairProduct (sqB sq_at euler_nonres
 open LeanProofs.IPRA.DiophantineNumberTheory.WilsonProduct (wilson pred_lt)
 open LeanProofs.IPRA.DiophantineNumberTheory.ResidueFacts (neg_pow residue_pow)
 open LeanProofs.IPRA.Foundations.BoundedReflection (exB wit ex_cases ex_elim eqb_cases eq_of_eqb one_ne_zero)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

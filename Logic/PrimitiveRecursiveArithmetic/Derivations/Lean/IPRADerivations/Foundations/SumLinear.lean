@@ -2,6 +2,7 @@ import IPRADerivations.Core.SumOrder
 import IPRADerivations.Core.SumReflect
 import IPRADerivations.Core.Pairing
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Summing a pointwise linear relation (`ipra_coherent_methods_2026-11-15`, `prop:weighted-dimension`)
@@ -24,11 +25,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.SumLinear
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

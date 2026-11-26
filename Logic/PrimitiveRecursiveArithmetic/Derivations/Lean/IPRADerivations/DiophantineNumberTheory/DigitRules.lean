@@ -2,6 +2,7 @@ import IPRADerivations.Combinatorics.LegendreDigits
 import IPRADerivations.DiophantineNumberTheory.ModularCertificate
 import IPRADerivations.Foundations.CrossingSearch
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Base-expansion divisibility rules
@@ -25,16 +26,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.DigitRules
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (dm qB' legendre_digits)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_of_dvd')
 open LeanProofs.IPRA.DiophantineNumberTheory.ModularCertificate (rem_add_mul)
 open LeanProofs.IPRA.Foundations.CrossingSearch (monus_of_eq)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

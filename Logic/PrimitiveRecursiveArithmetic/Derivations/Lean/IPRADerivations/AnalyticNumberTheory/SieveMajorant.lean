@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.SieveRough
 import IPRADerivations.AnalyticNumberTheory.SieveExpansion
 import IPRADerivations.Analysis.RationalArithmetic.PowerSums
 import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.Header
 
 /-!
 # The quadratic majorant, summed over the progression
@@ -35,7 +36,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SieveMajorant
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrEqb')
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.DivisorExchange (dvB LW)
@@ -44,10 +45,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.SieveExpansion (cB lB inst2_lB)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveRough (rB rgh rough_sum)
 open LeanProofs.IPRA.Analysis.PowerSums (sum_le)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

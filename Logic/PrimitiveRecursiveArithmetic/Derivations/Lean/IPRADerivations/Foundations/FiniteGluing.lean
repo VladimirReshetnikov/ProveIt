@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.BoundedFormulas
 import IPRADerivations.AnalyticNumberTheory.Valuation
+import IPRADerivations.Core.Header
 
 /-!
 # Uniform finite gluing (`ipra_categorical_methods`, `thm:finite-glue`)
@@ -41,14 +42,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.FiniteGluing
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg)
 open LeanProofs.IPRA.Foundations.BoundedReflection
 open LeanProofs.IPRA.Foundations.BoundedFormulas (sg_of_pos)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

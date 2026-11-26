@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.MobiusBounds
 import IPRADerivations.Probability.Independence
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Divisor inversion for the energy statistic (`thm:energy`, recovery direction)
@@ -29,17 +30,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.EnergyMobius
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (muP muN lB inst2_lB inst2_mulB congrEqb' zero_mul_l)
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds (GP GN inst2_GP inst2_GN congrMu cancel_gen)
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.Probability.Independence (dsum dsum_rows sum_scale row_pt col_pt shift_inst2 inst3_mul')
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (quo_eq)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

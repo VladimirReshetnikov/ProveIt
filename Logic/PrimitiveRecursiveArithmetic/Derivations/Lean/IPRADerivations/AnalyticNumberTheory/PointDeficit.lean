@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.AbsDiff
+import IPRADerivations.Core.Header
 
 /-!
 # The pointwise deficit inequalities (`pnt_ipra_constructive_2026-11-14`, `con:deficit`)
@@ -17,12 +18,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PointDeficit
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.AbsDiff (absd)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

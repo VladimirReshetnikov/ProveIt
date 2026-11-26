@@ -2,6 +2,7 @@ import IPRADerivations.DiophantineNumberTheory.PellApprox
 import IPRADerivations.AnalyticNumberTheory.Multiplicative
 import IPRADerivations.AnalyticNumberTheory.PrimorialUpper
 import IPRADerivations.Combinatorics.LegendreDigits
+import IPRADerivations.Core.Header
 
 /-!
 # The sequence of approximations and its classes
@@ -23,7 +24,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.PellSequence
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.PellApprox (Qv Cv pv qv Q_pos pell_approx)
 open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_lt')
 open LeanProofs.IPRA.AnalyticNumberTheory.PrimorialUpper (sg_le1)
@@ -31,10 +32,6 @@ open LeanProofs.IPRA.Combinatorics.LegendreDigits (dmu)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (one_le_of_pos)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -2,6 +2,7 @@ import IPRADerivations.Foundations.AuxiliaryEnvelope
 import IPRADerivations.Core.SumSplit
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Support localization of finite sums (`hurwitz_khinchin_ipra`, the (K11) count inside a gap)
@@ -20,12 +21,8 @@ count over the cell's own fine cells, the hypothesis of `KhinchinRoundBits.cell_
 
 namespace LeanProofs.IPRA.Foundations.SumLocal
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.AuxiliaryEnvelope (sum_le_const)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

@@ -2,6 +2,7 @@ import IPRADerivations.Foundations.ModulusNormalization
 import IPRADerivations.AnalyticNumberTheory.PowerCleared
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Probability.Ninther
+import IPRADerivations.Core.Header
 
 /-!
 # Coherent extraction from approximate minima
@@ -36,15 +37,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.CoherentMinimizer
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.ModulusNormalization (mhat index_le modulus_le mhat_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared (pw_le_exp)
 open LeanProofs.IPRA.Probability.Ninther (mn mn_le mn_ge)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

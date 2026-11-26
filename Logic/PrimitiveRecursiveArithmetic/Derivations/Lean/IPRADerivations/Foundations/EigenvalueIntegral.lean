@@ -2,6 +2,7 @@ import IPRADerivations.Foundations.EigenvalueBound
 import IPRADerivations.Foundations.RationalRootConstant
 import IPRADerivations.Core.ProdLemmas
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Integrality of a rational eigenvalue in every dimension (`ipra_presentations_to_witnesses`, `lem:integer-eigenvalue`)
@@ -31,14 +32,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.EigenvalueIntegral
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.RationalRootDegree (Bez euclid)
 open LeanProofs.IPRA.Foundations.RationalRootConstant (dvd_le shift_succ₁)
 open LeanProofs.IPRA.Foundations.EigenvalueBound (wB inst2_wB mB mB_at sum_scale)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.DivisorExchange
 import IPRADerivations.AnalyticNumberTheory.SymmetryInstances
 import IPRADerivations.AnalyticNumberTheory.PhiLower
+import IPRADerivations.Core.Header
 
 /-!
 # Numbers without small divisors: a weighted divisor sum collapses to its first term
@@ -23,16 +24,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SieveRough
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg sg_succ)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg zero_mul_l congrEqb')
 open LeanProofs.IPRA.AnalyticNumberTheory.DivisorExchange (dvB dvB_at)
 open LeanProofs.IPRA.AnalyticNumberTheory.SymmetryInstances (rem_one shift_one'')
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (one_le_pos)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

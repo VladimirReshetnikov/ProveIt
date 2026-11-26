@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.PowerCleared
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.InductionTactic
+import IPRADerivations.Core.Header
 
 /-!
 # Summing over multiples
@@ -21,7 +22,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SumReindex
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
 open LeanProofs.IPRA.DiophantineNumberTheory.FermatQuartic (zo_eqb eq_of_eqb congrPair)
 open LeanProofs.IPRA.AnalyticNumberTheory.Euler (congrEqb)
@@ -31,10 +32,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_lt')
 open LeanProofs.IPRA.AnalyticNumberTheory.SumPhi (sum_ones)
 open LeanProofs.IPRA.AnalyticNumberTheory.TotientCorollaries (eqb_le_one)
 open LeanProofs.IPRA.Analysis.PowerSums (sum_le)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

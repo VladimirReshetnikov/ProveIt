@@ -2,6 +2,7 @@ import IPRADerivations.Foundations.TraceReflection
 import IPRADerivations.Foundations.BoundedFormulas
 import IPRADerivations.Core.Pairing
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.Header
 
 /-!
 # The bisection invariant
@@ -40,15 +41,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.BisectionInvariant
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.ClockedDescent (subst_QF')
 open LeanProofs.IPRA.Signum (sg)
 open LeanProofs.IPRA.Foundations.BoundedFormulas (sg_of_pos sg_of_zero)
 open LeanProofs.IPRA.Foundations.TraceReflection (Run I3 subst_I3 run_zero run_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)} {c : PTm 3}
 

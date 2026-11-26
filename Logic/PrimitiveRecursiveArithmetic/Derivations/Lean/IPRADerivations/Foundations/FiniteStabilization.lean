@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.IterationFusion
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Core.InductionTactic
+import IPRADerivations.Core.Header
 
 /-!
 # Finite stabilization of ranked iterations
@@ -45,12 +46,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.FiniteStabilization
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.ClockedDescent (subst_QF')
 open LeanProofs.IPRA.Foundations.IterationFusion
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

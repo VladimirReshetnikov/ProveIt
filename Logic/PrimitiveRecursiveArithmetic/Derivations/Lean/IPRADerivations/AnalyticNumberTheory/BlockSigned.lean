@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.BlockTrunc
 import IPRADerivations.AnalyticNumberTheory.LogRefinement
 import IPRADerivations.AnalyticNumberTheory.ChebyshevAbel
+import IPRADerivations.Core.Header
 
 /-!
 # The signed mean of the excess sums (`pnt_ipra_constructive_2026-11-14`, `con:signed`)
@@ -29,7 +30,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.BlockSigned
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB inst2_h)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (wt S_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
@@ -44,10 +45,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.BlockTrunc (dB e_trunc e_split d_lam d
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (cancel_pos pos_of_one_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.SumReindex (le_quo_of_mul_le)
 open LeanProofs.IPRA.Analysis.Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.LcmBridgeTheta
 import IPRADerivations.AnalyticNumberTheory.StepParams
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.InductionTactic
+import IPRADerivations.Core.Header
 
 /-!
 # `ϑ(m²) ≥ m²/4` for every `m ≥ 16` on the logarithm names
@@ -25,7 +26,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.LcmBridgeSide
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.LcmBridgeTheta (theta_lower two_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogInterval (loN loD)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinGammaInterval (k2)
@@ -35,10 +36,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
 open LeanProofs.IPRA.Geometry.HypercubeSplit (le_cancel_pos)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

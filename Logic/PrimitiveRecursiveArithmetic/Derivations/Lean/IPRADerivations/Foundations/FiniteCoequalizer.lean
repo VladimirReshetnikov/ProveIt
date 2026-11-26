@@ -3,6 +3,7 @@ import IPRADerivations.Foundations.FiniteQuotient
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.CommonLemmas
 import IPRADerivations.Core.InductionTactic
+import IPRADerivations.Core.Header
 
 /-!
 # Coequalizers of finite sets by sequential merging (`ipra_categorical_methods`, Section 4)
@@ -43,7 +44,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.FiniteCoequalizer
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.ProductPower (dg rem_lt'')
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (eq_of_eqb_ne)
 open LeanProofs.IPRA.Foundations.BoundedReflection
@@ -51,10 +52,6 @@ open LeanProofs.IPRA.Foundations.BoundedReflection
 open LeanProofs.IPRA.Foundations.FiniteSetExponential
 open LeanProofs.IPRA.Foundations.FiniteSetCategory
 open LeanProofs.IPRA.Foundations.FiniteQuotient (congrInst1)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

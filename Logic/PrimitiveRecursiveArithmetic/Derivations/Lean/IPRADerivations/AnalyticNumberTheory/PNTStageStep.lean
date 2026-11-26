@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.LogRefinement
 import IPRADerivations.Core.Gcd
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # The finite stage implication preserves the table (`pnt_ipra_constructive_2026-11-14`)
@@ -26,12 +27,8 @@ Both are slack certificates followed by cancellation of the positive factor (`M`
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.LogRefinement (pos_of_eq)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

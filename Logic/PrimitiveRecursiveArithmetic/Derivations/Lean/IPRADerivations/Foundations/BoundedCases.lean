@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.BoundedDecision
+import IPRADerivations.Core.Header
 
 /-!
 # Case analysis over the values of bounded terms
@@ -15,11 +16,7 @@ The valuation is known in the metatheory, so each case may use arguments that de
 
 namespace LeanProofs.IPRA.Foundations.BoundedCases
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 set_option autoImplicit false
 

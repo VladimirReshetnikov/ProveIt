@@ -4,6 +4,7 @@ import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.AnalyticNumberTheory.Mobius
 import IPRADerivations.Topology.StaggeredGrids
 import IPRADerivations.Probability.Independence
+import IPRADerivations.Core.Header
 
 /-!
 # Counting through an injection
@@ -29,17 +30,13 @@ separated by `Q⁻²`, so an interval of length `λ` contains at most `λQ² + 1
 
 namespace LeanProofs.IPRA.Foundations.InjectionCount
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 open LeanProofs.IPRA.Combinatorics.FiniteBijection (sg_bit shift_inst2')
 open LeanProofs.IPRA.AnalyticNumberTheory.SumPhi (sum_ones)
 open LeanProofs.IPRA.Topology.StaggeredGrids (eqb01' eq_of_eqb congrEqb')
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

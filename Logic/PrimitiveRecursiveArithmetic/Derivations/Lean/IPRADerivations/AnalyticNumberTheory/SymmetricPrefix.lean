@@ -4,6 +4,7 @@ import IPRADerivations.AnalyticNumberTheory.Order
 import IPRADerivations.AnalyticNumberTheory.PowerCleared
 import IPRADerivations.AnalyticNumberTheory.HarmonicMertens
 import IPRADerivations.DiophantineNumberTheory.KhinchinBlock
+import IPRADerivations.Core.Header
 
 /-!
 # Symmetric tests on a whole prefix (`riemann_ipra_prime_criteria_2026-11-20`, Theorem `thm:symmetric-prefix`)
@@ -24,15 +25,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SymmetricPrefix
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared (pw_le_exp)
 open LeanProofs.IPRA.AnalyticNumberTheory.SumPhi (sum_ones)
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlock (sum_le_lin1)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

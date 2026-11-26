@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.Core.Descent
 import IPRADerivations.Core.Order
+import IPRADerivations.Core.Header
 
 /-!
 # A supplied finite cover gives an explicit skeleton (`ipra_categorical_methods`, Section 7)
@@ -41,13 +42,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.FiniteCoverSkeleton
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Search (mu search_spec search_minimal search_found)
 open LeanProofs.IPRA.Foundations.BoundedReflection (eqb_cases eq_of_eqb one_ne_zero)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.RateIff
+import IPRADerivations.Core.Header
 
 /-!
 # The explicit Cauchy modulus of the weighted series (`riemann_ipra_equivalences_2026-11-20`, `thm:rate` (3))
@@ -17,7 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.RateCauchy
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.RateAbel
 open LeanProofs.IPRA.AnalyticNumberTheory.RateShell
 open LeanProofs.IPRA.AnalyticNumberTheory.AbsDiff (absd absd_le le_absd_l le_absd_r)
@@ -27,10 +28,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.BlockChain (one_le_pw')
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerTransfer (k4)
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared (pw_le_exp)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

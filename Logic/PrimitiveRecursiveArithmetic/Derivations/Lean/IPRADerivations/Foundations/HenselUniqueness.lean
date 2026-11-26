@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.HenselIteration
 import IPRADerivations.Foundations.FilteredLiftingStep
+import IPRADerivations.Core.Header
 
 /-!
 # Uniqueness of the filtered lift for one polynomial equation over `ℤ`
@@ -25,15 +26,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.HenselUniqueness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.PolynomialRemainder (PE ev dv)
 open LeanProofs.IPRA.Foundations.FilteredTaylor (pd tq ls taylor_exact diff_exact dv_eq)
 open LeanProofs.IPRA.Foundations.HenselIteration (pt jac)
 open LeanProofs.IPRA.Foundations.FilteredLiftingStep (hensel_unique_ring)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

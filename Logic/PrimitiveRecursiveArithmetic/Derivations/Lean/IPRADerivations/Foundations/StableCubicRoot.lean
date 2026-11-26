@@ -2,6 +2,7 @@ import IPRADerivations.Core.PolynomialImplications
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Core.Gcd
 import IPRADerivations.Core.Parity
+import IPRADerivations.Core.Header
 
 /-!
 # The stable cubic root
@@ -26,11 +27,7 @@ The bisection that constructs the root name (`lem:bisect`) is the construction o
 
 namespace LeanProofs.IPRA.Foundations.StableCubicRoot
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 /-! ## The identities -/
 

@@ -2,6 +2,7 @@ import IPRADerivations.DiophantineNumberTheory.KhinchinScale
 import IPRADerivations.Foundations.SumFlatten
 import IPRADerivations.AnalyticNumberTheory.EulerDomination
 import IPRADerivations.AnalyticNumberTheory.TotientCorollaries
+import IPRADerivations.Core.Header
 
 /-!
 # The active members of one Khinchin scale are the reduced fractions `𝓡_k(J)` (`hurwitz_khinchin_ipra`, (K8))
@@ -27,7 +28,7 @@ after rescaling by `T`).
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinScaleCount
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg congrEqb')
 open LeanProofs.IPRA.DiophantineNumberTheory.QuarticStep (congrGcd)
@@ -42,10 +43,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBad (inJT inJT_congr)
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinReduced (copB inst2_copB cqB inst2_cqB redR k3_bounds)
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinSeparated (actv)
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinScale (tup AK actK dec actC qC scale_measure)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

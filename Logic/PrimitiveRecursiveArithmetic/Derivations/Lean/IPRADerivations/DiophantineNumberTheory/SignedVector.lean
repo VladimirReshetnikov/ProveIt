@@ -3,6 +3,7 @@ import IPRADerivations.DiophantineNumberTheory.NorthcottLocus
 import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # Signed primitive representatives in every dimension
@@ -28,7 +29,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.SignedVector
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.SignedLine (sv crossF cross_nat case_00 case_11 le_zero_eq)
 open LeanProofs.IPRA.DiophantineNumberTheory.GcdList (gv)
 open LeanProofs.IPRA.DiophantineNumberTheory.GcdNormalize (gv_all_zero)
@@ -36,10 +37,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.GcdUnique (index_eq sh_inst)
 open LeanProofs.IPRA.DiophantineNumberTheory.ProjectiveVectorUnique (propJ)
 open LeanProofs.IPRA.Foundations.BoundedReflection (exB wit ex_cases ex_elim ex_least ex_none)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

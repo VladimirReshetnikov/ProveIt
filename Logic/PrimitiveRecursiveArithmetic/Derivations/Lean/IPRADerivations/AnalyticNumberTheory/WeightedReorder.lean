@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.SummatoryCompose
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Reordering the double sum of the weighted identity (`pnt_ipra_constructive_2026-11-14`, `sb:weighted-sum`)
@@ -22,16 +23,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.WeightedReorder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.SummatoryCompose (dH inst2_dH Mono hRB inst2_hRB compose)
 open LeanProofs.IPRA.AnalyticNumberTheory.SymmetryInstances (conv_zero)
 open LeanProofs.IPRA.AnalyticNumberTheory.DirichletLeibniz (cvB conv inst2_cvB)
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (cvF inst2_cvF conv_assoc)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (zero_mul_l)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

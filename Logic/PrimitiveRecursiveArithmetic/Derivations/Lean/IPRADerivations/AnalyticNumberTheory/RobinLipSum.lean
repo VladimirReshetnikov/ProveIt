@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.RobinLipLog
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # The finitary artanh addition theorem for `LogI` (`robin_ipra_research_2026-11-19`, §"Explicit interval arithmetic")
@@ -28,7 +29,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.RobinLipSum
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinGamma (Lv Pv)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogName (Nz Dz Lz Dz_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLipName (Rv)
@@ -41,10 +42,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
 open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBounds (two_pos')
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

@@ -1,6 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.Coprime
 import IPRADerivations.Geometry.PlatonicSolids
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # An empty conic detected by a prime-power obstruction
@@ -23,14 +24,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.ConicEmpty
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (gcd_greatest')
 open LeanProofs.IPRA.Geometry.PlatonicSolids (lt_three_cases)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

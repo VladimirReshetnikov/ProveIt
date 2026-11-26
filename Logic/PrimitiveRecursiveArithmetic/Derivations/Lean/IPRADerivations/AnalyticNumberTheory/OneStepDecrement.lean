@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.OneStepRaw
+import IPRADerivations.Core.Header
 
 /-!
 # The one-step decrement (`pnt_ipra_constructive_2026-11-14`, Lemma `con:one-step`)
@@ -29,7 +30,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.OneStepDecrement
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (S_mono wt)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
@@ -48,10 +49,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (Psi)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le cancel_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.SymmetryPointwise (quo_mul_le)
 open LeanProofs.IPRA.Analysis.Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

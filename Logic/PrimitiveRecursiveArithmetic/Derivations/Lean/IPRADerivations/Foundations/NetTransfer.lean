@@ -1,5 +1,6 @@
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Core.BoundedSums
+import IPRADerivations.Core.Header
 
 /-!
 # Transfer of a bound from a certified finite net
@@ -30,11 +31,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.NetTransfer
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

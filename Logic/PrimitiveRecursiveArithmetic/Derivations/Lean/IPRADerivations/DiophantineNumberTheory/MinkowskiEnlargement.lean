@@ -4,6 +4,7 @@ import IPRADerivations.Foundations.GapDecision
 import IPRADerivations.Foundations.SequenceComposition
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.SubstCommand
+import IPRADerivations.Core.Header
 
 /-!
 # Integer-facet enlargement preserves the integer lattice points
@@ -35,7 +36,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiEnlargement
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
@@ -43,9 +44,6 @@ open LeanProofs.IPRA.Foundations.FiniteQueryDemand
   (finiteMaximum finiteMaximum_at finiteMaximum_zero finiteMaximum_succ subst_finiteMaximum)
 open LeanProofs.IPRA.Foundations.GapDecision (zabs subst_zabs)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.GcdFiber
 import IPRADerivations.DiophantineNumberTheory.Coprime
+import IPRADerivations.Core.Header
 
 /-!
 # Case split on a positive divisor
@@ -17,13 +18,9 @@ only a positive divisor `d` of `N` has to be treated; there `N = d (N/d)`, and f
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.DivisorCases
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_of_dvd' pos_of_eq_mul)
 open LeanProofs.IPRA.Signum (sg sg_zero)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

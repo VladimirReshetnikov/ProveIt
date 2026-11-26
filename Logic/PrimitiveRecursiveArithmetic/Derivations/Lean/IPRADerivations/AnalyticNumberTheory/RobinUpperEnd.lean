@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.RobinThreePos
 import IPRADerivations.AnalyticNumberTheory.RobinGammaUpper
+import IPRADerivations.Core.Header
 
 /-!
 # The upper end `U(n, k)`, `Neg`, and the incompatibility of `Pos` and `Neg` (`robin_ipra_research_2026-11-19`, `eq:neg`)
@@ -25,7 +26,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.RobinUpperEnd
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinGamma (Lv Pv sv Wv nn dd Pt Qt P_succ' Q_succ dB_at nB_at)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogName (Nz Nz_succ frac_trans L_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogInterval
@@ -44,10 +45,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBounds (two_pos')
 open LeanProofs.IPRA.AnalyticNumberTheory.SigmaPrimePower (pos_pw)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.Signum (sg sg_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

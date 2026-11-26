@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.TraceComposition
+import IPRADerivations.Core.Header
 
 /-!
 # Closure of certified trace systems under products, branches and loops
@@ -26,13 +27,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.TraceClosure
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.IterationFusion (app1 iter rel rel_congr congrApp1)
 open LeanProofs.IPRA.Foundations.TraceComposition (Preserved run_invariant)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 theorem const_vec {k : ℕ} (t : PTm k) : (fun _ : Fin 1 => t) = (![t] : Fin 1 → PTm k) := by
   funext i; fin_cases i; rfl

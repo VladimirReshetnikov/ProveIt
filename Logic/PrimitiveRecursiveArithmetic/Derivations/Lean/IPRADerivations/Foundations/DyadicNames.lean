@@ -3,6 +3,7 @@ import IPRADerivations.AnalyticNumberTheory.Totatives
 import IPRADerivations.Foundations.ObservationEstimates
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Regular names on a common dyadic scale
@@ -38,14 +39,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.DyadicNames
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.Minkowski (le_add_monus monus_le_of_le_add)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totatives (monus_succ_of_lt)
 open LeanProofs.IPRA.Foundations.ObservationEstimates (pw_exp_le)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

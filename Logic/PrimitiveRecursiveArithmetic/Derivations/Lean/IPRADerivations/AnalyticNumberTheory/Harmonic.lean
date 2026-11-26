@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.PhiPowTwo
 import IPRADerivations.DiophantineNumberTheory.Hurwitz
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.InductionTactic
+import IPRADerivations.Core.Header
 
 /-!
 # The dyadic lower bound for harmonic numbers
@@ -23,7 +24,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.Harmonic
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
 open LeanProofs.IPRA.AnalyticNumberTheory.GcdFiber (div_eq)
@@ -34,10 +35,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.PhiDouble (two_pos')
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (dvd_fact eq_succ_pred)
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.DiophantineNumberTheory.Hurwitz (add_le_add)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

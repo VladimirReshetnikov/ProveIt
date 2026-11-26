@@ -2,6 +2,7 @@ import IPRADerivations.Core.Search
 import IPRADerivations.Core.MultiSums
 import IPRADerivations.Foundations.GapDecision
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Exact label recovery from a separation gap
@@ -32,12 +33,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.GapRecovery
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.GapDecision (zabs zabs_tri zabs_neg)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

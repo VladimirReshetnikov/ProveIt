@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.SievePairCount
+import IPRADerivations.Core.Header
 
 /-!
 # The pair count bounds with their side conditions as indicator factors
@@ -24,17 +25,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SievePairBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg sg_zero)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg zero_mul_l)
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (sg_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveCount (cnt)
 open LeanProofs.IPRA.AnalyticNumberTheory.SievePairCount (lc pair_le pair_ge)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

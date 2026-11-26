@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.BoundedSyntax
+import IPRADerivations.Core.Header
 
 /-!
 # Bounded-formula induction through the actual Boolean compiler
@@ -15,11 +16,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.BoundedSyntaxInduction
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.BoundedSyntax
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

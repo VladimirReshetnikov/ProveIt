@@ -1,6 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.PellCFStep
 import IPRADerivations.Core.Pigeonhole
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # The finite Dirichlet construction for `√D`
@@ -20,17 +21,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.PellDirichlet
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.DiophantineNumberTheory.SquareArea (le_add_mono)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (le_of_sq_le)
 open LeanProofs.IPRA.Geometry.HypercubeSplit (le_cancel_pos)
 open LeanProofs.IPRA.DiophantineNumberTheory.PellCFStep (lt_of_sq_lt pos_of_le_one one_le_of_pos le_add_monus_l)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

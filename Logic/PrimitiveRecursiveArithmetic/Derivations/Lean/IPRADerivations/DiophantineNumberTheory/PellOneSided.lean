@@ -1,6 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.PellGcd
 import IPRADerivations.DiophantineNumberTheory.PellDescent
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # One-sided optimality of Pell approximants
@@ -20,14 +21,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.PellOneSided
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
 open LeanProofs.IPRA.DiophantineNumberTheory.PellDescent (lt_of_sq_lt)
 open LeanProofs.IPRA.DiophantineNumberTheory.PellGcd (PX PY pell_norm)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

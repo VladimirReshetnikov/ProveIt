@@ -3,6 +3,7 @@ import IPRADerivations.Core.Powers
 import IPRADerivations.DiophantineNumberTheory.FLTMultiples
 import IPRADerivations.Foundations.TelescopingNames
 import IPRADerivations.Analysis.Integration.RiemannSumRules
+import IPRADerivations.Core.Header
 
 /-!
 # Estimates of the finite-observation framework
@@ -34,14 +35,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.ObservationEstimates
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.FLTMultiples (pw_pos)
 open LeanProofs.IPRA.Foundations.TelescopingNames (regular_of_budget)
 open LeanProofs.IPRA.Analysis.RiemannSumRules (rs_bound)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

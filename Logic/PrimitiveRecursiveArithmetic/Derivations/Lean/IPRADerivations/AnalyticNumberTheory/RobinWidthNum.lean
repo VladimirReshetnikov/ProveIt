@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.RobinGammaWidth
 import IPRADerivations.AnalyticNumberTheory.RobinExpWidth
 import IPRADerivations.AnalyticNumberTheory.LcmBridgeDPsi
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # The numerical side of `(n + 12)2^{−r} ≤ 2^{−k}` (`robin_ipra_research_2026-11-19`, §"Composing the double logarithm")
@@ -20,7 +21,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.RobinWidthNum
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinGamma (Pv)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinExpName (Fv F_zero F_succ)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinGammaWidth (Zg)
@@ -31,10 +32,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
 open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBounds (two_pos')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

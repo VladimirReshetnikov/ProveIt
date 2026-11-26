@@ -4,6 +4,7 @@ import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.DiophantineNumberTheory.FLTMultiples
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.SubstCommand
+import IPRADerivations.Core.Header
 
 /-!
 # The elementary estimates of the zeta finite contract (`zeta_functional_equation_ipra`)
@@ -25,14 +26,10 @@ estimates justifying the constants". Cleared of denominators:
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.ZetaFiniteContract
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockGeo (congrPw2)
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockScales (pw_mono2)
 open LeanProofs.IPRA.Probability.FiniteCauchySchwarz (dist dist_sq)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

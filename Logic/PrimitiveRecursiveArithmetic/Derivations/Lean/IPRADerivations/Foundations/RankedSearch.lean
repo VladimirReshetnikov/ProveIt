@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.LeastBoundedWitness
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.Header
 
 /-!
 # Bounded search driven by a decreasing rank
@@ -27,13 +28,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.RankedSearch
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Search (mu search_found)
 open LeanProofs.IPRA.Foundations.LeastBoundedWitness (accepted_of_lt)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.MeshChange
+import IPRADerivations.Core.Header
 
 /-!
 # The arithmetic of the prime-counting estimate (`pnt_ipra_constructive_2026-11-14`, `lem:pi-conversion`)
@@ -20,14 +21,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PiAlg
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (cancel_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared (pw_le_exp)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

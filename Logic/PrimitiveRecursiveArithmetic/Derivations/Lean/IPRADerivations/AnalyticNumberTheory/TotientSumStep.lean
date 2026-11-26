@@ -3,6 +3,7 @@ import IPRADerivations.AnalyticNumberTheory.QuotientBlocks
 import IPRADerivations.AnalyticNumberTheory.SieveRecursion
 import IPRADerivations.AnalyticNumberTheory.Fermat
 import IPRADerivations.Probability.Independence
+import IPRADerivations.Core.Header
 
 /-!
 # The prime step for the sums `∑_{d ≤ t} [d ∣ a] z!/φ(d)`
@@ -28,7 +29,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.TotientSumStep
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi totBody)
@@ -43,10 +44,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.TotientTermStep (gt split_pt scale_pt)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_of_dvd' gcd_greatest' dvd_self')
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
 open LeanProofs.IPRA.Signum (sg)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

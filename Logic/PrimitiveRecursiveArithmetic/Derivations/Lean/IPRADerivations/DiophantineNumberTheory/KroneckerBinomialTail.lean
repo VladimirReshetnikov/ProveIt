@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.KroneckerKernel
 import IPRADerivations.Combinatorics.BinomialTwo
+import IPRADerivations.Core.Header
 
 /-!
 # The binomial tail of the Kronecker kernel
@@ -19,17 +20,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KroneckerBinomialTail
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.AperyMultibound (mul_pw)
 open LeanProofs.IPRA.DiophantineNumberTheory.SimultaneousGrid (one_le_pw_of cancel_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.Order (pw_one_base)
 open LeanProofs.IPRA.Combinatorics.Vandermonde (gb)
 open LeanProofs.IPRA.Combinatorics.BinomialTwo (bt S bt_at binomial_two)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

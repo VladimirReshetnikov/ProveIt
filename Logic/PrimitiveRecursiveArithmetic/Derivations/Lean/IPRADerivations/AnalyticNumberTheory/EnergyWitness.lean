@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.EnergyRecovery
 import IPRADerivations.AnalyticNumberTheory.LocalFactor
+import IPRADerivations.Core.Header
 
 /-!
 # The witness conversion "energy bound `c` ⇒ `8^r c` for `M`" (`thm:energy`)
@@ -22,7 +23,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.EnergyWitness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.EnergyRecovery (QN Mabs energy_recovery)
 open LeanProofs.IPRA.AnalyticNumberTheory.EnergyJordan (pos_succ)
 open LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor (pw_mul_base)
@@ -32,10 +33,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.SquareReciprocal (cancel_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (fact_pos)
 open LeanProofs.IPRA.Analysis.Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

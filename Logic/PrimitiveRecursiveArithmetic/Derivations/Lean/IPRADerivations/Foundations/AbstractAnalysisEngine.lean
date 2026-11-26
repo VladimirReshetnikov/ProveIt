@@ -5,6 +5,7 @@ import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.DiophantineNumberTheory.AperyMultibound
 import IPRADerivations.DiophantineNumberTheory.SimultaneousGrid
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # The elementary quantitative engine of abstract analysis
@@ -31,15 +32,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.AbstractAnalysisEngine
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.RationalClosure (succ_le_two_pow)
 open LeanProofs.IPRA.AnalyticNumberTheory.RSA (pw_mul)
 open LeanProofs.IPRA.DiophantineNumberTheory.AperyMultibound (mul_pw)
 open LeanProofs.IPRA.DiophantineNumberTheory.SimultaneousGrid (cancel_pos)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

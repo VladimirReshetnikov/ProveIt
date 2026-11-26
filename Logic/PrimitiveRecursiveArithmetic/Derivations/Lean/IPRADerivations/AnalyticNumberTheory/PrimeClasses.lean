@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.PrimeRank
+import IPRADerivations.Core.Header
 
 /-!
 # Primes in the residue classes of a modulus
@@ -18,16 +19,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PrimeClasses
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (isP)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrIsP)
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds (shift_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.PiTheta (piB inst2_piB)
 open LeanProofs.IPRA.AnalyticNumberTheory.PrimeRank (pc)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -5,6 +5,7 @@ import IPRADerivations.Combinatorics.CoefficientLogConcave
 import IPRADerivations.Probability.Variance
 import IPRADerivations.Foundations.FiniteAMGM
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Sums over a permuted range, and the total-degree audit of the elimination polynomial
@@ -38,7 +39,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.EliminationDegree
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Permutation (FS rangeAll invAll retAll prod_perm)
 open LeanProofs.IPRA.Combinatorics.Stirling (gle gle_of_le gle_above)
 open LeanProofs.IPRA.Combinatorics.CoefficientLogConcave (inst2_mul inst2_monus inst2_ap2)
@@ -48,10 +49,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt (pw_lt_exp)
 open LeanProofs.IPRA.Foundations.ProductSumDomination (sum_trunc)
 open LeanProofs.IPRA.Foundations.FiniteAMGM (prod_succ'')
 open LeanProofs.IPRA.Probability.Variance (sum_const_of)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

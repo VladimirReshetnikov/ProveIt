@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.TriangularUniqueness
+import IPRADerivations.Core.Header
 
 /-!
 # The Hurwitz examples determine their solutions (`ipra_coherent_methods_2026-11-15`)
@@ -23,16 +24,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.HurwitzUniqueness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.Combinatorics.Bell (bell bell_zero)
 open LeanProofs.IPRA.Combinatorics.BinomialTransform (bgB)
 open LeanProofs.IPRA.Foundations.HurwitzProduct
 open LeanProofs.IPRA.Foundations.TriangularUniqueness
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

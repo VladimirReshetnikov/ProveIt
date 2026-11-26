@@ -4,6 +4,7 @@ import IPRADerivations.Analysis.Optimization.WeightedCauchySchwarz
 import IPRADerivations.AnalyticNumberTheory.AbsDiff
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # Recovery of `M` from the energy: `(N!)² M(N)² ≤ 8 Q_N` (`thm:energy`)
@@ -32,7 +33,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.EnergyRecovery
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.EnergyMobius (muS subst_muS tB gM mtS inst2_mtS posB negB mobius_energy
   quo_one)
 open LeanProofs.IPRA.AnalyticNumberTheory.EnergyJordan (J2 jordan_quarter pos_succ)
@@ -47,10 +48,6 @@ open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (quo_eq)
 open LeanProofs.IPRA.Analysis.Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

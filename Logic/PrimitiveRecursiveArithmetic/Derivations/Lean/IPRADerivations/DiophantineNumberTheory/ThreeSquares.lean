@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.NumeralPrimes
 import IPRADerivations.Combinatorics.LegendreDigits
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # The three-square obstruction
@@ -25,13 +26,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.ThreeSquares
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (dmu)
 open LeanProofs.IPRA.Foundations.NumeralPrimes (num_lt num_pos)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

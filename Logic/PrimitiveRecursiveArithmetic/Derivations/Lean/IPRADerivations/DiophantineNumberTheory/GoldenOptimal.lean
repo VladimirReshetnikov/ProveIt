@@ -6,6 +6,7 @@ import IPRADerivations.AnalyticNumberTheory.SquareReciprocal
 import IPRADerivations.AnalyticNumberTheory.Totient
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.SubstCommand
+import IPRADerivations.Core.Header
 
 /-!
 # Optimality of `1/√5` for the golden ratio (`hurwitz_khinchin_ipra`)
@@ -35,15 +36,11 @@ squaring `NK + a² < s(2p − q)` and `(2p − q)² = 4N + 5q²` give `(NK − a
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.GoldenOptimal
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Topology.CollisionScales (lt_pw_two)
 open LeanProofs.IPRA.DiophantineNumberTheory.FLTMultiples (pw_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.SquareReciprocal (cancel_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (quo_eq)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

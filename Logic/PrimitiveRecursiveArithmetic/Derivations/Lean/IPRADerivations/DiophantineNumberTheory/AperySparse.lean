@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.AperyLcmCount
 import IPRADerivations.AnalyticNumberTheory.ChebyshevBounds
+import IPRADerivations.Core.Header
 
 /-!
 # The sparse lcm bound of the Apéry packet
@@ -20,7 +21,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.AperySparse
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.AperyMultibound (Aval cube_lt mul_pw)
 open LeanProofs.IPRA.DiophantineNumberTheory.AperyMultinomial (Mm multibound)
 open LeanProofs.IPRA.DiophantineNumberTheory.AperyLcmCount (lcm_div Mm_pos)
@@ -32,10 +33,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBounds (lcmu_one)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

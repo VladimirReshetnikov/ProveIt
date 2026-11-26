@@ -3,6 +3,7 @@ import IPRADerivations.AnalyticNumberTheory.RobinLogInterval
 import IPRADerivations.AnalyticNumberTheory.RobinGammaInterval
 import IPRADerivations.AnalyticNumberTheory.RobinExpName
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # `thm:three` as `Pos` certificates (`robin_ipra_research_2026-11-19`, §"Composing the double logarithm", `eq:pos`)
@@ -36,7 +37,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.RobinThreePos
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinGamma (Lv L_zero Pv P_succ P_zero)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogName (Nz Nz_zero Nz_succ Lz frac_trans)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogInterval
@@ -53,10 +54,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBounds (two_pos')
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.Signum (sg sg_zero)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

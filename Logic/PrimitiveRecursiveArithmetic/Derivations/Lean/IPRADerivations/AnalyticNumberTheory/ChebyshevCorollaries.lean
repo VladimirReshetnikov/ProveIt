@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.ChebyshevUpper
 import IPRADerivations.Core.CertificateTactics
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # Two corollaries of the Chebyshev bounds
@@ -25,7 +26,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevCorollaries
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorVector (one_le_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.PrimeRank (pc)
@@ -33,10 +34,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.PrimorialUpper (pri pri_pos pri_step p
 open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevUpper (cheb_upper_b)
 open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBounds (two_pos')
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

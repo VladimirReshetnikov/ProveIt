@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.BackwardDemand
 import IPRADerivations.Core.SumSplit
+import IPRADerivations.Core.Header
 
 /-!
 # The stage-dependent additive precision budget
@@ -15,14 +16,10 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Foundations.BackwardDemandStageLoss
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.BackwardDemand
 open LeanProofs.IPRA.Foundations.BoundedFormulas (BF)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totatives (monus_succ_of_lt)
-open LeanProofs.IPRA.PTm (monus)
-open LeanProofs.ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

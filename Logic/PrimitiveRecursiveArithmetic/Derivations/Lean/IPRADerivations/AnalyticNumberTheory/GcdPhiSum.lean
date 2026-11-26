@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.MobiusInversion
 import IPRADerivations.DiophantineNumberTheory.GcdList
 import IPRADerivations.AnalyticNumberTheory.DivisorFactor
+import IPRADerivations.Core.Header
 
 /-!
 # The greatest common divisor as a totient sum over common divisors
@@ -20,7 +21,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.GcdPhiSum
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi totBody)
 open LeanProofs.IPRA.AnalyticNumberTheory.SumPhi (dpB inst2_dp sum_phi_at)
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds (sum_ext shift_pos)
@@ -29,10 +30,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrEqb')
 open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (gcd_greatest' gcd_dvd' dvd_le')
 open LeanProofs.IPRA.DiophantineNumberTheory.GcdList (gcd_dvd_all dvd_trans_all)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

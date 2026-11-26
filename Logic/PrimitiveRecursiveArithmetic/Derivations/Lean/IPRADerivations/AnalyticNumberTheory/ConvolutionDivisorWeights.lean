@@ -4,6 +4,7 @@ import IPRADerivations.AnalyticNumberTheory.Fermat
 import IPRADerivations.AnalyticNumberTheory.Totient
 import IPRADerivations.Core.CertificateTactics
 import IPRADerivations.Core.SubstCommand
+import IPRADerivations.Core.Header
 
 /-!
 # Original Dirichlet convolution weights on split divisors
@@ -17,7 +18,7 @@ two complementary quotients. The lemmas work with the original
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionDivisorWeights
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.DirichletLeibniz (cvB cv_at)
 open LeanProofs.IPRA.AnalyticNumberTheory.DivisorSplit (pos_of_dvd)
 open LeanProofs.IPRA.AnalyticNumberTheory.Fermat (subst_up_shift')
@@ -27,10 +28,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
   (dvd_of_eq' eq_of_dvd' one_le_of_pos pos_of_eq_mul)
 open LeanProofs.IPRA.Foundations.BoundedReflection (eqb_cases)
 open LeanProofs.IPRA.Signum (sg sg_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

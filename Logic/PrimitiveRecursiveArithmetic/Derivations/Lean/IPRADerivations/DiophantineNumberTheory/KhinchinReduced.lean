@@ -2,6 +2,7 @@ import IPRADerivations.DiophantineNumberTheory.KhinchinBadBound
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Core.SumSplit
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Enough separated reduced fractions in every interval: (K3) (`hurwitz_khinchin_ipra`)
@@ -38,7 +39,7 @@ All inequalities are derived from explicit slack certificates (`Core/OrderCertif
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinReduced
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg)
 open LeanProofs.IPRA.Topology.StaggeredGrids (eqb01')
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBad (xq inJT cntB badB inst2_cntB inst2_badB)
@@ -46,10 +47,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBadSum (cB inst2_cB bqB ins
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBadBound (bad_bound)
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinLattice (aK latticeA lattice_core)
 open LeanProofs.IPRA.AnalyticNumberTheory.SquareReciprocal (cancel_le)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.Mobius
 import IPRADerivations.AnalyticNumberTheory.Fermat
 import IPRADerivations.DiophantineNumberTheory.ModularCertificate
 import IPRADerivations.AnalyticNumberTheory.ValuationMul
+import IPRADerivations.Core.Header
 
 /-!
 # The Frobenius identity for two numbers
@@ -22,16 +23,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.FrobeniusSum
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two)
 open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.Fermat (fermat_at)
 open LeanProofs.IPRA.DiophantineNumberTheory.ModularCertificate (rem_add_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

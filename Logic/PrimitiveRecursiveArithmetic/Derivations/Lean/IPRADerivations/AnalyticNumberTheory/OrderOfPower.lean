@@ -3,6 +3,7 @@ import IPRADerivations.AnalyticNumberTheory.PlusPower
 import IPRADerivations.DiophantineNumberTheory.ConicGcd
 import IPRADerivations.Combinatorics.BinomialIdentities
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # The order of a power
@@ -33,7 +34,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.OrderOfPower
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.RSA (pw_mul quo_one)
 open LeanProofs.IPRA.AnalyticNumberTheory.Order (ord order_cong)
 open LeanProofs.IPRA.AnalyticNumberTheory.OrderDivides (order_dvd_of_pow pow_of_order_dvd)
@@ -43,10 +44,6 @@ open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_of_eq' eq_of_dvd' gcd_dvd' dvd_le' gcd_comm_one
   pos_of_eq_mul coprime_quotients)
 open LeanProofs.IPRA.DiophantineNumberTheory.ConicGcd (dvd_of_coprime_pair)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

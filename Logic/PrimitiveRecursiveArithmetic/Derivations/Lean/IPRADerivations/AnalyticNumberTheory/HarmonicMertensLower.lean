@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.HarmonicMertens
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.InductionTactic
+import IPRADerivations.Core.Header
 
 /-!
 # Mertens' lower bound for the harmonic logarithm (`pnt_ipra_constructive_2026-11-14`)
@@ -23,7 +24,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertensLower
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
 open LeanProofs.IPRA.AnalyticNumberTheory.LogElementary (log_upper)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (S_mono wt lw_prime tr_pos tr_le Hy)
@@ -35,10 +36,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt (Lw)
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (congrLw lw_mul)
 open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (pos_of_lt_zero lt_zero_of_pos)
 open LeanProofs.IPRA.Analysis.Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

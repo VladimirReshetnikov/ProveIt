@@ -3,6 +3,7 @@ import IPRADerivations.AnalyticNumberTheory.PrimorialLower
 import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.Geometry.HypercubeSplit
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # `ϑ(m²) ≥ m²/4` on the logarithm names (`lcm_bridge.tex`, rough Chebyshev lemma)
@@ -26,7 +27,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.LcmBridgeTheta
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogInterval (eb eb_spec loN loD lo_nest loD_pos dt st)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinGammaInterval (k2)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinThreePos (lo_k2)
@@ -35,10 +36,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
 open LeanProofs.IPRA.Geometry.HypercubeSplit (le_cancel_pos)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -2,6 +2,7 @@ import IPRADerivations.Combinatorics.BinomialTheorem
 import IPRADerivations.Foundations.ChineseRemainder
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.SubstCommand
+import IPRADerivations.Core.Header
 
 /-!
 # Fermat's little theorem
@@ -23,17 +24,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.Fermat
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.Combinatorics.Binomial
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (binom_eq binom_zero' binom_self' mul_cancel)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem
 open LeanProofs.IPRA.Foundations.ChineseRemainder (rem_eq_of_eq)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

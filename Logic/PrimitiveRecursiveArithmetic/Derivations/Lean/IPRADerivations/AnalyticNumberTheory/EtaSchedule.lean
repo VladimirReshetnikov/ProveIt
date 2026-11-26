@@ -5,6 +5,7 @@ import IPRADerivations.AnalyticNumberTheory.PhiLower
 import IPRADerivations.AnalyticNumberTheory.Valuation
 import IPRADerivations.DiophantineNumberTheory.CoprimeModulus
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # The finite schedule of the eta certificate checker
@@ -35,15 +36,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.EtaSchedule
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.Analysis.ExponentialSeries (fact_succ' fact_zero')
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -7,6 +7,7 @@ import IPRADerivations.Combinatorics.CatalanConvolution
 import IPRADerivations.Analysis.RationalArithmetic.RationalClosure
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # The canonical root decomposition
@@ -40,7 +41,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.CanonicalDecomposition
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.CanonicalPowers
 open LeanProofs.IPRA.AnalyticNumberTheory.RSA (pw_mul)
 open LeanProofs.IPRA.AnalyticNumberTheory.Order (pw_one_base)
@@ -50,10 +51,6 @@ open LeanProofs.IPRA.Combinatorics.CatalanConvolution (monus_monus)
 open LeanProofs.IPRA.Analysis.RationalClosure (succ_le_two_pow)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (eq_succ_pred)
 open LeanProofs.IPRA.Probability.Variance (ad)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

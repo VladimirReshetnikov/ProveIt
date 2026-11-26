@@ -4,6 +4,7 @@ import IPRADerivations.AnalyticNumberTheory.RobinLogWidth
 import IPRADerivations.AnalyticNumberTheory.LcmBridgeSide
 import IPRADerivations.AnalyticNumberTheory.LcmBridgeTransfer
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # `ψ ≤ ϑ + m log P` on the logarithm names (`robin_ipra_research_2026-11-19`, `paper/lcm_bridge.tex`)
@@ -27,7 +28,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.LcmBridgeDPsi
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLipName (Rv)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLipSum (one_le_mul one_le_of_pos')
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLipBound (lo_pow)
@@ -43,10 +44,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
 open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBounds (two_pos')
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

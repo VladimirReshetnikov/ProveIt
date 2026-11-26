@@ -2,6 +2,7 @@ import IPRADerivations.Foundations.BoundedDescent
 import IPRADerivations.Foundations.TraceClosure
 import IPRADerivations.Core.MultiSums
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.Header
 
 /-!
 # Finite descent with an explicit range, with a guarded step
@@ -32,15 +33,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.GuardedDescent
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.IterationFusion (app1 iter congrApp1)
 open LeanProofs.IPRA.Foundations.BoundedDescent (Descent descent_inv terminal)
 open LeanProofs.IPRA.Foundations.TraceClosure (branchStep app1_branchStep)
 open LeanProofs.IPRA.Foundations.BoundedReflection (eq_of_eqb)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

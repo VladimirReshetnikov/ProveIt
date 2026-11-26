@@ -1,6 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.Coprime
 import IPRADerivations.Foundations.ChineseRemainder
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Linear Diophantine equations: the solvability criterion
@@ -26,13 +27,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.LinearDiophantine
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (gcd_dvd' dvd_mul' dvd_add' dvd_sub' eq_of_dvd')
 open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

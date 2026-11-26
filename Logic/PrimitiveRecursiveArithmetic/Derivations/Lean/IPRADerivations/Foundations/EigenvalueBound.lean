@@ -4,6 +4,7 @@ import IPRADerivations.Core.SumReflect
 import IPRADerivations.Core.Pairing
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.InductionTactic
+import IPRADerivations.Core.Header
 
 /-!
 # The eigenvalue bound in every dimension (`ipra_presentations_to_witnesses`, `lem:integer-eigenvalue`)
@@ -39,11 +40,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.EigenvalueBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

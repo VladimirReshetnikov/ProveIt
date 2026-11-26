@@ -1,6 +1,7 @@
 import IPRADerivations.Topology.DimensionUnits
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.SubstCommand
+import IPRADerivations.Core.Header
 
 /-!
 # Floors of rationals with different denominators
@@ -34,13 +35,9 @@ naturals:
 
 namespace LeanProofs.IPRA.Foundations.RationalFloors
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Topology.StaggeredCells (near dist)
 open LeanProofs.IPRA.Topology.DimensionUnits (dist_of_add dist_comm dist_le_one_of_near)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

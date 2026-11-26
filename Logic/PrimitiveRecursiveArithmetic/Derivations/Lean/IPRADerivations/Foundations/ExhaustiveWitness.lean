@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.Core.ProdLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # Elimination of a bounded auxiliary choice (`ipra_resources_and_elimination_2026-11-15`, `thm:exhaustive`, `prop:singleton`)
@@ -39,12 +40,8 @@ procedures, not statements of iPRA).
 
 namespace LeanProofs.IPRA.Foundations.ExhaustiveWitness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.BoundedReflection (exB wit ex_intro ex_elim ex_none)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

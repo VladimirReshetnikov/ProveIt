@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.MertensTotient
 import IPRADerivations.AnalyticNumberTheory.FactorialLambda
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # The Chebyshev identity for the Mertens function
@@ -26,7 +27,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.MertensChebyshev
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.DirichletLeibniz (cvB conv cv_at)
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (cvF inst2_cvF)
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvSummatory (RB RB_at Bs bS inst2_bS)
@@ -37,10 +38,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.MobiusFloor (inst2_oneB)
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt (lamB Lam ellB Lw DB lambda_divsum)
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (DB_at)
 open LeanProofs.IPRA.Signum (sg)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

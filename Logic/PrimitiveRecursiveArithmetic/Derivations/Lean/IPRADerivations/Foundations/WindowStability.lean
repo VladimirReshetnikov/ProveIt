@@ -4,6 +4,7 @@ import IPRADerivations.Core.SumLemmas
 import IPRADerivations.Probability.FiniteLaws
 import IPRADerivations.Foundations.FrontierSoundness
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Finite-window stability: the two selection arguments
@@ -35,13 +36,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.WindowStability
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.FiniteLaws (Mn mn_le)
 open LeanProofs.IPRA.Foundations.FrontierSoundness (shift_succ' le_of_lt_succ')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

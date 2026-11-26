@@ -2,6 +2,7 @@ import IPRADerivations.DiophantineNumberTheory.SignedEuclidean
 import IPRADerivations.Foundations.SequenceComposition
 import IPRADerivations.AnalyticNumberTheory.PhiLower
 import IPRADerivations.Core.Powers
+import IPRADerivations.Core.Header
 
 /-!
 # Runtime-dimensional residue colors for the finite Minkowski mesh
@@ -26,15 +27,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiResidues
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (entry_congr)
 open LeanProofs.IPRA.DiophantineNumberTheory.SignedEuclidean
   (decode computedRemainder computedQuotient divmodF)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

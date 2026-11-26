@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.MinkowskiRationalContent
 import IPRADerivations.DiophantineNumberTheory.MinkowskiGuardChecker
+import IPRADerivations.Core.Header
 
 /-!
 # The original rational box-certificate checker
@@ -18,7 +19,7 @@ set_option maxRecDepth 8192
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiBoxChecker
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations
 open LeanProofs.IPRA.Foundations.BoundedSyntax
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence subst_entry subst_sequence)
@@ -31,9 +32,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiRationalContent
   (contentNumerator contentDenominator rational_mesh)
 open LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiWellFormed (entryBody vectorGuard)
 open LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiGuardChecker (vectorSyntax vector_formula)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -1,4 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.SquareArea
+import IPRADerivations.Core.Header
 
 /-!
 # The rational points of `y² = x³ − x`
@@ -24,14 +25,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.EllipticE1
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.DiophantineNumberTheory.Pythagoras (two_pos)
 open LeanProofs.IPRA.DiophantineNumberTheory.SquareArea (tri mk_tri chiF chi_of_tri hyps)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

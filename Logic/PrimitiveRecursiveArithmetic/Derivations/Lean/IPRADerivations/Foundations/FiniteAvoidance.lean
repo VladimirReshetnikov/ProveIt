@@ -4,6 +4,7 @@ import IPRADerivations.Core.SumOrder
 import IPRADerivations.Probability.Variance
 import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.Foundations.AuxiliaryEnvelope
+import IPRADerivations.Core.Header
 
 /-!
 # Finite avoidance by counting (`platonic_solids_ipra`, `lem:height`)
@@ -41,16 +42,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.FiniteAvoidance
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.BoundedReflection (exB wit ex_cases ex_elim ex_none
   zero_of_compl_ne)
 open LeanProofs.IPRA.Foundations.AuxiliaryEnvelope (sum_le_const)
 open LeanProofs.IPRA.Probability.Variance (sum_one)
 open LeanProofs.IPRA.Signum (sg sg_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

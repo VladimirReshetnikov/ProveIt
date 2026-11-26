@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.GuardedLoop
 import IPRADerivations.Foundations.StrategyRealization
+import IPRADerivations.Core.Header
 
 /-!
 # A typed acyclic FIBER proof compiler
@@ -26,13 +27,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.FiberCompiler
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.BoundedFormulas
 open LeanProofs.IPRA.Foundations.TraceReflection (Run A2)
 open LeanProofs.IPRA.ClockedDescent (Pat)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ}
 

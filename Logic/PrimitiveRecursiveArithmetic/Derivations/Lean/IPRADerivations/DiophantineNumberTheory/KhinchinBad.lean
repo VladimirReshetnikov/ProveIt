@@ -3,6 +3,7 @@ import IPRADerivations.AnalyticNumberTheory.SumReindex
 import IPRADerivations.Core.MultiSums
 import IPRADerivations.Probability.Independence
 import IPRADerivations.DiophantineNumberTheory.HurwitzMargin
+import IPRADerivations.Core.Header
 
 /-!
 # The bad pairs of one denominator (`hurwitz_khinchin_ipra`, (K3))
@@ -21,7 +22,7 @@ The parameters are packed as `x = ⟨q, ⟨α, ⟨γ, β⟩⟩⟩`.
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBad
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_le')
 open LeanProofs.IPRA.AnalyticNumberTheory.Order (gcd_pos_right)
@@ -30,10 +31,6 @@ open LeanProofs.IPRA.Topology.StaggeredGrids (eqb01' eq_of_eqb congrEqb')
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
 open LeanProofs.IPRA.Foundations.LatticeCount (sg_congr)
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinSieve (inJ_scale)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

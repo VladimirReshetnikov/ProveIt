@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.MinkowskiRationalScaling
 import IPRADerivations.DiophantineNumberTheory.MinkowskiBoxUnion
+import IPRADerivations.Core.Header
 
 /-!
 # Actual common-denominator conversion of rational box endpoints
@@ -23,7 +24,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiRationalBoxes
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.MasterCertificate
   (entry sequence sequence_length sequence_decode subst_entry subst_sequence)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
@@ -34,9 +35,6 @@ open LeanProofs.IPRA.Analysis.RationalSupMetric
 open LeanProofs.IPRA.Analysis.RationalArgmin (rationalLE subst_rationalLE)
 open LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiRationalScaling
   (rationalLT gap scaledLeft scaledGap subst_rationalLT subst_gap)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

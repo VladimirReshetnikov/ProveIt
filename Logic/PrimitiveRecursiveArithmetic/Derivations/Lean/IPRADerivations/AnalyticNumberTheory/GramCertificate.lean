@@ -1,4 +1,5 @@
 import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.Header
 
 /-!
 # The finite steps of the rational Gram certificate
@@ -29,10 +30,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.GramCertificate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.DenominatorPrimeStep
 import IPRADerivations.AnalyticNumberTheory.LcmBridgeTransfer
 import IPRADerivations.Foundations.CrossingSearch
 import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.Header
 
 /-!
 # The comparison `S_a ≤ G_a` on a whole range, one prime at a time
@@ -33,7 +34,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.DenominatorRange
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (isP prime_of_isP isP_of_prime)
@@ -46,10 +47,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.TotientSumStep (Gs GtB)
 open LeanProofs.IPRA.AnalyticNumberTheory.DenominatorPrimeStep (prime_step quo_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.LcmBridgeTransfer (inst2_mul)
 open LeanProofs.IPRA.Foundations.CrossingSearch (monus_of_eq)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

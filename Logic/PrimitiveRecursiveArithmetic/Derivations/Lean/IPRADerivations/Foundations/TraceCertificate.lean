@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.StriveCompilation
 import IPRADerivations.Foundations.FiniteQueryTable
 import IPRADerivations.Foundations.IterationFusion
+import IPRADerivations.Core.Header
 
 /-!
 # Reflection of deterministic trace certificates
@@ -27,15 +28,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.TraceCertificate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.IterationFusion (app1 iter iter_zero iter_succ congrApp1 subst_app1)
 open LeanProofs.IPRA.Foundations.FiniteQueryTable (table_entry)
 open LeanProofs.IPRA.Foundations.StriveCompilation (bits_one)
 open LeanProofs.IPRA.Foundations.BoundedReflection (eqb_cases eq_of_eqb)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

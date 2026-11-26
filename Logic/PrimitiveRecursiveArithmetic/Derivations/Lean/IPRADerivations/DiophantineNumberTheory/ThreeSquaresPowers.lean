@@ -2,6 +2,7 @@ import IPRADerivations.DiophantineNumberTheory.ThreeSquares
 import IPRADerivations.DiophantineNumberTheory.FourSquares
 import IPRADerivations.Core.CertificateTactics
 import IPRADerivations.Core.InductionTactic
+import IPRADerivations.Core.Header
 
 /-!
 # The three-square obstruction for `4^a (8b + 7)`
@@ -27,7 +28,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.ThreeSquaresPowers
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrEqb')
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (dmu)
@@ -39,10 +40,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.ThreeSquares (three_squares_open)
 open LeanProofs.IPRA.Foundations.NumeralPrimes (subst_num num_lt num_pos)
 open LeanProofs.IPRA.Foundations.BoundedReflection (exB wit ex_cases ex_intro ex_elim eqb_cases eq_of_eqb
   one_ne_zero)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

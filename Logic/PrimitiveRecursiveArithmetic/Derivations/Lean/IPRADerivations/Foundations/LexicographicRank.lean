@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.MixedRadix
 import IPRADerivations.Core.SumLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # Lexicographic rank and the fuel of a fixed-dimensional descent
@@ -32,12 +33,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.LexicographicRank
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.MixedRadix
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

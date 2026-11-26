@@ -5,6 +5,7 @@ import IPRADerivations.AnalyticNumberTheory.Multiplicative
 import IPRADerivations.AnalyticNumberTheory.Mobius
 import IPRADerivations.Probability.Independence
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.Header
 
 /-!
 # The lattice count of quadratic reciprocity
@@ -35,7 +36,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.RectangleCount
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.DivisorHyperbola (leI leI_one leI_zero IB IB_at row_count)
 open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (sum2_lift)
 open LeanProofs.IPRA.AnalyticNumberTheory.Euler (lift3 at_pair shift_cop)
@@ -45,10 +46,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (gauss dvd_of_eq' dvd_le' g
 open LeanProofs.IPRA.DiophantineNumberTheory.QuadraticReciprocityGoal (floorSum rectangle)
 open LeanProofs.IPRA.Probability.Independence (dsum dsum_rows dsum_congr dsum_add pmB inst3_pmB sum_mul_sum
   inst3_add' row_pt col_pt)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

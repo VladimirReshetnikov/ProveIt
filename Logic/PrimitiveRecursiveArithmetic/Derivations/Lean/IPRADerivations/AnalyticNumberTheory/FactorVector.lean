@@ -5,6 +5,7 @@ import IPRADerivations.Probability.ProductReplacement
 import IPRADerivations.Combinatorics.LegendreFact
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # Finite factor vectors
@@ -31,7 +32,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.FactorVector
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val val_dvd cof_eq cof_not_dvd pw_pos' isP isP_01
   prime_of_isP isP_of_prime lpf_congr prime_congr two_le_lpf lt_pw)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime lpf lpf_dvd lpf_prime)
@@ -41,10 +42,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_of_eq' eq_of_dvd' dvd_
 open LeanProofs.IPRA.Combinatorics.Binomial (quo_of_eq)
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (pos_mul')
 open LeanProofs.IPRA.Probability.ProductReplacement (prod_succ')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -2,6 +2,7 @@ import IPRADerivations.Foundations.RationalRootDegree
 import IPRADerivations.Core.SumReflect
 import IPRADerivations.Core.SumLemmas
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Rational roots: the constant coefficient (`ipra_presentations_to_witnesses`, `lem:norm-rational-roots`)
@@ -34,13 +35,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.RationalRootConstant
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 open LeanProofs.IPRA.Foundations.RationalRootDegree
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

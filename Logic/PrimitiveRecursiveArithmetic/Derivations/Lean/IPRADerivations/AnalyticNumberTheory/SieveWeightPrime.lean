@@ -4,6 +4,7 @@ import IPRADerivations.AnalyticNumberTheory.Radical
 import IPRADerivations.AnalyticNumberTheory.Multiplicative
 import IPRADerivations.AnalyticNumberTheory.DivisorSplit
 import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.Header
 
 /-!
 # The vector of the explicit sieve weights at `k p` for a prime `p`
@@ -32,7 +33,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightPrime
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg sg_zero)
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
@@ -51,10 +52,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightValues (YP YN YP_at YN_at)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (gcd_comm_one)
 open LeanProofs.IPRA.DiophantineNumberTheory.QuarticStep (congrGcd)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

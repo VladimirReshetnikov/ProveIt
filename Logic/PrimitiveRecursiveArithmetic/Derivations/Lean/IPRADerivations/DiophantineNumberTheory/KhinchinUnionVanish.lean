@@ -1,4 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.KhinchinBlockLocal
+import IPRADerivations.Core.Header
 
 /-!
 # The block's union bit vanishes outside its cell, uniformly (`hurwitz_khinchin_ipra`)
@@ -18,15 +19,11 @@ Both instantiate `block_out` under the cell binder, with its margin hypotheses t
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinUnionVanish
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg)
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockScales (Xt bB)
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockLocal (block_out)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

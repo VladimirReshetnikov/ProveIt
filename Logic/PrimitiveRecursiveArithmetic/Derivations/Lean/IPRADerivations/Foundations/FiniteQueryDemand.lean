@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.BackwardDemand
 import IPRADerivations.Foundations.BoundedSyntax
 import IPRADerivations.Foundations.DemandClosure
+import IPRADerivations.Core.Header
 
 /-!
 # Observational induction with variable finite query families
@@ -22,13 +23,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.FiniteQueryDemand
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.DemandClosure
   (maximum subst_maximum maximum_left maximum_right maximum_le)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

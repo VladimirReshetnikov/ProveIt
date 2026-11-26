@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.FiniteStabilization
+import IPRADerivations.Core.Header
 
 /-!
 # Sequential composition of deterministic trace systems
@@ -29,11 +30,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.TraceComposition
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.IterationFusion (app1 iter rel)
 open LeanProofs.IPRA.Foundations.FiniteStabilization (invariant)
-open Syn
-open scoped Fm
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

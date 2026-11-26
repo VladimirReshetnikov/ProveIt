@@ -1,4 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.AperySqueeze
+import IPRADerivations.Core.Header
 
 /-!
 # The Wronskian step of the Apéry recurrence
@@ -19,11 +20,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.AperyWronskian
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

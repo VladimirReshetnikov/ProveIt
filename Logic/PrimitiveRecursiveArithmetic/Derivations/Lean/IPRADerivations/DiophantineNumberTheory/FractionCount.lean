@@ -3,6 +3,7 @@ import IPRADerivations.Foundations.InjectionCount
 import IPRADerivations.DiophantineNumberTheory.QuarticStep
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # Counting separated reduced fractions in an interval (`hurwitz_khinchin_ipra`, (K3), (K9))
@@ -26,7 +27,7 @@ their floors differ (`FractionSeparation.floor_inj`, `cl_zero`), and every floor
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.FractionCount
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 open LeanProofs.IPRA.Topology.StaggeredGrids (eqb01' eq_of_eqb congrEqb')
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg)
@@ -36,10 +37,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.FractionSeparation (floor_inj)
 open LeanProofs.IPRA.DiophantineNumberTheory.QuarticStep (congrGcd)
 open LeanProofs.IPRA.Foundations.InjectionCount (coll viol rowCB clB vB sgB inst2_clB inst2_vB inst2_rowCB
   injection_count)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.FiniteHausdorff
 import IPRADerivations.Probability.Variance
+import IPRADerivations.Core.Header
 
 /-!
 # Images and distance observations of actual finite aggregates
@@ -17,16 +18,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.FiniteHausdorffOperations
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.FiniteHausdorff
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode)
 open LeanProofs.IPRA.Foundations.DemandClosure (maximum maximum_left maximum_right maximum_le)
 open LeanProofs.IPRA.Probability.Variance (ad)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

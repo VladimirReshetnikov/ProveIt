@@ -3,6 +3,7 @@ import IPRADerivations.Probability.MedianCounts
 import IPRADerivations.Core.SumSplit
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.InductionTactic
+import IPRADerivations.Core.Header
 
 /-!
 # Counting along residue classes: Brun's finite counting error
@@ -28,14 +29,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.BrunCounting
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Foundations.ChineseRemainder (rem_eq_of_eq')
 open LeanProofs.IPRA.Probability.MedianCounts (subst_data)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

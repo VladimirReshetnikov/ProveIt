@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.RationalRootScan
 import IPRADerivations.AnalyticNumberTheory.Valuation
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # The rational-root list with its substitution test as a term (`ipra_presentations_to_witnesses`, `lem:norm-rational-roots`)
@@ -40,16 +41,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.RationalRootList
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.RationalRootDegree (Bez P tB)
 open LeanProofs.IPRA.Foundations.RationalRootScan (absd height box scan_sound roots_complete)
 open LeanProofs.IPRA.Foundations.FilteredEnumeration (rank sel)
 open LeanProofs.IPRA.Foundations.BoundedReflection (one_ne_zero)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (eq_of_eqb_ne)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

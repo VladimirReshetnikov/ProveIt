@@ -1,5 +1,6 @@
 import IPRADerivations.Core.LinearAlgebra
 import IPRADerivations.Core.Order
+import IPRADerivations.Core.Header
 
 /-!
 # Certificates of the bounded linear solver and of the border action (`ipra_categorical_methods`, `lem:bounded-linear-solver`, `lem:action-finite-span`)
@@ -36,9 +37,7 @@ normalization) and the reduction of a general polynomial.
 
 namespace LeanProofs.IPRA.Foundations.LinearCertificates
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
+open_ipra
 
 /-! ## The identities over a commutative ring -/
 

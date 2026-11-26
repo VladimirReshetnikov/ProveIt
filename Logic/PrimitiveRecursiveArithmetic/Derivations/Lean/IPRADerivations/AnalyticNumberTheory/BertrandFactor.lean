@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.BertrandSearch
 import IPRADerivations.AnalyticNumberTheory.BertrandMiddle
 import IPRADerivations.AnalyticNumberTheory.PrimorialUpper
 import IPRADerivations.AnalyticNumberTheory.PhiUpper
+import IPRADerivations.Core.Header
 
 /-!
 # Bertrand's postulate: the bound on the central coefficient after a failed search
@@ -33,7 +34,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.BertrandFactor
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val isP prime_of_isP isP_of_prime lpf_of_prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (lcmu)
@@ -57,10 +58,6 @@ open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.Combinatorics.CentralBinomial (central_pos)
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (dm dmu)
 open LeanProofs.IPRA.Signum (sg)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.MobiusFloor
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # The recursion of the Mertens function
@@ -22,15 +23,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.MertensRecursion
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (zero_mul_l)
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (sg_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusFloor (MP MN GPB GNB inst2_GPB inst2_GNB mertens_floor)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

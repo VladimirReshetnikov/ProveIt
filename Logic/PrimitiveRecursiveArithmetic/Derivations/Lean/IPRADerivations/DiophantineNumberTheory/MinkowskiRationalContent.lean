@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.MinkowskiRationalBoxes
 import IPRADerivations.DiophantineNumberTheory.MinkowskiContentSum
+import IPRADerivations.Core.Header
 
 /-!
 # Original rational box content and the actual integer cell count
@@ -20,15 +21,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiRationalContent
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
 open LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiRationalBoxes
   (integerBoxes mesh widthNumerator widthDenominator rationalSides subst_integerBoxes subst_mesh
     subst_widthNumerator subst_widthDenominator subst_rationalSides)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

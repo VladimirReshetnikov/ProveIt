@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.WeightedMangoldt
 import IPRADerivations.AnalyticNumberTheory.ValuationMul
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # The valuation of a sum
@@ -22,7 +23,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.ValuationAdd
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val val_dvd val_not_dvd cof_eq cof_not_dvd pw_pos')
@@ -30,10 +31,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos val_unique)
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt (pw_dvd_pw)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_trans' dvd_add' dvd_sub' dvd_of_eq' gcd_dvd' gcd_greatest')
 open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

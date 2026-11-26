@@ -1,6 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.KhinchinK2Step
 import IPRADerivations.DiophantineNumberTheory.KhinchinRounds
 import IPRADerivations.Core.SubstCommand
+import IPRADerivations.Core.Header
 
 /-!
 # The divergent Khinchin theorem (K2), end to end (`hurwitz_khinchin_ipra`)
@@ -36,16 +37,12 @@ Results:
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinK2
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.FiniteSetExponential (code dg_lt)
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinAmplify (half_bound pow_amp)
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinK2Widths (monoF kdF subst_monoF subst_kdF mono_shift sh
   pos_of_one wbK)
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinK2Step (rr xr tB evB inst2_evB two_pos round_step hr_r)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

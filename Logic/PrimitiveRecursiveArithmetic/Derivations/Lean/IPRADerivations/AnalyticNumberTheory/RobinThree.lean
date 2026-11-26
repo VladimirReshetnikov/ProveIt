@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.SigmaPrimePower
+import IPRADerivations.Core.Header
 
 /-!
 # Robin's inequality with at most three prime factors: the arithmetic core (`robin_ipra_research_2026-11-19`, `thm:three`)
@@ -24,7 +25,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.RobinThree
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.SigmaMult (sig sigma_mul)
 open LeanProofs.IPRA.AnalyticNumberTheory.SigmaPrimePower (sigma_pow pos_pw)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
@@ -34,10 +35,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (gcd_comm_one coprime_mul)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul rem_zero_of_eq)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

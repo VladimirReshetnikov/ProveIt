@@ -2,6 +2,7 @@ import IPRADerivations.DiophantineNumberTheory.HurwitzLoop
 import IPRADerivations.Core.Fubini
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # Precision independence of the continued-fraction prefix (`hurwitz_khinchin_ipra`)
@@ -24,14 +25,10 @@ Two approximations `Y/W` and `Z/V` run the loop of `HurwitzLoop` from the same s
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.HurwitzPrefix
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.HurwitzExtraction (adist digit_from_name digit_stable₂
   close_from_cauchy sep_transfer)
 open LeanProofs.IPRA.DiophantineNumberTheory.HurwitzLoop
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

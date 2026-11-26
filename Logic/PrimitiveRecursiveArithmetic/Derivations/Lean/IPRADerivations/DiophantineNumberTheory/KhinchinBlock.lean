@@ -2,6 +2,7 @@ import IPRADerivations.DiophantineNumberTheory.KhinchinBlockScales
 import IPRADerivations.DiophantineNumberTheory.KhinchinBlockArith
 import IPRADerivations.DiophantineNumberTheory.KhinchinScaleCount
 import IPRADerivations.AnalyticNumberTheory.Primes
+import IPRADerivations.Core.Header
 
 /-!
 # A finite Khinchin block covers a fixed fraction (`hurwitz_khinchin_ipra`, (K11))
@@ -29,7 +30,7 @@ the union `V = |⋃_k E_k|` (in cells) satisfies `D T ≤ 8192 β V`, i.e. `|⋃
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlock
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 open LeanProofs.IPRA.Combinatorics.FiniteBijection (shift_inst2')
 open LeanProofs.IPRA.Analysis.Products (fact)
@@ -46,10 +47,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockGeo (s_facts w_le_s pa
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockScales (Xt Qk Kk yk bB uB b_bit scale_E scale_inter
   u_at pw_mono2)
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockArith (block_arith)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.HarmonicMertensLower
 import IPRADerivations.DiophantineNumberTheory.HurwitzLoop
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # The signed logarithmic mean for the harmonic logarithm (`pnt_ipra_constructive_2026-11-14`, `con:signed`)
@@ -23,7 +24,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.HarmonicSignedMean
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (wt psi_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale mertens_upper)
@@ -31,10 +32,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertensLower (mertens_lower)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLambda (Sw)
 open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (Psi pos_of_lt_zero)
 open LeanProofs.IPRA.Analysis.Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

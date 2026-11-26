@@ -2,6 +2,7 @@ import IPRADerivations.Foundations.BisectionInvariant
 import IPRADerivations.Core.Powers
 import IPRADerivations.AnalyticNumberTheory.Valuation
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # The bisection bracket of the cubic `y³ + y = x`
@@ -35,14 +36,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.CubicBisection
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.TraceReflection (Run I3 run_succ)
 open LeanProofs.IPRA.Foundations.BisectionInvariant (cAt bStep BInv bisection_at I3_congr₁ bis_nested)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (lt_pw)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

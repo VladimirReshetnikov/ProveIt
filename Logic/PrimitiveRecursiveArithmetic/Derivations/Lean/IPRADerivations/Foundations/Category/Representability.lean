@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.Category.LocalYoneda
+import IPRADerivations.Core.Header
 
 /-! Imported from the packet `foundations/category_theory_ipra_2026-11-20`, `lean/CategoryIPRA/Representability.lean`: the namespace is placed under `LeanProofs.IPRA` and the `#print axioms` lines are dropped (the library audits axioms in `Checks/Axioms.lean`). -/
 
@@ -23,12 +24,10 @@ term substitution is inherited from the existing object-language library.
 
 namespace LeanProofs.IPRA.Foundations.Category.Representability
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.PresentedCategory
 open LeanProofs.IPRA.Foundations.Yoneda
 open LeanProofs.IPRA.Foundations.Category.LocalYoneda
-open Syn
-open scoped Fm
 
 variable {C : Pres} (L : C.Laws)
 variable {n : ℕ} {Γ : List (Fm PTm n)}

@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.ZetaFiniteContract
 import IPRADerivations.AnalyticNumberTheory.RSA
+import IPRADerivations.Core.Header
 
 /-!
 # The error budget of the zeta finite contract (`zeta_functional_equation_ipra`)
@@ -21,15 +22,11 @@ most `2^{−p−1} < 2^{−p}`:
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.ZetaErrorBudget
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockGeo (congrPw2)
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockScales (pw_mono2)
 open LeanProofs.IPRA.AnalyticNumberTheory.ZetaFiniteContract (clog clog_spec)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

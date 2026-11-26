@@ -3,6 +3,7 @@ import IPRADerivations.DiophantineNumberTheory.EisensteinParity
 import IPRADerivations.AnalyticNumberTheory.Totatives
 import IPRADerivations.AnalyticNumberTheory.PowerResidue
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # The folded residues form a permutation
@@ -29,7 +30,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.FoldedPermutation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_lt' zero_lt')
 open LeanProofs.IPRA.AnalyticNumberTheory.Euler (lift3 at_pair shift_cop)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totatives (sum_perm)
@@ -38,10 +39,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (gcd_comm_one)
 open LeanProofs.IPRA.DiophantineNumberTheory.QuadraticReciprocityGoal (floorSum)
 open LeanProofs.IPRA.DiophantineNumberTheory.FoldedResidues (fold fold_le fold_spec rem_pos comp)
 open LeanProofs.IPRA.DiophantineNumberTheory.EisensteinParity (bB idB eB inst2_bB inst2_idB floor_parity)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

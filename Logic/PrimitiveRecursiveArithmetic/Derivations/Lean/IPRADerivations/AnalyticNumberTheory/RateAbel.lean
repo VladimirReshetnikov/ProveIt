@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.PowerDivisorUniform
 import IPRADerivations.DiophantineNumberTheory.Dirichlet
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Dyadic shell weights and the recovery of growth from bounded weighted sums
@@ -27,7 +28,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.RateAbel
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.StepParams (ell clog_bracket)
 open LeanProofs.IPRA.DiophantineNumberTheory.Dirichlet (quo_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared (pw_le_exp)
@@ -38,10 +39,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.AbsDiff (absd absd_le le_absd_l le_absd_r)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

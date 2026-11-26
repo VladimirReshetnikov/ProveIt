@@ -3,6 +3,7 @@ import IPRADerivations.AnalyticNumberTheory.SymmetryPointwise
 import IPRADerivations.Geometry.HypercubeSplit
 import IPRADerivations.Analysis.FiniteOperations.WeierstrassProduct
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # The prime-power reciprocal loss of the lcm bridge: `Σ_{p≤m²} p^{−a_p−1} ≤ 2/m`
@@ -32,7 +33,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.LcmBridgeLoss
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val isP isP_01 prime_of_isP pw_pos')
 open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (lcmu lcm_valuation)
@@ -40,10 +41,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two)
 open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Geometry.HypercubeSplit (le_cancel_pos)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

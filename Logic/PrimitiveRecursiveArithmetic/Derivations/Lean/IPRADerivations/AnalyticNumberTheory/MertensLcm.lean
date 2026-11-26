@@ -5,6 +5,7 @@ import IPRADerivations.Foundations.MixedRadix
 import IPRADerivations.Combinatorics.Binomial
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # The product form of the Chebyshev identity for the Mertens function
@@ -33,7 +34,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.MertensLcm
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val isP prime_of_isP pw_pos')
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg zero_mul_l)
@@ -48,10 +49,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (lcmu lcmu_pos psi_lcm Psi Lam
 open LeanProofs.IPRA.AnalyticNumberTheory.MertensChebyshev (LwB chebyshev_mertens mertens_term)
 open LeanProofs.IPRA.AnalyticNumberTheory.ValuationExt (val_ext dW lw_delta lw_pow)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

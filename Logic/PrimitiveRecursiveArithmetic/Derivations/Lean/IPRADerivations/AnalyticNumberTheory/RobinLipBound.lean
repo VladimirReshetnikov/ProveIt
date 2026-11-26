@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.RobinLipSum
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Elementary bounds and powers for the lower names of `LogI` (`robin_ipra_research_2026-11-19`, `lcm_bridge.tex`)
@@ -18,7 +19,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.RobinLipBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinGamma (Lv Pv)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogName (Nz Dz Lz Un Ud low_up Dz_pos Ud_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogDiff (up_le)
@@ -33,10 +34,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos' lt_pw)
 open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBounds (two_pos')
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

@@ -3,6 +3,7 @@ import IPRADerivations.Geometry.HypercubeSplit
 import IPRADerivations.AnalyticNumberTheory.SummatoryPhi
 import IPRADerivations.AnalyticNumberTheory.TotientCorollaries
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Shell arithmetic for the weighted series (`riemann_ipra_equivalences_2026-11-20`, `thm:rate`, (1) ⇒ (2))
@@ -22,7 +23,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.RateShell
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.RateAbel
 open LeanProofs.IPRA.AnalyticNumberTheory.StepParams (ell clog_bracket)
 open LeanProofs.IPRA.Geometry.HypercubeSplit (exp_le_of_pw_le)
@@ -38,10 +39,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.AbsDiff (absd absd_le le_absd_l le_abs
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerTransfer (k4)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

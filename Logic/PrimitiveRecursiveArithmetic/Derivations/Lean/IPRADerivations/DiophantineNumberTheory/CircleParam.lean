@@ -1,6 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.ConicNonzero
 import IPRADerivations.DiophantineNumberTheory.ConicGcd
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # The unit circle `X² + Y² = Z²`
@@ -23,14 +24,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.CircleParam
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.ConicNonzero (zt_sq_zero)
 open LeanProofs.IPRA.DiophantineNumberTheory.ConicGcd (dvd_of_coprime_pair coprime_squares)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_add' dvd_sub')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

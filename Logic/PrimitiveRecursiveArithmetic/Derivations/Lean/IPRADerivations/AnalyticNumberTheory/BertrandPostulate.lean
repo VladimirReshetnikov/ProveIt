@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.BertrandFactor
 import IPRADerivations.AnalyticNumberTheory.BertrandGrowth
 import IPRADerivations.AnalyticNumberTheory.BertrandCertificate
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Bertrand's postulate as a closed sentence of iPRA
@@ -27,7 +28,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.BertrandPostulate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.BertrandSearch (found failureObligation sentence
   bertrand_of_failure_refuted)
 open LeanProofs.IPRA.AnalyticNumberTheory.BertrandFactor (sq md gap)
@@ -38,10 +39,6 @@ open LeanProofs.IPRA.Combinatorics.Catalan (cb)
 open LeanProofs.IPRA.Combinatorics.CentralBinomial (central_lower)
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (dm)
 open LeanProofs.IPRA.DiophantineNumberTheory.ResidueFacts (pw_two)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

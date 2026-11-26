@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.SymmetricPrefix
+import IPRADerivations.Core.Header
 
 /-!
 # The moment test on a whole prefix (`riemann_ipra_prime_criteria_2026-11-20`, `thm:symmetric-prefix`, eq:sym-mom)
@@ -17,15 +18,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SymmetricMoment
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
 open LeanProofs.IPRA.AnalyticNumberTheory.SumPhi (sum_ones)
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlock (sum_le_lin1)
 open LeanProofs.IPRA.AnalyticNumberTheory.SymmetricPrefix (term_le_sum hP Below)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

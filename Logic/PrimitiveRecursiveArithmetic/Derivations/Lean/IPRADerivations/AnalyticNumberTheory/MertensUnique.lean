@@ -9,6 +9,7 @@ import IPRADerivations.Core.SumSplit
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # The floor recurrence determines the Mertens function
@@ -41,7 +42,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.MertensUnique
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg zero_mul_l)
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvSummatory (Bs bS)
 open LeanProofs.IPRA.AnalyticNumberTheory.SymmetrySum (aPB aNB)
@@ -52,10 +53,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.EulerProduct (eq_of_viol viol_of_eq)
 open LeanProofs.IPRA.AnalyticNumberTheory.GcdFiber (div_eq)
 open LeanProofs.IPRA.Combinatorics.Stirling (gle gle_of_le gle_above)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

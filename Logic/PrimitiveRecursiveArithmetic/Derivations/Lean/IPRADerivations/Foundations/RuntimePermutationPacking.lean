@@ -2,6 +2,7 @@ import IPRADerivations.Foundations.RuntimePermutationInsertion
 import IPRADerivations.Foundations.RuntimePermutationFactorialBound
 import IPRADerivations.Core.CongruenceTactic
 import IPRADerivations.Core.SubstCommand
+import IPRADerivations.Core.Header
 
 /-!
 # Exact rectangular indexing of the actual retained permutation list
@@ -17,8 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Foundations.RuntimePermutationPacking
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (zero succ)
+open_ipra
 open RuntimePermutationWords (count words position horizon permutationBit)
 open RuntimePermutationDeletion (packed maximumPosition deletedWord deletedRank deleted_rank_correct)
 open RuntimePermutationInsertion (inserted insertedWord inserted_tuple inserted_word_bound inserted_word_valid inserted_maximum deleted_inserted_word)
@@ -26,8 +26,6 @@ open RuntimePermutationFactorialBound (packingF packing_at packing_bound packing
 open RuntimeAdjacentPermutationSwap (different_of_lt)
 open MasterCertificate (entry)
 open SequenceComposition (entry_congr)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

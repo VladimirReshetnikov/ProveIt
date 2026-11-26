@@ -3,6 +3,7 @@ import IPRADerivations.AnalyticNumberTheory.DivisorHyperbola
 import IPRADerivations.AnalyticNumberTheory.PhiDouble
 import IPRADerivations.Foundations.SignedSums
 import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.Header
 
 /-!
 # The second supplementary law
@@ -29,7 +30,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.SecondSupplement
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg sg_zero)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
@@ -46,10 +47,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.QuadraticReciprocityGoal (signBit)
 open LeanProofs.IPRA.DiophantineNumberTheory.EisensteinParity (eV eB inst2_eB)
 open LeanProofs.IPRA.DiophantineNumberTheory.GaussLemma (gauss_lemma pred_ne_one)
 open LeanProofs.IPRA.DiophantineNumberTheory.QuadraticReciprocity (sign_eq)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

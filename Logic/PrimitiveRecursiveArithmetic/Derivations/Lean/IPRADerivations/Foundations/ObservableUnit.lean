@@ -2,6 +2,7 @@ import IPRADerivations.Foundations.EigenvalueBound
 import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.Core.Fubini
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # The unit identity gives a nonzero coordinate (`ipra_presentations_to_witnesses`, `thm:finite-observable-image`)
@@ -29,13 +30,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.ObservableUnit
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.BoundedReflection (exB wit ex_cases ex_elim ex_none)
 open LeanProofs.IPRA.Foundations.EigenvalueBound (wB inst2_wB)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

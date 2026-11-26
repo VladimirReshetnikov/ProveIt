@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.MobiusFloor
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # The reverse direction of Möbius inversion
@@ -28,7 +29,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.MobiusInversionReverse
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (muP muN congrSg zero_mul_l congrEqb' one_inst PB NB inst2_PB
   inst2_NB mobius_cancel mobius_one)
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds (sum_ext mu_bound)
@@ -40,10 +41,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.HyperbolaSwap (conv_congr_m conv_comm0
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (sum_add2)
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusFloor (mul_one1)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

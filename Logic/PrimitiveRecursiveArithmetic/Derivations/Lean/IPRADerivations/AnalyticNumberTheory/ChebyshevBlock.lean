@@ -3,6 +3,7 @@ import IPRADerivations.AnalyticNumberTheory.FactorialLambda
 import IPRADerivations.Probability.Variance
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.Reindex
+import IPRADerivations.Core.Header
 
 /-!
 # The Chebyshev block identity (`pnt_ipra_constructive_2026-11-14`, `con:signed`)
@@ -27,16 +28,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBlock
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvSummatory (RB RB_at bS inst2_bS Bs)
 open LeanProofs.IPRA.AnalyticNumberTheory.HyperbolaSwap (hyp_swap)
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (sum_add2)
 open LeanProofs.IPRA.Probability.Variance (sum_const_of)
 open LeanProofs.IPRA.Signum (sg)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

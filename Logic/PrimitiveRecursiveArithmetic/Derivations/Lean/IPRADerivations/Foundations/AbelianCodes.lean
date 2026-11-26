@@ -1,5 +1,6 @@
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Core.BoundedSums
+import IPRADerivations.Core.Header
 
 /-!
 # Abelian groups on natural-number codes
@@ -21,11 +22,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.AbelianCodes
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 /-- The group operation `G(a, b)`. -/
 abbrev op (G : PTm 2) {n : ℕ} (a b : PTm n) : PTm n := inst2 G a b

@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.BooleanizationCorollaries
+import IPRADerivations.Core.Header
 
 /-!
 # Canonical selection for an arbitrary binary Boolean verifier
@@ -10,11 +11,8 @@ object-language hypothesis. The actual PR selector searches the complement
 
 namespace LeanProofs.IPRA.Foundations.BoundedSelection
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.BooleanizationCorollaries
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

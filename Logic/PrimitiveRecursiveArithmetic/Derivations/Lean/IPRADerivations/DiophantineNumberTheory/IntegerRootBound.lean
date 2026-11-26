@@ -3,6 +3,7 @@ import IPRADerivations.Core.Gcd
 import IPRADerivations.DiophantineNumberTheory.FLTMultiples
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # An integer root bound
@@ -29,12 +30,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.IntegerRootBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.FLTMultiples (pw_pos)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

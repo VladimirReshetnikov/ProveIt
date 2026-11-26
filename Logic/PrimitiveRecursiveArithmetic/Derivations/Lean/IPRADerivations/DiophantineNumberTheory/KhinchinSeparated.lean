@@ -1,6 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.KhinchinReduced
 import IPRADerivations.DiophantineNumberTheory.FractionSeparation
 import IPRADerivations.Foundations.IntervalPacking
+import IPRADerivations.Core.Header
 
 /-!
 # The scale-`k` intervals of Khinchin's construction are separated (`hurwitz_khinchin_ipra`, (K8))
@@ -21,7 +22,7 @@ On the grid `T` (a common multiple of the denominators), the fraction `p/q` sits
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinSeparated
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 open LeanProofs.IPRA.Combinatorics.FiniteBijection (sg_bit)
 open LeanProofs.IPRA.Topology.StaggeredGrids (eqb01' eq_of_eqb)
@@ -30,10 +31,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.SquareReciprocal (cancel_le)
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBad (inJT)
 open LeanProofs.IPRA.DiophantineNumberTheory.FractionSeparation (frac_unique)
 open LeanProofs.IPRA.Foundations.IntervalPacking (pos_of_sg_one lt_of_monus_pos absurd_one_zero')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.PowerDivisorInversion
 import IPRADerivations.AnalyticNumberTheory.SymmetryPointwise
+import IPRADerivations.Core.Header
 
 /-!
 # The growth transfer `A ⇒ B_h` (`riemann_ipra_prime_criteria_2026-11-20`, `thm:powerdivisor`)
@@ -19,7 +20,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorGrowth
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorPrefix
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorRow (pw_pos1)
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorInversion (Zp)
@@ -38,10 +39,6 @@ open LeanProofs.IPRA.Foundations.BoundedReflection (eqb_cases)
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (sum_add2)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

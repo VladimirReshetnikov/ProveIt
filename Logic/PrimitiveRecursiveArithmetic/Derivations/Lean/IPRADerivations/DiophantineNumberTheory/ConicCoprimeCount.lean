@@ -4,6 +4,7 @@ import IPRADerivations.Core.SumOrder
 import IPRADerivations.Core.SumLemmas
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Many coprime pairs in a square
@@ -27,17 +28,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.SummatoryPhi (DPB DNB inst2_DP inst2_DN summatory_phi)
 open LeanProofs.IPRA.AnalyticNumberTheory.CoprimePairs (gB3)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (muP muN om_two_one sq_two_one congrEqb' zero_ne_one')
 open LeanProofs.IPRA.AnalyticNumberTheory.TotientCorollaries (eqb_le_one)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.BackwardViability
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.InductionTactic
+import IPRADerivations.Core.Header
 
 /-!
 # The certified finite chain (`ipra_evidence_framework`, "certified finite chain")
@@ -38,7 +39,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.ViableChain
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg)
 open LeanProofs.IPRA.Probability.ProductPower (dg)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
@@ -46,10 +47,6 @@ open LeanProofs.IPRA.Foundations.BackwardViability
 open LeanProofs.IPRA.Foundations.BackwardViability.Instance
 open LeanProofs.IPRA.Foundations.BoundedReflection (sg_cases one_ne_zero)
 open LeanProofs.IPRA.Foundations.BoundedFormulas (sg_of_zero)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

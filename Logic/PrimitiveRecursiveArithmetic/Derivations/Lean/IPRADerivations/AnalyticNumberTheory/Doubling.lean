@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.BlockCases
 import IPRADerivations.AnalyticNumberTheory.HarmonicLogPow2
+import IPRADerivations.Core.Header
 
 /-!
 # Harmonic lengths of dyadic blocks (`pnt_ipra_constructive_2026-11-14`, `con:block-length`)
@@ -17,14 +18,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.Doubling
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB pw2_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.BlockCases (S_gap)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

@@ -1,5 +1,6 @@
 import IPRADerivations.Core.OrderCertificates
 import Mathlib.Algebra.BigOperators.Fin
+import IPRADerivations.Core.Header
 
 /-!
 # Weighted error budgets on finite dependency graphs
@@ -24,11 +25,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.ErrorBudget
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

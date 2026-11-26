@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.GoldbachGeometric
 import IPRADerivations.AnalyticNumberTheory.ValuationMul
 import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.Header
 
 /-!
 # A Mersenne prime has a prime exponent
@@ -15,7 +16,7 @@ the constructed divisor lies in the properly excluded interval of a prime
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.MersenneExponent
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Fermat (prime_shift)
 open LeanProofs.IPRA.AnalyticNumberTheory.GoldbachGeometric (gB geom_sum one_le_pw)
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared (pw_le_exp)
@@ -25,10 +26,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_of_eq' eq_of_dvd')
 open LeanProofs.IPRA.DiophantineNumberTheory.FLTMultiples (pw_pos)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

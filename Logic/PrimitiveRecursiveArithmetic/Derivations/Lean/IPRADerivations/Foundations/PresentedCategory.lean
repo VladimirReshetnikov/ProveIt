@@ -1,4 +1,5 @@
 import IPRADerivations.Core.Tactic
+import IPRADerivations.Core.Header
 
 /-!
 # Primitive-recursively presented categories (`ipra_categorical_methods`, Section 4)
@@ -40,10 +41,7 @@ No excluded middle and no induction is used beyond what the supplied laws themse
 
 namespace LeanProofs.IPRA.Foundations.PresentedCategory
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
+open_ipra
 
 /-- A presentation of a category by formulas and terms of iPRA. -/
 structure Pres where

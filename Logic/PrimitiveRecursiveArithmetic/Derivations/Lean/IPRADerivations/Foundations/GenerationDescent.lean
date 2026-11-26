@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.AbelianCodes
 import IPRADerivations.AnalyticNumberTheory.Totatives
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Finite generation from a computable reducing step
@@ -27,15 +28,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.GenerationDescent
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.AbelianCodes (op Assoc Comm IdL congrOp smul smulF congrSmul smul_op smul_mul)
 open LeanProofs.IPRA.Signum (sg)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totatives (sg_lt sg_le)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 /-- A unary body `F(a)`. -/
 abbrev ap1 (F : PTm 1) {n : ℕ} (a : PTm n) : PTm n := Syn.subst ![a] F

@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.EliminationDegree
 import IPRADerivations.Foundations.BoundedFormulas
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Counting under a fixed-point-free involution
@@ -26,15 +27,11 @@ theorem counts with multiplicities as well as counting the indices with a proper
 
 namespace LeanProofs.IPRA.Foundations.InvolutionParity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Permutation (FS rangeAll invAll retAll inst2_FS)
 open LeanProofs.IPRA.Foundations.EliminationDegree (sum_perm)
 open LeanProofs.IPRA.Foundations.BoundedFormulas (sg_of_pos sg_of_zero)
 open LeanProofs.IPRA.Signum (sg)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -3,6 +3,7 @@ import IPRADerivations.Foundations.FiniteSetExponential
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.CommonLemmas
 import IPRADerivations.Core.InductionTactic
+import IPRADerivations.Core.Header
 
 /-!
 # Coherent points from bounded surjective liftings (`ipra_categorical_methods`, `thm:tower`)
@@ -43,14 +44,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.CoherentTower
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.BoundedReflection (wit bounded_choice one_ne_zero)
 open LeanProofs.IPRA.Foundations.FiniteSetExponential (rem_of_lt)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos' eq_of_eqb_ne)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

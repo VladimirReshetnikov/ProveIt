@@ -2,6 +2,7 @@ import IPRADerivations.Core.LinearAlgebra
 import IPRADerivations.Core.SumLemmas
 import IPRADerivations.Foundations.EigenvalueBound
 import IPRADerivations.Foundations.RationalRootScan
+import IPRADerivations.Core.Header
 
 /-!
 # Separated annihilators: the boundary column and the grid radius (`ipra_presentations_to_witnesses`, `thm:annihilator-to-module`)
@@ -41,15 +42,11 @@ object, and the mixed-radix indexing of the exponent box (the digits are
 
 namespace LeanProofs.IPRA.Foundations.AnnihilatorGrid
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.RationalRootDegree (Bez P leading_dvd)
 open LeanProofs.IPRA.Foundations.RationalRootConstant (num_bound)
 open LeanProofs.IPRA.Foundations.RationalRootScan (bez_swap absd mx le_mx_left le_mx_right)
 open LeanProofs.IPRA.Foundations.EigenvalueBound (adB inst2_adB)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 section Ring
 

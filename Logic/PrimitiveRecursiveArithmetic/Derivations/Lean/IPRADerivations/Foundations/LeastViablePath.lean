@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.ViableChain
 import IPRADerivations.Core.Search
+import IPRADerivations.Core.Header
 
 /-!
 # Finite dependent choice by least viability
@@ -33,15 +34,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.LeastViablePath
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Search (mu search_found)
 open LeanProofs.IPRA.Foundations.BackwardViability
 open LeanProofs.IPRA.Foundations.BackwardViability.Instance
 open LeanProofs.IPRA.Foundations.ViableChain (start chain chain_inv chain_edge chain_local subst_V)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)} (I : Instance)
 

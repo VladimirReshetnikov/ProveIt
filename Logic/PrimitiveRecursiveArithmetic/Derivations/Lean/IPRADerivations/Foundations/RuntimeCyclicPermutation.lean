@@ -2,6 +2,7 @@ import IPRADerivations.Foundations.RuntimeWordAppend
 import IPRADerivations.Foundations.FiniteFiberGrouping
 import IPRADerivations.Foundations.GuardedTotalization
 import IPRADerivations.Core.SubstCommand
+import IPRADerivations.Core.Header
 
 /-!
 # A cyclic permutation and its wrap bit
@@ -15,11 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Foundations.RuntimeCyclicPermutation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open LeanProofs.IPRA.PTm (monus)
-open ConciseIPRA.PTm (zero succ)
-open scoped Fm
-open Syn
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

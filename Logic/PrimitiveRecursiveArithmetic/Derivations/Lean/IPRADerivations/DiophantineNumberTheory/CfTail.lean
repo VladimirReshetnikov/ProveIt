@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.CfValue
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # The nested fraction with a rational tail
@@ -19,16 +20,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.CfTail
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.HurwitzLoop (sP sQ sP' sQ' st proj_st)
 open LeanProofs.IPRA.DiophantineNumberTheory.CfReal (nx proj_nx co cv uv cv_zero cv_succ uv_zero uv_succ lin Lin4
   subst_cv subst_uv)
 open LeanProofs.IPRA.DiophantineNumberTheory.CfValue (Pre pre Av congrSg' monus_step monus_one)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

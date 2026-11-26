@@ -5,6 +5,7 @@ import IPRADerivations.Core.MultiSums
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.Reindex
+import IPRADerivations.Core.Header
 
 /-!
 # Associativity of the finite Dirichlet convolution
@@ -29,7 +30,7 @@ in the packet's `L² = 𝟏 * (Λ * Λ + 𝒟Λ)` (`lam_conv_L`, `selberg_diviso
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.DirichletLeibniz (cvB conv DwB inst2_cvB inst2_DwB cv_at)
 open LeanProofs.IPRA.AnalyticNumberTheory.SelbergLeibniz (lamF lam_conv_one selberg_leibniz)
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt (Lw)
@@ -40,10 +41,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.Totient (count_multiples quo_eq)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (zero_mul_l congrEqb' congrSg)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

@@ -1,4 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.KhinchinGapRound
+import IPRADerivations.Core.Header
 
 /-!
 # One (K2) round on a refining grid (`hurwitz_khinchin_ipra`)
@@ -24,12 +25,8 @@ newly covered fine cells of block `g` (`rs_g + cv_g = r`):
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinGridRound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlock (sum_le_lin1)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

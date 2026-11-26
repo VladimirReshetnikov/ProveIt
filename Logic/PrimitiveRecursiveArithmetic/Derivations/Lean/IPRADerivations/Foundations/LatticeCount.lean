@@ -3,6 +3,7 @@ import IPRADerivations.Core.Gcd
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.CommonLemmas
 import IPRADerivations.Core.SubstCommand
+import IPRADerivations.Core.Header
 
 /-!
 # Counting integers in intervals
@@ -18,13 +19,9 @@ The body reads its endpoints from the pair parameter `⟨lo, hi⟩`.
 
 namespace LeanProofs.IPRA.Foundations.LatticeCount
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 open LeanProofs.IPRA.Foundations.IntervalCover (cnt)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

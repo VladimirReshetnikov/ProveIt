@@ -1,6 +1,7 @@
 import IPRADerivations.Probability.UnionUtility
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Foundations.ReverseDemand
+import IPRADerivations.Core.Header
 
 /-!
 # Normalizing a modulus to a monotone one
@@ -36,14 +37,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.ModulusNormalization
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.UnionUtility (Mx Ag mx_upper ag_attains)
 open LeanProofs.IPRA.Probability.Ninther (mx)
 open LeanProofs.IPRA.Foundations.ReverseDemand (le_mx_left le_mx_right mx_lub)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)} (μ : PTm 2)
 

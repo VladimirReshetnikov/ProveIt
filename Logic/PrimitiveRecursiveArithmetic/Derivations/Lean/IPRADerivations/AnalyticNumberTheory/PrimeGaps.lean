@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.PrimeRank
 import IPRADerivations.Core.CertificateTactics
 import IPRADerivations.Core.InductionTactic
+import IPRADerivations.Core.Header
 
 /-!
 # Arbitrarily long runs of composite numbers
@@ -20,7 +21,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PrimeGaps
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime dvd_fact fact_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (isP isP_01 prime_of_isP)
@@ -28,10 +29,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrIsP)
 open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.PrimeRank (pc pc_succ congrPc pc_step_le succ_le_succ)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_add')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

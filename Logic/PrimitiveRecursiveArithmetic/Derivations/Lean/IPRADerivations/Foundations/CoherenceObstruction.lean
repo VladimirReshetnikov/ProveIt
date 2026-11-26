@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.BackwardViability
 import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.Core.InductionTactic
+import IPRADerivations.Core.Header
 
 /-!
 # Finite solvability without a coherent branch (`ipra_categorical_methods`, `thm:tree`)
@@ -40,16 +41,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.CoherenceObstruction
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.ProductPower (dg dg_low rem_lt'')
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
 open LeanProofs.IPRA.Foundations.BoundedReflection (eqb_cases one_ne_zero)
 open LeanProofs.IPRA.Foundations.BackwardViability (lt_two_of_bit bit_of_lt_two)
 open LeanProofs.IPRA.Foundations.FiniteSetExponential
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

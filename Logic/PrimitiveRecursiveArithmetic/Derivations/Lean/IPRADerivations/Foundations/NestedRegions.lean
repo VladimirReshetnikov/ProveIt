@@ -1,6 +1,7 @@
 import IPRADerivations.Core.MultiSums
 import IPRADerivations.Core.Powers
 import IPRADerivations.Core.Gcd
+import IPRADerivations.Core.Header
 
 /-!
 # Nested rational balls and their regular center name
@@ -21,11 +22,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.NestedRegions
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
+open_ipra
 
 variable {n m : ℕ} {Γ : List (Fm PTm n)}
 

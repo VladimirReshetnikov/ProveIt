@@ -1,6 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.TwoSquaresByDescent
 import IPRADerivations.AnalyticNumberTheory.PrimeGaps
 import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.Header
 
 /-!
 # Fermat's two-square theorem: sorted bounds and the biconditional
@@ -32,7 +33,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.TwoSquaresBounds
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two)
 open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
@@ -42,10 +43,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_of_eq')
 open LeanProofs.IPRA.DiophantineNumberTheory.FermatTwoSquares (Aw Bw fermat_witness fermat_converse_open)
 open LeanProofs.IPRA.DiophantineNumberTheory.TwoSquaresByDescent (T rep_intro rep_elim)
 open LeanProofs.IPRA.Foundations.CrossingSearch (monus_of_eq)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

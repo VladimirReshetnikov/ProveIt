@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.FactorialLambda
 import IPRADerivations.Core.ParityArith
+import IPRADerivations.Core.Header
 
 /-!
 # Liouville's function is completely multiplicative
@@ -25,14 +26,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.LiouvilleLambda
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (zero_mul_l isP_zero isP_one)
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt (ellB Lw)
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (ell_at lw_mul)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

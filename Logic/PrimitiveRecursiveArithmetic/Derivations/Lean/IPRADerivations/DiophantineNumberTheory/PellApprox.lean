@@ -4,6 +4,7 @@ import IPRADerivations.AnalyticNumberTheory.SquareReciprocal
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.AnalyticNumberTheory.Smooth
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # Bounded norm with a prescribed lower denominator
@@ -29,17 +30,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.PellApprox
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.PellDirichlet (dirichlet dp dq)
 open LeanProofs.IPRA.DiophantineNumberTheory.IrrationalSqrt (square_of_rational_root)
 open LeanProofs.IPRA.AnalyticNumberTheory.SquareReciprocal (cancel_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (one_le_of_pos)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -4,6 +4,7 @@ import IPRADerivations.AnalyticNumberTheory.Euler
 import IPRADerivations.Foundations.CrossingSearch
 import IPRADerivations.Core.CertificateTactics
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # The half-factorial is a root of `−1`
@@ -32,7 +33,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.HalfFactorialRoot
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime fact_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (isP prime_of_isP isP_of_prime)
@@ -47,10 +48,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_of_eq' eq_of_dvd' dvd_
 open LeanProofs.IPRA.DiophantineNumberTheory.ModularCertificate (rem_add_congr)
 open LeanProofs.IPRA.DiophantineNumberTheory.WilsonConverse (wilson_prime succ_dvd)
 open LeanProofs.IPRA.Foundations.CrossingSearch (monus_of_eq)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

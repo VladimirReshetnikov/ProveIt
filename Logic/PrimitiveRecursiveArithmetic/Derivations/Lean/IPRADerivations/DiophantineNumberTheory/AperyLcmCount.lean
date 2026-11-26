@@ -1,6 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.AperyLcmTerms
 import IPRADerivations.DiophantineNumberTheory.AperyLcmVal
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # The per-prime count of the Apéry divisibility step
@@ -23,7 +24,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.AperyLcmCount
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.AperyLcmTerms (terms_le terms_lt)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totatives (sg_lt sg_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
@@ -47,10 +48,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.BinomialLcm (dvd_of_val_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (prime_of_isP isP)
 open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (val_mul)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

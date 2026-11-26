@@ -2,6 +2,7 @@ import IPRADerivations.Foundations.IterationFusion
 import IPRADerivations.Core.Powers
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Core.BoundedSums
+import IPRADerivations.Core.Header
 
 /-!
 # Iterates of a contraction on an invariant ball
@@ -30,12 +31,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.ContractionIterates
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.IterationFusion (app1 iter iter_zero iter_succ congrApp1 subst_app1)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

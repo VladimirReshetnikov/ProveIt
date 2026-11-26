@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.BoundedFormulas
+import IPRADerivations.Core.Header
 
 /-!
 # The two-class obstruction (`ipra_categorical_methods`, `thm:no-two-class-skeleton`)
@@ -31,13 +32,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.TwoClassObstruction
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg)
 open LeanProofs.IPRA.Foundations.BoundedReflection (sg_cases one_ne_zero)
 open LeanProofs.IPRA.Foundations.BoundedFormulas (sg_of_pos sg_of_zero)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

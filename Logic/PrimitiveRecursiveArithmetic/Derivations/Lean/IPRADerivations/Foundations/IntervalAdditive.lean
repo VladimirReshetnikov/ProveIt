@@ -2,6 +2,7 @@ import IPRADerivations.Foundations.IntervalCover
 import IPRADerivations.Foundations.LatticeCount
 import IPRADerivations.Foundations.InjectionCount
 import IPRADerivations.Core.Reindex
+import IPRADerivations.Core.Header
 
 /-!
 # Additivity of length for disjoint finite unions
@@ -26,7 +27,7 @@ The general `at_most_one`: a family of bits `[a(j)]` with no two set has at most
 
 namespace LeanProofs.IPRA.Foundations.IntervalAdditive
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 open LeanProofs.IPRA.Combinatorics.FiniteBijection (sg_bit shift_inst2')
 open LeanProofs.IPRA.Foundations.IntervalCover (cnt indB inst3_indB covB measure lenB)
@@ -34,10 +35,6 @@ open LeanProofs.IPRA.Foundations.LatticeCount (icB icS exact_count)
 open LeanProofs.IPRA.Foundations.InjectionCount (term_zero)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

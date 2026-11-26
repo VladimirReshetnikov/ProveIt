@@ -6,6 +6,7 @@ import IPRADerivations.AnalyticNumberTheory.EulerProduct
 import IPRADerivations.AnalyticNumberTheory.CoprimeModulus
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # Counting a progression inside the multiples of `l` (the sieve counting step)
@@ -35,7 +36,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SieveCount
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.BrunCounting (gB g_at A count_upper count_lower)
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerResidue (res res_lt ind_transport)
 open LeanProofs.IPRA.AnalyticNumberTheory.CoprimeModulus (pos_of_one_le two_le_of_ne)
@@ -46,10 +47,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (pos_of_eq rem_small)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrEqb' zero_mul_l one_inst)
 open LeanProofs.IPRA.AnalyticNumberTheory.EulerProduct (eqb_comm')
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_of_dvd')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

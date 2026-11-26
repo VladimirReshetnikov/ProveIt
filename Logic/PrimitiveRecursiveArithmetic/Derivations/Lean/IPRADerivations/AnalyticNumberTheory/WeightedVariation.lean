@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.WeightedBound
 import IPRADerivations.AnalyticNumberTheory.AbelParts
 import IPRADerivations.AnalyticNumberTheory.SumReindex
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # The variation of `|R(x/n)|` (`pnt_ipra_constructive_2026-11-14`, `sb:weighted-sum`)
@@ -23,7 +24,7 @@ set_option linter.unusedSectionVars false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.WeightedVariation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB inst2_h quo_anti)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (wt)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
@@ -49,10 +50,6 @@ open LeanProofs.IPRA.Probability.Independence (cm_pt)
 open LeanProofs.IPRA.Foundations.AuxiliaryEnvelope (sum_le_const)
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

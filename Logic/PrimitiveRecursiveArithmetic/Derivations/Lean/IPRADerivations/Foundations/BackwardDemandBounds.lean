@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.BackwardDemand
+import IPRADerivations.Core.Header
 
 /-!
 # The explicit constant-loss observation budget
@@ -16,13 +17,9 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Foundations.BackwardDemandBounds
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.BackwardDemand
 open LeanProofs.IPRA.Foundations.BoundedFormulas (BF)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

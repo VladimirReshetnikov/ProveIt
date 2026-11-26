@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.ConicCount
 import IPRADerivations.DiophantineNumberTheory.SimultaneousTransfer
+import IPRADerivations.Core.Header
 
 /-!
 # Arithmetic of the Kronecker corollaries
@@ -20,12 +21,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KroneckerCorollaries
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.PolynomialRemainder (AbsLe abs_hi abs_lo)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

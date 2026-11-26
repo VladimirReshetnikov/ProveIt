@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.WeightedVariation
+import IPRADerivations.Core.Header
 
 /-!
 # Selberg's weighted inequality (`pnt_ipra_constructive_2026-11-14`, `sb:weighted-sum`)
@@ -21,7 +22,7 @@ set_option linter.unusedSectionVars false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.WeightedAbel
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (wt)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
@@ -52,10 +53,6 @@ open LeanProofs.IPRA.Probability.Lotus (cmB sum_const_mul)
 open LeanProofs.IPRA.Probability.Independence (cm_pt)
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

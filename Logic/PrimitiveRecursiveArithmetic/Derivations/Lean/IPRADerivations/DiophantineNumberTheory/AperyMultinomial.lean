@@ -2,6 +2,7 @@ import IPRADerivations.DiophantineNumberTheory.AperyMultibound
 import IPRADerivations.DiophantineNumberTheory.SuperellipticFamily
 import IPRADerivations.Combinatorics.BinomialTheorem
 import IPRADerivations.Core.SumLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # The multinomial-term bound of the Apéry lcm estimate
@@ -27,15 +28,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.AperyMultinomial
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.AperyMultibound (Aval mul_pw multibound_of_term)
 open LeanProofs.IPRA.DiophantineNumberTheory.SuperellipticFamily (one_pw)
 open LeanProofs.IPRA.Combinatorics.Binomial (binom)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (tBody inst2_t binomial_at congrBinom congrPw)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.RealizerLeastSearch
 import IPRADerivations.Foundations.FiniteQueryDemand
 import IPRADerivations.Core.SubstCommand
+import IPRADerivations.Core.Header
 
 /-!
 # Actual finite Herbrand capsules
@@ -19,15 +20,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.HerbrandCapsule
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
 open LeanProofs.IPRA.Foundations.RealizerComposition (sequence_mono)
 open LeanProofs.IPRA.Foundations.FiniteQueryDemand (finiteMaximum finiteMaximum_at subst_finiteMaximum)
 open LeanProofs.IPRA.Foundations.BoundedSyntax (BFm)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

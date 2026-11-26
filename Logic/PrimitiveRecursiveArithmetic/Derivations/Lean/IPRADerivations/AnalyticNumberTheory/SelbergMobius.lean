@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.ConvolutionAssoc
 import IPRADerivations.AnalyticNumberTheory.MangoldtMobius
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.AnalyticNumberTheory.DivisorCases
+import IPRADerivations.Core.Header
 
 /-!
 # Selberg's exact symmetry identity `μ * L² = Λ * Λ + 𝒟Λ` (`pnt_ipra_constructive_2026-11-14`)
@@ -23,7 +24,7 @@ the inversion is `[d ∣ N] μ^±(d) L_w(N/d)²` (`row_sq_mob`, as `MangoldtMobi
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SelbergMobius
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds (sum_ext shift_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusInversion (aP aN inst3_aP inst3_aN mobius_inversion eqb_rem_big)
@@ -34,10 +35,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (cvF inst2_cvF selber
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_of_dvd' pos_of_eq_mul)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

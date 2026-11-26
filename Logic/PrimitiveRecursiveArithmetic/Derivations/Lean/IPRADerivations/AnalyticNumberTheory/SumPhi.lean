@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.GcdFiber
 import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.InductionTactic
+import IPRADerivations.Core.Header
 
 /-!
 # The divisor-sum identity `∑_{d ∣ n} φ(d) = n`
@@ -22,7 +23,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SumPhi
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
@@ -31,10 +32,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.Order (gcd_pos_right)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totatives (pw_two_inj prod_pw_two)
 open LeanProofs.IPRA.AnalyticNumberTheory.GcdFiber (div_eq eqb_iff gB inst3_gB shift_pos gcd_fiber_at)
 open LeanProofs.IPRA.AnalyticNumberTheory.RSA (pw_mul)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

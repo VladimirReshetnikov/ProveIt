@@ -4,6 +4,7 @@ import IPRADerivations.Topology.CollisionScales
 import IPRADerivations.Core.CertificateTactics
 import IPRADerivations.Core.CommonLemmas
 import IPRADerivations.Core.InductionTactic
+import IPRADerivations.Core.Header
 
 /-!
 # The dyadic Chebyshev upper bound for the prime count
@@ -36,7 +37,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevUpper
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (isP)
 open LeanProofs.IPRA.AnalyticNumberTheory.PrimeRank (pc pc_zero pc_succ pc_step_le congrPc succ_le_succ pc_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.PrimorialUpper (pri pri_pos pri_succ pri_le congrPri)
@@ -44,10 +45,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevPi (exp_le_of_pw_le cb_lower 
 open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBounds (two_pos')
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Topology.CollisionScales (lt_pw_two)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

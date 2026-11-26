@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.FiniteSetCategory
+import IPRADerivations.Core.Header
 
 /-!
 # Binary products in the table category of finite sets (`ipra_categorical_methods`, Section 4)
@@ -26,16 +27,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.FiniteSetProducts
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.ProductPower (dg)
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (pos_mul')
 open LeanProofs.IPRA.Foundations.FiniteSetExponential
 open LeanProofs.IPRA.Foundations.FiniteSetCategory
 open LeanProofs.IPRA.Foundations.PresentedCategory
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

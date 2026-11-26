@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.DivisorFactor
+import IPRADerivations.Core.Header
 
 /-!
 # Multiplicativity of the divisor sum `σ` (`robin_ipra_research_2026-11-19`)
@@ -16,14 +17,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SigmaMult
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.DivisorFactor
 open LeanProofs.IPRA.Probability.Lotus (cmB inst2_cmB sum_const_mul)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrEqb')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

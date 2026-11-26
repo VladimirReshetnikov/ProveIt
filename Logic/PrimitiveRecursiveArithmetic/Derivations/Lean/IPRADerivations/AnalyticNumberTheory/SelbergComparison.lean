@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.TauLogAbel
+import IPRADerivations.Core.Header
 
 /-!
 # The comparison-function error (`pnt_ipra_constructive_2026-11-14`, `sb:comparison-error`)
@@ -27,7 +28,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SelbergComparison
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (S_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
@@ -36,10 +37,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.DivisorBound (divisor_upper divisor_lo
 open LeanProofs.IPRA.AnalyticNumberTheory.TauLogAbel (As CT Tm tau_abel c_nonneg isqrt_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (pos_of_lt_zero)
 open LeanProofs.IPRA.Analysis.Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

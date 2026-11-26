@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.SieveWeightRows
 import IPRADerivations.AnalyticNumberTheory.SieveWeightValues
 import IPRADerivations.Foundations.SignedSums
 import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.Header
 
 /-!
 # The quadratic form at the explicit sieve weights
@@ -36,7 +37,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightForm
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg sg_zero)
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg zero_mul_l)
@@ -51,10 +52,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightRows (uB Ab_sum Bb_sum)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightValues (y0P y0N YP YN YP_at YN_at aP_indep aN_indep Y_disj
   phi_YP phi_YN)
 open LeanProofs.IPRA.Probability.Independence (dsum)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

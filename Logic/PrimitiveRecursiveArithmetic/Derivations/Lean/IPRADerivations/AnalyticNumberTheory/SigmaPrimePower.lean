@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.SigmaMult
 import IPRADerivations.AnalyticNumberTheory.Fermat
 import IPRADerivations.AnalyticNumberTheory.PlusPower
 import IPRADerivations.AnalyticNumberTheory.SumReindex
+import IPRADerivations.Core.Header
 
 /-!
 # `σ` at a prime power (`robin_ipra_research_2026-11-19`)
@@ -22,7 +23,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SigmaPrimePower
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.SigmaMult (sB sig inst2_sB inst2_v0)
 open LeanProofs.IPRA.AnalyticNumberTheory.DivisorSplit (mul_cancel pos_of_dvd)
 open LeanProofs.IPRA.AnalyticNumberTheory.DivisorFactor (inst2_v1)
@@ -43,10 +44,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (sum_add2)
 open LeanProofs.IPRA.AnalyticNumberTheory.Euler (rem_one)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.BlockChain (one_le_pw')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

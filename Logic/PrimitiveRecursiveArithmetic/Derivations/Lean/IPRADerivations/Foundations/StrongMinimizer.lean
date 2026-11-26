@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.ApproximateWitness
 import IPRADerivations.Foundations.StrongConvexity
+import IPRADerivations.Core.Header
 
 /-!
 # Rational stability of actual finite-net minimizers
@@ -21,12 +22,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.StrongMinimizer
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n m : ℕ} {Γ : List (Fm PTm n)}
 

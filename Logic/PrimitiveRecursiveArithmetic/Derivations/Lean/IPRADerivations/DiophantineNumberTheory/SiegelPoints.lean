@@ -1,6 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.Siegel
 import IPRADerivations.DiophantineNumberTheory.SuperellipticFamily
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # The integral points of `y² = x^{2m} + x + 1`, completed
@@ -24,12 +25,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.SiegelPoints
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.SuperellipticFamily (s_eq_one one_pw zero_pw congrPwBase)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

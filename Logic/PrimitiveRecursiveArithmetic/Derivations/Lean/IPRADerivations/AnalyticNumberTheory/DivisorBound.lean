@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.DivisorHarmonic
 import IPRADerivations.AnalyticNumberTheory.HarmonicMertens
 import IPRADerivations.DiophantineNumberTheory.HurwitzLoop
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # The divisor bound for the harmonic logarithm (`pnt_ipra_constructive_2026-11-14`, `sb:divisor-bound`)
@@ -26,7 +27,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.DivisorBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB inst2_h)
 open LeanProofs.IPRA.AnalyticNumberTheory.LogRefinement (log_refine)
 open LeanProofs.IPRA.AnalyticNumberTheory.LogElementary (log_upper)
@@ -36,10 +37,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.DivisorHarmonic (divisor_harmonic)
 open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (pos_of_lt_zero)
 open LeanProofs.IPRA.DiophantineNumberTheory.HurwitzLoop (quo_mul_le)
 open LeanProofs.IPRA.Analysis.Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

@@ -1,6 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.ZTCancel
 import IPRADerivations.DiophantineNumberTheory.ConicLower
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # `L` and `R` have no common projective zero
@@ -20,13 +21,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.ConicNonzero
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.ConicIdentities (Form)
 open LeanProofs.IPRA.DiophantineNumberTheory.ZTCancel (zt_no_zero_div)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

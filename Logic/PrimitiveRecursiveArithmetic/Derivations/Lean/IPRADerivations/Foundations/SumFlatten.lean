@@ -3,6 +3,7 @@ import IPRADerivations.Core.SumSplit
 import IPRADerivations.Core.MultiSums
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.AnalyticNumberTheory.Totient
+import IPRADerivations.Core.Header
 
 /-!
 # Flattening a double sum
@@ -23,11 +24,7 @@ packet, `hurwitz_khinchin_ipra`) must be handed to a single-index lemma such as
 
 namespace LeanProofs.IPRA.Foundations.SumFlatten
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 set_option autoImplicit false
 

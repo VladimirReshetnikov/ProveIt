@@ -2,6 +2,7 @@ import IPRADerivations.DiophantineNumberTheory.QuarticStep
 import IPRADerivations.Core.EuclidLemma
 import IPRADerivations.AnalyticNumberTheory.PhiLower
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # The gcd tools and the primitive Pythagorean parametrization
@@ -28,7 +29,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.DescentTools
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
 open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos)
@@ -36,10 +37,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
 open LeanProofs.IPRA.DiophantineNumberTheory.Pythagoras (pm pn pyth_at two_pos)
 open LeanProofs.IPRA.DiophantineNumberTheory.QuarticStep (odd_sq_sum not_both_even)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

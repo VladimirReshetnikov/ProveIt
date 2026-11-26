@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.QuantifierTransport
 import IPRADerivations.Core.Order
+import IPRADerivations.Core.Header
 
 /-!
 # The constructive logical core of the Richardson reduction, inside iPRA
@@ -20,10 +21,8 @@ derivations, for arbitrary formulas of iPRA, with `iff A B = (A ⟶ B) ⋏ (B �
 
 namespace LeanProofs.IPRA.Foundations.RichardsonLogic
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.QuantifierTransport (pushEx)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

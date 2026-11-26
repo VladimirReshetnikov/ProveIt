@@ -3,6 +3,7 @@ import IPRADerivations.Foundations.RuntimeWordAppend
 import IPRADerivations.Foundations.InjectionCount
 import IPRADerivations.Core.CongruenceTactic
 import IPRADerivations.Core.SubstCommand
+import IPRADerivations.Core.Header
 
 /-!
 # Actual deletion of the maximum digit of a numerical permutation word
@@ -18,15 +19,11 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Foundations.RuntimePermutationDeletion
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RuntimePermutationWords (digit horizon permutationBit word encode tuple range distinct entriesEqual)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
 open LeanProofs.IPRA.Foundations.GuardedTotalization (sel sel_one sel_zero)
-open LeanProofs.IPRA.PTm (monus pred)
-open ConciseIPRA.PTm (zero succ app)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

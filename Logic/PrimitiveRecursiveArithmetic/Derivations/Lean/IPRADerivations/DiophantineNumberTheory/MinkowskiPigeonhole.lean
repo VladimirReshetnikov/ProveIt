@@ -1,6 +1,7 @@
 import IPRADerivations.Core.Pigeonhole
 import IPRADerivations.Foundations.MasterCertificate
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # Bounded color collision with only a finite prefix range contract
@@ -24,13 +25,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiPigeonhole
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_lt' rem_eq')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

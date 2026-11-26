@@ -3,6 +3,7 @@ import IPRADerivations.DiophantineNumberTheory.FourSquaresSeed
 import IPRADerivations.DiophantineNumberTheory.FermatTwoSquares
 import IPRADerivations.Foundations.StrongInduction
 import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.Header
 
 /-!
 # Lagrange's four-square theorem with primitive recursive witnesses
@@ -33,7 +34,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.FourSquares
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime lpf)
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorVector (one_le_pos lpf_prime' lpf_dvd')
 open LeanProofs.IPRA.AnalyticNumberTheory.BinomialThree (pos_of_one_le)
@@ -48,10 +49,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.FermatTwoSquares (odd_of_prime_ne_t
 open LeanProofs.IPRA.Foundations.BoundedReflection (exB wit ex_cases ex_intro ex_elim ex_least eqb_cases
   eq_of_eqb one_ne_zero)
 open LeanProofs.IPRA.Signum (sg sg_zero)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

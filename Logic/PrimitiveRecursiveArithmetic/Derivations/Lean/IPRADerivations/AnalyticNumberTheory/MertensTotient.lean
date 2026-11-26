@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.MobiusFloor
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Weighted floor sums of the Mertens function and the summatory totient
@@ -29,7 +30,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.MertensTotient
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi totBody)
 open LeanProofs.IPRA.AnalyticNumberTheory.SumPhi (dpB inst2_dp sum_phi_at)
 open LeanProofs.IPRA.AnalyticNumberTheory.DirichletLeibniz (cvB conv cv_at)
@@ -40,10 +41,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.MobiusSummatory (bF gS inst2_gS mobius
 open LeanProofs.IPRA.AnalyticNumberTheory.HyperbolaSwap (hyp_swap)
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusFloor (MP MN inst2_oneB B_one)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

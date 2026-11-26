@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.SelbergMobiusP
 import IPRADerivations.AnalyticNumberTheory.ConvSummatory
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Selberg's identity summed up to `x` (`pnt_ipra_constructive_2026-11-14`, towards `sb:symmetry-bound`)
@@ -23,7 +24,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SymmetrySum
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds (mu_bound congrMu)
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt
@@ -34,10 +35,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (sum_add2 lam_zero)
 open LeanProofs.IPRA.AnalyticNumberTheory.SelbergMobiusP (Gx QSP QSN inst2_QSP inst2_QSN selberg_mobius_p)
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvSummatory (RB conv_summatory)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

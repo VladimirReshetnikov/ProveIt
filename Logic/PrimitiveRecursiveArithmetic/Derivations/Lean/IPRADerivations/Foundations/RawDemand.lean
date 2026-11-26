@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.FiniteStabilization
 import IPRADerivations.Foundations.ReverseDemand
 import IPRADerivations.Probability.Ninther
+import IPRADerivations.Core.Header
 
 /-!
 # Raw demand adequacy of the capped closure
@@ -29,13 +30,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.RawDemand
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.IterationFusion (app1 iter)
 open LeanProofs.IPRA.Foundations.FiniteStabilization (capped_closure_least)
 open LeanProofs.IPRA.Foundations.ReverseDemand (le_mx_left le_mx_right mx_lub)
 open LeanProofs.IPRA.Probability.Ninther (mx mn mn_le mn_ge)
-open Syn
-open scoped Fm
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

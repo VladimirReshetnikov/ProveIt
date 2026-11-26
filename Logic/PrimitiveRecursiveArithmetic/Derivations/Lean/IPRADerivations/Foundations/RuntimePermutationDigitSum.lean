@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.RuntimeWordSorting
 import IPRADerivations.Core.SubstCommand
+import IPRADerivations.Core.Header
 
 /-!
 # The sum of numerical permutation digits
@@ -13,11 +14,8 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Foundations.RuntimePermutationDigitSum
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RuntimePermutationWords
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

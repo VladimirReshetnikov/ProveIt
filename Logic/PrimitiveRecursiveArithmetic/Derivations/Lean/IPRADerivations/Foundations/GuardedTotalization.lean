@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.BooleanBits
 import IPRADerivations.Foundations.IterationFusion
+import IPRADerivations.Core.Header
 
 /-!
 # Guarded totalization
@@ -22,14 +23,10 @@ For a guard bit `g`, a computed value `a` and a default `d`, the total program i
 
 namespace LeanProofs.IPRA.Foundations.GuardedTotalization
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.BoundedFormulas (not_of_zero not_of_one)
 open LeanProofs.IPRA.Foundations.BooleanBits (Bit)
 open LeanProofs.IPRA.Foundations.IterationFusion (rel rel_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

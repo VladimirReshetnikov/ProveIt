@@ -1,4 +1,5 @@
 import IPRADerivations.Core.LinearAlgebra
+import IPRADerivations.Core.Header
 
 /-!
 # Common zeros give norm zeros, for every matrix size (`ipra_presentations_to_witnesses`, `lem:norm-intersection-vanishing`)
@@ -28,9 +29,7 @@ Not derived: the construction of `M_G(a)` from the monic reduction identities, a
 
 namespace LeanProofs.IPRA.Foundations.NullVectorDeterminant
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
+open_ipra
 open Matrix
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}

@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.ReverseDemand
 import IPRADerivations.Core.Descent
+import IPRADerivations.Core.Header
 
 /-!
 # The least reverse demand on an acyclic graph
@@ -31,11 +32,9 @@ order; that construction is the metalevel elaboration of the packets and is not 
 
 namespace LeanProofs.IPRA.Foundations.GraphDemand
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.Ninther (mx)
 open LeanProofs.IPRA.Foundations.ReverseDemand (le_mx_left le_mx_right mx_lub)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

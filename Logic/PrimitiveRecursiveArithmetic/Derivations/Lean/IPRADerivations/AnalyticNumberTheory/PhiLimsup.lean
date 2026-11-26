@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.PhiUpper
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Finite witnesses for `limsup φ(n)/n = 1`
@@ -17,15 +18,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PhiLimsup
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (lpf μz lpf_dvd lpf_prime prime dvd_fact fact_pos not_dvd_one)
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.Radical (phi_prime)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

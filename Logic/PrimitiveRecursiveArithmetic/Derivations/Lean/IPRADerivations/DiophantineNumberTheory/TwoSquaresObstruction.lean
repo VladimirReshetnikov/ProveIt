@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.PrimesModFour
 import IPRADerivations.AnalyticNumberTheory.PowerResidue
 import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.Header
 
 /-!
 # Primes `q ≡ 3 (mod 4)` and sums of two squares
@@ -24,7 +25,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.TwoSquaresObstruction
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two)
 open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
@@ -39,10 +40,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.ThueGrid (rem_cancel)
 open LeanProofs.IPRA.DiophantineNumberTheory.QuadraticReciprocityGoal (signBit)
 open LeanProofs.IPRA.DiophantineNumberTheory.QuadraticSupplements (minus_one_law no_root_of_sign)
 open LeanProofs.IPRA.DiophantineNumberTheory.FermatTwoSquares (four_pos)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

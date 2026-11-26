@@ -3,6 +3,7 @@ import IPRADerivations.AnalyticNumberTheory.LocalFactor
 import IPRADerivations.DiophantineNumberTheory.ModularCertificate
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # The order of a product with coprime orders
@@ -25,7 +26,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.OrderProduct
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.RSA (pw_mul)
 open LeanProofs.IPRA.AnalyticNumberTheory.Order (ord order_cong pw_rem_congr pw_one_base)
 open LeanProofs.IPRA.AnalyticNumberTheory.OrderDivides (order_dvd_of_pow pow_of_order_dvd)
@@ -34,10 +35,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.ModularCertificate (rem_mul_congr2)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_of_eq' eq_of_dvd' dvd_le' gcd_comm_one coprime_mul)
 open LeanProofs.IPRA.DiophantineNumberTheory.ConicGcd (dvd_of_coprime_pair)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.SieveBilinear
 import IPRADerivations.AnalyticNumberTheory.SieveDiagonal
+import IPRADerivations.Core.Header
 
 /-!
 # The main term and the error term of the bilinear sieve estimate
@@ -26,7 +27,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SieveClosedForms
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrEqb')
 open LeanProofs.IPRA.AnalyticNumberTheory.SievePairSum (subst_gcd' Cm inst3_Cm inst3_wB)
@@ -37,10 +38,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.DivisorExchange (LW)
 open LeanProofs.IPRA.DiophantineNumberTheory.QuarticStep (congrGcd)
 open LeanProofs.IPRA.Foundations.DoubleSumScale (at1 dsum_scale)
 open LeanProofs.IPRA.Probability.Independence (dsum pmB inst3_pmB sum_mul_sum)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

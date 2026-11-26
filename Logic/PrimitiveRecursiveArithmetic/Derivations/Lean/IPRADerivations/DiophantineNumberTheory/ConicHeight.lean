@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.ConicIdentities
 import IPRADerivations.Analysis.Polynomials.PolynomialRemainder
+import IPRADerivations.Core.Header
 
 /-!
 # The upper height bound of the conic parametrization
@@ -21,13 +22,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.ConicHeight
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.ConicIdentities (Form)
 open LeanProofs.IPRA.Analysis.PolynomialRemainder (AbsLe abs_hi abs_lo abs_of abs_mono abs_add abs_mul)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

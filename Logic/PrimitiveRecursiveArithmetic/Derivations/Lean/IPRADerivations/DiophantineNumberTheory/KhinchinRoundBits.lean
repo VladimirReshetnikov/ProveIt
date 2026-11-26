@@ -3,6 +3,7 @@ import IPRADerivations.DiophantineNumberTheory.KhinchinMargin
 import IPRADerivations.Foundations.CrossingSearch
 import IPRADerivations.Core.SumLemmas
 import IPRADerivations.AnalyticNumberTheory.SumPhi
+import IPRADerivations.Core.Header
 
 /-!
 # The bits of one (K2) round in a coarse cell (`hurwitz_khinchin_ipra`)
@@ -25,17 +26,13 @@ parameter `⟨w, z⟩`, so the bodies `fB v`, `cB v` are closed.
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinRoundBits
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg)
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinGridRound (bit_cases)
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinMargin (monus_le' sg_le_one)
 open LeanProofs.IPRA.Foundations.CrossingSearch (monus_of_eq)
 open LeanProofs.IPRA.Foundations.AuxiliaryEnvelope (sum_le_const)
 open LeanProofs.IPRA.AnalyticNumberTheory.SumPhi (sum_ones)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

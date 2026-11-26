@@ -1,6 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.AperyMultinomial
 import IPRADerivations.AnalyticNumberTheory.BinomialLcm
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # The valuation of the Apéry multinomial
@@ -22,7 +23,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.AperyLcmVal
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (fact_pos prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val)
@@ -31,10 +32,6 @@ open LeanProofs.IPRA.Combinatorics.Binomial (binom bden bden_pos binom_rem_zero 
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (qB')
 open LeanProofs.IPRA.Combinatorics.LegendreFact (legendre_fact)
 open LeanProofs.IPRA.DiophantineNumberTheory.AperyMultinomial (Mm)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

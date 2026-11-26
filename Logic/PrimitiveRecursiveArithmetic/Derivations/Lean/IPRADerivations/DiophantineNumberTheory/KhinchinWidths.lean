@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.KhinchinBlock
 import IPRADerivations.DiophantineNumberTheory.KhinchinMargin
+import IPRADerivations.Core.Header
 
 /-!
 # Scale widths from the capped masses (`hurwitz_khinchin_ipra`, (K8)–(K11) hypotheses)
@@ -20,13 +21,9 @@ The exactness is a divisibility condition on the grid (`4 Q_k² C` divides `T t_
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinWidths
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlock (sum_le_lin1)
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinMargin (cancel)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

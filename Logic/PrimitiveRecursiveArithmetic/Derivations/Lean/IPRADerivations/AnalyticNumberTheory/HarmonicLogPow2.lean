@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.LogElementary
 import IPRADerivations.Core.Gcd
+import IPRADerivations.Core.Header
 
 /-!
 # `log 2 ≤ 1` for the harmonic logarithm (`pnt_ipra_constructive_2026-11-14`, towards `con:global`)
@@ -16,13 +17,9 @@ logarithm `λ_M(a/b) = H_{Ma} − H_{Mb}` (with `H_m = S(m, F)/F`) the passage n
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogPow2
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
 open LeanProofs.IPRA.AnalyticNumberTheory.LogElementary (log_upper)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.CubicBisection
+import IPRADerivations.Core.Header
 
 /-!
 # The certified enclosure of the cubic root
@@ -37,14 +38,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.CubicEnclosure
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.TraceReflection (Run)
 open LeanProofs.IPRA.Foundations.BisectionInvariant (bStep)
 open LeanProofs.IPRA.Foundations.CubicBisection (cinit cc cubic_bisection cubic_bracket cubic_nested width_fuel)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

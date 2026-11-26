@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.SieveMajorant
 import IPRADerivations.AnalyticNumberTheory.FactorVector
 import IPRADerivations.AnalyticNumberTheory.SumPhi
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # From the sifted count to the count of primes in the progression
@@ -24,7 +25,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SievePrimes
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg sg_zero)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (isP isP_01 prime_of_isP)
@@ -35,10 +36,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.SieveExpansion (cB inst2_cB)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveRough (rB inst2_rB rgh)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveMajorant (S0 S0_at)
 open LeanProofs.IPRA.Analysis.PowerSums (sum_le)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

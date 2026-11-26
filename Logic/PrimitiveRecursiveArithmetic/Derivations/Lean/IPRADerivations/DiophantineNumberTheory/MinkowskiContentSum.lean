@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.RationalNormalForm
 import IPRADerivations.Core.ProdLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # Exact clearing of the actual rational box-content sum
@@ -20,13 +21,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiContentSum
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.RationalIntegerNormalization (positive_form)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (one_le_of_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)

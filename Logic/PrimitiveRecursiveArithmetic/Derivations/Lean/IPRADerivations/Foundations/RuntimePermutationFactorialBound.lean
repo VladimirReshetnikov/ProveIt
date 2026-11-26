@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.RuntimePermutationDeletion
 import IPRADerivations.Topology.InjectionBound
 import IPRADerivations.Core.SubstCommand
+import IPRADerivations.Core.Header
 
 /-!
 # The retained runtime permutation count is bounded by the actual factorial
@@ -17,13 +18,10 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Foundations.RuntimePermutationFactorialBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RuntimePermutationWords (count words horizon permutationBit)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.RuntimePermutationDeletion (packed packed_bound packed_unique)
-open ConciseIPRA.PTm (zero succ app)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

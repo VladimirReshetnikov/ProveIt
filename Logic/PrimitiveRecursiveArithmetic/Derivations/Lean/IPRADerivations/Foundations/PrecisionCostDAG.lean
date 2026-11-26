@@ -8,6 +8,7 @@ import IPRADerivations.Foundations.RealizerComposition
 import IPRADerivations.Core.CongruenceTactic
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.SubstCommand
+import IPRADerivations.Core.Header
 
 /-!
 # Actual rational budgets on finite topologically ordered dependency graphs
@@ -31,8 +32,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.PrecisionCostDAG
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open LeanProofs.IPRA.PTm (monus pred)
+open_ipra
 open LeanProofs.IPRA.Foundations.MasterCertificate (sequence entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition
   (length empty append append_length append_left append_right entry_congr)
@@ -41,9 +41,6 @@ open LeanProofs.IPRA.Analysis.RationalArithmetic (add multiply represents)
 open LeanProofs.IPRA.Analysis.RationalArgmin (rationalLE)
 open LeanProofs.IPRA.Analysis.RationalIntegerNormalization (normalize)
 open LeanProofs.IPRA.Analysis.RationalFiniteSum (sum)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

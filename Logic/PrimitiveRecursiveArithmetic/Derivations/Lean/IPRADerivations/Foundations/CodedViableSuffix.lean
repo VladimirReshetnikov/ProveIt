@@ -2,6 +2,7 @@ import IPRADerivations.Foundations.CodedViableChain
 import IPRADerivations.Core.CongruenceTactic
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.SubstCommand
+import IPRADerivations.Core.Header
 
 /-!
 # Coded viable suffixes at an arbitrary numerical level
@@ -14,17 +15,13 @@ and genuine QF induction, without an external admissibility rule bundle.
 set_option autoImplicit false
 set_option linter.unusedSimpArgs false
 namespace LeanProofs.IPRA.Foundations.CodedViableSuffix
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open LeanProofs.IPRA.PTm (monus)
+open_ipra
 open LeanProofs.IPRA.Foundations.BackwardViability
 open LeanProofs.IPRA.Foundations.BackwardViability.Instance
 open LeanProofs.IPRA.Foundations.ViableChain
 open LeanProofs.IPRA.Foundations.CodedViableChain (g_values t_values nonzero_of_eq pair_mono)
 open LeanProofs.IPRA.Foundations.MasterCertificate (sequence entry stack stack_succ stack_zero)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr subst_length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def remaining (I : Instance) (i p : PTm n) : PTm n := monus (I.h p) i

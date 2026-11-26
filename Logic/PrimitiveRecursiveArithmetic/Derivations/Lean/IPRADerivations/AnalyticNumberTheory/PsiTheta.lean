@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.PiTheta
+import IPRADerivations.Core.Header
 
 /-!
 # Prime powers of exponent at least two (`pnt_ipra_constructive_2026-11-14`, Lemma `lem:pi-conversion`)
@@ -19,7 +20,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PsiTheta
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (wt)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSquareSum (U)
@@ -37,10 +38,6 @@ open LeanProofs.IPRA.Foundations.BoundedFormulas (sg_of_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared (pw_le_exp)
 open LeanProofs.IPRA.Signum (sg)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

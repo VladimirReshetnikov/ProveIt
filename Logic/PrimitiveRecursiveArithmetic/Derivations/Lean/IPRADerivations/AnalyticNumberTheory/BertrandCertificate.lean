@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.BertrandSearch
 import IPRADerivations.Foundations.NumeralPrimes
+import IPRADerivations.Core.Header
 
 /-!
 # Bertrand's postulate: the finite certificate
@@ -24,14 +25,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.BertrandCertificate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.BertrandSearch (found limit exclude_interval_prime)
 open LeanProofs.IPRA.Foundations.NumeralPrimes (prime_num num_le num_lt)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

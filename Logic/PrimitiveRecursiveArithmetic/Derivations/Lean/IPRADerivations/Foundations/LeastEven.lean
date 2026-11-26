@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.BoundedSyntax
 import IPRADerivations.Foundations.BoundedSelection
 import IPRADerivations.Core.Parity
+import IPRADerivations.Core.Header
 
 /-!
 # The least even natural number in a bounded interval
@@ -21,10 +22,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.LeastEven
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.PerfectDivisorBounds
 import IPRADerivations.AnalyticNumberTheory.MersenneExponent
 import IPRADerivations.AnalyticNumberTheory.ValuationAdd
 import IPRADerivations.AnalyticNumberTheory.FactorVector
+import IPRADerivations.Core.Header
 
 /-!
 # The Euclid–Euler characterization of even perfect numbers
@@ -23,7 +24,7 @@ Mersenne exponent theorem.
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.EvenPerfectConverse
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorVector (val_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.MersenneExponent
   (mersenne succ_mersenne two_le_mersenne prime_exponent)
@@ -40,10 +41,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
   (dvd_of_eq' eq_of_dvd' dvd_sub' gcd_comm_one one_le_of_pos pos_of_eq_mul)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

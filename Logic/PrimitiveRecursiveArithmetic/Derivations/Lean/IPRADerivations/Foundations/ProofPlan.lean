@@ -1,4 +1,5 @@
 import IPRADerivations.Core.Basic
+import IPRADerivations.Core.Header
 
 /-!
 # The proof-plan compiler
@@ -28,9 +29,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.ProofPlan
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
+open_ipra
 
 /-- The indexed plan language. -/
 inductive Plan : {n : ℕ} → List (Fm PTm n) → Fm PTm n → Type

@@ -6,6 +6,7 @@ import IPRADerivations.Probability.Lotus
 import IPRADerivations.Core.SumOrder
 import IPRADerivations.Core.CertificateTactics
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # One prime step of the weight bound
@@ -37,7 +38,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightStep
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg sg_zero)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
@@ -51,10 +52,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightValues (YP YN)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightPrime (Y_kill abs_step)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_of_dvd')
 open LeanProofs.IPRA.Probability.Lotus (cmB inst2_cmB sum_const_mul)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

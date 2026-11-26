@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.SignedSums
 import IPRADerivations.Probability.Independence
 import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.Header
 
 /-!
 # Pulling a signed scalar out of a finite sum
@@ -12,11 +13,9 @@ difference representation, and compare signed values below the bound.
 
 namespace LeanProofs.IPRA.Foundations.SignedSumScale
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.Independence (cm_pt)
 open LeanProofs.IPRA.Probability.Lotus (cmB sum_const_mul)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

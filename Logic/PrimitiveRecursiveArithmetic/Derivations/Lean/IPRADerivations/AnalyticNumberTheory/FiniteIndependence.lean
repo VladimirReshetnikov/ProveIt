@@ -3,6 +3,7 @@ import IPRADerivations.AnalyticNumberTheory.SumReindex
 import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.Core.CertificateTactics
 import IPRADerivations.Core.InductionTactic
+import IPRADerivations.Core.Header
 
 /-!
 # Exact finite independence of divisibility events
@@ -33,7 +34,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.FiniteIndependence
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi totBody inst2_tot count_multiples quo_eq)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrEqb' zero_mul_l)
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds (shift_pos)
@@ -45,10 +46,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_of_eq' eq_of_dvd' gcd_
   coprime_dvd_left coprime_mul)
 open LeanProofs.IPRA.DiophantineNumberTheory.QuarticStep (congrGcd)
 open LeanProofs.IPRA.Foundations.BoundedReflection (eqb_cases eq_of_eqb one_ne_zero)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

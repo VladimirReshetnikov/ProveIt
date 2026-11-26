@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.HarmonicUpper
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.SubstCommand
+import IPRADerivations.Core.Header
 
 /-!
 # The telescoping bound for `Σ 1/d²` (Khinchin (K6))
@@ -21,14 +22,10 @@ With `T(N, F) = Σ_{i<N} ⌊F/(i+1)²⌋`:
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SquareReciprocal
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicUpper (block_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (quo_eq)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

@@ -4,6 +4,7 @@ import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.Combinatorics.BinomialIdentities
 import IPRADerivations.Core.EuclidLemma
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Injectivity of canonical powering
@@ -30,7 +31,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.CanonicalPowers
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
 open LeanProofs.IPRA.DiophantineNumberTheory.PrimitiveReduction (dvd_of_pw_dvd_pw)
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared (pw_le_cancel)
@@ -41,10 +42,6 @@ open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
 open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (eq_succ_pred)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

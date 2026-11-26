@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.SieveCount
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Counting a progression inside the common multiples of `d` and `e`
@@ -25,7 +26,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SievePairCount
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.BrunCounting (gB)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveCount (fB cnt cnt_pt count_le count_ge pos_mul)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
@@ -34,10 +35,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrEqb')
 open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos crt_unique_at)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_of_dvd' dvd_of_eq' gcd_dvd' dvd_trans' pos_of_eq_mul)
 open LeanProofs.IPRA.DiophantineNumberTheory.QuarticStep (congrGcd)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

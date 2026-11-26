@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.MobiusSummatory
 import IPRADerivations.AnalyticNumberTheory.SumPhi
 import IPRADerivations.AnalyticNumberTheory.HyperbolaSwap
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # The Möbius floor identity `∑_{d ≤ x} μ(d) ⌊x/d⌋ = [x ≥ 1]`
@@ -30,7 +31,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.MobiusFloor
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (muP muN congrSg zero_mul_l)
 open LeanProofs.IPRA.AnalyticNumberTheory.SymmetryInstances (epsB eps_bs sum_sg_eps)
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorVector (one_le_pos)
@@ -42,10 +43,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.MobiusSummatory (bF gS inst2_gS mobius
 open LeanProofs.IPRA.AnalyticNumberTheory.SumPhi (sum_ones)
 open LeanProofs.IPRA.AnalyticNumberTheory.HyperbolaSwap (hyp_swap)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.BackwardDemand
+import IPRADerivations.Core.Header
 
 /-!
 # Compile predetermined parameter-changing recursion
@@ -24,12 +25,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.ParameterChangingRecursion
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.BackwardDemand
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

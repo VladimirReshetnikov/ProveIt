@@ -5,6 +5,7 @@ import IPRADerivations.Core.SumSplit
 import IPRADerivations.Core.ProdLemmas
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.InductionTactic
+import IPRADerivations.Core.Header
 
 /-!
 # The Apéry recurrence
@@ -41,7 +42,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.AperyRecurrence
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Binomial (binom)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (binom_eq mul_cancel)
 open LeanProofs.IPRA.Combinatorics.Stirling (gle gle_of_le)
@@ -51,10 +52,6 @@ open LeanProofs.IPRA.Combinatorics.Catalan (succ_pos)
 open LeanProofs.IPRA.Combinatorics.CatalanNarayana (le_of_lt_succ)
 open LeanProofs.IPRA.Probability.BinomialLaw (absorption)
 open LeanProofs.IPRA.DiophantineNumberTheory.AperyNumbers (apB inst2_ap apery)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

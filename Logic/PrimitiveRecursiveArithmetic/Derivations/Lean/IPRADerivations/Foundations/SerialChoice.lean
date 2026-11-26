@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.GuardedTrace
 import IPRADerivations.Foundations.LeastBoundedWitness
 import IPRADerivations.Core.Descent
+import IPRADerivations.Core.Header
 
 /-!
 # Finite dependent choice from seriality
@@ -37,14 +38,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.SerialChoice
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Search (mu)
 open LeanProofs.IPRA.Foundations.LeastBoundedWitness (ExW lt_of_exists)
 open LeanProofs.IPRA.Foundations.TraceReflection (Run I3 subst_I3 run_succ)
 open LeanProofs.IPRA.Foundations.GuardedTrace (guarded_trace_all)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)} {g0 sT Bd : PTm 2} {B0 fuel : PTm 1} {Good : Fm PTm 3}
 

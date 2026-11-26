@@ -3,6 +3,7 @@ import IPRADerivations.Foundations.AuxiliaryEnvelope
 import IPRADerivations.Analysis.Names.Rates.ErrorBudgets
 import IPRADerivations.Probability.Histogram
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.Header
 
 /-!
 # The drift of a conserved quantity along Euler polygons
@@ -31,16 +32,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.OdeConservation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.Variance (ad)
 open LeanProofs.IPRA.Probability.Histogram (ad_self)
 open LeanProofs.IPRA.Analysis.ErrorBudgets (ad_tri)
 open LeanProofs.IPRA.Foundations.TelescopingNames (telescope)
 open LeanProofs.IPRA.Foundations.AuxiliaryEnvelope (sum_le_const)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -4,6 +4,7 @@ import IPRADerivations.Foundations.FrontierSoundness
 import IPRADerivations.Foundations.CoherentTower
 import IPRADerivations.Core.Division
 import IPRADerivations.Core.SumReflect
+import IPRADerivations.Core.Header
 
 /-!
 # The rational finite window: a nonrise of the floors
@@ -28,14 +29,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.RationalWindow
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.LeastBoundedWitness (ExW)
 open LeanProofs.IPRA.Foundations.RiseAlternative (riseB nxB inst2_riseB inst2_nxB nonrise_of_bound)
 open LeanProofs.IPRA.Foundations.FrontierSoundness (rdB inst2_rdB)
 open LeanProofs.IPRA.Foundations.CoherentTower (ex_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

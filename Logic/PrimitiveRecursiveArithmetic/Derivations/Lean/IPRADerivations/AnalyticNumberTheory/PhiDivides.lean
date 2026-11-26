@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.PhiPower
 import IPRADerivations.Core.InductionTactic
+import IPRADerivations.Core.Header
 
 /-!
 # Divisibility monotonicity of the totient
@@ -18,7 +19,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PhiDivides
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Algebra.CubeRootTwo (sg sg_zero sg_succ)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
@@ -27,10 +28,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.Primes (lpf lpf_dvd lpf_prime prime eq
 open LeanProofs.IPRA.AnalyticNumberTheory.Order (phi_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (phi_mul_at rem_eq' zero_lt')
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiPower (phi_mul_pow_at)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

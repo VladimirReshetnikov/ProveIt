@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.SmoothTruncated
 import IPRADerivations.AnalyticNumberTheory.TotientSumStep
+import IPRADerivations.Core.Header
 
 /-!
 # The prime step of the comparison `H ≤ G`
@@ -28,7 +29,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.DenominatorPrimeStep
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two)
@@ -37,10 +38,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.EulerDomination (Sm)
 open LeanProofs.IPRA.AnalyticNumberTheory.DivisorHyperbola (quo_le_self)
 open LeanProofs.IPRA.AnalyticNumberTheory.SmoothTruncated (trunc_step_succ)
 open LeanProofs.IPRA.AnalyticNumberTheory.TotientSumStep (Gs Ws G_split W_scale Ws_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

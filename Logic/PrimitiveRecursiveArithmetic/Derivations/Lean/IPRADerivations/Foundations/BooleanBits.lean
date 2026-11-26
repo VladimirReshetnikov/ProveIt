@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.BoundedFormulas
+import IPRADerivations.Core.Header
 
 /-!
 # Truth tables of the Boolean operations on proved bits
@@ -23,13 +24,9 @@ lemmas `or_left`, `or_right`, `or_none` of `Foundations/BoundedFormulas`.
 
 namespace LeanProofs.IPRA.Foundations.BooleanBits
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.BoundedFormulas (and_both and_zero_left and_zero_right not_of_zero not_of_one
   clash)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

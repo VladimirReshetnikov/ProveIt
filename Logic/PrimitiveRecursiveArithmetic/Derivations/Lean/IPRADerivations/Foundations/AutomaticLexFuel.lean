@@ -3,6 +3,7 @@ import IPRADerivations.Foundations.IterationFusion
 import IPRADerivations.Foundations.IntersectionEnumeration
 import IPRADerivations.Probability.UnionUtility
 import IPRADerivations.Core.InductionTactic
+import IPRADerivations.Core.Header
 
 /-!
 # Automatic fuel for fixed-dimensional descent (`ipra_resources_and_elimination_2026-11-15`, `thm:automatic-lex-fuel`)
@@ -48,7 +49,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.AutomaticLexFuel
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.ClockedDescent (subst_QF')
 open LeanProofs.IPRA.Foundations.IterationFusion (rel subst_rel rel_congr)
 open LeanProofs.IPRA.Foundations.LexFuelMonotone (itStep itP itP_zero itP_succ F succ_le)
@@ -56,10 +57,6 @@ open LeanProofs.IPRA.Foundations.LexPotential (itP_congr_count lexgt)
 open LeanProofs.IPRA.Foundations.LexChain (co controlled_lex)
 open LeanProofs.IPRA.Foundations.IntersectionEnumeration (maxFin le_maxFin)
 open LeanProofs.IPRA.Probability.UnionUtility (mxF Mx mx_succ mx_upper)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

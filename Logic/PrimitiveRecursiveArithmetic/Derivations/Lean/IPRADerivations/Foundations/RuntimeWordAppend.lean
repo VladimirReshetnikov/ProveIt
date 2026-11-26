@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.RuntimePermutationWords
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.SubstCommand
+import IPRADerivations.Core.Header
 
 /-!
 # Appending a numerical mixed-radix word digit
@@ -18,11 +19,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.RuntimeWordAppend
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
-open LeanProofs.IPRA.PTm (pred monus)
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

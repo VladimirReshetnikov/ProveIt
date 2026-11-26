@@ -1,5 +1,6 @@
 import IPRADerivations.Core.Powers
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Integral points by squeezing between squares (`siegel_ipra`, `ipra_framework`)
@@ -20,11 +21,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.Siegel
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 /-! ## The squeeze -/
 

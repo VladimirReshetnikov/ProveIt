@@ -4,6 +4,7 @@ import IPRADerivations.AnalyticNumberTheory.SquareReciprocal
 import IPRADerivations.AnalyticNumberTheory.SumPhi
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # The Jordan count `J₂(d) ≥ d²/4` (`thm:energy`, recovery direction)
@@ -30,7 +31,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.EnergyJordan
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.BlockSum (flatB flat_at flatten)
 open LeanProofs.IPRA.Probability.Independence (dsum sum_scale sum_mul_sum pmB inst3_pmB row_pt col_pt)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (mulBody count_multiples quo_eq)
@@ -39,10 +40,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.SumPhi (sum_ones)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (gcd_dvd' dvd_trans' dvd_le' eq_of_dvd')
 open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

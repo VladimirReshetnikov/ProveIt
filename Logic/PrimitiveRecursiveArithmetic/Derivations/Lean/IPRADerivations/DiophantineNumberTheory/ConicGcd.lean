@@ -1,6 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.ConicLower
 import IPRADerivations.DiophantineNumberTheory.Coprime
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Cancellation of common factors in the conic parametrization
@@ -19,13 +20,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.ConicGcd
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_mul' dvd_sub' dvd_le' coprime_mul gcd_comm_one)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

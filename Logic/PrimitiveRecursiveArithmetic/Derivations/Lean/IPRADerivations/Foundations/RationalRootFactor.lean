@@ -4,6 +4,7 @@ import IPRADerivations.Foundations.EigenvalueBound
 import IPRADerivations.DiophantineNumberTheory.FLTMultiples
 import IPRADerivations.Combinatorics.BinomialIdentities
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Rational roots: removing the factor `T^e` (`ipra_presentations_to_witnesses`, `lem:norm-rational-roots`; `ipra_resources_and_elimination_2026-11-15`, `lem:elim-rational-roots`)
@@ -39,16 +40,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.RationalRootFactor
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
 open LeanProofs.IPRA.Foundations.RationalRootDegree (tB tB_at P)
 open LeanProofs.IPRA.Foundations.EigenvalueBound (mB mB_at sum_scale)
 open LeanProofs.IPRA.DiophantineNumberTheory.FLTMultiples (pw_pos)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

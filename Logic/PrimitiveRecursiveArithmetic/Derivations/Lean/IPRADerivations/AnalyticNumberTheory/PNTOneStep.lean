@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.PNTThresholds
+import IPRADerivations.Core.Header
 
 /-!
 # The arithmetic of one finite contraction (`pnt_ipra_constructive_2026-11-14`, `con:one-step`)
@@ -18,12 +19,8 @@ Packet: `analytic-number-theory/pnt_ipra_constructive_2026-11-14`, `contraction.
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PNTOneStep
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTThresholds (Dq Tt T_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

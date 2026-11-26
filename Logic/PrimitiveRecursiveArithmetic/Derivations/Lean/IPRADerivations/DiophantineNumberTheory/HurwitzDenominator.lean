@@ -4,6 +4,7 @@ import IPRADerivations.Core.Pairing
 import IPRADerivations.Core.Parity
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.SubstCommand
+import IPRADerivations.Core.Header
 
 /-!
 # The denominator lemma of the sharp Hurwitz theorem (`hurwitz_khinchin_ipra`)
@@ -33,11 +34,7 @@ The hypotheses `1 ≤ u ≤ v` of the packet are not needed for the conclusion.
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.HurwitzDenominator
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 set_option autoImplicit false
 

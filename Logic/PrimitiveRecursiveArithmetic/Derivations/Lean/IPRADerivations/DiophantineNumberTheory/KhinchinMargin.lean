@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.SumReindex
 import IPRADerivations.Foundations.CoverLocal
 import IPRADerivations.Core.Gcd
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # The scale intervals stay inside their gap (`hurwitz_khinchin_ipra`, (K8))
@@ -21,13 +22,9 @@ On the grid `T`, the fraction `p/q ∈ J^* = (α/β, γ/β)` (`qα < pβ < qγ`)
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinMargin
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg)
 open LeanProofs.IPRA.AnalyticNumberTheory.SumReindex (le_quo_of_mul_le)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

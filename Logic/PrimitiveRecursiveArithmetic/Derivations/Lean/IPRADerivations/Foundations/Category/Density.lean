@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.Yoneda
+import IPRADerivations.Core.Header
 
 /-! Imported from the packet `foundations/category_theory_ipra_2026-11-20`, `lean/CategoryIPRA/Density.lean`: the namespace is placed under `LeanProofs.IPRA` and the `#print axioms` lines are dropped (the library audits axioms in `Checks/Axioms.lean`). -/
 
@@ -18,11 +19,9 @@ work; this file does not assert that those additional steps are complete.
 
 namespace LeanProofs.IPRA.Foundations.Category.Density
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.PresentedCategory
 open LeanProofs.IPRA.Foundations.Yoneda
-open Syn
-open scoped Fm
 
 variable {C : Pres} {F : Fam} (FL : FamLaws C F)
 variable {n : ℕ} {Γ : List (Fm PTm n)}

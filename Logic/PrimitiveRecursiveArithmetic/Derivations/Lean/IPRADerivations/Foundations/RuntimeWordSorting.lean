@@ -2,6 +2,7 @@ import IPRADerivations.Foundations.RuntimeAdjacentPermutationSwap
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Core.CongruenceTactic
 import IPRADerivations.Core.SubstCommand
+import IPRADerivations.Core.Header
 
 /-!
 # Actual bounded adjacent sorting of numerical words
@@ -17,14 +18,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.RuntimeWordSorting
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.BoundedSyntax (BFm formula)
 open LeanProofs.IPRA.Foundations.GuardedTotalization (sel sel_zero sel_one)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
-open LeanProofs.IPRA.PTm (monus pred)
 
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}

@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.SievePrimeInequality
 import IPRADerivations.Core.SumSplit
 import IPRADerivations.Core.SumOrder
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # At most `Z − 1` primes below `Z`
@@ -27,7 +28,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SievePrimesSharp
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (isP)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg zero_mul_l congrIsP isP_zero)
@@ -42,10 +43,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.SievePrimes (lowB inst2_lowB count_bel
 open LeanProofs.IPRA.AnalyticNumberTheory.SievePrimeInequality (combine)
 open LeanProofs.IPRA.Analysis.PowerSums (sum_le)
 open LeanProofs.IPRA.Probability.Independence (dsum)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

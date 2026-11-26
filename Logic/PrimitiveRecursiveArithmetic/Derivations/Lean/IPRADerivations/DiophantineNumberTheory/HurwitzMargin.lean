@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.HurwitzDenominator
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # The margin certificate of the sharp Hurwitz theorem (`hurwitz_khinchin_ipra`)
@@ -30,11 +31,7 @@ convergent brackets and the extraction of the continued-fraction prefix are not 
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.HurwitzMargin
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.HurwitzDenominator (goodPair)
 
 set_option autoImplicit false

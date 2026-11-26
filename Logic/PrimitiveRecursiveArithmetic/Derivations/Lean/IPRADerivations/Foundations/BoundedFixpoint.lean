@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.BoundedDescent
 import IPRADerivations.Foundations.BoundedFormulas
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Fixed points of an ascending bounded operator (`ipra_categorical_methods`, Section 4)
@@ -44,16 +45,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.BoundedFixpoint
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg)
 open LeanProofs.IPRA.Foundations.IterationFusion
 open LeanProofs.IPRA.Foundations.BoundedDescent
 open LeanProofs.IPRA.Foundations.BoundedReflection (eq_of_eqb one_ne_zero sg_cases)
 open LeanProofs.IPRA.Foundations.BoundedFormulas (sg_of_pos sg_of_zero)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

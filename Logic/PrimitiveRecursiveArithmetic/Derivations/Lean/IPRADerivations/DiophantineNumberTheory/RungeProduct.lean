@@ -1,6 +1,7 @@
 import IPRADerivations.Geometry.DesarguesInternal
 import IPRADerivations.Probability.MedianWeighted
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Absolute values of integer terms and the Runge product bound
@@ -21,14 +22,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.RungeProduct
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Geometry.CevaMenelaus (nz)
 open LeanProofs.IPRA.Geometry.DesarguesInternal (zt_dich nz_absurd)
 open LeanProofs.IPRA.Probability.MedianWeighted (ad_add_le)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

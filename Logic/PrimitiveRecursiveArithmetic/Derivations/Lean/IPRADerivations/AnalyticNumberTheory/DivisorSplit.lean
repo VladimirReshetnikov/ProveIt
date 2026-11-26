@@ -2,6 +2,7 @@ import IPRADerivations.DiophantineNumberTheory.Coprime
 import IPRADerivations.DiophantineNumberTheory.GcdList
 import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Divisors of a coprime product (`robin_ipra_research_2026-11-19`, multiplicativity of `σ`)
@@ -22,17 +23,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.DivisorSplit
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_of_eq' eq_of_dvd' dvd_le' gcd_dvd' gauss coprime_dvd_left
   gcd_comm_one coprime_quotients pos_of_eq_mul one_le_of_pos dvd_mul')
 open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.DiophantineNumberTheory.GcdList (rem_by_zero)
 open LeanProofs.IPRA.Foundations.BoundedReflection (eqb_cases eq_of_eqb)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

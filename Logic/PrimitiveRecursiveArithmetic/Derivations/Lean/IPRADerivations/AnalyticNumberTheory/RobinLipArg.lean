@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.RobinLipName
 import IPRADerivations.AnalyticNumberTheory.RobinLogInterval
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Lipschitz bounds for the reduced logarithm names (`robin_ipra_research_2026-11-19`, §"Explicit interval arithmetic")
@@ -21,17 +22,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.RobinLipArg
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinGamma (Lv L_zero L_succ Pv P_succ P_zero)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogName (Nz Nz_zero Nz_succ Dz Lz)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLipName (Rv lip_up lip_low)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogInterval (c3)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

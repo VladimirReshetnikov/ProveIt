@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.ChebyshevBounds
 import IPRADerivations.AnalyticNumberTheory.BinomialThree
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # The harmonic Mangoldt sum, integer form
@@ -23,7 +24,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLambda
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt (lamB Lam Lw)
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (FLB FL_at lam_zero factorial_lambda sum_add2)
 open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (LamB Psi inst2_LamB)
@@ -31,10 +32,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_of_dvd')
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
 open LeanProofs.IPRA.Analysis.Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

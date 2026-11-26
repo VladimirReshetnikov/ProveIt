@@ -2,6 +2,7 @@ import IPRADerivations.DiophantineNumberTheory.QuadraticReciprocity
 import IPRADerivations.DiophantineNumberTheory.FermatTwoSquares
 import IPRADerivations.DiophantineNumberTheory.TwoSquaresObstruction
 import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.Header
 
 /-!
 # Quadratic reciprocity by residue classes modulo 4
@@ -28,7 +29,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.ReciprocityClasses
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.Foundations.BoundedSyntax (bit bit_cases program_correct)
 open LeanProofs.IPRA.Foundations.BoundedReflection (one_ne_zero)
@@ -37,10 +38,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.QuadraticReciprocityGoal (signBit n
 open LeanProofs.IPRA.DiophantineNumberTheory.QuadraticReciprocity (premises)
 open LeanProofs.IPRA.DiophantineNumberTheory.FermatTwoSquares (mod4_parities)
 open LeanProofs.IPRA.DiophantineNumberTheory.TwoSquaresObstruction (parities_three)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.EulerDomination
 import IPRADerivations.AnalyticNumberTheory.SieveRecursion
+import IPRADerivations.Core.Header
 
 /-!
 # The prime step for truncated smooth harmonic sums
@@ -23,17 +24,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SmoothTruncated
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.SumReindex (riB reindex_eq cM)
 open LeanProofs.IPRA.AnalyticNumberTheory.EulerDomination (Sm gB par zz bT sAP sA sR leA leB)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveRecursion (cM_succ)
 open LeanProofs.IPRA.DiophantineNumberTheory.Hurwitz (add_le_add)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

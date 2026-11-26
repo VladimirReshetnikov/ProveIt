@@ -2,6 +2,7 @@ import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Core.BoundedSums
 import IPRADerivations.Core.Gcd
 import IPRADerivations.AnalyticNumberTheory.PhiLower
+import IPRADerivations.Core.Header
 
 /-!
 # Finite zeta tails
@@ -26,12 +27,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.AperyZetaTail
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

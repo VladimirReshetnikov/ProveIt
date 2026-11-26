@@ -1,4 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.NorthcottNatural
+import IPRADerivations.Core.Header
 
 /-!
 # Bounded-height enumeration on a decidable locus
@@ -24,17 +25,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.NorthcottLocus
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.GcdList (gv)
 open LeanProofs.IPRA.DiophantineNumberTheory.DigitCode (code entriesLt code_lt code_digit)
 open LeanProofs.IPRA.DiophantineNumberTheory.NorthcottNatural (digB gv_congr congrEqb)
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (dB_at)
 open LeanProofs.IPRA.Foundations.FilteredEnumeration (rank sel sel_spec sel_rank rank_lt_size)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (eq_of_eqb_ne)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.DivisorSwap
 import IPRADerivations.AnalyticNumberTheory.SelbergLeibniz
 import IPRADerivations.AnalyticNumberTheory.ConvolutionAssoc
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # The divisor involution with a parameter, and commutativity of convolution (`pnt_ipra_constructive_2026-11-14`)
@@ -19,7 +20,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.DivisorSwapP
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds (shift_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.DivisorSwap (zt zt_symm quo_lt')
@@ -28,10 +29,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.SelbergLeibniz (tau_leibniz)
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt (Lw)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

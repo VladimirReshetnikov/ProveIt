@@ -2,6 +2,7 @@ import IPRADerivations.DiophantineNumberTheory.KhinchinBadSum
 import IPRADerivations.AnalyticNumberTheory.HarmonicUpper
 import IPRADerivations.AnalyticNumberTheory.SquareReciprocal
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # The bad-pair estimate of (K3) (`hurwitz_khinchin_ipra`)
@@ -31,7 +32,7 @@ arithmetic has room for it.
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBadBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg)
 open LeanProofs.IPRA.AnalyticNumberTheory.SumReindex (le_quo_of_mul_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (quo_eq)
@@ -41,10 +42,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB inst2_h)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicUpper (harmonic_upper)
 open LeanProofs.IPRA.AnalyticNumberTheory.SquareReciprocal (sqB T inst2_sq square_bound cancel_le)
 open LeanProofs.IPRA.DiophantineNumberTheory.HurwitzMargin (le_mul_mono sq_le_sq add_le_add')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

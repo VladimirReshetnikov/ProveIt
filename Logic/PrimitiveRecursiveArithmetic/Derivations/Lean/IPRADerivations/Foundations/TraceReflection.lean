@@ -1,4 +1,5 @@
 import IPRADerivations.Core.ClockedDescent
+import IPRADerivations.Core.Header
 
 /-!
 # Finite trace reflection
@@ -25,12 +26,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.TraceReflection
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.ClockedDescent (Pat subst_Pat Pat_var subst_QF')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable (init : PTm 1) (step : PTm 3) (fuel : PTm 1) (Inv : Fm PTm 3) (G : Fm PTm 1) (A : Fm PTm 2)
 

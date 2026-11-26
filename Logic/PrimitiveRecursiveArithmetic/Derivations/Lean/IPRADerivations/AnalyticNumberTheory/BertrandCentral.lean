@@ -3,6 +3,7 @@ import IPRADerivations.Combinatorics.CentralBinomial
 import IPRADerivations.DiophantineNumberTheory.ResidueFacts
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.InductionTactic
+import IPRADerivations.Core.Header
 
 /-!
 # Bertrand's postulate: the odd central binomial coefficient
@@ -27,7 +28,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.BertrandCentral
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Binomial
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
@@ -35,10 +36,6 @@ open LeanProofs.IPRA.Combinatorics.Catalan (cb cat cb_rec cb_zero cat_spec cat_o
 open LeanProofs.IPRA.Combinatorics.CentralBinomial (central_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.DiophantineNumberTheory.ResidueFacts (pw_two)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

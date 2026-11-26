@@ -4,6 +4,7 @@ import IPRADerivations.AnalyticNumberTheory.Order
 import IPRADerivations.Topology.StaggeredGrids
 import IPRADerivations.Core.EuclidLemma
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # The coprimality sieve for (K3) (`hurwitz_khinchin_ipra`)
@@ -22,16 +23,12 @@ This module proves the pointwise step and the scaling invariance:
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinSieve
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_le')
 open LeanProofs.IPRA.AnalyticNumberTheory.Order (gcd_pos_right)
 open LeanProofs.IPRA.Topology.StaggeredGrids (eqb01')
 open LeanProofs.IPRA.Foundations.LatticeCount (sg_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

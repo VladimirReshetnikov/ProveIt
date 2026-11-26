@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.FiniteGluing
 import IPRADerivations.Core.InductionTactic
+import IPRADerivations.Core.Header
 
 /-!
 # Rank and select for a decidable finite subset (`ipra_categorical_methods`, finite limits)
@@ -42,17 +43,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.FilteredEnumeration
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg)
 open LeanProofs.IPRA.Foundations.BoundedReflection
   (sgB inst2_sgB exB wit ex_intro ex_elim ex_least sg_cases one_ne_zero)
 open LeanProofs.IPRA.Foundations.BoundedFormulas (sg_of_zero)
 open LeanProofs.IPRA.Foundations.FiniteGluing (sg_of_ne)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (eq_of_eqb_ne)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

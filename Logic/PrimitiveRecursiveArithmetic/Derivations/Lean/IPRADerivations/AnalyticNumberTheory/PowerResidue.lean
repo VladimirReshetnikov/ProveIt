@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.PowerDivisorUniform
 import IPRADerivations.AnalyticNumberTheory.Euler
 import IPRADerivations.Foundations.ChineseRemainder
+import IPRADerivations.Core.Header
 
 /-!
 # Residues along perfect powers (`riemann_ipra_prime_criteria_2026-11-20`, `thm:powerdivisor`, progression rows)
@@ -23,7 +24,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PowerResidue
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Euler (N_pos cop_mul cop_of_mul cop_rem cop_of_rem rem_rem rem_small rem_lt
   rem_mul_rem rem_decomp shift_le_two)
 open LeanProofs.IPRA.AnalyticNumberTheory.RSA (rem_mul_congr)
@@ -31,10 +32,6 @@ open LeanProofs.IPRA.Foundations.ChineseRemainder (rem_eq_of_eq gcd_pos)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_one_of_dvd_one gcd_dvd')
 open LeanProofs.IPRA.Foundations.BoundedReflection (eqb_cases eq_of_eqb)
 open LeanProofs.IPRA.DiophantineNumberTheory.QuarticStep (congrGcd)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

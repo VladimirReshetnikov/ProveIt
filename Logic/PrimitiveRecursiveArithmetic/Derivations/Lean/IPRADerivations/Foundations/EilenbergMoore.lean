@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.KleisliCategory
+import IPRADerivations.Core.Header
 
 /-!
 # Eilenberg–Moore algebras of the monad of an adjunction
@@ -24,14 +25,12 @@ Packet: `foundations/category_theory_ipra_2026-11-20`, `sections/adjunctions.tex
 
 namespace LeanProofs.IPRA.Foundations.EilenbergMoore
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.PresentedCategory
 open LeanProofs.IPRA.Foundations.Adjunction
 open LeanProofs.IPRA.Foundations.AdjunctionMonad
 open LeanProofs.IPRA.Foundations.KleisliIdentity (mu_nat)
 open LeanProofs.IPRA.Foundations.KleisliCategory (cmp_left cmp_right T_hom T_comp)
-open Syn
-open scoped Fm
 
 variable {C D : Pres} (LC : C.Laws) (LD : D.Laws) {A : Adj} (FL : A.L.Laws C D)
   (FR : A.R.Laws D C) (AL : A.Laws C D) {n : ℕ} {Γ : List (Fm PTm n)}

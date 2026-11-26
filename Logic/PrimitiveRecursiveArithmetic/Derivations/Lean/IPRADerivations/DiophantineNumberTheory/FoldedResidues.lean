@@ -3,6 +3,7 @@ import IPRADerivations.DiophantineNumberTheory.ModularCertificate
 import IPRADerivations.AnalyticNumberTheory.ConvolutionAssoc
 import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Folded residues
@@ -34,7 +35,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.FoldedResidues
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg sg_zero)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg)
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (sg_pos rem_small)
@@ -43,10 +44,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.RSA (rem_mul_congr)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (gauss dvd_le' eq_of_dvd')
 open LeanProofs.IPRA.DiophantineNumberTheory.ModularCertificate (rem_add_mul rem_add_congr rem_mul_congr2)
 open LeanProofs.IPRA.DiophantineNumberTheory.RectangleCount (no_small)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

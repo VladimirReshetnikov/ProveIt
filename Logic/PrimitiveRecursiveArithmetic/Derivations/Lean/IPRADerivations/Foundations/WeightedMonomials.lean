@@ -2,6 +2,7 @@ import IPRADerivations.DiophantineNumberTheory.Coprime
 import IPRADerivations.AnalyticNumberTheory.CrtBijection
 import IPRADerivations.Foundations.AuxiliaryEnvelope
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Weights of reduced monomials and the cover count (`ipra_coherent_methods_2026-11-15`, `thm:weighted-norm-degree`, `cor:weighted-cover`)
@@ -33,14 +34,10 @@ the norm (`thm:weighted-norm-degree`, the rescaling argument), `lem:weighted-fib
 
 namespace LeanProofs.IPRA.Foundations.WeightedMonomials
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (gauss dvd_of_eq')
 open LeanProofs.IPRA.AnalyticNumberTheory.CrtBijection (rem_small)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

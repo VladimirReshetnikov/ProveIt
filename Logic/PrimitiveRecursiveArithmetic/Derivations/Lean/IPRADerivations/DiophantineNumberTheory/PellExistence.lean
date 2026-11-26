@@ -1,6 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.PellSequence
 import IPRADerivations.DiophantineNumberTheory.PellCollision
 import IPRADerivations.Core.Pigeonhole
+import IPRADerivations.Core.Header
 
 /-!
 # Uniform bounded Pell existence
@@ -26,16 +27,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.PellExistence
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.PellApprox (Qv Cv pv qv pell_approx)
 open LeanProofs.IPRA.DiophantineNumberTheory.PellSequence
 open LeanProofs.IPRA.DiophantineNumberTheory.PellCollision (collision_pos collision_neg N1p N2p N1n N2n)
 open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_lt')
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

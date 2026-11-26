@@ -4,6 +4,7 @@ import IPRADerivations.Foundations.FiniteSetExponential
 import IPRADerivations.Foundations.BlockPartitionSum
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.SubstCommand
+import IPRADerivations.Core.Header
 
 /-!
 # One complete (K2) round from `ψ` and `D` (`hurwitz_khinchin_ipra`)
@@ -29,7 +30,7 @@ code `c` (`w_g = ⌊c/2^g⌋ mod 2`, `evB`). Every cell, uncovered or not, recei
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinK2Step
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg)
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (fact_pos)
@@ -47,10 +48,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinRoundWrapper (px)
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinK2RoundZ (vZ k2_round_z)
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinK2Widths (monoF kdF shift_monoF pos_of_one one_le_pw kd_tail
   wbK hW_pt r4_at cell_cover sh le_pairT_right)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

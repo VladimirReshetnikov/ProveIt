@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.AdjunctionMonad
+import IPRADerivations.Core.Header
 
 /-!
 # Naturality of the multiplication and the Kleisli identity laws
@@ -16,12 +17,10 @@ codes as `C`, arrows `a → b` represented by arrows `a → Tb` in `C`, identity
 
 namespace LeanProofs.IPRA.Foundations.KleisliIdentity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.PresentedCategory
 open LeanProofs.IPRA.Foundations.Adjunction
 open LeanProofs.IPRA.Foundations.AdjunctionMonad
-open Syn
-open scoped Fm
 
 variable {C D : Pres} (LC : C.Laws) (LD : D.Laws) {A : Adj} (FL : A.L.Laws C D)
   (FR : A.R.Laws D C) (AL : A.Laws C D) {n : ℕ} {Γ : List (Fm PTm n)}

@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.ChainViability
 import IPRADerivations.Foundations.SequenceComposition
 import IPRADerivations.Core.SubstCommand
+import IPRADerivations.Core.Header
 
 /-!
 # Actual coded finite viable chains
@@ -23,16 +24,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.CodedViableChain
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open LeanProofs.IPRA.PTm (monus)
+open_ipra
 open LeanProofs.IPRA.Foundations.BackwardViability
 open LeanProofs.IPRA.Foundations.BackwardViability.Instance
 open LeanProofs.IPRA.Foundations.ViableChain
 open LeanProofs.IPRA.Foundations.MasterCertificate (sequence entry stack stackF stack_succ stack_zero)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr subst_length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

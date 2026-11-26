@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.BoundedReflection
+import IPRADerivations.Core.Header
 
 /-!
 # The logical form of the Robin criterion in iPRA (`robin_ipra_research_2026-11-19`)
@@ -26,11 +27,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.RobinLogic
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 set_option autoImplicit false
 

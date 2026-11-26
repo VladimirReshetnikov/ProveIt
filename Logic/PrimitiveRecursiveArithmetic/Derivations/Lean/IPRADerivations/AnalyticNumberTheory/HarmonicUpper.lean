@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.Harmonic
 import IPRADerivations.Core.SumOrder
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.SubstCommand
+import IPRADerivations.Core.Header
 
 /-!
 # The dyadic upper bound for harmonic numbers
@@ -24,13 +25,9 @@ With `S(N, F) = Σ_{i<N} ⌊F/(i+1)⌋` (`Harmonic.S`):
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.HarmonicUpper
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB inst2_h quo_anti S_one)
 open LeanProofs.IPRA.Analysis.Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

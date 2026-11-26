@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.TraceReflection
 import IPRADerivations.Core.Descent
+import IPRADerivations.Core.Header
 
 /-!
 # Composition of extensional contracts
@@ -29,11 +30,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.ExtensionalComposition
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.TraceReflection (I3 subst_I3)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
 
 variable {EX EY EZ : Fm PTm 3} {C D dC dD : PTm 1}
 

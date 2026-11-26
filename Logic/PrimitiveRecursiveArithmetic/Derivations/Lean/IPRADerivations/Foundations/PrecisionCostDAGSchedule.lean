@@ -2,6 +2,7 @@ import IPRADerivations.Foundations.PrecisionCostDAG
 import IPRADerivations.Analysis.Polynomials.RootFinding.GaussianRootSchedule
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Core.SubstCommand
+import IPRADerivations.Core.Header
 
 /-!
 # A derived dyadic schedule for the actual rational dependency DAG
@@ -21,17 +22,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.PrecisionCostDAGSchedule
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open LeanProofs.IPRA.PTm (pred monus)
+open_ipra
 open LeanProofs.IPRA.Foundations.PrecisionCostDAG
 open LeanProofs.IPRA.Foundations.MasterCertificate (sequence entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
 open LeanProofs.IPRA.Analysis.RationalArithmetic (add multiply)
 open LeanProofs.IPRA.Analysis.RationalArgmin (rationalLE)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -9,6 +9,7 @@ import IPRADerivations.AnalyticNumberTheory.SumPhi
 import IPRADerivations.Core.SumSplit
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # The Möbius function and Möbius cancellation
@@ -42,7 +43,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.Mobius
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val isP isP_01 isP_of_prime prime_of_isP eq_of_eqb_ne)
 open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (val_unique val_mul not_dvd_one p_pos)
@@ -61,10 +62,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.Totient (quo_eq)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_of_dvd' dvd_of_eq' gauss)
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (pos_mul')
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

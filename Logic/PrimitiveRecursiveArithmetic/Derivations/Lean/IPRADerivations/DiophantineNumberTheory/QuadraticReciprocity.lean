@@ -3,6 +3,7 @@ import IPRADerivations.DiophantineNumberTheory.FoldedPermutation
 import IPRADerivations.DiophantineNumberTheory.RectangleCount
 import IPRADerivations.DiophantineNumberTheory.QuadraticReciprocityGoal
 import IPRADerivations.Foundations.BoundedSyntax
+import IPRADerivations.Core.Header
 
 /-!
 # Eisenstein's lemma and the law of quadratic reciprocity
@@ -32,7 +33,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.QuadraticReciprocity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (not_dvd_prime)
 open LeanProofs.IPRA.DiophantineNumberTheory.QuadraticReciprocityGoal (nonsquare signBit floorSum eisenstein
@@ -44,10 +45,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.PairProduct (sqB sq_at)
 open LeanProofs.IPRA.DiophantineNumberTheory.GaussLemma (rb gauss_lemma)
 open LeanProofs.IPRA.Foundations.BoundedSyntax (formula bit bounded_reflection bit_zero_iff program_correct)
 open LeanProofs.IPRA.Foundations.BoundedReflection (exB wit ex_cases ex_elim ex_none eqb_cases eq_of_eqb one_ne_zero)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

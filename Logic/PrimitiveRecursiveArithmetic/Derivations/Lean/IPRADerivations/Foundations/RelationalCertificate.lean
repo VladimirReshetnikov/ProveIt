@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.BoundedDescent
+import IPRADerivations.Core.Header
 
 /-!
 # Reflection of relational viability certificates
@@ -33,14 +34,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.RelationalCertificate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.IterationFusion (app1 iter congrApp1)
 open LeanProofs.IPRA.Foundations.BoundedDescent (Descent descent_inv terminal)
 open LeanProofs.IPRA.Foundations.BoundedReflection (one_ne_zero)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable (nx ρ V H P Lc : PTm 1)
 

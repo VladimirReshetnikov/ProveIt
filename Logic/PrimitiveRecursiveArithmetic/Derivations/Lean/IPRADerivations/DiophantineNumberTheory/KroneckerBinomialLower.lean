@@ -1,6 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.KroneckerBinomialTail
 import IPRADerivations.Probability.BinomialLaw
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # `C(r, k) ≥ (r/k)^k` and the full binomial kernel estimate
@@ -22,7 +23,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KroneckerBinomialLower
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.BinomialLaw (absorption)
 open LeanProofs.IPRA.Combinatorics.Binomial (binom)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (binom_zero')
@@ -30,10 +31,6 @@ open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrBinom)
 open LeanProofs.IPRA.Combinatorics.Vandermonde (gb)
 open LeanProofs.IPRA.Combinatorics.Stirling (gle_of_le)
 open LeanProofs.IPRA.DiophantineNumberTheory.KroneckerBinomialTail (binom_tail)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

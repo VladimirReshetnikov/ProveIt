@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.Adjunction
 import IPRADerivations.Foundations.SplitEquivalence
 import IPRADerivations.Core.BoundedSums
+import IPRADerivations.Core.Header
 
 /-!
 # The left Kan extension formula on representatives (`ipra_categorical_methods`, Section 4)
@@ -55,13 +56,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.KanFormula
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.PresentedCategory
 open LeanProofs.IPRA.Foundations.Adjunction
 open LeanProofs.IPRA.Foundations.SplitEquivalence (idFun idFun_o idFun_m idFun_laws)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
 
 /-- A covariant presented family: a functor to sets given by formulas and an action term. -/
 structure CoFam where

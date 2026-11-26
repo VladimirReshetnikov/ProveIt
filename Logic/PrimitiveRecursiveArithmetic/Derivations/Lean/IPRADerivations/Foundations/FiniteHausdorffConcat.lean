@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.FiniteHausdorff
+import IPRADerivations.Core.Header
 
 /-!
 # Concatenation of actual finite Hausdorff lists
@@ -14,16 +15,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.FiniteHausdorffConcat
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.FiniteHausdorff
 open LeanProofs.IPRA.Foundations.SequenceComposition
   (length append append_length append_left append_right append_right_at add_lt_left)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.DemandClosure (maximum maximum_left maximum_right maximum_le)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

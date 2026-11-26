@@ -1,5 +1,6 @@
 import IPRADerivations.Core.Pairing
 import IPRADerivations.Core.InductionTactic
+import IPRADerivations.Core.Header
 
 /-!
 # Growth of continued-fraction denominators (`hurwitz_khinchin_ipra`)
@@ -16,11 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.Hurwitz
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 variable (a' : PR 1) {n : ℕ} {Γ : List (Fm PTm n)}
 

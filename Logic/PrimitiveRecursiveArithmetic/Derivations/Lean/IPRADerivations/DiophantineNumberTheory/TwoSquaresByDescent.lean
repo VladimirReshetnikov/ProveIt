@@ -1,6 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.TwoSquaresDescent
 import IPRADerivations.DiophantineNumberTheory.FourSquares
 import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.Header
 
 /-!
 # Fermat's two-square theorem by bounded descent
@@ -30,7 +31,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.TwoSquaresByDescent
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorVector (one_le_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.BinomialThree (pos_of_one_le)
@@ -46,10 +47,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.QuadraticSupplements (root_of_sign 
 open LeanProofs.IPRA.Foundations.BoundedReflection (exB wit ex_cases ex_intro ex_elim ex_least eqb_cases
   eq_of_eqb one_ne_zero)
 open LeanProofs.IPRA.Signum (sg sg_zero)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

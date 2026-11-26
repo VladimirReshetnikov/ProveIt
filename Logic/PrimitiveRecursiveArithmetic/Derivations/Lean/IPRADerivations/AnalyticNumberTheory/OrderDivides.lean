@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.Order
+import IPRADerivations.Core.Header
 
 /-!
 # The order of a residue divides exactly the exponents of the identity
@@ -18,14 +19,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.OrderDivides
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 open LeanProofs.IPRA.AnalyticNumberTheory.RSA (rem_mul_congr pw_mul)
 open LeanProofs.IPRA.AnalyticNumberTheory.Order (mu ord order_cong order_minimal pw_rem_congr pw_one_base)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

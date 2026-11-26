@@ -4,6 +4,7 @@ import IPRADerivations.AnalyticNumberTheory.EulerProduct
 import IPRADerivations.AnalyticNumberTheory.Order
 import IPRADerivations.AnalyticNumberTheory.Euler
 import IPRADerivations.AnalyticNumberTheory.CoprimeModulus
+import IPRADerivations.Core.Header
 
 /-!
 # Two facts behind the explicit sieve weights
@@ -26,7 +27,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightFacts
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi totBody)
 open LeanProofs.IPRA.AnalyticNumberTheory.TotientCorollaries (phi_lt)
@@ -37,10 +38,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (zero_mul_l)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveRough (two_le_of)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_of_dvd')
 open LeanProofs.IPRA.DiophantineNumberTheory.QuarticStep (congrGcd)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

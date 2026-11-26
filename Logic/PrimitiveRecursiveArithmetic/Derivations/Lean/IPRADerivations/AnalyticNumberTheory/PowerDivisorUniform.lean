@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.PowerDivisorGrowth
+import IPRADerivations.Core.Header
 
 /-!
 # One witness for every exponent (`riemann_ipra_prime_criteria_2026-11-20`, `thm:powerdivisor`)
@@ -21,12 +22,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorUniform
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorGrowth
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

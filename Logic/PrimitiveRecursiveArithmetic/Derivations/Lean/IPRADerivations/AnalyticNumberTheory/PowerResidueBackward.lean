@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.PowerResidueInversion
 import IPRADerivations.AnalyticNumberTheory.PowerResidueForward
+import IPRADerivations.Core.Header
 
 /-!
 # The backward transfer for progression rows (`riemann_ipra_prime_criteria_2026-11-20`, `thm:powerdivisor`)
@@ -23,7 +24,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PowerResidueBackward
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerAbstractInversion (rBg RSg inst2_rBg)
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerResidueInversion (Rt Rt_at inversion_res)
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerResidueForward (InR inR_at)
@@ -42,10 +43,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 open LeanProofs.IPRA.DiophantineNumberTheory.PrimitiveReduction (pw_zero_base)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (muP muN)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

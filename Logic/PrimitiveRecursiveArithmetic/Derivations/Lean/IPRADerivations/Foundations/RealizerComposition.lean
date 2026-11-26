@@ -2,6 +2,7 @@ import IPRADerivations.Foundations.SequenceComposition
 import IPRADerivations.Foundations.BoundedFormulas
 import IPRADerivations.Core.CommonLemmas
 import IPRADerivations.Core.SubstCommand
+import IPRADerivations.Core.Header
 
 /-!
 # Composition of bounded finite-query certificate realizers
@@ -32,16 +33,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.RealizerComposition
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.MasterCertificate
   (sequence stack stack_zero stack_succ sequence_length sequence_decode entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition
   (length block prefixSum flatMap flatMap_length flatMap_lookup entry_congr)
 open LeanProofs.IPRA.Foundations.BoundedReflection
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

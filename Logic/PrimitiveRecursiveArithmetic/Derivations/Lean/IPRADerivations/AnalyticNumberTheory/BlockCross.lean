@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.BlockCases
 import IPRADerivations.AnalyticNumberTheory.CrossAlg
 import IPRADerivations.AnalyticNumberTheory.WeightedVariation
+import IPRADerivations.Core.Header
 
 /-!
 # The crossing case of the block deficit (`pnt_ipra_constructive_2026-11-14`, `con:deficit`)
@@ -22,7 +23,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.BlockCross
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S quo_anti)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (wt)
 open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (Psi)
@@ -36,10 +37,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.BlockCases (mass_interior block_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.CrossAlg (crossC_alg)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 open LeanProofs.IPRA.Analysis.Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

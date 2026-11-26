@@ -7,6 +7,7 @@ import IPRADerivations.Geometry.HypercubeSplit
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.CommonLemmas
 import IPRADerivations.Core.InductionTactic
+import IPRADerivations.Core.Header
 
 /-!
 # The binomial bound `(1 + 1/a)^a ≤ 3`
@@ -28,7 +29,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.BinomialThree
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Combinatorics.Binomial (binom bden)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (binom_eq)
@@ -39,10 +40,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.Order (pw_one_base)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (lt_pw)
 open LeanProofs.IPRA.Probability.SortingBound (fct fact_pos le_one_succ)
 open LeanProofs.IPRA.Geometry.HypercubeSplit (le_cancel_pos)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

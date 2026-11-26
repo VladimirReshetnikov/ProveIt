@@ -1,6 +1,7 @@
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Foundations.IterationFusion
 import IPRADerivations.Foundations.CoherentTower
+import IPRADerivations.Core.Header
 
 /-!
 # Sign guards, diameter composition and independent certificates
@@ -40,13 +41,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.ObserverGuards
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.IterationFusion (app1 subst_app1)
 open LeanProofs.IPRA.Foundations.CoherentTower (ex_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

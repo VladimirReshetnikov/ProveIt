@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.AbsDiff
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.InductionTactic
+import IPRADerivations.Core.Header
 
 /-!
 # Finite summation by parts with signed increments (`pnt_ipra_constructive_2026-11-14`, `sb:finite-abel`)
@@ -20,11 +21,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.AbelParts
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 set_option autoImplicit false
 

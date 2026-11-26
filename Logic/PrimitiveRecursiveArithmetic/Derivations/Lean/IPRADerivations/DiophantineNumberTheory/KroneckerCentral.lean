@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.KroneckerBinomialLower
 import IPRADerivations.Combinatorics.Catalan
+import IPRADerivations.Core.Header
 
 /-!
 # The constant Fourier coefficient of the Kronecker kernel
@@ -17,13 +18,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KroneckerCentral
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Catalan (cb cb_zero cb_rec)
 open LeanProofs.IPRA.DiophantineNumberTheory.AperyMultibound (mul_pw)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

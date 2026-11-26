@@ -7,6 +7,7 @@ import IPRADerivations.AnalyticNumberTheory.FourthRootSum
 import IPRADerivations.Foundations.CrossingSearch
 import IPRADerivations.Core.CertificateTactics
 import IPRADerivations.Core.InductionTactic
+import IPRADerivations.Core.Header
 
 /-!
 # The survivors of the sieve, and Legendre's formula for `π`
@@ -36,7 +37,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SieveSurvivors
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime lpf)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val isP isP_01 prime_of_isP isP_of_prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos not_dvd_one)
@@ -57,10 +58,6 @@ open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos)
 open LeanProofs.IPRA.Foundations.CrossingSearch (monus_of_eq)
 open LeanProofs.IPRA.Foundations.BoundedReflection (one_ne_zero)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

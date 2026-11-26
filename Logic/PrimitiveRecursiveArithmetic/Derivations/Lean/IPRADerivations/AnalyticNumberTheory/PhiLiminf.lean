@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.EulerDomination
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.InductionTactic
+import IPRADerivations.Core.Header
 
 /-!
 # Finite witnesses for `liminf φ(n)/n = 0`
@@ -21,7 +22,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PhiLiminf
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
 open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos)
@@ -39,10 +40,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared (A Dn pB pBt dBt A_succ Dn_succ A_pos pBt_zero pBt_one
   dBt_zero dBt_one ProdP DenE)
 open LeanProofs.IPRA.AnalyticNumberTheory.EulerDomination (euler_domination Dn_pos mul_one')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

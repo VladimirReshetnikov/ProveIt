@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.BoundedFormulas
+import IPRADerivations.Core.Header
 
 /-!
 # Guarded finite covers and composed bounded searches
@@ -19,10 +20,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.BoundedCover
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.BoundedFormulas
-open Syn
-open scoped Fm
 
 /-- Instantiating a two-variable open premise at `![i, x]`. -/
 theorem fmAt_inst2 (A : BF) {m : ℕ} (i x : PTm m) :

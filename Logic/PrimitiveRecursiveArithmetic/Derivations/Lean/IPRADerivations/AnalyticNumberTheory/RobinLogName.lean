@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.RobinGamma
 import IPRADerivations.AnalyticNumberTheory.LocalFactor
 import IPRADerivations.AnalyticNumberTheory.Order
 import IPRADerivations.AnalyticNumberTheory.SigmaPrimePower
+import IPRADerivations.Core.Header
 
 /-!
 # Nested logarithm names (`robin_ipra_research_2026-11-19`, `eq:logtail`)
@@ -25,16 +26,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.RobinLogName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinGamma (Lf Lv L_zero L_succ Pv P_succ)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.AnalyticNumberTheory.SigmaPrimePower (pos_pw)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

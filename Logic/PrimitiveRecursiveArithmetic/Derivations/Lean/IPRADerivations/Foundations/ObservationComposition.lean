@@ -2,6 +2,7 @@ import IPRADerivations.Foundations.FiniteQueryTable
 import IPRADerivations.Foundations.ReverseDemand
 import IPRADerivations.Probability.UnionUtility
 import IPRADerivations.Probability.Ninther
+import IPRADerivations.Core.Header
 
 /-!
 # Composition of finite observation contracts
@@ -32,15 +33,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.ObservationComposition
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.FiniteQueryTable (table_good)
 open LeanProofs.IPRA.Foundations.ReverseDemand (le_mx_left le_mx_right)
 open LeanProofs.IPRA.Probability.UnionUtility (Mx mx_upper)
 open LeanProofs.IPRA.Probability.Ninther (mx)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable (V u W J : PTm 2)
 

@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.PerfectNumbers
 import IPRADerivations.AnalyticNumberTheory.Fermat
 import IPRADerivations.Core.SumSplit
+import IPRADerivations.Core.Header
 
 /-!
 # Three distinct divisors bound the divisor sum
@@ -14,15 +15,11 @@ divisor sum `N + 1` is prime.
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PerfectDivisorBounds
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.SigmaMult (sB sig inst2_sB)
 open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_of_eq' dvd_self')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.FactorVector
 import IPRADerivations.AnalyticNumberTheory.FactorialLambda
 import IPRADerivations.AnalyticNumberTheory.MuLambda
 import IPRADerivations.Core.Fubini
+import IPRADerivations.Core.Header
 
 /-!
 # Valuations determine a positive number; the weight of a power
@@ -22,7 +23,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.ValuationExt
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val isP isP_01 isP_of_prime pw_pos')
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (zero_mul_l)
@@ -32,10 +33,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt (Lw ellB)
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (ell_at lw_mul congrLw)
 open LeanProofs.IPRA.AnalyticNumberTheory.MuLambda (lw_one)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

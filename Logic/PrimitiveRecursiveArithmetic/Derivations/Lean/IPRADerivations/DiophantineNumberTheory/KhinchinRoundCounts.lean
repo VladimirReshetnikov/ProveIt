@@ -1,4 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.KhinchinRoundBits
+import IPRADerivations.Core.Header
 
 /-!
 # One (K2) round from the per-cell (K11) counts (`hurwitz_khinchin_ipra`)
@@ -18,14 +19,10 @@ fine cells `k < r`. The per-cell (K11) count — `KhinchinBlock.block_cover`, co
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinRoundCounts
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg)
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinGridRound (round_grid)
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinRoundBits (fB cB cell_sum cell_res cell_cov)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

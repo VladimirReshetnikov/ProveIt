@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.FilteredEnumeration
 import IPRADerivations.Core.Division
 import IPRADerivations.Probability.UnionUtility
+import IPRADerivations.Core.Header
 
 /-!
 # The complete duplicate-free list of the solutions below a height bound
@@ -38,15 +39,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.BoundedEnumeration
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg)
 open LeanProofs.IPRA.Foundations.FilteredEnumeration (rank sel sel_spec sel_rank rank_lt_size rank_mono)
 open LeanProofs.IPRA.Foundations.BoundedFormulas (sg_of_pos sg_of_zero not_of_zero not_of_one)
 open LeanProofs.IPRA.Probability.UnionUtility (Mx mx_upper)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

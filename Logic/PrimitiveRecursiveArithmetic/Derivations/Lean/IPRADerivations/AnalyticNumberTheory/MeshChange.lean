@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.PsiTheta
 import IPRADerivations.AnalyticNumberTheory.LogRefinement
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Changing the mesh and the denominator of the harmonic logarithm (`pnt_ipra_constructive_2026-11-14`)
@@ -23,7 +24,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.MeshChange
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (S_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
@@ -32,10 +33,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.LogRefinement (log_refine)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (dvd_fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 open LeanProofs.IPRA.Analysis.Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

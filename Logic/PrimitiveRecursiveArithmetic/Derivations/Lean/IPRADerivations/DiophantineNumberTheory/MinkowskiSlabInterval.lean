@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.RationalFiniteSum
 import IPRADerivations.Foundations.BoundedSyntax
+import IPRADerivations.Core.Header
 
 /-!
 # The actual rational slab interval checker
@@ -23,7 +24,7 @@ set_option maxRecDepth 8192
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiSlabInterval
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
@@ -31,9 +32,6 @@ open LeanProofs.IPRA.Analysis.RationalArgmin (left rationalLE)
 open LeanProofs.IPRA.Analysis.RationalArithmetic
   (multiply minimum maximum negative multiplyF minimumF maximumF)
 open LeanProofs.IPRA.Analysis.RationalFiniteSum (term sum termwiseLE sum_monotone)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

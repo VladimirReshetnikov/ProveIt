@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.Coprime
 import IPRADerivations.AnalyticNumberTheory.Order
+import IPRADerivations.Core.Header
 
 /-!
 # The gcd of a vector
@@ -22,14 +23,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.GcdList
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_trans')
 open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.Order (gcd_pos_right)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

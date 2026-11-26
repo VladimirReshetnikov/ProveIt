@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.SieveMajorant
 import IPRADerivations.AnalyticNumberTheory.SieveClosedForms
+import IPRADerivations.Core.Header
 
 /-!
 # The sieve inequality for arbitrary signed weights
@@ -29,16 +30,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SieveInequality
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveExpansion (cB lB)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveClosedForms (gU sgV bil_le bil_ge)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveMajorant (S0 Nb majorant)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveDiagonal (Lb)
 open LeanProofs.IPRA.Probability.Independence (dsum)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

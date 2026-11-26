@@ -1,5 +1,6 @@
 import IPRADerivations.Core.Evaluation
 import IPRADerivations.Foundations.EmbeddingBasics
+import IPRADerivations.Core.Header
 
 /-!
 # The universal primitive-recursive evaluator obstruction
@@ -18,11 +19,8 @@ The external semantic assertion is explicitly distinguished from the ordinary
 
 namespace LeanProofs.IPRA.Foundations.UniversalEvaluatorObstruction
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.EmbeddingBasics (diagB no_universal_evaluator)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app)
 
 /-- The diagonal program computes the candidate evaluator plus one. -/
 theorem diagonal_value (E : PR 2) (x : ℕ) :

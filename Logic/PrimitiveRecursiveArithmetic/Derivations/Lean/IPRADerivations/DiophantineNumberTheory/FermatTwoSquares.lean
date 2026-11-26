@@ -3,6 +3,7 @@ import IPRADerivations.DiophantineNumberTheory.QuadraticSupplements
 import IPRADerivations.Combinatorics.IndependentSets
 import IPRADerivations.AnalyticNumberTheory.BertrandFactor
 import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.Header
 
 /-!
 # Fermat's theorem on sums of two squares, with primitive recursive witnesses
@@ -34,7 +35,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.FermatTwoSquares
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two)
 open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
@@ -46,10 +47,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.PairProduct (sqB)
 open LeanProofs.IPRA.DiophantineNumberTheory.QuadraticSupplements (root_of_sign minus_one_law)
 open LeanProofs.IPRA.DiophantineNumberTheory.ThueGrid (G1 G2 root_to_squares)
 open LeanProofs.IPRA.Foundations.BoundedReflection (wit eqb_cases eq_of_eqb one_ne_zero)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

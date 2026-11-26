@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.BoundedFormulas
+import IPRADerivations.Core.Header
 
 /-!
 # Bounded-formula compilation with certificate checkers
@@ -29,13 +30,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.StriveCompilation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.BoundedFormulas (BF bitAt fmAt bf_reflect bf_cases)
 open LeanProofs.IPRA.Foundations.BoundedReflection (eqb_cases eq_of_eqb one_ne_zero)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {m : ℕ} {Δ : List (Fm PTm m)}
 

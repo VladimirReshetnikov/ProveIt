@@ -3,6 +3,7 @@ import IPRADerivations.Foundations.FiniteQueryDemand
 import IPRADerivations.Foundations.SequenceComposition
 import IPRADerivations.Core.CommonLemmas
 import IPRADerivations.Core.SubstCommand
+import IPRADerivations.Core.Header
 
 /-!
 # Actual finite nearest-neighbor and Hausdorff scans
@@ -23,7 +24,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.FiniteHausdorff
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.ApproximateWitness (argmin argmin_spec)
 open LeanProofs.IPRA.Foundations.FiniteQueryDemand
   (finiteMaximum finiteMaximum_zero finiteMaximum_succ finiteMaximum_at)
@@ -32,10 +33,6 @@ open LeanProofs.IPRA.Foundations.DemandClosure
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Probability.FiniteLaws (Mn mn_le)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

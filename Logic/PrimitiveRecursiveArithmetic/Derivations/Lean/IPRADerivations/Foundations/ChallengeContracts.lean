@@ -1,4 +1,5 @@
 import IPRADerivations.Core.Order
+import IPRADerivations.Core.Header
 
 /-!
 # Finite challenge contracts (`ipra_categorical_methods`, Section 3)
@@ -41,10 +42,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.ChallengeContracts
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
+open_ipra
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

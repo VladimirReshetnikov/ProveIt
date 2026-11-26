@@ -2,6 +2,7 @@ import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Core.Parity
 import IPRADerivations.AnalyticNumberTheory.Valuation
 import IPRADerivations.Foundations.BooleanBits
+import IPRADerivations.Core.Header
 
 /-!
 # Precision arithmetic for names: tails, inverses, moduli and vanishing errors
@@ -35,13 +36,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.PrecisionArithmetic
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (lt_pw)
 open LeanProofs.IPRA.Foundations.BooleanBits (Bit left_of_band right_of_band)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

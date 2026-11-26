@@ -1,4 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.SimultaneousGrid
+import IPRADerivations.Core.Header
 
 /-!
 # The kernel-tail constant of the quantitative Kronecker theorem
@@ -15,13 +16,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KroneckerKernel
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.AperyMultibound (mul_pw)
 open LeanProofs.IPRA.DiophantineNumberTheory.SimultaneousGrid (one_le_pw_of)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

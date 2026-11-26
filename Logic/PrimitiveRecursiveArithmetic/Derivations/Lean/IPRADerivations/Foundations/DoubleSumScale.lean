@@ -1,4 +1,5 @@
 import IPRADerivations.Probability.Independence
+import IPRADerivations.Core.Header
 
 /-!
 # A factor that depends only on the parameter leaves a double sum
@@ -19,12 +20,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.DoubleSumScale
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.Independence (row_pt sum_scale dsum)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -1,5 +1,6 @@
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Core.BoundedSums
+import IPRADerivations.Core.Header
 
 /-!
 # The local defect of an Euler polygon by midpoint telescoping
@@ -32,11 +33,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.OdeLocalDefect
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

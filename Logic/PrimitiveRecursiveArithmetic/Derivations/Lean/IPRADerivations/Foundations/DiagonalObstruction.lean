@@ -1,6 +1,7 @@
 import IPRADerivations.Core.Order
 import IPRADerivations.Core.BoundedSums
 import IPRADerivations.Core.Tactic
+import IPRADerivations.Core.Header
 
 /-!
 # The diagonal obstruction (`ipra_categorical_methods`, Section 4)
@@ -29,11 +30,7 @@ the exponentials of finite sets.
 
 namespace LeanProofs.IPRA.Foundations.DiagonalObstruction
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

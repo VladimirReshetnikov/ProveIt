@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.LeastBoundedWitness
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Foundations.IterationFusion
+import IPRADerivations.Core.Header
 
 /-!
 # Erasing the choice of a certificate behind a stable observer
@@ -45,14 +46,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.ObserverErasure
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Search (mu)
 open LeanProofs.IPRA.Foundations.LeastBoundedWitness (ExW lt_of_exists)
 open LeanProofs.IPRA.Foundations.IterationFusion (rel subst_rel)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

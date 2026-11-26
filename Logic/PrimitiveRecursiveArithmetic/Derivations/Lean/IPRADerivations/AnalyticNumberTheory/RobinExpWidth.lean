@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.RobinExpName
 import IPRADerivations.AnalyticNumberTheory.RobinLipName
+import IPRADerivations.Core.Header
 
 /-!
 # The Lipschitz bound of the exponential names (`robin_ipra_research_2026-11-19`, §"The exponential enclosure")
@@ -21,13 +22,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.RobinExpWidth
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinExpName (Ev Ed Fv Tn Td E_zero E_succ)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLipName (pd1)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

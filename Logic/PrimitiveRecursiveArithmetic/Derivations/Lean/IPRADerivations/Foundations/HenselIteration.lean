@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.FilteredTaylor
+import IPRADerivations.Core.Header
 
 /-!
 # The precision invariant of filtered lifting for one polynomial equation over `ℤ`
@@ -29,13 +30,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.HenselIteration
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.PolynomialRemainder (PE ev dv)
 open LeanProofs.IPRA.Foundations.FilteredTaylor (pd tq ls taylor_exact diff_exact dv_eq)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

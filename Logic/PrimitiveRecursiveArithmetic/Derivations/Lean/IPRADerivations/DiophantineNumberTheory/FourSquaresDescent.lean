@@ -5,6 +5,7 @@ import IPRADerivations.AnalyticNumberTheory.Mobius
 import IPRADerivations.AnalyticNumberTheory.ValuationMul
 import IPRADerivations.AnalyticNumberTheory.Totatives
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Four squares: one step of the descent
@@ -29,7 +30,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.FourSquaresDescent
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (lpf_of_prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorVector (one_le_pos)
@@ -42,10 +43,6 @@ open LeanProofs.IPRA.Combinatorics.LegendreDigits (dm)
 open LeanProofs.IPRA.DiophantineNumberTheory.ModularCertificate (rem_add_mul)
 open LeanProofs.IPRA.DiophantineNumberTheory.FourSquaresAlgebra
 open LeanProofs.IPRA.Signum (sg)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.SieveWeightOne
 import IPRADerivations.AnalyticNumberTheory.SievePrimes
 import IPRADerivations.Foundations.SumPositive
 import IPRADerivations.Core.SumOrder
+import IPRADerivations.Core.Header
 
 /-!
 # The sum of the absolute values of the explicit sieve weights
@@ -37,7 +38,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightAbs
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg sg_zero)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (muP muN)
 open LeanProofs.IPRA.AnalyticNumberTheory.DirichletLeibniz (cvB cv_at)
@@ -51,10 +52,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightValues (YP YN eqb_zero_one)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightForm (UPw UNw)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightOne (Asum)
 open LeanProofs.IPRA.Probability.Independence (row_pt)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

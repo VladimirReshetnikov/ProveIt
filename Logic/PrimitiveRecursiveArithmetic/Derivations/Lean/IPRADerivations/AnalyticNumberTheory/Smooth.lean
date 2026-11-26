@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.SumReindex
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.InductionTactic
+import IPRADerivations.Core.Header
 
 /-!
 # Every `m ≤ N` divides a power of the primorial
@@ -20,7 +21,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.Smooth
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
@@ -32,10 +33,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (lpf_congr prime_congr pw_po
 open LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor (pw_mul_base)
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared (A pB pBt A_succ A_pos pBt_one)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (isP_of_prime)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

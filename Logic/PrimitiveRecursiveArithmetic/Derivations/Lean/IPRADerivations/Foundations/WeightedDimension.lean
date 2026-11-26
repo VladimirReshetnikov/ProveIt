@@ -4,6 +4,7 @@ import IPRADerivations.Foundations.BoundedFormulas
 import IPRADerivations.Foundations.EigenvalueGrid
 import IPRADerivations.Core.Fubini
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # The eventual dimension formula (`ipra_coherent_methods_2026-11-15`, `prop:weighted-dimension`)
@@ -34,17 +35,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.WeightedDimension
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg)
 open LeanProofs.IPRA.Probability.ProductPower (div_eq' rem_lt'')
 open LeanProofs.IPRA.Foundations.FiniteSetExponential (pair_fst)
 open LeanProofs.IPRA.Foundations.BoundedFormulas (sg_of_pos sg_of_zero)
 open LeanProofs.IPRA.Foundations.SumLinear
 open LeanProofs.IPRA.Foundations.EigenvalueGrid (mul_cancel)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

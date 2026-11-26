@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.AperySparse
 import IPRADerivations.DiophantineNumberTheory.AperyGrowth
+import IPRADerivations.Core.Header
 
 /-!
 # The explicit index of the Apéry argument
@@ -22,7 +23,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.AperyIndex
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.AperyMultibound (pw_num num_lt)
 open LeanProofs.IPRA.DiophantineNumberTheory.AperyMultinomial (base_split)
 open LeanProofs.IPRA.DiophantineNumberTheory.AperySparse (sparse)
@@ -33,10 +34,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (lcmu)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos' lt_pw)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

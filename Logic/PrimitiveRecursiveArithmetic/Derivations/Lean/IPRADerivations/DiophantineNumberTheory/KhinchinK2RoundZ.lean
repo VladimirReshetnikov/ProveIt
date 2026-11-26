@@ -1,4 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.KhinchinRoundWrapper
+import IPRADerivations.Core.Header
 
 /-!
 # The (K2) round theorem (`hurwitz_khinchin_ipra`)
@@ -23,7 +24,7 @@ parameter is `⟨z, x⟩` with `x = px r B K₀ M R G' p`, the bits are `w(g, �
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinK2RoundZ
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg)
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockScales (Xt bB)
@@ -31,10 +32,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinCellParams (αc γc b0c)
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinCellBridge (cell_bridge)
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinRoundCounts (round_from_counts rsB wB)
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinRoundWrapper (px vB vB_at)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

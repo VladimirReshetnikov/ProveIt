@@ -2,6 +2,7 @@ import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.AnalyticNumberTheory.DivisorHyperbola
 import IPRADerivations.AnalyticNumberTheory.MertensTotient
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # The parity of the divisor function
@@ -30,7 +31,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.TauParity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB inst2_h)
 open LeanProofs.IPRA.AnalyticNumberTheory.DivisorHyperbola (hyperbola)
 open LeanProofs.IPRA.AnalyticNumberTheory.DirichletLeibniz (conv)
@@ -41,10 +42,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.MobiusFloor (inst2_oneB)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (zero_mul_l)
 open LeanProofs.IPRA.Foundations.BoundedReflection (eqb_cases eq_of_eqb)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

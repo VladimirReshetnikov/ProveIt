@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.PowerResidueRows
 import IPRADerivations.AnalyticNumberTheory.PowerDivisorGrowth
 import IPRADerivations.DiophantineNumberTheory.PrimitiveReduction
+import IPRADerivations.Core.Header
 
 /-!
 # The forward transfer for progression rows (`riemann_ipra_prime_criteria_2026-11-20`, `thm:powerdivisor`)
@@ -24,7 +25,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PowerResidueForward
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorPrefix (Apre)
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerTwistPrefix (tBt tbtB tbtB_at)
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerResidue (res res_lt res_cop)
@@ -37,10 +38,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 open LeanProofs.IPRA.DiophantineNumberTheory.PrimitiveReduction (pw_zero_base)
 open LeanProofs.IPRA.AnalyticNumberTheory.AbsDiff (absd)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

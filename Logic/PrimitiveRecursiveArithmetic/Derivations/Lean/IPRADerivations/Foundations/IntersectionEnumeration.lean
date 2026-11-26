@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.RationalRootScan
 import IPRADerivations.Probability.UnionUtility
+import IPRADerivations.Core.Header
 
 /-!
 # The two-level intersection scan and global covers (`ipra_presentations_to_witnesses`, `thm:norm-complete-intersection`, `cor:norm-global-list`)
@@ -51,15 +52,11 @@ Not derived: the tests as programs on coefficient codes (specialization `F_a`, e
 
 namespace LeanProofs.IPRA.Foundations.IntersectionEnumeration
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.RationalRootScan
   (mx le_mx_left le_mx_right box scan_sound scan_complete)
 open LeanProofs.IPRA.Foundations.FilteredEnumeration (rank sel)
 open LeanProofs.IPRA.Probability.UnionUtility (Mx mx_upper)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

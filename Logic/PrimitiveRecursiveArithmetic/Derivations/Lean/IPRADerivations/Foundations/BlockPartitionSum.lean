@@ -1,5 +1,6 @@
 import IPRADerivations.Core.SumSplit
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.Header
 
 /-!
 # Sums over a partition into consecutive blocks (`hurwitz_khinchin_ipra`, gap lists)
@@ -19,11 +20,7 @@ on the number of blocks, splitting the cell range at each endpoint (`Core.SumSpl
 
 namespace LeanProofs.IPRA.Foundations.BlockPartitionSum
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 set_option autoImplicit false
 

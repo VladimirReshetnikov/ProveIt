@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.TraceReflection
+import IPRADerivations.Core.Header
 
 /-!
 # Trace reflection with a guarded step
@@ -31,12 +32,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.GuardedTrace
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.ClockedDescent (subst_QF')
 open LeanProofs.IPRA.Foundations.TraceReflection (Run I3 subst_I3 subst_Run run_zero run_succ I3_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
 
 variable {n : ℕ}
 

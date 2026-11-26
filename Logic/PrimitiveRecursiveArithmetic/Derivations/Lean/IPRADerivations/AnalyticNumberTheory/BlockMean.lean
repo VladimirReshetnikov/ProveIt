@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.BlockSigned
+import IPRADerivations.Core.Header
 
 /-!
 # The signed block mean over divisors (`pnt_ipra_constructive_2026-11-14`, `con:signed`)
@@ -18,16 +19,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.BlockMean
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvSummatory (RB)
 open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBlock (iB eB gB gB_at block_id)
 open LeanProofs.IPRA.AnalyticNumberTheory.BlockFloor (lB fB lB_at fB_at)
 open LeanProofs.IPRA.AnalyticNumberTheory.BlockSigned (excess_upper excess_lower)
 open LeanProofs.IPRA.Analysis.Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

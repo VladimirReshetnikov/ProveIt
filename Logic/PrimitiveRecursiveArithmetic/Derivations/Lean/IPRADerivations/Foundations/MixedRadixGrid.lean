@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.FiniteSetExponential
 import IPRADerivations.Foundations.FilteredEnumeration
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # The mixed-radix enumeration of a coordinate grid (`ipra_presentations_to_witnesses`, `thm:module-enumeration`)
@@ -38,14 +39,10 @@ the certificate checker.
 
 namespace LeanProofs.IPRA.Foundations.MixedRadixGrid
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.FiniteSetExponential
   (pair_lt pair_fst pair_snd pair_eta snd_lt fst_lt)
 open LeanProofs.IPRA.Foundations.FilteredEnumeration (rank sel sel_rank rank_lt_size)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

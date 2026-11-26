@@ -3,6 +3,7 @@ import IPRADerivations.AnalyticNumberTheory.Multiplicative
 import IPRADerivations.DiophantineNumberTheory.ModularCertificate
 import IPRADerivations.Core.CertificateTactics
 import IPRADerivations.Core.InductionTactic
+import IPRADerivations.Core.Header
 
 /-!
 # The period of the sieve count
@@ -28,7 +29,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SievePeriod
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi totBody inst2_tot)
 open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (gcd_rem)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg congrEqb' zero_mul_l)
@@ -37,10 +38,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.SieveRecursion (Phi)
 open LeanProofs.IPRA.DiophantineNumberTheory.ModularCertificate (rem_add_mul)
 open LeanProofs.IPRA.DiophantineNumberTheory.QuarticStep (congrGcd)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -1,6 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.ProjectiveNormalize
 import IPRADerivations.Probability.Independence
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Uniqueness of Bézout-primitive representatives in every dimension
@@ -25,13 +26,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.ProjectiveVectorUnique
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

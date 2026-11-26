@@ -2,6 +2,7 @@ import IPRADerivations.Core.Search
 import IPRADerivations.Core.Powers
 import IPRADerivations.Foundations.Adjunction
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Square roots without zero testing (`ipra_evidence_framework`, worked example)
@@ -35,13 +36,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.SquareRootNames
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Search (mu search_found search_minimal)
 open LeanProofs.IPRA.Foundations.Adjunction (par_le_one)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

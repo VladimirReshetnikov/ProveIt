@@ -2,6 +2,7 @@ import IPRADerivations.Core.Fubini
 import IPRADerivations.Core.SumOrder
 import IPRADerivations.Core.Signum
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Finite unions of grid intervals and their exact length
@@ -27,12 +28,8 @@ The proof of `subadditive`: a covered cell is counted at most by the number of m
 
 namespace LeanProofs.IPRA.Foundations.IntervalCover
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

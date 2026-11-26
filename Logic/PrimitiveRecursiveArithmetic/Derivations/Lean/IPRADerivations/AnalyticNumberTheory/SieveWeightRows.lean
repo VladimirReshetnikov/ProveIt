@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.SieveWeightFacts
 import IPRADerivations.AnalyticNumberTheory.SieveInversion
 import IPRADerivations.AnalyticNumberTheory.SieveClosedForms
 import IPRADerivations.Core.CertificateTactics
+import IPRADerivations.Core.Header
 
 /-!
 # The sieve weights defined by inversion, and their sums over multiples
@@ -31,7 +32,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightRows
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg sg_zero)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg zero_mul_l congrEqb')
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (sg_pos)
@@ -44,10 +45,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.SieveDiagonal (Ab Ab_at Bb Bb_at)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveClosedForms (gU inst2_gU sgV inst2_sgV)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightFacts (g_supp)
 open LeanProofs.IPRA.Probability.Independence (row_pt sum_scale dsum)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

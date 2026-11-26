@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.BlockSums
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # The mass of a block of divisors (`pnt_ipra_constructive_2026-11-14`, `con:deficit`)
@@ -17,7 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.BlockMass
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S)
 open LeanProofs.IPRA.AnalyticNumberTheory.SummatoryCompose (hRB)
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvSummatory (RB RB_at)
@@ -28,10 +29,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.BlockSums (Y biB fzB ia_at ind0 ind1 b
 open LeanProofs.IPRA.Foundations.ProductSumDomination (sum_trunc)
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.Signum (sg)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

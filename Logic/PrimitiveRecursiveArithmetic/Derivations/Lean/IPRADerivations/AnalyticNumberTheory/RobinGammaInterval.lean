@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.RobinLogName
+import IPRADerivations.Core.Header
 
 /-!
 # The lower Euler-constant name (`robin_ipra_research_2026-11-19`, `lem:gamma`)
@@ -26,16 +27,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.RobinGammaInterval
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinGamma (Lf Lv L_zero L_succ Pv P_succ P_zero sv Wv)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogName
   (Nz Nz_zero Nz_succ Dz Un Ud Lz log_name L_eq N_bridge Un_congr Ud_congr Ud_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

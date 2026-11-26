@@ -5,6 +5,7 @@ import IPRADerivations.Core.BoundedSums
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.SubstCommand
+import IPRADerivations.Core.Header
 
 /-!
 # The finite sums of the Khinchin second moment (`hurwitz_khinchin_ipra`, (K10))
@@ -22,11 +23,7 @@ Both are quantifier-free inductions on the number of terms.
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinMoment
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 set_option autoImplicit false
 

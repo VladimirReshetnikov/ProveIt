@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.BoundedCover
+import IPRADerivations.Core.Header
 
 /-!
 # Finite challenge decomposition
@@ -23,13 +24,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.ChallengeDecomposition
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.BoundedFormulas
 open LeanProofs.IPRA.Foundations.BoundedReflection (all_fail)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable (Q Z E : PTm 1) (R : BF)
 

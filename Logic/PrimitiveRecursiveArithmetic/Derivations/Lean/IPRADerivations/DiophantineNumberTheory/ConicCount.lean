@@ -1,4 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.AperyWronskian
+import IPRADerivations.Core.Header
 
 /-!
 # The counting estimates of a pointed conic
@@ -19,11 +20,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.ConicCount
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

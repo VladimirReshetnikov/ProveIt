@@ -1,5 +1,6 @@
 import IPRADerivations.Core.BoundedSums
 import IPRADerivations.Core.Order
+import IPRADerivations.Core.Header
 
 /-!
 # Invariants indexed by control labels
@@ -30,11 +31,7 @@ output projections are metalevel constructions and are not formalized here.
 
 namespace LeanProofs.IPRA.Foundations.LabelledInvariant
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num)
+open_ipra
 
 variable {n : ℕ}
 

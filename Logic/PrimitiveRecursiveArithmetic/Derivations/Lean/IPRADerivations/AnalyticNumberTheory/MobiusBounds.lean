@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.Mobius
+import IPRADerivations.Core.Header
 
 /-!
 # Möbius sums with arbitrary bounds
@@ -19,7 +20,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val isP)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (eq_succ_pred)
@@ -27,10 +28,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (val_unique)
 open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_eq')
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_le' one_le_of_pos)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

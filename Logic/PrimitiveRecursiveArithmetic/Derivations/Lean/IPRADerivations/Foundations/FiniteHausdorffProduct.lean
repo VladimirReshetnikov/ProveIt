@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.FiniteHausdorff
 import IPRADerivations.AnalyticNumberTheory.Multiplicative
+import IPRADerivations.Core.Header
 
 /-!
 # Actual finite Cartesian products in the sup metric
@@ -21,7 +22,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.FiniteHausdorffProduct
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.FiniteHausdorff
 open LeanProofs.IPRA.Foundations.MasterCertificate
   (sequence entry sequence_length sequence_decode subst_sequence subst_entry)
@@ -30,10 +31,6 @@ open LeanProofs.IPRA.Foundations.DemandClosure
   (maximum subst_maximum maximum_left maximum_right maximum_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_lt' quo_lt)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

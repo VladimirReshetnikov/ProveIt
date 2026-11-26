@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.HenselSystem
+import IPRADerivations.Core.Header
 
 /-!
 # Uniqueness of the filtered lift for polynomial systems over `ℤ`
@@ -26,15 +27,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.HenselSystemUniqueness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.PolynomialRemainder (PE ev dv)
 open LeanProofs.IPRA.Foundations.FilteredTaylor (pd tq ls taylor_exact diff_exact dv_eq zsum toZ_zsum toZ_zero)
 open LeanProofs.IPRA.Foundations.HenselUniqueness (toZ_ev_congr pw_split)
 open LeanProofs.IPRA.Foundations.HenselSystem (jac kron kron_toZ g)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k m : ℕ} {Γ : List (Fm PTm k)}
 

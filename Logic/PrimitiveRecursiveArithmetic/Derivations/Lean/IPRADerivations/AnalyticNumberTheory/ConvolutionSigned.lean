@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.ConvolutionDivisorWeights
 import IPRADerivations.AnalyticNumberTheory.ConvolutionMultiplicative
 import IPRADerivations.Foundations.SignedSumScale
+import IPRADerivations.Core.Header
 
 /-!
 # The coprime product law for integer-valued Dirichlet convolution
@@ -15,7 +16,7 @@ including complementary divisors of the same positive inputs.
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionSigned
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionDivisorWeights (quotient_product)
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionMultiplicative (conv_at_one)
 open LeanProofs.IPRA.AnalyticNumberTheory.DirichletLeibniz (cvB conv)
@@ -26,10 +27,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.Fermat (subst_up_shift')
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_of_eq' eq_of_dvd' pos_of_eq_mul)
 open LeanProofs.IPRA.Foundations.SignedSumScale (sum_scale)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

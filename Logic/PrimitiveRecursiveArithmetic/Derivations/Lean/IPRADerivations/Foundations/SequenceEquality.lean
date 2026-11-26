@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.MasterCertificate
 import IPRADerivations.Core.CongruenceTactic
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Header
 
 /-!
 # Literal equality of sequences constructed by the checked stack program
@@ -17,12 +18,9 @@ It does not assert extensionality of arbitrary or malformed sequence codes.
 
 namespace LeanProofs.IPRA.Foundations.SequenceEquality
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.MasterCertificate
   (stack stack_zero stack_succ sequence)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

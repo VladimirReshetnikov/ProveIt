@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.RationalArithmetic.RationalNormalForm
 import IPRADerivations.DiophantineNumberTheory.MinkowskiCenterVectors
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Header
 
 /-!
 # Canonical vector guards in Minkowski's arbitrary-formula scheme
@@ -21,7 +22,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiWellFormed
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis LeanProofs.IPRA.Foundations
 open LeanProofs.IPRA.Analysis.RationalIntegerNormalization (normalize integerCode normalize_integer)
 open LeanProofs.IPRA.Analysis.RationalNormalForm (wellFormed normalize_well_formed)
@@ -32,9 +33,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiCenterVectors
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
 open LeanProofs.IPRA.Foundations.SequenceEquality (sequence_equal)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

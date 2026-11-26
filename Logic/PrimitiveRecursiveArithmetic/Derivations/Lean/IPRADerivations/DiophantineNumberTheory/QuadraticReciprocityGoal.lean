@@ -3,6 +3,7 @@ import IPRADerivations.Core.Division
 import IPRADerivations.Core.MultiSums
 import IPRADerivations.Core.ParityArith
 import IPRADerivations.Foundations.BoundedSyntax
+import IPRADerivations.Core.Header
 
 /-!
 # Quadratic reciprocity: the object sentence and its assembly from the two counts
@@ -27,12 +28,9 @@ witness statements of the packet are not derived.
 set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.QuadraticReciprocityGoal
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.Foundations.BoundedSyntax
-open Syn
-open scoped Fm
-open LeanProofs.ConciseIPRA.PTm (app succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

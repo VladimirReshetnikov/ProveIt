@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.PowerDivisorPrefix
+import IPRADerivations.Core.Header
 
 /-!
 # The prefix identity for divisor-twisted bodies (`riemann_ipra_prime_criteria_2026-11-20`, `thm:powerdivisor`)
@@ -20,17 +21,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PowerTwistPrefix
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorPrefix (Apre step_pt)
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (sum_add2)
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (quo_small)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.BlockChain (one_le_pw')
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrEqb')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

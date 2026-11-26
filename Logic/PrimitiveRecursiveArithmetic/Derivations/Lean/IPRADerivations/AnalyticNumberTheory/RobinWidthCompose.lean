@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.RobinWidthNum
 import IPRADerivations.AnalyticNumberTheory.RobinLipWidth
 import IPRADerivations.AnalyticNumberTheory.RobinUpperEnd
+import IPRADerivations.Core.Header
 
 /-!
 # The width of the Robin interval `[L(n, k), U(n, k)]` (`robin_ipra_research_2026-11-19`, §"Composing the double logarithm")
@@ -24,7 +25,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.RobinWidthCompose
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinGamma (Pv Pt Qt)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogName (frac_trans)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinExpName
@@ -48,10 +49,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
 open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBounds (two_pos')
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.RobinLogName
+import IPRADerivations.Core.Header
 
 /-!
 # Elementary inequalities for the logarithm names (`robin_ipra_research_2026-11-19`, `lcm_bridge.tex`)
@@ -17,14 +18,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.RobinLogDiff
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinGamma (Lv L_zero L_succ Pv P_succ P_zero)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogName
   (Nz Nz_zero Nz_succ Dz Un Ud Lz log_name Nz_congr Dz_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 
