@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Barnes.Taylor.GaussianBarnesCanonicalDerivativeBinding
-import IPRADerivations.Analysis.Gamma.GaussianGammaRationalRatioBinding
+import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.GaussianBarnesCanonicalDerivativeBinding
+import IPRADerivations.Analysis.Gamma.Ratios.GaussianGammaRationalRatioBinding
 
 /-!
 # Exact named Taylor remainder of a Barnes logarithm row

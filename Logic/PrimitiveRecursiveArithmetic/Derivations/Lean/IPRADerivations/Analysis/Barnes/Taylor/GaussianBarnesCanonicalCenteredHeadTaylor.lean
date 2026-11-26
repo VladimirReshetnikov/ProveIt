@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Taylor.GaussianBarnesCanonicalCenteredHead
-import IPRADerivations.Analysis.Polynomials.GaussianRationalHornerPrefixTaylor
+import IPRADerivations.Analysis.Polynomials.Horner.GaussianRationalHornerPrefixTaylor
 
 /-!
 # Every truncation of the original centered Barnes base-power polynomial

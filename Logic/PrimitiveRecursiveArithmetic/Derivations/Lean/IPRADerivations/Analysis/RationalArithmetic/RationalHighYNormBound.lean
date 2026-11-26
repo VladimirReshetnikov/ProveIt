@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.RationalPolynomialMonicHornerReductionGaussianEmbedding
+import IPRADerivations.Analysis.Polynomials.Horner.RationalPolynomialMonicHornerReductionGaussianEmbedding
 import IPRADerivations.Analysis.Polynomials.RationalPolynomialMonicNorm
 
 /-!

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalCorrectionShift
-import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalPrefactor
+import IPRADerivations.Analysis.Barnes.Prefactors.GaussianBarnesCanonicalPrefactor
 import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalTerminalRemainder
 
 /-!

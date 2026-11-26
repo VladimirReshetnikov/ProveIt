@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.PositiveAxis.GaussianEulerPositivePowerChartOrder
+import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.GaussianEulerPositivePowerChartOrder
 import IPRADerivations.Analysis.Euler.PositiveAxis.GaussianEulerLowerPowerOrder
 
 /-!

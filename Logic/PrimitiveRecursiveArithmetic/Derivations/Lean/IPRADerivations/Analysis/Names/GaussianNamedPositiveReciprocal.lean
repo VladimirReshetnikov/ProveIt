@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Logarithm.GaussianNamedPositiveLogarithm
-import IPRADerivations.Analysis.Euler.GaussianEulerCompactExhaustionNormalization
+import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactExhaustionNormalization
 
 /-!
 # Reciprocal of a positive real name with a supplied compact margin

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteProductFamily
 import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaWeierstrassApproximant
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalFiniteProduct
+import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalFiniteProduct
 
 /-!
 # Products of finite families of constant Gaussian names

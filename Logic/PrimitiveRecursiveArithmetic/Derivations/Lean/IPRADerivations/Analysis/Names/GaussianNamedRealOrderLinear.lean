@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.GaussianGammaRationalWendelBoundary
+import IPRADerivations.Analysis.Gamma.Ratios.GaussianGammaRationalWendelBoundary
 import IPRADerivations.Analysis.Gamma.GaussianGammaStrongLogConvexityAlgebra
 import IPRADerivations.Analysis.Names.GaussianNamedNaturalScaleOrder
 

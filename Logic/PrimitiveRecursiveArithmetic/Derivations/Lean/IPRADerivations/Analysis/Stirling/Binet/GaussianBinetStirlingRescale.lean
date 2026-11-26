@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.GaussianBinetStirlingRemainder
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianLogGammaEulerChartAgreement
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerChartAgreement
 
 /-!
 # Rescaling the original complex Stirling remainder

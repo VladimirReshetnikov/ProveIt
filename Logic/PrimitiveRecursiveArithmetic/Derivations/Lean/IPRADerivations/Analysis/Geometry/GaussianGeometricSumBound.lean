@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.GaussianOffDominantWeights
-import IPRADerivations.Analysis.Polynomials.GaussianHornerCommonDenominator
+import IPRADerivations.Analysis.Polynomials.Horner.GaussianHornerCommonDenominator
 import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalNormClearing
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalCover
+import IPRADerivations.Analysis.RationalArithmetic.Covers.GaussianRationalCover
 
 /-!
 # The exact geometric bound for two actual Gaussian-rational sums

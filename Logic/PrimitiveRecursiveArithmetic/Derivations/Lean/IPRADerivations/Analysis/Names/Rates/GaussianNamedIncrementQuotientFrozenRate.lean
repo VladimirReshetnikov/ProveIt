@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedIncrementDifferenceQuotient
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedReciprocalFrozenRate
-import IPRADerivations.Analysis.Euler.GaussianEulerNamedPowerScalingPowerFrozen
+import IPRADerivations.Analysis.Euler.PowerScaling.GaussianEulerNamedPowerScalingPowerFrozen
 
 /-!
 # Compare an original named increment quotient with a decoded native quotient

@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianLogGammaEulerPositiveAxis
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianLogGammaEulerRationalContinuity
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerPositiveAxis
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerRationalContinuity
 
 /-!
 # Original positive log-Gamma under a small rational translation

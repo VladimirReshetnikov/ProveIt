@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.Logarithms.GaussianEulerLogarithmicCompactName
-import IPRADerivations.Analysis.Euler.GaussianEulerCompactAdditivity
+import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactAdditivity
 
 /-!
 # Original logarithmic compact names on arbitrary positive intervals

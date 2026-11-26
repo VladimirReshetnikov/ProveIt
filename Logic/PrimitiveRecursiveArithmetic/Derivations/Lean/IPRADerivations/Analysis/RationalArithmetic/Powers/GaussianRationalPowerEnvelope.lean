@@ -1,5 +1,5 @@
 import IPRADerivations.Algebra.PowerDifference
-import IPRADerivations.Analysis.Polynomials.GaussianRationalHornerLipschitz
+import IPRADerivations.Analysis.Polynomials.Horner.GaussianRationalHornerLipschitz
 import IPRADerivations.Core.LinearCombination
 
 /-!

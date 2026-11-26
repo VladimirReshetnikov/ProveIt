@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Integration.GaussianRationalQuadratureSquareJacobian
 import IPRADerivations.Analysis.Euler.GaussianEulerDampedTimeRate
-import IPRADerivations.Analysis.Euler.GaussianEulerCompactModulus
+import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactModulus
 
 /-!
 # Compact geometry and actual Euler bounds for quadratic time

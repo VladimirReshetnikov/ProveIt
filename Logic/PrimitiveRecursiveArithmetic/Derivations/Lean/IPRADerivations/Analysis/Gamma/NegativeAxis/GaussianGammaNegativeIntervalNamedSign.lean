@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.NegativeAxis.GaussianGammaNegativeIntervalProductSign
-import IPRADerivations.Analysis.Gamma.GaussianGammaPoleMultiplier
+import IPRADerivations.Analysis.Gamma.Poles.GaussianGammaPoleMultiplier
 import IPRADerivations.Analysis.Integration.GaussianMomentReflection
 import IPRADerivations.Analysis.Names.GaussianNamedRealOrderLinear
 import IPRADerivations.Analysis.Stirling.GaussianStirlingMultiplicativeBoundsStrictOrder

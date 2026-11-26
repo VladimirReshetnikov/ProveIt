@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.Integration.GaussianEulerIncompleteFixedCutoff
-import IPRADerivations.Analysis.Euler.GaussianEulerCompactAlignment
+import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactAlignment
 import IPRADerivations.Analysis.Names.GaussianNameRingLaws
 
 /-!

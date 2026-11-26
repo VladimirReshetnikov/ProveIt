@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Inequalities.GaussianCompactPositiveRadiusDominance
-import IPRADerivations.Analysis.Euler.GaussianEulerVerticalShiftedRadius
+import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerVerticalShiftedRadius
 import IPRADerivations.Core.CertificateTactics
 
 /-!

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.GaussianEulerPositiveScalingIntegrand
-import IPRADerivations.Analysis.Euler.GaussianEulerCompactPowerVariation
+import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactPowerVariation
 import IPRADerivations.Analysis.Euler.Integration.GaussianEulerDecayFactorBounds
 import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedMultiplyRate
 

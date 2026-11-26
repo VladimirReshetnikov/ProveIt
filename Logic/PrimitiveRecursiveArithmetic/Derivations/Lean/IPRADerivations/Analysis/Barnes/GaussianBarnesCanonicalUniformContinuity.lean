@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalUniformCutoff
-import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalPrefactorLipschitz
-import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalHeadLipschitz
+import IPRADerivations.Analysis.Barnes.Prefactors.GaussianBarnesCanonicalPrefactorLipschitz
+import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalHeadLipschitz
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateComposition
 
 /-!

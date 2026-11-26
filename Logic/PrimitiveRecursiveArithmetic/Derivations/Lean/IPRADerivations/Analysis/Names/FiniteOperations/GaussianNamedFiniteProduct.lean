@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalRectangularProduct
+import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalRectangularProduct
 import IPRADerivations.Analysis.Names.GaussianNameArithmetic
 
 /-!

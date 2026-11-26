@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.Integration.GaussianEulerPowerScalingCompactRate
-import IPRADerivations.Analysis.Euler.GaussianEulerCompactAdditivity
+import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactAdditivity
 
 /-!
 # The actual compact quadrature of the power-damped Euler integrand

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.SpecialFunctions.GaussianNamedDampingPowerIntegrand
-import IPRADerivations.Analysis.Euler.PositiveAxis.GaussianEulerPositivePowerChartLower
+import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.GaussianEulerPositivePowerChartLower
 
 /-!
 # Exact real observations of the named damping chart and decay

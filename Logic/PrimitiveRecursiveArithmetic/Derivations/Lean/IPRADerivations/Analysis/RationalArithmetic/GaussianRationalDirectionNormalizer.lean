@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.GaussianIntegerCircleProjection
 import IPRADerivations.Analysis.Polynomials.RootFinding.RationalSquareRootBounds
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalProductWitness
+import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalProductWitness
 import IPRADerivations.Foundations.DemandClosure
 import IPRADerivations.Combinatorics.FiniteBijection
 import IPRADerivations.AnalyticNumberTheory.Totatives

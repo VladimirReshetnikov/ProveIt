@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalNamedDemand
+import IPRADerivations.Analysis.Barnes.Names.GaussianBarnesCanonicalNamedDemand
 import IPRADerivations.Core.MultiSums
 
 /-!

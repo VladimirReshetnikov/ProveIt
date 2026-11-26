@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianLogGammaEulerChartAgreement
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianLogGammaEulerLinearSlope
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerChartAgreement
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerLinearSlope
 import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalLowerBounds
 
 /-!

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaOriginalC19Prefix
-import IPRADerivations.Analysis.Gamma.GaussianGammaAllDegreeCoefficientVariation
+import IPRADerivations.Analysis.Gamma.Taylor.GaussianGammaAllDegreeCoefficientVariation
 import IPRADerivations.Foundations.FiniteQueryDemand
 
 /-!

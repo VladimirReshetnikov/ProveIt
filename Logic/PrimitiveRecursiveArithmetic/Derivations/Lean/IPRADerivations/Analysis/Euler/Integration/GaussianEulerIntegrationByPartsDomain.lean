@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.GaussianEulerIntegralGammaIdentification
-import IPRADerivations.Analysis.Euler.GaussianEulerVerticalNamedRadius
+import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerVerticalNamedRadius
 import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerShiftLimit
 import IPRADerivations.Analysis.Euler.GaussianEulerLaterCutoffObservation
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedSmallPerturbationTransport

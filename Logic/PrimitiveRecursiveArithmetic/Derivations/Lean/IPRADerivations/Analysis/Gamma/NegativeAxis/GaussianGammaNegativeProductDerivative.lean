@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.GaussianGammaPoleFiniteFactors
+import IPRADerivations.Analysis.Gamma.Poles.GaussianGammaPoleFiniteFactors
 import IPRADerivations.Analysis.Polynomials.GaussianRationalCoefficientScaling
 
 /-!

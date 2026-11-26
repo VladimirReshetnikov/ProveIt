@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.GaussianGammaCompactCutoffGeometry
-import IPRADerivations.Analysis.Euler.GaussianEulerCompactAlignment
+import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactAlignment
 import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerCompactQuadrature
 
 /-!

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.Integration.GaussianEulerPowerScalingFrozenIntegrand
-import IPRADerivations.Analysis.Euler.PositiveAxis.GaussianEulerPositivePowerChartMeshJacobian
+import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.GaussianEulerPositivePowerChartMeshJacobian
 
 /-!
 # Literal frozen power-scaling rows at their true multiplication clocks

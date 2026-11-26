@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Names.GaussianNamedNaturalScale
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaCanonicalExponent
+import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalExponent
 
 /-!
 # Natural scaling and multiplication by the constant name

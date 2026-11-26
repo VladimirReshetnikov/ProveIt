@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.GaussianEulerQuadraticKernelTimeRate
-import IPRADerivations.Analysis.Euler.GaussianEulerCompactAdditivity
+import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactAdditivity
 import IPRADerivations.Core.CongruenceTactic
 
 /-!

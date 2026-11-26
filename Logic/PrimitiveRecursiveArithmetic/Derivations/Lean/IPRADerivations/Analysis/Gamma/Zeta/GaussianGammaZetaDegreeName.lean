@@ -1,8 +1,8 @@
-import IPRADerivations.Analysis.Gamma.GaussianGammaFixedDegreeHorizon
-import IPRADerivations.Analysis.Gamma.GaussianGammaReciprocalDegreeCells
+import IPRADerivations.Analysis.Gamma.Taylor.GaussianGammaFixedDegreeHorizon
+import IPRADerivations.Analysis.Gamma.Taylor.GaussianGammaReciprocalDegreeCells
 import IPRADerivations.Analysis.Names.RationalReciprocalPowerName
 import IPRADerivations.Analysis.Names.RationalGaussianNameEmbedding
-import IPRADerivations.Analysis.Gamma.GaussianGammaCofinalDegreeTail
+import IPRADerivations.Analysis.Gamma.Taylor.GaussianGammaCofinalDegreeTail
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
 import IPRADerivations.Core.CongruenceTactic
 

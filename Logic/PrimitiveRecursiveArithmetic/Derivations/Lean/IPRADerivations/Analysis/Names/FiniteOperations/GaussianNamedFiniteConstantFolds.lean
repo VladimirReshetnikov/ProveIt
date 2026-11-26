@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteSumFamily
 import IPRADerivations.Analysis.Names.GaussianNameConjugation
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaCanonicalExponent
+import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalExponent
 
 /-!
 # Literal finite sums and products of Gaussian constant names

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianLogGammaEulerResidualRadius
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerResidualRadius
 import IPRADerivations.Analysis.Logarithm.GaussianCompactLogarithmBounds
 
 /-!

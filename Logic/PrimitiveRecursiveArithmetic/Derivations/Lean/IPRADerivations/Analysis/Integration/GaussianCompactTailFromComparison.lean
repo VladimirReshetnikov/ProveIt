@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Names.GaussianCompactNamedAdditivity
-import IPRADerivations.Analysis.Polynomials.GaussianReciprocalHorner
+import IPRADerivations.Analysis.Polynomials.Horner.GaussianReciprocalHorner
 
 /-!
 # Compact tail bounds from a common reference

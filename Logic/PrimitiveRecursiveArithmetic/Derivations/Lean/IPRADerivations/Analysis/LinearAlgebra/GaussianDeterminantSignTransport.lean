@@ -1,5 +1,5 @@
 import IPRADerivations.Foundations.RuntimeAdjacentPermutationSwap
-import IPRADerivations.Analysis.Polynomials.GaussianPolynomialDeterminantTerms
+import IPRADerivations.Analysis.Polynomials.Determinants.GaussianPolynomialDeterminantTerms
 import IPRADerivations.Analysis.Polynomials.GaussianInverseBinomialRows
 import IPRADerivations.Analysis.Polynomials.GaussianCoefficientNormOrder
 import IPRADerivations.Core.CongruenceTactic

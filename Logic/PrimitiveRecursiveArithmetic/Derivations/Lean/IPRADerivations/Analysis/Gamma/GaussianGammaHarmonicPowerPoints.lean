@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerHeadQuadratic
-import IPRADerivations.Analysis.Gamma.GaussianGammaReciprocalDegreeCells
+import IPRADerivations.Analysis.Gamma.Taylor.GaussianGammaReciprocalDegreeCells
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalRoundedPower
 
 /-!

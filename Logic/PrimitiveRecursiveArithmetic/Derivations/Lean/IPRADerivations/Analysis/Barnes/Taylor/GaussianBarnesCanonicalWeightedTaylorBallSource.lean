@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Barnes.Taylor.GaussianBarnesCanonicalExponentTaylorWeightedMass
-import IPRADerivations.Analysis.Barnes.Taylor.GaussianBarnesCanonicalCorrectedMercatorCofinal
+import IPRADerivations.Analysis.Barnes.Taylor.Coefficients.GaussianBarnesCanonicalExponentTaylorWeightedMass
+import IPRADerivations.Analysis.Barnes.Taylor.RelativeExpansions.GaussianBarnesCanonicalCorrectedMercatorCofinal
 
 /-!
 # One positive Barnes step radius at every Taylor order

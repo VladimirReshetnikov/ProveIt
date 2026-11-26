@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.PositiveAxis.GaussianNamedEulerUnitKernel
+import IPRADerivations.Analysis.Euler.PositiveAxis.UnitKernel.GaussianNamedEulerUnitKernel
 import IPRADerivations.Analysis.Euler.PositiveAxis.GaussianEulerUnitTimeRate
 
 /-!

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Digamma.GaussianGammaDigammaDyadicCrossing
 import IPRADerivations.Analysis.Gamma.Digamma.GaussianGammaDigammaLipschitz
-import IPRADerivations.Analysis.Euler.PositiveAxis.GaussianEulerSharpScheduledApproximation
+import IPRADerivations.Analysis.Euler.PositiveAxis.SharpRates.GaussianEulerSharpScheduledApproximation
 
 /-!
 # The dyadic mesh and adjacent digamma observations

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.Integration.GaussianEulerPowerChartFrozenKernel
 import IPRADerivations.Analysis.Euler.Integration.GaussianEulerPowerScalingCompactRate
-import IPRADerivations.Analysis.Euler.PositiveAxis.GaussianEulerPositivePowerChartJacobian
+import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.GaussianEulerPositivePowerChartJacobian
 import IPRADerivations.Analysis.Gamma.GaussianGammaReciprocalInverse
 
 /-!

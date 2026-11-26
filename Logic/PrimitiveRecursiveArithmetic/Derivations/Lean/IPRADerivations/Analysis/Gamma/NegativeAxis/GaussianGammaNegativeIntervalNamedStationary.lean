@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.NegativeAxis.GaussianGammaNegativeIntervalNamedGammaInverse
 import IPRADerivations.Analysis.Gamma.NegativeAxis.GaussianGammaNegativeIntervalNamedDerivative
 import IPRADerivations.Analysis.Gamma.Digamma.GaussianGammaNegativeIntervalNamedDigammaRoot
-import IPRADerivations.Analysis.Gamma.GaussianGammaRationalWendelUniform
+import IPRADerivations.Analysis.Gamma.Ratios.GaussianGammaRationalWendelUniform
 
 /-!
 # Stationary offsets for the unscaled cofinal Gamma derivative

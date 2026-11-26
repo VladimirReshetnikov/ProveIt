@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalLogCofinalRate
+import IPRADerivations.Analysis.Barnes.Logarithms.GaussianBarnesCanonicalLogCofinalRate
 import IPRADerivations.Analysis.Exponential.GaussianRadiusExponentialLipschitzRate
 
 /-!

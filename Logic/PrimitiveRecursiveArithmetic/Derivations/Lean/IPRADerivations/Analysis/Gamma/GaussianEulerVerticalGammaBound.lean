@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Euler.GaussianEulerVerticalQuadrature
-import IPRADerivations.Analysis.Euler.GaussianEulerVerticalShiftedRadius
+import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerVerticalQuadrature
+import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerVerticalShiftedRadius
 import IPRADerivations.Analysis.Euler.Integration.GaussianEulerIntegralPositiveLower
 import IPRADerivations.Core.CertificateTactics
 

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.LinearAlgebra.GaussianScalarDeterminant
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalProductDeletion
+import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalProductDeletion
 import IPRADerivations.Foundations.RuntimePermutationInsertion
 import IPRADerivations.Core.CongruenceTactic
 

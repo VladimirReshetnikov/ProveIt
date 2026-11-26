@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalPolynomialShift
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalProductAlgebra
+import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalProductAlgebra
 
 /-!
 # Cleared shift of the actual Barnes base-power product

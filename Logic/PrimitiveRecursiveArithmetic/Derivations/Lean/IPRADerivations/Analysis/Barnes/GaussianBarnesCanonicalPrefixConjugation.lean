@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalProduct
-import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalHeadConjugation
-import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalPrefactorConjugation
+import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalHeadConjugation
+import IPRADerivations.Analysis.Barnes.Prefactors.GaussianBarnesCanonicalPrefactorConjugation
 
 /-!
 # Conjugation of the original literal finite Barnes product

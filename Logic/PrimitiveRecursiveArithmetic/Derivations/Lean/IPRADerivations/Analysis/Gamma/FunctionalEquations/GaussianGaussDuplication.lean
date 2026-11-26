@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianGaussDuplicationFactor
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGaussEulerFiniteIdentity
+import IPRADerivations.Analysis.Gamma.EulerProducts.Gauss.GaussianGaussEulerFiniteIdentity
 import IPRADerivations.Analysis.FiniteOperations.GaussianGaussExplicitShiftedProducts
 
 /-!

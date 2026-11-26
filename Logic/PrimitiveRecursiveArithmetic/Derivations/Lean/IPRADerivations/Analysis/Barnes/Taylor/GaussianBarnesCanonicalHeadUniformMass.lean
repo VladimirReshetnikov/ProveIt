@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalLogCofinal
+import IPRADerivations.Analysis.Barnes.Logarithms.GaussianBarnesCanonicalLogCofinal
 import IPRADerivations.Analysis.Barnes.Taylor.GaussianBarnesCanonicalCenteredHead
 import IPRADerivations.Analysis.Polynomials.GaussianPolynomialPowerNormVariation
 import IPRADerivations.Analysis.Polynomials.GaussianRationalPolynomialProductTruncation

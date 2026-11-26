@@ -1,8 +1,8 @@
 import IPRADerivations.Analysis.Stirling.Binet.GaussianBinetStirlingRemainder
 import IPRADerivations.Analysis.Logarithm.GaussianRightHalfPlaneLogarithmCompactBound
 import IPRADerivations.Analysis.Logarithm.GaussianRightHalfPlaneLogarithmNamed
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianLogGammaEulerNamed
-import IPRADerivations.Analysis.Euler.GaussianEulerNamedPowerScalingPowerFrozen
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerNamed
+import IPRADerivations.Analysis.Euler.PowerScaling.GaussianEulerNamedPowerScalingPowerFrozen
 import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedAddRate
 
 /-!

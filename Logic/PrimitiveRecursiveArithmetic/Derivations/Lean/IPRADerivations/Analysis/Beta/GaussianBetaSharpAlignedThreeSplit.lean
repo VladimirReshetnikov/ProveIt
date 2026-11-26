@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Integration.GaussianCompactAlignedThreeSplit
 import IPRADerivations.Analysis.Names.Rates.GaussianCompactModulusAlignedTime
 import IPRADerivations.Analysis.Beta.GaussianBetaSharpAlignedFourSplit
-import IPRADerivations.Analysis.Euler.GaussianEulerCompactAdditivity
+import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactAdditivity
 
 /-!
 # The actual sharp grid with one contiguous tail from N/2 to top

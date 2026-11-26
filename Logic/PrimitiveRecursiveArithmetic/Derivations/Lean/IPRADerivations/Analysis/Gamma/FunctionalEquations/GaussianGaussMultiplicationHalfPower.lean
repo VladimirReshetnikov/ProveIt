@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianGaussMultiplicationPowerPerturbation
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianNamedGammaHalfShift
-import IPRADerivations.Analysis.Euler.GaussianEulerVerticalRealSamples
+import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerVerticalRealSamples
 import IPRADerivations.Analysis.Exponential.GaussianExponentialRealPart
 import IPRADerivations.Analysis.Names.GaussianNamedBoundedProductObservation
 

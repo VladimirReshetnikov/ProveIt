@@ -1,6 +1,6 @@
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalCover
+import IPRADerivations.Analysis.RationalArithmetic.Covers.GaussianRationalCover
 import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalRadius
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalProductStability
+import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalProductStability
 
 /-!
 # Finite product stability for the original Gaussian-rational lists

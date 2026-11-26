@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.Integration.GaussianEulerDecayQuadraturePrecision
-import IPRADerivations.Analysis.Gamma.GaussianGammaRationalWendelBoundary
+import IPRADerivations.Analysis.Gamma.Ratios.GaussianGammaRationalWendelBoundary
 import IPRADerivations.Analysis.Beta.GaussianEulerBetaPrimitiveEvaluationPascal
 
 /-!

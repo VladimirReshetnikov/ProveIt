@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerHeadLower
 import IPRADerivations.Analysis.Euler.GaussianEulerDampedTimeRate
-import IPRADerivations.Analysis.Euler.PositiveAxis.GaussianEulerPositivePowerChartJacobian
+import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.GaussianEulerPositivePowerChartJacobian
 
 /-!
 # Natural numerator and denominator of the original real Euler head

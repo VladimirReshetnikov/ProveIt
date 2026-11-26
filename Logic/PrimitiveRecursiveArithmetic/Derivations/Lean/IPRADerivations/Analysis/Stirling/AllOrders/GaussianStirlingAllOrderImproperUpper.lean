@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.AllOrders.GaussianStirlingAllOrderNamedUpperGap
 import IPRADerivations.Analysis.Names.GaussianNamedStrictOrderDifference
-import IPRADerivations.Analysis.Gamma.GaussianGammaRationalWendelBoundary
+import IPRADerivations.Analysis.Gamma.Ratios.GaussianGammaRationalWendelBoundary
 import IPRADerivations.Analysis.Stirling.GaussianStirlingMultiplicativeBoundsCaps
 
 /-!

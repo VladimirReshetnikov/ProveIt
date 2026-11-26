@@ -1,8 +1,8 @@
 import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalNormalizedExponentAlgebra
-import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalPrefactorShiftBinding
+import IPRADerivations.Analysis.Barnes.Prefactors.GaussianBarnesCanonicalPrefactorShiftBinding
 import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalPrefixShift
-import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalCombinedRemainder
-import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalAdjacentLog
+import IPRADerivations.Analysis.Barnes.Logarithms.GaussianBarnesCanonicalCombinedRemainder
+import IPRADerivations.Analysis.Barnes.Logarithms.GaussianBarnesCanonicalAdjacentLog
 
 /-!
 # The original normalized exponent equals the three Barnes remainders

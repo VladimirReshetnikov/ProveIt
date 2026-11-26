@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.GaussianBarnesWeightedProductShift
-import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalDeflatedFactor
+import IPRADerivations.Analysis.Barnes.Deflation.GaussianBarnesCanonicalDeflatedFactor
 import IPRADerivations.Core.CongruenceTactic
 
 /-!

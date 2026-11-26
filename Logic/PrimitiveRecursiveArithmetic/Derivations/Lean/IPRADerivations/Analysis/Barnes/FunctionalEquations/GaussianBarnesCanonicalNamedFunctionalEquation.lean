@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.FunctionalEquations.GaussianBarnesCanonicalFunctionalEquation
-import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalNamedFrozen
+import IPRADerivations.Analysis.Barnes.Names.GaussianBarnesCanonicalNamedFrozen
 import IPRADerivations.Analysis.Euler.GaussianEulerNamedShiftInput
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianGammaC7NamedFrozen
 

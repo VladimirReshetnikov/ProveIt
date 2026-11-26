@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.GaussianGeneralFTAValueZero
-import IPRADerivations.Analysis.Polynomials.GaussianPolynomialNameHorner
+import IPRADerivations.Analysis.Polynomials.Horner.GaussianPolynomialNameHorner
 
 /-!
 # The constructed general FTA root in actual Gaussian name arithmetic

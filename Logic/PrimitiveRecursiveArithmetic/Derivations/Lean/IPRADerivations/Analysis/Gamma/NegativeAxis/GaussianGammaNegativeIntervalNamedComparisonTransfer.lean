@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.GaussianGammaRationalWendelUniform
+import IPRADerivations.Analysis.Gamma.Ratios.GaussianGammaRationalWendelUniform
 import IPRADerivations.Analysis.Names.GaussianNamedRealOrderEnvelope
 import IPRADerivations.Analysis.Names.GaussianNamedStrictOrderDifference
 

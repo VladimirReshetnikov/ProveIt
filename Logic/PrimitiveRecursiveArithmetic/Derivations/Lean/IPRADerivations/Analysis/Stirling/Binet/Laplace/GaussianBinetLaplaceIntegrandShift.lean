@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.GaussianBinetLaplaceExponentialShift
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.GaussianBinetLaplaceIntegrand
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.GaussianBinetLaplaceStripHorizon
-import IPRADerivations.Analysis.Stirling.Binet.GaussianBinetKernelWeightedBridge
+import IPRADerivations.Analysis.Stirling.Binet.Kernel.GaussianBinetKernelWeightedBridge
 
 /-!
 # Exact pointwise unit difference of the original Laplace integrand

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.PositiveAxis.GaussianEulerUnitKernelCompactPositiveRadius
+import IPRADerivations.Analysis.Euler.PositiveAxis.UnitKernel.GaussianEulerUnitKernelCompactPositiveRadius
 import IPRADerivations.Analysis.RationalArithmetic.RationalUpperAddition
 import IPRADerivations.Analysis.Optimization.RationalCubeInfimumIntervals
 

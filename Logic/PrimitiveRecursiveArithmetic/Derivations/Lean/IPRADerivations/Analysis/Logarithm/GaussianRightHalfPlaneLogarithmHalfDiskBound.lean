@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Logarithm.GaussianRightHalfPlaneLogarithmMercatorHalfDisk
 import IPRADerivations.Analysis.Logarithm.GaussianPositiveRationalLogarithmFactorFourBound
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianLogGammaEulerResidualRadius
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerResidualRadius
 
 /-!
 # Admit the entire radius-one-half disk to the canonical logarithm bound

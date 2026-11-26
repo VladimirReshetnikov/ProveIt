@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.GaussianStirlingFiniteSeries
-import IPRADerivations.Analysis.Gamma.GaussianGammaHalfSqrtBrackets
+import IPRADerivations.Analysis.Gamma.HalfInteger.GaussianGammaHalfSqrtBrackets
 
 /-!
 # Sharp rational comparison of the finite Stirling difference series

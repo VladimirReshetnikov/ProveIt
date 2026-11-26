@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Logarithm.GaussianRightHalfPlaneRadialLogarithm
 import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRightHalfPlaneArgumentProperness
 import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRightHalfPlaneArgumentAxis
-import IPRADerivations.Analysis.Gamma.GaussianGammaRationalWendelBoundary
+import IPRADerivations.Analysis.Gamma.Ratios.GaussianGammaRationalWendelBoundary
 
 /-!
 # Canonical logarithm on the encoded rational right half-plane

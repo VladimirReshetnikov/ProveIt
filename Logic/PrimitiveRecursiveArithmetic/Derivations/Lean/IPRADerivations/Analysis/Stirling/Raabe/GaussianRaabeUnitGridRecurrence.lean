@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianCompactScalarMajorant
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianLogGammaEulerPositiveAxis
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianLogGammaEulerRecurrence
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerPositiveAxis
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerRecurrence
 import IPRADerivations.Analysis.Integration.GaussianRationalQuadratureDifference
 
 /-!

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.PositiveAxis.GaussianEulerUnitSubstitutionImproperName
+import IPRADerivations.Analysis.Euler.PositiveAxis.UnitSubstitution.GaussianEulerUnitSubstitutionImproperName
 import IPRADerivations.Analysis.Gamma.GaussianEulerIntegralGammaIdentification
 
 /-!

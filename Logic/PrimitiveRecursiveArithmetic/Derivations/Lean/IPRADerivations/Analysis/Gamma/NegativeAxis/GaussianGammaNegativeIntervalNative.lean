@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.GaussianGammaLocalPoleFormula
+import IPRADerivations.Analysis.Gamma.Poles.GaussianGammaLocalPoleFormula
 import IPRADerivations.Analysis.Gamma.GaussianGammaInputProperness
 import IPRADerivations.Analysis.Gamma.CriticalPoints.GaussianGammaNegativeCriticalCorrection
 import IPRADerivations.Analysis.Stirling.GaussianStirlingGammaLogarithm

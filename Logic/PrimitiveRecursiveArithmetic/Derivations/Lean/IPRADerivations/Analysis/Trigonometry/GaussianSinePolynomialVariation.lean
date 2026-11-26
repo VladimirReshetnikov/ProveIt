@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Trigonometry.GaussianSineNormalizedSampleReconstruction
-import IPRADerivations.Analysis.Polynomials.GaussianRationalHornerLipschitz
+import IPRADerivations.Analysis.Polynomials.Horner.GaussianRationalHornerLipschitz
 
 /-!
 # Variation of the normalized sine polynomial

@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.Zeta.GaussianGammaZetaMellinGrid
 import IPRADerivations.Analysis.Gamma.Zeta.GaussianGammaZetaMellinReciprocalRate
-import IPRADerivations.Analysis.Euler.GaussianEulerCompactPowerVariation
-import IPRADerivations.Analysis.Euler.GaussianEulerNamedPowerScalingPowerFrozen
+import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactPowerVariation
+import IPRADerivations.Analysis.Euler.PowerScaling.GaussianEulerNamedPowerScalingPowerFrozen
 
 /-!
 # Regular compact quadrature for the original Mellin integrand

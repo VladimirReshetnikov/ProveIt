@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.GaussianRationalUniformFirstOrderPolynomial
-import IPRADerivations.Analysis.Polynomials.GaussianRationalHornerPerturbation
+import IPRADerivations.Analysis.Polynomials.Horner.GaussianRationalHornerPerturbation
 
 /-!
 # Uniform continuity of the original rational synthetic slope

@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Euler.Integration.GaussianEulerIncompleteLowerPrefixGeometry
 import IPRADerivations.Analysis.Euler.Integration.GaussianEulerIncompleteLowerPrefixSigned
 import IPRADerivations.Analysis.Euler.Integration.GaussianEulerIncompleteRealCompactNonnegative
-import IPRADerivations.Analysis.Euler.GaussianEulerVerticalCompactInterval
+import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerVerticalCompactInterval
 import IPRADerivations.Analysis.Euler.Integration.GaussianEulerIncompleteDyadicEndpoint
 
 /-!

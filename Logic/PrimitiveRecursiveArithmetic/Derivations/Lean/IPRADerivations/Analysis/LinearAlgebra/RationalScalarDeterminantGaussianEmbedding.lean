@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.RationalRowSpanGaussianEmbedding
+import IPRADerivations.Analysis.RationalArithmetic.Spans.RationalRowSpanGaussianEmbedding
 import IPRADerivations.Analysis.LinearAlgebra.GaussianScalarDeterminant
 import IPRADerivations.Core.CongruenceTactic
 

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.GaussianRootProduct
-import IPRADerivations.Analysis.RationalArithmetic.RationalProductWitness
+import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.RationalProductWitness
 
 /-!
 # A least nearby Gaussian factor from an actual polynomial evaluation

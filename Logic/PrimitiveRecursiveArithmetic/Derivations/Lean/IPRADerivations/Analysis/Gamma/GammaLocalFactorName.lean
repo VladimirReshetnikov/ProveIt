@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.GammaCanonicalRemainder
+import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GammaCanonicalRemainder
 import IPRADerivations.Analysis.Logarithm.DyadicComplexLogarithm
 import IPRADerivations.Core.LinearCombination
 

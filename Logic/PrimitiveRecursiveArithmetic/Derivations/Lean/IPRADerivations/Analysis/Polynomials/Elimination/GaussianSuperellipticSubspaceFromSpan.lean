@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.GaussianAnnihilatorPolynomialEvaluation
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalRowSpan
+import IPRADerivations.Analysis.RationalArithmetic.Spans.GaussianRationalRowSpan
 import IPRADerivations.Analysis.Polynomials.Elimination.GaussianSuperellipticSubspaceWitness
 
 /-!

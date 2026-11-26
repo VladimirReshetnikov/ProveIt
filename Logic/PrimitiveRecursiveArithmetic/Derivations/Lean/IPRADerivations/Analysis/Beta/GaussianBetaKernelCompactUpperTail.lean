@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Beta.GaussianBetaKernelUpperTail
-import IPRADerivations.Analysis.Euler.GaussianEulerCompactUpperTail
+import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactUpperTail
 import IPRADerivations.Core.CongruenceTactic
 
 /-!

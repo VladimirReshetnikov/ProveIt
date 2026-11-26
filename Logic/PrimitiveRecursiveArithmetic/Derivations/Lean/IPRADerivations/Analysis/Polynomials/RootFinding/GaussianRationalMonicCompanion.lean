@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.GaussianRationalPolynomialBuffers
-import IPRADerivations.Analysis.Polynomials.GaussianRationalHornerPerturbation
+import IPRADerivations.Analysis.Polynomials.Horner.GaussianRationalHornerPerturbation
 
 /-!
 # Actual multiplication by the variable modulo a monic polynomial

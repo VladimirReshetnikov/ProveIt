@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.Integration.GaussianEulerPowerChartCofinalEndpoints
-import IPRADerivations.Analysis.Euler.PositiveAxis.GaussianEulerPositivePowerChartMesh
+import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.GaussianEulerPositivePowerChartMesh
 
 /-!
 # Equal rational inputs to the original power chart

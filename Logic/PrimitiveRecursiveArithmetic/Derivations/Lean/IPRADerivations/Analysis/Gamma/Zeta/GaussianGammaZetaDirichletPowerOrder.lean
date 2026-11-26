@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.Zeta.GaussianGammaZetaDirichletReciprocalRow
 import IPRADerivations.Analysis.Euler.Integration.GaussianEulerPowerChartRationalPowers
-import IPRADerivations.Analysis.Euler.PositiveAxis.GaussianEulerPositivePowerChartOrder
-import IPRADerivations.Analysis.Gamma.GaussianGammaHalfSqrtBrackets
+import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.GaussianEulerPositivePowerChartOrder
+import IPRADerivations.Analysis.Gamma.HalfInteger.GaussianGammaHalfSqrtBrackets
 import IPRADerivations.Analysis.Stirling.GaussianStirlingOddCoefficients
 
 /-!

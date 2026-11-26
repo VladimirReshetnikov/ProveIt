@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Digamma.GaussianGammaDigammaDerivativeProductOrder
-import IPRADerivations.Analysis.Euler.PositiveAxis.GaussianEulerPositivePowerChartOrder
+import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.GaussianEulerPositivePowerChartOrder
 
 /-!
 # Monotonicity of the native digamma name

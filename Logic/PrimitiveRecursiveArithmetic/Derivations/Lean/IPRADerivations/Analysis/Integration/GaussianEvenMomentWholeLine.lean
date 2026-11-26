@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Integration.GaussianEvenMomentSymmetricGrid
-import IPRADerivations.Analysis.Gamma.GaussianGammaHalfSqrtValues
+import IPRADerivations.Analysis.Gamma.HalfInteger.GaussianGammaHalfSqrtValues
 
 /-!
 # Literal whole-line even Gaussian moments on cofinal reflected panels

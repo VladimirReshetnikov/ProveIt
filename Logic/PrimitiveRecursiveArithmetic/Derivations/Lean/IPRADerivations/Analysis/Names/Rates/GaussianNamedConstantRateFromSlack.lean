@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaCanonicalExponent
+import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalExponent
 
 /-!
 # A sharp constant comparison from late observations

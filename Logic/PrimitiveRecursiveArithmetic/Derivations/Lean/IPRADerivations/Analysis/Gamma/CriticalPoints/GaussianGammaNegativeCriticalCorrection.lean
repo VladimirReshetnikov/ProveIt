@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.Digamma.GaussianGammaDigammaReciprocalPair
-import IPRADerivations.Analysis.Gamma.GaussianGammaRationalWendelBoundary
+import IPRADerivations.Analysis.Gamma.Ratios.GaussianGammaRationalWendelBoundary
 import IPRADerivations.Analysis.Stirling.GaussianStirlingTailComparison
-import IPRADerivations.Analysis.Euler.PositiveAxis.GaussianEulerPositivePowerChartCorrectedImage
+import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.GaussianEulerPositivePowerChartCorrectedImage
 
 /-!
 # Finite reciprocal correction on a negative Gamma interval

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.GaussianGammaLinearCoefficient
+import IPRADerivations.Analysis.Gamma.Taylor.GaussianGammaLinearCoefficient
 import IPRADerivations.Analysis.Gamma.GaussianGammaExponentStep
 
 /-!

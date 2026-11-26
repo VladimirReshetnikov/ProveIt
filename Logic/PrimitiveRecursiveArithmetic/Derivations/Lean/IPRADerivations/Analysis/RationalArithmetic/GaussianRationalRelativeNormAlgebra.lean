@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalNormClearing
 import IPRADerivations.Analysis.Inequalities.RationalNonnegativePowers
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalProductWitness
+import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalProductWitness
 
 /-!
 # Exact arithmetic for relative Gaussian-rational norm budgets

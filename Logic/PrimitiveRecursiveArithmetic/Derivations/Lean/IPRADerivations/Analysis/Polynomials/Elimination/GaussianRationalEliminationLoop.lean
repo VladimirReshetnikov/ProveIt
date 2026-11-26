@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalPivotSearch
+import IPRADerivations.Analysis.RationalArithmetic.Spans.GaussianRationalPivotSearch
 import IPRADerivations.Foundations.BoundedSyntaxInduction
 import IPRADerivations.Core.CongruenceTactic
 

@@ -3,7 +3,7 @@ A uniform step certificate for the zero-free kept-power logarithm.
 The lower margin for the original base power is one over M.
 -/
 import IPRADerivations.Analysis.Barnes.Taylor.GaussianBarnesCanonicalHeadRelativeLog
-import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalHeadPolynomialQuotient
+import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalHeadPolynomialQuotient
 import IPRADerivations.Analysis.Names.GaussianNameReciprocal
 import IPRADerivations.Core.CommonLemmas
 

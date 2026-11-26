@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Logarithm.GaussianRightHalfPlaneRadialLogarithm
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianGaussMultiplicationLogarithm
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedLipschitzRate
 import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianCoordinateRadius
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianLogGammaEulerResidualRadius
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerResidualRadius
 
 /-!
 # Quantitative radial continuity in the right half-plane

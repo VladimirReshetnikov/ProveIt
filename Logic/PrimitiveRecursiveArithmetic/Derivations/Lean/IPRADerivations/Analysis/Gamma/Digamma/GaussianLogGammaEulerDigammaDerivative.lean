@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianLogGammaEulerDerivativeQuotient
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerDerivativeQuotient
 import IPRADerivations.Analysis.Gamma.Digamma.GaussianLogGammaEulerDigammaFractionsCofinal
 
 /-!

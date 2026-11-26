@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.GaussianBinetSineDampedTransform
-import IPRADerivations.Analysis.Stirling.Binet.GaussianBinetKernelImaginaryRatioRows
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianLogGammaEulerPositiveAxis
+import IPRADerivations.Analysis.Stirling.Binet.Kernel.GaussianBinetKernelImaginaryRatioRows
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerPositiveAxis
 
 /-!
 # The frozen geometric sine transform is the original Binet kernel row

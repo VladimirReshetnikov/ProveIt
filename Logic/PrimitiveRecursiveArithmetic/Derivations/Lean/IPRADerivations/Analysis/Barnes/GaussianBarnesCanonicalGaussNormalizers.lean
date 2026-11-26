@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalAdjacentLog
+import IPRADerivations.Analysis.Barnes.Logarithms.GaussianBarnesCanonicalAdjacentLog
 import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaFactorialValues
 import IPRADerivations.Analysis.Gamma.GaussianGammaInputProperness
 import IPRADerivations.Analysis.Euler.GaussianHarmonicIntegerExponential

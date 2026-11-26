@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Digamma.GaussianGammaDigammaFiniteSum
-import IPRADerivations.Analysis.Euler.PositiveAxis.GaussianEulerPositivePowerChartImageWeights
+import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.GaussianEulerPositivePowerChartImageWeights
 import IPRADerivations.Analysis.Stirling.GaussianStirlingRationalTelescopers
 
 /-!

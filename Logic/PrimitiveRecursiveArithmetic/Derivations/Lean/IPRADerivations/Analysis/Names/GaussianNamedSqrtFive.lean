@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.GaussianGammaHalfSqrtBrackets
+import IPRADerivations.Analysis.Gamma.HalfInteger.GaussianGammaHalfSqrtBrackets
 import IPRADerivations.Geometry.IsoperimetricDyadicSquareRoot
 
 /-!

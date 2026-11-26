@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalFiniteSum
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalLinearProduct
+import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalLinearProduct
 import IPRADerivations.Core.CongruenceTactic
 
 /-!

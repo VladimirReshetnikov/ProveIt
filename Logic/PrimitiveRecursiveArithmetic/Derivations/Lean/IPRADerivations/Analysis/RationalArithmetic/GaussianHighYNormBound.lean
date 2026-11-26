@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.GaussianPolynomialMonicHornerReduction
+import IPRADerivations.Analysis.Polynomials.Horner.GaussianPolynomialMonicHornerReduction
 import IPRADerivations.Analysis.RationalArithmetic.GaussianNormFiniteZeroBound
 
 /-!

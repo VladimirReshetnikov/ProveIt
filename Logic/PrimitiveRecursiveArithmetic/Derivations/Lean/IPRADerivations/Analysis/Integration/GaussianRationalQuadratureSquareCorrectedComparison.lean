@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Integration.GaussianRationalQuadratureSquareComparison
 import IPRADerivations.Analysis.Euler.GaussianEulerDampedTimeRate
-import IPRADerivations.Analysis.Euler.GaussianEulerCompactAdditivity
+import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactAdditivity
 import IPRADerivations.Analysis.Integration.GaussianCompactZeroWidth
 
 /-!

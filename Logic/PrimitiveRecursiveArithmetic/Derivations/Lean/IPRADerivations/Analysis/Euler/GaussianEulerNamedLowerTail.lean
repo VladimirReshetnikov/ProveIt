@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.GaussianEulerCompactLowerTail
+import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactLowerTail
 import IPRADerivations.Analysis.Euler.PositiveAxis.GaussianEulerLowerTailFiniteBudget
 import IPRADerivations.Analysis.Euler.PositiveAxis.GaussianEulerLowerCofinalQuadrature
 import IPRADerivations.Analysis.Euler.GaussianEulerCutoffCauchyComparison

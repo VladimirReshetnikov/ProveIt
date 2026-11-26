@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.LinearAlgebra.RationalCofactorBorderedMinors
-import IPRADerivations.Analysis.Polynomials.RationalCofactorCoefficientValues
+import IPRADerivations.Analysis.Polynomials.Determinants.RationalCofactorCoefficientValues
 import IPRADerivations.Core.CongruenceTactic
 
 /-!

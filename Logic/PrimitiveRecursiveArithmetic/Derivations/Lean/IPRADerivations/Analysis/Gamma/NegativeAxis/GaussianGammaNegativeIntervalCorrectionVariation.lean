@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.NegativeAxis.GaussianGammaNegativeIntervalInverseRationalEnvelope
 import IPRADerivations.Analysis.Gamma.CriticalPoints.GaussianGammaNegativeCriticalCorrectionSlope
-import IPRADerivations.Analysis.Gamma.GaussianGammaHalfSqrtBrackets
+import IPRADerivations.Analysis.Gamma.HalfInteger.GaussianGammaHalfSqrtBrackets
 import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalFubini
 
 /-!

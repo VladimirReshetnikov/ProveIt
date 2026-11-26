@@ -4,7 +4,7 @@ import IPRADerivations.Analysis.Exponential.GaussianExponentialRadiusIndependenc
 import IPRADerivations.Analysis.Exponential.GaussianPositiveExponentialMajorant
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedSmallPerturbationTransport
 import IPRADerivations.Analysis.Exponential.GaussianExponentialInverse
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaCanonicalExponent
+import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalExponent
 
 /-!
 # Actual bounded exponential stages at one numerical cap

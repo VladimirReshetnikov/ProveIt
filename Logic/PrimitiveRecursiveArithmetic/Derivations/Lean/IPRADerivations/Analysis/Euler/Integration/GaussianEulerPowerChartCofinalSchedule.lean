@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.Integration.GaussianEulerPowerChartRoundedEndpoints
 import IPRADerivations.Analysis.Euler.Integration.GaussianEulerPowerScalingGridSchedule
-import IPRADerivations.Analysis.Euler.GaussianEulerCompactExhaustion
+import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactExhaustion
 
 /-!
 # Cofinal corrected image panels for the original substitution schedule

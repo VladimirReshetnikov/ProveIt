@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Gamma.GaussianGammaHalfPiName
-import IPRADerivations.Analysis.Gamma.GaussianGammaHalfSqrtBrackets
+import IPRADerivations.Analysis.Gamma.HalfInteger.GaussianGammaHalfPiName
+import IPRADerivations.Analysis.Gamma.HalfInteger.GaussianGammaHalfSqrtBrackets
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRealOrderTransport
 
 /-!

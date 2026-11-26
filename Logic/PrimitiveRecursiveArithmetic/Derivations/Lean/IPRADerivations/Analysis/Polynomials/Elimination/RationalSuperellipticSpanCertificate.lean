@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.RationalAnnihilatorOnSpan
+import IPRADerivations.Analysis.RationalArithmetic.Spans.RationalAnnihilatorOnSpan
 import IPRADerivations.Analysis.Polynomials.RationalAnnihilatorPolynomialWeight
 
 /-!

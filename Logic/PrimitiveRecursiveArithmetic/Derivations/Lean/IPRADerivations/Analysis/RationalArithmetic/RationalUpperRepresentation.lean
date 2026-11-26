@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.RationalArithmetic.RationalValueBounds
 import IPRADerivations.Analysis.RationalArithmetic.RationalArithmetic
 import IPRADerivations.Analysis.Polynomials.PolynomialBisection
-import IPRADerivations.Analysis.Polynomials.GaussianRationalHorner
+import IPRADerivations.Analysis.Polynomials.Horner.GaussianRationalHorner
 
 /-!
 # Native signed comparison from an actual rational upper budget

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentCayleyStep
-import IPRADerivations.Analysis.Gamma.GaussianGammaHalfPiName
+import IPRADerivations.Analysis.Gamma.HalfInteger.GaussianGammaHalfPiName
 
 /-!
 # Exact prefixes of the original arctangent quadrature

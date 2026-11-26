@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.CriticalPoints.GaussianGammaMinimumRationalBase
 import IPRADerivations.Analysis.Gamma.CriticalPoints.GaussianGammaMinimumLogProperness
 import IPRADerivations.Analysis.Gamma.CriticalPoints.GaussianGammaMinimumChordStationary
-import IPRADerivations.Analysis.Gamma.GaussianGammaRationalWendelBoundary
+import IPRADerivations.Analysis.Gamma.Ratios.GaussianGammaRationalWendelBoundary
 import IPRADerivations.Analysis.Inequalities.GaussianRationalNonnegativeFractions
 
 /-!

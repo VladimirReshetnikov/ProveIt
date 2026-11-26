@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.GaussianEulerNamedPowerScalingParameterFrozen
+import IPRADerivations.Analysis.Euler.PowerScaling.GaussianEulerNamedPowerScalingParameterFrozen
 import IPRADerivations.Analysis.Gamma.Names.GaussianNamedGammaLateInput
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateComposition
 import IPRADerivations.Analysis.Gamma.GaussianGammaRadiusOverlap

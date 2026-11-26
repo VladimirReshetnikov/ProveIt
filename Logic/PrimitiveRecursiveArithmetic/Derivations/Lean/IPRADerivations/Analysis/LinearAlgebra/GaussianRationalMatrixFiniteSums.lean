@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.GaussianRationalLagrangeCardinals
 import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalPermutationSum
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalFiniteProduct
+import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalFiniteProduct
 import IPRADerivations.Analysis.Polynomials.GaussianInverseBinomialRows
 
 /-!

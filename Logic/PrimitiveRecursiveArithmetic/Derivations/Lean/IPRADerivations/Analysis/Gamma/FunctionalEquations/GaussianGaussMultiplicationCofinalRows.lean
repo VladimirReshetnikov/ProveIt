@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaGaussEulerProduct
+import IPRADerivations.Analysis.Gamma.EulerProducts.Gauss.GaussianGammaGaussEulerProduct
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianGammaGaussReferenceEulerProduct
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianGaussMultiplicationSharpPowerRate
 import IPRADerivations.Analysis.Exponential.GaussianRobinMeshExponential

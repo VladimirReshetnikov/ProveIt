@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.GaussianReciprocalHorner
+import IPRADerivations.Analysis.Polynomials.Horner.GaussianReciprocalHorner
 
 /-!
 # Actual rational algebra for the Horner power-sum decomposition

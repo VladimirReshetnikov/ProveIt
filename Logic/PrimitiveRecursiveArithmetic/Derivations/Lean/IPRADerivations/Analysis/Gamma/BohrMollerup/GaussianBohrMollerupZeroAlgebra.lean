@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.BohrMollerup.GaussianBohrMollerupDifferenceTransform
-import IPRADerivations.Analysis.Gamma.GaussianGammaRationalWendelBoundary
+import IPRADerivations.Analysis.Gamma.Ratios.GaussianGammaRationalWendelBoundary
 
 /-!
 # Zero and cancellation for actual regular name differences

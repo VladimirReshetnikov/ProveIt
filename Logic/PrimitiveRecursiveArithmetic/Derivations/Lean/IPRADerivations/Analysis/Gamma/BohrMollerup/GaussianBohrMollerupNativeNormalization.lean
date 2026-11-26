@@ -3,7 +3,7 @@ import IPRADerivations.Analysis.Stirling.GaussianStirlingLogDuplication
 import IPRADerivations.Analysis.Gamma.GaussianGammaInputProperness
 import IPRADerivations.Analysis.Exponential.GaussianRobinMeshExponential
 import IPRADerivations.Analysis.Exponential.GaussianExponentialInverse
-import IPRADerivations.Analysis.Gamma.GaussianGammaRationalWendelGautschi
+import IPRADerivations.Analysis.Gamma.Ratios.GaussianGammaRationalWendelGautschi
 
 /-!
 # Original positive rational log Gamma is normalized at one

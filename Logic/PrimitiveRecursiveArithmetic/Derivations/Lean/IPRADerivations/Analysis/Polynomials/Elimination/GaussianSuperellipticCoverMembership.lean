@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalOriginalSpanMembership
+import IPRADerivations.Analysis.RationalArithmetic.Spans.GaussianRationalOriginalSpanMembership
 import IPRADerivations.Foundations.FiniteCoverAssignment
 import IPRADerivations.Core.CongruenceTactic
 

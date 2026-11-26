@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Trigonometry.GaussianSineProductHeadLower
 import IPRADerivations.Analysis.FiniteOperations.GaussianInverseSquareProductGrowth
 import IPRADerivations.Analysis.Names.Rates.GaussianApproximateInverseDistance
 import IPRADerivations.Analysis.FiniteOperations.GaussianBoundedInverseApartness
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalProductAlgebra
+import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalProductAlgebra
 
 /-!
 # Uniform lower bound for the actual finite sine-product tails

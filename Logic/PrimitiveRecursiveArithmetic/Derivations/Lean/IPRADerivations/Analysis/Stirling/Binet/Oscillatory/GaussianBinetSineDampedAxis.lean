@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.GaussianBinetLaplaceDecay
 import IPRADerivations.Analysis.Stirling.Binet.GaussianBinetExponentialIntegralGrid
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianLogGammaEulerPositiveAxis
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerPositiveAxis
 import IPRADerivations.Analysis.Gamma.Digamma.GaussianGammaDigammaTwoShiftSecants
 
 /-!

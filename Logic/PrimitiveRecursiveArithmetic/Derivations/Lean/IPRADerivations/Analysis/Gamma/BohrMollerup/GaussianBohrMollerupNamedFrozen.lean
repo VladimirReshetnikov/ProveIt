@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.BohrMollerup.GaussianBohrMollerupLiteralUniqueness
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianLogGammaEulerNamedPositiveAxis
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerNamedPositiveAxis
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
 
 /-!

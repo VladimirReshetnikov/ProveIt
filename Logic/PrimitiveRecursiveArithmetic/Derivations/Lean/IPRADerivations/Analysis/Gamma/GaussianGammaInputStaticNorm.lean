@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.GaussianGammaExponentCoefficientPolynomial
+import IPRADerivations.Analysis.Gamma.Taylor.GaussianGammaExponentCoefficientPolynomial
 import IPRADerivations.Analysis.Polynomials.GaussianPolynomialNormBuffers
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalRoundedPower
 

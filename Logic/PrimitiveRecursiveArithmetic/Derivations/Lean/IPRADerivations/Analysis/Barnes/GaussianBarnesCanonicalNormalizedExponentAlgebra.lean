@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalPrefactorShiftAlgebra
+import IPRADerivations.Analysis.Barnes.Prefactors.GaussianBarnesCanonicalPrefactorShiftAlgebra
 
 /-!
 # Exact logarithmic normalization of the Barnes recurrence

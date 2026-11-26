@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.GaussianBinetLaplaceExponential
 import IPRADerivations.Analysis.Euler.Integration.GaussianEulerDecayQuadraturePrecision
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianLogGammaEulerResidualRadius
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerResidualRadius
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianNamedGammaHalfShift
 
 /-!

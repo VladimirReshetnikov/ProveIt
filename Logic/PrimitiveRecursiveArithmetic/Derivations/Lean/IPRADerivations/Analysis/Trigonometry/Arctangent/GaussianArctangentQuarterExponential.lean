@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentExponentialPrefix
 import IPRADerivations.Analysis.Exponential.GaussianExponentialReference
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaCanonicalExponent
-import IPRADerivations.Analysis.Gamma.GaussianGammaHalfPiName
+import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalExponent
+import IPRADerivations.Analysis.Gamma.HalfInteger.GaussianGammaHalfPiName
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedDiagonalRate
 import IPRADerivations.Analysis.Exponential.GaussianRationalUniformExponentialLipschitz
 

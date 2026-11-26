@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Zeta.GaussianGammaZetaDirichletSquareRow
 import IPRADerivations.Analysis.Gamma.Zeta.GaussianGammaZetaMellinDampedImproper
-import IPRADerivations.Analysis.Stirling.Binet.GaussianBinetBaselBinding
+import IPRADerivations.Analysis.Stirling.Binet.Kernel.GaussianBinetBaselBinding
 import IPRADerivations.Analysis.Names.GaussianNameConjugation
 import IPRADerivations.Analysis.Integration.GaussianCompactZeroWidth
 

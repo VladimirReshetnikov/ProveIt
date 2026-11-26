@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.GaussianRationalHornerPerturbation
+import IPRADerivations.Analysis.Polynomials.Horner.GaussianRationalHornerPerturbation
 
 /-!
 # Perturbation of every coefficient of the actual rational Horner program

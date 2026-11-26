@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.GaussianRationalVariableHornerBudget
+import IPRADerivations.Analysis.Polynomials.Horner.GaussianRationalVariableHornerBudget
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalPowerExpansion
 import IPRADerivations.Foundations.BoundedSyntaxBackwardInduction
 import IPRADerivations.Core.CongruenceTactic

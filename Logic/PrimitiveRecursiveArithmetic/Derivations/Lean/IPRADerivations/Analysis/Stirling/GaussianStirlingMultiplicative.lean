@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Stirling.GaussianStirlingMultiplicativeAlgebra
 import IPRADerivations.Analysis.Stirling.GaussianStirlingDuplicationConstant
 import IPRADerivations.Analysis.Exponential.GaussianRealExponentialCompactLower
-import IPRADerivations.Analysis.Euler.GaussianEulerVerticalRealSamples
+import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerVerticalRealSamples
 
 /-!
 # Exact normalized Stirling ratio for positive rational arguments

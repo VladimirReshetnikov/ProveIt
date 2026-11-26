@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.RationalMinorOrderTransport
+import IPRADerivations.Analysis.RationalArithmetic.Spans.RationalMinorOrderTransport
 import IPRADerivations.Analysis.LinearAlgebra.GaussianScalarDeterminantLastRowTransport
 import IPRADerivations.Core.CongruenceTactic
 

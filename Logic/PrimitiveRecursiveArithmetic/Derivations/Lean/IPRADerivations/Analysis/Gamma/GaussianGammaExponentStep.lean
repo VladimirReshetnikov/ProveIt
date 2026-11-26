@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.GaussianGammaCutoffName
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaCanonicalTailShift
+import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalTailShift
 import IPRADerivations.Analysis.Gamma.GaussianGammaHarmonicIncrement
 import IPRADerivations.Analysis.Names.GaussianNameRingLaws
 

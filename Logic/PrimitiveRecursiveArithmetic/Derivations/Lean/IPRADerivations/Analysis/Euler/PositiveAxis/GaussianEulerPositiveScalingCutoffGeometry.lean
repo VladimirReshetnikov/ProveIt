@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Integration.GaussianCompactIntervalRescaling
-import IPRADerivations.Analysis.Euler.GaussianEulerCompactAdditivity
+import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactAdditivity
 import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerCompactQuadrature
 
 /-!

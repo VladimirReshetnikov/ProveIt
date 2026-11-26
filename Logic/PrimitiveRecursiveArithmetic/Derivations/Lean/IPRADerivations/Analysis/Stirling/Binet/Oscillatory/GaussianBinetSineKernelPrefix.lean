@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.GaussianBinetSineKernelGrid
-import IPRADerivations.Analysis.Stirling.Binet.GaussianBinetSecondWeightedSineTransposedPrefix
-import IPRADerivations.Analysis.Stirling.Binet.GaussianBinetSecondWeightedSineCut
+import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.GaussianBinetSecondWeightedSineTransposedPrefix
+import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.GaussianBinetSecondWeightedSineCut
 
 /-!
 # The actual transposed sine prefix and the frozen kernel rectangle

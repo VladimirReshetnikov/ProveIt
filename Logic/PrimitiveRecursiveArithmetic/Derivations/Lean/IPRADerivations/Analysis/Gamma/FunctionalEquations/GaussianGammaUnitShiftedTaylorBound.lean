@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianGammaUnitReciprocalShift
-import IPRADerivations.Analysis.Gamma.GaussianGammaQuadraticSampler
+import IPRADerivations.Analysis.Gamma.Taylor.GaussianGammaQuadraticSampler
 
 /-!
 # The cubic error of the actual shifted reciprocal times the step

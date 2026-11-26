@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Beta.GaussianBetaAllDegreeEulerInverse
-import IPRADerivations.Analysis.Euler.GaussianEulerCompactPowerMajorant
+import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactPowerMajorant
 
 /-!
 # A numerical bound for every original finite beta endpoint sample

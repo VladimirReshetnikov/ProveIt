@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.GaussianPolynomialLinearFactorCoefficients
-import IPRADerivations.Analysis.Gamma.GaussianGammaPolynomialConstantLinear
+import IPRADerivations.Analysis.Gamma.Taylor.GaussianGammaPolynomialConstantLinear
 import IPRADerivations.Analysis.Polynomials.RootFinding.GaussianRationalFiniteRoots
 import IPRADerivations.Core.CongruenceTactic
 

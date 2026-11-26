@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.GaussianBinetStirlingUnitDifferenceAlgebra
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianLogGammaEulerRecurrence
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerRecurrence
 
 /-!
 # Unit difference of the canonical complex Stirling remainder

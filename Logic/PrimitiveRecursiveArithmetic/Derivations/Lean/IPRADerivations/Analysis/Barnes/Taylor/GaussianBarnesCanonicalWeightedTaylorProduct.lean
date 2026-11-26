@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Taylor.GaussianBarnesCanonicalWeightedTaylorRecomposition
-import IPRADerivations.Analysis.Barnes.Taylor.GaussianBarnesCanonicalTaylorProduct
+import IPRADerivations.Analysis.Barnes.Taylor.Coefficients.GaussianBarnesCanonicalTaylorProduct
 import IPRADerivations.Analysis.Exponential.GaussianRationalPolynomialExponentialWeightedProductTruncation
 
 /-!

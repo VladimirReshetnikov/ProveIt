@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalProductReverse
+import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalProductReverse
 import IPRADerivations.Analysis.Trigonometry.GaussianSineNormalizedSampleProduct
 
 /-!

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.GaussianBinetFrozenKernelRectangle
-import IPRADerivations.Analysis.Stirling.Binet.GaussianBinetKernelFrequencyRadius
+import IPRADerivations.Analysis.Stirling.Binet.Kernel.GaussianBinetKernelFrequencyRadius
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.GaussianBinetLaplaceFrequencySuffix
 
 /-!

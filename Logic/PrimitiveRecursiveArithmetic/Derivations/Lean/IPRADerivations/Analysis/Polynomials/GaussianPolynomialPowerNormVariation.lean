@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.GaussianPolynomialDeterminantStageError
+import IPRADerivations.Analysis.Polynomials.Determinants.GaussianPolynomialDeterminantStageError
 import IPRADerivations.Analysis.Polynomials.GaussianRationalPolynomialPowers
 
 /-!

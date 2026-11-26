@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGaussEulerFiniteIdentity
+import IPRADerivations.Analysis.Gamma.EulerProducts.Gauss.GaussianGaussEulerFiniteIdentity
 import IPRADerivations.Analysis.Polynomials.RootFinding.GaussianGaussPiPowerSquareRoot
 
 /-!

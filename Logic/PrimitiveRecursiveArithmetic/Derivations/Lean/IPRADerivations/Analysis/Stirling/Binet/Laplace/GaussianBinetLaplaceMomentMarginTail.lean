@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.GaussianBinetLaplaceMomentMarginRows
 import IPRADerivations.Analysis.Integration.GaussianCompactMeshIndependence
-import IPRADerivations.Analysis.Stirling.Binet.GaussianBinetSecondDecayEnvelope
+import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.GaussianBinetSecondDecayEnvelope
 import IPRADerivations.Analysis.SpecialFunctions.GaussianNamedDampingPowerReciprocalTail
 
 /-!

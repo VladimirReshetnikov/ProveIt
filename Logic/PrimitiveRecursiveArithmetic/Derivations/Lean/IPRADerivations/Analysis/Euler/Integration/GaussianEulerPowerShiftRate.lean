@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.Integration.GaussianEulerPowerExponentIncrement
-import IPRADerivations.Analysis.Euler.GaussianEulerCompactPowerMajorant
+import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactPowerMajorant
 import IPRADerivations.Analysis.Exponential.GaussianRadiusExponentialLipschitzRate
 import IPRADerivations.Analysis.Exponential.GaussianExponentialRadiusIndependence
 

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.GaussianEulerSquareJacobianRate
-import IPRADerivations.Analysis.Euler.GaussianEulerCompactAdditivity
+import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactAdditivity
 import IPRADerivations.Core.CongruenceTactic
 
 /-!

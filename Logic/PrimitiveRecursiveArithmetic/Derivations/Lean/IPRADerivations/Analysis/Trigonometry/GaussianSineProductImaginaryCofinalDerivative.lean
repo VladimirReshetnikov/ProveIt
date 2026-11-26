@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Trigonometry.GaussianSineProductImaginaryFirstOrderBound
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaCanonicalExponent
+import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalExponent
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedLipschitzRate
 import IPRADerivations.Analysis.Names.GaussianNamedDifference
 

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.Integration.GaussianEulerIncompleteName
-import IPRADerivations.Analysis.Euler.GaussianEulerCompactAlignment
+import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactAlignment
 import IPRADerivations.Core.CertificateTactics
 
 /-!

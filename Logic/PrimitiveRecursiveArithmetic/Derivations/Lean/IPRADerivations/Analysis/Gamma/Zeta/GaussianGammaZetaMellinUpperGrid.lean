@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.Zeta.GaussianGammaZetaMellinUpperPoint
 import IPRADerivations.Analysis.Gamma.Zeta.GaussianGammaZetaMellinGrid
 import IPRADerivations.Analysis.SpecialFunctions.GaussianNamedDampingPowerReciprocalTail
-import IPRADerivations.Analysis.Stirling.Binet.GaussianBinetSecondDecayEnvelope
+import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.GaussianBinetSecondDecayEnvelope
 
 /-!
 # Uniform upper tail of the original Mellin quadrature

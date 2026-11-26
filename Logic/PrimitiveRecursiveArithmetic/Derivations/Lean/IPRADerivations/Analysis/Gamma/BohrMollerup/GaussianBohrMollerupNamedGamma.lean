@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.BohrMollerup.GaussianBohrMollerupNamedLift
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianLogGammaEulerNamedExponential
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerNamedExponential
 
 /-!
 # Named Gamma from the cofinal Bohr–Mollerup lift

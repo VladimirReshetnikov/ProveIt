@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.GaussianGammaRationalRatioBinding
+import IPRADerivations.Analysis.Gamma.Ratios.GaussianGammaRationalRatioBinding
 
 /-!
 # The original Gamma quotient at two rational shifts

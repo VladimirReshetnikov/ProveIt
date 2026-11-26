@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianLogGammaEulerResidualDomain
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerResidualDomain
 import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentClippedParameter
 import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalGridRounding
 import IPRADerivations.Foundations.EigenvalueBound

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalProduct
-import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalHeadShift
-import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalPrefactorShift
+import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalHeadShift
+import IPRADerivations.Analysis.Barnes.Prefactors.GaussianBarnesCanonicalPrefactorShift
 
 /-!
 # Cleared unit shift of the original literal Barnes product

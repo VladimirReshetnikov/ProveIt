@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalFactor
-import IPRADerivations.Analysis.Gamma.GaussianGammaPoleZeros
+import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalFactor
+import IPRADerivations.Analysis.Gamma.Poles.GaussianGammaPoleZeros
 import IPRADerivations.Analysis.RationalArithmetic.GaussianProductNorm
 import IPRADerivations.Analysis.Polynomials.RootFinding.GaussianMonicResidualRadius
 

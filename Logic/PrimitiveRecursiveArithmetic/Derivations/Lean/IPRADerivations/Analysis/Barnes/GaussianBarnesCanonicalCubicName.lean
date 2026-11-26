@@ -1,6 +1,6 @@
-import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalLogObservation
+import IPRADerivations.Analysis.Barnes.Logarithms.GaussianBarnesCanonicalLogObservation
 import IPRADerivations.Analysis.Exponential.GaussianExponentialReference
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaCanonicalExponent
+import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalExponent
 
 /-!
 # The original cubic logarithm and the exact first two terms

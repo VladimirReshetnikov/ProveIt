@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.GaussianEulerCompactModulus
+import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactModulus
 import IPRADerivations.Analysis.Exponential.GaussianPositiveExponentialMajorant
 import IPRADerivations.Core.CongruenceTactic
 

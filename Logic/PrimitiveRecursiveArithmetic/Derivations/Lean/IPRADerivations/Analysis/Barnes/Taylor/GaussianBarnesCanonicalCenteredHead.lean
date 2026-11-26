@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Barnes.Taylor.GaussianBarnesCanonicalHeadPolynomialDerivative
+import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.GaussianBarnesCanonicalHeadPolynomialDerivative
 import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerFactorPolynomial
 import IPRADerivations.Analysis.Polynomials.GaussianRationalPolynomialPowers
 

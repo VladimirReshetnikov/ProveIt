@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.GaussianGeneralPolynomialSamples
-import IPRADerivations.Analysis.Polynomials.GaussianRationalHornerLipschitz
+import IPRADerivations.Analysis.Polynomials.Horner.GaussianRationalHornerLipschitz
 import IPRADerivations.Analysis.Polynomials.RootFinding.GaussianRootApproximationWitness
 import IPRADerivations.Analysis.Geometry.GaussianEuclideanDistanceName
 import IPRADerivations.Analysis.Names.GaussianFastValueCut

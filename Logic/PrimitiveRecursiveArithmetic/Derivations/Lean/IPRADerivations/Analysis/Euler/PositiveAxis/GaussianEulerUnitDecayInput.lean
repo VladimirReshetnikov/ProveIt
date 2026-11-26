@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Euler.Integration.GaussianEulerDecayCompactLower
 import IPRADerivations.Analysis.Euler.Integration.GaussianEulerDecayCompactUpper
 import IPRADerivations.Analysis.RationalArithmetic.RationalCompactObservationTightening
-import IPRADerivations.Analysis.Euler.PositiveAxis.GaussianNamedEulerUnitKernel
+import IPRADerivations.Analysis.Euler.PositiveAxis.UnitKernel.GaussianNamedEulerUnitKernel
 import IPRADerivations.Analysis.Euler.Integration.GaussianEulerDecayRealSamples
 import IPRADerivations.Analysis.Euler.Integration.GaussianEulerDecayQuadraturePrecision
 

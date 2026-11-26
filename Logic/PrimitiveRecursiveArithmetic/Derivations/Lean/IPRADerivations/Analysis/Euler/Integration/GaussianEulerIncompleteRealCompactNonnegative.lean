@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.GaussianEulerRealIntegrandNonnegative
 import IPRADerivations.Analysis.Integration.GaussianCompactRiemannLower
-import IPRADerivations.Analysis.Euler.GaussianEulerCompactAdditivity
+import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactAdditivity
 import IPRADerivations.Core.CertificateTactics
 
 /-!

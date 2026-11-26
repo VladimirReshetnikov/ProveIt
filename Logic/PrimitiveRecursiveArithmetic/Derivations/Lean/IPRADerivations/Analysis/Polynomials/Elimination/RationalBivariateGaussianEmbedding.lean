@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.RationalRowSpanGaussianEmbedding
+import IPRADerivations.Analysis.RationalArithmetic.Spans.RationalRowSpanGaussianEmbedding
 import IPRADerivations.Analysis.Polynomials.RationalPolynomialBuffersGaussianEmbedding
 import IPRADerivations.Analysis.Polynomials.GaussianPolynomialMonicCompanion
 

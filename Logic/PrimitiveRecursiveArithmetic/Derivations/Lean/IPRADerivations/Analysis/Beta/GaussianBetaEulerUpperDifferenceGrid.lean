@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Beta.GaussianBetaEulerTailDifferencePointwise
-import IPRADerivations.Analysis.Euler.GaussianEulerCompactUpperTail
+import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactUpperTail
 import IPRADerivations.Analysis.Integration.GaussianRationalQuadratureDifference
 import IPRADerivations.Core.CongruenceTactic
 

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalSingleExponential
-import IPRADerivations.Analysis.Gamma.GaussianGammaRationalRatioBinding
+import IPRADerivations.Analysis.Gamma.Ratios.GaussianGammaRationalRatioBinding
 
 /-!
 # Separate the constant and displacement in the original Barnes exponential

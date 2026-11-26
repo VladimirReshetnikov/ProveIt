@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Gamma.NegativeAxis.GaussianGammaNegativeInterval
 import IPRADerivations.Analysis.Gamma.NegativeAxis.GaussianGammaNegativeIntervalNamedLogFrozen
 import IPRADerivations.Analysis.Gamma.NegativeAxis.GaussianGammaNegativeIntervalNamedInput
 import IPRADerivations.Analysis.Gamma.NegativeAxis.GaussianGammaNegativeIntervalNamedSign
-import IPRADerivations.Analysis.Euler.GaussianEulerVerticalRealSamples
+import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerVerticalRealSamples
 import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedMultiplyRate
 
 /-!

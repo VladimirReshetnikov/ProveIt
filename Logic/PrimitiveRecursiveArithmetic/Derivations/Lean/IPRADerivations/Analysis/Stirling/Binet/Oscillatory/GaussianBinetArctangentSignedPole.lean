@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.GaussianBinetArctangentResolvent
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianLogGammaEulerResidualRadius
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerResidualRadius
 import IPRADerivations.Analysis.Trigonometry.GaussianSineProductImaginaryLogDerivativeTail
 import IPRADerivations.Analysis.Names.GaussianNamedRightHalfPlaneSigned
 

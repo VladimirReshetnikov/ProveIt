@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Taylor.GaussianBarnesCanonicalCenteredExponentialShift
-import IPRADerivations.Analysis.Barnes.Taylor.GaussianBarnesCanonicalHeadPolynomialDerivative
+import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.GaussianBarnesCanonicalHeadPolynomialDerivative
 import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedMultiplyRate
 
 /-!

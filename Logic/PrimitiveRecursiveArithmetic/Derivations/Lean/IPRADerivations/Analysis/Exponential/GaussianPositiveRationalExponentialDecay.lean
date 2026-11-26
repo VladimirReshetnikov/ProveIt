@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Exponential.GaussianPositiveExponentialTermBound
 import IPRADerivations.Analysis.Exponential.GaussianExponentialInverse
 import IPRADerivations.Analysis.FiniteOperations.GaussianBoundedInverseApartness
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaCanonicalExponent
+import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalExponent
 import IPRADerivations.Analysis.Names.Rates.GaussianApproximateInverseDistance
 import IPRADerivations.AnalyticNumberTheory.LocalFactor
 

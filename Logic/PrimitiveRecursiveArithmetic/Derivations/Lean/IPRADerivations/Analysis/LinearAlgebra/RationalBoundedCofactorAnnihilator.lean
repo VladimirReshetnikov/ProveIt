@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.LinearAlgebra.RationalCofactorDotProduct
 import IPRADerivations.Analysis.LinearAlgebra.RationalCofactorOriginalClearing
-import IPRADerivations.Analysis.RationalArithmetic.RationalOriginalAnnihilator
+import IPRADerivations.Analysis.RationalArithmetic.Spans.RationalOriginalAnnihilator
 import IPRADerivations.Core.CongruenceTactic
 
 /-!

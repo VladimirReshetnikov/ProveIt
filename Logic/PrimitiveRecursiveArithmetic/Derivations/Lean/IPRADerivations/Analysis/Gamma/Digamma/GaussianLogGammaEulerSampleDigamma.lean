@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianLogGammaEulerCommonDenominator
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerCommonDenominator
 import IPRADerivations.Analysis.Gamma.Digamma.GaussianLogGammaEulerDigammaDerivative
 
 /-!

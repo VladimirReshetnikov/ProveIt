@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianGammaGaussReferenceProduct
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGaussEulerCutoff
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalLinearProduct
+import IPRADerivations.Analysis.Gamma.EulerProducts.Gauss.GaussianGaussEulerCutoff
+import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalLinearProduct
 
 /-!
 # Cofinal Euler samples of the reference Gamma product

@@ -4,7 +4,7 @@ import IPRADerivations.Analysis.Gamma.Digamma.GaussianGammaDigammaRecurrence
 import IPRADerivations.Analysis.Euler.Integration.GaussianEulerPowerChartTimeOrder
 import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerRationalLogOrder
 import IPRADerivations.Analysis.Gamma.Names.GaussianGammaNativeStrictLogConvexity
-import IPRADerivations.Analysis.Gamma.GaussianGammaRationalWendelUniform
+import IPRADerivations.Analysis.Gamma.Ratios.GaussianGammaRationalWendelUniform
 import IPRADerivations.Analysis.Stirling.GaussianStirlingMultiplicativeBoundsStrictOrder
 
 /-!

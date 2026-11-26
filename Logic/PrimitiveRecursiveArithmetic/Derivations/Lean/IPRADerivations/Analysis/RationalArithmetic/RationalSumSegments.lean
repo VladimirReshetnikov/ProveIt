@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.RationalSumConstants
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalFiniteProduct
+import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalFiniteProduct
 
 /-!
 # Exact scalar rational sum splitting at an internal index

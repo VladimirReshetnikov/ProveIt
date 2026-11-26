@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Stirling.GaussianStirlingWallisFactor
 import IPRADerivations.Analysis.Stirling.GaussianStirlingGammaLogarithm
-import IPRADerivations.Analysis.Gamma.GaussianGammaHalfIntegerValues
-import IPRADerivations.Analysis.Gamma.GaussianGammaHalfSquareLimit
+import IPRADerivations.Analysis.Gamma.HalfInteger.GaussianGammaHalfIntegerValues
+import IPRADerivations.Analysis.Gamma.HalfInteger.GaussianGammaHalfSquareLimit
 import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedProductSquare
 
 /-!

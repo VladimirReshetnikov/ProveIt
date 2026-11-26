@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalDistanceOrder
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalCover
+import IPRADerivations.Analysis.RationalArithmetic.Covers.GaussianRationalCover
 
 /-!
 # Actual Euclidean distance samples to a finite Gaussian-rational list

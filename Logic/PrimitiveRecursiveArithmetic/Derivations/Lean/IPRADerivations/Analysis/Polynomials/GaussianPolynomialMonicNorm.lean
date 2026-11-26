@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.GaussianPolynomialMultiplicationMatrix
-import IPRADerivations.Analysis.Polynomials.GaussianPolynomialDeterminant
+import IPRADerivations.Analysis.Polynomials.Determinants.GaussianPolynomialDeterminant
 
 /-!
 # Actual runtime monic multiplication-matrix norm polynomial

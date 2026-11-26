@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.LinearAlgebra.GaussianScalarDeterminant
 import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalTupleExpansion
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalProductAlgebra
+import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalProductAlgebra
 
 /-!
 # Expansion of the actual scalar determinant of a matrix product

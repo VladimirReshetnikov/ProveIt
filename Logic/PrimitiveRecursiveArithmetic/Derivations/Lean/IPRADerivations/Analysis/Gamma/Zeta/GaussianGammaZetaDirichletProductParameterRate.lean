@@ -3,7 +3,7 @@ import IPRADerivations.Analysis.Gamma.Zeta.GaussianGammaZetaDirichletUniformBoun
 import IPRADerivations.Analysis.Gamma.Zeta.GaussianGammaZetaDirichletProduct
 import IPRADerivations.Analysis.Euler.Integration.GaussianEulerIntegralUpperBound
 import IPRADerivations.Analysis.Gamma.GaussianGammaHalfPlaneInputContinuity
-import IPRADerivations.Analysis.Euler.GaussianEulerNamedPowerScalingPowerFrozen
+import IPRADerivations.Analysis.Euler.PowerScaling.GaussianEulerNamedPowerScalingPowerFrozen
 
 /-!
 # Effective parameter continuity of the original Gamma–Dirichlet product

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Logarithm.GaussianRightHalfPlaneLogarithmLocalBound
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianLogGammaEulerHead
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerHead
 import IPRADerivations.Analysis.Logarithm.GaussianLocalLogarithmName
 import IPRADerivations.Analysis.Logarithm.GaussianFiniteLogarithmCompositionTail
 

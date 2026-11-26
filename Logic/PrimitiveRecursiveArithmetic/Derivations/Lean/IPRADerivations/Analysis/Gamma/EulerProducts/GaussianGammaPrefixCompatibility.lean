@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaOriginalPrefixCoefficientNames
 import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaOriginalPrefixName
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaCanonicalPrefixName
+import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalPrefixName
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
 
 /-!

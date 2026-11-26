@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.GaussianGammaExponentEulerCoefficients
+import IPRADerivations.Analysis.Gamma.Taylor.GaussianGammaExponentEulerCoefficients
 import IPRADerivations.Analysis.Gamma.GaussianGammaHarmonicPowerPoints
 import IPRADerivations.Analysis.Names.RationalGaussianNameEmbedding
 

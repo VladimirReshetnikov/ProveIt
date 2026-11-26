@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.GaussianEulerVerticalNamedReference
+import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerVerticalNamedReference
 import IPRADerivations.Analysis.Gamma.GaussianEulerVerticalGammaBound
 import IPRADerivations.Analysis.Gamma.Names.GaussianNamedGammaPositiveLower
 import IPRADerivations.Analysis.Names.RationalReciprocalPowerName

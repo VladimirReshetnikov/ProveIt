@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.GaussianEulerCompactModulus
+import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactModulus
 
 /-!
 # Parameter continuity of the original Euler integrand on a fixed compact

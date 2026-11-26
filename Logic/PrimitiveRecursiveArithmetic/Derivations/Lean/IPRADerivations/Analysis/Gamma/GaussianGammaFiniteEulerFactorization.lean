@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.GaussianPolynomialProductEulerFactorization
 import IPRADerivations.Analysis.Gamma.GaussianGammaCombinedEulerKernelPolynomial
-import IPRADerivations.Analysis.Gamma.GaussianGammaFiniteCoefficientPolynomial
+import IPRADerivations.Analysis.Gamma.Taylor.GaussianGammaFiniteCoefficientPolynomial
 
 /-!
 # Actual finite Gamma polynomial Euler factorization

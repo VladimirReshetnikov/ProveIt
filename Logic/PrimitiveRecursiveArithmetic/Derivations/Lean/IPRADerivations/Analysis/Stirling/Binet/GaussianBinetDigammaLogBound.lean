@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.GaussianBinetReciprocalPrefix
 import IPRADerivations.Analysis.Gamma.Digamma.GaussianLogGammaEulerDigammaFractionsCofinal
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianLogGammaEulerTerminalShiftError
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerTerminalShiftError
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
 
 /-!

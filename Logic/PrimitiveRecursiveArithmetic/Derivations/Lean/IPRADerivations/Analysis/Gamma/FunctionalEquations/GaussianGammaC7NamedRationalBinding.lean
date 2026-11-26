@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianGammaC7NamedFrozen
-import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalNamed
+import IPRADerivations.Analysis.Barnes.Names.GaussianBarnesCanonicalNamed
 
 /-!
 # The named entire reciprocal Gamma extends the original rational evaluator

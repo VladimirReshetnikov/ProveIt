@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.PositiveAxis.GaussianEulerPositivePowerChartCorrectedPanel
+import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.GaussianEulerPositivePowerChartCorrectedPanel
 import IPRADerivations.AnalyticNumberTheory.CoprimeModulus
 import IPRADerivations.Geometry.HypercubeSplit
 

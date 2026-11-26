@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Raabe.GaussianRaabeRightSide
 import IPRADerivations.Analysis.Gamma.Names.GaussianNamedGammaPositiveLower
-import IPRADerivations.Analysis.Euler.GaussianEulerNamedPowerScalingPowerFrozen
+import IPRADerivations.Analysis.Euler.PowerScaling.GaussianEulerNamedPowerScalingPowerFrozen
 import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedAddRate
 
 /-!

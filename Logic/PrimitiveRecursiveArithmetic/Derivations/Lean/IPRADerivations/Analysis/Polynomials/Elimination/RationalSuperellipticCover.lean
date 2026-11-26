@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.RationalOriginalSpanMembership
+import IPRADerivations.Analysis.RationalArithmetic.Spans.RationalOriginalSpanMembership
 import IPRADerivations.Analysis.Polynomials.Elimination.RationalSuperellipticSubspace
 import IPRADerivations.Foundations.FiniteCoverAssignment
 import IPRADerivations.Core.CongruenceTactic

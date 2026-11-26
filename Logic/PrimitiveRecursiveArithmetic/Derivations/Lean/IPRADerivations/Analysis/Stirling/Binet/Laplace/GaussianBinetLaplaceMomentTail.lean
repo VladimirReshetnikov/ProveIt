@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.GaussianBinetLaplaceMomentDecay
 import IPRADerivations.Analysis.Names.GaussianCompactNamedAdditivity
-import IPRADerivations.Analysis.Stirling.Binet.GaussianBinetSecondDecayEnvelope
+import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.GaussianBinetSecondDecayEnvelope
 import IPRADerivations.Analysis.SpecialFunctions.GaussianNamedDampingPowerReciprocalTail
 import IPRADerivations.DiophantineNumberTheory.AperyMultibound
 

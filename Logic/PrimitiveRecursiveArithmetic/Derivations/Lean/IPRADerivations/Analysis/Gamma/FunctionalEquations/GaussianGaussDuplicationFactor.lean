@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaGaussReferencePrefix
-import IPRADerivations.Analysis.Gamma.GaussianGammaHalfSqrtPi
+import IPRADerivations.Analysis.Gamma.HalfInteger.GaussianGammaHalfSqrtPi
 import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteProductAppend
 import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaFactorialValues
 import IPRADerivations.Core.Evaluation

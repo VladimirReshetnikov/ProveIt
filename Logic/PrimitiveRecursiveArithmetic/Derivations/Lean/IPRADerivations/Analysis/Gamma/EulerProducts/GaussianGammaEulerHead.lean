@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalFiniteProduct
+import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalFiniteProduct
 import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalReciprocal
 import IPRADerivations.Analysis.Logarithm.GaussianFiniteLogarithmCompositionName
 import IPRADerivations.Core.CongruenceTactic

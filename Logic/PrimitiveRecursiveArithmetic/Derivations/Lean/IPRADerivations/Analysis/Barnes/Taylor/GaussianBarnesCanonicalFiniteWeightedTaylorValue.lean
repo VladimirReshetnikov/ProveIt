@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Barnes.Taylor.GaussianBarnesCanonicalFiniteCenteredExponentialShift
 import IPRADerivations.Analysis.Barnes.Taylor.GaussianBarnesCanonicalFiniteCentralExponentialBound
 import IPRADerivations.Analysis.Barnes.Taylor.GaussianBarnesCanonicalWeightedTaylorBall
-import IPRADerivations.Analysis.Euler.GaussianEulerNamedPowerScalingPowerFrozen
+import IPRADerivations.Analysis.Euler.PowerScaling.GaussianEulerNamedPowerScalingPowerFrozen
 import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedAddRate
 
 /-!

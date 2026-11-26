@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.GaussianGammaRationalWendelUniformLog
+import IPRADerivations.Analysis.Gamma.Ratios.GaussianGammaRationalWendelUniformLog
 import IPRADerivations.Analysis.Exponential.GaussianRealNameExponentialNonnegative
 
 /-!

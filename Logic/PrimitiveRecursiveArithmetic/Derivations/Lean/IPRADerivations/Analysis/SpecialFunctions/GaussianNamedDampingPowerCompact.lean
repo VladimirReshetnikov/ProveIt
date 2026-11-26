@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.SpecialFunctions.GaussianNamedDampingPowerFrozen
-import IPRADerivations.Analysis.Euler.GaussianEulerCompactAdditivity
+import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactAdditivity
 
 /-!
 # Ordinary compact quadrature of the named power-damped Euler kernel

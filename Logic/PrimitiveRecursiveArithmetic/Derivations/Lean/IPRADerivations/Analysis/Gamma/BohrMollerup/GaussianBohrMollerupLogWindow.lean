@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.GaussianGammaRationalLogWendel
+import IPRADerivations.Analysis.Gamma.Ratios.GaussianGammaRationalLogWendel
 import IPRADerivations.Analysis.Stirling.GaussianStirlingMultiplicativeBoundsLog
 import IPRADerivations.Analysis.Names.GaussianNamedNaturalScaleOrder
 import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerDenominator

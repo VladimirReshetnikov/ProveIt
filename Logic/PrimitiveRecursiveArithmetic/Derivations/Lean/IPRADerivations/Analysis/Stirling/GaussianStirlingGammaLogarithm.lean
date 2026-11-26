@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianGammaGaussRefe
 import IPRADerivations.Analysis.Gamma.GaussianGammaRealValues
 import IPRADerivations.Analysis.Euler.Integration.GaussianEulerIntegralPositiveLower
 import IPRADerivations.Analysis.Names.GaussianNamedPositiveLateLogSource
-import IPRADerivations.Analysis.Euler.GaussianEulerVerticalProjection
+import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerVerticalProjection
 
 /-!
 # The original Gamma logarithm at a positive encoded rational

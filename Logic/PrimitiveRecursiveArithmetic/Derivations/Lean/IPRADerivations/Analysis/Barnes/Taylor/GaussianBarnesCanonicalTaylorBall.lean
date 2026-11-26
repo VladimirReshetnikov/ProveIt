@@ -1,7 +1,7 @@
-import IPRADerivations.Analysis.Barnes.Taylor.GaussianBarnesCanonicalExponentTaylorMass
-import IPRADerivations.Analysis.Barnes.Taylor.GaussianBarnesCanonicalExponentTaylorSchedule
-import IPRADerivations.Analysis.Barnes.Taylor.GaussianBarnesCanonicalExponentTaylorBallSchedule
-import IPRADerivations.Analysis.Barnes.Taylor.GaussianBarnesCanonicalTaylorProduct
+import IPRADerivations.Analysis.Barnes.Taylor.Coefficients.GaussianBarnesCanonicalExponentTaylorMass
+import IPRADerivations.Analysis.Barnes.Taylor.Coefficients.GaussianBarnesCanonicalExponentTaylorSchedule
+import IPRADerivations.Analysis.Barnes.Taylor.Coefficients.GaussianBarnesCanonicalExponentTaylorBallSchedule
+import IPRADerivations.Analysis.Barnes.Taylor.Coefficients.GaussianBarnesCanonicalTaylorProduct
 
 /-!
 # A stored Taylor polynomial on a disk for the original Barnes evaluator

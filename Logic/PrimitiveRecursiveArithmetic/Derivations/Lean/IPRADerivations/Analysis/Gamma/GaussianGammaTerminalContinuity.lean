@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.GaussianGammaPoleInverseContinuity
+import IPRADerivations.Analysis.Gamma.Poles.GaussianGammaPoleInverseContinuity
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
 
 /-!

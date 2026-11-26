@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.GaussianCoefficientNameBounds
 import IPRADerivations.Analysis.Polynomials.RootFinding.GaussianBalancedRadiusArithmetic
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalProductWitness
+import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalProductWitness
 import IPRADerivations.Core.LinearCombination
 
 /-!

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerRationalLog
 import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerInverseConvergence
-import IPRADerivations.Analysis.Euler.GaussianEulerVerticalProjection
+import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerVerticalProjection
 
 /-!
 # Uniform positive margin for cofinal finite Euler inverses

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.LinearAlgebra.GaussianFiberDeterminantNonzero
-import IPRADerivations.Analysis.Polynomials.GaussianPolynomialScalarLeftDeterminant
-import IPRADerivations.Analysis.Polynomials.GaussianPolynomialRowFactorDeterminant
+import IPRADerivations.Analysis.Polynomials.Determinants.GaussianPolynomialScalarLeftDeterminant
+import IPRADerivations.Analysis.Polynomials.Determinants.GaussianPolynomialRowFactorDeterminant
 import IPRADerivations.Core.CongruenceTactic
 
 /-!

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.GaussianGammaExponentCoefficientPolynomial
+import IPRADerivations.Analysis.Gamma.Taylor.GaussianGammaExponentCoefficientPolynomial
 import IPRADerivations.Analysis.Gamma.Zeta.GaussianGammaZetaTailSeries
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedSmallPerturbationTransport
 import IPRADerivations.Core.CongruenceTactic

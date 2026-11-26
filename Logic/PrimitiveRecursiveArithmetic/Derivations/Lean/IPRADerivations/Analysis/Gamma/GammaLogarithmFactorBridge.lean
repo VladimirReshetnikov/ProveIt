@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.GammaCanonicalFactors
+import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GammaCanonicalFactors
 import IPRADerivations.Analysis.Logarithm.GaussianFiniteLogarithmSampler
 
 /-!

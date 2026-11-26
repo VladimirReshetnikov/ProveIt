@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianGammaFiniteCoefficientRecurrence
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianGammaRecurrenceWeights
-import IPRADerivations.Analysis.Gamma.GaussianGammaAllDegreeCoefficientStability
+import IPRADerivations.Analysis.Gamma.Taylor.GaussianGammaAllDegreeCoefficientStability
 import IPRADerivations.Core.CongruenceTactic
 
 /-!

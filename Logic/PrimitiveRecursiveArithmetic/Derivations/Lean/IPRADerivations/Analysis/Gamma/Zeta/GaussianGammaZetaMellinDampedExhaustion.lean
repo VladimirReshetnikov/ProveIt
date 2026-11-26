@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.GaussianEulerCompactExhaustion
+import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactExhaustion
 import IPRADerivations.Analysis.Gamma.GaussianEulerPositiveScalingGamma
 
 /-!

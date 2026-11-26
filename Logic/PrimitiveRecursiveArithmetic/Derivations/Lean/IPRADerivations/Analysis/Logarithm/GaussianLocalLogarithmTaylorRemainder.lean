@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Logarithm.GaussianFiniteLogarithmTaylorRemainder
 import IPRADerivations.Analysis.Logarithm.GaussianLocalLogarithmName
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedInverseRate
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaCanonicalExponent
+import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalExponent
 
 /-!
 # Arbitrary-order Taylor remainder for the original local Gaussian logarithm

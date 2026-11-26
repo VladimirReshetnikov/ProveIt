@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.GaussianNamedEulerQuadrature
-import IPRADerivations.Analysis.Euler.GaussianNamedEulerCompactModulus
+import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianNamedEulerCompactModulus
 
 /-!
 # Fixed compact observations at the actual named Euler cutoffs

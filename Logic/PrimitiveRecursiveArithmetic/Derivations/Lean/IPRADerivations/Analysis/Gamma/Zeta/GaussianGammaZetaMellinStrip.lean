@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Zeta.GaussianGammaZetaMellinDecayPrefix
-import IPRADerivations.Analysis.Euler.GaussianEulerCompactPowerMajorant
+import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactPowerMajorant
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianCompactScalarMajorant
 
 /-!

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.GaussianBinetLaplaceMomentImproperTaylor
 import IPRADerivations.Analysis.Euler.GaussianEulerWeightedHalfDecay
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianLogGammaEulerResidualRadius
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerResidualRadius
 
 /-!
 # Rational chart invariance of actual improper Binet moments

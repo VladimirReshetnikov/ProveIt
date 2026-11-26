@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Digamma.GaussianGammaDigammaSeriesTerms
-import IPRADerivations.Analysis.Euler.PositiveAxis.GaussianEulerPositivePowerChartImageWeights
+import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.GaussianEulerPositivePowerChartImageWeights
 
 /-!
 # The positive-term digamma series

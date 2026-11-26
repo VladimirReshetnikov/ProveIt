@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Names.GaussianNamedDifferenceAlgebra
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaCanonicalExponent
+import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalExponent
 import IPRADerivations.Analysis.Polynomials.GaussianRationalSyntheticCoefficientValues
 
 /-!

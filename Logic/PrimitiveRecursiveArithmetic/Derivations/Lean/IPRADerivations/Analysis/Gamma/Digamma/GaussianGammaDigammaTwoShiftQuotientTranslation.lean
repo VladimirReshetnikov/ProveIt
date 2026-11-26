@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Digamma.GaussianGammaDigammaTwoShiftLogGammaTranslation
 import IPRADerivations.Analysis.Gamma.Digamma.GaussianGammaDigammaTwoShiftBinding
-import IPRADerivations.Analysis.Euler.GaussianEulerNamedPowerScalingPowerFrozen
+import IPRADerivations.Analysis.Euler.PowerScaling.GaussianEulerNamedPowerScalingPowerFrozen
 import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedAddRate
 
 /-!

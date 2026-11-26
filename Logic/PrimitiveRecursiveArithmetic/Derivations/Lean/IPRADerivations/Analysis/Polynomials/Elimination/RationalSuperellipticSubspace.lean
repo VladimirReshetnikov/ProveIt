@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.Elimination.RationalSuperellipticNormDegree
 import IPRADerivations.Analysis.Inequalities.RationalWeightedMonomialEvaluation
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalOriginalSpanRank
+import IPRADerivations.Analysis.RationalArithmetic.Spans.GaussianRationalOriginalSpanRank
 import IPRADerivations.Core.CongruenceTactic
 
 /-!

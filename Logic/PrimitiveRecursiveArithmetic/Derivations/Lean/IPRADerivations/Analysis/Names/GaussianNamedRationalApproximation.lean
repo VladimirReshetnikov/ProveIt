@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedInverseRate
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaCanonicalExponent
+import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalExponent
 
 /-!
 # A regular complex name and its frozen rational observation

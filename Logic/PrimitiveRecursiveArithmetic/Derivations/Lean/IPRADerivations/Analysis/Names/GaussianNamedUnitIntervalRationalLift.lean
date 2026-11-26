@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.GaussianNamedEulerUnitTime
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedLipschitzRate
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaCanonicalExponent
+import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalExponent
 
 /-!
 # Lift a rational evaluation with a uniform rate to unit-interval names

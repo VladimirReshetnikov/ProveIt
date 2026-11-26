@@ -3,7 +3,7 @@ import IPRADerivations.Analysis.Trigonometry.GaussianSineProductImaginaryHyperbo
 import IPRADerivations.Analysis.Trigonometry.GaussianPiRationalScaleRepresentation
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedDifferenceQuotientProperness
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
-import IPRADerivations.Analysis.Euler.GaussianEulerCompactModulus
+import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactModulus
 
 /-!
 # The product rule for the original hyperbolic sine product

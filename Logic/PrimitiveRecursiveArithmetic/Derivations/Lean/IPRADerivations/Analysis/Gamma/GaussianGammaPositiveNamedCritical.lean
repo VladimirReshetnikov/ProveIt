@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.Digamma.GaussianGammaDigammaPositiveStationary
 import IPRADerivations.Analysis.Gamma.Digamma.GaussianGammaPositiveNamedDigammaInjective
 import IPRADerivations.Analysis.Gamma.Digamma.GaussianNamedPositiveDigammaProperness
-import IPRADerivations.Analysis.Gamma.GaussianGammaRationalWendelBoundary
+import IPRADerivations.Analysis.Gamma.Ratios.GaussianGammaRationalWendelBoundary
 
 /-!
 # Critical points of the original Gamma on the positive half-line

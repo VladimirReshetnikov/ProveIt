@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.GaussianRationalUnitDiskHornerNorm
+import IPRADerivations.Analysis.Polynomials.Horner.GaussianRationalUnitDiskHornerNorm
 import IPRADerivations.Analysis.Logarithm.GaussianFiniteLogarithmCompositionTail
 import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalTravelScaling
 

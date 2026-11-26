@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.LinearAlgebra.GaussianScalarDeterminant
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalProductAlgebra
+import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalProductAlgebra
 import IPRADerivations.Core.BoundedSums
 import IPRADerivations.Analysis.LinearAlgebra.GaussianDeterminantSignTransport
 

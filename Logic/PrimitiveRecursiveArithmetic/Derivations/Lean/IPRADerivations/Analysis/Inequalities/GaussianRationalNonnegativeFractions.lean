@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Inequalities.GaussianRationalNonnegativeProducts
 import IPRADerivations.Analysis.RationalArithmetic.GaussianPositiveRealArithmetic
-import IPRADerivations.Analysis.Gamma.GaussianGammaHalfSqrtBrackets
+import IPRADerivations.Analysis.Gamma.HalfInteger.GaussianGammaHalfSqrtBrackets
 import IPRADerivations.Analysis.Names.GaussianNameArithmetic
 
 /-!

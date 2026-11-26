@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerDenominator
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalRectangularProduct
+import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalRectangularProduct
 
 /-!
 # Gauss grouping at arbitrary finite Euler cutoffs

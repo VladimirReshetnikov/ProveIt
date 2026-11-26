@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Integration.GaussianOddMomentSignedGrid
 import IPRADerivations.Analysis.Integration.GaussianOddMomentAbsoluteMetric
-import IPRADerivations.Analysis.Euler.PositiveAxis.GaussianEulerPositivePowerChartOrder
+import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.GaussianEulerPositivePowerChartOrder
 
 /-!
 # Literal absolute odd Gaussian quadratures on finite grids

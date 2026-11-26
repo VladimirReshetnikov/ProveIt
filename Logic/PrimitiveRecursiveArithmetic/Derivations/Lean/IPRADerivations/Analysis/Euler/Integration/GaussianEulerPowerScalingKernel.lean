@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.PositiveAxis.GaussianEulerPositivePowerChartLogarithm
+import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.GaussianEulerPositivePowerChartLogarithm
 import IPRADerivations.Analysis.Euler.Integration.GaussianEulerPowerScalingParameter
 import IPRADerivations.Analysis.Euler.GaussianEulerExponentialSubstitutionNamedKernel
 

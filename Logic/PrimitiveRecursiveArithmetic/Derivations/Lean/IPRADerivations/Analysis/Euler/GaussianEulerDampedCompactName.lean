@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.GaussianEulerDampedTimeRate
-import IPRADerivations.Analysis.Euler.GaussianEulerCompactAdditivity
+import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactAdditivity
 
 /-!
 # Actual compact quadrature names for positive rational Euler damping

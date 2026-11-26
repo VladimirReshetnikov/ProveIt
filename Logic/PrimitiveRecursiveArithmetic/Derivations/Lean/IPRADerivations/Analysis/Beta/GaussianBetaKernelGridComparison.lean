@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Beta.GaussianBetaKernelExponential
-import IPRADerivations.Analysis.Euler.GaussianEulerCompactProductComparison
+import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactProductComparison
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianCompactScalarMajorant
 import IPRADerivations.Analysis.Euler.GaussianEulerImproperName
 

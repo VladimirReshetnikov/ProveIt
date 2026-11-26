@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianGammaC7Name
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaCanonicalExponentBound
+import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalExponentBound
 import IPRADerivations.Analysis.Exponential.GaussianPositiveExponentialMajorant
 
 /-!

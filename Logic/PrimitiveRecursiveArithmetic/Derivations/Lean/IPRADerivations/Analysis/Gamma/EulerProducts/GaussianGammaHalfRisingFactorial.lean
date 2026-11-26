@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.GaussianGammaHalfIntegerDomain
+import IPRADerivations.Analysis.Gamma.HalfInteger.GaussianGammaHalfIntegerDomain
 import IPRADerivations.Probability.NormalMoments
 
 /-!

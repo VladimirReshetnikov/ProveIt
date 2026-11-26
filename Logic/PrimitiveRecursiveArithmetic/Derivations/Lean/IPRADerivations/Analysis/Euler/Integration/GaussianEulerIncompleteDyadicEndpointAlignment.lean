@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.Integration.GaussianEulerIncompleteName
-import IPRADerivations.Analysis.Euler.GaussianEulerCompactAlignment
+import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactAlignment
 
 /-!
 # The original lower incomplete compact piece at a dyadic cutoff

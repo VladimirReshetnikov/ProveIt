@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Barnes.Taylor.GaussianBarnesCanonicalTailExponentialDerivative
-import IPRADerivations.Analysis.Barnes.Taylor.GaussianBarnesCanonicalLogDerivativeQuotient
+import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.GaussianBarnesCanonicalTailExponentialDerivative
+import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.GaussianBarnesCanonicalLogDerivativeQuotient
 
 /-! The actual divided difference of the original Barnes tail exponential
 converges to the original named product of the tail value and its

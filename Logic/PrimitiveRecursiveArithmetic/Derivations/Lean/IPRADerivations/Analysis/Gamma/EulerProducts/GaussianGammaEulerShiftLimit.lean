@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerShift
 import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerConvergence
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalLinearProduct
+import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalLinearProduct
 
 /-!
 # The actual coefficient in the original finite Euler shift

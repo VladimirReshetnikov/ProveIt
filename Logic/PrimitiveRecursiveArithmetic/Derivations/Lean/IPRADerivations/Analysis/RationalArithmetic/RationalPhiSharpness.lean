@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.RationalConsecutiveFactorProduct
+import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.RationalConsecutiveFactorProduct
 import IPRADerivations.Analysis.RationalArithmetic.RationalPhiSection
 
 /-!

@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalValue
 import IPRADerivations.Analysis.Barnes.Taylor.GaussianBarnesCanonicalCenteredHead
-import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalHeadExponentialFactors
-import IPRADerivations.Analysis.Barnes.Taylor.GaussianBarnesCanonicalPrefactorExponentDerivative
+import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalHeadExponentialFactors
+import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.GaussianBarnesCanonicalPrefactorExponentDerivative
 import IPRADerivations.Analysis.Gamma.GaussianGammaFoldedApproximantBalance
 
 /-!

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.GaussianEulerCompactLowerTail
+import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactLowerTail
 
 /-!
 # Reusing the original lower-root partition for an actual evaluator

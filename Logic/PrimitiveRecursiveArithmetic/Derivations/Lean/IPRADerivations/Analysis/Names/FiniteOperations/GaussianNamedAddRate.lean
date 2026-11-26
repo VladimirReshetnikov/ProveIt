@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedDifferenceRate
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateComposition
 import IPRADerivations.Analysis.Exponential.GaussianExponentialReference
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaCanonicalExponent
+import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalExponent
 
 /-!
 # Independent rates for the original named sum

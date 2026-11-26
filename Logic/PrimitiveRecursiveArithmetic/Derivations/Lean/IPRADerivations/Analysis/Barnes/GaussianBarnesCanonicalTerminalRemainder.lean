@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Logarithm.GaussianLocalLogarithmLinearRemainder
 import IPRADerivations.Analysis.Names.GaussianNamedDifference
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaCanonicalExponent
+import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalExponent
 import IPRADerivations.Analysis.Exponential.GaussianExponentialRadiusIndependence
 
 /-!

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.GaussianBinetExponentialIntegral
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianLogGammaEulerResidualRadius
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerResidualRadius
 
 /-!
 # Actual compact antiderivative for purely imaginary input

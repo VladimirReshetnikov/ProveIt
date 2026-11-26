@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Taylor.GaussianBarnesCanonicalFiniteCentralExponential
-import IPRADerivations.Analysis.Barnes.Taylor.GaussianBarnesCanonicalFiniteExponentTaylor
+import IPRADerivations.Analysis.Barnes.Taylor.Coefficients.GaussianBarnesCanonicalFiniteExponentTaylor
 
 /-!
 # Translate the exponential of the actual finite Barnes exponent

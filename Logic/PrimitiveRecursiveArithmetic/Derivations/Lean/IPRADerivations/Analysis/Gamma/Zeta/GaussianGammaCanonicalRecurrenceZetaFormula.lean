@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaCanonicalCoefficientRecurrence
+import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalCoefficientRecurrence
 import IPRADerivations.Core.CongruenceTactic
 
 /-!

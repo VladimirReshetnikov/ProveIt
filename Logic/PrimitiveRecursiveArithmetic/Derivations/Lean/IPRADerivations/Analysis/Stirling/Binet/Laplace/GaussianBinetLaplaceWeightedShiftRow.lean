@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.GaussianBinetLaplaceIntegrandShift
-import IPRADerivations.Analysis.Stirling.Binet.GaussianBinetKernelWeightedBridgeZero
+import IPRADerivations.Analysis.Stirling.Binet.Kernel.GaussianBinetKernelWeightedBridgeZero
 
 /-!
 # Pointwise Binet Laplace shift with the weighted unit quadrature

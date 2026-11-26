@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.GaussianRootSamples
 import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalDistanceOrder
-import IPRADerivations.Analysis.Polynomials.GaussianRationalHornerPerturbation
+import IPRADerivations.Analysis.Polynomials.Horner.GaussianRationalHornerPerturbation
 
 /-!
 # Coherence of the actual approximate root-product coefficients

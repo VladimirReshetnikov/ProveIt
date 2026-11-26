@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalLinearProduct
-import IPRADerivations.Analysis.Polynomials.GaussianReciprocalHorner
+import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalLinearProduct
+import IPRADerivations.Analysis.Polynomials.Horner.GaussianReciprocalHorner
 import IPRADerivations.Core.CongruenceTactic
 
 /-!

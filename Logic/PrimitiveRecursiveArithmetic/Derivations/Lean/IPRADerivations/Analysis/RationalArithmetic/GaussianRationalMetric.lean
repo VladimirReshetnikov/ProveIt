@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.GaussianRationalHorner
+import IPRADerivations.Analysis.Polynomials.Horner.GaussianRationalHorner
 import IPRADerivations.Foundations.BoundedSyntax
 
 /-!

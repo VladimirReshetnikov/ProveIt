@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.GaussianRootSupport
 import IPRADerivations.Analysis.Polynomials.RootFinding.GaussianRootFiniteEvaluation
 import IPRADerivations.Analysis.Polynomials.RootFinding.GaussianRootAdequacySchedule
-import IPRADerivations.Analysis.Polynomials.GaussianRationalHornerLipschitz
+import IPRADerivations.Analysis.Polynomials.Horner.GaussianRationalHornerLipschitz
 import IPRADerivations.Core.CongruenceTactic
 
 /-!
