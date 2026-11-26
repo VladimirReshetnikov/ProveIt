@@ -41,6 +41,9 @@ import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.CertificateTactics
 import IPRADerivations.Core.CongruenceTactic
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Reindex
+import IPRADerivations.Core.SubstCommand
+import IPRADerivations.Core.InductionTactic
 import IPRADerivations.Algebra.CayleyHamilton
 import IPRADerivations.Algebra.AdjugateInverse
 import IPRADerivations.Algebra.CayleyHamiltonGeneral
