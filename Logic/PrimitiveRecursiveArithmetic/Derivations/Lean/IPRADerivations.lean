@@ -1303,6 +1303,7 @@ import IPRADerivations.Probability.MartingaleRate
 import IPRADerivations.Probability.QuantumExpectation
 import IPRADerivations.Analysis.Trigonometry.UnitCircle.ComplexPowers
 import IPRADerivations.Analysis.Trigonometry.UnitCircle.RotationRemainder
+import IPRADerivations.Analysis.Trigonometry.UnitCircle.RotationDoubling
 import IPRADerivations.Probability.CharacteristicDerivative
 import IPRADerivations.Probability.TruncationEstimate
 import IPRADerivations.Probability.MomentDeterminacy
