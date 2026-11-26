@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Names.RationalGaussianNameEmbedding
+import IPRADerivations.Analysis.Names.Arithmetic.RationalGaussianNameEmbedding
 import IPRADerivations.Analysis.Gamma.EulerProducts.GammaEulerConstantName
 import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalTailName
 import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameArithmetic

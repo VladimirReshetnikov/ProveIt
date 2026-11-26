@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Stirling.Duplication.GaussianStirlingDuplicationAlgebra
 import IPRADerivations.Analysis.Stirling.Duplication.GaussianStirlingDuplicationConstant
 import IPRADerivations.Analysis.Stirling.Duplication.GaussianStirlingDuplicationLogs
-import IPRADerivations.Analysis.Stirling.GaussianStirlingRecurrence
+import IPRADerivations.Analysis.Stirling.Telescoping.GaussianStirlingRecurrence
 
 /-!
 # The exact named Stirling duplication identity

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.ReciprocalGamma.GaussianGammaAdjacentCutoff
-import IPRADerivations.Analysis.Gamma.GaussianGammaEncodingRescaling
+import IPRADerivations.Analysis.Gamma.Names.Input.GaussianGammaEncodingRescaling
 import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameRingLaws
 
 /-!

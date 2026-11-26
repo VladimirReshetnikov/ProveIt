@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.Integration.GaussianEulerIntegrandName
 import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameConjugation
-import IPRADerivations.Analysis.Gamma.GaussianGammaRealValues
+import IPRADerivations.Analysis.Gamma.Names.Symmetry.GaussianGammaRealValues
 
 /-!
 # Exact reality of the original rational decay observations

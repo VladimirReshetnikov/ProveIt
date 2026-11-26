@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.GaussianGammaFoldedQBound
-import IPRADerivations.Analysis.Gamma.GaussianGammaReciprocalInverse
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.ReciprocalGamma.GaussianGammaReciprocalInverse
 
 /-!
 # The original finite Euler reciprocal with the SAME C13 constant

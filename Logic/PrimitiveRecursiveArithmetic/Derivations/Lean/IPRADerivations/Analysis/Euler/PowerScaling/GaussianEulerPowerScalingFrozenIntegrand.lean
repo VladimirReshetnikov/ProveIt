@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.GaussianEulerPowerChartFrozenKernel
 import IPRADerivations.Analysis.Euler.PowerScaling.GaussianEulerPowerScalingCompactRate
 import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.GaussianEulerPositivePowerChartJacobian
-import IPRADerivations.Analysis.Gamma.GaussianGammaReciprocalInverse
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.ReciprocalGamma.GaussianGammaReciprocalInverse
 
 /-!
 # The original power-damped integrand at a frozen chart point

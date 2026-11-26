@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRationalConjugation
 import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameRingLaws
 import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialReference
-import IPRADerivations.Analysis.Names.RationalGaussianNameEmbedding
+import IPRADerivations.Analysis.Names.Arithmetic.RationalGaussianNameEmbedding
 
 /-!
 # Actual conjugation of Gaussian names and their precision normalizers

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Trigonometry.GaussianSineProductName
+import IPRADerivations.Analysis.Trigonometry.SineProducts.GaussianSineProductName
 
 /-!
 # The explicit sine-product schedule and error budget

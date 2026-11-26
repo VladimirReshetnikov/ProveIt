@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.PowerEstimates.GaussianGaussMultiplicationPowerRate
 import IPRADerivations.Analysis.Gamma.EulerProducts.Gauss.GaussianGaussEulerCutoff
-import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianNamedGammaHalfShift
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.GaussianNamedGammaHalfShift
 
 /-!
 # Exact Gauss power ratio at the two Euler cutoffs

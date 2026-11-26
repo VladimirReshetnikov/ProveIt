@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.DominantTerms.GaussianDominantPairAlgebra
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalRoundedPower
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalRelativeTwoTerm
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.GaussianRationalRelativeTwoTerm
 import IPRADerivations.Analysis.RationalArithmetic.Norms.GaussianRationalInvertibleNorm
 
 /-!

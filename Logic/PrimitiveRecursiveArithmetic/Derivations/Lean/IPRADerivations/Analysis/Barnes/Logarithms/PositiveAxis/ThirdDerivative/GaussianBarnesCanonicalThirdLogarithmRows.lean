@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalBase
+import IPRADerivations.Analysis.Barnes.CanonicalProducts.GaussianBarnesCanonicalBase
 import IPRADerivations.Analysis.Barnes.Taylor.RelativeExpansions.HigherOrders.GaussianBarnesCanonicalHigherRows
 import IPRADerivations.Analysis.Beta.EulerProducts.GaussianEulerBetaProductPascal
 import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianPositiveExponentialTermBound

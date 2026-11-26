@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.FunctionalEquations.Hyperfactorial.GaussianBarnesCanonicalHyperfactorial
-import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalNormalization
-import IPRADerivations.Analysis.Exponential.GaussianExponentialInverse
+import IPRADerivations.Analysis.Barnes.CanonicalProducts.GaussianBarnesCanonicalNormalization
+import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialInverse
 
 /-! # The positive rational analytic hyperfactorial takes value one at one -/
 

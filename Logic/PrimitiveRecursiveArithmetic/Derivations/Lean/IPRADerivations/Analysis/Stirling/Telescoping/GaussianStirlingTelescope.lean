@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.GaussianStirlingNames
+import IPRADerivations.Analysis.Stirling.GammaLogarithm.GaussianStirlingNames
 import IPRADerivations.Analysis.Stirling.Telescoping.GaussianStirlingDifference
 import IPRADerivations.Analysis.Names.Differences.GaussianNamedDifference
 import IPRADerivations.Analysis.Series.Telescoping.GaussianRationalParameterTelescope

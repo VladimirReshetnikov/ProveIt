@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.GaussianEulerNamedShiftInput
+import IPRADerivations.Analysis.Gamma.Names.Input.GaussianEulerNamedShiftInput
 import IPRADerivations.Analysis.Names.RightHalfPlane.GaussianNamedRightHalfPlaneLift
 import IPRADerivations.Analysis.Gamma.EulerProducts.Convexity.GaussianGammaEulerRationalLogOrder
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRealOrderTransport

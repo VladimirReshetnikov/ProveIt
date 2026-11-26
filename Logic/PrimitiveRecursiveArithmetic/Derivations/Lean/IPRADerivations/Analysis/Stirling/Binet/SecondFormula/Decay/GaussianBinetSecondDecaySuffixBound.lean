@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.Decay.GaussianBinetSecondDecaySharedTail
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalSuffixMask
+import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalSuffixMask
 import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerNamedUpperTail
 
 /-!

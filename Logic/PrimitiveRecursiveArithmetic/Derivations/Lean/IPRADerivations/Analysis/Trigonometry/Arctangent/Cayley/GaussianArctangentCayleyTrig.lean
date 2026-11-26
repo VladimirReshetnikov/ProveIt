@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Trigonometry.Arctangent.Cayley.GaussianArctangentCayleyStep
-import IPRADerivations.Analysis.Trigonometry.GaussianNamedSineFromExponential
+import IPRADerivations.Analysis.Trigonometry.Sine.GaussianNamedSineFromExponential
 
 /-!
 # Exact trigonometric readback of the Cayley fraction

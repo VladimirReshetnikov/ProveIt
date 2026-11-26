@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Bounds.GaussianStirlingGlobalBoundsShiftCorrection
-import IPRADerivations.Analysis.Stirling.GaussianStirlingRecurrence
+import IPRADerivations.Analysis.Stirling.Telescoping.GaussianStirlingRecurrence
 
 /-!
 # Exact decomposition of the translated Stirling difference

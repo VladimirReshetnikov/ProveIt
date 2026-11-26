@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.FunctionalEquations.Hyperfactorial.GaussianBarnesCanonicalNamedHyperfactorial
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Recurrence.GaussianLogGammaEulerNamedRecurrence
-import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianNamedGammaHalfShift
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.GaussianNamedGammaHalfShift
 
 /-! # The hyperfactorial exponent recurrence on actual regular names -/
 

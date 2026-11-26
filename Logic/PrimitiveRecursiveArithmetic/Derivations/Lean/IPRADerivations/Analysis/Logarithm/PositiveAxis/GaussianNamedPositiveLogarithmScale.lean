@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianNamedPositiveLogarithmExponential
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.ReciprocalGamma.GaussianGammaAdjacentCutoff
-import IPRADerivations.Analysis.Exponential.GaussianExponentialAddition
+import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialAddition
 
 /-!
 # Logarithm of an exact positive rational multiple

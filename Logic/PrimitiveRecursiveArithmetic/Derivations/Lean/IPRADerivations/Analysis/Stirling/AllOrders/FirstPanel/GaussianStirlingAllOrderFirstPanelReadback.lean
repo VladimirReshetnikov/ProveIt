@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.AllOrders.FirstPanel.GaussianStirlingAllOrderFirstPanelError
 import IPRADerivations.Analysis.Stirling.Expansions.GaussianStirlingOddReadback
-import IPRADerivations.Analysis.Names.RationalGaussianNameEmbedding
+import IPRADerivations.Analysis.Names.Arithmetic.RationalGaussianNameEmbedding
 import IPRADerivations.Analysis.RationalArithmetic.Representations.RationalRepresentedUpper
 
 /-!

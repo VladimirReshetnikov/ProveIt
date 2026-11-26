@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianPositiveExponentialOrder
 import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialReference
-import IPRADerivations.Analysis.Gamma.GaussianGammaRealValues
+import IPRADerivations.Analysis.Gamma.Names.Symmetry.GaussianGammaRealValues
 
 /-!
 # Independent observations of ordered positive exponentials

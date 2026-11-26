@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Exponential.GaussianExactDiskExponential
+import IPRADerivations.Analysis.Exponential.Names.GaussianExactDiskExponential
 
 /-!
 # The exact C6 disk of the original canonical Gamma tail

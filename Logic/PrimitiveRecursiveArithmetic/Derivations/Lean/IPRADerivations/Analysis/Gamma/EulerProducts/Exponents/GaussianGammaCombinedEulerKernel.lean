@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Taylor.GaussianGammaExponentEulerCoefficients
 import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.GaussianGammaHarmonicPowerPoints
-import IPRADerivations.Analysis.Names.RationalGaussianNameEmbedding
+import IPRADerivations.Analysis.Names.Arithmetic.RationalGaussianNameEmbedding
 
 /-!
 # The original harmonic and tail contributions give the C42 kernel

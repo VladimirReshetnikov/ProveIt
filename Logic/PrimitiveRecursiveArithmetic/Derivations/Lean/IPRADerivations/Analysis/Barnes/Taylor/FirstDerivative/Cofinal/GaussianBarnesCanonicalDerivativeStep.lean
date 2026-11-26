@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.NamedValues.GaussianBarnesCanonicalValueDerivative
-import IPRADerivations.Analysis.Gamma.GaussianGammaEncodingRescaling
+import IPRADerivations.Analysis.Gamma.Names.Input.GaussianGammaEncodingRescaling
 
 /-!
 # Certified nonzero steps at every Barnes rational argument

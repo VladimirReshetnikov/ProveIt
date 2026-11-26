@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Poles.GaussianGammaPoleZeros
-import IPRADerivations.Analysis.Gamma.GaussianGammaReciprocalInverse
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.ReciprocalGamma.GaussianGammaReciprocalInverse
 
 /-!
 # Exact pole search for rational reciprocal Gamma inputs

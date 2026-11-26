@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Trigonometry.GaussianNamedSinc
+import IPRADerivations.Analysis.Trigonometry.Sinc.GaussianNamedSinc
 
 /-!
 # Division-free factorization of the original sine name

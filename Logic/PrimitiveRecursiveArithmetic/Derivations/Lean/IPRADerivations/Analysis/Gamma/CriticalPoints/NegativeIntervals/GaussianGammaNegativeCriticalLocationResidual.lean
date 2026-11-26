@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.CriticalPoints.GaussianGammaNegativeCriticalLocation
 import IPRADerivations.Analysis.Gamma.Digamma.GaussianGammaDigammaReal
-import IPRADerivations.Analysis.Names.RationalGaussianNameEmbedding
+import IPRADerivations.Analysis.Names.Arithmetic.RationalGaussianNameEmbedding
 
 /-!
 # Gaussian residual at the selected negative rational location

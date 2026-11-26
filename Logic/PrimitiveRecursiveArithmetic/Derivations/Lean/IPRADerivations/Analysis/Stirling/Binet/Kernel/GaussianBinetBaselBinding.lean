@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Integration.Quadrature.BaselRiemann
 import IPRADerivations.Analysis.Stirling.Wallis.GaussianGammaHalfWallisRate
 import IPRADerivations.Analysis.Stirling.Expansions.GaussianStirlingOddCoefficients
-import IPRADerivations.Analysis.Names.RationalReciprocalPowerName
+import IPRADerivations.Analysis.Names.Arithmetic.RationalReciprocalPowerName
 
 /-!
 # Literal reciprocal squares in the original Basel estimate

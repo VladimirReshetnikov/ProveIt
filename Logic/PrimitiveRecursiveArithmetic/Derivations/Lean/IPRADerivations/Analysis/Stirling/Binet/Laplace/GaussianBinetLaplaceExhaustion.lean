@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.GaussianBinetLaplaceSharpTail
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.Strips.GaussianBinetLaplaceStripHorizon
-import IPRADerivations.Analysis.Names.GaussianCompactNamedAdditivity
+import IPRADerivations.Analysis.Integration.CompactGrids.Splits.GaussianCompactNamedAdditivity
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedSmallAddendRate
 
 /-!

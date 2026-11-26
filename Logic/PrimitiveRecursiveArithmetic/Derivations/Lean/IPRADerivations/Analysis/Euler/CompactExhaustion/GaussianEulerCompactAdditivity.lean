@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Names.GaussianCompactNamedAdditivity
+import IPRADerivations.Analysis.Integration.CompactGrids.Splits.GaussianCompactNamedAdditivity
 import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactModulus
 
 /-!

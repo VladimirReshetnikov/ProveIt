@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.Derivatives.GaussianGammaUnitEulerDifference
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.GaussianGammaRepeatedShift
-import IPRADerivations.Analysis.Gamma.GaussianGammaInputProperness
+import IPRADerivations.Analysis.Gamma.Names.Input.GaussianGammaInputProperness
 
 /-!
 # The observed reciprocal Gamma shift for positive steps at one

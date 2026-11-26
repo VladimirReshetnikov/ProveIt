@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalBase
+import IPRADerivations.Analysis.Barnes.CanonicalProducts.GaussianBarnesCanonicalBase
 import IPRADerivations.Analysis.Trigonometry.Cyclic.GaussianCyclicExponentialSamples
 
 /-!

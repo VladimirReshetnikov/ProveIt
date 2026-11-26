@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Taylor.Coefficients.ProductCoefficients.GaussianBarnesCanonicalTaylorProduct
-import IPRADerivations.Analysis.Gamma.GaussianGammaEncodingRescaling
+import IPRADerivations.Analysis.Gamma.Names.Input.GaussianGammaEncodingRescaling
 
 /-!
 # Chart independence of the original centered Barnes head

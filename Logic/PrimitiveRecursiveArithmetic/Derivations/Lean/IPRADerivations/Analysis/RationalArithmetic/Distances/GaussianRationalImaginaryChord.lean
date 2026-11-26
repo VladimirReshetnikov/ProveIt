@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.Norms.GaussianRationalNormSquareTransport
-import IPRADerivations.Analysis.Trigonometry.GaussianNamedSineFromExponential
+import IPRADerivations.Analysis.Trigonometry.Sine.GaussianNamedSineFromExponential
 
 /-!
 # The real sine and squared imaginary chord of a rational sample

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Trigonometry.Sinc.GaussianScalarSincTaylorBounds
-import IPRADerivations.Analysis.Trigonometry.GaussianNamedSineTaylor
+import IPRADerivations.Analysis.Trigonometry.Sine.GaussianNamedSineTaylor
 import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.GaussianRationalLowerBounds
 
 /-!

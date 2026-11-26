@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Series.Harmonic.RationalHarmonicInterval
-import IPRADerivations.Analysis.Names.RationalGaussianNameEmbedding
+import IPRADerivations.Analysis.Names.Arithmetic.RationalGaussianNameEmbedding
 import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameArithmetic
 import IPRADerivations.Analysis.RationalArithmetic.Embeddings.RationalGaussianRealPart
 

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Vigneras.GaussianBarnesVignerasIntegerPeriod
-import IPRADerivations.Analysis.Logarithm.DyadicComplexLogarithm
+import IPRADerivations.Analysis.Logarithm.Local.DyadicComplexLogarithm
 
 /-!
 # Reduce the positive rational Barnes quotient to the unit interval starting at one

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GammaCanonicalFactors
-import IPRADerivations.Analysis.Logarithm.DyadicComplexLogarithm
+import IPRADerivations.Analysis.Logarithm.Local.DyadicComplexLogarithm
 import IPRADerivations.Analysis.RationalArithmetic.RationalClosure
 
 /-!

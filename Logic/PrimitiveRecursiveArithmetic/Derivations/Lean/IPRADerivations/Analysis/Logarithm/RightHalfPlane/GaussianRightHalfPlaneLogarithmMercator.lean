@@ -3,7 +3,7 @@ import IPRADerivations.Analysis.Logarithm.RightHalfPlane.GaussianRightHalfPlaneL
 import IPRADerivations.Analysis.Exponential.RightHalfPlane.GaussianRightHalfPlaneLogarithmExponential
 import IPRADerivations.Analysis.Exponential.Names.GaussianNamedExponentialLocalUniqueness
 import IPRADerivations.Analysis.Logarithm.Local.GaussianLocalLogarithmQuarterBound
-import IPRADerivations.Analysis.Exponential.GaussianLocalLogarithmExponentialIdentity
+import IPRADerivations.Analysis.Logarithm.Local.GaussianLocalLogarithmExponentialIdentity
 
 /-!
 # Identify the canonical logarithm with Mercator near one

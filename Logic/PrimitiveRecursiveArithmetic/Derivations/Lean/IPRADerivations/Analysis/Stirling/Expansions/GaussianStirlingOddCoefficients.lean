@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Expansions.GaussianStirlingOddSeries
 import IPRADerivations.Analysis.Logarithm.Robin.GaussianRobinOddLogarithm
-import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianNamedGammaHalfShift
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.GaussianNamedGammaHalfShift
 
 /-!
 # Exact coefficients of the normalized Stirling odd series

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Exponential.GaussianFiniteExponentialLocalUniqueness
+import IPRADerivations.Analysis.Exponential.Names.GaussianFiniteExponentialLocalUniqueness
 import IPRADerivations.Analysis.Exponential.Names.GaussianNamedExponentialDifferenceIdentity
 import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianRealNameExponentialUnitReflection
 

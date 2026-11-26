@@ -3,7 +3,7 @@ import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianBoundedC
 import IPRADerivations.Analysis.Gamma.HalfInteger.GaussianGammaHalfPiName
 import IPRADerivations.Analysis.Exponential.Names.GaussianNamedExponentialLinearRate
 import IPRADerivations.Analysis.Trigonometry.Hyperbolic.GaussianSineProductImaginaryScaling
-import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianNamedGammaHalfShift
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.GaussianNamedGammaHalfShift
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.ReciprocalGamma.GaussianGammaAdjacentCutoff
 
 /-!

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Exponential.FiniteSeries.BinomialExponentialGap
-import IPRADerivations.Analysis.Exponential.ExponentialSeries
+import IPRADerivations.Analysis.Exponential.FiniteSeries.ExponentialSeries
 import IPRADerivations.Analysis.Gamma.BohrMollerup.BohrMollerupUniqueness
 import IPRADerivations.Combinatorics.BinomialTheorem
 import IPRADerivations.Combinatorics.BellTriangle

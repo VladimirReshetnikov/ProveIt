@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Poles.GaussianGammaLocalPoleFormula
 import IPRADerivations.Analysis.Exponential.IntegerPowers.GaussianRobinMeshExponential
-import IPRADerivations.Analysis.Gamma.GaussianGammaInputProperness
+import IPRADerivations.Analysis.Gamma.Names.Input.GaussianGammaInputProperness
 
 /-!
 # Exact center value of the original local Gamma regular part

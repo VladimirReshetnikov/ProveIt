@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianNamedGammaHalfShift
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.GaussianNamedGammaHalfShift
 import IPRADerivations.Analysis.Euler.Integration.Parts.GaussianEulerNamedIBPRecurrence
 
 /-!

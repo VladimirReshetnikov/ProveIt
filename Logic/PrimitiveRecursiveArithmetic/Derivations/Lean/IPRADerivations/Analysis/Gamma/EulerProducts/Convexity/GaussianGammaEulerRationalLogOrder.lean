@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRealOrderTransport
 import IPRADerivations.Analysis.Stirling.Telescoping.GaussianStirlingTailComparison
-import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianNamedGammaHalfShift
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.GaussianNamedGammaHalfShift
 
 /-!
 # Summing and rearranging independent-clock named orders

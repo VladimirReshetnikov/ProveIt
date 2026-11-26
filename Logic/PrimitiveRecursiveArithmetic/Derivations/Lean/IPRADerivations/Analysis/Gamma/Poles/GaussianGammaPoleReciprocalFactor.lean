@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Poles.GaussianGammaPoleFiniteFactors
-import IPRADerivations.Analysis.Gamma.GaussianGammaRadiusOverlap
+import IPRADerivations.Analysis.Gamma.Names.PoleFree.GaussianGammaRadiusOverlap
 
 /-!
 # The exact linear factor of the original reciprocal Gamma at a pole

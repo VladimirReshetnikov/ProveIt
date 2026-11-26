@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Trigonometry.GaussianNamedSinc
+import IPRADerivations.Analysis.Trigonometry.Sinc.GaussianNamedSinc
 
 /-!
 # Quadratic bounds on the original sinc name

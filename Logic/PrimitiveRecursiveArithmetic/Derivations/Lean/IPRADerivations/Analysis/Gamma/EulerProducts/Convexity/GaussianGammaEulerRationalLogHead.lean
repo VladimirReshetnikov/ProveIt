@@ -3,7 +3,7 @@ import IPRADerivations.Analysis.Gamma.EulerProducts.Convexity.GaussianGammaEuler
 import IPRADerivations.Analysis.Euler.HarmonicLogarithms.GaussianHarmonicLogarithmPower
 import IPRADerivations.Analysis.Names.Scaling.GaussianNaturalScaleProductName
 import IPRADerivations.Analysis.Logarithm.PositiveAxis.GaussianPositiveRationalLogarithmOrder
-import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianNamedGammaHalfShift
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.GaussianNamedGammaHalfShift
 
 /-!
 # Weighted logarithmic comparison of the original inverse heads

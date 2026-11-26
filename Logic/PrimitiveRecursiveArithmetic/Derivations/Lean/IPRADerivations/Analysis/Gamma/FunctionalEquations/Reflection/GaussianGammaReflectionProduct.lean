@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Reflection.GaussianGammaEulerReflectionLimit
-import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianGammaShift
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.GaussianGammaShift
 
 /-!
 # Cleared reflection of the original pole-free Gamma names

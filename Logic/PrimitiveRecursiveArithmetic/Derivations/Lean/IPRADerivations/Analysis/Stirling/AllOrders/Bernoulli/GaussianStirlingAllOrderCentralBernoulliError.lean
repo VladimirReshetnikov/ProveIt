@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Stirling.AllOrders.Truncation.GaussianStirlingAllOrderCentralDerivativeBinding
 import IPRADerivations.Analysis.Stirling.AllOrders.PanelParts.GaussianStirlingAllOrderDiscreteParts
 import IPRADerivations.Analysis.RationalArithmetic.Representations.RationalRepresentedUpper
-import IPRADerivations.Analysis.Names.RationalGaussianNameEmbedding
+import IPRADerivations.Analysis.Names.Arithmetic.RationalGaussianNameEmbedding
 
 /-!
 # The actual centered Bernoulli grid has a second-order curvature error

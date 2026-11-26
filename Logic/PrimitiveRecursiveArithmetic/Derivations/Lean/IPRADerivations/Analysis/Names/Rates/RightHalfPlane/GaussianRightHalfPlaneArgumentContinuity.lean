@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Names.Rates.RightHalfPlane.GaussianRightHalfPlaneArgumentChartContinuity
-import IPRADerivations.Analysis.Geometry.GaussianRightHalfPlaneArgumentIncrementGeometry
+import IPRADerivations.Analysis.Trigonometry.Arctangent.Inverse.GaussianRightHalfPlaneArgumentIncrementGeometry
 import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRightHalfPlaneArgumentLocalBound
 
 /-!

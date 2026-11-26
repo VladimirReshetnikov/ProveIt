@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Beta.CompactKernels.GaussianBetaKernelLogarithm
-import IPRADerivations.Analysis.Exponential.GaussianLocalLogarithmExponentialIdentity
+import IPRADerivations.Analysis.Logarithm.Local.GaussianLocalLogarithmExponentialIdentity
 import IPRADerivations.Analysis.Exponential.IntegerPowers.GaussianBoundedIntegerExponential
 import IPRADerivations.Analysis.Exponential.Estimates.GaussianRadiusExponentialLipschitzRate
 

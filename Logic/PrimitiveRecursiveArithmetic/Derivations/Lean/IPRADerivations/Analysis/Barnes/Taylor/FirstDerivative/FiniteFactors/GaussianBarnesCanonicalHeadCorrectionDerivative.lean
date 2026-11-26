@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Barnes.FunctionalEquations.UnitShift.GaussianBar
 import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalExponentBound
 import IPRADerivations.Analysis.Integration.RiemannSums.GaussianRationalRiemannRefinement
 import IPRADerivations.Analysis.Polynomials.RootFinding.Characteristic.GaussianCharacteristicEntryNorm
-import IPRADerivations.Analysis.Euler.Integration.Incomplete.GaussianEulerIncompleteFactorialCombination
+import IPRADerivations.Analysis.Euler.Integration.Incomplete.IntegerValues.GaussianEulerIncompleteFactorialCombination
 
 /-!
 # Exact quadratic expansion of the original finite Barnes correction

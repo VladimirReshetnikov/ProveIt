@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Trigonometry.GaussianNamedSineTaylor
+import IPRADerivations.Analysis.Trigonometry.Sine.GaussianNamedSineTaylor
 import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameRingLaws
 
 /-!

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.HalfInteger.GaussianGammaHalfIntegerDomain
-import IPRADerivations.Analysis.Euler.GaussianEulerNaturalPower
+import IPRADerivations.Analysis.Euler.PositiveAxis.Moments.GaussianEulerNaturalPower
 
 /-!
 # Original quadratic kernels are literal even Gaussian moment rows

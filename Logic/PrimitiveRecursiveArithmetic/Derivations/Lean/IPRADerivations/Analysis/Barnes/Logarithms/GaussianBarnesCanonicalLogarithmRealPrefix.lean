@@ -1,6 +1,6 @@
-import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalSingleExponential
+import IPRADerivations.Analysis.Barnes.CanonicalProducts.GaussianBarnesCanonicalSingleExponential
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalFiniteSumAxis
-import IPRADerivations.Analysis.Stirling.GaussianStirlingNames
+import IPRADerivations.Analysis.Stirling.GammaLogarithm.GaussianStirlingNames
 
 /-!
 # Real observations of the Barnes prefactor exponent and finite correction

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.Cofinal.GaussianBarnesCanonicalDerivativeRow
-import IPRADerivations.Analysis.Euler.Integration.Incomplete.GaussianEulerIncompleteFactorialDenominator
+import IPRADerivations.Analysis.Euler.Integration.Incomplete.IntegerValues.GaussianEulerIncompleteFactorialDenominator
 
 /-!
 # Higher rational Barnes logarithmic coefficients

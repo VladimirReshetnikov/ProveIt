@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.GaussianGammaFoldedMajorantExponent
 import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.GaussianGammaFoldedApproximantBalance
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.ReciprocalGamma.GaussianGammaCutoffIndependence
-import IPRADerivations.Analysis.Exponential.GaussianExponentialInverse
+import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialInverse
 
 /-!
 # The exact C9 majorant of the original folded finite P_N

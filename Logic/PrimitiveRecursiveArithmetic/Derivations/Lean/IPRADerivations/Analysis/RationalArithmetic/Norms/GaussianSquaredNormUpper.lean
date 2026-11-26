@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Names.GaussianLinearDistanceName
+import IPRADerivations.Analysis.Geometry.Distances.GaussianLinearDistanceName
 import IPRADerivations.Analysis.RationalArithmetic.Distances.GaussianRationalL1
 import IPRADerivations.Analysis.Inequalities.NonnegativeArithmetic.RationalNonnegativePowers
 

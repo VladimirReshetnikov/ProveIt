@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Names.PoleFree.GaussianGammaNamedPoleFreeFrozen
-import IPRADerivations.Analysis.Gamma.GaussianGammaRadiusOverlap
+import IPRADerivations.Analysis.Gamma.Names.PoleFree.GaussianGammaRadiusOverlap
 import IPRADerivations.Analysis.Trigonometry.SineProducts.Bounds.GaussianSineProductReflectionLower
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
 

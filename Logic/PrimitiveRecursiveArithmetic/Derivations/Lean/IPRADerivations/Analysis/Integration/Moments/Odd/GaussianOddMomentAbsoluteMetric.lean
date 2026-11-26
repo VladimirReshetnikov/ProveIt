@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.GaussianGammaRealValues
+import IPRADerivations.Analysis.Gamma.Names.Symmetry.GaussianGammaRealValues
 import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianPositiveRealArithmetic
 
 /-!

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.Factorials.GaussianNamedGammaFactorialInterpolation
-import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianGammaShift
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.GaussianGammaShift
 import IPRADerivations.Analysis.Gamma.Poles.GaussianGammaPoleSearch
 
 /-!

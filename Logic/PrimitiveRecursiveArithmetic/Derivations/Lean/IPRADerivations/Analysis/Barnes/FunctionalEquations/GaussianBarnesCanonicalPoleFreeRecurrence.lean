@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.FunctionalEquations.GaussianBarnesCanonicalFunctionalEquation
-import IPRADerivations.Analysis.Gamma.GaussianGammaReciprocalInverse
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.ReciprocalGamma.GaussianGammaReciprocalInverse
 
 /-!
 # The original Barnes recurrence with the pole-free Gamma multiplier

@@ -3,7 +3,7 @@ import IPRADerivations.Analysis.Polynomials.RootFinding.FundamentalTheorem.Gauss
 import IPRADerivations.Analysis.Polynomials.RootFinding.FundamentalTheorem.GaussianGeneralFTARates
 import IPRADerivations.Analysis.RationalArithmetic.Distances.GaussianRationalDistanceOrder
 import IPRADerivations.Analysis.Polynomials.Division.GaussianRationalSyntheticCoefficientValues
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalRelativeTwoTerm
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.GaussianRationalRelativeTwoTerm
 import IPRADerivations.Algebra.PowerDifference
 
 /-!

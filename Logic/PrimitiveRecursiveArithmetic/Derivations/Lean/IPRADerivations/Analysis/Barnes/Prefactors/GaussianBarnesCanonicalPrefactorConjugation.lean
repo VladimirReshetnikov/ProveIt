@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.Prefactors.GaussianBarnesCanonicalPrefactor
-import IPRADerivations.Analysis.Gamma.GaussianGammaNameConjugation
-import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianNamedGammaHalfShift
+import IPRADerivations.Analysis.Gamma.Names.Symmetry.GaussianGammaNameConjugation
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.GaussianNamedGammaHalfShift
 
 /-!
 # Conjugation of the original Barnes prefactor

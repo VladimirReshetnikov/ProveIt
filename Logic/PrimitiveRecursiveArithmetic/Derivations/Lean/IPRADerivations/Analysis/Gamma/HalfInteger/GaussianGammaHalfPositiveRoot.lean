@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.HalfInteger.GaussianGammaHalfSquareLimit
 import IPRADerivations.Analysis.Euler.Integration.GaussianEulerIntegralPositiveLower
-import IPRADerivations.Analysis.Gamma.GaussianGammaRealValues
+import IPRADerivations.Analysis.Gamma.Names.Symmetry.GaussianGammaRealValues
 
 /-!
 # Positive real-root certificate for the original Gamma value at one half

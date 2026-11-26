@@ -3,7 +3,7 @@ import IPRADerivations.Analysis.Stirling.Wallis.GaussianStirlingWallisGammaRatio
 import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedMultiplyRate
 import IPRADerivations.Analysis.Euler.Logarithms.GaussianEulerLogarithmicImproperInputProperness
 import IPRADerivations.Analysis.Stirling.GammaLogarithm.GaussianStirlingGammaLogarithm
-import IPRADerivations.Analysis.Gamma.GaussianGammaEncodingRescaling
+import IPRADerivations.Analysis.Gamma.Names.Input.GaussianGammaEncodingRescaling
 
 /-!
 # The original digamma name on positive rational inputs

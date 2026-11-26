@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.FunctionalEquations.Glaisher.GaussianBarnesGlaisherFinite
-import IPRADerivations.Analysis.Barnes.BarnesInteger
+import IPRADerivations.Analysis.Barnes.FunctionalEquations.IntegerValues.BarnesInteger
 import IPRADerivations.Analysis.Beta.Endpoints.GaussianBetaUpperPowerCancellation
 import IPRADerivations.Analysis.Euler.HarmonicLogarithms.GaussianHarmonicLogarithmPower
 

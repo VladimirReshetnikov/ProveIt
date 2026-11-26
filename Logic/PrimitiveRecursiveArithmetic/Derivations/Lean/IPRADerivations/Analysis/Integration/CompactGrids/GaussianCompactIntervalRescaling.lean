@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Names.GaussianCompactNamedAdditivity
+import IPRADerivations.Analysis.Integration.CompactGrids.Splits.GaussianCompactNamedAdditivity
 
 /-!
 # Actual compact names respect positive interval denominator rescaling

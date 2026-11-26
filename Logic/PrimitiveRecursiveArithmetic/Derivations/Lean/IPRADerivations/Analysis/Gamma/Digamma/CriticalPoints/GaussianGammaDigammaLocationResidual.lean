@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Digamma.CriticalPoints.GaussianGammaDigammaDyadicLocation
 import IPRADerivations.Analysis.Gamma.Digamma.GaussianGammaDigammaReal
-import IPRADerivations.Analysis.Names.RationalGaussianNameEmbedding
+import IPRADerivations.Analysis.Names.Arithmetic.RationalGaussianNameEmbedding
 
 /-!
 # Gaussian residual at the primitive recursive digamma location

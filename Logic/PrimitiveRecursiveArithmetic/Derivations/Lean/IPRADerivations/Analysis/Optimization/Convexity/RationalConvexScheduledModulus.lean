@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Optimization.Convexity.RationalConvexSourceRLC
 import IPRADerivations.Analysis.RationalArithmetic.Powers.RationalCofinalPowerOrder
-import IPRADerivations.Analysis.Names.RationalIntervalArithmeticNames
+import IPRADerivations.Analysis.Names.Approximation.RationalIntervalArithmeticNames
 
 /-!
 # The local modulus for the fixed source log-convex presentation

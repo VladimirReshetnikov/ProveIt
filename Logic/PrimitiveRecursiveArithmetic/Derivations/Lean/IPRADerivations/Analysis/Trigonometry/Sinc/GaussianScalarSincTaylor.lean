@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Trigonometry.GaussianScalarSineTaylor
+import IPRADerivations.Analysis.Trigonometry.Sine.GaussianScalarSineTaylor
 import IPRADerivations.Analysis.Exponential.Polynomials.GaussianPolynomialExponentialLinear
 
 /-!

@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Exponential.Estimates.GaussianRationalExponentialTail
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalPowerDifference
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianIntegerFractionPowers
-import IPRADerivations.Analysis.Exponential.GaussianRadiusExponentialName
+import IPRADerivations.Analysis.Exponential.Names.GaussianRadiusExponentialName
 import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalExponent
 
 /-!

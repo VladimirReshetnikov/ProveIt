@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Exponentiation.GaussianLogGammaEulerExponentialHead
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerCofinal
-import IPRADerivations.Analysis.Gamma.GaussianGammaRightHalfPlane
+import IPRADerivations.Analysis.Gamma.Names.Input.GaussianGammaRightHalfPlane
 
 /-!
 # The exponential of the canonical right-half-plane log-Gamma

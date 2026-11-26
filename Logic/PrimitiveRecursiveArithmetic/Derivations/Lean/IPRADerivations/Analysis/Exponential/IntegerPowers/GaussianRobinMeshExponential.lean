@@ -1,9 +1,9 @@
 import IPRADerivations.Analysis.SpecialFunctions.LambertW.GaussianRobinMeshLogDecomposition
 import IPRADerivations.Analysis.Names.Scaling.GaussianNaturalScaleProductName
 import IPRADerivations.Analysis.Inequalities.GaussianMeshLogSign
-import IPRADerivations.Analysis.Gamma.GaussianGammaFunctionalEquation
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.GaussianGammaFunctionalEquation
 import IPRADerivations.Analysis.Exponential.IntegerPowers.GaussianRobinIntegerExponential
-import IPRADerivations.Analysis.Gamma.GaussianGammaNormalization
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.ReciprocalGamma.GaussianGammaNormalization
 
 /-!
 # Exponential of the original mesh logarithm from its binary components

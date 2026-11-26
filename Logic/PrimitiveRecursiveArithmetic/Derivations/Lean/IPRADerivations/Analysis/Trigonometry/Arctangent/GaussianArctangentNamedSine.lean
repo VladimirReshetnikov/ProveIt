@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentOriginalExponential
-import IPRADerivations.Analysis.Trigonometry.GaussianNamedSineFromExponential
+import IPRADerivations.Analysis.Trigonometry.Sine.GaussianNamedSineFromExponential
 
 /-!
 # Named sine at the original arctangent quarter and full turns

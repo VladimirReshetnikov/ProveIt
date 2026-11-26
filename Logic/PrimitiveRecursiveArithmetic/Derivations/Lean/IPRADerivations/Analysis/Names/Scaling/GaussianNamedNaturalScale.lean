@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.Scaling.GaussianRationalNaturalScale
 import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameRingLaws
-import IPRADerivations.Analysis.Exponential.GaussianRadiusExponentialName
+import IPRADerivations.Analysis.Exponential.Names.GaussianRadiusExponentialName
 import IPRADerivations.Analysis.RationalArithmetic.RationalClosure
 import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialReference
 

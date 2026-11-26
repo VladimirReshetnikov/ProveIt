@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Logarithm.RightHalfPlane.GaussianRightHalfPlaneLogarithmRelativeStep
 import IPRADerivations.Analysis.Exponential.RightHalfPlane.GaussianRightHalfPlaneLogarithmExponential
-import IPRADerivations.Analysis.Exponential.GaussianLocalLogarithmExponentialIdentity
+import IPRADerivations.Analysis.Logarithm.Local.GaussianLocalLogarithmExponentialIdentity
 import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.GaussianGammaFoldedApproximantBalance
 
 /-!

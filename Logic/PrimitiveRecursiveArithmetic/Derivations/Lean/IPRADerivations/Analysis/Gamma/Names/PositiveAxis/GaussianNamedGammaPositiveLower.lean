@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.Names.GaussianNamedGammaLateInput
 import IPRADerivations.Analysis.Euler.Integration.GaussianEulerIntegralPositiveLower
 import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayRealSamples
-import IPRADerivations.Analysis.Euler.GaussianNamedEulerQuadrature
+import IPRADerivations.Analysis.Euler.Integration.Parameters.GaussianNamedEulerQuadrature
 
 /-!
 # Positive lower bound at a fixed regular real Gamma input

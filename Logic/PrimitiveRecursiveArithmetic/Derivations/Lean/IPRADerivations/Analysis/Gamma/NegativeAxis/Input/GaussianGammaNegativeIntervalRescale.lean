@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.NegativeAxis.GaussianGammaNegativeIntervalNative
-import IPRADerivations.Analysis.Gamma.GaussianGammaEncodingRescaling
+import IPRADerivations.Analysis.Gamma.Names.Input.GaussianGammaEncodingRescaling
 
 /-!
 # Rescale the original negative-interval encoding

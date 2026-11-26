@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Taylor.GaussianGammaAllDegreeCoefficientVariation
-import IPRADerivations.Analysis.Gamma.GaussianGammaRadiusOverlap
+import IPRADerivations.Analysis.Gamma.Names.PoleFree.GaussianGammaRadiusOverlap
 
 /-!
 # The original whole polynomials observed by the actual coefficient names

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Exponential.ExponentialSeries
+import IPRADerivations.Analysis.Exponential.FiniteSeries.ExponentialSeries
 
 /-!
 # The finite exponential majorant

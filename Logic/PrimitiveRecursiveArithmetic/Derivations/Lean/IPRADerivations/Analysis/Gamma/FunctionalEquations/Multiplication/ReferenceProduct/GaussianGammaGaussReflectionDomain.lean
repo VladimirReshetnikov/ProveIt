@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.ReferenceProduct.GaussianGammaGaussReference
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Reflection.GaussianGammaReflectionProduct
-import IPRADerivations.Analysis.Gamma.GaussianGammaInputProperness
-import IPRADerivations.Analysis.Gamma.GaussianGammaRadiusOverlap
+import IPRADerivations.Analysis.Gamma.Names.Input.GaussianGammaInputProperness
+import IPRADerivations.Analysis.Gamma.Names.PoleFree.GaussianGammaRadiusOverlap
 
 /-!
 # The original reflection domain for the positive Gauss reference rows

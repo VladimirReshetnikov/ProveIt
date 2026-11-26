@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.SharpRates.GaussianEulerSharpNamedSchedule
-import IPRADerivations.Analysis.Euler.GaussianNamedEulerQuadrature
+import IPRADerivations.Analysis.Euler.Integration.Parameters.GaussianNamedEulerQuadrature
 
 /-!
 # The exact sharp rate to the original named improper Euler integral

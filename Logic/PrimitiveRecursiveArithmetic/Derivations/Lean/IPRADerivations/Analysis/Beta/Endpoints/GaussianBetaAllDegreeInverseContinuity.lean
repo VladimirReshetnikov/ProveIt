@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Beta.GaussianBetaUniformEndpointBound
+import IPRADerivations.Analysis.Beta.Endpoints.GaussianBetaUniformEndpointBound
 import IPRADerivations.Analysis.Names.Rates.Reciprocals.GaussianNamedInverseRate
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
 import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.GaussianGammaFiniteInputContinuity

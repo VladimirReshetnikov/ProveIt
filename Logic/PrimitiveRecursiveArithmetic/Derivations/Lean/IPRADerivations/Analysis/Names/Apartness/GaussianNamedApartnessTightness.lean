@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameReciprocal
 import IPRADerivations.Analysis.Names.Differences.GaussianNamedDifference
-import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianNamedGammaHalfShift
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.GaussianNamedGammaHalfShift
 
 /-!
 # Tightness of the finite apartness predicate for regular names

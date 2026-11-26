@@ -3,7 +3,7 @@ import IPRADerivations.Analysis.Gamma.NegativeAxis.Values.GaussianGammaNegativeI
 import IPRADerivations.Analysis.Gamma.NegativeAxis.Derivatives.GaussianGammaNegativeIntervalNamedTerminalInput
 import IPRADerivations.Analysis.Gamma.Names.PoleFree.GaussianGammaNamedPoleFreeEncoding
 import IPRADerivations.Analysis.Gamma.Names.GaussianNamedGammaLateInput
-import IPRADerivations.Analysis.Gamma.GaussianGammaRadiusOverlap
+import IPRADerivations.Analysis.Gamma.Names.PoleFree.GaussianGammaRadiusOverlap
 
 /-!
 # The inverse Gamma recurrence for named negative offsets

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Digamma.PositiveNames.GaussianGammaPositiveNamedDigammaFrozen
 import IPRADerivations.Analysis.Gamma.Digamma.Series.GaussianGammaDigammaRescale
-import IPRADerivations.Analysis.Euler.GaussianEulerNamedShiftInput
+import IPRADerivations.Analysis.Gamma.Names.Input.GaussianEulerNamedShiftInput
 import IPRADerivations.Analysis.Integration.Quadrature.SquareSubstitution.GaussianRationalQuadratureSquareCells
 import IPRADerivations.Analysis.RationalArithmetic.Norms.GaussianRationalInvertibleNorm
 import IPRADerivations.Analysis.Names.Rates.Reciprocals.GaussianNamedReciprocalFrozenRate

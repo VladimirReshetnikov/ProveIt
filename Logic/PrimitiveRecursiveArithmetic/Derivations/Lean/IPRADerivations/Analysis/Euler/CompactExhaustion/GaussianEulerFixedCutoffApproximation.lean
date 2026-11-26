@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.GaussianEulerImproperName
+import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerImproperName
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedLipschitzRate
 
 /-!

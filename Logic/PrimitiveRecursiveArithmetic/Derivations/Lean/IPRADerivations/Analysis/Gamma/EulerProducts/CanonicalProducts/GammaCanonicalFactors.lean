@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Logarithm.ComplexLogarithmCauchy
+import IPRADerivations.Analysis.Logarithm.FiniteSeries.ComplexLogarithmCauchy
 import IPRADerivations.Analysis.Series.ReciprocalSquares.ReciprocalSquareTail
 import IPRADerivations.Probability.TowerCommonDen
 

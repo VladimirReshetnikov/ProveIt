@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.GaussianGammaExponentStep
-import IPRADerivations.Analysis.Exponential.GaussianExponentialAddition
+import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialAddition
 import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialRadiusIndependence
-import IPRADerivations.Analysis.Exponential.GaussianLocalLogarithmExponentialIdentity
+import IPRADerivations.Analysis.Logarithm.Local.GaussianLocalLogarithmExponentialIdentity
 
 /-!
 # Adjacent-cutoff independence of the actual original C7 construction

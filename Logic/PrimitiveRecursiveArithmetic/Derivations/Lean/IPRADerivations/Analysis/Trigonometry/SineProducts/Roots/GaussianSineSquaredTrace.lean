@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Trigonometry.SineProducts.Roots.GaussianSineSquaredPolynomial
-import IPRADerivations.Analysis.Trigonometry.GaussianNamedSineFromExponential
+import IPRADerivations.Analysis.Trigonometry.Sine.GaussianNamedSineFromExponential
 import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianRationalFiniteRoots
 
 /-!

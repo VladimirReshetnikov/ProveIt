@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.FunctionalEquations.Glaisher.GaussianBarnesGlaisherFinite
-import IPRADerivations.Analysis.Stirling.GaussianStirlingNames
+import IPRADerivations.Analysis.Stirling.GammaLogarithm.GaussianStirlingNames
 import IPRADerivations.Analysis.Stirling.Telescoping.GaussianStirlingRationalTelescopers
 
 /-!

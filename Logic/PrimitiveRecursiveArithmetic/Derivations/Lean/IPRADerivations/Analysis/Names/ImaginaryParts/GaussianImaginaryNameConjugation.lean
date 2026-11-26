@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameConjugation
-import IPRADerivations.Analysis.Exponential.GaussianExponentialInverse
+import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialInverse
 
 /-!
 # Named negation and conjugation on the imaginary axis

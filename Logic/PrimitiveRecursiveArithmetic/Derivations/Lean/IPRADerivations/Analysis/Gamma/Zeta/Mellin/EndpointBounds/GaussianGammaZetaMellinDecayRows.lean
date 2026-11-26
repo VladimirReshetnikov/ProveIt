@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Zeta.Mellin.Compact.GaussianGammaZetaMellinGeometric
-import IPRADerivations.Analysis.Euler.Integration.Incomplete.GaussianEulerIncompleteFactorialDenominator
+import IPRADerivations.Analysis.Euler.Integration.Incomplete.IntegerValues.GaussianEulerIncompleteFactorialDenominator
 import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialInverseSamples
 import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedProductObservationBound
 

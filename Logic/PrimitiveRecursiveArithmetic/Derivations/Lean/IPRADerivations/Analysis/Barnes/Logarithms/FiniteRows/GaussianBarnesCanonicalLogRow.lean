@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Barnes.BarnesCutoff
+import IPRADerivations.Analysis.Barnes.TailControl.BarnesCutoff
 import IPRADerivations.Analysis.Logarithm.Local.GaussianLocalLogarithmName
 import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedDifferenceQuotient
 

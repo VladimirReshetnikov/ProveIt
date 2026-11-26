@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Names.GaussianCompactNamedAdditivity
+import IPRADerivations.Analysis.Integration.CompactGrids.Splits.GaussianCompactNamedAdditivity
 
 /-!
 # Literal zero-width compact quadrature

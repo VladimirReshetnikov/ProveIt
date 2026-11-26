@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.Integration.Parts.GaussianEulerIntegrationByPartsRecurrence
 import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerVerticalNamedReference
-import IPRADerivations.Analysis.Euler.GaussianEulerNamedShiftInput
+import IPRADerivations.Analysis.Gamma.Names.Input.GaussianEulerNamedShiftInput
 
 /-!
 # Euler integration by parts on regular right-half-plane names

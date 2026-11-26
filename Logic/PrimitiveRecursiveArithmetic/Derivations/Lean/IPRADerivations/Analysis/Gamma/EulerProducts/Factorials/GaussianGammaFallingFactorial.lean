@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.Factorials.GaussianGammaRisingFactorial
-import IPRADerivations.Analysis.Gamma.GaussianGammaInputProperness
+import IPRADerivations.Analysis.Gamma.Names.Input.GaussianGammaInputProperness
 
 /-!
 # Actual native falling-factorial numerator and factorial normalization

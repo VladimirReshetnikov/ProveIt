@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.GaussianStirlingNames
+import IPRADerivations.Analysis.Stirling.GammaLogarithm.GaussianStirlingNames
 import IPRADerivations.Analysis.Stirling.Telescoping.GaussianStirlingDifference
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalSumAlgebra
 

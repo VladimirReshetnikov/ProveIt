@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Exponential.GaussianExponentialAddition
+import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialAddition
 import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialRadiusIndependence
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.PowerEstimates.GaussianGaussMultiplicationRelativeExponential
 import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedMultiplyRate

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Names.Arithmetic.GaussianNamedHalf
 import IPRADerivations.Analysis.Polynomials.RootFinding.RealRoots.GaussianNamedBoundedSquareRoot
-import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianNamedGammaHalfShift
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.GaussianNamedGammaHalfShift
 
 /-!
 # The radial logarithm of a positive rational squared radius

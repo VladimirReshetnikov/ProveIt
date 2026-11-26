@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.Logarithms.PositiveAxis.GaussianBarnesCanonicalPositiveHeadLogarithm
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalFiniteSumAxis
-import IPRADerivations.Analysis.Stirling.GaussianStirlingNames
+import IPRADerivations.Analysis.Stirling.GammaLogarithm.GaussianStirlingNames
 import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianRealNameExponentialInjectivity
 
 /-! Every observation in the original kept Barnes logarithm is on the real axis. -/

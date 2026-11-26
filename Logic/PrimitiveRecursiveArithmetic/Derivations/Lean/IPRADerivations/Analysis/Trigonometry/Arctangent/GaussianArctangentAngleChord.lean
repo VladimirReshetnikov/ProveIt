@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Trigonometry.Arctangent.Inverse.GaussianArctange
 import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentImaginaryOrderTransport
 import IPRADerivations.Analysis.Trigonometry.Arctangent.Extension.GaussianArctangentNamedChordExtension
 import IPRADerivations.Analysis.Trigonometry.Arctangent.Cayley.GaussianArctangentNamedCayleyTrig
-import IPRADerivations.Analysis.Trigonometry.GaussianNamedSineFromExponential
+import IPRADerivations.Analysis.Trigonometry.Sine.GaussianNamedSineFromExponential
 
 /-!
 # The sine chord on the full certified angle interval

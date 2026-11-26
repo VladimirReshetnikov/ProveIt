@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Geometry.Distances.GaussianEuclideanDistanceVariation
 import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianRootSupport
-import IPRADerivations.Analysis.Names.GaussianLinearDistanceName
+import IPRADerivations.Analysis.Geometry.Distances.GaussianLinearDistanceName
 
 /-!
 # Actual Euclidean distance to the collision-tolerant root-support name

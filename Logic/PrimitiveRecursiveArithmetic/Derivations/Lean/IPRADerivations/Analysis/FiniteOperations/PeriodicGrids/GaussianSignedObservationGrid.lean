@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.FiniteOperations.PeriodicGrids.PeriodicThirdDifferenceModulo
 import IPRADerivations.Analysis.Geometry.Distances.GaussianRelativeNormTriangle
-import IPRADerivations.Analysis.Logarithm.DyadicComplexLogarithm
+import IPRADerivations.Analysis.Logarithm.Local.DyadicComplexLogarithm
 import IPRADerivations.Analysis.RationalArithmetic.Distances.GaussianRationalL1
 import IPRADerivations.Analysis.RationalArithmetic.Distances.GaussianRationalDistanceOrder
 import IPRADerivations.Core.CongruenceTactic

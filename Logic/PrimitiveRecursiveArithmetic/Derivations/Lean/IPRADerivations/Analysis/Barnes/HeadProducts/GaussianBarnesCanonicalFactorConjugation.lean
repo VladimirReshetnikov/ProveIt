@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalFactor
-import IPRADerivations.Analysis.Gamma.GaussianGammaNameConjugation
+import IPRADerivations.Analysis.Gamma.Names.Symmetry.GaussianGammaNameConjugation
 
 /-!
 # Conjugation of each original Barnes factor

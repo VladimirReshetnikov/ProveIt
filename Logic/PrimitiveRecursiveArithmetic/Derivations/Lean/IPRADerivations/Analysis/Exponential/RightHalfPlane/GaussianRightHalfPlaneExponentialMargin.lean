@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Trigonometry.GaussianRightHalfPlaneArgumentCosine
+import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianRightHalfPlaneArgumentCosine
 import IPRADerivations.Analysis.Logarithm.RightHalfPlane.GaussianRightHalfPlaneRadialLogarithm
 import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRationalSquareCancellation
 

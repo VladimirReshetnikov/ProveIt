@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Convexity.GaussianGammaNativeLogConvexity
-import IPRADerivations.Analysis.Stirling.GaussianStirlingNames
+import IPRADerivations.Analysis.Stirling.GammaLogarithm.GaussianStirlingNames
 import IPRADerivations.Analysis.Stirling.GammaLogarithm.GaussianStirlingGammaLogRescale
 import IPRADerivations.Analysis.Stirling.GammaLogarithm.GaussianStirlingGammaLogShift
 

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.StirlingBounds.GaussianBinetStirlingVerticalBound
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.GaussianBinetLaplaceImproperBound
-import IPRADerivations.Analysis.Names.GaussianNamedRecurrencePinning
+import IPRADerivations.Analysis.Names.Rates.GaussianNamedRecurrencePinning
 
 /-!
 # The actual first-formula discrepancy vanishes along right translations

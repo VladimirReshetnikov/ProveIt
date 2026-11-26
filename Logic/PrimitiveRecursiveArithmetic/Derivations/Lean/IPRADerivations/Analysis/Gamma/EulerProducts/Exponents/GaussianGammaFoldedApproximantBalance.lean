@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.GaussianGammaFoldedExponentBalance
-import IPRADerivations.Analysis.Exponential.GaussianExponentialAddition
+import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialAddition
 import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialRadiusIndependence
 
 /-!

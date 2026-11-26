@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerWeightedHalfDecay
-import IPRADerivations.Analysis.Logarithm.GaussianUpperTimeLogarithmPower
+import IPRADerivations.Analysis.Logarithm.PositiveAxis.GaussianUpperTimeLogarithmPower
 
 /-!
 # Actual logarithmic powers and the first half-decay factor

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianGammaShift
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.GaussianGammaShift
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.GaussianGammaShiftTrajectory
 import IPRADerivations.Analysis.Names.Scaling.GaussianNamedNaturalScale
 

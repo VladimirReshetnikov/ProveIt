@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Barnes.BarnesInteger
+import IPRADerivations.Analysis.Barnes.FunctionalEquations.IntegerValues.BarnesInteger
 import IPRADerivations.AnalyticNumberTheory.EtaSchedule
 import IPRADerivations.AnalyticNumberTheory.RSA
 

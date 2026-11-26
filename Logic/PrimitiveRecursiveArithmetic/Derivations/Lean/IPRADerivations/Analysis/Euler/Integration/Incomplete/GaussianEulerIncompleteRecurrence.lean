@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.Integration.Incomplete.GaussianEulerIncompleteRecurrenceResidual
 import IPRADerivations.Analysis.Euler.Integration.Incomplete.GaussianEulerIncompleteRadiusOverlap
-import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalBalance
+import IPRADerivations.Analysis.RationalArithmetic.Distances.GaussianRationalBalance
 
 /-!
 # The lower and upper incomplete Gamma recurrences

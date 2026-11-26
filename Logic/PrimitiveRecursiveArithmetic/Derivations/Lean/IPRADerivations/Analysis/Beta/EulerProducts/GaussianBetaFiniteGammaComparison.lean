@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Beta.EulerProducts.GaussianBetaFiniteEulerComparison
-import IPRADerivations.Analysis.Gamma.GaussianGammaRightHalfPlane
+import IPRADerivations.Analysis.Gamma.Names.Input.GaussianGammaRightHalfPlane
 
 /-!
 # Cofinal original beta quadrature converges to the original Gamma name

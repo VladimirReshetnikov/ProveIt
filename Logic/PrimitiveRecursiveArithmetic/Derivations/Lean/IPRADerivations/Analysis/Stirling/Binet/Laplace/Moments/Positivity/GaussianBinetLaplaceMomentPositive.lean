@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.Moments.Improper.GaussianBinetLaplaceMomentImproper
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.Moments.Positivity.GaussianBinetLaplaceMomentNonnegative
 import IPRADerivations.Analysis.Names.Order.GaussianNamedRealOrderEnvelope
-import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianNamedGammaHalfShift
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.GaussianNamedGammaHalfShift
 import IPRADerivations.Analysis.Gamma.EulerProducts.Convexity.GaussianGammaEulerRationalLogOrder
 
 /-!

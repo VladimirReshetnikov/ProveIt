@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.GaussianStirlingNames
+import IPRADerivations.Analysis.Stirling.GammaLogarithm.GaussianStirlingNames
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.GaussianGaussTriplicationPi
 import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentPiMargins
 

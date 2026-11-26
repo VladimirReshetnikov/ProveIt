@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.GaussianGammaRepeatedShift
-import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianGammaShift
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.GaussianGammaShift
 
 /-!
 # V8 for the actual original Gamma names at every numerical shift

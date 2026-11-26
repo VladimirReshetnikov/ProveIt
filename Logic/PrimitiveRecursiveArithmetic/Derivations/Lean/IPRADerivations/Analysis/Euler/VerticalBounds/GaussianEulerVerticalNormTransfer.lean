@@ -1,6 +1,6 @@
-import IPRADerivations.Analysis.Exponential.GaussianExponentialRealPart
+import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialRealPart
 import IPRADerivations.Analysis.RationalArithmetic.Norms.GaussianSquaredNormUpper
-import IPRADerivations.Analysis.Gamma.GaussianGammaRealValues
+import IPRADerivations.Analysis.Gamma.Names.Symmetry.GaussianGammaRealValues
 
 /-!
 # Actual norm-radius transfer from equality of squared-norm names

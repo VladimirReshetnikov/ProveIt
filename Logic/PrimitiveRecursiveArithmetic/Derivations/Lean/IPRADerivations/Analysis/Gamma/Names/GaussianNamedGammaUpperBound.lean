@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Names.RightHalfPlane.GaussianNamedHalfPlaneCorrection
 import IPRADerivations.Analysis.Euler.Integration.GaussianEulerIntegralUpperBound
-import IPRADerivations.Analysis.Euler.GaussianNamedEulerQuadrature
+import IPRADerivations.Analysis.Euler.Integration.Parameters.GaussianNamedEulerQuadrature
 
 /-!
 # The exact A + D_R bound for the original named Gamma and Euler integral

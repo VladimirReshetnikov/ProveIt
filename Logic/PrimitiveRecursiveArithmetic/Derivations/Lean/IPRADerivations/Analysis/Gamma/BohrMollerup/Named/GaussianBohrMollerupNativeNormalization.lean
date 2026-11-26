@@ -1,8 +1,8 @@
 import IPRADerivations.Analysis.Gamma.BohrMollerup.GaussianBohrMollerupPresentation
 import IPRADerivations.Analysis.Stirling.Duplication.GaussianStirlingLogDuplication
-import IPRADerivations.Analysis.Gamma.GaussianGammaInputProperness
+import IPRADerivations.Analysis.Gamma.Names.Input.GaussianGammaInputProperness
 import IPRADerivations.Analysis.Exponential.IntegerPowers.GaussianRobinMeshExponential
-import IPRADerivations.Analysis.Exponential.GaussianExponentialInverse
+import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialInverse
 import IPRADerivations.Analysis.Gamma.Ratios.GaussianGammaRationalWendelGautschi
 
 /-!

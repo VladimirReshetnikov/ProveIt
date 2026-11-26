@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.Moments.GaussianBinetLaplaceMomentVariation
 import IPRADerivations.Analysis.Names.RightHalfPlane.GaussianNamedRightHalfPlaneSigned
-import IPRADerivations.Analysis.Names.GaussianLinearDistanceName
+import IPRADerivations.Analysis.Geometry.Distances.GaussianLinearDistanceName
 
 /-!
 # Variation between actual positive real projections of signed samples

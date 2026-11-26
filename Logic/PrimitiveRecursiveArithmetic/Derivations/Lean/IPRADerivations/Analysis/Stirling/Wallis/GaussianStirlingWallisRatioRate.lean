@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Wallis.GaussianStirlingWallisGammaRatio
-import IPRADerivations.Analysis.Stirling.GaussianStirlingNames
-import IPRADerivations.Analysis.Names.RationalGaussianNameEmbedding
+import IPRADerivations.Analysis.Stirling.GammaLogarithm.GaussianStirlingNames
+import IPRADerivations.Analysis.Names.Arithmetic.RationalGaussianNameEmbedding
 
 /-!
 # Effective Wallis rate for the original Stirling half-step ratio

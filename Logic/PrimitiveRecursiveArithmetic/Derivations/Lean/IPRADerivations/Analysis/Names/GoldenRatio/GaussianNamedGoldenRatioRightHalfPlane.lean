@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Names.RightHalfPlane.GaussianNamedPositiveLateLogSource
 import IPRADerivations.Analysis.Names.GoldenRatio.GaussianNamedGoldenRatioUniqueness
-import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianNamedGammaHalfShift
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.GaussianNamedGammaHalfShift
 
 /-!
 # Golden-ratio uniqueness for certified positive real names

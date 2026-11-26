@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Names.GaussianCompactNamedAdditivity
+import IPRADerivations.Analysis.Integration.CompactGrids.Splits.GaussianCompactNamedAdditivity
 
 /-!
 # Three actual compact quadratures at the same rational step

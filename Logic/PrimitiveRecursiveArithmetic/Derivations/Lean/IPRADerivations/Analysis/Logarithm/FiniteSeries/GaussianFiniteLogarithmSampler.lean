@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Logarithm.FiniteSeries.GaussianFiniteLogarithmPolynomial
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianIntegerFractionPowers
-import IPRADerivations.Analysis.Logarithm.ComplexLogarithmName
+import IPRADerivations.Analysis.Logarithm.Local.ComplexLogarithmName
 
 /-!
 # The literal finite logarithm equals the original cleared sampler

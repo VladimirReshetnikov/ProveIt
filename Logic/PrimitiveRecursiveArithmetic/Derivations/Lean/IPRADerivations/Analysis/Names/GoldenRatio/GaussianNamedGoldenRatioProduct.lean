@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Names.GoldenRatio.GaussianNamedGoldenRatioUniqueness
-import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianNamedGammaHalfShift
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.GaussianNamedGammaHalfShift
 
 /-!
 # The positive golden-ratio equation in product form

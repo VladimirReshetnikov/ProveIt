@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Barnes.FunctionalEquations.IntegerValues.GaussianBarnesCanonicalIntegerRecurrence
-import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalNormalization
-import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalProperness
-import IPRADerivations.Analysis.Barnes.BarnesInteger
+import IPRADerivations.Analysis.Barnes.CanonicalProducts.GaussianBarnesCanonicalNormalization
+import IPRADerivations.Analysis.Barnes.CanonicalProducts.GaussianBarnesCanonicalProperness
+import IPRADerivations.Analysis.Barnes.FunctionalEquations.IntegerValues.BarnesInteger
 
 /-!
 # The original Barnes value equals the superfactorial at every integer

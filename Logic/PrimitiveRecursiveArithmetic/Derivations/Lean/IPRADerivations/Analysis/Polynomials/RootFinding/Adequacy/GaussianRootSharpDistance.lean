@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.Adequacy.GaussianRootSharpResidualSamples
 import IPRADerivations.Analysis.Polynomials.RootFinding.Adequacy.GaussianRootDistanceOrderBudget
-import IPRADerivations.Analysis.Names.GaussianLinearDistanceName
+import IPRADerivations.Analysis.Geometry.Distances.GaussianLinearDistanceName
 import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.GaussianScalarOrderCut
 import IPRADerivations.Analysis.Polynomials.RootFinding.Adequacy.GaussianRootAdequacy
 

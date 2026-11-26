@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.Integration.Parts.GaussianEulerNamedIBPRecurrence
-import IPRADerivations.Analysis.Euler.GaussianNamedEulerQuadrature
+import IPRADerivations.Analysis.Euler.Integration.Parameters.GaussianNamedEulerQuadrature
 
 /-!
 # Euler recurrence for the original named improper integrals

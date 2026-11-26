@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Telescoping.GaussianStirlingTelescope
-import IPRADerivations.Analysis.Stirling.GaussianStirlingRecurrence
+import IPRADerivations.Analysis.Stirling.Telescoping.GaussianStirlingRecurrence
 
 /-!
 # A normalized name for the finite Stirling telescope

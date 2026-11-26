@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Names.GaussianNamedGammaLateInput
-import IPRADerivations.Analysis.Gamma.GaussianGammaRadiusOverlap
+import IPRADerivations.Analysis.Gamma.Names.PoleFree.GaussianGammaRadiusOverlap
 import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerVerticalNamedProjection
 
 /-!

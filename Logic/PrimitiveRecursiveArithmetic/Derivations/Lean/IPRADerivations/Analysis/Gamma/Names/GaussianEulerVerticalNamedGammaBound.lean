@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerVerticalNamedReference
 import IPRADerivations.Analysis.Gamma.Integrals.GaussianEulerVerticalGammaBound
 import IPRADerivations.Analysis.Gamma.Names.PositiveAxis.GaussianNamedGammaPositiveLower
-import IPRADerivations.Analysis.Names.RationalReciprocalPowerName
+import IPRADerivations.Analysis.Names.Arithmetic.RationalReciprocalPowerName
 
 /-!
 # Vertical domination at arbitrary regular named Gamma inputs

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialReference
-import IPRADerivations.Analysis.Exponential.GaussianUnitDiskExponentialName
+import IPRADerivations.Analysis.Exponential.Names.GaussianUnitDiskExponentialName
 
 /-!
 # Radius independence for the original Gaussian exponential constructors

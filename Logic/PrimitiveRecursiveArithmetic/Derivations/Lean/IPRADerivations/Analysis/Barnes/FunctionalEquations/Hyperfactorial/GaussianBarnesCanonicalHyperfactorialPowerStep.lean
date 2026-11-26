@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.FunctionalEquations.Hyperfactorial.GaussianBarnesCanonicalHyperfactorialExponentStep
-import IPRADerivations.Analysis.Exponential.GaussianExponentialAddition
+import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialAddition
 import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialRadiusIndependence
 
 /-! # Exponentiating the hyperfactorial numerator increment -/

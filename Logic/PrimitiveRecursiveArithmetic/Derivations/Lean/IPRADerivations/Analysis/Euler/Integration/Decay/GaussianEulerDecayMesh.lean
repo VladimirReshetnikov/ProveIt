@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayIncrement
 import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactRiemannName
-import IPRADerivations.Analysis.Gamma.GaussianGammaEncodingRescaling
+import IPRADerivations.Analysis.Gamma.Names.Input.GaussianGammaEncodingRescaling
 
 /-!
 # Finite telescoping for the original Euler decay

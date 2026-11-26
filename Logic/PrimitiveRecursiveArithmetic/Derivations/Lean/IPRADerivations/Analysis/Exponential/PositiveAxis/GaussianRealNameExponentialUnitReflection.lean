@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianPositiveExponentialSeparation
 import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianSignedNameExponentialOrder
-import IPRADerivations.Analysis.Exponential.GaussianExponentialInverse
+import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialInverse
 import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianDeterminantSignTransport
 import IPRADerivations.Analysis.Names.Differences.GaussianNamedDifference
 

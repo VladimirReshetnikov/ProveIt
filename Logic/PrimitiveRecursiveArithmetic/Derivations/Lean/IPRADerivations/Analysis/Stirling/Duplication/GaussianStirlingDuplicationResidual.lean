@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Duplication.GaussianStirlingDuplicationLogs
 import IPRADerivations.Analysis.Stirling.Telescoping.GaussianStirlingRationalTelescopers
-import IPRADerivations.Analysis.Stirling.GaussianStirlingNames
+import IPRADerivations.Analysis.Stirling.GammaLogarithm.GaussianStirlingNames
 import IPRADerivations.Analysis.Euler.HarmonicLogarithms.GaussianHarmonicIntervalLinearRemainder
 
 /-!

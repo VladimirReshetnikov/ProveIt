@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Logarithm.ComplexLogarithmRemainder
+import IPRADerivations.Analysis.Logarithm.FiniteSeries.ComplexLogarithmRemainder
 
 /-!
 # Value equality for the actual signed-pair Gaussian arithmetic

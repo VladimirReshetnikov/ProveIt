@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.Names.GaussianNamedGamma
 import IPRADerivations.Analysis.Gamma.EulerProducts.Factorials.GaussianGammaFactorialValues
-import IPRADerivations.Analysis.Gamma.GaussianGammaInputProperness
-import IPRADerivations.Analysis.Gamma.GaussianGammaRadiusOverlap
+import IPRADerivations.Analysis.Gamma.Names.Input.GaussianGammaInputProperness
+import IPRADerivations.Analysis.Gamma.Names.PoleFree.GaussianGammaRadiusOverlap
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedDiagonalRate
 
 /-!

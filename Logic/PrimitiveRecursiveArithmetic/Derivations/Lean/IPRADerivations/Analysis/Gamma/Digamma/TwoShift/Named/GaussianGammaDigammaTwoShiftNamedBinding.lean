@@ -3,7 +3,7 @@ import IPRADerivations.Analysis.Gamma.Digamma.TwoShift.GaussianGammaDigammaTwoSh
 import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedAddRate
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedUniformRateClosure
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedFrozenScalarOrder
-import IPRADerivations.Analysis.Stirling.GaussianStirlingNames
+import IPRADerivations.Analysis.Stirling.GammaLogarithm.GaussianStirlingNames
 
 /-!
 # Original normalized Gamma ratio on regular positive real names

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Exponential.Estimates.GaussianRationalUniformExponentialLipschitz
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedLipschitzRate
-import IPRADerivations.Analysis.Exponential.GaussianRadiusExponentialName
+import IPRADerivations.Analysis.Exponential.Names.GaussianRadiusExponentialName
 
 /-!
 # Original common-radius exponential names preserve a Lipschitz rate

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialReference
 import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameRingLaws
-import IPRADerivations.Analysis.Exponential.GaussianRadiusExponentialName
+import IPRADerivations.Analysis.Exponential.Names.GaussianRadiusExponentialName
 
 /-!
 # Product observations with prescribed numerical bounds

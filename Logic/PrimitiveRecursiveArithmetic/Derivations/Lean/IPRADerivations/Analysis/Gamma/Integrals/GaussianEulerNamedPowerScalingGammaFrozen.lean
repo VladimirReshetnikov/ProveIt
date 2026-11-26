@@ -1,7 +1,7 @@
-import IPRADerivations.Analysis.Euler.PowerScaling.GaussianEulerNamedPowerScalingParameterFrozen
+import IPRADerivations.Analysis.Euler.PowerScaling.Named.GaussianEulerNamedPowerScalingParameterFrozen
 import IPRADerivations.Analysis.Gamma.Names.GaussianNamedGammaLateInput
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateComposition
-import IPRADerivations.Analysis.Gamma.GaussianGammaRadiusOverlap
+import IPRADerivations.Analysis.Gamma.Names.PoleFree.GaussianGammaRadiusOverlap
 
 /-!
 # Named Gamma of the rescaled parameter at frozen exponents

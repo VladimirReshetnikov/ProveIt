@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Trigonometry.Cyclic.GaussianCyclicExponentialGroup
-import IPRADerivations.Analysis.Trigonometry.GaussianNamedSineFromExponential
+import IPRADerivations.Analysis.Trigonometry.Sine.GaussianNamedSineFromExponential
 
 /-!
 # The half-angle sine on the full cyclic index range

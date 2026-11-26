@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactAlignedTime
-import IPRADerivations.Analysis.Names.GaussianCompactNamedAdditivity
+import IPRADerivations.Analysis.Integration.CompactGrids.Splits.GaussianCompactNamedAdditivity
 
 /-!
 # A genuine original compact modulus supplies aligned-time observations

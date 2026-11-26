@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitSubstitution.GaussianEulerUnitSubstitutionCompactName
-import IPRADerivations.Analysis.Euler.GaussianEulerImproperName
+import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerImproperName
 
 /-!
 # The actual cofinal original unit-substitution density

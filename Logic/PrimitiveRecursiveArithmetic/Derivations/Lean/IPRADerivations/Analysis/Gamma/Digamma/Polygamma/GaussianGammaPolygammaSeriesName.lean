@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Digamma.Polygamma.GaussianGammaPolygammaPrefix
-import IPRADerivations.Analysis.Gamma.GaussianGammaReciprocalInverse
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.ReciprocalGamma.GaussianGammaReciprocalInverse
 
 /-!
 # A regular name for the signed polygamma series

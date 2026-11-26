@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentNamedSlope
-import IPRADerivations.Analysis.Names.RationalReciprocalPowerName
+import IPRADerivations.Analysis.Names.Arithmetic.RationalReciprocalPowerName
 
 /-!
 # Forward Lipschitz bound for the actual partial arctangent

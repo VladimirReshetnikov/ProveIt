@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Euler.GaussianNamedEulerQuadrature
+import IPRADerivations.Analysis.Euler.Integration.Parameters.GaussianNamedEulerQuadrature
 import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianNamedEulerCompactModulus
 
 /-!

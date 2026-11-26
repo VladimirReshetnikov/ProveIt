@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.FiniteDifferences.GaussianPolynomialForwardDifference
-import IPRADerivations.Analysis.Exponential.ExponentialSeries
+import IPRADerivations.Analysis.Exponential.FiniteSeries.ExponentialSeries
 
 /-!
 # Iterated Gaussian polynomial forward differences at encoded order

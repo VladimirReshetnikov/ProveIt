@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GammaCanonicalRemainder
-import IPRADerivations.Analysis.Logarithm.DyadicComplexLogarithm
+import IPRADerivations.Analysis.Logarithm.Local.DyadicComplexLogarithm
 
 /-!
 # A regular local canonical factor name with its sharp cutoff certificate
