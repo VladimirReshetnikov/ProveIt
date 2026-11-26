@@ -2984,3 +2984,6 @@ The relative-argument expansion has explicit summable quadratic and cubic error 
 
 Exact original factor conjugation folds through each finite segment, preserving both original normalization clocks and allowing both empty segments and vanishing factors.
 [GaussianNamedFiniteProductConjugation](Lean/IPRADerivations/Analysis/GaussianNamedFiniteProductConjugation.lean), [GaussianBarnesCanonicalHeadConjugation](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHeadConjugation.lean)
+
+The actual relative quadratic term and direct exponent correction cancel to the literal first-derivative expression times the input increment plus the original controlled quadratic remainder. Transfer to derivative observations of the named row and its cofinal limit remains open.
+[GaussianBarnesCanonicalDerivativeAlgebra](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDerivativeAlgebra.lean)
