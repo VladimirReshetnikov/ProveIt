@@ -2903,3 +2903,6 @@ At any common cutoff, independent certified disk radii give the same represented
 
 The original finite prefactor and factors at each admitted cutoff compare at independent clocks with the regular canonical Barnes sampler. A verified primitive-recursive cutoff at each admitted rational input gives leading error at most $2^{-p}$ for every later truncation.
 [GaussianBarnesCanonicalProduct](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalProduct.lean)
+
+The same encoded Gaussian rational in two positive-denominator presentations gives equivalent names for the original factor, prefactor and full finite product on independently certified disks.
+[GaussianBarnesCanonicalFiniteProperness](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalFiniteProperness.lean)
