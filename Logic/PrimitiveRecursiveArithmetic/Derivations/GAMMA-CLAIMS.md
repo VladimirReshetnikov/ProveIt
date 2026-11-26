@@ -3029,3 +3029,6 @@ The original cofinal log difference and original named product of the literal st
 
 In iPRA the actual Barnes prefactor shifts by the exponential of the literal named exponent difference, the original finite prefix obeys the cleared unit shift including zeros, and the accompanying polynomial is the original Gamma Euler head at the matching index times the exact factorial.
 [GaussianBarnesCanonicalPrefactorShift](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalPrefactorShift.lean), [GaussianBarnesCanonicalPrefixShift](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalPrefixShift.lean), [GaussianBarnesCanonicalGaussDenominator](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalGaussDenominator.lean)
+
+The primitive-recursive sampler uses the verified rational deflated evaluator at its certified input demand, with constructive Cauchy regularity and properness. On the certified half-unit disk about a Barnes zero it retains a uniform apartness bound.
+[GaussianBarnesCanonicalDeflatedNamed](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDeflatedNamed.lean)
