@@ -30,8 +30,6 @@ with a parameter).
 
 set_option linter.unusedSimpArgs false
 
-namespace LeanProofs.IPRA.AnalyticNumberTheory.MobiusInversion
-
 open LeanProofs.ConciseIPRA LeanProofs.IPRA
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds
@@ -43,12 +41,14 @@ open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
 open Syn
 open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
+open LeanProofs.ConciseIPRA.PTm (app zero succ)
 open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
+local notation "𝔞" t:max => Groth.ι (LeanProofs.IPRA.Q.mk _ t)
+
+namespace LeanProofs.IPRA.AnalyticNumberTheory.MobiusInversion
 
 /-! ## Divisibility of a product -/
 
@@ -139,21 +139,7 @@ end LeanProofs.IPRA.AnalyticNumberTheory.MobiusInversion
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.MobiusInversionP
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius
-open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusInversion (dv_symm eqb_quo shift_inst2)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_of_dvd' pos_of_eq_mul)
-open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
-open LeanProofs.IPRA.Probability.Independence (sum_scale)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
-
-variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 section Inversion
 
@@ -360,24 +346,6 @@ end Inversion
 end LeanProofs.IPRA.AnalyticNumberTheory.MobiusInversionP
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.MobiusInversion
-
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius
-open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds
-open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_eq' zero_lt')
-open LeanProofs.IPRA.AnalyticNumberTheory.Totient (quo_eq)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_of_dvd' dvd_of_eq' pos_of_eq_mul)
-open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
-open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
-open LeanProofs.IPRA.Probability.Independence (sum_scale)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
-
-variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The plain inversion, as the instance `Z = ⟨N, 0⟩` -/
 

@@ -117,18 +117,12 @@ theorem inst3_swB (d e Z : PTm n) : inst3 (swB G) d e Z = zt d e (fstT Z) * inst
 
 theorem inst2_SB (d Z : PTm n) :
     inst2 (SB G) d Z = (sg d * eqb (rem (fstT Z) d) zero) * inst3 G d (quo (fstT Z) d) Z := by
-  have hf : Syn.subst ![d, Z] (Syn.subst ![var 0, quo (fstT (var 1)) (var 0), var 1] G) =
-      inst3 G d (quo (fstT Z) d) Z := by
-    simp only [inst3, Syn.subst_subst]; congr 1; funext k; fin_cases k <;> simp
-  simp only [inst2, SB, PTm.subst_mul, hf]
+  simp only [inst2, SB, PTm.subst_mul, subst_reindex3]
   simp
 
 theorem inst2_TB (d Z : PTm n) :
     inst2 (TB G) d Z = (sg d * eqb (rem (fstT Z) d) zero) * inst3 G (quo (fstT Z) d) d Z := by
-  have hf : Syn.subst ![d, Z] (Syn.subst ![quo (fstT (var 1)) (var 0), var 0, var 1] G) =
-      inst3 G (quo (fstT Z) d) d Z := by
-    simp only [inst3, Syn.subst_subst]; congr 1; funext k; fin_cases k <;> simp
-  simp only [inst2, TB, PTm.subst_mul, hf]
+  simp only [inst2, TB, PTm.subst_mul, subst_reindex3]
   simp
 
 theorem row_sw (d Z : PTm n) :
