@@ -3056,3 +3056,6 @@ The literal finite rational correction has an exact linear term and a quadratic 
 
 The actual kept base-power product agrees with a rational coefficient polynomial at every Gaussian rational argument. Its value, slope, and quadratic remainder have uniform certified bounds and the estimate includes zeros.
 [GaussianBarnesCanonicalHeadPolynomial](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHeadPolynomial.lean), [GaussianBarnesCanonicalHeadPolynomialDerivative](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHeadPolynomialDerivative.lean)
+
+The actual full Barnes divided difference has a uniform rate once the original fixed prefix quotient is supplied. The join uses the checked disk continuity of the fixed prefix and the closed tail exponential derivative, retaining both independent observation errors.
+[GaussianBarnesCanonicalValueDerivativeJoin](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalValueDerivativeJoin.lean)
