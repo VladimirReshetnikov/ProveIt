@@ -2975,3 +2975,6 @@ An explicit lower modulus depends only on the disk radius and chosen negative in
 
 The shifted original translated powers telescope to the plain Gamma denominator product and one endpoint power. The exact finite identity admits zeros and supplies the polynomial part of the Barnes functional equation.
 [GaussianBarnesWeightedProductShift](Lean/IPRADerivations/Analysis/GaussianBarnesWeightedProductShift.lean), [GaussianBarnesCanonicalPolynomialShift](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalPolynomialShift.lean)
+
+The actual change of the original local logarithm has a certified relative Mercator argument. The native input perturbation determines its rational bound and the product identity of the bases.
+[GaussianBarnesCanonicalRelativeStep](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalRelativeStep.lean)
