@@ -209,10 +209,8 @@ theorem add_raw_diagonal (f f' g g' : PR 2) (x x' y y' : PTm n)
     GaussianValueNormalizerExtensionality.rawDiagonal (addRawF f g) (addRawF f' g')
       (data x y) (data x' y') (two+two) := by
   refine .allI ?_
-  have hf1 : Γ.map Fm.shift ⊢[PRAAx] diagonalEquivalent f f' (Syn.shift x) (Syn.shift x') := by
-    simpa only [Fm.shift,GaussianNameEquivalence.subst_diagonalEquivalent,Syn.shift] using hf.shift
-  have hg1 : Γ.map Fm.shift ⊢[PRAAx] diagonalEquivalent g g' (Syn.shift y) (Syn.shift y') := by
-    simpa only [Fm.shift,GaussianNameEquivalence.subst_diagonalEquivalent,Syn.shift] using hg.shift
+  have hf1 := GaussianNameEquivalence.shift_diagonalEquivalent hf
+  have hg1 := GaussianNameEquivalence.shift_diagonalEquivalent hg
   have e : Γ.map Fm.shift ⊢[PRAAx]
       distanceBounded
         (ap2 (addRawF f g) (var 0) (data (Syn.shift x) (Syn.shift y)))
@@ -236,10 +234,8 @@ theorem multiply_raw_diagonal (f f' g g' : PR 2) (x x' y y' : PTm n)
   refine .allI ?_
   have hfp1 := GaussianEuclideanDistanceName.shift_pointCN hfp
   have hg1 := GaussianEuclideanDistanceName.shift_pointCN hg
-  have hfe1 : Γ.map Fm.shift ⊢[PRAAx] diagonalEquivalent f f' (Syn.shift x) (Syn.shift x') := by
-    simpa only [Fm.shift,GaussianNameEquivalence.subst_diagonalEquivalent,Syn.shift] using hfe.shift
-  have hge1 : Γ.map Fm.shift ⊢[PRAAx] diagonalEquivalent g g' (Syn.shift y) (Syn.shift y') := by
-    simpa only [Fm.shift,GaussianNameEquivalence.subst_diagonalEquivalent,Syn.shift] using hge.shift
+  have hfe1 := GaussianNameEquivalence.shift_diagonalEquivalent hfe
+  have hge1 := GaussianNameEquivalence.shift_diagonalEquivalent hge
   have e : Γ.map Fm.shift ⊢[PRAAx]
       distanceBounded
         (ap2 (multiplyRawF f g) (var 0) (data (Syn.shift x) (Syn.shift y)))

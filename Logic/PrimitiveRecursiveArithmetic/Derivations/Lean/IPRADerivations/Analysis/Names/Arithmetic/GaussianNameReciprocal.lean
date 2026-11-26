@@ -371,8 +371,7 @@ theorem names_equivalent (f g : PR 2) (h h' x y : PTm n)
     simpa only [Fm.shift,subst_apart,Syn.shift] using ha.shift
   have hb1 : Γ.map Fm.shift ⊢[PRAAx] apart g (Syn.shift h') (Syn.shift y) := by
     simpa only [Fm.shift,subst_apart,Syn.shift] using hb.shift
-  have he1 : Γ.map Fm.shift ⊢[PRAAx] GaussianNameEquivalence.diagonalEquivalent f g (Syn.shift x) (Syn.shift y) := by
-    simpa only [Fm.shift,GaussianNameEquivalence.subst_diagonalEquivalent,Syn.shift] using he.shift
+  have he1 := GaussianNameEquivalence.shift_diagonalEquivalent he
   simpa only [Syn.shift,subst_rawData,subst_R,PTm.subst_mul,
     ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero] using
     raw_equivalent_at f g (Syn.shift h) (Syn.shift h') (Syn.shift x) (Syn.shift y) (var 0) hf1 hg1 ha1 hb1 he1

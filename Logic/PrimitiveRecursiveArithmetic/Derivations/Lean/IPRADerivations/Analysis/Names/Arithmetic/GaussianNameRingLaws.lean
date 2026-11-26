@@ -527,9 +527,7 @@ theorem negative_equivalent (f g : PR 2) (x y : PTm n)
   apply GaussianValueNormalizerExtensionality.normalized_names_equivalent _ _ (one+one) (one+one) x y two
     (negative_regular f x hf) (negative_regular g y hg)
   refine .allI ?_
-  have he1 : Γ.map Fm.shift ⊢[PRAAx]
-      GaussianNameEquivalence.diagonalEquivalent f g (Syn.shift x) (Syn.shift y) := by
-    simpa only [Fm.shift,GaussianNameEquivalence.subst_diagonalEquivalent,Syn.shift] using he.shift
+  have he1 := GaussianNameEquivalence.shift_diagonalEquivalent he
   have e : Γ.map Fm.shift ⊢[PRAAx]
       distanceBounded (ap2 (negativeRawF f) (var 0) (Syn.shift x))
         (ap2 (negativeRawF g) (var 0) (Syn.shift y)) two (unit (var 0)) :=

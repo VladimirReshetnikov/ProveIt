@@ -41,6 +41,12 @@ ipra_subst diagonalEquivalent [Syn.subst_shift, Syn.shift_subst]
 
 ipra_subst crossEquivalent [Syn.subst_shift, Syn.shift_subst]
 
+/-- Preserve diagonal equivalence in the context with one more variable. -/
+theorem shift_diagonalEquivalent {f g : PR 2} {x y : PTm n}
+    (h : Γ ⊢[PRAAx] diagonalEquivalent f g x y) :
+    Γ.map Fm.shift ⊢[PRAAx] diagonalEquivalent f g (Syn.shift x) (Syn.shift y) := by
+  simpa only [Fm.shift, subst_diagonalEquivalent, Syn.shift] using h.shift
+
 /-- Preserve cross-equivalence in the context with one more variable. -/
 theorem shift_crossEquivalent {f g : PR 2} {x y : PTm n}
     (h : Γ ⊢[PRAAx] crossEquivalent f g x y) :
@@ -125,8 +131,7 @@ theorem diagonal_cross_at (f g : PR 2) (x y s t : PTm n)
   refine .allI ?_
   have hf := GaussianEuclideanDistanceName.shift_pointCN hF
   have hg := GaussianEuclideanDistanceName.shift_pointCN hG
-  have he : Γ.map Fm.shift ⊢[PRAAx] diagonalEquivalent f g (Syn.shift x) (Syn.shift y) := by
-    simpa only [Fm.shift,subst_diagonalEquivalent,Syn.shift] using hEq.shift
+  have he := shift_diagonalEquivalent hEq
   simpa only [Syn.shift,subst_ap2,GaussianRationalMetric.subst_qsub,subst_unit,PTm.subst_add,PTm.subst_mul,
     ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero] using
     diagonal_slack f g (Syn.shift x) (Syn.shift y) (Syn.shift s) (Syn.shift t) (var 0) hf hg he
@@ -137,9 +142,7 @@ theorem diagonal_to_cross (f g : PR 2) (x y : PTm n)
   refine .allI (.allI ?_)
   have hf := GaussianEuclideanDistanceName.shift_pointCN (GaussianEuclideanDistanceName.shift_pointCN hF)
   have hg := GaussianEuclideanDistanceName.shift_pointCN (GaussianEuclideanDistanceName.shift_pointCN hG)
-  have he : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx]
-      diagonalEquivalent f g (Syn.shift (Syn.shift x)) (Syn.shift (Syn.shift y)) := by
-    simpa only [Fm.shift,subst_diagonalEquivalent,Syn.shift] using hEq.shift.shift
+  have he := shift_diagonalEquivalent (shift_diagonalEquivalent hEq)
   exact diagonal_cross_at f g _ _ (var 1) (var 0) hf hg he
 
 /-- Compare the original observations at one precision, canceling the common dyadic factor. -/
@@ -175,16 +178,13 @@ theorem cross_refl (f : PR 2) (x : PTm n) (hF : Γ ⊢[PRAAx] pointCN f x) :
 theorem diagonal_symm (f g : PR 2) (x y : PTm n)
     (hEq : Γ ⊢[PRAAx] diagonalEquivalent f g x y) : Γ ⊢[PRAAx] diagonalEquivalent g f y x := by
   refine .allI ?_
-  have he : Γ.map Fm.shift ⊢[PRAAx] diagonalEquivalent f g (Syn.shift x) (Syn.shift y) := by
-    simpa only [Fm.shift,subst_diagonalEquivalent,Syn.shift] using hEq.shift
+  have he := shift_diagonalEquivalent hEq
   exact distance_symmetric _ _ _ _ (unit_positive _) (diagonal_at f g _ _ (var 0) he)
 
 theorem cross_symm (f g : PR 2) (x y : PTm n)
     (hEq : Γ ⊢[PRAAx] crossEquivalent f g x y) : Γ ⊢[PRAAx] crossEquivalent g f y x := by
   refine .allI (.allI ?_)
-  have he : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx]
-      crossEquivalent f g (Syn.shift (Syn.shift x)) (Syn.shift (Syn.shift y)) := by
-    simpa only [Fm.shift,subst_crossEquivalent,Syn.shift] using hEq.shift.shift
+  have he := shift_crossEquivalent (shift_crossEquivalent hEq)
   exact distance_congr (.eqRefl _) (.eqRefl _) (add_comm _ _) (mul_comm _ _)
     (distance_symmetric _ _ _ _ (positive_product _ _ (unit_positive _) (unit_positive _))
       (cross_at f g _ _ (var 0) (var 1) he))
@@ -220,12 +220,8 @@ theorem cross_trans (f g h : PR 2) (x y z : PTm n)
     (hFG : Γ ⊢[PRAAx] crossEquivalent f g x y) (hGH : Γ ⊢[PRAAx] crossEquivalent g h y z) :
     Γ ⊢[PRAAx] crossEquivalent f h x z := by
   refine .allI (.allI ?_)
-  have fg : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx]
-      crossEquivalent f g (Syn.shift (Syn.shift x)) (Syn.shift (Syn.shift y)) := by
-    simpa only [Fm.shift,subst_crossEquivalent,Syn.shift] using hFG.shift.shift
-  have gh : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx]
-      crossEquivalent g h (Syn.shift (Syn.shift y)) (Syn.shift (Syn.shift z)) := by
-    simpa only [Fm.shift,subst_crossEquivalent,Syn.shift] using hGH.shift.shift
+  have fg := shift_crossEquivalent (shift_crossEquivalent hFG)
+  have gh := shift_crossEquivalent (shift_crossEquivalent hGH)
   exact cross_trans_at f g h _ _ _ (var 1) (var 0) fg gh
 
 theorem diagonal_trans (f g h : PR 2) (x y z : PTm n)
