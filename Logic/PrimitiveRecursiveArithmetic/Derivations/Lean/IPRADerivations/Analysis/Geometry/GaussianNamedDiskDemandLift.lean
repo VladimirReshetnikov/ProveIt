@@ -84,7 +84,7 @@ theorem clock_demand (map : RationalMap) (p R s : PTm n) (hs : Γ ⊢[PRAAx] le 
     by simpa [demandBody,inst2] using finiteMaximum_at (demandBody map) (x := R) inside
   exact le_congr (succ_eq_add_one _).eqSymm (succ_eq_add_one _).eqSymm (add_le_add_right one top)
 
-private theorem input_budget (k l a : PTm n) (hk : Γ ⊢[PRAAx] le (succ a) k) (hl : Γ ⊢[PRAAx] le (succ a) l) :
+theorem input_budget (k l a : PTm n) (hk : Γ ⊢[PRAAx] le (succ a) k) (hl : Γ ⊢[PRAAx] le (succ a) l) :
     Γ ⊢[PRAAx] le ((unit k+unit l)*unit a) (one*(unit k*unit l)) := by
   have double : Γ ⊢[PRAAx] unit (succ a) ≐ two*unit a := (pw_succ two a).eqTrans (mul_comm _ _)
   have left := mul_le_mul_right (unit l) (le_congr double (.eqRefl _) (unit_monotone hk))
@@ -107,7 +107,7 @@ theorem late_rate (map : RationalMap) (f g : PR 2) (s k l x y R : PTm n)
   exact map.uniform_input (rawGaussian q) (rawGaussian r) R (rawDen q) (rawDen r) s
     (native_source f k x R hf) (native_source g l y R hg) fine
 
-private theorem output_budget (p q : PTm n) : Γ ⊢[PRAAx] le
+theorem output_budget (p q : PTm n) : Γ ⊢[PRAAx] le
     (rateNumerator one (unit (succ p)) (succ p) (succ q)*(unit p*unit q))
     ((unit p+unit q)*rateDenominator (unit (succ p)) (succ p) (succ q)) := by
   have dp : Γ ⊢[PRAAx] unit (succ p) ≐ unit p*two := pw_succ two p
