@@ -181,6 +181,41 @@ theorem field5_at (p N a C E x : PTm n) : Γ ⊢[PRAAx] field5 (sampleData p N a
     ((congrSnd (congrSnd (congrSnd (snd_pair _ _)))).eqTrans
       ((congrSnd (congrSnd (snd_pair _ _))).eqTrans (snd_pair _ _).sndE))
 
+/-- Read a compiled observation at its clock and the six parameters stored
+in the original compact data code. -/
+theorem packed_observation_at (body : PTm 7) (r a b c d e x : PTm n) :
+    Γ ⊢[PRAAx] ap2 (PTm.toPR (Syn.subst
+      ![var 0, field0 (var 1), field1 (var 1), field2 (var 1), field3 (var 1), field4 (var 1), field5 (var 1)] body))
+      r (sampleData a b c d e x) ≐ Syn.subst ![r, a, b, c, d, e, x] body := by
+  let input := sampleData a b c d e x
+  let decode : Fin 7 → PTm 2 :=
+    ![var 0, field0 (var 1), field1 (var 1), field2 (var 1), field3 (var 1), field4 (var 1), field5 (var 1)]
+  change Γ ⊢[PRAAx] ap2 (PTm.toPR (Syn.subst decode body)) r input ≐ Syn.subst ![r, a, b, c, d, e, x] body
+  apply (toPR_eq (Γ := Γ) (Syn.subst decode body) ![r, input]).eqTrans
+  rw [Syn.subst_subst]
+  apply Prf.eqCongr
+  intro i
+  fin_cases i
+  · exact .eqRefl _
+  · change Γ ⊢[PRAAx] Syn.subst ![r, input] (field0 (var 1)) ≐ a
+    rw [subst_field0]
+    exact field0_at a b c d e x
+  · change Γ ⊢[PRAAx] Syn.subst ![r, input] (field1 (var 1)) ≐ b
+    rw [subst_field1]
+    exact field1_at a b c d e x
+  · change Γ ⊢[PRAAx] Syn.subst ![r, input] (field2 (var 1)) ≐ c
+    rw [subst_field2]
+    exact field2_at a b c d e x
+  · change Γ ⊢[PRAAx] Syn.subst ![r, input] (field3 (var 1)) ≐ d
+    rw [subst_field3]
+    exact field3_at a b c d e x
+  · change Γ ⊢[PRAAx] Syn.subst ![r, input] (field4 (var 1)) ≐ e
+    rw [subst_field4]
+    exact field4_at a b c d e x
+  · change Γ ⊢[PRAAx] Syn.subst ![r, input] (field5 (var 1)) ≐ x
+    rw [subst_field5]
+    exact field5_at a b c d e x
+
 def sampleBody (F : PR 3) : PTm 2 := ap3 F (field0 (var 1))
   (grid (var 0) (field1 (var 1)) (field2 (var 1)) (field3 (var 1)) (field4 (var 1))) (field5 (var 1))
 @[simp] theorem sample_entry (F : PR 3) (i d : PTm n) : inst2 (sampleBody F) i d =
@@ -357,22 +392,9 @@ ipra_subst input
 
 theorem name_at (F : PR 3) (p a C E L T x : PTm n) : Γ ⊢[PRAAx]
     ap2 (nameF F) p (data a C E L T x) ≐ sample F p a C E L T x := by
-  have old := toPR_eq (Γ := Γ)
-    (sample F (var 0) (field0 (var 1)) (field1 (var 1)) (field2 (var 1)) (field3 (var 1)) (field4 (var 1)) (field5 (var 1)) : PTm 2)
-    ![p,data a C E L T x]
-  have e : Γ ⊢[PRAAx] ap2 (nameF F) p (data a C E L T x) ≐ sample F p
-      (field0 (data a C E L T x)) (field1 (data a C E L T x)) (field2 (data a C E L T x))
-      (field3 (data a C E L T x)) (field4 (data a C E L T x)) (field5 (data a C E L T x)) := by
-    simpa only [nameF,ap2,subst_sample,subst_field0,subst_field1,subst_field2,subst_field3,subst_field4,subst_field5,
-      Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using old
-  apply e.eqTrans
-  ipra_congr (sample F (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) : PTm 7) with
-    [.eqRefl p, (show _ ⊢[PRAAx] field0 (data a C E L T x) ≐ a from field0_at _ _ _ _ _ _),
-      (show _ ⊢[PRAAx] field1 (data a C E L T x) ≐ C from field1_at _ _ _ _ _ _),
-      (show _ ⊢[PRAAx] field2 (data a C E L T x) ≐ E from field2_at _ _ _ _ _ _),
-      (show _ ⊢[PRAAx] field3 (data a C E L T x) ≐ L from field3_at _ _ _ _ _ _),
-      (show _ ⊢[PRAAx] field4 (data a C E L T x) ≐ T from field4_at _ _ _ _ _ _),
-      (show _ ⊢[PRAAx] field5 (data a C E L T x) ≐ x from field5_at _ _ _ _ _ _)]
+  convert packed_observation_at (Γ := Γ)
+    (sample F (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) : PTm 7) p a C E L T x using 2 <;>
+    simp only [nameF, data, subst_sample, Syn.subst_var] <;> rfl
 
 theorem sample_canonical (F : PR 3) (p a C E L T x : PTm n) : Γ ⊢[PRAAx]
     GaussianRationalHorner.canonical (sample F p a C E L T x) := GaussianRationalHorner.qmul_canonical _ _

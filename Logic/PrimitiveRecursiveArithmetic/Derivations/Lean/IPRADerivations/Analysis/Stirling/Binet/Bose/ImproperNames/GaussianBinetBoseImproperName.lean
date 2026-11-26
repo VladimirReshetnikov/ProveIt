@@ -19,7 +19,7 @@ open_ipra
 open GaussianBinetBoseHorizonRate (ordered_rate)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianCompactRiemannName
-  (sampleData field0 field1 field2 field3 field4 field0_at field1_at field2_at field3_at field4_at)
+  (sampleData field0 field1 field2 field3 field4)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNamedInverseRate (independentRate rate_at denominator_positive)
 open GaussianNamedLipschitzRate (diagonalEnvelope diagonalNumerator diagonalDenominator)
@@ -54,25 +54,11 @@ ipra_subst data
 
 ipra_subst sample
 
-private theorem last_field {α : Type} (a b c d e f : α) : ![a,b,c,d,e,f] (5 : Fin 6) = f := rfl
-
 theorem sample_at (p X Y D sign K : PTm n) : Γ ⊢[PRAAx]
     ap2 nameF p (data X Y D sign K) ≐ sample p X Y D sign K := by
-  let x := data X Y D sign K
-  have read : Γ ⊢[PRAAx] ap2 nameF p x ≐ sample p (field0 x) (field1 x) (field2 x) (field3 x) (field4 x) := by
-    simpa only [nameF,ap2,subst_sample,GaussianCompactRiemannName.subst_field0,
-      GaussianCompactRiemannName.subst_field1,GaussianCompactRiemannName.subst_field2,
-      GaussianCompactRiemannName.subst_field3,GaussianCompactRiemannName.subst_field4,
-      Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using
-      toPR_eq (Γ := Γ) (sample (var 0) (field0 (var 1)) (field1 (var 1)) (field2 (var 1)) (field3 (var 1))
-        (field4 (var 1)) : PTm 2) ![p,x]
-  apply read.eqTrans
-  simpa only [subst_sample,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.cons_val_three,Matrix.cons_val_four,last_field,Matrix.cons_val_succ,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (sample (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6)
-    (σ := ![p,field0 x,field1 x,field2 x,field3 x,field4 x]) (σ' := ![p,X,Y,D,sign,K])
-    (fun i => by fin_cases i; exact .eqRefl _; exact field0_at _ _ _ _ _ _; exact field1_at _ _ _ _ _ _;
-                 exact field2_at _ _ _ _ _ _; exact field3_at _ _ _ _ _ _; exact field4_at _ _ _ _ _ _)
+  convert GaussianCompactRiemannName.packed_observation_at (Γ := Γ)
+    (sample (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 7) p X Y D sign K zero using 2 <;>
+    simp only [nameF, data, subst_sample, Syn.subst_var] <;> rfl
 
 theorem schedule_positive (p K : PTm n) : Γ ⊢[PRAAx] le one (schedule p K) := le_add_right _ _
 

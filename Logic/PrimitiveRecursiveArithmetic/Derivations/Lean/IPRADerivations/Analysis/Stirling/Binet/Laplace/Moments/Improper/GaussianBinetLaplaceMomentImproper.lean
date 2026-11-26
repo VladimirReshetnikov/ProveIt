@@ -19,7 +19,7 @@ namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentImproper
 open_ipra
 open GaussianBinetLaplaceMomentPrefixes (prefixData prefix_regular tailNumerator ordered_rate)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open GaussianCompactRiemannName (sampleData field0 field1 field2 field3 field0_at field1_at field2_at field3_at)
+open GaussianCompactRiemannName (sampleData field0 field1 field2 field3)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianFastValueCut (exponent normalizer query_budget)
 open GaussianNamedInverseRate (independentRate denominator_positive rate_at)
@@ -46,21 +46,9 @@ ipra_subst data
 ipra_subst sample
 
 theorem sample_at (p j X D R : PTm n) : Γ ⊢[PRAAx] ap2 nameF p (data j X D R) ≐ sample p j X D R := by
-  let x := data j X D R
-  have read : Γ ⊢[PRAAx] ap2 nameF p x ≐ sample p (field0 x) (field1 x) (field2 x) (field3 x) := by
-    simpa only [nameF,ap2,subst_sample,GaussianCompactRiemannName.subst_field0,
-      GaussianCompactRiemannName.subst_field1,GaussianCompactRiemannName.subst_field2,
-      GaussianCompactRiemannName.subst_field3,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using
-      toPR_eq (Γ := Γ) (sample (var 0) (field0 (var 1)) (field1 (var 1)) (field2 (var 1)) (field3 (var 1)) : PTm 2) ![p,x]
-  apply read.eqTrans
-  simpa using Prf.eqCongr (sample (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5)
-    (σ := ![p,field0 x,field1 x,field2 x,field3 x]) (σ' := ![p,j,X,D,R])
-    (fun i => by fin_cases i
-                 exact .eqRefl _
-                 exact field0_at _ _ _ _ _ _
-                 exact field1_at _ _ _ _ _ _
-                 exact field2_at _ _ _ _ _ _
-                 exact field3_at _ _ _ _ _ _)
+  convert GaussianCompactRiemannName.packed_observation_at (Γ := Γ)
+    (sample (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 7) p j X D R zero zero using 2 <;>
+    simp only [nameF, data, subst_sample, Syn.subst_var] <;> rfl
 
 theorem cutoff_positive (p j D : PTm n) : Γ ⊢[PRAAx] le one (cutoff p j D) := unit_positive _
 

@@ -54,23 +54,9 @@ ipra_subst data
 /-- Literal readback of the original rational kernel and both real queries. -/
 theorem sample_at (f : PR 2) (p x z R B E : PTm n) : Γ ⊢[PRAAx]
     ap2 (nameF f) p (data x z R B E) ≐ observation f p x z R B E := by
-  have raw : Γ ⊢[PRAAx] ap2 (nameF f) p (data x z R B E) ≐ observation f p
-      (field0 (data x z R B E)) (field1 (data x z R B E)) (field2 (data x z R B E))
-      (field3 (data x z R B E)) (field4 (data x z R B E)) := by
-    simpa [nameF,ap2] using toPR_eq (Γ := Γ)
-      (observation f (var 0) (field0 (var 1)) (field1 (var 1)) (field2 (var 1)) (field3 (var 1)) (field4 (var 1)) : PTm 2) ![p,data x z R B E]
-  have fields := Prf.eqCongr (Ax := PRAAx) (Γ := Γ)
-    (observation f (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6)
-    (σ := ![p,field0 (data x z R B E),field1 (data x z R B E),field2 (data x z R B E),field3 (data x z R B E),field4 (data x z R B E)])
-    (σ' := ![p,x,z,R,B,E]) (fun i => by
-      fin_cases i
-      exact .eqRefl _
-      exact GaussianCompactRiemannName.field0_at _ _ _ _ _ _
-      exact GaussianCompactRiemannName.field1_at _ _ _ _ _ _
-      exact GaussianCompactRiemannName.field2_at _ _ _ _ _ _
-      exact GaussianCompactRiemannName.field3_at _ _ _ _ _ _
-      exact GaussianCompactRiemannName.field4_at _ _ _ _ _ _)
-  exact raw.eqTrans (by simpa using fields)
+  convert GaussianCompactRiemannName.packed_observation_at (Γ := Γ)
+    (observation f (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 7) p x z R B E zero using 2 <;>
+    simp only [nameF, data, subst_observation, Syn.subst_var] <;> rfl
 
 theorem sample_canonical (f : PR 2) (p x z R B E : PTm n) : Γ ⊢[PRAAx]
     GaussianRationalHorner.canonical (ap2 (nameF f) p (data x z R B E)) := by
