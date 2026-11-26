@@ -3404,3 +3404,6 @@ Literal nested finite telescoping proves a third-difference lower bound for the 
 
 The three coded fine derivative rates yield a coarse signed third-difference bound on four actual Gaussian observations. A common lattice pays 2D+1 units for each adjacent derivative residual.
 [GaussianDiscreteDerivativeRounding](Lean/IPRADerivations/Analysis/FiniteOperations/PeriodicGrids/GaussianDiscreteDerivativeRounding.lean), [GaussianDiscreteThirdDerivativeEstimate](Lean/IPRADerivations/Analysis/FiniteOperations/PeriodicGrids/GaussianDiscreteThirdDerivativeEstimate.lean)
+
+The signed cyclic range, literal wrap errors, and exact cubic scale yield the projected metric distance between original Gaussian samples at subsampled indices.
+[GaussianDiscretePeriodicGridReadback](Lean/IPRADerivations/Analysis/FiniteOperations/PeriodicGrids/GaussianDiscretePeriodicGridReadback.lean), [GaussianDiscretePeriodicThirdDerivative](Lean/IPRADerivations/Analysis/FiniteOperations/PeriodicGrids/GaussianDiscretePeriodicThirdDerivative.lean)
