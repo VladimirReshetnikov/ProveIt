@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.RationalArithmetic
-import IPRADerivations.Analysis.GaussianL1
+import IPRADerivations.Analysis.RationalArithmetic.RationalArithmetic
+import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianL1
 import IPRADerivations.AnalyticNumberTheory.DivisorHyperbola
 import IPRADerivations.Foundations.RealizerComposition
 

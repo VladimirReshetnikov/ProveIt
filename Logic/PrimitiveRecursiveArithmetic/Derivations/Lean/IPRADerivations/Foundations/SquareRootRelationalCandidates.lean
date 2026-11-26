@@ -2,9 +2,9 @@ import IPRADerivations.Foundations.SquareRootNames
 import IPRADerivations.Foundations.BoundedEnumeration
 import IPRADerivations.Foundations.FilteredEnumerationCode
 import IPRADerivations.Foundations.CodedViableChain
-import IPRADerivations.Analysis.GaussianDescentClockArithmetic
-import IPRADerivations.Analysis.RationalRepresentations
-import IPRADerivations.Analysis.GaussianEuclideanDistanceName
+import IPRADerivations.Analysis.Polynomials.RootFinding.GaussianDescentClockArithmetic
+import IPRADerivations.Analysis.RationalArithmetic.RationalRepresentations
+import IPRADerivations.Analysis.Geometry.GaussianEuclideanDistanceName
 import IPRADerivations.Probability.Variance
 import IPRADerivations.Core.CongruenceTactic
 import IPRADerivations.Core.SubstCommand

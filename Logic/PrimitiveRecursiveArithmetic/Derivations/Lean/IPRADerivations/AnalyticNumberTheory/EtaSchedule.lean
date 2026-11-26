@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.ExponentialSeries
+import IPRADerivations.Analysis.Exponential.ExponentialSeries
 import IPRADerivations.AnalyticNumberTheory.LocalFactor
 import IPRADerivations.AnalyticNumberTheory.PowerCleared
 import IPRADerivations.AnalyticNumberTheory.PhiLower

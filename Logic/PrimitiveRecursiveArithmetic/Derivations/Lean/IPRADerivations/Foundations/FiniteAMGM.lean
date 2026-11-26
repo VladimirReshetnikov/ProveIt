@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.WeightedAMGM
+import IPRADerivations.Analysis.Optimization.WeightedAMGM
 import IPRADerivations.Combinatorics.BinomialTheorem
 import IPRADerivations.AnalyticNumberTheory.PhiLower
 import IPRADerivations.Core.LinearCombination

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.WeightedComparison
+import IPRADerivations.Analysis.Inequalities.WeightedComparison
 
 /-!
 # Approximate extrema and the certified interval of the uniform metric

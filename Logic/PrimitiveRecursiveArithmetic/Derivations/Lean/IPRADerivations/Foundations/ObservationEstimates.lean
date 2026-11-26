@@ -2,7 +2,7 @@ import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Core.Powers
 import IPRADerivations.DiophantineNumberTheory.FLTMultiples
 import IPRADerivations.Foundations.TelescopingNames
-import IPRADerivations.Analysis.RiemannSumRules
+import IPRADerivations.Analysis.Integration.RiemannSumRules
 
 /-!
 # Estimates of the finite-observation framework

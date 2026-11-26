@@ -1,6 +1,6 @@
 import IPRADerivations.Algebra.StableRootBounds
 import IPRADerivations.Probability.Expectation
-import IPRADerivations.Analysis.PowerSums
+import IPRADerivations.Analysis.RationalArithmetic.PowerSums
 
 /-!
 # Square-root certificate stability in mixed bases

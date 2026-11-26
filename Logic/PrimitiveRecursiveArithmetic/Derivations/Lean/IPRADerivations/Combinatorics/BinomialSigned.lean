@@ -1,5 +1,5 @@
 import IPRADerivations.Combinatorics.BinomialTheorem
-import IPRADerivations.Analysis.TerminatingSeries
+import IPRADerivations.Analysis.Series.TerminatingSeries
 import IPRADerivations.Probability.Independence
 import IPRADerivations.Core.LinearCombination
 

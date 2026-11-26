@@ -1,0 +1,192 @@
+import IPRADerivations.Analysis.Gamma.Names.GaussianGammaNamedPoleFreeModulus
+import IPRADerivations.Foundations.FiniteQueryDemand
+
+/-!
+# Original Gamma on regular complex names with a uniform pole certificate
+
+Each output evaluates the original native Gamma program at a decoded
+input observation. A finite maximum provides a common precision even
+when the native modulus is supplied without a monotonicity theorem.
+-/
+
+set_option autoImplicit false
+set_option maxHeartbeats 1500000
+
+namespace LeanProofs.IPRA.Analysis.GaussianGammaNamedPoleFree
+
+open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open LeanProofs.IPRA.Foundations.FiniteQueryDemand (finiteMaximum finiteMaximum_at)
+open GaussianCoefficientNameBounds (unit unit_positive)
+open GaussianEuclideanDistanceName (pointCN)
+open GaussianGammaHalfPlaneInputContinuity (modulus subst_modulus)
+open GaussianGammaReciprocalInverse (gammaF gammaData gamma_regular)
+open GaussianRationalL1 (rawGaussian rawDen)
+open GaussianNameEquivalence (crossEquivalent cross_at cross_symm cross_refl)
+open GaussianNamedInverseRate (rateNumerator rateDenominator denominator_positive rate_at)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric)
+open GaussianRationalHorner (positive_product)
+open GaussianRationalMetric (distanceBounded)
+open GaussianExponentialReference (unit_monotone)
+open Syn
+open scoped Fm
+open ConciseIPRA.PTm (succ)
+
+variable {n : ℕ} {Γ : List (Fm PTm n)}
+
+def source (f : PR 2) (x R E : PTm n) : Fm PTm n := pointCN f x ⋏ .all
+  (GaussianGammaReciprocalInverse.source (rawGaussian (ap2 f (var 0) (Syn.shift x)))
+    (Syn.shift R) (rawDen (ap2 f (var 0) (Syn.shift x))) one (Syn.shift E))
+
+@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x R E : PTm n) :
+    (source f x R E).subst σ = source f (Syn.subst σ x) (Syn.subst σ R) (Syn.subst σ E) := by
+  simp [source,Syn.subst_shift,Syn.shift_subst,one]
+
+theorem source_at (f : PR 2) (k x R E : PTm n) (h : Γ ⊢[PRAAx] source f x R E) : Γ ⊢[PRAAx]
+    GaussianGammaReciprocalInverse.source (rawGaussian (ap2 f k x)) R (rawDen (ap2 f k x)) one E := by
+  simpa [Syn.subst_inst_shift,one] using h.andE₂.allE k
+
+def demandBody : PTm 2 := modulus (var 0) (fstT (var 1)) (sndT (var 1))
+def clock (p R E : PTm n) : PTm n := succ (finiteMaximum demandBody (succ (succ p)) (pairT R E))
+def encodedData (f : PR 2) (k x R E : PTm n) : PTm n :=
+  gammaData (rawGaussian (ap2 f k x)) R (rawDen (ap2 f k x)) E
+def sample (f : PR 2) (p x R E : PTm n) : PTm n := ap2 gammaF (succ p) (encodedData f (clock p R E) x R E)
+def data (x R E : PTm n) : PTm n := pairT x (pairT R E)
+def nameF (f : PR 2) : PR 2 := PTm.toPR
+  (sample f (var 0) (fstT (var 1)) (fstT (sndT (var 1))) (sndT (sndT (var 1))))
+
+@[simp] theorem subst_clock {m : ℕ} (σ : Fin n → PTm m) (p R E : PTm n) :
+    Syn.subst σ (clock p R E) = clock (Syn.subst σ p) (Syn.subst σ R) (Syn.subst σ E) := by simp [clock]
+@[simp] theorem subst_encodedData {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (k x R E : PTm n) :
+    Syn.subst σ (encodedData f k x R E) = encodedData f (Syn.subst σ k) (Syn.subst σ x) (Syn.subst σ R) (Syn.subst σ E) := by
+  simp [encodedData,gammaData,GaussianGammaReciprocalInverse.gammaHeight]
+@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p x R E : PTm n) :
+    Syn.subst σ (sample f p x R E) = sample f (Syn.subst σ p) (Syn.subst σ x) (Syn.subst σ R) (Syn.subst σ E) := by
+  simp [sample]
+@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (x R E : PTm n) :
+    Syn.subst σ (data x R E) = data (Syn.subst σ x) (Syn.subst σ R) (Syn.subst σ E) := by simp [data]
+
+private theorem demand_at (s R E : PTm n) : Γ ⊢[PRAAx] inst2 demandBody s (pairT R E) ≐ modulus s R E := by
+  have h := Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (modulus (var 0) (var 1) (var 2) : PTm 3)
+    (σ := ![s,fstT (pairT R E),sndT (pairT R E)]) (σ' := ![s,R,E])
+    (fun i => by fin_cases i; exact .eqRefl _; exact fst_pair _ _; exact snd_pair _ _)
+  simpa only [demandBody,inst2,subst_modulus,Syn.subst_var,
+    subst_fstT,subst_sndT,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using h
+
+theorem clock_demand (p R E s : PTm n) (hs : Γ ⊢[PRAAx] le s (succ p)) :
+    Γ ⊢[PRAAx] le (succ (modulus s R E)) (clock p R E) := by
+  have hs' : Γ ⊢[PRAAx] lt s (succ (succ p)) := (succ_monus_succ _ _).eqTrans hs
+  have below := le_congr (demand_at s R E) (.eqRefl _) (finiteMaximum_at demandBody hs')
+  exact le_congr (succ_eq_add_one _).eqSymm (succ_eq_add_one _).eqSymm (add_le_add_right one below)
+
+theorem name_at (f : PR 2) (p x R E : PTm n) : Γ ⊢[PRAAx]
+    ap2 (nameF f) p (data x R E) ≐ sample f p x R E := by
+  let X := data x R E
+  have raw : Γ ⊢[PRAAx] ap2 (nameF f) p X ≐ sample f p (fstT X) (fstT (sndT X)) (sndT (sndT X)) := by
+    simpa only [nameF,ap2,subst_sample,Syn.subst_var,subst_fstT,subst_sndT,Matrix.cons_val_zero,Matrix.cons_val_one]
+      using toPR_eq (Γ := Γ)
+        (sample f (var 0) (fstT (var 1)) (fstT (sndT (var 1))) (sndT (sndT (var 1))) : PTm 2) ![p,X]
+  have fields := Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (sample f (var 0) (var 1) (var 2) (var 3) : PTm 4)
+    (σ := ![p,fstT X,fstT (sndT X),sndT (sndT X)]) (σ' := ![p,x,R,E])
+    (fun i => by
+      fin_cases i
+      exact .eqRefl _
+      exact fst_pair _ _
+      exact (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
+      exact (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))
+  exact raw.eqTrans (by simpa only [subst_sample,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
+    Matrix.cons_val_two,Matrix.cons_val_three,Matrix.head_cons,Matrix.tail_cons] using fields)
+
+theorem encoded_regular (f : PR 2) (k x R E : PTm n) (h : Γ ⊢[PRAAx] source f x R E) :
+    Γ ⊢[PRAAx] pointCN gammaF (encodedData f k x R E) :=
+  gamma_regular _ R _ one E (source_at f k x R E h)
+
+private theorem input_budget (r t m : PTm n)
+    (hr : Γ ⊢[PRAAx] le (succ m) r) (ht : Γ ⊢[PRAAx] le (succ m) t) :
+    Γ ⊢[PRAAx] le ((unit r+unit t)*unit m) (one*(unit r*unit t)) := by
+  have double : Γ ⊢[PRAAx] unit (succ m) ≐ two*unit m := (pw_succ two m).eqTrans (mul_comm _ _)
+  have left := mul_le_mul_right (unit t) (le_congr double (.eqRefl _) (unit_monotone hr))
+  have right := mul_le_mul_right (unit r) (le_congr double (.eqRefl _) (unit_monotone ht))
+  exact RationalValueBounds.positive_cancel RationalAlgebra.two_positive
+    (le_congr (by ipra_ring) (by ipra_ring) (add_le_add₂ left right))
+
+theorem encoded_rate (f g : PR 2) (r t s x y R E : PTm n)
+    (hf : Γ ⊢[PRAAx] source f x R E) (hg : Γ ⊢[PRAAx] source g y R E)
+    (he : Γ ⊢[PRAAx] crossEquivalent f g x y)
+    (hr : Γ ⊢[PRAAx] le (succ (modulus s R E)) r) (ht : Γ ⊢[PRAAx] le (succ (modulus s R E)) t) :
+    Γ ⊢[PRAAx] GaussianNamedInverseRate.independentRate gammaF gammaF
+      (encodedData f r x R E) (encodedData g t y R E) one (unit s) := by
+  let u := ap2 f r x
+  let v := ap2 g t y
+  let m := modulus s R E
+  have den := positive_product _ _ (unit_positive (Γ := Γ) r) (unit_positive t)
+  have actual := GaussianFastValueCut.recode_distance_bound u v _ _ den (cross_at f g x y r t he)
+  have near := distance_radius_mono _ _ _ _ _ _ den (unit_positive m) (input_budget r t m hr ht) actual
+  exact GaussianGammaNamedPoleFreeModulus.original_rate s (rawGaussian u) (rawGaussian v) R (rawDen u) (rawDen v) E
+    (source_at f r x R E hf) (source_at g t y R E hg) near
+
+private theorem output_budget (p q : PTm n) : Γ ⊢[PRAAx] le
+    (rateNumerator one (unit (succ p)) (succ p) (succ q)*(unit p*unit q))
+    ((unit p+unit q)*rateDenominator (unit (succ p)) (succ p) (succ q)) := by
+  have dp : Γ ⊢[PRAAx] unit (succ p) ≐ unit p*two := pw_succ two p
+  have dq : Γ ⊢[PRAAx] unit (succ q) ≐ unit q*two := pw_succ two q
+  have rd := congrMul (congrMul dp dp) dq
+  have rn := congrAdd (congrMul (congrMul (.eqRefl one) dp) dq) (congrMul dp (congrAdd dp dq))
+  exact le_congr (congrMul rn (.eqRefl _)).eqSymm (congrMul (.eqRefl _) rd).eqSymm
+    (le_of_eq_add (d := two*two*unit p*unit p*unit p*unit q) (by ipra_ring))
+
+private theorem observations_of_le (f g : PR 2) (p q x y R E : PTm n)
+    (hf : Γ ⊢[PRAAx] source f x R E) (hg : Γ ⊢[PRAAx] source g y R E)
+    (he : Γ ⊢[PRAAx] crossEquivalent f g x y) (hpq : Γ ⊢[PRAAx] le p q) :
+    Γ ⊢[PRAAx] distanceBounded (sample f p x R E) (sample g q y R E) (unit p+unit q) (unit p*unit q) := by
+  let r := clock p R E
+  let t := clock q R E
+  let s := succ p
+  have hs : Γ ⊢[PRAAx] le s (succ q) :=
+    le_congr (succ_eq_add_one _).eqSymm (succ_eq_add_one _).eqSymm (add_le_add_right one hpq)
+  have rate := encoded_rate f g r t s x y R E hf hg he
+    (clock_demand p R E s (le_refl _)) (clock_demand q R E s hs)
+  have obs := rate_at gammaF gammaF (encodedData f r x R E) (encodedData g t y R E) one (unit s) (succ p) (succ q) rate
+  exact distance_radius_mono _ _ _ _ _ _ (denominator_positive _ _ _ (unit_positive s))
+    (positive_product _ _ (unit_positive p) (unit_positive q)) (output_budget p q) obs
+
+theorem original_observations (f g : PR 2) (p q x y R E : PTm n)
+    (hf : Γ ⊢[PRAAx] source f x R E) (hg : Γ ⊢[PRAAx] source g y R E)
+    (he : Γ ⊢[PRAAx] crossEquivalent f g x y) :
+    Γ ⊢[PRAAx] distanceBounded (ap2 (nameF f) p (data x R E)) (ap2 (nameF g) q (data y R E))
+      (unit p+unit q) (unit p*unit q) := by
+  have sourceResult : Γ ⊢[PRAAx] distanceBounded (sample f p x R E) (sample g q y R E)
+      (unit p+unit q) (unit p*unit q) := by
+    refine .orE (le_total p q) (observations_of_le f g p q x y R E hf.wk hg.wk he.wk Prf.hyp0) ?_
+    have back := observations_of_le g f q p y x R E hg.wk hf.wk (cross_symm _ _ _ _ he.wk) Prf.hyp0
+    have den : (le q p)::Γ ⊢[PRAAx] le one (unit q*unit p) :=
+      positive_product _ _ (unit_positive q) (unit_positive p)
+    exact distance_congr (.eqRefl _) (.eqRefl _) (add_comm _ _) (mul_comm _ _)
+      (distance_symmetric _ _ _ _ den back)
+  exact distance_congr (name_at f p x R E).eqSymm (name_at g q y R E).eqSymm (.eqRefl _) (.eqRefl _) sourceResult
+
+theorem proper (f g : PR 2) (x y R E : PTm n)
+    (hf : Γ ⊢[PRAAx] source f x R E) (hg : Γ ⊢[PRAAx] source g y R E)
+    (he : Γ ⊢[PRAAx] crossEquivalent f g x y) :
+    Γ ⊢[PRAAx] crossEquivalent (nameF f) (nameF g) (data x R E) (data y R E) := by
+  let sh (t : PTm n) := Syn.shift (Syn.shift t)
+  let Δ := (Γ.map Fm.shift).map Fm.shift
+  have sf : Δ ⊢[PRAAx] source f (sh x) (sh R) (sh E) := by
+    simpa only [Δ,sh,Fm.shift,Syn.shift,subst_source] using hf.shift.shift
+  have sg : Δ ⊢[PRAAx] source g (sh y) (sh R) (sh E) := by
+    simpa only [Δ,sh,Fm.shift,Syn.shift,subst_source] using hg.shift.shift
+  have se : Δ ⊢[PRAAx] crossEquivalent f g (sh x) (sh y) := by simpa [Δ,sh,Fm.shift,Syn.shift] using he.shift.shift
+  refine .allI (.allI ?_)
+  simpa only [crossEquivalent,subst_data,Syn.shift,sh] using
+    original_observations f g (var 1) (var 0) (sh x) (sh y) (sh R) (sh E) sf sg se
+
+theorem name_regular (f : PR 2) (x R E : PTm n) (h : Γ ⊢[PRAAx] source f x R E) :
+    Γ ⊢[PRAAx] pointCN (nameF f) (data x R E) := by
+  simpa only [pointCN,GaussianEuclideanPointDistance.unit,GaussianCoefficientNameBounds.unit,crossEquivalent] using
+    proper f f x x R E h h (cross_refl f x h.andE₁)
+
+theorem actual_named_pole_free_Gamma_regular_closed (f : PR 2) :
+    ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3
+      (source f (var 0) (var 1) (var 2) ⟶ pointCN (nameF f) (data (var 0) (var 1) (var 2))) :=
+  closeUniv 3 (.impI (name_regular f _ _ _ Prf.hyp0))
+
+end LeanProofs.IPRA.Analysis.GaussianGammaNamedPoleFree

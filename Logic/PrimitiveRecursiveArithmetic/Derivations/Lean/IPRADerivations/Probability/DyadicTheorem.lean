@@ -1,6 +1,6 @@
 import IPRADerivations.Probability.DyadicCover
 import IPRADerivations.Core.Fubini
-import IPRADerivations.Analysis.PowerSums
+import IPRADerivations.Analysis.RationalArithmetic.PowerSums
 
 /-!
 # The dyadic strong law: the maximal tail bound

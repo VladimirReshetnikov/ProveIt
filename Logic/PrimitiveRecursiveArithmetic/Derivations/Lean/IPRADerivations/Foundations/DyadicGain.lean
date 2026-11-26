@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalClosure
+import IPRADerivations.Analysis.RationalArithmetic.RationalClosure
 import IPRADerivations.Core.OrderCertificates
 
 /-!

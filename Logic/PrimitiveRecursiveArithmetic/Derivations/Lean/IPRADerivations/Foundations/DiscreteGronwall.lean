@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.PowerSums
+import IPRADerivations.Analysis.RationalArithmetic.PowerSums
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.AnalyticNumberTheory.LocalFactor

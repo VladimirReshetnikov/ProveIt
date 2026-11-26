@@ -3,7 +3,7 @@ import IPRADerivations.AnalyticNumberTheory.SumReindex
 import IPRADerivations.AnalyticNumberTheory.PrimorialUpper
 import IPRADerivations.AnalyticNumberTheory.FourthRootSum
 import IPRADerivations.AnalyticNumberTheory.MobiusFloor
-import IPRADerivations.Analysis.PowerSums
+import IPRADerivations.Analysis.RationalArithmetic.PowerSums
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.CommonLemmas
 import IPRADerivations.Core.InductionTactic

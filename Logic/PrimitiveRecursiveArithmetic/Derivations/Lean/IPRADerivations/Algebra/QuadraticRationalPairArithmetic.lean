@@ -1,5 +1,5 @@
 import IPRADerivations.Algebra.QuadraticRationalClearing
-import IPRADerivations.Analysis.RationalAlgebra
+import IPRADerivations.Analysis.RationalArithmetic.RationalAlgebra
 import IPRADerivations.Core.CertificateTactics
 
 /-!

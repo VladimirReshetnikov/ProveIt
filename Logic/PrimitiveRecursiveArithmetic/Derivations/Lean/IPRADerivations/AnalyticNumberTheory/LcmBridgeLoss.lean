@@ -1,7 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.PrimorialLower
 import IPRADerivations.AnalyticNumberTheory.SymmetryPointwise
 import IPRADerivations.Geometry.HypercubeSplit
-import IPRADerivations.Analysis.WeierstrassProduct
+import IPRADerivations.Analysis.FiniteOperations.WeierstrassProduct
 import IPRADerivations.Core.LinearCombination
 
 /-!

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalFiniteSum
+import IPRADerivations.Analysis.RationalArithmetic.RationalFiniteSum
 import IPRADerivations.Foundations.BoundedSyntax
 
 /-!

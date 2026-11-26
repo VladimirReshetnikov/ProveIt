@@ -1,6 +1,6 @@
 import IPRADerivations.Foundations.TelescopingNames
 import IPRADerivations.Foundations.AuxiliaryEnvelope
-import IPRADerivations.Analysis.ErrorBudgets
+import IPRADerivations.Analysis.Names.Rates.ErrorBudgets
 import IPRADerivations.Probability.Histogram
 import IPRADerivations.Core.OrderCertificates
 

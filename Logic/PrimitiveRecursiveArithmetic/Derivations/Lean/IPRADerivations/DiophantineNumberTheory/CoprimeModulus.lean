@@ -1,5 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.AperyNumbers
-import IPRADerivations.Analysis.Pochhammer
+import IPRADerivations.Analysis.RationalArithmetic.Powers.Pochhammer
 import IPRADerivations.Foundations.ChineseRemainder
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.InductionTactic

@@ -12,25 +12,25 @@ lemmas and analytic certificate structures are separate evidence.
 
 ## Current checked arithmetic
 
-[GammaEulerMesh](Lean/IPRADerivations/Analysis/GammaEulerMesh.lean)
+[GammaEulerMesh](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GammaEulerMesh.lean)
 computes the exact sample `H_N−(H_(KN)−H_K)` on the positive integer
 mesh. It proves the C1 difference for a common mesh and the finite
 range `[0,1]` on the independently normalized samples.
-[GammaEulerConstantName](Lean/IPRADerivations/Analysis/GammaEulerConstantName.lean)
+[GammaEulerConstantName](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GammaEulerConstantName.lean)
 constructs the actual fixed-index and cofinal regular names and proves the
 sharp named C1 and C2 comparisons with independent observation errors.
-[GammaMeshRobinLogBridge](Lean/IPRADerivations/Analysis/GammaMeshRobinLogBridge.lean)
+[GammaMeshRobinLogBridge](Lean/IPRADerivations/Analysis/Gamma/GammaMeshRobinLogBridge.lean)
 proves independent-precision agreement of the regular harmonic-mesh and
 binary-reduced Robin logarithm names for positive integers. Its Robin
 observations use the original numerator and denominator at `p+N+4`. It
 also proves that the fixed-index Euler sample plus the logarithm at the
 same mesh equals the original exact harmonic value. The unreduced artanh
 sampler still needs its own comparison.
-[RationalGaussianNameEmbedding](Lean/IPRADerivations/Analysis/RationalGaussianNameEmbedding.lean)
+[RationalGaussianNameEmbedding](Lean/IPRADerivations/Analysis/Names/RationalGaussianNameEmbedding.lean)
 embeds the original regular scalar names as regular Gaussian names,
 with exact Euclidean distances and a computed exponential disk.
 
-[GammaCanonicalFactors](Lean/IPRADerivations/Analysis/GammaCanonicalFactors.lean)
+[GammaCanonicalFactors](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GammaCanonicalFactors.lean)
 implements the finite expression
 
 `−z²/(2N²) + Σ_{j=3}^{L+2} (−1)^(j+1) z^j/(jN^j)`.
@@ -47,7 +47,7 @@ under `N≥1`, `B≥1`, `|z|≤RB` and `2R≤N`. This is a finite, uniform estim
 for the prescribed canonical factors. It does not identify an analytic
 logarithm or a Gamma function by its module name.
 
-[GammaCanonicalNames](Lean/IPRADerivations/Analysis/GammaCanonicalNames.lean)
+[GammaCanonicalNames](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GammaCanonicalNames.lean)
 now constructs the actual joint tail name, with factor count
 `2^(p+5)(R²+1)` and Taylor length `p+5+count`. A proved overlap comparison
 and index-tail estimate each cost at most `2^(-p-5)`. The actual PR5 signed
@@ -56,485 +56,485 @@ ordered-precision bounds, exact program equations, rounding correctness and
 the C6 disk bound with only the explicit `2/2^(p+4)` rounding slack.
 `primitive_recursive_joint_tail_name` is a name for this prescribed
 power-series tail.
-[GaussianGammaCanonicalTailName](Lean/IPRADerivations/Analysis/GaussianGammaCanonicalTailName.lean)
+[GaussianGammaCanonicalTailName](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGammaCanonicalTailName.lean)
 uses those exact observations as a regular Gaussian rational name with the
 C6 radius and the same rounding slack. At the sufficient cutoff `4R²≤N`,
 every sample lies in the unit disk, which supplies an actual input and
 regular output for the exponential of this tail.
-[GaussianGammaCanonicalTailFiniteSplit](Lean/IPRADerivations/Analysis/GaussianGammaCanonicalTailFiniteSplit.lean)
+[GaussianGammaCanonicalTailFiniteSplit](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGammaCanonicalTailFiniteSplit.lean)
 identifies the normalized original finite tail with the exact Gaussian sum
 of its original factors. One extra factor in the original tail yields
 the first factor plus the successor tail at the same Taylor degree.
-[GaussianGammaCanonicalTailMetric](Lean/IPRADerivations/Analysis/GaussianGammaCanonicalTailMetric.lean)
+[GaussianGammaCanonicalTailMetric](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGammaCanonicalTailMetric.lean)
 proves the original same-query comparison with error `8/2^(p+4)`.
-[GaussianGammaCanonicalTailShift](Lean/IPRADerivations/Analysis/GaussianGammaCanonicalTailShift.lean)
+[GaussianGammaCanonicalTailShift](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGammaCanonicalTailShift.lean)
 accounts for the retiming of the actual addition and proves the regular
 name identity `T_N=L_(N+1)+T_(N+1)` at independent precisions.
-[GaussianGammaExactTailDisk](Lean/IPRADerivations/Analysis/GaussianGammaExactTailDisk.lean)
+[GaussianGammaExactTailDisk](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaExactTailDisk.lean)
 constructs an equivalent regular tail name on the exact C6 disk and
 proves its exponential bound when `R²≤N`.
-[GaussianGammaCanonicalTailExponential](Lean/IPRADerivations/Analysis/GaussianGammaCanonicalTailExponential.lean)
+[GaussianGammaCanonicalTailExponential](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGammaCanonicalTailExponential.lean)
 proves that the actual tail exponential approaches one at a computed
 cofinal cutoff. The original pure-tail finite sample comparison uses the
 C6 radius and the finite three-Lipschitz estimate.
-[GaussianGammaEulerHead](Lean/IPRADerivations/Analysis/GaussianGammaEulerHead.lean)
+[GaussianGammaEulerHead](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGammaEulerHead.lean)
 builds the literal finite polynomial in C5 and C7, proves its finite
 split and binds each factor to the local C4 constant. At cutoff `2R` its
 Euclidean majorant is exactly the polynomial factor in C9.
-[GaussianGammaEulerHeadLower](Lean/IPRADerivations/Analysis/GaussianGammaEulerHeadLower.lean)
+[GaussianGammaEulerHeadLower](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGammaEulerHeadLower.lean)
 proves that the original pole guard gives the exact lower bound
 `δ^(N+1)/N!` on the literal head. Its actual rational reciprocal
 multiplies the head to one and satisfies the corresponding upper bound.
-[GaussianBoundedInverseApartness](Lean/IPRADerivations/Analysis/GaussianBoundedInverseApartness.lean)
+[GaussianBoundedInverseApartness](Lean/IPRADerivations/Analysis/FiniteOperations/GaussianBoundedInverseApartness.lean)
 computes a finite anchor for the original reciprocal-name program from
 a bounded regular inverse and proves agreement with that inverse.
-[GaussianGammaReciprocalInverse](Lean/IPRADerivations/Analysis/GaussianGammaReciprocalInverse.lean)
+[GaussianGammaReciprocalInverse](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaReciprocalInverse.lean)
 constructs the original reciprocal of C7 under the supplied pole guard.
 It proves the C13 constant is positive and gives a regular multiplicative
 inverse bounded by exactly `1/λ`. The actual Gamma observations obey
 `1/λ+2/2^p`.
-[GaussianApproximateInverseDistance](Lean/IPRADerivations/Analysis/GaussianApproximateInverseDistance.lean)
-and [GaussianNamedInverseRate](Lean/IPRADerivations/Analysis/GaussianNamedInverseRate.lean)
+[GaussianApproximateInverseDistance](Lean/IPRADerivations/Analysis/Names/Rates/GaussianApproximateInverseDistance.lean)
+and [GaussianNamedInverseRate](Lean/IPRADerivations/Analysis/Names/Rates/GaussianNamedInverseRate.lean)
 transfer a direct comparison with base rate `D/N` to the exact inverse
 rate `A²D/(B²N)` when both inverses have bounds `A/B`.
-[GaussianNamedRateTransport](Lean/IPRADerivations/Analysis/GaussianNamedRateTransport.lean)
+[GaussianNamedRateTransport](Lean/IPRADerivations/Analysis/Names/Rates/GaussianNamedRateTransport.lean)
 preserves the exact base rate across replacements by equivalent names.
-[GaussianGammaEulerInverseConvergence](Lean/IPRADerivations/Analysis/GaussianGammaEulerInverseConvergence.lean)
+[GaussianGammaEulerInverseConvergence](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGammaEulerInverseConvergence.lean)
 instantiates the C15 rate `3M_R(R²+R)/(λ²N)` for the actual Euler
 reciprocal and Gamma with independent observation errors.
-[GaussianGammaEulerInverseApproximationName](Lean/IPRADerivations/Analysis/GaussianGammaEulerInverseApproximationName.lean)
+[GaussianGammaEulerInverseApproximationName](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGammaEulerInverseApproximationName.lean)
 constructs an actual cofinal sampler from this exact fractional
 coefficient and proves that it gives the same regular name as Gamma.
-[GaussianGammaRadiusOverlap](Lean/IPRADerivations/Analysis/GaussianGammaRadiusOverlap.lean)
+[GaussianGammaRadiusOverlap](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaRadiusOverlap.lean)
 proves agreement of the original C7 and Gamma names at the same
 encoded rational point on two supplied disks. Gamma permits separate
 pole certificates and actual computed anchors on the two disks.
-[GaussianGammaCanonicalExponent](Lean/IPRADerivations/Analysis/GaussianGammaCanonicalExponent.lean)
+[GaussianGammaCanonicalExponent](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGammaCanonicalExponent.lean)
 constructs the actual regular C7 exponent from the Euler constant mesh
 name, the exact harmonic value and the original canonical tail at `2R`.
 The computed zeroth-observation radius gives a regular exponential.
-[GaussianGammaHarmonicIncrement](Lean/IPRADerivations/Analysis/GaussianGammaHarmonicIncrement.lean)
+[GaussianGammaHarmonicIncrement](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaHarmonicIncrement.lean)
 proves the exact scalar and Gaussian identity `H_(N+1)=H_N+1/(N+1)`
 for the original harmonic programs.
-[GaussianGammaCanonicalExponentBound](Lean/IPRADerivations/Analysis/GaussianGammaCanonicalExponentBound.lean)
+[GaussianGammaCanonicalExponentBound](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGammaCanonicalExponentBound.lean)
 proves that every original C7 exponent observation lies in the numerical
 disk of radius `2R²+2R`, using the original tail with its rounding error.
-[GaussianGammaFixedEulerExponent](Lean/IPRADerivations/Analysis/GaussianGammaFixedEulerExponent.lean)
+[GaussianGammaFixedEulerExponent](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaFixedEulerExponent.lean)
 constructs an exact representative in the same disk for the exponent
 built from the fixed Euler observation and both finite-tail summands.
-[GaussianGammaFixedEulerExponentBalance](Lean/IPRADerivations/Analysis/GaussianGammaFixedEulerExponentBalance.lean)
+[GaussianGammaFixedEulerExponentBalance](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaFixedEulerExponentBalance.lean)
 proves the addition identity with the original Euler correction.
-[GaussianGammaFoldedQBound](Lean/IPRADerivations/Analysis/GaussianGammaFoldedQBound.lean)
+[GaussianGammaFoldedQBound](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaFoldedQBound.lean)
 then factors the original `Q_N` and gives its exact bounded representative.
-[GaussianGammaEulerReciprocalInverse](Lean/IPRADerivations/Analysis/GaussianGammaEulerReciprocalInverse.lean)
+[GaussianGammaEulerReciprocalInverse](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGammaEulerReciprocalInverse.lean)
 constructs its actual reciprocal on the pole-free disk using the same
 C13 constant `λ`. The exact representative has bound `1/λ`.
-[GaussianRationalLowerPerturbation](Lean/IPRADerivations/Analysis/GaussianRationalLowerPerturbation.lean)
+[GaussianRationalLowerPerturbation](Lean/IPRADerivations/Analysis/Names/Rates/GaussianRationalLowerPerturbation.lean)
 proves the exact Gaussian lower bound near one and the fractional lower
 bound for one factor of a product.
-[GaussianGammaObservationLower](Lean/IPRADerivations/Analysis/GaussianGammaObservationLower.lean)
+[GaussianGammaObservationLower](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaObservationLower.lean)
 uses them to bound the actual `P` and `Q_N` observations below by
 `λ max(0,1−K/2^p)` and the Gamma observations below by
 `(1/M_R) max(0,1−K/2^p)`. Each `K` is given by the corresponding
 original multiplication clock.
-[GaussianGammaPoleZeros](Lean/IPRADerivations/Analysis/GaussianGammaPoleZeros.lean)
+[GaussianGammaPoleZeros](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaPoleZeros.lean)
 proves exact zero of the original C7 observations at each encoded
 negative integer whose pole index is included in the head.
-[GaussianGammaPoleSearch](Lean/IPRADerivations/Analysis/GaussianGammaPoleSearch.lean)
+[GaussianGammaPoleSearch](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaPoleSearch.lean)
 proves the converse for encoded rational inputs. The bounded search
 returns an exact pole index or derives separation with `δ=1/B` from
 the nonzero translated integer norms. The actual reciprocal anchor
 then excludes the original C7 zero predicate in the failure branch.
-[GaussianGammaEulerHeadShift](Lean/IPRADerivations/Analysis/GaussianGammaEulerHeadShift.lean)
+[GaussianGammaEulerHeadShift](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGammaEulerHeadShift.lean)
 proves the finite polynomial cancellation underlying C20 for all
 numerical cutoffs. Its actual head output satisfies
 `z H_N(z+1)=(z+N+1)H_N(z)` by multiplication alone.
-[GaussianGammaEulerShift](Lean/IPRADerivations/Analysis/GaussianGammaEulerShift.lean)
+[GaussianGammaEulerShift](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGammaEulerShift.lean)
 proves the corresponding shift for the original finite Euler names
 with the actual `exp(−log N)` factor.
-[GaussianGammaEulerShiftLimit](Lean/IPRADerivations/Analysis/GaussianGammaEulerShiftLimit.lean)
+[GaussianGammaEulerShiftLimit](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGammaEulerShiftLimit.lean)
 computes the correction and its exact error under the mesh-log inverse
-identity. [GaussianGammaFunctionalEquation](Lean/IPRADerivations/Analysis/GaussianGammaFunctionalEquation.lean)
+identity. [GaussianGammaFunctionalEquation](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaFunctionalEquation.lean)
 proves the original C7 shift under that identity for all positive cutoffs.
-[RationalReciprocalPowerTail](Lean/IPRADerivations/Analysis/RationalReciprocalPowerTail.lean)
+[RationalReciprocalPowerTail](Lean/IPRADerivations/Analysis/RationalArithmetic/Powers/RationalReciprocalPowerTail.lean)
 proves the C17 sharp finite tail for the actual reciprocal-power sum.
 The bound retains the endpoint potential for every numerical length,
 with exponent `m≥2` and starting index `N≥1`.
-[RationalReciprocalPowerName](Lean/IPRADerivations/Analysis/RationalReciprocalPowerName.lean)
+[RationalReciprocalPowerName](Lean/IPRADerivations/Analysis/Names/RationalReciprocalPowerName.lean)
 gives the C17 cofinal zeta sampler and the shifted tail as regular names.
 Each raw tail observation satisfies the exact sharp bound and is nonnegative.
 The original finite reciprocal-power prefix plus this tail reconstructs the
 same zeta name at independent observation precisions.
-[GaussianGammaFiniteDegreeRearrangement](Lean/IPRADerivations/Analysis/GaussianGammaFiniteDegreeRearrangement.lean)
+[GaussianGammaFiniteDegreeRearrangement](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaFiniteDegreeRearrangement.lean)
 proves the finite C16 degree rearrangement for the actual normalized tail.
 Its returned PR program computes both equal rectangle values, and the
 original `R²/N` bound applies to the value.
-[GaussianGammaReciprocalDegreeCells](Lean/IPRADerivations/Analysis/GaussianGammaReciprocalDegreeCells.lean)
+[GaussianGammaReciprocalDegreeCells](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaReciprocalDegreeCells.lean)
 separates each literal degree column into its signed monomial and the
 actual rational reciprocal-power partial sum.
-[GaussianGammaDegreeTail](Lean/IPRADerivations/Analysis/GaussianGammaDegreeTail.lean)
+[GaussianGammaDegreeTail](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaDegreeTail.lean)
 proves the exact C18 error `R²/(N·2^(L+1))` between finite rectangles
 of degrees `L+2` and `L+J+2`, including the original `N=2R` choice.
-[GaussianGammaFixedDegreeHorizon](Lean/IPRADerivations/Analysis/GaussianGammaFixedDegreeHorizon.lean)
+[GaussianGammaFixedDegreeHorizon](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaFixedDegreeHorizon.lean)
 proves the exact change with factor horizon at a fixed degree and
 constructs its regular cofinal name with the original factor clock.
-[GaussianGammaCofinalDegreeTail](Lean/IPRADerivations/Analysis/GaussianGammaCofinalDegreeTail.lean)
+[GaussianGammaCofinalDegreeTail](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaCofinalDegreeTail.lean)
 proves the same C18 error against the original cofinal tail at independent
 precisions, with the two requested observation errors.
-[GaussianGammaZetaDegreeName](Lean/IPRADerivations/Analysis/GaussianGammaZetaDegreeName.lean)
+[GaussianGammaZetaDegreeName](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaDegreeName.lean)
 identifies the original fixed-degree tail with the actual C17 zeta-tail
 polynomial, retaining the exact C18 bound.
-[GaussianGammaZetaTailSeries](Lean/IPRADerivations/Analysis/GaussianGammaZetaTailSeries.lean)
+[GaussianGammaZetaTailSeries](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaTailSeries.lean)
 uses the cofinal degree `L_p=p+R²` to construct the actual C16 zeta series
 and proves its equivalence with the original tail at independent
 precisions, including the source cutoff `N=2R`.
-[GaussianFiniteExponentialCoefficientMajorant](Lean/IPRADerivations/Analysis/GaussianFiniteExponentialCoefficientMajorant.lean)
+[GaussianFiniteExponentialCoefficientMajorant](Lean/IPRADerivations/Analysis/Exponential/GaussianFiniteExponentialCoefficientMajorant.lean)
 proves the finite weighted coefficient bound for the original polynomial
-exponential. [GaussianWeightedPolynomialTail](Lean/IPRADerivations/Analysis/GaussianWeightedPolynomialTail.lean)
+exponential. [GaussianWeightedPolynomialTail](Lean/IPRADerivations/Analysis/Polynomials/GaussianWeightedPolynomialTail.lean)
 proves the finite C19 geometric tail on the rescaled half disk. The
 Comparison of coefficient names across radii and cofinal analyticity remain.
-[GaussianGammaZetaCoefficientPolynomial](Lean/IPRADerivations/Analysis/GaussianGammaZetaCoefficientPolynomial.lean)
+[GaussianGammaZetaCoefficientPolynomial](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaCoefficientPolynomial.lean)
 constructs the actual degree buffer and binds its Horner value to the
 original C16 polynomial at its original clock.
-[GaussianGammaZetaCoefficientNorm](Lean/IPRADerivations/Analysis/GaussianGammaZetaCoefficientNorm.lean)
+[GaussianGammaZetaCoefficientNorm](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaCoefficientNorm.lean)
 derives the original sampled weighted coefficient bound
 `R^m/(m(m−1)N^(m−1))` for each `m≥2`.
-[GaussianGammaZetaWeightedNorm](Lean/IPRADerivations/Analysis/GaussianGammaZetaWeightedNorm.lean)
+[GaussianGammaZetaWeightedNorm](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaWeightedNorm.lean)
 sums the original stored coefficients to prove the full finite tail
 mass `R²/N` for every cutoff and observation precision.
-[GaussianGammaLinearCoefficient](Lean/IPRADerivations/Analysis/GaussianGammaLinearCoefficient.lean)
+[GaussianGammaLinearCoefficient](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaLinearCoefficient.lean)
 checks the original sampled Euler-linear monomial and its mass
 `R(N+1)`.
-[GaussianGammaExponentCoefficientPolynomial](Lean/IPRADerivations/Analysis/GaussianGammaExponentCoefficientPolynomial.lean)
+[GaussianGammaExponentCoefficientPolynomial](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaExponentCoefficientPolynomial.lean)
 combines the original sampled exponent coefficients and bounds the
 weighted mass of their finite exponential at cutoff `2R`.
-[GaussianGammaEulerFactorPolynomial](Lean/IPRADerivations/Analysis/GaussianGammaEulerFactorPolynomial.lean)
+[GaussianGammaEulerFactorPolynomial](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGammaEulerFactorPolynomial.lean)
 evaluates the actual stored two-entry Euler factor.
-[GaussianGammaEulerHeadPolynomial](Lean/IPRADerivations/Analysis/GaussianGammaEulerHeadPolynomial.lean)
+[GaussianGammaEulerHeadPolynomial](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGammaEulerHeadPolynomial.lean)
 builds the actual head by coefficient convolution and proves weighted
 mass at most `R(1+R)^N`.
-[GaussianGammaFiniteCoefficientPolynomial](Lean/IPRADerivations/Analysis/GaussianGammaFiniteCoefficientPolynomial.lean)
+[GaussianGammaFiniteCoefficientPolynomial](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaFiniteCoefficientPolynomial.lean)
 evaluates the full finite product of the original head and sampled
 finite exponential. Its exact weighted coefficient majorant is the
 original `M_R`. A prefix through degree `d` has discarded-tail
 error at most `M_(2R)/2^(d+1)` on the radius-`R` disk.
-[GaussianGammaSynchronousExponentName](Lean/IPRADerivations/Analysis/GaussianGammaSynchronousExponentName.lean)
+[GaussianGammaSynchronousExponentName](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaSynchronousExponentName.lean)
 proves that a regular sampler evaluates the same sampled exponent
 coefficient buffer with clocks determined solely by radius and precision.
-[GaussianGammaSynchronousExponentCompatibility](Lean/IPRADerivations/Analysis/GaussianGammaSynchronousExponentCompatibility.lean)
+[GaussianGammaSynchronousExponentCompatibility](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaSynchronousExponentCompatibility.lean)
 identifies that sampler with the original C7 exponent at independent
 precisions on the original disk.
-[GaussianBoundedConstantProductName](Lean/IPRADerivations/Analysis/GaussianBoundedConstantProductName.lean)
+[GaussianBoundedConstantProductName](Lean/IPRADerivations/Analysis/Names/GaussianBoundedConstantProductName.lean)
 then provides a regular multiplication clock depending only on the
 numerical bound for the constant. This lets the finite coefficient
 sampler multiply by the original head with an argument-independent clock.
-[GaussianGammaCofinalCoefficientName](Lean/IPRADerivations/Analysis/GaussianGammaCofinalCoefficientName.lean)
+[GaussianGammaCofinalCoefficientName](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaCofinalCoefficientName.lean)
 binds the resulting observations to the original computed coefficient
 polynomials and the original C7 name. All three coefficient clocks depend
 solely on radius and precision.
-[GaussianGammaOriginalC19Prefix](Lean/IPRADerivations/Analysis/GaussianGammaOriginalC19Prefix.lean)
+[GaussianGammaOriginalC19Prefix](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGammaOriginalC19Prefix.lean)
 compares the computed degree prefix directly to the original C7 name
 with the exact C19 degree bound and independent observation errors.
-[GaussianGammaPolynomialConstantLinear](Lean/IPRADerivations/Analysis/GaussianGammaPolynomialConstantLinear.lean)
+[GaussianGammaPolynomialConstantLinear](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaPolynomialConstantLinear.lean)
 checks the actual constant and linear coefficients of the cofinal
 polynomial as zero and one.
-[GaussianPolynomialLinearFactorCoefficients](Lean/IPRADerivations/Analysis/GaussianPolynomialLinearFactorCoefficients.lean)
+[GaussianPolynomialLinearFactorCoefficients](Lean/IPRADerivations/Analysis/Polynomials/GaussianPolynomialLinearFactorCoefficients.lean)
 checks the original quadratic coefficient under a linear factor.
-[GaussianPolynomialExponentialLinear](Lean/IPRADerivations/Analysis/GaussianPolynomialExponentialLinear.lean)
+[GaussianPolynomialExponentialLinear](Lean/IPRADerivations/Analysis/Exponential/GaussianPolynomialExponentialLinear.lean)
 proves preservation of the linear coefficient by the actual finite
 exponential when the input constant coefficient is zero.
-[GaussianGammaEulerHeadQuadratic](Lean/IPRADerivations/Analysis/GaussianGammaEulerHeadQuadratic.lean)
+[GaussianGammaEulerHeadQuadratic](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGammaEulerHeadQuadratic.lean)
 identifies the quadratic entry of the Euler head with the harmonic sum.
-[GaussianGammaPolynomialQuadratic](Lean/IPRADerivations/Analysis/GaussianGammaPolynomialQuadratic.lean)
+[GaussianGammaPolynomialQuadratic](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaPolynomialQuadratic.lean)
 identifies the exact cofinal quadratic coefficient name with the
 original Euler–Mascheroni name.
-[GaussianGammaFiniteQuadraticExpansion](Lean/IPRADerivations/Analysis/GaussianGammaFiniteQuadraticExpansion.lean)
+[GaussianGammaFiniteQuadraticExpansion](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaFiniteQuadraticExpansion.lean)
 bounds the remainder of the unchanged finite polynomial by a cubic
 in the shrinking input radius.
-[GaussianGammaQuadraticSampler](Lean/IPRADerivations/Analysis/GaussianGammaQuadraticSampler.lean)
+[GaussianGammaQuadraticSampler](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaQuadraticSampler.lean)
 extends that bound to the original reciprocal Gamma observations. The
 independent Euler–Mascheroni observation error retains its quadratic
 input-radius factor.
-[GaussianGammaExponentCoefficientStability](Lean/IPRADerivations/Analysis/GaussianGammaExponentCoefficientStability.lean)
+[GaussianGammaExponentCoefficientStability](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaExponentCoefficientStability.lean)
 proves fixed exponent-coefficient equality across degree horizons
 at the same sample precision and Euler cutoff.
-[GaussianPolynomialExponentialCapStability](Lean/IPRADerivations/Analysis/GaussianPolynomialExponentialCapStability.lean)
+[GaussianPolynomialExponentialCapStability](Lean/IPRADerivations/Analysis/Exponential/GaussianPolynomialExponentialCapStability.lean)
 checks that each original finite exponential coefficient is unchanged
 across caps at least its exponent for zero constant input.
-[GaussianPolynomialLowJetProduct](Lean/IPRADerivations/Analysis/GaussianPolynomialLowJetProduct.lean)
+[GaussianPolynomialLowJetProduct](Lean/IPRADerivations/Analysis/Polynomials/GaussianPolynomialLowJetProduct.lean)
 transfers coefficient agreement through the actual product of buffers
 with different stored degrees.
-[GaussianGammaPowerHorizonCoherence](Lean/IPRADerivations/Analysis/GaussianGammaPowerHorizonCoherence.lean),
-[GaussianGammaExponentialHorizonCoherence](Lean/IPRADerivations/Analysis/GaussianGammaExponentialHorizonCoherence.lean),
-and [GaussianGammaFiniteCoefficientStability](Lean/IPRADerivations/Analysis/GaussianGammaFiniteCoefficientStability.lean)
+[GaussianGammaPowerHorizonCoherence](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaPowerHorizonCoherence.lean),
+[GaussianGammaExponentialHorizonCoherence](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaExponentialHorizonCoherence.lean),
+and [GaussianGammaFiniteCoefficientStability](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaFiniteCoefficientStability.lean)
 reduce every literal cofinal coefficient observation to the actual fixed
 coefficient at its degree-sized truncations and original precision clock.
-[GaussianPolynomialPowerNormVariation](Lean/IPRADerivations/Analysis/GaussianPolynomialPowerNormVariation.lean)
+[GaussianPolynomialPowerNormVariation](Lean/IPRADerivations/Analysis/Polynomials/GaussianPolynomialPowerNormVariation.lean)
 checks the perturbation bound for the actual finite power cursor.
-[GaussianPolynomialExponentialCoefficientVariation](Lean/IPRADerivations/Analysis/GaussianPolynomialExponentialCoefficientVariation.lean)
+[GaussianPolynomialExponentialCoefficientVariation](Lean/IPRADerivations/Analysis/Exponential/GaussianPolynomialExponentialCoefficientVariation.lean)
 preserves each factorial weight in the original finite exponential
 coefficient error.
-[GaussianGammaInputPrecisionNorm](Lean/IPRADerivations/Analysis/GaussianGammaInputPrecisionNorm.lean)
+[GaussianGammaInputPrecisionNorm](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaInputPrecisionNorm.lean)
 proves the actual input coefficient buffer error across precisions.
-[GaussianGammaInputStaticNorm](Lean/IPRADerivations/Analysis/GaussianGammaInputStaticNorm.lean)
+[GaussianGammaInputStaticNorm](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaInputStaticNorm.lean)
 gives its canonical fixed-degree norm envelope.
-[GaussianGammaFixedCoefficientVariation](Lean/IPRADerivations/Analysis/GaussianGammaFixedCoefficientVariation.lean)
+[GaussianGammaFixedCoefficientVariation](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaFixedCoefficientVariation.lean)
 derives a computed precision modulus for the full actual fixed
 coefficient for every degree.
-[GaussianGammaHigherCoefficientName](Lean/IPRADerivations/Analysis/GaussianGammaHigherCoefficientName.lean)
+[GaussianGammaHigherCoefficientName](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaHigherCoefficientName.lean)
 constructs a regular name at every degree from the unchanged cofinal
 coefficient sampler at radius `e+1`.
-[GaussianGammaRadiusCoefficientName](Lean/IPRADerivations/Analysis/GaussianGammaRadiusCoefficientName.lean)
+[GaussianGammaRadiusCoefficientName](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaRadiusCoefficientName.lean)
 keeps the radius as an actual input.
-[GaussianGammaAllDegreeCoefficientStability](Lean/IPRADerivations/Analysis/GaussianGammaAllDegreeCoefficientStability.lean)
-and [GaussianGammaAllDegreeCoefficientVariation](Lean/IPRADerivations/Analysis/GaussianGammaAllDegreeCoefficientVariation.lean)
+[GaussianGammaAllDegreeCoefficientStability](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaAllDegreeCoefficientStability.lean)
+and [GaussianGammaAllDegreeCoefficientVariation](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaAllDegreeCoefficientVariation.lean)
 remove the head-degree restriction by exact product coefficient
 preservation under padding. The unchanged name is regular for every
 internal degree at any fixed positive radius.
-[GaussianLagrangeInterpolation](Lean/IPRADerivations/Analysis/GaussianLagrangeInterpolation.lean)
+[GaussianLagrangeInterpolation](Lean/IPRADerivations/Analysis/Polynomials/GaussianLagrangeInterpolation.lean)
 recovers finite original coefficients from actual natural-grid observations.
-[GaussianLagrangeCoefficientSensitivity](Lean/IPRADerivations/Analysis/GaussianLagrangeCoefficientSensitivity.lean)
+[GaussianLagrangeCoefficientSensitivity](Lean/IPRADerivations/Analysis/Polynomials/GaussianLagrangeCoefficientSensitivity.lean)
 computes the error gain of the original inverse row.
-[GaussianShrinkingPolynomialTail](Lean/IPRADerivations/Analysis/GaussianShrinkingPolynomialTail.lean)
+[GaussianShrinkingPolynomialTail](Lean/IPRADerivations/Analysis/Polynomials/GaussianShrinkingPolynomialTail.lean)
 retains the exact power of the shrinking radius in the finite tail bound.
-[GaussianShrinkingGridValueRecovery](Lean/IPRADerivations/Analysis/GaussianShrinkingGridValueRecovery.lean)
+[GaussianShrinkingGridValueRecovery](Lean/IPRADerivations/Analysis/Names/GaussianShrinkingGridValueRecovery.lean)
 uses the original full polynomial values on the shrinking grid. The
 checked low-prefix program and exact rational dilation give a bound
 for the difference of the actual coefficients.
-[GaussianGammaUnitCoefficientMass](Lean/IPRADerivations/Analysis/GaussianGammaUnitCoefficientMass.lean)
+[GaussianGammaUnitCoefficientMass](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaUnitCoefficientMass.lean)
 bounds the total ordinary coefficient norm of each original polynomial.
-[GaussianGammaCoefficientRadiusIndependence](Lean/IPRADerivations/Analysis/GaussianGammaCoefficientRadiusIndependence.lean)
+[GaussianGammaCoefficientRadiusIndependence](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaCoefficientRadiusIndependence.lean)
 proves that the actual coefficient names agree at every pair of positive
 radii, including the original canonical radius.
-[GaussianGammaOriginalPrefixName](Lean/IPRADerivations/Analysis/GaussianGammaOriginalPrefixName.lean)
+[GaussianGammaOriginalPrefixName](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGammaOriginalPrefixName.lean)
 regularizes the unchanged original finite prefix and proves its literal
 C19 approximation bound with independent precisions.
-[GaussianGammaCanonicalPrefixName](Lean/IPRADerivations/Analysis/GaussianGammaCanonicalPrefixName.lean)
+[GaussianGammaCanonicalPrefixName](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGammaCanonicalPrefixName.lean)
 supplies the regular finite evaluator of the original canonical names.
-[GaussianGammaCanonicalPrefixTaylor](Lean/IPRADerivations/Analysis/GaussianGammaCanonicalPrefixTaylor.lean) compares the actual original finite C19 polynomial
+[GaussianGammaCanonicalPrefixTaylor](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGammaCanonicalPrefixTaylor.lean) compares the actual original finite C19 polynomial
 to the finite sum of actual canonical coefficient observations at any
 internal order. Its remainder retains the full power of the shrinking
 input radius, with separate finite-cutoff and coefficient-query errors.
-[GaussianGammaCanonicalTaylorSampler](Lean/IPRADerivations/Analysis/GaussianGammaCanonicalTaylorSampler.lean) removes the auxiliary finite-polynomial query from the bound
+[GaussianGammaCanonicalTaylorSampler](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGammaCanonicalTaylorSampler.lean) removes the auxiliary finite-polynomial query from the bound
 for the original reciprocal Gamma sampler. The resulting error is the
 shrinking tail plus one output observation error and the coefficient
 observation error multiplied by the number of retained terms.
-[GaussianGammaDeflatedPrefixTaylor](Lean/IPRADerivations/Analysis/GaussianGammaDeflatedPrefixTaylor.lean) factors the exact canonical prefix by its argument and
+[GaussianGammaDeflatedPrefixTaylor](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGammaDeflatedPrefixTaylor.lean) factors the exact canonical prefix by its argument and
 checks the value one at zero for the deflated prefix.
-[GaussianGammaShiftedDeflatedPolynomial](Lean/IPRADerivations/Analysis/GaussianGammaShiftedDeflatedPolynomial.lean) factors the original full Euler polynomial and compares
+[GaussianGammaShiftedDeflatedPolynomial](Lean/IPRADerivations/Analysis/Gamma/FunctionalEquations/GaussianGammaShiftedDeflatedPolynomial.lean) factors the original full Euler polynomial and compares
 its deflated value with the shifted reciprocal Gamma at independent
 precisions on the certified nonzero native guard.
-[GaussianGammaShiftedDeflatedName](Lean/IPRADerivations/Analysis/GaussianGammaShiftedDeflatedName.lean) packages this comparison as a regular name through a
+[GaussianGammaShiftedDeflatedName](Lean/IPRADerivations/Analysis/Gamma/FunctionalEquations/GaussianGammaShiftedDeflatedName.lean) packages this comparison as a regular name through a
 computed retiming and proves equivalence to the original shifted name.
-[GaussianGammaShiftedDeflatedZero](Lean/IPRADerivations/Analysis/GaussianGammaShiftedDeflatedZero.lean) evaluates the same deflated polynomial and shifted reciprocal
+[GaussianGammaShiftedDeflatedZero](Lean/IPRADerivations/Analysis/Gamma/FunctionalEquations/GaussianGammaShiftedDeflatedZero.lean) evaluates the same deflated polynomial and shifted reciprocal
 name at the native zero input.
-[GaussianGammaShiftedDeflatedIdentification](Lean/IPRADerivations/Analysis/GaussianGammaShiftedDeflatedIdentification.lean) proves the same original name equivalence over the full
-native source, including zero. [GaussianGammaDeflatedFiniteTaylor](Lean/IPRADerivations/Analysis/GaussianGammaDeflatedFiniteTaylor.lean) proves the true deflated
+[GaussianGammaShiftedDeflatedIdentification](Lean/IPRADerivations/Analysis/Gamma/FunctionalEquations/GaussianGammaShiftedDeflatedIdentification.lean) proves the same original name equivalence over the full
+native source, including zero. [GaussianGammaDeflatedFiniteTaylor](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaDeflatedFiniteTaylor.lean) proves the true deflated
 polynomial remainder with the full power of the shrinking radius.
-[GaussianGammaShiftedTaylorSampler](Lean/IPRADerivations/Analysis/GaussianGammaShiftedTaylorSampler.lean) transfers that remainder to the original shifted reciprocal
+[GaussianGammaShiftedTaylorSampler](Lean/IPRADerivations/Analysis/Gamma/FunctionalEquations/GaussianGammaShiftedTaylorSampler.lean) transfers that remainder to the original shifted reciprocal
 Gamma observation at every internal order. It retains the original
 canonical coefficient observations and their independent clock, and
 covers zero increment.
-[GaussianGammaPrefixCompatibility](Lean/IPRADerivations/Analysis/GaussianGammaPrefixCompatibility.lean)
+[GaussianGammaPrefixCompatibility](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGammaPrefixCompatibility.lean)
 identifies the two prefix names and proves the literal C19 rate with
 these canonical coefficients on the original encoded disk.
-[GaussianRobinOddLogarithm](Lean/IPRADerivations/Analysis/GaussianRobinOddLogarithm.lean)
-and [GaussianRobinLogarithmParity](Lean/IPRADerivations/Analysis/GaussianRobinLogarithmParity.lean)
+[GaussianRobinOddLogarithm](Lean/IPRADerivations/Analysis/Logarithm/GaussianRobinOddLogarithm.lean)
+and [GaussianRobinLogarithmParity](Lean/IPRADerivations/Analysis/Logarithm/GaussianRobinLogarithmParity.lean)
 identify the original finite Robin artanh component with the difference of
 the two original local logarithm polynomials evaluated at opposite rational
-inputs. [GaussianRobinOddLogarithmName](Lean/IPRADerivations/Analysis/GaussianRobinOddLogarithmName.lean)
+inputs. [GaussianRobinOddLogarithmName](Lean/IPRADerivations/Analysis/Logarithm/GaussianRobinOddLogarithmName.lean)
 constructs a regular sampler from the stored odd series and proves
 its equivalence with the actual difference of the two regular local
 logarithm names.
-[GaussianRobinOddExponential](Lean/IPRADerivations/Analysis/GaussianRobinOddExponential.lean)
+[GaussianRobinOddExponential](Lean/IPRADerivations/Analysis/Exponential/GaussianRobinOddExponential.lean)
 identifies the actual exponential of that odd name with the constant
 `(b+a)/(b−a)` on the half disk.
-[GaussianRobinLogRangeReduction](Lean/IPRADerivations/Analysis/GaussianRobinLogRangeReduction.lean)
+[GaussianRobinLogRangeReduction](Lean/IPRADerivations/Analysis/SpecialFunctions/LambertW/GaussianRobinLogRangeReduction.lean)
 identifies the actual exponentials of the original two binary components
 as `2` and `a/Bt(a,b)`.
-[GaussianRobinLowerDecomposition](Lean/IPRADerivations/Analysis/GaussianRobinLowerDecomposition.lean)
+[GaussianRobinLowerDecomposition](Lean/IPRADerivations/Analysis/SpecialFunctions/LambertW/GaussianRobinLowerDecomposition.lean)
 proves the exact decomposition of the original stored lower endpoint at
 every numerical cutoff into the two actual odd sums and the binary exponent.
-[GaussianRobinMeshLogDecomposition](Lean/IPRADerivations/Analysis/GaussianRobinMeshLogDecomposition.lean)
+[GaussianRobinMeshLogDecomposition](Lean/IPRADerivations/Analysis/SpecialFunctions/LambertW/GaussianRobinMeshLogDecomposition.lean)
 identifies their named weighted sum with the original mesh logarithm
 at independent observation precisions.
-[GaussianNamedNaturalScale](Lean/IPRADerivations/Analysis/GaussianNamedNaturalScale.lean)
-and [GaussianNaturalScaleProductName](Lean/IPRADerivations/Analysis/GaussianNaturalScaleProductName.lean)
+[GaussianNamedNaturalScale](Lean/IPRADerivations/Analysis/Names/GaussianNamedNaturalScale.lean)
+and [GaussianNaturalScaleProductName](Lean/IPRADerivations/Analysis/Names/GaussianNaturalScaleProductName.lean)
 identify the actual retimed scaling with named multiplication.
-[GaussianRobinIntegerExponential](Lean/IPRADerivations/Analysis/GaussianRobinIntegerExponential.lean)
+[GaussianRobinIntegerExponential](Lean/IPRADerivations/Analysis/Exponential/GaussianRobinIntegerExponential.lean)
 proves the exponential law for every numerical binary exponent by
 quantifier-free induction on a finite error comparison.
-[GaussianMeshLogSign](Lean/IPRADerivations/Analysis/GaussianMeshLogSign.lean)
+[GaussianMeshLogSign](Lean/IPRADerivations/Analysis/Inequalities/GaussianMeshLogSign.lean)
 checks the exact named negation and reciprocal transport.
-[GaussianRobinMeshExponential](Lean/IPRADerivations/Analysis/GaussianRobinMeshExponential.lean)
+[GaussianRobinMeshExponential](Lean/IPRADerivations/Analysis/Exponential/GaussianRobinMeshExponential.lean)
 combines the original range-reduced components and proves
 `exp(log N)=N` and `exp(−log N)=1/N` for the original mesh name.
 This proves C20 with its original disk conditions.
-[GaussianGammaNormalization](Lean/IPRADerivations/Analysis/GaussianGammaNormalization.lean)
+[GaussianGammaNormalization](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaNormalization.lean)
 uses the original Euler head at one and the finite convergence rate
 to prove `P(1)=1` and `Γ(1)=1` once the mesh identity is supplied.
-[GaussianGammaShift](Lean/IPRADerivations/Analysis/GaussianGammaShift.lean)
+[GaussianGammaShift](Lean/IPRADerivations/Analysis/Gamma/FunctionalEquations/GaussianGammaShift.lean)
 uses the reciprocal shift and checked inverse product to prove
 `Γ(z+1)=zΓ(z)` on the recorded original two pole-free domains.
-[GaussianGammaShiftTrajectory](Lean/IPRADerivations/Analysis/GaussianGammaShiftTrajectory.lean)
+[GaussianGammaShiftTrajectory](Lean/IPRADerivations/Analysis/Gamma/FunctionalEquations/GaussianGammaShiftTrajectory.lean)
 constructs the actual native successor trajectory, proves its disk at
 every numerical stage, and identifies its encoded coordinate values.
-[GaussianGammaFactorialValues](Lean/IPRADerivations/Analysis/GaussianGammaFactorialValues.lean)
+[GaussianGammaFactorialValues](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGammaFactorialValues.lean)
 then proves the original C21 factorial identity for all internal indices.
-[GaussianGammaRepeatedShift](Lean/IPRADerivations/Analysis/GaussianGammaRepeatedShift.lean)
+[GaussianGammaRepeatedShift](Lean/IPRADerivations/Analysis/Gamma/FunctionalEquations/GaussianGammaRepeatedShift.lean)
 proves C22 for the original reciprocal Gamma name and the actual rising
 product, including zero factors.
-[GaussianGammaRisingFactorial](Lean/IPRADerivations/Analysis/GaussianGammaRisingFactorial.lean)
+[GaussianGammaRisingFactorial](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGammaRisingFactorial.lean)
 proves V8 for the original Gamma names wherever both endpoints have
 certified pole margins. Every internal index is allowed, including zero.
 The observation program returns the actual rising product and the two
 sides of the identity at independent precisions.
-[GaussianGammaBinomialCleared](Lean/IPRADerivations/Analysis/GaussianGammaBinomialCleared.lean)
+[GaussianGammaBinomialCleared](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaBinomialCleared.lean)
 proves the entire cleared V9 identity using the actual generalized
 binomial polynomial, including its values at apparent cancelled poles.
-[GaussianGammaBinomialQuotient](Lean/IPRADerivations/Analysis/GaussianGammaBinomialQuotient.lean)
+[GaussianGammaBinomialQuotient](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaBinomialQuotient.lean)
 identifies the actual formal Gamma quotient with that polynomial
 where the two original Gamma endpoint guards hold. Both proofs
 allow every internal index, including zero.
-[GaussianGammaLocalPoleGuards](Lean/IPRADerivations/Analysis/GaussianGammaLocalPoleGuards.lean)
+[GaussianGammaLocalPoleGuards](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaLocalPoleGuards.lean)
 derives the original punctured-disk domain for C24 and the separated
 terminal argument `1+h/B`.
-[GaussianGammaPoleFiniteFactors](Lean/IPRADerivations/Analysis/GaussianGammaPoleFiniteFactors.lean)
+[GaussianGammaPoleFiniteFactors](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaPoleFiniteFactors.lean)
 identifies the actual reversed rising factors with the signed factorial
 times the finite normalized correction product.
-[GaussianGammaPoleMultiplier](Lean/IPRADerivations/Analysis/GaussianGammaPoleMultiplier.lean)
+[GaussianGammaPoleMultiplier](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaPoleMultiplier.lean)
 checks the inverse step and the actual finite product of inverse factors.
-[GaussianGammaLocalPoleFormula](Lean/IPRADerivations/Analysis/GaussianGammaLocalPoleFormula.lean)
+[GaussianGammaLocalPoleFormula](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaLocalPoleFormula.lean)
 proves C24 and its cleared form for the original Gamma names at every
 encoded rational increment in the punctured unit disk. It computes
 both margins from the integer squared norm of the increment.
-[GaussianGammaPoleFactorContinuity](Lean/IPRADerivations/Analysis/GaussianGammaPoleFactorContinuity.lean)
+[GaussianGammaPoleFactorContinuity](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaPoleFactorContinuity.lean)
 proves the explicit rational error of the original finite normalized
 factor product near the pole.
-[GaussianGammaPoleReciprocalFactor](Lean/IPRADerivations/Analysis/GaussianGammaPoleReciprocalFactor.lean)
+[GaussianGammaPoleReciprocalFactor](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaPoleReciprocalFactor.lean)
 proves the original C23 factorization throughout the encoded closed
 unit disk.
-[GaussianGammaPoleQuotientCenter](Lean/IPRADerivations/Analysis/GaussianGammaPoleQuotientCenter.lean)
-and [GaussianGammaPoleCenterValue](Lean/IPRADerivations/Analysis/GaussianGammaPoleCenterValue.lean)
+[GaussianGammaPoleQuotientCenter](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaPoleQuotientCenter.lean)
+and [GaussianGammaPoleCenterValue](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaPoleCenterValue.lean)
 check the exact center values of the reciprocal quotient and regularized
 Gamma name against the signed factorial and signed inverse factorial.
-[GaussianGammaPoleInverseContinuity](Lean/IPRADerivations/Analysis/GaussianGammaPoleInverseContinuity.lean)
+[GaussianGammaPoleInverseContinuity](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaPoleInverseContinuity.lean)
 proves the corresponding actual inverse-factor perturbation bound on
 the half disk.
-[GaussianGammaTerminalContinuity](Lean/IPRADerivations/Analysis/GaussianGammaTerminalContinuity.lean)
+[GaussianGammaTerminalContinuity](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaTerminalContinuity.lean)
 proves the fixed half-disk certificate for the actual terminal argument
 and transfers an independent C7 rate at one to the original Gamma name.
-[GaussianGammaPoleProductRate](Lean/IPRADerivations/Analysis/GaussianGammaPoleProductRate.lean),
-[GaussianGammaPoleLimitTransport](Lean/IPRADerivations/Analysis/GaussianGammaPoleLimitTransport.lean),
-and [GaussianGammaPoleLimitModulus](Lean/IPRADerivations/Analysis/GaussianGammaPoleLimitModulus.lean)
+[GaussianGammaPoleProductRate](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaPoleProductRate.lean),
+[GaussianGammaPoleLimitTransport](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaPoleLimitTransport.lean),
+and [GaussianGammaPoleLimitModulus](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaPoleLimitModulus.lean)
 derive both local product observations at a common computed precision
 from a specified terminal C7 rate.
-[GaussianGammaPoleDifferenceQuotient](Lean/IPRADerivations/Analysis/GaussianGammaPoleDifferenceQuotient.lean)
+[GaussianGammaPoleDifferenceQuotient](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaPoleDifferenceQuotient.lean)
 binds the factored quotient to the actual division on the punctured disk.
-[GaussianGammaPoleLimits](Lean/IPRADerivations/Analysis/GaussianGammaPoleLimits.lean)
+[GaussianGammaPoleLimits](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaPoleLimits.lean)
 derives the terminal rate and proves the C23 and C25 dyadic limits of
 the actual divided reciprocal and the original cleared Gamma on encoded
 rational increments. The bound holds for every later observation.
-[GaussianRationalConjugation](Lean/IPRADerivations/Analysis/GaussianRationalConjugation.lean)
+[GaussianRationalConjugation](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianRationalConjugation.lean)
 proves exact conjugation for rational code, metric and scalar Taylor sums.
-[GaussianGammaFiniteConjugation](Lean/IPRADerivations/Analysis/GaussianGammaFiniteConjugation.lean)
+[GaussianGammaFiniteConjugation](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaFiniteConjugation.lean)
 proves covariance of the original finite head, local factors and literal
 prefix for C26.
-[GaussianNameConjugation](Lean/IPRADerivations/Analysis/GaussianNameConjugation.lean)
+[GaussianNameConjugation](Lean/IPRADerivations/Analysis/Names/GaussianNameConjugation.lean)
 transports conjugation through the actual regular-name operations.
-[GaussianGammaNameConjugation](Lean/IPRADerivations/Analysis/GaussianGammaNameConjugation.lean)
+[GaussianGammaNameConjugation](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaNameConjugation.lean)
 proves conjugation of the original C7 reciprocal via the literal C11
 cofinal Weierstrass sampler, including at every zero of the original head.
-[GaussianGammaInverseConjugation](Lean/IPRADerivations/Analysis/GaussianGammaInverseConjugation.lean)
+[GaussianGammaInverseConjugation](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaInverseConjugation.lean)
 proves conjugation for the same pole-free Gamma inverse.
-[GaussianGammaRealValues](Lean/IPRADerivations/Analysis/GaussianGammaRealValues.lean)
+[GaussianGammaRealValues](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaRealValues.lean)
 constructs actual rational regular names for the real values of both
 original Gamma names at encoded real rational inputs.
-[GaussianGammaFiniteValueProperness](Lean/IPRADerivations/Analysis/GaussianGammaFiniteValueProperness.lean)
-and [GaussianGammaInputProperness](Lean/IPRADerivations/Analysis/GaussianGammaInputProperness.lean)
+[GaussianGammaFiniteValueProperness](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaFiniteValueProperness.lean)
+and [GaussianGammaInputProperness](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaInputProperness.lean)
 prove that equality of the native coordinate values at a fixed denominator
 is respected by the original reciprocal and pole-free Gamma names.
-[GaussianGammaEulerHeadContinuity](Lean/IPRADerivations/Analysis/GaussianGammaEulerHeadContinuity.lean)
+[GaussianGammaEulerHeadContinuity](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGammaEulerHeadContinuity.lean)
 proves the actual finite head modulus on each fixed-radius disk for
 two encodings with the same denominator.
-[GaussianGammaEncodingRescaling](Lean/IPRADerivations/Analysis/GaussianGammaEncodingRescaling.lean)
+[GaussianGammaEncodingRescaling](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaEncodingRescaling.lean)
 proves C7 agreement under positive rescaling of both numerator and
 denominator, including all positive encodings of one.
-[GaussianGammaLogExponentContinuity](Lean/IPRADerivations/Analysis/GaussianGammaLogExponentContinuity.lean)
-and [GaussianGammaEulerContinuityReference](Lean/IPRADerivations/Analysis/GaussianGammaEulerContinuityReference.lean)
+[GaussianGammaLogExponentContinuity](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaLogExponentContinuity.lean)
+and [GaussianGammaEulerContinuityReference](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGammaEulerContinuityReference.lean)
 derive the original C7 comparison with a finite shared reference and
 bound the reference variation in the input.
-[GaussianGammaInputContinuity](Lean/IPRADerivations/Analysis/GaussianGammaInputContinuity.lean)
+[GaussianGammaInputContinuity](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaInputContinuity.lean)
 derives the uniform input modulus for the original C7 name from this
 reference. It preserves independent observation errors.
-[GaussianGammaC7Name](Lean/IPRADerivations/Analysis/GaussianGammaC7Name.lean)
+[GaussianGammaC7Name](Lean/IPRADerivations/Analysis/Gamma/FunctionalEquations/GaussianGammaC7Name.lean)
 multiplies it by the original polynomial head and gives a regular name
 for the displayed C7 expression on each fixed input disk.
-[GaussianGammaCutoffName](Lean/IPRADerivations/Analysis/GaussianGammaCutoffName.lean)
+[GaussianGammaCutoffName](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaCutoffName.lean)
 verifies the same programs at arbitrary numerical cutoffs satisfying
 `N≥1` and `2R≤N`, with literal specialization at `N=2R`.
-[GaussianGammaC9Bound](Lean/IPRADerivations/Analysis/GaussianGammaC9Bound.lean)
+[GaussianGammaC9Bound](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaC9Bound.lean)
 proves the exact C9 bound `M_R` for every observation of the original
-reciprocal name. [GaussianGammaFoldedMajorantExponent](Lean/IPRADerivations/Analysis/GaussianGammaFoldedMajorantExponent.lean)
+reciprocal name. [GaussianGammaFoldedMajorantExponent](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaFoldedMajorantExponent.lean)
 constructs the same bound for a representative formed from the original
 head and the exponent at `2R` minus the tail at `N`.
-[GaussianGammaFoldedC9Bound](Lean/IPRADerivations/Analysis/GaussianGammaFoldedC9Bound.lean)
+[GaussianGammaFoldedC9Bound](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaFoldedC9Bound.lean)
 identifies this bounded representative with the original folded finite
 `P_N` program. Its original observations obey `M_R+2/2^p`.
-[GaussianGammaFiniteApproximantName](Lean/IPRADerivations/Analysis/GaussianGammaFiniteApproximantName.lean)
+[GaussianGammaFiniteApproximantName](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaFiniteApproximantName.lean)
 constructs the folded C5 names from the original polynomial head,
 Euler constant, harmonic value, and harmonic-mesh logarithm. It proves the
 actual sampling equations and regularity.
-[GaussianGammaWeierstrassFactors](Lean/IPRADerivations/Analysis/GaussianGammaWeierstrassFactors.lean)
+[GaussianGammaWeierstrassFactors](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGammaWeierstrassFactors.lean)
 checks the literal finite products at a common Taylor cutoff.
-[GaussianGammaWeierstrassFiniteName](Lean/IPRADerivations/Analysis/GaussianGammaWeierstrassFiniteName.lean)
+[GaussianGammaWeierstrassFiniteName](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGammaWeierstrassFiniteName.lean)
 normalizes the actual factor fold and compares it to the negative
 harmonic exponential.
-[GaussianGammaWeierstrassApproximant](Lean/IPRADerivations/Analysis/GaussianGammaWeierstrassApproximant.lean)
+[GaussianGammaWeierstrassApproximant](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGammaWeierstrassApproximant.lean)
 attaches the original Euler-constant exponential and identifies the
 literal factor-by-factor name with the original folded `P_N`.
-[GaussianGammaWeierstrassConvergence](Lean/IPRADerivations/Analysis/GaussianGammaWeierstrassConvergence.lean)
+[GaussianGammaWeierstrassConvergence](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGammaWeierstrassConvergence.lean)
 proves that the folded name approaches C7 at rate `3M_R R²/N`.
-[GaussianGammaWeierstrassLimit](Lean/IPRADerivations/Analysis/GaussianGammaWeierstrassLimit.lean)
+[GaussianGammaWeierstrassLimit](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGammaWeierstrassLimit.lean)
 transfers the exact rate to the literal factor program and evaluates
 it at a computed cofinal cutoff. The resulting actual regular sampler
 agrees with the original C7 reciprocal at independent precisions.
-[GaussianGammaLogHarmonicName](Lean/IPRADerivations/Analysis/GaussianGammaLogHarmonicName.lean)
+[GaussianGammaLogHarmonicName](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaLogHarmonicName.lean)
 proves that the actual sum of the fixed-index Euler and harmonic-mesh
 logarithm names agrees with the exact harmonic constant at independent
 precisions.
-[GaussianGammaExponentStep](Lean/IPRADerivations/Analysis/GaussianGammaExponentStep.lean)
+[GaussianGammaExponentStep](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaExponentStep.lean)
 proves the actual exponent identity for adjacent cutoffs by combining
 the harmonic increment, tail shift and original local full logarithm.
-[GaussianGammaAdjacentCutoff](Lean/IPRADerivations/Analysis/GaussianGammaAdjacentCutoff.lean)
+[GaussianGammaAdjacentCutoff](Lean/IPRADerivations/Analysis/Gamma/FunctionalEquations/GaussianGammaAdjacentCutoff.lean)
 uses local C4 and the literal head successor to prove agreement of the
 complete C7 names at adjacent cutoffs, including zeros of the polynomial
-head. [GaussianGammaFoldedApproximantBalance](Lean/IPRADerivations/Analysis/GaussianGammaFoldedApproximantBalance.lean)
+head. [GaussianGammaFoldedApproximantBalance](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaFoldedApproximantBalance.lean)
 proves both C8 product identities for the actual folded programs.
-[GaussianGammaCutoffIndependence](Lean/IPRADerivations/Analysis/GaussianGammaCutoffIndependence.lean)
+[GaussianGammaCutoffIndependence](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaCutoffIndependence.lean)
 uses quantifier-free induction at fixed observation precision, followed
 by an envelope comparison, to derive agreement at any two valid
-numerical cutoffs. [GaussianGammaEulerCorrectionDisk](Lean/IPRADerivations/Analysis/GaussianGammaEulerCorrectionDisk.lean)
+numerical cutoffs. [GaussianGammaEulerCorrectionDisk](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGammaEulerCorrectionDisk.lean)
 proves the exact `R/N` disk for the represented Euler correction.
-[GaussianGammaPerturbationExponent](Lean/IPRADerivations/Analysis/GaussianGammaPerturbationExponent.lean)
+[GaussianGammaPerturbationExponent](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaPerturbationExponent.lean)
 proves the actual difference-of-exponents envelope at `(R²+R)/N`
 and its relation to the original correction.
-[GaussianGammaEulerConvergence](Lean/IPRADerivations/Analysis/GaussianGammaEulerConvergence.lean)
+[GaussianGammaEulerConvergence](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGammaEulerConvergence.lean)
 combines the two C8 product identities by multiplication and proves the
 C10 bound `3M_R(R²+R)/N` with the two ordinary independent observation
-errors. [GaussianGammaEulerApproximationName](Lean/IPRADerivations/Analysis/GaussianGammaEulerApproximationName.lean)
+errors. [GaussianGammaEulerApproximationName](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGammaEulerApproximationName.lean)
 chooses a numerical cutoff and one additional observation bit to
 construct an actual regular cofinal Euler sampler equivalent to the
 original reciprocal name.
 
-[GammaCanonicalRemainder](Lean/IPRADerivations/Analysis/GammaCanonicalRemainder.lean)
+[GammaCanonicalRemainder](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GammaCanonicalRemainder.lean)
 proves the sharp finite C3 remainder between cutoffs `L` and `L+K` of the
 actual factor at the same rational argument. The cleared scale is
 `(L+3)N^(L+2)(N-R)`, and the right-hand radius power is `R^(L+3)`.
 The returned PR5 data retain both original positive denominators and the
 certificate proves the positivity of this scale under `R<N`.
 
-[GammaLocalFactorName](Lean/IPRADerivations/Analysis/GammaLocalFactorName.lean)
+[GammaLocalFactorName](Lean/IPRADerivations/Analysis/Gamma/GammaLocalFactorName.lean)
 constructs the actual local-factor name on `N≥1`, `|z|≤R` and `2R≤N`.
 It gives a PR4 signed dyadic observation at scale `2^(p+4)`, proves
 regularity at independent precisions, and gives the disk bound
@@ -542,14 +542,14 @@ regularity at independent precisions, and gives the disk bound
 fixed cutoff with a cofinal name observation, with explicit rounding
 slack. The original logarithm and its exponential are identified below.
 
-The reusable [ReciprocalSquareTail](Lean/IPRADerivations/Analysis/ReciprocalSquareTail.lean)
+The reusable [ReciprocalSquareTail](Lean/IPRADerivations/Analysis/Series/ReciprocalSquareTail.lean)
 provides the underlying uniform rational inverse-square comparison.
-The [complex logarithm modules](Lean/IPRADerivations/Analysis/ComplexLogarithmName.lean)
+The [complex logarithm modules](Lean/IPRADerivations/Analysis/Logarithm/ComplexLogarithmName.lean)
 construct a different canonical local power-series name and its exact
 rounding/Cauchy bounds; they do not automatically instantiate Gamma's Euler
 approximants, elementary function error budgets, or branch/domain contracts.
 
-[LogarithmExponentialCoefficients](Lean/IPRADerivations/Analysis/LogarithmExponentialCoefficients.lean)
+[LogarithmExponentialCoefficients](Lean/IPRADerivations/Analysis/Exponential/LogarithmExponentialCoefficients.lean)
 now proves a finite algebraic dependency of C4. Its actual signed Bell/history
 program uses the proved kernel `g_k=(-1)^k k!`, and derives the differential
 coefficient recurrence, initial values and zero coefficients at every
@@ -558,8 +558,8 @@ factorials. The low coefficients of the literal finite sum of powers of the
 truncated logarithm are identified below. Transport to the actual analytic
 exponential and logarithm names requires their tail bounds.
 
-[FiniteExponential](Lean/IPRADerivations/Analysis/FiniteExponential.lean)
-and [FiniteLogarithm](Lean/IPRADerivations/Analysis/FiniteLogarithm.lean)
+[FiniteExponential](Lean/IPRADerivations/Analysis/Exponential/FiniteExponential.lean)
+and [FiniteLogarithm](Lean/IPRADerivations/Analysis/Logarithm/FiniteLogarithm.lean)
 now evaluate the literal factorial-cleared finite sums, together with
 independent termwise derivative sums. Exact coefficient clearing identifies
 the prescribed `1/k!` and alternating `1/j` coefficients. Internal-cutoff
@@ -569,159 +569,159 @@ residuals `D E'_N+x^N=E_N` and
 contracts are checked. The complex composition, coefficient bounds, tails,
 and original logarithm name identity follow in the modules below.
 
-[GaussianRationalPolynomialPowers](Lean/IPRADerivations/Analysis/GaussianRationalPolynomialPowers.lean)
+[GaussianRationalPolynomialPowers](Lean/IPRADerivations/Analysis/Polynomials/GaussianRationalPolynomialPowers.lean)
 provides the stored Gaussian-rational power buffers needed for the literal
 finite composition. With the original coefficient length, the computed
 buffer evaluates to the corresponding power of the original Horner value.
 Every in-range successor also has the actual convolution coefficient law.
-[GaussianRationalPolynomialExponential](Lean/IPRADerivations/Analysis/GaussianRationalPolynomialExponential.lean)
+[GaussianRationalPolynomialExponential](Lean/IPRADerivations/Analysis/Exponential/GaussianRationalPolynomialExponential.lean)
 constructs the actual factorial-weighted coefficient sum. Its Horner
 evaluation is the literal finite complex exponential sum of the original
 value.
 
-[GaussianFiniteLogarithmPolynomial](Lean/IPRADerivations/Analysis/GaussianFiniteLogarithmPolynomial.lean)
+[GaussianFiniteLogarithmPolynomial](Lean/IPRADerivations/Analysis/Logarithm/GaussianFiniteLogarithmPolynomial.lean)
 constructs the original truncated logarithm polynomial and identifies each
 stored coefficient with the original factorial kernel. Its actual finite
 exponential composition has the literal finite complex Horner value.
-[GaussianIntegerFractionPowers](Lean/IPRADerivations/Analysis/GaussianIntegerFractionPowers.lean)
+[GaussianIntegerFractionPowers](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianIntegerFractionPowers.lean)
 proves the exact fraction powers and signed factorial numerator.
-[GaussianFiniteLogarithmSampler](Lean/IPRADerivations/Analysis/GaussianFiniteLogarithmSampler.lean)
+[GaussianFiniteLogarithmSampler](Lean/IPRADerivations/Analysis/Logarithm/GaussianFiniteLogarithmSampler.lean)
 identifies the value of the same logarithm polynomial with the original
 cleared numerator and denominator.
-[GammaLogarithmFactorBridge](Lean/IPRADerivations/Analysis/GammaLogarithmFactorBridge.lean)
+[GammaLogarithmFactorBridge](Lean/IPRADerivations/Analysis/Gamma/GammaLogarithmFactorBridge.lean)
 identifies that sample with the sum of the original linear term and
 the original canonical factor and evaluates the actual finite exponential
 composition at that argument. The low-degree coefficients and analytic tail
 are checked below.
-[GaussianRationalLowCoefficientConvolution](Lean/IPRADerivations/Analysis/GaussianRationalLowCoefficientConvolution.lean)
+[GaussianRationalLowCoefficientConvolution](Lean/IPRADerivations/Analysis/Polynomials/GaussianRationalLowCoefficientConvolution.lean)
 identifies low coefficients of the actual stored polynomial product with
 their finite ascending Cauchy sums.
-[GaussianRationalPolynomialPowerSupport](Lean/IPRADerivations/Analysis/GaussianRationalPolynomialPowerSupport.lean)
+[GaussianRationalPolynomialPowerSupport](Lean/IPRADerivations/Analysis/Polynomials/GaussianRationalPolynomialPowerSupport.lean)
 uses that identity to derive the zero coefficients below the original
 power exponent.
-[GaussianRationalPolynomialExponentialStability](Lean/IPRADerivations/Analysis/GaussianRationalPolynomialExponentialStability.lean)
+[GaussianRationalPolynomialExponentialStability](Lean/IPRADerivations/Analysis/Exponential/GaussianRationalPolynomialExponentialStability.lean)
 proves that the actual low coefficient of the original composition is
 already attained at the stage indexed by that coefficient. The remaining
 coefficient comparison is with the Bell recurrence.
-[GaussianRationalPolynomialExponentialCoefficients](Lean/IPRADerivations/Analysis/GaussianRationalPolynomialExponentialCoefficients.lean)
+[GaussianRationalPolynomialExponentialCoefficients](Lean/IPRADerivations/Analysis/Exponential/GaussianRationalPolynomialExponentialCoefficients.lean)
 identifies the same coefficient with the exact inverse-factorial-weighted
 sum of stored power coefficients.
-[GaussianRationalWeightedCoefficientConvolution](Lean/IPRADerivations/Analysis/GaussianRationalWeightedCoefficientConvolution.lean)
+[GaussianRationalWeightedCoefficientConvolution](Lean/IPRADerivations/Analysis/Polynomials/GaussianRationalWeightedCoefficientConvolution.lean)
 derives the exponent-weighted product rule on those same low coefficients.
-[GaussianRationalEulerCoefficients](Lean/IPRADerivations/Analysis/GaussianRationalEulerCoefficients.lean)
+[GaussianRationalEulerCoefficients](Lean/IPRADerivations/Analysis/Polynomials/GaussianRationalEulerCoefficients.lean)
 stores the actual exponent-weighted coefficients, implements the product rule
 with the actual output buffers, and derives the alternating unit Euler
 coefficients of the original logarithm.
-[GaussianRationalPolynomialPowerEuler](Lean/IPRADerivations/Analysis/GaussianRationalPolynomialPowerEuler.lean)
+[GaussianRationalPolynomialPowerEuler](Lean/IPRADerivations/Analysis/Polynomials/GaussianRationalPolynomialPowerEuler.lean)
 derives the exact Euler rule for the low coefficients of the original stored
 powers, including the source logarithm.
-[GaussianRationalFactorialEulerSums](Lean/IPRADerivations/Analysis/GaussianRationalFactorialEulerSums.lean)
+[GaussianRationalFactorialEulerSums](Lean/IPRADerivations/Analysis/Inequalities/GaussianRationalFactorialEulerSums.lean)
 shifts the exact factorial-weighted sum after applying that rule to the
 original composition.
-[GaussianRationalExponentialProductCoefficients](Lean/IPRADerivations/Analysis/GaussianRationalExponentialProductCoefficients.lean)
+[GaussianRationalExponentialProductCoefficients](Lean/IPRADerivations/Analysis/Exponential/GaussianRationalExponentialProductCoefficients.lean)
 identifies the shifted finite sum with the actual product of the Euler-weighted
 base and the accumulated exponential.
-[GaussianRationalFiniteExponentialEuler](Lean/IPRADerivations/Analysis/GaussianRationalFiniteExponentialEuler.lean)
+[GaussianRationalFiniteExponentialEuler](Lean/IPRADerivations/Analysis/Exponential/GaussianRationalFiniteExponentialEuler.lean)
 combines power support with the exact cutoff to derive the finite exponential
 Euler rule for the original logarithm at every exponent within both cutoffs.
-[GaussianRationalCoefficientRecursion](Lean/IPRADerivations/Analysis/GaussianRationalCoefficientRecursion.lean)
+[GaussianRationalCoefficientRecursion](Lean/IPRADerivations/Analysis/Polynomials/GaussianRationalCoefficientRecursion.lean)
 proves bounded uniqueness for an actual prior-coefficient recursion.
-[GaussianFiniteLogarithmCoefficientRecursion](Lean/IPRADerivations/Analysis/GaussianFiniteLogarithmCoefficientRecursion.lean)
+[GaussianFiniteLogarithmCoefficientRecursion](Lean/IPRADerivations/Analysis/Logarithm/GaussianFiniteLogarithmCoefficientRecursion.lean)
 derives that recursion and its initial value on the original stored
 composition.
-[GaussianFiniteLogarithmLinearRecursion](Lean/IPRADerivations/Analysis/GaussianFiniteLogarithmLinearRecursion.lean)
+[GaussianFiniteLogarithmLinearRecursion](Lean/IPRADerivations/Analysis/Logarithm/GaussianFiniteLogarithmLinearRecursion.lean)
 verifies the same recurrence on the actual two-coefficient linear buffer.
-[GaussianFiniteLogarithmBellIdentification](Lean/IPRADerivations/Analysis/GaussianFiniteLogarithmBellIdentification.lean)
+[GaussianFiniteLogarithmBellIdentification](Lean/IPRADerivations/Analysis/Logarithm/GaussianFiniteLogarithmBellIdentification.lean)
 then identifies the coefficients of the literal finite composition with the
 original signed Bell values at each exponent within both internal cutoffs.
-[GaussianFiniteLogarithmCompositionTail](Lean/IPRADerivations/Analysis/GaussianFiniteLogarithmCompositionTail.lean)
+[GaussianFiniteLogarithmCompositionTail](Lean/IPRADerivations/Analysis/Logarithm/GaussianFiniteLogarithmCompositionTail.lean)
 derives the actual residual from the stored high coefficients and bounds its
 size on the source half-disk using the computed stage coefficient budget.
 A uniform weighted majorant remains necessary for the analytic modulus.
-[GaussianRationalPolynomialDilation](Lean/IPRADerivations/Analysis/GaussianRationalPolynomialDilation.lean)
+[GaussianRationalPolynomialDilation](Lean/IPRADerivations/Analysis/Polynomials/GaussianRationalPolynomialDilation.lean)
 constructs the actual scaled-argument buffer and proves the weighted
 coefficient arithmetic used to produce that majorant.
-[GaussianFiniteLogarithmWeightedNorm](Lean/IPRADerivations/Analysis/GaussianFiniteLogarithmWeightedNorm.lean)
+[GaussianFiniteLogarithmWeightedNorm](Lean/IPRADerivations/Analysis/Logarithm/GaussianFiniteLogarithmWeightedNorm.lean)
 bounds the actual truncated logarithm at auxiliary weight 5/9 by 65/72
 for every original truncation degree.
-[GaussianFiniteExponentialWeightedNorm](Lean/IPRADerivations/Analysis/GaussianFiniteExponentialWeightedNorm.lean)
+[GaussianFiniteExponentialWeightedNorm](Lean/IPRADerivations/Analysis/Exponential/GaussianFiniteExponentialWeightedNorm.lean)
 then bounds the weighted norm of the original finite exponential composition
 by 72/7 at the same auxiliary weight. Convergence at the source disk still
 requires the tail and truncation comparisons.
-[GaussianRationalUnitDiskHornerNorm](Lean/IPRADerivations/Analysis/GaussianRationalUnitDiskHornerNorm.lean)
+[GaussianRationalUnitDiskHornerNorm](Lean/IPRADerivations/Analysis/Polynomials/GaussianRationalUnitDiskHornerNorm.lean)
 uses the original Horner size bound to control each prefix of the same
 dilated composition by 11 at the rescaled source argument of radius at most
 9/10.
-[GaussianFiniteLogarithmGeometricTail](Lean/IPRADerivations/Analysis/GaussianFiniteLogarithmGeometricTail.lean)
+[GaussianFiniteLogarithmGeometricTail](Lean/IPRADerivations/Analysis/Logarithm/GaussianFiniteLogarithmGeometricTail.lean)
 identifies the actual high-prefix residual after subtracting the linear part
 and bounds it on the original half-disk by the geometric tail. The passage
 to a dyadic error bound is checked by
-[GaussianFiniteLogarithmDyadicTail](Lean/IPRADerivations/Analysis/GaussianFiniteLogarithmDyadicTail.lean).
-[GaussianFiniteLogarithmCompositionName](Lean/IPRADerivations/Analysis/GaussianFiniteLogarithmCompositionName.lean)
+[GaussianFiniteLogarithmDyadicTail](Lean/IPRADerivations/Analysis/Logarithm/GaussianFiniteLogarithmDyadicTail.lean).
+[GaussianFiniteLogarithmCompositionName](Lean/IPRADerivations/Analysis/Logarithm/GaussianFiniteLogarithmCompositionName.lean)
 constructs the regular cofinal name from the original finite Gamma-factor
 samples and proves its equivalence to the constant name `1+w`.
-[GaussianRationalExponentialTail](Lean/IPRADerivations/Analysis/GaussianRationalExponentialTail.lean)
+[GaussianRationalExponentialTail](Lean/IPRADerivations/Analysis/Exponential/GaussianRationalExponentialTail.lean)
 proves the original scalar-sum cutoff comparison on a bounded Gaussian
-rational input. [GaussianRationalExponentialName](Lean/IPRADerivations/Analysis/GaussianRationalExponentialName.lean)
+rational input. [GaussianRationalExponentialName](Lean/IPRADerivations/Analysis/Exponential/GaussianRationalExponentialName.lean)
 constructs the original cutoff name at such queries.
-[GaussianRationalExponentialLipschitz](Lean/IPRADerivations/Analysis/GaussianRationalExponentialLipschitz.lean)
+[GaussianRationalExponentialLipschitz](Lean/IPRADerivations/Analysis/Exponential/GaussianRationalExponentialLipschitz.lean)
 proves the uniform three-Lipschitz estimate for the original finite
 scalar exponential on the unit disk.
-[GaussianRationalRadiusExponentialLipschitz](Lean/IPRADerivations/Analysis/GaussianRationalRadiusExponentialLipschitz.lean)
+[GaussianRationalRadiusExponentialLipschitz](Lean/IPRADerivations/Analysis/Exponential/GaussianRationalRadiusExponentialLipschitz.lean)
 proves the cutoff-dependent Lipschitz estimate on any numerical disk
 and bounds it by the computed binary precision factor.
-[GaussianRadiusExponentialName](Lean/IPRADerivations/Analysis/GaussianRadiusExponentialName.lean)
+[GaussianRadiusExponentialName](Lean/IPRADerivations/Analysis/Exponential/GaussianRadiusExponentialName.lean)
 uses that factor to compute the sampling clock for an actual regular
 exponential on any fixed numerical disk. The exponential preserves
 independent-precision equivalence of input names on that disk.
-[GaussianScalarExponentialDiagonal](Lean/IPRADerivations/Analysis/GaussianScalarExponentialDiagonal.lean)
+[GaussianScalarExponentialDiagonal](Lean/IPRADerivations/Analysis/Exponential/GaussianScalarExponentialDiagonal.lean)
 proves that the actual triangular Cauchy sum is exactly the original
 finite scalar exponential of the sum.
-[GaussianScalarExponentialProductLowDegrees](Lean/IPRADerivations/Analysis/GaussianScalarExponentialProductLowDegrees.lean)
+[GaussianScalarExponentialProductLowDegrees](Lean/IPRADerivations/Analysis/Exponential/GaussianScalarExponentialProductLowDegrees.lean)
 binds the original rectangular product and identifies its exact difference
 with the sum of its actual high-degree coefficients.
-[GaussianScalarExponentialProductTail](Lean/IPRADerivations/Analysis/GaussianScalarExponentialProductTail.lean)
+[GaussianScalarExponentialProductTail](Lean/IPRADerivations/Analysis/Exponential/GaussianScalarExponentialProductTail.lean)
 proves the requested dyadic error of that actual high part at a computed
-cutoff. [GaussianExponentialReference](Lean/IPRADerivations/Analysis/GaussianExponentialReference.lean)
+cutoff. [GaussianExponentialReference](Lean/IPRADerivations/Analysis/Exponential/GaussianExponentialReference.lean)
 compares each actual observation with the original finite sum at a common
-later input and cutoff. [GaussianExponentialAddition](Lean/IPRADerivations/Analysis/GaussianExponentialAddition.lean)
+later input and cutoff. [GaussianExponentialAddition](Lean/IPRADerivations/Analysis/Exponential/GaussianExponentialAddition.lean)
 uses the original addition and multiplication clocks to prove
 `exp(u+v)=exp(u)exp(v)` at independent observation precisions on a common
 numerical disk with `R≥1`.
-[GaussianExponentialRadiusIndependence](Lean/IPRADerivations/Analysis/GaussianExponentialRadiusIndependence.lean)
+[GaussianExponentialRadiusIndependence](Lean/IPRADerivations/Analysis/Exponential/GaussianExponentialRadiusIndependence.lean)
 proves exponential properness with independent input disks and agreement
 with the actual specialized unit-disk exponential.
-[GaussianExponentialInverse](Lean/IPRADerivations/Analysis/GaussianExponentialInverse.lean)
+[GaussianExponentialInverse](Lean/IPRADerivations/Analysis/Exponential/GaussianExponentialInverse.lean)
 proves that multiplying the exponential of the original name by the
 exponential of its actual negative gives the constant one.
-[GaussianExponentialDiskMajorant](Lean/IPRADerivations/Analysis/GaussianExponentialDiskMajorant.lean)
+[GaussianExponentialDiskMajorant](Lean/IPRADerivations/Analysis/Exponential/GaussianExponentialDiskMajorant.lean)
 transfers the actual finite series on the nonnegative real axis to a
 Euclidean bound throughout the disk.
-[GaussianPositiveExponentialProduct](Lean/IPRADerivations/Analysis/GaussianPositiveExponentialProduct.lean)
+[GaussianPositiveExponentialProduct](Lean/IPRADerivations/Analysis/Exponential/GaussianPositiveExponentialProduct.lean)
 proves positivity of the original high-degree part and submultiplicativity
 of the real finite sums.
-[GaussianPositiveExponentialMajorant](Lean/IPRADerivations/Analysis/GaussianPositiveExponentialMajorant.lean)
+[GaussianPositiveExponentialMajorant](Lean/IPRADerivations/Analysis/Exponential/GaussianPositiveExponentialMajorant.lean)
 uses those positive sums and the unit factorial bound to prove `3^R`
 for the original finite exponential on the entire numerical disk at
 every cutoff.
-[GaussianUnitDiskExponentialName](Lean/IPRADerivations/Analysis/GaussianUnitDiskExponentialName.lean)
+[GaussianUnitDiskExponentialName](Lean/IPRADerivations/Analysis/Exponential/GaussianUnitDiskExponentialName.lean)
 uses the actual scalar sums to construct a regular exponential of an
 argument name with unit-disk samples and proves preservation of name
 equivalence.
-[GaussianExponentialSmallPerturbation](Lean/IPRADerivations/Analysis/GaussianExponentialSmallPerturbation.lean)
+[GaussianExponentialSmallPerturbation](Lean/IPRADerivations/Analysis/Exponential/GaussianExponentialSmallPerturbation.lean)
 proves the finite and named bound `3A/B` from one under a disk bound
 `A/B≤1`. The product estimate for a bounded prefactor is `3MA/B`,
-including at zeros. [GaussianExactDiskShrinking](Lean/IPRADerivations/Analysis/GaussianExactDiskShrinking.lean)
+including at zeros. [GaussianExactDiskShrinking](Lean/IPRADerivations/Analysis/Geometry/GaussianExactDiskShrinking.lean)
 constructs an equivalent name with exact disk radius from a bound with
-dyadic observation slack. [GaussianExactDiskExponential](Lean/IPRADerivations/Analysis/GaussianExactDiskExponential.lean)
+dyadic observation slack. [GaussianExactDiskExponential](Lean/IPRADerivations/Analysis/Exponential/GaussianExactDiskExponential.lean)
 transports this correction through the actual exponential programs.
-[GaussianNamedSmallPerturbationTransport](Lean/IPRADerivations/Analysis/GaussianNamedSmallPerturbationTransport.lean)
+[GaussianNamedSmallPerturbationTransport](Lean/IPRADerivations/Analysis/Names/Rates/GaussianNamedSmallPerturbationTransport.lean)
 proves the prefactor estimate at independent precisions using the
 actual original multiplication clock.
-[GaussianLocalLogarithmName](Lean/IPRADerivations/Analysis/GaussianLocalLogarithmName.lean)
+[GaussianLocalLogarithmName](Lean/IPRADerivations/Analysis/Logarithm/GaussianLocalLogarithmName.lean)
 proves regularity and the unit-disk bound on every original unshifted
 logarithm observation.
-[GaussianLocalLogarithmExponentialIdentity](Lean/IPRADerivations/Analysis/GaussianLocalLogarithmExponentialIdentity.lean)
+[GaussianLocalLogarithmExponentialIdentity](Lean/IPRADerivations/Analysis/Exponential/GaussianLocalLogarithmExponentialIdentity.lean)
 then compares the actual exponential of that name with the constant name
 `1+z/N` in both the cross and diagonal relations on the original half-disk
 with `N≥1`. It also proves equivalence with the actual cofinal finite
@@ -729,210 +729,210 @@ composition. These are object-theory derivations of the local C4 identity.
 
 ### Checked Euler quadrature
 
-[GaussianEulerExponentCompactBounds](Lean/IPRADerivations/Analysis/GaussianEulerExponentCompactBounds.lean)
+[GaussianEulerExponentCompactBounds](Lean/IPRADerivations/Analysis/Euler/GaussianEulerExponentCompactBounds.lean)
 bounds the original exponent on the compact interval and follows both
-program clocks. [GaussianEulerCompactModulus](Lean/IPRADerivations/Analysis/GaussianEulerCompactModulus.lean)
+program clocks. [GaussianEulerCompactModulus](Lean/IPRADerivations/Analysis/Euler/GaussianEulerCompactModulus.lean)
 derives the local sampled modulus for the unchanged Euler integrand from
 the positive rational time interval and the native bound on the complex
-parameter. [GaussianGammaEulerCompactQuadrature](Lean/IPRADerivations/Analysis/GaussianGammaEulerCompactQuadrature.lean)
+parameter. [GaussianGammaEulerCompactQuadrature](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGammaEulerCompactQuadrature.lean)
 supplies the actual fixed-interval quadrature name at the prescribed
 Gamma endpoints. Its checked modulus uses a larger mesh factor than the
 paper’s proposed derivative bound.
 
-[GaussianEulerDecayQuadraturePrecision](Lean/IPRADerivations/Analysis/GaussianEulerDecayQuadraturePrecision.lean)
+[GaussianEulerDecayQuadraturePrecision](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerDecayQuadraturePrecision.lean)
 proves the decay endpoint estimate with independent observation
 precisions and the exact geometric mesh term.
-[GaussianEulerDecayCompactAntiderivative](Lean/IPRADerivations/Analysis/GaussianEulerDecayCompactAntiderivative.lean)
+[GaussianEulerDecayCompactAntiderivative](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerDecayCompactAntiderivative.lean)
 identifies the resulting compact decay name with the original
 difference of endpoint decay names.
-[GaussianSignedRealExponentialOrder](Lean/IPRADerivations/Analysis/GaussianSignedRealExponentialOrder.lean)
+[GaussianSignedRealExponentialOrder](Lean/IPRADerivations/Analysis/Exponential/GaussianSignedRealExponentialOrder.lean)
 proves signed real-axis order for the unchanged named exponential.
-[GaussianCompactRiemannSplit](Lean/IPRADerivations/Analysis/GaussianCompactRiemannSplit.lean)
+[GaussianCompactRiemannSplit](Lean/IPRADerivations/Analysis/Integration/GaussianCompactRiemannSplit.lean)
 checks the exact finite split of the actual affine grid at a common step.
-[GaussianCompactRiemannAdditivity](Lean/IPRADerivations/Analysis/GaussianCompactRiemannAdditivity.lean)
+[GaussianCompactRiemannAdditivity](Lean/IPRADerivations/Analysis/Integration/GaussianCompactRiemannAdditivity.lean)
 compares the actual shared-step observations via their zero-distance
 rate across distinct rational time encodings.
-[GaussianPositiveRationalLogarithmSign](Lean/IPRADerivations/Analysis/GaussianPositiveRationalLogarithmSign.lean)
+[GaussianPositiveRationalLogarithmSign](Lean/IPRADerivations/Analysis/Logarithm/GaussianPositiveRationalLogarithmSign.lean)
 proves the sign of the original logarithm up to observation error.
-[GaussianExponentialRealPartMajorant](Lean/IPRADerivations/Analysis/GaussianExponentialRealPartMajorant.lean)
+[GaussianExponentialRealPartMajorant](Lean/IPRADerivations/Analysis/Exponential/GaussianExponentialRealPartMajorant.lean)
 bounds the original complex exponential squared modulus from its actual
 real part.
-[GaussianEulerDecayOrder](Lean/IPRADerivations/Analysis/GaussianEulerDecayOrder.lean)
+[GaussianEulerDecayOrder](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerDecayOrder.lean)
 proves order in the original rational time and binds the actual
 nonnegative representative.
-[GaussianCompactNamedAdditivity](Lean/IPRADerivations/Analysis/GaussianCompactNamedAdditivity.lean)
+[GaussianCompactNamedAdditivity](Lean/IPRADerivations/Analysis/Names/GaussianCompactNamedAdditivity.lean)
 proves addition for the original regular compact names, and
-[GaussianEulerCompactAdditivity](Lean/IPRADerivations/Analysis/GaussianEulerCompactAdditivity.lean)
+[GaussianEulerCompactAdditivity](Lean/IPRADerivations/Analysis/Euler/GaussianEulerCompactAdditivity.lean)
 instantiates it for the unchanged Euler evaluator on positive intervals.
-[GaussianEulerHalfDecayQuadrature](Lean/IPRADerivations/Analysis/GaussianEulerHalfDecayQuadrature.lean)
+[GaussianEulerHalfDecayQuadrature](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerHalfDecayQuadrature.lean)
 checks the actual half-argument grid transformation.
-[GaussianEulerDecayEndpointBound](Lean/IPRADerivations/Analysis/GaussianEulerDecayEndpointBound.lean)
+[GaussianEulerDecayEndpointBound](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerDecayEndpointBound.lean)
 controls the endpoint difference using the left endpoint observation, and
-[GaussianEulerHalfDecayTailBound](Lean/IPRADerivations/Analysis/GaussianEulerHalfDecayTailBound.lean)
+[GaussianEulerHalfDecayTailBound](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerHalfDecayTailBound.lean)
 checks the finite upper-cutoff bound for the half-decay kernel.
-[GaussianHarmonicLogarithmName](Lean/IPRADerivations/Analysis/GaussianHarmonicLogarithmName.lean)
+[GaussianHarmonicLogarithmName](Lean/IPRADerivations/Analysis/Euler/GaussianHarmonicLogarithmName.lean)
 supplies an exact-order representative of the original logarithm.
-[GaussianHarmonicIntegerExponential](Lean/IPRADerivations/Analysis/GaussianHarmonicIntegerExponential.lean)
+[GaussianHarmonicIntegerExponential](Lean/IPRADerivations/Analysis/Euler/GaussianHarmonicIntegerExponential.lean)
 identifies the actual exponential of its natural multiple with the
 exact rational power.
-[GaussianEulerUpperPowerCoefficients](Lean/IPRADerivations/Analysis/GaussianEulerUpperPowerCoefficients.lean)
+[GaussianEulerUpperPowerCoefficients](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerUpperPowerCoefficients.lean)
 checks the actual doubled real multiplier bound and the nonnegative
 harmonic inputs for time at least one.
-[GaussianEulerUpperPowerBound](Lean/IPRADerivations/Analysis/GaussianEulerUpperPowerBound.lean)
+[GaussianEulerUpperPowerBound](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerUpperPowerBound.lean)
 proves the bound `t^R+2^-p` at each original power sample.
-[GaussianEulerHalfDecayProduct](Lean/IPRADerivations/Analysis/GaussianEulerHalfDecayProduct.lean)
+[GaussianEulerHalfDecayProduct](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerHalfDecayProduct.lean)
 identifies the original integrand with its power and the two half-decay
-factors. [GaussianEulerWeightedHalfDecay](Lean/IPRADerivations/Analysis/GaussianEulerWeightedHalfDecay.lean)
+factors. [GaussianEulerWeightedHalfDecay](Lean/IPRADerivations/Analysis/Euler/GaussianEulerWeightedHalfDecay.lean)
 checks the factorial majorant of the first product with explicit slack.
-[GaussianEulerHalfDecayReference](Lean/IPRADerivations/Analysis/GaussianEulerHalfDecayReference.lean)
+[GaussianEulerHalfDecayReference](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerHalfDecayReference.lean)
 gives the nonnegative scalar representative of the second factor.
-[GaussianEulerUpperTailPointwise](Lean/IPRADerivations/Analysis/GaussianEulerUpperTailPointwise.lean)
+[GaussianEulerUpperTailPointwise](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerUpperTailPointwise.lean)
 bounds every original integrand observation at time at least one by
 `2^R R!(H_q+2^-q)+2^-p`, where `H_q` is the independent nonnegative
 half-decay observation.
-[GaussianCompactMeshIndependence](Lean/IPRADerivations/Analysis/GaussianCompactMeshIndependence.lean),
-[GaussianCompactIntervalRescaling](Lean/IPRADerivations/Analysis/GaussianCompactIntervalRescaling.lean)
-and [GaussianEulerCompactAlignment](Lean/IPRADerivations/Analysis/GaussianEulerCompactAlignment.lean)
+[GaussianCompactMeshIndependence](Lean/IPRADerivations/Analysis/Integration/GaussianCompactMeshIndependence.lean),
+[GaussianCompactIntervalRescaling](Lean/IPRADerivations/Analysis/Integration/GaussianCompactIntervalRescaling.lean)
+and [GaussianEulerCompactAlignment](Lean/IPRADerivations/Analysis/Euler/GaussianEulerCompactAlignment.lean)
 identify the original compact Euler names across different legitimate
 mesh bounds and rational encodings of the same interval.
-[GaussianGammaCompactCutoffGeometry](Lean/IPRADerivations/Analysis/GaussianGammaCompactCutoffGeometry.lean)
-and [GaussianGammaCompactCutoffAlignment](Lean/IPRADerivations/Analysis/GaussianGammaCompactCutoffAlignment.lean)
+[GaussianGammaCompactCutoffGeometry](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaCompactCutoffGeometry.lean)
+and [GaussianGammaCompactCutoffAlignment](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaCompactCutoffAlignment.lean)
 relate the actual cutoff denominators and align the earlier Euler
 quadrature name with the corresponding interval at the later cutoff.
-[GaussianGammaCompactCutoffSplit](Lean/IPRADerivations/Analysis/GaussianGammaCompactCutoffSplit.lean)
+[GaussianGammaCompactCutoffSplit](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaCompactCutoffSplit.lean)
 checks the resulting three-piece decomposition of the original
 later name, including coincident cutoffs.
-[GaussianCompactScalarMajorant](Lean/IPRADerivations/Analysis/GaussianCompactScalarMajorant.lean)
+[GaussianCompactScalarMajorant](Lean/IPRADerivations/Analysis/RationalArithmetic/Powers/GaussianCompactScalarMajorant.lean)
 sums the pointwise scalar majorant on the original grid and passes an
 independent row comparison through the actual quadrature weight.
-[GaussianEulerCompactUpperTail](Lean/IPRADerivations/Analysis/GaussianEulerCompactUpperTail.lean)
+[GaussianEulerCompactUpperTail](Lean/IPRADerivations/Analysis/Euler/GaussianEulerCompactUpperTail.lean)
 proves the upper-cutoff norm bound for the original finite Euler
 quadrature using the scaled half-decay kernel and explicit mesh and
 observation errors.
-[GaussianEulerHalfDecayLeftNorm](Lean/IPRADerivations/Analysis/GaussianEulerHalfDecayLeftNorm.lean)
+[GaussianEulerHalfDecayLeftNorm](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerHalfDecayLeftNorm.lean)
 retains a bound on the actual left decay observation at arbitrary
-rational time. [GaussianEulerUpperTailLeftNorm](Lean/IPRADerivations/Analysis/GaussianEulerUpperTailLeftNorm.lean)
+rational time. [GaussianEulerUpperTailLeftNorm](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerUpperTailLeftNorm.lean)
 uses it in the original upper-tail grid, with coefficient
 `D_R=2^(R+1) R!` and the actual decay observation at `N/4` when
-the grid starts at `N/2`. [GaussianEulerNamedUpperTail](Lean/IPRADerivations/Analysis/GaussianEulerNamedUpperTail.lean)
+the grid starts at `N/2`. [GaussianEulerNamedUpperTail](Lean/IPRADerivations/Analysis/Euler/GaussianEulerNamedUpperTail.lean)
 removes the auxiliary errors and proves the bound for the original
 varying-cutoff upper-tail name.
-[GaussianEulerUpperTailCauchyBudget](Lean/IPRADerivations/Analysis/GaussianEulerUpperTailCauchyBudget.lean)
+[GaussianEulerUpperTailCauchyBudget](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerUpperTailCauchyBudget.lean)
 applies the original cutoff height to that estimate.
-[GaussianEulerLowerPowerComparison](Lean/IPRADerivations/Analysis/GaussianEulerLowerPowerComparison.lean)
+[GaussianEulerLowerPowerComparison](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerLowerPowerComparison.lean)
 checks the signed real upper bound for the actual lower-time power
-square. [RationalHarmonicIntervalProduct](Lean/IPRADerivations/Analysis/RationalHarmonicIntervalProduct.lean)
+square. [RationalHarmonicIntervalProduct](Lean/IPRADerivations/Analysis/Series/RationalHarmonicIntervalProduct.lean)
 checks the exact product telescope of the original finite harmonic intervals.
-[GaussianHarmonicLogarithmPower](Lean/IPRADerivations/Analysis/GaussianHarmonicLogarithmPower.lean)
+[GaussianHarmonicLogarithmPower](Lean/IPRADerivations/Analysis/Euler/GaussianHarmonicLogarithmPower.lean)
 binds natural powers to the original logarithm. The transformed grid
 and the sharp right-endpoint panel bound are checked by
-[GaussianEulerLowerTailRootGrid](Lean/IPRADerivations/Analysis/GaussianEulerLowerTailRootGrid.lean)
-and [GaussianEulerLowerTailPowerPanel](Lean/IPRADerivations/Analysis/GaussianEulerLowerTailPowerPanel.lean).
-[GaussianEulerLowerTransformedIntegrand](Lean/IPRADerivations/Analysis/GaussianEulerLowerTransformedIntegrand.lean)
+[GaussianEulerLowerTailRootGrid](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerLowerTailRootGrid.lean)
+and [GaussianEulerLowerTailPowerPanel](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerLowerTailPowerPanel.lean).
+[GaussianEulerLowerTransformedIntegrand](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerLowerTransformedIntegrand.lean)
 proves the original pointwise estimate at those transformed times.
-[GaussianEulerLowerTailLocalComparison](Lean/IPRADerivations/Analysis/GaussianEulerLowerTailLocalComparison.lean)
+[GaussianEulerLowerTailLocalComparison](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerLowerTailLocalComparison.lean)
 applies the actual sampled modulus to each row of the exact lower
 partition and its right endpoint.
-[GaussianEulerCompactLowerTail](Lean/IPRADerivations/Analysis/GaussianEulerCompactLowerTail.lean)
+[GaussianEulerCompactLowerTail](Lean/IPRADerivations/Analysis/Euler/GaussianEulerCompactLowerTail.lean)
 sums the weighted panel bounds through the exact original grouping.
-[GaussianEulerLowerTailFiniteBudget](Lean/IPRADerivations/Analysis/GaussianEulerLowerTailFiniteBudget.lean)
-and [GaussianEulerLowerCofinalQuadrature](Lean/IPRADerivations/Analysis/GaussianEulerLowerCofinalQuadrature.lean)
+[GaussianEulerLowerTailFiniteBudget](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerLowerTailFiniteBudget.lean)
+and [GaussianEulerLowerCofinalQuadrature](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerLowerCofinalQuadrature.lean)
 give the cofinal norm bound and approximation to the actual lower name.
-[GaussianEulerVaryingCutoffName](Lean/IPRADerivations/Analysis/GaussianEulerVaryingCutoffName.lean)
+[GaussianEulerVaryingCutoffName](Lean/IPRADerivations/Analysis/Euler/GaussianEulerVaryingCutoffName.lean)
 checks the actual varying-cutoff sampler and its regularity from the
 lower-tail norm bound.
-[GaussianEulerNamedLowerTail](Lean/IPRADerivations/Analysis/GaussianEulerNamedLowerTail.lean)
+[GaussianEulerNamedLowerTail](Lean/IPRADerivations/Analysis/Euler/GaussianEulerNamedLowerTail.lean)
 proves that bound on the original lower name at any requested observation
 precision under the encoded positive half-plane hypotheses.
-[GaussianEulerImproperName](Lean/IPRADerivations/Analysis/GaussianEulerImproperName.lean)
+[GaussianEulerImproperName](Lean/IPRADerivations/Analysis/Euler/GaussianEulerImproperName.lean)
 therefore gives regularity for the unchanged sampler and verifies its
 primitive recursive output and evaluation schedule.
-[GaussianEulerFixedCutoffApproximation](Lean/IPRADerivations/Analysis/GaussianEulerFixedCutoffApproximation.lean)
+[GaussianEulerFixedCutoffApproximation](Lean/IPRADerivations/Analysis/Euler/GaussianEulerFixedCutoffApproximation.lean)
 bounds its distance to the compact name at each fixed cutoff by the sum
 of both tail majorants and the two independent observation errors.
-[GaussianEulerUnitIntegrand](Lean/IPRADerivations/Analysis/GaussianEulerUnitIntegrand.lean)
+[GaussianEulerUnitIntegrand](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerUnitIntegrand.lean)
 identifies the exact sample and finite grid at one with the decay program.
-[GaussianEulerUnitEndpointDecay](Lean/IPRADerivations/Analysis/GaussianEulerUnitEndpointDecay.lean)
+[GaussianEulerUnitEndpointDecay](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerUnitEndpointDecay.lean)
 bounds the actual endpoint difference at the original cutoffs.
-[GaussianEulerImproperNormalization](Lean/IPRADerivations/Analysis/GaussianEulerImproperNormalization.lean)
+[GaussianEulerImproperNormalization](Lean/IPRADerivations/Analysis/Euler/GaussianEulerImproperNormalization.lean)
 proves that the original improper Euler name at the canonical unit
 argument agrees with the finite-product Gamma name at arbitrary
 independent observation precisions.
-[GaussianEulerBetaPoleGuard](Lean/IPRADerivations/Analysis/GaussianEulerBetaPoleGuard.lean)
+[GaussianEulerBetaPoleGuard](Lean/IPRADerivations/Analysis/Beta/GaussianEulerBetaPoleGuard.lean)
 proves the finite weighted Euler operator identity for the actual beta
 primitive from the native positive half-plane source.
-[GaussianBetaKernelLogarithm](Lean/IPRADerivations/Analysis/GaussianBetaKernelLogarithm.lean)
+[GaussianBetaKernelLogarithm](Lean/IPRADerivations/Analysis/Beta/GaussianBetaKernelLogarithm.lean)
 compares the original scaled logarithm with the decay exponent and gives
 a fixed compact radius.
-[GaussianBetaKernelSignedLogarithm](Lean/IPRADerivations/Analysis/GaussianBetaKernelSignedLogarithm.lean)
+[GaussianBetaKernelSignedLogarithm](Lean/IPRADerivations/Analysis/Beta/GaussianBetaKernelSignedLogarithm.lean)
 proves the finite Taylor sign and transfers it to the same original
 rounded observation. The real remainder is at least the negative
 dyadic allowance and obeys the original quadratic norm bound.
-[GaussianBetaKernelDampedDoubling](Lean/IPRADerivations/Analysis/GaussianBetaKernelDampedDoubling.lean)
+[GaussianBetaKernelDampedDoubling](Lean/IPRADerivations/Analysis/Beta/GaussianBetaKernelDampedDoubling.lean)
 proves the exact one-step relative estimate for the original finite
 kernel at degrees `N` and `2N`.
-[GaussianBetaKernelDampedRefinement](Lean/IPRADerivations/Analysis/GaussianBetaKernelDampedRefinement.lean)
+[GaussianBetaKernelDampedRefinement](Lean/IPRADerivations/Analysis/Beta/GaussianBetaKernelDampedRefinement.lean)
 keeps the geometric factor and the actual later kernel throughout
 finite dyadic refinement.
-[GaussianBetaKernelDecayDampedError](Lean/IPRADerivations/Analysis/GaussianBetaKernelDecayDampedError.lean)
+[GaussianBetaKernelDecayDampedError](Lean/IPRADerivations/Analysis/Beta/GaussianBetaKernelDecayDampedError.lean)
 bounds the original kernel error by the quadratic factor times the
 actual positive decay observation and its explicit allowances.
-[GaussianBetaUpperRowDampedError](Lean/IPRADerivations/Analysis/GaussianBetaUpperRowDampedError.lean)
+[GaussianBetaUpperRowDampedError](Lean/IPRADerivations/Analysis/Beta/GaussianBetaUpperRowDampedError.lean)
 keeps the exact high-time row factor `t^(R+2)/N` with the same
 positive decay reference and independently queried beta and Euler
-observations. [GaussianEulerLowTimePowerOrder](Lean/IPRADerivations/Analysis/GaussianEulerLowTimePowerOrder.lean)
+observations. [GaussianEulerLowTimePowerOrder](Lean/IPRADerivations/Analysis/Euler/GaussianEulerLowTimePowerOrder.lean)
 gives the reciprocal-power reference comparison for the actual
 lower-time power square.
-[GaussianEulerLowTimeReciprocalReference](Lean/IPRADerivations/Analysis/GaussianEulerLowTimeReciprocalReference.lean)
+[GaussianEulerLowTimeReciprocalReference](Lean/IPRADerivations/Analysis/Euler/GaussianEulerLowTimeReciprocalReference.lean)
 identifies that reference with the exact rational square, and
-[GaussianEulerLowTimePowerBound](Lean/IPRADerivations/Analysis/GaussianEulerLowTimePowerBound.lean)
+[GaussianEulerLowTimePowerBound](Lean/IPRADerivations/Analysis/Euler/GaussianEulerLowTimePowerBound.lean)
 bounds the original lower-time power norm by `b/a+2^-p`.
-[GaussianBetaKernelTailDifference](Lean/IPRADerivations/Analysis/GaussianBetaKernelTailDifference.lean)
+[GaussianBetaKernelTailDifference](Lean/IPRADerivations/Analysis/Beta/GaussianBetaKernelTailDifference.lean)
 bounds the absolute full-support kernel difference with one positive
 decay factor and explicit observation allowances.
-[GaussianBetaRowMonomialReference](Lean/IPRADerivations/Analysis/GaussianBetaRowMonomialReference.lean)
+[GaussianBetaRowMonomialReference](Lean/IPRADerivations/Analysis/Beta/GaussianBetaRowMonomialReference.lean)
 compares the actual high-time scalar majorant to the literal monomial
 decay evaluator scaled by `1/N`.
-[GaussianRationalQuadratureDifference](Lean/IPRADerivations/Analysis/GaussianRationalQuadratureDifference.lean)
+[GaussianRationalQuadratureDifference](Lean/IPRADerivations/Analysis/Integration/GaussianRationalQuadratureDifference.lean)
 binds the exact weighted sum of row differences to the original pair
 of quadratures.
-[GaussianMonomialDecayMajorant](Lean/IPRADerivations/Analysis/GaussianMonomialDecayMajorant.lean)
+[GaussianMonomialDecayMajorant](Lean/IPRADerivations/Analysis/Integration/GaussianMonomialDecayMajorant.lean)
 bounds the actual monomial times decay through the weighted half-decay
 majorant at coefficient `2^d d!`.
-[GaussianMonomialDecayQuadrature](Lean/IPRADerivations/Analysis/GaussianMonomialDecayQuadrature.lean)
-and [GaussianMonomialDecayBudget](Lean/IPRADerivations/Analysis/GaussianMonomialDecayBudget.lean)
+[GaussianMonomialDecayQuadrature](Lean/IPRADerivations/Analysis/Integration/GaussianMonomialDecayQuadrature.lean)
+and [GaussianMonomialDecayBudget](Lean/IPRADerivations/Analysis/Integration/GaussianMonomialDecayBudget.lean)
 retain its integrated coefficient `2^(d+1) d!` above time one with
 a computed dyadic allowance.
-[GaussianEulerSharpDegreeSchedule](Lean/IPRADerivations/Analysis/GaussianEulerSharpDegreeSchedule.lean)
+[GaussianEulerSharpDegreeSchedule](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerSharpDegreeSchedule.lean)
 checks the report’s exact choice `N=4(C_R+D_R+p+10)·2^(p+4)`,
 the rational bound `C_R/N≤2^(-p-3)`, and the original decay bound at
 `N/4` with explicit observation error and a computed precision. The
 full integrated sharp comparison remains.
-[GaussianBetaLowGridError](Lean/IPRADerivations/Analysis/GaussianBetaLowGridError.lean)
+[GaussianBetaLowGridError](Lean/IPRADerivations/Analysis/Beta/GaussianBetaLowGridError.lean)
 proves the exact `1/N` contribution below time one from the actual
 beta and Euler row observations, with independently requested errors.
-[GaussianBetaUpperGridMonomialComparison](Lean/IPRADerivations/Analysis/GaussianBetaUpperGridMonomialComparison.lean)
+[GaussianBetaUpperGridMonomialComparison](Lean/IPRADerivations/Analysis/Beta/GaussianBetaUpperGridMonomialComparison.lean)
 proves the exact factorial cap divided by the degree for the actual
 middle shared grid, with explicit mesh and evaluation allowances.
-[GaussianBetaEulerTailDifferencePointwise](Lean/IPRADerivations/Analysis/GaussianBetaEulerTailDifferencePointwise.lean)
+[GaussianBetaEulerTailDifferencePointwise](Lean/IPRADerivations/Analysis/Beta/GaussianBetaEulerTailDifferencePointwise.lean)
 bounds the actual difference on the upper support by one factorial
 half-decay reference and supplies the corresponding scalar majorant.
-[GaussianBetaEulerUpperDifferenceGrid](Lean/IPRADerivations/Analysis/GaussianBetaEulerUpperDifferenceGrid.lean)
+[GaussianBetaEulerUpperDifferenceGrid](Lean/IPRADerivations/Analysis/Beta/GaussianBetaEulerUpperDifferenceGrid.lean)
 transfers that majorant on the original grid through a single
 weighted half-decay quadrature.
-[GaussianBetaZeroExtension](Lean/IPRADerivations/Analysis/GaussianBetaZeroExtension.lean)
+[GaussianBetaZeroExtension](Lean/IPRADerivations/Analysis/Beta/GaussianBetaZeroExtension.lean)
 keeps the literal beta evaluator on the support and returns the
 canonical zero at the degree and beyond.
-[GaussianBetaZeroExtendedGrid](Lean/IPRADerivations/Analysis/GaussianBetaZeroExtendedGrid.lean)
+[GaussianBetaZeroExtendedGrid](Lean/IPRADerivations/Analysis/Beta/GaussianBetaZeroExtendedGrid.lean)
 checks the finite support and exterior grid identities.
-[GaussianCompactAlignedSplit](Lean/IPRADerivations/Analysis/GaussianCompactAlignedSplit.lean)
+[GaussianCompactAlignedSplit](Lean/IPRADerivations/Analysis/Integration/GaussianCompactAlignedSplit.lean)
 splits a shared mesh using actual equal-time observations, including
 zero-width panels.
-[GaussianBetaContiguousUpperTail](Lean/IPRADerivations/Analysis/GaussianBetaContiguousUpperTail.lean)
+[GaussianBetaContiguousUpperTail](Lean/IPRADerivations/Analysis/Beta/GaussianBetaContiguousUpperTail.lean)
 uses one factorially weighted original decay observation at a quarter
 of the degree for the contiguous upper grid, with explicit sampling
 and mesh allowances. The degree may be any fixed natural at least two.
-[GaussianEulerSharpFiniteRate](Lean/IPRADerivations/Analysis/GaussianEulerSharpFiniteRate.lean)
+[GaussianEulerSharpFiniteRate](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerSharpFiniteRate.lean)
 connects those panels to the original finite Euler reciprocal-inverse
 and improper Euler samplers. On the finite sampler domain `1 ≤ R`,
 `2R ≤ N`, the checked distance has leading terms
@@ -942,533 +942,533 @@ L1 radius of the original observation plus its own dyadic tolerance.
 The finite and improper output clocks are independent and each retains
 its own observation tolerance. An explicit finite clock eliminates the
 auxiliary mesh and sampling errors inside the object theory.
-[GaussianEulerDecayRealSamples](Lean/IPRADerivations/Analysis/GaussianEulerDecayRealSamples.lean)
+[GaussianEulerDecayRealSamples](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerDecayRealSamples.lean)
 proves that every original decay sample at a rational time is real.
 Its raw L1 radius is its exact Euclidean absolute value.
-[GaussianEulerSharpGammaRate](Lean/IPRADerivations/Analysis/GaussianEulerSharpGammaRate.lean)
+[GaussianEulerSharpGammaRate](Lean/IPRADerivations/Analysis/Gamma/GaussianEulerSharpGammaRate.lean)
 transfers the exact radius to the original Gamma observation.
-[GaussianEulerSharpScheduledApproximation](Lean/IPRADerivations/Analysis/GaussianEulerSharpScheduledApproximation.lean)
+[GaussianEulerSharpScheduledApproximation](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerSharpScheduledApproximation.lean)
 uses the stated degree `4(C_R+D_R+p+10)2^(p+4)` and proves that the
 original finite observation at `p+2` is within `2^-p` of either
 the original improper Euler or Gamma observation at `p+2`.
-[GaussianBetaAllDegreeEulerInverse](Lean/IPRADerivations/Analysis/GaussianBetaAllDegreeEulerInverse.lean)
+[GaussianBetaAllDegreeEulerInverse](Lean/IPRADerivations/Analysis/Beta/GaussianBetaAllDegreeEulerInverse.lean)
 certifies the same finite reciprocal evaluator for all positive
 degrees, using the height derived from its finite beta endpoint.
 Its new data give the same represented value as the previous data
 on the original sampler domain.
-[GaussianEulerSharpAllDegrees](Lean/IPRADerivations/Analysis/GaussianEulerSharpAllDegrees.lean)
+[GaussianEulerSharpAllDegrees](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerSharpAllDegrees.lean)
 proves the sharp rate to the original improper sample for every
 `N ≥ 2` on the encoded rational complex half-plane domain, with
 independent output and decay precisions.
-[GaussianEulerSharpReportTerms](Lean/IPRADerivations/Analysis/GaussianEulerSharpReportTerms.lean)
+[GaussianEulerSharpReportTerms](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerSharpReportTerms.lean)
 checks that each of the two leading terms is strictly below
 `2^-(p+3)` at the stated degree and computed decay query.
-[GaussianBetaAllDegreeMixedInverseContinuity](Lean/IPRADerivations/Analysis/GaussianBetaAllDegreeMixedInverseContinuity.lean)
+[GaussianBetaAllDegreeMixedInverseContinuity](Lean/IPRADerivations/Analysis/Beta/GaussianBetaAllDegreeMixedInverseContinuity.lean)
 proves a cutoff-independent input modulus for the actual all-degree
 finite Euler evaluator with separately encoded rational inputs.
-[GaussianEulerRealPowerLowerOrder](Lean/IPRADerivations/Analysis/GaussianEulerRealPowerLowerOrder.lean)
-and [GaussianEulerDecayLowerEnvelope](Lean/IPRADerivations/Analysis/GaussianEulerDecayLowerEnvelope.lean)
+[GaussianEulerRealPowerLowerOrder](Lean/IPRADerivations/Analysis/Euler/GaussianEulerRealPowerLowerOrder.lean)
+and [GaussianEulerDecayLowerEnvelope](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerDecayLowerEnvelope.lean)
 prove the separate one-half and one-ninth lower estimates on the
 original power and decay factors on the interval from one to two.
 Each bound retains the tolerance of its actual requested observation.
-[GaussianEulerSharpNamedIntegralRate](Lean/IPRADerivations/Analysis/GaussianEulerSharpNamedIntegralRate.lean)
+[GaussianEulerSharpNamedIntegralRate](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerSharpNamedIntegralRate.lean)
 extends the sharp rate to general fixed regular complex input names
 with a positive real-part margin. It uses the input name's computed
 disk radius and keeps the original improper integral observation.
-[GaussianEulerSharpNamedSchedule](Lean/IPRADerivations/Analysis/GaussianEulerSharpNamedSchedule.lean)
+[GaussianEulerSharpNamedSchedule](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerSharpNamedSchedule.lean)
 checks the stated degree for the named Gamma observations.
-[GaussianEulerIntegralPositiveLower](Lean/IPRADerivations/Analysis/GaussianEulerIntegralPositiveLower.lean)
+[GaussianEulerIntegralPositiveLower](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerIntegralPositiveLower.lean)
 sums the actual positive unit panel over the common mesh and proves
 the bound one eighteenth, with the requested observation tolerance,
 for the original improper integral and Gamma at encoded positive real inputs.
-[GaussianNamedGammaPositiveLower](Lean/IPRADerivations/Analysis/GaussianNamedGammaPositiveLower.lean)
+[GaussianNamedGammaPositiveLower](Lean/IPRADerivations/Analysis/Gamma/Names/GaussianNamedGammaPositiveLower.lean)
 extends it to regular real names with actual real samples and a positive
-real-part margin. [GaussianEulerUnitToTopBound](Lean/IPRADerivations/Analysis/GaussianEulerUnitToTopBound.lean)
+real-part margin. [GaussianEulerUnitToTopBound](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerUnitToTopBound.lean)
 gives the actual upper panel the factorial bound `2^(R+1) R!` with a
-cofinal tolerance. [GaussianEulerEtaToOneRootGrid](Lean/IPRADerivations/Analysis/GaussianEulerEtaToOneRootGrid.lean)
+cofinal tolerance. [GaussianEulerEtaToOneRootGrid](Lean/IPRADerivations/Analysis/Euler/GaussianEulerEtaToOneRootGrid.lean)
 checks the actual transformed mesh endpoints and right-row estimate
 on the entire panel from the lower cutoff to one.
-[GaussianEulerEtaToOneRowBound](Lean/IPRADerivations/Analysis/GaussianEulerEtaToOneRowBound.lean)
+[GaussianEulerEtaToOneRowBound](Lean/IPRADerivations/Analysis/Euler/GaussianEulerEtaToOneRowBound.lean)
 compares the original affine rows to those right endpoints.
-[GaussianEulerEtaToOneQuadratureBound](Lean/IPRADerivations/Analysis/GaussianEulerEtaToOneQuadratureBound.lean)
+[GaussianEulerEtaToOneQuadratureBound](Lean/IPRADerivations/Analysis/Euler/GaussianEulerEtaToOneQuadratureBound.lean)
 sums the original weighted blocks.
-[GaussianEulerEtaToOneBound](Lean/IPRADerivations/Analysis/GaussianEulerEtaToOneBound.lean)
+[GaussianEulerEtaToOneBound](Lean/IPRADerivations/Analysis/Euler/GaussianEulerEtaToOneBound.lean)
 gives the corresponding original compact observation radius `A + 2^(-p)`.
-[GaussianEulerUnitToTopCompactBound](Lean/IPRADerivations/Analysis/GaussianEulerUnitToTopCompactBound.lean)
+[GaussianEulerUnitToTopCompactBound](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerUnitToTopCompactBound.lean)
 gives the observation from one the factorial radius with the requested
 dyadic tolerance, and compares the actual compact samplers on a fixed
 interval with different top guards.
-[GaussianEulerIntegralUpperBound](Lean/IPRADerivations/Analysis/GaussianEulerIntegralUpperBound.lean)
+[GaussianEulerIntegralUpperBound](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerIntegralUpperBound.lean)
 uses the actual split at one to bound every original cutoff, then
-[GaussianEulerIntegralUpperTransfer](Lean/IPRADerivations/Analysis/GaussianEulerIntegralUpperTransfer.lean)
+[GaussianEulerIntegralUpperTransfer](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerIntegralUpperTransfer.lean)
 gives the original improper and Gamma observation bounds with radius
 `A + 2^(R+1) R! + 2^(-p)` for encoded inputs on the positive real
 half-plane. The Gamma comparison uses the original guard `1 <= R`.
-[GaussianNamedHalfPlaneCorrection](Lean/IPRADerivations/Analysis/GaussianNamedHalfPlaneCorrection.lean)
+[GaussianNamedHalfPlaneCorrection](Lean/IPRADerivations/Analysis/Names/GaussianNamedHalfPlaneCorrection.lean)
 corrects late observations into the exact given half-plane without
-changing the computed radius. [GaussianNamedGammaUpperBound](Lean/IPRADerivations/Analysis/GaussianNamedGammaUpperBound.lean)
+changing the computed radius. [GaussianNamedGammaUpperBound](Lean/IPRADerivations/Analysis/Gamma/Names/GaussianNamedGammaUpperBound.lean)
 then proves the same radius with the same `A` on regular complex names.
-[GaussianEulerUnitNormalizationIntegrand](Lean/IPRADerivations/Analysis/GaussianEulerUnitNormalizationIntegrand.lean)
+[GaussianEulerUnitNormalizationIntegrand](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerUnitNormalizationIntegrand.lean)
 identifies the original unit-argument samples with the decay samples.
-[GaussianEulerUnitNormalizationCompact](Lean/IPRADerivations/Analysis/GaussianEulerUnitNormalizationCompact.lean)
+[GaussianEulerUnitNormalizationCompact](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerUnitNormalizationCompact.lean)
 uses the checked decay antiderivative on the original compact interval.
-[GaussianEulerUnitNormalization](Lean/IPRADerivations/Analysis/GaussianEulerUnitNormalization.lean)
+[GaussianEulerUnitNormalization](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerUnitNormalization.lean)
 uses both endpoint bounds to derive the original improper integral value
 one and hence the Gamma value one.
-[GaussianEulerVerticalProjection](Lean/IPRADerivations/Analysis/GaussianEulerVerticalProjection.lean)
-and [GaussianEulerVerticalNativeProjection](Lean/IPRADerivations/Analysis/GaussianEulerVerticalNativeProjection.lean)
+[GaussianEulerVerticalProjection](Lean/IPRADerivations/Analysis/Euler/GaussianEulerVerticalProjection.lean)
+and [GaussianEulerVerticalNativeProjection](Lean/IPRADerivations/Analysis/Euler/GaussianEulerVerticalNativeProjection.lean)
 preserve the required disk and positive margin at the real part of the
-argument. [GaussianEulerVerticalExponentialSquare](Lean/IPRADerivations/Analysis/GaussianEulerVerticalExponentialSquare.lean),
-[GaussianEulerVerticalExponentReference](Lean/IPRADerivations/Analysis/GaussianEulerVerticalExponentReference.lean),
-and [GaussianEulerVerticalIntegrandSquare](Lean/IPRADerivations/Analysis/GaussianEulerVerticalIntegrandSquare.lean)
+argument. [GaussianEulerVerticalExponentialSquare](Lean/IPRADerivations/Analysis/Euler/GaussianEulerVerticalExponentialSquare.lean),
+[GaussianEulerVerticalExponentReference](Lean/IPRADerivations/Analysis/Euler/GaussianEulerVerticalExponentReference.lean),
+and [GaussianEulerVerticalIntegrandSquare](Lean/IPRADerivations/Analysis/Euler/GaussianEulerVerticalIntegrandSquare.lean)
 identify the squared norms of the two original integrands.
-[GaussianEulerVerticalRealSamples](Lean/IPRADerivations/Analysis/GaussianEulerVerticalRealSamples.lean)
-and [GaussianEulerVerticalRealRadius](Lean/IPRADerivations/Analysis/GaussianEulerVerticalRealRadius.lean)
+[GaussianEulerVerticalRealSamples](Lean/IPRADerivations/Analysis/Euler/GaussianEulerVerticalRealSamples.lean)
+and [GaussianEulerVerticalRealRadius](Lean/IPRADerivations/Analysis/Euler/GaussianEulerVerticalRealRadius.lean)
 give the actual real-axis observations a nonnegative radius with a
-dyadic correction. [GaussianPositiveRadiusFiniteSum](Lean/IPRADerivations/Analysis/GaussianPositiveRadiusFiniteSum.lean)
-and [GaussianPositiveRadiusQuadrature](Lean/IPRADerivations/Analysis/GaussianPositiveRadiusQuadrature.lean)
+dyadic correction. [GaussianPositiveRadiusFiniteSum](Lean/IPRADerivations/Analysis/FiniteOperations/GaussianPositiveRadiusFiniteSum.lean)
+and [GaussianPositiveRadiusQuadrature](Lean/IPRADerivations/Analysis/Integration/GaussianPositiveRadiusQuadrature.lean)
 carry certified row bounds through the unchanged finite weighted sums.
-[GaussianEulerVerticalNormTransfer](Lean/IPRADerivations/Analysis/GaussianEulerVerticalNormTransfer.lean)
+[GaussianEulerVerticalNormTransfer](Lean/IPRADerivations/Analysis/Euler/GaussianEulerVerticalNormTransfer.lean)
 transfers an actual sample radius across the squared norm identity.
-[GaussianEulerVerticalPointwise](Lean/IPRADerivations/Analysis/GaussianEulerVerticalPointwise.lean)
+[GaussianEulerVerticalPointwise](Lean/IPRADerivations/Analysis/Euler/GaussianEulerVerticalPointwise.lean)
 then bounds each original complex row by its original real companion
 and four requested dyadic allowances.
-[GaussianEulerVerticalQuadrature](Lean/IPRADerivations/Analysis/GaussianEulerVerticalQuadrature.lean)
+[GaussianEulerVerticalQuadrature](Lean/IPRADerivations/Analysis/Euler/GaussianEulerVerticalQuadrature.lean)
 gives the actual same-query compact and improper bounds with the precise
 grid width and row precision.
-[GaussianEulerVerticalShiftedRadius](Lean/IPRADerivations/Analysis/GaussianEulerVerticalShiftedRadius.lean)
+[GaussianEulerVerticalShiftedRadius](Lean/IPRADerivations/Analysis/Euler/GaussianEulerVerticalShiftedRadius.lean)
 keeps a nonnegative radius when a coarse real observation is signed.
-[GaussianEulerVerticalGammaBound](Lean/IPRADerivations/Analysis/GaussianEulerVerticalGammaBound.lean)
+[GaussianEulerVerticalGammaBound](Lean/IPRADerivations/Analysis/Gamma/GaussianEulerVerticalGammaBound.lean)
 proves the encoded-input vertical inequality on the original Gamma
 observations at independent queries by removing the auxiliary improper
-precision. [GaussianEulerVerticalNamedProjection](Lean/IPRADerivations/Analysis/GaussianEulerVerticalNamedProjection.lean)
+precision. [GaussianEulerVerticalNamedProjection](Lean/IPRADerivations/Analysis/Euler/GaussianEulerVerticalNamedProjection.lean)
 binds the real projection of a regular name to the decoded native
 projection with the original disk.
-[GaussianEulerVerticalNamedRadius](Lean/IPRADerivations/Analysis/GaussianEulerVerticalNamedRadius.lean)
-and [GaussianEulerVerticalNamedReference](Lean/IPRADerivations/Analysis/GaussianEulerVerticalNamedReference.lean)
+[GaussianEulerVerticalNamedRadius](Lean/IPRADerivations/Analysis/Euler/GaussianEulerVerticalNamedRadius.lean)
+and [GaussianEulerVerticalNamedReference](Lean/IPRADerivations/Analysis/Euler/GaussianEulerVerticalNamedReference.lean)
 compare both actual named Gamma samplers to one late rational input and
 its native real projection at a common certified radius.
-[GaussianEulerVerticalNamedGammaBound](Lean/IPRADerivations/Analysis/GaussianEulerVerticalNamedGammaBound.lean)
+[GaussianEulerVerticalNamedGammaBound](Lean/IPRADerivations/Analysis/Gamma/Names/GaussianEulerVerticalNamedGammaBound.lean)
 gives the same original vertical Gamma inequality at independent queries
 of regular complex names, with only the two requested observation allowances.
-[GaussianEulerVerticalNamedIntegralBound](Lean/IPRADerivations/Analysis/GaussianEulerVerticalNamedIntegralBound.lean)
+[GaussianEulerVerticalNamedIntegralBound](Lean/IPRADerivations/Analysis/Euler/GaussianEulerVerticalNamedIntegralBound.lean)
 proves the same inequality with the original named improper Euler
 evaluators and the exact signed comparison radius.
-[GaussianEulerIntegrationByPartsLinear](Lean/IPRADerivations/Analysis/GaussianEulerIntegrationByPartsLinear.lean)
+[GaussianEulerIntegrationByPartsLinear](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerIntegrationByPartsLinear.lean)
 checks the original time-weighted product's linear term.
-[GaussianEulerIntegrationByPartsProductStep](Lean/IPRADerivations/Analysis/GaussianEulerIntegrationByPartsProductStep.lean)
-and [GaussianEulerIntegrationByPartsStep](Lean/IPRADerivations/Analysis/GaussianEulerIntegrationByPartsStep.lean)
+[GaussianEulerIntegrationByPartsProductStep](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerIntegrationByPartsProductStep.lean)
+and [GaussianEulerIntegrationByPartsStep](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerIntegrationByPartsStep.lean)
 give the literal original boundary increment its quadratic cell error
 and explicit observation allowance.
-[GaussianEulerIntegrationByPartsObservation](Lean/IPRADerivations/Analysis/GaussianEulerIntegrationByPartsObservation.lean)
+[GaussianEulerIntegrationByPartsObservation](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerIntegrationByPartsObservation.lean)
 binds the literal power-times-decay product to the actual normalized
 integrand at independent queries.
-[GaussianEulerIntegrationByPartsGridObservation](Lean/IPRADerivations/Analysis/GaussianEulerIntegrationByPartsGridObservation.lean)
+[GaussianEulerIntegrationByPartsGridObservation](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerIntegrationByPartsGridObservation.lean)
 carries this comparison to the actual weighted affine grid.
-[GaussianEulerIntegrationByPartsEndpoints](Lean/IPRADerivations/Analysis/GaussianEulerIntegrationByPartsEndpoints.lean)
+[GaussianEulerIntegrationByPartsEndpoints](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerIntegrationByPartsEndpoints.lean)
 bounds the original primitive at the lower cutoff and upper integer time.
-[GaussianEulerIntegrationByPartsEndpointRescale](Lean/IPRADerivations/Analysis/GaussianEulerIntegrationByPartsEndpointRescale.lean)
+[GaussianEulerIntegrationByPartsEndpointRescale](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerIntegrationByPartsEndpointRescale.lean)
 compares those times with their actual affine-grid endpoint encodings.
-[GaussianEulerIntegrationByPartsGrid](Lean/IPRADerivations/Analysis/GaussianEulerIntegrationByPartsGrid.lean)
+[GaussianEulerIntegrationByPartsGrid](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerIntegrationByPartsGrid.lean)
 telescopes the literal finite operator grid and retains an explicit
 step and observation error.
-[GaussianEulerIntegrationByPartsEndpointBudget](Lean/IPRADerivations/Analysis/GaussianEulerIntegrationByPartsEndpointBudget.lean)
+[GaussianEulerIntegrationByPartsEndpointBudget](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerIntegrationByPartsEndpointBudget.lean)
 bounds each actual affine boundary observation at a computed later cutoff.
-[GaussianEulerIntegrationByPartsCofinalGrid](Lean/IPRADerivations/Analysis/GaussianEulerIntegrationByPartsCofinalGrid.lean)
+[GaussianEulerIntegrationByPartsCofinalGrid](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerIntegrationByPartsCofinalGrid.lean)
 chooses a refinement of the original compact mesh and reads the
 same grid back to the original compact observations.
-[GaussianEulerIntegrationByPartsNormalizedGrid](Lean/IPRADerivations/Analysis/GaussianEulerIntegrationByPartsNormalizedGrid.lean)
+[GaussianEulerIntegrationByPartsNormalizedGrid](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerIntegrationByPartsNormalizedGrid.lean)
 relates the actual operator grid to the old and shifted normalized
 Euler quadratures.
-[GaussianEulerIntegrationByPartsRecurrence](Lean/IPRADerivations/Analysis/GaussianEulerIntegrationByPartsRecurrence.lean)
+[GaussianEulerIntegrationByPartsRecurrence](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerIntegrationByPartsRecurrence.lean)
 combines those estimates with the original Euler-to-Gamma identification
 to prove the right-half-plane recurrence on encoded rational inputs,
 including the comparison at independent Gamma and product queries.
-[GaussianEulerNamedIBPRecurrence](Lean/IPRADerivations/Analysis/GaussianEulerNamedIBPRecurrence.lean)
+[GaussianEulerNamedIBPRecurrence](Lean/IPRADerivations/Analysis/Euler/GaussianEulerNamedIBPRecurrence.lean)
 lifts this proof to original regular complex input names, using the
 actual normalized translation by one and the original named product.
-[GaussianEulerNamedIntegralIBPRecurrence](Lean/IPRADerivations/Analysis/GaussianEulerNamedIntegralIBPRecurrence.lean)
+[GaussianEulerNamedIntegralIBPRecurrence](Lean/IPRADerivations/Analysis/Euler/GaussianEulerNamedIntegralIBPRecurrence.lean)
 gives the corresponding identity of actual improper Euler names.
-[GaussianEulerIntegrationByPartsCompact](Lean/IPRADerivations/Analysis/GaussianEulerIntegrationByPartsCompact.lean)
+[GaussianEulerIntegrationByPartsCompact](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerIntegrationByPartsCompact.lean)
 keeps both actual shifted-integrand endpoint observations in the
 finite compact identity, with a computed error.
-[GaussianEulerIncompleteCutoff](Lean/IPRADerivations/Analysis/GaussianEulerIncompleteCutoff.lean)
+[GaussianEulerIncompleteCutoff](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerIncompleteCutoff.lean)
 splits the original later compact name at any positive rational point
 on a shared denominator and proves its actual compact additivity.
-[GaussianEulerLogarithmicMultiplier](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicMultiplier.lean)
+[GaussianEulerLogarithmicMultiplier](Lean/IPRADerivations/Analysis/Euler/Logarithms/GaussianEulerLogarithmicMultiplier.lean)
 checks the actual logarithmic Euler rows for every numerical order.
-[GaussianEulerLogarithmicCompactName](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicCompactName.lean)
+[GaussianEulerLogarithmicCompactName](Lean/IPRADerivations/Analysis/Euler/Logarithms/GaussianEulerLogarithmicCompactName.lean)
 constructs their actual regular compact quadrature.
-[GaussianUpperTimeLogarithmPower](Lean/IPRADerivations/Analysis/GaussianUpperTimeLogarithmPower.lean)
+[GaussianUpperTimeLogarithmPower](Lean/IPRADerivations/Analysis/Logarithm/GaussianUpperTimeLogarithmPower.lean)
 bounds the original regular logarithmic power on the upper half
 of the time axis by the corresponding time power and observation error.
-[GaussianEulerIntegrationByPartsCompactNamedIdentity](Lean/IPRADerivations/Analysis/GaussianEulerIntegrationByPartsCompactNamedIdentity.lean)
+[GaussianEulerIntegrationByPartsCompactNamedIdentity](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerIntegrationByPartsCompactNamedIdentity.lean)
 proves the regular-name compact identity on all encoded positive
 intervals, including zero width, retaining both original boundary names.
-[GaussianEulerIncompleteCutoffParts](Lean/IPRADerivations/Analysis/GaussianEulerIncompleteCutoffParts.lean)
+[GaussianEulerIncompleteCutoffParts](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerIncompleteCutoffParts.lean)
 identifies the change in each actual compact piece at a fixed rational
 split with the corresponding original whole-integral tail.
-[GaussianEulerIncompleteCutoffRate](Lean/IPRADerivations/Analysis/GaussianEulerIncompleteCutoffRate.lean)
+[GaussianEulerIncompleteCutoffRate](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerIncompleteCutoffRate.lean)
 bounds both changes using the original tail coefficients and the two
 requested observation precisions.
-[GaussianEulerIncompleteName](Lean/IPRADerivations/Analysis/GaussianEulerIncompleteName.lean)
+[GaussianEulerIncompleteName](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerIncompleteName.lean)
 makes the cofinal lower and upper programs into actual regular names,
-and [GaussianEulerIncompleteSum](Lean/IPRADerivations/Analysis/GaussianEulerIncompleteSum.lean)
+and [GaussianEulerIncompleteSum](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerIncompleteSum.lean)
 proves that their normalized sum agrees with the actual improper Euler
 and Gamma names at every positive rational split.
-[GaussianEulerIncompleteFixedCutoff](Lean/IPRADerivations/Analysis/GaussianEulerIncompleteFixedCutoff.lean)
+[GaussianEulerIncompleteFixedCutoff](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerIncompleteFixedCutoff.lean)
 compares the incomplete names to their corresponding compact pieces
 at any later fixed cutoff, with the original tail rate.
-[GaussianEulerIncompleteRadiusOverlap](Lean/IPRADerivations/Analysis/GaussianEulerIncompleteRadiusOverlap.lean)
+[GaussianEulerIncompleteRadiusOverlap](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerIncompleteRadiusOverlap.lean)
 aligns physical intervals across two certified radii and proves
 agreement of the original names at independent queries.
-[GaussianEulerIntegrandTimeProperness](Lean/IPRADerivations/Analysis/GaussianEulerIntegrandTimeProperness.lean)
+[GaussianEulerIntegrandTimeProperness](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerIntegrandTimeProperness.lean)
 identifies the original shifted integrand at equal rational encodings.
-[GaussianEulerIncompleteRecurrence](Lean/IPRADerivations/Analysis/GaussianEulerIncompleteRecurrence.lean)
+[GaussianEulerIncompleteRecurrence](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerIncompleteRecurrence.lean)
 proves both original incomplete recurrences, retaining the split-point
 integrand with opposite signs and bounding the two external terms.
-[GaussianEulerIncompleteUnitUpper](Lean/IPRADerivations/Analysis/GaussianEulerIncompleteUnitUpper.lean)
+[GaussianEulerIncompleteUnitUpper](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerIncompleteUnitUpper.lean)
 identifies the original upper incomplete sampler at one with decay.
-[GaussianEulerIncompleteFactorialDenominator](Lean/IPRADerivations/Analysis/GaussianEulerIncompleteFactorialDenominator.lean)
+[GaussianEulerIncompleteFactorialDenominator](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerIncompleteFactorialDenominator.lean)
 checks the literal finite factorial polynomial, its original scalar
 recurrence, and the integer numerator and denominator.
-[GaussianEulerIntegerBoundary](Lean/IPRADerivations/Analysis/GaussianEulerIntegerBoundary.lean)
+[GaussianEulerIntegerBoundary](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerIntegerBoundary.lean)
 identifies the original integer boundary sampler with the literal
 rational power times the original decay.
-[GaussianEulerIncompleteIntegerFormula](Lean/IPRADerivations/Analysis/GaussianEulerIncompleteIntegerFormula.lean)
+[GaussianEulerIncompleteIntegerFormula](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerIncompleteIntegerFormula.lean)
 derives the upper formula at every internal index by induction on
 the fixed-precision numerical error.
-[GaussianEulerIncompleteIntegerLowerFormula](Lean/IPRADerivations/Analysis/GaussianEulerIncompleteIntegerLowerFormula.lean)
+[GaussianEulerIncompleteIntegerLowerFormula](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerIncompleteIntegerLowerFormula.lean)
 derives the lower formula from the original sum and factorial value.
-[GaussianEulerIncompleteDyadicEndpoint](Lean/IPRADerivations/Analysis/GaussianEulerIncompleteDyadicEndpoint.lean)
+[GaussianEulerIncompleteDyadicEndpoint](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerIncompleteDyadicEndpoint.lean)
 uses the original lower-tail bound to prove the exact root rate of
 approach to the zero-split values on the original dyadic sequence.
-[GaussianEulerIncompleteSmallRationalEndpoint](Lean/IPRADerivations/Analysis/GaussianEulerIncompleteSmallRationalEndpoint.lean)
+[GaussianEulerIncompleteSmallRationalEndpoint](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerIncompleteSmallRationalEndpoint.lean)
 proves the same uniform bound for every positive rational split at most
 the cutoff, with the original lower and upper programs and independent
 requested observations.
-[GaussianEulerIncompleteZeroModulus](Lean/IPRADerivations/Analysis/GaussianEulerIncompleteZeroModulus.lean)
+[GaussianEulerIncompleteZeroModulus](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerIncompleteZeroModulus.lean)
 computes a positive rational threshold directly from any requested
 endpoint tolerance.
-[GaussianLogarithmFactorialPowerBound](Lean/IPRADerivations/Analysis/GaussianLogarithmFactorialPowerBound.lean)
+[GaussianLogarithmFactorialPowerBound](Lean/IPRADerivations/Analysis/Logarithm/GaussianLogarithmFactorialPowerBound.lean)
 derives the literal logarithmic power bound from the corresponding
 factorial term of the original finite exponential.
-[GaussianEulerLogarithmicHalfDecay](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicHalfDecay.lean)
+[GaussianEulerLogarithmicHalfDecay](Lean/IPRADerivations/Analysis/Euler/Logarithms/GaussianEulerLogarithmicHalfDecay.lean)
 proves the upper weighted-row bound at the exact factorial majorant
 for the combined Euler and logarithmic degree.
-[GaussianEulerLowerLogarithmPower](Lean/IPRADerivations/Analysis/GaussianEulerLowerLogarithmPower.lean)
+[GaussianEulerLowerLogarithmPower](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerLowerLogarithmPower.lean)
 proves the inverse-root bound for the actual logarithm at squared root times.
-[GaussianEulerLogarithmicUpperPointwise](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicUpperPointwise.lean)
+[GaussianEulerLogarithmicUpperPointwise](Lean/IPRADerivations/Analysis/Euler/Logarithms/GaussianEulerLogarithmicUpperPointwise.lean)
 proves the original upper pointwise majorant for the retimed logarithmic compact row.
-[GaussianEulerLogarithmicUpperScalar](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicUpperScalar.lean)
+[GaussianEulerLogarithmicUpperScalar](Lean/IPRADerivations/Analysis/Euler/Logarithms/GaussianEulerLogarithmicUpperScalar.lean)
 supplies the original scalar majorant at the combined degree to the actual compact evaluator.
-[GaussianEulerLogarithmicUpperCutoffBudget](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicUpperCutoffBudget.lean)
+[GaussianEulerLogarithmicUpperCutoffBudget](Lean/IPRADerivations/Analysis/Euler/Logarithms/GaussianEulerLogarithmicUpperCutoffBudget.lean)
 checks the actual upper logarithmic compact tails at the integer cutoff
 with the exact doubled upper factorial coefficient.
-[GaussianEulerLogarithmicLowerFiniteBudget](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicLowerFiniteBudget.lean)
+[GaussianEulerLogarithmicLowerFiniteBudget](Lean/IPRADerivations/Analysis/Euler/Logarithms/GaussianEulerLogarithmicLowerFiniteBudget.lean)
 checks the actual finite lower logarithmic root quadrature with the
 exact factorial coefficient at the doubled root degree.
-[GaussianEulerLogarithmicNamedLowerBound](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicNamedLowerBound.lean)
-and [GaussianEulerLogarithmicLowerCutoffBudget](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicLowerCutoffBudget.lean)
+[GaussianEulerLogarithmicNamedLowerBound](Lean/IPRADerivations/Analysis/Euler/Logarithms/GaussianEulerLogarithmicNamedLowerBound.lean)
+and [GaussianEulerLogarithmicLowerCutoffBudget](Lean/IPRADerivations/Analysis/Euler/Logarithms/GaussianEulerLogarithmicLowerCutoffBudget.lean)
 lift the bound to the actual compact lower name and compute a cutoff
 for any requested tail tolerance.
-[GaussianEulerLogarithmicIntervalAdditivity](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicIntervalAdditivity.lean)
+[GaussianEulerLogarithmicIntervalAdditivity](Lean/IPRADerivations/Analysis/Euler/Logarithms/GaussianEulerLogarithmicIntervalAdditivity.lean)
 checks finite additivity at fixed evaluator guards.
-[GaussianEulerLogarithmicClientRate](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicClientRate.lean)
+[GaussianEulerLogarithmicClientRate](Lean/IPRADerivations/Analysis/Euler/Logarithms/GaussianEulerLogarithmicClientRate.lean)
 proves the original logarithmic rows agree when the evaluator guards change.
-[GaussianEulerLogarithmicClientIndependence](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicClientIndependence.lean)
+[GaussianEulerLogarithmicClientIndependence](Lean/IPRADerivations/Analysis/Euler/Logarithms/GaussianEulerLogarithmicClientIndependence.lean)
 lifts that agreement to the actual compact names.
-[GaussianEulerLogarithmicLowerGuardBound](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicLowerGuardBound.lean)
+[GaussianEulerLogarithmicLowerGuardBound](Lean/IPRADerivations/Analysis/Euler/Logarithms/GaussianEulerLogarithmicLowerGuardBound.lean)
 preserves the exact lower coefficient under a larger valid upper-time guard.
-[GaussianEulerLogarithmicCommonCutoff](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicCommonCutoff.lean)
+[GaussianEulerLogarithmicCommonCutoff](Lean/IPRADerivations/Analysis/Euler/Logarithms/GaussianEulerLogarithmicCommonCutoff.lean)
 identifies the physical cutoff intervals using a computed lower index offset,
 with the original integrand radius retained.
-[GaussianEulerLogarithmicCertificateGeometry](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicCertificateGeometry.lean)
+[GaussianEulerLogarithmicCertificateGeometry](Lean/IPRADerivations/Analysis/Euler/Logarithms/GaussianEulerLogarithmicCertificateGeometry.lean)
 matches the actual lower endpoints for two independent cutoff certificates.
-[GaussianEulerLogarithmicImproperName](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicImproperName.lean)
+[GaussianEulerLogarithmicImproperName](Lean/IPRADerivations/Analysis/Euler/Logarithms/GaussianEulerLogarithmicImproperName.lean)
 constructs the actual regular varying-cutoff name at every numerical
 logarithmic order.
-[GaussianEulerLogarithmicFixedCutoff](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicFixedCutoff.lean)
+[GaussianEulerLogarithmicFixedCutoff](Lean/IPRADerivations/Analysis/Euler/Logarithms/GaussianEulerLogarithmicFixedCutoff.lean)
 proves an independent observation rate to any sufficiently late fixed interval.
-[GaussianEulerLogarithmicTopExtension](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicTopExtension.lean)
+[GaussianEulerLogarithmicTopExtension](Lean/IPRADerivations/Analysis/Euler/Logarithms/GaussianEulerLogarithmicTopExtension.lean)
 compares an actual compact cutoff with its extension to an arbitrary larger top.
-[GaussianEulerLogarithmicCertificateOverlap](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicCertificateOverlap.lean),
-[GaussianEulerLogarithmicInputProperness](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicInputProperness.lean),
-and [GaussianEulerLogarithmicImproperInputProperness](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicImproperInputProperness.lean)
+[GaussianEulerLogarithmicCertificateOverlap](Lean/IPRADerivations/Analysis/Euler/Logarithms/GaussianEulerLogarithmicCertificateOverlap.lean),
+[GaussianEulerLogarithmicInputProperness](Lean/IPRADerivations/Analysis/Euler/Logarithms/GaussianEulerLogarithmicInputProperness.lean),
+and [GaussianEulerLogarithmicImproperInputProperness](Lean/IPRADerivations/Analysis/Euler/Logarithms/GaussianEulerLogarithmicImproperInputProperness.lean)
 prove agreement across independent certificates and equal normalized rational inputs.
-[GaussianEulerLogarithmicContinuity](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicContinuity.lean)
+[GaussianEulerLogarithmicContinuity](Lean/IPRADerivations/Analysis/Euler/Logarithms/GaussianEulerLogarithmicContinuity.lean)
 computes a parameter modulus and proves the independent observation estimate
 for the original improper names on certified rational shifts.
-[GaussianEulerLogarithmicZeroIdentification](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicZeroIdentification.lean)
+[GaussianEulerLogarithmicZeroIdentification](Lean/IPRADerivations/Analysis/Euler/Logarithms/GaussianEulerLogarithmicZeroIdentification.lean)
 identifies the order-zero improper name with the original Gamma program.
-[GaussianEulerLogarithmicParameterTaylor](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicParameterTaylor.lean)
+[GaussianEulerLogarithmicParameterTaylor](Lean/IPRADerivations/Analysis/Euler/Logarithms/GaussianEulerLogarithmicParameterTaylor.lean)
 checks the actual pointwise first-order remainder at every numerical
 order. It derives the shifted radius from the increment bound and
 leaves all three original observation queries independent.
-[GaussianEulerLogarithmicTaylorGrid](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicTaylorGrid.lean)
+[GaussianEulerLogarithmicTaylorGrid](Lean/IPRADerivations/Analysis/Euler/Logarithms/GaussianEulerLogarithmicTaylorGrid.lean)
 integrates the actual quadratic bound on a shared finite grid with
 the exact interval-length factor.
-[GaussianEulerLogarithmicCompactTaylor](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicCompactTaylor.lean)
+[GaussianEulerLogarithmicCompactTaylor](Lean/IPRADerivations/Analysis/Euler/Logarithms/GaussianEulerLogarithmicCompactTaylor.lean)
 lifts the finite estimate to the three independently meshed compact
 names and retains the exact quadratic coefficient.
-[GaussianEulerLogarithmicCompactParameterRate](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicCompactParameterRate.lean)
+[GaussianEulerLogarithmicCompactParameterRate](Lean/IPRADerivations/Analysis/Euler/Logarithms/GaussianEulerLogarithmicCompactParameterRate.lean)
 derives a fixed-interval parameter Lipschitz estimate from that bound
 and the actual compact majorant at the next logarithmic order.
-[GaussianEulerDerivativeParameterPath](Lean/IPRADerivations/Analysis/GaussianEulerDerivativeParameterPath.lean)
-and [GaussianEulerDerivativeSubdivisionBudget](Lean/IPRADerivations/Analysis/GaussianEulerDerivativeSubdivisionBudget.lean)
+[GaussianEulerDerivativeParameterPath](Lean/IPRADerivations/Analysis/Euler/GaussianEulerDerivativeParameterPath.lean)
+and [GaussianEulerDerivativeSubdivisionBudget](Lean/IPRADerivations/Analysis/Euler/GaussianEulerDerivativeSubdivisionBudget.lean)
 verify the native parameter segment, its endpoint and step identities,
 and the computed subdivision and relative error budgets.
-[GaussianEulerDerivativeSlopeVariation](Lean/IPRADerivations/Analysis/GaussianEulerDerivativeSlopeVariation.lean)
+[GaussianEulerDerivativeSlopeVariation](Lean/IPRADerivations/Analysis/Euler/GaussianEulerDerivativeSlopeVariation.lean)
 bounds variation of the original improper slopes along the whole path, uniformly
 in its subdivision count.
-[GaussianEulerLogarithmicPathCompactTaylor](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicPathCompactTaylor.lean)
+[GaussianEulerLogarithmicPathCompactTaylor](Lean/IPRADerivations/Analysis/Euler/Logarithms/GaussianEulerLogarithmicPathCompactTaylor.lean)
 checks the exact local remainder on successive original compact path observations.
-[GaussianEulerDerivativeCommonInterval](Lean/IPRADerivations/Analysis/GaussianEulerDerivativeCommonInterval.lean)
+[GaussianEulerDerivativeCommonInterval](Lean/IPRADerivations/Analysis/Euler/GaussianEulerDerivativeCommonInterval.lean)
 constructs a common physical interval for adjacent orders at every path point
 and preserves the independently chosen truncation tolerances.
-[GaussianRationalParameterTelescope](Lean/IPRADerivations/Analysis/GaussianRationalParameterTelescope.lean)
+[GaussianRationalParameterTelescope](Lean/IPRADerivations/Analysis/Series/GaussianRationalParameterTelescope.lean)
 sums the finite parameter errors and converts the repeated substep to the actual
 whole increment.
-[GaussianEulerLogarithmicPathCompactRows](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicPathCompactRows.lean)
-and [GaussianEulerDerivativeCompactSlopeRows](Lean/IPRADerivations/Analysis/GaussianEulerDerivativeCompactSlopeRows.lean)
+[GaussianEulerLogarithmicPathCompactRows](Lean/IPRADerivations/Analysis/Euler/Logarithms/GaussianEulerLogarithmicPathCompactRows.lean)
+and [GaussianEulerDerivativeCompactSlopeRows](Lean/IPRADerivations/Analysis/Euler/GaussianEulerDerivativeCompactSlopeRows.lean)
 supply the two actual finite row tables.
-[GaussianEulerDerivativeEndpointBinding](Lean/IPRADerivations/Analysis/GaussianEulerDerivativeEndpointBinding.lean)
+[GaussianEulerDerivativeEndpointBinding](Lean/IPRADerivations/Analysis/Euler/GaussianEulerDerivativeEndpointBinding.lean)
 transports the two compact endpoints to the original improper names.
-[GaussianNamedDifferenceQuotient](Lean/IPRADerivations/Analysis/GaussianNamedDifferenceQuotient.lean)
+[GaussianNamedDifferenceQuotient](Lean/IPRADerivations/Analysis/Names/Rates/GaussianNamedDifferenceQuotient.lean)
 constructs the actual regular difference quotient for a nonzero native increment.
-[GaussianRationalNormalizedTelescope](Lean/IPRADerivations/Analysis/GaussianRationalNormalizedTelescope.lean)
+[GaussianRationalNormalizedTelescope](Lean/IPRADerivations/Analysis/Series/GaussianRationalNormalizedTelescope.lean)
 cancels the increment before bounding the finite mean of the slope errors.
-[GaussianEulerLogarithmicDerivative](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicDerivative.lean)
+[GaussianEulerLogarithmicDerivative](Lean/IPRADerivations/Analysis/Euler/Logarithms/GaussianEulerLogarithmicDerivative.lean)
 proves `I_j' = I_{j+1}` of ledger family 14 on certified native Gaussian
 rational inputs for every numerical `j`. Its modulus is independent of the
 increment, and the bound is `2⁻ᵖ + 2⁻ᑫ + 2⁻ᵛ` for the independent actual
 observations at `q` and `v`.
-[GaussianGammaEulerFirstDerivative](Lean/IPRADerivations/Analysis/GaussianGammaEulerFirstDerivative.lean)
+[GaussianGammaEulerFirstDerivative](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGammaEulerFirstDerivative.lean)
 binds the quotient made directly from the original Gamma evaluator to
 the certified order-one logarithmic integral at the same rate.
-[GaussianGammaUnitEulerDifference](Lean/IPRADerivations/Analysis/GaussianGammaUnitEulerDifference.lean)
+[GaussianGammaUnitEulerDifference](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaUnitEulerDifference.lean)
 gives the explicit positive rational increment schedule at one.
-[GaussianRationalUnitInverseExpansion](Lean/IPRADerivations/Analysis/GaussianRationalUnitInverseExpansion.lean)
+[GaussianRationalUnitInverseExpansion](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianRationalUnitInverseExpansion.lean)
 transports a finite quadratic remainder through inversion using the
 actual product residual.
-[GaussianGammaDerivativeAtOne](Lean/IPRADerivations/Analysis/GaussianGammaDerivativeAtOne.lean)
+[GaussianGammaDerivativeAtOne](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaDerivativeAtOne.lean)
 identifies the original first logarithmic Euler integral at one with
 the negative of the original Euler–Mascheroni name. The independent
 Gamma difference-quotient observations have the same dyadic derivative
 rate for every increment certified by the original Euler derivative
 source, including the computed positive rational steps.
-[GaussianEulerLogarithmicMixedParameterRate](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicMixedParameterRate.lean)
+[GaussianEulerLogarithmicMixedParameterRate](Lean/IPRADerivations/Analysis/Euler/Logarithms/GaussianEulerLogarithmicMixedParameterRate.lean)
 proves the uniform comparison at distinct native inputs with independent
-certificates. [GaussianNamedEulerLogarithmicImproper](Lean/IPRADerivations/Analysis/GaussianNamedEulerLogarithmicImproper.lean)
+certificates. [GaussianNamedEulerLogarithmicImproper](Lean/IPRADerivations/Analysis/Euler/Logarithms/GaussianNamedEulerLogarithmicImproper.lean)
 uses a finite demand maximum to construct regular logarithmic improper
 evaluators at every numerical order on a fixed certified complex name.
-[GaussianRationalQuadratureDilation](Lean/IPRADerivations/Analysis/GaussianRationalQuadratureDilation.lean)
+[GaussianRationalQuadratureDilation](Lean/IPRADerivations/Analysis/Integration/GaussianRationalQuadratureDilation.lean)
 checks the finite pullback for a positive rational scale and its exact
 Jacobian, preserving the original grid observations.
-[GaussianEulerPositiveTimePowerProduct](Lean/IPRADerivations/Analysis/GaussianEulerPositiveTimePowerProduct.lean)
+[GaussianEulerPositiveTimePowerProduct](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerPositiveTimePowerProduct.lean)
 proves the product laws for the original positive-time logarithm and complex power.
-[GaussianEulerPositiveScalingIntegrand](Lean/IPRADerivations/Analysis/GaussianEulerPositiveScalingIntegrand.lean)
+[GaussianEulerPositiveScalingIntegrand](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerPositiveScalingIntegrand.lean)
 proves the actual pointwise pullback identity with modified decay and the
 original complex power factor.
-[GaussianNamedEulerLogarithmicFrozenRate](Lean/IPRADerivations/Analysis/GaussianNamedEulerLogarithmicFrozenRate.lean)
+[GaussianNamedEulerLogarithmicFrozenRate](Lean/IPRADerivations/Analysis/Euler/Logarithms/GaussianNamedEulerLogarithmicFrozenRate.lean)
 compares the named integral with any sufficiently late decoded input.
-[GaussianNamedEulerLogarithmicIncrementBinding](Lean/IPRADerivations/Analysis/GaussianNamedEulerLogarithmicIncrementBinding.lean)
+[GaussianNamedEulerLogarithmicIncrementBinding](Lean/IPRADerivations/Analysis/Euler/Logarithms/GaussianNamedEulerLogarithmicIncrementBinding.lean)
 uses one decoded base value and its exact Gaussian rational shift.
-[GaussianNamedEulerLogarithmicDerivative](Lean/IPRADerivations/Analysis/GaussianNamedEulerLogarithmicDerivative.lean)
+[GaussianNamedEulerLogarithmicDerivative](Lean/IPRADerivations/Analysis/Euler/Logarithms/GaussianNamedEulerLogarithmicDerivative.lean)
 proves family 14 at every numerical order on any fixed certified regular
 complex name, for nonzero native Gaussian rational increments. It preserves
 both requested observation precisions and computes the modulus before the
 increment is supplied.
-[GaussianNamedEulerLogarithmicNamedDerivative](Lean/IPRADerivations/Analysis/GaussianNamedEulerLogarithmicNamedDerivative.lean)
+[GaussianNamedEulerLogarithmicNamedDerivative](Lean/IPRADerivations/Analysis/Euler/Logarithms/GaussianNamedEulerLogarithmicNamedDerivative.lean)
 extends the same estimate to increments given by regular complex names
 with finite apartness and an all-observation smallness certificate. The
 actual named reciprocal, original difference, and original named slope
 all retain their original query interfaces.
-[GaussianNamedEulerLogarithmicZeroIdentification](Lean/IPRADerivations/Analysis/GaussianNamedEulerLogarithmicZeroIdentification.lean)
+[GaussianNamedEulerLogarithmicZeroIdentification](Lean/IPRADerivations/Analysis/Euler/Logarithms/GaussianNamedEulerLogarithmicZeroIdentification.lean)
 proves that the order-zero evaluator agrees with the original Gamma name
 on every fixed certified complex input.
-[GaussianNamedGammaEulerFirstDerivative](Lean/IPRADerivations/Analysis/GaussianNamedGammaEulerFirstDerivative.lean)
+[GaussianNamedGammaEulerFirstDerivative](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianNamedGammaEulerFirstDerivative.lean)
 proves the first derivative estimate directly for the quotient of the original
 named Gamma evaluators along a certified regular named increment.
-[GaussianEulerPositiveScalingQuadrature](Lean/IPRADerivations/Analysis/GaussianEulerPositiveScalingQuadrature.lean)
+[GaussianEulerPositiveScalingQuadrature](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerPositiveScalingQuadrature.lean)
 lifts the scaled integrand identity to the original finite quadrature
 with its rational Jacobian and both observation allowances.
-[GaussianEulerPositiveScalingCompact](Lean/IPRADerivations/Analysis/GaussianEulerPositiveScalingCompact.lean)
+[GaussianEulerPositiveScalingCompact](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerPositiveScalingCompact.lean)
 compares the resulting compact names on a common rational grid.
-[GaussianEulerPositiveScalingImproper](Lean/IPRADerivations/Analysis/GaussianEulerPositiveScalingImproper.lean)
+[GaussianEulerPositiveScalingImproper](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerPositiveScalingImproper.lean)
 checks family 16 at exponent parameter `r = 1` with a positive rational
 damping rate `c / d` and encoded complex input. The compact damped
 samples on the inverse-dilated Euler cutoffs form a regular improper
 name. Its independent observations agree with the original improper
 Euler integral multiplied by the actual inverse scale power
 `exp(-(z / B) log(c / d))` within the sum of the two dyadic errors.
-[GaussianEulerPositiveScalingGamma](Lean/IPRADerivations/Analysis/GaussianEulerPositiveScalingGamma.lean)
+[GaussianEulerPositiveScalingGamma](Lean/IPRADerivations/Analysis/Gamma/GaussianEulerPositiveScalingGamma.lean)
 identifies the resulting improper name directly with the original
 Gamma name times this inverse scale power and proves the forward
 identity obtained by multiplying the integral by the positive scale power.
-[GaussianRationalQuadratureSquareJacobian](Lean/IPRADerivations/Analysis/GaussianRationalQuadratureSquareJacobian.lean)
+[GaussianRationalQuadratureSquareJacobian](Lean/IPRADerivations/Analysis/Integration/GaussianRationalQuadratureSquareJacobian.lean)
 checks the finite left-endpoint Jacobian error for the quadratic map.
-[GaussianEulerSquarePower](Lean/IPRADerivations/Analysis/GaussianEulerSquarePower.lean)
+[GaussianEulerSquarePower](Lean/IPRADerivations/Analysis/Euler/GaussianEulerSquarePower.lean)
 checks the original power at a squared rational time against the
 original-time evaluator with doubled exponent.
-[GaussianEulerSquareIntegrand](Lean/IPRADerivations/Analysis/GaussianEulerSquareIntegrand.lean)
+[GaussianEulerSquareIntegrand](Lean/IPRADerivations/Analysis/Euler/GaussianEulerSquareIntegrand.lean)
 identifies the actual Jacobian-weighted Euler observation with the
 doubled-power kernel times twice the scale power. It preserves the
 finite evaluator and its original product query.
-[GaussianRationalQuadratureSquareGridDistance](Lean/IPRADerivations/Analysis/GaussianRationalQuadratureSquareGridDistance.lean)
+[GaussianRationalQuadratureSquareGridDistance](Lean/IPRADerivations/Analysis/Integration/GaussianRationalQuadratureSquareGridDistance.lean)
 locates the target grid blocks and checks their mapped node distances.
-[GaussianEulerQuadraticLowerEndpoint](Lean/IPRADerivations/Analysis/GaussianEulerQuadraticLowerEndpoint.lean)
+[GaussianEulerQuadraticLowerEndpoint](Lean/IPRADerivations/Analysis/Euler/GaussianEulerQuadraticLowerEndpoint.lean)
 checks cofinal containment and the actual lower omitted-tail bound
 at the mapped rational endpoints.
-[GaussianEulerSquareCompactComparison](Lean/IPRADerivations/Analysis/GaussianEulerSquareCompactComparison.lean)
+[GaussianEulerSquareCompactComparison](Lean/IPRADerivations/Analysis/Euler/GaussianEulerSquareCompactComparison.lean)
 proves the original compact Euler integral equals the retimed
 Jacobian-weighted compact integral on positive-width rational
 intervals. It retains both requested observation precisions. The
 zero-width finite quadratures both evaluate to zero.
-[GaussianEulerQuadraticKernelCompactName](Lean/IPRADerivations/Analysis/GaussianEulerQuadraticKernelCompactName.lean)
+[GaussianEulerQuadraticKernelCompactName](Lean/IPRADerivations/Analysis/Euler/GaussianEulerQuadraticKernelCompactName.lean)
 constructs the regular compact sampler for the unfactored kernel.
-[GaussianEulerQuadraticUpperEndpoint](Lean/IPRADerivations/Analysis/GaussianEulerQuadraticUpperEndpoint.lean)
+[GaussianEulerQuadraticUpperEndpoint](Lean/IPRADerivations/Analysis/Euler/GaussianEulerQuadraticUpperEndpoint.lean)
 aligns a quadratic image endpoint to an original upper cutoff and
 bounds the actual omitted upper tail.
-[GaussianEulerQuadraticImproperJacobian](Lean/IPRADerivations/Analysis/GaussianEulerQuadraticImproperJacobian.lean)
+[GaussianEulerQuadraticImproperJacobian](Lean/IPRADerivations/Analysis/Euler/GaussianEulerQuadraticImproperJacobian.lean)
 checks the cofinal Jacobian-weighted integral against the original
-Gamma evaluator. [GaussianEulerQuadraticImproperKernel](Lean/IPRADerivations/Analysis/GaussianEulerQuadraticImproperKernel.lean)
+Gamma evaluator. [GaussianEulerQuadraticImproperKernel](Lean/IPRADerivations/Analysis/Euler/GaussianEulerQuadraticImproperKernel.lean)
 constructs the separate cofinal sampler for the unfactored kernel
 and proves its inverse-factor identity with the original Euler name.
-[GaussianEulerQuadraticGamma](Lean/IPRADerivations/Analysis/GaussianEulerQuadraticGamma.lean)
+[GaussianEulerQuadraticGamma](Lean/IPRADerivations/Analysis/Gamma/GaussianEulerQuadraticGamma.lean)
 checks the quadratic family 15 identity
 \(\Gamma(z)=2c^z\int_0^\infty u^{2z-1}e^{-cu^2}\,du\)
 for positive rational \(c\) and certified encoded complex \(z\),
 with independent observation precisions for the original Gamma
 name and the actual factored improper sampler.
-[GaussianEulerExponentialSubstitutionNamedKernel](Lean/IPRADerivations/Analysis/GaussianEulerExponentialSubstitutionNamedKernel.lean)
+[GaussianEulerExponentialSubstitutionNamedKernel](Lean/IPRADerivations/Analysis/Euler/GaussianEulerExponentialSubstitutionNamedKernel.lean)
 constructs the actual exponential kernel on a regular input name
 and identifies its value at the original logarithm of a positive
-rational time. [GaussianEulerExponentialLogGrid](Lean/IPRADerivations/Analysis/GaussianEulerExponentialLogGrid.lean)
+rational time. [GaussianEulerExponentialLogGrid](Lean/IPRADerivations/Analysis/Euler/GaussianEulerExponentialLogGrid.lean)
 checks the finite logarithmic image sum using the actual widths
 and the exponential values at the mapped left endpoints.
-[GaussianEulerUnitSubstitutionDensity](Lean/IPRADerivations/Analysis/GaussianEulerUnitSubstitutionDensity.lean)
+[GaussianEulerUnitSubstitutionDensity](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerUnitSubstitutionDensity.lean)
 compares the finite original decay-image density to the original
-Euler quadrature. [GaussianEulerUnitLogarithmicComposition](Lean/IPRADerivations/Analysis/GaussianEulerUnitLogarithmicComposition.lean)
+Euler quadrature. [GaussianEulerUnitLogarithmicComposition](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerUnitLogarithmicComposition.lean)
 constructs the actual logarithm of minus log at rational inputs
 strictly between zero and one.
-[GaussianEulerExponentialImproper](Lean/IPRADerivations/Analysis/GaussianEulerExponentialImproper.lean)
+[GaussianEulerExponentialImproper](Lean/IPRADerivations/Analysis/Euler/GaussianEulerExponentialImproper.lean)
 identifies the original Gamma name with the improper sampler of
 $e^{zu-e^u}$ on the logarithmic images of the original Euler grids.
-[GaussianEulerExponentialLogPartition](Lean/IPRADerivations/Analysis/GaussianEulerExponentialLogPartition.lean)
+[GaussianEulerExponentialLogPartition](Lean/IPRADerivations/Analysis/Euler/GaussianEulerExponentialLogPartition.lean)
 proves nonnegative sampled widths, the $C/N$ mesh bound and exact
-telescoping. [GaussianEulerExponentialCutoffPartition](Lean/IPRADerivations/Analysis/GaussianEulerExponentialCutoffPartition.lean)
+telescoping. [GaussianEulerExponentialCutoffPartition](Lean/IPRADerivations/Analysis/Euler/GaussianEulerExponentialCutoffPartition.lean)
 proves that the actual image endpoints exhaust every fixed signed
-interval. [GaussianEulerExponentialNamedKernelRate](Lean/IPRADerivations/Analysis/GaussianEulerExponentialNamedKernelRate.lean)
+interval. [GaussianEulerExponentialNamedKernelRate](Lean/IPRADerivations/Analysis/Euler/GaussianEulerExponentialNamedKernelRate.lean)
 checks the uniform gain for the genuine kernel on regular names.
-[GaussianEulerUnitSubstitutionGamma](Lean/IPRADerivations/Analysis/GaussianEulerUnitSubstitutionGamma.lean)
+[GaussianEulerUnitSubstitutionGamma](Lean/IPRADerivations/Analysis/Gamma/GaussianEulerUnitSubstitutionGamma.lean)
 identifies the actual cofinal decay-image density on `u = exp(-t)`
-with the original Gamma name. [GaussianEulerUnitSubstitutionImageGrid](Lean/IPRADerivations/Analysis/GaussianEulerUnitSubstitutionImageGrid.lean)
+with the original Gamma name. [GaussianEulerUnitSubstitutionImageGrid](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerUnitSubstitutionImageGrid.lean)
 checks order, total width and shrinking mesh, and
-[GaussianEulerUnitSubstitutionEndpoints](Lean/IPRADerivations/Analysis/GaussianEulerUnitSubstitutionEndpoints.lean)
+[GaussianEulerUnitSubstitutionEndpoints](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerUnitSubstitutionEndpoints.lean)
 checks exhaustion to zero and one.
-[GaussianEulerUnitKernelCompactRate](Lean/IPRADerivations/Analysis/GaussianEulerUnitKernelCompactRate.lean)
+[GaussianEulerUnitKernelCompactRate](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerUnitKernelCompactRate.lean)
 certifies the genuine rational-input kernel on compact subintervals
 of `(0, 1)`.
-[GaussianNamedEulerUnitKernel](Lean/IPRADerivations/Analysis/GaussianNamedEulerUnitKernel.lean)
+[GaussianNamedEulerUnitKernel](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianNamedEulerUnitKernel.lean)
 extends the actual kernel to regular names whose real samples remain
 in the certified compact interval. It derives regularity and
 properness from the literal decoded rational samples and their
 computed observation precisions.
-[GaussianNamedEulerUnitKernelFrozenRate](Lean/IPRADerivations/Analysis/GaussianNamedEulerUnitKernelFrozenRate.lean)
+[GaussianNamedEulerUnitKernelFrozenRate](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianNamedEulerUnitKernelFrozenRate.lean)
 compares the actual result with the original rational kernel at any
 frozen input sample, with leading error `L / 2^k` and both requested
 dyadic allowances.
-[GaussianNamedEulerUnitTime](Lean/IPRADerivations/Analysis/GaussianNamedEulerUnitTime.lean)
+[GaussianNamedEulerUnitTime](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianNamedEulerUnitTime.lean)
 constructs the original harmonic logarithmic time on those inputs.
-[GaussianNamedEulerUnitTimeExponential](Lean/IPRADerivations/Analysis/GaussianNamedEulerUnitTimeExponential.lean)
+[GaussianNamedEulerUnitTimeExponential](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianNamedEulerUnitTimeExponential.lean)
 recovers the original input by exponentiating the negative of its time.
-[GaussianEulerUnitDecayInput](Lean/IPRADerivations/Analysis/GaussianEulerUnitDecayInput.lean)
+[GaussianEulerUnitDecayInput](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerUnitDecayInput.lean)
 supplies the exact compact certificate for the original decay at a
 computed later precision. For `1/E <= t <= T`, that certificate is
 `[1/G, 1-1/G]` with `G = 2(3^T + 4E)`.
-[GaussianRealNameExponentialInjectivity](Lean/IPRADerivations/Analysis/GaussianRealNameExponentialInjectivity.lean)
+[GaussianRealNameExponentialInjectivity](Lean/IPRADerivations/Analysis/Exponential/GaussianRealNameExponentialInjectivity.lean)
 derives equality of the original real-axis inputs from equality of
 their separately clocked exponentials.
-[GaussianNamedEulerUnitKernelAtDecay](Lean/IPRADerivations/Analysis/GaussianNamedEulerUnitKernelAtDecay.lean)
+[GaussianNamedEulerUnitKernelAtDecay](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianNamedEulerUnitKernelAtDecay.lean)
 proves that the actual time at `u = exp(-t)` equals `t`, and that
 the genuine named kernel at that input equals the original Euler
 power at `t`, with independent precision allowances. It also bounds
 the error of evaluating the rational unit kernel at a literal
 rounded decay sample.
-[GaussianEulerUnitSubstitutionDensityPrecision](Lean/IPRADerivations/Analysis/GaussianEulerUnitSubstitutionDensityPrecision.lean)
+[GaussianEulerUnitSubstitutionDensityPrecision](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerUnitSubstitutionDensityPrecision.lean)
 gives a uniform bound for independently late observations of the
 same fixed-grid density.
-[GaussianEulerUnitSubstitutionTiltedNodes](Lean/IPRADerivations/Analysis/GaussianEulerUnitSubstitutionTiltedNodes.lean)
+[GaussianEulerUnitSubstitutionTiltedNodes](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerUnitSubstitutionTiltedNodes.lean)
 gives ordered native rational nodes with an explicit correction of
 at most `2N / 2^p` for each original rounded decay node.
-[RationalUnitFloorBounds](Lean/IPRADerivations/Analysis/RationalUnitFloorBounds.lean)
+[RationalUnitFloorBounds](Lean/IPRADerivations/Analysis/RationalArithmetic/RationalUnitFloorBounds.lean)
 derives compact interval guards for quantized lattice nodes and all
-intermediate points. [RationalTiltedFloorWidth](Lean/IPRADerivations/Analysis/RationalTiltedFloorWidth.lean)
+intermediate points. [RationalTiltedFloorWidth](Lean/IPRADerivations/Analysis/RationalArithmetic/RationalTiltedFloorWidth.lean)
 bounds each rounded width by the original signed width, with one
 tilt increment and the two floor allowances.
-[GaussianEulerUnitSubstitutionReversedWeights](Lean/IPRADerivations/Analysis/GaussianEulerUnitSubstitutionReversedWeights.lean)
+[GaussianEulerUnitSubstitutionReversedWeights](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerUnitSubstitutionReversedWeights.lean)
 keeps the original density under exact finite reversal and projects
 the actual cell mesh to scalar endpoint distances.
-[GaussianEulerUnitKernelCompactName](Lean/IPRADerivations/Analysis/GaussianEulerUnitKernelCompactName.lean)
+[GaussianEulerUnitKernelCompactName](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerUnitKernelCompactName.lean)
 constructs a regular compact unit-kernel quadrature with an explicit
 modulus on native rational panels.
-[GaussianEulerUnitSubstitutionNearbyKernel](Lean/IPRADerivations/Analysis/GaussianEulerUnitSubstitutionNearbyKernel.lean)
+[GaussianEulerUnitSubstitutionNearbyKernel](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerUnitSubstitutionNearbyKernel.lean)
 bounds the original power against the rational kernel at nearby
 points with independent observation precisions.
-[GaussianPartitionedFiniteSumTotalDistance](Lean/IPRADerivations/Analysis/GaussianPartitionedFiniteSumTotalDistance.lean)
+[GaussianPartitionedFiniteSumTotalDistance](Lean/IPRADerivations/Analysis/Integration/GaussianPartitionedFiniteSumTotalDistance.lean)
 accumulates the finite row error using the total cut width.
-[GaussianPartitionedFiniteSumWeightReplacement](Lean/IPRADerivations/Analysis/GaussianPartitionedFiniteSumWeightReplacement.lean)
+[GaussianPartitionedFiniteSumWeightReplacement](Lean/IPRADerivations/Analysis/Integration/GaussianPartitionedFiniteSumWeightReplacement.lean)
 controls the replacement of the integer-cell weights by signed widths.
-[GaussianEulerUnitSubstitutionFloorCuts](Lean/IPRADerivations/Analysis/GaussianEulerUnitSubstitutionFloorCuts.lean)
+[GaussianEulerUnitSubstitutionFloorCuts](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerUnitSubstitutionFloorCuts.lean)
 constructs the absolute and relative integer cuts in a common
 certified compact unit interval.
-[GaussianEulerUnitSubstitutionLatticeComparison](Lean/IPRADerivations/Analysis/GaussianEulerUnitSubstitutionLatticeComparison.lean)
+[GaussianEulerUnitSubstitutionLatticeComparison](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerUnitSubstitutionLatticeComparison.lean)
 compares the original signed decay-image density to the original
 unit kernel evaluated on the resulting uniform rational lattice.
 The error includes the original mesh and pointwise rate and the
 summed cost of replacing the signed cell widths.
-[GaussianEulerUnitSubstitutionLatticeRate](Lean/IPRADerivations/Analysis/GaussianEulerUnitSubstitutionLatticeRate.lean)
+[GaussianEulerUnitSubstitutionLatticeRate](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerUnitSubstitutionLatticeRate.lean)
 separates the finite error into the time mesh, decay precision,
 lattice denominator and independent kernel precision.
-[GaussianEulerUnitSubstitutionIndependentQuadrature](Lean/IPRADerivations/Analysis/GaussianEulerUnitSubstitutionIndependentQuadrature.lean)
+[GaussianEulerUnitSubstitutionIndependentQuadrature](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerUnitSubstitutionIndependentQuadrature.lean)
 extends this finite comparison to an independently chosen positive
 uniform quadrature count at independent precision on the same
 rational panel, including a collapsed rounded panel.
-[GaussianEulerUnitSubstitutionPanelComparison](Lean/IPRADerivations/Analysis/GaussianEulerUnitSubstitutionPanelComparison.lean)
+[GaussianEulerUnitSubstitutionPanelComparison](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerUnitSubstitutionPanelComparison.lean)
 compares the original regular compact unit quadrature on a computed
 rational panel to any independently requested observation of the original
 compact Euler name.
-[GaussianEulerUnitSubstitutionOrdinaryImproper](Lean/IPRADerivations/Analysis/GaussianEulerUnitSubstitutionOrdinaryImproper.lean)
+[GaussianEulerUnitSubstitutionOrdinaryImproper](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerUnitSubstitutionOrdinaryImproper.lean)
 identifies the resulting cofinal ordinary unit quadrature with the original
 Gamma name, with independent observation indices. Its Euler comparison
 allows any later original time cutoff.
-[GaussianEulerUnitSubstitutionOrdinaryEndpoints](Lean/IPRADerivations/Analysis/GaussianEulerUnitSubstitutionOrdinaryEndpoints.lean)
+[GaussianEulerUnitSubstitutionOrdinaryEndpoints](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerUnitSubstitutionOrdinaryEndpoints.lean)
 proves that the same rounded rational endpoints are strictly inside the
 unit interval and approach zero and one with the requested dyadic errors.
-[GaussianEulerUnitKernelRationalPanelContinuity](Lean/IPRADerivations/Analysis/GaussianEulerUnitKernelRationalPanelContinuity.lean)
+[GaussianEulerUnitKernelRationalPanelContinuity](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerUnitKernelRationalPanelContinuity.lean)
 bounds the difference of the actual compact unit quadratures on two
 panels in a common certified compact interval. Both endpoints may
 move by a given rational radius and the two rational denominators
 and observation indices may be chosen independently. The leading
 error is the endpoint radius times the sum of the compact Lipschitz
 constant and twice the kernel majorant.
-[GaussianEulerUnitKernelMarginIndependence](Lean/IPRADerivations/Analysis/GaussianEulerUnitKernelMarginIndependence.lean)
+[GaussianEulerUnitKernelMarginIndependence](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerUnitKernelMarginIndependence.lean)
 proves that changing the certified margin on a fixed panel preserves
 the original name.
-[GaussianEulerUnitSubstitutionOrdinaryContainment](Lean/IPRADerivations/Analysis/GaussianEulerUnitSubstitutionOrdinaryContainment.lean)
+[GaussianEulerUnitSubstitutionOrdinaryContainment](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerUnitSubstitutionOrdinaryContainment.lean)
 shows that the actual rounded cofinal panel contains any fixed proper
 rational panel as soon as its stage unit reaches that panel's denominator.
-[GaussianEulerUnitKernelNestedPanels](Lean/IPRADerivations/Analysis/GaussianEulerUnitKernelNestedPanels.lean)
+[GaussianEulerUnitKernelNestedPanels](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerUnitKernelNestedPanels.lean)
 splits the actual compact quadrature on a containing rational panel
 into the original contained quadrature and the two omitted strips.
 The two original panels can have different denominators and compact
 margins, and either strip can have width zero.
-[GaussianEulerUnitKernelCompactDominance](Lean/IPRADerivations/Analysis/GaussianEulerUnitKernelCompactDominance.lean)
+[GaussianEulerUnitKernelCompactDominance](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerUnitKernelCompactDominance.lean)
 bounds the norm of each original compact observation by the real
 part of the original quadrature at the projected parameter, plus
 both requested observation errors.
-[GaussianEulerUnitSubstitutionArbitraryExhaustion](Lean/IPRADerivations/Analysis/GaussianEulerUnitSubstitutionArbitraryExhaustion.lean)
+[GaussianEulerUnitSubstitutionArbitraryExhaustion](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerUnitSubstitutionArbitraryExhaustion.lean)
 proves the uniform ordinary improper limit for encoded complex inputs
 on the certified right half-plane. For target precision `s`, the
 denominator of the computed inner reference panel gives a reciprocal
@@ -1477,212 +1477,212 @@ has original compact observation `p` within
 `2^(-s) + 2^(-p) + 2^(-q)` of the original Gamma observation `q`.
 The proof accepts any valid compact margin. The panel denominator
 automatically supplies one for every proper rational panel.
-[GaussianEulerPositivePowerChart](Lean/IPRADerivations/Analysis/GaussianEulerPositivePowerChart.lean)
+[GaussianEulerPositivePowerChart](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerPositivePowerChart.lean)
 constructs the actual power chart for positive rational scale and
 exponent with compact variation bounds.
-[GaussianEulerPositivePowerChartJacobian](Lean/IPRADerivations/Analysis/GaussianEulerPositivePowerChartJacobian.lean)
+[GaussianEulerPositivePowerChartJacobian](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerPositivePowerChartJacobian.lean)
 evaluates the Jacobian of the same chart and bounds the quadratic
 increment remainder at independent observation precisions.
-[GaussianEulerPositivePowerChartOrder](Lean/IPRADerivations/Analysis/GaussianEulerPositivePowerChartOrder.lean) proves order on rational times with the two independent
-dyadic observation allowances. [GaussianEulerPositivePowerChartLogarithm](Lean/IPRADerivations/Analysis/GaussianEulerPositivePowerChartLogarithm.lean) identifies the original
+[GaussianEulerPositivePowerChartOrder](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerPositivePowerChartOrder.lean) proves order on rational times with the two independent
+dyadic observation allowances. [GaussianEulerPositivePowerChartLogarithm](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerPositivePowerChartLogarithm.lean) identifies the original
 chart with the exponential of its affine logarithmic coordinate.
-[GaussianEulerPowerScalingParameter](Lean/IPRADerivations/Analysis/GaussianEulerPowerScalingParameter.lean) derives the rescaled native Gamma parameter and
-its half-plane source. [GaussianEulerPowerScalingKernel](Lean/IPRADerivations/Analysis/GaussianEulerPowerScalingKernel.lean) proves the pointwise kernel
+[GaussianEulerPowerScalingParameter](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerPowerScalingParameter.lean) derives the rescaled native Gamma parameter and
+its half-plane source. [GaussianEulerPowerScalingKernel](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerPowerScalingKernel.lean) proves the pointwise kernel
 identity including the inverse scale factor and the rescaled complex
-exponent. [GaussianEulerPositivePowerChartLower](Lean/IPRADerivations/Analysis/GaussianEulerPositivePowerChartLower.lean) supplies an explicit positive lower bound on
+exponent. [GaussianEulerPositivePowerChartLower](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerPositivePowerChartLower.lean) supplies an explicit positive lower bound on
 the compact image and exact positive-real sample guards at uniformly
-late precisions. [GaussianEulerDampedNamedIntegrand](Lean/IPRADerivations/Analysis/GaussianEulerDampedNamedIntegrand.lean) identifies the original power-damped Euler
-integrand times t with the logarithmic kernel. [GaussianEulerPowerScalingCompactRate](Lean/IPRADerivations/Analysis/GaussianEulerPowerScalingCompactRate.lean) gives a
+late precisions. [GaussianEulerDampedNamedIntegrand](Lean/IPRADerivations/Analysis/Euler/GaussianEulerDampedNamedIntegrand.lean) identifies the original power-damped Euler
+integrand times t with the logarithmic kernel. [GaussianEulerPowerScalingCompactRate](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerPowerScalingCompactRate.lean) gives a
 uniform majorant and a compact variation bound for the actual
-power-damped integrand. [GaussianEulerPositivePowerChartImage](Lean/IPRADerivations/Analysis/GaussianEulerPositivePowerChartImage.lean) decodes the original retimed chart
-samples as exact positive rationals. [GaussianEulerPositivePowerChartMesh](Lean/IPRADerivations/Analysis/GaussianEulerPositivePowerChartMesh.lean) gives ordered corrected
-image nodes and a finite mesh bound. [GaussianEulerPositivePowerChartMeshJacobian](Lean/IPRADerivations/Analysis/GaussianEulerPositivePowerChartMeshJacobian.lean) compares individual
+power-damped integrand. [GaussianEulerPositivePowerChartImage](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerPositivePowerChartImage.lean) decodes the original retimed chart
+samples as exact positive rationals. [GaussianEulerPositivePowerChartMesh](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerPositivePowerChartMesh.lean) gives ordered corrected
+image nodes and a finite mesh bound. [GaussianEulerPositivePowerChartMeshJacobian](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerPositivePowerChartMeshJacobian.lean) compares individual
 corrected widths with the original Jacobian times the physical step and
-gives the exact correction on a repeated cell. [GaussianNamedPositiveLogarithm](Lean/IPRADerivations/Analysis/GaussianNamedPositiveLogarithm.lean) extends the original
-positive-rational logarithm to compact positive names, and [GaussianNamedPositiveLogarithmExponential](Lean/IPRADerivations/Analysis/GaussianNamedPositiveLogarithmExponential.lean)
-recovers the named input under the original exponential. [GaussianEulerPowerChartNamedLogarithm](Lean/IPRADerivations/Analysis/GaussianEulerPowerChartNamedLogarithm.lean)
+gives the exact correction on a repeated cell. [GaussianNamedPositiveLogarithm](Lean/IPRADerivations/Analysis/Logarithm/GaussianNamedPositiveLogarithm.lean) extends the original
+positive-rational logarithm to compact positive names, and [GaussianNamedPositiveLogarithmExponential](Lean/IPRADerivations/Analysis/Exponential/GaussianNamedPositiveLogarithmExponential.lean)
+recovers the named input under the original exponential. [GaussianEulerPowerChartNamedLogarithm](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerPowerChartNamedLogarithm.lean)
 identifies the lifted chart logarithm with its affine coordinate.
-[GaussianEulerPowerChartFrozenKernel](Lean/IPRADerivations/Analysis/GaussianEulerPowerChartFrozenKernel.lean) gives the compact comparison with the literal time-weighted
-Euler row at the frozen decoded image. [GaussianEulerPowerScalingFrozenIntegrand](Lean/IPRADerivations/Analysis/GaussianEulerPowerScalingFrozenIntegrand.lean) cancels the
+[GaussianEulerPowerChartFrozenKernel](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerPowerChartFrozenKernel.lean) gives the compact comparison with the literal time-weighted
+Euler row at the frozen decoded image. [GaussianEulerPowerScalingFrozenIntegrand](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerPowerScalingFrozenIntegrand.lean) cancels the
 source time and compares the original power-damped integrand directly
-to the frozen Euler row with its inverse scale factor. [GaussianEulerPowerScalingCompactName](Lean/IPRADerivations/Analysis/GaussianEulerPowerScalingCompactName.lean)
-builds the ordinary source-panel quadrature. [GaussianEulerPowerScalingFrozenRow](Lean/IPRADerivations/Analysis/GaussianEulerPowerScalingFrozenRow.lean) exposes the exact
-original row clocks, and [GaussianEulerPowerScalingCell](Lean/IPRADerivations/Analysis/GaussianEulerPowerScalingCell.lean) combines their readback with the
-evaluated Jacobian error. [GaussianEulerPowerScalingImageQuadrature](Lean/IPRADerivations/Analysis/GaussianEulerPowerScalingImageQuadrature.lean) compares the finite affine source sum
+to the frozen Euler row with its inverse scale factor. [GaussianEulerPowerScalingCompactName](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerPowerScalingCompactName.lean)
+builds the ordinary source-panel quadrature. [GaussianEulerPowerScalingFrozenRow](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerPowerScalingFrozenRow.lean) exposes the exact
+original row clocks, and [GaussianEulerPowerScalingCell](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerPowerScalingCell.lean) combines their readback with the
+evaluated Jacobian error. [GaussianEulerPowerScalingImageQuadrature](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerPowerScalingImageQuadrature.lean) compares the finite affine source sum
 with the corrected image sum and extracts one original scale factor.
-[GaussianEulerPositivePowerChartCorrectedImage](Lean/IPRADerivations/Analysis/GaussianEulerPositivePowerChartCorrectedImage.lean) decodes the corrected nodes in a certified compact interval
+[GaussianEulerPositivePowerChartCorrectedImage](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerPositivePowerChartCorrectedImage.lean) decodes the corrected nodes in a certified compact interval
 and compares their original Euler samples to those at the raw image.
-[GaussianEulerPowerScalingCorrectedQuadrature](Lean/IPRADerivations/Analysis/GaussianEulerPowerScalingCorrectedQuadrature.lean) lifts that comparison to the full finite weighted sum.
-[GaussianEulerPowerScalingFiniteSubstitution](Lean/IPRADerivations/Analysis/GaussianEulerPowerScalingFiniteSubstitution.lean) combines both finite comparisons with the source-derived
+[GaussianEulerPowerScalingCorrectedQuadrature](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerPowerScalingCorrectedQuadrature.lean) lifts that comparison to the full finite weighted sum.
+[GaussianEulerPowerScalingFiniteSubstitution](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerPowerScalingFiniteSubstitution.lean) combines both finite comparisons with the source-derived
 rescaled Gamma parameter and a single common scale observation.
-[GaussianEulerPowerScalingFiniteBudget](Lean/IPRADerivations/Analysis/GaussianEulerPowerScalingFiniteBudget.lean) separates the mesh and observation errors. [GaussianEulerPowerScalingGridSchedule](Lean/IPRADerivations/Analysis/GaussianEulerPowerScalingGridSchedule.lean) gives
+[GaussianEulerPowerScalingFiniteBudget](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerPowerScalingFiniteBudget.lean) separates the mesh and observation errors. [GaussianEulerPowerScalingGridSchedule](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerPowerScalingGridSchedule.lean) gives
 an explicit count and two clocks for an arbitrary dyadic accuracy
 request. The scheduled source grid refines the unchanged compact
 quadrature mesh and gives a comparison to the actual compact name.
-[GaussianEulerPositivePowerChartCorrectedPanel](Lean/IPRADerivations/Analysis/GaussianEulerPositivePowerChartCorrectedPanel.lean) proves the corrected nodes lie in their exact rational
+[GaussianEulerPositivePowerChartCorrectedPanel](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerPositivePowerChartCorrectedPanel.lean) proves the corrected nodes lie in their exact rational
 endpoint panel and gives a common denominator for the two endpoints.
-[GaussianEulerPowerChartRationalPowers](Lean/IPRADerivations/Analysis/GaussianEulerPowerChartRationalPowers.lean) evaluates chart values at native rational powers. [GaussianEulerPowerChartRoundedEndpoints](Lean/IPRADerivations/Analysis/GaussianEulerPowerChartRoundedEndpoints.lean)
-controls both actual rounded endpoints. [GaussianEulerPowerChartCofinalSchedule](Lean/IPRADerivations/Analysis/GaussianEulerPowerChartCofinalSchedule.lean) then derives corrected
+[GaussianEulerPowerChartRationalPowers](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerPowerChartRationalPowers.lean) evaluates chart values at native rational powers. [GaussianEulerPowerChartRoundedEndpoints](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerPowerChartRoundedEndpoints.lean)
+controls both actual rounded endpoints. [GaussianEulerPowerChartCofinalSchedule](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerPowerChartCofinalSchedule.lean) then derives corrected
 panels enclosing any prescribed original Euler cutoff while using the
 same grid schedule as the finite substitution.
-[GaussianEulerPositivePowerChartImageComparison](Lean/IPRADerivations/Analysis/GaussianEulerPositivePowerChartImageComparison.lean) compares the literal weighted rows to independently counted
+[GaussianEulerPositivePowerChartImageComparison](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerPositivePowerChartImageComparison.lean) compares the literal weighted rows to independently counted
 ordinary Euler quadratures on the exact corrected panel by refinement
-on a common native lattice. [GaussianEulerCompactExhaustion](Lean/IPRADerivations/Analysis/GaussianEulerCompactExhaustion.lean) compares arbitrary enclosing
-ordinary quadratures to the unchanged improper Gamma name. [GaussianEulerCompactExhaustionScaled](Lean/IPRADerivations/Analysis/GaussianEulerCompactExhaustionScaled.lean)
+on a common native lattice. [GaussianEulerCompactExhaustion](Lean/IPRADerivations/Analysis/Euler/GaussianEulerCompactExhaustion.lean) compares arbitrary enclosing
+ordinary quadratures to the unchanged improper Gamma name. [GaussianEulerCompactExhaustionScaled](Lean/IPRADerivations/Analysis/Euler/GaussianEulerCompactExhaustionScaled.lean)
 gives a dyadic schedule with the original inverse scale observation,
-and [GaussianEulerCompactExhaustionNormalization](Lean/IPRADerivations/Analysis/GaussianEulerCompactExhaustionNormalization.lean) supplies the paid-clock cancellation of the chart coefficient.
-[GaussianEulerPowerScalingCofinalObservation](Lean/IPRADerivations/Analysis/GaussianEulerPowerScalingCofinalObservation.lean) composes the finite substitution and two ordinary image
-comparisons with independent observation precisions. [GaussianEulerPowerScalingSourceExhaustion](Lean/IPRADerivations/Analysis/GaussianEulerPowerScalingSourceExhaustion.lean) proves
+and [GaussianEulerCompactExhaustionNormalization](Lean/IPRADerivations/Analysis/Euler/GaussianEulerCompactExhaustionNormalization.lean) supplies the paid-clock cancellation of the chart coefficient.
+[GaussianEulerPowerScalingCofinalObservation](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerPowerScalingCofinalObservation.lean) composes the finite substitution and two ordinary image
+comparisons with independent observation precisions. [GaussianEulerPowerScalingSourceExhaustion](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerPowerScalingSourceExhaustion.lean) proves
 that these physical source panels eventually contain every fixed positive
-rational interval. [GaussianEulerPowerScalingImproper](Lean/IPRADerivations/Analysis/GaussianEulerPowerScalingImproper.lean) compiles the ordinary panel observations
+rational interval. [GaussianEulerPowerScalingImproper](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerPowerScalingImproper.lean) compiles the ordinary panel observations
 into the original cofinal improper sampler and derives its equality with
 `(1/r) c^(-z/r) Γ(z/r)` for every positive rational `c,r` under the
 original encoded right-half-plane assumptions.
-[GaussianNamedPositiveReciprocal](Lean/IPRADerivations/Analysis/GaussianNamedPositiveReciprocal.lean) gives a regular name by taking exact reciprocals of
-literal retimed observations. [GaussianEulerNamedPowerScalingParameter](Lean/IPRADerivations/Analysis/GaussianEulerNamedPowerScalingParameter.lean) derives the positive
-half-plane margin at the named argument `z/r`, and [GaussianEulerNamedPowerScalingFormula](Lean/IPRADerivations/Analysis/GaussianEulerNamedPowerScalingFormula.lean) constructs
+[GaussianNamedPositiveReciprocal](Lean/IPRADerivations/Analysis/Names/GaussianNamedPositiveReciprocal.lean) gives a regular name by taking exact reciprocals of
+literal retimed observations. [GaussianEulerNamedPowerScalingParameter](Lean/IPRADerivations/Analysis/Euler/GaussianEulerNamedPowerScalingParameter.lean) derives the positive
+half-plane margin at the named argument `z/r`, and [GaussianEulerNamedPowerScalingFormula](Lean/IPRADerivations/Analysis/Euler/GaussianEulerNamedPowerScalingFormula.lean) constructs
 the regular Gamma-side product with the original exponential. On
-compact intervals, [GaussianNamedDampingPowerChart](Lean/IPRADerivations/Analysis/GaussianNamedDampingPowerChart.lean) gives a joint rate in the two parameter
-names and the time. [GaussianNamedDampingPowerIntegrand](Lean/IPRADerivations/Analysis/GaussianNamedDampingPowerIntegrand.lean) specializes the original named kernel
-exactly to constant rational parameters, and [GaussianNamedDampingPowerFrozen](Lean/IPRADerivations/Analysis/GaussianNamedDampingPowerFrozen.lean) derives its
+compact intervals, [GaussianNamedDampingPowerChart](Lean/IPRADerivations/Analysis/SpecialFunctions/GaussianNamedDampingPowerChart.lean) gives a joint rate in the two parameter
+names and the time. [GaussianNamedDampingPowerIntegrand](Lean/IPRADerivations/Analysis/SpecialFunctions/GaussianNamedDampingPowerIntegrand.lean) specializes the original named kernel
+exactly to constant rational parameters, and [GaussianNamedDampingPowerFrozen](Lean/IPRADerivations/Analysis/SpecialFunctions/GaussianNamedDampingPowerFrozen.lean) derives its
 uniform pointwise rate to the original kernel at literal decoded
 rational parameter observations.
-[GaussianNamedDampingPowerCompact](Lean/IPRADerivations/Analysis/GaussianNamedDampingPowerCompact.lean) constructs the original compact quadrature name for positive
-parameter names. [GaussianNamedDampingPowerCompactPaid](Lean/IPRADerivations/Analysis/GaussianNamedDampingPowerCompactPaid.lean) chooses a common freezing clock on each fixed
-physical panel, and [GaussianNamedDampingPowerCompactAdditivity](Lean/IPRADerivations/Analysis/GaussianNamedDampingPowerCompactAdditivity.lean) checks addition across adjacent panels.
-[GaussianNamedDampingPowerCompactBound](Lean/IPRADerivations/Analysis/GaussianNamedDampingPowerCompactBound.lean) transfers rational panel bounds with a dyadic allowance. [GaussianEulerNamedPowerScalingGammaFrozen](Lean/IPRADerivations/Analysis/GaussianEulerNamedPowerScalingGammaFrozen.lean)
+[GaussianNamedDampingPowerCompact](Lean/IPRADerivations/Analysis/SpecialFunctions/GaussianNamedDampingPowerCompact.lean) constructs the original compact quadrature name for positive
+parameter names. [GaussianNamedDampingPowerCompactPaid](Lean/IPRADerivations/Analysis/SpecialFunctions/GaussianNamedDampingPowerCompactPaid.lean) chooses a common freezing clock on each fixed
+physical panel, and [GaussianNamedDampingPowerCompactAdditivity](Lean/IPRADerivations/Analysis/SpecialFunctions/GaussianNamedDampingPowerCompactAdditivity.lean) checks addition across adjacent panels.
+[GaussianNamedDampingPowerCompactBound](Lean/IPRADerivations/Analysis/SpecialFunctions/GaussianNamedDampingPowerCompactBound.lean) transfers rational panel bounds with a dyadic allowance. [GaussianEulerNamedPowerScalingGammaFrozen](Lean/IPRADerivations/Analysis/Gamma/GaussianEulerNamedPowerScalingGammaFrozen.lean)
 gives the independent rate for the actual Gamma at the named and exact
-payload rational arguments. [GaussianEulerPowerChartExponentOrder](Lean/IPRADerivations/Analysis/GaussianEulerPowerChartExponentOrder.lean) orders the rational charts by
+payload rational arguments. [GaussianEulerPowerChartExponentOrder](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerPowerChartExponentOrder.lean) orders the rational charts by
 exponent on either side of one using their original observations.
-[GaussianEulerPowerChartUniformRounded](Lean/IPRADerivations/Analysis/GaussianEulerPowerChartUniformRounded.lean) and [GaussianEulerPowerScalingUniformObservation](Lean/IPRADerivations/Analysis/GaussianEulerPowerScalingUniformObservation.lean) choose physical endpoints before either parameter
-is frozen, then compare the original enclosing rational quadrature. [GaussianEulerPowerChartUniformExhaustion](Lean/IPRADerivations/Analysis/GaussianEulerPowerChartUniformExhaustion.lean)
-proves cofinality of those physical panels. [GaussianEulerNamedPowerScalingFormulaFrozen](Lean/IPRADerivations/Analysis/GaussianEulerNamedPowerScalingFormulaFrozen.lean) gives the independent
-rate for the full named Gamma product. [GaussianEulerNamedPowerScalingImproper](Lean/IPRADerivations/Analysis/GaussianEulerNamedPowerScalingImproper.lean) identifies the actual
+[GaussianEulerPowerChartUniformRounded](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerPowerChartUniformRounded.lean) and [GaussianEulerPowerScalingUniformObservation](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerPowerScalingUniformObservation.lean) choose physical endpoints before either parameter
+is frozen, then compare the original enclosing rational quadrature. [GaussianEulerPowerChartUniformExhaustion](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerPowerChartUniformExhaustion.lean)
+proves cofinality of those physical panels. [GaussianEulerNamedPowerScalingFormulaFrozen](Lean/IPRADerivations/Analysis/Euler/GaussianEulerNamedPowerScalingFormulaFrozen.lean) gives the independent
+rate for the full named Gamma product. [GaussianEulerNamedPowerScalingImproper](Lean/IPRADerivations/Analysis/Euler/GaussianEulerNamedPowerScalingImproper.lean) identifies the actual
 cofinal ordinary quadrature with that product for all certified positive
-names. [GaussianNamedDampingPowerLowerCutoff](Lean/IPRADerivations/Analysis/GaussianNamedDampingPowerLowerCutoff.lean) gives the independent compact lower-cutoff bound on the
-original root grid, including zero width. [GaussianNamedDampingPowerReciprocalTail](Lean/IPRADerivations/Analysis/GaussianNamedDampingPowerReciprocalTail.lean) checks a finite
+names. [GaussianNamedDampingPowerLowerCutoff](Lean/IPRADerivations/Analysis/SpecialFunctions/GaussianNamedDampingPowerLowerCutoff.lean) gives the independent compact lower-cutoff bound on the
+original root grid, including zero width. [GaussianNamedDampingPowerReciprocalTail](Lean/IPRADerivations/Analysis/SpecialFunctions/GaussianNamedDampingPowerReciprocalTail.lean) checks a finite
 affine-grid reciprocal-square comparison.
-[GaussianEulerNamedPowerScalingExhaustion](Lean/IPRADerivations/Analysis/GaussianEulerNamedPowerScalingExhaustion.lean) identifies the exact selected named panel and proves that it
-eventually encloses each fixed positive rational interval. [GaussianEulerPowerScalingArbitraryObservation](Lean/IPRADerivations/Analysis/GaussianEulerPowerScalingArbitraryObservation.lean)
-and [GaussianEulerNamedPowerScalingArbitraryPanel](Lean/IPRADerivations/Analysis/GaussianEulerNamedPowerScalingArbitraryPanel.lean) prove the rate for any enclosing positive rational physical
+[GaussianEulerNamedPowerScalingExhaustion](Lean/IPRADerivations/Analysis/Euler/GaussianEulerNamedPowerScalingExhaustion.lean) identifies the exact selected named panel and proves that it
+eventually encloses each fixed positive rational interval. [GaussianEulerPowerScalingArbitraryObservation](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerPowerScalingArbitraryObservation.lean)
+and [GaussianEulerNamedPowerScalingArbitraryPanel](Lean/IPRADerivations/Analysis/Euler/GaussianEulerNamedPowerScalingArbitraryPanel.lean) prove the rate for any enclosing positive rational physical
 panel with arbitrary independent observation precisions.
-[GaussianEulerNamedPowerScalingArbitraryLimit](Lean/IPRADerivations/Analysis/GaussianEulerNamedPowerScalingArbitraryLimit.lean) binds the arbitrary enclosing panels directly to the actual
-named improper sampler, and [GaussianEulerPowerScalingArbitraryTails](Lean/IPRADerivations/Analysis/GaussianEulerPowerScalingArbitraryTails.lean) and [GaussianEulerNamedPowerScalingArbitraryTails](Lean/IPRADerivations/Analysis/GaussianEulerNamedPowerScalingArbitraryTails.lean) give the explicit norm
+[GaussianEulerNamedPowerScalingArbitraryLimit](Lean/IPRADerivations/Analysis/Euler/GaussianEulerNamedPowerScalingArbitraryLimit.lean) binds the arbitrary enclosing panels directly to the actual
+named improper sampler, and [GaussianEulerPowerScalingArbitraryTails](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerPowerScalingArbitraryTails.lean) and [GaussianEulerNamedPowerScalingArbitraryTails](Lean/IPRADerivations/Analysis/Euler/GaussianEulerNamedPowerScalingArbitraryTails.lean) give the explicit norm
 bounds for panels lying wholly outside either physical cutoff.
-[GaussianBetaSharpPartition](Lean/IPRADerivations/Analysis/GaussianBetaSharpPartition.lean)
+[GaussianBetaSharpPartition](Lean/IPRADerivations/Analysis/Beta/GaussianBetaSharpPartition.lean)
 locates one and the two degree endpoints on the same original dyadic
 grid and identifies the original half-time decay at the split with
 the literal quarter-degree observation.
-[GaussianBetaKernelGridComparison](Lean/IPRADerivations/Analysis/GaussianBetaKernelGridComparison.lean)
+[GaussianBetaKernelGridComparison](Lean/IPRADerivations/Analysis/Beta/GaussianBetaKernelGridComparison.lean)
 compares the literal finite beta-kernel grid with the original improper
 Euler observation at its actual evaluation clock and also allows
 independent observation precision on a fixed cutoff interval.
-[GaussianEulerBetaProductValue](Lean/IPRADerivations/Analysis/GaussianEulerBetaProductValue.lean)
+[GaussianEulerBetaProductValue](Lean/IPRADerivations/Analysis/Beta/GaussianEulerBetaProductValue.lean)
 identifies the original reciprocal head with the factorial quotient
 of the actual rising product.
-[GaussianGammaHalfEulerHead](Lean/IPRADerivations/Analysis/GaussianGammaHalfEulerHead.lean) evaluates the original finite head at one half and checks
-its exact inverse product. [GaussianGammaHalfEulerExponential](Lean/IPRADerivations/Analysis/GaussianGammaHalfEulerExponential.lean) proves that the square of its
+[GaussianGammaHalfEulerHead](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaHalfEulerHead.lean) evaluates the original finite head at one half and checks
+its exact inverse product. [GaussianGammaHalfEulerExponential](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaHalfEulerExponential.lean) proves that the square of its
 original exponential factor is the rational number `1/N` for every
 positive finite cutoff.
-[GaussianGammaHalfWallisRate](Lean/IPRADerivations/Analysis/GaussianGammaHalfWallisRate.lean) gives the finite Wallis rate to the exact arctangent
-quadrature. [GaussianGammaHalfSquareLimit](Lean/IPRADerivations/Analysis/GaussianGammaHalfSquareLimit.lean) proves that the actual square of the original
-half-Gamma name is the arctangent name for pi. [GaussianGammaHalfPositiveRoot](Lean/IPRADerivations/Analysis/GaussianGammaHalfPositiveRoot.lean) checks positivity
-and the real axis for the same square root. [GaussianGammaHalfSqrtPi](Lean/IPRADerivations/Analysis/GaussianGammaHalfSqrtPi.lean)
+[GaussianGammaHalfWallisRate](Lean/IPRADerivations/Analysis/Stirling/GaussianGammaHalfWallisRate.lean) gives the finite Wallis rate to the exact arctangent
+quadrature. [GaussianGammaHalfSquareLimit](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaHalfSquareLimit.lean) proves that the actual square of the original
+half-Gamma name is the arctangent name for pi. [GaussianGammaHalfPositiveRoot](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaHalfPositiveRoot.lean) checks positivity
+and the real axis for the same square root. [GaussianGammaHalfSqrtPi](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaHalfSqrtPi.lean)
 identifies it with the independently evaluated dyadic square-root program.
-[GaussianEulerBetaPrimitivePascal](Lean/IPRADerivations/Analysis/GaussianEulerBetaPrimitivePascal.lean)
+[GaussianEulerBetaPrimitivePascal](Lean/IPRADerivations/Analysis/Beta/GaussianEulerBetaPrimitivePascal.lean)
 proves the actual primitive coefficient recurrence at all degrees.
-[GaussianEulerBetaEndpoint](Lean/IPRADerivations/Analysis/GaussianEulerBetaEndpoint.lean)
+[GaussianEulerBetaEndpoint](Lean/IPRADerivations/Analysis/Beta/GaussianEulerBetaEndpoint.lean)
 identifies the literal primitive at one with the original factorial
 quotient for arbitrary internal degree under the native half-plane
 guard.
-[GaussianPositiveRationalLogarithmIncrement](Lean/IPRADerivations/Analysis/GaussianPositiveRationalLogarithmIncrement.lean)
+[GaussianPositiveRationalLogarithmIncrement](Lean/IPRADerivations/Analysis/Logarithm/GaussianPositiveRationalLogarithmIncrement.lean)
 checks the original positive-rational logarithm increment with its
 quadratic remainder and independent observation errors.
-[GaussianBetaKernelDomination](Lean/IPRADerivations/Analysis/GaussianBetaKernelDomination.lean)
+[GaussianBetaKernelDomination](Lean/IPRADerivations/Analysis/Beta/GaussianBetaKernelDomination.lean)
 gives nonnegativity and the original decay upper bound across the
 entire finite support.
-[GaussianRationalFirstOrderPolynomial](Lean/IPRADerivations/Analysis/GaussianRationalFirstOrderPolynomial.lean)
+[GaussianRationalFirstOrderPolynomial](Lean/IPRADerivations/Analysis/Polynomials/GaussianRationalFirstOrderPolynomial.lean)
 gives the actual beta primitive polynomial increment with a
-quadratic residual. [GaussianRationalUniformFirstOrderPolynomial](Lean/IPRADerivations/Analysis/GaussianRationalUniformFirstOrderPolynomial.lean)
+quadratic residual. [GaussianRationalUniformFirstOrderPolynomial](Lean/IPRADerivations/Analysis/Polynomials/GaussianRationalUniformFirstOrderPolynomial.lean)
 makes the polynomial estimate uniform on the compact disk.
-[GaussianEulerPowerIncrement](Lean/IPRADerivations/Analysis/GaussianEulerPowerIncrement.lean)
+[GaussianEulerPowerIncrement](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerPowerIncrement.lean)
 checks the original power increment with the compact quadratic
 remainder and the two requested observation errors.
-[GaussianBetaPrimitiveCompactStep](Lean/IPRADerivations/Analysis/GaussianBetaPrimitiveCompactStep.lean)
+[GaussianBetaPrimitiveCompactStep](Lean/IPRADerivations/Analysis/Beta/GaussianBetaPrimitiveCompactStep.lean)
 uses the exact synthetic slope and the original power clock to compare
 successive primitive samples to the actual weighted beta row.
-[GaussianBetaPrimitiveGridTelescope](Lean/IPRADerivations/Analysis/GaussianBetaPrimitiveGridTelescope.lean)
+[GaussianBetaPrimitiveGridTelescope](Lean/IPRADerivations/Analysis/Beta/GaussianBetaPrimitiveGridTelescope.lean)
 checks the exact finite telescoping and sums that shape of cell error
 on the original affine mesh.
-[GaussianBetaPrimitiveCompactGridAccuracy](Lean/IPRADerivations/Analysis/GaussianBetaPrimitiveCompactGridAccuracy.lean)
+[GaussianBetaPrimitiveCompactGridAccuracy](Lean/IPRADerivations/Analysis/Beta/GaussianBetaPrimitiveCompactGridAccuracy.lean)
 discharges the local conditions from the native compact interval bounds
 and computes the mesh and observation precision for any requested
 dyadic error.
-[GaussianBetaPrimitiveLowerEndpointRefinement](Lean/IPRADerivations/Analysis/GaussianBetaPrimitiveLowerEndpointRefinement.lean)
+[GaussianBetaPrimitiveLowerEndpointRefinement](Lean/IPRADerivations/Analysis/Beta/GaussianBetaPrimitiveLowerEndpointRefinement.lean)
 gives the vanishing degree-scaled lower endpoint at the actual grid
-clock. [GaussianBetaUpperEndpointInverse](Lean/IPRADerivations/Analysis/GaussianBetaUpperEndpointInverse.lean)
+clock. [GaussianBetaUpperEndpointInverse](Lean/IPRADerivations/Analysis/Beta/GaussianBetaUpperEndpointInverse.lean)
 identifies the literal degree-scaled upper endpoint name with the
 original finite Euler reciprocal.
-[GaussianBetaUpperGridEndpoint](Lean/IPRADerivations/Analysis/GaussianBetaUpperGridEndpoint.lean)
+[GaussianBetaUpperGridEndpoint](Lean/IPRADerivations/Analysis/Beta/GaussianBetaUpperGridEndpoint.lean)
 makes this comparison for the raw upper grid observation at the
 original row clock, with two independent dyadic errors.
-[GaussianBetaFiniteEulerComparison](Lean/IPRADerivations/Analysis/GaussianBetaFiniteEulerComparison.lean)
+[GaussianBetaFiniteEulerComparison](Lean/IPRADerivations/Analysis/Beta/GaussianBetaFiniteEulerComparison.lean)
 compares the unchanged beta quadrature on the whole interval from a
 computed lower cutoff to the support endpoint with the original finite
 Euler reciprocal at independently requested precisions. The positive
 mesh and evaluation precision are computed and may be refined.
-[GaussianBetaKernelCompactUpperTail](Lean/IPRADerivations/Analysis/GaussianBetaKernelCompactUpperTail.lean)
+[GaussianBetaKernelCompactUpperTail](Lean/IPRADerivations/Analysis/Beta/GaussianBetaKernelCompactUpperTail.lean)
 bounds the original upper beta quadrature through the support endpoint
 using the existing half-decay estimates.
-[GaussianBetaKernelLowerTransformedPower](Lean/IPRADerivations/Analysis/GaussianBetaKernelLowerTransformedPower.lean)
+[GaussianBetaKernelLowerTransformedPower](Lean/IPRADerivations/Analysis/Beta/GaussianBetaKernelLowerTransformedPower.lean)
 bounds the original lower transformed rows uniformly in the finite
 degree.
-[GaussianBetaKernelCompactModulus](Lean/IPRADerivations/Analysis/GaussianBetaKernelCompactModulus.lean)
+[GaussianBetaKernelCompactModulus](Lean/IPRADerivations/Analysis/Beta/GaussianBetaKernelCompactModulus.lean)
 proves the compact sampled modulus of that same evaluator uniformly in
 the degree.
-[GaussianBetaKernelLowerRootQuadrature](Lean/IPRADerivations/Analysis/GaussianBetaKernelLowerRootQuadrature.lean)
+[GaussianBetaKernelLowerRootQuadrature](Lean/IPRADerivations/Analysis/Beta/GaussianBetaKernelLowerRootQuadrature.lean)
 derives the original lower root-grid tail estimate uniformly in the degree.
-[GaussianBetaFiniteEulerAtCutoff](Lean/IPRADerivations/Analysis/GaussianBetaFiniteEulerAtCutoff.lean)
+[GaussianBetaFiniteEulerAtCutoff](Lean/IPRADerivations/Analysis/Beta/GaussianBetaFiniteEulerAtCutoff.lean)
 uses the uniform beta primitive bound to let the lower cutoff be
 chosen independently of the degree.
-[GaussianBetaFixedCutoffSplit](Lean/IPRADerivations/Analysis/GaussianBetaFixedCutoffSplit.lean)
+[GaussianBetaFixedCutoffSplit](Lean/IPRADerivations/Analysis/Beta/GaussianBetaFixedCutoffSplit.lean)
 splits that grid into the actual compact middle and upper tail at the
 same step.
-[GaussianBetaRefinedFixedCompactBudget](Lean/IPRADerivations/Analysis/GaussianBetaRefinedFixedCompactBudget.lean)
+[GaussianBetaRefinedFixedCompactBudget](Lean/IPRADerivations/Analysis/Beta/GaussianBetaRefinedFixedCompactBudget.lean)
 computes the degree and evaluation precision for the actual middle
 comparison at any requested dyadic error.
-[GaussianEulerIntegralGammaIdentification](Lean/IPRADerivations/Analysis/GaussianEulerIntegralGammaIdentification.lean)
+[GaussianEulerIntegralGammaIdentification](Lean/IPRADerivations/Analysis/Gamma/GaussianEulerIntegralGammaIdentification.lean)
 proves agreement of the original improper Euler and Gamma names, with
 the two independent dyadic observation errors, for an arbitrary encoded
 complex rational input on the positive real half-plane.
-[GaussianNamedRightHalfPlane](Lean/IPRADerivations/Analysis/GaussianNamedRightHalfPlane.lean)
+[GaussianNamedRightHalfPlane](Lean/IPRADerivations/Analysis/Names/GaussianNamedRightHalfPlane.lean)
 derives a native positive margin and a uniform disk for late observations
 of a fixed regular input name.
-[GaussianGammaHalfPlaneInputContinuity](Lean/IPRADerivations/Analysis/GaussianGammaHalfPlaneInputContinuity.lean)
+[GaussianGammaHalfPlaneInputContinuity](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaHalfPlaneInputContinuity.lean)
 proves a mixed-denominator modulus for the original Gamma observations.
-[GaussianNamedGamma](Lean/IPRADerivations/Analysis/GaussianNamedGamma.lean)
+[GaussianNamedGamma](Lean/IPRADerivations/Analysis/Gamma/Names/GaussianNamedGamma.lean)
 uses that modulus to derive the regularity of the actual Gamma evaluator
 on the fixed input name.
-[GaussianNamedEulerIntegrand](Lean/IPRADerivations/Analysis/GaussianNamedEulerIntegrand.lean)
+[GaussianNamedEulerIntegrand](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianNamedEulerIntegrand.lean)
 proves regularity of the actual integrand at every positive rational time
 and agreement with the old integrand for equal encoded rational inputs.
-[GaussianEulerIntegrandParameterContinuity](Lean/IPRADerivations/Analysis/GaussianEulerIntegrandParameterContinuity.lean)
+[GaussianEulerIntegrandParameterContinuity](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerIntegrandParameterContinuity.lean)
 bounds the compact variation between independently encoded rational
 parameters at the same time.
-[GaussianNamedEulerIntegrandParameterContinuity](Lean/IPRADerivations/Analysis/GaussianNamedEulerIntegrandParameterContinuity.lean)
+[GaussianNamedEulerIntegrandParameterContinuity](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianNamedEulerIntegrandParameterContinuity.lean)
 carries the compact parameter comparison to a fixed complex name
 and its frozen rational observation.
-[GaussianNamedEulerCompactTimeRate](Lean/IPRADerivations/Analysis/GaussianNamedEulerCompactTimeRate.lean)
+[GaussianNamedEulerCompactTimeRate](Lean/IPRADerivations/Analysis/Euler/GaussianNamedEulerCompactTimeRate.lean)
 derives the compact time rate on the actual named evaluator.
-[GaussianNamedEulerQuadrature](Lean/IPRADerivations/Analysis/GaussianNamedEulerQuadrature.lean)
+[GaussianNamedEulerQuadrature](Lean/IPRADerivations/Analysis/Euler/GaussianNamedEulerQuadrature.lean)
 evaluates that named integrand on the original varying grids with
 the certified margin parameter `2A`. Advancing the outer precision by
 three gives a regular improper integral name and proves agreement with
 the original Gamma program on a fixed regular complex input at arbitrary
 independent output precisions.
-[GaussianNamedEulerCompactModulus](Lean/IPRADerivations/Analysis/GaussianNamedEulerCompactModulus.lean)
+[GaussianNamedEulerCompactModulus](Lean/IPRADerivations/Analysis/Euler/GaussianNamedEulerCompactModulus.lean)
 constructs the actual regular fixed compact quadrature from the sampled
-modulus. [GaussianNamedEulerCutoffBinding](Lean/IPRADerivations/Analysis/GaussianNamedEulerCutoffBinding.lean)
+modulus. [GaussianNamedEulerCutoffBinding](Lean/IPRADerivations/Analysis/Euler/GaussianNamedEulerCutoffBinding.lean)
 identifies each varying-cutoff sample with the corresponding fixed
 compact observation at the original clock. The literal C_R/N plus
 exponential tail rate of the report remains.
@@ -1694,15 +1694,15 @@ exponential tail rate of the report remains.
 | 1 | Actual harmonic/logarithm Euler-constant evaluator, C1–C2 inequalities, a regular name, and its bounds. |
 | 2–3 | Actual cofinal samplers establish C11 for the literal Weierstrass product and C15 for the Euler reciprocals. The C7 and Gamma names agree on overlapping disks for the same encoded rational point. The right-half-plane Euler integral agrees with the original Gamma name on encoded complex rational inputs. The Gamma evaluator and fixed-time Euler integrand now extend to regular fixed complex names. The original improper Euler quadrature on a fixed regular complex name agrees with its Gamma name. |
 | 4–10 | The original C7 zero predicate is characterized by an exact pole search for encoded rational inputs. The actual Gamma observations have a quantitative nonvanishing bound on pole-free disks. The whole finite coefficient product has the C9 majorant and the radius-doubled degree tail. C23 and C25 have checked difference-quotient and residue limits on encoded rational increments. The original cofinal coefficient names and C19 are checked on encoded disks. Entire analyticity and classification for general named inputs remain. C20, the original C21 shift and factorial values, C22, and the C24 punctured-disk identity are proved on their recorded domains. C26 conjugation and the real value representation for encoded real rational inputs are proved for the original reciprocal and pole-free Gamma names. |
-| 11–17 | [GaussianGammaIntegralCutoffs](Lean/IPRADerivations/Analysis/GaussianGammaIntegralCutoffs.lean) checks the numerical endpoints and budgets for the original mesh. [GaussianPositiveRationalLogarithm](Lean/IPRADerivations/Analysis/GaussianPositiveRationalLogarithm.lean) constructs the positive-rational logarithm and checks its exponential. [GaussianPositiveExponentialTermBound](Lean/IPRADerivations/Analysis/GaussianPositiveExponentialTermBound.lean) checks the finite factorial-term lower bound used in the upper integral tail. [GaussianEulerIntegrandName](Lean/IPRADerivations/Analysis/GaussianEulerIntegrandName.lean) constructs the actual regular sampled integrand. [GaussianRationalRiemannRefinement](Lean/IPRADerivations/Analysis/GaussianRationalRiemannRefinement.lean) proves the weighted finite refinement bound from the original cell distances. [GaussianPositiveRationalExponentialDecay](Lean/IPRADerivations/Analysis/GaussianPositiveRationalExponentialDecay.lean) proves the factorial monomial bound for the named negative exponential with explicit dyadic observation slack. [GaussianEulerDecayFactorBounds](Lean/IPRADerivations/Analysis/GaussianEulerDecayFactorBounds.lean) transfers the dyadic integer and weighted half-argument bounds to the actual decay program. [GaussianGammaIntegralTailBudget](Lean/IPRADerivations/Analysis/GaussianGammaIntegralTailBudget.lean) checks the exact left root and the combined endpoint majorant at the prescribed cutoffs. [RationalHarmonicInterval](Lean/IPRADerivations/Analysis/RationalHarmonicInterval.lean) proves the exact signed harmonic-interval refinement and equal-ratio estimates. [GaussianExponentialLinearRemainder](Lean/IPRADerivations/Analysis/GaussianExponentialLinearRemainder.lean) checks the original exponential linear remainder on the unit disk. [GaussianPositiveRationalLogarithmProperness](Lean/IPRADerivations/Analysis/GaussianPositiveRationalLogarithmProperness.lean) proves agreement of the original logarithm across equal positive rational encodings. [GaussianGammaRightHalfPlane](Lean/IPRADerivations/Analysis/GaussianGammaRightHalfPlane.lean) derives the original Gamma domain and C15 rate from the positive real-part margin. [RationalHarmonicIntervalVariation](Lean/IPRADerivations/Analysis/RationalHarmonicIntervalVariation.lean) gives the finite harmonic variation bound and [GaussianNamedLipschitzRate](Lean/IPRADerivations/Analysis/GaussianNamedLipschitzRate.lean) removes auxiliary dyadic errors from diagonal estimates of regular names. [GaussianCompactRiemannName](Lean/IPRADerivations/Analysis/GaussianCompactRiemannName.lean) derives regular compact quadrature from an actual local sampled modulus. [GaussianGammaCompactQuadratureBoundary](Lean/IPRADerivations/Analysis/GaussianGammaCompactQuadratureBoundary.lean) binds that construction to the Gamma cutoffs on each fixed interval. [GaussianEulerDecayAddition](Lean/IPRADerivations/Analysis/GaussianEulerDecayAddition.lean) checks addition of rational decay arguments and the linear remainder for the original decay samples. [GaussianPositiveRationalLogarithmVariation](Lean/IPRADerivations/Analysis/GaussianPositiveRationalLogarithmVariation.lean) proves the original logarithm variation rate. [GaussianRationalUniformExponentialLipschitz](Lean/IPRADerivations/Analysis/GaussianRationalUniformExponentialLipschitz.lean) gives a uniform variation bound for the original finite scalar exponential on a disk. [GaussianEulerDecayIncrement](Lean/IPRADerivations/Analysis/GaussianEulerDecayIncrement.lean) establishes a uniform first-order remainder for the original positive-time decay samples. [GaussianEulerDecayMesh](Lean/IPRADerivations/Analysis/GaussianEulerDecayMesh.lean) sums this error on an actual finite mesh and compares to the endpoint difference. [GaussianEulerDecayQuadrature](Lean/IPRADerivations/Analysis/GaussianEulerDecayQuadrature.lean) compares the actual affine-grid decay sum to the two original endpoint observations with a quantitative error. [GaussianCompactLogarithmBounds](Lean/IPRADerivations/Analysis/GaussianCompactLogarithmBounds.lean) bounds the actual compact logarithm observations uniformly. [GaussianRadiusExponentialLipschitzRate](Lean/IPRADerivations/Analysis/GaussianRadiusExponentialLipschitzRate.lean) lifts the finite variation bound to the original exponential names. [GaussianPositiveExponentialOrder](Lean/IPRADerivations/Analysis/GaussianPositiveExponentialOrder.lean) checks finite positive-axis order and [GaussianExponentialRealPart](Lean/IPRADerivations/Analysis/GaussianExponentialRealPart.lean) relates the exponential norm square to the real part of its exponent. The [checked Euler quadrature](#checked-euler-quadrature) now supplies the original integrand modulus, regular varying-endpoint improper quadrature, and its comparison to each fixed compact name with both endpoint majorants. The Euler-integral identification is checked on encoded rationals and fixed regular complex names. The sharp finite Euler rate is checked for every degree at least two on encoded complex inputs. The stated degree schedule gives the evaluated original observation corollaries. The sharp finite-sampler rate extends to general regular complex names at the computed radius. The one-eighteenth lower bound is checked for encoded positive real inputs and regular positive real names with actual real samples. The combined factorial upper bound is checked on encoded inputs and regular names at their computed radii. The decay antiderivative gives a checked integral proof of the Gamma value at one. The vertical integrand squared norm identity is checked. The vertical Gamma comparison is checked for encoded inputs and regular complex names. Integration by parts gives the recurrence on encoded rational inputs and regular complex names. The compact logarithmic quadratures, incomplete-Gamma sum and both recurrences are checked on encoded rational inputs with positive rational split. The upper and lower integer formulas are checked for all numerical indices at positive rational splits. Every positive rational split at most the original cutoff has the exact root rate to the zero-split values. The all-order derivative of the logarithmic integral names (family 14) is checked on certified native Gaussian rationals and fixed regular complex input names, including named increments with finite apartness and all-observation smallness. The finite Euler scaling comparison includes the exact Jacobian. Its cofinal lift proves the improper scaling law at exponent parameter one for positive rational damping and encoded complex input, including the direct original Gamma identity. The quadratic map has checked finite Jacobian and complex-power identities, actual pointwise integrand transport, compact Jacobian-weighted integration on positive-width rational intervals, and both omitted tails. Its cofinal lift proves the quadratic improper identity with the original Gamma evaluator for positive rational damping and encoded complex input. The exponential improper form is checked on the actual ordered logarithmic image partitions with explicit cofinal endpoint bounds. The unit-interval decay-image sampler is checked against the original Gamma evaluator, with explicit endpoint exhaustion and shrinking mesh. The genuine unit kernel has a uniform compact rate, a checked extension to regular compact real input names, and a checked pointwise pullback to the original Euler power at every certified decay-image input. The finite density is compared with independently counted uniform quadratures on the rounded rational panels. The original Gamma name is identified with the cofinal ordinary quadrature on the computed rational unit panels, with an independently later original time cutoff and explicit endpoint exhaustion. Compact endpoint continuity holds at independent rational denominators and observation indices, and arbitrary fixed proper rational panels are eventually contained in the computed cofinal panels. Exact nested panel splitting and compact real-parameter domination are checked at independent observation indices. A uniform omitted-tail bound identifies arbitrary proper rational endpoint exhaustions with the original Gamma name for encoded complex inputs, with independent observation queries. [GaussianEulerPowerScalingImproper](Lean/IPRADerivations/Analysis/GaussianEulerPowerScalingImproper.lean) proves the original improper power-damping identity for positive rational damping and exponent and encoded complex input. The extension to arbitrary positive real scaling remains open. |
-| 18–24 | Reflection with an explicit sine margin, multiplication at arbitrary internal positive integer multiplier, duplication/triplication, beta–Gamma relation, beta symmetry/recurrence and all stated integral forms with their positive half-plane margins. [GaussianScalarExponentialOddTaylor](Lean/IPRADerivations/Analysis/GaussianScalarExponentialOddTaylor.lean), [GaussianScalarSineTaylor](Lean/IPRADerivations/Analysis/GaussianScalarSineTaylor.lean), and [GaussianNamedSineTaylor](Lean/IPRADerivations/Analysis/GaussianNamedSineTaylor.lean) give the finite and named sine series identities used in the trigonometric foundation. [GaussianArctangentCayleyRefinement](Lean/IPRADerivations/Analysis/GaussianArctangentCayleyRefinement.lean) proves the explicit finite Cayley estimate at any rational arctangent endpoint in the unit interval. [GaussianArctangentPartialQuadrature](Lean/IPRADerivations/Analysis/GaussianArctangentPartialQuadrature.lean) gives the regular native partial arctangent, [GaussianArctangentPartialRepresentation](Lean/IPRADerivations/Analysis/GaussianArctangentPartialRepresentation.lean) removes dependence on the fraction encoding, and [GaussianArctangentPartialUnitEndpoint](Lean/IPRADerivations/Analysis/GaussianArctangentPartialUnitEndpoint.lean) matches the unit endpoint with the original π program. [GaussianArctangentPartialExponential](Lean/IPRADerivations/Analysis/GaussianArctangentPartialExponential.lean) and [GaussianArctangentPartialTrig](Lean/IPRADerivations/Analysis/GaussianArctangentPartialTrig.lean) prove the named exponential, sine and cosine identities in T1 at every encoded rational arctangent parameter in the unit interval. [GaussianArctangentChordComparison](Lean/IPRADerivations/Analysis/GaussianArctangentChordComparison.lean) and [GaussianArctangentNamedChord](Lean/IPRADerivations/Analysis/GaussianArctangentNamedChord.lean) give the finite and independently sampled T2 chord comparison on the rational arctangent image. [GaussianArctangentSlope](Lean/IPRADerivations/Analysis/GaussianArctangentSlope.lean) proves the finite lower and upper slope bounds, and [GaussianArctangentGridSearch](Lean/IPRADerivations/Analysis/GaussianArctangentGridSearch.lean) finds the first row crossing a target with an explicit residual. [GaussianArctangentNamedSlope](Lean/IPRADerivations/Analysis/GaussianArctangentNamedSlope.lean) lifts the two slope bounds to the original names at independent precisions. [GaussianArctangentRationalTarget](Lean/IPRADerivations/Analysis/GaussianArctangentRationalTarget.lean) clears rational target denominators exactly and bounds the selected observation by `2/M` from the target when it is in the finite grid range. [GaussianArctangentClampedTarget](Lean/IPRADerivations/Analysis/GaussianArctangentClampedTarget.lean) proves the native prefix is independent of the clearing factorial and verifies clipping to the endpoints for finite nonnegative inverse targets. [GaussianArctangentPhysicalRefinement](Lean/IPRADerivations/Analysis/GaussianArctangentPhysicalRefinement.lean) retains the actual mesh denominator in the forward error and compares any selected inverse sample to the original named arctangent at the selected rational parameter. [GaussianArctangentInverseSampler](Lean/IPRADerivations/Analysis/GaussianArctangentInverseSampler.lean) and [GaussianArctangentInverseForward](Lean/IPRADerivations/Analysis/GaussianArctangentInverseForward.lean) implement the inverse sampler for arbitrary regular angles certified by the independent-precision interval inequalities, with forward error at most `7/2^p` on the selected finite grid. [GaussianArctangentInverseGap](Lean/IPRADerivations/Analysis/GaussianArctangentInverseGap.lean) transfers forward errors to rational parameter errors. [GaussianArctangentNamedInverse](Lean/IPRADerivations/Analysis/GaussianArctangentNamedInverse.lean) proves regularity and exact rational readback for the inverse. [GaussianArctangentInverseUniqueness](Lean/IPRADerivations/Analysis/GaussianArctangentInverseUniqueness.lean) proves equivalence for inverse names of equivalent target angles, and [GaussianImaginaryCoordinateName](Lean/IPRADerivations/Analysis/GaussianImaginaryCoordinateName.lean) checks the regular coordinate name used to state the inverse identity. [GaussianArctangentNamedExtension](Lean/IPRADerivations/Analysis/GaussianArctangentNamedExtension.lean) defines the regular forward name and [GaussianArctangentExtensionRange](Lean/IPRADerivations/Analysis/GaussianArctangentExtensionRange.lean) certifies its target interval. [GaussianArctangentInverseCorrectness](Lean/IPRADerivations/Analysis/GaussianArctangentInverseCorrectness.lean) identifies the angle coordinate after forward evaluation of the inverse and gives full Gaussian name equivalence for imaginary-axis angle samples. [GaussianArctangentNamedExtensionUniqueness](Lean/IPRADerivations/Analysis/GaussianArctangentNamedExtensionUniqueness.lean) recovers exactly represented unit-interval parameter names after the opposite round trip. [GaussianArctangentNamedCayley](Lean/IPRADerivations/Analysis/GaussianArctangentNamedCayley.lean) identifies the original named exponential of the general forward program with regular observations of the literal Cayley quotient. [GaussianArctangentNamedCayleyTrig](Lean/IPRADerivations/Analysis/GaussianArctangentNamedCayleyTrig.lean) identifies both original sine and cosine names with literal Cayley formulas on regular parameters. [GaussianArctangentNamedChordExtension](Lean/IPRADerivations/Analysis/GaussianArctangentNamedChordExtension.lean) proves the sampled chord for the general forward name, and [GaussianArctangentAngleChord](Lean/IPRADerivations/Analysis/GaussianArctangentAngleChord.lean) transfers it through the exact inverse to every certified imaginary-axis angle in the original interval. [GaussianArctangentPiMargins](Lean/IPRADerivations/Analysis/GaussianArctangentPiMargins.lean) proves the margins 1501/500 ≤ π ≤ 7/2 with the observation error. For T3, [GaussianScalarSincTaylor](Lean/IPRADerivations/Analysis/GaussianScalarSincTaylor.lean) proves the literal finite sine–sinc identity at all inputs, [GaussianScalarSincTaylorBounds](Lean/IPRADerivations/Analysis/GaussianScalarSincTaylorBounds.lean) gives the quadratic error on the unit disk, and [GaussianSineMultipleAngleRecurrence](Lean/IPRADerivations/Analysis/GaussianSineMultipleAngleRecurrence.lean) proves the zero-safe multiple-angle difference law and even recurrence. [GaussianNamedSinc](Lean/IPRADerivations/Analysis/GaussianNamedSinc.lean) constructs the regular factorial sinc name on bounded inputs and [GaussianNamedSineSincFactorization](Lean/IPRADerivations/Analysis/GaussianNamedSineSincFactorization.lean) proves its division-free identity with the original named sine. [GaussianSineSquaredPolynomial](Lean/IPRADerivations/Analysis/GaussianSineSquaredPolynomial.lean) gives the actual monic multiple-angle polynomial; [GaussianSineSquaredTrace](Lean/IPRADerivations/Analysis/GaussianSineSquaredTrace.lean) evaluates it at the squared-sine coordinate and proves the rational power-difference root implication; [GaussianSineSquaredNormalization](Lean/IPRADerivations/Analysis/GaussianSineSquaredNormalization.lean) evaluates it at zero sine. [GaussianArctangentDivisionAngles](Lean/IPRADerivations/Analysis/GaussianArctangentDivisionAngles.lean) certifies the divided angles, and [GaussianArctangentDivisionAngleRoots](Lean/IPRADerivations/Analysis/GaussianArctangentDivisionAngleRoots.lean) proves the original sine vanishes after multiplication by the odd order. [GaussianArctangentDivisionAngleGaps](Lean/IPRADerivations/Analysis/GaussianArctangentDivisionAngleGaps.lean) proves the uniform synchronized gaps between the angle observations and from the quarter endpoint. [GaussianRationalSeparatedDeflation](Lean/IPRADerivations/Analysis/GaussianRationalSeparatedDeflation.lean) propagates residual bounds through rational synthetic deflation, and [GaussianRationalSeparatedReconstruction](Lean/IPRADerivations/Analysis/GaussianRationalSeparatedReconstruction.lean) bounds the resulting product evaluation error at separated samples. [GaussianArctangentDivisionSinePositive](Lean/IPRADerivations/Analysis/GaussianArctangentDivisionSinePositive.lean) proves the actual sine at each positive prescribed angle is at least 2k/m. [GaussianNamedSincQuadraticBounds](Lean/IPRADerivations/Analysis/GaussianNamedSincQuadraticBounds.lean) and [GaussianNamedSincRatio](Lean/IPRADerivations/Analysis/GaussianNamedSincRatio.lean) give the original named sinc quadratic and squared-ratio estimates. [GaussianInverseSquareProductTail](Lean/IPRADerivations/Analysis/GaussianInverseSquareProductTail.lean) proves an explicit finite inverse-square product tail and [GaussianSineProductName](Lean/IPRADerivations/Analysis/GaussianSineProductName.lean) gives a regular name for the literal product. [GaussianSineProductT4Budget](Lean/IPRADerivations/Analysis/GaussianSineProductT4Budget.lean) checks the numerical T4 clock and closes the final error absorption under its product and prefactor estimates. For R1, [GaussianGammaEulerReflectionHead](Lean/IPRADerivations/Analysis/GaussianGammaEulerReflectionHead.lean) pairs the original heads and [GaussianGammaEulerReflectionName](Lean/IPRADerivations/Analysis/GaussianGammaEulerReflectionName.lean) proves the exact reflection value of the original finite Euler approximant names on the certified pole-free domain. [GaussianGammaEulerReflectionLimit](Lean/IPRADerivations/Analysis/GaussianGammaEulerReflectionLimit.lean) passes the finite identity to the original reciprocal Gamma names at independent output precisions. [GaussianGammaReflectionProduct](Lean/IPRADerivations/Analysis/GaussianGammaReflectionProduct.lean) proves the limiting reflection product for the original Gamma names at $z$ and $1-z$, with constructive division by $zS(z)$ on the certified pole-free domain. [GaussianGammaReflectionSineTransfer](Lean/IPRADerivations/Analysis/GaussianGammaReflectionSineTransfer.lean) derives the original cleared sine reflection formula from T7 at the original argument. [GaussianInverseSquareProductGrowth](Lean/IPRADerivations/Analysis/GaussianInverseSquareProductGrowth.lean) checks the uniform inverse-square product envelope, [GaussianArctangentCayleySquareGap](Lean/IPRADerivations/Analysis/GaussianArctangentCayleySquareGap.lean) gives the finite Cayley square gap, and [GaussianSineSquaredResidual](Lean/IPRADerivations/Analysis/GaussianSineSquaredResidual.lean) converts the power discrepancy into a quantitative polynomial residual. [GaussianArctangentDivisionAngleResidual](Lean/IPRADerivations/Analysis/GaussianArctangentDivisionAngleResidual.lean) bounds the residual at the actual rational Cayley observations given a sampled sine margin. [GaussianInverseSquareProductComparison](Lean/IPRADerivations/Analysis/GaussianInverseSquareProductComparison.lean) bounds the weighted difference of the actual finite products. [GaussianSineSampleRootList](Lean/IPRADerivations/Analysis/GaussianSineSampleRootList.lean) instantiates the finite monic reconstruction bound with the original rational root samples under explicit separation. [GaussianArctangentDivisionCayleyMargins](Lean/IPRADerivations/Analysis/GaussianArctangentDivisionCayleyMargins.lean) proves the sampled sine lower bounds and pairwise squared-sine separation on the actual inverse grid. [GaussianSineProductT6](Lean/IPRADerivations/Analysis/GaussianSineProductT6.lean) combines the finite head, suffix, and sinc prefactor estimates to the exact T4 radius, and [GaussianSineProductT4Finite](Lean/IPRADerivations/Analysis/GaussianSineProductT4Finite.lean) closes the finite quantified estimate and dyadic precision form. [GaussianSincRatioProductRow](Lean/IPRADerivations/Analysis/GaussianSincRatioProductRow.lean) derives the head and prefactor estimates from certified sinc observations. [GaussianSineRootNormalization](Lean/IPRADerivations/Analysis/GaussianSineRootNormalization.lean) identifies each normalized linear root factor with $1-s^2/r^2$ under its proved sine margin. [GaussianSineSampleRootGuards](Lean/IPRADerivations/Analysis/GaussianSineSampleRootGuards.lean) applies the exact rational root margin and residual estimates to the actual polynomial and its finite root list. [GaussianSineSquaredRootSeparation](Lean/IPRADerivations/Analysis/GaussianSineSquaredRootSeparation.lean) applies the exact rational root margin and residual estimates to the actual polynomial and its finite root list. [GaussianArctangentDivisionSineSeparation](Lean/IPRADerivations/Analysis/GaussianArctangentDivisionSineSeparation.lean) transfers the gap to the original squared sine names at independent precisions, and [GaussianSineProductScaledArguments](Lean/IPRADerivations/Analysis/GaussianSineProductScaledArguments.lean) checks the actual T4 scaled arguments and their sinc radius guards. [GaussianSineNormalizedSampleProduct](Lean/IPRADerivations/Analysis/GaussianSineNormalizedSampleProduct.lean) proves the exact normalized finite factor fold, and [GaussianSineNormalizedSampleReconstruction](Lean/IPRADerivations/Analysis/GaussianSineNormalizedSampleReconstruction.lean) gives an explicit cofinal error against the multiple-angle polynomial divided by the odd order. [GaussianNamedSineMultipleAngle](Lean/IPRADerivations/Analysis/GaussianNamedSineMultipleAngle.lean) proves the named multiple-angle sine identity on every bounded Gaussian input, and [GaussianNamedEvenSinePolynomial](Lean/IPRADerivations/Analysis/GaussianNamedEvenSinePolynomial.lean) identifies its even recurrence with the odd order times the normalized polynomial. [GaussianSineNormalizedSampleName](Lean/IPRADerivations/Analysis/GaussianSineNormalizedSampleName.lean) identifies the normalized polynomial with the regular root-product name. [GaussianSineNormalizedForwardProduct](Lean/IPRADerivations/Analysis/GaussianSineNormalizedForwardProduct.lean) verifies the ascending rational factor order. [GaussianSineProductScaledArgumentIdentity](Lean/IPRADerivations/Analysis/GaussianSineProductScaledArgumentIdentity.lean) and [GaussianSineProductRelativeArgument](Lean/IPRADerivations/Analysis/GaussianSineProductRelativeArgument.lean) bind the original scaled arguments and root sine to the literal arithmetic. For R3, [GaussianSineProductHeadLower](Lean/IPRADerivations/Analysis/GaussianSineProductHeadLower.lean) and [GaussianSineProductTailLower](Lean/IPRADerivations/Analysis/GaussianSineProductTailLower.lean) prove the factorial head and inverse-square tail bounds, [GaussianSineProductReflectionLower](Lean/IPRADerivations/Analysis/GaussianSineProductReflectionLower.lean) transfers their exact product to the original name, and [GaussianSineReflectionLower](Lean/IPRADerivations/Analysis/GaussianSineReflectionLower.lean) proves the original sine lower bound at an explicit dyadic reserve given the T7 identity. [GaussianNamedSincCongruence](Lean/IPRADerivations/Analysis/GaussianNamedSincCongruence.lean) transports sinc across independently certified equivalent names. [GaussianSineProductNamedT3](Lean/IPRADerivations/Analysis/GaussianSineProductNamedT3.lean) proves T3 at the original reflection argument, with explicit cancellation for nonzero numerators and exact zero-sample identities at zero. [GaussianSineRawRootBinding](Lean/IPRADerivations/Analysis/GaussianSineRawRootBinding.lean) and [GaussianSineProductSynchronizedRow](Lean/IPRADerivations/Analysis/GaussianSineProductSynchronizedRow.lean) identify the original Cayley observations and bound each actual normalized factor at a synchronized query clock. [GaussianSineProductSynchronizedMagnitude](Lean/IPRADerivations/Analysis/GaussianSineProductSynchronizedMagnitude.lean) verifies the inverse-square envelope on all actual Cayley rows. [GaussianSineProductT4Actual](Lean/IPRADerivations/Analysis/GaussianSineProductT4Actual.lean) proves the synchronized comparisons at the common cofinal clock, and [GaussianSineProductT7Actual](Lean/IPRADerivations/Analysis/GaussianSineProductT7Actual.lean) proves the T7 identity for the original sinc, the exact R3 bound at every certified precision, and both cleared and divided Gamma reflection (claim 18). The ordinary quotient uses [GaussianGammaReflectionQuotient](Lean/IPRADerivations/Analysis/GaussianGammaReflectionQuotient.lean) and [GaussianGammaReflectionR3Domain](Lean/IPRADerivations/Analysis/GaussianGammaReflectionR3Domain.lean) to compute the sine reciprocal from the original complementary pole guards. For Gauss multiplication, [GaussianRationalRectangularProduct](Lean/IPRADerivations/Analysis/GaussianRationalRectangularProduct.lean), [GaussianGammaEulerDenominator](Lean/IPRADerivations/Analysis/GaussianGammaEulerDenominator.lean), and [GaussianGammaEulerDenominatorGrouping](Lean/IPRADerivations/Analysis/GaussianGammaEulerDenominatorGrouping.lean) prove the finite denominator grouping in M2 at arbitrary positive integer multiplier. [GaussianGammaGaussEulerHeads](Lean/IPRADerivations/Analysis/GaussianGammaGaussEulerHeads.lean) identifies the grouped product of the actual shifted Euler heads with the factorial-normalized head at the Gauss cutoff. [GaussianGammaGaussDomain](Lean/IPRADerivations/Analysis/GaussianGammaGaussDomain.lean) pulls the original scaled pole guard back to every shifted argument. [GaussianGammaGaussReference](Lean/IPRADerivations/Analysis/GaussianGammaGaussReference.lean) certifies the positive normalization arguments and computes the common exponent offsets. For M1, [GaussianCyclicExponentialRoots](Lean/IPRADerivations/Analysis/GaussianCyclicExponentialRoots.lean) proves the original cyclic root law and [GaussianCyclicExponentialSeparation](Lean/IPRADerivations/Analysis/GaussianCyclicExponentialSeparation.lean) supplies separated actual observations. For M3, [GaussianGaussMultiplicationLogarithm](Lean/IPRADerivations/Analysis/GaussianGaussMultiplicationLogarithm.lean) proves the exact $1/N$ bound on the original integer logarithm samples and gives an independent-clock version. [GaussianNamedFiniteProductName](Lean/IPRADerivations/Analysis/GaussianNamedFiniteProductName.lean) lifts rowwise approximations to the regular name of their finite product. [GaussianCyclicRootProduct](Lean/IPRADerivations/Analysis/GaussianCyclicRootProduct.lean) reconstructs the finite cofinal product of the nontrivial cyclic factors at one. [GaussianGaussEulerHeadCancellation](Lean/IPRADerivations/Analysis/GaussianGaussEulerHeadCancellation.lean) cancels the common factorial factors across two original Euler head products, and [GaussianGaussEulerRowExponents](Lean/IPRADerivations/Analysis/GaussianGaussEulerRowExponents.lean) identifies the common exponential factor for every shifted row. [GaussianGaussMultiplicationLogRatio](Lean/IPRADerivations/Analysis/GaussianGaussMultiplicationLogRatio.lean) proves the corresponding rate for the original positive rational log names at bases $N/L$ and $1/m$. [GaussianNamedFiniteProductApartness](Lean/IPRADerivations/Analysis/GaussianNamedFiniteProductApartness.lean) gives explicit reciprocal clocks for regular finite products with a uniform row margin, including the exact empty product. [GaussianGaussMultiplicationSharpPowerRate](Lean/IPRADerivations/Analysis/GaussianGaussMultiplicationSharpPowerRate.lean) proves M3 with exact leading coefficient $2A m^A$, where $A=m(R+1)$, and the independent observation errors. [GaussianGaussEulerCutoff](Lean/IPRADerivations/Analysis/GaussianGaussEulerCutoff.lean) computes the common Euler cutoff and proves that each larger cutoff also gives the required error. [GaussianGammaGaussShiftedProduct](Lean/IPRADerivations/Analysis/GaussianGammaGaussShiftedProduct.lean), [GaussianGammaGaussShiftedApartness](Lean/IPRADerivations/Analysis/GaussianGammaGaussShiftedApartness.lean), and [GaussianGammaGaussEulerProduct](Lean/IPRADerivations/Analysis/GaussianGammaGaussEulerProduct.lean) construct the original shifted Gamma product, certify its reciprocal clock, and prove convergence of the literal finite Euler product. [GaussianNamedFiniteProductAlgebra](Lean/IPRADerivations/Analysis/GaussianNamedFiniteProductAlgebra.lean) and [GaussianNamedRepeatedExponential](Lean/IPRADerivations/Analysis/GaussianNamedRepeatedExponential.lean) transport finite rowwise multiplication and repeated exponentials through the actual clocks. [GaussianCyclicChordSquare](Lean/IPRADerivations/Analysis/GaussianCyclicChordSquare.lean) and [GaussianCyclicSineProductSquare](Lean/IPRADerivations/Analysis/GaussianCyclicSineProductSquare.lean) identify the cyclic chord product with the squared sine product at certified clocks. [GaussianCyclicSinePositiveRows](Lean/IPRADerivations/Analysis/GaussianCyclicSinePositiveRows.lean) and [GaussianCyclicSineProductNormalization](Lean/IPRADerivations/Analysis/GaussianCyclicSineProductNormalization.lean) justify cancellation of the square on the actual finite rows. [GaussianCyclicSineProductName](Lean/IPRADerivations/Analysis/GaussianCyclicSineProductName.lean) proves M1 for the primitive recursive product of the original sine names at arbitrary positive internal order, with value $m/2^{m-1}$. [GaussianGaussEulerPowerRatio](Lean/IPRADerivations/Analysis/GaussianGaussEulerPowerRatio.lean) proves the exact ratio-power law at the two original cutoff logarithms, and [GaussianGaussEulerOffsetPower](Lean/IPRADerivations/Analysis/GaussianGaussEulerOffsetPower.lean) collects the repeated relative factors into the exponential of the scaled coefficient. [GaussianGammaEulerFullHeadInverse](Lean/IPRADerivations/Analysis/GaussianGammaEulerFullHeadInverse.lean) factors each actual Euler name through its complete head reciprocal. [GaussianNamedFiniteProductFamilyCongruence](Lean/IPRADerivations/Analysis/GaussianNamedFiniteProductFamilyCongruence.lean) transports regular families of independently sampled rows to their actual product names. [GaussianGammaGaussReferenceProduct](Lean/IPRADerivations/Analysis/GaussianGammaGaussReferenceProduct.lean), [GaussianGammaGaussReferenceEulerProduct](Lean/IPRADerivations/Analysis/GaussianGammaGaussReferenceEulerProduct.lean), and [GaussianGaussMultiplicationCofinalRows](Lean/IPRADerivations/Analysis/GaussianGaussMultiplicationCofinalRows.lean) construct the reference product with a reciprocal clock and bind the shifted, reference, scaled, and ratio observations to their limiting names at one padded cutoff. [GaussianGaussMultiplicationM2Transport](Lean/IPRADerivations/Analysis/GaussianGaussMultiplicationM2Transport.lean) proves M4 in its cleared form from the exact named M2 identity at the cofinal Euler cutoffs. It constructs the named finite factors and uses uniform observation bounds to pass to the original Gamma names. [GaussianGaussEulerFiniteIdentity](Lean/IPRADerivations/Analysis/GaussianGaussEulerFiniteIdentity.lean) proves exact cleared M2 on the original finite Euler names and passes to the cleared Gamma limit at the cofinal cutoffs. [GaussianGammaGaussReferenceSquare](Lean/IPRADerivations/Analysis/GaussianGammaGaussReferenceSquare.lean) proves the exact squared M5 normalization $P_m^2=(2\pi)^{m-1}/m$ for the original reference product, by the actual reflection rows and M1. [GaussianGammaGaussPositiveReference](Lean/IPRADerivations/Analysis/GaussianGammaGaussPositiveReference.lean) gives a primitive recursive representative of the certified positive root and proves its real positivity and exact square. [GaussianGaussMultiplication](Lean/IPRADerivations/Analysis/GaussianGaussMultiplication.lean) proves the divided M4 formula with the actual scaled Gamma reciprocal and the M5 formula in the form $m^{1-mz}\sqrt{(2\pi)^{m-1}/m}\,\Gamma(mz)$ for every positive internal order. The normalized formula uses the certified positive-root representative from the reference rows. [GaussianGaussMultiplicationIndependentNormalization](Lean/IPRADerivations/Analysis/GaussianGaussMultiplicationIndependentNormalization.lean) also computes that root directly from the radicand. [GaussianGaussEulerRelativeQuotient](Lean/IPRADerivations/Analysis/GaussianGaussEulerRelativeQuotient.lean) proves the literal M2 nested quotient at every certified cutoff. [GaussianGaussMultiplicationHalfPowers](Lean/IPRADerivations/Analysis/GaussianGaussMultiplicationHalfPowers.lean) proves the displayed M5 identity with separately computed $(2\pi)^{(m-1)/2}$ and $m^{1/2-mz}$. [GaussianGaussDuplication](Lean/IPRADerivations/Analysis/GaussianGaussDuplication.lean) and [GaussianGaussTriplication](Lean/IPRADerivations/Analysis/GaussianGaussTriplication.lean) prove M6 and M7 for the explicit original Gamma rows at their common denominators. |
+| 11–17 | [GaussianGammaIntegralCutoffs](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaIntegralCutoffs.lean) checks the numerical endpoints and budgets for the original mesh. [GaussianPositiveRationalLogarithm](Lean/IPRADerivations/Analysis/Logarithm/GaussianPositiveRationalLogarithm.lean) constructs the positive-rational logarithm and checks its exponential. [GaussianPositiveExponentialTermBound](Lean/IPRADerivations/Analysis/Exponential/GaussianPositiveExponentialTermBound.lean) checks the finite factorial-term lower bound used in the upper integral tail. [GaussianEulerIntegrandName](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerIntegrandName.lean) constructs the actual regular sampled integrand. [GaussianRationalRiemannRefinement](Lean/IPRADerivations/Analysis/Integration/GaussianRationalRiemannRefinement.lean) proves the weighted finite refinement bound from the original cell distances. [GaussianPositiveRationalExponentialDecay](Lean/IPRADerivations/Analysis/Exponential/GaussianPositiveRationalExponentialDecay.lean) proves the factorial monomial bound for the named negative exponential with explicit dyadic observation slack. [GaussianEulerDecayFactorBounds](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerDecayFactorBounds.lean) transfers the dyadic integer and weighted half-argument bounds to the actual decay program. [GaussianGammaIntegralTailBudget](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaIntegralTailBudget.lean) checks the exact left root and the combined endpoint majorant at the prescribed cutoffs. [RationalHarmonicInterval](Lean/IPRADerivations/Analysis/Series/RationalHarmonicInterval.lean) proves the exact signed harmonic-interval refinement and equal-ratio estimates. [GaussianExponentialLinearRemainder](Lean/IPRADerivations/Analysis/Exponential/GaussianExponentialLinearRemainder.lean) checks the original exponential linear remainder on the unit disk. [GaussianPositiveRationalLogarithmProperness](Lean/IPRADerivations/Analysis/Logarithm/GaussianPositiveRationalLogarithmProperness.lean) proves agreement of the original logarithm across equal positive rational encodings. [GaussianGammaRightHalfPlane](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaRightHalfPlane.lean) derives the original Gamma domain and C15 rate from the positive real-part margin. [RationalHarmonicIntervalVariation](Lean/IPRADerivations/Analysis/Series/RationalHarmonicIntervalVariation.lean) gives the finite harmonic variation bound and [GaussianNamedLipschitzRate](Lean/IPRADerivations/Analysis/Names/Rates/GaussianNamedLipschitzRate.lean) removes auxiliary dyadic errors from diagonal estimates of regular names. [GaussianCompactRiemannName](Lean/IPRADerivations/Analysis/Integration/GaussianCompactRiemannName.lean) derives regular compact quadrature from an actual local sampled modulus. [GaussianGammaCompactQuadratureBoundary](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaCompactQuadratureBoundary.lean) binds that construction to the Gamma cutoffs on each fixed interval. [GaussianEulerDecayAddition](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerDecayAddition.lean) checks addition of rational decay arguments and the linear remainder for the original decay samples. [GaussianPositiveRationalLogarithmVariation](Lean/IPRADerivations/Analysis/Logarithm/GaussianPositiveRationalLogarithmVariation.lean) proves the original logarithm variation rate. [GaussianRationalUniformExponentialLipschitz](Lean/IPRADerivations/Analysis/Exponential/GaussianRationalUniformExponentialLipschitz.lean) gives a uniform variation bound for the original finite scalar exponential on a disk. [GaussianEulerDecayIncrement](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerDecayIncrement.lean) establishes a uniform first-order remainder for the original positive-time decay samples. [GaussianEulerDecayMesh](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerDecayMesh.lean) sums this error on an actual finite mesh and compares to the endpoint difference. [GaussianEulerDecayQuadrature](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerDecayQuadrature.lean) compares the actual affine-grid decay sum to the two original endpoint observations with a quantitative error. [GaussianCompactLogarithmBounds](Lean/IPRADerivations/Analysis/Logarithm/GaussianCompactLogarithmBounds.lean) bounds the actual compact logarithm observations uniformly. [GaussianRadiusExponentialLipschitzRate](Lean/IPRADerivations/Analysis/Exponential/GaussianRadiusExponentialLipschitzRate.lean) lifts the finite variation bound to the original exponential names. [GaussianPositiveExponentialOrder](Lean/IPRADerivations/Analysis/Exponential/GaussianPositiveExponentialOrder.lean) checks finite positive-axis order and [GaussianExponentialRealPart](Lean/IPRADerivations/Analysis/Exponential/GaussianExponentialRealPart.lean) relates the exponential norm square to the real part of its exponent. The [checked Euler quadrature](#checked-euler-quadrature) now supplies the original integrand modulus, regular varying-endpoint improper quadrature, and its comparison to each fixed compact name with both endpoint majorants. The Euler-integral identification is checked on encoded rationals and fixed regular complex names. The sharp finite Euler rate is checked for every degree at least two on encoded complex inputs. The stated degree schedule gives the evaluated original observation corollaries. The sharp finite-sampler rate extends to general regular complex names at the computed radius. The one-eighteenth lower bound is checked for encoded positive real inputs and regular positive real names with actual real samples. The combined factorial upper bound is checked on encoded inputs and regular names at their computed radii. The decay antiderivative gives a checked integral proof of the Gamma value at one. The vertical integrand squared norm identity is checked. The vertical Gamma comparison is checked for encoded inputs and regular complex names. Integration by parts gives the recurrence on encoded rational inputs and regular complex names. The compact logarithmic quadratures, incomplete-Gamma sum and both recurrences are checked on encoded rational inputs with positive rational split. The upper and lower integer formulas are checked for all numerical indices at positive rational splits. Every positive rational split at most the original cutoff has the exact root rate to the zero-split values. The all-order derivative of the logarithmic integral names (family 14) is checked on certified native Gaussian rationals and fixed regular complex input names, including named increments with finite apartness and all-observation smallness. The finite Euler scaling comparison includes the exact Jacobian. Its cofinal lift proves the improper scaling law at exponent parameter one for positive rational damping and encoded complex input, including the direct original Gamma identity. The quadratic map has checked finite Jacobian and complex-power identities, actual pointwise integrand transport, compact Jacobian-weighted integration on positive-width rational intervals, and both omitted tails. Its cofinal lift proves the quadratic improper identity with the original Gamma evaluator for positive rational damping and encoded complex input. The exponential improper form is checked on the actual ordered logarithmic image partitions with explicit cofinal endpoint bounds. The unit-interval decay-image sampler is checked against the original Gamma evaluator, with explicit endpoint exhaustion and shrinking mesh. The genuine unit kernel has a uniform compact rate, a checked extension to regular compact real input names, and a checked pointwise pullback to the original Euler power at every certified decay-image input. The finite density is compared with independently counted uniform quadratures on the rounded rational panels. The original Gamma name is identified with the cofinal ordinary quadrature on the computed rational unit panels, with an independently later original time cutoff and explicit endpoint exhaustion. Compact endpoint continuity holds at independent rational denominators and observation indices, and arbitrary fixed proper rational panels are eventually contained in the computed cofinal panels. Exact nested panel splitting and compact real-parameter domination are checked at independent observation indices. A uniform omitted-tail bound identifies arbitrary proper rational endpoint exhaustions with the original Gamma name for encoded complex inputs, with independent observation queries. [GaussianEulerPowerScalingImproper](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerPowerScalingImproper.lean) proves the original improper power-damping identity for positive rational damping and exponent and encoded complex input. The extension to arbitrary positive real scaling remains open. |
+| 18–24 | Reflection with an explicit sine margin, multiplication at arbitrary internal positive integer multiplier, duplication/triplication, beta–Gamma relation, beta symmetry/recurrence and all stated integral forms with their positive half-plane margins. [GaussianScalarExponentialOddTaylor](Lean/IPRADerivations/Analysis/Exponential/GaussianScalarExponentialOddTaylor.lean), [GaussianScalarSineTaylor](Lean/IPRADerivations/Analysis/Trigonometry/GaussianScalarSineTaylor.lean), and [GaussianNamedSineTaylor](Lean/IPRADerivations/Analysis/Trigonometry/GaussianNamedSineTaylor.lean) give the finite and named sine series identities used in the trigonometric foundation. [GaussianArctangentCayleyRefinement](Lean/IPRADerivations/Analysis/Trigonometry/Arctangent/GaussianArctangentCayleyRefinement.lean) proves the explicit finite Cayley estimate at any rational arctangent endpoint in the unit interval. [GaussianArctangentPartialQuadrature](Lean/IPRADerivations/Analysis/Trigonometry/Arctangent/GaussianArctangentPartialQuadrature.lean) gives the regular native partial arctangent, [GaussianArctangentPartialRepresentation](Lean/IPRADerivations/Analysis/Trigonometry/Arctangent/GaussianArctangentPartialRepresentation.lean) removes dependence on the fraction encoding, and [GaussianArctangentPartialUnitEndpoint](Lean/IPRADerivations/Analysis/Trigonometry/Arctangent/GaussianArctangentPartialUnitEndpoint.lean) matches the unit endpoint with the original π program. [GaussianArctangentPartialExponential](Lean/IPRADerivations/Analysis/Trigonometry/Arctangent/GaussianArctangentPartialExponential.lean) and [GaussianArctangentPartialTrig](Lean/IPRADerivations/Analysis/Trigonometry/Arctangent/GaussianArctangentPartialTrig.lean) prove the named exponential, sine and cosine identities in T1 at every encoded rational arctangent parameter in the unit interval. [GaussianArctangentChordComparison](Lean/IPRADerivations/Analysis/Trigonometry/Arctangent/GaussianArctangentChordComparison.lean) and [GaussianArctangentNamedChord](Lean/IPRADerivations/Analysis/Trigonometry/Arctangent/GaussianArctangentNamedChord.lean) give the finite and independently sampled T2 chord comparison on the rational arctangent image. [GaussianArctangentSlope](Lean/IPRADerivations/Analysis/Trigonometry/Arctangent/GaussianArctangentSlope.lean) proves the finite lower and upper slope bounds, and [GaussianArctangentGridSearch](Lean/IPRADerivations/Analysis/Trigonometry/Arctangent/GaussianArctangentGridSearch.lean) finds the first row crossing a target with an explicit residual. [GaussianArctangentNamedSlope](Lean/IPRADerivations/Analysis/Trigonometry/Arctangent/GaussianArctangentNamedSlope.lean) lifts the two slope bounds to the original names at independent precisions. [GaussianArctangentRationalTarget](Lean/IPRADerivations/Analysis/Trigonometry/Arctangent/GaussianArctangentRationalTarget.lean) clears rational target denominators exactly and bounds the selected observation by `2/M` from the target when it is in the finite grid range. [GaussianArctangentClampedTarget](Lean/IPRADerivations/Analysis/Trigonometry/Arctangent/GaussianArctangentClampedTarget.lean) proves the native prefix is independent of the clearing factorial and verifies clipping to the endpoints for finite nonnegative inverse targets. [GaussianArctangentPhysicalRefinement](Lean/IPRADerivations/Analysis/Trigonometry/Arctangent/GaussianArctangentPhysicalRefinement.lean) retains the actual mesh denominator in the forward error and compares any selected inverse sample to the original named arctangent at the selected rational parameter. [GaussianArctangentInverseSampler](Lean/IPRADerivations/Analysis/Trigonometry/Arctangent/GaussianArctangentInverseSampler.lean) and [GaussianArctangentInverseForward](Lean/IPRADerivations/Analysis/Trigonometry/Arctangent/GaussianArctangentInverseForward.lean) implement the inverse sampler for arbitrary regular angles certified by the independent-precision interval inequalities, with forward error at most `7/2^p` on the selected finite grid. [GaussianArctangentInverseGap](Lean/IPRADerivations/Analysis/Trigonometry/Arctangent/GaussianArctangentInverseGap.lean) transfers forward errors to rational parameter errors. [GaussianArctangentNamedInverse](Lean/IPRADerivations/Analysis/Trigonometry/Arctangent/GaussianArctangentNamedInverse.lean) proves regularity and exact rational readback for the inverse. [GaussianArctangentInverseUniqueness](Lean/IPRADerivations/Analysis/Trigonometry/Arctangent/GaussianArctangentInverseUniqueness.lean) proves equivalence for inverse names of equivalent target angles, and [GaussianImaginaryCoordinateName](Lean/IPRADerivations/Analysis/Names/GaussianImaginaryCoordinateName.lean) checks the regular coordinate name used to state the inverse identity. [GaussianArctangentNamedExtension](Lean/IPRADerivations/Analysis/Trigonometry/Arctangent/GaussianArctangentNamedExtension.lean) defines the regular forward name and [GaussianArctangentExtensionRange](Lean/IPRADerivations/Analysis/Trigonometry/Arctangent/GaussianArctangentExtensionRange.lean) certifies its target interval. [GaussianArctangentInverseCorrectness](Lean/IPRADerivations/Analysis/Trigonometry/Arctangent/GaussianArctangentInverseCorrectness.lean) identifies the angle coordinate after forward evaluation of the inverse and gives full Gaussian name equivalence for imaginary-axis angle samples. [GaussianArctangentNamedExtensionUniqueness](Lean/IPRADerivations/Analysis/Trigonometry/Arctangent/GaussianArctangentNamedExtensionUniqueness.lean) recovers exactly represented unit-interval parameter names after the opposite round trip. [GaussianArctangentNamedCayley](Lean/IPRADerivations/Analysis/Trigonometry/Arctangent/GaussianArctangentNamedCayley.lean) identifies the original named exponential of the general forward program with regular observations of the literal Cayley quotient. [GaussianArctangentNamedCayleyTrig](Lean/IPRADerivations/Analysis/Trigonometry/Arctangent/GaussianArctangentNamedCayleyTrig.lean) identifies both original sine and cosine names with literal Cayley formulas on regular parameters. [GaussianArctangentNamedChordExtension](Lean/IPRADerivations/Analysis/Trigonometry/Arctangent/GaussianArctangentNamedChordExtension.lean) proves the sampled chord for the general forward name, and [GaussianArctangentAngleChord](Lean/IPRADerivations/Analysis/Trigonometry/Arctangent/GaussianArctangentAngleChord.lean) transfers it through the exact inverse to every certified imaginary-axis angle in the original interval. [GaussianArctangentPiMargins](Lean/IPRADerivations/Analysis/Trigonometry/Arctangent/GaussianArctangentPiMargins.lean) proves the margins 1501/500 ≤ π ≤ 7/2 with the observation error. For T3, [GaussianScalarSincTaylor](Lean/IPRADerivations/Analysis/Trigonometry/GaussianScalarSincTaylor.lean) proves the literal finite sine–sinc identity at all inputs, [GaussianScalarSincTaylorBounds](Lean/IPRADerivations/Analysis/Trigonometry/GaussianScalarSincTaylorBounds.lean) gives the quadratic error on the unit disk, and [GaussianSineMultipleAngleRecurrence](Lean/IPRADerivations/Analysis/Trigonometry/GaussianSineMultipleAngleRecurrence.lean) proves the zero-safe multiple-angle difference law and even recurrence. [GaussianNamedSinc](Lean/IPRADerivations/Analysis/Trigonometry/GaussianNamedSinc.lean) constructs the regular factorial sinc name on bounded inputs and [GaussianNamedSineSincFactorization](Lean/IPRADerivations/Analysis/Trigonometry/GaussianNamedSineSincFactorization.lean) proves its division-free identity with the original named sine. [GaussianSineSquaredPolynomial](Lean/IPRADerivations/Analysis/Trigonometry/GaussianSineSquaredPolynomial.lean) gives the actual monic multiple-angle polynomial; [GaussianSineSquaredTrace](Lean/IPRADerivations/Analysis/Trigonometry/GaussianSineSquaredTrace.lean) evaluates it at the squared-sine coordinate and proves the rational power-difference root implication; [GaussianSineSquaredNormalization](Lean/IPRADerivations/Analysis/Trigonometry/GaussianSineSquaredNormalization.lean) evaluates it at zero sine. [GaussianArctangentDivisionAngles](Lean/IPRADerivations/Analysis/Trigonometry/Arctangent/GaussianArctangentDivisionAngles.lean) certifies the divided angles, and [GaussianArctangentDivisionAngleRoots](Lean/IPRADerivations/Analysis/Trigonometry/Arctangent/GaussianArctangentDivisionAngleRoots.lean) proves the original sine vanishes after multiplication by the odd order. [GaussianArctangentDivisionAngleGaps](Lean/IPRADerivations/Analysis/Trigonometry/Arctangent/GaussianArctangentDivisionAngleGaps.lean) proves the uniform synchronized gaps between the angle observations and from the quarter endpoint. [GaussianRationalSeparatedDeflation](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianRationalSeparatedDeflation.lean) propagates residual bounds through rational synthetic deflation, and [GaussianRationalSeparatedReconstruction](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianRationalSeparatedReconstruction.lean) bounds the resulting product evaluation error at separated samples. [GaussianArctangentDivisionSinePositive](Lean/IPRADerivations/Analysis/Trigonometry/Arctangent/GaussianArctangentDivisionSinePositive.lean) proves the actual sine at each positive prescribed angle is at least 2k/m. [GaussianNamedSincQuadraticBounds](Lean/IPRADerivations/Analysis/Trigonometry/GaussianNamedSincQuadraticBounds.lean) and [GaussianNamedSincRatio](Lean/IPRADerivations/Analysis/Trigonometry/GaussianNamedSincRatio.lean) give the original named sinc quadratic and squared-ratio estimates. [GaussianInverseSquareProductTail](Lean/IPRADerivations/Analysis/FiniteOperations/GaussianInverseSquareProductTail.lean) proves an explicit finite inverse-square product tail and [GaussianSineProductName](Lean/IPRADerivations/Analysis/Trigonometry/GaussianSineProductName.lean) gives a regular name for the literal product. [GaussianSineProductT4Budget](Lean/IPRADerivations/Analysis/Trigonometry/GaussianSineProductT4Budget.lean) checks the numerical T4 clock and closes the final error absorption under its product and prefactor estimates. For R1, [GaussianGammaEulerReflectionHead](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGammaEulerReflectionHead.lean) pairs the original heads and [GaussianGammaEulerReflectionName](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGammaEulerReflectionName.lean) proves the exact reflection value of the original finite Euler approximant names on the certified pole-free domain. [GaussianGammaEulerReflectionLimit](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGammaEulerReflectionLimit.lean) passes the finite identity to the original reciprocal Gamma names at independent output precisions. [GaussianGammaReflectionProduct](Lean/IPRADerivations/Analysis/Gamma/FunctionalEquations/GaussianGammaReflectionProduct.lean) proves the limiting reflection product for the original Gamma names at $z$ and $1-z$, with constructive division by $zS(z)$ on the certified pole-free domain. [GaussianGammaReflectionSineTransfer](Lean/IPRADerivations/Analysis/Gamma/FunctionalEquations/GaussianGammaReflectionSineTransfer.lean) derives the original cleared sine reflection formula from T7 at the original argument. [GaussianInverseSquareProductGrowth](Lean/IPRADerivations/Analysis/FiniteOperations/GaussianInverseSquareProductGrowth.lean) checks the uniform inverse-square product envelope, [GaussianArctangentCayleySquareGap](Lean/IPRADerivations/Analysis/Trigonometry/Arctangent/GaussianArctangentCayleySquareGap.lean) gives the finite Cayley square gap, and [GaussianSineSquaredResidual](Lean/IPRADerivations/Analysis/Trigonometry/GaussianSineSquaredResidual.lean) converts the power discrepancy into a quantitative polynomial residual. [GaussianArctangentDivisionAngleResidual](Lean/IPRADerivations/Analysis/Trigonometry/Arctangent/GaussianArctangentDivisionAngleResidual.lean) bounds the residual at the actual rational Cayley observations given a sampled sine margin. [GaussianInverseSquareProductComparison](Lean/IPRADerivations/Analysis/FiniteOperations/GaussianInverseSquareProductComparison.lean) bounds the weighted difference of the actual finite products. [GaussianSineSampleRootList](Lean/IPRADerivations/Analysis/Trigonometry/GaussianSineSampleRootList.lean) instantiates the finite monic reconstruction bound with the original rational root samples under explicit separation. [GaussianArctangentDivisionCayleyMargins](Lean/IPRADerivations/Analysis/Trigonometry/Arctangent/GaussianArctangentDivisionCayleyMargins.lean) proves the sampled sine lower bounds and pairwise squared-sine separation on the actual inverse grid. [GaussianSineProductT6](Lean/IPRADerivations/Analysis/Trigonometry/GaussianSineProductT6.lean) combines the finite head, suffix, and sinc prefactor estimates to the exact T4 radius, and [GaussianSineProductT4Finite](Lean/IPRADerivations/Analysis/Trigonometry/GaussianSineProductT4Finite.lean) closes the finite quantified estimate and dyadic precision form. [GaussianSincRatioProductRow](Lean/IPRADerivations/Analysis/Trigonometry/GaussianSincRatioProductRow.lean) derives the head and prefactor estimates from certified sinc observations. [GaussianSineRootNormalization](Lean/IPRADerivations/Analysis/Trigonometry/GaussianSineRootNormalization.lean) identifies each normalized linear root factor with $1-s^2/r^2$ under its proved sine margin. [GaussianSineSampleRootGuards](Lean/IPRADerivations/Analysis/Trigonometry/GaussianSineSampleRootGuards.lean) applies the exact rational root margin and residual estimates to the actual polynomial and its finite root list. [GaussianSineSquaredRootSeparation](Lean/IPRADerivations/Analysis/Trigonometry/GaussianSineSquaredRootSeparation.lean) applies the exact rational root margin and residual estimates to the actual polynomial and its finite root list. [GaussianArctangentDivisionSineSeparation](Lean/IPRADerivations/Analysis/Trigonometry/Arctangent/GaussianArctangentDivisionSineSeparation.lean) transfers the gap to the original squared sine names at independent precisions, and [GaussianSineProductScaledArguments](Lean/IPRADerivations/Analysis/Trigonometry/GaussianSineProductScaledArguments.lean) checks the actual T4 scaled arguments and their sinc radius guards. [GaussianSineNormalizedSampleProduct](Lean/IPRADerivations/Analysis/Trigonometry/GaussianSineNormalizedSampleProduct.lean) proves the exact normalized finite factor fold, and [GaussianSineNormalizedSampleReconstruction](Lean/IPRADerivations/Analysis/Trigonometry/GaussianSineNormalizedSampleReconstruction.lean) gives an explicit cofinal error against the multiple-angle polynomial divided by the odd order. [GaussianNamedSineMultipleAngle](Lean/IPRADerivations/Analysis/Trigonometry/GaussianNamedSineMultipleAngle.lean) proves the named multiple-angle sine identity on every bounded Gaussian input, and [GaussianNamedEvenSinePolynomial](Lean/IPRADerivations/Analysis/Trigonometry/GaussianNamedEvenSinePolynomial.lean) identifies its even recurrence with the odd order times the normalized polynomial. [GaussianSineNormalizedSampleName](Lean/IPRADerivations/Analysis/Trigonometry/GaussianSineNormalizedSampleName.lean) identifies the normalized polynomial with the regular root-product name. [GaussianSineNormalizedForwardProduct](Lean/IPRADerivations/Analysis/Trigonometry/GaussianSineNormalizedForwardProduct.lean) verifies the ascending rational factor order. [GaussianSineProductScaledArgumentIdentity](Lean/IPRADerivations/Analysis/Trigonometry/GaussianSineProductScaledArgumentIdentity.lean) and [GaussianSineProductRelativeArgument](Lean/IPRADerivations/Analysis/Trigonometry/GaussianSineProductRelativeArgument.lean) bind the original scaled arguments and root sine to the literal arithmetic. For R3, [GaussianSineProductHeadLower](Lean/IPRADerivations/Analysis/Trigonometry/GaussianSineProductHeadLower.lean) and [GaussianSineProductTailLower](Lean/IPRADerivations/Analysis/Trigonometry/GaussianSineProductTailLower.lean) prove the factorial head and inverse-square tail bounds, [GaussianSineProductReflectionLower](Lean/IPRADerivations/Analysis/Trigonometry/GaussianSineProductReflectionLower.lean) transfers their exact product to the original name, and [GaussianSineReflectionLower](Lean/IPRADerivations/Analysis/Trigonometry/GaussianSineReflectionLower.lean) proves the original sine lower bound at an explicit dyadic reserve given the T7 identity. [GaussianNamedSincCongruence](Lean/IPRADerivations/Analysis/Trigonometry/GaussianNamedSincCongruence.lean) transports sinc across independently certified equivalent names. [GaussianSineProductNamedT3](Lean/IPRADerivations/Analysis/Trigonometry/GaussianSineProductNamedT3.lean) proves T3 at the original reflection argument, with explicit cancellation for nonzero numerators and exact zero-sample identities at zero. [GaussianSineRawRootBinding](Lean/IPRADerivations/Analysis/Trigonometry/GaussianSineRawRootBinding.lean) and [GaussianSineProductSynchronizedRow](Lean/IPRADerivations/Analysis/Trigonometry/GaussianSineProductSynchronizedRow.lean) identify the original Cayley observations and bound each actual normalized factor at a synchronized query clock. [GaussianSineProductSynchronizedMagnitude](Lean/IPRADerivations/Analysis/Trigonometry/GaussianSineProductSynchronizedMagnitude.lean) verifies the inverse-square envelope on all actual Cayley rows. [GaussianSineProductT4Actual](Lean/IPRADerivations/Analysis/Trigonometry/GaussianSineProductT4Actual.lean) proves the synchronized comparisons at the common cofinal clock, and [GaussianSineProductT7Actual](Lean/IPRADerivations/Analysis/Trigonometry/GaussianSineProductT7Actual.lean) proves the T7 identity for the original sinc, the exact R3 bound at every certified precision, and both cleared and divided Gamma reflection (claim 18). The ordinary quotient uses [GaussianGammaReflectionQuotient](Lean/IPRADerivations/Analysis/Gamma/FunctionalEquations/GaussianGammaReflectionQuotient.lean) and [GaussianGammaReflectionR3Domain](Lean/IPRADerivations/Analysis/Gamma/FunctionalEquations/GaussianGammaReflectionR3Domain.lean) to compute the sine reciprocal from the original complementary pole guards. For Gauss multiplication, [GaussianRationalRectangularProduct](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianRationalRectangularProduct.lean), [GaussianGammaEulerDenominator](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGammaEulerDenominator.lean), and [GaussianGammaEulerDenominatorGrouping](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGammaEulerDenominatorGrouping.lean) prove the finite denominator grouping in M2 at arbitrary positive integer multiplier. [GaussianGammaGaussEulerHeads](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGammaGaussEulerHeads.lean) identifies the grouped product of the actual shifted Euler heads with the factorial-normalized head at the Gauss cutoff. [GaussianGammaGaussDomain](Lean/IPRADerivations/Analysis/Gamma/FunctionalEquations/GaussianGammaGaussDomain.lean) pulls the original scaled pole guard back to every shifted argument. [GaussianGammaGaussReference](Lean/IPRADerivations/Analysis/Gamma/FunctionalEquations/GaussianGammaGaussReference.lean) certifies the positive normalization arguments and computes the common exponent offsets. For M1, [GaussianCyclicExponentialRoots](Lean/IPRADerivations/Analysis/Trigonometry/GaussianCyclicExponentialRoots.lean) proves the original cyclic root law and [GaussianCyclicExponentialSeparation](Lean/IPRADerivations/Analysis/Trigonometry/GaussianCyclicExponentialSeparation.lean) supplies separated actual observations. For M3, [GaussianGaussMultiplicationLogarithm](Lean/IPRADerivations/Analysis/Gamma/FunctionalEquations/GaussianGaussMultiplicationLogarithm.lean) proves the exact $1/N$ bound on the original integer logarithm samples and gives an independent-clock version. [GaussianNamedFiniteProductName](Lean/IPRADerivations/Analysis/Names/FiniteOperations/GaussianNamedFiniteProductName.lean) lifts rowwise approximations to the regular name of their finite product. [GaussianCyclicRootProduct](Lean/IPRADerivations/Analysis/Trigonometry/GaussianCyclicRootProduct.lean) reconstructs the finite cofinal product of the nontrivial cyclic factors at one. [GaussianGaussEulerHeadCancellation](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGaussEulerHeadCancellation.lean) cancels the common factorial factors across two original Euler head products, and [GaussianGaussEulerRowExponents](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGaussEulerRowExponents.lean) identifies the common exponential factor for every shifted row. [GaussianGaussMultiplicationLogRatio](Lean/IPRADerivations/Analysis/Gamma/FunctionalEquations/GaussianGaussMultiplicationLogRatio.lean) proves the corresponding rate for the original positive rational log names at bases $N/L$ and $1/m$. [GaussianNamedFiniteProductApartness](Lean/IPRADerivations/Analysis/Names/FiniteOperations/GaussianNamedFiniteProductApartness.lean) gives explicit reciprocal clocks for regular finite products with a uniform row margin, including the exact empty product. [GaussianGaussMultiplicationSharpPowerRate](Lean/IPRADerivations/Analysis/Gamma/FunctionalEquations/GaussianGaussMultiplicationSharpPowerRate.lean) proves M3 with exact leading coefficient $2A m^A$, where $A=m(R+1)$, and the independent observation errors. [GaussianGaussEulerCutoff](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGaussEulerCutoff.lean) computes the common Euler cutoff and proves that each larger cutoff also gives the required error. [GaussianGammaGaussShiftedProduct](Lean/IPRADerivations/Analysis/Gamma/FunctionalEquations/GaussianGammaGaussShiftedProduct.lean), [GaussianGammaGaussShiftedApartness](Lean/IPRADerivations/Analysis/Gamma/FunctionalEquations/GaussianGammaGaussShiftedApartness.lean), and [GaussianGammaGaussEulerProduct](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGammaGaussEulerProduct.lean) construct the original shifted Gamma product, certify its reciprocal clock, and prove convergence of the literal finite Euler product. [GaussianNamedFiniteProductAlgebra](Lean/IPRADerivations/Analysis/Names/FiniteOperations/GaussianNamedFiniteProductAlgebra.lean) and [GaussianNamedRepeatedExponential](Lean/IPRADerivations/Analysis/Exponential/GaussianNamedRepeatedExponential.lean) transport finite rowwise multiplication and repeated exponentials through the actual clocks. [GaussianCyclicChordSquare](Lean/IPRADerivations/Analysis/Trigonometry/GaussianCyclicChordSquare.lean) and [GaussianCyclicSineProductSquare](Lean/IPRADerivations/Analysis/Trigonometry/GaussianCyclicSineProductSquare.lean) identify the cyclic chord product with the squared sine product at certified clocks. [GaussianCyclicSinePositiveRows](Lean/IPRADerivations/Analysis/Trigonometry/GaussianCyclicSinePositiveRows.lean) and [GaussianCyclicSineProductNormalization](Lean/IPRADerivations/Analysis/Trigonometry/GaussianCyclicSineProductNormalization.lean) justify cancellation of the square on the actual finite rows. [GaussianCyclicSineProductName](Lean/IPRADerivations/Analysis/Trigonometry/GaussianCyclicSineProductName.lean) proves M1 for the primitive recursive product of the original sine names at arbitrary positive internal order, with value $m/2^{m-1}$. [GaussianGaussEulerPowerRatio](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGaussEulerPowerRatio.lean) proves the exact ratio-power law at the two original cutoff logarithms, and [GaussianGaussEulerOffsetPower](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGaussEulerOffsetPower.lean) collects the repeated relative factors into the exponential of the scaled coefficient. [GaussianGammaEulerFullHeadInverse](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGammaEulerFullHeadInverse.lean) factors each actual Euler name through its complete head reciprocal. [GaussianNamedFiniteProductFamilyCongruence](Lean/IPRADerivations/Analysis/Names/FiniteOperations/GaussianNamedFiniteProductFamilyCongruence.lean) transports regular families of independently sampled rows to their actual product names. [GaussianGammaGaussReferenceProduct](Lean/IPRADerivations/Analysis/Gamma/FunctionalEquations/GaussianGammaGaussReferenceProduct.lean), [GaussianGammaGaussReferenceEulerProduct](Lean/IPRADerivations/Analysis/Gamma/FunctionalEquations/GaussianGammaGaussReferenceEulerProduct.lean), and [GaussianGaussMultiplicationCofinalRows](Lean/IPRADerivations/Analysis/Gamma/FunctionalEquations/GaussianGaussMultiplicationCofinalRows.lean) construct the reference product with a reciprocal clock and bind the shifted, reference, scaled, and ratio observations to their limiting names at one padded cutoff. [GaussianGaussMultiplicationM2Transport](Lean/IPRADerivations/Analysis/Gamma/FunctionalEquations/GaussianGaussMultiplicationM2Transport.lean) proves M4 in its cleared form from the exact named M2 identity at the cofinal Euler cutoffs. It constructs the named finite factors and uses uniform observation bounds to pass to the original Gamma names. [GaussianGaussEulerFiniteIdentity](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGaussEulerFiniteIdentity.lean) proves exact cleared M2 on the original finite Euler names and passes to the cleared Gamma limit at the cofinal cutoffs. [GaussianGammaGaussReferenceSquare](Lean/IPRADerivations/Analysis/Gamma/FunctionalEquations/GaussianGammaGaussReferenceSquare.lean) proves the exact squared M5 normalization $P_m^2=(2\pi)^{m-1}/m$ for the original reference product, by the actual reflection rows and M1. [GaussianGammaGaussPositiveReference](Lean/IPRADerivations/Analysis/Gamma/FunctionalEquations/GaussianGammaGaussPositiveReference.lean) gives a primitive recursive representative of the certified positive root and proves its real positivity and exact square. [GaussianGaussMultiplication](Lean/IPRADerivations/Analysis/Gamma/FunctionalEquations/GaussianGaussMultiplication.lean) proves the divided M4 formula with the actual scaled Gamma reciprocal and the M5 formula in the form $m^{1-mz}\sqrt{(2\pi)^{m-1}/m}\,\Gamma(mz)$ for every positive internal order. The normalized formula uses the certified positive-root representative from the reference rows. [GaussianGaussMultiplicationIndependentNormalization](Lean/IPRADerivations/Analysis/Gamma/FunctionalEquations/GaussianGaussMultiplicationIndependentNormalization.lean) also computes that root directly from the radicand. [GaussianGaussEulerRelativeQuotient](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGaussEulerRelativeQuotient.lean) proves the literal M2 nested quotient at every certified cutoff. [GaussianGaussMultiplicationHalfPowers](Lean/IPRADerivations/Analysis/Gamma/FunctionalEquations/GaussianGaussMultiplicationHalfPowers.lean) proves the displayed M5 identity with separately computed $(2\pi)^{(m-1)/2}$ and $m^{1/2-mz}$. [GaussianGaussDuplication](Lean/IPRADerivations/Analysis/Gamma/FunctionalEquations/GaussianGaussDuplication.lean) and [GaussianGaussTriplication](Lean/IPRADerivations/Analysis/Gamma/FunctionalEquations/GaussianGaussTriplication.lean) prove M6 and M7 for the explicit original Gamma rows at their common denominators. |
 | 25–30 | Positive-root selection and half-integer values, the listed fractional-argument relations and fractional products, and imaginary/half-shifted modulus formulas, including their zero-safe versions. V8 and V9 hold for the original Gamma names on certified endpoints at arbitrary internal indices. The entire cleared V9 identity covers apparent cancelled poles. |
-| 31–36 | Digamma and polygamma evaluators with remainder bounds, recurrences/signs/special derivative values, differentiated reflection/multiplication, rational-argument values, and the finite polynomial recursion for Gamma derivatives. Derivative orders may remain external where the source explicitly allows that schema. The original first derivative at one is identified with the negative Euler–Mascheroni name. [GaussianGammaDigammaNative](Lean/IPRADerivations/Analysis/GaussianGammaDigammaNative.lean) constructs the original positive rational digamma as $Γ'/Γ$, verifies the product with the original Gamma name, and proves $ψ(1)=-γ$. [GaussianGammaDigammaStep](Lean/IPRADerivations/Analysis/GaussianGammaDigammaStep.lean) binds the original derivative rate to literal rational increments $1/D$. [GaussianGammaDigammaDerivativeShift](Lean/IPRADerivations/Analysis/GaussianGammaDigammaDerivativeShift.lean) derives the differentiated Gamma recurrence and [GaussianGammaDigammaRecurrence](Lean/IPRADerivations/Analysis/GaussianGammaDigammaRecurrence.lean) proves $ψ(x+1)=ψ(x)+1/x$ at every encoded positive rational point. [GaussianGammaDigammaInteger](Lean/IPRADerivations/Analysis/GaussianGammaDigammaInteger.lean) proves $ψ(n+1)=H_n-γ$ with an explicit independent-observation bound. [GaussianGammaDigammaFiniteSum](Lean/IPRADerivations/Analysis/GaussianGammaDigammaFiniteSum.lean) proves the finite reciprocal-sum formula for every internal natural shift of the original positive rational digamma. [GaussianGammaDigammaGammaComparison](Lean/IPRADerivations/Analysis/GaussianGammaDigammaGammaComparison.lean) proves the symmetric product inequality for original Gamma at a positive rational increment. [GaussianGammaDigammaMonotone](Lean/IPRADerivations/Analysis/GaussianGammaDigammaMonotone.lean) passes the verified derivative rates through the comparison and cancels positive Gamma factors to prove monotonicity of the original digamma. [GaussianGammaDigammaSeries](Lean/IPRADerivations/Analysis/GaussianGammaDigammaSeries.lean) proves the cofinal C28 rate for all encoded positive rational inputs, and [GaussianGammaDigammaSeriesTerms](Lean/IPRADerivations/Analysis/GaussianGammaDigammaSeriesTerms.lean) binds the finite correction to the literal reciprocal differences of the paper. [GaussianGammaDigammaPositiveTerms](Lean/IPRADerivations/Analysis/GaussianGammaDigammaPositiveTerms.lean) proves the original positive-term C27 representation, and [GaussianGammaDigammaEulerDerivative](Lean/IPRADerivations/Analysis/GaussianGammaDigammaEulerDerivative.lean) bounds the literal finite Euler slope against the original digamma with independent observation clocks. [GaussianGammaDigammaElementaryBounds](Lean/IPRADerivations/Analysis/GaussianGammaDigammaElementaryBounds.lean) and [GaussianGammaDigammaElementaryOriginalLog](Lean/IPRADerivations/Analysis/GaussianGammaDigammaElementaryOriginalLog.lean) prove the elementary logarithmic bracket on the original positive rational digamma with either original logarithm presentation. The polygamma and differentiated identity claims remain open. |
-| 37–42 | [GaussianGammaCanonicalCoefficientRecurrence](Lean/IPRADerivations/Analysis/GaussianGammaCanonicalCoefficientRecurrence.lean) proves the C42 equality of the actual regular canonical coefficient and finite sum names. [GaussianGammaCanonicalRecurrenceZetaFormula](Lean/IPRADerivations/Analysis/GaussianGammaCanonicalRecurrenceZetaFormula.lean) identifies the right name with the original gamma and signed zeta formula at the same observations. The remaining local Taylor/log-Gamma expansions, Laurent constants and remainders at each pole, positive-integer-centered expansions, vertical modulus products, and balanced parameter products still require their named coefficient and discarded-tail comparisons. |
-| 43–48 | Quantitative strict convexity, effective Bohr–Mollerup uniqueness at fixed presentations, Wendel/Gautschi inequalities, rate-bearing Gamma ratios, actual positive-minimum location and negative-pole interval extremum/sign constructions. [GaussianGammaEulerRationalHeadConvexity](Lean/IPRADerivations/Analysis/GaussianGammaEulerRationalHeadConvexity.lean) proves the weighted powered comparison on the original positive rational finite Euler heads. [GaussianGammaEulerRationalLogConvexity](Lean/IPRADerivations/Analysis/GaussianGammaEulerRationalLogConvexity.lean) proves exact weighted convexity on the original finite Euler logarithms. [GaussianNamedPositiveLogarithmRate](Lean/IPRADerivations/Analysis/GaussianNamedPositiveLogarithmRate.lean) proves quantitative transport through the named logarithm at a common positive lower bound. [GaussianGammaEulerRationalLogConvergence](Lean/IPRADerivations/Analysis/GaussianGammaEulerRationalLogConvergence.lean) proves the quantitative log convergence using the explicit cofinal positive margin. [GaussianGammaNativeLogConvexity](Lean/IPRADerivations/Analysis/GaussianGammaNativeLogConvexity.lean) passes the exact weighted convexity inequality to the native log-Gamma names on all encoded positive rational arguments. [GaussianGammaNativeMidpointLogGap](Lean/IPRADerivations/Analysis/GaussianGammaNativeMidpointLogGap.lean) adds the explicit margin $(a-d)^2/(a+d)^2$ to twice the native log-Gamma at the midpoint for positive rational endpoints $a/b$ and $d/b$. [GaussianGammaNativeWeightedLogGap](Lean/IPRADerivations/Analysis/GaussianGammaNativeWeightedLogGap.lean) extends this explicit margin to the sums with arbitrary positive natural weights. [GaussianGammaNativeStrictLogConvexity](Lean/IPRADerivations/Analysis/GaussianGammaNativeStrictLogConvexity.lean) proves strict log-convexity on distinct encoded positive rationals by negating reverse order. [GaussianGammaNativeStrongLogConvexity](Lean/IPRADerivations/Analysis/GaussianGammaNativeStrongLogConvexity.lean) proves the full weight-dependent modulus from the paper, with additive margin $rs(d-a)^2/(2(r+s)B^2)$ in the unnormalized comparison at $a/b,d/b$ with upper endpoint bound $B/b$ and natural weights $r>0,s\ge0$. [GaussianGammaRationalGautschi](Lean/IPRADerivations/Analysis/GaussianGammaRationalGautschi.lean) proves both strict Gautschi bounds $x^{1-u}<\Gamma(x+1)/\Gamma(x+u)<(x+1)^{1-u}$ for all encoded positive rational $x$ and rational $0<u<1$. It verifies that multiplying the original quotient by the original denominator recovers the numerator. [GaussianGammaRationalWendelGautschi](Lean/IPRADerivations/Analysis/GaussianGammaRationalWendelGautschi.lean) proves both strict Wendel bounds on the normalized Gamma quotient and [GaussianGammaRationalWendelBinding](Lean/IPRADerivations/Analysis/GaussianGammaRationalWendelBinding.lean) verifies the defining product with its original denominator. [GaussianGammaRationalWendelBoundary](Lean/IPRADerivations/Analysis/GaussianGammaRationalWendelBoundary.lean) establishes both exact boundary values and the full weak Wendel interval. [GaussianGammaRationalWendelUniformLog](Lean/IPRADerivations/Analysis/GaussianGammaRationalWendelUniformLog.lean) proves the uniform signed logarithmic rate for the original normalized Wendel ratio, including the one-quarter bound on its error coefficient. [GaussianGammaRationalWendelUniform](Lean/IPRADerivations/Analysis/GaussianGammaRationalWendelUniform.lean) proves the uniform relative error $0\le1-Q\le u(1-u)/x\le1/(4x)$ on the original named Wendel quotient for all rational weights in the unit interval. [GaussianGammaDigammaTwoShiftBinding](Lean/IPRADerivations/Analysis/GaussianGammaDigammaTwoShiftBinding.lean) identifies the original normalized two-shift Gamma quotient by its exact product with its denominator. [GaussianGammaDigammaTwoShiftRate](Lean/IPRADerivations/Analysis/GaussianGammaDigammaTwoShiftRate.lean) and [GaussianGammaDigammaTwoShiftRelativeRate](Lean/IPRADerivations/Analysis/GaussianGammaDigammaTwoShiftRelativeRate.lean) prove the C46 logarithmic and relative rates for common-denominator positive rational base and endpoints, with signed rational shifts and the source inequalities on the positive integer shift bound and base. The logarithmic bound is on the certified exponent of the quotient. [The exact rational-window rates](Lean/IPRADerivations/Analysis/GaussianGammaDigammaTwoShiftRationalRate.lean) give the original constants for every rational shift window, including noninteger bounds. Extension to regular named inputs remains open. [GaussianGammaDigammaLipschitz](Lean/IPRADerivations/Analysis/GaussianGammaDigammaLipschitz.lean) proves the original digamma upper slope $2(y-x)$ for common-denominator rational $1\le x\le y$ at independent observation clocks. [GaussianGammaDigammaRescaling](Lean/IPRADerivations/Analysis/GaussianGammaDigammaRescaling.lean) verifies that positive rescaling preserves the native digamma value. [GaussianGammaDigammaDyadicCrossing](Lean/IPRADerivations/Analysis/GaussianGammaDigammaDyadicCrossing.lean) gives the bounded scan for adjacent opposite sample signs under the two endpoint tests. [GaussianGammaDigammaSlopeLowerRational](Lean/IPRADerivations/Analysis/GaussianGammaDigammaSlopeLowerRational.lean) proves the lower slope $(y-x)/4$ on $[1,2]$ with separate rational encodings. [GaussianGammaDigammaDyadicMesh](Lean/IPRADerivations/Analysis/GaussianGammaDigammaDyadicMesh.lean) bounds the increase on adjacent dyadic samples by $4\cdot 2^{-(p+6)}$, and [GaussianGammaDigammaGridSign](Lean/IPRADerivations/Analysis/GaussianGammaDigammaGridSign.lean) passes this bound to the absolute residual when the samples have opposite signs. [GaussianGammaDigammaCriticalSigns](Lean/IPRADerivations/Analysis/GaussianGammaDigammaCriticalSigns.lean) proves $\psi(1)<-1/4$ and $\psi(2)>1/4$ for the original names. [GaussianGammaDigammaDyadicEndpoints](Lean/IPRADerivations/Analysis/GaussianGammaDigammaDyadicEndpoints.lean) verifies their finite grid samples at every prescribed clock, and [GaussianGammaDigammaDyadicLocation](Lean/IPRADerivations/Analysis/GaussianGammaDigammaDyadicLocation.lean) constructs a regular primitive recursive location by comparing selected opposite-sign cells at independent clocks. The checked bound on the sampled digamma residual is $4\cdot 2^{-(p+6)}$. [GaussianGammaDigammaLocationInput](Lean/IPRADerivations/Analysis/GaussianGammaDigammaLocationInput.lean) identifies the actual frozen inputs of the named integrals with the selected fractions. [GaussianGammaDigammaLocationResidual](Lean/IPRADerivations/Analysis/GaussianGammaDigammaLocationResidual.lean) lifts the scalar digamma residual to an independent-clock Gaussian distance. [GaussianGammaDigammaLocationProduct](Lean/IPRADerivations/Analysis/GaussianGammaDigammaLocationProduct.lean) uses a uniform bound on the original Gamma name to give a vanishing residual for the first logarithmic integral. [GaussianGammaDigammaPositiveStationary](Lean/IPRADerivations/Analysis/GaussianGammaDigammaPositiveStationary.lean) proves equality of the original first named logarithmic integral to zero at the completed location and transfers the original first derivative error bound to difference quotients at that point. [GaussianGammaDigammaLocationInterior](Lean/IPRADerivations/Analysis/GaussianGammaDigammaLocationInterior.lean) places the completed location in $[17/16,31/16]$. [GaussianGammaDigammaLocationValue](Lean/IPRADerivations/Analysis/GaussianGammaDigammaLocationValue.lean) proves that the actual named quotient $\Gamma^{\prime}/\Gamma$ is zero at this regular interior point. [GaussianGammaPositiveRationalProperness](Lean/IPRADerivations/Analysis/GaussianGammaPositiveRationalProperness.lean) transports original Gamma between encodings with different denominators, radii and lower certificates. [GaussianGammaMinimumSignedStep](Lean/IPRADerivations/Analysis/GaussianGammaMinimumSignedStep.lean) identifies the literal signed small-step endpoint with the weighted chord center and verifies the original derivative rate there. [GaussianGammaMinimumQuotientReadback](Lean/IPRADerivations/Analysis/GaussianGammaMinimumQuotientReadback.lean) recovers the original endpoint variation with the exact step factor. [GaussianGammaMinimumChord](Lean/IPRADerivations/Analysis/GaussianGammaMinimumChord.lean) proves the asymmetric strong chord in both endpoint orders with a squared rational margin uniform in the weight. [GaussianGammaMinimumCenterRate](Lean/IPRADerivations/Analysis/GaussianGammaMinimumCenterRate.lean) transfers the derivative residual to the original log-Gamma endpoint variation along the thin chord. [GaussianGammaMinimumChordStationary](Lean/IPRADerivations/Analysis/GaussianGammaMinimumChordStationary.lean) cancels the weight with the thin-step rate and eliminates the intermediate observation allowances while preserving the strong margin. [GaussianGammaMinimumFreezeRational](Lean/IPRADerivations/Analysis/GaussianGammaMinimumFreezeRational.lean) and [GaussianGammaMinimumFreezeLocation](Lean/IPRADerivations/Analysis/GaussianGammaMinimumFreezeLocation.lean) read the actual named log-Gamma and native positive rational freezes with the independent-clock rate. [GaussianGammaMinimumFreezeOrder](Lean/IPRADerivations/Analysis/GaussianGammaMinimumFreezeOrder.lean) transfers their weak and strict logarithm orders to the original Gamma names. [GaussianGammaNegativeCriticalCorrection](Lean/IPRADerivations/Analysis/GaussianGammaNegativeCriticalCorrection.lean) computes the literal reciprocal correction for every negative interval. [GaussianGammaNegativeCriticalSigns](Lean/IPRADerivations/Analysis/GaussianGammaNegativeCriticalSigns.lean) proves margins of $-5$ and $5$ at the two prescribed endpoints and the corresponding opposite finite signs for the shifted digamma name. [GaussianGammaNegativeCriticalLowerSlope](Lean/IPRADerivations/Analysis/GaussianGammaNegativeCriticalLowerSlope.lean) proves a quarter lower slope throughout the interval, and [GaussianGammaNegativeCriticalSlope](Lean/IPRADerivations/Analysis/GaussianGammaNegativeCriticalSlope.lean) gives the explicit upper slope $2+(N+2)K^2$ on windows where both distances from the poles are at least $1/K$. [GaussianGammaNegativeCriticalGrid](Lean/IPRADerivations/Analysis/GaussianGammaNegativeCriticalGrid.lean) selects adjacent opposite signs at every dyadic mesh with a vanishing sampled residual. [GaussianGammaNegativeCriticalLocation](Lean/IPRADerivations/Analysis/GaussianGammaNegativeCriticalLocation.lean) proves regularity of the original dyadic location, and [GaussianGammaNegativeCriticalLocationInterior](Lean/IPRADerivations/Analysis/GaussianGammaNegativeCriticalLocationInterior.lean) puts it strictly between $-N-1$ and $-N$. [GaussianGammaNegativeCriticalLocationZero](Lean/IPRADerivations/Analysis/GaussianGammaNegativeCriticalLocationZero.lean) constructs the zero value of the shifted digamma at that location by explicit cofinal evaluation. [GaussianGammaNegativeIntervalNative](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalNative.lean) proves that the original Gamma name times the literal repeated shift product gives the positive terminal Gamma name at $1+a/b$. [GaussianGammaNegativeIntervalDerivativeTarget](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalDerivativeTarget.lean) verifies the algebraic identities for the proposed derivative target. [GaussianGammaNegativeProductDerivativeCorrection](Lean/IPRADerivations/Analysis/GaussianGammaNegativeProductDerivativeCorrection.lean) identifies the first coefficient of the literal product with the negative of the digamma correction times that product. [GaussianGammaNegativeProductDerivativeRate](Lean/IPRADerivations/Analysis/GaussianGammaNegativeProductDerivativeRate.lean) proves its finite derivative error proportional to the displacement. [GaussianGammaNegativeIntervalProductSign](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalProductSign.lean) bounds the signed product below by $a(b-a)/b^2$ throughout the open interval. [GaussianGammaNegativeIntervalGammaSign](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalGammaSign.lean) gives an explicit positive lower bound on the sign-adjusted original Gamma over encoded rational inputs. [GaussianGammaNegativeIntervalInverseRecurrence](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalInverseRecurrence.lean) proves the inverse recurrence and identifies its two-term derivative target. [GaussianGammaNegativeIntervalInverseBound](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalInverseBound.lean) and [GaussianGammaNegativeIntervalStep](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalStep.lean) certify bounds and the original positive Euler rate at a native unit step. [GaussianGammaNegativeIntervalDigammaRate](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalDigammaRate.lean) proves that the original negative Gamma difference quotient at any rational input converges along steps $1/D$ to the Gamma value times the literal shifted digamma, and that its normalization by the original Gamma converges to the shifted digamma itself. It supplies an explicit cutoff and separate allowances for both observation clocks. [GaussianGammaNegativeIntervalCriticalQuotientZero](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalCriticalQuotientZero.lean) and [GaussianGammaNegativeIntervalCriticalDerivativeZero](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalCriticalDerivativeZero.lean) prove that actual normalized and unnormalized Gamma quotients at the selected dyadic inputs give regular zero names, with explicit cofinal unit steps. [GaussianGammaNegativeIntervalLogAbsolute](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalLogAbsolute.lean) verifies that the named exponential of the real logarithm is the original Gamma after correcting its interval sign, and [GaussianGammaNegativeIntervalLogAbsoluteOrder](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalLogAbsoluteOrder.lean) transfers both weak and strict orders to that magnitude. [GaussianGammaNegativeIntervalLogStrongConvexity](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalLogStrongConvexity.lean) gives its strong weighted logarithmic comparison with an explicit quadratic margin on every negative rational interval. [GaussianGammaNegativeIntervalChordRate](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalChordRate.lean) gives the original signed thin-chord Gamma derivative rate in either endpoint order. [GaussianGammaNegativeIntervalLogThinChord](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalLogThinChord.lean) retains $|c-a|^2/(16b^2)$ in the unnormalized chord and [GaussianGammaNegativeIntervalLogChordStationary](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalLogChordStationary.lean) makes the stationary comparison conditional on the corresponding thin-step logarithmic rate. [GaussianGammaNegativeIntervalUniformLower](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalUniformLower.lean) gives the signed Gamma magnitude a floor independent of its rational encoding, and [GaussianGammaNegativeIntervalLogAbsoluteRetiming](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalLogAbsoluteRetiming.lean) binds the resulting retimed positive logarithm to the original log magnitude. [GaussianGammaNegativeIntervalCriticalComparison](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalCriticalComparison.lean) then proves the strong comparison at the actual selected critical approximants against distinct rational inputs with the same denominator and a common pole margin. Its leading error tends to zero with an interval-dependent coefficient, and the two observation allowances remain independent. [GaussianGammaNegativeIntervalCriticalRationalComparison](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalCriticalRationalComparison.lean) removes the common-denominator and apartness premises while preserving the exact squared gap and the same error. [GaussianGammaNegativeIntervalNamedInput](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalNamedInput.lean) verifies the selected offset's named pole margin, and [GaussianGammaNegativeIntervalNamedInputRetiming](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalNamedInputRetiming.lean) obtains an exact sample collar by reading a sufficiently late observation of any regular real offset with named order margins. [GaussianGammaNegativeIntervalRationalProperness](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalRationalProperness.lean) identifies the decoded critical fraction with the literal grid fraction and proves equal-encoding coherence of the original signed Gamma and log magnitude. [GaussianGammaNegativeIntervalNamedApartness](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalNamedApartness.lean) keeps the squared comparison gap positive at every sufficiently late observation when the offsets are apart. [GaussianGammaNegativeIntervalNamedComparisonTransfer](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalNamedComparisonTransfer.lean) transfers finite comparisons with a persistent margin to the regular names. [GaussianGammaNegativeIntervalNamedDigammaRationalRate](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalNamedDigammaRationalRate.lean) and [GaussianGammaNegativeIntervalNamedDigamma](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalNamedDigamma.lean) construct the regular named shifted digamma and bound its distance from the actual rational digamma at every frozen observation. [GaussianGammaNegativeIntervalNamedDigammaInverseSlope](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalNamedDigammaInverseSlope.lean) carries the lower slope to the named offsets. [GaussianGammaNegativeIntervalNamedDigammaUniqueness](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalNamedDigammaUniqueness.lean) proves injectivity under separate pole margins. [GaussianGammaNegativeIntervalNamedDigammaRoot](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalNamedDigammaRoot.lean) identifies the literal critical grid offset as the unique zero, including inputs admitted through named interval order and retiming. [GaussianGammaNegativeIntervalNamedLogTerminal](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalNamedLogTerminal.lean) supplies a modulus for the original positive terminal Gamma across distinct rational encodings, and [GaussianGammaNegativeIntervalNamedLogVariation](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalNamedLogVariation.lean) extends it through the negative shift and logarithm. [GaussianGammaNegativeIntervalNamedLog](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalNamedLog.lean) constructs regular real log-magnitude names by sampling the original evaluations. [GaussianGammaNegativeIntervalNamedLogFrozen](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalNamedLogFrozen.lean) proves the uniform late-freeze bound with independent output clocks. [GaussianGammaNegativeIntervalNamedMinimum](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalNamedMinimum.lean) and [GaussianGammaNegativeIntervalNamedStrictMinimum](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalNamedStrictMinimum.lean) establish the weak log-magnitude minimum and its strict form with positive separation. [GaussianGammaNegativeIntervalNamedGamma](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalNamedGamma.lean) identifies Gamma on the named interval by a uniform rate to the literal unscaled rational Gamma evaluator. [GaussianGammaNegativeIntervalNamedExtremum](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalNamedExtremum.lean) proves the parity-dependent Gamma extrema under named interval bounds and preserves strictness when the original offset is apart. [GaussianGammaNegativeIntervalNamedGammaSign](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalNamedGammaSign.lean) certifies real observations and the strict interval sign. [GaussianGammaNegativeIntervalNamedDigammaQuotient](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalNamedDigammaQuotient.lean) and [GaussianGammaNegativeIntervalNamedSignedDigammaQuotient](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalNamedSignedDigammaQuotient.lean) identify the normalized original forward unit quotients with the named digamma along the explicit cofinal rational freezes. [GaussianGammaNegativeIntervalSignedDigammaQuotient](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalSignedDigammaQuotient.lean) proves exact cancellation of the signed factors. [GaussianGammaNegativeIntervalNamedDerivative](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalNamedDerivative.lean) gives a uniform rational offset clock and an explicit step cutoff for the original unscaled forward quotients, with limit the product of named Gamma and named digamma. [GaussianNamedApartnessTightness](Lean/IPRADerivations/Analysis/GaussianNamedApartnessTightness.lean) and [GaussianGammaNegativeIntervalNamedExtremumUniqueness](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalNamedExtremumUniqueness.lean) prove that an offset attaining the extremal value equals the selected offset, using finite rational comparisons inside iPRA. [GaussianGammaMinimumRational](Lean/IPRADerivations/Analysis/GaussianGammaMinimumRational.lean) preserves the squared rational separation term with an explicit stationary residual allowance. [GaussianGammaMinimumGlobal](Lean/IPRADerivations/Analysis/GaussianGammaMinimumGlobal.lean) proves that the selected positive location is a global minimum of the original named Gamma on all positive real inputs with a lower certificate, with strict inequality for every input finitely apart from the minimizer. [GaussianGammaNamedPoleFreeModulus](Lean/IPRADerivations/Analysis/GaussianGammaNamedPoleFreeModulus.lean), [GaussianGammaNamedPoleFree](Lean/IPRADerivations/Analysis/GaussianGammaNamedPoleFree.lean), [GaussianGammaNamedPoleFreeEncoding](Lean/IPRADerivations/Analysis/GaussianGammaNamedPoleFreeEncoding.lean), and [GaussianGammaNamedPoleFreeFrozen](Lean/IPRADerivations/Analysis/GaussianGammaNamedPoleFreeFrozen.lean) construct the regular pole-free complex Gamma evaluator from the original native observations with a uniform disk and pole separation. [GaussianGammaNegativeIntervalNamedGammaNativeDomain](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalNamedGammaNativeDomain.lean) certifies the affine negative-interval input, and [GaussianGammaNegativeIntervalNamedGammaPoleFreeBinding](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalNamedGammaPoleFreeBinding.lean) proves equality of the two Gamma names at that input. [GaussianGammaNegativeIntervalNamedTerminalDerivative](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalNamedTerminalDerivative.lean) proves the rate for the original positive terminal quotient and preserves the named increment. [GaussianGammaNegativeIntervalInverseRationalEnvelope](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalInverseRationalEnvelope.lean) gives the exact rational inverse-shift difference and quadratic remainder. [GaussianGammaNegativeIntervalNamedInverseFactor](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalNamedInverseFactor.lean) and [GaussianGammaNegativeIntervalNamedCorrectionFactor](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalNamedCorrectionFactor.lean) extend the exact inverse shift and its derivative coefficient to named inputs. [GaussianGammaNegativeIntervalNamedInverseDerivative](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalNamedInverseDerivative.lean) proves the named-increment rate for the original inverse factor. [GaussianNamedIncrementProductRule](Lean/IPRADerivations/Analysis/GaussianNamedIncrementProductRule.lean) proves the exact named-increment product rule, and [GaussianGammaNegativeIntervalNamedInverseRecurrence](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalNamedInverseRecurrence.lean) and [GaussianGammaNegativeIntervalNamedDerivativeRecurrence](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalNamedDerivativeRecurrence.lean) identify the original recurrence and derivative target using common terminal freezes. [GaussianGammaNamedPoleFreeProperness](Lean/IPRADerivations/Analysis/GaussianGammaNamedPoleFreeProperness.lean) proves extensionality of the native pole-free evaluator under independent certificates, and [GaussianGammaNegativeIntervalNamedGammaPoleFreeQuotient](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalNamedGammaPoleFreeQuotient.lean) preserves the original named reciprocal through the affine shift. [GaussianGammaNegativeIntervalNamedIncrementDerivative](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalNamedIncrementDerivative.lean) verifies that the original quotient converges to named Gamma times shifted digamma for every regular named real increment satisfying the explicit smallness and separation certificates. [GaussianGammaNegativeIntervalNamedGammaInverse](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalNamedGammaInverse.lean) and [GaussianGammaNegativeIntervalNamedStationary](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalNamedStationary.lean) cancel the nonzero named Gamma factor. [GaussianGammaNegativeIntervalNamedDerivativeMargin](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalNamedDerivativeMargin.lean) proves derivative extensionality across independently certified pole margins. [GaussianGammaNegativeIntervalNamedCritical](Lean/IPRADerivations/Analysis/GaussianGammaNegativeIntervalNamedCritical.lean) gives the actual quotient rate to zero at the selected point and both directions of the critical-point classification for offsets supplied with named interval bounds. [GaussianBohrMollerupUniqueness](Lean/IPRADerivations/Analysis/GaussianBohrMollerupUniqueness.lean) proves effective uniqueness for fixed logarithmic presentations satisfying the internal laws, with a two-chord comparison and cutoff $j=1+a(a+b)2^p$ at $a/b$. [GaussianBohrMollerupPositivePresentation](Lean/IPRADerivations/Analysis/GaussianBohrMollerupPositivePresentation.lean) identifies positive presentations with the actual Gamma name. [The literal bracket enclosure](Lean/IPRADerivations/Analysis/GaussianBohrMollerupBracketEnclosure.lean) proves both original general-block bracket inequalities. [The literal width](Lean/IPRADerivations/Analysis/GaussianBohrMollerupBracketWidth.lean) gives the paper’s rational bound and dyadic cutoff. [The literal squeeze](Lean/IPRADerivations/Analysis/GaussianBohrMollerupLiteralUniqueness.lean) uses exactly that cutoff for uniqueness. [The named extension](Lean/IPRADerivations/Analysis/GaussianBohrMollerupNamedGamma.lean) evaluates each fixed verified rational presentation on actual late positive real input observations and identifies its lifted logarithm and exponential with the original named values. This gives the fixed-presentation uniqueness claim via these chords. The paper’s specific finite $L_n/U_n$ approximation intervals are separate. |
-| 49–53 | Leading Stirling/relative errors, Robbins bounds, every fixed order of log-Stirling and digamma expansions with the signed positive-real-axis remainder, and the actual multiplicative-coefficient/error algorithm. Generic Euler–Maclaurin components need application-specific endpoint and positivity proofs. [GaussianStirlingNames](Lean/IPRADerivations/Analysis/GaussianStirlingNames.lean) constructs the regular real name of $A(x)$ on every encoded positive rational, using the original Gamma and harmonic logarithms. [GaussianStirlingConstant](Lean/IPRADerivations/Analysis/GaussianStirlingConstant.lean) constructs the regular real name of $C=\tfrac12\log(2\pi)$. [GaussianStirlingRecurrence](Lean/IPRADerivations/Analysis/GaussianStirlingRecurrence.lean) gives the original named equality $A(x)-A(x+1)=d(x)$. [StirlingRationalSeries](Lean/IPRADerivations/Analysis/StirlingRationalSeries.lean), [GaussianStirlingRationalTelescopers](Lean/IPRADerivations/Analysis/GaussianStirlingRationalTelescopers.lean), and [GaussianStirlingFiniteSeries](Lean/IPRADerivations/Analysis/GaussianStirlingFiniteSeries.lean) prove the rational finite series estimate, its exact Horner representation, and the matching telescopers with positive margins. [GaussianStirlingDifferenceBrackets](Lean/IPRADerivations/Analysis/GaussianStirlingDifferenceBrackets.lean) proves the original finite odd-series logarithm brackets on the full positive rational domain. [GaussianStirlingDifferenceBounds](Lean/IPRADerivations/Analysis/GaussianStirlingDifferenceBounds.lean) proves the sharp local inequalities and exact rational finite endpoint order. [GaussianStirlingOriginalIntegerLimit](Lean/IPRADerivations/Analysis/GaussianStirlingOriginalIntegerLimit.lean) constructs the regular integer limit name with exact tail $1/(12n)$ and independent observation errors. [GaussianStirlingLogDuplication](Lean/IPRADerivations/Analysis/GaussianStirlingLogDuplication.lean) proves original log-Gamma duplication on the Stirling inputs. [GaussianStirlingDuplication](Lean/IPRADerivations/Analysis/GaussianStirlingDuplication.lean) proves the exact positive rational Stirling duplication identity with the original $C$ and the signed residual $1/2-x\log(1+1/(2x))$. [GaussianStirlingWallisGammaRatio](Lean/IPRADerivations/Analysis/GaussianStirlingWallisGammaRatio.lean) identifies the actual half-integer and integer Gamma ratio with the finite Wallis factor. [GaussianStirlingWallisLogRate](Lean/IPRADerivations/Analysis/GaussianStirlingWallisLogRate.lean) gives its logarithmic rate $12/n+29\cdot 2^{-p}$ for $n\ge 6$ at clock $p$. [GaussianStirlingWallisLogIdentity](Lean/IPRADerivations/Analysis/GaussianStirlingWallisLogIdentity.lean) relates this logarithm exactly to the original Gamma logarithms. [GaussianStirlingDuplicationResidual](Lean/IPRADerivations/Analysis/GaussianStirlingDuplicationResidual.lean) proves the residual bound $1/(4x)+3\cdot 2^{-p}$ on the original name. [GaussianStirlingHalfStep](Lean/IPRADerivations/Analysis/GaussianStirlingHalfStep.lean) derives a distance $64(1/n+2^{-p})$ between original samples at $n+1/2$ and $n$ for $n\ge 6$. [GaussianStirlingConstantIdentification](Lean/IPRADerivations/Analysis/GaussianStirlingConstantIdentification.lean) proves unconditional equality of the actual cofinal integer limit and $C=\tfrac12\log(2\pi)$ in object iPRA. [GaussianStirlingGlobalBounds](Lean/IPRADerivations/Analysis/GaussianStirlingGlobalBounds.lean) retains both sharp finite margins and proves the first-order log remainder bounds under a translated cofinal rate. It derives the rate at integer inputs. [GaussianStirlingRobbins](Lean/IPRADerivations/Analysis/GaussianStirlingRobbins.lean) proves both sharp logarithmic Robbins inequalities, including the explicit lower and upper margins, unconditionally at positive integers. [GaussianStirlingMultiplicative](Lean/IPRADerivations/Analysis/GaussianStirlingMultiplicative.lean) identifies the exponential of the original log remainder with the literal positive rational Stirling quotient and verifies the positive square root and denominator inverse. [GaussianStirlingGlobalBoundsShiftCorrection](Lean/IPRADerivations/Analysis/GaussianStirlingGlobalBoundsShiftCorrection.lean) bounds the elementary part of the cofinal positive-rational shift by $5/n+3\cdot2^{-p}$. [GaussianStirlingGlobalBoundsRemainder](Lean/IPRADerivations/Analysis/GaussianStirlingGlobalBoundsRemainder.lean) proves the exact named finite remainder decomposition. [GaussianStirlingGlobalBoundsTranslatedRate](Lean/IPRADerivations/Analysis/GaussianStirlingGlobalBoundsTranslatedRate.lean) reduces the cofinal rational rate and sharp global bounds to the original fractional log-Gamma increment estimate. [GaussianStirlingMultiplicativeBoundsCaps](Lean/IPRADerivations/Analysis/GaussianStirlingMultiplicativeBoundsCaps.lean) derives the relative error bound $1/(6x)$ for $x\ge1$ from the sharp first-order logarithmic remainder. [GaussianStirlingFactorialRobbins](Lean/IPRADerivations/Analysis/GaussianStirlingFactorialRobbins.lean) proves $1<R_n<12n/(12n-1)$ for the literal factorial ratio and $R_n<1+2^{-p}$ for $n\ge2^p$. [GaussianStirlingGammaFractionalIncrement](Lean/IPRADerivations/Analysis/GaussianStirlingGammaFractionalIncrement.lean) proves the actual fractional log-Gamma estimate and discharges the cofinal hypotheses. It proves the sharp first-order log remainder and the positive finite-series tail for all encoded positive rationals, and both sharp logarithmic Robbins bounds for encoded rationals at least one. [GaussianStirlingFactorialRobbinsExponential](Lean/IPRADerivations/Analysis/GaussianStirlingFactorialRobbinsExponential.lean) proves the classical strict exponential caps for the literal factorial quotient. [GaussianStirlingGlobalMultiplicativeBounds](Lean/IPRADerivations/Analysis/GaussianStirlingGlobalMultiplicativeBounds.lean) proves the strict leading exponential comparison for all encoded positive rationals, the strict relative-error bound for $x\ge1$, and the strict exponential Robbins bounds on $x\ge1$. [GaussianStirlingFactorialRobbinsConventionalRatio](Lean/IPRADerivations/Analysis/GaussianStirlingFactorialRobbinsConventionalRatio.lean) binds that same factorial quotient to the literal conventional formula $R_n n^n\sqrt{2\pi n}=n!e^n$. [GaussianStirlingAllOrderPairedRefinement](Lean/IPRADerivations/Analysis/GaussianStirlingAllOrderPairedRefinement.lean) proves a positive reflected inverse-power weight gap uniform under mesh refinement. [GaussianStirlingAllOrderCenteredBernoulli](Lean/IPRADerivations/Analysis/GaussianStirlingAllOrderCenteredBernoulli.lean) binds the centered kernel to the original Bernoulli mesh with exact reflection and zero endpoints. [GaussianStirlingExpansionCoefficients](Lean/IPRADerivations/Analysis/GaussianStirlingExpansionCoefficients.lean) proves the fixed-order coefficient recurrence and initial coefficient. [GaussianStirlingExpansionErrorProgram](Lean/IPRADerivations/Analysis/GaussianStirlingExpansionErrorProgram.lean) proves an explicit multiplicative approximation and error algorithm for the original quotient from the corresponding higher logarithmic rate. [GaussianStirlingAllOrderBernoulliShape](Lean/IPRADerivations/Analysis/GaussianStirlingAllOrderBernoulliShape.lean) proves that the actual centered Bernoulli polynomial has a nonnegative coefficient expansion in $4t(1-t)$ with a positive coefficient. [GaussianStirlingAllOrderBernoulliMeshOrder](Lean/IPRADerivations/Analysis/GaussianStirlingAllOrderBernoulliMeshOrder.lean) proves monotonicity on the first half of the literal grid. [GaussianStirlingAllOrderBernoulliMeshRefinement](Lean/IPRADerivations/Analysis/GaussianStirlingAllOrderBernoulliMeshRefinement.lean) proves exact refinement invariance. [GaussianStirlingAllOrderBernoulliMeshMargin](Lean/IPRADerivations/Analysis/GaussianStirlingAllOrderBernoulliMeshMargin.lean) gives the explicit positive gap on the separated subintervals at all refinements. [GaussianStirlingExpansionFirstOrder](Lean/IPRADerivations/Analysis/GaussianStirlingExpansionFirstOrder.lean) identifies the literal first-order output with $1+1/(12x)$ and discharges its analytic premise from the proved rational Robbins bracket. [GaussianStirlingAllOrderBernoulliEnvelope](Lean/IPRADerivations/Analysis/GaussianStirlingAllOrderBernoulliEnvelope.lean) bounds the original centered kernel by its exact midpoint value on the full rational mesh. [GaussianStirlingAllOrderPanelTail](Lean/IPRADerivations/Analysis/GaussianStirlingAllOrderPanelTail.lean) proves the uniform reciprocal-power tail for its actual finite weighted panels. [GaussianStirlingAllOrderFirstPanel](Lean/IPRADerivations/Analysis/GaussianStirlingAllOrderFirstPanel.lean) gives the exact partial fraction decomposition of the original first kernel on a panel. [GaussianStirlingCubicRate](Lean/IPRADerivations/Analysis/GaussianStirlingCubicRate.lean) proves the strict signed bracket $1/(12x)-1/(360x^3)<R(x)<1/(12x)$ at every encoded positive rational input, with a cubic rate at independent observations. [GaussianStirlingExpansionSecondOrder](Lean/IPRADerivations/Analysis/GaussianStirlingExpansionSecondOrder.lean) uses that rate to discharge the original multiplicative program through degree two. [GaussianStirlingAllOrderFirstPanelSum](Lean/IPRADerivations/Analysis/GaussianStirlingAllOrderFirstPanelSum.lean) evaluates the original first weighted panel as the literal harmonic interval and reciprocal-square sum. [GaussianStirlingAllOrderFirstPanelSquareError](Lean/IPRADerivations/Analysis/GaussianStirlingAllOrderFirstPanelSquareError.lean) relates the square contribution to one with an explicit finite-mesh rate. [GaussianStirlingAllOrderFirstPanelError](Lean/IPRADerivations/Analysis/GaussianStirlingAllOrderFirstPanelError.lean) gives an explicit two-sided comparison between the literal first panel and twice the original harmonic-log difference. [GaussianStirlingAllOrderBoxProductGap](Lean/IPRADerivations/Analysis/GaussianStirlingAllOrderBoxProductGap.lean) proves a positive crossed-product gap on separated refinable boxes for the original centered and reflected weight samples. [GaussianStirlingAllOrderFirstPanelImproper](Lean/IPRADerivations/Analysis/GaussianStirlingAllOrderFirstPanelImproper.lean) identifies the original log-Stirling remainder with the actual first centered periodic Bernoulli weighted improper sum and proves its explicit cutoff error $46· 2^{-p}$. [GaussianStirlingAllOrderPanelDerivative](Lean/IPRADerivations/Analysis/GaussianStirlingAllOrderPanelDerivative.lean) gives the exact centered derivative complement and endpoint identities. [GaussianStirlingAllOrderDiscreteParts](Lean/IPRADerivations/Analysis/GaussianStirlingAllOrderDiscreteParts.lean) verifies exact finite summation by parts, and [GaussianStirlingAllOrderCentralDerivativeBinding](Lean/IPRADerivations/Analysis/GaussianStirlingAllOrderCentralDerivativeBinding.lean) identifies the leading quadratic term of the centered finite difference with the actual lower Bernoulli grid, with a two-sided finite error. [GaussianStirlingAllOrderHalfGridMean](Lean/IPRADerivations/Analysis/GaussianStirlingAllOrderHalfGridMean.lean) proves the normalized reverse-Chebyshev inequality for the original reflected first-half grids, retaining a positive rational margin independent of refinement. [GaussianStirlingAllOrderPairedReadback](Lean/IPRADerivations/Analysis/GaussianStirlingAllOrderPairedReadback.lean) identifies every weighted product with the two original periodic panel rows at its reflected indices. [RationalPowerMoments](Lean/IPRADerivations/Analysis/RationalPowerMoments.lean) verifies the literal scalar monomial average and its $1/M$ mesh error against the exact monomial moment. [GaussianStirlingAllOrderCentralBernoulliError](Lean/IPRADerivations/Analysis/GaussianStirlingAllOrderCentralBernoulliError.lean) and [GaussianStirlingAllOrderReciprocalWeightError](Lean/IPRADerivations/Analysis/GaussianStirlingAllOrderReciprocalWeightError.lean) verify the quantitative centered second-difference comparisons for the original Bernoulli and reciprocal-power panel factors. [GaussianStirlingAllOrderReciprocalGridError](Lean/IPRADerivations/Analysis/GaussianStirlingAllOrderReciprocalGridError.lean) expresses the reciprocal curvature error uniformly on the literal panel grid. [GaussianStirlingAllOrderPairedPanel](Lean/IPRADerivations/Analysis/GaussianStirlingAllOrderPairedPanel.lean) reads the original panel as exactly the paired half-grid with the literal midpoint correction. [RationalPolynomialGridSum](Lean/IPRADerivations/Analysis/RationalPolynomialGridSum.lean) verifies a fixed signed polynomial grid fold through the natural power sums. [GaussianStirlingAllOrderPanelPartsRecurrence](Lean/IPRADerivations/Analysis/GaussianStirlingAllOrderPanelPartsRecurrence.lean) proves the quantitative integration-by-parts recurrence for the original finite panels with an explicit $1/M$ mesh error, and [GaussianStirlingAllOrderPowerIntegral](Lean/IPRADerivations/Analysis/GaussianStirlingAllOrderPowerIntegral.lean) gives the adjacent antiderivative brackets for the reciprocal-power mass. The unweighted averages have exact reflected-grid identities with the appropriate midpoint and endpoint corrections in [GaussianStirlingAllOrderPairedWeightFold](Lean/IPRADerivations/Analysis/GaussianStirlingAllOrderPairedWeightFold.lean) and [GaussianStirlingAllOrderPairedBernoulliFold](Lean/IPRADerivations/Analysis/GaussianStirlingAllOrderPairedBernoulliFold.lean). [GaussianStirlingAllOrderBernoulliGridMean](Lean/IPRADerivations/Analysis/GaussianStirlingAllOrderBernoulliGridMean.lean) identifies the literal centered Bernoulli samples with the signed polynomial whose constant coefficient has been removed. [RationalPolynomialGridMean](Lean/IPRADerivations/Analysis/RationalPolynomialGridMean.lean) proves a two-sided mesh error for every fixed signed polynomial, and [GaussianStirlingAllOrderBernoulliGridRate](Lean/IPRADerivations/Analysis/GaussianStirlingAllOrderBernoulliGridRate.lean) specializes the exact moment and error to the original centered Bernoulli mean at each fixed positive order. [GaussianStirlingAllOrderPanelPartsCofinal](Lean/IPRADerivations/Analysis/GaussianStirlingAllOrderPanelPartsCofinal.lean) proves an explicit cofinal $2^{-p}$ residual for the exact original weighted and mass prefixes. [GaussianStirlingAllOrderFirstPanelCommonMesh](Lean/IPRADerivations/Analysis/GaussianStirlingAllOrderFirstPanelCommonMesh.lean) compares the actual first panel on arbitrary fine meshes with its original local logarithmic name. [GaussianStirlingAllOrderPowerIntegralMesh](Lean/IPRADerivations/Analysis/GaussianStirlingAllOrderPowerIntegralMesh.lean) and [GaussianStirlingAllOrderPowerIntegralCofinal](Lean/IPRADerivations/Analysis/GaussianStirlingAllOrderPowerIntegralCofinal.lean) identify the original reciprocal-power mass with its exact antiderivative, with a cofinal error uniform over the cutoff. [GaussianStirlingAllOrderPairedWeightMass](Lean/IPRADerivations/Analysis/GaussianStirlingAllOrderPairedWeightMass.lean) identifies this mass fold with the ordinary weight average used in the reflected comparison. [GaussianStirlingAllOrderPanelPartsBinding](Lean/IPRADerivations/Analysis/GaussianStirlingAllOrderPanelPartsBinding.lean) binds the literal cofinal weighted prefixes at every fixed order to the named recurrence based on the original remainder. [GaussianStirlingAllOrderImproperName](Lean/IPRADerivations/Analysis/GaussianStirlingAllOrderImproperName.lean) supplies the regular improper name and its equivalence to that recurrence. [GaussianDigammaFirstBernoulliPanelSum](Lean/IPRADerivations/Analysis/GaussianDigammaFirstBernoulliPanelSum.lean) splits the first original digamma panel exactly into the literal reciprocal, square and cube mass folds. [GaussianDigammaFirstBernoulliEndpoints](Lean/IPRADerivations/Analysis/GaussianDigammaFirstBernoulliEndpoints.lean) identifies the exact square and cube antiderivative correction with the reciprocal endpoint trapezoid. [GaussianStirlingAllOrderFullGridCovariance](Lean/IPRADerivations/Analysis/GaussianStirlingAllOrderFullGridCovariance.lean) transfers the positive reflected margin to the original full panel with an exact midpoint correction. [GaussianStirlingAllOrderFullGridMeanRate](Lean/IPRADerivations/Analysis/GaussianStirlingAllOrderFullGridMeanRate.lean) inserts the signed Bernoulli mean with its mesh allowance, and [GaussianStirlingAllOrderMidpointCorrection](Lean/IPRADerivations/Analysis/GaussianStirlingAllOrderMidpointCorrection.lean) bounds the midpoint correction by the current reciprocal-power cap divided by $4S$. [GaussianStirlingAllOrderPanelPositive](Lean/IPRADerivations/Analysis/GaussianStirlingAllOrderPanelPositive.lean) and [GaussianStirlingAllOrderPanelPositivePrefix](Lean/IPRADerivations/Analysis/GaussianStirlingAllOrderPanelPositivePrefix.lean) prove a uniformly positive lower floor for the first original weighted panel and every nonempty prefix on meshes $8S$. [GaussianDigammaFirstBernoulliHarmonic](Lean/IPRADerivations/Analysis/GaussianDigammaFirstBernoulliHarmonic.lean) proves the exact correction between the original left harmonic mass and the verified factorial-harmonic interval. [GaussianStirlingAllOrderLogTruncation](Lean/IPRADerivations/Analysis/GaussianStirlingAllOrderLogTruncation.lean) identifies the signed multiple of the actual improper name with the original log-Stirling remainder after subtracting each literal fixed truncation. [GaussianStirlingAllOrderTruncationCoefficients](Lean/IPRADerivations/Analysis/GaussianStirlingAllOrderTruncationCoefficients.lean) checks the correction coefficients against the existing log coefficient formula. [GaussianStirlingAllOrderImproperPositive](Lean/IPRADerivations/Analysis/GaussianStirlingAllOrderImproperPositive.lean) passes the finite rational floor to the actual improper name and proves strict positivity. [GaussianStirlingAllOrderOuterCovariance](Lean/IPRADerivations/Analysis/GaussianStirlingAllOrderOuterCovariance.lean) sums the corrected upper comparison over every nonempty original cutoff while retaining the first-panel margin. [GaussianStirlingAllOrderTruncationHorner](Lean/IPRADerivations/Analysis/GaussianStirlingAllOrderTruncationHorner.lean) supplies the exact connection between the literal correction sums and the original Horner program at both parities. [GaussianStirlingAllOrderOuterCovarianceRate](Lean/IPRADerivations/Analysis/GaussianStirlingAllOrderOuterCovarianceRate.lean) gives the uniform summed error and [GaussianStirlingAllOrderOuterCovarianceStrict](Lean/IPRADerivations/Analysis/GaussianStirlingAllOrderOuterCovarianceStrict.lean) retains a fixed positive rational floor for the strict finite covariance gap. [GaussianStirlingAllOrderSignedLower](Lean/IPRADerivations/Analysis/GaussianStirlingAllOrderSignedLower.lean) transports strict positivity to the original oriented truncation error. [GaussianStirlingAllOrderNamedUpperGap](Lean/IPRADerivations/Analysis/GaussianStirlingAllOrderNamedUpperGap.lean) transfers the rational floor to the named difference. [GaussianStirlingAllOrderImproperUpper](Lean/IPRADerivations/Analysis/GaussianStirlingAllOrderImproperUpper.lean) proves the strict upper comparison on the actual improper name. [GaussianStirlingAllOrderSignedBounds](Lean/IPRADerivations/Analysis/GaussianStirlingAllOrderSignedBounds.lean) proves the sharp strict two-sided bound for the oriented original log-Stirling error at every fixed order and every encoded positive rational input. [GaussianDigammaFirstBernoulliLocal](Lean/IPRADerivations/Analysis/GaussianDigammaFirstBernoulliLocal.lean) proves the explicit first-panel rate against the real log-difference name. [GaussianDigammaFirstBernoulliReference](Lean/IPRADerivations/Analysis/GaussianDigammaFirstBernoulliReference.lean) gives the exact finite reference row as an anchor difference. [GaussianStirlingAllOrderSignedParity](Lean/IPRADerivations/Analysis/GaussianStirlingAllOrderSignedParity.lean) gives the original un-oriented parity brackets. [GaussianStirlingAllOrderSharpLogRate](Lean/IPRADerivations/Analysis/GaussianStirlingAllOrderSharpLogRate.lean) transfers those exact bounds to the original Horner errors, discharges the independent-clock log rate for positive rational inputs at least one, and proves the original multiplicative approximation program at every fixed degree under its explicit large-argument guard. [GaussianDigammaFirstBernoulliPrefix](Lean/IPRADerivations/Analysis/GaussianDigammaFirstBernoulliPrefix.lean) and [GaussianDigammaFirstBernoulliImproper](Lean/IPRADerivations/Analysis/GaussianDigammaFirstBernoulliImproper.lean) sum the mesh errors and identify the native first cofinal weighted prefix with $\log x-1/(2x)-\psi(x)$, including the explicit required mesh and observation rate. [GaussianDigammaBernoulliRecurrence](Lean/IPRADerivations/Analysis/GaussianDigammaBernoulliRecurrence.lean) verifies the recurrence and its mesh rate at every fixed order. [GaussianDigammaBernoulliImproperName](Lean/IPRADerivations/Analysis/GaussianDigammaBernoulliImproperName.lean) gives explicit regular names for the literal weighted prefixes and their cross-clock equivalence to the recurrence. [GaussianDigammaBernoulliCoefficients](Lean/IPRADerivations/Analysis/GaussianDigammaBernoulliCoefficients.lean) verifies the coefficients against the original Bernoulli table. [GaussianDigammaBernoulliTruncation](Lean/IPRADerivations/Analysis/GaussianDigammaBernoulliTruncation.lean) identifies each actual improper name with $(-1)^{m+1}$ times the native error after subtracting the first $m$ inverse even powers on every encoded positive rational. [GaussianDigammaBernoulliActualBase](Lean/IPRADerivations/Analysis/GaussianDigammaBernoulliActualBase.lean) and [GaussianDigammaBernoulliActualUpper](Lean/IPRADerivations/Analysis/GaussianDigammaBernoulliActualUpper.lean) pass the positive lower floor and the sharp strict upper comparison to the actual improper names. [GaussianDigammaBernoulliRadius](Lean/IPRADerivations/Analysis/GaussianDigammaBernoulliRadius.lean) identifies that upper point with the magnitude of the first omitted term. [GaussianDigammaBernoulliSharpRemainder](Lean/IPRADerivations/Analysis/GaussianDigammaBernoulliSharpRemainder.lean) proves the strict signed two-sided bound for the original digamma truncation after every fixed number $m$ of corrections on all encoded positive rationals. |
-| 54–58 | [GaussianLogGammaEulerCofinal](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerCofinal.lean) constructs the canonical Euler logarithm on the signed rational right half-plane from the original heads. Its exponential equals the original Gamma name by [GaussianLogGammaEulerExponentialLimit](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerExponentialLimit.lean). The unit shift, normalization at one and positive-rational-axis identity are checked below. The cofinal Taylor comparison with the reciprocal slope is checked below. The actual punctured difference quotient converges to the C27 digamma series on these rational charts. The canonical program also gives a regular log-Gamma evaluator on regular complex names with a certified right-half-plane margin. Its exponential agrees with the original named Gamma, including the overlap with the general pole-free evaluator. The actual named derivative is the cofinal digamma series, with a uniform modulus. The exact unit-shift recurrence holds for regular input names on the same certified right half-plane. On the certified positive real axis the same named evaluator equals the original real log-Gamma. The actual Binet kernel series has the uniform `1/(8N)` truncation bound and the interval estimates recorded below. Its value at zero is `1/12`, which is also the sharp upper bound on the nonnegative axis. [The elementary kernel proof](Lean/IPRADerivations/Analysis/GaussianBinetKernelElementaryRational.lean) identifies its quotient at positive rational times and its value at zero. [The first Binet formula](Lean/IPRADerivations/Analysis/GaussianBinetFirstFormula.lean) identifies the original improper Laplace sampler with the original Stirling remainder on the encoded rational right half-plane. [The named first Binet formula](Lean/IPRADerivations/Analysis/GaussianBinetFirstFormulaNamed.lean) extends the identity to regular complex names with the original positive real-part margin and disk. [The second Binet improper integral](Lean/IPRADerivations/Analysis/GaussianBinetBoseImproperName.lean) is a regular name for the original integrand with checked lower and upper cutoff rates. [The second Binet formula](Lean/IPRADerivations/Analysis/GaussianBinetSecondFormula.lean) identifies twice this original improper integral with the original Stirling remainder on the encoded rational right half-plane. [The named second Binet formula](Lean/IPRADerivations/Analysis/GaussianBinetSecondFormulaNamed.lean) lifts that original sampler to regular complex names with the certified margin and disk. [Raabe’s formula](Lean/IPRADerivations/Analysis/GaussianRaabeFormula.lean) holds for the original unit-interval log-Gamma quadrature at every encoded positive rational input. [The cofinal frozen-grid formula](Lean/IPRADerivations/Analysis/GaussianRaabeNamedGrid.lean) extends it to regular positive real names with a certified margin, using actual late input observations and every sufficiently fine mesh at each such base. [The original improper unit integral at zero](Lean/IPRADerivations/Analysis/GaussianRaabeUnitIntegral.lean) equals the named Stirling constant. [The shifted unit integral](Lean/IPRADerivations/Analysis/GaussianRaabeShiftedUnitFormula.lean) equals the same constant minus one. [The actual Binet forward quotient](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentForwardQuotient.lean) converges to the negative successor moment at each encoded positive rational base, with explicit observation and step errors. [The two-sided derivative](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentBackwardQuotient.lean) compares both original quotients to the same negative successor moment for every internal order at encoded positive rational inputs. [The named moment evaluator](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentNamed.lean) extends the original moments to regular inputs on the certified positive real axis. [Named strict positivity](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentNamedPositive.lean) has the uniform explicit [1,2] panel floor at all internal orders. [Both original named quotients](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentNamedDerivative.lean) converge to the negative successor moment at the same base with explicit error budgets uniform in the physical margin. Together with the zeroth identity and strict positivity, this gives complete monotonicity of the original named Stirling remainder. [The original Mellin improper integral](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinImproper.lean) and [Gamma times the original Dirichlet name](Lean/IPRADerivations/Analysis/GaussianGammaZetaDirichletProduct.lean) are regular on the certified half-plane. [The original Gamma–zeta Mellin identity](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinIdentity.lean) proves their equality for encoded complex rational parameters with the certified real-part margin. [The factorized named formula](Lean/IPRADerivations/Analysis/GaussianGammaZetaNamedMellin.lean) extends the identity to regular complex parameters with a certified margin above one, using the original named Gamma of the actual input and the separately lifted original Dirichlet series. [The original specialization at two](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinBasel.lean) equates the actual improper sampler with the original pi-square name divided by six. |
-| 59–62 | Wallis product with a rational rate to the original arctangent quadrature checked in [GaussianGammaHalfWallisRate](Lean/IPRADerivations/Analysis/GaussianGammaHalfWallisRate.lean). [GaussianEvenMomentIntegral](Lean/IPRADerivations/Analysis/GaussianEvenMomentIntegral.lean) checks the actual positive-half Gaussian moment relative to the original half-integer Gamma value. [GaussianGammaHalfIntegerValues](Lean/IPRADerivations/Analysis/GaussianGammaHalfIntegerValues.lean) gives its exact factorial coefficient relative to Gamma at one half. [GaussianOddSymmetricQuadrature](Lean/IPRADerivations/Analysis/GaussianOddSymmetricQuadrature.lean) checks exact finite symmetric cancellation for the literal odd Gaussian quadrature. [GaussianGammaHalfPositiveRoot](Lean/IPRADerivations/Analysis/GaussianGammaHalfPositiveRoot.lean) identifies the original value at one half as a positive real square root of the exact arctangent name for pi. [GaussianGammaHalfSqrtPi](Lean/IPRADerivations/Analysis/GaussianGammaHalfSqrtPi.lean) checks its equality with an independent dyadic square-root program. [GaussianGammaHalfWallisConvergence](Lean/IPRADerivations/Analysis/GaussianGammaHalfWallisConvergence.lean) proves the one-sided Wallis rate. [GaussianGammaHalfSqrtValues](Lean/IPRADerivations/Analysis/GaussianGammaHalfSqrtValues.lean) identifies the actual positive half-integer Gamma values and the positive-half even Gaussian moments with the independent square-root sampler and their exact factors. [GaussianEvenMomentSymmetricGrid](Lean/IPRADerivations/Analysis/GaussianEvenMomentSymmetricGrid.lean) checks the original reflected even rows and their finite sums. [GaussianEvenMomentWholeLine](Lean/IPRADerivations/Analysis/GaussianEvenMomentWholeLine.lean) uses the original cofinal endpoints and omitted-tail bounds for both halves. [GaussianEvenMomentWholeLineValue](Lean/IPRADerivations/Analysis/GaussianEvenMomentWholeLineValue.lean) identifies the actual whole-line even moment with the unhalved factorial and independent square-root factors. [GaussianOddMomentWholeAbsolute](Lean/IPRADerivations/Analysis/GaussianOddMomentWholeAbsolute.lean) gives the literal odd absolute convergence to twice the positive-half Euler reference, with exact symmetric cancellation of the signed quadrature. [GaussianOddMomentIndependentCuts](Lean/IPRADerivations/Analysis/GaussianOddMomentIndependentCuts.lean) proves the signed limit is zero at independent left and right cutoffs. Gamma-density normalization and moments are checked. [GaussianEulerIntegerMomentIntegrand](Lean/IPRADerivations/Analysis/GaussianEulerIntegerMomentIntegrand.lean) proves the original weighted Euler row identity at every internal integer order. [GaussianGammaDensityDomain](Lean/IPRADerivations/Analysis/GaussianGammaDensityDomain.lean) derives the shifted integral and Gamma guards. [GaussianEulerIntegerMomentUniform](Lean/IPRADerivations/Analysis/GaussianEulerIntegerMomentUniform.lean) gives a uniform compact clock for the literal weighted rows. [GaussianGammaDensityMomentReference](Lean/IPRADerivations/Analysis/GaussianGammaDensityMomentReference.lean) evaluates the normalized original shifted integral as the rising product. [GaussianEulerIntegerMomentGrid](Lean/IPRADerivations/Analysis/GaussianEulerIntegerMomentGrid.lean) and [GaussianGammaDensityMomentGrid](Lean/IPRADerivations/Analysis/GaussianGammaDensityMomentGrid.lean) bind the literal weighted rows to the normalized cofinal sampler. [GaussianGammaDensityMomentName](Lean/IPRADerivations/Analysis/GaussianGammaDensityMomentName.lean) proves the original density moments for every internal nonnegative integer on the encoded half-plane. [GaussianGammaDensityMeanVariance](Lean/IPRADerivations/Analysis/GaussianGammaDensityMeanVariance.lean) gives normalization, mean and variance for that same sampler. [GaussianNamedGoldenRatio](Lean/IPRADerivations/Analysis/GaussianNamedGoldenRatio.lean) proves the independent positive golden-ratio name satisfies its quadratic identity. [GaussianNamedGoldenRatioFormula](Lean/IPRADerivations/Analysis/GaussianNamedGoldenRatioFormula.lean) binds that sampler to the original affine square-root expression, and [GaussianNamedGoldenRatioUniqueness](Lean/IPRADerivations/Analysis/GaussianNamedGoldenRatioUniqueness.lean) proves uniqueness of its quadratic among certified positive regular names. [GaussianNamedGammaFirstCrossing](Lean/IPRADerivations/Analysis/GaussianNamedGammaFirstCrossing.lean) proves the first Gamma crossing at three halves. [GaussianNamedGammaBackwardIdentification](Lean/IPRADerivations/Analysis/GaussianNamedGammaBackwardIdentification.lean) identifies the original named backward argument with the literal pole-free evaluator at decoded native observations. [GaussianNamedGammaSecondCrossing](Lean/IPRADerivations/Analysis/GaussianNamedGammaSecondCrossing.lean) proves the second crossing exactly at the independent positive golden ratio. [GaussianNamedGammaSecondCrossingWitness](Lean/IPRADerivations/Analysis/GaussianNamedGammaSecondCrossingWitness.lean) proves the literal golden name is admitted and attains the crossing. [GaussianArctangentCayleyValues](Lean/IPRADerivations/Analysis/GaussianArctangentCayleyValues.lean) proves the exact norm and endpoints of the rational Cayley grid. [GaussianArctangentCayleyStep](Lean/IPRADerivations/Analysis/GaussianArctangentCayleyStep.lean) bounds its linear exponential step defect by `2/M²`. [GaussianArctangentExponentialPrefix](Lean/IPRADerivations/Analysis/GaussianArctangentExponentialPrefix.lean) matches the exact arctangent prefix to the original π program. [GaussianArctangentCayleyExponentialStep](Lean/IPRADerivations/Analysis/GaussianArctangentCayleyExponentialStep.lean) and [GaussianArctangentCayleyBudget](Lean/IPRADerivations/Analysis/GaussianArctangentCayleyBudget.lean) give the local exponential defect and mesh budget. [GaussianArctangentQuarterExponential](Lean/IPRADerivations/Analysis/GaussianArctangentQuarterExponential.lean) and [GaussianArctangentExponentialPeriod](Lean/IPRADerivations/Analysis/GaussianArctangentExponentialPeriod.lean) transport the finite endpoint estimate to the original exponential clocks. [GaussianArctangentCayleyTelescope](Lean/IPRADerivations/Analysis/GaussianArctangentCayleyTelescope.lean) proves the finite Cayley estimate at every prefix, and [GaussianArctangentOriginalExponential](Lean/IPRADerivations/Analysis/GaussianArctangentOriginalExponential.lean) proves the exact quarter, half and full turns for the original arctangent name. [GaussianArctangentNamedSine](Lean/IPRADerivations/Analysis/GaussianArctangentNamedSine.lean) proves the period and signed integer zeros of the named sine, and [GaussianArctangentNamedPhase](Lean/IPRADerivations/Analysis/GaussianArctangentNamedPhase.lean) identifies the actual integer and quarter products with the corresponding phase programs. [GaussianNamedGammaFactorialInterpolation](Lean/IPRADerivations/Analysis/GaussianNamedGammaFactorialInterpolation.lean) gives an explicit regular name for the alternative interpolation on the certified right half-plane, its recurrence and factorial values, and its distinction at one quarter for any nonzero rational coefficient. [GaussianGammaPoleFreeSineInterpolation](Lean/IPRADerivations/Analysis/GaussianGammaPoleFreeSineInterpolation.lean) proves the same interpolation program satisfies the recurrence on encoded Gaussian rationals off the original poles, deriving both separation certificates from exact pole exclusion. [GaussianNamedSineTaylor](Lean/IPRADerivations/Analysis/GaussianNamedSineTaylor.lean) identifies the sine factor with its literal signed factorial series at independent precisions. |
+| 31–36 | Digamma and polygamma evaluators with remainder bounds, recurrences/signs/special derivative values, differentiated reflection/multiplication, rational-argument values, and the finite polynomial recursion for Gamma derivatives. Derivative orders may remain external where the source explicitly allows that schema. The original first derivative at one is identified with the negative Euler–Mascheroni name. [GaussianGammaDigammaNative](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaDigammaNative.lean) constructs the original positive rational digamma as $Γ'/Γ$, verifies the product with the original Gamma name, and proves $ψ(1)=-γ$. [GaussianGammaDigammaStep](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaDigammaStep.lean) binds the original derivative rate to literal rational increments $1/D$. [GaussianGammaDigammaDerivativeShift](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaDigammaDerivativeShift.lean) derives the differentiated Gamma recurrence and [GaussianGammaDigammaRecurrence](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaDigammaRecurrence.lean) proves $ψ(x+1)=ψ(x)+1/x$ at every encoded positive rational point. [GaussianGammaDigammaInteger](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaDigammaInteger.lean) proves $ψ(n+1)=H_n-γ$ with an explicit independent-observation bound. [GaussianGammaDigammaFiniteSum](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaDigammaFiniteSum.lean) proves the finite reciprocal-sum formula for every internal natural shift of the original positive rational digamma. [GaussianGammaDigammaGammaComparison](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaDigammaGammaComparison.lean) proves the symmetric product inequality for original Gamma at a positive rational increment. [GaussianGammaDigammaMonotone](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaDigammaMonotone.lean) passes the verified derivative rates through the comparison and cancels positive Gamma factors to prove monotonicity of the original digamma. [GaussianGammaDigammaSeries](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaDigammaSeries.lean) proves the cofinal C28 rate for all encoded positive rational inputs, and [GaussianGammaDigammaSeriesTerms](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaDigammaSeriesTerms.lean) binds the finite correction to the literal reciprocal differences of the paper. [GaussianGammaDigammaPositiveTerms](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaDigammaPositiveTerms.lean) proves the original positive-term C27 representation, and [GaussianGammaDigammaEulerDerivative](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaDigammaEulerDerivative.lean) bounds the literal finite Euler slope against the original digamma with independent observation clocks. [GaussianGammaDigammaElementaryBounds](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaDigammaElementaryBounds.lean) and [GaussianGammaDigammaElementaryOriginalLog](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaDigammaElementaryOriginalLog.lean) prove the elementary logarithmic bracket on the original positive rational digamma with either original logarithm presentation. The polygamma and differentiated identity claims remain open. |
+| 37–42 | [GaussianGammaCanonicalCoefficientRecurrence](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGammaCanonicalCoefficientRecurrence.lean) proves the C42 equality of the actual regular canonical coefficient and finite sum names. [GaussianGammaCanonicalRecurrenceZetaFormula](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaCanonicalRecurrenceZetaFormula.lean) identifies the right name with the original gamma and signed zeta formula at the same observations. The remaining local Taylor/log-Gamma expansions, Laurent constants and remainders at each pole, positive-integer-centered expansions, vertical modulus products, and balanced parameter products still require their named coefficient and discarded-tail comparisons. |
+| 43–48 | Quantitative strict convexity, effective Bohr–Mollerup uniqueness at fixed presentations, Wendel/Gautschi inequalities, rate-bearing Gamma ratios, actual positive-minimum location and negative-pole interval extremum/sign constructions. [GaussianGammaEulerRationalHeadConvexity](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGammaEulerRationalHeadConvexity.lean) proves the weighted powered comparison on the original positive rational finite Euler heads. [GaussianGammaEulerRationalLogConvexity](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGammaEulerRationalLogConvexity.lean) proves exact weighted convexity on the original finite Euler logarithms. [GaussianNamedPositiveLogarithmRate](Lean/IPRADerivations/Analysis/Logarithm/GaussianNamedPositiveLogarithmRate.lean) proves quantitative transport through the named logarithm at a common positive lower bound. [GaussianGammaEulerRationalLogConvergence](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianGammaEulerRationalLogConvergence.lean) proves the quantitative log convergence using the explicit cofinal positive margin. [GaussianGammaNativeLogConvexity](Lean/IPRADerivations/Analysis/Gamma/Names/GaussianGammaNativeLogConvexity.lean) passes the exact weighted convexity inequality to the native log-Gamma names on all encoded positive rational arguments. [GaussianGammaNativeMidpointLogGap](Lean/IPRADerivations/Analysis/Gamma/Names/GaussianGammaNativeMidpointLogGap.lean) adds the explicit margin $(a-d)^2/(a+d)^2$ to twice the native log-Gamma at the midpoint for positive rational endpoints $a/b$ and $d/b$. [GaussianGammaNativeWeightedLogGap](Lean/IPRADerivations/Analysis/Gamma/Names/GaussianGammaNativeWeightedLogGap.lean) extends this explicit margin to the sums with arbitrary positive natural weights. [GaussianGammaNativeStrictLogConvexity](Lean/IPRADerivations/Analysis/Gamma/Names/GaussianGammaNativeStrictLogConvexity.lean) proves strict log-convexity on distinct encoded positive rationals by negating reverse order. [GaussianGammaNativeStrongLogConvexity](Lean/IPRADerivations/Analysis/Gamma/Names/GaussianGammaNativeStrongLogConvexity.lean) proves the full weight-dependent modulus from the paper, with additive margin $rs(d-a)^2/(2(r+s)B^2)$ in the unnormalized comparison at $a/b,d/b$ with upper endpoint bound $B/b$ and natural weights $r>0,s\ge0$. [GaussianGammaRationalGautschi](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaRationalGautschi.lean) proves both strict Gautschi bounds $x^{1-u}<\Gamma(x+1)/\Gamma(x+u)<(x+1)^{1-u}$ for all encoded positive rational $x$ and rational $0<u<1$. It verifies that multiplying the original quotient by the original denominator recovers the numerator. [GaussianGammaRationalWendelGautschi](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaRationalWendelGautschi.lean) proves both strict Wendel bounds on the normalized Gamma quotient and [GaussianGammaRationalWendelBinding](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaRationalWendelBinding.lean) verifies the defining product with its original denominator. [GaussianGammaRationalWendelBoundary](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaRationalWendelBoundary.lean) establishes both exact boundary values and the full weak Wendel interval. [GaussianGammaRationalWendelUniformLog](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaRationalWendelUniformLog.lean) proves the uniform signed logarithmic rate for the original normalized Wendel ratio, including the one-quarter bound on its error coefficient. [GaussianGammaRationalWendelUniform](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaRationalWendelUniform.lean) proves the uniform relative error $0\le1-Q\le u(1-u)/x\le1/(4x)$ on the original named Wendel quotient for all rational weights in the unit interval. [GaussianGammaDigammaTwoShiftBinding](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaDigammaTwoShiftBinding.lean) identifies the original normalized two-shift Gamma quotient by its exact product with its denominator. [GaussianGammaDigammaTwoShiftRate](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaDigammaTwoShiftRate.lean) and [GaussianGammaDigammaTwoShiftRelativeRate](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaDigammaTwoShiftRelativeRate.lean) prove the C46 logarithmic and relative rates for common-denominator positive rational base and endpoints, with signed rational shifts and the source inequalities on the positive integer shift bound and base. The logarithmic bound is on the certified exponent of the quotient. [The exact rational-window rates](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaDigammaTwoShiftRationalRate.lean) give the original constants for every rational shift window, including noninteger bounds. Extension to regular named inputs remains open. [GaussianGammaDigammaLipschitz](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaDigammaLipschitz.lean) proves the original digamma upper slope $2(y-x)$ for common-denominator rational $1\le x\le y$ at independent observation clocks. [GaussianGammaDigammaRescaling](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaDigammaRescaling.lean) verifies that positive rescaling preserves the native digamma value. [GaussianGammaDigammaDyadicCrossing](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaDigammaDyadicCrossing.lean) gives the bounded scan for adjacent opposite sample signs under the two endpoint tests. [GaussianGammaDigammaSlopeLowerRational](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaDigammaSlopeLowerRational.lean) proves the lower slope $(y-x)/4$ on $[1,2]$ with separate rational encodings. [GaussianGammaDigammaDyadicMesh](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaDigammaDyadicMesh.lean) bounds the increase on adjacent dyadic samples by $4\cdot 2^{-(p+6)}$, and [GaussianGammaDigammaGridSign](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaDigammaGridSign.lean) passes this bound to the absolute residual when the samples have opposite signs. [GaussianGammaDigammaCriticalSigns](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaDigammaCriticalSigns.lean) proves $\psi(1)<-1/4$ and $\psi(2)>1/4$ for the original names. [GaussianGammaDigammaDyadicEndpoints](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaDigammaDyadicEndpoints.lean) verifies their finite grid samples at every prescribed clock, and [GaussianGammaDigammaDyadicLocation](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaDigammaDyadicLocation.lean) constructs a regular primitive recursive location by comparing selected opposite-sign cells at independent clocks. The checked bound on the sampled digamma residual is $4\cdot 2^{-(p+6)}$. [GaussianGammaDigammaLocationInput](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaDigammaLocationInput.lean) identifies the actual frozen inputs of the named integrals with the selected fractions. [GaussianGammaDigammaLocationResidual](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaDigammaLocationResidual.lean) lifts the scalar digamma residual to an independent-clock Gaussian distance. [GaussianGammaDigammaLocationProduct](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaDigammaLocationProduct.lean) uses a uniform bound on the original Gamma name to give a vanishing residual for the first logarithmic integral. [GaussianGammaDigammaPositiveStationary](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaDigammaPositiveStationary.lean) proves equality of the original first named logarithmic integral to zero at the completed location and transfers the original first derivative error bound to difference quotients at that point. [GaussianGammaDigammaLocationInterior](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaDigammaLocationInterior.lean) places the completed location in $[17/16,31/16]$. [GaussianGammaDigammaLocationValue](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaDigammaLocationValue.lean) proves that the actual named quotient $\Gamma^{\prime}/\Gamma$ is zero at this regular interior point. [GaussianGammaPositiveRationalProperness](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaPositiveRationalProperness.lean) transports original Gamma between encodings with different denominators, radii and lower certificates. [GaussianGammaMinimumSignedStep](Lean/IPRADerivations/Analysis/Gamma/CriticalPoints/GaussianGammaMinimumSignedStep.lean) identifies the literal signed small-step endpoint with the weighted chord center and verifies the original derivative rate there. [GaussianGammaMinimumQuotientReadback](Lean/IPRADerivations/Analysis/Gamma/CriticalPoints/GaussianGammaMinimumQuotientReadback.lean) recovers the original endpoint variation with the exact step factor. [GaussianGammaMinimumChord](Lean/IPRADerivations/Analysis/Gamma/CriticalPoints/GaussianGammaMinimumChord.lean) proves the asymmetric strong chord in both endpoint orders with a squared rational margin uniform in the weight. [GaussianGammaMinimumCenterRate](Lean/IPRADerivations/Analysis/Gamma/CriticalPoints/GaussianGammaMinimumCenterRate.lean) transfers the derivative residual to the original log-Gamma endpoint variation along the thin chord. [GaussianGammaMinimumChordStationary](Lean/IPRADerivations/Analysis/Gamma/CriticalPoints/GaussianGammaMinimumChordStationary.lean) cancels the weight with the thin-step rate and eliminates the intermediate observation allowances while preserving the strong margin. [GaussianGammaMinimumFreezeRational](Lean/IPRADerivations/Analysis/Gamma/CriticalPoints/GaussianGammaMinimumFreezeRational.lean) and [GaussianGammaMinimumFreezeLocation](Lean/IPRADerivations/Analysis/Gamma/CriticalPoints/GaussianGammaMinimumFreezeLocation.lean) read the actual named log-Gamma and native positive rational freezes with the independent-clock rate. [GaussianGammaMinimumFreezeOrder](Lean/IPRADerivations/Analysis/Gamma/CriticalPoints/GaussianGammaMinimumFreezeOrder.lean) transfers their weak and strict logarithm orders to the original Gamma names. [GaussianGammaNegativeCriticalCorrection](Lean/IPRADerivations/Analysis/Gamma/CriticalPoints/GaussianGammaNegativeCriticalCorrection.lean) computes the literal reciprocal correction for every negative interval. [GaussianGammaNegativeCriticalSigns](Lean/IPRADerivations/Analysis/Gamma/CriticalPoints/GaussianGammaNegativeCriticalSigns.lean) proves margins of $-5$ and $5$ at the two prescribed endpoints and the corresponding opposite finite signs for the shifted digamma name. [GaussianGammaNegativeCriticalLowerSlope](Lean/IPRADerivations/Analysis/Gamma/CriticalPoints/GaussianGammaNegativeCriticalLowerSlope.lean) proves a quarter lower slope throughout the interval, and [GaussianGammaNegativeCriticalSlope](Lean/IPRADerivations/Analysis/Gamma/CriticalPoints/GaussianGammaNegativeCriticalSlope.lean) gives the explicit upper slope $2+(N+2)K^2$ on windows where both distances from the poles are at least $1/K$. [GaussianGammaNegativeCriticalGrid](Lean/IPRADerivations/Analysis/Gamma/CriticalPoints/GaussianGammaNegativeCriticalGrid.lean) selects adjacent opposite signs at every dyadic mesh with a vanishing sampled residual. [GaussianGammaNegativeCriticalLocation](Lean/IPRADerivations/Analysis/Gamma/CriticalPoints/GaussianGammaNegativeCriticalLocation.lean) proves regularity of the original dyadic location, and [GaussianGammaNegativeCriticalLocationInterior](Lean/IPRADerivations/Analysis/Gamma/CriticalPoints/GaussianGammaNegativeCriticalLocationInterior.lean) puts it strictly between $-N-1$ and $-N$. [GaussianGammaNegativeCriticalLocationZero](Lean/IPRADerivations/Analysis/Gamma/CriticalPoints/GaussianGammaNegativeCriticalLocationZero.lean) constructs the zero value of the shifted digamma at that location by explicit cofinal evaluation. [GaussianGammaNegativeIntervalNative](Lean/IPRADerivations/Analysis/Gamma/NegativeAxis/GaussianGammaNegativeIntervalNative.lean) proves that the original Gamma name times the literal repeated shift product gives the positive terminal Gamma name at $1+a/b$. [GaussianGammaNegativeIntervalDerivativeTarget](Lean/IPRADerivations/Analysis/Gamma/NegativeAxis/GaussianGammaNegativeIntervalDerivativeTarget.lean) verifies the algebraic identities for the proposed derivative target. [GaussianGammaNegativeProductDerivativeCorrection](Lean/IPRADerivations/Analysis/Gamma/NegativeAxis/GaussianGammaNegativeProductDerivativeCorrection.lean) identifies the first coefficient of the literal product with the negative of the digamma correction times that product. [GaussianGammaNegativeProductDerivativeRate](Lean/IPRADerivations/Analysis/Gamma/NegativeAxis/GaussianGammaNegativeProductDerivativeRate.lean) proves its finite derivative error proportional to the displacement. [GaussianGammaNegativeIntervalProductSign](Lean/IPRADerivations/Analysis/Gamma/NegativeAxis/GaussianGammaNegativeIntervalProductSign.lean) bounds the signed product below by $a(b-a)/b^2$ throughout the open interval. [GaussianGammaNegativeIntervalGammaSign](Lean/IPRADerivations/Analysis/Gamma/NegativeAxis/GaussianGammaNegativeIntervalGammaSign.lean) gives an explicit positive lower bound on the sign-adjusted original Gamma over encoded rational inputs. [GaussianGammaNegativeIntervalInverseRecurrence](Lean/IPRADerivations/Analysis/Gamma/FunctionalEquations/GaussianGammaNegativeIntervalInverseRecurrence.lean) proves the inverse recurrence and identifies its two-term derivative target. [GaussianGammaNegativeIntervalInverseBound](Lean/IPRADerivations/Analysis/Gamma/NegativeAxis/GaussianGammaNegativeIntervalInverseBound.lean) and [GaussianGammaNegativeIntervalStep](Lean/IPRADerivations/Analysis/Gamma/NegativeAxis/GaussianGammaNegativeIntervalStep.lean) certify bounds and the original positive Euler rate at a native unit step. [GaussianGammaNegativeIntervalDigammaRate](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaNegativeIntervalDigammaRate.lean) proves that the original negative Gamma difference quotient at any rational input converges along steps $1/D$ to the Gamma value times the literal shifted digamma, and that its normalization by the original Gamma converges to the shifted digamma itself. It supplies an explicit cutoff and separate allowances for both observation clocks. [GaussianGammaNegativeIntervalCriticalQuotientZero](Lean/IPRADerivations/Analysis/Gamma/NegativeAxis/GaussianGammaNegativeIntervalCriticalQuotientZero.lean) and [GaussianGammaNegativeIntervalCriticalDerivativeZero](Lean/IPRADerivations/Analysis/Gamma/NegativeAxis/GaussianGammaNegativeIntervalCriticalDerivativeZero.lean) prove that actual normalized and unnormalized Gamma quotients at the selected dyadic inputs give regular zero names, with explicit cofinal unit steps. [GaussianGammaNegativeIntervalLogAbsolute](Lean/IPRADerivations/Analysis/Gamma/NegativeAxis/GaussianGammaNegativeIntervalLogAbsolute.lean) verifies that the named exponential of the real logarithm is the original Gamma after correcting its interval sign, and [GaussianGammaNegativeIntervalLogAbsoluteOrder](Lean/IPRADerivations/Analysis/Gamma/NegativeAxis/GaussianGammaNegativeIntervalLogAbsoluteOrder.lean) transfers both weak and strict orders to that magnitude. [GaussianGammaNegativeIntervalLogStrongConvexity](Lean/IPRADerivations/Analysis/Gamma/NegativeAxis/GaussianGammaNegativeIntervalLogStrongConvexity.lean) gives its strong weighted logarithmic comparison with an explicit quadratic margin on every negative rational interval. [GaussianGammaNegativeIntervalChordRate](Lean/IPRADerivations/Analysis/Gamma/NegativeAxis/GaussianGammaNegativeIntervalChordRate.lean) gives the original signed thin-chord Gamma derivative rate in either endpoint order. [GaussianGammaNegativeIntervalLogThinChord](Lean/IPRADerivations/Analysis/Gamma/NegativeAxis/GaussianGammaNegativeIntervalLogThinChord.lean) retains $|c-a|^2/(16b^2)$ in the unnormalized chord and [GaussianGammaNegativeIntervalLogChordStationary](Lean/IPRADerivations/Analysis/Gamma/NegativeAxis/GaussianGammaNegativeIntervalLogChordStationary.lean) makes the stationary comparison conditional on the corresponding thin-step logarithmic rate. [GaussianGammaNegativeIntervalUniformLower](Lean/IPRADerivations/Analysis/Gamma/NegativeAxis/GaussianGammaNegativeIntervalUniformLower.lean) gives the signed Gamma magnitude a floor independent of its rational encoding, and [GaussianGammaNegativeIntervalLogAbsoluteRetiming](Lean/IPRADerivations/Analysis/Gamma/NegativeAxis/GaussianGammaNegativeIntervalLogAbsoluteRetiming.lean) binds the resulting retimed positive logarithm to the original log magnitude. [GaussianGammaNegativeIntervalCriticalComparison](Lean/IPRADerivations/Analysis/Gamma/NegativeAxis/GaussianGammaNegativeIntervalCriticalComparison.lean) then proves the strong comparison at the actual selected critical approximants against distinct rational inputs with the same denominator and a common pole margin. Its leading error tends to zero with an interval-dependent coefficient, and the two observation allowances remain independent. [GaussianGammaNegativeIntervalCriticalRationalComparison](Lean/IPRADerivations/Analysis/Gamma/NegativeAxis/GaussianGammaNegativeIntervalCriticalRationalComparison.lean) removes the common-denominator and apartness premises while preserving the exact squared gap and the same error. [GaussianGammaNegativeIntervalNamedInput](Lean/IPRADerivations/Analysis/Gamma/NegativeAxis/GaussianGammaNegativeIntervalNamedInput.lean) verifies the selected offset's named pole margin, and [GaussianGammaNegativeIntervalNamedInputRetiming](Lean/IPRADerivations/Analysis/Gamma/NegativeAxis/GaussianGammaNegativeIntervalNamedInputRetiming.lean) obtains an exact sample collar by reading a sufficiently late observation of any regular real offset with named order margins. [GaussianGammaNegativeIntervalRationalProperness](Lean/IPRADerivations/Analysis/Gamma/NegativeAxis/GaussianGammaNegativeIntervalRationalProperness.lean) identifies the decoded critical fraction with the literal grid fraction and proves equal-encoding coherence of the original signed Gamma and log magnitude. [GaussianGammaNegativeIntervalNamedApartness](Lean/IPRADerivations/Analysis/Gamma/NegativeAxis/GaussianGammaNegativeIntervalNamedApartness.lean) keeps the squared comparison gap positive at every sufficiently late observation when the offsets are apart. [GaussianGammaNegativeIntervalNamedComparisonTransfer](Lean/IPRADerivations/Analysis/Gamma/NegativeAxis/GaussianGammaNegativeIntervalNamedComparisonTransfer.lean) transfers finite comparisons with a persistent margin to the regular names. [GaussianGammaNegativeIntervalNamedDigammaRationalRate](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaNegativeIntervalNamedDigammaRationalRate.lean) and [GaussianGammaNegativeIntervalNamedDigamma](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaNegativeIntervalNamedDigamma.lean) construct the regular named shifted digamma and bound its distance from the actual rational digamma at every frozen observation. [GaussianGammaNegativeIntervalNamedDigammaInverseSlope](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaNegativeIntervalNamedDigammaInverseSlope.lean) carries the lower slope to the named offsets. [GaussianGammaNegativeIntervalNamedDigammaUniqueness](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaNegativeIntervalNamedDigammaUniqueness.lean) proves injectivity under separate pole margins. [GaussianGammaNegativeIntervalNamedDigammaRoot](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaNegativeIntervalNamedDigammaRoot.lean) identifies the literal critical grid offset as the unique zero, including inputs admitted through named interval order and retiming. [GaussianGammaNegativeIntervalNamedLogTerminal](Lean/IPRADerivations/Analysis/Gamma/NegativeAxis/GaussianGammaNegativeIntervalNamedLogTerminal.lean) supplies a modulus for the original positive terminal Gamma across distinct rational encodings, and [GaussianGammaNegativeIntervalNamedLogVariation](Lean/IPRADerivations/Analysis/Gamma/NegativeAxis/GaussianGammaNegativeIntervalNamedLogVariation.lean) extends it through the negative shift and logarithm. [GaussianGammaNegativeIntervalNamedLog](Lean/IPRADerivations/Analysis/Gamma/NegativeAxis/GaussianGammaNegativeIntervalNamedLog.lean) constructs regular real log-magnitude names by sampling the original evaluations. [GaussianGammaNegativeIntervalNamedLogFrozen](Lean/IPRADerivations/Analysis/Gamma/NegativeAxis/GaussianGammaNegativeIntervalNamedLogFrozen.lean) proves the uniform late-freeze bound with independent output clocks. [GaussianGammaNegativeIntervalNamedMinimum](Lean/IPRADerivations/Analysis/Gamma/NegativeAxis/GaussianGammaNegativeIntervalNamedMinimum.lean) and [GaussianGammaNegativeIntervalNamedStrictMinimum](Lean/IPRADerivations/Analysis/Gamma/NegativeAxis/GaussianGammaNegativeIntervalNamedStrictMinimum.lean) establish the weak log-magnitude minimum and its strict form with positive separation. [GaussianGammaNegativeIntervalNamedGamma](Lean/IPRADerivations/Analysis/Gamma/NegativeAxis/GaussianGammaNegativeIntervalNamedGamma.lean) identifies Gamma on the named interval by a uniform rate to the literal unscaled rational Gamma evaluator. [GaussianGammaNegativeIntervalNamedExtremum](Lean/IPRADerivations/Analysis/Gamma/NegativeAxis/GaussianGammaNegativeIntervalNamedExtremum.lean) proves the parity-dependent Gamma extrema under named interval bounds and preserves strictness when the original offset is apart. [GaussianGammaNegativeIntervalNamedGammaSign](Lean/IPRADerivations/Analysis/Gamma/NegativeAxis/GaussianGammaNegativeIntervalNamedGammaSign.lean) certifies real observations and the strict interval sign. [GaussianGammaNegativeIntervalNamedDigammaQuotient](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaNegativeIntervalNamedDigammaQuotient.lean) and [GaussianGammaNegativeIntervalNamedSignedDigammaQuotient](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaNegativeIntervalNamedSignedDigammaQuotient.lean) identify the normalized original forward unit quotients with the named digamma along the explicit cofinal rational freezes. [GaussianGammaNegativeIntervalSignedDigammaQuotient](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaNegativeIntervalSignedDigammaQuotient.lean) proves exact cancellation of the signed factors. [GaussianGammaNegativeIntervalNamedDerivative](Lean/IPRADerivations/Analysis/Gamma/NegativeAxis/GaussianGammaNegativeIntervalNamedDerivative.lean) gives a uniform rational offset clock and an explicit step cutoff for the original unscaled forward quotients, with limit the product of named Gamma and named digamma. [GaussianNamedApartnessTightness](Lean/IPRADerivations/Analysis/Names/GaussianNamedApartnessTightness.lean) and [GaussianGammaNegativeIntervalNamedExtremumUniqueness](Lean/IPRADerivations/Analysis/Gamma/NegativeAxis/GaussianGammaNegativeIntervalNamedExtremumUniqueness.lean) prove that an offset attaining the extremal value equals the selected offset, using finite rational comparisons inside iPRA. [GaussianGammaMinimumRational](Lean/IPRADerivations/Analysis/Gamma/CriticalPoints/GaussianGammaMinimumRational.lean) preserves the squared rational separation term with an explicit stationary residual allowance. [GaussianGammaMinimumGlobal](Lean/IPRADerivations/Analysis/Gamma/CriticalPoints/GaussianGammaMinimumGlobal.lean) proves that the selected positive location is a global minimum of the original named Gamma on all positive real inputs with a lower certificate, with strict inequality for every input finitely apart from the minimizer. [GaussianGammaNamedPoleFreeModulus](Lean/IPRADerivations/Analysis/Gamma/Names/GaussianGammaNamedPoleFreeModulus.lean), [GaussianGammaNamedPoleFree](Lean/IPRADerivations/Analysis/Gamma/Names/GaussianGammaNamedPoleFree.lean), [GaussianGammaNamedPoleFreeEncoding](Lean/IPRADerivations/Analysis/Gamma/Names/GaussianGammaNamedPoleFreeEncoding.lean), and [GaussianGammaNamedPoleFreeFrozen](Lean/IPRADerivations/Analysis/Gamma/Names/GaussianGammaNamedPoleFreeFrozen.lean) construct the regular pole-free complex Gamma evaluator from the original native observations with a uniform disk and pole separation. [GaussianGammaNegativeIntervalNamedGammaNativeDomain](Lean/IPRADerivations/Analysis/Gamma/NegativeAxis/GaussianGammaNegativeIntervalNamedGammaNativeDomain.lean) certifies the affine negative-interval input, and [GaussianGammaNegativeIntervalNamedGammaPoleFreeBinding](Lean/IPRADerivations/Analysis/Gamma/NegativeAxis/GaussianGammaNegativeIntervalNamedGammaPoleFreeBinding.lean) proves equality of the two Gamma names at that input. [GaussianGammaNegativeIntervalNamedTerminalDerivative](Lean/IPRADerivations/Analysis/Gamma/NegativeAxis/GaussianGammaNegativeIntervalNamedTerminalDerivative.lean) proves the rate for the original positive terminal quotient and preserves the named increment. [GaussianGammaNegativeIntervalInverseRationalEnvelope](Lean/IPRADerivations/Analysis/Gamma/NegativeAxis/GaussianGammaNegativeIntervalInverseRationalEnvelope.lean) gives the exact rational inverse-shift difference and quadratic remainder. [GaussianGammaNegativeIntervalNamedInverseFactor](Lean/IPRADerivations/Analysis/Gamma/NegativeAxis/GaussianGammaNegativeIntervalNamedInverseFactor.lean) and [GaussianGammaNegativeIntervalNamedCorrectionFactor](Lean/IPRADerivations/Analysis/Gamma/NegativeAxis/GaussianGammaNegativeIntervalNamedCorrectionFactor.lean) extend the exact inverse shift and its derivative coefficient to named inputs. [GaussianGammaNegativeIntervalNamedInverseDerivative](Lean/IPRADerivations/Analysis/Gamma/NegativeAxis/GaussianGammaNegativeIntervalNamedInverseDerivative.lean) proves the named-increment rate for the original inverse factor. [GaussianNamedIncrementProductRule](Lean/IPRADerivations/Analysis/Names/GaussianNamedIncrementProductRule.lean) proves the exact named-increment product rule, and [GaussianGammaNegativeIntervalNamedInverseRecurrence](Lean/IPRADerivations/Analysis/Gamma/FunctionalEquations/GaussianGammaNegativeIntervalNamedInverseRecurrence.lean) and [GaussianGammaNegativeIntervalNamedDerivativeRecurrence](Lean/IPRADerivations/Analysis/Gamma/FunctionalEquations/GaussianGammaNegativeIntervalNamedDerivativeRecurrence.lean) identify the original recurrence and derivative target using common terminal freezes. [GaussianGammaNamedPoleFreeProperness](Lean/IPRADerivations/Analysis/Gamma/Names/GaussianGammaNamedPoleFreeProperness.lean) proves extensionality of the native pole-free evaluator under independent certificates, and [GaussianGammaNegativeIntervalNamedGammaPoleFreeQuotient](Lean/IPRADerivations/Analysis/Gamma/NegativeAxis/GaussianGammaNegativeIntervalNamedGammaPoleFreeQuotient.lean) preserves the original named reciprocal through the affine shift. [GaussianGammaNegativeIntervalNamedIncrementDerivative](Lean/IPRADerivations/Analysis/Gamma/NegativeAxis/GaussianGammaNegativeIntervalNamedIncrementDerivative.lean) verifies that the original quotient converges to named Gamma times shifted digamma for every regular named real increment satisfying the explicit smallness and separation certificates. [GaussianGammaNegativeIntervalNamedGammaInverse](Lean/IPRADerivations/Analysis/Gamma/NegativeAxis/GaussianGammaNegativeIntervalNamedGammaInverse.lean) and [GaussianGammaNegativeIntervalNamedStationary](Lean/IPRADerivations/Analysis/Gamma/NegativeAxis/GaussianGammaNegativeIntervalNamedStationary.lean) cancel the nonzero named Gamma factor. [GaussianGammaNegativeIntervalNamedDerivativeMargin](Lean/IPRADerivations/Analysis/Gamma/NegativeAxis/GaussianGammaNegativeIntervalNamedDerivativeMargin.lean) proves derivative extensionality across independently certified pole margins. [GaussianGammaNegativeIntervalNamedCritical](Lean/IPRADerivations/Analysis/Gamma/NegativeAxis/GaussianGammaNegativeIntervalNamedCritical.lean) gives the actual quotient rate to zero at the selected point and both directions of the critical-point classification for offsets supplied with named interval bounds. [GaussianBohrMollerupUniqueness](Lean/IPRADerivations/Analysis/Gamma/BohrMollerup/GaussianBohrMollerupUniqueness.lean) proves effective uniqueness for fixed logarithmic presentations satisfying the internal laws, with a two-chord comparison and cutoff $j=1+a(a+b)2^p$ at $a/b$. [GaussianBohrMollerupPositivePresentation](Lean/IPRADerivations/Analysis/Gamma/BohrMollerup/GaussianBohrMollerupPositivePresentation.lean) identifies positive presentations with the actual Gamma name. [The literal bracket enclosure](Lean/IPRADerivations/Analysis/Gamma/BohrMollerup/GaussianBohrMollerupBracketEnclosure.lean) proves both original general-block bracket inequalities. [The literal width](Lean/IPRADerivations/Analysis/Gamma/BohrMollerup/GaussianBohrMollerupBracketWidth.lean) gives the paper’s rational bound and dyadic cutoff. [The literal squeeze](Lean/IPRADerivations/Analysis/Gamma/BohrMollerup/GaussianBohrMollerupLiteralUniqueness.lean) uses exactly that cutoff for uniqueness. [The named extension](Lean/IPRADerivations/Analysis/Gamma/BohrMollerup/GaussianBohrMollerupNamedGamma.lean) evaluates each fixed verified rational presentation on actual late positive real input observations and identifies its lifted logarithm and exponential with the original named values. This gives the fixed-presentation uniqueness claim via these chords. The paper’s specific finite $L_n/U_n$ approximation intervals are separate. |
+| 49–53 | Leading Stirling/relative errors, Robbins bounds, every fixed order of log-Stirling and digamma expansions with the signed positive-real-axis remainder, and the actual multiplicative-coefficient/error algorithm. Generic Euler–Maclaurin components need application-specific endpoint and positivity proofs. [GaussianStirlingNames](Lean/IPRADerivations/Analysis/Stirling/GaussianStirlingNames.lean) constructs the regular real name of $A(x)$ on every encoded positive rational, using the original Gamma and harmonic logarithms. [GaussianStirlingConstant](Lean/IPRADerivations/Analysis/Stirling/GaussianStirlingConstant.lean) constructs the regular real name of $C=\tfrac12\log(2\pi)$. [GaussianStirlingRecurrence](Lean/IPRADerivations/Analysis/Stirling/GaussianStirlingRecurrence.lean) gives the original named equality $A(x)-A(x+1)=d(x)$. [StirlingRationalSeries](Lean/IPRADerivations/Analysis/Stirling/StirlingRationalSeries.lean), [GaussianStirlingRationalTelescopers](Lean/IPRADerivations/Analysis/Stirling/GaussianStirlingRationalTelescopers.lean), and [GaussianStirlingFiniteSeries](Lean/IPRADerivations/Analysis/Stirling/GaussianStirlingFiniteSeries.lean) prove the rational finite series estimate, its exact Horner representation, and the matching telescopers with positive margins. [GaussianStirlingDifferenceBrackets](Lean/IPRADerivations/Analysis/Stirling/GaussianStirlingDifferenceBrackets.lean) proves the original finite odd-series logarithm brackets on the full positive rational domain. [GaussianStirlingDifferenceBounds](Lean/IPRADerivations/Analysis/Stirling/GaussianStirlingDifferenceBounds.lean) proves the sharp local inequalities and exact rational finite endpoint order. [GaussianStirlingOriginalIntegerLimit](Lean/IPRADerivations/Analysis/Stirling/GaussianStirlingOriginalIntegerLimit.lean) constructs the regular integer limit name with exact tail $1/(12n)$ and independent observation errors. [GaussianStirlingLogDuplication](Lean/IPRADerivations/Analysis/Stirling/GaussianStirlingLogDuplication.lean) proves original log-Gamma duplication on the Stirling inputs. [GaussianStirlingDuplication](Lean/IPRADerivations/Analysis/Stirling/GaussianStirlingDuplication.lean) proves the exact positive rational Stirling duplication identity with the original $C$ and the signed residual $1/2-x\log(1+1/(2x))$. [GaussianStirlingWallisGammaRatio](Lean/IPRADerivations/Analysis/Stirling/GaussianStirlingWallisGammaRatio.lean) identifies the actual half-integer and integer Gamma ratio with the finite Wallis factor. [GaussianStirlingWallisLogRate](Lean/IPRADerivations/Analysis/Stirling/GaussianStirlingWallisLogRate.lean) gives its logarithmic rate $12/n+29\cdot 2^{-p}$ for $n\ge 6$ at clock $p$. [GaussianStirlingWallisLogIdentity](Lean/IPRADerivations/Analysis/Stirling/GaussianStirlingWallisLogIdentity.lean) relates this logarithm exactly to the original Gamma logarithms. [GaussianStirlingDuplicationResidual](Lean/IPRADerivations/Analysis/Stirling/GaussianStirlingDuplicationResidual.lean) proves the residual bound $1/(4x)+3\cdot 2^{-p}$ on the original name. [GaussianStirlingHalfStep](Lean/IPRADerivations/Analysis/Stirling/GaussianStirlingHalfStep.lean) derives a distance $64(1/n+2^{-p})$ between original samples at $n+1/2$ and $n$ for $n\ge 6$. [GaussianStirlingConstantIdentification](Lean/IPRADerivations/Analysis/Stirling/GaussianStirlingConstantIdentification.lean) proves unconditional equality of the actual cofinal integer limit and $C=\tfrac12\log(2\pi)$ in object iPRA. [GaussianStirlingGlobalBounds](Lean/IPRADerivations/Analysis/Stirling/GaussianStirlingGlobalBounds.lean) retains both sharp finite margins and proves the first-order log remainder bounds under a translated cofinal rate. It derives the rate at integer inputs. [GaussianStirlingRobbins](Lean/IPRADerivations/Analysis/Stirling/GaussianStirlingRobbins.lean) proves both sharp logarithmic Robbins inequalities, including the explicit lower and upper margins, unconditionally at positive integers. [GaussianStirlingMultiplicative](Lean/IPRADerivations/Analysis/Stirling/GaussianStirlingMultiplicative.lean) identifies the exponential of the original log remainder with the literal positive rational Stirling quotient and verifies the positive square root and denominator inverse. [GaussianStirlingGlobalBoundsShiftCorrection](Lean/IPRADerivations/Analysis/Stirling/GaussianStirlingGlobalBoundsShiftCorrection.lean) bounds the elementary part of the cofinal positive-rational shift by $5/n+3\cdot2^{-p}$. [GaussianStirlingGlobalBoundsRemainder](Lean/IPRADerivations/Analysis/Stirling/GaussianStirlingGlobalBoundsRemainder.lean) proves the exact named finite remainder decomposition. [GaussianStirlingGlobalBoundsTranslatedRate](Lean/IPRADerivations/Analysis/Stirling/GaussianStirlingGlobalBoundsTranslatedRate.lean) reduces the cofinal rational rate and sharp global bounds to the original fractional log-Gamma increment estimate. [GaussianStirlingMultiplicativeBoundsCaps](Lean/IPRADerivations/Analysis/Stirling/GaussianStirlingMultiplicativeBoundsCaps.lean) derives the relative error bound $1/(6x)$ for $x\ge1$ from the sharp first-order logarithmic remainder. [GaussianStirlingFactorialRobbins](Lean/IPRADerivations/Analysis/Stirling/GaussianStirlingFactorialRobbins.lean) proves $1<R_n<12n/(12n-1)$ for the literal factorial ratio and $R_n<1+2^{-p}$ for $n\ge2^p$. [GaussianStirlingGammaFractionalIncrement](Lean/IPRADerivations/Analysis/Stirling/GaussianStirlingGammaFractionalIncrement.lean) proves the actual fractional log-Gamma estimate and discharges the cofinal hypotheses. It proves the sharp first-order log remainder and the positive finite-series tail for all encoded positive rationals, and both sharp logarithmic Robbins bounds for encoded rationals at least one. [GaussianStirlingFactorialRobbinsExponential](Lean/IPRADerivations/Analysis/Stirling/GaussianStirlingFactorialRobbinsExponential.lean) proves the classical strict exponential caps for the literal factorial quotient. [GaussianStirlingGlobalMultiplicativeBounds](Lean/IPRADerivations/Analysis/Stirling/GaussianStirlingGlobalMultiplicativeBounds.lean) proves the strict leading exponential comparison for all encoded positive rationals, the strict relative-error bound for $x\ge1$, and the strict exponential Robbins bounds on $x\ge1$. [GaussianStirlingFactorialRobbinsConventionalRatio](Lean/IPRADerivations/Analysis/Stirling/GaussianStirlingFactorialRobbinsConventionalRatio.lean) binds that same factorial quotient to the literal conventional formula $R_n n^n\sqrt{2\pi n}=n!e^n$. [GaussianStirlingAllOrderPairedRefinement](Lean/IPRADerivations/Analysis/Stirling/AllOrders/GaussianStirlingAllOrderPairedRefinement.lean) proves a positive reflected inverse-power weight gap uniform under mesh refinement. [GaussianStirlingAllOrderCenteredBernoulli](Lean/IPRADerivations/Analysis/Stirling/AllOrders/GaussianStirlingAllOrderCenteredBernoulli.lean) binds the centered kernel to the original Bernoulli mesh with exact reflection and zero endpoints. [GaussianStirlingExpansionCoefficients](Lean/IPRADerivations/Analysis/Stirling/GaussianStirlingExpansionCoefficients.lean) proves the fixed-order coefficient recurrence and initial coefficient. [GaussianStirlingExpansionErrorProgram](Lean/IPRADerivations/Analysis/Stirling/GaussianStirlingExpansionErrorProgram.lean) proves an explicit multiplicative approximation and error algorithm for the original quotient from the corresponding higher logarithmic rate. [GaussianStirlingAllOrderBernoulliShape](Lean/IPRADerivations/Analysis/Stirling/AllOrders/GaussianStirlingAllOrderBernoulliShape.lean) proves that the actual centered Bernoulli polynomial has a nonnegative coefficient expansion in $4t(1-t)$ with a positive coefficient. [GaussianStirlingAllOrderBernoulliMeshOrder](Lean/IPRADerivations/Analysis/Stirling/AllOrders/GaussianStirlingAllOrderBernoulliMeshOrder.lean) proves monotonicity on the first half of the literal grid. [GaussianStirlingAllOrderBernoulliMeshRefinement](Lean/IPRADerivations/Analysis/Stirling/AllOrders/GaussianStirlingAllOrderBernoulliMeshRefinement.lean) proves exact refinement invariance. [GaussianStirlingAllOrderBernoulliMeshMargin](Lean/IPRADerivations/Analysis/Stirling/AllOrders/GaussianStirlingAllOrderBernoulliMeshMargin.lean) gives the explicit positive gap on the separated subintervals at all refinements. [GaussianStirlingExpansionFirstOrder](Lean/IPRADerivations/Analysis/Stirling/GaussianStirlingExpansionFirstOrder.lean) identifies the literal first-order output with $1+1/(12x)$ and discharges its analytic premise from the proved rational Robbins bracket. [GaussianStirlingAllOrderBernoulliEnvelope](Lean/IPRADerivations/Analysis/Stirling/AllOrders/GaussianStirlingAllOrderBernoulliEnvelope.lean) bounds the original centered kernel by its exact midpoint value on the full rational mesh. [GaussianStirlingAllOrderPanelTail](Lean/IPRADerivations/Analysis/Stirling/AllOrders/GaussianStirlingAllOrderPanelTail.lean) proves the uniform reciprocal-power tail for its actual finite weighted panels. [GaussianStirlingAllOrderFirstPanel](Lean/IPRADerivations/Analysis/Stirling/AllOrders/GaussianStirlingAllOrderFirstPanel.lean) gives the exact partial fraction decomposition of the original first kernel on a panel. [GaussianStirlingCubicRate](Lean/IPRADerivations/Analysis/Stirling/GaussianStirlingCubicRate.lean) proves the strict signed bracket $1/(12x)-1/(360x^3)<R(x)<1/(12x)$ at every encoded positive rational input, with a cubic rate at independent observations. [GaussianStirlingExpansionSecondOrder](Lean/IPRADerivations/Analysis/Stirling/GaussianStirlingExpansionSecondOrder.lean) uses that rate to discharge the original multiplicative program through degree two. [GaussianStirlingAllOrderFirstPanelSum](Lean/IPRADerivations/Analysis/Stirling/AllOrders/GaussianStirlingAllOrderFirstPanelSum.lean) evaluates the original first weighted panel as the literal harmonic interval and reciprocal-square sum. [GaussianStirlingAllOrderFirstPanelSquareError](Lean/IPRADerivations/Analysis/Stirling/AllOrders/GaussianStirlingAllOrderFirstPanelSquareError.lean) relates the square contribution to one with an explicit finite-mesh rate. [GaussianStirlingAllOrderFirstPanelError](Lean/IPRADerivations/Analysis/Stirling/AllOrders/GaussianStirlingAllOrderFirstPanelError.lean) gives an explicit two-sided comparison between the literal first panel and twice the original harmonic-log difference. [GaussianStirlingAllOrderBoxProductGap](Lean/IPRADerivations/Analysis/Stirling/AllOrders/GaussianStirlingAllOrderBoxProductGap.lean) proves a positive crossed-product gap on separated refinable boxes for the original centered and reflected weight samples. [GaussianStirlingAllOrderFirstPanelImproper](Lean/IPRADerivations/Analysis/Stirling/AllOrders/GaussianStirlingAllOrderFirstPanelImproper.lean) identifies the original log-Stirling remainder with the actual first centered periodic Bernoulli weighted improper sum and proves its explicit cutoff error $46· 2^{-p}$. [GaussianStirlingAllOrderPanelDerivative](Lean/IPRADerivations/Analysis/Stirling/AllOrders/GaussianStirlingAllOrderPanelDerivative.lean) gives the exact centered derivative complement and endpoint identities. [GaussianStirlingAllOrderDiscreteParts](Lean/IPRADerivations/Analysis/Stirling/AllOrders/GaussianStirlingAllOrderDiscreteParts.lean) verifies exact finite summation by parts, and [GaussianStirlingAllOrderCentralDerivativeBinding](Lean/IPRADerivations/Analysis/Stirling/AllOrders/GaussianStirlingAllOrderCentralDerivativeBinding.lean) identifies the leading quadratic term of the centered finite difference with the actual lower Bernoulli grid, with a two-sided finite error. [GaussianStirlingAllOrderHalfGridMean](Lean/IPRADerivations/Analysis/Stirling/AllOrders/GaussianStirlingAllOrderHalfGridMean.lean) proves the normalized reverse-Chebyshev inequality for the original reflected first-half grids, retaining a positive rational margin independent of refinement. [GaussianStirlingAllOrderPairedReadback](Lean/IPRADerivations/Analysis/Stirling/AllOrders/GaussianStirlingAllOrderPairedReadback.lean) identifies every weighted product with the two original periodic panel rows at its reflected indices. [RationalPowerMoments](Lean/IPRADerivations/Analysis/RationalArithmetic/Powers/RationalPowerMoments.lean) verifies the literal scalar monomial average and its $1/M$ mesh error against the exact monomial moment. [GaussianStirlingAllOrderCentralBernoulliError](Lean/IPRADerivations/Analysis/Stirling/AllOrders/GaussianStirlingAllOrderCentralBernoulliError.lean) and [GaussianStirlingAllOrderReciprocalWeightError](Lean/IPRADerivations/Analysis/Stirling/AllOrders/GaussianStirlingAllOrderReciprocalWeightError.lean) verify the quantitative centered second-difference comparisons for the original Bernoulli and reciprocal-power panel factors. [GaussianStirlingAllOrderReciprocalGridError](Lean/IPRADerivations/Analysis/Stirling/AllOrders/GaussianStirlingAllOrderReciprocalGridError.lean) expresses the reciprocal curvature error uniformly on the literal panel grid. [GaussianStirlingAllOrderPairedPanel](Lean/IPRADerivations/Analysis/Stirling/AllOrders/GaussianStirlingAllOrderPairedPanel.lean) reads the original panel as exactly the paired half-grid with the literal midpoint correction. [RationalPolynomialGridSum](Lean/IPRADerivations/Analysis/Polynomials/RationalPolynomialGridSum.lean) verifies a fixed signed polynomial grid fold through the natural power sums. [GaussianStirlingAllOrderPanelPartsRecurrence](Lean/IPRADerivations/Analysis/Stirling/AllOrders/GaussianStirlingAllOrderPanelPartsRecurrence.lean) proves the quantitative integration-by-parts recurrence for the original finite panels with an explicit $1/M$ mesh error, and [GaussianStirlingAllOrderPowerIntegral](Lean/IPRADerivations/Analysis/Stirling/AllOrders/GaussianStirlingAllOrderPowerIntegral.lean) gives the adjacent antiderivative brackets for the reciprocal-power mass. The unweighted averages have exact reflected-grid identities with the appropriate midpoint and endpoint corrections in [GaussianStirlingAllOrderPairedWeightFold](Lean/IPRADerivations/Analysis/Stirling/AllOrders/GaussianStirlingAllOrderPairedWeightFold.lean) and [GaussianStirlingAllOrderPairedBernoulliFold](Lean/IPRADerivations/Analysis/Stirling/AllOrders/GaussianStirlingAllOrderPairedBernoulliFold.lean). [GaussianStirlingAllOrderBernoulliGridMean](Lean/IPRADerivations/Analysis/Stirling/AllOrders/GaussianStirlingAllOrderBernoulliGridMean.lean) identifies the literal centered Bernoulli samples with the signed polynomial whose constant coefficient has been removed. [RationalPolynomialGridMean](Lean/IPRADerivations/Analysis/Polynomials/RationalPolynomialGridMean.lean) proves a two-sided mesh error for every fixed signed polynomial, and [GaussianStirlingAllOrderBernoulliGridRate](Lean/IPRADerivations/Analysis/Stirling/AllOrders/GaussianStirlingAllOrderBernoulliGridRate.lean) specializes the exact moment and error to the original centered Bernoulli mean at each fixed positive order. [GaussianStirlingAllOrderPanelPartsCofinal](Lean/IPRADerivations/Analysis/Stirling/AllOrders/GaussianStirlingAllOrderPanelPartsCofinal.lean) proves an explicit cofinal $2^{-p}$ residual for the exact original weighted and mass prefixes. [GaussianStirlingAllOrderFirstPanelCommonMesh](Lean/IPRADerivations/Analysis/Stirling/AllOrders/GaussianStirlingAllOrderFirstPanelCommonMesh.lean) compares the actual first panel on arbitrary fine meshes with its original local logarithmic name. [GaussianStirlingAllOrderPowerIntegralMesh](Lean/IPRADerivations/Analysis/Stirling/AllOrders/GaussianStirlingAllOrderPowerIntegralMesh.lean) and [GaussianStirlingAllOrderPowerIntegralCofinal](Lean/IPRADerivations/Analysis/Stirling/AllOrders/GaussianStirlingAllOrderPowerIntegralCofinal.lean) identify the original reciprocal-power mass with its exact antiderivative, with a cofinal error uniform over the cutoff. [GaussianStirlingAllOrderPairedWeightMass](Lean/IPRADerivations/Analysis/Stirling/AllOrders/GaussianStirlingAllOrderPairedWeightMass.lean) identifies this mass fold with the ordinary weight average used in the reflected comparison. [GaussianStirlingAllOrderPanelPartsBinding](Lean/IPRADerivations/Analysis/Stirling/AllOrders/GaussianStirlingAllOrderPanelPartsBinding.lean) binds the literal cofinal weighted prefixes at every fixed order to the named recurrence based on the original remainder. [GaussianStirlingAllOrderImproperName](Lean/IPRADerivations/Analysis/Stirling/AllOrders/GaussianStirlingAllOrderImproperName.lean) supplies the regular improper name and its equivalence to that recurrence. [GaussianDigammaFirstBernoulliPanelSum](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianDigammaFirstBernoulliPanelSum.lean) splits the first original digamma panel exactly into the literal reciprocal, square and cube mass folds. [GaussianDigammaFirstBernoulliEndpoints](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianDigammaFirstBernoulliEndpoints.lean) identifies the exact square and cube antiderivative correction with the reciprocal endpoint trapezoid. [GaussianStirlingAllOrderFullGridCovariance](Lean/IPRADerivations/Analysis/Stirling/AllOrders/GaussianStirlingAllOrderFullGridCovariance.lean) transfers the positive reflected margin to the original full panel with an exact midpoint correction. [GaussianStirlingAllOrderFullGridMeanRate](Lean/IPRADerivations/Analysis/Stirling/AllOrders/GaussianStirlingAllOrderFullGridMeanRate.lean) inserts the signed Bernoulli mean with its mesh allowance, and [GaussianStirlingAllOrderMidpointCorrection](Lean/IPRADerivations/Analysis/Stirling/AllOrders/GaussianStirlingAllOrderMidpointCorrection.lean) bounds the midpoint correction by the current reciprocal-power cap divided by $4S$. [GaussianStirlingAllOrderPanelPositive](Lean/IPRADerivations/Analysis/Stirling/AllOrders/GaussianStirlingAllOrderPanelPositive.lean) and [GaussianStirlingAllOrderPanelPositivePrefix](Lean/IPRADerivations/Analysis/Stirling/AllOrders/GaussianStirlingAllOrderPanelPositivePrefix.lean) prove a uniformly positive lower floor for the first original weighted panel and every nonempty prefix on meshes $8S$. [GaussianDigammaFirstBernoulliHarmonic](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianDigammaFirstBernoulliHarmonic.lean) proves the exact correction between the original left harmonic mass and the verified factorial-harmonic interval. [GaussianStirlingAllOrderLogTruncation](Lean/IPRADerivations/Analysis/Stirling/AllOrders/GaussianStirlingAllOrderLogTruncation.lean) identifies the signed multiple of the actual improper name with the original log-Stirling remainder after subtracting each literal fixed truncation. [GaussianStirlingAllOrderTruncationCoefficients](Lean/IPRADerivations/Analysis/Stirling/AllOrders/GaussianStirlingAllOrderTruncationCoefficients.lean) checks the correction coefficients against the existing log coefficient formula. [GaussianStirlingAllOrderImproperPositive](Lean/IPRADerivations/Analysis/Stirling/AllOrders/GaussianStirlingAllOrderImproperPositive.lean) passes the finite rational floor to the actual improper name and proves strict positivity. [GaussianStirlingAllOrderOuterCovariance](Lean/IPRADerivations/Analysis/Stirling/AllOrders/GaussianStirlingAllOrderOuterCovariance.lean) sums the corrected upper comparison over every nonempty original cutoff while retaining the first-panel margin. [GaussianStirlingAllOrderTruncationHorner](Lean/IPRADerivations/Analysis/Stirling/AllOrders/GaussianStirlingAllOrderTruncationHorner.lean) supplies the exact connection between the literal correction sums and the original Horner program at both parities. [GaussianStirlingAllOrderOuterCovarianceRate](Lean/IPRADerivations/Analysis/Stirling/AllOrders/GaussianStirlingAllOrderOuterCovarianceRate.lean) gives the uniform summed error and [GaussianStirlingAllOrderOuterCovarianceStrict](Lean/IPRADerivations/Analysis/Stirling/AllOrders/GaussianStirlingAllOrderOuterCovarianceStrict.lean) retains a fixed positive rational floor for the strict finite covariance gap. [GaussianStirlingAllOrderSignedLower](Lean/IPRADerivations/Analysis/Stirling/AllOrders/GaussianStirlingAllOrderSignedLower.lean) transports strict positivity to the original oriented truncation error. [GaussianStirlingAllOrderNamedUpperGap](Lean/IPRADerivations/Analysis/Stirling/AllOrders/GaussianStirlingAllOrderNamedUpperGap.lean) transfers the rational floor to the named difference. [GaussianStirlingAllOrderImproperUpper](Lean/IPRADerivations/Analysis/Stirling/AllOrders/GaussianStirlingAllOrderImproperUpper.lean) proves the strict upper comparison on the actual improper name. [GaussianStirlingAllOrderSignedBounds](Lean/IPRADerivations/Analysis/Stirling/AllOrders/GaussianStirlingAllOrderSignedBounds.lean) proves the sharp strict two-sided bound for the oriented original log-Stirling error at every fixed order and every encoded positive rational input. [GaussianDigammaFirstBernoulliLocal](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianDigammaFirstBernoulliLocal.lean) proves the explicit first-panel rate against the real log-difference name. [GaussianDigammaFirstBernoulliReference](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianDigammaFirstBernoulliReference.lean) gives the exact finite reference row as an anchor difference. [GaussianStirlingAllOrderSignedParity](Lean/IPRADerivations/Analysis/Stirling/AllOrders/GaussianStirlingAllOrderSignedParity.lean) gives the original un-oriented parity brackets. [GaussianStirlingAllOrderSharpLogRate](Lean/IPRADerivations/Analysis/Stirling/AllOrders/GaussianStirlingAllOrderSharpLogRate.lean) transfers those exact bounds to the original Horner errors, discharges the independent-clock log rate for positive rational inputs at least one, and proves the original multiplicative approximation program at every fixed degree under its explicit large-argument guard. [GaussianDigammaFirstBernoulliPrefix](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianDigammaFirstBernoulliPrefix.lean) and [GaussianDigammaFirstBernoulliImproper](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianDigammaFirstBernoulliImproper.lean) sum the mesh errors and identify the native first cofinal weighted prefix with $\log x-1/(2x)-\psi(x)$, including the explicit required mesh and observation rate. [GaussianDigammaBernoulliRecurrence](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianDigammaBernoulliRecurrence.lean) verifies the recurrence and its mesh rate at every fixed order. [GaussianDigammaBernoulliImproperName](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianDigammaBernoulliImproperName.lean) gives explicit regular names for the literal weighted prefixes and their cross-clock equivalence to the recurrence. [GaussianDigammaBernoulliCoefficients](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianDigammaBernoulliCoefficients.lean) verifies the coefficients against the original Bernoulli table. [GaussianDigammaBernoulliTruncation](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianDigammaBernoulliTruncation.lean) identifies each actual improper name with $(-1)^{m+1}$ times the native error after subtracting the first $m$ inverse even powers on every encoded positive rational. [GaussianDigammaBernoulliActualBase](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianDigammaBernoulliActualBase.lean) and [GaussianDigammaBernoulliActualUpper](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianDigammaBernoulliActualUpper.lean) pass the positive lower floor and the sharp strict upper comparison to the actual improper names. [GaussianDigammaBernoulliRadius](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianDigammaBernoulliRadius.lean) identifies that upper point with the magnitude of the first omitted term. [GaussianDigammaBernoulliSharpRemainder](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianDigammaBernoulliSharpRemainder.lean) proves the strict signed two-sided bound for the original digamma truncation after every fixed number $m$ of corrections on all encoded positive rationals. |
+| 54–58 | [GaussianLogGammaEulerCofinal](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianLogGammaEulerCofinal.lean) constructs the canonical Euler logarithm on the signed rational right half-plane from the original heads. Its exponential equals the original Gamma name by [GaussianLogGammaEulerExponentialLimit](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianLogGammaEulerExponentialLimit.lean). The unit shift, normalization at one and positive-rational-axis identity are checked below. The cofinal Taylor comparison with the reciprocal slope is checked below. The actual punctured difference quotient converges to the C27 digamma series on these rational charts. The canonical program also gives a regular log-Gamma evaluator on regular complex names with a certified right-half-plane margin. Its exponential agrees with the original named Gamma, including the overlap with the general pole-free evaluator. The actual named derivative is the cofinal digamma series, with a uniform modulus. The exact unit-shift recurrence holds for regular input names on the same certified right half-plane. On the certified positive real axis the same named evaluator equals the original real log-Gamma. The actual Binet kernel series has the uniform `1/(8N)` truncation bound and the interval estimates recorded below. Its value at zero is `1/12`, which is also the sharp upper bound on the nonnegative axis. [The elementary kernel proof](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetKernelElementaryRational.lean) identifies its quotient at positive rational times and its value at zero. [The first Binet formula](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetFirstFormula.lean) identifies the original improper Laplace sampler with the original Stirling remainder on the encoded rational right half-plane. [The named first Binet formula](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetFirstFormulaNamed.lean) extends the identity to regular complex names with the original positive real-part margin and disk. [The second Binet improper integral](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetBoseImproperName.lean) is a regular name for the original integrand with checked lower and upper cutoff rates. [The second Binet formula](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetSecondFormula.lean) identifies twice this original improper integral with the original Stirling remainder on the encoded rational right half-plane. [The named second Binet formula](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetSecondFormulaNamed.lean) lifts that original sampler to regular complex names with the certified margin and disk. [Raabe’s formula](Lean/IPRADerivations/Analysis/Stirling/Raabe/GaussianRaabeFormula.lean) holds for the original unit-interval log-Gamma quadrature at every encoded positive rational input. [The cofinal frozen-grid formula](Lean/IPRADerivations/Analysis/Stirling/Raabe/GaussianRaabeNamedGrid.lean) extends it to regular positive real names with a certified margin, using actual late input observations and every sufficiently fine mesh at each such base. [The original improper unit integral at zero](Lean/IPRADerivations/Analysis/Stirling/Raabe/GaussianRaabeUnitIntegral.lean) equals the named Stirling constant. [The shifted unit integral](Lean/IPRADerivations/Analysis/Stirling/Raabe/GaussianRaabeShiftedUnitFormula.lean) equals the same constant minus one. [The actual Binet forward quotient](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceMomentForwardQuotient.lean) converges to the negative successor moment at each encoded positive rational base, with explicit observation and step errors. [The two-sided derivative](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceMomentBackwardQuotient.lean) compares both original quotients to the same negative successor moment for every internal order at encoded positive rational inputs. [The named moment evaluator](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceMomentNamed.lean) extends the original moments to regular inputs on the certified positive real axis. [Named strict positivity](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceMomentNamedPositive.lean) has the uniform explicit [1,2] panel floor at all internal orders. [Both original named quotients](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceMomentNamedDerivative.lean) converge to the negative successor moment at the same base with explicit error budgets uniform in the physical margin. Together with the zeroth identity and strict positivity, this gives complete monotonicity of the original named Stirling remainder. [The original Mellin improper integral](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaMellinImproper.lean) and [Gamma times the original Dirichlet name](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaDirichletProduct.lean) are regular on the certified half-plane. [The original Gamma–zeta Mellin identity](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaMellinIdentity.lean) proves their equality for encoded complex rational parameters with the certified real-part margin. [The factorized named formula](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaNamedMellin.lean) extends the identity to regular complex parameters with a certified margin above one, using the original named Gamma of the actual input and the separately lifted original Dirichlet series. [The original specialization at two](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaMellinBasel.lean) equates the actual improper sampler with the original pi-square name divided by six. |
+| 59–62 | Wallis product with a rational rate to the original arctangent quadrature checked in [GaussianGammaHalfWallisRate](Lean/IPRADerivations/Analysis/Stirling/GaussianGammaHalfWallisRate.lean). [GaussianEvenMomentIntegral](Lean/IPRADerivations/Analysis/Integration/GaussianEvenMomentIntegral.lean) checks the actual positive-half Gaussian moment relative to the original half-integer Gamma value. [GaussianGammaHalfIntegerValues](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaHalfIntegerValues.lean) gives its exact factorial coefficient relative to Gamma at one half. [GaussianOddSymmetricQuadrature](Lean/IPRADerivations/Analysis/Integration/GaussianOddSymmetricQuadrature.lean) checks exact finite symmetric cancellation for the literal odd Gaussian quadrature. [GaussianGammaHalfPositiveRoot](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaHalfPositiveRoot.lean) identifies the original value at one half as a positive real square root of the exact arctangent name for pi. [GaussianGammaHalfSqrtPi](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaHalfSqrtPi.lean) checks its equality with an independent dyadic square-root program. [GaussianGammaHalfWallisConvergence](Lean/IPRADerivations/Analysis/Stirling/GaussianGammaHalfWallisConvergence.lean) proves the one-sided Wallis rate. [GaussianGammaHalfSqrtValues](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaHalfSqrtValues.lean) identifies the actual positive half-integer Gamma values and the positive-half even Gaussian moments with the independent square-root sampler and their exact factors. [GaussianEvenMomentSymmetricGrid](Lean/IPRADerivations/Analysis/Integration/GaussianEvenMomentSymmetricGrid.lean) checks the original reflected even rows and their finite sums. [GaussianEvenMomentWholeLine](Lean/IPRADerivations/Analysis/Integration/GaussianEvenMomentWholeLine.lean) uses the original cofinal endpoints and omitted-tail bounds for both halves. [GaussianEvenMomentWholeLineValue](Lean/IPRADerivations/Analysis/Integration/GaussianEvenMomentWholeLineValue.lean) identifies the actual whole-line even moment with the unhalved factorial and independent square-root factors. [GaussianOddMomentWholeAbsolute](Lean/IPRADerivations/Analysis/Integration/GaussianOddMomentWholeAbsolute.lean) gives the literal odd absolute convergence to twice the positive-half Euler reference, with exact symmetric cancellation of the signed quadrature. [GaussianOddMomentIndependentCuts](Lean/IPRADerivations/Analysis/Integration/GaussianOddMomentIndependentCuts.lean) proves the signed limit is zero at independent left and right cutoffs. Gamma-density normalization and moments are checked. [GaussianEulerIntegerMomentIntegrand](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerIntegerMomentIntegrand.lean) proves the original weighted Euler row identity at every internal integer order. [GaussianGammaDensityDomain](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaDensityDomain.lean) derives the shifted integral and Gamma guards. [GaussianEulerIntegerMomentUniform](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerIntegerMomentUniform.lean) gives a uniform compact clock for the literal weighted rows. [GaussianGammaDensityMomentReference](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaDensityMomentReference.lean) evaluates the normalized original shifted integral as the rising product. [GaussianEulerIntegerMomentGrid](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerIntegerMomentGrid.lean) and [GaussianGammaDensityMomentGrid](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaDensityMomentGrid.lean) bind the literal weighted rows to the normalized cofinal sampler. [GaussianGammaDensityMomentName](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaDensityMomentName.lean) proves the original density moments for every internal nonnegative integer on the encoded half-plane. [GaussianGammaDensityMeanVariance](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaDensityMeanVariance.lean) gives normalization, mean and variance for that same sampler. [GaussianNamedGoldenRatio](Lean/IPRADerivations/Analysis/Names/GaussianNamedGoldenRatio.lean) proves the independent positive golden-ratio name satisfies its quadratic identity. [GaussianNamedGoldenRatioFormula](Lean/IPRADerivations/Analysis/Names/GaussianNamedGoldenRatioFormula.lean) binds that sampler to the original affine square-root expression, and [GaussianNamedGoldenRatioUniqueness](Lean/IPRADerivations/Analysis/Names/GaussianNamedGoldenRatioUniqueness.lean) proves uniqueness of its quadratic among certified positive regular names. [GaussianNamedGammaFirstCrossing](Lean/IPRADerivations/Analysis/Gamma/Names/GaussianNamedGammaFirstCrossing.lean) proves the first Gamma crossing at three halves. [GaussianNamedGammaBackwardIdentification](Lean/IPRADerivations/Analysis/Gamma/Names/GaussianNamedGammaBackwardIdentification.lean) identifies the original named backward argument with the literal pole-free evaluator at decoded native observations. [GaussianNamedGammaSecondCrossing](Lean/IPRADerivations/Analysis/Gamma/Names/GaussianNamedGammaSecondCrossing.lean) proves the second crossing exactly at the independent positive golden ratio. [GaussianNamedGammaSecondCrossingWitness](Lean/IPRADerivations/Analysis/Gamma/Names/GaussianNamedGammaSecondCrossingWitness.lean) proves the literal golden name is admitted and attains the crossing. [GaussianArctangentCayleyValues](Lean/IPRADerivations/Analysis/Trigonometry/Arctangent/GaussianArctangentCayleyValues.lean) proves the exact norm and endpoints of the rational Cayley grid. [GaussianArctangentCayleyStep](Lean/IPRADerivations/Analysis/Trigonometry/Arctangent/GaussianArctangentCayleyStep.lean) bounds its linear exponential step defect by `2/M²`. [GaussianArctangentExponentialPrefix](Lean/IPRADerivations/Analysis/Trigonometry/Arctangent/GaussianArctangentExponentialPrefix.lean) matches the exact arctangent prefix to the original π program. [GaussianArctangentCayleyExponentialStep](Lean/IPRADerivations/Analysis/Trigonometry/Arctangent/GaussianArctangentCayleyExponentialStep.lean) and [GaussianArctangentCayleyBudget](Lean/IPRADerivations/Analysis/Trigonometry/Arctangent/GaussianArctangentCayleyBudget.lean) give the local exponential defect and mesh budget. [GaussianArctangentQuarterExponential](Lean/IPRADerivations/Analysis/Trigonometry/Arctangent/GaussianArctangentQuarterExponential.lean) and [GaussianArctangentExponentialPeriod](Lean/IPRADerivations/Analysis/Trigonometry/Arctangent/GaussianArctangentExponentialPeriod.lean) transport the finite endpoint estimate to the original exponential clocks. [GaussianArctangentCayleyTelescope](Lean/IPRADerivations/Analysis/Trigonometry/Arctangent/GaussianArctangentCayleyTelescope.lean) proves the finite Cayley estimate at every prefix, and [GaussianArctangentOriginalExponential](Lean/IPRADerivations/Analysis/Trigonometry/Arctangent/GaussianArctangentOriginalExponential.lean) proves the exact quarter, half and full turns for the original arctangent name. [GaussianArctangentNamedSine](Lean/IPRADerivations/Analysis/Trigonometry/Arctangent/GaussianArctangentNamedSine.lean) proves the period and signed integer zeros of the named sine, and [GaussianArctangentNamedPhase](Lean/IPRADerivations/Analysis/Trigonometry/Arctangent/GaussianArctangentNamedPhase.lean) identifies the actual integer and quarter products with the corresponding phase programs. [GaussianNamedGammaFactorialInterpolation](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianNamedGammaFactorialInterpolation.lean) gives an explicit regular name for the alternative interpolation on the certified right half-plane, its recurrence and factorial values, and its distinction at one quarter for any nonzero rational coefficient. [GaussianGammaPoleFreeSineInterpolation](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaPoleFreeSineInterpolation.lean) proves the same interpolation program satisfies the recurrence on encoded Gaussian rationals off the original poles, deriving both separation certificates from exact pole exclusion. [GaussianNamedSineTaylor](Lean/IPRADerivations/Analysis/Trigonometry/GaussianNamedSineTaylor.lean) identifies the sine factor with its literal signed factorial series at independent precisions. |
 
 In particular, a finite factor bound or a generic exponentiation/logarithm
 interface does not prove a source assertion identifying the completed named
@@ -1719,7 +1719,7 @@ compared to literal rational evaluations read at a common late observation.
 At the selected positive offset an explicit nonzero dyadic increment meets the
 original derivative source at each precision, and its original quotient has
 leading error at most `2^{-p}` from zero.
-[GaussianNamedPositiveDigamma](Lean/IPRADerivations/Analysis/GaussianNamedPositiveDigamma.lean), [GaussianGammaPositiveNamedRationalFreeze](Lean/IPRADerivations/Analysis/GaussianGammaPositiveNamedRationalFreeze.lean), [GaussianGammaDigammaLocationGammaDerivative](Lean/IPRADerivations/Analysis/GaussianGammaDigammaLocationGammaDerivative.lean).
+[GaussianNamedPositiveDigamma](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianNamedPositiveDigamma.lean), [GaussianGammaPositiveNamedRationalFreeze](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaPositiveNamedRationalFreeze.lean), [GaussianGammaDigammaLocationGammaDerivative](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaDigammaLocationGammaDerivative.lean).
 
 The recurrence gives a strict rational digamma lower slope across arbitrary
 positive encodings with a common upper bound. Its inverse bounds the exact
@@ -1727,13 +1727,13 @@ input separation from independent output observations. Freezing the original
 named reciprocal and Euler derivative together transports the bound to regular
 positive real names. The original derivative vanishes precisely at the
 selected location, under arbitrary independently chosen positive margins.
-[GaussianGammaDigammaCompactSlopeLower](Lean/IPRADerivations/Analysis/GaussianGammaDigammaCompactSlopeLower.lean), [GaussianRationalLowerSlopeDistance](Lean/IPRADerivations/Analysis/GaussianRationalLowerSlopeDistance.lean), [GaussianGammaDigammaCompactInverseSlope](Lean/IPRADerivations/Analysis/GaussianGammaDigammaCompactInverseSlope.lean), [GaussianGammaPositiveNamedReciprocalFrozen](Lean/IPRADerivations/Analysis/GaussianGammaPositiveNamedReciprocalFrozen.lean), [GaussianGammaPositiveNamedDigammaFrozen](Lean/IPRADerivations/Analysis/GaussianGammaPositiveNamedDigammaFrozen.lean), [GaussianGammaPositiveNamedDigammaInjective](Lean/IPRADerivations/Analysis/GaussianGammaPositiveNamedDigammaInjective.lean), [GaussianNamedPositiveDigammaProperness](Lean/IPRADerivations/Analysis/GaussianNamedPositiveDigammaProperness.lean), [GaussianGammaPositiveNamedCritical](Lean/IPRADerivations/Analysis/GaussianGammaPositiveNamedCritical.lean).
+[GaussianGammaDigammaCompactSlopeLower](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaDigammaCompactSlopeLower.lean), [GaussianRationalLowerSlopeDistance](Lean/IPRADerivations/Analysis/Inequalities/GaussianRationalLowerSlopeDistance.lean), [GaussianGammaDigammaCompactInverseSlope](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaDigammaCompactInverseSlope.lean), [GaussianGammaPositiveNamedReciprocalFrozen](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaPositiveNamedReciprocalFrozen.lean), [GaussianGammaPositiveNamedDigammaFrozen](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaPositiveNamedDigammaFrozen.lean), [GaussianGammaPositiveNamedDigammaInjective](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaPositiveNamedDigammaInjective.lean), [GaussianNamedPositiveDigammaProperness](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianNamedPositiveDigammaProperness.lean), [GaussianGammaPositiveNamedCritical](Lean/IPRADerivations/Analysis/Gamma/GaussianGammaPositiveNamedCritical.lean).
 
 The original positive digamma is equivalent to a name with exact real
 observations. The quantitative rational upper bound controls late finite
 observations whose order differs from the named input order by observation
 error. This gives exact strict monotonicity on the named positive domain.
-[GaussianGammaDigammaCompactLipschitz](Lean/IPRADerivations/Analysis/GaussianGammaDigammaCompactLipschitz.lean), [GaussianNamedPositiveDigammaReal](Lean/IPRADerivations/Analysis/GaussianNamedPositiveDigammaReal.lean), [GaussianGammaPositiveNamedDigammaOrder](Lean/IPRADerivations/Analysis/GaussianGammaPositiveNamedDigammaOrder.lean).
+[GaussianGammaDigammaCompactLipschitz](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaDigammaCompactLipschitz.lean), [GaussianNamedPositiveDigammaReal](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianNamedPositiveDigammaReal.lean), [GaussianGammaPositiveNamedDigammaOrder](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaPositiveNamedDigammaOrder.lean).
 
 The two original normalized Euler digamma names at a positive real input
 and its unit shift satisfy the digamma recurrence. A common frozen
@@ -1741,7 +1741,7 @@ positive rational observation gives the literal shift with a shared
 denominator. The positive margin supplies a reciprocal certificate
 for the original input. The comparison rate removes the observation
 errors from both digamma terms and the reciprocal.
-[GaussianGammaPositiveNamedDigammaRecurrenceInput](Lean/IPRADerivations/Analysis/GaussianGammaPositiveNamedDigammaRecurrenceInput.lean), [GaussianGammaPositiveNamedDigammaRecurrence](Lean/IPRADerivations/Analysis/GaussianGammaPositiveNamedDigammaRecurrence.lean).
+[GaussianGammaPositiveNamedDigammaRecurrenceInput](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaPositiveNamedDigammaRecurrenceInput.lean), [GaussianGammaPositiveNamedDigammaRecurrence](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaPositiveNamedDigammaRecurrence.lean).
 
 For every internal derivative order `m ≥ 1`, the literal signed
 polygamma tail on a certified Gaussian-rational disk satisfies the
@@ -1749,7 +1749,7 @@ C30 bound `(m−1)! · 2^(m+1) / N^m`. The cutoff meets `N ≥ 2R` and
 `N ≥ 1` and the finite last index is arbitrary. The proof computes
 the reciprocal powers of the actual translated numerator and keeps
 their original signed factorial scaling.
-[GaussianGammaPolygammaTailRows](Lean/IPRADerivations/Analysis/GaussianGammaPolygammaTailRows.lean), [GaussianGammaPolygammaTail](Lean/IPRADerivations/Analysis/GaussianGammaPolygammaTail.lean).
+[GaussianGammaPolygammaTailRows](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaPolygammaTailRows.lean), [GaussianGammaPolygammaTail](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaPolygammaTail.lean).
 
 The C29 regular series evaluator uses the literal signed prefix from
 the zeroth term, with a primitive-recursive cofinal cutoff. The pole
@@ -1757,7 +1757,7 @@ certificate excludes zero denominators at every index. Its comparison
 with any admissible cutoff retains the C30 bound and the dyadic
 observation error. Identifying the series with the corresponding
 derivative remains open.
-[GaussianGammaPolygammaPrefix](Lean/IPRADerivations/Analysis/GaussianGammaPolygammaPrefix.lean), [GaussianGammaPolygammaSeriesName](Lean/IPRADerivations/Analysis/GaussianGammaPolygammaSeriesName.lean).
+[GaussianGammaPolygammaPrefix](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaPolygammaPrefix.lean), [GaussianGammaPolygammaSeriesName](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaPolygammaSeriesName.lean).
 
 ## Real Gamma away from the poles
 
@@ -1768,7 +1768,7 @@ recovers the original input. The positive and negative quotient transfers
 both preserve the caller's original reciprocal of the increment. One
 computed demand supplies both derivative guards and preserves the pole
 separation of the perturbed input.
-[GaussianGammaNamedHalfPlanePoleFree](Lean/IPRADerivations/Analysis/GaussianGammaNamedHalfPlanePoleFree.lean), [GaussianGammaNamedHalfPlanePoleFreeQuotient](Lean/IPRADerivations/Analysis/GaussianGammaNamedHalfPlanePoleFreeQuotient.lean), [GaussianGammaNamedPoleFreePositiveAdmission](Lean/IPRADerivations/Analysis/GaussianGammaNamedPoleFreePositiveAdmission.lean), [GaussianGammaNamedPoleFreeNegativeSnapshot](Lean/IPRADerivations/Analysis/GaussianGammaNamedPoleFreeNegativeSnapshot.lean), [GaussianGammaNamedPoleFreeRealAdmission](Lean/IPRADerivations/Analysis/GaussianGammaNamedPoleFreeRealAdmission.lean), [GaussianGammaNamedPoleFreeNegativeChartDerivative](Lean/IPRADerivations/Analysis/GaussianGammaNamedPoleFreeNegativeChartDerivative.lean), [GaussianGammaNamedPoleFreeIncrementSource](Lean/IPRADerivations/Analysis/GaussianGammaNamedPoleFreeIncrementSource.lean), [GaussianGammaNamedRealDerivativeDemand](Lean/IPRADerivations/Analysis/GaussianGammaNamedRealDerivativeDemand.lean).
+[GaussianGammaNamedHalfPlanePoleFree](Lean/IPRADerivations/Analysis/Gamma/Names/GaussianGammaNamedHalfPlanePoleFree.lean), [GaussianGammaNamedHalfPlanePoleFreeQuotient](Lean/IPRADerivations/Analysis/Gamma/Names/GaussianGammaNamedHalfPlanePoleFreeQuotient.lean), [GaussianGammaNamedPoleFreePositiveAdmission](Lean/IPRADerivations/Analysis/Gamma/Names/GaussianGammaNamedPoleFreePositiveAdmission.lean), [GaussianGammaNamedPoleFreeNegativeSnapshot](Lean/IPRADerivations/Analysis/Gamma/Names/GaussianGammaNamedPoleFreeNegativeSnapshot.lean), [GaussianGammaNamedPoleFreeRealAdmission](Lean/IPRADerivations/Analysis/Gamma/Names/GaussianGammaNamedPoleFreeRealAdmission.lean), [GaussianGammaNamedPoleFreeNegativeChartDerivative](Lean/IPRADerivations/Analysis/Gamma/Names/GaussianGammaNamedPoleFreeNegativeChartDerivative.lean), [GaussianGammaNamedPoleFreeIncrementSource](Lean/IPRADerivations/Analysis/Gamma/Names/GaussianGammaNamedPoleFreeIncrementSource.lean), [GaussianGammaNamedRealDerivativeDemand](Lean/IPRADerivations/Analysis/Gamma/Names/GaussianGammaNamedRealDerivativeDemand.lean).
 
 The sign of the same late observation selects the derivative program,
 using a fixed branch for every subsequent observation. For an arbitrary
@@ -1777,7 +1777,7 @@ smallness bound, the actual pole-free quotient has an independent-clock
 rate to this derivative. A nonzero dyadic increment meets the demand
 at each precision. The derivative is zero exactly at the selected
 positive location or the selected offset in the computed negative chart.
-[GaussianNameBranch](Lean/IPRADerivations/Analysis/GaussianNameBranch.lean), [GaussianGammaNamedRealDerivativeStep](Lean/IPRADerivations/Analysis/GaussianGammaNamedRealDerivativeStep.lean), [GaussianGammaNamedRealDerivative](Lean/IPRADerivations/Analysis/GaussianGammaNamedRealDerivative.lean), [GaussianGammaNamedRealCritical](Lean/IPRADerivations/Analysis/GaussianGammaNamedRealCritical.lean).
+[GaussianNameBranch](Lean/IPRADerivations/Analysis/Names/GaussianNameBranch.lean), [GaussianGammaNamedRealDerivativeStep](Lean/IPRADerivations/Analysis/Gamma/Names/GaussianGammaNamedRealDerivativeStep.lean), [GaussianGammaNamedRealDerivative](Lean/IPRADerivations/Analysis/Gamma/Names/GaussianGammaNamedRealDerivative.lean), [GaussianGammaNamedRealCritical](Lean/IPRADerivations/Analysis/Gamma/Names/GaussianGammaNamedRealCritical.lean).
 
 A shared explicit dyadic increment meets the demands at two equivalent
 inputs. Their original pole-free quotients agree under independent radius
@@ -1785,7 +1785,7 @@ and pole-separation certificates. Combining the two rates gives exact
 extensionality of the derivative. On the positive domain, equality with
 the selected minimum value excludes every finite apartness witness,
 so the input name is equivalent to the selected minimizer.
-[GaussianNamedDyadicIncrement](Lean/IPRADerivations/Analysis/GaussianNamedDyadicIncrement.lean), [GaussianGammaNamedPoleFreeQuotientProperness](Lean/IPRADerivations/Analysis/GaussianGammaNamedPoleFreeQuotientProperness.lean), [GaussianGammaNamedRealDerivativeProperness](Lean/IPRADerivations/Analysis/GaussianGammaNamedRealDerivativeProperness.lean), [GaussianGammaMinimumGlobalUniqueness](Lean/IPRADerivations/Analysis/GaussianGammaMinimumGlobalUniqueness.lean).
+[GaussianNamedDyadicIncrement](Lean/IPRADerivations/Analysis/Names/GaussianNamedDyadicIncrement.lean), [GaussianGammaNamedPoleFreeQuotientProperness](Lean/IPRADerivations/Analysis/Gamma/Names/GaussianGammaNamedPoleFreeQuotientProperness.lean), [GaussianGammaNamedRealDerivativeProperness](Lean/IPRADerivations/Analysis/Gamma/Names/GaussianGammaNamedRealDerivativeProperness.lean), [GaussianGammaMinimumGlobalUniqueness](Lean/IPRADerivations/Analysis/Gamma/CriticalPoints/GaussianGammaMinimumGlobalUniqueness.lean).
 
 ## The right-half-plane logarithm and finite Euler heads
 
@@ -1796,19 +1796,19 @@ square-root program. The signed phase uses the arctangent on the unit
 interval and the reciprocal chart beyond it. Equal ratios give exactly
 equivalent phase names. The combined logarithm has the positive-axis
 readback and positive rational scaling formula of the source.
-[GaussianNamedHalf](Lean/IPRADerivations/Analysis/GaussianNamedHalf.lean), [GaussianPositiveRationalHalfLogarithm](Lean/IPRADerivations/Analysis/GaussianPositiveRationalHalfLogarithm.lean), [GaussianRightHalfPlaneRadialLogarithm](Lean/IPRADerivations/Analysis/GaussianRightHalfPlaneRadialLogarithm.lean), [GaussianRightHalfPlaneArgument](Lean/IPRADerivations/Analysis/GaussianRightHalfPlaneArgument.lean), [GaussianRightHalfPlaneArgumentProperness](Lean/IPRADerivations/Analysis/GaussianRightHalfPlaneArgumentProperness.lean), [GaussianRightHalfPlaneArgumentAxis](Lean/IPRADerivations/Analysis/GaussianRightHalfPlaneArgumentAxis.lean), [GaussianRightHalfPlaneLogarithm](Lean/IPRADerivations/Analysis/GaussianRightHalfPlaneLogarithm.lean).
+[GaussianNamedHalf](Lean/IPRADerivations/Analysis/Names/GaussianNamedHalf.lean), [GaussianPositiveRationalHalfLogarithm](Lean/IPRADerivations/Analysis/Logarithm/GaussianPositiveRationalHalfLogarithm.lean), [GaussianRightHalfPlaneRadialLogarithm](Lean/IPRADerivations/Analysis/Logarithm/GaussianRightHalfPlaneRadialLogarithm.lean), [GaussianRightHalfPlaneArgument](Lean/IPRADerivations/Analysis/RationalArithmetic/Complex/GaussianRightHalfPlaneArgument.lean), [GaussianRightHalfPlaneArgumentProperness](Lean/IPRADerivations/Analysis/RationalArithmetic/Complex/GaussianRightHalfPlaneArgumentProperness.lean), [GaussianRightHalfPlaneArgumentAxis](Lean/IPRADerivations/Analysis/RationalArithmetic/Complex/GaussianRightHalfPlaneArgumentAxis.lean), [GaussianRightHalfPlaneLogarithm](Lean/IPRADerivations/Analysis/Logarithm/GaussianRightHalfPlaneLogarithm.lean).
 
 The small-chart phase exponential has the exact Cayley square and
 nonnegative real part at every observation. Both reciprocal and
 conjugate charts have explicit exponential transfer.
-[GaussianRightHalfPlaneArgumentExponential](Lean/IPRADerivations/Analysis/GaussianRightHalfPlaneArgumentExponential.lean), [GaussianRightHalfPlaneArgumentCosine](Lean/IPRADerivations/Analysis/GaussianRightHalfPlaneArgumentCosine.lean), [GaussianRightHalfPlaneArgumentExponentialBranches](Lean/IPRADerivations/Analysis/GaussianRightHalfPlaneArgumentExponentialBranches.lean).
+[GaussianRightHalfPlaneArgumentExponential](Lean/IPRADerivations/Analysis/Exponential/GaussianRightHalfPlaneArgumentExponential.lean), [GaussianRightHalfPlaneArgumentCosine](Lean/IPRADerivations/Analysis/Trigonometry/GaussianRightHalfPlaneArgumentCosine.lean), [GaussianRightHalfPlaneArgumentExponentialBranches](Lean/IPRADerivations/Analysis/Exponential/GaussianRightHalfPlaneArgumentExponentialBranches.lean).
 
 In the direct phase chart, the positive radial representative times
 the original phase exponential recovers the exact encoded fraction.
 Their product squared is the square of the input. The finite real
 margin of the sum licenses original reciprocal cancellation,
 which selects the desired square root.
-[GaussianNamedSquareBranch](Lean/IPRADerivations/Analysis/GaussianNamedSquareBranch.lean), [GaussianRightHalfPlaneExponentialMargin](Lean/IPRADerivations/Analysis/GaussianRightHalfPlaneExponentialMargin.lean), [GaussianRightHalfPlaneExponentialSmall](Lean/IPRADerivations/Analysis/GaussianRightHalfPlaneExponentialSmall.lean).
+[GaussianNamedSquareBranch](Lean/IPRADerivations/Analysis/Names/GaussianNamedSquareBranch.lean), [GaussianRightHalfPlaneExponentialMargin](Lean/IPRADerivations/Analysis/Exponential/GaussianRightHalfPlaneExponentialMargin.lean), [GaussianRightHalfPlaneExponentialSmall](Lean/IPRADerivations/Analysis/Exponential/GaussianRightHalfPlaneExponentialSmall.lean).
 
 The reciprocal phase chart follows by interchanging the numerator
 magnitudes and applying the exact quarter turn to the conjugate
@@ -1816,27 +1816,27 @@ exponential. Conjugation then implements the negative imaginary
 sign. The exponential of the full logarithm recovers the same
 signed fraction program used in the original finite Euler heads
 at every admitted encoded Gaussian rational.
-[GaussianRightHalfPlaneExponentialCharts](Lean/IPRADerivations/Analysis/GaussianRightHalfPlaneExponentialCharts.lean), [GaussianRightHalfPlaneLogarithmExponential](Lean/IPRADerivations/Analysis/GaussianRightHalfPlaneLogarithmExponential.lean).
+[GaussianRightHalfPlaneExponentialCharts](Lean/IPRADerivations/Analysis/Exponential/GaussianRightHalfPlaneExponentialCharts.lean), [GaussianRightHalfPlaneLogarithmExponential](Lean/IPRADerivations/Analysis/Exponential/GaussianRightHalfPlaneLogarithmExponential.lean).
 
 A common precision computed from the number of terms gives a regular
 sum of the actual shifted logarithms. This yields the finite Euler head
 `log(N!) + z log(N) − Σ Log(z+k)` on the rational right half-plane.
 The cofinal limit and its exponential identity with the original
 Gamma evaluator are constructed below.
-[GaussianNamedFiniteSumFamily](Lean/IPRADerivations/Analysis/GaussianNamedFiniteSumFamily.lean), [GaussianLogGammaEulerHead](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerHead.lean).
+[GaussianNamedFiniteSumFamily](Lean/IPRADerivations/Analysis/Names/FiniteOperations/GaussianNamedFiniteSumFamily.lean), [GaussianLogGammaEulerHead](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianLogGammaEulerHead.lean).
 
 Common positive rescaling of both numerators and the denominator
 preserves the complete logarithm name. For any internal positive
 integer `k`, the same program satisfies
 `Log(z+k) = log(k) + Log(1+z/k)` with the original sign bit and
 the exact shifted numerator and residual denominator.
-[GaussianRightHalfPlaneLogarithmRescale](Lean/IPRADerivations/Analysis/GaussianRightHalfPlaneLogarithmRescale.lean).
+[GaussianRightHalfPlaneLogarithmRescale](Lean/IPRADerivations/Analysis/Logarithm/GaussianRightHalfPlaneLogarithmRescale.lean).
 
 Finite sums of regular names now have checked first-row and final-row
 splits, transport under bounded row equivalence, and additivity.
 These statements compare the actual count-dependent samplers at
 independent observation clocks.
-[GaussianNamedFiniteSumFamilySplit](Lean/IPRADerivations/Analysis/GaussianNamedFiniteSumFamilySplit.lean), [GaussianNamedFiniteSumFamilyCongruence](Lean/IPRADerivations/Analysis/GaussianNamedFiniteSumFamilyCongruence.lean), [GaussianNamedFiniteSumFamilyAdd](Lean/IPRADerivations/Analysis/GaussianNamedFiniteSumFamilyAdd.lean).
+[GaussianNamedFiniteSumFamilySplit](Lean/IPRADerivations/Analysis/Names/FiniteOperations/GaussianNamedFiniteSumFamilySplit.lean), [GaussianNamedFiniteSumFamilyCongruence](Lean/IPRADerivations/Analysis/Names/FiniteOperations/GaussianNamedFiniteSumFamilyCongruence.lean), [GaussianNamedFiniteSumFamilyAdd](Lean/IPRADerivations/Analysis/Names/FiniteOperations/GaussianNamedFiniteSumFamilyAdd.lean).
 
 For every positive internal cutoff `N`, the same finite Euler head has
 the value `z log(N) − (Log(z) + Σ_{k=1}^N Log(1+z/k))` at
@@ -1844,14 +1844,14 @@ independent observation clocks. An internal finite sum of the integer
 logarithms equals `log(N!)`, which cancels after splitting each
 denominator row. The bounded prefix and interval split reads the exact
 original row at its offset.
-[GaussianLogGammaFactorialLogSum](Lean/IPRADerivations/Analysis/GaussianLogGammaFactorialLogSum.lean), [GaussianLogGammaEulerFactorSum](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerFactorSum.lean), [GaussianLogGammaEulerNormalizedHead](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerNormalizedHead.lean), [GaussianNamedFiniteSumFamilyRange](Lean/IPRADerivations/Analysis/GaussianNamedFiniteSumFamilyRange.lean).
+[GaussianLogGammaFactorialLogSum](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianLogGammaFactorialLogSum.lean), [GaussianLogGammaEulerFactorSum](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianLogGammaEulerFactorSum.lean), [GaussianLogGammaEulerNormalizedHead](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianLogGammaEulerNormalizedHead.lean), [GaussianNamedFiniteSumFamilyRange](Lean/IPRADerivations/Analysis/Names/FiniteOperations/GaussianNamedFiniteSumFamilyRange.lean).
 
 On the signed rational disk `|w| ≤ 1/8`, the actual canonical logarithm
 of `1+w` equals the actual Mercator logarithm at independently chosen
 precisions. Both logarithms exponentiate to the same encoded rational.
 The late difference samples have norm at most `3/4`, where the
 quadratic exponential remainder gives an internal uniqueness proof.
-[GaussianFiniteExponentialLocalUniqueness](Lean/IPRADerivations/Analysis/GaussianFiniteExponentialLocalUniqueness.lean), [GaussianNamedExponentialLocalUniqueness](Lean/IPRADerivations/Analysis/GaussianNamedExponentialLocalUniqueness.lean), [GaussianRightHalfPlaneLogarithmMercator](Lean/IPRADerivations/Analysis/GaussianRightHalfPlaneLogarithmMercator.lean).
+[GaussianFiniteExponentialLocalUniqueness](Lean/IPRADerivations/Analysis/Exponential/GaussianFiniteExponentialLocalUniqueness.lean), [GaussianNamedExponentialLocalUniqueness](Lean/IPRADerivations/Analysis/Exponential/GaussianNamedExponentialLocalUniqueness.lean), [GaussianRightHalfPlaneLogarithmMercator](Lean/IPRADerivations/Analysis/Logarithm/GaussianRightHalfPlaneLogarithmMercator.lean).
 
 The exact difference between two finite Euler heads is the weighted
 positive-real logarithm difference minus the sum of the canonical
@@ -1860,7 +1860,7 @@ for `|z|`, a row at `k ≥ 8R` differs from its linear term `z/k`
 by at most `R²/k²` plus its explicit observation error. The linear
 terms sum exactly to `z(H_{N+r}−H_N)`, which also approximates
 `z(log(N+r)−log(N))` with error `R/N` plus its observation error.
-[GaussianLogGammaEulerNormalizedDifference](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerNormalizedDifference.lean), [GaussianLogGammaEulerResidualCanonicalError](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerResidualCanonicalError.lean), [GaussianLogGammaEulerLinearInterval](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerLinearInterval.lean), [GaussianLogGammaEulerWeightedIntervalError](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerWeightedIntervalError.lean).
+[GaussianLogGammaEulerNormalizedDifference](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianLogGammaEulerNormalizedDifference.lean), [GaussianLogGammaEulerResidualCanonicalError](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianLogGammaEulerResidualCanonicalError.lean), [GaussianLogGammaEulerLinearInterval](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianLogGammaEulerLinearInterval.lean), [GaussianLogGammaEulerWeightedIntervalError](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianLogGammaEulerWeightedIntervalError.lean).
 
 For any independently chosen observation precisions, the original Euler
 heads at `N+r` and `N` differ by at most `(R²+R)/N` plus the two
@@ -1871,14 +1871,14 @@ cofinal name, independent of the chosen admissible radius. The concrete
 radius `A+B` covers every signed rational admitted by the original
 right-half-plane certificate. The half-disk branch proof below gives
 the source threshold `N ≥ 2R`.
-[GaussianLogGammaEulerResidualInterval](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerResidualInterval.lean), [GaussianLogGammaEulerHeadGap](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerHeadGap.lean), [GaussianLogGammaEulerCofinal](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerCofinal.lean).
+[GaussianLogGammaEulerResidualInterval](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianLogGammaEulerResidualInterval.lean), [GaussianLogGammaEulerHeadGap](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianLogGammaEulerHeadGap.lean), [GaussianLogGammaEulerCofinal](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianLogGammaEulerCofinal.lean).
 
 Exponentiating the negative of either finite Euler logarithm head
 gives the original reciprocal Euler head at independently chosen
 precisions. The proof identifies each shifted signed rational factor,
 uses the original integer logarithm in the weighted exponent, and
 folds the exponential product at every internal finite length.
-[GaussianLogGammaEulerExponentialHead](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerExponentialHead.lean), [GaussianLogGammaEulerExponentialFold](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerExponentialFold.lean).
+[GaussianLogGammaEulerExponentialHead](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianLogGammaEulerExponentialHead.lean), [GaussianLogGammaEulerExponentialFold](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianLogGammaEulerExponentialFold.lean).
 
 The actual exponential of the canonical cofinal log-Gamma equals the
 original Gamma sampler at every admitted signed Gaussian rational.
@@ -1886,7 +1886,7 @@ The reciprocal identity uses the original C7 name and the pole margin
 `1/D`. The checked cofinal values agree across any two presentations
 with equal canonical rational arguments, including distinct sign bits
 for a zero imaginary part.
-[GaussianLogGammaEulerRepresentation](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerRepresentation.lean), [GaussianLogGammaEulerExponentialLimit](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerExponentialLimit.lean).
+[GaussianLogGammaEulerRepresentation](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianLogGammaEulerRepresentation.lean), [GaussianLogGammaEulerExponentialLimit](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianLogGammaEulerExponentialLimit.lean).
 
 The original finite head satisfies the exact unit shift with correction
 `Log(z)+log(N)−Log(z+N+1)`, after factorial cancellation and
@@ -1895,7 +1895,7 @@ reindexing the denominator sum. With `S` bounding `|z+1|` and
 by at most `2S/N` plus a dyadic observation error. A common computed
 cutoff proves `L(z+1)−L(z)=Log(z)` for the canonical cofinal names
 at independent precisions.
-[GaussianLogGammaEulerRecurrenceFinite](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerRecurrenceFinite.lean), [GaussianLogGammaEulerTerminalShiftError](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerTerminalShiftError.lean), [GaussianLogGammaEulerRecurrence](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerRecurrence.lean).
+[GaussianLogGammaEulerRecurrenceFinite](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianLogGammaEulerRecurrenceFinite.lean), [GaussianLogGammaEulerTerminalShiftError](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianLogGammaEulerTerminalShiftError.lean), [GaussianLogGammaEulerRecurrence](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianLogGammaEulerRecurrence.lean).
 
 At `z=1`, the original denominator sum equals `log((N+1)!)`.
 The finite Euler logarithm is therefore `log(N)−log(N+1)` and
@@ -1903,20 +1903,20 @@ converges to zero. This normalizes the canonical log-Gamma at every
 encoding of the rational one. The positive exponential of each finite
 head also equals the original finite Gamma inverse on its pole-safe
 domain.
-[GaussianLogGammaEulerNormalization](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerNormalization.lean), [GaussianLogGammaEulerExponentialFiniteGamma](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerExponentialFiniteGamma.lean).
+[GaussianLogGammaEulerNormalization](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianLogGammaEulerNormalization.lean), [GaussianLogGammaEulerExponentialFiniteGamma](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianLogGammaEulerExponentialFiniteGamma.lean).
 
 The finite Euler expression for the complex slope uses the original
 integer logarithm and the literal reciprocal sum through index `N`.
 For positive indices, each reciprocal differs from the corresponding
 harmonic term by at most `R/k²` on a certified right-half-plane input.
-[GaussianLogGammaEulerReciprocalSlope](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerReciprocalSlope.lean).
+[GaussianLogGammaEulerReciprocalSlope](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianLogGammaEulerReciprocalSlope.lean).
 
 Summing the reciprocal-row error and comparing it with the actual
 integer-logarithm increment gives an Euler slope tail of `(R+1)/N`
 at every positive cutoff. A primitive-recursive cofinal slope name
 has this convergence rate with independent observation errors on the
 signed rational right half-plane. Its Taylor comparison with the canonical logarithm is proved below.
-[GaussianLogGammaEulerReciprocalSlopeGap](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerReciprocalSlopeGap.lean), [GaussianLogGammaEulerReciprocalSlopeCofinal](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerReciprocalSlopeCofinal.lean).
+[GaussianLogGammaEulerReciprocalSlopeGap](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianLogGammaEulerReciprocalSlopeGap.lean), [GaussianLogGammaEulerReciprocalSlopeCofinal](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianLogGammaEulerReciprocalSlopeCofinal.lean).
 
 The difference of the two original finite log-Gamma heads at a common
 cutoff is the displacement times the original integer logarithm minus
@@ -1925,14 +1925,14 @@ step has an exact reciprocal expression and a checked quadratic
 Mercator observation error. Its exponential, multiplied by the base
 argument, recovers the later rational argument. Coordinate and chart
 ratio bounds come from the same native displacement.
-[GaussianLogGammaEulerArgumentIncrement](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerArgumentIncrement.lean), [GaussianRightHalfPlaneLogarithmRelativeStep](Lean/IPRADerivations/Analysis/GaussianRightHalfPlaneLogarithmRelativeStep.lean), [GaussianRightHalfPlaneLogarithmRelativeExponential](Lean/IPRADerivations/Analysis/GaussianRightHalfPlaneLogarithmRelativeExponential.lean).
+[GaussianLogGammaEulerArgumentIncrement](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianLogGammaEulerArgumentIncrement.lean), [GaussianRightHalfPlaneLogarithmRelativeStep](Lean/IPRADerivations/Analysis/Logarithm/GaussianRightHalfPlaneLogarithmRelativeStep.lean), [GaussianRightHalfPlaneLogarithmRelativeExponential](Lean/IPRADerivations/Analysis/Exponential/GaussianRightHalfPlaneLogarithmRelativeExponential.lean).
 
 The canonical logarithm agrees with the original Mercator logarithm
 on the closed signed rational disk `|w| ≤ 1/2`. The proof bounds the
 original radial name using the harmonic rectangle sums and selects the
 logarithm by the fourth-root separation estimate. The same Euler
 residual sampler now has its quadratic bound as soon as `k ≥ 2R`.
-[GaussianRightHalfPlaneLogarithmHalfDiskBound](Lean/IPRADerivations/Analysis/GaussianRightHalfPlaneLogarithmHalfDiskBound.lean), [GaussianLogGammaEulerResidualHalfDisk](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerResidualHalfDisk.lean), [GaussianLogGammaEulerCofinal](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerCofinal.lean).
+[GaussianRightHalfPlaneLogarithmHalfDiskBound](Lean/IPRADerivations/Analysis/Logarithm/GaussianRightHalfPlaneLogarithmHalfDiskBound.lean), [GaussianLogGammaEulerResidualHalfDisk](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianLogGammaEulerResidualHalfDisk.lean), [GaussianLogGammaEulerCofinal](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianLogGammaEulerCofinal.lean).
 
 The canonical positive-rational observations lie on the real axis.
 Their exponential is the original positive Gamma, so real
@@ -1941,7 +1941,7 @@ log-Gamma evaluator for either sign encoding of zero imaginary part.
 The finite linear rows also sum to the exact displacement times the
 original reciprocal sum. The squared row errors have a uniform finite
 majorant, with the observation errors counted explicitly.
-[GaussianLogGammaEulerPositiveAxis](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerPositiveAxis.lean), [GaussianLogGammaEulerLinearSlope](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerLinearSlope.lean), [GaussianLogGammaEulerTaylorMajorant](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerTaylorMajorant.lean).
+[GaussianLogGammaEulerPositiveAxis](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianLogGammaEulerPositiveAxis.lean), [GaussianLogGammaEulerLinearSlope](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianLogGammaEulerLinearSlope.lean), [GaussianLogGammaEulerTaylorMajorant](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianLogGammaEulerTaylorMajorant.lean).
 
 For two sufficiently close signed rational inputs on the certified
 right half-plane, the actual difference of their canonical logarithms
@@ -1950,7 +1950,7 @@ ratio, and the radial and angular comparisons keep the corrected name
 inside the exponential uniqueness radius. At row `k`, the original
 logarithm increment differs from its linear reciprocal term by at most
 `4H²/(A+kD)²` plus its common-clock dyadic observation allowance.
-[GaussianRightHalfPlaneArgumentContinuity](Lean/IPRADerivations/Analysis/GaussianRightHalfPlaneArgumentContinuity.lean), [GaussianRightHalfPlaneRadialContinuity](Lean/IPRADerivations/Analysis/GaussianRightHalfPlaneRadialContinuity.lean), [GaussianRightHalfPlaneLogarithmIncrement](Lean/IPRADerivations/Analysis/GaussianRightHalfPlaneLogarithmIncrement.lean).
+[GaussianRightHalfPlaneArgumentContinuity](Lean/IPRADerivations/Analysis/Names/Rates/GaussianRightHalfPlaneArgumentContinuity.lean), [GaussianRightHalfPlaneRadialContinuity](Lean/IPRADerivations/Analysis/Names/Rates/GaussianRightHalfPlaneRadialContinuity.lean), [GaussianRightHalfPlaneLogarithmIncrement](Lean/IPRADerivations/Analysis/Logarithm/GaussianRightHalfPlaneLogarithmIncrement.lean).
 
 At every positive internal cutoff, the original finite Euler
 logarithm increment differs from the actual displacement times the
@@ -1960,7 +1960,7 @@ denominator, and `K` bounds the reciprocal real margin. The observation
 allowance is uniform in the cutoff. A computed admission from the two
 real margins and the common size bound supplies the local logarithm
 guards for sufficiently small displacements.
-[GaussianLogGammaEulerTaylorRows](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerTaylorRows.lean), [GaussianLogGammaEulerTaylorFinite](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerTaylorFinite.lean), [GaussianRightHalfPlaneLogarithmIncrementMargin](Lean/IPRADerivations/Analysis/GaussianRightHalfPlaneLogarithmIncrementMargin.lean).
+[GaussianLogGammaEulerTaylorRows](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianLogGammaEulerTaylorRows.lean), [GaussianLogGammaEulerTaylorFinite](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianLogGammaEulerTaylorFinite.lean), [GaussianRightHalfPlaneLogarithmIncrementMargin](Lean/IPRADerivations/Analysis/Logarithm/GaussianRightHalfPlaneLogarithmIncrementMargin.lean).
 
 The same quadratic bound holds for the cofinal logarithm increment
 and the displacement times the cofinal reciprocal slope. Both original
@@ -1969,7 +1969,7 @@ common real margin, a common size bound and an explicit displacement
 threshold. For a nonzero displacement, the native integer square root
 provides positive lower and upper norm margins and a checked bound on
 the actual reciprocal.
-[GaussianLogGammaEulerTaylorCofinal](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerTaylorCofinal.lean), [GaussianLogGammaEulerTaylorUniform](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerTaylorUniform.lean), [GaussianLogGammaEulerStepReciprocal](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerStepReciprocal.lean).
+[GaussianLogGammaEulerTaylorCofinal](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianLogGammaEulerTaylorCofinal.lean), [GaussianLogGammaEulerTaylorUniform](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianLogGammaEulerTaylorUniform.lean), [GaussianLogGammaEulerStepReciprocal](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianLogGammaEulerStepReciprocal.lean).
 
 The actual punctured difference quotient is the canonical cofinal
 logarithm increment multiplied by the computed rational reciprocal.
@@ -1981,14 +1981,14 @@ integer radius of the displacement numerator, and `K` bounds the reciprocal
 real margin. The literal finite series has a leading cutoff error of
 `(R+2)/N` for every positive cutoff `N`. The closed derivative modulus
 uses `8H(K²+2)2ʳ ≤ D` to obtain a leading error of `2⁻ʳ`.
-[GaussianLogGammaEulerDerivativeQuotient](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerDerivativeQuotient.lean), [GaussianLogGammaEulerDigammaFractionsRate](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerDigammaFractionsRate.lean), [GaussianLogGammaEulerDigammaFractionsCofinal](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerDigammaFractionsCofinal.lean), [GaussianLogGammaEulerDigammaDerivative](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerDigammaDerivative.lean).
+[GaussianLogGammaEulerDerivativeQuotient](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianLogGammaEulerDerivativeQuotient.lean), [GaussianLogGammaEulerDigammaFractionsRate](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianLogGammaEulerDigammaFractionsRate.lean), [GaussianLogGammaEulerDigammaFractionsCofinal](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianLogGammaEulerDigammaFractionsCofinal.lean), [GaussianLogGammaEulerDigammaDerivative](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianLogGammaEulerDigammaDerivative.lean).
 
 For a regular complex name with a certified positive real margin
 `1/M`, the actual retimed observations admit a signed rational chart
 with real part at least `1/(2M)` and a single computed disk bound.
 The chart decoding preserves the exact value of each observation,
 including comparisons between observations with different denominators.
-[GaussianNamedRightHalfPlaneSigned](Lean/IPRADerivations/Analysis/GaussianNamedRightHalfPlaneSigned.lean).
+[GaussianNamedRightHalfPlaneSigned](Lean/IPRADerivations/Analysis/Names/GaussianNamedRightHalfPlaneSigned.lean).
 
 On a common positive real margin `1/K`, the actual finite complex
 reciprocal sums have variation bounded by `(K²+2)|z-w|` across rational
@@ -1998,13 +1998,13 @@ dyadic error for each independently chosen output observation. Retiming
 the actual input observations gives a regular digamma name on the
 certified right half-plane. Equivalent input names on a common margin
 and disk give equivalent digamma names.
-[GaussianLogGammaEulerSlopeContinuity](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerSlopeContinuity.lean), [GaussianLogGammaEulerDigammaContinuity](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerDigammaContinuity.lean), [GaussianLogGammaEulerNamedDigamma](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerNamedDigamma.lean).
+[GaussianLogGammaEulerSlopeContinuity](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianLogGammaEulerSlopeContinuity.lean), [GaussianLogGammaEulerDigammaContinuity](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianLogGammaEulerDigammaContinuity.lean), [GaussianLogGammaEulerNamedDigamma](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianLogGammaEulerNamedDigamma.lean).
 
 The shared evaluator lift allocates half of each observation error to
 retiming the input and half to evaluating at the resulting rational
 chart. It proves the exact independent rate to the rational evaluator
 at any sufficiently late input observation.
-[GaussianNamedRightHalfPlaneLift](Lean/IPRADerivations/Analysis/GaussianNamedRightHalfPlaneLift.lean).
+[GaussianNamedRightHalfPlaneLift](Lean/IPRADerivations/Analysis/Names/GaussianNamedRightHalfPlaneLift.lean).
 
 Two independently retimed samples of regular names with a common
 real margin can be placed over their literal product denominator.
@@ -2015,14 +2015,14 @@ samples under the explicit local guard, the quotient of their rational
 log-Gamma names has leading error `16P(K²+2)/Q` to the original digamma
 partial fractions at the base sample, where `P/Q` bounds their distance
 and `K=2M` bounds the reciprocal real margin of the samples.
-[GaussianLogGammaEulerCommonDenominator](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerCommonDenominator.lean), [GaussianLogGammaEulerSampleDigamma](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerSampleDigamma.lean).
+[GaussianLogGammaEulerCommonDenominator](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianLogGammaEulerCommonDenominator.lean), [GaussianLogGammaEulerSampleDigamma](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianLogGammaEulerSampleDigamma.lean).
 
 The named digamma program agrees with the C27 series when the input
 is an admissible constant name for a signed rational. The same program
 has an independent comparison with a series evaluated at any sufficiently
 late original input observation, with leading error `2⁻ˢ` for the verified
 freeze clock at precision `s`.
-[GaussianLogGammaEulerNamedDigammaRational](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerNamedDigammaRational.lean).
+[GaussianLogGammaEulerNamedDigammaRational](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianLogGammaEulerNamedDigammaRational.lean).
 
 The original cofinal slope is uniformly bounded on each certified
 rational disk and real margin. This gives a local modulus for the
@@ -2032,13 +2032,13 @@ cofinal value, so the proof applies to observations with independent
 denominators. The resulting named evaluator is regular, is proper on
 each common certified domain and has the independent `2⁻ˢ` freeze rate
 to its original rational program.
-[GaussianLogGammaEulerReciprocalSlopeBound](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerReciprocalSlopeBound.lean), [GaussianLogGammaEulerRationalContinuity](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerRationalContinuity.lean), [GaussianLogGammaEulerRescale](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerRescale.lean), [GaussianLogGammaEulerNamed](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerNamed.lean).
+[GaussianLogGammaEulerReciprocalSlopeBound](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianLogGammaEulerReciprocalSlopeBound.lean), [GaussianLogGammaEulerRationalContinuity](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianLogGammaEulerRationalContinuity.lean), [GaussianLogGammaEulerRescale](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianLogGammaEulerRescale.lean), [GaussianLogGammaEulerNamed](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianLogGammaEulerNamed.lean).
 
 Every original right-half-plane rational chart also gives a certified
 constant complex name. Its real margin is the reciprocal of the positive
 integer denominator, and the theorem supplies the decoded chart certificate
 at the common sample margin.
-[GaussianNamedRightHalfPlaneConstant](Lean/IPRADerivations/Analysis/GaussianNamedRightHalfPlaneConstant.lean).
+[GaussianNamedRightHalfPlaneConstant](Lean/IPRADerivations/Analysis/Names/GaussianNamedRightHalfPlaneConstant.lean).
 
 The actual exponential of the named log-Gamma program agrees with
 the original complex Gamma evaluator on the certified right half-plane.
@@ -2046,7 +2046,7 @@ A common late observation gives the rational exponential identity,
 and a radius bound and the original evaluator clocks remove the freeze
 error. The same equality holds with the general pole-free Gamma program
 on their common certified domain.
-[GaussianNamedRadiusExponentialFreeze](Lean/IPRADerivations/Analysis/GaussianNamedRadiusExponentialFreeze.lean), [GaussianLogGammaEulerExponentialFrozen](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerExponentialFrozen.lean), [GaussianLogGammaEulerNamedExponential](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerNamedExponential.lean).
+[GaussianNamedRadiusExponentialFreeze](Lean/IPRADerivations/Analysis/Exponential/GaussianNamedRadiusExponentialFreeze.lean), [GaussianLogGammaEulerExponentialFrozen](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianLogGammaEulerExponentialFrozen.lean), [GaussianLogGammaEulerNamedExponential](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianLogGammaEulerNamedExponential.lean).
 
 For regular complex inputs on a common certified disk and real margin,
 the actual named log-Gamma increment has a quadratic comparison with
@@ -2055,7 +2055,7 @@ input distance and satisfies the explicit local admission inequality,
 the leading output error is `16P²(K²+2)/Q²` with `K=2M`. A computed
 finite sample removes the auxiliary freeze error, leaving independent
 dyadic observation errors. The comparison includes coincident inputs.
-[GaussianNamedLogGammaTaylorFrozen](Lean/IPRADerivations/Analysis/GaussianNamedLogGammaTaylorFrozen.lean), [GaussianNamedLogGammaTaylorEstimate](Lean/IPRADerivations/Analysis/GaussianNamedLogGammaTaylorEstimate.lean).
+[GaussianNamedLogGammaTaylorFrozen](Lean/IPRADerivations/Analysis/Gamma/Names/GaussianNamedLogGammaTaylorFrozen.lean), [GaussianNamedLogGammaTaylorEstimate](Lean/IPRADerivations/Analysis/Gamma/Names/GaussianNamedLogGammaTaylorEstimate.lean).
 
 For apart inputs, the actual log-Gamma quotient uses the verified
 named reciprocal of their displacement. It converges to the named
@@ -2064,7 +2064,7 @@ apartness witness. A bounded search finds the earliest witness, giving
 a reciprocal bound comparable to the displacement. Witness equivalence
 transfers the result back to the original quotient program. In
 particular `192P(K²+2)2ʳ ≤ Q` suffices for leading error `2⁻ʳ`.
-[GaussianNamedTaylorDifferenceQuotient](Lean/IPRADerivations/Analysis/GaussianNamedTaylorDifferenceQuotient.lean), [GaussianNamedMinimumApartness](Lean/IPRADerivations/Analysis/GaussianNamedMinimumApartness.lean), [GaussianNamedLogGammaDerivativeUniform](Lean/IPRADerivations/Analysis/GaussianNamedLogGammaDerivativeUniform.lean).
+[GaussianNamedTaylorDifferenceQuotient](Lean/IPRADerivations/Analysis/Names/Rates/GaussianNamedTaylorDifferenceQuotient.lean), [GaussianNamedMinimumApartness](Lean/IPRADerivations/Analysis/Names/GaussianNamedMinimumApartness.lean), [GaussianNamedLogGammaDerivativeUniform](Lean/IPRADerivations/Analysis/Gamma/Names/GaussianNamedLogGammaDerivativeUniform.lean).
 
 On positive rational inputs, the literal complex digamma series
 agrees with the original real `Γ′/Γ` evaluator. The finite formulas
@@ -2072,7 +2072,7 @@ differ by one terminal reciprocal, which is bounded by `1/N`.
 For every certified positive real name, a shared late observation
 then identifies the two actual named evaluators. The comparison with
 the original `Γ′/Γ` programs at nonreal inputs remains open.
-[GaussianLogGammaEulerDigammaPositiveAxis](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerDigammaPositiveAxis.lean), [GaussianLogGammaEulerNamedDigammaPositiveAxis](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerNamedDigammaPositiveAxis.lean).
+[GaussianLogGammaEulerDigammaPositiveAxis](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianLogGammaEulerDigammaPositiveAxis.lean), [GaussianLogGammaEulerNamedDigammaPositiveAxis](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianLogGammaEulerNamedDigammaPositiveAxis.lean).
 
 The canonical right-half-plane logarithm is also a regular named
 evaluator, with a local rational modulus and a checked late-observation
@@ -2083,14 +2083,14 @@ two representations of that shifted sample. Comparing the three named
 evaluations at the same base observation proves
 `ℒ(z+1) − ℒ(z) = Log z`. The theory can compute both disk bounds directly
 from the original and shifted input names.
-[GaussianRightHalfPlaneLogarithmNamed](Lean/IPRADerivations/Analysis/GaussianRightHalfPlaneLogarithmNamed.lean), [GaussianLogGammaEulerChartAgreement](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerChartAgreement.lean), [GaussianLogGammaEulerShiftedChart](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerShiftedChart.lean), [GaussianLogGammaEulerNamedRecurrence](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerNamedRecurrence.lean).
+[GaussianRightHalfPlaneLogarithmNamed](Lean/IPRADerivations/Analysis/Logarithm/GaussianRightHalfPlaneLogarithmNamed.lean), [GaussianLogGammaEulerChartAgreement](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianLogGammaEulerChartAgreement.lean), [GaussianLogGammaEulerShiftedChart](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianLogGammaEulerShiftedChart.lean), [GaussianLogGammaEulerNamedRecurrence](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianLogGammaEulerNamedRecurrence.lean).
 
 The canonical named log-Gamma agrees with the original real log-Gamma
 on every certified positive real name. At a sufficiently late real
 observation, exact rational chart agreement identifies the two inputs
 to the already proved positive-rational identity. This yields equality
 of the actual named evaluators for every admissible disk bound.
-[GaussianLogGammaEulerNamedPositiveAxis](Lean/IPRADerivations/Analysis/GaussianLogGammaEulerNamedPositiveAxis.lean).
+[GaussianLogGammaEulerNamedPositiveAxis](Lean/IPRADerivations/Analysis/Gamma/EulerProducts/GaussianLogGammaEulerNamedPositiveAxis.lean).
 
 For the complex digamma comparison used in the first Binet formula,
 the actual reciprocal at any rational tag in a horizontal unit cell
@@ -2099,7 +2099,7 @@ positive real reciprocals. The same sharp bound holds for the literal
 finite average over the tags. For a small horizontal step the original
 canonical logarithm observations satisfy the quadratic estimate with
 the actual rational width times the left reciprocal as linear term.
-[GaussianBinetReciprocalRows](Lean/IPRADerivations/Analysis/GaussianBinetReciprocalRows.lean), [GaussianBinetReciprocalMean](Lean/IPRADerivations/Analysis/GaussianBinetReciprocalMean.lean), [GaussianBinetLogHorizontalStep](Lean/IPRADerivations/Analysis/GaussianBinetLogHorizontalStep.lean).
+[GaussianBinetReciprocalRows](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetReciprocalRows.lean), [GaussianBinetReciprocalMean](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetReciprocalMean.lean), [GaussianBinetLogHorizontalStep](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetLogHorizontalStep.lean).
 
 At a common horizontal unit mesh, the actual logarithm increment
 approaches the literal reciprocal average. At any internal prefix
@@ -2110,7 +2110,7 @@ reciprocal prefix. Comparing its terminal real logarithm to the
 shifted canonical logarithm and passing to the cofinal names proves
 `|ψ(z)−Log(z)| ≤ 1/Re(z)` for every signed rational chart in the
 right half-plane. The statement allows independent observation clocks.
-[GaussianBinetLogCellGrid](Lean/IPRADerivations/Analysis/GaussianBinetLogCellGrid.lean), [GaussianBinetLogCellComparison](Lean/IPRADerivations/Analysis/GaussianBinetLogCellComparison.lean), [GaussianBinetReciprocalPrefix](Lean/IPRADerivations/Analysis/GaussianBinetReciprocalPrefix.lean), [GaussianBinetDigammaLogBound](Lean/IPRADerivations/Analysis/GaussianBinetDigammaLogBound.lean).
+[GaussianBinetLogCellGrid](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetLogCellGrid.lean), [GaussianBinetLogCellComparison](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetLogCellComparison.lean), [GaussianBinetReciprocalPrefix](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetReciprocalPrefix.lean), [GaussianBinetDigammaLogBound](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetDigammaLogBound.lean).
 
 The complex Stirling remainder uses the actual cofinal log-Gamma, the
 canonical logarithm and the named Stirling constant. Its restriction to
@@ -2118,34 +2118,34 @@ the positive real axis agrees exactly with the original real remainder,
 including the sharp absolute bound `1/(12x)`. The canonical recurrence
 gives its exact unit difference
 `R(z)−R(z+1) = (z+1/2)(Log(z+1)−Log(z))−1`.
-[GaussianBinetStirlingRemainder](Lean/IPRADerivations/Analysis/GaussianBinetStirlingRemainder.lean), [GaussianBinetStirlingRealBound](Lean/IPRADerivations/Analysis/GaussianBinetStirlingRealBound.lean), [GaussianBinetStirlingUnitDifferenceAlgebra](Lean/IPRADerivations/Analysis/GaussianBinetStirlingUnitDifferenceAlgebra.lean), [GaussianBinetStirlingUnitDifference](Lean/IPRADerivations/Analysis/GaussianBinetStirlingUnitDifference.lean).
+[GaussianBinetStirlingRemainder](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetStirlingRemainder.lean), [GaussianBinetStirlingRealBound](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetStirlingRealBound.lean), [GaussianBinetStirlingUnitDifferenceAlgebra](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetStirlingUnitDifferenceAlgebra.lean), [GaussianBinetStirlingUnitDifference](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetStirlingUnitDifference.lean).
 
 On the original uniform grid of `[0,1]`, the weighted resolvent
 `(1/2−t)/(z+t)` has an exact affine reduction at every tag. Its literal
 finite sum and cofinal quadrature agree with the canonical logarithm
 increment expression. The resulting cofinal unit quadrature equals
 the actual remainder difference `R(z)−R(z+1)`.
-[GaussianBinetWeightedResolventGrid](Lean/IPRADerivations/Analysis/GaussianBinetWeightedResolventGrid.lean), [GaussianBinetWeightedResolvent](Lean/IPRADerivations/Analysis/GaussianBinetWeightedResolvent.lean).
+[GaussianBinetWeightedResolventGrid](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetWeightedResolventGrid.lean), [GaussianBinetWeightedResolvent](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetWeightedResolvent.lean).
 
 The actual unit grid for `(1/2−u) exp(−tu)` has a checked mesh and
 observation error against the elementary endpoint primitive. At
 positive rational `t`, the regular cofinal name equals
 `(1+exp(−t))/(2t)−(1−exp(−t))/t²`. At zero the literal left grid of
 size `N` gives `1/(2N)` and its cofinal value is zero.
-[GaussianBinetWeightedExponentialAlgebra](Lean/IPRADerivations/Analysis/GaussianBinetWeightedExponentialAlgebra.lean), [GaussianBinetWeightedExponentialGrid](Lean/IPRADerivations/Analysis/GaussianBinetWeightedExponentialGrid.lean), [GaussianBinetWeightedExponentialZero](Lean/IPRADerivations/Analysis/GaussianBinetWeightedExponentialZero.lean), [GaussianBinetWeightedExponential](Lean/IPRADerivations/Analysis/GaussianBinetWeightedExponential.lean).
+[GaussianBinetWeightedExponentialAlgebra](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetWeightedExponentialAlgebra.lean), [GaussianBinetWeightedExponentialGrid](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetWeightedExponentialGrid.lean), [GaussianBinetWeightedExponentialZero](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetWeightedExponentialZero.lean), [GaussianBinetWeightedExponential](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetWeightedExponential.lean).
 
 On a bounded interval `0 ≤ t ≤ T`, the weighted exponential unit
 quadrature has a time-uniform cell bound and a uniform comparison to
 both finite left and midpoint grids. The left-grid error is at most
 `g(T)/M + (g(T)+8)/2^p`, where `g(T)=2·3^T·T+3`. The exact one-cell
 value gives a uniform bound on every original cofinal observation.
-[GaussianBinetWeightedExponentialRowRate](Lean/IPRADerivations/Analysis/GaussianBinetWeightedExponentialRowRate.lean), [GaussianBinetWeightedExponentialUniform](Lean/IPRADerivations/Analysis/GaussianBinetWeightedExponentialUniform.lean), [GaussianBinetWeightedExponentialBound](Lean/IPRADerivations/Analysis/GaussianBinetWeightedExponentialBound.lean), [GaussianBinetWeightedExponentialMidpoint](Lean/IPRADerivations/Analysis/GaussianBinetWeightedExponentialMidpoint.lean).
+[GaussianBinetWeightedExponentialRowRate](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetWeightedExponentialRowRate.lean), [GaussianBinetWeightedExponentialUniform](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetWeightedExponentialUniform.lean), [GaussianBinetWeightedExponentialBound](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetWeightedExponentialBound.lean), [GaussianBinetWeightedExponentialMidpoint](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetWeightedExponentialMidpoint.lean).
 
 A literal signed vertical step has the checked quadratic logarithm
 estimate. The normalized first-order Stirling expression
 `ψ(z)−Log(z)+1/(2z)` has absolute bound `3/(2 Re(z))` at independent
 observations.
-[GaussianBinetLogVerticalStep](Lean/IPRADerivations/Analysis/GaussianBinetLogVerticalStep.lean), [GaussianBinetStirlingSlopeBound](Lean/IPRADerivations/Analysis/GaussianBinetStirlingSlopeBound.lean).
+[GaussianBinetLogVerticalStep](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetLogVerticalStep.lean), [GaussianBinetStirlingSlopeBound](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetStirlingSlopeBound.lean).
 
 The actual vertical remainder increment has the first-order term
 formed from the literal displacement and the same-clock original
@@ -2153,7 +2153,7 @@ digamma, logarithm and half reciprocal. Exact subtraction cancels the
 common Stirling constant. The observation bound retains separate
 quadratic log-Gamma and logarithm contributions and normalization
 allowances for the original remainder samples.
-[GaussianBinetStirlingVerticalAlgebra](Lean/IPRADerivations/Analysis/GaussianBinetStirlingVerticalAlgebra.lean), [GaussianBinetLogGammaVerticalStep](Lean/IPRADerivations/Analysis/GaussianBinetLogGammaVerticalStep.lean), [GaussianBinetStirlingVerticalStep](Lean/IPRADerivations/Analysis/GaussianBinetStirlingVerticalStep.lean).
+[GaussianBinetStirlingVerticalAlgebra](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetStirlingVerticalAlgebra.lean), [GaussianBinetLogGammaVerticalStep](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetLogGammaVerticalStep.lean), [GaussianBinetStirlingVerticalStep](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetStirlingVerticalStep.lean).
 
 The literal vertical increments telescope over an internal subdivision.
 Positive rescaling identifies the subdivided endpoints with the original
@@ -2161,14 +2161,14 @@ remainder names. If `z = (A ± Bi)/D`, the vertical difference from `R(A/D)`
 has leading norm bound `3B/(2A)`. The sharp positive-real anchor gives the
 full leading bound `(D+18B)/(12A)` for `R(z)`, with an explicit error at
 independent observation clocks.
-[GaussianBinetStirlingRescale](Lean/IPRADerivations/Analysis/GaussianBinetStirlingRescale.lean), [GaussianBinetStirlingVerticalRate](Lean/IPRADerivations/Analysis/GaussianBinetStirlingVerticalRate.lean), [GaussianBinetStirlingVerticalGrid](Lean/IPRADerivations/Analysis/GaussianBinetStirlingVerticalGrid.lean), [GaussianBinetStirlingVerticalBound](Lean/IPRADerivations/Analysis/GaussianBinetStirlingVerticalBound.lean).
+[GaussianBinetStirlingRescale](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetStirlingRescale.lean), [GaussianBinetStirlingVerticalRate](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetStirlingVerticalRate.lean), [GaussianBinetStirlingVerticalGrid](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetStirlingVerticalGrid.lean), [GaussianBinetStirlingVerticalBound](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetStirlingVerticalBound.lean).
 
 For the imaginary-axis sine product used in the Binet kernel
 identification, the actual finite factor derivative terms give the
 literal derivative of the encoded product at any internal cutoff. The
 exact first-order expansion uses a primitive recursive second-order
 remainder and retains the original sine product at both inputs.
-[GaussianSineProductImaginaryLogDerivative](Lean/IPRADerivations/Analysis/GaussianSineProductImaginaryLogDerivative.lean), [GaussianSineProductImaginaryFirstOrder](Lean/IPRADerivations/Analysis/GaussianSineProductImaginaryFirstOrder.lean).
+[GaussianSineProductImaginaryLogDerivative](Lean/IPRADerivations/Analysis/Trigonometry/GaussianSineProductImaginaryLogDerivative.lean), [GaussianSineProductImaginaryFirstOrder](Lean/IPRADerivations/Analysis/Trigonometry/GaussianSineProductImaginaryFirstOrder.lean).
 
 The imaginary-axis sine-product expansion has a quadratic error
 uniform in the cutoff on each bounded interval. The literal row
@@ -2177,14 +2177,14 @@ the derivative expansion to the original cofinal sine product keeps
 the weighted cofinal derivative term and the exact quadratic rate
 with independent observation clocks. The product and reciprocal row
 names are invariant under exact rational rescaling.
-[GaussianSineProductImaginaryLogDerivativeTail](Lean/IPRADerivations/Analysis/GaussianSineProductImaginaryLogDerivativeTail.lean), [GaussianSineProductImaginaryFirstOrderBound](Lean/IPRADerivations/Analysis/GaussianSineProductImaginaryFirstOrderBound.lean), [GaussianSineProductImaginaryCofinalDerivative](Lean/IPRADerivations/Analysis/GaussianSineProductImaginaryCofinalDerivative.lean), [GaussianSineProductImaginaryScaling](Lean/IPRADerivations/Analysis/GaussianSineProductImaginaryScaling.lean).
+[GaussianSineProductImaginaryLogDerivativeTail](Lean/IPRADerivations/Analysis/Trigonometry/GaussianSineProductImaginaryLogDerivativeTail.lean), [GaussianSineProductImaginaryFirstOrderBound](Lean/IPRADerivations/Analysis/Trigonometry/GaussianSineProductImaginaryFirstOrderBound.lean), [GaussianSineProductImaginaryCofinalDerivative](Lean/IPRADerivations/Analysis/Trigonometry/GaussianSineProductImaginaryCofinalDerivative.lean), [GaussianSineProductImaginaryScaling](Lean/IPRADerivations/Analysis/Trigonometry/GaussianSineProductImaginaryScaling.lean).
 
 The original named exponential has a first-order remainder at any
 regular small input and an independent quadratic rate for shifts.
 Signed rational multiples of the original π name preserve exact
 additive increments. Multiplication by the literal imaginary unit
 agrees with the actual rotation name used by the sine connection.
-[GaussianNamedExponentialLinearRate](Lean/IPRADerivations/Analysis/GaussianNamedExponentialLinearRate.lean), [GaussianNamedExponentialShiftDerivative](Lean/IPRADerivations/Analysis/GaussianNamedExponentialShiftDerivative.lean), [GaussianPiRationalScale](Lean/IPRADerivations/Analysis/GaussianPiRationalScale.lean), [GaussianNamedImaginaryProduct](Lean/IPRADerivations/Analysis/GaussianNamedImaginaryProduct.lean).
+[GaussianNamedExponentialLinearRate](Lean/IPRADerivations/Analysis/Exponential/GaussianNamedExponentialLinearRate.lean), [GaussianNamedExponentialShiftDerivative](Lean/IPRADerivations/Analysis/Exponential/GaussianNamedExponentialShiftDerivative.lean), [GaussianPiRationalScale](Lean/IPRADerivations/Analysis/Trigonometry/GaussianPiRationalScale.lean), [GaussianNamedImaginaryProduct](Lean/IPRADerivations/Analysis/Names/GaussianNamedImaginaryProduct.lean).
 
 At nonnegative rational `x` in a certified bounded interval, the
 actual original exponential expression for `sinh(πx)` equals the
@@ -2193,7 +2193,7 @@ axis. Positive rescaling preserves the original signed π inputs
 exactly. A separate dyadic uniqueness theorem identifies two regular
 slope names when their weighted approximants differ quadratically at
 the common nonzero step.
-[GaussianPiRationalScaleRepresentation](Lean/IPRADerivations/Analysis/GaussianPiRationalScaleRepresentation.lean), [GaussianNamedScaledDerivativeUniqueness](Lean/IPRADerivations/Analysis/GaussianNamedScaledDerivativeUniqueness.lean), [GaussianSineProductImaginaryHyperbolic](Lean/IPRADerivations/Analysis/GaussianSineProductImaginaryHyperbolic.lean).
+[GaussianPiRationalScaleRepresentation](Lean/IPRADerivations/Analysis/Trigonometry/GaussianPiRationalScaleRepresentation.lean), [GaussianNamedScaledDerivativeUniqueness](Lean/IPRADerivations/Analysis/Names/GaussianNamedScaledDerivativeUniqueness.lean), [GaussianSineProductImaginaryHyperbolic](Lean/IPRADerivations/Analysis/Trigonometry/GaussianSineProductImaginaryHyperbolic.lean).
 
 The actual hyperbolic exponential expression has a first-order rate
 at a fixed rational base under a positive change of encoding. The
@@ -2202,40 +2202,40 @@ The derivative expression equals the original named `π cosh(πx)`.
 The original sine product representation has a matching independent
 product-rule estimate whose quadratic coefficient is also uniform
 under rescaling.
-[GaussianNamedDifferenceAlgebra](Lean/IPRADerivations/Analysis/GaussianNamedDifferenceAlgebra.lean), [GaussianPiRationalScaleFactors](Lean/IPRADerivations/Analysis/GaussianPiRationalScaleFactors.lean), [GaussianSineProductImaginaryExponentialShift](Lean/IPRADerivations/Analysis/GaussianSineProductImaginaryExponentialShift.lean), [GaussianSineProductImaginaryHyperbolicDerivative](Lean/IPRADerivations/Analysis/GaussianSineProductImaginaryHyperbolicDerivative.lean), [GaussianSineProductImaginaryCoshIdentity](Lean/IPRADerivations/Analysis/GaussianSineProductImaginaryCoshIdentity.lean), [GaussianSineProductImaginaryHyperbolicProductRuleAlgebra](Lean/IPRADerivations/Analysis/GaussianSineProductImaginaryHyperbolicProductRuleAlgebra.lean), [GaussianSineProductImaginaryHyperbolicProductRule](Lean/IPRADerivations/Analysis/GaussianSineProductImaginaryHyperbolicProductRule.lean).
+[GaussianNamedDifferenceAlgebra](Lean/IPRADerivations/Analysis/Names/GaussianNamedDifferenceAlgebra.lean), [GaussianPiRationalScaleFactors](Lean/IPRADerivations/Analysis/Trigonometry/GaussianPiRationalScaleFactors.lean), [GaussianSineProductImaginaryExponentialShift](Lean/IPRADerivations/Analysis/Trigonometry/GaussianSineProductImaginaryExponentialShift.lean), [GaussianSineProductImaginaryHyperbolicDerivative](Lean/IPRADerivations/Analysis/Trigonometry/GaussianSineProductImaginaryHyperbolicDerivative.lean), [GaussianSineProductImaginaryCoshIdentity](Lean/IPRADerivations/Analysis/Trigonometry/GaussianSineProductImaginaryCoshIdentity.lean), [GaussianSineProductImaginaryHyperbolicProductRuleAlgebra](Lean/IPRADerivations/Analysis/Trigonometry/GaussianSineProductImaginaryHyperbolicProductRuleAlgebra.lean), [GaussianSineProductImaginaryHyperbolicProductRule](Lean/IPRADerivations/Analysis/Trigonometry/GaussianSineProductImaginaryHyperbolicProductRule.lean).
 
 At a fixed rational base `x`, the two actual derivative names are
 equal by comparison at a common nonzero dyadic displacement. Cancel
 the original apart π factor to get `cosh(πx) = P(x)+xD(x)` for the
 cofinal sine product `P` and its actual derivative `D`.
-[GaussianSineProductImaginaryDerivativeComparison](Lean/IPRADerivations/Analysis/GaussianSineProductImaginaryDerivativeComparison.lean), [GaussianSineProductImaginaryCofinalLogDerivative](Lean/IPRADerivations/Analysis/GaussianSineProductImaginaryCofinalLogDerivative.lean).
+[GaussianSineProductImaginaryDerivativeComparison](Lean/IPRADerivations/Analysis/Trigonometry/GaussianSineProductImaginaryDerivativeComparison.lean), [GaussianSineProductImaginaryCofinalLogDerivative](Lean/IPRADerivations/Analysis/Trigonometry/GaussianSineProductImaginaryCofinalLogDerivative.lean).
 
 Combining that derivative with the exact hyperbolic sine identity
 proves the cleared partial fractions
 `(πx) cosh(πx) = sinh(πx) (1+x Σⱼ 2x/(j²+x²))` at the original
 rational inputs. This uses the actual cofinal reciprocal row name.
-[GaussianSineProductImaginaryCothExpansion](Lean/IPRADerivations/Analysis/GaussianSineProductImaginaryCothExpansion.lean).
+[GaussianSineProductImaginaryCothExpansion](Lean/IPRADerivations/Analysis/Trigonometry/GaussianSineProductImaginaryCothExpansion.lean).
 
 At a nonnegative rational time `t`, the cofinal kernel `k(t)` satisfies
 `(t/2) cosh(t/2) = sinh(t/2) (1+t² k(t))` with the original exponential
 names. Freezing π once at a shared observation binds the literal kernel
 rows to the partial-fraction samples. The uniform bounds remove the
 freeze and identify the hyperbolic factors at their original time.
-[GaussianBinetKernelImaginaryRatioRows](Lean/IPRADerivations/Analysis/GaussianBinetKernelImaginaryRatioRows.lean), [GaussianBinetKernelImaginaryRatioPrefix](Lean/IPRADerivations/Analysis/GaussianBinetKernelImaginaryRatioPrefix.lean), [GaussianBinetKernelImaginaryRatioCofinal](Lean/IPRADerivations/Analysis/GaussianBinetKernelImaginaryRatioCofinal.lean), [GaussianBinetKernelFrozenHyperbolic](Lean/IPRADerivations/Analysis/GaussianBinetKernelFrozenHyperbolic.lean), [GaussianNamedUniformRateClosure](Lean/IPRADerivations/Analysis/GaussianNamedUniformRateClosure.lean), [GaussianBinetKernelRationalTimeCleared](Lean/IPRADerivations/Analysis/GaussianBinetKernelRationalTimeCleared.lean).
+[GaussianBinetKernelImaginaryRatioRows](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetKernelImaginaryRatioRows.lean), [GaussianBinetKernelImaginaryRatioPrefix](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetKernelImaginaryRatioPrefix.lean), [GaussianBinetKernelImaginaryRatioCofinal](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetKernelImaginaryRatioCofinal.lean), [GaussianBinetKernelFrozenHyperbolic](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetKernelFrozenHyperbolic.lean), [GaussianNamedUniformRateClosure](Lean/IPRADerivations/Analysis/Names/Rates/GaussianNamedUniformRateClosure.lean), [GaussianBinetKernelRationalTimeCleared](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetKernelRationalTimeCleared.lean).
 
 For positive rational time the original hyperbolic sine is apart from zero.
 Its actual Taylor series gives a quantitative lower bound from the first
 odd term. Cancelling the original denominator yields
 `k(t) = ((t/2) cosh(t/2)−sinh(t/2))/(t² sinh(t/2))` with the actual
 reciprocal sampler. At zero the original kernel equals `1/12`.
-[GaussianBinetKernelSinhOddLower](Lean/IPRADerivations/Analysis/GaussianBinetKernelSinhOddLower.lean), [GaussianBinetKernelSinhApartness](Lean/IPRADerivations/Analysis/GaussianBinetKernelSinhApartness.lean), [GaussianNamedClearedScalarQuotient](Lean/IPRADerivations/Analysis/GaussianNamedClearedScalarQuotient.lean), [GaussianBinetKernelElementaryRational](Lean/IPRADerivations/Analysis/GaussianBinetKernelElementaryRational.lean).
+[GaussianBinetKernelSinhOddLower](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetKernelSinhOddLower.lean), [GaussianBinetKernelSinhApartness](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetKernelSinhApartness.lean), [GaussianNamedClearedScalarQuotient](Lean/IPRADerivations/Analysis/Names/GaussianNamedClearedScalarQuotient.lean), [GaussianBinetKernelElementaryRational](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetKernelElementaryRational.lean).
 
 Multiplying the cleared kernel identity by the original negative
 half-time exponential identifies `(1−exp(−t))k(t)` with the actual
 cofinal quadrature of `(1/2−u)exp(−tu)` on `[0,1]`. The positive
 branch cancels an exact nonzero rational scale. At `t = 0` the
 weighted grid bound proves exact agreement and regularity.
-[GaussianBinetKernelHalfExponential](Lean/IPRADerivations/Analysis/GaussianBinetKernelHalfExponential.lean), [GaussianBinetKernelWeightedBridge](Lean/IPRADerivations/Analysis/GaussianBinetKernelWeightedBridge.lean), [GaussianBinetKernelWeightedBridgeZero](Lean/IPRADerivations/Analysis/GaussianBinetKernelWeightedBridgeZero.lean).
+[GaussianBinetKernelHalfExponential](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetKernelHalfExponential.lean), [GaussianBinetKernelWeightedBridge](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetKernelWeightedBridge.lean), [GaussianBinetKernelWeightedBridgeZero](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetKernelWeightedBridgeZero.lean).
 
 On each bounded rational time panel, the original exponential
 at `−(z+1)t` equals the product of the original names at `−zt` and
@@ -2243,7 +2243,7 @@ at `−(z+1)t` equals the product of the original names at `−zt` and
 equals the original `exp(−zt)` times the cofinal weighted exponential
 unit quadrature. This applies to any admitted radii for the two
 original integrands and includes time zero.
-[GaussianBinetLaplaceExponentialShift](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceExponentialShift.lean), [GaussianBinetLaplaceIntegrandShift](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceIntegrandShift.lean), [GaussianBinetLaplaceWeightedShiftRow](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceWeightedShiftRow.lean).
+[GaussianBinetLaplaceExponentialShift](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceExponentialShift.lean), [GaussianBinetLaplaceIntegrandShift](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceIntegrandShift.lean), [GaussianBinetLaplaceWeightedShiftRow](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceWeightedShiftRow.lean).
 
 The Binet kernel series uses the original named π in each positive row
 `2/(t²+4π²n²)`. On `0 ≤ t ≤ T` the actual finite and cofinal samples
@@ -2253,7 +2253,7 @@ positive cutoff `N`. The comparison of the original finite and cofinal
 evaluators retains independent dyadic errors. Both evaluators satisfy
 the cutoff-independent Lipschitz estimate with gain `T` on `[0,T]`,
 including its uniform-mesh specialization.
-[GaussianBinetKernelPi](Lean/IPRADerivations/Analysis/GaussianBinetKernelPi.lean), [GaussianBinetKernelRows](Lean/IPRADerivations/Analysis/GaussianBinetKernelRows.lean), [GaussianBinetKernelPositive](Lean/IPRADerivations/Analysis/GaussianBinetKernelPositive.lean), [GaussianBinetKernelTailMajorant](Lean/IPRADerivations/Analysis/GaussianBinetKernelTailMajorant.lean), [GaussianBinetKernelTail](Lean/IPRADerivations/Analysis/GaussianBinetKernelTail.lean), [GaussianBinetKernelCofinal](Lean/IPRADerivations/Analysis/GaussianBinetKernelCofinal.lean), [GaussianBinetKernelTimeContinuity](Lean/IPRADerivations/Analysis/GaussianBinetKernelTimeContinuity.lean).
+[GaussianBinetKernelPi](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetKernelPi.lean), [GaussianBinetKernelRows](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetKernelRows.lean), [GaussianBinetKernelPositive](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetKernelPositive.lean), [GaussianBinetKernelTailMajorant](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetKernelTailMajorant.lean), [GaussianBinetKernelTail](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetKernelTail.lean), [GaussianBinetKernelCofinal](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetKernelCofinal.lean), [GaussianBinetKernelTimeContinuity](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetKernelTimeContinuity.lean).
 
 The literal reciprocal-square sum satisfies the Basel identity against
 the original zeta and π names. Rewriting each actual zero-parameter
@@ -2261,7 +2261,7 @@ kernel row by that sum identifies the cofinal kernel at zero with
 `1/12` for every positive denominator encoding. The exact finite row
 order gives the global upper bound `k(t) ≤ 1/12` for nonnegative rational
 `t`. A sample at clock `p` obeys the upper bound `1/12 + 2⁻ᵖ`.
-[GaussianBinetBaselBinding](Lean/IPRADerivations/Analysis/GaussianBinetBaselBinding.lean), [GaussianBinetBaselName](Lean/IPRADerivations/Analysis/GaussianBinetBaselName.lean), [GaussianBinetKernelZero](Lean/IPRADerivations/Analysis/GaussianBinetKernelZero.lean), [GaussianBinetKernelUpper](Lean/IPRADerivations/Analysis/GaussianBinetKernelUpper.lean).
+[GaussianBinetBaselBinding](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetBaselBinding.lean), [GaussianBinetBaselName](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetBaselName.lean), [GaussianBinetKernelZero](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetKernelZero.lean), [GaussianBinetKernelUpper](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetKernelUpper.lean).
 
 On a certified finite strip the original Gaussian exponential is
 evaluated at the exact argument `−zt`. Its normalized product with
@@ -2269,7 +2269,7 @@ the kernel samples gives the finite and cofinal Binet integrands.
 The independent observation comparison with the finite cutoff has
 leading error `1/(8N)`. The integrand has a computable Lipschitz gain
 uniform in the cutoff on each finite strip and a finite mesh bound.
-[GaussianBinetKernelCoarseBound](Lean/IPRADerivations/Analysis/GaussianBinetKernelCoarseBound.lean), [GaussianBinetLaplaceExponential](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceExponential.lean), [GaussianBinetLaplaceIntegrand](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceIntegrand.lean).
+[GaussianBinetKernelCoarseBound](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetKernelCoarseBound.lean), [GaussianBinetLaplaceExponential](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceExponential.lean), [GaussianBinetLaplaceIntegrand](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceIntegrand.lean).
 
 The original integrands yield regular compact quadrature names on
 any admitted finite panel in nonnegative time. The translated chart
@@ -2280,14 +2280,14 @@ the named compact truncation estimate with leading error
 Changing the certified disk radius or time horizon preserves the actual
 integrand at each physical tag and preserves the compact name for the
 same panel.
-[GaussianBinetLaplaceStrip](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceStrip.lean), [GaussianBinetLaplaceStripCutoff](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceStripCutoff.lean), [GaussianBinetLaplaceStripHorizon](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceStripHorizon.lean).
+[GaussianBinetLaplaceStrip](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceStrip.lean), [GaussianBinetLaplaceStripCutoff](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceStripCutoff.lean), [GaussianBinetLaplaceStripHorizon](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceStripHorizon.lean).
 
 The squared norm of the actual complex exponential at `−zt` agrees
 with the square of the original real decay at `−Re(z)t`. The observation
 norm estimate transfers that decay to the actual normalized product
 with the kernel. The majorant retains the leading coefficient `1/12`
 and explicit errors at the original product and real decay clocks.
-[GaussianBinetLaplaceDecay](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceDecay.lean), [GaussianBinetLaplaceDomination](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceDomination.lean).
+[GaussianBinetLaplaceDecay](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceDecay.lean), [GaussianBinetLaplaceDomination](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceDomination.lean).
 
 The compact tail after a rational endpoint is bounded uniformly in
 the strip width and the certified horizon. The original nonnegative
@@ -2296,27 +2296,27 @@ coefficient `1/(12 Re(z))`, with explicit independent observation
 errors. At physical cutoff `D L`, an effective envelope gives leading
 bound `D 2⁻ᴸ/(12 X)` for `Re(z)=X/D`. A zero-width strip evaluates
 exactly to zero.
-[GaussianBinetLaplaceScalarMajorant](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceScalarMajorant.lean), [GaussianBinetLaplaceStripDomination](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceStripDomination.lean), [GaussianBinetLaplaceStripTail](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceStripTail.lean), [GaussianBinetLaplaceStripTailEnvelope](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceStripTailEnvelope.lean), [GaussianBinetLaplaceSharpTail](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceSharpTail.lean).
+[GaussianBinetLaplaceScalarMajorant](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceScalarMajorant.lean), [GaussianBinetLaplaceStripDomination](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceStripDomination.lean), [GaussianBinetLaplaceStripTail](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceStripTail.lean), [GaussianBinetLaplaceStripTailEnvelope](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceStripTailEnvelope.lean), [GaussianBinetLaplaceSharpTail](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceSharpTail.lean).
 
 The original compact quadrature is additive at a physical split.
 The prefix comparison retains the effective leading tail
 `D 2⁻ᴸ/(12 X)` at independent clocks for a prefix ending at `D L`.
 This also compares two actual exhaustion prefixes at their own
 horizons and covers equality of cutoffs.
-[GaussianBinetLaplaceExhaustion](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceExhaustion.lean), [GaussianBinetLaplaceOrderedPrefixes](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceOrderedPrefixes.lean).
+[GaussianBinetLaplaceExhaustion](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceExhaustion.lean), [GaussianBinetLaplaceOrderedPrefixes](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceOrderedPrefixes.lean).
 
 The improper Binet Laplace name reads the actual compact quadrature
 at an internal cutoff and a later clock. It is regular on each
 certified signed rational right-half-plane chart. Its observations
 compare to those of every positive finite prefix with the same
 leading bound `D 2⁻ᴸ/(12 X)`.
-[GaussianBinetLaplaceImproperName](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceImproperName.lean).
+[GaussianBinetLaplaceImproperName](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceImproperName.lean).
 
 The original real decay at time zero evaluates exactly to one. The
 finite decay quadrature includes the zero left cell with the same
 error bound. The actual improper Binet sampler consequently has
 norm at most `1/(12 Re(z)) + 2⁻⁽ᵖ⁺¹⁾` at its observation clock `p`.
-[GaussianEulerDecayQuadratureAtZero](Lean/IPRADerivations/Analysis/GaussianEulerDecayQuadratureAtZero.lean), [GaussianBinetLaplaceImproperBound](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceImproperBound.lean).
+[GaussianEulerDecayQuadratureAtZero](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerDecayQuadratureAtZero.lean), [GaussianBinetLaplaceImproperBound](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceImproperBound.lean).
 
 ## Source artifacts and representation boundaries
 
@@ -2348,7 +2348,7 @@ The difference of the two actual improper observations is within
 common grid. The horizon `D L` is shared and the condition
 `D 2^p ≤ 2^L` absorbs both original tails. The grid can be refined
 further and the row clock increased while preserving the bound.
-[GaussianCompactPointwiseDifference](Lean/IPRADerivations/Analysis/GaussianCompactPointwiseDifference.lean), [GaussianCompactDifferenceRefinement](Lean/IPRADerivations/Analysis/GaussianCompactDifferenceRefinement.lean), [GaussianBinetLaplaceDifferencePrefix](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceDifferencePrefix.lean), [GaussianBinetLaplaceDifferenceGrid](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceDifferenceGrid.lean).
+[GaussianCompactPointwiseDifference](Lean/IPRADerivations/Analysis/Integration/GaussianCompactPointwiseDifference.lean), [GaussianCompactDifferenceRefinement](Lean/IPRADerivations/Analysis/Integration/GaussianCompactDifferenceRefinement.lean), [GaussianBinetLaplaceDifferencePrefix](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceDifferencePrefix.lean), [GaussianBinetLaplaceDifferenceGrid](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceDifferenceGrid.lean).
 
 For the original finite exponential rectangle, interchanging the two
 sums leaves the actual serialized weights and observations in place.
@@ -2357,7 +2357,7 @@ expression, and their tails decay on the selected horizon. At the
 prescribed finite budgets, the rectangle is within `2/2^p` of the
 literal weighted-resolvent grid. The cofinal comparison binds its
 limit to the canonical Stirling unit difference.
-[GaussianBinetExponentialPanel](Lean/IPRADerivations/Analysis/GaussianBinetExponentialPanel.lean), [GaussianBinetExponentialIntegralGrid](Lean/IPRADerivations/Analysis/GaussianBinetExponentialIntegralGrid.lean), [GaussianBinetExponentialIntegral](Lean/IPRADerivations/Analysis/GaussianBinetExponentialIntegral.lean), [GaussianBinetExponentialRectangle](Lean/IPRADerivations/Analysis/GaussianBinetExponentialRectangle.lean), [GaussianBinetExponentialRectangleShift](Lean/IPRADerivations/Analysis/GaussianBinetExponentialRectangleShift.lean), [GaussianBinetExponentialRectangleColumn](Lean/IPRADerivations/Analysis/GaussianBinetExponentialRectangleColumn.lean), [GaussianBinetExponentialRectangleEndpoint](Lean/IPRADerivations/Analysis/GaussianBinetExponentialRectangleEndpoint.lean), [GaussianBinetExponentialRectangleResolvent](Lean/IPRADerivations/Analysis/GaussianBinetExponentialRectangleResolvent.lean), [GaussianBinetExponentialRectangleEvaluation](Lean/IPRADerivations/Analysis/GaussianBinetExponentialRectangleEvaluation.lean).
+[GaussianBinetExponentialPanel](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetExponentialPanel.lean), [GaussianBinetExponentialIntegralGrid](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetExponentialIntegralGrid.lean), [GaussianBinetExponentialIntegral](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetExponentialIntegral.lean), [GaussianBinetExponentialRectangle](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetExponentialRectangle.lean), [GaussianBinetExponentialRectangleShift](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetExponentialRectangleShift.lean), [GaussianBinetExponentialRectangleColumn](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetExponentialRectangleColumn.lean), [GaussianBinetExponentialRectangleEndpoint](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetExponentialRectangleEndpoint.lean), [GaussianBinetExponentialRectangleResolvent](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetExponentialRectangleResolvent.lean), [GaussianBinetExponentialRectangleEvaluation](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetExponentialRectangleEvaluation.lean).
 
 The normalized discrepancy `R(z+j)−J(z+j)` uses the actual remainder and
 actual improper Binet names. Its bound decays uniformly as the internal
@@ -2366,7 +2366,7 @@ equality proof would make that family constant and hence zero. The closed
 conditional derives the first Binet identity from the hypothesis that the
 actual unit difference of `J` equals the weighted-resolvent quadrature
 along the entire translated family.
-[GaussianNamedRecurrencePinning](Lean/IPRADerivations/Analysis/GaussianNamedRecurrencePinning.lean), [GaussianNamedDifferenceZero](Lean/IPRADerivations/Analysis/GaussianNamedDifferenceZero.lean), [GaussianBinetFirstFormulaDecay](Lean/IPRADerivations/Analysis/GaussianBinetFirstFormulaDecay.lean), [GaussianBinetFirstFormulaPinning](Lean/IPRADerivations/Analysis/GaussianBinetFirstFormulaPinning.lean).
+[GaussianNamedRecurrencePinning](Lean/IPRADerivations/Analysis/Names/GaussianNamedRecurrencePinning.lean), [GaussianNamedDifferenceZero](Lean/IPRADerivations/Analysis/Names/GaussianNamedDifferenceZero.lean), [GaussianBinetFirstFormulaDecay](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetFirstFormulaDecay.lean), [GaussianBinetFirstFormulaPinning](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetFirstFormulaPinning.lean).
 
 The first Binet formula is proved for the two original names at every
 encoded complex rational point in the right half-plane. At each requested
@@ -2376,7 +2376,7 @@ unit difference of the improper sampler with the weighted resolvent.
 The translated discrepancy argument then proves equality of the
 Stirling remainder and the original improper integral. The closed
 theorem has only the original input-domain guard.
-[GaussianNamedProductObservationBound](Lean/IPRADerivations/Analysis/GaussianNamedProductObservationBound.lean), [GaussianBinetLaplaceWeightedGridReadback](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceWeightedGridReadback.lean), [GaussianBinetLaplaceWeightedGridProduct](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceWeightedGridProduct.lean), [GaussianBinetLaplaceWeightedGridRectangle](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceWeightedGridRectangle.lean), [GaussianBinetLaplaceRectangleRowBudget](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceRectangleRowBudget.lean), [GaussianBinetLaplaceRectangleSchedule](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceRectangleSchedule.lean), [GaussianBinetLaplaceRectangleJoin](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceRectangleJoin.lean), [GaussianBinetFirstFormula](Lean/IPRADerivations/Analysis/GaussianBinetFirstFormula.lean).
+[GaussianNamedProductObservationBound](Lean/IPRADerivations/Analysis/Names/FiniteOperations/GaussianNamedProductObservationBound.lean), [GaussianBinetLaplaceWeightedGridReadback](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceWeightedGridReadback.lean), [GaussianBinetLaplaceWeightedGridProduct](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceWeightedGridProduct.lean), [GaussianBinetLaplaceWeightedGridRectangle](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceWeightedGridRectangle.lean), [GaussianBinetLaplaceRectangleRowBudget](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceRectangleRowBudget.lean), [GaussianBinetLaplaceRectangleSchedule](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceRectangleSchedule.lean), [GaussianBinetLaplaceRectangleJoin](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceRectangleJoin.lean), [GaussianBinetFirstFormula](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetFirstFormula.lean).
 
 On a common right-half-plane margin and disk, the original rational
 Stirling remainder has an explicit linear rate. Transferring it to
@@ -2385,7 +2385,7 @@ with a quantitative readback at late rational observations. A
 single late rational observation identifies the lift with the
 Stirling remainder assembled from the original named log-Gamma,
 logarithm, argument and Stirling constant.
-[GaussianRightHalfPlaneLogarithmCompactBound](Lean/IPRADerivations/Analysis/GaussianRightHalfPlaneLogarithmCompactBound.lean), [GaussianBinetStirlingRemainderRate](Lean/IPRADerivations/Analysis/GaussianBinetStirlingRemainderRate.lean), [GaussianBinetLaplaceNamed](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceNamed.lean), [GaussianBinetFirstFormulaNamed](Lean/IPRADerivations/Analysis/GaussianBinetFirstFormulaNamed.lean).
+[GaussianRightHalfPlaneLogarithmCompactBound](Lean/IPRADerivations/Analysis/Logarithm/GaussianRightHalfPlaneLogarithmCompactBound.lean), [GaussianBinetStirlingRemainderRate](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetStirlingRemainderRate.lean), [GaussianBinetLaplaceNamed](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceNamed.lean), [GaussianBinetFirstFormulaNamed](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetFirstFormulaNamed.lean).
 
 For the second Binet formula, the original rational integrand
 `z/(z²+u²)` equals the average of the two resolvents at `z±iu` on the
@@ -2393,27 +2393,27 @@ right half-plane. The admitted poles have the same positive-real
 margin. The resulting original compact arctangent quadrature is
 regular, and every actual observation at time `t` has norm bounded
 by `t/Re(z)`.
-[GaussianBinetArctangentResolvent](Lean/IPRADerivations/Analysis/GaussianBinetArctangentResolvent.lean), [GaussianBinetArctangentResolventRate](Lean/IPRADerivations/Analysis/GaussianBinetArctangentResolventRate.lean), [GaussianBinetArctangentQuadrature](Lean/IPRADerivations/Analysis/GaussianBinetArctangentQuadrature.lean), [GaussianBinetArctangentQuadratureBound](Lean/IPRADerivations/Analysis/GaussianBinetArctangentQuadratureBound.lean).
+[GaussianBinetArctangentResolvent](Lean/IPRADerivations/Analysis/Stirling/Binet/Oscillatory/GaussianBinetArctangentResolvent.lean), [GaussianBinetArctangentResolventRate](Lean/IPRADerivations/Analysis/Stirling/Binet/Oscillatory/GaussianBinetArctangentResolventRate.lean), [GaussianBinetArctangentQuadrature](Lean/IPRADerivations/Analysis/Stirling/Binet/Oscillatory/GaussianBinetArctangentQuadrature.lean), [GaussianBinetArctangentQuadratureBound](Lean/IPRADerivations/Analysis/Stirling/Binet/Oscillatory/GaussianBinetArctangentQuadratureBound.lean).
 
 The two original exponential panel sums at the signed poles read back
 on one common horizon. Their symmetric average approximates the exact
 cosine resolvent uniformly over a bounded rational frequency interval,
 with explicit finite-mesh and exponential-tail errors.
-[GaussianBinetArctangentSignedPole](Lean/IPRADerivations/Analysis/GaussianBinetArctangentSignedPole.lean), [GaussianBinetArctangentPoleLaplace](Lean/IPRADerivations/Analysis/GaussianBinetArctangentPoleLaplace.lean), [GaussianBinetArctangentCosineLaplace](Lean/IPRADerivations/Analysis/GaussianBinetArctangentCosineLaplace.lean).
+[GaussianBinetArctangentSignedPole](Lean/IPRADerivations/Analysis/Stirling/Binet/Oscillatory/GaussianBinetArctangentSignedPole.lean), [GaussianBinetArctangentPoleLaplace](Lean/IPRADerivations/Analysis/Stirling/Binet/Oscillatory/GaussianBinetArctangentPoleLaplace.lean), [GaussianBinetArctangentCosineLaplace](Lean/IPRADerivations/Analysis/Stirling/Binet/Oscillatory/GaussianBinetArctangentCosineLaplace.lean).
 
 The original pure-imaginary exponential quadrature satisfies the
 cleared finite antiderivative with both frequency signs, including
 zero. The difference of the original signed-pole Laplace panels
 approximates the cleared sine resolvent with uniform bounds on the
 bounded frequency interval.
-[GaussianBinetImaginaryExponentialIntegral](Lean/IPRADerivations/Analysis/GaussianBinetImaginaryExponentialIntegral.lean), [GaussianBinetSineLaplaceResolvent](Lean/IPRADerivations/Analysis/GaussianBinetSineLaplaceResolvent.lean).
+[GaussianBinetImaginaryExponentialIntegral](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetImaginaryExponentialIntegral.lean), [GaussianBinetSineLaplaceResolvent](Lean/IPRADerivations/Analysis/Stirling/Binet/Oscillatory/GaussianBinetSineLaplaceResolvent.lean).
 
 On a common grid, the original finite arctangent quadrature compares
 with the original rectangle of cosine transforms. The outer grid
 multiplies the uniform resolvent error by its physical width. Each
 actual shifted exponential factors with explicit error into the
 original damping and the purely imaginary oscillatory sample.
-[GaussianBinetArctangentCosineRectangle](Lean/IPRADerivations/Analysis/GaussianBinetArctangentCosineRectangle.lean), [GaussianBinetOscillatoryPanelFactor](Lean/IPRADerivations/Analysis/GaussianBinetOscillatoryPanelFactor.lean).
+[GaussianBinetArctangentCosineRectangle](Lean/IPRADerivations/Analysis/Stirling/Binet/Oscillatory/GaussianBinetArctangentCosineRectangle.lean), [GaussianBinetOscillatoryPanelFactor](Lean/IPRADerivations/Analysis/Stirling/Binet/Oscillatory/GaussianBinetOscillatoryPanelFactor.lean).
 
 The actual positive Pi-scaled exponential has a Taylor gap from one
 of at least `4t` at every positive rational time. Its reciprocal is
@@ -2422,28 +2422,28 @@ original arctangent times this reciprocal has norm at most
 `1/(4 Re(z))` all the way toward the origin. For an exact rational
 inverse pair `xy = 1`, the literal geometric power sum has the
 cleared finite identity `(x−1) Σ_{j=1}^N y^j = 1−y^N`.
-[GaussianExponentialAffineLower](Lean/IPRADerivations/Analysis/GaussianExponentialAffineLower.lean), [GaussianBinetBoseExponential](Lean/IPRADerivations/Analysis/GaussianBinetBoseExponential.lean), [GaussianBinetBoseDenominator](Lean/IPRADerivations/Analysis/GaussianBinetBoseDenominator.lean), [GaussianBinetBoseIntegrandBound](Lean/IPRADerivations/Analysis/GaussianBinetBoseIntegrandBound.lean), [GaussianRationalInverseGeometric](Lean/IPRADerivations/Analysis/GaussianRationalInverseGeometric.lean).
+[GaussianExponentialAffineLower](Lean/IPRADerivations/Analysis/Exponential/GaussianExponentialAffineLower.lean), [GaussianBinetBoseExponential](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetBoseExponential.lean), [GaussianBinetBoseDenominator](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetBoseDenominator.lean), [GaussianBinetBoseIntegrandBound](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetBoseIntegrandBound.lean), [GaussianRationalInverseGeometric](Lean/IPRADerivations/Analysis/Geometry/GaussianRationalInverseGeometric.lean).
 
 The original finite cosine rectangle equals the transposed sum with
 both literal mesh weights. The transposed entries have an explicit
 comparison to the original damping multiplied by the mean of the
 two imaginary exponentials. Exact signed rational rescaling binds
 their frequency charts at the actual grid tags.
-[GaussianRationalQuadratureMean](Lean/IPRADerivations/Analysis/GaussianRationalQuadratureMean.lean), [GaussianBinetOscillatoryRectangleTranspose](Lean/IPRADerivations/Analysis/GaussianBinetOscillatoryRectangleTranspose.lean), [GaussianBinetOscillatoryMatrixCell](Lean/IPRADerivations/Analysis/GaussianBinetOscillatoryMatrixCell.lean), [GaussianBinetImaginaryExponentialScale](Lean/IPRADerivations/Analysis/GaussianBinetImaginaryExponentialScale.lean).
+[GaussianRationalQuadratureMean](Lean/IPRADerivations/Analysis/Integration/GaussianRationalQuadratureMean.lean), [GaussianBinetOscillatoryRectangleTranspose](Lean/IPRADerivations/Analysis/Stirling/Binet/Oscillatory/GaussianBinetOscillatoryRectangleTranspose.lean), [GaussianBinetOscillatoryMatrixCell](Lean/IPRADerivations/Analysis/Stirling/Binet/Oscillatory/GaussianBinetOscillatoryMatrixCell.lean), [GaussianBinetImaginaryExponentialScale](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetImaginaryExponentialScale.lean).
 
 At every original arctangent observation, the leading term is
 `t/z` with norm error at most `(t/Re(z))³`. The original rational
 rows retain their exact values, so this bound has no sampling
 allowance. For positive rational time the divided arctangent
 differs from `1/z` by at most `t²/Re(z)³`.
-[GaussianBinetArctangentLinearApproximation](Lean/IPRADerivations/Analysis/GaussianBinetArctangentLinearApproximation.lean).
+[GaussianBinetArctangentLinearApproximation](Lean/IPRADerivations/Analysis/Stirling/Binet/Oscillatory/GaussianBinetArctangentLinearApproximation.lean).
 
 Read the positive exponential sample selected by the actual Bose
 reciprocal. The exact inverse of that exponential sample has norm
 at most `1/(1+4t)`. For `t=A/B>0` its literal geometric prefix of
 length `N` differs from the original reciprocal observation by
 at most `B²/[4A(B+4NA)]`, independently of the observation clock.
-[GaussianBinetBoseGeometricRatio](Lean/IPRADerivations/Analysis/GaussianBinetBoseGeometricRatio.lean), [GaussianRationalGeometricPowerTail](Lean/IPRADerivations/Analysis/GaussianRationalGeometricPowerTail.lean), [GaussianBinetBoseSeries](Lean/IPRADerivations/Analysis/GaussianBinetBoseSeries.lean).
+[GaussianBinetBoseGeometricRatio](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetBoseGeometricRatio.lean), [GaussianRationalGeometricPowerTail](Lean/IPRADerivations/Analysis/Geometry/GaussianRationalGeometricPowerTail.lean), [GaussianBinetBoseSeries](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetBoseSeries.lean).
 
 The literal arctangent-decay row admits a common half-decay majorant
 with an explicit clock allowance, including at time zero. The rescaled
@@ -2451,7 +2451,7 @@ zero-start scalar quadrature yields the bound `11K/m²` for row `m`
 on every integer horizon with the verified mesh and clock budgets.
 A shared grid and one frozen Pi sample give the actual tail bound
 `11K/C` for every finite block after row `C`.
-[GaussianBinetSecondDecayEnvelope](Lean/IPRADerivations/Analysis/GaussianBinetSecondDecayEnvelope.lean), [GaussianBinetSecondDecayPointwise](Lean/IPRADerivations/Analysis/GaussianBinetSecondDecayPointwise.lean), [GaussianBinetSecondDecayQuadrature](Lean/IPRADerivations/Analysis/GaussianBinetSecondDecayQuadrature.lean), [GaussianBinetSecondDecayGrid](Lean/IPRADerivations/Analysis/GaussianBinetSecondDecayGrid.lean), [GaussianBinetSecondDecayFinite](Lean/IPRADerivations/Analysis/GaussianBinetSecondDecayFinite.lean), [GaussianBinetSecondDecayTail](Lean/IPRADerivations/Analysis/GaussianBinetSecondDecayTail.lean), [GaussianBinetSecondDecayFrozenTail](Lean/IPRADerivations/Analysis/GaussianBinetSecondDecayFrozenTail.lean).
+[GaussianBinetSecondDecayEnvelope](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetSecondDecayEnvelope.lean), [GaussianBinetSecondDecayPointwise](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetSecondDecayPointwise.lean), [GaussianBinetSecondDecayQuadrature](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetSecondDecayQuadrature.lean), [GaussianBinetSecondDecayGrid](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetSecondDecayGrid.lean), [GaussianBinetSecondDecayFinite](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetSecondDecayFinite.lean), [GaussianBinetSecondDecayTail](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetSecondDecayTail.lean), [GaussianBinetSecondDecayFrozenTail](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetSecondDecayFrozenTail.lean).
 
 The original unscaled second Binet integrand has the continuous
 endpoint `1/(2π z)` at zero. The denominator's original observation
@@ -2459,14 +2459,14 @@ keeps its own Pi sample and has quadratic error from the linear
 term at that clock. Comparing with the original divided arctangent
 gives leading error `(K³+100K)t` for `0<t≤1/10` and
 `1/Re(z)≤K`, with independent observation errors.
-[GaussianBinetBoseLinearApproximation](Lean/IPRADerivations/Analysis/GaussianBinetBoseLinearApproximation.lean), [GaussianBinetBoseIntegrandEndpoint](Lean/IPRADerivations/Analysis/GaussianBinetBoseIntegrandEndpoint.lean).
+[GaussianBinetBoseLinearApproximation](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetBoseLinearApproximation.lean), [GaussianBinetBoseIntegrandEndpoint](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetBoseIntegrandEndpoint.lean).
 
 The original signed Pi-scaled decay row compares with the actual
 frozen-Pi decay evaluator on the same compact time interval. Its
 rate is uniform in the encoded rational tag and therefore works
 across every later time mesh. The product rate also applies to
 the original arctangent-weighted rows.
-[GaussianBinetSecondDecayPiBridge](Lean/IPRADerivations/Analysis/GaussianBinetSecondDecayPiBridge.lean).
+[GaussianBinetSecondDecayPiBridge](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetSecondDecayPiBridge.lean).
 
 At each positive rational time, the corresponding original signed
 exponential rows approximate the powers of the actual geometric ratio.
@@ -2474,20 +2474,20 @@ Their literal finite sums give a regular cofinal evaluator. Its normalized
 samples read back the exact finite prefix and differ from the reciprocal
 of the original Bose denominator by at most `6/2^p`. The object theory
 proves equivalence of the two names.
-[GaussianBinetBoseIntegerScale](Lean/IPRADerivations/Analysis/GaussianBinetBoseIntegerScale.lean), [GaussianBinetBoseSeriesRows](Lean/IPRADerivations/Analysis/GaussianBinetBoseSeriesRows.lean), [GaussianBinetBoseLiteralPrefix](Lean/IPRADerivations/Analysis/GaussianBinetBoseLiteralPrefix.lean), [GaussianBinetBoseLiteralCofinal](Lean/IPRADerivations/Analysis/GaussianBinetBoseLiteralCofinal.lean)
+[GaussianBinetBoseIntegerScale](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetBoseIntegerScale.lean), [GaussianBinetBoseSeriesRows](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetBoseSeriesRows.lean), [GaussianBinetBoseLiteralPrefix](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetBoseLiteralPrefix.lean), [GaussianBinetBoseLiteralCofinal](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetBoseLiteralCofinal.lean)
 
 The original transposed cosine columns approximate the sine
 quotient on the same mesh. At positive time the cleared cosine
 antiderivative gives the quotient by the imaginary frequency. At
 zero the regularized quotient has its exact removable value. A
 single primitive-recursive row inherits uniform norm and mesh bounds.
-[GaussianBinetCosinePrimitive](Lean/IPRADerivations/Analysis/GaussianBinetCosinePrimitive.lean), [GaussianBinetOscillatoryColumns](Lean/IPRADerivations/Analysis/GaussianBinetOscillatoryColumns.lean), [GaussianBinetOscillatorySineQuotient](Lean/IPRADerivations/Analysis/GaussianBinetOscillatorySineQuotient.lean), [GaussianBinetOscillatoryZeroColumn](Lean/IPRADerivations/Analysis/GaussianBinetOscillatoryZeroColumn.lean), [GaussianBinetOscillatorySineRows](Lean/IPRADerivations/Analysis/GaussianBinetOscillatorySineRows.lean)
+[GaussianBinetCosinePrimitive](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetCosinePrimitive.lean), [GaussianBinetOscillatoryColumns](Lean/IPRADerivations/Analysis/Stirling/Binet/Oscillatory/GaussianBinetOscillatoryColumns.lean), [GaussianBinetOscillatorySineQuotient](Lean/IPRADerivations/Analysis/Stirling/Binet/Oscillatory/GaussianBinetOscillatorySineQuotient.lean), [GaussianBinetOscillatoryZeroColumn](Lean/IPRADerivations/Analysis/Stirling/Binet/Oscillatory/GaussianBinetOscillatoryZeroColumn.lean), [GaussianBinetOscillatorySineRows](Lean/IPRADerivations/Analysis/Stirling/Binet/Oscillatory/GaussianBinetOscillatorySineRows.lean)
 
 Summing the regularized sine columns with the original time weight
 gives a finite damped sine integral. It approximates both the original
 finite arctangent quadrature and the original arctangent observations,
 with explicit mesh, horizon and clock errors.
-[GaussianBinetOscillatorySineRectangle](Lean/IPRADerivations/Analysis/GaussianBinetOscillatorySineRectangle.lean), [GaussianBinetArctangentSineGridComparison](Lean/IPRADerivations/Analysis/GaussianBinetArctangentSineGridComparison.lean)
+[GaussianBinetOscillatorySineRectangle](Lean/IPRADerivations/Analysis/Stirling/Binet/Oscillatory/GaussianBinetOscillatorySineRectangle.lean), [GaussianBinetArctangentSineGridComparison](Lean/IPRADerivations/Analysis/Stirling/Binet/Oscillatory/GaussianBinetArctangentSineGridComparison.lean)
 
 The original second Binet product admits a compact integral on every
 positive rational interval `[A/E,(A+C)/E]`. The original arctangent
@@ -2495,7 +2495,7 @@ and reciprocal have time rates on that interval, so the literal
 left quadrature defines a regular name. Every actual sample has
 norm at most `CD/(4EX)` for real part `X/D`, including intervals
 whose lower endpoint tends to zero.
-[GaussianBinetBoseReciprocalTimeRate](Lean/IPRADerivations/Analysis/GaussianBinetBoseReciprocalTimeRate.lean), [GaussianBinetArctangentTimeRate](Lean/IPRADerivations/Analysis/GaussianBinetArctangentTimeRate.lean), [GaussianBinetBoseCompact](Lean/IPRADerivations/Analysis/GaussianBinetBoseCompact.lean), [GaussianBinetBoseCompactBound](Lean/IPRADerivations/Analysis/GaussianBinetBoseCompactBound.lean)
+[GaussianBinetBoseReciprocalTimeRate](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetBoseReciprocalTimeRate.lean), [GaussianBinetArctangentTimeRate](Lean/IPRADerivations/Analysis/Stirling/Binet/Oscillatory/GaussianBinetArctangentTimeRate.lean), [GaussianBinetBoseCompact](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetBoseCompact.lean), [GaussianBinetBoseCompactBound](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetBoseCompactBound.lean)
 
 At each positive frozen Pi frequency, the exact shifted exponential
 panels compare to the standard real damping times the original
@@ -2503,694 +2503,694 @@ regularized sine quotient. Summing on the shared mesh gives the
 actual Binet kernel row, up to explicit mesh, horizon and clock
 errors. Independent radii and clocks for the same positive sine
 quotient have a separate quantitative comparison.
-[GaussianBinetSineDampedTransform](Lean/IPRADerivations/Analysis/GaussianBinetSineDampedTransform.lean), [GaussianBinetSineFrozenPiTerm](Lean/IPRADerivations/Analysis/GaussianBinetSineFrozenPiTerm.lean), [GaussianBinetSineDampedAxis](Lean/IPRADerivations/Analysis/GaussianBinetSineDampedAxis.lean), [GaussianBinetSineDampedPanels](Lean/IPRADerivations/Analysis/GaussianBinetSineDampedPanels.lean), [GaussianBinetSineRealDampedPanels](Lean/IPRADerivations/Analysis/GaussianBinetSineRealDampedPanels.lean), [GaussianBinetSineDampedQuadrature](Lean/IPRADerivations/Analysis/GaussianBinetSineDampedQuadrature.lean), [GaussianBinetSineQuotientClock](Lean/IPRADerivations/Analysis/GaussianBinetSineQuotientClock.lean)
+[GaussianBinetSineDampedTransform](Lean/IPRADerivations/Analysis/Stirling/Binet/Oscillatory/GaussianBinetSineDampedTransform.lean), [GaussianBinetSineFrozenPiTerm](Lean/IPRADerivations/Analysis/Stirling/Binet/Oscillatory/GaussianBinetSineFrozenPiTerm.lean), [GaussianBinetSineDampedAxis](Lean/IPRADerivations/Analysis/Stirling/Binet/Oscillatory/GaussianBinetSineDampedAxis.lean), [GaussianBinetSineDampedPanels](Lean/IPRADerivations/Analysis/Stirling/Binet/Oscillatory/GaussianBinetSineDampedPanels.lean), [GaussianBinetSineRealDampedPanels](Lean/IPRADerivations/Analysis/Stirling/Binet/Oscillatory/GaussianBinetSineRealDampedPanels.lean), [GaussianBinetSineDampedQuadrature](Lean/IPRADerivations/Analysis/Stirling/Binet/Oscillatory/GaussianBinetSineDampedQuadrature.lean), [GaussianBinetSineQuotientClock](Lean/IPRADerivations/Analysis/Stirling/Binet/Oscillatory/GaussianBinetSineQuotientClock.lean)
 
 A single frozen Pi clock supplies every literal reciprocal row. The truncated kernel and the actual exponential-weighted prefix compare with the cofinal kernel and the original first Binet Laplace integrand, with quantitative cutoff and clock budgets.
-[GaussianBinetKernelFrozenPrefix](Lean/IPRADerivations/Analysis/GaussianBinetKernelFrozenPrefix.lean)
+[GaussianBinetKernelFrozenPrefix](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetKernelFrozenPrefix.lean)
 
 Exact compact rescaling and additivity compare the original intervals whose lower endpoints are dyadic. The omitted strip has norm at most its width divided by four times the real part. The resulting regular name integrates the original product from zero to each positive integer horizon.
-[GaussianBinetBoseCompactAlignment](Lean/IPRADerivations/Analysis/GaussianBinetBoseCompactAlignment.lean), [GaussianBinetBoseOriginExhaustion](Lean/IPRADerivations/Analysis/GaussianBinetBoseOriginExhaustion.lean), [GaussianBinetBoseOriginName](Lean/IPRADerivations/Analysis/GaussianBinetBoseOriginName.lean)
+[GaussianBinetBoseCompactAlignment](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetBoseCompactAlignment.lean), [GaussianBinetBoseOriginExhaustion](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetBoseOriginExhaustion.lean), [GaussianBinetBoseOriginName](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetBoseOriginName.lean)
 
 The original exponential-minus-one observation retains a cubic Taylor lower bound. The arctangent times the original reciprocal is bounded by K/t² when D≤KX. Its actual compact integral on [A/E,(A+C)/E] is bounded by 2KE/A with an explicit sample allowance, independently of the upper endpoint.
-[GaussianBinetBoseCubicGap](Lean/IPRADerivations/Analysis/GaussianBinetBoseCubicGap.lean), [GaussianBinetBoseFarBound](Lean/IPRADerivations/Analysis/GaussianBinetBoseFarBound.lean), [GaussianBinetBoseFarQuadrature](Lean/IPRADerivations/Analysis/GaussianBinetBoseFarQuadrature.lean)
+[GaussianBinetBoseCubicGap](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetBoseCubicGap.lean), [GaussianBinetBoseFarBound](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetBoseFarBound.lean), [GaussianBinetBoseFarQuadrature](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetBoseFarQuadrature.lean)
 
 The time margin E·t≥1 permits a common cutoff N≥E²·2^p. Each original arctangent-weighted cell of that literal prefix compares with its frozen Pi counterpart, with a common error 5KT/2^p over t≤T when D≤KX.
-[GaussianBinetBoseLiteralUniform](Lean/IPRADerivations/Analysis/GaussianBinetBoseLiteralUniform.lean), [GaussianBinetBoseLiteralFrozen](Lean/IPRADerivations/Analysis/GaussianBinetBoseLiteralFrozen.lean)
+[GaussianBinetBoseLiteralUniform](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetBoseLiteralUniform.lean), [GaussianBinetBoseLiteralFrozen](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetBoseLiteralFrozen.lean)
 
 The actual finite frozen-Pi prefixes of lengths C+r and C are compared at the same supplied time mesh and observation clock. The explicit certified mesh and clock floors give the uniform tail 11K/C.
-[GaussianBinetSecondDecaySharedTail](Lean/IPRADerivations/Analysis/GaussianBinetSecondDecaySharedTail.lean)
+[GaussianBinetSecondDecaySharedTail](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetSecondDecaySharedTail.lean)
 
 The actual shifted exponential antiderivative uses the rate-versus-horizon inequality directly. A common physical horizon independent of the Pi denominator now suffices to compare the actual weighted sine quadrature to each literal Binet kernel row.
-[GaussianBinetFixedHorizonDecay](Lean/IPRADerivations/Analysis/GaussianBinetFixedHorizonDecay.lean), [GaussianBinetFixedHorizonPole](Lean/IPRADerivations/Analysis/GaussianBinetFixedHorizonPole.lean), [GaussianBinetFixedHorizonSine](Lean/IPRADerivations/Analysis/GaussianBinetFixedHorizonSine.lean), [GaussianBinetFixedHorizonFrozenRows](Lean/IPRADerivations/Analysis/GaussianBinetFixedHorizonFrozenRows.lean)
+[GaussianBinetFixedHorizonDecay](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetFixedHorizonDecay.lean), [GaussianBinetFixedHorizonPole](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetFixedHorizonPole.lean), [GaussianBinetFixedHorizonSine](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetFixedHorizonSine.lean), [GaussianBinetFixedHorizonFrozenRows](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetFixedHorizonFrozenRows.lean)
 
 Both cutoff limits now give the original improper integral as a regular name on the encoded rational right half-plane. At independent clocks its comparison to the original compact interval [2^(-L-1),T] has leading error 2K/T + D/(4X·2^(L+1)) when D≤KX.
-[GaussianBinetBoseHorizonRate](Lean/IPRADerivations/Analysis/GaussianBinetBoseHorizonRate.lean), [GaussianBinetBoseImproperName](Lean/IPRADerivations/Analysis/GaussianBinetBoseImproperName.lean)
+[GaussianBinetBoseHorizonRate](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetBoseHorizonRate.lean), [GaussianBinetBoseImproperName](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetBoseImproperName.lean)
 
 The original compact product compares with the literal exponential prefix on any certified refinement. The angular precision and cutoff may be chosen before the mesh, so the same positive time tags can be used for later decay rows.
-[GaussianBinetBosePrefixQuadrature](Lean/IPRADerivations/Analysis/GaussianBinetBosePrefixQuadrature.lean), [GaussianBinetBosePrefixRefinement](Lean/IPRADerivations/Analysis/GaussianBinetBosePrefixRefinement.lean)
+[GaussianBinetBosePrefixQuadrature](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetBosePrefixQuadrature.lean), [GaussianBinetBosePrefixRefinement](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetBosePrefixRefinement.lean)
 
 The actual arctangent-weighted quadrature expands to a finite matrix and transposes with the original time weight. Each cell retains the exact signed exponential and its original time-tag-dependent observation clock.
-[GaussianBinetBosePrefixTranspose](Lean/IPRADerivations/Analysis/GaussianBinetBosePrefixTranspose.lean)
+[GaussianBinetBosePrefixTranspose](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetBosePrefixTranspose.lean)
 
 The normalized factor of two preserves the original improper name with twice the compact-cutoff error. A comparison with the first Binet integral suffices for the second identity. The positive weighted cells agree exactly with the original sine transform cells, and the zero-frequency cell has its removable value.
-[GaussianBinetSecondFormulaReduction](Lean/IPRADerivations/Analysis/GaussianBinetSecondFormulaReduction.lean), [GaussianBinetSecondRowCell](Lean/IPRADerivations/Analysis/GaussianBinetSecondRowCell.lean)
+[GaussianBinetSecondFormulaReduction](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetSecondFormulaReduction.lean), [GaussianBinetSecondRowCell](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetSecondRowCell.lean)
 
 A single sine clock, horizon and grid count give error 10/2^p between the original arctangent observation and its actual damped sine rectangle for all encoded time tags bounded by the chosen horizon.
-[GaussianBinetArctangentSineUniform](Lean/IPRADerivations/Analysis/GaussianBinetArctangentSineUniform.lean)
+[GaussianBinetArctangentSineUniform](Lean/IPRADerivations/Analysis/Stirling/Binet/Oscillatory/GaussianBinetArctangentSineUniform.lean)
 
 The literal transposed prefix compares with the frozen-Pi matrix at a separately chosen later observation clock. Each frozen column is the exact geometric row, and the zero-start matrix binds to the existing shared-mesh tail.
-[GaussianBinetBoseFrozenMatrix](Lean/IPRADerivations/Analysis/GaussianBinetBoseFrozenMatrix.lean), [GaussianBinetBoseFrozenOrigin](Lean/IPRADerivations/Analysis/GaussianBinetBoseFrozenOrigin.lean)
+[GaussianBinetBoseFrozenMatrix](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetBoseFrozenMatrix.lean), [GaussianBinetBoseFrozenOrigin](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetBoseFrozenOrigin.lean)
 
 The original removable column and an explicit sine quotient bound control the discarded low-frequency prefix. Every remaining frequency has an explicit positive margin, so the fixed-horizon sine transform uses a tail bound independent of raw denominator size.
-[GaussianBinetFixedHorizonPositiveMargin](Lean/IPRADerivations/Analysis/GaussianBinetFixedHorizonPositiveMargin.lean), [GaussianBinetSineQuotientMajorant](Lean/IPRADerivations/Analysis/GaussianBinetSineQuotientMajorant.lean), [GaussianBinetSineStripCut](Lean/IPRADerivations/Analysis/GaussianBinetSineStripCut.lean), [GaussianBinetOscillatorySineSmallStrip](Lean/IPRADerivations/Analysis/GaussianBinetOscillatorySineSmallStrip.lean)
+[GaussianBinetFixedHorizonPositiveMargin](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetFixedHorizonPositiveMargin.lean), [GaussianBinetSineQuotientMajorant](Lean/IPRADerivations/Analysis/Stirling/Binet/Oscillatory/GaussianBinetSineQuotientMajorant.lean), [GaussianBinetSineStripCut](Lean/IPRADerivations/Analysis/Stirling/Binet/Oscillatory/GaussianBinetSineStripCut.lean), [GaussianBinetOscillatorySineSmallStrip](Lean/IPRADerivations/Analysis/Stirling/Binet/Oscillatory/GaussianBinetOscillatorySineSmallStrip.lean)
 
 The literal first Binet Laplace strip and the shared-Pi finite kernel prefix use exactly the same physical tags and left weights. Their explicit cutoff bound is 14 times the physical width divided by 2^p.
-[GaussianBinetKernelFrozenStrip](Lean/IPRADerivations/Analysis/GaussianBinetKernelFrozenStrip.lean)
+[GaussianBinetKernelFrozenStrip](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetKernelFrozenStrip.lean)
 
 The original cofinal Laplace integrand has norm at most one half. Each compact left sum is bounded by half the physical width, and exact additivity gives the same leading error for the removed left interval at independent clocks.
-[GaussianBinetLaplaceLowerWindow](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceLowerWindow.lean)
+[GaussianBinetLaplaceLowerWindow](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceLowerWindow.lean)
 
 The original frozen decay observation is moved to the exact sine evaluation clock. Replacing the original arctangent by the scheduled sine rectangle on that same grid has error T*(20+2KT)/2^q, including the original time-zero tag.
-[GaussianBinetSecondWeightedSinePoint](Lean/IPRADerivations/Analysis/GaussianBinetSecondWeightedSinePoint.lean), [GaussianBinetSecondWeightedSineGrid](Lean/IPRADerivations/Analysis/GaussianBinetSecondWeightedSineGrid.lean)
+[GaussianBinetSecondWeightedSinePoint](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetSecondWeightedSinePoint.lean), [GaussianBinetSecondWeightedSineGrid](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetSecondWeightedSineGrid.lean)
 
 The exact zero-start frozen matrix equals the original finite geometric row sum. Its scheduled sine replacement has error at most NT(20+2KT)/2^q for N rows on the same physical mesh and with the same frozen Pi sample.
-[GaussianBinetSecondWeightedSinePrefix](Lean/IPRADerivations/Analysis/GaussianBinetSecondWeightedSinePrefix.lean)
+[GaussianBinetSecondWeightedSinePrefix](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetSecondWeightedSinePrefix.lean)
 
 The weighted sine column can be evaluated at the sine rectangle clock even when the antiderivative uses a later mesh clock. The comparison to the frozen kernel row separates the dyadic clock error from the endpoint error controlled by the positive frequency margin.
-[GaussianBinetSineDampedRetiming](Lean/IPRADerivations/Analysis/GaussianBinetSineDampedRetiming.lean), [GaussianBinetSineKernelCommonClock](Lean/IPRADerivations/Analysis/GaussianBinetSineKernelCommonClock.lean)
+[GaussianBinetSineDampedRetiming](Lean/IPRADerivations/Analysis/Stirling/Binet/Oscillatory/GaussianBinetSineDampedRetiming.lean), [GaussianBinetSineKernelCommonClock](Lean/IPRADerivations/Analysis/Stirling/Binet/Oscillatory/GaussianBinetSineKernelCommonClock.lean)
 
 The literal frozen Pi prefix uses an explicit size-dependent tail independent of observation precision. The original positive frequency tags and integration weight read back exactly, and the literal late damping clock can be chosen independently of the Pi clock.
-[GaussianBinetKernelFrozenIndependent](Lean/IPRADerivations/Analysis/GaussianBinetKernelFrozenIndependent.lean), [GaussianBinetKernelFrequencyGrid](Lean/IPRADerivations/Analysis/GaussianBinetKernelFrequencyGrid.lean)
+[GaussianBinetKernelFrozenIndependent](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetKernelFrozenIndependent.lean), [GaussianBinetKernelFrequencyGrid](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetKernelFrequencyGrid.lean)
 
 The original tags of the compact interval from 1/E to T match the corresponding suffix of the complete frozen time grid. The mesh weights agree exactly, and the time-tag comparison retains a uniform dyadic allowance.
-[GaussianBinetBoseFrozenTimeRescale](Lean/IPRADerivations/Analysis/GaussianBinetBoseFrozenTimeRescale.lean), [GaussianBinetBoseFrozenSuffix](Lean/IPRADerivations/Analysis/GaussianBinetBoseFrozenSuffix.lean)
+[GaussianBinetBoseFrozenTimeRescale](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetBoseFrozenTimeRescale.lean), [GaussianBinetBoseFrozenSuffix](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetBoseFrozenSuffix.lean)
 
 The original positive row majorant controls the geometric tail before the omitted zero-start time cells are restored. The combined error is 11K/I + 2KI/E², independent of the discarded geometric count.
-[GaussianRationalSuffixMask](Lean/IPRADerivations/Analysis/GaussianRationalSuffixMask.lean), [GaussianBinetSecondDecaySuffixBound](Lean/IPRADerivations/Analysis/GaussianBinetSecondDecaySuffixBound.lean), [GaussianBinetBoseFrozenSuffixCut](Lean/IPRADerivations/Analysis/GaussianBinetBoseFrozenSuffixCut.lean), [GaussianBinetBoseFrozenOriginCut](Lean/IPRADerivations/Analysis/GaussianBinetBoseFrozenOriginCut.lean)
+[GaussianRationalSuffixMask](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianRationalSuffixMask.lean), [GaussianBinetSecondDecaySuffixBound](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetSecondDecaySuffixBound.lean), [GaussianBinetBoseFrozenSuffixCut](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetBoseFrozenSuffixCut.lean), [GaussianBinetBoseFrozenOriginCut](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetBoseFrozenOriginCut.lean)
 
 Exact finite interchange exposes each positive transposed column as the original complex damping times the original real-damped sine quadrature. The physical floor cut and low-frequency error hold on that same grid.
-[GaussianBinetSecondWeightedSineMatrix](Lean/IPRADerivations/Analysis/GaussianBinetSecondWeightedSineMatrix.lean), [GaussianBinetSecondWeightedSineTranspose](Lean/IPRADerivations/Analysis/GaussianBinetSecondWeightedSineTranspose.lean), [GaussianBinetSecondWeightedSineSuffix](Lean/IPRADerivations/Analysis/GaussianBinetSecondWeightedSineSuffix.lean), [GaussianBinetSecondWeightedSineCut](Lean/IPRADerivations/Analysis/GaussianBinetSecondWeightedSineCut.lean)
+[GaussianBinetSecondWeightedSineMatrix](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetSecondWeightedSineMatrix.lean), [GaussianBinetSecondWeightedSineTranspose](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetSecondWeightedSineTranspose.lean), [GaussianBinetSecondWeightedSineSuffix](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetSecondWeightedSineSuffix.lean), [GaussianBinetSecondWeightedSineCut](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetSecondWeightedSineCut.lean)
 
 Compare the literal positive sine suffix with the original first Binet improper observation via its arbitrary-mesh compact quadrature. The per-tag comparison permits different certified damping radii.
-[GaussianBinetKernelFrequencyRadius](Lean/IPRADerivations/Analysis/GaussianBinetKernelFrequencyRadius.lean), [GaussianBinetLaplaceFrequencySuffix](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceFrequencySuffix.lean)
+[GaussianBinetKernelFrequencyRadius](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetKernelFrequencyRadius.lean), [GaussianBinetLaplaceFrequencySuffix](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceFrequencySuffix.lean)
 
 Checked the later frozen prefix against the weighted sine prefix on the same time grid, with an independent angular clock. The retained angular cells compare to the original frozen kernel with separately bounded observation and time-tail errors.
-[GaussianBinetSecondDecayRetiming](Lean/IPRADerivations/Analysis/GaussianBinetSecondDecayRetiming.lean), [GaussianBinetSineKernelFrequency](Lean/IPRADerivations/Analysis/GaussianBinetSineKernelFrequency.lean)
+[GaussianBinetSecondDecayRetiming](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetSecondDecayRetiming.lean), [GaussianBinetSineKernelFrequency](Lean/IPRADerivations/Analysis/Stirling/Binet/Oscillatory/GaussianBinetSineKernelFrequency.lean)
 
 The compact comparison fixes the retained geometric count before choosing the literal observation clock. Refinement, freezing, suffix alignment, and the origin correction connect the original improper sample to the retained full frozen matrix with error at most 9·2^-h.
-[GaussianBinetBoseLiteralLate](Lean/IPRADerivations/Analysis/GaussianBinetBoseLiteralLate.lean), [GaussianBinetBosePrefixRefinementLate](Lean/IPRADerivations/Analysis/GaussianBinetBosePrefixRefinementLate.lean), [GaussianBinetBoseImproperFrozen](Lean/IPRADerivations/Analysis/GaussianBinetBoseImproperFrozen.lean)
+[GaussianBinetBoseLiteralLate](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetBoseLiteralLate.lean), [GaussianBinetBosePrefixRefinementLate](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetBosePrefixRefinementLate.lean), [GaussianBinetBoseImproperFrozen](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetBoseImproperFrozen.lean)
 
 Explicit primitive-recursive schedules choose the time, geometric, and strip cutoffs, then pay independent angular, kernel, and Laplace sample budgets on one dyadic denominator.
-[GaussianBinetSecondEarlySchedule](Lean/IPRADerivations/Analysis/GaussianBinetSecondEarlySchedule.lean), [GaussianBinetSecondFrequencySchedule](Lean/IPRADerivations/Analysis/GaussianBinetSecondFrequencySchedule.lean), [GaussianBinetSecondErrorBudget](Lean/IPRADerivations/Analysis/GaussianBinetSecondErrorBudget.lean)
+[GaussianBinetSecondEarlySchedule](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetSecondEarlySchedule.lean), [GaussianBinetSecondFrequencySchedule](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetSecondFrequencySchedule.lean), [GaussianBinetSecondErrorBudget](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetSecondErrorBudget.lean)
 
 The checked late Bose schedule admits independent lower bounds on π accuracy, the time mesh, and the final literal clock. The retained sine prefix is transposed and compared with the exact frozen kernel rectangle. Its frequency columns approximate the original first-Binet quadrature using the original mesh weight.
-[GaussianBinetBoseLateSchedule](Lean/IPRADerivations/Analysis/GaussianBinetBoseLateSchedule.lean), [GaussianBinetSecondWeightedSineTransposedPrefix](Lean/IPRADerivations/Analysis/GaussianBinetSecondWeightedSineTransposedPrefix.lean), [GaussianBinetFrozenKernelRectangle](Lean/IPRADerivations/Analysis/GaussianBinetFrozenKernelRectangle.lean), [GaussianBinetSineKernelGrid](Lean/IPRADerivations/Analysis/GaussianBinetSineKernelGrid.lean), [GaussianBinetSineKernelPrefix](Lean/IPRADerivations/Analysis/GaussianBinetSineKernelPrefix.lean), [GaussianBinetFrozenKernelLaplace](Lean/IPRADerivations/Analysis/GaussianBinetFrozenKernelLaplace.lean)
+[GaussianBinetBoseLateSchedule](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetBoseLateSchedule.lean), [GaussianBinetSecondWeightedSineTransposedPrefix](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetSecondWeightedSineTransposedPrefix.lean), [GaussianBinetFrozenKernelRectangle](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetFrozenKernelRectangle.lean), [GaussianBinetSineKernelGrid](Lean/IPRADerivations/Analysis/Stirling/Binet/Oscillatory/GaussianBinetSineKernelGrid.lean), [GaussianBinetSineKernelPrefix](Lean/IPRADerivations/Analysis/Stirling/Binet/Oscillatory/GaussianBinetSineKernelPrefix.lean), [GaussianBinetFrozenKernelLaplace](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetFrozenKernelLaplace.lean)
 
 The actual first and scaled second improper observations differ by at most 35·2^-p at every common observation p. The checked first Binet identity identifies the scaled original Bose sampler with the original Stirling remainder. The object-theory theorem is universally closed.
-[GaussianBinetSecondFormula](Lean/IPRADerivations/Analysis/GaussianBinetSecondFormula.lean)
+[GaussianBinetSecondFormula](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetSecondFormula.lean)
 
 The lifted program reads the original scaled Bose sampler at each selected rational argument. It is regular, admits an independent comparison to every sufficiently late rational observation, and is equivalent to the original named Stirling remainder on the certified right half-plane.
-[GaussianNamedRightHalfPlaneLiftTransport](Lean/IPRADerivations/Analysis/GaussianNamedRightHalfPlaneLiftTransport.lean), [GaussianBinetSecondFormulaNamed](Lean/IPRADerivations/Analysis/GaussianBinetSecondFormulaNamed.lean)
+[GaussianNamedRightHalfPlaneLiftTransport](Lean/IPRADerivations/Analysis/Names/Rates/GaussianNamedRightHalfPlaneLiftTransport.lean), [GaussianBinetSecondFormulaNamed](Lean/IPRADerivations/Analysis/Stirling/Binet/GaussianBinetSecondFormulaNamed.lean)
 
 The actual compact quadratures on adjacent unit intervals differ by the original logarithm quadrature with error at most 8·2^-p at the common observation clock, on every positive mesh. The upper and lower unit integrals use the same physical tags.
-[GaussianRaabeUnitGridRecurrence](Lean/IPRADerivations/Analysis/GaussianRaabeUnitGridRecurrence.lean)
+[GaussianRaabeUnitGridRecurrence](Lean/IPRADerivations/Analysis/Stirling/Raabe/GaussianRaabeUnitGridRecurrence.lean)
 
-A checked regular point evaluator uses the original positive-time Euler power and the reciprocal of the unscaled exponential minus one. The reciprocal has norm at most the inverse time at every observation. [The original Gamma–zeta Mellin identity](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinIdentity.lean) now identifies the corresponding improper integral on the certified rational chart.
-[GaussianGammaZetaMellinIntegrand](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinIntegrand.lean)
+A checked regular point evaluator uses the original positive-time Euler power and the reciprocal of the unscaled exponential minus one. The reciprocal has norm at most the inverse time at every observation. [The original Gamma–zeta Mellin identity](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaMellinIdentity.lean) now identifies the corresponding improper integral on the certified rational chart.
+[GaussianGammaZetaMellinIntegrand](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaMellinIntegrand.lean)
 
 The original real decay and cofinal Binet kernel give a positive rational floor on every bounded time interval, with an explicit observation allowance. This supplies the positive-interval estimate for the Stirling remainder moments.
-[GaussianBinetLaplaceRealFloor](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceRealFloor.lean)
+[GaussianBinetLaplaceRealFloor](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceRealFloor.lean)
 
 The literal same-clock logarithm samples give a quadratic primitive estimate on each positive rational cell. Telescoping compares the original compact logarithm quadrature to the actual endpoint difference with separate mesh and observation errors.
-[GaussianRaabeLogPrimitiveCell](Lean/IPRADerivations/Analysis/GaussianRaabeLogPrimitiveCell.lean), [GaussianRaabeLogPrimitiveGrid](Lean/IPRADerivations/Analysis/GaussianRaabeLogPrimitiveGrid.lean)
+[GaussianRaabeLogPrimitiveCell](Lean/IPRADerivations/Analysis/Stirling/Raabe/GaussianRaabeLogPrimitiveCell.lean), [GaussianRaabeLogPrimitiveGrid](Lean/IPRADerivations/Analysis/Stirling/Raabe/GaussianRaabeLogPrimitiveGrid.lean)
 
 At a rooted time t=(a/b)^A, the actual Mellin observation for the parameter s is bounded by (b/a)^(A−1)+3·2^-p on the admitted chart for s−1. The exact time factor cancels the reciprocal norm bound.
-[GaussianGammaZetaMellinOriginBound](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinOriginBound.lean)
+[GaussianGammaZetaMellinOriginBound](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaMellinOriginBound.lean)
 
 The actual compact quadrature inherits the pointwise rational floor with its physical width. On [1,2] the late samples have real part at least 1/(104·3^(2X)), with explicit dyadic admission.
-[GaussianBinetLaplaceCompactRealFloor](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceCompactRealFloor.lean)
+[GaussianBinetLaplaceCompactRealFloor](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceCompactRealFloor.lean)
 
 The actual unscaled reciprocal is approximated by the finite powers of the inverse of its exact positive exponential sample. On a strip with time at least 1/H the uniform error is bounded by H²/(H+N), before weighting by the original Euler power.
-[GaussianGammaZetaMellinGeometric](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinGeometric.lean)
+[GaussianGammaZetaMellinGeometric](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaMellinGeometric.lean)
 
 At the actual reciprocal clock, every retained geometric term compares to the original Euler decay evaluated at the positive integer multiple of time. Its inverse retiming cost has an explicit dyadic denominator.
-[GaussianGammaZetaMellinDecayRows](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinDecayRows.lean)
+[GaussianGammaZetaMellinDecayRows](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaMellinDecayRows.lean)
 
 The original logarithm observations on equal positive rational charts compare at independent precisions. Multiplication by the common physical endpoint preserves a uniform rate, including the exact grid rescaling.
-[GaussianRaabeLogPrimitiveRescale](Lean/IPRADerivations/Analysis/GaussianRaabeLogPrimitiveRescale.lean)
+[GaussianRaabeLogPrimitiveRescale](Lean/IPRADerivations/Analysis/Stirling/Raabe/GaussianRaabeLogPrimitiveRescale.lean)
 
 An exact rational t^j factor weights the original cofinal Laplace sample. On the original compact grid [1,2], every late natural moment has the same strict positive floor as the unweighted panel.
-[GaussianBinetLaplaceMomentFloor](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentFloor.lean)
+[GaussianBinetLaplaceMomentFloor](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceMomentFloor.lean)
 
 Each original right-tag observation is weighted by its exact powered cell width. The finite rooted grid sum is bounded by 4·2^-h as soon as its span in the root coordinate meets the certified dyadic budget.
-[GaussianGammaZetaMellinOriginCell](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinOriginCell.lean), [GaussianGammaZetaMellinOriginGrid](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinOriginGrid.lean)
+[GaussianGammaZetaMellinOriginCell](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaMellinOriginCell.lean), [GaussianGammaZetaMellinOriginGrid](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaMellinOriginGrid.lean)
 
 The deviation of the actual unit log-Gamma quadrature from the logarithm primitive has an explicit finite bound under an arbitrary integer shift. The same mesh count and observation clock are used throughout the telescope.
-[GaussianRaabeUnitGridShift](Lean/IPRADerivations/Analysis/GaussianRaabeUnitGridShift.lean)
+[GaussianRaabeUnitGridShift](Lean/IPRADerivations/Analysis/Stirling/Raabe/GaussianRaabeUnitGridShift.lean)
 
 At every actual logarithm observation on a large positive unit interval, the elementary Stirling term compares to a centered affine model with an explicit inverse-argument and dyadic error. This supplies the local estimate for the far-field average.
-[GaussianRaabeStirlingCell](Lean/IPRADerivations/Analysis/GaussianRaabeStirlingCell.lean)
+[GaussianRaabeStirlingCell](Lean/IPRADerivations/Analysis/Stirling/Raabe/GaussianRaabeStirlingCell.lean)
 
 An explicit modulus combines the original Laplace time estimate with the exact power t^j. It certifies regularity of the original weighted quadrature on arbitrary admissible compact strips and on [1,2].
-[GaussianBinetLaplaceMomentCompact](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentCompact.lean)
+[GaussianBinetLaplaceMomentCompact](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceMomentCompact.lean)
 
 The centered left grid has exact mean −1/(2N). Averaging the checked elementary Stirling samples gives the literal endpoint primitive with the explicit inverse-argument error, dyadic error, and a mesh-bias coefficient independent of the mesh.
-[GaussianRaabeCenteredMesh](Lean/IPRADerivations/Analysis/GaussianRaabeCenteredMesh.lean), [GaussianRaabeAffineMean](Lean/IPRADerivations/Analysis/GaussianRaabeAffineMean.lean), [GaussianRaabeStirlingMesh](Lean/IPRADerivations/Analysis/GaussianRaabeStirlingMesh.lean)
+[GaussianRaabeCenteredMesh](Lean/IPRADerivations/Analysis/Stirling/Raabe/GaussianRaabeCenteredMesh.lean), [GaussianRaabeAffineMean](Lean/IPRADerivations/Analysis/Stirling/Raabe/GaussianRaabeAffineMean.lean), [GaussianRaabeStirlingMesh](Lean/IPRADerivations/Analysis/Stirling/Raabe/GaussianRaabeStirlingMesh.lean)
 
 The exact rational weight commutes with the original horizon comparison. Weighted compact integrals agree whenever both charts cover the same physical panel, including the independently sampled row comparison.
-[GaussianBinetLaplaceMomentHorizon](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentHorizon.lean)
+[GaussianBinetLaplaceMomentHorizon](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceMomentHorizon.lean)
 
 At a common admissible horizon, the original weighted quadrature on consecutive strips agrees with the sum of their regular names.
-[GaussianBinetLaplaceMomentAdditivity](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentAdditivity.lean)
+[GaussianBinetLaplaceMomentAdditivity](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceMomentAdditivity.lean)
 
 The original positive-window Mellin observations compare with the finite weighted Euler decay prefix on the same physical tags. A computed common clock controls the decay rows and leaves the exact geometric truncation allowance.
-[GaussianGammaZetaMellinDecayPrefix](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinDecayPrefix.lean), [GaussianGammaZetaMellinStrip](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinStrip.lean)
+[GaussianGammaZetaMellinDecayPrefix](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaMellinDecayPrefix.lean), [GaussianGammaZetaMellinStrip](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaMellinStrip.lean)
 
 The original real Stirling remainder controls actual common-clock log-Gamma and logarithm observations. Explicit schedules bound the finite shift, elementary and remainder errors after choosing the distant interval and mesh. The right side is the regular name for the logarithm primitive plus the original Stirling constant.
-[GaussianRaabeStirlingRemainder](Lean/IPRADerivations/Analysis/GaussianRaabeStirlingRemainder.lean), [GaussianRaabeRightSide](Lean/IPRADerivations/Analysis/GaussianRaabeRightSide.lean), [GaussianRaabeCofinalSchedule](Lean/IPRADerivations/Analysis/GaussianRaabeCofinalSchedule.lean)
+[GaussianRaabeStirlingRemainder](Lean/IPRADerivations/Analysis/Stirling/Raabe/GaussianRaabeStirlingRemainder.lean), [GaussianRaabeRightSide](Lean/IPRADerivations/Analysis/Stirling/Raabe/GaussianRaabeRightSide.lean), [GaussianRaabeCofinalSchedule](Lean/IPRADerivations/Analysis/Stirling/Raabe/GaussianRaabeCofinalSchedule.lean)
 
 The original weighted finite Mellin rectangle can be summed first over time or first over the decay index. The transposed columns retain the actual Euler samples at positive integer multiples of the original time tags.
-[GaussianGammaZetaMellinTranspose](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinTranspose.lean)
+[GaussianGammaZetaMellinTranspose](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaMellinTranspose.lean)
 
 The original weighted compact observations have a physical width bound. In the unit time window the bound is the width itself, uniformly in the internal natural moment order.
-[GaussianBinetLaplaceMomentWidth](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentWidth.lean)
+[GaussianBinetLaplaceMomentWidth](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceMomentWidth.lean)
 
 The original reciprocal exponential and exact weight yield an inverse-square bound with the explicit factorial coefficient and uniform dyadic allowance.
-[GaussianBinetLaplaceMomentDecay](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentDecay.lean)
+[GaussianBinetLaplaceMomentDecay](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceMomentDecay.lean)
 
 The common affine-grid inverse-square estimate bounds the original weighted quadrature uniformly in the total width and the chosen covering horizon.
-[GaussianBinetLaplaceMomentTail](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentTail.lean)
+[GaussianBinetLaplaceMomentTail](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceMomentTail.lean)
 
 At any mesh above the computed floor, the actual log-Gamma quadrature and the regular right side differ by at most 14·2^-h at the selected clock. The mesh may be aligned to a separate endpoint partition. The exact encoded unit argument has an explicit comparison to the original Stirling constant minus one.
-[GaussianRaabeStirlingGridRemainder](Lean/IPRADerivations/Analysis/GaussianRaabeStirlingGridRemainder.lean), [GaussianRaabePositiveComparison](Lean/IPRADerivations/Analysis/GaussianRaabePositiveComparison.lean), [GaussianRaabeAtOne](Lean/IPRADerivations/Analysis/GaussianRaabeAtOne.lean)
+[GaussianRaabeStirlingGridRemainder](Lean/IPRADerivations/Analysis/Stirling/Raabe/GaussianRaabeStirlingGridRemainder.lean), [GaussianRaabePositiveComparison](Lean/IPRADerivations/Analysis/Stirling/Raabe/GaussianRaabePositiveComparison.lean), [GaussianRaabeAtOne](Lean/IPRADerivations/Analysis/Stirling/Raabe/GaussianRaabeAtOne.lean)
 
 The exact moment names on ordered positive windows have the original inverse-square tail rate at independent precisions.
-[GaussianBinetLaplaceMomentPrefixes](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentPrefixes.lean)
+[GaussianBinetLaplaceMomentPrefixes](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceMomentPrefixes.lean)
 
 An explicit cofinal cutoff gives a regular name of the weighted original Laplace integrand. Its independent comparison to every original compact prefix retains the inverse-horizon tail bound.
-[GaussianBinetLaplaceMomentImproper](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentImproper.lean)
+[GaussianBinetLaplaceMomentImproper](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceMomentImproper.lean)
 
 The actual weighted rows have nonnegative real limits, and the common quadrature preserves the real order.
-[GaussianBinetLaplaceMomentNonnegative](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentNonnegative.lean)
+[GaussianBinetLaplaceMomentNonnegative](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceMomentNonnegative.lean)
 
 The original weighted Mellin strip compares to a finite sum of the actual positive-scaling damped Euler quadratures for the scales 1 through N, with a scheduled geometric and dyadic error.
-[GaussianGammaZetaMellinDampedPoint](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinDampedPoint.lean), [GaussianGammaZetaMellinDampedStrip](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinDampedStrip.lean)
+[GaussianGammaZetaMellinDampedPoint](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaMellinDampedPoint.lean), [GaussianGammaZetaMellinDampedStrip](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaMellinDampedStrip.lean)
 
 The arbitrary-width recurrence binds the original positive-strip observations exactly. Equal rational tags give aligned grids for the full and trimmed unit panels. A uniform unit-panel bound controls the omitted strip, and the original logarithm primitive has an explicit bound at the dyadic endpoint.
-[GaussianRaabeStripGridRecurrence](Lean/IPRADerivations/Analysis/GaussianRaabeStripGridRecurrence.lean), [GaussianRaabeLogGammaAlignedTime](Lean/IPRADerivations/Analysis/GaussianRaabeLogGammaAlignedTime.lean), [GaussianRaabeUnitStripBound](Lean/IPRADerivations/Analysis/GaussianRaabeUnitStripBound.lean), [GaussianRaabeOriginStripAlignment](Lean/IPRADerivations/Analysis/GaussianRaabeOriginStripAlignment.lean), [GaussianRaabeDyadicPrimitive](Lean/IPRADerivations/Analysis/GaussianRaabeDyadicPrimitive.lean)
+[GaussianRaabeStripGridRecurrence](Lean/IPRADerivations/Analysis/Stirling/Raabe/GaussianRaabeStripGridRecurrence.lean), [GaussianRaabeLogGammaAlignedTime](Lean/IPRADerivations/Analysis/Stirling/Raabe/GaussianRaabeLogGammaAlignedTime.lean), [GaussianRaabeUnitStripBound](Lean/IPRADerivations/Analysis/Stirling/Raabe/GaussianRaabeUnitStripBound.lean), [GaussianRaabeOriginStripAlignment](Lean/IPRADerivations/Analysis/Stirling/Raabe/GaussianRaabeOriginStripAlignment.lean), [GaussianRaabeDyadicPrimitive](Lean/IPRADerivations/Analysis/Stirling/Raabe/GaussianRaabeDyadicPrimitive.lean)
 
 On the aligned trimmed grid, the actual logarithm quadrature approximates minus one with separate mesh, observation, and dyadic-endpoint errors.
-[GaussianRaabeOriginLogStrip](Lean/IPRADerivations/Analysis/GaussianRaabeOriginLogStrip.lean)
+[GaussianRaabeOriginLogStrip](Lean/IPRADerivations/Analysis/Stirling/Raabe/GaussianRaabeOriginLogStrip.lean)
 
 Certifies a common finite cutoff, aligned meshes and observation clock, with separate bounds for both omitted endpoint contributions and the original truncated logarithm quadrature.
-[GaussianRaabeOriginSchedule](Lean/IPRADerivations/Analysis/GaussianRaabeOriginSchedule.lean)
+[GaussianRaabeOriginSchedule](Lean/IPRADerivations/Analysis/Stirling/Raabe/GaussianRaabeOriginSchedule.lean)
 
 Every moment on the positive real chart has a named positive lower bound, witnessed by the compact unit panel and the nonnegative exterior strips of each cofinal prefix.
-[GaussianBinetLaplaceMomentPositive](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentPositive.lean)
+[GaussianBinetLaplaceMomentPositive](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceMomentPositive.lean)
 
 The actual left sums on [x,x+1] give a regular name at every encoded positive rational x and are independently-precision cross-equivalent to x log x − x plus the original Stirling constant. The comparison is universally closed in iPRA.
-[GaussianRaabeFormula](Lean/IPRADerivations/Analysis/GaussianRaabeFormula.lean)
+[GaussianRaabeFormula](Lean/IPRADerivations/Analysis/Stirling/Raabe/GaussianRaabeFormula.lean)
 
 An internally finite sum of positively scaled improper Euler values is independently-precision equivalent to the original Gamma name times the corresponding finite Dirichlet sum. This proves the finite factorization on the original scaled evaluators before the infinite limit.
-[GaussianNamedFiniteSumFamilyMultiply](Lean/IPRADerivations/Analysis/GaussianNamedFiniteSumFamilyMultiply.lean), [GaussianGammaZetaMellinDampedImproper](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinDampedImproper.lean)
+[GaussianNamedFiniteSumFamilyMultiply](Lean/IPRADerivations/Analysis/Names/FiniteOperations/GaussianNamedFiniteSumFamilyMultiply.lean), [GaussianGammaZetaMellinDampedImproper](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaMellinDampedImproper.lean)
 
 The original quadratures on [2⁻ʰ,1] satisfy the certified 39/2^k comparison with the actual half-log(2π) observation. The padded cofinal schedule gives a regular improper name cross-equivalent to the named constant by a closed iPRA proof.
-[GaussianRaabeOriginComparison](Lean/IPRADerivations/Analysis/GaussianRaabeOriginComparison.lean), [GaussianRaabeUnitIntegral](Lean/IPRADerivations/Analysis/GaussianRaabeUnitIntegral.lean)
+[GaussianRaabeOriginComparison](Lean/IPRADerivations/Analysis/Stirling/Raabe/GaussianRaabeOriginComparison.lean), [GaussianRaabeUnitIntegral](Lean/IPRADerivations/Analysis/Stirling/Raabe/GaussianRaabeUnitIntegral.lean)
 
 The original [1,2] quadratures at each exact shifted unit-grid tag give a regular name for the integral of logΓ(1+t) on [0,1]. It is cross-equivalent to the named Stirling constant minus the exact rational unit.
-[GaussianRaabeShiftedUnitFormula](Lean/IPRADerivations/Analysis/GaussianRaabeShiftedUnitFormula.lean)
+[GaussianRaabeShiftedUnitFormula](Lean/IPRADerivations/Analysis/Stirling/Raabe/GaussianRaabeShiftedUnitFormula.lean)
 
 Every nonnegative rational argument s admits an original observation bound 3s²+2/2^p against 1−s. This bound will control the Taylor remainder in the weighted Binet integral.
-[GaussianEulerDecayGlobalTaylor](Lean/IPRADerivations/Analysis/GaussianEulerDecayGlobalTaylor.lean)
+[GaussianEulerDecayGlobalTaylor](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerDecayGlobalTaylor.lean)
 
 The actual weighted and unweighted quadratures agree in the zeroth order on every shared physical panel. The checked cofinal rates then identify the two original improper names.
-[GaussianBinetLaplaceMomentZeroOrder](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentZeroOrder.lean)
+[GaussianBinetLaplaceMomentZeroOrder](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceMomentZeroOrder.lean)
 
 The original real Stirling remainder is cross-equivalent to the actual improper Binet moment at order zero and its canonical radius, by a universally closed iPRA proof.
-[GaussianBinetLaplaceMomentStirling](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentStirling.lean)
+[GaussianBinetLaplaceMomentStirling](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceMomentStirling.lean)
 
 Each original finite damped panel on a rational grid compares to its actual improper Euler row with a certified scaled endpoint allowance and a common mesh and observation clock.
-[GaussianGammaZetaMellinDampedExhaustion](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinDampedExhaustion.lean)
+[GaussianGammaZetaMellinDampedExhaustion](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaMellinDampedExhaustion.lean)
 
 The named expression x log x − x plus the original Stirling constant admits a uniform rate to its rational counterpart at every actual late input observation. The coefficient is independent of the frozen numerator and denominator.
-[GaussianRaabeNamedRightSide](Lean/IPRADerivations/Analysis/GaussianRaabeNamedRightSide.lean)
+[GaussianRaabeNamedRightSide](Lean/IPRADerivations/Analysis/Stirling/Raabe/GaussianRaabeNamedRightSide.lean)
 
 Every sufficiently late actual rational observation of the input and every sufficiently fine original log-Gamma grid at that base satisfy an independent-precision comparison with the named Raabe expression. The selected primitive-recursive schedule gives a regular name and a universally closed equivalence for each input sampler.
-[GaussianRaabeNamedGrid](Lean/IPRADerivations/Analysis/GaussianRaabeNamedGrid.lean)
+[GaussianRaabeNamedGrid](Lean/IPRADerivations/Analysis/Stirling/Raabe/GaussianRaabeNamedGrid.lean)
 
 A certified enclosing panel, shared mesh and observation clock give an explicit independent-precision rate from the literal finite damped quadrature sum to Gamma times the original finite Dirichlet sum.
-[GaussianGammaZetaMellinDampedWindow](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinDampedWindow.lean)
+[GaussianGammaZetaMellinDampedWindow](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaMellinDampedWindow.lean)
 
 For every internal finite prefix, the explicit widened physical panel contains the given positive panel. The chosen bounds and mesh make its literal damped sum agree with the original finite Gamma–Dirichlet product within 10/2^p+1/2^r at independent precisions.
-[GaussianGammaZetaMellinDampedWindowSchedule](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinDampedWindowSchedule.lean)
+[GaussianGammaZetaMellinDampedWindowSchedule](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaMellinDampedWindowSchedule.lean)
 
 The same-clock original Mellin observation factors the finite geometric prefix. Its uniform factor two gives a prefix-count independent norm bound at each positive time and on the powered lower endpoint cells.
-[GaussianGammaZetaMellinGeometricEnvelope](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinGeometricEnvelope.lean)
+[GaussianGammaZetaMellinGeometricEnvelope](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaMellinGeometricEnvelope.lean)
 
 The original Mellin evaluator agrees exactly with the finite-strip grid. Its sampled denominator retains a positive factorial monomial after subtracting one, giving an inverse-square observation bound. The checked scalar telescoper bounds any shared-step upper panel independently of its right endpoint.
-[GaussianGammaZetaMellinGrid](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinGrid.lean), [GaussianGammaZetaMellinUpperPoint](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinUpperPoint.lean), [GaussianGammaZetaMellinUpperGrid](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinUpperGrid.lean)
+[GaussianGammaZetaMellinGrid](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaMellinGrid.lean), [GaussianGammaZetaMellinUpperPoint](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaMellinUpperPoint.lean), [GaussianGammaZetaMellinUpperGrid](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaMellinUpperGrid.lean)
 
 At a common observation clock, the actual weighted moments have the next time power as the exact linear coefficient. The quadratic majorant is the nonnegative frozen moment two orders higher, plus a uniform dyadic observation allowance.
-[GaussianEulerDecayGlobalIncrement](Lean/IPRADerivations/Analysis/GaussianEulerDecayGlobalIncrement.lean), [GaussianBinetLaplaceMomentFrozenRows](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentFrozenRows.lean), [GaussianBinetLaplaceMomentTaylorRows](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentTaylorRows.lean)
+[GaussianEulerDecayGlobalIncrement](Lean/IPRADerivations/Analysis/Euler/Integration/GaussianEulerDecayGlobalIncrement.lean), [GaussianBinetLaplaceMomentFrozenRows](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceMomentFrozenRows.lean), [GaussianBinetLaplaceMomentTaylorRows](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceMomentTaylorRows.lean)
 
 The original quadratures on a shared physical grid satisfy the right Taylor comparison. The leading norm allowance is three times the squared increment times a norm bound for the original moment two orders higher. The remaining dyadic cost is proportional to physical width and independent of mesh size.
-[GaussianBinetLaplaceMomentTaylorMajorant](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentTaylorMajorant.lean), [GaussianBinetLaplaceMomentTaylorGrid](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentTaylorGrid.lean)
+[GaussianBinetLaplaceMomentTaylorMajorant](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceMomentTaylorMajorant.lean), [GaussianBinetLaplaceMomentTaylorGrid](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceMomentTaylorGrid.lean)
 
 Every certified positive rational panel has an explicit sampled modulus at independent time encodings and observation clocks. The actual ordinary affine quadrature is a regular name, proved in iPRA.
-[GaussianGammaZetaMellinReciprocalRate](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinReciprocalRate.lean), [GaussianGammaZetaMellinCompact](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinCompact.lean)
+[GaussianGammaZetaMellinReciprocalRate](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaMellinReciprocalRate.lean), [GaussianGammaZetaMellinCompact](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaMellinCompact.lean)
 
 The actual compact name on nested powered positive cutoffs obeys an origin bound independent of the inner endpoint. The proof groups the original affine quadrature into powered cells and controls the drift to each right tag.
-[GaussianEulerLowerTailRootedMajorant](Lean/IPRADerivations/Analysis/GaussianEulerLowerTailRootedMajorant.lean), [GaussianGammaZetaMellinLowerRooted](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinLowerRooted.lean)
+[GaussianEulerLowerTailRootedMajorant](Lean/IPRADerivations/Analysis/Euler/PositiveAxis/GaussianEulerLowerTailRootedMajorant.lean), [GaussianGammaZetaMellinLowerRooted](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaMellinLowerRooted.lean)
 
 The actual inverse-power row equals the reciprocal-time original power times its exact rational scale. A certified real-part margin gives a dyadic block decay bound at arbitrary original observation clocks.
-[GaussianGammaZetaDirichletReciprocalRow](Lean/IPRADerivations/Analysis/GaussianGammaZetaDirichletReciprocalRow.lean), [GaussianGammaZetaDirichletPowerOrder](Lean/IPRADerivations/Analysis/GaussianGammaZetaDirichletPowerOrder.lean), [GaussianGammaZetaDirichletRowDecay](Lean/IPRADerivations/Analysis/GaussianGammaZetaDirichletRowDecay.lean)
+[GaussianGammaZetaDirichletReciprocalRow](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaDirichletReciprocalRow.lean), [GaussianGammaZetaDirichletPowerOrder](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaDirichletPowerOrder.lean), [GaussianGammaZetaDirichletRowDecay](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaDirichletRowDecay.lean)
 
 The actual same-clock shifted improper observation compares to the original base minus the exact increment times the successor moment. The quadratic allowance uses a uniform norm bound on the actual higher moment and the remaining term is 10/2^p.
-[GaussianBinetLaplaceMomentImproperBound](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentImproperBound.lean), [GaussianBinetLaplaceMomentImproperTaylor](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentImproperTaylor.lean)
+[GaussianBinetLaplaceMomentImproperBound](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceMomentImproperBound.lean), [GaussianBinetLaplaceMomentImproperTaylor](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceMomentImproperTaylor.lean)
 
 The original Dirichlet sums converge at the certified margin with the explicit dyadic-block rate for every sufficiently long finite prefix. The original normalized Gamma product has the corresponding independent-observation rate.
-[GaussianGammaZetaDirichletBlock](Lean/IPRADerivations/Analysis/GaussianGammaZetaDirichletBlock.lean), [GaussianGammaZetaDirichletTail](Lean/IPRADerivations/Analysis/GaussianGammaZetaDirichletTail.lean), [GaussianGammaZetaDirichletFiniteRate](Lean/IPRADerivations/Analysis/GaussianGammaZetaDirichletFiniteRate.lean), [GaussianGammaZetaDirichletCofinal](Lean/IPRADerivations/Analysis/GaussianGammaZetaDirichletCofinal.lean), [GaussianGammaZetaDirichletProduct](Lean/IPRADerivations/Analysis/GaussianGammaZetaDirichletProduct.lean)
+[GaussianGammaZetaDirichletBlock](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaDirichletBlock.lean), [GaussianGammaZetaDirichletTail](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaDirichletTail.lean), [GaussianGammaZetaDirichletFiniteRate](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaDirichletFiniteRate.lean), [GaussianGammaZetaDirichletCofinal](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaDirichletCofinal.lean), [GaussianGammaZetaDirichletProduct](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaDirichletProduct.lean)
 
 At each encoded positive rational base, the original punctured forward difference quotient converges to the negative of the next moment with explicit linear step error and independent dyadic observation errors.
-[GaussianBinetLaplaceMomentForwardQuotient](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentForwardQuotient.lean)
+[GaussianBinetLaplaceMomentForwardQuotient](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceMomentForwardQuotient.lean)
 
 Exact rescaling and two compact endpoint bounds give a uniform comparison through enclosing powered windows. The cofinal sampler of the original affine log-power and reciprocal integrand is a regular name by a universally closed iPRA judgment.
-[GaussianGammaZetaMellinCompactUpperTail](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinCompactUpperTail.lean), [GaussianGammaZetaMellinCutoffWindows](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinCutoffWindows.lean), [GaussianGammaZetaMellinNestedBound](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinNestedBound.lean), [GaussianGammaZetaMellinImproper](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinImproper.lean)
+[GaussianGammaZetaMellinCompactUpperTail](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaMellinCompactUpperTail.lean), [GaussianGammaZetaMellinCutoffWindows](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaMellinCutoffWindows.lean), [GaussianGammaZetaMellinNestedBound](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaMellinNestedBound.lean), [GaussianGammaZetaMellinImproper](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaMellinImproper.lean)
 
 Exact transposition binds the finite evaluator to the original damped grid. Uniform lower and upper estimates are independent of the finite count. A powered enclosing window compares the actual compact finite sum with the original Gamma–Dirichlet product at independent observation clocks.
-[GaussianGammaZetaMellinFiniteDampedEvaluator](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinFiniteDampedEvaluator.lean), [GaussianGammaZetaMellinFiniteDampedModulus](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinFiniteDampedModulus.lean), [GaussianGammaZetaMellinFiniteDampedGrid](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinFiniteDampedGrid.lean), [GaussianGammaZetaMellinFiniteDampedLower](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinFiniteDampedLower.lean), [GaussianGammaZetaMellinFiniteDampedUpper](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinFiniteDampedUpper.lean), [GaussianGammaZetaMellinPoweredWindow](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinPoweredWindow.lean), [GaussianGammaZetaMellinPoweredCompactProduct](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinPoweredCompactProduct.lean)
+[GaussianGammaZetaMellinFiniteDampedEvaluator](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaMellinFiniteDampedEvaluator.lean), [GaussianGammaZetaMellinFiniteDampedModulus](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaMellinFiniteDampedModulus.lean), [GaussianGammaZetaMellinFiniteDampedGrid](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaMellinFiniteDampedGrid.lean), [GaussianGammaZetaMellinFiniteDampedLower](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaMellinFiniteDampedLower.lean), [GaussianGammaZetaMellinFiniteDampedUpper](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaMellinFiniteDampedUpper.lean), [GaussianGammaZetaMellinPoweredWindow](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaMellinPoweredWindow.lean), [GaussianGammaZetaMellinPoweredCompactProduct](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaMellinPoweredCompactProduct.lean)
 
 The original compact Mellin pullback and the actual finite Euler damped compact sampler agree up to the checked uniform error on a fixed positive panel, with a concrete lower threshold on the count.
-[GaussianGammaZetaMellinFiniteDampedComparison](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinFiniteDampedComparison.lean)
+[GaussianGammaZetaMellinFiniteDampedComparison](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaMellinFiniteDampedComparison.lean)
 
 A primitive-recursive envelope depending on the order and the positive rational margin bounds all observations of the original improper moment uniformly in the base chart denominator.
-[GaussianBinetLaplaceMomentMarginRows](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentMarginRows.lean), [GaussianBinetLaplaceMomentMarginTail](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentMarginTail.lean), [GaussianBinetLaplaceMomentMarginBound](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentMarginBound.lean)
+[GaussianBinetLaplaceMomentMarginRows](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceMomentMarginRows.lean), [GaussianBinetLaplaceMomentMarginTail](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceMomentMarginTail.lean), [GaussianBinetLaplaceMomentMarginBound](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceMomentMarginBound.lean)
 
 A fixed positive core panel, count-independent exterior estimates and original finite Euler scaling identify the actual Mellin improper sampler with Gamma times the original cofinal Dirichlet series, by a closed iPRA derivation at independently chosen observation precisions.
-[GaussianGammaZetaMellinFiniteNested](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinFiniteNested.lean), [GaussianGammaZetaMellinFiniteNestedBound](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinFiniteNestedBound.lean), [GaussianGammaZetaMellinFiniteCompactUpper](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinFiniteCompactUpper.lean), [GaussianGammaZetaMellinFiniteWindowTail](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinFiniteWindowTail.lean), [GaussianGammaZetaMellinIdentity](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinIdentity.lean)
+[GaussianGammaZetaMellinFiniteNested](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaMellinFiniteNested.lean), [GaussianGammaZetaMellinFiniteNestedBound](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaMellinFiniteNestedBound.lean), [GaussianGammaZetaMellinFiniteCompactUpper](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaMellinFiniteCompactUpper.lean), [GaussianGammaZetaMellinFiniteWindowTail](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaMellinFiniteWindowTail.lean), [GaussianGammaZetaMellinIdentity](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaMellinIdentity.lean)
 
 The fixed-presentation convexity law gives the paper’s chord for every natural block size, including the right endpoint. The literal named bracket difference is x times the logarithm of the endpoint ratio. Its checked bounds give both the exact rational width bound and the stated dyadic cutoff.
-[GaussianBohrMollerupBlockChord](Lean/IPRADerivations/Analysis/GaussianBohrMollerupBlockChord.lean), [GaussianBohrMollerupBracketEndpoints](Lean/IPRADerivations/Analysis/GaussianBohrMollerupBracketEndpoints.lean), [GaussianBohrMollerupBracketWidth](Lean/IPRADerivations/Analysis/GaussianBohrMollerupBracketWidth.lean)
+[GaussianBohrMollerupBlockChord](Lean/IPRADerivations/Analysis/Gamma/BohrMollerup/GaussianBohrMollerupBlockChord.lean), [GaussianBohrMollerupBracketEndpoints](Lean/IPRADerivations/Analysis/Gamma/BohrMollerup/GaussianBohrMollerupBracketEndpoints.lean), [GaussianBohrMollerupBracketWidth](Lean/IPRADerivations/Analysis/Gamma/BohrMollerup/GaussianBohrMollerupBracketWidth.lean)
 
 Any two positive rational input charts with the same quotient give equivalent observations of the original improper Binet moment. The closed theorem compares independently chosen observation precisions and allows separate certified chart radii.
-[GaussianBinetLaplaceMomentRescale](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentRescale.lean)
+[GaussianBinetLaplaceMomentRescale](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceMomentRescale.lean)
 
 Iterating the exact fixed-presentation recurrence gives the actual shifted logarithm sum at every finite block length. Each term is bounded by the last logarithm, giving the closed finite-sum comparison for the larger block chord.
-[GaussianBohrMollerupFiniteRecurrence](Lean/IPRADerivations/Analysis/GaussianBohrMollerupFiniteRecurrence.lean), [GaussianBohrMollerupBlockLogBound](Lean/IPRADerivations/Analysis/GaussianBohrMollerupBlockLogBound.lean)
+[GaussianBohrMollerupFiniteRecurrence](Lean/IPRADerivations/Analysis/Gamma/BohrMollerup/GaussianBohrMollerupFiniteRecurrence.lean), [GaussianBohrMollerupBlockLogBound](Lean/IPRADerivations/Analysis/Gamma/BohrMollerup/GaussianBohrMollerupBlockLogBound.lean)
 
 For every internal moment order, the original forward and backward difference quotients converge to the negative successor moment at the same fixed rational base. The theorem gives explicit error budgets and independent observation clocks for positive rational steps bounded by 1/(2D) at a base X/D.
-[GaussianBinetLaplaceMomentBackwardWindow](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentBackwardWindow.lean), [GaussianBinetLaplaceMomentBackwardQuotient](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentBackwardQuotient.lean)
+[GaussianBinetLaplaceMomentBackwardWindow](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceMomentBackwardWindow.lean), [GaussianBinetLaplaceMomentBackwardQuotient](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceMomentBackwardQuotient.lean)
 
 At the concrete argument two, the original exponential Dirichlet row equals the literal rational reciprocal square. The proof doubles the original logarithm and identifies its exponential with the product of the two original reciprocal-base exponentials.
-[GaussianGammaZetaDirichletSquareRow](Lean/IPRADerivations/Analysis/GaussianGammaZetaDirichletSquareRow.lean)
+[GaussianGammaZetaDirichletSquareRow](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaDirichletSquareRow.lean)
 
 The integer factorial normalization and exact finite log recurrence transport the two convexity chords to the original finite lower and upper bracket names. A closed iPRA derivation places the fixed presentation between those names for every encoded positive rational x at most B and every n at least two.
-[GaussianBohrMollerupFactorialNormalization](Lean/IPRADerivations/Analysis/GaussianBohrMollerupFactorialNormalization.lean), [GaussianBohrMollerupBracketIncrements](Lean/IPRADerivations/Analysis/GaussianBohrMollerupBracketIncrements.lean), [GaussianBohrMollerupBracketEnclosure](Lean/IPRADerivations/Analysis/GaussianBohrMollerupBracketEnclosure.lean)
+[GaussianBohrMollerupFactorialNormalization](Lean/IPRADerivations/Analysis/Gamma/BohrMollerup/GaussianBohrMollerupFactorialNormalization.lean), [GaussianBohrMollerupBracketIncrements](Lean/IPRADerivations/Analysis/Gamma/BohrMollerup/GaussianBohrMollerupBracketIncrements.lean), [GaussianBohrMollerupBracketEnclosure](Lean/IPRADerivations/Analysis/Gamma/BohrMollerup/GaussianBohrMollerupBracketEnclosure.lean)
 
 The checked integer Gamma trajectory and actual factorial readback give Gamma(2)=1 on the native Mellin chart. The closed specialization equates the original improper sampler with its original cofinal Dirichlet name at two.
-[GaussianGammaZetaMellinTwoDirichlet](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinTwoDirichlet.lean)
+[GaussianGammaZetaMellinTwoDirichlet](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaMellinTwoDirichlet.lean)
 
 Using the same paper cutoff for both presentations gives an independent-clock comparison through their original bracket names. Removing the dyadic error identifies the two presentations and gives the corresponding original positive Gamma uniqueness statement.
-[GaussianBohrMollerupLiteralUniqueness](Lean/IPRADerivations/Analysis/GaussianBohrMollerupLiteralUniqueness.lean)
+[GaussianBohrMollerupLiteralUniqueness](Lean/IPRADerivations/Analysis/Gamma/BohrMollerup/GaussianBohrMollerupLiteralUniqueness.lean)
 
 At every common finite cutoff the actual exponential rows give the literal finite reciprocal-square sum. The two checked tail rates then identify the original cofinal Dirichlet name with the original rational reciprocal-power name and transfer the Basel evaluation.
-[GaussianGammaZetaDirichletSquareFinite](Lean/IPRADerivations/Analysis/GaussianGammaZetaDirichletSquareFinite.lean), [GaussianGammaZetaDirichletSquareCofinal](Lean/IPRADerivations/Analysis/GaussianGammaZetaDirichletSquareCofinal.lean)
+[GaussianGammaZetaDirichletSquareFinite](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaDirichletSquareFinite.lean), [GaussianGammaZetaDirichletSquareCofinal](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaDirichletSquareCofinal.lean)
 
 The specialized Mellin integrand is the rational time multiplied by the original reciprocal of the unscaled exponential minus one at all positive rational points. The original improper name equals pi squared divided by six by closed iPRA name equality.
-[GaussianGammaZetaMellinTwoIntegrand](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinTwoIntegrand.lean), [GaussianGammaZetaMellinBasel](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinBasel.lean)
+[GaussianGammaZetaMellinTwoIntegrand](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaMellinTwoIntegrand.lean), [GaussianGammaZetaMellinBasel](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaMellinBasel.lean)
 
 The original moment varies linearly with the step on a common certified positive margin. The signed chart version transports this bound through exact rational coordinates and covers either order of the endpoints at independent observation clocks.
-[GaussianBinetLaplaceMomentVariation](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentVariation.lean), [GaussianBinetLaplaceMomentSignedVariation](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentSignedVariation.lean)
+[GaussianBinetLaplaceMomentVariation](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceMomentVariation.lean), [GaussianBinetLaplaceMomentSignedVariation](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceMomentSignedVariation.lean)
 
 The primitive-recursive evaluator takes the actual late signed samples of a regular input with a certified positive real-part margin. The named moment is regular and proper for every internal order, and the comparison with each sufficiently late original rational evaluation has an independent observation rate.
-[GaussianBinetLaplaceMomentNamed](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentNamed.lean)
+[GaussianBinetLaplaceMomentNamed](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceMomentNamed.lean)
 
 On canonical real input observations with a certified positive margin, the original named Stirling remainder agrees with the named zeroth Binet moment. The comparison retains the original observation clocks on both names.
-[GaussianBinetLaplaceMomentNamedStirling](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentNamedStirling.lean)
+[GaussianBinetLaplaceMomentNamedStirling](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceMomentNamedStirling.lean)
 
 The compiled fixed presentation evaluates its actual rational program on the incoming real name’s late samples. The literal rational squeeze and native continuity give a regular real lift, identify the original named log-Gamma, and recover the original named Gamma by exponentiating that lift.
-[GaussianBohrMollerupNamedFrozen](Lean/IPRADerivations/Analysis/GaussianBohrMollerupNamedFrozen.lean), [GaussianBohrMollerupNamedLift](Lean/IPRADerivations/Analysis/GaussianBohrMollerupNamedLift.lean), [GaussianBohrMollerupNamedGamma](Lean/IPRADerivations/Analysis/GaussianBohrMollerupNamedGamma.lean)
+[GaussianBohrMollerupNamedFrozen](Lean/IPRADerivations/Analysis/Gamma/BohrMollerup/GaussianBohrMollerupNamedFrozen.lean), [GaussianBohrMollerupNamedLift](Lean/IPRADerivations/Analysis/Gamma/BohrMollerup/GaussianBohrMollerupNamedLift.lean), [GaussianBohrMollerupNamedGamma](Lean/IPRADerivations/Analysis/Gamma/BohrMollerup/GaussianBohrMollerupNamedGamma.lean)
 
 The literal finite summation program propagates a bounded family of row comparisons at independently chosen observation clocks. Only the spatial error grows with the internal summation length.
-[GaussianNamedFiniteSumFamilyRate](Lean/IPRADerivations/Analysis/GaussianNamedFiniteSumFamilyRate.lean)
+[GaussianNamedFiniteSumFamilyRate](Lean/IPRADerivations/Analysis/Names/FiniteOperations/GaussianNamedFiniteSumFamilyRate.lean)
 
 On a fixed compact time panel the actual Euler log-power has a checked parameter rate. The same estimate controls each original Mellin integrand sample and the original Dirichlet row. A common, internally chosen truncation and the existing Dirichlet tail rates give a primitive-recursive input demand for every independent cofinal observation error.
-[GaussianEulerCompactPowerParameterRate](Lean/IPRADerivations/Analysis/GaussianEulerCompactPowerParameterRate.lean), [GaussianGammaZetaParameterRates](Lean/IPRADerivations/Analysis/GaussianGammaZetaParameterRates.lean), [GaussianGammaZetaDirichletParameterRate](Lean/IPRADerivations/Analysis/GaussianGammaZetaDirichletParameterRate.lean)
+[GaussianEulerCompactPowerParameterRate](Lean/IPRADerivations/Analysis/Euler/GaussianEulerCompactPowerParameterRate.lean), [GaussianGammaZetaParameterRates](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaParameterRates.lean), [GaussianGammaZetaDirichletParameterRate](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaDirichletParameterRate.lean)
 
 A primitive-recursive maximum of the input demands selects actual late signed samples. The checked lift is regular and proper, agrees with arbitrary later frozen rational evaluations, and preserves rational agreement for two evaluators using the same demand.
-[GaussianNamedRightHalfPlaneDemandLift](Lean/IPRADerivations/Analysis/GaussianNamedRightHalfPlaneDemandLift.lean), [GaussianNamedRightHalfPlaneDemandComparison](Lean/IPRADerivations/Analysis/GaussianNamedRightHalfPlaneDemandComparison.lean)
+[GaussianNamedRightHalfPlaneDemandLift](Lean/IPRADerivations/Analysis/Names/GaussianNamedRightHalfPlaneDemandLift.lean), [GaussianNamedRightHalfPlaneDemandComparison](Lean/IPRADerivations/Analysis/Names/GaussianNamedRightHalfPlaneDemandComparison.lean)
 
 The literal [1,2] panel supplies the explicit lower bound 2/(104·3^(2S)) at every internal order under the certified real upper radius S. The named proof gives strict order and a computed original sample with at least half that lower bound.
-[GaussianBinetLaplaceMomentNamedPositive](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentNamedPositive.lean)
+[GaussianBinetLaplaceMomentNamedPositive](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceMomentNamedPositive.lean)
 
 Both actual difference quotients converge to the negative successor moment on a common fixed positive margin. The leading constants depend on the internal order and the physical margin and work for every denominator encoding of the base.
-[GaussianBinetLaplaceMomentForwardMargin](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentForwardMargin.lean), [GaussianBinetLaplaceMomentTwoSidedMargin](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentTwoSidedMargin.lean)
+[GaussianBinetLaplaceMomentForwardMargin](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceMomentForwardMargin.lean), [GaussianBinetLaplaceMomentTwoSidedMargin](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceMomentTwoSidedMargin.lean)
 
 Uniform Gamma and Dirichlet sample bounds and the independent factor rates yield a concrete primitive-recursive input demand for the original normalized product on the certified rational half-plane.
-[GaussianGammaZetaDirichletUniformBound](Lean/IPRADerivations/Analysis/GaussianGammaZetaDirichletUniformBound.lean), [GaussianGammaZetaDirichletProductParameterRate](Lean/IPRADerivations/Analysis/GaussianGammaZetaDirichletProductParameterRate.lean)
+[GaussianGammaZetaDirichletUniformBound](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaDirichletUniformBound.lean), [GaussianGammaZetaDirichletProductParameterRate](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaDirichletProductParameterRate.lean)
 
 The signed native numerator, denominator, and certified wider radius give a common rational chart. The three actual rational providers share one input demand for Gamma, the cofinal Dirichlet series, and their original normalized product.
-[GaussianGammaZetaNamedChart](Lean/IPRADerivations/Analysis/GaussianGammaZetaNamedChart.lean)
+[GaussianGammaZetaNamedChart](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaNamedChart.lean)
 
 For a regular name with real part bounded below by one plus an explicit margin, the original subtraction sampler supplies the certified s−1 chart. Shifting back identifies the original input at independent clocks.
-[GaussianGammaZetaNamedInput](Lean/IPRADerivations/Analysis/GaussianGammaZetaNamedInput.lean)
+[GaussianGammaZetaNamedInput](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaNamedInput.lean)
 
 The original normalized quotient has the exact paper logarithmic and relative bounds 4A(A+1)/x and 8A(A+1)/x on a common rational chart, including noninteger A, reversed or equal endpoints, and the stated relative-error threshold.
-[GaussianGammaDigammaTwoShiftExactFiniteRate](Lean/IPRADerivations/Analysis/GaussianGammaDigammaTwoShiftExactFiniteRate.lean), [GaussianGammaDigammaTwoShiftRationalWindow](Lean/IPRADerivations/Analysis/GaussianGammaDigammaTwoShiftRationalWindow.lean), [GaussianGammaDigammaTwoShiftExactCofinalRate](Lean/IPRADerivations/Analysis/GaussianGammaDigammaTwoShiftExactCofinalRate.lean), [GaussianGammaDigammaTwoShiftRationalRate](Lean/IPRADerivations/Analysis/GaussianGammaDigammaTwoShiftRationalRate.lean)
+[GaussianGammaDigammaTwoShiftExactFiniteRate](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaDigammaTwoShiftExactFiniteRate.lean), [GaussianGammaDigammaTwoShiftRationalWindow](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaDigammaTwoShiftRationalWindow.lean), [GaussianGammaDigammaTwoShiftExactCofinalRate](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaDigammaTwoShiftExactCofinalRate.lean), [GaussianGammaDigammaTwoShiftRationalRate](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaDigammaTwoShiftRationalRate.lean)
 
 At a certified positive real name, both actual normalized difference quotients agree in the limit with the negative successor moment from the same unshifted input. Their independent observation bounds have explicit leading rate proportional to the step size on the fixed physical margin.
-[GaussianNamedDifferenceQuotientRate](Lean/IPRADerivations/Analysis/GaussianNamedDifferenceQuotientRate.lean), [GaussianBinetLaplaceMomentNamedShift](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentNamedShift.lean), [GaussianBinetLaplaceMomentNamedDerivative](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentNamedDerivative.lean)
+[GaussianNamedDifferenceQuotientRate](Lean/IPRADerivations/Analysis/Names/Rates/GaussianNamedDifferenceQuotientRate.lean), [GaussianBinetLaplaceMomentNamedShift](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceMomentNamedShift.lean), [GaussianBinetLaplaceMomentNamedDerivative](Lean/IPRADerivations/Analysis/Stirling/Binet/Laplace/GaussianBinetLaplaceMomentNamedDerivative.lean)
 
 A shared late signed input sample compares the Gamma chart provider with the repository’s original named Gamma on the actual input. The adapter admits the original argument directly and proves agreement at independent output clocks.
-[GaussianGammaZetaNamedGammaAlignment](Lean/IPRADerivations/Analysis/GaussianGammaZetaNamedGammaAlignment.lean)
+[GaussianGammaZetaNamedGammaAlignment](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaNamedGammaAlignment.lean)
 
 Both original samplers are evaluated on actual late signed samples with the same certified input demand. Closed iPRA name equality extends their rational identity to every regular input name on the certified half-plane.
-[GaussianGammaZetaMellinParameterRate](Lean/IPRADerivations/Analysis/GaussianGammaZetaMellinParameterRate.lean), [GaussianGammaZetaNamedHalfPlane](Lean/IPRADerivations/Analysis/GaussianGammaZetaNamedHalfPlane.lean)
+[GaussianGammaZetaMellinParameterRate](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaMellinParameterRate.lean), [GaussianGammaZetaNamedHalfPlane](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaNamedHalfPlane.lean)
 
 An explicit shared late clock encodes three original positive real names on one rational denominator. The three original logarithm evaluators have independent observation rates against their actual common-chart values.
-[GaussianGammaDigammaTwoShiftNamedFreeze](Lean/IPRADerivations/Analysis/GaussianGammaDigammaTwoShiftNamedFreeze.lean)
+[GaussianGammaDigammaTwoShiftNamedFreeze](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaDigammaTwoShiftNamedFreeze.lean)
 
 A common actual late signed sample compares the original normalized product with the product of separately regular factors. The Gamma factor is the original named Gamma evaluated directly at s. The closed iPRA formula holds under an explicit positive margin for Re(s) above one.
-[GaussianGammaZetaNamedFactors](Lean/IPRADerivations/Analysis/GaussianGammaZetaNamedFactors.lean), [GaussianGammaZetaNamedMellin](Lean/IPRADerivations/Analysis/GaussianGammaZetaNamedMellin.lean)
+[GaussianGammaZetaNamedFactors](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaNamedFactors.lean), [GaussianGammaZetaNamedMellin](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaNamedMellin.lean)
 
 The original finite and cofinal Dirichlet sums agree across equal rational encodings and independently certified charts. The original named Dirichlet and Mellin values are proper for equivalent input names with independently chosen margin certificates.
-[GaussianGammaZetaDirichletOverlap](Lean/IPRADerivations/Analysis/GaussianGammaZetaDirichletOverlap.lean), [GaussianGammaZetaDirichletPresentation](Lean/IPRADerivations/Analysis/GaussianGammaZetaDirichletPresentation.lean), [GaussianGammaZetaNamedDirichletOverlap](Lean/IPRADerivations/Analysis/GaussianGammaZetaNamedDirichletOverlap.lean), [GaussianGammaZetaNamedMellinOverlap](Lean/IPRADerivations/Analysis/GaussianGammaZetaNamedMellinOverlap.lean)
+[GaussianGammaZetaDirichletOverlap](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaDirichletOverlap.lean), [GaussianGammaZetaDirichletPresentation](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaDirichletPresentation.lean), [GaussianGammaZetaNamedDirichletOverlap](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaNamedDirichletOverlap.lean), [GaussianGammaZetaNamedMellinOverlap](Lean/IPRADerivations/Analysis/Gamma/Zeta/GaussianGammaZetaNamedMellinOverlap.lean)
 
 The checked shifts repair sample windows that meet the named boundary, including the relative-error threshold. A cofinal named order comparison removes errors that can be made arbitrarily small while retaining independent observation precisions.
-[GaussianNamedCofinalOrder](Lean/IPRADerivations/Analysis/GaussianNamedCofinalOrder.lean), [GaussianGammaDigammaTwoShiftWindowBuffer](Lean/IPRADerivations/Analysis/GaussianGammaDigammaTwoShiftWindowBuffer.lean)
+[GaussianNamedCofinalOrder](Lean/IPRADerivations/Analysis/Names/GaussianNamedCofinalOrder.lean), [GaussianGammaDigammaTwoShiftWindowBuffer](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaDigammaTwoShiftWindowBuffer.lean)
 
 The actual cubic Mercator rows have the explicit rational Gaussian bound and rounded-observation rate. Summing the original finite rows gives the paper’s tail radius and the corrected Barnes cutoff.
-[GaussianBarnesCanonicalLogRow](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalLogRow.lean), [GaussianBarnesCanonicalLogTail](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalLogTail.lean), [GaussianBarnesCanonicalLogObservation](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalLogObservation.lean)
+[GaussianBarnesCanonicalLogRow](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalLogRow.lean), [GaussianBarnesCanonicalLogTail](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalLogTail.lean), [GaussianBarnesCanonicalLogObservation](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalLogObservation.lean)
 
 The original named logarithmic quotient and its normalized exponential are regular and have explicit independent-clock rates against their actual common-chart rational equivalents. This supplies the cofinal comparison needed for exact named window bounds.
-[GaussianGammaDigammaTwoShiftNamedBinding](Lean/IPRADerivations/Analysis/GaussianGammaDigammaTwoShiftNamedBinding.lean), [GaussianGammaDigammaTwoShiftNamedExponential](Lean/IPRADerivations/Analysis/GaussianGammaDigammaTwoShiftNamedExponential.lean)
+[GaussianGammaDigammaTwoShiftNamedBinding](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaDigammaTwoShiftNamedBinding.lean), [GaussianGammaDigammaTwoShiftNamedExponential](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaDigammaTwoShiftNamedExponential.lean)
 
 The signed exponent is unchanged by translating the base and both shifted arguments on a common denominator. The original logarithmic quotient has a linear independent observation rate for this translation on the certified local positive window.
-[GaussianGammaDigammaTwoShiftLogGammaTranslation](Lean/IPRADerivations/Analysis/GaussianGammaDigammaTwoShiftLogGammaTranslation.lean), [GaussianGammaDigammaTwoShiftQuotientTranslation](Lean/IPRADerivations/Analysis/GaussianGammaDigammaTwoShiftQuotientTranslation.lean)
+[GaussianGammaDigammaTwoShiftLogGammaTranslation](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaDigammaTwoShiftLogGammaTranslation.lean), [GaussianGammaDigammaTwoShiftQuotientTranslation](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaDigammaTwoShiftQuotientTranslation.lean)
 
 The actual rounded cubic rows split at a fixed head boundary. The corrected Barnes endpoint and a proved row precision budget give a regular primitive-recursive Gaussian name on each rational disk, including the empty tail at radius zero.
-[GaussianBarnesCanonicalLogRoundedTail](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalLogRoundedTail.lean), [GaussianBarnesCanonicalLogSchedule](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalLogSchedule.lean), [GaussianBarnesCanonicalLogCofinal](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalLogCofinal.lean)
+[GaussianBarnesCanonicalLogRoundedTail](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalLogRoundedTail.lean), [GaussianBarnesCanonicalLogSchedule](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalLogSchedule.lean), [GaussianBarnesCanonicalLogCofinal](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalLogCofinal.lean)
 
 The two original exponential factors use the named Stirling constant and Euler–Mascheroni constant. Their literal product is regular and agrees at independent clocks with the exponential of the combined exponent.
-[GaussianBarnesCanonicalPrefactor](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalPrefactor.lean)
+[GaussianBarnesCanonicalPrefactor](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalPrefactor.lean)
 
 The head evaluates each literal polynomial power times its original exponential, with a uniform disk cap. Arbitrary consecutive finite products are regular and split exactly, including possible zero factors. The original prefactor has a checked inverse and apartness certificate.
-[GaussianBarnesCanonicalPrefactorInverse](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalPrefactorInverse.lean), [GaussianBarnesCanonicalFactor](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalFactor.lean), [GaussianBarnesCanonicalHead](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHead.lean), [GaussianBarnesCanonicalHeadSplit](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHeadSplit.lean)
+[GaussianBarnesCanonicalPrefactorInverse](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalPrefactorInverse.lean), [GaussianBarnesCanonicalFactor](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalFactor.lean), [GaussianBarnesCanonicalHead](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalHead.lean), [GaussianBarnesCanonicalHeadSplit](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalHeadSplit.lean)
 
 The actual fixed interval and regular cofinal logarithm satisfy the exact independent-clock leading error $2R^3/(3N)$. The bounded exponential and fixed prefactor and head propagate that rate to the actual split Barnes sampler.
-[GaussianBarnesCanonicalFiniteLog](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalFiniteLog.lean), [GaussianBarnesCanonicalLogIntervalRate](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalLogIntervalRate.lean), [GaussianBarnesCanonicalLogCofinalRate](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalLogCofinalRate.lean), [GaussianBarnesCanonicalTailExponential](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalTailExponential.lean), [GaussianBarnesCanonicalValue](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalValue.lean)
+[GaussianBarnesCanonicalFiniteLog](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalFiniteLog.lean), [GaussianBarnesCanonicalLogIntervalRate](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalLogIntervalRate.lean), [GaussianBarnesCanonicalLogCofinalRate](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalLogCofinalRate.lean), [GaussianBarnesCanonicalTailExponential](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalTailExponential.lean), [GaussianBarnesCanonicalValue](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalValue.lean)
 
 The actual cubic logarithm agrees with the original local logarithm after cancellation of its first two terms. On the tail disk this gives an exact independent-clock identification of each exponentiated row with the literal direct Barnes factor.
-[GaussianBarnesCanonicalCubicName](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalCubicName.lean), [GaussianBarnesCanonicalCorrection](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalCorrection.lean), [GaussianBarnesCanonicalLogFactor](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalLogFactor.lean)
+[GaussianBarnesCanonicalCubicName](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalCubicName.lean), [GaussianBarnesCanonicalCorrection](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalCorrection.lean), [GaussianBarnesCanonicalLogFactor](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalLogFactor.lean)
 
 An exact Gaussian integer numerator test identifies the original factor base zeros at the corresponding negative integers and supplies a rational lower bound on each nonzero base.
-[GaussianBarnesCanonicalBase](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalBase.lean)
+[GaussianBarnesCanonicalBase](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalBase.lean)
 
 The ordinary named real-order hypotheses control a common late dyadic chart. The original named cap $4A(A+1)/x$ and its size guard have independent rates to the actual finite rational chart values.
-[GaussianNamedFrozenScalarOrder](Lean/IPRADerivations/Analysis/GaussianNamedFrozenScalarOrder.lean), [GaussianGammaDigammaTwoShiftNamedWindow](Lean/IPRADerivations/Analysis/GaussianGammaDigammaTwoShiftNamedWindow.lean), [GaussianGammaDigammaTwoShiftNamedChart](Lean/IPRADerivations/Analysis/GaussianGammaDigammaTwoShiftNamedChart.lean), [GaussianGammaDigammaTwoShiftNamedSize](Lean/IPRADerivations/Analysis/GaussianGammaDigammaTwoShiftNamedSize.lean), [GaussianGammaDigammaTwoShiftNamedCap](Lean/IPRADerivations/Analysis/GaussianGammaDigammaTwoShiftNamedCap.lean)
+[GaussianNamedFrozenScalarOrder](Lean/IPRADerivations/Analysis/Names/Rates/GaussianNamedFrozenScalarOrder.lean), [GaussianGammaDigammaTwoShiftNamedWindow](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaDigammaTwoShiftNamedWindow.lean), [GaussianGammaDigammaTwoShiftNamedChart](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaDigammaTwoShiftNamedChart.lean), [GaussianGammaDigammaTwoShiftNamedSize](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaDigammaTwoShiftNamedSize.lean), [GaussianGammaDigammaTwoShiftNamedCap](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaDigammaTwoShiftNamedCap.lean)
 
 The original normalized quotient on regular real names with a certified positive margin obeys the exact logarithmic bracket with radius $4A(A+1)/x$ and the exact relative bracket with radius $8A(A+1)/x$. The latter assumes $4A(A+1)\le x$. The repaired charts include equality at the window boundaries.
-[GaussianGammaDigammaTwoShiftCapRepair](Lean/IPRADerivations/Analysis/GaussianGammaDigammaTwoShiftCapRepair.lean), [GaussianGammaDigammaTwoShiftChartProper](Lean/IPRADerivations/Analysis/GaussianGammaDigammaTwoShiftChartProper.lean), [GaussianGammaDigammaTwoShiftNamedRepairedChart](Lean/IPRADerivations/Analysis/GaussianGammaDigammaTwoShiftNamedRepairedChart.lean), [GaussianGammaDigammaTwoShiftNamedLogOrder](Lean/IPRADerivations/Analysis/GaussianGammaDigammaTwoShiftNamedLogOrder.lean), [GaussianGammaDigammaTwoShiftNamedRelativeOrder](Lean/IPRADerivations/Analysis/GaussianGammaDigammaTwoShiftNamedRelativeOrder.lean)
+[GaussianGammaDigammaTwoShiftCapRepair](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaDigammaTwoShiftCapRepair.lean), [GaussianGammaDigammaTwoShiftChartProper](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaDigammaTwoShiftChartProper.lean), [GaussianGammaDigammaTwoShiftNamedRepairedChart](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaDigammaTwoShiftNamedRepairedChart.lean), [GaussianGammaDigammaTwoShiftNamedLogOrder](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaDigammaTwoShiftNamedLogOrder.lean), [GaussianGammaDigammaTwoShiftNamedRelativeOrder](Lean/IPRADerivations/Analysis/Gamma/Digamma/GaussianGammaDigammaTwoShiftNamedRelativeOrder.lean)
 
 A nonzero rational base gives an explicit lower bound on the original positive power times the actual exponential at every sufficiently late sample.
-[GaussianBarnesCanonicalFactorApartness](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalFactorApartness.lean)
+[GaussianBarnesCanonicalFactorApartness](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalFactorApartness.lean)
 
 The actual finite cubic logarithmic sum exponentiates to the actual literal finite factor product. The internal finite fold includes the empty interval.
-[GaussianNamedFiniteExponentialFold](Lean/IPRADerivations/Analysis/GaussianNamedFiniteExponentialFold.lean), [GaussianBarnesCanonicalFiniteLogRows](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalFiniteLogRows.lean), [GaussianBarnesCanonicalFiniteLogProduct](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalFiniteLogProduct.lean)
+[GaussianNamedFiniteExponentialFold](Lean/IPRADerivations/Analysis/Exponential/GaussianNamedFiniteExponentialFold.lean), [GaussianBarnesCanonicalFiniteLogRows](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalFiniteLogRows.lean), [GaussianBarnesCanonicalFiniteLogProduct](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalFiniteLogProduct.lean)
 
 At any common cutoff, independent certified disk radii give the same represented finite product. The comparison passes through the original row and prefactor samplers and permits zero factors.
-[GaussianBarnesCanonicalFiniteRadius](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalFiniteRadius.lean)
+[GaussianBarnesCanonicalFiniteRadius](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalFiniteRadius.lean)
 
 The original finite prefactor and factors at each admitted cutoff compare at independent clocks with the regular canonical Barnes sampler. A verified primitive-recursive cutoff at each admitted rational input gives leading error at most $2^{-p}$ for every later truncation.
-[GaussianBarnesCanonicalProduct](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalProduct.lean)
+[GaussianBarnesCanonicalProduct](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalProduct.lean)
 
 The same encoded Gaussian rational in two positive-denominator presentations gives equivalent names for the original factor, prefactor and full finite product on independently certified disks.
-[GaussianBarnesCanonicalFiniteProperness](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalFiniteProperness.lean)
+[GaussianBarnesCanonicalFiniteProperness](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalFiniteProperness.lean)
 
 At zero input every sample of the literal finite canonical product is exactly one. The original cofinal sampler represents one for every admitted radius and positive denominator, proving $G(1)=1$.
-[GaussianBarnesCanonicalNormalization](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalNormalization.lean)
+[GaussianBarnesCanonicalNormalization](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalNormalization.lean)
 
 A bounded search across actual factor bases identifies an exact zero in the finite product or builds a quantitative late observation certificate of apartness.
-[GaussianBarnesCanonicalHeadApartness](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHeadApartness.lean)
+[GaussianBarnesCanonicalHeadApartness](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalHeadApartness.lean)
 
 Two original regular names with explicit apartness witnesses give apartness at the actual retimed product observation.
-[GaussianNamedProductApartness](Lean/IPRADerivations/Analysis/GaussianNamedProductApartness.lean)
+[GaussianNamedProductApartness](Lean/IPRADerivations/Analysis/Names/FiniteOperations/GaussianNamedProductApartness.lean)
 
 The exact exponential of the negated cofinal logarithm supplies a named inverse and quantitative apartness of the actual tail sampler.
-[GaussianBarnesCanonicalTailApartness](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalTailApartness.lean)
+[GaussianBarnesCanonicalTailApartness](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalTailApartness.lean)
 
 For the original sampler $F(z)=G(1+z)$ on admitted Gaussian rational inputs, a bounded witness search gives exact pointwise zero exactly at the negative integers, and gives apartness at all other inputs. The ordinary Cauchy-name zero envelope implies the same witness. Analytic multiplicities remain open.
-[GaussianBarnesCanonicalValueZeros](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalValueZeros.lean)
+[GaussianBarnesCanonicalValueZeros](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalValueZeros.lean)
 
 An explicit bound on the actual prefactor and fixed head gives a single primitive-recursive cutoff depending only on the disk radius and requested precision. Every admitted rational input and every later literal product obey the same leading dyadic error.
-[GaussianBarnesCanonicalDiskBound](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDiskBound.lean), [GaussianBarnesCanonicalUniformCutoff](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalUniformCutoff.lean)
+[GaussianBarnesCanonicalDiskBound](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalDiskBound.lean), [GaussianBarnesCanonicalUniformCutoff](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalUniformCutoff.lean)
 
 The original cofinal sampler represents the same value under different disk radii and denominator encodings of the same Gaussian rational. Both comparisons use a common literal cutoff and eliminate the leading dyadic errors by a finite rational gap query.
-[GaussianBarnesCanonicalProperness](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalProperness.lean)
+[GaussianBarnesCanonicalProperness](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalProperness.lean)
 
 Explicit disk and index bounds give an independent-clock Lipschitz rate for the actual factor observations, including separately encoded Gaussian rational inputs.
-[GaussianBarnesCanonicalFactorLipschitz](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalFactorLipschitz.lean)
+[GaussianBarnesCanonicalFactorLipschitz](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalFactorLipschitz.lean)
 
 The original finite product at each common segment has an explicit independent-clock Lipschitz bound. The proof retains different rational encodings and each product normalization, including empty segments.
-[GaussianBarnesCanonicalHeadLipschitz](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHeadLipschitz.lean)
+[GaussianBarnesCanonicalHeadLipschitz](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalHeadLipschitz.lean)
 
 The actual rational first-derivative expression has radius $2R^2/k^2$ and its exact finite tail has radius $2R^2/N$. The cofinal derivative quotient proof uses this bound to keep the rational slope error uniform in the truncation.
-[GaussianBarnesCanonicalDerivativeRow](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDerivativeRow.lean), [GaussianReciprocalSquareInterval](Lean/IPRADerivations/Analysis/GaussianReciprocalSquareInterval.lean), [GaussianBarnesCanonicalDerivativeTail](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDerivativeTail.lean)
+[GaussianBarnesCanonicalDerivativeRow](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalDerivativeRow.lean), [GaussianReciprocalSquareInterval](Lean/IPRADerivations/Analysis/Series/GaussianReciprocalSquareInterval.lean), [GaussianBarnesCanonicalDerivativeTail](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalDerivativeTail.lean)
 
 The original factor equals the exact rational power $(z+m)^m$ times its actual regular exponential multiplier, with a certified positive lower bound.
-[GaussianBarnesCanonicalDeflatedFactor](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDeflatedFactor.lean)
+[GaussianBarnesCanonicalDeflatedFactor](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalDeflatedFactor.lean)
 
 The original ranges on both sides of the isolated index are apart throughout the certified closed half-unit rational neighborhood. The disk guard forces the chosen factor into the fixed initial head.
-[GaussianBarnesCanonicalDeflatedHead](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDeflatedHead.lean)
+[GaussianBarnesCanonicalDeflatedHead](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalDeflatedHead.lean)
 
 On each common rational disk, an explicit input clock certifies a dyadic value budget for the original cofinal evaluator. The estimate combines the literal prefactor and head variation with two uniform convergence errors.
-[GaussianBarnesCanonicalPrefactorLipschitz](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalPrefactorLipschitz.lean), [GaussianBarnesCanonicalUniformContinuity](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalUniformContinuity.lean)
+[GaussianBarnesCanonicalPrefactorLipschitz](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalPrefactorLipschitz.lean), [GaussianBarnesCanonicalUniformContinuity](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalUniformContinuity.lean)
 
 On each admitted half-unit neighborhood of a negative integer, the actual Barnes value equals the exact power of the shifted input times a regular coefficient with explicit apartness. The original prefactor, remaining finite ranges and cofinal tail supply that coefficient. The analytic multiplicity theorem still requires the analytic contracts.
-[GaussianBarnesCanonicalDeflatedValue](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDeflatedValue.lean)
+[GaussianBarnesCanonicalDeflatedValue](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalDeflatedValue.lean)
 
 The exact sums of the literal first-derivative rows give a regular sampler with an explicit cofinal length and tail modulus. The original tail logarithm’s divided differences converge to this sampler at the rate given in the cofinal logarithm derivative entry.
-[GaussianBarnesCanonicalDerivativeCofinal](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDerivativeCofinal.lean)
+[GaussianBarnesCanonicalDerivativeCofinal](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalDerivativeCofinal.lean)
 
 The original rational evaluator, applied to an explicit late original input observation, gives a regular Barnes name. On a common certified disk it respects equivalent input names and agrees with the original rational value on constant inputs. The disk can be computed from the input name.
-[GaussianBarnesCanonicalNamedDemand](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalNamedDemand.lean), [GaussianBarnesCanonicalNamed](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalNamed.lean)
+[GaussianBarnesCanonicalNamedDemand](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalNamedDemand.lean), [GaussianBarnesCanonicalNamed](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalNamed.lean)
 
 Throughout the certified half-unit neighborhood, each retained factor has a lower bound independent of the input numerator and denominator. The same uniform apartness holds at the exact skipped-head observation.
-[GaussianBarnesCanonicalDeflatedHeadUniform](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDeflatedHeadUniform.lean)
+[GaussianBarnesCanonicalDeflatedHeadUniform](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalDeflatedHeadUniform.lean)
 
 The three admitted Mercator names satisfy the exact addition and difference identity when their rational bases multiply. This supplies an exact name identity for the Barnes derivative comparison.
-[GaussianLocalLogarithmMultiplicativeIncrement](Lean/IPRADerivations/Analysis/GaussianLocalLogarithmMultiplicativeIncrement.lean)
+[GaussianLocalLogarithmMultiplicativeIncrement](Lean/IPRADerivations/Analysis/Logarithm/GaussianLocalLogarithmMultiplicativeIncrement.lean)
 
 The original factor at the conjugate rational input is the conjugate of the original factor at the input. The proof covers all admissible positive indices and permits a zero factor.
-[GaussianBarnesCanonicalFactorConjugation](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalFactorConjugation.lean)
+[GaussianBarnesCanonicalFactorConjugation](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalFactorConjugation.lean)
 
 The exact original named Barnes outputs agree for equivalent input names with separately certified radii. The proof compares a common pair of actual late rational inputs and eliminates independent dyadic error terms.
-[GaussianBarnesCanonicalNamedFrozen](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalNamedFrozen.lean)
+[GaussianBarnesCanonicalNamedFrozen](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalNamedFrozen.lean)
 
 The genuine exponential factors at their actual multiplication clock satisfy a rational lower bound depending only on the disk radius. This gives uniform apartness at a computed observation.
-[GaussianBarnesCanonicalPrefactorUniformApartness](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalPrefactorUniformApartness.lean)
+[GaussianBarnesCanonicalPrefactorUniformApartness](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalPrefactorUniformApartness.lean)
 
 An explicit lower modulus depends only on the disk radius and chosen negative integer. It applies to the exact local coefficient program at every sufficiently late observation across the whole admitted rational neighborhood.
-[GaussianBarnesCanonicalDeflatedValueUniformApartness](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDeflatedValueUniformApartness.lean)
+[GaussianBarnesCanonicalDeflatedValueUniformApartness](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalDeflatedValueUniformApartness.lean)
 
 The shifted original translated powers telescope to the plain Gamma denominator product and one endpoint power. The exact finite identity admits zeros and supplies the polynomial part of the Barnes functional equation.
-[GaussianBarnesWeightedProductShift](Lean/IPRADerivations/Analysis/GaussianBarnesWeightedProductShift.lean), [GaussianBarnesCanonicalPolynomialShift](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalPolynomialShift.lean)
+[GaussianBarnesWeightedProductShift](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesWeightedProductShift.lean), [GaussianBarnesCanonicalPolynomialShift](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalPolynomialShift.lean)
 
 The actual change of the original local logarithm has a certified relative Mercator argument. The native input perturbation determines its rational bound and the product identity of the bases.
-[GaussianBarnesCanonicalRelativeStep](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalRelativeStep.lean)
+[GaussianBarnesCanonicalRelativeStep](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalRelativeStep.lean)
 
 The relative-argument expansion has explicit summable quadratic and cubic error bounds on the original finite rational samples, with the original perturbation and factor index retained.
-[GaussianBarnesCanonicalRelativeTaylor](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalRelativeTaylor.lean)
+[GaussianBarnesCanonicalRelativeTaylor](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalRelativeTaylor.lean)
 
 Exact original factor conjugation folds through each finite segment, preserving both original normalization clocks and allowing both empty segments and vanishing factors.
-[GaussianNamedFiniteProductConjugation](Lean/IPRADerivations/Analysis/GaussianNamedFiniteProductConjugation.lean), [GaussianBarnesCanonicalHeadConjugation](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHeadConjugation.lean)
+[GaussianNamedFiniteProductConjugation](Lean/IPRADerivations/Analysis/Names/FiniteOperations/GaussianNamedFiniteProductConjugation.lean), [GaussianBarnesCanonicalHeadConjugation](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalHeadConjugation.lean)
 
 The actual relative quadratic term and direct exponent correction cancel to the literal first-derivative expression times the input increment plus the original controlled quadratic remainder. The named row binding and cofinal first-order estimate below carry this remainder into the original observations.
-[GaussianBarnesCanonicalDerivativeAlgebra](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDerivativeAlgebra.lean)
+[GaussianBarnesCanonicalDerivativeAlgebra](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalDerivativeAlgebra.lean)
 
 The actual prefactor preserves conjugation through its real constants and original exponentials. The exact Gaussian rational isometry also preserves independent observation rates for any original pair of conjugated names.
-[GaussianBarnesCanonicalPrefactorConjugation](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalPrefactorConjugation.lean), [GaussianNamedRateConjugation](Lean/IPRADerivations/Analysis/GaussianNamedRateConjugation.lean)
+[GaussianBarnesCanonicalPrefactorConjugation](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalPrefactorConjugation.lean), [GaussianNamedRateConjugation](Lean/IPRADerivations/Analysis/Names/Rates/GaussianNamedRateConjugation.lean)
 
 The actual literal finite product commutes with conjugation. Comparing both cofinal values with that same finite cutoff and removing independent rational slack proves exact conjugation of the original value at Gaussian rational arguments.
-[GaussianBarnesCanonicalPrefixConjugation](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalPrefixConjugation.lean), [GaussianBarnesCanonicalValueConjugation](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalValueConjugation.lean)
+[GaussianBarnesCanonicalPrefixConjugation](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalPrefixConjugation.lean), [GaussianBarnesCanonicalValueConjugation](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalValueConjugation.lean)
 
 The original named Barnes evaluator commutes with conjugation on regular Gaussian complex names with independent disk certificates. The proof uses one common late input observation, the rational conjugation identity, and exact removal of observation slack.
-[GaussianBarnesCanonicalNamedConjugation](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalNamedConjugation.lean)
+[GaussianBarnesCanonicalNamedConjugation](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalNamedConjugation.lean)
 
 A finite exact telescope bounds the difference of two literal Gaussian rational sums when each row has an inverse-square error and a common clock error.
-[GaussianReciprocalSquareSumDistance](Lean/IPRADerivations/Analysis/GaussianReciprocalSquareSumDistance.lean)
+[GaussianReciprocalSquareSumDistance](Lean/IPRADerivations/Analysis/Series/GaussianReciprocalSquareSumDistance.lean)
 
 The difference of the original Barnes exponent corrections at consecutive arguments sums exactly to the literal harmonic expression, including at empty cutoff.
-[GaussianBarnesCanonicalCorrectionShift](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalCorrectionShift.lean)
+[GaussianBarnesCanonicalCorrectionShift](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalCorrectionShift.lean)
 
 The actual two named cubic logarithm observations differ from their literal linear term by the summable quadratic bound. The original rationals and both observation clocks are retained.
-[GaussianNamedConstantRateFromSlack](Lean/IPRADerivations/Analysis/GaussianNamedConstantRateFromSlack.lean), [GaussianBarnesCanonicalDerivativeBinding](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDerivativeBinding.lean)
+[GaussianNamedConstantRateFromSlack](Lean/IPRADerivations/Analysis/Names/Rates/GaussianNamedConstantRateFromSlack.lean), [GaussianBarnesCanonicalDerivativeBinding](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalDerivativeBinding.lean)
 
 The named row difference is the literal linear term plus a named relative cubic and explicit quadratic correction. This remainder has the exact independent-clock bound against zero.
-[GaussianBarnesCanonicalNamedTaylorRemainder](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalNamedTaylorRemainder.lean)
+[GaussianBarnesCanonicalNamedTaylorRemainder](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalNamedTaylorRemainder.lean)
 
 The two original finite logarithms differ from the input increment times the literal first-derivative sum by the exact finite reciprocal-square bound. The actual derivative prefix and its cofinal sampler also have an explicit independent-clock rate.
-[GaussianBarnesCanonicalDerivativeInterval](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDerivativeInterval.lean), [GaussianBarnesCanonicalDerivativeCofinalRate](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDerivativeCofinalRate.lean)
+[GaussianBarnesCanonicalDerivativeInterval](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalDerivativeInterval.lean), [GaussianBarnesCanonicalDerivativeCofinalRate](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalDerivativeCofinalRate.lean)
 
 The literal shifted finite head times the plain product equals the original head times the final translated power and the exact harmonic exponential correction. The identity admits zero factors and separate disk certificates.
-[GaussianBarnesCanonicalBaseProductShift](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalBaseProductShift.lean), [GaussianNamedFiniteConstantFolds](Lean/IPRADerivations/Analysis/GaussianNamedFiniteConstantFolds.lean), [GaussianBarnesCanonicalHeadExponentialFactors](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHeadExponentialFactors.lean), [GaussianBarnesCanonicalHeadShift](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHeadShift.lean)
+[GaussianBarnesCanonicalBaseProductShift](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalBaseProductShift.lean), [GaussianNamedFiniteConstantFolds](Lean/IPRADerivations/Analysis/Names/FiniteOperations/GaussianNamedFiniteConstantFolds.lean), [GaussianBarnesCanonicalHeadExponentialFactors](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalHeadExponentialFactors.lean), [GaussianBarnesCanonicalHeadShift](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalHeadShift.lean)
 
 The literal finite products and cofinal rate give an explicit common-disk input demand for the actual exponential tail sampler.
-[GaussianBarnesCanonicalTailContinuity](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalTailContinuity.lean)
+[GaussianBarnesCanonicalTailContinuity](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalTailContinuity.lean)
 
 The two retained finite ranges of the actual head give an explicit common-disk Lipschitz bound for the original skipped product.
-[GaussianBarnesCanonicalDeflatedHeadLipschitz](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDeflatedHeadLipschitz.lean)
+[GaussianBarnesCanonicalDeflatedHeadLipschitz](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalDeflatedHeadLipschitz.lean)
 
 Combining the actual prefactor, multiplier, skipped head and cofinal tail gives an explicit uniform input demand for the exact deflated coefficient.
-[GaussianBarnesCanonicalDeflatedValueContinuity](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDeflatedValueContinuity.lean)
+[GaussianBarnesCanonicalDeflatedValueContinuity](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalDeflatedValueContinuity.lean)
 
 The original cofinal log difference and original named product of the literal step with the cofinal rational derivative series have the independent rate `(3R+342)H²/(B² N₀)` plus two dyadic observation errors, with `N₀ = max(1,2R)`. The cutoff is shared only in the finite proof. The actual observations use independent clocks.
-[GaussianBarnesCanonicalDerivativeTailBinding](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDerivativeTailBinding.lean)
+[GaussianBarnesCanonicalDerivativeTailBinding](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalDerivativeTailBinding.lean)
 
 In iPRA the actual Barnes prefactor shifts by the exponential of the literal named exponent difference, the original finite prefix obeys the cleared unit shift including zeros, and the accompanying polynomial is the original Gamma Euler head at the matching index times the exact factorial.
-[GaussianBarnesCanonicalPrefactorShift](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalPrefactorShift.lean), [GaussianBarnesCanonicalPrefixShift](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalPrefixShift.lean), [GaussianBarnesCanonicalGaussDenominator](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalGaussDenominator.lean)
+[GaussianBarnesCanonicalPrefactorShift](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalPrefactorShift.lean), [GaussianBarnesCanonicalPrefixShift](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalPrefixShift.lean), [GaussianBarnesCanonicalGaussDenominator](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalGaussDenominator.lean)
 
 The primitive-recursive sampler uses the verified rational deflated evaluator at its certified input demand, with constructive Cauchy regularity and properness. On the certified half-unit disk about a Barnes zero it retains a uniform apartness bound.
-[GaussianBarnesCanonicalDeflatedNamed](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDeflatedNamed.lean)
+[GaussianBarnesCanonicalDeflatedNamed](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalDeflatedNamed.lean)
 
 The normalized sampler reads the genuine translated integer power of a late original input sample. The certified half-unit disk supplies a unit bound and a finite comparison to the power at a shared late clock.
-[GaussianBarnesCanonicalNamedTranslatedPower](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalNamedTranslatedPower.lean)
+[GaussianBarnesCanonicalNamedTranslatedPower](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalNamedTranslatedPower.lean)
 
 The original named Barnes evaluator agrees at independent precisions with the named product of the translated power and the original named deflated coefficient. The same iPRA theorem gives uniform apartness of the coefficient on the certified half-unit disk.
-[GaussianBarnesCanonicalNamedLocalFactorization](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalNamedLocalFactorization.lean)
+[GaussianBarnesCanonicalNamedLocalFactorization](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalNamedLocalFactorization.lean)
 
 The difference of the two original tail exponential names agrees to quadratic error with the Gaussian step times the named product of the base tail exponential and its cofinal log derivative. Input margins guarantee a uniformly small actual logarithmic increment.
-[GaussianBarnesCanonicalTailExponentialMargin](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalTailExponentialMargin.lean), [GaussianBarnesCanonicalTailExponentialDerivative](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalTailExponentialDerivative.lean)
+[GaussianBarnesCanonicalTailExponentialMargin](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalTailExponentialMargin.lean), [GaussianBarnesCanonicalTailExponentialDerivative](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalTailExponentialDerivative.lean)
 
 For nonzero rational Gaussian steps the actual divided differences approach the original cofinal derivative names with leading errors linear in the step size. Each comparison has a closed iPRA dyadic precision theorem retaining two independent observations. The exponential derivative uses the named product of the base tail exponential and the logarithmic derivative.
-[GaussianRationalConstantProductRate](Lean/IPRADerivations/Analysis/GaussianRationalConstantProductRate.lean), [GaussianNativeDerivativeQuotientRate](Lean/IPRADerivations/Analysis/GaussianNativeDerivativeQuotientRate.lean), [GaussianBarnesCanonicalLogDerivativeQuotient](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalLogDerivativeQuotient.lean), [GaussianBarnesCanonicalTailExponentialQuotient](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalTailExponentialQuotient.lean)
+[GaussianRationalConstantProductRate](Lean/IPRADerivations/Analysis/Names/Rates/GaussianRationalConstantProductRate.lean), [GaussianNativeDerivativeQuotientRate](Lean/IPRADerivations/Analysis/Names/Rates/GaussianNativeDerivativeQuotientRate.lean), [GaussianBarnesCanonicalLogDerivativeQuotient](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalLogDerivativeQuotient.lean), [GaussianBarnesCanonicalTailExponentialQuotient](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalTailExponentialQuotient.lean)
 
 The exact product split applies to the original quotient by a literal rational Gaussian step. Independent quotient and continuity rates for the two factors give the product derivative rate with a common denominator, including at zeros of either factor.
-[GaussianNamedNativeProductDerivativeRate](Lean/IPRADerivations/Analysis/GaussianNamedNativeProductDerivativeRate.lean)
+[GaussianNamedNativeProductDerivativeRate](Lean/IPRADerivations/Analysis/Names/Rates/GaussianNamedNativeProductDerivativeRate.lean)
 
 The actual terminal logarithm, harmonic difference and Stirling remainder give a uniform bound `(R²+M+1)/K+(17M+18)2⁻ᵖ` at cutoff K under the certified disk and coefficient bounds.
-[GaussianBarnesCanonicalTerminalRemainder](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalTerminalRemainder.lean), [GaussianBarnesCanonicalHarmonicRemainder](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHarmonicRemainder.lean), [GaussianBarnesCanonicalCombinedRemainder](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalCombinedRemainder.lean)
+[GaussianBarnesCanonicalTerminalRemainder](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalTerminalRemainder.lean), [GaussianBarnesCanonicalHarmonicRemainder](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalHarmonicRemainder.lean), [GaussianBarnesCanonicalCombinedRemainder](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalCombinedRemainder.lean)
 
 The literal finite rational correction has an exact linear term and a quadratic remainder bounded by `N H²/B²` for a native Gaussian step of size at most `H/B`.
-[GaussianBarnesCanonicalHeadCorrectionDerivative](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHeadCorrectionDerivative.lean)
+[GaussianBarnesCanonicalHeadCorrectionDerivative](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalHeadCorrectionDerivative.lean)
 
 The actual kept base-power product agrees with a rational coefficient polynomial at every Gaussian rational argument. Its value, slope, and quadratic remainder have uniform certified bounds and the estimate includes zeros.
-[GaussianBarnesCanonicalHeadPolynomial](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHeadPolynomial.lean), [GaussianBarnesCanonicalHeadPolynomialDerivative](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHeadPolynomialDerivative.lean)
+[GaussianBarnesCanonicalHeadPolynomial](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalHeadPolynomial.lean), [GaussianBarnesCanonicalHeadPolynomialDerivative](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalHeadPolynomialDerivative.lean)
 
 The actual full Barnes divided difference has a uniform rate once the original fixed prefix quotient is supplied. The join uses the checked disk continuity of the fixed prefix and the closed tail exponential derivative, retaining both independent observation errors.
-[GaussianBarnesCanonicalValueDerivativeJoin](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalValueDerivativeJoin.lean)
+[GaussianBarnesCanonicalValueDerivativeJoin](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalValueDerivativeJoin.lean)
 
 The exponential of the actual combined logarithmic remainder approaches the exact constant one at independent precisions and uniform leading rate `factor(radius R M)*(R²+M+1)/K`. The translated input and midpoint have uniformly certified rational disk bounds.
-[GaussianBarnesCanonicalCombinedRemainderRate](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalCombinedRemainderRate.lean), [GaussianBarnesCanonicalShiftChart](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalShiftChart.lean)
+[GaussianBarnesCanonicalCombinedRemainderRate](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalCombinedRemainderRate.lean), [GaussianBarnesCanonicalShiftChart](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalShiftChart.lean)
 
 The actual named prefactor exponent difference is exactly `S−1/2−(1+γ)*(z+1/2)`, with the original Stirling and Euler constants and their certified arithmetic.
-[GaussianBarnesCanonicalPrefactorShiftAlgebra](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalPrefactorShiftAlgebra.lean), [GaussianBarnesCanonicalPrefactorShiftBinding](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalPrefactorShiftBinding.lean)
+[GaussianBarnesCanonicalPrefactorShiftAlgebra](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalPrefactorShiftAlgebra.lean), [GaussianBarnesCanonicalPrefactorShiftBinding](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalPrefactorShiftBinding.lean)
 
 Equal Gaussian fractions on a fixed certified disk give identical cofinal logarithmic-derivative observations at a common precision. The original named Barnes quotient agrees with the native rational quotient under exact rational endpoint and step equivalences, including independently chosen endpoint disks.
-[GaussianBarnesCanonicalDerivativeFractionProperness](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDerivativeFractionProperness.lean), [GaussianBarnesCanonicalNamedQuotientBinding](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalNamedQuotientBinding.lean)
+[GaussianBarnesCanonicalDerivativeFractionProperness](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalDerivativeFractionProperness.lean), [GaussianBarnesCanonicalNamedQuotientBinding](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalNamedQuotientBinding.lean)
 
 The actual dynamic-radius finite exponential has the named derivative equal to that exponential times the exact finite correction slope. The independent first-order bound is quadratic in the native Gaussian step and its coefficients depend only on the disk and cutoff.
-[GaussianNamedExponentialTaylorTransport](Lean/IPRADerivations/Analysis/GaussianNamedExponentialTaylorTransport.lean), [GaussianBarnesCanonicalHeadCorrectionExponentialDerivative](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHeadCorrectionExponentialDerivative.lean)
+[GaussianNamedExponentialTaylorTransport](Lean/IPRADerivations/Analysis/Exponential/GaussianNamedExponentialTaylorTransport.lean), [GaussianBarnesCanonicalHeadCorrectionExponentialDerivative](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalHeadCorrectionExponentialDerivative.lean)
 
 The original finite recurrence exponent and actual terminal power are matched to the combined named remainder. The adjacent Euler logarithm has an independent `1/N` bound, preserving the difference between the actual Gauss cutoff and the Barnes recurrence cutoff.
-[GaussianBarnesCanonicalNormalizedExponentAlgebra](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalNormalizedExponentAlgebra.lean), [GaussianBarnesCanonicalAdjacentLog](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalAdjacentLog.lean), [GaussianBarnesCanonicalNormalizedExponent](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalNormalizedExponent.lean), [GaussianBarnesCanonicalTerminalPower](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalTerminalPower.lean)
+[GaussianBarnesCanonicalNormalizedExponentAlgebra](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalNormalizedExponentAlgebra.lean), [GaussianBarnesCanonicalAdjacentLog](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalAdjacentLog.lean), [GaussianBarnesCanonicalNormalizedExponent](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalNormalizedExponent.lean), [GaussianBarnesCanonicalTerminalPower](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalTerminalPower.lean)
 
 The actual Barnes prefactor has the named derivative given by the original prefactor times its named exponent slope. On a certified disk the independent-clock first-order error is quadratic in the step, with precisely the original named Stirling and Euler constants.
-[GaussianBarnesCanonicalPrefactorExponentDerivative](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalPrefactorExponentDerivative.lean), [GaussianBarnesCanonicalPrefactorExponentEstimate](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalPrefactorExponentEstimate.lean), [GaussianBarnesCanonicalPrefactorDerivative](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalPrefactorDerivative.lean)
+[GaussianBarnesCanonicalPrefactorExponentDerivative](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalPrefactorExponentDerivative.lean), [GaussianBarnesCanonicalPrefactorExponentEstimate](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalPrefactorExponentEstimate.lean), [GaussianBarnesCanonicalPrefactorDerivative](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalPrefactorDerivative.lean)
 
 Equivalent Gaussian fractions on one certified disk give equivalent actual cofinal tail exponential names and therefore equivalent actual tail derivative names at independent precisions.
-[GaussianBarnesCanonicalTailDerivativeFractionProperness](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalTailDerivativeFractionProperness.lean)
+[GaussianBarnesCanonicalTailDerivativeFractionProperness](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalTailDerivativeFractionProperness.lean)
 
 The actual finite head quotient converges to the sum of the original correction exponential derivative times the exact polynomial and the original exponential times the polynomial slope. The leading error is uniform on a disk, applies at zeros of the head, and scales linearly with the native Gaussian step.
-[GaussianNativeDerivativeQuotientQuadratic](Lean/IPRADerivations/Analysis/GaussianNativeDerivativeQuotientQuadratic.lean), [GaussianBarnesCanonicalHeadPolynomialQuotient](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHeadPolynomialQuotient.lean), [GaussianBarnesCanonicalHeadDerivativeJoin](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHeadDerivativeJoin.lean), [GaussianBarnesCanonicalHeadDerivative](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHeadDerivative.lean)
+[GaussianNativeDerivativeQuotientQuadratic](Lean/IPRADerivations/Analysis/Names/Rates/GaussianNativeDerivativeQuotientQuadratic.lean), [GaussianBarnesCanonicalHeadPolynomialQuotient](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalHeadPolynomialQuotient.lean), [GaussianBarnesCanonicalHeadDerivativeJoin](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalHeadDerivativeJoin.lean), [GaussianBarnesCanonicalHeadDerivative](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalHeadDerivative.lean)
 
 The derivative of the actual prefactor times the original kept head has a uniform first-order quotient rate with denominator `B*initial R`. The proof keeps both original named factors and allows all zeros of the head.
-[GaussianBarnesCanonicalPrefixDerivativeJoin](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalPrefixDerivativeJoin.lean), [GaussianBarnesCanonicalPrefixDerivative](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalPrefixDerivative.lean)
+[GaussianBarnesCanonicalPrefixDerivativeJoin](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalPrefixDerivativeJoin.lean), [GaussianBarnesCanonicalPrefixDerivative](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalPrefixDerivative.lean)
 
 Equivalent fractions give identical data for the actual prefactor derivative sampler and equivalent output names at independent precisions.
-[GaussianBarnesCanonicalPrefactorDerivativeProperness](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalPrefactorDerivativeProperness.lean)
+[GaussianBarnesCanonicalPrefactorDerivativeProperness](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalPrefactorDerivativeProperness.lean)
 
 A rational input distance bound `A/M` on a common certified disk gives a uniform leading derivative error `gain(R) A/M` for the original independent observations.
-[GaussianBarnesCanonicalPrefactorDerivativeContinuity](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalPrefactorDerivativeContinuity.lean)
+[GaussianBarnesCanonicalPrefactorDerivativeContinuity](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalPrefactorDerivativeContinuity.lean)
 
 The original full Barnes value quotient converges to its explicit product-rule derivative name, with independent observations and a uniform bound linear in the step size. The same bound applies to the actual named quotient for names representing the corresponding rational configuration.
-[GaussianBarnesCanonicalValueDerivative](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalValueDerivative.lean)
+[GaussianBarnesCanonicalValueDerivative](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalValueDerivative.lean)
 
 At every admitted Gaussian rational point explicit denominator refinement permits a nonzero arbitrarily small native step. Full derivative fraction properness gives independent comparison to a fixed name at the original argument, including arbitrarily requested internal precision.
-[GaussianBarnesCanonicalHeadDerivativeFractionProperness](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHeadDerivativeFractionProperness.lean), [GaussianBarnesCanonicalDerivativeStep](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDerivativeStep.lean), [GaussianBarnesCanonicalValueDerivativeProperness](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalValueDerivativeProperness.lean)
+[GaussianBarnesCanonicalHeadDerivativeFractionProperness](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalHeadDerivativeFractionProperness.lean), [GaussianBarnesCanonicalDerivativeStep](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalDerivativeStep.lean), [GaussianBarnesCanonicalValueDerivativeProperness](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalValueDerivativeProperness.lean)
 
 One refined nonzero rational step works simultaneously in two certified interior disks. Exact properness of the actual Barnes values and removal of dyadic slack identify the two original derivative names.
-[GaussianBarnesCanonicalDerivativeDiskIndependence](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDerivativeDiskIndependence.lean)
+[GaussianBarnesCanonicalDerivativeDiskIndependence](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalDerivativeDiskIndependence.lean)
 
 The cofinal logarithmic slope has Lipschitz constant `4(R+R²)` on a certified disk. The actual tail exponential derivative then has an explicit primitive-recursive input modulus at independent precisions.
-[GaussianBarnesCanonicalDerivativeContinuity](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDerivativeContinuity.lean), [GaussianBarnesCanonicalTailExponentialDerivativeContinuity](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalTailExponentialDerivativeContinuity.lean)
+[GaussianBarnesCanonicalDerivativeContinuity](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalDerivativeContinuity.lean), [GaussianBarnesCanonicalTailExponentialDerivativeContinuity](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalTailExponentialDerivativeContinuity.lean)
 
 At a common positive cutoff, the original Barnes truncations satisfy the finite recurrence with the original Gauss reciprocal approximation and the matched exponential remainder times `1+w/K`. The cleared identity allows Gamma poles and zeros of the Barnes factors.
-[GaussianBarnesCanonicalGaussNormalizers](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalGaussNormalizers.lean), [GaussianBarnesCanonicalNormalizedMultiplier](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalNormalizedMultiplier.lean), [GaussianBarnesCanonicalFiniteGaussIdentity](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalFiniteGaussIdentity.lean)
+[GaussianBarnesCanonicalGaussNormalizers](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalGaussNormalizers.lean), [GaussianBarnesCanonicalNormalizedMultiplier](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalNormalizedMultiplier.lean), [GaussianBarnesCanonicalFiniteGaussIdentity](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalFiniteGaussIdentity.lean)
 
 Comparing the actual padded synthetic quotients and finite harmonic correction gives a disk Lipschitz bound for the original kept head derivative at arbitrary Gaussian rational presentations. The same program has an explicit uniform bound on every sample.
-[GaussianRationalSyntheticSlopeLipschitz](Lean/IPRADerivations/Analysis/GaussianRationalSyntheticSlopeLipschitz.lean), [GaussianBarnesCanonicalHeadCorrectionContinuity](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHeadCorrectionContinuity.lean), [GaussianBarnesCanonicalHeadDerivativeContinuity](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHeadDerivativeContinuity.lean)
+[GaussianRationalSyntheticSlopeLipschitz](Lean/IPRADerivations/Analysis/Inequalities/GaussianRationalSyntheticSlopeLipschitz.lean), [GaussianBarnesCanonicalHeadCorrectionContinuity](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalHeadCorrectionContinuity.lean), [GaussianBarnesCanonicalHeadDerivativeContinuity](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalHeadDerivativeContinuity.lean)
 
 A uniform Lipschitz bound and all-sample cap for the original kept-prefix derivative follow from the checked head and prefactor bounds and the actual named sum and product observation laws.
-[GaussianNamedBoundedSumObservation](Lean/IPRADerivations/Analysis/GaussianNamedBoundedSumObservation.lean), [GaussianBarnesCanonicalPrefixDerivativeContinuity](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalPrefixDerivativeContinuity.lean)
+[GaussianNamedBoundedSumObservation](Lean/IPRADerivations/Analysis/Names/GaussianNamedBoundedSumObservation.lean), [GaussianBarnesCanonicalPrefixDerivativeContinuity](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalPrefixDerivativeContinuity.lean)
 
 Given a checked primitive-recursive disk modulus, the genuine lifted sampler evaluates the original rational derivative at a late original input observation. It has closed iPRA regularity, common-disk properness, and an explicit late-readback bound.
-[GaussianNamedDiskDemandLift](Lean/IPRADerivations/Analysis/GaussianNamedDiskDemandLift.lean), [GaussianNamedDiskDemandReadback](Lean/IPRADerivations/Analysis/GaussianNamedDiskDemandReadback.lean), [GaussianBarnesCanonicalNamedDerivative](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalNamedDerivative.lean)
+[GaussianNamedDiskDemandLift](Lean/IPRADerivations/Analysis/Geometry/GaussianNamedDiskDemandLift.lean), [GaussianNamedDiskDemandReadback](Lean/IPRADerivations/Analysis/Geometry/GaussianNamedDiskDemandReadback.lean), [GaussianBarnesCanonicalNamedDerivative](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalNamedDerivative.lean)
 
 The original full rational derivative has a primitive-recursive uniform disk modulus. It gives the actual derivative sampler on regular Gaussian names, with regularity, properness across separately certified radii, explicit late readback, and the original quotient rate on exact rational configurations.
-[GaussianBarnesCanonicalValueDerivativeContinuity](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalValueDerivativeContinuity.lean), [GaussianBarnesCanonicalNamedValueDerivative](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalNamedValueDerivative.lean)
+[GaussianBarnesCanonicalValueDerivativeContinuity](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalValueDerivativeContinuity.lean), [GaussianBarnesCanonicalNamedValueDerivative](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalNamedValueDerivative.lean)
 
 For $F(z)=G(1+z)$, the actual entire reciprocal Gamma name gives the cleared recurrence $F(z+1) / \Gamma(z+1)=F(z)$ on every admitted Gaussian rational, including poles. Multiplying by the original Gamma name on the certified pole-free domain gives the ordinary recurrence.
-[GaussianBarnesCanonicalFiniteGaussRate](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalFiniteGaussRate.lean), [GaussianBarnesCanonicalFunctionalEquation](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalFunctionalEquation.lean), [GaussianBarnesCanonicalPoleFreeRecurrence](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalPoleFreeRecurrence.lean)
+[GaussianBarnesCanonicalFiniteGaussRate](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalFiniteGaussRate.lean), [GaussianBarnesCanonicalFunctionalEquation](Lean/IPRADerivations/Analysis/Barnes/FunctionalEquations/GaussianBarnesCanonicalFunctionalEquation.lean), [GaussianBarnesCanonicalPoleFreeRecurrence](Lean/IPRADerivations/Analysis/Barnes/FunctionalEquations/GaussianBarnesCanonicalPoleFreeRecurrence.lean)
 
 A single dyadic upper bound on the native step pays the original quotient margin and desired output precision, independently of the nonzero certificate.
-[GaussianBarnesCanonicalDerivativeIncrementPrecision](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDerivativeIncrementPrecision.lean)
+[GaussianBarnesCanonicalDerivativeIncrementPrecision](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalDerivativeIncrementPrecision.lean)
 
 The actual quotient by an apart regular named Gaussian step agrees to an explicit independent rate with the native quotient at a decoded late step. The error keeps the individual endpoint approximation rates and the actual reciprocal clock.
-[GaussianNamedIncrementQuotientFrozenRate](Lean/IPRADerivations/Analysis/GaussianNamedIncrementQuotientFrozenRate.lean)
+[GaussianNamedIncrementQuotientFrozenRate](Lean/IPRADerivations/Analysis/Names/Rates/GaussianNamedIncrementQuotientFrozenRate.lean)
 
 The original base and late apart step have exact common-denominator native encodings and a matched exact sum. The actual named addition clock is retained, and rational step bounds give native smallness certificates.
-[GaussianNamedIncrementChart](Lean/IPRADerivations/Analysis/GaussianNamedIncrementChart.lean)
+[GaussianNamedIncrementChart](Lean/IPRADerivations/Analysis/Names/GaussianNamedIncrementChart.lean)
 
 An explicit mixed-denominator disk modulus gives a genuine named sampler for the original C7 evaluator. The named output is regular and proper, and its comparison to the frozen rational evaluation preserves independent clocks, including at poles.
-[GaussianGammaC7Named](Lean/IPRADerivations/Analysis/GaussianGammaC7Named.lean), [GaussianGammaC7NamedFrozen](Lean/IPRADerivations/Analysis/GaussianGammaC7NamedFrozen.lean)
+[GaussianGammaC7Named](Lean/IPRADerivations/Analysis/Gamma/FunctionalEquations/GaussianGammaC7Named.lean), [GaussianGammaC7NamedFrozen](Lean/IPRADerivations/Analysis/Gamma/FunctionalEquations/GaussianGammaC7NamedFrozen.lean)
 
 The actual named base and shifted values both have an independent leading error of one dyadic unit at the requested precision in their comparison with the shared late rational chart. Changing the step denominator on this chart preserves the actual quotient datum exactly.
-[GaussianBarnesCanonicalNamedIncrementEndpoints](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalNamedIncrementEndpoints.lean)
+[GaussianBarnesCanonicalNamedIncrementEndpoints](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalNamedIncrementEndpoints.lean)
 
 The actual named divided difference converges to the actual named derivative for apart regular Gaussian increments with a certified dyadic sample bound. The requested step bound depends only on the disk and target precision. The apartness certificate determines only the later observation clock.
-[GaussianBarnesCanonicalNamedIncrementDerivative](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalNamedIncrementDerivative.lean)
+[GaussianBarnesCanonicalNamedIncrementDerivative](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalNamedIncrementDerivative.lean)
 
 The original first-derivative row increments by the actual rational second derivative times the step, with exact resolvent remainder and uniform bound `8H²/(B²k²)`. The second-derivative row has radius `12R/k²` and its original finite sums obey the inverse-square telescope.
-[GaussianBarnesCanonicalSecondDerivativeRow](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalSecondDerivativeRow.lean), [GaussianBarnesCanonicalSecondDerivativeTail](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalSecondDerivativeTail.lean), [GaussianBarnesCanonicalSecondDerivativeStep](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalSecondDerivativeStep.lean)
+[GaussianBarnesCanonicalSecondDerivativeRow](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalSecondDerivativeRow.lean), [GaussianBarnesCanonicalSecondDerivativeTail](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalSecondDerivativeTail.lean), [GaussianBarnesCanonicalSecondDerivativeStep](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalSecondDerivativeStep.lean)
 
 When a regular input name represents an exact Gaussian rational, the original named reciprocal Gamma value agrees with the original rational C7 evaluator at independent observation precisions. The proof applies at poles.
-[GaussianGammaC7NamedRationalBinding](Lean/IPRADerivations/Analysis/GaussianGammaC7NamedRationalBinding.lean)
+[GaussianGammaC7NamedRationalBinding](Lean/IPRADerivations/Analysis/Gamma/FunctionalEquations/GaussianGammaC7NamedRationalBinding.lean)
 
 At every internal order r≥3 the rational coefficient through the original base reciprocal has the bound `2^r/(r*k^(r−1))`. Exact multiplication by r! gives the factorial-scaled row with its sharp bound. Both programs have inverse-square bounds for finite tails.
-[GaussianBarnesCanonicalHigherRows](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHigherRows.lean)
+[GaussianBarnesCanonicalHigherRows](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalHigherRows.lean)
 
 The original Barnes and reciprocal-Gamma evaluators on the actual named unit shift satisfy the cleared functional equation at every regular Gaussian input on a certified disk. The proof aligns their late rational observations and passes the exact rational equation through independent dyadic rate bounds.
-[GaussianBarnesCanonicalNamedFunctionalEquation](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalNamedFunctionalEquation.lean)
+[GaussianBarnesCanonicalNamedFunctionalEquation](Lean/IPRADerivations/Analysis/Barnes/FunctionalEquations/GaussianBarnesCanonicalNamedFunctionalEquation.lean)
 
 On certified pole-free regular Gaussian input charts, multiply the cleared Barnes equation by the original named Gamma evaluator. Its exact inverse relation with the original named reciprocal-Gamma yields the usual functional equation.
-[GaussianGammaC7NamedInverse](Lean/IPRADerivations/Analysis/GaussianGammaC7NamedInverse.lean), [GaussianBarnesCanonicalNamedPoleFreeRecurrence](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalNamedPoleFreeRecurrence.lean)
+[GaussianGammaC7NamedInverse](Lean/IPRADerivations/Analysis/Gamma/FunctionalEquations/GaussianGammaC7NamedInverse.lean), [GaussianBarnesCanonicalNamedPoleFreeRecurrence](Lean/IPRADerivations/Analysis/Barnes/FunctionalEquations/GaussianBarnesCanonicalNamedPoleFreeRecurrence.lean)
 
 Starting at the original retained-row boundary, the exact rational reciprocal-square rows define a regular second derivative name. The original cofinal first derivative has that derivative with the stated independent-clock quadratic increment bound. At apart encoded rational steps the native difference quotient converges with leading error 16 times the step norm divided by the original head boundary.
-[GaussianScaledReciprocalSquareInterval](Lean/IPRADerivations/Analysis/GaussianScaledReciprocalSquareInterval.lean), [GaussianBarnesCanonicalSecondDerivativeCofinal](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalSecondDerivativeCofinal.lean), [GaussianBarnesCanonicalSecondDerivativeInterval](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalSecondDerivativeInterval.lean), [GaussianBarnesCanonicalSecondDerivativeBinding](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalSecondDerivativeBinding.lean)
+[GaussianScaledReciprocalSquareInterval](Lean/IPRADerivations/Analysis/Series/GaussianScaledReciprocalSquareInterval.lean), [GaussianBarnesCanonicalSecondDerivativeCofinal](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalSecondDerivativeCofinal.lean), [GaussianBarnesCanonicalSecondDerivativeInterval](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalSecondDerivativeInterval.lean), [GaussianBarnesCanonicalSecondDerivativeBinding](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalSecondDerivativeBinding.lean)
 
 The literal finite Mercator polynomials have a geometric remainder at every internal order. The same bound, with the rounded sampler allowance, controls the original named logarithm. At the original Barnes shifted relative input the bound uses the certified radius 2H/(Bk).
-[GaussianFiniteLogarithmTaylorRemainder](Lean/IPRADerivations/Analysis/GaussianFiniteLogarithmTaylorRemainder.lean), [GaussianLocalLogarithmTaylorRemainder](Lean/IPRADerivations/Analysis/GaussianLocalLogarithmTaylorRemainder.lean), [GaussianBarnesCanonicalRelativeMercatorRemainder](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalRelativeMercatorRemainder.lean)
+[GaussianFiniteLogarithmTaylorRemainder](Lean/IPRADerivations/Analysis/Logarithm/GaussianFiniteLogarithmTaylorRemainder.lean), [GaussianLocalLogarithmTaylorRemainder](Lean/IPRADerivations/Analysis/Logarithm/GaussianLocalLogarithmTaylorRemainder.lean), [GaussianBarnesCanonicalRelativeMercatorRemainder](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalRelativeMercatorRemainder.lean)
 
 At every internally encoded order r at least three, the literal retained rational coefficient sums define a regular name with independent-clock finite-prefix error bounded by 2^r divided by the retained boundary. The proof splits the literal finite sums and applies the same inverse-square telescope at every encoded order.
-[GaussianBarnesCanonicalHigherTail](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHigherTail.lean), [GaussianBarnesCanonicalHigherCofinal](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHigherCofinal.lean), [GaussianBarnesCanonicalHigherCofinalRate](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHigherCofinalRate.lean)
+[GaussianBarnesCanonicalHigherTail](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalHigherTail.lean), [GaussianBarnesCanonicalHigherCofinal](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalHigherCofinal.lean), [GaussianBarnesCanonicalHigherCofinalRate](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalHigherCofinalRate.lean)
 
 At every encoded order at least three, the original relative logarithm term multiplied by the Barnes row index equals the factorial-normalized coefficient times the literal displacement raised to that degree. The proof uses the checked inverse of the original base and the actual parity and radius powers.
-[GaussianBarnesCanonicalHigherRelative](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHigherRelative.lean)
+[GaussianBarnesCanonicalHigherRelative](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalHigherRelative.lean)
 
 The literal finite base-power product equals its displacement polynomial, including at zeros. Every truncation through the actual degree has error controlled by a computed Horner mass times the displacement radius to the first omitted power.
-[GaussianBarnesCanonicalCenteredHead](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalCenteredHead.lean), [GaussianBarnesCanonicalCenteredHeadTaylor](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalCenteredHeadTaylor.lean)
+[GaussianBarnesCanonicalCenteredHead](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalCenteredHead.lean), [GaussianBarnesCanonicalCenteredHeadTaylor](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalCenteredHeadTaylor.lean)
 
 Scaling each higher logarithmic coefficient sum by the encoded factorial gives the literal derivative-row sum. The normalized cofinal name is regular and each actual sample equals that derivative sum at its own explicit finite cutoff.
-[GaussianBarnesCanonicalHigherDerivative](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHigherDerivative.lean)
+[GaussianBarnesCanonicalHigherDerivative](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalHigherDerivative.lean)
 
 The original corrected log-row increment and the literal finite retained interval compare to their actual Mercator-based Taylor polynomials at every internally encoded degree at least two. The interval error retains the exact inverse-square telescoping factor for all lengths.
-[GaussianBarnesCanonicalCorrectedMercator](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalCorrectedMercator.lean), [GaussianBarnesCanonicalCorrectedMercatorInterval](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalCorrectedMercatorInterval.lean)
+[GaussianBarnesCanonicalCorrectedMercator](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalCorrectedMercator.lean), [GaussianBarnesCanonicalCorrectedMercatorInterval](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalCorrectedMercatorInterval.lean)
 
 The literal weighted Mercator polynomial splits at degree two. The exact low terms are the original derivative rows with their finite correction, and the higher terms transpose from logarithmic rows to the original retained coefficient-prefix sums.
-[GaussianBarnesCanonicalHigherMercatorSum](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHigherMercatorSum.lean), [GaussianBarnesCanonicalQuadraticBinding](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalQuadraticBinding.lean), [GaussianBarnesCanonicalHigherMercatorTranspose](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHigherMercatorTranspose.lean)
+[GaussianBarnesCanonicalHigherMercatorSum](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalHigherMercatorSum.lean), [GaussianBarnesCanonicalQuadraticBinding](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalQuadraticBinding.lean), [GaussianBarnesCanonicalHigherMercatorTranspose](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalHigherMercatorTranspose.lean)
 
 The kept base-power product has a quantitative zero-free Mercator chart. Its relative logarithm combines with the original finite correction, prefactor exponent and cofinal logarithmic tail. On those charts, exponentiating the sum and multiplying by the original starting value restores the original shifted value. The kept powers also have the stated uniform cubic polynomial remainder.
-[GaussianBarnesCanonicalHeadRelativeLog](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHeadRelativeLog.lean), [GaussianBarnesCanonicalHeadRelativeLogMargin](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHeadRelativeLogMargin.lean), [GaussianRationalUniformSecondOrderPolynomial](Lean/IPRADerivations/Analysis/GaussianRationalUniformSecondOrderPolynomial.lean), [GaussianBarnesCanonicalHeadPolynomialTaylor](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHeadPolynomialTaylor.lean), [GaussianBarnesCanonicalRelativeLogIncrement](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalRelativeLogIncrement.lean)
+[GaussianBarnesCanonicalHeadRelativeLog](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalHeadRelativeLog.lean), [GaussianBarnesCanonicalHeadRelativeLogMargin](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalHeadRelativeLogMargin.lean), [GaussianRationalUniformSecondOrderPolynomial](Lean/IPRADerivations/Analysis/Polynomials/GaussianRationalUniformSecondOrderPolynomial.lean), [GaussianBarnesCanonicalHeadPolynomialTaylor](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalHeadPolynomialTaylor.lean), [GaussianBarnesCanonicalRelativeLogIncrement](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalRelativeLogIncrement.lean)
 
 The corrected finite interval Mercator polynomial is exactly the sum of the original retained first, second, and higher coefficient blocks times their displacement powers. The original finite named increment therefore has the checked arbitrary-order Taylor bound for that coefficient polynomial.
-[GaussianBarnesCanonicalCorrectedMercatorCoefficients](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalCorrectedMercatorCoefficients.lean), [GaussianBarnesCanonicalCorrectedMercatorPrefix](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalCorrectedMercatorPrefix.lean)
+[GaussianBarnesCanonicalCorrectedMercatorCoefficients](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalCorrectedMercatorCoefficients.lean), [GaussianBarnesCanonicalCorrectedMercatorPrefix](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalCorrectedMercatorPrefix.lean)
 
 The original cofinal logarithmic increment admits the literal corrected finite Taylor polynomial with a combined finite-prefix and summable Taylor error. Its primitive-recursive cutoff makes the finite-prefix contribution dyadic and retains the analytic remainder at every encoded degree at least two.
-[GaussianBarnesCanonicalCorrectedMercatorCofinal](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalCorrectedMercatorCofinal.lean)
+[GaussianBarnesCanonicalCorrectedMercatorCofinal](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalCorrectedMercatorCofinal.lean)
 
 The original value equals the literal finite base-power product times the named exponential of the actual prefactor exponent, finite correction and cofinal log. On a shifted rational chart the kept product is its exact centered displacement polynomial. Both identities hold at zeros of the head.
-[GaussianBarnesCanonicalSingleExponential](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalSingleExponential.lean)
+[GaussianBarnesCanonicalSingleExponential](Lean/IPRADerivations/Analysis/Barnes/GaussianBarnesCanonicalSingleExponential.lean)
 
 The original shifted value is the exact centered kept polynomial times the exponential of the central exponent times the exponential of its actual named increment. Any independent-clock rate for the last factor lifts to the original shifted Barnes evaluator with a gain independent of the displacement.
-[GaussianBarnesCanonicalCenteredExponentialShift](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalCenteredExponentialShift.lean), [GaussianBarnesCanonicalCenteredProductRate](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalCenteredProductRate.lean)
+[GaussianBarnesCanonicalCenteredExponentialShift](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalCenteredExponentialShift.lean), [GaussianBarnesCanonicalCenteredProductRate](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalCenteredProductRate.lean)

@@ -1,6 +1,6 @@
-import IPRADerivations.Analysis.RationalSumLinearity
-import IPRADerivations.Analysis.RationalAlgebra
-import IPRADerivations.Analysis.GaussianWeightedErrorBudget
+import IPRADerivations.Analysis.RationalArithmetic.RationalSumLinearity
+import IPRADerivations.Analysis.RationalArithmetic.RationalAlgebra
+import IPRADerivations.Analysis.Inequalities.GaussianWeightedErrorBudget
 import IPRADerivations.Foundations.BoundedSyntaxInduction
 import IPRADerivations.Foundations.BoundedEnumeration
 import IPRADerivations.Core.SumLemmas

@@ -1,5 +1,5 @@
 import IPRADerivations.Geometry.Distinct.AnalyticConicAffine
-import IPRADerivations.Analysis.RationalAlgebra
+import IPRADerivations.Analysis.RationalArithmetic.RationalAlgebra
 import IPRADerivations.Core.LinearCombination
 
 /-!

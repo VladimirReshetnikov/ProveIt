@@ -1,5 +1,5 @@
 import IPRADerivations.Topology.MetricProducts
-import IPRADerivations.Analysis.PolynomialCertificates
+import IPRADerivations.Analysis.Polynomials.PolynomialCertificates
 import IPRADerivations.Foundations.FiniteObservations.MetricKernel
 
 /-!

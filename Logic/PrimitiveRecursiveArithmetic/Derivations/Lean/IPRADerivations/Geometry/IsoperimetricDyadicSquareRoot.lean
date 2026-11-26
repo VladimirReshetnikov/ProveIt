@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalSquareRootBounds
+import IPRADerivations.Analysis.Polynomials.RootFinding.RationalSquareRootBounds
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Core.LinearCombination
 

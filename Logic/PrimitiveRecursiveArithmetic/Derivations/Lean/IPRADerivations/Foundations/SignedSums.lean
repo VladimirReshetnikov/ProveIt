@@ -1,7 +1,7 @@
 import IPRADerivations.Core.IntCertificates
 import IPRADerivations.Core.Fubini
 import IPRADerivations.Core.SumReflect
-import IPRADerivations.Analysis.PowerSums
+import IPRADerivations.Analysis.RationalArithmetic.PowerSums
 
 /-!
 # Bounded sums of signed bodies

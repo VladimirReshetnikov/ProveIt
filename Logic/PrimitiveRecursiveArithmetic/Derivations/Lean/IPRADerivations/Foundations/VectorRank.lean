@@ -1,6 +1,6 @@
 import IPRADerivations.Core.SumLemmas
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Analysis.PowerSums
+import IPRADerivations.Analysis.RationalArithmetic.PowerSums
 
 /-!
 # The rank of a vector: componentwise order and strict increase

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.PolynomialBisection
+import IPRADerivations.Analysis.Polynomials.PolynomialBisection
 
 /-!
 # Fraction-free synthetic division and finite rational root bounds

@@ -1,5 +1,5 @@
 import IPRADerivations.Combinatorics.BinomialIdentities
-import IPRADerivations.Analysis.PowerSums
+import IPRADerivations.Analysis.RationalArithmetic.PowerSums
 import IPRADerivations.Core.Powers
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.CommonLemmas

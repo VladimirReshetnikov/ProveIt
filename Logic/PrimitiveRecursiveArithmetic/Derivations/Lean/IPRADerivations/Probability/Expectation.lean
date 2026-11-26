@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.PowerSums
+import IPRADerivations.Analysis.RationalArithmetic.PowerSums
 import IPRADerivations.AnalyticNumberTheory.PhiLower
 import IPRADerivations.DiophantineNumberTheory.Hurwitz
 import IPRADerivations.Core.LinearCombination

@@ -1,5 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.OrderPower
-import IPRADerivations.Analysis.PowerSums
+import IPRADerivations.Analysis.RationalArithmetic.PowerSums
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.InductionTactic
 

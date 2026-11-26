@@ -3,7 +3,7 @@ import IPRADerivations.Combinatorics.BinomialTwo
 import IPRADerivations.AnalyticNumberTheory.Order
 import IPRADerivations.Combinatorics.BellStirling
 import IPRADerivations.AnalyticNumberTheory.PhiLower
-import IPRADerivations.Analysis.PowerSums
+import IPRADerivations.Analysis.RationalArithmetic.PowerSums
 import IPRADerivations.Core.LinearCombination
 
 /-!

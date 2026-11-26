@@ -1,5 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.ConicIdentities
-import IPRADerivations.Analysis.PolynomialRemainder
+import IPRADerivations.Analysis.Polynomials.PolynomialRemainder
 
 /-!
 # The upper height bound of the conic parametrization

@@ -1,5 +1,5 @@
 import IPRADerivations.Combinatorics.Bell
-import IPRADerivations.Analysis.PowerSums
+import IPRADerivations.Analysis.RationalArithmetic.PowerSums
 import IPRADerivations.Core.CommonLemmas
 
 /-!

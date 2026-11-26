@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.PowerGap
+import IPRADerivations.Analysis.Inequalities.PowerGap
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Core.Powers
 import IPRADerivations.Core.LinearCombination

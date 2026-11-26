@@ -1,5 +1,5 @@
 import IPRADerivations.Probability.Expectation
-import IPRADerivations.Analysis.WeightedAMGM
+import IPRADerivations.Analysis.Optimization.WeightedAMGM
 import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.Core.ProdLemmas
 import IPRADerivations.DiophantineNumberTheory.SuperellipticFamily

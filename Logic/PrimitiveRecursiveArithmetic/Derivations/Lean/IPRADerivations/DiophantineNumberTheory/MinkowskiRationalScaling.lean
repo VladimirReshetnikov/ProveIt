@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.RationalArgmin
-import IPRADerivations.Analysis.RationalSupMetric
+import IPRADerivations.Analysis.Optimization.RationalArgmin
+import IPRADerivations.Analysis.RationalArithmetic.RationalSupMetric
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.CommonLemmas
 import IPRADerivations.Core.SubstCommand

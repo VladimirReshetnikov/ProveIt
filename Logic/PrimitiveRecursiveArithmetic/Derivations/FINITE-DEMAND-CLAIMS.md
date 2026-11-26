@@ -32,18 +32,18 @@ Implementation links are relative to `Lean/IPRADerivations`. Names have prefix
 | `cor:observational-induction`, [02_backward_induction.tex](../docs/proofs/foundations/ipra_finite_demand/sections/02_backward_induction.tex) | **Checked conditional object family.** `BackwardDemand.observational_induction` and `observational_induction_closed` derive all numerical stages/demands from global base and local-step contracts. | The client must prove those contracts. They are not silently inferred from the existence of an intended represented object. |
 | `thm:parameter-changing-recursion`, [02_backward_induction.tex](../docs/proofs/foundations/ipra_finite_demand/sections/02_backward_induction.tex) | **Checked actual PR construction.** [ParameterChangingRecursion](Lean/IPRADerivations/Foundations/ParameterChangingRecursion.lean) defines the two-pass evaluator and explicit `compiledF : PR 3`. `backward_coherence`, `horizon_coherence`, `forward_coherence`, `compiled_program_zero`, `compiled_program_succ`, and closed `zero_equation`/`successor_equation` prove the actual changing-parameter equations. | No mathematical remainder for fixed predetermined PR `b`, `D`, `F`. Adaptive unbounded recursion whose next demand depends on an uncomputed output is outside this theorem. |
 | `cor:finite-query-induction`, [02_backward_induction.tex](../docs/proofs/foundations/ipra_finite_demand/sections/02_backward_induction.tex) | **Checked actual envelope and object induction.** [FiniteQueryDemand](Lean/IPRADerivations/Foundations/FiniteQueryDemand.lean) constructs the nested PR maximum, proves `query_le_envelope` and closed `finite_query_envelope`, derives the actual bounded-prefix translation/local step, and proves `finite_query_induction_closed` for the original arity-indexed source observation. Query counts and upper limits are internal and may be nonmonotone; empty maxima are zero. | No mathematical remainder for the stated fixed-program/bounded-observation schema. Concrete applications must prove their actual global base and multiple-query local contracts. |
-| `thm:nonlinear-name-validity`, [02_backward_induction.tex](../docs/proofs/foundations/ipra_finite_demand/sections/02_backward_induction.tex) | **Checked actual rational iteration.** [Analysis/LogisticName](Lean/IPRADerivations/Analysis/LogisticName.lean) proves clipping nonexpansiveness, logistic range/Lipschitz4, positive denominators, actual PR5 program linkage, closed `parameter_shift_closed`, `nonlinear_name_validity_closed` and `globally_regular_output_closed`. The finite input premise is exactly bounded observations through `K+2N`; parameter `A/B` is internal with `B>0`, `A≤4B`. | No mathematical remainder for the finite source theorem and its global-regularity corollary in the declared signed rational coding. Completed-real interpretation and different external name encodings need their own adapters. |
-| `lem:aggregate-calculus`, [03_aggregates.tex](../docs/proofs/foundations/ipra_finite_demand/sections/03_aggregates.tex) | **Checked all five finite estimates in the original rational-coordinate coding.** [Analysis/RationalHausdorff](Lean/IPRADerivations/Analysis/RationalHausdorff.lean) supplies the actual independent-denominator values, original-coordinate cover equivalence and PR checker, using [RationalSupMetric](Lean/IPRADerivations/Analysis/RationalSupMetric.lean) normalization. [Triangle](Lean/IPRADerivations/Analysis/RationalHausdorffTriangle.lean), [Concat](Lean/IPRADerivations/Analysis/RationalHausdorffConcat.lean), [Product](Lean/IPRADerivations/Analysis/RationalHausdorffProduct.lean), [Image](Lean/IPRADerivations/Analysis/RationalHausdorffImage.lean) and [PointDistanceVariation](Lean/IPRADerivations/Analysis/RationalPointDistanceVariation.lean) prove the five literal source estimates, from actual constructors/nearest witnesses, and acceptance of the output checkers. Product factors and the output retain their independent scales; images use only the genuine finite cross-pair Lipschitz law. | No mathematical remainder for these five estimates in this coding. Cartesian products retain the legitimate bounded stored point-length guards for the two runtime factor dimensions; other arithmetic uses the documented total first-d/e decoder. Image evaluators are fixed PR schemas; all dimensions, Lipschitz numerators/positive denominators and persistent parameters are internal. Other external coding formats need their own explicit adapters. This does not assert an internal universal interpreter for arbitrary PR metric or map codes. |
-| `thm:aggregate-chain`, [03_aggregates.tex](../docs/proofs/foundations/ipra_finite_demand/sections/03_aggregates.tex) | **Checked actual rational point constructor.** [Analysis/RationalNearest](Lean/IPRADerivations/Analysis/RationalNearest.lean) supplies the actual least original-list neighbor. [Analysis/AggregateChain](Lean/IPRADerivations/Analysis/AggregateChain.lean) supplies PR5 index/name/distance/neighbor programs, QF membership and per-coordinate sharp-tail inductions, `aggregate_chain_closed`, `sharp_tail_closed`, `distance_regular_closed`, `chain_programs_closed` and `name_length_closed`. The actual `q_(s+t+2)` output is regular and every sample stays within `3e_s` of the seed. Its actual nearest-distance sample uses `q_(s+k+3)` against `S_(k+1)` and satisfies `8·2^k·num≤5·den`, with positive computed denominator, an actual nearest witness and derived scalar-name coherence. | No mathematical remainder for the source finite-observation theorem in this rational coding. Fixed list evaluator is external; dimension, seed/stage/precision indices and persistent data are internal. Stored dimension follows from the legitimate input `shaped` contract; stronger arithmetic estimates use the explicitly documented total first-`d` decoder. Malformed/empty inputs inherit raw entry/nearest totalization and are not promised the packet's suggested zero-vector default. Completed-real interpretation and other name encodings need separate adapters; no arbitrary choice function is asserted. |
-| `thm:aggregate-optimization`, [03_aggregates.tex](../docs/proofs/foundations/ipra_finite_demand/sections/03_aggregates.tex) | **Checked full finite-name construction.** [Analysis/AggregateOptimization](Lean/IPRADerivations/Analysis/AggregateOptimization.lean), with [RationalArgmin](Lean/IPRADerivations/Analysis/RationalArgmin.lean), [RationalValueBounds](Lean/IPRADerivations/Analysis/RationalValueBounds.lean), [RationalPointDistance](Lean/IPRADerivations/Analysis/RationalPointDistance.lean) and the checked chain, constructs actual signed-rational value, witness, supremum and evaluator programs. Proves minima Cauchy bounds, regularity, support and the exact `(4L+2)` budget for runtime `L=A/B`, `B≥1`. Explicit coarse PR shifts discharge all shift-existence obligations. Arbitrary-support distance bounds and a final computed-precision integer-gap step prove literal `LeNamed0`; `named_bounds_closed` contains both infimum-lower and supremum-upper statements. Closed metadata and the main/coarse/supremum constructors retain all numerical data internally. | No mathematical remainder for the stated global approximate-map contract and chosen finite rational coding. List, map and competitor point evaluators are fixed PR schemas; dimension, Lipschitz data, precisions, bounds and persistent parameters are internal. Support is the actual computed point-distance zero observation predicate; it is not a supplied lower-bound law. Stored lengths use the legitimate separate input `shaped` contract. Completed-real/native-archive presentations and alternative invariant-domain contracts require their explicit adapters. No exact minimizing point or coherence across separately chosen minimizers is asserted. |
-| `lem:product-stability`, [04_root_sets.tex](../docs/proofs/foundations/ipra_finite_demand/sections/04_root_sets.tex) | **Checked full original Gaussian-rational pair coding.** [GaussianRationalStability](Lean/IPRADerivations/Analysis/GaussianRationalStability.lean) `original_product_stability_closed` proves both original Euclidean covers; `original_product_checker_closed` gives actual checker acceptance and `original_product_witness_closed` certifies the PR6 returned original target entry. The actual [normalization](Lean/IPRADerivations/Analysis/GaussianRationalNormalization.lean), [radius/budget](Lean/IPRADerivations/Analysis/GaussianRationalRadius.lean), [original-cover](Lean/IPRADerivations/Analysis/GaussianRationalCover.lean), [rational metric](Lean/IPRADerivations/Analysis/GaussianRationalMetric.lean) and [Horner](Lean/IPRADerivations/Analysis/GaussianRationalHorner.lean) bridges connect independent original component denominators to the [common-D theorem](Lean/IPRADerivations/Analysis/GaussianRationalProductStability.lean). Actual [product polynomials](Lean/IPRADerivations/Analysis/GaussianRootProduct.lean), [coefficient scaling](Lean/IPRADerivations/Analysis/GaussianPolynomialScaling.lean), [perturbation](Lean/IPRADerivations/Analysis/GaussianPolynomialPerturbation.lean) and [norm/factor search](Lean/IPRADerivations/Analysis/GaussianProductNorm.lean) derive every intermediate conclusion. | No mathematical remainder for this source lemma in the explicit pair coding. All nine numerical inputs are internal: original lists, degree, radius `u/v≥1`, coefficient tolerance `A/B≥0` and output radius `P/Q≥0`. The exact source condition `Q^N N u^(N−1) A≤P^N B v^(N−1)` is retained. Repeated roots and zero tolerances are allowed; no canonical-storage, positive-tolerance, supplied factorization/evaluation/clearing, successful-search or target-cover premise is added. This proves support closeness and does not assert a multiplicity-preserving matching or root existence. |
-| `thm:approx-factor`, [04_root_sets.tex](../docs/proofs/foundations/ipra_finite_demand/sections/04_root_sets.tex) | **Checked full actual uniform construction with a concrete monic instance.** [GaussianApproximateFactorization](Lean/IPRADerivations/Analysis/GaussianApproximateFactorization.lean) proves `uniform_approximate_factorization_closed`, `returned_approximate_factorization_closed` and `returned_product_evaluation_closed`. The actual PR4 returns N computed roots and the actual degree-N product coefficients, with full coefficient L1 error≤eta=p/q. Numerical C,N,p,q are internal. [Parameters](Lean/IPRADerivations/Analysis/GaussianFactorParameters.lean) computes A0 and epsilon=p/(2NLq); [stage bounds](Lean/IPRADerivations/Analysis/GaussianFactorBounds.lean) derives the whole coefficient invariant by compiled bounded induction and each root radius using the proved [monic residual-radius theorem](Lean/IPRADerivations/Analysis/GaussianMonicResidualRadius.lean). Actual [linear multiplication/error transport](Lean/IPRADerivations/Analysis/GaussianRationalDeflationError.lean), [product reconstruction](Lean/IPRADerivations/Analysis/GaussianRationalReconstruction.lean) and [weighted budgets](Lean/IPRADerivations/Analysis/GaussianWeightedErrorBudget.lean) give the complete backward QF error proof. | No mathematical remainder for this conditional theorem in the stated coding: the input is a coefficient list of length N+1 with literal canonical leading coefficient one, N≥1 and 1≤p≤q. The additional premise is precisely `GaussianFactorParameters.monicRD`, a uniform local contraction for proper monic polynomials, from which stage residuals are derived. The concrete fixed step is now constructed in [GaussianMonicRD](Lean/IPRADerivations/Analysis/GaussianMonicRD.lean), and [GaussianMonicApplications](Lean/IPRADerivations/Analysis/GaussianMonicApplications.lean) proves the actual and returned approximate-root/factorization instances with that RD premise discharged internally. The generic interface retains its step argument; the general nonmonic FTA remains separate. The [literal (TE) coefficient identity](Lean/IPRADerivations/Analysis/GaussianDeflationResidualPolynomial.lean) is also checked for the actual computed roots and residuals. The [general convolution norm bound](Lean/IPRADerivations/Analysis/GaussianRationalConvolutionNorm.lean) holds for the actual product. The alternative bounded-grid interface has [signed nearest-mesh rounding](Lean/IPRADerivations/Analysis/GaussianRationalGridRounding.lean), with a proved range and half-mesh error. The [stored square grid](Lean/IPRADerivations/Analysis/GaussianRationalSquareGrid.lean) now covers every original disk point at distance at most `1/M`, with a computed valid index and a radius bound on each stored entry. [GaussianMonicGridApproximateRoot](Lean/IPRADerivations/Analysis/GaussianMonicGridApproximateRoot.lean) derives that witness and proves success and leastness of the actual stored grid scan. It uses the conservative integer mesh `4(1+L)q`. [GaussianMonicExactGridApproximateRoot](Lean/IPRADerivations/Analysis/GaussianMonicExactGridApproximateRoot.lean) checks the same stored scan at the exact source mesh `ceil(4 L_P/epsilon)`. The coefficient-error estimate uses the actual one-step error recurrence and backward prefix-weighted induction. Root existence, desired factorization/error and global stage invariants are not premises. |
-| `thm:root-support`, [04_root_sets.tex](../docs/proofs/foundations/ipra_finite_demand/sections/04_root_sets.tex) | **Checked full source construction with a concrete fixed-step instance.** [GaussianRootSupport](Lean/IPRADerivations/Analysis/GaussianRootSupport.lean) proves `collision_tolerant_root_support_closed`, the original two-cover checker and the actual PR3 root-name program. [GaussianCoefficientNameBounds](Lean/IPRADerivations/Analysis/GaussianCoefficientNameBounds.lean), [GaussianRootSchedule](Lean/IPRADerivations/Analysis/GaussianRootSchedule.lean), [GaussianRootSamples](Lean/IPRADerivations/Analysis/GaussianRootSamples.lean), [GaussianRootRadius](Lean/IPRADerivations/Analysis/GaussianRootRadius.lean) and [GaussianRootCoefficientCoherence](Lean/IPRADerivations/Analysis/GaussianRootCoefficientCoherence.lean) construct exact source A/R/b/E(t), actual sample/factor programs, final coefficient radius A, listed-root radius A+2 and coefficient discrepancy 4*2^-E(t). [GaussianRootStability](Lean/IPRADerivations/Analysis/GaussianRootStability.lean) derives both original Euclidean covers at 2^(-t-2). Numerical degree, data and all precisions are internal; only fixed PR schemas are external. | No mathematical remainder for this source result in the chosen coding. The generic interface retains the local monic RD contract; [GaussianMonicRootSupport](Lean/IPRADerivations/Analysis/GaussianMonicRootSupport.lean) discharges it using the proved fixed step and exports `concrete_root_support_closed`, actual named/returned covers and checker acceptance. Only genuine CN, positive degree and stage order remain. The original root-name PR3, coefficient errors, radii, product evaluation, listed zeros and returned fields are audited. No final radius, factorization/coherence law, root separation or cover is an input premise. |
-| `prop:root-adequacy`, [04_root_sets.tex](../docs/proofs/foundations/ipra_finite_demand/sections/04_root_sets.tex) | **Checked full source proposition and concrete completed-distance instance.** [GaussianRootAdequacyTheorem](Lean/IPRADerivations/Analysis/GaussianRootAdequacyTheorem.lean) proves the single closed `root_adequacy_closed` sentence: actual P-value fastness, literal quantified Member iff actual polynomial-program zero, all-stage nonnegative fast Euclidean distance names, both sharp represented error cuts and the source PR forward stage at every precision. [SharpEvaluation](Lean/IPRADerivations/Analysis/GaussianRootSharpEvaluation.lean) proves `root-eval-error` at exact 2*C_Z/D; [SharpDistance](Lean/IPRADerivations/Analysis/GaussianRootSharpDistance.lean) proves `root-distance-residual` as the genuine two-name order cut at exact M_Z/C_R. The original Z is retained; sample disk Z+1 is derived from its represented norm bound. All degrees, data, stages and precision indices are internal. [Actual power envelopes](Lean/IPRADerivations/Analysis/GaussianRationalPowerEnvelope.lean), [rational-disk Lipschitz](Lean/IPRADerivations/Analysis/GaussianRationalHornerRadiusLipschitz.lean), [finite slack removal](Lean/IPRADerivations/Analysis/GaussianFastValueCut.lean), [distance upper cuts](Lean/IPRADerivations/Analysis/GaussianEuclideanDistanceUpperCut.lean) and [actual affine distance names](Lean/IPRADerivations/Analysis/GaussianLinearDistanceName.lean) supply derived components. | No mathematical remainder for the displayed proposition in the chosen original rational/name coding under its genuine CN/pointCN, numerical disk/degree and local RD assumptions. The later unnumbered stage-distance/zero-distance corollary is checked by [DistanceCompletion](Lean/IPRADerivations/Analysis/GaussianRootDistanceCompletion.lean) and [DistanceZero](Lean/IPRADerivations/Analysis/GaussianRootDistanceZero.lean); [CompletedAdequacy](Lean/IPRADerivations/Analysis/GaussianRootCompletedAdequacy.lean) identifies its literal zero predicate with literal P-program zero. [GaussianMonicRootAdequacy](Lean/IPRADerivations/Analysis/GaussianMonicRootAdequacy.lean) now exports the full original proposition and completed corollary with RD discharged internally, retaining original C_Z/M_Z and genuine CN/pointCN/disk/degree guards. It binds the actual PR3 root and PR2 polynomial/distance names and proves membership iff actual polynomial-name zero iff completed distance-name zero. Distance completion and its membership equivalence require only CN, pointCN and positive degree. Generic completed Gaussian-point and field realization remains separate. No desired error/coherence/order, represented minimizing root or output invariant is an input. |
-| `thm:general-norm`, [05_norm_certificates.tex](../docs/proofs/foundations/ipra_finite_demand/sections/05_norm_certificates.tex) | **Checked sharp finite norm zero bound for Gaussian rationals and original rationals.** [GaussianNormFiniteZeroBound](Lean/IPRADerivations/Analysis/GaussianNormFiniteZeroBound.lean) proves `actual_finite_norm_zero_bound_closed` for the original norm and original distinct common-zero list. The only arithmetic and source guards are the monic input shape, the original point predicates and the actual nonzero coefficient flag of the returned norm. Its conclusion uses the actual computed degree. [The reconstruction theorem](Lean/IPRADerivations/Analysis/GaussianNormFiniteZeroBound.lean) derives bounded literal coefficient equality at every group prefix before applying the nonzero flag. Its two bounded inductions first transfer factors within one fiber and then reconstruct the product across the original groups. Each induction runs on a quantifier-free compiled observation. Singular and ramified fibers are included through their original exact sizes. [RationalPolynomialMonicNorm](Lean/IPRADerivations/Analysis/RationalPolynomialMonicNorm.lean) proves the same bound for the actual original rational determinant and any distinct list of common zeros of the original monic equation and reduced polynomial. The premise is either its actual nonzero flag or a bounded nonzero rational coefficient. | [GaussianHighYNormBound](Lean/IPRADerivations/Analysis/GaussianHighYNormBound.lean) also proves the original point bound from arbitrary input Y degree and the actual nonzero norm flag. [Stored division](Lean/IPRADerivations/Analysis/GaussianBivariateMonicDivisionIdentity.lean) proves the literal coefficient identity for the computed quotient and remainder. [The completed Vandermonde product](Lean/IPRADerivations/Analysis/GaussianCompletedVandermondeProduct.lean) identifies the actual fiber determinant. [RationalHighYNormBound](Lean/IPRADerivations/Analysis/RationalHighYNormBound.lean) proves the corresponding original rational arbitrary-Y bound. [RationalPolynomialMonicHornerQuotientGaussianEmbedding](Lean/IPRADerivations/Analysis/RationalPolynomialMonicHornerQuotientGaussianEmbedding.lean) reconstructs the original rational evaluation from the returned quotient and remainder at arbitrary arguments. [RationalBivariateMonicDivisionIdentity](Lean/IPRADerivations/Analysis/RationalBivariateMonicDivisionIdentity.lean) proves the literal stored coefficient identity for the actual original rational factor, quotient and remainder. Additional coded fields remain open. |
-| `thm:norm-degree`, [05_norm_certificates.tex](../docs/proofs/foundations/ipra_finite_demand/sections/05_norm_certificates.tex) | **Checked exact norm degree and nonvanishing for rationals and Gaussian rationals.** [GaussianSuperellipticNormDegree](Lean/IPRADerivations/Analysis/GaussianSuperellipticNormDegree.lean) derives the cyclic leading term from the original retained determinant word. [RationalSuperellipticNormDegree](Lean/IPRADerivations/Analysis/RationalSuperellipticNormDegree.lean) identifies the original rational determinant, flag, degree and signed leading coefficient under the same numerical and polynomial hypotheses. | Other coded fields require their own arithmetic and polynomial contracts. |
-| `cor:norm-zeros`, [05_norm_certificates.tex](../docs/proofs/foundations/ipra_finite_demand/sections/05_norm_certificates.tex) | **Checked sharp weighted point counts for rationals and Gaussian rationals.** The Gaussian theorem and [RationalSuperellipticNormDegree](Lean/IPRADerivations/Analysis/RationalSuperellipticNormDegree.lean) derive the actual norm nonzero flag, consume the original distinct list satisfying `Y^m=f(X)` and `G=0`, and bound its length by the actual weighted degree. | The Gaussian proper-subspace application is checked below. The original rational proper-subspace specialization is checked below. Further coded fields remain open. |
-| `cor:norm-subspace`, [05_norm_certificates.tex](../docs/proofs/foundations/ipra_finite_demand/sections/05_norm_certificates.tex) | **Checked proper-subspace point bounds for the original rational and Gaussian-rational row spans.** [GaussianRationalOriginalSpanRank](Lean/IPRADerivations/Analysis/GaussianRationalOriginalSpanRank.lean) proves that properness of the original span is equivalent to strict deficiency of the actual pivot count. In the full-count case the program produces coefficients of the original rows for every numerical target vector. The closed point bound consumes genuine properness, the original distinct curve points, and their per-point existential membership in the same matrix span. Its nonzero null vector, compiled polynomial and exact norm are derived. [RationalSuperellipticSubspace](Lean/IPRADerivations/Analysis/RationalSuperellipticSubspace.lean) derives the bound for the original rational basis evaluation vectors and their original coefficients. It proves the equivalence of properness and computed rank deficiency using real projection and the actual rational unit vector at a free column. | [GaussianSuperellipticCoverBound](Lean/IPRADerivations/Analysis/GaussianSuperellipticCoverBound.lean) proves the subsequent count for a supplied family of at most `M` proper row spans covering the original points. It uses the exact computed original membership test. [RationalOriginalSpanMembership](Lean/IPRADerivations/Analysis/RationalOriginalSpanMembership.lean) proves the exact rational membership test and derives a rational witness on acceptance. [RationalOriginalAnnihilator](Lean/IPRADerivations/Analysis/RationalOriginalAnnihilator.lean) computes a rational null vector of the original rows with a unit at the free column. [RationalSuperellipticCover](Lean/IPRADerivations/Analysis/RationalSuperellipticCover.lean) proves the corresponding bound for supplied rational covers using the exact least membership search and the returned groups. [RationalAnnihilatorPolynomial](Lean/IPRADerivations/Analysis/RationalAnnihilatorPolynomial.lean) compiles original rational basis coefficients into a canonical original bivariate polynomial, with checked coefficient and evaluation transport. [RationalAnnihilatorOnSpan](Lean/IPRADerivations/Analysis/RationalAnnihilatorOnSpan.lean) proves that this actual compiled polynomial of the computed rational annihilator vanishes on the supplied original points in the original span. [RationalSuperellipticSpanCertificate](Lean/IPRADerivations/Analysis/RationalSuperellipticSpanCertificate.lean) proves the complete bound using the actual rational annihilator, its nonzero polynomial with bounded weight, and its actual rational norm. [RationalSubtupleSpan](Lean/IPRADerivations/Analysis/RationalSubtupleSpan.lean) proves retention and preservation of properness for the mask-selected rational subtuples used to enumerate finite cover candidates. [RationalFiniteSpanCover](Lean/IPRADerivations/Analysis/RationalFiniteSpanCover.lean) computes classifier masks for an already supplied proper-span cover and returns an equally long proper subtuple-span cover of the same rational vectors. [RationalSubspaceCoverCandidates](Lean/IPRADerivations/Analysis/RationalSubspaceCoverCandidates.lean) gives the actual bounded enumeration with the source limit `2^(tM)` and reconstructs a candidate for a supplied family of length `M`. [RationalSubspaceCoverSearch](Lean/IPRADerivations/Analysis/RationalSubspaceCoverSearch.lean) proves the global Boolean cover decision using the actual rank and membership predicates and the least bounded search. A supplied cover with exactly `M` members yields acceptance. [RationalPhiFeatures](Lean/IPRADerivations/Analysis/RationalPhiFeatures.lean) constructs the exact feature tuple `(1,x,…,x^s,y)` and derives the original section equation from the computed annihilator. [RationalPhiSectionNonzero](Lean/IPRADerivations/Analysis/RationalPhiSectionNonzero.lean) proves the point bound for the exact feature space when the annihilator has a nonzero ordinate coefficient. [RationalPhiSection](Lean/IPRADerivations/Analysis/RationalPhiSection.lean) proves both forms of the original complete finite section bound, without a coprimality premise. [RationalCoverPadding](Lean/IPRADerivations/Analysis/RationalCoverPadding.lean) proves the exact at-most-M global decision in positive dimension. [RationalPhiCoverBound](Lean/IPRADerivations/Analysis/RationalPhiCoverBound.lean) derives the original curve count from that bit by applying the full source section theorem to the actual groups. Quantitative success and further coded fields remain open. |
+| `thm:nonlinear-name-validity`, [02_backward_induction.tex](../docs/proofs/foundations/ipra_finite_demand/sections/02_backward_induction.tex) | **Checked actual rational iteration.** [Analysis/LogisticName](Lean/IPRADerivations/Analysis/Names/LogisticName.lean) proves clipping nonexpansiveness, logistic range/Lipschitz4, positive denominators, actual PR5 program linkage, closed `parameter_shift_closed`, `nonlinear_name_validity_closed` and `globally_regular_output_closed`. The finite input premise is exactly bounded observations through `K+2N`; parameter `A/B` is internal with `B>0`, `A≤4B`. | No mathematical remainder for the finite source theorem and its global-regularity corollary in the declared signed rational coding. Completed-real interpretation and different external name encodings need their own adapters. |
+| `lem:aggregate-calculus`, [03_aggregates.tex](../docs/proofs/foundations/ipra_finite_demand/sections/03_aggregates.tex) | **Checked all five finite estimates in the original rational-coordinate coding.** [Analysis/RationalHausdorff](Lean/IPRADerivations/Analysis/RationalArithmetic/RationalHausdorff.lean) supplies the actual independent-denominator values, original-coordinate cover equivalence and PR checker, using [RationalSupMetric](Lean/IPRADerivations/Analysis/RationalArithmetic/RationalSupMetric.lean) normalization. [Triangle](Lean/IPRADerivations/Analysis/Geometry/RationalHausdorffTriangle.lean), [Concat](Lean/IPRADerivations/Analysis/RationalArithmetic/RationalHausdorffConcat.lean), [Product](Lean/IPRADerivations/Analysis/RationalArithmetic/RationalHausdorffProduct.lean), [Image](Lean/IPRADerivations/Analysis/RationalArithmetic/RationalHausdorffImage.lean) and [PointDistanceVariation](Lean/IPRADerivations/Analysis/RationalArithmetic/RationalPointDistanceVariation.lean) prove the five literal source estimates, from actual constructors/nearest witnesses, and acceptance of the output checkers. Product factors and the output retain their independent scales; images use only the genuine finite cross-pair Lipschitz law. | No mathematical remainder for these five estimates in this coding. Cartesian products retain the legitimate bounded stored point-length guards for the two runtime factor dimensions; other arithmetic uses the documented total first-d/e decoder. Image evaluators are fixed PR schemas; all dimensions, Lipschitz numerators/positive denominators and persistent parameters are internal. Other external coding formats need their own explicit adapters. This does not assert an internal universal interpreter for arbitrary PR metric or map codes. |
+| `thm:aggregate-chain`, [03_aggregates.tex](../docs/proofs/foundations/ipra_finite_demand/sections/03_aggregates.tex) | **Checked actual rational point constructor.** [Analysis/RationalNearest](Lean/IPRADerivations/Analysis/RationalArithmetic/RationalNearest.lean) supplies the actual least original-list neighbor. [Analysis/AggregateChain](Lean/IPRADerivations/Analysis/Names/AggregateChain.lean) supplies PR5 index/name/distance/neighbor programs, QF membership and per-coordinate sharp-tail inductions, `aggregate_chain_closed`, `sharp_tail_closed`, `distance_regular_closed`, `chain_programs_closed` and `name_length_closed`. The actual `q_(s+t+2)` output is regular and every sample stays within `3e_s` of the seed. Its actual nearest-distance sample uses `q_(s+k+3)` against `S_(k+1)` and satisfies `8·2^k·num≤5·den`, with positive computed denominator, an actual nearest witness and derived scalar-name coherence. | No mathematical remainder for the source finite-observation theorem in this rational coding. Fixed list evaluator is external; dimension, seed/stage/precision indices and persistent data are internal. Stored dimension follows from the legitimate input `shaped` contract; stronger arithmetic estimates use the explicitly documented total first-`d` decoder. Malformed/empty inputs inherit raw entry/nearest totalization and are not promised the packet's suggested zero-vector default. Completed-real interpretation and other name encodings need separate adapters; no arbitrary choice function is asserted. |
+| `thm:aggregate-optimization`, [03_aggregates.tex](../docs/proofs/foundations/ipra_finite_demand/sections/03_aggregates.tex) | **Checked full finite-name construction.** [Analysis/AggregateOptimization](Lean/IPRADerivations/Analysis/Optimization/AggregateOptimization.lean), with [RationalArgmin](Lean/IPRADerivations/Analysis/Optimization/RationalArgmin.lean), [RationalValueBounds](Lean/IPRADerivations/Analysis/RationalArithmetic/RationalValueBounds.lean), [RationalPointDistance](Lean/IPRADerivations/Analysis/RationalArithmetic/RationalPointDistance.lean) and the checked chain, constructs actual signed-rational value, witness, supremum and evaluator programs. Proves minima Cauchy bounds, regularity, support and the exact `(4L+2)` budget for runtime `L=A/B`, `B≥1`. Explicit coarse PR shifts discharge all shift-existence obligations. Arbitrary-support distance bounds and a final computed-precision integer-gap step prove literal `LeNamed0`; `named_bounds_closed` contains both infimum-lower and supremum-upper statements. Closed metadata and the main/coarse/supremum constructors retain all numerical data internally. | No mathematical remainder for the stated global approximate-map contract and chosen finite rational coding. List, map and competitor point evaluators are fixed PR schemas; dimension, Lipschitz data, precisions, bounds and persistent parameters are internal. Support is the actual computed point-distance zero observation predicate; it is not a supplied lower-bound law. Stored lengths use the legitimate separate input `shaped` contract. Completed-real/native-archive presentations and alternative invariant-domain contracts require their explicit adapters. No exact minimizing point or coherence across separately chosen minimizers is asserted. |
+| `lem:product-stability`, [04_root_sets.tex](../docs/proofs/foundations/ipra_finite_demand/sections/04_root_sets.tex) | **Checked full original Gaussian-rational pair coding.** [GaussianRationalStability](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianRationalStability.lean) `original_product_stability_closed` proves both original Euclidean covers; `original_product_checker_closed` gives actual checker acceptance and `original_product_witness_closed` certifies the PR6 returned original target entry. The actual [normalization](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianRationalNormalization.lean), [radius/budget](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianRationalRadius.lean), [original-cover](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianRationalCover.lean), [rational metric](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianRationalMetric.lean) and [Horner](Lean/IPRADerivations/Analysis/Polynomials/GaussianRationalHorner.lean) bridges connect independent original component denominators to the [common-D theorem](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianRationalProductStability.lean). Actual [product polynomials](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianRootProduct.lean), [coefficient scaling](Lean/IPRADerivations/Analysis/Polynomials/GaussianPolynomialScaling.lean), [perturbation](Lean/IPRADerivations/Analysis/Polynomials/GaussianPolynomialPerturbation.lean) and [norm/factor search](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianProductNorm.lean) derive every intermediate conclusion. | No mathematical remainder for this source lemma in the explicit pair coding. All nine numerical inputs are internal: original lists, degree, radius `u/v≥1`, coefficient tolerance `A/B≥0` and output radius `P/Q≥0`. The exact source condition `Q^N N u^(N−1) A≤P^N B v^(N−1)` is retained. Repeated roots and zero tolerances are allowed; no canonical-storage, positive-tolerance, supplied factorization/evaluation/clearing, successful-search or target-cover premise is added. This proves support closeness and does not assert a multiplicity-preserving matching or root existence. |
+| `thm:approx-factor`, [04_root_sets.tex](../docs/proofs/foundations/ipra_finite_demand/sections/04_root_sets.tex) | **Checked full actual uniform construction with a concrete monic instance.** [GaussianApproximateFactorization](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianApproximateFactorization.lean) proves `uniform_approximate_factorization_closed`, `returned_approximate_factorization_closed` and `returned_product_evaluation_closed`. The actual PR4 returns N computed roots and the actual degree-N product coefficients, with full coefficient L1 error≤eta=p/q. Numerical C,N,p,q are internal. [Parameters](Lean/IPRADerivations/Analysis/RationalArithmetic/Powers/GaussianFactorParameters.lean) computes A0 and epsilon=p/(2NLq); [stage bounds](Lean/IPRADerivations/Analysis/RationalArithmetic/Powers/GaussianFactorBounds.lean) derives the whole coefficient invariant by compiled bounded induction and each root radius using the proved [monic residual-radius theorem](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianMonicResidualRadius.lean). Actual [linear multiplication/error transport](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianRationalDeflationError.lean), [product reconstruction](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianRationalReconstruction.lean) and [weighted budgets](Lean/IPRADerivations/Analysis/Inequalities/GaussianWeightedErrorBudget.lean) give the complete backward QF error proof. | No mathematical remainder for this conditional theorem in the stated coding: the input is a coefficient list of length N+1 with literal canonical leading coefficient one, N≥1 and 1≤p≤q. The additional premise is precisely `GaussianFactorParameters.monicRD`, a uniform local contraction for proper monic polynomials, from which stage residuals are derived. The concrete fixed step is now constructed in [GaussianMonicRD](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianMonicRD.lean), and [GaussianMonicApplications](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianMonicApplications.lean) proves the actual and returned approximate-root/factorization instances with that RD premise discharged internally. The generic interface retains its step argument; the general nonmonic FTA remains separate. The [literal (TE) coefficient identity](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianDeflationResidualPolynomial.lean) is also checked for the actual computed roots and residuals. The [general convolution norm bound](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianRationalConvolutionNorm.lean) holds for the actual product. The alternative bounded-grid interface has [signed nearest-mesh rounding](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianRationalGridRounding.lean), with a proved range and half-mesh error. The [stored square grid](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianRationalSquareGrid.lean) now covers every original disk point at distance at most `1/M`, with a computed valid index and a radius bound on each stored entry. [GaussianMonicGridApproximateRoot](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianMonicGridApproximateRoot.lean) derives that witness and proves success and leastness of the actual stored grid scan. It uses the conservative integer mesh `4(1+L)q`. [GaussianMonicExactGridApproximateRoot](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianMonicExactGridApproximateRoot.lean) checks the same stored scan at the exact source mesh `ceil(4 L_P/epsilon)`. The coefficient-error estimate uses the actual one-step error recurrence and backward prefix-weighted induction. Root existence, desired factorization/error and global stage invariants are not premises. |
+| `thm:root-support`, [04_root_sets.tex](../docs/proofs/foundations/ipra_finite_demand/sections/04_root_sets.tex) | **Checked full source construction with a concrete fixed-step instance.** [GaussianRootSupport](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianRootSupport.lean) proves `collision_tolerant_root_support_closed`, the original two-cover checker and the actual PR3 root-name program. [GaussianCoefficientNameBounds](Lean/IPRADerivations/Analysis/Polynomials/GaussianCoefficientNameBounds.lean), [GaussianRootSchedule](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianRootSchedule.lean), [GaussianRootSamples](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianRootSamples.lean), [GaussianRootRadius](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianRootRadius.lean) and [GaussianRootCoefficientCoherence](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianRootCoefficientCoherence.lean) construct exact source A/R/b/E(t), actual sample/factor programs, final coefficient radius A, listed-root radius A+2 and coefficient discrepancy 4*2^-E(t). [GaussianRootStability](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianRootStability.lean) derives both original Euclidean covers at 2^(-t-2). Numerical degree, data and all precisions are internal; only fixed PR schemas are external. | No mathematical remainder for this source result in the chosen coding. The generic interface retains the local monic RD contract; [GaussianMonicRootSupport](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianMonicRootSupport.lean) discharges it using the proved fixed step and exports `concrete_root_support_closed`, actual named/returned covers and checker acceptance. Only genuine CN, positive degree and stage order remain. The original root-name PR3, coefficient errors, radii, product evaluation, listed zeros and returned fields are audited. No final radius, factorization/coherence law, root separation or cover is an input premise. |
+| `prop:root-adequacy`, [04_root_sets.tex](../docs/proofs/foundations/ipra_finite_demand/sections/04_root_sets.tex) | **Checked full source proposition and concrete completed-distance instance.** [GaussianRootAdequacyTheorem](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianRootAdequacyTheorem.lean) proves the single closed `root_adequacy_closed` sentence: actual P-value fastness, literal quantified Member iff actual polynomial-program zero, all-stage nonnegative fast Euclidean distance names, both sharp represented error cuts and the source PR forward stage at every precision. [SharpEvaluation](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianRootSharpEvaluation.lean) proves `root-eval-error` at exact 2*C_Z/D; [SharpDistance](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianRootSharpDistance.lean) proves `root-distance-residual` as the genuine two-name order cut at exact M_Z/C_R. The original Z is retained; sample disk Z+1 is derived from its represented norm bound. All degrees, data, stages and precision indices are internal. [Actual power envelopes](Lean/IPRADerivations/Analysis/RationalArithmetic/Powers/GaussianRationalPowerEnvelope.lean), [rational-disk Lipschitz](Lean/IPRADerivations/Analysis/Polynomials/GaussianRationalHornerRadiusLipschitz.lean), [finite slack removal](Lean/IPRADerivations/Analysis/Names/GaussianFastValueCut.lean), [distance upper cuts](Lean/IPRADerivations/Analysis/Geometry/GaussianEuclideanDistanceUpperCut.lean) and [actual affine distance names](Lean/IPRADerivations/Analysis/Names/GaussianLinearDistanceName.lean) supply derived components. | No mathematical remainder for the displayed proposition in the chosen original rational/name coding under its genuine CN/pointCN, numerical disk/degree and local RD assumptions. The later unnumbered stage-distance/zero-distance corollary is checked by [DistanceCompletion](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianRootDistanceCompletion.lean) and [DistanceZero](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianRootDistanceZero.lean); [CompletedAdequacy](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianRootCompletedAdequacy.lean) identifies its literal zero predicate with literal P-program zero. [GaussianMonicRootAdequacy](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianMonicRootAdequacy.lean) now exports the full original proposition and completed corollary with RD discharged internally, retaining original C_Z/M_Z and genuine CN/pointCN/disk/degree guards. It binds the actual PR3 root and PR2 polynomial/distance names and proves membership iff actual polynomial-name zero iff completed distance-name zero. Distance completion and its membership equivalence require only CN, pointCN and positive degree. Generic completed Gaussian-point and field realization remains separate. No desired error/coherence/order, represented minimizing root or output invariant is an input. |
+| `thm:general-norm`, [05_norm_certificates.tex](../docs/proofs/foundations/ipra_finite_demand/sections/05_norm_certificates.tex) | **Checked sharp finite norm zero bound for Gaussian rationals and original rationals.** [GaussianNormFiniteZeroBound](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianNormFiniteZeroBound.lean) proves `actual_finite_norm_zero_bound_closed` for the original norm and original distinct common-zero list. The only arithmetic and source guards are the monic input shape, the original point predicates and the actual nonzero coefficient flag of the returned norm. Its conclusion uses the actual computed degree. [The reconstruction theorem](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianNormFiniteZeroBound.lean) derives bounded literal coefficient equality at every group prefix before applying the nonzero flag. Its two bounded inductions first transfer factors within one fiber and then reconstruct the product across the original groups. Each induction runs on a quantifier-free compiled observation. Singular and ramified fibers are included through their original exact sizes. [RationalPolynomialMonicNorm](Lean/IPRADerivations/Analysis/Polynomials/RationalPolynomialMonicNorm.lean) proves the same bound for the actual original rational determinant and any distinct list of common zeros of the original monic equation and reduced polynomial. The premise is either its actual nonzero flag or a bounded nonzero rational coefficient. | [GaussianHighYNormBound](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianHighYNormBound.lean) also proves the original point bound from arbitrary input Y degree and the actual nonzero norm flag. [Stored division](Lean/IPRADerivations/Analysis/Polynomials/Elimination/GaussianBivariateMonicDivisionIdentity.lean) proves the literal coefficient identity for the computed quotient and remainder. [The completed Vandermonde product](Lean/IPRADerivations/Analysis/Polynomials/Elimination/GaussianCompletedVandermondeProduct.lean) identifies the actual fiber determinant. [RationalHighYNormBound](Lean/IPRADerivations/Analysis/RationalArithmetic/RationalHighYNormBound.lean) proves the corresponding original rational arbitrary-Y bound. [RationalPolynomialMonicHornerQuotientGaussianEmbedding](Lean/IPRADerivations/Analysis/Polynomials/RationalPolynomialMonicHornerQuotientGaussianEmbedding.lean) reconstructs the original rational evaluation from the returned quotient and remainder at arbitrary arguments. [RationalBivariateMonicDivisionIdentity](Lean/IPRADerivations/Analysis/Polynomials/Elimination/RationalBivariateMonicDivisionIdentity.lean) proves the literal stored coefficient identity for the actual original rational factor, quotient and remainder. Additional coded fields remain open. |
+| `thm:norm-degree`, [05_norm_certificates.tex](../docs/proofs/foundations/ipra_finite_demand/sections/05_norm_certificates.tex) | **Checked exact norm degree and nonvanishing for rationals and Gaussian rationals.** [GaussianSuperellipticNormDegree](Lean/IPRADerivations/Analysis/Polynomials/Elimination/GaussianSuperellipticNormDegree.lean) derives the cyclic leading term from the original retained determinant word. [RationalSuperellipticNormDegree](Lean/IPRADerivations/Analysis/Polynomials/Elimination/RationalSuperellipticNormDegree.lean) identifies the original rational determinant, flag, degree and signed leading coefficient under the same numerical and polynomial hypotheses. | Other coded fields require their own arithmetic and polynomial contracts. |
+| `cor:norm-zeros`, [05_norm_certificates.tex](../docs/proofs/foundations/ipra_finite_demand/sections/05_norm_certificates.tex) | **Checked sharp weighted point counts for rationals and Gaussian rationals.** The Gaussian theorem and [RationalSuperellipticNormDegree](Lean/IPRADerivations/Analysis/Polynomials/Elimination/RationalSuperellipticNormDegree.lean) derive the actual norm nonzero flag, consume the original distinct list satisfying `Y^m=f(X)` and `G=0`, and bound its length by the actual weighted degree. | The Gaussian proper-subspace application is checked below. The original rational proper-subspace specialization is checked below. Further coded fields remain open. |
+| `cor:norm-subspace`, [05_norm_certificates.tex](../docs/proofs/foundations/ipra_finite_demand/sections/05_norm_certificates.tex) | **Checked proper-subspace point bounds for the original rational and Gaussian-rational row spans.** [GaussianRationalOriginalSpanRank](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianRationalOriginalSpanRank.lean) proves that properness of the original span is equivalent to strict deficiency of the actual pivot count. In the full-count case the program produces coefficients of the original rows for every numerical target vector. The closed point bound consumes genuine properness, the original distinct curve points, and their per-point existential membership in the same matrix span. Its nonzero null vector, compiled polynomial and exact norm are derived. [RationalSuperellipticSubspace](Lean/IPRADerivations/Analysis/Polynomials/Elimination/RationalSuperellipticSubspace.lean) derives the bound for the original rational basis evaluation vectors and their original coefficients. It proves the equivalence of properness and computed rank deficiency using real projection and the actual rational unit vector at a free column. | [GaussianSuperellipticCoverBound](Lean/IPRADerivations/Analysis/Polynomials/Elimination/GaussianSuperellipticCoverBound.lean) proves the subsequent count for a supplied family of at most `M` proper row spans covering the original points. It uses the exact computed original membership test. [RationalOriginalSpanMembership](Lean/IPRADerivations/Analysis/RationalArithmetic/RationalOriginalSpanMembership.lean) proves the exact rational membership test and derives a rational witness on acceptance. [RationalOriginalAnnihilator](Lean/IPRADerivations/Analysis/RationalArithmetic/RationalOriginalAnnihilator.lean) computes a rational null vector of the original rows with a unit at the free column. [RationalSuperellipticCover](Lean/IPRADerivations/Analysis/Polynomials/Elimination/RationalSuperellipticCover.lean) proves the corresponding bound for supplied rational covers using the exact least membership search and the returned groups. [RationalAnnihilatorPolynomial](Lean/IPRADerivations/Analysis/Polynomials/RationalAnnihilatorPolynomial.lean) compiles original rational basis coefficients into a canonical original bivariate polynomial, with checked coefficient and evaluation transport. [RationalAnnihilatorOnSpan](Lean/IPRADerivations/Analysis/RationalArithmetic/RationalAnnihilatorOnSpan.lean) proves that this actual compiled polynomial of the computed rational annihilator vanishes on the supplied original points in the original span. [RationalSuperellipticSpanCertificate](Lean/IPRADerivations/Analysis/Polynomials/Elimination/RationalSuperellipticSpanCertificate.lean) proves the complete bound using the actual rational annihilator, its nonzero polynomial with bounded weight, and its actual rational norm. [RationalSubtupleSpan](Lean/IPRADerivations/Analysis/RationalArithmetic/RationalSubtupleSpan.lean) proves retention and preservation of properness for the mask-selected rational subtuples used to enumerate finite cover candidates. [RationalFiniteSpanCover](Lean/IPRADerivations/Analysis/RationalArithmetic/RationalFiniteSpanCover.lean) computes classifier masks for an already supplied proper-span cover and returns an equally long proper subtuple-span cover of the same rational vectors. [RationalSubspaceCoverCandidates](Lean/IPRADerivations/Analysis/RationalArithmetic/RationalSubspaceCoverCandidates.lean) gives the actual bounded enumeration with the source limit `2^(tM)` and reconstructs a candidate for a supplied family of length `M`. [RationalSubspaceCoverSearch](Lean/IPRADerivations/Analysis/RationalArithmetic/RationalSubspaceCoverSearch.lean) proves the global Boolean cover decision using the actual rank and membership predicates and the least bounded search. A supplied cover with exactly `M` members yields acceptance. [RationalPhiFeatures](Lean/IPRADerivations/Analysis/RationalArithmetic/RationalPhiFeatures.lean) constructs the exact feature tuple `(1,x,…,x^s,y)` and derives the original section equation from the computed annihilator. [RationalPhiSectionNonzero](Lean/IPRADerivations/Analysis/RationalArithmetic/RationalPhiSectionNonzero.lean) proves the point bound for the exact feature space when the annihilator has a nonzero ordinate coefficient. [RationalPhiSection](Lean/IPRADerivations/Analysis/RationalArithmetic/RationalPhiSection.lean) proves both forms of the original complete finite section bound, without a coprimality premise. [RationalCoverPadding](Lean/IPRADerivations/Analysis/RationalArithmetic/RationalCoverPadding.lean) proves the exact at-most-M global decision in positive dimension. [RationalPhiCoverBound](Lean/IPRADerivations/Analysis/RationalArithmetic/RationalPhiCoverBound.lean) derives the original curve count from that bit by applying the full source section theorem to the actual groups. Quantitative success and further coded fields remain open. |
 
 The additional displayed equation `eq:constant-loss-budget` is checked in
 [BackwardDemandBounds](Lean/IPRADerivations/Foundations/BackwardDemandBounds.lean).
@@ -61,14 +61,14 @@ initial sum and the original local observation contract.
 
 
 The equality convention (E) is now checked by
-[Analysis/AggregateEquality](Lean/IPRADerivations/Analysis/AggregateEquality.lean).
+[Analysis/AggregateEquality](Lean/IPRADerivations/Analysis/Names/AggregateEquality.lean).
 `equivalent_reflexive_closed`, `equivalent_symmetric_closed` and
 `equivalent_transitive_closed` give the exact source relation for fixed PR
 list evaluators with internal dimension and persistent numerical data.
 Four original-coordinate covers give `2e_k+6e_v`; at the actual precision
 `v=6·2^k·D(S_k,U_k)`, integer gap removal yields `2e_k` using the endpoint
 pair's own computed denominator. Equivalent aggregates now give equal actual distance names by
-[Analysis/AggregateDistanceName](Lean/IPRADerivations/Analysis/AggregateDistanceName.lean).
+[Analysis/AggregateDistanceName](Lean/IPRADerivations/Analysis/Names/AggregateDistanceName.lean).
 `fixed_names_equivalent_closed` proves the source `2e_k` comparison for
 actual `d(z,S_k)` samples. `moving_names_equivalent_closed` proves the
 unbounded equivalence of the prescribed `d(U_(k+1),S_(k+1))` names when
@@ -126,11 +126,11 @@ the original length; it is not an output field defined as that length. Group
 and slot lookups recover every original position. All lengths and indices
 are numerical, including empty and repeated-entry cases.
 
-[GaussianRationalValueEquality](Lean/IPRADerivations/Analysis/GaussianRationalValueEquality.lean)
+[GaussianRationalValueEquality](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianRationalValueEquality.lean)
 proves that native cross-product field equality is equivalent to equality of
 the actual canonical keys and to a zero rational difference. Its genuine QF
 Horner proof transports actual evaluation across field equality.
-[GaussianRationalFiberGrouping](Lean/IPRADerivations/Analysis/GaussianRationalFiberGrouping.lean)
+[GaussianRationalFiberGrouping](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianRationalFiberGrouping.lean)
 uses that exact recoder on the original x projection, so field-equal abscissae
 have exactly the same computed group even when their raw codes differ. The
 partition theorem counts original positions rather than distinct codes.
@@ -142,14 +142,14 @@ constructs the actual stored scan through m^m word codes and proves numerical
 word coverage and uniqueness for all in-range distinct tuples. Its inversion
 and parity programs include m=0 and m=1. This supplies the runtime word list
 for the determinant.
-[GaussianPolynomialDeterminantTerms](Lean/IPRADerivations/Analysis/GaussianPolynomialDeterminantTerms.lean)
+[GaussianPolynomialDeterminantTerms](Lean/IPRADerivations/Analysis/Polynomials/GaussianPolynomialDeterminantTerms.lean)
 now constructs the signed polynomial products of the actual cells M(digit_j,j),
 retaining complete coefficients. Genuine QF induction derives the independent
 scalar-product evaluation from the original square-table shape. Explicit sign
 branches select +1 for even parity and -1 for odd parity. Stored widths,
 canonicality, coefficient recurrences, empty/singleton cases and actual PR4
 fields are checked.
-[GaussianPolynomialDeterminant](Lean/IPRADerivations/Analysis/GaussianPolynomialDeterminant.lean)
+[GaussianPolynomialDeterminant](Lean/IPRADerivations/Analysis/Polynomials/GaussianPolynomialDeterminant.lean)
 now folds those signed products across the actual retained word list into a
 complete canonical polynomial. Separate genuine QF inductions prove its
 coefficient and evaluation Leibniz formulas against independently constructed
@@ -162,18 +162,18 @@ because their bounded entries agree.
 
 ## Original-row norm and actual curve fibers
 
-[GaussianPolynomialMonicNorm](Lean/IPRADerivations/Analysis/GaussianPolynomialMonicNorm.lean)
+[GaussianPolynomialMonicNorm](Lean/IPRADerivations/Analysis/Polynomials/GaussianPolynomialMonicNorm.lean)
 now composes the original polynomial multiplication matrix with the actual
 numerical determinant. It derives every nested matrix-shape condition from
 the original coefficient-row guards, returns the norm/matrix/columns/width,
 and proves literal coefficient and evaluation Leibniz. Its width bound is
 m(a+pred(m)c)+1; no exact nonzero degree is asserted. The same returned matrix
 satisfies the source curve-action equations, including zero components at an
-original common zero. [The original point root theorem](Lean/IPRADerivations/Analysis/GaussianNormFiniteZeroBound.lean)
+original common zero. [The original point root theorem](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianNormFiniteZeroBound.lean)
 uses the positive size of its actual abscissa group to derive norm zero.
 Field-value properness transports this equality to the original abscissa code.
 
-[GaussianRationalCurveFibers](Lean/IPRADerivations/Analysis/GaussianRationalCurveFibers.lean)
+[GaussianRationalCurveFibers](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianRationalCurveFibers.lean)
 constructs the actual ordinate list of every original field-x fiber. Genuine
 scalar specialization properness transports original F/G equations to its
 representative x. Original pairwise field-distinctness is the negation of
@@ -186,13 +186,13 @@ use this same partition.
 
 ## Field transport and completed fiber-matrix prerequisites
 
-[GaussianRationalFubini](Lean/IPRADerivations/Analysis/GaussianRationalFubini.lean)
+[GaussianRationalFubini](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianRationalFubini.lean)
 proves equality of separately constructed row-first and column-first field
 sums by genuine QF induction. Both counts are numerical and raw entries stay
-under actual qadd. [GaussianRationalPermutationSum](Lean/IPRADerivations/Analysis/GaussianRationalPermutationSum.lean)
+under actual qadd. [GaussianRationalPermutationSum](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianRationalPermutationSum.lean)
 uses actual delta/incidence sums to derive bounded permutation reindexing from
 local range and inverse facts, including empty domains and raw inputs.
-[GaussianRationalFiniteProduct](Lean/IPRADerivations/Analysis/GaussianRationalFiniteProduct.lean)
+[GaussianRationalFiniteProduct](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianRationalFiniteProduct.lean)
 constructs actual qone/qmul folds and derives numerical splits and bounded
 entry congruence; a raw singleton is its canonical recode.
 
@@ -203,10 +203,10 @@ balance, distinct-adjacent odd-count relation and retained parity flip. Its
 word-code horizon guard remains separate from the bare tuple checker. Actual
 retained words derive the needed bounds and distinctness internally.
 Actual Gaussian signing and same-scalar pair cancellation are now derived in
-[GaussianDeterminantSignTransport](Lean/IPRADerivations/Analysis/GaussianDeterminantSignTransport.lean).
+[GaussianDeterminantSignTransport](Lean/IPRADerivations/Analysis/LinearAlgebra/GaussianDeterminantSignTransport.lean).
 The raw double negative equals canonical recode; comparison with the original
 code retains its canonical guard. Actual retained ranks derive word validity.
-[GaussianRationalAdjacentProduct](Lean/IPRADerivations/Analysis/GaussianRationalAdjacentProduct.lean)
+[GaussianRationalAdjacentProduct](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianRationalAdjacentProduct.lean)
 now proves actual adjacent-factor swaps using that SAME numerical reader, and
 a genuine unconditional QF induction identifies the original determinant
 scalar fold with the actual generic evaluated-factor product. Numerical
@@ -214,7 +214,7 @@ bounds/data and raw factors remain internal. Exchanged matrix-factor matching,
 concrete retained-word field-sum reindexing and full alternation/adjugate/
 determinant algebra remain required.
 
-[GaussianRationalFiberVandermonde](Lean/IPRADerivations/Analysis/GaussianRationalFiberVandermonde.lean)
+[GaussianRationalFiberVandermonde](Lean/IPRADerivations/Analysis/Polynomials/Elimination/GaussianRationalFiberVandermonde.lean)
 now constructs the actual U/W power/completion tables, constant-polynomial WP
 and polynomial product WM. Genuine QF coefficient/evaluator fold proofs
 identify WM with the actual WP*M finite sums. Original norm and field-point
@@ -226,7 +226,7 @@ are derived below. The global multiplicity count uses the resulting local
 row-factor quotients. The explicit determinant formula for the same
 block-completed matrix is derived below.
 
-[GaussianRationalLagrangeCardinals](Lean/IPRADerivations/Analysis/GaussianRationalLagrangeCardinals.lean)
+[GaussianRationalLagrangeCardinals](Lean/IPRADerivations/Analysis/Polynomials/GaussianRationalLagrangeCardinals.lean)
 now constructs actual numerical skip/deletion lists with proved full coverage.
 A guarded QF induction on the SAME original reverse reconstruction-factor fold
 proves the denominator nonzero from original field distinction. The native
@@ -236,13 +236,13 @@ entry computation for this cardinal data. The actual PR2 and original-fiber PR4
 outputs retain the SAME generated ordinate list, selected x and exact partition;
 source point distinction and original index guards discharge the field premises.
 Singletons and empty admissible-index domains are covered. The full actual completed-matrix right inverse is now derived in
-[GaussianRationalFiberRightInverse](Lean/IPRADerivations/Analysis/GaussianRationalFiberRightInverse.lean).
+[GaussianRationalFiberRightInverse](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianRationalFiberRightInverse.lean).
 For t=length(R)<=m its actual blocks are W=[[V,C],[0,I]] and
 Z=[[N,-NC],[0,I]], with N the SAME ascending cardinal coefficient table.
 The proof derives the small V*N identity, splits the SAME m-term product,
 and cancels the actual upper-right sums by one shared triple-product Fubini
 body. The lower standard rows keep their original global coordinate r.
-[GaussianRationalMatrixFiniteSums](Lean/IPRADerivations/Analysis/GaussianRationalMatrixFiniteSums.lean)
+[GaussianRationalMatrixFiniteSums](Lean/IPRADerivations/Analysis/LinearAlgebra/GaussianRationalMatrixFiniteSums.lean)
 supplies the derived same-fold split, raw-safe delta selection, negation and
 actual scalar matrix-product producer; no matrix or sum output law is supplied.
 Original curveZeros and pointDistinct yield the actual field distinction and
@@ -250,25 +250,25 @@ t<=m for the original generated ordinate list. PR2/PR4 output identities keep
 N/C/W/Z/WZ/R/t/m, the original selected x and exact cardinal partition.
 Empty and full fibers, zero dimensions, singleton and raw ordinate codes have
 explicit guarded endpoints.
-[GaussianFiberDeterminantNonzero](Lean/IPRADerivations/Analysis/GaussianFiberDeterminantNonzero.lean)
+[GaussianFiberDeterminantNonzero](Lean/IPRADerivations/Analysis/LinearAlgebra/GaussianFiberDeterminantNonzero.lean)
 uses the actual right inverse and the scalar determinant laws to derive
 `det W · det Z = 1`. It identifies the sole coefficient of the constant
 polynomial lift with the same nonzero determinant and retains the original
-fiber data. The [triangular determinant theorem](Lean/IPRADerivations/Analysis/GaussianScalarTriangularDeterminant.lean)
+fiber data. The [triangular determinant theorem](Lean/IPRADerivations/Analysis/LinearAlgebra/GaussianScalarTriangularDeterminant.lean)
 reduces the actual scalar determinant of a field-triangular matrix to its
-actual diagonal product in either orientation. The [Newton polynomial table](Lean/IPRADerivations/Analysis/GaussianVandermondeNewtonPolynomials.lean)
+actual diagonal product in either orientation. The [Newton polynomial table](Lean/IPRADerivations/Analysis/Polynomials/Elimination/GaussianVandermondeNewtonPolynomials.lean)
 uses the same original nodes to compute the forward difference products.
-The [square Vandermonde theorem](Lean/IPRADerivations/Analysis/GaussianVandermondeNewtonMatrix.lean)
+The [square Vandermonde theorem](Lean/IPRADerivations/Analysis/Polynomials/Elimination/GaussianVandermondeNewtonMatrix.lean)
 proves the literal product for the original square power matrix. The
-[unit triangular eliminator](Lean/IPRADerivations/Analysis/GaussianVandermondeCompletionElimination.lean)
+[unit triangular eliminator](Lean/IPRADerivations/Analysis/Polynomials/Elimination/GaussianVandermondeCompletionElimination.lean)
 clears the upper-right block of the original completed matrix by actual
-multiplication. The [completed determinant theorem](Lean/IPRADerivations/Analysis/GaussianCompletedVandermondeProduct.lean)
+multiplication. The [completed determinant theorem](Lean/IPRADerivations/Analysis/Polynomials/Elimination/GaussianCompletedVandermondeProduct.lean)
 uses the extended Newton table to derive the literal forward pair product
 for that original matrix whenever the ordinate count is at most its size.
 It proves the same value for the original constant polynomial lift and
 field nonvanishing when the ordinates are distinct.
 
-[GaussianPolynomialColumnAlternation](Lean/IPRADerivations/Analysis/GaussianPolynomialColumnAlternation.lean)
+[GaussianPolynomialColumnAlternation](Lean/IPRADerivations/Analysis/Polynomials/GaussianPolynomialColumnAlternation.lean)
 now constructs the actual adjacent-column table with inactive raw-row fallback.
 It derives original-to-swapped table shape, matches the SAME determinant factor
 products using the shared word-position swap, and derives the bounded retained-rank
@@ -277,10 +277,10 @@ original/swapped determinant programs have opposite evaluations at every numeric
 query under only original shape and the adjacent-position guard. Its PR4 returns
 both original program payloads; empty and singleton inactive cases retain their
 correct evaluations.
-[GaussianPolynomialColumnCoefficients](Lean/IPRADerivations/Analysis/GaussianPolynomialColumnCoefficients.lean)
+[GaussianPolynomialColumnCoefficients](Lean/IPRADerivations/Analysis/Polynomials/GaussianPolynomialColumnCoefficients.lean)
 adds the original and swapped buffers, whose combined width is `mL+1`, and
 derives its vanishing on the actual grid from the evaluation theorem.
-[GaussianRationalFiniteGridIdentity](Lean/IPRADerivations/Analysis/GaussianRationalFiniteGridIdentity.lean)
+[GaussianRationalFiniteGridIdentity](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianRationalFiniteGridIdentity.lean)
 uses that many distinct points to force the computed zero flag and the
 zero value of every coefficient. Canonicality then gives literal negation of
 the original stored coefficients at all bounded indices. The PR4 result
@@ -288,162 +288,162 @@ retains both buffers and the original swap payload.
 
 [RuntimeWordAppend](Lean/IPRADerivations/Foundations/RuntimeWordAppend.lean)
 proves the append and bounded digit laws used by
-[GaussianRationalTupleExpansion](Lean/IPRADerivations/Analysis/GaussianRationalTupleExpansion.lean).
+[GaussianRationalTupleExpansion](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianRationalTupleExpansion.lean).
 The latter expands the product of the first `d ≤ m` Gaussian-rational row sums
 into the sum over all `m^d` words, using
-[GaussianRationalBlockSums](Lean/IPRADerivations/Analysis/GaussianRationalBlockSums.lean)
+[GaussianRationalBlockSums](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianRationalBlockSums.lean)
 to flatten the folds. The same block-sum library proves that masking by a
 fixed selector agrees with summing the indices in the actual retained list.
 [RuntimeWordSorting](Lean/IPRADerivations/Foundations/RuntimeWordSorting.lean)
 derives a computed sort using `m²+1` steps of the adjacent swap. It preserves
 the checker and produces either the identity word or a repeated adjacent
-digit. [GaussianScalarColumnSelection](Lean/IPRADerivations/Analysis/GaussianScalarColumnSelection.lean)
+digit. [GaussianScalarColumnSelection](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianScalarColumnSelection.lean)
 uses that trace to prove the signed permutation law and zero for repeated
-columns. [GaussianScalarDeterminant](Lean/IPRADerivations/Analysis/GaussianScalarDeterminant.lean)
+columns. [GaussianScalarDeterminant](Lean/IPRADerivations/Analysis/LinearAlgebra/GaussianScalarDeterminant.lean)
 derives the scalar Leibniz formula and bounded cell congruence, and
-[GaussianScalarIdentityDeterminant](Lean/IPRADerivations/Analysis/GaussianScalarIdentityDeterminant.lean)
+[GaussianScalarIdentityDeterminant](Lean/IPRADerivations/Analysis/LinearAlgebra/GaussianScalarIdentityDeterminant.lean)
 proves that the actual identity table has determinant one.
-[GaussianScalarDeterminantMultiplication](Lean/IPRADerivations/Analysis/GaussianScalarDeterminantMultiplication.lean)
+[GaussianScalarDeterminantMultiplication](Lean/IPRADerivations/Analysis/LinearAlgebra/GaussianScalarDeterminantMultiplication.lean)
 expands the true product of dot sums and uses this selection law and the
 original retained-word scan to prove scalar multiplicativity.
 
-[GaussianPolynomialScalarLeftDeterminant](Lean/IPRADerivations/Analysis/GaussianPolynomialScalarLeftDeterminant.lean)
+[GaussianPolynomialScalarLeftDeterminant](Lean/IPRADerivations/Analysis/Polynomials/GaussianPolynomialScalarLeftDeterminant.lean)
 applies the result to evaluation of the actual scalar-left polynomial product.
-The [grid comparison](Lean/IPRADerivations/Analysis/GaussianRationalGridCoefficientEquality.lean)
+The [grid comparison](Lean/IPRADerivations/Analysis/Polynomials/GaussianRationalGridCoefficientEquality.lean)
 then gives equality of its determinant coefficients with the independently
 scaled determinant coefficients, including for the original fiber product.
-[GaussianScalarDiagonalDeterminant](Lean/IPRADerivations/Analysis/GaussianScalarDiagonalDeterminant.lean)
+[GaussianScalarDiagonalDeterminant](Lean/IPRADerivations/Analysis/LinearAlgebra/GaussianScalarDiagonalDeterminant.lean)
 proves the diagonal determinant and actual row action. The constructed row
 quotients and repeated-root factor are checked separately in
-[GaussianPolynomialRowQuotient](Lean/IPRADerivations/Analysis/GaussianPolynomialRowQuotient.lean).
-[GaussianPolynomialRowFactorDeterminant](Lean/IPRADerivations/Analysis/GaussianPolynomialRowFactorDeterminant.lean)
+[GaussianPolynomialRowQuotient](Lean/IPRADerivations/Analysis/Polynomials/GaussianPolynomialRowQuotient.lean).
+[GaussianPolynomialRowFactorDeterminant](Lean/IPRADerivations/Analysis/Polynomials/GaussianPolynomialRowFactorDeterminant.lean)
 composes the row quotients with the actual scalar diagonal action and
 finite grid coefficient comparison. It proves the factor identity at
 every stored coefficient after padding. The
-[original fiber quotient](Lean/IPRADerivations/Analysis/GaussianNormFiberDivisibility.lean)
+[original fiber quotient](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianNormFiberDivisibility.lean)
 then uses `det W · det Z = 1` to transfer that factor identity to
 the original returned norm. It takes the original norm input and source
 point predicates, and preserves the exact fiber count and partition.
 
-[Linear cancellation](Lean/IPRADerivations/Analysis/GaussianRationalLinearCancellation.lean)
-and [fixed-width synthetic division](Lean/IPRADerivations/Analysis/GaussianRationalFixedWidthStrip.lean)
+[Linear cancellation](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianRationalLinearCancellation.lean)
+and [fixed-width synthetic division](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianRationalFixedWidthStrip.lean)
 give the next steps for separating factors of different abscissae.
-The [superelliptic rows](Lean/IPRADerivations/Analysis/GaussianSuperellipticTail.lean)
+The [superelliptic rows](Lean/IPRADerivations/Analysis/Polynomials/Elimination/GaussianSuperellipticTail.lean)
 give the exact original curve equation, and the
-[weighted maximum](Lean/IPRADerivations/Analysis/GaussianPolynomialWeightedDegree.lean)
+[weighted maximum](Lean/IPRADerivations/Analysis/Polynomials/GaussianPolynomialWeightedDegree.lean)
 uses the original nonzero rows and computed degrees.
 The [cyclic word and wraps](Lean/IPRADerivations/Foundations/RuntimeCyclicPermutation.lean)
 and [digit sum](Lean/IPRADerivations/Foundations/RuntimePermutationDigitSum.lean)
 supply numerical permutation facts for the weighted proof. The
-[original companion matrix entries](Lean/IPRADerivations/Analysis/GaussianSuperellipticMatrixEntries.lean)
+[original companion matrix entries](Lean/IPRADerivations/Analysis/Polynomials/Elimination/GaussianSuperellipticMatrixEntries.lean)
 now have the evaluated rotation and wrap-power formula, with the inverse
 index tied to the original matrix slots. The
-[matching stored coefficient law](Lean/IPRADerivations/Analysis/GaussianSuperellipticMatrixCoefficients.lean)
+[matching stored coefficient law](Lean/IPRADerivations/Analysis/Polynomials/Elimination/GaussianSuperellipticMatrixCoefficients.lean)
 reflects the evaluated identity at a finite grid and identifies the actual
 padded cell and its tighter unpadded buffer. The
-[original cell leading law](Lean/IPRADerivations/Analysis/GaussianSuperellipticMatrixLeading.lean)
+[original cell leading law](Lean/IPRADerivations/Analysis/Polynomials/Elimination/GaussianSuperellipticMatrixLeading.lean)
 identifies its computed degree and leading coefficient in both wrap cases.
 A zero row gives a zero cell independently of the flag of `f`. For nonzero
 `f`, the cell and selected row have the same computed nonzero flag. The
-[power-product law](Lean/IPRADerivations/Analysis/GaussianRationalPowerProduct.lean)
+[power-product law](Lean/IPRADerivations/Analysis/RationalArithmetic/Powers/GaussianRationalPowerProduct.lean)
 gives an exact finite product for a common leading base and summed exponents.
 The [permutation sum law](Lean/IPRADerivations/Foundations/RuntimePermutationSums.lean)
 reindexes an arbitrary fixed numerical body along the actual retained word.
-[Actual determinant term degrees](Lean/IPRADerivations/Analysis/GaussianPolynomialDeterminantTermDegree.lean)
+[Actual determinant term degrees](Lean/IPRADerivations/Analysis/Polynomials/GaussianPolynomialDeterminantTermDegree.lean)
 derive the zero and nonzero branches of every existing stage and signed
 term. The computed degree is the sum of the degrees of the actual factors,
 and the leading coefficient uses their actual leading product and sign.
-[Leading coefficient selection](Lean/IPRADerivations/Analysis/GaussianPolynomialDeterminantLeadingSelection.lean)
+[Leading coefficient selection](Lean/IPRADerivations/Analysis/Polynomials/GaussianPolynomialDeterminantLeadingSelection.lean)
 uses the original signed coefficient sum. Once its earlier terms vanish
 and the selected slot has a single nonzero contributor, the actual scan
 returns the first slot, degree and leading value. The
-[actual word weights](Lean/IPRADerivations/Analysis/GaussianSuperellipticWordWeights.lean)
+[actual word weights](Lean/IPRADerivations/Analysis/Polynomials/Elimination/GaussianSuperellipticWordWeights.lean)
 derive strict degree away from the retained cyclic term. The
-[term bridge](Lean/IPRADerivations/Analysis/GaussianSuperellipticWordTerms.lean)
+[term bridge](Lean/IPRADerivations/Analysis/Polynomials/Elimination/GaussianSuperellipticWordTerms.lean)
 transfers these weights to the existing determinant stages, and the
-[cyclic leading product](Lean/IPRADerivations/Analysis/GaussianSuperellipticCyclicLeading.lean)
+[cyclic leading product](Lean/IPRADerivations/Analysis/Polynomials/Elimination/GaussianSuperellipticCyclicLeading.lean)
 computes the actual leading value with the exact wrap count. The
-[original norm theorem](Lean/IPRADerivations/Analysis/GaussianSuperellipticNormDegree.lean)
+[original norm theorem](Lean/IPRADerivations/Analysis/Polynomials/Elimination/GaussianSuperellipticNormDegree.lean)
 combines these laws with the
-[degree dominance criterion](Lean/IPRADerivations/Analysis/GaussianPolynomialDeterminantDegreeDominance.lean)
+[degree dominance criterion](Lean/IPRADerivations/Analysis/Polynomials/GaussianPolynomialDeterminantDegreeDominance.lean)
 to derive the original flag, exact degree, signed leading coefficient and
 finite weighted point bound.
 
-The [grouped factor product](Lean/IPRADerivations/Analysis/GaussianNormGroupFactorProduct.lean)
+The [grouped factor product](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianNormGroupFactorProduct.lean)
 is monic of computed degree equal to the original prefix sum of fiber
 sizes. At completion the sum is the length of the original point list.
 Field-value distinction of the original abscissae proves that the prefix
 product does not vanish at the next abscissa. The
-[padded factorization degree law](Lean/IPRADerivations/Analysis/GaussianRationalPaddedProductDegree.lean)
+[padded factorization degree law](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianRationalPaddedProductDegree.lean)
 proves that a coefficient reconstruction of a nonzero padded norm yields
 nonzero factors and the exact degree sum. The
-[actual block transfer](Lean/IPRADerivations/Analysis/GaussianRationalBlockFactorTransfer.lean)
+[actual block transfer](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianRationalBlockFactorTransfer.lean)
 uses one initial finite coefficient comparison to derive the intermediate
 root and cancellation at each stripping step. The
-[original finite norm bound](Lean/IPRADerivations/Analysis/GaussianNormFiniteZeroBound.lean)
+[original finite norm bound](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianNormFiniteZeroBound.lean)
 applies this transfer through the original group count and identifies the
 sum of all removed multiplicities with the length of the input point list.
 
 For the subspace construction, the
-[bivariate power expansion](Lean/IPRADerivations/Analysis/GaussianBivariatePowerExpansion.lean)
+[bivariate power expansion](Lean/IPRADerivations/Analysis/Polynomials/Elimination/GaussianBivariatePowerExpansion.lean)
 identifies the original evaluator with an actual nested finite sum in the
 ascending exponents. It reads the original descending storage slots in
 both coordinates. The
-[actual weighted basis](Lean/IPRADerivations/Analysis/GaussianWeightedMonomialBasis.lean)
+[actual weighted basis](Lean/IPRADerivations/Analysis/Inequalities/GaussianWeightedMonomialBasis.lean)
 enumerates the original admissible pairs in lexicographic order. Its
 returned evaluation vector uses precisely those pairs. The
-[rectangular pivot operation](Lean/IPRADerivations/Analysis/GaussianRationalRowElimination.lean)
+[rectangular pivot operation](Lean/IPRADerivations/Analysis/Polynomials/Elimination/GaussianRationalRowElimination.lean)
 normalizes a nonzero source pivot, eliminates its column and preserves
 the original homogeneous row equations in both directions. The
-[flat bivariate sum](Lean/IPRADerivations/Analysis/GaussianBivariateFlatSum.lean)
+[flat bivariate sum](Lean/IPRADerivations/Analysis/Polynomials/Elimination/GaussianBivariateFlatSum.lean)
 uses the basis quotient and remainder labels. The
-[polynomial compiler](Lean/IPRADerivations/Analysis/GaussianAnnihilatorPolynomial.lean)
+[polynomial compiler](Lean/IPRADerivations/Analysis/Polynomials/GaussianAnnihilatorPolynomial.lean)
 stores the input coefficients at their actual retained ranks and derives
 the weighted bound and nonvanishing from the finite input witness. The
-[evaluation identity](Lean/IPRADerivations/Analysis/GaussianAnnihilatorPolynomialEvaluation.lean)
+[evaluation identity](Lean/IPRADerivations/Analysis/Polynomials/GaussianAnnihilatorPolynomialEvaluation.lean)
 filters the full sum by the original basis predicate and derives the exact
 row dot product. The
-[actual row-combination theorem](Lean/IPRADerivations/Analysis/GaussianRationalRowSpan.lean)
+[actual row-combination theorem](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianRationalRowSpan.lean)
 uses finite sum interchange to carry null row equations to any supplied
 span membership certified by coordinate value equality. The
-[subspace bound](Lean/IPRADerivations/Analysis/GaussianSuperellipticSubspaceFromSpan.lean)
+[subspace bound](Lean/IPRADerivations/Analysis/Polynomials/Elimination/GaussianSuperellipticSubspaceFromSpan.lean)
 uses each point’s existential coefficient witness to derive its zero
 equation and applies the exact norm bound to the same compiled polynomial.
-The [pivot search](Lean/IPRADerivations/Analysis/GaussianRationalPivotSearch.lean)
+The [pivot search](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianRationalPivotSearch.lean)
 chooses the least available row with a nonzero field entry, or derives
 field-zero entries for all available rows on failure. The
-[elimination loop](Lean/IPRADerivations/Analysis/GaussianRationalEliminationLoop.lean)
+[elimination loop](Lean/IPRADerivations/Analysis/Polynomials/Elimination/GaussianRationalEliminationLoop.lean)
 computes the full rectangular update and its tag history, preserving the
 original homogeneous equations. The
-[tag profile](Lean/IPRADerivations/Analysis/GaussianRationalEliminationTagProfile.lean)
+[tag profile](Lean/IPRADerivations/Analysis/Polynomials/Elimination/GaussianRationalEliminationTagProfile.lean)
 shows that bounded pivot rows have unique tags and provides their actual
 column lookup. The
-[unmarked-row invariant](Lean/IPRADerivations/Analysis/GaussianRationalEliminationUnmarkedRows.lean)
+[unmarked-row invariant](Lean/IPRADerivations/Analysis/Polynomials/Elimination/GaussianRationalEliminationUnmarkedRows.lean)
 makes every processed entry of an unmarked row field-zero. The
-[pivot history count](Lean/IPRADerivations/Analysis/GaussianRationalPivotHistoryCount.lean)
+[pivot history count](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianRationalPivotHistoryCount.lean)
 computes the least free column from strict count deficiency. The
-[free-column vector](Lean/IPRADerivations/Analysis/GaussianRationalFreeColumnVector.lean)
-has a unit at that column. The [pivot column invariant](Lean/IPRADerivations/Analysis/GaussianRationalEliminationPivotColumns.lean)
+[free-column vector](Lean/IPRADerivations/Analysis/LinearAlgebra/GaussianRationalFreeColumnVector.lean)
+has a unit at that column. The [pivot column invariant](Lean/IPRADerivations/Analysis/Polynomials/Elimination/GaussianRationalEliminationPivotColumns.lean)
 derives the exact field unit and zeros for every computed pivot column.
-The [annihilator program](Lean/IPRADerivations/Analysis/GaussianRationalAnnihilatorVector.lean)
+The [annihilator program](Lean/IPRADerivations/Analysis/LinearAlgebra/GaussianRationalAnnihilatorVector.lean)
 uses these equations and the unmarked rows to prove that the same
 nonzero vector solves the reduced system. The full elimination loop
 transfers that vector back to the original homogeneous system. The
-[closed subspace bound](Lean/IPRADerivations/Analysis/GaussianSuperellipticSubspaceTheorem.lean)
+[closed subspace bound](Lean/IPRADerivations/Analysis/Polynomials/Elimination/GaussianSuperellipticSubspaceTheorem.lean)
 applies the supplied-vector theorem to this actual output. The
-[rank deficiency criterion](Lean/IPRADerivations/Analysis/GaussianRationalRankNullityCriterion.lean)
+[rank deficiency criterion](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianRationalRankNullityCriterion.lean)
 proves equivalence between strict deficiency and a nonzero null vector of
 the original matrix. The
-[proper-span witness](Lean/IPRADerivations/Analysis/GaussianRationalProperSpanWitness.lean)
+[proper-span witness](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianRationalProperSpanWitness.lean)
 produces a unit vector outside the original row span in the deficient case.
 When every column has a pivot, the
-[reduced span theorem](Lean/IPRADerivations/Analysis/GaussianRationalFullReducedSpan.lean)
+[reduced span theorem](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianRationalFullReducedSpan.lean)
 computes coefficients representing any supplied target vector in the
-reduced rows. The [one-pivot transport](Lean/IPRADerivations/Analysis/GaussianRationalRowSpanPivotTransfer.lean)
+reduced rows. The [one-pivot transport](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianRationalRowSpanPivotTransfer.lean)
 derives the actual coefficient correction for the original rows. The
-[backward recursion](Lean/IPRADerivations/Analysis/GaussianRationalRowSpanRewind.lean)
+[backward recursion](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianRationalRowSpanRewind.lean)
 keeps each represented coordinate fixed as it revisits the numerical
-column history. Finally, the [original-span criterion](Lean/IPRADerivations/Analysis/GaussianRationalOriginalSpanRank.lean)
+column history. Finally, the [original-span criterion](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianRationalOriginalSpanRank.lean)
 identifies properness of the original span with strict deficiency and
 applies this criterion to the original point bound.
 
@@ -454,103 +454,103 @@ actual group sizes is the original length. If every group has size at
 most the cutoff, the original length is at most the number of groups
 times that cutoff.
 
-[Forward row-span transport](Lean/IPRADerivations/Analysis/GaussianRationalRowSpanForward.lean)
+[Forward row-span transport](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianRationalRowSpanForward.lean)
 computes coefficient lists for the same elimination steps. The
-[reduced-span test](Lean/IPRADerivations/Analysis/GaussianRationalReducedSpanMembership.lean)
+[reduced-span test](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianRationalReducedSpanMembership.lean)
 checks the candidate coefficients at all original columns. The
-[original-span test](Lean/IPRADerivations/Analysis/GaussianRationalOriginalSpanMembership.lean)
+[original-span test](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianRationalOriginalSpanMembership.lean)
 reflects actual existential membership in the original rows. The
-[cover membership adapter](Lean/IPRADerivations/Analysis/GaussianSuperellipticCoverMembership.lean)
+[cover membership adapter](Lean/IPRADerivations/Analysis/Polynomials/Elimination/GaussianSuperellipticCoverMembership.lean)
 uses this test on the original monomial evaluation vectors. Each actual
 group inherits the original curve equation, field distinctness and span
-membership, so the [closed covering theorem](Lean/IPRADerivations/Analysis/GaussianSuperellipticCoverBound.lean)
+membership, so the [closed covering theorem](Lean/IPRADerivations/Analysis/Polynomials/Elimination/GaussianSuperellipticCoverBound.lean)
 derives the sharp count from the supplied finite family and cover.
 
-[Polynomial Y shift](Lean/IPRADerivations/Analysis/GaussianPolynomialYShift.lean)
+[Polynomial Y shift](Lean/IPRADerivations/Analysis/Polynomials/GaussianPolynomialYShift.lean)
 pads the original rows and appends one polynomial-zero row.
-[Constant injection](Lean/IPRADerivations/Analysis/GaussianPolynomialConstantInjection.lean)
+[Constant injection](Lean/IPRADerivations/Analysis/Polynomials/GaussianPolynomialConstantInjection.lean)
 adds the original incoming X polynomial to the constant Y row.
-The [monic remainder fold](Lean/IPRADerivations/Analysis/GaussianPolynomialMonicHornerReduction.lean)
+The [monic remainder fold](Lean/IPRADerivations/Analysis/Polynomials/GaussianPolynomialMonicHornerReduction.lean)
 uses these coefficient operations and the actual companion to reduce all
-original Y rows. The [quotient fold](Lean/IPRADerivations/Analysis/GaussianPolynomialMonicHornerQuotient.lean)
+original Y rows. The [quotient fold](Lean/IPRADerivations/Analysis/Polynomials/GaussianPolynomialMonicHornerQuotient.lean)
 uses the top row of the same remainder and derives reconstruction at
 arbitrary numerical X and Y queries. The
-[rectangular grid theorem](Lean/IPRADerivations/Analysis/GaussianBivariateGridCoefficients.lean)
+[rectangular grid theorem](Lean/IPRADerivations/Analysis/Polynomials/Elimination/GaussianBivariateGridCoefficients.lean)
 identifies stored coefficients from exact agreement on a rectangular grid.
-[Rectangular buffers](Lean/IPRADerivations/Analysis/GaussianBivariatePolynomialBuffers.lean)
+[Rectangular buffers](Lean/IPRADerivations/Analysis/Polynomials/Elimination/GaussianBivariatePolynomialBuffers.lean)
 implement literal padding and addition with exact evaluator laws. The
-[full monic table](Lean/IPRADerivations/Analysis/GaussianBivariateMonicFactor.lean)
-and [bivariate convolution](Lean/IPRADerivations/Analysis/GaussianBivariatePolynomialProduct.lean)
+[full monic table](Lean/IPRADerivations/Analysis/Polynomials/Elimination/GaussianBivariateMonicFactor.lean)
+and [bivariate convolution](Lean/IPRADerivations/Analysis/Polynomials/Elimination/GaussianBivariatePolynomialProduct.lean)
 compute the actual product of the monic factor and quotient. The
-[closed coefficient identity](Lean/IPRADerivations/Analysis/GaussianBivariateMonicDivisionIdentity.lean)
+[closed coefficient identity](Lean/IPRADerivations/Analysis/Polynomials/Elimination/GaussianBivariateMonicDivisionIdentity.lean)
 proves equality of each stored coefficient of the padded original input
 and the computed product plus remainder. Its only source guards are
 positive monic Y degree and the original row widths.
-The [high-Y norm bound](Lean/IPRADerivations/Analysis/GaussianHighYNormBound.lean)
+The [high-Y norm bound](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianHighYNormBound.lean)
 uses the computed remainder and the original common zeros to give the
 sharp finite point count when the actual norm is nonzero.
 
 ## Characteristic coefficients and rational field transport
 
-[GaussianRationalCharacteristicPolynomial](Lean/IPRADerivations/Analysis/GaussianRationalCharacteristicPolynomial.lean)
+[GaussianRationalCharacteristicPolynomial](Lean/IPRADerivations/Analysis/Polynomials/GaussianRationalCharacteristicPolynomial.lean)
 computes the characteristic polynomial of an actual Gaussian-rational
 matrix with numerical dimension. It proves the literal leading coefficient
 one and identifies every evaluation with the actual scalar determinant of
-`X I - A`. [GaussianRationalConvolutionNorm](Lean/IPRADerivations/Analysis/GaussianRationalConvolutionNorm.lean)
+`X I - A`. [GaussianRationalConvolutionNorm](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianRationalConvolutionNorm.lean)
 proves the coefficient L1 product estimate for the stored convolution.
-[GaussianPolynomialConvolutionDifference](Lean/IPRADerivations/Analysis/GaussianPolynomialConvolutionDifference.lean)
+[GaussianPolynomialConvolutionDifference](Lean/IPRADerivations/Analysis/Polynomials/GaussianPolynomialConvolutionDifference.lean)
 gives the corresponding perturbation bound for the actual two products.
 [RuntimePermutationFactorialBound](Lean/IPRADerivations/Foundations/RuntimePermutationFactorialBound.lean)
 bounds the retained word count by `n!` through maximum deletion and
 an injection into the smaller enumerator.
-[GaussianPolynomialDeterminantStageNorm](Lean/IPRADerivations/Analysis/GaussianPolynomialDeterminantStageNorm.lean)
+[GaussianPolynomialDeterminantStageNorm](Lean/IPRADerivations/Analysis/Polynomials/GaussianPolynomialDeterminantStageNorm.lean)
 follows the actual word-product stage and proves the power bound.
-[GaussianPolynomialDeterminantNorm](Lean/IPRADerivations/Analysis/GaussianPolynomialDeterminantNorm.lean)
+[GaussianPolynomialDeterminantNorm](Lean/IPRADerivations/Analysis/Polynomials/GaussianPolynomialDeterminantNorm.lean)
 sums those signed-word bounds using the retained count.
-[GaussianCharacteristicEntryNorm](Lean/IPRADerivations/Analysis/GaussianCharacteristicEntryNorm.lean)
+[GaussianCharacteristicEntryNorm](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianCharacteristicEntryNorm.lean)
 computes the coefficient bounds for the original two-coefficient entries
 and their differences from the Euclidean bounds on the input entries.
-[GaussianPolynomialDeterminantStageError](Lean/IPRADerivations/Analysis/GaussianPolynomialDeterminantStageError.lean)
+[GaussianPolynomialDeterminantStageError](Lean/IPRADerivations/Analysis/Polynomials/GaussianPolynomialDeterminantStageError.lean)
 proves the exact word error recurrence through the actual convolution.
-[GaussianPolynomialDeterminantError](Lean/IPRADerivations/Analysis/GaussianPolynomialDeterminantError.lean)
+[GaussianPolynomialDeterminantError](Lean/IPRADerivations/Analysis/Polynomials/GaussianPolynomialDeterminantError.lean)
 then bounds the difference of the actual retained sums.
-[GaussianCharacteristicMagnitude](Lean/IPRADerivations/Analysis/GaussianCharacteristicMagnitude.lean)
-and [GaussianCharacteristicSensitivity](Lean/IPRADerivations/Analysis/GaussianCharacteristicSensitivity.lean)
+[GaussianCharacteristicMagnitude](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianCharacteristicMagnitude.lean)
+and [GaussianCharacteristicSensitivity](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianCharacteristicSensitivity.lean)
 derive the exact source constants `A=2^n n!(B+1)^n` and
 `C=2^n n! n(B+1)^(n−1)` for each computed coefficient in the Euclidean
 metric, using the original entry modulus and pairwise distance bounds.
 Both results also apply to each coefficient returned by the actual PR2
-characteristic program. [GaussianMatrixNames](Lean/IPRADerivations/Analysis/GaussianMatrixNames.lean)
+characteristic program. [GaussianMatrixNames](Lean/IPRADerivations/Analysis/LinearAlgebra/GaussianMatrixNames.lean)
 constructs the original square sample tables from a fixed PR4 entry
 program and its Euclidean regularity. It computes a valid uniform bound
 as one plus the sum of the existing integer row bounds.
-[GaussianCharacteristicPrecisionShift](Lean/IPRADerivations/Analysis/GaussianCharacteristicPrecisionShift.lean)
+[GaussianCharacteristicPrecisionShift](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianCharacteristicPrecisionShift.lean)
 chooses the least shift `c` with `C≤2^c`.
-[GaussianCharacteristicNames](Lean/IPRADerivations/Analysis/GaussianCharacteristicNames.lean)
+[GaussianCharacteristicNames](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianCharacteristicNames.lean)
 then proves the regular lower-coefficient name contract for the actual
 characteristic samples at entry precision `s+c`, and proves the exact
-leading coefficient. [GaussianCharacteristicRootSupport](Lean/IPRADerivations/Analysis/GaussianCharacteristicRootSupport.lean)
+leading coefficient. [GaussianCharacteristicRootSupport](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianCharacteristicRootSupport.lean)
 applies the existing concrete monic root-support and adequacy theorems
 to this actual coefficient program. It gives the computed disk, dyadic
 cover, and named-root characterization. It also identifies every stored
 coefficient of the root-stage polynomial with the actual characteristic
 output at the computed matrix sampling precision.
-[GaussianRationalModulus](Lean/IPRADerivations/Analysis/GaussianRationalModulus.lean)
+[GaussianRationalModulus](Lean/IPRADerivations/Analysis/Names/Rates/GaussianRationalModulus.lean)
 gives an actual dyadic-width modulus sampler and Euclidean variation
-bound. [GaussianCoordinateRadius](Lean/IPRADerivations/Analysis/GaussianCoordinateRadius.lean)
+bound. [GaussianCoordinateRadius](Lean/IPRADerivations/Analysis/RationalArithmetic/Complex/GaussianCoordinateRadius.lean)
 proves the same-radius comparison on each real and imaginary coordinate.
-[GaussianModulusAggregateMap](Lean/IPRADerivations/Analysis/GaussianModulusAggregateMap.lean)
+[GaussianModulusAggregateMap](Lean/IPRADerivations/Analysis/Names/Rates/GaussianModulusAggregateMap.lean)
 gives the converse bound with factor two and proves the actual
 sup-coordinate modulus evaluator satisfies the exact aggregate map
-contract. [GaussianRootSynchronizedHit](Lean/IPRADerivations/Analysis/GaussianRootSynchronizedHit.lean)
+contract. [GaussianRootSynchronizedHit](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianRootSynchronizedHit.lean)
 proves that every original represented root has an actual finite hit at
 the same root stage, with the exact dyadic radius needed for support.
-[GaussianAggregateCoverTransport](Lean/IPRADerivations/Analysis/GaussianAggregateCoverTransport.lean)
+[GaussianAggregateCoverTransport](Lean/IPRADerivations/Analysis/Names/GaussianAggregateCoverTransport.lean)
 preserves stored root indices and passes the original two-sided covers to
-the coordinate metric. [GaussianCharacteristicAggregate](Lean/IPRADerivations/Analysis/GaussianCharacteristicAggregate.lean)
+the coordinate metric. [GaussianCharacteristicAggregate](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianCharacteristicAggregate.lean)
 proves that these actual stages form a shaped, nonempty regular aggregate.
 Every represented characteristic root has zero distance to it.
-[GaussianSpectralRadius](Lean/IPRADerivations/Analysis/GaussianSpectralRadius.lean)
+[GaussianSpectralRadius](Lean/IPRADerivations/Analysis/LinearAlgebra/GaussianSpectralRadius.lean)
 then proves the spectral-radius construction of
 [§3](../docs/proofs/foundations/ipra_finite_demand/sections/03_aggregates.tex).
 Its PR3 sample is literally the maximum modulus sample of a stored root
@@ -558,12 +558,12 @@ at stage `k+2`. The derived dyadic bounds give regularity, arbitrarily
 accurate aggregate witnesses, and a named upper bound on every
 represented root. The same upper bound holds for actual characteristic
 polynomial-name zeros under the original adequacy disk hypotheses.
-[GaussianCharacteristicAggregateDecoding](Lean/IPRADerivations/Analysis/GaussianCharacteristicAggregateDecoding.lean)
+[GaussianCharacteristicAggregateDecoding](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianCharacteristicAggregateDecoding.lean)
 proves that any regular two-coordinate stream supported by these actual
 stages decodes to an original represented characteristic root. The
 decoded point samples use one extra coordinate precision, and stage
 `k+2` supplies the original Gaussian distance cut at precision `k`.
-[GaussianSpectralRootWitness](Lean/IPRADerivations/Analysis/GaussianSpectralRootWitness.lean)
+[GaussianSpectralRootWitness](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianSpectralRootWitness.lean)
 computes a Gaussian root name separately for each requested accuracy.
 The finite maximizer seeds the actual nearest-neighbor chain. The
 decoded name has an original characteristic root membership proof
@@ -572,117 +572,117 @@ sample and that sample's actual modulus approximation. At precisions
 `t` and `l` the radius sample exceeds this witness's modulus sample
 by at most `2^-k + 2^-t + 2^-l`.
 
-[RationalGaussianEmbedding](Lean/IPRADerivations/Analysis/RationalGaussianEmbedding.lean)
+[RationalGaussianEmbedding](Lean/IPRADerivations/Analysis/RationalArithmetic/RationalGaussianEmbedding.lean)
 preserves field equality, zero, one, addition, multiplication and negation
 from the original scalar rational codes. Its real-axis round trip uses
-canonical recoding. [RationalPolynomialGaussianEmbedding](Lean/IPRADerivations/Analysis/RationalPolynomialGaussianEmbedding.lean)
+canonical recoding. [RationalPolynomialGaussianEmbedding](Lean/IPRADerivations/Analysis/Polynomials/RationalPolynomialGaussianEmbedding.lean)
 constructs the actual mapped coefficient list and proves that the actual
 rational Horner calculation embeds into Gaussian Horner. This also gives
 zero reflection and the evaluation formula at arbitrary raw real-axis
-queries. [RationalGaussianRealPart](Lean/IPRADerivations/Analysis/RationalGaussianRealPart.lean)
-and [RationalRowSpanGaussianEmbedding](Lean/IPRADerivations/Analysis/RationalRowSpanGaussianEmbedding.lean)
+queries. [RationalGaussianRealPart](Lean/IPRADerivations/Analysis/RationalArithmetic/RationalGaussianRealPart.lean)
+and [RationalRowSpanGaussianEmbedding](Lean/IPRADerivations/Analysis/RationalArithmetic/RationalRowSpanGaussianEmbedding.lean)
 now transport original rational row-span membership through the actual
 rectangular embedding. Every Gaussian witness yields a rational witness
 by taking real parts.
-[RationalScalarDeterminantGaussianEmbedding](Lean/IPRADerivations/Analysis/RationalScalarDeterminantGaussianEmbedding.lean)
+[RationalScalarDeterminantGaussianEmbedding](Lean/IPRADerivations/Analysis/LinearAlgebra/RationalScalarDeterminantGaussianEmbedding.lean)
 identifies the literal original rational scalar determinant with the
 actual Gaussian determinant of the embedded matrix and reflects zero.
-[RationalPolynomialBuffersGaussianEmbedding](Lean/IPRADerivations/Analysis/RationalPolynomialBuffersGaussianEmbedding.lean)
-and [RationalPolynomialProductGaussianEmbedding](Lean/IPRADerivations/Analysis/RationalPolynomialProductGaussianEmbedding.lean)
+[RationalPolynomialBuffersGaussianEmbedding](Lean/IPRADerivations/Analysis/Polynomials/RationalPolynomialBuffersGaussianEmbedding.lean)
+and [RationalPolynomialProductGaussianEmbedding](Lean/IPRADerivations/Analysis/Polynomials/RationalPolynomialProductGaussianEmbedding.lean)
 compute the original rational zero, padding, addition, scaling, and
 convolution buffers. They prove the actual coefficient conjugacy and
 corresponding canonical rational evaluation laws.
-[RationalBivariateGaussianEmbedding](Lean/IPRADerivations/Analysis/RationalBivariateGaussianEmbedding.lean)
+[RationalBivariateGaussianEmbedding](Lean/IPRADerivations/Analysis/Polynomials/Elimination/RationalBivariateGaussianEmbedding.lean)
 transports original rational bivariate and monic Horner evaluation.
-[RationalCurvePointsGaussianEmbedding](Lean/IPRADerivations/Analysis/RationalCurvePointsGaussianEmbedding.lean)
+[RationalCurvePointsGaussianEmbedding](Lean/IPRADerivations/Analysis/RationalArithmetic/RationalCurvePointsGaussianEmbedding.lean)
 maps every original point index and derives the Gaussian common-zero
 hypotheses from rational distinctness and both original zero tests.
-[RationalPolynomialDeterminantTermsGaussianEmbedding](Lean/IPRADerivations/Analysis/RationalPolynomialDeterminantTermsGaussianEmbedding.lean)
-and [RationalPolynomialDeterminantGaussianEmbedding](Lean/IPRADerivations/Analysis/RationalPolynomialDeterminantGaussianEmbedding.lean)
+[RationalPolynomialDeterminantTermsGaussianEmbedding](Lean/IPRADerivations/Analysis/Polynomials/RationalPolynomialDeterminantTermsGaussianEmbedding.lean)
+and [RationalPolynomialDeterminantGaussianEmbedding](Lean/IPRADerivations/Analysis/Polynomials/RationalPolynomialDeterminantGaussianEmbedding.lean)
 transport the actual signed polynomial products and the retained
-determinant sum. [RationalPolynomialDegreeGaussianEmbedding](Lean/IPRADerivations/Analysis/RationalPolynomialDegreeGaussianEmbedding.lean)
+determinant sum. [RationalPolynomialDegreeGaussianEmbedding](Lean/IPRADerivations/Analysis/Polynomials/RationalPolynomialDegreeGaussianEmbedding.lean)
 shows that coefficient embedding preserves the actual nonzero flag and
 computed degree.
-[GaussianPolynomialDeterminantCongruence](Lean/IPRADerivations/Analysis/GaussianPolynomialDeterminantCongruence.lean)
+[GaussianPolynomialDeterminantCongruence](Lean/IPRADerivations/Analysis/Polynomials/GaussianPolynomialDeterminantCongruence.lean)
 compares the actual determinant whenever its two numerical coefficient
 tables agree at the protected indices.
-[RationalPolynomialDeterminantTransport](Lean/IPRADerivations/Analysis/RationalPolynomialDeterminantTransport.lean)
+[RationalPolynomialDeterminantTransport](Lean/IPRADerivations/Analysis/Polynomials/RationalPolynomialDeterminantTransport.lean)
 uses this comparison to transfer the original rational polynomial,
 evaluation, nonzero flag, and degree to any Gaussian table whose bounded
 cells agree after embedding.
-[RationalPolynomialMonicCompanionGaussianEmbedding](Lean/IPRADerivations/Analysis/RationalPolynomialMonicCompanionGaussianEmbedding.lean)
+[RationalPolynomialMonicCompanionGaussianEmbedding](Lean/IPRADerivations/Analysis/Polynomials/RationalPolynomialMonicCompanionGaussianEmbedding.lean)
 constructs an actual original rational companion step with the derived
 row widths and embedded coefficients.
-[RationalPolynomialMultiplicationMatrixGaussianEmbedding](Lean/IPRADerivations/Analysis/RationalPolynomialMultiplicationMatrixGaussianEmbedding.lean)
+[RationalPolynomialMultiplicationMatrixGaussianEmbedding](Lean/IPRADerivations/Analysis/Polynomials/RationalPolynomialMultiplicationMatrixGaussianEmbedding.lean)
 iterates that step to form all actual rational columns. A guarded bounded
 induction preserves their widths and proves the coefficient transport at
 every entry of the row-major matrix.
-[RationalPolynomialMonicNorm](Lean/IPRADerivations/Analysis/RationalPolynomialMonicNorm.lean)
+[RationalPolynomialMonicNorm](Lean/IPRADerivations/Analysis/Polynomials/RationalPolynomialMonicNorm.lean)
 then transports the original rational determinant and degree of the
 actual matrix. Each original rational common-zero point is a zero of
 the computed norm, and the distinct list has length at most its degree
 whenever the computed norm is nonzero.
-[RationalPolynomialNonvanishing](Lean/IPRADerivations/Analysis/RationalPolynomialNonvanishing.lean)
+[RationalPolynomialNonvanishing](Lean/IPRADerivations/Analysis/Polynomials/RationalPolynomialNonvanishing.lean)
 identifies this nonzero flag with a bounded nonzero rational coefficient.
 The proof covers already reduced input polynomials.
-[RationalPolynomialConstantInjectionGaussianEmbedding](Lean/IPRADerivations/Analysis/RationalPolynomialConstantInjectionGaussianEmbedding.lean)
+[RationalPolynomialConstantInjectionGaussianEmbedding](Lean/IPRADerivations/Analysis/Polynomials/RationalPolynomialConstantInjectionGaussianEmbedding.lean)
 constructs the actual constant-row injection and transports its
 coefficients. The bounded row relation also transports both Horner
 folds.
-[RationalPolynomialMonicHornerReductionGaussianEmbedding](Lean/IPRADerivations/Analysis/RationalPolynomialMonicHornerReductionGaussianEmbedding.lean)
+[RationalPolynomialMonicHornerReductionGaussianEmbedding](Lean/IPRADerivations/Analysis/Polynomials/RationalPolynomialMonicHornerReductionGaussianEmbedding.lean)
 now proves the derived shape, coefficient conjugacy, and original
 evaluation law of the actual arbitrary-Y remainder. Its PR6 result
 uses the original polynomial and preserves its evaluation on the monic
-curve. [RationalHighYNormBound](Lean/IPRADerivations/Analysis/RationalHighYNormBound.lean)
+curve. [RationalHighYNormBound](Lean/IPRADerivations/Analysis/RationalArithmetic/RationalHighYNormBound.lean)
 passes that actual returned remainder into the original rational norm.
 The computed norm degree bounds the supplied distinct original common
-zeros when the norm has a nonzero rational coefficient. [RationalPolynomialMonicHornerQuotientGaussianEmbedding](Lean/IPRADerivations/Analysis/RationalPolynomialMonicHornerQuotientGaussianEmbedding.lean)
+zeros when the norm has a nonzero rational coefficient. [RationalPolynomialMonicHornerQuotientGaussianEmbedding](Lean/IPRADerivations/Analysis/Polynomials/RationalPolynomialMonicHornerQuotientGaussianEmbedding.lean)
 uses the actual rational quotient and the same returned remainder to reconstruct
 the original evaluation at arbitrary points.
-[RationalBivariatePolynomialBuffersGaussianEmbedding](Lean/IPRADerivations/Analysis/RationalBivariatePolynomialBuffersGaussianEmbedding.lean)
+[RationalBivariatePolynomialBuffersGaussianEmbedding](Lean/IPRADerivations/Analysis/Polynomials/Elimination/RationalBivariatePolynomialBuffersGaussianEmbedding.lean)
 constructs the original rational rectangular padding and addition, with
 coefficient transport and evaluation at arbitrary rational points.
-[RationalBivariatePolynomialProductGaussianEmbedding](Lean/IPRADerivations/Analysis/RationalBivariatePolynomialProductGaussianEmbedding.lean)
+[RationalBivariatePolynomialProductGaussianEmbedding](Lean/IPRADerivations/Analysis/Polynomials/Elimination/RationalBivariatePolynomialProductGaussianEmbedding.lean)
 constructs the actual original row convolution, its canonical coefficient
 identity, and its original evaluation product.
-[RationalBivariateMonicFactorGaussianEmbedding](Lean/IPRADerivations/Analysis/RationalBivariateMonicFactorGaussianEmbedding.lean)
+[RationalBivariateMonicFactorGaussianEmbedding](Lean/IPRADerivations/Analysis/Polynomials/Elimination/RationalBivariateMonicFactorGaussianEmbedding.lean)
 constructs the full original monic factor with its original evaluator.
-[RationalBivariateGridCoefficients](Lean/IPRADerivations/Analysis/RationalBivariateGridCoefficients.lean)
+[RationalBivariateGridCoefficients](Lean/IPRADerivations/Analysis/Polynomials/Elimination/RationalBivariateGridCoefficients.lean)
 derives bounded rational coefficient equality from actual original rational
 grid values, including literal equality of canonical codes.
-[RationalBivariateMonicDivisionIdentity](Lean/IPRADerivations/Analysis/RationalBivariateMonicDivisionIdentity.lean)
+[RationalBivariateMonicDivisionIdentity](Lean/IPRADerivations/Analysis/Polynomials/Elimination/RationalBivariateMonicDivisionIdentity.lean)
 uses the actual original padded buffers and their derived evaluation equality
 to prove literal stored coefficient equality of the original input and the
 computed product plus remainder.
 
-[RationalSuperellipticTail](Lean/IPRADerivations/Analysis/RationalSuperellipticTail.lean)
+[RationalSuperellipticTail](Lean/IPRADerivations/Analysis/Polynomials/Elimination/RationalSuperellipticTail.lean)
 constructs the original rational table for `Y^m - f(X)` and proves that
 its embedded table is literally the Gaussian tail. The equality uses
 the two actual sequence layouts and their bounded lookups.
-[RationalScalarPowerGaussianEmbedding](Lean/IPRADerivations/Analysis/RationalScalarPowerGaussianEmbedding.lean)
-and [RationalPolynomialLeadingGaussianEmbedding](Lean/IPRADerivations/Analysis/RationalPolynomialLeadingGaussianEmbedding.lean)
+[RationalScalarPowerGaussianEmbedding](Lean/IPRADerivations/Analysis/RationalArithmetic/Powers/RationalScalarPowerGaussianEmbedding.lean)
+and [RationalPolynomialLeadingGaussianEmbedding](Lean/IPRADerivations/Analysis/Polynomials/RationalPolynomialLeadingGaussianEmbedding.lean)
 check the original signed rational powers and the leading coefficient
 returned by the original nonzero scan.
-[RationalPolynomialWeightedDegreeGaussianEmbedding](Lean/IPRADerivations/Analysis/RationalPolynomialWeightedDegreeGaussianEmbedding.lean)
+[RationalPolynomialWeightedDegreeGaussianEmbedding](Lean/IPRADerivations/Analysis/Polynomials/RationalPolynomialWeightedDegreeGaussianEmbedding.lean)
 computes the original nonzero rows, weighted maximum, and its maximizing
 index with the same finite scan. Each agrees with its Gaussian
-counterpart. [RationalSuperellipticNormDegree](Lean/IPRADerivations/Analysis/RationalSuperellipticNormDegree.lean)
+counterpart. [RationalSuperellipticNormDegree](Lean/IPRADerivations/Analysis/Polynomials/Elimination/RationalSuperellipticNormDegree.lean)
 then computes the exact original rational norm degree and its signed leading
 coefficient. The same original rational degree bounds the supplied distinct
 list of common zeros.
 
-[GaussianRationalVariableHornerBudget](Lean/IPRADerivations/Analysis/GaussianRationalVariableHornerBudget.lean)
+[GaussianRationalVariableHornerBudget](Lean/IPRADerivations/Analysis/Polynomials/GaussianRationalVariableHornerBudget.lean)
 computes a coefficient-dependent variation bound by following actual
 Horner evaluations over the original cleared coefficients. Its guarded
 size and variation invariants give a sharper bound directly from the
-coefficient list. [GaussianRationalDerivativeWeights](Lean/IPRADerivations/Analysis/GaussianRationalDerivativeWeights.lean)
+coefficient list. [GaussianRationalDerivativeWeights](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianRationalDerivativeWeights.lean)
 identifies this recurrence with the exact coefficient-weighted sum on
 cleared numerators.
-[GaussianRationalDerivativeSum](Lean/IPRADerivations/Analysis/GaussianRationalDerivativeSum.lean)
+[GaussianRationalDerivativeSum](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianRationalDerivativeSum.lean)
 derives the original rational sum, its maximum with one, and the exact
 positive least ceiling. With this mesh, the proved Horner bound gives the
 source residual change at most `p/(4q)`.
-[GaussianMonicExactGridApproximateRoot](Lean/IPRADerivations/Analysis/GaussianMonicExactGridApproximateRoot.lean)
+[GaussianMonicExactGridApproximateRoot](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianMonicExactGridApproximateRoot.lean)
 uses the original square grid and least search on its actual stored
 points. It derives a successful stored test before calling the scan
 and binds all returned fields under the original monic, degree,
@@ -690,7 +690,7 @@ coefficient, and tolerance hypotheses.
 
 ## Approximate vector images
 
-[AggregateApproximateImage](Lean/IPRADerivations/Analysis/AggregateApproximateImage.lean)
+[AggregateApproximateImage](Lean/IPRADerivations/Analysis/Optimization/AggregateApproximateImage.lean)
 derives the vector-valued image construction of
 [§3](../docs/proofs/foundations/ipra_finite_demand/sections/03_aggregates.tex).
 The actual output at stage `k` maps every stored input point at stage
@@ -699,15 +699,15 @@ actual binary-length shift satisfies the source approximation budget.
 The original approximate Lipschitz contract implies the two finite
 covers, regularity, and preservation of equivalence of regular input
 names. The metric reads the declared number of output coordinates.
-[AggregateApproximatePointMap](Lean/IPRADerivations/Analysis/AggregateApproximatePointMap.lean)
+[AggregateApproximatePointMap](Lean/IPRADerivations/Analysis/Optimization/AggregateApproximatePointMap.lean)
 uses the same shift for point samples, proves regularity and equivalence
 preservation, and transports support zero from the original point to its
 actual image. Reverse support selection remains open.
-[AggregateApproximateLipschitz](Lean/IPRADerivations/Analysis/AggregateApproximateLipschitz.lean)
+[AggregateApproximateLipschitz](Lean/IPRADerivations/Analysis/Optimization/AggregateApproximateLipschitz.lean)
 proves that the diagonal and mixed precision bounds define the same
 represented distance cut for regular points. The actual mapped point
 therefore satisfies the exact represented Lipschitz inequality.
-[AggregateImageOptimization](Lean/IPRADerivations/Analysis/AggregateImageOptimization.lean)
+[AggregateImageOptimization](Lean/IPRADerivations/Analysis/Optimization/AggregateImageOptimization.lean)
 uses the two original shifts for a scalar objective on the computed image.
 Its actual least minimizer agrees with the direct scan of source indices,
 and the represented bounds hold on the images of original support points.
@@ -763,176 +763,176 @@ the environment labels. Completion needs the following evidence:
    root-membership directions. Finite product stability is now checked in
    the full original rational coding above. Uniform approximate factorization
    is checked by actual backward coefficient-error induction. Its concrete
-   monic instance now discharges (RD) using the proved uniform step. Its [balanced-radius producer](Lean/IPRADerivations/Analysis/GaussianBalancedRadius.lean)
+   monic instance now discharges (RD) using the proved uniform step. Its [balanced-radius producer](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianBalancedRadius.lean)
    now derives the actual zero/nonzero radius certificates and bounded
    scan/witness outputs from a supplied coefficient list. Actual
-   [translation](Lean/IPRADerivations/Analysis/GaussianRationalTranslation.lean)
+   [translation](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianRationalTranslation.lean)
    now constructs the coefficients of P(z+W), and the
-   [monic frontend](Lean/IPRADerivations/Analysis/GaussianTranslatedBalancedRadius.lean)
+   [monic frontend](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianTranslatedBalancedRadius.lean)
    connects the original C,N,z to the full radius certificate. Relative
    Euclidean finite-sum norms are also checked. The actual
-   [dominant plateau](Lean/IPRADerivations/Analysis/GaussianDominantPlateauValues.lean)
-   and its [original monic-input frontend](Lean/IPRADerivations/Analysis/GaussianTranslatedDominantPlateau.lean)
+   [dominant plateau](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianDominantPlateauValues.lean)
+   and its [original monic-input frontend](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianTranslatedDominantPlateau.lean)
    now derive the same positive coefficient's dominance at three literal
    consecutive radii. The actual bounded center search supplies its own
    success, and no maximum, count, monotonicity or plateau premise is
-   supplied. The actual [pointwise squared weights](Lean/IPRADerivations/Analysis/GaussianDominantScoreWeights.lean)
+   supplied. The actual [pointwise squared weights](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianDominantScoreWeights.lean)
    satisfy 16^abs(i-k)*S_i<=S_k at the selected radius. The actual
-   [off-dominant Gaussian sum](Lean/IPRADerivations/Analysis/GaussianOffDominantSum.lean)
+   [off-dominant Gaussian sum](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianOffDominantSum.lean)
    now satisfies 9*normSq(otherSum)<=4*selectedScore, giving the required
    2/3 norm estimate for every displacement within that radius.
-   [GaussianOffDominantMagnitudeSum](Lean/IPRADerivations/Analysis/GaussianOffDominantMagnitudeSum.lean)
+   [GaussianOffDominantMagnitudeSum](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianOffDominantMagnitudeSum.lean)
    separately proves the source `eq:other-terms` sum of individual magnitudes
    for the original terms at the selected radius. Every tuple of rational
    lower bounds satisfies the exact 2/3 inequality, and the actual
    square-root sampler supplies individual brackets whose summed width is
    at most `2^-m`. The finite-cut theorem uses the original polynomial
    input and is also connected to the monic and nonmonic residual inputs.
-   The actual [polynomial decomposition](Lean/IPRADerivations/Analysis/GaussianRationalDominantDecomposition.lean)
-   and [strict dominant lower/upper bounds](Lean/IPRADerivations/Analysis/GaussianDominantMagnitude.lean)
+   The actual [polynomial decomposition](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianRationalDominantDecomposition.lean)
+   and [strict dominant lower/upper bounds](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianDominantMagnitude.lean)
    are now checked, with the unchanged source D=2^N*4^(2*N*N). The
-   [original-input preparation](Lean/IPRADerivations/Analysis/GaussianTranslatedDominantEstimates.lean)
+   [original-input preparation](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianTranslatedDominantEstimates.lean)
    connects the literal P(z+delta) split, bounds against actual P(z),
    both residual branches and the conditional off-sum norm estimate.
-   The actual [rational direction](Lean/IPRADerivations/Analysis/GaussianRationalDirection.lean)
+   The actual [rational direction](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianRationalDirection.lean)
    now proves the exact source certificate A*b^2<=d^2, d>=0 and b>0 for its
    actual unit output, with original nonzero/k/epsilon guards only. Its
-   [initializer](Lean/IPRADerivations/Analysis/GaussianRationalDirectionNormalizer.lean),
-   [computed loop](Lean/IPRADerivations/Analysis/GaussianRationalDirectionIteration.lean)
-   and [phase transfer](Lean/IPRADerivations/Analysis/GaussianRationalPhaseCertificate.lean)
+   [initializer](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianRationalDirectionNormalizer.lean),
+   [computed loop](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianRationalDirectionIteration.lean)
+   and [phase transfer](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianRationalPhaseCertificate.lean)
    discharge all normalization, clock and local approximation laws. Actual
    normalizer/target data and the 65/64 bracket are retained. Dominant-pair
    decrease and uniform monic contraction are now proved by the actual
-   [selected residual estimates](Lean/IPRADerivations/Analysis/GaussianDominantResidualEstimates.lean),
-   [original positive-residual transport](Lean/IPRADerivations/Analysis/GaussianMonicPositiveDecrease.lean)
-   and [zero/positive branch](Lean/IPRADerivations/Analysis/GaussianMonicDescentBranch.lean).
-   [GaussianMonicRD](Lean/IPRADerivations/Analysis/GaussianMonicRD.lean) constructs
+   [selected residual estimates](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianDominantResidualEstimates.lean),
+   [original positive-residual transport](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianMonicPositiveDecrease.lean)
+   and [zero/positive branch](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianMonicDescentBranch.lean).
+   [GaussianMonicRD](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianMonicRD.lean) constructs
    the fixed step and proves its uniform object-theory monicRD sentence.
-   [Concrete applications](Lean/IPRADerivations/Analysis/GaussianMonicApplications.lean)
+   [Concrete applications](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianMonicApplications.lean)
    discharge RD for approximate-root/factorization programs.
-   [Concrete root support](Lean/IPRADerivations/Analysis/GaussianMonicRootSupport.lean)
-   and [concrete adequacy](Lean/IPRADerivations/Analysis/GaussianMonicRootAdequacy.lean)
+   [Concrete root support](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianMonicRootSupport.lean)
+   and [concrete adequacy](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianMonicRootAdequacy.lean)
    now discharge that RD contract in the actual root names, source proposition
    and completed-distance corollary, preserving their genuine input guards.
-   Actual [nonconstant translation](Lean/IPRADerivations/Analysis/GaussianTranslatedNonconstant.lean)
+   Actual [nonconstant translation](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianTranslatedNonconstant.lean)
    also proves the original positive-degree coefficient survives translation.
-   [Nonmonic RD](Lean/IPRADerivations/Analysis/GaussianNonmonicRD.lean) uses the
+   [Nonmonic RD](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianNonmonicRD.lean) uses the
    same fixed step at the original N to prove finite contraction for every
    nonconstant rational polynomial, even with zero leading coefficients.
-   [Nonmonic approximate roots](Lean/IPRADerivations/Analysis/GaussianNonmonicApproximateRoot.lean)
+   [Nonmonic approximate roots](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianNonmonicApproximateRoot.lean)
    instantiate the actual finite residual clock without an RD premise.
-   Actual [triangular coefficient recovery](Lean/IPRADerivations/Analysis/GaussianTranslationCoefficientValues.lean),
-   [rational rescaling](Lean/IPRADerivations/Analysis/GaussianTranslationScaledCoefficients.lean)
-   and [computed maximum](Lean/IPRADerivations/Analysis/GaussianTranslationCoefficientMaximum.lean)
-   now give the [quantitative translation bound](Lean/IPRADerivations/Analysis/GaussianTranslationCoefficientBound.lean)
+   Actual [triangular coefficient recovery](Lean/IPRADerivations/Analysis/Polynomials/GaussianTranslationCoefficientValues.lean),
+   [rational rescaling](Lean/IPRADerivations/Analysis/Polynomials/GaussianTranslationScaledCoefficients.lean)
+   and [computed maximum](Lean/IPRADerivations/Analysis/Polynomials/GaussianTranslationCoefficientMaximum.lean)
+   now give the [quantitative translation bound](Lean/IPRADerivations/Analysis/Polynomials/GaussianTranslationCoefficientBound.lean)
    with the stronger coefficient constant 2^N, hence the source N*2^N.
    Genuine [compiled backward induction](Lean/IPRADerivations/Foundations/BoundedSyntaxBackwardInduction.lean)
    proves the actual row invariant; no inversion or global coefficient law
-   is supplied. A separate [actual inverse-binomial row proof](Lean/IPRADerivations/Analysis/GaussianInverseBinomialRows.lean)
+   is supplied. A separate [actual inverse-binomial row proof](Lean/IPRADerivations/Analysis/Polynomials/GaussianInverseBinomialRows.lean)
    now derives the literal Pascal sums by guarded backward induction, and
-   [inverse translation](Lean/IPRADerivations/Analysis/GaussianRationalInverseTranslation.lean)
+   [inverse translation](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianRationalInverseTranslation.lean)
    binds them to ordinary binomial coefficients and actual translated entries.
    The original a_k is canonically recoded; original length and k<=N suffice,
    including N=0 and noncanonical raw inputs. No inverse identity is assumed.
-   [Internal rational power-order reflection](Lean/IPRADerivations/Analysis/RationalNonnegativePowerOrder.lean)
-   is also proved. Actual [coefficient apartness and radius combination](Lean/IPRADerivations/Analysis/GaussianNonmonicTravelCoefficientBound.lean)
-   and its [normalized program comparison](Lean/IPRADerivations/Analysis/GaussianNonmonicTravelComparison.lean)
-   derive the source squared budget. [Residual clearing](Lean/IPRADerivations/Analysis/GaussianTravelResidualClearing.lean)
-   and [shrinking-power arithmetic](Lean/IPRADerivations/Analysis/RationalShrinkingStepPowerBound.lean)
+   [Internal rational power-order reflection](Lean/IPRADerivations/Analysis/Inequalities/RationalNonnegativePowerOrder.lean)
+   is also proved. Actual [coefficient apartness and radius combination](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianNonmonicTravelCoefficientBound.lean)
+   and its [normalized program comparison](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianNonmonicTravelComparison.lean)
+   derive the source squared budget. [Residual clearing](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianTravelResidualClearing.lean)
+   and [shrinking-power arithmetic](Lean/IPRADerivations/Analysis/RationalArithmetic/Powers/RationalShrinkingStepPowerBound.lean)
    then give the original travel bound. The unchanged displacement is proved
-   to stay within the actual [starting radius](Lean/IPRADerivations/Analysis/GaussianNonmonicDisplacementRadius.lean).
-   [GaussianNonmonicStepBound](Lean/IPRADerivations/Analysis/GaussianNonmonicStepBound.lean)
+   to stay within the actual [starting radius](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianNonmonicDisplacementRadius.lean).
+   [GaussianNonmonicStepBound](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianNonmonicStepBound.lean)
    closes the full finite source step-bound lemma and its actual PR3 endpoint
    from original coefficient/rate/residual assumptions, without an NC, chosen
    coefficient, radius, power or output-law premise. All 15 numerical inputs
-   are internal. [General coefficient names](Lean/IPRADerivations/Analysis/GaussianGeneralCoefficientNames.lean)
+   are internal. [General coefficient names](Lean/IPRADerivations/Analysis/Polynomials/GaussianGeneralCoefficientNames.lean)
    now derive whole-tail apartness from the actual h+2 test; the
-   [sample builder](Lean/IPRADerivations/Analysis/GaussianGeneralPolynomialSamples.lean)
+   [sample builder](Lean/IPRADerivations/Analysis/Polynomials/GaussianGeneralPolynomialSamples.lean)
    retains all supplied coefficients and derives its initial B bound.
-   [All-coefficient perturbation](Lean/IPRADerivations/Analysis/GaussianRationalAllCoefficientPerturbation.lean)
+   [All-coefficient perturbation](Lean/IPRADerivations/Analysis/Polynomials/GaussianRationalAllCoefficientPerturbation.lean)
    covers the changing leading observation. Actual
-   [global constants](Lean/IPRADerivations/Analysis/GaussianGeneralFTAConstants.lean)
-   and [rate comparisons](Lean/IPRADerivations/Analysis/GaussianGeneralFTARates.lean)
+   [global constants](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianGeneralFTAConstants.lean)
+   and [rate comparisons](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianGeneralFTARates.lean)
    discharge the source clock and rate obligations, with the documented
    upper-power binary-length convention. The
-   [actual product recursor](Lean/IPRADerivations/Analysis/GaussianGeometricProduct.lean),
-   [tail gap](Lean/IPRADerivations/Analysis/GaussianGeometricProductTail.lean)
-   and [finite uniform bound](Lean/IPRADerivations/Analysis/GaussianGeometricProductBound.lean)
-   prove the [computed source product bound](Lean/IPRADerivations/Analysis/GaussianGeneralProductBound.lean)
+   [actual product recursor](Lean/IPRADerivations/Analysis/Geometry/GaussianGeometricProduct.lean),
+   [tail gap](Lean/IPRADerivations/Analysis/Geometry/GaussianGeometricProductTail.lean)
+   and [finite uniform bound](Lean/IPRADerivations/Analysis/Geometry/GaussianGeometricProductBound.lean)
+   prove the [computed source product bound](Lean/IPRADerivations/Analysis/FiniteOperations/GaussianGeneralProductBound.lean)
    1<=U_j<=R from N>=1 alone, without a supplied global bound or infinite product.
-   The [actual trajectory](Lean/IPRADerivations/Analysis/GaussianGeneralFTATrajectory.lean)
+   The [actual trajectory](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianGeneralFTATrajectory.lean)
    samples P_j at j+L and has proved updates, canonicality and initial residual.
-   The [computed sampled-step theorem](Lean/IPRADerivations/Analysis/GaussianGeneralFTAStepBound.lean)
+   The [computed sampled-step theorem](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianGeneralFTAStepBound.lean)
    derives U C rho^j from original coefficient names/apartness and the local
    disk/residual budgets; every finite rate/lambda/NC obligation is discharged.
-   The [actual adjacent-sample drift](Lean/IPRADerivations/Analysis/GaussianGeneralFTACoefficientDrift.lean)
+   The [actual adjacent-sample drift](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianGeneralFTACoefficientDrift.lean)
    is bounded by B Q^j/(8D) throughout the computed R disk, from genuine
    coefficient coherence and precision/rate arithmetic alone.
-   The [actual residual recurrence](Lean/IPRADerivations/Analysis/GaussianGeneralFTAResidualStep.lean)
-   and [position-margin bootstrap](Lean/IPRADerivations/Analysis/GaussianGeneralFTARadiusStep.lean)
-   now establish the [source-only simultaneous invariant](Lean/IPRADerivations/Analysis/GaussianGeneralFTAInvariant.lean)
+   The [actual residual recurrence](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianGeneralFTAResidualStep.lean)
+   and [position-margin bootstrap](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianGeneralFTARadiusStep.lean)
+   now establish the [source-only simultaneous invariant](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianGeneralFTAInvariant.lean)
    by genuine QF induction. The next disk is derived before coefficient drift
    is used for the next residual; no circular global premise is supplied.
-   [Finite actual-trajectory telescoping](Lean/IPRADerivations/Analysis/GaussianGeneralFTATelescope.lean)
+   [Finite actual-trajectory telescoping](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianGeneralFTATelescope.lean)
    and the original computed schedules prove the
-   [general FTA main inequalities](Lean/IPRADerivations/Analysis/GaussianGeneralFTARootName.lean),
+   [general FTA main inequalities](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianGeneralFTARootName.lean),
    including every later original coefficient sample and zero leading entries.
-   The [actual root program](Lean/IPRADerivations/Analysis/GaussianGeneralFTAName.lean)
+   The [actual root program](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianGeneralFTAName.lean)
    is a fast Gaussian point name in the computed R disk. Its
-   [same-precision polynomial evaluations](Lean/IPRADerivations/Analysis/GaussianGeneralFTAPolynomialValueName.lean)
+   [same-precision polynomial evaluations](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianGeneralFTAPolynomialValueName.lean)
    give a canonical fast zero PR2 name using the derived V_t bound and computed
    bl(4S+1) shift. The
-   [general polynomial observer](Lean/IPRADerivations/Analysis/GaussianGeneralPolynomialEvaluation.lean)
+   [general polynomial observer](Lean/IPRADerivations/Analysis/Polynomials/GaussianGeneralPolynomialEvaluation.lean)
    derives its exact (N+1)U^N plus weighted-Lipschitz modulus at any bounded
    fast point name, retaining separate numerical coefficient/point data.
-   Its [actual generic value name](Lean/IPRADerivations/Analysis/GaussianGeneralPolynomialValueName.lean)
+   Its [actual generic value name](Lean/IPRADerivations/Analysis/Polynomials/GaussianGeneralPolynomialValueName.lean)
    is fast and canonical, and finite fixed-query slack removal transports any
    raw K*2^-s envelope to program zero without a modulus-dominates-K premise.
-   The [general FTA binding](Lean/IPRADerivations/Analysis/GaussianGeneralFTAValueZero.lean)
+   The [general FTA binding](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianGeneralFTAValueZero.lean)
    proves that precise generic program-zero predicate from the original source
-   assumptions. The [constant coefficient compiler](Lean/IPRADerivations/Analysis/GaussianConstantCoefficientNames.lean)
+   assumptions. The [constant coefficient compiler](Lean/IPRADerivations/Analysis/Polynomials/GaussianConstantCoefficientNames.lean)
    also derives actual coefficient coherence and computed apartness from
    numerical polynomial entries and one positive-degree nonzero coefficient;
    no coefficient-name schema is supplied for this case. The
-   [original numerical polynomial binding](Lean/IPRADerivations/Analysis/GaussianConstantPolynomialEvaluation.lean)
+   [original numerical polynomial binding](Lean/IPRADerivations/Analysis/Polynomials/GaussianConstantPolynomialEvaluation.lean)
    proves actual coefficient and guarded-QF Horner-prefix equality, then
    constructs the concrete root/value programs and original-evaluation
    dyadic zero bound from list length and a nonzero positive-degree
    coefficient alone. Arbitrary outer list-code extensionality is not used.
-   The [Euclidean name relation](Lean/IPRADerivations/Analysis/GaussianNameEquivalence.lean)
-   and [independent normalizer comparison](Lean/IPRADerivations/Analysis/GaussianValueNormalizerExtensionality.lean)
+   The [Euclidean name relation](Lean/IPRADerivations/Analysis/Names/GaussianNameEquivalence.lean)
+   and [independent normalizer comparison](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianValueNormalizerExtensionality.lean)
    now prove cross-name equivalence and program-zero transport by finite
    fixed-query slack removal. The
-   [general polynomial extensionality theorem](Lean/IPRADerivations/Analysis/GaussianGeneralPolynomialExtensionality.lean)
+   [general polynomial extensionality theorem](Lean/IPRADerivations/Analysis/Polynomials/GaussianGeneralPolynomialExtensionality.lean)
    derives its raw discrepancy from equivalent coefficients and points,
    retaining every coefficient and the original independent disks/data/shifts.
    It includes same-upper-degree coefficient, point and disk independence.
-   [Actual degree padding](Lean/IPRADerivations/Analysis/GaussianPolynomialDegreePadding.lean)
+   [Actual degree padding](Lean/IPRADerivations/Analysis/Polynomials/GaussianPolynomialDegreePadding.lean)
    preserves the original raw entries and adds literal leading zeros; genuine
    guarded QF Horner inductions prove equal evaluation. The
-   [different-degree extensionality theorem](Lean/IPRADerivations/Analysis/GaussianPolynomialDegreeExtensionality.lean)
+   [different-degree extensionality theorem](Lean/IPRADerivations/Analysis/Polynomials/GaussianPolynomialDegreeExtensionality.lean)
    compares the original normalized programs through their actual common-degree
    extensions, retaining independent disks, data and shifts.
-   [Actual Gaussian-name ring laws](Lean/IPRADerivations/Analysis/GaussianNameRingLaws.lean)
+   [Actual Gaussian-name ring laws](Lean/IPRADerivations/Analysis/Names/GaussianNameRingLaws.lean)
    now prove associativity, commutativity, both distributions and the
    zero/one/inverse laws up to exact cross-precision equivalence, from
    original point-Cauchy conditions alone. Computed disks and all nested
    normalization errors are derived.
-   [Actual reciprocal names](Lean/IPRADerivations/Analysis/GaussianNameReciprocal.lean)
+   [Actual reciprocal names](Lean/IPRADerivations/Analysis/Names/GaussianNameReciprocal.lean)
    now derive separation, regularity, both product inverse laws and properness
    from point CN and the original finite dyadic apartness witness. Bare
    negated zero is not an effective apartness selector.
-   [Uniform prefix interpretation](Lean/IPRADerivations/Analysis/GaussianPolynomialNameHorner.lean)
+   [Uniform prefix interpretation](Lean/IPRADerivations/Analysis/Polynomials/GaussianPolynomialNameHorner.lean)
    derives actual add/multiply Horner recurrence for internal prefix lengths;
    the full prefix binds to the original value program and zero predicate
    with its exact original data and normalization shift.
-   [The collected name-level FTA certificate](Lean/IPRADerivations/Analysis/GaussianRepresentedFTA.lean)
+   [The collected name-level FTA certificate](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianRepresentedFTA.lean)
    now derives the actual root, prefix-arithmetic and full Horner-zero
    certificate from the original source input, retaining R/T/data and the
    original programs. Its actual sample output has proved fields and bounds.
    Completed-field realization and represented factorization remain separate.
-   The [natural scalar action](Lean/IPRADerivations/Analysis/GaussianRationalNaturalScale.lean)
-   and [finite Gaussian sum](Lean/IPRADerivations/Analysis/GaussianRationalFiniteSum.lean)
+   The [natural scalar action](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianRationalNaturalScale.lean)
+   and [finite Gaussian sum](Lean/IPRADerivations/Analysis/RationalArithmetic/GaussianRationalFiniteSum.lean)
    prove the actual recurrences and algebra used by the now-proved literal
    inverse-binomial Pascal row and its source-identity binding. Generic
    completed-field and the remaining
@@ -945,15 +945,15 @@ the environment labels. Completion needs the following evidence:
    Generic completed Gaussian-point and field realization remains separate.
 5. **Coded field algebra:** actual runtime polynomial buffers, convolution
    product, monic companion and quotient/remainder programs are now checked in
-   [GaussianRationalPolynomialBuffers](Lean/IPRADerivations/Analysis/GaussianRationalPolynomialBuffers.lean),
-   [GaussianRationalPolynomialProduct](Lean/IPRADerivations/Analysis/GaussianRationalPolynomialProduct.lean),
-   [GaussianRationalMonicCompanion](Lean/IPRADerivations/Analysis/GaussianRationalMonicCompanion.lean)
-   and [GaussianRationalMonicReduction](Lean/IPRADerivations/Analysis/GaussianRationalMonicReduction.lean).
+   [GaussianRationalPolynomialBuffers](Lean/IPRADerivations/Analysis/Polynomials/GaussianRationalPolynomialBuffers.lean),
+   [GaussianRationalPolynomialProduct](Lean/IPRADerivations/Analysis/Polynomials/GaussianRationalPolynomialProduct.lean),
+   [GaussianRationalMonicCompanion](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianRationalMonicCompanion.lean)
+   and [GaussianRationalMonicReduction](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianRationalMonicReduction.lean).
    The original coefficient lengths and literal monic head alone yield actual
    canonical quotient/remainder lists and the exact evaluator identity at
    every internal base-field point. The quotient length M+2 is deliberately
    coarse; the remainder has D entries. No output law is an input.
-   [GaussianRationalMonicReconstruction](Lean/IPRADerivations/Analysis/GaussianRationalMonicReconstruction.lean)
+   [GaussianRationalMonicReconstruction](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/GaussianRationalMonicReconstruction.lean)
    now proves the actual coefficient identity for those SAME returned Q/R
    codes and the actual convolution product, on the common width D+M+2.
    Original shapes/monicity and the queried index bound suffice. The source
@@ -961,21 +961,21 @@ the environment labels. Completion needs the following evidence:
    identified. A genuine fixed-index QF prefix induction derives this identity
    without an evaluator premise, and an actual PR4 reconstructed buffer has
    the proved entries, length and canonicality. This remains an exact Q(i)
-   dependency. [GaussianPolynomialMonicCompanion](Lean/IPRADerivations/Analysis/GaussianPolynomialMonicCompanion.lean)
+   dependency. [GaussianPolynomialMonicCompanion](Lean/IPRADerivations/Analysis/Polynomials/GaussianPolynomialMonicCompanion.lean)
    now constructs an actual companion step over Q(i)[X], with internally
    quantified Y row count and X degree bounds. Original row shapes yield
    literal stored coefficient cancellation, including the true constant-one
    monic top-row convolution, before scalar/two-variable specialization.
    The last shifted row is explicitly zero; raw inputs, m=1 and a=c=0 are
-   covered. [GaussianPolynomialMultiplicationMatrix](Lean/IPRADerivations/Analysis/GaussianPolynomialMultiplicationMatrix.lean)
+   covered. [GaussianPolynomialMultiplicationMatrix](Lean/IPRADerivations/Analysis/Polynomials/GaussianPolynomialMultiplicationMatrix.lean)
    now constructs actual numerical-dimension polynomial columns and the source
    row-major matrix. Complete coefficients are retained at a proved uniform X
    width; genuine compiled QF stage invariants and explicit Y-row reversal
    derive the literal evaluation-row identity at the actual curve point.
-   [GaussianRationalPolynomialDegree](Lean/IPRADerivations/Analysis/GaussianRationalPolynomialDegree.lean)
+   [GaussianRationalPolynomialDegree](Lean/IPRADerivations/Analysis/Polynomials/GaussianRationalPolynomialDegree.lean)
    supplies the actual canonical trim/computed degree and root-bound adapter
    from the original nonzero-coefficient existence, including zero/default
-   semantics. [GaussianRationalPolynomialProductDegree](Lean/IPRADerivations/Analysis/GaussianRationalPolynomialProductDegree.lean)
+   semantics. [GaussianRationalPolynomialProductDegree](Lean/IPRADerivations/Analysis/Polynomials/GaussianRationalPolynomialProductDegree.lean)
    now derives the actual product's leading value/nonvanishing and computed
    degree from the SAME coefficient convolution and factor scans; raw and
    zero-factor cases have explicit source scopes. The actual numerical

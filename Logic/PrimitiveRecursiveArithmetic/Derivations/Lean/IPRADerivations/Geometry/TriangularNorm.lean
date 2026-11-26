@@ -2,7 +2,7 @@ import IPRADerivations.Core.Tactic
 import IPRADerivations.Core.ProdLemmas
 import IPRADerivations.Core.ParityArith
 import IPRADerivations.Combinatorics.BinomialIdentities
-import IPRADerivations.Analysis.RationalClosure
+import IPRADerivations.Analysis.RationalArithmetic.RationalClosure
 import IPRADerivations.Core.LinearCombination
 
 /-!

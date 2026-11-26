@@ -1,8 +1,8 @@
 import IPRADerivations.DiophantineNumberTheory.MinkowskiSlabInterval
 import IPRADerivations.DiophantineNumberTheory.MinkowskiWellFormed
-import IPRADerivations.Analysis.RationalAlgebra
-import IPRADerivations.Analysis.RationalSumLinearity
-import IPRADerivations.Analysis.RationalSumAdditivity
+import IPRADerivations.Analysis.RationalArithmetic.RationalAlgebra
+import IPRADerivations.Analysis.RationalArithmetic.RationalSumLinearity
+import IPRADerivations.Analysis.RationalArithmetic.RationalSumAdditivity
 
 /-!
 # Actual slab bodies are symmetric and midpoint closed

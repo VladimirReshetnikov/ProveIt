@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.ErrorBudgets
+import IPRADerivations.Analysis.Names.Rates.ErrorBudgets
 import IPRADerivations.Core.OrderCertificates
 
 /-!

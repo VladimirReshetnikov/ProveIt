@@ -2,7 +2,7 @@ import IPRADerivations.DiophantineNumberTheory.AperyMultibound
 import IPRADerivations.DiophantineNumberTheory.SimultaneousGrid
 import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Analysis.RationalClosure
+import IPRADerivations.Analysis.RationalArithmetic.RationalClosure
 
 /-!
 # Majorants of composed polynomial clocks
