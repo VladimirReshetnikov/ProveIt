@@ -22,7 +22,7 @@ open GaussianEulerLowerTailFiniteBudget (residual oldNumerator oldDenominator)
 open GaussianGammaIntegralCutoffs (height etaDen)
 open GaussianEulerIntegrandName (evaluatorF fixedData)
 open GaussianEulerCompactModulus (lipschitz)
-open GaussianCompactRiemannName (sampledModulus quadrature precision)
+open GaussianCompactRiemannName (sampledModulus sampled_modulus_congr quadrature quadrature_congr precision)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (bound_congr)
@@ -55,21 +55,6 @@ theorem interval_source (z R B k A : PTm n) (h : Γ ⊢[PRAAx] GaussianEulerLowe
   exact .andI (.andI h.andE₂.andE₁.andE₁ (.andI he h.andE₂.andE₁.andE₂))
     (.andI (le_refl one) (le_congr endpoint.eqSymm (by ipra_ring : Γ ⊢[PRAAx] etaDen k A R ≐ etaDen k A R*one) (le_refl _)))
 
-private theorem modulus_congr (F : PR 3) (a C E a' C' E' L x : PTm n)
-    (ha : Γ ⊢[PRAAx] a ≐ a') (hC : Γ ⊢[PRAAx] C ≐ C') (hE : Γ ⊢[PRAAx] E ≐ E')
-    (h : Γ ⊢[PRAAx] sampledModulus F a C E L x) : Γ ⊢[PRAAx] sampledModulus F a' C' E' L x := by
-  simpa only [GaussianCompactRiemannName.subst_sampledModulus,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-    Matrix.cons_val_two,Matrix.cons_val_three,Matrix.cons_val_four,Matrix.cons_val_succ,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqSubst (Γ := Γ) (Ax := PRAAx) (sampledModulus F (var 0) (var 1) (var 2) (var 3) (var 4) : Fm PTm 5)
-      ![a,C,E,L,x] ![a',C',E',L,x] (fun i => by fin_cases i; exact ha; exact hC; exact hE; exact .eqRefl _; exact .eqRefl _)
-      (by simpa using h)
-
-private theorem quadrature_congr (F : PR 3) (s N a C E N' a' C' E' x : PTm n)
-    (hN : Γ ⊢[PRAAx] N ≐ N') (ha : Γ ⊢[PRAAx] a ≐ a') (hC : Γ ⊢[PRAAx] C ≐ C') (hE : Γ ⊢[PRAAx] E ≐ E') :
-    Γ ⊢[PRAAx] quadrature F s N a C E x ≐ quadrature F s N' a' C' E' x := by
-  ipra_congr (quadrature F (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) with
-    [.eqRefl s, hN, ha, hC, hE, .eqRefl x]
-
 theorem finite_source (z R B H k e : PTm n) (hH : Γ ⊢[PRAAx] le one H)
     (h : Γ ⊢[PRAAx] GaussianEulerLowerPowerCoefficients.source z R B (succ e)) : Γ ⊢[PRAAx]
     GaussianEulerEtaToOneQuadratureBound.source z R B H k e (lipschitz R (etaDen k (succ e) R) one) := by
@@ -87,7 +72,7 @@ theorem finite_source (z R B H k e : PTm n) (hH : Γ ⊢[PRAAx] le one H)
   have ha : Γ ⊢[PRAAx] K*one ≐ time zero H k A R := (by ipra_ring : Γ ⊢[PRAAx] K*one ≐ K).eqTrans (GaussianEulerEtaToOneRootGrid.first_time H k A R).eqSymm
   have hc : Γ ⊢[PRAAx] K*C ≐ totalWidth H k A R := (mul_comm _ _).eqTrans (GaussianEulerEtaToOneRootGrid.exact_width H k A R).eqSymm
   have he : Γ ⊢[PRAAx] K*E ≐ timeDen H k A R := (mul_comm _ _).eqTrans (GaussianEulerEtaToOneRootGrid.exact_denominator H k A R).eqSymm
-  exact .andI hH (.andI hW (.andI h (modulus_congr evaluatorF _ _ _ _ _ _ _ _ ha hc he mod)))
+  exact .andI hH (.andI hW (.andI h (sampled_modulus_congr ha hc he (.eqRefl _) (.eqRefl _) mod)))
 
 theorem finite_radius_conversion (x s t H k e R L : PTm n)
     (hH : Γ ⊢[PRAAx] le (unit t) H) (hP : Γ ⊢[PRAAx] le (unit t) (unit s))
@@ -130,9 +115,10 @@ theorem cofinal_bound (t z R B k e : PTm n) (h : Γ ⊢[PRAAx] GaussianEulerLowe
   have hP : Γ ⊢[PRAAx] le (unit t) (unit s) := GaussianExponentialReference.unit_monotone (le_trans (le_add_right t one) (le_add_right _ _))
   have norm := finite_radius_conversion y s t H k e R L hHT hP
     (bound_congr (.eqRefl _) (by unfold oldNumerator GaussianEulerLowerBlockWeight.numerator; ipra_ring) (.eqRefl _) raw)
-  have eq : Γ ⊢[PRAAx] y ≐ b := quadrature_congr evaluatorF s _ _ _ _ _ _ _ _ (fixedData z B)
+  have eq : Γ ⊢[PRAAx] y ≐ b := quadrature_congr evaluatorF (.eqRefl s)
     (GaussianEulerEtaToOneRootGrid.exact_width H k A R) (GaussianEulerEtaToOneRootGrid.first_time H k A R)
     (GaussianEulerEtaToOneRootGrid.exact_width H k A R) (GaussianEulerEtaToOneRootGrid.exact_denominator H k A R)
+    (.eqRefl _)
   exact bound_congr eq (.eqRefl _) (.eqRefl _) norm
 
 theorem cofinal_observations (t s z R B k A : PTm n) (h : Γ ⊢[PRAAx] GaussianEulerLowerPowerCoefficients.source z R B A) : Γ ⊢[PRAAx]

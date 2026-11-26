@@ -22,7 +22,7 @@ open GaussianGammaCompactCutoffGeometry (lowerWidth)
 open GaussianEulerLowerTailRootGrid (rootNumerator rootDenominator timeNumerator timeDenominator)
 open GaussianEulerLowerTailLocalComparison (rightTime)
 open GaussianEulerLowerTailPartition (totalWidth root_right_guard)
-open GaussianCompactRiemannName (sampledModulus)
+open GaussianCompactRiemannName (sampledModulus sampled_modulus_congr)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded)
 open GaussianRationalReciprocal (bound_congr)
@@ -109,15 +109,6 @@ theorem right_bound (F G : PR 2) (i s N p q k z Rz B x y C₀ C R₀ R : PTm n)
     (congrMul (congrAp2 powF e (.eqRefl a)) (.eqRefl _))
     (original_pointwise_bound F G s z Rz B A a b x y C₀ C R₀ R E T low chart)
 
-private theorem modulus_congr (F : PR 3) (a W E a' W' E' L x : PTm n)
-    (ha : Γ ⊢[PRAAx] a ≐ a') (hW : Γ ⊢[PRAAx] W ≐ W') (hE : Γ ⊢[PRAAx] E ≐ E')
-    (h : Γ ⊢[PRAAx] sampledModulus F a W E L x) : Γ ⊢[PRAAx] sampledModulus F a' W' E' L x := by
-  simpa only [GaussianCompactRiemannName.subst_sampledModulus,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-    Matrix.cons_val_two,Matrix.cons_val_three,Matrix.cons_val_four,Matrix.cons_val_succ,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqSubst (Γ := Γ) (Ax := PRAAx) (sampledModulus F (var 0) (var 1) (var 2) (var 3) (var 4) : Fm PTm 5)
-      ![a,W,E,L,x] ![a',W',E',L,x] (fun i => by fin_cases i; exact ha; exact hW; exact hE; exact .eqRefl _; exact .eqRefl _)
-      (by simpa using h)
-
 theorem rescaled_modulus (F G : PR 2) (N p q k z Rz B x y C₀ C R₀ R : PTm n)
     (hs : Γ ⊢[PRAAx] source F G z Rz B (succ k) x y C₀ C R₀ R)
     (hN : Γ ⊢[PRAAx] le one N) (hpq : Γ ⊢[PRAAx] le p q) : Γ ⊢[PRAAx]
@@ -138,7 +129,7 @@ theorem rescaled_modulus (F G : PR 2) (N p q k z Rz B x y C₀ C R₀ R : PTm n)
   have hW : Γ ⊢[PRAAx] K*W ≐ totalWidth N p q A := (mul_comm _ _).eqTrans width.eqSymm
   have hE : Γ ⊢[PRAAx] K*E ≐ timeDenominator N q A Rz :=
     (mul_comm _ _).eqTrans (GaussianEulerLowerTailRootGrid.time_denominator N q A Rz).eqSymm
-  exact modulus_congr _ _ _ _ _ _ _ _ _ ha hW hE mod
+  exact sampled_modulus_congr ha hW hE (.eqRefl _) (.eqRefl _) mod
 
 theorem actual_named_lower_cutoff_right_observations_closed (F G : PR 2) :
     ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 15

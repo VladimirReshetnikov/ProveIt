@@ -28,7 +28,7 @@ open GaussianEulerLowerTailLocalComparison (rowTime rightTime)
 open GaussianBetaKernelGridComparison (evaluatorF sampleDataBeta)
 open GaussianGammaIntegralCutoffs (etaDen eta_den_positive)
 open GaussianGammaCompactCutoffGeometry (lowerWidth ratio lower_endpoint)
-open GaussianCompactRiemannName (sampledModulus)
+open GaussianCompactRiemannName (sampledModulus sampled_modulus_congr)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded)
 open GaussianRationalReciprocal (bound_congr)
@@ -52,15 +52,6 @@ def originalQuadrature (s z R B H p q k N : PTm n) : PTm n :=
 
 ipra_subst lipschitz [etaDen, GaussianGammaIntegralCutoffs.height, GaussianGammaIntegralCutoffs.tailCoefficient]
 ipra_subst source
-
-private theorem modulus_congr (F : PR 3) (a C E a' C' E' L x : PTm n)
-    (ha : Γ ⊢[PRAAx] a ≐ a') (hC : Γ ⊢[PRAAx] C ≐ C') (hE : Γ ⊢[PRAAx] E ≐ E')
-    (h : Γ ⊢[PRAAx] sampledModulus F a C E L x) : Γ ⊢[PRAAx] sampledModulus F a' C' E' L x := by
-  simpa only [GaussianCompactRiemannName.subst_sampledModulus,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-    Matrix.cons_val_two,Matrix.cons_val_three,Matrix.cons_val_four,Matrix.cons_val_succ,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqSubst (Γ := Γ) (Ax := PRAAx) (sampledModulus F (var 0) (var 1) (var 2) (var 3) (var 4) : Fm PTm 5)
-      ![a,C,E,L,x] ![a',C',E',L,x] (fun i => by fin_cases i; exact ha; exact hC; exact hE; exact .eqRefl _; exact .eqRefl _)
-      (by simpa using h)
 
 /-- The original lower interval lies below one, so the original degree
 N>=1 supplies the beta support for every actual local time query. -/
@@ -97,7 +88,7 @@ theorem root_modulus (z R B H p q k N : PTm n) (h : Γ ⊢[PRAAx] GaussianEulerL
     (mul_comm _ _).eqTrans (GaussianEulerLowerTailRootGrid.time_width H p q A).eqSymm
   have he : Γ ⊢[PRAAx] K*E ≐ timeDenominator H q A R :=
     (mul_comm _ _).eqTrans (GaussianEulerLowerTailRootGrid.time_denominator H q A R).eqSymm
-  exact modulus_congr _ _ _ _ _ _ _ _ _ ha hc he mod
+  exact sampled_modulus_congr ha hc he (.eqRefl _) (.eqRefl _) mod
 
 theorem right_sample_norm (i s H p q k z R B N : PTm n) (hH : Γ ⊢[PRAAx] le one H)
     (hpq : Γ ⊢[PRAAx] le p q) (hi : Γ ⊢[PRAAx] lt i H)

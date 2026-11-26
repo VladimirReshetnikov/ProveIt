@@ -27,7 +27,7 @@ open GaussianEulerLowerCofinalQuadrature (rootMesh transformed)
 open GaussianEulerLowerTailRootGrid (timeNumerator timeDenominator)
 open GaussianEulerLowerTailPartition (totalWidth)
 open GaussianEulerLowerTailRowBound (stepScale)
-open GaussianCompactRiemannName (sampledModulus quadrature mesh precision)
+open GaussianCompactRiemannName (sampledModulus sampled_modulus_congr quadrature quadrature_congr mesh precision)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianRationalHorner (qzero positive_product)
@@ -50,21 +50,6 @@ ipra_subst result [height, GaussianGammaIntegralCutoffs.tailCoefficient]
 theorem split_source (z R B p q A : PTm n) (h : Γ ⊢[PRAAx] source z R B A) (hpq : Γ ⊢[PRAAx] le p q) :
     Γ ⊢[PRAAx] GaussianGammaCompactCutoffSplit.source z R B p q A :=
   .andI h.andE₁ (.andI h.andE₂.andE₁ hpq)
-
-private theorem modulus_congr (F : PR 3) (a C E a' C' E' L x : PTm n)
-    (ha : Γ ⊢[PRAAx] a ≐ a') (hC : Γ ⊢[PRAAx] C ≐ C') (hE : Γ ⊢[PRAAx] E ≐ E')
-    (h : Γ ⊢[PRAAx] sampledModulus F a C E L x) : Γ ⊢[PRAAx] sampledModulus F a' C' E' L x := by
-  simpa only [GaussianCompactRiemannName.subst_sampledModulus,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-    Matrix.cons_val_two,Matrix.cons_val_three,Matrix.cons_val_four,Matrix.cons_val_succ,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqSubst (Γ := Γ) (Ax := PRAAx) (sampledModulus F (var 0) (var 1) (var 2) (var 3) (var 4) : Fm PTm 5)
-      ![a,C,E,L,x] ![a',C',E',L,x] (fun i => by fin_cases i; exact ha; exact hC; exact hE; exact .eqRefl _; exact .eqRefl _)
-      (by simpa using h)
-
-private theorem quadrature_congr (F : PR 3) (s N a C E N' a' C' E' x : PTm n)
-    (hN : Γ ⊢[PRAAx] N ≐ N') (ha : Γ ⊢[PRAAx] a ≐ a') (hC : Γ ⊢[PRAAx] C ≐ C') (hE : Γ ⊢[PRAAx] E ≐ E') :
-    Γ ⊢[PRAAx] quadrature F s N a C E x ≐ quadrature F s N' a' C' E' x := by
-  ipra_congr (quadrature F (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) with
-    [.eqRefl s, hN, ha, hC, hE, .eqRefl x]
 
 theorem finite_source (z R B N p q k : PTm n) (hN : Γ ⊢[PRAAx] le one N)
     (h : Γ ⊢[PRAAx] source z R B (succ k)) (hpq : Γ ⊢[PRAAx] lt p q) :
@@ -92,7 +77,7 @@ theorem finite_source (z R B N p q k : PTm n) (hN : Γ ⊢[PRAAx] le one N)
   have he : Γ ⊢[PRAAx] K*E ≐ timeDenominator N q A R :=
     (mul_comm _ _).eqTrans (GaussianEulerLowerTailRootGrid.time_denominator N q A R).eqSymm
   exact .andI hN (.andI (le_of_lt hpq) (.andI hW (.andI h.andE₂
-    (modulus_congr evaluatorF _ _ _ _ _ _ _ _ ha hc he mod))))
+    (sampled_modulus_congr ha hc he (.eqRefl _) (.eqRefl _) mod))))
 
 theorem cofinal_bound (t z R B p q k : PTm n)
     (h : Γ ⊢[PRAAx] source z R B (succ k)) (hpq : Γ ⊢[PRAAx] lt p q) :
@@ -126,8 +111,8 @@ theorem cofinal_bound (t z R B p q k : PTm n)
       ipra_ring) (.eqRefl _) raw)
   have e : Γ ⊢[PRAAx] y ≐ b :=
     let w := GaussianEulerLowerTailRootGrid.time_width (Γ := Γ) N p q A
-    quadrature_congr evaluatorF s _ _ _ _ _ _ _ _ x w
-      (GaussianEulerLowerTailRootGrid.time_first N p q A) w (GaussianEulerLowerTailRootGrid.time_denominator N q A R)
+    quadrature_congr evaluatorF (.eqRefl s) w
+      (GaussianEulerLowerTailRootGrid.time_first N p q A) w (GaussianEulerLowerTailRootGrid.time_denominator N q A R) (.eqRefl x)
   exact bound_congr e (.eqRefl _) (.eqRefl _) norm
 
 theorem compared_bound_to_slack (x y A H K s t : PTm n) (hH : Γ ⊢[PRAAx] le one H)

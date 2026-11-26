@@ -23,7 +23,7 @@ open GaussianEulerLowerTailRootGrid (rootNumerator rootDenominator timeNumerator
 open GaussianEulerLowerTailPartition (totalWidth root_right_guard)
 open GaussianGammaIntegralCutoffs (etaDen eta_den_positive height)
 open GaussianGammaCompactCutoffGeometry (ratio lowerWidth lower_endpoint)
-open GaussianCompactRiemannName (sampledModulus)
+open GaussianCompactRiemannName (sampledModulus sampled_modulus_congr)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded)
 open GaussianRationalReciprocal (bound_congr)
@@ -48,14 +48,6 @@ ipra_subst source
 theorem degree_identity (A : PTm n) (hA : Γ ⊢[PRAAx] le one A) : Γ ⊢[PRAAx] degree A ≐ panelDegree A :=
   RationalIntegerNormalization.positive_form (positive_product two A (le_succ_self one) hA)
 
-private theorem modulus_congr (F : PR 3) (a C E a' C' E' L x : PTm n)
-    (ha : Γ ⊢[PRAAx] a ≐ a') (hC : Γ ⊢[PRAAx] C ≐ C') (hE : Γ ⊢[PRAAx] E ≐ E')
-    (h : Γ ⊢[PRAAx] sampledModulus F a C E L x) : Γ ⊢[PRAAx] sampledModulus F a' C' E' L x := by
-  simpa only [GaussianCompactRiemannName.subst_sampledModulus,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-    Matrix.cons_val_two,Matrix.cons_val_three,Matrix.cons_val_four,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqSubst (Γ := Γ) (Ax := PRAAx) (sampledModulus F (var 0) (var 1) (var 2) (var 3) (var 4) : Fm PTm 5)
-      ![a,C,E,L,x] ![a',C',E',L,x] (fun i => by fin_cases i; exact ha; exact hC; exact hE; exact .eqRefl _; exact .eqRefl _) (by simpa using h)
-
 theorem base_modulus (j z R B p q A : PTm n)
     (h : Γ ⊢[PRAAx] GaussianEulerLowerPowerCoefficients.source z R B A) (hpq : Γ ⊢[PRAAx] le p q) : Γ ⊢[PRAAx]
     sampledModulus evaluatorF one (lowerWidth p q (panelDegree A)) (intervalDen q A R) (lipschitz j q A R) (fixedData j z R B q A) := by
@@ -79,10 +71,11 @@ theorem root_modulus (j z R B H p q A : PTm n)
   have mod := GaussianCompactIntervalRescaling.rescaled_modulus evaluatorF K one (lowerWidth p q D)
     (intervalDen q A R) (lipschitz j q A R) (fixedData j z R B q A)
     (GaussianPolynomialPerturbation.power_positive H D hH) (base_modulus j z R B p q A h hpq)
-  exact modulus_congr _ _ _ _ _ _ _ _ _
+  exact sampled_modulus_congr
     ((by ipra_ring : Γ ⊢[PRAAx] K*one ≐ K).eqTrans (GaussianEulerLowerTailRootGrid.time_first H p q D).eqSymm)
     ((mul_comm _ _).eqTrans (GaussianEulerLowerTailRootGrid.time_width H p q D).eqSymm)
-    ((mul_comm _ _).eqTrans (GaussianEulerLowerTailRootGrid.time_denominator H q D R).eqSymm) mod
+    ((mul_comm _ _).eqTrans (GaussianEulerLowerTailRootGrid.time_denominator H q D R).eqSymm)
+    (.eqRefl _) (.eqRefl _) mod
 
 private theorem domain_congr (a b c d E T : PTm n) (ha : Γ ⊢[PRAAx] a ≐ c) (hb : Γ ⊢[PRAAx] b ≐ d)
     (h : Γ ⊢[PRAAx] GaussianCompactLogarithmBounds.domain a b E T) : Γ ⊢[PRAAx] GaussianCompactLogarithmBounds.domain c d E T := by

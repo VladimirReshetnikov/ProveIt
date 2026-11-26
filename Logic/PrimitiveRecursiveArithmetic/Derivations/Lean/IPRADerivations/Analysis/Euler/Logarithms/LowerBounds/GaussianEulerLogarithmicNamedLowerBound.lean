@@ -24,7 +24,7 @@ open GaussianEulerLowerTailPartition (totalWidth)
 open GaussianEulerLowerTailRootGrid (timeNumerator timeDenominator)
 open GaussianGammaCompactCutoffGeometry (lowerWidth)
 open GaussianGammaIntegralCutoffs (height)
-open GaussianCompactRiemannName (quadrature precision)
+open GaussianCompactRiemannName (quadrature quadrature_congr precision)
 open GaussianRationalMetric (bounded)
 open GaussianRationalHorner (positive_product qzero)
 open GaussianRationalReciprocal (bound_congr)
@@ -43,12 +43,6 @@ def denominator (s p A R : PTm n) : PTm n := unit (height p (panelDegree A) R)*u
 ipra_subst data [lowerWidth]
 ipra_subst point
 ipra_subst leading [Products.fact]
-
-private theorem quadrature_congr (F : PR 3) (s N a C E N' a' C' E' x : PTm n)
-    (hN : Γ ⊢[PRAAx] N ≐ N') (ha : Γ ⊢[PRAAx] a ≐ a') (hC : Γ ⊢[PRAAx] C ≐ C') (hE : Γ ⊢[PRAAx] E ≐ E') : Γ ⊢[PRAAx]
-    quadrature F s N a C E x ≐ quadrature F s N' a' C' E' x := by
-  ipra_congr (quadrature F (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) with
-    [.eqRefl s, hN, ha, hC, hE, .eqRefl x]
 
 theorem compact_input (j z R B p q A : PTm n) (h : Γ ⊢[PRAAx] source z R B A) (hpq : Γ ⊢[PRAAx] le p q) : Γ ⊢[PRAAx]
     GaussianCompactRiemannName.input evaluatorF one (lowerWidth p q (panelDegree A)) (intervalDen q A R)
@@ -86,9 +80,9 @@ theorem cofinal_bound (t j z R B p q A : PTm n) (h : Γ ⊢[PRAAx] source z R B 
     (.andI h (.andI hH hpq)) meshBudget precisionBudget
   have actual : Γ ⊢[PRAAx] GaussianEulerLogarithmicLowerQuadrature.originalQuadrature s j z R B H p q A ≐
       transformed evaluatorF t D (lowerWidth p q D) (intervalDen q A R) L one x :=
-    quadrature_congr evaluatorF s _ _ _ _ _ _ _ _ x (GaussianEulerLowerTailRootGrid.time_width H p q D)
+    quadrature_congr evaluatorF (.eqRefl s) (GaussianEulerLowerTailRootGrid.time_width H p q D)
       (GaussianEulerLowerTailRootGrid.time_first H p q D) (GaussianEulerLowerTailRootGrid.time_width H p q D)
-      (GaussianEulerLowerTailRootGrid.time_denominator H q D R)
+      (GaussianEulerLowerTailRootGrid.time_denominator H q D R) (.eqRefl x)
   have num : Γ ⊢[PRAAx] GaussianEulerLogarithmicLowerFiniteBudget.numerator t j p q A R ≐
       leading j A*unit t+GaussianEulerLogarithmicLowerFiniteBudget.residualCoefficient j p q A R*unit (height p D R) := by
     have e := natEq (GaussianEulerLogarithmicLowerFiniteBudget.leading_coefficient (Γ := Γ) j A h.andE₁)

@@ -70,6 +70,22 @@ def sampledModulus (F : PR 3) (a C E L x : PTm n) : Fm PTm n := .all (.all (.all
     (Syn.shift (Syn.shift (Syn.shift (Syn.shift x)))) (var 3) (var 2) (var 1) (var 0)))))
 ipra_subst sampledModulus [Syn.subst_shift, Syn.shift_subst, Syn.up]
 
+/-- Transport the sampled modulus along equal interval parameters, Lipschitz bound, and data. -/
+theorem sampled_modulus_congr {F : PR 3} {a a' C C' E E' L L' x x' : PTm n}
+    (ha : Γ ⊢[PRAAx] a ≐ a') (hC : Γ ⊢[PRAAx] C ≐ C') (hE : Γ ⊢[PRAAx] E ≐ E')
+    (hL : Γ ⊢[PRAAx] L ≐ L') (hx : Γ ⊢[PRAAx] x ≐ x')
+    (h : Γ ⊢[PRAAx] sampledModulus F a C E L x) : Γ ⊢[PRAAx] sampledModulus F a' C' E' L' x' := by
+  simpa only [subst_sampledModulus, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one,
+    Matrix.cons_val_two, Matrix.cons_val_three, Matrix.cons_val_four, Matrix.head_cons, Matrix.tail_cons] using
+    Prf.eqSubst (sampledModulus F (var 0) (var 1) (var 2) (var 3) (var 4) : Fm PTm 5)
+      ![a, C, E, L, x] ![a', C', E', L', x'] (fun i => by
+        fin_cases i
+        · exact ha
+        · exact hC
+        · exact hE
+        · exact hL
+        · exact hx) (by simpa using h)
+
 /-- Carry the sampled modulus into the context with one fresh variable. -/
 theorem shift_sampled_modulus {F : PR 3} {a C E L x : PTm n}
     (h : Γ ⊢[PRAAx] sampledModulus F a C E L x) :
