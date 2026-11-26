@@ -2921,3 +2921,6 @@ The exact exponential of the negated cofinal logarithm supplies a named inverse 
 
 For the original sampler $F(z)=G(1+z)$ on admitted Gaussian rational inputs, a bounded witness search gives exact pointwise zero exactly at the negative integers, and gives apartness at all other inputs. The ordinary Cauchy-name zero envelope implies the same witness. Analytic multiplicities remain open.
 [GaussianBarnesCanonicalValueZeros](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalValueZeros.lean)
+
+An explicit bound on the actual prefactor and fixed head gives a single primitive-recursive cutoff depending only on the disk radius and requested precision. Every admitted rational input and every later literal product obey the same leading dyadic error.
+[GaussianBarnesCanonicalDiskBound](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDiskBound.lean), [GaussianBarnesCanonicalUniformCutoff](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalUniformCutoff.lean)
