@@ -3008,3 +3008,6 @@ The actual two named cubic logarithm observations differ from their literal line
 
 The named row difference is the literal linear term plus a named relative cubic and explicit quadratic correction. This remainder has the exact independent-clock bound against zero.
 [GaussianBarnesCanonicalNamedTaylorRemainder](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalNamedTaylorRemainder.lean)
+
+The two original finite logarithms differ from the input increment times the literal first-derivative sum by the exact finite reciprocal-square bound. The actual derivative prefix and its cofinal sampler also have an explicit independent-clock rate.
+[GaussianBarnesCanonicalDerivativeInterval](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDerivativeInterval.lean), [GaussianBarnesCanonicalDerivativeCofinalRate](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDerivativeCofinalRate.lean)
