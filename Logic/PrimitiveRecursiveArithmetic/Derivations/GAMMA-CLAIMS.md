@@ -2933,3 +2933,6 @@ Explicit disk and index bounds give an independent-clock Lipschitz rate for the 
 
 The original finite product at each common segment has an explicit independent-clock Lipschitz bound. The proof retains different rational encodings and each product normalization, including empty segments.
 [GaussianBarnesCanonicalHeadLipschitz](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHeadLipschitz.lean)
+
+The actual rational first-derivative expression has radius $2R^2/k^2$ and its exact finite tail has radius $2R^2/N$. This establishes the rational tail estimate used by a future differentiation proof.
+[GaussianBarnesCanonicalDerivativeRow](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDerivativeRow.lean), [GaussianReciprocalSquareInterval](Lean/IPRADerivations/Analysis/GaussianReciprocalSquareInterval.lean), [GaussianBarnesCanonicalDerivativeTail](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDerivativeTail.lean)
