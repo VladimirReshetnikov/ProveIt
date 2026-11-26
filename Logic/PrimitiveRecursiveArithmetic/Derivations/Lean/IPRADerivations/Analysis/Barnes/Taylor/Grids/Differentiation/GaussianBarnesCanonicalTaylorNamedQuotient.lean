@@ -72,8 +72,7 @@ theorem regular (z h R B J e : PTm n) (hz : Γ ⊢[PRAAx] source z R B)
 
 theorem scale_difference (k x y : PTm n) : Γ ⊢[PRAAx]
     qsub (natScale k x) (natScale k y) ≐ natScale k (qsub x y) :=
-  (qsub_congr (natScale_as_product k x) (natScale_as_product k y)).eqTrans
-    ((multiplication_difference (naturalPoint k) x y).eqTrans (natScale_as_product k (qsub x y)).eqSymm)
+  GaussianRationalNaturalScale.natScale_sub k x y
 
 /-- A bound for doubled samples gives half the radius for the original
 samples, with no assumption on their raw numerator representation. -/

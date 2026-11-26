@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianRationalCoefficientScaling
 import IPRADerivations.Analysis.Polynomials.RootFinding.Descent.GaussianTranslatedNonconstant
+import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalRoundedPower
 
 /-!
 # Actual natural scaling of arbitrary Gaussian-rational codes
@@ -106,6 +107,13 @@ theorem natScale_product (t a b : PTm n) : Γ ⊢[PRAAx]
     apply equal_of_values <;> simp only [re_mul,im_mul,re_scale,im_scale] <;> ring)
     (.eqRefl _) (qmul_represents _ _ _ _ _ _ (raw_den_positive a) (raw_den_positive b)
       (raw_represents a) (natScale_raw_represents t b))
+
+/-- Natural scaling distributes over subtraction of Gaussian-rational codes. -/
+theorem natScale_sub (t a b : PTm n) : Γ ⊢[PRAAx]
+    GaussianRationalMetric.qsub (natScale t a) (natScale t b) ≐
+      natScale t (GaussianRationalMetric.qsub a b) :=
+  (GaussianRationalSyntheticDivision.qsub_congr (natScale_as_product t a) (natScale_as_product t b)).eqTrans
+    ((GaussianRationalRoundedPower.multiplication_difference _ _ _).eqTrans (natScale_as_product t _).eqSymm)
 
 theorem natScale_multiply (t u q : PTm n) : Γ ⊢[PRAAx]
     natScale t (natScale u q) ≐ natScale (t*u) q := by

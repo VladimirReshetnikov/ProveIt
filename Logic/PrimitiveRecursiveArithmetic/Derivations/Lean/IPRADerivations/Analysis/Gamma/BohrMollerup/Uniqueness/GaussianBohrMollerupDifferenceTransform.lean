@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Names.Order.GaussianNamedRealOrderLinear
 import IPRADerivations.Analysis.Names.Scaling.GaussianNamedNaturalScale
-import IPRADerivations.Analysis.Integration.Moments.GaussianMomentReflection
 
 /-!
 # Exchange and natural scaling of named differences
@@ -26,7 +25,7 @@ open GaussianNaturalScaleProductName (productF productData)
 open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_triangle_same)
 open GaussianRationalHorner (qadd qmul)
 open GaussianRationalMetric (qsub qnegative distanceBounded)
-open GaussianRationalNaturalScale (natScale natScale_as_product naturalPoint)
+open GaussianRationalNaturalScale (natScale natScale_sub)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -75,14 +74,6 @@ theorem exchange (F G H I : PR 2) (x y z w : PTm n)
     distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
       (distance_triangle_same _ _ _ _ _ _ (unit_positive p) a b)
 
-private theorem raw_scale (i a b : PTm n) : Γ ⊢[PRAAx] natScale i (qsub a b) ≐ qsub (natScale i a) (natScale i b) := by
-  have first := (natScale_as_product (Γ := Γ) i (qsub a b)).eqTrans
-    (GaussianRationalCoefficientScaling.qmul_add (naturalPoint i) a (qnegative b))
-  have second := qadd_congr (Γ := Γ) (natScale_as_product i a).eqSymm
-    ((GaussianMomentReflection.negative_right_product (naturalPoint i) b).eqTrans
-      (GaussianInverseBinomialRows.negative_congr (natScale_as_product i b).eqSymm))
-  exact first.eqTrans second
-
 private def scaleBudget (F G : PR 2) (i x y : PTm n) : PTm n :=
   num 6+(cost F i x+cost G i y)+(cost (nameF F G) i (data x y)+i*num 6)
 
@@ -101,7 +92,7 @@ private theorem scaled_at (F G : PR 2) (i x y p : PTm n)
     (regular _ _ _ hx) (regular _ _ _ hy)
   have b := difference_distance _ _ _ _ _ _ _ (unit_positive p)
     (GaussianNamedNaturalScaleOrder.sample_error F i x p hx) (GaussianNamedNaturalScaleOrder.sample_error G i y p hy)
-  have left := distance_congr (.eqRefl _) (raw_scale i f g).eqSymm (.eqRefl _) (.eqRefl _)
+  have left := distance_congr (.eqRefl _) (natScale_sub i f g) (.eqRefl _) (.eqRefl _)
     (distance_triangle_same _ _ _ _ _ _ (unit_positive p) a b)
   have rhs0 := GaussianNamedNaturalScaleOrder.sample_error D i z p hz
   have norm := GaussianNameBounds.sample_bound D z p hz
