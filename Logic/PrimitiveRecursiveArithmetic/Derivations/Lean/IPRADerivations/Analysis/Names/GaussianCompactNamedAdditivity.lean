@@ -17,11 +17,12 @@ namespace LeanProofs.IPRA.Analysis.GaussianCompactNamedAdditivity
 
 open_ipra
 open GaussianRationalHorner (qadd positive_product)
-open GaussianRationalMetric (distanceBounded)
+open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianCompactRiemannName (sampledModulus localBody inside evaluatorName nameData sample quadrature mesh precision)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open GaussianNameEquivalence (crossEquivalent)
+open GaussianNameEquivalence (crossEquivalent point_at_later)
+open GaussianRationalReciprocal (bound_congr)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -96,6 +97,34 @@ theorem refinement_distance (F : PR 3) (p a C E L T x : PTm n) (hC : Γ ⊢[PRAA
   apply distance_radius_mono _ _ _ _ (num 3) K
     (le_congr (.eqRefl _) (by unfold GaussianNamedInverseRate.rateDenominator; ipra_ring) den) (unit_positive _) _ raw
   exact budget
+
+/-- A bound on the shared-step refinement pays three observation units at an earlier clock. -/
+theorem observation_bound_of_refined (F : PR 3) (r s a C E L T x A D : PTm n)
+    (hrs : Γ ⊢[PRAAx] le r s) (hC : Γ ⊢[PRAAx] le one C) (hD : Γ ⊢[PRAAx] le one D)
+    (hin : Γ ⊢[PRAAx] GaussianCompactRiemannName.input F a C E L T x)
+    (hbound : Γ ⊢[PRAAx] bounded (refined F s a C E L T x) A D) : Γ ⊢[PRAAx]
+    bounded (ap2 (GaussianCompactRiemannName.nameF F) r (GaussianCompactRiemannName.data a C E L T x))
+      (A*unit r+num 3*D) (D*unit r) := by
+  let G := GaussianCompactRiemannName.nameF F
+  let d := GaussianCompactRiemannName.data a C E L T x
+  let w := refined F s a C E L T x
+  have hr := unit_positive (Γ := Γ) r
+  have hs := unit_positive (Γ := Γ) (s+num 6)
+  have near : Γ ⊢[PRAAx] distanceBounded (ap2 G r d) (ap2 G s d) two (unit r) :=
+    distance_symmetric _ _ _ _ hr (point_at_later G d r s
+      (GaussianCompactRiemannName.name_regular F a C E L T x hin) hrs)
+  have read := GaussianCompactRiemannName.name_at (Γ := Γ) F s a C E L T x
+  have room := le_trans (mul_le_mul_left (num 3) (GaussianExponentialReference.unit_monotone hrs))
+    (GaussianCompactRiemannName.dyadic_six_lower s)
+  have refineGap : Γ ⊢[PRAAx] distanceBounded (ap2 G s d) w one (unit r) :=
+    distance_radius_mono _ _ _ _ _ _ hs hr (le_congr (.eqRefl _) (one_mul _).eqSymm room)
+      (distance_symmetric _ _ _ _ hs
+        (distance_congr (.eqRefl _) read.eqSymm (.eqRefl _) (.eqRefl _) (refinement_distance F s a C E L T x hC hin)))
+  have distance : Γ ⊢[PRAAx] distanceBounded (ap2 G r d) w (num 3) (unit r) :=
+    distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
+      (distance_triangle_same _ _ _ _ _ _ hr near refineGap)
+  exact bound_congr (.eqRefl _) (by ipra_ring) (mul_comm _ _)
+    (GaussianReconstructionRoots.norm_from_distance (ap2 G r d) w (num 3) (unit r) A D hr hD distance hbound)
 
 theorem finite_at_name_grid (F : PR 3) (p a C1 C2 E L T x : PTm n) (h : Γ ⊢[PRAAx] input F a C1 C2 E L T x) : Γ ⊢[PRAAx]
     distanceBounded (refined F p a (C1+C2) E L T x)
