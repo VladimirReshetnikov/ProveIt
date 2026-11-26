@@ -3287,3 +3287,6 @@ At each encoded derivative order, two independently chosen total factor counts b
 
 One finite rational square grid covers the admitted disk. The primitive-recursive nearest entry identifies a certified local chart whose Taylor-ball error against the original Barnes evaluator has separate dyadic bounds in observation precision and degree.
 [GaussianBarnesCanonicalWeightedTaylorBallCover](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalWeightedTaylorBallCover.lean)
+
+The exact finite harmonic numerator below a dyadic cutoff is at most one plus the dyadic index times the common unit. The literal Barnes head correction on a disk of radius R with N factors then has norm at most R squared times one plus this index, plus N times R.
+[RationalHarmonicDyadicUpper](Lean/IPRADerivations/Analysis/Series/RationalHarmonicDyadicUpper.lean), [GaussianBarnesCanonicalDyadicHeadCorrection](Lean/IPRADerivations/Analysis/Barnes/HeadProducts/GaussianBarnesCanonicalDyadicHeadCorrection.lean)
