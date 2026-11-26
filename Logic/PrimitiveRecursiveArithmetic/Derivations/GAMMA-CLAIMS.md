@@ -2978,3 +2978,6 @@ The shifted original translated powers telescope to the plain Gamma denominator 
 
 The actual change of the original local logarithm has a certified relative Mercator argument. The native input perturbation determines its rational bound and the product identity of the bases.
 [GaussianBarnesCanonicalRelativeStep](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalRelativeStep.lean)
+
+The relative-argument expansion has explicit summable quadratic and cubic error bounds on the original finite rational samples, with the original perturbation and factor index retained.
+[GaussianBarnesCanonicalRelativeTaylor](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalRelativeTaylor.lean)
