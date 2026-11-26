@@ -3284,3 +3284,6 @@ The degree-zero factorial Taylor evaluator is equivalent to the original named B
 
 At each encoded derivative order, two independently chosen total factor counts beyond one precision-dependent threshold give literal finite factorial derivative names with a uniform dyadic Cauchy bound. The threshold depends only on the disk radius, order, and precision. Different retaining buffers and equivalent rational encodings of the center are admitted.
 [GaussianBarnesCanonicalFixedTaylorDerivativeCauchy](Lean/IPRADerivations/Analysis/Barnes/Taylor/Coefficients/GaussianBarnesCanonicalFixedTaylorDerivativeCauchy.lean)
+
+One finite rational square grid covers the admitted disk. The primitive-recursive nearest entry identifies a certified local chart whose Taylor-ball error against the original Barnes evaluator has separate dyadic bounds in observation precision and degree.
+[GaussianBarnesCanonicalWeightedTaylorBallCover](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalWeightedTaylorBallCover.lean)
