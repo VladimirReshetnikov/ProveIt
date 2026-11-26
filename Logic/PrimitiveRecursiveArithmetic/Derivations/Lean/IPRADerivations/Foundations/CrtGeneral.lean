@@ -33,11 +33,10 @@ open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.TotientCorollaries (lcm)
 open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (lcm_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds (shift_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_lt')
-open LeanProofs.IPRA.AnalyticNumberTheory.EulerProduct (eq_of_viol viol_of_eq)
+open LeanProofs.IPRA.AnalyticNumberTheory.EulerProduct (eq_of_viol)
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorVector (subst_dvd)
 open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos crt_exists_at)
-open LeanProofs.IPRA.Foundations.CrtCoprime (mS mS_at m_pos wB w_at fB f_at remdvd rem_down left_zero right_zero)
+open LeanProofs.IPRA.Foundations.CrtCoprime (mS m_pos fB rem_down left_zero right_zero)
 open LeanProofs.IPRA.Foundations.CrtLcm (Lc Lc_zero Lc_succ Lc_pos m_dvd_Lc Lc_cong lcm_mono dist_dvd
   dvd_lcm_left dvd_lcm_right lcm_dvd_of)
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (dmu)
@@ -195,9 +194,8 @@ abbrev X (K y : PTm n) : PTm n := Search.mu (fB mB aB) (Lc mB K y) (pairT K y)
 
 /-- A solution of the first `K` congruences solves the `i`-th one. -/
 theorem sol_at {x K y i : PTm n} (h : Γ ⊢[PRAAx] CrtCoprime.V mB aB x K y ≐ zero) (hi : Γ ⊢[PRAAx] lt i K) :
-    Γ ⊢[PRAAx] rem x (inst2 (mS mB) i y) ≐ rem (inst2 aB i y) (inst2 (mS mB) i y) := by
-  have r := eq_of_viol ((w_at mB aB i x y).eqSymm.eqTrans (sum_zero_elim (wB mB aB) h hi))
-  rw [mS_at]; exact r
+    Γ ⊢[PRAAx] rem x (inst2 (mS mB) i y) ≐ rem (inst2 aB i y) (inst2 (mS mB) i y) :=
+  CrtCoprime.solution_at mB aB h hi
 
 /-- The solution `x` of the first `K` congruences is compatible with `a_K` modulo each `gcd(m_i, m_K)`. -/
 theorem pt_compat {x K y i : PTm n} (hV : Γ ⊢[PRAAx] CrtCoprime.V mB aB x K y ≐ zero)
@@ -215,52 +213,9 @@ theorem pt_compat {x K y i : PTm n} (hV : Γ ⊢[PRAAx] CrtCoprime.V mB aB x K y
 theorem found {x K y : PTm n} (hx1 : Γ ⊢[PRAAx] rem x (Lc mB K y) ≐ rem (X mB aB K y) (Lc mB K y))
     (hx2 : Γ ⊢[PRAAx] rem x (inst2 (mS mB) K y) ≐ rem (inst2 aB K y) (inst2 (mS mB) K y))
     (hV : Γ ⊢[PRAAx] CrtCoprime.V mB aB (X mB aB K y) K y ≐ zero) :
-    Γ ⊢[PRAAx] (CrtCoprime.V mB aB (X mB aB (succ K) y) (succ K) y ≐ zero) ⋏ lt (X mB aB (succ K) y) (Lc mB (succ K) y) := by
-  have Lp := Lc_pos (Γ := Γ) mB (succ K) y
-  have zlt : Γ ⊢[PRAAx] lt (rem x (Lc mB (succ K) y)) (Lc mB (succ K) y) := rem_lt' Lp x
-  have hK : Γ ⊢[PRAAx] lt K (succ K) := le_refl _
-  -- the term `i` of the violation count of `z = x mod L(K + 1)`, for `i < K + 1`
-  have pt : ∀ {k : ℕ} {Δ : List (Fm PTm k)} (x' K' y' i : PTm k),
-      (Δ ⊢[PRAAx] rem x' (Lc mB K' y') ≐ rem (X mB aB K' y') (Lc mB K' y')) →
-      (Δ ⊢[PRAAx] rem x' (inst2 (mS mB) K' y') ≐ rem (inst2 aB K' y') (inst2 (mS mB) K' y')) →
-      (Δ ⊢[PRAAx] CrtCoprime.V mB aB (X mB aB K' y') K' y' ≐ zero) → (Δ ⊢[PRAAx] lt i (succ K')) →
-      (Δ ⊢[PRAAx] inst2 (wB mB aB) i (pairT (rem x' (Lc mB (succ K') y')) y') ≐ zero) := by
-    intro k Δ x' K' y' i h1 h2 h3 hi
-    have mi := m_pos (Γ := Δ) mB i y'
-    have r0 := remdvd (x := x') mi (Lc_pos mB (succ K') y') (m_dvd_Lc mB hi)
-    have ri : Δ ⊢[PRAAx] rem x' (inst2 (mS mB) i y') ≐ rem (inst2 aB i y') (inst2 (mS mB) i y') := by
-      refine .orE (lt_succ_cases hi) ?_ ?_
-      · have hlt : (lt i K' :: Δ) ⊢[PRAAx] lt i K' := Prf.hyp0
-        exact (rem_down mi.wk (Lc_pos mB K' y') (m_dvd_Lc mB hlt) h1.wk).eqTrans (sol_at mB aB h3.wk hlt)
-      · have e : ((i ≐ K') :: Δ) ⊢[PRAAx] i ≐ K' := Prf.hyp0
-        have em := congrInst2 (Γ := (i ≐ K') :: Δ) (mS mB) e (.eqRefl y')
-        have ea := congrInst2 (Γ := (i ≐ K') :: Δ) aB e (.eqRefl y')
-        exact (congrAp2 remF (.eqRefl _) em).eqTrans (h2.wk.eqTrans
-          (congrAp2 remF ea.eqSymm em.eqSymm))
-    have r := r0.eqTrans ri
-    rw [mS_at] at r
-    exact (w_at mB aB i _ y').eqTrans (viol_of_eq r)
-  have vz : Γ ⊢[PRAAx] CrtCoprime.V mB aB (rem x (Lc mB (succ K) y)) (succ K) y ≐ zero := by
-    refine sum_zero_of_bounded (wB mB aB) (pairT (rem x (Lc mB (succ K) y)) y) (succ K) (.allI (.impI ?_))
-    have s1 : Γ.map Fm.shift ⊢[PRAAx] rem (Syn.shift x) (Lc mB (Syn.shift K) (Syn.shift y)) ≐
-        rem (X mB aB (Syn.shift K) (Syn.shift y)) (Lc mB (Syn.shift K) (Syn.shift y)) := by
-      simpa [Fm.shift, Syn.shift] using hx1.shift
-    have s2 : Γ.map Fm.shift ⊢[PRAAx] rem (Syn.shift x) (inst2 (mS mB) (Syn.shift K) (Syn.shift y)) ≐
-        rem (inst2 aB (Syn.shift K) (Syn.shift y)) (inst2 (mS mB) (Syn.shift K) (Syn.shift y)) := by
-      have e := hx2.shift
-      simp only [Fm.shift, Fm.subst_eq, subst_ap2] at e
-      rw [← AnalyticNumberTheory.MobiusInversion.shift_inst2, ← AnalyticNumberTheory.MobiusInversion.shift_inst2]
-      exact e
-    have s3 : Γ.map Fm.shift ⊢[PRAAx] CrtCoprime.V mB aB (X mB aB (Syn.shift K) (Syn.shift y)) (Syn.shift K) (Syn.shift y) ≐ zero := by
-      simpa [Fm.shift, Syn.shift] using hV.shift
-    have sz : Syn.shift (pairT (rem x (Lc mB (succ K) y)) y) =
-        pairT (rem (Syn.shift x) (Lc mB (succ (Syn.shift K)) (Syn.shift y))) (Syn.shift y) := by simp [Syn.shift]
-    have sK : Syn.shift (succ K) = succ (Syn.shift K) := by simp [Syn.shift]
-    rw [sz, sK]
-    exact pt _ _ _ _ s1.wk s2.wk s3.wk Prf.hyp0
-  have sf := Search.search_found (f := fB mB aB) (N := Lc mB (succ K) y) (x := pairT (succ K) y)
-    ((f_at mB aB _ (succ K) y).eqTrans vz) zlt
-  exact .andI ((f_at mB aB _ (succ K) y).eqSymm.eqTrans (Prf.andE₁ (Prf.andE₂ sf))) (Prf.andE₁ sf)
+    Γ ⊢[PRAAx] (CrtCoprime.V mB aB (X mB aB (succ K) y) (succ K) y ≐ zero) ⋏ lt (X mB aB (succ K) y) (Lc mB (succ K) y) :=
+  CrtCoprime.found_with_bound mB aB (rec2 (succ zero) (CrtLcm.stepB mB))
+    (fun j y => Lc_pos mB j y) (fun hi => m_dvd_Lc mB hi) hx1 hx2 hV
 
 theorem rem_one' (t : PTm n) : Γ ⊢[PRAAx] rem t one ≐ zero := AnalyticNumberTheory.Euler.rem_one t
 
@@ -310,11 +265,8 @@ theorem step {K y : PTm n}
 
 theorem base (y : PTm n) :
     Γ ⊢[PRAAx] (CrtCoprime.V mB aB (X mB aB zero y) zero y ≐ zero) ⋏ lt (X mB aB zero y) (Lc mB zero y) := by
-  have L0 := Lc_zero (Γ := Γ) mB y
-  have lt0 : Γ ⊢[PRAAx] lt zero (Lc mB zero y) := le_congr (.eqRefl _) L0.eqSymm (le_refl _)
-  have sf := Search.search_found (f := fB mB aB) (N := Lc mB zero y) (x := pairT zero y) (i := zero)
-    ((f_at mB aB zero zero y).eqTrans (sum_zero _ _)) lt0
-  exact .andI ((f_at mB aB _ zero y).eqSymm.eqTrans (Prf.andE₁ (Prf.andE₂ sf))) (Prf.andE₁ sf)
+  exact CrtCoprime.search_solution_of_witness mB aB (sum_zero _ _)
+    (le_congr (.eqRefl _) (Lc_zero (Γ := Γ) mB y).eqSymm (le_refl one))
 
 /-- **`el:crt`, existence**: for a compatible system (`C K y = 0`), the search `X K y` solves all `K` congruences
 and lies below `L = lcm(m_0, …, m_{K−1})`. -/

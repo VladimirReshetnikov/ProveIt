@@ -169,43 +169,65 @@ theorem term_eq {x X K y i : PTm n} (hi : Γ ⊢[PRAAx] lt i K) (hx : Γ ⊢[PRA
   exact (w_at mB aB i _ y).eqTrans ((congrMonus (.eqRefl _) (AnalyticNumberTheory.Euler.congrEqb e (.eqRefl _))).eqTrans
     (w_at mB aB i X y).eqSymm)
 
+/-- A vanishing violation count certifies each congruence in the prefix. -/
+theorem solution_at {x K y i : PTm n} (hV : Γ ⊢[PRAAx] V mB aB x K y ≐ zero)
+    (hi : Γ ⊢[PRAAx] lt i K) :
+    Γ ⊢[PRAAx] rem x (inst2 (mS mB) i y) ≐ rem (inst2 aB i y) (inst2 (mS mB) i y) := by
+  rw [mS_at]
+  exact eq_of_viol ((w_at mB aB i x y).eqSymm.eqTrans (sum_zero_elim (wB mB aB) hV hi))
+
+private theorem zero_violation {x y i : PTm n}
+    (h : Γ ⊢[PRAAx] rem x (inst2 (mS mB) i y) ≐ rem (inst2 aB i y) (inst2 (mS mB) i y)) :
+    Γ ⊢[PRAAx] inst2 (wB mB aB) i (pairT x y) ≐ zero := by
+  rw [mS_at] at h
+  exact (w_at mB aB i x y).eqTrans (viol_of_eq h)
+
+/-- The bounded search finds a solution whenever a witness lies below its bound. -/
+theorem search_solution_of_witness {z K y M : PTm n}
+    (hV : Γ ⊢[PRAAx] V mB aB z K y ≐ zero) (hz : Γ ⊢[PRAAx] lt z M) :
+    Γ ⊢[PRAAx] (V mB aB (Search.mu (fB mB aB) M (pairT K y)) K y ≐ zero) ⋏
+      lt (Search.mu (fB mB aB) M (pairT K y)) M := by
+  have sf := Search.search_found ((f_at mB aB z K y).eqTrans hV) hz
+  exact .andI ((f_at mB aB _ K y).eqSymm.eqTrans sf.andE₂.andE₁) sf.andE₁
+
+/-- Extend a solution from `K` to `K + 1` using any positive search bound divisible by the prefix moduli. -/
+theorem found_with_bound (B : PR 2)
+    (positive : ∀ {d : ℕ} {Δ : List (Fm PTm d)} (j y : PTm d),
+      Δ ⊢[PRAAx] ap2 B j y ≐ succ (pred (ap2 B j y)))
+    (divides : ∀ {d : ℕ} {Δ : List (Fm PTm d)} {i j y : PTm d},
+      (Δ ⊢[PRAAx] lt i j) → (Δ ⊢[PRAAx] dvd (inst2 (mS mB) i y) (ap2 B j y)))
+    {x X K y : PTm n} (hx1 : Γ ⊢[PRAAx] rem x (ap2 B K y) ≐ rem X (ap2 B K y))
+    (hx2 : Γ ⊢[PRAAx] rem x (inst2 (mS mB) K y) ≐ rem (inst2 aB K y) (inst2 (mS mB) K y))
+    (hV : Γ ⊢[PRAAx] V mB aB X K y ≐ zero) :
+    Γ ⊢[PRAAx] (V mB aB (Search.mu (fB mB aB) (ap2 B (succ K) y) (pairT (succ K) y)) (succ K) y ≐ zero) ⋏
+      lt (Search.mu (fB mB aB) (ap2 B (succ K) y) (pairT (succ K) y)) (ap2 B (succ K) y) := by
+  let z := rem x (ap2 B (succ K) y)
+  have hprefix : Γ ⊢[PRAAx] V mB aB z K y ≐ zero := by
+    refine sum_zero_of_bounded (wB mB aB) (pairT z y) K (.allI (.impI ?_))
+    have hi : (lt (var 0) (Syn.shift K) :: Γ.map Fm.shift) ⊢[PRAAx] lt (var 0) (Syn.shift K) := Prf.hyp0
+    have hnext := le_trans hi (le_succ_self (Syn.shift K))
+    have hx1' : Γ.map Fm.shift ⊢[PRAAx] rem (Syn.shift x) (ap2 B (Syn.shift K) (Syn.shift y)) ≐
+        rem (Syn.shift X) (ap2 B (Syn.shift K) (Syn.shift y)) := by
+      simpa [Fm.shift, Syn.shift] using hx1.shift
+    have hV' : Γ.map Fm.shift ⊢[PRAAx] V mB aB (Syn.shift X) (Syn.shift K) (Syn.shift y) ≐ zero := by
+      simpa [Fm.shift, Syn.shift] using hV.shift
+    have hmi := m_pos (Γ := lt (var 0) (Syn.shift K) :: Γ.map Fm.shift) mB (var 0) (Syn.shift y)
+    have reduce := remdvd (x := Syn.shift x) hmi (positive (succ (Syn.shift K)) (Syn.shift y)) (divides hnext)
+    have preserve := rem_down hmi (positive (Syn.shift K) (Syn.shift y)) (divides hi) hx1'.wk
+    simpa [z, Syn.shift] using zero_violation mB aB (reduce.eqTrans (preserve.eqTrans (solution_at mB aB hV'.wk hi)))
+  have next := zero_violation mB aB
+    ((remdvd (m_pos mB K y) (positive (succ K) y) (divides (le_refl (succ K)))).eqTrans hx2)
+  have allZero := (sum_succ' (wB mB aB) K (pairT z y)).eqTrans
+    ((congrAdd hprefix next).eqTrans (add_zero zero))
+  exact search_solution_of_witness mB aB allZero (rem_lt' (positive (succ K) y) x)
+
 /-- A common solution `x` of `X K y` modulo `L K` and of `a_K` modulo `m_K` gives a solution of the first `K + 1`
 congruences below `L(K + 1)`; the search finds the least one. -/
 theorem found {x K y : PTm n} (hx1 : Γ ⊢[PRAAx] rem x (L mB K y) ≐ rem (X mB aB K y) (L mB K y))
     (hx2 : Γ ⊢[PRAAx] rem x (inst2 (mS mB) K y) ≐ rem (inst2 aB K y) (inst2 (mS mB) K y))
     (hV : Γ ⊢[PRAAx] V mB aB (X mB aB K y) K y ≐ zero) :
-    Γ ⊢[PRAAx] (V mB aB (X mB aB (succ K) y) (succ K) y ≐ zero) ⋏ lt (X mB aB (succ K) y) (L mB (succ K) y) := by
-  have Lp := L_pos (Γ := Γ) mB (succ K) y
-  let z := rem x (L mB (succ K) y)
-  have zlt : Γ ⊢[PRAAx] lt z (L mB (succ K) y) := rem_lt' Lp x
-  -- the first `K` terms
-  have s1 : Γ ⊢[PRAAx] V mB aB z K y ≐ V mB aB (X mB aB K y) K y := by
-    refine sum_congr_bounded (wB mB aB) (wB mB aB) (pairT z y) (pairT (X mB aB K y) y) K (.allI (.impI ?_))
-    have hx1' : Γ.map Fm.shift ⊢[PRAAx] rem (Syn.shift x) (L mB (Syn.shift K) (Syn.shift y)) ≐
-        rem (X mB aB (Syn.shift K) (Syn.shift y)) (L mB (Syn.shift K) (Syn.shift y)) := by
-      simpa [Fm.shift, Syn.shift] using hx1.shift
-    have sz : Syn.shift (pairT z y) =
-        pairT (rem (Syn.shift x) (L mB (succ (Syn.shift K)) (Syn.shift y))) (Syn.shift y) := by
-      simp [z, Syn.shift]
-    have sX : Syn.shift (pairT (X mB aB K y) y) = pairT (X mB aB (Syn.shift K) (Syn.shift y)) (Syn.shift y) := by
-      simp [Syn.shift]
-    rw [sz, sX]
-    exact term_eq mB aB Prf.hyp0 hx1'.wk
-  -- the term `K`
-  have hmK := m_pos (Γ := Γ) mB K y
-  have dK : Γ ⊢[PRAAx] dvd (inst2 (mS mB) K y) (L mB (succ K) y) :=
-    dvd_of_eq' hmK (w := L mB K y) ((L_succ mB K y).eqTrans (mul_comm _ _))
-  have rK : Γ ⊢[PRAAx] rem z (inst2 (mS mB) K y) ≐ rem (inst2 aB K y) (inst2 (mS mB) K y) :=
-    (remdvd hmK Lp dK).eqTrans hx2
-  have tK : Γ ⊢[PRAAx] inst2 (wB mB aB) K (pairT z y) ≐ zero := by
-    have r : Γ ⊢[PRAAx] rem z (succ (inst2 mB K y)) ≐ rem (inst2 aB K y) (succ (inst2 mB K y)) := by
-      rw [mS_at] at rK; exact rK
-    exact (w_at mB aB K z y).eqTrans (viol_of_eq r)
-  have vz : Γ ⊢[PRAAx] V mB aB z (succ K) y ≐ zero :=
-    (sum_succ' (wB mB aB) K (pairT z y)).eqTrans ((congrAdd (s1.eqTrans hV) tK).eqTrans (add_zero _))
-  have sf := Search.search_found (f := fB mB aB) (N := L mB (succ K) y) (x := pairT (succ K) y)
-    ((f_at mB aB z (succ K) y).eqTrans vz) zlt
-  exact .andI ((f_at mB aB _ (succ K) y).eqSymm.eqTrans (Prf.andE₁ (Prf.andE₂ sf))) (Prf.andE₁ sf)
+    Γ ⊢[PRAAx] (V mB aB (X mB aB (succ K) y) (succ K) y ≐ zero) ⋏ lt (X mB aB (succ K) y) (L mB (succ K) y) :=
+  found_with_bound mB aB (prodF (mS mB)) (fun j y => L_pos mB j y) (fun hi => m_dvd mB hi) hx1 hx2 hV
 
 theorem rem_one' (t : PTm n) : Γ ⊢[PRAAx] rem t one ≐ zero := AnalyticNumberTheory.Euler.rem_one t
 
@@ -244,11 +266,8 @@ theorem step {K y : PTm n}
 
 theorem base (y : PTm n) :
     Γ ⊢[PRAAx] (V mB aB (X mB aB zero y) zero y ≐ zero) ⋏ lt (X mB aB zero y) (L mB zero y) := by
-  have L0 : Γ ⊢[PRAAx] L mB zero y ≐ one := prod_zero (mS mB) y
-  have lt0 : Γ ⊢[PRAAx] lt zero (L mB zero y) := le_congr (.eqRefl _) L0.eqSymm (le_refl _)
-  have sf := Search.search_found (f := fB mB aB) (N := L mB zero y) (x := pairT zero y) (i := zero)
-    ((f_at mB aB zero zero y).eqTrans (sum_zero _ _)) lt0
-  exact .andI ((f_at mB aB _ zero y).eqSymm.eqTrans (Prf.andE₁ (Prf.andE₂ sf))) (Prf.andE₁ sf)
+  exact search_solution_of_witness mB aB (sum_zero _ _)
+    (le_congr (.eqRefl _) (prod_zero (Γ := Γ) (mS mB) y).eqSymm (le_refl one))
 
 /-- **The Chinese remainder theorem for coprime moduli**: if every modulus is coprime to the product of the
 previous ones (`H K y = 0`), the search `X K y` solves all `K` congruences and lies below `∏_{i<K} m_i`. -/
@@ -271,8 +290,10 @@ theorem crt_coprime {K y : PTm n} (hH : Γ ⊢[PRAAx] H mB K y ≐ zero) :
 
 /-- **The solution**: `X K y ≡ a_i (mod m_i)` for every `i < K`. -/
 theorem crt_coprime_at {K y i : PTm n} (hH : Γ ⊢[PRAAx] H mB K y ≐ zero) (hi : Γ ⊢[PRAAx] lt i K) :
-    Γ ⊢[PRAAx] rem (X mB aB K y) (succ (inst2 mB i y)) ≐ rem (inst2 aB i y) (succ (inst2 mB i y)) :=
-  eq_of_viol ((w_at mB aB i _ y).eqSymm.eqTrans (sum_zero_elim (wB mB aB) (Prf.andE₁ (crt_coprime mB aB hH)) hi))
+    Γ ⊢[PRAAx] rem (X mB aB K y) (succ (inst2 mB i y)) ≐ rem (inst2 aB i y) (succ (inst2 mB i y)) := by
+  have h := solution_at mB aB (crt_coprime mB aB hH).andE₁ hi
+  rw [mS_at] at h
+  exact h
 
 end Step
 
