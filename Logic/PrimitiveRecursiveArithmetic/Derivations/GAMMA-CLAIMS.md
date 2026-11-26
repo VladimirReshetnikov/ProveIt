@@ -2999,3 +2999,6 @@ The original named Barnes evaluator commutes with conjugation on regular Gaussia
 
 A finite exact telescope bounds the difference of two literal Gaussian rational sums when each row has an inverse-square error and a common clock error.
 [GaussianReciprocalSquareSumDistance](Lean/IPRADerivations/Analysis/GaussianReciprocalSquareSumDistance.lean)
+
+The difference of the original Barnes exponent corrections at consecutive arguments sums exactly to the literal harmonic expression, including at empty cutoff.
+[GaussianBarnesCanonicalCorrectionShift](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalCorrectionShift.lean)
